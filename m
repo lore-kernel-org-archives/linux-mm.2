@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B00AD3B7E1
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CD6D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275F26B000D; Mon,  8 Dec 2025 01:30:00 -0500 (EST)
+	id 5F8A06B000E; Mon,  8 Dec 2025 01:30:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FEF96B000E; Mon,  8 Dec 2025 01:30:00 -0500 (EST)
+	id 581636B0010; Mon,  8 Dec 2025 01:30:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13D6E6B0010; Mon,  8 Dec 2025 01:30:00 -0500 (EST)
+	id 4BF496B0011; Mon,  8 Dec 2025 01:30:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E8C786B000D
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:29:59 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8813E1A0980
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:59 +0000 (UTC)
-X-FDA: 84195328518.15.FCD7036
+	by kanga.kvack.org (Postfix) with ESMTP id 38F206B000E
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:01 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF68913BF5B
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:00 +0000 (UTC)
+X-FDA: 84195328560.16.4B53536
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D6AD6A000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrkKJurf;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3369F1C0004
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ChdeafpH;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175398;
+	s=arc-20220608; t=1765175399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yfS+BlhQJqeO7lgzc5qntPtm8788Expbnrlic/Caw6k=;
-	b=WxknOQ6rpstmz7eg82sB1Vqhw9M2Il/Cvkps7P7nUTkyrFklCOQ4XG5PnAiCs8jLg39v6P
-	UIA9jcYu95aEMOMS4/Yl0FFd9p07CmLvPe/HwtZqVx+8zb71wePIq5wkmYspuAoYqe2H71
-	OFhG6iyLwMK/MhRzUh/yUCMvybM5l34=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175398; a=rsa-sha256;
-	cv=none;
-	b=npfP6hcl/BeprtsQ4AD4S5Ey6byRyeO1yFnBTJ7nVcX4fKMVFliI9EvDqMtVUi4OgadCGF
-	/w/RMj07f+lEn5M6ZdOYUkbsZF0aJgKKUshU4tQmsrOC2nGNuzmZ8XCn2LWek8BoK1HFvB
-	N8HNbw3KzKaLBFayIexVmzaFfEhPvEU=
+	bh=Mi4kZ1HcWEGoo2TO8+D7Kmn8urbymUqIL0LPjzAiLx8=;
+	b=rOoeLx4I1yGnGK5E0aeFfQuIIELDq1B/oRB420Qg2d74H9QDRZQiAgWuoqsf/Xt1qxWNkG
+	rlBZaPuIdR6SK68u7y2Wwx4whM8vdKbfbBYbpdyhWL8vesJgqA0zc4uQYEH6mjamYLvDEK
+	4nwzXao8EHbis1Ue1s9WO+686G2WBgs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrkKJurf;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ChdeafpH;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175399; a=rsa-sha256;
+	cv=none;
+	b=J+l1P2M1fWRgLrTviAfG0z5x58+DWuHvjeGTD98gjhGWEq6ULDICtbpZ+FuOZkdJWgeyyA
+	d245DF64f/uh1BGUdNDzgaIsUzoLbNwmfde0x6sfrAmr8vm2Rf18xfUAotlEBByKtuT4C0
+	+4ujDP1r+o26btD+Z6RDVvhfgU+djr8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C501444B1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A65B44393;
+	Mon,  8 Dec 2025 06:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52020C4CEF1;
 	Mon,  8 Dec 2025 06:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35AEC19424;
-	Mon,  8 Dec 2025 06:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175396;
-	bh=IsAQBy+/F0THMv/6pxlb7dlCDTvmO/F43GY/84Lx7Qs=;
+	s=k20201202; t=1765175398;
+	bh=FU7PUMIztU6bHn9o0PvCgnBq3cHVYIdbgyjQa5N1taw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrkKJurf/ekHLTqr3oXC4YqVnKygVWt0HJT+83gq/Sz7EFTeS1jr0l3zZ3x3TwyZh
-	 uRswznSYSjtlgylkCypij/Ca+pKIB1LnH8V2t5o8RUaD+dlzdGd0OYo08Ek9z5f3dT
-	 R1HLsTu7RvLf2loccy9ldM0/g9rnq8W30RR2OV/3lg0Gq61og2650e77nJqi8EBgMK
-	 04/1zCu7TbWB1cErBqV1C3ZFWqnYOt1J0upc/zfA0B53yngOk1KwXdH+pfIszva00f
-	 ETh14f5tGl6dakWTIosb3VkJlpnfEiXyFUSpK3CbHj87TKWd4cPyWgK/WjoT06T/2W
-	 UbEDolHGhNslg==
+	b=ChdeafpH4rH6YL3o1OKRhEuJQnPqQu9MWx0FDHaiJjG2zbJafy/3MUasBBnoQ6ERw
+	 8+RMDYPSMQ+pQtclPsOp/r6aNzokcl/inkk19+vYiY8FJ7pA58bWrpi14lANsZukl7
+	 v0z7oACIteOEGOzdjcln69EjPOT1UAQIgQ3UbdJWpvjhLq2yZZORheMgWQQGXMNk8L
+	 XuziggKbS2BuzHsZ8rl1O+5R28lNck8cQjOZFnftcgl0/ReiHNbauEqMjxBxb1zJbD
+	 3Bcuc20nOgtGmJ68jLXrUEyi4yXMNKphfR5Ol8MsHs6c10Qp8xuwzX4+emNNQx3RfG
+	 gIuiMu3ys40mQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 05/37] mm/{mprotect,memory}: (no upstream-aimed hack) implement MM_CP_DAMON
-Date: Sun,  7 Dec 2025 22:29:09 -0800
-Message-ID: <20251208062943.68824-6-sj@kernel.org>
+Subject: [RFC PATCH v3 06/37] mm/damon/paddr: support page fault access check primitive
+Date: Sun,  7 Dec 2025 22:29:10 -0800
+Message-ID: <20251208062943.68824-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D6AD6A000C
-X-Stat-Signature: exdk8eyhuex6fk58ibfwzne8wmrs7pej
+X-Stat-Signature: arzos6y3hmbt1c9zh9yh41yr84ji64mp
+X-Rspamd-Queue-Id: 3369F1C0004
 X-Rspam-User: 
-X-HE-Tag: 1765175397-299375
-X-HE-Meta: U2FsdGVkX19ct6fG4jfy2M+YkBs5jx4FLTXLaBs7KTh0xAjDdFRseKgFl3RvJga17jT0n2Y09etIL+HEm0WH/JgSyqjfRJJgmQX0rr8diEDQ0ZNSNzIep+LaXEengIAH0kGX42HloLEYupMCugzWnbBTkkGoCJAXzG4GISTiGjU/GCNHeufXY4Z9BlJ9zSh2x6R6iUbXd8R6TjUwPQpMd1WbHe75TeATT8P2+sm13rY1VzIgAMzN95S9xtCEug+Vu7c36swAQapJH7A3WTxWH0+Ol1DuaqLNKIR8OIuKJItzOmtKRQ7Ikl9U58PDZv9YKt0RoM8CP9kWxmVSGqE4PC6pp9mIGNIMtOI9r4UVb5wkcRH110UlcrGo5PN1LrU9Jxx0uh2jU0FxvmaeLN4YUQnQ6hv/G/foB/U+RLoLmbao/QvRt7qPqTbT9DgUAsWUFq1u5umhWyEzbwz5mq9U6maXbY7AmrCeIBM9Qv5LsWVtq2FsBPA0g13GWOKPSY6cLF1Lv5F4qosQLBpn5BGlqty8huuzemSgSYvePuskln+Z0ZiCvKWoFaRTpPDwEy2vG75PGBdQjI4SbVb+2dqfS74QPYnxIzeE6hSXswX0zW78i5GYawFLcyHeo5rjMfwkUAbUmW802p5ctvH2jOU1mFMJrR3bZOZbGh3JgBT5pKnMNMukJvxp6nu48l+7iVIWUZBlpiw74U/gEpodEhcmtvQn5AcW3GU0hxQzaQKd0uK34+RwtIufJCxhHHrcE+wVw9MTmUir6oNGZy9Gs1noRCSsZPKww9b0ZhWKUfTZiBUt9C2Hl47VcfN4IFw/EbojDUE/2zFvmaWKerDpkNrm/5Xje8MnbFST+w0jB/iqbzvd+6EnM9SjKWfFzWFANxSMtr1ObI+dcxw4a2dAoQ5fi3ww142eaW8qU3tEpZQxIgDcJRqEYRDsND9w3BDgPKgkSMaerccO1zvMEudwoI/
- 4IZf3NVH
- 6m+8fFIaW1l6ogo0rmJrGSEpyfmffLDYoiDIn627f2EPz3TfoLYgXx0vICvVJ6ChOo8HhkzFTJ+I5YnDiuKO6GHKff7TNA9Ujlsx5Xg92Z9pMMoQmU7Yzi1egqmL3s9xiOrspBHfvNknyzqCuQpcrgdcoBLK5CCT3kJ6nuEXWhcui9tjSlfBVWX6h9Q+60IxtAR/nmYk/Useqw8Zx0+OxKt+Rf10acK+jO/9QhE/2H2O4Gr541UzbRLsD/0MaJ7czUFggPEqzeRcbQMXIoGv6bbbWTxhRNZr7QU34DaRAo25plP7V8JvFpFsnvQua74Pi4c5b
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765175398-717881
+X-HE-Meta: U2FsdGVkX19kfZGQpQE3R4DSp2ZXQbGbnB3yXTJUh2iTW7T9UoDEMYVR+Ua01pKIwNu4OuBvh4ouxfbJ0aerfBmxeaBiyMsQ4Rl/OSWPjKayfx5qIdZ6zjrn/kj/5Nv7iyFp9kmQDkWxN4fLV5HR5vA1Ll4ukjgVF74VxEhboy0hVAgAw2th+mm01tyeZd5YtzDpILDpNMId/Gvw4fQ70bZvIzpLnoHDTWFnVWZDp0aEVxFaiT9kwFIjVsx+jI2Uci5vgZJgNhJJ5j1b7XF4OyLsYtP1FkhPEaLj28CJDqmnIikqhrbDhpYUysxj2bp1FuGv90FTp/FQ4iOLCGCGqt+eW6sZyiUsyxkcoL+saqHOc7Sm9dBXiAxfzzKLAIzqNBqgql+eW2a/1Us8Hje4OSuuE9c140Sw8aftjCwq8wYR7PCQ40SlfBoY+jitdWXogeJ5fgf50uzmMhQa35QJt517hI/pbyqrafkcS3PrgxCQuZ6HzyNMHUsxcSYVKTZt15zU76NRhpB1A6Yb1gJpdXwc4/Ml9iZWdji9qMDHrQuI5WDju11VVfcl3PV1n5jHezV37jj0LGRqE98UPvlncB37y3W6igY8mF8tHSr97xtjd+PUMiYM4hMTaGnz1uCdyUt2dP4wnoZuKAbijqMT6DX91bPvkXEQLbC6g0umehQZWJMt1NqGlmUVn/lNfYpDtKF9yzB8nKOxI03bAAYFrLPi63trsPh8DwAhNEHsGrYbzZauu4ADdnCttN/h5w1yBjix+Lhi9GI4PvqFBEijV9ziyI444s5EkygjIVEppT5GyueMze2RUhpQbAzpp3Jda/sr46Lz/nScp4n9kf4K0ETLUAn4aYTP9GKXwqOFU07qEYmNfXT62eAqAGadoeMf901Epz6/AEiwnwvkYfnLi30t3E1TOoV+88fn3W1qC5/J78Xfwr+jrlZEyCegBtqVXK1P91BuThB7kLxY+bP
+ JsWHQG0M
+ ZpIJCL4EN5cFuQjyljNDqzQWvfYyIVtXvv+mTv2ySNibElgyn20ETyXe0gyfQUCiPHWv30NhYmxhqXMvrsuC0/MT7J8qY5T8U573P1KnoSRJDI325YY07rRZ7lbZzVYegim4S6YBqqLCm9SQF4luGZSinIOD0NBW15x5YI6stOmVmU69fqhjVBBevZayZGeRmRzG9pCSQraIh0HaZoaX1TQ2MWYwHGlp41s3vaCMQfut/spR79yomDPNp88mivVD3EurcOCW2C86sthdVp/fserP77RuEK1izU+LUfrls6gK/cCI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,157 +94,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Note that this is not upstreamable as-is.  This is only for helping
-discussion of other changes of its series.
-
-DAMON is using Accessed bits of page table entries as the major source
-of the access information.  It lacks some additional information such as
-which CPU was making the access.  Page faults could be another source of
-information for such additional information.
-
-Implement another change_protection() flag for such use cases, namely
-MM_CP_DAMON.  DAMON will install PAGE_NONE protections using the flag.
-To avoid interfering with NUMA_BALANCING, which is also using PAGE_NON
-protection, pass the faults to DAMON only when NUMA_BALANCING is
-disabled.
-
-Again, this is not upstreamable as-is.  There were comments about this
-on the previous version, and I was unable to take time on addressing
-those.  As a result, this version is not addressing any of those
-previous comments.  I'm sending this, though, to help discussions on
-patches of its series, except this one.  Please forgive me adding this
-to your inbox without addressing your comments, and ignore.  I will
-establish another discussion for this part later.
+Extend DAMON operation set for the physical address space (paddr) to
+support page fault access check primitive.  When DAMON core layer asks
+it to use page fault events as its access check primitive, paddr will
+install PROT_NONE protection to access sampling target pages, in a way
+similar to NUMA_HINT_FAULTS, using the non-upstreamable hack that was
+added by the previous commit.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/mm.h |  1 +
- mm/memory.c        | 60 ++++++++++++++++++++++++++++++++++++++++++++--
- mm/mprotect.c      |  5 ++++
- 3 files changed, 64 insertions(+), 2 deletions(-)
+ mm/damon/paddr.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 553cf9f438f1..2cba5a0196da 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2848,6 +2848,7 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
- #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
-+#define MM_CP_DAMON                        (1UL << 4)
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 07a8aead439e..698ca6b9dde6 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -14,6 +14,7 @@
+ #include <linux/swap.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/mm_inline.h>
++#include <asm/tlb.h>
  
- bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t pte);
-diff --git a/mm/memory.c b/mm/memory.c
-index 6675e87eb7dd..5dc85adb1e59 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -78,6 +78,7 @@
- #include <linux/sched/sysctl.h>
- #include <linux/pgalloc.h>
- #include <linux/uaccess.h>
-+#include <linux/damon.h>
- 
- #include <trace/events/kmem.h>
- 
-@@ -6172,6 +6173,54 @@ static vm_fault_t wp_huge_pud(struct vm_fault *vmf, pud_t orig_pud)
- 	return VM_FAULT_FALLBACK;
+ #include "../internal.h"
+ #include "ops-common.h"
+@@ -56,7 +57,8 @@ static void __damon_pa_prepare_access_check(struct damon_region *r,
+ 	damon_pa_mkold(damon_pa_phys_addr(r->sampling_addr, addr_unit));
  }
  
-+/*
-+ * NOTE: This is only poc purpose "hack" that will not be upstreamed as is.
-+ * More discussions between all stakeholders including maintainers of MM core,
-+ * NUMA balancing, and DAMON should be made to make this upstreamable.
-+ * (https://lore.kernel.org/20251128193947.80866-1-sj@kernel.org)
-+ *
-+ * This function is called from page fault handler, for page faults on
-+ * P{TE,MD}-protected but vma-accessible pages.  DAMON is making the fake
-+ * protection for access sampling purpose.  This function simply clear the
-+ * protection and report this access to DAMON, by calling
-+ * damon_report_page_fault().
-+ *
-+ * The protection clear code is copied from NUMA fault handling code for PTE.
-+ * Again, this is only poc purpose "hack" to show what information DAMON want
-+ * from page fault events, rather than an upstream-aimed version.
-+ */
-+static vm_fault_t do_damon_page(struct vm_fault *vmf, bool huge_pmd)
+-static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
++/* Use page table accessed bits */
++static void damon_pa_prepare_access_checks_abit(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+@@ -67,6 +69,68 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
+ 	}
+ }
+ 
++static bool damon_pa_change_protection_one(struct folio *folio,
++		struct vm_area_struct *vma, unsigned long addr, void *arg)
 +{
-+	struct vm_area_struct *vma = vmf->vma;
-+	struct folio *folio;
-+	pte_t pte, old_pte;
-+	bool writable = false, ignore_writable = false;
-+	bool pte_write_upgrade = vma_wants_manual_pte_write_upgrade(vma);
++	/* todo: batch or remove tlb flushing */
++	struct mmu_gather tlb;
 +
-+	spin_lock(vmf->ptl);
-+	old_pte = ptep_get(vmf->pte);
-+	if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
-+	}
-+	pte = pte_modify(old_pte, vma->vm_page_prot);
-+	writable = pte_write(pte);
-+	if (!writable && pte_write_upgrade &&
-+			can_change_pte_writable(vma, vmf->address, pte))
-+		writable = true;
-+	folio = vm_normal_folio(vma, vmf->address, pte);
-+	if (folio && folio_test_large(folio))
-+		numa_rebuild_large_mapping(vmf, vma, folio, pte,
-+				ignore_writable, pte_write_upgrade);
-+	else
-+		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
-+				writable);
-+	pte_unmap_unlock(vmf->pte, vmf->ptl);
++	if (!vma_is_accessible(vma))
++		return true;
 +
-+	damon_report_page_fault(vmf, huge_pmd);
-+	return 0;
++	tlb_gather_mmu(&tlb, vma->vm_mm);
++
++	change_protection(&tlb, vma, addr, addr + PAGE_SIZE, MM_CP_DAMON);
++
++	tlb_finish_mmu(&tlb);
++	return true;
 +}
 +
- /*
-  * These routines also need to handle stuff like marking pages dirty
-  * and/or accessed for architectures that don't do it in hardware (most
-@@ -6236,8 +6285,11 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
- 	if (!pte_present(vmf->orig_pte))
- 		return do_swap_page(vmf);
- 
--	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
-+	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
-+		if (sysctl_numa_balancing_mode == NUMA_BALANCING_DISABLED)
-+			return do_damon_page(vmf, false);
- 		return do_numa_page(vmf);
-+	}
- 
- 	spin_lock(vmf->ptl);
- 	entry = vmf->orig_pte;
-@@ -6363,8 +6415,12 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
- 		return 0;
- 	}
- 	if (pmd_trans_huge(vmf.orig_pmd)) {
--		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma))
-+		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma)) {
-+			if (sysctl_numa_balancing_mode ==
-+					NUMA_BALANCING_DISABLED)
-+				return do_damon_page(&vmf, true);
- 			return do_huge_pmd_numa_page(&vmf);
-+		}
- 
- 		if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
- 		    !pmd_write(vmf.orig_pmd)) {
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 5c330e817129..d2c14162f93d 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -651,6 +651,11 @@ long change_protection(struct mmu_gather *tlb,
- 	WARN_ON_ONCE(cp_flags & MM_CP_PROT_NUMA);
- #endif
- 
-+#ifdef CONFIG_ARCH_SUPPORTS_NUMA_BALANCING
-+	if (cp_flags & MM_CP_DAMON)
-+		newprot = PAGE_NONE;
-+#endif
++static void damon_pa_change_protection(unsigned long paddr)
++{
++	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
++	struct rmap_walk_control rwc = {
++		.rmap_one = damon_pa_change_protection_one,
++		.anon_lock = folio_lock_anon_vma_read,
++	};
++	bool need_lock;
 +
- 	if (is_vm_hugetlb_page(vma))
- 		pages = hugetlb_change_protection(tlb, vma, start, end, newprot,
- 						  cp_flags);
++	if (!folio)
++		return;
++	if (!folio_mapped(folio) || !folio_raw_mapping(folio))
++		return;
++
++	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
++	if (need_lock && !folio_trylock(folio))
++		return;
++
++	rmap_walk(folio, &rwc);
++
++	if (need_lock)
++		folio_unlock(folio);
++}
++
++static void damon_pa_prepare_access_checks_faults(struct damon_ctx *ctx)
++{
++	struct damon_target *t;
++	struct damon_region *r;
++
++	damon_for_each_target(t, ctx) {
++		damon_for_each_region(r, t) {
++			r->sampling_addr = damon_rand(r->ar.start, r->ar.end);
++			damon_pa_change_protection(r->sampling_addr);
++		}
++	}
++}
++
++static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
++{
++	if (ctx->sample_control.primitives_enabled.page_table)
++		damon_pa_prepare_access_checks_abit(ctx);
++	if (ctx->sample_control.primitives_enabled.page_fault)
++		damon_pa_prepare_access_checks_faults(ctx);
++}
++
+ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
+ {
+ 	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
 -- 
 2.47.3
 
