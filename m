@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A1A7D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 00:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5377BD3B7E2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:10:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D92216B0005; Mon,  8 Dec 2025 19:58:52 -0500 (EST)
+	id 87A726B0005; Mon,  8 Dec 2025 20:10:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D431F6B0007; Mon,  8 Dec 2025 19:58:52 -0500 (EST)
+	id 82AA76B0007; Mon,  8 Dec 2025 20:10:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32246B0008; Mon,  8 Dec 2025 19:58:52 -0500 (EST)
+	id 740116B0008; Mon,  8 Dec 2025 20:10:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BDA6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:58:52 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1DE21133AAD
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 00:58:52 +0000 (UTC)
-X-FDA: 84198122904.26.899DA59
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2F6BB180010
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 00:58:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765241930; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6282B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:10:57 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2DC9160347
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:10:56 +0000 (UTC)
+X-FDA: 84198153312.24.3185962
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5A03D12000C
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:10:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="V59VH1/l";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765242655; a=rsa-sha256;
 	cv=none;
-	b=SuzJDOMZFHP4e4l2osyr6aDkTs9ioBy8R8uaxt5Q39Yx0S4Wh8Olr30wuL6HoHxrFm+M2y
-	jy8oiEPuFDe1eP2L/tha3mU0G07i4mVxm1lXDINxa/+539tcR3PKMcfadpeHSlsF7PlaAz
-	Cy/pwvYyG6vn096WGbN8iks7NXCuwvc=
+	b=4Ui8KJULrr+HYb0ZMn6ToZEJUP0cGF7Xm006vDXI4GQdRe3KL9xRLfrB3IvATVGdbDiUxt
+	zBc5N4AE44jvz2CrVqdDVvoEFh1yKJzuyQ6wAnpFUod5NJQupJY44GtjsRx/WNJzTTDk4u
+	TmZa5IyA0v7cPaYes4xSuJ2y2o8wsbs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="V59VH1/l";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765241930;
+	s=arc-20220608; t=1765242655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tib9TGK/UC+x3df3zki0aTVD10jsG2qaH+by+JtaEIg=;
-	b=LKR/+A57itg0iEIMKRbHJqIcZir/EYeVR2CRIdH5ToTDI3W8L/BTvs/xr/AfYWk73XYY5x
-	Jh1GJ5Oa8rsTnHHeQKmehWNt7s1VmnNp4q3bHcmqau/FEDJl+b9lhzLekQX7UNu+jovBs/
-	zRr81yoxyf0QSnFgJ4Dn8crvE5fvzMc=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dQL6t3DL6zKHMM9
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 08:57:42 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 3CE7B1A08DC
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 08:58:40 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP2 (Coremail) with SMTP id Syh0CgBHJlA+dDdpiONbBA--.18208S2;
-	Tue, 09 Dec 2025 08:58:40 +0800 (CST)
-Message-ID: <075ad534-9a76-4067-97a1-a3219fa4c60e@huaweicloud.com>
-Date: Tue, 9 Dec 2025 08:58:37 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=A7kEoT3OXFDBtQpIjlKhgqBDkSYryRQU8lvQ/Zrvns4=;
+	b=iBhHKcc2joR5LXNxalkT2gLVSl++YMK82F+jdMDtJ4Lxs10noFqOBsjkQaGZ986NbtYqCY
+	ycaOCbqEDdogVyugoYAVebAkaSLMFNPoMJR0jMqFqYq/ue09ltNEFu2K+EPy38rZ7+jjmw
+	SqAaFdGbH6TswSM8nNLeJD2OMJ9FlQI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765242655; x=1796778655;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/EbTB2VpFhTczeUk+QQoWbLB5Re1Ql5lmWm28tpOWNM=;
+  b=V59VH1/lUTYO/HjO36BoZTvsnNBTr0wmsv8vpeGf83y0hLyBKHxWLLUH
+   ygR452WDD+rANQkNybX0df8B7B7hb2SsPlVBuDE1ENyYNWCY5DtGdzCcA
+   FcemMW4afJt1haL8C6pcFrEcCqGgVbWWgn+QUWeW9vD0lfVKptuQrBMoh
+   oFQmFeJFp7uhLnyqMCn0yvU62HO5TqBaqFR1wQw+c+PiIedNbIxp6pRAP
+   ZHqG/yhNxWEPoIQG7yLqrUEA9bPa2tyxM+iOaja7hQ+aI8pQLmQcV5jB6
+   bcUAYTxRu4KdPweb9PS9SfGo19XIzKI7JgVukI5sLMhlW8iUl97pxcfH+
+   Q==;
+X-CSE-ConnectionGUID: BNs0f3q2Qx231vLFKAYzYA==
+X-CSE-MsgGUID: qX3E8vO0TymOW+mhhWXcGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="92669363"
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="92669363"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 17:10:53 -0800
+X-CSE-ConnectionGUID: iU7rIwTtT9yciBOprGY+Sw==
+X-CSE-MsgGUID: 3CbqSVE0TaKwTC+/XtMQCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="195368149"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 08 Dec 2025 17:10:52 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vSmFc-0000000017W-2zkh;
+	Tue, 09 Dec 2025 01:10:48 +0000
+Date: Tue, 9 Dec 2025 09:10:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Jackman <jackmanb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
+Subject: Re: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+Message-ID: <202512090844.OmozcWcI-lkp@intel.com>
+References: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrei Vagin <avagin@gmail.com>
-Cc: Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, cgroups@vger.kernel.org, criu@lists.linux.dev,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
-References: <20251205005841.3942668-1-avagin@google.com>
- <57a7d8c3-a911-4729-bc39-ba3a1d810990@huaweicloud.com>
- <CANaxB-x5qVv_yYR7aYYdrd26uFRk=Zsd243+TeBWMn47wi++eA@mail.gmail.com>
- <bc10cdcb-840f-400e-85b8-3e8ae904f763@huaweicloud.com>
- <CANaxB-yOfS1KPZaZJ_4WG8XeZnB9M_shtWOOONTXQ2CW4mqsSA@mail.gmail.com>
- <6dmgfe5vbbuqw7ycsm4l2ecpv4eppdsau4t22kitjcjglg2gna@dyjlwhfhviif>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <6dmgfe5vbbuqw7ycsm4l2ecpv4eppdsau4t22kitjcjglg2gna@dyjlwhfhviif>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHJlA+dDdpiONbBA--.18208S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw4rAr1fJr4DAr1fGrykZrb_yoW8GF1xpF
-	WkC3W7Gw4kJ347ZaykZ392qF4FvFW8AFy7Jr15K3s3AFW7u3W8Ar4ftrW5WFsxXr9xC3W2
-	vw1YvrWfuan0vaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2F6BB180010
-X-Stat-Signature: mxnatoffuwryseyamtsqemtaepdggbm3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5A03D12000C
+X-Stat-Signature: 8obqfk7edtzw6qnswtpc819e6wefy5gu
 X-Rspam-User: 
-X-HE-Tag: 1765241924-131076
-X-HE-Meta: U2FsdGVkX1+xm/jxRX017hvIkCX/rqI2m6cv2adujtipffaiNY+xt49VGnojGboBIvM7+4aPrp0kYWRsxCa9hJRFsUOADo+bfGc0Y/astcHOOoi8YQQDeZJ5oUnTjSTIH+XGrensktKp5Iu9jhFtJ+olYFG0oNScgYovWuqGQ7HL1SHRj1GtVMElAvr7wO7nSzQ0A84WsIMfNrBX/PBvuPL6wtiNVfrS+fypm0yYJWw0xyvBCOV6kJS1h/cfxWnLyfWqgq2JdbePGEJw3b/fLmTrafgaQSd3TtWD07OERYmcTZNdcBcMMz6rw5VRSx58FqqN6MBiK+ctqXduEK63SxYtlye9mr72rYcFItbAKbeod2XR9V2dmH6JsKp0wbfCPLqZAUhuBAau7jX1mY4kccwNVLAR9rE29NY2ZZCi9MhC3+PyD+6oXNPH2BmkmHP4ShqzjLgl9qoBShiZrE0a8Mo17nlObWC1pJ818I3KdyUrD2gSUbX8qPcz10kJyJTaARs1fKGePCb+jpVrMpD2OSGodo8F8jZa5x0S+m8nWkxFRxKnQRaJ1WrSXPsWe74EgOwSBTw5FF2HLmpONyc2Bodhg2j71LzFQHf7Q/di5LY0fZqUgXqtZUmgap45QO02MIWZpjt2+7kg9EsZii5fsGH7FLyxFo+2xAJU5LDrc9iv+xnWPtwGtwmeliOSxfwkv70oUfgNTcHyYT6wlaWfpHsguxc0dFu7Fvw4lVD5ZVUTg6pj17paDH0IptJk3m959qPew8IY2jtS+JRqxu1cgtW5arw/P3NpvLUTFRUh23/PbSgHMEBw/Nr2uGhUIfjy5sQdzkoX4QGeUv/0U8Jo0i5+yH+JplZuwYOSPlughUAC1i7dWcJNvEo0IYJngcIlaSKSCIq72VNJqkB99zy6co+XZ+VWpunndqb0h1QWou3GOXA21rACFcN6RHenV4HT+E40LDiOjY4ZTspPupk
- juPAN3la
- nAW0P1q3DTW7a3qYO50WYyvnQI7QC+SLmA90tTqDwnGy/B/WQ31PLP8DX0q8oh0vndvaCt9Mjv4nvckq4EKl+60/nXLL/9u942BOlfrK+3DLQBrfc+LkPDrJ0kL6Kkjocw4k8sXu9UlOTOTJyrmQCsIjNTHpkYkSykbjyKowtGisqUHQ=
+X-HE-Tag: 1765242654-710641
+X-HE-Meta: U2FsdGVkX1/QVP8xos+Dy3QvZMkFKbjrPOvxkN06SGtokNjmXFc5ivQb4R6DEKmaFTAjtg16Th6fW98cEHbo5kYtUgd5wK4075cYTiAAEplsD4QMnChnAU+fM85mSO2Kbfe2btd18leiR5c6EVVuxQC8YegYpTg/4Cn8IfjRmz842rZjWqzNoS3ZHjQ5ldtBM8oYHYD3y4HfgdwV+LQZuSE+iFU0Eb0IklQdEMB39ch+Xeq0Veca02aPQ6AZYDP5H3fhkDH2lLiiOZURkbR/mX+NLFn/is3ZEyeMrZ+MhDCb9EG/xOo+DSbjAoeHBrHW4Ok/6f6+wRdqbSqtd8UMr6ZcGbF0IQcdyuqo8a7wi4FJZqQGVjyHPdZDSI8JacAirYmDd0aFVmxPhVTHBwal8Y9BrQmdytg5fi1vfzi+F9x8RosLCY9WxmgngUInjUrqPY5kUHn/R9QbweH9h15n/B6hVhhKjK6us9nRqgyv7+kEFLzdGeL2qzFN11jS0NG2CwNJb7ZrYZPPhhfmUfy3KF7r24npwjKfBJnrOlztz5Dpzo7nhz0jJaKed831XZDhDvz0dD3jL/fNxA4hlGR9VALV/WId4c3yt4bkzXsc7stK4YBkjAOTbPKxMD0x3UTFvvp+KpUVFPtTnFAymJJYVGbxs8nGQk4goHCgu+iVM57vWY7x8bQcvmWp1YWkZCIvyi2ogGnNoQQaS6Y07C4uwp1ru9o/iV9ynR74kiLFgNClzNEzA1v2M1Nff/IvnV5XcFoYHAnN6DNAyQtlqz1+Viz4/PqmmvI/vfJbN96n4DnhevwwLoQCbs615/SYzlv3wy1TwupFCXgVSWNyx94JdkBQQbFRFoDlHo/6c79Z+cEyoXwtYfQnw8c0Xjel3v5Wb4BbbEXPXv39GoDcaf56rvqgNMZvL2FMBXd92CGod5Hq0kZHuChJg0DTNV5UKcxFpwpfqibaLXjwTretzNk
+ jI0i67M1
+ Rd9pRveR6/6+P17912by62zEhcwjqiUS8o/SueStcdWqfOkvISWuutujQaQQn2T2+r13678UYi1bLyZeMXM4jpiQccF3m7+pDgEucnPP3juWyx7n4a8Dgyhhbd5vFgvdmoDEAcvP5WkAyPaGNHfzaj58b0gOlL+fOOLfNuc8M8YmlGURippCMQisKnoZz0sgqRYo0yoBjon/fybo6+Axbct5KUUZ/wvxHUOMPmCZsfU5wdgAkXXcfnLDjGHksOIWPi8iFGvu4RhWtiO5xUyu72VlBul6y1+XpSFcwEHVPFu1e8mu6DYNRjBPdzJMOucAwMm2WoCuyIZUULv1VcSNrZrJXEjQuCrzwEZgt+8nz0bVlCJah44ZpeMuDLNUiWcvTGRkpnYtuDoXsl2tEcP9a6X2e4QWS2cLzTSV2UPjG0Jfn48JLMcVYIiFzXQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,42 +110,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Brendan,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on ecc46e02e0abe025a6e840cba2d647f23fd1d721]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/mm-vmalloc-clarify-why-vmap_range_noflush-might-sleep/20251208-132202
+base:   ecc46e02e0abe025a6e840cba2d647f23fd1d721
+patch link:    https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08%40google.com
+patch subject: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20251209/202512090844.OmozcWcI-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251209/202512090844.OmozcWcI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512090844.OmozcWcI-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/vmalloc.c: In function 'vmap_range_noflush':
+>> mm/vmalloc.c:308:21: error: 'GFP_PGTABLE_KERNEL' undeclared (first use in this function)
+     308 |         might_alloc(GFP_PGTABLE_KERNEL);
+         |                     ^~~~~~~~~~~~~~~~~~
+   mm/vmalloc.c:308:21: note: each undeclared identifier is reported only once for each function it appears in
 
 
-On 2025/12/9 0:48, Michal Koutný wrote:
-> Hello Andrei.
-> 
-> On Fri, Dec 05, 2025 at 12:19:04PM -0800, Andrei Vagin <avagin@gmail.com> wrote:
->> If we are talking about C/R use cases, it should be configured when
->> container is started. It can be adjusted dynamically, but all changes
->> will affect only new processes. The auxiliary vectors are set on execve.
-> 
-> The questions by Ridong are getting at the reasons why cgroup API
-> doesn't sound like a good match for these values.
+vim +/GFP_PGTABLE_KERNEL +308 mm/vmalloc.c
 
-Eh, The statement "it can be adjusted dynamically, but all changes will affect only new processes"
-means that processes created within the same cgroup could end up with different capabilities. This
-does not sound like how cgroups typically operate;
-
-> I understand it's tempting to implement this by simply copying some
-> masks from the enclosing cgroup but since there's little to be done upon
-> (dynamic) change or a process migration it's overkill.
-> 
-> So I'd look at how other [1] adjustments between fork-exec are done and
-> fit it with them. I guess prctl would be an option as a substitute for
-> non-existent setauxval().
-> 
-> Thanks,
-> Michal
-> 
-> [1] Yes, I admit cgroup migration is among them too. Another one is
-> setns(2) which is IMO a closer concept for this modified view of HW, I'm
-> not sure whether hardware namespaces had been brought up (and rejected)
-> in the past.
-> 
+   297	
+   298	static int vmap_range_noflush(unsigned long addr, unsigned long end,
+   299				phys_addr_t phys_addr, pgprot_t prot,
+   300				unsigned int max_page_shift)
+   301	{
+   302		pgd_t *pgd;
+   303		unsigned long start;
+   304		unsigned long next;
+   305		int err;
+   306		pgtbl_mod_mask mask = 0;
+   307	
+ > 308		might_alloc(GFP_PGTABLE_KERNEL);
+   309		BUG_ON(addr >= end);
+   310	
+   311		start = addr;
+   312		pgd = pgd_offset_k(addr);
+   313		do {
+   314			next = pgd_addr_end(addr, end);
+   315			err = vmap_p4d_range(pgd, addr, next, phys_addr, prot,
+   316						max_page_shift, &mask);
+   317			if (err)
+   318				break;
+   319		} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+   320	
+   321		if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+   322			arch_sync_kernel_mappings(start, end);
+   323	
+   324		return err;
+   325	}
+   326	
 
 -- 
-Best regards,
-Ridong
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
