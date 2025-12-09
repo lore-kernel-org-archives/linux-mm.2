@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACEAD3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:41:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96206D3B7E2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD4956B0007; Mon,  8 Dec 2025 20:41:19 -0500 (EST)
+	id E2FC56B0005; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A25F76B0010; Mon,  8 Dec 2025 20:41:19 -0500 (EST)
+	id DE1166B0007; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718CC6B0007; Mon,  8 Dec 2025 20:41:19 -0500 (EST)
+	id CF5806B0008; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 305796B000E
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:41:19 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2497C03C7
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:41:18 +0000 (UTC)
-X-FDA: 84198229836.29.7CDF901
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5BDB240016
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:41:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BC54B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5810F899FA
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:47:39 +0000 (UTC)
+X-FDA: 84198245838.26.F60AF18
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B742680002
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:47:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d+DcxBjg;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765244477;
+	s=arc-20220608; t=1765244857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qrKU8b38VH1s6YxcuZDei7M14hKJ8DekpiJqRt6quMI=;
-	b=CipsUsapYKHJuYzXsHdREFxZR0M14Z4E+aDbTVhi1xe8xy/TDuaxxjucrw5cQfEAWsSyL6
-	+39JKm9TigtsZCN1PnphXI28jgISAxw75lEB3NXtS9qdZGLox7P+vrsY8anG1dHmutED2f
-	rBVgqSjWCNa2REr97ENvsIKpWSEG8fA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765244477; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kjhjVV39WMHuZ5/VFyDlS0BZ172MSmO7iFwB6K30eA8=;
+	b=15NQi413RaQ6WXBAzXK1e9qtzAob0pumO7SkYXbBBz2f6zY3EW4/6gHGCyz+tO0BqfS3DH
+	5KPcyZLxqC/sV4OkBJq277/zO1RxE9ZMJz+/1sg/TWCxnLJO3YH2TjBAUMUNaX7AmXgTdn
+	hhQHUFMtG9aSLc8sepcqRqxHh4IJX+Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765244857; a=rsa-sha256;
 	cv=none;
-	b=eFrXcikdpHH7HQcjs6ETLREcWkfUqaVN8FDjJLEUqw1pIlWH9N6Z3meJEuP+5gqn1WzOxi
-	0UGAtqNMPMEotWeEZeIh7u/Q7tIYIgz/aK/nIc9BWJ3s4ZvJWfo8sVR3X3RiVKNZfXYtjR
-	M7kxfRyZNWJQ4FGatsGwULp98YUhpwE=
+	b=k0aVZZu+7Omu1D0syXWoHOVZ0PvcoMo3O0Z2MWIcgkBCpQTyF5wdweR2oTHoFBdGa/aSCB
+	0WsOt8oZwH6TSaerkp9H/Hw+ekualQ7M8QcG4kkZxQsc1CFlLtlFL/yyppuhsTT/Ypqe+E
+	xUm9Leli/BmT/WygfKwCi3zjhFBZMzg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dQM4p229gzYQtk2
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 09:40:58 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id EA1171A06DC
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 09:41:10 +0800 (CST)
-Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP2 (Coremail) with SMTP id Syh0CgBnRlAafjdpkF9fBA--.23909S4;
-	Tue, 09 Dec 2025 09:41:10 +0800 (CST)
-From: Chen Ridong <chenridong@huaweicloud.com>
-To: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com
-Cc: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	lujialin4@huawei.com,
-	chenridong@huaweicloud.com,
-	zhongjinji@honor.com
-Subject: [PATCH -next 2/5] mm/mglru: remove memcg lru
-Date: Tue,  9 Dec 2025 01:25:54 +0000
-Message-Id: <20251209012557.1949239-3-chenridong@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251209012557.1949239-1-chenridong@huaweicloud.com>
-References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
-MIME-Version: 1.0
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d+DcxBjg;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E2A296016F;
+	Tue,  9 Dec 2025 01:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B769C4CEF1;
+	Tue,  9 Dec 2025 01:47:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1765244856;
+	bh=4cKepWPJcFwPX4THOx/vqYkh+UCHtZ7kDQ2aqoDPkm4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=d+DcxBjg5jtSOTqE0qSB+K/QhwVBgzF+xRAiQmVy2Jcv25IRmejK0ZvuvXCb4MVYZ
+	 rltceVBT3mjL/bFp1ljSmf6rATb1gn7Z4jNELn9jVdWxCGqzNVWCZcqI648xY0ZU4N
+	 34mK/77uPBCNxsxVKSQe3j6hNKkJxULaiKOG+DxU=
+Date: Mon, 8 Dec 2025 17:47:35 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ahelenia =?UTF-8?B?WmllbWlhxYRza2E=?=
+ <nabijaczleweli@nabijaczleweli.xyz>
+Cc: Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Christian Brauner
+ <brauner@kernel.org>
+Subject: Re: [PATCH v2] tmpfs: enforce the immutable flag on open files
+Message-Id: <20251208174735.35aef48b1a15a2d08e073bd0@linux-foundation.org>
+In-Reply-To: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
+References: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBnRlAafjdpkF9fBA--.23909S4
-X-Coremail-Antispam: 1UD129KBjvAXoW3Kw1ftw4kKry3tw15Wr18AFb_yoW8XrW7Jo
-	WSvr4DC3Zagr18Xw18ZrnFyF9xZF4DKryrXw15JwsrC3Wjvrn8Wr4DJw4UGFyfJF1rG3y0
-	vryYqw1UXrZaqw13n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUOc7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
-	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r15M28IrcIa0x
-	kI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84AC
-	jcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr
-	1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1l
-	e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-	8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
-	kIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7sRipB-tUUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5BDB240016
-X-Stat-Signature: yx85gjr4s1cuygfgxakmwxci9wu1na5x
+X-Rspamd-Queue-Id: B742680002
+X-Stat-Signature: 5q4gocoszhj78ugyrogzh4x5b49kq8g8
 X-Rspam-User: 
-X-HE-Tag: 1765244474-53592
-X-HE-Meta: U2FsdGVkX1/s96CXcM/Ec/eBKExhi9FusQ+8DfQ7AAwcywMFQQg5jTTFlQWoZSXkBiY50G2TmHW+QCuMv1ssvrUaS0LL36AfoPfX66DdilsydG/O5u9AUE5IQ4Gb2woDAmJ4Ay8te9aQibu5yXSxD9uUd3X1pQ7YOr5ReE0G+/4M4dU1529zr+lhwE0/jEt0JbCrEtjQqSz23yfCB6HGGMZD4Zt8qT/Ao68nhKJ26LmIAMIazq69j8zE7PvuSJmmc382hjDuvz8Y4RF2YKj6cnoEensf4k+uQ3rmf4xSuqwq4nZORBsg7YnidZ0yFw2ce8wL8jYWWoCz7rsujSD3DDYjnPC9SV97nF8E5QR6c2P1s8YXkxpg8tku6ZSrlY9bNfL7Pc4WL7sz9MOljU2r9m/UCJtZnzrdg2eSslBbRw60Cn3XTgrWr6wWH0GP+j4uxovGwQuEn4Xq5fkTPXvaqG2DF9k0HE3il2H5FkDUZ4op3Kyd/bRAHOTRsjQqA+ucLS6GOlDjcoV1d/K4JfzDvrsSRWgacYwos57fm6VfpBVudwzDY9LVlVFXjl+Z1aUrsabJDPdG0mtht41dU5onhboa9o8YzMzStJxtSliXxFQ1zJtdf1AD4fCrFIzpn4UdXpwCEI6RkFhaVBeYo/BJ+ea9CMBVL7ge5UwdVWmoPFpg7Uj2IeoRIUdpOuhh509NRjEIksY4vlL6i/l83o6FbdnkXHHNTfOIAEe29n3LZJH/8FpA8LbH5sRZ6JYy7wUbJhSJcWOBc2NdZtYeQ+RVzz68McI+mXiHgLsHKsG20fqMG3/7X4DQQsQ6FIEg9FuAQjTuRdqdyKGWW5TqOrpbTBCIWeQ+wd2KISCRynqvo3ZqvfA4Thqw09Xp7+GcEYl2sUEXmViAHhNxsTdroAnkStl/tMpOFidvjhefV7jI19cYZlTUyzTE3VRcAkxPSqRUgyt2fSQiV7GB3wB22GO
- Ma4hsja7
- J2oHCe57iRLxi4dT2v+CvhI9RB6nHKhOkcuBZOb0CQjzUWYsAmmiUm25OMu/EV7qpQFgE5nSlMrDQPm/CET+du0qbOjFiHBKwI8oweF13QiiqfYXVT4/psenqdT4oMvHyDfmgcmWoUJQkBnuiZgZMB7MkfQ==
+X-HE-Tag: 1765244857-623491
+X-HE-Meta: U2FsdGVkX1/pnvkfPcv8lJXVq05TOmE+GC58+junlZhfsUV46HQ/yU5egTJ+4IQ7pHSa7w3L0wAmU4xOKaDy3GRfu6+blekqxfCSMIF1HYSNRu1Qpc5zgtd7NynsT+QUEo+HE1O5lD9UkxDpewJTlmoxEMJ0rsaJUZbUCh3pTkoUgWnzqsJt9qsTtHZpEG5/6MRgEmV8kskQaorkax0N2DB6tYiTj7z7QhcexeYNv4WezRos5pyuLOGfkZdXhPXIlhNL5H/YktfgEnrBhjj1d2YbNyLocZqvUwiAdh2R9duj3GYMV1PgAOWviozpCmf8ENkMX3CGSDeLh7MZz4sJmv2l67xNQw/5FPhnUCrD0Ai/FJlCUL3gs6Chg5vieXc3ChgKHJ9lCXA/7au+ejwV3OS8eui2O7asr36dyfpzJkkdMafmRnP55r189wezV8F4Y3uM143lB97ALeTOV+F6sL/2dPgx6dLYe/vDVxHayXGVifQXKJAdIUVyXphRBaTg6p4Gh+CAx9Ep6n4kz5atzspvvBAqElWamZrPUlV1W1MZ/oSXARQwLdRven20KYGc0/3G2bPJj4vrIgl7/IAZ9pVjrCZZKfxsB/k9zT7zeQ0QjH5am9LsSeQvMpAyWuNn1nfRbyP4JT2h2hqwcS/Vf5i6r0ZE/pEvf1NFFZ2b9q4F+YRVoH1deuWqYHOVdnoZxtBFoQsslYqeFDsry8K7+YHBxmI1/kh0JgyO/KLzoyVoJi7QJav0Jdh46Dt22I6F69SmyGunOADz2a2zP2Ljhx8cFLtAz5viqSbbJIf377tN5H6frWCZ+gmrnQsd4abWipFYbxItwZuIhlrs0dbxcnQNvMBEgF/Dgr2ei+xwjICTmgLCNaM3k6YFX9qt3JRxYPDRV4kJpH2c8MgUrYoh99K3V9+FknaNSoVXVKmyizSmg2qH+w4cGn07FyyeAtMUuCAWhpesIK1k3mo0nrU
+ dEecU/0+
+ rkL1RZPxCit+4LiT+ToNFPJv2C3Op1LxI7nUEYWszN/M7MQHPKCXAsLLtCuzLYn6HVWEoeFDIR0sEvgPLWOiSLmOj98mTDpgFFf4W7aubmgD5X5lvzUdiyLa9ViMFOOWeyDsAl5iMtJsz0sIhqLz+ZV7s1+4e4HcVnmLvUCj+fjHQLKrubnmmbRSABrhc8fcs5vFg8rtck9myD+pj8bYq1fiiScv4SHL5L0Y9IOWVuyGao19bgWH3nj1PJs0N6+VvBVGf651MW/nw+Bvb02VqVe0YNSYtmXbBj+dFb4VrUm79VcFqBxRhdN8Pm4bAy+J15EnHPHX0pdEwFE47ws6Ue2CQjzT+HvILK+jhaXV2oc9YBggh6fR7/LnaTzcle2NXf3bg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,437 +93,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Ridong <chenridong@huawei.com>
+On Mon, 8 Dec 2025 22:50:15 +0100 Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz> wrote:
 
-Now that the previous patch has switched global reclaim to use
-mem_cgroup_iter, the specialized memcg LRU infrastructure is no longer
-needed. This patch removes all related code:
+> This useful behaviour is implemented for most filesystems,
+> and wants to be implemented for every filesystem, quoth ref:
+>   There is general agreement that we should standardize all file systems
+>   to prevent modifications even for files that were opened at the time
+>   the immutable flag is set.  Eventually, a change to enforce this at
+>   the VFS layer should be landing in mainline.
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
----
- Documentation/mm/multigen_lru.rst |  30 ------
- include/linux/mmzone.h            |  89 -----------------
- mm/memcontrol-v1.c                |   6 --
- mm/memcontrol.c                   |   4 -
- mm/mm_init.c                      |   1 -
- mm/vmscan.c                       | 153 +-----------------------------
- 6 files changed, 1 insertion(+), 282 deletions(-)
+This changes the VFS parts of tmpfs, not the MM parts.  So please
+resend and also cc
 
-diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
-index 52ed5092022f..bf8547e2f592 100644
---- a/Documentation/mm/multigen_lru.rst
-+++ b/Documentation/mm/multigen_lru.rst
-@@ -220,36 +220,6 @@ time domain because a CPU can scan pages at different rates under
- varying memory pressure. It calculates a moving average for each new
- generation to avoid being permanently locked in a suboptimal state.
- 
--Memcg LRU
-----------
--An memcg LRU is a per-node LRU of memcgs. It is also an LRU of LRUs,
--since each node and memcg combination has an LRU of folios (see
--``mem_cgroup_lruvec()``). Its goal is to improve the scalability of
--global reclaim, which is critical to system-wide memory overcommit in
--data centers. Note that memcg LRU only applies to global reclaim.
--
--The basic structure of an memcg LRU can be understood by an analogy to
--the active/inactive LRU (of folios):
--
--1. It has the young and the old (generations), i.e., the counterparts
--   to the active and the inactive;
--2. The increment of ``max_seq`` triggers promotion, i.e., the
--   counterpart to activation;
--3. Other events trigger similar operations, e.g., offlining an memcg
--   triggers demotion, i.e., the counterpart to deactivation.
--
--In terms of global reclaim, it has two distinct features:
--
--1. Sharding, which allows each thread to start at a random memcg (in
--   the old generation) and improves parallelism;
--2. Eventual fairness, which allows direct reclaim to bail out at will
--   and reduces latency without affecting fairness over some time.
--
--In terms of traversing memcgs during global reclaim, it improves the
--best-case complexity from O(n) to O(1) and does not affect the
--worst-case complexity O(n). Therefore, on average, it has a sublinear
--complexity.
--
- Summary
- -------
- The multi-gen LRU (of folios) can be disassembled into the following
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 75ef7c9f9307..49952301ff3b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -509,12 +509,6 @@ struct lru_gen_folio {
- 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
- 	/* whether the multi-gen LRU is enabled */
- 	bool enabled;
--	/* the memcg generation this lru_gen_folio belongs to */
--	u8 gen;
--	/* the list segment this lru_gen_folio belongs to */
--	u8 seg;
--	/* per-node lru_gen_folio list for global reclaim */
--	struct hlist_nulls_node list;
- };
- 
- enum {
-@@ -558,79 +552,14 @@ struct lru_gen_mm_walk {
- 	bool force_scan;
- };
- 
--/*
-- * For each node, memcgs are divided into two generations: the old and the
-- * young. For each generation, memcgs are randomly sharded into multiple bins
-- * to improve scalability. For each bin, the hlist_nulls is virtually divided
-- * into three segments: the head, the tail and the default.
-- *
-- * An onlining memcg is added to the tail of a random bin in the old generation.
-- * The eviction starts at the head of a random bin in the old generation. The
-- * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
-- * the old generation, is incremented when all its bins become empty.
-- *
-- * There are four operations:
-- * 1. MEMCG_LRU_HEAD, which moves a memcg to the head of a random bin in its
-- *    current generation (old or young) and updates its "seg" to "head";
-- * 2. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
-- *    current generation (old or young) and updates its "seg" to "tail";
-- * 3. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
-- *    generation, updates its "gen" to "old" and resets its "seg" to "default";
-- * 4. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
-- *    young generation, updates its "gen" to "young" and resets its "seg" to
-- *    "default".
-- *
-- * The events that trigger the above operations are:
-- * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
-- * 2. The first attempt to reclaim a memcg below low, which triggers
-- *    MEMCG_LRU_TAIL;
-- * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
-- *    threshold, which triggers MEMCG_LRU_TAIL;
-- * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
-- *    threshold, which triggers MEMCG_LRU_YOUNG;
-- * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
-- * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
-- * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
-- *
-- * Notes:
-- * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
-- *    of their max_seq counters ensures the eventual fairness to all eligible
-- *    memcgs. For memcg reclaim, it still relies on mem_cgroup_iter().
-- * 2. There are only two valid generations: old (seq) and young (seq+1).
-- *    MEMCG_NR_GENS is set to three so that when reading the generation counter
-- *    locklessly, a stale value (seq-1) does not wraparound to young.
-- */
--#define MEMCG_NR_GENS	3
--#define MEMCG_NR_BINS	8
--
--struct lru_gen_memcg {
--	/* the per-node memcg generation counter */
--	unsigned long seq;
--	/* each memcg has one lru_gen_folio per node */
--	unsigned long nr_memcgs[MEMCG_NR_GENS];
--	/* per-node lru_gen_folio list for global reclaim */
--	struct hlist_nulls_head	fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
--	/* protects the above */
--	spinlock_t lock;
--};
--
--void lru_gen_init_pgdat(struct pglist_data *pgdat);
- void lru_gen_init_lruvec(struct lruvec *lruvec);
- bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
- 
- void lru_gen_init_memcg(struct mem_cgroup *memcg);
- void lru_gen_exit_memcg(struct mem_cgroup *memcg);
--void lru_gen_online_memcg(struct mem_cgroup *memcg);
--void lru_gen_offline_memcg(struct mem_cgroup *memcg);
--void lru_gen_release_memcg(struct mem_cgroup *memcg);
--void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
- 
- #else /* !CONFIG_LRU_GEN */
- 
--static inline void lru_gen_init_pgdat(struct pglist_data *pgdat)
--{
--}
--
- static inline void lru_gen_init_lruvec(struct lruvec *lruvec)
- {
- }
-@@ -648,22 +577,6 @@ static inline void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- {
- }
- 
--static inline void lru_gen_online_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
--{
--}
--
- #endif /* CONFIG_LRU_GEN */
- 
- struct lruvec {
-@@ -1503,8 +1416,6 @@ typedef struct pglist_data {
- #ifdef CONFIG_LRU_GEN
- 	/* kswap mm walk data */
- 	struct lru_gen_mm_walk mm_walk;
--	/* lru_gen_folio list */
--	struct lru_gen_memcg memcg_lru;
- #endif
- 
- 	CACHELINE_PADDING(_pad2_);
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 6eed14bff742..8f41e72ae7f0 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -182,12 +182,6 @@ static void memcg1_update_tree(struct mem_cgroup *memcg, int nid)
- 	struct mem_cgroup_per_node *mz;
- 	struct mem_cgroup_tree_per_node *mctz;
- 
--	if (lru_gen_enabled()) {
--		if (soft_limit_excess(memcg))
--			lru_gen_soft_reclaim(memcg, nid);
--		return;
--	}
--
- 	mctz = soft_limit_tree.rb_tree_per_node[nid];
- 	if (!mctz)
- 		return;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index be810c1fbfc3..ab3ebecb5ec7 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3874,8 +3874,6 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
- 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
- 				   FLUSH_TIME);
--	lru_gen_online_memcg(memcg);
--
- 	/* Online state pins memcg ID, memcg ID pins CSS */
- 	refcount_set(&memcg->id.ref, 1);
- 	css_get(css);
-@@ -3915,7 +3913,6 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
--	lru_gen_offline_memcg(memcg);
- 
- 	drain_all_stock(memcg);
- 
-@@ -3927,7 +3924,6 @@ static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
- 
- 	invalidate_reclaim_iterators(memcg);
--	lru_gen_release_memcg(memcg);
- }
- 
- static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index fc2a6f1e518f..6e5e1fe6ff31 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1745,7 +1745,6 @@ static void __init free_area_init_node(int nid)
- 	pgdat_set_deferred_range(pgdat);
- 
- 	free_area_init_core(pgdat);
--	lru_gen_init_pgdat(pgdat);
- }
- 
- /* Any regular or high memory on that node ? */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 70b0e7e5393c..584f41eb4c14 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2698,9 +2698,6 @@ static bool should_clear_pmd_young(void)
- #define for_each_evictable_type(type, swappiness)			\
- 	for ((type) = min_type(swappiness); (type) <= max_type(swappiness); (type)++)
- 
--#define get_memcg_gen(seq)	((seq) % MEMCG_NR_GENS)
--#define get_memcg_bin(bin)	((bin) % MEMCG_NR_BINS)
--
- static struct lruvec *get_lruvec(struct mem_cgroup *memcg, int nid)
- {
- 	struct pglist_data *pgdat = NODE_DATA(nid);
-@@ -4287,140 +4284,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	return true;
- }
- 
--/******************************************************************************
-- *                          memcg LRU
-- ******************************************************************************/
--
--/* see the comment on MEMCG_NR_GENS */
--enum {
--	MEMCG_LRU_NOP,
--	MEMCG_LRU_HEAD,
--	MEMCG_LRU_TAIL,
--	MEMCG_LRU_OLD,
--	MEMCG_LRU_YOUNG,
--};
--
--static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
--{
--	int seg;
--	int old, new;
--	unsigned long flags;
--	int bin = get_random_u32_below(MEMCG_NR_BINS);
--	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
--
--	spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
--
--	VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
--
--	seg = 0;
--	new = old = lruvec->lrugen.gen;
--
--	/* see the comment on MEMCG_NR_GENS */
--	if (op == MEMCG_LRU_HEAD)
--		seg = MEMCG_LRU_HEAD;
--	else if (op == MEMCG_LRU_TAIL)
--		seg = MEMCG_LRU_TAIL;
--	else if (op == MEMCG_LRU_OLD)
--		new = get_memcg_gen(pgdat->memcg_lru.seq);
--	else if (op == MEMCG_LRU_YOUNG)
--		new = get_memcg_gen(pgdat->memcg_lru.seq + 1);
--	else
--		VM_WARN_ON_ONCE(true);
--
--	WRITE_ONCE(lruvec->lrugen.seg, seg);
--	WRITE_ONCE(lruvec->lrugen.gen, new);
--
--	hlist_nulls_del_rcu(&lruvec->lrugen.list);
--
--	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
--		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
--	else
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
--
--	pgdat->memcg_lru.nr_memcgs[old]--;
--	pgdat->memcg_lru.nr_memcgs[new]++;
--
--	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
--		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--
--	spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
--}
--
--#ifdef CONFIG_MEMCG
--
--void lru_gen_online_memcg(struct mem_cgroup *memcg)
--{
--	int gen;
--	int nid;
--	int bin = get_random_u32_below(MEMCG_NR_BINS);
--
--	for_each_node(nid) {
--		struct pglist_data *pgdat = NODE_DATA(nid);
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		spin_lock_irq(&pgdat->memcg_lru.lock);
--
--		VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
--
--		gen = get_memcg_gen(pgdat->memcg_lru.seq);
--
--		lruvec->lrugen.gen = gen;
--
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
--		pgdat->memcg_lru.nr_memcgs[gen]++;
--
--		spin_unlock_irq(&pgdat->memcg_lru.lock);
--	}
--}
--
--void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--	int nid;
--
--	for_each_node(nid) {
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_OLD);
--	}
--}
--
--void lru_gen_release_memcg(struct mem_cgroup *memcg)
--{
--	int gen;
--	int nid;
--
--	for_each_node(nid) {
--		struct pglist_data *pgdat = NODE_DATA(nid);
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		spin_lock_irq(&pgdat->memcg_lru.lock);
--
--		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
--			goto unlock;
--
--		gen = lruvec->lrugen.gen;
--
--		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
--		pgdat->memcg_lru.nr_memcgs[gen]--;
--
--		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
--			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--unlock:
--		spin_unlock_irq(&pgdat->memcg_lru.lock);
--	}
--}
--
--void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
--{
--	struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--	/* see the comment on MEMCG_NR_GENS */
--	if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_HEAD)
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
--}
--
--#endif /* CONFIG_MEMCG */
--
- /******************************************************************************
-  *                          the eviction
-  ******************************************************************************/
-@@ -5613,18 +5476,6 @@ static const struct file_operations lru_gen_ro_fops = {
-  *                          initialization
-  ******************************************************************************/
- 
--void lru_gen_init_pgdat(struct pglist_data *pgdat)
--{
--	int i, j;
--
--	spin_lock_init(&pgdat->memcg_lru.lock);
--
--	for (i = 0; i < MEMCG_NR_GENS; i++) {
--		for (j = 0; j < MEMCG_NR_BINS; j++)
--			INIT_HLIST_NULLS_HEAD(&pgdat->memcg_lru.fifo[i][j], i);
--	}
--}
--
- void lru_gen_init_lruvec(struct lruvec *lruvec)
- {
- 	int i;
-@@ -5671,9 +5522,7 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- 		struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
- 
- 		VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
--					   sizeof(lruvec->lrugen.nr_pages)));
--
--		lruvec->lrugen.list.next = LIST_POISON1;
-+				   sizeof(lruvec->lrugen.nr_pages)));
- 
- 		if (!mm_state)
- 			continue;
--- 
-2.34.1
-
+linux-fsdevel@vger.kernel.org
+Christian Brauner <brauner@kernel.org>
 
