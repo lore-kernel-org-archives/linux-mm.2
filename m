@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C82D1CDC6
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 05:57:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB0A9D3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 06:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 345A36B0005; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
+	id E4C3A6B0005; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F62A6B0007; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
+	id DFA476B0007; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20C416B0008; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
+	id D0FDC6B0008; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10C5E6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5A471403F2
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:57:53 +0000 (UTC)
-X-FDA: 84198876426.03.58DF26B
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F8CE40008
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:57:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C10F56B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A9555294F
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:23:10 +0000 (UTC)
+X-FDA: 84198940140.21.9460D98
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5B7B810000C
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:23:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VC4Ypqef;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765261388; a=rsa-sha256;
+	cv=none;
+	b=KpQmmYvhjuP+FRHvnZLFzJl1nSz2fPbHkqoUK4cF73+HkNsIyXTMXsB/19/n2P+xjhwtvZ
+	2RPiSTYxEhds2+qNeMa0Ekd9H2MBWSaQzGGOBeZF+g3hWjy1amw8N0hLgif8G9n/7Rd6Bk
+	EeMtuyjWS8MOB3vJBSgSEN9D3uYgwfg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VC4Ypqef;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765259871;
+	s=arc-20220608; t=1765261388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=G9QJUce7C1/hhUjySjfVcnAcCGL4smJfqpSdBq+tWdU=;
-	b=HNUksvSdDev2dJaI1bvGx/MXK0BTqd8Uw7A18pGdO+Po5ClB2bCjtUAhG6PcQpWqbWBIPo
-	i8Hqly1XBbiCDRGEUOxvperr7EyzqZ8BrsbYUNH6OkRIWkx8FLLMY1nMvJYFnWGmQPIm1O
-	npenC57qLt0WjeDl3OYz6ZH3wpak3bY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765259871; a=rsa-sha256;
-	cv=none;
-	b=XFC9ToxF99fzeDZPW7a8Y/2ePzqy6Bf8xTd5KugspiX1rxVRkMWgOYJ5rD+KwNNoS8uIq6
-	ZYvDkWqwZutclC6jxcxdqeWpyCc0ocbL+7SiulaVl5IvXsaszA8WPvJuAYrDkeJB+v3Xiv
-	PWaoMEO3pKgoYtFRY9gdzAzTwVSadv8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-X-UUID: f00bc2c0d4c311f0a38c85956e01ac42-20251209
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:a4ee5210-558a-4a02-850b-aae16ec0cb53,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:a4ee5210-558a-4a02-850b-aae16ec0cb53,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:e41193994fc12412c7bb15a61e65599b,BulkI
-	D:251209135728SMWVWXEJ,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f00bc2c0d4c311f0a38c85956e01ac42-20251209
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 902813503; Tue, 09 Dec 2025 13:57:25 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] mm/damon/core: delete damon_target when detected invalid
-Date: Tue,  9 Dec 2025 13:57:13 +0800
-Message-ID: <20251209055713.270737-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.52.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9F8CE40008
-X-Stat-Signature: tctr1krssx6snp7u3otrks8kyrsqdgep
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+CLk45ra1fYgW55XvsXvXAF/BHCLHprBL2qMpGLAoh8=;
+	b=qwiuDhJw8QTvXaXv18OCKJu05hA3ZjtcvqJWrVp6CctdiKBoY7WT9XI1R4nRD8ykGJMPGt
+	aBo43xfQ6Fdm+idNedn7MoqijUkIxR39zrzEYjyOueli5m3DVtKf6rJ65Y6XTM7/FYQ+H7
+	aExzF51V9kYiqmPZEsWeHkPfOqvj91M=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765261386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+CLk45ra1fYgW55XvsXvXAF/BHCLHprBL2qMpGLAoh8=;
+	b=VC4YpqefvEcJ6O+lIz39BT2VJbG3iP8kR+GpykLM3b8sfIy5MUjYXdk8kjZtCVXWnBbRCc
+	U62fruicHGgyRSiywIAPRAhaCy0D2UbJgFOjXMl/vu362KK5Egk8J8VEz74ORbWXB19jWz
+	pfNkHiewwrFs+mYVNGf0wrnZxjQa1kE=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20251205194351.1646318-1-kas@kernel.org>
+Date: Tue, 9 Dec 2025 14:22:28 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Usama Arif <usamaarif642@gmail.com>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <4F9E5F2F-4B4D-4CE2-929D-1D12B1DB44F8@linux.dev>
+References: <20251205194351.1646318-1-kas@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5B7B810000C
+X-Stat-Signature: dg1tmfcoskhgxqgzh4zqw95uwphw7wqx
 X-Rspam-User: 
-X-HE-Tag: 1765259869-203124
-X-HE-Meta: U2FsdGVkX18yxJvP0rRjWEc7EOMj3kDl4Z3G4MMpmh2b3W/FYm9dEQHCos3HTHrjztWF1sbIAEYI7GvOpJTk1pJLGnJ/TGf4/7iQvYZfLnu3bMeEAmhXsB5A38qRSHN3gzahoBnmm+wmxACKB+csCXj6JS2BdaqfuKhM1SoGa6FPijEosO3BQODNeq+6iho98CnRd+Eav6K7rOYEr+QV+z55b5G/5sRxJwgRlW8dOP07hNlhgFtpoH+lv1Ox8B3qbOpiVltxBsHjyzF6jYHmF71uRpDkSahxwrjsmt4qtA62PIWVvXrPOxX+GvuvowIX8vT130VxnXQ72Ev6tF4Fx1GEqAcaW11gGoqTSrSnjH+mcW5DjLiV7mKNgTeNBg2MZWXwL+ZxFQBZpkpzefEbx49q4iYebu4OLrJoe5zYTCgHaALeEbPlR6vYkcbMXFJurPcl0Cpt7su0rlUy6eaTOFpalnLHNM5e8HB1yqp1fb4U8JD7+UV1KIF802CyTII+A9R99keQZG4aRbPFYOLp5mgCsZ2DEO+GasOqNeitsC8xU0L65UQUm/O33AYRcaCsJL6dssQLDf/v+MmFeLdzgZehynSVkd3HLX6+OaY2R4c3FNkiKJg9dHH5YcrALLt6GvpuGrxMiqg4rTaHwv7hyER747gkn+SsdB+xLEXp9GAZyXJL3gKBtswyp1p7Op8SqvHXsWK0AByB/dqmL1O3HhxCIecoojJSANkgVVZkdV8ZuFJiCzWzELFn5QshBeQ85Ik0tpPnLqCLN9n24kMIun+OKBpK7GM1fdk5eL5/ciOtHiLau4gBbotdls/0u+EM3r8ZpRkMUxwmkfDP1Mj5UIhuMFD2ZWKdQL7ZydO/9p/WCNJpYS6TiwkvY3Su+Q5lumtXpCTNldhP74f86Q5/XyZ7DqvaRcJeR7MG2aTXQjR4CB7+qMzlPeelAkSwj0Ox4bCPVLMpM/c2AVjH3G6
- 9lVM5/pp
- WrF35MqAU6fsHPli3qLPr3lpmrGemsQaBmOJtHWRNYqHf6v0=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1765261388-814565
+X-HE-Meta: U2FsdGVkX1/fAISknQHE/kOLdEYwpVjfuGKST6vOp4d2eaDRjoFFvDgmH1KdUpNlInl/va3nLqPQvtPO3WjV+36IpeMxhfMEFfo7RIJEeJw+d5WCBca4/2nJh4/j/HIoqNTZyIZmGmE2BxVKKy96x4wnzGI2NaBS0J5Rkez/tNYRw5Dju7NuqzvhfhnrmatFx03aWqkdJXvlgZNtSg3ue3dR4odcIYUJI1RTrYZun8YbrSXpfxZlQxdRo21rNKSdAiWSyeHEnu0JRlV9DPqtENp1Mfvc7U4hoxEbv1ClBpzoI24gW9020h17DDivxxeHK5QUHd0DKOTb5SZVr0sFOJHPwxqvuETdkQ6xPbX+tUZM2b07X37Ur/cMKWhMtJflaIh+USnx8W3AUGozXcyIFkhJBA1mXZqkqID3Ubdp15K+DYmm+ghtS1MIJ4ngBsneEz3RxEjHY6XTZGXOqFowu1S+blOCHZ+FNI8dP0hu3gBJxZLasFYGaAOY1G1bUpVILwVqAQfrUcb0YI0bWCiSiAgmdv84mIxv5Xio0kwcjmIbq6fK6rw25ZnPn8aEpuVy2RrjJbtZtzmwmeOtPRA3Q2pWwUVLGmnfLqsUQyB1in9xVIzeDr0WdSRRwfnEJY2WHpN1XlKH9DK6R8oHhDgi8UTVFb1CajOMQ00EhMzmFMKQz/Huq8B+wOQ6TbbIvd+POxHRmE1KjyoRPdZbevt+ySt++48zaDmIWPuK8h7NLN+jqVYOTLYu6EnCxcojrLVU5gAA+bc0WsVM65avf2qGxrotHqqI5BZk8O4VSF2+9yaU6vplANLVndfpy97W4Hi8H5yNRkphc0Nrc9bJ0heOAdvRz3Jl3j2cUoztDqDXQKL4xvjMh/G0Z/v7KdZKrg7glVR7pA6SwzOZV9n6C5ZZyHiG4HT9AV1L7JW16ru/FXQM7aD2uQHkKnJCLQ0+SpWTssPV2NZpNFAPh7vJT3B
+ wr9NNOX4
+ IHRfUgNNIO9YrCsbHBq3ZEIMK67ae6R7M2+XwmfmaTHmMXrJuYaWue7YQs7luyuTs//fqhaZdL28DWxFU7oJ3XjNrXDpZyZK/l8ExTtc3nROc9f/rLFxSCtUXIgau+Nhx6PINpQs5pS8emodJdVJ3IVdhV/hoWavDVKi/L8aA1YIBLaI3j4RoSHCD5835ZPSttBFtavBVt9Jzs+naaxr5m+zRimJApowGjSQN5Eck+IINBTkl4brXnZyz8dEEJ7qmLmKj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,64 +106,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, DAMON does not proactively clean up invalid monitoring
-targets during its runtime.  When some monitored targets exit, DAMON
-still makes the following unnecessary function calls,
 
-  --damon_for_each_target--
-  --damon_for_each_region--
-      damon_do_apply_schemes
-        damos_apply_scheme
-          damon_va_apply_scheme
-            damos_madvise
-              damon_get_mm
 
-and it is only in the damon_get_mm() that it may finally discover that
-the monitoring target no longer exists.
+> On Dec 6, 2025, at 03:43, Kiryl Shutsemau <kas@kernel.org> wrote:
+> 
+> This series removes "fake head pages" from the HugeTLB vmemmap
+> optimization (HVO) by changing how tail pages encode their relationship
+> to the head page.
+> 
+> It simplifies compound_head() and page_ref_add_unless(). Both are in the
+> hot path.
 
-To avoid wasting CPU resources, this patch modifies the
-kdamond_need_stop() logic to proactively clean up monitoring targets
-when they are found to be invalid.
+Besides, the code simplification also looks good.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/damon/core.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> Background
+> ==========
+> 
+> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
+> and remapping the freed virtual addresses to a single physical page.
+> Previously, all tail page vmemmap entries were remapped to the first
+> vmemmap page (containing the head struct page), creating "fake heads" -
+> tail pages that appear to have PG_head set when accessed through the
+> deduplicated vmemmap.
+> 
+> This required special handling in compound_head() to detect and work
+> around fake heads, adding complexity and overhead to a very hot path.
+> 
+> New Approach
+> ============
+> 
+> For architectures/configs where sizeof(struct page) is a power of 2 (the
+> common case), this series changes how position of the head page is encoded
+> in the tail pages.
+> 
+> Instead of storing a pointer to the head page, the ->compound_info
+> (renamed from ->compound_head) now stores a mask.
+> 
+> The mask can be applied to any tail page's virtual address to compute
+> the head page address. Critically, all tail pages of the same order now
+> have identical compound_info values, regardless of which compound page
+> they belong to.
+> 
+> This enables a key optimization: instead of remapping tail vmemmap
+> entries to the head page (creating fake heads), we remap them to a
+> shared, pre-initialized vmemmap_tail page per hstate. The head page
+> gets its own dedicated vmemmap page, eliminating fake heads entirely.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f9fc0375890a..eb5612bfd6bf 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2462,7 +2462,8 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
-  */
- static bool kdamond_need_stop(struct damon_ctx *ctx)
- {
--	struct damon_target *t;
-+	struct damon_target *t, *next;
-+	bool valid_target_exist = false;
- 
- 	if (kthread_should_stop())
- 		return true;
-@@ -2470,11 +2471,16 @@ static bool kdamond_need_stop(struct damon_ctx *ctx)
- 	if (!ctx->ops.target_valid)
- 		return false;
- 
--	damon_for_each_target(t, ctx) {
-+	damon_for_each_target_safe(t, next, ctx) {
- 		if (ctx->ops.target_valid(t))
--			return false;
-+			valid_target_exist = true;
-+		else
-+			damon_destroy_target(t, ctx);
- 	}
- 
-+	if (valid_target_exist)
-+		return false;
-+
- 	return true;
- }
- 
--- 
-2.52.0
+A very interesting approach.
+
+The prerequisite is that the starting address of vmemmap must be aligned to
+16MB boundaries (for 1GB huge pages). Right? We should add some checks
+somewhere to guarantee this (not compile time but at runtime like for KASLR).
+
+> 
+> Benefits
+> ========
+> 
+> 1. Smaller generated code. On defconfig, I see ~15K reduction of text
+>   in vmlinux:
+> 
+>   add/remove: 6/33 grow/shrink: 54/262 up/down: 6130/-21922 (-15792)
+> 
+> 2. Simplified compound_head(): No fake head detection needed. The
+>   function is now branchless for power-of-2 struct page sizes.
+
+And it is also a common approach as well for DAX to eliminate an
+additional tail page.
+
+> 
+> 3. Eliminated race condition: The old scheme required synchronize_rcu()
+>   to coordinate between HVO remapping and speculative PFN walkers that
+>   might write to fake heads. With the head page always in writable
+>   memory, this synchronization is unnecessary.
+> 
+> 4. Removed static key: hugetlb_optimize_vmemmap_key is no longer needed
+>   since compound_head() no longer has HVO-specific branches.
+> 
+> 5. Cleaner architecture: The vmemmap layout is now straightforward -
+>   head page has its own vmemmap, tails share a read-only template.
+
+I have no idea about the feature of memdesc, but regarding HVO, it is
+a nice improvement. I'll look into the details later.
+
+Muchun,
+Thanks.
+> 
+> I had hoped to see performance improvement, but my testing thus far has
+> shown either no change or only a slight improvement within the noise.
+> 
+> Series Organization
+> ===================
+> 
+> Patches 1-3: Preparatory refactoring
+>  - Change prep_compound_tail() interface to take order
+>  - Rename compound_head field to compound_info
+>  - Move set/clear_compound_head() near compound_head()
+> 
+> Patch 4: Core encoding change
+>  - Implement mask-based encoding for power-of-2 struct page
+> 
+> Patches 5-6: HVO restructuring
+>  - Refactor vmemmap_walk to support separate head/tail pages
+>  - Introduce per-hstate vmemmap_tail, eliminate fake heads
+> 
+> Patches 7-9: Cleanup
+>  - Remove fake head checks from compound_head(), PageTail(), etc.
+>  - Remove VMEMMAP_SYNCHRONIZE_RCU and synchronize_rcu() calls
+>  - Remove hugetlb_optimize_vmemmap_key static key
+> 
+> Patch 10: Optimization
+>  - Implement branchless compound_head() for power-of-2 case
+> 
+> Patch 11: Documentation
+>  - Update vmemmap_dedup.rst to reflect new architecture
+> 
+> Kiryl Shutsemau (11):
+>  mm: Change the interface of prep_compound_tail()
+>  mm: Rename the 'compound_head' field in the 'struct page' to
+>    'compound_info'
+>  mm: Move set/clear_compound_head() to compound_head()
+>  mm: Rework compound_head() for power-of-2 sizeof(struct page)
+>  mm/hugetlb: Refactor code around vmemmap_walk
+>  mm/hugetlb: Remove fake head pages
+>  mm: Drop fake head checks and fix a race condition
+>  hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+>  mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
+>  mm: Remove the branch from compound_head()
+>  hugetlb: Update vmemmap_dedup.rst
+> 
+> .../admin-guide/kdump/vmcoreinfo.rst          |   2 +-
+> Documentation/mm/vmemmap_dedup.rst            |  62 ++---
+> include/linux/hugetlb.h                       |   3 +
+> include/linux/mm_types.h                      |  20 +-
+> include/linux/page-flags.h                    | 163 +++++-------
+> include/linux/page_ref.h                      |   8 +-
+> include/linux/types.h                         |   2 +-
+> kernel/vmcore_info.c                          |   2 +-
+> mm/hugetlb.c                                  |   8 +-
+> mm/hugetlb_vmemmap.c                          | 245 ++++++++----------
+> mm/hugetlb_vmemmap.h                          |   4 +-
+> mm/internal.h                                 |  11 +-
+> mm/mm_init.c                                  |   2 +-
+> mm/page_alloc.c                               |   4 +-
+> mm/slab.h                                     |   2 +-
+> mm/util.c                                     |  15 +-
+> 16 files changed, 242 insertions(+), 311 deletions(-)
+> 
+> -- 
+> 2.51.2
+> 
 
 
