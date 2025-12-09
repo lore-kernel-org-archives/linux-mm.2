@@ -4,88 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36509D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 07:21:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0A0D3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 07:46:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140576B0005; Tue,  9 Dec 2025 02:21:55 -0500 (EST)
+	id ABB816B0005; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F1856B0007; Tue,  9 Dec 2025 02:21:55 -0500 (EST)
+	id A6C3B6B0007; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006D56B0008; Tue,  9 Dec 2025 02:21:54 -0500 (EST)
+	id 95B056B0008; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E60DB6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 02:21:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 649A1140416
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:21:54 +0000 (UTC)
-X-FDA: 84199088148.19.7518802
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A3D131C0004
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:21:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uNDULjqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765264912; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8571C6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FAF613AF79
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:46:02 +0000 (UTC)
+X-FDA: 84199148964.03.C2FFF57
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D5CAE20004
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:45:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765266360; a=rsa-sha256;
 	cv=none;
-	b=ZRfCqsnmP+dDPpcmH5z/9QIUNekA6Hh6iUHutmDp4xZ3oJ7Iz5Tp2FCY5r/WT56jD/3AlT
-	rE6Ayr+SLuV2t7PsJMl2iPMbg2XUQ0tPQsvA/ArV0vw7NvMJpl3mDo/M56aDNJgsi13Gr+
-	u24mexHO3DCdW/xQDblBXA9hSrgbFao=
+	b=k9WV5Q+ogHkMD3lx+JQ1gYmf+Xg2B0ItF/yTH//mFNledm16B6iRLgSZX24mAq4yns3/W/
+	0iYEr00RO5uwUjDXr30HEXNhnpSykkJx5a1Qs8wbm9gM5eduAe2vGDeApZ0UhaV1kIsPpN
+	5/4/K+FuQn0HrDTTVjpnVG0Y1ahMK6Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uNDULjqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765264912;
+	s=arc-20220608; t=1765266360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iaz7ChT4qKnjkK7Iu1ZHnQeBlb+LWs4ghUNTWn+BX8Y=;
-	b=Yx3UFlfVIbnlk5QwBmQeYvwr5ZZoWtMsJJK41bu5w2x8awLO7ql1zEiYJReEQU3kagRRg7
-	qByDDWmsIMnJGTOgQyia48Gec9+2QXUEAbEqxquFuqjqVjwoJ534wSNJHdqZuy2sjHybp0
-	BlMfNicAYMClEuQfSeNvhqmkMAUDoFg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F33340067;
-	Tue,  9 Dec 2025 07:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A8AC4CEF5;
-	Tue,  9 Dec 2025 07:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765264911;
-	bh=YFsjm86FdvkgcY6Jiigg9An1/lmF5ic/ii6TJuTDmGc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNDULjqHUgaW7V6B+JgMTxVCIdhI5LwAO4x9mGGF2NAzKCSz8cfG/YlWW7dScHzx5
-	 SYhrMuK5bePqInXB/WmVJuw+j4Cq9i7ni3uV9XICTDN+PP9OwXtQJmlPvnpVKnlU2S
-	 M9BPCmrTFKbQwmFQWya1JVIKxB21FKTZHi8WIzBdT/Eczdt3G58U2l/t1E3Gt1JUc2
-	 FwFU0TEkaHOr02EdA0CQbGtTP4A1v3G7HQX1COy1C/Ev7payIQJrtojta8o4fAS7nP
-	 gMfp1MPNHDpwI11VIQgnMZwAZyHYSzTM9vnVukJdBahtkEkT03SnqWqafmZiaD6JoU
-	 9aqy7F1xb0f5Q==
-From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/core: delete damon_target when detected invalid
-Date: Mon,  8 Dec 2025 23:21:45 -0800
-Message-ID: <20251209072146.42315-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251209055713.270737-1-lienze@kylinos.cn>
-References: 
+	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
+	b=kGJpbueMJqziJEHLXQqgRykvuzmv10rqlSfwW51dPI/Gsz9wM8kslTVHnZ9ivWDNO1gGfb
+	4YXZJwwsuqs52gOjzDc9O4AkhENDpQFPNtCs7AYYS+SWt5dPCIHKfg37TNoJs0vJl+rdsn
+	mRV92wK8A27ex2rTBt9a4/FSBFB3oDQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2B4DA336F2;
+	Tue,  9 Dec 2025 07:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765266358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
+	b=ArPWOzqry+T5cOS2iVikGeqNVXifulv3jUvAKUVogE31EuolkmsjeMRLXsTaBOxwGZMcUc
+	qpG8YvMRqQwec8zTBAGOMcP5J2AKV4dYpaOHriBSquVSOKEaBShD9pzx1FYgcHwvb1m7EA
+	H0Ybd2V+4thyBWZGDjsksnWInyJrXB0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765266358;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
+	b=+9kVsrjwBaPQ2mHtRbMqwr/v/yNzgQ1UlvsY4jHxYThD4kSrVmtqxCUNCU77H5BoOUIpuW
+	C5fivGV17pWnFSDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765266358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
+	b=ArPWOzqry+T5cOS2iVikGeqNVXifulv3jUvAKUVogE31EuolkmsjeMRLXsTaBOxwGZMcUc
+	qpG8YvMRqQwec8zTBAGOMcP5J2AKV4dYpaOHriBSquVSOKEaBShD9pzx1FYgcHwvb1m7EA
+	H0Ybd2V+4thyBWZGDjsksnWInyJrXB0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765266358;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
+	b=+9kVsrjwBaPQ2mHtRbMqwr/v/yNzgQ1UlvsY4jHxYThD4kSrVmtqxCUNCU77H5BoOUIpuW
+	C5fivGV17pWnFSDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D36D23EA63;
+	Tue,  9 Dec 2025 07:45:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id V+H0H63TN2nFWQAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 09 Dec 2025 07:45:49 +0000
+Message-ID: <d395cf62-2066-4965-87e6-823a7bbde775@suse.de>
+Date: Tue, 9 Dec 2025 08:45:46 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 1/3] filemap: set max order to be min order if THP is
+ disabled
+To: Pankaj Raghav <p.raghav@samsung.com>,
+ Suren Baghdasaryan <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Michal Hocko <mhocko@suse.com>, Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ mcgrof@kernel.org, gost.dev@samsung.com, kernel@pankajraghav.com,
+ tytso@mit.edu
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+ <20251206030858.1418814-2-p.raghav@samsung.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20251206030858.1418814-2-p.raghav@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rzszjas9wskdugmu99swd47rsgnuhmft
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A3D131C0004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765264912-465497
-X-HE-Meta: U2FsdGVkX1+kvLyAYMQwyqQSed+LQ/fYFId6D+mJIODRtED+N6BKWMbZc2x92aR6LlDrqRxAJCWi/3VA/yiWWfrgCn13KoCSfJii19c3FoFmc7GDICFwA4QaTM4gTrlLjLEOT5qLBFpd6X4OMjoB0Y5zvjil8cHMkN4DeBqYisv43eshq2Qo/LvMDUfqkVXdmV2hKqrgVCGEWuhjICnYX1yuS9JKlOH3MgDJ7qZ2I5DFBjaMwAuHMwpZL1T6Et1FE0V8GxjmDRVbMn3/33e/77VazSbU7cyinYTfQ066nK61tK05ck5MuFP6P5xHtfr1AjoAW+LfZGonL4W1XC6bWMYfotFdJJsH5Gzenl430CDrJ2kWLSpNySRJCFjKD7CN72Ac+pHB6yiJBiSNZ6Gp6ysIewJBvDuYv5SW1oXBmBQYy0ARNMZlWE7YuFCb2NYdoJjAkHoZRdWWgzl+D1WecUhmHIP3ohm68GhzK1v5AgeLi+6oUXi3nmUH+8WVXs8y7Q3UfOiIh0DdzgR3Rx636KG/5TOzdqXplKHRCkcmNB73J+tge3Aa6t6tv4X+j2ESbdKRfqnuYKVaX+Wg5R/xaH4IQaes+qS+tQx7FuSxfzkYc2XCfN/PII8dEP6CfaYH6ABOKHICBejVKo8zJCwZwXNfp+bOawRF38wt+FhQAE3fscGfy/3xLFhLdJBzRq3tulwt+U2T6I18u5axKlRXH+iS0DSYSDmfPUqnfQo0eqSR6hTG3lvHuE9laz8hLABHzXCdb+Wv25EOum+lXacMPCGXoolF1M6LCk1U4NM4xPw539+b0suWjW0bVNKuyz/vHvqfb4wX78qQovr+U50I3NC3UhOoxr2YdR5PQkMpLmUBoXrScxAEbF163xoi4gbawlQPKUrjPP9aMScgfCxeI/1TX4hMW8Tmk+4qPrQjT9K9pCokwceoo1djq3uCom0qKPt+eyHGRsg2gZV+2rA
- HcC9c8s+
- BiRMuVtXXUlKyps5h5SuYJhJL2GqsmQf74FXdJ2plkiCF+nVQZZ2VP1+BWaUP49tYZAS4y2X+Uj7q7FWFCvlLfzUeAQiVJyTonly7V8oGIR3NakoYBFW/o6f6IIyik4Sa4fJ+VBuMl5bsdsGnDHO/4wS/yJbNuh7OwABxYtYLpZB6ZYnGuqStMYhuSQMEnnuM275gqXruppzZZ5kUYjjvhHlLkVIXtug23kx0se8ORLkyjGS6tihMzwweaYrmKZrcDTGP
+X-Rspamd-Queue-Id: D5CAE20004
+X-Rspamd-Server: rspam10
+X-Stat-Signature: rpcfz9ugzt3ph4zaocyf5xrbk3qhhhux
+X-HE-Tag: 1765266359-144387
+X-HE-Meta: U2FsdGVkX18g9K/9W7lDnrmEpg/RiXWS369zjIttgOxyIex6JvIRyWoVp9kD/PiLwuu98M64MPsPgj9ZG0+OLJUbcm4pkxWepWMNZ71BW9bY1V43O5vt+AUNFmnRSyI34aIM4xWXUduxFoghgEsjhoVQD0d8OK05ZkQl593uxQB2MNMCcyeHAycKwSvQShgxS//G16PNPM14JgkHnFqLu0pktmMjwCLifQNITtdZxFs+neC4ixTwNb0Yp3BkEMB2AROm2yVS4QkkvQxV6+UZlcVY9W/6eU2Q2unEAOFzbeAZqV7RCV3WgjEksB1PdQlZqNTFkuOJqk51nTirhqdwFYJnBIopzcu8lDeMewE0YC74jEZ3hJFZThm/ITXMupD8w2cdYsrYXnGYlBcIKV74d6Xjpsa3PV8w7vvS2aJaE7BQBYUC+XPc6493QGBGHrNRi3HFCdpUR5ARnDCd/3LHhQ71zCtqJzR1EU6xo0JYT/JWa+uX/G9xn0/THgeK+DlJbhBZeeTuIBrY5GN/Z7rES2AtWlaTnssnOgz1Nf4If8Iwqzvm8t7Emb/jGnjnROAU5TJc1YKbjTfgQRSy3XK7p1N3VdqsNN9KleNaQ1Ai6Xktr5V7t2f7uWab4Lsbpb8/u2ux4ewdeZC0kY480GmRI8jvf6t7HtMzJTHY/VQ96MoE+XCe1mT41HA7mTG2OWRf60Q7rqFoEXXp5Xj1WMMeMhMSoJmR3WIwUMZVPobAxkDevSlMYnBuujOF/VoIh/3+7MM+ldP+1rwOGSs+HOXkDykc5yXlfAU7s8BxQUMdkmAXVU8ebvz/7O1tCSfs5MiRnMd2YRMxftVolD0QFf060aMgKt4WARXglSwahoUMx/CYrhncB/QKKDOhBh0eZMDnoPg4h3cAVJvKxO2CSvJ/fhkoFmQ5wu1BSBVOyxI5DgLpyFYXNFXfZvfXPJod0L/iE9itcsPaOgXlO3FeomC
+ MwgtOFeb
+ rmaHL093aY7/tT1R+/zQ5NnY0OCIHFgbRt6vOfRpXWzSBN6grQ6lXPE0pmo5npt2tFWApGKgrwkquSBdHthv+3aeEsvlql03riN/d2C7YNcnHtmHD8VuJntDJg0xyd2j79B8R2yrcS+evkvKJZqOmKVL64B9TivCu2DeF09e8hG1Jvj03AjzCBWw/iMSwID5DeuoUFsoHbRbRDjkz8FAWXBBVhbZPbePrhMoTq95Sni8lm8mDX7ZbQY2/t2VXXuM5GEfDnsTklPuSzb3zT6zIYXhxmFX8rBnHO5PlbqPzgKXZjl8qWw5aO9mt6bHJpBCfh7TSDGituI6XC4Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,95 +150,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  9 Dec 2025 13:57:13 +0800 Enze Li <lienze@kylinos.cn> wrote:
-
-> Currently, DAMON does not proactively clean up invalid monitoring
-> targets during its runtime.  When some monitored targets exit, DAMON
-> still makes the following unnecessary function calls,
+On 12/6/25 04:08, Pankaj Raghav wrote:
+> Large folios in the page cache depend on the splitting infrastructure from
+> THP. To remove the dependency between large folios and
+> CONFIG_TRANSPARENT_HUGEPAGE, set the min order == max order if THP is
+> disabled. This will make sure the splitting code will not be required
+> when THP is disabled, therefore, removing the dependency between large
+> folios and THP.
 > 
->   --damon_for_each_target--
->   --damon_for_each_region--
->       damon_do_apply_schemes
->         damos_apply_scheme
->           damon_va_apply_scheme
->             damos_madvise
->               damon_get_mm
-> 
-> and it is only in the damon_get_mm() that it may finally discover that
-> the monitoring target no longer exists.
+The description is actually misleading.
+It's not that you remove the dependency from THP for large folios
+_in general_ (the CONFIG_THP is retained in this patch).
+Rather you remove the dependency for large folios _for the block layer_.
+And that should be make explicit in the description, otherwise the
+description and the patch doesn't match.
 
-Thank you for finding this inefficiency, Enze!
+Cheers,
 
-> 
-> To avoid wasting CPU resources, this patch modifies the
-> kdamond_need_stop() logic to proactively clean up monitoring targets
-> when they are found to be invalid.
-
-However, this could introduce an unexpected behavior change to DAMON sysfs
-users.  Let's consider a DAMON context having three target processes (a, b, c)
-is running.  The second process is terminated.  And the user updates the target
-with two existing processes and a new process (a, d, c) using the online commit
-feature.
-
-Before this change, 'a' and 'c' targets keep running with the old monitoring
-results.  The target for 'b' is replaced for 'd'.  After this change, the
-target for 'b' is removed from the list, and 'c' becomes the second target of
-the list.  Because the online commit feature works based on the indices of
-targets on the list, target for 'c' is updated for 'b', lose previous
-monitoring results.
-
-Please let me know if I'm missing something.
-
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
->  mm/damon/core.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index f9fc0375890a..eb5612bfd6bf 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2462,7 +2462,8 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
->   */
->  static bool kdamond_need_stop(struct damon_ctx *ctx)
->  {
-> -	struct damon_target *t;
-> +	struct damon_target *t, *next;
-> +	bool valid_target_exist = false;
->  
->  	if (kthread_should_stop())
->  		return true;
-> @@ -2470,11 +2471,16 @@ static bool kdamond_need_stop(struct damon_ctx *ctx)
->  	if (!ctx->ops.target_valid)
->  		return false;
->  
-> -	damon_for_each_target(t, ctx) {
-> +	damon_for_each_target_safe(t, next, ctx) {
->  		if (ctx->ops.target_valid(t))
-> -			return false;
-> +			valid_target_exist = true;
-> +		else
-> +			damon_destroy_target(t, ctx);
->  	}
->  
-> +	if (valid_target_exist)
-> +		return false;
-> +
->  	return true;
->  }
-
-So, from the beginning part of the patch description, I understand your concern
-is the unnecessary function calls in kdamond_apply_schemes().  What about
-checking the target validness using ctx->ops.target_valid() and avoid going
-deeper if it is invalid?  Seems the damon_for_each_target() loop is a good
-point to do this.
-
-What do you think?
-
-
-Thanks,
-SJ
-
-[...]
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
