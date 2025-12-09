@@ -4,107 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E66D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 09:55:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A991CD1CDC6
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 10:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 447056B0005; Tue,  9 Dec 2025 04:55:32 -0500 (EST)
+	id CDA356B0005; Tue,  9 Dec 2025 05:37:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41E906B0007; Tue,  9 Dec 2025 04:55:32 -0500 (EST)
+	id C8B0C6B0007; Tue,  9 Dec 2025 05:37:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35B7B6B0008; Tue,  9 Dec 2025 04:55:32 -0500 (EST)
+	id BA09E6B0008; Tue,  9 Dec 2025 05:37:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 254606B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 04:55:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0932134329
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 09:55:31 +0000 (UTC)
-X-FDA: 84199475262.09.FFA57ED
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E3E6D40015
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 09:55:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=biUnudgq;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id A5B0B6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:37:49 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E29988B53
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 10:37:49 +0000 (UTC)
+X-FDA: 84199581858.20.16FB4E9
+Received: from mail-m82145.xmail.ntesmail.com (mail-m82145.xmail.ntesmail.com [156.224.82.145])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 234F580005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 10:37:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=stu.pku.edu.cn header.s=default header.b=c59eyqZ+;
+	spf=pass (imf30.hostedemail.com: domain of lty218@stu.pku.edu.cn designates 156.224.82.145 as permitted sender) smtp.mailfrom=lty218@stu.pku.edu.cn;
+	dmarc=pass (policy=none) header.from=stu.pku.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765274129;
+	s=arc-20220608; t=1765276667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LHnjqa28VSLuL2ZA10MZEvcdyGRXt3fJ8/yesSH4S6E=;
-	b=gp8SG05tIt8RYjTHXZT6ndVcAvYC6hw/fSWV4zOsUwdFpkLxQrRsEiDaME12PNSP06PS3l
-	otxiYuw4Rnsq1RfxsY/PyXqhTWo4JzAo/1s9AIqXdtFUUmps0cBVU8mGB99yyc/0Evkm5D
-	SyZSdMjeG9cViGi/c8Lde1E8EjgEFSI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=biUnudgq;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765274129; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ve+v0S9eahQrh/s4/Q8CF+bqSWqkhDgzmnCxsYvzy6w=;
+	b=uchQKnLtiofiCFpt5wYwO0Mb+TNugcyOea7XJMj24kL8Xg1GjasTPlnQB/iNh+hakJprr8
+	dYcp9vGfkdylUJPqzbkwoHH3NfAPpQaj9L+3N0VkolgFtXyAMPjQoqMVBWUxpGREeeDxmv
+	EKwefKHME/JuFA/XHTGtx2wu/AWx9QY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765276667; a=rsa-sha256;
 	cv=none;
-	b=gd+7MZ8JiXSbn4cuXIxG2j5PZGxnI5I6s21ty2jYlDp2xqkLVogIUPuF71ZT/DDgJ5/Q13
-	ejIAtnU061dgXIq8PB/CWJVa9PsHURdHHkHn0/t3qaSXPF3wyaMtRjSv4UxpZkcqxZ7FMm
-	UM1D7tWwS3q8MN5HhdZCp38dl0n/XEI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765274130; x=1796810130;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WUs7r+J6bXFpDh7ayirRnSaKdkdL3HYKLS9fGPGyaRc=;
-  b=biUnudgq1CUbsZ5ldfjkwFF5iUDxN5ZL3vQHK2kRFOQ2Zw9TTbxqLMJ+
-   d2G5lQ+ikflCm+uzGoDKA1BxlMkmyr3wZ4ZWLYWeHbcUd8b0fk9oYsfmP
-   +QaGF0nVJimYE4KpYyrfgTEoKConqfk8kH6IBcuwEmUynvvv6zstuO1yR
-   a1HmQBBVPNIFBjT0IZ8bAGzm04abG/fAQ4lDogC79FD9ZbTjXcRAgx6Be
-   dVDLMD3zDUyijR4Ny95H7+E4wmcTf4lUWR9WMFxtm3QxsAV+yVfumvbzo
-   OspGMtyLB+AV4Y+H9TWjizEIiV5FILQ9+LS/MhVNq13+0OGScaPQpwPFr
-   g==;
-X-CSE-ConnectionGUID: DrCU1U1sQBuEjiGcAhdQrg==
-X-CSE-MsgGUID: Av7YTYFhQ42Jo/xp+fsmNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="77549642"
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; 
-   d="scan'208";a="77549642"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 01:55:28 -0800
-X-CSE-ConnectionGUID: BX5nu9W6SOm4T1F9M/xx6g==
-X-CSE-MsgGUID: aRr+P5HxRSWqix/GB5gnoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; 
-   d="scan'208";a="196476646"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 09 Dec 2025 01:55:25 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vSuRH-000000001cT-2A1y;
-	Tue, 09 Dec 2025 09:55:23 +0000
-Date: Tue, 9 Dec 2025 17:54:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH] resource: add WARN_ON_ONCE for resource_size() and
- document misusage
-Message-ID: <202512091733.6IVBDnru-lkp@intel.com>
-References: <20251208202921.16819-1-ansuelsmth@gmail.com>
+	b=1XH9NtuxyeHO+Ccg055TK398OWmciobDWnTDOrJrx5bHKMOlifdKK0OdkJk1+Fu9kdgs1N
+	q569zR2yxQR5Nu/RPgl0Zf5rlGQVQW1Z9ibU2QrlsjYf+U2QW/pgTmqe4uVddsfecLk+K4
+	VukPgixrPGxotsW3l5ZMS6P0W1yPSfw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=stu.pku.edu.cn header.s=default header.b=c59eyqZ+;
+	spf=pass (imf30.hostedemail.com: domain of lty218@stu.pku.edu.cn designates 156.224.82.145 as permitted sender) smtp.mailfrom=lty218@stu.pku.edu.cn;
+	dmarc=pass (policy=none) header.from=stu.pku.edu.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AN6AuABUJ1wJzL8FhRfI7Koh.1.1765276660708.Hmail.2200013188@stu.pku.edu.cn>
+To: linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linux-mm <linux-mm@kvack.org>, akpm <akpm@linux-foundation.org>, 
+	xujiakai2025 <xujiakai2025@iscas.ac.cn>, 
+	"zhaoruilin22@mails.ucas.ac.cn" <zhaoruilin22@mails.ucas.ac.cn>
+Subject: =?UTF-8?B?W0JVR10gUG9zc2libGUgQ2lyY3VsYXIgTG9ja2luZyBEZXBlbmRlbmN5IChkZWFkbG9jaykgIGluIHBjcHVfYWxsb2NfbXV0ZXggYW5kIG1pZ2h0X2FsbG9j?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_MAC_1.56.0
+X-Originating-IP: 210.73.43.101
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208202921.16819-1-ansuelsmth@gmail.com>
-X-Stat-Signature: zc7q5a4fybqa1ksy84bge8cx5zjdqcwo
+Received: from 2200013188@stu.pku.edu.cn( [210.73.43.101] ) by ajax-webmail ( [127.0.0.1] ) ; Tue, 9 Dec 2025 18:37:40 +0800 (GMT+08:00)
+From: Tianyu Li <lty218@stu.pku.edu.cn>
+Date: Tue, 9 Dec 2025 18:37:40 +0800 (GMT+08:00)
+X-HM-Tid: 0a9b029903a209b6kunme1487666285a1
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTv2670zqzAM+7RIKOqUHUUyjnjpPRHs8I0th+
+	pfToBLAHHPQiSvzTUYtFIRevI3hx+6N3X75Pug8kABQIlOzly17YVBpfH3PQTNVlxbHsqq3UXUqU
+	KDMiiEyCvh/CUOxFNnvLB5g5IT7PMLKkryE3k=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZGh0aVhhMHk0dGEIZSkNOGVYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSktVTEhVT0hVSktKWVdZFhoPEhUdFFlBWU9LSFVKS0hKTkpNVUpLS1
+	VKQlkG
+DKIM-Signature: a=rsa-sha256;
+	b=c59eyqZ+15pGe00scMM2FZdb/ttV+kLQ/pOhTsOhE9XUqagfZfiShQ/B1dN8ymzUecsSWYYEmrDG12nXsODmamIV6LIRmjMqYlrfUnAk5H0DR/Igqu1gNoZXGItveAoaTkOQcskqTz0p1t0re/ewaeKIua+9Fb9QtpoH0zUuHRA=; s=default; c=relaxed/relaxed; d=stu.pku.edu.cn; v=1;
+	bh=Ve+v0S9eahQrh/s4/Q8CF+bqSWqkhDgzmnCxsYvzy6w=;
+	h=date:mime-version:subject:message-id:from;
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 234F580005
+X-Stat-Signature: 3kfk61s9f7hhbwbon56smxoce6p81nw4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E3E6D40015
-X-HE-Tag: 1765274128-637388
-X-HE-Meta: U2FsdGVkX19Nhz+ZVQO0cRpMSeKlbk28OWRGzllKYGn4bGuP+Co5NMZt8lDxH5J4r0xPgmgOePW/vziz/w9yDOVf6UVNpIYy3FACkOqul+IKsh3PJ6WtFbv2qgIdckXBscuVmF0SuDC7WOFDCSe3zbJ0+KBQGBUJ7v2AI48cqjqrgE+XmZYXvr3riX1FtC+wPKx9Z4D7bKIsC9pBj6rpO3Yv3X7/4hJq8cIT/qWbExOk+7BY6DQLh+hkDWyjYfSIpk0BsOv9wy4z9ykNqsKWay5uPxzRb+lxQZVTRl1hrsD8uDLjqSE7lngNsShxNE0Ut3FZdhl5oTBhhUGxUC9Gtvypf2xY3c7EMhbMBNYR3ATPSMPeMHvCPVMR7dJUJkHk37G7BQjF24bSbGOEgTOgIteB4HPXiI5sUbcruuJmKwHBwUt40XTPswM1N+sDT+FsXtfphBQI2FdoRyKu/+W/48U97eocx9iYCvCZP6DvK2OO1o9L22e9dwdV8Ijl6S3Jex5zAcTWlvaxL8oJSK/iWS8BMygKoJMbs4YPHykZyEVVMa+2opNaloI4X4tKAJhkzq0TnSbos+DqJug9cX9WBHcE6aZRNXg59Ll8NoU10FL2nRmMs55O+U5z2ys4VB7/vjjQG9Iusz68xMtDkwOA1gpwISNISQEUA1KDOUNs6H1PU1iqD+f2ta3wYwXTmHP7uSu3gUT3m8rs/bMjbDWvmws6oT8C5esYiQPtwFnFWxkn5Kt+U9JGl3kS3y0b1nFhIXfNXYtVK84CgWPhZxkFOsp1ssQsQ/uiUCGcj+BH1Xn4B1ttZjWhN75Hg+FlYpC71jqFlbh8yQtaUMxBkGMXxMyEVB1zsde4EyZE6+LUCOQusFBBeozzKPuNZbo5nIWnY3cf/w31GKRji1YCP+2pgKbXKElHQ5Kv+6UzfaudguAeQ3Pppfu861JJp0vgNLkpR9riBne0/Z3BQUpBW/G
- Dhfuw5I0
- Yed7Cx0uhkSiBzkjrfNvsNfyjrzJSkw8Jn5ITk9TsREFr/qWruLgUu+OLwcY7EPkDLLvBXSnxXhphojF42H+YaiUCl/v9uAQL+zB1DcJGoB1PNoL0Jujvg/Z3Vm5moLrmBAiVLqCBeBdAQ0zDu2qXcQtpSpC7S1rZM+15yxA5tMDdHX0ZW3yR3qVAuFkJy7I+lU94nVCnQJxdsaO/3QoLKRIp+gvt/xCKM35/sQ7nNkgogLBmERufd9bptfrRxCxXrgeroTJNpXBFMCjIyD9KK+xZ6L+UnJ8dZvpNn2y5TJBxqPD89eIUcsDROLX8vBhi0GI8iFtshXpiTHc17lEu3ZKdMXLGn4Ag00GXpvYpDqL50HeAA2y3jF0AOqxlpmSZ9nV6vuUJdy49oRpk8TKtSLLs0lLBhqRrXgYJW/yYRbPitXo=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1765276665-156848
+X-HE-Meta: U2FsdGVkX1/mQAWiCef27hMpLrBGkSfD/+scCno7l1JMOhKkW9sYJ+1sQ9xudvK5kcUTGkQj2pHlX7H4QAC9vuOuOLHlvaolY3i3KA3QV18wLp0eC2rh/CPp8VVWQONsI4WZ+9/0qS+G7Y27wVi4NsP6BsTan6Ap/5DzWGwUPrUn5tLh2a1rDyj25TeByv4n0XNSvB+x0D3vwcjYcwkNL2Xf+srLn7qvdVsKXVuwc9J+kT1gYCYNKXiOYGWdIWGkpPvxhq7l6rrlt65+9dgcOvHVGW7082NcFC5yEEFfmNhzFI6TNaBLo8+44o6bCLgshJqd/X9JKV6XK0yu6riQ71h8T5iYcHP2/pAbn1PI9vWKwiVhOTFWKBoG/21WOjSGlNLxbQ88L6mm0GVgsGGvyx0d0XgjPYPVCZUu9Z0C+xp8rVZFpr8nLa5VoElsNAIK+3mnvfzswZKcUM9CAFEF9fTl6I4hm8Ey1ZsmB9B1mvm9Xg0+n9TmM76fcEk55wgdL4Vdrv/JuhuIqfwkGwKamPngp3C3u454gHnJnZWt8e8V6JuXGUN/8/AxKkJ3+6KV9UJjd9RTKeWmNmbJyt9hAFpOPhE57U2yFyS8HjC8hgG5oSw2bBowy3y7xQd/J9iLSxCIojdNi2nBG96eXXvaETqC5GgK652JLkNX/ijyb5sGLFX7PuVRutVCOV4Cu3lupCbC/2rbn/jP+OIUIRID4gQw+nkuFF7sn9jSrZ4+V9mBv1+Pla/lmlrCf6xszlZsp9wnwwTizS4E31XXbdLt7BSODWcLS5+NJbw8/7qzZxrbzDfQUn3CDysyliaw/kA5sT911OLgqgM3XWclE2Bujmm36aDRBNjn1tkTe8t0+vTl6J4dTN/f+AAvw2s0MO45micd/5QbANeO4TN3l1SdcewePnrcS4PbXTtcXlOp+fVwADiQfctNbH5gUPVP8xLC9pbpvQdRT96yQRDVDPg
+ JcNwFhW8
+ XcokG91B/kj0EQT5I5LothcJa/jG4qCsvppbRN/L/5s0nHZjtK1Sgq3NGUiE2rHciF7nSWa9LDn5ZW+y8/48uPYmzY7KzaHbwgRfWYDY0tUgwLLCIiIY+bBo7MWB6d1YHpMfTTkmuKTsqDoCG1TFvsg0m/djxp4SrzfSdMJDvb4ugKX3aObDiL42nKutFWdcfVclRAs4e+oGkoj6F+o0P0JdBo+gZYGCnDe84NBADRW0GeNy75r3E4Awq+T2yUGm+qC+u9LPt55Op2jdb0zDQEmGkxGBtXATObQ5Z3y1//tN1yJ2SzF8SpEFeHgn364qyL06NPzOtd+NqV31xPTCAFFpJqzdVUobgb17PeMzMpKQslEES0QThZF+vDobLQHIoIwqHCH9XGDcZ52rpWzwKSQWl5i+lZIXsy4TY74zFXlXTnp+0M/J2avv7qN5h69crIx5kLiD5E7if9OzXCpA5EdrW2AjcSLvQFJsfgTTYR3B+bX4ytkqZAlZC3LwoTzc9Qk1+tBxI7bCGv/pHK0C1Qr82fAhIqlYjLeKwN0JsNxMEDyw0Ef9RObSsIQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.201680, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,77 +92,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Christian,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v6.18 next-20251209]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/resource-add-WARN_ON_ONCE-for-resource_size-and-document-misusage/20251209-043037
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251208202921.16819-1-ansuelsmth%40gmail.com
-patch subject: [PATCH] resource: add WARN_ON_ONCE for resource_size() and document misusage
-config: openrisc-allnoconfig (https://download.01.org/0day-ci/archive/20251209/202512091733.6IVBDnru-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251209/202512091733.6IVBDnru-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512091733.6IVBDnru-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from kernel/resource.c:15:
-   include/linux/ioport.h: In function 'resource_size':
->> include/linux/ioport.h:302:9: error: implicit declaration of function 'WARN_ON_ONCE' [-Wimplicit-function-declaration]
-     302 |         WARN_ON_ONCE(!res->flags);
-         |         ^~~~~~~~~~~~
-
-
-vim +/WARN_ON_ONCE +302 include/linux/ioport.h
-
-   288	
-   289	/**
-   290	 * resource_size - Get the size of the resource
-   291	 * @res: Resource descriptor
-   292	 *
-   293	 * This MUST be used ONLY with correctly inizialized resource descriptor.
-   294	 * Passing a resource descriptor with zeroed flags will produce a WARN
-   295	 * signaling a misusage of this helper and probably a BUG in the user
-   296	 * of this helper.
-   297	 *
-   298	 * Return: Size of the resource calculated from resource end - start + 1.
-   299	 */
-   300	static inline resource_size_t resource_size(const struct resource *res)
-   301	{
- > 302		WARN_ON_ONCE(!res->flags);
-   303		return res->end - res->start + 1;
-   304	}
-   305	static inline unsigned long resource_type(const struct resource *res)
-   306	{
-   307		return res->flags & IORESOURCE_TYPE_BITS;
-   308	}
-   309	static inline unsigned long resource_ext_type(const struct resource *res)
-   310	{
-   311		return res->flags & IORESOURCE_EXT_TYPE_BITS;
-   312	}
-   313	/* True iff r1 completely contains r2 */
-   314	static inline bool resource_contains(const struct resource *r1, const struct resource *r2)
-   315	{
-   316		if (resource_type(r1) != resource_type(r2))
-   317			return false;
-   318		if (r1->flags & IORESOURCE_UNSET || r2->flags & IORESOURCE_UNSET)
-   319			return false;
-   320		return r1->start <= r2->start && r1->end >= r2->end;
-   321	}
-   322	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+SGVsbG8sCgpMb2NrZGVwIHJlcG9ydHMgYSBwb3NzaWJsZSBjaXJjdWxhciBsb2NraW5nIGRlcGVu
+ZGVuY3kgKGRlYWRsb2NrKSBkZXRlY3RlZCB2aWEgYSBmdXp6aW5nIGZyYW1ld29yayBvbiBMaW51
+eCA2LjE4LjAtcmM3LCBhbmQgaXQgYWxzbyBhcHBlYXJzIHRvIGJlIHJlcHJvZHVjaWJsZSBvbiB2
+Ni4xOC4gU2luY2UgdGhlIHJlcG9ydCBpdHNlbGYgaXMgYWxyZWFkeSBxdWl0ZSBjbGVhciwgSSBk
+b27igJl0IHdhbnQgdG8gcmlzayBhZGRpbmcgaW5hY2N1cmF0ZSBhbmFseXNpcyBoZXJlLiBJbnN0
+ZWFkLCBJIGhhdmUgYXR0YWNoZWQgdGhlIHJlbGV2YW50IGluZm9ybWF0aW9uIGFuZCBtYXRlcmlh
+bHMgYmVsb3cgZm9yIHlvdXIgcmV2aWV3LgoKICBLZXJuZWwgc291cmNlOiBodHRwczovL2Nkbi5r
+ZXJuZWwub3JnL3B1Yi9saW51eC9rZXJuZWwvdjYueC9saW51eC02LjE4LnRhci54egogIEtlcm5l
+bCBjb25maWd1cmF0aW9uOiBodHRwczovL2dpdGh1Yi5jb20vajFha2FpL0tDb25maWdGdXp6X2J1
+Zy9yYXcvcmVmcy9oZWFkcy9tYWluL3g4Ni9tYWlubGluZS1jb25maWcKICBLZXJuZWwgbG9nKHJl
+cG9ydCk6IGh0dHBzOi8vZ2l0aHViLmNvbS9XeG0tMjMzL0tDb25maWdGdXp6X2NyYXNoZXMvcmF3
+L3JlZnMvaGVhZHMvbWFpbi8wZjg1ZmM2NjFhZjFlM2M2OWIyNmI5N2VhYWFhNDNkNjI5ZGU0NDlj
+L3JlcG9ydDAKICBSZXByb2R1Y3Rpb24gQyBDb2RlOiBodHRwczovL2dpdGh1Yi5jb20vV3htLTIz
+My9LQ29uZmlnRnV6el9jcmFzaGVzL3Jhdy9yZWZzL2hlYWRzL21haW4vMGY4NWZjNjYxYWYxZTNj
+NjliMjZiOTdlYWFhYTQzZDYyOWRlNDQ5Yy9yZXByby5jcHJvZwogIFN5c2NhbGwgc2VxdWVuY2Ug
+Zm9yIHJlcHJvZHVjdGlvbiAobW9yZSBwcmVjaXNlKTogaHR0cHM6Ly9naXRodWIuY29tL1d4bS0y
+MzMvS0NvbmZpZ0Z1enpfY3Jhc2hlcy9yYXcvcmVmcy9oZWFkcy9tYWluLzBmODVmYzY2MWFmMWUz
+YzY5YjI2Yjk3ZWFhYWE0M2Q2MjlkZTQ0OWMvcmVwcm8ucHJvZwogIEdDQyBpbmZvOiBodHRwczov
+L2dpdGh1Yi5jb20vV3htLTIzMy9LQ29uZmlnRnV6el9jcmFzaGVzL3Jhdy9yZWZzL2hlYWRzL21h
+aW4vMGY4NWZjNjYxYWYxZTNjNjliMjZiOTdlYWFhYTQzZDYyOWRlNDQ5Yy9nY2NpbmZvCgpJIGhv
+cGUgdGhpcyByZXBvcnQgaGVscHMgaW4gaWRlbnRpZnlpbmcgYW5kIHJlc29sdmluZyB0aGUgaXNz
+dWUuIFRoYW5rcyBmb3IgeW91ciB0aW1lIGFuZCBhdHRlbnRpb24uCgpCZXN0IHJlZ2FyZHMuDQoN
+Cg==
 
