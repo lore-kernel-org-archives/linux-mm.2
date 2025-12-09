@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96206D3B7E2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39619D3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2FC56B0005; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
+	id A15136B0005; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE1166B0007; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
+	id 9C6556B0007; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF5806B0008; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
+	id 8DC3A6B0008; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC54B6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:47:39 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5810F899FA
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:47:39 +0000 (UTC)
-X-FDA: 84198245838.26.F60AF18
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B742680002
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:47:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d+DcxBjg;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C9CF6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FDFB12CC6
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:50:22 +0000 (UTC)
+X-FDA: 84198252684.17.C39CD03
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2DC561C0004
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:50:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xi2n69Nh;
+	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765245020; a=rsa-sha256;
+	cv=none;
+	b=eaK+yd5ZUqIVr27TyzJo/nY5VYfmPlysQB5gZt3zCRaXkOVYZKXTceaFlqz41E/Fjhz4i/
+	MtvsCfwtg8fnMSbzYDdHRPd62AphIp4vnFEdjkkUnK0PCvSbNg2B+H7u6gxVh9N3/UEpgj
+	DnBPCovX/O6xykRjvD56RKA6roRFogM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xi2n69Nh;
+	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765244857;
+	s=arc-20220608; t=1765245020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjhjVV39WMHuZ5/VFyDlS0BZ172MSmO7iFwB6K30eA8=;
-	b=15NQi413RaQ6WXBAzXK1e9qtzAob0pumO7SkYXbBBz2f6zY3EW4/6gHGCyz+tO0BqfS3DH
-	5KPcyZLxqC/sV4OkBJq277/zO1RxE9ZMJz+/1sg/TWCxnLJO3YH2TjBAUMUNaX7AmXgTdn
-	hhQHUFMtG9aSLc8sepcqRqxHh4IJX+Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765244857; a=rsa-sha256;
-	cv=none;
-	b=k0aVZZu+7Omu1D0syXWoHOVZ0PvcoMo3O0Z2MWIcgkBCpQTyF5wdweR2oTHoFBdGa/aSCB
-	0WsOt8oZwH6TSaerkp9H/Hw+ekualQ7M8QcG4kkZxQsc1CFlLtlFL/yyppuhsTT/Ypqe+E
-	xUm9Leli/BmT/WygfKwCi3zjhFBZMzg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d+DcxBjg;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E2A296016F;
-	Tue,  9 Dec 2025 01:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B769C4CEF1;
-	Tue,  9 Dec 2025 01:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765244856;
-	bh=4cKepWPJcFwPX4THOx/vqYkh+UCHtZ7kDQ2aqoDPkm4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d+DcxBjg5jtSOTqE0qSB+K/QhwVBgzF+xRAiQmVy2Jcv25IRmejK0ZvuvXCb4MVYZ
-	 rltceVBT3mjL/bFp1ljSmf6rATb1gn7Z4jNELn9jVdWxCGqzNVWCZcqI648xY0ZU4N
-	 34mK/77uPBCNxsxVKSQe3j6hNKkJxULaiKOG+DxU=
-Date: Mon, 8 Dec 2025 17:47:35 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ahelenia =?UTF-8?B?WmllbWlhxYRza2E=?=
- <nabijaczleweli@nabijaczleweli.xyz>
-Cc: Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Christian Brauner
- <brauner@kernel.org>
-Subject: Re: [PATCH v2] tmpfs: enforce the immutable flag on open files
-Message-Id: <20251208174735.35aef48b1a15a2d08e073bd0@linux-foundation.org>
-In-Reply-To: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
-References: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B742680002
-X-Stat-Signature: 5q4gocoszhj78ugyrogzh4x5b49kq8g8
+	bh=kxfMIuOKyfe8bmObUhS5t43dMnDHqQLX9eXqaAzAfm4=;
+	b=6p/j2fECU3qkbWiGIfIxNpmAr1bPsDTODwOX2j3NPzs9oxvkRAQbtjroxKnArKeD/rW6Gi
+	xLpyOXBg09ya9FRv0kmYjsI1WlqKpYVdnDCc1MMJEjRYWVHJ6aEyzt03kY+fqlPTHU6TKE
+	ukm2H70dAzJbdk4HIepKEuf3E0MN7TU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765245016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kxfMIuOKyfe8bmObUhS5t43dMnDHqQLX9eXqaAzAfm4=;
+	b=xi2n69NhA9UUpc69ygoXYVKF83VuBUmVTPKU3Yp4M00JtdFEZBtQP2alKZOjckFkjX106J
+	2g2gQp7o7exkpimIsJzGs61RKtYjg+HdvdP6wxRjlhVI9m8fCBo+26EY6PnU6INl3ocnm9
+	YXxlgfy6p/LkmEa9rJ8VqKmWUNuyvvA=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: hui.zhu@linux.dev
+Cc: "Andrew Morton" <akpm@linux-foundation.org>,
+  linux-kernel@vger.kernel.org,  "Alexei Starovoitov" <ast@kernel.org>,
+  "Suren Baghdasaryan" <surenb@google.com>,  "Michal Hocko"
+ <mhocko@kernel.org>,  "Shakeel Butt" <shakeel.butt@linux.dev>,  "Johannes
+ Weiner" <hannes@cmpxchg.org>,  "Andrii Nakryiko" <andrii@kernel.org>,  "JP
+ Kobryn" <inwardvessel@gmail.com>,  linux-mm@kvack.org,
+  cgroups@vger.kernel.org,  bpf@vger.kernel.org,  "Martin KaFai Lau"
+ <martin.lau@kernel.org>,  "Song Liu" <song@kernel.org>,  "Kumar Kartikeya
+ Dwivedi" <memxor@gmail.com>,  "Tejun Heo" <tj@kernel.org>
+Subject: Re: [PATCH v2 21/23] sched: psi: implement bpf_psi_create_trigger()
+  kfunc
+In-Reply-To: <1d9a162605a3f32ac215430131f7745488deaa34@linux.dev> (hui zhu's
+	message of "Mon, 08 Dec 2025 08:49:34 +0000")
+References: <20251027232206.473085-1-roman.gushchin@linux.dev>
+	<20251027232206.473085-11-roman.gushchin@linux.dev>
+	<1d9a162605a3f32ac215430131f7745488deaa34@linux.dev>
+Date: Mon, 08 Dec 2025 17:49:22 -0800
+Message-ID: <87cy4otof1.fsf@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 2DC561C0004
 X-Rspam-User: 
-X-HE-Tag: 1765244857-623491
-X-HE-Meta: U2FsdGVkX1/pnvkfPcv8lJXVq05TOmE+GC58+junlZhfsUV46HQ/yU5egTJ+4IQ7pHSa7w3L0wAmU4xOKaDy3GRfu6+blekqxfCSMIF1HYSNRu1Qpc5zgtd7NynsT+QUEo+HE1O5lD9UkxDpewJTlmoxEMJ0rsaJUZbUCh3pTkoUgWnzqsJt9qsTtHZpEG5/6MRgEmV8kskQaorkax0N2DB6tYiTj7z7QhcexeYNv4WezRos5pyuLOGfkZdXhPXIlhNL5H/YktfgEnrBhjj1d2YbNyLocZqvUwiAdh2R9duj3GYMV1PgAOWviozpCmf8ENkMX3CGSDeLh7MZz4sJmv2l67xNQw/5FPhnUCrD0Ai/FJlCUL3gs6Chg5vieXc3ChgKHJ9lCXA/7au+ejwV3OS8eui2O7asr36dyfpzJkkdMafmRnP55r189wezV8F4Y3uM143lB97ALeTOV+F6sL/2dPgx6dLYe/vDVxHayXGVifQXKJAdIUVyXphRBaTg6p4Gh+CAx9Ep6n4kz5atzspvvBAqElWamZrPUlV1W1MZ/oSXARQwLdRven20KYGc0/3G2bPJj4vrIgl7/IAZ9pVjrCZZKfxsB/k9zT7zeQ0QjH5am9LsSeQvMpAyWuNn1nfRbyP4JT2h2hqwcS/Vf5i6r0ZE/pEvf1NFFZ2b9q4F+YRVoH1deuWqYHOVdnoZxtBFoQsslYqeFDsry8K7+YHBxmI1/kh0JgyO/KLzoyVoJi7QJav0Jdh46Dt22I6F69SmyGunOADz2a2zP2Ljhx8cFLtAz5viqSbbJIf377tN5H6frWCZ+gmrnQsd4abWipFYbxItwZuIhlrs0dbxcnQNvMBEgF/Dgr2ei+xwjICTmgLCNaM3k6YFX9qt3JRxYPDRV4kJpH2c8MgUrYoh99K3V9+FknaNSoVXVKmyizSmg2qH+w4cGn07FyyeAtMUuCAWhpesIK1k3mo0nrU
- dEecU/0+
- rkL1RZPxCit+4LiT+ToNFPJv2C3Op1LxI7nUEYWszN/M7MQHPKCXAsLLtCuzLYn6HVWEoeFDIR0sEvgPLWOiSLmOj98mTDpgFFf4W7aubmgD5X5lvzUdiyLa9ViMFOOWeyDsAl5iMtJsz0sIhqLz+ZV7s1+4e4HcVnmLvUCj+fjHQLKrubnmmbRSABrhc8fcs5vFg8rtck9myD+pj8bYq1fiiScv4SHL5L0Y9IOWVuyGao19bgWH3nj1PJs0N6+VvBVGf651MW/nw+Bvb02VqVe0YNSYtmXbBj+dFb4VrUm79VcFqBxRhdN8Pm4bAy+J15EnHPHX0pdEwFE47ws6Ue2CQjzT+HvILK+jhaXV2oc9YBggh6fR7/LnaTzcle2NXf3bg
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xdnnqrmhmcdgcs3x8bj38pjgyjnyisqg
+X-HE-Tag: 1765245019-78530
+X-HE-Meta: U2FsdGVkX18k6GM7zmMaosOWy6gPmIUp58Ko+x0Bkw9MynhQBVyFITeE0e39NjRQ2qLtzDsrW+x5BhFXiwiPh7/LyImOfrBWqcDcCTITmFns8p4av15kMLbtGejUvn2/TKWlRInzcKtUrBXYdjLiwCHU89LSDMcWqOPL+fVcwNAA+bYVosAKP546dcl99kdOsYL8bDFmfVsUE6GHMz7JriEslLC/MIuOvXjwQn0AVRDqFo2vXuDax7QCwj9PS6BcRH1lk1j86a2eNpep+gtuug7LbUUFHA1FBiFoJYD6n487FD9tOfGS1SYh6I7mNQeAJrP4c2uYv994P0muxJ3xhlYg+16BGqJMx6QVwMY0knKk4lNG1jkqUM0mRW5PPxddXrmw3DyXivKV3U7igFISqckxvjOQANYwYHj+VZTHsNePF8vnHWig/ASc3HllA4AKV1E4ep27bWlRf0okFVowZwp1NLSWYVN0khVISgmAiVLuA7PR8Ei6Rw/xqeCX1DMSJPHvtQbXqXtO+sM/Rx6x3l505hO1YAwPrzbPtGC6JJn+ZQ/uJA0EAv+3OyldJ3ODO2wHM7mNfWi3meGq/vow7KJcIrTBD7Z0cnD/wW/O3sl1A22rHPoonV4ixYBbXB9VEiYRJkYzpm1W1/6WFf8U/Nk9Gmw8Bn3NTOEpnyZ+EFi/cPImzs2PDDBsbUAkddiByd1ZCfrHbX0eddaocd4bLGkzVcIiyM1tfe1+KsNBWMvRDA56ZpeCDHm/Wv/7wtE0P0UFb7NF6Z/ToHYB4gZjSin72RPYjbw+6k/I4c5vC2MjGuNI7lx9XXfTbzOW3Vij1kPTuEob/B59LAG7XVUSxLwpCqVAW/ZLmsdUjLDVaraTyBmehtf0FYuTjJDAa/MlZ3B+Lcytz6BVGM47fwotZUajf4r19MrWa1ZsDuqVti107K9B6Uet+oNsXps7XliVALr4BFPqVEmQX1iJAfU
+ 4XbhRnJ/
+ tRlGlY9+NV7fNIN12ZvvVL00QOo80FTQdCe3t7Tq2zbNJDYX7bOsTn7IleelWIMi9xAMsgaDhGHD4VHmm10ocUISDQ/ebdXJr1yj29MvxFOoR9/wrNEp6Zp5qePMQS482iz2f0zr3vVtjUBYZdcOa/WeKBX0RlbpPqi29RXE02FDIT2Fp9+PRKOLNhmWjdsJB4D9gZEq3OPdBJulh3SKE6B5tOFONiWiuBtVT5id4H+G9F2omVye+0Ji5/s2v4RpNm1kAtN5CqEJXnCuZNA8cmj+ywUn10LrQJA4A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,18 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 8 Dec 2025 22:50:15 +0100 Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz> wrote:
+hui.zhu@linux.dev writes:
 
-> This useful behaviour is implemented for most filesystems,
-> and wants to be implemented for every filesystem, quoth ref:
->   There is general agreement that we should standardize all file systems
->   to prevent modifications even for files that were opened at the time
->   the immutable flag is set.  Eventually, a change to enforce this at
->   the VFS layer should be landing in mainline.
+> 2025=E5=B9=B410=E6=9C=8828=E6=97=A5 07:22, "Roman Gushchin" <roman.gushch=
+in@linux.dev
+> mailto:roman.gushchin@linux.dev?to=3D%22Roman%20Gushchin%22%20%3Croman.gu=
+shchin%40linux.dev%3E
+>> =E5=86=99=E5=88=B0:
+>
+>
+>>=20
+>> Implement a new bpf_psi_create_trigger() BPF kfunc, which allows
+>> to create new PSI triggers and attach them to cgroups or be
+>> system-wide.
+>>=20
+>> Created triggers will exist until the struct ops is loaded and
+>> if they are attached to a cgroup until the cgroup exists.
+>>=20
+>> Due to a limitation of 5 arguments, the resource type and the "full"
+>> bit are squeezed into a single u32.
+>>=20
+>> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+>
+> Hi Roman,
+>
+> I wrote an eBPF program attempting to use bpf_psi struct ops and
+> bpf_psi_create_trigger to continuously receive memory-related PSI
+> events, but I only received one event.
+>
+> Looking at the code implementation, when an event occurs:
+> if (cmpxchg(&t->event, 0, 1) =3D=3D 0) {
+>
+> However, in eBPF there appears to be no way to call the equivalent
+> of this code from psi_trigger_poll:
+> if (cmpxchg(&t->event, 1, 0) =3D=3D 1)
+> to reset the event back to 0.
+>
+> Would it be possible to add an additional BPF helper function to
+> handle this? Without a way to acknowledge/reset the event flag,
+> the trigger only fires once and cannot be reused for continuous
+> monitoring.
 
-This changes the VFS parts of tmpfs, not the MM parts.  So please
-resend and also cc
+Hi Hui,
 
-linux-fsdevel@vger.kernel.org
-Christian Brauner <brauner@kernel.org>
+Good point. I'll add something in v3, which I'm working on, if I'm going
+to preserve the bpf psi infrastructure in the current form. An
+alternative approach suggested by Tejun was to use a simple tracepoint
+and implement the rest in BPF - something I'm exploring right now.
+
+Thanks!
 
