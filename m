@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14118D1CDC6
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 04:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA8BD3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 04:48:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AED66B0005; Mon,  8 Dec 2025 23:43:42 -0500 (EST)
+	id 84BBF6B0005; Mon,  8 Dec 2025 23:48:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38C226B0007; Mon,  8 Dec 2025 23:43:42 -0500 (EST)
+	id 7FC686B0007; Mon,  8 Dec 2025 23:48:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29C8F6B0008; Mon,  8 Dec 2025 23:43:42 -0500 (EST)
+	id 6EA416B0008; Mon,  8 Dec 2025 23:48:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 18CEE6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 23:43:42 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EE67C0459
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 04:43:41 +0000 (UTC)
-X-FDA: 84198689442.11.15043B5
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 421A74000D
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 04:43:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z4RaZnHR;
-	spf=pass (imf11.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 581B36B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 23:48:24 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1AC22C044F
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 04:48:24 +0000 (UTC)
+X-FDA: 84198701328.19.AAB8821
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C6459140006
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 04:48:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M9iJkDgI;
+	spf=pass (imf09.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765255420;
+	s=arc-20220608; t=1765255702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oHaNF3NLkUcld+qJXROnyemM10ER7BqRqDwEKLhFDTo=;
-	b=HDt2IeF2uhk90YUjUHK4J7wbc8YZenDdXKg0uGwOKpgFzkEBJ8xvp76gjyQAiIIlUIvesL
-	DYr0urCvGmSl9Nl5IC8f22l1uUpt8dod2KCKG4/w9RlbrIWF0//i6DuUUU9GazB0mu5Q2P
-	wiVX8pUlgt8JyHliAAm9JizWgzN5ptM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z4RaZnHR;
-	spf=pass (imf11.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765255420; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vN6Aq/njE6CJjIRH/PbSI6Q15A65PktEQSV8DhVab9g=;
+	b=bcnRc+T7ZY2i6fz3y2eLB+6btPFdnTnxljroUXV8YJoavmtCvwK8aclghXdgNWOvmHbr/2
+	h4pi9d5XIk3kQbXy6K6yMaqAGd5UiZkzU4E9NzoUJaUb/WYiX+zxrg3KK++cJB570mevk+
+	xKrDaqE5EDCxzJgJIuKsWSFk4SE5rPE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765255702; a=rsa-sha256;
 	cv=none;
-	b=qITr98xmXU3hRMUJZblTRYPEaKpwh3RFLesBjIjCuqIEfeGSAvwImxg2owKqFnPAdis0ct
-	YzhslppAE0a6Gakh6UKLGUm4S5PY1CeFDTFIk39sB3+6qPGS+ZRMAO+iV7BnFbAw+ooqzq
-	mzcoAqgaYFTY82m1EmsyLuow55kyuAM=
-Message-ID: <48d0b46e-2b82-44b6-a717-94bc258a508d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765255412;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oHaNF3NLkUcld+qJXROnyemM10ER7BqRqDwEKLhFDTo=;
-	b=Z4RaZnHR0fIYk8Sv17Zr2mt78F7d5wPSTnieVtot08w35Gl9cmheLnXS1geWFqfwS5eRjd
-	1dTnwFOYF2fDWvGYEP78fX93UW/XAMectuyHfrIbLeXZ/1SUE3Wvlt7Wf38yfm1OVCIGG1
-	TiwkOIHMVpMwzQZpKOK079f7PElyX4c=
-Date: Mon, 8 Dec 2025 20:43:22 -0800
+	b=kjcoZTDYmzErPJey2gwWL7S/vT+xdQ52N6V5yoBM04LHL5/Vw7si7qf2rIaKEA3//9tW7p
+	xBEgr9yfqqYYQm69GSi+hh3p1UdXGWChhaUfY2E3JIdNcw0I+X8lPojht3ro2/si0+TV0m
+	O4AcE8tOKr0QRviHYXdMI0BaoiTwpdg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M9iJkDgI;
+	spf=pass (imf09.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765255702; x=1796791702;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tDlKoEC9nLtBsgxGfntiUOgTYLF/8XwN5NDgz58sbUA=;
+  b=M9iJkDgInkqNXNC0OVSf5AdVZ0CJvNDOc25+81Sd1rsjL+POEOrdDwKP
+   sJJLQOKgLer/Ne7QFci+VfdyTfejfRo9uzyEE1cYvXpPgVrCYN8dl3mrB
+   IHF47UsEF8xAfeXEudSEXBPlJNa2A80yWO59ZMST/+QFqsOtot/Oj/Lna
+   06dvv2zGwN25oQk1dIR7y6d6a8hJcuj1a5uopSjJtgo2pW00ucfSpJXXf
+   RCCj+wt40OvN6bQXvA1pXT83blrPRxK3iZuQfs4bFDpVVVubK1hGSDCBI
+   ld4qVeZMJ8pc+kE9nVZ6Kl0jk3xQwyn5yQ/mSGHy6CanrQ+P/6VuoVbXj
+   g==;
+X-CSE-ConnectionGUID: 5ovbuXJ0RUyoSE4icDPEmg==
+X-CSE-MsgGUID: OBDtJ/nUQmCN1j9OlzM8+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="77894305"
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="77894305"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 20:48:21 -0800
+X-CSE-ConnectionGUID: O+rESzwJRkamDfhaGtPWbw==
+X-CSE-MsgGUID: kzIM6I0KTFSUe2hVEGvCVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="233491915"
+Received: from baandr0id001.iind.intel.com ([10.66.253.151])
+  by orviesa001.jf.intel.com with ESMTP; 08 Dec 2025 20:48:19 -0800
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: [PATCH] tools/mm/page_owner_sort: Fix timestamp comparison for stable sorting
+Date: Tue,  9 Dec 2025 10:15:52 +0530
+Message-Id: <20251209044552.3396468-1-kaushlendra.kumar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH 00/10] liveupdate: hugetlb support
-To: Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>,
- David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kexec@lists.infradead.org
-References: <20251206230222.853493-1-pratyush@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20251206230222.853493-1-pratyush@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ksrk1zq6uprnqrn3feb4pb16kuqmtimj
-X-Rspamd-Queue-Id: 421A74000D
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C6459140006
+X-Stat-Signature: mofe5cjp7y1w8b6ow7m1et7aksm6dk9y
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1765255418-84191
-X-HE-Meta: U2FsdGVkX1+eNnaE6VHUjRngIHFEGlUPKNNiicKRyVMfAPTd0m0JwPGG5KIq2V/EBJ7KZl84Vv2wCWNp5UBxR0l3diAVH1z0gG9ImrSzbR8wXqREqSQO0hbQZbx6tWeomZa3RPKp12GeFyN9J/I56Qta7Ob+HgFDnOdjD28CIxC9wlCZZLJx94jy0qUWE4OoQqe6SyyLRDwZ+j4gzbvX1XSdeb2c9TQqfLYBawoxMMIJHas+uiMcOfduEGBGVVBrdkDb9HHXrEgq/NvtJmeaBq0orBmP0Q/zHrNNSHNVDkgsZjf+LqHOF6fbZkF661LTxe+5w7xGuH0mHCfHRQSbgF1kLpvFxWSFgQQA4CE10x0YhszMgy7tRPfAeWyECmEybt39RMNcTAm37iQipjTE4Q+Lun4+yueNfTZTIZ9aJ2xS+M60pwJhrEXXUN4NDh+9YdryLIf+nw0FyoIdPBnoOQX6oH2EPIk+PJ6Kde4re5GKe74rDzkRwVvjkuv3gEuN9FT5Z4miwY5b4X6uj3NOp1mAc/M71ouiT1EBslB2wIhKEQF+kgq6zLnHJeFFlBLKbEM9jjWVK2ZgOFZNqiVs9NZf4mOZffrYybMNePRkZGv7ApDpA4m/mbMPPRbIlvX6pumrwqq20xTkjDvx6WeSaU6h/KXDJvqY3eSI9qyWtEHNTOoF08kcVCTXDCuaMg1ahlzJ0FQja2lw9LfURXbKxoGbWg7iFbedgCYLwwIxciGamYZTczp9RwtBAyEuPZlkcwG16hkTtkq5ONTKTY+nvN46Oq8MPt6Jkvf/kKvXYjxh5QiCxFIPIyngjhnpR8juLMslrzbGeHr6jUsZncDG1R1DvNsKyk1HCYQwL7T2mi8KToJtpxoJAxgI+h2K5hV5PszxtcyNuxAtAeaoz0rfgW+7B6fInyZXjErOj7QZfO1GIIkG2x5jKjCPBFMZ9wnQbtunrzGSe9nTibj45U6
- /r+7zG2G
- R+kcnP/EZEEiv0EnjeSF/61Jq0Z+pExGfyfpxRmzILPYly0vtkKL4tv2tNczQ+CIYbtAAfmRl2B8k1OCcpBrhqdiJ8NT5VyRdTI3uvUS+1GkbwzEczIFhQKlpDILH9ekA9qTqfDPpNTZZllZeBp+V6WRdPPosHAfrFW8a5Sr6f1veDVsLJO4e480TBooiH/cPgelCelOwG++/oecxAPN3vTk7mew9o4dgISLgjNmY+iH6KrSpZlMKxD3U7OqB2qzRmMuT25fcqbb8dpRlCamwUK7mFGFRoyGwISLXlhbXP8goLOvqHzoDmfxKAcIHhWEH3Q7zTj/RVzvVIHM0I8jKDPVGDryC3/qr2Vc6R7xUkSIfr7GrKOBQt1F6rDX0VkWSJIEOKwBBfZr60p0StKd/Mp7f73ZEiMFZAu3IHklTjppTf7AwLI57GU5HUg05w6QjMF2wHg4hXhY8/PtNKyj6QY+NJEyMJqeDBZF94IRLfBCDS9TlXoiiCNczTGc/5dwymnqQ4oaD3lL32mI=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1765255701-498945
+X-HE-Meta: U2FsdGVkX19U2crVHmAVLNGa8WEiViqpJsBHmuVgBBr+VbI33WeuGHHKqe82JS4zt3aJ/qmy3Nuq2Y6/JPcN22aqjMNR628geyoeUbcXXXkqWuo9BU9kbMbP9nxpkzfYqMCnb+brccapN4agtrqSuT/VHE9XcAs4Q0UsEZGNB8PJYoHn2ImqFCFp6mdTvtjRTPNTGeiHH9AVPO9YJFgAXeJGFGAKBW0PpiV16YFXsYQcyDm/9mm3MhGNbrwJtlwKTfCPos5eymhZ2dD8N/xnI+b7UPoPlTIax2EChi8vUwEml4WbUYY8TwgKcEw7Fgahg0hednOO/E7Jtnzw3HZaZD7euhtvgh/HGwR0ZFdFk8vng6IBHYIPL4KA+tvv7PTkiDIBoJ9LE7+Udi910YNMtzt8kv5NuXeG267MDX9IUsOv0pRwLNogacZORMx0SbBzkpx9P99IrVPrHofzJE5WUHyI1SN1UXtt2UDocJAGT5AnWtma8Ap6a2+bthexjGDMIAdpkZSIx5TjQIdx5wHly76AMvQpiyUBDI9W19TaD8aIZyBC0MQKcenrwzg4pdfTjaCCHyzfRuS1EN8lJWt8cx4PiicbMOmm6hlk9ptsgjfDBBBB0l7lvMtkD23OXPVho42zaqdsSmvThLXnYi6dZy1fEdTKWTUookdHPYXX8WJAISGREQJFuB37GxQocUzUAH1rYPf+OLBJzTyibhZ/lIffs3iypQ3nSHndQd3+hoMpftCkwgU0CBUsgAyBOj2ncLOSSeX4ngm0MuAZW4ouqJe6GE38QXTeIM8eVblDf9El6137dr1MDEtRzWDB3S47FplnDe8kcht2a1aHqzzE/rLHco3uZZMn/t2eihWyx/z4xnux4A9LBe8X+kWlXQaGP5Mdt4XNBvVOvDeVeda1k/DwMY4Bxa+cdBCyN+IRXW8=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000159, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,133 +99,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The ternary operator in compare_ts() returns 1 when timestamps are equal,
+causing unstable sorting behavior. Replace with explicit three-way
+comparison that returns 0 for equal timestamps, ensuring stable qsort
+ordering and consistent output.
 
-在 2025/12/6 15:02, Pratyush Yadav 写道:
-> This series adds support for live updating hugetlb-backed memfd,
-> including support for 1G huge pages. This allows live updating VMs which
-> use hugepages to back VM memory.
->
-> Please take a look at this patch series [0] to know more about the Live
-> Update Orchestrator (LUO). It also includes patches for live updating a
-> shmem-backed memfd. This series is a follow up to that, adding huge page
-> support as well.
->
-> You can also read this LWN article [1] to learn more about KHO and Live
-> Update Orchestrator, though do note that this article is a bit
-> out-of-date. LUO has since evolved. For example, subsystems have been
-> replaced with FLB, and the state machine has been simplified.
->
-> This series is based on top of mm-non-unstable, which includes the LUO
-> FLB patches [2].
->
-> This series uses LUO FLB to track how many pages are preserved for each
-> hstate, to ensure the live updated kernel does not over-allocate
-> hugepages.
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+---
+ tools/mm/page_owner_sort.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-
-Is this patch serise based on the patches in the link 
-https://lkml.org/lkml/2025/11/26/1665?
-
-Thanks,
-
-Yanjun.Zhu
-
-
->
-> Areas for Discussion
-> ====================
->
-> Why is this an RFC?
-> -------------------
->
-> While I believe the code is in decent shape, I have only done some basic
-> testing and have not put it through more intensive testing, including
-> testing on ARM64. I am also not completely confident on the handling of
-> reservations and cgroup charging, even though it appears to work on the
-> surface.
->
-> The goal of this is to start discussion at high level points so we can
-> at least agree on the general direction. This also gives people some
-> time to see the code, before the session discussing this at LPC 2025
-> [3].
->
-> Disabling scratch-only earlier in boot
-> --------------------------------------
->
-> Patch 2 moves KHO memory initialization to earlier in boot. Detailed
-> discussion on the topic is in patch 2's message.
->
-> Allocating gigantic hugepages after paging_init() on x86
-> --------------------------------------------------------
->
-> To allow KHO to work with gigantic hugepages on x86, patch 2 moves
-> gigantic huge page allocation after paging_init(). This can have some
-> impact on ability to allocate gigantic pages, but I believe the impact
-> should not be severe. See patch 2 for more detailed discussion and test
-> results.
->
-> Early-boot access to LUO FLB data
-> ---------------------------------
->
-> To work with gigantic page allocation, LUO FLB data is needed in early
-> boot, before LUO is fully initialized. Patch 3 adds support for fetching
-> LUO FLB data in early boot.
->
-> Preserving the entire huge page pool vs only used
-> -------------------------------------------------
->
-> This series makes a design decision on preserving only the number of
-> preserved huge pages for each hstate, instead of preserving the entire
-> huge page pool. Both approaches were brought up in the Live Update
-> meetings. Patch 6 discusses the reasoning in more detail.
->
-> [0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatashin@soleen.com/T/#u
-> [1] https://lwn.net/Articles/1033364/
-> [2] https://lore.kernel.org/linux-mm/20251125225006.3722394-1-pasha.tatashin@soleen.com/T/#u
-> [3] https://lpc.events/event/19/contributions/2044/
->
-> Pratyush Yadav (10):
->    kho: drop restriction on maximum page order
->    kho: disable scratch-only earlier in boot
->    liveupdate: do early initialization before hugepages are allocated
->    liveupdate: flb: allow getting FLB data in early boot
->    mm: hugetlb: export some functions to hugetlb-internal header
->    liveupdate: hugetlb subsystem FLB state preservation
->    mm: hugetlb: don't allocate pages already in live update
->    mm: hugetlb: disable CMA if liveupdate is enabled
->    mm: hugetlb: allow freezing the inode
->    liveupdate: allow preserving hugetlb-backed memfd
->
->   Documentation/mm/memfd_preservation.rst |   9 +
->   MAINTAINERS                             |   2 +
->   arch/x86/kernel/setup.c                 |  19 +-
->   fs/hugetlbfs/inode.c                    |  14 +-
->   include/linux/hugetlb.h                 |   8 +
->   include/linux/kho/abi/hugetlb.h         |  98 ++++
->   include/linux/liveupdate.h              |  12 +
->   kernel/liveupdate/Kconfig               |  15 +
->   kernel/liveupdate/kexec_handover.c      |  13 +-
->   kernel/liveupdate/luo_core.c            |  30 +-
->   kernel/liveupdate/luo_flb.c             |  69 ++-
->   kernel/liveupdate/luo_internal.h        |   2 +
->   mm/Makefile                             |   1 +
->   mm/hugetlb.c                            | 113 ++--
->   mm/hugetlb_cma.c                        |   7 +
->   mm/hugetlb_internal.h                   |  50 ++
->   mm/hugetlb_luo.c                        | 699 ++++++++++++++++++++++++
->   mm/memblock.c                           |   1 -
->   mm/memfd_luo.c                          |   4 -
->   mm/mm_init.c                            |  15 +-
->   20 files changed, 1099 insertions(+), 82 deletions(-)
->   create mode 100644 include/linux/kho/abi/hugetlb.h
->   create mode 100644 mm/hugetlb_internal.h
->   create mode 100644 mm/hugetlb_luo.c
->
->
-> base-commit: 55b7d75112c25b3e2a5eadc11244c330a5c00a41
-
+diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+index 880e36df0c11..82d6f6b31348 100644
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -183,7 +183,11 @@ static int compare_ts(const void *p1, const void *p2)
+ {
+ 	const struct block_list *l1 = p1, *l2 = p2;
+ 
+-	return l1->ts_nsec < l2->ts_nsec ? -1 : 1;
++	if (l1->ts_nsec < l2->ts_nsec)
++		return -1;
++	if (l1->ts_nsec > l2->ts_nsec)
++		return 1;
++	return 0;
+ }
+ 
+ static int compare_cull_condition(const void *p1, const void *p2)
 -- 
-Best Regards,
-Yanjun.Zhu
+2.34.1
 
 
