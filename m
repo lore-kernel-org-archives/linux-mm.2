@@ -4,107 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D979D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 12:20:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F20D3D1CDC6
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 12:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64FD06B0008; Tue,  9 Dec 2025 07:20:57 -0500 (EST)
+	id 615B46B0005; Tue,  9 Dec 2025 07:28:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 600A96B000A; Tue,  9 Dec 2025 07:20:57 -0500 (EST)
+	id 5C6806B0007; Tue,  9 Dec 2025 07:28:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EF946B000C; Tue,  9 Dec 2025 07:20:57 -0500 (EST)
+	id 4B4FA6B0008; Tue,  9 Dec 2025 07:28:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D8BD6B0008
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:20:57 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCEF31604FC
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:20:56 +0000 (UTC)
-X-FDA: 84199841712.14.D8D4490
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0DC6A1C0012
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:20:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Df386ezK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765282855; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 39FAF6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:28:57 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7C9AB9DF2
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:28:56 +0000 (UTC)
+X-FDA: 84199861872.09.2648946
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8451010000C
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:28:54 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VJlXEdXF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7U2McOFD;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VJlXEdXF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7U2McOFD;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765283335; a=rsa-sha256;
 	cv=none;
-	b=vB1/KUD5AuJMdTSUwFyaAjVcsEeleGu3oVN3IFgcJs/dG3r06H92Yu7MGvo2Zt/mZoR7by
-	PgeO54B5ACKRyJJO4dYMSqi1YimouM9+26WWJgYEaj3q3Z4mIQOKpd4hE6arIVhuiQY4xl
-	sqfiaGxaolM1cDmT5YQXjySEPRTpGCI=
+	b=mVmTb21znLmY7JJ+VFHAYqUtFM9ixZ3362nRTiys11irjvOpBsjwAS5IklTmkagojDfskP
+	iVeGpa5AGRqxTDj5YrRETGHv00iu/p/v+HOkvyc9di1c9yMfEHkFTG6oRiWK7C/O/xRf0j
+	K3sdLLgSRng2D2FHXHJ/RUcmv3BL2Rg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Df386ezK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VJlXEdXF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7U2McOFD;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VJlXEdXF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7U2McOFD;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765282855;
+	s=arc-20220608; t=1765283335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZJ/q2HbA4FuEYRTrl5RlRoMHzWJPZwJ2pv4mVX9pX8=;
-	b=BxafVYHUYVXjjFnEo0+iNo2kT1sGJPTPOXNQHdzxrkxbtvnCIo6WFCGaDnWTWsI0Y0RkrA
-	V+UYifJ7rG48FLhYF1IRWJq1zKE4a8oBH2wzv/PnfPqqdx1vVd4WN0wKYXLI8u1f+euPRa
-	X+ZvGFAZWHeHk01yRcl9n0WaMdQ5Z4Q=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78c38149f9fso23444877b3.2
-        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 04:20:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765282854; x=1765887654; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XZJ/q2HbA4FuEYRTrl5RlRoMHzWJPZwJ2pv4mVX9pX8=;
-        b=Df386ezKStGRokbG8if01phia7kgYGSRV2cg+hrgupZMJck+0Jd/xrD8Quz+va7HKm
-         FT4uz9Qd8bt8lcawFwOCpWWH/WdojuT4R1Jaa5RgxCd8NEXLKvVKIjhp2k4H57t1SUee
-         V9D8yEsoPALmloyOpTymvRxLlxTWCCgRdWI4rPmU1mHsMcjWcWZn7jEt3711MGwouR96
-         EV2yogO0Gsn0bfr9MBaiY5IezWZT8aw4l62KDlaXJrlmPD5jQfv5oHo+UJgojXtb7hiQ
-         /fKwATzZ5NiUx7cD2aNndbrq6jbSd7c7Uz2vDPLWTVlCbjWPf0W/vWl5boU/PVHNFRmL
-         fipg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765282854; x=1765887654;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XZJ/q2HbA4FuEYRTrl5RlRoMHzWJPZwJ2pv4mVX9pX8=;
-        b=q70MGlsj4c5l8utZ/olK4LaxBnGUm0Wv1lwGqAoQnb3AKMR9YxSFug5vziH7ycWd0l
-         TEGaH03upXVylp0yGS5lA1UcBmHlyfdqDlkzMwAG5kTfQllDzlQeit+1RU2io+XOogiI
-         K0UAAxxBUC2qdF5Vwvej++N2GzjkAEmo14IwiVyQ4RVCW6STSV2W+zeg6qSfTBuAeU7Q
-         qvuBsmc0nv4xvmPfcioGSN1k0wkIG85/ke1D2Z6d39wk7f+QyOfLYe1tnBdMFKgfGJVV
-         fHKRXR9bOEEEqleuuBs3ao8RQPiKyL9aAH526T67cKPVnpGAaKmPpe1Wf+Gb2D+rc/oY
-         9SvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTM49NhlIKW/GgL3WNkSLp7YS70O92n0nuepBMevgUESev/3hgDpRNdNIM88uHjU7lQoRBSwj9rw==@kvack.org
-X-Gm-Message-State: AOJu0YzTm1r1/iFXqyQ4MEAHappNZdQITGg4/DpmRpYKh2g4GkIj+qza
-	4Vyhk84DmGoWEQq9/IMLElGYVXSfhluFZcPDcJVjhILBnbZEKsOS7F98HOMPPJpqWQEPStjPv7J
-	QxNglbnH9H8lPD6PYvtoWo/rTRzPMeemhqFe4rFU=
-X-Gm-Gg: AY/fxX6YkGvH/fsv0q6U2PvsJXS7btE4YPGvZS8xbpx1xjzj8pgG4uzP+TaxcEDNFOL
-	4utL1Sjxt7HpHH4pPLN4FNBmErlnludAwkjwKibr0GaPJN0yRTVsWGwYrXTxH6xjfIJyXYfrlij
-	FDad58sRGdyJlYrgh/JPqx2QSHx6QSpJHl1V+0OGNKDAJ2Saf2AuxLOK64FguwI/Ys7Eq7X3RBb
-	cPPFd1rIyltaBp1zr1tjQ936OM3W02aEH2aT899HKntN6yr+jgfUDufwFJgjuhuBqj+p2Ao
-X-Google-Smtp-Source: AGHT+IF4qVNyyFQhAQ44HrKZTO+BDYWue2tjOtQ0ldbioOqiAYBKibcU6XKIYYlyd1/TpiMhH9iPXpGu0w3y1arhMa0=
-X-Received: by 2002:a05:690c:22c2:b0:788:bd8:673 with SMTP id
- 00721157ae682-78c33c16394mr103464237b3.44.1765282854027; Tue, 09 Dec 2025
- 04:20:54 -0800 (PST)
+	bh=ygaHW8o5EWTBSXhXnK7ekdPvbFwd/VSzrB9zkhVTLRQ=;
+	b=xDQWRRROBRqkgWdDAELrK8TOnv7ssn+xCe5cv7Y7GHyxNVSh/N5sBWoMUF4350A5myUicc
+	rN8xWyU0lIOqniamhzlF8CrDjTcimhDEVNLq/uRa7QKdtpI+GqSkg3Jb5c+hNE/xOIFu8q
+	YIsuRSvkLpRR16bgV9+xi2RDcuKk8tQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C74D95BE26;
+	Tue,  9 Dec 2025 12:28:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765283332; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ygaHW8o5EWTBSXhXnK7ekdPvbFwd/VSzrB9zkhVTLRQ=;
+	b=VJlXEdXFL5fd4Sem3MzdBi6M+Hr11U7VtVbf3ME1dk5aSuhjv3O/iSL8Yd/XI8EpEFKwGn
+	qt5OE3BhUWleFUONVE7NBCIrv8ySHriCLSY0zQvS97diMAG7hRy1P55heddbwQqqP5orwx
+	zke8vzmd4c6IaLFBZbk/OIH2tq5XjmE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765283332;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ygaHW8o5EWTBSXhXnK7ekdPvbFwd/VSzrB9zkhVTLRQ=;
+	b=7U2McOFDYb7YMgNpJuCJtvWZaYZMflyH94JOMxO/WJFjXPjjRW/ONo04eFBGZ6oK+Zhnh3
+	bJ4+1uZfHqHgl3Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765283332; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ygaHW8o5EWTBSXhXnK7ekdPvbFwd/VSzrB9zkhVTLRQ=;
+	b=VJlXEdXFL5fd4Sem3MzdBi6M+Hr11U7VtVbf3ME1dk5aSuhjv3O/iSL8Yd/XI8EpEFKwGn
+	qt5OE3BhUWleFUONVE7NBCIrv8ySHriCLSY0zQvS97diMAG7hRy1P55heddbwQqqP5orwx
+	zke8vzmd4c6IaLFBZbk/OIH2tq5XjmE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765283332;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ygaHW8o5EWTBSXhXnK7ekdPvbFwd/VSzrB9zkhVTLRQ=;
+	b=7U2McOFDYb7YMgNpJuCJtvWZaYZMflyH94JOMxO/WJFjXPjjRW/ONo04eFBGZ6oK+Zhnh3
+	bJ4+1uZfHqHgl3Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B094C3EA63;
+	Tue,  9 Dec 2025 12:28:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EYIZKwQWOGnwYgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 09 Dec 2025 12:28:52 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4850FA08E4; Tue,  9 Dec 2025 13:28:48 +0100 (CET)
+Date: Tue, 9 Dec 2025 13:28:48 +0100
+From: Jan Kara <jack@suse.cz>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, 
+	"Eric W. Biederman" <ebiederm@xmission.com>, Roberto Sassu <roberto.sassu@huaweicloud.com>, 
+	Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, 
+	Christian Brauner <brauner@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>, 
+	James Morris <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>, 
+	Adrian Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	tiozhang <tiozhang@didiglobal.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, YueHaibing <yuehaibing@huawei.com>, 
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>, 
+	Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>, 
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Elena Reshetova <elena.reshetova@intel.com>, David Windsor <dwindsor@gmail.com>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Hans Liljestrand <ishkamiel@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Adrian Ratiu <adrian.ratiu@collabora.com>, 
+	Ingo Molnar <mingo@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>, zohar@linux.ibm.com, 
+	linux-integrity@vger.kernel.org, Ryan Lee <ryan.lee@canonical.com>, 
+	apparmor <apparmor@lists.ubuntu.com>
+Subject: Re: Are setuid shell scripts safe? (Implied by
+ security_bprm_creds_for_exec)
+Message-ID: <722m42dxrfxao7y6ul5cb26orxoinsrozwqlf7ts52lpbfzgxs@gm6kakrzlhkz>
+References: <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
+ <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+ <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
+ <6dc556a0a93c18fffec71322bf97441c74b3134e.camel@huaweicloud.com>
+ <87v7iqtcev.fsf_-_@email.froward.int.ebiederm.org>
+ <dca0f01500f9d6705dccf3b3ef616468b1f53f57.camel@huaweicloud.com>
+ <87ms42rq3t.fsf@email.froward.int.ebiederm.org>
+ <GV2PPF74270EBEE90CDCD964F69E806EF58E4D9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <20251204054915.GI1712166@ZenIV>
+ <GV2PPF74270EBEE0AAAE2EB22B668EE21A7E4A6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-References: <20251206224724.13832-1-rgbi3307@gmail.com> <20251207023625.44177-1-sj@kernel.org>
-In-Reply-To: <20251207023625.44177-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Tue, 9 Dec 2025 21:20:42 +0900
-X-Gm-Features: AQt7F2q9hsT8FOu7rr45aQ_Azbmj4EMMy0e-8Rt-6hhhTyywnYIFfVlP3APSEdA
-Message-ID: <CAHOvCC6_-h1jQkZMbtYDC_jrB490jzp1t1Fx-_mhYnE7tqvzbw@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: tu9g6yu1atzryp8q5zcso3ogmeff7jin
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEE0AAAE2EB22B668EE21A7E4A6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8451010000C
+X-Stat-Signature: t3ntfri556twd3kbk7nku4k61apwkr7x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0DC6A1C0012
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765282854-278360
-X-HE-Meta: U2FsdGVkX1+jXvyEwswbAGlZxIjpDv55fPIIRthvvNRQX2CrlACXKsVtpdfhEsbMK6ruuddmDJ7uNF5wr1VFbbBuMcc45av4wvpEeTOYsNdeLgmWJDamhGDbD/KtbVCpdkhKXvbfW4CXUOLkReTXcn7d4MjHx7E0sICP3Iqhhvld/To6s18f6jIMpCUZdEnVa/kn9JJNvMBk1uLpY4S7cXVjBKXHZU3vzdrkCpVKuFbvGEpE2VfaEXSjB9DjCkielsbp+RfhsLBEAoBpDp61mg1NI7pvtB+JlNQZ29Wqf/OF/DClN8WUCAcg4JRV9rowoopgKkaEtno3plfeqHqTuAD0aziOXwjO755N0oF/RjZGr7qT0U7jy70b48r9/EUfPmuy9PXzzRgVTqUQKiU6JjrkrKPrR3bW6s8g4SaEdKnvegvkm20PpjdKUTJIRH3nfSad+G1Rm6horocz4JhKlPxGaExtssqHLD30FCs10HRQHTOELFE+HXDF+WGXGBejR0JbgUW5zyBa1Vym5cB2e0k6mpWu8y9DgYnUi62CA1EzsjrJ9qe+h9lA80gN9haV1Hp57OHpxnrbP2GxRjxlD0GMLDo1MAbBOwc7MTgLD/0AcCOBNyT2lkHZrawFcmnF4Vk7wYCfK5/ACzfzvSzKiufQUO8tWwADcruTkwaPoyeENXzGdgA1ztZsnm7wpgMAqZatVJTVJFC/Z42ZjWuHH8S0vsTIugv+ttRwkcQBKaiBrIkLAjsBSYQ4iwxBp7prUDU+Of62ZE9coK8Ti3VMd1R/kyA2dXoHUfBecu1lsCaPV4Xxc/mjramkeO1Cbn/scN/WsabH31cLlWKAmfOjbAynNEV+RweE2xRYVF+smhcTjC3FpUmCwE3Gy8Mib1f4mBlI5wPepVcza0mxnPkzW1/Uc/ogJ3WiBJGWGi5KL+gjr8UqlOfRNd8Kxfw+XG4l9gDur4qg4So1wDoQtNI
- iJts9NPJ
- O84fiZGV34UOGH8lw20J7Cbs7p2rkjMlSZZKewe60KeSctSXAt7lS6c0vVESUf9obSIaKqZY12+NxFsNG+5rI2v2gSkcILov83X7um6OMlY1bzID3ZBxrNhQLYgAmu946f0UNkXnXPMHFYRGyHuZzUgMOYBntZUpZYvoX8zywXidh5bzjvvubolOTz6wA59c6MSuj5q1E1PCQ6IyyiB2aIoxJCjnDeSNOLAGgXiZkxK622SnxQBxZFh2Wn8PYwRA6TEcCrE5qx+aRTRIwOw14HGosdDxnQX9x3aAoeMHvrWQzEw/hFSM633mLdhFmrcvdRSl7K0kohNeKjQS5D8iZGiu9dCuO18SGnCrf2jLbMYSCD+eZKI/cyxx3D60UV9dmSc0KQj6Lv/Dc3AGLOb3FESZNJtLelvLI5D8BG8kJ3iQixDVC778dmHYmqcfbx3zN+BVb
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000127, version=1.2.4
+X-HE-Tag: 1765283334-445205
+X-HE-Meta: U2FsdGVkX19bzs6rbb0AJkhY//21Rktr1qrflrUJzAg3Nm5gI6BmdSbMHXbrrsa9pukn87Kx2evg/ZJewNc7n19lOPGXpj5KDfWi4Z4SVVhVhYMK0OxbxkcDMDnLSvBSp8CZZPNi4rp587G3p+r3/TtaqfbvVE+QdS3EddF0S3deiPBZWekVzoj7ykrLO/psnETAbKY3jHimxPvmumh8Ab9+tbKwM4DLO+9UVA8BXV3kFjn1nzW3wDphsHqER3vTMXCJwcBmWhpqADUpk3wnt5IyE7JNPYFlBM99HbONrs9ov4qi1cCSanPgMXeUAw6AyQuUwoHDRkFHjTeE0tMq+mUyGK6qTOX043NXOeVIRf2vbOiZU7qRB+VEaFrd5Wwug8f3g9Pe7HPGW0mAbmenSMWAs9lZRBlk8M71Y8HJQ38NfBtMGI0AYULXb/FyFIU8CNSb8HQKIUkFq6+SlMiz2D3D/xSfyXUMbXU4muIC/d2CBrOhp61g/qtg/N2eTRSnoumq4Et1h1zrfnQLLv1sUpnop2HA5t4/s0LSm6s2MTXzfGpYNMVjtk1GCOFxth3D9f8EZHpaMc13U+xFQA8wapbbfM6AFtUtmzwwV1My8guaJzVgAS17hPNekLDXgq1p9V6Uh3nNgcRiy07zZiF3wMCk5tkMW5xGJiwOzKOl4iip0QBwAeIaD+fnmGMDLUufS6Il2pUJLbMBlJBJKqkFtZyryyq2BPDWRBgKNeEmaDSIdINSBaYbz+uKebHzY6PytCT4cx4Au0oSCkzWKBT65SA1gKFOCHd8DBJY31/BKhyAt3SF6BMVRUMkah3HoUw4B4IJKIJRcDTfA4NOM2fiKecTdODNMZoo2RJXKh4fc70+/vXHI91z0mwu44b30Xe28DpqCCGzRmzY5i2DONINqeufN2o88sX1Nqh88yaDUoWB6R0SFC9e7sFG1RqH65h9HQdXffTgxAIEja22KK4
+ QgxYyc2f
+ eFwuObOqU/cMNy7PoBH3h/zTXAy1fu94+oPbYPFJbsppSaECdoqmlxOzSInL2Zoh3T6+1Frv1Rdq25i45Ur00R1uI2xyqEeR/qQe3RFeW4SSwzXxrGT2fayri1kNvgK8y/sqIDqPU15vBeWIP8ewRR8c3tE7CySBiP/LpU8d/EC14w+QfPT5/jh7eRBP+r4ZVDEvDL298J5oxxb1DzD/AXShoCSBavkoTfzKjZL1LbA4K6JPZZTmVJlUr0tPgfXeHxcz/tJgVTo4zQ+8ApwRbmbw29SIG40k88Zh4e1beM1dGKE084RgggSiV6mjEzctASCOJqukyCHkjw4aV0YOt141swd7Ql6Pucz3UiI93+bWnsM3ZY1IIAur9Cm+epAs8HImWvsb56SoJcZrYhspRBOKdaLieZDI1hVOI/cDFp18JUlKT++xgHYX/Mlj1TE69xOekDjuI+YnUk1ntnqSx/KYqJt43XQEkiWPelbd2nU/CCKfQyLJzsR9n5VgN9IQ2qWd5qfv/AsMUiPirHBUaleABY0a/88ZxiiES
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,59 +168,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, SeongJae,
+On Thu 04-12-25 14:03:27, Bernd Edlinger wrote:
+> On 12/4/25 06:49, Al Viro wrote:
+> > On Wed, Dec 03, 2025 at 02:16:29PM +0100, Bernd Edlinger wrote:
+> > 
+> >> Hmm, yes, that looks like an issue.
+> >>
+> >> I would have expected the security engine to look at bprm->filenanme
+> >> especially in the case, when bprm->interp != bprm->filename,
+> >> and check that it is not a sym-link with write-access for the
+> >> current user and of course also that the bprm->file is not a regular file
+> >> which is writable by the current user, if that is the case I would have expected
+> >> the secuity engine to enforce non-new-privs on a SUID executable somehow.
+> > 
+> > Check that _what_ is not a symlink?  And while we are at it, what do write
+> > permissions to any symlinks have to do with anything whatsoever?
+> 
+> When we execve a normal executable, we do open the binary file with
+> deny_write_access so this might allow the security engine to inspaect the
+> binary, before it is used.
 
-Thank you for your detailed feedback.
-My patch has the advantage of removing the use of
-the damon_call_control.dealloc_on_cancel variable.
-Other than that, I agree with you pointed out.
-It's not a patch that significantly improves functionality,
-so I'm fine with doing whatever you decide.
+That would be seriously flawed IMO because there are lot of cases where
+code is executed without deny_write_access() - like shared libraries, code
+loaded by interpreter, and probably more.
 
-Thanks,
-JaeJoon
+> However this behavior has changed recently,
+> now it has some exceptions, where even this behavior is no longer
+> guaranteed for binary executables, due to commit
+> 0357ef03c94ef835bd44a0658b8edb672a9dbf51, but why?  I have no idea...
 
-On Sun, 7 Dec 2025 at 11:36, SeongJae Park <sj@kernel.org> wrote:
->
-> On Sun,  7 Dec 2025 07:47:23 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> > The damon_call_control structure is used by all damon modules.
-> > In mm/damon/sysfs.c, it is dynamically allocated with kmalloc(),
->
-> It is only for refresh_ms handling damon_call_control.
-> damon_sysfs_damon_call() doesn't use kmalloc().
->
-> > and in
-> > the remaining modules, it is statically coded.
->
-> I try not to use dynamic allocation when possible and *reasonable*, since doing
-> so eliminates the chances of bugs from dynamic allocation handling mistakes.
->
-> > There are many daemon
-> > modules and they are designed to be used only when needed.  It is more
-> > efficient to use kmalloc dynamically whenever needed as in damon/sysfs.c.
->
-> I agree that is more efficient in terms of kernel size.  Nevertheless, I don't
-> think it is a significant improvement, since it is only single data structure
-> per the DAMON module.  The total number of DAMON modules is only five.  Two
-> among those are samples.
->
-> > Using damon_call_control dynamically and consistently has the advantage of
-> > eliminating the dealloc_on_cancel member variable condition and reducing
-> > code size.
->
-> Disadvantage of this change is that it is adding four more dynamic allocations
-> that we need to cautiously maintain.  It is not significantly increasing the
-> maintenance overhead.  But, the advantage (kernel size reduction) also seems
-> only modest, if I'm not wrong.
->
-> So I'm sadly have to say I don't think this change is really needed.
->
-> Please let me know if I'm missing something, though.
->
->
-> Thanks,
-> SJ
->
-> [...]
+Because for hierarchical storage implementation you may need to fill in the
+executable data from remote storage on demand and the deny_write_access
+logic was making this impossible. We even tried to completely remove the
+deny_write_access logic exactly because it has very limited use and
+complicates things (commit 2a010c412853 ("fs: don't block i_writecount
+during exec")) but that had to be reverted because some userspace depends
+on the ETXTBUSY behavior.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
