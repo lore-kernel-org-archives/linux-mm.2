@@ -4,104 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D15AD1CDC6
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 05:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C82D1CDC6
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 05:57:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6344F6B0005; Tue,  9 Dec 2025 00:44:20 -0500 (EST)
+	id 345A36B0005; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E4C56B0007; Tue,  9 Dec 2025 00:44:20 -0500 (EST)
+	id 2F62A6B0007; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2BD6B0008; Tue,  9 Dec 2025 00:44:20 -0500 (EST)
+	id 20C416B0008; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 35CF36B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 00:44:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB50812F85
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:44:19 +0000 (UTC)
-X-FDA: 84198842238.22.3B2DF4B
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E2A5140005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:44:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IKxEZNVn;
-	spf=pass (imf26.hostedemail.com: domain of 3MLc3aQgKCM02tv35t6uz77z4x.v75416DG-553Etv3.7Az@flex--jackmanb.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3MLc3aQgKCM02tv35t6uz77z4x.v75416DG-553Etv3.7Az@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 10C5E6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 00:57:54 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5A471403F2
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:57:53 +0000 (UTC)
+X-FDA: 84198876426.03.58DF26B
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9F8CE40008
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 05:57:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765259058;
+	s=arc-20220608; t=1765259871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=aeRS0rrF2ORdDNQRDFOZx3EYhiwIbLZ/NuYorYmEULo=;
-	b=Y3R8ceh4ydP8Yxg80j66VLtAdj2lZT5t4/fLVUgTd9+3SdM17UCE4ck5gUO60FE62Q9OqQ
-	E3ip+oLSwJZCI603+oHoGg20n9QCqVYQxiFa7occ1dibn0lqEksaI4yaRcq8TuJcgH60+t
-	wlphQaPaim7OUqtlypjMJTj4KkW8eyY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765259058; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=G9QJUce7C1/hhUjySjfVcnAcCGL4smJfqpSdBq+tWdU=;
+	b=HNUksvSdDev2dJaI1bvGx/MXK0BTqd8Uw7A18pGdO+Po5ClB2bCjtUAhG6PcQpWqbWBIPo
+	i8Hqly1XBbiCDRGEUOxvperr7EyzqZ8BrsbYUNH6OkRIWkx8FLLMY1nMvJYFnWGmQPIm1O
+	npenC57qLt0WjeDl3OYz6ZH3wpak3bY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765259871; a=rsa-sha256;
 	cv=none;
-	b=8PgXlzJnpBfKB6pd7DOrXhIE2JV7x24A1Xddz8/4tHTSm/jmrs/QDunyIEYLZbzQIknKva
-	+ub+SljLIdYIrFt36Ey6hlYMRiDY41W07dvmyV9GjtIi97m9qsPI3f7RJv68hutUCO+gon
-	M5jl1Vr0r+nSBPWPvP9Fjalm+nRSpjc=
+	b=XFC9ToxF99fzeDZPW7a8Y/2ePzqy6Bf8xTd5KugspiX1rxVRkMWgOYJ5rD+KwNNoS8uIq6
+	ZYvDkWqwZutclC6jxcxdqeWpyCc0ocbL+7SiulaVl5IvXsaszA8WPvJuAYrDkeJB+v3Xiv
+	PWaoMEO3pKgoYtFRY9gdzAzTwVSadv8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IKxEZNVn;
-	spf=pass (imf26.hostedemail.com: domain of 3MLc3aQgKCM02tv35t6uz77z4x.v75416DG-553Etv3.7Az@flex--jackmanb.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3MLc3aQgKCM02tv35t6uz77z4x.v75416DG-553Etv3.7Az@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343daf0f488so5269471a91.1
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 21:44:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765259057; x=1765863857; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aeRS0rrF2ORdDNQRDFOZx3EYhiwIbLZ/NuYorYmEULo=;
-        b=IKxEZNVnrD8undttNDmXQc/m9/UoWSY4mXTi18HqCvos1p0g+YIW87Cej8lU2meJB6
-         yHVxExGSqMWsOvga6sLNPZQiNdtid6aTtet+EpZGWactaGqLIA2kZol+KLgpyw9yMpGI
-         /P0z1m4fN0dkBpG6sklOj6PuA3J7EMqxaIs7kpgJ22CClLg8bzjuzg+lT8XLTD4u2f7l
-         wVWD34FMJDskXG+F2GgqlPlXhSncN1vgVBvaxQkrT/scRksq73QRv9cnRKNtMRJ7AqqH
-         PTEvXKpvQWQD9dtr8hQYveNeDIJoejtyfQBimcUDGHdGYgu4I5HlwsFFFl6p47P1EISd
-         WezQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765259057; x=1765863857;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aeRS0rrF2ORdDNQRDFOZx3EYhiwIbLZ/NuYorYmEULo=;
-        b=evnN3NpPgCdInFgijFNMOEGiR22P1zEZDo0ZKJBDI75B8qaOv1g+dA4uXEVNtFoHte
-         vLMHew44a//ZJGIsFIY8zKXVDTfvf4TzvTRQGvuSE5waY+GrHQXXXKV4Gwh8JfbIzrI8
-         KdA2bvvKz7Nrs/NBsY2kf0QECVkMWxF29SoHC7ifntkhuTEvXeBFbboVBah3jXLOjyAn
-         SwKFP2k/oLRFAsS2Q2hunqrgS4uTpNo84JpNZbxbN4+L3L27AMH6GeN5CqAr8GIpeRaJ
-         4+SvMbnS4b+FzRsyTgFqtaY1f0PxA3RHeZD14lOncFcbAhsHygNxzK/w6dl1S8TEc7iI
-         8kyw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/uh2qHtCC+w832oftBsPF724tYoR38dxrTPIyWuW1/Be1WULCmsENtZRGziG4uFC9n8I2qZ/Ujg==@kvack.org
-X-Gm-Message-State: AOJu0YxNMF1EYt0Zhoo7EQDZ4bKBxx5UGtfkRXmZ6kbhNOoKrMjyEhaF
-	zwo2EZTSEBuD/4XmTcT/D5Wh4m0lSOxz0sMRTnJcBrf9BHTasImXSGlex8U8eUbgANHdP4c2YS+
-	cQNmUiuXsC9nAXw==
-X-Google-Smtp-Source: AGHT+IH4X90kdSgY4gS6T2ygfWyabi8rSDiiqcDLF1Md3MDGtyvaNqc10OgaH/bpc5lD84VGSrNHO3O0B1jxUw==
-X-Received: from pgac24.prod.google.com ([2002:a05:6a02:2958:b0:bd9:a349:94c7])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:e082:b0:252:2bfe:b65a with SMTP id adf61e73a8af0-36617e36e06mr9940237637.7.1765259056752;
- Mon, 08 Dec 2025 21:44:16 -0800 (PST)
-Date: Tue, 09 Dec 2025 05:44:14 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAC23N2kC/4WNQQrDIBRErxL+uhYVQ5Kueo8Sitpf80Fj0CAtI
- XevTQ/Q3byBebNBxkSY4dJskLBQpjhXkKcG7KRnh4welUFy2QrJe2YUK0F7Hy0L5Kb1/stdq3Q
- 3CFQoONTxkvBJr0N8GytPlNeY3sdPEd/2r7IIJtig9GBMj9bw/upidB7PNgYY933/AOsBhcq9A AAA
-X-Change-Id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
-X-Mailer: b4 0.14.2
-Message-ID: <20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com>
-Subject: [PATCH v2] mm/vmalloc: clarify why vmap_range_noflush() might sleep
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0E2A5140005
-X-Stat-Signature: e4ij4x4mtzxx4mjprp9g348i1sxzanp3
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+X-UUID: f00bc2c0d4c311f0a38c85956e01ac42-20251209
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:a4ee5210-558a-4a02-850b-aae16ec0cb53,IP:10,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:5
+X-CID-INFO: VERSION:1.3.6,REQID:a4ee5210-558a-4a02-850b-aae16ec0cb53,IP:10,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:5
+X-CID-META: VersionHash:a9d874c,CLOUDID:e41193994fc12412c7bb15a61e65599b,BulkI
+	D:251209135728SMWVWXEJ,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
+	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
+	0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f00bc2c0d4c311f0a38c85956e01ac42-20251209
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 902813503; Tue, 09 Dec 2025 13:57:25 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/damon/core: delete damon_target when detected invalid
+Date: Tue,  9 Dec 2025 13:57:13 +0800
+Message-ID: <20251209055713.270737-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9F8CE40008
+X-Stat-Signature: tctr1krssx6snp7u3otrks8kyrsqdgep
 X-Rspam-User: 
-X-HE-Tag: 1765259057-689133
-X-HE-Meta: U2FsdGVkX1+YD+8YwXj44GMdVYTcf1lXqWNVkz3EKSMsa74r8ft4veXRk7YrdjY4A/hixT7NVJu3CXZSbUzm1eU5uvk+O7pWFXN82qnoUuvHJYdbGqqPga0eqNH8cpe5w0ROlO2nc33pasrpW/yLbCHjGq7HMK+JEcpxOLabYE37q2houphxIGAnjbLfE84EyszsiVemX//f/kOQwcBJsmqZ3Ot6ubjgP0Oj7TwBzvJ/Cnng2UrCHYGTBMYqHpss1WOkQ3Fsd+CLRE3kCKQTSFMremPFZdFJ+IopGQBNOIFhszua0nRQsR81yZiVTRkH0OkrLEcswg2d/yOLQz7QDDeTa98Wo6ne2E7yxpSmD05TyHlm07x/1eqpVzHIe5CVf+G+o7TV87+xCj6FBiS0viAh3i8DJadkncTlEgl02U6wc6OkCl2AvPL7E3ZioKTSvoXghaDdTwmUSGE67LAA2Pm/qdAmsWGRHckHbTaIexGz4J/j1tgZDWW1ylzHwakgw9k7V5J1upbFONTeNJ1n+CEUZSg14Q7ew2To1vN0Y9PEgcD9N54hlngBgiyedxUeh8r2PlD6uoCpSP1NodQUC1ZUcWZS602HW9zmfbH0+tX/jFwCNxX70UDC7MM2WqRXbtdmQwdVFWnP/UNNx8kRRNqzvixfuCxElkCyr5KVcFfc6ljWYa2i2eKpG6x6D28QN5p9Q+la8fCQfBsDFcn/Dx/IS6X7KupOVN/Wz7MCqIGWkIn2fHQbu+i1vMhNB5+kItPOJCOZZOL6nkY8lHy3Nrf5RUDMYKna7WjbYn8cWIcoZICDVEisUZZWj5Ywtb9o8Jz7ED7w9PeHqNe+iJHyUxoDXvS4S3MS0iRmqlUrE69tijvLuw+jPwWqt4vd1T+gyEiViHK8AITF7CSbygsLP64lMcP5XngZFUsq90T9m4eGezb46tOsM+k0QHp+hE4n8ssVTvD3znRQL4SwcEX
- ozDHmggV
- 7z3KBeP0fNjYNPbSg6XENyFn7/81fLbwJE9ETiWveMS4WvDeDyAXM2mUAWR53FVx2iF6y134TgGJuek7uvqKLD4+BR+iijAEaKw05xFeDY+8lVPBdij2uH23FhBO1Im1RLv/X9c2s0GbrGXWO42MpTsEE3wihpyGLtM92nn4YC7bCNEDb8ATyfdaCpS09AUk7wnZFP999iRUtP7HhJygMJkdhKp3vYGGQgbo3GR7EZtTyoMabJcStmqsUxcpiDLv0d/UizCJDw7ktUKQOw8Bi6ePLu6t23k02IhBE9y7q7nDnub8e3Km7G6WOpOk+YN4tR9oklhE5TpFNxTyX56Z1A/6K6YXaWxXgot80430W+HVf0/DgyddTJeS26kJ2drvxbDZ3gLxT3dINbSDxFYq9u3dnqi7rSBhSlo5tmF8k16qcPRI9elgzj3NWqyLfejzFip1jHiYK9q7PoT+HRdg9BV2Pbo2IopG96GcbmHPcKkoR70Xy8ROwCJYdvjuehwKp5/bpfGY++jeQc48VSJ1ZMV33rOIGBRsqlkdiVan3NnUWmaGMXNNhbP/qzDpFqiW8+oQ9/QSru6zyUXI4MfCvVZh0WxZURAPwHL2WXaPSgbrfwN7Ph916Llr4Cg==
+X-HE-Tag: 1765259869-203124
+X-HE-Meta: U2FsdGVkX18yxJvP0rRjWEc7EOMj3kDl4Z3G4MMpmh2b3W/FYm9dEQHCos3HTHrjztWF1sbIAEYI7GvOpJTk1pJLGnJ/TGf4/7iQvYZfLnu3bMeEAmhXsB5A38qRSHN3gzahoBnmm+wmxACKB+csCXj6JS2BdaqfuKhM1SoGa6FPijEosO3BQODNeq+6iho98CnRd+Eav6K7rOYEr+QV+z55b5G/5sRxJwgRlW8dOP07hNlhgFtpoH+lv1Ox8B3qbOpiVltxBsHjyzF6jYHmF71uRpDkSahxwrjsmt4qtA62PIWVvXrPOxX+GvuvowIX8vT130VxnXQ72Ev6tF4Fx1GEqAcaW11gGoqTSrSnjH+mcW5DjLiV7mKNgTeNBg2MZWXwL+ZxFQBZpkpzefEbx49q4iYebu4OLrJoe5zYTCgHaALeEbPlR6vYkcbMXFJurPcl0Cpt7su0rlUy6eaTOFpalnLHNM5e8HB1yqp1fb4U8JD7+UV1KIF802CyTII+A9R99keQZG4aRbPFYOLp5mgCsZ2DEO+GasOqNeitsC8xU0L65UQUm/O33AYRcaCsJL6dssQLDf/v+MmFeLdzgZehynSVkd3HLX6+OaY2R4c3FNkiKJg9dHH5YcrALLt6GvpuGrxMiqg4rTaHwv7hyER747gkn+SsdB+xLEXp9GAZyXJL3gKBtswyp1p7Op8SqvHXsWK0AByB/dqmL1O3HhxCIecoojJSANkgVVZkdV8ZuFJiCzWzELFn5QshBeQ85Ik0tpPnLqCLN9n24kMIun+OKBpK7GM1fdk5eL5/ciOtHiLau4gBbotdls/0u+EM3r8ZpRkMUxwmkfDP1Mj5UIhuMFD2ZWKdQL7ZydO/9p/WCNJpYS6TiwkvY3Su+Q5lumtXpCTNldhP74f86Q5/XyZ7DqvaRcJeR7MG2aTXQjR4CB7+qMzlPeelAkSwj0Ox4bCPVLMpM/c2AVjH3G6
+ 9lVM5/pp
+ WrF35MqAU6fsHPli3qLPr3lpmrGemsQaBmOJtHWRNYqHf6v0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,41 +106,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The only reason vmap_range_noflush() can sleep is because of pagetable
-allocations.
+Currently, DAMON does not proactively clean up invalid monitoring
+targets during its runtime.  When some monitored targets exit, DAMON
+still makes the following unnecessary function calls,
 
-The actual allocation mechanism is arch-specific so might_alloc()
-doesn't work here (what GFP flags would be used?). Hence, just add a
-comment.
+  --damon_for_each_target--
+  --damon_for_each_region--
+      damon_do_apply_schemes
+        damos_apply_scheme
+          damon_va_apply_scheme
+            damos_madvise
+              damon_get_mm
 
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
+and it is only in the damon_get_mm() that it may finally discover that
+the monitoring target no longer exists.
+
+To avoid wasting CPU resources, this patch modifies the
+kdamond_need_stop() logic to proactively clean up monitoring targets
+when they are found to be invalid.
+
+Signed-off-by: Enze Li <lienze@kylinos.cn>
 ---
-Changes in v2:
-- Switched from might_alloc() to keeping might_sleep() + comment
-- Link to v1: https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
----
- mm/vmalloc.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/damon/core.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index a53c7462671bdd896f95712af71398ffbe22fb80..c23d378dd4446e2784505ec3d5bb9568fb0d3c9a 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -305,6 +305,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
- 	int err;
- 	pgtbl_mod_mask mask = 0;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f9fc0375890a..eb5612bfd6bf 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2462,7 +2462,8 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
+  */
+ static bool kdamond_need_stop(struct damon_ctx *ctx)
+ {
+-	struct damon_target *t;
++	struct damon_target *t, *next;
++	bool valid_target_exist = false;
  
-+	/* Might allocate pagetables. */
- 	might_sleep();
- 	BUG_ON(addr >= end);
+ 	if (kthread_should_stop())
+ 		return true;
+@@ -2470,11 +2471,16 @@ static bool kdamond_need_stop(struct damon_ctx *ctx)
+ 	if (!ctx->ops.target_valid)
+ 		return false;
  
-
----
-base-commit: ecc46e02e0abe025a6e840cba2d647f23fd1d721
-change-id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
-
-Best regards,
+-	damon_for_each_target(t, ctx) {
++	damon_for_each_target_safe(t, next, ctx) {
+ 		if (ctx->ops.target_valid(t))
+-			return false;
++			valid_target_exist = true;
++		else
++			damon_destroy_target(t, ctx);
+ 	}
+ 
++	if (valid_target_exist)
++		return false;
++
+ 	return true;
+ }
+ 
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.52.0
 
 
