@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB0A9D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 06:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C2DED3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 06:36:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4C3A6B0005; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
+	id B5D4E6B0005; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFA476B0007; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
+	id B0E0D6B0007; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0FDC6B0008; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
+	id 9FC4A6B0008; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C10F56B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:23:10 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A9555294F
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:23:10 +0000 (UTC)
-X-FDA: 84198940140.21.9460D98
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5B7B810000C
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:23:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VC4Ypqef;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765261388; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8A9C66B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 153CB8A4F7
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:36:56 +0000 (UTC)
+X-FDA: 84198974832.23.CA258C2
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 43F63180002
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:36:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="RD9/65sP";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765262214; a=rsa-sha256;
 	cv=none;
-	b=KpQmmYvhjuP+FRHvnZLFzJl1nSz2fPbHkqoUK4cF73+HkNsIyXTMXsB/19/n2P+xjhwtvZ
-	2RPiSTYxEhds2+qNeMa0Ekd9H2MBWSaQzGGOBeZF+g3hWjy1amw8N0hLgif8G9n/7Rd6Bk
-	EeMtuyjWS8MOB3vJBSgSEN9D3uYgwfg=
+	b=7f4k7GgVDkxFBFs6CUsbKdutqFkjg2TUR/GguG2SXo8ALDP1ExD65LYreUNJFU+nO7LjXQ
+	xMEENaVSpGJk/lVZXKN+PIJTOAe+qt/z9mrbuxvFWsJ3QZNZEdS9H1Ko9bZ9YM6mDou6ur
+	JsHgbRtsQbN2B/1x9k0TIocMYEeVqmw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VC4Ypqef;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="RD9/65sP";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765261388;
+	s=arc-20220608; t=1765262214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+CLk45ra1fYgW55XvsXvXAF/BHCLHprBL2qMpGLAoh8=;
-	b=qwiuDhJw8QTvXaXv18OCKJu05hA3ZjtcvqJWrVp6CctdiKBoY7WT9XI1R4nRD8ykGJMPGt
-	aBo43xfQ6Fdm+idNedn7MoqijUkIxR39zrzEYjyOueli5m3DVtKf6rJ65Y6XTM7/FYQ+H7
-	aExzF51V9kYiqmPZEsWeHkPfOqvj91M=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765261386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+CLk45ra1fYgW55XvsXvXAF/BHCLHprBL2qMpGLAoh8=;
-	b=VC4YpqefvEcJ6O+lIz39BT2VJbG3iP8kR+GpykLM3b8sfIy5MUjYXdk8kjZtCVXWnBbRCc
-	U62fruicHGgyRSiywIAPRAhaCy0D2UbJgFOjXMl/vu362KK5Egk8J8VEz74ORbWXB19jWz
-	pfNkHiewwrFs+mYVNGf0wrnZxjQa1kE=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
- optimization
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251205194351.1646318-1-kas@kernel.org>
-Date: Tue, 9 Dec 2025 14:22:28 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>,
- Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>,
- Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Usama Arif <usamaarif642@gmail.com>,
- kernel-team@meta.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <4F9E5F2F-4B4D-4CE2-929D-1D12B1DB44F8@linux.dev>
-References: <20251205194351.1646318-1-kas@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5B7B810000C
-X-Stat-Signature: dg1tmfcoskhgxqgzh4zqw95uwphw7wqx
+	bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
+	b=N3k34S2+FPu6moPzQHUoDS3NQ4OcySmdftwNfmiyUR+WG/2VOlIjNBAkbBCOscZxuvocxG
+	S3p2Rn51YLbtfrAdPKNGn/iiCbUOvPfkfzVcCSI5WgnfddWrR636TdcnAcLCbT12APyzGg
+	i++d3N15pCB6eQGsVt5LHbWNrxkHTnE=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6495cc3e622so343185a12.2
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 22:36:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765262212; x=1765867012; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
+        b=RD9/65sPsSnYSymn78adkB8QsZ1llTf4UT/sLTUiwKf3P62mFsu6yR6uBhOo78sOan
+         F+YpA6GF+LTwkPfoxGUQCROU73xU3Vsw5/oLPfVwtIEc5tqwwtQEYhu8xKBXHz5A+Z44
+         qWdmyL1JW/7I/PlAz0RCm01oB+F7FDQyCx4Pe7Y6CSL+M74Fvw749D+7k6hQha/jbdnR
+         SEgpQlBRJZo9/YnVy4upSsoawiIYusmOFskQs3/K7hoGkDzkwGposx4Z10BElGUKPw+Z
+         RiGZHhQQbDG2vF3bIybX2SZ1qt/jxgPlxNnYsheGE2i1uNh3CSJs9pQUX7dTWGyTLOI/
+         znRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765262212; x=1765867012;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
+        b=G1XnoQA7lKCsHfNNL4frdylQzvgctW3p3TjE3HmkX26/kOAGOtX61w+KVs2RQUgr0x
+         a1qn/aEK6g3QkUMFQ5IbwhORu8VBGOZciY+WAu8LXk3Mw/7cHOgnGwM36mjAXhlJwO+t
+         N5j/t4/UM++33QPAgc4X5QpJhOK2+WliLoSqzGFXFu8amT3Eulafz7pn6R7UErvR68gK
+         YmrAOo5guS6cRsrQm2mlUyR5zYHq1aumUY+dVIWJ5K/vZlXfqVdPcXSStAnXLsFBVhuE
+         +hF29HY7WsLv5rfBOWR2Jx5P3dqV0Bz5LF/dwyO/r6ub1EZDpECcIL0+bmLTKCoO2L/n
+         nlGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWr+9MGSASx+Xq9+xzsmg6xpNNaktMHSUgkdnGWya7qquQx5dG+BrOYaRB1rhsCSJwvu466UP9LjA==@kvack.org
+X-Gm-Message-State: AOJu0YwWh4t/ayGvzhD590OmxFlAmGDcigDpcmiBfXWiWXMimNhMG/P9
+	2XC+m1tvH9G87QVv6kn4ESngkiVU9TuM2nFnRz9eF50Rm3U6fCLOpIpY3tjjTK8d9xptdsmFh23
+	RP6O1V9+QlYYmTw==
+X-Google-Smtp-Source: AGHT+IHCnkhtu+erinZRjzHU08DdBwFzraMet61P9UwT8esvB8HjyL7gPlKocQZ3b3SJKLvMZ7snSMNitdCnUA==
+X-Received: from edbek6.prod.google.com ([2002:a05:6402:3706:b0:647:5ed5:87dd])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2816:b0:647:57e7:472e with SMTP id 4fb4d7f45d1cf-6491abf2749mr7780459a12.22.1765262212352;
+ Mon, 08 Dec 2025 22:36:52 -0800 (PST)
+Date: Tue, 09 Dec 2025 06:36:51 +0000
+In-Reply-To: <20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com>
+Mime-Version: 1.0
+References: <20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DETH88RP5U4O.QACTRJIY5Y1X@google.com>
+Subject: Re: [PATCH v2] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765261388-814565
-X-HE-Meta: U2FsdGVkX1/fAISknQHE/kOLdEYwpVjfuGKST6vOp4d2eaDRjoFFvDgmH1KdUpNlInl/va3nLqPQvtPO3WjV+36IpeMxhfMEFfo7RIJEeJw+d5WCBca4/2nJh4/j/HIoqNTZyIZmGmE2BxVKKy96x4wnzGI2NaBS0J5Rkez/tNYRw5Dju7NuqzvhfhnrmatFx03aWqkdJXvlgZNtSg3ue3dR4odcIYUJI1RTrYZun8YbrSXpfxZlQxdRo21rNKSdAiWSyeHEnu0JRlV9DPqtENp1Mfvc7U4hoxEbv1ClBpzoI24gW9020h17DDivxxeHK5QUHd0DKOTb5SZVr0sFOJHPwxqvuETdkQ6xPbX+tUZM2b07X37Ur/cMKWhMtJflaIh+USnx8W3AUGozXcyIFkhJBA1mXZqkqID3Ubdp15K+DYmm+ghtS1MIJ4ngBsneEz3RxEjHY6XTZGXOqFowu1S+blOCHZ+FNI8dP0hu3gBJxZLasFYGaAOY1G1bUpVILwVqAQfrUcb0YI0bWCiSiAgmdv84mIxv5Xio0kwcjmIbq6fK6rw25ZnPn8aEpuVy2RrjJbtZtzmwmeOtPRA3Q2pWwUVLGmnfLqsUQyB1in9xVIzeDr0WdSRRwfnEJY2WHpN1XlKH9DK6R8oHhDgi8UTVFb1CajOMQ00EhMzmFMKQz/Huq8B+wOQ6TbbIvd+POxHRmE1KjyoRPdZbevt+ySt++48zaDmIWPuK8h7NLN+jqVYOTLYu6EnCxcojrLVU5gAA+bc0WsVM65avf2qGxrotHqqI5BZk8O4VSF2+9yaU6vplANLVndfpy97W4Hi8H5yNRkphc0Nrc9bJ0heOAdvRz3Jl3j2cUoztDqDXQKL4xvjMh/G0Z/v7KdZKrg7glVR7pA6SwzOZV9n6C5ZZyHiG4HT9AV1L7JW16ru/FXQM7aD2uQHkKnJCLQ0+SpWTssPV2NZpNFAPh7vJT3B
- wr9NNOX4
- IHRfUgNNIO9YrCsbHBq3ZEIMK67ae6R7M2+XwmfmaTHmMXrJuYaWue7YQs7luyuTs//fqhaZdL28DWxFU7oJ3XjNrXDpZyZK/l8ExTtc3nROc9f/rLFxSCtUXIgau+Nhx6PINpQs5pS8emodJdVJ3IVdhV/hoWavDVKi/L8aA1YIBLaI3j4RoSHCD5835ZPSttBFtavBVt9Jzs+naaxr5m+zRimJApowGjSQN5Eck+IINBTkl4brXnZyz8dEEJ7qmLmKj
+X-Rspamd-Queue-Id: 43F63180002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: p4ymqn5sqc5ynpbgoigir89z95w7ii9h
+X-HE-Tag: 1765262214-859960
+X-HE-Meta: U2FsdGVkX194M+EucU8uzPBjlKDyD03WpvARBa6fLNy0CiP0OheCsef1wnBnru5Z/C+bhbBjly3DtLMBCQP1ZyZ8gw/Az6OqpS6ncKw04GRT36rd4rJzyZKNz55bkyuVy+C+aa23qikqa/fMt6x+haPyQWOTQpuIDw2TauDKgzYsXeJQIyhZqpFuKnzlHBuipO4jyTFQqrZgkgOgEZDXDRGvt6PwN1NBoBRyS7V9+OqUF0K5bm2QdB2o6v7MyShRAxmHlbXkBIz7es4s0MIYG0PKpKQQqsxqtJSFQr7qNcnHjDFXB7YNLKlWG/tKmPuFV1fyF2oBv/YolrpHwna9+PVuTLtuPBKsbW3aHp7sjZLTc3RqfAz+qq9gmhhmKKbbuVTmuLq6oexgifLDb8PWD09Ni+qexhDsiCjuUCDZW7tnE/1w34BsUv3zg/v809QTIrgzTuZbaQpO6J2QrIcj7cIyHezj/7t5lPN3mLTHwqukB/prfl5voT6XlbX2B40JhIR6lGpBWdbeExDYa/zIBbB4U39J/to1ns2tbbC//xKLxZL6y8zsPJnU2UWAcogGwnf2FMigZoIey4R4tc6bU3N1yGO+AgsQXZ3HzPKfumKg1WC4WIFqAp9h03u7D6+sN6Q/PUevl912mcy6MpeJDfQMD432MJ4O4WTvAKXof5PpZEDSQ7s+bDibnoZOGB8WE69ZzMVgLnVWNJqq0K8nXIrfqhoeBwlFGBjtg3S0G/ivGbS8MBmsnzKpXkGZUIRlf8PQ/9iGr46o86VMz9d8xFjeO7RPqGTbfAwR31jY6/gCIkam4Jnh+yufqARfSU7XU5UFGbkIQPGX1Zy23jrxrAIGuzZ6j4MFXhS/uCy1XLgE0w9EyUjkXNgsymCdMWOWPHS3hZShBqd5sCTX57t2zkJdJ0IqCMSIeD9mffHMCNFv2Ux9IwHAPAE0pc2Tn7Gra2XCdykPhLAgHbIJgH8
+ j9AznmC9
+ sqAx9i2GJQ5A5Nawktu5TDW5NKxvaIeiVEKfu0NaJNGSa0LTj1cvqoV1V0/UbOF1ffeV5DOHEoZ8FheLV2X7IeXeIr0QXoBLgMybhi9r5UFRB+TAm8MGRHQx0SYTzHRUOCXXL/F/h9YHZ0Xou8s8dJY3Vevrq9ZJRwZZqPULakrzgr1E7scsAgu5UK73fHHiOVNnDZmhMsZmz4ukjNpYvvFMG5PfD/p+RWOcJWm70kYxnReLp5w5MO4MDAlzo/6M7pvOMKi2agx19R01zxnTulcNCBAMVJz+59Tx4VyTe2FZyEiC5nI4DPSLw0Ic8JXBivpnj750qo+srAqHrqmmKcbTeenebfrFL8W/DD867/GeXcsDmf/4HyLRq5jHPwLrEV+SdtE7sVXCfF22TGKLS+B2FbOWct2TxG6heySZp4PFcdMvpsA2eOtQGGm5gz8EnITc1JFAz9leJniylilpDqPlwBQ+B2gDDAXTVPh8JDYFcdv6ghoR8mH0ZjxpZ+d/wYBNYLIPO5Kx2tURerjpnZ51NZ251EQwUJkfAFnZ+SKVHTd2wYcb71RNnJ2sDCk5Ae3rNzcW2Q8stwzKVA8bbyTLz2u9qvMG0wkncdM8Pw+5A/Bvj8ngzS7xs1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,155 +110,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue Dec 9, 2025 at 5:44 AM UTC, Brendan Jackman wrote:
+> The only reason vmap_range_noflush() can sleep is because of pagetable
+> allocations.
+>
+> The actual allocation mechanism is arch-specific so might_alloc()
+> doesn't work here (what GFP flags would be used?). Hence, just add a
+> comment.
+>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+> Changes in v2:
+> - Switched from might_alloc() to keeping might_sleep() + comment
+> - Link to v1: https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
+> ---
+>  mm/vmalloc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index a53c7462671bdd896f95712af71398ffbe22fb80..c23d378dd4446e2784505ec3d5bb9568fb0d3c9a 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -305,6 +305,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>  	int err;
+>  	pgtbl_mod_mask mask = 0;
+>  
+> +	/* Might allocate pagetables. */
 
+I just realised that for x86, there's also TLB shootdowns in
+pud_free_pmd_page() etc. So I guess this is also a might_ for the the
+lockdep_assert_irqs_enabled() in smp_call_function_many_cond(). Should
+probably mention that too.
 
-> On Dec 6, 2025, at 03:43, Kiryl Shutsemau <kas@kernel.org> wrote:
-> 
-> This series removes "fake head pages" from the HugeTLB vmemmap
-> optimization (HVO) by changing how tail pages encode their relationship
-> to the head page.
-> 
-> It simplifies compound_head() and page_ref_add_unless(). Both are in the
-> hot path.
+Anything else I missed, before I send v3?
 
-Besides, the code simplification also looks good.
-
-> 
-> Background
-> ==========
-> 
-> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
-> and remapping the freed virtual addresses to a single physical page.
-> Previously, all tail page vmemmap entries were remapped to the first
-> vmemmap page (containing the head struct page), creating "fake heads" -
-> tail pages that appear to have PG_head set when accessed through the
-> deduplicated vmemmap.
-> 
-> This required special handling in compound_head() to detect and work
-> around fake heads, adding complexity and overhead to a very hot path.
-> 
-> New Approach
-> ============
-> 
-> For architectures/configs where sizeof(struct page) is a power of 2 (the
-> common case), this series changes how position of the head page is encoded
-> in the tail pages.
-> 
-> Instead of storing a pointer to the head page, the ->compound_info
-> (renamed from ->compound_head) now stores a mask.
-> 
-> The mask can be applied to any tail page's virtual address to compute
-> the head page address. Critically, all tail pages of the same order now
-> have identical compound_info values, regardless of which compound page
-> they belong to.
-> 
-> This enables a key optimization: instead of remapping tail vmemmap
-> entries to the head page (creating fake heads), we remap them to a
-> shared, pre-initialized vmemmap_tail page per hstate. The head page
-> gets its own dedicated vmemmap page, eliminating fake heads entirely.
-
-A very interesting approach.
-
-The prerequisite is that the starting address of vmemmap must be aligned to
-16MB boundaries (for 1GB huge pages). Right? We should add some checks
-somewhere to guarantee this (not compile time but at runtime like for KASLR).
-
-> 
-> Benefits
-> ========
-> 
-> 1. Smaller generated code. On defconfig, I see ~15K reduction of text
->   in vmlinux:
-> 
->   add/remove: 6/33 grow/shrink: 54/262 up/down: 6130/-21922 (-15792)
-> 
-> 2. Simplified compound_head(): No fake head detection needed. The
->   function is now branchless for power-of-2 struct page sizes.
-
-And it is also a common approach as well for DAX to eliminate an
-additional tail page.
-
-> 
-> 3. Eliminated race condition: The old scheme required synchronize_rcu()
->   to coordinate between HVO remapping and speculative PFN walkers that
->   might write to fake heads. With the head page always in writable
->   memory, this synchronization is unnecessary.
-> 
-> 4. Removed static key: hugetlb_optimize_vmemmap_key is no longer needed
->   since compound_head() no longer has HVO-specific branches.
-> 
-> 5. Cleaner architecture: The vmemmap layout is now straightforward -
->   head page has its own vmemmap, tails share a read-only template.
-
-I have no idea about the feature of memdesc, but regarding HVO, it is
-a nice improvement. I'll look into the details later.
-
-Muchun,
-Thanks.
-> 
-> I had hoped to see performance improvement, but my testing thus far has
-> shown either no change or only a slight improvement within the noise.
-> 
-> Series Organization
-> ===================
-> 
-> Patches 1-3: Preparatory refactoring
->  - Change prep_compound_tail() interface to take order
->  - Rename compound_head field to compound_info
->  - Move set/clear_compound_head() near compound_head()
-> 
-> Patch 4: Core encoding change
->  - Implement mask-based encoding for power-of-2 struct page
-> 
-> Patches 5-6: HVO restructuring
->  - Refactor vmemmap_walk to support separate head/tail pages
->  - Introduce per-hstate vmemmap_tail, eliminate fake heads
-> 
-> Patches 7-9: Cleanup
->  - Remove fake head checks from compound_head(), PageTail(), etc.
->  - Remove VMEMMAP_SYNCHRONIZE_RCU and synchronize_rcu() calls
->  - Remove hugetlb_optimize_vmemmap_key static key
-> 
-> Patch 10: Optimization
->  - Implement branchless compound_head() for power-of-2 case
-> 
-> Patch 11: Documentation
->  - Update vmemmap_dedup.rst to reflect new architecture
-> 
-> Kiryl Shutsemau (11):
->  mm: Change the interface of prep_compound_tail()
->  mm: Rename the 'compound_head' field in the 'struct page' to
->    'compound_info'
->  mm: Move set/clear_compound_head() to compound_head()
->  mm: Rework compound_head() for power-of-2 sizeof(struct page)
->  mm/hugetlb: Refactor code around vmemmap_walk
->  mm/hugetlb: Remove fake head pages
->  mm: Drop fake head checks and fix a race condition
->  hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
->  mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
->  mm: Remove the branch from compound_head()
->  hugetlb: Update vmemmap_dedup.rst
-> 
-> .../admin-guide/kdump/vmcoreinfo.rst          |   2 +-
-> Documentation/mm/vmemmap_dedup.rst            |  62 ++---
-> include/linux/hugetlb.h                       |   3 +
-> include/linux/mm_types.h                      |  20 +-
-> include/linux/page-flags.h                    | 163 +++++-------
-> include/linux/page_ref.h                      |   8 +-
-> include/linux/types.h                         |   2 +-
-> kernel/vmcore_info.c                          |   2 +-
-> mm/hugetlb.c                                  |   8 +-
-> mm/hugetlb_vmemmap.c                          | 245 ++++++++----------
-> mm/hugetlb_vmemmap.h                          |   4 +-
-> mm/internal.h                                 |  11 +-
-> mm/mm_init.c                                  |   2 +-
-> mm/page_alloc.c                               |   4 +-
-> mm/slab.h                                     |   2 +-
-> mm/util.c                                     |  15 +-
-> 16 files changed, 242 insertions(+), 311 deletions(-)
-> 
-> -- 
-> 2.51.2
-> 
+>  	might_sleep();
+>  	BUG_ON(addr >= end);
 
 
