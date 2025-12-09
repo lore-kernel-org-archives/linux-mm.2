@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00297D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 11:36:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20758D3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 12:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5B56B0005; Tue,  9 Dec 2025 06:36:51 -0500 (EST)
+	id 0EE686B0005; Tue,  9 Dec 2025 07:16:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A76956B0007; Tue,  9 Dec 2025 06:36:51 -0500 (EST)
+	id 077726B0007; Tue,  9 Dec 2025 07:16:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 965476B0008; Tue,  9 Dec 2025 06:36:51 -0500 (EST)
+	id EA8866B0008; Tue,  9 Dec 2025 07:16:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 844236B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:36:51 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25F1FC057D
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 11:36:51 +0000 (UTC)
-X-FDA: 84199730622.15.95E9195
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3EA0240003
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 11:36:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GyQloiaW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765280209;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ns+PhtoMtT3whJ2OyUU1RIVA9EHSuQyDwkBgv7RCRS0=;
-	b=DMJ9hUul9g67x1AiC0zYI5q/5zBeD5Rvotp7GPJKyk6TMXRJvaCtLFvB+IwTuf8y2Iqntc
-	1QKTHmG9wqyTbzyTnmZv1szE8C0uBbPrshjK+XWhUbBXaqW6Ak5hNL0ZGwyBx7OQ92YDyR
-	HLYoyHXXRSj8pYA3BLIGmAsSWSvaK2Q=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GyQloiaW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765280209; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D01016B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:16:30 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F8A18A822
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:16:30 +0000 (UTC)
+X-FDA: 84199830540.20.F70336E
+Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8A94F2000A
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 12:16:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf13.hostedemail.com: domain of 3GxM4aQkbAHIiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=3GxM4aQkbAHIiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765282588; a=rsa-sha256;
 	cv=none;
-	b=B2gCeqHXyyEH6kgFoqf78Qe2CFBrTn1nQ9uUpPm5T7uHPcxyDOP9KB754HjAawZ75Cjhsx
-	/hQPX2vaKu+SfaM2WHg8GgBNzINVWU5jeflTRIrp8kbNvbol6uSVGfqifjQYWu9RSsbnkU
-	AmR89ZCnwTY0pmowxV73Gh7bgn/LzkU=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-640e065991dso4288539d50.3
-        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 03:36:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765280208; x=1765885008; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ns+PhtoMtT3whJ2OyUU1RIVA9EHSuQyDwkBgv7RCRS0=;
-        b=GyQloiaWRel2y9PSRLezu3j0l5Tl1wCZDbgX55zE6W1ATqYqZFwsXxowF9OOWhSnNF
-         sIz8fNn9y+TvjCcy3Rmozj4opFFB4ONTlqbXJ7hvQUBpVxmsXiNyS3gACsDDxP6l+xAs
-         QDLUV5nORvEI5lgS0+KZqLOA4oT3KwDT8rosJY+HNl5QKT1U3KnAbNuCcsUUxgS5iyLZ
-         KubiOG5gxnGalSryzBk6Rd9aCzNC7uZQg/wsBk2S/pmo1F+TPi9nJUlUw39wc736k9qi
-         Si5Uxwio0/8VGvwDuwyC7mOpOmb1IHhvcXz5Rtl6tECPO7A6gVflnZ2ZPHKDf95wiE9S
-         82cQ==
+	b=5CZfCJhEJaYNUPtKyGBa0NB33FluAVbc4uBcr9NoPZ4JiyOr5trdogEM/fe1Ln2k7PjgOw
+	g7SPOAKYdlMHA2PI3GOYgedu7wN8IH8EXrWW5Z3LALg0U24pNtC4auXsOiY6xgk40zRDFt
+	FGWD7Py/yO20B3nC/tjsgn7UxxI2zsk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf13.hostedemail.com: domain of 3GxM4aQkbAHIiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=3GxM4aQkbAHIiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765282588;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=N/uM2X39VK9KGgzHBxwgtTqja8IFkuw/J5CQxJyGUM4=;
+	b=EED1OWsidt1m+hj0acd1Fs4GpVGGJjPI0lyP6JXb2xD5nBqgjFFsiqvoHLTrdMB48PCoAK
+	pv2TZ+94FsYY2AH7ASdt7fvvVJe4dzgXZlBvOtq3pnTP2Ul8mxWKr3RZ/lIhyjmci3t8q1
+	7YyDX7vWQ3zRlBn3k4NXdbPKirZozaA=
+Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7c7032a5b40so5400199a34.1
+        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 04:16:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765280208; x=1765885008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ns+PhtoMtT3whJ2OyUU1RIVA9EHSuQyDwkBgv7RCRS0=;
-        b=oV2OkzLK2YuFu8KWswxqC2H7mGAWPS0zH2AC0knGdsO8rDJtJ4mBZDfyDGepleUzc4
-         t/xZiWqxnJeNfQuCtCvudG4yFnVcs6/f93buzR7dmFEiMQUDe3a/e5vUN1O++eYhLTDH
-         remsqyq3ZR44toGqkSwv56YoNs1+iUhWaRWgVHTd2NNxA/qOqYpITqXlWNUuW8mrVOIm
-         qELuolLoVNSxzUREO72QWA1lG7sIt5CK7Fsj1L7MQud9vZ0ni8wPtpb0xLJuuNDfl//N
-         S7iaF6Tn3tVSk0uBJ9xN/IM5pcxYcDft/0lmvO5xK75Ti6D1M9SMhoYBOdwL5nGfV7Jq
-         PXoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVf/rOSCOTu6EhlNiKR89DqswcR0ScdpDixjytsiTOSM9LOVAJi5ZOeb3Y0IGkSkA0zM2ZrnV+OlQ==@kvack.org
-X-Gm-Message-State: AOJu0YxjykFX9M+HF2hQ4qvfKZhKTC1Jo7LHoVbroFC1CC70Tf9VjM5y
-	8GoW3NGxyMU6C1IMcJlab43Ba8LxgE/9QK79EDxPe6GAufXU9UnTKR+l8iqL9EBTgVj1Wad6ldr
-	wF/8YNUiycQulT+TeXpeWM7JLHmLP6ic=
-X-Gm-Gg: AY/fxX6XPVgc0T8bjiYIVNJU0LOncdE4qkLC0WFW9NN2FdqRVGg4uZEgcve1/Vx8uuR
-	kIfm+lBh1osg6ksSh9I1zVhvJ33Y4Ol7r1AEIuD5dgku6yBhVjQq/jz7Rb+zLKvf7IbRHHD3kA8
-	TVKhH2wqfYh2UaBKnh5RzV1L+3IHtuJj1j/+fmEDDaRjpJ4gNltpbbuVg7Mht+AQa6o1nnk4eXF
-	CwYm/ueME5dBaIT9vgbzlb4qNQNk9mSNi9mEJdEqsA/bNIzExbBPSG2r3iwsjfQaqDVTg/inRj7
-	ldQp3XXVIwEDmakSzCidBDkDDsc2hV8czJvt23+FoZKELGTwMXwyY/PnpTc4wCDkTZZrSg==
-X-Google-Smtp-Source: AGHT+IEb0kLJ3ddCCJa58WbtFVm/qMAonoEdyzm5Qvgo0ozWq+S1ZEX6u5F2N89blm+/SfxMh0Vi4y7TAINN8c/jI4U=
-X-Received: by 2002:a53:acc7:0:10b0:640:d038:faf9 with SMTP id
- 956f58d0204a3-6444e75520cmr6840335d50.25.1765280208228; Tue, 09 Dec 2025
- 03:36:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765282587; x=1765887387;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N/uM2X39VK9KGgzHBxwgtTqja8IFkuw/J5CQxJyGUM4=;
+        b=j6Ia9qa8YxcLDFLEVPbxp4r/CN3BV236cv4l6yDYIkAuGRAAVDcjc5sipfgQ+OHhcj
+         0jK0AU9CNo9r7PeOPixJdh1xKBA4RqGY/mxD5sww+VqG+Y5jXg2lGzQ48LVUQF/p2Ki/
+         NAugi7qPzYtVGJcrD2nFnNLj+SiBdE0POuxnHvhCAM0OwxNhNg9abBAR50xQGtx9yvwL
+         LMavwaq9itRgiHMEqNVOOoZZg2TuKUqiT5Yyvo/wE8gNa1HnHTD8cQ25KQaQIYE8u+SQ
+         nu1YpS5ziXx6feZmVu9ROchdpMXEFC8rHGlfSJdcH4XKhUFWeS7i2wDyq/E2WUVzK2fg
+         Fi6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUGgDIZFGesyD1G7e3ZWN6k8cAs82ZIZZx0vH3b1gkCje1au79aVeQLdNyOPsPcLKc4Lz/DLh+MCg==@kvack.org
+X-Gm-Message-State: AOJu0Yw/UoIRLuo8BPYPf/wZKDG0gvkwBySZqIVFcIpND8dj7IShS1wO
+	HpyozyzNcHNc7/ijLe2iqF+nNZ3F9a5QXolxlF5r9RjI10H2PJLZUE0QFhGu3k4ffbdJyM2+szj
+	KMdzCxLERJ3P+7XsiITGUCfeVJsrsV9oHy9iTwqsGgrJzegzk0EJoyjFvx0Q=
+X-Google-Smtp-Source: AGHT+IHDa9f5juZBS+Zx6u44j1CWhoT2+BzGGjqYDErBrr8VbE8OglzIH0QZqyauT5Q9M9GGrLyFTZD/tJvIe2YRmp/HhStVLnCL
 MIME-Version: 1.0
-References: <20251208060046.2933866-1-kartikey406@gmail.com> <bc25b607-f99d-4878-abb7-cff5de13fc2c@kernel.org>
-In-Reply-To: <bc25b607-f99d-4878-abb7-cff5de13fc2c@kernel.org>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Tue, 9 Dec 2025 17:06:35 +0530
-X-Gm-Features: AQt7F2ouTf3Mif4KtIWXtkfeRwvufqMpa4mxR1KfQRFLoSTuTUf2Jb-99tfomPM
-Message-ID: <CADhLXY5ktE6AoarNBmO209cvpRPtrmLB0G=RSN+pAmmbqynHfg@mail.gmail.com>
-Subject: Re: [PATCH] mm/workingset: fix crash from corrupted shadow entries in lru_gen
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+e008db2ac01e282550ee@syzkaller.appspot.com, 
-	Yu Zhao <yuzhao@google.com>
+X-Received: by 2002:a05:6820:607:b0:659:9a49:8dd9 with SMTP id
+ 006d021491bc7-6599a8e96fbmr3928732eaf.27.1765282587547; Tue, 09 Dec 2025
+ 04:16:27 -0800 (PST)
+Date: Tue, 09 Dec 2025 04:16:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6938131b.050a0220.4004e.0007.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in shrink_lruvec
+From: syzbot <syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, mhocko@kernel.org, shakeel.butt@linux.dev, 
+	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 4yse4cnwoyfxbgzoda3sr61b5fju47nz
-X-Rspamd-Queue-Id: 3EA0240003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765280209-378370
-X-HE-Meta: U2FsdGVkX19zW35ikGfWR/z3KWFqlrDVU2ZtHKw/CgcRC5obkrMUOrhthQmRBrz/4q4esuka7X/2J83Kc8DoX6rwzp/zy39KwnzCTE4yVN//JI4tFW9WvwENcaWCC5qZxvXzgJiyQLZXDAu2tmfnh5TDvUqsbxzk5m1jqbT1O0RhjLSsXkPYycjyBruHY3G7Jq+Jg72dWS4Nc8Zte0N+ojiYmU8pJr8+KuI5jXhWaL0DjxzhDDNVQP+LlW/E9GmgN3EAM5Z2NQIZCN8f3fnxWySUPDEozX6GgyfCqJiMFk5nR59B/vbWsJ4+sfxIE+UmvAONlGcFTX8VS4Zv4S7jvextvlieplsENbdnbS2OzyfA2CtNqVzqYOdsjlYO+fzMccErGUJhR+ch34gjAltcVhe5d1NP9sRd8UweanCJV6coT9hV7Ql2hO6i8E7dd1I10XBo7wQA+H4OxkhiMwCwnT2e6D3cS/AyI3MpYN2jaED2z4YoYAahzh5Wjb2KBBzFFfubejx5GotdUH+rOFTWUcqcVm1SmmJuLbRC8xBFzOAZbWx1eAkzIVkISjMEVEKFwLf6r7Ixa+WsL/nmNB4E2Kma/g7ZsoyqzOgAAACJsDnTzmih74MAcpjmQiOTzbyquk/Awn2t7dLrhOYEKmLl8jbgBRn3J8mge1IVHzQP6GpcWJbHAaLE7roiOqzZTBYJiEVw/GqrclggQrhRbWMTSOdtNuaQS9ci6kQGWxSq+jYq1/eX8lx+920BFLBS2YinxgyUzLl/2KodGup/42DKHGXmVc9j79QX0fmN1dabn/0sM1A/eicWwVccqt3XGK1OgByZJ0GV311QjxHI3sMPWeLIOFDm5q1tX1fnXjdbcHwHj/8EEYqM6fODcHiNvN3kPBM7MNcMSVWmv6MOVJroCOI7aDLZjL81FqcE5gQejXisAedZkv8vzCxyAVJsckCDiGmNDAT3MNgX9tAGdDE
- U9+UU/bL
- XIxW5GsijIZ5gtbiirp/5jVyD+a+pxvrS2bMVqGxGKd3fVuhF5m8VknFAOAyc+bkh8uDqNii1kD0amsoO47pk+IDbY+UDBn64SQzXC47+IFomxpw5wHlnSruyI+ihQtYEEpnZjdyUnPnN/BQWURE1IrGtbuukYREKEif0cEl7RbYoc+qoqJv5Pysop5LhWNoxqF+gTSJRlX2y+Vd+TAhlv0Oc8jZtEEP3p4G3QoTVXBqxc3bCVm9botfNZmcuKpsrIqy06lhI7l9gRBlPty6UsOFsu8iPc5+GisbafDCS4hPm18hDrv2lYTsnC9KnZIEoG9GEV3VPWivn1CY+2t1sa9rWKQUM2/RIG41giiohLFJKC9nOa2tMWbYr2Gy+NiBfSPT7Zs1mEGWo0pLiZlKivzByW3oFvBQ0naThEiPF/t+K2ABkwkcedHtLQslDGy0aAQV90IY/735q4npDtfmJ8eh7KIcZzYAUf9A1Xunv1Uy2uMMgR4DBPfYyqLAPEro9ZiR7wSwAYEglXIewgKu93c/OoybPsMWNi03B5nZf4uFi2mc=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000013, version=1.2.4
+X-Rspamd-Queue-Id: 8A94F2000A
+X-Rspamd-Server: rspam10
+X-Stat-Signature: j7runax8zmki7so7u6mjqt5m1w1f8u5x
+X-HE-Tag: 1765282588-880645
+X-HE-Meta: U2FsdGVkX1/v8w/vNPTPbgc0mG0UHxpkyq7mB9bO2Tp/C9ufxNCVFThY2bor2gIq1oPQ5SGb/4vVVdZ++4879xyYSjSzwKiXAdxhbdFX6gHFhIhFCEOBMUNEix/yANTpTn6RpLhPZORsCVl20KIo6YHYbfC5SB50vJmVl9i10b1f0G944cjD0E7YLSNZTXNLPoiQsGqmqN8rTPlNo8wk/B7Q2G0iYP2zx+HerlX0QMH+ZGm046AKnM/WLWA4n9dL7rFlcL7fFNCT+6bMEqeAmm7NicLyc+OQU+autxfWDoCIQWhkHshJ/k91VJhJ+WjVLZxWNN4pMQKko2TsO8NwL5xa/8B/RXLwR+vdSuj2s7iiNUMXImQGduG6PlzcLXvEG0j9C+Xe3tCwJz/gPx5cHmbttXHHyLeHgt0Xk2+FjGWTPYM+znirku71421SgW8rTfcf93FCdN1knEcfq0Wr89IBvMO/QmWjNprInRb3TUlmcdWYdAT1FOsEXbS6wmhpZzv8L2EwMtEmg3xehWcGrFqfRHY2pX8d+U79th0FTku2cjJKqWJDjS/B8Ng9o6KwH1HMj4+auD+MJp4IR9Phvj5FT0o5SWxlhz9llLPMZyENJnwS4OlC2ZZRz4/wfUV4yHkK5/WVCcx5QCwvWSmkKNy1ObldJl3cAJdDjm0GP00FD5tqvyzUMUvCetBBYAi+673WPmxQBNKMrhDMBOq6dFiYzU8nVH9uvU1yJ9NYHfMpurxueFXM95hpm5QBAvDkWiXeUuEQWWDCECV8Cu8E02Tz+5wPg8nHgh7HFsa5CIwA/MasOyFUf+0rtP3Y8h0cTBqrjc+mDBFkpFBAyMa+V3YtEM/lJRZtn+vmCOOVz5qSOC5fs4EdDgHnicooyWw8kfay7evi0Pu6B7TuGCe8Hghsv9blFNz1CZjgnUHre689QLMGdNlwn40TKb9HtthL93eBDBEpe1xqKomgdtg
+ u5njAUH/
+ DAKX5JIGN3eGcDgU1hqbN//6MTcZOmkKeAXYv4lurZq9TJcdHsMOiXjEUF6RxjwcGPKQ+6WkHBp+zvoz3NxcZmWGuMGwMTWtB0I0GCOuQQJN7SXZQwsuwIkQZXpSqNx7GmWhl6BjmYJ8ziLWGDfBEumJLEJbUg1WvzKnjMwFScq9E0w44i4e5G3vsaYnUBIXhZtHD/Jjf40ecrwS8k4Zg7rHecu0g1cWJNelTKYyrwmKtvCL1T+aSEqg9xNBbqUDlsVnxhCCGd8enxOj+e2RxHuX998H3JIzlPI46SQdoyTPGxt27AMtp69yQYLR5goKIPZ/NUsZp9+1esKdyC17oMw2F9lybH3rYO/0dJ2KlnpEBw9XOWa0lWBetVdqPXW7y+OXBgABhNt/Jh446WaigPh7xacpcdwybEJFX6bZKSNg598Qzf/ocOyPdINk+sQ2a1+3yB/cswvoM0W5yFzCsjtYKcxSJIgBYIiEr8vnYZjY/qN8lak7OsckUYdn2eF+fLQhDzL6VNqARiXxrTO9i98zSxu3yVv3YrcXImIejU7xDtKybhLfbiyGDPk8lzG5kAy5xQKOc+ur/rZOC/dQ4dzZUEHT/ibWiiO9tvZQhtpIaiIfztlJMowxeOivRS/8LMrhHMBaiGcYhUNzUH7SQpXizoO1djHtaNVu+8WR3r9nmNAKlID0OHMnYfPGyq0p96zQ9OKRj2utmZEnx9IeBOv4JswTqFO4uGzw8wZ3wVsHaDJPHOyQIQPfll4t9PeP+oNq/40UNs7iYPEouDs0WOjvhqdUjaANhEFzy2TPoqfq7ETBfY43z6eyg3LlBcOS9FbT8/0vz6XIRD9t0IIiYDrNTBWyd3cpIN8Oc9rhofRB6JdcBu89yn2FiufzazEDwtKSHPKXU7K52ed8Ufj6E8WXETVUYGHY1G8EEjOxZV2R83IpiNW5RHiV4Byr8+HLejsJTPQ28sYBkuVUdHd1tmS7pUbrE
+ vCs9vd/G
+ CFp64WUu7+qW9uauRvy4qJu+a4JRYNeYZJIDgoPmPBbCwBkwQtYK/JnsXoyGiwEbFwTrd604fSY8kXfjqljr1Q9Dn5G2wn2uMIqdSq5xSL1VaGeQFGoQ/JP/fGJ88ekztdOyMV30HaEDQDnZV2mYv6L6GvlwOSrwXjVxTcbrelD/20I9TC7ZMmVfNcZKjConWFQvwZfTXCurGw50ORp4U0DfSItOl4ZigludSeWyMnP24QGs0cuy+KjO58ItrwhqjtwSddTgGprX8pWDfSdP32TK6UYm30A37kjeZ2II1QMMirBxGFqtAvobEVeKvCrNZ5f2qju7WARUVk3wqgnBGUQashvdR/AJFnKGK2PVzkIJKRuwFh3tRvzkP7Xt1faJINUkdKu+mLJ9F7gpBt8G8oRt+SCog2yt11Ts7NnXA16unTsj23MVad/GiOxKyqrMgR2DDnOzvQKZWnOA4pTY/QrFLCORjCUSI5WIb7bo2qrrQraCFONVygzZWUAwbq8q
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,105 +99,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 8, 2025 at 4:54=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
+Hello,
 
-> That's just hacking around the root cause, no? Because IIUC, that's not
-> something we would ever expect to happen unless BUG.
->
-> Unless I am missing something this patch is trying to cure the symptoms,
-> but not the root cause.
->
-> Now, if it would be valid (and we would not have a corruption), then
-> handling it like you propose would be the right thing.
+syzbot found the following issue on:
 
-Hi David,
+HEAD commit:    2061f18ad76e Merge tag 'caps-pr-20251204' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=151cc41a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=879619bdbc37e7fc
+dashboard link: https://syzkaller.appspot.com/bug?extid=90fcab4d88cffed6d0d8
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
 
-Thank you for your review. Here's the root cause analysis with debug eviden=
-ce:
+Unfortunately, I don't have any reproducer for this issue yet.
 
-ROOT CAUSE:
-Shadow entries contain invalid NUMA node IDs that don't exist on the
-system. When unpack_shadow() calls NODE_DATA(invalid_nid), it returns
-NULL, leading to a crash.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/5fcfff6f18cf/disk-2061f18a.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/36b7247e87d2/vmlinux-2061f18a.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e2f1eee5ec54/bzImage-2061f18a.xz
 
-EVIDENCE FROM DEBUG LOGS:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com
 
-1. First crash - invalid node_id=3D4 (system has nodes 0-3):
+------------[ cut here ]------------
+WARNING: mm/vmscan.c:5049 at lru_gen_shrink_lruvec mm/vmscan.c:5049 [inline], CPU#1: syz.0.6406/391
+WARNING: mm/vmscan.c:5049 at shrink_lruvec+0x253b/0x2b50 mm/vmscan.c:5818, CPU#1: syz.0.6406/391
+Modules linked in:
+CPU: 1 UID: 0 PID: 391 Comm: syz.0.6406 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:lru_gen_shrink_lruvec mm/vmscan.c:5049 [inline]
+RIP: 0010:shrink_lruvec+0x253b/0x2b50 mm/vmscan.c:5818
+Code: 89 de e8 78 78 bf ff 49 8d 46 34 48 89 44 24 38 84 db 0f 84 cf 00 00 00 31 ff b9 02 00 00 00 e9 42 df ff ff e8 06 7e bf ff 90 <0f> 0b 90 e9 45 dd ff ff 48 8b bc 24 98 00 00 00 e8 e0 90 27 00 e9
+RSP: 0018:ffffc9000d5def60 EFLAGS: 00010283
+RAX: 0000000000001170 RBX: ffffc9000d5df120 RCX: ffffc90014135000
+RDX: 0000000000080000 RSI: ffffffff81fe1a6a RDI: 0000000000000001
+RBP: ffffc9000d5df2e0 R08: 0000000000000001 R09: 0000000000000030
+R10: 0000000000000020 R11: 00000000622d1f49 R12: 0000000000000020
+R13: ffff88807cd00d40 R14: ffffc9000d5df628 R15: 1ffff92001abbe0a
+FS:  00007f36a7b6f6c0(0000) GS:ffff888124a67000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30008ff8 CR3: 000000005c3e2000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ shrink_node_memcgs mm/vmscan.c:6054 [inline]
+ shrink_node+0x988/0x3da0 mm/vmscan.c:6095
+ shrink_zones mm/vmscan.c:6339 [inline]
+ do_try_to_free_pages+0x362/0x1920 mm/vmscan.c:6401
+ try_to_free_mem_cgroup_pages+0x31b/0x740 mm/vmscan.c:6729
+ mem_cgroup_resize_max+0x113/0x2b0 mm/memcontrol-v1.c:1480
+ mem_cgroup_write+0x295/0x3a0 mm/memcontrol-v1.c:1662
+ cgroup_file_write+0x1ef/0x7a0 kernel/cgroup/cgroup.c:4312
+ kernfs_fop_write_iter+0x3af/0x570 fs/kernfs/file.c:352
+ iter_file_splice_write+0xa24/0x12b0 fs/splice.c:738
+ do_splice_from fs/splice.c:938 [inline]
+ direct_splice_actor+0x192/0x6c0 fs/splice.c:1161
+ splice_direct_to_actor+0x345/0xa30 fs/splice.c:1105
+ do_splice_direct_actor fs/splice.c:1204 [inline]
+ do_splice_direct+0x174/0x240 fs/splice.c:1230
+ do_sendfile+0xb06/0xe50 fs/read_write.c:1370
+ __do_sys_sendfile64 fs/read_write.c:1431 [inline]
+ __se_sys_sendfile64 fs/read_write.c:1417 [inline]
+ __x64_sys_sendfile64+0x1d8/0x220 fs/read_write.c:1417
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f36a6d8f7c9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f36a7b6f038 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
+RAX: ffffffffffffffda RBX: 00007f36a6fe5fa0 RCX: 00007f36a6d8f7c9
+RDX: 0000000000000000 RSI: 000000000000000b RDI: 000000000000000b
+RBP: 00007f36a6e13f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f36a6fe6038 R14: 00007f36a6fe5fa0 R15: 00007ffd83c52c98
+ </TASK>
 
-[   12.345678] UNPACK_SHADOW: shadow=3D0x11
-[   12.345679]   Unpacked: memcgid=3D0 nid=3D4 eviction=3D0x0 workingset=3D=
-0
-[   12.345680]   NODE_DATA(4)=3D0000000000000000
-[   12.345681] *** BUG: INVALID NODE ID 4! ***
-[   12.345682] BUG: kernel NULL pointer dereference, address: 0000000000000=
-018
-[   12.345683] Call Trace:
-[   12.345684]  lru_gen_test_recent+0x34/0x1b0
-[   12.345685]  workingset_refault+0x123/0x2b0
 
-2. Second crash - invalid node_id=3D11:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-[   15.678901] UNPACK_SHADOW: shadow=3D0x2d
-[   15.678902]   Unpacked: memcgid=3D0 nid=3D11 eviction=3D0x0 workingset=
-=3D0
-[   15.678903]   NODE_DATA(11)=3D0000000000000000
-[   15.678904] *** BUG: INVALID NODE ID 11! ***
-[   15.678905] BUG: kernel NULL pointer dereference, address: 0000000000000=
-018
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-CRITICAL FINDING:
-During the same run, ALL newly created shadows had valid node_id=3D0:
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-[   12.123456] LRU_GEN_EVICTION: min_seq=3D0x0 refs=3D0 tier=3D0
-[   12.123457]   token=3D0x0
-[   12.123458] PACK_SHADOW: memcgid=3D2 node_id=3D0 eviction=3D0x0
-[   12.123459]   Final packed shadow=3D0x201
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-[   12.234567] PACK_SHADOW: memcgid=3D2 node_id=3D0 eviction=3D0x0
-[   12.234568]   Final packed shadow=3D0x201
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-[   12.345678] PACK_SHADOW: memcgid=3D2 node_id=3D0 eviction=3D0x0
-[   12.345679]   Final packed shadow=3D0x201
-
-Notice: We UNPACK shadows 0x11 and 0x2d (with invalid node IDs), but we
-NEVER see them being PACKED during this instrumented run. This indicates
-these invalid shadows are stale entries from before debug was applied.
-
-ANALYSIS:
-
-The invalid shadows appear to be:
-- Persisting in page cache/swap from previous runs
-
-We cannot confirm if:
-- The reproducer actively creates these invalid shadows, OR
-- It only triggers refaults on pre-existing invalid shadows
-
-PROPOSED SOLUTION:
-
-Given this uncertainty, we need both prevention AND remediation:
-
-1. In pack_shadow() - prevent new invalid shadows:
-   if (pgdat->node_id >=3D MAX_NUMNODES || !NODE_DATA(pgdat->node_id)) {
-       WARN_ONCE(1, "Invalid node_id=3D%d\n", pgdat->node_id);
-       pgdat =3D NODE_DATA(0);
-   }
-
-2. In unpack_shadow() - handle existing invalid shadows:
-   if (nid >=3D MAX_NUMNODES || !NODE_DATA(nid)) {
-       pr_warn_once("Invalid shadow node_id=3D%d, using node 0\n", nid);
-       nid =3D 0;
-   }
-
-The unpack_shadow() fix is critical for handling legacy invalid shadows
-that already exist in the wild.
-
-I can investigate further to identify the creation path if needed. Please
-let me know if you'd like me to:
-- Submit the defensive fix (unpack_shadow validation) first
-- Continue investigating the creation path
-- Or both in parallel
-
-Thanks,
-Deepanshu
+If you want to undo deduplication, reply with:
+#syz undup
 
