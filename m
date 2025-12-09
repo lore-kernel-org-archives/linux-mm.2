@@ -4,94 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA046D3B7F4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 16:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2BAD3B983
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 16:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1302C6B0006; Tue,  9 Dec 2025 11:50:01 -0500 (EST)
+	id 865CF6B0006; Tue,  9 Dec 2025 11:55:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1AD6B0007; Tue,  9 Dec 2025 11:50:01 -0500 (EST)
+	id 816B96B0007; Tue,  9 Dec 2025 11:55:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F39116B0008; Tue,  9 Dec 2025 11:50:00 -0500 (EST)
+	id 72C746B0008; Tue,  9 Dec 2025 11:55:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DB98C6B0006
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 11:50:00 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6928484D92
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 16:50:00 +0000 (UTC)
-X-FDA: 84200519760.07.9E8E5A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C0E3DA0003
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 16:49:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HJjOTpm2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765298998; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 611AF6B0006
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 11:55:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED53BB70ED
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 16:55:15 +0000 (UTC)
+X-FDA: 84200532990.01.6CA6826
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2BC4240005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 16:55:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LceoDyAx;
+	spf=pass (imf17.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765299314; a=rsa-sha256;
 	cv=none;
-	b=HoBpnG7SjRLbLVYsH0EfZqcMmzqD5oWDc/AE5Z5EOCkYoWo63GJNQ38QXGxnI7sjlVnzAo
-	E3uCiUqyi1OXPaIP2EeTc+laonDwZuKwg8oX1HPtV1tnBSgro2/opT6kMYoUy5rTlnrOat
-	I42/vKY4nWBIXXIj+d0WQRKs1pslIWs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HJjOTpm2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	b=WafNp/0+gkgL+mf1zr6shCTohAUEk5EN8XgK1iKZFqZON8E3qErMJmyQ7Tl4g+fDbvl0zb
+	cFb1etRtNsGybvcECqkjBmDIFL6Ajwy5LLbwyIbIdYGQDWDwbQEaMn6i8HMsXPnEyCEBdB
+	vwd+YwfSee5S0xM7fcsKkPU5deG3oac=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765298998;
+	s=arc-20220608; t=1765299314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6buBg3qkfBGJ4lwdTN3deFRi/fkXG/oXgxI+TJ6Ig60=;
-	b=PzX+qdf9UuL+zauEtiw1IT5npd/+sODalYSMKP7Rj/RaqhNyRDARWI5XEGoSiDYpK6jqlY
-	vk5XZ1+EjXXQRqFhLUa4br9Qq6sPt7Cg9KIufyZZFI8s/fmaAsXA8fOlPEx9xlsKboVo0m
-	o2V3hF90TII16CLuKTcgnXFUjP7htVA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2AC860127;
-	Tue,  9 Dec 2025 16:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8E4C4CEF5;
-	Tue,  9 Dec 2025 16:49:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765298997;
-	bh=Fi78wc/8rnoNlreCtprcXsR18cJ0DDoUyGSanGb1RRc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HJjOTpm2un+kyEU0/ywQtbHS8wwQye9QYslUGfHzpEghgFGb1qOs9CojnRpSrmnSV
-	 ZKdjT74+9GHiUXpruZRNIUG9g/zbxlIYMAb3/utMhHV39M2zuNqTpvEfmNxm3C3q81
-	 YVJ80JYsEcWa+y27dp+1JyF+ES01uHXTA27aHIrTHlvvz/ZR1/gy+ZY2oAIKm3RUuS
-	 4uYLyek/yu0Dn+l0TnLkBXcRjFtd00r7yrcIZaeavLdqPgrvJ+5CYpmAm20+Da3goB
-	 RqXSALzX97DUVkKLtiYlidha19mfi8u38DrGu0rQFAFZNUIcBr6aRiDQ8GArUKySrI
-	 vUQSe71LrzXiQ==
-Date: Tue, 9 Dec 2025 08:49:56 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
-Cc: Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] tmpfs: enforce the immutable flag on open files
-Message-ID: <20251209164956.GB89444@frogsfrogsfrogs>
-References: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
- <be986c18-3db2-38a1-8401-f0035ab71e7a@google.com>
- <mmfrclxjf2mmmohiwdbgqhyyrlab33tpnmtuzatk2xsuyiglrp@tarta.nabijaczleweli.xyz>
+	bh=AcYeadRTyF+PlQ/oEdxR8E/IWsWlibs/HBIZ6+q3Odw=;
+	b=7XE+ckAQXcQdzXMFatDwB9e5ottbm9PapHm9kLh945wF3gVOrunk6J6DJ9pSgynEzX+is4
+	eVipfrpTM5jvVPJkvQDY9xdTlMyvyfJe86JuwpI/mIjX94sJ64AWcZT7Q7+Mo3Pp6KbXYQ
+	rxAwwgOkpgyhDAcrFGGS0qNLLJ9eWJ4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LceoDyAx;
+	spf=pass (imf17.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 9 Dec 2025 16:55:01 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765299311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AcYeadRTyF+PlQ/oEdxR8E/IWsWlibs/HBIZ6+q3Odw=;
+	b=LceoDyAxpvE0bVPr0vdjrLOLViws7k3o9OHiuVj41YsvMwvWJx5R2677mjvLPQGnzRqoBk
+	piEdE6iNoURc4kLO/JARESprqJVuI2UaqLGtVft3X7+D+1wvHlITPjUD24WZxhSOUpUY3/
+	9uF25WZjP0noAwibUEvSCF8UpnjGOTA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>, 
+	SeongJae Park <sj@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
+	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <j7rqzweklga72b7hdebljs7nziz7bs7kzvevkuhnbwi3uespkt@rmkdqlpku2gh>
+References: <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
+ <aSaUUez5J1w5WyE-@gondor.apana.org.au>
+ <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
+ <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
+ <aTZExW2LgFNTfwVJ@gondor.apana.org.au>
+ <SJ2PR11MB8472529E92EC003D956DF530C9A2A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <aTZS4RKR3Zci8d_I@gondor.apana.org.au>
+ <qux3i5m4weedza76ynfmjmtvt4whnkk3itwpuolozfvk3cg6ud@rylhkigmqn7t>
+ <aTeKNEX5stqjG55i@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <mmfrclxjf2mmmohiwdbgqhyyrlab33tpnmtuzatk2xsuyiglrp@tarta.nabijaczleweli.xyz>
+In-Reply-To: <aTeKNEX5stqjG55i@gondor.apana.org.au>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 2BC4240005
+X-Stat-Signature: p68cut47pmap8fhzc7h5a849if8x5rf3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0E3DA0003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 97jqrgyxanudodmyf7c81iobgct943mh
-X-HE-Tag: 1765298998-700722
-X-HE-Meta: U2FsdGVkX18iSWrfFvpx4NvCQS4AJP593KB9iaHY03zDRmsQSCF5IOYb3n3OgQEXwwX2nATAQYIRWsGNmrkDYN2N1aqT+3gIcjh+pOmhECtELSgP+N9LL5bO7VUhFUYChe3CQ+X4ZuT5Q/m35FBz8UHxy1ddsrW35DSxOO1DGT/E/CWs4H8+OTuIKXYSXUzNV8Wf9Ll8F4MS2BqhtuSXPF+CIPJkrFbh9MkBLKx/3p7wk4vASJtpf30kZcI/OK833XolGZ97WiN8YHnHr8Ajb7g77bL5gW7JuvWhYUarQwx/mTILfjXaz/fiw+pPLyGJJ7zYRESmjGuM9Xx2daWPOCHyRadGo9Zp6ywIeoHfyiIUehtiGMr2sExz8UTfEQm8Ru6KfH7U2qwPB/eo+d+qk+hsgPT32bZi9LIwccHjKR22qE4Y0BVRNKCl2kwEsYoGvTJy7yVCXiZEN5XihypHJHg5A9dOFqMkohY3tGaKwtDn43gygfH3cwsjtcz9IPNSV9ZJUNjN9aFAyJRebeVhXB+nKaI/U7J+QQWjFhuGIg7hx4z40NcrTVGsFaUJQgHrBqm0LF6xcAH+2wbvAlHn7k+huciGEf0qCp3B4Fypzy9sFmbZ0SS8e9t9Aqqz5eFvqcmIMYHcdyI0e1sscRTuCLUiWT9KJQNx7/BYY09phvWWdlhNmnliRo+srXEOGX3DrdQKFJEHltVIdTC/wWIgLqngJkcHpmjd/qEII2KevcSUA6RL++CwthqFhE3g1sRXyTTU00V+7/9tOXY/rvrU2SXiKpCkxU0N+vr/ae7k+/DKdKVIZAmw7hkmcxMkt26R1LEJp1rlq/RKBKePKLfgKA9ObXQUIYn0mbVU5zHGJxnFLDzjD7PahGyPFm4pjLYGxbtZ32VeYRY8d9JGZLup4pnltkdCD2ci1wPQP46R0YlEa4QhHew/mnWYduN00Exl4fNMEgowtNbts8ZpakP
- /aeZDIMo
- 8i83tRlxBaQeQ3zMTzju5NMhBhYHuwTBAtNO94sVCulrrV9Qpu3hNjJRhdAlB2zAiXmyC3MIWi59ZPwLMh1EN5Lg1WOhE31yy23/sd691riFj9Uw6L6QVToAhZQmZY8Eqi4Qo/6vxFrrAG8K66tLciHYLU3jKNQVZjmzMzGo0G4rnz3rGlZOcwIdAWfgtYSL7GaGOUdG2vR2j37gfR7jZIgsGXPQgquCSHLh2wcBumENlbn6YKbYopSpgWqhjvI8HA3/1pKP294pAOhIk1IucketsoaUlMhzwyz6mUhygCaAJtJwm9G1y2bGjReCiFtvNaHnFyin29BUSzlx83zg8OkOQI8iHb4G6XDdGaPWv2I1K8GNMah4/qlbGWH4995vQi/J0
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765299313-873476
+X-HE-Meta: U2FsdGVkX1+n033TitkGD3EvN+G6/wQahpNEoSLjL6g3SKk0UVaOefN2fZZX17jpKxH595RKOPy1u8cKl/b6ET/cmCpTYdpCWUxoIOVdYhmqvjOMH4uGCw2zW7j/S0xCmMGjdYDba/oZmRXbTO3tIhcFXnXdXvmIOqMEzq2uLigC36kKqjGVK8ax20tJcpwim4QQ0mYqZX6GmA1ycW6qBrEzAGGPiRfJ+SWm7OLRiFpV5XynWNnOaN4cVlaevJb30INFOC7DRe5NUxyeFPwBSgQo9s8+N02iaObkM9o/+j9gKpR39IsGyNv98OQ5gWYu+YmF+7Xq7eOXR7tx1gVvV3+BvmATAOZTDT7LJrqz2hWLLIgiDSXgEfZwsHmEyN05hBJO1AjZmmNgSu2RZTBl/DVlR0s9X9BdGrIuHPXAGhXdZN/AQ12aYBzbtYXFK9mK+Z7xcZkt6299Ur165Q9I7dC9KV0NKbhtd8UGASyZNiohLEFoo8Tp2Zkh253pYU8TRAYzNAm5AwP8Tnj3BR2Q7mB5F9pV1y/a6uMTALIWDdE7sMqNBdE5r+AW/MoEeCEIzhOtlQiiZ38o5O9lUXksBqNUyyvbIqBJspFv3yl5sCMHmAJH4IwLr9cRF5VNBMNPTyRg3ejsIBqgp1/IPcBuREWGRnJM8np+exQyKyRCto28PXrtj3iCNlfQ1SvLOEkDvRsY3UBp21K4RiG+X+gGV0rv2ABbQGRpyQN5swDJexp/jfBacWl0k8PoHDkcJiC/hYeGRAfJ5RwXEk9Cd14fTgLbPT1WdHZOFLjA1aHaiSSM8oUWDPTYOScVati6hp+ItW6/tWh05YEbizn2t6mUNVKPaj5CjP/4b5tIM8NI7lSwvHtVVnj4qIBWfd3cY6ofu04T8MIsbQCgtT6QRGlHYdpyQKYwW55/2VtVGCWSX0g9ig2GTAB7POaPQnq0jFM7KT2A4HVhUNWnLKkkkLI
+ nBEM/Gnt
+ ljTGMHSYy0ZwCt3qooiwUiTTXTToY2sDsGZWy5U1yuYwRdInPwzlrn7XQt3xeg7M/hJcOCZQmCMdFW+/Qo7hivtL5GNKiuK8qHa3KInGXmuum1sgXY/5+N/jC/s/HgcnkAnNfCjBU0V5SnrQDAzyHcQToFMzURlGE+AM32NDNfx577CxHZer7wfs9TmVKSkt2y4GNADegBPhV67dGEbUrEhYVTG+8LCDpK8jvqkj/ntCKCaM3D68LhPzkq8cOumikwEV6eCvHEkuN3RpxYiD6XMhDipMQz8QfkrH84YZZrblWeCsZoMEsINNwyPqz77lVX3OVR9C4T3CUclHb0X/d9jCNsYQT0ogATp/R8OS8iRowV6o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,196 +108,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 09, 2025 at 03:00:35PM +0100, Ahelenia Ziemiańska wrote:
-> On Mon, Dec 08, 2025 at 08:14:44PM -0800, Hugh Dickins wrote:
-> > On Mon, 8 Dec 2025, Ahelenia Ziemiańska wrote:
-> > > This useful behaviour is implemented for most filesystems,
-> > > and wants to be implemented for every filesystem, quoth ref:
-> > >   There is general agreement that we should standardize all file systems
-> > >   to prevent modifications even for files that were opened at the time
-> > >   the immutable flag is set.  Eventually, a change to enforce this at
-> > >   the VFS layer should be landing in mainline.
-> > > 
-> > > References: commit 02b016ca7f99 ("ext4: enforce the immutable flag on
-> > >  open files")
-> > > Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
-> > Sorry: thanks, but no thanks.
+On Tue, Dec 09, 2025 at 10:32:20AM +0800, Herbert Xu wrote:
+> On Tue, Dec 09, 2025 at 01:15:02AM +0000, Yosry Ahmed wrote:
 > > 
-> > Supporting page_mkwrite() comes at a cost (an additional fault on first
-> > write to a folio in a shared mmap).  It's important for space allocation
-> > (and more) in the case of persistent writeback filesystems, but unwelcome
-> > overhead in the case of tmpfs (and ramfs and hugetlbfs - others?).
+> > Just to clarify, does this mean that zswap can pass a batch of (eight)
+> > pages to the acomp API, and get the results for the batch uniformly
+> > whether or not the underlying compressor supports batching?
 > 
-> Yeah, from the way page_mkwrite() was implemented it looked like
-> enough of a pessimisation to be significant, and with how common
-> an operation this is, I kinda expected this result.
-> 
-> (I was also gonna post the same for ramfs,
->  but it doesn't support FS_IOC_SETFLAGS attributes at all.)
-> 
-> > tmpfs has always preferred not to support page_mkwrite(), and just fail
-> > fstests generic/080: we shall not slow down to change that, without a
-> > much stronger justification than "useful behaviour" which we've got
-> > along well enough without.
-> 
-> How do we feel about just the VFS half of this,
-> i.e. open(WR)/chattr +i/write() = -EPERM?
-> That shouldn't have a performance impact.
-> 
-> (I'll admit that this is the behaviour I find to be useful,
->  and I was surprised that the ext4 implementation also made mappings
->  SIGBUS, but I implemented both out of an undue sense of completionism.)
-> 
-> > But it is interesting that tmpfs supports IMMUTABLE, and passes all
-> > the chattr fstests, without this patch.  Perhaps you should be adding
-> > a new fstest, for tmpfs to fail: I won't thank you for that, but it
-> > would be a fair response!
-> 
-> I rather think having IMMUTABLE but not atomically perfusing it
-> to file descriptions is worthy of a test failure.
-> The mmap behaviour, not so much.
+> Correct.  In fact I'd like to remove the batch size exposure to zswap
+> altogether.  zswap should just pass along whatever maximum number of
+> pages that is convenient to itself.
 
-If tmpfs isn't going to implement the same FS_FLAG_IMMUTABLE behaviors
-as all the other filesystems then you should remove support for setting
-the flag at all and leave a comment that minimizing fault latencies was
-more important to the maintainer, so that nobody gets any smart ideas
-about adding it back in.  Better not to advertise support than to have
-quirky sh*t all over the kernel.
+I think exposing the batch size is still useful as a hint for zswap. In
+the current series, zswap allocates as many per-CPU buffers as the
+compressor's batch size, so no extra buffers for non-batching
+compressors (including SW compressors).
 
---D
+If we use the same batch size regardless, we'll have to always allocate
+8 (or N) per-CPU buffers, for little to no benefit on non-batching
+compressors.
 
-> > Hugh
-> > 
-> > > ---
-> > > v1: https://lore.kernel.org/linux-fsdevel/znhu3eyffewvvhleewehuvod2wrf4tz6vxrouoakiarjtxt5uy@tarta.nabijaczleweli.xyz/t/#u
-> > > 
-> > > shmem_page_mkwrite()'s return 0; falls straight into do_page_mkwrite()'s
-> > > 	if (unlikely(!(ret & VM_FAULT_LOCKED))) {
-> > > 		folio_lock(folio);
-> > > Given the unlikely, is it better to folio_lock(folio); return VM_FAULT_LOCKED; instead?
-> > > 
-> > > /ext4# uname -a
-> > > Linux tarta 6.18.0-10912-g416f99c3b16f-dirty #1 SMP PREEMPT_DYNAMIC Sat Dec  6 12:14:41 CET 2025 x86_64 GNU/Linux
-> > > /ext4# while sleep 1; do echo $$; done > file &
-> > > [1] 262
-> > > /ext4# chattr +i file
-> > > /ext4# sh: line 25: echo: write error: Operation not permitted
-> > > sh: line 25: echo: write error: Operation not permitted
-> > > sh: line 25: echo: write error: Operation not permitted
-> > > sh: line 25: echo: write error: Operation not permitted
-> > > fg
-> > > while sleep 1; do
-> > >     echo $$;
-> > > done > file
-> > > ^C
-> > > /ext4# mount -t tmpfs tmpfs /tmp
-> > > /ext4# cd /tmp
-> > > /tmp# while sleep 1; do echo $$; done > file &
-> > > [1] 284
-> > > /tmp# chattr +i file
-> > > /tmp# sh: line 35: echo: write error: Operation not permitted
-> > > sh: line 35: echo: write error: Operation not permitted
-> > > sh: line 35: echo: write error: Operation not permitted
-> > > 
-> > > $ cat test.c
-> > > #include <unistd.h>
-> > > #include <fcntl.h>
-> > > #include <sys/ioctl.h>
-> > > #include <linux/fs.h>
-> > > #include <sys/mman.h>
-> > > int main(int, char **argv) {
-> > > 	int fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0666);
-> > > 	ftruncate(fd, 1024 * 1024);
-> > > 	char *addr = mmap(NULL, 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> > > 	addr[0] = 0x69;
-> > > 	int attrs = FS_IMMUTABLE_FL;
-> > > 	ioctl(3, FS_IOC_SETFLAGS, &attrs);
-> > > 	addr[1024 * 1024 - 1] = 0x69;
-> > > }
-> > > 
-> > > # strace ./test /tmp/file
-> > > execve("./test", ["./test", "/tmp/file"], 0x7ffc720bead8 /* 22 vars */) = 0
-> > > ...
-> > > openat(AT_FDCWD, "/tmp/file", O_RDWR|O_CREAT|O_TRUNC, 0666) = 3
-> > > ftruncate(3, 1048576)                   = 0
-> > > mmap(NULL, 1048576, PROT_READ|PROT_WRITE, MAP_SHARED, 3, 0) = 0x7f09bbf2a000
-> > > ioctl(3, FS_IOC_SETFLAGS, [FS_IMMUTABLE_FL]) = 0
-> > > --- SIGBUS {si_signo=SIGBUS, si_code=BUS_ADRERR, si_addr=0x7f09bc029fff} ---
-> > > +++ killed by SIGBUS +++
-> > > Bus error
-> > > # tr -d \\0 < /tmp/file; echo
-> > > i
-> > > 
-> > >  mm/shmem.c | 25 +++++++++++++++++++++++++
-> > >  1 file changed, 25 insertions(+)
-> > > 
-> > > diff --git a/mm/shmem.c b/mm/shmem.c
-> > > index d578d8e765d7..432935f79f35 100644
-> > > --- a/mm/shmem.c
-> > > +++ b/mm/shmem.c
-> > > @@ -1294,6 +1294,14 @@ static int shmem_setattr(struct mnt_idmap *idmap,
-> > >  	bool update_mtime = false;
-> > >  	bool update_ctime = true;
-> > >  
-> > > +	if (unlikely(IS_IMMUTABLE(inode)))
-> > > +		return -EPERM;
-> > > +
-> > > +	if (unlikely(IS_APPEND(inode) &&
-> > > +		     (attr->ia_valid & (ATTR_MODE | ATTR_UID |
-> > > +					ATTR_GID | ATTR_TIMES_SET))))
-> > > +		return -EPERM;
-> > > +
-> > >  	error = setattr_prepare(idmap, dentry, attr);
-> > >  	if (error)
-> > >  		return error;
-> > > @@ -2763,6 +2771,17 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
-> > >  	return ret;
-> > >  }
-> > >  
-> > > +static vm_fault_t shmem_page_mkwrite(struct vm_fault *vmf)
-> > > +{
-> > > +	struct file *file = vmf->vma->vm_file;
-> > > +
-> > > +	if (unlikely(IS_IMMUTABLE(file_inode(file))))
-> > > +		return VM_FAULT_SIGBUS;
-> > > +
-> > > +	file_update_time(file);
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  unsigned long shmem_get_unmapped_area(struct file *file,
-> > >  				      unsigned long uaddr, unsigned long len,
-> > >  				      unsigned long pgoff, unsigned long flags)
-> > > @@ -3475,6 +3494,10 @@ static ssize_t shmem_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
-> > >  	ret = generic_write_checks(iocb, from);
-> > >  	if (ret <= 0)
-> > >  		goto unlock;
-> > > +	if (unlikely(IS_IMMUTABLE(inode))) {
-> > > +		ret = -EPERM;
-> > > +		goto unlock;
-> > > +	}
-> > >  	ret = file_remove_privs(file);
-> > >  	if (ret)
-> > >  		goto unlock;
-> > > @@ -5286,6 +5309,7 @@ static const struct super_operations shmem_ops = {
-> > >  static const struct vm_operations_struct shmem_vm_ops = {
-> > >  	.fault		= shmem_fault,
-> > >  	.map_pages	= filemap_map_pages,
-> > > +	.page_mkwrite	= shmem_page_mkwrite,
-> > >  #ifdef CONFIG_NUMA
-> > >  	.set_policy     = shmem_set_policy,
-> > >  	.get_policy     = shmem_get_policy,
-> > > @@ -5295,6 +5319,7 @@ static const struct vm_operations_struct shmem_vm_ops = {
-> > >  static const struct vm_operations_struct shmem_anon_vm_ops = {
-> > >  	.fault		= shmem_fault,
-> > >  	.map_pages	= filemap_map_pages,
-> > > +	.page_mkwrite	= shmem_page_mkwrite,
-> > >  #ifdef CONFIG_NUMA
-> > >  	.set_policy     = shmem_set_policy,
-> > >  	.get_policy     = shmem_get_policy,
-> > > -- 
-> > > 2.39.5
+So we still want the batch size on the zswap side, but we want the
+crypto API to be uniform whether or not the compressor supports
+batching.
+
 > 
-
-
+> Cheers,
+> -- 
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
