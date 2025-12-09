@@ -4,110 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B20CED3B98A
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 18:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DA5D3B98C
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 18:20:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB6FE6B0006; Tue,  9 Dec 2025 13:06:10 -0500 (EST)
+	id 7EE306B0006; Tue,  9 Dec 2025 13:20:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67A16B0007; Tue,  9 Dec 2025 13:06:10 -0500 (EST)
+	id 79FAF6B0007; Tue,  9 Dec 2025 13:20:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B572C6B0008; Tue,  9 Dec 2025 13:06:10 -0500 (EST)
+	id 6B4F66B0008; Tue,  9 Dec 2025 13:20:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A16686B0006
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 13:06:10 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53F44B7845
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 18:06:10 +0000 (UTC)
-X-FDA: 84200711700.29.EDDC332
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BA46AC000E
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 18:06:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JL3CLzO9;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765303568; a=rsa-sha256;
-	cv=none;
-	b=PKNQpdBscRFt5XKm/jHdNe7ExNMTMLDasp1KCXtOhQYacQIQRMd35uRvi9DQCn8JnXbG6V
-	oKH+oVbgpCO0Drk2oNliOC9sD5viw1b2NwYWrMB/A4X8UF/NNH5kqe+HSP35Amzu9UgwnP
-	vo8SQq4ocZiRA9VAjZ80wx/8xP0ANEI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JL3CLzO9;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 59C696B0006
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 13:20:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0783C0290
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 18:20:31 +0000 (UTC)
+X-FDA: 84200747862.13.2C61E20
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F1EF0C0003
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 18:20:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=JJGh0Eon;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=fvdl@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765303568;
+	s=arc-20220608; t=1765304430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5iBDKi+mtCQKzJoCUWOyyx0NYDSpQscWdtJyV8tlWwI=;
-	b=oxPwbTN2CJ+9FH+YKJH5R1/dZS5v03Wk0XIgVpPBus4JcTtcb54g10KgQrEQ+TziHwjML6
-	6IugkbiEc68GtVwYTd7PwZQ4DQadlzRMFYuCSaGasPByk1YtHots7GW6Wsi2fADmIrG/JL
-	xtFIkfagYXxxbbf3+S1cbX8fYnOBz/I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765303568; x=1796839568;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=07h+7iBXoZF2/As0GV/qDmBkKOgLQ1vyvDX4HcfGzyM=;
-  b=JL3CLzO9cWjIyBk+SFpw4cO6M/rYD/KNWHF/4BnV3X5CtjlEgOFYzdJm
-   135gfdbgEzEtooOjTcnxRrfYZoANkpd/YsWOHt8zXIJXuLf9QGVKBTCTy
-   XwuACPZuDu9NvJf5jaqFumo322H3iAOH3+k/svUha5wq5HeXpZR9GQhC1
-   TdJYne6TIUFUhiY9/iPTGcxJMVpkMVx8CB7UZPfYY6ixOd9BH3ZKHpDAf
-   UNzsguABgNrRcUqIFgm9FL5EEqLpy6QB1/NMPZSdIlUHirVZdy3Pu6bgC
-   XFsl1CS7jVSja9dbcgHPl6va6QWrCODNoRlCHJytYJ5d+OEdDAWT716n0
-   g==;
-X-CSE-ConnectionGUID: lu1yLHlDSJ+tuyc/IllyCw==
-X-CSE-MsgGUID: 2d8p9ovYTJSi8cWQNL9VOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="84680305"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="84680305"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 10:06:06 -0800
-X-CSE-ConnectionGUID: xx2RS3ENS1mxbMIde3HKOQ==
-X-CSE-MsgGUID: Q8HV4iIJR0mlQaeYpVEStw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="227325758"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 09 Dec 2025 10:05:59 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vT261-0000000028F-1sZw;
-	Tue, 09 Dec 2025 18:05:57 +0000
-Date: Wed, 10 Dec 2025 02:05:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yunhui Cui <cuiyunhui@bytedance.com>, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, andii@kernel.org, andybnac@gmail.com,
-	apatel@ventanamicro.com, ast@kernel.org, ben.dooks@codethink.co.uk,
-	bjorn@kernel.org, bpf@vger.kernel.org, charlie@rivosinc.com,
-	cl@gentwo.org, conor.dooley@microchip.com, cyrilbur@tenstorrent.com,
-	daniel@iogearbox.net, debug@rivosinc.com, dennis@kernel.org,
-	eddyz87@gmail.com, haoluo@google.com, john.fastabend@gmail.com,
-	jolsa@kernel.org, kpsingh@kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-	linux@rasmusvillemoes.dk, martin.lau@linux.dev, palmer@dabbelt.com,
-	pjw@kernel.org, puranjay@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 2/3] riscv: introduce percpu.h into include/asm
-Message-ID: <202512100134.TRTNjFGL-lkp@intel.com>
-References: <20251208034944.73113-3-cuiyunhui@bytedance.com>
+	bh=evmg9WyrD2HkygF7wnhCaOCmIVrkIj1I8JvCf7Jiv9o=;
+	b=t7yjQ0iTfzJeF1/RYqQ0FKiBVqs3jaG+sgKQDazN0nm/mW9KvAXxO1mjOTGPrOgQ648yFY
+	3uUnUuPBCI+I4hc/ubA1RkhqgqdW0czK0s33ZIWmcZ3shReuxyg8jJM9R6fbuDwUtG3/aP
+	iIDC/zs+jt11/38MNbzjopfJyEEY0k0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=JJGh0Eon;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=fvdl@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765304430; a=rsa-sha256;
+	cv=none;
+	b=PPqSDWHadMReInptHB8N0lC4gFkW7ACCxzOlWvelk1a1PeO4D+i17H2PPWzZYPJEO4dHMj
+	F+9WqQfu4n5LjJ1c1qynfgIga5uYrNeI9pS9NVe5OQ4baTil0iFdTrFlNlTyREPB67KqX2
+	OzmYtxmdKjSom9yxdPxuhSpuERl/DLs=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64969e4c588so708a12.1
+        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 10:20:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765304428; x=1765909228; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=evmg9WyrD2HkygF7wnhCaOCmIVrkIj1I8JvCf7Jiv9o=;
+        b=JJGh0EonpeJuKNdv/NSuo0V46m6PiphlDulAnQmxoeuZHiFzmu2ljz/7oQnXCfxjgq
+         nG0st5QDyInyLeWykUnDyQOC5Ckg5LwJyaco+boTJJtMy+F9SkUkxjCa13TfAh8oHN+h
+         roQnqccMvIFASNlofh1ViOrINJHOzNB5RJEwlOpn8WG31DAGI1P5WIFLA7qv+8hKmlgc
+         hVg6vAY0hO6dbOmwg2OOzu0yOgE2G/KY6XY0uvDP/3t1lJLWWt/y0pzipLyDDh39/JyR
+         HVhuJPwzRj8hr0eYMMlaU/l0CwqLlDY6xO1EtZrJdQK+yf9l4BGwiz+bf+MzxzcMPUxx
+         XJIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765304428; x=1765909228;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=evmg9WyrD2HkygF7wnhCaOCmIVrkIj1I8JvCf7Jiv9o=;
+        b=THgQN7y9t+iNxgTwMz794KUss69y3fUj0zJ9a6S8oHY7+BORpXDS0dX+UXD4LigLZJ
+         jIdwLn8DO5VybvDPua0Wa7EIioL2mCo3gP8oLzrd6DhC0opDG6QCr9VtvOa95mDoxgEa
+         yRn0jNb4VOL9+v6cwmAfFILpA3NVqXlcWfFnEoG7Ih1jYwa+T5beqcZq4Hub8wv5ObOf
+         yanz6d12cstxqY7GjvglS/EAxcSDXy6O/jSQgQmNIjGijiPyVlCpnQRJ+rSC/HHvRQcy
+         kSNTBgPNHaRPmY0KsZOvMk6PhzCyunQtmgYmIX6ZNPLsxnwDp56aXcaNbrv3Y8RwnQAN
+         +n2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUgWzvmxlNmi9GmCRl+gQp6C5qGC7Er02fb0eiNdZM4lZJUW/8sRm20Sh+cfJl9SlFzjojvHLhekA==@kvack.org
+X-Gm-Message-State: AOJu0YyrjytFUKGaXT0+i9Xp4LkSBu/2y/VbJvOOyMF7Wq2vBNF53wjb
+	ZeoBk99VJgu/pKliO1Ved3Hrvv8cdjT/SbsztWeg2+AADqFopGHB71I2IZFZ5FE1PnBab5tEug9
+	LThLQLvdfjwoEr3AjGipzczYvVusIyQWBQuRr3Xvk
+X-Gm-Gg: AY/fxX6EW/XU0YwSKPwvDvHJhV/EXZiwqLI97m5rXbJIKkMseIQbn4ohu+Yty+LkY3H
+	deZ8igGv8ybdVezGx+9tqPjI9glFZXwA0EGOOpvLiJAXgRjosc2gtdEXHLAwZDnc6bg5Wv8ZY9D
+	V5aqIu/FhgLa/dvfXROOKxt+jbxgYwCq+f5zsCX2MBQDfZRCnnSi9OI7u7J4/mTV3+Hp6N357wL
+	jLTdGl9Pp2/jSC4DGAfhKI9psoGUhOpvTMWBZPeWIJMcKu39fL9N+iW4OZ7Y6Hd2feEcxse
+X-Google-Smtp-Source: AGHT+IGua9KoMluY3zejeC3C4N+kgaL8dARViDU9ow5MyTiyFYNRtdVfy/9pEYEg+/C25U3TBmJkhcigAjHtb0SZb7k=
+X-Received: by 2002:a05:6402:1602:b0:643:6984:ceea with SMTP id
+ 4fb4d7f45d1cf-6496c45ea0cmr74a12.13.1765304428077; Tue, 09 Dec 2025 10:20:28
+ -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208034944.73113-3-cuiyunhui@bytedance.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BA46AC000E
-X-Stat-Signature: r8xsemw47t8g7yawz8cbjmjqbien34rb
+References: <20251205194351.1646318-1-kas@kernel.org>
+In-Reply-To: <20251205194351.1646318-1-kas@kernel.org>
+From: Frank van der Linden <fvdl@google.com>
+Date: Tue, 9 Dec 2025 10:20:14 -0800
+X-Gm-Features: AQt7F2r1NndvV55ZUE81wu9xsLiEjLpVzmQRQozJzmow2POGkCNA76ncwaR0Tis
+Message-ID: <CAPTztWaWnurc=9fOBpPO25JoZu6PHU6c7AYNJbE+xdWV4gwskA@mail.gmail.com>
+Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap optimization
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Usama Arif <usamaarif642@gmail.com>, kernel-team@meta.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1765303567-590290
-X-HE-Meta: U2FsdGVkX1+c5eGdBKPgLc8/Xmmc+9vETnQUXlCV6CPnWTP5Yiq4qiPCjeRrGHL7TxNA7JKBQGkOPBmjxij+wxbzQPVTRBl4o/1mcq4mYoA8Oe3m1kRo4385BKpLB7FlxymmV3ThzB5aMP37p0wnyPpZGmXWMnkuHglEaTSUsE4HCZi6zeGw5d2nmUW9PsNne0KSzBTgHDNUifc5pBfCO6yw8hOOHCXcXJgvxqZkIRoxjwTdCsRE0ZFws4ChFQup/nrMZfhpuY+wqF3XIDqsJ5XfIXQ4z/+MVCIdrMMPXrWa2UhLLDb6MiGW8GuX3dn/6/NpPyFs7pAtj0oE0xLgzNP42VQiuVSdrMhPbVdWEuJd2lQ0+cghykNN69UOmEwk0p+lcFJC3puQPCa9Z++sSCmc6dsDLARXP47Qlveam5DPaWr+m0+5IdWu1Cd+o4Yg0Vk2cTLlZewpZ5SJ4YyyzWAlO32EYLxQOyTcspjFmIBtkUszUrdEYFbKr8P6IqDKHYR35XHnWXxljmNyyFok4JbXQIPtrytbb4t70FzxTihNNY4iJ+rrHOvYMvzctzm68Foawp1zqVc/Tq/zahNRm4dw/4+nZx62uiRj/j0140qyDP+lPC4WfQ7wR4XFf4zAPo+0wSBONiVrMOzUOK7h5ITn/2C+qDVLBv7oGHOckn6rJJyO6QRo9Sve4VBPZyFlJc1FPNHPyqy6wCymZkBHyWnwUnMfBTvNY9zbyt/NfPaRjmLGVfS9DFmsgdO7bmrP1hUvDJKlVYQLt1edsnec51B7ZTtHo6SbCBgtvZOTVBdFKYchPPu8Trw8b+0UwQkr+g4qB0Mq9tOKC2rStPgk3rnsSdTdWq3RymQs2qiZfEV71rv1ECnV5Nq16nB4lOdLv9jetrEGt155v5Rtu5k/luG6Eg8Rkxbq1YY4uXmAUAE8C5kssdKxJIXs8J3/jx0uwUnZ1Al/GCJfsdU54KZ
- IeCELw8L
- 1qKLSC9IycdkNv7R01a0WLAYfS9sUWMFy7Er3c6rTfef1UUo+zKGI8TTkXCqAVE0PCfI6Ag2ctUADAtMgb0uzYRPV5MCoeNGnvO7wrIo9UFc76wKjQ0abLE6WAe/N43/E0sdbqlrobHb0gK9QAcAbrZzNC5ohVsO7gKtcFfqJb+XLREHQy7bxsY5BHj0dBuRtjEa1PVuxvyPdlHOH3ssfFX4yTcX/Pq1HSgDD2mIhHy+obrlf7pb2d7cpiqUK7vdsaZcl0HD8Xp/QJ8d4MC0c92Z9uSWW685AxrOKSHlE1pyImG+4OJOWeCnsHTMwSgboz5jH1vi+itYV9s/ojcogmtiT+PFgyb1rlMzqzFqKHm+9nRhFD+Zq8ThI8s88T/nsyhfxERnjlmd1GC69RAa0nN38PAIdRsCSsf29WVXQWxRKzuldoBrMPg3V+G51mJmPJ9ZM
+X-Stat-Signature: hwcbhho48no78em441zigq4h69u6waqi
+X-Rspamd-Queue-Id: F1EF0C0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765304429-512187
+X-HE-Meta: U2FsdGVkX19lYNGIZtNaequvUMwYGljDgSRPCzu6XZf4OLLWM3KEmO2E74dgWdmBEboB/g0oSFKJQJpi4uk5cnt5X8WbR0mFJStyI+FcFhjVeRQ2GS8UcuAy7jGGoBN7n92Oc+03Zg5B3v6XZmcmNa38U/E8T2Nw2LJ2/r5FKLxqIDzNdB3/2CJxztVoiWIi4XEUrhugC9k+GHT1ki4MIg9sQDtTybLzmrYmcuYkX+l1zra/vTACGHM9fKfm3NvGTkQ3q5DOiyoP0k6CcOzauVq8ejKevr64k06aNtFcvbGaBYqE7wmP/fD1N0a71f9nqcQyxwBzGf/732+a/OP243LkwbeEIi16eJIUIC1sKtF/zoizEH7MX6dzNKxfKbHcRPpOEbzyjqtHgeyfgy7Ig7HpRPB8JuT1d40dXvqzR3RfoA1knOVOO+0JCb5EAtoWvpG8cAiYW1BCy5dUnhYiRdXQ86DUobQ1+nwAHmvr6Kk0K93Ap9iE3VlzguX7Gxs60EnMIX7fBrQbTMmL8qkAcmp6zQwPs1v5u2kfysSIoN5HftDrtwoEa3kEuM9e8IcQRPYdLZmPokhbywVWrNB4lZ9+jDnxTUgq3x2JzlVvNEWH0A8oYLLNxhFuBpa4XGdxKB4n6K8yjWN9zIjjTPQh3WK9A2cV0Rx2SaztRrGGsDYvmnSc8YW5SfCsNVcabkLWv8EXO9aIYFKdT3xlCr8FoU8Q2xubPtiRy1isnYIV0oCA5kB7qdC0j72ZDRzTWkOC/n/OIvnOb4vA4dGRMtEk1C2WPCQqtXmHoSB3QqdPpBDg4HqUNKEorQNFpBCahPzrfs2jEba4yy96K9o6vaHc9Em6jScNiWaFn5gDuWznxr1KKXODua9o8UGuTTjuBws+a83r6XIV7x7auoIBqmHKAHaapKZD1U9G5jXdeZknmmz/kPJtOC3dvqMmkYM6B5fwCXGorskTxr3acMvxsqb
+ qNpJvTC6
+ 9XMc0uvKAD2XEBy2m8I3GIEttXGHEvSKM0OXBGtA1x/6wNMPtAl8idBE66zOZoO/UKMVJh20Xj6l6bZwm2ysNGsoTTi1/z3dJ4+Vu9Ki6JRzkB1NqZlqZIN6Vbyg1HGg9TOw3TLuaBun7ECdDQc5dfFFroUqeRwWtEXFn8F9JvYiFwFR4AxlH1VxuGnpegVz/tToivMuNti/N0wd2NWPr+SJcY/+ZiAKEX4ZQz9HdURJ31NuNmjPu832XiyjBQsg+n1P3VD4pfL30qmuc/EZJxKUcN8UmveXcSvsGIaAxK2p15Y8Abdjx+UlJgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,80 +121,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yunhui,
+On Fri, Dec 5, 2025 at 11:44=E2=80=AFAM Kiryl Shutsemau <kas@kernel.org> wr=
+ote:
+>
+> This series removes "fake head pages" from the HugeTLB vmemmap
+> optimization (HVO) by changing how tail pages encode their relationship
+> to the head page.
+>
+> It simplifies compound_head() and page_ref_add_unless(). Both are in the
+> hot path.
+>
+> Background
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
+> and remapping the freed virtual addresses to a single physical page.
+> Previously, all tail page vmemmap entries were remapped to the first
+> vmemmap page (containing the head struct page), creating "fake heads" -
+> tail pages that appear to have PG_head set when accessed through the
+> deduplicated vmemmap.
+>
+> This required special handling in compound_head() to detect and work
+> around fake heads, adding complexity and overhead to a very hot path.
+>
+> New Approach
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> For architectures/configs where sizeof(struct page) is a power of 2 (the
+> common case), this series changes how position of the head page is encode=
+d
+> in the tail pages.
+>
+> Instead of storing a pointer to the head page, the ->compound_info
+> (renamed from ->compound_head) now stores a mask.
+>
+> The mask can be applied to any tail page's virtual address to compute
+> the head page address. Critically, all tail pages of the same order now
+> have identical compound_info values, regardless of which compound page
+> they belong to.
+>
+> This enables a key optimization: instead of remapping tail vmemmap
+> entries to the head page (creating fake heads), we remap them to a
+> shared, pre-initialized vmemmap_tail page per hstate. The head page
+> gets its own dedicated vmemmap page, eliminating fake heads entirely.
+>
+> Benefits
+> =3D=3D=3D=3D=3D=3D=3D=3D
+>
+> 1. Smaller generated code. On defconfig, I see ~15K reduction of text
+>    in vmlinux:
+>
+>    add/remove: 6/33 grow/shrink: 54/262 up/down: 6130/-21922 (-15792)
+>
+> 2. Simplified compound_head(): No fake head detection needed. The
+>    function is now branchless for power-of-2 struct page sizes.
+>
+> 3. Eliminated race condition: The old scheme required synchronize_rcu()
+>    to coordinate between HVO remapping and speculative PFN walkers that
+>    might write to fake heads. With the head page always in writable
+>    memory, this synchronization is unnecessary.
+>
+> 4. Removed static key: hugetlb_optimize_vmemmap_key is no longer needed
+>    since compound_head() no longer has HVO-specific branches.
+>
+> 5. Cleaner architecture: The vmemmap layout is now straightforward -
+>    head page has its own vmemmap, tails share a read-only template.
+>
+> I had hoped to see performance improvement, but my testing thus far has
+> shown either no change or only a slight improvement within the noise.
+>
+> Series Organization
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Patches 1-3: Preparatory refactoring
+>   - Change prep_compound_tail() interface to take order
+>   - Rename compound_head field to compound_info
+>   - Move set/clear_compound_head() near compound_head()
+>
+> Patch 4: Core encoding change
+>   - Implement mask-based encoding for power-of-2 struct page
+>
+> Patches 5-6: HVO restructuring
+>   - Refactor vmemmap_walk to support separate head/tail pages
+>   - Introduce per-hstate vmemmap_tail, eliminate fake heads
+>
+> Patches 7-9: Cleanup
+>   - Remove fake head checks from compound_head(), PageTail(), etc.
+>   - Remove VMEMMAP_SYNCHRONIZE_RCU and synchronize_rcu() calls
+>   - Remove hugetlb_optimize_vmemmap_key static key
+>
+> Patch 10: Optimization
+>   - Implement branchless compound_head() for power-of-2 case
+>
+> Patch 11: Documentation
+>   - Update vmemmap_dedup.rst to reflect new architecture
+>
+> Kiryl Shutsemau (11):
+>   mm: Change the interface of prep_compound_tail()
+>   mm: Rename the 'compound_head' field in the 'struct page' to
+>     'compound_info'
+>   mm: Move set/clear_compound_head() to compound_head()
+>   mm: Rework compound_head() for power-of-2 sizeof(struct page)
+>   mm/hugetlb: Refactor code around vmemmap_walk
+>   mm/hugetlb: Remove fake head pages
+>   mm: Drop fake head checks and fix a race condition
+>   hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+>   mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
+>   mm: Remove the branch from compound_head()
+>   hugetlb: Update vmemmap_dedup.rst
+>
+>  .../admin-guide/kdump/vmcoreinfo.rst          |   2 +-
+>  Documentation/mm/vmemmap_dedup.rst            |  62 ++---
+>  include/linux/hugetlb.h                       |   3 +
+>  include/linux/mm_types.h                      |  20 +-
+>  include/linux/page-flags.h                    | 163 +++++-------
+>  include/linux/page_ref.h                      |   8 +-
+>  include/linux/types.h                         |   2 +-
+>  kernel/vmcore_info.c                          |   2 +-
+>  mm/hugetlb.c                                  |   8 +-
+>  mm/hugetlb_vmemmap.c                          | 245 ++++++++----------
+>  mm/hugetlb_vmemmap.h                          |   4 +-
+>  mm/internal.h                                 |  11 +-
+>  mm/mm_init.c                                  |   2 +-
+>  mm/page_alloc.c                               |   4 +-
+>  mm/slab.h                                     |   2 +-
+>  mm/util.c                                     |  15 +-
+>  16 files changed, 242 insertions(+), 311 deletions(-)
+>
+> --
+> 2.51.2
+>
+>
 
-kernel test robot noticed the following build warnings:
+I love this in general - I've always disliked the fake head
+construction (though I understand the reason behind it).
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.18 next-20251209]
-[cannot apply to bpf-next/net bpf-next/master bpf/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+However, it seems like you didn't add support to vmemmap_populate_hvo,
+as far as I can tell. That's the function that is used to do HVO early
+on bootmem (memblock) allocated 'gigantic' pages. So I think that
+would break with this patch.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/riscv-remove-irqflags-h-inclusion-in-asm-bitops-h/20251208-115407
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20251208034944.73113-3-cuiyunhui%40bytedance.com
-patch subject: [PATCH v2 2/3] riscv: introduce percpu.h into include/asm
-config: riscv-randconfig-r132-20251209 (https://download.01.org/0day-ci/archive/20251210/202512100134.TRTNjFGL-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251210/202512100134.TRTNjFGL-lkp@intel.com/reproduce)
+Could you add support there too? I don't think it would be hard to.
+While at it, you could also do it for vmemmap_populate_hugepages to
+support devdax :-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512100134.TRTNjFGL-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   fs/gfs2/file.c: note: in included file (through include/linux/irqflags.h, include/linux/spinlock.h, include/linux/mmzone.h, ...):
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
---
-   fs/gfs2/trans.c: note: in included file (through include/linux/irqflags.h, include/linux/spinlock.h, include/linux/sched.h):
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
->> arch/riscv/include/asm/percpu.h:113:1: sparse: sparse: cast truncates bits from constant value (ffffffff becomes ffff)
-
-vim +113 arch/riscv/include/asm/percpu.h
-
-   108	
-   109	#define PERCPU_OP_8_16(op_name, op, expr, final_op)			\
-   110		PERCPU_8_16_OP(op_name, op, 8, .b, u8, expr, final_op);		\
-   111		PERCPU_8_16_OP(op_name, op, 16, .h, u16, expr, final_op)
-   112	
- > 113	PERCPU_OP_8_16(add, add, val, add)
-   114	PERCPU_OP_8_16(andnot, and, ~val, and)
-   115	PERCPU_OP_8_16(or, or, val, or)
-   116	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+- Frank
 
