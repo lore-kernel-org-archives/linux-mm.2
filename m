@@ -4,104 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C2DED3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 06:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36509D3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 07:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5D4E6B0005; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
+	id 140576B0005; Tue,  9 Dec 2025 02:21:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0E0D6B0007; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
+	id 0F1856B0007; Tue,  9 Dec 2025 02:21:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FC4A6B0008; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
+	id 006D56B0008; Tue,  9 Dec 2025 02:21:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A9C66B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:36:56 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 153CB8A4F7
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:36:56 +0000 (UTC)
-X-FDA: 84198974832.23.CA258C2
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 43F63180002
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 06:36:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="RD9/65sP";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765262214; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E60DB6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 02:21:54 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 649A1140416
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:21:54 +0000 (UTC)
+X-FDA: 84199088148.19.7518802
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A3D131C0004
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:21:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uNDULjqH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765264912; a=rsa-sha256;
 	cv=none;
-	b=7f4k7GgVDkxFBFs6CUsbKdutqFkjg2TUR/GguG2SXo8ALDP1ExD65LYreUNJFU+nO7LjXQ
-	xMEENaVSpGJk/lVZXKN+PIJTOAe+qt/z9mrbuxvFWsJ3QZNZEdS9H1Ko9bZ9YM6mDou6ur
-	JsHgbRtsQbN2B/1x9k0TIocMYEeVqmw=
+	b=ZRfCqsnmP+dDPpcmH5z/9QIUNekA6Hh6iUHutmDp4xZ3oJ7Iz5Tp2FCY5r/WT56jD/3AlT
+	rE6Ayr+SLuV2t7PsJMl2iPMbg2XUQ0tPQsvA/ArV0vw7NvMJpl3mDo/M56aDNJgsi13Gr+
+	u24mexHO3DCdW/xQDblBXA9hSrgbFao=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="RD9/65sP";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3hMM3aQgKCDsgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uNDULjqH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765262214;
+	s=arc-20220608; t=1765264912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
-	b=N3k34S2+FPu6moPzQHUoDS3NQ4OcySmdftwNfmiyUR+WG/2VOlIjNBAkbBCOscZxuvocxG
-	S3p2Rn51YLbtfrAdPKNGn/iiCbUOvPfkfzVcCSI5WgnfddWrR636TdcnAcLCbT12APyzGg
-	i++d3N15pCB6eQGsVt5LHbWNrxkHTnE=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6495cc3e622so343185a12.2
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 22:36:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765262212; x=1765867012; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
-        b=RD9/65sPsSnYSymn78adkB8QsZ1llTf4UT/sLTUiwKf3P62mFsu6yR6uBhOo78sOan
-         F+YpA6GF+LTwkPfoxGUQCROU73xU3Vsw5/oLPfVwtIEc5tqwwtQEYhu8xKBXHz5A+Z44
-         qWdmyL1JW/7I/PlAz0RCm01oB+F7FDQyCx4Pe7Y6CSL+M74Fvw749D+7k6hQha/jbdnR
-         SEgpQlBRJZo9/YnVy4upSsoawiIYusmOFskQs3/K7hoGkDzkwGposx4Z10BElGUKPw+Z
-         RiGZHhQQbDG2vF3bIybX2SZ1qt/jxgPlxNnYsheGE2i1uNh3CSJs9pQUX7dTWGyTLOI/
-         znRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765262212; x=1765867012;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBlg6N0YGJgNDGWLE0hR1gRUpuGlTlt32WJRdXYRD2Q=;
-        b=G1XnoQA7lKCsHfNNL4frdylQzvgctW3p3TjE3HmkX26/kOAGOtX61w+KVs2RQUgr0x
-         a1qn/aEK6g3QkUMFQ5IbwhORu8VBGOZciY+WAu8LXk3Mw/7cHOgnGwM36mjAXhlJwO+t
-         N5j/t4/UM++33QPAgc4X5QpJhOK2+WliLoSqzGFXFu8amT3Eulafz7pn6R7UErvR68gK
-         YmrAOo5guS6cRsrQm2mlUyR5zYHq1aumUY+dVIWJ5K/vZlXfqVdPcXSStAnXLsFBVhuE
-         +hF29HY7WsLv5rfBOWR2Jx5P3dqV0Bz5LF/dwyO/r6ub1EZDpECcIL0+bmLTKCoO2L/n
-         nlGg==
-X-Forwarded-Encrypted: i=1; AJvYcCWr+9MGSASx+Xq9+xzsmg6xpNNaktMHSUgkdnGWya7qquQx5dG+BrOYaRB1rhsCSJwvu466UP9LjA==@kvack.org
-X-Gm-Message-State: AOJu0YwWh4t/ayGvzhD590OmxFlAmGDcigDpcmiBfXWiWXMimNhMG/P9
-	2XC+m1tvH9G87QVv6kn4ESngkiVU9TuM2nFnRz9eF50Rm3U6fCLOpIpY3tjjTK8d9xptdsmFh23
-	RP6O1V9+QlYYmTw==
-X-Google-Smtp-Source: AGHT+IHCnkhtu+erinZRjzHU08DdBwFzraMet61P9UwT8esvB8HjyL7gPlKocQZ3b3SJKLvMZ7snSMNitdCnUA==
-X-Received: from edbek6.prod.google.com ([2002:a05:6402:3706:b0:647:5ed5:87dd])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2816:b0:647:57e7:472e with SMTP id 4fb4d7f45d1cf-6491abf2749mr7780459a12.22.1765262212352;
- Mon, 08 Dec 2025 22:36:52 -0800 (PST)
-Date: Tue, 09 Dec 2025 06:36:51 +0000
-In-Reply-To: <20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com>
-Mime-Version: 1.0
-References: <20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DETH88RP5U4O.QACTRJIY5Y1X@google.com>
-Subject: Re: [PATCH v2] mm/vmalloc: clarify why vmap_range_noflush() might sleep
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+	bh=iaz7ChT4qKnjkK7Iu1ZHnQeBlb+LWs4ghUNTWn+BX8Y=;
+	b=Yx3UFlfVIbnlk5QwBmQeYvwr5ZZoWtMsJJK41bu5w2x8awLO7ql1zEiYJReEQU3kagRRg7
+	qByDDWmsIMnJGTOgQyia48Gec9+2QXUEAbEqxquFuqjqVjwoJ534wSNJHdqZuy2sjHybp0
+	BlMfNicAYMClEuQfSeNvhqmkMAUDoFg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F33340067;
+	Tue,  9 Dec 2025 07:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A8AC4CEF5;
+	Tue,  9 Dec 2025 07:21:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765264911;
+	bh=YFsjm86FdvkgcY6Jiigg9An1/lmF5ic/ii6TJuTDmGc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uNDULjqHUgaW7V6B+JgMTxVCIdhI5LwAO4x9mGGF2NAzKCSz8cfG/YlWW7dScHzx5
+	 SYhrMuK5bePqInXB/WmVJuw+j4Cq9i7ni3uV9XICTDN+PP9OwXtQJmlPvnpVKnlU2S
+	 M9BPCmrTFKbQwmFQWya1JVIKxB21FKTZHi8WIzBdT/Eczdt3G58U2l/t1E3Gt1JUc2
+	 FwFU0TEkaHOr02EdA0CQbGtTP4A1v3G7HQX1COy1C/Ev7payIQJrtojta8o4fAS7nP
+	 gMfp1MPNHDpwI11VIQgnMZwAZyHYSzTM9vnVukJdBahtkEkT03SnqWqafmZiaD6JoU
+	 9aqy7F1xb0f5Q==
+From: SeongJae Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH] mm/damon/core: delete damon_target when detected invalid
+Date: Mon,  8 Dec 2025 23:21:45 -0800
+Message-ID: <20251209072146.42315-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251209055713.270737-1-lienze@kylinos.cn>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rzszjas9wskdugmu99swd47rsgnuhmft
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43F63180002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: p4ymqn5sqc5ynpbgoigir89z95w7ii9h
-X-HE-Tag: 1765262214-859960
-X-HE-Meta: U2FsdGVkX194M+EucU8uzPBjlKDyD03WpvARBa6fLNy0CiP0OheCsef1wnBnru5Z/C+bhbBjly3DtLMBCQP1ZyZ8gw/Az6OqpS6ncKw04GRT36rd4rJzyZKNz55bkyuVy+C+aa23qikqa/fMt6x+haPyQWOTQpuIDw2TauDKgzYsXeJQIyhZqpFuKnzlHBuipO4jyTFQqrZgkgOgEZDXDRGvt6PwN1NBoBRyS7V9+OqUF0K5bm2QdB2o6v7MyShRAxmHlbXkBIz7es4s0MIYG0PKpKQQqsxqtJSFQr7qNcnHjDFXB7YNLKlWG/tKmPuFV1fyF2oBv/YolrpHwna9+PVuTLtuPBKsbW3aHp7sjZLTc3RqfAz+qq9gmhhmKKbbuVTmuLq6oexgifLDb8PWD09Ni+qexhDsiCjuUCDZW7tnE/1w34BsUv3zg/v809QTIrgzTuZbaQpO6J2QrIcj7cIyHezj/7t5lPN3mLTHwqukB/prfl5voT6XlbX2B40JhIR6lGpBWdbeExDYa/zIBbB4U39J/to1ns2tbbC//xKLxZL6y8zsPJnU2UWAcogGwnf2FMigZoIey4R4tc6bU3N1yGO+AgsQXZ3HzPKfumKg1WC4WIFqAp9h03u7D6+sN6Q/PUevl912mcy6MpeJDfQMD432MJ4O4WTvAKXof5PpZEDSQ7s+bDibnoZOGB8WE69ZzMVgLnVWNJqq0K8nXIrfqhoeBwlFGBjtg3S0G/ivGbS8MBmsnzKpXkGZUIRlf8PQ/9iGr46o86VMz9d8xFjeO7RPqGTbfAwR31jY6/gCIkam4Jnh+yufqARfSU7XU5UFGbkIQPGX1Zy23jrxrAIGuzZ6j4MFXhS/uCy1XLgE0w9EyUjkXNgsymCdMWOWPHS3hZShBqd5sCTX57t2zkJdJ0IqCMSIeD9mffHMCNFv2Ux9IwHAPAE0pc2Tn7Gra2XCdykPhLAgHbIJgH8
- j9AznmC9
- sqAx9i2GJQ5A5Nawktu5TDW5NKxvaIeiVEKfu0NaJNGSa0LTj1cvqoV1V0/UbOF1ffeV5DOHEoZ8FheLV2X7IeXeIr0QXoBLgMybhi9r5UFRB+TAm8MGRHQx0SYTzHRUOCXXL/F/h9YHZ0Xou8s8dJY3Vevrq9ZJRwZZqPULakrzgr1E7scsAgu5UK73fHHiOVNnDZmhMsZmz4ukjNpYvvFMG5PfD/p+RWOcJWm70kYxnReLp5w5MO4MDAlzo/6M7pvOMKi2agx19R01zxnTulcNCBAMVJz+59Tx4VyTe2FZyEiC5nI4DPSLw0Ic8JXBivpnj750qo+srAqHrqmmKcbTeenebfrFL8W/DD867/GeXcsDmf/4HyLRq5jHPwLrEV+SdtE7sVXCfF22TGKLS+B2FbOWct2TxG6heySZp4PFcdMvpsA2eOtQGGm5gz8EnITc1JFAz9leJniylilpDqPlwBQ+B2gDDAXTVPh8JDYFcdv6ghoR8mH0ZjxpZ+d/wYBNYLIPO5Kx2tURerjpnZ51NZ251EQwUJkfAFnZ+SKVHTd2wYcb71RNnJ2sDCk5Ae3rNzcW2Q8stwzKVA8bbyTLz2u9qvMG0wkncdM8Pw+5A/Bvj8ngzS7xs1w==
+X-Rspamd-Queue-Id: A3D131C0004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765264912-465497
+X-HE-Meta: U2FsdGVkX1+kvLyAYMQwyqQSed+LQ/fYFId6D+mJIODRtED+N6BKWMbZc2x92aR6LlDrqRxAJCWi/3VA/yiWWfrgCn13KoCSfJii19c3FoFmc7GDICFwA4QaTM4gTrlLjLEOT5qLBFpd6X4OMjoB0Y5zvjil8cHMkN4DeBqYisv43eshq2Qo/LvMDUfqkVXdmV2hKqrgVCGEWuhjICnYX1yuS9JKlOH3MgDJ7qZ2I5DFBjaMwAuHMwpZL1T6Et1FE0V8GxjmDRVbMn3/33e/77VazSbU7cyinYTfQ066nK61tK05ck5MuFP6P5xHtfr1AjoAW+LfZGonL4W1XC6bWMYfotFdJJsH5Gzenl430CDrJ2kWLSpNySRJCFjKD7CN72Ac+pHB6yiJBiSNZ6Gp6ysIewJBvDuYv5SW1oXBmBQYy0ARNMZlWE7YuFCb2NYdoJjAkHoZRdWWgzl+D1WecUhmHIP3ohm68GhzK1v5AgeLi+6oUXi3nmUH+8WVXs8y7Q3UfOiIh0DdzgR3Rx636KG/5TOzdqXplKHRCkcmNB73J+tge3Aa6t6tv4X+j2ESbdKRfqnuYKVaX+Wg5R/xaH4IQaes+qS+tQx7FuSxfzkYc2XCfN/PII8dEP6CfaYH6ABOKHICBejVKo8zJCwZwXNfp+bOawRF38wt+FhQAE3fscGfy/3xLFhLdJBzRq3tulwt+U2T6I18u5axKlRXH+iS0DSYSDmfPUqnfQo0eqSR6hTG3lvHuE9laz8hLABHzXCdb+Wv25EOum+lXacMPCGXoolF1M6LCk1U4NM4xPw539+b0suWjW0bVNKuyz/vHvqfb4wX78qQovr+U50I3NC3UhOoxr2YdR5PQkMpLmUBoXrScxAEbF163xoi4gbawlQPKUrjPP9aMScgfCxeI/1TX4hMW8Tmk+4qPrQjT9K9pCokwceoo1djq3uCom0qKPt+eyHGRsg2gZV+2rA
+ HcC9c8s+
+ BiRMuVtXXUlKyps5h5SuYJhJL2GqsmQf74FXdJ2plkiCF+nVQZZ2VP1+BWaUP49tYZAS4y2X+Uj7q7FWFCvlLfzUeAQiVJyTonly7V8oGIR3NakoYBFW/o6f6IIyik4Sa4fJ+VBuMl5bsdsGnDHO/4wS/yJbNuh7OwABxYtYLpZB6ZYnGuqStMYhuSQMEnnuM275gqXruppzZZ5kUYjjvhHlLkVIXtug23kx0se8ORLkyjGS6tihMzwweaYrmKZrcDTGP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,41 +94,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Dec 9, 2025 at 5:44 AM UTC, Brendan Jackman wrote:
-> The only reason vmap_range_noflush() can sleep is because of pagetable
-> allocations.
->
-> The actual allocation mechanism is arch-specific so might_alloc()
-> doesn't work here (what GFP flags would be used?). Hence, just add a
-> comment.
->
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+On Tue,  9 Dec 2025 13:57:13 +0800 Enze Li <lienze@kylinos.cn> wrote:
+
+> Currently, DAMON does not proactively clean up invalid monitoring
+> targets during its runtime.  When some monitored targets exit, DAMON
+> still makes the following unnecessary function calls,
+> 
+>   --damon_for_each_target--
+>   --damon_for_each_region--
+>       damon_do_apply_schemes
+>         damos_apply_scheme
+>           damon_va_apply_scheme
+>             damos_madvise
+>               damon_get_mm
+> 
+> and it is only in the damon_get_mm() that it may finally discover that
+> the monitoring target no longer exists.
+
+Thank you for finding this inefficiency, Enze!
+
+> 
+> To avoid wasting CPU resources, this patch modifies the
+> kdamond_need_stop() logic to proactively clean up monitoring targets
+> when they are found to be invalid.
+
+However, this could introduce an unexpected behavior change to DAMON sysfs
+users.  Let's consider a DAMON context having three target processes (a, b, c)
+is running.  The second process is terminated.  And the user updates the target
+with two existing processes and a new process (a, d, c) using the online commit
+feature.
+
+Before this change, 'a' and 'c' targets keep running with the old monitoring
+results.  The target for 'b' is replaced for 'd'.  After this change, the
+target for 'b' is removed from the list, and 'c' becomes the second target of
+the list.  Because the online commit feature works based on the indices of
+targets on the list, target for 'c' is updated for 'b', lose previous
+monitoring results.
+
+Please let me know if I'm missing something.
+
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
 > ---
-> Changes in v2:
-> - Switched from might_alloc() to keeping might_sleep() + comment
-> - Link to v1: https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
-> ---
->  mm/vmalloc.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a53c7462671bdd896f95712af71398ffbe22fb80..c23d378dd4446e2784505ec3d5bb9568fb0d3c9a 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -305,6 +305,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->  	int err;
->  	pgtbl_mod_mask mask = 0;
+>  mm/damon/core.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index f9fc0375890a..eb5612bfd6bf 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2462,7 +2462,8 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
+>   */
+>  static bool kdamond_need_stop(struct damon_ctx *ctx)
+>  {
+> -	struct damon_target *t;
+> +	struct damon_target *t, *next;
+> +	bool valid_target_exist = false;
 >  
-> +	/* Might allocate pagetables. */
+>  	if (kthread_should_stop())
+>  		return true;
+> @@ -2470,11 +2471,16 @@ static bool kdamond_need_stop(struct damon_ctx *ctx)
+>  	if (!ctx->ops.target_valid)
+>  		return false;
+>  
+> -	damon_for_each_target(t, ctx) {
+> +	damon_for_each_target_safe(t, next, ctx) {
+>  		if (ctx->ops.target_valid(t))
+> -			return false;
+> +			valid_target_exist = true;
+> +		else
+> +			damon_destroy_target(t, ctx);
+>  	}
+>  
+> +	if (valid_target_exist)
+> +		return false;
+> +
+>  	return true;
+>  }
 
-I just realised that for x86, there's also TLB shootdowns in
-pud_free_pmd_page() etc. So I guess this is also a might_ for the the
-lockdep_assert_irqs_enabled() in smp_call_function_many_cond(). Should
-probably mention that too.
+So, from the beginning part of the patch description, I understand your concern
+is the unnecessary function calls in kdamond_apply_schemes().  What about
+checking the target validness using ctx->ops.target_valid() and avoid going
+deeper if it is invalid?  Seems the damon_for_each_target() loop is a good
+point to do this.
 
-Anything else I missed, before I send v3?
+What do you think?
 
->  	might_sleep();
->  	BUG_ON(addr >= end);
 
+Thanks,
+SJ
+
+[...]
 
