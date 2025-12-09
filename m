@@ -4,144 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0A0D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 07:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 650F4D1CDC6
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 08:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB816B0005; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
+	id 67B8F6B0005; Tue,  9 Dec 2025 03:18:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6C3B6B0007; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
+	id 605166B0007; Tue,  9 Dec 2025 03:18:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95B056B0008; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
+	id 4CC846B0008; Tue,  9 Dec 2025 03:18:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8571C6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 02:46:02 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FAF613AF79
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:46:02 +0000 (UTC)
-X-FDA: 84199148964.03.C2FFF57
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D5CAE20004
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 07:45:59 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765266360; a=rsa-sha256;
-	cv=none;
-	b=k9WV5Q+ogHkMD3lx+JQ1gYmf+Xg2B0ItF/yTH//mFNledm16B6iRLgSZX24mAq4yns3/W/
-	0iYEr00RO5uwUjDXr30HEXNhnpSykkJx5a1Qs8wbm9gM5eduAe2vGDeApZ0UhaV1kIsPpN
-	5/4/K+FuQn0HrDTTVjpnVG0Y1ahMK6Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ArPWOzqr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+9kVsrjw;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 374086B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 03:18:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D08C358F56
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 08:18:57 +0000 (UTC)
+X-FDA: 84199231914.04.9648523
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4025B40003
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 08:18:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J+aaFS9D;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765266360;
+	s=arc-20220608; t=1765268336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
-	b=kGJpbueMJqziJEHLXQqgRykvuzmv10rqlSfwW51dPI/Gsz9wM8kslTVHnZ9ivWDNO1gGfb
-	4YXZJwwsuqs52gOjzDc9O4AkhENDpQFPNtCs7AYYS+SWt5dPCIHKfg37TNoJs0vJl+rdsn
-	mRV92wK8A27ex2rTBt9a4/FSBFB3oDQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2B4DA336F2;
-	Tue,  9 Dec 2025 07:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765266358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
-	b=ArPWOzqry+T5cOS2iVikGeqNVXifulv3jUvAKUVogE31EuolkmsjeMRLXsTaBOxwGZMcUc
-	qpG8YvMRqQwec8zTBAGOMcP5J2AKV4dYpaOHriBSquVSOKEaBShD9pzx1FYgcHwvb1m7EA
-	H0Ybd2V+4thyBWZGDjsksnWInyJrXB0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765266358;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
-	b=+9kVsrjwBaPQ2mHtRbMqwr/v/yNzgQ1UlvsY4jHxYThD4kSrVmtqxCUNCU77H5BoOUIpuW
-	C5fivGV17pWnFSDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765266358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
-	b=ArPWOzqry+T5cOS2iVikGeqNVXifulv3jUvAKUVogE31EuolkmsjeMRLXsTaBOxwGZMcUc
-	qpG8YvMRqQwec8zTBAGOMcP5J2AKV4dYpaOHriBSquVSOKEaBShD9pzx1FYgcHwvb1m7EA
-	H0Ybd2V+4thyBWZGDjsksnWInyJrXB0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765266358;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vyUMGUr5q6ydWbAZ/XOXlO9x9TXtSajw6bYZWYBs7sI=;
-	b=+9kVsrjwBaPQ2mHtRbMqwr/v/yNzgQ1UlvsY4jHxYThD4kSrVmtqxCUNCU77H5BoOUIpuW
-	C5fivGV17pWnFSDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D36D23EA63;
-	Tue,  9 Dec 2025 07:45:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id V+H0H63TN2nFWQAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 09 Dec 2025 07:45:49 +0000
-Message-ID: <d395cf62-2066-4965-87e6-823a7bbde775@suse.de>
-Date: Tue, 9 Dec 2025 08:45:46 +0100
+	bh=aL/hwR8PIWPLlV6uFQBsf2fAQbPmjSBfIHKkmx7HAzw=;
+	b=LO2d5j6JoDZNqHkIec/uVRTwCY1tOT5m8pR/+lEeeT3yDT1gFUlEQi6xTaBf06FBy1dCN7
+	zK//dHIVUmB2MF4timvTJdER17YL5YCMWa8Dbyi5T33Akfm8JyJryYT9DFySd1vmOTXWJY
+	Z+bT5gWqbcBPo6fuavaysQzbmvJip74=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J+aaFS9D;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765268336; a=rsa-sha256;
+	cv=none;
+	b=a2w7/xrCZ1ykvW1JtQ0aknzADyp7BeXXf/7rv+x+p7AH2ruzIN/qcVyZJifCFNr4FHz1ZS
+	ZI4iTDrSTIDIq+p4JbKaXpbOFmkiIO51X3leo6fGXYoOOXgn+nLT4ovFDwLrlITz8oylqO
+	048pPhcldXU3WSRpT6fOEl2gUFnY75M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 414CB40408;
+	Tue,  9 Dec 2025 08:18:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66519C4CEF5;
+	Tue,  9 Dec 2025 08:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765268335;
+	bh=aL/hwR8PIWPLlV6uFQBsf2fAQbPmjSBfIHKkmx7HAzw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=J+aaFS9DJjhtBzUXMwjiV1dTctAzbSTgd+qhpLMl5+L/KZvE8jsx3AyT07Pl72FmX
+	 DBXpTNDIbkr0ESOZCipm+oEipaq4Us8aDhRUR89KNBqA+0HaL+Rx/ENO3lxV6x8fuW
+	 zptCYOGL5rXnmjGw26F1L16Wwp931gY+IQ6hg2bslYXpzSAJ9LgoTsnFgsw9jq78ry
+	 1BCC+EnCrO8RFAZGdvmCba4sJVIpSvxSVnHIHT/MVh7fJqJYfQHh7ASXPxCpKc5FTR
+	 5B5vOjVS8NOEHgGq2/S31MnHy6yDdyNJoBZTN7PXj7Rf8Rl7DtrXCXmUHKkDB38QiT
+	 z81VvUd0S+h+A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,
+  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Suren
+ Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
+ Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
+ <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
+ <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
+ Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
+  Vipin Sharma <vipinsh@google.com>,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-doc@vger.kernel.org,
+  kexec@lists.infradead.org
+Subject: Re: [RFC PATCH 00/10] liveupdate: hugetlb support
+In-Reply-To: <48d0b46e-2b82-44b6-a717-94bc258a508d@linux.dev> (Zhu Yanjun's
+	message of "Mon, 8 Dec 2025 20:43:22 -0800")
+References: <20251206230222.853493-1-pratyush@kernel.org>
+	<48d0b46e-2b82-44b6-a717-94bc258a508d@linux.dev>
+Date: Tue, 09 Dec 2025 09:18:45 +0100
+Message-ID: <86h5u0ax0a.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 1/3] filemap: set max order to be min order if THP is
- disabled
-To: Pankaj Raghav <p.raghav@samsung.com>,
- Suren Baghdasaryan <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Michal Hocko <mhocko@suse.com>, Lance Yang <lance.yang@linux.dev>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- mcgrof@kernel.org, gost.dev@samsung.com, kernel@pankajraghav.com,
- tytso@mit.edu
-References: <20251206030858.1418814-1-p.raghav@samsung.com>
- <20251206030858.1418814-2-p.raghav@samsung.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20251206030858.1418814-2-p.raghav@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: r6dq5oyfkt4mk19qxyp3cq1j6a8mpefz
+X-Rspamd-Queue-Id: 4025B40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5CAE20004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: rpcfz9ugzt3ph4zaocyf5xrbk3qhhhux
-X-HE-Tag: 1765266359-144387
-X-HE-Meta: U2FsdGVkX18g9K/9W7lDnrmEpg/RiXWS369zjIttgOxyIex6JvIRyWoVp9kD/PiLwuu98M64MPsPgj9ZG0+OLJUbcm4pkxWepWMNZ71BW9bY1V43O5vt+AUNFmnRSyI34aIM4xWXUduxFoghgEsjhoVQD0d8OK05ZkQl593uxQB2MNMCcyeHAycKwSvQShgxS//G16PNPM14JgkHnFqLu0pktmMjwCLifQNITtdZxFs+neC4ixTwNb0Yp3BkEMB2AROm2yVS4QkkvQxV6+UZlcVY9W/6eU2Q2unEAOFzbeAZqV7RCV3WgjEksB1PdQlZqNTFkuOJqk51nTirhqdwFYJnBIopzcu8lDeMewE0YC74jEZ3hJFZThm/ITXMupD8w2cdYsrYXnGYlBcIKV74d6Xjpsa3PV8w7vvS2aJaE7BQBYUC+XPc6493QGBGHrNRi3HFCdpUR5ARnDCd/3LHhQ71zCtqJzR1EU6xo0JYT/JWa+uX/G9xn0/THgeK+DlJbhBZeeTuIBrY5GN/Z7rES2AtWlaTnssnOgz1Nf4If8Iwqzvm8t7Emb/jGnjnROAU5TJc1YKbjTfgQRSy3XK7p1N3VdqsNN9KleNaQ1Ai6Xktr5V7t2f7uWab4Lsbpb8/u2ux4ewdeZC0kY480GmRI8jvf6t7HtMzJTHY/VQ96MoE+XCe1mT41HA7mTG2OWRf60Q7rqFoEXXp5Xj1WMMeMhMSoJmR3WIwUMZVPobAxkDevSlMYnBuujOF/VoIh/3+7MM+ldP+1rwOGSs+HOXkDykc5yXlfAU7s8BxQUMdkmAXVU8ebvz/7O1tCSfs5MiRnMd2YRMxftVolD0QFf060aMgKt4WARXglSwahoUMx/CYrhncB/QKKDOhBh0eZMDnoPg4h3cAVJvKxO2CSvJ/fhkoFmQ5wu1BSBVOyxI5DgLpyFYXNFXfZvfXPJod0L/iE9itcsPaOgXlO3FeomC
- MwgtOFeb
- rmaHL093aY7/tT1R+/zQ5NnY0OCIHFgbRt6vOfRpXWzSBN6grQ6lXPE0pmo5npt2tFWApGKgrwkquSBdHthv+3aeEsvlql03riN/d2C7YNcnHtmHD8VuJntDJg0xyd2j79B8R2yrcS+evkvKJZqOmKVL64B9TivCu2DeF09e8hG1Jvj03AjzCBWw/iMSwID5DeuoUFsoHbRbRDjkz8FAWXBBVhbZPbePrhMoTq95Sni8lm8mDX7ZbQY2/t2VXXuM5GEfDnsTklPuSzb3zT6zIYXhxmFX8rBnHO5PlbqPzgKXZjl8qWw5aO9mt6bHJpBCfh7TSDGituI6XC4Q=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765268336-900256
+X-HE-Meta: U2FsdGVkX1/fj2M6iQEonHmf1CCKLEJ0EHGxledKQgNLIk3EtZYCUvrrnq/+J79ZJFzG/fd7PM+A/F6YNoZqDFsrYahD2joZiw3eGczAuDsPacFCzLv6/BSwkYaRxBGngYmsiOvPWIBk576IZ0uFjUVLI60jHKIhNmDOkwjsQtnKja/zKRlyqvVkBwYc9aM/1DqXTHLKCNtsi6hPODfgmuKF4kyCpQprBwRAv//McZuHix6U0BZEsWPSC7IFiQJGjTMO6UmX1tdlS+nqJTcl2YhyWFT7COeMF36tz6sknGTL9IqBccwN0hhQrXlQ9n3ab29bt1+9G8vyzivIuIX6bDEJ5Hm7hqqwAJVk3kYhILS1Ek0kYFc8sqfvENe/N7HGTo8Rp/19STFx+6hetxfMkK6HPckw4sF3EeveRTNqQzCaXNaFW5t4lrFAIMNYM+Mk9/H3NAqtSSb+AFSeFwm2ElJjT95QvUmlx96VNpFYiOX/+gpTnQqJ+osEmsMimUd3XPlaqyPnz0cM5NQ0kUqm/MVkC1nqYhTtsizK51nY87tVZdmyFKg9eq3R3pGoKA9AbHiWoKX6gwscD8uuBGV4Xh2LRDahGlMy7Q2p9NQjT0rQ8iDuw/aUY1fxKO4pCYKwhEF/TgYZReomGxSMl2xsfguC5ZmODH3tkni9ZSW79jM2XrivR7PxGvPlQ+zrSFoTcAE0H2Cy+OMxUVIZw78L6NO9OHbWYOMWcidoCRTRP/QNxYPe7kFFxJNOgwrDCPJK3vD31qDbCRTmpMFWbW2pcHDpUxUULhrzyOvPFwLQlhWKRzfWswhSf9L5pddLEN9D6WdTLZ2gZbXF3oHYqiP3A9e2jdRQScXGMzQ0gQAct8dzrotWyE7HNl4psa7SEW7sgSIMoncEf11pztRTrUwO2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,27 +107,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/6/25 04:08, Pankaj Raghav wrote:
-> Large folios in the page cache depend on the splitting infrastructure from
-> THP. To remove the dependency between large folios and
-> CONFIG_TRANSPARENT_HUGEPAGE, set the min order == max order if THP is
-> disabled. This will make sure the splitting code will not be required
-> when THP is disabled, therefore, removing the dependency between large
-> folios and THP.
-> 
-The description is actually misleading.
-It's not that you remove the dependency from THP for large folios
-_in general_ (the CONFIG_THP is retained in this patch).
-Rather you remove the dependency for large folios _for the block layer_.
-And that should be make explicit in the description, otherwise the
-description and the patch doesn't match.
+Hi,
 
-Cheers,
+On Mon, Dec 08 2025, Zhu Yanjun wrote:
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+> =E5=9C=A8 2025/12/6 15:02, Pratyush Yadav =E5=86=99=E9=81=93:
+>> This series adds support for live updating hugetlb-backed memfd,
+>> including support for 1G huge pages. This allows live updating VMs which
+>> use hugepages to back VM memory.
+>>
+>> Please take a look at this patch series [0] to know more about the Live
+>> Update Orchestrator (LUO). It also includes patches for live updating a
+>> shmem-backed memfd. This series is a follow up to that, adding huge page
+>> support as well.
+>>
+>> You can also read this LWN article [1] to learn more about KHO and Live
+>> Update Orchestrator, though do note that this article is a bit
+>> out-of-date. LUO has since evolved. For example, subsystems have been
+>> replaced with FLB, and the state machine has been simplified.
+>>
+>> This series is based on top of mm-non-unstable, which includes the LUO
+>> FLB patches [2].
+>>
+>> This series uses LUO FLB to track how many pages are preserved for each
+>> hstate, to ensure the live updated kernel does not over-allocate
+>> hugepages.
+>
+>
+> Is this patch serise based on the patches in the link
+> https://lkml.org/lkml/2025/11/26/1665?
+
+No. That is an independent series. This series is based on
+mm-nonmm-unstable, which has the base LUO patches and the LUO FLB
+patches, but not the VFIO or IOMMU patches.
+
+[...]
+
+--=20
+Regards,
+Pratyush Yadav
 
