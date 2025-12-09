@@ -4,94 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39619D3B7EA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7ACDD3B7EA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Dec 2025 01:53:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15136B0005; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
+	id 49DB56B0005; Mon,  8 Dec 2025 20:53:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C6556B0007; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
+	id 44F326B0007; Mon,  8 Dec 2025 20:53:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DC3A6B0008; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
+	id 3644E6B0008; Mon,  8 Dec 2025 20:53:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C9CF6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:50:22 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FDFB12CC6
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:50:22 +0000 (UTC)
-X-FDA: 84198252684.17.C39CD03
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2DC561C0004
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:50:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xi2n69Nh;
-	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765245020; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 239256B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:53:02 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4394C036C
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:53:01 +0000 (UTC)
+X-FDA: 84198259362.11.1AEC88F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A2E0D2000D
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 01:52:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="R/r7HFlI";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765245179; a=rsa-sha256;
 	cv=none;
-	b=eaK+yd5ZUqIVr27TyzJo/nY5VYfmPlysQB5gZt3zCRaXkOVYZKXTceaFlqz41E/Fjhz4i/
-	MtvsCfwtg8fnMSbzYDdHRPd62AphIp4vnFEdjkkUnK0PCvSbNg2B+H7u6gxVh9N3/UEpgj
-	DnBPCovX/O6xykRjvD56RKA6roRFogM=
+	b=ymVUyiFokhc+Qf+DHA/eX5t8CBjJZJ3Opwk15V35EtmQTxhuWScN+6k0qrm6d7ETio+Ppd
+	uWBNzqkbc4/ix+SqhCzq08wC8qg7QHvUgC1Xuxwg76MMUDxu67WyLmSwea1acnHTqAYV6v
+	tBfJkNJhLTyu1vGz+NH9d9y9y6k264Q=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xi2n69Nh;
-	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="R/r7HFlI";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765245020;
+	s=arc-20220608; t=1765245179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kxfMIuOKyfe8bmObUhS5t43dMnDHqQLX9eXqaAzAfm4=;
-	b=6p/j2fECU3qkbWiGIfIxNpmAr1bPsDTODwOX2j3NPzs9oxvkRAQbtjroxKnArKeD/rW6Gi
-	xLpyOXBg09ya9FRv0kmYjsI1WlqKpYVdnDCc1MMJEjRYWVHJ6aEyzt03kY+fqlPTHU6TKE
-	ukm2H70dAzJbdk4HIepKEuf3E0MN7TU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765245016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kxfMIuOKyfe8bmObUhS5t43dMnDHqQLX9eXqaAzAfm4=;
-	b=xi2n69NhA9UUpc69ygoXYVKF83VuBUmVTPKU3Yp4M00JtdFEZBtQP2alKZOjckFkjX106J
-	2g2gQp7o7exkpimIsJzGs61RKtYjg+HdvdP6wxRjlhVI9m8fCBo+26EY6PnU6INl3ocnm9
-	YXxlgfy6p/LkmEa9rJ8VqKmWUNuyvvA=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: hui.zhu@linux.dev
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  "Alexei Starovoitov" <ast@kernel.org>,
-  "Suren Baghdasaryan" <surenb@google.com>,  "Michal Hocko"
- <mhocko@kernel.org>,  "Shakeel Butt" <shakeel.butt@linux.dev>,  "Johannes
- Weiner" <hannes@cmpxchg.org>,  "Andrii Nakryiko" <andrii@kernel.org>,  "JP
- Kobryn" <inwardvessel@gmail.com>,  linux-mm@kvack.org,
-  cgroups@vger.kernel.org,  bpf@vger.kernel.org,  "Martin KaFai Lau"
- <martin.lau@kernel.org>,  "Song Liu" <song@kernel.org>,  "Kumar Kartikeya
- Dwivedi" <memxor@gmail.com>,  "Tejun Heo" <tj@kernel.org>
-Subject: Re: [PATCH v2 21/23] sched: psi: implement bpf_psi_create_trigger()
-  kfunc
-In-Reply-To: <1d9a162605a3f32ac215430131f7745488deaa34@linux.dev> (hui zhu's
-	message of "Mon, 08 Dec 2025 08:49:34 +0000")
-References: <20251027232206.473085-1-roman.gushchin@linux.dev>
-	<20251027232206.473085-11-roman.gushchin@linux.dev>
-	<1d9a162605a3f32ac215430131f7745488deaa34@linux.dev>
-Date: Mon, 08 Dec 2025 17:49:22 -0800
-Message-ID: <87cy4otof1.fsf@linux.dev>
+	bh=tuDPPlix0docxJrP7gni/PZtpUQNQMtVDouizGPh/Qk=;
+	b=3YL3dZltLEvJQAipvrilrwRrDrJKNCt/ccr5XLTz4/X8iKo49n2AStyU0M+XKf2zQwtZ5j
+	Xgpar5pFkJo0p5/NVguEgTgOpbgY36/RFn3RNznSzyA3lyL7FjZFNJMYhr846hYGWweles
+	VSHHtLLj1O0pDI3dFeWvbLXzo1UycVE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765245179; x=1796781179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ey9K4onyQ6f8kRj6L7zyp5HQ9JpLyn+tNZX7DiZPVB4=;
+  b=R/r7HFlIdMTVU4gMZnNNGd3lItS3EZEzOpp4Va6e31sa2hLJetbIn9tJ
+   Oym9iXuM6VrG70KTwdHkDuyqNuXqPIoQoazozBn7lD7MPIe5TgxHAQ7Dd
+   1xxeaD+iNtOFCA7uR07yai8VRSceFaI6ZYUnrubd1B6ezXYFwzfSdmGvV
+   L/G+UUGiRN3RFz1/hxE3dwAPRPq/0Lw9GpBFUJ7uLQxI5PJlnm1TH5mUV
+   FRXWJ3OcsxWzo1vbK75pci+DoBOj4mvVIQRnFq3QyHBF9dPtTIzrcP1Tn
+   DTAALdt1NsUblzWGt1oeTgN0P857Znk4FSj6NbGCc11N/dKgxkeuFsDuG
+   A==;
+X-CSE-ConnectionGUID: CtaiVSFGSGCK+XoNOb3tvw==
+X-CSE-MsgGUID: nT8DvJ7iRoqLEBGRBU3X8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67081859"
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="67081859"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 17:52:57 -0800
+X-CSE-ConnectionGUID: NmFLdEa4RSSSF9mDwljs4w==
+X-CSE-MsgGUID: 3LPMO/wqQvKJ5OnTwt0Fog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; 
+   d="scan'208";a="200537413"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 08 Dec 2025 17:52:55 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vSmuL-000000001AQ-09RK;
+	Tue, 09 Dec 2025 01:52:53 +0000
+Date: Tue, 9 Dec 2025 09:52:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Jackman <jackmanb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
+Subject: Re: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+Message-ID: <202512090959.BWqYaOOg-lkp@intel.com>
+References: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2DC561C0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
+X-Rspamd-Queue-Id: A2E0D2000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: xdnnqrmhmcdgcs3x8bj38pjgyjnyisqg
-X-HE-Tag: 1765245019-78530
-X-HE-Meta: U2FsdGVkX18k6GM7zmMaosOWy6gPmIUp58Ko+x0Bkw9MynhQBVyFITeE0e39NjRQ2qLtzDsrW+x5BhFXiwiPh7/LyImOfrBWqcDcCTITmFns8p4av15kMLbtGejUvn2/TKWlRInzcKtUrBXYdjLiwCHU89LSDMcWqOPL+fVcwNAA+bYVosAKP546dcl99kdOsYL8bDFmfVsUE6GHMz7JriEslLC/MIuOvXjwQn0AVRDqFo2vXuDax7QCwj9PS6BcRH1lk1j86a2eNpep+gtuug7LbUUFHA1FBiFoJYD6n487FD9tOfGS1SYh6I7mNQeAJrP4c2uYv994P0muxJ3xhlYg+16BGqJMx6QVwMY0knKk4lNG1jkqUM0mRW5PPxddXrmw3DyXivKV3U7igFISqckxvjOQANYwYHj+VZTHsNePF8vnHWig/ASc3HllA4AKV1E4ep27bWlRf0okFVowZwp1NLSWYVN0khVISgmAiVLuA7PR8Ei6Rw/xqeCX1DMSJPHvtQbXqXtO+sM/Rx6x3l505hO1YAwPrzbPtGC6JJn+ZQ/uJA0EAv+3OyldJ3ODO2wHM7mNfWi3meGq/vow7KJcIrTBD7Z0cnD/wW/O3sl1A22rHPoonV4ixYBbXB9VEiYRJkYzpm1W1/6WFf8U/Nk9Gmw8Bn3NTOEpnyZ+EFi/cPImzs2PDDBsbUAkddiByd1ZCfrHbX0eddaocd4bLGkzVcIiyM1tfe1+KsNBWMvRDA56ZpeCDHm/Wv/7wtE0P0UFb7NF6Z/ToHYB4gZjSin72RPYjbw+6k/I4c5vC2MjGuNI7lx9XXfTbzOW3Vij1kPTuEob/B59LAG7XVUSxLwpCqVAW/ZLmsdUjLDVaraTyBmehtf0FYuTjJDAa/MlZ3B+Lcytz6BVGM47fwotZUajf4r19MrWa1ZsDuqVti107K9B6Uet+oNsXps7XliVALr4BFPqVEmQX1iJAfU
- 4XbhRnJ/
- tRlGlY9+NV7fNIN12ZvvVL00QOo80FTQdCe3t7Tq2zbNJDYX7bOsTn7IleelWIMi9xAMsgaDhGHD4VHmm10ocUISDQ/ebdXJr1yj29MvxFOoR9/wrNEp6Zp5qePMQS482iz2f0zr3vVtjUBYZdcOa/WeKBX0RlbpPqi29RXE02FDIT2Fp9+PRKOLNhmWjdsJB4D9gZEq3OPdBJulh3SKE6B5tOFONiWiuBtVT5id4H+G9F2omVye+0Ji5/s2v4RpNm1kAtN5CqEJXnCuZNA8cmj+ywUn10LrQJA4A
+X-Stat-Signature: 4z97145hkz5xtgmkixm379homjokc6u9
+X-HE-Tag: 1765245178-398168
+X-HE-Meta: U2FsdGVkX1/38aQt0l03a1FWdONNVPkTuzcgRfbv9NlLqcwSmKSrF1qAnNzmO0jHBmwoPyNzOqSAL17QA3pcnuinuxfJTgWmJAcho2daoLS8WMdFTFodgD1LJAiuagNYXwrUTLmzFpBBtedM7d3PFBRfE050hF82PNlwQRoWDAcDdxo5wYGcDzMnLmb/DlyuPfZJGqwA9jDQXu8TCrT3I8/Y5b0B1XBHWO7yN9Hz96/2qzvtITHosNh56PJ21tCM9Y5VrDujBhWwghLMKeOvsDV6Q8bUTYuTN6EIp86y6zEdlx5al1QTnuG2a/Y4z9mYM9qby+kVVmpHA89SUAkJ+ceVa37TwzFRW+ZDY5nERS0z0bvUSSkUeBsporCy7L8KOBee1yJdV2wxGdg4KJAmgSQsr0DnYDXFSxzDB8Q7uiPR/AoctJFwqdsSLtBm+MvZH51eYuKc4rfdDK2OipDnD4k2ItJSxTs2WhQjSqco6mCoHfpKhCrhoVCIQ4NF95gF8Xu6giCYjVrwk14jljTiB6iNnuhJKgufPKYOo/f6P3m2y8AjOS/WKjazzBeBrpDJPB310BQTFv7L8ahdSgRsektiO0Rp0GlaJFGPUkqr7cKTDVZngFlCZGlmVrrcc/P9EBTvic5+/osxe+CLoA7rFffbANoyG3H/GLEqNpACdI6RjqYZO4gZf9oP29S48yQ7GewdDLWWHv9SrLIX337wcJLNKkl/3rdii74PHPGH33mUTQod8Lr4LwPQbkAdOlNYcqNkW2L6v0nzwlYTcv5kOqbTwi2x1xkb3gb0YQeiLgFfLVsfoTCInR0RJC39jpxOhQf8sCA/A/I2414AEVhxTkac5Rbuot3Tl3OGVMbRT6CVwsYDHJ6+ohdJu8p0w5yel2bw4rhJ0UF4dGIyUz1tj6n/WbKM/b/ZNuvX1LPqEyrY6yPVHTrq1T8hr1rUoeYOrvyugPCCNQ+Ygk8OE4V
+ 9TxvC4aA
+ kSIeL7S0gyW0MsdpltcVbjWitNUZvfRMa/PRoMaz0aSQOwkuqqYydsodm2/psXbR6cV46ytw3vi0+4YS9iklKtd2pLZi6/So1MAuA3lsvFBN8SNTApeqM5Izxt1neiQEUVtAJsPfIJfnRBd9k/ZDSm6jb0gyL5fGOw2363m2ASDTlA0AEa+pIIFHsQ1mZegrHufJCQJTh9c1DF8FoClomE2DGAbjGw5AmM9ERdv7+3ypJqsYw4p4q5ISukLdEH3bGGg2mEwgbrffjkxgd/bnEJyWHG01Yh7gcJ8JiH/D/eQ4Ji0l9u+kJHxcRLGtvY/M07jR7yfikhXxjOrKDm1zKfapPpw8wZNS4FTWrEOnZEH5SzdfHc1qRItrEEKyVZe6Whwppb6rqm5mcYiA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,53 +110,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hui.zhu@linux.dev writes:
+Hi Brendan,
 
-> 2025=E5=B9=B410=E6=9C=8828=E6=97=A5 07:22, "Roman Gushchin" <roman.gushch=
-in@linux.dev
-> mailto:roman.gushchin@linux.dev?to=3D%22Roman%20Gushchin%22%20%3Croman.gu=
-shchin%40linux.dev%3E
->> =E5=86=99=E5=88=B0:
->
->
->>=20
->> Implement a new bpf_psi_create_trigger() BPF kfunc, which allows
->> to create new PSI triggers and attach them to cgroups or be
->> system-wide.
->>=20
->> Created triggers will exist until the struct ops is loaded and
->> if they are attached to a cgroup until the cgroup exists.
->>=20
->> Due to a limitation of 5 arguments, the resource type and the "full"
->> bit are squeezed into a single u32.
->>=20
->> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->
-> Hi Roman,
->
-> I wrote an eBPF program attempting to use bpf_psi struct ops and
-> bpf_psi_create_trigger to continuously receive memory-related PSI
-> events, but I only received one event.
->
-> Looking at the code implementation, when an event occurs:
-> if (cmpxchg(&t->event, 0, 1) =3D=3D 0) {
->
-> However, in eBPF there appears to be no way to call the equivalent
-> of this code from psi_trigger_poll:
-> if (cmpxchg(&t->event, 1, 0) =3D=3D 1)
-> to reset the event back to 0.
->
-> Would it be possible to add an additional BPF helper function to
-> handle this? Without a way to acknowledge/reset the event flag,
-> the trigger only fires once and cannot be reused for continuous
-> monitoring.
+kernel test robot noticed the following build errors:
 
-Hi Hui,
+[auto build test ERROR on ecc46e02e0abe025a6e840cba2d647f23fd1d721]
 
-Good point. I'll add something in v3, which I'm working on, if I'm going
-to preserve the bpf psi infrastructure in the current form. An
-alternative approach suggested by Tejun was to use a simple tracepoint
-and implement the rest in BPF - something I'm exploring right now.
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/mm-vmalloc-clarify-why-vmap_range_noflush-might-sleep/20251208-132202
+base:   ecc46e02e0abe025a6e840cba2d647f23fd1d721
+patch link:    https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08%40google.com
+patch subject: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20251209/202512090959.BWqYaOOg-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251209/202512090959.BWqYaOOg-lkp@intel.com/reproduce)
 
-Thanks!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512090959.BWqYaOOg-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/vmalloc.c:308:14: error: use of undeclared identifier 'GFP_PGTABLE_KERNEL'
+     308 |         might_alloc(GFP_PGTABLE_KERNEL);
+         |                     ^
+   1 error generated.
+
+
+vim +/GFP_PGTABLE_KERNEL +308 mm/vmalloc.c
+
+   297	
+   298	static int vmap_range_noflush(unsigned long addr, unsigned long end,
+   299				phys_addr_t phys_addr, pgprot_t prot,
+   300				unsigned int max_page_shift)
+   301	{
+   302		pgd_t *pgd;
+   303		unsigned long start;
+   304		unsigned long next;
+   305		int err;
+   306		pgtbl_mod_mask mask = 0;
+   307	
+ > 308		might_alloc(GFP_PGTABLE_KERNEL);
+   309		BUG_ON(addr >= end);
+   310	
+   311		start = addr;
+   312		pgd = pgd_offset_k(addr);
+   313		do {
+   314			next = pgd_addr_end(addr, end);
+   315			err = vmap_p4d_range(pgd, addr, next, phys_addr, prot,
+   316						max_page_shift, &mask);
+   317			if (err)
+   318				break;
+   319		} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+   320	
+   321		if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+   322			arch_sync_kernel_mappings(start, end);
+   323	
+   324		return err;
+   325	}
+   326	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
