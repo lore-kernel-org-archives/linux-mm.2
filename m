@@ -4,115 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16ED0D3B9B5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 00:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07FEBD3B9B6
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 00:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A006B0008; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
+	id 3F2566B0005; Tue,  9 Dec 2025 19:38:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50ACD6B000A; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
+	id 3A1716B0007; Tue,  9 Dec 2025 19:38:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 420086B000C; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
+	id 26A9C6B0008; Tue,  9 Dec 2025 19:38:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BF876B0008
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA68E140284
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:26:43 +0000 (UTC)
-X-FDA: 84201670686.17.49DB732
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DF3FA14000B
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:26:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d65E0VGK;
-	spf=pass (imf09.hostedemail.com: domain of haolee.swjtu@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haolee.swjtu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 112566B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 19:38:33 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DA7B58630
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:38:32 +0000 (UTC)
+X-FDA: 84201700464.25.FABF2ED
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 27F77C0009
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:38:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NSDvUYM1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rHHBaVK2;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NSDvUYM1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rHHBaVK2;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765327110; a=rsa-sha256;
+	cv=none;
+	b=4tCPafrXvMcewzUsxbbjJxOqotgdc7Tv46Lw7idIiIrqxsyFPRnpZFbH08N45sTht2WMTT
+	YKmwN7knfttqr3f1uwmJEbjcUr6ld06ghLflEzNIdbDdao9YCvtmSbdGI+hsc2HhmT1DZE
+	67ZfXGjqeiviiYAklxbBNv1dZp1XfF8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NSDvUYM1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rHHBaVK2;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NSDvUYM1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rHHBaVK2;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765326401;
+	s=arc-20220608; t=1765327110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
-	b=yvNR4/Zb9sfO1jnUeph0hcYQ/sATMSXXq2EJ9g1u0tQjrRAbWapLw6HpMDzH15POorGCFA
-	i5GK1pNswXiNoY+KYEpmW3Nh821jzizQ1P9jee1skzByQIhmXZ9D28DkVHNKTFfcP3QFc1
-	/+085ye2zolJ3O9RaE6mm3ScR529WBU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765326401; a=rsa-sha256;
-	cv=none;
-	b=GxaxN6TJIyZyoUfnRK/QUnDa9Wiiq8xZ9FmB+fXGWOJDYHSsVe9F52kpUZFsHeB5lkqoO3
-	8MUFd3RlILfMrIAGF0CZtxaICm5+T3Ezv3l1ZDrkxHKYFbsGj2hYiJ6Frj6TEfDwiVvylE
-	tUVkDJBFhM/I4E8f8qwuhw/RmAJOqQY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d65E0VGK;
-	spf=pass (imf09.hostedemail.com: domain of haolee.swjtu@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haolee.swjtu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so6310814b3a.1
-        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 16:26:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765326401; x=1765931201; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
-        b=d65E0VGKZ4Ub4y7AdihXiNZcr9L7otBn97rCQBNcFWic8Enm+lwoSzzgK4Q0ezSy99
-         eAucMsTPenOtMyJCngBKGFzB3Ju6F14YlqBvhjqwRpbVWqx31taK/uuBskDveJSPpgLy
-         fGw1uoqheM3xmqHeSJBHIO+8hNtUsf5iWpbYPF66hQmH11WsAca3Gc3SS0J96Ox3I4FC
-         l+iwEy6NVpE4RiDJ1bPL+1dpOYUbs4yDWdAF6moS1OoQc2pfjOotEfsUrMovA1ym/QaE
-         dXhPb2eP5+g9WKSoOCs5fszi5P3rnfwmLVahB+icmkvLHun6O4YZs7BbCxldzDYLVOAu
-         MsoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765326401; x=1765931201;
-        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
-        b=kPFBQQbVKNBdLXJE29uBVOJ4eDKU57I9+jR1TGUDSl3bZUNYmnO1vXnz/BttmlYC+3
-         PKvrpSkbLBI/xo5IXKIRUr0mud81x0OMytXY85n0clg5uJSrevNDAcZN2o6kS7hO8bP4
-         Avp/hKle54hFCixtYgze0POPUL0tttPplGLth1fwEcSyP3DQBjqmbg4ygW7qXnYg8Izi
-         LNO/wYxHcTXBxou6/2iEf+0+PDe/1ZsR18HftZ1U2731qV7aQVeJ7lJrifftmPaWHOb+
-         /ieZCtBwhiNhp7wMvF9MVziq6I2oap62+NU0heiQTu/4T+tXg5o5EWjqZ/ujEJ5Fwk4I
-         ljqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQeTqCaPsqr67Gel75tIZGGZVshEezGFJ6i8VvRdUAEvyKu67wuAMHqIzp5ELEEFi3jUUegfLI3A==@kvack.org
-X-Gm-Message-State: AOJu0YxqbOi5Dt15PhPcLx/a8pVfb66zaCfJcpDGvRsJK4DLyNdsPhyv
-	GkjbE2+HFNGuW/L7u/VOLDKz1iTWNKISo/7nuOU/Ul4d3FcEuf1JpZN3RNniDzIP
-X-Gm-Gg: ASbGncumNuLIOaqE8uRYUPQwxsKLCpbKd+YZ1fRBGXbiqIQrAnfwR4IJLDLdg+r4XAQ
-	yDSkX+TPb6qb54Ye/msYxdASR08X77vRbMcvlD1XXBV14H17Wbjt4ulL2x5cp6gkMhyjutZFW0k
-	QnAsS/oaS5TjiweE2kIslCmkeRGLb9WOz6Yact3B3YG4chl9M7h2qpQOxcxwavF0M75gBij1CNP
-	3wROBZKSBSZwXDSHs0KPQY0czY3w4sAF5set/61ejn2cOz+vbiPKNBrlL6DW7aljuC55JmoK/pt
-	Y3rY9vNr8Nqg6bch3FpbhAmGOdS3zYAzAcFa/OuWXsjmZFDBrx0ZE/ZLSayqthKE1Qz8Axh9B9h
-	aCNAbpy4zqeDGeP56R/jkoKZrBjNzrlOz3nBhiy/Zqxl+F8D5nNJlaNx3rnsfil9iIcdiCA7NSc
-	o5ckg8bsajmgdPuJ6fq2W+7YiHGXoelbBFzJbSWQ==
-X-Google-Smtp-Source: AGHT+IF7MlPg1IeGwFPzOw/217kUpoJG1hoqSSMUBfyAYD/y2jQk236f8LUR8LHD2kc+WIm9dUchHg==
-X-Received: by 2002:a05:7022:2522:b0:119:e569:f276 with SMTP id a92af1059eb24-11f296cc089mr511525c88.31.1765326400595;
-        Tue, 09 Dec 2025 16:26:40 -0800 (PST)
-Received: from fedora ([2a01:7e03::f03c:91ff:fe02:b162])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76e2f3csm70907328c88.5.2025.12.09.16.26.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 16:26:40 -0800 (PST)
-From: Hao Li <haolee.swjtu@gmail.com>
-X-Google-Original-From: Hao Li <haoli.tcs@gmail.com>
-Date: Wed, 10 Dec 2025 08:26:31 +0800
-To: vbabka@suse.cz, akpm@linux-foundation.org, harry.yoo@oracle.com, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, haolee.swjtu@gmail.com
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Li <haolee.swjtu@gmail.com>
-Subject: [PATCH v2] slub: keep empty main sheaf as spare in
- __pcs_replace_empty_main()
-Message-ID: <20251210002629.34448-1-haoli.tcs@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sZNiUJuG3TeKZsNDlVrI19mlrKWSweIT9h/omtBTHB8=;
+	b=A6ZqTiI+QAap2tXmINiXG0YIMoXWd2mkb6CimKOT9+diM6cZgy+jFVyHmQ2k//bp46HB7Q
+	3PLAEQzdkolrgUL07BrdIt4X1IOn++JXhpllzB+i1rDfXXrvMyfIKdxOh/JtKu0iXjOmpG
+	TWDPvSoFnABIFqIRGXfMOjrQxoXiMJs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 974F7338B4;
+	Wed, 10 Dec 2025 00:38:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765327108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZNiUJuG3TeKZsNDlVrI19mlrKWSweIT9h/omtBTHB8=;
+	b=NSDvUYM1HDtqM6oPFiwMjjuKWt4EqZKJymRYKTh7+EzbnTgM8NgnBjhnDhEjH2fAkho4i5
+	Tt/7gFFhQ50Qp0DqvIcM0fGxIgnBLATl2OJmaTMwtq9K8BsLPKR6Y4f479SGw9c0fn8kBQ
+	YFRJzly+foIx/GASnxveaEDorM0zhZk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765327108;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZNiUJuG3TeKZsNDlVrI19mlrKWSweIT9h/omtBTHB8=;
+	b=rHHBaVK2YDKlGAiXwsxjk4Zl6UntY3f/wo8LTvZ6U52z2ltaHfrD/w/u4Xc6paFySFxx55
+	e1GPfKAztuHd1UAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765327108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZNiUJuG3TeKZsNDlVrI19mlrKWSweIT9h/omtBTHB8=;
+	b=NSDvUYM1HDtqM6oPFiwMjjuKWt4EqZKJymRYKTh7+EzbnTgM8NgnBjhnDhEjH2fAkho4i5
+	Tt/7gFFhQ50Qp0DqvIcM0fGxIgnBLATl2OJmaTMwtq9K8BsLPKR6Y4f479SGw9c0fn8kBQ
+	YFRJzly+foIx/GASnxveaEDorM0zhZk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765327108;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZNiUJuG3TeKZsNDlVrI19mlrKWSweIT9h/omtBTHB8=;
+	b=rHHBaVK2YDKlGAiXwsxjk4Zl6UntY3f/wo8LTvZ6U52z2ltaHfrD/w/u4Xc6paFySFxx55
+	e1GPfKAztuHd1UAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C59DF3EA63;
+	Wed, 10 Dec 2025 00:38:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +gEjEPjAOGl2dwAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 10 Dec 2025 00:38:16 +0000
+Message-ID: <b23da846-ff6e-4b73-9691-beb14ceb0fa5@suse.de>
+Date: Wed, 10 Dec 2025 01:38:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DF3FA14000B
-X-Stat-Signature: jrrpd8kropqszyip6yef3p8fzd6531ng
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 1/3] filemap: set max order to be min order if THP is
+ disabled
+To: Pankaj Raghav <kernel@pankajraghav.com>,
+ Pankaj Raghav <p.raghav@samsung.com>, Suren Baghdasaryan
+ <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Michal Hocko <mhocko@suse.com>, Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ mcgrof@kernel.org, gost.dev@samsung.com, tytso@mit.edu
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+ <20251206030858.1418814-2-p.raghav@samsung.com>
+ <d395cf62-2066-4965-87e6-823a7bbde775@suse.de>
+ <3ced3736-81e8-4bc3-b5a3-50ac4af3536c@pankajraghav.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <3ced3736-81e8-4bc3-b5a3-50ac4af3536c@pankajraghav.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 27F77C0009
+X-Stat-Signature: urn8hfgzq1g51gp7acie8bd7ekt6kha9
 X-Rspam-User: 
-X-HE-Tag: 1765326401-918793
-X-HE-Meta: U2FsdGVkX19lmmCozEQT4OrHYOwUTvA7YMibfRh34VxWDsSCXYqEHRRSX98rktOFVa9go3f7iayR4FgYCc5/sEmZPDIrTGxzsmqt0uWb7GDMEtUTeBk6HkswXHhPSo7y/cAOUuKtkcQFgMiApc7I/ItJiD4X9TI5BvPThLvnYZAs4vI0Vv9zUY3eONvjZa4deu3+pCVJ5fINJl1xr32GvCCemHT0jiDf2rSN32Mj/BXXPXve0y8ePyuVwFJKFn250jlxono3fsi/U+9lY5DFjUCNtDwPi79Svij5zidYwGqXLpBVqtfTRmIMPcPifIa2eaoi69Y4IKU1uuvO4aLtLdM0GV22OdJx0c9ZTrmTHuuntrF9BAepV1NA5m4zC32Q0Vt0I/g9218ZRpeiKLT/Tho/epfVo1oMkinuryUDXLzwO/wfWstupF5BZC/7u5mM4tdbgBS3r10PYv/6dxVolYHm2XT9xS4z7CMR/4tio0EaPMYqClVkK9QxtpV0o8xLW1jms2JvWJz88S5wgl2xTouVKIH62BegP6W3IHWH0XCPwLmnbz6ktVIj7v9gbhXe2DWKOuhmiFfPmh7BVz6buss8b/flhaQ7bFhbWv4Hj1FnQ8hgtEuUj+BUHZCTPXt3wb4NSfK+KGVeYAo/1VWwSiIPUnQNCU1CwXQ4HTeGXQmCBZ78J2b9ua78r/0GPRbjRViA8rki4vRwqQUfPWIbxm00gw06THMGBnXzhfhdnZvdDckEfTlgfkoDcoUBkADXlkdKJWyx1pAjZV+AToQOaIg+USSVZVWZwRkYMy7BdfpV9A8z3HlPIAdGx05xELe7UVhBRDDH9AzZh+wlOv07iErp3spxXBZ0JJblOAU22ejaIv0Uk8x2aH8sidg8J20+xm5vIx58jub5ApYgX3onMISOUWVm1gYrfxiuX9k7tglT9y3DbAWRorowCfXtu0Ie3xhODp2bgqrdb5HmJ5z
- e7fCz0wf
- U6286E6Y68jDtFPnf4nKIkJ+cgvxCLFOLSWJA2lt0B5xqmp1ndSQx8eRWHlD52pS0cZpw2GMtiXE1pXuo6g58DPL8S4bTaN10OLZdgWNlbyO/CgmAUaaupPv7bDrgFBSNLUPf3mnyOWLsz0DcpVopT2Jfkie1RC9BQLKbtalqDW0yf5uB5kokozvdoLwG15uLvnnEYX9U6IJZVPnAeehq9jV2z7og+uNgtlWB9ue2tkrazNHylwXYY7iEGe39obOx6vE+UxfBGEaCyQVgQIRrr9Z2eVEi6NYDk8qTtK3zW9u8kxB8PEC6GAUA0GqKDP6FdCnXyCrOTHvKOs09fJ8E+hzSOGYqZlZCre6U2vpupBOxZ+IHplB1CTbCPUc5AVUaN7jSn/dPC7OCnw5FRvkdXCNkCCzwQML1ii28B+L9MrPHn4Q8DC3MdM6EyTsy0rU7sqY329Ufwpk5FyKz0BRNWFacAnTSq++77Q+DMxotVznHky1txSzuUJjjYQGA66RmRZk9Xg+PZ/hiWtE6GJOCqC9hNv161KNhfry5WYP+F6OPvzFs1mCyxQ+m6mbwJxlgFC8r3yuzbovKe3MP3Tj7zTdJ28GqO0luF7qxu6vCdDlr1mBMPNrWegJCO8v47yThO6cvQE4eUTg+nveYY4FpiHgSW9tC1lp5SDTXUQ1bsPDSbb/zsuXGIx6gdAhhLQE9PWhe
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.003028, version=1.2.4
+X-HE-Tag: 1765327109-451842
+X-HE-Meta: U2FsdGVkX18JN0L611lB/r3Uj1a8EP+Es2xJzTWT63teXyDHOeax0yvmpfwGlKv12lInZACkjKe5Fhcv/uhd1Z1uzsYPuGoC25qxDCeUOApue3AfqziRHEXrurUmLDIdv4yc94sySvEBS+7+MJmWb/7HczIS3RwsBHvRAsLhpaVrxVrZWbeaxd55t849uZNOwh6KVuGgbS7+gYNiAb/QO8y90mrnTBUvuKRtr7XSi99+dM5VS44biXix0jqnIcac76eSmzF63WeUcQtIqn/h7wHHXHaBbs4U9olghrJtlFMKH4n0c5tEgH2GdM6BP8nH+LfeERsuCtqf5+Xxz6WitRJhQ+Ra6QMmdJsQSaMofNiuOjmuCdWzphL5Wysv8qdgYPEnULTdWPhFdhp9m2eKZwGG+oGy+LKKVJQvdlxt39kddRj/roUbK4fG3B0LyXzXxPi+QnF4q+AyWWqBZ4L0emHBMBk8RL4zYwn4u+vvg9HIu8nOjouZK9ZgIWlEVFJ1WxRmVnb2O05hVcCgI54qQlkfvf727QGxsNHk2eT+XX4hIDTE78XgH63G6S0DbSyKLf7+JqxofB75MUR7l0zDAzFk5QXjiy8iEUsYHnD1XhxaGBastQKsWEKRVXlZ/jtKn1ddDYHgCC2Cc+NipOg16yI+acwh/RBDaFewvtja50mNuYHpricqrgct+KgDmYJmv8PAWtxn4i8xyoFO1f20og501kdEZKz2wEcIbrnL3leVNTLZvvSSoLnL3x7oz5OsjaDvCq9OVJf7NdYECIVn8to+RBbp7KPQcYDYJ3iWYAChExjZUz7DSpHI6KheO8enL4QAJzIxCyfgLJglUYZKoOZkqBg6vqptPllZ5XybWhyvg8rMRZEWbU7JnOIyRHd5IPUkt+sf3O+xUZmjIYBy1Ed8Oym9jb6CiL1AWqKcR4DGseiPSz1M6lwcaFL9djxA3lyQVaQTjDnqD+DkV3n
+ 9YAuA+np
+ hm68UXUH/Y7cbUKwnJ/gkjGxDVCAwOOVayIsOsEMU67I+gIL2x6ZpURo0rHHQl8/75zQFlzZl5IB1vXaKotIpHP6Kd8eHRdw9HrQfHj3EflQ2h7HTpSk7U0XtgeOp2CQuSGyMvLuIy1E//uqv8g2rH7wdBdNd89xgpvBXZJVhIoCRQM53qFUl0eq+aXoZeQrs7i5+c2mm2lt1T/Rak9zWKvoOKK2XcMtwqECf6v8nSi9jPt97wsOkbNL9Vci+HQkHUit+FBFU7axfwrKjKgFXKxJYZbfADB0Lcf8omltnuB9R28ABbRfsKWiE4pRQB3df61Rg9gbeeExiO4s=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,54 +152,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Li <haolee.swjtu@gmail.com>
+On 12/9/25 17:33, Pankaj Raghav wrote:
+> On 12/9/25 13:15, Hannes Reinecke wrote:
+>> On 12/6/25 04:08, Pankaj Raghav wrote:
+>>> Large folios in the page cache depend on the splitting infrastructure from
+>>> THP. To remove the dependency between large folios and
+>>> CONFIG_TRANSPARENT_HUGEPAGE, set the min order == max order if THP is
+>>> disabled. This will make sure the splitting code will not be required
+>>> when THP is disabled, therefore, removing the dependency between large
+>>> folios and THP.
+>>>
+>> The description is actually misleading.
+>> It's not that you remove the dependency from THP for large folios
+>> _in general_ (the CONFIG_THP is retained in this patch).
+>> Rather you remove the dependency for large folios _for the block layer_.
+>> And that should be make explicit in the description, otherwise the
+>> description and the patch doesn't match.
+>>
+> 
+> Hmm, that is not what I am doing. This has nothing to do with the block layer directly.
+> I mentioned this in the cover letter but I can reiterate it again.
+> 
+> Large folios depended on THP infrastructure when it was introduced. When we added added LBS support
+> to the block layer, we introduced an indirect dependency on CONFIG_THP. When we disabled config_THP
+> and had a block device logical block size > page size, we ran into a panic.
+> 
+> That was fixed here[1].
+> 
+Yes, and no. That patch limited the maximum blocksize without THP to 4k,
+so effectively disabling LBS.
 
-When __pcs_replace_empty_main() fails to obtain a full sheaf directly
-from the barn, it may either:
+> If this patch is upstreamed, then we can disable THP but still have a LBS drive attached without any
+> issues.
+> 
+But this is what I meant. We do _not_ disable the dependency on THP for
+LBS, we just remove checks for the config option itself in the block 
+layer code. The actual dependency on THP will remain as LBS will only
+be supported if THP is enabled.
 
-  - Refill an empty sheaf obtained via barn_get_empty_sheaf(), or
-  - Allocate a brand new full sheaf via alloc_full_sheaf().
+> Baolin added another CONFIG_THP block in ext4 [2]. With this support, we don't need to sprinkle THP
+> where file backed large folios are used.
+> 
+> Happy to discuss this in LPC (if you are attending)!
+> 
+The very first presentation on the first day in the CXL track. Yes :-)
+Let's discuss there; would love to figure out if we cannot remove the
+actual dependency on THP, too.
 
-After reacquiring the per-CPU lock, if pcs->main is still empty and
-pcs->spare is NULL, the current code donates the empty main sheaf to
-the barn via barn_put_empty_sheaf() and installs the full sheaf as
-pcs->main, leaving pcs->spare unpopulated.
+Cheers,
 
-Instead, keep the existing empty main sheaf locally as the spare:
-
-  pcs->spare = pcs->main;
-  pcs->main = full;
-
-This populates pcs->spare earlier, which can reduce future barn traffic.
-
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Hao Li <haolee.swjtu@gmail.com>
----
-
-The Gmail account(haoli.tcs) I used to send v1 of the patch has been
-restricted from sending emails for unknown reasons, so I'm sending v2
-from this address instead. Thanks.
-
- mm/slub.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index a0b905c2a557..a3e73ebb0cc8 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5077,6 +5077,11 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	 */
- 
- 	if (pcs->main->size == 0) {
-+		if (!pcs->spare) {
-+			pcs->spare = pcs->main;
-+			pcs->main = full;
-+			return pcs;
-+		}
- 		barn_put_empty_sheaf(barn, pcs->main);
- 		pcs->main = full;
- 		return pcs;
+Hannes
 -- 
-2.50.1
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
