@@ -4,116 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81AAD2CE17
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 04:28:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5303D2CE17
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 05:26:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 250CF6B0007; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
+	id C6F5B6B0006; Wed, 10 Dec 2025 00:26:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2013A6B0008; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
+	id BF8BC6B0007; Wed, 10 Dec 2025 00:26:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E686B000A; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
+	id AE7686B0008; Wed, 10 Dec 2025 00:26:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0868C6B0007
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1B6558941
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:28:22 +0000 (UTC)
-X-FDA: 84202279644.18.3CF234B
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 10CC1C0007
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:28:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=o5UKxnlY;
-	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765340901; a=rsa-sha256;
-	cv=none;
-	b=OUMGXMlOc8x27Y6Vf318qCUQDSgoCLHLb6WKVcU4yWLsPpr84y8X8ZdBP2KEy9ZCmTPZpC
-	J9ee4tPQiDwlz9mrBuhvo2O8f9NJHX7wrin6aJSIFyqbNsghlRaYgDOGp5nLbI4nfpAUVf
-	xGsZZLpuY0bAhxewvMwGEBmuwsRyN9I=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765340901;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OQfWpBVkXWRGjFGQWDDm62eANx/f67q4RwxOcophSOU=;
-	b=VmusFrNt8Dggp78yEMPbK195YVMZndK0m4sZ4hwv5R9BLG2jwELZAA7jCmH2ZmC1gr9ais
-	XoT58PVRYRskUrd5/QWw8jNRcgtVWTd4aYvZWTbP4tuuz4Sn6pbqpbu1XOH0oxOCsCZ6bd
-	UproOALDUceF6qvRUl0P/s9MU6adNQ0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=o5UKxnlY;
-	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=OQfWpBVkXWRGjFGQWDDm62eANx/f67q4RwxOcophSOU=; 
-	b=o5UKxnlYep7lSUUwWim+bLfjwfHoogk/yS8buh8k6PyJYw1yI5o6xGQ9xBQJDxaxqQANVQFK9MS
-	505DVNridkct6fi2LwX+dcbHT8Zq4RsmktcnEUAPY3riX3DBGZH7Ai/GcTpRKQy0Mi00E0yi5iH4f
-	p93hlXyZI+84CNmdpT0aQeXxiOHQCTm1OI6FTDYurbMnxQiyRk69S8QsxiikKc/9vf9jAZufSJ2bP
-	TmGRNBGWpDmHcaMRlezqlqasklsa5QitG7FAfkkEqVYQD+AnxHXVxQqU93AFSElFdXBpuKrNqakad
-	pA+tUWzUMnBJfYiaNNefDxgrZU6Zoe9o5blQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vTBoB-009Bre-0u;
-	Wed, 10 Dec 2025 12:28:12 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Dec 2025 12:28:11 +0800
-Date: Wed, 10 Dec 2025 12:28:11 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>,
-	SeongJae Park <sj@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-	"nphamcs@gmail.com" <nphamcs@gmail.com>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>,
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>,
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
-	"kasong@tencent.com" <kasong@tencent.com>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"clabbe@baylibre.com" <clabbe@baylibre.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"ebiggers@google.com" <ebiggers@google.com>,
-	"surenb@google.com" <surenb@google.com>,
-	"Accardi, Kristen C" <kristen.c.accardi@intel.com>,
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
-	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>,
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Message-ID: <aTj22_idykAfpDNw@gondor.apana.org.au>
-References: <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
- <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
- <aTZExW2LgFNTfwVJ@gondor.apana.org.au>
- <SJ2PR11MB8472529E92EC003D956DF530C9A2A@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <aTZS4RKR3Zci8d_I@gondor.apana.org.au>
- <qux3i5m4weedza76ynfmjmtvt4whnkk3itwpuolozfvk3cg6ud@rylhkigmqn7t>
- <aTeKNEX5stqjG55i@gondor.apana.org.au>
- <j7rqzweklga72b7hdebljs7nziz7bs7kzvevkuhnbwi3uespkt@rmkdqlpku2gh>
- <SJ2PR11MB8472CE03A67C1161469CDE9EC9A3A@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <bfkkizyjmfulkzxgf45l7tjsnudtyutnenyngzw7l4tmmugo3k@zr2wg2xqh3uv>
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 96F716B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:26:10 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED2935897C
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 05:26:09 +0000 (UTC)
+X-FDA: 84202425258.04.EBF30AB
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E5B9140008
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 05:25:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=temperror reason="query timed out" header.from=kylinos.cn (policy=temperror);
+	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+X-UUID: a67431ead58811f0a38c85956e01ac42-20251210
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:3003985e-5f7c-4672-98c6-31e9e248a8cc,IP:20,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:15
+X-CID-INFO: VERSION:1.3.6,REQID:3003985e-5f7c-4672-98c6-31e9e248a8cc,IP:20,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:15
+X-CID-META: VersionHash:a9d874c,CLOUDID:310602fbf03de4f7880188d6a71b941c,BulkI
+	D:251210132533GWS883M0,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
+	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
+	0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a67431ead58811f0a38c85956e01ac42-20251210
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1115932276; Wed, 10 Dec 2025 13:25:33 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/damon/core: fix wasteful CPU calls by skipping non-existent targets
+Date: Wed, 10 Dec 2025 13:25:08 +0800
+Message-ID: <20251210052508.264433-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bfkkizyjmfulkzxgf45l7tjsnudtyutnenyngzw7l4tmmugo3k@zr2wg2xqh3uv>
-X-Rspamd-Queue-Id: 10CC1C0007
-X-Stat-Signature: z334f7ob67s43q4c3bqykxw6cfpat657
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765340899-324136
-X-HE-Meta: U2FsdGVkX19XrzLuU1ZQNSrihkh03Fsw9MQOG6dJpUONziwXqxk/c4WOKZP3zAR/XhfdyMtsmgkmLIOghRakkXLQMMYmRZFwgbSVO7KfRWbzcbRSFWfXqY3FncfPx3PaOUjGBkepuMdfqXA+l+DEUEaGPOS6qDU5KvXiKVc4xd9BMEHCYpBqJGXVzNSz1cDlDW/7lI2nO9Ud838jgrc3GnILN1uAuqmrQfSu0gbfOytT7YfeKzKULZJ0EuuyZcAahmuVLQafZbqR94NE6eqgCJOENwbLVKn8f+yf/oBK3Wc9gysvXc+/75+iM3CCgeJRQnfdFzwpfmkuKY++KsQrQgugJ7GdUQjIYCLDU+kVDrKvTyLPJbawV5G8gHJDBsTnnSwAVQEs1WwcGX51HAT5q97Kk9QJKeAPz3ar1u4U59aRn/YAB2QIL1pXUAs6OXprxpLvv5/wpgxrSRlkyDJL/ZGAdcx2WGwZBB0jdz1VROtilbF4JHEx+nsQQq+Ro9Y0dfVFPj2AUYNK5ulu4B5RsnL9hKcuVs+2UjyiuAUCFxCRx5v00YrTEs8WM+ROFsmz1Xn/zDa/F7FROW7+x20vIn6QEGpita3fyQp/7CNn17VAf00QOODLkbZyzBHyhdO44WDqlWBcrLm7ZS3NKgZ33wVV4YaNmKiwe2s2OKDVzajmxtQUhxZEQNBLMvT7azv1ltS6t/Axwu+jVHSio15b8/ERWO42mzgFoooE/KfCyDlCLBqevxl40buL73Lh6Zqn2NgCfy1Vks/j3qitjcUzXVbgdYLn+dNjIjyEt9sjwNcpO6DQKlckfh/RC0zByn+Cdv304NEEel2k3LKy5KE99NSRKXc3B2rMB4NNdQ0nYO83ewpCQDTFcMJP3vCTflKL9WHXoa0Zgn0w09U96/DOHzhE8bWd45Hawcmh0Sm1OHTTY8AMaruDjbJdc3vNe075j0LlKhxGlfuLVSFvdeL
- I5xIW6Vh
- A0Q84cGMEkBwDe3HJcO/4zOBMAA==
+X-Rspamd-Queue-Id: E5B9140008
+X-Rspamd-Server: rspam10
+X-Stat-Signature: kx5jouuuujmpf5r4rjyoytwxg4x8m745
+X-HE-Tag: 1765344358-970033
+X-HE-Meta: U2FsdGVkX1+hRQxNQMyafB5O2ydHXDe65xByU20ho7S41lNfM7FSURZbOUlzVX83hdeg+HqLXVeqWf/nxgiXwbrhlKE4NXNHOed3zesQY8pmKGnrikr+34REAKHbxp73+61GxAt0gC1B1FFrfr5TlbCMV00G62DVaGBV3xpO2c5Gfu8UvdqvSWBeZnxknY2qciIuOrXDd3fu+ZybXG2bhiyGHpLS7YesjVQHtPKvFNuMKVvHLmG0jE8zizO+QHAgql+3mZvdy1VmaVt7Wm8NyJsFHhMo99QdtNeM6vyLr7ZtBOD7KeNkxvFEvOLD5TRpbIGH86+7WlNa46Bgc+jdDz1Ey6SmH3oTTPCW7dwsG14Ztwz8wcflkYLzIpJtdcsLHS1XEmBVSoZ8mZ+PKwj3B0iBdir2F4sFRi6w7DdnNxVwNa3LEhUv4Jjd3HGeyZS4BSmSrcZCCRqTRbVxA6pAQOQYRY1n2OZqn/KX/+iprkjrGubSjwaz3gdms30/dT80cnOpkZOpcYXAkahKISCIiQcoE3lya597ljf9vdpCRXaNSiUMyaZBAWxV/oBvQE3fd4gkG21L+eQSFdflNsRXtnX9NkjZsvwf6G0ppXzmKsk2hPrno9i+mSwVGARgDvuf6jWHwF22z+aYM91gtxZUMuN7T6mpIu+FF++Dk7aV/mYi31QaRWXgHDTA3XWC2Ibuj7B9QhgJao5ofN+IfIYqFuHNtcQt5U27kRZV12Y0ALnk8tC116rq13ZH9bIKcEXE643i7TPOnaXIWSrjaxZ8retChFH6OUj/L7OGtil9golV0kdugOicZb0/5LNNEKsNiMAbRJn6mgmbtIO9vqaWmcpDZD+yXxyO/Kb4ArgSsgjv2n+otfIqv8T3j5y1T0WJ+0iUmfWP6rA3wL61dG8lWeML3h/pNXyfD+RKem8zMCvuPDPIDQBFn2x/U29O9KaJ4R4k4i5ZG0Qsi3OZZCm
+ d0gSGuid
+ exp7pxEFXRC1jbj4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,21 +89,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 09, 2025 at 05:31:35PM +0000, Yosry Ahmed wrote:
->
-> Ugh, yes.. I don't think we want to burn 7 extra pages per-CPU for SW
-> compressors.
+Currently, DAMON does not proactively clean up invalid monitoring
+targets during its runtime.  When some monitored processes exit, DAMON
+continues to make the following unnecessary function calls,
 
-OK so the consensus is that we're keeping the visible batch size
-attribute for now, which will be set to 1 for everything but iaa.
+  --damon_for_each_target--
+  --damon_for_each_region--
+      damon_do_apply_schemes
+        damos_apply_scheme
+          damon_va_apply_scheme
+            damos_madvise
+              damon_get_mm
 
-So for now I'm going to just provide a trivial acomp fallback so
-that non-batching algorithms conform to the batching calling
-convention for a batch size of 1.
+it is only in the damon_get_mm() function that it may finally discover
+the target no longer exists, which wastes CPU resources. A simple idea
+is to check for the existence of monitoring targets within the
+kdamond_need_stop() function and promptly clean up non-existent targets.
 
-Cheers,
+However, SJ pointed out that this approach is problematic because the
+online commit logic incorrectly uses list indices to update the
+monitoring state.  This can lead to data loss if the target list is
+changed concurrently.  Meanwhile, SJ suggests checking for target
+existence at the damon_for_each_target level, and if a target does not
+exist, simply skip it and proceed to the next one.
+
+Suggested-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+ mm/damon/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f9fc0375890a..e43bdf0b41a8 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2266,6 +2266,9 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 
+ 	mutex_lock(&c->walk_control_lock);
+ 	damon_for_each_target(t, c) {
++		if (c->ops.target_valid && c->ops.target_valid(t) == false)
++			continue;
++
+ 		damon_for_each_region_safe(r, next_r, t)
+ 			damon_do_apply_schemes(c, t, r);
+ 	}
+
+base-commit: c9b47175e9131118e6f221cc8fb81397d62e7c91
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.52.0
+
 
