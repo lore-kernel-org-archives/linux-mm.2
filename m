@@ -4,118 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5FD2D3E781
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 22:45:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6432BD3E781
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 22:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1C0F6B0006; Wed, 10 Dec 2025 17:45:04 -0500 (EST)
+	id A3D316B0006; Wed, 10 Dec 2025 17:46:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECD8E6B0007; Wed, 10 Dec 2025 17:45:04 -0500 (EST)
+	id 9EE566B0007; Wed, 10 Dec 2025 17:46:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBBE86B0008; Wed, 10 Dec 2025 17:45:04 -0500 (EST)
+	id 903AB6B0008; Wed, 10 Dec 2025 17:46:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C75166B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 17:45:04 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6FFDC1406E0
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:45:04 +0000 (UTC)
-X-FDA: 84205043328.03.9CE4FC7
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A041614000C
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:45:02 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lY/pGn8q";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765406702; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 7F8316B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 17:46:35 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C627BAB6B
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:35 +0000 (UTC)
+X-FDA: 84205047150.21.4C17FC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 88D0510000F
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TlR9UQpf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765406793; a=rsa-sha256;
 	cv=none;
-	b=CodSXQmY+l/d7WZ+Cpd3AvvGVe/3ppQIEwOrOkWP2JeGQ7zWKFGf01s2U6X6kyZ6Ivpadr
-	LAwGrwabhXTdnqFCj9WEEcj9rZeG4USdANBlcB7T13BaFbigr9f8g9Zz1WriNzzQI3VEP2
-	w5lUQfj7ME/PkzOai//CPfAMX+lUN7I=
+	b=6pn+hrbqH7Le0MJYu2DV3NN+bACjnlD6yVNH1f8c2KmYPi50i6LZjdUl/fPucTXYUoAnUV
+	MhoDg4dluOAjY9YE4UaGL0N6SCBIBBqBs2DximiB7LBZ4KGMBn9KXRpkFkFby4gvG6/vgN
+	yWsLDPGgWQDVSAyWkfgbYsaD7HomUkE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lY/pGn8q";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TlR9UQpf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765406702;
+	s=arc-20220608; t=1765406793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQ2DSh18BPQ1A171tvS4unFLacQbk30zjgIUm7UzPLk=;
-	b=LDhuJ78csM3oYELvChbjZnFPdust7JsWwNsp+0BLf4OowdfFyneQ1/fWda7RLnFb4zsAJb
-	9rhCcgZ33kMj5G3H/kMMcKmMID2U9WSabjW6nS/ioAuuTIcq66uUzfweVCQX9fityzhmWp
-	DQ6KzvUdXXyA8rjodhguDKksHcywsz8=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b72b495aa81so51652166b.2
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 14:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765406701; x=1766011501; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VQ2DSh18BPQ1A171tvS4unFLacQbk30zjgIUm7UzPLk=;
-        b=lY/pGn8qbWYgkIhWuXKDaolJTGNHXIc0LFgv/QiaCT3fkUREAbjGmlbvTXTUFsVLxv
-         9aLuK9zlNM/YYePBS4RtwI/NfLk13GauJeFksPRCps8MW7BSWA0eBrioM7Qyq3AL0wrU
-         6KUdJCko9yFpJ3uIMT3Rlfni9J/dIjDVobcmMaYFz+I+76g60zYNtHKORZb6R7xFdo0Y
-         BoaKaqQ/ViUmLoxLZYVJ/xdoZ5s1+IoVn+KpM1rHBL2A049G7cABOWj/7uo+JwwH/nvr
-         u7XZKBnE6je9V4rQihLyferePocd0DeG/ZxM2Z3q8Zv4t22Pa9erCibwJ3LvC4iSzNLS
-         CS7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765406701; x=1766011501;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VQ2DSh18BPQ1A171tvS4unFLacQbk30zjgIUm7UzPLk=;
-        b=R/vRqhmDTBt9P0bkqrxRnemmVKBL/wYpdd7KJzZdjB3irGGeV2h67g+5EjypSAhz2e
-         nEuh5jFSJ923tJIoK0cbSI0W0/fDNFBaJN+kdcpgs5TlXCiJdFtmPF/vq+Od5rax0xsE
-         a3fSIN5y/qNv9TRBM1SYba5dIAA8mV2VYGP9EIOb97DkIeo9N6nlrHucAeqATUODSCts
-         mssu+rFltVAH4/iJ0QWB0GNLOKe/mdsOtkJEQxi64MZDokv8cjsmKEo2dQHuZmwHvz7X
-         C2MggFaxkFhqhB6g7oRzxoKg/x1G0QzDRAaigndmHzVmCLbHq4fsMVDV+LeMHanvy66A
-         HI3w==
-X-Forwarded-Encrypted: i=1; AJvYcCX3Fv/KIoLrvyAJ6YR3uKcbACHfkTQupO/AVyqWoQD95Ed54KoyD1cXZc2yNd+D5QN8TbCcm5TyqA==@kvack.org
-X-Gm-Message-State: AOJu0YxSWzpMiX6S/r7huC/kQxQifLWqxyy2s02Mt8h9wlq1hzDMypoN
-	kbhE3JcelMX7lpJMhM3LQ7hQlHrjn56plsF/bdYi5jmy8dezYOsvkWDAZTPMGTlWgcfklPWvg17
-	eFhZjs7xsCknPrF+4lajPyLE8Ye8vRlU=
-X-Gm-Gg: AY/fxX4QjWiU9wOh7/ikrJel1ExGf9YBSTIIDstMChoEZ9Xo9gly1vACdK+a3vi2Xpw
-	kw+PHwihFHXa3q88bqpBUmJ/1jMWmzdbWYnSIEsehrrFJuRcOivTmiC/VB4Ku5XWBAGWEkHN1Zf
-	jWNrAstdpoPgFlWOCvdalINHAHUnHlka+l5OyScWUPZPbgs2Y0SqZkriEmHd/0TxV4pZLwfnn/I
-	vG7n1/7RM1luRcYLqngs61q55zYFvByIjfELOkTOnGppL2ZaZxz03euoxTWfwVxjy9SICrDf+RU
-	nXUOzMJSvZ+1z6BOtpwx0cMmK4I=
-X-Google-Smtp-Source: AGHT+IGm7kBMJMQy3iQeRY+8zR4da+gs16KCJ935OvAzALtjygXNQLUTj7Hvy/HSaYzKQJr5Gk7AKONXf1Wc76/Jkw4=
-X-Received: by 2002:a17:907:9408:b0:b76:e346:f74 with SMTP id
- a640c23a62f3a-b7ce83886b1mr452457766b.16.1765406700728; Wed, 10 Dec 2025
- 14:45:00 -0800 (PST)
+	bh=TJ673bVWTvIYL7YqmRgfM8ziJeMWCC2g4e40z1K/nWQ=;
+	b=Bk498+DVUlvkyBP7izDKgM9SDfg0wi46j8pyPuAL4HF7gLDer/OI1rFHuxSPpDj9G6EX2p
+	vC09cB+DsAmzk5Si4D4/9w/I/1Bac5otLhSblrGXBvkS97bP5ok69izgRHegEKScOrwMOH
+	OjtAmw3eq1A5L6JWdesq87b0cIs7wWY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 334F1436F9;
+	Wed, 10 Dec 2025 22:46:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25142C4CEF1;
+	Wed, 10 Dec 2025 22:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765406792;
+	bh=Fxnj/rAIkI6I++vejdH2wjowK+XQNikPUDfMZas4d6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TlR9UQpfL9LMzzpy3fDxNkAjdfGKRCUYtqdpteEirsFfXr64EbgHfwGbwACvH64h9
+	 CDSgKKlGxilM5VF1noV5Bgrx/+vePd5GRelSM6Lel8nqyUvQb0kmVMLuPaawn4PRDR
+	 VoMvm54tv/MGduxSkf4D6JSNwl6N2KK6xvV+Pguixkj/QQcF2ydJxkoKevk9Hx0DX6
+	 EBMg9mapth1/ajySOnl141dLt2kg26C+NY4ufAUZ9WhSJxlbFMYgBke4ZXwCUdgaY4
+	 KNpx7ur3diSmsvdB3id6B6TESC77qU4/5T7gFTzS9AcpZIs7D6vw2HN/xctIFozciy
+	 8MK/p+tJmhmPw==
+Date: Wed, 10 Dec 2025 23:46:27 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH v5 0/4] Add ARRAY_END(), and use it to fix off-by-one bugs
+Message-ID: <cover.1765406336.git.alx@kernel.org>
+X-Mailer: git-send-email 2.51.0
+References: <cover.1758806023.git.alx@kernel.org>
 MIME-Version: 1.0
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
- <20251205184342.2cfcc73e@pumpkin> <4eea9138-3853-457d-9113-e3caa7f00437@lucifer.local>
- <20251205213449.12bf4819@pumpkin> <d8bcc6b5-eb75-4a0f-99a1-295dcb04dfe8@lucifer.local>
- <e7fb4a23-5ece-4a03-8f0d-58517c388eb7@lucifer.local> <7006fa60-f4d3-4e7d-8c2b-974e9e4a1224@suse.cz>
- <ek7v5vxht56g77kbojo35eqdcqdmxjvguf3tp5wnfydopbthb2@xie6b7r53ote> <0a7b6c7e-c388-4327-b666-6225bc63c90c@lucifer.local>
-In-Reply-To: <0a7b6c7e-c388-4327-b666-6225bc63c90c@lucifer.local>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 10 Dec 2025 23:44:48 +0100
-X-Gm-Features: AQt7F2ry4ov7U_m6emJr1MRH_2xjP74GcRZBMJmKrPLSGtov2b2QEYXBsfTzJiE
-Message-ID: <CAGudoHFcD=Wv=SEqaaks1TcY2CZQsozNzadejQA1uBbdNPSakg@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, David Laight <david.laight.linux@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1758806023.git.alx@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 88D0510000F
+X-Stat-Signature: bx3ctfrffzyzubdcwm4qhb6m7xpxns3f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A041614000C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: cuojwapun7hbe4n5tnpbstrm4dtictdn
-X-HE-Tag: 1765406702-480461
-X-HE-Meta: U2FsdGVkX1+lXrqXyu0RfJbf0LsPtwQN22kSqTpcvSlT9r6ZFtnDWzfPwgLjuPXmWd1NPYYqpJjtAlK86gNRdQNYmeeATiIT8ubFEoogMX2dmu/Of9f6/segjrZnOkYbEstHDFKsG0l097Vw7i/1jtKLo8JDW8WdsN5EqwhtuGJeiqbpElACDZ3hrWl+K40KkobxpZT+BGDbxkTrFmRly9PonrPZDv0Ckf7CdHG+DB/ht+F++He7JtQ2FOxZitTBaiYBwA+WTq+nZPbdN+6tvVTn5j6UbRaJb5W320FCyDLrxx994GktJN+fSQ3iuwRJ0THCOiZfVxD90z7RPn9BCdbta72HxjZtzZddvw7NkwTQuh8yklq0KdzyLrvbcfUyoUEQD9GWgrcTxzl2Q4q7oyb1Ayzq4HUeR1rse381f/PbVi5UdGHIGGmCQPzaxIguKdTFGZB8Hs0AYrM8mkqljPlMzAtaXvmQZcG3mcPzD4UODDtRqoZdnKTpXCEdg839JF8qYOxWiiJG/E6qzGnTjR3PzlE3tIg/pN3FfS9JwqMY0Ct+vA+X7YDH/igO1aU/RtEX2Po39e5BA5AiZvUhhYSviBXFemFH/VixUS4B49ap+UCmL9UgY8L2wV2QYb89Ackw38KU/VtZa9f3yzg6KhTOEHGMz07oTdtXg+85sQeBfFVkHSk8yLcsT/sxXB2r+0nGG39tT/TpUDTC0DxkzMjyBd8YKCnMpkzc36KzBf+R2JwJXFR7dq9sqaZXyEN2vLsWB9rIP1GIYxx8PP8l/oDQ5CRoNEJgR95cZozX8Ec5GZmWWHv+/QDwGkZXkbwThvakmF1GamVz2FUuqbimFaCE6n6LpX8uIEnovFZn647U+VTx2FAroo6Zm0aBPR+Lpi6RaOV7rQbZp8+ogJ5E2AymeISHJ3Td7vlehHUyaOgv6hdfi+VnHKbVj1ArjR/L4iITa363PgjWAsIPx72
- /Xb1lnUJ
- 8JGoF1UiYLuv5T6J3/warH07rv2W/CpQ7I1mqh02U3MmWtOrb96GOgN6uOe0fkb0GC+ED1YoLit9Z3oRJqhSyfu49oQ==
+X-HE-Tag: 1765406793-170744
+X-HE-Meta: U2FsdGVkX18KWygGdaBNlDiHEAxyKQDJP8froEfNuh/wGvbnobCuwuMGvQqlTnysFIZvId0c5JcsmHq7JtDn8WrlxyRrBgqzW+MBULnt3bBYC2C8unfFjIDCfkzuGXLdr0D+/fHUu+b7jvKzHT5UO7QuWqLOWi7EIA/fyuNWBwKvFZUgqmzTyeRGQrYRNTcsJsxq1srtQEY/2gOD8r1RmnEjvy+GmSIb3C2cJI1HNF6CVwPD+npfV9xkhJOCh08cwZkiNzlU/l/wGMdZqcosJQ8jeM0dsgXBHa+8idOZMOn1B7g7+T+isqGfsUt+po40E/T/dbocUca7TYU/bm7uS9tMztF2U1UdzsuxtNVV70WaZkPmHz1aEH9zcHIFIZxZxxIy6d9LCxzKM/FrVbCnw1HH3PI9YwyeoDkStmWhnlvSR/8ZPyoXM26hU26XDKvqfQm+0ri9ERe2UKDWMvElwrlvNkfq2Zv27uMlolaxBZSreX1vpmWqYg5g2z2cPY2YMTOLGMDMRWnI9qCP/duvuzke4qbF45jc4f4djGODhGUSyFDJIALslZJZjnw4rvG4gcLFb4knTxhyDlmI87GoGnQSmy5q3FI54swEFN7l1An5xEaiP4rBaa8TFyvVrgmmfAWrA6icpZqpxz4jNZo8S5Mw0TpPAa9idGQ5FzrJ75W/SNdptPkSPK/w68We2/VlUkgqYp3uO6sCgFY5qAlbdXp/7uFotX4IjWpmefr+gynB6q2uXE2ghyeaWA69zTDSw3/Z3LuM1W5WaQf4XIIB6Op3aBIrOHAaVWwIoUMCV39UK7KeTjosDIH+X2Mb7ub4RTF+wDECGaHoEGfl2kjREzMQbXdScwkSRANsvsxn2ajKbxjq4KJFIAoy1yyR153WnG8BdwSyfnz1242G3O2nAmOd5lv+WKpFxCA9GP/L1wiHu4sLJ5YBSOKmoGTd2lYUVXvNAa5PTTv2oEn0Tyw
+ kLFc5qeT
+ v5eC5YVgkFwVI72oIxe7SNJw+SDCxKfWleyw1pzoF0H3t78f2VVHhcjHdGkqiKKGjyklJiGSMOpQ44wUzFGsCqZgNVRA/br4P5Ffh4ifzTG/xnHHwCXHzuWpTpRhrj8DZEoBV1SBQ9YBCZ46/atlkw3s1arIvLLaK5lwWBVedUsddNNYbCUZRC76HYWDjcxrTkUojvNZqoutJ5ru9yFCXEPKvLOjRpIWRC7d1k+LkZJzPqqm0GXI9AV99iTUoVwDASd/I1f3tCprtUfVvHV9GXav+wGJxhtK/MF9NjXzay2ibDVNAbvqmFVj2MR5t7dz2+ydmFItkT8H5JD+guYcf8b4YwFQB+OihJHNK4S/k2wZxK9QDYqS9mwhXbJNNjstcAHhmQopT9zQ5JSEBzqQ1kuR1KJvlGDunvwGyrZIhuNhm/nR6vlm13nroZncTll9UsUEYdfNs/OHqQQqBlvfIQc03SmOpdaWJpYm8m23aAiE/KQS7xxhMPTDEh1U9+9Rq8mIgje67ykdj5dp+j2M5J3mqOziOurLuq2RzXG5uff4iD6QIdAiQhJ2tsY7pdMgETpNXeVAKebjdx6B5wdPvI+UqwNj2PFUAPUh54mHOh80pxoT6JC/xuO1i7nLGngCgjyGh6yeDLhOrjxM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,59 +96,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 5:18=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Tue, Dec 09, 2025 at 10:26:22AM +0100, Mateusz Guzik wrote:
-> > On Tue, Dec 09, 2025 at 09:28:10AM +0100, Vlastimil Babka wrote:
-> > > As Mateusz pointed out off-list, the profiles look like mutexes are d=
-oing
-> > > less optimistic spinning and more sleeping. Which IMHO isn't somethin=
-g that
-> > > this change can directly affect.
-> > >
-> >
-> > Not mutexes but rwsems.
-> >
-> > The bench at hand has some of the code spinlocked, other parts take
-> > rwsems for reading *or* writing.
-> >
-> > I had a peek at rwsem implementation and to my understanding it can
-> > degrade to no spinning in a microbenchmark setting like this one,
-> > provided you are unlucky enough.
->
-> So we're just sleep, sleep sleeping? That would explain it...
->
-> I mean is this an issue with the IPC design or the rwsem's in general?
->
+Add ARRAY_END(), and use it to fix off-by-one bugs
 
-the ipc code is not doing itself any favors, but is probably not worth
-working on either
+ARRAY_END() is a macro to calculate a pointer to one past the last
+element of an array argument.  This is a very common pointer, which is
+used to iterate over all elements of an array:
 
-the lock stuff suffers internal problems. while there is no such thing
-as fastest possible lock, let alone sleepable rw lock, it is pretty
-clear the current code leaves perf on the table even with that caveat
+        for (T *p = a; p < ARRAY_END(a); p++)
+                ...
 
-> >
-> > In particular you can get unlucky if existing timings get perturbed,
-> > which I presume is happening after Lorenzo's patch.
-> >
-> > To demonstrate I wrote a toy patch which conditionally converts affecte=
-d
-> > down_read calls into down_write (inlined at the end).
-> >
-> > While the original report is based on a 192-thread box, I was only able
-> > to test with 80 threads. Even so, the crux of the issue was nicely
-> > reproduced.
-> >
-> > ./stress-ng --timeout 10 --times --verify --metrics --no-rand-seed --ms=
-g 80
->
-> I wonder if large core count matters here in particular, I was doing this
-> (albeit in a VM...) with 62 cores
->
+Of course, this pointer should never be dereferenced.  A pointer one
+past the last element of an array should not be dereferenced; it's
+perfectly fine to hold such a pointer --and a good thing to do--, but
+the only thing it should be used for is comparing it with other pointers
+derived from the same array.
 
-you need a large enough count to generate enough contention in the
-first place. how much is it for this bench i have no tried figuring
-out, even for my hw
+Due to how special these pointers are, it would be good to use
+consistent naming.  It's common to name such a pointer 'end' --in fact,
+we have many such cases in the kernel--.  C++ even standardized this
+name with std::end().  Let's try naming such pointers 'end', and try
+also avoid using 'end' for pointers that are not the result of
+ARRAY_END().
+
+It has been incorrectly suggested that these pointers are dangerous, and
+that they should never be used, suggesting to use something like
+
+	#define ARRAY_LAST(a)  ((a) + ARRAY_SIZE(a) - 1)
+
+	for (T *p = a; p <= ARRAY_LAST(a); p++)
+		...
+
+This is bogus, as it doesn't scale down to arrays of 0 elements.  In the
+case of an array of 0 elements, ARRAY_LAST() would underflow the
+pointer, which not only it can't be dereferenced, it can't even be held
+(it produces Undefined Behavior).  That would be a footgun.  Such arrays
+don't exist per the ISO C standard; however, GCC supports them as an
+extension (with partial support, though; GCC has a few bugs which need
+to be fixed).
+
+This patch set fixes a few places where it was intended to use the array
+end (that is, one past the last element), but accidentally a pointer to
+the last element was used instead, thus wasting one byte.
+
+It also replaces other places where the array end was correctly
+calculated with ARRAY_SIZE(), by using the simpler ARRAY_END().
+
+Also, there was one drivers/ file that already defined this macro.  We
+remove that definition, to not conflict with this one.
+
+Cc: Kees Cook <kees@kernel.org>
+Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Marco Elver <elver@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>
+In-Reply-To: <cover.1758806023.git.alx@kernel.org>
+
+---
+
+Hi,
+
+I've rebased v5 on top of v6.18.  The patches are identical (see
+range-diff below).  I've tested them again, to make sure they're fine,
+although I'm not sure I have enabled all configs to build all of this
+code.  Please make sure everything builds, or let me know if (and how)
+I should test anything else.
+
+Some details of the .config I used for testing:
+	$ cat .config | grep KUNIT_TEST | grep -v -e ^# -e CRYPTO
+	CONFIG_KCSAN_KUNIT_TEST=y
+	CONFIG_KFENCE_KUNIT_TEST=y
+
+From v6.18:
+	$ sudo dmesg | grep -inC2 kfence | sed 's/^...//' > tmp/kfence_master;
+
+From this branch:
+	$ sudo dmesg | grep -inC2 kfence | sed 's/^...//' > tmp/kfence_endof;
+
+Results:
+	$ diff -U0 \
+		<(cat tmp/kfence_master \
+			| sed 's/0x[0-9a-f]*/0x????/g' \
+			| sed 's/[[:digit:]]\.[[:digit:]]\+/?.?/g' \
+			| sed 's/#[[:digit:]]\+/#???/g' \
+			| sed 's/././') \
+		<(cat tmp/kfence_endof \
+			| sed 's/0x[0-9a-f]*/0x????/g' \
+			| sed 's/[[:digit:]]\.[[:digit:]]\+/?.?/g' \
+			| sed 's/#[[:digit:]]\+/#???/g' \
+			| sed 's/././');
+	--- /dev/fd/63	2025-12-10 23:45:12.512438818 +0100
+	+++ /dev/fd/62	2025-12-10 23:45:12.516438854 +0100
+	@@ -17 +17 @@
+	-.-[  68?.?] allocated by task 2516 on cpu 21 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2515 on cpu 8 at 68?.?s (?.?s ago):
+	@@ -31 +31 @@
+	-.-[  68?.?] allocated by task 2516 on cpu 0 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2515 on cpu 1 at 68?.?s (?.?s ago):
+	@@ -45 +45 @@
+	-.-[  68?.?] allocated by task 2518 on cpu 10 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2517 on cpu 4 at 68?.?s (?.?s ago):
+	@@ -59 +59 @@
+	-.-[  68?.?] allocated by task 2518 on cpu 2 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2517 on cpu 4 at 68?.?s (?.?s ago):
+	@@ -73 +73 @@
+	-.-[  68?.?] allocated by task 2520 on cpu 10 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2519 on cpu 14 at 68?.?s (?.?s ago):
+	@@ -87 +87 @@
+	-.-[  68?.?] allocated by task 2522 on cpu 10 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2521 on cpu 14 at 68?.?s (?.?s ago):
+	@@ -101 +101 @@
+	-.-[  68?.?] allocated by task 2524 on cpu 10 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2523 on cpu 14 at 68?.?s (?.?s ago):
+	@@ -115 +115 @@
+	-.-[  68?.?] allocated by task 2526 on cpu 15 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2525 on cpu 18 at 68?.?s (?.?s ago):
+	@@ -129 +129 @@
+	-.-[  68?.?] allocated by task 2532 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2531 on cpu 15 at 68?.?s (?.?s ago):
+	@@ -143 +143 @@
+	-.-[  68?.?] allocated by task 2534 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2533 on cpu 15 at 68?.?s (?.?s ago):
+	@@ -157 +157 @@
+	-.-[  68?.?] allocated by task 2536 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2535 on cpu 15 at 68?.?s (?.?s ago):
+	@@ -171 +171 @@
+	-.-[  68?.?] allocated by task 2538 on cpu 14 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2537 on cpu 15 at 68?.?s (?.?s ago):
+	@@ -185 +185 @@
+	-.-[  68?.?] allocated by task 2540 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2539 on cpu 3 at 68?.?s (?.?s ago):
+	@@ -199 +199 @@
+	-.-[  68?.?] allocated by task 2540 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2539 on cpu 3 at 68?.?s (?.?s ago):
+	@@ -213 +213 @@
+	-.-[  68?.?] allocated by task 2542 on cpu 8 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2541 on cpu 15 at 68?.?s (?.?s ago):
+	@@ -227 +227 @@
+	-.-[  68?.?] allocated by task 2542 on cpu 1 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2541 on cpu 1 at 68?.?s (?.?s ago):
+	@@ -241 +241 @@
+	-.-[  68?.?] allocated by task 2552 on cpu 23 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2551 on cpu 11 at 68?.?s (?.?s ago):
+	@@ -255 +255 @@
+	-.-[  68?.?] allocated by task 2554 on cpu 1 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2553 on cpu 5 at 68?.?s (?.?s ago):
+	@@ -275 +275 @@
+	-.-[  68?.?] allocated by task 2564 on cpu 9 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2563 on cpu 13 at 68?.?s (?.?s ago):
+	@@ -289 +289 @@
+	-.-[  68?.?] allocated by task 2566 on cpu 9 at 68?.?s (?.?s ago):
+	+.-[  68?.?] allocated by task 2565 on cpu 15 at 68?.?s (?.?s ago):
+
+
+Have a lovely night!
+Alex
+
+
+Alejandro Colomar (4):
+  array_size.h: Add ARRAY_END()
+  mm: Fix benign off-by-one bugs
+  kernel: Fix off-by-one benign bugs
+  mm: Use ARRAY_END() instead of open-coding it
+
+ drivers/block/floppy.c     | 2 --
+ include/linux/array_size.h | 6 ++++++
+ kernel/kcsan/kcsan_test.c  | 4 ++--
+ mm/kfence/kfence_test.c    | 4 ++--
+ mm/kmemleak.c              | 2 +-
+ mm/kmsan/kmsan_test.c      | 2 +-
+ mm/memcontrol-v1.c         | 4 ++--
+ 7 files changed, 14 insertions(+), 10 deletions(-)
+
+Range-diff against v4:
+1:  9f87d6208a6c = 1:  5973cfb67419 array_size.h: Add ARRAY_END()
+2:  ac55d92551e4 = 2:  9c38dd009c17 mm: Fix benign off-by-one bugs
+3:  ca8dec7f5bc9 = 3:  b4a945a4d40b kernel: Fix off-by-one benign bugs
+4:  980c8fe8a6de = 4:  e7bde864b039 mm: Use ARRAY_END() instead of open-coding it
+-- 
+2.51.0
+
 
