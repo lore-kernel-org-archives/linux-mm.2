@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1183D3E781
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 22:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0530ED3E781
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 22:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A0436B0007; Wed, 10 Dec 2025 17:46:41 -0500 (EST)
+	id 5F7AB6B0008; Wed, 10 Dec 2025 17:46:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0785A6B0008; Wed, 10 Dec 2025 17:46:41 -0500 (EST)
+	id 5CF4B6B000A; Wed, 10 Dec 2025 17:46:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECFD46B000A; Wed, 10 Dec 2025 17:46:40 -0500 (EST)
+	id 4BE8F6B000C; Wed, 10 Dec 2025 17:46:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DD72E6B0007
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 17:46:40 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66AD6BAB6B
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:40 +0000 (UTC)
-X-FDA: 84205047360.25.5D5DF2A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BD569100002
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0j+r5f9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BC646B0008
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 17:46:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4C165A791
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:45 +0000 (UTC)
+X-FDA: 84205047570.22.1D56B99
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 405A3180002
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:46:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GgfixRCi;
+	spf=pass (imf24.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765406798;
+	s=arc-20220608; t=1765406804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CNXDhEfUs2p7rqxHrG1BCgqb9DusTf8GED65ME2P2Z0=;
-	b=g6rQ6EYFpy8LXC26QkBrh4WbPwWR68Q6GDeay11hdeZRCBEZ435jCjcpNTIwpF9+bwyOqV
-	pIhZXPIPbmpVitfDM3sm5IXIc1vLovT6/ALWox1E5OnzNzoCcyFkW+yi+EADJh76sN8X2w
-	4rBjd0SzOUXWdltubszyKjxjEZnobrE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0j+r5f9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765406798; a=rsa-sha256;
+	bh=DXKtenz6DaLMGUShcrB400tfbTGBqWhLKx1FA2IPRio=;
+	b=ROP3mfIx5KDS+PjsUByhn5aWR9FHx2jLa9j7RBxpJRI/QCkCjW3ZKiJve1qkMa31Rg70Tq
+	FuW3xIhqRWtFAC5VLZSGfSV/No01XZSvGu6p/pPzab/o9ygu/iBUC7bmD7CKd5eTx7qaAa
+	9qaDEA5oSmQ5lVkaNUCRhH/l5PFFfps=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765406804; a=rsa-sha256;
 	cv=none;
-	b=JirQttEPUFjbVd9J4xF/IzkC4kDRRG2B4hL4smmZeYp9LjGWTe+XiT2cx/XxZeeZeuglJn
-	8nmzUHKBfjy2zGsaGW2DjJn4WybTK8yzOQIDXL0LMoSA/AmTX09QXcN6dlRvcSHoTsRTXB
-	6ph8qQmI5ZCc9igvub3HfI6vKjAoggA=
+	b=KoWElyhcEEvLUYeGjWcjL7j8Fiqt4w/Wm/lXvSITMaMlFlEuQgCQylmG+kLE4+kPcEv2o7
+	U5vqGWQEMmp590Tm3Q1OtyT0hQ3iusoReIYJU+3CrrBb6qoEeKaHjejGU2V6FkmiJzp84S
+	Pjwc78zhF/ZlIMVnttVVJfcH6iiCeMg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GgfixRCi;
+	spf=pass (imf24.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA1A143C84;
-	Wed, 10 Dec 2025 22:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF61DC4CEF7;
-	Wed, 10 Dec 2025 22:46:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B6B5601A1;
+	Wed, 10 Dec 2025 22:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617C3C4CEF7;
+	Wed, 10 Dec 2025 22:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765406797;
-	bh=2xVmGhP0PFx/hs6+oME8OSKXBynf/1IS5/aMFkAz6UI=;
+	s=k20201202; t=1765406803;
+	bh=Rsfmd7zbC+kSZ3iat7Z+yufKodHJKLHaalHhwgTU+L8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p0j+r5f9ceLd8JHdJaXG7/kP8pHtSxWUPFhU+TbgylfEi6XsCOmOT7ltMtjUZtofz
-	 Qs1F+acTHhoCLqplDmCTxk9we3iblfj2QoOLV78cMgJf2XnhfPwfuXrjyBm0TgaIuP
-	 D5OMULpUvRNtf24eC2PYQhofqtglZFrh2rA5QOqN0vK/E6WtbZ22LfeQD4pTYsuqye
-	 s3IZnsmwfqd1GpC8sFO37M4ynILFwQuQST9kbk47DJm6ArDM/BTk3WhCTA99mwg4iR
-	 ehvsbtK5Kwr39gN2HxoYTOuanvMnE16zsb0qeY/eVBI6ELoiJucKZE4NdeX2Fxt7ca
-	 nPMzwhrijLiww==
-Date: Wed, 10 Dec 2025 23:46:32 +0100
+	b=GgfixRCi7D7zmf3LonNP4Ozluj3wnGSed4vLDV4g17ge/6u5M1FsXvVGvX9p4ZrpS
+	 M+IsDN9v6aU9atxImKnxkehgn/1UxkHVP0Mn0N9ScQY/Qv0ZJnH2hOmqw9hL/KZ8lI
+	 kOheLRRqM/O3o7/HcKvk8lLIhulQdS3hWsRx9Y7iJ9gwrdwXI8VFVf0fXYo4lvIpyR
+	 nCc4DBMJDwv6nwS7OZhwHtWVz81y/SAHIp9VrpBNaXQoG6UehgOSeq6bPOHLxmXgJ4
+	 RWiF73VfH7N+ezRbnYv5wey494xpQZoY09iLJkLrZCoBznINB1eJgpdCwVroGuGduU
+	 d7cpqDth50dig==
+Date: Wed, 10 Dec 2025 23:46:38 +0100
 From: Alejandro Colomar <alx@kernel.org>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -72,8 +72,8 @@ Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH v5 1/4] array_size.h: Add ARRAY_END()
-Message-ID: <5973cfb674192bc8e533485dbfb54e3062896be1.1765406337.git.alx@kernel.org>
+Subject: [PATCH v5 2/4] mm: Fix benign off-by-one bugs
+Message-ID: <9c38dd009c17b0219889c7089d9bdde5aaf28a8e.1765406337.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
 References: <cover.1758806023.git.alx@kernel.org>
  <cover.1765406336.git.alx@kernel.org>
@@ -81,14 +81,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <cover.1765406336.git.alx@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 405A3180002
+X-Stat-Signature: 48uy4fry96te63yrunbmzpaodjw5u94x
 X-Rspam-User: 
-X-Stat-Signature: y7gbxfo981tqhs67hj67htekxtba59g9
-X-Rspamd-Queue-Id: BD569100002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765406798-843243
-X-HE-Meta: U2FsdGVkX19pYvoyuE3L44LAgLmX4JKJ4yaUKvzHyxzOtYxW7qfVuPyirwWEX5P+U2Y9vgZMIKAlLc8O3mmStMioXbigZLeLH/13sK+QrHtiNtvRki/RZzJO9FtWfnCsF6Q2aXSrLk3eDcF36rLCwh48IFsrMHkldvBRCNWFJKBZEHBvrpjjAwoOYezuUo0LlkNH35hpsnHbcX2FUi4uK8ySR2KuwnWfAdzcLrBc0fUQmlBqPn9dhD/KiMt5n+rdrHkxiHEyIN2pFc81VNYRmVhdg1DKivf/UOiatX++5swCPNvBAebYi0W28Z3OcPO9ZLqcmrmkiizbd6ZcVneqiSXJ3Vjr2zzROP7T92mmRgJvVb8PNNswEjIjwHVH/Y1rpMb/K6E7zW+x3KbxCnf3YoTAKkeKTQJmbOK0cflwgxxjM6X0srDZPgfWtcv9OIE+jpWo98uxuLc1bHFmBe/Oh9nXqcqCW2LPw81tYmzE62ZOH2WEaFOwsnAoiZ4B45iqhACmqaWM5vobKTh6gmdnzmeiFVkGzajmzhglkYJOVjFofp9yX8cpZLbMZbpyYVludvv2G9qKvwFduXGBcEVu4KZdAy7Hm4Ek3Ax9ti5QhofREpl7Li/jMhqkmdiYYLko6Q5kEk1M6Mc8mVpLiQDJjOFVb+ZlNv+2d3ngVOXMyXRRa3GTjB70+bnAuA765+u46plsOE+dN2WsDITomAnIkf6zYXFyQ89rlEM3urQ/F08m/mDFhTSyXbpoicQaai3jn0b5gKR+838cqWT/BPSae//01AYgy/RgghIRsfySk8Sa1zJVu8EzQGawE+zAlDKOek8beQ71UpmMfkv5p6e6GUwNK8Hp4AXFQYhUlsBs7M/+QC7rwPNXVhqo4lqhaeLZIvOdyUaQDyh1COtBKUrVwa7rY8MPJrfWBTnr6x9ilPLrsjPbdj+nRZzlV13AfXQ23j1OMbrh7Y0PWZYlaNk
- /uGtlmWk
- +8k7U1uZbx/CNW5elglZQkBGKWJe0rj0cpzXcwRwyr9iavhM=
+X-HE-Tag: 1765406804-282834
+X-HE-Meta: U2FsdGVkX1/Lj96Zw1ryG1taoRjGw8Kq1QJsVvE/zssp48QjUO8EDul7tQoG+NGvOp/mufFoEFZJnL21VXZvrwzKfgwYkWC8A4djG2C6qySAacTXzTFCUfg1z3rn3RMhc2IrUZx3CWmtQDcf9t5onqryqegfvam6Ww4vmfMvFJ3cu0ydUGjPJBUgD5/4z/HBvjYyZ8CnJBiYzbKodcUdsR+PNQ5kuIaxGCCKer+XKRaQCOt+UGqGM5so4dGDaqMVCW8V4OQbO444n546MDj/vYnsHJiY0T9IVvOvC/7PIT6mXZ7nUUAtmsxWUlZfXjmTXVz3UFxdOquEcbkeyunIatmrp3RZbd3y5aT1b9IWSjJ8W+EEIST18H5gvGU+Fez5UX9VJw0BeKdIqYXG6rNKn0tEtfX+DnKddjQxvcaoHWYBO2NX14Eriw02NRp2wOt2Z0hdI032OP2TKFMvd8qjuR1vq3zhz3GPnThIYXy59wTZLjfXHw1va6tjIbaU26pTgY3KlvmlKFbqstYURxVx7gWg/LMBcl7ad2TZXdqUufJGFJiwuUUKBidpNgdFRoP12V7Yym8d4s2ttFvZXcfxvJMrcp57taSmUNUsoBTMVCWK1ih6lDrbYdfXk9TRzPg0h3SlZHzEVz58ohb3RmPEsswTNcWKq8JP3xJRnScWiipX6DSbcXv7xPVpdRer4tCfEJbMZ0p6kZrsE7EGCoj6g7p/7Wq2xBbiXDEZx7DDO7gbl5Ci2wRHNRMElmra4DtndvnT3NKgj/N3I6TzN1Vualsa7wkCO1ibVGg9fbnDb0FluDg+GzPtBdrrDuxOURwRLhdsQlJ0FCtku9pPbeVSShN+oDZpYlJ0eSUXDa2PYpPHse9lcsJhAsqdvGOCec4pDIsDmJqwvd99YgQAlc6sdUeO+H6aQ8tsUV9i+THNBG51vxNJFplMgfJs0V+G8+hXfaoAv4ZkHl3g1hsVosY
+ xRgEVff0
+ A2NaENcCPJSgicnVlcZneKMx6s+2obrbm1bixG5/OCyierDfRPagnWIC5yNIfdaBbczl7MoaLvkW5vWttkTbxTNPW/goaZhnqQeNEbkg25HI2EeOZSNQvwrzYXCSRYSlLoqforM//oYYehBaNmbvErbHcwjAHTNJseH2udsn/A5QuWtMZypjk9HiAr++CeI3U8ynvbhC+Ik6uql3sowG5IY5kvBAQNj0cxy3srP4JTF0vVrr+fmGmmOWycKw1NnO0CEiwuTMv1S2Cf6yfWbYcNr4OVr9H3UHPYIC3Izno4uGNnaWm9XD+4AAz+vAcoAuP/5wF19R7I/wtWAeTtyzepBqTS3DoLpQs2hs5mMi1ZSKPEEIY81X2Q/4gOc4PWo4OP0PZeGPtO4P/ZEB0SpnW0Kzu4QgHGWwAcSECwtT8rjcDov14cpNgGAJbf4HPjog2zuYFqkHVoWL0koq+mfai+MHdAol0VspaS52jgsQi4ib45BBegqU8zkivvYlPG74NNT2p0ddkDTj4hTcFVy425jQtVRS3XPIeJwZB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,56 +97,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ARRAY_END() returns a pointer one past the end of the last element in
-the array argument.  This pointer is useful for iterating over the
-elements of an array:
+We were wasting a byte due to an off-by-one bug.  s[c]nprintf()
+doesn't write more than $2 bytes including the null byte, so trying to
+pass 'size-1' there is wasting one byte.
 
-	for (T *p = a, p < ARRAY_END(a); p++)
-		...
-
+Acked-by: Marco Elver <elver@google.com>
 Cc: Kees Cook <kees@kernel.org>
 Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc: Marco Elver <elver@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>
 Signed-off-by: Alejandro Colomar <alx@kernel.org>
-Message-ID: <37b1088dbd01a21d2f9d460aa510726119b3bcb0.1752193588.git.alx@kernel.org>
+Message-ID: <515445ae064d4b8599899bf0d8b480dadd2ff843.1752182685.git.alx@kernel.org>
 ---
- drivers/block/floppy.c     | 2 --
- include/linux/array_size.h | 6 ++++++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ mm/kfence/kfence_test.c | 4 ++--
+ mm/kmsan/kmsan_test.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-index 5336c3c5ca36..69661840397e 100644
---- a/drivers/block/floppy.c
-+++ b/drivers/block/floppy.c
-@@ -4802,8 +4802,6 @@ static void floppy_release_allocated_regions(int fdc, const struct io_region *p)
- 	}
- }
+diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+index 00034e37bc9f..5725a367246d 100644
+--- a/mm/kfence/kfence_test.c
++++ b/mm/kfence/kfence_test.c
+@@ -110,7 +110,7 @@ static bool report_matches(const struct expect_report *r)
  
--#define ARRAY_END(X) (&((X)[ARRAY_SIZE(X)]))
--
- static int floppy_request_regions(int fdc)
- {
- 	const struct io_region *p;
-diff --git a/include/linux/array_size.h b/include/linux/array_size.h
-index 06d7d83196ca..0c4fec98822e 100644
---- a/include/linux/array_size.h
-+++ b/include/linux/array_size.h
-@@ -10,4 +10,10 @@
-  */
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+ 	/* Title */
+ 	cur = expect[0];
+-	end = &expect[0][sizeof(expect[0]) - 1];
++	end = ARRAY_END(expect[0]);
+ 	switch (r->type) {
+ 	case KFENCE_ERROR_OOB:
+ 		cur += scnprintf(cur, end - cur, "BUG: KFENCE: out-of-bounds %s",
+@@ -140,7 +140,7 @@ static bool report_matches(const struct expect_report *r)
  
-+/**
-+ * ARRAY_END - get a pointer to one past the last element in array @arr
-+ * @arr: array
-+ */
-+#define ARRAY_END(arr)  (&(arr)[ARRAY_SIZE(arr)])
-+
- #endif  /* _LINUX_ARRAY_SIZE_H */
+ 	/* Access information */
+ 	cur = expect[1];
+-	end = &expect[1][sizeof(expect[1]) - 1];
++	end = ARRAY_END(expect[1]);
+ 
+ 	switch (r->type) {
+ 	case KFENCE_ERROR_OOB:
+diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
+index 902ec48b1e3e..b5ad5dfb2c00 100644
+--- a/mm/kmsan/kmsan_test.c
++++ b/mm/kmsan/kmsan_test.c
+@@ -105,7 +105,7 @@ static bool report_matches(const struct expect_report *r)
+ 
+ 	/* Title */
+ 	cur = expected_header;
+-	end = &expected_header[sizeof(expected_header) - 1];
++	end = ARRAY_END(expected_header);
+ 
+ 	cur += scnprintf(cur, end - cur, "BUG: KMSAN: %s", r->error_type);
+ 
 -- 
 2.51.0
 
