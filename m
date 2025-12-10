@@ -4,98 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1727D2CE17
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 04:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81AAD2CE17
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 04:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9D8A6B0006; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
+	id 250CF6B0007; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4ED56B0007; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
+	id 2013A6B0008; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64736B0008; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
+	id 13E686B000A; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 98ADA6B0006
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D04C134844
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:27:41 +0000 (UTC)
-X-FDA: 84202277922.05.D34CEE4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2717E40006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:27:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YoEtHsGu;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765340859; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0868C6B0007
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 23:28:23 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1B6558941
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:28:22 +0000 (UTC)
+X-FDA: 84202279644.18.3CF234B
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 10CC1C0007
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:28:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=o5UKxnlY;
+	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765340901; a=rsa-sha256;
 	cv=none;
-	b=HNYb2ROnA9GoCl5/D1smGgK6Ty4uiAEa+E3cVxcWJwUA+ohKS2aysw5wUJr2i8wHxOL1IA
-	MaJLeDfbFBEAURMB8W5HmJdD6vAfEbq1Iu6p+77PNLs7NBmoYiJYHIpzTuCsHxq2avh9xk
-	iwmtP3oW/dhoOuKm+H8NJcKnh7+TULc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YoEtHsGu;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	b=OUMGXMlOc8x27Y6Vf318qCUQDSgoCLHLb6WKVcU4yWLsPpr84y8X8ZdBP2KEy9ZCmTPZpC
+	J9ee4tPQiDwlz9mrBuhvo2O8f9NJHX7wrin6aJSIFyqbNsghlRaYgDOGp5nLbI4nfpAUVf
+	xGsZZLpuY0bAhxewvMwGEBmuwsRyN9I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765340859;
+	s=arc-20220608; t=1765340901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XQZTyVY5EI22OfoG+6/Jw+yO17GgHGjfzONX+f4GGdA=;
-	b=uVzhS0GUmoV2tS+MLYFUd0XLGv3lZNFXxrdjLX6uirPG5wASg7sVq671CSGxlKey8nPZWB
-	xaEgFy2PqVN3qM3+Cijygo7ynxk/8H7ufhAIHnskwXA2KzcW8qEesKuRcAJPBeYYKrysYS
-	gBQjYoxt/7KpqE+fSIttUZlT+vswxDo=
+	bh=OQfWpBVkXWRGjFGQWDDm62eANx/f67q4RwxOcophSOU=;
+	b=VmusFrNt8Dggp78yEMPbK195YVMZndK0m4sZ4hwv5R9BLG2jwELZAA7jCmH2ZmC1gr9ais
+	XoT58PVRYRskUrd5/QWw8jNRcgtVWTd4aYvZWTbP4tuuz4Sn6pbqpbu1XOH0oxOCsCZ6bd
+	UproOALDUceF6qvRUl0P/s9MU6adNQ0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=o5UKxnlY;
+	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XQZTyVY5EI22OfoG+6/Jw+yO17GgHGjfzONX+f4GGdA=; b=YoEtHsGuQbLbUOQDdHALmnfwAY
-	tNqObB8kUEP4Gy80sUh6a6H3/Nr0AbajRKuSYoR78lcNgmUVQq6R5pU3F43oxeaOzBqymfrpbwlsl
-	cewMwuciIcEhRpC7dPshg6Y32cTaC78zq8lGz4gNi0bnkaca2Iaq1beqJzJinqtKiyBt7shpUUL+t
-	D2u3r6TCbz3yxZH6CnusT0Z9Ocaniazn+dSz0vWuJRlHTH7mSLqVpLOFOc26sI0wx5RWxlBz8ekyx
-	5Eyyjcz8lV7qjG9j0yy4um3BWtHJEIocISpWzduMS6rBVQ8xyNV9Psb7wKqB91GwfGalaY84SbD60
-	vpvfQdFA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTBnJ-0000000CJG5-1xCy;
-	Wed, 10 Dec 2025 04:27:17 +0000
-Date: Wed, 10 Dec 2025 04:27:17 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Pankaj Raghav <p.raghav@samsung.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Michal Hocko <mhocko@suse.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nico Pache <npache@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, mcgrof@kernel.org,
-	gost.dev@samsung.com, kernel@pankajraghav.com, tytso@mit.edu
-Subject: Re: [RFC v2 0/3] Decoupling large folios dependency on THP
-Message-ID: <aTj2pZqwx5xJVavb@casper.infradead.org>
-References: <20251206030858.1418814-1-p.raghav@samsung.com>
- <64291696-C808-49D0-9F89-6B3B97F58717@nvidia.com>
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=OQfWpBVkXWRGjFGQWDDm62eANx/f67q4RwxOcophSOU=; 
+	b=o5UKxnlYep7lSUUwWim+bLfjwfHoogk/yS8buh8k6PyJYw1yI5o6xGQ9xBQJDxaxqQANVQFK9MS
+	505DVNridkct6fi2LwX+dcbHT8Zq4RsmktcnEUAPY3riX3DBGZH7Ai/GcTpRKQy0Mi00E0yi5iH4f
+	p93hlXyZI+84CNmdpT0aQeXxiOHQCTm1OI6FTDYurbMnxQiyRk69S8QsxiikKc/9vf9jAZufSJ2bP
+	TmGRNBGWpDmHcaMRlezqlqasklsa5QitG7FAfkkEqVYQD+AnxHXVxQqU93AFSElFdXBpuKrNqakad
+	pA+tUWzUMnBJfYiaNNefDxgrZU6Zoe9o5blQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vTBoB-009Bre-0u;
+	Wed, 10 Dec 2025 12:28:12 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Dec 2025 12:28:11 +0800
+Date: Wed, 10 Dec 2025 12:28:11 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>,
+	SeongJae Park <sj@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+	"kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>,
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <aTj22_idykAfpDNw@gondor.apana.org.au>
+References: <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
+ <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
+ <aTZExW2LgFNTfwVJ@gondor.apana.org.au>
+ <SJ2PR11MB8472529E92EC003D956DF530C9A2A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <aTZS4RKR3Zci8d_I@gondor.apana.org.au>
+ <qux3i5m4weedza76ynfmjmtvt4whnkk3itwpuolozfvk3cg6ud@rylhkigmqn7t>
+ <aTeKNEX5stqjG55i@gondor.apana.org.au>
+ <j7rqzweklga72b7hdebljs7nziz7bs7kzvevkuhnbwi3uespkt@rmkdqlpku2gh>
+ <SJ2PR11MB8472CE03A67C1161469CDE9EC9A3A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <bfkkizyjmfulkzxgf45l7tjsnudtyutnenyngzw7l4tmmugo3k@zr2wg2xqh3uv>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <64291696-C808-49D0-9F89-6B3B97F58717@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2717E40006
-X-Stat-Signature: s45nx5qxetazukznag6na61674y64hu8
+In-Reply-To: <bfkkizyjmfulkzxgf45l7tjsnudtyutnenyngzw7l4tmmugo3k@zr2wg2xqh3uv>
+X-Rspamd-Queue-Id: 10CC1C0007
+X-Stat-Signature: z334f7ob67s43q4c3bqykxw6cfpat657
 X-Rspam-User: 
-X-HE-Tag: 1765340858-832742
-X-HE-Meta: U2FsdGVkX1/cPvDMyvJHAr+o3+KPHjbgyKxZU+4FML3O0R6odptTp1wa1EciFFjsHquPf9H59w4SvBE0epNka0VNghA9hJGAB/5R2QEuS71EQmdBwSN8Vla24VSxJvMfDiV1Qtcw68GehQa4da/+ZG+cOFg3gI70oULXA6iSpellViyt7BUYBO9wCgtr1uZ2eUynQ5bxZx7RNlG8Sl+7fGdt7ktV8dIpLl6TJaXzxggvB7ioyvAzK2RLsN0b+BGpB9EzR1EfZBqKZXKzUeXVbOT24nlatvyV1oAG5uPnQb5GvGnBdU0tnsdKVDTplOIT/da5RrovvNywQq4GhRME2Sl3vXwqu3sz7zOKt31o23vcgHu/PXiaNoSwtbOAbyzv+RVepXzuwMa41q7mgQ1kIX0Y75jRZXBBXzwAvZSAOMUIT0yF1ntGg4BSKs0jGOS1dWMnRWxjM1I1Hq+nFpoB35XccZqcXxA+BTd6ZrtCsQG6Nb1qVmhTZI7S4CpBHmIAMcy0Ni4w4xdxx4f62xjiddukgLmoqNlfqNlYcFBtlpzwhrJ1yON/S9LEW1K2JTvprRgVd6wva1dHMH921mRZYDD2qqDm+dITRIQ34n9hgb5ROZeWxVp1+ZCp+OugWooy+ljeJiwomvli5TXGJGrfPSUpJLgoczBVNMYzeqTWXBpczhUsSVtLSj88Y5Z5O1LOT/EbbqtBWW7PVWspc6YsW1XDr2DU8IBRZPPqUusLfKwboIVVQL8zCnWB83IrS/aFMeVDBkZWDv6c4PVHKzsNRg8lqW3x1J0e6KZ8isIKAHFzIbUdhqc0sJjgqBCKF8z2eOxOcxVRQMH0NlCGTxoGaN/C1diScTGzkZ80RaE3OYrSMFdSRMTyAfxVHR7cgR+SfrHWyxegOlJkCRLIWAYAiXEVIcSJYjGj3A8WYSyfqx4dOZKu1ANRjqFD5hR8A/nEb1GH6pIIqFyUYNlhdpP
- 5gJgg0qm
- x4ygD/WD8AqPYA2iwLWUfVwi9S4tz8fBSi7hamIpM8IgSd5WeZ3F0dwdPr3xN3cxgjzd5N6dXcDsZyIZBmEK6BRobyjbuwaXR1T8CJ6b0usFofJ0iSvjI8jqJL6JCqe9i5GNXhfpwU/GIQn8DESx2kHRC5vPdvzdW1LWAUitVoziBkB+zGWA+GKdzC9jsTegD7hTV9mbd7jc6LsVkLPR7b3DBwEFW4dIgoe66lbDqpJvo0VmoEtgK9dh/PsNakNuJ5cFs
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765340899-324136
+X-HE-Meta: U2FsdGVkX19XrzLuU1ZQNSrihkh03Fsw9MQOG6dJpUONziwXqxk/c4WOKZP3zAR/XhfdyMtsmgkmLIOghRakkXLQMMYmRZFwgbSVO7KfRWbzcbRSFWfXqY3FncfPx3PaOUjGBkepuMdfqXA+l+DEUEaGPOS6qDU5KvXiKVc4xd9BMEHCYpBqJGXVzNSz1cDlDW/7lI2nO9Ud838jgrc3GnILN1uAuqmrQfSu0gbfOytT7YfeKzKULZJ0EuuyZcAahmuVLQafZbqR94NE6eqgCJOENwbLVKn8f+yf/oBK3Wc9gysvXc+/75+iM3CCgeJRQnfdFzwpfmkuKY++KsQrQgugJ7GdUQjIYCLDU+kVDrKvTyLPJbawV5G8gHJDBsTnnSwAVQEs1WwcGX51HAT5q97Kk9QJKeAPz3ar1u4U59aRn/YAB2QIL1pXUAs6OXprxpLvv5/wpgxrSRlkyDJL/ZGAdcx2WGwZBB0jdz1VROtilbF4JHEx+nsQQq+Ro9Y0dfVFPj2AUYNK5ulu4B5RsnL9hKcuVs+2UjyiuAUCFxCRx5v00YrTEs8WM+ROFsmz1Xn/zDa/F7FROW7+x20vIn6QEGpita3fyQp/7CNn17VAf00QOODLkbZyzBHyhdO44WDqlWBcrLm7ZS3NKgZ33wVV4YaNmKiwe2s2OKDVzajmxtQUhxZEQNBLMvT7azv1ltS6t/Axwu+jVHSio15b8/ERWO42mzgFoooE/KfCyDlCLBqevxl40buL73Lh6Zqn2NgCfy1Vks/j3qitjcUzXVbgdYLn+dNjIjyEt9sjwNcpO6DQKlckfh/RC0zByn+Cdv304NEEel2k3LKy5KE99NSRKXc3B2rMB4NNdQ0nYO83ewpCQDTFcMJP3vCTflKL9WHXoa0Zgn0w09U96/DOHzhE8bWd45Hawcmh0Sm1OHTTY8AMaruDjbJdc3vNe075j0LlKhxGlfuLVSFvdeL
+ I5xIW6Vh
+ A0Q84cGMEkBwDe3HJcO/4zOBMAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,16 +122,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 09, 2025 at 11:03:23AM -0500, Zi Yan wrote:
-> I wonder if core-mm should move mTHP code out of CONFIG_TRANSPARENT_HUGEPAGE
-> and mTHP might just work. Hmm, folio split might need to be moved out of
-> mm/huge_memory.c in that case. khugepaged should work for mTHP without
-> CONFIG_TRANSPARENT_HUGEPAGE as well. OK, for anon folios, the changes might
-> be more involved.
+On Tue, Dec 09, 2025 at 05:31:35PM +0000, Yosry Ahmed wrote:
+>
+> Ugh, yes.. I don't think we want to burn 7 extra pages per-CPU for SW
+> compressors.
 
-I think this is the key question to be discussed at LPC.  How much of
-the current THP code should we say "OK, this is large folio support
-and everybody needs it" and how much is "This is PMD (or mTHP) support;
-this architecture doesn't have it, we don't need to compile it in".
+OK so the consensus is that we're keeping the visible batch size
+attribute for now, which will be set to 1 for everything but iaa.
 
+So for now I'm going to just provide a trivial acomp fallback so
+that non-batching algorithms conform to the batching calling
+convention for a batch size of 1.
+
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
