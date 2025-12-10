@@ -4,240 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC4ED3C52A
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 11:28:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 214EED3C536
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 12:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 209DD6B0006; Wed, 10 Dec 2025 06:28:12 -0500 (EST)
+	id F13CF6B0006; Wed, 10 Dec 2025 07:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 193DA6B0007; Wed, 10 Dec 2025 06:28:12 -0500 (EST)
+	id E9E626B0007; Wed, 10 Dec 2025 07:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033636B0008; Wed, 10 Dec 2025 06:28:11 -0500 (EST)
+	id D65166B0008; Wed, 10 Dec 2025 07:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E16646B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 06:28:11 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BAAA13B0B8
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 11:28:11 +0000 (UTC)
-X-FDA: 84203337582.01.E714B8B
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F17A480002
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 11:28:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V5tTn9tW;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hznlQtwz;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765366088; a=rsa-sha256;
-	cv=pass;
-	b=8e2ac8F3yH2L11npnXPNKC0Y4HHDcp52eREhDje+8dXs51fKQopmOgqTi3zm/AqU6CWB7P
-	niyg5Zh4FHxyK3Mf9/DN5hkLF7g8xF6HbTUDj80tTYlhYEZ9bEH5HPdP6iQ2/Cx0lxiKnV
-	cpTWfHpJiLPpH+Ipj7BvBxz6JBIz+nc=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V5tTn9tW;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hznlQtwz;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765366088;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BE53B6B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:30:08 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E28660276
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:30:08 +0000 (UTC)
+X-FDA: 84203493696.09.9EA42C4
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 76DC540003
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:30:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EVniFHSM;
+	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765369806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dL/vVW9+EnSnYZOpDAk0jeuSaxFiu5filwO4kPa5GM=;
-	b=csmubWiJ0/4Z+dvga2r1aAZeXlie4mJZKNRtrFWOsk40T3nUegoSRBDVFUc2TNNkVSIkme
-	VfCiCdKRB/G57NXrKdAqDWTJvvVgKvN3V1MXttSbHjnKgtecYb7t0M3D4Oc1ndWPfBRSCm
-	2yVw+qF7p4n6qwc/owATyFQIwSbz+pA=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BAAZekm2897442;
-	Wed, 10 Dec 2025 11:22:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=4dL/vVW9+EnSnYZOpD
-	Ak0jeuSaxFiu5filwO4kPa5GM=; b=V5tTn9tW8Q3rLNPCFeQ74TGoFPLuOZBaia
-	CunrAvuV5fq2c53QW2owjt/QMJiI/rIM7F/fh5tZj9FE6cPOMk4R0X4KI4POSh1X
-	9Vc9Kzx9KoaU/9N3MSlYrQFToXlAnx+KwvtyFLt447g9aLQHxSvOZP3bITHyxy/9
-	oI035zOhvuamBZa+phmI8RmOAixfdoEa3XrPRtoWZrEFfp2TpV5wdh5PQDr9063Q
-	zmjIG8i63aaLf87lp7ys/eSxtsNphyLK6+rnDzWppSPjVmZF0bzFgZmsPkQ40ltM
-	XvTJxbvr0JQGnLTklNJRcxmc4OWcBij5GbmyymiMeqD0qzuRFZMQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ay78b81wu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Dec 2025 11:22:45 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAA9t62038344;
-	Wed, 10 Dec 2025 11:22:44 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010003.outbound.protection.outlook.com [52.101.46.3])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4avaxac944-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Dec 2025 11:22:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mdIG0Eh71w3WM/WQpmsX2xiy4SFR7CYUdq7MCPzex6yU2bxANHah/x44La29eteJvcgI2vmB8zwSPik06bLNCwRdMbuoWZoWF1PuE/MWduxtIJHpgZigv/VUcBWLmNOrrT3YOqtKFm/MV5CAxaAt/ot1eIyfWiIV0IOIRfA/ecSc0q8eu2vBntiDU9bjIkUc5BgmGBxJBcFJbU2lXTddQd23CzsoWzzriddamVjGMpwolbOKfXIfnJfLlN+pQU42ptGB0hSke0Eck4WZ4DWfpXUc67ik7HDVFpI/zS5UjB6k09MXEPRgo/wfKZBsPKTiTfDzf2ybx1ri5FdkCXNkUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dL/vVW9+EnSnYZOpDAk0jeuSaxFiu5filwO4kPa5GM=;
- b=t3mRaJcsh+Umi9lK9Es7pO6fzDv8Pz8DWQdaQkaD7O6H/bCMYTJ7eiR6o3vfgzu6rydD+Cu3meX/ZBZjwzwOt9A0lxCvylnxdSyzWhnTtvwSQS0065/XOrCD87pL+5HygJMyl0RhyP9aFXoH7HHkvxRnRrRCMF9RC0uxRECW/hkprQUxZgmhwneeWMoXh/HXne2ZOVngBB4nldUDm9rUNs/pN+yYs+uziXj3vcvN3ywgx2q283Qv4HnW51CipHM4EdQ5SG4OyV05w8/DHFZqzo75ZMh4DnqsOp7rN5vwSEhQrZ4KVBxQwaoPBTs79cJbC4lAyFzC4LJaDmEHwLU/tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+	b=Ykbch7y5wE7OOpza34PUNR2Yh8f0WoAFcVfniLTEziKnOYX7tXm/hXScyoP/svzBeUtL5m
+	QYkKh432aeIQzFO6HQIV9l/Q7zjaDn/iCJK7qlSt/9bTvMQRKVXNcC1Ml7LWlSZw8GBK/U
+	48zdPERvbvphH/nVN0P48f0S7rNKKuM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EVniFHSM;
+	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765369806; a=rsa-sha256;
+	cv=none;
+	b=Q3SYcEDJw07bUfQhCIJ33phI89AMq5SAGvqt0WN6z1F0P+y11nhYvfzhhz5w5PuZYX4/+3
+	7Jp3oYMh56JbGRTDEjhjbNY98nGwaPLlbj5uZHWNojwP4tg4OlGN8P2gljStZk62mVMdMZ
+	o4cO+vDfQks9fTI3a+lLaj8KbDJO7EY=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-6446fcddf2fso558433d50.0
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:30:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dL/vVW9+EnSnYZOpDAk0jeuSaxFiu5filwO4kPa5GM=;
- b=hznlQtwz6FzRlO6pLqkmh3IH9YKozmLjkBYeIc0DDSZOfQTui81D+qWoXrPZ5zKwEraD9DbsZ2zt37QymQ6pOxEL08HNcY2kYaMAFRuLrK370hHA6KjPj2SFjhAaE/00z6b54SsYyXSTAflJpWdSZP6MkVHFVTt9pTWzL7rozo8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH2PR10MB4328.namprd10.prod.outlook.com (2603:10b6:610:7e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.9; Wed, 10 Dec
- 2025 11:22:41 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
- 11:22:41 +0000
-Date: Wed, 10 Dec 2025 11:22:40 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        Prakash Sangappa <prakash.sangappa@oracle.com>,
-        Nadav Amit <nadav.amit@gmail.com>, Liu Shixin <liushixin2@huawei.com>
-Subject: Re: [PATCH v1 2/4] mm/hugetlb: fix two comments related to
- huge_pmd_unshare()
-Message-ID: <834ec5ca-d43c-441d-a10b-ea268333e433@lucifer.local>
-References: <20251205213558.2980480-1-david@kernel.org>
- <20251205213558.2980480-3-david@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251205213558.2980480-3-david@kernel.org>
-X-ClientProxiedBy: LO4P302CA0044.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:317::10) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1765369805; x=1765974605; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+        b=EVniFHSMZOd2NCy5VfwV0bAnIchkfMxGTR82Rdt7Zv1ajNQlNJUwjlsXUlumobBTV4
+         hXEYwyVcitg4siw6Tpbl01QNLciYxBK4TyexJ/Bc7+9kkLeVPyUfALTdVZyt1Ao9aIe7
+         nZdKedAPJj5oDkH5UCm7dfN5w2iEYL3DVgFDac4+ieovSKOnbecpGYTqMmPOPJ88nEGu
+         X34FJGjLocecD77j3g9Ya7dYya/jpqEn1da/lJY5vn2BxxzAx8Uy1oCAAZw2PUoCNNzu
+         eTidTBWNSpPtHGAUNfJLruDrFEP15LljKzPXe7dPuB/YXafCqmYe2wydHdywUmERWNjT
+         8yvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765369805; x=1765974605;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+        b=fGCdHXjwGN1VCooJBmeIwlJCM21zF0LGNxaEsP4MVcDwL0INoGkvjzJi7Th9pbfWQu
+         7A0wYYYVPWH2feLzPgl6ivWNSnIXJA3FsWd9xBGHieHf067gvNsgPQS6W+NZLyYIgx46
+         5l1ii3VNmzJM5ExKalu77lA2Cs8I5iBKl68g+Q7ZjNl5Dj7AgGi2tnzG5beiXfJMmYVe
+         LyFT220BK4rxAxVe8EagZCKBvrFISY2tBOyzT+UWHAJJCe1Z93OMSPPrlL/QKOjpP5ud
+         9o68ENhEc7K7SiL0mFSkORwiNqdApnkUz5ikOJbyZMIbn25aF/NEAwCnAwiX1Rn0h+9/
+         j/XA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIstm813cIzMsU5lnZlRLRyY2JTAB2IwnOnT/+A9FEV8LGD/UGBDpxbqJJSQR1ZwceFHDnJCjqiQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx/SQNlNz5Db/P2ZSsqCW3NrwQ0i4mIVoMz6I2ANRlyP3Xpo2MG
+	bAlYZH8TRfAunmuIOVHLO2Tcy415ff9OU0NnFJ1fRWKRVdcqswGGqXBT
+X-Gm-Gg: AY/fxX6VKJ33gLbq7m/srUTjVUWqko7uz3i+NMaD+P6Inv77b7NKSlaJ70fLwRauIM7
+	qScXCzrtk8TLTHaZEHqherExnRCd5NUkMIWJ0KA8thORoPB1ujztyxVzLnnPG1EBs8MIcB5VH94
+	q5GEqUvWeJpvrSj5IZgFVWMh13n7uKgbblcPXrfrAp8QA81xP281WhxcZXZUjefwxIPtOvm83OA
+	T/x4p/F5fyFxpLaMtJLw35+Yy1G6xHvQnjdxFc7v1Szis3Em5pe4SU/mUKnJ31ZL/WTSWFMcVgj
+	pGyT8EOEkHGjKNigRRGvlp8L0huvUOloPZNg2l/gjcp+Cy47iUcvk6c9srRJN6B6Ktw4INYPgsR
+	hIkm+xoCWXpJ3h0wi8QHes7zrFMZrM9hTEKK5EazUBzroLrNv8gsB3/yRyleCRGL2neTV2IZ3aN
+	OdJNim1fpd4IAeWPDxDdcFCMU/rafO87Rb
+X-Google-Smtp-Source: AGHT+IFNh53RYGhBm0spY9cGU4hrvZl3rVUUUljhOpXEUJgWRnGD1AENe9Wq19Qn4XXLgG15AaZkgw==
+X-Received: by 2002:a05:690e:2597:b0:63f:c52c:3828 with SMTP id 956f58d0204a3-6446e98333amr1349152d50.26.1765369805247;
+        Wed, 10 Dec 2025 04:30:05 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:5c::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b4ac94dsm70695807b3.9.2025.12.10.04.30.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 04:30:04 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: mawupeng <mawupeng1@huawei.com>
+Cc: joshua.hahnjy@gmail.com,
+	willy@infradead.org,
+	david@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kernel-team@meta.com
+Subject: Re: [RFC LPC2025 PATCH 0/4] Deprecate zone_reclaim_mode
+Date: Wed, 10 Dec 2025 04:30:01 -0800
+Message-ID: <20251210123003.424248-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <fc00c53c-ab54-42a2-979b-0ecb49ff6b48@huawei.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH2PR10MB4328:EE_
-X-MS-Office365-Filtering-Correlation-Id: 891da33f-5923-4f5e-91d3-08de37de6ed3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YVt3SzsnPuGJ71QTzLr/1tVxsy4gukQO0HJY5lltu4hxmFX6+MQvhhvJsKED?=
- =?us-ascii?Q?gA22IpCRMDqcS8eofedQqvC7B4WjDOWI7y6dnyQnxubJQhFHP/HU8UOkycZZ?=
- =?us-ascii?Q?Aom6yhfrT+eGt1EsVGVVroTa3yl29HWnYDPeHtPp9V7k3LRgmhI5a5iIfZOE?=
- =?us-ascii?Q?JGetkfDNHKKrdjnuZSAUlaAkI4YnvTfx2S9q/woUyCBqOrPcWOjCWqe4T1Hr?=
- =?us-ascii?Q?4CxcuG18vI4QV4i2fKpO6XkASxfqFZu5Shkf81Icj6wgHh8OxhGHlIhbugY2?=
- =?us-ascii?Q?BbiIkto9VI0onI3Fyk4LoQq52rVQK5E0xeHjmdxP87LjBLgP456p8XKKjhXx?=
- =?us-ascii?Q?rco882x9o/Leey/Edb5no6tPnNfltE2gynzyVKdkEVwRpmzLGZOLhx3pFRff?=
- =?us-ascii?Q?pl2jFN8yPSarDwoRU82H+pMFn7rXIRDgiw8wPAQglKJ9pdBJqx5s/xtKxfH1?=
- =?us-ascii?Q?9BVOY/IgJ1lpYkaepfH21pfDPOi3mDQmhskv3F9D2vdhYHUcRhagOXlKnJro?=
- =?us-ascii?Q?51WLscUDkZU2dgsEYLV4NCPkeEhT6gLAQojRj4bpcNl8RIxp5y7qaLENl9/a?=
- =?us-ascii?Q?F5K2uZKiNFVD3pC5EPLOP8h7HF/sNBeNsV67ZUyAMBRzDPq+/aQh5FtMXDHv?=
- =?us-ascii?Q?8O3sewet6f8HlK4CMjL2AOT4ZHeApNdRrvDuR8ATtIM4wmJWoDSYOtbMsW7g?=
- =?us-ascii?Q?LdeF9qbKVI8OXju34Tib1peSPJMaCQ1+jtkcETVV2wIklFnVb5sdW06eihwH?=
- =?us-ascii?Q?+xDOhr7n4IXpC+QuLAKmW6XatW3lzIEUKQDBQOR4VzR0ZR3rJgqmznT39rcG?=
- =?us-ascii?Q?LDEdCM7AwvXV38R8/72Wun6usm0rlm5lRHqZ6m3aj6yiddmcwX8szwzunN7M?=
- =?us-ascii?Q?yYtGLatJ4gvywU4ybwLOBwVxssaaajXc2JSPcxOqMF1OSqxwVJERQwrU5OzR?=
- =?us-ascii?Q?xSp4h1cZFwH7HotAJT5hWFMk3itd39bLljsmOtOlZj0UWOcx1xS2crarJ/DL?=
- =?us-ascii?Q?/Zp3uO2ZfRUlfx2mVB4ysmAVJ3RJvmw++ia2n0399P89NE7TNvlVmk3I2PJr?=
- =?us-ascii?Q?BG3YgNiN/BD/1teNh3GRL5dscctgQl0HFu+xkavbv9G+GQeOPt4s8o2/RTjY?=
- =?us-ascii?Q?yzuyXhlMjqTdad0jcO0HYJ2bl8hiZqtCfAeeuv35H8VpgY8Q1BUl/RQxaswQ?=
- =?us-ascii?Q?VFvSPm8AGFyTURw2ho2Dk97Tde6EbmnDfWg9kQfPaIDGzI4xNb4cBMpGOdhc?=
- =?us-ascii?Q?i2QsODGr4zAGgtx0RHYjNK7AdINMCBnSn0SyUltPCNURbUCPBUzCORG9ydic?=
- =?us-ascii?Q?/YAQe/cw7b2FyNV9ffP1HbsD4BSeq1XmzgIR0N355OoE2K5aka7k5aNsSCHo?=
- =?us-ascii?Q?qTyfA5a53nNTg+cfa6ztP4i9Gll85AIxCw20D58rur1FCmMCBhADlgDGitf6?=
- =?us-ascii?Q?4UKQBRg/OWWZDxG2A4B2Yvk7jnv+lSBJ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?17eBaMPi8GGyYjpvpJMM3ZF1nPABy9r60k5CsASFRcotFvprNWPCUDbpqBVS?=
- =?us-ascii?Q?qDfFOw1PEwy/6Pf3aiGoUtqza3iJAbI+gcFK/RLd9LI2Lz+4HMYDAHyO9IzS?=
- =?us-ascii?Q?vzKSD6D6plOlKWu5V1SuUAHsQSYm8re2MGbUy9XNbIXsBG/cTmdW1x7/JB4N?=
- =?us-ascii?Q?AzhEW6b0NP9Jk0LL7aGajvTW80iteZaM5kJc4+nZJv33/JVIOiykr2l8wcjL?=
- =?us-ascii?Q?H0Ub3dI+rpPoB8wP0cWmiO+xf6WMgO681kxy7rI/bFb96uu7oa1e/i9WcnB/?=
- =?us-ascii?Q?iR+WdGAqsmwvXWS1MxtCV+XNYI+f+X0oIu0o56OgbNW6vZ5t4RhbgYmlW/T9?=
- =?us-ascii?Q?mH5Fsu+DuKol12C+j+TnBkAjs5ku7LSwGXNl6oJijGe6+H9wfvfCQKhpeuRh?=
- =?us-ascii?Q?DAz7mpQyLZNvT1VGIiOLuuXjO1pKFWRzAYuu4ijhAWP1sVk4OrwKOHRcm73y?=
- =?us-ascii?Q?Mhay9aRlCDQ/ApScwYbpQhl+MyIZ6MoGafGhPoUZ30VSnWFK4uBYlWJqW9wH?=
- =?us-ascii?Q?xH851V5EFWCnOYBIrxUbaU+uj62imdmERWp5eoUKc6KZ4oZRIXRo23uBt31z?=
- =?us-ascii?Q?CKV/L7wTbEg/SCRcR0k3013YlGgoMim08F9KjvA6vfRJedkbW0m17n7xcmN1?=
- =?us-ascii?Q?zNl1Ke+lLFtJFX0O3gpXbUTBn/JeBU0pxMuagX5zw2xnebFOIS1zuSZ3nAvC?=
- =?us-ascii?Q?zvzaAN3WvV1zpf7ziYJn17M7lFRojpuSp++KLURuAi3J7QFDJS+KdIBcYTxE?=
- =?us-ascii?Q?cHWa1AeX3JNqFLgzk/8LSNTGEX9i2P/WFOLi6IB88SK7UIR9NXIz4JZYGSRZ?=
- =?us-ascii?Q?kpQ5CeJwhVkKXs8YXTnDGPeBh/t50roKiHLtTa2nq2YuCdgpi4OHJTYwAsrO?=
- =?us-ascii?Q?IFhGquItT10aSPSQveqHmgUmd4YEmC2bAvbxtbJTbxyrcuaPh9/neRS2q0K+?=
- =?us-ascii?Q?6+OJVjeDRpmW1dC/DXeVs6dnLmxYnQnqw5yMWfRv37oHIYzE7q4TtGJjPtSz?=
- =?us-ascii?Q?SQ57OQd4gyJHTZ8X5Qzo5y50F3U/svFnjXHrKw8slpQ6aJL9or+WejqYtF7J?=
- =?us-ascii?Q?GFsQ7N12IuXGYPlx5mOQgqwXdqx7SNc5jeJ0Wc11PIxSpU9MCvMVmFDYkoVQ?=
- =?us-ascii?Q?G7jugxicc2t61co47tFnTtARNvjqTgVj2z8YMd1Dmm7A5/zCHANTT3+S9CQF?=
- =?us-ascii?Q?jYGWVMz/KKUz+Oy3GCNHefV/eqifNxaOINhOL6WWc8oJ+mxEXpSjqwYFzDGh?=
- =?us-ascii?Q?XDrj3Hg0oonmI1gyrA0K/dwg6tk2PZQnGW50GeMaMtQr13+L+erElIeV5SkE?=
- =?us-ascii?Q?3r6nHPoqtf/PESjMkqJ8zdoXSzQqE1nsz+nQ73C4XDuFRg6f9UbTFrw8pygO?=
- =?us-ascii?Q?HKW6SywYtBWL6jRprNr8x4aSCXy2EfJvLsVL9a5VQtXUt0Ei/vNpzVDaH/pm?=
- =?us-ascii?Q?gDB+ra6qkjzHwsoHY+kNLEB7JlzLzBIRrGRFmWzOSftZ7qxG149UuTs7vHfD?=
- =?us-ascii?Q?9Jd1imLt98twiSSt/8eP6lVps48PkXQPGSbVr0jccE3wkzfBOSS/KLTagLlG?=
- =?us-ascii?Q?JOtfgGpKDr6ay1krdPESspM7uslWURIj4ontP/65urb742AMGqCc0sS897Qz?=
- =?us-ascii?Q?IQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	dwf6cvXeswIm9e4UCaJeHRigBMzGTmjk30UWDNIdZ9Cva7Pq8HzNwfY1AzrHGNCa5Dry+E75bws66AUQQIHcHzu9tqzzFVcMBVBBdT+BMXoxGWc3nL0NO27BK1bF+CLdGdGMgINEnV8Adlp390YwF8apuBmDYs2m2ML6nlP3xnzzaOusiOwcpc0F8+9c6878jWow+yBgIcqMtSA4k9Ufv/CfNDuGLGP4QMfbASHP4GGCOOiMhzl8HdyqxBBerlGwx10M8BU2OYAJWxA9jpJtupV6x3NMy3DVLsEIx8Lr9rasOan0ZbVZkYYRLvqobVd5y2UbK4oRlH7yxeuxtia7G85VRbvfYeTl2usuIkX803MNuCwc8iFukEefXFtEv3u2uOLGjK84oom+nW3griTPw3HeZoAOYwe+4k9zPIlbXxHrVR45wTlgTOvr73aaM7AGRKeF8h4wM1a8sKN9svtUudYtGkgIV7u9vlefRLgvVI8e8HyS7skw8MTSCvNzgrAtZswoNcCqpq7s05QX1OvmQcQWXH96IU2JtL6b3Kk6RUg7w+f+cemipsNGNjFlPNVDyKSYNGg4Gy7CMKK3+AcrHg5gC4uWwSru95pMkFXz/JA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 891da33f-5923-4f5e-91d3-08de37de6ed3
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 11:22:41.6583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EfA2mZd8Vo+5kxPrBzQkiRE+fWMrMgyjWnRMzZpMKJsROMQanC5/X+Rltc9cnP1lojPkpcNyN+sYO4rbYJywfBZ6FJzjfyEgJPugsCONFa8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4328
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-09_05,2025-12-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2512100090
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEwMDA5MSBTYWx0ZWRfX9tO9EdwXm7W/
- RD98t2jiodnSW8s3IrG/dapwPtEubcL6vvRlEu6JRBE72bDPqfm+n1zJUmljE7vbKs5K776s1SS
- Spssv0jRxOyWe/B5jt6fnEG+vTMaG89BHDquEBWqNe2VbSaw4T91zKP9YULDRAQOGQSLHjy0oS9
- U7xISQNlBa1D6zoUnV/kK2WlB6PAU3Mk3Vq6uPa9MZr48DO9BW/dO3G5j7hvhSzCkcgpBnVJx8o
- EGz4WYoUjNgs/z1KVcAyE3pXJCZ3IpXTWo/wEt60LgOHJ7AoEvu8NCmnBnF0HaARcnsPKk1iPQl
- PmjPQLCFiBvFPoSy3sXSfOqxeJRLX4e6CqoaFMJjJ1dU23CwRUaekTiuLuijm0sOl4B/y63akHm
- 0cXTGKGd6Q/b27xw1SZzyVpxt21OTg==
-X-Proofpoint-ORIG-GUID: IyA4Ky3aQJXWBgBEB2Z1LTK8vAwCYMZR
-X-Proofpoint-GUID: IyA4Ky3aQJXWBgBEB2Z1LTK8vAwCYMZR
-X-Authority-Analysis: v=2.4 cv=X/df6WTe c=1 sm=1 tr=0 ts=69395805 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=i0EeH86SAAAA:8 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=m6Xm_G35GB99sRZvWEIA:9
- a=CjuIK1q_8ugA:10
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F17A480002
-X-Stat-Signature: mhqn3fk6az6e7acu8qhrk6ig3sa3qxbq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dkfy6hmiz1zg6om1r33k65crbt9gd8eg
+X-Rspamd-Queue-Id: 76DC540003
 X-Rspam-User: 
-X-HE-Tag: 1765366087-42917
-X-HE-Meta: U2FsdGVkX1/F9XCrSiBa6Ea2zJsJFuAMhtAgJh2wPThhHMrf8LeSaQXZsdO0i9jFQ6OFKVn7yqSfrjQoyexAN3EqsJsGI+saFxMBdy/14lUcvWIS/PxO2lw6xUd0c4BVxXHlDAx5v1JAQH+WzxD/dOcNA+pi1ayPXJsGmreWo9nhEus3D3nh1APXEQB/n5qFE2TJ3rOTwvJbjsuEPevV08H8M4H5H317oZcZBkTiEiQX9l7vkNa6A4/fB8vhnXCpC+r1HjxOhoPUxQHC/J29ZWQ9egZH9BTzJtDZyaaMBKtbd1Vm+oqbb17csmILBqdgmsVgT5WSo/K+nutKFaJBW3UPXMaayNC6wy2/WzfmUEoqybbXMkwv0JKcYlASP0Bo+HZeCVUfvfeoviu/T3sHFkdOUS6a76zYXNzaDwkZC1o+B5nm/x9nI4q5jsWBj2JO5w5EyddGWZLUJz9F5BoUUm6XH4QZu0fZFQVABEOR3M2rmagwyc5apP+Zp+PYXmihCozJaU2+v86BwPy8lIzlqQFedHTB1XERYZgb5+AceCZTSLsuNx2xdsgthLpZLvpBeZGqn51boOG2GHAhY3X5/n0XPu4EwSC449sdNA0tcJQqfLNz2GNMKlx5ziIJHzG/lnMeAEn1Q4qirD+PEzml+qe2sSmxVHk//1+KDISZsSMd9uNj2nIBaoWlQ6A3nmhu2uxp/cwST4BxlaHvJbTAyhoZQYx9XhVIr8btJLC0hLZytS3XNlI5G8d+AcjvX5r2YeuIfihdB/lcYvSf4fog45m+sFneakBgctMP7pjUWZKN4ayYqySc8/ksDtwOoCRlFoAoDQXQ+QNFzM9A6QyjUqhDVwdNeBbDSKA4UgjJXNF/zcf1XD01kQe9JZha4JrXmE+3LSr0JXdB9itmgWlkBtilmUvT93mZNYfDKllZ91oiQj79Oqg5yZXkKQ8bQjHWyr2KHVlK/qWkNgZe0Tv
- VQsVWSVh
- A5QquRpEa4gIUhH1kVgLs5KT+2Wwk7fDEbeGvGGv+uFDNjuYW/iXYOfgWffowmQxnJE24jm/5t/cNRTdC3ZM6x2cxl3o2ClYk8cUFfwrOocbX+LAtHC6vM4IxeoLDIhfODZe6LjiO+eBUABI868OwSRvg84AU9T1QB5qzVZ501TDh3JhumoFcHPsMxaRagMvxZEwz6F0guDWzbvZ2wyRg+094z5l8wJkNOF+Et2+JbumQSsHGFDAmagPgIvM3pEEH49/zEEEVl/GeUIfx5a6pW/nKKSzWV+Y7K59+x2huWCLD44JAX0Q4ru13ykIecMfhbmFGU+7XrWtjDaBQdcXzWrnG7lgWKMfaxzgr4DlHvUslJpdUsiBpRf5wVivSTgxPfChySXYAfsCjB95WuqdzWjMCCQMdL3jHlno8Pzxz85d3dwg59Hx61gVA7WxWkLMm+TIJGM71FT7K+pev/5kQiK4mpgS4xewIJbJo/onI+SyaYT6od5EL0n/9elG1r2DmUhd8LTpqRfz9vQ/hml7qSGQgphf81AuHVvMUgEF7e9tgan0gJknnw/q00Qv/bcknt+FGcfxhaVyvlFzKgeeOs8itJb/E+FVrwaYRm4hCYSyinNwWEMywitmJaIywSK49NNa5LUgNHlF48bHydyMIhrqTS5MmWSTyhLGSRW52F+ePN8g+A0anoDsSqpGjpZffxIUmQbps+YiP2MeUTrsgqtyZT5KPOHTqhXh5swPv6IqthMih6y6uCfd6f1Uuks2Bq8Pkdr/b0vsHNQWmhrZY/aoHw9FKJlYkWz+KdNIviXmgqRkb1M4zSAoLtA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765369806-230526
+X-HE-Meta: U2FsdGVkX1/VEeJbx3T8ZplUyTF0XQudSJEkjc0VtmTdRXbhMRgjmLhl6fGrMlnNN4gSKczxyHpAxq/YDzSvYoGl03YL8DU17ZOcJyPih4rvtxoXWK5sU8ZDtpfTqrkq0JYRks2ULWPC01JoD3dFOBiO8JcnxpqudddjjzobLbV2EiGLo+nJOjJNRKnZHs7W1WkxFUkv2VfjPMV2PqxXCcBIib6Tjo3tBgLf+h17OIQi72m28phvgOfsaV0sz3sAhRDK92TonekJfS6y6g8X6lULvEuPWqS4vbdCw0/Pi3QX/DcwUzyAfr3my9rMFMeFcFuTJh1WUV8eE4rQrKik03IB1gRBGTWX5ZOoOundacexVgVRRK6iWcgILLJOVk8mBJ+jq/7kPkQPpc2DhFB/SSLBdm4l2eo4iyvoipODkb+pkQPQyhjRGYBnJQhEuYq2QrxCMWgogS61xb1RxgXD8DR2pTpJiCqNIeT1DhjNcivICH1k1b9oesMwzDTu5WtvyPKDm4lxj8ugBDIsXTv887XoFj6yVBxLBdlG7eFqe/5P/7ovGsEjw1w7+U/QN0LmgQ/asX/BrZDyr+4Bs0fOxUF/6W0Bmz2Dwy/HAxIXyu7U0fYcznWfHljKrYk7Km61BOkvnEdLD60vTuqeBerRtXINckjkDF6MGiyydQ9RKAudh4QIM0JsP2pyLK6Ev+9LtXyGDSbBgEVUdThmRzk/y1KzLyNU0SPXjWr5SzYEyNH6kh3pJm9IVimHxjYXyuAiHlHCQWc/SsM6ye+WyY00Dn4vA12WWtY+Nn6TDNya9wwAQWiQlyZsd+hHBDQ7w8BoI9VYFnlyyz6PjCtyr2XgR/dnmtKV90XrH6jnHqJg0gSC7fClOgNKgUrofgj9LqAJpu6bN5CbI97K5BwmBzHbERUd8yZpxStZRrvxd5kFc5771vP4qvq4l+60lPWvrwbxXFJY3wd09JZMCfncrkx
+ z7rUA4Ox
+ qBwn3OiyUSX053fkJ4ahIPj0MaNSOLgpmt7O6p+JpP3XSJsWrGrNw7JOYXz8TBTmqIwuVj7UWasvvsFwGxsouguyWui1ucHn6Cvy0Vw9QWl6/HuSDp60H9ptfz2OWPMjRfepONeuUs+hJO5Jx55+2pb9kYvGr9odlXuSnIM4ZVYOyz9Z0elOi1qZsq7AlFeDEDlJZ+xPllxaJK/Cvf/gn3ztb8e8di2tnym4/DQFaA9SKr8tdqoCMLUs3aiLS3fA4D2sijDsBZQVW/6e6atO1o4eS4nRFXOTI58Griq4natL/hSf436bDMO1cnI7fRMSE50/RWny2mU5em8DkS5XlVFru9u3kJDmdzv1Knu2Q4+tX+m/QULD9hRiW3rBiQNtu1hTyfctY936nyBYVM3M8aFDI5yogxk68Aw2voaxsbO2yqxj9klyzKNEJGzWU7cZPernLn41jzVmYVJxev/CIPPBm9HA0kNmMpNbemshHmcUaSmaupVfO9JQjeYB1c2AcFw+xoVh4bZkbob11kGnPzny5uXR2u8h9OmxufjvcJMm5qiwoDtGWnlBmypMDTzQMwTd1PNzUirq3LL27SCGjOfTFDucFZOrMGCy1XSFZoSjZ7ilFw2SsDFK2EvFzOx/SoCxStZUPgFuqiFFr5TKn1b13W96ucMsYEKTVl9pixL1fhRt16BUQXE8MiRobqATVnMkxb221536the0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -246,84 +128,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 05, 2025 at 10:35:56PM +0100, David Hildenbrand (Red Hat) wrote:
-> Ever since we stopped using the page count to detect shared PMD
-> page tables, these comments are outdated.
->
-> The only reason we have to flush the TLB early is because once we drop
-> the i_mmap_rwsem, the previously shared page table could get freed (to
-> then get reallocated and used for other purpose). So we really have to
-> flush the TLB before that could happen.
->
-> So let's simplify the comments a bit.
->
-> The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
-> part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
-> correctly after huge_pmd_unshare") was confusing: sure it is recorded
-> in the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do
-> anything. So let's drop that comment while at it as well.
->
-> We'll centralize these comments in a single helper as we rework the code
-> next.
->
-> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-> Cc: Liu Shixin <liushixin2@huawei.com>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+On Tue, 9 Dec 2025 20:43:01 +0800 mawupeng <mawupeng1@huawei.com> wrote:
+> 
+> On 2025/12/6 7:32, Joshua Hahn wrote:
+> > Hello folks, 
+> > This is a code RFC for my upcoming discussion at LPC 2025 in Tokyo [1].
+> >
+> > zone_reclaim_mode was introduced in 2005 to prevent the kernel from facing
+> > the high remote access latency associated with NUMA systems. With it enabled,
+> > when the kernel sees that the local node is full, it will stall allocations and
+> > trigger direct reclaim locally, instead of making a remote allocation, even
+> > when there may still be free memory. Thsi is the preferred way to consume memory
+> > if remote memory access is more expensive than performing direct reclaim.
+> > The choice is made on a system-wide basis, but can be toggled at runtime.
+> > 
+> > This series deprecates the zone_reclaim_mode sysctl in favor of other NUMA
+> > aware mechanisms, such as NUMA balancing, memory.reclaim, membind, and
+> > tiering / promotion / demotion. Let's break down what differences there are
+> > in these mechanisms, based on workload characteristics.
 
-LGTM, so:
+[...snip...]
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Hello mawupeng, thank you for your feedback on this RFC.
 
-> ---
->  mm/hugetlb.c | 24 ++++++++----------------
->  1 file changed, 8 insertions(+), 16 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 51273baec9e5d..3c77cdef12a32 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5304,17 +5304,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	tlb_end_vma(tlb, vma);
->
->  	/*
-> -	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
-> -	 * could defer the flush until now, since by holding i_mmap_rwsem we
-> -	 * guaranteed that the last reference would not be dropped. But we must
-> -	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
-> -	 * dropped and the last reference to the shared PMDs page might be
-> -	 * dropped as well.
-> -	 *
-> -	 * In theory we could defer the freeing of the PMD pages as well, but
-> -	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
-> -	 * detect sharing, so we cannot defer the release of the page either.
+I was wondering if you were planning to attend LPC this year. If so, I'll be
+discussing this idea at the MM microconference tomorrow (December 11th) and
+would love to discuss this after the presentation with you in the hallway.
+I want to make sure that I'm not missing any important nuances or use cases
+for zone_reclaim_mode. After all, my only motivation for deprecating this is
+to simplify the code allocation path and reduce maintenence burden, both of
+which definitely does not outweigh valid usecases. On the other hand if we can
+find out that we can deprecate zone_reclaim_mode, and also find some
+alternatives that lead to better performance on your end, that sounds
+like the ultimate win-win scenario for me : -)
 
-Was it this comment that led you to question the page_count issue? :)
+> In real-world scenarios, we have observed on a dual-socket (2P) server with multiple
+> NUMA nodes—each having relatively limited local memory capacity—that page cache
+> negatively impacts overall performance. The zone_reclaim_node feature is used to
+> alleviate performance issues.
+> 
+> The main reason is that page cache consumes free memory on the local node, causing
+> processes without mbind restrictions to fall back to other nodes that still have free
+> memory. Accessing remote memory comes with a significant latency penalty. In extreme
+> testing, if a system is fully populated with page cache beforehand, Spark application
+> performance can drop by 80%. However, with zone_reclaim enabled, the performance
+> degradation is limited to only about 30%.
 
-> -	 * Instead, do flush now.
-> +	 * There is nothing protecting a previously-shared page table that we
-> +	 * unshared through huge_pmd_unshare() from getting freed after we
-> +	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-> +	 * succeeded, flush the range corresponding to the pud.
->  	 */
->  	if (force_flush)
->  		tlb_flush_mmu_tlbonly(tlb);
-> @@ -6536,11 +6529,10 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  		cond_resched();
->  	}
->  	/*
-> -	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
-> -	 * may have cleared our pud entry and done put_page on the page table:
-> -	 * once we release i_mmap_rwsem, another task can do the final put_page
-> -	 * and that page table be reused and filled with junk.  If we actually
-> -	 * did unshare a page of pmds, flush the range corresponding to the pud.
-> +	 * There is nothing protecting a previously-shared page table that we
-> +	 * unshared through huge_pmd_unshare() from getting freed after we
-> +	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-> +	 * succeeded, flush the range corresponding to the pud.
->  	 */
->  	if (shared_pmd)
->  		flush_hugetlb_tlb_range(vma, range.start, range.end);
-> --
-> 2.52.0
->
+This sounds right to me. In fact, I have observed similar results in some
+experiments that I ran myself, where on a 2-NUMA system with 125GB memory each,
+I fill up one node with 100G of garbage filecache and try to run a 60G anon
+workload in it. Here are the average access latency results:
+
+- zone_reclaim_mode enabled: 56.34 ns/access
+- zone_reclaim_mode disabled: 67.86 ns/access
+
+However, I was able to achieve better results by disabling zone_reclaim_mode
+and using membind instead:
+
+- zone_reclaim_mode disabled + membind: 52.98 ns/access
+
+Of course, these are on my specific system with my specific workload so the
+numbers (and results) may be different on your end. You specifically mentioned
+"processes without mbind restrictions". Is there a reason why these workloads
+cannot be membound to a node?
+
+On that note, I had another follow-up question. If remote latency really is a
+big concern, I am wondering if you have seen remote allocations despite
+enabling zone_reclaim_mode. From my understanding of the code, zone_reclaim_mode
+is not a strict guarantee of memory locality. If direct reclaim fails and
+we fail to reclaim enough, the allocation is serviced from a remote node anyways.
+
+Maybe I did not make this clear in my RFC, but I definitely believe that there
+are workloads out there that benefit from zone_reclaim_mode. However, I
+also believe that membind is just a better alternative for all the scenarios
+that I can think of, so it would really be helpful for my education to learn
+about workloads that benefit from zone_reclaim_mode but cannot use membind.
+
+> Furthermore, for typical HPC applications, memory pressure tends to be balanced
+> across NUMA nodes. Yet page cache is often generated by background tasks—such as
+> logging modules—which breaks memory locality and adversely affects overall performance.
+
+I see. From my very limited understanding of HPC applications, they tend to be
+perfectly sized for the nodes they run on, so having logging agents generate
+additional page cache really does sound like a problem to me. 
+
+> At the same time, there are a large number of __GFP_THISNODE memory allocation requests in
+> the system. Anonymous pages that fall back from other nodes cannot be migrated or easily
+> reclaimed (especially when swap is disabled), leading to uneven distribution of available
+> memory within a single node. By enabling zone_reclaim_mode, the kernel preferentially reclaims
+> file pages within the local NUMA node to satisfy local anonymous-page allocations, which
+> effectively avoids warn_alloc problems caused by uneven distribution of anonymous pages.
+> 
+> In such scenarios, relying solely on mbind may offer limited flexibility.
+
+I see. So if I understand your scenario correctly, what you want is something
+between mbind which is strict in guaranteeing that memory comes locally, and
+the default memory allocation preference, which prefers allocating from
+remote nodes when the local node runs out of memory.
+
+I have some follow-up questions here.
+It seems like the fact that anonymous memory from remote processes leaking
+their memory into the current node is actually caused by two characteristics
+of zone_reclaim_mode. Namely, that it does not guarantee memory locality,
+and that it is a system-wide setting. Under your scenario, we cannot have
+a mixture of HPC workloads that cannot handle remote memory access latency,
+as well as non-HPC workloads that would actually benefit from being able to
+consume free memory from remote nodes before triggering reclaim.
+
+So in a scenario where we have multiple HPC workloads running on a multi-NUMA
+system, we can just size each workload to fit the nodes, and membind them so
+that we don't have to worry about migrating or reclaiming remote processes'
+anonymous memory.
+
+In a scenario where we have an HPC workload + non-HPC workloads, we can membind
+the HPC workload to a single node, and exclude that node from the other
+workloads' nodemasks to prevent anonymous memory from leaking into it.
+
+> We have also experimented with proactively waking kswapd to improve synchronous reclaim
+> efficiency. Our actual tests show that this can roughly double the memory allocation rate[1].
+
+Personally I believe that this could be the way forward. However, there are
+still some problems that we have to address, the biggest one being: pagecache
+can be considered "garbage" in both your HPC workloads and my microbenchmark.
+However, the pagecache can be very valuable in certain scenarios. What if
+the workload will access the pagecache in the future? I'm not really sure if
+it makes sense to clean up that pagecache and allocate locally, when the
+worst-case scenario is that we have to incur much more latency reading from
+disk and bringing in those pages again, when there is free memory still
+available in the system.
+
+Perhaps the real solution is to deprecate zone_reclaim_mode and offer more
+granular (per-workload basis), and sane (guarantee memory locality and also
+perform kswapd when the ndoe is full) options for the user.
+
+> We could also discuss whether there are better solutions for such HPC scenarios.
+
+Yes, I really hope that we can reach the win-win scenario that I mentioned at
+the beginning of the reply. I really want to help users achieve the best
+performance they can, and also help keep the kernel easy to maintain in the
+long-run. Thank you for sharing your perspective, I really learned a lot.
+Looking forward to your response, or if you are coming to LPC, would love to
+grab a coffee. Have a grat day!
+Joshua
+
+> [1]: https://lore.kernel.org/all/20251011062043.772549-1-mawupeng1@huawei.com/
 
