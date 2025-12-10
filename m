@@ -4,173 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0716D3C546
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 12:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94044D3C546
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 13:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0776B0006; Wed, 10 Dec 2025 07:58:08 -0500 (EST)
+	id 6D9D06B0006; Wed, 10 Dec 2025 08:21:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 039AF6B0007; Wed, 10 Dec 2025 07:58:07 -0500 (EST)
+	id 690666B0007; Wed, 10 Dec 2025 08:21:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C516B0008; Wed, 10 Dec 2025 07:58:07 -0500 (EST)
+	id 579F76B0008; Wed, 10 Dec 2025 08:21:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC6326B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:58:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 459846B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 08:21:29 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1B9613497B
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:58:06 +0000 (UTC)
-X-FDA: 84203564172.29.E800015
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7B403160015
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:58:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eMcTYzlX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fPgis3gp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eMcTYzlX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fPgis3gp;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765371484; a=rsa-sha256;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2D6F5948C
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 13:21:28 +0000 (UTC)
+X-FDA: 84203623056.29.1A876FA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C4BE6120015
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 13:21:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765372887; a=rsa-sha256;
 	cv=none;
-	b=KT20t3W+KQFgf14Vuk4mlOkP9fj0gUT2wAUIXQv5q6He2BJFSNiqzg2sza7mxvn/MWf9dg
-	9fCFXF1CxovEI/6+cvIN5vHgCMy2zx/vrAA0Q6JA6AtSFf9YEESCinYvAtQMz1DO6iq3Hl
-	U0jx5C7BFU2Lesd0RsZk943pcezcQgk=
+	b=cMpbrhauqkrwARyLuGigSBXI4ZMDOoCtkdgC3cwqhTEZbVWO4a98rtW2YjZwzUVRd7eBZm
+	7XbRjrVVzY6TMmAaRxTSuHL/Fq1j1Ynen1Lb4t6RurJeL0pEoRbzBE4ia9B4vHfOnBTIsR
+	rwivc0U/F+Zjs0nUtOcVsAI6AtvtYKo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eMcTYzlX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fPgis3gp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eMcTYzlX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fPgis3gp;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765371484;
+	s=arc-20220608; t=1765372887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0eetQyXD/sOvNibezct7Tv5ZQAuEm4ZVFaMv9Mjbh4E=;
-	b=XPH2HmHYYOS08irVs5p+ee2rWqPPeCRKkm9R6sWrP0niRP0bkkaHxGJsqdXb8iOEh6MZIt
-	ah/HRP4x8t0zjBakcNdCYrAY15TtyTsVZK9wNDJAiAi6IpSj0iES8qtKBBCGcwXVLeIZR7
-	TvLkxR2jlLlTg403UhMGhjhjn03WCgY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B9B7E3388E;
-	Wed, 10 Dec 2025 12:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765371482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0eetQyXD/sOvNibezct7Tv5ZQAuEm4ZVFaMv9Mjbh4E=;
-	b=eMcTYzlXpYLmLxRRqBffyjzH+cQV+HaQB10LMie7tRnMKZHe26vXpwRvUeSjZ5UBn0JNuU
-	8DgYNfljrx27Jy1r6/dX15zQuierbimxLnWSh1RfHgDFMg4t5uRYEzAJN/WRSD9OzX8b8J
-	Yuw78+YifDTeGhMBfZL7lU0C4x2tL2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765371482;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0eetQyXD/sOvNibezct7Tv5ZQAuEm4ZVFaMv9Mjbh4E=;
-	b=fPgis3gprjFz7y6ob7fRcQ6zytoWvTnbIgZExBO6KmvgJ6mr9HtowMfVegHxogPoxJmDjU
-	mDIn1tcxsximINBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765371482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0eetQyXD/sOvNibezct7Tv5ZQAuEm4ZVFaMv9Mjbh4E=;
-	b=eMcTYzlXpYLmLxRRqBffyjzH+cQV+HaQB10LMie7tRnMKZHe26vXpwRvUeSjZ5UBn0JNuU
-	8DgYNfljrx27Jy1r6/dX15zQuierbimxLnWSh1RfHgDFMg4t5uRYEzAJN/WRSD9OzX8b8J
-	Yuw78+YifDTeGhMBfZL7lU0C4x2tL2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765371482;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0eetQyXD/sOvNibezct7Tv5ZQAuEm4ZVFaMv9Mjbh4E=;
-	b=fPgis3gprjFz7y6ob7fRcQ6zytoWvTnbIgZExBO6KmvgJ6mr9HtowMfVegHxogPoxJmDjU
-	mDIn1tcxsximINBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A33433EA63;
-	Wed, 10 Dec 2025 12:58:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IlKBJ1puOWkbEwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 10 Dec 2025 12:58:02 +0000
-Message-ID: <aaf80bb6-ad8a-4d11-b8bf-a91168ae6a08@suse.cz>
-Date: Wed, 10 Dec 2025 13:58:02 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=OK40klnmTnIf2yIdbIncWE7q5KQZ3Y+JJsAWa117nf8=;
+	b=Zp4DgGVZw4GfNfewDfOUaJd+sGlyw7/fPWO8p3aiCG4RR3am88fkdZ7yf+fGffuVphjwkE
+	3+DunOZLCYg9UFgyTBE01DdsmYYD/KCGH2ypoOER7rewaK5JYuRQ3dD4tI9g9DdXFSoW6G
+	J9Mgp913SUF+h9hERnr6gSZPssTCEn0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A720175D;
+	Wed, 10 Dec 2025 05:21:18 -0800 (PST)
+Received: from [10.57.90.205] (unknown [10.57.90.205])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BA3453F762;
+	Wed, 10 Dec 2025 05:21:24 -0800 (PST)
+Message-ID: <66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com>
+Date: Wed, 10 Dec 2025 13:21:22 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: reset KASAN tag in defer_free() before accessing
- freed memory
-Content-Language: en-US
-To: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
- cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- harry.yoo@oracle.com, ast@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-References: <20251210022024.3255826-1-kartikey406@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251210022024.3255826-1-kartikey406@gmail.com>
+Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Content-Language: en-GB
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20251021194455.33351-2-vishal.moola@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20251021194455.33351-2-vishal.moola@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B403160015
+X-Rspamd-Queue-Id: C4BE6120015
 X-Rspamd-Server: rspam10
-X-Stat-Signature: 3wb9ueabt387sp1x5idff4xi7pjw196k
-X-HE-Tag: 1765371484-232250
-X-HE-Meta: U2FsdGVkX1+IShNAiJLzrGBwNqNU6KdDIEmikuuoGVztG1FrQQ4POE7SOgsg9Cxbdj8msEScZYu2cdYEL/tiUaUKt1yPM95rxE8oTQL1bjFsRmK8xCvgL1kmwGoM31UJ6a0Q3uiHGi+lKUAR/gWvGOZnuI1LGrBJB8y74eHd6vF11VORXeOC3LmcQUUvEqcsqscjGwcMb7eF8ZPlWB9zg/TRQZSydmI5Gm4d1bF6RC3BpZGyWgI+Slm85o3pM88jQl/ld7GgLkFMgsQl6BmoD+Xpz7+7JDo1dd826jRiiMb/v6OwSi7iTLP+UgY+AFkpwvoNdBW+r+gzgXl48h002EpvHUBlIVBSV2Xq8jGw4KHay3ZRaDypKT6W7ev027q0CCM36BqWBYMMf8jQJo22RPiylvrFEwZyWETAb5tniRTNShNis6S/ZHB8LG5nvKSzm7dgMMawdPdkX9zeyN4cmrVph0s+UQSpjSvgmJksdMeezJqi3WtT6WNXCziOKDQayN9UyLL7FxXa8kMGq4dpYQogASVg6kTCXR4cLZ/qERk4xNCLqk0mL7O5Os7ICkMlpXcyzwG0T8SRQPCGRFK2qEWosTCNWYvt7f0UtKPlzOiMxZZ2fxKRDSZPU8kdptM/UoxNTr3jbtZzYkvvbSTvsqBCNtllD/4H1WB6nZ6txENYQR0ehdxC5p4fVdofCSPBzpzmihAU+8Ty0ixuS9jSO0VnE65G+Cco96ebZYkPVOhVf7wh5XE/bDbOisIjGyQotjvYyM1SKv1vXaZeEFT90FoqqBqdpsUjwCW8hF3tkAYfBmZ0K6BfAMLLCpq4hFqnUh72OyyEqAfwD3oMYCt3e2KfzqgBLp42nv2fVWb/IMEH0z9pZ+8iji7O1zxBfx/q9TqoS59zQiEONfelVUcFlXB6BhTuA0yrD/uYUpU0bKnOrbUrALJ2RkO5OuaSLcDhbL3y2Rt1fKurZzCcgbj
- PPEC9BRM
- 58I3faehQXQhO0CRPXGw6/y8rNYgcd+0Kc9QMMkdGNDyO77F/+nrmt9CbSCEx7ZIMjkbzVVbSgsNHbIjDq9ouBJ9mf9JmSCfyoYg8ZjFxQ4W/ljCHEE3IVsAKeyUA69lWrg5B7MiKyF72mvtbEkeA/NeMmkXkuRS130tyW6rcH1iC9/v6Kj6zKIfMWPDDjJTH38lgtgAc1r5RJOB1wwSDp3ONwuwwL6BVWY+K3Jqm5ZdlMLSofGDGHzqczs5JzKF319daOlLM2REY9FKZhhgIslENBcJEQPAVg9k+h2x7+KF1IZTybNc5SAov6vjXsF3poqGQlRTWRAxT0/jLA2auFujBdyx2jSjOLbJtPOtZd7Pb3N/tzubLK4hjbCHFfUug3Yf646AlfxSlCU3ABysfF506UzP+jotkD1Vjujk7FTenTWJHhDfZ882sQdF2B2d3rYQIgPFC6mIY0lseuZ+iUrpt60ijRmhbSKWrUMRoIwG0W8VW8kvb7BVJCwpIe+PqfZBT+fpT2rk1M68WvL1aTbJQlDZkayn7cylTqNV+F1qzZKeyxphLFFYC3EoLshL7b3zD
+X-Stat-Signature: 8fxe4oicwtpqqjrrhky7itwbrshcpseh
+X-HE-Tag: 1765372886-341891
+X-HE-Meta: U2FsdGVkX18MY+HQHV+cVbyhIORTlqVXM/lzkZbNII7zq0E5quMSttMyg6iQAwIbhib01TQBwV5Lyj4OcNAhL4w3/S0FgXbfY9dRyELofe6LJqpAUfWXrMrasr2e0gcXnLfm7NSF2CrAggwUCYqKhJCEvGGR0C/XaC37LQ8IOwmNT9EP77gI4jxaVMsO2suA8AW/zfyRE1ZqCovM1h2rzNRbNgAY7GRpDVkogKTQ6iCfvSMGc+1wIoUoww2BZWjxA6RBEDc6Ixewdf5o1OSDTHgDhFhZhXPoqDMPImZ4kmUQOlqt8g0NUmbHCx16H+B/MIj5mKnq1ItvXc0UxZ51DK2C27GEvjouQ7vhJOtYWreyEnl1jKEsiidVMfcrEiQ/JEFvhl55UXdW7yAI8bhJO+KDHZMRNAlOJROaDR9taCQhbRgMnxz8P34mvTkQ1DD29eNI1c2IJrDSaWk+4yaDF1F985qnzPWJjM7w9X4ROYA1JlwJ4S/Z+Lo/tiO+9jGeooPD+qwyJoSFyUIxkqa4Oq7qlYUpNlyDMkfah1ZRWgA2XLOqeHh7zadlt/EsH13J6VAED7493Yn3tjGg+FtepnOCG628rwa3VvegQSNeheH+dI1r0Y44OHb/j7yspzGbGqCf16dOGdHy6FOPaoB55n0Oi4WbHuWkwVOn2n3WblWxEPTMHNH2Zp2W+6KCw4WFiB4riAnLjfeL6HsGnB4at3uIRQhdeiRqVbqhM4dv6yX5WviBWCNQRU9mrHn3QgB114cE61v2YtPwl//dM5Asbm5zV4KWatPw3M27b/vd0G0xXwrnuyFFvUI9LE0XmE4TvjrH+FaaxZNqtKQA/auJZpHyDqZ+py6MyseRQehJAN1yh+KOm1ld1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,48 +85,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/10/25 03:20, Deepanshu Kartikey wrote:
-> When CONFIG_SLUB_TINY is enabled, kfree_nolock() calls kasan_slab_free()
-> before defer_free(). On ARM64 with MTE (Memory Tagging Extension),
-> kasan_slab_free() poisons the memory and changes the tag from the
-> original (e.g., 0xf3) to a poison tag (0xfe).
-> 
-> When defer_free() then tries to write to the freed object to build the
-> deferred free list via llist_add(), the pointer still has the old tag,
-> causing a tag mismatch and triggering a KASAN use-after-free report:
-> 
->   BUG: KASAN: slab-use-after-free in defer_free+0x3c/0xbc mm/slub.c:6537
->   Write at addr f3f000000854f020 by task kworker/u8:6/983
->   Pointer tag: [f3], memory tag: [fe]
-> 
-> Fix this by calling kasan_reset_tag() before accessing the freed memory.
-> This is safe because defer_free() is part of the allocator itself and is
-> expected to manipulate freed memory for bookkeeping purposes.
-> 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Reported-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=7a25305a76d872abcfa1
-> Tested-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Hi Vishal,
 
-Thanks, added cc: stable and pushed to slab/for-next-fixes
 
+On 21/10/2025 20:44, Vishal Moola (Oracle) wrote:
+> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+> allocator. Rather than making requests to the buddy allocator for at
+> most 100 pages at a time, we can eagerly request large order pages a
+> smaller number of times.
+> 
+> We still split the large order pages down to order-0 as the rest of the
+> vmalloc code (and some callers) depend on it. We still defer to the bulk
+> allocator and fallback path in case of order-0 pages or failure.
+> 
+> Running 1000 iterations of allocations on a small 4GB system finds:
+> 
+> 1000 2mb allocations:
+> 	[Baseline]			[This patch]
+> 	real    46.310s			real    0m34.582
+> 	user    0.001s			user    0.006s
+> 	sys     46.058s			sys     0m34.365s
+> 
+> 10000 200kb allocations:
+> 	[Baseline]			[This patch]
+> 	real    56.104s			real    0m43.696
+> 	user    0.001s			user    0.003s
+> 	sys     55.375s			sys     0m42.995s
+
+I'm seeing some big vmalloc micro benchmark regressions on arm64, for which 
+bisect is pointing to this patch.
+
+The tests are all originally from the vmalloc_test module. Note that (R) 
+indicates a statistically significant regression and (I) indicates a 
+statistically improvement.
+
+p is number of pages in the allocation, h is huge. So it looks like the 
+regressions are all coming for the non-huge case, where we want to split to 
+order-0.
+
++---------------------------------+----------------------------------------------------------+------------+------------------------+
+| Benchmark                       | Result Class                                             |     6-18-0 |   6-18-0-gc2f2b01b74be |
++=================================+==========================================================+============+========================+
+| micromm/vmalloc                 | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |  514126.58 |            (R) -42.20% |
+|                                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |  320458.33 |                 -0.02% |
+|                                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |  399680.33 |            (R) -23.43% |
+|                                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |  788723.25 |            (R) -23.66% |
+|                                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |  979839.58 |                 -1.05% |
+|                                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |  481454.58 |            (R) -23.99% |
+|                                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |  615924.00 |              (I) 2.56% |
+|                                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         | 1799224.08 |            (R) -23.28% |
+|                                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         | 2313859.25 |              (I) 3.43% |
+|                                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         | 3541904.75 |            (R) -23.86% |
+|                                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         | 3597577.25 |             (R) -2.97% |
+|                                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |  487021.83 |              (I) 4.95% |
+|                                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  344466.33 |                 -0.65% |
+|                                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  342484.25 |                 -1.58% |
+|                                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     | 4034901.17 |            (R) -25.35% |
+|                                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |  195973.42 |                  0.57% |
+|                                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |  643489.33 |            (R) -47.63% |
+|                                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        | 2029261.33 |            (R) -27.88% |
+|                                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |   83557.08 |                 -0.22% |
++---------------------------------+----------------------------------------------------------+------------+------------------------+
+
+I have a couple of thoughts from looking at the patch:
+
+ - Perhaps split_page() is the bulk of the cost? Previously for this case we 
+   were allocating order-0 so there was no split to do. For h=1, split would 
+   have already been called so that would explain why no regression for that 
+   case?
+
+ - I guess we are bypassing the pcpu cache? Could this be having an effect? Dev 
+   (cc'ed) did some similar investigation a while back and saw increased vmalloc 
+   latencies when bypassing pcpu cache.
+
+ - Philosophically is allocating physically contiguous memory when it is not 
+   strictly needed the right thing to do? Large physically contiguous blocks are 
+   a scarce resource so we don't want to waste them. Although I guess it could 
+   be argued that this actually preserves the contiguous blocks because the 
+   lifetime of all the pages is tied together. Anyway, I doubt this is the 
+   reason for the slow down, since those benchmarks are not under memory 
+   pressure.
+
+Anyway, it would be good to resolve the performance regressions if we can.
+
+Thanks,
+Ryan
+
+> 
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> 
+> -----
+> RFC:
+> https://lore.kernel.org/linux-mm/20251014182754.4329-1-vishal.moola@gmail.com/
+> 
+> Changes since rfc:
+>   - Mask off NO_FAIL in large_gfp
+>   - Mask off GFP_COMP in large_gfp
+> There was discussion about warning on and rejecting unsupported GFP
+> flags in vmalloc, I'll have a separate patch for that.
+> 
+>   - Introduce nr_remaining variable to track total pages
+>   - Calculate large order as (min(max_order, ilog2())
+>   - Attempt lower orders on failure before falling back to original path
+>   - Drop unnecessary fallback comment change
 > ---
->  mm/slub.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  mm/vmalloc.c | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index e6a330e24145..46959c6da2cf 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6534,6 +6534,8 @@ static void defer_free(struct kmem_cache *s, void *head)
->  
->  	guard(preempt)();
->  
-> +	head = kasan_reset_tag(head);
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index adde450ddf5e..0832f944544c 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3619,8 +3619,44 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  		unsigned int order, unsigned int nr_pages, struct page **pages)
+>  {
+>  	unsigned int nr_allocated = 0;
+> +	unsigned int nr_remaining = nr_pages;
+> +	unsigned int max_attempt_order = MAX_PAGE_ORDER;
+>  	struct page *page;
+>  	int i;
+> +	gfp_t large_gfp = (gfp &
+> +		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
+> +		| __GFP_NOWARN;
+> +	unsigned int large_order = ilog2(nr_remaining);
 > +
->  	df = this_cpu_ptr(&defer_free_objects);
->  	if (llist_add(head + s->offset, &df->objects))
->  		irq_work_queue(&df->work);
+> +	large_order = min(max_attempt_order, large_order);
+> +
+> +	/*
+> +	 * Initially, attempt to have the page allocator give us large order
+> +	 * pages. Do not attempt allocating smaller than order chunks since
+> +	 * __vmap_pages_range() expects physically contigous pages of exactly
+> +	 * order long chunks.
+> +	 */
+> +	while (large_order > order && nr_remaining) {
+> +		if (nid == NUMA_NO_NODE)
+> +			page = alloc_pages_noprof(large_gfp, large_order);
+> +		else
+> +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
+> +
+> +		if (unlikely(!page)) {
+> +			max_attempt_order = --large_order;
+> +			continue;
+> +		}
+> +
+> +		split_page(page, large_order);
+> +		for (i = 0; i < (1U << large_order); i++)
+> +			pages[nr_allocated + i] = page + i;
+> +
+> +		nr_allocated += 1U << large_order;
+> +		nr_remaining = nr_pages - nr_allocated;
+> +
+> +		large_order = ilog2(nr_remaining);
+> +		large_order = min(max_attempt_order, large_order);
+> +	}
+>  
+>  	/*
+>  	 * For order-0 pages we make use of bulk allocator, if
 
 
