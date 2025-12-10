@@ -4,157 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DB3D3B9AD
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 00:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16ED0D3B9B5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 00:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 043BC6B0005; Tue,  9 Dec 2025 19:20:53 -0500 (EST)
+	id 55A006B0008; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F36A46B0007; Tue,  9 Dec 2025 19:20:52 -0500 (EST)
+	id 50ACD6B000A; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E252C6B0008; Tue,  9 Dec 2025 19:20:52 -0500 (EST)
+	id 420086B000C; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CEDA76B0005
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 19:20:52 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DDA5160336
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:20:52 +0000 (UTC)
-X-FDA: 84201655944.14.F611BB9
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B146D4000A
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:20:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Andc+qDx;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=R3uMNKSE;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf12.hostedemail.com: domain of oreoluwa.babatunde@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=oreoluwa.babatunde@oss.qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765326050; a=rsa-sha256;
-	cv=none;
-	b=Jzfd2pXCiK63RcQV1rq1cUkP2jGkWgebZ4cJCUXUKLPGlOxClsQWuRWplOfVt8sFnnezjd
-	KJj6zEJb8gYfdhHDeE9iSR5mmQmqvddCDyUKCLYEjCR8FkzqkfQdC7G6m8rsPCK/Mep0yt
-	CM2t8bHekjGOZfRS3C+RFiD4DKBWoKQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Andc+qDx;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=R3uMNKSE;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf12.hostedemail.com: domain of oreoluwa.babatunde@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=oreoluwa.babatunde@oss.qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BF876B0008
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 19:26:44 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA68E140284
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:26:43 +0000 (UTC)
+X-FDA: 84201670686.17.49DB732
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DF3FA14000B
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:26:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d65E0VGK;
+	spf=pass (imf09.hostedemail.com: domain of haolee.swjtu@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haolee.swjtu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765326050;
+	s=arc-20220608; t=1765326401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iHBwA4IfSbfg57hhtkGLsS9PBLgMplwjUcXE/vuBD94=;
-	b=lRwncDuG3scFsR+hav4Pfzmz9EyKY6N1Fjgpnq8Nlyr8qVkNrhN2FwlEi09b68droBM7Tb
-	HilI3v6COwHtsbLhBQrtkaBIwM1I9MQcxfF6M69/jh5ExiAVfcdajsSoRM246aasErJFhD
-	cZK1NGkm3S15AvUBl0QqXKYlDUsF6ho=
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B9NIUH01075585
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:20:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=iHBwA4IfSbfg57hhtkGLsS9PBLgMplwjUcX
-	E/vuBD94=; b=Andc+qDxHSt0WG+VzJdUdL+Fg/tBG89vPh8M5YeWLUE9dxrtnQm
-	hCYQB2GhvmoyKChwoKWoL1PXDQjU3XYeGx230eVf2whf2R8R90jGAc21bmJru4ZV
-	YnZm9BwxfvxIo9uMmFzx8B0ymQhdvWtMtnaOd74HIGlZIpDF1QwYh+gLNni6pHZV
-	ah+bqFu+uCKIKCssGpAmsXyFC7/Kxtpy9Y+NN+vVVlSJP5iEFg2VUqax+Nb/NyXj
-	pHc8qnC9ZYIrM+OXr0CWPK71NkECp8NNgvsXD53pmQ2cc6qW19TKqs5OHp25u0m1
-	kQX8DtQg77Co7XKf5b1XLYOiA2ju7OL2B0w==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4axp5p1k2r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 00:20:48 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b969f3f5c13so6685983a12.0
-        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 16:20:48 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
+	b=yvNR4/Zb9sfO1jnUeph0hcYQ/sATMSXXq2EJ9g1u0tQjrRAbWapLw6HpMDzH15POorGCFA
+	i5GK1pNswXiNoY+KYEpmW3Nh821jzizQ1P9jee1skzByQIhmXZ9D28DkVHNKTFfcP3QFc1
+	/+085ye2zolJ3O9RaE6mm3ScR529WBU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765326401; a=rsa-sha256;
+	cv=none;
+	b=GxaxN6TJIyZyoUfnRK/QUnDa9Wiiq8xZ9FmB+fXGWOJDYHSsVe9F52kpUZFsHeB5lkqoO3
+	8MUFd3RlILfMrIAGF0CZtxaICm5+T3Ezv3l1ZDrkxHKYFbsGj2hYiJ6Frj6TEfDwiVvylE
+	tUVkDJBFhM/I4E8f8qwuhw/RmAJOqQY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d65E0VGK;
+	spf=pass (imf09.hostedemail.com: domain of haolee.swjtu@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haolee.swjtu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so6310814b3a.1
+        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 16:26:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765326046; x=1765930846; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iHBwA4IfSbfg57hhtkGLsS9PBLgMplwjUcXE/vuBD94=;
-        b=R3uMNKSEfTsfshW6kGXM7MepUPZ+lZCIdCXnxMrDRQ+wxX8oF2L/fE0gko7EA6hOGl
-         5UoaeAIBrIvS/OHsxQTCoSuW9g+cAjLK8uaMqompJq/1NVj0P0RC8dTfKkzBG6G9IdnC
-         U9HM7fwz9ixw5P1MN2IM0l7+b8OE7Ze46yK6zQWlVXLXw5g8C8tXin2ZHYsXrPmtxMlM
-         kd+ky40hzH2KTYJgEwFBW3Nbsoz0Uhw6axQTII20fPQSyqzwqgilDD3mIC11vd7Ijg17
-         wV9b94Q5aInRWdbpdBl1Zs1gO8R5BKFzh6SpEkT7l06dW5rwtS/aUTWzUtL0jTg/u0RL
-         YYUA==
+        d=gmail.com; s=20230601; t=1765326401; x=1765931201; darn=kvack.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
+        b=d65E0VGKZ4Ub4y7AdihXiNZcr9L7otBn97rCQBNcFWic8Enm+lwoSzzgK4Q0ezSy99
+         eAucMsTPenOtMyJCngBKGFzB3Ju6F14YlqBvhjqwRpbVWqx31taK/uuBskDveJSPpgLy
+         fGw1uoqheM3xmqHeSJBHIO+8hNtUsf5iWpbYPF66hQmH11WsAca3Gc3SS0J96Ox3I4FC
+         l+iwEy6NVpE4RiDJ1bPL+1dpOYUbs4yDWdAF6moS1OoQc2pfjOotEfsUrMovA1ym/QaE
+         dXhPb2eP5+g9WKSoOCs5fszi5P3rnfwmLVahB+icmkvLHun6O4YZs7BbCxldzDYLVOAu
+         MsoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765326046; x=1765930846;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iHBwA4IfSbfg57hhtkGLsS9PBLgMplwjUcXE/vuBD94=;
-        b=Y0fBzYJvQ2BHyzVO8gfiAYrJzisFuylB2IosaFMj+HlOOTc6YS344rdl4AyCy/2APY
-         Qakk6kBuYVz4/GIygycp8uRFsKjnWrH1PgfKR3I0f7xXURwInfl8GAN5qN7nUCRRQHJg
-         kbyR7TkPBSAFBaKNX40T79RktnG21aQnKsrZzKTr+BiXYdUhdoST8WzcqxnRrzN3xyfW
-         fboJX62GzDoFak6lVyEzBFSy6vNRO9e7yxwmZ2gtBG7qns7uJFyeWnQKAbn5pMbT6KhS
-         ujgO/lPTgFx5lpeW6Whve/pG3d4Hegi69EV1nPr8ZsMAL6kf0EgW0N+1uJrg82eZo570
-         2kAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIknVelhgnJmOrfFn6FCxhsen19t6jpGs+k98OlEAhHNjeuc+N6w1Rcr9zo9u9u4gpVRMPEvmFIQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz7n+uF0VvKCDO6ApGZhjeifLsbkc1SXnhoTU47WO7bFnTK5Tbb
-	959jcsR1YMVA3BHxcApmYeTA2ePRH8Is9qPDdlcbQfi54TYurwF6COF07S5uHY9oa+w+o/rgCp0
-	tJSAgqaAtB2G6mC+xzr1TL3OMGyQD/jMggGhcS2Qpn1KSGNWKA6ZJwA==
-X-Gm-Gg: ASbGncuBJfzj8K8ZOjSQWoXDhycpIIVgVM3CZZFIuyxYIHMC7PvyrJvH390vKhet4pm
-	PowUPV67aft64fwqbzE4RDTwTo9pwp+jycHQ1mqcUOAEAeywwBmSGxMtVIN7wCD+c6EAv3xi7Dn
-	cn6p5mCGWBM3pAMHhrGAb9SWq7bUyxlJcRv//mtmYn2HsTHMgbJiGdvw/8Q7bVArRrLRaWot7m0
-	RIpM4lqodNbSzhdwbTHHVGuReYkUvu7+lYwzqILnBq/kvxX0G0p+PVOSTEUYvrr9SdYkT0CvslO
-	eN68rFDeJ+J5dBca+xTJtsOTIjSCxBZ94e5xGmoWxXI76Xg30MKJEF1uAMs1o5qB0AVfiposDb5
-	UKOf6MVu1fLmofEosk3dNlrZHfasvIPJrRNSCYPZbMVYKmPd2PimMUp4pjgtlCAuURuf/f1r1
-X-Received: by 2002:a05:7022:62b:b0:11b:ade6:45a7 with SMTP id a92af1059eb24-11f2966a03emr425007c88.1.1765326046090;
-        Tue, 09 Dec 2025 16:20:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGcLj2nkg82c0xX0uwbx/GB/IwXsGaN8dBi7OsSisu2MU6g5avYy1Et2uoitaYLu9zbKsRD9w==
-X-Received: by 2002:a05:7022:62b:b0:11b:ade6:45a7 with SMTP id a92af1059eb24-11f2966a03emr424972c88.1.1765326045477;
-        Tue, 09 Dec 2025 16:20:45 -0800 (PST)
-Received: from hu-obabatun-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76e2eefsm79775745c88.6.2025.12.09.16.20.44
+        d=1e100.net; s=20230601; t=1765326401; x=1765931201;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I3Ady1WXXJBpaZVaLEwdHfkulwoqkZGdiHtuycholjk=;
+        b=kPFBQQbVKNBdLXJE29uBVOJ4eDKU57I9+jR1TGUDSl3bZUNYmnO1vXnz/BttmlYC+3
+         PKvrpSkbLBI/xo5IXKIRUr0mud81x0OMytXY85n0clg5uJSrevNDAcZN2o6kS7hO8bP4
+         Avp/hKle54hFCixtYgze0POPUL0tttPplGLth1fwEcSyP3DQBjqmbg4ygW7qXnYg8Izi
+         LNO/wYxHcTXBxou6/2iEf+0+PDe/1ZsR18HftZ1U2731qV7aQVeJ7lJrifftmPaWHOb+
+         /ieZCtBwhiNhp7wMvF9MVziq6I2oap62+NU0heiQTu/4T+tXg5o5EWjqZ/ujEJ5Fwk4I
+         ljqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQeTqCaPsqr67Gel75tIZGGZVshEezGFJ6i8VvRdUAEvyKu67wuAMHqIzp5ELEEFi3jUUegfLI3A==@kvack.org
+X-Gm-Message-State: AOJu0YxqbOi5Dt15PhPcLx/a8pVfb66zaCfJcpDGvRsJK4DLyNdsPhyv
+	GkjbE2+HFNGuW/L7u/VOLDKz1iTWNKISo/7nuOU/Ul4d3FcEuf1JpZN3RNniDzIP
+X-Gm-Gg: ASbGncumNuLIOaqE8uRYUPQwxsKLCpbKd+YZ1fRBGXbiqIQrAnfwR4IJLDLdg+r4XAQ
+	yDSkX+TPb6qb54Ye/msYxdASR08X77vRbMcvlD1XXBV14H17Wbjt4ulL2x5cp6gkMhyjutZFW0k
+	QnAsS/oaS5TjiweE2kIslCmkeRGLb9WOz6Yact3B3YG4chl9M7h2qpQOxcxwavF0M75gBij1CNP
+	3wROBZKSBSZwXDSHs0KPQY0czY3w4sAF5set/61ejn2cOz+vbiPKNBrlL6DW7aljuC55JmoK/pt
+	Y3rY9vNr8Nqg6bch3FpbhAmGOdS3zYAzAcFa/OuWXsjmZFDBrx0ZE/ZLSayqthKE1Qz8Axh9B9h
+	aCNAbpy4zqeDGeP56R/jkoKZrBjNzrlOz3nBhiy/Zqxl+F8D5nNJlaNx3rnsfil9iIcdiCA7NSc
+	o5ckg8bsajmgdPuJ6fq2W+7YiHGXoelbBFzJbSWQ==
+X-Google-Smtp-Source: AGHT+IF7MlPg1IeGwFPzOw/217kUpoJG1hoqSSMUBfyAYD/y2jQk236f8LUR8LHD2kc+WIm9dUchHg==
+X-Received: by 2002:a05:7022:2522:b0:119:e569:f276 with SMTP id a92af1059eb24-11f296cc089mr511525c88.31.1765326400595;
+        Tue, 09 Dec 2025 16:26:40 -0800 (PST)
+Received: from fedora ([2a01:7e03::f03c:91ff:fe02:b162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76e2f3csm70907328c88.5.2025.12.09.16.26.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 16:20:45 -0800 (PST)
-From: Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>
-To: robh@kernel.org, m.szyprowski@samsung.com, ye.li@oss.nxp.com
-Cc: oreoluwa.babatunde@oss.qualcomm.com, kernel@oss.qualcomm.com,
-        saravanak@google.com, akpm@linux-foundation.org, david@redhat.com,
-        lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        robin.murphy@arm.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        iommu@lists.linux.dev, quic_c_gdjako@quicinc.com
-Subject: [PATCH] of: reserved_mem: Allow reserved_mem framework detect "cma=" kernel param
-Date: Tue,  9 Dec 2025 16:20:27 -0800
-Message-Id: <20251210002027.1171519-1-oreoluwa.babatunde@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 09 Dec 2025 16:26:40 -0800 (PST)
+From: Hao Li <haolee.swjtu@gmail.com>
+X-Google-Original-From: Hao Li <haoli.tcs@gmail.com>
+Date: Wed, 10 Dec 2025 08:26:31 +0800
+To: vbabka@suse.cz, akpm@linux-foundation.org, harry.yoo@oracle.com, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, haolee.swjtu@gmail.com
+Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Li <haolee.swjtu@gmail.com>
+Subject: [PATCH v2] slub: keep empty main sheaf as spare in
+ __pcs_replace_empty_main()
+Message-ID: <20251210002629.34448-1-haoli.tcs@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 8js91AfXFOkUrsLiODH7uDbf1_5Bhk8C
-X-Authority-Analysis: v=2.4 cv=ZZYQ98VA c=1 sm=1 tr=0 ts=6938bce0 cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=DS4snQ7NONFh9zYVhi8A:9 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEwMDAwMSBTYWx0ZWRfX/VWg5Se5eO2J
- nGNY7UpvQkQFEMOj3KpFwWBHX3nvt1WmjLGlW7LZCAvJ9QTdJZ11yz4kBMHeocCpjXNgSO0zwtc
- Rl1HJdSHKBJb02qvo+RBE1aHZsejzCYx/+30ncjFVtkxmByqC1usM2f6kTPXyV6EsZMrxVdtcG5
- NjdcRlRlCip8OGwOs0F2mOwFeg/dCV3CbcVDleZuhNVJpZYTxwqytgVwLzSd+VOMlhmCksBEv2Q
- EAE65qw53kBOoloBZX8EQRIVQjiUuxop+TwBrwU2RzNCoFYSmNtXPqRlFkI9XNSCrmxsOA5yA1Y
- 9f4vyQgSDSHnMTWo8VbWYvDTuPkt/QOT/pYOyE2T46XniaDrpy8gXVX9iUfOb68y0pXgGb81g3l
- BNK1rWFTLgL6XXChOyBb+a/ENK0ZPQ==
-X-Proofpoint-GUID: 8js91AfXFOkUrsLiODH7uDbf1_5Bhk8C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-09_05,2025-12-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512100001
-X-Rspamd-Queue-Id: B146D4000A
-X-Stat-Signature: a3omb9oyijqohwrto8qakxmkkjajitxd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DF3FA14000B
+X-Stat-Signature: jrrpd8kropqszyip6yef3p8fzd6531ng
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765326049-579273
-X-HE-Meta: U2FsdGVkX1/tBFPG8Kk4ov8bO49tnNKyNWFeOkVYlcNqzCE/kXVKKd+5bbFcgqYNEeubBcM+BiwzgiMNyIZWvx+dITOOAWhSzZVhq0OIdwdtxsCFQDE+edxSA2fYgUnDBFgcIxT5lRAQ2jjkIsIF/qopNNng2ljH2p4OHalfTHkT0Ck4elp5cfNfQ0IvVAQsp3b/K+MeMMjcyDiuDdhXW3a5BJjyUSF0MLwlD7gZVf/kdhnQSVoJ6RxlIEXyh3NTXWRceQKKGQuUGOIEj9gXBTQjUqFITNN1UtUE/5aby07YQeVtilhfnWNBS4X3iaILbMZV26cAxZyyGPAzfQJMRpveffv+5eYakEYsiWrQI1JyaiAt5eg3WLUgT9cjaavTrkFhgKDX6nycRhK0sUUfEd+eShqlqi1wGxtUdzsTaAy4NlM09dOmAk0IjX7dwPmFk+tATvAHyQJ8i/7s4TbJtSARC6lv2X4JrMqGJm4nN3x9UUQpPGMyZhIRgS5vFYaRW+4I/HtHp9wDUFyoiHrv/ekyhqrfLNOiBw8N9GqXS09XFNnXzHSh55hevyjX2+wfHYoZhaSrZFWOG/V+M9cxExLOvEuuESZIC3LJWSKxTphny4qHO1KyWDLmIEVPEOReJl31uQorts5FZfvTDdeQJBm8wnRuwEqW/rBeYZc6AAr8/MYXlefa9il23Jm62ct5IY+hKAnEcVM5vGSONJ6xWF5MFawU5Bh82oaPtA3HHLR9w0PWg51dQNHaNserqfeH0ViPBI1oOTNsBF1KbSGtVQAuiU7gBHojYfZkthwbz2WjeXljhAgQrfh+/t8AZkmyywbqiRB3Pb4GWc+ngvzclCrG7coagAcLGjgCGe1Ox3oodY3nImz5y+8qkdOEQhDhwoThIVuclQPWc1LgxPX5jRvTnuEBQTq5/aXZj2idJV8/X4jU2kIhK4XOGd+frufy2Q+DMNoKV1C+Hh4+usi
- YLIADb/G
- XctGb5UR3Sct6HoBU/C21n7WIKhTCp8yRIHhXLkdrB4r4JBteFm4dAp+oTsmFKikB4a5gVh7Achi0293bjrVMwgtYkMvDXH/woRN0tJA8j7o+Jtw90EHQwYKiyEoOZThEM8XmFaDR7Wlf6oHJgA4TmeoTp/XrOKES+eDBsizRE07NspzSwfbMQJchu2zXTc9houJKrIAPZ31u+4vxbY1YcAy1pNbj3Opg1AsdothZkw2fKZgVwvuQ4jUxE5r5ra7e5qCaidLrSyDF02UvZkNaLkXKx/29T7H27to1nloswH/UmSkB0FS27zzw9NU2hKfrL7fw90gvCP7MPd7F95QcN3fBsI5FwtRyRLtkh7wqb6ZMjYe5ItWJ9rriQ0rAykRHN3MltipcFK6hja+hrKB+c5q0h1AcYISqyPtrpmeKJv06BCeIguAxrjFqpDNRaTR8zuykjPLpct+/h2Sznez6FQaQEGFPXaZ9IRR8GDgPZSG6mI4Ae9rGHJ1YAt8RoNUoQXv1PGGATvHsbxIdZacDihGN8wS0gCe05MlqxXfV123GrayvBwsSewk4g24yamaAL6fuGBZ4KWgmCFPO31xNn3I7fQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1765326401-918793
+X-HE-Meta: U2FsdGVkX19lmmCozEQT4OrHYOwUTvA7YMibfRh34VxWDsSCXYqEHRRSX98rktOFVa9go3f7iayR4FgYCc5/sEmZPDIrTGxzsmqt0uWb7GDMEtUTeBk6HkswXHhPSo7y/cAOUuKtkcQFgMiApc7I/ItJiD4X9TI5BvPThLvnYZAs4vI0Vv9zUY3eONvjZa4deu3+pCVJ5fINJl1xr32GvCCemHT0jiDf2rSN32Mj/BXXPXve0y8ePyuVwFJKFn250jlxono3fsi/U+9lY5DFjUCNtDwPi79Svij5zidYwGqXLpBVqtfTRmIMPcPifIa2eaoi69Y4IKU1uuvO4aLtLdM0GV22OdJx0c9ZTrmTHuuntrF9BAepV1NA5m4zC32Q0Vt0I/g9218ZRpeiKLT/Tho/epfVo1oMkinuryUDXLzwO/wfWstupF5BZC/7u5mM4tdbgBS3r10PYv/6dxVolYHm2XT9xS4z7CMR/4tio0EaPMYqClVkK9QxtpV0o8xLW1jms2JvWJz88S5wgl2xTouVKIH62BegP6W3IHWH0XCPwLmnbz6ktVIj7v9gbhXe2DWKOuhmiFfPmh7BVz6buss8b/flhaQ7bFhbWv4Hj1FnQ8hgtEuUj+BUHZCTPXt3wb4NSfK+KGVeYAo/1VWwSiIPUnQNCU1CwXQ4HTeGXQmCBZ78J2b9ua78r/0GPRbjRViA8rki4vRwqQUfPWIbxm00gw06THMGBnXzhfhdnZvdDckEfTlgfkoDcoUBkADXlkdKJWyx1pAjZV+AToQOaIg+USSVZVWZwRkYMy7BdfpV9A8z3HlPIAdGx05xELe7UVhBRDDH9AzZh+wlOv07iErp3spxXBZ0JJblOAU22ejaIv0Uk8x2aH8sidg8J20+xm5vIx58jub5ApYgX3onMISOUWVm1gYrfxiuX9k7tglT9y3DbAWRorowCfXtu0Ie3xhODp2bgqrdb5HmJ5z
+ e7fCz0wf
+ U6286E6Y68jDtFPnf4nKIkJ+cgvxCLFOLSWJA2lt0B5xqmp1ndSQx8eRWHlD52pS0cZpw2GMtiXE1pXuo6g58DPL8S4bTaN10OLZdgWNlbyO/CgmAUaaupPv7bDrgFBSNLUPf3mnyOWLsz0DcpVopT2Jfkie1RC9BQLKbtalqDW0yf5uB5kokozvdoLwG15uLvnnEYX9U6IJZVPnAeehq9jV2z7og+uNgtlWB9ue2tkrazNHylwXYY7iEGe39obOx6vE+UxfBGEaCyQVgQIRrr9Z2eVEi6NYDk8qTtK3zW9u8kxB8PEC6GAUA0GqKDP6FdCnXyCrOTHvKOs09fJ8E+hzSOGYqZlZCre6U2vpupBOxZ+IHplB1CTbCPUc5AVUaN7jSn/dPC7OCnw5FRvkdXCNkCCzwQML1ii28B+L9MrPHn4Q8DC3MdM6EyTsy0rU7sqY329Ufwpk5FyKz0BRNWFacAnTSq++77Q+DMxotVznHky1txSzuUJjjYQGA66RmRZk9Xg+PZ/hiWtE6GJOCqC9hNv161KNhfry5WYP+F6OPvzFs1mCyxQ+m6mbwJxlgFC8r3yuzbovKe3MP3Tj7zTdJ28GqO0luF7qxu6vCdDlr1mBMPNrWegJCO8v47yThO6cvQE4eUTg+nveYY4FpiHgSW9tC1lp5SDTXUQ1bsPDSbb/zsuXGIx6gdAhhLQE9PWhe
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.003028, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,129 +120,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When initializing the default cma region, the "cma=" kernel parameter
-takes priority over a DT defined linux,cma-default region. Hence, give
-the reserved_mem framework the ability to detect this so that the DT
-defined cma region can skip initialization accordingly.
+From: Hao Li <haolee.swjtu@gmail.com>
 
-Signed-off-by: Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>
+When __pcs_replace_empty_main() fails to obtain a full sheaf directly
+from the barn, it may either:
+
+  - Refill an empty sheaf obtained via barn_get_empty_sheaf(), or
+  - Allocate a brand new full sheaf via alloc_full_sheaf().
+
+After reacquiring the per-CPU lock, if pcs->main is still empty and
+pcs->spare is NULL, the current code donates the empty main sheaf to
+the barn via barn_put_empty_sheaf() and installs the full sheaf as
+pcs->main, leaving pcs->spare unpopulated.
+
+Instead, keep the existing empty main sheaf locally as the spare:
+
+  pcs->spare = pcs->main;
+  pcs->main = full;
+
+This populates pcs->spare earlier, which can reduce future barn traffic.
+
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Hao Li <haolee.swjtu@gmail.com>
 ---
- drivers/of/of_reserved_mem.c | 19 +++++++++++++++++--
- include/linux/cma.h          |  1 +
- kernel/dma/contiguous.c      | 16 ++++++++++------
- 3 files changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 2e9ea751ed2d..bef68a4916b5 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -158,7 +158,7 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
- 	phys_addr_t base, size;
- 	int len;
- 	const __be32 *prop;
--	bool nomap;
-+	bool nomap, default_cma;
+The Gmail account(haoli.tcs) I used to send v1 of the patch has been
+restricted from sending emails for unknown reasons, so I'm sending v2
+from this address instead. Thanks.
+
+ mm/slub.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index a0b905c2a557..a3e73ebb0cc8 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5077,6 +5077,11 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	 */
  
- 	prop = of_get_flat_dt_prop(node, "reg", &len);
- 	if (!prop)
-@@ -171,6 +171,12 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
- 	}
- 
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
-+	default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
-+
-+	if (default_cma && cma_skip_dt_default_reserved_mem()) {
-+		pr_err("Skipping dt linux,cma-default for \"cma=\" kernel param.\n");
-+		return -EINVAL;
-+	}
- 
- 	while (len >= t_len) {
- 		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
-@@ -256,12 +262,15 @@ void __init fdt_scan_reserved_mem_reg_nodes(void)
- 
- 	fdt_for_each_subnode(child, fdt, node) {
- 		const char *uname;
-+		bool default_cma = of_get_flat_dt_prop(child, "linux,cma-default", NULL);
- 
- 		prop = of_get_flat_dt_prop(child, "reg", &len);
- 		if (!prop)
- 			continue;
- 		if (!of_fdt_device_is_available(fdt, child))
- 			continue;
-+		if (default_cma && cma_skip_dt_default_reserved_mem())
-+			continue;
- 
- 		uname = fdt_get_name(fdt, child, NULL);
- 		if (len && len % t_len != 0) {
-@@ -406,7 +415,7 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
- 	phys_addr_t base = 0, align = 0, size;
- 	int len;
- 	const __be32 *prop;
--	bool nomap;
-+	bool nomap, default_cma;
- 	int ret;
- 
- 	prop = of_get_flat_dt_prop(node, "size", &len);
-@@ -430,6 +439,12 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
- 	}
- 
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
-+	default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
-+
-+	if (default_cma && cma_skip_dt_default_reserved_mem()) {
-+		pr_err("Skipping dt linux,cma-default for \"cma=\" kernel param.\n");
-+		return -EINVAL;
-+	}
- 
- 	/* Need adjust the alignment to satisfy the CMA requirement */
- 	if (IS_ENABLED(CONFIG_CMA)
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 62d9c1cf6326..3d3047029950 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -47,6 +47,7 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 					unsigned int order_per_bit,
- 					const char *name,
- 					struct cma **res_cma);
-+extern bool cma_skip_dt_default_reserved_mem(void);
- extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
- 			      bool no_warn);
- extern bool cma_pages_valid(struct cma *cma, const struct page *pages, unsigned long count);
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index d9b9dcba6ff7..9071c08650e3 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -90,6 +90,16 @@ static int __init early_cma(char *p)
- }
- early_param("cma", early_cma);
- 
-+/*
-+ * cma_skip_dt_default_reserved_mem - This is called from the
-+ * reserved_mem framework to detect if the default cma region is being
-+ * set by the "cma=" kernel parameter.
-+ */
-+bool __init cma_skip_dt_default_reserved_mem(void)
-+{
-+	return size_cmdline != -1;
-+}
-+
- #ifdef CONFIG_DMA_NUMA_CMA
- 
- static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
-@@ -463,12 +473,6 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
- 	struct cma *cma;
- 	int err;
- 
--	if (size_cmdline != -1 && default_cma) {
--		pr_info("Reserved memory: bypass %s node, using cmdline CMA params instead\n",
--			rmem->name);
--		return -EBUSY;
--	}
--
- 	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
- 	    of_get_flat_dt_prop(node, "no-map", NULL))
- 		return -EINVAL;
+ 	if (pcs->main->size == 0) {
++		if (!pcs->spare) {
++			pcs->spare = pcs->main;
++			pcs->main = full;
++			return pcs;
++		}
+ 		barn_put_empty_sheaf(barn, pcs->main);
+ 		pcs->main = full;
+ 		return pcs;
 -- 
-2.34.1
+2.50.1
 
 
