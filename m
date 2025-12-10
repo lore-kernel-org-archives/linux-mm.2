@@ -4,115 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9892AD3B9AB
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 21:58:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A4E1D3E77D
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 22:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C25866B0006; Wed, 10 Dec 2025 16:58:00 -0500 (EST)
+	id 589776B0006; Wed, 10 Dec 2025 17:28:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFC9A6B0007; Wed, 10 Dec 2025 16:58:00 -0500 (EST)
+	id 53A126B0007; Wed, 10 Dec 2025 17:28:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEC316B0008; Wed, 10 Dec 2025 16:58:00 -0500 (EST)
+	id 4286D6B0008; Wed, 10 Dec 2025 17:28:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FCB76B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:58:00 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72F3559CA9
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:58:00 +0000 (UTC)
-X-FDA: 84204924720.13.CBBA9D2
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 979A410000D
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:57:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BiELn8se;
-	spf=pass (imf14.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 321FA6B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 17:28:44 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A57E716063A
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:28:43 +0000 (UTC)
+X-FDA: 84205002126.05.9844C8F
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CB5A3C000A
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:28:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iDmm5jbj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765405721; a=rsa-sha256;
+	cv=none;
+	b=0mDRibAkqdE5vtCkHD5cYDdpaViwTc8vsthwCbOa2Jtfs8ansNmAIsSNzGE9Hb8Ju8Ky58
+	cbUtnR3TswyOEWXlL3/5/xbIwwgDa0+l7Bo9LPzEk302HDKEoKG0f5gVW4iCHJsjv1q0lk
+	EnP4huoT+xO/Dd3Rop5kxqyqllIeR4A=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iDmm5jbj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765403878;
+	s=arc-20220608; t=1765405721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+hm1NbizhX2u/6oOBSk1ArXnzSC2i/yu4zfAVJxLwRo=;
-	b=Gjki47zetYujux/7Wnxv+TPXB3C/RAxtev73e2VxVNqZvGe+OLjenhe/KeGkbOrFmAjMYk
-	FeU8dTusikxs3N7sLm3aFoNLVSOlj36y0tPjqwDr/HO+QO6QsGhV1m/tkZzzOtJ6MnIOs3
-	1KhHKQZdLe2rSsFw6nY4Ssv63pP7tz8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BiELn8se;
-	spf=pass (imf14.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765403878; a=rsa-sha256;
-	cv=none;
-	b=73ZCI+pgCpXDdJ4uUt/PIG4SS3py5CMFIYQLjGxZWcoTAnxcYyBXvQw3hIuBIc4siznV8F
-	u06ODT1SzPr3bqU/xu1ODOLnR5eUbhozrmlUKPGN/VXDMg7YjbSAHWwrzViZVxixUt7CPG
-	axRKiG/3+snvxWSPZ+cQuMac/xdV6i4=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso334311b3a.1
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 13:57:58 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2Y4YR3EvZUPa1M0pk6ofj+UMivnBJWFnH2I8aOHSdEA=;
+	b=5pP68zQfw3VHWJqBSirG80waI4Muad3xt/oLPwTorVDFr3IlJO49GtJ41mqMKo2ahuBJrZ
+	BQB7xVGpPTP3nsWtkAwupvWoW0i5iOqOumyYn6ukb0VFDMVc7gp30VhP6AZ3AyW0drQ66V
+	VWtZ+qM4d4HUoI/uUzy2loUPsXJ5myw=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-bf1b402fa3cso333100a12.3
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 14:28:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765403877; x=1766008677; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+hm1NbizhX2u/6oOBSk1ArXnzSC2i/yu4zfAVJxLwRo=;
-        b=BiELn8se2bKTp/vBreSyUxdcKqFeiva6gPssKPReJTzcBBvFqLDj7Mb/On5zC6v2Lf
-         3vw3oqg/MHLloxrtoXVvQgUm4p8hejHCGHrDmbWSrA8uQenIv4kSc+AyJN47e3gS7yFj
-         iD2B+0yzZTrYmbWM6+exoRNn8PCFs0M6hT0JPAZf1vp7r8gZTjUY4r4l3YfPpVCUyIwr
-         w/RH4jZlb/ECdJ+Fvw34c8it3AvlDcqoOrXO0pN/qh4VDRppeqFTQ+zHy+qGxv0kvVXz
-         2TfBkk3zezP7y89IBcDGSOCP1j3ETFo7OBIgqjfdJALeUDh8cSPMJ2dZmbLr0/7ZmAs0
-         N3CQ==
+        d=gmail.com; s=20230601; t=1765405721; x=1766010521; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Y4YR3EvZUPa1M0pk6ofj+UMivnBJWFnH2I8aOHSdEA=;
+        b=iDmm5jbjSX/LBaY16r58Ky3YaeRNGuzLbmfvsgj0uk/UVd5WGX1g5aGWFrLBwzqKlu
+         NxfKaUR6ZEJNW4Te7m5CTQYbNNtoyWJX2bJJapCR6fVHa+X6ea0bVs1qOU4Rkg6YCN4j
+         TJ7NcYNbafrpkfHcZOqRAO0bsZvaeWfu11c+3BLuhuVdhOosMrE2kWp5/kK43+AKz14r
+         w5Ntk8AzMC65vGzVTIEJkK2lrQnt1p+idvJFUmSjlk83COVkwq2aF/s6IMwAjpV2yZb2
+         Tyu3Dh/Eb3+RI5zQ+pal+CtiX0C31kLwHbNRYy9Z5u3XbOH7E8hZLNxc3fHYkk0Q5s12
+         goFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765403877; x=1766008677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+hm1NbizhX2u/6oOBSk1ArXnzSC2i/yu4zfAVJxLwRo=;
-        b=ZvuMRXT1ORVe08tFbnFUVCoSVwkEAHgCghFYAkNR0SCLAxceho8qkjAjeRMMsyVzLP
-         ASBlN7FHSMYLEphz9GvSi812eWJnZmcJAwh7hIazgsioBiuClJaPzlEzPNyI6/vJPoVr
-         cUKe09ktoQTxaRJvb3xM6cr0tbQ+B344A2bMGaGqDjXrQoPh90+8D/LhWYApr9GK6TdW
-         YqcCp9O31wocsBnD6UfTHfijK1y8HeLD/IW3fmkSVB0bZ9ie8Q11fGAS8FwTJzPWa1Sl
-         36jRV7FtIb5ILI+gTTYq6zPTpZsp+4k6vOgll7/b2QVX2GTsv/w9QAhZyTWIRNKEFitD
-         k34g==
-X-Forwarded-Encrypted: i=1; AJvYcCVYud3MTjFW6JhlTCC0+cV40yVV+12MCTCHaXSM+g/Ej737P47HBpOUFuF+H3UZ9lPZRQHcHxhNtA==@kvack.org
-X-Gm-Message-State: AOJu0Ywx17YYQPC7KiUZavoPVT4NAtWkVU/Y3qf4HPaqanlvp6eY0yay
-	/YmRggq1LsPKtykIvqpafUAT4M5VrmDauBnMHgMSFj3XEUBsd2vIJ2A6
-X-Gm-Gg: AY/fxX678XBb/OhhJryUy58Wg9LXiIs1gsWTqwN1Muh/TYWFd9fdKO0JtI7FdrgLvqW
-	03aDCYgWIAzEGbcAnuCcA63mSHpgmIQewPqL+vK4nIK/ZPRlfqROsUmt96HH6RgLMRgyWcwTbQm
-	XEDtSUGo5kVoNGti2fCF/S7NC9MLSAxvV4MdRz2sQf1cXJYA4uDR6sfa0C0rYVoms0jMPhyGy8b
-	J9afUH+Q8H0p6k25itojtvWuVan6IhijVp1lnZ6q0Kd4PI2RRKUVYrCynFZv6mB2tO4f2CP3MlN
-	g6mrbL8+KbVfXOe93v8blnBeO+KVLtwhf9uDUPSVi949tgwE7xUuo2J2Y8SvO0fqzt5cKVy1iv0
-	6m7zlGFv0nFj/IAIElWP9lwZ6gmzb/ILan6o0N9Cbd0dAZHCdsKXhhshr4Goa/pdUaWuKMbW+QZ
-	OJJ+J1KkE3m1k4eW8MXfk+nniEVgM=
-X-Google-Smtp-Source: AGHT+IHA+9Qz7ydU3Ty9NpHFSEVIZQE81z8wV2mYZQOhee792sM2qH9nyagSd+BRXofaMXiX+aNkbA==
-X-Received: by 2002:a05:6a00:4f82:b0:7f1:7c82:fe2e with SMTP id d2e1a72fcca58-7f22dabffacmr4111460b3a.1.1765403877452;
-        Wed, 10 Dec 2025 13:57:57 -0800 (PST)
-Received: from LilGuy ([2409:40c2:1056:3997:289:7d28:d8ed:a86])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7f4c54812aesm453133b3a.65.2025.12.10.13.57.53
+        d=1e100.net; s=20230601; t=1765405721; x=1766010521;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2Y4YR3EvZUPa1M0pk6ofj+UMivnBJWFnH2I8aOHSdEA=;
+        b=L8DsFEdTB8+lpT49BYza+sU+UUGLVUNC1LZZBcqiSqvyDEFH5HINcXykxphpPZQkHR
+         GYW9Wose7D6bquiUVHVkjkqc0/T3FS1OGx0ujGpbgRBcPllS435jn4AEZj5ZZuZUn0L/
+         xkvGSXsi6yYMAJAxp0APBQU13FDUCGyFzyODjeHuN68LIBTlpH898ivdrN8Ts0Uw7/hO
+         7GgVm2tfLv4qX6Wxeo2PdZFkIoo1m+4NEnBoAztGFRW9UscfjIro8XnlbakplPLifvGS
+         qs/UYuHmmfG+A2Y388k78289Sy+xVJHEU7lYMYwgqxKlx3IvXfjNbnU6m10PdEoJhZxY
+         ePAw==
+X-Gm-Message-State: AOJu0YyyaMml/ZMTFYTwfa8UGHA8OAcbEQDrDh/+qnJWP5dXM6PHbAh+
+	hj/A/vNAeoonGWfX7ACXYa64eGuY0SyQhcD4o3iQTEJCYFboNzJJ8i8c
+X-Gm-Gg: ASbGnctmWSYWm1+duu0AUrVG8fDfYHSxaqIwrTefD2804yGzWQRVrVaoXK6+fSWnHw0
+	7pKz8CxOdEB2wxb25flJTOp5dnL5PCGkn4/HLhpMBQ1YCLn8Aq07dljYrdzWhvvQOguC6TTtAuB
+	i0TRZoteJTq51OEGiKKPngdx/CbXHaOEH4KdKYoT37FGFfWhMYp+dyo3na3fMkupc/k5kpxr+oZ
+	BnBdyRAxbI7qb/KO/1XbLayE0mn/6s6/GLGnLg/Ymh2K6YYSvx06BLe7SQ5JF+tp38VUEDRGiOQ
+	bu8eoBo/ri9TTCeLVN29VgPdfoFpBOXQwdpmeILSBXZuukf1HrtoowBEnzu7dYPgq230AeD366c
+	QMfa+QrcYHTc+pqq0fSkIFdSmLaLvxBgVoA55xEg5T3CJDNC/uAS/WMEBPi7BxW5XlC7o8iRHof
+	/LeE4ZzeAzKnOy/FIAAr/yKeLdtx3lN+f9TnCS7UWtKUE=
+X-Google-Smtp-Source: AGHT+IHZ6lBnOUweOAui2ZzJf3TpHq0VX8oilk8s2hjf+9kxfxm8aifawoRpmp/EQn7l9HuOqXwLqA==
+X-Received: by 2002:a05:7022:2485:b0:119:e56c:189c with SMTP id a92af1059eb24-11f2966a2ecmr2952426c88.4.1765405720243;
+        Wed, 10 Dec 2025 14:28:40 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e2ff624sm2090304c88.12.2025.12.10.14.28.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 13:57:56 -0800 (PST)
-From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev (open list:DAMON),
-	linux-mm@kvack.org (open list:DAMON),
-	linux-kernel@vger.kernel.org (open list)
-Cc: skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Subject: [PATCH v3] mm/damon/sysfs-schemes: Remove outdated TODO in target_nid_store()
-Date: Thu, 11 Dec 2025 03:27:22 +0000
-Message-ID: <20251211032722.4928-2-swarajgaikwad1925@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        Wed, 10 Dec 2025 14:28:39 -0800 (PST)
+Date: Wed, 10 Dec 2025 14:28:37 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aTn0FZig5a_DpTJg@fedora>
+References: <20251021194455.33351-2-vishal.moola@gmail.com>
+ <66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nnikjtgn4b8kfnk1qdhic5oowbskq118
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com>
+X-Stat-Signature: sw7wrdfxyat1upmxsk58okaos45rwi7d
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 979A410000D
-X-HE-Tag: 1765403878-317887
-X-HE-Meta: U2FsdGVkX1//TOWtighfRZApEI6aXsH6bwchbMo5V5nqfd8cG0qClSITC1RsL39VJFO8FNrqhYd5N18iNek8BCTBbx559qXMj5uL+9DqiNl4Dbi0gWVIdqO0qoIOuN9v9mYXLfbBvjAXS/DBQDL2z2ZAK/JIxFQmGEFa8jGNVgVUwkCKq8SFVsvl8+hwOrm7y+UyGiCZyCvUA4T/GjGHw92p55w+9idhkd1ezewR28zyNphoEyiCgyALeWq5lIvP5QAZx5X3oxweCzCEnSmi9vOiel5jYfXqnQmXX0nm8gEoaR8Z/Wk7oLexcn3Lsr8NkRh7KElNlm8SYpmUQSDRhsTwRVPQ3D9w151N9WGN3Zs9658WkzTY+DVRphkG5/UwQJ4rWjsRKlWXg1PnrjUEIoaf5G5fPBSLEpZ3sb+Nge9WZqyFLESdARU30jOgkDEYg0H8jK0ZED2rl7ZiDik7twnLd/Dz7YAT+jRv1KiEsoRZiMHOXMU+UlnylTAKr9H1EhFMSceKv+PdQKXRnuOGL+XcYLiNFugnCT4sZeod2pdF3nOq4gR1yoD0Cgh9DkIs9zpjRJb9oT6Tubm9JneplBnjMznb3fs23QRnhFiOlcjDEeLwIX3poVrVjH6qenKdsIxkAhPk5y1tOYXCB0Ik1xhWFzcJ8Uomlc5+92crzWkDW4xXm7zOz1rxs0nRSQHab7GGarNxX4MnU6uySJ7RqOzN2So89Iv82H2CM/2j2ja3SUAXdjtq+cYkX9wSmpcQxKjE0cncInp/sOP+RrVVcD+OJPMtKhzljYt+2yEfa+2YsPT9TX/9+cx+lbjiqBFdebKUluju1MC659xzOwVcA5sc2HJ4ugWbFaWOBoOzTIon2m9O6yP+Tzjo0CjacMIiOD64ZCexON4/UWLHClMjMgBhkymRCmyV1S9me28HmVLAz8nD6uvedtuPhXPY94eLxSFhUbmJ2y/NLvkysea
- 4YSZ4lUU
- zugcT/M6CpYHdZ1XyjxHZMXipseW2SNkTpfZanDeVdcwdRz5aTp6VKZya5wKAaez9BFQCIMpTxh2wYcq6VAkSHGbE/+DXmOgVKUti/o9Rjl2kc8b+wpRO0At6xzLCpkA8XkcNNJJj/WzHERO8TDNH5KCxwtpqFzVS3ju0e0yS1UtBqMlJTbcL4CM7gJTTosEuaGGuzxMWx0ZxnhMbm1ma2qHdP5Ucjs5MJEE3LEzNJqtTHH+rj/udcVN/kC2bMxEIo3oEYUbAJ5mBA3NVuAqvnQSOeiNg/6SW65tmrJ1Kpl2/RB4q0yHgXtmjI4mv6GvKnwtvLbkF9UY5jwkVkxe58Ro+X0JNx1i5P/TSfHE2ooCYNo4dp2EzPbXjUD0Eh8U01Hkev4B31P5qusm7ptGNbqPd3cZ+jG1X2L1ZAfWwnVE5MDYxLuC1LTmw0O8G7OtqmtCvP5QSUE1vLRrfKryZwBAKsywuKFvjLPxS2rol7oALK9XQAjpLGHeB4enuK3uhlZmEC09f24/CUoeUWLMQ8748OHYqdnOVKkV80xSs99AxGxUvjrLwzNk5h5M/apDZSaLN
+X-Rspamd-Queue-Id: CB5A3C000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765405721-162632
+X-HE-Meta: U2FsdGVkX18c1nVeDqXPiQ+6cjGakp6+BEu4Cv7TZiljWmQBjOe21bmDDTjB71P16vpTubYieQotNvjuficNErKOtummxJkRjfkCTNTB7sq0Ek7Ll5zdXor4gDo0xISBiq0PmKHd77hWj0Wmvu/pcRbfKtqMZc7uop8FGzUqpTt/TYLCdqz2heqqW7yjdAmBUs0IAd1InbyCkXNO46HoEEQKN99O4YtzV/X6dxTi0ifiEnkfP51OBYXtYOZvLfiMwFz0ApLqQwfmQtYFu9o1BVx1jwKRT+Zy9j5CQnLUwM86+SXI9in1Nd4PUcuuA//JiB3y6pHNp7gzxObUuy8haGzSVv8/9Wsy2S8kg9VVslUVcJ3xBg6WhznT2AxPYZGl1I0RWtNZX1ZZpa09HP+IXREU5onTxnQUJKKrN1HYjKGh5CeB1FchlXxArFU77JKI+ErDesmudBnLdRaUp+yzbCfLmovgdWHZwvnJI4VRm1N1wWrPmn78aUC6UsBByOqPnq7rKX++yMz1ZMhKxHvBDru0JczpWIXN6OtLKepsGXOiEnwpeh3Ukj5v4d2g/Dhmd5MpIY4uEFWxsJWSRQ5+kd+B0bxAPWM9ePYQGOPISMYPBqf7JVMyOKt9Tv4wQHE7vzsm6qYOItONwJl5xZ7e7dyV6xzJA1o0gWibqlpSf6en9BHovXpqnjbVW7gBKDqOXNWorZ+z9l0m1fhDYyRojqBc+vkkS4F8cA4OFIu+WBNBZU4399dC/wXNutI8xVKHq6nPxFbnGDrAdPeeBf9RdcYIBtTCird/TDddmNEC15MeOwctsxTU9yGBfWv+fAnKl9G0bqtk2CmTyLN9NCbu3V/n5rtMT5icVi5G4wTcPumdiiBOCa8zJ4AO+RDgGLZVbj3P96CcEDaXgySatvTwkQp3UNorX1WMnwDRroMqs65nNmQsY6DdMHvF+VdsmxWvxI5JQmjVuxvDGcStDp7
+ Ahu5d+/t
+ nKpaB4eShun6TEBBDzxKTpMBwRSCI3DgfK3M3XWH+3y/kAMMVB9mS7PJjldSbPNq8o9Eu0zoEK7oIPr6uOL8xgLWx7j9g+QFlW5HBywxEp3j/m6HD0hIGgpqrXpf2b0C4pEAtjIM6iKmhthlqcEdjp/Vg++juw0FC2fO85Go0cUTHI97PRk7wJnNjClNDEtCOKr7WhxKOirqEr+evuIll16UZ+L4Igj4XxdrgbaYfUx9VUCiRfgLIXwMjC2zAS3GJzwUAt+6EO/N2SfwncnCYsqK1ymwwEw+PhE8XTxG0leJbl2uwitReH6jtsMAyztG4plzncSRsEpi0msWERsfLCSb25r2on5sokQwvS/S5RxkUtFiCkSS0yrJ6zaazeFaMOYgr6739njWsI9HHLVNvSzXyrnr0cYiGsOo6CeR6D6JqV0MVxCLEkczl7WQ31V+bbki3UHLgowPvgtcifzGd9VxDUiAkpyG2Jy8HC0+e1PSWU6M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,51 +120,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The TODO comment in target_nid_store() suggested adding range validation
-for target_nid. As discussed in [1], the current behavior of accepting
-any integer value is intentional. DAMON sysfs aims to remain flexible,
-including supporting users who prepare node IDs before future NUMA hotplug
-events.
+On Wed, Dec 10, 2025 at 01:21:22PM +0000, Ryan Roberts wrote:
+> Hi Vishal,
+> 
+> 
+> On 21/10/2025 20:44, Vishal Moola (Oracle) wrote:
+> > Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+> > allocator. Rather than making requests to the buddy allocator for at
+> > most 100 pages at a time, we can eagerly request large order pages a
+> > smaller number of times.
+> > 
+> > We still split the large order pages down to order-0 as the rest of the
+> > vmalloc code (and some callers) depend on it. We still defer to the bulk
+> > allocator and fallback path in case of order-0 pages or failure.
+> > 
+> > Running 1000 iterations of allocations on a small 4GB system finds:
+> > 
+> > 1000 2mb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    46.310s			real    0m34.582
+> > 	user    0.001s			user    0.006s
+> > 	sys     46.058s			sys     0m34.365s
+> > 
+> > 10000 200kb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    56.104s			real    0m43.696
+> > 	user    0.001s			user    0.003s
+> > 	sys     55.375s			sys     0m42.995s
+> 
+> I'm seeing some big vmalloc micro benchmark regressions on arm64, for which 
+> bisect is pointing to this patch.
 
-Because this behavior matches the broader design philosophy of the DAMON
-sysfs interface, the TODO comment is now misleading. This patch removes the
-comment without introducing any behavioral change.
+Ulad had similar findings/concerns[1]. Tldr: The numbers you are seeing
+are expected for how the test module is currently written.
 
-No functional changes.
+> The tests are all originally from the vmalloc_test module. Note that (R) 
+> indicates a statistically significant regression and (I) indicates a 
+> statistically improvement.
+> 
+> p is number of pages in the allocation, h is huge. So it looks like the 
+> regressions are all coming for the non-huge case, where we want to split to 
+> order-0.
+> 
+> +---------------------------------+----------------------------------------------------------+------------+------------------------+
+> | Benchmark                       | Result Class                                             |     6-18-0 |   6-18-0-gc2f2b01b74be |
+> +=================================+==========================================================+============+========================+
+> | micromm/vmalloc                 | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |  514126.58 |            (R) -42.20% |
+> |                                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |  320458.33 |                 -0.02% |
+> |                                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |  399680.33 |            (R) -23.43% |
+> |                                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |  788723.25 |            (R) -23.66% |
+> |                                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |  979839.58 |                 -1.05% |
+> |                                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |  481454.58 |            (R) -23.99% |
+> |                                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |  615924.00 |              (I) 2.56% |
+> |                                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         | 1799224.08 |            (R) -23.28% |
+> |                                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         | 2313859.25 |              (I) 3.43% |
+> |                                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         | 3541904.75 |            (R) -23.86% |
+> |                                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         | 3597577.25 |             (R) -2.97% |
+> |                                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |  487021.83 |              (I) 4.95% |
+> |                                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  344466.33 |                 -0.65% |
+> |                                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  342484.25 |                 -1.58% |
+> |                                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     | 4034901.17 |            (R) -25.35% |
+> |                                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |  195973.42 |                  0.57% |
+> |                                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |  643489.33 |            (R) -47.63% |
+> |                                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        | 2029261.33 |            (R) -27.88% |
+> |                                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |   83557.08 |                 -0.22% |
+> +---------------------------------+----------------------------------------------------------+------------+------------------------+
+>
+> I have a couple of thoughts from looking at the patch:
+> 
+>  - Perhaps split_page() is the bulk of the cost? Previously for this case we 
+>    were allocating order-0 so there was no split to do. For h=1, split would 
+>    have already been called so that would explain why no regression for that 
+>    case?
 
-[1] https://lore.kernel.org/lkml/20251210150930.57679-1-sj@kernel.org/
+For h=1, this patch shouldn't change (as long as nr_pages <
+arch_vmap_{pte,pmd}_supported_shift). This is why you don't see regressions
+in those cases.
 
-Suggested-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
----
-v3:
- - Added Reviewed-by tag.
- - Moved version history below the '---' line.
+>  - I guess we are bypassing the pcpu cache? Could this be having an effect? Dev 
+>    (cc'ed) did some similar investigation a while back and saw increased vmalloc 
+>    latencies when bypassing pcpu cache.
 
-v2:
- - Removed the logic changes (validation) introduced in v1.
- - Updated commit message to reflect that only the comment is
-   being removed.
+I'd say this is more a case of this test module targeting the pcpu
+cache. The module allocates then frees one at a time, which promotes
+reusing pcpu pages. [1] Has some numbers after modifying the test such
+that all the allocations are made before freeing any.
 
- mm/damon/sysfs-schemes.c | 1 -
- 1 file changed, 1 deletion(-)
+>  - Philosophically is allocating physically contiguous memory when it is not 
+>    strictly needed the right thing to do? Large physically contiguous blocks are 
+>    a scarce resource so we don't want to waste them. Although I guess it could 
+>    be argued that this actually preserves the contiguous blocks because the 
+>    lifetime of all the pages is tied together. Anyway, I doubt this is the 
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 6536f16006c9..14a17da350ab 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2245,7 +2245,6 @@ static ssize_t target_nid_store(struct kobject *kobj,
- 			struct damon_sysfs_scheme, kobj);
- 	int err = 0;
+This was the primary incentive for this patch :)
 
--	/* TODO: error handling for target_nid range. */
- 	err = kstrtoint(buf, 0, &scheme->target_nid);
+>    reason for the slow down, since those benchmarks are not under memory 
+>    pressure.
+>
+> Anyway, it would be good to resolve the performance regressions if we can.
 
- 	return err ? err : count;
+Imo, the appropriate way to address these is to modify the test module
+as seen in [1].
 
-base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
---
-2.52.0
-
+[1] https://lore.kernel.org/linux-mm/aPJ6lLf24TfW_1n7@milan/
 
