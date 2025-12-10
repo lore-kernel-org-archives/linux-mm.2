@@ -4,123 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C3AD3C928
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 16:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80859D3C928
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 16:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F7D6B0006; Wed, 10 Dec 2025 11:37:26 -0500 (EST)
+	id E2FAB6B0008; Wed, 10 Dec 2025 11:38:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 356886B0008; Wed, 10 Dec 2025 11:37:26 -0500 (EST)
+	id E06956B000A; Wed, 10 Dec 2025 11:38:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C8C6B000A; Wed, 10 Dec 2025 11:37:26 -0500 (EST)
+	id CF5256B000C; Wed, 10 Dec 2025 11:38:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 163AA6B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 11:37:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 99CEB134ACF
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:37:25 +0000 (UTC)
-X-FDA: 84204116850.26.74137AA
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 185CD1C0013
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:37:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="BYu/J6AO";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765384644; a=rsa-sha256;
-	cv=none;
-	b=okcbSRh6fDYuGK0vUMYMc+0WbXvwV6lg/GiBa2rVAWueORbWrdtUFBiLCQffUkNbIwZt4z
-	5SKks0xgAPjqRikmRyYfER46ZsVgHGEQI4u6pia8PMsCotdZZg0qcqQj99VH19WC9KP63q
-	2VioSLLPUJi2ancqb9bEIpAT3LBwyII=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="BYu/J6AO";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765384644;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C04536B0008
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 11:38:03 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E1E960375
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:38:03 +0000 (UTC)
+X-FDA: 84204118446.23.F3C1585
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012031.outbound.protection.outlook.com [52.101.43.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AA650A000D
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:38:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rziNsxnJ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765384680; a=rsa-sha256;
+	cv=pass;
+	b=AQTAGea5ZuaMGP813PsNg21wIaSkcvoKrTs+CbYNpq2PBdmYYjr/H9pI8M7PoS/Qws4ui7
+	xmjbS+gi6PaSKhSysrGoFkcGvEaWJ1q1ANnIM4ZTe52juP53ivPUEv07SlEKIqrUQ0Xl6m
+	pX0Mib3UlQPoap8WNxK+BjDwUGBM0As=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rziNsxnJ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765384680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kgo0gn00i5ezpmur+oazSYFqerNtpx0n/NmNjZb+ZMg=;
-	b=nT9oo5rXmBO0QLt0bT12/GOGn+TME9m2tJAQfQ1RuUgGEQWwrQJrn+YXMQ7K8ngqGg1KEd
-	DjNwid9bBOGqaBr4MHEmMoeQik4q3pNsJ2b7Xhs+tW2UznRrKO8zKrvnBZndOLGnqEkCbs
-	f66nJxOi/QRTFA4+HcawEGTZYitaGVg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kgo0gn00i5ezpmur+oazSYFqerNtpx0n/NmNjZb+ZMg=; b=BYu/J6AOcF2tcc1KVJ32FxlxHU
-	bU3jWS69I/gzoL5rBfMEk59+8SQbX3m1TlSNJJBxfMpkoI1KbFOV27y7QMVenzPHs2zsO9Sf9JDR/
-	0uQ3VHyBkDCTe/IxD+Z6b87X+qxa2kKTWHsibvBOBaekXJ6QPk+VCsTlrEk0LXs6LqwXPIzUtPCHi
-	DgQm6ujZfpSwd9uSbFR7ePLCGitwY5+n8wyOncj7wceU19MDKcL1WcIIAVXEvXl9cAjIOPG8mYxWw
-	6JMAH/tcx3NXcdb2kiwaVULI21AwrcK3vWCo8+YKj4qPCyLpmW/tbyigfGqh1WkZkRrZSQx7w1fJ+
-	QH9+jTew==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTMJz-0000000DbAQ-3Ck2;
-	Wed, 10 Dec 2025 15:41:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A3513300566; Wed, 10 Dec 2025 17:37:00 +0100 (CET)
-Date: Wed, 10 Dec 2025 17:37:00 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Marco Elver <elver@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 00/35] Compiler-Based Context- and Locking-Analysis
-Message-ID: <20251210163700.GN3707837@noisy.programming.kicks-ass.net>
-References: <20251120145835.3833031-2-elver@google.com>
- <aTmdSMuP0LUAdfO_@elver.google.com>
+	bh=58vVcA/zjtkNyGncrSDKI/ACEENeevsjztGDeGfMruU=;
+	b=fct/0gui10fvsrM8igP3RZEHdGcSQfLBWA0cwICJyfaP2S4BnwCW+nY8naInLSsuaYrBMN
+	ILCcqEVvyT6i5AmiwcL47a301SDU7F2JXiR3J0RzsyXytMeBePtB7x03DRAys5ngMXxHEd
+	L8saWxeFpdZPdZntVPK2UL+/fKllzCc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TH2vrgchjmfkQiZCQF9FBHKvAKBVm0l2Hki5iXIjCTtr51PVpu//IJwrVpE1I8063jFL2pH9LqJgLKQ0ZH5Qg3cUI8r+9Bp8SPIqAROKgJ5PcyUrmqT6cr0wWojcTagwNaf1HugSs1qmSImU5X6qVJ4XjmHgqE4NeSx2b4Ggng5BJ43eMBF81VZ0lss7SlICBv5HlTIQXL180QAxx8ATxaAkpZln/O/SX0NHVKobJnAuerqlJEX11RzDu83tYhl1R13sagEGq7PuTiRNiV3KlShXORjnuZhBoMcvm8nuM4PdMKSiPcA+AGOHodA/GonfxRUSDlqytO/knPeUw5tO0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=58vVcA/zjtkNyGncrSDKI/ACEENeevsjztGDeGfMruU=;
+ b=TL57XhNnuV8ZSltFeUKebxCceaV1UN+6BackvUIU7nzYGVen8jNA8zfOYMMWFvmnqtF14pn7cwk28fH8A6nb+nTebhhPCZLuw78ZwcCMaqWZ6h9e9UYhNf65HaL0l5m17/ScKisw7oEwKtW+Wm1fIRIhIKsHzQRSF4IR95xoQZlT2hfxkFId46VTt5w1CVB2Efy/WUwZqhI+XVFZTlxEDm9JY7jYXwGZUFxbDusejo2K+R0rrUQvZaMJdLYJwFpXYKfI3y36vfUeVrqJl3DyIH5q2ieL05VX3G//dg0ZRdsqYj28Q3mOEkLbMMZ76zF5wopuSiNwWDQsILcmGJsqJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=58vVcA/zjtkNyGncrSDKI/ACEENeevsjztGDeGfMruU=;
+ b=rziNsxnJTcgxdkYB5fj6w25kSgTY5lOmV7FjvEjXLYqryNVzB7BxslNUQNUIviQ+j2Osv9a8yimXV4g1/ztqwdIJL9q7r4AD2SAZQkAl49EicMeD4ARUcWXMScicZGvm/AdA9QXuSiWqYzNG1F1EgVUo3XpTODa2J8gO1p94BKG5ZwEsVp6Fno2rdHcK5lp1Hbv4s7l4vr+K0jwUbHak+x18dBgEQGIp9gYtgLcp0x22xaOevB+NSgTpNtgW59xqWbVyoqlJBQlZzyRAzD0wTzR5+IhFrVEoB57Z8nF1R1UP83Ubh/KVI0Iicx0jdRwyIlMF8fGcis2I1nw/JCmLSw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ BL1PR12MB5873.namprd12.prod.outlook.com (2603:10b6:208:395::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Wed, 10 Dec
+ 2025 16:37:55 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
+ 16:37:55 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>,
+ Suren Baghdasaryan <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Michal Hocko <mhocko@suse.com>, Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Nico Pache <npache@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ mcgrof@kernel.org, gost.dev@samsung.com, kernel@pankajraghav.com,
+ tytso@mit.edu
+Subject: Re: [RFC v2 0/3] Decoupling large folios dependency on THP
+Date: Wed, 10 Dec 2025 11:37:51 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <D498FB7E-1C57-47A6-BAF4-EA1BAAE75526@nvidia.com>
+In-Reply-To: <aTj2pZqwx5xJVavb@casper.infradead.org>
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+ <64291696-C808-49D0-9F89-6B3B97F58717@nvidia.com>
+ <aTj2pZqwx5xJVavb@casper.infradead.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BL0PR1501CA0012.namprd15.prod.outlook.com
+ (2603:10b6:207:17::25) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTmdSMuP0LUAdfO_@elver.google.com>
-X-Rspamd-Queue-Id: 185CD1C0013
-X-Stat-Signature: nz49umptf96ispiij71aj1xqrez5zrih
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|BL1PR12MB5873:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a03b19a-5972-4210-9017-08de380a7839
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZgkxCnEo8iS97lIgdAi/ad9d3nuwlT6QJ6ghXOC0xJBLAUYzV/4mouvkQvnY?=
+ =?us-ascii?Q?zFN5Km00heorORwKrO13eh9lSlNYUyI74czo2/Y1TE0Jxa3jI9sohiRj7yiC?=
+ =?us-ascii?Q?nGJrUkYmbXxlzTEkBW2NlSuPEMt02v75zI8wAmcpAEDTT57MT1wP/EAyAnpF?=
+ =?us-ascii?Q?cfm3t3qsdG3AdZ32ZY+vt57y0VlEf4Qa3YUwfAz0NnZrqT/HBhxn9XcAMlt5?=
+ =?us-ascii?Q?L1D75jnGHt1/jcVjgvJsbbbfMa1GYwqg3Lag2IzamcBB1kbevpeyldCXISuY?=
+ =?us-ascii?Q?wdEto/oy9bbxVCJaYQ/+BpJtm2d8H2HAbSiTH1lW8sDuylhNp+fRYA6OiizT?=
+ =?us-ascii?Q?sqGDTqsGdVn6bH4ySDafQmZ6VTqMDTmcr2vqw+9TATiEphBJiN/eoyaNCY6/?=
+ =?us-ascii?Q?aSjvzS5TXByw0eCax9UE+3JY1hhJjgbfn2wkcpwkgHauAnpN2W+uynqF+DcJ?=
+ =?us-ascii?Q?cWSfaHP7TKrELuwUClUjUbd5FXcXAulD3S+EVMx+1JeGLc9nyGNpNms2YtE5?=
+ =?us-ascii?Q?ArkJSEyJ6HScDQdjEyfBjLgjcGKL82AvtTYGQkBZU132/ufJGvG767sgDPwl?=
+ =?us-ascii?Q?rdwL0oaen2UXz/IycqnPI6MCBCkrtKrS5FqJNylvaP2qJDMj3hFHCpIUYxHY?=
+ =?us-ascii?Q?Ympsnb8XJIVDnwOCeVd+GU9W2sFG5EVR8A+3YB5OfQpJeS17qjfGnQcFXQIU?=
+ =?us-ascii?Q?7QIx1PEEvQG909BSCam3Oq8lyBInOZ2ntBF92KZu7cFupyfMjo1GQCY4U+5P?=
+ =?us-ascii?Q?oPzRiHPUZGglqr/ruj+WPpqMRctdLLwaKQL/NGnKsNXX9y25JZz3H5iXtqvk?=
+ =?us-ascii?Q?ZYiDeea4WSbsHPtFw5ENmJ4xM4RCWEcIGVCzXjUygisiH/FFSk+0snBLM1nc?=
+ =?us-ascii?Q?HN88G1v9kVllzyxAPW4pN7MyRVPsIA9Qm5GXyN51cofhKINR41EmuhPgiOwD?=
+ =?us-ascii?Q?pogdYoSAdKgasLHNd/zjWT4X/baSshfZxjQ3ryJ7OZX6uE2NPwhMeGuMscu4?=
+ =?us-ascii?Q?K84NgixUkGVT0ZRsQxDkvoEVkHy/65EdAOllRc/UAGpy0CW4WKjvLcWBGuEH?=
+ =?us-ascii?Q?XJ/tO1HmQp6O4XRcHh0nPiw3LJVJYUoBLkhRNHZ4/OkAPKw/RSSJHHus9Sbj?=
+ =?us-ascii?Q?HqqrrhvImt5wUH1kK8Ibl5bYULnYcQj4+o6+SwbZ2vVgSovO3/1BVijQPAro?=
+ =?us-ascii?Q?5Mks8jHjwgJ1jtbi0KG9Rl5cNR7FZN5SLCiwofB97shI9uQls6ejmC1iOvFH?=
+ =?us-ascii?Q?U3FbWT9oUgeHFiWfF3GrT9CXo7CYLb6fpCHWA9eISH5pUGH7Ik2bwvV8L7Kn?=
+ =?us-ascii?Q?IzKO7VahHcDCIFWX+DTp/EpOd2R/S0jQKY6Rkn/J2WznG/bR92DtLzhKk98z?=
+ =?us-ascii?Q?PtJUZSYNgMAb35T4UDsS9no3a1UEddf3WBC/dWrq5gerffC0lXQiswtfuHo/?=
+ =?us-ascii?Q?s508iJ6E39V1kuoJPK5Kccr/7QzJ9++V?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9oT/hz/Qyw6YWeU7QPJVJcoTqP+RijeEdrcK1B9DY1YIUw4X4kSGRDVPY+kx?=
+ =?us-ascii?Q?CyKoiMvEpr3brMdsBabkErrZzswYPXkOi0Cv0stfvKHDhb2Ft+KRrmiOUGwo?=
+ =?us-ascii?Q?TXG7/PnZ6nWVgzZ0C0XsDdJa/josL8q1hU0pRkqI9dDx6CLv2PwDghoss3+V?=
+ =?us-ascii?Q?xq7NvhpAMzO8d/KCB9ssPIxUQ8W65fZAVKoUdGoZu7hROvUExEFGDBwdnHPo?=
+ =?us-ascii?Q?/vGOTTpxVBO7h0A5/GegrQkyKJSollbWhpK162TrYjUhzq9HTdmTar6UA0GG?=
+ =?us-ascii?Q?QueHQU9dzN3tQFjFxhdA1LXQQuu0OWnZ7zbrPSFgzD3TA+r2Lu9TMeGqAEYQ?=
+ =?us-ascii?Q?PLd0CLXS/Ens7DTw805Ppyx+0hj2woqAiUUhqG+MBSp16YfQnsdbiNGCN5fb?=
+ =?us-ascii?Q?KjSpsGVFw+JTEKOqTHPWs9ndJOUM/+YAyT+3tgCbZuhHpTHc1ENeYZyAIXtD?=
+ =?us-ascii?Q?WYTTvB9j0ckKvjMgKqbYaOYbInijUEbj6Ph1F8e6rLqavM0CYBaeIvAuGz5b?=
+ =?us-ascii?Q?vANIX/m/yMxkWsXLITQyKJie+xocoW3Xoh6iGKoPlnrjOupvfWRnLzjKFymF?=
+ =?us-ascii?Q?IpwSoq1t6yRVB/EPW2B2p2A20MrbGMgyNPHhkCbAQ2v8luba3/087O7GUy9P?=
+ =?us-ascii?Q?hDjn0Z/4h3Jxwa/SOKv4OHnm8YR4rgbiGGXcftoSH2HBmY3NuDtEa3OcouZ3?=
+ =?us-ascii?Q?JFj+viJWuaKW/bYaX4TTDZgRj9RQTG3PzHgyv8bTTwzEq3Srfm4RqiE6733z?=
+ =?us-ascii?Q?aUDKtY9TfaxZEzg7+jIeSqEh1+/JrSJvBReRWg/6lzkHD3/FQaH+1zXPAXmB?=
+ =?us-ascii?Q?N/5jssN+i0PV4BY/3iWoDm/lv8xiJmdyPyRoJIQuRJMEAmkBseKyG8EZshDS?=
+ =?us-ascii?Q?1TFxD4DdoX5iZcM2DH6qGmRUGrRCHNyWXnpOj4+Xz6odvJ9xtRJorxfkKjWf?=
+ =?us-ascii?Q?mLLqYQgfXm89z/zittECAFAFBBMTY5Eu58tSec9JK0OhqhKuHJF1xsG7NDED?=
+ =?us-ascii?Q?mJ/czWLpUAbcZl+hlA+35Xgp0e75hoTP7nhxOHb8kl9u7l8YPgF5FRN1srna?=
+ =?us-ascii?Q?klirbZoalmhrH1HjRhJ79EnYezdnmS6pXmdvUxbylfWggN7Jg8GO45n4KuCQ?=
+ =?us-ascii?Q?GxWjnhCgjtr0CequTKNJrf+7RAW20ZKNBAlKfoaovK/5WGnMtaHqDHsAo+DT?=
+ =?us-ascii?Q?Vd1/dfZVh02XXMLJGKbfmr53TEEzJuvfN6ZGPqik+Ykoh4PWM1BKk+rNKKlr?=
+ =?us-ascii?Q?siYB/eciMREsRQQ9rBoQTWmVkv+U42eO4F53STLlefeamWG6GqQD6cdI+OtI?=
+ =?us-ascii?Q?ggKv3qECTOWVxHpyk4NDLVvzzh1I/Ted3mHncpyKk+jcGhJqe640cDxsriZY?=
+ =?us-ascii?Q?UhOkz5pgyXjDiPIN6C1/u60gNHNhIhkd6oi0hlOsMn6egw7+PYseJehP4a1R?=
+ =?us-ascii?Q?zV6MTYO7oP3vHtuI6PYk9AomfINA76To06k8P3YecE7nn8OHzMVuFMcSIAIX?=
+ =?us-ascii?Q?jGo9W9k0wB9wPwGnhzOfG5zxr2kfdgcsyxBALSetQgGXG+1H6YZxvfu8N7N+?=
+ =?us-ascii?Q?dLEZtRbHRs1B7S75MEbw09vrZgdptDvZtupZEnDm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a03b19a-5972-4210-9017-08de380a7839
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 16:37:55.2046
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nQnv7Y399rAcNbvZGTgVkPp30Fvg+sdCO6eMJW6KEuPKv123y9SvIFObpv6i51gl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5873
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AA650A000D
+X-Stat-Signature: 3tcogkya9fsproixc5ahnzenyz7shsno
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765384642-948823
-X-HE-Meta: U2FsdGVkX1/PtSrkRbuRs9TIQqHyyGDlSd7tNEUFvj8bYQ377MtjEq8iSIQuJXANL92+dcPJwjzRUwhRAXciclxuVyuAgDTN9qp2rfEkHo/on+HanO/AzYgr8YrUCCJGTLzUgVQGAFrtmdVNck/5e7c1eoescEoFWaxat0phza1hi30CzedF0CbTsipbAnfkTlC2E5VBH+0SgkIAVSsamlQyHtTPQri5z7eHQR/8E59PulKwD0mPxiRSjLLQlW4LTfjpN5AfI066jpwa7LIZb3aCQOzzQ5BCLeI1+XKWd1PfejtUbYikTKXwqHHze5nzsHyzcuKQJrgQS6VkSSU5/maIcqT9TRHLSRYsoJZpLrtc3Wf9RTlflonB0R5PUIt1irQKlGO/MhMxbZ2xO8WEvAmBYC/BcYYFXUdjjgE5vXI248erPRMhzFJ2A36z6BrPyl4T/opw0kbfiLKr4ESqaphiPl4/Df6ZWHpcbS3X+j4b7UavS1PrU6TBU9OU3YcZpe58gP+dWkWLFaGJOaMp3pLctf8HGdLFGf/qWzRmquxhamNyVx9HUxlgTQTxM5KRVmfSAP9475g0WSh7oO6jZPtHUpVkeXmKNoCsnJydq5uGbV7JqiFBMpbt6sfIQD4Wevg2YZP/F3eZ84XPVxtzfXqBjD6n86scr7rpR0KSi1nGf5Qyy1T8lpoOj+bvV+dQhpiJdhJJ0kMrl3UzPflmsalkE7kAC8YQw4McBdklDytoB43W+foF+lU3t3aduHVYw/DrSlGy17TpuIUsQZ79jUuWPFr5tiqLzewnCpqPhD7YpDgXCumcNV7AFHe1wtKHV9kU46TarIzbxHtWcWxAzTdop/Josp2hnJ9bnNLowhBEHFXhCejWbtUBmrSalvO/ncMzfuJ2GSkLsJn3OM3vBIcLQSnZnh/uckum4zrCt7dZ0Rjcmh92ocbW1QvIfLYtfiMpJuETqxwemKhJexL
- 7w6coDIU
- DsChVRsaXVif5A+09ihFgoiBXVquoIrxer5POTwK3ECnQMNFaiP36rdsC28J2xE9Cqbu9D79xQ3vnx1scVpx3WQUb1c0mutOd1LI+EdN/ap+sOKqpUTfJIMg2Rja10zZMf8xbZK8FPFhdVvLU6bzybtnfhdv1R2LWeT/fv8sYGhFkA7Cx8CdEi0mmXBp9/mfi+nOMo5CyU/mcGjofp9vxPjQYLSRnsO4zhrySyZClLMSc5iXBNRJ+TT3ZhGbn3ZsBmCHg5hKHod2mGVRpIwd36BvqA417R9FFaJxUpF7vVkK3ekp/3aXU0AGI2cMLemf+sRE7c+AOpU3BqddZM6oJ0pN24RYcdrqpSr7cArftwZUPY8w=
+X-HE-Tag: 1765384680-142014
+X-HE-Meta: U2FsdGVkX19smse3InLHTMKQeq0AkUFbNNeZHNNwQaaKVrP3Js3mvX/RKxIlyJt+0QebQFaHQ0DQSs9SvBypNlS61Lo9i3eb1euLSisxB5CodoleJgQyZdqVeEB0KwRHmkA0HDgJxBXqxbWgkRdFFOPrnLzssnCpXva1BjkClL8YSI/XzVSWQGV8SDuAK5BNlHl12wP0Aybk+4xy8ZYrr53BJb50TvH4MLlGVC8iXra4J4XqqjOfph7aNUpgc3DA6/NVTik1UIm9FDcCIeh+F4pUbDj6AIg476Q53+rWg5E3XsgyT8YQLFLEDJecr5IayLKjtjcJDn+KYcYfq6dBlceGRcSpEiJ37uXAyeQQZAIjgS0IXqkjGTlT/LwtHnQpJNrNifZ5f+rJqu9a0MH7H6BDq64RVR5dhoOPv2YyorJ6zENP+s8MgblC3QGrFwykAf5XgMmL+NS+SaS7VZ3KXUUfMLHhJnEn45OdsEi3cSPjmoLqJSrd02nxoGIRq7DNcMOpS5OthLF7QntrnqPUhZhC9ZR2HJQg9kDKg0DQyMWe++GxJHSIP9B5zARPOJjhTjtYqxtK6IzqidcuK/O6bBEZ4Wh1DVCjVTU6uSsbJER3VKdaU/HPb+E+Rd/IrkaR711fTrKDJSmFlICDKVgqnH9M51YeRAP5ozpyV8In3dWI5m1ALUc7Km2pw7zyUtGB49dEpKzFNZZvkl3SLPifcvRxSWGy1a0z2tOb86mIi3kDNUIjQkLQb7VnlOSN2dCEkDjsglBVqwnDSIbNh+0tJrThnrIrp22zaTceHM0+cYBaASlaCq6b60qe/MKlxH3CCHB6P7x8K9TU5yVWit9m2iI/CQpO5b7Iil57hQ/nLzvpZHiK7PnlrcFxd/Ey8junyK8R/VvAIbl8Eho+a1OLWPYlLc4NzGqA42eMdFaBVVmPzfERzFwppG10jaPgcizeCILC9MIVEPX4b9Z8c3S
+ d7q8cLJ5
+ OQpBoTErDCqrKpxb/xsSilVXC9ikbAU0rmmMerPZA/3tlsffpEXKAXiTXOCprUDlcssc9yeKJun7kF8gaQ4KZRlCZniuhZgfBZNX9qoNLSMnif+leyUNFZ9kbkarUjKbUBI2oeCqBBBlTwfwgeyQrd0S7eiAR+qJoLtjfSkcq4WfG4RfpBluNKr+F/jMdMZjow4xafl3YMcnFfoiGXU/f8aoYN3aLLcLYwAdQ3Aqf5Z2OJdoz11Rw98jz0ZTt3YdtXc5URzkT70FeusisIu923UMhFl07x2ua/UfFIuSlYDU86OQXsxMYspVu0Nr46bx6mpUKadxP4sRfkEk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,37 +192,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 05:18:16PM +0100, Marco Elver wrote:
-> All,
-> 
-> On Thu, Nov 20, 2025 at 03:49PM +0100, Marco Elver wrote:
-> > Context Analysis is a language extension, which enables statically
-> > checking that required contexts are active (or inactive) by acquiring
-> > and releasing user-definable "context guards". An obvious application is
-> > lock-safety checking for the kernel's various synchronization primitives
-> > (each of which represents a "context guard"), and checking that locking
-> > rules are not violated.
-> [...] 
-> > A Clang version that supports `-Wthread-safety-pointer` and the new
-> > alias-analysis of context-guard pointers is required (from this version
-> > onwards):
-> > 
-> > 	https://github.com/llvm/llvm-project/commit/7ccb5c08f0685d4787f12c3224a72f0650c5865e
-> > 
-> > The minimum required release version will be Clang 22.
-> > 
-> > This series is also available at this Git tree:
-> > 
-> > 	https://git.kernel.org/pub/scm/linux/kernel/git/melver/linux.git/log/?h=ctx-analysis/dev
-> [...] 
-> 
-> I realize that I sent this series at the end of the last release cycle,
-> and now we're in the merge window, along with LPC going on -- so it
-> wasn't the best timing (however, it might be something to discuss at
-> LPC, too :-) .. I'm attending virtually, however :-/).
-> 
-> How to proceed?
+On 9 Dec 2025, at 23:27, Matthew Wilcox wrote:
 
-Ah, I knew I was forgetting something :/ I'll try and have a peek at
-this series this week.
+> On Tue, Dec 09, 2025 at 11:03:23AM -0500, Zi Yan wrote:
+>> I wonder if core-mm should move mTHP code out of CONFIG_TRANSPARENT_HUGEPAGE
+>> and mTHP might just work. Hmm, folio split might need to be moved out of
+>> mm/huge_memory.c in that case. khugepaged should work for mTHP without
+>> CONFIG_TRANSPARENT_HUGEPAGE as well. OK, for anon folios, the changes might
+>> be more involved.
+>
+> I think this is the key question to be discussed at LPC.  How much of
+
+I am not going, so would like to get a summary afterwards. :)
+
+> the current THP code should we say "OK, this is large folio support
+> and everybody needs it" and how much is "This is PMD (or mTHP) support;
+> this architecture doesn't have it, we don't need to compile it in".
+
+I agree with most of it, except mTHP part. mTHP should be part of large
+folio, since I see mTHP is anon equivalent to file backed large folio.
+Both are a >0 order folio mapped by PTEs (ignoring to-be-implemented
+multi-PMD mapped large folios for now).
+
+Best Regards,
+Yan, Zi
 
