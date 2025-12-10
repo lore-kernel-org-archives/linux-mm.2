@@ -4,108 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C1DD3B9BA
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 01:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EBACD3C520
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 02:20:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4D16B0007; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id 660346B0005; Tue,  9 Dec 2025 21:20:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8B516B000C; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id 611646B0007; Tue,  9 Dec 2025 21:20:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92BD86B0008; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id 4D8BD6B0008; Tue,  9 Dec 2025 21:20:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3EB6B0007
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B7AE14031C
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:36:36 +0000 (UTC)
-X-FDA: 84201846792.06.00AFE84
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4B1A3180002
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:36:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QmLk0fh3;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765330594; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39FE56B0005
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 21:20:40 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F7EE12F10
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 02:20:40 +0000 (UTC)
+X-FDA: 84201957840.11.666E2B9
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 40A791C0013
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 02:20:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA04sE1W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765333238; a=rsa-sha256;
 	cv=none;
-	b=BfhxKicifzKKkxuC9UZCotciOIALNWCVu7I2AddKiHCbfBr5yLy/fZgyyyfK2hXfGe/b+9
-	cDkiZzijzVnc1RuyDtOVmXVPgrO88k3AaoH088OHbkny3CVLChjj9wbCyNCbFkYeQtq4Y7
-	kRqRP7J5DfnUnoB8kdtPFAtMCDXbC+k=
+	b=h9sU8y2SJGj4QLDBgZxSFysUqm1eJKOntgcLctMZMhUQCsmp+UNyjKIg/NmIQ3bXPqMt3j
+	jV92Ni+FF5EWd9tl3cJFcRlLgz66q0pp8BH7OHTrmkIEWNXYSwSVDGLRjAN0rvn+us0gcL
+	pF1RIJ8g3t7QKT4UVnuTh33ZCpzQgDc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QmLk0fh3;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA04sE1W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765330594;
+	s=arc-20220608; t=1765333238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FxbvGjr2Y2N79H0lgErfXlSxcOGyB5fPj6Y09U3ZMnk=;
-	b=jUPnOqSlbXwHqCMGKXM82Yqe1Fiu+4bFAc8ARazobLJSZPwMIaCCz3qXRsaM1NgLYht1gM
-	SVH2X57y+VfA75KnWWyH2kOZsAVvlYB35Dhk9QGEKE+DOWr4Wo4mnF6DMtJHmR2CmCWjF4
-	L3Ki4kdnt1r8c/1nSHrS5TvJ3fSGfvI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765330594; x=1796866594;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uSDeJjyIQS8Egw5OHsCLIaafNV3WCKJ/9T3J2/OTVzw=;
-  b=QmLk0fh3XqNZHZmZ3HBmjEpAS9SXhDfJ48vLgQMiHTgbMblvTeQeb2Yn
-   hNypRKLly4Nr4KLGZPDokHXVU++KU0tljMlnn7sWoiSI7feGwvM6Lc4eY
-   VVcSbOyNZUS4+6n96lyuRQHGiDYcoA7G759F68at7t0T0Ec+9Bt9UCI/e
-   EDku4gczrSX8rfnratckjUjs06JkoUSJJ7J7G7Fqn9B6E6c4UnIVK+dWs
-   i30m4jzitZ7Yhvk4nWPEh8l7mfES2RtY21QpnaZUu0THyIcq4qWiwElAq
-   iZ1nh0sghlzF7DWwkdrWPsgKnbVJdEL50Qh+9Fht/Pu1wbypPviCi1Xpd
-   Q==;
-X-CSE-ConnectionGUID: 1CkH9Y4bR/Wdz0LVgXKT1w==
-X-CSE-MsgGUID: uQzZHQB6QoKvdFgV2yx7vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="84711136"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="84711136"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 17:36:32 -0800
-X-CSE-ConnectionGUID: cnOgj/h8THab7ux0gRDrTw==
-X-CSE-MsgGUID: TIzBoRUfRaGjipsGCM573A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="201303729"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 09 Dec 2025 17:36:27 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vT97x-000000002Ur-1Se8;
-	Wed, 10 Dec 2025 01:36:25 +0000
-Date: Wed, 10 Dec 2025 09:35:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chen Ridong <chenridong@huaweicloud.com>, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, lujialin4@huawei.com,
-	chenridong@huaweicloud.com
-Subject: Re: [PATCH -next 2/2] memcg: remove mem_cgroup_size()
-Message-ID: <202512100939.F1LEdUev-lkp@intel.com>
-References: <20251209130251.1988615-3-chenridong@huaweicloud.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1hgwXyIhsOlBx2ai+QKi5I8i7EJWnRRhSoZKHEZC4ZM=;
+	b=2J5Xp9JoWXzP/JFe5LY09eQ9c7rHVX3yp/x/NzPEPuFHG6Z+U5+Yly2x8q5duv2s8W92Ve
+	csoZyEK/7J/WxaubI+FFnpbHKK/SaK9uw09EGevE4+orz9WTMD8X1Cp/lVKv3CFjE51MWu
+	XW19ABFDqXqqYvj8qyb11bc6ccbB6wI=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-343684a06b2so6622615a91.1
+        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 18:20:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765333237; x=1765938037; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1hgwXyIhsOlBx2ai+QKi5I8i7EJWnRRhSoZKHEZC4ZM=;
+        b=OA04sE1WQtt2ZDwdshtj3Od5lfgwjcAZRjK0vhB7Akjz5kRnyB8XgV7fxZ7/kx25+K
+         1ghbY/G5oJcC6WR6YYPshmodJqew90kE1rgSfovSDsjZ+UvcKw14y7ov/k+j2A6F2XC/
+         FJIN27I79jUo6A1Z+4KtU3ydD4R8vf+OCLUIjKhzf4ZgwuAjXAkkQtHobaDoMPTrbCcq
+         Q3aIUSST4YBMTdd054DfmhB+0iuQL5LZWIjxB7OGbW5YoJwLoF1L4q/dKpEROmc4G2aU
+         aFz6/t2GJ5qUWSi+pVv+vrlL44NPTSFd/1/c3oZXLCXN9QVJmwE56A9drWLulS68um9s
+         RtYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765333237; x=1765938037;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1hgwXyIhsOlBx2ai+QKi5I8i7EJWnRRhSoZKHEZC4ZM=;
+        b=vAqMiZgBW0AYu7+wmAfYdyoVhNjXogwpm/PRByqkw6SVDmb5gFtm+o7QNFZFx/6BL6
+         RjgamGCBBddmStVhQFzo8f8BQksYoP9LpYEYEpH7JHPba3jm+tH/V0O1HKqJGPzmw0UN
+         NvHYqh1iH5lkyfOepb3brbcEWjApjE3FkS8Bn15x+my1WGDoZIcCTpkYJ2kbk8G7y+/D
+         wWlcEu3bdmhr8MO4mEkBO01F4ubERUb7CiSFUzQdwexFYwyAvtSxbUVUlHqIb4c8R+Vo
+         lbdhC/X+NSudC5sIyTFcCmGVaSkG7crIZI3w4YGWLQbF1TMXpMZb0J7PJH1XGzmOPk4X
+         gwrg==
+X-Gm-Message-State: AOJu0YzsKiCUdXja79/wkWFUomwwLr+kn/PcCK8FUKDLWbfL3KCJVCQd
+	30Oxd6VpgK3x5TEdsaraWEhK+Wvkf1L4jGm0dojpmZYbWfgYjdfxJNcf
+X-Gm-Gg: AY/fxX5FTCsWW/l6pXoXqt1AcVxX3SfPs6ylvWEMoRBM2GFV3dxetQnY/MF24oY6MFO
+	srgFzhoO82iU/Q3lBIPyXJHNk7smyo3doDD2ZMlxR4ZTRcnHwQDk3RCQxx5QpQEO7kzFlNdljeB
+	maVvOXfm5i2WoXBdq2vpFU5KxmHCv2auvaowQdiLoUhHKKdZiQz/8PJPlFooeHC9v+j5BIEPIXU
+	qZZnFVHfne/LG+sS8wcdG4S8paRzeIGRAq/60WFnqZadlPy9tXjLwACiKJQPHsy3qSjV56tFwhN
+	VFI+cT2NtiYhqvhFbWGYrbTjQnmZ2d1JjJrbPLrMQFrVNzgyrzUeGDa3j6ad5pqhtprJLVTtps6
+	sQheylyBvIo2v+lG0AgSloNph0mgweXtG553e5t2LjfYfLaZf5KzEejX3zMgDBTZUCyjKf9bmOo
+	cDSuZSqAeKNqoPM5zFkjMVc+sq88cp6Lr3XtdkqN3YXL2urv9ZpYzggQup7/xvGNLqCY0=
+X-Google-Smtp-Source: AGHT+IHLHIerDr0gMLPqPgbC6hqm3lmPtR0PfhJNDNVbOYo+TZwEbADxoItQ3BZxmIDDJ8VAClmYsQ==
+X-Received: by 2002:a17:90b:1c12:b0:340:ec6f:5ac5 with SMTP id 98e67ed59e1d1-34a72809b45mr697475a91.2.1765333236955;
+        Tue, 09 Dec 2025 18:20:36 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:c197:3b05:5401:dca3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a47bdc221sm1601937a91.1.2025.12.09.18.20.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 18:20:35 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com,
+	ast@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
+Subject: [PATCH] mm/slub: reset KASAN tag in defer_free() before accessing freed memory
+Date: Wed, 10 Dec 2025 07:50:24 +0530
+Message-ID: <20251210022024.3255826-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209130251.1988615-3-chenridong@huaweicloud.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B1A3180002
-X-Stat-Signature: pwgxkd1cz4wczkuk3oqxq51p5tdn6bjz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 40A791C0013
+X-Stat-Signature: e1hbxbzb5a65y5c96ouj7nafwexbxgzt
 X-Rspam-User: 
-X-HE-Tag: 1765330593-707407
-X-HE-Meta: U2FsdGVkX18/zXhgmJHRPIfFJlNmJgf9ZXSush775VxRrXv3advXIfaB17gujb1fxYKqqzqpLtYKi8Nzu3sAqDG7lESkyEkMwwpOC7PHdoPZxQaJrguNQdKJGsRMQfX4OQgTRZm1UGMI17MmVufkOfjOv8rXgN0Bgzg0ov46iAwD7et91t1rnoH3+jbt/R7DLLx4xcwZk7y0h7NmSxqoDoPGD6RkkgHMsXUAabKYJb8kl5Zd9QtCC+olVNmPVwtgicRdR+JCokJG3fJVCv3gnyVmHA95GV3kvHG0JPE8E0ybmF39pKA/SgoB72JfcGHjTk+02kMgql5Lt2NrG9Mvk9kITHgMDY3LwpTIr6LrtmhSFx+pfRvV2LI71COPJ8viatqXtkvDL2qyoPBq/6WuGIuxItR/v5i1bVvWe4Qu13tkQT0pLDlIO4zcUaTpioa3m77hAnX7T6bn2GTkBpw1LWNLSkwWrBRJo0Q55NYgpiU50brUqJC/+SSRc5FjxpcErSr0RwWdk6anaLlIUu0qynBi5uf3X+NAqtiwEXPAdqFiQRNcDeGpV+5/Ghp2D5062Mzqz+sMo6eI7MCKPNv0AE6OhPM/Q6tua5cnONQ4syw3vKISfNhhWSkAjI+ZkItZDsJSvY/xTlqYvFTxVcvKf8YjKb9Xw/h1THCb7Fb6uhhDeYqrGgGW1TcwRrtu6XQzx7gkJ7W0PxeYj0JI4A2pUm7MxLUiUULSYG+LLKfTNnyAadW5Ymn7UiaHCTeQzIdX2REBCQyQPqdK/2H9xvNHCAf9dFaK2HcHpFx3dNhObSZDqnK5mhfMqIWPhI09B3WhojMYxaV95Noh4mUozKDpMyXn6pdTXPbCAYplZ1oN4GFy/HytDNbznLwCyWNarnOau0QX5QgnKvH5+PYVsSfgyBdTzE/O90PrMipE0O5aPE09ynqsRWxUFwOJK+d5R8BcVPTLXdSauVNndr5Zqn3
- zdqV0H1Q
- RZ8ulfwYsUW2mWtb3siJTfDngQ7TwAmTyrcQoqP1qke1lOrTf02vPjO/9DTnVtnScCB3uysM8rURHHXB5mD9cJbJeA/3Kvw2ESJ2SAbjMoUA2ogKksYgExDpt+4omDirkKS7a8XWvh3XsUsKiaCkIQSwxq79mF76cpp+pzEbVnW9Y8V+GDfrJEOEY0AXBdR565iNDZNdnazER5/a8giON0HWEy1vw0YrOwtC4LobBYVlZmyH6LWoowLf3+FRSo7d67LP0XcqGR61HBrxG+ZDqg4JNxWxx/z+IOT8ha8JHAkYjkU5UXSa0stt1zniH6HTvYMFITJ6jEde5yMBht3460XUuElw+Yf9ruunOIpi9QEq+MbvM8ZKg+UBVEk+Cek2oA7uruYEh4YQT/eE=
+X-HE-Tag: 1765333238-655602
+X-HE-Meta: U2FsdGVkX1+aGH4IYn+KLNhle/7zmBViOKl5wSe9OqXlVsrEAvf86feOe6igy/m5CCtBzzc3ddYv1tZYoF9vG5qBoSrKDqxJprJAZKMeW+C3ulSnfu8J8D1V+EUdN7EVieGvLyi/MpSBuAN2+fjj9J2qHGqM4IaWtw2wvkAadPg6Jd+HY5oz4MguAboELvmcMHAxNz1VFt7cjbhgmVoriMu3klBmpmVxmglVPTnhUPsLaDqb60PKIl6SUisSPLBLBXJW2jcknDS3VeX8/2inWkCgHfPw8Ad4IYXJFAF/VAMIg3hivayNecmrZbrIfOmEiYgI3J7sfPaT24T+47/nA1IHJc9IBytoeBie1ISXNsEMMi7INSdIy4fBWX46UpQ6/ew7etdinXnREoZzayKhCvX8uYnfvAuAYUbPRcFXM71eCEGHUNLV2BdlWBcIyg69E3AufsuvFQ9SpKpd0JSPl9bAuyV58a0aXwXFojq6Xu0ejGMsEec1iZcQoNcd7iAOG2qd5vsXL6LcReiKVENA615Cxtm7/z/dcKgZc3GKAoPP3crK3RYnK2oowxTYNeiV7dffX+4E+4PzpiCDCuKMjqkVuWsACD6f8J7e0gsEpfjWr1rm65kSxTG5aFKVLqNkT6yBWSVqQBrr5eIi15IjO3cpDH/o+fdiikMDq1DnXRAiEy83uwQs74+wU3PcFjaSqWN3O3QcAwAQrQGmPT8YU3aLF+jtWgflJKRKklbLfKuXhBWUs6YMb7PxT1KOGmGxlf8ZZcwJmmqYmAouAz4diqPaIOsUiRlwmihWIp1DpHMvf9CDLMk6aNk1nqqJoKEucJXdWoMxmlDkcNbilU+apK2TCYx4pO7Sqsag206l+U37/YzElZ2fBwfKuij4OvS8iI99MacA9HTEZJkneJHT+5PhSu/IeQtHRZYEE10TyoVtyfzHA8dZbQ9lMtW60ARyz71cUjTwxYn+EHEyGuw
+ +z4Vr8s4
+ BP6pa2pY+sR6YMkKWxOjPWqxD+hMC5+9PLka8FKPKI4TyTDEBN8RuKWzlKv65Z3NvbHC2oByeq9qoa7YSpKoI/KvZ/p5O03h198S5ytyyB7Igb9m+mekWuuuiOpGWS311Pz3dwSj1NJN568H4cv1gB14xGV7KHRbetqYNuwnRjYfODiHln2FcNg4kn4frEau+0QcTI/s9oBdqCxKpKO765DRpWkXq9+AZSm9/p8pTeBD3EJFwJvVi1+/B52FUxuGzRzpXQcv7Hb4VDQ6YCJLSD1H8EUF3HdUOCQyD+PRQxletiKzFVMU7IcAUOi9u4oBHYj/nUgxE473eHe1+1f+7HeDBQvpIXvfSV6H4C+hDtHrXWMHGBUcbciroM5pPVENckTpXW6/I9ReGvqcPL8c5vAACgZlMVJHegogQM48fWXuVNMC5VYMLMjNFiEOHkKinSCQA6No1XbwlvfLkIAtmPGjoWn0N+gnghrgNj99yLllOjQ385QuFBabAzaXgg4xIqJ+YeD248RDU/cdO7cq/WtsBwOyatNteUcZwQAUPtf47Y67B5u84LZPFpSFYA7mzqdy865mGyFP//NAWL4yskQnwu33l3mjTSHkF8DcfOVZ+TPwSlZwBskd8RRatvfIKoH5qRvQ7Lpns5Jzjmxf7ckH0Y2KetWC/b2GBWT5uxRpxQTisNnV0Tic7YVGsOTR8mt5yY3dfYujQLfE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,104 +123,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Chen,
+When CONFIG_SLUB_TINY is enabled, kfree_nolock() calls kasan_slab_free()
+before defer_free(). On ARM64 with MTE (Memory Tagging Extension),
+kasan_slab_free() poisons the memory and changes the tag from the
+original (e.g., 0xf3) to a poison tag (0xfe).
 
-kernel test robot noticed the following build errors:
+When defer_free() then tries to write to the freed object to build the
+deferred free list via llist_add(), the pointer still has the old tag,
+causing a tag mismatch and triggering a KASAN use-after-free report:
 
-[auto build test ERROR on next-20251209]
+  BUG: KASAN: slab-use-after-free in defer_free+0x3c/0xbc mm/slub.c:6537
+  Write at addr f3f000000854f020 by task kworker/u8:6/983
+  Pointer tag: [f3], memory tag: [fe]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chen-Ridong/memcg-move-mem_cgroup_usage-memcontrol-v1-c/20251209-211854
-base:   next-20251209
-patch link:    https://lore.kernel.org/r/20251209130251.1988615-3-chenridong%40huaweicloud.com
-patch subject: [PATCH -next 2/2] memcg: remove mem_cgroup_size()
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251210/202512100939.F1LEdUev-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 6ec8c4351cfc1d0627d1633b02ea787bd29c77d8)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251210/202512100939.F1LEdUev-lkp@intel.com/reproduce)
+Fix this by calling kasan_reset_tag() before accessing the freed memory.
+This is safe because defer_free() is part of the allocator itself and is
+expected to manipulate freed memory for bookkeeping purposes.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512100939.F1LEdUev-lkp@intel.com/
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+Reported-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7a25305a76d872abcfa1
+Tested-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ mm/slub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-All errors (new ones prefixed by >>):
-
->> mm/vmscan.c:2488:49: error: incomplete definition of type 'struct mem_cgroup'
-    2488 |                 unsigned long usage = page_counter_read(&memcg->memory);
-         |                                                          ~~~~~^
-   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
-      36 | struct mem_cgroup;
-         |        ^
-   1 error generated.
-
-
-vim +2488 mm/vmscan.c
-
-  2450	
-  2451	static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
-  2452			struct scan_control *sc, unsigned long scan)
-  2453	{
-  2454		unsigned long min, low;
-  2455	
-  2456		mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
-  2457	
-  2458		if (min || low) {
-  2459			/*
-  2460			 * Scale a cgroup's reclaim pressure by proportioning
-  2461			 * its current usage to its memory.low or memory.min
-  2462			 * setting.
-  2463			 *
-  2464			 * This is important, as otherwise scanning aggression
-  2465			 * becomes extremely binary -- from nothing as we
-  2466			 * approach the memory protection threshold, to totally
-  2467			 * nominal as we exceed it.  This results in requiring
-  2468			 * setting extremely liberal protection thresholds. It
-  2469			 * also means we simply get no protection at all if we
-  2470			 * set it too low, which is not ideal.
-  2471			 *
-  2472			 * If there is any protection in place, we reduce scan
-  2473			 * pressure by how much of the total memory used is
-  2474			 * within protection thresholds.
-  2475			 *
-  2476			 * There is one special case: in the first reclaim pass,
-  2477			 * we skip over all groups that are within their low
-  2478			 * protection. If that fails to reclaim enough pages to
-  2479			 * satisfy the reclaim goal, we come back and override
-  2480			 * the best-effort low protection. However, we still
-  2481			 * ideally want to honor how well-behaved groups are in
-  2482			 * that case instead of simply punishing them all
-  2483			 * equally. As such, we reclaim them based on how much
-  2484			 * memory they are using, reducing the scan pressure
-  2485			 * again by how much of the total memory used is under
-  2486			 * hard protection.
-  2487			 */
-> 2488			unsigned long usage = page_counter_read(&memcg->memory);
-  2489			unsigned long protection;
-  2490	
-  2491			/* memory.low scaling, make sure we retry before OOM */
-  2492			if (!sc->memcg_low_reclaim && low > min) {
-  2493				protection = low;
-  2494				sc->memcg_low_skipped = 1;
-  2495			} else {
-  2496				protection = min;
-  2497			}
-  2498	
-  2499			/* Avoid TOCTOU with earlier protection check */
-  2500			usage = max(usage, protection);
-  2501	
-  2502			scan -= scan * protection / (usage + 1);
-  2503	
-  2504			/*
-  2505			 * Minimally target SWAP_CLUSTER_MAX pages to keep
-  2506			 * reclaim moving forwards, avoiding decrementing
-  2507			 * sc->priority further than desirable.
-  2508			 */
-  2509			scan = max(scan, SWAP_CLUSTER_MAX);
-  2510		}
-  2511		return scan;
-  2512	}
-  2513	
-
+diff --git a/mm/slub.c b/mm/slub.c
+index e6a330e24145..46959c6da2cf 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6534,6 +6534,8 @@ static void defer_free(struct kmem_cache *s, void *head)
+ 
+ 	guard(preempt)();
+ 
++	head = kasan_reset_tag(head);
++
+ 	df = this_cpu_ptr(&defer_free_objects);
+ 	if (llist_add(head + s->offset, &df->objects))
+ 		irq_work_queue(&df->work);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
