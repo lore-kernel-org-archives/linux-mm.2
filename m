@@ -4,79 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E6EED3C526
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 03:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1727D2CE17
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 04:27:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7453B6B0006; Tue,  9 Dec 2025 22:45:37 -0500 (EST)
+	id B9D8A6B0006; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6576B0007; Tue,  9 Dec 2025 22:45:37 -0500 (EST)
+	id B4ED56B0007; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60C1D6B0008; Tue,  9 Dec 2025 22:45:37 -0500 (EST)
+	id A64736B0008; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B40C6B0006
-	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 22:45:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2DA21A036C
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 03:45:36 +0000 (UTC)
-X-FDA: 84202171872.02.0CB8150
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 98ADA6B0006
+	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 23:27:41 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D04C134844
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:27:41 +0000 (UTC)
+X-FDA: 84202277922.05.D34CEE4
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3D0E118000F
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 03:45:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=U9x+IGn5;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2717E40006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:27:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YoEtHsGu;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765338335; a=rsa-sha256;
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765340859; a=rsa-sha256;
 	cv=none;
-	b=dyRayQgyMEiyOwJE156znnGqHd+06HcPNNQCbmkUs+l7+Vkqa/tds1Uqw8p4Xzj3ZBCGbE
-	iDucovxc0ErTbzo4YY531goeD2UlzMI6ITUsAtAPSGT5KQS0JFJOYdpGKnmN4BQbwdtR/5
-	4nmYMcih2pKp4Cqu6HMuZl/iLZwlRyM=
+	b=HNYb2ROnA9GoCl5/D1smGgK6Ty4uiAEa+E3cVxcWJwUA+ohKS2aysw5wUJr2i8wHxOL1IA
+	MaJLeDfbFBEAURMB8W5HmJdD6vAfEbq1Iu6p+77PNLs7NBmoYiJYHIpzTuCsHxq2avh9xk
+	iwmtP3oW/dhoOuKm+H8NJcKnh7+TULc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=U9x+IGn5;
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YoEtHsGu;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765338335;
+	s=arc-20220608; t=1765340859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2WfPHKWV90Obax8RTD9RFUwZWIeyEw9VQINnpBPSgNY=;
-	b=uh/eougMk34zYvhTrlxLSUR7eQiO69FwDcIAp0sqQSWj7dEdLHx61aeh2lJjxcdWv697BJ
-	tfpVCcEHGNulcwRXFZlmW/1ab4BVhhFDxSPNqxf1jfUj4c+a4xow36nDkgsGgu8TwA1s94
-	/ioPC7BNV3eo9U60mBhFt5e+Tu2MLkw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XQZTyVY5EI22OfoG+6/Jw+yO17GgHGjfzONX+f4GGdA=;
+	b=uVzhS0GUmoV2tS+MLYFUd0XLGv3lZNFXxrdjLX6uirPG5wASg7sVq671CSGxlKey8nPZWB
+	xaEgFy2PqVN3qM3+Cijygo7ynxk/8H7ufhAIHnskwXA2KzcW8qEesKuRcAJPBeYYKrysYS
+	gBQjYoxt/7KpqE+fSIttUZlT+vswxDo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=2WfPHKWV90Obax8RTD9RFUwZWIeyEw9VQINnpBPSgNY=; b=U9x+IGn5W1mmlUNCKdY3oBzgfa
-	dBvV4S7RUrdrsWiyg6cjobIIlA7KBSKd48cey+QhZfBUFOI1xJWeGg3eEE+Wv2nzR6hmhXF18RNq3
-	toSeAB1HLH6+CJ8CqJFsfO4z4aANquDYUslPYCjqwnima/2taQYPUI4ASSlArWfyD6AgcglCOnqfK
-	pYXK0w5HWSjcFT89IPdDG9gTAJfDVFPohHoaiOrKz5QgGmEMBzuyEa0BqKEuTE07BkuelHiZOC5Ja
-	8gzp+d5SJPrUl7znOgnfXSRb8v4W7h/coLg0SigbuCXRo7JV+MF2oBlQymDBSCFNNJf2wG0rmBudr
-	RYNQVnkA==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XQZTyVY5EI22OfoG+6/Jw+yO17GgHGjfzONX+f4GGdA=; b=YoEtHsGuQbLbUOQDdHALmnfwAY
+	tNqObB8kUEP4Gy80sUh6a6H3/Nr0AbajRKuSYoR78lcNgmUVQq6R5pU3F43oxeaOzBqymfrpbwlsl
+	cewMwuciIcEhRpC7dPshg6Y32cTaC78zq8lGz4gNi0bnkaca2Iaq1beqJzJinqtKiyBt7shpUUL+t
+	D2u3r6TCbz3yxZH6CnusT0Z9Ocaniazn+dSz0vWuJRlHTH7mSLqVpLOFOc26sI0wx5RWxlBz8ekyx
+	5Eyyjcz8lV7qjG9j0yy4um3BWtHJEIocISpWzduMS6rBVQ8xyNV9Psb7wKqB91GwfGalaY84SbD60
+	vpvfQdFA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTB8u-0000000CH5R-168S;
-	Wed, 10 Dec 2025 03:45:32 +0000
-Date: Wed, 10 Dec 2025 03:45:32 +0000
+	id 1vTBnJ-0000000CJG5-1xCy;
+	Wed, 10 Dec 2025 04:27:17 +0000
+Date: Wed, 10 Dec 2025 04:27:17 +0000
 From: Matthew Wilcox <willy@infradead.org>
-To: linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>
-Subject: Plumbers Memory Management Microconference Tomorrow
-Message-ID: <aTjs3EZL_-eAA8nW@casper.infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Pankaj Raghav <p.raghav@samsung.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Michal Hocko <mhocko@suse.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nico Pache <npache@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, mcgrof@kernel.org,
+	gost.dev@samsung.com, kernel@pankajraghav.com, tytso@mit.edu
+Subject: Re: [RFC v2 0/3] Decoupling large folios dependency on THP
+Message-ID: <aTj2pZqwx5xJVavb@casper.infradead.org>
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+ <64291696-C808-49D0-9F89-6B3B97F58717@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: o4c9jsqu4ybzi976qxhobdun6b5a3cep
+In-Reply-To: <64291696-C808-49D0-9F89-6B3B97F58717@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2717E40006
+X-Stat-Signature: s45nx5qxetazukznag6na61674y64hu8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D0E118000F
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765338334-240550
-X-HE-Meta: U2FsdGVkX1/oZowBawi+c3YNl5pMiyB6sfNPC4NbHAuqCgkMeZ3wfmhPLzw0zC+j0RLYyLpXiv5SHcBUO26jN0goNoYKrMmyKVXeRzWkI9f2hoqdMV6Ptmt44iYBji3VXlBe8jRS2QX3il9p6Ai4nQuaqGjbOKyNzQGSTuiXa/pqoY1WJRmha0ezJ3oB429Q86OIFGEss9c4RbU/fkdgv1MNMG1oVCd1k2aQF3Lp1TGuhbBSKEdjAg1TgYZS6Jj5PYdfDN4JCDagWclfcZ84Egg7ake4dwKva3dDyj17jHrXeEY9SE2pM70FGhjcE0OrMnSdk9+2R65/Zuf+z4Pa0yB9Ydif6x86rquJFpxpYD4vvhDao+mMxOXA1KY3KWqxme6iZQ6s29NA+OTu5nUbVsctyvyvNfaaDyTyuZ14buQdHUaP7ZCXBiUisyG1kWD96ZZG6BRzRr6T8xMvezKFp29sf+O0IlU71QcYtTddZ2LbRa7hsUldkOgU9PqjX6Owl4G6w8BX4ILgL3kQuE2k/wWNkXECn/D3S+8+MM5TqGLnkfaXbhlkkULodgOSgKHBms0t3nJnfuwCu7XXGc/Txcq486NQobiQAr73mcmY1yDuk1HUaXBfQXQJ8akZWm5b4ovtXNG6BiO3HNKQZtoqaa1yJSzLDok7R6ij9Zv+InlvFA8dBvFudtuDAlL37noZgWNeBlQ54I2X7mpguUwRWmHxAV9XkUSGWYlQEoBesRy0EJrpKCAo1+JhqRa/fVviYiVemGlMd75jjfyM3i23+KtFSp257q7lzSb0C3NPHIiES0qnNevs91tuFpz3SQ06sbTWEs0GT2041WdnEBJw68D3O30MX5Z7NmHVeYG7OsxB/7UkzWkonCZMnpsYbVFTf4YOsQJBehDQZyBYunV0i2zNgtm28WnCxgwAf0BnCGO8tW0GD7u29K1KbvGSTs6xUGrNlHQCAXcwAaCMU9Q
- SvUsBYqu
- CA3bGVvv3roAoYcOFFpmXXOaL/ghaBJdBTuaEM/JCOe0x3LnxYTqc5QAbg943SMRoCbkNP0wrLuHb+EWmZyUYgaK3fE7k0U32yO6xA8RSOM6Jx2KRBBZOzEbB/uC7jLmWngdtPN8NYgFIcbazhfKtl3BQRKU2dcK2QhiV/7oBrXR4qDZPGk3nmrSGIZvM4S/20VYNTeTz2DUJmSe6/mdCkySHG+3LaCn7IB2zh5wGKp1vEWU2Ow4qz+h07mvIonyXszrsZw1PRD63wQaA63MXJSLy9napW0Iw7qBMZCnXubiOrIA/U2u3K8TYrYh5f2n25qKffXBe4N3MS/A=
+X-HE-Tag: 1765340858-832742
+X-HE-Meta: U2FsdGVkX1/cPvDMyvJHAr+o3+KPHjbgyKxZU+4FML3O0R6odptTp1wa1EciFFjsHquPf9H59w4SvBE0epNka0VNghA9hJGAB/5R2QEuS71EQmdBwSN8Vla24VSxJvMfDiV1Qtcw68GehQa4da/+ZG+cOFg3gI70oULXA6iSpellViyt7BUYBO9wCgtr1uZ2eUynQ5bxZx7RNlG8Sl+7fGdt7ktV8dIpLl6TJaXzxggvB7ioyvAzK2RLsN0b+BGpB9EzR1EfZBqKZXKzUeXVbOT24nlatvyV1oAG5uPnQb5GvGnBdU0tnsdKVDTplOIT/da5RrovvNywQq4GhRME2Sl3vXwqu3sz7zOKt31o23vcgHu/PXiaNoSwtbOAbyzv+RVepXzuwMa41q7mgQ1kIX0Y75jRZXBBXzwAvZSAOMUIT0yF1ntGg4BSKs0jGOS1dWMnRWxjM1I1Hq+nFpoB35XccZqcXxA+BTd6ZrtCsQG6Nb1qVmhTZI7S4CpBHmIAMcy0Ni4w4xdxx4f62xjiddukgLmoqNlfqNlYcFBtlpzwhrJ1yON/S9LEW1K2JTvprRgVd6wva1dHMH921mRZYDD2qqDm+dITRIQ34n9hgb5ROZeWxVp1+ZCp+OugWooy+ljeJiwomvli5TXGJGrfPSUpJLgoczBVNMYzeqTWXBpczhUsSVtLSj88Y5Z5O1LOT/EbbqtBWW7PVWspc6YsW1XDr2DU8IBRZPPqUusLfKwboIVVQL8zCnWB83IrS/aFMeVDBkZWDv6c4PVHKzsNRg8lqW3x1J0e6KZ8isIKAHFzIbUdhqc0sJjgqBCKF8z2eOxOcxVRQMH0NlCGTxoGaN/C1diScTGzkZ80RaE3OYrSMFdSRMTyAfxVHR7cgR+SfrHWyxegOlJkCRLIWAYAiXEVIcSJYjGj3A8WYSyfqx4dOZKu1ANRjqFD5hR8A/nEb1GH6pIIqFyUYNlhdpP
+ 5gJgg0qm
+ x4ygD/WD8AqPYA2iwLWUfVwi9S4tz8fBSi7hamIpM8IgSd5WeZ3F0dwdPr3xN3cxgjzd5N6dXcDsZyIZBmEK6BRobyjbuwaXR1T8CJ6b0usFofJ0iSvjI8jqJL6JCqe9i5GNXhfpwU/GIQn8DESx2kHRC5vPdvzdW1LWAUitVoziBkB+zGWA+GKdzC9jsTegD7hTV9mbd7jc6LsVkLPR7b3DBwEFW4dIgoe66lbDqpJvo0VmoEtgK9dh/PsNakNuJ5cFs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,16 +104,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!  David Hildenbrand & I are co-hosting the Kernel Memory
-Management MC at Plumbers tomorrow.  While in-person attendance
-is full, you can still register to attend virtually at
-https://lpc.events/event/19/page/245-attend
+On Tue, Dec 09, 2025 at 11:03:23AM -0500, Zi Yan wrote:
+> I wonder if core-mm should move mTHP code out of CONFIG_TRANSPARENT_HUGEPAGE
+> and mTHP might just work. Hmm, folio split might need to be moved out of
+> mm/huge_memory.c in that case. khugepaged should work for mTHP without
+> CONFIG_TRANSPARENT_HUGEPAGE as well. OK, for anon folios, the changes might
+> be more involved.
 
-The schedule is available here:
-https://lpc.events/event/19/sessions/222/#20251211
-The conference is being held in Tokyo so make sure the times on the
-schedule work for you; 15:00 Tokyo time is 7am in Paris, 6am in London,
-1am in New York, and 10pm in Los Angeles.
-
+I think this is the key question to be discussed at LPC.  How much of
+the current THP code should we say "OK, this is large folio support
+and everybody needs it" and how much is "This is PMD (or mTHP) support;
+this architecture doesn't have it, we don't need to compile it in".
 
 
