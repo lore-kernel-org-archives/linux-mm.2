@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910C0D3B9A9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 08:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E50ED3B9A9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 09:14:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E96D96B0006; Wed, 10 Dec 2025 03:42:23 -0500 (EST)
+	id AC6546B0006; Wed, 10 Dec 2025 04:14:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E47E86B0007; Wed, 10 Dec 2025 03:42:23 -0500 (EST)
+	id A78156B0007; Wed, 10 Dec 2025 04:14:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5DBD6B0008; Wed, 10 Dec 2025 03:42:23 -0500 (EST)
+	id 98D046B0008; Wed, 10 Dec 2025 04:14:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C43576B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 03:42:23 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A28DB8FA2
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 08:42:23 +0000 (UTC)
-X-FDA: 84202919766.11.F744079
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7BEBC1C000C
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 08:42:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765356141; a=rsa-sha256;
-	cv=none;
-	b=7IRV7rTLgJi1SJ6nElA3lXJf+m+c/dphW2mYvqnANFAjbGvJVPEzvSSWGRtXyCJEQLHCet
-	zKhhmkCPyFpDLV8qo6Lo6FEFeZgh3m9Gayv44RSuMocLjFg6qtDKnbi73rdTtIRq6vFsFJ
-	VjbpfCxjnvBaIRds+/F7J4bmCsKzFWw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 846136B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 04:14:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2AFF3B967D
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 09:14:15 +0000 (UTC)
+X-FDA: 84203000070.09.B298570
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 70DBA40009
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 09:14:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nJFkEQYJ;
+	spf=pass (imf04.hostedemail.com: domain of 35Dk5aQUKCI0Dr1v2x55x2v.t532z4BE-331Crt1.58x@flex--wakel.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=35Dk5aQUKCI0Dr1v2x55x2v.t532z4BE-331Crt1.58x@flex--wakel.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765356141;
+	s=arc-20220608; t=1765358053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HeryyzZzLp65h/NZGcvmK52pZNFHK5D9WdENI+2hwvk=;
-	b=sw/zKRNERixadFVrChvg+31CINhqVYhVwXgTFB011HXFXUh7w2X5Tp6DcUB4YZWA+WPru3
-	w1ojER9MSDVxfNWXPahxUXbkZe4Ibev0pPVN1n+1QTKjgXXFwbjp7qrmjbsdYFAjfoyuGF
-	+XmeZoswu856y9qoOVdSzeHw3ylwiWw=
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dR8MD1JvyzKHMn4
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:41:12 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id EF5B91A084D
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:42:11 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP2 (Coremail) with SMTP id Syh0CgBXOFJiMjlpL9n3BA--.10261S2;
-	Wed, 10 Dec 2025 16:42:11 +0800 (CST)
-Message-ID: <48f734fa-531a-4b3f-9c96-02dd342d41d2@huaweicloud.com>
-Date: Wed, 10 Dec 2025 16:42:09 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next v2 2/2] memcg: remove mem_cgroup_size()
-To: Michal Hocko <mhocko@suse.com>
-Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, akpm@linux-foundation.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, david@kernel.org,
- zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- lujialin4@huawei.com
-References: <20251210071142.2043478-1-chenridong@huaweicloud.com>
- <20251210071142.2043478-3-chenridong@huaweicloud.com>
- <aTkp1tIIiw8Nti10@tiehlicka>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <aTkp1tIIiw8Nti10@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBXOFJiMjlpL9n3BA--.10261S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kCFW8Wr18Kw13Wry8Krg_yoW8ur1UpF
-	Wvka45ta15Ary3Jw1Sv348Z3sYv3y0qay5Jry7Cr1fZwsIqrn5tFy2k3WvqryUCF9xZFyI
-	vayY9an3Cw429aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	UQ6p9UUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 7BEBC1C000C
-X-Stat-Signature: 1j5r6t6hgsxuu8k3us9isr8fhjsepr4o
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gJ+diNdvdoAjNwW4/UoG9jb3p4kgQF7Wid7xBQKDtGQ=;
+	b=53saGUr7WGyo7rVmpAV+Gttl98zOFO4yrsJ8tNXw+gy5aeWfmtSonipMX/vG9doqYR3CbF
+	/RvpngO3ehHcrDV6cJXq3gd7owGnXA+2WgMzkkW9aHbQUVXyYQ2V7sPMQWUx3hC1dpb3PC
+	R3glv2cur7Xaq9QcZP3xW3TrGRkoRp4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nJFkEQYJ;
+	spf=pass (imf04.hostedemail.com: domain of 35Dk5aQUKCI0Dr1v2x55x2v.t532z4BE-331Crt1.58x@flex--wakel.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=35Dk5aQUKCI0Dr1v2x55x2v.t532z4BE-331Crt1.58x@flex--wakel.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765358053; a=rsa-sha256;
+	cv=none;
+	b=Ru+iIPsn7+/wHnm2rGDB44OKhfJEzUghMPBwFFcjYtXkouEoiCaWl4CFH1xu1JDPZWv7uh
+	Wh4wF4ZoUcBAIbr2V7mj+tpDmOoEcMXK4cT3IXK8EzXy0Rp5N3/okQEOwD8Chch9HGRaKr
+	AEbAdiDtrAFDWymspMeHhEuRSQ4K9YI=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-29e6b269686so49670035ad.1
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:14:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765358052; x=1765962852; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gJ+diNdvdoAjNwW4/UoG9jb3p4kgQF7Wid7xBQKDtGQ=;
+        b=nJFkEQYJxi2U8y0qSkT2iphzwhNPrnJk2qdbC2eIoxiXi01vBAlphgZ13GGQcwPaYx
+         h4LB8vuRxkX9r/QRZ02EDQ1Bql8/QRhZTJ/Q9c6ZUayfa6MzhhKvQzotTASbl+KJJGEr
+         86JQ6fCetu5uRJnUJ36HX/ckdSPrD2f/nj0BXZks512dBNPsewVziLuDFGQdJC1gY1Wy
+         eDTjqNDAkxfFSQfCK65Q9EY9+FmSvlRjDLM77qQWMq+hixNKWT06AYpGmFuvlIb+yjh2
+         Ox6chCljZZpMQVvQmhRjFHyTwhXhzbp3/N0Zz4akCnGfIz/1ZLkaShBf8pPCUd+sVSny
+         XTwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765358052; x=1765962852;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gJ+diNdvdoAjNwW4/UoG9jb3p4kgQF7Wid7xBQKDtGQ=;
+        b=khstletXjCbcOCkP/IV3xrxbCPv1O5WlhuPxUygnIjFt57GClc9r9KcMvU1RsWBHbI
+         PWLtr+DPoFp5yWyhX7irawN9M4FwEJ7bqEv+nQe0V80x4XO+QvPKHCi6+2W/8y1a7N5P
+         q0pBmIanENm0TmQVKY1lZZnEo42FdZL0hU163ZkgSMw0osTEB7fjNnS/cIj80cgfbu/7
+         u1it/jVfLok5u04HmxDEjmXfG9kJskw39HXTSSPBo7y2lzZl85w0IZexmZMam/qNL9ut
+         91PP4YuZXDwEUjSFspaPPKDnwdW6zB0kCN90QAtVGVYHDQS8MbC2nFuDVXxqR9EZz8MW
+         y86w==
+X-Forwarded-Encrypted: i=1; AJvYcCV57x9VyQgK1lCzDAP/MLNgucMOsdJx7rR6h6LZkP+n+piB1pShThNRVyd/BQMqV/+1kc6Klgm5Sw==@kvack.org
+X-Gm-Message-State: AOJu0YyQ692AAchgElBt0UTFmh2bW7ySkPjC2kafC6IsaPVi1GZpZul4
+	vem537YP6GyTMZz54yv28pP3GzVKMyIAsfVqtJdHy4T3KzAuxj0HIxOYyUcLh+VjSNxNfN8MTw6
+	T4g==
+X-Google-Smtp-Source: AGHT+IEu6z3l2QX6KuLU3Q6OFfDJ0FX6A27zVmwG9FygHINtFnYd4ff1NV1/k8xr34jkmCShD9fTkvGN/A==
+X-Received: from plij11.prod.google.com ([2002:a17:903:380b:b0:290:28e2:ce65])
+ (user=wakel job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d482:b0:295:4d97:84fc
+ with SMTP id d9443c01a7336-29ec2484bcemr16730975ad.32.1765358052034; Wed, 10
+ Dec 2025 01:14:12 -0800 (PST)
+Date: Wed, 10 Dec 2025 17:14:08 +0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251210091408.3781445-1-wakel@google.com>
+Subject: [PATCH] selftests/mm: Fix thread state check in uffd-unit-tests
+From: Wake Liu <wakel@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, Wake Liu <wakel@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 5ogrybe4k7q7q9wdnqqz38ebsofenc9u
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765356137-90271
-X-HE-Meta: U2FsdGVkX1+XC9W42zdmTfObdoKcm5JMaY2o0nTgwOjka66mC9VKMeq+mK7N8PibSd72ukJ+a+KKf6LfxHVXoXkWpnarhurbSA9uh7DXvvF7cMlDklNXKtiZ0KbJA9aLQIxpRXttOLNzGDu5qCw2gWzpy0plKsgdMvrWSXvgF4Z9VAzI7btx7k8GxRWnKVUhVvUJNW4cFdcBv+drUeghDThZQD/ZNEtYtleu6hmPmM2wXB1k7pasHVHIrHbMIekthA8U5gF4228EPOIejfXh3WTx3c/oREd73oCqhY9/FxylKgzjqSgbsqPAFEX7vOrnvRIXLzup2M6pFAqeHN16AYeG8PZIb/T/RQ30Ca2POxN0MZTbBbeAoG3vo4O3mnYeD/xbXTwbvDlBi28/asoj+kd8fsr9h/0o/TRgyfvClnPZxm4s6omf8kIefiAioKQbR42QEp6rnkMVkLUsg56gjljqkdq7xNNhoVujF2tz/12Y/nzMgQrV5i+yHpuaDqAL8RUWtC4nVUbBegw+g1xyVPqld8Y5u29uhk9/0/jUc3oVrNdOS7co5sbwHY9XF/5aR4P+LEOFXEbSpIFmaVI0r3uBOKBnQJ8kzH2zASfXznh8+dDnoi9uK8xR9XPfrDhkKxuuS90RWgQ+vZH2zNweOtO2CoItmxBlX8fxd+JSX5u95S+fyiJdWZzJFXJAIbG49NET4G71GPxHwfsLWYOG7MKk6vObXr2a2EKPoUX6jIfsVHTkat/wyG9HI6gvgvHWjcVqifurXBy2rOUj2HLNKD/BUFSvtoX812+o3C5/bApKu6zreMGW7sJ81f6Hq73mWv1gifxIMqRI0NkwJfqOnjQbz8vAcOBSm2eXCjArr0OX9pa5qOYcMlTXQjebmhh6zG+XcPdRiKbvKj+l4W8UE5g65ysdbOlihN0V2GjF0jHqpzYL9qIe/5SIWDAJdW02BN8tIDkoSHooOGn966L
- XBnb+r4D
- HETX+vx1yCAoDcuInEFGzeR2L1L3kTUU9OlQrSa9iPx7nA9TucK74PHs+GjCgLyhACmt4rLQtwB60O0258qFyx5my3PRQyEasrVeviRp1pMQYA+96qh0bDZJzoRgZRNwZ6JUQe39GJgqINBZjSwPeQoGEYjMd+6LlYbRZfKP6tOavl3b85Q1DE7Jqyg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 70DBA40009
+X-HE-Tag: 1765358053-479806
+X-HE-Meta: U2FsdGVkX1/kEEkPvRlZ3CQdkKHD3lMyoCrTGOSqnWkIeQLfEQhVB73r+Q8MQKUjS5qZCg2+9MdkFbflB0obmCUaYiU4WrpsirUmRIYxuIc6hAFFX0mZmrz0YCHKrtM2PBBXYmmwelscgChrXxCXbX6SsqS3rpXPqgA/cAy060yjH4VPTR7L8ZAmH9EawnMU4K1YYHeMEvDKBEchmEolKAqOd5WqvHAtEZ30QrIadENSxfpRZlOMUgz8tGW8Z21B6XTL48S6LU5tswnYLWuwFkla9P2q9HuTDfLuXv5vt0liTg+U9AJP8VnN0Uld5JfaT0ctadyo/X3Py1CtrJ+aF9ia1CY6HbMWOXKzxhvISzb5EvH6dUPTBC78OySCQpUqTOL1dcI3MDuPxuFmd9TA/kn3lX3BfuTx3i/TtKHttGBMh1E6pGpvT2ExcWS6GLvlQOcgp95REPpDbQT5Ao+jgyrJrmkezVsC2ko75x+evOWWZzcjA0CFlbPvMq+zZ8YnTKYiJGklzfe5DdukbqUhyF5JfL+OtjG0gNRcytECNXC7x9LPt/LrnjoIVkRv/a3oiki2FdoDgDrbc8602v2cw6//wgBgOlt0cxxrzseukqiziloynw0QvYliczG9p/5wRiOzPspogQSAOrAt1WZmBrDgA6D9rK9n6uiLp3Iq4zz/qbVnWsq93MHS2qBanfCozsNJjIOFJtj4t4CmbafDPXHaV1dEmcnyJwkVc/EFynhRHmA9pPQvwqnBMLiyzLhRmzNlVli8Ma/xKdNiPfIbYhkUHNMMC9Ct7ChYed7eot/4aqK+h3w5VtqHIyQwpIKZDvAz9/zGACsDYlMOc9gtexDxjx6QZwUYYnClPMCYlzC+bWrVySI9VMebs+sIBCBKmFLzzHEFc9ZEVYKAigHm0Bw1bYlqLyxDMzgSzkzHsyE0unRBPVhFsHtmVv0+U4/cYvF4Zw3oI7KfE8Pj+yX
+ nT6Y+KtE
+ qUamtA3OC4WnZXC/do62i2vSxVyKS96G9XXV5wJE49U8bRimAjl5HpEl6imEZK+NlY4wor6/9Ma+b+vtC7hUQKeIJ6lYD2znzemUlpYFDXZmopb989190qxxXnaqSCzqrkYEdywVt6rOxk5oiaUDvKfyYNgefT0EYSKP132YqOBL2ftX+WU2O/v5PlzTXbz5nSiHuhbXHnsHslK4TdCT/x9sl+LZQLEsOuml+7Q7vbnS8vbZzp2uOvC5Cz+O4Jw5zen4ly6r+afYAohMvMGNplZB9G/N3juMoVJXcTJkgx32a7UdPfSJ3mo54Uc8FX0HZM5CXyIkN9MlAk5PRG/rCsZMi2Q2neuvizchLfcWAKBeltKmhk30Rm4Gr5j/no2s3RxlCoAKPn8fvKzSnLW/DOzb+7gS+cr4bFJa+Coyw/TpiaX8pJPBVAn8ABG4b6bkM6DztZOlVQnN/BHV9mQy6U3Wp58pEUAy+pihgLH6egHrmmTjH52yufxmQdC5yaQeTwu+hEBKYuINJqe+pt91JBuyevZbf7ComVU/lBk1UsU3nvAjpiTBxZ3hV5UfTRZ5MtdkUpFhDGVPcBzT82pMCFJ4inl5L5XTtkNv194QudDrqqjA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,64 +112,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+In the thread_state_get() function, the logic to find the thread's state
+character was using `sizeof(header) - 1` to calculate the offset from
+the "State:\t" string.
 
+The `header` variable is a `const char *` pointer. `sizeof()` on a
+pointer returns the size of the pointer itself, not the length of the
+string literal it points to. This makes the code's behavior dependent
+on the architecture's pointer size.
 
-On 2025/12/10 16:05, Michal Hocko wrote:
-> On Wed 10-12-25 07:11:42, Chen Ridong wrote:
->> From: Chen Ridong <chenridong@huawei.com>
->>
->> The mem_cgroup_size helper is used only in apply_proportional_protection
->> to read the current memory usage. Its semantics are unclear and
->> inconsistent with other sites, which directly call page_counter_read for
->> the same purpose.
->>
->> Remove this helper and replace its usage with page_counter_read for
->> clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
->> to better reflect its meaning.
->>
->> This change is safe because page_counter_read() is only called when memcg
->> is enabled in the apply_proportional_protection.
->>
->> No functional changes intended.
-> 
-> I would prefer to keep the code as is. 
-> 
+This bug was identified on a 32-bit ARM build (`gsi_tv_arm`) for
+Android, running on an ARMv8-based device, compiled with Clang 19.0.1.
 
-I find the mem_cgroup_size() function name misleading—it suggests counting the number of memory
-cgroups, but it actually returns the current memory usage.
+On this 32-bit architecture, `sizeof(char *)` is 4. The expression
+`sizeof(header) - 1` resulted in an incorrect offset of 3, causing the
+test to read the wrong character from `/proc/[tid]/status` and fail.
 
-When looking for a clearer alternative, I found mem_cgroup_usage(), which is only called by v1. This
-raised the question of whether mem_cgroup_size() is truly necessary. Moreover, I noticed other code
-locations simply call page_counter_read() directly to obtain current usage.
+On 64-bit architectures, `sizeof(char *)` is 8, so the expression
+coincidentally evaluates to 7, which matches the length of "State:\t".
+This is why the bug likely remained hidden on 64-bit builds.
 
-> Btw.
-> [...]
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 670fe9fae5ba..fe48d0376e7c 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -2451,6 +2451,7 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
->>  static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		struct scan_control *sc, unsigned long scan)
->>  {
->> +#ifdef CONFIG_MEMCG
->>  	unsigned long min, low;
->>  
->>  	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
-> [...]
->> @@ -2508,6 +2509,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		 */
->>  		scan = max(scan, SWAP_CLUSTER_MAX);
->>  	}
->> +#endif
->>  	return scan;
->>  }
-> 
-> This returns a random garbage for !CONFIG_MEMCG, doesn't it?
-> 
+To fix this and make the code portable and correct across all
+architectures, this patch replaces `sizeof(header) - 1` with
+`strlen(header)`. The `strlen()` function correctly calculates the
+string's length, ensuring the correct offset is always used.
 
+Signed-off-by: Wake Liu <wakel@google.com>
+---
+ tools/testing/selftests/mm/uffd-unit-tests.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index f4807242c5b2..6f5e404a446c 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1317,7 +1317,7 @@ static thread_state thread_state_get(pid_t tid)
+ 		p = strstr(tmp, header);
+ 		if (p) {
+ 			/* For example, "State:\tD (disk sleep)" */
+-			c = *(p + sizeof(header) - 1);
++			c = *(p + strlen(header));
+ 			return c == 'D' ?
+ 			    THR_STATE_UNINTERRUPTIBLE : THR_STATE_UNKNOWN;
+ 		}
 -- 
-Best regards,
-Ridong
+2.52.0.223.gf5cc29aaa4-goog
 
 
