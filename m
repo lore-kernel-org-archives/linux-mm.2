@@ -4,132 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E933D3E77B
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 19:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2281CD3E77B
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:01:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27FCD6B0006; Wed, 10 Dec 2025 14:51:54 -0500 (EST)
+	id 1F8CD6B0006; Wed, 10 Dec 2025 15:01:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 256D56B0007; Wed, 10 Dec 2025 14:51:54 -0500 (EST)
+	id 1AA366B0007; Wed, 10 Dec 2025 15:01:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16CEC6B0008; Wed, 10 Dec 2025 14:51:54 -0500 (EST)
+	id 0728C6B0008; Wed, 10 Dec 2025 15:01:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0581D6B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 14:51:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70D2CBA944
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:51:53 +0000 (UTC)
-X-FDA: 84204606906.03.908CBA1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E71DE6B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:01:23 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 777455A2A5
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:01:23 +0000 (UTC)
+X-FDA: 84204630846.14.5575E18
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 109A2180013
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:51:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="h16+2q/a";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765396311; a=rsa-sha256;
-	cv=none;
-	b=ZEesSg+ijOm9+7T9G+lU3SuYPHHcqCMYWkvS76n2fkK9EahQ8l6B6EgpPQUEqEJMRI7oS+
-	HXJYcnd4E2Be0znrFQl17gJlsCpESaCC30O5c8OlEnbMw1tzigSgsSEtEk5qYAuTEiWoou
-	JuV/TYSeNTKYRDSy0AC71U7PBwV6K1g=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="h16+2q/a";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 178128000E
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:01:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NjlK+20q;
+	spf=pass (imf02.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765396311;
+	s=arc-20220608; t=1765396881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AgTacFvON8EG6QFjOtITInXZzOpTjY+dV5wDUO7hRQw=;
-	b=oT/jfCjVcAmRNs6+f5eoyUNlo5yxkKz9lBu3JI/3W3Kn+5IMvk1IEdgC2q7jWzbX+m7Qux
-	SluglNvFqUoKHzcidQ2XMjjwhk3U2+FrE9N3wXsrdszkO0sCITGPpPZjpZE772Eh2V+A88
-	G83RLJHNqd7o14tC5Hhy9H8ZJdVlVd4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V9RbkySjzGfl0K9jXSqidi1BNCt8AnLcDnqFvp2ykS8=;
+	b=3+7hsUDGOPkGty6Pf8XykmJaJjxdiyNZzMhD79a6vjdoc7VV5SL7UIkR6kKwiOklfmMoe0
+	X3vlWE135fzMUnCyEDf4Z6fuyTQJ+cne3ePE2mdbVTkZ9xRdqzj0Ok0G0Qpq4d1VllocdV
+	ZSv3Jxt3qh+S7d1LXyRv8Xy7TU2xUFw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765396881; a=rsa-sha256;
+	cv=none;
+	b=nfiu7JGeETYOdK+KUoiEXxGtVpJN6kPlbJwHCpDuLaEqHfqI8REVQzWSanykQhUXFZKM2m
+	znXXN1KjKD8gE62VgcfcRJwoeoS5pusP/WeBqQr90oJmxU/UsLQMTsSMZgmfICIJK9GcDt
+	B92N7O1+vX0ja8Sd/Id9Rz9tYruaaV0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NjlK+20q;
+	spf=pass (imf02.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765396310;
+	s=mimecast20190719; t=1765396880;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AgTacFvON8EG6QFjOtITInXZzOpTjY+dV5wDUO7hRQw=;
-	b=h16+2q/axxfiaSH9cAj6FVOs9WU1hvhs9e8PdAsWgNq2wIWQziyMEqqUTTVCKYdpz4iNzw
-	RmaXRxVaMN0CA/gSqHmghfwHeuG/cuNkwWN2Es8h//05YWk3j7ALqSENE/ibVMmMdc/mbI
-	eDB/u/VGTwTiqH4EJbtnJhbi9TIEZVA=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=V9RbkySjzGfl0K9jXSqidi1BNCt8AnLcDnqFvp2ykS8=;
+	b=NjlK+20qTmmVQnwAgMJeNSJY9lRM/vVjnhEj9N9NdJn+xs9XPufUM2XyaXYkx30z2kcbQo
+	pj5pA6fMAizoCh7IFPlGKEduVtzCNCqa/0nYiKpoxjy69GHFNWIU2nzkSe1KyFPcQcXNua
+	DeKmCjrIz/vYFzhFqFZg8y81Drilqrc=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-_NVDj0mINqysJOm46Itd8A-1; Wed, 10 Dec 2025 14:51:49 -0500
-X-MC-Unique: _NVDj0mINqysJOm46Itd8A-1
-X-Mimecast-MFC-AGG-ID: _NVDj0mINqysJOm46Itd8A_1765396309
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b6963d163eso50011685a.3
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 11:51:49 -0800 (PST)
+ us-mta-62-fptdZsEvOhyLKmrsh9rQkw-1; Wed, 10 Dec 2025 15:01:17 -0500
+X-MC-Unique: fptdZsEvOhyLKmrsh9rQkw-1
+X-Mimecast-MFC-AGG-ID: fptdZsEvOhyLKmrsh9rQkw_1765396876
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-297f587dc2eso4627395ad.2
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:01:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765396309; x=1766001109;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AgTacFvON8EG6QFjOtITInXZzOpTjY+dV5wDUO7hRQw=;
-        b=sTO0jp3sgazJe2VQZvZKSrbpT7rD/sDVPmzBZFHFka8xJxmc9W3Zd+tVBzkG8SHBGW
-         bMpxZIl4lgV7r6GoKsRmI+2e4MhhCi+X8EwdQpm8KmSAZWCIyIGKlob9cmkkDQ/DgFf+
-         dCkhiXJlsPA2r/jAfpYQ0AuDJk8gcL6K5szD1HbkiazzrX3Ht0ZXnxoEsTq92tV49XjM
-         Tp5yCdK8Elv7/wWHKUHN9YcfDDVutm9cVEiDtCLAJ7/axvsbvqZ2LaJT/q7Cnka8EmJx
-         AuznXXe1yoRlx8YKfOWC7XbVTvK1agKAVTmAQbNmEdAGLzdKQ//fuexLp4N0AOcBdZuM
-         mnUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ok8QZnvSJqx1p4Ipn8J26MX4aMRNa8lKCl1fpd0yKtueoG4Lii9EYjCzhKaJau6ZlObf0R1taw==@kvack.org
-X-Gm-Message-State: AOJu0YxRGycvQ+GzkyLA4iIXgo3iiA83Zfx8pHfZS7vT6iJJEibYFfSt
-	jrC2Ea1nQd+60MW1naKaVqBgMNRcAVJcs5NqMeY3H9swz7X6+1XXG4W8ruScGO5Kk94q+HmfkA/
-	KkTA8l1lP+7wDbVaedmVz9znNf4zjRGxC+fb0P41RrJPjbh9/JdDm
-X-Gm-Gg: ASbGnctxsliiJwuIGLpDnwsfbMxTWkqr/NK7BAFVFe7Npe66xxXBDhRJ3/ISFSnqDnE
-	p7SzsNFrV9+ZYNpFsLYs+18xcO+eGVAT3v8B61ujE5r1t0RYcZwfjtinGgcO2j9iJvKl1EMNoOi
-	RBRpkvf+tq8xXmPb0JdrQMJJO71CVIY0yHm+V9fTqsRZNL+jTUGtyw5+KAxbjqXRO75w1vlsigS
-	0lGlGWTBoovOh/2p5b30Enok5CdpOVsRmWMlJ5oAECDd0fN2iaxZegEopDglnuKP3UOHGAW7hdv
-	tV0F27o9i+XttvTsxvnHdHsN8TDMrnh71ECaHPMQmKB21lpPbTlTtmHJYOHZmV3UGDXki5tOpNd
-	Aofo=
-X-Received: by 2002:a05:620a:298e:b0:8b2:faa3:4c77 with SMTP id af79cd13be357-8ba38319803mr555740285a.0.1765396308667;
-        Wed, 10 Dec 2025 11:51:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8yx8A+CBHx6Z8LCFOIAJuCthOtds6H4ec7oH3JAGsNI6sRNuSA+X8f8s93mX3FffFUDJBGw==
-X-Received: by 2002:a05:620a:298e:b0:8b2:faa3:4c77 with SMTP id af79cd13be357-8ba38319803mr555734385a.0.1765396308095;
-        Wed, 10 Dec 2025 11:51:48 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ef16adcsm4356536d6.46.2025.12.10.11.51.46
+        d=1e100.net; s=20230601; t=1765396876; x=1766001676;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V9RbkySjzGfl0K9jXSqidi1BNCt8AnLcDnqFvp2ykS8=;
+        b=aB4f5nniBLHm2IFsfCEW7R1jW0cewqut3wL5CLtWRc4jHZdvCD8UduXwqxJJmiC2IT
+         JghvzjyDRE06qtKnCSFscLR98Z276FOM5SSKq0buAY228pTWZLz36POVPsIWLkHU8r5Y
+         w6S/N1sT4WL5+eo0oX3CpMvu2QBG8TeO8izVcuBhbkpndXL3PaoC6owwjmxmP3xDET9v
+         kACy9YQOlC24WvsF/AbHiiuCkNRKocm7kQanOXjTbvwoNDsK6EJa+prO1T7RAjUxsxfJ
+         xqLHLZC40aFz5TKZIxTK9eKPUPHVmwCBw4ABbCtENssOPzazmGJsWHo2pTxgoJfALqCh
+         THUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDe/I10cEa1u/tRoDF4wxA7euav/SaOIoPUIohCk0mhiePnztGA1BitDci6KMU4VWVwIxc0tzKEQ==@kvack.org
+X-Gm-Message-State: AOJu0YzdRB382hND6OlpuWVGLS+ybGxwYZYqIjsB6/xQKr2tX7chMZHR
+	EOhlIjZx/Ktbq2XUNAtNHRD+QU0hwjhLwY+Egk0lzsHBlW5rYWPR9BtcGPaRzSBJagXCWnEn7zd
+	t4hiNq1e/PQqmMxyiLX0O22rWo8GkLy8sqhtRNPbd8cAa4XB39Ro=
+X-Gm-Gg: AY/fxX71IumQacUVVaZ6RyCTW8PEjng7hajQO0mPV3fZQiHvsy6aseZwd1Xe9C2oXaX
+	s54PGkk2vQ+/1ql+hAth9ld3bRICMKxfZq7q+CBfj3hed9ltXcTra44fwIEjduezLuwknskXhal
+	9YG/D+XbJRo8d5sgvytZ+9RsqA+UwfXTwIhZfKG9gu3mxy5stsvyUeTOb52I6gUWCQW1xa7CNr6
+	jjBFtOQAJt7cyjKq2FEvbBdOrS1kU/NpzNZ4wLs/lVV6wPXwwCg+kuIRORg+ilSfEGm35PZupks
+	KrsrNWwjx6CNAeTPk4l7vJCSzMFpx6cNRdoiMZvs6yA7FwhprVJ/LfA8Rsb6glVKSMW/+LPAEOa
+	W690LLJhmdXKWWuaq7Hurpeh5jD7HYAVsIk7P/A==
+X-Received: by 2002:a17:903:3b8f:b0:295:8a09:bcf2 with SMTP id d9443c01a7336-29ec229b8bamr31841445ad.8.1765396876006;
+        Wed, 10 Dec 2025 12:01:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGrGjll388q8qWAtNsls6L1JpU1c2oP7akLc7evYgTdRMpha5cZhDbVRpAeZMgzYqyVmAu9gA==
+X-Received: by 2002:a17:903:3b8f:b0:295:8a09:bcf2 with SMTP id d9443c01a7336-29ec229b8bamr31841005ad.8.1765396875476;
+        Wed, 10 Dec 2025 12:01:15 -0800 (PST)
+Received: from dkarn-thinkpadp16vgen1.punetw6.csb ([2402:e280:3e0d:a45:3861:8b7f:6ae1:6229])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9b373d6sm1819395ad.13.2025.12.10.12.01.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 11:51:47 -0800 (PST)
-Date: Wed, 10 Dec 2025 14:51:46 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Wake Liu <wakel@google.com>
+        Wed, 10 Dec 2025 12:01:14 -0800 (PST)
+From: Deepakkumar Karn <dkarn@redhat.com>
+To: willy@infradead.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Liam.Howlett@oracle.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH] selftests/mm: Fix thread state check in uffd-unit-tests
-Message-ID: <aTnPUmEMwymsWHyV@x1.local>
-References: <20251210091408.3781445-1-wakel@google.com>
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepakkumar Karn <dkarn@redhat.com>
+Subject: [PATCH] pagemap: Add alert to mapping_set_release_always() for mapping with no release_folio
+Date: Thu, 11 Dec 2025 01:31:04 +0530
+Message-ID: <20251210200104.262523-1-dkarn@redhat.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-In-Reply-To: <20251210091408.3781445-1-wakel@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tPgDPWIiqQMKwDhQ7H8LUxYGnypDiZaizBPJOqoriNc_1765396309
+X-Mimecast-MFC-PROC-ID: REsmRbpzX7AIvJeB6XWaR-L3Kexu7FJv8VYgRiVpMIg_1765396876
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 109A2180013
-X-Stat-Signature: 4bai5zf7sbion1uebtkantj9d33row5g
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 178128000E
+X-Stat-Signature: ho1zmhcigc1bojjzao6oanwupgouis3n
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765396310-129286
-X-HE-Meta: U2FsdGVkX1/5ayV5tuy5gGBbe9KnJlybRLH3Mpjrvc6Y4irSujqoOUz3g4xxGKrE2vEYa3ECpp3bmxVi7hU432fd6d3Pcg84rihbXuIKEUS+7jPRXL4MWdnBrNaVSqPHoSfiIfACBsuPA+ANu32velAy6bmpqOM7a3yW9a8CVHaYeDf9CpksKqVqrwPY4Q3gnZLPLi8f8Js2oqz9YPgHolhcAs9iAdSkkYtJJk9yw0tsS8VmbEmiN7N56AFOHijVx8eeVtUHLj+MtLErefQA7ICHWF1o+HuSJGEk3HigCyh0pvbzFC+fdAsxVCRsFKtVt8c+2CnHWqjuZ88CRzLjHll+Y9aJzpGyI9xsaP/8jTlSU11g8SBU2ify2dei1O2W8xdaGI1DBtF8VwRYbc0JR3VepSHyfBtfVSP5Ke19oa6XgBI5JWocT6V5xK1Q2LwMOYfWpbFMCauxyjK5Mt7ShtEQaEyu/0USk9LjOMf3FctOrS6xu9NYs3MiXUY1rCkQQ6PpRRGS3NGspL2ONgrb4AopRNnUURDLqMqLcDYpDYG0idD7SMApw0hIG+BzYQLkM4/OIi/IODyE/nU4HrtORhtec7r2v9yLIn4q2q8qEuuGdzoMXuUGq/8Yr1AzbS2cDiCDmjdjIvyL6cGPfP3kIFxHXAew5NCTo+VKXnQ/L4LT0treYSaAbLiMY095sWUMOSQoO7WqSTxxJo0KdB+v1KYnXX4vYIFQEmbBX6xrkcYLHg+6iciwYRAoDWnlgapxTqzV/484T4NxGH3RSwjc1Ph/lrQBfmTf28ScjKOcS0L14/1FgjDasmhDei5HXFQOjwazg/hViyWE+vwA/chdk+4o1o6QYK0fp1xiNsovT69vGp9wEd/NFmkHfSinIU+RNqFVPH+71ArKRFfoBDI5xQOXtVP0hOgD9ap9jf6rUYaRO/TIs4pRlI4+Pgk7o4uFM3Mp3Hw27RaqqkHbz+c
- YnwUZiFh
- lsAipv7pIrZjp+L5iRnp3/YMPnrH9TNcMBmgbZLxmOcW1ynKzB4zKGAIcOkqYse5ik6a+AJ0IFWmAb23sVH8goDE6Zwip5Rw3KXPM0WPrqNx09BQFUdxWLegapq9Wa5ivgeC+kipcdpmLQ5QcaSlnAem4XV3IRCxiMrRIC9skcQkf9SQ=
+X-HE-Tag: 1765396880-848042
+X-HE-Meta: U2FsdGVkX1/TvwW1QoqQgsCnoK8UxSuFxvyWK1c3U69msCi8YlrH1rFrFYrJNJysOCDa3bzKvyl5BqEZ9bVJTMMX6VwAio7dLhP1rciNC+2zpxFcMdEH6yVGW4u6p1CzvB3d61iwBR+RGaQMyEr0on0uCPElU0qX8cvtItLsFpKIW2g3toIJIC+MTdTK8X6qswoB/PiwIQG+cQl3CfO1SxDSm0KAAwxjpUERStvVxCIC8KNFmzDo2tGaQy+4nZXR5IHeMyQuZKqUjBjnSD44dby3HM+//5JIcFUshxENBwvVpj8mgvTG201zLoeWkmMQSLHPwbPKKxYTDsOFDSOKeiO5kRCDd38hRE1igPYniwZktUMnyja8Ekur8+rw7TsBr6R73DqSnAz2il4753Hdp7Xkk3VJ4w6mvdeBGXk6bpw6TWrcqsW4sRscU4RekevbK7LzAclwxGFYuXyIsvw5CQSZI80mxWEChdjyKq/BRyrlbgrJRT7SJK+2n32F7ApaugIJn2LG2ABIpdhaGtriPsWF01utuO5DWUBJB5dli9/CE4bZjZupbQiHWW724O8dZ2koxyTCDy3xk+OwUBeJp+G7y3tJ9NRzG5D4stRURrjh71Vsx0HPVfoUnmeO0xdsERpxC6Gd89IFUUwX8qFCoyMZlStCfTETdbVaEun9TOKKh0c2nVngIpIWIdQH/AvA3lJ1zBsEQ4SjvF69uXNwOXRV94CD7+CqR8pjmBLLXrkindmU02LEBoQzRJPdDHWX40aAncpHiS2ssadAdrtmts/iE5cFp2YQ6TRSvboKA5upcATRCkmYZC9ECsjk3EQV1lMP66qeW1cn+6a7EGhdUg0njX8iSDji/AfTX2xsauRHn+DUr5RQ3YSRKwo61g5Dcn09TClHH+bGzsWH9le7Gr8MGjNAkv+196UDIKVFJ1eT/+DJS6GcIzEd+8Ut+3axV6OmyV8u1ELzjl28PMu
+ O8V9PsjV
+ EIbrCLO2787g3FobNN4e/IJ7vUSJa1NIGdOYatWic61TiIonOJ/7ciiUN+EqJ3f9zlllkTJtxweX6oo6oX5fvhzSuUVjAAiU2752c89agIost0askSCQP/YxDrlBiuRCcPTibQxZr7KP0v9iuSJCYDvJ4VGL6NeM82+9WpdfETdkY709WbY4Bm+yAT3i6buJwpLlV4iznWko+q2jxugkAlCdXgamAPLeCl5VtarWzGmmaSuY6UPA3uCNLfvSzfcv7sn64ZBENR2cdDoqYuf/Vvo4w8JZAm6Poc/8LvZrccjfvEaCHBuCbL4hMU/Kwavp926/3AYuROSjGd/8qedzR0LY1GsQmrodghVrIFo1EwIXsyMobdVfwkCnNNWtsBy+bTLvYA2T+HZrWIV/aG/0SsUXUlNPfvAlVCTPUzUK/dfLfaKtKf5odVYDiDH72lH7nTypzBDvDTzSCIUJz48pCvBK1L53ZeoAAtQ8LneEt/xSxLBlxlS0qgV+eCRcbxQnEVjHw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,67 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 05:14:08PM +0800, Wake Liu wrote:
-> In the thread_state_get() function, the logic to find the thread's state
-> character was using `sizeof(header) - 1` to calculate the offset from
-> the "State:\t" string.
-> 
-> The `header` variable is a `const char *` pointer. `sizeof()` on a
-> pointer returns the size of the pointer itself, not the length of the
-> string literal it points to. This makes the code's behavior dependent
-> on the architecture's pointer size.
-> 
-> This bug was identified on a 32-bit ARM build (`gsi_tv_arm`) for
-> Android, running on an ARMv8-based device, compiled with Clang 19.0.1.
-> 
-> On this 32-bit architecture, `sizeof(char *)` is 4. The expression
-> `sizeof(header) - 1` resulted in an incorrect offset of 3, causing the
-> test to read the wrong character from `/proc/[tid]/status` and fail.
-> 
-> On 64-bit architectures, `sizeof(char *)` is 8, so the expression
-> coincidentally evaluates to 7, which matches the length of "State:\t".
-> This is why the bug likely remained hidden on 64-bit builds.
-> 
-> To fix this and make the code portable and correct across all
-> architectures, this patch replaces `sizeof(header) - 1` with
-> `strlen(header)`. The `strlen()` function correctly calculates the
-> string's length, ensuring the correct offset is always used.
-> 
-> Signed-off-by: Wake Liu <wakel@google.com>
+AS_RELEASE_ALWAYS tells the memory management code to always call
+->release_folio() when releasing a folio, even if it has no private
+data. Setting this flag without providing release_folio callback
+leads to try_to_free_buffers() being called on folios without
+buffer_heads, causing a NULL pointer dereference.
 
-Oops, thanks for spotting it.  It was an accident the size of array is 8
-here.. What I should have meant was:
+Add a VM_WARN_ONCE() alert to mapping_set_release_always() to catch
+this programming error early and help prevent similar bugs in other
+filesystems.
 
-	const char header[] = "State:\t";
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
+---
+ include/linux/pagemap.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-That should also work with sizeof().  But your fix works, so it's all fine.
-
-Acked-by: Peter Xu <peterx@redhat.com>
-
-Thanks,
-
-> ---
->  tools/testing/selftests/mm/uffd-unit-tests.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index f4807242c5b2..6f5e404a446c 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -1317,7 +1317,7 @@ static thread_state thread_state_get(pid_t tid)
->  		p = strstr(tmp, header);
->  		if (p) {
->  			/* For example, "State:\tD (disk sleep)" */
-> -			c = *(p + sizeof(header) - 1);
-> +			c = *(p + strlen(header));
->  			return c == 'D' ?
->  			    THR_STATE_UNINTERRUPTIBLE : THR_STATE_UNKNOWN;
->  		}
-> -- 
-> 2.52.0.223.gf5cc29aaa4-goog
-> 
-
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 31a848485ad9..cc352e87ac2d 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -296,6 +296,9 @@ static inline bool mapping_release_always(const struct address_space *mapping)
+ 
+ static inline void mapping_set_release_always(struct address_space *mapping)
+ {
++	/* Alert while setting the flag with no release_folio callback */
++	VM_WARN_ONCE(!mapping->a_ops->release_folio,
++		     "Setting AS_RELEASE_ALWAYS with no release_folio");
+ 	set_bit(AS_RELEASE_ALWAYS, &mapping->flags);
+ }
+ 
 -- 
-Peter Xu
+2.52.0
 
 
