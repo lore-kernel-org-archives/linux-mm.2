@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14FBAD3C912
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 15:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CCC6D3C920
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 15:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A4316B0005; Wed, 10 Dec 2025 10:09:38 -0500 (EST)
+	id 6BB4F6B0005; Wed, 10 Dec 2025 10:43:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7547D6B0006; Wed, 10 Dec 2025 10:09:38 -0500 (EST)
+	id 66ACF6B0006; Wed, 10 Dec 2025 10:43:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F52E6B0008; Wed, 10 Dec 2025 10:09:38 -0500 (EST)
+	id 55A416B0008; Wed, 10 Dec 2025 10:43:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48A356B0005
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 10:09:38 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEAAD134C0B
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:09:37 +0000 (UTC)
-X-FDA: 84203895594.02.CF5684B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2CF8C4000B
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:09:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzY+YMpn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765379376; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 413796B0005
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 10:43:15 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D89EB60388
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:43:14 +0000 (UTC)
+X-FDA: 84203980308.18.4B6C557
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A8C7D40003
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:43:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="i/rhQmCy";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765381393; a=rsa-sha256;
 	cv=none;
-	b=cUKZ8mWTu7zdoni8HhKF0iMzuPlSGJhlHK1Feiio+ctwWscdxV9PCENsx2sd1vAj7YSu4c
-	GpujolSfyV8eav+lVuW5Lx88oMuG0GrTuoXBdfGt+Mmv2LyrOJL1CKfeVe+Nb7GgOEBtML
-	BgrOLRFmSgUZphhdeWsxelMSXmjnqgs=
+	b=PjUgjL+pVHCtU7mabEfOlqX310KCl0fQ8GArz1h1SHo5TMrkIWRtryEPCljkhlTlQAK8PT
+	JN2fqOHy66NWsIbwhM+BLcdw59p3aYVkelCvmHM7oQ9b0tdkgWwL5EVwFe1AgUE/agFNx1
+	dK9VCxGwCQUw3LzjGtwEdKHFdJwmJqw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzY+YMpn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="i/rhQmCy";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765379376;
+	s=arc-20220608; t=1765381393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uVGDaiD0TiExYwNhXm+onvkY2c03m4JR/cAis24y35o=;
-	b=W/XIC2yS+EBGM2VmS5Lc/4Im7v1H/ovCOIGKyMp6OtLJEIhv99qbCCmHc6gciGM+3Pqs3+
-	GfY2t9Tfe/WseRLgYqOh+/ORvz5vHY7INnqvcZsXqX+95/bvuHln0+5fnd0DcInbfyi/HC
-	Ducg5V26HeISie/i8y/rYVNmPD2kjKI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38BBF6013B;
-	Wed, 10 Dec 2025 15:09:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B604C4CEF1;
-	Wed, 10 Dec 2025 15:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765379374;
-	bh=RNmnMRCESvvHPFXhuXOJd3zbdNDnT+Lv6azVvJPG2UI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzY+YMpnkL8T8+6BMETspq6d93c5ln9SEAyW+/EtA/UfdcxDc7MhLz8KhjGcSMb/A
-	 ITPaTW92f0vl1ze5oJ28cNk++oEn62ZQU1wCXI2efEUgzwkUVB4q9bJ+TWSok5h6De
-	 e8y19U+jU2WogiOYUQvAKa5W6L/+GvB781OKQqPdGJ8jI7MAnjpXLQ9tU7RcabHNl1
-	 hVoWcOKjcBx90H1OxPaWR1jT/RXbCAK/o6DJTkGFZHS/vpojXUsemeqHEIK8M+ItvI
-	 wHi5lQiJwcNz+H4pdyU4vsYFRMDM+V8WjOnlfbetvCH3BeXIzSSv+hbQgsKMrrFK5O
-	 H/aeQRzK234uQ==
-From: SeongJae Park <sj@kernel.org>
-To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev (open list:DAMON),
-	linux-mm@kvack.org (open list:DAMON),
-	linux-kernel@vger.kernel.org (open list),
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com
-Subject: Re: [PATCH] mm/damon/sysfs: check for online node in target_nid_store
-Date: Wed, 10 Dec 2025 07:09:30 -0800
-Message-ID: <20251210150930.57679-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251210111708.46959-1-swarajgaikwad1925@gmail.com>
-References: 
+	 in-reply-to:references:dkim-signature;
+	bh=RK4QBOSJ1ETPPkTsE5aRaLlAhXzJmTbjPxuvjBfxx3M=;
+	b=IBNHhaV05e5g/LKor/+zf2T8IjWOQhyNIplr+tXUTXC8TUKg2eVo2lng/aaXU+dq01dgUT
+	TYu8Xe4u9MgvwOB3+Vv5tf0Mv9HKKIYnbn8RDNS4AV2p7HJavh1CXB615bFYz+/qoPCRyd
+	iCtPNoG9hZStntpcYE57TrkgN5Vzgso=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4f1ab2ea5c1so20616671cf.3
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:43:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1765381392; x=1765986192; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RK4QBOSJ1ETPPkTsE5aRaLlAhXzJmTbjPxuvjBfxx3M=;
+        b=i/rhQmCyTFZ/dYojsgPShDK+9TLdcMwhQ2fD9ZeMymjj8Ha5Hr3D09OWSlMyaCrThL
+         M8Oqp28GpqZWhdgfGVTHqaQ/uQjocUbcxTLph6ubrcEOwYaF0xPIx3zcSzNrwdlVFB8u
+         Hru4h1E82X0t2LGPV1CpXQgmjEdxQnHQKbxP/8xLcxhLqhpu4WAhHqe+wlAqbZqNwxrr
+         pQ4eVCdxFwFlJrB8SmPkq6V2k4WZI36R1rYJuCCsLmQIlG+YL2QLe/u7FREbXEWnCHvV
+         R5efribEDyXwDG8ndHzuOHu5qlDjw+UZSbpB+O/2OPi/0eCoMy2o7Hr3mzkO6YnK3RkJ
+         Hojg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765381392; x=1765986192;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RK4QBOSJ1ETPPkTsE5aRaLlAhXzJmTbjPxuvjBfxx3M=;
+        b=lYlSfIcPmhDpUQHjb0qnEKeZ/VTYmUqVpiweICHY7lqeeQmfc91LRjYMA6OZeeJ3P8
+         X4bDxSUZAf6HVeSNAtz5kouaOsO4B1iDufnOXs9pxKsx+OeSwalHvx3TX12cmIKhpD+2
+         GTwZCRIMaEutS/6ipjukeY/Vdims8h7cK/Q9Yz5eegTm7ZV0ffqKB7Bvg4ULzrC8MpSn
+         r/69PKhrr5AkmZDQEGkaHT3Rn/3qtNt3e2LWKXb7aVt+zf0YjJuiRwJU4d4gw625m7uo
+         Ifw/moN0qRYef5SdzqOqE089gJYW4y1Quw7ON4cDbnDvfIe/6z9JwmVQCu7Pi1tpn76B
+         2VMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVApSU2UkMBg3qAAl7LDO8sd/IgNggmKANO6rnRnbWq8hOlJ1EUC5jhsqXMaM86vyS+SYDsQeau7Q==@kvack.org
+X-Gm-Message-State: AOJu0YwYLgWI2sxq/gnMYh0ASYnyrtjFd+e/tCcDnC3SsYOW0RhLGNwx
+	BITCCSOiZotmUr/URGRXQiodIZraK6994QVy8Rpzv00BMlvSMLugXKCqTKzaPNTfFeU=
+X-Gm-Gg: ASbGnctM9vUctK8Que8yCybLkPngteT6gaAb7hH79fWowk6Cx33LpLNuiJiwDsKtEH2
+	t/KW9iT5rQaF6a+h/JUKIcUR4Zh/v25SaBU+9ndgGO73V9qVkim0WXnHqVJSw1hxqZ7btZqgjVy
+	tAnGhn+xlDjVKFxa2OkS//AqLemA6ZovBN6bTp6NFFUUhebkO6E5NjYubnVItlxhZSeMeKh5W/B
+	2/ajS/cSlMMYgOrDvJK8MMz+FBftdDQ1AXIyxBKYc6jctf4Ejxy3qwFx6OGPqrUh2iNgCAi//GS
+	XWvIYicMEZG0Cke1Doj86wlxsj8fGg9i8dGYZ7bQ1mGEKKICj2P2M2uaqvw7qwmzS3Tf/p/ktja
+	QNvat0Ao7AhFS16RliAIggs9dvJfy/qLwF6CYr3I92qvhqpdLhYgXCa2CI2sZ10gbNNMdZeupjb
+	CFSk1c2+W22Q==
+X-Google-Smtp-Source: AGHT+IElOjLE5rbcqYu4F/R+HCfn9jPxWZdNKUhuhWsu8mUAZgrglF0s2qhg7pSLqr7FMjuEMrobIg==
+X-Received: by 2002:ac8:5d14:0:b0:4f1:ac12:b01b with SMTP id d75a77b69052e-4f1b1a7a156mr37209431cf.38.1765381391629;
+        Wed, 10 Dec 2025 07:43:11 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-888287a56d2sm162353706d6.29.2025.12.10.07.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 07:43:10 -0800 (PST)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: memcontrol: rename mem_cgroup_from_slab_obj()
+Date: Wed, 10 Dec 2025 10:43:01 -0500
+Message-ID: <20251210154301.720133-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A8C7D40003
+X-Stat-Signature: 8mcaq6zame6t5rbrsyfatg8nrud3jbf6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2CF8C4000B
-X-Rspamd-Server: rspam10
-X-Stat-Signature: nc874bdrhjuhg15d66efhbrrjs8khrtm
-X-HE-Tag: 1765379375-514856
-X-HE-Meta: U2FsdGVkX19WfMJHN0yDm8pAXBc1jWPZAKnUdozOKog5lH0zkdzA4W9zsHH0idW/uJC9W2urLpYbL4FqcGJfUIUsKzkfmFXLyPehYz93r6ffwoZavOUHAjL470TfVYmS9d9epLpDQAY2nuct/D1aCRXTlH3S0o4UMMRAjI5f4rejUdtMe51/kPa7yHLyA3CC67hexso/NU0HQi3k8hb35D5K4g9CgWL0LR3IfSkiDNLsMNKDM4sqVfD+bZOweI3o4ZV0AxK0+UXFAGVOH5ljZYtwX7tg0I3HamlCiwpdErEEuceg9dsnpQW7n8JzcbPW6PWkUmr9TxkDv/GLxCdWUXOV6RNzv3kVuSByC9loskyESG7EdbmNxgC1fcY1viUAfCDQRcn5kgfchiXMDZJ2xTEcmbmxJTjdAOy0g1A6VgtyeOkQDQl0P+5vcs1C48DH+kFP9Fr7yCXCGFsLXCPPRLu+nHu9teBd50ZDb4oVriwKn/MPIu4LksUxDMhbUSCRNQj5tcQkqNo2jZiFAG6Xk9ZUbhKTQxB3OosRwTxDkW58LM8mZyXqDZrW4nl9d49rGdKJIu1Zi1dkl8dqgjkdhQO2Vq7nl49bg5DU5FmXVz59h8YdFtg9Q9CXqcqNxRUn0DfeZQ2/OI7DCtGwFcI2y4C8zMKR4JdKqKckfHw79vQFGY1nC9P/2MZRyxXiPN6HY2Jmwp7ikV9RlE3H67FK3xxJHjrGZh5nL5Yj/j8tBh45cWeqgbmV3Itic9CKPmllup/SN4LXO/FqS/NEuGoNNSH+nK8LjFhLsHgQPn4ayRn75j0Ex+TmYm4IspWCMpgPWM5n4BDUt9/38Lwa9ibMR7M0ypwVvxm/+qUxuokSymZA2My+EuBg3NZtfKmO4df8UailOcx4MpKIRSx32BEZ4GZtwsk39kdQ2kqBRyw+CoCQ9nBawW3/jwYhlQZk2iByWgOq6oRkUVHAotbf0Qm
- kqwApu49
- Iq4rZnetaKiBAw6kQ77WENe3/sqcRSoYhcuWOvi8HZKHXXqj1wmltYDYP+7wETitNFV9f+HIWItCjzq1jvc0Xs1W3WI9q5MDnXKflXbzDPVZdN0cb9r0YpkVAChAO/f5f74dg7L5qSH7+66rv1KJUDx9+IGJ0XZCTDb0BSUkldBs2psVAPRJOOHoo+lRrgBynmqC5WEZ8HmF/gewPgn2dhwZXf235ju0KGiO4USpPIy64k4q+IYUdMhgD0csMydG09Rl2XIkZY4eZBRnWr8970VHi999sCXs8BIlGgRJxkZaTCH8aGKZmF1zRp7TTi9T5JycG1DPFOKK6K82juHkEykkcIXBzwrgYz0rj
+X-HE-Tag: 1765381392-536407
+X-HE-Meta: U2FsdGVkX1+Mu7ldqx1UombI8NBr4KqEHXrE9aVa+BlHQQggJNO+/1atBNMJ9IQ7KZZTDmOn9GvZNzeHlMd/4QwbGkujh9o50Om6n0mtuLxnw3HvIL9CkyIQRfHpUZexn/NYtOwZRW1wQaifieY+bjlVwHQTixg2Dxf/3TBtqcIuBo2ur5MKkoLQ5+tmjf8JitBYjprGYExhHXBtzUPpA3H4TBtinSjgVLBstBDNORp/igiSrfRKCdgIZJGWQg0uyz/khkXRMrZXmJY2kgWzsp6sWdYWRTyz0m6GYoH4++c5JgPozhOzlXHXQ/cJn8wqWiDhF/HMAdDTKnyL/LEoE1AkZi6/4ymo213KBocQvwQ4cKviqV5cujU/pn5bQU7n4oxSQ2dSzJfxgbVf93NJ9P6x30phSGeBn/vES3vYhCvEm5E59TDOQa9NNe3buWvKD+lg7A7GO2lIssWPXFTtE7putOIl1nMZcqOEt8GhAeYa0kkSLKA4V5nLQz6YI8FKeyzWjto6CNIEPfPFOWS1MGDhQWROlR2kr0OhZmCVN1WH9LYP/Y9aOr7kKGSVQddOtZZBxvxTTnMqHbv5esADVikO6+haNKwXK4iN7OBkJWchoXdgnZM/Gnld+6sg3mIIN6qVULhcQzjs93fLPFXyR/AduTP+bsMW3ViBt5+/9vu5CWXFzY2624Imgx/JuknqmTwWs4v2RGM9HZPAf0bmtu4M3HKHTOCAeTOsO+oOYLUCwugaGVkOFEo9Up6C2ziWmd3Xi/JZOP1MLSAdykHtgb96joWIwXRx3gc8lc2fwY2EgdFJ3CiYFf4+arzsffb60dkDXDh+Tf2PTNV3jruUGn8JzjmetWckp2BbnD2bcbyuLgMUrZT5ul2Y3sCs/jymaAEG8zMP+wgyNcyOGzP0jkJvSOV8sKyRejwUrEgJo5YcxIbMIUCSYqVGb0DObP+6dpMIBsZRrHydxamVNji
+ 3uDX+DjX
+ 6jVZ3lNqdFvbIJ94UJFcKEjOdNtJTOMNYCkNP2undFPCemKOmOcDfupSy2jtMUZIMylTuYsp87Sk96nDJvy7EqroLDyK54/fAWqJjf421UitxgQaUNQudk/iVxf4UYaDAQ+pBQ6mCEkDUDbiWXTnXXzArnmaEVtBXclQ1llhAOt0TF9vLd7+0uIrVb23rEbttBwWKUCs7KB3v3ZcpJe85pMiXmK1U4yCNroOWCe6lD+S+R4eSC7xjg8Y1dA5+OWlc+Wyxumw2JUEUkREFl5lH8uPP8DIKtzEjHJoiQH80WcMgiBftsH2vPnC41A7TeBfl6QckO3iCmtWx1pHTFDvXr76oUUphcRMzB1ZOOSULQpT3bXeWBVRAp59UvWQOSCSEJVzwQRmMyl0sW01DvzyUDlIOEbahvAKnII4hjn16PFps95ud+ppRC0+vSjeLGMZjV6K2QIX/8EuAP3EhTb7A+wOUUy8DXMlR/EyBLpOn80Sv0yg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,59 +123,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Swaraj,
+In addition to slab objects, this function is used for resolving
+non-slab kernel pointers. This has caused confusion in recent
+refactoring work. Rename it to mem_cgroup_from_virt(), sticking with
+terminology established by the virt_to_<foo>() converters.
 
-On Wed, 10 Dec 2025 11:17:07 +0000 Swaraj Gaikwad <swarajgaikwad1925@gmail.com> wrote:
+Link: https://lore.kernel.org/linux-mm/20251113161424.GB3465062@cmpxchg.org/
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ include/linux/memcontrol.h | 4 ++--
+ mm/list_lru.c              | 4 ++--
+ mm/memcontrol.c            | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-> The 'target_nid_store' function previously accepted any integer value
-> written to the 'target_nid' sysfs file without validation. This allowed
-> users to set invalid Node IDs (e.g., -1 or 9999).
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 0651865a4564..17ad5cf43129 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1727,7 +1727,7 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
+ 	return memcg ? memcg->kmemcg_id : -1;
+ }
+ 
+-struct mem_cgroup *mem_cgroup_from_slab_obj(void *p);
++struct mem_cgroup *mem_cgroup_from_virt(void *p);
+ 
+ static inline void count_objcg_events(struct obj_cgroup *objcg,
+ 				      enum vm_event_item idx,
+@@ -1799,7 +1799,7 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
+ 	return -1;
+ }
+ 
+-static inline struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
++static inline struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ {
+ 	return NULL;
+ }
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index ec48b5dadf51..37b642f6cbda 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -187,7 +187,7 @@ bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
+ 
+ 	if (list_lru_memcg_aware(lru)) {
+ 		rcu_read_lock();
+-		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		ret = list_lru_add(lru, item, nid, mem_cgroup_from_virt(item));
+ 		rcu_read_unlock();
+ 	} else {
+ 		ret = list_lru_add(lru, item, nid, NULL);
+@@ -224,7 +224,7 @@ bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
+ 
+ 	if (list_lru_memcg_aware(lru)) {
+ 		rcu_read_lock();
+-		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		ret = list_lru_del(lru, item, nid, mem_cgroup_from_virt(item));
+ 		rcu_read_unlock();
+ 	} else {
+ 		ret = list_lru_del(lru, item, nid, NULL);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index be810c1fbfc3..e552072e346c 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -806,7 +806,7 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+ 	struct lruvec *lruvec;
+ 
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_slab_obj(p);
++	memcg = mem_cgroup_from_virt(p);
+ 
+ 	/*
+ 	 * Untracked pages have no memcg, no lruvec. Update only the
+@@ -2619,7 +2619,7 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+  * The caller must ensure the memcg lifetime, e.g. by taking rcu_read_lock(),
+  * cgroup_mutex, etc.
+  */
+-struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
++struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ {
+ 	struct slab *slab;
+ 
+-- 
+2.52.0
 
-Nice catch!  Actually this was even able to trigger kernel BUG, as commit
-7e6c3130690a ("mm/damon/ops-common: ignore migration request to invalid nodes")
-explains.  And the commit fixed the issue by avoiding only the kernel BUG,
-while still allowing the invalid input.  The intention was to make the
-interface as simple as possible unless it causes real issues.  It is for both
-maiking the maintenance easy and allowing flexible usages of the interface.  It
-is a king of consistent deisgn philosophy of the DAMON sysfs interface.  For
-this particular case, the current behavior allows flexible usages regardless of
-possible hot [un]plug of NUMA nodes.  IOW, I'd argue this is not a bug but an
-intended behavior.
-
-Maybe the commit message should have more clearly explained the intention.  As
-the author of the commit, I apology for not making the intention clear.
-
-> 
-> This patch adds a check using 'node_online(nid)' to ensure the input
-> is a valid, online node. If the node is invalid, it returns
-> -EINVAL.
-
-I'm sadly have to say that I'm not very convinced with this change because it
-makes a behavioral change.  Making behavioral changes is ok as long as the
-changes are obvious improvements.  I don't feel this change is an obvious
-improvement for following reasons.  After all, it is making the interface bit
-more complicated, in terms of its maintenance.  Seond, and more importantly, it
-makes it less flexible in case of possible hot [un]plugging of NUMA nodes.
-Suppose the user knows they will hot-plug a NUMA node and wants to set the
-target NUMA node before doing the hotplug.
-
-> This change also resolves the TODO comment "error handling
-> for target_nid range".
-
-Thank you for mentioning this!  Seems the comment was intended to be addressed
-before the code be upstreamed, and I missed it, sorry.  That's also why I'm
-saying thank you :)  I think we should just remove the comment.
-
-So, I'd suggest you to send a new version of this patch for such comment
-removal only.  Of course, further documentation improvements woudl be nice,
-though I wouldn't insist you should do that as a part of the next version of
-this patch.  What do you think?
-
-Please let me know if I'm missing something.
-
-
-Thank,
-SJ
-
-[...]
 
