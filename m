@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C575D3B9AB
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22742D3E77D
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5DBF6B0008; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
+	id 35C3E6B0006; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3AF56B000A; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
+	id 30D546B0007; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B729D6B000C; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
+	id 1FC0F6B0008; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A957C6B0008
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C42A8AEAF
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:52 +0000 (UTC)
-X-FDA: 84204690024.03.D10FB91
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F2896B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7934913B97A
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:43:50 +0000 (UTC)
+X-FDA: 84204737820.18.0C33F14
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EC0F5C000E
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3tWFvCK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 42130A0017
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:43:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3XkWwD/";
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765399428; a=rsa-sha256;
+	cv=none;
+	b=rqfFKgcclNZSVxMfvt6fvIUhjZWmnLdysw+Gan8Ytw9sLzRjzUWXluPY8Vaxt4rMGFntcm
+	vimh2iPdbDC446TmFOxa2ZDrTIIWS/z6wDVapWlyzrx1K3U+dVXuyh97WQK4SXnZAzTwHv
+	r9puCMXUQszfqx6XEkKMYy0ZdmzhWbE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3XkWwD/";
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765398290;
+	s=arc-20220608; t=1765399428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
-	b=TGuIQoVwrPpO1M/pKc25tFT6uMD9NvFEa/UQUJeLORvZjD8e74l1n9CV6vt6AjfpIdF9uH
-	yd3JmfwtdjQZB/10pXRTN2KZ+A27VMk8uwGWCVuz0jwqJUSMAxOoAg1zcPFKrtAwSdGOpQ
-	exgXy2U9wGPvitMAwgV7FqqBrOa+FOI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3tWFvCK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765398290; a=rsa-sha256;
-	cv=none;
-	b=cM/B3TjHly9vCwG5aBmDa+WbwyS8xgoxSusUZUQZft48xLgwCwzas6nNjtn7agTtX0ssTV
-	FAW2HED/MosYxDHTNnzi42fX3lhyQdkCX0qxTFJk1K86M1XXxMrq0oVPxDRwWN3N2Qy71A
-	NXIzCqfOGwT4Z/EWXU4gbEl49WpKWcA=
+	bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
+	b=TCVvjBstXvqOpp1nTdBQ3XtM0sNyfI033Ne7wtAzUCc96VBB3nm+fuKw3ujnbhzkC/foPE
+	v2GM4owIvgXSD+5HFCUJh9d3mKr9usUth87s5Yp3B95Ii/PIoQ5iXzoTqfPFJNSXaEMmit
+	46YRHJtO6pHMiQ9IblMTiXHRoROCfFY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765398289;
+	s=mimecast20190719; t=1765399427;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
-	b=T3tWFvCKZbcwIjQpW4oLoobdUOPxaSRwnYzAvyaZAGy+6CddxiG1PFqSFu33WrGc1DPbvC
-	/bkrhrVgmoxAh2tgtdIO7P4pEL/nUW3W+t64iRbmFEPAA/ic5YkSd5hjHMtVSxu+Jd2RB8
-	C1va+y0blCFJ/Wd37MOAXjg2+mvRySw=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
+	b=N3XkWwD/Pkoj8biU6T9xsdaqfnunO+SKCPh9dsc1XZn3zv7Zr1dPtTA0hpGVu6a04eq0f6
+	T5gFKuGFPCBiHZJVWafMSHhyteQauuDELhQytomBTD5/yOmNAwAtqVPO3IaFv7uk8BLtIG
+	ws42VTymAhxnxN6/TOllk7PNvtzr8i4=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-nv82kKmpM4OZT31WBmtnBw-1; Wed, 10 Dec 2025 15:23:05 -0500
-X-MC-Unique: nv82kKmpM4OZT31WBmtnBw-1
-X-Mimecast-MFC-AGG-ID: nv82kKmpM4OZT31WBmtnBw_1765398184
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-88050708ac2so6094256d6.2
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:23:05 -0800 (PST)
+ us-mta-595-4K5Dn9AyNiWaxXnZwXr1TA-1; Wed, 10 Dec 2025 15:43:46 -0500
+X-MC-Unique: 4K5Dn9AyNiWaxXnZwXr1TA-1
+X-Mimecast-MFC-AGG-ID: 4K5Dn9AyNiWaxXnZwXr1TA_1765399426
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8804823b757so29357546d6.0
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:43:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765398184; x=1766002984;
+        d=1e100.net; s=20230601; t=1765399426; x=1766004226;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
-        b=F3mBp7Oxt/yiJ7HELFAcI/KlpBs9IsuC9Usk0EddTSeTEGsty/DhTGZE8zh72CZGOi
-         6KaU3mOYaidDeBUInNYKJAmhONVIZlIeslMmgjVEo/WX98toUaj8Eufc32xSWswbBOMA
-         AZdp9HJTgmvxvYmJaiZTNwRO6yz0U3cVqPxhbqcJPg8QnVSoIJfazO2CYjBiHLoJKkSS
-         hqGzedHEZsHzqjcPxW5z/dqT/DCmqNOinT9vudjn4PoIGtmsHq0JWw2Jkm8eL/WiMK9t
-         Q8CTZzkxLD3Fgqc1tmQq2Hw7ijUMV6+8bfNjtZpsZi1zJoUIXOKINUK/zt5RrWSPaikd
-         0Ung==
-X-Forwarded-Encrypted: i=1; AJvYcCXxXCu0SCcIE2GA8GCQ66CL3BMS+CeuH3u4Q3mCOUitIiHB+Di7xmk5Ex6fKk/bzwNUyBQp7TjqAw==@kvack.org
-X-Gm-Message-State: AOJu0YztvKAywrRNzQnVQho6YTSytRlTrtcIO0pPaF/lr+qq4JvZ53iM
-	fBkeim7KO0RsLUnBYhwTg9b/Ma0dB7/gLEIaoOzXBSeDWqwDhYwUl8L6OBpOepJ/+diSpPN7Jpb
-	i7z1ZgDsbZTDsLpUgU+y6TIGu2ce5zIgQjeuhm4D3Eg5fbcEFOkBm
-X-Gm-Gg: AY/fxX5ivx/+cnHbxnDHjhDASOwAFI5AaiwRPmEn4w/eBM5fStDb859kMmolbvRaJra
-	1c2+22qGEFolTY1Wz1fqwvaJp9HmS5WtRSMSZG5ksLscDoTDTLOyY5Z1bAVkYRp5zXKJnBsKy8/
-	Iu4g1SjtWtchO/3BWrvL7yN3LqnoXuWsB7eqypGYzXSornPRYYjzjLR0h/lzy6OD+nn0RhKalS9
-	zXacLY1wtqvqN/0Ouhf+a5heD/kfV7DMcSxGcA+RFHAxwC+iFVwOXUycFH2+iOHJooQBtbS9rkR
-	uC5uVLImUgQRLXF10xRuj7iVE3Exn7kOfIb2XhUuaJZ1GcHmOE5ZaTPWTrtEnJ/0ZMGS1hBDxQe
-	Fq5M=
-X-Received: by 2002:a05:6214:4903:b0:87d:e32:81c4 with SMTP id 6a1803df08f44-88863ad08cemr52863466d6.48.1765398184399;
-        Wed, 10 Dec 2025 12:23:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEen9Ttl4I4Ei6GHZ1MxrJ25bb6YcCEXyK7UMXPPB/FWpCm+gy8UvSEyxIjsONMA4wz0hEVYw==
-X-Received: by 2002:a05:6214:4903:b0:87d:e32:81c4 with SMTP id 6a1803df08f44-88863ad08cemr52862896d6.48.1765398183866;
-        Wed, 10 Dec 2025 12:23:03 -0800 (PST)
+        bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
+        b=l7JgaJOaFIKsRIWUI/n/Jgr9qzp7Oah4FbN9CzUOCvr2XvbBuimh70v+fqHqLcmMXc
+         sbnI1ttNypo2vEOz5UajI9wqgV95NovWxvMUaltd17g7FRRZH581rLu36KqIedQuEOTR
+         Ce3UdIF5VnPfkJ3kFN71Nh+bXeU7O8P1vSaDu1FuAZ5r7lgSasf6glH+1yHsc5+rTsUI
+         hvsD3qJDMxmoV98O3IR+YQSPHaaliq5qhQ7bEQbzheZhlw2SSHxQo3YcpZqRzLpjBiHN
+         vMbrdXu614rwPw5+lCMSnSm9hZWURxd8geRjPY2lnR34LE3o2TbD6hxVVSlMV7GxS3gn
+         Gz3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVUNEozwh4xy57/q4C4Ez5h2HxnPvUgVnt9E9BsqTjMZDn26JMEJmblKCWs1UltNctM+hYbDHJdUA==@kvack.org
+X-Gm-Message-State: AOJu0YxjEKnOwRiqm10mVXMGP4ZW4xNhaYTLeAq/rml/IRMYQCMRzVqI
+	DW9r9lc829ZlW1zSNkKE/n/th7DgVrWIx/XrL26+B0W3WPCNCRF9GdnFyEvRrhzPsIDI4lzlrXy
+	AACg8Ei6b07Bym1suJxd0HYJIEN7KC9t6kh0TwS6YjA2Gr7pbOeKZ
+X-Gm-Gg: AY/fxX7vPOwPqAI+EFvl4PsJ3oBIDgnTPK66Kroqd9zmfbehY6Rvhz/VL8aa6fSlCe9
+	mKyoks6N6h75sZdwP6u/+vNryzShntb56coXfXSX7balDxg1sDDAIOfJgsF2W4ELu8GLuhvhi68
+	a7S6oz+S91P2stDWm1Wx852zoZOBF6X61SbuOjL3h6jczGHNKRAueTr35jrLGE9KG+iG+0fK45r
+	5D2ah5cXh+fHXQV95Qazap8uDPGR9PkI6NZIlea5vA3LoNVbvni4okPyq/lMNp9f2poPytXrYuf
+	k6nAqdjNSw3ENXxCWSE23YZlcv8f59KLqFUOT7VwmhB2dmtEP+bRhOYOmvvO/h4OJ94xLJ4UFb7
+	l4kg=
+X-Received: by 2002:a05:6214:21e1:b0:880:51f0:5ba0 with SMTP id 6a1803df08f44-8886f2c85efmr12874466d6.26.1765399425706;
+        Wed, 10 Dec 2025 12:43:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEMlXnfPx1nwXlxZMeogmX6e8U0uMByKwt0vnr5JltJxNMWxHqIgAvaalVCu7oIuo0OaauRzQ==
+X-Received: by 2002:a05:6214:21e1:b0:880:51f0:5ba0 with SMTP id 6a1803df08f44-8886f2c85efmr12873866d6.26.1765399425121;
+        Wed, 10 Dec 2025 12:43:45 -0800 (PST)
 Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ec567dfsm5133986d6.22.2025.12.10.12.23.02
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ef30441sm6054106d6.56.2025.12.10.12.43.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 12:23:03 -0800 (PST)
-Date: Wed, 10 Dec 2025 15:23:02 -0500
+        Wed, 10 Dec 2025 12:43:44 -0800 (PST)
+Date: Wed, 10 Dec 2025 15:43:43 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -107,26 +107,27 @@ Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
 	Kevin Tian <kevin.tian@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
-Message-ID: <aTnWphMGVwWl12FX@x1.local>
+Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
+ !MAP_FIXED mappings
+Message-ID: <aTnbf_dtwOo_gaVM@x1.local>
 References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-3-peterx@redhat.com>
- <aTWpjOhLOMOB2e74@nvidia.com>
+ <20251204151003.171039-5-peterx@redhat.com>
+ <aTWqvfYHWWMgKHPQ@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <aTWpjOhLOMOB2e74@nvidia.com>
+In-Reply-To: <aTWqvfYHWWMgKHPQ@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JHVMfEJeNYuDBoqv_htQnG_Psn9SQHmW8b23bm5nOPY_1765398184
+X-Mimecast-MFC-PROC-ID: SOTdi1E05-tzvtS4JPscmnDO_0_LX4uQBAKIhbcE9JU_1765399426
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+X-Rspamd-Queue-Id: 42130A0017
 X-Rspam-User: 
-X-Stat-Signature: i456nnh1qcmzqttd7rkuspojuqmd7uim
-X-Rspamd-Queue-Id: EC0F5C000E
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765398289-515308
-X-HE-Meta: U2FsdGVkX1+GvebMH9xpI3uPdpM778PZuq1bQb33VNtdArCi75hMzSLiOZJWjdyFB9hr1mHbpMnjLpQGRQ3ZWwWKLrmfCPiMQ3ZogRufnJMquecayW5P0CfvBOB5CP8muqw9JomphNwFAJRNxIf7ymxOfGjdlHy74Rg44BhvrSPbtH5Ni88JDFAmuC6LPOumUUqw93wk9IN/vrLcI0k/9LxH+gN0kaeq1BXDJGqGElT4YCDlQ8vZ0RljnDt5z65g+PbktJ2qFYz70rAv9E9bP8jUYncKliehBmImvLXBWLunYqZ3cAm+LKfGlZgFboWkKQBizNYleJvjLJ6BilF9VxapvAvUMTZ5GHkrs1pQSi+ccBSlImSDa5Ne4DhweC6rAE6QJxplb6d3e+FuKJT6JxjdTOv67XkEYxFGEBMmVohHomiP7ppcy2NPWDerZLN4eBk7/m9ZhBbZEJJ0iMS88IbZvfIIS0Vtd027RR/JMyr9J87YkGe9NNRFgMlyegRhb0YU1es+nAQqmQ3/0cXVyI1tquo+WgSG5oVGDgYzEF8d4oHiUpKJ3+vjfyzUEKp2XXcPWE5xDezdlqF6bEQhVMO9kv64cFKK5YyZ7RW4eRxk87Yf5DULow+vyZS/mp0H3JYYqx7UXMZYU/WtYdVALYW4R2O+tbQxSwRBDvX7CNr34avFLJQVYOvIyguKMZUTsr2XYGGVfirTZ3rVjfRenp7Jg8daMmWK0VBlFfHwkXbL6xZnVSS7+1yg1EZUtBpcsXaYas+ZR0XMJnTYbFqHmdUYIvnTRYUxEREiNfOlIl/xhS+yHMDvYqL71oDbgOwhWdc+Ky34b7TN266Q26g16A0zlfvubvqpJZncBR30S4mXR4u/UwzMzM5YOIrrOPTiQvWPXC/C783TMdtAgskpoSjDjoyxqDCtuugNNu/jsTVwueDdv/9HenWrvY6PBzWtBviMnWs4ULzIfKhbHwE
- aFX8Ifjk
- PnLaIkVN7ys4GacnC7YjYHCtA0FgZ3CvLvwmt4d4/Ra7goGIFXFY+4xurrhZV/e4WGwhaD62b/mVhc1JNcn2o5e2jYhW8D3WOFpwujSyOjIgzoGOtZERdomGkLYXY6fxTo6tRrJa1FHZWcHuEM6aN60oYrd5g6uVFT1kCKav3/6iYZyqimTi572ZQvC1bPONobstG9Efc4Yf9xLPkFRbbXgNmkN1pAqvEzleeWra8HA/M+2BzA4ZckanX9GDmrAUPwloxqnWxonuNnW+InbdPPgr2rQ38aF2IH3gJNVJOLyKzIvCyQgz1Sq7Js0sGXVi+KxyAmFuYbRhDPndXvdthxIVoQSyjskKNZiS7PV/oH7+6I0sLqcsaV1vEWC9y+MSHHk/eDyIiJY/lHSb5U8x2Gh1NgfPy1V9EE6oUmHPFm75lQfVLJVZSLnZvqlEmYqD5/tkzsqC0G5ria8P/WOuzAeb6B0KjHTxWKqXEzL26/9qq1ovS3LAFCpr7AvuzSweFNyC8Y8nlPpqzd0fSl7LhtjkXGA6ncWrBv2fmN/BIGsdVKfJW2gtDOfCJNCiqQ80HC4XzUGn67L1qJKA=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: njktydgwm18wyrmnoyj8qnpkc8qzt65n
+X-HE-Tag: 1765399428-80290
+X-HE-Meta: U2FsdGVkX1/QXvndPk8V26dZcoRaLgIXRvHk6tJ+ZlnIy1YVGwf+RH/4CpDl35qp6BYUOZJHiD8m/XbOXB3p4Mrr4rU3jixbKLaZf+ZYQB8YDd8x3g1JqRmROOpdsZCetgqaQVV3Yyl7YAgFux70eEyqdUGvjiKQFHULTcLVAMAtwy0PVqIhrvXmzl5RzNlUQGSkRtUJNEsXRa3Sv+piF6OSATY6YdG5+heFtUC8xGDg503eNbsAJ3Vnrjdlf4vxaQCqpthuZsDnYuhrlT4EfjZDat+sevNoOdFqt5JOzAxmVHluJWvgQxcyR/uCI5I6cO/WyLPdbT1ow4kF5MeVYscZ4+Odl5dTx5pb34lK4fPK3C6ZPFG2ycLEdkyoPbM1LeeJTFqbYVVnyLbo6uGjglAqoSXRih0Xo6yvPIEcEyFJDie5lsmixf+BProwL3L37sblVTTiryx+VvBRoxfu4Q8ErsVizLsYRlO6x54MvEE8X4AEIervICOe0hoNvcpU6usro2NiKInTFQWUFFlf+PRut82Asp8cUi+oQeuQnk3MeVxaR99ZWQ+RxAcWCPmYlobPWc+rlmn1i9F1EvEtepqSUrLa0Y1PBEozy7qQPBO8Mc424oXUyS+ycvFmsGvcQA7uAAU00T3VykzmKR0FJ0NPlnoOCQPJvaJvPSGrtewiKluLFvCbYFIWCYogJu7qJcsDp5ywD/LbwVBa92YmxiVt5e0Dzlj7XBzN8YCZxw3TtkZEgu9+Nn6ZAPnQdxDyOGRmrh8OM0jrFAKvB6l4uFHhoFbbXNJDEE85FzLF601C8R9XdSaTepFBRNYWeUs7j1NBdcM54uhRfpbIJdaAGEPdba5ot+8lBtgQYl79CPZyT2zyWzoOfY7qqSWTTbKu/gReskwDnRxEqb7VvBDEEqxWCgd6rulUOWzxdvEasxmvcLAXTRCGEP6dakPlWckk4s+/gS2uFeOPfmKwsT3
+ EOiqjs0I
+ zVlo3YgA1RlA6lEDGlNwo6FjAKr62JMVRfxi2FIMoPq7XmuW8UIuFBZpPoYubk3MoPXUqQDwKT8KoHjZTwcD5ixCPUnYduOxxAdeOmI2K0FB2VdP7Bts5EgbxAsccLVQUmjlLKFMgaK+uDFN6diiHA7iPVdIIV+GvdcJYfKj46ymgxMpbXJ/GTBSv67ftrU3PNwCJZU32CKyDiyqrehiPC2iRk1skd6i2OSih7WJ/jKTH5ZRKAhxXQCOkItsvs2+ZMZZ6nlIoXE6hEmVjgiHknaxDMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,83 +136,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 07, 2025 at 12:21:32PM -0400, Jason Gunthorpe wrote:
-> On Thu, Dec 04, 2025 at 10:10:01AM -0500, Peter Xu wrote:
-> > Add one new file operation, get_mapping_order().  It can be used by file
-> > backends to report mapping order hints.
-> > 
-> > By default, Linux assumed we will map in PAGE_SIZE chunks.  With this hint,
-> > the driver can report the possibility of mapping chunks that are larger
-> > than PAGE_SIZE.  Then, the VA allocator will try to use that as alignment
-> > when allocating the VA ranges.
-> > 
-> > This is useful because when chunks to be mapped are larger than PAGE_SIZE,
-> > VA alignment matters and it needs to be aligned with the size of the chunk
-> > to be mapped.
-> > 
-> > Said that, no matter what is the alignment used for the VA allocation, the
-> > driver can still decide which size to map the chunks.  It is also not an
-> > issue if it keeps mapping in PAGE_SIZE.
-> > 
-> > get_mapping_order() is defined to take three parameters.  Besides the 1st
-> > parameter which will be the file object pointer, the 2nd + 3rd parameters
-> > being the pgoff + size of the mmap() request.  Its retval is defined as the
-> > order, which must be non-negative to enable the alignment.  When zero is
-> > returned, it should behave like when the hint is not provided, IOW,
-> > alignment will still be PAGE_SIZE.
+On Sun, Dec 07, 2025 at 12:26:37PM -0400, Jason Gunthorpe wrote:
+> On Thu, Dec 04, 2025 at 10:10:03AM -0500, Peter Xu wrote:
 > 
-> This should explain how it works when the incoming pgoff is not
-> aligned..
+> > +/*
+> > + * Hint function for mmap() about the size of mapping to be carried out.
+> > + * This helps to enable huge pfnmaps as much as possible on BAR mappings.
+> > + *
+> > + * This function does the minimum check on mmap() parameters to make the
+> > + * hint valid only. The majority of mmap() sanity check will be done later
+> > + * in mmap().
+> > + */
+> > +int vfio_pci_core_get_mapping_order(struct vfio_device *device,
+> > +				    unsigned long pgoff, size_t len)
+> > +{
+> > +	struct vfio_pci_core_device *vdev =
+> > +	    container_of(device, struct vfio_pci_core_device, vdev);
+> > +	struct pci_dev *pdev = vdev->pdev;
+> > +	unsigned int index = pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> > +	unsigned long req_start;
+> > +	size_t phys_len;
+> > +
+> > +	/* Currently, only bars 0-5 supports huge pfnmap */
+> > +	if (index >= VFIO_PCI_ROM_REGION_INDEX)
+> > +		return 0;
+> > +
+> > +	/*
+> > +	 * NOTE: we're keeping things simple as of now, assuming the
+> > +	 * physical address of BARs (aka, pci_resource_start(pdev, index))
+> > +	 * should always be aligned with pgoff in vfio-pci's address space.
+> > +	 */
+> > +	req_start = (pgoff << PAGE_SHIFT) & ((1UL << VFIO_PCI_OFFSET_SHIFT) - 1);
+> > +	phys_len = PAGE_ALIGN(pci_resource_len(pdev, index));
+> > +
+> > +	/*
+> > +	 * If this happens, it will probably fail mmap() later.. mapping
+> > +	 * hint isn't important anymore.
+> > +	 */
+> > +	if (req_start >= phys_len)
+> > +		return 0;
+> > +
+> > +	phys_len = MIN(phys_len - req_start, len);
+> > +
+> > +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && phys_len >= PUD_SIZE)
+> > +		return PUD_ORDER;
+> > +
+> > +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && phys_len >= PMD_SIZE)
+> > +		return PMD_ORDER;
+> > +
+> 
+> This seems a bit weird, the vma length is already known, it is len,
+> why do we go to all this trouble to recalculate len in terms of phys?
+> 
+> If the length is wrong the mmap will fail, so there is no issue with
+> returning a larger order here.
+> 
+> I feel this should just return the order based on pci_resource_len()?
 
-Hmm, I thought the charm of this new proposal (based on suggestions of your
-v1 reviews) is to not need to worry on this..  Or maybe you meant I should
-add some doc comments in the commit message?
+IIUC there's a trivial difference when partial of a huge bar is mapped.
 
-If so I can do that.
+Example: 1G bar, map range (pgoff=2M, size=1G-2M).
 
-thp_get_unmapped_area_vmflags() should have taken all kinds of pgoff
-unalignment into account.  It's just that this v2 is better than v1 when
-using this new API because that THP function doesn't need to be exported
-anymore.
+If we return bar size order, we'd say 1G, however then it means we'll do
+the alignment with 1G. __thp_get_unmapped_area() will think it's not
+proper, because:
+
+	loff_t off_end = off + len;
+	loff_t off_align = round_up(off, size);
+
+	if (off_end <= off_align || (off_end - off_align) < size)
+		return 0;
+
+Here what we really want is to map (2M, 1G-2M) with 2M huge, not 1G, nor
+4K.
 
 > 
-> I think for dpdk we want to support mapping around the MSI hole so
-> something like
-> 
->  pgoff 0 -> 2M
->  skip 4k
->  2m + 4k -> 64M
-> 
-> Should setup the last VMA to align to 2M + 4k so the first PMD is
-> fragmented to 4k pages but the remaning part is 2M sized or better.
-> 
-> We just noticed a bug very similer to this in qemu around it's manual
-> alignment scheme where it would de-align things around the MSI window
-> and spoil the PMDs.
+> And shouldn't the mm be the one aligning it to what the arch can do
+> not drives?
 
-Right, IIUC this series should work all fine exactly as you said.
+Note that here checking CONFIG_ARCH_SUPPORTS_P*D_PFNMAP is a vfio behavior,
+pairing with the huge_fault() of vfio-pci driver.  It implies if vfio-pci's
+huge pfnmap is enabled or not.  If it's not enabled, we don't need to
+report larger orders here.
 
-Here the driver should only care about what owns the content of (pgoff,
-len) range, and the proper order to map these chunks.  In case of VFIO, it
-will know what BAR it's mapping, so as to return a proper order for that
-specific bar pointed by (pgoff, len).
+Said that, this is still a valid point, that core mm should likely also
+check against the configs when the kernel was built, though it should not
+check against CONFIG_ARCH_SUPPORTS_PMD_PFNMAP.. Instead, it should check
+HAVE_ARCH_TRANSPARENT_HUGEPAGE*.
 
-The driver doesn't need to worry on anything else like above.
+But then... I really want to avoid adding more dependencies to THPs in core
+mm on pfnmaps.  I used to decouple THP and huge mappings, that series
+wasn't going anywhere, but adding these checks will add more dependencies..
 
-Let me know if I misread your question, or if this series doesn't achieve
-what you're asking here..
+Shall I keep it simple to leave it to drivers, until we have something more
+solid (I think we need HAVE_ARCH_HUGE_P*D_LEAVES here)?
+
+Even with that config ready, drivers should always still do proper check on
+its own (drivers need to support huge pfnmaps here first before reporting
+high orders).  So what I can add into core mm to check arch support would
+only be an extra layer of safety net, not much real help but burn some cpu
+cycles, IMHO...
 
 Thanks,
-
-> 
-> I guess ideally the file could return the order assuming an aligned-to-start
-> pgoff and the core code could use that order to compute an adjustment
-> for
-> the actual pgoff so we maintain:
->   va % order = pgoff % order
-> 
-> Jason
-> 
 
 -- 
 Peter Xu
