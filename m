@@ -4,130 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22742D3E77D
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8001D3E77D
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 21:36:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35C3E6B0006; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
+	id AB90A6B0006; Wed, 10 Dec 2025 16:36:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30D546B0007; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
+	id A69E06B0007; Wed, 10 Dec 2025 16:36:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FC0F6B0008; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
+	id 9803E6B0008; Wed, 10 Dec 2025 16:36:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2896B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:43:51 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7934913B97A
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:43:50 +0000 (UTC)
-X-FDA: 84204737820.18.0C33F14
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 42130A0017
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:43:48 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3XkWwD/";
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765399428; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8848A6B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:36:56 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2A85C14066A
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:36:55 +0000 (UTC)
+X-FDA: 84204871590.04.031EE62
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8129BC0007
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:36:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sFMzM11v;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765402613; a=rsa-sha256;
 	cv=none;
-	b=rqfFKgcclNZSVxMfvt6fvIUhjZWmnLdysw+Gan8Ytw9sLzRjzUWXluPY8Vaxt4rMGFntcm
-	vimh2iPdbDC446TmFOxa2ZDrTIIWS/z6wDVapWlyzrx1K3U+dVXuyh97WQK4SXnZAzTwHv
-	r9puCMXUQszfqx6XEkKMYy0ZdmzhWbE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3XkWwD/";
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	b=yU83vcPmA3y+PiTMwpjZgTDPRu6TldfstdwH1W0HD3HHvSFn9K9Fb9Etn1yRwuVZJYoxy9
+	O+3QGjj42fcMLZSfKPhVPAC44D/pXsRD6SbE7YPB26rOamZVjrOKRDfzXtZ0l43/+NqfTk
+	FGELFKuoDZpx3AO5ja+yJTSwqEsnDCw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765399428;
+	s=arc-20220608; t=1765402613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
-	b=TCVvjBstXvqOpp1nTdBQ3XtM0sNyfI033Ne7wtAzUCc96VBB3nm+fuKw3ujnbhzkC/foPE
-	v2GM4owIvgXSD+5HFCUJh9d3mKr9usUth87s5Yp3B95Ii/PIoQ5iXzoTqfPFJNSXaEMmit
-	46YRHJtO6pHMiQ9IblMTiXHRoROCfFY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765399427;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
-	b=N3XkWwD/Pkoj8biU6T9xsdaqfnunO+SKCPh9dsc1XZn3zv7Zr1dPtTA0hpGVu6a04eq0f6
-	T5gFKuGFPCBiHZJVWafMSHhyteQauuDELhQytomBTD5/yOmNAwAtqVPO3IaFv7uk8BLtIG
-	ws42VTymAhxnxN6/TOllk7PNvtzr8i4=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-4K5Dn9AyNiWaxXnZwXr1TA-1; Wed, 10 Dec 2025 15:43:46 -0500
-X-MC-Unique: 4K5Dn9AyNiWaxXnZwXr1TA-1
-X-Mimecast-MFC-AGG-ID: 4K5Dn9AyNiWaxXnZwXr1TA_1765399426
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8804823b757so29357546d6.0
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:43:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765399426; x=1766004226;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MdaxxiCV8H2eHhp9NcagGoogiR+1MMFcEmWlgLwt4lY=;
-        b=l7JgaJOaFIKsRIWUI/n/Jgr9qzp7Oah4FbN9CzUOCvr2XvbBuimh70v+fqHqLcmMXc
-         sbnI1ttNypo2vEOz5UajI9wqgV95NovWxvMUaltd17g7FRRZH581rLu36KqIedQuEOTR
-         Ce3UdIF5VnPfkJ3kFN71Nh+bXeU7O8P1vSaDu1FuAZ5r7lgSasf6glH+1yHsc5+rTsUI
-         hvsD3qJDMxmoV98O3IR+YQSPHaaliq5qhQ7bEQbzheZhlw2SSHxQo3YcpZqRzLpjBiHN
-         vMbrdXu614rwPw5+lCMSnSm9hZWURxd8geRjPY2lnR34LE3o2TbD6hxVVSlMV7GxS3gn
-         Gz3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUNEozwh4xy57/q4C4Ez5h2HxnPvUgVnt9E9BsqTjMZDn26JMEJmblKCWs1UltNctM+hYbDHJdUA==@kvack.org
-X-Gm-Message-State: AOJu0YxjEKnOwRiqm10mVXMGP4ZW4xNhaYTLeAq/rml/IRMYQCMRzVqI
-	DW9r9lc829ZlW1zSNkKE/n/th7DgVrWIx/XrL26+B0W3WPCNCRF9GdnFyEvRrhzPsIDI4lzlrXy
-	AACg8Ei6b07Bym1suJxd0HYJIEN7KC9t6kh0TwS6YjA2Gr7pbOeKZ
-X-Gm-Gg: AY/fxX7vPOwPqAI+EFvl4PsJ3oBIDgnTPK66Kroqd9zmfbehY6Rvhz/VL8aa6fSlCe9
-	mKyoks6N6h75sZdwP6u/+vNryzShntb56coXfXSX7balDxg1sDDAIOfJgsF2W4ELu8GLuhvhi68
-	a7S6oz+S91P2stDWm1Wx852zoZOBF6X61SbuOjL3h6jczGHNKRAueTr35jrLGE9KG+iG+0fK45r
-	5D2ah5cXh+fHXQV95Qazap8uDPGR9PkI6NZIlea5vA3LoNVbvni4okPyq/lMNp9f2poPytXrYuf
-	k6nAqdjNSw3ENXxCWSE23YZlcv8f59KLqFUOT7VwmhB2dmtEP+bRhOYOmvvO/h4OJ94xLJ4UFb7
-	l4kg=
-X-Received: by 2002:a05:6214:21e1:b0:880:51f0:5ba0 with SMTP id 6a1803df08f44-8886f2c85efmr12874466d6.26.1765399425706;
-        Wed, 10 Dec 2025 12:43:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMlXnfPx1nwXlxZMeogmX6e8U0uMByKwt0vnr5JltJxNMWxHqIgAvaalVCu7oIuo0OaauRzQ==
-X-Received: by 2002:a05:6214:21e1:b0:880:51f0:5ba0 with SMTP id 6a1803df08f44-8886f2c85efmr12873866d6.26.1765399425121;
-        Wed, 10 Dec 2025 12:43:45 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ef30441sm6054106d6.56.2025.12.10.12.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 12:43:44 -0800 (PST)
-Date: Wed, 10 Dec 2025 15:43:43 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
- !MAP_FIXED mappings
-Message-ID: <aTnbf_dtwOo_gaVM@x1.local>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-5-peterx@redhat.com>
- <aTWqvfYHWWMgKHPQ@nvidia.com>
+	bh=xlOZX50xQnNhB5PiCw1+XOn2uJxjLtZ+AKBHh/CL+V8=;
+	b=Rb0YwCfm2MG2tY+oygRdE00nqkW50nHC7R59jFhcMd3vyGmACLzpOKtlcQ6ro1FOjjClOO
+	h/eZndkMChRnDmbq+tpfVkinMZ4JpVV8gJo/CBJ6M/3KODKibE6QdBhczUrrBs5C5wWFfG
+	lWaTYNpSId4eTlGL5FZpNopwwSV0C68=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sFMzM11v;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xlOZX50xQnNhB5PiCw1+XOn2uJxjLtZ+AKBHh/CL+V8=; b=sFMzM11vJrI4ZVJ1l5sjMWw1Tm
+	+0404zmyBebadt6fVmJfywgZuccDmE0IzMrk9r0iKPC30jFHWaSdPHD9NH3mlAF/bHn6AMoYUhLkv
+	i7pvm0VnlkKW1EYAqpzAIekZdx8kwIitn75Tt9A0qgPIP1B0X8NGBuVrYqbyp6D+7GS4i5//dTy1g
+	h/6N3oy/iXfZM7/NOXF6azHxiZAX9PE/J54FIOOsGCIrlxwjr9geLbtxxhhd2KelMMZu+TxEHxJmh
+	f/9g4uBQDUBw/LWWwnEiYI/p5I2gF09hVqXdT2BK8mrGYEmNxXcqu75CX/eeSn1SYvBMkRsMFLf8z
+	FQBdWV/g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTRrX-0000000DN8l-1uUR;
+	Wed, 10 Dec 2025 21:36:44 +0000
+Date: Wed, 10 Dec 2025 21:36:43 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Deepakkumar Karn <dkarn@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
+ mapping with no release_folio
+Message-ID: <aTnn68vLGxFxO8kv@casper.infradead.org>
+References: <20251210200104.262523-1-dkarn@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <aTWqvfYHWWMgKHPQ@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SOTdi1E05-tzvtS4JPscmnDO_0_LX4uQBAKIhbcE9JU_1765399426
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 42130A0017
+In-Reply-To: <20251210200104.262523-1-dkarn@redhat.com>
+X-Rspamd-Queue-Id: 8129BC0007
+X-Stat-Signature: 55yk4pdwazn17youdwqnkyyzin9a3x8n
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: njktydgwm18wyrmnoyj8qnpkc8qzt65n
-X-HE-Tag: 1765399428-80290
-X-HE-Meta: U2FsdGVkX1/QXvndPk8V26dZcoRaLgIXRvHk6tJ+ZlnIy1YVGwf+RH/4CpDl35qp6BYUOZJHiD8m/XbOXB3p4Mrr4rU3jixbKLaZf+ZYQB8YDd8x3g1JqRmROOpdsZCetgqaQVV3Yyl7YAgFux70eEyqdUGvjiKQFHULTcLVAMAtwy0PVqIhrvXmzl5RzNlUQGSkRtUJNEsXRa3Sv+piF6OSATY6YdG5+heFtUC8xGDg503eNbsAJ3Vnrjdlf4vxaQCqpthuZsDnYuhrlT4EfjZDat+sevNoOdFqt5JOzAxmVHluJWvgQxcyR/uCI5I6cO/WyLPdbT1ow4kF5MeVYscZ4+Odl5dTx5pb34lK4fPK3C6ZPFG2ycLEdkyoPbM1LeeJTFqbYVVnyLbo6uGjglAqoSXRih0Xo6yvPIEcEyFJDie5lsmixf+BProwL3L37sblVTTiryx+VvBRoxfu4Q8ErsVizLsYRlO6x54MvEE8X4AEIervICOe0hoNvcpU6usro2NiKInTFQWUFFlf+PRut82Asp8cUi+oQeuQnk3MeVxaR99ZWQ+RxAcWCPmYlobPWc+rlmn1i9F1EvEtepqSUrLa0Y1PBEozy7qQPBO8Mc424oXUyS+ycvFmsGvcQA7uAAU00T3VykzmKR0FJ0NPlnoOCQPJvaJvPSGrtewiKluLFvCbYFIWCYogJu7qJcsDp5ywD/LbwVBa92YmxiVt5e0Dzlj7XBzN8YCZxw3TtkZEgu9+Nn6ZAPnQdxDyOGRmrh8OM0jrFAKvB6l4uFHhoFbbXNJDEE85FzLF601C8R9XdSaTepFBRNYWeUs7j1NBdcM54uhRfpbIJdaAGEPdba5ot+8lBtgQYl79CPZyT2zyWzoOfY7qqSWTTbKu/gReskwDnRxEqb7VvBDEEqxWCgd6rulUOWzxdvEasxmvcLAXTRCGEP6dakPlWckk4s+/gS2uFeOPfmKwsT3
- EOiqjs0I
- zVlo3YgA1RlA6lEDGlNwo6FjAKr62JMVRfxi2FIMoPq7XmuW8UIuFBZpPoYubk3MoPXUqQDwKT8KoHjZTwcD5ixCPUnYduOxxAdeOmI2K0FB2VdP7Bts5EgbxAsccLVQUmjlLKFMgaK+uDFN6diiHA7iPVdIIV+GvdcJYfKj46ymgxMpbXJ/GTBSv67ftrU3PNwCJZU32CKyDiyqrehiPC2iRk1skd6i2OSih7WJ/jKTH5ZRKAhxXQCOkItsvs2+ZMZZ6nlIoXE6hEmVjgiHknaxDMw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765402612-448825
+X-HE-Meta: U2FsdGVkX1/mELQJq0Pw3SnqXMFfvv1TQFJyJUjNpXTC+7avRCiKJK7nuY5ts0Q9kfd42PK9MOOoPOrxOst80kIIfDD/CUq8w5JLhAomSNunXZxAdCM7qOdt/UdEbkaYZXBgnOY8kUOuXmU+SAWFDGimalohH/UJlZQ/i/EJegZQe/1fuNmFkJjQKcNbRa0KO2v1qrU3oYjrq5PmNZgPxdthB3nLkQAcjIAfcNe287O02r+dELwQXUAXX6T7xc0HL80WzcNvrkkw58ImCvVvhOXRMqmJzgmWdU/Ldpml/iDd2xQf8ZeqKQVXDljsyVZWGIAjxNRjR8wHjo9FyL3ZraLDZVOKyawyO0X93APzQWbYxa7AtygUpDBIV75MJ9kC0MZryBlI8CQReXepgHd04y3ds0h+uqCvEAX0/KQjw71QsLlQ0mXRWsueE78Fc6jptR/So8uTrCQPovR685uirtXYZs7pAHlexO6V0zWUbHJp8869BAtTRiGuuCQGGWFtDO7UkHouhhFtPhkHuBLuIG4j/i/SkMwILJFkVWU0oWmPT2IwAVHFerVQq1xKxkJQLLGanZCrxPNV2UnFOvuk3FE94XZCPEV18/0m7GVgIUGIFFER2SDa7pWPXYiEoZghcP/rqH9WvgmVDITZmFlLqBJRn4T0zpeunWIQpFmbpUDtqzlmH4TmoxOyGDjXAaZHNK+Rb0w9Rr6PRJdXir1jSBeupAmznhIznJM1CMLifZANHx1tMSgVTrjmtW9ZI64o31yh+rZu9ua8a/0iwKTqwssr61r9nFM3qg01+T0sE4MJ+H+63uFY5kzExSUFLs48mhOuf1QrHhEDISGwblwX2wzPWz0XTep/VH+omqUJXhaLu+gQBg9A+i2msO39aPiPE+gIKV5IxgxQ9RTLKICXW00dqLl5QVYX/D4cVoErlvFUHPgoKEXTXBDqMPriehBrSaM9libMnNizEBn3Nk+
+ ph4yRv/x
+ 7Rs4Eu47IVBrvp4QBvXok8sieYXRV6/08JOT/Bi3Z7RxB/Y1Vjla0h+VGZ8NAu38Uaj2AKDh58/04JXNIHR3GomCawWIIIABZSrXL6vLUCfyyg3mtwWOGveCbLtbN/6QyFGiqcp/XYbC6k5sXTYuiydNWnWAt0ur8TpeGBrefU1b9Z/PFel+1YGNA69DiTSzBEf5segV9lUo9a6PdoP3VkFJ7junNIz/PPKrhoP2D+gb8SP9wZa99iGYZ+aLwXwxhsruThoKMFXXwH5dBc8cD8VcdlxzsnuFnessqqXI0Murg4CI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,110 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 07, 2025 at 12:26:37PM -0400, Jason Gunthorpe wrote:
-> On Thu, Dec 04, 2025 at 10:10:03AM -0500, Peter Xu wrote:
+On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
+>  static inline void mapping_set_release_always(struct address_space *mapping)
+>  {
+> +	/* Alert while setting the flag with no release_folio callback */
+
+The comment is superfluous.
+
+> +	VM_WARN_ONCE(!mapping->a_ops->release_folio,
+> +		     "Setting AS_RELEASE_ALWAYS with no release_folio");
+
+But you haven't said why we need to do this.  Surely the NULL pointer
+splat is enough to tell you that you did something stupid?
+
+>  	set_bit(AS_RELEASE_ALWAYS, &mapping->flags);
+>  }
+>  
+> -- 
+> 2.52.0
 > 
-> > +/*
-> > + * Hint function for mmap() about the size of mapping to be carried out.
-> > + * This helps to enable huge pfnmaps as much as possible on BAR mappings.
-> > + *
-> > + * This function does the minimum check on mmap() parameters to make the
-> > + * hint valid only. The majority of mmap() sanity check will be done later
-> > + * in mmap().
-> > + */
-> > +int vfio_pci_core_get_mapping_order(struct vfio_device *device,
-> > +				    unsigned long pgoff, size_t len)
-> > +{
-> > +	struct vfio_pci_core_device *vdev =
-> > +	    container_of(device, struct vfio_pci_core_device, vdev);
-> > +	struct pci_dev *pdev = vdev->pdev;
-> > +	unsigned int index = pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> > +	unsigned long req_start;
-> > +	size_t phys_len;
-> > +
-> > +	/* Currently, only bars 0-5 supports huge pfnmap */
-> > +	if (index >= VFIO_PCI_ROM_REGION_INDEX)
-> > +		return 0;
-> > +
-> > +	/*
-> > +	 * NOTE: we're keeping things simple as of now, assuming the
-> > +	 * physical address of BARs (aka, pci_resource_start(pdev, index))
-> > +	 * should always be aligned with pgoff in vfio-pci's address space.
-> > +	 */
-> > +	req_start = (pgoff << PAGE_SHIFT) & ((1UL << VFIO_PCI_OFFSET_SHIFT) - 1);
-> > +	phys_len = PAGE_ALIGN(pci_resource_len(pdev, index));
-> > +
-> > +	/*
-> > +	 * If this happens, it will probably fail mmap() later.. mapping
-> > +	 * hint isn't important anymore.
-> > +	 */
-> > +	if (req_start >= phys_len)
-> > +		return 0;
-> > +
-> > +	phys_len = MIN(phys_len - req_start, len);
-> > +
-> > +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && phys_len >= PUD_SIZE)
-> > +		return PUD_ORDER;
-> > +
-> > +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && phys_len >= PMD_SIZE)
-> > +		return PMD_ORDER;
-> > +
 > 
-> This seems a bit weird, the vma length is already known, it is len,
-> why do we go to all this trouble to recalculate len in terms of phys?
-> 
-> If the length is wrong the mmap will fail, so there is no issue with
-> returning a larger order here.
-> 
-> I feel this should just return the order based on pci_resource_len()?
-
-IIUC there's a trivial difference when partial of a huge bar is mapped.
-
-Example: 1G bar, map range (pgoff=2M, size=1G-2M).
-
-If we return bar size order, we'd say 1G, however then it means we'll do
-the alignment with 1G. __thp_get_unmapped_area() will think it's not
-proper, because:
-
-	loff_t off_end = off + len;
-	loff_t off_align = round_up(off, size);
-
-	if (off_end <= off_align || (off_end - off_align) < size)
-		return 0;
-
-Here what we really want is to map (2M, 1G-2M) with 2M huge, not 1G, nor
-4K.
-
-> 
-> And shouldn't the mm be the one aligning it to what the arch can do
-> not drives?
-
-Note that here checking CONFIG_ARCH_SUPPORTS_P*D_PFNMAP is a vfio behavior,
-pairing with the huge_fault() of vfio-pci driver.  It implies if vfio-pci's
-huge pfnmap is enabled or not.  If it's not enabled, we don't need to
-report larger orders here.
-
-Said that, this is still a valid point, that core mm should likely also
-check against the configs when the kernel was built, though it should not
-check against CONFIG_ARCH_SUPPORTS_PMD_PFNMAP.. Instead, it should check
-HAVE_ARCH_TRANSPARENT_HUGEPAGE*.
-
-But then... I really want to avoid adding more dependencies to THPs in core
-mm on pfnmaps.  I used to decouple THP and huge mappings, that series
-wasn't going anywhere, but adding these checks will add more dependencies..
-
-Shall I keep it simple to leave it to drivers, until we have something more
-solid (I think we need HAVE_ARCH_HUGE_P*D_LEAVES here)?
-
-Even with that config ready, drivers should always still do proper check on
-its own (drivers need to support huge pfnmaps here first before reporting
-high orders).  So what I can add into core mm to check arch support would
-only be an extra layer of safety net, not much real help but burn some cpu
-cycles, IMHO...
-
-Thanks,
-
--- 
-Peter Xu
-
 
