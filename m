@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F635D3B9B7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 01:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C1DD3B9BA
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 01:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CA156B0005; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id AB4D16B0007; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A0E56B0007; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id A8B516B000C; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B70E6B000A; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
+	id 92BD86B0008; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2666B0005
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3EB6B0007
 	for <linux-mm@kvack.org>; Tue,  9 Dec 2025 20:36:36 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 296E8C038D
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B7AE14031C
 	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:36:36 +0000 (UTC)
-X-FDA: 84201846792.09.3134D3B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 135B74000A
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:36:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zku8P4XP;
+X-FDA: 84201846792.06.00AFE84
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4B1A3180002
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 01:36:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QmLk0fh3;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765330594; a=rsa-sha256;
 	cv=none;
-	b=NgaCakQFZG4hehZcIkJEm0QY44V+G0edp4yTYqnnvoXPkoNIwwEF5PnsrjTemSVEd5Fj8N
-	RzT03DlgftBcJZZTVor/A0MtdzI+SwCeUnpEhet2B2fNLi/Ra3XNRmOx5X1FKMx5m6e9J/
-	uPulrcSthrn8Kn8A0AAJRqhAoioNC+Q=
+	b=BfhxKicifzKKkxuC9UZCotciOIALNWCVu7I2AddKiHCbfBr5yLy/fZgyyyfK2hXfGe/b+9
+	cDkiZzijzVnc1RuyDtOVmXVPgrO88k3AaoH088OHbkny3CVLChjj9wbCyNCbFkYeQtq4Y7
+	kRqRP7J5DfnUnoB8kdtPFAtMCDXbC+k=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zku8P4XP;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QmLk0fh3;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1765330594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PkBPlVcB3gDbzhTDP+PFFevJPKgj6dN1oKtBBTf7IUo=;
-	b=droltHbyxHv+lCNuI4ULRZzILvm/Fk+1BgAT3M0T3e+Yd4+h86bKs20Vn72pyYidOsr9gn
-	t+vqkWnd1XAvQY7Cc7qLGlZJvHmF9Jn4tD/MEsa+ru04bvSyFum8J/q4U1OEH/pSYdh2CD
-	5kBHJ+AkrXr7nKHOrd6LZT4BM14BJqU=
+	bh=FxbvGjr2Y2N79H0lgErfXlSxcOGyB5fPj6Y09U3ZMnk=;
+	b=jUPnOqSlbXwHqCMGKXM82Yqe1Fiu+4bFAc8ARazobLJSZPwMIaCCz3qXRsaM1NgLYht1gM
+	SVH2X57y+VfA75KnWWyH2kOZsAVvlYB35Dhk9QGEKE+DOWr4Wo4mnF6DMtJHmR2CmCWjF4
+	L3Ki4kdnt1r8c/1nSHrS5TvJ3fSGfvI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765330593; x=1796866593;
+  t=1765330594; x=1796866594;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=khF7mS5pnq1YnL1FTDwYR8u3vG6BRMqesr0++X/h1x0=;
-  b=Zku8P4XPsNyseAo0Ie+oJSDYTX4NP5/wdsy6ot3acKJbWhWvDOrFrPXV
-   eZeGGneulBXf7Xd9+qI6obWRGDXKdO4nxK9UzngU8SSWnO99i0bojgJPL
-   Eo9sErCdycWRul3lxKP/suLMcYwrBvdc05DFU4yEYRwI4rsr9JZ1s+2mN
-   4MKfTBAVTTLML50gRfVuD51O9gITxd1LsXpr7ksPmResaWfP/UYuceFxI
-   NzRO1cQZ0XPVNt2PmdvB0BhKwzRQef9fOcZIEcv3uK2eSDGART4YB4+/U
-   gNfep9bsrXu1jp2QMwdxl9IEWjv+pVu52RWFHMutmEj7VRfHQ4mpf3hGm
-   g==;
-X-CSE-ConnectionGUID: kkgTRBjZSTe8r2jQeZ2XvA==
-X-CSE-MsgGUID: 9JBRyjuWTF+d1pVN9AkBHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="54842116"
+  bh=uSDeJjyIQS8Egw5OHsCLIaafNV3WCKJ/9T3J2/OTVzw=;
+  b=QmLk0fh3XqNZHZmZ3HBmjEpAS9SXhDfJ48vLgQMiHTgbMblvTeQeb2Yn
+   hNypRKLly4Nr4KLGZPDokHXVU++KU0tljMlnn7sWoiSI7feGwvM6Lc4eY
+   VVcSbOyNZUS4+6n96lyuRQHGiDYcoA7G759F68at7t0T0Ec+9Bt9UCI/e
+   EDku4gczrSX8rfnratckjUjs06JkoUSJJ7J7G7Fqn9B6E6c4UnIVK+dWs
+   i30m4jzitZ7Yhvk4nWPEh8l7mfES2RtY21QpnaZUu0THyIcq4qWiwElAq
+   iZ1nh0sghlzF7DWwkdrWPsgKnbVJdEL50Qh+9Fht/Pu1wbypPviCi1Xpd
+   Q==;
+X-CSE-ConnectionGUID: 1CkH9Y4bR/Wdz0LVgXKT1w==
+X-CSE-MsgGUID: uQzZHQB6QoKvdFgV2yx7vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="84711136"
 X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="54842116"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 17:36:31 -0800
-X-CSE-ConnectionGUID: u3aX/YPmS3elk3EL5uqLTQ==
-X-CSE-MsgGUID: HK6gFFGXSX+9FE+AKcY2hA==
+   d="scan'208";a="84711136"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 17:36:32 -0800
+X-CSE-ConnectionGUID: cnOgj/h8THab7ux0gRDrTw==
+X-CSE-MsgGUID: TIzBoRUfRaGjipsGCM573A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="196281100"
+   d="scan'208";a="201303729"
 Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Dec 2025 17:36:27 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 09 Dec 2025 17:36:27 -0800
 Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vT97x-000000002Ut-1bTw;
+	id 1vT97x-000000002Ur-1Se8;
 	Wed, 10 Dec 2025 01:36:25 +0000
 Date: Wed, 10 Dec 2025 09:35:54 +0800
 From: kernel test robot <lkp@intel.com>
@@ -87,24 +87,25 @@ To: Chen Ridong <chenridong@huaweicloud.com>, hannes@cmpxchg.org,
 	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
 	david@kernel.org, zhengqi.arch@bytedance.com,
 	lorenzo.stoakes@oracle.com
-Cc: oe-kbuild-all@lists.linux.dev, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	lujialin4@huawei.com, chenridong@huaweicloud.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+	chenridong@huaweicloud.com
 Subject: Re: [PATCH -next 2/2] memcg: remove mem_cgroup_size()
-Message-ID: <202512100924.LqJqXM7P-lkp@intel.com>
+Message-ID: <202512100939.F1LEdUev-lkp@intel.com>
 References: <20251209130251.1988615-3-chenridong@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251209130251.1988615-3-chenridong@huaweicloud.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 135B74000A
-X-Stat-Signature: e3bofy8f9wpd8sdhxfn531dty37omekp
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4B1A3180002
+X-Stat-Signature: pwgxkd1cz4wczkuk3oqxq51p5tdn6bjz
 X-Rspam-User: 
-X-HE-Tag: 1765330592-778972
-X-HE-Meta: U2FsdGVkX19197JiTKOvCTlimnDqjIDpDY7j6eXD2AGqVym+8DJPfC/AzL4T8OqPfQ3x9XaHfY1dW6k+Sor0WLiMkJjIEPtg5REQdHnf1Eh/zIlMKlB6E7bw1VV/5LXkp1kFwQqMeQ3IvqshVYJDLgnP2tfyU44bd8+wYe4HGoMRgDzUskyu24PzRrjGLJM+NcjIjzDUtnnkAwMB5OIxbmeIqHUoOpkKLD/0nOcF59mYUAJwIfokZuURfZ2LCsBiIcSqIVj8aLYbNzsXM2s2ltLubkxyY9XaAYP2MJfwQZvl72d5VKofjdm7azVKwD+h0ZGDFoB7lqEiFxS7d2Il9ePZ4BSCbZqkNg051sXztdENG43UUyjfEY+r9Hn2eKLC8f7os9W605OLZehTbjd8kwMW7Y+v5HkrUy9lrjCC1BcJlbrwyI3DNPLvI6ydSgHRBCFDJSln5OUjpZDR9jvuBFKcwAXjoUBwWnz+0v3TylRtcErJoG6sZyeinwMbvgqZiV9x3eBU+mAL+YBtAblz11RkMM9Uv+eUje+IYb17/R8sPl9INXm9zJic6kwYSvZY37kqCzjtNDXy78Oskk4YBxktBcoEKkJ8CwicPe9AeavBNmTD9oumufnwm5+lZud1wH86Kd9dlFDJAq5COLWsZsjJQk4YPzjrZWaJadenu6vW6Jb9MQ5y5Z+ydKLoejMn84526VAKxkBSpkVEQLA/ZGkCRYKts40lrQ19F2gBBMU3NfTnpj0xHhZLUzRIVTUe+xOOAkqr0rF0jWMlvTBTnoKqZ2BnP6rSdTbNO5dK4Y0A79aqLlUwCmy1/5pp1uNW9aT3UkEqfGpvlXdgnP4E90GPyK/SX5757hu2MwPBgGPMrw2Z1Cwtj4Idt7/QG1FiJeOhv2XctYSRH3q2DDK0uRLj3lV6iO9fUw5TrZIbR9+4iAKuK0e5wubg16YDAMSSmHzcLAW5UYgxSOmewUJ
- uSoApcjn
- 9XSQaHkAtACnpUu/Fi+agv1x+DsHNw4a8UIU3XZs4Q/fhH/B84q74oStcFc32sphqqqCJoYphEwU2uM/6e8lVQb8JfCPq7T0PN/6JVw/L6xgPp7XpN3autwMIZWDadWNpbIXCE+BvfzN1KqocSWHLRDVQnut8pwV71/yJq8VHNldE6DSjyq1mwFy56t2sBc05rkxxgBJHk760xelKAm7URxChE9JMSNEQap+QX4T2h84ERHdPoPw48FR2wOSRa940VTUQRzeAKbMxvEXL7R/zeHd5MvsVfRKZL+qk8GxnQjgweNNyHOtelTw0XP9X3deuf+SgXM6wh0q/+9pdxjluF6bqSk48n7geuWk+ix9Zc/V0PNuVhmnMCKMR6KnSprzVGeWtK7w8yYS3VgJnkJHfYW6GDw==
+X-HE-Tag: 1765330593-707407
+X-HE-Meta: U2FsdGVkX18/zXhgmJHRPIfFJlNmJgf9ZXSush775VxRrXv3advXIfaB17gujb1fxYKqqzqpLtYKi8Nzu3sAqDG7lESkyEkMwwpOC7PHdoPZxQaJrguNQdKJGsRMQfX4OQgTRZm1UGMI17MmVufkOfjOv8rXgN0Bgzg0ov46iAwD7et91t1rnoH3+jbt/R7DLLx4xcwZk7y0h7NmSxqoDoPGD6RkkgHMsXUAabKYJb8kl5Zd9QtCC+olVNmPVwtgicRdR+JCokJG3fJVCv3gnyVmHA95GV3kvHG0JPE8E0ybmF39pKA/SgoB72JfcGHjTk+02kMgql5Lt2NrG9Mvk9kITHgMDY3LwpTIr6LrtmhSFx+pfRvV2LI71COPJ8viatqXtkvDL2qyoPBq/6WuGIuxItR/v5i1bVvWe4Qu13tkQT0pLDlIO4zcUaTpioa3m77hAnX7T6bn2GTkBpw1LWNLSkwWrBRJo0Q55NYgpiU50brUqJC/+SSRc5FjxpcErSr0RwWdk6anaLlIUu0qynBi5uf3X+NAqtiwEXPAdqFiQRNcDeGpV+5/Ghp2D5062Mzqz+sMo6eI7MCKPNv0AE6OhPM/Q6tua5cnONQ4syw3vKISfNhhWSkAjI+ZkItZDsJSvY/xTlqYvFTxVcvKf8YjKb9Xw/h1THCb7Fb6uhhDeYqrGgGW1TcwRrtu6XQzx7gkJ7W0PxeYj0JI4A2pUm7MxLUiUULSYG+LLKfTNnyAadW5Ymn7UiaHCTeQzIdX2REBCQyQPqdK/2H9xvNHCAf9dFaK2HcHpFx3dNhObSZDqnK5mhfMqIWPhI09B3WhojMYxaV95Noh4mUozKDpMyXn6pdTXPbCAYplZ1oN4GFy/HytDNbznLwCyWNarnOau0QX5QgnKvH5+PYVsSfgyBdTzE/O90PrMipE0O5aPE09ynqsRWxUFwOJK+d5R8BcVPTLXdSauVNndr5Zqn3
+ zdqV0H1Q
+ RZ8ulfwYsUW2mWtb3siJTfDngQ7TwAmTyrcQoqP1qke1lOrTf02vPjO/9DTnVtnScCB3uysM8rURHHXB5mD9cJbJeA/3Kvw2ESJ2SAbjMoUA2ogKksYgExDpt+4omDirkKS7a8XWvh3XsUsKiaCkIQSwxq79mF76cpp+pzEbVnW9Y8V+GDfrJEOEY0AXBdR565iNDZNdnazER5/a8giON0HWEy1vw0YrOwtC4LobBYVlZmyH6LWoowLf3+FRSo7d67LP0XcqGR61HBrxG+ZDqg4JNxWxx/z+IOT8ha8JHAkYjkU5UXSa0stt1zniH6HTvYMFITJ6jEde5yMBht3460XUuElw+Yf9ruunOIpi9QEq+MbvM8ZKg+UBVEk+Cek2oA7uruYEh4YQT/eE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,21 +124,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Chen-Ridong/memcg-move-me
 base:   next-20251209
 patch link:    https://lore.kernel.org/r/20251209130251.1988615-3-chenridong%40huaweicloud.com
 patch subject: [PATCH -next 2/2] memcg: remove mem_cgroup_size()
-config: i386-allnoconfig (https://download.01.org/0day-ci/archive/20251210/202512100924.LqJqXM7P-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251210/202512100924.LqJqXM7P-lkp@intel.com/reproduce)
+config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251210/202512100939.F1LEdUev-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 6ec8c4351cfc1d0627d1633b02ea787bd29c77d8)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251210/202512100939.F1LEdUev-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512100924.LqJqXM7P-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512100939.F1LEdUev-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   mm/vmscan.c: In function 'apply_proportional_protection':
->> mm/vmscan.c:2488:63: error: invalid use of undefined type 'struct mem_cgroup'
+>> mm/vmscan.c:2488:49: error: incomplete definition of type 'struct mem_cgroup'
     2488 |                 unsigned long usage = page_counter_read(&memcg->memory);
-         |                                                               ^~
+         |                                                          ~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   1 error generated.
 
 
 vim +2488 mm/vmscan.c
