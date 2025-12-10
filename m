@@ -4,143 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C416D3E77A
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C575D3B9AB
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 20:24:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83E576B0006; Wed, 10 Dec 2025 15:24:16 -0500 (EST)
+	id C5DBF6B0008; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EF716B0007; Wed, 10 Dec 2025 15:24:16 -0500 (EST)
+	id C3AF56B000A; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DDCD6B0008; Wed, 10 Dec 2025 15:24:16 -0500 (EST)
+	id B729D6B000C; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 614C16B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:24:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02437BAA28
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:15 +0000 (UTC)
-X-FDA: 84204688512.14.31A3E63
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A957C6B0008
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:24:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C42A8AEAF
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:52 +0000 (UTC)
+X-FDA: 84204690024.03.D10FB91
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 98277100008
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N9OJp2Ej;
+	by imf28.hostedemail.com (Postfix) with ESMTP id EC0F5C000E
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:24:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3tWFvCK;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765398253; a=rsa-sha256;
-	cv=none;
-	b=lrxFS3gftPwuUKU2Eeg49vlVmNBw1qlLR4oO5vpCDF2ADaxTQsLAmT0mzKw0SrTKspW4wi
-	04UukzaSLeLw1/efwwncLL9/RneYVBciMGNSj85mgwIi3RyswBjbJd3PcvmahktkC6y3bA
-	bHyN/p9CNn9IX51YtUEWmS6smGzNE3s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N9OJp2Ej;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765398253;
+	s=arc-20220608; t=1765398290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KxnQ/iEQ1sK58mDVjsOZpAu/QgTIX6mC6WKI+mp0l1A=;
-	b=GoEZzz31MF59jyRzP3Obk1kr1lBaPGMNdaWGFTDIC0s5B1qHibJ7Wp99jNIJlTm5Qeu7lQ
-	pWzwWHxslamWKr/rTCbGhFQ2HNXAdL7wVZRH9PXoBpzTBUBPT8VUhRx1JIsSgGZOHnPjcu
-	FacrGPuQz9tAjfHMjymKGuPFvG7PJ6Q=
+	bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
+	b=TGuIQoVwrPpO1M/pKc25tFT6uMD9NvFEa/UQUJeLORvZjD8e74l1n9CV6vt6AjfpIdF9uH
+	yd3JmfwtdjQZB/10pXRTN2KZ+A27VMk8uwGWCVuz0jwqJUSMAxOoAg1zcPFKrtAwSdGOpQ
+	exgXy2U9wGPvitMAwgV7FqqBrOa+FOI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3tWFvCK;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765398290; a=rsa-sha256;
+	cv=none;
+	b=cM/B3TjHly9vCwG5aBmDa+WbwyS8xgoxSusUZUQZft48xLgwCwzas6nNjtn7agTtX0ssTV
+	FAW2HED/MosYxDHTNnzi42fX3lhyQdkCX0qxTFJk1K86M1XXxMrq0oVPxDRwWN3N2Qy71A
+	NXIzCqfOGwT4Z/EWXU4gbEl49WpKWcA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765398253;
+	s=mimecast20190719; t=1765398289;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KxnQ/iEQ1sK58mDVjsOZpAu/QgTIX6mC6WKI+mp0l1A=;
-	b=N9OJp2EjGOQNopngZILTcDRiGs7Dd5AXHq7dC8TtbGW6/Nze6RTuAgpYSbKYy3mpiCkEtJ
-	6AFGhhFhXCIHtM/Q4AWoh4P5UU5SmBG0e5ZI3ZWGsPaZ+jjIb/MXFCi5Tzr3hRUXxNnDA4
-	hMU1dAx0w0oEBGJ5AU8BVstQv6RyZtY=
+	bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
+	b=T3tWFvCKZbcwIjQpW4oLoobdUOPxaSRwnYzAvyaZAGy+6CddxiG1PFqSFu33WrGc1DPbvC
+	/bkrhrVgmoxAh2tgtdIO7P4pEL/nUW3W+t64iRbmFEPAA/ic5YkSd5hjHMtVSxu+Jd2RB8
+	C1va+y0blCFJ/Wd37MOAXjg2+mvRySw=
 Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
  [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-aov-je5qPIWLmCFUos8STQ-1; Wed, 10 Dec 2025 15:24:12 -0500
-X-MC-Unique: aov-je5qPIWLmCFUos8STQ-1
-X-Mimecast-MFC-AGG-ID: aov-je5qPIWLmCFUos8STQ_1765398251
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-880444afa2cso4246016d6.1
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:24:11 -0800 (PST)
+ us-mta-479-nv82kKmpM4OZT31WBmtnBw-1; Wed, 10 Dec 2025 15:23:05 -0500
+X-MC-Unique: nv82kKmpM4OZT31WBmtnBw-1
+X-Mimecast-MFC-AGG-ID: nv82kKmpM4OZT31WBmtnBw_1765398184
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-88050708ac2so6094256d6.2
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 12:23:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765398251; x=1766003051;
+        d=1e100.net; s=20230601; t=1765398184; x=1766002984;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KxnQ/iEQ1sK58mDVjsOZpAu/QgTIX6mC6WKI+mp0l1A=;
-        b=KRAY6NCLIDKt0bo8eC9//QbAnTqhfhiAFbAIfunLy+w5Z5mFlk8EHgij0qMKtyJZHm
-         5W7e+NUJp0zB8J4dZKksafRNCzKe6w6vKYWoowHwxmXN00hNElKdc+uU/KFZy07i0DVN
-         fHvuC3+B6ActXcOyId9yn6O4GrnCgXRqUQWM+YNOV8FRzUFD42PKGiBQYGIMa+ljckZu
-         +KzTtRadPyoOV1rL/zS3rg6DuN7SHJOb1fDDX0kZE4NyZLQC6nxPtRWMxpz4yGGicxZu
-         9MDzyGwWB7lvm7UQ+GWtiPk9rKWBHtXEp+E1aJKqfuBH2Ms5HGWLd1qvvLSOrwWkYZOx
-         Rp8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXnKCGCB2VBS7XVJK/IUNHIVPc3z+BlxjN/Mtjd+Z6tTKjyYpiK+jZWS+90EAvl14NCK3II9ILsFQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx1Y1MGInbfVG+qQc7U65rL1n4DHekGvuN6y+tqFswzh/BuxzP6
-	XPhrGiikBaO/TBV9QgTipN93d2/Q6aiyMJdF+4G8ja5gCJcot5u1TeuR3bhDDpWCklHcyV1/DYt
-	MOCxD+yyHdS5kVCepQt3rcJalJ1twmu6blF1oy1Fkoz+w2ni9janM
-X-Gm-Gg: AY/fxX6WYiuTpVYRD9ZWC30qWCNHEtT3qgCv8xIZUm15l1V7l2LiY4skGwuSAnUpFBt
-	NpQNtx3FIyX+yOyOk5vppNMQM2Eee94OHbCvIArmJREYZseHu3tLNf92kFx0d+hkfEp2/mkdSQx
-	jlkZJ9Yzh0/266UpDSUShSwh4c8KL1h2/R6QvXVBF3u3LiqOMnfbCspahDFPxtjKWEVRKDgiQfJ
-	HVL38Jq8IadLSyW8Ye1VCbD7VEiIBQfwJ6uG8dqjCJxuSQ55u0kY7z6delaPuIWUq85MbXBvwn9
-	eYgx2y9yr61/ByGBxc1r+nU9ig0HGstz7z8ZmHlsXdf/+7vi9I+qQugD61skRHECAP4RzVzmO7H
-	C1+M=
-X-Received: by 2002:a05:6214:768:b0:880:501f:5e8 with SMTP id 6a1803df08f44-88863a2ab3amr50897016d6.13.1765398251249;
-        Wed, 10 Dec 2025 12:24:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEp/TCjQkjo9IXEU5scwVWKecCDQSTmMb8hfAZZ6nq5cmvChNS/S1r8YuGRQNN9gNusvbUp7Q==
-X-Received: by 2002:a05:6214:768:b0:880:501f:5e8 with SMTP id 6a1803df08f44-88863a2ab3amr50896356d6.13.1765398250715;
-        Wed, 10 Dec 2025 12:24:10 -0800 (PST)
+        bh=qCVxcy9QRWz5ZYAmOizCoYj4D+NmiFdOKdb5vzD8rtA=;
+        b=F3mBp7Oxt/yiJ7HELFAcI/KlpBs9IsuC9Usk0EddTSeTEGsty/DhTGZE8zh72CZGOi
+         6KaU3mOYaidDeBUInNYKJAmhONVIZlIeslMmgjVEo/WX98toUaj8Eufc32xSWswbBOMA
+         AZdp9HJTgmvxvYmJaiZTNwRO6yz0U3cVqPxhbqcJPg8QnVSoIJfazO2CYjBiHLoJKkSS
+         hqGzedHEZsHzqjcPxW5z/dqT/DCmqNOinT9vudjn4PoIGtmsHq0JWw2Jkm8eL/WiMK9t
+         Q8CTZzkxLD3Fgqc1tmQq2Hw7ijUMV6+8bfNjtZpsZi1zJoUIXOKINUK/zt5RrWSPaikd
+         0Ung==
+X-Forwarded-Encrypted: i=1; AJvYcCXxXCu0SCcIE2GA8GCQ66CL3BMS+CeuH3u4Q3mCOUitIiHB+Di7xmk5Ex6fKk/bzwNUyBQp7TjqAw==@kvack.org
+X-Gm-Message-State: AOJu0YztvKAywrRNzQnVQho6YTSytRlTrtcIO0pPaF/lr+qq4JvZ53iM
+	fBkeim7KO0RsLUnBYhwTg9b/Ma0dB7/gLEIaoOzXBSeDWqwDhYwUl8L6OBpOepJ/+diSpPN7Jpb
+	i7z1ZgDsbZTDsLpUgU+y6TIGu2ce5zIgQjeuhm4D3Eg5fbcEFOkBm
+X-Gm-Gg: AY/fxX5ivx/+cnHbxnDHjhDASOwAFI5AaiwRPmEn4w/eBM5fStDb859kMmolbvRaJra
+	1c2+22qGEFolTY1Wz1fqwvaJp9HmS5WtRSMSZG5ksLscDoTDTLOyY5Z1bAVkYRp5zXKJnBsKy8/
+	Iu4g1SjtWtchO/3BWrvL7yN3LqnoXuWsB7eqypGYzXSornPRYYjzjLR0h/lzy6OD+nn0RhKalS9
+	zXacLY1wtqvqN/0Ouhf+a5heD/kfV7DMcSxGcA+RFHAxwC+iFVwOXUycFH2+iOHJooQBtbS9rkR
+	uC5uVLImUgQRLXF10xRuj7iVE3Exn7kOfIb2XhUuaJZ1GcHmOE5ZaTPWTrtEnJ/0ZMGS1hBDxQe
+	Fq5M=
+X-Received: by 2002:a05:6214:4903:b0:87d:e32:81c4 with SMTP id 6a1803df08f44-88863ad08cemr52863466d6.48.1765398184399;
+        Wed, 10 Dec 2025 12:23:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEen9Ttl4I4Ei6GHZ1MxrJ25bb6YcCEXyK7UMXPPB/FWpCm+gy8UvSEyxIjsONMA4wz0hEVYw==
+X-Received: by 2002:a05:6214:4903:b0:87d:e32:81c4 with SMTP id 6a1803df08f44-88863ad08cemr52862896d6.48.1765398183866;
+        Wed, 10 Dec 2025 12:23:03 -0800 (PST)
 Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ef0d241sm5052596d6.42.2025.12.10.12.24.08
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8886ec567dfsm5133986d6.22.2025.12.10.12.23.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 12:24:10 -0800 (PST)
-Date: Wed, 10 Dec 2025 15:24:08 -0500
+        Wed, 10 Dec 2025 12:23:03 -0800 (PST)
+Date: Wed, 10 Dec 2025 15:23:02 -0500
 From: Peter Xu <peterx@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>, Nico Pache <npache@redhat.com>,
-	Zi Yan <ziy@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	David Hildenbrand <david@redhat.com>,
+	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
 	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
 	David Laight <david.laight.linux@gmail.com>,
 	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
 	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
-Message-ID: <aTnW6OorSRmn1SqI@x1.local>
+Message-ID: <aTnWphMGVwWl12FX@x1.local>
 References: <20251204151003.171039-1-peterx@redhat.com>
  <20251204151003.171039-3-peterx@redhat.com>
- <aTGmkHsRSsnneW0G@x1.local>
- <aTaYtlTdhxKx2R24@casper.infradead.org>
+ <aTWpjOhLOMOB2e74@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <aTaYtlTdhxKx2R24@casper.infradead.org>
+In-Reply-To: <aTWpjOhLOMOB2e74@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DVKxhWWRkzGrD81-O8IPmUWKbP9hW9enyfPRQKp1UTY_1765398251
+X-Mimecast-MFC-PROC-ID: JHVMfEJeNYuDBoqv_htQnG_Psn9SQHmW8b23bm5nOPY_1765398184
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Stat-Signature: ewu393qfsibwtzwk94ooq6ehk67m5ne9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98277100008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765398253-290468
-X-HE-Meta: U2FsdGVkX19Hol4AV9gqT/VWC0hDycTpTJphq/WjI9BVEcg9XYxkiXjDZiBb2R2wNv5nUR99TWLS6hwS0lOtLfMxdLLIllmgHiGdGSJyJPeAYzmpbma5VxlUCtkfImXsvdvuXeZP97egiLt7k1l5DCSjtOiFVhNl7P7oGbxH2PmBkSBWGxjZOC9Qy0S5aDuWQdNL6XbQiKnnSoSRBPz20YyeR4fzWndtUSHtAov/j3NF1cdMPO5vnzDZgdLIp+zoOEQItKMKy1sMjJmd9q12+vrryhlyZ+xD5Dj/mqcMj1rglSI2qVndE5JzBjlDsTBV36SoVIDkGufFtJYwkT/AZjdhO0Hea0LdgGuqELtYLnoxj4R7SBjlHHv5LpTRogNj6v22G80SDJHXTkwVjiaySRh0rs6t5H3WC2BtCyqNc5kKaLzu7dzhVox7L/mj0pP7oWlawkM9YFuFSIL/W0k77hLCHzXhmctVeLWTHQsqjL1Q3cT4B8rh4cCeKA0lnfw13K5mDwWN5YMKG+ncNLKFeYi777g17yc9hEiKkwY9TusaJuvu+CZwiDlx8COB82b2512TJ6PQDRHu4jIU1XNCt674f2JKJ4ReTr49DDIJ9HK2k82vGhorb4RXSJkjTu490JAQDF9UcFsnk7bJcMbWwtsT7DDSfg8GdyiDxcl5AfKtbJ+ox2Y/wjou2PJxyonmLqc9xWNR+T8/UdRq8BD7CPlXbwidyH6OrsFNfbIFg9Q+ge1EsVJjlYfcUSuh39pAahlZfGK459nc9ieWBw/IoI/SBgC4ZOMuDBg/CPXlEOlbvvXpaC0fGzMPHh14b/NrKufTUmrq0ZaoU221xABPOD5F3yVh7T4stAP8lNqHqwO3BlAbcFcHP8Nfdzi+PKT/1yMLHZS5J7dPOu6PuqesELRvdl6+FWdVHm1Q1+5/3kMFU2F9kBRZstssKu0MwaBDGg5iG+Ok8/20C2/yIsv
- FAQGQPOF
- Ia81EqnCKsyPnvTw6bAeWojwUsy72yoQzC8BlDOV0y7HH7UeVQ+EEyR/rkOfaX+MPEPnu6nBXg6jBhGOZ57YhrRmMjnNy84uFclHODYNFYDt+QG7RofpgPJ1QRiPbQNThNWmKajV8lE/TXKI/42xfCQO+XkuImVjBD9Hzd6zzg4bsKCLk6gjl14IXp2KZSpgaqZBDMQjexzKGwp2Qh5TzK/yAFCQh7TwrvSyYzk6oEB/cmuYjaCAT9r5h8WvR4g/DDlQICBp8CZOwQvgZoAgj/ALhzLs0X5Hcewxroobbbj6kjbq6ogMne/ti76rnQmkXxAnyBgoqPNinMs26Lpo2dBrM+mo12l8rqPMfbDj7AmMZ4S3pkejEpM9SOWUyUbLmeNq4Wt6SLQoYSZoM3+9IoVLVqWubHAKhWVB8Kk04jjc33Rfq3sEGr7pRgOMrh3LSkeY8dfQswtdaXVFCkEaSmCuv48clWvyrngP+KmIfzASRmEC5q45SNte14Qlo4iHOCJqd1dHNChh9w+wQyrHq0ldn0I0h84FC5J3I9Fdgd+inMab4rTEx+fGU+WgURQZFHIaGQ4ceV4Hb3AY=
+X-Stat-Signature: i456nnh1qcmzqttd7rkuspojuqmd7uim
+X-Rspamd-Queue-Id: EC0F5C000E
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765398289-515308
+X-HE-Meta: U2FsdGVkX1+GvebMH9xpI3uPdpM778PZuq1bQb33VNtdArCi75hMzSLiOZJWjdyFB9hr1mHbpMnjLpQGRQ3ZWwWKLrmfCPiMQ3ZogRufnJMquecayW5P0CfvBOB5CP8muqw9JomphNwFAJRNxIf7ymxOfGjdlHy74Rg44BhvrSPbtH5Ni88JDFAmuC6LPOumUUqw93wk9IN/vrLcI0k/9LxH+gN0kaeq1BXDJGqGElT4YCDlQ8vZ0RljnDt5z65g+PbktJ2qFYz70rAv9E9bP8jUYncKliehBmImvLXBWLunYqZ3cAm+LKfGlZgFboWkKQBizNYleJvjLJ6BilF9VxapvAvUMTZ5GHkrs1pQSi+ccBSlImSDa5Ne4DhweC6rAE6QJxplb6d3e+FuKJT6JxjdTOv67XkEYxFGEBMmVohHomiP7ppcy2NPWDerZLN4eBk7/m9ZhBbZEJJ0iMS88IbZvfIIS0Vtd027RR/JMyr9J87YkGe9NNRFgMlyegRhb0YU1es+nAQqmQ3/0cXVyI1tquo+WgSG5oVGDgYzEF8d4oHiUpKJ3+vjfyzUEKp2XXcPWE5xDezdlqF6bEQhVMO9kv64cFKK5YyZ7RW4eRxk87Yf5DULow+vyZS/mp0H3JYYqx7UXMZYU/WtYdVALYW4R2O+tbQxSwRBDvX7CNr34avFLJQVYOvIyguKMZUTsr2XYGGVfirTZ3rVjfRenp7Jg8daMmWK0VBlFfHwkXbL6xZnVSS7+1yg1EZUtBpcsXaYas+ZR0XMJnTYbFqHmdUYIvnTRYUxEREiNfOlIl/xhS+yHMDvYqL71oDbgOwhWdc+Ky34b7TN266Q26g16A0zlfvubvqpJZncBR30S4mXR4u/UwzMzM5YOIrrOPTiQvWPXC/C783TMdtAgskpoSjDjoyxqDCtuugNNu/jsTVwueDdv/9HenWrvY6PBzWtBviMnWs4ULzIfKhbHwE
+ aFX8Ifjk
+ PnLaIkVN7ys4GacnC7YjYHCtA0FgZ3CvLvwmt4d4/Ra7goGIFXFY+4xurrhZV/e4WGwhaD62b/mVhc1JNcn2o5e2jYhW8D3WOFpwujSyOjIgzoGOtZERdomGkLYXY6fxTo6tRrJa1FHZWcHuEM6aN60oYrd5g6uVFT1kCKav3/6iYZyqimTi572ZQvC1bPONobstG9Efc4Yf9xLPkFRbbXgNmkN1pAqvEzleeWra8HA/M+2BzA4ZckanX9GDmrAUPwloxqnWxonuNnW+InbdPPgr2rQ38aF2IH3gJNVJOLyKzIvCyQgz1Sq7Js0sGXVi+KxyAmFuYbRhDPndXvdthxIVoQSyjskKNZiS7PV/oH7+6I0sLqcsaV1vEWC9y+MSHHk/eDyIiJY/lHSb5U8x2Gh1NgfPy1V9EE6oUmHPFm75lQfVLJVZSLnZvqlEmYqD5/tkzsqC0G5ria8P/WOuzAeb6B0KjHTxWKqXEzL26/9qq1ovS3LAFCpr7AvuzSweFNyC8Y8nlPpqzd0fSl7LhtjkXGA6ncWrBv2fmN/BIGsdVKfJW2gtDOfCJNCiqQ80HC4XzUGn67L1qJKA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,17 +135,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 08, 2025 at 09:21:58AM +0000, Matthew Wilcox wrote:
-> On Thu, Dec 04, 2025 at 10:19:44AM -0500, Peter Xu wrote:
-> > > Add one new file operation, get_mapping_order().  It can be used by file
-> > > backends to report mapping order hints.
+On Sun, Dec 07, 2025 at 12:21:32PM -0400, Jason Gunthorpe wrote:
+> On Thu, Dec 04, 2025 at 10:10:01AM -0500, Peter Xu wrote:
+> > Add one new file operation, get_mapping_order().  It can be used by file
+> > backends to report mapping order hints.
+> > 
+> > By default, Linux assumed we will map in PAGE_SIZE chunks.  With this hint,
+> > the driver can report the possibility of mapping chunks that are larger
+> > than PAGE_SIZE.  Then, the VA allocator will try to use that as alignment
+> > when allocating the VA ranges.
+> > 
+> > This is useful because when chunks to be mapped are larger than PAGE_SIZE,
+> > VA alignment matters and it needs to be aligned with the size of the chunk
+> > to be mapped.
+> > 
+> > Said that, no matter what is the alignment used for the VA allocation, the
+> > driver can still decide which size to map the chunks.  It is also not an
+> > issue if it keeps mapping in PAGE_SIZE.
+> > 
+> > get_mapping_order() is defined to take three parameters.  Besides the 1st
+> > parameter which will be the file object pointer, the 2nd + 3rd parameters
+> > being the pgoff + size of the mmap() request.  Its retval is defined as the
+> > order, which must be non-negative to enable the alignment.  When zero is
+> > returned, it should behave like when the hint is not provided, IOW,
+> > alignment will still be PAGE_SIZE.
 > 
-> This seems like a terrible idea.  I'll look at it after Plumbers.
+> This should explain how it works when the incoming pgoff is not
+> aligned..
 
-Sure, no rush, please feel free to go through discussion in v1 when it
-comes, that's where we landed to this API based on suggestions from Jason.
+Hmm, I thought the charm of this new proposal (based on suggestions of your
+v1 reviews) is to not need to worry on this..  Or maybe you meant I should
+add some doc comments in the commit message?
 
-I'm open to other suggestions.
+If so I can do that.
+
+thp_get_unmapped_area_vmflags() should have taken all kinds of pgoff
+unalignment into account.  It's just that this v2 is better than v1 when
+using this new API because that THP function doesn't need to be exported
+anymore.
+
+> 
+> I think for dpdk we want to support mapping around the MSI hole so
+> something like
+> 
+>  pgoff 0 -> 2M
+>  skip 4k
+>  2m + 4k -> 64M
+> 
+> Should setup the last VMA to align to 2M + 4k so the first PMD is
+> fragmented to 4k pages but the remaning part is 2M sized or better.
+> 
+> We just noticed a bug very similer to this in qemu around it's manual
+> alignment scheme where it would de-align things around the MSI window
+> and spoil the PMDs.
+
+Right, IIUC this series should work all fine exactly as you said.
+
+Here the driver should only care about what owns the content of (pgoff,
+len) range, and the proper order to map these chunks.  In case of VFIO, it
+will know what BAR it's mapping, so as to return a proper order for that
+specific bar pointed by (pgoff, len).
+
+The driver doesn't need to worry on anything else like above.
+
+Let me know if I misread your question, or if this series doesn't achieve
+what you're asking here..
+
+Thanks,
+
+> 
+> I guess ideally the file could return the order assuming an aligned-to-start
+> pgoff and the core code could use that order to compute an adjustment
+> for
+> the actual pgoff so we maintain:
+>   va % order = pgoff % order
+> 
+> Jason
+> 
 
 -- 
 Peter Xu
