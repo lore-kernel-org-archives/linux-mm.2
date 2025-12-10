@@ -4,114 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAEDCD2CE17
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 07:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCE68D2CE17
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Dec 2025 07:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E2936B0006; Wed, 10 Dec 2025 02:06:07 -0500 (EST)
+	id 19BC06B0007; Wed, 10 Dec 2025 02:26:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BA546B0007; Wed, 10 Dec 2025 02:06:07 -0500 (EST)
+	id 14A0D6B0008; Wed, 10 Dec 2025 02:26:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F75C6B0008; Wed, 10 Dec 2025 02:06:07 -0500 (EST)
+	id 011C36B000C; Wed, 10 Dec 2025 02:26:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 713626B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 02:06:07 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E061013492C
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:06:06 +0000 (UTC)
-X-FDA: 84202677132.20.E427986
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E0B6F18000D
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:06:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eNOJDpT5;
-	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E0FB26B0008
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 02:26:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8DF3E1A03CA
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:26:48 +0000 (UTC)
+X-FDA: 84202729296.09.48DEBFD
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2DD3980007
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 07:26:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765350365;
+	s=arc-20220608; t=1765351606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3q5pyCB1YAl49x/+AJ0QKDE2yC1eVd9dXTt+B+QxS28=;
-	b=qK1C+GyKYVhROAVQ8Z/1a9W7nOvZUHEqfTiwSHlXIBQh/iEKxs9pc/uuNHw4P9CCsHRsrL
-	8vP780mHHEhVQ3lyQpBIq2Zb1IBCI6mHV945l6FCl3DEZ4Jtn4QRbajldHo4zrYOJJ6jmJ
-	GSqfLskrcYGBb1fpEANTriM9ICbLHAc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765350365; a=rsa-sha256;
-	cv=none;
-	b=2ZtbMk/qYlIzUusGpXn4yRtcjG31GCQmVPSwBv6azizh+4WX//OBn3UTxQpDK2RJFeu1Dn
-	fpj9pFwdPeNY8wFP1GEKz+aZd7FAKx0nVrP33UWIqKkNZUFxEf3gVEQuUVd5MXVK5FKq/V
-	pkNExz1AUlHVgVd/6XiTU+DsVpP0w4I=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BOyAi8pAgfF9LoUJLm8S1NFc1ZVcYKUmpUwWkQUdh4Q=;
+	b=H3CdQ7QK1lYSmP1lccZKzORwJk0KUVGH/Nyc90pyB8obNsDMIr1vgpdRco8mvEY/bKX7Uy
+	igFYu6KTS8LzlknT2oPcTO159aDjH7cRo5OEx7ASZe/6HjJw+3FDTFbCK/QMmchisq4VIu
+	POL5yyZNayAeNwcNeaEdqDSL3bP4rQc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eNOJDpT5;
-	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42e2e52cc04so2317294f8f.0
-        for <linux-mm@kvack.org>; Tue, 09 Dec 2025 23:06:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765350363; x=1765955163; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3q5pyCB1YAl49x/+AJ0QKDE2yC1eVd9dXTt+B+QxS28=;
-        b=eNOJDpT5+djkOaJalRS6bhvY1W7gw14guiodWa9evekRWf88DIWTtK/XOT9AvkRTie
-         niuxgcYpIcS9BHTgqadxU13S3wL718xBeyFZZDnkzaeAfMChJ8EgGZKsurSQ+QFtA6Tc
-         VHHCSTuhCaiGxoflAy2tw1dnKdqDJwRmqPx9VOiImWP4ol1UcQiTLBWD9YScm+MbhayH
-         4fz4s74xJSkwRrHwuFKwBKzn/WuCD5hTgx642W64fzHaOHBOYVlXVqHzZ7Co+yjuxkEG
-         zBqtlx/wZ+pWhF2M/c/2yzLswmjw1ZTJ4Q1ylTVWXmhTuDqpDMesU6urmv/AbmoC59nd
-         VJ1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765350363; x=1765955163;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3q5pyCB1YAl49x/+AJ0QKDE2yC1eVd9dXTt+B+QxS28=;
-        b=wkDNig7a0zJLFdBp2FkJa41bG4VVPW+QSAxJdkKCzAFr7CLRXjWKCIIgTJkm/LLI7K
-         JexpLIaXLsRod7L0YGARaoIuWcUXGJ9tsG7nRGPFsP6yeH8HxvxyyxqIiziNhRAOyS/T
-         0AdhQ6Z3QLo7ytk//mzMbYLNR9RhqFKxMi259QJroLC/K5gaKIBSnlme8PJfaqxh5BQT
-         UFt5FCyMbYv8Rei9YsyX+u40ly21VH+95ejmLXLIT2rkwG9UXCd9caPxm/6xAcDGiwPz
-         2pmSJU01ysCL/uEA6ueUKn9wCJtifX2Q0uACqJDYmjLP/KXnHLBopPmHtM+lbYE1+xfI
-         Oa4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVnAo4RtLwREKIoP382Hyuqk4pWK0m8W2a1JtWZ0sCgvskr6ArjLY10JO4qFseHsU8B8Mmg5ubNbg==@kvack.org
-X-Gm-Message-State: AOJu0YykVbYUjv0OszJX2QNKnjMYR01AN6rXUn7sly3qHTtO1tt5yOst
-	eqVq++r5uJ3OhUs69xMG3nrNfiJAhTmDf2SVEL7WcZ0ky23rOxiwH7SgR/tdStJOZ0rWEa7OGTL
-	9UTcMzzgcOnuj13DTxr+IKY1qkNIXwoE=
-X-Gm-Gg: AY/fxX7Rg/cHesYoWKhrJx0mUyR14UC9Nc66bCQY96bq6OsFFZEHpJC4kWDJ+uRq3q8
-	l8RVfy91wJe2y6RFTh0da6z5/XWUzW8E6N9OJLD1OoLOkYJFoo9Yhpx/S95If6TZrieQE7W4Zoo
-	5M2l1e7w22prUwWMEjSJlocVeD49DAtoIrB0YVHK+ATTbXZDv9R4WMKzLvomMOMF966bdHVGuTk
-	5S5N7Ik+KKtGIHu1HI0kPPuEmPeqTmdDdtTaUYQx+3phBYc984BZB6bRN5Gr/qJInxCyQ8m
-X-Google-Smtp-Source: AGHT+IFNuofYkt/xOtW7wXiUCQcf0/SlkM7pvVXk2IWMuyZrA+pgaKc/hWdLmNtf4AUbGfmW5f2StLFIz8C3F5F8fHM=
-X-Received: by 2002:a05:6000:2892:b0:3ec:dd12:54d3 with SMTP id
- ffacd0b85a97d-42fa3afd499mr1436752f8f.35.1765350363084; Tue, 09 Dec 2025
- 23:06:03 -0800 (PST)
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765351606; a=rsa-sha256;
+	cv=none;
+	b=YsZwa7BEVjnvW/C9w+70nOLS4rw765FimFRmlBxeT/HPnLrpj4Ewm+TuOhzkHwldurfqT8
+	ep/Lntp0tdIgBh1moOziFqKnbNBKCzzDnrNPtgeL4Gy1DyXdr4S1qwcyMwOdmI9EAaRYQf
+	5oW1wJPh+m5Q0ajPIlUV+ciFFB7RFOk=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dR6hw6CSKzYQtql
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:26:24 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 9A97B1A1B5A
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 15:26:39 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgC33pujIDlpfef4BA--.9918S4;
+	Wed, 10 Dec 2025 15:26:39 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	david@kernel.org,
+	zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com
+Cc: cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huaweicloud.com
+Subject: [PATCH -next v2 2/2] memcg: remove mem_cgroup_size()
+Date: Wed, 10 Dec 2025 07:11:42 +0000
+Message-Id: <20251210071142.2043478-3-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251210071142.2043478-1-chenridong@huaweicloud.com>
+References: <20251210071142.2043478-1-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-References: <20251210022024.3255826-1-kartikey406@gmail.com>
-In-Reply-To: <20251210022024.3255826-1-kartikey406@gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 10 Dec 2025 16:05:52 +0900
-X-Gm-Features: AQt7F2psMb6xxXf3GnQm9t3MP71E8p1_MPJjx1ZxbXEM5Jglku_brHLBirqOKbg
-Message-ID: <CAADnVQKzPyWo0GvFymxNSmMV63ZRtKGoFaUPvZCE59q0HbV=8A@mail.gmail.com>
-Subject: Re: [PATCH] mm/slub: reset KASAN tag in defer_free() before accessing
- freed memory
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E0B6F18000D
-X-Stat-Signature: ss6wzq7qs9skiwo6337iqadpnasrydwh
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgC33pujIDlpfef4BA--.9918S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxur1kur4rXF4kAr47AFWkWFg_yoW5KF4kpF
+	nFk3y3Jw45trW5Gr4aka4UZa4fAa18ta43Jry7Gw18Z3Zxtw1YqF9Fyw18XrWUCF93XF17
+	Za909r48C3y2y3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
+	6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+	Ja73UjIFyTuYvjTRNiSHDUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: cgzcoftujthfxefhjx1hwmj5n5yyxjag
+X-Rspamd-Queue-Id: 2DD3980007
 X-Rspam-User: 
-X-HE-Tag: 1765350364-683189
-X-HE-Meta: U2FsdGVkX18JeA8MXOcVPiSp1O9Zsmh6i5trjZtslopI002YX7YtxysRXLrMOIIURloJDFLczOnJ7N1EPi+LJqUtHFoZqGjhiliYQ4PiCQ9g5aayinR51qsMp1luw+c6/NzbTqk3260G+RtKE9Cfk9FM9hJ/S97hDu33StVTv5/qi6oseBUvXdyQjUoEL5BfQtOl5kV8gplvIjEa0pNWDC5qsFIq20GC/DngDoIJVc5cOVIyLn/VlAbXR4tIUDeGfiL7VYhKyMPiRI+aT/E47Dc6XFm5LtT0iDrOTtDg/2jhZaURJbJ3au3moA5+GBBEjHh7taJ8tOtXFo090AM6SMOWog1Gdd3s9cCcUsBNLyLj/GzEKjKP9CY5k8vGSsATOCggKUFjrangbrz1pFOlrRunB4NPSDWb+p/uKO12V2IdjxG2EeC5/Ao6hmIKgcoCsy3Bfge+uv3P+fvc8FqI1hqAhigs4T384BgoGEGnp0UPszZaCfofwSi9CUpuPXs4RWubXDMwgP+lQs3Xm2pfSqlVnub5iCr27p1C3GHmuKaddJL621TYfcdu1xwfTgiT4QymsIGhqXqO31Rff3whrPa96bTD3U6EC6GstLEm6jE1lFEhhZzvgG3aEy45/1wPxnaxR5512IhSekjARUKXgzTmWoGPkxOH354MjbqDfm1H6Ozzekdz2kqXv6KeNYk+Fen7yaPIaHA3WAHnGx7y/EIJRyVoIK+XjXLwnRL5sN9S2f/dQfS8iF+tHw2hZ7rd02a4mvICrkFWPzbeArqYOA6OA5xbUs509bYS5F4C7xpsoCdjWOyN88XHO0jHTpdDfsRx9xA0hqiMx23dXNHF19O9Ei+v+Np+eDXSD5cZOAcrEcYByHfnKYwou1h6FoBwa4gvEkjRQFFUUiAk9kurkfHj4HkWGj3v1voMWn2DQEYFriugfvsBpHzKmxfZgPAhp4XTjtm3Gm3YG+lPVZt
- MQvWKtNw
- 89qRgsG7kEq2HX/lbdZdKQ82H9vhqx00psMDs/kGsG2S9IZOTs/UTcEpGOG3T3WxvuzxibAgjEEqj6T6dPN2NwbnGNHwvPlrc0Am3H97Ev/HFOhsYEayVKAlIUi+3PMuj4ywmvJO6yl2vs0WU4dn6HCwTl7TQ3ztIayaRTWwauwqHaQ413g8/ahbcNrKFbOT/g3zyE+iEzVxcVu4lH0q+a0bMQ6v4xkse2Yk9YLLThPdyle9bUYTR4OSH/8UomrhDO5WQn38HXReQDN3Dws5osqgJfo74Qxg0IeEO+JOi/ulut+vAtkz6tf/sxwVL9ZaydTmxwRjeNvDBmDGRa71KB+aM7IYTJRGA9pKO7OgzjfZMZkb3/8KEKGrekrd0QXhiwS/ZDt0q9Q+FKP8b/wc4nEJeisF93klQhrKsNNB0GQg8PlioQd0O+sohgvDNeBcaT0Sp2oboXe+KPCtLl+3IPku0jI4G+u5A4ZeVj5Ew6eeABmHYVUovz4TimoQDMTE0qkWax05uJ4IJ/Xgonbvx9TrAXKH5DPHxdrozk+9kE4YKlbeDH5TS+Jsvo66obz1BBfwrqkX43dAGDl+7QG7sfbN6c/j7bAuUeglG67i73pB4OGz/9vGuYdOJibCIuust69cN4UgVNpcIOBRAX9rH1cds6d6W+n4nSgip5jdzZ1IuEWPSFbnE/2xyhN15Gug8ekwQ
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765351604-860531
+X-HE-Meta: U2FsdGVkX1+x1ds7jVPk1nqV/4vVEZDBLO6mF0B0N6clg7LiEEzdx3g7/6P4GmX6NwGJeEkcnMnibgmsgP93BPpE7xqi1FJyS0K8KVk7CTijKmc96JwqNP6EE0nblbn9joNVBontLPr+/ZF2Kzj88PEBb3hfhYdX5e5Nr1O1uakKcTzfeWh6pYZ2B9zvstw+TlLRbfis4HjkRUVp0cSlaY5ot5sSuquC0w02kcpW2T3ShxJgqFciV3v7yLRo1nNXip/OE3wYxMVm6BRQR3fnaUhNSvKQsMcjmLNzaNjGuvnFktvXp8VTgfUFGwtgBQKfbuRZCozWOIkml9zevom3PltXf8y/jg1gCq/5yTKoVOQAF3wVxb5JgkogCvEd7zqT4GFgB9WpZnkgcdseEmZY5jcjtl9IgXpr1p4tn0bUTH9qwQuzZC6TpObdiw8ybrTYr93j7twgbLf/WgAU9ztmlXvKF5QGJUmkyS23IhW2RUPsV1MY5kequ8Cbv5o/OGiwSb0Ll/8qoGc7SUTz8opjwrawjcI1G4np7KthycCIAmId/2/55v+XtSuQCygnavFVbz8QOQ8u4yrbyBNXjFqybHM0oUMdZz//bEfbHuQJ6B6XE4RCaSaijAZw723SvvvHow8A+v2rkYKHvTuxImuFg+eD3jZEQfvhpXfJ4jnud/8dweEIITHycLODZRxDMVWnb9mPHjaKWTB/5Ker0pAURZO1Pb/1c+n9Tu6r97pYreeFSlHFWEfVxAa/CR8PFvRLJAaDzXnO0X1r9eECF4KdMNddKNDFN687RYpFIBaMkN9nUUuOcOh7opQ8Hawn1eQZA6+BNWhQk5hmRAkZ3fbRRcpZ2Q5+2LWRg9rQRNiM8Rw9hWM6Wmn7JJx04JloH9BD9Ln8kIMgne7rH6j6Zrpl/8zNxExEQku5LlKPk9jY4SPYAb1ZfPlhQy5pRa6KGHvl84SAoJFGf9c7xv4/2J0
+ Brj2frna
+ 52/6D1oYj65h4Cyl6g/EgLIuFkO+Tbd4Yp19WRYTwQ/jwTAuaV4A6rY9pvAoMTMXfK8BZi7GqdgwH7c552PBYe4v/9onHzWuPocUr/V2TaNVCsYWD3N+wihUSGJ6YN4CHii6PqD49elJoN16knYanGGdYMeR4ZevmlgWg8vFNlEgWtHwrJ9WnlebbAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,51 +116,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 11:20=E2=80=AFAM Deepanshu Kartikey
-<kartikey406@gmail.com> wrote:
->
-> When CONFIG_SLUB_TINY is enabled, kfree_nolock() calls kasan_slab_free()
-> before defer_free(). On ARM64 with MTE (Memory Tagging Extension),
-> kasan_slab_free() poisons the memory and changes the tag from the
-> original (e.g., 0xf3) to a poison tag (0xfe).
->
-> When defer_free() then tries to write to the freed object to build the
-> deferred free list via llist_add(), the pointer still has the old tag,
-> causing a tag mismatch and triggering a KASAN use-after-free report:
->
->   BUG: KASAN: slab-use-after-free in defer_free+0x3c/0xbc mm/slub.c:6537
->   Write at addr f3f000000854f020 by task kworker/u8:6/983
->   Pointer tag: [f3], memory tag: [fe]
->
-> Fix this by calling kasan_reset_tag() before accessing the freed memory.
-> This is safe because defer_free() is part of the allocator itself and is
-> expected to manipulate freed memory for bookkeeping purposes.
->
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock()=
-.")
-> Reported-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D7a25305a76d872abcfa1
-> Tested-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
->  mm/slub.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index e6a330e24145..46959c6da2cf 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6534,6 +6534,8 @@ static void defer_free(struct kmem_cache *s, void *=
-head)
->
->         guard(preempt)();
->
-> +       head =3D kasan_reset_tag(head);
-> +
->         df =3D this_cpu_ptr(&defer_free_objects);
->         if (llist_add(head + s->offset, &df->objects))
->                 irq_work_queue(&df->work);
+From: Chen Ridong <chenridong@huawei.com>
 
-makes sense to me.
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+The mem_cgroup_size helper is used only in apply_proportional_protection
+to read the current memory usage. Its semantics are unclear and
+inconsistent with other sites, which directly call page_counter_read for
+the same purpose.
+
+Remove this helper and replace its usage with page_counter_read for
+clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
+to better reflect its meaning.
+
+This change is safe because page_counter_read() is only called when memcg
+is enabled in the apply_proportional_protection.
+
+No functional changes intended.
+
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ include/linux/memcontrol.h | 7 -------
+ mm/memcontrol.c            | 5 -----
+ mm/vmscan.c                | 8 +++++---
+ 3 files changed, 5 insertions(+), 15 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 6a48398a1f4e..bedeb606c691 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -919,8 +919,6 @@ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 
+ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
+ 
+-unsigned long mem_cgroup_size(struct mem_cgroup *memcg);
+-
+ void mem_cgroup_print_oom_context(struct mem_cgroup *memcg,
+ 				struct task_struct *p);
+ 
+@@ -1328,11 +1326,6 @@ static inline unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
+ 	return 0;
+ }
+ 
+-static inline unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+-{
+-	return 0;
+-}
+-
+ static inline void
+ mem_cgroup_print_oom_context(struct mem_cgroup *memcg, struct task_struct *p)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index dbe7d8f93072..659ce171b1b3 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1621,11 +1621,6 @@ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
+ 	return max;
+ }
+ 
+-unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+-{
+-	return page_counter_read(&memcg->memory);
+-}
+-
+ void __memcg_memory_event(struct mem_cgroup *memcg,
+ 			  enum memcg_memory_event event, bool allow_spinning)
+ {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 670fe9fae5ba..fe48d0376e7c 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2451,6 +2451,7 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
+ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		struct scan_control *sc, unsigned long scan)
+ {
++#ifdef CONFIG_MEMCG
+ 	unsigned long min, low;
+ 
+ 	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
+@@ -2485,7 +2486,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		 * again by how much of the total memory used is under
+ 		 * hard protection.
+ 		 */
+-		unsigned long cgroup_size = mem_cgroup_size(memcg);
++		unsigned long usage = page_counter_read(&memcg->memory);
+ 		unsigned long protection;
+ 
+ 		/* memory.low scaling, make sure we retry before OOM */
+@@ -2497,9 +2498,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		}
+ 
+ 		/* Avoid TOCTOU with earlier protection check */
+-		cgroup_size = max(cgroup_size, protection);
++		usage = max(usage, protection);
+ 
+-		scan -= scan * protection / (cgroup_size + 1);
++		scan -= scan * protection / (usage + 1);
+ 
+ 		/*
+ 		 * Minimally target SWAP_CLUSTER_MAX pages to keep
+@@ -2508,6 +2509,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		 */
+ 		scan = max(scan, SWAP_CLUSTER_MAX);
+ 	}
++#endif
+ 	return scan;
+ }
+ 
+-- 
+2.34.1
+
 
