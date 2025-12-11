@@ -4,115 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C10F5D41C2E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76786D41C31
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11C536B0005; Thu, 11 Dec 2025 07:37:09 -0500 (EST)
+	id 477EA6B0005; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F4426B0007; Thu, 11 Dec 2025 07:37:09 -0500 (EST)
+	id 428F56B0007; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 031456B0008; Thu, 11 Dec 2025 07:37:08 -0500 (EST)
+	id 3181E6B0008; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E7DC86B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:37:08 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92F4F131170
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:37:08 +0000 (UTC)
-X-FDA: 84207140136.21.755ECD3
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B3F9F4000D
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:37:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ULzGzf/g";
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E0C26B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA5241A006F
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:56:37 +0000 (UTC)
+X-FDA: 84207189234.26.FE3744D
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6EB4C140013
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:56:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765457795; a=rsa-sha256;
+	cv=none;
+	b=jl9UeInjTRN/h262V2WoUzDhDRlnjiZyoW8fRVljaMjUrym8BWacByijtUvCIimeA0yqHK
+	BP/d5Dls/cNc5dh0INinV/iDKijF+NJphzgSh2v01qNBmdfC3Xq810trDYKf/k6sq2RgFf
+	uJFMvcpX1iqxBpvYDDc0LCgvglZh8tA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765456626;
+	s=arc-20220608; t=1765457795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qb7w4dEkS/WJYKdR+lnZ5LKlEUSJP7zUGNH1/GVMobE=;
-	b=AAy9W50hzVEtu0leCrqSh3JdHP0wVDf1v9c38r/jD128uijbQ9NJ4d3JwuT5VXdFOxJmZW
-	339R8HiE1WrfodF/TY7uzFkxiXDn+FnG9NoIwtdOUafCeVs2nadVzogxSrgTZ4IjHZGnQ0
-	f3UmlJ9ICtlUUeuixzxIDwnwpaqQMeY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765456626; a=rsa-sha256;
-	cv=none;
-	b=d6LpNKzsEEENqHFTFO1vsz9qPgNfJJbXFDLgv1cVKwNDW8j9t0xFj1YyM/0W2T50qJ9DKw
-	Ln3DiWnHZcDHJHZgozGqhzs4RGmfUV0MI5cm5XlBDy1hn2SLIkv4FkBSE+mzxpBVN+vPoV
-	VCs/rBLuoSfTZFsa3WCfsxJdaNYaJ8o=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ULzGzf/g";
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-93f5b804d4aso9213241.3
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:37:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765456625; x=1766061425; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qb7w4dEkS/WJYKdR+lnZ5LKlEUSJP7zUGNH1/GVMobE=;
-        b=ULzGzf/gHiig6hDnF41M7NiEf63U3+vnzp+hzmphrtvEjW+JCGzcP1a52wMbP30L5Q
-         adIrBLdckObWv1KKkQEiUmqrLyDJM7mdpes1DlONIWxz9U4IlqYFapSbmSSXn2G2+q46
-         UlT65qJw3DXf9CxWRM2iYY+SLSklSs1u0E/bzSa3z/hv9LEp44qc3jc8tXFvpiGMRsO6
-         Ni2WPNMpXRZRfesu6ppsuT7jzyhKY/uCn70KMPCw7LOFDDJMoS40DW2Uo9EMQJSuphIe
-         aRNPUBPPNvdRikBAGUpp10GIWnbZAVUKYDVmhpfC8EOWqusCryilD7Z1Aawb8HoiPHGW
-         557w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765456625; x=1766061425;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qb7w4dEkS/WJYKdR+lnZ5LKlEUSJP7zUGNH1/GVMobE=;
-        b=EWVOKvKoxKkK2bkaCVpPzz4fVehyL+HntEdJCusO4ZB72mKhx4o/SjsURfOg3Tf2hJ
-         wWA92toJieNRJIbbGZGiI5mDkEf/NGWuPACpbwngvz1EQI756hHb+4cYqbHUkMAMU/Yc
-         rNc1Mxs6Tv5KS3Af2u5/aC3TR/6Gx+JhKxNYxqSHssvkszlusqL8k6UYOU9OYf5e8WdO
-         n+dq2a3dOHESgkAGPLh53qWpBRq9LHvShFiF9bI0Zav30rqQUXUDtUY8KTXnHDLFVa3+
-         GhaIBtf33AZDmzSB5CV8bo9p9FGU/J2zI5vezmyyPZUkdXdnaeq2cliZ9tv8lfZo8ZoS
-         +pWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXp42z1VKI5ATrhFfkJWvcOKRNxRav10w90MLsTbsOaLqW9s6u+UuBAFuIbXCYhjUkCr+WUQqE1jg==@kvack.org
-X-Gm-Message-State: AOJu0Yz2DX6kD4fyFwEa1LNsfieP+n7EkmYUwsl6MqGf1gniXYbJAIKB
-	m3AFvg91e3uD5CqdvOU5vK872w4u3tGdyaxAiw9klpvcpeeedNAnksGlxz9MD1paY37sLn8llzM
-	j3DN0MuCQorP+lXIl0cyDeDxtaEf8Uos=
-X-Gm-Gg: AY/fxX7nsT/weDwKFDsuhAbiGM4sqBNSngvbtv7LTcH4pxV4y1aJmosSiI0NsLV09eP
-	54KT32a/HUSZ2frXmP4qKOpK2CAMIK4T9jTxBw3RUrMEqSux0NCUPGHBKTB8z8MB5PWAtzJ47C9
-	nFkEl0smmCZHs8oiOX+Toorw0IXIs4UxVt7Vd2rMm7PedvfojKWIaYhKWFXbEyvbXKgiQKrv19Q
-	pKG2H+qWzn5FS3sZNtZ56hDWfZvtgWehBWyBkO5qEf/uO3qtnt5TzYtj4Fgr+Mlj46UxmPr24tg
-	/yFhCQz9
-X-Google-Smtp-Source: AGHT+IH6QD73T3CQ2JBAUzE15s0jML3qHw16C343Rh4nwXrF61qHiGoVQrgUOlxSDKVLaFHRU4/Fj1pnToTM924tNUc=
-X-Received: by 2002:a05:6102:50a6:b0:5db:f031:84ce with SMTP id
- ada2fe7eead31-5e571eed9b4mr1779282137.29.1765456625268; Thu, 11 Dec 2025
- 04:37:05 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=IApp5Zq2pWN9QswcUIPFDpgq3y5QzfcLSKeWPisFBsM=;
+	b=FsjQHh/KsYFIyyyjylAq3vjNE8oLb4m3TYRMtZCfs0LPy8PrU3TOUKVqsRfcFZpPbmIkj0
+	YyhrQou5IvwfqYuT1ma8Dm0GR1qul+WxVCAU1nOeeR5/fk0iFv+owWFWuG1VnBTXGR0p9B
+	Mjv0mhUGgBcjayGG4NbCUhpV8/Ao020=
+X-UUID: ca2bc78ed69011f0a38c85956e01ac42-20251211
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP, DN_TRUSTED
+	SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:b815228f-5004-4bfb-8de6-d055e296cf9e,IP:10,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:5
+X-CID-INFO: VERSION:1.3.6,REQID:b815228f-5004-4bfb-8de6-d055e296cf9e,IP:10,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:5
+X-CID-META: VersionHash:a9d874c,CLOUDID:9d3d869a785c8be25cb357e3a72a6f05,BulkI
+	D:2512112056224ZFS4ZVI,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
+	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
+	C:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ca2bc78ed69011f0a38c85956e01ac42-20251211
+X-User: lienze@kylinos.cn
+Received: from ubuntu.. [(61.48.214.33)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 262288006; Thu, 11 Dec 2025 20:56:20 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/damon: add loadable module support for sample modules
+Date: Thu, 11 Dec 2025 20:56:14 +0800
+Message-ID: <20251211125614.1242713-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com> <af330c9ea188bd0f28189b1e6e5803f6de9d2abe.1765439381.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <af330c9ea188bd0f28189b1e6e5803f6de9d2abe.1765439381.git.baolin.wang@linux.alibaba.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 11 Dec 2025 20:36:51 +0800
-X-Gm-Features: AQt7F2o2oQ9UqEmkEwhl5rOFyhajnuLd2K2hl-pbOyh5rDa7buD-_5Vc_9Xr_KQ
-Message-ID: <CAGsJ_4yVCbP9EJ2KZu-83PL-LViB+zn3NPC5E61LKf+nWWNsWw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mm: rmap: support batched unmapping for file large folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B3F9F4000D
-X-Stat-Signature: kk5dgeopqw973h54shsjinpqobh8hn8h
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bsqrf39wswp1hmzadqf6capw91it3iz3
 X-Rspam-User: 
-X-HE-Tag: 1765456626-715802
-X-HE-Meta: U2FsdGVkX19Dh0OhGZDRqjZ1ky8S3buJRy6PuA5s2gcqIJYJ+IQhIvETwZSsEa2UYSCB7lgYPjOepltU+C7EdvE2kDbknB+VNo+KxgKnU6ZWGtJTB48M/qQQk6MkDhJ90HQePDJuCgyHPqlutIHt88b9iR+YZtkw9QCy12p1TKaBe2okKMwdH36EF3Z7fL22LhVthSsRYzOarMTasrvuRKe1vB1KUztd1NWu0h3U1trZTLJYmgD1aNZGIiehUFwsogIG0P4RGgDiCvSsu1V6Jqr5DZ27/3ESUAIm9eyTci+yjoZeWQJXDaiouYN3zKEsAhy0L3Yak5iGk7R18ULfACFgDKjXapj4pafEvZhqIHADty20SxWU0qSQgaRju0V3eFDGzl0hGhwp41YIGCnj9/Bn1YjoH5wwxHtTrAgsqSt5NZxVyFu3wDbadyG0s2n4ejZTSe87a6OEeNY9NwU2L+HqqBRQtQhS80GeXidjWDly1Gz1Nax+xXr0ZZSyKfBguwOncTUR3/tO+zYb/KUdqKzn0kfwpDNRE43VoQBjTsk8fpHz17ZG8LuX4i0I0oUSaBgSKSyJO2ZgYhk8sMBVg4U3087drLJvyAQVhQ2zp9FRpvN3AwOU8q5+kb6sRaoG413l+WMKDyvR2MGPSTWb9J8UQO7fLLaoAEmJP7pyobKe3OUXXCLvjwmNBlfmQbXDcpC/FdwRxNTBhS9chMKloXGy5ZS0Owru1rVbasFyD+xq9CfDVhW/saAf6dmQLaSxi6G5chOiAvF3fOrqCBCdQhZ3wXdjR+/S84JiKde+1SoK6mWJsmXnwdxIvt05Ffqzb97PfgxhF0PFVxn/Xu5taeTXyx1joF/jmS0rtLnT2PLH9iBHMqPXasDFyDJ6F3jaWOOwGLn6ofjrFOwphd0uEdjqEirQPswpQRsYds0UY+twaL/ECdYs8R3ouMAMzuZmmxmw3CZGBFAw7/eAVy8
- ZytGEqsr
- KuHgiSLnjRppKDyXsKi1klYeFUkX6TsakCftGD34Ced6Vqet15jKalSUduHJ1ubSqHiY5iYPJsc5/1w5/0kxa+jEb/GBoV/yR/o2yorZLU2HxlCOHQy9B/7BSr5YluxxsVM0kseVGsqYsseoC2SZYyHeTRLB2mo68S1WJdQmxjfCvNkR8uAw9SGPTpZ+J5Kw8F+TOilZDO+FKco4as66W9NsnpngS5t3VnD8zDKh5g4u0jr3uqrsZsUf7zm2mOW9jv+X8O7ZxmXKKBcD/G8qFCof3WnZcHfs2w58+Q112ffgLjCjYjvZqiVC1QBxvHQvWXckjk48VjYGjBOe3SWgXbSp7lUUhDFCmf3YxumFkDwuR4tosFe5HX4oR9iFhM1+HZr55kYk6gGxQ9I8onzbqUPuMcw==
+X-Rspamd-Queue-Id: 6EB4C140013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765457792-380614
+X-HE-Meta: U2FsdGVkX1/47yOdNq8OnXiYJKhJw+9GQqmpwcrSGiAriGMUxH7gqUGut2NGO29Kl5NHkDZCQUXEx5GuPnGD4LoR7XZ4ic6OPdBP/AErEXM4tbmF1z6i5LkKUwtZlMN1grGdNhSsFzxgihGng6/MF5DAuvsZouVYkR2XCh1Hb9+QbJk6oQzQID3nlnbsyfwGWt/s0BbuiOuyg+89dRxlCHGD51qeUEyxEzA73E66FktQG+Z4okvGMu3DI+97hriRvMDZ0J/13gPClbuRet+qWX8STNc9Sobo7n8t65kDDRlWYe0Zc6THIvdI+y+tgbLoNyjSes3T1TnHV5B0+RkULanAdlMSV9ftBZ7XLPx3bBh5f6Hz2bgm/N+FY2lP1lsjc4tohNqNe3C8czMSmwEA5hZRxxqR+oh/02XmFTzEGDkGKeog8IF+lDDAEuzQ8rvnJMMcRHzvNP0QmQoLxeH8z2VyoMbXjlnF5rAZDi298RjGcnBTYShFZFH85HVgVZDuq5vrS/+hWpufuiKE/ABuVFElH/56HFLLxjRizh+6dBewgLybi7ir/SmWgg8AeGo+S/UGVWiOonPhIN739gxa3I/j9yZSA+hatgSSds9iqoO8zXLtlgasbvy6fvQHQcESimd954UWHmwpLGwkamxKBKHyX/rsGk5wakymxxQrtu5bBTKTfNcI2Jma7pDWssuRXmvaKgrlRr2ZmVtIpChQ+nqxQX0lAeyDoe5E9qt3M+aTS+SJkls6AHr36f1pM1el0yfGRcpYFqlbP1xExAeYqmFbEvIMX2cQpJ+jvkwXGPELMwpJiYCCrx32uBQ+wPxtEBYSOaX+g+3AQMOEbTYYNGSClpO9s2WKYZtMl8nxlavGk5/B5xd3/WOUwgGaFro2RSl4+3tvbugoiqCxWbQgthbXOdEQUVLc/cr/Nvo9jYY5K8ZLuV/QboTfPbZVU8SvT80W5D2fRWRtavGlQ7k
+ 5huQCyd0
+ aYTLL0uEASVK9lpi681vLpDHQew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,35 +106,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 4:17=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> Similar to folio_referenced_one(), we can apply batched unmapping for fil=
-e
-> large folios to optimize the performance of file folios reclamation.
->
-> Performance testing:
-> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and t=
-ry to
-> reclaim 8G file-backed folios via the memory.reclaim interface. I can obs=
-erve
-> 75% performance improvement on my Arm64 32-core server.
->
-> W/o patch:
-> real    0m1.018s
-> user    0m0.000s
-> sys     0m1.018s
->
-> W/ patch:
-> real    0m0.249s
-> user    0m0.000s
-> sys     0m0.249s
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+This patch adds loadable kernel module compilation support for the three
+DAMON sample modules.  While preserving the existing built-in compilation
+option, the change introduces necessary code exports and configuration
+updates, enabling these modules to also be built as independent loadable
+modules.
 
-It appears quite straightforward to introduce file folios support based on =
-the
-current lazyfree implementation.
+Key modifications include exporting required function symbols from
+damon/core.c and changing relevant Kconfig options from bool to
+tristate.  This allows users to select between "built-in", "module", and
+"disabled" configurations.
 
-Acked-by: Barry Song <baohua@kernel.org>
+This enhancement provides greater flexibility for both development and
+deployment.  Users can now compile the sample modules as loadable
+modules and manage them dynamically at runtime without reconfiguration
+or system reboots.
+
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+ mm/damon/core.c       | 18 ++++++++++++++++++
+ samples/damon/Kconfig | 12 ++++++------
+ samples/damon/mtier.c |  3 +++
+ samples/damon/prcl.c  |  3 +++
+ samples/damon/wsse.c  |  3 +++
+ 5 files changed, 33 insertions(+), 6 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f9fc0375890a..2e16684e512d 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -108,6 +108,7 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
+ 	mutex_unlock(&damon_ops_lock);
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(damon_select_ops);
+ 
+ /*
+  * Construct a damon_region struct
+@@ -133,12 +134,14 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
+ 
+ 	return region;
+ }
++EXPORT_SYMBOL_GPL(damon_new_region);
+ 
+ void damon_add_region(struct damon_region *r, struct damon_target *t)
+ {
+ 	list_add_tail(&r->list, &t->regions_list);
+ 	t->nr_regions++;
+ }
++EXPORT_SYMBOL_GPL(damon_add_region);
+ 
+ static void damon_del_region(struct damon_region *r, struct damon_target *t)
+ {
+@@ -276,6 +279,7 @@ struct damos_filter *damos_new_filter(enum damos_filter_type type,
+ 	INIT_LIST_HEAD(&filter->list);
+ 	return filter;
+ }
++EXPORT_SYMBOL_GPL(damos_new_filter);
+ 
+ /**
+  * damos_filter_for_ops() - Return if the filter is ops-hndled one.
+@@ -303,6 +307,7 @@ void damos_add_filter(struct damos *s, struct damos_filter *f)
+ 	else
+ 		list_add_tail(&f->list, &s->core_filters);
+ }
++EXPORT_SYMBOL_GPL(damos_add_filter);
+ 
+ static void damos_del_filter(struct damos_filter *f)
+ {
+@@ -334,11 +339,13 @@ struct damos_quota_goal *damos_new_quota_goal(
+ 	INIT_LIST_HEAD(&goal->list);
+ 	return goal;
+ }
++EXPORT_SYMBOL_GPL(damos_new_quota_goal);
+ 
+ void damos_add_quota_goal(struct damos_quota *q, struct damos_quota_goal *g)
+ {
+ 	list_add_tail(&g->list, &q->goals);
+ }
++EXPORT_SYMBOL_GPL(damos_add_quota_goal);
+ 
+ static void damos_del_quota_goal(struct damos_quota_goal *g)
+ {
+@@ -409,6 +416,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 
+ 	return scheme;
+ }
++EXPORT_SYMBOL_GPL(damon_new_scheme);
+ 
+ static void damos_set_next_apply_sis(struct damos *s, struct damon_ctx *ctx)
+ {
+@@ -478,11 +486,13 @@ struct damon_target *damon_new_target(void)
+ 
+ 	return t;
+ }
++EXPORT_SYMBOL_GPL(damon_new_target);
+ 
+ void damon_add_target(struct damon_ctx *ctx, struct damon_target *t)
+ {
+ 	list_add_tail(&t->list, &ctx->adaptive_targets);
+ }
++EXPORT_SYMBOL_GPL(damon_add_target);
+ 
+ bool damon_targets_empty(struct damon_ctx *ctx)
+ {
+@@ -553,6 +563,7 @@ struct damon_ctx *damon_new_ctx(void)
+ 
+ 	return ctx;
+ }
++EXPORT_SYMBOL_GPL(damon_new_ctx);
+ 
+ static void damon_destroy_targets(struct damon_ctx *ctx)
+ {
+@@ -573,6 +584,7 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
+ 
+ 	kfree(ctx);
+ }
++EXPORT_SYMBOL_GPL(damon_destroy_ctx);
+ 
+ static bool damon_attrs_equals(const struct damon_attrs *attrs1,
+ 		const struct damon_attrs *attrs2)
+@@ -742,6 +754,7 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(damon_set_attrs);
+ 
+ /**
+  * damon_set_schemes() - Set data access monitoring based operation schemes.
+@@ -763,6 +776,7 @@ void damon_set_schemes(struct damon_ctx *ctx, struct damos **schemes,
+ 	for (i = 0; i < nr_schemes; i++)
+ 		damon_add_scheme(ctx, schemes[i]);
+ }
++EXPORT_SYMBOL_GPL(damon_set_schemes);
+ 
+ static struct damos_quota_goal *damos_nth_quota_goal(
+ 		int n, struct damos_quota *q)
+@@ -1371,6 +1385,7 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(damon_start);
+ 
+ /*
+  * __damon_stop() - Stops monitoring of a given context.
+@@ -1414,6 +1429,7 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
+ 	}
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(damon_stop);
+ 
+ /**
+  * damon_is_running() - Returns if a given DAMON context is running.
+@@ -1469,6 +1485,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+ 		return -ECANCELED;
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(damon_call);
+ 
+ /**
+  * damos_walk() - Invoke a given functions while DAMOS walk regions.
+@@ -2924,6 +2941,7 @@ bool damon_initialized(void)
+ {
+ 	return damon_region_cache != NULL;
+ }
++EXPORT_SYMBOL_GPL(damon_initialized);
+ 
+ static int __init damon_init(void)
+ {
+diff --git a/samples/damon/Kconfig b/samples/damon/Kconfig
+index cbf96fd8a8bf..87abb8c10926 100644
+--- a/samples/damon/Kconfig
++++ b/samples/damon/Kconfig
+@@ -3,8 +3,8 @@
+ menu "DAMON Samples"
+ 
+ config SAMPLE_DAMON_WSSE
+-	bool "DAMON sample module for working set size estimation"
+-	depends on DAMON && DAMON_VADDR
++	tristate "DAMON sample module for working set size estimation"
++	depends on DAMON && DAMON_VADDR && m
+ 	help
+ 	  This builds DAMON sample module for working set size estimation.
+ 
+@@ -15,8 +15,8 @@ config SAMPLE_DAMON_WSSE
+ 	  If unsure, say N.
+ 
+ config SAMPLE_DAMON_PRCL
+-	bool "DAMON sample module for access-aware proactive reclamation"
+-	depends on DAMON && DAMON_VADDR
++	tristate "DAMON sample module for access-aware proactive reclamation"
++	depends on DAMON && DAMON_VADDR && m
+ 	help
+ 	  This builds DAMON sample module for access-aware proactive
+ 	  reclamation.
+@@ -28,8 +28,8 @@ config SAMPLE_DAMON_PRCL
+ 	  If unsure, say N.
+ 
+ config SAMPLE_DAMON_MTIER
+-	bool "DAMON sample module for memory tiering"
+-	depends on DAMON && DAMON_PADDR
++	tristate "DAMON sample module for memory tiering"
++	depends on DAMON && DAMON_PADDR && m
+ 	help
+ 	  Thps builds DAMON sample module for memory tierign.
+ 
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index 775838a23d93..3e9efc67a3ea 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -238,3 +238,6 @@ static int __init damon_sample_mtier_init(void)
+ }
+ 
+ module_init(damon_sample_mtier_init);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("A DAMON module for memory tiering");
++MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
+diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
+index b7c50f2656ce..290a3335aa06 100644
+--- a/samples/damon/prcl.c
++++ b/samples/damon/prcl.c
+@@ -167,3 +167,6 @@ static int __init damon_sample_prcl_init(void)
+ }
+ 
+ module_init(damon_sample_prcl_init);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("A DAMON module for proactive reclamation");
++MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
+diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
+index 799ad4443943..183bcb7b8516 100644
+--- a/samples/damon/wsse.c
++++ b/samples/damon/wsse.c
+@@ -147,3 +147,6 @@ static int __init damon_sample_wsse_init(void)
+ }
+ 
+ module_init(damon_sample_wsse_init);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("A DAMON module for working set size estimation");
++MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
+
+base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
+-- 
+2.43.0
+
 
