@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51A68D3E782
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 06:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A36D3E78F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 06:05:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEE416B0005; Thu, 11 Dec 2025 01:04:20 -0500 (EST)
+	id A2EF36B0005; Thu, 11 Dec 2025 01:05:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9ECD6B0007; Thu, 11 Dec 2025 01:04:20 -0500 (EST)
+	id 9DF146B0007; Thu, 11 Dec 2025 01:05:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4576B0008; Thu, 11 Dec 2025 01:04:20 -0500 (EST)
+	id 8F5AC6B0008; Thu, 11 Dec 2025 01:05:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BF316B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:04:20 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 124DA5B35E
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:04:20 +0000 (UTC)
-X-FDA: 84206150280.10.1799CD4
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 80AC26B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:05:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01B3989E36
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:05:54 +0000 (UTC)
+X-FDA: 84206154270.19.812CA87
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5C995C0002
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:04:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBQBsdtH;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4FCB240005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:05:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AyntbrJj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765433058; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765433153; a=rsa-sha256;
 	cv=none;
-	b=ZTv94zZ/UuQoJeKm7kBkCX6nQAjYIucEcYudMpAwTV6NXUB3lx6XOYSrno1M96SOhGy0KV
-	BAcAwxa3sLq1k/t/v64pOCNCyfn1yx8rRfeswdMnt+VbydM0isQEAogIyJ6rLVfPxL/jma
-	mfvp3pvaTPzcwicBkLTmGWoIuDY8OpA=
+	b=OeAoo90q9AQp1HYY8v6ZMprI0Jq8mTvHfNOuiUQl7H6+i5HRdEo7e2WTZb+jP2kVagWKsj
+	1GWgjYC2TLyI3emkN/uMQ++OTOfnI+0zlZajwkheTb+WI5KJPq0HxUuLjLZqB+hBlIwwm6
+	I9UVKixfp6QBSY9ny/81nX/9UOQe7hk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBQBsdtH;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AyntbrJj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765433058;
+	s=arc-20220608; t=1765433153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sd58r0YfcpR0GUofnOsw2xNxZ/cSwsaP47SwSrxjjTA=;
-	b=i81h904GC5wrBLALlON2nLf0MhcI6evLt1v7mwlzw6mbW/pFHXMvhOUJhUsaItvH7uJvTC
-	MljD9b6t7TbmaIuvQVTOCDsoL8cHlRK40gEBELcrxAhlU5zHDpd2OM8m0e1CBriwYcpIyT
-	1CtRkmwHkPvKzqL2fqBc8xBT2Jmunao=
+	bh=tTrSWQLyjAFT4AbE2eV+80Hl4muzdoL2lV9UU0u9274=;
+	b=R17YWL8QYaCi6Xxgy0+nsDNuWHZqn4hXJlM8Cg6fQgALTrVBqO9SSIyookg+bjkrIMQSFS
+	mRQ8THUrRWSS4eAw3lpdhImeRQb1I0z6/CawphA54mb3mKdNBVdIZ771TEXbgIe+hagfaS
+	6ggJKIPuzuGK0GhfVbv/d1BxPhDHbsM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10B3F405FA;
-	Thu, 11 Dec 2025 06:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E092C4CEFB;
-	Thu, 11 Dec 2025 06:04:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FE8C43EAA;
+	Thu, 11 Dec 2025 06:05:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCD6C4CEFB;
+	Thu, 11 Dec 2025 06:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765433056;
-	bh=BVPTFvay2BavFmovTX+OOoOefFkQfN54jZGSLeoCJNg=;
+	s=k20201202; t=1765433152;
+	bh=7Gc6odwQPHaTgsU2FCJIBG3liP08oRT8KS4tGYydvqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBQBsdtHO+uingZR4s55C823rSHJT9TLEELvdy5RwB4zRpzx0SA7f6PkpdZBY5Tms
-	 zcaD/Nwr/kqJPi8YaDr2BuTs7Tern92Ss0DF0K7kcPrfounpN8ZxRifQH6K4yoJO6t
-	 ljlvYOZPvFML62jA98n0pGFwRnYHfAGEcMu/BkbHdoFDvDZYncMm/iUJ4swiqgPuLs
-	 hwH8zgzPosSVoZ5rhadruP7j5804gxIQlUEFZgfbj8ok/5mXlTBtcIw5EDui/bd4Go
-	 J5R0zOuyjlolByr7jhLq6EmgtdeKsjrUdIIcWff6jYnZ13FB7Ae52jgIBZGnqvuPZo
-	 7oV6d7PDdJyJQ==
+	b=AyntbrJjb8YdKpboqST7GrJnEjz1l0RDixnpjegtQyFrcq1DiBZtxpOYIXOQuo2Km
+	 5BUbRC7NlGoGU+C+K28sd+p23yjMOJ5x3ArgNswVR34QQKUpbWPEin+o+0MTkq/xfH
+	 JZkoq69/JS9MHSg81kV3j9I0n9qSndQOT/L4rvrnS685MUg0p7rqggt4Q7TSh9/ak6
+	 PRjj5DaNHIkGJbesD1Mqcq1+lbCx1ijvyFrR4QjwkkMwqkJDB0l67f8jEdKR2Ql6Gg
+	 /hvVCc0vfr6S5OzHtNuK8/n/oGxw9XFWhDPpLbpLs3x7p+evvD/sxJLfy88hrwIzRt
+	 SVGpqanE68U3Q==
 From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
-Date: Wed, 10 Dec 2025 22:04:12 -0800
-Message-ID: <20251211060413.60534-1-sj@kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev (open list:DAMON),
+	linux-mm@kvack.org (open list:DAMON),
+	linux-kernel@vger.kernel.org (open list),
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com
+Subject: Re: [PATCH v3] mm/damon/sysfs-schemes: Remove outdated TODO in target_nid_store()
+Date: Wed, 10 Dec 2025 22:05:48 -0800
+Message-ID: <20251211060548.73803-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC6bJLf=LuBpm90n5poz8Sqhz9wjXtk5ypbPwkvhb1ptag@mail.gmail.com>
+In-Reply-To: <20251211032722.4928-2-swarajgaikwad1925@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6mi7zt3hqqf3wadc7wcmnxqqm3sq1chs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C995C0002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765433058-141297
-X-HE-Meta: U2FsdGVkX1+8tleKa3A3pK5W13VuMzDUvrm2BZ2M/GhBJgnnzV2a+EAnGUceRtp26VRXRmKJ3y+gHr0X+0r5gwb4SJtEHeMWNMLW+B8CWTbmPQERO7PRs0wJzaJHLkKvz7gKLn0Fk8FSwoAj/7qvBc2Ef8Har4fISyJDl1LQxDJmHKH6z/itgc0lg77Uxaclva0e70SomVto41KMfy4zyfWu02v8sS/gvc7XvfBBY0m4j2OL695l5aGXEWgEckzoYJ6tCobeF5VhJYnC788hRl5ea1w7wPdAlHr2zlC7DpBucp9aMR5sa8Sfw00eQTM7+m7SSCd7UC7Mih+xt7asgoyn+xiSE7RCa7KtUXm+0hYvtYipLjn0f8NRiK86sMXNHsTXE9/xJ8gK+crSIoWiR0H6oo3Al7sGllKQjQEd7o4K6+bM/2/94iT/pB+mLlxw3P1tgSsQHOlmcEMzqifsTjdZIHVJahlst1EcOCyMtN93PJtubce8v1qjxb1ZNi4iOjsQM5pc2iRhi6KlcvpQDX8OUH0BdXBym8kUM7VX+XNKZ6ftb9kBzMbGGMA1IiQCPSufNyRxwadJp+59xYTe75uCDp91p2jmZgnw79tiA5Eq16IPuHYV/k7cAnTmWiJstmAL8wEv0mcUBqovTgepXNlWtoUASHUfK6H4BR8SVu0Yg5uGG38ImY0ye1q76pLfUitim24PRwHybjcUj1Mn/PZkBbMVIBdHGeYFzydqEqMhRbYjP4UU6ctP7MDXSoA//8+osdMNYTNGtBi7/gyjz2cH+5HvbLzaLmKqEnUxKuvgRqtb1vwQItdDNIJHexGRByRpqvT1TuyaUt140FWxtPL+d1tpfTVRMnB0RERggAa24bHVDaTQXI7OrFinF9gzqSbJXM6FtdYsz1WdP/1fo36RoHt5YBPq+xSRNoeYgQl/5Z/IiLmHxOCVFaa6l2/H3gnC/giNstiX7cujjwB
- UrYwq2NN
- YSchgvqKdhKjHBLUhu+IVH4h8cBtAUhNBPTYYV3PivHp9nPTrIeBaKA+ucYpLvGzCdLigwjcLnZISs+ynM7XZ7B/FXhJon3lORZOGxnY+y7ersgnEEOzwpx5udoTW5fmtnZ8c1lVLyJbAJIIpH9p7fFrYg9vrBPg3ovIjGSQubK5VJXrWM50e0iPyWdSvInaie44nZZDU7Q9nwhgCjhQDTSEduFyoFb2XQBLSA9yJTYa4YYeQo3xLLmNDV7QEzYjIZm0vCWpqt54Ozk0=
+X-Rspamd-Queue-Id: 4FCB240005
+X-Rspamd-Server: rspam10
+X-Stat-Signature: u9wqh4iw9i9syj34yc4f97ez444a9qpn
+X-HE-Tag: 1765433153-565303
+X-HE-Meta: U2FsdGVkX19tbToUkhhDIYZvyeEGXgm1WGlOoZBmaRWWDIzG1QjxVnZrV3OOsZIQg6qxPOePbGZnV/3qyxeRav0pm99SEk1UPh+K6xTxEWVv6F8shHt5aLwg58T4V3Ow+g7NEpnBjbVtt88B9O3buEbYN3vTPeXPYmc0pKuHDHSskf8bvnv75rfIAYkEWyzjsHQhU0CTt8StoZp/oHAV8TUVfjao5gESAtf4WHxfksAS8ApXknqiuL7hcOJzakqr07yb/9XDu49SW3KpSajxze4se3Qo+vRs0Wb680p0rdE1221B6L+QNYbVuk1v8lDutQo9pRJ1ngBOE5ePIFHrQXqZRVAzK+EUkqb86m6jA0gdYyXgkNa+mo0BNyNAYNRSL2lcly5WAdoMi2Xh6m1QwlKCiBGm/tgUZuskWRYAnpTZMxI4ZCB2+pehH1XgyA3gf8hAs+Gp0W3V/wWmR5qIBsSyU+dyv2yR4ADZ6oiZH6SMrqP+FDPXFoUG3k/ZMCksfk7MwWeQEhv0dp07niDPlzbXjpnnm+57P8iairstMaFkEjjPP7+gffqyEUT75ml3eByT26pX+yvKx/tkYHg4aI1tSv5FjbQspNAzLNIOenF9yc5ZF5lBH8YIaCPGzwMU9RPKlJ0Cer3uNkpuO6aUwnb+cfuzjduu0upkzhx7P6ZGURsBPi4kwtJYR3/Nrt0gmxKo00H8eAKV6j+9b573HWlWGiAHc5ecbDQCxj11hT2YOcm+1wqBfCNZR4ZLrJo/nXKVoJK1AgiX2JJACVgCdhFE4Wx/vXpbMddjzPzcNEdA18louBe3rnSmexroNfQAE+5XnirERd2zo9HijzrLAlhHqUfMthH8RHVqkKRe5Gm3MhROQ/CsSzh9LejyGR7ELHaPopGyj7kPs5cE330pngI//vbcV2Wdrus7dIFXJVjq90iWinqye0pI9Dost7Q+S/V/oB3YZN4MLOT/GOf
+ /8bvO/xL
+ EgEVA7FWQbdRiir9a/7y8z8aECKIfS0h3vjFJjUdX31pBfESwZyQijG0WLKWarR/lkbtW2SMB/HHVaSHE1yfk3zGlFmlt6RkYjY9Oam3fOj25J4qN3uTfpkZ5+upPR04tKUPfzEGB87l11iP58zBr+yBXXIKQBddVN6NquPMYbmJOPI6z3R9OYiEUXrZqH0N5m4Py2V4FihP+fqHbN5+EUGyk+GC5KWye7BP757FHq+YL/miL826on/PMy7CBFuMg0Gk8ZyULTCbffFz8YXLE6VBkPqif/qqBzdJvHp1Z8ypM9VHkevVjF9+PFWsGyuQ5heCt8zxt5NHVVWxeB8wdf8+YIr9seVtk1Vue4l1MeGe7I0tEicBD07xSlg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,46 +96,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Dec 2025 12:29:59 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+On Thu, 11 Dec 2025 03:27:22 +0000 Swaraj Gaikwad <swarajgaikwad1925@gmail.com> wrote:
 
-> On Wed, 10 Dec 2025 at 11:54, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Tue, 9 Dec 2025 21:20:42 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-[...]
-> I suggested removing the dealloc_on_cancel condition from the patch.
-> When using the damon_call_control structure, if you only use kmalloc()/kfree()
-> when canceled without dealloc_on_cancel.  However, currently, in other modules,
-> since it is static struct damon_call_control { ... }, kfree() is not allowed,
-> so dealloc_on_cancel condition is additionally required.
-> Because kmalloc()/kfree() and static are mixed together,
-> dealloc_on_cancel condition is required.
-> As you pointed out in the previous email, kmalloc()/kfree() has the burden of
-> memory allocation and deallocation, and static has the disadvantage of
-> increasing
-> the code size.  Both have their pros and cons.
-> Among these, I proposed unifying them into kmalloc()/kfree() methods and
-> removing the dealloc_on_cancel
-
-Thank you for kindly clarifying this, JeaJoon!
-
+> The TODO comment in target_nid_store() suggested adding range validation
+> for target_nid. As discussed in [1], the current behavior of accepting
+> any integer value is intentional. DAMON sysfs aims to remain flexible,
+> including supporting users who prepare node IDs before future NUMA hotplug
+> events.
 > 
-> >
-> > Meanwhile I find the feature might look complicated, or not well documented.
-> > Specifically, dealloc_on_cancel should be set on only dynamic-allocated
-> > damon_call_control object, but that is not well documented on the kernel-doc
-> > comments.  Are you saying removing it is an advantage because it makes reading
-> > code easier?  If that's the case, how about improving the documentation?
-> >
+> Because this behavior matches the broader design philosophy of the DAMON
+> sysfs interface, the TODO comment is now misleading. This patch removes the
+> comment without introducing any behavioral change.
 > 
-> dealloc_on_cancel is only used in mm/damon/sysfs.c.  Here, since kmalloc
-> the damon_call_control structure, the dealloc_on_cancel=true condition is
-> required.  If you want to keep the current code as is and only change the
-> comment, it would be clearer to comment it out like this:
+> No functional changes.
 > 
-> De-allocate when canceled.
-> --> To perform kfree() if allocated with kmalloc() when canceled.
+> [1] https://lore.kernel.org/lkml/20251210150930.57679-1-sj@kernel.org/
+> 
+> Suggested-by: SeongJae Park <sj@kernel.org>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
 
-Sounds good.  Would you mind sending a patch for that?
+Looks all good, thank you for doing this, Swaraj!
 
 
 Thanks,
