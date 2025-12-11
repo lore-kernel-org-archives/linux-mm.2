@@ -4,93 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0479BD3E783
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D0B6D3B9AB
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:29:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61ABF6B0006; Wed, 10 Dec 2025 19:22:07 -0500 (EST)
+	id 9D4C46B0006; Wed, 10 Dec 2025 19:29:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F30A6B0007; Wed, 10 Dec 2025 19:22:07 -0500 (EST)
+	id 9858B6B0007; Wed, 10 Dec 2025 19:29:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52F846B0008; Wed, 10 Dec 2025 19:22:07 -0500 (EST)
+	id 874B66B0008; Wed, 10 Dec 2025 19:29:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 448696B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:22:07 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 958E7133EDD
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:22:06 +0000 (UTC)
-X-FDA: 84205287852.13.B2A496F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F06311A0017
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:22:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rqe6UzkZ;
-	spf=pass (imf19.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 71AFD6B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:29:38 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2361C604A8
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:29:38 +0000 (UTC)
+X-FDA: 84205306836.02.2CCE366
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0B640A0012
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:29:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=R+9YAy+F;
+	spf=pass (imf15.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765412525;
+	s=arc-20220608; t=1765412976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ybb6B9zUCkxqay2LUJs7i9guib6JBGoNoiItJmOjNA=;
-	b=HJ3mS6F5KLrgkwasLxeqL4RaCABq26yx51fLOb6gqFWKxfWEPwKICFY2So4LZj4Bv1SULg
-	l1tSK2jlrdUVTc0eqOopzaPbm9e6VwJrVerZVlMBHHjJmt1glyQFvx6kbHB8CzOsWCggX5
-	+LEjT9Js/NzPL/uytT1CgusbIanfkaQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765412525; a=rsa-sha256;
-	cv=none;
-	b=mrGh9ghl1YWQV0Nw5BtW80+a315Zu2ZKRvBntjBTmpZkmry0E16w61jegtlfgQB61FfYMk
-	EDxmR2R0ajdIwtwZ9uLsJoekG3aEUi5AHNsI9YpD/mTwk+BmQ+m6C5QaPFNOO7wmDXUCxu
-	AU7oogz84yDc4uqJfTQJ0yxcP9vfdsI=
+	bh=hph6c6mLrMrxrVM4J3elgrKqEusrkULz2AJc0PIUBG4=;
+	b=HqVYWrx+V93c2p8oFi+LVlRHEBaCLMWVBboTEmI3WC4cwqnJ87TVZRdDWFrJ0kLL65tfFy
+	hDDmub/+eazqbqWzpbYidhKE6b4xVDaIB6R06PBvitUHnZ6KJyeSrRM+xnFqpz7ipb1pqs
+	vziUs42LXpov9fIJ3kuIWO9JrrO+Xok=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rqe6UzkZ;
-	spf=pass (imf19.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BA4860122;
-	Thu, 11 Dec 2025 00:22:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BED0C4CEF1;
-	Thu, 11 Dec 2025 00:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765412524;
-	bh=RPl5WnXapSoEpkolaJGlgnCo9f6ZWioOSypmBl5OQ2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rqe6UzkZ4XIgCo5fZ2Vn/2anaRyCbaGxCqzFHStiU2uTPpqi1q6PmKY955a0yU45a
-	 3G/BIL0IKVRq817mjInN/Q4Hwa1bezY0e7aDNZpHuI6zy4hNaVHuRqM3PBIx2sp3//
-	 7X+O+amkAnWf+tnvHbqnLrEEOMZN37LHT4/UOjLbokrTq3AxsBbkAnQOuz+wWDZzfJ
-	 KC8UhrGpJWoKGu2UEF9ffgVrAla59R4cHvcO5GOp6Q9u8M5KOwamxn5Gzq0LFhNpSL
-	 MZTpbDTXLyR/Gyk7e/UDxJ0VW9gBsHJCFtGKTl60Bay6nPd8Lo7P03ALBZIswgPgIO
-	 +BQv9dIiI7wrw==
-Date: Thu, 11 Dec 2025 01:21:59 +0100
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
-Message-ID: <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1765406336.git.alx@kernel.org>
- <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
- <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=R+9YAy+F;
+	spf=pass (imf15.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765412976; a=rsa-sha256;
+	cv=none;
+	b=pnfY6cmmuSf2JC20AWwULjUYJzDeQkSk6ro4c6jzgJ0J0PVxcvr6bpvTKOEaXBKP5Sxm0t
+	8eJGYeOc5280FroqRnmaCdt3cNjP2FepqZpVF1/qTWuXNh+h0qYyOlO098W/orxvfa66rH
+	skw1DxKOM2rD0WWH5zYuNvIxdZeskEg=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-298144fb9bcso4296975ad.0
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:29:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1765412975; x=1766017775; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hph6c6mLrMrxrVM4J3elgrKqEusrkULz2AJc0PIUBG4=;
+        b=R+9YAy+FhtVAXQbc3YGNEAjN01cmeULdaQGwUAhTpbDiA4+YC7ZeNrzdmlFfQxvZ4p
+         N0Xy7FgOoUDyWHsBSeGbRfNMKR3xgDKQvyhuPok5UO7KXskr5DcGw/5RIes9pFsVbz/D
+         pyKSEYPbMoGljzK/CPYhVyzsVY+iV0kOiKlIJmKnZVW4YpyWXd8AhkmdnXL1MC/D7HhB
+         s8q6pAGaIfmPARCjVUeQI6dgMsmIND2Fd3aSPVuUBJAOiMiVJpzv3iXp+YPWw+uQo42e
+         LgWd2acjnL7g2NzUAs3Esvj09wAABC4A4ESf0N/7/MtsjQO3d6EjZV7teECvaTB3qN4o
+         IbaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765412975; x=1766017775;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hph6c6mLrMrxrVM4J3elgrKqEusrkULz2AJc0PIUBG4=;
+        b=EIOCmstWY/hRG6U1eP4ZJUMAFZO+MLfEJJ88VTsevRRm5zm+HkviFVVC/tECi/g3dJ
+         8/LnM7wBcsOepXlsdZAk5rZmpJH0nLGcC5MaEfWDTt3GRc+/fY8h0gKg2dn8/p1YJbjd
+         kRqAsUj5TfYsJsyjfLu1oLonLXvlIMJ+K6+1AoR5h8GhYjv59TdTYs62YfAinePyE4rK
+         Qwr+o1Qn8ApW3xOPkr/og87yYKC7z6nrlaXJegCBvrd7CFgrkzQR3EtPcfbfsP9SAOKL
+         jNnMhz0ISWtdBACvb/WEaC/MSzREG2a/TumQAJWvt2wD5pgBC2AErn53ag/MCTG3N2ou
+         W/mA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTUgiubsUlcGGyMC8BOncjKYv7yvjyJqTq/w5gljcfTZer1NH0+ed3HtsK9op5cUbxBWvkHH5/PQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy2v4N+N/kT9aJLwwCMYphOg0LXp9lXLdB9ZD5CD6laSaGjU1DW
+	OyeAEHCZsNtvRjHgA58P00b6eYqeIiOJOf7aPyGeFNCZaIVwhpG4wpdAb1cEY9QlsCs=
+X-Gm-Gg: AY/fxX4U2EBXs9Dsgiojfh1aBsLtskANzsOrFW3tSE6QXdqUDaMxsQ4RJJZRa1l1pYT
+	twsU3Qa+X0ZSAhFzHQ/yuAv6BmGcwCt2V1t5WxgR+CRryxE213IPlcyX7nyagcgE7D/Dg1iNscx
+	L65dGzkEo3SXuxYOZ2FwsRAeTxfO1yTkmULTtvUwlqz07aqUJUghQRIg2meujZaLOK6xYPDxVPr
+	JsYGnilOwgozCUX9F0A08kcEPeQGK75eWZoQEE3j1YHSc26XuBqYWbH2+Oy7zellQmyv6tRbuYv
+	GY8OpdGpWzfPOPpjOZq7TSpZQJW8P2gh4P6NFF0w7FgOoy0f2oA/0WefdIINcFQq2HiQULne7UW
+	Fj5o8Y532BjTG4imbLcrVeBo0l2XcjNTqc7c6KYy5u28HH4jQJa7v6QPt/ZUX6/xsHcvrC1KVvi
+	aGoBB3x7pcvO/3HPyIfLpjTI0HMNrPjQ==
+X-Google-Smtp-Source: AGHT+IEqajP6+u4eTxzUYHfF6PVb972s/3Qa3UlhPbS0/TAJuALl6ObT5PUNXanFEPyHtJ8XnDuE7g==
+X-Received: by 2002:a17:903:234c:b0:299:e041:ecf6 with SMTP id d9443c01a7336-29ec27ce2b4mr43176775ad.40.1765412974654;
+        Wed, 10 Dec 2025 16:29:34 -0800 (PST)
+Received: from [100.64.0.1] ([167.103.29.104])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2b8e0fb4sm539653a12.25.2025.12.10.16.29.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Dec 2025 16:29:34 -0800 (PST)
+Message-ID: <818ba76e-0553-459d-b956-520f23762034@sifive.com>
+Date: Thu, 11 Dec 2025 09:29:28 +0900
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wdgm72fj63kh6hzs"
-Content-Disposition: inline
-In-Reply-To: <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F06311A0017
-X-Stat-Signature: u9yyaqt9dspoeut6hcfdmhdkmifofrsz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/22] checkpatch: Warn on page table access without
+ accessors
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Joe Perches <joe@perches.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+ <20251113014656.2605447-8-samuel.holland@sifive.com>
+ <1dfa1e3566cafbe43a1d4753defef9c82ddb3b64.camel@perches.com>
+ <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
+ <273b638e-8251-4faf-929a-87432a48abdc@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <273b638e-8251-4faf-929a-87432a48abdc@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hbgoti6n3jwudu5eb6xkq9zfhbuwkgz7
 X-Rspam-User: 
-X-HE-Tag: 1765412524-402159
-X-HE-Meta: U2FsdGVkX1+bndaaQnFxrZvNCzmDQfOIMWkYRydJo7ELhKUTJ/dfAt6VsH5dSOT/4tZaab/aNpxEP5UCWpldqzRzyd2uqVuzqMFgsu4qJqIp48JiodhDWWSuTdR31Dy61fsi5PfNiN2DJXSjbxRl7d/0WJRPfQpajG3bFiiSPzV1iFIomcOuCMDGcj5Ua3xSttRMsdaa+qVhqupSG+6aUTjw7aWM8P/E0kt3qYnv9HtcUSIFK3AOfaQXLNtu2DCPsEB7IxL5CqG9y18pQ84+OPtxHF3dFVvAPowDvb868YAzu34LAoZU91/42da16rOuair50PLXPV1d2wyeaYrj+KtXHBavNt7AdaKbTOb7S2DsTInm8TcWWwNK+mi8NLKnEoHesseE6yVAgXMn/lzq2csT1hwm//vQvTt387bbylhEZX/iW3Mk3uIW3obFsbJvhpdxaQzsX5P1JC30gk3zS7Ktx50pnz7l4cnNfGZa3paWOtnlRsap4BMYRuwlSNmBel4/aNJ505D1oRqrtNAWfcPxw1jKzeZKxYjnmk3GHS2ZraOxZ+e42mWYO9varJgoCGngXN6YvBgOQrB7CQt2tWNjY5zgaAm+zkRlI0asOpzCpFj+n/n9XnSv8/u/GWTtbfTotyr8r8smd/bNQeaXsRxXnbLdd84hLe1bRXFC8auv9AGm/AFrG/bfJ8kq5EsuoAh1ZnMpA8lepU7QIgu898Ty7B1DJFsgYIu50g9NIBLKtlahASaZzfuk6b/Mpf7hXxoExjvnimk2jzYAIYsBJSd2eHag2l2/IFxRuZ00abdBEmHG4vRXNl3FtWihPn6FXioUCx/qCCYXpu3whJufgq34JxygMRJ14FgM0VhdL/G6v1LvcEKOrYXZjmTb5ChAN7nuYiZYvBhL7quEbWoLaFq0ZxDXxiKfNje+DbiG+/VGtEUpLMlaI53ZXz+VIyHPs5Nmx6BhOotJZsmd6z+
- h3U8zJwV
- rj85RiQxCzESabJk5oBk1brgGsAyA9PWyAje6MXZ5YxXoOZ1w6kIDqgz79qofQYmytXvCg3C3h5oSoJV/QHDe+gDSxnfRs1xMbbUY4tDMFiYq1JjPy/vH3GiIEmLzQqi5cHxpc87gfIsHu59vZbkQiu/ExEtPt/6E/6/CQbBCyf0hTl0LE+rzcu74SHnxxdojd6bFd7PEWELe6o0SI6Cjrwy4GC4u5C+m+X/pRijPyu9xaWXmIXnI3JwSjrfPwsWbxzx/fIe/zbRd5EE8sWWQUavciXSmsRAKGUG208XPt1VcVOklsjcL6pIt6ANDJH3e0UZ5WziEqS/eLAemSnzKmI6Z/Yh2tW9m87Ky3bljK0F0cilLW1FIjm4TMu+Ne6C6PiBCrEUiEPGTBn9jE7/Tw/HQH42bvS/0XsU93uFyL3jX/bS7y3G25XpNmIkNV5ZOSEkbQffx1AFNUd+trqkTNzh5fgwgumbEYdw07NW6CP2meuBzXSTClzErRXupB7tn0dWah10g77Q3Db9Vqu8102GHIkmUCwsUN2o0bJvWQVJ1TPiIAAtIzFJt9cQ+LlCq8Vzn6MmlHXc3ZFiIbby2fPpD6fc4ZARPcVsgHGexVImr0eA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0B640A0012
+X-HE-Tag: 1765412975-103994
+X-HE-Meta: U2FsdGVkX1+vwBWFZnuJJ+7HF8IRIRHK0R47pHEscZ55A3pGUIRNckzv5vsBcNsAAsFCbzWJd8K5Dm7AuhP6B5Wy+9uBkA9VY/mUfVPjAuY8Hs2VDmrpeUdUI0ng7/RXdTCX6GSPsjgRu8U16jNGrm+fvJkT5UhWwQCn7QMidlhGktmq7kZmh9+4NH1lDq/zQQfCDYL7oPJ3YSKqiiDBTeJ1E+bEs8SgHHhFgdYcX5nUX4g2nN7yextMOWT4Yw3KnH2jef1OWutYqy2lY2eQBgBi1rvxirF742TZpM1lbqgPL/Cj9PJ56xxwzbl6EOvmNXD16gN1P7RUfgLO6J2dXVAXkMjdCRF0iyHTONMPgwXxTqsgb5ajTaBEusTKi+zcNbHKKP8Cet8HLWHULmXWTviDu63ZC7N19hXcPpmXeI2DaQl1Xf3ZDAWkcvURi2ajdTYrWzA9dRRWMy3275mSJm53xwJ8eOsar+xlqyPhhvsyGNAa9nTx6cclpkdqs3L8gn7v3rT6Rb/FFatrhiC61380BU4SjXWxPnRPAUyzKHs4pK+bKP+0knNC+e/PmIDRVNZ1qx+soc4LYk5K1KdKJEkyIaNEdgB7ohN+obPaIX7DpOr4Ra8p25Y76idReaJYZg1MrpcJ28x4yUo2hTFb5jX+yodACIFFQBTm7xigYg5+cndEIZBIGtKI/qW0iG+vyp1QGk7IcNdGGaF+Gan+CSpyAr/qeCIZrWDR/hi62XJplJydja0DKb89m7WUJZFJrhlsVl1GPMiLROt98Ra0REDWDfx8uoCQdxrMCuP0QOI5FAaRexdDmjadRpwVkfqvhYTjEdvnfQpzWvM0jIB987H7LwA+xHvgMkQjrlcVxMMXMDbjYdkcYmvNa/xukV94dfw3KGLzHRKuhaR7ld52X/Bb6egIJpBYXgwAZk7L/EFoQbPDqrw64s+WF4OXAg0nR0jV95IYYVjAhva3Zwi
+ 2Y4RXn2C
+ W6PwgbZMxOhuODUV1yl8Rp+e4P4PsVuIHox8fNWMXkuLGtiNnw/aKuhTo0ctL30UOqXFMs4gw5MDuVJyRQ1DG6hiTxL6By0MP36daZJ28IWNibkPhHvr1QpzPPSO/q9er7mSDZ14DZf/PWG0N8NVtFVnB7NAAn47aTC8a8PWQw3LtScEfPaXMzj/QHTm7vuRlXzTvg2xUvA2kg5U9m9TXAMja02BeQujgxJ2/v4XyaefmEjQhbr92lZr/eZOG9oO4i3Q3k7wOlwrMF+i0hY+UFEkXqcfDlHkHnO6IrFskLG6/999bp7HEz0J/gvxP65bGBCTdn1mcdJbimobUSB9W9+r6qWy1QhLSSQuDBUlbJrEqwDPi5860ngKq5BYO9Oz1E7hg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,137 +139,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2025-11-14 4:17 AM, David Hildenbrand (Red Hat) wrote:
+> On 13.11.25 03:36, Samuel Holland wrote:
+>> On 2025-11-12 8:21 PM, Joe Perches wrote:
+>>> On Wed, 2025-11-12 at 17:45 -0800, Samuel Holland wrote:
+>>>> Architectures may have special rules for accessing the hardware page
+>>>> tables (for example, atomicity/ordering requirements), so the generic MM
+>>>> code provides the pXXp_get() and set_pXX() hooks for architectures to
+>>>> implement. These accessor functions are often omitted where a raw
+>>>> pointer dereference is believed to be safe (i.e. race-free). However,
+>>>> RISC-V needs to use these hooks to rewrite the page table values at
+>>>> read/write time on some platforms. A raw pointer dereference will no
+>>>> longer produce the correct value on those platforms, so the generic code
+>>>> must always use the accessor functions.
+>>> []
+>>>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+>>> []
+>>>> @@ -7721,6 +7721,13 @@ sub process {
+>>>>                   ERROR("MISSING_SENTINEL", "missing sentinel in ID
+>>>> array\n" . "$here\n$stat\n");
+>>>>               }
+>>>>           }
+>>>> +
+>>>> +# check for raw dereferences of hardware page table pointers
+>>>> +        if ($realfile !~ m@^arch/@ &&
+>>>> +            $line =~ /(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?
+>>>> (pte|p[mu4g]d)p?\b/) {
+>>>> +            WARN("PAGE_TABLE_ACCESSORS",
+>>>> +                 "Use $3p_get()/set_$3() instead of dereferencing page
+>>>> table pointers\n" . $herecurr);
+>>>> +        }
+>>>>       }
+>>>
+>>> Seems like a lot of matches
+>>>
+>>> $ git grep -P '(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|
+>>> p[mu4g]d)p?\b' | \
+>>>    grep -v '^arch/' | wc -l
+>>> 766
+> 
+> That is indeed concerning.
+> 
+> I recall that we discussed an alternative approach with Ryan in the past: I
+> don't remember all the details, but essentially it was about using separate
+> types, such that dereferencing would not get you the type the other functions
+> would be expecting. Such that the compiler will bark when you try to dereference.
 
---wdgm72fj63kh6hzs
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
-Message-ID: <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1765406336.git.alx@kernel.org>
- <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
- <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+Even if some functions a new incompatible pointer type, don't we still have the
+problem that neither type would be safe to dereference?
 
-Hi Kees,
+A similar option to a new type would be to add a sparse annotation to the
+pointers that reference hardware page tables, similar to __user. I have
+prototyped a coccinelle script to add this annotation, and the sparse checking
+works. But I don't have the coccinelle expertise to automate the whole thing, so
+there's a lot of manual cleanup required. And this requires touching all
+architectures at once to avoid introducing erroneous sparse warnings. So I did
+not include this for v3 because it is quite a lot of churn. Is this something I
+should try to fully implement for v4?
 
-On Thu, Dec 11, 2025 at 08:18:56AM +0900, Kees Cook wrote:
->=20
->=20
-> On December 11, 2025 7:46:49 AM GMT+09:00, Alejandro Colomar <alx@kernel.=
-org> wrote:
-> >Cc: Kees Cook <kees@kernel.org>
-> >Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> >Signed-off-by: Alejandro Colomar <alx@kernel.org>
->=20
-> Hm, this seems to be missing a commit log body?
+Regards,
+Samuel
 
-Actually, there's not much to it.  The patch uses ARRAY_END() where it
-was being open-coded.  There aren't any bugs in this code, so it's
-purely cosmetic (and of course, to prevent future issues, in case the
-code is modified).  Maybe I could say precisely that.  What would you
-say here?
-
-> Are there other open-coded instances that could be replaced? This seems l=
-ike a great task for a coccinelle script.
-
-There are many, but I wanted to keep them out of this initial patch set,
-to make it easy to apply.  When this one is applied, I could work on a
-second round that replaces more of them with coccinelle.  This is just
-for showing that this is beneficial, and to make sure that you ask for
-more.  :)
-
-Also, it's easier if there are few maintainers that would block an
-initial patch set.  If restrict the patch set to a few files, I don't
-have to deal with many of them.  Once I get used to this, I'll deal with
-all of them.
-
->=20
-> -Kees
-
-Have a lovely night!
-Alex
-
->=20
-> >---
-> > mm/kmemleak.c      | 2 +-
-> > mm/memcontrol-v1.c | 4 ++--
-> > 2 files changed, 3 insertions(+), 3 deletions(-)
-> >
-> >diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-> >index 1ac56ceb29b6..fe33f2edfe07 100644
-> >--- a/mm/kmemleak.c
-> >+++ b/mm/kmemleak.c
-> >@@ -510,7 +510,7 @@ static void mem_pool_free(struct kmemleak_object *ob=
-ject)
-> > {
-> > 	unsigned long flags;
-> >=20
-> >-	if (object < mem_pool || object >=3D mem_pool + ARRAY_SIZE(mem_pool)) {
-> >+	if (object < mem_pool || object >=3D ARRAY_END(mem_pool)) {
-> > 		kmem_cache_free(object_cache, object);
-> > 		return;
-> > 	}
-> >diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> >index 6eed14bff742..b2f37bd939fa 100644
-> >--- a/mm/memcontrol-v1.c
-> >+++ b/mm/memcontrol-v1.c
-> >@@ -1794,7 +1794,7 @@ static int memcg_numa_stat_show(struct seq_file *m=
-, void *v)
-> >=20
-> > 	mem_cgroup_flush_stats(memcg);
-> >=20
-> >-	for (stat =3D stats; stat < stats + ARRAY_SIZE(stats); stat++) {
-> >+	for (stat =3D stats; stat < ARRAY_END(stats); stat++) {
-> > 		seq_printf(m, "%s=3D%lu", stat->name,
-> > 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
-> > 						   false));
-> >@@ -1805,7 +1805,7 @@ static int memcg_numa_stat_show(struct seq_file *m=
-, void *v)
-> > 		seq_putc(m, '\n');
-> > 	}
-> >=20
-> >-	for (stat =3D stats; stat < stats + ARRAY_SIZE(stats); stat++) {
-> >+	for (stat =3D stats; stat < ARRAY_END(stats); stat++) {
-> >=20
-> > 		seq_printf(m, "hierarchical_%s=3D%lu", stat->name,
-> > 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
->=20
-> --=20
-> Kees Cook
-
---=20
-<https://www.alejandro-colomar.es>
-
---wdgm72fj63kh6hzs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmk6DqYACgkQ64mZXMKQ
-wqnO3A//Y/44NuPwFdMR93aY92M4uji8XMPgUWUuBllAjk0sc7RR5iOv7UZSRCBv
-4zGidrjrLQxN7pzXPjGPO1vfQ1w4NB1jsNSHN9Pwh7PIwM+/Qhr2t7XZEvv5drCI
-VifTsaRtdmhH9qXLDQaMKdl8idazStL+jLDkB+97t+DEH0n4eiAvUSEVXr5BPJrF
-4z68qYvzJIpb/XY+5s7t6QYmCcfmjPmj/i623AttoFEXPQD83itK7+3+xvtdOldF
-GWBk1IKbPzJseusCDpV0P7jMs7E/sTeY6386psYc5pWMx7I/Tw3X0tM5zdwAOTPW
-RgXE57lqIXQwvHXEHksdrBvqT0bNa6L/x5XTc4yUuE7kvt+Ba+QTVRfzo1MSFOht
-ROjsSotDmC7UTfqI2PPV/f6r2eItGbwKsjr7+YU2RMjxaiLnLA6PduBbArvIlwOF
-J7zNK79bvLEXa91Gw7oD4bzq3mUxf4TLQqC0ASpGpFMFgrVxqMKRWYvjRIXwU3do
-AgE6p5KaOwWBCL3Rnsj7hRPp+EUf/Pe0s4/J8UEMR+FOCt0Hjt56W4bjq2i0bhfl
-m5rcREdyj5O8mxSR79JrjykIrI3dcwE1i+nFZT8sa+k0IduVmVlkHvEyl4IDLE4l
-1e0JAS1KNk8NpqJPaEfhQ/0Msg0XZKC7Q8kqGxbLo0tYB7LnOwo=
-=niXK
------END PGP SIGNATURE-----
-
---wdgm72fj63kh6hzs--
 
