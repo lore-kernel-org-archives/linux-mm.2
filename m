@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C83E9D3B9AB
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 01:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14EF3D3E783
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 01:45:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01B476B000A; Wed, 10 Dec 2025 20:45:25 -0500 (EST)
+	id 151D76B0007; Wed, 10 Dec 2025 20:45:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4116B0007; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
+	id 0DB026B0008; Wed, 10 Dec 2025 20:45:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D38026B000C; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
+	id E47D46B000D; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6146B0007
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BDC8E6B0008
 	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BB4413BAC8
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63170C0767
 	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:45:24 +0000 (UTC)
-X-FDA: 84205497768.16.D6C8DC0
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 86137120012
+X-FDA: 84205497768.15.F652EA8
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ADEE11C000F
 	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:45:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765417522; a=rsa-sha256;
-	cv=none;
-	b=i4wE993Td3Sb4BY3SU+BjGdhBJ9s85g4Y3DRun4Nk1NTDzIdUusmjG7RHVIlYe5dmGedRm
-	w7OQz8vrd4bY7O8TO2mFY7X1g455/4TvrAvZpcqf8jiEU1UKjzt8FmiAtCoRQ4qQcPqZW7
-	XOhDWRZLv7RUWsiMoDPcWKhAhq26eoM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1765417522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=34BMZA8gs8ZLWrMrazutP7Uj+MptvOK6WMsUMF92mQQ=;
-	b=MQO67Dr9TOyrX93efNeCIZf+FxJB+0kVsRjOlywtqFiN8E9cC9VWd6uqN5ptxfmBL5MdMN
-	xOO4661E7IrfjZ0PSMjPTgNAyWrSLtx8pHm4kp+DlhFgwT7xC35TsyHg3LIIvXnVOrfjfi
-	jS2MrXOXkRPD1zxo/1UVK5/bYFAjt0g=
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dRb4X2xD4zYQtkx
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:45:00 +0800 (CST)
+	bh=bATo4aD8BcreVRTbB56k5oeNz2mItAaS0yYrXnIXCLk=;
+	b=cmi1Gs6IiCyHH7DKz52FaliaeyrjA2709A2LY3wMvpHT8DKAig2AL4DN7DRxWYzP5Uvzs7
+	d2LBqmv4LJRT9yFI2fpkkJanBvA5roJhXC83PUHxUo5jao+TLFOTot/vmu2vs8qyPsIAiu
+	4FHEyUPwPLg4sOcaFc+uf1I2sl23E5o=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765417522; a=rsa-sha256;
+	cv=none;
+	b=wrSqHncfyP7fxJLlVdPsaZbX5CeDrXrcqk2Ozdu2M2JQMTJWscmagG/GwCFm0+DBKmwJo5
+	mzvEy2gAr8l7+U0ENh2fHdjnAtxJp/xTOXlAswSL0Gd7h8OisMaPgoR7zwSAKLAQt9gN3D
+	dpDkN29PkMMqA9QTdeH7+MkL7UB0LgI=
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dRb3g3XdczKHMMD
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:44:15 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 6CA261A06DE
+	by mail.maildlp.com (Postfix) with ESMTP id 5BC1A1A08FF
 	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:45:16 +0800 (CST)
 Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP2 (Coremail) with SMTP id Syh0CgB3VlAgIjpp39lLBQ--.49534S4;
+	by APP2 (Coremail) with SMTP id Syh0CgB3VlAgIjpp39lLBQ--.49534S3;
 	Thu, 11 Dec 2025 09:45:16 +0800 (CST)
 From: Chen Ridong <chenridong@huaweicloud.com>
 To: hannes@cmpxchg.org,
@@ -73,21 +73,21 @@ Cc: cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lujialin4@huawei.com,
 	chenridong@huaweicloud.com
-Subject: [PATCH -next v3 2/2] memcg: remove mem_cgroup_size()
-Date: Thu, 11 Dec 2025 01:30:19 +0000
-Message-Id: <20251211013019.2080004-3-chenridong@huaweicloud.com>
+Subject: [PATCH -next v3 1/2] memcg: move mem_cgroup_usage memcontrol-v1.c
+Date: Thu, 11 Dec 2025 01:30:18 +0000
+Message-Id: <20251211013019.2080004-2-chenridong@huaweicloud.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211013019.2080004-1-chenridong@huaweicloud.com>
 References: <20251211013019.2080004-1-chenridong@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgB3VlAgIjpp39lLBQ--.49534S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxur1kKF4UtrWrZFWUKw18Grg_yoWrCry7pF
-	sFy3y3tw4YyrW3WrZIka4UZa4fAw48ta45Jry7Gw1xZ3ZIqw15XFy2yw18XFWUCF9aqFy7
-	Za90yr1kC3y2krUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+X-CM-TRANSID:Syh0CgB3VlAgIjpp39lLBQ--.49534S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxJF1fZF1fWr43XF4DAry8uFg_yoW5WF45pF
+	s3C3ZxZa1rJrW5Wr4akFyDur93Za1xXay5t3s7tryfZwnxtwn0g342y3yrAFW5CF97Xrnr
+	Xws0yw1xGr4Ykw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
 	Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
 	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
 	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
@@ -96,18 +96,18 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxur1kKF4UtrWrZFWUKw18Grg_yoWrCry7pF
 	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
 	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
 	kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
-	Ja73UjIFyTuYvjTRRCJPDUUUU
+	6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
+	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
+	vjDU0xZFpf9x0pR75rsUUUUU=
 X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: doegsjiiywtx5wo4hsurkggrc85rpfoo
+X-Stat-Signature: 74wngea56ubqmi5es9pykqotmuxxwxf3
+X-Rspamd-Queue-Id: ADEE11C000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86137120012
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765417520-968004
-X-HE-Meta: U2FsdGVkX19ju95WoIqGwCH2TWgcKJvD2pfkAAKOCP+xArNAHydtcGXZyqUiohTlq6oM6vCJXys/42cp9uNauuCs12wYN3SMXwMrCz/I9OIoImyAfjJK2qwmd2+EJAXa+NGoY2+qU0RYRSMZyFbd1v+dBbSIW2YX0fJfvTewpuqdlKt5AncB3x7lTQ/zm60etgwer+dDkDW7NvOrHvRQJQilI+8PeAlIpDYq2ZfMogPTA0gmFsckXiuBD8Vq4MfvnuNf0SvpT0Pvo2OrOz8i54gXrObxNkoLbSp70tSM3Z0n1hRxNjvRUXmitKfqkkaY3oWvTZYqrCuRQRis5cGCpPMBfOUXkXq7yCguymxit3buvSSxz5/ziGDv6en+T7mCRyDHcRopd6TzZT2IlUOzVeNrA9ddpY08zNtYvAVPuAzb87YiW9JNw9ppi1yGPskKiHD80nZ9br8hWtn57PEcFe6xt0MrJUGVsxguXNPE1zXzZbyExSNSV+DWJNGFMbvls2kBAoqlxjgafCRL1XLq/lcl1LxxxEfE6sw/h6Ol8n2Wt7DuSR5eEzhPvyOVC9j0/dosuOY57s/BqNB/NYGqqpCThH3KvOIFc0zhR/I9JQocTscOxgF41nEQG69cJ2L3dypoVqW/b3OyRXoZMrAvTA5PNp3PLmUoOQ3Ev7xYymvKugsgWf1ZOWdTcgyAJYa4QKhgVN0wZNXbutzOfW+cTs1D49g7WysYIe4JUVUnNdX/SQYWSwiClIC9kUc6THWQJVdFzOeSbI2/9oqWfrdWw/g+BXACv6CIlHJ7mrQ8GkpSJJWowza8PHjO0V7FjgnDR5syxHKNQAKVjWbIqwTtB5cy8VhH05tDE8WAyoGXOjUqomDF+jzcjrxcpfy2jTPlcMISPf3finZnlr9fxCOAs9ys+oGGwDl6WJA4O0LtoAx7E//2m9qZ6jn8AAXTjSzlpRByr9mAEdtXor16pfc
- 8xvwm/EX
- bXrS3kx18kVlQDfC6k/0R3egayIJFtDipuZFHEGYRxFSvqr4g5TMZUQMrmB2Qw+oPITIrzTDfuVmSPErB37KQCt0/U9kKCKJNm+9EzbLGcfLVpMgQHwpdhb9jNIoCT+Y2/aPxZdlAOmOGG+H6Vls4CZ+Im8PzhLNH6bDGL7KI5wM0e2wGtAMo6wgSjw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765417520-228259
+X-HE-Meta: U2FsdGVkX1/fPpZqBMzx9rBMNQKFbiuiqjq05rMuCxGNPiNxneMyP4FotaZQOgL6L33MbOZhQROA9Hs4K7IDLyixR8a/EUHDnrkg6Sm6Fn4vOL7Q9iI4ujqNVIsyzh3JV/HtOwl5lZtXdRVxylt76MbGnT8TlgdVXOHB1hkjiqcUgePa5Xkg46ffnrj3OvDb7a4myUHB/fZwMt0drmR1E+X7giBsN9Ni9JDdhELLrt8pc0oaBw119iQlODLTefBHfBhfZGzzR0frR7TOsn3j3p9uSDIu1ppDmXVHLsp55ouKqc2cDPVFOAR8pf+HIfnuGylKGdNg+Z9M/0+WWogRw7rvbsxZIg29D/9bOEi72QU6VoT7K7RhvRH7y1P+tmw7MCuOokSt2KPr0g6DqBwu/OrJGDyLJ/a9OmHh5u/3ckp2CoLHlupug6xiWK06/EwX7FxCJDF6buzrkqSoroPgAiIaRKuNofLFT8VF0SW3/IC4PBCgqgn5+sB/jTg/0KCjdDygbXhUrKlAbqzKb4I4Djcd9DZvz1SlYI6dr4ledaNMbtd6aP/g8LnjA2yoKwCed1FSqnnO6kD8YP8hF8Onqvupn2/ocltK1Pl15yxrIjd10iCtK4+xqoj6WB8neHpZbHMQwgBGcntCmuZuh7M5Ub1YNOsogIrbeddmJL0JQXnk8tRgpZNwU8IrhnefLPk/2F0I4skhYk1JD7e3P6iDckQ1hCq1rPC8kLAFzl0wpl3e1elDRD7qtlLvgPL5iK51Ky5Tp/UJvaXclAucz34OuZ3KtCnT995Y3XN4+O8QhmTXsjKEzRRomBGLZYaT0ywnQZ0+0INvVRxnlEPWdUyurx65zZJs4rPrGKiNQTn1kK3WCcI4AiYUKga9P3lo5MAAiNPhSgy0WfA+8nQZdhZ6ADy7CRsCvA5wXGBG4Vl9TSB+HDM0xDZ4FXpcUMsGsMqsXweThbX1D4MnR246rqS
+ 6tTLjEOK
+ rVupEo/Gf5g+nVC0CJLb0tT7yju2JB95pyV/R0FHGos0s7AAvyCeCdw1J0kcoieEpdffiesUxzfmNwpT2VKV9OdWshytBBdJIILvGihObsUghE6Cg3VtYO+es0UydU/QDtzW8EfGQGNXBMeDNtMNC+/tjJ79ch2WrIOeAA/gSb9HjUpnx596sYfCMdO3ZtrglrPKDupbjeom/9wiyYLfqa45fQyzyknInSOPT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,132 +118,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chen Ridong <chenridong@huawei.com>
 
-The mem_cgroup_size helper is used only in apply_proportional_protection
-to read the current memory usage. Its semantics are unclear and
-inconsistent with other sites, which directly call page_counter_read for
-the same purpose.
-
-Remove this helper and get its usage via mem_cgroup_protection for
-clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
-to better reflect its meaning.
-
-No functional changes intended.
+Currently, mem_cgroup_usage is only used for v1, just move it to
+memcontrol-v1.c
 
 Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- include/linux/memcontrol.h | 18 +++++++-----------
- mm/memcontrol.c            |  5 -----
- mm/vmscan.c                |  9 ++++-----
- 3 files changed, 11 insertions(+), 21 deletions(-)
+ mm/memcontrol-v1.c | 22 ++++++++++++++++++++++
+ mm/memcontrol-v1.h |  2 --
+ mm/memcontrol.c    | 22 ----------------------
+ 3 files changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 6a48398a1f4e..603252e3169c 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -557,13 +557,15 @@ static inline bool mem_cgroup_disabled(void)
- static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 					 struct mem_cgroup *memcg,
- 					 unsigned long *min,
--					 unsigned long *low)
-+					 unsigned long *low,
-+					 unsigned long *usage)
- {
--	*min = *low = 0;
-+	*min = *low = *usage = 0;
- 
- 	if (mem_cgroup_disabled())
- 		return;
- 
-+	*usage = page_counter_read(&memcg->memory);
- 	/*
- 	 * There is no reclaim protection applied to a targeted reclaim.
- 	 * We are special casing this specific case here because
-@@ -919,8 +921,6 @@ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
- 
- unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
- 
--unsigned long mem_cgroup_size(struct mem_cgroup *memcg);
--
- void mem_cgroup_print_oom_context(struct mem_cgroup *memcg,
- 				struct task_struct *p);
- 
-@@ -1102,9 +1102,10 @@ static inline void memcg_memory_event_mm(struct mm_struct *mm,
- static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 					 struct mem_cgroup *memcg,
- 					 unsigned long *min,
--					 unsigned long *low)
-+					 unsigned long *low,
-+					 unsigned long *usage)
- {
--	*min = *low = 0;
-+	*min = *low = *usage = 0;
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 6eed14bff742..0b50cb122ff3 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -427,6 +427,28 @@ static int mem_cgroup_move_charge_write(struct cgroup_subsys_state *css,
  }
+ #endif
  
- static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
-@@ -1328,11 +1329,6 @@ static inline unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
- 	return 0;
- }
- 
--static inline unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
--{
--	return 0;
--}
--
- static inline void
- mem_cgroup_print_oom_context(struct mem_cgroup *memcg, struct task_struct *p)
++static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
++{
++	unsigned long val;
++
++	if (mem_cgroup_is_root(memcg)) {
++		/*
++		 * Approximate root's usage from global state. This isn't
++		 * perfect, but the root usage was always an approximation.
++		 */
++		val = global_node_page_state(NR_FILE_PAGES) +
++			global_node_page_state(NR_ANON_MAPPED);
++		if (swap)
++			val += total_swap_pages - get_nr_swap_pages();
++	} else {
++		if (!swap)
++			val = page_counter_read(&memcg->memory);
++		else
++			val = page_counter_read(&memcg->memsw);
++	}
++	return val;
++}
++
+ static void __mem_cgroup_threshold(struct mem_cgroup *memcg, bool swap)
  {
+ 	struct mem_cgroup_threshold_ary *t;
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index 6358464bb416..e92b21af92b1 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -22,8 +22,6 @@
+ 	     iter != NULL;				\
+ 	     iter = mem_cgroup_iter(NULL, iter, NULL))
+ 
+-unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
+-
+ void drain_all_stock(struct mem_cgroup *root_memcg);
+ 
+ unsigned long memcg_events(struct mem_cgroup *memcg, int event);
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index dbe7d8f93072..659ce171b1b3 100644
+index e2e49f4ec9e0..dbe7d8f93072 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -1621,11 +1621,6 @@ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
- 	return max;
+@@ -3272,28 +3272,6 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
+ 	css_get_many(&__folio_memcg(folio)->css, new_refs);
  }
  
--unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+-unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 -{
--	return page_counter_read(&memcg->memory);
+-	unsigned long val;
+-
+-	if (mem_cgroup_is_root(memcg)) {
+-		/*
+-		 * Approximate root's usage from global state. This isn't
+-		 * perfect, but the root usage was always an approximation.
+-		 */
+-		val = global_node_page_state(NR_FILE_PAGES) +
+-			global_node_page_state(NR_ANON_MAPPED);
+-		if (swap)
+-			val += total_swap_pages - get_nr_swap_pages();
+-	} else {
+-		if (!swap)
+-			val = page_counter_read(&memcg->memory);
+-		else
+-			val = page_counter_read(&memcg->memsw);
+-	}
+-	return val;
 -}
 -
- void __memcg_memory_event(struct mem_cgroup *memcg,
- 			  enum memcg_memory_event event, bool allow_spinning)
+ static int memcg_online_kmem(struct mem_cgroup *memcg)
  {
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 670fe9fae5ba..9a6ee80275fc 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2451,9 +2451,9 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
- static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
- 		struct scan_control *sc, unsigned long scan)
- {
--	unsigned long min, low;
-+	unsigned long min, low, usage;
- 
--	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
-+	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low, &usage);
- 
- 	if (min || low) {
- 		/*
-@@ -2485,7 +2485,6 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
- 		 * again by how much of the total memory used is under
- 		 * hard protection.
- 		 */
--		unsigned long cgroup_size = mem_cgroup_size(memcg);
- 		unsigned long protection;
- 
- 		/* memory.low scaling, make sure we retry before OOM */
-@@ -2497,9 +2496,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
- 		}
- 
- 		/* Avoid TOCTOU with earlier protection check */
--		cgroup_size = max(cgroup_size, protection);
-+		usage = max(usage, protection);
- 
--		scan -= scan * protection / (cgroup_size + 1);
-+		scan -= scan * protection / (usage + 1);
- 
- 		/*
- 		 * Minimally target SWAP_CLUSTER_MAX pages to keep
+ 	struct obj_cgroup *objcg;
 -- 
 2.34.1
 
