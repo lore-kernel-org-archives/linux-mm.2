@@ -4,97 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E15F2D41C14
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:25:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B968D41C1A
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 260616B0005; Thu, 11 Dec 2025 05:25:22 -0500 (EST)
+	id 682EA6B0005; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 211C86B0007; Thu, 11 Dec 2025 05:25:22 -0500 (EST)
+	id 659A26B0007; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 127026B0008; Thu, 11 Dec 2025 05:25:22 -0500 (EST)
+	id 56F056B0008; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 01E066B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:25:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1679135244
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:25:21 +0000 (UTC)
-X-FDA: 84206808042.26.0CB1C0D
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4CC8F4000E
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:25:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=dkkUE25B;
-	spf=pass (imf27.hostedemail.com: domain of 815559068@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=815559068@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 486B46B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BFF3D16083F
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:26:16 +0000 (UTC)
+X-FDA: 84206810352.01.4CBCEEA
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6F6E640008
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:26:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=mi8c7GWM;
+	spf=pass (imf11.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765448720;
+	s=arc-20220608; t=1765448775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=muJJnWMBp9xL4OG/hh7aijxOXwNHCLCBN54PWmxRRdE=;
-	b=VY7/RxLP9zjdLl24no23Hc3AByH/Mni9NM/cooEzJWYPvkfb6lGJ+Uhaq5XS1E6UiVIVp9
-	h3cmXYVbfmALBJa868YL10zd0I3F1GN0Ur0kf+sdzvM6/jqKrHsBuV10W4/Gc6dhDF/H0B
-	cI8tsfpymvAzYlrlnJQAd2CnWRsa470=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765448720; a=rsa-sha256;
+	bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
+	b=gUjg/ut6Nx4vmyFMZvOoT2/AnRx2moyKwGoLq4FqZYNrfgXiPAkmLO6cUB8u2Y0Xj5f/LV
+	VVQp76CBxiK7c2CUNRwCFTUTYth2VE3a9tbIpa04DhQCRZ02WewojYd+xAn1ZwUbFR88qQ
+	gSm2jD/qYqqbN2pRyX8/B1nN8IFFgGo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765448775; a=rsa-sha256;
 	cv=none;
-	b=dgJizrzKrlf/EdErSIgNirXkImp2SmPDX/tiDPAa+n/DgQvzp/LHah7NRGFi4q3JovZzWs
-	aYr9HXw1BF6mdEFFBTW5ZZv7tWvWcQtNX5DTH1iqD+AWt86M3JXYGiXc9HaIqzxOEUOIpA
-	7hp5YKhpul9BjbA5Tj5VCyF4lSa1wXc=
+	b=pKzRdaSRMTx7UGANdz476c/562XZg6msgyiSz1AvmASt9dzVQqqKqCHUkNiTTYjdk9Jm3e
+	nvHoH/krDrA84sFnXe6XNn3vkKpo3E0OeNvOY6EMT6NrElC+lwS8ChwdF25S74D+7Whki/
+	U5B/rf32OnIgCV7+9d2RRkJyQ8mlgmc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=dkkUE25B;
-	spf=pass (imf27.hostedemail.com: domain of 815559068@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=815559068@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1765448715; bh=muJJnWMBp9xL4OG/hh7aijxOXwNHCLCBN54PWmxRRdE=;
-	h=From:To:Cc:Subject:Date;
-	b=dkkUE25Bz1pmb6Jmtqco2Wszb1yLEU55mouR7qShwKv8up3TtCkWHs5fgrQ/d06Hx
-	 G7pJPqGPmN4Nnozwrkykrnz9MM5psKARngBe19+d8RPo7NDOB3rm+eqqHO3UplS5kJ
-	 9W/5DaqFf0fuGu7NxVr/jceqtofv21DABe92SUEI=
-Received: from compass-pc.sustech.edu.cn ([2001:da8:201d:1107::a52e])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 64DA56C9; Thu, 11 Dec 2025 18:25:13 +0800
-X-QQ-mid: xmsmtpt1765448713t9xkouwxs
-Message-ID: <tencent_917BFA629ACDD8A2E6A32C53CEA147C66409@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNzndnV3ibA/KhHwsNIP1a+wO6MLVMRVgTqboTDPEHdfz8iY3Fy7vb
-	 9EE4GyPQp9UMnqSZJ7qOEMz6jx71hlQ8eIg7nBJqEk7aBZSuaWiUAPw8IVg1BoQPefvBdYJuwTBN
-	 qDc/cnwR4iX6hkbSbdDLILazoJ6aDYxJBH52MyH3TbwEjDZDGsDdTwlGdG6zX0ZRZ8SzkIxyCzU1
-	 uyokvXkWmFmAwqoE+VGSnZ/JwMMnjmYpG3zCQlYpxk/cOFjJ1TlHuA44uAo9NRER0+Vu5K6/8XT8
-	 5OJVdt6rxaUBVhRwMZ6HNZqR7oPoahiU+SwQMeZ4ZAbzxZoiwegKQpAl8ZtGTs5mVYjBpG1EeNNR
-	 ux5WZvsOoAOlvr+n/RLpImV0/y+5HpVBnooVza1GWBRDuhJ7CI4/PHc1sGxSqwd/coZpHhBqb41B
-	 6MdrElfCk511WZPPQdhV3I/0uEXDgbr1qENugI5tcV8VqXh3GjuK2p+FBb9+OAYLs45OmOTOq9Go
-	 avLfqgTRTpgmeVxc3ypbZPJcYSZ9xIv/Tlq5pIM7sjT8vMrmYyFccHdfXo6pqKIFM8DYHnoeVuTS
-	 Yp6YmwE7Rx5SOufBemTCjinVe2BQZ7ZmmUh55uQtshpbYqjTdEhMILJ7LVjZgcLRn1PjXQTs7u9z
-	 2P+db1BepT6zNIbf1Y+Jrx8ESHkicnVGTwmYBgRUk/Bsht7P0pGACEsQ1wm8YJMoYZbMvYhB+4OT
-	 CslSAc9NPbDplqjeBz5TmIA/WhT8Xnj+Fy2qU6lMEfAw9SqhF3XNj2zDqGocdSg8LWVHpGRpUPY4
-	 nuMjOquN1fxH9p0AT36sCT0AVfbhyiC8UYhTEq592H9lBxaVm3poQOK5H8/C3RxpQ0VCvE5DUO+T
-	 BnUa0Ow+IR75puE+k/IBVnX5wzGM7J033JNhqSTI234iM6PgnanzwNwbvGMAByqowVZWVEYwxHav
-	 SQC8GK8xAaaTu7T3TR9fY85vU1Q7K21Mg0kiSTvlw3jJZyNSizwWVCZZYTVI8BH+fdBTzMzo3xVZ
-	 iEbrB4Jbc/qT88YUd9
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: Yankai Xu <815559068@qq.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Yankai Xu <815559068@qq.com>
-Subject: [PATCH] mm/gfp: cast GFP_ZONE_TABLE entries to long to avoid shift overflow
-Date: Thu, 11 Dec 2025 18:24:05 +0800
-X-OQ-MSGID: <20251211102405.1102836-1-815559068@qq.com>
-X-Mailer: git-send-email 2.43.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=mi8c7GWM;
+	spf=pass (imf11.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29d7b019e0eso10903435ad.2
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:26:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thingy.jp; s=google; t=1765448773; x=1766053573; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
+        b=mi8c7GWM3vShOvL7c0Lal3+IILTJ603l5uYG/DbzuJJEQ42k8kiPzCz8MeOLvEHROb
+         rZRlUIOBTcWNbhgifptZT0lCvPcd7LDmoAgerC9ucBQ3+iTF9rXLSKkZT0XyCJs+898c
+         2GU0mgKZUL3fOB6+T2R93XxP6FKZRoy5jtgDw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765448773; x=1766053573;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
+        b=G8HLQDRFnYsnLycMvRaaulGkH+XvAkpMCgy1jR1p7LfwZ8r/z1qaKyNiCU4AxIddPo
+         vTvLiNDgk7oHtlWypVvwFufu/9BFJrexGgfBgHV+y34PrN9vCSpSCSzlFRoJdLEmZW38
+         CT+NQ5pTtBVsYW8/T2dm2KAUrGUPh+cX9gbvE1y0AcpIN7CPxywVq6kghw/u5QjNqsUr
+         1ZzE/mQvvnBZb+p9BLaxa8oM4DSbnPDl31A6dWRytQp1oBLnNg0AnkXmuKL48U8sjRBS
+         kf9ZEDiYxKRXNSZUPkep+udc2vk+8OFiccdS7Ck+SU0F8PS8cz567dhFGmfaNPlBvWao
+         evhA==
+X-Gm-Message-State: AOJu0Yw00PMMv7o9kJnBzGaELSX9JKTChQQhg+tBnbhp3roczACyB01J
+	9dS1rZ8LQGMXMkGIKmgWssTlKgfNd5YdK83vde5OkMieOzpI8jVSfAcimn9PIuUPYfamQ4ro17q
+	S4TIk04g=
+X-Gm-Gg: AY/fxX6QX7BFo8n4ldHTF0F/VzN1YY/sZtqNZpJ+qPJRCBg0aBXgNoWPX9rwGsRbWOu
+	8Zq6v5vu+wdWJKDNd2QFdaG77gCXyeIOBNoH/uayyGDrw/OzYwCJ8SYKlydvzNEoi0xjLjB3W05
+	KJlAiVxBOiiZ5FEzgqgIn0MxeJL87n/U2N9j47oUTmXk/wt9V6zYXEYsmXXSGHBcsrQJ3FJUCCk
+	FN3o994w55nfPPm3lkM/oa0IzQDtFlkG2o30D8iEI1Cwah3/SS5QqComiWR625+w9B8uknWyxiq
+	pSwi2rTC2nHYM+6DkFMoGnOhRuNNpn59zRnXiz0NS1JadIdysTKAMjRuyy2OWC7h1YLZMelKPTp
+	brFp6B3oH2ZGBynQBuGStESp1VM+ga5sHfi8yuGGIBzlffZYm4VRZva058oBESxcWPNUyMWssgy
+	ZTub7kyR+nPoaiCxWgTMhGRgWT1sNjh1bNqvI4D/jcrI8Wmv599hu27w8u1KG/R7OsB0Btb5I/r
+	6s=
+X-Google-Smtp-Source: AGHT+IHtxJuTKPpxeSlCS0VeV+tpw+BbRU6MxR2kKYmrWqgxv0hJ/sCDXnxbVaXlm/7z15urdp+U6g==
+X-Received: by 2002:a17:903:2983:b0:295:8662:6a4e with SMTP id d9443c01a7336-29ec27c15e3mr62125785ad.47.1765448772723;
+        Thu, 11 Dec 2025 02:26:12 -0800 (PST)
+Received: from kinako.work.home.arpa (p1344243-ipxg00a01sizuokaden.shizuoka.ocn.ne.jp. [114.145.20.243])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29ee9d38adcsm20759115ad.30.2025.12.11.02.26.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 02:26:12 -0800 (PST)
+From: Daniel Palmer <daniel@thingy.jp>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Daniel Palmer <daniel@thingy.jp>
+Subject: [RFC PATCH] mm/page_alloc: ?nommu? Deadlock in drain_pages_zone()?
+Date: Thu, 11 Dec 2025 19:26:07 +0900
+Message-ID: <20251211102607.2538595-1-daniel@thingy.jp>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4CC8F4000E
-X-Stat-Signature: r94jd9fpo116erhjtqxanwa3breyeo1m
+X-Rspamd-Queue-Id: 6F6E640008
+X-Stat-Signature: tzpri8otowdrkcdd86ata9hugiiozh1z
 X-Rspam-User: 
-X-HE-Tag: 1765448718-964219
-X-HE-Meta: U2FsdGVkX19u9YkYPsHUHfsmoTJ7Qci6wnOU+fjazJgTHwOhFZ0TLW8jPUxHR5VPM0AS3ag+65lEVKoupbMISMPv9CpYY0ARUSXnDlOsxwh3aVtxH8KNWx48BzKyRnejL6eWqeeAK8kARl+YIQC+++O9aPn35nTRXJs/eJgdeltJ1C/LmO4Q7wdxB2oBcdty7QCryTNrjjqgk2ruljtk/brLVyINItgbMHb2AId8vVNUQdp2xxLKn9AJxOcAAYHMQ1Nzjk5Ysl5YJze3pZRS1/NJvsH1KNDrE/1mBbbpEPfoWmsad6AzUpFi0kysWfZAIemKFIU0F/0wxXlI10Fb7AUgnzj2JMnaoLmPMBCO+PrL12tYJ45fpjMD6gJha0qGfhnNbynEQ87pYNEHRwnqCeCxhZSDlzTyhJQ6aKelw+2xShDXq2P+hX1TCSEXCf7vv5VcSVHTc94LlIEg25H4jZ5s/UjEI65l5fno3LrOgwD4nTPPUmU19AhDR33pYDWA8h1jPFiAB/rBAIyc+ymbIkIwr/kVH58yf453a4KDdRB65ny7y6RIwhY690IFieagLTqWbDRvaFNe8Dhrm9x8mglmZz6juVrSB0eUx+Vle6RBnycefTad+BixJAm6UD4Ah8q6V/xgLauaaLoU9eXS9aGLYGaKlNIFMDdfSuG0xRiu4rVLV/LHwF4wyCa84d6WTX3ynCxWQ/iMDlZ0httlbo3ANCbY9Aob/2CCPmrNxgPGOeasi+o++C84giYQYZAMVfLU2icwUDBLNq5Nx/dmxVwcJbeFDKClFFZlojHft3CvcK4nwOTOAowdIm5fo2rl6UheZ1ZcDyZEWXu15UQuMZ9q47eByKStcWDJKOera0e7Soya6y/LQXM5/ic9vtmdAgZhRa4MqmTZMNDi7EaGwzktjv0egNaGyQBZZCSBMFXNdduutL/OKcnMugle/ECHCgywh+aWUsCcnK8Zhbu
- qcpDb1zt
- mkRfO/FdgvQyiPPkryyKI0TT0WLxPM/rKQX59nyMo1VhEQmb0p2Hu6cFODnH9idvTzkyNI0yOFsCzkBxHzy5RjKdMkzayoQSDRnsIk/ipNco2NtWs941peqYjKLN5R+yMrOsfGebdwEVSwqICy+KuendfzNk14xg2tfDuQM63Pjh0XiW7MMOICvHw2yrUK/UmKStFrOyuOwVOyFfk4tdnjKlHpyiMZr8piA0DFTMjzpR2dLzrhfbhrnIdJxAQwIuVUmMQ3uucMPghdFz+Ot9AdsbzlWvllN0sbv8Q
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000005, version=1.2.4
+X-HE-Tag: 1765448774-221357
+X-HE-Meta: U2FsdGVkX1/jG7/xvkNyRQzYicpZGJ8NXV84YgSteE4AItPz6GEwbxxce171ol82xQN9XNuc4MKqsqsfEe6gqc+afw8Y43uW1HRucGV5SPk+1Q5I7I4ROc/XdtxTNX7PRAxczDtDX9ZJbKMwVhbjGuvcMrYZxx2PU2UV1SVzfwfziYKVTAOyPjBlpg6uyOQLO7C1BX6LLiyj4wqbPy73MDZLJ+sz3EznmIgpc1tA3Np9AnPQioG47jd1qZiQLxB/w8NCxNsOSQDRE0gOIgJnIifseuSFl3pnkmRlNv4tvxcGM/eMp0LPzxcyq5rWKCFc9vfk1eCFg3npPMLtVHCvRVm8prw5MKyZMB0u7ULW9ttGUu36KNX1Z1secvIST0I3+5wR+9s5Vd2xlSPbGAbKXB0BjqYUcyrUvx//7RREEM98hOSTUuRADCa371qXHs0aTGacR9TOq3TLkcGDuPULIwunnA+TYpQjyEFliSpZfRQ6Q9BFSifsYD8Zb0xsiPYrurzHKaovg1jZezGB+KenT90oCo3fhKUC8xYDuJ4c+DWGN60DRV+zC7t81vMRc6lRbgloGo1xKDRhcWPBPPJDAEX7ZviMj+sM5/UkhPhQMMYAbZlxdlDm2Zq4/j8pbv7EGd1584vPdZeLk8ElHCM6GMEk1LyCmrKpR8jiiMQCBWppk929RFGFJr7RBUq4WMDvNCWVPTiiX7g9ScZa3oqPyW80RaX02b4dsZBT9a47kCFTprRAd3pzP7dBLeTvTeqzGSaFmoXWGLKrBgcyHGFtNBseuikiEEnCGc6fUqNo6vB5Ra2134DkFLHePw5RS3k4KjrXhTiqFFyPgQkPIlD4XchWpb4u/e1nbprZTSV811/Xa49z2GfXCcjy6MjiZFx01duJXKg1gYg9j4NsqtBlKGKpRSZcRWUfMhRSQcgmn3WDLfjiSeG0MtVZlKTgIYR3CXbaw6ZMWunue+MRfMd
+ dArCaA23
+ hSnd3jkvIPM8nZFkGS7G1GducWtC6yyvsW8wBYI1zMmZCtTflDLBFlOGHNdeH+ufK5DDMUpwqZAO2idaZGQUc5/9r5ZZTayzbIjVSS4B7TXZmQxsbWc6QGzhSQZYWkhRvsm/LafwhF/IMSMkuCRu7LriE7o/doQxAG+T+8MrXaOcqf/pg1QtmnYgnJo0NGVq7xTJJ651SkfOOlqjcUtJtRZnXQJXbVHo6o8CrgOCAMwfz1TxN0LoRPfcQBg7DMVjRB8CuLnSb87uwk0qebvW/RUrLmw9PPHHiCyBiGe95Sp1yIsAAop6Rwe4o9azwImDz0YkmgN1GApC4hixL7OKSf2KCzqzd/C2gvIw2+J7pAt4Xd4dHRxWF0MEucSLlAex8HLUmTNCdeid+1oMsGWs+8fql4f4yPlSnVzIpewnHlvOFNx5tezGUFejyKTSlj1eMlkeS
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,46 +114,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a new zone is added to enum zone_type in mmzone.h, the existing
-GFP_ZONE_TABLE macro causes a compile-time shift overflow. This happens
-because enum zone_type is of type int. The shift is logically
-valid because it has been checked by 16 * GFP_ZONES_SHIFT > BITS_PER_LONG previously.
+per_cpu_pages_init() sets pcp->batch to 1 (BOOT_PAGESET_BATCH) at boot,
+then later it is set to 0 (from zone_batchsize()) via the following path:
 
-Fixed this by casting each value in GFP_ZONE_TABLE to type long.
+init_per_zone_wmark_min()
+ ->setup_per_zone_wmarks()
+   ->zone_pcp_update()
+     ->zone_set_pageset_high_and_batch()
 
-Signed-off-by: Yankai Xu <815559068@qq.com>
+Once this happens if an OOM happens drain_pages_zone() will never return
+because count never gets to zero.
+
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
 ---
- include/linux/gfp.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index b155929af..e694f3103 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -122,14 +122,14 @@ static inline bool gfpflags_allow_spinning(const gfp_t gfp_flags)
- #endif
+Background: I am running a nommu kernel on 68000 with 8MB of RAM,
+I messed up my userland config and the resulting binaries became
+too big to fit in to the free blocks of memory, OOM should have
+happened and I should have seen the kernel trying to free memory
+but instead it dead locked. Since this is nommu I thought maybe
+I am corrupting memory but I checked with gdb and it doesn't seem
+like it. I have some local patches to make this weird setup work
+too but I don't think its anything to do with that either.
 
- #define GFP_ZONE_TABLE ( \
--	(ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)				       \
--	| (OPT_ZONE_DMA << ___GFP_DMA * GFP_ZONES_SHIFT)		       \
--	| (OPT_ZONE_HIGHMEM << ___GFP_HIGHMEM * GFP_ZONES_SHIFT)	       \
--	| (OPT_ZONE_DMA32 << ___GFP_DMA32 * GFP_ZONES_SHIFT)		       \
--	| (ZONE_NORMAL << ___GFP_MOVABLE * GFP_ZONES_SHIFT)		       \
--	| (OPT_ZONE_DMA << (___GFP_MOVABLE | ___GFP_DMA) * GFP_ZONES_SHIFT)    \
--	| (ZONE_MOVABLE << (___GFP_MOVABLE | ___GFP_HIGHMEM) * GFP_ZONES_SHIFT)\
--	| (OPT_ZONE_DMA32 << (___GFP_MOVABLE | ___GFP_DMA32) * GFP_ZONES_SHIFT)\
-+	((long)ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)				     \
-+	| ((long)OPT_ZONE_DMA << ___GFP_DMA * GFP_ZONES_SHIFT)			     \
-+	| ((long)OPT_ZONE_HIGHMEM << ___GFP_HIGHMEM * GFP_ZONES_SHIFT)		     \
-+	| ((long)OPT_ZONE_DMA32 << ___GFP_DMA32 * GFP_ZONES_SHIFT)		     \
-+	| ((long)ZONE_NORMAL << ___GFP_MOVABLE * GFP_ZONES_SHIFT)		     \
-+	| ((long)OPT_ZONE_DMA << (___GFP_MOVABLE | ___GFP_DMA) * GFP_ZONES_SHIFT)    \
-+	| ((long)ZONE_MOVABLE << (___GFP_MOVABLE | ___GFP_HIGHMEM) * GFP_ZONES_SHIFT)\
-+	| ((long)OPT_ZONE_DMA32 << (___GFP_MOVABLE | ___GFP_DMA32) * GFP_ZONES_SHIFT)\
- )
+This change stops the dead lock and I see OOM messages instead as
+expected. I have no idea if it is correct. Patch is simply to show
+what I am seeing.
 
- /*
---
-2.43.0
+ mm/page_alloc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 822e05f1a964..83c9ce6f93ad 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2618,8 +2618,11 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ 		spin_lock(&pcp->lock);
+ 		count = pcp->count;
+ 		if (count) {
+-			int to_drain = min(count,
+-				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
++			int to_drain = count;
++
++			/* if pcp->batch is zero this loop will never exit, on nommu pcp->batch is always 0 */
++			if (likely(pcp->batch))
++				to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+ 
+ 			free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 			count -= to_drain;
+-- 
+2.51.0
 
 
