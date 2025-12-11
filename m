@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D53CD41C08
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 08:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D0D4D3E786
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 08:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560AB6B000D; Thu, 11 Dec 2025 03:17:22 -0500 (EST)
+	id 758DE6B0005; Thu, 11 Dec 2025 03:32:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EA416B000E; Thu, 11 Dec 2025 03:17:22 -0500 (EST)
+	id 731976B0007; Thu, 11 Dec 2025 03:32:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 428196B0010; Thu, 11 Dec 2025 03:17:22 -0500 (EST)
+	id 66DB56B0008; Thu, 11 Dec 2025 03:32:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FB876B000D
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:17:22 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB9401407C1
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:21 +0000 (UTC)
-X-FDA: 84206485482.10.A0CFD90
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 536AF18000A
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gJo4993S;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765441040; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 55FFB6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:32:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0AE0F1607DC
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:32:27 +0000 (UTC)
+X-FDA: 84206523534.01.ABC914F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2049D100005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:32:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765441945; a=rsa-sha256;
 	cv=none;
-	b=2LTEMhiYIfs9t9TRfgYCTJofEwotAyl7gYlNFETsYrtQJxzN1JT32gYIrPMEgq6Ny5oZfV
-	IsiUBuvEWBVTQsN2g6sbeCa0eDzi4eR1MXC5jfgVgVY6h5S6lHPDxr/U70fXPk1L/S/xvZ
-	NFiDbhNuMd5CXRVm7z6S87+FWYvb5yk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gJo4993S;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	b=h3oVknyDeNQjQ0YXjtbTgCb+3rRhZDHIvH9KBIMNBv+oE4H2s3M5KH/nH26BXg5mp6Ie8U
+	3o8hKMFVydxVI4gHVHesKM/8AG0TkEzQNunC63PsOhYptuq/BzQPtVYnA0YeBMzxDDCdZg
+	+twlBXxRpZkdfTgiQ9wyaok3khAOjZQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765441040;
+	s=arc-20220608; t=1765441945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GTUtfG6uYByUGiREez0T2P/sllJfoIOg91OqMSv2QCo=;
-	b=GdQlVGZmKhcefyX1mcs1uweIEb2A3rEVJG506zRZDzE7Vk6TSH3RXYfLUe0hyrEOblt3I3
-	fuD0iET1VSaqvSL7hBX7g8orfBrgWq9p0R92h83t87XJIJniT9FXd59GfghmLsixQqbaCf
-	MiZPdo4PgAcjfxzDYVZxXIOv4Cj2/iM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765441035; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=GTUtfG6uYByUGiREez0T2P/sllJfoIOg91OqMSv2QCo=;
-	b=gJo4993SZkNx01mWQ6MeC3Fw+IYxByVyhZDRR9vJ6k1L9JJzXVA5emuoqZiUBlPCSn3gJfEj+C2dWyT+gJ8tpjboG+vt9A3XfbnMjOdShZYU891+Ib5M9FMIJkqwO4Gs7mupJBRGkPRy/xacdXNsuS4Ul8WvftrsBFKoUEN/w18=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuZjI5S_1765441033 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Dec 2025 16:17:14 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	riel@surriel.com,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	willy@infradead.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] mm: rmap: support batched unmapping for file large folios
-Date: Thu, 11 Dec 2025 16:16:56 +0800
-Message-ID: <af330c9ea188bd0f28189b1e6e5803f6de9d2abe.1765439381.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gFGKwQFZhAgj0vZg0JOnKWX4eBi96ftbchr15dmFnoU=;
+	b=FnhuqtJWnznjY7DeRT2nNClhyxGdE6ghjXVazlYIpPsLDOwYhi6BYK0z9f5aEHms3TY36o
+	C+MRlIjne6l3OZ/yVYP6IYJaVb3QvNEoL1YSQMC5nSqFbOKrGN4jXAOole5Xm08Rn6nPM+
+	oiM5pJxVKIaeNR6GwUZ9F7Fsygo+Rq4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC7BB153B;
+	Thu, 11 Dec 2025 00:32:16 -0800 (PST)
+Received: from [10.163.80.88] (unknown [10.163.80.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80A7F3F73B;
+	Thu, 11 Dec 2025 00:32:21 -0800 (PST)
+Message-ID: <e896d23d-53ee-4fb6-8951-427d2210a0df@arm.com>
+Date: Thu, 11 Dec 2025 14:02:18 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 87876mx3o7bkrcmam9opjrdf43go1shb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: zswap: delete unused acomp->is_sleepable
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251211025645.820517-1-hannes@cmpxchg.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20251211025645.820517-1-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2049D100005
+X-Stat-Signature: kxbfx8o8fh1mxaimdtz9116aq36p6o75
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 536AF18000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765441038-22295
-X-HE-Meta: U2FsdGVkX19VFhBOkfuwXAcrqSEfwDDeDlIuMpvTxRRJQYdYq1i9aEmwm+oc6Hv1qX8sIS3BLiNGbPLpcQWSnwd66r5/pJC/G9k/JvmHMPRlMCo43TlpvryH2HxcENCBCCClwzejh1gYhNrO5n5BV4qcMoxJiStOv6j12/gt1lWACBIJwjMKOBvIzNsemxsBj3mH4itUDqrZ/kUGc8jYGP5THmypBRpR23SE6sxDjlzEuf71IOPfAxb4GEjN/KM+hzi+terq3iaB/lJyxe5zwPFC21BVeqZnHYFRhxchbnW6sy/Lz5GU7YCORutHiAFzLHp4FjQKqgAcV3se9feUvfQsn8UlzK6REHWEEzPtRXy3I3/UR7y5isd89qkBgI49G7qhwDmFjdqH1RbSuDe+Ja7wNPl8jW77R1/2RCYNGzNvc79frYCP6LIs7ZfSS2fgIV60uILSuesfwKmeTtieGAy0+DBtM6MmpEoVJtV1/dAcU9ijeD/oc1hPA2JqkrtxX/1ia/3dMtM+ow3f/Xvvf9n/TeTdwsK2761bND4F2fE2oZmLMmCdGupMN+zOz53x568ZPw2/uMEMMe+A3KbG2HNHLLPRJsKMkKdDC7gTbWR/ZpUKyAGOtz2pUraN1GfLQjUcCIAwyRT0RllHpe9lkh1q0vUbLtxO3TfLD+XlwzTMBBhEwAITtzXcSA7yQZ6U7awmqAeJh5s9UWaAddDgFRQhW195D4uCjohKzV6I4OOajvk72PT/BgYadbjddtSuATISkUbmXohxGIhI/Rw1f1Ce8mow+zASmhMgB+RW4keQLYzfkjatNy6U2gySuNo4/f2VWmrP3GfKWu4xWUl0VjfrevQfeVXLNdP7ESd0YOaddASrjhgOpxMK6bAKpS+AeofcA1ym5G47d1D6sojKMmskzA3OXQbfgNwGsZkljfSP2ocxnnTrU5CPtp11iOMfOQjGPxWTf6vdmVU6Zha
- 7LhdmIXy
- 4hLKNtFCESn9fRu7UdeP0GmAXgrI0lHiG4DlUNySadZThlfz/VXl4GYQaegRLemBUFvrsdFypwaqPAXEn3u/ya3xjsMq/0QJC1oxUVWeGoeBd0n/9PTEZyrHOAq3ZMVX1OMaVWySZDHIazmGiGJ8Mk6lNWehq9uU7oZ0SDVT61QMWoRtWJP8asHXbCtsU1kGnrMwde0gKHbk4JQgg2jKSZjkNgK2R1HGbMApOEWC8o91g+51Q+mm0ykihSS3AAou0ofdn
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765441944-158527
+X-HE-Meta: U2FsdGVkX19v1iUSPrMRHEImuEVlbKCuARMRZrsNlTxzjneEoEzpH13DFQAtrun9+hrYbiHDTy5eCmtLHZuxw07IyZsDrlPMpajP+HQlO3yLkn8QjBpTiZS2Ui5HzWzBwhmtITY9AjnEhQikp2ufOS8IjccSbtlGH0CU1eV/bD9ImL81FKe5HiGnPhlxtGBaOIrhkvbrUOmhnHTOl+9mOKKbGwx6p1WGIgo8Rf2bzS8bTzRc+0Cjj/r80OBpmj9IBO8ZMOtTFuoKb26atSr+9TMI+Hr1SqvM0kOG38Uorr+r6T6TlAvxcPg4y6FPAidG/7ZQy5A56VUttgfNiT8gXcsq0hg4X7/BAeivuvTkxUY26PU+wfQSfcAhkREZUz3tSoRv01qZgjNPaWaVjNDDHc9aBg8yAI6ObHJr3hxwG4byKOTmcgzTO0Li/ncFcRJ6vKQK9TbVnBO17CevXlXNNTAnTFAffVEUeHSEczZtYKzPG1AAYsndqqOBfO0ACMlpE8ddWqueNG/1MujVghl2+Pu7vDplYMjs8fV4z4imG1m+JPZv0Xama1CZQMfjyttuh6eW9smEN4Wrbx91JOtipMehceGvGTjYyfVdpGt8rVL3y34n6xpQBkj+A85C38KvcXRSs+aMn8PDX0NCTaoCDHrVdFf3Ozk8Pkneo44yzDxeeT6CglvbSTwlgWEbc8WophPCwO3Nf9u7WmasCgbNAscUSPek/Xkr0GLIR1OxCaJTaD8gz+/CuUGU6ewuDN+zZdmf77QzoyDz/Zj4w/0H5cwnDDeVmW1ia5LeWU538j04HN38E7TkbNG/HKwNDZF+gq7Y88oZNcqDpzVuPe7wMXUibwci8s5shQNX8SbycgudA7/jId9gCDbkcOM0N+/LEAGU04/yavQEscHILmEJ2HuloG2enYaMps5tqgsG+3X1+YQ/XP3yebOAfDwUDTxR2iprPYh7Qfjn/NqNBNK
+ +XhKpDof
+ p83kwrbuUoWYo7r2XLnCPiU2CfP5KAiJ8Z1kOOmVdxTrb0PhOFKEPdZ6CW0G8D/YQNApW9iex3VrRDRid/rKDbQJuUc7SIcB5pS8YazC5faLNi8ozxOBZJtlk09B+1MOcE+n/1uHXw4idfKxVCq3weXgHxom1v6H6/xsS1KYHnt+ScFEgPceWljFBIbv+kvQ1CwArly4jLnm8nkOMNZCLQ8mVBe5cqN7tYFqHT4hx5+ssrkf4SbwRXlYLftbqc59sJ9XzMCf5Fg9op4KgpXKh+b6xgbBCooq7uuh0P7QkUml8vt7vyCVOFmGNfa0gROi34mLyTNLNvHd5p0hu+YnP+HPEKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,56 +87,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Similar to folio_referenced_one(), we can apply batched unmapping for file
-large folios to optimize the performance of file folios reclamation.
+On 11/12/25 8:26 AM, Johannes Weiner wrote:
+> This hasn't been used since 7d4c9629b74f ("mm: zswap: use object
+> read/write APIs instead of object mapping APIs"). Drop it.
+> 
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  mm/zswap.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 5d0f8b13a958..84797ed4d3f5 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -141,7 +141,6 @@ struct crypto_acomp_ctx {
+>  	struct crypto_wait wait;
+>  	u8 *buffer;
+>  	struct mutex mutex;
+> -	bool is_sleepable;
+>  };
+>  
+>  /*
+> @@ -781,7 +780,6 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  
+>  	acomp_ctx->buffer = buffer;
+>  	acomp_ctx->acomp = acomp;
+> -	acomp_ctx->is_sleepable = acomp_is_async(acomp);
+>  	acomp_ctx->req = req;
+>  	mutex_unlock(&acomp_ctx->mutex);
+>  	return 0;
 
-Performance testing:
-Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
-reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-75% performance improvement on my Arm64 32-core server.
 
-W/o patch:
-real    0m1.018s
-user    0m0.000s
-sys     0m1.018s
-
-W/ patch:
-real	0m0.249s
-user	0m0.000s
-sys	0m0.249s
-
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/rmap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index ec232165c47d..4c9d5777c8da 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1855,9 +1855,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	end_addr = pmd_addr_end(addr, vma->vm_end);
- 	max_nr = (end_addr - addr) >> PAGE_SHIFT;
- 
--	/* We only support lazyfree batching for now ... */
--	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
-+	/* We only support lazyfree or file folios batching for now ... */
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
- 		return 1;
-+
- 	if (pte_unused(pte))
- 		return 1;
- 
-@@ -2223,7 +2224,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 *
- 			 * See Documentation/mm/mmu_notifier.rst
- 			 */
--			dec_mm_counter(mm, mm_counter_file(folio));
-+			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
- 		}
- discard:
- 		if (unlikely(folio_test_hugetlb(folio))) {
--- 
-2.47.3
-
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
