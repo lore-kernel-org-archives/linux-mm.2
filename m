@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD45D43352
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 21:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54622D43352
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 21:11:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5B86B0005; Thu, 11 Dec 2025 16:11:31 -0500 (EST)
+	id BBE956B0006; Thu, 11 Dec 2025 16:11:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 356356B0006; Thu, 11 Dec 2025 16:11:31 -0500 (EST)
+	id B6DC46B0007; Thu, 11 Dec 2025 16:11:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C4B6B0007; Thu, 11 Dec 2025 16:11:31 -0500 (EST)
+	id AAB0F6B0008; Thu, 11 Dec 2025 16:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D90C6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 16:11:31 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DDD6134B63
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:11:30 +0000 (UTC)
-X-FDA: 84208436340.01.6E2509E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0C70140006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:11:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WvV9J8K7;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9945B6B0006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 16:11:49 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26A32B837C
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:11:49 +0000 (UTC)
+X-FDA: 84208437138.02.499CD35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7AE7540004
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:11:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=A7npviBy;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765487489;
+	s=arc-20220608; t=1765487507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JHoi15bH+o+h9ciNLX0ixL7Y8Xckzt6YtYSoHoAdl7U=;
-	b=UsLxTQ3nnf5ycwxaUpZmtr3TQmEcKsRAEWZxI1rraGMVa5EnLwpG20vYBwOAbIrP6ZYaWM
-	aQSv7FCVJFS/WYpsajt9dxYK/VLyGAhz8WeRoy0CZJ7v28Kx74+J4+pTGneQnqkU7zgXFR
-	BgUjeghl8iweV2EV6+ZBKdlDa5nGmPg=
+	 references:dkim-signature; bh=LwvWXv7WmyrUZysIkOJ5BmjdT2f0eqd+48EtQKg/k0U=;
+	b=SPdDNTtenC7Eo5cmT0cGBXxjlMuiVxbkhmkSSvLeqK/3Cmr64OX6O4djRpZLH2V2mJpXi8
+	mVXxzwBU8qRUU67emgrSf41PHFfxCVLuh9g+Qj0rGrlNlzw7ynC8w0GEdeubcuo1WNzFbe
+	cCJEdsWMsy7jS8KjayqXJlmqdRb19nI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WvV9J8K7;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=A7npviBy;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765487489; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765487507; a=rsa-sha256;
 	cv=none;
-	b=CrCx2Mht6stE5U9UQeXrymANmCB/KO7BVowD5uf1/lfiCGtSjYGuYeT8XFy+i+ZfmCjuB5
-	TxgPnpTsdY6ciFW04qYgPJmAW2jiwSpX5ly+NgRHDK61w0ye6tC8DGTzAgFrzvCuoFlKao
-	C2Nibc6k5BgPwW2r4e0tQG+7yV47vHw=
+	b=TKpVLDCCKhi4M2CQTJQwnli1zN+GGh8vAKPZBw0L1N2fiTwFSRRpuTC4DkB+94W5Z3Xh6G
+	VGPediU7h1DL8x2raF+uz0yyOGRTw0YHJitMNsnHuqR7rGkLKvFkddteXF3h5o6xWyJan8
+	KFF3ULCaujbyytZQIxBGaaTayFFELBI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6EF276013A;
-	Thu, 11 Dec 2025 21:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0304CC4CEF7;
-	Thu, 11 Dec 2025 21:11:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E02C42D67;
+	Thu, 11 Dec 2025 21:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1076CC4CEF7;
+	Thu, 11 Dec 2025 21:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765487488;
-	bh=dKA7DY+h/BTnP4TtIZ2JRJA+YNGIcriYupklfmwGn10=;
+	s=korg; t=1765487506;
+	bh=XfWChLIq0U5zTAEZDWkGgBN6OS3uU0puWnQSlLEXHEU=;
 	h=Date:From:To:Cc:Subject:From;
-	b=WvV9J8K7ngLHz/soT1XhSqGFbutC+LYJYIlV2Tdi0h/hoNT2XajYOmkhsDf1xxwnb
-	 vBIs2unjQJ2WxWGtx9X8ZMAAX1IPTzl9QQZ53/c5WEjwm6pSG2PCI/C/pc2WU1dDJT
-	 PftPFbwhHMBj1kGHAdzAMikU3avcxxvB/7Eb+kD0=
-Date: Thu, 11 Dec 2025 13:11:27 -0800
+	b=A7npviByx79r+2lwvsaoRYS71wzj04sSvrud/blEramhGNT1WNyNYqfiXjh3Vbae7
+	 kwBLBrsz+1LqJMutFapSLzWLraGQSJjwTlUBrR0QNzLsXcB5upoX2RzBkjvEer/3WW
+	 BsKcwyAfaNgZjlCLItXvzcoWzWnaEXUSeC5sMHN4=
+Date: Thu, 11 Dec 2025 13:11:45 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, linux-mm@kvack.org,
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: [GIT PULL] additional MM updates for 6.19-rc1
-Message-Id: <20251211131127.defed99e5b82e49af605108a@linux-foundation.org>
+Subject: [GIT PULL] additional non-MM updates for 6.19-rc1
+Message-Id: <20251211131145.512b1694cf5f46d959cfef76@linux-foundation.org>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4kcjxfwoekx6swi5iyncxprokm4iwgfp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0C70140006
-X-Stat-Signature: fm1i5ya8357am4s5cghj3t9pcn64bsuh
-X-HE-Tag: 1765487488-799791
-X-HE-Meta: U2FsdGVkX1+qH+YFEGdeF3r/p+KIKs9h6XRLOtbtF87/ffRdh8ul2I1m8NwQssTTYYsyJllCJVV+nbRTGnclpSLtC03vTh8v01pFlEx2S5uP4sI4cyxmdEiLCy/PQGrhT9Hf3cMDThzCdlSLxuzBjK4D4lD7fy4f1O0kEu5RHcIGQVCNHhh6WNDeVag98tD+HYWMe5R4i/zPUHgQh1LKsxLhIioP55IQ//DsQu6cc5G/G9O0MZRYylxvO4m/xQm4LvB9dMMeQn372TQA5fieiA4mGUgCOzCVTbcwSn0khkZg9vV29kl/RAVDCQIBn7l/e6Xu+IPuThmGmUnAJ9nJusEiJ4P0yvoMfy1+jtVaXg4KTIzL814tqT56FfUGptF43Sk0FMcvTTDLHF9JwuZcN8CmgIc5Ro9byhfB6LiVUkqSL2+RETULG6QQElMp/PN80K2lnL11A5jH6kl7WPVoZWJCdrok308PeHAnTT/JCFCPM3uZFrBfg8P7EGjEzkqngzStuGyQJVygfYam9OPk26tQdnoEbIkRageSSeZPrtc7rpzM7V+4IhE/y3SF6ssJ/3y9rqbkxUL3jtRQQrrVyuAg8issS0L661NJBZNicfKvjlzuLQnDvpwku5Zw3G9HbR4V+Q6Izg3faO3UCfNn6Ymasx6r+8UA/NZoNstkLYCVkYjsgK1sI1MXXCL/VR75WD/w/+gkFWeuI/IyKlm98WvQmopuvnTeOflFJPIyqOsZisB26YfhSf4+WnqrvdtE6FfIpbHwFmd9+/eztxGUIuONTFYGI8ZGLf1a9jGuopef6alR26hwcbuxyW0E4oMr5k6hzEXqZWSeh3e2A75+jan3RIlMv7pjSc0DlzVIyZHKr9KVMqexHfYIYcuJZc7vXLTaYcQ9lpAJfBE2y2XAZHpIPEW2+Lhvmv3Juw1Pq6i2JvTuYOYEgAdQBz8vUhkPkffuMQS3f/fCW5e/PTr
- fSB1Bzyz
- zKdaGVRZRGNjJrTcQdlKBfv+dFzOuRoPFxXLQBJ9lCevYDs9ix0UvLnzdzKbK2ste1kERhFbk/LtZ/JhFUstnzpbxYCfyoLUmvdLZBdw0zARGNgKZwen9fptI1xyI6rIHIGRTxCWKC1jBP/ztgRFNZP894Ox9icZaI4/GvcJEQVBzXOChKKAgd4tJcu7Y92VTgVIge1Sd9T46cfxy1Bx8usUvwKP+zOgtXVPi+xJjI13nG0Zl2Y9l3kYHhW2xs5Cq06upoZuDkme8Kgk=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7AE7540004
+X-HE-Tag: 1765487507-663136
+X-HE-Meta: U2FsdGVkX19X3GN9ntLoBetGY3DMRGjf6Fkwu6kS4O4V0pvoJIs8F9GXnwbu4gfgXYC+ftcUzFhxtrXhzbTLmVO1Cpkx3mHRWzXWOekHLbjV1doU8hWzAu/H970NZ8wE9tvmckVjE1bA8AsOyqtSgq9yJw7D1qto1f3cxGfaVt97TdkXinYG449t+oveKtAHh7ZrAif0usYGR2m3ReBmoIbBdRB5o4NpWsR2+IXo1xYfKseQheLKfHQGxYhO8WIcKcxacCFWNovj/Fvaj+DzIrTMKdcMPG/sH3LjgJ7P4rahLn2GJA8PxuD0cWgaBV3gp9ISW0GJrHM/5smlpaagKYb4EZ+GaON+VyJyiuesS6GxIciZATv1bEQncy+CYsKnbzC2nIy59YfkddsoLbGFSe0fenbhk/43TF/JPc9dJ4V38UHAvA5sXpXK8bcJHHeVwOUIQpB7tVWStpZc1ATK0E7BpVywmGsMuJK3zOLuspoLjG9xv1xMV2oIEhjQlINDs1BucUUSoM5315jrVjNfa7A3ENw0sMLkpcK+435itMQHyeVNGTeEfTLPxdxenybKN2fGLPTHULMjqlQBukMkD5wct1oHnXXcHZE/sVUwiqFdgv0NPvFBxI04IgQXVJoPDoGfQWjZanVyTsAq3r4t42C2FZPAFzF3hmCm+EdxvKvPeIvza3Gz5pywAS6yefISEj+d7yiKWZ5Pf/FDqqYdd3PD6sJD2wXd2t1r6Jpc/rZ4euJ+LQPpY2DB4kAhgycqoFI9D4hRNQLUveyvGMaaHB/6i0KlH+b8+5rS2kIzNUFeqL2Hi9AHOS/XvoCHYVgpSmLa0jrKxHVG0rbEUUZOPMLFK2b23mpITS2M9Hd+EMtFvXkfHtCy7aV6SsOKVv8Lt3n8bVv3FuAlYuJro1+W5np49MISdUU4wTI+ELuzJ+TMLMSk8E8qw8JsUmYMJttTH9KLUxlselhXzLgLnK1
+ vJywfcCD
+ q5iqRplR2ZIForHyrSTnk1sj3hELHvFeDVsybIayOvTMCjTDBCQojaBcg+ItLi7y0SaNfeyaIuEHIyJ/BQJlzLz0ELkQRfYD6Q909U285Ggph8ECY8ddKwsn0RKECulHrqgo7YZe0N8JHE7ga+Eb+V9kKLNLktKpyqf8MRizUxsmvp04++916HkJqGlmq+1T3T4ZUJNGidh3QRhTgJqyNIi57PzFWurxhXAzcFU4lnVdHNPQ7i4PY2d0lgI8nHcVjRxcuH0tBTAkWN/zSyEQXNaB6NtdF0qbBMKeN5XLD0SJ02IU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,70 +88,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-Linus, please merge this small batch of followup patches for this -rc
-cycle, thanks.
+Linus, please merge this small batch of followup non-MM patches for the
+upcoming -rc cycle,
 
-My test merge found no conflicts.
+No conflicts were seen in a test merge.
+
+Thanks.
 
 
+The following changes since commit aa514a297a0c175239f24a2e582ebd37f0727494:
 
-The following changes since commit faf3c923523e5c8fc3baaa413d62e913774ae52f:
-
-  mm: fix vma_start_write_killable() signal handling (2025-11-29 10:41:11 -0800)
+  calibrate: update header inclusion (2025-11-27 14:24:45 -0800)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-stable-2025-12-11-11-39
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-12-11-11-47
 
-for you to fetch changes up to dafdba0964bd10913fbaa5537201cbbe05df5b9c:
+for you to fetch changes up to 601cc399a01049efa76be8f496541315dc9cf914:
 
-  mm/damon/tests/core-kunit: avoid damos_test_commit stack warning (2025-12-09 11:25:34 -0800)
-
-----------------------------------------------------------------
-Patch series in this pull request:
-
-- The 2 patch series "powerpc/pseries/cmm: two smaller fixes" from David
-  Hildenbrand fixes a couple of minor things in ppc land.
-
-- The 4 patch series "Improve folio split related functions" from Zi Yan
-  provides some cleanups and minorish fixes in the folio splitting code.
+  mm: memfd_luo: add CONFIG_SHMEM dependency (2025-12-10 16:07:44 -0800)
 
 ----------------------------------------------------------------
-Arnd Bergmann (1):
-      mm/damon/tests/core-kunit: avoid damos_test_commit stack warning
+There are no significant series in this small merge.  Please see the
+individual changelogs for details.
 
-Chen Ridong (1):
-      mm: vmscan: correct nr_requested tracing in scan_folios
+----------------------------------------------------------------
+Ahmet Eray Karadag (3):
+      ocfs2: add ocfs2_emergency_state helper and apply to setattr
+      ocfs2: convert remaining read-only checks to ocfs2_emergency_state
+      ocfs2: invalidate inode if i_mode is zero after block read
 
-David Hildenbrand (2):
-      powerpc/pseries/cmm: call balloon_devinfo_init() also without CONFIG_BALLOON_COMPACTION
-      powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
+Ally Heev (1):
+      checkpatch: add uninitialized pointer with __free attribute check
 
-Jinhui Guo (1):
-      mm/sparse: fix sparse_vmemmap_init_nid_early definition without CONFIG_SPARSEMEM
+Andy Shevchenko (1):
+      args: fix documentation to reflect the correct numbers
 
-Lukas Bulwahn (2):
-      mm: fix CONFIG_STACK_GROWSUP typo in mm.h
-      MAINTAINERS: add idr core-api doc file to XARRAY
+Arnd Bergmann (2):
+      mm: shmem: avoid build warning for CONFIG_SHMEM=n
+      mm: memfd_luo: add CONFIG_SHMEM dependency
 
-Shameer Kolothum (1):
-      mm/hugetlb: fix incorrect error return from hugetlb_reserve_pages()
+Dan Carpenter (1):
+      liveupdate: luo_file: don't use invalid list iterator
 
-Zi Yan (4):
-      mm/huge_memory: change folio_split_supported() to folio_check_splittable()
-      mm/huge_memory: replace can_split_folio() with direct refcount calculation
-      mm/huge_memory: make min_order_for_split() always return an order
-      mm/huge_memory: fix folio split stats counting
+Deepanshu Kartikey (1):
+      ocfs2: validate inline xattr size and entry count in ocfs2_xattr_ibody_list
 
- MAINTAINERS                          |   1 +
- arch/powerpc/platforms/pseries/cmm.c |   3 +-
- include/linux/huge_mm.h              |  13 ++-
- include/linux/mm.h                   |   2 +-
- include/linux/mmzone.h               |   2 +-
- mm/damon/tests/core-kunit.h          |   9 +-
- mm/huge_memory.c                     | 165 +++++++++++++++++++----------------
- mm/hugetlb.c                         |  25 ++++--
- mm/vmscan.c                          |   8 +-
- 9 files changed, 131 insertions(+), 97 deletions(-)
+Dmitry Antipov (1):
+      ocfs2: fix memory leak in ocfs2_merge_rec_left()
+
+Edward Adam Davis (1):
+      ocfs2: check tl_used after reading it from trancate log inode
+
+Gustavo A. R. Silva (1):
+      ocfs2: avoid -Wflex-array-member-not-at-end warning
+
+Lalit Shankar Chowdhury (1):
+      fs/fat: remove unnecessary wrapper fat_max_cache()
+
+Pasha Tatashin (1):
+      liveupdate: luo_core: fix redundant bound check in luo_ioctl()
+
+Prithvi Tambewagh (1):
+      ocfs2: fix kernel BUG in ocfs2_find_victim_chain
+
+Thorsten Blum (1):
+      ocfs2: replace deprecated strcpy with strscpy
+
+ Documentation/dev-tools/checkpatch.rst | 23 ++++++++++++++++++++
+ fs/fat/cache.c                         |  7 +------
+ fs/ocfs2/alloc.c                       | 12 ++++++-----
+ fs/ocfs2/buffer_head_io.c              |  2 +-
+ fs/ocfs2/cluster/nodemanager.c         |  3 ++-
+ fs/ocfs2/dir.c                         | 10 ++++-----
+ fs/ocfs2/file.c                        | 14 +++++++++----
+ fs/ocfs2/inode.c                       | 11 ++++++++--
+ fs/ocfs2/move_extents.c                |  2 +-
+ fs/ocfs2/namei.c                       |  3 ++-
+ fs/ocfs2/ocfs2.h                       | 18 ++++++++++++++++
+ fs/ocfs2/resize.c                      |  4 ++--
+ fs/ocfs2/stackglue.c                   |  3 ++-
+ fs/ocfs2/suballoc.c                    | 13 +++++++++++-
+ fs/ocfs2/super.c                       |  2 +-
+ fs/ocfs2/xattr.c                       | 38 ++++++++++++++++++++++++++++++----
+ include/linux/args.h                   |  4 ++--
+ kernel/liveupdate/Kconfig              |  1 +
+ kernel/liveupdate/luo_core.c           |  4 +---
+ kernel/liveupdate/luo_file.c           |  7 +++++--
+ mm/shmem.c                             | 11 ++++++++--
+ scripts/checkpatch.pl                  |  6 ++++++
+ 22 files changed, 154 insertions(+), 44 deletions(-)
+
 
 
