@@ -4,100 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76786D41C31
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:56:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 067D6D41C34
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 477EA6B0005; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
+	id 406EB6B0007; Thu, 11 Dec 2025 07:59:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 428F56B0007; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
+	id 3B83F6B0008; Thu, 11 Dec 2025 07:59:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3181E6B0008; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
+	id 2CF376B000A; Thu, 11 Dec 2025 07:59:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E0C26B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:56:38 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA5241A006F
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:56:37 +0000 (UTC)
-X-FDA: 84207189234.26.FE3744D
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6EB4C140013
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:56:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765457795; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 197AA6B0007
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:59:38 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3FD516014F
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:37 +0000 (UTC)
+X-FDA: 84207196794.16.7A774D0
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E71F240002
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="saXjF0/T";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3NcA6aQgKCPAkegklSXSYggYdW.Ugedafmp-eecnSUc.gjY@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3NcA6aQgKCPAkegklSXSYggYdW.Ugedafmp-eecnSUc.gjY@flex--smostafa.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765457976; a=rsa-sha256;
 	cv=none;
-	b=jl9UeInjTRN/h262V2WoUzDhDRlnjiZyoW8fRVljaMjUrym8BWacByijtUvCIimeA0yqHK
-	BP/d5Dls/cNc5dh0INinV/iDKijF+NJphzgSh2v01qNBmdfC3Xq810trDYKf/k6sq2RgFf
-	uJFMvcpX1iqxBpvYDDc0LCgvglZh8tA=
+	b=V7CGH8OPpIS2LSwrrqQ51XiwCo/Hv1tB3XeWRz5CjKjTUFc/9GJulP/2IQEjZ91lCKoTeG
+	4HQBTjy0WyvRdmu+DKuyMI4v6Ehkwc7JDzR11LVcRg5ZQCm5AtcQMtjBrKQaVc8N3tThy5
+	T7o4/XqopGaZ83WzP+NqVhl7ViLHoyM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="saXjF0/T";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3NcA6aQgKCPAkegklSXSYggYdW.Ugedafmp-eecnSUc.gjY@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3NcA6aQgKCPAkegklSXSYggYdW.Ugedafmp-eecnSUc.gjY@flex--smostafa.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765457795;
+	s=arc-20220608; t=1765457976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=IApp5Zq2pWN9QswcUIPFDpgq3y5QzfcLSKeWPisFBsM=;
-	b=FsjQHh/KsYFIyyyjylAq3vjNE8oLb4m3TYRMtZCfs0LPy8PrU3TOUKVqsRfcFZpPbmIkj0
-	YyhrQou5IvwfqYuT1ma8Dm0GR1qul+WxVCAU1nOeeR5/fk0iFv+owWFWuG1VnBTXGR0p9B
-	Mjv0mhUGgBcjayGG4NbCUhpV8/Ao020=
-X-UUID: ca2bc78ed69011f0a38c85956e01ac42-20251211
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP, DN_TRUSTED
-	SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:b815228f-5004-4bfb-8de6-d055e296cf9e,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:b815228f-5004-4bfb-8de6-d055e296cf9e,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:9d3d869a785c8be25cb357e3a72a6f05,BulkI
-	D:2512112056224ZFS4ZVI,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
-	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
-	C:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ca2bc78ed69011f0a38c85956e01ac42-20251211
-X-User: lienze@kylinos.cn
-Received: from ubuntu.. [(61.48.214.33)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 262288006; Thu, 11 Dec 2025 20:56:20 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] mm/damon: add loadable module support for sample modules
-Date: Thu, 11 Dec 2025 20:56:14 +0800
-Message-ID: <20251211125614.1242713-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bsqrf39wswp1hmzadqf6capw91it3iz3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1YPd4rabCA15+W0gc58X3ldTKNVJsgSl/m8TAJcDC9k=;
+	b=eSe8fDHLUnbVXpba/YUH0hQ83VIymVyzSpASO/wEkm0UlTX4B9qwUWnYAE5HRYonNDfMGn
+	oPE/XMPVpyZLELL9xT7sYsJNQlJ1f79fx8hdjs29srnlO6D8Do6+4QUnESYHW7+3WYSk0w
+	zDqQ0uJGOIEUuOkw4uyrckX/vW/E11E=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477563e531cso414985e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:59:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765457974; x=1766062774; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1YPd4rabCA15+W0gc58X3ldTKNVJsgSl/m8TAJcDC9k=;
+        b=saXjF0/TDc1malyYMJpvx694sgjcYUusOWtGjfabHNvKHTzfqgi7CLUTIp0StMlDkf
+         B+vuiBhBokEqRzGeHiK+q6Z94iIXg2ATUxzEZOO3y2j0QM4w4modNwFBLG3b9s5kfjoc
+         gsdaDN8YlaYNuGj/KV4iu45pf4vbS3m3/7XIUXZFRu/cKJri0tTfdUnJ52hXQdPimx53
+         xFPedrPbcOALP1YfwtmDvmMUEDGl4VtlzxObigxRUuoSw4AVWPYKVXad4x+AgHB1JzDN
+         KCZdERnS70/hTvsFjDfAME9lNkwulwZF0XwQHCjvTGG1pmYg32ENTyHBulPF0vdtEJcG
+         JCrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765457974; x=1766062774;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1YPd4rabCA15+W0gc58X3ldTKNVJsgSl/m8TAJcDC9k=;
+        b=Sx9dB1MGFlnIRmxxDXBdUSXT/wuzIGPCB1FrJYAhw+4+W5WjlKTAtd6wbAKMWxkJPz
+         W/Hf67mWksn5NuWLW6cPjYNsxrI+r+1r3PnuTpPx94AvqGI8zCp5kWbgLQSuJI9j/Lzf
+         +5PIknHDQvF0n+WAIXXlR4v0F4fQaZstvU74aD5ImpJzSb1D87zUCW0viBTpRgEpGAtE
+         iRRofyKL08hQMiu9+uYiuQA8TwCyGzOG+od3nvtwL1dltUaiW6XuaaKyci8rf1R0L2b2
+         dwAerP1KSuufXY+1ZSJA0Udl7al1Y19f3Ika1THCPA5yDyu6yvATBm+dQJvQih0HsF8e
+         wYVA==
+X-Gm-Message-State: AOJu0YweT63oRIh4h9H4VKdtn9PYQsD/m71EbaRldECdwavvLFhBLWEh
+	lCI5Zh1F5O1YoQX5wGluOH6TQUxJfiHh9d68/V+F9jRez2GN7OHzgN1HIZ7m8LjmY37lzjNc2g6
+	oWlHLynVtYVx+isWDSupvSt/i3PkzM/N6JsouoQOEVVW4om4AJ5dbuuIN5F0oMPh4RR5Axs+jH8
+	eNl75Q3y/2VVniNf+7xy4owfwAj+lUOQ7JR1z70ZQnag==
+X-Google-Smtp-Source: AGHT+IEutEw1d7HRrDvz7Uw5x03SFSXvQO6Sqwdti2F86uaAXoFjBNtSfbvmhvAiwBwLApQfmCLLxUs3FhConw==
+X-Received: from wmbhi3.prod.google.com ([2002:a05:600c:5343:b0:477:c551:bdb9])
+ (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1389:b0:46e:4a13:e6c6 with SMTP id 5b1f17b1804b1-47a83843239mr56517695e9.19.1765457973952;
+ Thu, 11 Dec 2025 04:59:33 -0800 (PST)
+Date: Thu, 11 Dec 2025 12:59:24 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251211125928.3258905-1-smostafa@google.com>
+Subject: [PATCH v4 0/4] iommu: Add IOMMU_DEBUG_PAGEALLOC sanitizer
+From: Mostafa Saleh <smostafa@google.com>
+To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
+	Mostafa Saleh <smostafa@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6EB4C140013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765457792-380614
-X-HE-Meta: U2FsdGVkX1/47yOdNq8OnXiYJKhJw+9GQqmpwcrSGiAriGMUxH7gqUGut2NGO29Kl5NHkDZCQUXEx5GuPnGD4LoR7XZ4ic6OPdBP/AErEXM4tbmF1z6i5LkKUwtZlMN1grGdNhSsFzxgihGng6/MF5DAuvsZouVYkR2XCh1Hb9+QbJk6oQzQID3nlnbsyfwGWt/s0BbuiOuyg+89dRxlCHGD51qeUEyxEzA73E66FktQG+Z4okvGMu3DI+97hriRvMDZ0J/13gPClbuRet+qWX8STNc9Sobo7n8t65kDDRlWYe0Zc6THIvdI+y+tgbLoNyjSes3T1TnHV5B0+RkULanAdlMSV9ftBZ7XLPx3bBh5f6Hz2bgm/N+FY2lP1lsjc4tohNqNe3C8czMSmwEA5hZRxxqR+oh/02XmFTzEGDkGKeog8IF+lDDAEuzQ8rvnJMMcRHzvNP0QmQoLxeH8z2VyoMbXjlnF5rAZDi298RjGcnBTYShFZFH85HVgVZDuq5vrS/+hWpufuiKE/ABuVFElH/56HFLLxjRizh+6dBewgLybi7ir/SmWgg8AeGo+S/UGVWiOonPhIN739gxa3I/j9yZSA+hatgSSds9iqoO8zXLtlgasbvy6fvQHQcESimd954UWHmwpLGwkamxKBKHyX/rsGk5wakymxxQrtu5bBTKTfNcI2Jma7pDWssuRXmvaKgrlRr2ZmVtIpChQ+nqxQX0lAeyDoe5E9qt3M+aTS+SJkls6AHr36f1pM1el0yfGRcpYFqlbP1xExAeYqmFbEvIMX2cQpJ+jvkwXGPELMwpJiYCCrx32uBQ+wPxtEBYSOaX+g+3AQMOEbTYYNGSClpO9s2WKYZtMl8nxlavGk5/B5xd3/WOUwgGaFro2RSl4+3tvbugoiqCxWbQgthbXOdEQUVLc/cr/Nvo9jYY5K8ZLuV/QboTfPbZVU8SvT80W5D2fRWRtavGlQ7k
- 5huQCyd0
- aYTLL0uEASVK9lpi681vLpDHQew==
+X-Rspamd-Queue-Id: E71F240002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 7c3r1ma3f5ngr3msp5fzea3q7sx4owtx
+X-HE-Tag: 1765457975-622189
+X-HE-Meta: U2FsdGVkX1/zMNf5bEtHmF830j9wr7XzR+6GXHmEXv5PXYPYKljfhnxMp22blfThKkrMEPqFJKPwuoxKFbTamiYC2qPCJQtobSPWrNpo63arn6HrcoFaNv9auMjN4SQjrEATEe865dDTcUKf8Ppc/bqwQk4atlDiI0l6WU+kXiAO0Ysn8aQmdMl7uISEhLZ9s2BcPZDpdpsJsEX4sQP1Xmp5B5JSxHj1Ko+bD3uLxBMAPgbLJrQNzl5EbrJ8Qu7qDjS8qF65ESduZUgASw5EgEiK81s0GkKWf1E4D62XinjyjSRTZR1RXonBAVzZXpcCY6TPY77xHdAFCo04+adiKtTv9xws2UmYqE+X4Kv+RSnOjWtupFvmwuuZCoaIc7xb6hI8Jj3E3X9J8VBF2z+hr8nfuQWNGWFL6ImXgTeigd1np/P3DXd5d+jx4EMNigAUrcKeit0aR7Nsdnz41kf6bsleCezLwGTGOv72Q0UnHz40XtQUkOKCwVyl2iYH/xqQhEUUKqdP5EdQVSa8oE7c7THzKJL2sbJZV0YXJLpb7DNPZN0OSKT6q5fBauPBw4dhlfCCtQU/qAjndBteb3DIgAj3dtPFzSDSrw1JWlMTOseKQCxFmVPmevtx0ivYlNfDVLvBg6JURZuNCN5Jp/QpNOSZNKzBA47LjFounB4i3m7B3ZRHYXeKIYGJfiWuW1LsrUIS1j3TfL21QPZtYGNkOVLrKjN4wDEaoyxMnlzxn4j5G/YkvoGHwtisVECFJDFg8WhNdc7kRVw/Wzx3MwUnFQoj34WYEnWnAbjwiCk2jRPi/zzqFc73AWnTV/qxN3tKqCB4Xj2s4azBYX8vFXpjTv6b1VUJ3lQtbXxdCFTwBCclKQa9kNYof8YZR3loJTtRDnrbM57tg5FaOzJZab3fkPLF/3qjRbApuCK+3Fyr6pZUpzwilk/3TiUC3EePa/JgGEaKOaxH6KYdVjXfPDk
+ xbwwbecV
+ fdb6dW5ny/uNhN0ypQ3SNW+fejSl0Od+QZ2zEdz7gLbCwlf3nrwnB1RDYSH1U/oPV/CKRfMuI8l4oNhamLcGadBYQy4kul/jEm1g9XFQPl4WWFcK2ycqesFI2hvBK1QQVe9We/+ZcY8nB4ZeGU91fk+Bl3sMquhHWgny8Q06XxFA7We1Fhk8N5IStqNenwwwktNeXp528DHVeKaoEk8yA37JqDoZN8RqfzYEDK7J4lHl6a/WGGEywGfoOBFnA54bhAeBbQtAZZz9rpq6i1ecd0eQv26FNfeVXbSb6z5hJYbBqNjMuIR0erKQaQicxhFDpmaHrLYuPX/rH/J9C25eKhiNd3fsMX5N3d2Q/kVBEbvvfrG8rwud31/Oipl8r4OK415aTxyvXGRcakVCbv6Kv7FsPROfZ2H5ykJ2FlAdbZMqAEU/l71djZ1S5CZ1nyhoDipjLSC2QpiqEQP3R+5Tv0+m3gddY7FotJfmyS2Lq+7etBDxC1Oi3JsjBVq+Hp+p+NBtz2g0xi7wSEX4jIOl47Bplq1WSgUVQqS/QYIfnNcbPw0dQdUTc60DAZ8fVz92RT0pq93Bbr/OQrnFhLJcTZlxOxA9h+ag8jOy+An9TFKm+jZO2aAZIJitQItEPudRcwGg+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,247 +114,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds loadable kernel module compilation support for the three
-DAMON sample modules.  While preserving the existing built-in compilation
-option, the change introduces necessary code exports and configuration
-updates, enabling these modules to also be built as independent loadable
-modules.
+Overview
+--------
+This patch series introduces a new debugging feature,
+IOMMU_DEBUG_PAGEALLOC, designed to catch DMA use-after-free bugs
+and IOMMU mapping leaks from buggy drivers.
 
-Key modifications include exporting required function symbols from
-damon/core.c and changing relevant Kconfig options from bool to
-tristate.  This allows users to select between "built-in", "module", and
-"disabled" configurations.
+The kernel has powerful sanitizers like KASAN and DEBUG_PAGEALLOC
+for catching CPU-side memory corruption. However, there is limited
+runtime sanitization for DMA mappings managed by the IOMMU. A buggy
+driver can free a page while it is still mapped for DMA, leading to
+memory corruption or use-after-free vulnerabilities when that page is
+reallocated and used for a different purpose.
 
-This enhancement provides greater flexibility for both development and
-deployment.  Users can now compile the sample modules as loadable
-modules and manage them dynamically at runtime without reconfiguration
-or system reboots.
+Inspired by DEBUG_PAGEALLOC, this sanitizer tracks IOMMU mappings on a
+per-page basis, as it=E2=80=99s not possible to unmap the pages, because it
+requires to lock and walk all domains on every kernel free, instead we
+rely on page_ext to add an IOMMU-specific mapping reference count for
+each page.
+And on each page allocated/freed from the kernel we simply check the
+count and WARN if it is not zero, and dumping page owner information
+if enabled.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/damon/core.c       | 18 ++++++++++++++++++
- samples/damon/Kconfig | 12 ++++++------
- samples/damon/mtier.c |  3 +++
- samples/damon/prcl.c  |  3 +++
- samples/damon/wsse.c  |  3 +++
- 5 files changed, 33 insertions(+), 6 deletions(-)
+Concurrency
+-----------
+By design this check is racy where one caller can map pages just after
+the check, which can lead to false negatives.
+In my opinion this is acceptable for sanitizers (for ex KCSAN have
+that property).
+Otherwise we have to implement locks in iommu_map/unmap for all domains
+which is not favourable even for a debug feature.
+The sanitizer only guarantees that the refcount itself doesn=E2=80=99t get
+corrupted using atomics. And there are no false positives.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f9fc0375890a..2e16684e512d 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -108,6 +108,7 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
- 	mutex_unlock(&damon_ops_lock);
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(damon_select_ops);
- 
- /*
-  * Construct a damon_region struct
-@@ -133,12 +134,14 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
- 
- 	return region;
- }
-+EXPORT_SYMBOL_GPL(damon_new_region);
- 
- void damon_add_region(struct damon_region *r, struct damon_target *t)
- {
- 	list_add_tail(&r->list, &t->regions_list);
- 	t->nr_regions++;
- }
-+EXPORT_SYMBOL_GPL(damon_add_region);
- 
- static void damon_del_region(struct damon_region *r, struct damon_target *t)
- {
-@@ -276,6 +279,7 @@ struct damos_filter *damos_new_filter(enum damos_filter_type type,
- 	INIT_LIST_HEAD(&filter->list);
- 	return filter;
- }
-+EXPORT_SYMBOL_GPL(damos_new_filter);
- 
- /**
-  * damos_filter_for_ops() - Return if the filter is ops-hndled one.
-@@ -303,6 +307,7 @@ void damos_add_filter(struct damos *s, struct damos_filter *f)
- 	else
- 		list_add_tail(&f->list, &s->core_filters);
- }
-+EXPORT_SYMBOL_GPL(damos_add_filter);
- 
- static void damos_del_filter(struct damos_filter *f)
- {
-@@ -334,11 +339,13 @@ struct damos_quota_goal *damos_new_quota_goal(
- 	INIT_LIST_HEAD(&goal->list);
- 	return goal;
- }
-+EXPORT_SYMBOL_GPL(damos_new_quota_goal);
- 
- void damos_add_quota_goal(struct damos_quota *q, struct damos_quota_goal *g)
- {
- 	list_add_tail(&g->list, &q->goals);
- }
-+EXPORT_SYMBOL_GPL(damos_add_quota_goal);
- 
- static void damos_del_quota_goal(struct damos_quota_goal *g)
- {
-@@ -409,6 +416,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
- 
- 	return scheme;
- }
-+EXPORT_SYMBOL_GPL(damon_new_scheme);
- 
- static void damos_set_next_apply_sis(struct damos *s, struct damon_ctx *ctx)
- {
-@@ -478,11 +486,13 @@ struct damon_target *damon_new_target(void)
- 
- 	return t;
- }
-+EXPORT_SYMBOL_GPL(damon_new_target);
- 
- void damon_add_target(struct damon_ctx *ctx, struct damon_target *t)
- {
- 	list_add_tail(&t->list, &ctx->adaptive_targets);
- }
-+EXPORT_SYMBOL_GPL(damon_add_target);
- 
- bool damon_targets_empty(struct damon_ctx *ctx)
- {
-@@ -553,6 +563,7 @@ struct damon_ctx *damon_new_ctx(void)
- 
- 	return ctx;
- }
-+EXPORT_SYMBOL_GPL(damon_new_ctx);
- 
- static void damon_destroy_targets(struct damon_ctx *ctx)
- {
-@@ -573,6 +584,7 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
- 
- 	kfree(ctx);
- }
-+EXPORT_SYMBOL_GPL(damon_destroy_ctx);
- 
- static bool damon_attrs_equals(const struct damon_attrs *attrs1,
- 		const struct damon_attrs *attrs2)
-@@ -742,6 +754,7 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(damon_set_attrs);
- 
- /**
-  * damon_set_schemes() - Set data access monitoring based operation schemes.
-@@ -763,6 +776,7 @@ void damon_set_schemes(struct damon_ctx *ctx, struct damos **schemes,
- 	for (i = 0; i < nr_schemes; i++)
- 		damon_add_scheme(ctx, schemes[i]);
- }
-+EXPORT_SYMBOL_GPL(damon_set_schemes);
- 
- static struct damos_quota_goal *damos_nth_quota_goal(
- 		int n, struct damos_quota *q)
-@@ -1371,6 +1385,7 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(damon_start);
- 
- /*
-  * __damon_stop() - Stops monitoring of a given context.
-@@ -1414,6 +1429,7 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
- 	}
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(damon_stop);
- 
- /**
-  * damon_is_running() - Returns if a given DAMON context is running.
-@@ -1469,6 +1485,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 		return -ECANCELED;
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(damon_call);
- 
- /**
-  * damos_walk() - Invoke a given functions while DAMOS walk regions.
-@@ -2924,6 +2941,7 @@ bool damon_initialized(void)
- {
- 	return damon_region_cache != NULL;
- }
-+EXPORT_SYMBOL_GPL(damon_initialized);
- 
- static int __init damon_init(void)
- {
-diff --git a/samples/damon/Kconfig b/samples/damon/Kconfig
-index cbf96fd8a8bf..87abb8c10926 100644
---- a/samples/damon/Kconfig
-+++ b/samples/damon/Kconfig
-@@ -3,8 +3,8 @@
- menu "DAMON Samples"
- 
- config SAMPLE_DAMON_WSSE
--	bool "DAMON sample module for working set size estimation"
--	depends on DAMON && DAMON_VADDR
-+	tristate "DAMON sample module for working set size estimation"
-+	depends on DAMON && DAMON_VADDR && m
- 	help
- 	  This builds DAMON sample module for working set size estimation.
- 
-@@ -15,8 +15,8 @@ config SAMPLE_DAMON_WSSE
- 	  If unsure, say N.
- 
- config SAMPLE_DAMON_PRCL
--	bool "DAMON sample module for access-aware proactive reclamation"
--	depends on DAMON && DAMON_VADDR
-+	tristate "DAMON sample module for access-aware proactive reclamation"
-+	depends on DAMON && DAMON_VADDR && m
- 	help
- 	  This builds DAMON sample module for access-aware proactive
- 	  reclamation.
-@@ -28,8 +28,8 @@ config SAMPLE_DAMON_PRCL
- 	  If unsure, say N.
- 
- config SAMPLE_DAMON_MTIER
--	bool "DAMON sample module for memory tiering"
--	depends on DAMON && DAMON_PADDR
-+	tristate "DAMON sample module for memory tiering"
-+	depends on DAMON && DAMON_PADDR && m
- 	help
- 	  Thps builds DAMON sample module for memory tierign.
- 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index 775838a23d93..3e9efc67a3ea 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -238,3 +238,6 @@ static int __init damon_sample_mtier_init(void)
- }
- 
- module_init(damon_sample_mtier_init);
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("A DAMON module for memory tiering");
-+MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
-diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
-index b7c50f2656ce..290a3335aa06 100644
---- a/samples/damon/prcl.c
-+++ b/samples/damon/prcl.c
-@@ -167,3 +167,6 @@ static int __init damon_sample_prcl_init(void)
- }
- 
- module_init(damon_sample_prcl_init);
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("A DAMON module for proactive reclamation");
-+MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
-diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
-index 799ad4443943..183bcb7b8516 100644
---- a/samples/damon/wsse.c
-+++ b/samples/damon/wsse.c
-@@ -147,3 +147,6 @@ static int __init damon_sample_wsse_init(void)
- }
- 
- module_init(damon_sample_wsse_init);
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("A DAMON module for working set size estimation");
-+MODULE_AUTHOR("SeongJae Park <sj@kernel.org>");
+CPU vs IOMMU Page Size
+----------------------
+IOMMUs can use different page sizes and which can be non-homogeneous;
+not even all of them have the same page size.
 
-base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
--- 
-2.43.0
+To solve this, the refcount is always incremented and decremented in
+units of the smallest page size supported by the IOMMU domain. This
+ensures the accounting remains consistent regardless of the size of
+the map or unmap operation, otherwise double counting can happen.
+
+Testing & Performance
+---------------------
+This was tested on Morello with Arm64 + SMMUv3
+Did some tests on Qemu including different SMMUv3/CPU page size (arm64).
+
+I also ran dma_map_benchmark on Morello:
+
+echo dma_map_benchmark > /sys/bus/pci/devices/0000\:06\:00.0/driver_overrid=
+e
+echo 0000:06:00.0 >  /sys/bus/pci/devices/0000\:06\:00.0/driver/unbind
+echo 0000:06:00.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind
+./dma_map_benchmark -t $threads -g $nr_pages
+
+CONFIG refers to "CONFIG_IOMMU_DEBUG_PAGEALLOC"
+cmdline refers to "iommu.debug_pagealloc"
+Numbers are (map latency)/(unmap latency), lower is better.
+
+			CONFIG=3Dn    CONFIG=3Dy    CONFIG=3Dy
+			            cmdline=3D0   cmdline=3D1
+4K - 1 thread		0.1/0.6     0.1/0.6     0.1/0.7
+4K - 4 threads		0.1/1.1     0.1/1.0     0.2/1.1
+1M - 1 thread		0.8/21.2    0.7/21.2    5.4/42.3
+1M - 4 threads		1.1/45.9    1.1/46.0    5.9/45.1
+
+Main changes in v4:
+v3: https://lore.kernel.org/all/20251124200811.2942432-1-smostafa@google.co=
+m/
+- Update the kernel parameter format in docs based on Randy feedback
+- Update commit subjects
+- Add IOMMU only functions in iommu-priv.h based on Baolu feedback
+
+Main changes in v3: (Most of them addressing Will comments)
+v2: https://lore.kernel.org/linux-iommu/20251106163953.1971067-1-smostafa@g=
+oogle.com/
+- Reword the Kconfig help
+- Use unmap_begin/end instead of unmap/remap
+- Use relaxed accessors when refcounting
+- Fix a bug with checking the returned address from iova_to_phys
+- Add more hardening checks (overflow)
+- Add more debug info on assertions (dump_page_owner())
+- Handle cases where unmap returns larger size as the core code seems
+  to tolerate that.
+- Drop Tested-by tags from Qinxin as the code logic changed
+
+Main changes in v2:
+v1: https://lore.kernel.org/linux-iommu/20251003173229.1533640-1-smostafa@g=
+oogle.com/
+- Address J=C3=B6rg comments about #ifdefs and static keys
+- Reword the Kconfig help
+- Drop RFC
+- Collect t-b from Qinxin
+- Minor cleanups
+
+
+Mostafa Saleh (4):
+  iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+  iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+  iommu: debug-pagealloc: Track IOMMU pages
+  iommu: debug-pagealloc: Check mapped/unmapped kernel memory
+
+ .../admin-guide/kernel-parameters.txt         |   9 +
+ drivers/iommu/Kconfig                         |  19 ++
+ drivers/iommu/Makefile                        |   1 +
+ drivers/iommu/iommu-debug-pagealloc.c         | 174 ++++++++++++++++++
+ drivers/iommu/iommu-priv.h                    |  58 ++++++
+ drivers/iommu/iommu.c                         |  11 +-
+ include/linux/iommu-debug-pagealloc.h         |  32 ++++
+ include/linux/mm.h                            |   5 +
+ mm/page_ext.c                                 |   4 +
+ 9 files changed, 311 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+ create mode 100644 include/linux/iommu-debug-pagealloc.h
+
+--=20
+2.52.0.223.gf5cc29aaa4-goog
 
 
