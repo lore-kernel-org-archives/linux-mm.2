@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55265D3E792
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 11:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB59D3E792
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 11:51:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A3846B0005; Thu, 11 Dec 2025 06:49:19 -0500 (EST)
+	id 5FFB66B0005; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 954B66B0007; Thu, 11 Dec 2025 06:49:19 -0500 (EST)
+	id 5897E6B0007; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A776B0008; Thu, 11 Dec 2025 06:49:19 -0500 (EST)
+	id 451316B0008; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B5D6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:49:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BE19BB9B0
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:49:19 +0000 (UTC)
-X-FDA: 84207019638.01.0C45795
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 432C41C0008
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:49:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JVN1AzMs;
-	spf=none (imf18.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 305F66B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6D3C140880
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:51:50 +0000 (UTC)
+X-FDA: 84207025980.13.8C750DF
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3D03D40002
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:51:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=YCtHfTx7;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765453909; a=rsa-sha256;
+	cv=none;
+	b=vWMJ3DKUUah1nMnewNjUHLOun6P61ZthM+Do9Zyl4lqlbtZS2liOnorxAQlfdayLSipKsN
+	3a/D5RxvJxTafvvgfmfKONz2uVv1IPUzPC0+rQC/Z6NC6ZG3G9Y8sDVX94Dk8yN2L5TGiG
+	HKciOi2o7pIwxI+OEFHikOvMlJyFKNk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=YCtHfTx7;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765453757;
+	s=arc-20220608; t=1765453909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+OT4ivkTtGpyfGWvpgrf0Vr9j9IriXFLaXkwu0GJ6bw=;
-	b=ZvXnEusH8yctKgG6zECokrDsd0OglZbR5DE19gGckjo6BG3jAJKY3qduKKgt1LOOtII70C
-	SaRmAAAg7HjnPXi+pqP2ZzG9ys6dtA4uWXUaNU/Xpf0GW0RdtMs+8W7n0RhPgBR1rhPLoX
-	ShYpOAGXq1Ow0rDVmNDeLpR8h+TuYqw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JVN1AzMs;
-	spf=none (imf18.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765453757; a=rsa-sha256;
-	cv=none;
-	b=VmJVhq4cDxdYR/Mh6sa7tZ11KxpDyYvMRCanXh4aznCmwH1WLWoueWWmpuYlzXIXjYPm/7
-	GOGW3kDrZvUt+ucltdkGKXdZHJLRsn2l3ADL8FN/AJH6KyTiqgRiNfVxKlCNjUm7kpnnQK
-	zCCWS79xlZxJSRQU6StwfY63lLOzgKA=
+	bh=+ruouxJOUh2d+f+e8HHYpqnGoZEuPo3luh7bn7bAHeI=;
+	b=JesE1r7dE+a4zrhI8eWnpLm9nSxWUfKyHY7kRpLeizRR/CWs2cVAX2qwnpm08h0eouqAWA
+	qIqkD4gsa6Nap7nghsArCk1qfMlKfrpvmMui6HWkUr3SKGuXZH1TtZiQoAwRiFXbTwJf6Z
+	P94aeQ4GfbZnR4g+jAQhMwfYa4sbrBo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+OT4ivkTtGpyfGWvpgrf0Vr9j9IriXFLaXkwu0GJ6bw=; b=JVN1AzMsYXKkNnwNeBL1OpOC2M
-	usRg9+5aFTrJDHOxEclPH1av467Fb3Bj3rPgMyCbJ5gZYycl9Gw6AjdhzpiLl3C0V9sb1i0yaQfRK
-	mOf5ZYG2z9itaINLA0tfLNeKZSZyiW/C+oVjaNH6gOgA3m+gKuZvovx8NVkI5qpnHg6IQDV9R9c1T
-	fyzEc9WqyUb15CtUOl/P9FkFgRDq1JVhxqr2lfHMG4MfmM6gG4CgJ90xouVD4A2O/wBERNIxj9gwr
-	pYbXQ1fHOXH+zv5KIkiK43jA/QtjxQp5F0m7a8f08ERF19UcmgOhPesOMjYZXmUqtsp+gyMa2Aosq
-	y9tldtSA==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTfAP-0000000EBca-31xd;
-	Thu, 11 Dec 2025 11:49:05 +0000
+	bh=+ruouxJOUh2d+f+e8HHYpqnGoZEuPo3luh7bn7bAHeI=; b=YCtHfTx7RoM+FUijwKYs4TN7la
+	V38IiN6UXEJqoevDxSusV4xIKVmpUvu7bxeHyT1ebhxYje8Y8ewjpnUYe/AwPBWps727+uIgDIxGh
+	gHylwobYVFURCe1AhaSiscraq4UreJJ8qzq798CHWb/cBBob/1iZKF377N3zfzcIJ0TOPZsrSel9n
+	6sEuHcwYOL0ArmngL2gHZ2LsDyvZyXXzu1RFeIcoPmnUV1UOXv6jd2LeqmWmL1Yf8zM1kQcwdf6KN
+	3gr5k3gALYgZb+dCe5b//7iQ82XTD18jysr8AvEqOPt1OtNyHnlF7O1kL1V4e/6nZWZZvwAcoAjKU
+	8Sg8GQrA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTeLL-0000000ErCa-0UbQ;
+	Thu, 11 Dec 2025 10:56:19 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2CEC930301A; Thu, 11 Dec 2025 12:49:05 +0100 (CET)
-Date: Thu, 11 Dec 2025 12:49:05 +0100
+	id 3748730301A; Thu, 11 Dec 2025 12:51:35 +0100 (CET)
+Date: Thu, 11 Dec 2025 12:51:35 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Marco Elver <elver@google.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
@@ -104,24 +104,23 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
 	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
 	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 08/35] locking/rwlock, spinlock: Support Clang's
- context analysis
-Message-ID: <20251211114905.GE3911114@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <20251211115135.GF3911114@noisy.programming.kicks-ass.net>
 References: <20251120145835.3833031-2-elver@google.com>
  <20251120151033.3840508-7-elver@google.com>
- <20251120151033.3840508-9-elver@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120151033.3840508-9-elver@google.com>
-X-Stat-Signature: bems68mqfy75hwfapew3dghjjbnfrbq3
+In-Reply-To: <20251120151033.3840508-7-elver@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3D03D40002
+X-Stat-Signature: rgynudh4w84iyuzpptamazhxnko5wt8u
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 432C41C0008
-X-HE-Tag: 1765453757-673782
-X-HE-Meta: U2FsdGVkX1/CKsf/np+S+RYNSh+ZEH6InpEnQQd+QczRZw2YUWIuw4ylXPrlMBqXOnh85+9lY7FYu3xPs+0nC1UR4EuPu33DEr3AtNJTv6Vz3qf3xmkYZ+mTR+zgvbZXS4KPBIWrkVOtqpq6axOeVxF9ih5ppZeoJj5oLuFcJVqLhK35ZlTefzH76ITWDHY3N8ZTeDGnmAnHN1ag9c0ccaSJzd4X73tLCpc/1Mx1EI6EaQbcFNU6nIWfmlYX+0gt5Be5xMLmKsi8Hq1Hhh2FHfaZ04Uvl2rSBZOJOQedAze6CImR31tD1W/g+9I4Am7F87wQOYqp48dvp6TzVD+MyP1RoqQQC9eNX5kE0yBHHLId1AyQVbD9AbwSlwlndn99aezcFy8O7EihW5gHnIBGaQkrOmJx8D5joqjbX50BhIy/iA618x6ErgRg2Wr47scyUMNDKnRto7Y4MASaQlfuXjJrlyHIevIXHbNXqbXvR7jykceUS0lFbyMohte+Jb4vkgwXJQN5I0PiTu9pBBu45k1cHFJLk+WfW21FoomM8/+x1YXl3XNQe+buDFlHESwt06v8m+IE+TEJZQWyLLT90YuWTPeh0O/KLlGJJm3zaKjW8uRkHAafHDRUnvFXk/T+qa1zyUZQxyoA366NqtVmt6HC7KOcSucMhZNQgQW5kmIjio+hRF3ZUsapS7uR4kXxs6zocuxDWOqu+Oy20E5SJ5eiJ2vkhzeXunJ0jTLZ1JpCnxPCZM1M9W9aPjyUNhST7/h4NL49hRpz/I99hFiB/kGZ1Ecr7+EkilHAJUQJ3m33hpiJERwm077Tfyh2frni0iEAcdzpk7Nb4JLHdxyg/FYI3qPY+g6Svhzl7l29AtG512vK5cttwUYtIsOo0q6LzcZ40d5c+KAbao4codLqAZlv5dHXBZXdpI6P4BDTv2dV6yMwdyUtWjR7pM9RAleczmoSOXHpdIlvxaA/CDj
- slgkvc59
- Cg+6ZLHa0jf6Atp6becqNFQQ7KxeDqwA6XO3uVxcICrDcm0SUPUJrnOWXuvoLQOuoq4H556TcHgkjOcDZPrW81uslAEYJL50QRurlz+uvXzBZgFcYj+/GvDt8s+aijU2V3RV9Z3QwRYcZXO8rsM58YCmMwxT1ScU1fKcTgZ4L6aVQZ2gWr6uxZHLyUsVZFKPipGMbrHPm+02tsXz6vWom5Cj/XSgYUvQseJOqTkAUkXlDFB3TmjJhCCm5quY/I2HS/KmLJmUV+IDvU20AaxZHY2xHKA==
+X-HE-Tag: 1765453909-825389
+X-HE-Meta: U2FsdGVkX1+/JFXzH+/i4gkH4cEA36w4nNE6NmjI3kRlZ/gpwe/r6QJWb5VmmmRE8HsH69Cck3qspBN7fiTGExMV8PVETspeLthRDzxvveIy+dmEHaogsktOUkyXS+ewmNo+Rg83usA33NcCjIBaTe0100w8avcPy8i4wmDSUFN+G2XR6GzF8/h0l/AxnXEW0BCPyfMer2KukWtL10m2+2Gd/QzzieifQbPnl6hVzUWD+Q+5gQAzib1Jy/PlTe2UHwi9LMIhOgbRozTZOgRXcgElxtde71ol2N4LvU5ItZA8LrCskkfG9t2HHtTpnLKRiyOufLnx+5961UT3VzaqxM+ErfDiOT+voHjTH0eecY51I2fgd/atUm2BQUYaKqtTz9FXmMv0XllLyJ6FdGOt6fVI27cLeN9CG1OrC8S//VkjJyGYkajU6bq6CCI6E5RyQPmGh42CmRv8feXKEqRzi111dFL1lIiCGX6tRJgWqj3BNVOG82UGtqJpVgzJ+dHnrWblys87I6eAdiOBBXeHgL+sdPzx0g+j9wBpSF5oZvl5xExn76NsO5VUbdPaV9M30TugQ7qtU4Z8Jh7gRbuGU5zYz1xC77qlpAzo74deT5fz50uXnjwewJExBzTvu/DavzUYlbBX4UBp6gfiG8AltASYZf0fOboaszoXaFeo5DAzcGn9/96YcSeSi0Xevf8aa5kqbMCzh/krhc/UTB2KArpDJg+QmVYVHfvZ5Gk1oDO7XTnEUT1fSdFGqdm6eOPsZoZRWGTMDL2fFcj4U7Ucdx8HAZvBQ8sSGZDiZczOdsggSCs1cNBbtH3ErqQ9fbvXXHLIMPRpBOLsurO8Ke6WGs23/Cd7VIGjdOPIkiD/snzw/GiCSMvpCEqEhFWBJmQf/UEWaZDHn33/YCT8NH55t9400aqTkQT3OaLiKe2FZgzaNe79DCcH3YTsT4yFOiHLrGcMxflHQoSbPrD1hls
+ 5NtUp6Rq
+ KjMwgb3QDf2mVS8sgv6zmS7wtgTnKOIyXd3gQcfucky0H9kWwUUJel4STmhbypEF5zTAn/BAqejvi3I1X1YHeh2hc58iKsp7P0c/key+HNnE3qXEDtwrRj9cy79onYKzqA3PSr4qkzwOQz8Kf/jEhM9KrpU/ypTQIDWa6M8HPFC4rMCIOxc7IdHnev7TOdQAFeBf+djwlsDHb3AdOTttjxC3QDOoqph7/VUXWG6lv++uc99Qs3g/oSRKj/ztDzBT+WtcM9HrQU6X6v7U4xtogFmOGxslZiKv3nCFx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,35 +129,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 04:09:33PM +0100, Marco Elver wrote:
+On Thu, Nov 20, 2025 at 04:09:31PM +0100, Marco Elver wrote:
+> +#define DECLARE_LOCK_GUARD_0_ATTRS(_name, _lock, _unlock)		\
+> +static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
+> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
+> +
+> +#define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
+> +static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
+> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
 
-> To avoid warnings in constructors, the initialization functions mark a
-> lock as acquired when initialized before guarded variables.
-
-> diff --git a/include/linux/rwlock.h b/include/linux/rwlock.h
-> index 5b87c6f4a243..a2f85a0356c4 100644
-> --- a/include/linux/rwlock.h
-> +++ b/include/linux/rwlock.h
-> @@ -22,23 +22,24 @@ do {								\
->  	static struct lock_class_key __key;			\
->  								\
->  	__rwlock_init((lock), #lock, &__key);			\
-> +	__assume_ctx_guard(lock);				\
->  } while (0)
->  #else
->  # define rwlock_init(lock)					\
-> -	do { *(lock) = __RW_LOCK_UNLOCKED(lock); } while (0)
-> +	do { *(lock) = __RW_LOCK_UNLOCKED(lock); __assume_ctx_guard(lock); } while (0)
->  #endif
-
-This is again somewhat magical and confused the living daylight out of
-me. I know (from having looked back on previous discussions) that I was
-confused about this before, and clearly it didn't stick.
-
-So obviously I'll be confused again when I look at this code in a years
-time or so :/
-
-Can we get a comment near this __assume_ctx_guard() thing (because
-putting it all over the lock initializers would probably be duplicating
-things too much)?
+When you rebase this series; you'll find cleanup.h moved to
+__always_inline (because compilers are weird) and these should probably
+also switch.
 
