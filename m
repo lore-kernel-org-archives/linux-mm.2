@@ -4,95 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AA6CD3E78C
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 04:27:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1083D3E791
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 05:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 726C66B0005; Wed, 10 Dec 2025 23:27:08 -0500 (EST)
+	id D27A56B0005; Thu, 11 Dec 2025 00:07:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D93C6B0007; Wed, 10 Dec 2025 23:27:08 -0500 (EST)
+	id CD83D6B0007; Thu, 11 Dec 2025 00:07:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4E36B0008; Wed, 10 Dec 2025 23:27:08 -0500 (EST)
+	id BC76A6B0008; Thu, 11 Dec 2025 00:07:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44E2E6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 23:27:08 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C80B4140788
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:27:07 +0000 (UTC)
-X-FDA: 84205905294.01.99AAB72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 25B9E40006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:27:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TzEXc4tx;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765427226; a=rsa-sha256;
-	cv=none;
-	b=KCf4LRI7X5/ERhpMhhRawoBt54wBew/+wNSssc4J8YKHlSwJfGoPZ60cWQkNamDbXzK6+f
-	fzW2Ratw+Sxu3ghB2rBJYsq4Ii4WP+P5M+Nwv2u4cRz8BSYmG4U/MhdOOAwdDKEt9313QT
-	EDNnluM0y95+4bptW+xfpPXkBnlB3NA=
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AC10D6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:07:54 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37FD95B048
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:07:54 +0000 (UTC)
+X-FDA: 84206008068.27.73F47A8
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D9795A000C
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:07:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iX5bt+hQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="hNw/kktA";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kUOpH0Z8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9QyR5IDC;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765427226;
+	s=arc-20220608; t=1765429672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=eKXTOc/qyTfcN5X1gBtb5g7Xq4iw49a+Kau6321RZIA=;
-	b=oYgv1I3ueG93k9Tn0KYG2zAhQqsZ2uMK29qz17Qb+hLw7hknO6HPq0oDk2yAD1kl/sQuZh
-	WVCy3HrTMg9c10NsWmC4uuI2jecPiRghtEj3d/U7IN643Nm2iamHsFLx86pWeTMX5HOW32
-	DQq61MxCLgZw5rNxsb/hbUc/MXsOcew=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m7DNDRFGzVCcVWE+kBBV+oyh/JbLf2abSR0tz8270oM=;
+	b=vOGzNr2nmqKLd8oFCEk1iNUWRk/KLssl4Yi5DXmXsrqbCVtu+To+6Gon0uHdZxoMqskzIm
+	6MAIf30SgH39mseUhD+bEhOxmu3rce952RNgyE6r/bjucAxCzAXuhB6GjvkeegREeZPOoa
+	HXCBQS8GcFuX2qDnHZxCGYB+YItlL2Y=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TzEXc4tx;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3C3143E84;
-	Thu, 11 Dec 2025 04:27:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B448EC4CEFB;
-	Thu, 11 Dec 2025 04:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765427224;
-	bh=xpkKIG9FMryb6P12ow/DNTd5Jc1/Y/mhnvtHiSrrxfc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TzEXc4txHsbtptaVuuDDJvsSdK4q9CA+1T++9wgdK60nWiPaodxe5xZuV5yE45TC6
-	 LdMueM5iAF+Lx4gkH87EUZmBc/+Czs4gTzcgeX/I15yhBL4njM9duiE2JOpTT3K55v
-	 Lv7Ty2KdcASnmjbhnDmIeJzrESlF+VyPQ3cjQ5AS4ELsoSI9VWJutjgmXV0VBmV0qC
-	 g91EjdDdlGA1v5EIj+wVhQtl6r0BH/ubL+vyKT2Wh1zTM+C2SURNGc6yDMORqXbSvt
-	 bK37cHL0bnYdxlw3vO14L4LQLZnF5X5OUPfnKAL7ttBQZoJJ+1WxzPG1y0NCEXdv9+
-	 7o3TjfsdRNHyw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Miu <jasonmiu@google.com>
-Cc: linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org
-Subject: [RFC PATCH] liveupdate: list all file handler versions in vmlinux section
-Date: Thu, 11 Dec 2025 13:26:22 +0900
-Message-ID: <20251211042624.175517-1-pratyush@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iX5bt+hQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="hNw/kktA";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kUOpH0Z8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9QyR5IDC;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765429672; a=rsa-sha256;
+	cv=none;
+	b=uResfQso4qSch4jtuqf8mbjbbjbPqpP9k4+9vVAnEKyvqx1xLrO8d1asLvfslb4QdSCB6A
+	pMNhvzdKpOXlIERZDHJ7rylbWRIZ8vdkxTPq1AjKe0EqRLq1pQZEcQeVI6UAK3Q6VzjtLW
+	A0HATHhKkEmsUeYvp0bHGG5uFgWkngc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0589633711;
+	Thu, 11 Dec 2025 05:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765429669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7DNDRFGzVCcVWE+kBBV+oyh/JbLf2abSR0tz8270oM=;
+	b=iX5bt+hQDAJC5S4LfiUX18S3l2QkD8B2WemtgtdEYM9IQHDTG2lxrcGmuYJiB+KLC1eP2b
+	040ugC63kRy1PHAgrCjB9qn7rDwmDvphdeGkO+0r6IQnf7rtayNGHiARcVzNFFM89BEA1g
+	vr4pdZBWl9H/EtRbjIN7kXX67b9mBak=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765429669;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7DNDRFGzVCcVWE+kBBV+oyh/JbLf2abSR0tz8270oM=;
+	b=hNw/kktAhwG/ePOyE+JI2y/i79asQr5nYn/RykAJ4vgjyikRbz97x1Lwlu9ODm4ZsD/eK5
+	WQjodRnVCUWLKdDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765429668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7DNDRFGzVCcVWE+kBBV+oyh/JbLf2abSR0tz8270oM=;
+	b=kUOpH0Z8JCjmGDRYsM0c7GhyP/n4CBGGZAdWg/UuoN49qP5bqiYF3vo6MWY8dE40HFN1m1
+	/fxZdzOsodoGcGR3P0wKn9Qzgre71HxOmNObNKmxfeT1VtVlkKuOGJyQEjG7w7SYfRaDVL
+	12FVNZQWbHQzfrkwln8fr8CVLUALGPU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765429668;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7DNDRFGzVCcVWE+kBBV+oyh/JbLf2abSR0tz8270oM=;
+	b=9QyR5IDCtfCYs79YZMeDUXv8DTfQ7i5dcV4CBhRUCQ+FMvRgxEnpmlANSoWkFY7uW30V3Q
+	QH8a86/NE9BFO8Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B3463EA63;
+	Thu, 11 Dec 2025 05:07:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4C5EB6NROmmxFQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Thu, 11 Dec 2025 05:07:47 +0000
+Date: Thu, 11 Dec 2025 06:07:45 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Tianyou Li <tianyou.li@intel.com>
+Cc: David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+Message-ID: <aTpRoUt0WvEULeKE@localhost.localdomain>
+References: <20251208152544.1150732-1-tianyou.li@intel.com>
+ <20251208152544.1150732-2-tianyou.li@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25B9E40006
-X-Stat-Signature: m7rmny5iwszj3nn4x6q5mnxxk6i18gw6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208152544.1150732-2-tianyou.li@intel.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: b4bz7fk7zxe7wxrx1rbzydxrsqej7zn5
+X-Rspamd-Queue-Id: D9795A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765427225-538824
-X-HE-Meta: U2FsdGVkX19+8e6891kQLxIw546rAum3wSAJJdu6a+J29AEmJ4HpkQVFKhGSeeqPfGCfd5n8Bnb4mUsgScPJ9vabBUD5602ghTHerQGupJWCd1bNt83DpxDZ5Or5fNuOjLbt2zEtV+i4R5vnKIXLtCNq6JWeMxx4130g5fHSK1yO52+2CmpoPT9QXD84lP6tbK8eUnBoioJBaxpFOvf0dDqlOOJ21WtNGlPSvr5+MJvPU36MaOQFLeUDv34LgykcTbOodQf0amPZNcnHI2ujvzaW9UTjNvNqJwzqPAZ2sA5sXpjEUrjLt6CZzgUQbkk5g1F3t9tb+9a0AraS3NS4NhD6fEyViVZLzqiyg4llVefdGQI52LmhtlrMMH+iY1zU+jfNMCEuFD3y9K/jO3sydARjeEVsutSiVqgS/JCUtC6LC+en6A4CbFQ7S+ec0Db36nDncrG7vqEJpr1A7JgvU8JukbSowUeSyAutXiG57UTKyuoO2M9xm0RcNm09pQgSUemfc1rc5SUe7phjWTycZRgB+8wHUMxVdOrPY0FMDn0AHT7CH8xpWyioaHpg7UcwspbXyxN/J2muCoWHn8lwyWpI1k+dLB0Jk0nvVDfJECURTHwceCdkDDSi0C/bc/9PXdEAYRObsgOSq17/UdgwK6ORvNJ/AFuZuScXFQI0S95CEcbG1cN86XI1HBn84vRyeGON47jvMYC3Lf//fcEFMng2ywgGDNHwez0IgAdsIJfULo264ZAkuIilNjJAqQ02l6uQB9LeOz//JMNsgLfyAvjpjSTSlHq/d1GXrzk+rOA8h3WDutxgrlpgQIyvX6TJNNZTW/8refkccGRMz3Xd4adHdFFWrKqTUod8GaQBUY8zW1pjB1Lg7CwUdbQO8uNGHzLyfCxN+DXZb98GygnVUvTvK2GB7evbrqy5/Y/Xm/2l1gUH8D3Q+MuxAnYRiMeh+u1ETMK+KDZPentvod6
- 5MIUJ+Wy
- 4qu2XD0tFTRVaZSbBoPbxVQm/08crPyE1mPVdi78nlZID+eigK1lJKsfVf4Rjpx2+DFd0weNVBb7yQUgQmhzkNRzkk2zOsPlmVMduy4IavrSazS2LTkgl1M2SFiN6C/9anO6yMeSTiCn3cB8skJ/jUno9R5abo31Fx4Uj19NJrF6FI5MNCFU5cwZUgONYDaWA10YiTnF1cQOA5WA3DkBQMgHv/9MvxQQFNIoLMcLuRHyBA/yM6mgEbOYtOqPzoG17uNXTqdRyrpAYaBWNTgxnPEb17Z4mIR0SezyRQMaaatUEG8o=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765429671-988832
+X-HE-Meta: U2FsdGVkX1+7JP1lwTcZ+cETBDZnqTKLRAIToxIyTGBo/RzKbYClj4JFCvKgYXcikSmAb1/Ru68Mi6j9H3MtumUeXslKe3edrfDDoDMPu+LvOosoMHpj042wMU+/p6qJ8lLyrioLRI17r/ykv3dRKOjOgc06mfNF4lCCtNgjdumRGU5PFO9AjYZJlAfCB9moQ6CRD1hCr/aNMgKAQM4jMWWjNq25Y7ZKsRJzzQh/H5xqu9+92YpmRBB7SIIi1lyK4ACaMyiQE5VqieL7uL8Q43VuU81dO2S7j4VFEJkXoHcjCU55sFpzWfbPRH78wUcuRwub158CTn7wJx0MwnCjHqbZKFadj7xybAWA2cIhGl1p0LzB3wz57ENULEEjcL0XDbYDLTxuCOJq06Hue54quqR0Xy4c3tBzeycISHLoMuJJ9NrtnCfWZIiGNi+dtYFxU1VrTAo339BKbFoIG1DOnhW9cpF0Cwq6365nf6gMUTp/6aAcpZ+X9wawmZP8jK05A3PkLr7i477zpeZJ0CkcPi/vH13HsYdX5c/aJA26y3Fci2kmuQJL2BEP3+gL2dbikQdTSd9hocgy8wcjPUHkN/9W8jFaQy0GCP6NZayZR8Sa5h34n8+Na6j7WAVw1W+JwmPINjlWhqmb4tfx/PSI0AI4lIRh6C5aTJxr+alATnAHE1WicS4A9FEU5JWbRTZISAn9/a2x35FXa8utUuwAXi2UuR6Iva7kghERGAWBCyBNoMMvzuUGA9w+8A5yAyBcNzIBarFCcOiIg8bUgGRUmBFsKLGh3tNtPN6yapAFJpWIcysG3+cAyK47sKNDcAT0jKofiUINYU0vVrdYA92EzYHr1e3z5sZTMQX2LNm+Ix4Fg2ZCtYLssvN1/W6ysDwwY2nG9/jQovQA5Dew5zoJlAxr6+kHPLwg1dPZhP4K201tXacBUA7WEzpiQPrvrdOTzoMfEj2/Bg0+vi1stxj
+ 4XH+zUJk
+ JmKTM+6vZJORloU5NCJnikhbWW2ornZ3hfDIVKlowGRB+yVRQedULgd3t7RlZ0a5bcR2ovxHaZaC7AtDdZC3ktSIb25ioeWfsLkJFEvpIjSLdepf+5isNT2KKt+xWCgMgDRr3VDjtnc1VXOZTUcMh740VqBUb3Z/ZJryNAhDkb7QiasLTXew7LrmwJvFuNne7dPINTtTJ4nCUF7MKSG9mv5rNru7/gE2JSMc7uni75Oci2Va0pMOROGfE96YO+oIWd18I6MY2RxDMugK+IgdiGYpNmwxVoR2XVv+Zcc5OLDzWL9PeAQMpN9vp0IqM/ZhNj5aesD/qUjZAdjmkHwIEdBncvDZPhUxyLzKmSI3Dg73YswQ6iBgmaxFx9MqnBek3kzPM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,202 +139,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As live update evolves, there will be a need to update the serialization
-formats for the different file types. This could be for adding new
-features, for supporting a change in behaviour, or to fix bugs.
+On Mon, Dec 08, 2025 at 11:25:43PM +0800, Tianyou Li wrote:
+> When invoke move_pfn_range_to_zone or remove_pfn_range_from_zone, it will
+> update the zone->contiguous by checking the new zone's pfn range from the
+> beginning to the end, regardless the previous state of the old zone. When
+> the zone's pfn range is large, the cost of traversing the pfn range to
+> update the zone->contiguous could be significant.
+> 
+> Add fast paths to quickly detect cases where zone is definitely not
+> contiguous without scanning the new zone. The cases are: when the new range
+> did not overlap with previous range, the contiguous should be false; if the
+> new range adjacent with the previous range, just need to check the new
+> range; if the new added pages could not fill the hole of previous zone, the
+> contiguous should be false.
+> 
+> The following test cases of memory hotplug for a VM [1], tested in the
+> environment [2], show that this optimization can significantly reduce the
+> memory hotplug time [3].
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Plug Memory    | 256G |      10s      |      2s      |       80%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      33s      |      6s      |       81%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Unplug Memory  | 256G |      10s      |      2s      |       80%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      34s      |      6s      |       82%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>     qom-set vmem1 requested-size 0G (Unplug Memory)
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v6.18-rc2
+>     Qemu         : v9.0.0
+> 
+>     Launch VM    :
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>     Guest kernel auto-onlines newly added memory blocks:
+>     echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> [3] The time from typing the QEMU commands in [1] to when the output of
+>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>     memory is recognized.
+> 
+> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+> Reviewed-by: Pan Deng <pan.deng@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
 
-If the current kernel does not understand the same set of versions as
-the next kernel, live update will inevitably fail. The next kernel will
-be unable to understand the handed over data and will be unable to
-restore memory, devices, IOMMU page tables, etc.
+Overall this looks good to me, thanks Tianyou Li for working on this.
+Just some minor comments below:
 
-List the set of versions the kernel understands in a section in vmlinux.
-This can then be used by userspace tooling to make sure the set of file
-descriptors it uses have the same version between both kernels. If there
-is a mismatch, the tooling can catch this early and abort live update
-before it is too late.
+> ---
+>  mm/internal.h       |  8 +++++-
+>  mm/memory_hotplug.c | 64 ++++++++++++++++++++++++++++++++++++++++++---
+>  mm/mm_init.c        | 13 +++++++--
+>  3 files changed, 79 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 1561fc2ff5b8..1b5bba6526d4 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -730,7 +730,13 @@ static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+>  	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
+>  }
+>  
+> -void set_zone_contiguous(struct zone *zone);
+> +enum zone_contig_state {
+> +	ZONE_CONTIG_YES,
+> +	ZONE_CONTIG_NO,
+> +	ZONE_CONTIG_MAYBE,
+> +};
+> +
+> +void set_zone_contiguous(struct zone *zone, enum zone_contig_state state);
+>  bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
+>  			   unsigned long nr_pages);
+>  
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 0be83039c3b5..d711f6e2c87f 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -544,6 +544,28 @@ static void update_pgdat_span(struct pglist_data *pgdat)
+>  	pgdat->node_spanned_pages = node_end_pfn - node_start_pfn;
+>  }
+>  
+> +static enum zone_contig_state __meminit zone_contig_state_after_shrinking(
+> +		struct zone *zone, unsigned long start_pfn, unsigned long nr_pages)
 
-The versions are listed in a section called ".liveupdate_versions". The
-section has a header that contains a magic number and the version of the
-data format. The list of version strings directly follow this header.
-Only the version strings are listed, and it is up to userspace to map
-them to file descriptor types.
+Why do we need the __meminit? These functions are only used from memory-hotplug
+code so we should not need it?
 
-The format of the section has the same ABI rules as the rest of LUO ABI.
+> +{
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
+> +
+> +	/*
+> +	 * If the removed pfn range inside the original zone span, the contiguous
+> +	 * property is surely false.
+> +	 */
+> +	if (start_pfn > zone->zone_start_pfn && end_pfn < zone_end_pfn(zone))
+> +		return ZONE_CONTIG_NO;
+> +
+> +	/* If the removed pfn range is at the beginning or end of the
+> +	 * original zone span, the contiguous property is preserved when
+> +	 * the original zone is contiguous.
+> +	 */
+> +	if (start_pfn == zone->zone_start_pfn || end_pfn == zone_end_pfn(zone))
+> +		return zone->contiguous ? ZONE_CONTIG_YES : ZONE_CONTIG_MAYBE;
+> +
+> +	return ZONE_CONTIG_MAYBE;
+> +}
+> +
+>  void remove_pfn_range_from_zone(struct zone *zone,
+>  				      unsigned long start_pfn,
+>  				      unsigned long nr_pages)
+> @@ -551,6 +573,7 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>  	const unsigned long end_pfn = start_pfn + nr_pages;
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	unsigned long pfn, cur_nr_pages;
+> +	enum zone_contig_state contiguous_state = ZONE_CONTIG_MAYBE;
 
-Introduce a LIVEUPDATE_FILE_HANDLER macro that makes it easy to define a
-file handler while also adding its version string to the right section.
+I think that new_contiguous_state is clearer, but I do not have a strong
+opinion here.
 
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
----
+>  	/* Poison struct pages because they are now uninitialized again. */
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn += cur_nr_pages) {
+> @@ -571,12 +594,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>  	if (zone_is_zone_device(zone))
+>  		return;
+>  
+> +	contiguous_state = zone_contig_state_after_shrinking(zone, start_pfn, nr_pages);
+>  	clear_zone_contiguous(zone);
+>  
+>  	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
+>  	update_pgdat_span(pgdat);
+>  
+> -	set_zone_contiguous(zone);
+> +	set_zone_contiguous(zone, contiguous_state);
+>  }
+>  
+...
+> @@ -752,7 +809,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  {
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	int nid = pgdat->node_id;
+> -
+> +	const enum zone_contig_state contiguous_state =
+> +		zone_contig_state_after_growing(zone, start_pfn, nr_pages);
 
-Notes:
-    I also wrote a small tool [0] to parse this section and list all the
-    versions it contains to demonstrate how it can be used.
-    
-    This topic will also be discussed at an upcoming session at the Linux
-    Plumbers Conference 2025 [1].
-    
-    [0] https://github.com/prati0100/luo_section_parser
-    [1] https://lpc.events/event/19/contributions/2049/
+Same comment from remove_pfn_range_from_zone.
 
- include/asm-generic/vmlinux.lds.h | 12 +++++++++++
- include/linux/kho/abi/luo.h       | 34 +++++++++++++++++++++++++++++++
- include/linux/liveupdate.h        | 23 +++++++++++++++++++++
- kernel/liveupdate/luo_core.c      | 14 +++++++++++++
- mm/memfd_luo.c                    |  6 ++----
- 5 files changed, 85 insertions(+), 4 deletions(-)
+>  	clear_zone_contiguous(zone);
+>  
+>  	if (zone_is_empty(zone))
+> @@ -783,7 +841,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  			 MEMINIT_HOTPLUG, altmap, migratetype,
+>  			 isolate_pageblock);
+>  
+> -	set_zone_contiguous(zone);
+> +	set_zone_contiguous(zone, contiguous_state);
+>  }
+>  
+>  struct auto_movable_stats {
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 7712d887b696..e296bd9fac9e 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2263,11 +2263,19 @@ void __init init_cma_pageblock(struct page *page)
+>  }
+>  #endif
+>  
+> -void set_zone_contiguous(struct zone *zone)
+> +void set_zone_contiguous(struct zone *zone, enum zone_contig_state state)
+>  {
+>  	unsigned long block_start_pfn = zone->zone_start_pfn;
+>  	unsigned long block_end_pfn;
+>  
+> +	if (state == ZONE_CONTIG_YES) {
+> +		zone->contiguous = true;
+> +		return;
+> +	}
+> +
+> +	if (state == ZONE_CONTIG_NO)
+> +		return;
+> +
+>  	block_end_pfn = pageblock_end_pfn(block_start_pfn);
+>  	for (; block_start_pfn < zone_end_pfn(zone);
+>  			block_start_pfn = block_end_pfn,
+> @@ -2283,6 +2291,7 @@ void set_zone_contiguous(struct zone *zone)
+>  
+>  	/* We confirm that there is no hole */
+>  	zone->contiguous = true;
+> +
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index e04d56a5332e..a474c9529a5f 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -342,6 +342,17 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- #define THERMAL_TABLE(name)
- #endif
+Not needed?
+
+>  }
  
-+#ifdef CONFIG_LIVEUPDATE
-+#define LIVEUPDATE_VERSIONS						\
-+	. = ALIGN(8);							\
-+	.liveupdate_versions : AT(ADDR(.liveupdate_versions) - LOAD_OFFSET) {	\
-+		KEEP(*(.liveupdate_sec_hdr))				\
-+		KEEP(*(.liveupdate_versions))				\
-+	}
-+#else
-+#define LIVEUPDATE_VERSIONS
-+#endif
-+
- #define KERNEL_DTB()							\
- 	STRUCT_ALIGN();							\
- 	__dtb_start = .;						\
-@@ -544,6 +555,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	RO_EXCEPTION_TABLE						\
- 	NOTES								\
- 	BTF								\
-+	LIVEUPDATE_VERSIONS						\
- 									\
- 	. = ALIGN((align));						\
- 	__end_rodata = .;
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index 4a1cc6a5f3f8..57ef75695f62 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -244,4 +244,38 @@ struct luo_flb_ser {
- #define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
- #endif
- 
-+#define LIVEUPDATE_VER_HDR_MAGIC 0x4c565550 /* 'LVUP' */
-+#define LIVEUPDATE_VER_HDR_VER   1
-+
-+/**
-+ * struct liveupdate_ver_hdr - Header of vmlinux section with version lists
-+ * @magic:     Magic number.
-+ * @version:   Version of the header format.
-+ *
-+ * This struct is the header for the vmlinux section ".liveupdate_versions". The
-+ * section contains the list of file handler versions that the kernel can
-+ * support.
-+ */
-+struct liveupdate_ver_hdr {
-+	u32 magic;
-+	u32 version;
-+};
-+
-+/**
-+ * struct liveupdate_ver_table - Table of file handler versions that the kernel
-+ * can support.
-+ *
-+ * @hdr:        Table header.
-+ * @versions:   List of versions the kernel supports. The strings ate
-+ *              NUL-terminated, but to keep the format simpler always take up
-+ *              LIVEUPDATE_HNDL_COMPAT_LENGTH bytes.
-+ *
-+ * The list of versions immediately follows the header. The number of versions
-+ * are determined by section length.
-+ */
-+struct liveupdate_ver_table {
-+	struct liveupdate_ver_hdr hdr;
-+	char versions[][LIVEUPDATE_HNDL_COMPAT_LENGTH];
-+};
-+
- #endif /* _LINUX_KHO_ABI_LUO_H */
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index ed81e7b31a9f..5a8305595fe5 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -212,6 +212,29 @@ struct liveupdate_flb {
- 	struct luo_flb_private __private private;
- };
- 
-+#define LIVEUPDATE_SEC_VERSION(_name, _ver)				\
-+	static const char __ ## _name ## _vers[LIVEUPDATE_HNDL_COMPAT_LENGTH] \
-+	__used __section(".liveupdate_versions")			\
-+	__aligned(1) = _ver
-+
-+/**
-+ * LIVEUPDATE_FILE_HANDLER - Define a live update file handler.
-+ * @_name:        The name for the variable.
-+ * @_compatible:  The compatible string for the file handler.
-+ * @ops:          The file handler operations.
-+ *
-+ * Defines a struct liveupdate_file_handler called _name. It also makes sure the
-+ * compatible of the handler gets added to the liveupdate versions section. All
-+ * file handler must be defined using this macro.
-+ */
-+#define LIVEUPDATE_FILE_HANDLER(_name, _compatible, _ops)		\
-+	static struct liveupdate_file_handler _name = {\
-+		.compatible = _compatible,				\
-+		.ops = _ops,						\
-+	};								\
-+									\
-+	LIVEUPDATE_SEC_VERSION(_name, _compatible)
-+
- #ifdef CONFIG_LIVEUPDATE
- 
- /* Return true if live update orchestrator is enabled */
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index 7a9ef16b37d8..f44ed6019367 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -62,6 +62,20 @@
- #include "kexec_handover_internal.h"
- #include "luo_internal.h"
- 
-+/*
-+ * This is the header for the ".liveupdate_versions" section in vmlinux. See
-+ * struct liveupdate_ver_table for more info. The linker makes sure that the
-+ * this header precedes the compatibles added by LIVEUPDATE_FILE_HANDLER().
-+ */
-+static const struct liveupdate_ver_hdr ver_hdr
-+	__used __section(".liveupdate_sec_hdr") __aligned(8) = {
-+	.magic = LIVEUPDATE_VER_HDR_MAGIC,
-+	.version = LIVEUPDATE_VER_HDR_VER,
-+};
-+
-+/* Also list the LUO core version. */
-+LIVEUPDATE_SEC_VERSION(luo_ver, LUO_FDT_COMPATIBLE);
-+
- static struct {
- 	bool enabled;
- 	void *fdt_out;
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 4f6ba63b4310..23c7f1dd7d8e 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -495,10 +495,8 @@ static const struct liveupdate_file_ops memfd_luo_file_ops = {
- 	.owner = THIS_MODULE,
- };
- 
--static struct liveupdate_file_handler memfd_luo_handler = {
--	.ops = &memfd_luo_file_ops,
--	.compatible = MEMFD_LUO_FH_COMPATIBLE,
--};
-+LIVEUPDATE_FILE_HANDLER(memfd_luo_handler, MEMFD_LUO_FH_COMPATIBLE,
-+			&memfd_luo_file_ops);
- 
- static int __init memfd_luo_init(void)
- {
+
 -- 
-2.43.0
-
+Oscar Salvador
+SUSE Labs
 
