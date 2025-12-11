@@ -4,140 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE306D43360
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 23:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09690D43361
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 23:41:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019936B0005; Thu, 11 Dec 2025 18:25:36 -0500 (EST)
+	id 2ACCC6B0005; Thu, 11 Dec 2025 18:41:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09BC6B0006; Thu, 11 Dec 2025 18:25:35 -0500 (EST)
+	id 25DC16B0006; Thu, 11 Dec 2025 18:41:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF8256B0007; Thu, 11 Dec 2025 18:25:35 -0500 (EST)
+	id 173006B0007; Thu, 11 Dec 2025 18:41:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C8B5C6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 18:25:35 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 683DDB8920
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 23:25:35 +0000 (UTC)
-X-FDA: 84208774230.27.8465860
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5163D2000A
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 23:25:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=toTxqqJ6;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765495533; a=rsa-sha256;
-	cv=pass;
-	b=ds7SGP1WM/rrwoPLctyvxJiAYFeXQrhXDL9rplBCnhApSve+AEyhvxUymJUni5somngrIR
-	mGC2SPZr3/B8HDYBQhBVwVIVEN0Crt5S80EL5pXMKufxvIoP05+trHihM288mmSMFCso9x
-	z9R9GQhNdTZUv1E8K/QbTFUZdGr8g48=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=toTxqqJ6;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765495533;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0746D6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 18:41:03 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F7C5B7F2A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 23:41:02 +0000 (UTC)
+X-FDA: 84208813164.04.FB71C42
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3D17F100002
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 23:40:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UNgM3Hk2;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765496460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NgAS2i+WuabPCqxlCGTGd0RyAlQOwBDUG294JndQ1+g=;
-	b=jeprn9PF5mPwN0NpTevb+Rk4L16dkRihCZgwLlipGtEgdWDC7JbHlA/WTcC/vDHXxwOk3I
-	bb74hPjGizmOhSx2p4vDnINzxbX+IBtkZAyc+723KZmmFZvhJb/kgQ1PidWCYYuyyqYOCq
-	6gV7pIXlhuMY4BiwMzdiFfXEyGq5LtA=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so113395e9.1
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:25:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765495532; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MIHta4CPTp27iS4gpSbaQaZgJqix0xIQDVZzJfb1W4RN7JK7XL53R2SaydwlhTget5
-         g7sYOfTg1v0ZYTzPwwqjAoTOH1jOLBdIdGxET6woj1sk2eqdKcoxh66+89gwrqo/QeqU
-         Jurs8kpNOOzvedQNwni1PiQvMVWF0tGiN+okYzdcT2ZQe0dEn3DSeEIsIqgFhTraZQG3
-         pHbmu4NTd/A52Z6PgvznWOEVATNwP3hukx/wO7SPXrIb28JzkpYd9JuHhCxSW9GO+sTM
-         TAroOgn4FZ4uXjscQcdVL8igKernVhebhY+tWNuiD5jf+tpTMrT1JmWi58MBsu8KP9DO
-         Acbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NgAS2i+WuabPCqxlCGTGd0RyAlQOwBDUG294JndQ1+g=;
-        fh=X7f+eogFftrNBLAxb1tK8JEEM61p46I3QYouXJdoSJ8=;
-        b=KKIxrW5jAm69ARNZ31R2WmQfN4m/kQiQGP4/k14HANRsTjSMGjXBo680P4D+UDDIWw
-         jVux2WCVYQ4kD/mc0HFf0Kee0s7nvCFiXwvHjpuofuFAQHlTg16hfus1dwbSLWXE+3XP
-         nAVzqNH2qR6WBqHKfjnAq6bT2g1kXuRa9C/PL02eK7FdxwDHinCVwb7S23vUWW0mYNKJ
-         qezSn0bAEGLZqr8ZhPrGl8O01SFmn38xCzDtckTUiP6wEyC9MX4RThIxFClwksZsoBo2
-         IE26+XPlp+AKPfkVcDEcp4gLkJGiFQaNoFi6ZCejLMiHK42g7yljRKAN51vRNUQ1OWCk
-         FBLQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765495532; x=1766100332; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NgAS2i+WuabPCqxlCGTGd0RyAlQOwBDUG294JndQ1+g=;
-        b=toTxqqJ6P47EGYc2bqW7bOizD/BJp+J85MWJ47p/7G+dazJ9TPBW10qlq6w/UJaenr
-         aNcDB77ACW8wdfz2RugwB2MHQ3LAxVgtBc9mabXJMdqPVmBczFmdHVjfrWTBeN8SkZ08
-         IUZ54x4MWNegP5OQDiz4uheW85zet7tdxlSkh/xCSju03Ke4BE7YZeixll9KYUIbPSke
-         mHEKqsQvKPIKoJwgXiKLYsALdUogxzuMtj+kfdESh0YK94zuUBzmEsm0IWIpTSkv8yPV
-         UVjEOhf7A/cErLqrzlFrCIBwE4nNW6B6awkAV3JvvKRFAl5iYMMTySK1V7KC3GN4TSP9
-         2qNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765495532; x=1766100332;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NgAS2i+WuabPCqxlCGTGd0RyAlQOwBDUG294JndQ1+g=;
-        b=ceAqYL1+pMkQF7pcWHafrodbhhg1s4vUW53WzSHd9lOeGFI/bY91HBAatpqwX/iJ4K
-         IjMdEtgZGxX2BrCKkzUC652vK0kdIVNwFiNB0MHTLGo9pKTTI2pTG//dv1+DHZEY6jzm
-         QVl5dHPHZRHOEj89t8BWuKDJqUOOIPGtvAdgGSA4fAprWpwpMVrXR1YsD9J7YNEKmnrq
-         NN7n7Th4NrTUWMK4OW1HlpW8N3tY9bWqLp4Hwvu/IFoix+oSxzztPt7A2AKkC/qNaF1R
-         JhRif+ABMAaisNYLfjV5sMpgYQAZSJVXFfcKLjbFk58JPA+GKm7qZSzP6HHt3ZAls+dd
-         Usww==
-X-Forwarded-Encrypted: i=1; AJvYcCVBZAdnQxIM/dlvPuDinY1zTB/F7DG1D9d7DPJOKOUVo98m+gBU02LBvTokE2+GRIMF/YVsbl/4bQ==@kvack.org
-X-Gm-Message-State: AOJu0YzBOk6p5+5sUVhbHxqGsmn88XFgqwAL8FntWIg58KLFokWtqyHv
-	MONbbh7fZj46Lx7QYEXRgPZ7Z2L2olUAa9oZR2MGEbgBcAFJNHzSuEn0NyXiJeVatNwEoY1CE6W
-	VuLvZ8EbOpXsC1jWWt3dQAPF6RrBhZLqRu3jwbdwP
-X-Gm-Gg: AY/fxX4kUZiNpALpX1TuEWnKpnbTn9H8RpemEOsCczRxtpi9JSMr0H7xcatGn64oqZQ
-	mRM3epw7hwLfkN3ILPp1UlCUfCHODFw6pY+B4JHfYIaZ86mO1TtQMzzKLls3MVzTxtPTQVFrR83
-	Zm1SDTHDLxriPU59n0HLOyihIiNwUrPSfzX54LTXOxqoj0L396/fqZryL1CEv//bUKTxfrbn4CI
-	irZ0RuDLYOtqKmlVl3LmhVyw6anvbj0cBKcX+53ER9U7wQDJx5yX9JXnOB54WIboHrOnVTGU0/7
-	VA+vyww2tKvkgND+jdxxeQ8kIPhE
-X-Google-Smtp-Source: AGHT+IELsxBEvLr9lhxQI6U6yiPfylzFjjXDhgwGFlEHLwYN/fZlRQWWLcQMcMN3K4irAeygHhzmk1gxOJpHCOinQXk=
-X-Received: by 2002:a05:600c:4f0e:b0:477:772e:9b76 with SMTP id
- 5b1f17b1804b1-47a8980f35amr1528645e9.7.1765495531556; Thu, 11 Dec 2025
- 15:25:31 -0800 (PST)
+	bh=o8F1MyB30n09w2XnWCOdwRaJnp8yaU5N9F5AvB83Ov0=;
+	b=E2sZo96JRhpsvCyGp4PkCU7z2UpqPCn6uO/rBWT/ykcUuGMJJ7qxNTxKY40qm1kdfMYMe6
+	APceb1P0yyNdxxvx3L4OHIBfHrI7sybLIzJVBxh/ZvNX9Sqlyhumxxj4bkrkxSKYX6h5DW
+	pcifsgGiWEi6nIlFLFUDQkHC5RjFhEA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UNgM3Hk2;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765496460; a=rsa-sha256;
+	cv=none;
+	b=nChBi7bbBdudZ9glJQCJCogHpn1fyN3yHTakVCyViuh1RFWmBPQUO7qDIo9d/Ximd7CB7f
+	jFolgxPD4d06jlL/Pb+zrYbp3kZ6LFgLyVb8ORx599dqYesTrJtYxjyQPguMCFioqCtVX/
+	O3M5E5IX9X14uZfmx6vV1RrvPDc+I34=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765496459; x=1797032459;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EkQOI6jVqcqmDxCC2zpQcLsEWK0lUcThTIMyL7fnwXw=;
+  b=UNgM3Hk2bkSm8ehNHV6RFZVWIy9NJ+AoMHKFT/iIoBqcEznUym+lfE2R
+   vj1seJE3DvLfIOjEo9AlHYiT8DCiAvJqn810Q+d7+PYTVKfGODY2OTvq1
+   hic1m3sP5Cq1pfo5GM8mo9+q258ZS2AGOxbvGMR659cTyRg1U0BdbDqzR
+   bHE0yyPu7l/9tqlhzkYfxGT87x1qNhMSJZyJbkut6jzLPtGJFTUMMQO9S
+   XhXNRX97L7OJuj7TrXch6nC7W6fNIRVOyaEQBfq1Y2MmbRzi0aDBQ4+Vd
+   I5mF10iQkSA9A5V5/05IBQHXHfQwzyHoqr3Llq0mP1XP79Uw97GK8tCrs
+   g==;
+X-CSE-ConnectionGUID: C3hUdXMUS5infLsKjGKGpQ==
+X-CSE-MsgGUID: cSjBbBskR+uDHryTmodXtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78855733"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="78855733"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 15:40:58 -0800
+X-CSE-ConnectionGUID: Xr4OVmJmRbKPbckglQhbtw==
+X-CSE-MsgGUID: 9lUptSQiSpWJOUFt+BwWOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="196702616"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 11 Dec 2025 15:40:54 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vTqHE-000000005CP-0IV5;
+	Thu, 11 Dec 2025 23:40:52 +0000
+Date: Fri, 12 Dec 2025 07:40:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Gavin Shan <gshan@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH 2/2] mm/madvise: Use set_pte() to write page tables
+Message-ID: <202512120735.ge1E0s5N-lkp@intel.com>
+References: <20251211081117.1126521-3-samuel.holland@sifive.com>
 MIME-Version: 1.0
-References: <20251211193106.755485-2-echanude@redhat.com>
-In-Reply-To: <20251211193106.755485-2-echanude@redhat.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Fri, 12 Dec 2025 08:25:19 +0900
-X-Gm-Features: AQt7F2pSTNWKDsucwV-uysbrv-q3tz8hqRtbVQ0Nrt24_BZVepbEChaAJPcQzz0
-Message-ID: <CABdmKX2MPhw121ZG8V+f-XoOReUsCdmcug-cWDg=3WZcJ=NHHA@mail.gmail.com>
-Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
- in memcg
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, Christian Koenig <christian.koenig@amd.com>, 
-	Maxime Ripard <mripard@redhat.com>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5163D2000A
-X-Stat-Signature: ewb1hq7rpxdatckh4bs76iupecx4uwed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211081117.1126521-3-samuel.holland@sifive.com>
 X-Rspam-User: 
-X-HE-Tag: 1765495533-166641
-X-HE-Meta: U2FsdGVkX19WAowluSU8K++Otg3s83rFlLvVvLHAJVx80CwH6wcUBoSHt4M44b5Ph3W8YcFVmIgtKzT0wpC/ZQtXje3Qtn67NnQAhcMDR4bWKPjiv9e6sOMvYQdjKo9dNJrRyFlJi45bHxCIMeqerGIEjC+vIizUmLTqhBNy9UCWWdKo39rpwDjlcDTtzLq+HhSvokNL0sRRb0soNh/gKrzNimoeLqM1+0C0aPPZ8KAlGSgwl/B+FXaDv2hlovdWMWBKlIOOmj582cLkbHhC26F+13bki+I6cChASkUX+NdlxskhjQ5d4tGmwmyEavRyG2+HlBbepmMfKrwGKKXYlI04U6szpLsJQE5HUYlUaJhVCe0XqP5HwuWigCIS49hvb63KrSmymqgs8x+R8hIjjAxkFOLzcoPTNsx37ygpKWYK4FT7XdrmONiqKlkIA86xFSCfBh/kvBEUvijuneMPe499dtgyiOJi5P8qR/VQXh5SH7xW3iCvjlWEvlOk+xk+7P3W+sAX3BOx4L7IKI1MW8gBDe/xzRF5ckA+tOsMzH+GCeaxeVz0ht4sHofspAF/h0sgoYYdcCr0yEbx+dG+MCaE5LsiYOdaZh7V4NI2hon9v61uzviyTWixKhg1MVkCrGXrXnis01TznM7Os5eHvXMhkiMbIt3QN9Tu4M93k77f0an5j0EyJNrx1a7sSJC/ze1cfxRHj+dGxk5JqB3Fh5Gf3tJY/Y0g5aCKpkLAyjBAKeCxbgbb8TmTVpVSF4bpZ3Jn5rfTMp0zlKuus7THPxVtgTr9/kd0Gu0qGOHCdbhaH58rXsdpfr+lJmncTmGO7NYnu1HMFItelug4MeeV0ZkHl4PlE52zN3xCuHFhfolQf/rpEaRLqq16eornmLhaKX8zJ4N+FQX8Uv2RZO07jeWWVEj88cs6SMtdySh+j0u65JSN9yRdzdpVvY+95JHuwTWxEIR8ftJnQHamV4Z
- DjC7LMH7
- CoCD8gy84HP7+3eX5vJ5fGRv/ne+NX64Dsum2I3Cz5j3Imr9JW6cn5plOJt/K13rnB4dPFDyEFrVlmQSY30UhUKBUIBhucDkxRv89f/L+G7nthMNE/IDQKuv7ZsDn7ZzfVKgfISbL1xwT8KaYlQLdj5OmOWfwI4/VgOO0uYIpzh4pHFzaSxX2QDmyyE0SVJdflr3B7nwM/tE/MiJsUnSpGJunFt9Z00sJ92xi+HkC1u6Bv6rLkcQoSxCDJQyD6Zkucj01Fe/xfqq36ocSF7SLiuz9z6ieoRRFQtTKesEuymLVxY5VHkkQCA7zV3Tm+S+sgjAeXmeWWwf1j5o2Xk7sUZ9tDF5JJJDyIDNJOfWuuaA1zvoE144WHeVQb4aS+V0m1zuJ2p8/ENLtOXU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3D17F100002
+X-Stat-Signature: hkkgu4nuqas1q1fu7irkwshjhdwnx4bj
+X-HE-Tag: 1765496459-137904
+X-HE-Meta: U2FsdGVkX19aix/h4mzvVHLAUbyQmRN0Vm88yk9r6OdSx0buuA8bU9xffaJb3v+g+r5bss0XR8v27svZ4IpSz0FicxGLuB4fynFtClk7t8+sCDpNwUy969YXzdJTlIsVICyEhUr2chbpRBh2qakorHhfoRF2yAA8NxfnfWZyCkyl/2do1EEzS3vyXF0aCkkc+thK9ig0OL5zE0OTv36J0WzdBTZ26udb9Um9cR6M+dvUGcLLvuXApQDk3rXFwmsHsjemjTNl6cmUcjqeNBbvEdg0FTNDNc5IqY8wgz1FsenKGlGMHBQLO6cugpMnCXS+yMcGdIvaA2dNsUuRSG4JkwwfTzpo+T8rADtmd5KyZFRfA4fw9EsYKALw5gaa6t4brXyQW5INNSFZyaVulDx87XXNnn48OzoZMEGl9xgAZEvHnfOY6t5w1ed5mjFrtZqjvp0QWvYekcd9D0H+Gf0s0VpdjkVK/iBtbWl+Xwa/9E9MMqmRJ69+sstpcCYGfBFSnmvdghu/FiXmeB6alyzs9Mvq5YyUjaMxsUc9WRv/+MecFFmLNvRdreMmGb8wzGHR/qV4q3b8HGu647UT7aJsjwjH4T1l0r+LNtvWBvtQ35ufOPZD7PEaU0SrB9iXawUUO3PVheUpg0kL361vDkvNE0X5JG8IdwyFKGJd8JY9d0sCwmv26bpEakDDZ5cUPMpleiIjUd27QuK06Pb2mJi00+UhogXX8jTwJQTb5OkG8yXxnp0lzQZlasAg5XS/dfUy6edlXZCbj4pk4yxq5H4UZe+k8Lcl1xcijEB21Qo4R5hud6T4TRL2XfcJz3XmrivJ72iJTlAwIWvmYhYjED8gNjuGKH2vIIEtBOa3IEluUqfbcN+COGwi4hwRca//HLibXEXCAIwhS7ib1+rcS35yLBxMX1TgPCEg43ZlrEXjedX49YMX2LJqZHAjc+hSc0+JpiYs8zIWTxy9hNQFw2D
+ UWCJ4VrA
+ W1Oo2SurfTcDfBQMi/HmjpzkYB2ouf8VFaqERjuDuJVAjbJvy2Y5Uy+IHScpH7peuObBIQ8nav8oANduH964rW+qFryvpCz24NhaMfj8WW1f/n4gBYRaMcJv41tl4ovxWAXa96WVO3VL044MOrLbaB3w5y0f1VtzGYMt1lKM+6kSI7G0Nmo1WbjkIQNjbadGSzhnFopfmdJ4o0cnPtV97bp0n9u2cyZnNGeCwBkYua0SoZiqTEq/kgHLs79M9HY+lzMQhXqLMhWbnxnQZUK1BcMeR8bM9s2i4rliZ1QkKrqfqy7/TYnWwpXI9H+CpGnOzDc5YX1ik5wkNFv2E4SxFsMEs39vyZ9Cnh+aAzB7QfWWWFMVckOpMBeoUpfctb6mH0YmCJ2MaUanCTAy9o5ISLBQedQ3mi9+KBkrWz+nm1A8Au5zpjsbRK2xXgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,51 +116,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 4:31=E2=80=AFAM Eric Chanudet <echanude@redhat.com>=
- wrote:
->
-> The system dma-buf heap lets userspace allocate buffers from the page
-> allocator. However, these allocations are not accounted for in memcg,
-> allowing processes to escape limits that may be configured.
->
-> Pass the __GFP_ACCOUNT for our allocations to account them into memcg.
+Hi Samuel,
 
-We had a discussion just last night in the MM track at LPC about how
-shared memory accounted in memcg is pretty broken. Without a way to
-identify (and possibly transfer) ownership of a shared buffer, this
-makes the accounting of shared memory, and zombie memcg problems
-worse. :\
+kernel test robot noticed the following build errors:
 
->
-> Userspace components using the system heap can be constrained with, e.g:
->   systemd-run --user --scope -p MemoryMax=3D10M ...
->
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> ---
->  drivers/dma-buf/heaps/system_heap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/=
-system_heap.c
-> index 4c782fe33fd4..c91fcdff4b77 100644
-> --- a/drivers/dma-buf/heaps/system_heap.c
-> +++ b/drivers/dma-buf/heaps/system_heap.c
-> @@ -38,10 +38,10 @@ struct dma_heap_attachment {
->         bool mapped;
->  };
->
-> -#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
-> +#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO | __GFP_ACCOUNT)
->  #define HIGH_ORDER_GFP  (((GFP_HIGHUSER | __GFP_ZERO | __GFP_NOWARN \
->                                 | __GFP_NORETRY) & ~__GFP_RECLAIM) \
-> -                               | __GFP_COMP)
-> +                               | __GFP_COMP | __GFP_ACCOUNT)
->  static gfp_t order_flags[] =3D {HIGH_ORDER_GFP, HIGH_ORDER_GFP, LOW_ORDE=
-R_GFP};
->  /*
->   * The selection of the orders used for allocation (1MB, 64K, 4K) is des=
-igned
-> --
-> 2.52.0
->
+[auto build test ERROR on d358e5254674b70f34c847715ca509e46eb81e6f]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Samuel-Holland/mm-debug_vm_pgtable-Use-set_pXd-to-write-page-tables/20251211-161254
+base:   d358e5254674b70f34c847715ca509e46eb81e6f
+patch link:    https://lore.kernel.org/r/20251211081117.1126521-3-samuel.holland%40sifive.com
+patch subject: [PATCH 2/2] mm/madvise: Use set_pte() to write page tables
+config: arm-footbridge_defconfig (https://download.01.org/0day-ci/archive/20251212/202512120735.ge1E0s5N-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512120735.ge1E0s5N-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512120735.ge1E0s5N-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/madvise.c:1117:2: error: call to undeclared function 'set_pte'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1117 |         set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
+         |         ^
+   mm/madvise.c:1117:2: note: did you mean 'set_ptes'?
+   arch/arm/include/asm/pgtable.h:212:6: note: 'set_ptes' declared here
+     212 | void set_ptes(struct mm_struct *mm, unsigned long addr,
+         |      ^
+   1 error generated.
+
+
+vim +/set_pte +1117 mm/madvise.c
+
+  1110	
+  1111	static int guard_install_set_pte(unsigned long addr, unsigned long next,
+  1112					 pte_t *ptep, struct mm_walk *walk)
+  1113	{
+  1114		unsigned long *nr_pages = (unsigned long *)walk->private;
+  1115	
+  1116		/* Simply install a PTE marker, this causes segfault on access. */
+> 1117		set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
+  1118		(*nr_pages)++;
+  1119	
+  1120		return 0;
+  1121	}
+  1122	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
