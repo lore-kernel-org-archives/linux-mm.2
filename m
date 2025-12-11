@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0698D3E788
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 02:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A7ED3E788
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 02:56:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD8B96B0005; Wed, 10 Dec 2025 21:53:25 -0500 (EST)
+	id 43BF16B0005; Wed, 10 Dec 2025 21:56:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B89736B0007; Wed, 10 Dec 2025 21:53:25 -0500 (EST)
+	id 3EC576B0007; Wed, 10 Dec 2025 21:56:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E866B0008; Wed, 10 Dec 2025 21:53:25 -0500 (EST)
+	id 302406B0008; Wed, 10 Dec 2025 21:56:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A44B6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:53:25 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 196DD5AE21
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:53:25 +0000 (UTC)
-X-FDA: 84205669170.13.E14D3C6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9107FC0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:53:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=J08opOng;
-	spf=pass (imf22.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 226DB6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:56:54 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFC48BADB2
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:56:53 +0000 (UTC)
+X-FDA: 84205677906.14.CE8AF8F
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 97248140006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:56:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=gNuwpX2j;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765421603;
+	s=arc-20220608; t=1765421812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=54bOQMjE86a3OvBo4Z5xX+IGN2GAizUFzbeuDsoGB3k=;
-	b=4FOx61wTpzxd8D/x+0HSgD8WFGd1QfH5TlwC/sdwLsF4S3VebETfxomPMtOh/kwhxs48Uz
-	ViZQkie4EByYgP1TJQWB9FPOEJNjuyLMkDAvGOBGaCg21KLiMBRLTPyszVevzZb/fD+eDL
-	bhNZ4iskrNmFLQvcX7LQnmIp6K5Iwdg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=J08opOng;
-	spf=pass (imf22.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765421603; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XJniSuLX9UUDqWokOOmuSlzSiliXIsiBq5exgk5Qg70=;
+	b=mPU6KGdMd2nhNuhaALLsF1aIFm8fKxL5bn9xVyI+vWSxX0Q4/8307C4z05smfRM1FixVZK
+	B+3XdA6SGHXyczXOSqIngetoPRKfIXQdfOl7SKoA7mM8jkuoZDZO0XsLfaKKWn8ZpoR2Go
+	bkWrLmZ1AM83lCI0yNmkQnqWt/9GdcQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765421812; a=rsa-sha256;
 	cv=none;
-	b=eOkszgwCngbiyOjRnI0LW2kuAB7RUiZunYDA7MC55IJpZAFYkLISVNPAd5F6ySkCw3lxmj
-	zgZkYk4p7tdpAiIIUVrZCIzNL3DXv+BjvIN7kY9BOOjluK0C6X41oU02ftDjxOzlMi66k8
-	KE7A3bl+3+2dbO2sHHGDIoPbuxMhHgE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765421603; x=1796957603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nCP4Qrkpz8bVZqCHE4sJmyUXXrSPtXg/5yZwtOzX+cg=;
-  b=J08opOngke1umBZevExKoS8Q+VvpR/LnN3aELgMmGqYPtpvZ4a10x9JD
-   1/Rn6r98ozf7YZO/q6VPvpHBC4W4GDTnqyHBtXr45V3E6V6/dio0IVWUA
-   GBUNMR1LGy47QxNZs3DvTZW+wEgNEXqhUCPUjfpeN0y+65C7IKBcaPqcz
-   9fcN75jBTxHu9Z8ANXu3hWa2h8F0hy0Ji1mwqorVhK5gPzExY2XJoRoqW
-   dNWx2R76Qb1r1EJpWF2bAUMGTOdjMNDHQOzqm9M1mLCb+Ha3+muJDU9CQ
-   vY2geRZ3O05OljZxkV+EjvpfLnCVlOle7sVto3RzoU9voT6YOHnsv/Kfd
-   A==;
-X-CSE-ConnectionGUID: c+FumnzhQIOoFw5TB0Daig==
-X-CSE-MsgGUID: +4iEVMfNTI2P+SofSO4bAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78765554"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="78765554"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 18:53:20 -0800
-X-CSE-ConnectionGUID: Zev6oIoBRpaOqU2xDpbw4g==
-X-CSE-MsgGUID: oROrgDILQmSBZQ6XsbXTuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="196738003"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 18:53:20 -0800
-Date: Wed, 10 Dec 2025 19:00:06 -0800
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Changyuan Lyu <changyuanl@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	anthony.yznaga@oracle.com, arnd@arndb.de, ashish.kalra@amd.com,
-	benh@kernel.crashing.org, bp@alien8.de, catalin.marinas@arm.com,
-	corbet@lwn.net, dave.hansen@linux.intel.com,
-	devicetree@vger.kernel.org, dwmw2@infradead.org,
-	ebiederm@xmission.com, graf@amazon.com, hpa@zytor.com,
-	jgowans@amazon.com, kexec@lists.infradead.org, krzk@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, luto@kernel.org, mark.rutland@arm.com,
-	mingo@redhat.com, pasha.tatashin@soleen.com, pbonzini@redhat.com,
-	peterz@infradead.org, ptyadav@amazon.de, robh@kernel.org,
-	rostedt@goodmis.org, rppt@kernel.org, saravanak@google.com,
-	skinsburskii@linux.microsoft.com, tglx@linutronix.de,
-	thomas.lendacky@amd.com, will@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v8 17/17] Documentation: KHO: Add memblock bindings
-Message-ID: <20251211030006.GA9333@ranerica-svr.sc.intel.com>
-References: <20250509074635.3187114-1-changyuanl@google.com>
- <20250509074635.3187114-18-changyuanl@google.com>
+	b=vGqrH4oNr4bUJNCNVcQ/nmyUOgZKhps4ePVXbKpNMTYJ2I6XHmpyDfPvCLqf7EpRqW7cz7
+	jZQpDYnGYNZv0JiWdyw6dPSjEhZlUBg2fBDCaOxv4ShPwAAkXB89yRKPfBXQ/axiYuYmzR
+	S9v9PMuxwMReL7BPd3LgYUoo1U4eYNo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=gNuwpX2j;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b602811a01so57123985a.2
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 18:56:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1765421810; x=1766026610; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XJniSuLX9UUDqWokOOmuSlzSiliXIsiBq5exgk5Qg70=;
+        b=gNuwpX2jkucpr0ZkKEVZGqXd7X13OcHIZ9C9Lz7CwgFCgM3H9sFb8H+Acl0TNA4yd5
+         jI/etsETxkomTCAqWrAUALLWwVyIKi5OM2LIiTCUzkuDvQ1P4uZaXnLuuYlpbfouY2SZ
+         RAIZSh8V/xk20ux012wihPTzM1nyGFE6/K1etLZQCfmyQIq80vPpW+/PBA2TTmkPjRDr
+         y28DPE3cWNVSPJxb+UuPNbyBQ4dNjohHJ8Cr8T7MBrU7F44+1Huk0lQoW8SrXvvoPxpA
+         f2VqNErW07ZxsTipauUigY+XtS+ePiKlRRXwk6efCVDBs6SprD80H+V6tJkIqsCtd4ep
+         d5kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765421810; x=1766026610;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XJniSuLX9UUDqWokOOmuSlzSiliXIsiBq5exgk5Qg70=;
+        b=dfuvtVoFKYbcuO7Vr0CIT8N9wWzIrNIb/pUh1nnziLhMImgcpCZCCw1oQBL36OXWbU
+         UcawrvRFGQgFaTTA28jpvZNnaCVQrNosHufeTEw3KVl9bLkfByyFCPdzWkCKYRPxojti
+         wHzAhcxQO2ZDGoF8beniihmxosWMcfVaZ7qQxhGPAY6dBKVBn0iAqyRwAUFMQ66957O3
+         IHQbe0a0wvZmQSrQM4obOyr8o0SvmiIDyU3f0ibArwFHGUk7vYu1bMC0m+9P+dYype/U
+         GvyLEfB8MtCEx4So7WIbqMCB3IqV2h38N2fs20aGmpIy7hTkWUaF2mkSprUpFfI/vJto
+         To3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVFhe3JRTE2GyTR18+cPjDINskl56DkxzyN0TnFDgf8hRzSt6LKfbX2lRrw+ai3iyjFqKv6QsHNZw==@kvack.org
+X-Gm-Message-State: AOJu0YzXcYcJsaCTle9QoEyln4vKbvnlUGhY1N49X7XYlnI/b3Iik7xj
+	HVIHt5xTUBOxKsKM+U3sBUIcpG1G/b/tjyXUkf64fJDjwfrCcq8KOo6f60vUFFlpDsc=
+X-Gm-Gg: ASbGncuQ/5PKm31w8vsR50w9hDBzgjsdgN7TsloVkN5+Ql1weN1k+bZMqIq4r1ljG5e
+	oDMehh3sd54Ht6jttIzLGO+YSCdmrZ0X8Okhoyy732oat3nulYfAD89yVmNwef/QFxKrKKx7wR7
+	nSpIBYR3tAboLGASq60xLu9cSPbLd+Qv1FLpioRszuj0rhug8KrUyh8MMJp1yDerAAEz82l3Jao
+	wK7Ab3W/DFNwqX+xkdHivd9njtHDHYAY3LMvBIUo8PXlBVRGE61jlWxPL1nCwXCg0fS0/fEa9ZE
+	qE1mg4PtTatu3ZxU8PWjlwEdQK3hnYtFaXRYxxIOFWp9JiQ5eUTvo/y8uy7XcIdBJI4K5/EjKLs
+	+KdM6+3VuezJKJMdDtDDUJC1qMaeGn/pOYufFP8NRKiqupAh0SXBWCWQpbFkKCbxu2GKg0rJS/x
+	eGpAfQ+n9cDA==
+X-Google-Smtp-Source: AGHT+IF3rQHPU3OwqTZbiFQkHigAPBLGKp6Im2gpSXgMDXUsDlMkPHG2/gEkDtEQemDq4Eh0qK3RSg==
+X-Received: by 2002:a05:620a:1991:b0:8b5:8ba0:b312 with SMTP id af79cd13be357-8ba39f3f2bcmr742067385a.48.1765421810597;
+        Wed, 10 Dec 2025 18:56:50 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8bab5d4d944sm104642285a.55.2025.12.10.18.56.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 18:56:49 -0800 (PST)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: zswap: delete unused acomp->is_sleepable
+Date: Wed, 10 Dec 2025 21:56:45 -0500
+Message-ID: <20251211025645.820517-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509074635.3187114-18-changyuanl@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Stat-Signature: hdaiz59afuei1hmosq33gkw8qd5d4d1z
-X-Rspamd-Queue-Id: 9107FC0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 97248140006
+X-Stat-Signature: upc66iwwgpw81qhehf6pmbnmbihuxogk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1765421602-885284
-X-HE-Meta: U2FsdGVkX19t7JuQs0S7hXeAe6iHqyEUiSrPiCCgWrbHnuh7E7H8siBEOGmRpngdpkgfNrNga3fb19In5O3mktAvrYoIgtmlhfNu1xkckIQnCPP2/hdiE84ptLLJ3exJeD6GrzxYvUKmEaYvPvCcaTi9OoDz9loh5DTnjVt4urA44QtM7p1AJ6iQxmeHd0GubAZCQy2HFQjd9pwtrIQCxSvrZPdjm7KCO1KN4Wo8H5hU1Py1TVvSluGcTRIHdLCvkIXa/UoNqUa3eHpirIxpwsndOuw8Ft/1iATkV1KXS73Wf09096MamsBxpBiI9qY8gQPtP4p8sHuBYzJU4X/ZbvICSXmV3mqiLFNs1lQ9G4JBESpWRib8+R4if0ReiEIV7mbLyhNKeG0arcEmevK2xK133+L3tWRDjNK82cFQk4N0wKErtv5/7NMkLOOA/hz/OPFcAsjYDK03H0+6Fwq47f2eVPC7ZdOL8siptwECHtV3/fZsMX5eiyj0AyMXpJlUhDptNEZ3yCbMGpkDBADecrITON4F+0s9mfefTXw+UoRP6mKzo4s0TJfJbl/w/GlEP+oGIHOBU+Qqyn35hOwWKDbxFsCqdrQHce75xW6Q+FaxeWW6druPH715VAiLZWaXDTmkG0gWNx4zHB4fbLbLhjHXzAMTk+eCIRDs1+qimWY+Z1MqeOK4lFS9t2d7GeZ2LPql+it4vhpSeSeCwJkjTcULPeU2yoNP46szITnCRajJiuWg1LCk52Ir30K/vK4P8BLdSifQcsOO7QQ9Lon+mai2D+2DyiKWzDPtLuiKEKcqQJ0rSGFPNodTIGZOjZPvuTvHg5fFV49lp76qGIoXVpiOqpUonh2mCHE0Dgthp61J2PJbTf0WWoXwZ8Q5h0Dfiv4rCxVZZfN4jrZ43g5ihn1EJ3D1S6pzzlXNbKBa1cmM0ZiXSWtHvzES8E1A9pQOv/VPxuo0+lzma5nYCwP
- TQuBfl1y
- jMS3eQiGQJFBpKMtr7Tp9srZUwc8jvZyQ7Z9sHo4mlMol/JoF/zDevwnL9mqwuYz1yBY3oC/GeXmseggMZh11El6m7UmuiquGtSd8XPM4Dt2AJW4l3yvbXCj1hobVULbvG7Sn2Y0tBYMpzu558mM+lTJPyIBokH/zYludoghGjAw5SC0DTTbvNHgNnunv8HzWIFd/IzQp8h75CUTcknjpG/CBoQFiMLFJtyuI6d0uUma4xQ4qE7ntUTpi+g==
+X-HE-Tag: 1765421811-751223
+X-HE-Meta: U2FsdGVkX19GP+uWvHn2Y188AT//YGnPulC8WUftzVlYBzcxLmrMvbtSxX9GCx7U4GLiZwxAjRVmGBVMSqcJkX98HgXGCCvk6B6j4e4AQuxs1hDg6YHYbUOXcTjNlgFsb2I25Cq8cktzNGQpJqIITTsF9NM11NtIq1L3jLkMVYTFUsiN+6IO/QlUUSxTSf+kjOl1YHzKAZlbu2GrUM4Qu8GhgmgpzW8EHhRqyva/Upg+YK1Yj0WiH/EgXT/lf/fyZpBZZgNQ//vS3vqz0l1Qiw1RZ2ZDvPMaaAztA+M2fVMXb6GTzI2xN33bK04vlshfYR0IPVEt02/xEqZrCdDVjK0zT589EwslreT9z+jbFeEilBt3Z/7WstnNGwTIe5N0S7NHijZsLN2Z64C1uF4y9YQ8G+bHFWZa1qbUNT+BDrlvS2Z1WT1pwSKL68hNuG3ylWglH2pyAvw74LKYrgly/fMYgIVLFb4DW/EXW76Xon5niNygbG4eY328WhEzDPAOCyGMH6napX3WxONKDmk7GRLMm+kYtO9FwGFQZJFKoFT52yr1lOhZJgok60RI53yluVPLMV/gVNIn2qu+npUSG0ermx3QDHOxD8nEXk6/lz/YlkqTzMOp6BWsQzJkAZXFTnxLEIdIwoBfuUILOmZ8wLFHNqQH4eGfm5gvISIbbg3jqNcv+Z2xdgFqogMAjKfIbpPnHn9X3jV5aueE7oF8uKPpTQZlKwCwiJSj4b47aWJbVFGzeV8VkJelfPPor2wWp6vc3ISzSgs2Auq7Bp6eabvvvUNluxBTDlPnK3ep3xUfRevpC3+ToJHIY4V4wrXGOFJZsVbcvU9t7lYdHjt9xenQ1JIv4OlObs4LlfP6CKBh+/d2tgIAN84dSLTmqokqwoBiMsYu4xV9hVhqUbP5rCr6yC+oNHlKy3jAzBcIBiP0YMeizmVn99hx/LsobeWfXs8fQuLoeq0PhgmA94G
+ qhUA/NxB
+ 6JKzX/WyfyLwCaWG6OORjBQ1oyjt/DtiX5EOJt9MGA6QmT+h/PL4S8bBddIykf4tatD4nRikryQU1Xb30QsNQv9Z+s9OGkOta49qM0RSXudoKw8aB4g1nHFb3MyXjDoUFPeSMcVwHXVhJ28elDTvEy2YQYBISl2Yucr+daXFRwwwzxUCxd2knYnCMMnVYKFcG6CP61BcFxamTzZggVoCzg6+Vj/xnjOO2v4NRNbGi+Q+JhbfqlGmLfHfLOWhn0H6p9qrt+DEfgwbE8rKZnsEZprerH5Xyl5yVn0/bPTOZULrvco6/WjvfI0SjSKPHpJ0eur23bthFqr8q7Nh6qjngIqLxf1gE1AFf6wB9B4NDPVzggvh4yaGmTvvbXHOETIv9pHebrrdecYbtAm0jYW1IgAKQhim0YXVn+MzojI/me0HEPbU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,104 +119,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 09, 2025 at 12:46:35AM -0700, Changyuan Lyu wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> We introduced KHO into Linux: A framework that allows Linux to pass
-> metadata and memory across kexec from Linux to Linux. KHO reuses fdt
-> as file format and shares a lot of the same properties of firmware-to-
-> Linux boot formats: It needs a stable, documented ABI that allows for
-> forward and backward compatibility as well as versioning.
-> 
-> As first user of KHO, we introduced memblock which can now preserve
-> memory ranges reserved with reserve_mem command line options contents
-> across kexec, so you can use the post-kexec kernel to read traces from
-> the pre-kexec kernel.
-> 
-> This patch adds memblock schemas similar to "device" device tree ones to
-> a new kho bindings directory. This allows us to force contributors to
-> document the data that moves across KHO kexecs and catch breaking change
-> during review.
-> 
-> Co-developed-by: Alexander Graf <graf@amazon.com>
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
-> ---
->  .../kho/bindings/memblock/memblock.yaml       | 39 ++++++++++++++++++
->  .../kho/bindings/memblock/reserve-mem.yaml    | 40 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  3 files changed, 80 insertions(+)
->  create mode 100644 Documentation/core-api/kho/bindings/memblock/memblock.yaml
->  create mode 100644 Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml
-> 
-> diff --git a/Documentation/core-api/kho/bindings/memblock/memblock.yaml b/Documentation/core-api/kho/bindings/memblock/memblock.yaml
-> new file mode 100644
-> index 0000000000000..d388c28eb91d1
-> --- /dev/null
-> +++ b/Documentation/core-api/kho/bindings/memblock/memblock.yaml
-> @@ -0,0 +1,39 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +title: Memblock reserved memory
-> +
-> +maintainers:
-> +  - Mike Rapoport <rppt@kernel.org>
-> +
-> +description: |
-> +  Memblock can serialize its current memory reservations created with
-> +  reserve_mem command line option across kexec through KHO.
-> +  The post-KHO kernel can then consume these reservations and they are
-> +  guaranteed to have the same physical address.
+This hasn't been used since 7d4c9629b74f ("mm: zswap: use object
+read/write APIs instead of object mapping APIs"). Drop it.
 
-Hi Changyuan, Mike,
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/zswap.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-I am sorry I am late to this patchset. I am working on a patchset to use
-KHO to pass reserved memory regions to a driver after kexec and I have a
-few questions.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 5d0f8b13a958..84797ed4d3f5 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -141,7 +141,6 @@ struct crypto_acomp_ctx {
+ 	struct crypto_wait wait;
+ 	u8 *buffer;
+ 	struct mutex mutex;
+-	bool is_sleepable;
+ };
+ 
+ /*
+@@ -781,7 +780,6 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 
+ 	acomp_ctx->buffer = buffer;
+ 	acomp_ctx->acomp = acomp;
+-	acomp_ctx->is_sleepable = acomp_is_async(acomp);
+ 	acomp_ctx->req = req;
+ 	mutex_unlock(&acomp_ctx->mutex);
+ 	return 0;
+-- 
+2.52.0
 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - reserve-mem-v1
-
-Shouldn't this be "memblock-v1". IIUC, the compatible "reserve-mem-v1" is
-to be used for the memblock reserved memory regions, not the memblock node.
-
-
-> +
-> +patternProperties:
-> +  "$[0-9a-f_]+^":
-
-Shouldn't this be "^[0-9a-f_]+$": ^ at the start of the pattern and $ at
-the end of it? Or is this a KHO-specific rule?
-
-Also, IIUC, this means that names of the nodes are hexadecimal numbers
-whereas the example below has a "membloc" name. I assume this does not
-refer to the subnode named "n1" as this does not follow the pattern
-either Moreover, it should have been documented in the reserve-mem binding.
-
-> +    $ref: reserve-mem.yaml#
-> +    description: reserved memory regions
-> +
-> +required:
-> +  - compatible
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    memblock {
-> +      compatible = "memblock-v1";
-> +      n1 {
-> +        compatible = "reserve-mem-v1";
-> +        start = <0xc06b 0x4000000>;
-> +        size = <0x04 0x00>;
-> +      };
-> +    };
-
-Thanks and BR,
-Ricardo
 
