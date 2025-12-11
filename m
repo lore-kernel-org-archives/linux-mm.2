@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8203CD3E784
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 01:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C83E9D3B9AB
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 01:45:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A93D6B0006; Wed, 10 Dec 2025 20:37:17 -0500 (EST)
+	id 01B476B000A; Wed, 10 Dec 2025 20:45:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55A216B0007; Wed, 10 Dec 2025 20:37:17 -0500 (EST)
+	id EE4116B0007; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F646B0008; Wed, 10 Dec 2025 20:37:17 -0500 (EST)
+	id D38026B000C; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39A936B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:37:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F996C07B5
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:37:16 +0000 (UTC)
-X-FDA: 84205477272.25.DD45041
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0CEB840006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:37:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V6AMT8jM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765417035; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id BD6146B0007
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 20:45:24 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BB4413BAC8
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:45:24 +0000 (UTC)
+X-FDA: 84205497768.16.D6C8DC0
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 86137120012
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 01:45:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765417522; a=rsa-sha256;
 	cv=none;
-	b=BFW/SQAKB67gW9F4sMJbtr4myxjRrXBASc87P9BKBMBqVT0N0ZjRKAU/I8k9/7qEp3wNo/
-	360VPr22cVs2p1CXfh1j9y88mHnhEbc3T+Jbx9wmy3Oa9zZLmIcFQ91B9w5BaVChsAsdQM
-	Vm9sCNEYfGYXM3SXfzoC47HaZ0sEHcI=
+	b=i4wE993Td3Sb4BY3SU+BjGdhBJ9s85g4Y3DRun4Nk1NTDzIdUusmjG7RHVIlYe5dmGedRm
+	w7OQz8vrd4bY7O8TO2mFY7X1g455/4TvrAvZpcqf8jiEU1UKjzt8FmiAtCoRQ4qQcPqZW7
+	XOhDWRZLv7RUWsiMoDPcWKhAhq26eoM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V6AMT8jM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765417035;
+	s=arc-20220608; t=1765417522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jY+grogXXBnWjoMFYm8oVsSAVN+hszOu2GWT+9d/IS8=;
-	b=X9HMYJZ7tzCezidV7Cad6ThRzTI+nMmmBUDlZupEtY+wi+BvnaG8H4A/PaH/pxb3pRXeU3
-	Bym++iooQXT7WFlzXg55CJ9k/SzCza/ZtaAQfvWKoLxr3/qZ/bf8dbDdEOegIuBxXe9Kfe
-	Gfo7v2i0ETr39zqmakY/ejA6VKOLzWE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43E7760010;
-	Thu, 11 Dec 2025 01:37:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1DEC4CEF1;
-	Thu, 11 Dec 2025 01:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765417034;
-	bh=n+9g2JgdFj8T1N/HU2TUa1N0FmuWTTQ+EG/gxfX3CKQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V6AMT8jM/NWZgAaaUGPPuWI1qMzBJz+zOjs4zb7tpTK7FPSUMxZQOkuEkuw7vGa25
-	 QNoAWlM1YQ5qhv3qNEFLEYJ3CYdWKKsYtpwnjZGrZYOlot7FowEd8nbM33Lp2AzOA8
-	 V69jxhN36SKUJpp1bj2ZcW0VkIo8xjN5tRfUG2XziOkPiU6vPs15XE60rjWp2FnV5m
-	 WpOluu1qliViMciPhLMkb4Udyp7hUpcNt35QN4HGx/LbMaAc/3+qoTytZgrpGRFQ9i
-	 npg1B49J7LiraRY0vLupKzuJVo2r1CAZ3WwlK+MeYLum7tCz0uRAwfQwpvpRE4n7mP
-	 K5gi0nmY2EvMQ==
-Date: Wed, 10 Dec 2025 17:37:13 -0800
-From: Kees Cook <kees@kernel.org>
-To: Alejandro Colomar <alx@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Christopher Bazley <chris.bazley.wg14@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
-Message-ID: <202512101736.DE24BE89@keescook>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1765406336.git.alx@kernel.org>
- <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
- <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
- <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=34BMZA8gs8ZLWrMrazutP7Uj+MptvOK6WMsUMF92mQQ=;
+	b=MQO67Dr9TOyrX93efNeCIZf+FxJB+0kVsRjOlywtqFiN8E9cC9VWd6uqN5ptxfmBL5MdMN
+	xOO4661E7IrfjZ0PSMjPTgNAyWrSLtx8pHm4kp+DlhFgwT7xC35TsyHg3LIIvXnVOrfjfi
+	jS2MrXOXkRPD1zxo/1UVK5/bYFAjt0g=
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dRb4X2xD4zYQtkx
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:45:00 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 6CA261A06DE
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:45:16 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP2 (Coremail) with SMTP id Syh0CgB3VlAgIjpp39lLBQ--.49534S4;
+	Thu, 11 Dec 2025 09:45:16 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	david@kernel.org,
+	zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com
+Cc: cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huaweicloud.com
+Subject: [PATCH -next v3 2/2] memcg: remove mem_cgroup_size()
+Date: Thu, 11 Dec 2025 01:30:19 +0000
+Message-Id: <20251211013019.2080004-3-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251211013019.2080004-1-chenridong@huaweicloud.com>
+References: <20251211013019.2080004-1-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0CEB840006
-X-Stat-Signature: kn5g81besm8nw5hm8amq1rojeh86zkk5
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgB3VlAgIjpp39lLBQ--.49534S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxur1kKF4UtrWrZFWUKw18Grg_yoWrCry7pF
+	sFy3y3tw4YyrW3WrZIka4UZa4fAw48ta45Jry7Gw1xZ3ZIqw15XFy2yw18XFWUCF9aqFy7
+	Za90yr1kC3y2krUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
+	6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+	Ja73UjIFyTuYvjTRRCJPDUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: doegsjiiywtx5wo4hsurkggrc85rpfoo
 X-Rspam-User: 
-X-HE-Tag: 1765417034-698647
-X-HE-Meta: U2FsdGVkX18my1knxHtKc0XvSsHQvp2aXIqTEkrr8dML2w2ByNvCy1pv5sz4d57KlP0kEy6N66Tn0E+gH8hY1uVoR4fyGyWdif+hrWtmBqrKf2DbGZhF9M/aNpSevyMDXyST32H0AqdUCzmRmlAwPkqTVuMrEtNYe432LbWilCZ7lhTu1KJ85TB+lpUgZThLiXDOShwF8q4VS//2xlEwsKtiubOFhm3OdM8Y29c3PFwq0Az8tafzJq8KlO1M6rUTHSL3Uihg+DPiiHU+9vTNARvEuVboXZt1VgIVde3ZUoVfLvvci9Q/BBhjrknXUtiaUdAOdDx99huH3ykGy21z3yp+itBKJEeqxa8lKc53qqKIz95NN+T3x0FHY54A9wiYr/l6jOzq62BGRIAkbA+9Af64uEH201K3ormbqLwDPwoAv/EQOt6sFx/nzexYEMva404/5Af4dykEfJ7oHYB5oys/UjQdPKwWbTKf8ig6VQRFURsj4T0Y6NSEiA8XUQiUJyHpUs+o5DsacXO1TvwHCI8+N1AlN3ho+emxl6XcqCxRo+6/sqdVNQYn4FeZKdiqoHR761QOWrBe/PxA37Qbej85A048HnE62Dxoo1lHI/kT/xsbJU5+yACuYo5PvevDc5phkJpZs04YaOuTe+HwNk9Kd4mC4uleErXrN/qczDf3q0M5cE5drV2kj4P7D2Za00eH3+W8BNyJehWussSqUPCyPV3sLakhVffda/F9DM+pK5lrO8N6usv8HnuAdBokIntiXo4Lif+UuSIOsLe2LKxbZMtqk+IyrAfQVCP3lrsk53+uED6qvk6yX8UpFd7U8CstcJvrfEO07LqxgW8SHfs8u8WNl4YnJpfokpApgmawvWrLQ6xFaLMbWgIX8L9alUbQlK9zWMjQ/yu0D/UWLSJB9heO85tuPHJS0T7XTyio3gd5PY/aml6d86FN47/za3Qx+xcSsqhCGBhECdv
- jA+nRG4y
- C/RtRPNxS2w7GoStQALpuntDvugFfw8aGJDY8f41sZWK9/UBGOxgIdu9tMJE6PpjBPXduFRIEkIE6ltOYbLDEZ1wtQWk0cxB2oLBy146FzL5rVqjOjgyfDALoIhWm2YGHuiDFyp04pSJSDgdDONTLP8yWNVCpcClMjhuiRGKaZSYfz0KznOuWy4TV+eI12iHvxHr5/9xjyziPEO1mPAN0v9PKLj76zEDjvjZtjy7dgJZpox++Om3wiCYuYemqRVg4v8JZfiTYHvmxHQouLeIg64YzTTNg8iuz3X2djXqdLB4bzZV613ZloUJDfGRDGzjlAd05bwyiElFEqb+cMuo0yec3DuoDznrYgOJ7VtHTN7qfJwO8WxGVTAg71cnFvgtCWu/yAFEyvK6NpK3y5cXuRtQZx7XAeFVqY1DTHBS0gcnNIM+JcEItvwsnfRnit/BATQyusfYaiOZ7IxE=
+X-Rspamd-Queue-Id: 86137120012
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765417520-968004
+X-HE-Meta: U2FsdGVkX19ju95WoIqGwCH2TWgcKJvD2pfkAAKOCP+xArNAHydtcGXZyqUiohTlq6oM6vCJXys/42cp9uNauuCs12wYN3SMXwMrCz/I9OIoImyAfjJK2qwmd2+EJAXa+NGoY2+qU0RYRSMZyFbd1v+dBbSIW2YX0fJfvTewpuqdlKt5AncB3x7lTQ/zm60etgwer+dDkDW7NvOrHvRQJQilI+8PeAlIpDYq2ZfMogPTA0gmFsckXiuBD8Vq4MfvnuNf0SvpT0Pvo2OrOz8i54gXrObxNkoLbSp70tSM3Z0n1hRxNjvRUXmitKfqkkaY3oWvTZYqrCuRQRis5cGCpPMBfOUXkXq7yCguymxit3buvSSxz5/ziGDv6en+T7mCRyDHcRopd6TzZT2IlUOzVeNrA9ddpY08zNtYvAVPuAzb87YiW9JNw9ppi1yGPskKiHD80nZ9br8hWtn57PEcFe6xt0MrJUGVsxguXNPE1zXzZbyExSNSV+DWJNGFMbvls2kBAoqlxjgafCRL1XLq/lcl1LxxxEfE6sw/h6Ol8n2Wt7DuSR5eEzhPvyOVC9j0/dosuOY57s/BqNB/NYGqqpCThH3KvOIFc0zhR/I9JQocTscOxgF41nEQG69cJ2L3dypoVqW/b3OyRXoZMrAvTA5PNp3PLmUoOQ3Ev7xYymvKugsgWf1ZOWdTcgyAJYa4QKhgVN0wZNXbutzOfW+cTs1D49g7WysYIe4JUVUnNdX/SQYWSwiClIC9kUc6THWQJVdFzOeSbI2/9oqWfrdWw/g+BXACv6CIlHJ7mrQ8GkpSJJWowza8PHjO0V7FjgnDR5syxHKNQAKVjWbIqwTtB5cy8VhH05tDE8WAyoGXOjUqomDF+jzcjrxcpfy2jTPlcMISPf3finZnlr9fxCOAs9ys+oGGwDl6WJA4O0LtoAx7E//2m9qZ6jn8AAXTjSzlpRByr9mAEdtXor16pfc
+ 8xvwm/EX
+ bXrS3kx18kVlQDfC6k/0R3egayIJFtDipuZFHEGYRxFSvqr4g5TMZUQMrmB2Qw+oPITIrzTDfuVmSPErB37KQCt0/U9kKCKJNm+9EzbLGcfLVpMgQHwpdhb9jNIoCT+Y2/aPxZdlAOmOGG+H6Vls4CZ+Im8PzhLNH6bDGL7KI5wM0e2wGtAMo6wgSjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,45 +116,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 01:21:59AM +0100, Alejandro Colomar wrote:
-> Hi Kees,
-> 
-> On Thu, Dec 11, 2025 at 08:18:56AM +0900, Kees Cook wrote:
-> > 
-> > 
-> > On December 11, 2025 7:46:49 AM GMT+09:00, Alejandro Colomar <alx@kernel.org> wrote:
-> > >Cc: Kees Cook <kees@kernel.org>
-> > >Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > >Signed-off-by: Alejandro Colomar <alx@kernel.org>
-> > 
-> > Hm, this seems to be missing a commit log body?
-> 
-> Actually, there's not much to it.  The patch uses ARRAY_END() where it
-> was being open-coded.  There aren't any bugs in this code, so it's
-> purely cosmetic (and of course, to prevent future issues, in case the
-> code is modified).  Maybe I could say precisely that.  What would you
-> say here?
+From: Chen Ridong <chenridong@huawei.com>
 
-Yup, that would be perfect. A what/why, even a single sentence, is a
-minimum for commit log bodies.
+The mem_cgroup_size helper is used only in apply_proportional_protection
+to read the current memory usage. Its semantics are unclear and
+inconsistent with other sites, which directly call page_counter_read for
+the same purpose.
 
-> > Are there other open-coded instances that could be replaced? This seems like a great task for a coccinelle script.
-> 
-> There are many, but I wanted to keep them out of this initial patch set,
-> to make it easy to apply.  When this one is applied, I could work on a
-> second round that replaces more of them with coccinelle.  This is just
-> for showing that this is beneficial, and to make sure that you ask for
-> more.  :)
-> 
-> Also, it's easier if there are few maintainers that would block an
-> initial patch set.  If restrict the patch set to a few files, I don't
-> have to deal with many of them.  Once I get used to this, I'll deal with
-> all of them.
+Remove this helper and get its usage via mem_cgroup_protection for
+clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
+to better reflect its meaning.
 
-Sounds good!
+No functional changes intended.
 
--Kees
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ include/linux/memcontrol.h | 18 +++++++-----------
+ mm/memcontrol.c            |  5 -----
+ mm/vmscan.c                |  9 ++++-----
+ 3 files changed, 11 insertions(+), 21 deletions(-)
 
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 6a48398a1f4e..603252e3169c 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -557,13 +557,15 @@ static inline bool mem_cgroup_disabled(void)
+ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+ 					 struct mem_cgroup *memcg,
+ 					 unsigned long *min,
+-					 unsigned long *low)
++					 unsigned long *low,
++					 unsigned long *usage)
+ {
+-	*min = *low = 0;
++	*min = *low = *usage = 0;
+ 
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
++	*usage = page_counter_read(&memcg->memory);
+ 	/*
+ 	 * There is no reclaim protection applied to a targeted reclaim.
+ 	 * We are special casing this specific case here because
+@@ -919,8 +921,6 @@ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 
+ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
+ 
+-unsigned long mem_cgroup_size(struct mem_cgroup *memcg);
+-
+ void mem_cgroup_print_oom_context(struct mem_cgroup *memcg,
+ 				struct task_struct *p);
+ 
+@@ -1102,9 +1102,10 @@ static inline void memcg_memory_event_mm(struct mm_struct *mm,
+ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+ 					 struct mem_cgroup *memcg,
+ 					 unsigned long *min,
+-					 unsigned long *low)
++					 unsigned long *low,
++					 unsigned long *usage)
+ {
+-	*min = *low = 0;
++	*min = *low = *usage = 0;
+ }
+ 
+ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+@@ -1328,11 +1329,6 @@ static inline unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
+ 	return 0;
+ }
+ 
+-static inline unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+-{
+-	return 0;
+-}
+-
+ static inline void
+ mem_cgroup_print_oom_context(struct mem_cgroup *memcg, struct task_struct *p)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index dbe7d8f93072..659ce171b1b3 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1621,11 +1621,6 @@ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg)
+ 	return max;
+ }
+ 
+-unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+-{
+-	return page_counter_read(&memcg->memory);
+-}
+-
+ void __memcg_memory_event(struct mem_cgroup *memcg,
+ 			  enum memcg_memory_event event, bool allow_spinning)
+ {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 670fe9fae5ba..9a6ee80275fc 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2451,9 +2451,9 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
+ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		struct scan_control *sc, unsigned long scan)
+ {
+-	unsigned long min, low;
++	unsigned long min, low, usage;
+ 
+-	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
++	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low, &usage);
+ 
+ 	if (min || low) {
+ 		/*
+@@ -2485,7 +2485,6 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		 * again by how much of the total memory used is under
+ 		 * hard protection.
+ 		 */
+-		unsigned long cgroup_size = mem_cgroup_size(memcg);
+ 		unsigned long protection;
+ 
+ 		/* memory.low scaling, make sure we retry before OOM */
+@@ -2497,9 +2496,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+ 		}
+ 
+ 		/* Avoid TOCTOU with earlier protection check */
+-		cgroup_size = max(cgroup_size, protection);
++		usage = max(usage, protection);
+ 
+-		scan -= scan * protection / (cgroup_size + 1);
++		scan -= scan * protection / (usage + 1);
+ 
+ 		/*
+ 		 * Minimally target SWAP_CLUSTER_MAX pages to keep
 -- 
-Kees Cook
+2.34.1
+
 
