@@ -4,118 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63086D3E788
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 02:58:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A317D3E788
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 03:30:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ABAC6B0005; Wed, 10 Dec 2025 21:58:27 -0500 (EST)
+	id 82C356B0005; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883486B0007; Wed, 10 Dec 2025 21:58:27 -0500 (EST)
+	id 7B5AE6B0007; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C13B6B0008; Wed, 10 Dec 2025 21:58:27 -0500 (EST)
+	id 6839F6B0008; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 701976B0005
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 21:58:27 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB81013BB1C
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:58:25 +0000 (UTC)
-X-FDA: 84205681770.30.C08A29E
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 240BB1A0019
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:58:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=TtcV3cNC;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5352E6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB0431A0443
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:30:13 +0000 (UTC)
+X-FDA: 84205761906.18.EFB7210
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1800B10000F
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:30:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VemsgVHa;
+	spf=pass (imf05.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765421904;
+	s=arc-20220608; t=1765423812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4LfuhWoMqWAloJULoKj1IudIPQc7ilfqshnWS+4Dsvw=;
-	b=eDYeP2/J3ZDPPn2gXxNDYlN2KFhjGO9vgbwdRgRwptvFmQE6oUviqAQMJp1cAp5H1UTmiG
-	a8Bmht3WuFVDb+KY+r/ZP1vNouCpYNTFtiJ27AxY0ZkNSQBQ2MQSTveuLrKluxrBWUPFaf
-	PzUGDkwJr+1Fs+3bbx8DPDCIbGOuE/E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765421904; a=rsa-sha256;
-	cv=none;
-	b=OxQ5kgH6HoZ3cp7Er/dGHB3Hlmw6TNs/NYpIibbz4UYUIc62oZ2AzdRW/3Tbm8OHHp7x9I
-	pgKJ2o1J7Rn3Dh08rort+XkdPS1c8nZR/gRbc5/S4XAausp8PCK4IHLsMQQjfwzE/wlRie
-	gXxg8FcjfKb6pqhaHL9tKUYpyHHGyt0=
+	bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
+	b=6Z842K0xsfvJQhNX+p85OBMqGLbyxTl+D8ms0BFq3kWFJU2UL+rd6lJ2e3ZiyCC9DYawvu
+	+BNGlJafGQIfBFDR5xoP60HzpB8CDVv+96eUNSgDKIMCfAv8S9TZEhQ9pDFnYz00GbLO7E
+	Cpo2uwiN4EO1NEOr5Uw28b19ho44Was=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=TtcV3cNC;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b2148ca40eso75552085a.1
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 18:58:23 -0800 (PST)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VemsgVHa;
+	spf=pass (imf05.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765423812; a=rsa-sha256;
+	cv=none;
+	b=hw5H+/n+1TkuBBV04isV+bN/nVYIbhRmAwjcUvi8VMar0fjhluaOF+h9UIHmQrUlZ0I9Bn
+	CYrT4Emow16u3+DJfeyj4OFJPnXykeDeMOorZFGxGa6vleK1FTSVD6bC4UElLBuEdv3MM/
+	kygO4ISyvmLAIOmI2hC+hVuIDwhIDUE=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6446c924f9eso470087d50.1
+        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:30:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1765421903; x=1766026703; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4LfuhWoMqWAloJULoKj1IudIPQc7ilfqshnWS+4Dsvw=;
-        b=TtcV3cNCDP3XfSeIBVnoSgs3TTvR0Sl8UCxQ2Z0r6idAyLPhBKP6we5QVY2VakoXPb
-         S92FmCf6YZ1FhRQNGgYneCRjZVPDbf7Tlv9g/3jwnnkFgv0O0VKNm4IIm5H/38N4KUxc
-         8x6NV4ykCt2/bMA5jRsZeNTAZR/fMWdSKw62vpS0WXFXPtCoxaI0BrUWYnAFV7SX9XZn
-         U6mqpJoDIteTMluZfBSGUwiYqeouhCNa5mPS/gTbDS5C00UCUb7VdNL6gIoK+n9wRXJA
-         sdjwe0wgSMsS3M/aYrBmgWm59Ugdne2Du9y1AW0wL9g06kUrvrJU+GUpjao1BfOpKGyq
-         hgyA==
+        d=gmail.com; s=20230601; t=1765423811; x=1766028611; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
+        b=VemsgVHanELHi060gwvm7/fTA+YTTjt3kZzhJ+YTekATzqgrvIyQu4GAnrkwMQK8fg
+         qPtO6WgG08QequoXSE3pQZULAyZXfcysFpYWD9i8aZKMyL1JCJB0MLDP6UZhZm2diWhA
+         TN39KHjyP13GwdiqArAvDAYXIhHXEYzMmUTH7Sl70I8sYFreG4mj0dMPxnELID7e57pR
+         pDGrkehfRSLbRTy6Ye3vnowUwJOozPoa5kJOZorivQHToSRSw4U2pgX9Yfx1IxqHwBo/
+         eWhyh3+Ror3dZ8eqQUwRrpRqMnkMJNAZircC7W8CjvJYc3lA2e62xsBmV7+sqUWQI1Cu
+         ezdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765421903; x=1766026703;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4LfuhWoMqWAloJULoKj1IudIPQc7ilfqshnWS+4Dsvw=;
-        b=tBhq1Y2YQWaDF+F+GnFeEHUuzuEDqTXWGzda118ABRVV7sXXP29aSVnHfB54aXZdZl
-         jZ6r6xDX1tePJeNR6kDRMVyvWoSZERUi5qnkgEHRY7OgnhK+RqVzID3vQlWpit9J6MQl
-         EOfTtoGUsL4Sx//k8wLCWjm6D0YVbg+v6BmJ1O1dd4OJzyIM3WOhcpFb9FVFkR8sRom1
-         l1h8t9sjm3ebVlwVAdEj76iWnhTOzi5Z/vu3DIzbxhzfyNdwazcmR5g6M8jVNJuuJ03Z
-         wb3zQK36QQM854SxTEAWhqs0K/g+abz3GpL7+OeXLAyqs0ZL9SVr9GIRN2S7F8LJPlBa
-         4OfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtS373ruEr7a+rNqZLUetzGu+zwNinZd6buH6xWGJEuaIZe4NK10Nef2aQAWyHb5W/yFRxmLNOaw==@kvack.org
-X-Gm-Message-State: AOJu0YxNZN/b1IXpL14E2K8elgE4dJ/hfWWxXR16oUzfIrdRoWdyctgk
-	8Pe370bWN2bWfIdAYD5ow0+GIhZyIm1WcgACkFvjYRcuktZIun6iOiuSKfxajJ+lT6E=
-X-Gm-Gg: ASbGncvKWJUmUERHkC0yREpIf/qlq+DX3DiTLDvLPOWlLnMc6htnj9fwtZQxRBcPkld
-	Zq2fmEpXdscunI5z+xv6uMNQLIsTWbPcRGfisV2UWfnk0wh8PQaJcVB3DOxcZA/UH3O0ywNeI/M
-	txMTJJ+ikrGHHHXXt6GlX44/cU87RrANNa5+9fxXtpllxKyDNdgYlwWHDbLM+w7PqSpHyjIWoZj
-	MYdz3qVg/j6qgPEn7mjHefxYzp/DOkEHvZuLeC4L4JpjXheldHyd7aYHrVjgHaU2Lo27Cumg8Yk
-	yhJEhQ+OrpgXkYAIcNJcRtBgXaC/H2ceeY8SPKCVKVDDS9s2RzcstNJtKRpyoZM+XQin2z20/8/
-	NIAqulEDAtdMmtlwPxeShquvA90a8a4BWqiAme17pT7N6NJ1DFJnTnLveiGtQzs9FBtf/eotsLK
-	cpC2LuerRzanw0DDw3B+lc
-X-Google-Smtp-Source: AGHT+IFoXwBG0n5fP0BNrUvena3y71ni22tWG0aSIY3lZQj1Rng9OU7AuijjB7Oixr4MMXI+LjJMQg==
-X-Received: by 2002:a05:620a:2a11:b0:84a:71fc:a16a with SMTP id af79cd13be357-8ba39d46b56mr689168385a.37.1765421903169;
-        Wed, 10 Dec 2025 18:58:23 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8bab47f6f15sm113968985a.0.2025.12.10.18.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 18:58:22 -0800 (PST)
-Date: Wed, 10 Dec 2025 21:58:21 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	lujialin4@huawei.com
-Subject: Re: [PATCH -next v3 2/2] memcg: remove mem_cgroup_size()
-Message-ID: <20251211025821.GC643576@cmpxchg.org>
-References: <20251211013019.2080004-1-chenridong@huaweicloud.com>
- <20251211013019.2080004-3-chenridong@huaweicloud.com>
+        d=1e100.net; s=20230601; t=1765423811; x=1766028611;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
+        b=rUJsr/CRsrVvmt5lZGu/o3WoiW3BskHOpcltqBLbYR4us5s14FESYO6hfqsGqCUuBf
+         qvZTlCbMMuT7HHyR4jQmixGMpBzmsAuaKoPm8Eq5B7lm7o7HAD6ypQHITqQPegHWDmFN
+         IyQJM3C+ffRizCsRpOHFpE4sWGNecgxxT8rAK7XACYgof2YKUFn9IksDEey8K+GJBt8/
+         Rn4cFPvBj96maTW/Mc+YuCGytowh6lIU1TeH+/yHS6MedEj+Pv7eAJyeOdE8KsA0rZvn
+         xWyA9xDTUyWMl2BBTeyqzZJvpIGwcgKj9InxtwypgQDHpCgyGRhD8zBl7CkvEgrt5uRh
+         UK0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVMK4ljl8sNJUDUdo26mxxQ1tg1UaXT2ZBQ3Tc29nV47EK0up8BuJ1ACKJ3jNSHaXsaJqMjAYpZ2g==@kvack.org
+X-Gm-Message-State: AOJu0Yz79iK7ZDU0nu7NpbRSL0TqR/+ND6rZfjlEkMoxMNzurnH2ULHL
+	Bs3Kw/lUFkhPZ+jBkdaFBriCOkX3BAPnaEsxO/Em/wT/OkG9DLzLT5DlZMMthiK9SuJqi48+HAg
+	afbEUtDm4YsT2QS0cY9xWTN8qzQDllbk=
+X-Gm-Gg: AY/fxX6eE+4E+pDxaTX0LghlmihoWuA4mnakL4UfWKo7m2gq+fe6tyjTYi9Y9U2m5d1
+	aEuTpv3eVIy82Ll7cORq0vDbFopiQeUlGcB9qB+cBktP2qr4QJ+CzEAZnw/l3FciIjlEgV3f1NE
+	yb6ReQG0v6e57yikalfvQ16XorNaEZ8/ATLT0mdW75QOb7QmjXJVAZakjFiMm3pEXCGnCA6Je95
+	lnvA5niDh4rA2rpfUFyvZl/ZH9V+87OwQv6wJ6fTlwE80H1HqbRegadfuMJ1KDJ6jE/xg/K
+X-Google-Smtp-Source: AGHT+IGx1i/hmxNAhGumNMn4ohfzd7BdjnbBCPqjWbQs+69758IpzoHPpanbHngMm3xv6KkbqhaIcmYer50SEAgvZm8=
+X-Received: by 2002:a05:690e:190b:b0:644:60d9:7507 with SMTP id
+ 956f58d0204a3-6446eb5e004mr3726542d50.87.1765423811010; Wed, 10 Dec 2025
+ 19:30:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211013019.2080004-3-chenridong@huaweicloud.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 240BB1A0019
-X-Stat-Signature: gqmtzxmmgdzop1aquku5hz997kkzognz
+References: <CAHOvCC6_-h1jQkZMbtYDC_jrB490jzp1t1Fx-_mhYnE7tqvzbw@mail.gmail.com>
+ <20251210025400.51467-1-sj@kernel.org>
+In-Reply-To: <20251210025400.51467-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Thu, 11 Dec 2025 12:29:59 +0900
+X-Gm-Features: AQt7F2oJTFEnWJmg4wO_UeTkwCp5xM6MSBqPed-yCVo1NfNtcF-iEdE1q61GoxY
+Message-ID: <CAHOvCC6bJLf=LuBpm90n5poz8Sqhz9wjXtk5ypbPwkvhb1ptag@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: htfz5thwpcxb6oc898gt9m8izq9pygd1
+X-Rspamd-Queue-Id: 1800B10000F
 X-Rspam-User: 
-X-HE-Tag: 1765421903-502766
-X-HE-Meta: U2FsdGVkX18L4yyOAWXueyybjlAhkHEMjkFd+ADpQ/E00jdNfS2nqaOQDGuQ3Ai+qWgtrbIUxQd8gOYKvsTrcmydOxMECejD5R9xYknpC4nhpckJW9LRoqH6nehoB7nSmvF8Et4JCACws63obrMH5Url4OgfOAE71q0B4l9MKTYIdC1iKbdQ8fJRFDgCxM5t8DGVdLh/D+8EeJ+uPtEnwRApFVB7YTRs9OzHibCv2GTDUmg4Na+n8xz9Np5QRwAzv40HAgvqQyCFmPk9sYGN2DSC+9Dpb70Bn8BEDqh0lLR1E/VOsgEysDPvKfCtXOCA5XA67d8um0o6zh7JoENMDawUTQKwUbHAKu1cY1rT1iNYV/jM1L2CFVIQxgVDN6sczWxpiA/Ac+NQcV/Z86dRbi/8uibDmb6WtvJq+VXoCkOFN/45frl2k+YY3AyEM3Ku2Vr7cgh2tCMHSkw3PyMVXf29cT1cek+J9RG/gBbrUNBrO/Vib3ZINBm5l42e4Stos+WE8MJNKmbuQMpfE9HZF5mrVHGaS09E0TbVlxYGhnNwaummzXNaipLxzOV8dBV98YtVDeXFaWnUE7rM9B4mn4r9HETIpGl2iejVU7udiGc8bH2RJ5kjfgPV3i5MNSy/LwFUTIgXwqgzp6v9ZCIYi9ppWlvTDZxM0ol66YuUeU5wTN9Ln7SbVmEIkkyF8FDQFvhbPTS6vCtalfoopQTtjdwjyGzG79P8OCl0Uii1/LZs1BMSFa/4oYTZTkQ3DWNaGhJ1ofrswRxGTsF6Vm3LbA5QNJnZ67N3hPgNBNS4k7Ek4cPmojb5+E2YvNhGQ52caT5Qa4v70+FZYA8wWO6kzhxCF7SZXT5pLlfksVHSVMzphXEoKSqahE4wz82KPGMFd00RZC0CEDRg/SXl6zs689BLJzyVoDLEu6DhFGvtGGGs8DOoULQzEbcXkyE2L79RcbdvXnZBhYgKodIqYMS
- Szfhpwvr
- Tlde9+jN+ONZ4l4XcAps0OLrLckj6g17W69fgSmwZTYhmgiThdF/pm+Dj5tX+3vvw2uxxUtkCNV8tYBvUtdnkLt7PoEUQSW/utYw4ZbPXmTnj+RC5ZQ/RibO7YNgDR7AD6HMFP7NrQ+mqfg+rjs7LecyVrA8RUYRpQ2+y6kkoWftwMzxJc+1dnZnQF/nrIRBJ87D3dkYMRAOdWJMuTuMmzzGzxwk7oeDerfbSBfEU9fhJiC1c0eTdiPhANgiveTCeVkxuYxE9JBICKuQ2zg/zGbousCe8pJlloJkYRiVMLG6atJsLJ+Eql1AD7+oBGwcp6Q2113fOThzLucl6aRRqzU5GKzdMHpLbTub3HMag/h60/m69H5TqReM2f7VUEEPw+OzPfFygPhmkkU04eGQ6raIg6NFUwgrh0zQP0wPhUTQSr0kWsdtg2uiBVu3hSCDgPodq6bBB8POSEwrRD8z+B2xEsvmCj//+NSdXm153pBOqc1rLb7Gw2QiVAQ==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765423811-790637
+X-HE-Meta: U2FsdGVkX19LiFVnerz3g/8MulQ0PgIxSO845En9dJPD1gR8CnHGxpyGhQYw3/UlAtoS1At4MfZcS1Jjs+QpZEw8NC6w4hylrnY+cSJEmOmOvuzRAci4QwKedB25o0KZ/DJkgK4tY0JEhM7Hd++h0nLGimsggh7T2vGVDZoHEaMlNy+4YVkSz5cdJzv4j0SB/PQFYdD4iF0OfyT24fLY3H4HwrawJKvdx4W0nWfCb+HnChFmhk2p3S3fLMnUrGqirHP+WJ/oWFcl40JKx8doP5aKsy9EJ7m85wlkQN0u6whQ1jPvDwQJXjjZrvTNWqbhC2zBxYoECV6yPAmQjdPB38RQLE+bBQ6WNx2womJRVzWevsllof5lEkR/wxRlz82A4icS7piyBsOCwyVRuI7q+18KIMWNg/zvDFmxtvRkZL+JbtZxlP1a6zZIrpyQTMau/OiLhTAeIls++76uVfB86RePlDjjOtVs1RgPH+pWaQEcxTH/U8flJ/1s7dhZmCUfgUJSNOgu+fEBxaVbCXm5QLZAIyA+2L6MhwwABXPT6DxTza4v1uB5t77Bj6RtfN4vFga5DgpN99k9xJZOemMpNjgxOPzR25eXhaUUaCH7E+s1Dt1bPZQU8G7kznARrqcLJtiuqb/Z3Ti235Kxjt6MnLO5vtufMez5duZmXoYPc3U7MyvB2CAtEsj9haQ9gFkSYXQlAt2tWaZE5bw+rCJ+1LvqXidsbWBdxYs0vaJMC0zs6CXMx3mAqJGp+wOtM69zvQbR7MDBYYmurwxVJy4BBeCjPx6CT63i+Zr+YsVQBNIoa32wQLKjBYKwJ9ns8IO5lDZGs6qtomDoiz+OmeOJUsbXzzMhoOitFlU283Z0rlEvawqWDBFfxO0gAeMwE17LkIw8goLpKksHG1sqsdtrNC9SSU431ob5Q+cE+vCOV9YR7Q9DtmN18ITjHEYYDuK6OoBPfcBA9DQ5rK3i1z4
+ KZ9p37um
+ stVlvG1osJL5G6YQLv5obPO/rD8jjf6YU0ySejdq9srzNS8y6caQAOcFocsPCAbCsKUo8odB7k3OFrz0NkI9lTuHrLSZ2+ULEGh1bALakhvRRioBd6deN5gTUAhrRZRRwAU6UzoJ8BObqrFsd36wZn5xdzNFvXJ8QcP8QKQeself9m5AM2mfjScFjFlSWtwytINOe33hCAz1+9Pk0L1HAhs2hSmtgB0jw5zifdUdwKNSw/FchUV3eNoCNEuNf+JYV7z7MkJ3UXUieKv5hjhZ3l3EduPJrv7vG8Nw+NMLrPaTHRx+DCKEIWB9p1+r66jTh0qsgap0gPMR4d/Cn3/dSKeByeR0E1ITSmweVSR/QkXp2FOGzbBNq3domWOrNoqouTH8A+6o2TJBXrSpSnOBlBdW/ayhW/+bLBTVeaRvXSs/hOIeFPTsSoxQtZ0hQBjMzmGLX5r7y/ZZjemkO8WsV8u1JNA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,21 +113,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 01:30:19AM +0000, Chen Ridong wrote:
-> From: Chen Ridong <chenridong@huawei.com>
-> 
-> The mem_cgroup_size helper is used only in apply_proportional_protection
-> to read the current memory usage. Its semantics are unclear and
-> inconsistent with other sites, which directly call page_counter_read for
-> the same purpose.
-> 
-> Remove this helper and get its usage via mem_cgroup_protection for
-> clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
-> to better reflect its meaning.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+On Wed, 10 Dec 2025 at 11:54, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Tue, 9 Dec 2025 21:20:42 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > Hello, SeongJae,
+> >
+> > Thank you for your detailed feedback.
+> > My patch has the advantage of removing the use of
+> > the damon_call_control.dealloc_on_cancel variable.
+>
+> Thank you for keeping this conversation for enlightening me, Jaejoon.
+>
+> Could you please elaborate why you think the removal is an advantage?  I
+> understand reducing code is good in general.  But that's only if the code is
+> unnecessary.  dealloc_on_cancel is there for real use case, so I don't clearly
+> see why it is an advantage.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+I suggested removing the dealloc_on_cancel condition from the patch.
+When using the damon_call_control structure, if you only use kmalloc()/kfree()
+when canceled without dealloc_on_cancel.  However, currently, in other modules,
+since it is static struct damon_call_control { ... }, kfree() is not allowed,
+so dealloc_on_cancel condition is additionally required.
+Because kmalloc()/kfree() and static are mixed together,
+dealloc_on_cancel condition is required.
+As you pointed out in the previous email, kmalloc()/kfree() has the burden of
+memory allocation and deallocation, and static has the disadvantage of
+increasing
+the code size.  Both have their pros and cons.
+Among these, I proposed unifying them into kmalloc()/kfree() methods and
+removing the dealloc_on_cancel
+
+>
+> Meanwhile I find the feature might look complicated, or not well documented.
+> Specifically, dealloc_on_cancel should be set on only dynamic-allocated
+> damon_call_control object, but that is not well documented on the kernel-doc
+> comments.  Are you saying removing it is an advantage because it makes reading
+> code easier?  If that's the case, how about improving the documentation?
+>
+
+dealloc_on_cancel is only used in mm/damon/sysfs.c.  Here, since kmalloc
+the damon_call_control structure, the dealloc_on_cancel=true condition is
+required.  If you want to keep the current code as is and only change the
+comment, it would be clearer to comment it out like this:
+
+De-allocate when canceled.
+--> To perform kfree() if allocated with kmalloc() when canceled.
+
+> Btw, please consider not doing "top posting" [1].
+>
+> [1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
