@@ -4,131 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDAEAD41D56
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 15:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE150D41D50
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 15:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B0486B0006; Thu, 11 Dec 2025 10:08:19 -0500 (EST)
+	id 0ECE36B0005; Thu, 11 Dec 2025 10:29:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 487FC6B0007; Thu, 11 Dec 2025 10:08:19 -0500 (EST)
+	id 09E1A6B0007; Thu, 11 Dec 2025 10:29:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 350476B0008; Thu, 11 Dec 2025 10:08:19 -0500 (EST)
+	id EF5E16B0008; Thu, 11 Dec 2025 10:29:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 24D126B0006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:08:19 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFF3EC01FF
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:08:18 +0000 (UTC)
-X-FDA: 84207521076.07.95704B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B9DEC1C000A
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:08:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EqFupcXP;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA9CF6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:29:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80CF3139E9E
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:29:02 +0000 (UTC)
+X-FDA: 84207573324.12.5DF9B73
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6223E40009
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:29:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765466940; a=rsa-sha256;
+	cv=none;
+	b=69iaSPEPu36p1iN+pSkTO9XBdsoaTbw2ugi8Iwz44pplotPLEJX1LDqP8EEulnE53upRZ/
+	6RjcVDYaGtmIw1eSzCEMvZ2COf+mrsLRWlnsdZIBQgTWOMUyMD3zL60UKpZ95IJMTvC50B
+	xuvv+LAr0Lu01JP2FVqeTXxQZkfLZM4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765465696;
+	s=arc-20220608; t=1765466940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c4hozZxqCPaXLY1mxAFT2lRvZ7mc0q8CG1iaZF4YpSU=;
-	b=pUw4XNpqI2G83gg6zbtYlHcGPuDLuBdLaQV4wEp8ai6tkUojthf/grYmpZNsYau0EblPok
-	uAleaS67ct1NsO6XWZjTtrQSp/e9uds9VZV4EdvVy+Nfc+VKzgxs+DYz7SSF/RTPGOqeH7
-	gshqRT7+i/iu6jdJxAOtb8+0OX9Vl+A=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EqFupcXP;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765465696; a=rsa-sha256;
-	cv=none;
-	b=uhATb6GZ76TZsu49uASq9vd2MQ3QGIo37BwJrkJS35PfyGY2fG5khUgSyCGO6QALuwBLBV
-	vUMi1+tFkCXpe7+Z6FQitlEcAMSeDrXgQN1tzy+EPQiE9bfc4SRxgpcQMasxrESzQdVylV
-	2csGzAU0P2lqbYNG2F5tIcNZs5eOHv4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCCE9442A1;
-	Thu, 11 Dec 2025 15:08:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF9EC19421;
-	Thu, 11 Dec 2025 15:08:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765465695;
-	bh=BuXXa+/Hd8aPc2VP87UCC7y68C4whjwugE7BDLLteE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EqFupcXPpIbRjNZERBCqb+BaJvA5S8+pSFDVI9Ec6bet+KxCQVCiItBgp1rAVnR31
-	 NQcBTYgKzQqTy83O5YKzWAUPj84zJa7K4kWXL+sw1zSm1OXkmTaq/a4trqeegtuMPi
-	 NyZMFTLUB7ogGliTF1OLBMmSYgMhledSvNQvvscbt4BxG6HXD4/lZtmBHlDRparOQ9
-	 vPXjkSVfGeC0U46iP9aMerWp1WPQ7+JY7qeo0r1N+TkcHYPSlIZX0MEtwe0+UvU9rl
-	 BJpf2HeErqoLC+ymh33s6uV2Y2aW7NyjUK8j8amPFqOQr63Gbat57xmC3zVhOqAu9f
-	 pIGqPdygm1yCQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 791C7F40074;
-	Thu, 11 Dec 2025 10:08:14 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 11 Dec 2025 10:08:14 -0500
-X-ME-Sender: <xms:Xt46aduxeH6TjbuWN3YyUpuoKhZIZ9C9SgxLB1HiHbWBnW4ypgZ_tQ>
-    <xme:Xt46aZYSoAb6cz9vVpS1uNVo_sqv0Y8BDls1wPInwWxbBSJN6pwyue1Rx6fqWOI3n
-    sS3cralpP8lb5To0VfEj5TJKfijfD64NKZ_NG6but_9aGz-oVQTNJ5N>
-X-ME-Received: <xmr:Xt46aU95JPHUmvLYymSDNlDt7g35jW-AW7gARaL4VR9UEPPU7RfOSlXyA0gHTw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeivdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgestheksfdttddtjeenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepvddufeetkedvheektdefhfefjeeujeejtdejuedufefhveekkeeffeetvedvffek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtoheprghkph
-    hmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgu
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdrug
-    gvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvsggr
-    sghkrgesshhushgvrdgtiidprhgtphhtthhopehlohhrvghniihordhsthhorghkvghsse
-    horhgrtghlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdho
-    rhhgpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:Xt46aRYkCeiSFSsNVmqHqXPbtAxiMe7PRj6SkOXHHNm2iUj-ZQhsSQ>
-    <xmx:Xt46aaSJhr1AIk53q-_-w6gmNx8Ldz3q41N5QRsW067qFyjUsdzuYw>
-    <xmx:Xt46aYkv4rd8XbECYhIG7zLybfU8rjUpQQCzZEqS0ns_7X-MNVv7vQ>
-    <xmx:Xt46aeKbuLXfFuVtCBFdM0HsN4mjkKiun8yEgSI30IFS8PmfaZXzLw>
-    <xmx:Xt46acrgi93rqXo8ciNjWMSP4k_1iRFgGXHniNp192frSC-_BzBM4X9u>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Dec 2025 10:08:14 -0500 (EST)
-Date: Thu, 11 Dec 2025 15:08:13 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, 
-	Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Usama Arif <usamaarif642@gmail.com>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
- optimization
-Message-ID: <5twlonzi3rooao7gyp5g4tyaeevemcx6qhuf4xvdtsi2cykuo4@wrhxmxz63wvn>
-References: <20251205194351.1646318-1-kas@kernel.org>
- <4F9E5F2F-4B4D-4CE2-929D-1D12B1DB44F8@linux.dev>
- <m63ub6lxljw7m2mmc3ovbsyfurl7hp4cvx27tmwelcxxrra5m3@eva5tqcdjxtn>
- <6396CF70-E10F-4939-8E38-C58BE5BF6F91@linux.dev>
+	 in-reply-to:in-reply-to:references:references;
+	bh=vs7m0PXnHgcQaiE943XMAnahN1KbryZMAdb3Js/av9w=;
+	b=wO8ORfg/1Ggfdkh3NMsm6m2BV1HG6sBSMySGmbsF1wwbHWNUtw5BLFWNJbjoe7eoRykRmt
+	7ouLn8+DnqHT9a1Pakt9eC5Eoz/oaWtX6JlGfFjSh6VbxMofdg91hAQjb06Up5NKsV3xBR
+	p6ongdqhKiPjjCE+ELtP7q9HfwNOk+I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 250B51688;
+	Thu, 11 Dec 2025 07:28:52 -0800 (PST)
+Received: from [10.57.90.205] (unknown [10.57.90.205])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 664313F740;
+	Thu, 11 Dec 2025 07:28:58 -0800 (PST)
+Message-ID: <d108a8ce-8919-459d-aeca-dfa75cab54e7@arm.com>
+Date: Thu, 11 Dec 2025 15:28:56 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6396CF70-E10F-4939-8E38-C58BE5BF6F91@linux.dev>
-X-Stat-Signature: ujek4sgenfhjheeiru959yhjkink1pge
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Content-Language: en-GB
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20251021194455.33351-2-vishal.moola@gmail.com>
+ <66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com> <aTn0FZig5a_DpTJg@fedora>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <aTn0FZig5a_DpTJg@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B9DEC1C000A
-X-HE-Tag: 1765465696-385043
-X-HE-Meta: U2FsdGVkX1/UCmTmikwEnvyV38M2o7PhCERr/om0GGlFgtLKXly/mvgcO3Z+T00JvQCKY0QzFHfQXZrpyzPch7ACB5hx9yjdLDZ2SVJ2kAqIVpJeIPbIY0dJA4uK3C+Zy1RehQ7NCdyhZwo1l9svRu7MAqfBL7MKMHeG7QCKQbzS50vHy/cYiM5F4uYY81LwydoQYR8FDQjfpiWe7O+M8XT93MVgz7hH8ueLKsSxQ4qO6TiUdnI8oUs5yf0wT9VQ5j9+8iXtNscWyxMMUFz7b0w+i0QiakuN+MRohc6LfJVqZv3nnDr5uzvy1Yoo84Eyg7xwQJ4xudkF9PXT9lA8LTm6jPTDmE+hTh6co4Kwm5uFPNm1XU4jnVakO56wL1Bilb05HSS4Knu6j7IekT7Qmqoig9hq5AD84F0bv6ja6/ZYzuzeOJvjIgK2gyBjZu+dlkLFZebFr+JCM6fgi3o6LzSKUH8hbZx3/VqbuadnOosQFnY3+lS86MGOREOHoK1HwyeWchWrg49mOXq/ir0d4scesAw89df7+4uCOVKt2iQ3VpnvaifRmwP4k0eXlw5v8JIaeXElM1HigGfpyDwAUYxcj0XrvFObbrP+oGabp1VcqXDgJe+tRkVklpZr6AAEfP0MKLUiLOecpf/lGxLlZgEWWEFzQ5ibNoDGROjAMpJWjQqYBDshMpGPCcbrjaSfQno0CWecssdx/Qtu1vHkt+XNxuPNPKO6vyQp8afn2If8/WD5eMqw2hG144w5WuNRUHEfMHu855GxTkEK7UnOY0GVzB49WevmTPOc9U8ca/4N8ZKQpaAwyjOQpNz8jZ91kLgUqvlvaUVijnz3q63TnNBsxWO/1xZQFAPat4/KnO3wK0YElqLC9KAWchofHyu9MzCHGpCJ8Owkv3l8VvdqEAVfmY3tf2f86NtvbwBm/8w+L+GujbCFSbpfHB3i9SHhPEPoPjRe7PS1U6iZtKh
- hsb/VdW0
- mLw80DT905k4B8kHfTUkEg0vBJH8xF9pL8NB41sVwynns/Hz2MoESlJqzfFm9IEhQeIMUqQtLAglBOlrL2Oa/yZHqxAOsiCtUxsoU+ww3h9aRPyZzPFha57FKR34G+veN4Mw9caLfPydpc6GXgOAbTVzhGsG6FUM7vdH0siRaHwmULnEHGBJKNorNcfj0uOxU50oPvfQxuhQzC0skk1y+t0dxoFVmazUYUw6Z1DVa4AQHjc94d0csl0tPTIASy5wMruMeYIK3hLvABiTrYRiFcC6CFGAZqhTgu3L5Nt+TYC4+Krq8mKdytzh4RnMV0/yxXAK39Ho/wD9RELc=
+X-Rspamd-Queue-Id: 6223E40009
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4b9u1nhpj744cfr7jq66k5cwitogd7xj
+X-HE-Tag: 1765466940-531551
+X-HE-Meta: U2FsdGVkX18lefXdbxvEAemonU/OknZrOSvZFd9c+mK6Qzd5mG+5+7k8V8Qw5naELT0HRhebMBZzg4a5l9IqzPVersktcwXJY+j9q0CmkYWeNr9PrQDzzOKZ8ZOeALOzkcXMj4nzMtAACHlVxuVEWVR1/W12NTgDfEEKBaFxV/AGVSbCBePzJl2Npb90ql9NPWBBAhrsXE8UxHiOxOZF572NmltJYSI99Baf5WvjyEGcljUrj16n+BwXtyha3Ltp0y/ykJKY0dQR84rQN3qVQbRDUV+1+T/z9df6edLYSFquCjk7RUbsW6MJYbirSu9OAn6FLpPzK6JW2WtBkRdzfkZPNCt530l/4Ctl0jtJLhkMql7n8cd+Bd6i+W580iedJtnNwRH1HIIrgAv5VUlpy1pnNhzXkKRNbxs0Hz6e8iLG+eBqYwIzXOHvCTyE0PUtlxAQgITN2OnuGgMS8IOd/EOkoCzine+wAvRta9tibpFH1YyTE7c1RqaFiu1jQbGZ7Z+ktuOWfdoGgXZZLK8F0B3C10pgTymLJB63Vat+9ZW5Z5X3RkkENjuVDcr5cg21HExYKP+n1egsDW85FcL+fCsLqeaO4y6iaDM4Sr4caMw85T57igaES3VWxQTfLxhTMGzS0km+ZcTSuGLL8HcjxZGqrzJyn/Ruzw3UAq8ORuGgUxOi5NdMRd83vGP+jgzQ75XkpaWxRUWe6zuUT97lmUuz8yW+Gc3LOkNhp5BuQXY034WUOTh3nthqHWY1T6o6e/sQJnruMeoN0tGpavwRvP65DkpfvUS2ZSnFmOryUrrr0ElD0e4rREVISDXMAKfNmpsCvh0SyOvA6Q1ZGlWaSYz3Jgwl+DBBvxd1zn1nsECmuM1y3S/ZvaHTeVg3okd+j+wpqyoPDrXd1ewnP3rYdMrTqyy81Aq2ihYFjg21QZQQfBr2OFGml94ZGP9tkWQMe1a93i4HHZ2qulSVDh5
+ Q9KTjn/c
+ GRSz1KJXmJfOwM8qccmJ4ZcC0EKvCakHz1f2ulk7V4SNyS6oleqZQ7ZA9WcLdb0B/R8J4LZQq7m4VwemkTw+oPVYiqKMvstztUaFiQ5/thN03/qiysjKMbX6Rm+ytp8+jU0mB6hgxGoLEYF6gDj//EaACE1smmUTM+LYJo6mDej/RFvb7w4/PwbUm+wbdXQac2du2Az9bmwOGlXQVQl17D89t3Gn5t/FWPsqb1rumBmxtfu0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,62 +88,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 11:39:24AM +0800, Muchun Song wrote:
+On 10/12/2025 22:28, Vishal Moola (Oracle) wrote:
+> On Wed, Dec 10, 2025 at 01:21:22PM +0000, Ryan Roberts wrote:
+>> Hi Vishal,
+>>
+>>
+>> On 21/10/2025 20:44, Vishal Moola (Oracle) wrote:
+>>> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+>>> allocator. Rather than making requests to the buddy allocator for at
+>>> most 100 pages at a time, we can eagerly request large order pages a
+>>> smaller number of times.
+>>>
+>>> We still split the large order pages down to order-0 as the rest of the
+>>> vmalloc code (and some callers) depend on it. We still defer to the bulk
+>>> allocator and fallback path in case of order-0 pages or failure.
+>>>
+>>> Running 1000 iterations of allocations on a small 4GB system finds:
+>>>
+>>> 1000 2mb allocations:
+>>> 	[Baseline]			[This patch]
+>>> 	real    46.310s			real    0m34.582
+>>> 	user    0.001s			user    0.006s
+>>> 	sys     46.058s			sys     0m34.365s
+>>>
+>>> 10000 200kb allocations:
+>>> 	[Baseline]			[This patch]
+>>> 	real    56.104s			real    0m43.696
+>>> 	user    0.001s			user    0.003s
+>>> 	sys     55.375s			sys     0m42.995s
+>>
+>> I'm seeing some big vmalloc micro benchmark regressions on arm64, for which 
+>> bisect is pointing to this patch.
 > 
-> 
-> > On Dec 9, 2025, at 22:44, Kiryl Shutsemau <kas@kernel.org> wrote:
-> > 
-> > On Tue, Dec 09, 2025 at 02:22:28PM +0800, Muchun Song wrote:
-> >> The prerequisite is that the starting address of vmemmap must be aligned to
-> >> 16MB boundaries (for 1GB huge pages). Right? We should add some checks
-> >> somewhere to guarantee this (not compile time but at runtime like for KASLR).
-> > 
-> > I have hard time finding the right spot to put the check.
-> > 
-> > I considered something like the patch below, but it is probably too late
-> > if we boot preallocating huge pages.
-> > 
-> > I will dig more later, but if you have any suggestions, I would
-> > appreciate.
-> 
-> If you opt to record the mask information, then even when HVO is
-> disabled compound_head will still compute the head-page address
-> by means of the mask. Consequently this constraint must hold for
-> **every** compound page.  
-> 
-> Therefore adding your code in hugetlb_vmemmap.c is not appropriate:
-> that file only turns HVO off, yet the calculation remains broken
-> for all other large compound pages.
-> 
-> From MAX_FOLIO_ORDER we know that folio_alloc_gigantic() can allocate
-> at most 16 GB of physically contiguous memory. We must therefore
-> guarantee that the vmemmap area starts on an address aligned to at
-> least 256 MB.
-> 
-> When KASLR is disabled the vmemmap base is normally fixed by a
-> macro, so the check can be done at compile time; when KASLR is enabled
-> we have to ensure that the randomly chosen offset is a multiple
-> of 256 MB. These two spots are, in my view, the places that need
-> to be changed.
-> 
-> Moreover, this approach requires the virtual addresses of struct
-> page (possibly spanning sections) to be contiguous, so the method is
-> valid **only** under CONFIG_SPARSEMEM_VMEMMAP.
-> 
-> Also, when I skimmed through the overall patch yesterday, one detail
-> caught my eye: the shared tail page is **not** "per hstate"; it is
-> "per hstate, per zone, per node", because the zone and node
-> information is encoded in the tail page’s flags field. We should make
-> sure both page_to_nid() and page_zone() work properly.
+> Ulad had similar findings/concerns[1]. Tldr: The numbers you are seeing
+> are expected for how the test module is currently written.
 
-Right. Or we can slap compound_head() inside them. 
+Hmm... simplistically, I'd say that either the tests are bad, in which case they
+should be deleted, or they are good, in which case we shouldn't ignore the
+regressions. Having tests that we learn to ignore is the worst of both worlds.
 
-I stepped onto VM_BUG_ON_PAGE() in get_pfnblock_bitmap_bitidx().
-Workarounded with compound_head() for now.
+But I see your point about the allocation pattern not being very realistic.
 
-I am not sure if we want to allocate them per-zone. Seems excessive.
-But per-node is reasonable.
+> 
+>> The tests are all originally from the vmalloc_test module. Note that (R) 
+>> indicates a statistically significant regression and (I) indicates a 
+>> statistically improvement.
+>>
+>> p is number of pages in the allocation, h is huge. So it looks like the 
+>> regressions are all coming for the non-huge case, where we want to split to 
+>> order-0.
+>>
+>> +---------------------------------+----------------------------------------------------------+------------+------------------------+
+>> | Benchmark                       | Result Class                                             |     6-18-0 |   6-18-0-gc2f2b01b74be |
+>> +=================================+==========================================================+============+========================+
+>> | micromm/vmalloc                 | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |  514126.58 |            (R) -42.20% |
+>> |                                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |  320458.33 |                 -0.02% |
+>> |                                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |  399680.33 |            (R) -23.43% |
+>> |                                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |  788723.25 |            (R) -23.66% |
+>> |                                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |  979839.58 |                 -1.05% |
+>> |                                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |  481454.58 |            (R) -23.99% |
+>> |                                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |  615924.00 |              (I) 2.56% |
+>> |                                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         | 1799224.08 |            (R) -23.28% |
+>> |                                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         | 2313859.25 |              (I) 3.43% |
+>> |                                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         | 3541904.75 |            (R) -23.86% |
+>> |                                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         | 3597577.25 |             (R) -2.97% |
+>> |                                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |  487021.83 |              (I) 4.95% |
+>> |                                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  344466.33 |                 -0.65% |
+>> |                                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |  342484.25 |                 -1.58% |
+>> |                                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     | 4034901.17 |            (R) -25.35% |
+>> |                                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |  195973.42 |                  0.57% |
+>> |                                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |  643489.33 |            (R) -47.63% |
+>> |                                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        | 2029261.33 |            (R) -27.88% |
+>> |                                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |   83557.08 |                 -0.22% |
+>> +---------------------------------+----------------------------------------------------------+------------+------------------------+
+>>
+>> I have a couple of thoughts from looking at the patch:
+>>
+>>  - Perhaps split_page() is the bulk of the cost? Previously for this case we 
+>>    were allocating order-0 so there was no split to do. For h=1, split would 
+>>    have already been called so that would explain why no regression for that 
+>>    case?
+> 
+> For h=1, this patch shouldn't change (as long as nr_pages <
+> arch_vmap_{pte,pmd}_supported_shift). This is why you don't see regressions
+> in those cases.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+arm64 supports 64K contigous-mappings with vmalloc so once nr_pages >= 16 we can
+take the huge path.
+
+> 
+>>  - I guess we are bypassing the pcpu cache? Could this be having an effect? Dev 
+>>    (cc'ed) did some similar investigation a while back and saw increased vmalloc 
+>>    latencies when bypassing pcpu cache.
+> 
+> I'd say this is more a case of this test module targeting the pcpu
+> cache. The module allocates then frees one at a time, which promotes
+> reusing pcpu pages. [1] Has some numbers after modifying the test such
+> that all the allocations are made before freeing any.
+
+OK fair enough.
+
+We are seeing a bunch of other regressions in higher level benchmarks too; but
+haven't yet concluded what's causing those. I'll report back if this patch looks
+connected.
+
+Thanks,
+Ryan
+
+
+> 
+>>  - Philosophically is allocating physically contiguous memory when it is not 
+>>    strictly needed the right thing to do? Large physically contiguous blocks are 
+>>    a scarce resource so we don't want to waste them. Although I guess it could 
+>>    be argued that this actually preserves the contiguous blocks because the 
+>>    lifetime of all the pages is tied together. Anyway, I doubt this is the 
+> 
+> This was the primary incentive for this patch :)
+> 
+>>    reason for the slow down, since those benchmarks are not under memory 
+>>    pressure.
+>>
+>> Anyway, it would be good to resolve the performance regressions if we can.
+> 
+> Imo, the appropriate way to address these is to modify the test module
+> as seen in [1].
+> 
+> [1] https://lore.kernel.org/linux-mm/aPJ6lLf24TfW_1n7@milan/
+
 
