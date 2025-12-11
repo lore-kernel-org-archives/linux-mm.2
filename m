@@ -4,107 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A317D3E788
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 03:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFAAFD3E78C
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 03:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C356B0005; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
+	id 14E466B0005; Wed, 10 Dec 2025 22:45:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5AE6B0007; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
+	id 0FF2D6B0007; Wed, 10 Dec 2025 22:45:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6839F6B0008; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
+	id 014FC6B0008; Wed, 10 Dec 2025 22:45:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5352E6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:30:14 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB0431A0443
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:30:13 +0000 (UTC)
-X-FDA: 84205761906.18.EFB7210
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1800B10000F
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:30:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VemsgVHa;
-	spf=pass (imf05.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E3D1C6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 22:45:55 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7EC34160764
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:45:55 +0000 (UTC)
+X-FDA: 84205801470.12.CB76D7F
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 901E24000B
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:45:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=seJP1B5p;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765424754; a=rsa-sha256;
+	cv=none;
+	b=tRwnEINuos6nuJhR48Sh0l3H3AoN+7z69MXDPxU/zAEqvVTnFHy9ZwjXYttbvhmdAFV4p7
+	fXH3d9HztpL5LLEUh0PI359vLj7fXczVV/qM3LMkE9u8WZXOEB/j3EstqVFnlYacnnV7ad
+	0ZlGzWR/nFUItHALY5kNBsYEwQr76iU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=seJP1B5p;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765423812;
+	s=arc-20220608; t=1765424754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
-	b=6Z842K0xsfvJQhNX+p85OBMqGLbyxTl+D8ms0BFq3kWFJU2UL+rd6lJ2e3ZiyCC9DYawvu
-	+BNGlJafGQIfBFDR5xoP60HzpB8CDVv+96eUNSgDKIMCfAv8S9TZEhQ9pDFnYz00GbLO7E
-	Cpo2uwiN4EO1NEOr5Uw28b19ho44Was=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VemsgVHa;
-	spf=pass (imf05.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765423812; a=rsa-sha256;
-	cv=none;
-	b=hw5H+/n+1TkuBBV04isV+bN/nVYIbhRmAwjcUvi8VMar0fjhluaOF+h9UIHmQrUlZ0I9Bn
-	CYrT4Emow16u3+DJfeyj4OFJPnXykeDeMOorZFGxGa6vleK1FTSVD6bC4UElLBuEdv3MM/
-	kygO4ISyvmLAIOmI2hC+hVuIDwhIDUE=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6446c924f9eso470087d50.1
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:30:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765423811; x=1766028611; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
-        b=VemsgVHanELHi060gwvm7/fTA+YTTjt3kZzhJ+YTekATzqgrvIyQu4GAnrkwMQK8fg
-         qPtO6WgG08QequoXSE3pQZULAyZXfcysFpYWD9i8aZKMyL1JCJB0MLDP6UZhZm2diWhA
-         TN39KHjyP13GwdiqArAvDAYXIhHXEYzMmUTH7Sl70I8sYFreG4mj0dMPxnELID7e57pR
-         pDGrkehfRSLbRTy6Ye3vnowUwJOozPoa5kJOZorivQHToSRSw4U2pgX9Yfx1IxqHwBo/
-         eWhyh3+Ror3dZ8eqQUwRrpRqMnkMJNAZircC7W8CjvJYc3lA2e62xsBmV7+sqUWQI1Cu
-         ezdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765423811; x=1766028611;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+kgBa13isDA0TWyZlnig6dj5RwcTvhBOmcf0rRVr9A=;
-        b=rUJsr/CRsrVvmt5lZGu/o3WoiW3BskHOpcltqBLbYR4us5s14FESYO6hfqsGqCUuBf
-         qvZTlCbMMuT7HHyR4jQmixGMpBzmsAuaKoPm8Eq5B7lm7o7HAD6ypQHITqQPegHWDmFN
-         IyQJM3C+ffRizCsRpOHFpE4sWGNecgxxT8rAK7XACYgof2YKUFn9IksDEey8K+GJBt8/
-         Rn4cFPvBj96maTW/Mc+YuCGytowh6lIU1TeH+/yHS6MedEj+Pv7eAJyeOdE8KsA0rZvn
-         xWyA9xDTUyWMl2BBTeyqzZJvpIGwcgKj9InxtwypgQDHpCgyGRhD8zBl7CkvEgrt5uRh
-         UK0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVMK4ljl8sNJUDUdo26mxxQ1tg1UaXT2ZBQ3Tc29nV47EK0up8BuJ1ACKJ3jNSHaXsaJqMjAYpZ2g==@kvack.org
-X-Gm-Message-State: AOJu0Yz79iK7ZDU0nu7NpbRSL0TqR/+ND6rZfjlEkMoxMNzurnH2ULHL
-	Bs3Kw/lUFkhPZ+jBkdaFBriCOkX3BAPnaEsxO/Em/wT/OkG9DLzLT5DlZMMthiK9SuJqi48+HAg
-	afbEUtDm4YsT2QS0cY9xWTN8qzQDllbk=
-X-Gm-Gg: AY/fxX6eE+4E+pDxaTX0LghlmihoWuA4mnakL4UfWKo7m2gq+fe6tyjTYi9Y9U2m5d1
-	aEuTpv3eVIy82Ll7cORq0vDbFopiQeUlGcB9qB+cBktP2qr4QJ+CzEAZnw/l3FciIjlEgV3f1NE
-	yb6ReQG0v6e57yikalfvQ16XorNaEZ8/ATLT0mdW75QOb7QmjXJVAZakjFiMm3pEXCGnCA6Je95
-	lnvA5niDh4rA2rpfUFyvZl/ZH9V+87OwQv6wJ6fTlwE80H1HqbRegadfuMJ1KDJ6jE/xg/K
-X-Google-Smtp-Source: AGHT+IGx1i/hmxNAhGumNMn4ohfzd7BdjnbBCPqjWbQs+69758IpzoHPpanbHngMm3xv6KkbqhaIcmYer50SEAgvZm8=
-X-Received: by 2002:a05:690e:190b:b0:644:60d9:7507 with SMTP id
- 956f58d0204a3-6446eb5e004mr3726542d50.87.1765423811010; Wed, 10 Dec 2025
- 19:30:11 -0800 (PST)
-MIME-Version: 1.0
-References: <CAHOvCC6_-h1jQkZMbtYDC_jrB490jzp1t1Fx-_mhYnE7tqvzbw@mail.gmail.com>
- <20251210025400.51467-1-sj@kernel.org>
-In-Reply-To: <20251210025400.51467-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Thu, 11 Dec 2025 12:29:59 +0900
-X-Gm-Features: AQt7F2oJTFEnWJmg4wO_UeTkwCp5xM6MSBqPed-yCVo1NfNtcF-iEdE1q61GoxY
-Message-ID: <CAHOvCC6bJLf=LuBpm90n5poz8Sqhz9wjXtk5ypbPwkvhb1ptag@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: htfz5thwpcxb6oc898gt9m8izq9pygd1
-X-Rspamd-Queue-Id: 1800B10000F
+	bh=4yvkDOUriy9pDXe2tWtamvNl+RZD88OoynPeymFSPnY=;
+	b=QuJNbHDuAadUIbiiPWQrgORlHUq912cURTwlpvpCHUa9hsBl2pB6iDbqxMgnGxwiZzgQKK
+	2FGRzHhS2LW+AFCrakJV1fFdAlga6KT0ufeQri2SR08HnbAeg3oO4YFp92q5KT+kla/K+M
+	eFYet+nZZUOBo6YIT1ppJ9itvjjhz4A=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765424751;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4yvkDOUriy9pDXe2tWtamvNl+RZD88OoynPeymFSPnY=;
+	b=seJP1B5pfkeqKWBRy1j6/f0UPdqHw7PhRHnZjDpQpl9r4V09X+cEpY6/McB9bgdCQJVVbH
+	1vnCKLWkuCk8DBlEkOumALtIwzB/i9HKH6HljMBf3ifLAo7c5R7u39QhZWqr17csgQKKoY
+	TqvB6SiNcha6FUXyE2J9xCp4nhsYEPg=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <6396CF70-E10F-4939-8E38-C58BE5BF6F91@linux.dev>
+Date: Thu, 11 Dec 2025 11:45:13 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Usama Arif <usamaarif642@gmail.com>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BAF36B4D-0047-48C4-9CB8-C8566722A79B@linux.dev>
+References: <20251205194351.1646318-1-kas@kernel.org>
+ <4F9E5F2F-4B4D-4CE2-929D-1D12B1DB44F8@linux.dev>
+ <m63ub6lxljw7m2mmc3ovbsyfurl7hp4cvx27tmwelcxxrra5m3@eva5tqcdjxtn>
+ <6396CF70-E10F-4939-8E38-C58BE5BF6F91@linux.dev>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 901E24000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1765423811-790637
-X-HE-Meta: U2FsdGVkX19LiFVnerz3g/8MulQ0PgIxSO845En9dJPD1gR8CnHGxpyGhQYw3/UlAtoS1At4MfZcS1Jjs+QpZEw8NC6w4hylrnY+cSJEmOmOvuzRAci4QwKedB25o0KZ/DJkgK4tY0JEhM7Hd++h0nLGimsggh7T2vGVDZoHEaMlNy+4YVkSz5cdJzv4j0SB/PQFYdD4iF0OfyT24fLY3H4HwrawJKvdx4W0nWfCb+HnChFmhk2p3S3fLMnUrGqirHP+WJ/oWFcl40JKx8doP5aKsy9EJ7m85wlkQN0u6whQ1jPvDwQJXjjZrvTNWqbhC2zBxYoECV6yPAmQjdPB38RQLE+bBQ6WNx2womJRVzWevsllof5lEkR/wxRlz82A4icS7piyBsOCwyVRuI7q+18KIMWNg/zvDFmxtvRkZL+JbtZxlP1a6zZIrpyQTMau/OiLhTAeIls++76uVfB86RePlDjjOtVs1RgPH+pWaQEcxTH/U8flJ/1s7dhZmCUfgUJSNOgu+fEBxaVbCXm5QLZAIyA+2L6MhwwABXPT6DxTza4v1uB5t77Bj6RtfN4vFga5DgpN99k9xJZOemMpNjgxOPzR25eXhaUUaCH7E+s1Dt1bPZQU8G7kznARrqcLJtiuqb/Z3Ti235Kxjt6MnLO5vtufMez5duZmXoYPc3U7MyvB2CAtEsj9haQ9gFkSYXQlAt2tWaZE5bw+rCJ+1LvqXidsbWBdxYs0vaJMC0zs6CXMx3mAqJGp+wOtM69zvQbR7MDBYYmurwxVJy4BBeCjPx6CT63i+Zr+YsVQBNIoa32wQLKjBYKwJ9ns8IO5lDZGs6qtomDoiz+OmeOJUsbXzzMhoOitFlU283Z0rlEvawqWDBFfxO0gAeMwE17LkIw8goLpKksHG1sqsdtrNC9SSU431ob5Q+cE+vCOV9YR7Q9DtmN18ITjHEYYDuK6OoBPfcBA9DQ5rK3i1z4
- KZ9p37um
- stVlvG1osJL5G6YQLv5obPO/rD8jjf6YU0ySejdq9srzNS8y6caQAOcFocsPCAbCsKUo8odB7k3OFrz0NkI9lTuHrLSZ2+ULEGh1bALakhvRRioBd6deN5gTUAhrRZRRwAU6UzoJ8BObqrFsd36wZn5xdzNFvXJ8QcP8QKQeself9m5AM2mfjScFjFlSWtwytINOe33hCAz1+9Pk0L1HAhs2hSmtgB0jw5zifdUdwKNSw/FchUV3eNoCNEuNf+JYV7z7MkJ3UXUieKv5hjhZ3l3EduPJrv7vG8Nw+NMLrPaTHRx+DCKEIWB9p1+r66jTh0qsgap0gPMR4d/Cn3/dSKeByeR0E1ITSmweVSR/QkXp2FOGzbBNq3domWOrNoqouTH8A+6o2TJBXrSpSnOBlBdW/ayhW/+bLBTVeaRvXSs/hOIeFPTsSoxQtZ0hQBjMzmGLX5r7y/ZZjemkO8WsV8u1JNA==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3iyp5diwqrbf7uyrng78rhkoqmzw8zw1
+X-HE-Tag: 1765424753-390736
+X-HE-Meta: U2FsdGVkX18fekrH+wU2UzGsoThpyr7Mi3RTgIaI8xZHzxoSIXZ8L1Zi7RuZ7oMzGIWdWN9pbZU9Rq6a53jLt7CGN0oFX579yw3nzr9Pq6RugEVM9D15wDblrk9HdXaN49xb643Rf+Riqc/as2WwkyOR+QvyxrFos/KaaubX+E17KNOt00YIfgzM13tkV1bDehc/XMXf4O7Wh3QLc451SICEj3VJ6Hi0PjtvKVBU9brNyGqbbTQbyqWmzeKwzL1vDURIWB7rGzJWcBiKtsd2x/GrDQBRnbAEJ0IlLcn2YlgJqkbGYnrDzGGSxVwvXWRPHH6xolAYD3LQvviMhylDOyAkHngZ3n4gxWXboYbhmaie1uGWitkcKWU8EnSC3ZtM5ph71oRnSXY3ZZAd+W6D6G102vntR8zSppCBDLycW4P5RGW1CpxA1Hk1qlh9qQNG4DAJL76RjoPYLKpq6tYA9YIz8TMSUy9gv56AWbVIoUcdtdW02eaXY89kz0F0MeBv+Ud8xEFmMbYb2Q3tjXagbpDUH3fv35gd+3oGWcnRLWCFKdntJe4PzK2UHgAQVX7U334FGHZMib+JKpQhgKG7DMAd4fdmPTgeJf37p39Fw3xMCF3BETQRMhoSrl17fulpDNp49XPaVRGWjP+8AnxaYx7DkyED2/GFK0fqoV4P7BqeQuNqs1xS0+i3NX0M2LwLbt2O9DRHRuF3fpcF/iLBk4JGyFLJEDMcnWCAyS/4oE22P1pDIpUw64npMw5itiuIOJlF8ZbsmG8+of1QP2rBRsc7Ujyy1Gsne0Bg7VCyPeXP8gzuDxQ9OiIWaoMB8mcYA6Q6SXJ9vQQ3mXD4A4YNolUAqJiaUyev3kRBWRF/uln2udVyaB47lh+yhXFFRl3XrpnZEawUS57x0jD2vKzm4qj7rt3oW8SO+zLsum8NDYP7+usmJ7ORh+JtBVszRj0Fpc5k9R5MPwaKmylVBXe
+ +2+46F+E
+ 61AjxxBuIqziJowWFv7XlxH2MZ4uYMyPi3CPxhyVpwUGzSm4iXvrehBi2/n6NgU7cKWuOsa4SRZsZ0HXtLZa7JwT57/L/qukixM8P06XEFUqp1cilr5TmYmqm90O00Vr/4UE10D3VcUlG17aY96V2uYlftO+hSFUWfxVW7+sa91B1EceveIG3fsabWcQhPEusmdhRPtrqzBLKoefeymYA9guPsepVGtyS1lObbRwHExKpXvG4NwChK6TVrMgJ2OmAoSQV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,60 +109,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Dec 2025 at 11:54, SeongJae Park <sj@kernel.org> wrote:
->
-> On Tue, 9 Dec 2025 21:20:42 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> > Hello, SeongJae,
-> >
-> > Thank you for your detailed feedback.
-> > My patch has the advantage of removing the use of
-> > the damon_call_control.dealloc_on_cancel variable.
->
-> Thank you for keeping this conversation for enlightening me, Jaejoon.
->
-> Could you please elaborate why you think the removal is an advantage?  I
-> understand reducing code is good in general.  But that's only if the code is
-> unnecessary.  dealloc_on_cancel is there for real use case, so I don't clearly
-> see why it is an advantage.
 
-I suggested removing the dealloc_on_cancel condition from the patch.
-When using the damon_call_control structure, if you only use kmalloc()/kfree()
-when canceled without dealloc_on_cancel.  However, currently, in other modules,
-since it is static struct damon_call_control { ... }, kfree() is not allowed,
-so dealloc_on_cancel condition is additionally required.
-Because kmalloc()/kfree() and static are mixed together,
-dealloc_on_cancel condition is required.
-As you pointed out in the previous email, kmalloc()/kfree() has the burden of
-memory allocation and deallocation, and static has the disadvantage of
-increasing
-the code size.  Both have their pros and cons.
-Among these, I proposed unifying them into kmalloc()/kfree() methods and
-removing the dealloc_on_cancel
 
->
-> Meanwhile I find the feature might look complicated, or not well documented.
-> Specifically, dealloc_on_cancel should be set on only dynamic-allocated
-> damon_call_control object, but that is not well documented on the kernel-doc
-> comments.  Are you saying removing it is an advantage because it makes reading
-> code easier?  If that's the case, how about improving the documentation?
->
+> On Dec 10, 2025, at 11:39, Muchun Song <muchun.song@linux.dev> wrote:
+>=20
+>> On Dec 9, 2025, at 22:44, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>=20
+>> On Tue, Dec 09, 2025 at 02:22:28PM +0800, Muchun Song wrote:
+>>> The prerequisite is that the starting address of vmemmap must be =
+aligned to
+>>> 16MB boundaries (for 1GB huge pages). Right? We should add some =
+checks
+>>> somewhere to guarantee this (not compile time but at runtime like =
+for KASLR).
+>>=20
+>> I have hard time finding the right spot to put the check.
+>>=20
+>> I considered something like the patch below, but it is probably too =
+late
+>> if we boot preallocating huge pages.
+>>=20
+>> I will dig more later, but if you have any suggestions, I would
+>> appreciate.
+>=20
+> If you opt to record the mask information, then even when HVO is
+> disabled compound_head will still compute the head-page address
+> by means of the mask. Consequently this constraint must hold for
+> **every** compound page. =20
+>=20
+> Therefore adding your code in hugetlb_vmemmap.c is not appropriate:
+> that file only turns HVO off, yet the calculation remains broken
+> for all other large compound pages.
+>=20
+> =46rom MAX_FOLIO_ORDER we know that folio_alloc_gigantic() can =
+allocate
+> at most 16 GB of physically contiguous memory. We must therefore
+> guarantee that the vmemmap area starts on an address aligned to at
+> least 256 MB.
+>=20
+> When KASLR is disabled the vmemmap base is normally fixed by a
+> macro, so the check can be done at compile time; when KASLR is enabled
+> we have to ensure that the randomly chosen offset is a multiple
+> of 256 MB. These two spots are, in my view, the places that need
+> to be changed.
+>=20
+> Moreover, this approach requires the virtual addresses of struct
+> page (possibly spanning sections) to be contiguous, so the method is
+> valid **only** under CONFIG_SPARSEMEM_VMEMMAP.
 
-dealloc_on_cancel is only used in mm/damon/sysfs.c.  Here, since kmalloc
-the damon_call_control structure, the dealloc_on_cancel=true condition is
-required.  If you want to keep the current code as is and only change the
-comment, it would be clearer to comment it out like this:
+This is no longer an issue, because with nth_page removed (I only
+just found out), a folio can no longer span multiple sections even
+when !CONFIG_SPARSEMEM_VMEMMAP.
 
-De-allocate when canceled.
---> To perform kfree() if allocated with kmalloc() when canceled.
+>=20
+> Also, when I skimmed through the overall patch yesterday, one detail
+> caught my eye: the shared tail page is **not** "per hstate"; it is
+> "per hstate, per zone, per node", because the zone and node
+> information is encoded in the tail page=E2=80=99s flags field. We =
+should make
+> sure both page_to_nid() and page_zone() work properly.
+>=20
+> Muchun,
+> Thanks.
+>=20
+>>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 04a211a146a0..971558184587 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -886,6 +886,14 @@ static int __init hugetlb_vmemmap_init(void)
+>> BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
+>>=20
+>> 	for_each_hstate(h) {
+>> +  		unsigned long size =3D huge_page_size(h) / sizeof(struct =
+page);
+>> +
+>> +  		/* vmemmap is expected to be naturally aligned to page =
+size */
+>> +  		if (WARN_ON_ONCE(!IS_ALIGNED((unsigned long)vmemmap, =
+size))) {
+>> +  			vmemmap_optimize_enabled =3D false;
+>> +  			continue;
+>> +  		}
+>> +
+>> 		if (hugetlb_vmemmap_optimizable(h)) {
+>> 			register_sysctl_init("vm", =
+hugetlb_vmemmap_sysctls);
+>> 			break;
+>> --=20
+>> Kiryl Shutsemau / Kirill A. Shutemov
 
-> Btw, please consider not doing "top posting" [1].
->
-> [1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying
->
->
-> Thanks,
-> SJ
->
-> [...]
+
 
