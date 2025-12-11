@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A6DD41D6D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 17:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9CA4D41D74
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 17:22:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150B06B002D; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
+	id EE2446B002E; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8306B002E; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
+	id E92886B0030; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE09E6B002F; Thu, 11 Dec 2025 12:21:19 -0500 (EST)
+	id D5A606B0031; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CBBAF6B002D
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:21:19 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A46D12E4C
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:19 +0000 (UTC)
-X-FDA: 84207856278.23.0548AB9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B70CE6B002E
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:21:20 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E3621A0283
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:20 +0000 (UTC)
+X-FDA: 84207856320.22.588167E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 792AE140005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m4GgnHkt;
-	spf=pass (imf26.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5840580007
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gqXoLNZR;
+	spf=pass (imf30.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765473677;
+	s=arc-20220608; t=1765473678;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iECMerTAUVLGlPYW00F3cIDorrFSBKHkEEaZ/glZpso=;
-	b=OwWT+cFWrdmAoLe15dz/7xrvnTf5eDoWpaaRqcC6R6xepXHbIApJPZ0XYhxY090ELcpRqm
-	uoat0F4CPX+6vUGVFC4nk7atOhQH0Gxp9cUBHjxVbF/hjbyewhyxxhvMHfeBX/G9dOTsa0
-	xfmFyRyyvW986Ppc43gt1ZnvHzYNQyI=
+	bh=TFaxxej3Z8k0cOHBoLo4NFZJe4jMwCEz+NNSynx7iNk=;
+	b=akgGz6U8qbIcvmNbmVQBlh5voqAyKQMlXYJXqhfUQ0tevvswH1GFW5Xlh/t5qsbOyEIfsz
+	F2oSqbd/mQPniwhleaufF9o524k3WyiW/7AwRanZVoIn3xP6IsiF75A0MIs6iw2U0rCTyK
+	tc5He9nIreQYvaDwDakfca0dX8aceLM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m4GgnHkt;
-	spf=pass (imf26.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gqXoLNZR;
+	spf=pass (imf30.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765473677; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765473678; a=rsa-sha256;
 	cv=none;
-	b=MUiAlqL34apDOCjaCb+FBzj92WLZvj1I/BlFidkJJdayHDSF5xhFFWwjdOg8Jlhn8jpumX
-	T4JI7L+YTCTcgpyLhqB68wRbjKXRwTabba/+QRGkRZhKN50loqZmL0MOybUynCdUmrDNhO
-	aTm1lyFsPI1sOMeptlceB1TtSM2ZIF8=
+	b=8pzqdSNTFfpsDy51rpNLTVytF3Pz9Izlyx3BRJyrB6/z4zYn7osyxJEUjn3K+Cw/ogCbbH
+	oJS3oemPXtj4Ljeu3jImmpmrkmRL0GOyDNRl6Wwu03smbXVHsdFjoVAENaYayEGVPn+c7W
+	OlFgxmayw7KFbpCESbAjgvs3tHFsPiA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFC4944541;
+	by sea.source.kernel.org (Postfix) with ESMTP id EDF8544466;
 	Thu, 11 Dec 2025 17:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7FB53C19424;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C1A19C4AF11;
 	Thu, 11 Dec 2025 17:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1765473668;
-	bh=ly/QAA/61Anju/BdG7scvRW9qTC7lOqM9OgO/9B56Tk=;
+	bh=N3d4HTTMI9+zcdoji1/AM7ABunMHm9Tfk/j4/k5XLbY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=m4GgnHkt46O6ubOxKQU7DnKUkdRsZ2EgS0hvB4i8Yl5PxegPy7dfAh4urscTmhOD6
-	 v8ws+ql69frGc02Gjl8qvxwIhM6Tf9fWHRrinuJCblxh8bQYAgelSRdJSanazZAWZJ
-	 8AIJRaj8aZH8+OR6zd75fQcn0t2fyxYG2oeDNgiaViCQBcl8tVXyBbkT51yHtytFwl
-	 oVct8RkZ3ntsT4OSJttkTaYvAG61Tp0ozMZ4lUX/QbxNhGymbJTtc8fVZGIGb/q992
-	 zcnW7Cwoxzp+KSD59uOGbQsi+011QbMpU7wXCMfBnxPcOClsBt62xTOo29shbKwgSO
-	 kMQPIO/VWcZRw==
+	b=gqXoLNZRnPXb7EIKBpIO77raJBDLqLuyl/l2VA69/AGR0iuwSrHswjjtjcrYd4wlm
+	 W1Za4Juh6wIa9mU5su5HvAxDwO/7RmS7rLgGVRK9SnUNgETpJtnLbH/hHnQeDn1qXL
+	 Uz/FKJ4b3xLg8T7lf49KggiGM/WsulBXFvCO7noMnFY6fO8/Tko2/uM3l2hKoKcsqS
+	 Hbaz8QPxhF2N+EUTAeXTLeZIcGhnETQeyM+Vxg8sgL1ZKPhuAvV3f9cuWLR0XALqsC
+	 Cuwly1MUNG0beLAsoVVTEh6q13FGzJWFItnDtfMl3xMbxuwTDoXPzGncGZM047Uhq6
+	 qgPVKH+cQHGlw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E6DED41D6B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB151D41D6B;
 	Thu, 11 Dec 2025 17:21:08 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Thu, 11 Dec 2025 09:20:53 -0800
-Subject: [PATCH v26 20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in
- hwprobe
+Date: Thu, 11 Dec 2025 09:20:55 -0800
+Subject: [PATCH v26 22/28] riscv: enable kernel access to shadow stack
+ memory via FWFT sbi call
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-v5_user_cfi_series-v26-20-f0f419e81ac0@rivosinc.com>
+Message-Id: <20251211-v5_user_cfi_series-v26-22-f0f419e81ac0@rivosinc.com>
 References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
 In-Reply-To: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -108,28 +108,29 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
  Zong Li <zong.li@sifive.com>, 
+ Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
  Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
  Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765473664; l=1494;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765473664; l=2983;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=2JmRNzctibGknEiF/lJdumXBjnp4QWFhVuzyNKM/ZLQ=;
- b=KE1lLQse++AzNr8bFe7ngbv+UmadhK7drKBY7sWZTlFOOVqQ8FXrlU5d0owmEWV14WGj+kg+4
- gdfbGv8KPbXDdIzREHstiHYH8xcvl8Ys2gwEpXMZ43pDbO4S3lb5OWq
+ bh=/lrmV/FeWp9K1npGhndX90MYhj+E9a3zmaWQOvWF4as=;
+ b=9GpF+uL3hl5yLV8VePY/xGjTcAci06ofRDsz9+WiY5MKJDtfTLDa0TPOl+e/9aQtllYFRkaE4
+ OZ7g//oqGdxCMyEhbG/svQe1wrIk5eEoCEr2RgTUg69rY6kqeCtbo/R
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
-X-Rspamd-Queue-Id: 792AE140005
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5840580007
+X-Stat-Signature: zcqpdepk6n36zfhyy5bcjh5krz3154zm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Stat-Signature: q497fn3indhd8mnnm9iw7fpahnkrtxgs
-X-HE-Tag: 1765473677-754680
-X-HE-Meta: U2FsdGVkX19lHAqeEapaD/28bXJF3y9+OGR11mrgnx8ZUfegoJReviD/21q8oBWp+qTju+ryIGtDdduDlUxqthwPHvbUkipvuT4HBkvFGwblQ2SO3DdxJZnHyWnRFJCwFAb4WKAvEQGJmSyunAn1o8+yDLYSQc+vNrUfV4I3/VbPeQtUaFkPRINNkqatvh4JyH899XuGuigJ3OqMoxyurecKn9UgdO24g0sLqt9UINxUJcbPupqANjyVsfqjTzISwpLUH6Tm7EZCXf5yl8Fza21HSUTznM7RKIZdUk98fqUYdEjkCfoZlBOQwwuKA74226iSwHYKb15jQYaujDU0ITO7e8Gy9/BCe8f+Dllje9W3JywIkdBN9+CGptzj3nFD68NoxptmZ0ZnqspwAECQEPmJijgSHrxnTQ7LLuXtg70715bFouvGJzMttIgZv7Q/Kd777ZMNQw1c1C3ZoILLo5il3FN+zcmnuXtT+rQMoV6K+VWOAWUps/FwqExOun5qiQJHz1+N6cuaVadWlRfO7LVblniZ4fL0dB0TuUaazIVtoP8NxDNAtgXACykZORYz27+wBCf7cirr/oDNIcNGuyQQYggZZIUxgvNupro/woVFyA1JvtGrzye8GwoogY9ozaa6yDKQyZHDx8ElfGLtZSYjYn3Kkndwmg/e9qAEcsl4oAQ/pwCjCGLT295cmyQqaFQJ5Pkks2h+T1pDXA9Zfpz4VBagA0prvIC978dWnm28p4OcY2T5DpnfZ5FrdU4RyWYhE1gwo7rsNFcDV4cBEpBWdlqoz+eTYhiGBO0wy1Sez8ltWb7UlXihv//O/q95QB3nVGPqBuoajFwJmBwfad5d+Nas2O7sqmMgc36BJuwcwRRiSIDKfqNJWkJ9X4L4pq11bhD2Bx4565MikKhoeHbKFPGKocsoCQ+gwGBSrnAwc4r4BId2M/0NojDTS/35ycmTIPcJhFruyxqlqlh
- SqWEQZnJ
- I94gRcU2h7QVMPxTWCnzkVnu4sEbVbFNfOStL1hEYGT6/P+RQX3BoaeaEcyRHP8d23ox0b2EOmEGJtTvUKQeguvaCXq6E8iRUfG+ZW8/QlsbUEWytlDSlIEaVnkYLo3q850eJ5R3YWwEWUaxxLDeUljN4BDIaPV/LCiUm7V+hQIH6MKeSfaf56wgFStG6MCntRK9VMSgoPgEC9tG74cAHkbnchpPpnwAD01x6ot0lfokPpE5KMypIl0rPQ7NPT47aSTJgS0etJ05pW06u9pLOBmsFXdBRpw0+9BXL/QS848OKCJJarVC4AQpdGqkq29vpu+PhS+QFLW5dmN2VPLeNlPK51Gsyt7my5ZitQIO0+c8ivI2CTTERFFFQEBDh8PY+Ox25q+MlcZp62UHxA048R59yu1UiKd48dv9hOFWExEu1x1FN+X28rWA+HmBoQYuzdlfrIKVNl3M3EJtjubfeAn5yHDoQ+sCJFtGOEnTNnzyi543lLBm5bsQaP6Zm1ODYA5+ng7Cd22ZHhXtswxFgeM7tF5ZPPVSef/uLYsTw7fHxqrH/5nFxutTyJhSA8H/TCSc5WZSpFqynvS8RgrJnrSW8A8DQ6gl48Xmj
+X-HE-Tag: 1765473678-180816
+X-HE-Meta: U2FsdGVkX1+gzlj+o5HvWNdvSAIeiOmKCa7VitZu0BEJlWqopqT6Kh2vzxgENmnDLtbdtdbin21lbJ0Vys3gh8yWFfKA3dIkXZZ2FqrxDLY/VqZR8Qchur053h+F6dGXfP9vPO8vIuK+2wDOknO4jbZtP6NJgUE9mlK6xgNzNTGcScTCM/8ZQEczQdgpMLCezGzRbfEupM8m8TNFS+qOXK5Plxor+fX/SHyiWd9KfeMkgaHkbTIT0FttH69rj+RwJzMuT7S9W1mmOZc4XuGB5zjl/pegIzFWYg422Mz+SKZiwhAra0Zfg+SojL0ApXACSScNr0weGyERJKxkpbsIZoKnD9s2qdU0a4cIpSk970TREcOzhNIwZLhmxrDfhq6mhSWFMBkET28/u+A9mykKMovSRJQFafPN+D0xi6l27eLK9hZGo8O95r6boSDLLc4OAJbXybIuVsTS+JMQvRA8KUnmhh1c2NfSCpYYPYTND92xS7M/UAad0nBfmtmZCdlnIM3jeE3YNh+X/jOCMTe5oyJdMwLDZw/mxqLUn7+AKs5VbXTkxvnEeZQl0rNexR/a7sYWC0dM2LJrK/51lpbTjGQszfj0urA7CQnPXHSBenWCS7VlAaedaWcHyk3pqRwcHlz9rHzzkRfQwm5GMMYbY3+ofz5yaRgUmoZR3YW4cJxsmd+I9gjaJJGYoUP0HxmGPMNROxpCJTTO7kyjVXfXh+aa2Zs4GXiVrJIZjsF5vWE+yGxCmmxeZBBGTT7QZhOMHR253HzMXMYWggu/42cd+MB+dOZIFVCfMVJUrY0FJUpn88qXOUthwjHK7boRcPXMK25unB4Azy78m+SBOWZr4m1adIQJuuXMs9T/PF1mzj+ouCBaqMoHpqb5vyh4OOULY6ngHBD6NS33O9E18XsDLP32YwiL1uoGJhLhUVeZrH2H2y7oZhNd864DRq4bSFcFuekUgEj3b8usfSkhV74
+ M7Aqc+Hj
+ rmOP5SSHP5MkySi5DCbe+8osgioSfKUWWRJpYCbQnX6kP6KFyK/2MFyyw/RWk7Ehi6r3HQpjGXI14q4IGd3nb3yzTzyW87yh934aY46BD3ZrNNQk/OqluJZirfL6s7ei0SsPjVk2vAw4T8O97Q2o5PY5WbKyppagi8mUVzNum98aleGm96XmU1BkXN9kljAbHQyyDlIhCD9ltSDkZHNvvHenznG8Ky0AyInRPDoq/9D44ACeFq1oWM+GW00SeK7KLR0UhrN/rB4EpeCzhtKx4tiTHUbkwK2jUYIxkWc0EcEV0del5aP8uyEK+dDpiLh6BTOFbPOYNUNA4rpyeTNRjZe5l5//W/LwyTQuAkClxib1nzokPu5f4/4K8s4TE7nDM9gsnBlzVZlGuVL5ag3xHPbDIYz/6InJRArbpEENFD+yWkMqxZj72AM9je+OHV9RRVi030/n+KNbhyCtZAtEskkwMrhs15aZDCZT/bWxLr3FHf6o9RPBB8+yeFlvhVCZwu4q/lmUX9Ag5FCUeeCEMQB2ZyK1/sW1un+ZFltAQWI8V83c8pq3mWwfv4BnKO5isbOmXNA2cGeXXqM1PE3c032NXpjHYX7Fprbxv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,42 +141,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Adding enumeration of zicfilp and zicfiss extensions in hwprobe syscall.
+Kernel will have to perform shadow stack operations on user shadow stack.
+Like during signal delivery and sigreturn, shadow stack token must be
+created and validated respectively. Thus shadow stack access for kernel
+must be enabled.
+
+In future when kernel shadow stacks are enabled for linux kernel, it must
+be enabled as early as possible for better coverage and prevent imbalance
+between regular stack and shadow stack. After `relocate_enable_mmu` has
+been done, this is as early as possible it can enabled.
 
 Reviewed-by: Zong Li <zong.li@sifive.com>
+Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
 Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/uapi/asm/hwprobe.h | 2 ++
- arch/riscv/kernel/sys_hwprobe.c       | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/riscv/kernel/asm-offsets.c |  6 ++++++
+ arch/riscv/kernel/head.S        | 27 +++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/uapi/asm/hwprobe.h
-index 5d30a4fae37a..0efc9c7d1199 100644
---- a/arch/riscv/include/uapi/asm/hwprobe.h
-+++ b/arch/riscv/include/uapi/asm/hwprobe.h
-@@ -82,6 +82,8 @@ struct riscv_hwprobe {
- #define		RISCV_HWPROBE_EXT_ZAAMO		(1ULL << 56)
- #define		RISCV_HWPROBE_EXT_ZALRSC	(1ULL << 57)
- #define		RISCV_HWPROBE_EXT_ZABHA		(1ULL << 58)
-+#define		RISCV_HWPROBE_EXT_ZICFILP	(1ULL << 59)
-+#define		RISCV_HWPROBE_EXT_ZICFISS	(1ULL << 60)
- #define RISCV_HWPROBE_KEY_CPUPERF_0	5
- #define		RISCV_HWPROBE_MISALIGNED_UNKNOWN	(0 << 0)
- #define		RISCV_HWPROBE_MISALIGNED_EMULATED	(1 << 0)
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 000f4451a9d8..d13d9d0d1669 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -114,6 +114,8 @@ static void hwprobe_isa_ext0(struct riscv_hwprobe *pair,
- 		EXT_KEY(ZCMOP);
- 		EXT_KEY(ZICBOM);
- 		EXT_KEY(ZICBOZ);
-+		EXT_KEY(ZICFILP);
-+		EXT_KEY(ZICFISS);
- 		EXT_KEY(ZICNTR);
- 		EXT_KEY(ZICOND);
- 		EXT_KEY(ZIHINTNTL);
+diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
+index 8a2b2656cb2f..af827448a609 100644
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -533,4 +533,10 @@ void asm_offsets(void)
+ 	DEFINE(FREGS_A6,	    offsetof(struct __arch_ftrace_regs, a6));
+ 	DEFINE(FREGS_A7,	    offsetof(struct __arch_ftrace_regs, a7));
+ #endif
++#ifdef CONFIG_RISCV_SBI
++	DEFINE(SBI_EXT_FWFT, SBI_EXT_FWFT);
++	DEFINE(SBI_EXT_FWFT_SET, SBI_EXT_FWFT_SET);
++	DEFINE(SBI_FWFT_SHADOW_STACK, SBI_FWFT_SHADOW_STACK);
++	DEFINE(SBI_FWFT_SET_FLAG_LOCK, SBI_FWFT_SET_FLAG_LOCK);
++#endif
+ }
+diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+index bdf3352acf4c..9c99c5ad6fe8 100644
+--- a/arch/riscv/kernel/head.S
++++ b/arch/riscv/kernel/head.S
+@@ -15,6 +15,7 @@
+ #include <asm/image.h>
+ #include <asm/scs.h>
+ #include <asm/xip_fixup.h>
++#include <asm/usercfi.h>
+ #include "efi-header.S"
+ 
+ __HEAD
+@@ -170,6 +171,19 @@ secondary_start_sbi:
+ 	call relocate_enable_mmu
+ #endif
+ 	call .Lsetup_trap_vector
++#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_USER_CFI)
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_SHADOW_STACK
++	li a1, 1 /* enable supervisor to access shadow stack access */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall
++	beqz a0, 1f
++	la a1, riscv_nousercfi
++	li a0, CMDLINE_DISABLE_RISCV_USERCFI_BCFI
++	REG_S a0, (a1)
++1:
++#endif
+ 	scs_load_current
+ 	call smp_callin
+ #endif /* CONFIG_SMP */
+@@ -330,6 +344,19 @@ SYM_CODE_START(_start_kernel)
+ 	la tp, init_task
+ 	la sp, init_thread_union + THREAD_SIZE
+ 	addi sp, sp, -PT_SIZE_ON_STACK
++#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_USER_CFI)
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_SHADOW_STACK
++	li a1, 1 /* enable supervisor to access shadow stack access */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall
++	beqz a0, 1f
++	la a1, riscv_nousercfi
++	li a0, CMDLINE_DISABLE_RISCV_USERCFI_BCFI
++	REG_S a0, (a1)
++1:
++#endif
+ 	scs_load_current
+ 
+ #ifdef CONFIG_KASAN
 
 -- 
 2.43.0
