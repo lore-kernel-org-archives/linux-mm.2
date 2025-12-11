@@ -4,130 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EEC0D41C38
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 13:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27BEDD41C36
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 14:00:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A8C36B0007; Thu, 11 Dec 2025 08:54:48 -0500 (EST)
+	id 7A0366B0006; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6801A6B0008; Thu, 11 Dec 2025 08:54:48 -0500 (EST)
+	id 751236B0007; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F586B000A; Thu, 11 Dec 2025 08:54:48 -0500 (EST)
+	id 667646B0008; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B2D6B0007
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:54:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E51F9C01A2
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 13:54:47 +0000 (UTC)
-X-FDA: 84207335814.07.1FEACCC
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1B9E0A0019
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 13:54:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DD178Nk6;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 55D876B0006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1AD5C0176
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 14:00:01 +0000 (UTC)
+X-FDA: 84207349002.22.1641DE0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0498240004
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 13:59:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765461286;
+	s=arc-20220608; t=1765461600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWRPRAJ89lgq7qGLYK1gyasHO8BcBnTXm3hkZRbZKOw=;
-	b=jX/HcgTNbnSFKgPWsGLuVn3r+g/QqfLETXakweqLZ2sypDRoMDNpOU5FFY0ad9HA9JUl3L
-	EP0VgZDfy8PawnWcCImIjzwIZ5lFWYixJa2BP9AYxPcCkMZK6VOCSJB5ozWgx5wIIgh85h
-	hiATnqDvhWVV5VT0PTEAuzFW1oSrwzc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xs/3AOuZdsztLPquHqeRtr+v3dXXVtUFLlZnFglksuA=;
+	b=59BBg+RDX2eC7r93ukW73Gog5cBO5OdjIoCnUNBbjPk8ivhOlLxxSPDmjBmAf1jIU+tjP9
+	H/uS6UbbrspwQdCgjUJJ+Us9CpkBme6tvuUOrdGkDpUOWP+tM3xzB4j/NN7e/aTH4jniLp
+	PeoGOQE7eI0T/02ZV7Eg+vyZGOIPj5E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DD178Nk6;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765461286; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765461600; a=rsa-sha256;
 	cv=none;
-	b=elRsdun6f69PgZV5E2P2kKfKXLVyrI/TdggFO5ZH60KEYFxBbpqxV/9I/q8DvOGXGt2chy
-	KQgB1hH9xKYklpjZBdSqVnjzWmn6QaXm4GjQfwoOnH7CsOLA5oNWRi7DoAa+NGVCxt/0x/
-	Jw+63YSQK3SnhuI6R7YV9dna0VM+En4=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7aae5f2633dso95200b3a.3
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:54:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765461285; x=1766066085; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aWRPRAJ89lgq7qGLYK1gyasHO8BcBnTXm3hkZRbZKOw=;
-        b=DD178Nk6EwAv+ghim8T2/cQyV539YwpJ63NZbd81pGVkyX3DRsE29ZriwBPiIUMHvB
-         xDsZmoUCR6Z8Cx/l/tI0IbWU2hkDNyK1QDCTmHbI0VPujrmGmbMPuWFy9cfAPitE17Qw
-         ZzBKSuaPPvUqOZD0Y8NRxwWb4XuzXVFaJgcLeeP2elVISv84rVQZl9LlairS6hWKsFFi
-         k1JlzmXBZMunHU1vWM42Qq1vPcyzZzLAY473IrUyE40YVpi4fwWe16/tVxp4mj/nTfwZ
-         /brTNEzsCd953CMk6G9xbY+8R9nCm0CGsLJ+wP1tIsElY7hTy0nDvgfHx/Mm541QPWqE
-         MlHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765461285; x=1766066085;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aWRPRAJ89lgq7qGLYK1gyasHO8BcBnTXm3hkZRbZKOw=;
-        b=R5TjpopHySPbxu1r+2alKB/htrlTOMb4ujV0UHw+OGIqpNRKfq08DLRFEat24Ll7XD
-         w62BPeX7YlY9aIZmibMdxjlappvaaevyVrKAuXE1xqsMl7lajsRmfCyLxUKcMkM9BA6h
-         nQF43C2eq+cb89phNKwJrYtPoxrVfWE0J9j7S81QDluC0vrkB2ya+ATqBdJZX7BuJdNc
-         La1pXYg+fNbsmuMPg7HU55lJW1UAyT6QN9dep0gEKkLQzr120JkQWO6jaGjyG9xTjDuQ
-         W6Q1zyxBfDnyGll9lJvzpFeZDTenoqDykdariSWs8e+Qg1PHTEAwxfVRwytIvZXWT0R2
-         vlkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTknOuSZ3VJBesUO3F3n+uY8IvhKQYeIBp95jXFtzuGUctNb9OqSWXmTdpbiw9J20QLAae7ud93A==@kvack.org
-X-Gm-Message-State: AOJu0YxASz82u23NyMYV9NGyIOx5haEkc5J8jpiNmky7+bUEggptsF01
-	FFmUWVZEQN60lWLKpEfLM3HxHryOtd3AUG1+aFPAPU/xLrT7RBlIi2GqAzBI9RO5q58jNVvJ4vJ
-	hHO7fty3Dk12SUxHgK9/niwKpod1l1wwxCsWZC/n0
-X-Gm-Gg: AY/fxX4gF+UlM3E6yAHmX+bDXnEb0P73i5A7dnnVPYqBixZNQ/aSJ/MgrnVeYWYNnut
-	cCaME1f7XQkIi9AIzCUTD8Y71RwokIO9+pgZNOet7obzXQNXJcaLEFqSx37zZE9V7yNQlpwVVFE
-	h9WSMJHhhnWsx95eVpsgDDV3ETuV0IsGN5DnHJtLoecN4ctZWQxTUisxffAiIs6H9niDw2IYEO8
-	Ri2sRYjMWqmGVDiviGcx1IAH9aIZcFBeEttLnjRGnASI9s5d99eIzI4Gv9DriOpk8OPkRlVpETc
-	bwf5FTl6x4Ie5tM9wUtd1AGO
-X-Google-Smtp-Source: AGHT+IEaaruplzdVpdnApdH4OVSrHUz40RptUVIyI3MxrgnCoT6vGrQB2vef/vIeMxQHfT2Nk7cub+UMnQmlsyGPvik=
-X-Received: by 2002:a05:7022:2219:b0:11b:bf3f:5208 with SMTP id
- a92af1059eb24-11f296558d9mr5045780c88.1.1765461284380; Thu, 11 Dec 2025
- 05:54:44 -0800 (PST)
+	b=23djOtTv987tkokMOLneFAvXU7/fm8372fD/6lHIoPmkxq2HnLaZPKHBou1Z/C+Bf0TwCy
+	upTXj9qhsJgmeBpBsyBTV9rb26MordgLuRAJYZHh8tocxX+bmRi8cS7AwH1cNbUvqsR7I9
+	CYifiNGQxjdt3yiEhZ9VFzjNCyg7V/w=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DEE41688;
+	Thu, 11 Dec 2025 05:59:51 -0800 (PST)
+Received: from [10.57.90.205] (unknown [10.57.90.205])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 05CCA3F73B;
+	Thu, 11 Dec 2025 05:59:54 -0800 (PST)
+Message-ID: <a063f6c5-2785-4a9f-8079-25edb3e54cef@arm.com>
+Date: Thu, 11 Dec 2025 13:59:53 +0000
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
- <20251120151033.3840508-17-elver@google.com> <20251211122636.GI3911114@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251211122636.GI3911114@noisy.programming.kicks-ass.net>
-From: Marco Elver <elver@google.com>
-Date: Thu, 11 Dec 2025 14:54:06 +0100
-X-Gm-Features: AQt7F2oz75av79IX-Fsq5GL2dibuf0pX45-76DYGUr2aahssaITkwrN9Ju3gYq8
-Message-ID: <CANpmjNN+zafzhvUBBmjyy+TL1ecqJUHQNRX3bo9fBJi2nFUt=A@mail.gmail.com>
-Subject: Re: [PATCH v4 16/35] kref: Add context-analysis annotations
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
-	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, Chris Li <sparse@chrisli.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
-	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 9ruatqb8yuwrw9job9dyyi89kja465ax
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/22] mm: Allow page table accessors to be
+ non-idempotent
+Content-Language: en-GB
+To: Samuel Holland <samuel.holland@sifive.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+ <20251113014656.2605447-9-samuel.holland@sifive.com>
+ <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
+ <c2597d43-d909-4259-bb5b-9294e4069385@kernel.org>
+ <af8fd275-a34d-4b2f-8834-9c85dab2bbae@sifive.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <af8fd275-a34d-4b2f-8834-9c85dab2bbae@sifive.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1B9E0A0019
-X-HE-Tag: 1765461285-974755
-X-HE-Meta: U2FsdGVkX18D0ikDUTr2LO19oLxj8X9QySHHLUlg+Di2cOgM8C+7jGYu7yKGMyt7VPuEPmCN78v6OreIGDGw2NW9h2m8++kv1Fc0yxGi4TifinrW8FwdHWG/cIYkquCen712JWJDR8maNxj7AR1ar75D/Vmy88YQ88fs1gf7tnB71yGGITMi5zELGiThBFTm4APKWAfuJ0X7ROBwWky8qP4cA3KRpsZtg1ACPRzQIwT1CXMCTktfwWLA7P926p0GOixI0YRMnKA8VjEiJw1oCijdznZwDK9FU4wA7UENdv+uoKC6BnD+nsBZLAIEZDZVOlcGT1WvLjxkNhFopLqv3Gnyd8wNM91DVVTPzea3lu3YYXvBmNlOXLngjdMtd7fGgxEdSahcw9v6MkPPblqFxnyojhKu621pA9R5bLL3nQ+LvNfCyJRVrsGETCHWT+R+pFx5OJPk8lrTI8D4M9HXlI8kp6SisZGoJ8PtEkGcubr96PHt9McluFmj0tt4uYhVJxeKTwcEzY3SAogX0R9E60f3nF7GXgjOY0o8xu5VbiAbxXDM/ZnzqXhBKvNmBlTLRkNVvkes0osfFvWaZM5xmmGC8NzFwgny1JO9Bs99ZsQp+bc9U3GtRrWFODu8N33lUuCXJhJgmB1wFzydM06ivf4Pdb7vPeN9g2GzR8CqoQkNLd8McaG9kxNChcZGAybsuc/JfBN6EmwnAy9TCfIdUfB7f8BhjAAFz7DU3VSJQ9stinPpvnIrr/OzJbtkfBCtw4x1f7n0yeO+gtAbBCkmYGZyjqSe0eheqD0dl8R7VZxcgIqkpIay0LZmPirJJ0PceGx26GZTF1S2ampzOMJklcC7/d8HVGP1BHLwq6CNYX95oYzJB5XczoVP/3KqIbtwy3NG1XLnnK7WpyhpMaIo0dmPzn4Cwjs5swTPLCWQbdC5JItcnYfqun2Hk9ZS/TgWlo1rrPPC+S4Z0x1EBUe
- hetJUZiB
- ejwpsFJa2f7sX4lcQMFL/mLA2Ht38TFgtVaxmBDwo512hPg4OLsusykhJsQK2LQFt7QEuOADYMZh0+eYNUwJX+fSCapWoMVMwLkSNpu9qmLFi032VrbN85bJDAGgeBmlRwvz06HmAVewmVkKv+hA9eqBvPJ1AEOZpZDWe+G2siQVVL1Se09sQ7F2L5KNppEsgadmgbemhhbEsWA5wJVBJ5z1o1pcBDIOwoCXKk7gTZTPq4lnODpepBnRfz9LlEIgvvznxjC7kh1CtHNEAkYTBs1IwZBwOKVxw8HIdxz33BBkCqO3Sv5xUt4gh7Q2kmxlPV3YsB0Vo6rNCsmfVjlYLkg46r4ih0r6mkuKP
+X-Stat-Signature: zcnou43wemq5yrsoaefj3xqc6dyze4ak
+X-Rspamd-Queue-Id: 0498240004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765461599-236877
+X-HE-Meta: U2FsdGVkX19dfxGev89PwfK+S4wb/UycQW2xLhWeDQQbMyBao5vRusPha11YvzMlwVfVwYo63Ez7LhlDYeKQr+qpSMLQt50QW3lbMNUwa3EiIWQGP/9GYvJ6CNr5wLyL9gJE3+LJ1mxnby5/CCbHPza2GKIxolzipahuTaNK/935Pj52m/e1Fcz/KOUFOQ4yERQSn+GD5Hr2XQLOjNuDaPlWIqypto7KNRpcWo2qPaajx0O7RZCjY4M2b/6XCVOVpy7PynOe2oVYSZTHdsYvvsUwzB3FehQNsMQ8Mbh7eko7ymLTTepOSWwWxA6yCL0sHymBopWvnyEdtg0YRu3TT7CjIcf9jsBkcKr+jE0ASJKSrVe6DMI1MwPyUYvdlPyGAvTRryKTB1XpQGF8Gt7jyuO8kQPxkk+8fjthsz7vFnt9E6bnaKu2NDijK/XkWwWPb2BhBd07yH1R8dALuZquL69DjkIpeKDpobQu7whZHm3Av2pioyZ8Gq/JidcbyjxOuamKT+hW9/ZiY47CsP1ip5zymQWt9frkelQrRG9VB4gAybyo5pYSNQXNNHDeQHdrn5/GbxA6E0qS6sfWqY/LQLi/QA5W4AgfrwqvpM3igTqo9LXVnhddbUakmMfidjfOkwv5WMdrHDKFAwpeC2g+4IJclO/kftKFpm2oU8lZ51cmmiasf8PkWmwuQ7zj9uvPrJnPtxwtJm4n9u4xUFSk6NugiEmu0O6cbEu61CA8O82j30Na/5DhsfQwCz+Br1KfU38Cg5JcFMyr57DiBDeE3Nh16xCr+BULLMhBcUB/2Pn+w4hFKEL+kKDok862u6DJ6Bc3uC5wwcV49caKXhuj3Y9fza1gV85mYiAdeLdNb1N6lTkUhJ8VQxyKHq5EeIFL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,55 +98,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Dec 2025 at 13:26, Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Thu, Nov 20, 2025 at 04:09:41PM +0100, Marco Elver wrote:
-> > Mark functions that conditionally acquire the passed lock.
-> >
-> > Signed-off-by: Marco Elver <elver@google.com>
-> > ---
-> >  include/linux/kref.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/include/linux/kref.h b/include/linux/kref.h
-> > index 88e82ab1367c..9bc6abe57572 100644
-> > --- a/include/linux/kref.h
-> > +++ b/include/linux/kref.h
-> > @@ -81,6 +81,7 @@ static inline int kref_put(struct kref *kref, void (*release)(struct kref *kref)
-> >  static inline int kref_put_mutex(struct kref *kref,
-> >                                void (*release)(struct kref *kref),
-> >                                struct mutex *mutex)
-> > +     __cond_acquires(true, mutex)
-> >  {
-> >       if (refcount_dec_and_mutex_lock(&kref->refcount, mutex)) {
-> >               release(kref);
-> > @@ -102,6 +103,7 @@ static inline int kref_put_mutex(struct kref *kref,
-> >  static inline int kref_put_lock(struct kref *kref,
-> >                               void (*release)(struct kref *kref),
-> >                               spinlock_t *lock)
-> > +     __cond_acquires(true, lock)
-> >  {
-> >       if (refcount_dec_and_lock(&kref->refcount, lock)) {
-> >               release(kref);
-> > --
-> > 2.52.0.rc1.455.g30608eb744-goog
-> >
->
-> Note that both use the underlying refcount_dec_and_*lock() functions.
-> Its a bit sad that annotation those isn't sufficient. These are inline
-> functions after all, the compiler should be able to see through all that.
+On 11/12/2025 00:33, Samuel Holland wrote:
+> On 2025-11-28 2:47 AM, David Hildenbrand (Red Hat) wrote:
+>> On 11/27/25 17:57, Ryan Roberts wrote:
+>>> On 13/11/2025 01:45, Samuel Holland wrote:
+>>>> Currently, some functions such as pte_offset_map() are passed both
+>>>> pointers to hardware page tables, and pointers to previously-read PMD
+>>>> entries on the stack. To ensure correctness in the first case, these
+>>>> functions must use the page table accessor function (pmdp_get()) to
+>>>> dereference the supplied pointer. However, this means pmdp_get() is
+>>>> called twice in the second case. This double call must be avoided if
+>>>> pmdp_get() applies some non-idempotent transformation to the value.
+>>>>
+>>>> Avoid the double transformation by calling set_pmd() on the stack
+>>>> variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
+>>>
+>>> I don't think this is a good solution.
+>>
+>> Agreed,
+>>
+>>     set_pmd(&pmd, pmd);
+>>
+>> is rather horrible.
+> I agree that this patch is ugly. The only way I see to avoid code like this is
+> to refactor (or duplicate) the functions so no function takes pointers to both
+> hardware page tables and on-stack page table entries. Is that sort of
+> refactoring the right direction to go for v4?
 
-Wrappers will need their own annotations; for this kind of static
-analysis (built-in warning diagnostic), inferring things like
-__cond_acquires(true, lock) is far too complex (requires
-intra-procedural control-flow analysis), and would likely be
-incomplete too.
+From a quick look at the code, I think that some cases are solvable by
+refactoring to pass the value instead of the pointer, and leave it to the higher
+level decide how to read the value from the pointer - it knows if it is pointing
+to HW pgtable or if it's a (e.g) stack value.
 
-It might also be reasonable to argue that the explicit annotation is
-good for documentation.
+But the more I look at the code, the more instances I find where pointers to
+stack variables are being passed to arch pgtable helpers as if they are HW
+pgtable entry pointers. (Mainly pmd level).
 
-Aside: There's other static analysis tooling, like clang-analyzer that
-can afford to do more complex flow-sensitive intra-procedural
-analysis. But that has its own limitations, requires separate
-invocation, and is pretty slow in comparison.
+I wonder if we need to bite the bullet and explicitly separate the types? At
+each level, we have:
+
+ 1. page table entry value
+ 2. pointer to page table entry _value_ (e.g. pointer to pXX_t on stack)
+ 3. pointer to page table entry in HW pgtable
+
+Today, 1 is represented by pte_t, pmd_t, etc. 2 and 3 are represented by the
+same type; pte_t*, pmd_t*, etc.
+
+If we create a new type for 3, it will both document and enforce when type 2 or
+type 3 is required.
+
+e.g:
+
+// pte_t: defined by arch.
+typedef unsigned long pte_t;
+
+// ptep_t: new opaque type that can't be dereferenced.
+struct __ptep_t;
+typedef struct __ptep_t *ptep_t;
+
+// getter/setter responsible for cast & deref as appropriate.
+pte_t ptep_get(ptep_t ptep)
+{
+	return READ_ONCE(*(pte_t *)ptep);
+}
+
+int do_stuff(void)
+{
+	// value on stack: ok
+	pte_t mypte;
+
+	// pointer to value on stack: ok
+	pte_t *pmypte = &mypte;
+
+	// handle to entry on stack: not allowed by compiler!
+	ptep_t myptep = &mypte;
+
+	// handle to entry in pgtable: ok
+	ptep_t myptep = pte_offset_kernel(...);
+
+	// read value of pgtable entry: ok
+	pte_t val = ptep_get(myptep);
+
+	// attempt to pass pointer to stack variable: not allowed by compiler!
+	pte_t val = ptep_get(&mypte);
+
+	// attempt to directly dereference ptep: not allowed by compiler!
+	pte_t val = *myptep;
+}
+
+
+We could do this incrementally by initially typedefing ptep_t to be:
+typedef pte_t *ptep_t;
+
+Then we could flip the switch arch-by-arch to enable the stronger checking. We
+likely wouldn't need to convert arches that don't care.
+
+I think by doing this, it will expose all the current issues and force us to fix
+them properly.
+
+On the related subject of conversion to pXXp_get(); I've been looking into this
+and personally, I think we should have 2 helper flavours at each level:
+
+ - pXXd_get()      optimizable by compiler; defaults to C dereference
+ - pXXd_get_once() single-copy-atomic and unmovable by compiler
+
+It simplifies the converstion process, and reduces the risk of bugs
+significantly (go read about the arm32 issues discussed in Anshuman's series if
+you haven't done already).
+
+I appreciate this is all probably a lot more work than you would prefer to sign
+up for, I'd be happy to collaborate if we get concensus that this approach makes
+sense. What do you think?
+
+Thanks,
+Ryan
+
 
