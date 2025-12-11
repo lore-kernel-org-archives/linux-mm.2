@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45EAAD41C1D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4888D41C17
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:44:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A53DF6B0008; Thu, 11 Dec 2025 05:44:02 -0500 (EST)
+	id 523FE6B000A; Thu, 11 Dec 2025 05:44:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2BAA6B000A; Thu, 11 Dec 2025 05:44:02 -0500 (EST)
+	id 4D42F6B000C; Thu, 11 Dec 2025 05:44:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 968A16B000C; Thu, 11 Dec 2025 05:44:02 -0500 (EST)
+	id 3EABC6B000D; Thu, 11 Dec 2025 05:44:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 86A7C6B0008
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:44:02 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A0C114083F
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:44:02 +0000 (UTC)
-X-FDA: 84206855124.18.82075F0
+	by kanga.kvack.org (Postfix) with ESMTP id 303916B000A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:44:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA7198B163
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:44:06 +0000 (UTC)
+X-FDA: 84206855292.23.4D4A8F0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 78946A000E
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:44:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HBoVWUbI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765449840; a=rsa-sha256;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6028140009
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:44:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pFRMtGnp;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765449845; a=rsa-sha256;
 	cv=none;
-	b=DLpgLkRpr2IaDNm+lohctiB+YkNEvOlpxDWWmJ1IsjsbkOuYOf8Gat7IHLnJn34sE29IPw
-	WEBVvp0UE+imqiF3QLDXoMIeiPataFZB6UMseIaPHdfJ8bU3rfMDm7z5a6l3nLmRTvCh46
-	g7+oiCl4Pc3yI66Bt7g6WHpVXVZQyFs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HBoVWUbI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org
+	b=xDU2G0nzakQURttYIcCNoMaFycgFtmANwQfp0tNORaqjX0TKgmwJEsdCP65F2ILqsnlBx8
+	KlJDkf3ZVRI1dCAO3F8DpMfBGULIiKIYFiwbggrYZ+yN5GuNXarzuDSb7paDFvciBXvjSI
+	OtJVz8M8LiVid6GXjBCtCAjx1plVrdw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765449840;
+	s=arc-20220608; t=1765449845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXKtenz6DaLMGUShcrB400tfbTGBqWhLKx1FA2IPRio=;
-	b=D+9f1XZ3cE9gG8+BNEPs1kP09w94SrVKvNuiNgw5s59Ps8BHhJ70wMfYa25lCBueezKTd7
-	S1W1ANFj0tuZwn0Pp21Obi3/yOHeDVYE/B2LMl3K5G8JmC9SfT/YV999MfSDuxYYX40nAn
-	a1/wzd0D/c7jwO5JtkvWgIibQrJ7ya4=
+	bh=SyD7wRt/mfijbblI79CRl9e76BRavXQyqr+l5ZBChP8=;
+	b=Xzn06vfFJg8F99QzS1e7WcCEujUIaw3O5kb2O1lXlk2+8CAedfIDq8AhO/2h91dsc7CzD+
+	8ISzADnZfkdhvq2Wpx5Ol3BIeN6tG3QrXQdIKRon3FCizqJrZ3PW0glph2qsydTSi29NUi
+	3fJB3536kTpw6sdOReP8zd/QCc/Z5Sw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pFRMtGnp;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0DC426014F;
-	Thu, 11 Dec 2025 10:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B94C4CEF7;
-	Thu, 11 Dec 2025 10:43:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E9995601A7;
+	Thu, 11 Dec 2025 10:44:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4F1C113D0;
+	Thu, 11 Dec 2025 10:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765449839;
-	bh=Rsfmd7zbC+kSZ3iat7Z+yufKodHJKLHaalHhwgTU+L8=;
+	s=k20201202; t=1765449844;
+	bh=59w6p5OIO0ukVj/H6iWXGVoWsjSUgZ8nYZ9Xx2PeP8w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HBoVWUbIPjgDrlY7e+sbBXcwhv9wyvl/oGC9FVjnkNVQbmXNcvHpSiizWHBTWgmVu
-	 676b5JCo+l/vhSxnZkG5ex76Egqqm4ujKFANztBXWD/69rPUxapQR+jv7fWXfH8rMO
-	 7bBSCRPpnBWxr7QFRqPeSuCaQv+kuC1EXcei63Z0N4r0T8q7IsyF1cdxJAqLa79re/
-	 6S1wWL9Ofd/CVmAMEIKMEM+TCjSxJjn6f5/0o4BDhkIWCohnLcMd/e72uqPy92Txqp
-	 TeaIWji2IswH2f6gsDWEVp+tHgksXSMZekCWKawCfVxLWFHlpm2TNBjIjHsJkH5rVD
-	 CRfGfp2igqIcw==
-Date: Thu, 11 Dec 2025 11:43:54 +0100
+	b=pFRMtGnp9RaLnA9mlaRXpbbMcuS+xYuOfR1yP6HZrKcoc1/kbsmlAEIHzj+qjL/Ou
+	 U53bywg7t70e7VKIw/XqRSiv+S0O2zunvOs/eXkSnpZF0g8gt4Lae1hMLpmx4ywwNm
+	 mdTyld7hpKguk9olXKkALV9XX78jXdmALbMUCNzijnYtPlOKMlF/tlVhCFoeEoB+2K
+	 +PHtP9fdooYv+bVZMN46dtP3AHSa0okswCjS58gPniD6jvbPLIsii2pj0QLg7Px5cn
+	 KG/x74sgOdKag8Q6WbRyvmpuKMYgg8OSY4ykcYEM3Y4uobRBYPvGW/qDk8wxab+d+a
+	 gzpaE4JsJytvw==
+Date: Thu, 11 Dec 2025 11:44:00 +0100
 From: Alejandro Colomar <alx@kernel.org>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -72,8 +72,8 @@ Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH v6 2/4] mm: Fix benign off-by-one bugs
-Message-ID: <9c38dd009c17b0219889c7089d9bdde5aaf28a8e.1765449750.git.alx@kernel.org>
+Subject: [PATCH v6 3/4] kernel: Fix off-by-one benign bugs
+Message-ID: <b4a945a4d40b7104364244f616eb9fb9f1fa691f.1765449750.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
 References: <cover.1758806023.git.alx@kernel.org>
  <cover.1765449750.git.alx@kernel.org>
@@ -81,14 +81,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <cover.1765449750.git.alx@kernel.org>
-X-Rspamd-Queue-Id: 78946A000E
-X-Stat-Signature: qni57hefitosnh1duzqds86w37i4zb4u
+X-Rspamd-Queue-Id: 6028140009
+X-Stat-Signature: 3racxj3skjt63wistdzqmga6nz3j1gk8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765449840-300970
-X-HE-Meta: U2FsdGVkX18uj/S7SJshYF3Nh18OIRxNd1HGnWy+l2vah5G44RQUcN66MJbnAHncQlJNduFFDvmpI+9GbaPlOnGB/zHcrzmA7JJnax1JlthCGbWfO+WnHD/6sbtuIj4PLjNnAKXrnqSV4Cw8AG2bdiqb0BAXGGx0IY/HuEyhRcVUDQh8l03UMUaR3QVH8zT3h5b5yPxMteSx+EZHpyVWvbI8mXRqe61pHrng9eJ857n+ZVSyOSh4WKzWqULhuExGwGAwo1Nn0ZSCRkBwqUCcDOsZJUbhE+xId4QVfiuN5neIFkMFJITz1SKslEn/8qntAwR3FtQCqXOfTrQf2H/VJBeFifBJozPyKMJ5ta0/nx/n33+CY4YOCCGOTjCxCrtsgbd+05Ir5QCcZVbs9wrZABamQKVQHnuFYCsm/Yt6cchrO6f8NTatSSaZ5tAsCrnBszTyS2SBAgFxyWic/V3oT3ar+7z5xmet6fMJYVfFEMknNsyo/Ily1anPrlBMgfP7jn/9jpw+s5Jxsb9Yr7lDp4WGev0NAUvoFPJnw1KmhUuJoesfmlMHjYnGq1JwAc6vBCPE/8EN9AnC+pa5VROhqJeq6zNwO9NUwWV/hyyaMooRtlbGgXtQOpWF8x/wlEzUWuj1R7w88oHfHrmsN/BDF0hgAg5d/ZrV0xS2EW0tlhf64x+qewhMj9k4iTM4rP4Ap2x75YdgTE7Z856fJKCGa9ntZEOxRWwFfRObR+9eqjiGBfknNuHkZXWaIVHmF9br//gBUA0V8ABBSN9B8z04/cq/+N0UIZyl57OgI8T/31ArDmALP8ya84tIrQfVAvUXIEpONRRoLqyA950F7WBcRT2FNjkLEYS8b7Flm1Av+HcbT5f7noLBQ70+z0xGFKzpxGXDYavy4EbvHUOue2LcPXIgHHeoK4vOI2tEJHv9ZXlNkqLZuB2OQwfee0QzipJClpoJgVqYEKP24Yqhq7s
- UY39olx1
- AfCPYHGtam7cU23Qj7eQvCB18sQOwPNKfUr6VEplFBVq/sAHrZtQtWZRJ0munZR0kWqh35BGKbTGNOn9YgmuT9r9XLPsu0S7LGj+RqkaCggyXZFRw3i7bhNOjEQXHEgJgjKgNCukZb5pHI1Wf8k6BENWYEAHZOzQAqP+5E+7jgZetxCVZVkOPULkgulVFYFoE/CFFHSqbwKHW/2VXSMgWYmuIt9w3wRbqhYzg4JxjRP0C+Z0cmI5e2QAHy+IZYI8Jxo7clNnljZinMZTd7tPBF4DY5Hl7AOoHHOl6bMwzFkK8qOyYza5Ai4XjRbchr/bszb5Y7ExBdhd4JfCe/Q8GRBeD9gFSIRUO+VNMs/QPReFsUO8WXSidaocMX1vjKdYAjvnO6Bpcp3YnJTDjxJDLkN7apBYVWE1MkL+r2CBvi+C8B1mHf6K8qytmNBMk0ofP6bYs/yEOB3P4HrjW6ET7RzFYNeaU/GScBCwu7TUQdu+kD/k4Ef6In/D8bOZcpRpBA2QzpwUMhmKPkkoAJrgG1fMUrweh3uOkP1NI
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765449845-215653
+X-HE-Meta: U2FsdGVkX1/fDYgM7wdZe06KacCa7m1eaSR7Joh9BusuRkLKz1xWSDWjph1/YReBdOxmStbnuq7PASxxvAZYGPXtP+RfNaVVjiWhGC8HcQqeTI6KfZAP7C14OdUcHHzH1gREwK7SgBqluMLe21yEkPnkev1KyUJ/LSBTp3DnWtMfgcaCwvTbLxoMoudcUFDdkGarkgYGHwmEjtqye1nvpJXBxye1Fr9LXbEMZdlJ4NteCGwITvH/RxaAkw0Z3OJZHlUIT65KSW47wkL5Sv0YVAVxplaAcobc22sGKox+ilzSo6HjmCHxQLV686vMHz9txqTACXxBY7/ooLlYWq6TzYj7fMrp+JcrCBVgp/OBOZzqFll3SYkX/PpWb0t2z8MlYEbS1z1b29eyq3qUcHOEYj+xb+1zUqpEKMq1ojCNDwVLbELM8qkpRMtjSZ21umcwHv0fyD6ASdTUBfP6JuTBL9ylqTpIyvJ3arSgoPqW8ACd9WkEEzcvBbKmXcpQ5huxx2VrqzY0IaOMzcxZ2ZChsik9huyFt2wh32PEDUYZ6Ga+1kBkH2fpmsxs0DjMOt4r7X3FWQwFgDJXlO9uLe6ffsgXZTUN4ZsNFWiOCDj+buIiOCHluJcxQ5QOKIKNdm3PqA683TZuHUuUZvwpfbdLpNOKzgH8otLlgXa+dh27rViFtW9lVDvMQ4uI0gMoOpCwCE9pMkVeUksQAdn6mtv/UexGS8Jd4LBpj7c+4JqBhdiCSzYUa9xAqPPbjPr96UnJIM4Z2sl5SDVSkQKiHnpgVrihvmXhoE5myfCG22A6Dw5II0Z8TcOM8ZKzNqusGmZj8i1C2+ZoQf+hG88lGCE5On3nV05ti7zq1c8N1ygvfS4EmSzOUV+p5U47ibh5wgehMdz67CW30Jwlu2NyTCwjrm/6c+jz8I39aKHU1ZRvDhu325BsaTRSSzGt/RrjV7SFjbjc5nF1KQGbOBat3uZ
+ M0EkHBc+
+ EeB8t0psAQKhITH9CWOtxynsSqscVFDvYQXfW+VS67rjm0HpdHNiU5OF4yrxDWDaA3qIisWMYABiiNeHn82tmaEEXEeGj8WG94p6QfZSwOWBDEYkF851TmWIRV074osvOuSi9TpnWpBE6ZXoxDgWenDvWuDGYFdCDbMQSHFCPLZu/Bnpz33+12NdVdoFkPtRH9/moJWbnGscDe1FaHl4GOOxjdDq7XDpDkPtdvQ3b0RHdkkRc/i1lJLTmrtxc+AyQMMGKKcUSHGsAdZV6FMCiXiUS6FBU9qQQ6Fd9AOL4BdNIs3X6comheMuuFjNEJYhE9x8nKV5I6EY1pYY5YPyI3/7AiETH/YwFrBDW83rXOGuE2UrxD888bXppTBIoG0PHX3h1HBt5VQ2jIXxBnlNk2CCVSc2PcGLWAFov+aYG7PM+nX29bS+ZQKJTUMvKDJQTCNHddmFY+1SHUhV4IuMbTFs+ICg+2ebykPYK5AFem2LklHXxuVYTzqVAqi//Cekl5zSkjOkuzJSSmP5TaBxvM4wNlAgrLadhSsxE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,7 +101,10 @@ We were wasting a byte due to an off-by-one bug.  s[c]nprintf()
 doesn't write more than $2 bytes including the null byte, so trying to
 pass 'size-1' there is wasting one byte.
 
-Acked-by: Marco Elver <elver@google.com>
+This is essentially the same as the previous commit, in a different
+file.
+
+Cc: Marco Elver <elver@google.com>
 Cc: Kees Cook <kees@kernel.org>
 Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
 Cc: Alexander Potapenko <glider@google.com>
@@ -115,46 +118,31 @@ Cc: Marco Elver <elver@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Alejandro Colomar <alx@kernel.org>
-Message-ID: <515445ae064d4b8599899bf0d8b480dadd2ff843.1752182685.git.alx@kernel.org>
 ---
- mm/kfence/kfence_test.c | 4 ++--
- mm/kmsan/kmsan_test.c   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/kcsan/kcsan_test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 00034e37bc9f..5725a367246d 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -110,7 +110,7 @@ static bool report_matches(const struct expect_report *r)
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index 219d22857c98..8ef8167be745 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -176,7 +176,7 @@ static bool __report_matches(const struct expect_report *r)
  
  	/* Title */
  	cur = expect[0];
 -	end = &expect[0][sizeof(expect[0]) - 1];
 +	end = ARRAY_END(expect[0]);
- 	switch (r->type) {
- 	case KFENCE_ERROR_OOB:
- 		cur += scnprintf(cur, end - cur, "BUG: KFENCE: out-of-bounds %s",
-@@ -140,7 +140,7 @@ static bool report_matches(const struct expect_report *r)
+ 	cur += scnprintf(cur, end - cur, "BUG: KCSAN: %s in ",
+ 			 is_assert ? "assert: race" : "data-race");
+ 	if (r->access[1].fn) {
+@@ -200,7 +200,7 @@ static bool __report_matches(const struct expect_report *r)
  
- 	/* Access information */
+ 	/* Access 1 */
  	cur = expect[1];
 -	end = &expect[1][sizeof(expect[1]) - 1];
 +	end = ARRAY_END(expect[1]);
- 
- 	switch (r->type) {
- 	case KFENCE_ERROR_OOB:
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index 902ec48b1e3e..b5ad5dfb2c00 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -105,7 +105,7 @@ static bool report_matches(const struct expect_report *r)
- 
- 	/* Title */
- 	cur = expected_header;
--	end = &expected_header[sizeof(expected_header) - 1];
-+	end = ARRAY_END(expected_header);
- 
- 	cur += scnprintf(cur, end - cur, "BUG: KMSAN: %s", r->error_type);
+ 	if (!r->access[1].fn)
+ 		cur += scnprintf(cur, end - cur, "race at unknown origin, with ");
  
 -- 
 2.51.0
