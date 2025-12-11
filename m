@@ -4,132 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7227D41C12
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 09:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72121D41C12
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 09:35:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A596B0005; Thu, 11 Dec 2025 04:23:22 -0500 (EST)
+	id BAE8A6B0005; Thu, 11 Dec 2025 04:35:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BB996B0007; Thu, 11 Dec 2025 04:23:22 -0500 (EST)
+	id B5FAB6B0007; Thu, 11 Dec 2025 04:35:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A9706B0008; Thu, 11 Dec 2025 04:23:22 -0500 (EST)
+	id A756E6B0008; Thu, 11 Dec 2025 04:35:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7924A6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:23:22 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22621BB5C9
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:23:22 +0000 (UTC)
-X-FDA: 84206651844.23.9D279BE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B40BC10000D
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:23:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iSF3iqZZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Cvddhdp0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iSF3iqZZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Cvddhdp0;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 986876B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:35:26 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3275913BC97
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:35:26 +0000 (UTC)
+X-FDA: 84206682252.14.70C11B2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E945CA0006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:35:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765445724; a=rsa-sha256;
+	cv=none;
+	b=QU1nQe4oBqk+N3HDhUTGKBhUpPg7Cy5+VAahr8KW9qgS4uAq3zJa/RoRNOHB3GFJ3KzVWU
+	ztBG+EauFbJyJvlkhWD/0v2qhp5uiXf9cxFov9Ibuu9pRYtkXtuMuiAjhEpHqmh/F1R/s7
+	UUBTry16HU4wYFujlGVv5aysaHw+LGE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765445000;
+	s=arc-20220608; t=1765445724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xXntFMz/1BItVG7BvsstcortUO7vx/YgUgUDL2qXBqE=;
-	b=cqjk22XXz5nhBjyE2SJJAhFEM2+CSiAFEaIF3wFPDyCgVV+Ed02U4C2vOL+eRNTxxV+YLX
-	p+qSbQPQGsXZmHDLCPdjISq64JzmljeCGh/DQbnj86fThnu7d1UWdwF5C0olOG+HWqq14M
-	jUWXXrUY+LmttWqKQ0zlpcxk6VdzIqU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iSF3iqZZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Cvddhdp0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iSF3iqZZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Cvddhdp0;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765445000; a=rsa-sha256;
-	cv=none;
-	b=zly4KZ91HJIRJHOEOkZWZAZnxRbmRr0k7bkOtbUybhrYh6Q/GBIbS2LuGKwm6KiM0945I9
-	b5/n0wl37woNoqH1RZuH97ZzJLvGCkL9mr2yJYa8OWKrirWeAvus2Dxg3+/JmNG/qolS6O
-	i8KI0Wk7QkWvZ3L3nQTnqv29dC96Fx0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A9B42337FC;
-	Thu, 11 Dec 2025 09:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765444997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xXntFMz/1BItVG7BvsstcortUO7vx/YgUgUDL2qXBqE=;
-	b=iSF3iqZZaJrUzVh/nhj6PdwJEthnAQy0QYc1mpHJiPiyiaBizi36yLvF7cXtFalxhQTrGR
-	PMwYI1ak2JMSe6oOE+koNDCfB0TBf85IQR4BgUrcbZIVTUuzsdQBSwhBaoQ9kAyEbPpR37
-	AFC4jwR3HYiL3BG19FRM4isEFf/C2po=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765444997;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXntFMz/1BItVG7BvsstcortUO7vx/YgUgUDL2qXBqE=;
-	b=Cvddhdp0Fjq2RHksq6zh9kRmwA0xd166utjHnw/+xQaSp8yYOft/CkEU5SteuF4KKYOpxx
-	hHOD9FZ/73CzawAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765444997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXntFMz/1BItVG7BvsstcortUO7vx/YgUgUDL2qXBqE=;
-	b=iSF3iqZZaJrUzVh/nhj6PdwJEthnAQy0QYc1mpHJiPiyiaBizi36yLvF7cXtFalxhQTrGR
-	PMwYI1ak2JMSe6oOE+koNDCfB0TBf85IQR4BgUrcbZIVTUuzsdQBSwhBaoQ9kAyEbPpR37
-	AFC4jwR3HYiL3BG19FRM4isEFf/C2po=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765444997;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXntFMz/1BItVG7BvsstcortUO7vx/YgUgUDL2qXBqE=;
-	b=Cvddhdp0Fjq2RHksq6zh9kRmwA0xd166utjHnw/+xQaSp8yYOft/CkEU5SteuF4KKYOpxx
-	hHOD9FZ/73CzawAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DD9F3EA63;
-	Thu, 11 Dec 2025 09:23:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PC6FJoWNOmkodgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 11 Dec 2025 09:23:17 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4F54CA0A04; Thu, 11 Dec 2025 10:23:13 +0100 (CET)
-Date: Thu, 11 Dec 2025 10:23:13 +0100
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Deepakkumar Karn <dkarn@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
- mapping with no release_folio
-Message-ID: <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
-References: <20251210200104.262523-1-dkarn@redhat.com>
- <aTnn68vLGxFxO8kv@casper.infradead.org>
+	bh=tGs75aWCICkC7j1ezUu35CuPpgnIOUGAf4M8+kinw7A=;
+	b=xHuGLm4mguVUBRMhYzEtLRgFywtmgZ1Ug1oGKIe00t85b53zcBP+Ru8kU8R1GtdPb7+2Ua
+	lCRJdDom8f5Y/JWQRTEneuHHlbBgauunRPtij4/bCpJAK2CcmFzsnUdbOHArGSbQtb/G4L
+	Q1o45AMmAXLowDJNswjh9ELi97nJrak=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C8FB153B;
+	Thu, 11 Dec 2025 01:35:15 -0800 (PST)
+Received: from [10.163.80.88] (unknown [10.163.80.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3AB273F740;
+	Thu, 11 Dec 2025 01:35:18 -0800 (PST)
+Message-ID: <49d00536-bf7b-4bc2-b771-c708f36f9407@arm.com>
+Date: Thu, 11 Dec 2025 15:05:15 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTnn68vLGxFxO8kv@casper.infradead.org>
-X-Stat-Signature: bgmc89hkd1md7oyqx8i4pftmiiusrmkh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: memcontrol: rename mem_cgroup_from_slab_obj()
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251210154301.720133-1-hannes@cmpxchg.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20251210154301.720133-1-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E945CA0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B40BC10000D
-X-HE-Tag: 1765444999-755120
-X-HE-Meta: U2FsdGVkX18Hf3v1uI8AJzSSjof6Q3/vxN7gyhbnK4b0bCRAz/bAPwmGkunn9s6K20I44BnVCNSxeQZnw7/YsL3k7LFNWI5XzPfoSpQ10P/afjJokZL4hdXZ87DIaRVK+ctUoE5kEW/xPZ6fy8FfSNyfOMQ9/tEXukWEwkbinGqqX0yMDHsMwR3S7lv+ctY+D7aw6EkMcC0qm9bPm9ZzMNF5GTYzjXGWyz0N2F6iiZnMtVbXQJwKkkymL6TFFj29MufIMvNWNsphRMIvAkxlt0+XxsH3EBxhEJy2Rp6bfmQ91ZHod1C7FpzkQ2QVW7surlB5oJT59N9hVkH/OIELbdOJXdU/pG9fSdyUwoshJYhZhMUQ4CZSbFzSWI7UvSiPY5Gn8y3iwkpvCrv5Xp5Zyq3B9gTvlTj2xQnBKhq/uH8VKoXpFSQrWqnNpdYgkz3NEyLxviLxK6B78K3cYH39cGg268qgZkAAK0sdUBA0bxkQoT+Ev8OqPCAGu23SBv1o2n/c7ksjfn6xADtG47ihXlOG7rAlylV1Rr+iY+eulxVZWTNBb5M6lO/hOLFglMDS+tFtd2u5UNIlE4uhhHXxNTIRwDtcYegb7Sfb6glR1x+qCmJmQps+nYVRizXIWP3TfOTkXGRmDz+Murnu4vfy+G6xn/ctyoXueo1cA8PHb1NBWp5/JTdPQk1fmrcekDujwWh6DMGwawxeG2s2nNkxt+W4sVBpgIv4mp6TwXJ0YczIiI3iBQ90WO0BitAGJ1fO264qi3E5NaVGADbkXpf8aAe1mL+cPQsPiIYe37qmLO0V5nxstlX+CUHT3BwqHX6LigMpQRf1ZXenQ7WlcYnOCHFhNtZ7bibK3UY/8It8auVQM0JgpX6ZepAyrJlAthZyAEd6Mi0sTpGaMkj64VjFl5vHC+GCa0uj0NtGPFLH8B6NqsAQDN9FEntTLRekryvuE8cjpaRtGvRpaTZEZj4
- de3SuhDG
- /Uzf6Swjs6hT5Z8dQ7z5z3624JUYzn2m0dBG+Lqzi4Cd+xpCQHh+R8RsQFo4yoV2u8v1KR/RYSt72O7M10gjupCdV+6M6Let/fd5jEbArRN6KMzoxYpldurLiKliHqBdkT8v/wT4K54EkCHLY6dZskLcD0aszoxP6zt1srdKQCB7ONL+UobWRWy116pYkwijwKCB3JDqkYAPpdkIk4Y1MLsr0jbjY+xlBwsT9Ps9szJtKNLlSyUOgCrna2lxpcwbqT8DLwdEC3S7m3GYt2dhEm+QQcwDr/LX6mt75XTR3596wWzzaW62UNSCiPdASzThcKgI0gzMKZJlkJJnX7/nSbCx/oeBWrgvCovL2rCJehLrwBDzlCLM/3oLstX2AzKXq/UP405u4k7Q9nY8=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: pa1wff4hbqibffwce5o74gkabxbxiouf
+X-HE-Tag: 1765445723-266207
+X-HE-Meta: U2FsdGVkX196uZ2ChbbS1O8qHgUozMYXXF9q+gWXKETTnWGsYB8xQa+WrnIl3y53jQlJe/M+p8Osg/ObUMvLccQhdpCPa+1Xrdm99OIh1nJ5w4lzQ/EaZ7pJMzVWrS0UOdRMju8pc9wc+rvuAdgiQ+2WR3y6cioMo2p79CSyqyK04YIAi4RJyqYg/7axgeeTEq3Y8XbTEaEWceq7n8IPUyp6T/GrHxelI0pOXKVRUMkSdQ9a7ZOLAEMmOrO2zLjKNxAq+1oUDI+wVC8a7VnYs7w6XrAnlpPHmLKuEJQPwQT+YEq7KKmJisWIpDybnPw+SQ8Nhz4DkR+NS+sZ6AGWfJkfQElNnrmytON1OdPRqwgtBqRLWot2rkDE9rz4kVhSwOiPLV1lxRNu0loNfi/J+SbDfVOg3H/rQS1SrdXtV3Hi1SsI0bfU8cJtO9zPpT20bFuV/UJTT52/RLUO3ey2YSiVvfVZun+7wjn8TNvWjE2YTuyXfuMpSutoRCm6mDqKmXU5F7MuBB/vJ94aXQsv7qhwxnnls34P5+TW+od0loKSOFhQVI6vgUMJ+4aRmS/sklK70+2OZie9YxMVmL5tJnEzopcwa6YbuDN22JaQ1JAVC2fWghc/LF+On8ZP8/31xWLGwRlv3BBI5slZ//jDxuk4LJJYUy6hsSZlNFqdLGN5ZE8fM7aLkcANVKPyqXnh5cLsPmh7wCYwKBXKUZVlO50x5eRbL+d2jHWIVR0Q3uNEhIvcNX915CB03pR2RA115zwogQnvaLbuI4Hy64SLYs6lZ8ORNTJ2n/xu5wZqEKXLsu9+wwDU/b1QICZDgOLmFBBn31yq45qNKBLIzRzKKlLF5NqGcg+1TPzA5TFM6TAY+k1+w6cCBfQ/wuaTiML61CO2mtu1AW2olch3Os1BRh8YfFwoNlxPPoHmmurobNMW8m33rlmzbm15CZ4dEt75fBBZNJ0DoR8iDy77NwZ
+ 7VB0M0No
+ yyDbIZ/NWIvGPRL7LVWDv/vQr4XJJ/avU6jRv7wy5RBGh7xBp523RJu4cWHZ89oXloZg2F5uu9JZnu4HV+WdZpn6m81KKaHlxqVQfjJGj7d8hfBioW8om2iAIGZ6d9AzB+TwsByMhQRMZTdvQuD1WwWuLV3ZDrifOk7gX/KdNMQO3Bn7Kzc+46CztodixL1JqWhw1rno6uXwyOm1h/Jd8cmHsI6NpFct7aFk9+CYLe9TXSesYkXhnj3P6iR/NAPTsu4k+HY6+jnfNM0vMHJRyGerkUd+zr6A5h/w0q/ceYg5lcWJVL2aV3CafNeYSdJARDl/M4QANP+ZHT6Cjd5aKbsmHok93LWVUwKXlMdpd+lz7IBw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,30 +88,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 10-12-25 21:36:43, Matthew Wilcox wrote:
-> On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
-> >  static inline void mapping_set_release_always(struct address_space *mapping)
-> >  {
-> > +	/* Alert while setting the flag with no release_folio callback */
+On 10/12/25 9:13 PM, Johannes Weiner wrote:
+> In addition to slab objects, this function is used for resolving
+> non-slab kernel pointers. This has caused confusion in recent
+> refactoring work. Rename it to mem_cgroup_from_virt(), sticking with
+> terminology established by the virt_to_<foo>() converters.
 > 
-> The comment is superfluous.
-
-Agreed.
-
-> > +	VM_WARN_ONCE(!mapping->a_ops->release_folio,
-> > +		     "Setting AS_RELEASE_ALWAYS with no release_folio");
+> Link: https://lore.kernel.org/linux-mm/20251113161424.GB3465062@cmpxchg.org/
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  include/linux/memcontrol.h | 4 ++--
+>  mm/list_lru.c              | 4 ++--
+>  mm/memcontrol.c            | 4 ++--
+>  3 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> But you haven't said why we need to do this.  Surely the NULL pointer
-> splat is enough to tell you that you did something stupid?
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 0651865a4564..17ad5cf43129 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1727,7 +1727,7 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
+>  	return memcg ? memcg->kmemcg_id : -1;
+>  }
+>  
+> -struct mem_cgroup *mem_cgroup_from_slab_obj(void *p);
+> +struct mem_cgroup *mem_cgroup_from_virt(void *p);
+>  
+>  static inline void count_objcg_events(struct obj_cgroup *objcg,
+>  				      enum vm_event_item idx,
+> @@ -1799,7 +1799,7 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
+>  	return -1;
+>  }
+>  
+> -static inline struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+> +static inline struct mem_cgroup *mem_cgroup_from_virt(void *p)
+>  {
+>  	return NULL;
+>  }
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index ec48b5dadf51..37b642f6cbda 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -187,7 +187,7 @@ bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
+>  
+>  	if (list_lru_memcg_aware(lru)) {
+>  		rcu_read_lock();
+> -		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
+> +		ret = list_lru_add(lru, item, nid, mem_cgroup_from_virt(item));
+>  		rcu_read_unlock();
+>  	} else {
+>  		ret = list_lru_add(lru, item, nid, NULL);
+> @@ -224,7 +224,7 @@ bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
+>  
+>  	if (list_lru_memcg_aware(lru)) {
+>  		rcu_read_lock();
+> -		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
+> +		ret = list_lru_del(lru, item, nid, mem_cgroup_from_virt(item));
+>  		rcu_read_unlock();
+>  	} else {
+>  		ret = list_lru_del(lru, item, nid, NULL);
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index be810c1fbfc3..e552072e346c 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -806,7 +806,7 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+>  	struct lruvec *lruvec;
+>  
+>  	rcu_read_lock();
+> -	memcg = mem_cgroup_from_slab_obj(p);
+> +	memcg = mem_cgroup_from_virt(p);
+>  
+>  	/*
+>  	 * Untracked pages have no memcg, no lruvec. Update only the
+> @@ -2619,7 +2619,7 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>   * The caller must ensure the memcg lifetime, e.g. by taking rcu_read_lock(),
+>   * cgroup_mutex, etc.
+>   */
+> -struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+> +struct mem_cgroup *mem_cgroup_from_virt(void *p)
+>  {
+>  	struct slab *slab;
+> 
 
-Well, but this will tell it much earlier and it will directly point to the
-place were you've done the mistake (instead of having to figure out why
-drop_buffers() is crashing on you). So I think this assert makes sense to
-ease debugging and as kind of self-reminding documentation :).
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-								Honza
-
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
