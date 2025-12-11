@@ -4,119 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74392D41D7E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 18:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B9B4D43342
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 19:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 626B26B0027; Thu, 11 Dec 2025 13:24:42 -0500 (EST)
+	id 3694A6B0005; Thu, 11 Dec 2025 14:21:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D8636B0028; Thu, 11 Dec 2025 13:24:42 -0500 (EST)
+	id 2F23A6B0006; Thu, 11 Dec 2025 14:21:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE506B0029; Thu, 11 Dec 2025 13:24:42 -0500 (EST)
+	id 1E1346B0007; Thu, 11 Dec 2025 14:21:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3880E6B0027
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 13:24:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8C9C8889D
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 18:24:41 +0000 (UTC)
-X-FDA: 84208015962.29.0188104
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C7EE640006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 18:24:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YSOTF74J;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 09B316B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 14:21:28 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90984C02EF
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 19:21:27 +0000 (UTC)
+X-FDA: 84208159014.03.3C0FF9B
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9A3F44000A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 19:21:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mpPhEumS;
+	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765477479;
+	s=arc-20220608; t=1765480886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFrFvBFoSBllsimam77yErITX9FHt6tAqE6M9ZfsDfs=;
-	b=poZnw5pllFJaA66go8mpJsIiFSCs8Ljk/PIfO78EWtT464r2zgRiJcI+OMZfXsoPcC/IJi
-	4IqmvQOpzlts2F3flAtPlNLcRlB6MFMP13P7hRAUb0hv3fhxykmFGmTJNbXz8SqXk2jUn/
-	TvJMHDT8ACHIRSJxYjpfhzh2+1uqokQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YSOTF74J;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765477479; a=rsa-sha256;
+	bh=3W9fwDrcHoldv9DpxMw/S2gNbgaU+8zE2YQ9rFD1zWo=;
+	b=OtAuY7FkMC5LvDySG1whSRJDKjY89z0t/YnCjF8mkQ95WhwIM3rdt7pI66/asHOaetl9qb
+	4SwUrSCUzxdvs23T+NET34QB5ETencEbA8XMjjFYm+byUV4USI5U3tqca85OwjY8qGl5lP
+	/aH3nQ66mgvwsEynguxKJOPcyihxEZo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765480886; a=rsa-sha256;
 	cv=none;
-	b=eBi+Q/7X+OVFcsZ4mkewbNANeYATVchMO2OBiYKuQJyMknFazt9eULtffRyycs5wDpLXv/
-	apc41mVPHKsJraXZBpaRc8A4A9MozCH7qsgy4M3bwl1AbRn9QpRAGzhZOG9Dia13le7hFd
-	PfdzbliFF2vi0CkaRoLd5Jd8/T6GSO8=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5959b2f3fc9so441173e87.2
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:24:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765477478; x=1766082278; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JFrFvBFoSBllsimam77yErITX9FHt6tAqE6M9ZfsDfs=;
-        b=YSOTF74Jd6tP4/3uBn/t0qdza8G5uyMYACvxCkWUWSI+h/7UM2KBQcSv+/IDGfxBP3
-         G6l5D/yAcyfMWDLJsQyNQ+qYzECi+8/My0R0SDbfbakc3wxz2s8W31Xo8Pr2j7UsgzqE
-         +TEq4gmv/pQ7dPK5BxT1GbzSAWuhB2976N/4ygBIofpsiGIfqdaJi3dY9Jf3GbSudM47
-         if77dPc5ivQJkQNIJCaXIF0CClVKCuAJNQQX+3UXduioV+HARQC+AhtZ1SRUuUnucHiD
-         PMaubes4PeHKOmB62OMhp7hPKDpwP8DLIWxE6FugxTVGVhypfdLTjLrvpHrvTBXKDGD+
-         PuBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765477478; x=1766082278;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JFrFvBFoSBllsimam77yErITX9FHt6tAqE6M9ZfsDfs=;
-        b=raBgMFJz7RCUPKxQs2BKOD7HQq/mINQKNrK5nlU6HGec+d2HrmerEvguUNHx0RkTjX
-         G5ymb/V6ywrRbnrk/BYgNEGoFOF8fbQvLCmhdzOEurxm69eg0ejfvHM8MQX75/37IsD3
-         +inyX0ed5fF45e/S7KgirSpnlDEnnOiamzTG6Jpg97YykV+LooF3jwgdwR8ZDE4n0Apo
-         ffHDuCMXlPh4GhNs4z46phOUjUqtiIp6d4ZkxPuRQp1Ji1mAiQvyRjmjT573upW1r5R5
-         72izpxevN4R1JoOdg1Ln1w1iTgRqLrvSt7RwT7JZCDYTZCEqvpySna5+Ba6cBFLrI1/E
-         c2mw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDx6TkqYbM8ikqKRiPFJtqkhbme+fx7OtqNZxtULC026lc37y4LvFrRSxCjQIGKb86+Kzfwj8UQw==@kvack.org
-X-Gm-Message-State: AOJu0YxozwulsMLQm5cx8R1wZIBqkJ3lZA7MBAzkSRHXxaXYBlFWa3R0
-	nMHJTk4W7Mf5YCW6+3JJBPnvBeUz92gwEVqXMq6ke+6hxT0eF93HWN17
-X-Gm-Gg: AY/fxX405MUBsfmMKlph9oRceD9nW4hUoFD1E9UkGWDOP/SoKdM8S1ntbpT5kADu5Z7
-	sceDJDH0MMVbnvWxvcQ/bVCHe426AQ3VSWWqq2SEBLWA/eJa4uMk3Nv+mbQfFECAGXtfNu1WqkY
-	ScnDcqTGKGVyPRfZpyUPZgw8DXXbN56XgXHPYd1WbOasKy0BpXjXWvXRRP82dy1bjVQOUAqXNAr
-	RTq4CTSkYZDmeycPiFNmMUeWM9wK8lMjbP/69w6bCO/1GRyU1NNKUkx3npd+MLb9KoK74sYIOYe
-	1rM9m6tNZSsTwCL/X4ceCLf1qxzPcP2YBKS7dMWhPFYMiqIW8vZUUdxpWFIEejXiqMWyIyBAddI
-	6/M7znCjWxCCyzTAh89UeUs2bVmSAaDaPFP/cqawCCj9kaOJ1fN1BRS6im8Re+LkhvhZ1SlGGEB
-	/QWvXoq6GObETisrpmhz4=
-X-Google-Smtp-Source: AGHT+IFVxKB8gDiBMiJbinTn0xv4lsyliE65oXrRemLZRXTKoRg4ZE3AckW0VEdwuOTGsUa7HltYPg==
-X-Received: by 2002:a05:6512:3089:b0:598:ef2a:448e with SMTP id 2adb3069b0e04-598ef2a4493mr2784604e87.10.1765477477520;
-        Thu, 11 Dec 2025 10:24:37 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-598f3195189sm1060918e87.83.2025.12.11.10.24.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Dec 2025 10:24:36 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: mpatocka@redhat.com
-Cc: adrelanos@whonix.org,
-	arraybolt3@gmail.com,
-	cryptsetup@lists.linux.dev,
-	dm-devel@lists.linux.dev,
-	gmazyland@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: Hard system lock-ups when using encrypted swap and RAM is exhausted
-Date: Thu, 11 Dec 2025 21:24:29 +0300
-Message-ID: <20251211182429.3300562-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com>
-References: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com>
+	b=UPzQ3Mg0Px2Fhx7pjqxmTE9QMuEfg1HInZXbPfzY4wlI6GoIcBARbYoF9IRAzqpuNLc+lG
+	H9194jmE/I8BLN8B+wmEjTR2l7Rydl7E7nB6dCmiovrJQHQXajIVdMTozJWXfqQ2eIpwek
+	2mT7E9YwIBgRDJk1oH9p7RPrMYqx5CU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mpPhEumS;
+	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 11 Dec 2025 19:21:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765480883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3W9fwDrcHoldv9DpxMw/S2gNbgaU+8zE2YQ9rFD1zWo=;
+	b=mpPhEumSry4YKmfKQHO7LmlRuVeo+pryIyyMDhbaLogmdeU+0PvYO1NmvxEFhr9O4GwmPl
+	uD4mTaswToJ/Ael/CGi8KBHMQJP5RQi6d7KnXkCY40cSuHKhN2Ay/8OH4Vh/3aBYCAyBdb
+	cVbClk8ijetedVxJ/0INEBzFSnAwEiA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: zswap: delete unused acomp->is_sleepable
+Message-ID: <kzjyxqcgqlv27wopipjvv7pjawhiefi4dykkiaatx5tkruch3b@gz6knzofpqei>
+References: <20251211025645.820517-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C7EE640006
-X-Stat-Signature: ns7ss48a6x1hjhwnfqpzcyfrfbd88add
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211025645.820517-1-hannes@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dch4ph9ib591bz3hd771g89793dicxhu
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9A3F44000A
 X-Rspam-User: 
-X-HE-Tag: 1765477479-212716
-X-HE-Meta: U2FsdGVkX1/p+yS+dyoggWiwIgzGIMEgmJaEoJhNKq8XsWCdjg1Fc5V0+f3bSRIPDjE3I32Gt+0Q9jjclZ1NxPHq92q+x6ZcQz5UOyVdIV0HdPhOX3cwBJ1k+tkR/9dKelt1dU2pqiU3NC9N6iAEUpej8KcQ8mR5+R4vnDfx2eD0EBcXI65O0tGon2V8fMYIdypsKvs4Dxs6itEc2ahpWz3uDuCGhB7x/SzgJ6pa16riGbVfTXfH+a1wpH7PLfaQWps4XMVrQYnbTRzDG1OBbTmpOLoferb2bHLAnmk8spsMFcH95PfF0aAyNxDsweFKqmhC20O8PKP1wCoK2J7mrtFTuz9+nyxK5ogtJCHj5ce5Mp+m2PKpMsza+vYGmzpO2iyzdLheyEHTeUS4Q4Nzo+4nYHJ6tHHUVNXNC29uMInQe6LzRZrND8qf5VGF+vmVmSRkcZLINwf3o8HEYuNn/ZOwpe9v2StZkpEASiDQeCzNdJHgFhUv/FmGKHhm2NDXDGVBuO7WpgMlu5MZK2DmOLEVqhbqvj6vxy/a1T63hI98YlTNRQz4nDl1vxZloCFD8a1jLfyALUYs0iXvgT61ppG5X1J+o6ahuvSPBmRqL2j7R/7a17Vr6cRHbl81NdRdHrx2LbFVhsp20xfyuj5dkKnInImLVUU2Khs7ov3jSkWJ5tqg99srSTYuXvJv1OWfAxUu+25SRvcmbhegdgW7qyF5pamaznLQs/M+MRcOuIHWtSDTWYphWB1VS7GwdU8zJ63qBTAajplr0eVxj9U4Oe3KXKIB8T8OBdEYmPujaQMZeCiQSaz553i/x/+iDnkJ7pvpA2xs8FPAu7MEGXHBlE7hNAJG1L/KGnuQF4Xxe+Ai9TbwRXE5I8KZhGcMK+ZOh2OANNQOJ50QdRh230khIJdDkdBqHg0qgYmxn9MnfRxf7y3UNLT997/wOMQ6McHQ9nhauHYAw2fqKr90kuH
- HIk2g9Vi
- n/ZSrK1Ptc0yzPDg6u+5T1FQFtEVBcOFo5MQ8cS8KOsXsdgpQObxUZeF6gRhWDvQxdLTxcy1zg9mwxaTKYOPjDfNE08j93/VoEF+BRS01o5Zm2W5MY2JorvKpN4ijtEhWD5axsmmt1zyb4/2nqJyhHBqIU0FH/HWKf7lvjjbzROPCG9xNLYRYRjLSk4rgXa2KbewlntYIflxByYojj2L8/3HQPabMfm8pP3FajXWmv/gp4ARr/cc9//ifroqYmvKd3mIFUeWSDndM/IJGpCIp49oF0I8e4jjvRm0MAGeAJbylgFX5BofahDqiiv9yYOJAjTYDXOvqhvMLfGCJnqskq5JXSMuSQ91zGSk449S8KAtavkotkZqhJcAPLLmSZxw4fD2oKZXrQYDw3ek8qpTHjh5yJtB+O3NkYaLjlmiDE5qYea10NZsQ12yy7jpG6KAGiqfEqTAtkJNbyG4Emwml1bM4gLql8uxDCKBUyWQZFy6OQ4FrXjodKcYzGHrOnTtOTWg8
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000714, version=1.2.4
+X-HE-Tag: 1765480885-873105
+X-HE-Meta: U2FsdGVkX18gAdfkmC0vv8nRZ7UWCdiz5BHK56BO86DKbZlxLcINil+6dWcCLq8eX0KWscw9uZPuCecDbS+Mtc0ABWmn1QlGAC/Z1xIbfuZcKCPFAXnEFgUEwOnB7mco/5XMfHw2WmsxF256KJGELTvMV8RC2iE5k6dRGAKxuZdkIYB6wp2boEDhMjmIrYSgkuZov01uVU4pA0/c1I1mQtoXARWV+3lkRsXHgODDI3ns3gvgr4EeoDRvXB+WNjztUslvQoqGhKn/emQK6zzTkBQ9XcJNbvDPMRRsgSo5NCkwb8gLLJCvd1pSxMFFmHLAQ6X3n8fSAN9t1g2JnWRNfYf1Rl0OxeewdIOOGeKu2ydk71yrgYwn6oqdPXhXdQGj/gEBJVhZCYXlN+ocbZq6WYr1b97JkUEVT+CuX3Klqeqa5TR3/egPAHOxrwkbabhLDCGvjTa1RGoiZnkDINCcKWuEdVGEjg4KDykDcgtT9Oz4zhAOKCNnKHhU8HLMSyMvkoEuj+pKLVuJio0BccYw+kuQdsm3JQVTB9NSD9BALW7ch9qcaWuq2RcpXWzhpav7u6VT7GTQNfqxMMwCQSFrrqdm9f+bW0fx4B+nNjXeHJNaSL/gOvyxg1+nqSO2sesDU2JhUk2zwcB1kttWMhnXbzxGucA0FLy4plNy5QK9vORMbTsp09sEs7puSsG/2TXq4woqCdAV/1asm74eIxkhwK/MBCUHoWNEfg6M28D36B9+24VClMDMrWanQVBeaBhideCLinMtBg5PH9pmEXxUrObepuZD6jNtmhPuTzU41PxUlB5iA6uxjFRw+y7nwlno8TuHWNZDOYDdS6s93ED2R6EucT6xbeTn8z7YEbI7/j/EZuy1VhyoVyEEenpInKuGEApa+pDPzFeP16qULLjYaPMFyeESZwRyYoSCoeSelrOXKZDSOBGi/VeoBG2gCrWFXvQFkOIhzsg817OYUSk
+ LN5YZd0C
+ 5ld1pjxwFj4jidkX/Arb7Dzg9qcqkqKKsLbfLjWoProANtdriWexjRjudG+u7M4l9TeJzjqHscGRGHjM4/889qSMq2B3tT8MyUaDXKD11c7/20VXV3jxmj6S2yDlj3570cbOoEA4d2nHpV0JHOPbi/zZ+4I50dw5i3ooRZtw8+X02qwVEMqU9Y9gwHyj6jZA0qHa6uOGsEfYXtUjtd6xAqD+R3gn2CkfOjoAnH1ILxoylH6DWEfRpqWw1WkkCdF12wmzDa2bOTlBTgKWEoe/r8YPf5Q==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,17 +88,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mikulas Patocka <mpatocka@redhat.com>:
-> So, this is what happened to you - the machine runs out of memory, it 
-> needs to swap out some pages, dm-crypt encrypts the pages and generates 
-> write bios, the write bios are directed to the loop device, the loop 
-> device directs them to the filesystem, the filesystem attempts to allocate 
-> more memory => deadlock.
+On Wed, Dec 10, 2025 at 09:56:45PM -0500, Johannes Weiner wrote:
+> This hasn't been used since 7d4c9629b74f ("mm: zswap: use object
+> read/write APIs instead of object mapping APIs"). Drop it.
+> 
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Does similar thing happen in my case? I. e. swap on top of dm-integrity on
-top of partition? Is my use case supported? (I'm not talking about
-hibernation now, just about swap.)
+Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
--- 
-Askar Safin
+> ---
+>  mm/zswap.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 5d0f8b13a958..84797ed4d3f5 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -141,7 +141,6 @@ struct crypto_acomp_ctx {
+>  	struct crypto_wait wait;
+>  	u8 *buffer;
+>  	struct mutex mutex;
+> -	bool is_sleepable;
+>  };
+>  
+>  /*
+> @@ -781,7 +780,6 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  
+>  	acomp_ctx->buffer = buffer;
+>  	acomp_ctx->acomp = acomp;
+> -	acomp_ctx->is_sleepable = acomp_is_async(acomp);
+>  	acomp_ctx->req = req;
+>  	mutex_unlock(&acomp_ctx->mutex);
+>  	return 0;
+> -- 
+> 2.52.0
+> 
 
