@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FA1D41C36
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC97D41C33
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3932A6B000C; Thu, 11 Dec 2025 07:59:41 -0500 (EST)
+	id 20C5C6B000D; Thu, 11 Dec 2025 07:59:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36AA86B000D; Thu, 11 Dec 2025 07:59:41 -0500 (EST)
+	id 1BCCB6B000E; Thu, 11 Dec 2025 07:59:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FFF6B000E; Thu, 11 Dec 2025 07:59:41 -0500 (EST)
+	id 0F9256B0010; Thu, 11 Dec 2025 07:59:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 180696B000C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0162E6B000D
 	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:59:41 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA60D55EFD
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:40 +0000 (UTC)
-X-FDA: 84207196920.11.4ACF944
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 038C920010
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="W7y/aAJ1";
-	spf=pass (imf13.hostedemail.com: domain of 3OMA6aQgKCPMnhjnoVaVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--smostafa.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3OMA6aQgKCPMnhjnoVaVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--smostafa.bounces.google.com;
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B8F11386DC
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:41 +0000 (UTC)
+X-FDA: 84207196962.09.60B7DBC
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D1D61120011
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:59:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DyYFBurR;
+	spf=pass (imf29.hostedemail.com: domain of 3OsA6aQgKCPUpjlpqXcXdlldib.Zljifkru-jjhsXZh.lod@flex--smostafa.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OsA6aQgKCPUpjlpqXcXdlldib.Zljifkru-jjhsXZh.lod@flex--smostafa.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765457979; a=rsa-sha256;
+	cv=none;
+	b=Moz2blkTd6dGKRJWXikw1T+a2LhqYiOVccLqjOX0mY+zdD1XRkvKdgPrbGwW6hFSmKiBI7
+	NY+4B79Jh5+4jWT+57dleFH0vUm6giDTh3Hhrd/2WaC1WBaHN3oU804Z+1C9pxNURvx7AV
+	1TAqUhY5t17Bt/lbdA+gms50Hsm4/lQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1765457979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4W3L7Gncmv3IAVELs7REX8BF9wWmgyedLiyQWjFe18U=;
-	b=h3WUPr1PIAHqlXdKFEvxFJm1vrolCvW04uHIjUpdifhcxGVnmtuQkPVd66ZKMT2cXn7sYv
-	rgXYnBU1xFi1Z5kT4CoWOlqkMD6X8BqS2Nxq9QuJFHQT4GJIh+GKKkMIEe8z80FpJSbny4
-	L3zFkYWEWjsatAyjiS1d+AgkntWpNeM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765457979; a=rsa-sha256;
-	cv=none;
-	b=E7pb9lHmbrpIf6k1HSN2DeEt/w5DsqAZYhPK/EmhGyn0SRBwfgqo/cl1fv4pmSwwcLwOkv
-	+qjWlYVu3cCtHoqBkEXXd0XCf8P9YKOBmOzGaJLbB8C9NVaHpEuIASJBtocm0SRvazZTsy
-	ZNR+DxPdELifZq3Uk4rt8AhtyzjIel4=
+	bh=Z5uF5F4n44uHHmtIbXF2UG9WJO+vO8dPMrZl97vxG7I=;
+	b=6vYHXq4DVVhBWU67iqbGCulSd1lx7RHFXNY5uPX9Yo1yn09zOMvMo3h8bqvvqQfQEt1LpF
+	gIS0ds9BcwdTXCgzvkqSW11dkCTROiUYLd6CZv6J2024WWS1TdaPEpdykWcq7GeZ+I9mYo
+	0QD1tPXi5GkMaqJuRt2Z2oWw6tnq8pw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="W7y/aAJ1";
-	spf=pass (imf13.hostedemail.com: domain of 3OMA6aQgKCPMnhjnoVaVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--smostafa.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3OMA6aQgKCPMnhjnoVaVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--smostafa.bounces.google.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DyYFBurR;
+	spf=pass (imf29.hostedemail.com: domain of 3OsA6aQgKCPUpjlpqXcXdlldib.Zljifkru-jjhsXZh.lod@flex--smostafa.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OsA6aQgKCPUpjlpqXcXdlldib.Zljifkru-jjhsXZh.lod@flex--smostafa.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b2f79759bso38809f8f.2
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:59:38 -0800 (PST)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477563a0c75so354225e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 04:59:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765457977; x=1766062777; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4W3L7Gncmv3IAVELs7REX8BF9wWmgyedLiyQWjFe18U=;
-        b=W7y/aAJ14JtohGQuZH8qSU4owGiMe30g+C5DtNdm9uXR4k+NmuK7GmXPlGoverdhWj
-         rCJhYjLvMBpNndWVFvmdwxTFlCF/OMgfBndLGCP7T+cxOHkU5PrFCArd6X2S+sBtBqE7
-         6yV1gTnPelopfztvbiSiJeGvttTYFxVIgvcweZeDSqJy8C2P1M7iNM/pRWrNDTpwDjqb
-         Pb56y4dQyxI2fQ/GelwARUA+nQVXY0bdlj8wXfUhhNrsuVsdPO3hVUspehPCof5S/iNY
-         9LOwJHrZ0Oq2bC/ezyS3I22zZBdQPd99+hSxepYqEh8rIhEWXkhB1/J9mvrjjWpwwmXk
-         ilxA==
+        d=google.com; s=20230601; t=1765457978; x=1766062778; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z5uF5F4n44uHHmtIbXF2UG9WJO+vO8dPMrZl97vxG7I=;
+        b=DyYFBurRmjGFypQVrQy1gJx5aMG1N4Rg1bnZ4YhIH0mI6H4X+Rc5J9lh8LIwUHAE7G
+         LM9baLD0XCvXaR02qlF8LE04CVGXAmGq9WkFYxrxUQl4J2IBKFkQfyFjDqwxNS4vNNrs
+         S7UjA8LBqaGrDWqcg4BUB8F0kxwbVAr9ClFmt22E0dRAJuT5A+eOcsvJ7o186addV4Lp
+         q8m4UqyJsvLjZ+bISHTp/QQTnSsbRnldGE1us5QO19x/siIGVt4Fok4+Uli3sA1+x+pR
+         WXKlzR2VstD5cMhlRa/WLPcsYP9MbYLXnjoYe2XQjO6IxE8YiZqFM0L3TjmE7NKITslO
+         2qTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765457977; x=1766062777;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4W3L7Gncmv3IAVELs7REX8BF9wWmgyedLiyQWjFe18U=;
-        b=gdt7uAYCI1BnJeGKDvnfVqPgoVjvQc8WgnV4BzKYhN42yonf+v0HX1qWMy7duckxvm
-         3XcTfhVtunHinTJt7ySpnTuj2bgxFeMEW3nqLNkQOL62ih5mfEPpHpxqNIsqOrQNOqqq
-         5RoysT1boWFIQk+Gh3b1KhZRxfA9DvxRwVTWfy6+lT3bQA+EVtYMkO2dGAd9KDk3z2JN
-         /0OUm4hK3z6c3a5l+xrF6ARRZbaLuXLp3pDh6ua9ySaywuDLE2DZg7EW+jibuPLxEFtZ
-         hKPGp0DiBWLfq6cNEp7O2/z8BM2u30ILZLgmOZ1ghhvoL34uXA6sZqxNExU3ofw5lUjz
-         82Sw==
-X-Gm-Message-State: AOJu0YzuhYIBA9NEMv5yE7IZl+YaSMZ9uD0hBXuzCWLUh+JoP1lx/5iJ
-	k+Wt3XkmNuAR2p2pUPv+NCmdFpcbMipQ9UNuXTEK+QGZ0Kj3e9oyB/r5bWyFHPYBdLMSD1a7TNU
-	uVyhrsQ5r2qjlworsfxTZlsO4nRng4FlroNCy5nwhP/q6Lq1+vb0Eo4c2tgUB7259BjKNC4hnWS
-	D8xB5y0wQRBGARneuHzeafyvwBhe/Ijm0mIFaerjcA6Q==
-X-Google-Smtp-Source: AGHT+IGT9KfwHQf97dyte1BqZ2MoVgI51JA3s7OwveB26iyIwRb9n5NdLB5eerBZ7imEENFZ9FQDui0qZLsYyA==
-X-Received: from wrsb10.prod.google.com ([2002:a5d:45ca:0:b0:42b:5422:4add])
+        d=1e100.net; s=20230601; t=1765457978; x=1766062778;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Z5uF5F4n44uHHmtIbXF2UG9WJO+vO8dPMrZl97vxG7I=;
+        b=TRw6YjSMh0Pdzy4nDqE2nXMBoAaInoHG60IZSvj9DRvWJldhifLgR9DdwL2k4YTGWK
+         LMp+CHjZ1hXYx7UJDmDSGEvgiJHrQTpwkMuLstjJATvMk0jW92oMLdTz0pyEDEc3kI2Z
+         dcYZjgTiVXBOuUjt2hyekJe/6p1A2rr8HDQm6C06D6mAAA3LAks6MsBNlzX4pGv+yojR
+         6Kbu6Pmnjq9wkiUoxk5gKeQf1OZ3Wqh1Vt1pqvTFMP4zI58yZ6mwFjR5i5OgL/NPM2Fu
+         NL72L9W9OftgQpkMnM/kH1UqX8ndb3pbNZd2JuhefpvbUuzsQMNyX90ia448vQqLrDBb
+         IF+g==
+X-Gm-Message-State: AOJu0YyzoXMRSlW5hn2M1RNQ9kynTAKyFhN1RMXsKzF6PdWw/7C5gQF9
+	tp0qX2Inl+K+qPRAOA5xkaanzRaAfGBSeFbvYYm7ZR8+i9vBTrWJYgb/6q2j98BMlCBg46GKQxW
+	8P6xRtMLNQcJ4lDVzJf02V+xX3G1F36keaPRGi004TV/xweIXSHLHiOSmG7d/u2h+mP95maEzqJ
+	HnpL+3G7tTWTkAdqPjHRIb+O8D0qCxHhMZO1yYAM1Cgw==
+X-Google-Smtp-Source: AGHT+IEzrlA/D2+Mzh+inyFuHFFtWJkme4dxyA7uMTZWAlUftjFK9QGFcKLMuEzVGMzE2aQGlGAf5icqRkZxhw==
+X-Received: from wrvk5.prod.google.com ([2002:a5d:5185:0:b0:425:f04a:4d91])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2c10:b0:42b:4061:241d with SMTP id ffacd0b85a97d-42fa3b137dbmr6252217f8f.59.1765457976998;
- Thu, 11 Dec 2025 04:59:36 -0800 (PST)
-Date: Thu, 11 Dec 2025 12:59:27 +0000
+ 2002:a05:6000:2087:b0:42b:4177:7136 with SMTP id ffacd0b85a97d-42fa3afd48dmr6497099f8f.32.1765457978004;
+ Thu, 11 Dec 2025 04:59:38 -0800 (PST)
+Date: Thu, 11 Dec 2025 12:59:28 +0000
 In-Reply-To: <20251211125928.3258905-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20251211125928.3258905-1-smostafa@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251211125928.3258905-4-smostafa@google.com>
-Subject: [PATCH v4 3/4] iommu: debug-pagealloc: Track IOMMU pages
+Message-ID: <20251211125928.3258905-5-smostafa@google.com>
+Subject: [PATCH v4 4/4] iommu: debug-pagealloc: Check mapped/unmapped kernel memory
 From: Mostafa Saleh <smostafa@google.com>
 To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org
@@ -98,14 +101,15 @@ Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
 	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
 	Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 038C920010
-X-Stat-Signature: 8w74uznri8x79jsy78kd9q4kppsk1x9a
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D1D61120011
+X-Stat-Signature: o4wzieyhrkkm9tu9csrmfmpmaacaspox
 X-Rspam-User: 
-X-HE-Tag: 1765457978-573025
-X-HE-Meta: U2FsdGVkX19Ccc9wiCSnFEYgCd2Qh+vMUCU6E3P9qEKx6gxZd3rDwpq0UaaMopnTgHP3hsfIQb6VrF5uAySyINqbBYhAU6LOBn67iCzAmw3yncHcQ9t9vipL0UtwZCgXW0bTUaoMXIQ5OScLzVnKlLTsOXrtDukdx3DDS15+5FOoKmq14jyGDBxgqlisvrU3h1DJz6F/PNUcZtLFDFOtnB99Kv4xRkqljL65tvo3pQcgBauqn57LaDWT/DSrSpzM2dBFzqXrEjeejUi/v73kVLku0vuwsPm//i/o7Vl/QwxA/kKM5QuBV1y4JkzzN47owFJvOctRZ21YU2zPt+SAijL9V3R9lLA4j3MgLQBj1NUkhLAlOWjhJUOR2GLeTR1cUo5xs2jStI5PqWNyAz4w4K4JyeZPuthcPZ/UHrYRKR+EMv+SyRdUCNA0rvEa/KLu+heMc/OXq9jH51NYGrnzqvRLvuCKG9qhvb5hCo4rOmNiDim1HM+OEMUiZJHaFfHI9OjTnXf4nO4gCDaN6QCJ/eYMBlFDHgdU3yV2yMEsyrv/Rhyz/TwhXPkXX8PBO+abK0pWy8/FXhFf2dredIHPZ4gmr0zHcTueVYNWrxgG5C+0XACs3RbgmXW5WABIw6XaxIFEZYOEeRQUy2bzp38LmveL0rve8s93xerWi3H49MTXSdXI7V6Vd4D3v2ezxTQ7xRDGzOERBolujZ2cqUIno+IePIBJFxPdkc9vbWs6WSI2Sg7boWbY80LZN2wLT1r5PmJTjYajNIQsEHLMdKO5xMXfdxUAxj1UfAjPufCbQRwPjRNEm6K0oFBu47WJdJaQPE+rxZdenDDw4pH2JJOto6z27AaWexxTO1q+sZqnory5DEMUONEyL/RG9d3w/bZa2s5nsx3JEF3V4LXmqg5ynC1TXWsm8dCcMBQmgcnqoz2svlHqXE0YW3wFb0aXqGyZEvi2n6oRohNJX91hg3u
- lbduVhd8
- r5iNRBV1rQ5kflLXWex67k14Hq6/nnkebTvLjyPUhXtj/wqRyxeN7S6JBMrgLkFpPMkmAAFBfY4R2yQ08rrc5M/EtJCYYQvrV7j5VDj9OuTLl3nuvEpyiDXm3057Fp+Etz1goSA56A6Je6LxekcSPIqL0V6hJ1/cPU/xc91+l92IY7GYSr3l31cEtVpbmeTSXkPzygjEqtaptli4HIKpS8H3eN63nXD0/AV6Xmk3rqnySazrBno0NLeeZ6m4Gk97IAe2LWmfFPOB2vWv/0T/UlPTbgq/L10hcacIS+C7tAmU9Qm5cQ78Sn33OwAAC6LRNsdY9H0ZjRwciCLIhiHw090HubyC6TGCgwZWpQb/dolwkYB3C5nQD98ZbLhBiZE1yC8p59pJ76KDTzYpy8KzOBmj02LXkvs5RqfPVGbwH0E/XZ2eMgkt5cUsVToRnhCj3QpTjQFhXVZpI99o5YFav6rKLr1Ehl5p0yAgROnwbQUpQE62qVfYU1dfrcYxAmO631YjyEOBzI4HxDEVKwZ4O+Tio2Lcc34oerdvhuZCcX/YWEtbmT00RchuhAA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765457979-803968
+X-HE-Meta: U2FsdGVkX19xPFcwWkvx67fHOYVSZlliEWBLvPp4aw/lRr0la/cJaz9XiD8y8X5nko8k/SE7WhiI5jMrnWJaVdqTNPs+cr+caTnoLzCigQnGjpaA3UHRoxwgCTrMyabsDk4QcsL/npiaeJb/qf+vpKpZesb2ayvV8SDXzcGoxVldbA5DG9F3CL5+L4fPrpUxB1GsNWF1Js9Ce2KoZ1jsfcZTxZmYA9DSwTJM3Sw+LzYSV30ecDawICBpSELlroWXPBSUpLp3QZsCgcyR9iRpLYSnURdCsZuliQyPxMST6B83NEhMfP5H+ZeCm2x52s1nGQPzlKHzDEnpbBpb07TV4B0iPzrL+kPrRghDC4wt1rFBNWqoEQU38tvkLnfBD4oqn0GGGPg93Ryu+2EyIrt5aJ0esGAArY4wnRq7D4C4d+1FXTfrrw6TVtjAsgTEE7/VCy/Zqju1EURBVqUbk7gvrzpEhxgfOasdGQ3H6ZBjKf2EK1KyF1X0PaLTuV9Jg8REhtYSh9djOQs/bq/dsQZegshNyinzC7HzO1QZiUFc/jkUv1z/k93drUwXMHRRdR3AHAaSsnBqZIoJwC7QsHrMnHkd0KZOKZYvseKFt22Km5RsBwmMWZaL1CaR0qbesM9V6Tog4OgP58gO1Q5vWnM4HE7/Txq1D+4zMWRGKw8JeLS1wEKQ+svR5UPtP5vnNfNvtCQ9sni/TP8w6RMKi/xBXScb+Riwh2lytTE81zLu9ptjWRQydxbQFGw2Oy3yGNhvnh0Tz7WuXC6vDtjaEyFqbCM/ZNvFvwPA6vfBdf0ASlRbdSeoev3J52MBTidb9ssUIkqEMwiTBF2AtUP6TUNyM+8/VN0X4ysErzOBTxRV6vyqk/8bSkOOCrScVqfFJw7j2BovwVPReUvIkG/mgng40aSQH/HY6Z0NkEMxamZIh7/L2ym1t0gr1AIRhVA9RDBQLy+kXJu1Oy5mjxo41qY
+ 6srsEXEV
+ f3CyVkhXhFDrlValplWcgXspmfi+fp0YX3E9woU56RslmNnQQCxo1k6DP9V02XDvZ0/L6xQypC8fXTP8h1Tgtu+uF7DmFDhHa98eLwfObizWnAJRFpirkOSy3ya6XRIbcvs2j+YiPmh0mP8Q/eroivgU5FVb2LozVddYRwvLtLMccd57XeB5hN0wl4eRQ8NycqGn2f8dKmAK/YXQztahrA++bm9jKRtL2mGZ+OwUK8js5wHvVGey34E1dkJnt92R3rWiMKWs2NbksK2W40qBdLFXE61h2zbzhTRW2c2UK0dYrBwjuPyZRJtIE1B6aSV2itPZtwdvVwX3N9Gm4MqBsz75Et+4/uR2VkZCvSaWtAVaOPyAdL+fDCVu9NahvR1JmvOwATj/QUFC6lHsLW1sJr+847Cx6B5CSLu0lIzNK1tlv/okPiQLih54iN2PmWH6T11qV+SS9U7P1wpH8DbJGNBzcVSaehf+n4vPsX/eaWu/edJ/H0f5t6O3wOS0HaVAeka5sMVTtcAbJVdPAQkm/43QFw7wbviS1KSSCVUBIEvRgbfHluOaL4MoZVa9GVMRIZ4tadtYXlWO7inu0VfYwAKI1qg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,138 +118,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Using the new calls, use an atomic refcount to track how many times
-a page is mapped in any of the IOMMUs.
+Now, as the page_ext holds count of IOMMU mappings, we can use it to
+assert that any page allocated/freed is indeed not in the IOMMU.
 
-For unmap we need to use iova_to_phys() to get the physical address
-of the pages.
-
-We use the smallest supported page size as the granularity of tracking
-per domain.
-This is important as it is possible to map pages and unmap them with
-larger sizes (as in map_sg()) cases.
+The sanitizer doesn=E2=80=99t protect against mapping/unmapping during this
+period. However, that=E2=80=99s less harmful as the page is not used by the
+kernel.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- drivers/iommu/iommu-debug-pagealloc.c | 91 +++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+ drivers/iommu/iommu-debug-pagealloc.c | 23 +++++++++++++++++++++++
+ include/linux/iommu-debug-pagealloc.h | 14 ++++++++++++++
+ include/linux/mm.h                    |  5 +++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-index 1d343421da98..4639cf9518e6 100644
+diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-de=
+bug-pagealloc.c
+index 4639cf9518e6..424e00cd103b 100644
 --- a/drivers/iommu/iommu-debug-pagealloc.c
 +++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -29,19 +29,110 @@ struct page_ext_operations page_iommu_debug_ops = {
- 	.need = need_iommu_debug,
- };
- 
-+static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
+@@ -9,6 +9,7 @@
+ #include <linux/iommu-debug-pagealloc.h>
+ #include <linux/kernel.h>
+ #include <linux/page_ext.h>
++#include <linux/page_owner.h>
+=20
+ #include "iommu-priv.h"
+=20
+@@ -73,6 +74,28 @@ static size_t iommu_debug_page_size(struct iommu_domain =
+*domain)
+ 	return 1UL << __ffs(domain->pgsize_bitmap);
+ }
+=20
++static bool iommu_debug_page_count(const struct page *page)
 +{
-+	struct page *page = phys_to_page(phys);
-+	struct page_ext *page_ext = page_ext_get(page);
++	unsigned int ref;
++	struct page_ext *page_ext =3D page_ext_get(page);
++	struct iommu_debug_metadata *d =3D get_iommu_data(page_ext);
 +
-+	return page_ext;
-+}
-+
-+static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
-+{
-+	return page_ext_data(page_ext, &page_iommu_debug_ops);
-+}
-+
-+static void iommu_debug_inc_page(phys_addr_t phys)
-+{
-+	struct page_ext *page_ext = get_iommu_page_ext(phys);
-+	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-+
-+	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
++	ref =3D atomic_read(&d->ref);
 +	page_ext_put(page_ext);
++	return ref !=3D 0;
 +}
 +
-+static void iommu_debug_dec_page(phys_addr_t phys)
++void __iommu_debug_check_unmapped(const struct page *page, int numpages)
 +{
-+	struct page_ext *page_ext = get_iommu_page_ext(phys);
-+	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-+
-+	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
-+	page_ext_put(page_ext);
-+}
-+
-+/*
-+ * IOMMU page size doesn't have tomatch the CPU page size. So, we use
-+ * the smallest IOMMU page size to refcount the pages in the vmemmap.
-+ * That is important as both map and unmap has to use the same page size
-+ * to update the refcount to avoid double counting the same page.
-+ * And as we can't know from iommu_unmap() what was the original page size
-+ * used for map, we just use the minimum supported one for both.
-+ */
-+static size_t iommu_debug_page_size(struct iommu_domain *domain)
-+{
-+	return 1UL << __ffs(domain->pgsize_bitmap);
-+}
-+
- void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
- {
-+	size_t off, end;
-+	size_t page_size = iommu_debug_page_size(domain);
-+
-+	if (WARN_ON(!phys || check_add_overflow(phys, size, &end)))
-+		return;
-+
-+	for (off = 0 ; off < size ; off += page_size) {
-+		if (!pfn_valid(__phys_to_pfn(phys + off)))
-+			continue;
-+		iommu_debug_inc_page(phys + off);
++	while (numpages--) {
++		if (WARN_ON(iommu_debug_page_count(page))) {
++			pr_warn("iommu: Detected page leak!\n");
++			dump_page_owner(page);
++		}
++		page++;
 +	}
 +}
 +
-+static void __iommu_debug_update_iova(struct iommu_domain *domain,
-+				      unsigned long iova, size_t size, bool inc)
+ void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size=
+_t size)
+ {
+ 	size_t off, end;
+diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-de=
+bug-pagealloc.h
+index a439d6815ca1..46c3c1f70150 100644
+--- a/include/linux/iommu-debug-pagealloc.h
++++ b/include/linux/iommu-debug-pagealloc.h
+@@ -13,6 +13,20 @@ DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
+=20
+ extern struct page_ext_operations page_iommu_debug_ops;
+=20
++void __iommu_debug_check_unmapped(const struct page *page, int numpages);
++
++static inline void iommu_debug_check_unmapped(const struct page *page, int=
+ numpages)
 +{
-+	size_t off, end;
-+	size_t page_size = iommu_debug_page_size(domain);
++	if (static_branch_unlikely(&iommu_debug_initialized))
++		__iommu_debug_check_unmapped(page, numpages);
++}
 +
-+	if (WARN_ON(check_add_overflow(iova, size, &end)))
-+		return;
++#else
++static inline void iommu_debug_check_unmapped(const struct page *page,
++					      int numpages)
++{
++}
 +
-+	for (off = 0 ; off < size ; off += page_size) {
-+		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
-+
-+		if (!phys || !pfn_valid(__phys_to_pfn(phys)))
-+			continue;
-+
-+		if (inc)
-+			iommu_debug_inc_page(phys);
-+		else
-+			iommu_debug_dec_page(phys);
-+	}
- }
- 
- void __iommu_debug_unmap_begin(struct iommu_domain *domain,
- 			       unsigned long iova, size_t size)
+ #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+=20
+ #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7a1819c20643..3763b71a7d3e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -36,6 +36,7 @@
+ #include <linux/rcuwait.h>
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
++#include <linux/iommu-debug-pagealloc.h>
+=20
+ struct mempolicy;
+ struct anon_vma;
+@@ -4133,12 +4134,16 @@ extern void __kernel_map_pages(struct page *page, i=
+nt numpages, int enable);
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+ static inline void debug_pagealloc_map_pages(struct page *page, int numpag=
+es)
  {
-+	__iommu_debug_update_iova(domain, iova, size, false);
- }
- 
- void __iommu_debug_unmap_end(struct iommu_domain *domain,
- 			     unsigned long iova, size_t size,
- 			     size_t unmapped)
- {
-+	if (unmapped == size)
-+		return;
++	iommu_debug_check_unmapped(page, numpages);
 +
-+	/*
-+	 * If unmap failed, re-increment the refcount, but if it unmapped
-+	 * larger size, decrement the extra part.
-+	 */
-+	if (unmapped < size)
-+		__iommu_debug_update_iova(domain, iova + unmapped,
-+					  size - unmapped, true);
-+	else
-+		__iommu_debug_update_iova(domain, iova + size,
-+					  unmapped - size, false);
+ 	if (debug_pagealloc_enabled_static())
+ 		__kernel_map_pages(page, numpages, 1);
  }
- 
- void iommu_debug_init(void)
--- 
+=20
+ static inline void debug_pagealloc_unmap_pages(struct page *page, int nump=
+ages)
+ {
++	iommu_debug_check_unmapped(page, numpages);
++
+ 	if (debug_pagealloc_enabled_static())
+ 		__kernel_map_pages(page, numpages, 0);
+ }
+--=20
 2.52.0.223.gf5cc29aaa4-goog
 
 
