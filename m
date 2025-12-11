@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9EE9D41D7E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 20:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FCA1D43344
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 20:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB7456B0005; Thu, 11 Dec 2025 15:11:23 -0500 (EST)
+	id DC42A6B0005; Thu, 11 Dec 2025 15:24:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66866B0006; Thu, 11 Dec 2025 15:11:23 -0500 (EST)
+	id D9AD26B0006; Thu, 11 Dec 2025 15:24:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7C516B0007; Thu, 11 Dec 2025 15:11:23 -0500 (EST)
+	id C8A086B0007; Thu, 11 Dec 2025 15:24:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C46636B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:11:23 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F30F134B40
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 20:11:23 +0000 (UTC)
-X-FDA: 84208284846.12.FFEA014
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9A6A610000E
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 20:11:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t+MNRw80;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765483881; a=rsa-sha256;
-	cv=none;
-	b=01CPKiltDi/4wK99MWr3/Sf14zinPegiyelKVLVYn5yX0lkgU9XzvK0ysagtGGihkAXVCf
-	3a1595y0KpW2Tf2iTJ7Hq0PZxHG9LkKv4cEd7JheRBaOOSy8AG66TFTfe3y+81BAZmXW0A
-	1IwyIlh8AsTovZaZH3/+x7PdBjKpGDc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t+MNRw80;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B61BA6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:24:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40DC9160310
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 20:24:41 +0000 (UTC)
+X-FDA: 84208318362.11.EB5E82B
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6F29B1C001A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 20:24:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nhUPYhGH;
+	spf=pass (imf20.hostedemail.com: domain of yx.0xffff@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=yx.0xffff@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765483881;
+	s=arc-20220608; t=1765484679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXMCn07pdTFg6hWMUgVjMPRl4KUnIRjEdxDWebh/gNg=;
-	b=hq54j35qrDj5qiTKidBltf+7gLJ3x5SVEV1a6WzyDUjOwwVv9wMcjn9dy64cPWRCBrKDAs
-	juDv8GjJlsCdb3IsWwL49gu0NUw25Kz3s+3mKy89iWFfheTLwkLEO26Js+zH/uc3KTeODs
-	j5aX+RmT6Tq1aMieI+HwPOCKBbW85G0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 709E241B4A;
-	Thu, 11 Dec 2025 20:11:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9772C4CEFB;
-	Thu, 11 Dec 2025 20:11:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765483880;
-	bh=hvv30Ubhv2ost49RLGAz7UHR7RNidRTm8ejb5Fnwvcs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t+MNRw800my4MEFowljyIIUObRxfxjqrgwieAoFEvcCzoYUJJZsGwjXxC+IANhjBy
-	 MtltwwlP37apbn4K2x4NXEnCVDz9cQbUoq75lE/DtLsLjahHv6yuae2TRBqyiIogi6
-	 Jx1xttCkWrA6C/ZbI6NpswyVnusFemqXqFdlzo3w=
-Date: Thu, 11 Dec 2025 12:11:19 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: <ankita@nvidia.com>
-Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
- <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <alex@shazbot.org>,
- <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <cjia@nvidia.com>,
- <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
- <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v1 0/3] mm: fixup pfnmap memory failure handling
-Message-Id: <20251211121119.0ebfd65ed69b5d5f6537710a@linux-foundation.org>
-In-Reply-To: <20251211070603.338701-1-ankita@nvidia.com>
-References: <20251211070603.338701-1-ankita@nvidia.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9A6A610000E
-X-Stat-Signature: b6ez5i47dbtmr45xxeegd7apa3u1tqu7
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vS04UpnMf1M3nTFS2HrhXej7VoyiDsU8crRoKlTWiC4=;
+	b=up3+QRDXGP0PAO1dTBCKcZ/5wyx4IBA7q4841APtsQi+OwDZeIp6BUrWtNUhuiJYkZFA57
+	LzmeOHud5ZoLa+MMdRyC6KN3NARlv8WKxyL8dCnvALwTTc2WVbyGHltkF5AhLKLXVJ6p4w
+	nx5sN0tzoX0gZ2JXsz+BBYwUzi2MfPk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765484679; a=rsa-sha256;
+	cv=none;
+	b=GW+HKx4fWjRuyCsG+lheDn8+vYc1XIg6GEb7SU9zS22vUGkGuMT0MSmHsO9IGI/oSRoyeh
+	bnVIyWzvWclvNJ9f503AvFnHH3wXNpR97dlSK8cX50U2l0kajNGdP0Ts/lo6taOH+r1RSD
+	R8Gk8jDH/B3C6eFwdIyL6tOKcD5yzE8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nhUPYhGH;
+	spf=pass (imf20.hostedemail.com: domain of yx.0xffff@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=yx.0xffff@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29845b06dd2so5910805ad.2
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:24:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765484678; x=1766089478; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vS04UpnMf1M3nTFS2HrhXej7VoyiDsU8crRoKlTWiC4=;
+        b=nhUPYhGHYE/wi57iBcycKL+xywtnmRH+7PTyLCkXp5fzZMPGheXH/YO7UPb0ueQc4X
+         qHPCZ3AyMTfuhEu4eyMNLFUY+Z4/gbuyTtNDunOo+58eTsEe4bHvBLFz8v1oCSfmptBa
+         FgimTVQXzv63LsgAqedd9fYtesWwQjGe08lN+5PzKmdsepDGlHvjnhCDIg22icsNg5tr
+         RaNOym7EE62NChIL5F1VQTXYQQP2pMzV5ZgBCWjrN9QAzhTjfsAEz551sofnjztI7C4z
+         wvI49iELKY1woUPfqfWzMxEhGSOMbMMuAiLM5QyeSfM1pe9f5NbSWXyHRoDf2yG879hm
+         kl0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765484678; x=1766089478;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vS04UpnMf1M3nTFS2HrhXej7VoyiDsU8crRoKlTWiC4=;
+        b=q49u7o54yotvcYNnSeBaRGwL/roxVrbjnDCyZR6qd1BH0ZcLajVeqJle84LHhk78nE
+         tlWqH+89wMMYKBMgzHFgL0j9eN/VMgO05gGWAEV0OIccvV/ZntGs6mPez5huE5BWElzn
+         l3JXhEbMZnOdguGhaFA4kR1UkMxKGsUS0vnquy6WhJgA8PjBem5IJt+mNweUqUWrbZkc
+         smglwT+V6cAmfmtRYHgSRCFkU+KiM5y176MnFs4CS7sFSnI5T2rrk9WCFfIaTABn+tLB
+         Ycd3rA8zxdpWtbwRNBvi1pOO2g63QAZadHGPKT8t6LzNLDOfK/cCWyHn/jeD0InIzxYi
+         OpQw==
+X-Gm-Message-State: AOJu0YzTl7P1TDp0eWEYiUTsMTJIepYu1vYx5SbV7feuT75DFA95qqrG
+	GXdZAfxeXsqxh9l/pYDtXT1VXbzGlJU/KgFCV+xoKe9DYqWD9nkFV4o3
+X-Gm-Gg: AY/fxX5+l0NgCCk6EXfv6dwnRwMbs6IAgZOlO7UY70ThF5Fq31lTa9gnI1Nns2cdTDo
+	jDDQTwLORbvCSILbd5c0S6MMXxwGy6KN5UBuDWoTRaT29xmZoenZL3ovXfTRQqZGBGQp+3sxR9B
+	dZkOunUFMs17gEt8cQtRg4EdKPg4nLOcfmu0tvxdn3+mvr+JW3jTrEppz+GUwuGdBcNgHuYXNg1
+	GdtCuqLURlANE6vueUPXg3v2zMSD9GTQKusaWVWAGzwKn+S8+tjkbNV3WGz/1t2M+sTmnu9fiya
+	7qAuRYH07+RbhLPTbVCLzxb57RnCLJZuTpOSqxKpULcz7PRSWZ2b8pHpPrPoN4kuMB+TQ3kNwsh
+	doaI1bfEe/y21HuwwClsddQAPHE/k7Lp7qH3P3g0AtBTjNV+bDkzauugTPOo17eDcvdB6szxihv
+	Mk3HlI8sA=
+X-Google-Smtp-Source: AGHT+IHjcM3lcap3FKNCXDUPHth1hx6E2j82st7BoSmYCTHB5B3f+XK7DsR/nSUl1x4LaQWzBb7btA==
+X-Received: by 2002:a17:903:b87:b0:298:52a9:31d4 with SMTP id d9443c01a7336-29ec27edb12mr96231595ad.54.1765484678170;
+        Thu, 11 Dec 2025 12:24:38 -0800 (PST)
+Received: from localhost ([125.121.98.163])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9b37422sm33149375ad.15.2025.12.11.12.24.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 12:24:37 -0800 (PST)
+From: Yang Xin <yx.0xffff@gmail.com>
+X-Google-Original-From: Yang Xin <redleaf@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	mhocko@suse.com,
+	rientjes@google.com,
+	shakeel.butt@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yang Xin <redleaf@linux.alibaba.com>
+Subject: [PATCH] mm/oom_kill: add sysctl_oom_dump_stack to control kernel stack dumping on OOM
+Date: Fri, 12 Dec 2025 04:24:33 +0800
+Message-Id: <20251211202433.4495-1-redleaf@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oe335boqrmy3kgm5useecugdoi611jfx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6F29B1C001A
 X-Rspam-User: 
-X-HE-Tag: 1765483881-277929
-X-HE-Meta: U2FsdGVkX1/u2CrgxIvWUXFPIzuVs9U9vIQvRbqrVetppRwWF7JL/W0Kur8ZEzeS0SCAaT2yeikxk29QQcmKn+ecbGDTjOLirtNk2An/PQlKv8TXvOVrDplKQz67SFzNMSmre9PmNwVOvY626ZyYsBebc9gWfjQ6DHmzxefDqTPYNy0/Ci0SAS0XVDP/eM18IxUxfuuoYXrOYSpdd8oOI4OQIpwMmAoKxj9F5mIC3SfAJLpeuufGrI1vGsRvFzolI77/bv5EGBf13D4O3+mLY7G0lZSqYAI6GhFpYbPCHbanxzNrYUR7scqsA4WBMGVcOaygc2JfAOAUPEh9RkTqIABIhKIhAPEV+ci+CPW5IOy1zZZcV5NRLUFEGTOlZK0FKl2u4rTlx+N8spjNJNb/lwY7OJv8t+WrshGmsRTsLRxlvRvJj1L6Om+d0sci1/gWX/a+pi8Bqzz4vBw0/9KaYsK4GOEBVFrtjUIrTk9DzAgN+XJd0CRBM7lirLcQS3KUGk3NoLDVLC409mNK/7frjFka8wc3Uh1eYGpeclmhNW9Bi9HVPMoWBMbAprcRnZinGOeXyrJOw1/+MvSsLU/eKGBbYgmmpLNAsa4vYngaokolO8HiS6PyJ6xtRl2zsXoyxJ8jlvdcKajWNoTSx4+l1BgxTuh27MUfpH/VyrlrIZIwF+FdrhUpbisYfDLl6qlBVP1963hS9L16z2lNXhoFC++K2uspf2cpNowbY/ArMk637nONfZvsXsGayqOuh9gbktyMy6locMVLFw12gIJvxnSTMUZjIYgYqItQXomeOoeeA8juUperjlWCOZwhVD6WXkKNGIMGvWbRyjY0LCSEgcWBPaYhOM8nkGhoF1rZiLxg2M1sGSrvz6nPLBqgkLoCJZFoeLjGAelW60eVMVuILRE+F5CSdSuIJmt0pLa70gv2FOWEAjeqNG6qff4SCL5E4fcbRtwLWsLK3m2e5UZ
- WR5vm9HJ
- YhR2sL7iv6xvfxNRXI2vuHHWBrJHllHaSD8m0V8hT8/DoOgZ7lkdfEOmH3R1sAnig7PqwGKeVLQln3zzdEPeSQDeXKO5E67UnS2csKyJ7FF6W9EhE2V+TB6B6XUF7F6hAsPy9Jn1sNZMIpHOvc8Xq6pjXLaXY+PB+E+jmLWS8KYpj2UgMYioro9q+VXpEKrc9JzKnXgTFmezxrZDLiEshGPLgCjA+n01U8CssUPAVFFXfQOcGE9bCtA2HMd7v4tuTChD+7mhDY30H+W9Q07cTQDqodDWqTMGM/FHUaLIRHVaJ4Bbl3dnm9nuk9C2Ao/jsBptaGLWKa7bjWFuVYGGBW6pX4w==
+X-HE-Tag: 1765484679-927656
+X-HE-Meta: U2FsdGVkX18Uqy4zUGV6edWiCChAZj4rOhzDH7ETiJkyKGTEwgUlx0xfPeWfVFEyaAxKY8H9BK7MiS7fUYkJbhpogq/UFxnHZsF9l8NcdWU4gyn+UqBbZYoorJzRzNn7scZhUeOVqJjZ6ajSp7/Zr/MMd7WHRfzwi8bzlJ7gMTHIiwtNpVnbCoFlk+r7X6NgUdWepW3ZhWz9z170z3SuDnABPyFmWepAZCDOElIVLHWtK2+lScJCKSumMa9rE91BF1muOqL+XZq35lLp4S/4s5zCqJEpTGQFL01ZQG0zu+s2IGuN6nqnZHl06oXrLJt4VmSFemJ6zsJV4FH8YUx6K/zLTj1XV1aUWDmh2W+J/fRTFMzT7LjyjMtb6vmGtat5vFM4DwWFQbEGzHqxDN8/q5t+pjEE6/KQaKLvmuRPwuhp+sxh9SBc1X+hioEtyucCOuwB691moaZ/ObsSbVxWsiVoUE07SLyRuYnULgOZ2+xpfY3i1Y9zcsxl8FOPad42Ji4HkSZI5e5a5DYPcUPPkl4acrGBqxpycOaOF3n57CWNYCobY14dfxf3+QThQy4uCZNnvNb+LmyvHlrWMltWnPJBty0o9d4JYnL0MHhW1FJaOnB8L2QYBgcDWyCy55X/IyOfJHleQNWFJHEACUOWTiQQN4r2u3oVU7LJRCH2FM0WoV1gDXHUmyiww3s7ED6Yn893dp1ty7H+HBqJOJGF/NzB2RNITG+Bfwz7RPDi5UtxNOS3P4kBLBRHmxvrz1o/8Y15wOnW5XM2R9i868/PCnWGzHv6VclPl1Uwxcvjs2tc8OdM2qag6Hg/DVdJZ0J7ZOTpVz2n0ysNycdQv7oSd8dHpUVP2ISyWFJvjpXEaukaRbSp3Yz2vMSePPf9qNGeGaO7nmP67W3meIDHvi4Q+Fli44qHhl3OkF//LgbW9Czhg704qcZgJbEjTaeZwUK5PPgHzI+at4/g5zAg7vS
+ PU5qD8vF
+ jvfI06FvVwH5BRgZzgCPhz2mBPedrHMqR4fVxZjYUNPUibSkpEp1YOryM5MsrKns1z+ZA5yVqN4r9SlVRCCiT3ZflSnwM+QwAsreCZ47MTHKLg0bsKCbD5ckxL/qpUFppgRH3/3Ykx2FEOnxTSX/RuOOVksPU53lS8i1zEQLrK2T4YfcJBGbL/TdqS+FAubmHfOUwjVehoLfXbvVJNOvzGDMvn/4fibOCJbrokdMQ04w2twedgNAXQRQzupPsFAnnA2McZXv2Z0PPXhID4OERafQoPR4GiQ9zNAqg41Bka1Cpzh8Uq+PypvVQm1Y0mctF9APTTGAlKFbcJZip18IfEY97oCA0r1TyRJLKujYv3ySLDDosJxSJ7TjQXJHXXN0KCMFGGoOStr1ZWjvr7hLkFRkIGiPE4T3j1Md5vksjLFZnEVsrbttVlDdlS0BR65Vbg8kLaTdANM7FIrtFXGjH6EcXUlWlimrTR6IVcqoKgOEcysxaoGcYELHQN9mXXWvrqvsNMz/vlu5KlVQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,39 +120,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Dec 2025 07:06:00 +0000 <ankita@nvidia.com> wrote:
+    Most OOM kills triggered by user-space processes produce kernel stack
+    traces that are not helpful for diagnosing the root cause. These traces
+    usually just show the page fault handler or system call entry.
 
-> It was noticed during 6.19 merge window that the patch series [1] to
-> introduce memory failure handling for the PFNMAP memory is broken.
-> 
-> The expected behaviour of the series is to allow a driver (such as
-> nvgrace-gpu) to register its device memory with the mm. The mm would
-> then handle the poison on that registered memory region.
-> 
-> However, the following issues were identified in the patch series.
-> 1. Faulty use of PFN instead of mapping file page offset to derive
-> the usermode process VA corresponding to the mapping to PFN.
-> 2. nvgrace-gpu code called the registration at mmap, exposing it
-> to corruption. This may happen, when multiple mmap were called on the
-> same BAR. This issue was also noticed by Linus Torvalds who reverted
-> the patch [2].
-> 
-> This patch series addresses those issues.
-> 
-> Patch 1/3 fixes the first issue by translating PFN to page offset
-> and using that information to send the SIGBUS to the mapping process.
-> Patch 2/3 add stubs for CONFIG_MEMORY_FAILURE disabled.
-> Patch 3/3 is a resend of the reverted change to register the device
-> memory at the time of open instead of mmap.
-> 
+    Furthermore, dump_stack() can be expensive. It often runs with
+    interrupts disabled or holds the console lock for a long time,
+    potentially causing system latencies and preventing the system from
+    responding to other events.
 
-Strictly speaking, [1/3] is suitable for merging in the 6.19-rcX cycle
-because it fixes a 6.19-rcX thing.  But [2/3] and [3/3] don't fix
-anything and hence should be considered 6.20-rc1 material.  Yes?
+    This patch adds a new sysctl vm.oom_dump_stack to control this
+    behavior. Writing '0' to /proc/sys/vm/oom_dump_stack suppresses the
+    kernel stack dump during OOM kills, while '1' (the default) preserves
+    the existing behavior.
 
-So unless I'm missing something, I'll grab [1/3] as a 6.19-rcX hotfix. 
-Please prepare the other two patches as a standalone series for
-addition to mm.git after 6.19-rc1 is released.
+Signed-off-by: Yang Xin <redleaf@linux.alibaba.com>
+---
+ mm/oom_kill.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-Thanks.
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5eb11fbba704..a51dbd2e6912 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -56,6 +56,7 @@
+ static int sysctl_panic_on_oom;
+ static int sysctl_oom_kill_allocating_task;
+ static int sysctl_oom_dump_tasks = 1;
++static int sysctl_oom_dump_stack = 1;
+ 
+ /*
+  * Serializes oom killer invocations (out_of_memory()) from all contexts to
+@@ -464,7 +465,9 @@ static void dump_header(struct oom_control *oc)
+ 	if (!IS_ENABLED(CONFIG_COMPACTION) && oc->order)
+ 		pr_warn("COMPACTION is disabled!!!\n");
+ 
+-	dump_stack();
++	if (sysctl_oom_dump_stack)
++		dump_stack();
++
+ 	if (is_memcg_oom(oc))
+ 		mem_cgroup_print_oom_meminfo(oc->memcg);
+ 	else {
+@@ -736,6 +739,13 @@ static const struct ctl_table vm_oom_kill_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
+ 	},
++	{
++                .procname       = "oom_dump_stack",
++                .data           = &sysctl_oom_dump_stack,
++                .maxlen         = sizeof(sysctl_oom_dump_stack),
++                .mode           = 0644,
++                .proc_handler   = proc_dointvec,
++        },
+ };
+ #endif
+ 
+-- 
+2.30.2
+
 
