@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB59D3E792
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 11:51:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91330D41C1F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 12:04:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FFB66B0005; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
+	id EFABF6B0005; Thu, 11 Dec 2025 07:04:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5897E6B0007; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
+	id EAC446B0007; Thu, 11 Dec 2025 07:04:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 451316B0008; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
+	id D9AC86B0008; Thu, 11 Dec 2025 07:04:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 305F66B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 06:51:51 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6D3C140880
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:51:50 +0000 (UTC)
-X-FDA: 84207025980.13.8C750DF
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3D03D40002
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 11:51:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=YCtHfTx7;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765453909; a=rsa-sha256;
-	cv=none;
-	b=vWMJ3DKUUah1nMnewNjUHLOun6P61ZthM+Do9Zyl4lqlbtZS2liOnorxAQlfdayLSipKsN
-	3a/D5RxvJxTafvvgfmfKONz2uVv1IPUzPC0+rQC/Z6NC6ZG3G9Y8sDVX94Dk8yN2L5TGiG
-	HKciOi2o7pIwxI+OEFHikOvMlJyFKNk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=YCtHfTx7;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C7DB46B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 07:04:53 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9338B13534B
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:04:53 +0000 (UTC)
+X-FDA: 84207058866.17.0101EC7
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A62A120015
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:04:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cm3yzuQq;
+	spf=none (imf03.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765453909;
+	s=arc-20220608; t=1765454692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ruouxJOUh2d+f+e8HHYpqnGoZEuPo3luh7bn7bAHeI=;
-	b=JesE1r7dE+a4zrhI8eWnpLm9nSxWUfKyHY7kRpLeizRR/CWs2cVAX2qwnpm08h0eouqAWA
-	qIqkD4gsa6Nap7nghsArCk1qfMlKfrpvmMui6HWkUr3SKGuXZH1TtZiQoAwRiFXbTwJf6Z
-	P94aeQ4GfbZnR4g+jAQhMwfYa4sbrBo=
+	bh=J5QYsGE2XyUV8dMJUaGHOZ/s846nES10yHj06SSwiHE=;
+	b=4aucdVEBfT9YgJzVmqlcp558UJ5KrXQffGSiLwdm3L4uSCLUP9WcYK4WO+ur3t8QD91IAN
+	ufQP62/2IraTXoIg94pct0bGyDDMNOkZYFETcCtUCx99IpIHpaus+xS/parbsLRERZ6mny
+	CJMjKxgD6+u/cXuIlHgxyzxBxOnUOEw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765454692; a=rsa-sha256;
+	cv=none;
+	b=vV+5WYQGy+my3Zkzap5OwSRvoEtR1ToTdHWFppK0tlI/aO9ykLK52tO8Za87OuceOEKqZF
+	dNOk7a8yJ5ivCLkG//28o7BZov4rq5qlUXxVlKSt/L4cTIQFscXxNzT11Ttl8fOdZQMSQC
+	Je1JFQ1dXaTVZddZLnhuFliwnDzXE9U=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cm3yzuQq;
+	spf=none (imf03.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+ruouxJOUh2d+f+e8HHYpqnGoZEuPo3luh7bn7bAHeI=; b=YCtHfTx7RoM+FUijwKYs4TN7la
-	V38IiN6UXEJqoevDxSusV4xIKVmpUvu7bxeHyT1ebhxYje8Y8ewjpnUYe/AwPBWps727+uIgDIxGh
-	gHylwobYVFURCe1AhaSiscraq4UreJJ8qzq798CHWb/cBBob/1iZKF377N3zfzcIJ0TOPZsrSel9n
-	6sEuHcwYOL0ArmngL2gHZ2LsDyvZyXXzu1RFeIcoPmnUV1UOXv6jd2LeqmWmL1Yf8zM1kQcwdf6KN
-	3gr5k3gALYgZb+dCe5b//7iQ82XTD18jysr8AvEqOPt1OtNyHnlF7O1kL1V4e/6nZWZZvwAcoAjKU
-	8Sg8GQrA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTeLL-0000000ErCa-0UbQ;
-	Thu, 11 Dec 2025 10:56:19 +0000
+	bh=J5QYsGE2XyUV8dMJUaGHOZ/s846nES10yHj06SSwiHE=; b=Cm3yzuQqYooIj2GZtZDWYEC3ZO
+	S0fg9hzc4Z19Hv5Bc4P16q2CjNQ573CovUIuUpZEbXu9poIjw8goKrUxsrAu3j7Caix5SEmi3eHJ5
+	ty2o3ZeXS3kqUORWQHfUhEXRPllWuKhXfU6FuRy+jNCn3CPiuhwnM6hD6rLf9Bd5pxh4A4qnGsqmd
+	YA26rLCiywQY1V7BWRwKwRpg85biCy2lzMbTYkXrqgHkp9M0BmSuJ+nlBxwZvhjzGyyfDW1rDJahM
+	onQMIaTpJMWn2CJQspzPC2bN0ZBuwOi8vBCFsSztBk6L098HJ6Am/lBaLXUiYdMTHDu2proPsv+AW
+	SRG+MwEw==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTfPW-0000000ECYb-0fah;
+	Thu, 11 Dec 2025 12:04:42 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3748730301A; Thu, 11 Dec 2025 12:51:35 +0100 (CET)
-Date: Thu, 11 Dec 2025 12:51:35 +0100
+	id 803F130301A; Thu, 11 Dec 2025 13:04:41 +0100 (CET)
+Date: Thu, 11 Dec 2025 13:04:41 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Marco Elver <elver@google.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
@@ -104,23 +104,23 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
 	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
 	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
- analysis
-Message-ID: <20251211115135.GF3911114@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
+Message-ID: <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
 References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
+ <20251120145835.3833031-4-elver@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120151033.3840508-7-elver@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3D03D40002
-X-Stat-Signature: rgynudh4w84iyuzpptamazhxnko5wt8u
+In-Reply-To: <20251120145835.3833031-4-elver@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A62A120015
+X-Stat-Signature: yuq9uedaebhrnhwr7idoz74ya31oubp9
 X-Rspam-User: 
-X-HE-Tag: 1765453909-825389
-X-HE-Meta: U2FsdGVkX1+/JFXzH+/i4gkH4cEA36w4nNE6NmjI3kRlZ/gpwe/r6QJWb5VmmmRE8HsH69Cck3qspBN7fiTGExMV8PVETspeLthRDzxvveIy+dmEHaogsktOUkyXS+ewmNo+Rg83usA33NcCjIBaTe0100w8avcPy8i4wmDSUFN+G2XR6GzF8/h0l/AxnXEW0BCPyfMer2KukWtL10m2+2Gd/QzzieifQbPnl6hVzUWD+Q+5gQAzib1Jy/PlTe2UHwi9LMIhOgbRozTZOgRXcgElxtde71ol2N4LvU5ItZA8LrCskkfG9t2HHtTpnLKRiyOufLnx+5961UT3VzaqxM+ErfDiOT+voHjTH0eecY51I2fgd/atUm2BQUYaKqtTz9FXmMv0XllLyJ6FdGOt6fVI27cLeN9CG1OrC8S//VkjJyGYkajU6bq6CCI6E5RyQPmGh42CmRv8feXKEqRzi111dFL1lIiCGX6tRJgWqj3BNVOG82UGtqJpVgzJ+dHnrWblys87I6eAdiOBBXeHgL+sdPzx0g+j9wBpSF5oZvl5xExn76NsO5VUbdPaV9M30TugQ7qtU4Z8Jh7gRbuGU5zYz1xC77qlpAzo74deT5fz50uXnjwewJExBzTvu/DavzUYlbBX4UBp6gfiG8AltASYZf0fOboaszoXaFeo5DAzcGn9/96YcSeSi0Xevf8aa5kqbMCzh/krhc/UTB2KArpDJg+QmVYVHfvZ5Gk1oDO7XTnEUT1fSdFGqdm6eOPsZoZRWGTMDL2fFcj4U7Ucdx8HAZvBQ8sSGZDiZczOdsggSCs1cNBbtH3ErqQ9fbvXXHLIMPRpBOLsurO8Ke6WGs23/Cd7VIGjdOPIkiD/snzw/GiCSMvpCEqEhFWBJmQf/UEWaZDHn33/YCT8NH55t9400aqTkQT3OaLiKe2FZgzaNe79DCcH3YTsT4yFOiHLrGcMxflHQoSbPrD1hls
- 5NtUp6Rq
- KjMwgb3QDf2mVS8sgv6zmS7wtgTnKOIyXd3gQcfucky0H9kWwUUJel4STmhbypEF5zTAn/BAqejvi3I1X1YHeh2hc58iKsp7P0c/key+HNnE3qXEDtwrRj9cy79onYKzqA3PSr4qkzwOQz8Kf/jEhM9KrpU/ypTQIDWa6M8HPFC4rMCIOxc7IdHnev7TOdQAFeBf+djwlsDHb3AdOTttjxC3QDOoqph7/VUXWG6lv++uc99Qs3g/oSRKj/ztDzBT+WtcM9HrQU6X6v7U4xtogFmOGxslZiKv3nCFx
+X-HE-Tag: 1765454691-772441
+X-HE-Meta: U2FsdGVkX191ZygAA5eqewkdwj1+rkDhfl5w3G6csYkRUR8xZahNrDF0EcIRE9pcV87ufu7TPf+FDQPkkI2oXwq56+GthkIFgv13/O0yY2um/IKMFPc+6NjsTWJP06qEHDIjBHOFSQTBbvPnzAtoasN7XbOPqGM3kwI3ji+fOE5AqdFFcmVpU8GspHX6CdAvjeeFk7ELHmFXnUm7Z9MLiEjE8z8G/8beXjbvsqY3PSWQiCpqPMBTiHvZcqZ+UsrX7wqYOjA9gKmgReCIPyGD/Ie3H8CXqVPSM84ryDjcUdYi3cxHL8rmWoyU043y24FRIF6n3zPg4/p1VXlxy6uz87aPAtKBTJn85dk9tF4ED6gNmnZtnzg7RnLUT0HctcsXOuPaAyrbh2PccpfE5X8JRj1HlS4wlK4pktFRjnptQ6kR0DxlbePJ1I5s4mjCd2psWW21ZORWpwfEYBkmAMP4XpxHEfbV28IgCWUW1w7qcunJ4lCxUsr9Ptzp7GCTXfWEPiHYza0GZs6wyqaNqg8fUtdvA4Dmc4Mb/SbJJypHWPYYH+omjNgXPRfXFT+0aeSJSjrK12NxqcyGMVFNXS/Efi2vtfWrJ9Jxv3yYABOrcFuF54ZwifilVkJrT8XiRjSRU2Ccvv/WF371f/to2Dm74LiVMNCtSAEoJJ6wHUSyaI745R/5T2JeXapiKXqb9tdDwS1dyeh6/Sg4d16H3dHz4iBI1VUrPoD6c2avBfZxwfP6bSe/utsT9JHRSSqI5K0XkFcdtQYm5TGS4czV/MO3d5652b7cw2CiIzdobQfi7dC55v9D+476pPsok7AAavjI2/eLGICIyPJfEjUSCiIpBYGfuzhonOGJ6buOFw0o5a1vR+ElVg690+hnBe2DBKchlIoj/aB+WuH0fyQ/2plMSj3s9jW92l9vCYcM5KLOS84aUwBqrzMvQphWtk+7ZRIia8qj5/A5aDGF4nRFfgZ
+ MOvsjV5v
+ F75vOSn/XNBEeNoTpXJTFh3PSp8uirJHwQls/fvG+4OfB3hsvhABlDou7/3Fj1r3rYwyu40aV7F7uIAPjbrtpeanv/xJfETKGXH9ifd3xkuQEtdVwnEE4dX3FBtibNz7JJy4gQ5kxn33/fot8rCXl1Tx0HEmn8/ojomQYlS9hm3JDhenmhjixwLMJtJdHQWy105UVpnTMzcPDisH/JcjxzefbjmU0ZyQQOO70yU8AEI6rH051T2tIITMrdZLsIe0hZXqjNuiLWeJnXH3x6/u4c3123VOG8bjlLMf4iSLFti8+HcXm23tqGUrufQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,16 +129,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 04:09:31PM +0100, Marco Elver wrote:
-> +#define DECLARE_LOCK_GUARD_0_ATTRS(_name, _lock, _unlock)		\
-> +static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
-> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-> +
-> +#define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
-> +static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
-> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
+On Thu, Nov 20, 2025 at 03:49:04PM +0100, Marco Elver wrote:
 
-When you rebase this series; you'll find cleanup.h moved to
-__always_inline (because compilers are weird) and these should probably
-also switch.
+> +/**
+> + * context_guard_struct() - declare or define a context guard struct
+> + * @name: struct name
+> + *
+> + * Helper to declare or define a struct type that is also a context guard.
+> + *
+> + * .. code-block:: c
+> + *
+> + *	context_guard_struct(my_handle) {
+> + *		int foo;
+> + *		long bar;
+> + *	};
+> + *
+> + *	struct some_state {
+> + *		...
+> + *	};
+> + *	// ... declared elsewhere ...
+> + *	context_guard_struct(some_state);
+> + *
+> + * Note: The implementation defines several helper functions that can acquire
+> + * and release the context guard.
+> + */
+> +# define context_guard_struct(name, ...)								\
+> +	struct __ctx_guard_type(name) __VA_ARGS__ name;							\
+> +	static __always_inline void __acquire_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }	\
+> +	static __always_inline void __acquire_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
+> +	static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)		\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)	\
+> +	{ return ret; }											\
+> +	static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)	\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
+> +	{ return ret; }											\
+> +	static __always_inline void __release_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }	\
+> +	static __always_inline void __release_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
+> +	static __always_inline void __assume_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __assumes_ctx_guard(var) { }				\
+> +	static __always_inline void __assume_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }			\
+> +	struct name
+
+-typedef struct {
++context_guard_struct(rwlock) {
+        struct rwbase_rt        rwbase;
+        atomic_t                readers;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+        struct lockdep_map      dep_map;
+ #endif
+-} rwlock_t;
++};
++typedef struct rwlock rwlock_t;
+
+
+I must say I find the 'guard' naming here somewhat confusing. This is
+not a guard, but an actual lock type.
 
