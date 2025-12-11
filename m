@@ -4,108 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B968D41C1A
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF5C1D41C17
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 10:43:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 682EA6B0005; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
+	id 3005F6B0005; Thu, 11 Dec 2025 05:43:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659A26B0007; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
+	id 2D86C6B0007; Thu, 11 Dec 2025 05:43:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F056B0008; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
+	id 1EE706B0008; Thu, 11 Dec 2025 05:43:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 486B46B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:26:17 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BFF3D16083F
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:26:16 +0000 (UTC)
-X-FDA: 84206810352.01.4CBCEEA
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F6E640008
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:26:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=mi8c7GWM;
-	spf=pass (imf11.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5436B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 05:43:53 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD86BC0839
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:43:52 +0000 (UTC)
+X-FDA: 84206854704.21.5721CA6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E10CE4000A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:43:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TzCWGhmc;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765448775;
+	s=arc-20220608; t=1765449831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
-	b=gUjg/ut6Nx4vmyFMZvOoT2/AnRx2moyKwGoLq4FqZYNrfgXiPAkmLO6cUB8u2Y0Xj5f/LV
-	VVQp76CBxiK7c2CUNRwCFTUTYth2VE3a9tbIpa04DhQCRZ02WewojYd+xAn1ZwUbFR88qQ
-	gSm2jD/qYqqbN2pRyX8/B1nN8IFFgGo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765448775; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KyqfIo8VyN4wBnDpFgoy4kAvS0TY6gHlzsTyhAeK3Lw=;
+	b=SrvRv/cwOUFqwa/+WWYiNuJKt2vPFWF3JPmmkIUTpdVNwY2x1HjkF/+FWSCT20qI0FZY7G
+	vgYn0cZddw5b5tVKWxOf47JKf/mwgckSURYDDY+IcU6Dp1vn9nBFD2sVhppyqr4Jp6Gpyx
+	SpzvEIBoZKrlc02Gu9HPvICIZMnHY78=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765449831; a=rsa-sha256;
 	cv=none;
-	b=pKzRdaSRMTx7UGANdz476c/562XZg6msgyiSz1AvmASt9dzVQqqKqCHUkNiTTYjdk9Jm3e
-	nvHoH/krDrA84sFnXe6XNn3vkKpo3E0OeNvOY6EMT6NrElC+lwS8ChwdF25S74D+7Whki/
-	U5B/rf32OnIgCV7+9d2RRkJyQ8mlgmc=
+	b=PqP3epQd9wKMI48oqS6J+LZiBuk2k8g0Uho64HtEoU3mTg6NAr8tJYNmfIln9J2+WFWnYN
+	d4udpbhUkmvL3P/x9Yy0hbMGdhZ2dqy/zehLhuvaDZOYK8EIm1SZBsHDVoIsppx68rZuQ5
+	c6QyQkve5sXBcDiQlx0KNu40w+NvHK8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=mi8c7GWM;
-	spf=pass (imf11.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29d7b019e0eso10903435ad.2
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 02:26:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thingy.jp; s=google; t=1765448773; x=1766053573; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
-        b=mi8c7GWM3vShOvL7c0Lal3+IILTJ603l5uYG/DbzuJJEQ42k8kiPzCz8MeOLvEHROb
-         rZRlUIOBTcWNbhgifptZT0lCvPcd7LDmoAgerC9ucBQ3+iTF9rXLSKkZT0XyCJs+898c
-         2GU0mgKZUL3fOB6+T2R93XxP6FKZRoy5jtgDw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765448773; x=1766053573;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zFsNVH+hcnTF+WLyrqw+6YJkD+G+rP7K/L7LQLfciMw=;
-        b=G8HLQDRFnYsnLycMvRaaulGkH+XvAkpMCgy1jR1p7LfwZ8r/z1qaKyNiCU4AxIddPo
-         vTvLiNDgk7oHtlWypVvwFufu/9BFJrexGgfBgHV+y34PrN9vCSpSCSzlFRoJdLEmZW38
-         CT+NQ5pTtBVsYW8/T2dm2KAUrGUPh+cX9gbvE1y0AcpIN7CPxywVq6kghw/u5QjNqsUr
-         1ZzE/mQvvnBZb+p9BLaxa8oM4DSbnPDl31A6dWRytQp1oBLnNg0AnkXmuKL48U8sjRBS
-         kf9ZEDiYxKRXNSZUPkep+udc2vk+8OFiccdS7Ck+SU0F8PS8cz567dhFGmfaNPlBvWao
-         evhA==
-X-Gm-Message-State: AOJu0Yw00PMMv7o9kJnBzGaELSX9JKTChQQhg+tBnbhp3roczACyB01J
-	9dS1rZ8LQGMXMkGIKmgWssTlKgfNd5YdK83vde5OkMieOzpI8jVSfAcimn9PIuUPYfamQ4ro17q
-	S4TIk04g=
-X-Gm-Gg: AY/fxX6QX7BFo8n4ldHTF0F/VzN1YY/sZtqNZpJ+qPJRCBg0aBXgNoWPX9rwGsRbWOu
-	8Zq6v5vu+wdWJKDNd2QFdaG77gCXyeIOBNoH/uayyGDrw/OzYwCJ8SYKlydvzNEoi0xjLjB3W05
-	KJlAiVxBOiiZ5FEzgqgIn0MxeJL87n/U2N9j47oUTmXk/wt9V6zYXEYsmXXSGHBcsrQJ3FJUCCk
-	FN3o994w55nfPPm3lkM/oa0IzQDtFlkG2o30D8iEI1Cwah3/SS5QqComiWR625+w9B8uknWyxiq
-	pSwi2rTC2nHYM+6DkFMoGnOhRuNNpn59zRnXiz0NS1JadIdysTKAMjRuyy2OWC7h1YLZMelKPTp
-	brFp6B3oH2ZGBynQBuGStESp1VM+ga5sHfi8yuGGIBzlffZYm4VRZva058oBESxcWPNUyMWssgy
-	ZTub7kyR+nPoaiCxWgTMhGRgWT1sNjh1bNqvI4D/jcrI8Wmv599hu27w8u1KG/R7OsB0Btb5I/r
-	6s=
-X-Google-Smtp-Source: AGHT+IHtxJuTKPpxeSlCS0VeV+tpw+BbRU6MxR2kKYmrWqgxv0hJ/sCDXnxbVaXlm/7z15urdp+U6g==
-X-Received: by 2002:a17:903:2983:b0:295:8662:6a4e with SMTP id d9443c01a7336-29ec27c15e3mr62125785ad.47.1765448772723;
-        Thu, 11 Dec 2025 02:26:12 -0800 (PST)
-Received: from kinako.work.home.arpa (p1344243-ipxg00a01sizuokaden.shizuoka.ocn.ne.jp. [114.145.20.243])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29ee9d38adcsm20759115ad.30.2025.12.11.02.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 02:26:12 -0800 (PST)
-From: Daniel Palmer <daniel@thingy.jp>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Daniel Palmer <daniel@thingy.jp>
-Subject: [RFC PATCH] mm/page_alloc: ?nommu? Deadlock in drain_pages_zone()?
-Date: Thu, 11 Dec 2025 19:26:07 +0900
-Message-ID: <20251211102607.2538595-1-daniel@thingy.jp>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TzCWGhmc;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D7C84441D;
+	Thu, 11 Dec 2025 10:43:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51356C113D0;
+	Thu, 11 Dec 2025 10:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765449829;
+	bh=SL08egAf+JvLRJMamE3oqe4gonfUljQf3NQhumvhwxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TzCWGhmcsJOVikxD/0Atui8lv1QE9lu4h0KgG/QaQR9zJE+7ul8zV7he575FLyPQ3
+	 AiDhS0jeb6Na3e94u6aqGPn562eEQjeCbhP80Ni75E/RJgsGIoRR1k8Ff/TGv+W7dU
+	 iFxP1pVv7KpzBOFmbTpC8fQIPjiA3fXCox2jPXglZVDW4pfdTU53yq9ISKAotNWsyE
+	 Bn6TOfQ+SplfouSyUtDo3Wy859GE+oKN8iVel/6WF7SDgfswCOcSbx3/Wa6iGkdaHy
+	 1vRvbeJK0pdYIvXcPCRn0Jbrfs/hDh8oJk8KGPnJ0SNeU8VFBxeulR5vKqARjztXXS
+	 MDVxnbvEig62g==
+Date: Thu, 11 Dec 2025 11:43:44 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH v6 0/4] Add ARRAY_END(), and use it to fix off-by-one bugs
+Message-ID: <cover.1765449750.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
+References: <cover.1758806023.git.alx@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6F6E640008
-X-Stat-Signature: tzpri8otowdrkcdd86ata9hugiiozh1z
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1758806023.git.alx@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E10CE4000A
+X-Stat-Signature: itpu4776neyywk8u5i6sw961fuop7s9d
 X-Rspam-User: 
-X-HE-Tag: 1765448774-221357
-X-HE-Meta: U2FsdGVkX1/jG7/xvkNyRQzYicpZGJ8NXV84YgSteE4AItPz6GEwbxxce171ol82xQN9XNuc4MKqsqsfEe6gqc+afw8Y43uW1HRucGV5SPk+1Q5I7I4ROc/XdtxTNX7PRAxczDtDX9ZJbKMwVhbjGuvcMrYZxx2PU2UV1SVzfwfziYKVTAOyPjBlpg6uyOQLO7C1BX6LLiyj4wqbPy73MDZLJ+sz3EznmIgpc1tA3Np9AnPQioG47jd1qZiQLxB/w8NCxNsOSQDRE0gOIgJnIifseuSFl3pnkmRlNv4tvxcGM/eMp0LPzxcyq5rWKCFc9vfk1eCFg3npPMLtVHCvRVm8prw5MKyZMB0u7ULW9ttGUu36KNX1Z1secvIST0I3+5wR+9s5Vd2xlSPbGAbKXB0BjqYUcyrUvx//7RREEM98hOSTUuRADCa371qXHs0aTGacR9TOq3TLkcGDuPULIwunnA+TYpQjyEFliSpZfRQ6Q9BFSifsYD8Zb0xsiPYrurzHKaovg1jZezGB+KenT90oCo3fhKUC8xYDuJ4c+DWGN60DRV+zC7t81vMRc6lRbgloGo1xKDRhcWPBPPJDAEX7ZviMj+sM5/UkhPhQMMYAbZlxdlDm2Zq4/j8pbv7EGd1584vPdZeLk8ElHCM6GMEk1LyCmrKpR8jiiMQCBWppk929RFGFJr7RBUq4WMDvNCWVPTiiX7g9ScZa3oqPyW80RaX02b4dsZBT9a47kCFTprRAd3pzP7dBLeTvTeqzGSaFmoXWGLKrBgcyHGFtNBseuikiEEnCGc6fUqNo6vB5Ra2134DkFLHePw5RS3k4KjrXhTiqFFyPgQkPIlD4XchWpb4u/e1nbprZTSV811/Xa49z2GfXCcjy6MjiZFx01duJXKg1gYg9j4NsqtBlKGKpRSZcRWUfMhRSQcgmn3WDLfjiSeG0MtVZlKTgIYR3CXbaw6ZMWunue+MRfMd
- dArCaA23
- hSnd3jkvIPM8nZFkGS7G1GducWtC6yyvsW8wBYI1zMmZCtTflDLBFlOGHNdeH+ufK5DDMUpwqZAO2idaZGQUc5/9r5ZZTayzbIjVSS4B7TXZmQxsbWc6QGzhSQZYWkhRvsm/LafwhF/IMSMkuCRu7LriE7o/doQxAG+T+8MrXaOcqf/pg1QtmnYgnJo0NGVq7xTJJ651SkfOOlqjcUtJtRZnXQJXbVHo6o8CrgOCAMwfz1TxN0LoRPfcQBg7DMVjRB8CuLnSb87uwk0qebvW/RUrLmw9PPHHiCyBiGe95Sp1yIsAAop6Rwe4o9azwImDz0YkmgN1GApC4hixL7OKSf2KCzqzd/C2gvIw2+J7pAt4Xd4dHRxWF0MEucSLlAex8HLUmTNCdeid+1oMsGWs+8fql4f4yPlSnVzIpewnHlvOFNx5tezGUFejyKTSlj1eMlkeS
+X-HE-Tag: 1765449830-956385
+X-HE-Meta: U2FsdGVkX1+fZjuB4mK6b/LQ++xkfmjyfj3Agh666iXQ5r2Gutlzg8LF0bFrmaiTbWm1We+4obY1hblBuv/OUiFyDThlQblq31PJtHoSxbbrCi6aS1XJ4LG3pCgCNWdysO0xOaAuTY5bVRZDtE/eUSN8WY6t0CcD4bp/3RIkN8Ncxp8szZ0qxqKeqZWYoHcdHzSCYyNeAyJ5kqrQ6K45zRpllqMfdfdRtWElX4vF29qrnpN2feGUCSZWx7KwXYPgMUTvi3PCcXKTxVczWPhZ6kI7g5hjAmA0a+8Dkb/Z/sBgs3p+piml1tOIRF8f/SJejquCrjtzooXEUzybZ9hEyqAz/HHW1FsDrOD9VNLSSQlzJyr9f71jUbPVw6xE2+y124U6i8gherJ3IYkMGhfKChbOo6E5JCPGzgskiYjDPqcpcBEuznMfud8EyRUPaBZotFKeO8alSoHsMUIZnzbyJmnCQ+9X5xcllK4ucYRvPUb7KW+k8nAzKx4u1cOIyBPBd72b4q98fZ5QuwAXygJIb4Di9jrS6lrWDSbML4xuFDuClxvPgjKaam//NF8tYp8HXVHGSNNl/olRzIqhQ5JumHVbbCj2VDJ4U26SB1hBu44+QQnYOI6x5qazwILHEOG+vmuliwXjkb9CXwjEcbMyf7vjvBP14zoWVGdypM3pk3kEvgTbVXC6XFr2aYbknSR8K5bkirjMbSrNTF2JPXWaJL48a4tr7XyYRZxTOIbHinhwK7d53bFqEWlZfdTVhKO5yuC9y6RXr84rv6xvEE0GcQ7MkfJFhD30U5sqPTPwV8JG7WUDiX2JmMvIqbcZ08GoXaaUH93bAgsjqtBc6Ec7DT53ydffrzvrmLVXkFhMD1zoPiyAv92D2aYLZIgVNPzC3rjqmI2LT532s6RVWjNr6cJA4F0ALvCrrx6ULurlCbFaA1J8wWosThVrJ6GJ8Ieq8w4OAODUsectCTmB5lh
+ Rc+/RZqJ
+ D6AN2lXEhd3sg4GhsXGyIhIRZMkXc/0O9Oa1v5OF0NnAmn9seKYWVCQXqhyxXHmK4pqnBLSu4c51fZXTel0aUDQRilaolFCgvwhy/YClF7T2pn3byTMlxin1yKkdxGTLIi4bbWtmO9ZXds1SeMNUVRtrd/Ye+3rJox7jgeNKeNFlzBlZoU+OYCIeKgk6wCisgfz5VFcgg9DwbwfTqDI1rgr8HvEJRF+Ew3jpysi/ANcvIgD1tmZcIE0X9xLZ8cLeSE+ww8j8ONKa0VH7VN7hXnT0l4KxmTzJTz0ccPgj2yfTybBLgOE/2goWiet9/P0+9bu5wNQbZXvy4ywgw4zqArdoqY5MzQWGd89IbABciaH5+FIqnYKuHnfljFmUlxYObtd6Wmbbg034TSfPpzsewNbkpiS4E19oklK/VROurUpgM0b29x3rqRmRRFChTMsPj08Poxhnp+GlBSi7EXUKGHzd01NqQ4W3U2MUJeR9vUjFCzORhcd2kTiKtpND7kJ/eJQocTSyMwT3TZEeRPhhCZDNyU3byqupOqDBxnrwYwYLdThnpRsP4+xhANBSPlv2ARx3jylQrB1PulMBICkSyns0PBcGohIdEuV4c7PmN4FwHzmBVSWRPGRsf7V8GKNwyd6yjIgDn82wnFRQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,54 +96,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-per_cpu_pages_init() sets pcp->batch to 1 (BOOT_PAGESET_BATCH) at boot,
-then later it is set to 0 (from zone_batchsize()) via the following path:
+Add ARRAY_END(), and use it to fix off-by-one bugs
 
-init_per_zone_wmark_min()
- ->setup_per_zone_wmarks()
-   ->zone_pcp_update()
-     ->zone_set_pageset_high_and_batch()
+ARRAY_END() is a macro to calculate a pointer to one past the last
+element of an array argument.  This is a very common pointer, which is
+used to iterate over all elements of an array:
 
-Once this happens if an OOM happens drain_pages_zone() will never return
-because count never gets to zero.
+        for (T *p = a; p < ARRAY_END(a); p++)
+                ...
 
-Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+Of course, this pointer should never be dereferenced.  A pointer one
+past the last element of an array should not be dereferenced; it's
+perfectly fine to hold such a pointer --and a good thing to do--, but
+the only thing it should be used for is comparing it with other pointers
+derived from the same array.
+
+Due to how special these pointers are, it would be good to use
+consistent naming.  It's common to name such a pointer 'end' --in fact,
+we have many such cases in the kernel--.  C++ even standardized this
+name with std::end().  Let's try naming such pointers 'end', and try
+also avoid using 'end' for pointers that are not the result of
+ARRAY_END().
+
+It has been incorrectly suggested that these pointers are dangerous, and
+that they should never be used, suggesting to use something like
+
+	#define ARRAY_LAST(a)  ((a) + ARRAY_SIZE(a) - 1)
+
+	for (T *p = a; p <= ARRAY_LAST(a); p++)
+		...
+
+This is bogus, as it doesn't scale down to arrays of 0 elements.  In the
+case of an array of 0 elements, ARRAY_LAST() would underflow the
+pointer, which not only it can't be dereferenced, it can't even be held
+(it produces Undefined Behavior).  That would be a footgun.  Such arrays
+don't exist per the ISO C standard; however, GCC supports them as an
+extension (with partial support, though; GCC has a few bugs which need
+to be fixed).
+
+This patch set fixes a few places where it was intended to use the array
+end (that is, one past the last element), but accidentally a pointer to
+the last element was used instead, thus wasting one byte.
+
+It also replaces other places where the array end was correctly
+calculated with ARRAY_SIZE(), by using the simpler ARRAY_END().
+
+Also, there was one drivers/ file that already defined this macro.  We
+remove that definition, to not conflict with this one.
+
+Cc: Kees Cook <kees@kernel.org>
+Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Marco Elver <elver@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>
+In-Reply-To: <cover.1758806023.git.alx@kernel.org>
+
 ---
 
-Background: I am running a nommu kernel on 68000 with 8MB of RAM,
-I messed up my userland config and the resulting binaries became
-too big to fit in to the free blocks of memory, OOM should have
-happened and I should have seen the kernel trying to free memory
-but instead it dead locked. Since this is nommu I thought maybe
-I am corrupting memory but I checked with gdb and it doesn't seem
-like it. I have some local patches to make this weird setup work
-too but I don't think its anything to do with that either.
+Hi,
 
-This change stops the dead lock and I see OOM messages instead as
-expected. I have no idea if it is correct. Patch is simply to show
-what I am seeing.
+v6 adds a commit log to the last commit.  Everything else is unchanged.
+See range-diff below.
 
- mm/page_alloc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..83c9ce6f93ad 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2618,8 +2618,11 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- 		spin_lock(&pcp->lock);
- 		count = pcp->count;
- 		if (count) {
--			int to_drain = min(count,
--				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
-+			int to_drain = count;
-+
-+			/* if pcp->batch is zero this loop will never exit, on nommu pcp->batch is always 0 */
-+			if (likely(pcp->batch))
-+				to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
- 
- 			free_pcppages_bulk(zone, to_drain, pcp, 0);
- 			count -= to_drain;
+Have a lovely day!
+Alex
+
+Alejandro Colomar (4):
+  array_size.h: Add ARRAY_END()
+  mm: Fix benign off-by-one bugs
+  kernel: Fix off-by-one benign bugs
+  mm: Use ARRAY_END() instead of open-coding it
+
+ drivers/block/floppy.c     | 2 --
+ include/linux/array_size.h | 6 ++++++
+ kernel/kcsan/kcsan_test.c  | 4 ++--
+ mm/kfence/kfence_test.c    | 4 ++--
+ mm/kmemleak.c              | 2 +-
+ mm/kmsan/kmsan_test.c      | 2 +-
+ mm/memcontrol-v1.c         | 4 ++--
+ 7 files changed, 14 insertions(+), 10 deletions(-)
+
+Range-diff against v5:
+1:  5973cfb67419 = 1:  5973cfb67419 array_size.h: Add ARRAY_END()
+2:  9c38dd009c17 = 2:  9c38dd009c17 mm: Fix benign off-by-one bugs
+3:  b4a945a4d40b = 3:  b4a945a4d40b kernel: Fix off-by-one benign bugs
+4:  e7bde864b039 ! 4:  2335917d1238 mm: Use ARRAY_END() instead of open-coding it
+    @@ Metadata
+      ## Commit message ##
+         mm: Use ARRAY_END() instead of open-coding it
+     
+    +    There aren't any bugs in this code; it's purely cosmetic.
+    +
+    +    By using ARRAY_END(), we prevent future issues, in case the code is
+    +    modified; it has less moving parts.  Also, it should be more readable
+    +    (and perhaps more importantly, greppable), as there are several ways of
+    +    writing an expression that gets the end of an array, which are unified
+    +    by this API name.
+    +
+         Cc: Kees Cook <kees@kernel.org>
+         Cc: Linus Torvalds <torvalds@linux-foundation.org>
+         Signed-off-by: Alejandro Colomar <alx@kernel.org>
 -- 
 2.51.0
 
