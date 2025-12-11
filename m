@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0DD5D41D77
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 17:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43EBBD41D6B
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 17:21:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C71126B0026; Thu, 11 Dec 2025 12:21:14 -0500 (EST)
+	id 0180E6B0027; Thu, 11 Dec 2025 12:21:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C21D96B0027; Thu, 11 Dec 2025 12:21:14 -0500 (EST)
+	id EBFE66B002A; Thu, 11 Dec 2025 12:21:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B38046B0028; Thu, 11 Dec 2025 12:21:14 -0500 (EST)
+	id CE6E06B0029; Thu, 11 Dec 2025 12:21:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A18336B0026
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:21:14 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6941913A546
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:14 +0000 (UTC)
-X-FDA: 84207856068.05.D03F29A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A80B06B0027
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 12:21:15 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A07988C9D
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:15 +0000 (UTC)
+X-FDA: 84207856110.15.5DCA6AF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 54A3180005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OCpAsr1O;
-	spf=pass (imf30.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 63648C000B
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 17:21:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S3echqbA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765473673; a=rsa-sha256;
+	cv=none;
+	b=MOfXx6Bg7IG22Ieb0BTYaqlWntw0pi1ol6KYpghfr8uF1ZiYGnol0xR0oB9DxKAibubXwc
+	BJnEKNK8pLju/esP/aApY5hx2gyDbEDDgUOCNqX/ixiq24Rg3oBNq8zuFHXJfCStO9LRNT
+	fHaqdCyFrjTUi9J3wq/NGO60U1IGUPQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S3echqbA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765473672;
+	s=arc-20220608; t=1765473673;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FnS3sSaAmKH1sjlEJ414W/TvDIeFPTUnUNVNL3eOopI=;
-	b=g/oyZCfcNjex1fcDrRZKdPEc2Xck5cH0H9yJeJZQ1uOwJ5xYLIobocNvxnxWweOD6Qs5Cu
-	Ne37fzjZcPNcS4hWWRnDX3VJxOZ2/9hpL8Lirs2zEe+fDvodUrbh/BhkPtSrMi6IhQKUxk
-	uh6Irb57cj7LBZ3Y4pa10h90hA+I16g=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OCpAsr1O;
-	spf=pass (imf30.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765473672; a=rsa-sha256;
-	cv=none;
-	b=pIElqcf2Mkyma5Y3rxvS/wdDQbMD5i4wF3++4UE6fQ74XCxLafri6E7aVAzZlt91Whptxm
-	o2Dmi+4DrdDj59GTwNgEiUTTajHr1/BX/FFsZP3DgpDOp4k71Oq6ZlnqX7Xy8npD7lSSN1
-	5yePenIgn16rbvcfT7bsfNOlD6uWAyI=
+	bh=EkSjJz3KEg3Fo5ReCqUJTodeq3lTDSMEpnOhxCy/wHs=;
+	b=Mc381KDgRWaeTronLoSOZv64iZRJvUKbH8ubSd3SgKgswcWyUam2leBsGeWwtuuM0cN6CJ
+	q3Nv7JWgbTo9hYtbaqHNvYryF347EoVekqIv8Ick9LBkPNYseyEVv/xig54njC4zBbEUsm
+	+XHCwLMO3U4iOnwipeNApSuVMSBmitA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7FE8444A8;
+	by sea.source.kernel.org (Postfix) with ESMTP id DA4DD444DB;
 	Thu, 11 Dec 2025 17:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 39381C2BCF6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 71EB2C4AF65;
 	Thu, 11 Dec 2025 17:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1765473667;
-	bh=04gVJXOYw7Ju2c/7DpEHB2s0kbuucyi2foZBfgP2tHg=;
+	bh=QbH4U9WsnCS4LKZRC8bN7+fGRQLAKu+WMoAcfVBmy2o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OCpAsr1Oah2IC1WUiR+F+qmoVx03kfKjO5ul4TmrKjdNWt19LHqvTST4ZB2RUq1CR
-	 NEtzlpt+tbK/vkBJH0OA2icZt4KiJe10Ga7WLcHVbiJw8lXe4haTFNISBchUT8Ebj+
-	 XnBvRjgRnEYVnit1J0yPzGqQWyOQRE2EMwcOBL6y0Pl02vaxZbe9z8guMNqjZHZQqH
-	 W0oW7Xs3l+QoWhJETZ/gXR695ia2e2aFysYWXbliVb4Cj0jIiIKo0eNIdWHAxmDn/Q
-	 3egHFl7g9dZTsUeUVzj8ot9W/2oexpllzYecP6QUqxo8+QagY3fcPHzeJwKp4yRwwU
-	 t1IlUnZxHNvCw==
+	b=S3echqbA2Vu6bl+MOtKWQZ/zJrVCu/d7al+n+2p7RiRk1CDxiqp1OETVLoUdW0dqG
+	 G+KzHIakFCT+RQmuyUlz/elOO12+oXtf+YepL/HHxHb3YqwXr/7q+rCPYGFP0aNm9h
+	 900cfqdZaDVdxPwu5tbcQe8V1d5ufxO2J4Eegve6EaFt3sSCvl66OO9QiKEtYhvFzz
+	 slZ/8Mci0IwTJgcVTjWRpYlY2BZFqmpYppx/mgThxI2gmMFPl5r2bG4DpQ1tOK1f63
+	 z7uuQ0qezZosvKi3PPgxq7BFy3ASIjH1i+Bg2JPqy4cXb3NKKAlVFm8gHpEpQFw/j5
+	 ew5/h7tD0oy7A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 255D5D41D6D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56643D41D72;
 	Thu, 11 Dec 2025 17:21:07 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Thu, 11 Dec 2025 09:20:41 -0800
-Subject: [PATCH v26 08/28] riscv/mm: teach pte_mkwrite to manufacture
- shadow stack PTEs
+Date: Thu, 11 Dec 2025 09:20:43 -0800
+Subject: [PATCH v26 10/28] riscv/mm: Implement map_shadow_stack() syscall
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-v5_user_cfi_series-v26-8-f0f419e81ac0@rivosinc.com>
+Message-Id: <20251211-v5_user_cfi_series-v26-10-f0f419e81ac0@rivosinc.com>
 References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
 In-Reply-To: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -112,25 +111,25 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
  Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765473664; l=2371;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765473664; l=5985;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=t88tD6h5jGJWywn6Tz9bzXAVcX1Z5iY6bKQeGfJKelY=;
- b=2eVX9clVHze7ulKPpPv+R2k2xcoyYfboAVjhbcXbqF72Iv1e7pp49F2bHxf0gP5GgR/QmHs4n
- ILGolFzplBOBXJnDxgwDpdGNoU+rmmyqKLAJdAaQWB5pGIXvIhx5d7p
+ bh=2itqViQexaOTmpRjpWR4wDqh6fiZE0fHduuB5yNYi2Q=;
+ b=UXInGKtAUDENobkdalJfcFJmYzOp9dlfW+t5jfHDAv3IkcNPTwftB97uQh/mdOvXAqa7qrDie
+ 2/TftOmJFGgB6em7gArLLhLq4+y4a92zvauxSX6mxQhTyJiVzlA+jX1
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 54A3180005
-X-Stat-Signature: cpb7hgcrubzs781b6etpg45sepp8ugj4
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1765473672-795806
-X-HE-Meta: U2FsdGVkX19GQCR7a4aFhcTyhJ4bNjlmlFImCQenJYvro/wxEhzZSYTZ8eQcNw9pzdzqtAv7jWo4F9OwAjajD3LIYjym3nhmNlAPJkdmEkoCTwNBYQytm2Dgil+xIvB3EQ251F1e29+wIbl9AA2GOEZtQL/qQZhY4L+Lf5QHkRaiaOvM/5E6i1XKxmL5dH9uyIbw4fAAPbGaPchNQsyGAaGjb00yeClvTBt3UdOqr+IJOclJ/6glJn2s9OETIJyQ3TiuOLp5NywaWbwl1EBUyFBMEByF6kgHwZnNIXi2GBECHQONoTYx27R2eZ0uj3VB/u6TdbQQl1lz1AgwPT+t7clkxm9hkxVqS5Wcl8/uSMCKxtzS4MfQ0dJJlJiZnKv8bBd6/0DnzkkZ1bl+BG31XT3cybQlvLKDu8rf+iBExq7z5HJmoy+g4vdi0Ee84RBtkkCc8+OyDvcIZr4n+/dFwTm1wK896WDyRR/BZTHDfmLfIgVgMDOvuvJ2IYzP6F+GuzebVQKsBH3U/zAAGDCbUermWItTppLVcTp6kcJOuQafF0jhpG0xxHLMyVvktedUpZP4KYwBh2YNGHVTRmrRKVnOPgcxzyc1pC+04bMevga02+iNu04+XhJtw7gVU1Lga9lXk2r27a7+D0Y/jVpAQbL5sFFoVwScOGx2pi6Gthz5fFzC2uSlw12ywBWwDEFvBq37kOF/yGgWSwRCuOhx468kGfAV+fYWag38Z4k2mEFcoiNKqEU6QZIq2OYU7zUysWKH6VjapxfFIspJ3o8fEr40PUdzuxRXafvyMAYwXV+9i7iV7gsixLn73MB0NHSGIZ/YmELiLGl/sVHlGp93QYWuuj875Mic9Uh4+P7AQAfX769xuqVSaCHq4nLKl7gYF+jKH8rSKz5ENdONWSRXTsCyd6dsIRcpnnvNx7CMxuPVvAUVVuIddr2vicM42j+VbtXHa86kxqqM2yYCrs0
- 1MLTLfC/
- QkCOCNl+18NLpNqfC8hAxUhC4t7fe2Sh3m7buFweDgJwDAIKOCubtxSwIqUzZHWhd09uQ3GiT8apVsD10voUmbXqwvmFd6x09Yl7jKqmmekbW+ppVEIWtUIFnUzy4Tprh1l6gAhrYy5w4QXT0bwc5/3LTcJ1C2W5hGX8WNWeIyxHl9TF08sjL2LYhkwDWvy4AMi9TG4fkEzBeyV+BM/EadEk5f8spY/p98jQ3GXfUKkFUySf7aC/vBWXI3GOIQNhvYkN0OLWdU3IKWYRFeBakR/mXribiLt8wVvhPJu2SGS78m3K/HJMgX4LpMUuTjoSJxDYy+JlM27IaWP+BBkeIXNmcN3yLQFIjlJd+9N5DW+u6LrD5+3wMKRbIdw9I+w6rZOaZccLtOb5GanRgPQjNRibPAj9LoCI5eG9/ZWrkaNwNAYXEh1Gdft9qFnmbnhNZnoyz3xASy7wPkTxAuhhcIi+kqkmdcLyDpQvGGGZxv5IyldKVHR5UvLsnNCMvg/plOIpKF2ivyVTDFdxab6+99GofWLxCy+AhMp3Kxm0p5WHiTJkk1eVnHJhyLAaRot/CpXUUuBN3pGM74bsgCXImZpCKWAEeTPgym/7cLQ0ADMFMrvG04usuvv9DR2j7VtzWKHcg31CKvKDM8pU=
+X-Stat-Signature: 8fcce5msthjisr1d4z38etdghedizd1j
+X-Rspamd-Queue-Id: 63648C000B
+X-HE-Tag: 1765473673-492517
+X-HE-Meta: U2FsdGVkX1/tWyvEYNXWcbh6BrwV6uM8HeBxADdLErBLY3W6FfbVzvDA2FJdO8+aR56Wam8XdxO0vFYAB3X+PVzwErpozIKPbmnqlJoBtQxjmEztNGMw32gOu0T7fP/HsCAiJdq4EXArdTm5ywT8xlym4+aW/dLyHVS31hrpBhE2YbgQCeQ4v3QJ0FBo81d9fa1sAMYlyHIxd39ehS+YVJyoR1DZIhNJEpComtRt66aJUPKPkreRRo90lKQE8PzvHohnbdN5pKavNoT7HrigysMaZTjxTIp4GunYD/j/jNVEJO7DSX7wv1SQjAoNy3s3UjVlY2klChWqm26eDuCIkMKTZBod/EFpdpr/mkeselfXjaxG5F6rMX2LvU1vsP62XIlvbquLeoyavYSeacfBx/qBem0FermAM6XW+r2M7ECr6BSD8Njz8maAzBME0/H7Bt2QCNzvqF8wHZo3BKO++KBduRWq6EUgGNcl3VzJ+O/2Zs/r1MNjz2Yn84xMsbGmUg7e1sPzVh9956QR0DvAcPasYTQU08ImWqXJZ7Woskaq9YoVUnxDhu2zLZwJkGARuvY6rh/70Pwr59uvG8gaarlg+wXwUQ2d+49IKYX/wqFZO7Aqb72AVjwktJplilCG4r9ucr3mzAAES6YIFRSWzjxJgDMpcATsn36QtHEKmItKjw92TgMXgnfOePzvG3Ikp4ZtzQNT+PM/TARsfrYhSWbh1/obHwz+QKigphDRpjCLWvRuQ1mcRiFJjqN8eUmztzqCJYVNsn9MvogtN8KG6agp/4s1DeNlEaHd+EopGyo8BLEJeR+O0LW/bQmXsqnb5jYGXfeQ4oXRMrOMrtcAdHz1fsCq+oeIjaiL5r7BvD9FcVtMVQR9ahqHK1aucaCQLiVL2/36jBfZvlksFypT5wqhnEj4j4bh5SUpJf6JeSS9D/r9d+NPzil0/N2Io08cwjfUq1jKKltSXdYAbPY
+ 2nYBLVGi
+ YIhl5eS9Mq4rwKDT6ElIxbArl/nlpVQZgsZQY74BKxZ6BiY7jttSvaTsoHtLDocsdGAm2jYAZmOHGkV4w2LXq7UhG++ZWdbUB11x8Q1N+BLAEzkygdsF3KcFp3StN+5ty97iou7vvuKcrqmTCttVOtxitHvI/I3Pc1HmiQ6Gz5pi0+bgDoEuxw5p+uxa9c4dltp3XGNolpM+Jm6/PWobKAoAlUJ1wShtDGiM08g80mkDQhEkiUOOYAdy62AeUGAV7SN88bqD9KlDXCr8JtnscgIGCzJpHIFzrRfeA+dKeT4+xg3szCu5e4FAVuKa9G65UMAMTARbjw2nylT2QBGR5hwRLdolQhkcJ65xRcxMx3O6jbm488mQ+JDkBrYOILlVsA6HpjF0I9Hgez3V4ZRpu7OFD0FQ3RyYse6e0CVR3/iQpihZSo6cDsOhutyZR59pvx/9sEYWf1hlGdocQm1wheu+yiprqn47XxdusRT4pWzdTXEnmUkCijN5c9JwcXG3B6EyCf2VQNxpXqNkt6pTw7ESHpekQFIgXTJFmRenjJ7hAJXE8v+8qqlhA3CToe8cL677SxNmV4ZUnuetUL+taomdMGL1BqXvEnfH2J5lKdmrrOY603YmFRZjSW6vl1S7G1YAtsQt2xtQDKK4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,71 +140,184 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-pte_mkwrite creates PTEs with WRITE encodings for underlying arch.
-Underlying arch can have two types of writeable mappings. One that can be
-written using regular store instructions. Another one that can only be
-written using specialized store instructions (like shadow stack stores).
-pte_mkwrite can select write PTE encoding based on VMA range (i.e.
-VM_SHADOW_STACK)
+As discussed extensively in the changelog for the addition of this
+syscall on x86 ("x86/shstk: Introduce map_shadow_stack syscall") the
+existing mmap() and madvise() syscalls do not map entirely well onto the
+security requirements for shadow stack memory since they lead to windows
+where memory is allocated but not yet protected or stacks which are not
+properly and safely initialised. Instead a new syscall map_shadow_stack()
+has been defined which allocates and initialises a shadow stack page.
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+This patch implements this syscall for riscv. riscv doesn't require token
+to be setup by kernel because user mode can do that by itself. However to
+provide compatibility and portability with other architectues, user mode
+can specify token set flag.
+
 Reviewed-by: Zong Li <zong.li@sifive.com>
 Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
 Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/pgtable.h |  7 +++++++
- arch/riscv/mm/pgtable.c          | 16 ++++++++++++++++
- 2 files changed, 23 insertions(+)
+ arch/riscv/kernel/Makefile  |   1 +
+ arch/riscv/kernel/usercfi.c | 142 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 143 insertions(+)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index e4eb4657e1b6..b03e8f85221f 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -420,6 +420,10 @@ static inline pte_t pte_wrprotect(pte_t pte)
+diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+index f60fce69b725..2d0e0dcedbd3 100644
+--- a/arch/riscv/kernel/Makefile
++++ b/arch/riscv/kernel/Makefile
+@@ -125,3 +125,4 @@ obj-$(CONFIG_ACPI)		+= acpi.o
+ obj-$(CONFIG_ACPI_NUMA)	+= acpi_numa.o
  
- /* static inline pte_t pte_mkread(pte_t pte) */
- 
-+struct vm_area_struct;
-+pte_t pte_mkwrite(pte_t pte, struct vm_area_struct *vma);
-+#define pte_mkwrite pte_mkwrite
+ obj-$(CONFIG_GENERIC_CPU_VULNERABILITIES) += bugs.o
++obj-$(CONFIG_RISCV_USER_CFI) += usercfi.o
+diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
+new file mode 100644
+index 000000000000..251c3faccbf8
+--- /dev/null
++++ b/arch/riscv/kernel/usercfi.c
+@@ -0,0 +1,142 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 Rivos, Inc.
++ * Deepak Gupta <debug@rivosinc.com>
++ */
 +
- static inline pte_t pte_mkwrite_novma(pte_t pte)
- {
- 	return __pte(pte_val(pte) | _PAGE_WRITE);
-@@ -765,6 +769,9 @@ static inline pmd_t pmd_mkyoung(pmd_t pmd)
- 	return pte_pmd(pte_mkyoung(pmd_pte(pmd)));
- }
- 
-+pmd_t pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
-+#define pmd_mkwrite pmd_mkwrite
++#include <linux/sched.h>
++#include <linux/bitops.h>
++#include <linux/types.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/uaccess.h>
++#include <linux/sizes.h>
++#include <linux/user.h>
++#include <linux/syscalls.h>
++#include <linux/prctl.h>
++#include <asm/csr.h>
++#include <asm/usercfi.h>
 +
- static inline pmd_t pmd_mkwrite_novma(pmd_t pmd)
- {
- 	return pte_pmd(pte_mkwrite_novma(pmd_pte(pmd)));
-diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
-index 8b6c0a112a8d..17a4bd05a02f 100644
---- a/arch/riscv/mm/pgtable.c
-+++ b/arch/riscv/mm/pgtable.c
-@@ -165,3 +165,19 @@ pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 	return old;
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++#define SHSTK_ENTRY_SIZE sizeof(void *)
 +
-+pte_t pte_mkwrite(pte_t pte, struct vm_area_struct *vma)
++/*
++ * Writes on shadow stack can either be `sspush` or `ssamoswap`. `sspush` can happen
++ * implicitly on current shadow stack pointed to by CSR_SSP. `ssamoswap` takes pointer to
++ * shadow stack. To keep it simple, we plan to use `ssamoswap` to perform writes on shadow
++ * stack.
++ */
++static noinline unsigned long amo_user_shstk(unsigned long *addr, unsigned long val)
 +{
-+	if (vma->vm_flags & VM_SHADOW_STACK)
-+		return pte_mkwrite_shstk(pte);
++	/*
++	 * Never expect -1 on shadow stack. Expect return addresses and zero
++	 */
++	unsigned long swap = -1;
 +
-+	return pte_mkwrite_novma(pte);
++	__enable_user_access();
++	asm goto(".option push\n"
++		".option arch, +zicfiss\n"
++		"1: ssamoswap.d %[swap], %[val], %[addr]\n"
++		_ASM_EXTABLE(1b, %l[fault])
++		".option pop\n"
++		: [swap] "=r" (swap), [addr] "+A" (*addr)
++		: [val] "r" (val)
++		: "memory"
++		: fault
++		);
++	__disable_user_access();
++	return swap;
++fault:
++	__disable_user_access();
++	return -1;
 +}
 +
-+pmd_t pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
++/*
++ * Create a restore token on the shadow stack.  A token is always XLEN wide
++ * and aligned to XLEN.
++ */
++static int create_rstor_token(unsigned long ssp, unsigned long *token_addr)
 +{
-+	if (vma->vm_flags & VM_SHADOW_STACK)
-+		return pmd_mkwrite_shstk(pmd);
++	unsigned long addr;
 +
-+	return pmd_mkwrite_novma(pmd);
++	/* Token must be aligned */
++	if (!IS_ALIGNED(ssp, SHSTK_ENTRY_SIZE))
++		return -EINVAL;
++
++	/* On RISC-V we're constructing token to be function of address itself */
++	addr = ssp - SHSTK_ENTRY_SIZE;
++
++	if (amo_user_shstk((unsigned long __user *)addr, (unsigned long)ssp) == -1)
++		return -EFAULT;
++
++	if (token_addr)
++		*token_addr = addr;
++
++	return 0;
++}
++
++static unsigned long allocate_shadow_stack(unsigned long addr, unsigned long size,
++					   unsigned long token_offset, bool set_tok)
++{
++	int flags = MAP_ANONYMOUS | MAP_PRIVATE;
++	struct mm_struct *mm = current->mm;
++	unsigned long populate, tok_loc = 0;
++
++	if (addr)
++		flags |= MAP_FIXED_NOREPLACE;
++
++	mmap_write_lock(mm);
++	addr = do_mmap(NULL, addr, size, PROT_READ, flags,
++		       VM_SHADOW_STACK | VM_WRITE, 0, &populate, NULL);
++	mmap_write_unlock(mm);
++
++	if (!set_tok || IS_ERR_VALUE(addr))
++		goto out;
++
++	if (create_rstor_token(addr + token_offset, &tok_loc)) {
++		vm_munmap(addr, size);
++		return -EINVAL;
++	}
++
++	addr = tok_loc;
++
++out:
++	return addr;
++}
++
++SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsigned int, flags)
++{
++	bool set_tok = flags & SHADOW_STACK_SET_TOKEN;
++	unsigned long aligned_size = 0;
++
++	if (!cpu_supports_shadow_stack())
++		return -EOPNOTSUPP;
++
++	/* Anything other than set token should result in invalid param */
++	if (flags & ~SHADOW_STACK_SET_TOKEN)
++		return -EINVAL;
++
++	/*
++	 * Unlike other architectures, on RISC-V, SSP pointer is held in CSR_SSP and is available
++	 * CSR in all modes. CSR accesses are performed using 12bit index programmed in instruction
++	 * itself. This provides static property on register programming and writes to CSR can't
++	 * be unintentional from programmer's perspective. As long as programmer has guarded areas
++	 * which perform writes to CSR_SSP properly, shadow stack pivoting is not possible. Since
++	 * CSR_SSP is writeable by user mode, it itself can setup a shadow stack token subsequent
++	 * to allocation. Although in order to provide portablity with other architecture (because
++	 * `map_shadow_stack` is arch agnostic syscall), RISC-V will follow expectation of a token
++	 * flag in flags and if provided in flags, setup a token at the base.
++	 */
++
++	/* If there isn't space for a token */
++	if (set_tok && size < SHSTK_ENTRY_SIZE)
++		return -ENOSPC;
++
++	if (addr && (addr & (PAGE_SIZE - 1)))
++		return -EINVAL;
++
++	aligned_size = PAGE_ALIGN(size);
++	if (aligned_size < size)
++		return -EOVERFLOW;
++
++	return allocate_shadow_stack(addr, aligned_size, size, set_tok);
 +}
 
 -- 
