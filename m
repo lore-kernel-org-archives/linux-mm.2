@@ -4,104 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93710D3E784
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259E7D3E783
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 904A96B0006; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
+	id 7912C6B0006; Wed, 10 Dec 2025 19:55:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B4C36B0007; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
+	id 769306B0007; Wed, 10 Dec 2025 19:55:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CB356B0008; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
+	id 658976B0008; Wed, 10 Dec 2025 19:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FBC86B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D4C1135040
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:43:44 +0000 (UTC)
-X-FDA: 84205342368.20.1DED9CB
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DA15AC000A
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:43:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 54CD06B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:55:40 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB542C0530
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:55:39 +0000 (UTC)
+X-FDA: 84205372398.28.9AA0D8B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 54A7B40005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:55:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kiwoWh4c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765414538; a=rsa-sha256;
+	cv=none;
+	b=hLRiA2vn2QY0M9vKbA3Y6kgwQgiFE2a5RFbaBAkNBDG/U+gjPYz9KceZofCB0b6e2IQ7oA
+	lMh8NMxUUF5mNCC9xIosYgpDT6NGb59f5eFc7vd3tWqWoFKyiuH/CBEknuZvrXxc8P6uxU
+	QASifDuc3CNoXmdwPdsPUQvXyFkaYxU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kiwoWh4c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765413822;
+	s=arc-20220608; t=1765414538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aChNKSyPCYRgu+/GcOlFbmKUoiHZN3nZwAOz4R2P0X8=;
-	b=jJR3nz7hrv1vC9x8O/2eMbLXoaoBivCLS2G1Mh3oM/jynX8OGAVLLwnDOdvi8Rh0Z/UxFK
-	+QzIjIPwPoHLtfYCnURV3PUF6Hw/QJin5PM6bYTqGwJSMTCsfhkzKv6yzRKpIhAb1YFjP/
-	fVyQ2jqEyQfwSxZ0gdkklmnz27lrmsM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765413822; a=rsa-sha256;
-	cv=none;
-	b=iduvB3wYd5h33gKTQQcPrSvfW85YN4rFGTvVbVOv7Lhhrq+fSVBbCvi9YQyjIfMhvRSucM
-	+H60+Ezps/2oaEUAhR3Rbz7aTEZrJe6KAHYMSSkYHv/OxKKYBHsUWuqNgj/42FkK5rQHA1
-	FKJJUtfHHy0fHLE5ZYI4KWvLpm9uQJ0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dRYjH59czzYQtnc
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:43:15 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id AB9551A14D3
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:43:31 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP2 (Coremail) with SMTP id Syh0CgAH5k+yEzpp071GBQ--.40689S2;
-	Thu, 11 Dec 2025 08:43:31 +0800 (CST)
-Message-ID: <66201b4a-44a5-4221-810a-897699425195@huaweicloud.com>
-Date: Thu, 11 Dec 2025 08:43:29 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nhDeDpL+0SCOROOTBZaXvoXQG8qd1ixdSD6GpEFwwk0=;
+	b=pouFmu+JXQEsTxkMhmyfHg93NwASgE5S/s/3aQy3FspzZ91mjafu0a12Dmik4V8oCL1xjn
+	YD33Ahq1+f0ezOsp8lnwxYWTXF0x4JZLW5L30HuwHJxr6CKRy1upJ5cMOfmccFQSLbAeLE
+	yXoH91Dt5+nSQB7dtW3U9lQIlPXZVOY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A73860010;
+	Thu, 11 Dec 2025 00:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3A6C4CEF1;
+	Thu, 11 Dec 2025 00:55:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765414537;
+	bh=mmnJHids8+nSkIZq85Pu+urD+05j91c4LH2HRhu2rmc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kiwoWh4cp6k9wawe4ePdjIv69qdCmGmNg8BibmXSqvQeFYCUTdpMfqP/lzIQZjOyj
+	 XipqZU0q/YY8IES8WnOjX2pppqJfN6OjsvEViMvidylU/6azM7ySr6baLBlD+1Txxf
+	 Y4SYh1eE95mjIkL1WRNw17BMrThDZfxGofi0g8mRQp46MTXHhVlwPNu/kk1dNh5MyX
+	 TJTuDADHfTuvUhAaAYch1h+r/Zph6YzaZot7SMoG+w8bsvWXn31KjlvoCjgMR0gedV
+	 i/9F9qzEtpztZjwywrO4Dg2vDMp/qLkL6VRVr2aK6c7VjSqbvn1KavnNx4RRZQu46w
+	 JPI+I6PQtZi/Q==
+Message-ID: <83c42274-4c26-4a9e-8199-190336c18d79@kernel.org>
+Date: Thu, 11 Dec 2025 01:55:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next v2 2/2] memcg: remove mem_cgroup_size()
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, akpm@linux-foundation.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, david@kernel.org,
- zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- lujialin4@huawei.com
-References: <20251210071142.2043478-1-chenridong@huaweicloud.com>
- <20251210071142.2043478-3-chenridong@huaweicloud.com>
- <20251210163634.GB643576@cmpxchg.org>
+Subject: Re: [linux-next:master] [mm/hugetlb] 0e1ad0324a:
+ WARNING:at_mm/mmu_gather.c:#tlb_finish_mmu
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ kernel test robot <oliver.sang@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
+ Andrew Morton <akpm@linux-foundation.org>, suschako@amazon.de,
+ Laurence Oberman <loberman@redhat.com>, aneesh.kumar@kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ Liam Howlett <liam.howlett@oracle.com>, Liu Shixin <liushixin2@huawei.com>,
+ Muchun Song <muchun.song@linux.dev>, Nadav Amit <nadav.amit@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org
+References: <202512102246.ee3d6d07-lkp@intel.com>
+ <3966c02a-ec07-43c4-a230-8453f000a8c4@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20251210163634.GB643576@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <3966c02a-ec07-43c4-a230-8453f000a8c4@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgAH5k+yEzpp071GBQ--.40689S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kCFW8Wr18Kw13Wry8Krg_yoW8Kw4xpF
-	yvyay7Kw4aqry5Kr1Yv3sYva4Fvw48ta45try7Gr1IqwnIgr1rtF9Fy3W8Wry5CF93XF17
-	Za90gws7Cw42kFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DA15AC000A
-X-Stat-Signature: mocitpbgf4hkx6hnuy74wpr4jnxx9p6e
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 54A7B40005
+X-Stat-Signature: qfjm8aeg4ra73wzymkaahukjgobaathq
 X-Rspam-User: 
-X-HE-Tag: 1765413816-381828
-X-HE-Meta: U2FsdGVkX1+YtnKJYifdnQFSbA1Mk+O8Eltjlwbnqr5tpQLLNlEZ6vKQLozZJ4Nkgouc49t1yU6VpE0MIbwpjnaks2tBcSRvHO5dMj9ZZ8ajawpd2nHiA01t09YJgJob1aMpmNlA4j1/sHMPDHZc2c34IQq8VMh4YFxJ3vLPtdDa9/8gL+qsD4ySFhD0LcMoPj4d4yJwQS0tMxg9twDJSDuqOBgEjnQ7xE7CB2V0P3UZIdtElgLe0Au3LCNFyfvfh93k1kI6l1YZYYVRD1mDTW2Yt4YnxC1hj+74DT1kwWjr0fz9/HzWc3juJ5Mo7ojrm22S9/YWinkHX7Ohy2iAEqNdILWPbJSzpRmA/YgqJpc1bwn/GsdnSl/fmO768BGvtAsPrr+KqzT825mtmZgIXhHyCE7h0lOIZcKwH6pAeCX1M4hfGJrjBJ3uzY2G6ypnn8cSIuNPKSK61qK22Xr7NlmzG0mXA9/P7LXfBkSeqkqT+O241Nooro1wwdYhlrz5YuPbjeewxzatoWuzYpcbEEgc/1KQxxXjI3MfzE74t6YYEB2bg0nO/bwWH+6HsmkHeg+mWSeW7lmKiK0LeXYAYvxfjJv9QqaG9hXiYSODZV9v/noensImOpGIMfzWGD08cjVMP76ilXnU3l1zGic1K6MOsKtfSXWxZhzgr0WWZFZR7a8MfGYNC+MLnlfjz+hDk2UGtZCgkYzMrtmxrYzoKqvYEWY46S6VouE6C3wHOEY4AvBKdgudI6Vjm3Pc0t5nxFhgRZwPKTY5Dka80RV3RVtS+khd5+0DVNZmhsg+RRrlIwbr5mr9pKANQPOvWwg23ae6bNzZyeQIBMqMkG2/PtjXxxyoPuexXpqnMvipFmXa68WZ3M/f4GUo6MY1Ta0S3/OP0vEDWGLDVcqECcMhBr9B/6r02L6knIZQ89QVkbhvt1dwAnEFN4MavYzJYXRVuYYhHvrgKuwKLEa3RPp
- 2t+xdRFL
- wWMz+jQ5LGZbZUvWw0YKU4GLyiHT8Czm/RsLWKZfvUWmOXw0jA6gRKAzm3etgqo8/Io0gs0i1TqKRG/ByBbFXh+piTBjib+fmuYr9bqudESOwbbNjW8emkQ1WKWTHLp+mCf4MX7xGXKYuCaMnyVreaSe5/EmWAhD0pgUHCn2FwGkTjv+GzaCxDbk82KExObL+22q76Jr7RDWGUtLX+3uurk+mPgQeV3UAY1lx
+X-HE-Tag: 1765414538-749017
+X-HE-Meta: U2FsdGVkX18XWbUnNB4F9rSrY2Olu2K3gb/z2VM86MdNUl0b/pOARaeBDLg/0LueyeD4IHhYLWV6pe2i4Kg9nYrM3t3usdHbtm8WJrFKfzsrIdRYuI7yPFqpUFVZ14ejTqN/KwzfOT2fj0OBkQOCU6GpJXclw6NDMHfxgwL0z+Pp8dKpOBnqjXiPKtbGBsqVKrcVu7ok6fMUKJAeeCBh94l79s26iWbBGtCLR1HVdZMGeADRU3FpNhjE5+BMYUUSWsxwQkl279UMGLgt3Refb0/aLdEKRBllyaaJpCU4BN8GYOFlvTY28vtXtpDQuUPY3RTk9WTAWc4WUxr3WZ7EYREF7IiW67kzYlHYHC0MFubt3Xnw08wrS9P2ak82xGfK+LTnYFrD2w5kKs2c4xc22TvB3lv7CeiLgRHwgd6cKvHjRtLuOJd/dZx2jr22BZJOb0YlF6iH2W6rnqirFAJwh3i1U4bPzGe7cbBD+DJsmewYt+B7liA2ERqK3LeIvp+PavsN0t+soKNkSc6JUsOESE6Kmy4BA1YSVHR4Ey2hBxfLB9o4WADG0vP4WZSKXL0s6aVKw8xQbXPPJ2v1LsFOMSvt2QQuC4LRxdpGpAS8bJNo6okYuBR/NYPfBSH/NAd0ckJ3cVrtOTDlmsz4QPJkxWut85y+VGFXOnyKOpHA9qvAjPb64O/9A1807DN9yhbYiEy2xWes+4md3jEXvgM74J52PcYc8P9y/uAKCknE1HVizIjez+AhR56kIcETNZiSHdrPqPjgyysqGaK1Gmu+O2w/gFmms83OMmT+60OJE92ACs8j/i7mTlAN6qOqaoeamLrhsbcsqkXj+m2SSYi+F2EbQg0ydKQTGH8VwTjzei+fi4WBxFUTgIOMvpJL+t3MCIMRBT14SElxPn2RnN5d3KXgEeK+pfkYgYz3HMe97i5FJX/0lfP4xzzBdK2Ovh21OQWxHucXUvb5ASW5Ppk
+ 07QgLpZI
+ XFcj/01kqexg0l36CpSzBZ/JsHOkhB/knZ6w82rVjqLnDTArfns5XN0h2Gk3jpTGPCnGjWD/rLOa7Aq6dsf87H+/sf4jA+4eWc2nXBkbw7JMhUDFUjUTGLNy5ZeS6DSn0/XKtSvnIzC7ZZf+yhGNx4pf9UAS1f01Rk7WDLkBCJuBpck2YrpZQuyOqZ3vqQG1gdxLvyyVUzXKRI1GWMSLwdSq/JNeQH+awHmB8HC/mVtBX0z97V6U1euDjxFkOdQEKll7nPRLlYWv8tzvlPOWuR0053RSWm74Ud4PjQbmgfkzHWigFQLCVNOawv4IZ8pCP3uZVKiqAcwE0h8XXWkpNSlcfb7ulb5eSrDO3SmYRJRqo7l9mGyw8Ku8T9qcOteoMaD65xS4weE1PqG3ZXW9N9pRvZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,74 +107,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/11 0:36, Johannes Weiner wrote:
-> On Wed, Dec 10, 2025 at 07:11:42AM +0000, Chen Ridong wrote:
->> From: Chen Ridong <chenridong@huawei.com>
+On 12/10/25 16:02, Lorenzo Stoakes wrote:
+> On Wed, Dec 10, 2025 at 10:55:40PM +0800, kernel test robot wrote:
 >>
->> The mem_cgroup_size helper is used only in apply_proportional_protection
->> to read the current memory usage. Its semantics are unclear and
->> inconsistent with other sites, which directly call page_counter_read for
->> the same purpose.
 >>
->> Remove this helper and replace its usage with page_counter_read for
->> clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
->> to better reflect its meaning.
+>> Hello,
+>>
+>> kernel test robot noticed "WARNING:at_mm/mmu_gather.c:#tlb_finish_mmu" on:
+>>
+>> commit: 0e1ad0324aabb5aef3ef409de9a395cda7ee6098 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+>> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
 > 
-> +1
+> This is the:
 > 
-> I don't think the helper adds much.
+> 	VM_WARN_ON_ONCE(tlb->fully_unshared_tables);
 > 
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -2451,6 +2451,7 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
->>  static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		struct scan_control *sc, unsigned long scan)
->>  {
->> +#ifdef CONFIG_MEMCG
->>  	unsigned long min, low;
->>  
->>  	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
->> @@ -2485,7 +2486,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		 * again by how much of the total memory used is under
->>  		 * hard protection.
->>  		 */
->> -		unsigned long cgroup_size = mem_cgroup_size(memcg);
->> +		unsigned long usage = page_counter_read(&memcg->memory);
->>  		unsigned long protection;
->>  
->>  		/* memory.low scaling, make sure we retry before OOM */
->> @@ -2497,9 +2498,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		}
->>  
->>  		/* Avoid TOCTOU with earlier protection check */
->> -		cgroup_size = max(cgroup_size, protection);
->> +		usage = max(usage, protection);
->>  
->> -		scan -= scan * protection / (cgroup_size + 1);
->> +		scan -= scan * protection / (usage + 1);
->>  
->>  		/*
->>  		 * Minimally target SWAP_CLUSTER_MAX pages to keep
->> @@ -2508,6 +2509,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		 */
->>  		scan = max(scan, SWAP_CLUSTER_MAX);
->>  	}
->> +#endif
+> test case, so is likely the issue that Nadav raised where this isn't being
+> initialised properly so is just spuriously firing off.
 > 
-> To avoid the ifdef, how about making it
-> 
-> 	bool mem_cgroup_protection(root, memcg, &min, &low, &usage)
-> 
-> and branch the scaling on that return value. The compiler should be
-> able to eliminate the entire branch in the !CONFIG_MEMCG case. And it
-> keeps a cleaner split between memcg logic and reclaim logic.
 
-Much better, will update.
+Yes, I assume so. Surprised that this series is in -next already, so I 
+didn't send a fixup out yet.
+
+Let me try doing that later today.
 
 -- 
-Best regards,
-Ridong
+Cheers
 
+David
 
