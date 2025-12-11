@@ -4,92 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27BEDD41C36
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 14:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1C5D41C3E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 14:15:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A0366B0006; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
+	id 972EE6B0006; Thu, 11 Dec 2025 09:15:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 751236B0007; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
+	id 94ACA6B0007; Thu, 11 Dec 2025 09:15:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 667646B0008; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
+	id 8128A6B0008; Thu, 11 Dec 2025 09:15:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55D876B0006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:00:02 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1AD5C0176
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 14:00:01 +0000 (UTC)
-X-FDA: 84207349002.22.1641DE0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0498240004
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 13:59:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6D4ED6B0006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 09:15:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E791F139C3D
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 14:15:20 +0000 (UTC)
+X-FDA: 84207387600.29.8EBC043
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 91AD5180013
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 14:15:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=HGKt4wuB;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf24.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.11 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765462519; a=rsa-sha256;
+	cv=none;
+	b=U+lT4ZeK+9O7J1W0QQRhgzxuy83Nyp3msBFv1SRTkb/6CWSsPXkrt19Op5rr7Z8YEW3wx4
+	wdQ+XuSmlubZTR69icfFF0X6yufs1dVarrpQq7cEaJLJSM9NhsAfe3Wq2Z6NAtYhOT5yw4
+	IbZhIJy7jybuIO6skW19HyJtLNME8zE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=HGKt4wuB;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf24.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.11 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765461600;
+	s=arc-20220608; t=1765462519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xs/3AOuZdsztLPquHqeRtr+v3dXXVtUFLlZnFglksuA=;
-	b=59BBg+RDX2eC7r93ukW73Gog5cBO5OdjIoCnUNBbjPk8ivhOlLxxSPDmjBmAf1jIU+tjP9
-	H/uS6UbbrspwQdCgjUJJ+Us9CpkBme6tvuUOrdGkDpUOWP+tM3xzB4j/NN7e/aTH4jniLp
-	PeoGOQE7eI0T/02ZV7Eg+vyZGOIPj5E=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765461600; a=rsa-sha256;
-	cv=none;
-	b=23djOtTv987tkokMOLneFAvXU7/fm8372fD/6lHIoPmkxq2HnLaZPKHBou1Z/C+Bf0TwCy
-	upTXj9qhsJgmeBpBsyBTV9rb26MordgLuRAJYZHh8tocxX+bmRi8cS7AwH1cNbUvqsR7I9
-	CYifiNGQxjdt3yiEhZ9VFzjNCyg7V/w=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DEE41688;
-	Thu, 11 Dec 2025 05:59:51 -0800 (PST)
-Received: from [10.57.90.205] (unknown [10.57.90.205])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 05CCA3F73B;
-	Thu, 11 Dec 2025 05:59:54 -0800 (PST)
-Message-ID: <a063f6c5-2785-4a9f-8079-25edb3e54cef@arm.com>
-Date: Thu, 11 Dec 2025 13:59:53 +0000
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HXPsWGzqZNdQCafR+rn1ATjDdBIDY0Ma0kVhJ2NwlQM=;
+	b=eILlZQwi9kcwTZN8LwZqn7cD5THfz12HYu/gneFLQ8aPsa9GVhHmNbpzDGbfnRSm/5ppHj
+	DOq5DCbZDw2jHyv7gkB4pPIOUsBlFz0DyCKEegihSfFUV7OPjgi2bdxUxdUQ91pAOfM3t8
+	0CRHKMXME6sHOpAge5A8HExZuB06v0I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1765462516; x=1766067316; i=markus.elfring@web.de;
+	bh=HXPsWGzqZNdQCafR+rn1ATjDdBIDY0Ma0kVhJ2NwlQM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=HGKt4wuBitpFeSvoH0/dw/c3/ZM7WUCiSGzQDjPWa4l4Tnb4CR3x1kZ+95diQzq1
+	 YuPdAlew2E13mckZHDeNcmQYV3NUY2iYnchRWgmmPyTnAQYC3TN2WL32C/set4Kl5
+	 K1BkOuqb77rsGx+gLsHLp/B0PLlvU152amR22ZfNcoeVUYB6BSmtVo+oxuZavBx/Q
+	 JzECGfMPP/TW4PGX+p+Bl9oYLTxtRgLWkwXvftTJYqvLyov+q6afLpJyGh9kxyIkk
+	 NA3/sNimV2q4rEh5xs/JKqPxNlzieNipiDh9OJqx6P6udqO2EeyT4xxnnqIN6ApCQ
+	 S9520y85T+mxXYz21Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.1]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mc1ZN-1w1Om42sJj-00g0ku; Thu, 11
+ Dec 2025 15:15:15 +0100
+Message-ID: <22e31f45-55fc-43c6-bede-fee1c829aefc@web.de>
+Date: Thu, 11 Dec 2025 15:15:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/22] mm: Allow page table accessors to be
- non-idempotent
-Content-Language: en-GB
-To: Samuel Holland <samuel.holland@sifive.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-9-samuel.holland@sifive.com>
- <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
- <c2597d43-d909-4259-bb5b-9294e4069385@kernel.org>
- <af8fd275-a34d-4b2f-8834-9c85dab2bbae@sifive.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <af8fd275-a34d-4b2f-8834-9c85dab2bbae@sifive.com>
+To: Kees Cook <kees@kernel.org>, cocci@inria.fr,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Vlastimil Babka <vbabka@suse.cz>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org,
+ llvm@lists.linux.dev, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Bill Wendling <morbo@google.com>,
+ Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Harry Yoo <harry.yoo@oracle.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Jann Horn <jannh@google.com>,
+ Jonathan Corbet <corbet@lwn.net>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Justin Stitt <justinstitt@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Marco Elver <elver@google.com>, Matthew Wilcox <willy@infradead.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Pekka Enberg <penberg@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Sasha Levin <sashal@kernel.org>,
+ Tony Ambardar <tony.ambardar@gmail.com>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Yafang Shao <laoar.shao@gmail.com>
+References: <20251203233036.3212363-5-kees@kernel.org>
+Subject: Re: [PATCH v6 5/5] coccinelle: Add kmalloc_objs conversion script
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251203233036.3212363-5-kees@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:VtTnkvdHyx2N8zaT7+mVD3UDdwU4U/rdXNiikXVORMv6VYV8Ogj
+ QO81oGcmk1PW1LR+HEFchod3sdWVxqB3i47bFm+BHhn6aEGGcS+/9M+wmeMWv5Mg8qMX/pw
+ 8FiNvrGdj2vCRWC8hS63XVG0EBqP1REZchF+gMueq0w2iygrZGK4/OQJCOo1091iqD1h0q4
+ 2gGabs7EbmLApY22t+/Ew==
+UI-OutboundReport: notjunk:1;M01:P0:soOv9wERWaM=;YnN3t8FtRA8Bt6Lr38W/P8Eesha
+ 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
+ AU7LMQ87Gjr0AixRxww4Gyvk3U0+5X9BIazYOg
+X-Stat-Signature: npcep9nseoqrib4gmocou4zdj468jmxm
 X-Rspam-User: 
-X-Stat-Signature: zcnou43wemq5yrsoaefj3xqc6dyze4ak
-X-Rspamd-Queue-Id: 0498240004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765461599-236877
-X-HE-Meta: U2FsdGVkX19dfxGev89PwfK+S4wb/UycQW2xLhWeDQQbMyBao5vRusPha11YvzMlwVfVwYo63Ez7LhlDYeKQr+qpSMLQt50QW3lbMNUwa3EiIWQGP/9GYvJ6CNr5wLyL9gJE3+LJ1mxnby5/CCbHPza2GKIxolzipahuTaNK/935Pj52m/e1Fcz/KOUFOQ4yERQSn+GD5Hr2XQLOjNuDaPlWIqypto7KNRpcWo2qPaajx0O7RZCjY4M2b/6XCVOVpy7PynOe2oVYSZTHdsYvvsUwzB3FehQNsMQ8Mbh7eko7ymLTTepOSWwWxA6yCL0sHymBopWvnyEdtg0YRu3TT7CjIcf9jsBkcKr+jE0ASJKSrVe6DMI1MwPyUYvdlPyGAvTRryKTB1XpQGF8Gt7jyuO8kQPxkk+8fjthsz7vFnt9E6bnaKu2NDijK/XkWwWPb2BhBd07yH1R8dALuZquL69DjkIpeKDpobQu7whZHm3Av2pioyZ8Gq/JidcbyjxOuamKT+hW9/ZiY47CsP1ip5zymQWt9frkelQrRG9VB4gAybyo5pYSNQXNNHDeQHdrn5/GbxA6E0qS6sfWqY/LQLi/QA5W4AgfrwqvpM3igTqo9LXVnhddbUakmMfidjfOkwv5WMdrHDKFAwpeC2g+4IJclO/kftKFpm2oU8lZ51cmmiasf8PkWmwuQ7zj9uvPrJnPtxwtJm4n9u4xUFSk6NugiEmu0O6cbEu61CA8O82j30Na/5DhsfQwCz+Br1KfU38Cg5JcFMyr57DiBDeE3Nh16xCr+BULLMhBcUB/2Pn+w4hFKEL+kKDok862u6DJ6Bc3uC5wwcV49caKXhuj3Y9fza1gV85mYiAdeLdNb1N6lTkUhJ8VQxyKHq5EeIFL
+X-Rspamd-Queue-Id: 91AD5180013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765462518-449807
+X-HE-Meta: U2FsdGVkX19M2AdMfFp0WKqQoqIxeGm2hYzWc9CgJL71fXrIEulzhioJ6PFJgzjFfbf5evJqbHdYoLd9Y1zGdCQvewvly/3Y7zGXwn66/iRQ9o6E/dxmCyy1fMsN4LcHo0u/tpF+GyEJiupJJg2GsnsxiAj7QQmR1HVQb/wsI27eaJ0EuejIPqB0gZp2slPORAfcfFfKPg1uicNOSIOIU1gomdjbZS1LxUz9i6LqCvWpng9D8f8Q1ohoH+u805nbe5lZycpaEKT9DcBrZ3OOCGSZN4wgZ3Feinau/wq3A1ZrAnkKTt0uLXxirMBGDhd2FXlVi/uzWdnDrl2M96CyU3JGy9ZLImiBvq+66inFYJdtvyNGOTaq7lqg6rVRLKYMX5rUuGiBEQksFsyJ9NKjBn03ftUC9oFBAZYTJOzN1oqAdFPlwb53DA9EV03H10HKuFdeIhpe+4k1cl1iOTCo3Xcangi1AWD+8ZPNPXzj30Xn9t3HQRScBmKkqsEc6Y1O1zUgZPehXTtPWdBkU2tYf9O57gr/gQm7cFRnvUzdavmdmIWP82O5pXdO1G2z4eraHQB/KagD1X6cPB+ORuKYsU7uzeNeX8hQIntivkzq19/s0Ex9w54Iu36Hb7fvkCcK682PqDHC1QwVf1J6zf5a3AiuFrxsgUNQTEGkQ/ZET7QCUdX2pEGi3V78gFhz8RWMOpZ5JqU/FCu2o37Hj4LhyvBdXGB44rKkIgM+MY3PfaNQah1I3+iyMqcoYIqZL6lMWE0ydulOp72c3+zMuMumzt65ycnhonRD+xkmE6y6lr85BE56D5CVBJfy4tlGg1p3hBJQRtoZfgtXLLc86bxIlVoI3Q7bcbyuuXHnkfRHe6AIeNcLQ/ByTECApCu8bubnvbdv8pMw6YmXS3Sy6Ncj+yx1NMMsMxxIF1Rl8nuWby5VnzJhJCW6uy2WXPqRGJA5HSehlxuMN+S7aGnNzzS
+ oJfsZUUP
+ gMG0Qt4tyTvBd5575G5UZSgiEOCBXbeZ+2CTrIQIzSxczvIt+I8i+UN8Twh3tFgwkrH9hs81LOLff/MtAtCQR9c9WUJYhcMeS9/FmVDyVj/u9U09/E6a2m1SlgrJRpGdskzui8Ef26nCeSaf0os0KvqubUy1I28NkLVbNJr5+xkHzQ+6OiqjCSDG5njP1ASXzKd6BKxS/XcDCrP7ym3OoiELAAkwpTKxC/iCSiBJT76duWpVzsPXMyRghR1d19Da68ZQK+f173p1yWDxvzgAO5NNr4v9xeCmcgMJ1TmjJpN1fyqAcSfI0bvSYxFJY8x6JTDUmQ7oPD0fl1GQu1u/5w+l8fwP+GldQHeJ4VXTMIqTqzNcGCvOvj8DyrABJFLj+g/nrF03oyyk2tOkj9/UZcEBaXQnMif2GEXDpBIaU8uBOUeEsq35cs5G2nLBjXCrY4RRJyuTGH860ctfKqHRVVGy85mXWZea0AP7Ck1o2cIyMoEMhzqXCLqJ7tUvh9qwqKv8eJKw5v43LsUa80b/PLb6JkWBmw33IogddzoJ5C3UZB9Y3iad+h+aQGwWU8T8AFH7wyTAV7OIudvwtjE06R75KEtaPeIyC8cOyEo9t2yCq1XwQAI/kvGtS+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,119 +195,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/12/2025 00:33, Samuel Holland wrote:
-> On 2025-11-28 2:47 AM, David Hildenbrand (Red Hat) wrote:
->> On 11/27/25 17:57, Ryan Roberts wrote:
->>> On 13/11/2025 01:45, Samuel Holland wrote:
->>>> Currently, some functions such as pte_offset_map() are passed both
->>>> pointers to hardware page tables, and pointers to previously-read PMD
->>>> entries on the stack. To ensure correctness in the first case, these
->>>> functions must use the page table accessor function (pmdp_get()) to
->>>> dereference the supplied pointer. However, this means pmdp_get() is
->>>> called twice in the second case. This double call must be avoided if
->>>> pmdp_get() applies some non-idempotent transformation to the value.
->>>>
->>>> Avoid the double transformation by calling set_pmd() on the stack
->>>> variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
->>>
->>> I don't think this is a good solution.
->>
->> Agreed,
->>
->>     set_pmd(&pmd, pmd);
->>
->> is rather horrible.
-> I agree that this patch is ugly. The only way I see to avoid code like this is
-> to refactor (or duplicate) the functions so no function takes pointers to both
-> hardware page tables and on-stack page table entries. Is that sort of
-> refactoring the right direction to go for v4?
+> Finds and converts sized kmalloc-family of allocations into the
+> typed kmalloc_obj-family of allocations.
 
-From a quick look at the code, I think that some cases are solvable by
-refactoring to pass the value instead of the pointer, and leave it to the higher
-level decide how to read the value from the pointer - it knows if it is pointing
-to HW pgtable or if it's a (e.g) stack value.
+Can previous patch review concerns get more development attention anyhow?
+https://lore.kernel.org/cocci/71d406fb-9fb1-44a9-912a-7a0d270b9577@web.de/
+https://sympa.inria.fr/sympa/arc/cocci/2025-11/msg00066.html
 
-But the more I look at the code, the more instances I find where pointers to
-stack variables are being passed to arch pgtable helpers as if they are HW
-pgtable entry pointers. (Mainly pmd level).
-
-I wonder if we need to bite the bullet and explicitly separate the types? At
-each level, we have:
-
- 1. page table entry value
- 2. pointer to page table entry _value_ (e.g. pointer to pXX_t on stack)
- 3. pointer to page table entry in HW pgtable
-
-Today, 1 is represented by pte_t, pmd_t, etc. 2 and 3 are represented by the
-same type; pte_t*, pmd_t*, etc.
-
-If we create a new type for 3, it will both document and enforce when type 2 or
-type 3 is required.
-
-e.g:
-
-// pte_t: defined by arch.
-typedef unsigned long pte_t;
-
-// ptep_t: new opaque type that can't be dereferenced.
-struct __ptep_t;
-typedef struct __ptep_t *ptep_t;
-
-// getter/setter responsible for cast & deref as appropriate.
-pte_t ptep_get(ptep_t ptep)
-{
-	return READ_ONCE(*(pte_t *)ptep);
-}
-
-int do_stuff(void)
-{
-	// value on stack: ok
-	pte_t mypte;
-
-	// pointer to value on stack: ok
-	pte_t *pmypte = &mypte;
-
-	// handle to entry on stack: not allowed by compiler!
-	ptep_t myptep = &mypte;
-
-	// handle to entry in pgtable: ok
-	ptep_t myptep = pte_offset_kernel(...);
-
-	// read value of pgtable entry: ok
-	pte_t val = ptep_get(myptep);
-
-	// attempt to pass pointer to stack variable: not allowed by compiler!
-	pte_t val = ptep_get(&mypte);
-
-	// attempt to directly dereference ptep: not allowed by compiler!
-	pte_t val = *myptep;
-}
-
-
-We could do this incrementally by initially typedefing ptep_t to be:
-typedef pte_t *ptep_t;
-
-Then we could flip the switch arch-by-arch to enable the stronger checking. We
-likely wouldn't need to convert arches that don't care.
-
-I think by doing this, it will expose all the current issues and force us to fix
-them properly.
-
-On the related subject of conversion to pXXp_get(); I've been looking into this
-and personally, I think we should have 2 helper flavours at each level:
-
- - pXXd_get()      optimizable by compiler; defaults to C dereference
- - pXXd_get_once() single-copy-atomic and unmovable by compiler
-
-It simplifies the converstion process, and reduces the risk of bugs
-significantly (go read about the arm32 issues discussed in Anshuman's series if
-you haven't done already).
-
-I appreciate this is all probably a lot more work than you would prefer to sign
-up for, I'd be happy to collaborate if we get concensus that this approach makes
-sense. What do you think?
-
-Thanks,
-Ryan
-
+Regards,
+Markus
 
