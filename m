@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88250D41C02
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 08:17:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01495D3E79C
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 08:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61656B0005; Thu, 11 Dec 2025 03:17:16 -0500 (EST)
+	id 9312D6B000A; Thu, 11 Dec 2025 03:17:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11C56B000A; Thu, 11 Dec 2025 03:17:16 -0500 (EST)
+	id 8BAFF6B000C; Thu, 11 Dec 2025 03:17:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27F76B000C; Thu, 11 Dec 2025 03:17:16 -0500 (EST)
+	id 7D0F26B000D; Thu, 11 Dec 2025 03:17:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C503F6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:17:16 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65C9F14043C
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:16 +0000 (UTC)
-X-FDA: 84206485272.18.CBD2389
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 98C2E40010
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BkXQniJS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765441034; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E19A6B000A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 03:17:17 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F34C605F5
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:17 +0000 (UTC)
+X-FDA: 84206485314.02.A5D2F82
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 36CAF14000B
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:17:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cbOqi1Bm;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765441035; a=rsa-sha256;
 	cv=none;
-	b=jF6R9g8Vi5jGT5DYQhh5enHb4EcKVDIZ41nC6Vno+YWturOp5dKDnIGyx2xZjoucd0zxS0
-	IdVjPUe0mPRyDXoszfRrc9Tqb2aCGy+///VIbT4v1o1YleCO3q07+oJnYmRY2G4a7cofzz
-	cTs1789TxCMURx/f9F+zzyQYNssD+kY=
+	b=VxG1vm4S+exSGZJWog2odNtx5PB9VIlG5ji10ZjPaZJ/8VO1zhbaGwVyFNxQo8/72Q4MNV
+	rIk7Bp5RmkPlMwIcSddBKHAvKNdBdERT6E3XVpbyNIccnMzPi+FsEsMNKRMY8ynsawTr3q
+	sgXI7Ps5PgjxsR14bYlojVncdztO4/M=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BkXQniJS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cbOqi1Bm;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765441034;
+	s=arc-20220608; t=1765441035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=F7ZBUFth2QS91MsUVzia8UnQfPYwaqtJvLrEI1PCTTw=;
-	b=J9RVShOrfeMk4+k2R/FrCcCg0JK/I6AYt+1P9/Q9lgwYuISWW1O+9OveHNLy7I7XeuQoeF
-	d2C2NTPqubqagqdjbktoJe3galjJYytRKRef2kuBDFhd285um05qDS3H+KGid7H3dkG8GA
-	+6O7RlBUb/sPUvZ1Taxzb1YwI3RIP6Y=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/ea6etQCpReM0Dd5R3qfwP463Goog5MVH76oxL1v2kk=;
+	b=H9mgcvu1YTb4XZ8Tw3otLh21D3CTIoCQ1+1qG9I6vSKLRWBy4VLi3vyNs8vq7fKmXRR/iW
+	IlB5TtVwl9Z5CC4vgzxQJU1l6pRcvsptJA+5++9jIHENwi3p89j7fj3blyND4wSxb7DLjP
+	rDGxTlZ8RrYggdFjnTn8V7NYKVeOfgs=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1765441031; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=F7ZBUFth2QS91MsUVzia8UnQfPYwaqtJvLrEI1PCTTw=;
-	b=BkXQniJSXLcChS265vqghd45l7wNsRgJK6LYS81iEDCPRKxk8cjU1tptEGK1NJ2wzn8e8A8vTySyBPx8AiWqOoGpNTqOPE1p88U0ZWqAhK0yLRsE6gQSXKUxGvYAvPAgmU6aBNPxgDJMRIJMFWcm3i1Xn3FxF8HWYzfjf0h0afQ=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuZl4F4_1765441028 cluster:ay36)
+	t=1765441032; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=/ea6etQCpReM0Dd5R3qfwP463Goog5MVH76oxL1v2kk=;
+	b=cbOqi1BmJlR3HeCWfRata3dM8PlfIC8sss/Oz9J9NrF8666xT8cH8zu5mEMSH6/k0NMTZWL1dNHWUX0yD2GZIzaFSVcjmZWMsmENwumzxS03lgFOnicbPHW8IwpLArzqc3tNVi7/b0UtHgMtB21urPYtnlLaimHfUOeWfv0GNhk=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuZnGbv_1765441030 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 11 Dec 2025 16:17:09 +0800
+          Thu, 11 Dec 2025 16:17:11 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -77,20 +77,22 @@ Cc: lorenzo.stoakes@oracle.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/3] support batch checking of references and unmapping for large folios
-Date: Thu, 11 Dec 2025 16:16:53 +0800
-Message-ID: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v2 1/3] arm64: mm: support batch clearing of the young flag for large folios
+Date: Thu, 11 Dec 2025 16:16:54 +0800
+Message-ID: <e10f876ce130134fa089befe83f30561b48b9889.1765439380.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 36CAF14000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98C2E40010
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 1wc5qq655tmxdji34jghng3ru93uimyu
-X-HE-Tag: 1765441033-191837
-X-HE-Meta: U2FsdGVkX1/8NAipRjAvbdj0bR0P6YqTLZYIOEy1mX6VAn0SbJHuGYSoMwx9ADy1F8o3vy3rKLXXv4Ulw3GBp3sLUqbqX433oQiDvKdYMWiLTAy+rM41UGaEBrC9h4KNgMiM+tEuf31c/fCeh5pe+ztaaaQkwL+uxJFctGEQ7TOa60YqL2+Q1zw9gp1NLrgUEuXtpGxN/NG62ZVzYRGtbl5WabBE9SpV+CGSn7omQr+SmdyCiPh3HgfjbqKpRbmjWBztlaNrzEJlqWsrCCOLlfQnEwtXvR8GJ71u/XWolzXP13ORVzn1CW9WVQOcpLywqdTOkgWzHC84RBUHUlJZl7gzCVoPRmKTEFhtF2Iw+LkpnXWWXwXfh9fTsjB1t0bLr6pjfsI0PeZIkQuIUrGOqiPJ8vYLkUA2TAxk1gXIw4AtczRQnxBaZgG4dogIoUh9M7LBPERTSFQiEFbFx5Vdw3RokyX0sQsSQ0QAmbANdWd+tNqTd/w1q9/7qCKDsM1wQoKNN1ywE5J4aQqmzUerSx4iFHQcw6Sz9b8pOun8QLn0JgD2Moz3x0EJHs1VZOKJesHoubPnZSB2qH0QU4INM/2Op6nH6BbIsmjUo6Zz67vTXFbK8ZHeDSBjzmM+blxU24xKrpa4xuIOEJqMYSuTQZLir3CmY8OIvvoVOJTGbo2//AINkZBbhc7DJLNHhwV8ueBzD5BVoZFRKYHTKqAuxwdhIC9RuCBmFTZNv9Ce+RZUKCcvTh1gTdg2q2qrptqTt4526JKRzo19w0IrTU2NRkvO307Zp8j6PFNeVeg4+7GloU37UW9D1ZZoH23xzSnkQlo03oZw36+UazSWGeT0mGbVQ1WkiX3Tdw10tG3RKyBkT3nLM2S39oUwwMsePG7afjmkW9pfuJcfaERPR6MdPT3CR9vrfqKs5ALQ+0WpDSWZe/QD82abbOwp/U83eEYhiv9MOGRcX1zLNsl9WB/
- /mtEWANn
- efR2y74WUmw9FC31EJCXW5afUbZeY32DjcTA3vkk5lDlLUsDkyN2sREi3q8ZmfYY9GX9XHrW4vf4qYAE0K6ZJ/BFG9UdTcPCssv9Xh7/fJuJdFH068HfW9D1tPL+SbyYaix13jyXiSM+9S7lgQzOy4Fjg0F15TTw3TGN5ZGoRmdpPxrh63AICW88v34++x37X4tSuOSEo3Vxnet88kmp2S0YW9NSesVUx3APn
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 55fhrs6zrsupqnm8ay8iuh495e411jfs
+X-HE-Tag: 1765441034-966537
+X-HE-Meta: U2FsdGVkX1/fu3ogJr9Z0GFYD6lFuPWHc3H/4p4wJW6pwz4wuW3U8bvXW9b3CI9/ji0GcUO3TZKi9sQHtDbISMvD1Z+2R38oLgWoOc3JKxDB3GBmJWkVry5gSBRnr09E2ejQvzj8uA1P/tz/MwMtjBzI6Wv7HHQW4AUGv9Di//usycJyjRpJ48MPZ+QXKONIpCx03TKHFqellL4EDSHfo3h71ORoSzO3m96tbPm7BNt0eFTnbLoHWqxpFEjegwDn/mzE7ngYSWqFR7+280I2+Zu8wVzNofX7Rmvqgnr0GN3OhgSUfcvh1CD+Ic9IZQc3CWpV4HSQeMUh1hHDM5oJb6dEPHMaFswvKtHbw8WSlQjIERl2w/d7fJgBsnawR0lpiss6531PP7ufvgYoblsDQZFV9+rkLDo8yTenCJK6ubf/2bgYDL+cG0dboyQaV7Y04is55y/b3cV8unNGJZZPZcq+XfKzzPyKC5ej1c+Yt/r0hdI8nmwpxfMJoUyyJASr4RVxBvzU/HN0Vr9OyU764LdC0e9xRxLrF6EYFba9lftcBd0TWF5VD1fx8TBJUQbd5aHec/hXZHM8Vszz3XUBK3EiotvIDrh+Or6Adks302vXVv26TilucRN4W1xE4yU55QQUVRGoSihzkrS+guEtxmX5uGYNd0Kv2LMDKE3yMuGvXqvCHQ6puxSyeCVjDVohEQ05qcTJcywYChpqnMF81zWxpCBGkZBGMW/ElwjFRnNrGb3qjwgClI/33WhsCoZuVlnqBibJPiTA0I2z1xMpUYW09Ro6/ap4GXYLpjRWQmazrAivqNqNVhxO2FhUtgIII8wcFWLRNCiu+CdcI+q8ghhqPMCkDTXuK4QrnLAcjj9Oq+1BLWvEhx6LrW1l+u3cSqZGPBBsLxVoDBgpI9xXNOeGenKsO1h4O2N+uqs59L16KIqHCEgZAeua6G3wBFnVH6zTHNTcBmHuvLvhDrH
+ EwvJ8dZV
+ r4w6nHLezKYyPvBmBHroO5ejQTQ//mVuxyk0MLtwu6EMkg2qfarD227uQL7hD6Bc7oErcUZITwF4ojjFCIgO5LxzFHlYUCwphfYFg6ofBYF4M5P9VZg8rQskDTEcoiYGtqvLxaLoFSqH9E/4g6dfW76gccNf9D28V4oF+kPoadfdtGpbqwtDuBdVjI8EuQAE7YbS4JEOMNoa0u1VVWjrBFU2JX8+Q//jNIvBt3hYlGaLLS5/nmSenDRcW8kpQoAr+VGg1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,41 +101,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, folio_referenced_one() always checks the young flag for each PTE
-sequentially, which is inefficient for large folios. This inefficiency is
-especially noticeable when reclaiming clean file-backed large folios, where
-folio_referenced() is observed as a significant performance hotspot.
+Currently, contpte_ptep_test_and_clear_young() and contpte_ptep_clear_flush_young()
+only clear the young flag and flush TLBs for PTEs within the contiguous range.
+To support batch PTE operations for other sized large folios in the following
+patches, adding a new parameter to specify the number of PTEs.
 
-Moreover, on Arm architecture, which supports contiguous PTEs, there is already
-an optimization to clear the young flags for PTEs within a contiguous range.
-However, this is not sufficient. We can extend this to perform batched operations
-for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
+While we are at it, rename the functions to maintain consistency with other
+contpte_*() functions.
 
-Similar to folio_referenced_one(), we can also apply batched unmapping for large
-file folios to optimize the performance of file folio reclamation. By supporting
-batched checking of the young flags, flushing TLB entries, and unmapping, I can
-observed a significant performance improvements in my performance tests for file
-folios reclamation. Please check the performance data in the commit message of
-each patch.
-
-Run stress-ng and mm selftests, no issues were found.
-
-Changes from v1:
- - Add a new patch to support batched unmapping for file large folios.
- - Update the cover letter.
-
-Baolin Wang (3):
-  arm64: mm: support batch clearing of the young flag for large folios
-  mm: rmap: support batched checks of the references for large folios
-  mm: rmap: support batched unmapping for file large folios
-
- arch/arm64/include/asm/pgtable.h | 23 ++++++++++++-----
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ arch/arm64/include/asm/pgtable.h | 12 ++++-----
  arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
- include/linux/mmu_notifier.h     |  9 ++++---
- include/linux/pgtable.h          | 19 ++++++++++++++
- mm/rmap.c                        | 29 +++++++++++++++++----
- 5 files changed, 96 insertions(+), 28 deletions(-)
+ 2 files changed, 37 insertions(+), 19 deletions(-)
 
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 0944e296dd4a..e03034683156 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1679,10 +1679,10 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+ extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+ 				unsigned long addr, pte_t *ptep,
+ 				unsigned int nr, int full);
+-extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep);
+-extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep);
++extern int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
++				unsigned long addr, pte_t *ptep, unsigned int nr);
++extern int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
++				unsigned long addr, pte_t *ptep, unsigned int nr);
+ extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+ 				pte_t *ptep, unsigned int nr);
+ extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+@@ -1854,7 +1854,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 	if (likely(!pte_valid_cont(orig_pte)))
+ 		return __ptep_test_and_clear_young(vma, addr, ptep);
+ 
+-	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
++	return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
+ }
+ 
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+@@ -1866,7 +1866,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+ 	if (likely(!pte_valid_cont(orig_pte)))
+ 		return __ptep_clear_flush_young(vma, addr, ptep);
+ 
+-	return contpte_ptep_clear_flush_young(vma, addr, ptep);
++	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
+ }
+ 
+ #define wrprotect_ptes wrprotect_ptes
+diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+index c0557945939c..19b122441be3 100644
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -488,8 +488,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+ }
+ EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+ 
+-int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+-					unsigned long addr, pte_t *ptep)
++int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
++					unsigned long addr, pte_t *ptep,
++					unsigned int nr)
+ {
+ 	/*
+ 	 * ptep_clear_flush_young() technically requires us to clear the access
+@@ -500,39 +501,56 @@ int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 	 * having to unfold.
+ 	 */
+ 
++	unsigned long start = addr;
++	unsigned long end = start + nr * PAGE_SIZE;
+ 	int young = 0;
+ 	int i;
+ 
+-	ptep = contpte_align_down(ptep);
+-	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
++	if (pte_cont(__ptep_get(ptep + nr - 1)))
++		end = ALIGN(end, CONT_PTE_SIZE);
+ 
+-	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+-		young |= __ptep_test_and_clear_young(vma, addr, ptep);
++	if (pte_cont(__ptep_get(ptep))) {
++		start = ALIGN_DOWN(start, CONT_PTE_SIZE);
++		ptep = contpte_align_down(ptep);
++	}
++
++	nr = (end - start) / PAGE_SIZE;
++	for (i = 0; i < nr; i++, ptep++, start += PAGE_SIZE)
++		young |= __ptep_test_and_clear_young(vma, start, ptep);
+ 
+ 	return young;
+ }
+-EXPORT_SYMBOL_GPL(contpte_ptep_test_and_clear_young);
++EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
+ 
+-int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+-					unsigned long addr, pte_t *ptep)
++int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
++				unsigned long addr, pte_t *ptep,
++				unsigned int nr)
+ {
+ 	int young;
+ 
+-	young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
++	young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
+ 
+ 	if (young) {
++		unsigned long start = addr;
++		unsigned long end = start + nr * PAGE_SIZE;
++
++		if (pte_cont(__ptep_get(ptep + nr - 1)))
++			end = ALIGN(end, CONT_PTE_SIZE);
++
++		if (pte_cont(__ptep_get(ptep)))
++			start = ALIGN_DOWN(start, CONT_PTE_SIZE);
++
+ 		/*
+ 		 * See comment in __ptep_clear_flush_young(); same rationale for
+ 		 * eliding the trailing DSB applies here.
+ 		 */
+-		addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+-		__flush_tlb_range_nosync(vma->vm_mm, addr, addr + CONT_PTE_SIZE,
++		__flush_tlb_range_nosync(vma->vm_mm, start, end,
+ 					 PAGE_SIZE, true, 3);
+ 	}
+ 
+ 	return young;
+ }
+-EXPORT_SYMBOL_GPL(contpte_ptep_clear_flush_young);
++EXPORT_SYMBOL_GPL(contpte_clear_flush_young_ptes);
+ 
+ void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+ 					pte_t *ptep, unsigned int nr)
 -- 
 2.47.3
 
