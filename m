@@ -4,128 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B77D41D4D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 15:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FE5AD41D4C
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 15:03:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A2B36B0006; Thu, 11 Dec 2025 10:00:47 -0500 (EST)
+	id 9FB746B0007; Thu, 11 Dec 2025 10:03:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254016B0007; Thu, 11 Dec 2025 10:00:47 -0500 (EST)
+	id 9AB7B6B0008; Thu, 11 Dec 2025 10:03:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11C3D6B0008; Thu, 11 Dec 2025 10:00:47 -0500 (EST)
+	id 89A7F6B000A; Thu, 11 Dec 2025 10:03:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F06916B0006
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:00:46 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9254812BE4
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:00:46 +0000 (UTC)
-X-FDA: 84207502092.07.E539B67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5F3E010002F
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:00:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W08HE6zF;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7576F6B0007
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 10:03:04 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFA461A021B
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:03:03 +0000 (UTC)
+X-FDA: 84207507846.21.8349D21
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D556D14001F
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 15:03:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c64mCKe7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765465381; a=rsa-sha256;
+	cv=none;
+	b=Bm9EtlQoKMczMJcn8WkxeSrevioycf2dj3sH1AoBDpS0qsgY6lG6ciwV1I7mLNnGLXquoT
+	YlIteIQzFHtnK5fCn2XPEjDeHIgoJqOpWeA7LDjB0b2nhn5/3eim7wXIHLtiMeLfzFs+7B
+	ZX8BWJtmFjGvBORKUnKE+2eWoDS4uuI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c64mCKe7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765465244;
+	s=arc-20220608; t=1765465381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GGZ1nnrzNNo+dNXvu+6hUZUd6j9dUthS9yssmcvlTTA=;
-	b=GyQwhuF197oFTiRRrbM0smWkAMyfH91VXxjK62fdUsOBr2KAseM4l8x8S6zrVrywwxY8XK
-	O+1A5U9cQHGNTeIkkyF9IMHbg9MT7TH55j2eNsL5Y0rCbL84Asxfg5MA+mWoYNPoCHJOWe
-	QJ2zhXGIAG1544VWTFNUdBAtflXF0FA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W08HE6zF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765465244; a=rsa-sha256;
-	cv=none;
-	b=WEJ1DIl1b4MmSC2VWKHr5BxV754/Y70zsyV+0bbS2yFAuBZQV8KPbTxndirUrFEDj+KC7r
-	tuiOMOvx9W0BHI4Bs0HVkw+Itk3rifKG3Kk6V1RfLHMpqfMj4LwGmDxZIrmwwFUFpZ/i73
-	KxFhA8b3g60jRMpKhVzd0d4X0HMp324=
+	bh=m3AgACAxPT+VC827snBHyiIOuK1PWVQkXRgkvI+ouKY=;
+	b=1m55zQXJdDfVAP0bfugCGOD6o7r5wG9bl/0lxshLgaD+/L0QYOOHCazxuiza60ZrbcO6ds
+	5raUNjs5Cb1NgVDtS26EMkSS7uOC8UBkYA+LIFFPu1R/3JgmOG4ovhHK3lou3LR3D5qP0/
+	7ou2xnHCdOIm5ocs59Cw6qZbPXcd0XU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EFB644381;
-	Thu, 11 Dec 2025 15:00:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A219C4CEF7;
-	Thu, 11 Dec 2025 15:00:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24AF060137;
+	Thu, 11 Dec 2025 15:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CA8C4AF09;
+	Thu, 11 Dec 2025 15:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765465242;
-	bh=1UKwlxIH8EBWmveD91rtbw1zk2GIpitHurcNBZbqQuc=;
+	s=k20201202; t=1765465380;
+	bh=xlZUXqejsN7ctbfX3Kr79uQ3a9/b8Jw3fxqYjPtNYZI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W08HE6zFvXO+PVqKaVp7ZkX9LNSXoX9450L9UGj6FRlcSh0on0DbWkBLhnFnC16bE
-	 1PD0JvylznwzYRvG7RQEQt8sib6yWVX6ZmjlBsquojwFKPY1PHR0EBILC3+Tz+jBrA
-	 Zfwb6/v6FNDPQXf+2ijOYFWznkqkjVCMjQemkP6bLzjClmnA2V6sSm/9rqqoJeIOJf
-	 gn3d20uNKlgruxNJME5t7Oa/TmhC27MgOL9kImAOqUzTJ+RCKterH1D/1LRf5MobqP
-	 QiWe3/EuwPkuaSXL/2sgX8ojiyhJl3XcysZ7+AN/WzhcNbH+PLWCW2CKqpBRum9XHV
-	 zw8UlwIKYEUzQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 68BE0F4007F;
-	Thu, 11 Dec 2025 10:00:41 -0500 (EST)
+	b=c64mCKe7kMYKCv2CvPl1RxrhxfCX0G8VRyGr0fGzLeMT7Nae8IkPcPgBRx/SzGPX1
+	 TD0lXkIyPc4s4Z1distMh41pR5C1S0Aa60X2PpIF8/52lKG9/AT8DcB8bccfHFpWRF
+	 AV8rHiRvLsXxqBZdYeGOmCtgysyCg+FlyjdD8wxWVOp5o6OFuuj/vx09mGlIsxL1H5
+	 cXGz/SGiZzJIUYU0iH89wpNDPBhIRO3F/xYcLHLgY84slbdeHYk+9hLwyLfPxrSesJ
+	 n0QZjKjzkgwh+25dQ6qpESBsZCiIud7TcBe3VkP29s9FPGLoAXoIUjyIdIEaKxvjLO
+	 7Iyw1qgH1E4XA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9913CF4006A;
+	Thu, 11 Dec 2025 10:02:59 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 11 Dec 2025 10:00:41 -0500
-X-ME-Sender: <xms:mdw6aSugYlLqhSFkC_QL4fuLRQqmZ90svCc9oTbpJhrhGUJ6AtlLnw>
-    <xme:mdw6aU-EWNGVM0EUDYx23Jq7XrilUUJZPAMufw0aXg-hjt1xly1ADemtvftHioOVW
-    PByc53jmXauMiVmyCXBYiBWjZl_MCyWxsAcxuVgYQNanNjwLFyjRpw>
-X-ME-Received: <xmr:mdw6aZ1l2C5xAY3Sb3Ckw3OVTcBSdDd6LfXPha-3Kop8yxNxmoKVNy_LTEx5Ww>
+  by phl-compute-04.internal (MEProxy); Thu, 11 Dec 2025 10:02:59 -0500
+X-ME-Sender: <xms:I906aUhnw_m2u3AylnCxsUtuWhQyc9OxdIPfG1KxQX0NWRPi7qcQ9A>
+    <xme:I906aYbInKvW5YPfJYzAnpNeaETDytsONHczLwD2eedTf08auvNpqR7xNWwiLA871
+    akWfYXe6dggkzIBYpNr-yxBkFrqBidkZ-ndOQgVrf-g3XhUs-6mpQ>
+X-ME-Received: <xmr:I906aVfLIiqFe88uvNNhArAalczm6TtaSwKjG0PRZYWc7g7iBc65vwbosyle9g>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeiudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepphhrshgrmhhprghtsegrmhgurdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtg
-    hpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnh
-    gvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhu
-    thhrohhnihigrdguvgdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:mdw6aac5m85COt5GDXcf5N8EgK4MjN867SZwm-7FGk0WnsWXqo-q-A>
-    <xmx:mdw6aVcXsQE9PW1Q1fegSLWpVyQGH5vmnHpLx94yZhgTHhHXr1MHcQ>
-    <xmx:mdw6aQ3VMhcz6Op6EKFKWQ0mqr87xCJGOgAKBgERyCSAWjxXXih6Sg>
-    <xmx:mdw6aV72QgkHsEO7IT7gcnA5QiMWjq-EO2SCHqbap8KRc3x-tuqtHw>
-    <xmx:mdw6aXImq48CZQ54RUKyN9zjcudJV7yG6FOlFG0mX5jIUp-c3aE8gsY6>
+    hrpeffhffvvefukfhfgggtugfgjgestheksfdttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepvddufeetkedvheektdefhfefjeeujeejtdejuedufefhveekkeeffeetvedvffek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmuhgthhhunhdrshhonhhg
+    sehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepohhsrghlvhgrughorhesshhushgvrdguvgdprhgtphhtthhopehrphhp
+    theskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipd
+    hrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhr
+    tghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
+X-ME-Proxy: <xmx:I906adAFII0_3HQJ3ch1hllQct13BtZQQ-7617jSBs_hpTRYkVT79Q>
+    <xmx:I906adVERJ2GsWK-l9HkA9St0MWKEnblXxNHA8FlY5_x3iDQJv5VKg>
+    <xmx:I906aaXWqRQ6ELJDY6QFMQLrYkNzBl4qe4Ism8jUJzmFL2DW4BCtCA>
+    <xmx:I906aY9sZiGQ1pLrfN5cNBF0a4KmiybyotA7q98aOpOzU_UCK1OQhQ>
+    <xmx:I906aY8NXSe1T15uWMvWV-zrf6XdIiBCr7-GFiU0wGoM5afbXGFK2wB0>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Dec 2025 10:00:40 -0500 (EST)
-Date: Thu, 11 Dec 2025 15:00:39 +0000
+ 11 Dec 2025 10:02:59 -0500 (EST)
+Date: Thu, 11 Dec 2025 15:02:58 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, osalvador@suse.de, 
-	thomas.lendacky@amd.com, michael.roth@amd.com
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <uc6yz23havsg2cdgtk3fgku7xr4gj2ykse7lxitcs4eh2fw4vo@hyavdm3ovdfh>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <ac479414-e0fa-49be-8a30-8f9c0e7b7d32@kernel.org>
- <73a69c03-feda-4c56-9db1-30ec489066fb@amd.com>
- <938a7948-7882-41a3-926b-3d2a8d07620d@kernel.org>
- <89fde0fd-57c4-4146-82fc-a4c1a56e74ec@amd.com>
- <a7ac1f74-32a6-41d1-82da-b338c127fb2e@amd.com>
+To: Frank van der Linden <fvdl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Usama Arif <usamaarif642@gmail.com>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
+ optimization
+Message-ID: <ackz7hv2oskh4yx4ebk6pkalt3i6buulcn23celgqfqrbkn2hi@hlrsm4ugw66n>
+References: <20251205194351.1646318-1-kas@kernel.org>
+ <CAPTztWaWnurc=9fOBpPO25JoZu6PHU6c7AYNJbE+xdWV4gwskA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a7ac1f74-32a6-41d1-82da-b338c127fb2e@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPTztWaWnurc=9fOBpPO25JoZu6PHU6c7AYNJbE+xdWV4gwskA@mail.gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D556D14001F
+X-Stat-Signature: 4ngqs5zo597easm14i5zri6uhjd1eamw
 X-Rspam-User: 
-X-Stat-Signature: 84ory8enx3sd6kpp3o6pwimeihta4tmu
-X-Rspamd-Queue-Id: 5F3E010002F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765465244-554311
-X-HE-Meta: U2FsdGVkX19tYWmuFm1uzIKvlJszNsOjiqdeYd09jw2wEwXsKZfeRNYtwUH6vLHIvDfnVVcFKBTQhksMBnzubBWhZ72VggYSVF9kJmy2xEciFEP54ObulVAcs+L5Oj4aOWfewnsqPUvLuz3RfRmm+ANadVOVddY4Wn9gjg4hPDJmg5/jcxpyk8VQ7V0IynGfSytSRiqEh6EcaSu+NFfRS581XuuttVrHjLmWfXzyFnl3ogOre+Uy68ow/xhuozJ8QwZNGaXHthxmws2+EyBocit6tUTavS1D+9J7H4OJNxlL9LxTN/bMYLMYAvYnqcDnbqOt9kR6sB2yMIBJTfB/vYO9APvFpJrlTyBOnmirm939TctzRWuX10aCxH+iiNnUpoV1m/fDATzQ50hSZdATdi3RWeJNJxnMIK2sKPRUpvYe6Dx1d5438Chk/EoV3fWRCn4KbcjiJgFu0+XrrbXjUQ82x7aqW59cLjCJZDZqjY8fF+pnDYbksdY3TIcEm+IUlAR1s4wGNKeAPGVS4UuRZMKULYWBNPWEOi2xiLlvuHeHuDkiDwTDfDsuADoqSpWtIuFPeXLEjePa+1lQCQzlAbie1bmu0aM/vk/CEN9HmzdxF4kOE6y3j2Xun6dNtWiFkqoj/JNAiv9hjvecXChNhpmiQMSBVC+ffm/VW8AuBGDgJTBd5Fw9wkb13mZtu4wW8oH0x+FrV4uL+Klbwym3PlxG06Xf2FeKD6FL0NzAEr/9Kn5zClwyHDeLvDsEwPco5nObICyQyMxPMMnwAS1fo02ZyjqL5epNFSRSlGO42uFVU5bIyZsGQnbaj0bCNiPYRsRKxv6C6+neuE66np23v4oiOte/QHKVtmf2F0ZAs7rw1zOw9qDij2jbLxzFxpVfno6xGvOAdup9W8uGHKlfIAdkib7wiqHFJEveqd7KLIjpvgPcYDs2/rNBGkmeqa/B7IYhpkFmcg5KB5/5gPH
- hdaVPzNI
- JEf9QXS58jZlB0VX1wHOWDvmq2p96rHV8yrMwoMCcCYBe5Yjv00MtfChAH71SidpfkDAx8tu18B//PvQoneKhk8/ytg2haCrBMqH15mSfpg2f+OopPOUznOAUTbl9Nzu8dPhT4wQc44Ammpcgyj/KnEc6nWGgSPhVSTzGBi5zuAllpNmp867AGJzFoP39zPyZyOts4FuO8Mlj+d/LpPEsKtvrISLbaBorRmBPkVHUuLT1zFKEluPDcgLr/X+8mmImRMB9MUW8hfp9NSL1I91guQ+zKw==
+X-HE-Tag: 1765465381-486395
+X-HE-Meta: U2FsdGVkX1/AcLWGHmYo1OJSwIy2UnzNaAgGNQxW9uEBoKW85Do+QgW7RLlywxKgoVYSP7g8QS7+1BZxPQmSUpvgI45H9OvttPogydvNdjqVCKAi16vWiG/Ll33cT61fhiQVVDZ4kEt3j49xOo8GHEoPC7SCfEuwr8JRPMkM4YC6H5AgbD7EEJ1WQ2+ZoP7J4igYytvfOrfD5AZ05f3dqH3CgSCMjbErFQOoIzF/uR32SSL+PT0rIG4Vibiq3fIjGeUD/1uMsSdi1Sqx9KI0P1kWmiXOgqvKC++43mLNcnWWJaKUVKQcW+fcgWvbxk9I5A6MfU+p8KDGFyC8z1fg9CmD8O62XNcSR+jMA2kd6lrrp0th59n8thtRmPT2hf72X2ayGZ8fzS8k2W3EBZdgX/GOo0sdmAnv0D/CW6zVgooQOnyrjJNctxpJsLE3Ma6jgcxULZHIPtlCDESpG/hp5IFCnnOi49VUb8Fhw7pqu3addYTn7ck32ClNUqbkh1l/hqq4EMOxqOmtPGKfppRvFRYoU9PzOtusRXjNGpcyl0lsT2ciNqdm0Kf4DMgwPBAzTP+4fWZyD87Uxabw5bCa1zgTgUPzEIbP1qHPcIuaMW2zJHJatHR6hAFxP3JaRS4AinTqODQHKNx2uZchBaTK3h8LUxMqr+fNRG4e+ke5t3IcfXdAdB8m/IGKildEVcqKcNskfNSvEgDzxTCMx0vb6GEV7CPv4WL3m17OWNaCrip8ii2ifJWGjLTGtQTyjZtQj9m6AgXl+8pMXmPVoMXdX704lcZIvpMAcIjKgRhaCnnuU1gn8LV1pk83HkplQUIxl+qkpPHaJIDXS4wyHZFXDp8p92UIIdd5LjMTvkmVP5IcBGWt9Hax57thmdNtC09lrRb5QRgkLMPfkNjgGtv/9zKuwPlT1k5zHomsQKY/Hm2kVZoDSv6S9/PBFoKvwrdPjLVno5/0ZanHeH8XlzG
+ 6DlDWuhR
+ EyNznlBLEq9H7gMgFiHHZl0hA5c2EVk7IQFN4Pg0ABENdnLjFfIUUcJ9ISJNaRMh/UsoQIaxWnDy2mQWMdcWVBIg5LwVgj299HsBQ9Edr2sY8BWqvIYWGbto2wJLdjZlU7ecFjLm0XhRyD5P4I4vG+tDvtN6woC7285ApSE5BDjTyNZn9oaXRcbpuIzKBFtWZnESiqwG7T4GC8anX5w7GkiOAXWmWemJtLpQpjHC0wXZjBZ0BIW3w/MwYBzXpkC4VgnUQ3FLIMrRDPFEomPAEx97lK8wMMfl5eUy7qS4P9q3AWDDe6MZHTKVfcXNlR5qljtZI2IR1Y5fzMvQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,52 +135,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 09, 2025 at 03:36:09PM -0600, Pratik R. Sampat wrote:
-> > Agreed, I think Kiryl was hinting at pre-allocated bitmaps as well.
-> > 
-> > Since, the overhead to do this upfront is fairly minimal, that should
-> > certainly simplify things and have very little to no meddling with the
-> > original EFI struct.
-> > 
+On Tue, Dec 09, 2025 at 10:20:14AM -0800, Frank van der Linden wrote:
+> On Fri, Dec 5, 2025 at 11:44 AM Kiryl Shutsemau <kas@kernel.org> wrote:
+> >
+> > This series removes "fake head pages" from the HugeTLB vmemmap
+> > optimization (HVO) by changing how tail pages encode their relationship
+> > to the head page.
+> >
+> > It simplifies compound_head() and page_ref_add_unless(). Both are in the
+> > hot path.
+> >
+> > Background
+> > ==========
+> >
+> > HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
+> > and remapping the freed virtual addresses to a single physical page.
+> > Previously, all tail page vmemmap entries were remapped to the first
+> > vmemmap page (containing the head struct page), creating "fake heads" -
+> > tail pages that appear to have PG_head set when accessed through the
+> > deduplicated vmemmap.
+> >
+> > This required special handling in compound_head() to detect and work
+> > around fake heads, adding complexity and overhead to a very hot path.
+> >
+> > New Approach
+> > ============
+> >
+> > For architectures/configs where sizeof(struct page) is a power of 2 (the
+> > common case), this series changes how position of the head page is encoded
+> > in the tail pages.
+> >
+> > Instead of storing a pointer to the head page, the ->compound_info
+> > (renamed from ->compound_head) now stores a mask.
+> >
+> > The mask can be applied to any tail page's virtual address to compute
+> > the head page address. Critically, all tail pages of the same order now
+> > have identical compound_info values, regardless of which compound page
+> > they belong to.
+> >
+> > This enables a key optimization: instead of remapping tail vmemmap
+> > entries to the head page (creating fake heads), we remap them to a
+> > shared, pre-initialized vmemmap_tail page per hstate. The head page
+> > gets its own dedicated vmemmap page, eliminating fake heads entirely.
+> >
+> > Benefits
+> > ========
+> >
+> > 1. Smaller generated code. On defconfig, I see ~15K reduction of text
+> >    in vmlinux:
+> >
+> >    add/remove: 6/33 grow/shrink: 54/262 up/down: 6130/-21922 (-15792)
+> >
+> > 2. Simplified compound_head(): No fake head detection needed. The
+> >    function is now branchless for power-of-2 struct page sizes.
+> >
+> > 3. Eliminated race condition: The old scheme required synchronize_rcu()
+> >    to coordinate between HVO remapping and speculative PFN walkers that
+> >    might write to fake heads. With the head page always in writable
+> >    memory, this synchronization is unnecessary.
+> >
+> > 4. Removed static key: hugetlb_optimize_vmemmap_key is no longer needed
+> >    since compound_head() no longer has HVO-specific branches.
+> >
+> > 5. Cleaner architecture: The vmemmap layout is now straightforward -
+> >    head page has its own vmemmap, tails share a read-only template.
+> >
+> > I had hoped to see performance improvement, but my testing thus far has
+> > shown either no change or only a slight improvement within the noise.
+> >
+> > Series Organization
+> > ===================
+> >
+> > Patches 1-3: Preparatory refactoring
+> >   - Change prep_compound_tail() interface to take order
+> >   - Rename compound_head field to compound_info
+> >   - Move set/clear_compound_head() near compound_head()
+> >
+> > Patch 4: Core encoding change
+> >   - Implement mask-based encoding for power-of-2 struct page
+> >
+> > Patches 5-6: HVO restructuring
+> >   - Refactor vmemmap_walk to support separate head/tail pages
+> >   - Introduce per-hstate vmemmap_tail, eliminate fake heads
+> >
+> > Patches 7-9: Cleanup
+> >   - Remove fake head checks from compound_head(), PageTail(), etc.
+> >   - Remove VMEMMAP_SYNCHRONIZE_RCU and synchronize_rcu() calls
+> >   - Remove hugetlb_optimize_vmemmap_key static key
+> >
+> > Patch 10: Optimization
+> >   - Implement branchless compound_head() for power-of-2 case
+> >
+> > Patch 11: Documentation
+> >   - Update vmemmap_dedup.rst to reflect new architecture
+> >
+> > Kiryl Shutsemau (11):
+> >   mm: Change the interface of prep_compound_tail()
+> >   mm: Rename the 'compound_head' field in the 'struct page' to
+> >     'compound_info'
+> >   mm: Move set/clear_compound_head() to compound_head()
+> >   mm: Rework compound_head() for power-of-2 sizeof(struct page)
+> >   mm/hugetlb: Refactor code around vmemmap_walk
+> >   mm/hugetlb: Remove fake head pages
+> >   mm: Drop fake head checks and fix a race condition
+> >   hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+> >   mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
+> >   mm: Remove the branch from compound_head()
+> >   hugetlb: Update vmemmap_dedup.rst
+> >
+> >  .../admin-guide/kdump/vmcoreinfo.rst          |   2 +-
+> >  Documentation/mm/vmemmap_dedup.rst            |  62 ++---
+> >  include/linux/hugetlb.h                       |   3 +
+> >  include/linux/mm_types.h                      |  20 +-
+> >  include/linux/page-flags.h                    | 163 +++++-------
+> >  include/linux/page_ref.h                      |   8 +-
+> >  include/linux/types.h                         |   2 +-
+> >  kernel/vmcore_info.c                          |   2 +-
+> >  mm/hugetlb.c                                  |   8 +-
+> >  mm/hugetlb_vmemmap.c                          | 245 ++++++++----------
+> >  mm/hugetlb_vmemmap.h                          |   4 +-
+> >  mm/internal.h                                 |  11 +-
+> >  mm/mm_init.c                                  |   2 +-
+> >  mm/page_alloc.c                               |   4 +-
+> >  mm/slab.h                                     |   2 +-
+> >  mm/util.c                                     |  15 +-
+> >  16 files changed, 242 insertions(+), 311 deletions(-)
+> >
+> > --
+> > 2.51.2
+> >
+> >
 > 
-> Taking another look at this suggestion, I think there may be more to it
-> than I previously thought. Parsing e820 tables to know what the range
-> are for allocating the bitmap to cover hotplug may be difficult. For e.g
+> I love this in general - I've always disliked the fake head
+> construction (though I understand the reason behind it).
 > 
-> [ 0.000000] efi: mem110: [Unaccepted <snip>]
-> range=[0x0000000100000000-0x000000017fffffff] (2048MB)
-> [ 0.000000] efi: mem111: [Reserved   <snip>]
-> range=[0x000000fd00000000-0x000000ffffffffff] (12288MB)
-> 
-> Parsing of the ACPI SRAT seems to be the one that gives us useful ranges
-> to base the upfront bitmap allocation on. e.g.
-> ...
-> [    0.018357] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x17fffffff]
-> [    0.018781] ACPI: SRAT: Node 0 PXM 0 [mem 0x180000000-0x2ffffffff]
-> hotplug
-> This is also where max_possible_pfn gets updated to reflect this range.
+> However, it seems like you didn't add support to vmemmap_populate_hvo,
+> as far as I can tell. That's the function that is used to do HVO early
+> on bootmem (memblock) allocated 'gigantic' pages. So I think that
+> would break with this patch.
 
-Do I understand correctly that EFI memory map doesn't mention hot plug
-range at all, but SRAT does?
+Ouch. Good catch. Will fix.
 
-That's a mess. I thought, all hotpluggable range supposed to be declared
-in the memory map.
+> Could you add support there too? I don't think it would be hard to.
+> While at it, you could also do it for vmemmap_populate_hugepages to
+> support devdax :-)
 
-I wounder if it is what BIOS provides, or is it result of EFI memmap
-cleanup by kernel? I see we are doing bunch of them, like in
-efi_remove_e820_mmio().
+Yeah, DAX was on my radar. I will see if it makes sense to make part of
+this patchset or make an follow up.
 
-> One potential solution could be to parse the SRAT during unaccepted
-> memory bitmap allocation in the EFI stub. However, this would fragment
-> the implementation by duplicating the SRAT parsing. Alternatively, we
-> could keep the current approach of dynamically allocating the bitmap on
-> hotplug or I could also replace the entire memblock_reserved unaccepted
-> table like Kiryl suggested if we must absolutely avoid changing the
-> unaccepted structure?
-
-Other possible option would be to accept all memory on hotplug and don't
-touch the bitmap at all. It might be not that bad: it doesn't block boot.
-We can think of a better solution later, if needed.
+Other thing I want to change is that we probably want to make
+vmemmap_tails per node, so each node would use local memory for it.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
