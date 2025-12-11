@@ -4,130 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43327D3E784
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:33:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93710D3E784
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Dec 2025 00:43:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 856476B0006; Wed, 10 Dec 2025 19:33:50 -0500 (EST)
+	id 904A96B0006; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 807B06B0007; Wed, 10 Dec 2025 19:33:50 -0500 (EST)
+	id 8B4C36B0007; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F63D6B0008; Wed, 10 Dec 2025 19:33:50 -0500 (EST)
+	id 7CB356B0008; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E21D6B0006
-	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:33:50 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE746135000
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:33:49 +0000 (UTC)
-X-FDA: 84205317378.29.1B6B7D6
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E5CB0C000B
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:33:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FBC86B0006
+	for <linux-mm@kvack.org>; Wed, 10 Dec 2025 19:43:44 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D4C1135040
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:43:44 +0000 (UTC)
+X-FDA: 84205342368.20.1DED9CB
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DA15AC000A
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 00:43:36 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=Hhcu72m6;
-	spf=pass (imf28.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com
+	spf=pass (imf28.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765413228;
+	s=arc-20220608; t=1765413822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3QrmlcsyPJfUCC0ZcW/aA6sfMqx5l+Z163FBQ6ysu4g=;
-	b=40kGYdrCm3153nBN814Yzz7hkZIKiwB2aeeAw8plRjGTslpXvG1Kz26Qyi+lOhKS9zYnAy
-	5PBi7gkYKgwj/3ecfibp+TjrQGs9ERZ/08cKXmNoYUIBlIAAS7TKmvF9u4dnkgLcClFirY
-	3anLd2fxjT3qvP2P7+VWlPxBrlX8aIw=
+	 in-reply-to:in-reply-to:references:references;
+	bh=aChNKSyPCYRgu+/GcOlFbmKUoiHZN3nZwAOz4R2P0X8=;
+	b=jJR3nz7hrv1vC9x8O/2eMbLXoaoBivCLS2G1Mh3oM/jynX8OGAVLLwnDOdvi8Rh0Z/UxFK
+	+QzIjIPwPoHLtfYCnURV3PUF6Hw/QJin5PM6bYTqGwJSMTCsfhkzKv6yzRKpIhAb1YFjP/
+	fVyQ2jqEyQfwSxZ0gdkklmnz27lrmsM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765413822; a=rsa-sha256;
+	cv=none;
+	b=iduvB3wYd5h33gKTQQcPrSvfW85YN4rFGTvVbVOv7Lhhrq+fSVBbCvi9YQyjIfMhvRSucM
+	+H60+Ezps/2oaEUAhR3Rbz7aTEZrJe6KAHYMSSkYHv/OxKKYBHsUWuqNgj/42FkK5rQHA1
+	FKJJUtfHHy0fHLE5ZYI4KWvLpm9uQJ0=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=Hhcu72m6;
-	spf=pass (imf28.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765413228; a=rsa-sha256;
-	cv=none;
-	b=wH2/hlg7p6w97WP4Oq94baEJTLDqKI5ywRNXrTvuq4PcqJY+oH36uLgSt9hhkVUh54nr2v
-	w1/gtZRPanfPWdtdYZCnTjsZm/6aG6ITOnT/IphL85mEhsgvL+SDqCR+On+XebVug2nlzQ
-	9xhqZwZgSyITmXpAi8VLTl5qpf0LqYE=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7ade456b6abso303884b3a.3
-        for <linux-mm@kvack.org>; Wed, 10 Dec 2025 16:33:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1765413227; x=1766018027; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3QrmlcsyPJfUCC0ZcW/aA6sfMqx5l+Z163FBQ6ysu4g=;
-        b=Hhcu72m6TvYvCgCalPvVw31mAxg3PBYRyx5mRlVe5ANchGAai+6o8zMcJygbAtjpWs
-         fDVPpBwCP9keZEKoxH+Xl74IXySvH2JwAGPdrVEQKFMNW9n7KOdh2e5bOEit1J+Nk87A
-         Vt8TabMNdb+rVHxx5/IdiavqqUDhuBzbylR08+/TDOw3ORXoKSYAgS9WtfurFlUwEHcd
-         MUS/UU+OuyjYETWTYahpCmdCczOR5bSF8Ffyxjfm/CIqNgI2Q/UINZ1anvtyjoPhozGq
-         PIzFfFjywXZnlnHJbGVpv1vO9/4fwnr3xGsWHMAotuED0oTYZUIPLX1Bj1bSQZGHqrHE
-         rnPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765413227; x=1766018027;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3QrmlcsyPJfUCC0ZcW/aA6sfMqx5l+Z163FBQ6ysu4g=;
-        b=XWqruj0kATRR3GqIxXArAl4fIWn/Ti2KjAlv5b1kSeQelSG3HcCNvBhq0NXP/hcEaQ
-         hO7RaKSMXp0VhlCD1N4X+fJZvYmxNa5dpLPFcZMEXkYGEQqJUuzbsg3OvgYjfzvFz8YG
-         cRCI+jOr9/kVzY8xfORC4/5iiGMeXU9HMbG3DJzwLz7Ku/diXwy8lobIV03gMRZ4PO8m
-         OoTw85FtKsNuYNZfB9ezJCzPtDAmji5hm3shTEb+9zdEoKa3kDPjvkLdZqqFW+81Zy0h
-         WY/dJgPokO6Bfz1MgDkzRQkldk/np7/sGysn5EwoHOhofnQbSs/GTeLpB8y30d6QDjR1
-         G3Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVT7P0LHd2hXCOGab55YI6bWz7wXUViILg+dpcb3wfoFhCAj/k0lhMU00JS3k2PqHwOsCDIodwpXg==@kvack.org
-X-Gm-Message-State: AOJu0YxPGmCJiWUk7xA+F9eM1mJOC2YCTE1hitkWNHtU6pmXAZ5IuBv8
-	2x/ddR4lmdRx55h8eUN+U4C9W39A6gRTzub06VOPhN77wut+FykSgAi+/f0VBWAkOIc=
-X-Gm-Gg: ASbGncuunJaOjXRpSK7LqrCmP7jdu01Y7pLzsyH9kcnoOm45c+rzCxfdvW6uEht1z2Y
-	+Zl7fj7mg9u8aFkPdsJjyaXu0c0qB6OpgC5iuH3BLoTsU3RK54xgMxjy8RBzWG//pYesBC4po1Q
-	7pb/YL2WAbosrH8/fMbvBmduIYgKs4X1r94JH5tFqJA7LsTpOA+GddwoLY9xfxGxTlhkv6Pmkl/
-	cSUNzudZdEFJTVAa6uDouhW7szRj+BtAiVhEbitGoIO4l3TVCh91Cpf51aK+DNtZmFctwfWl655
-	mn4BmYKOL0LWYd388ju2vqGet2d19qhbKMa41yQ7RXO40QGnOfgqYDtr5fUhRwkU/VYHgyeZ1tt
-	tWA1r9tHHkHgUCn73C3ZkyO4WzDh89D5apfj4+l8o5JSm/jRz30fNJCJf75bHUMArc9q1AYMjLU
-	dbTPFck0OXHxVjbQ==
-X-Google-Smtp-Source: AGHT+IGjk/exFuz2Gv/i6l6p36w76njH4yBjUre8KbL1otNzyBmhPQsg1E1fJ2rghGyT0+Ekep5ekQ==
-X-Received: by 2002:a05:6a20:a10a:b0:366:14b0:4b0e with SMTP id adf61e73a8af0-366e3acee69mr4438378637.74.1765413226713;
-        Wed, 10 Dec 2025 16:33:46 -0800 (PST)
-Received: from [100.64.0.1] ([167.103.29.104])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c25b7d59dsm580312a12.6.2025.12.10.16.33.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Dec 2025 16:33:46 -0800 (PST)
-Message-ID: <af8fd275-a34d-4b2f-8834-9c85dab2bbae@sifive.com>
-Date: Thu, 11 Dec 2025 09:33:41 +0900
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dRYjH59czzYQtnc
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:43:15 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id AB9551A14D3
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 08:43:31 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP2 (Coremail) with SMTP id Syh0CgAH5k+yEzpp071GBQ--.40689S2;
+	Thu, 11 Dec 2025 08:43:31 +0800 (CST)
+Message-ID: <66201b4a-44a5-4221-810a-897699425195@huaweicloud.com>
+Date: Thu, 11 Dec 2025 08:43:29 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/22] mm: Allow page table accessors to be
- non-idempotent
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-9-samuel.holland@sifive.com>
- <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
- <c2597d43-d909-4259-bb5b-9294e4069385@kernel.org>
-From: Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH -next v2 2/2] memcg: remove mem_cgroup_size()
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, akpm@linux-foundation.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, david@kernel.org,
+ zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ lujialin4@huawei.com
+References: <20251210071142.2043478-1-chenridong@huaweicloud.com>
+ <20251210071142.2043478-3-chenridong@huaweicloud.com>
+ <20251210163634.GB643576@cmpxchg.org>
 Content-Language: en-US
-In-Reply-To: <c2597d43-d909-4259-bb5b-9294e4069385@kernel.org>
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251210163634.GB643576@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4zrb6irz5qy5jrd4ypw8txbkzz9g4sqj
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgAH5k+yEzpp071GBQ--.40689S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kCFW8Wr18Kw13Wry8Krg_yoW8Kw4xpF
+	yvyay7Kw4aqry5Kr1Yv3sYva4Fvw48ta45try7Gr1IqwnIgr1rtF9Fy3W8Wry5CF93XF17
+	Za90gws7Cw42kFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DA15AC000A
+X-Stat-Signature: mocitpbgf4hkx6hnuy74wpr4jnxx9p6e
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E5CB0C000B
-X-HE-Tag: 1765413227-680616
-X-HE-Meta: U2FsdGVkX1/8sYe0Dp0evoI+TMWuZU4zIQixgi0XaIMvQgDZwgDA+PCdl8yHasvdsC9MTKy5vuNwOpQmZfqKbzFVZjPfY64uAe0o2BWZftNVybSNKCfCXQ1EnWMsdwNrlcQV8d/JJ6PAXv6dIglEfyRXMsczTcBtLGKtlF8BW+RdI3KbL7PrMuQrIGQDxz8rCx/4qgKyglKfqJrjCgY9uwHVasaBIzZrvR2D7xnaKmyqRFskJ38/YnxJReH3YOaRkvy1gqsVKHp27gGfDXBbwWMRXlosVkDkk/Eop+mG3xmp/q6YxIklQO2SAmK2Ln1wNmVUQJPLrz4aF6hm3aD5ITveltHXXrFnZuebUR+fhZqq8rL853MUrv+ijHbyzMP9opE90VsMtgGR2ZnINrJS2AL3qA0mFegsdHWn7C1EBAdHFn9PTUN5M4Us5yfriqPg0QWr5+fohb9HIOESTFpU8JYZAx9Z6c7IVEHwhwBrke3q35B27Z2fk2UFUn/ZLgK0pmOoVCzkGsUGW0XiJ30n3xPgngsw13q3+PXe3Fw9tvZujzsUDWTISjlBRbdxvYJkJY2l/YEnjyaopq+HHf0sqlZLolP9AXZ1nXJ1GwPlG2HGvvNC5BbYNvOCKlX7F0aHzOKDzoe9R95TCm/T3GHzrdXqF3SSRkPSG1F6St4OcXaZDH96U3mO3HfAwR0/bFivNpiAdpI4OpmGWdnUvveoGXWfR+cmCA3gVLavxJEKiFO0HFrGG8M5Kn3orsakEmB9DnAr5n8Orl+mraNs7+DIsANNfwZRoXTY32G6gqfdFGaoRa0FA3F3UpkLIBgeZnYC2Fo9RsZ3BIQG5tUHhpCtd6ZApbUrTTn3wjHjoz9G63GBzlw5ka51ZVlW/lStdn8IjRcXNNpt8l1k45r4oue+jD7e5SsghubG+0jQg2TgLscP7Ss+1mnYyhSP0zIqcXHv1ajJF3d65QYFVeEbRA+
- 006U7Vt/
- HlaITsd8ZMzwuAJe71+2GBjGiHaclWyPtjIrr5MOPiVnwY7LS/fbeikI7lAe3oK3vCV7XoCDgKzZqw8cPuXILbplZCfLgOPqTtRjcetnnuXJD7jtYIOGpXR1JAUeOkKq+35wlg34wKxBp6oaQPn46DKqw/z2UYL0UFtWtxKmSLVaMrfR01YEjy96kM2UtmsVP7MOpbxnoSGq4uc/z3FNlqGvRuAH67jqB3V7VKfRNoMZQVniOnEWapmiFcqD7ZkSTGtNxS5wSg/J/Zs/r/sGkYtT3btFV5KZc/Hv9ccUwpBhJFOWT6YygrTnXM3Ko2+nvFJDZmPf1VtqCqvyB+3kfu+n1vzFj26sW9OnPoGMsf7CjGF9+C9sn664ElhLa8ThTNAfeR3HJLO/qIFhyalzaw/fVwxfZaIODcudB
+X-HE-Tag: 1765413816-381828
+X-HE-Meta: U2FsdGVkX1+YtnKJYifdnQFSbA1Mk+O8Eltjlwbnqr5tpQLLNlEZ6vKQLozZJ4Nkgouc49t1yU6VpE0MIbwpjnaks2tBcSRvHO5dMj9ZZ8ajawpd2nHiA01t09YJgJob1aMpmNlA4j1/sHMPDHZc2c34IQq8VMh4YFxJ3vLPtdDa9/8gL+qsD4ySFhD0LcMoPj4d4yJwQS0tMxg9twDJSDuqOBgEjnQ7xE7CB2V0P3UZIdtElgLe0Au3LCNFyfvfh93k1kI6l1YZYYVRD1mDTW2Yt4YnxC1hj+74DT1kwWjr0fz9/HzWc3juJ5Mo7ojrm22S9/YWinkHX7Ohy2iAEqNdILWPbJSzpRmA/YgqJpc1bwn/GsdnSl/fmO768BGvtAsPrr+KqzT825mtmZgIXhHyCE7h0lOIZcKwH6pAeCX1M4hfGJrjBJ3uzY2G6ypnn8cSIuNPKSK61qK22Xr7NlmzG0mXA9/P7LXfBkSeqkqT+O241Nooro1wwdYhlrz5YuPbjeewxzatoWuzYpcbEEgc/1KQxxXjI3MfzE74t6YYEB2bg0nO/bwWH+6HsmkHeg+mWSeW7lmKiK0LeXYAYvxfjJv9QqaG9hXiYSODZV9v/noensImOpGIMfzWGD08cjVMP76ilXnU3l1zGic1K6MOsKtfSXWxZhzgr0WWZFZR7a8MfGYNC+MLnlfjz+hDk2UGtZCgkYzMrtmxrYzoKqvYEWY46S6VouE6C3wHOEY4AvBKdgudI6Vjm3Pc0t5nxFhgRZwPKTY5Dka80RV3RVtS+khd5+0DVNZmhsg+RRrlIwbr5mr9pKANQPOvWwg23ae6bNzZyeQIBMqMkG2/PtjXxxyoPuexXpqnMvipFmXa68WZ3M/f4GUo6MY1Ta0S3/OP0vEDWGLDVcqECcMhBr9B/6r02L6knIZQ89QVkbhvt1dwAnEFN4MavYzJYXRVuYYhHvrgKuwKLEa3RPp
+ 2t+xdRFL
+ wWMz+jQ5LGZbZUvWw0YKU4GLyiHT8Czm/RsLWKZfvUWmOXw0jA6gRKAzm3etgqo8/Io0gs0i1TqKRG/ByBbFXh+piTBjib+fmuYr9bqudESOwbbNjW8emkQ1WKWTHLp+mCf4MX7xGXKYuCaMnyVreaSe5/EmWAhD0pgUHCn2FwGkTjv+GzaCxDbk82KExObL+22q76Jr7RDWGUtLX+3uurk+mPgQeV3UAY1lx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,33 +110,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-28 2:47 AM, David Hildenbrand (Red Hat) wrote:
-> On 11/27/25 17:57, Ryan Roberts wrote:
->> On 13/11/2025 01:45, Samuel Holland wrote:
->>> Currently, some functions such as pte_offset_map() are passed both
->>> pointers to hardware page tables, and pointers to previously-read PMD
->>> entries on the stack. To ensure correctness in the first case, these
->>> functions must use the page table accessor function (pmdp_get()) to
->>> dereference the supplied pointer. However, this means pmdp_get() is
->>> called twice in the second case. This double call must be avoided if
->>> pmdp_get() applies some non-idempotent transformation to the value.
->>>
->>> Avoid the double transformation by calling set_pmd() on the stack
->>> variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
->>
->> I don't think this is a good solution.
-> 
-> Agreed,
-> 
->     set_pmd(&pmd, pmd);
-> 
-> is rather horrible.
-I agree that this patch is ugly. The only way I see to avoid code like this is
-to refactor (or duplicate) the functions so no function takes pointers to both
-hardware page tables and on-stack page table entries. Is that sort of
-refactoring the right direction to go for v4?
 
-Regards,
-Samuel
+
+On 2025/12/11 0:36, Johannes Weiner wrote:
+> On Wed, Dec 10, 2025 at 07:11:42AM +0000, Chen Ridong wrote:
+>> From: Chen Ridong <chenridong@huawei.com>
+>>
+>> The mem_cgroup_size helper is used only in apply_proportional_protection
+>> to read the current memory usage. Its semantics are unclear and
+>> inconsistent with other sites, which directly call page_counter_read for
+>> the same purpose.
+>>
+>> Remove this helper and replace its usage with page_counter_read for
+>> clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
+>> to better reflect its meaning.
+> 
+> +1
+> 
+> I don't think the helper adds much.
+> 
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -2451,6 +2451,7 @@ static inline void calculate_pressure_balance(struct scan_control *sc,
+>>  static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+>>  		struct scan_control *sc, unsigned long scan)
+>>  {
+>> +#ifdef CONFIG_MEMCG
+>>  	unsigned long min, low;
+>>  
+>>  	mem_cgroup_protection(sc->target_mem_cgroup, memcg, &min, &low);
+>> @@ -2485,7 +2486,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+>>  		 * again by how much of the total memory used is under
+>>  		 * hard protection.
+>>  		 */
+>> -		unsigned long cgroup_size = mem_cgroup_size(memcg);
+>> +		unsigned long usage = page_counter_read(&memcg->memory);
+>>  		unsigned long protection;
+>>  
+>>  		/* memory.low scaling, make sure we retry before OOM */
+>> @@ -2497,9 +2498,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+>>  		}
+>>  
+>>  		/* Avoid TOCTOU with earlier protection check */
+>> -		cgroup_size = max(cgroup_size, protection);
+>> +		usage = max(usage, protection);
+>>  
+>> -		scan -= scan * protection / (cgroup_size + 1);
+>> +		scan -= scan * protection / (usage + 1);
+>>  
+>>  		/*
+>>  		 * Minimally target SWAP_CLUSTER_MAX pages to keep
+>> @@ -2508,6 +2509,7 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
+>>  		 */
+>>  		scan = max(scan, SWAP_CLUSTER_MAX);
+>>  	}
+>> +#endif
+> 
+> To avoid the ifdef, how about making it
+> 
+> 	bool mem_cgroup_protection(root, memcg, &min, &low, &usage)
+> 
+> and branch the scaling on that return value. The compiler should be
+> able to eliminate the entire branch in the !CONFIG_MEMCG case. And it
+> keeps a cleaner split between memcg logic and reclaim logic.
+
+Much better, will update.
+
+-- 
+Best regards,
+Ridong
 
 
