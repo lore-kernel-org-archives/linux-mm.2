@@ -4,128 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D096D4923A
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 15:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD8D1D49238
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 15:37:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0B36B0005; Fri, 12 Dec 2025 10:15:07 -0500 (EST)
+	id CBC306B0005; Fri, 12 Dec 2025 10:37:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A1676B0007; Fri, 12 Dec 2025 10:15:07 -0500 (EST)
+	id C6D776B0007; Fri, 12 Dec 2025 10:37:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690AC6B0008; Fri, 12 Dec 2025 10:15:07 -0500 (EST)
+	id B82D26B0008; Fri, 12 Dec 2025 10:37:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D08B6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:15:07 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C62BBB6FFE
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 15:15:06 +0000 (UTC)
-X-FDA: 84211167012.07.DF7DB7C
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5EDC714001B
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 15:15:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pdInoUIG;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765552504; a=rsa-sha256;
-	cv=none;
-	b=bsqEB4AfwAjK6KoeXx2pvhDqFavGI40tddM660nk72ERZWL/KxAXzfaRyJC1KxnVrkoGeP
-	kO0oczjxJ35Utkekzrsw/xxS7R5bVeABKpjv04e/hseglWG8VllVuWhdU7pvg6tgGKyxev
-	ZHvCSZDUp35IR5EZDgwd6eqD12bCXC4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pdInoUIG;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A70A86B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:37:09 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A2CEB700A
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 15:37:09 +0000 (UTC)
+X-FDA: 84211222578.10.FEAFEDC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 645FC12000C
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 15:37:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jLORUkzr;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765552504;
+	s=arc-20220608; t=1765553827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mcQwWjLr/MnvhHz7LcGUnOqHwl3FdHGQcUVFCIvQXB8=;
-	b=ezpBs/aCunXqzRz8VfBWyp21y90PGvGwvdpmXSlq3SzOSN5iN5Sg83IbGhgFdP5iSScMBC
-	cG9YkyAXYDKR1TuGI0+LPmqxvFqZcZ7uzUgK3o/4DJBbqLZPzSoUA4M9BAl3/9K0NPZXD3
-	XJLHy5Hs/kz4cKytGbRaP6BtM+NARM0=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BCF5AUY007030;
-	Fri, 12 Dec 2025 15:15:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:message-id:mime-version:subject:to; s=
-	pp1; bh=mcQwWjLr/MnvhHz7LcGUnOqHwl3FdHGQcUVFCIvQXB8=; b=pdInoUIG
-	hTFsAciQd8+muRqn7pgcU0IdDrzM4/p05I7gXq9Sv4YfzwX1Al2zIIT9DR3jD0jw
-	gAXv2RIx3ZHeHkOrKKgMFho6sQewX65nFQ5aEJz4R7l1FFZV3k4ULQrT5Wt2GZDg
-	A3v4oSrHWJU/AfqlqjKgQm3/EJgx2THNk1uoAkXFI+DnIJFq/VMBIz8oEd0QyTW1
-	6RIQfEPY/A7RJSXacwj94MoidYV4PAhJnFh0HXQ4zQ+wzT8e1TYPKLfT9K2dctgF
-	wfen99Dgudbft20aD9nxeh8gphtTQcPHXngoQNvmWW8P8DGKfEiEkI6Qsf+tyODL
-	cDmnCyNO38GgpQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc0ke2ad-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Dec 2025 15:15:01 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BCEkvR2026836;
-	Fri, 12 Dec 2025 15:15:00 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw1h1m96x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Dec 2025 15:15:00 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BCFExED52429124
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Dec 2025 15:14:59 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1093720043;
-	Fri, 12 Dec 2025 15:14:59 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D857120040;
-	Fri, 12 Dec 2025 15:14:58 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 12 Dec 2025 15:14:58 +0000 (GMT)
-Date: Fri, 12 Dec 2025 16:14:57 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/page_alloc: change all pageblocks migrate type on
- coalescing
-Message-ID: <20251212151457.3898073Add-agordeev@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Cf8FJbrl c=1 sm=1 tr=0 ts=693c3175 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=BYGt3CUIH6UFlYqRJg4A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: bZlwOoOYlYMno1f9809YkAnL220E54Ot
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAxNiBTYWx0ZWRfX3seQhtNlwR1x
- vwM2UsRLGmtrHSred9kyiBA/luTfhSW7wiPDsjhMR/Kz3Gr09GL00LrZoSOslyVHMyMHKrK0GFT
- ZAcEYcoGsbFaR2pXVGodfgLT7siRWtdDvJuWp36moQ5rG6ynWByIFZxyv7rJeWIDXBMIHqYyfkq
- 81JdFRtlMjHaqd7shbQWFLupUTDfp2DW9owlzSTC2q+qpTwZ91ndlSolwSOiIPZiKvIZ8/6Ikba
- on7tV+ADnyhs6trzAVNcW3dlHQ1m3vcA1O7gUDjY5TQACdiIfbbpCtS0ediLJJCwPZb6bk3+YCp
- bGzgmyoUzJGZKrQuoYMzMVLK5HASnhKD863mZu5ubJBd/epcZTzeZrsqG+7WYXLtAayVKvxvLT0
- HMSgzE2ZBNDkPu5mlJ6mPlBXBSFt/A==
-X-Proofpoint-GUID: bZlwOoOYlYMno1f9809YkAnL220E54Ot
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-12_04,2025-12-11_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2512060016
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5EDC714001B
-X-Stat-Signature: 1znw69kf6m5hutf348srwd1cr8qi45r7
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ju5zkerIglWaPpGjmbYVJw+6Z09quc8dS5LrfCYHuYA=;
+	b=mnanPaXGKki2TF1ofyTgJB8SHBjlSGbuabpnMaJj+16c7dyRkWqwLOyKRm93xXEZKgEByR
+	pnZv8rLEF5D9noUW1IUjJ22doMI5xudHJGXKYdxW6r5FHwlGyj2vIoMdy2vTN1jCZCUIZb
+	ZX6cVFynUnSfhyPv4/OGHGSef5lDzY4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765553827; a=rsa-sha256;
+	cv=none;
+	b=dkyGYRfbk5PYyW0N9QsZCPgBNjfxJf68uKeQCYaDrMyoKZgzQ+Jx5kFSJZ52WatCdtwsSF
+	scfAuNJOYgbNCf05IIl6CAgXJpiZLbpDYD0oKo3Pl+tkEcujZJ6ewArkYfmzw6QSWGHLi+
+	+EoXOmcVNYNzrfwxp6p676FAkpysIDs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jLORUkzr;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765553826; x=1797089826;
+  h=date:from:to:cc:subject:message-id;
+  bh=8Ym/uJK9GHPGhaSTYjVk6z72iuvot93YHum5uO/n7pc=;
+  b=jLORUkzrPDXUea5smQJX09dh8B3TQv0g8DDyMKRZRTW12StRm6mirJMN
+   3Ee1KPGS80YkptvVgx39RN8jF54/1DYLCmI9d7t6JcH9WwXGfbuu4o8l2
+   JytMJC3FKvvxmyMVuFXbNa0ESZDlz0cBDAWEDfbomR/86QRK2jgWrQhCp
+   i+21XOXR5PvVW3TXPnu0nbdUiIezzN3JLX91ihE8gQxlk+aGaaHuJ5+uM
+   6+1FGpK8sNQRSeEvwSr2AnbKSVXvkkkRwspdFHq/qI8Du8XuTV1pU9+fI
+   oFR8Vu4Eeo5B0Zg8VBGR43AFXu6mc9Pz9CBYYVvuV+1x0s+n9yx4+ApkE
+   g==;
+X-CSE-ConnectionGUID: 81Xr/UFqRUSvhcI+du+7FA==
+X-CSE-MsgGUID: pAgdQBbxRYaIMWAmHjDwUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="78927343"
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
+   d="scan'208";a="78927343"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 07:37:05 -0800
+X-CSE-ConnectionGUID: FUgz1a/3QZGTGrNtNclOsg==
+X-CSE-MsgGUID: 0UiSY9GVTwuOM0t2d4G9RA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
+   d="scan'208";a="197935755"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 12 Dec 2025 07:37:03 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vU5CX-000000006Er-2BEM;
+	Fri, 12 Dec 2025 15:37:01 +0000
+Date: Fri, 12 Dec 2025 23:36:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ d9771d0dbe18dd643760431870a6abf9b0866bb0
+Message-ID: <202512122343.23JgvvLD-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: t7jpsxo57jdzb3t8u741tmjp7gfbhccf
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 645FC12000C
 X-Rspam-User: 
-X-HE-Tag: 1765552504-388231
-X-HE-Meta: U2FsdGVkX19wl5D51zn46CeadIBagB/gLYp9GAaNnOlCAooKVOhglB/Z1SC8Ur4J3IzJQTl7ZfB9wTbyiEna9XqgAENDu2iD5e85DKOBtq0+kr/rcnxDD055HysrL6GVMepk62Xa6jRFlg9b1E7Wjpm46M1X/B+z1jjOwJ/N+Yo+GFOeSBdZ0a67rfaG60AJ9G05LRrs15znoyFN/JvneGMe+hJMmgtd4kay7iYS3ysKfYlNMQHNZ98/c27xyHep60C9YMT+mxtHTLeY9BF1e/wwPB4Y/jDm0ukdxZ9Tk8/sdPkgsKr1xLiwj94QPB+ez2CjSs7pV9ePb1bLUHltBEBj2nrhW9/lt5SC+MIc0oXzWvsDg4ntIbfjvCV0HwvN/desAz8Zmfjmv4tMbo+dSmOmUIxSnz1k2vTjlS0GOw9pOZKXAzAbOFVLXJLLrrtc6oe556DD+zd44TU55b1PmleaS3inPtNXMqisFT4kECCRGK29scwQKVu8SxWza+9X4bJNY+qAZqjB+SJWdA5wHfr4bGBtvkQUXRjdJWNT80k34P/ix/PxYBy5R96nxHMN5PJL3UaDfnqQ8cKmDMbyWjwhu4hPrcxdTFaedZ4aXuyjncKvOShzuwFRJoH5THQPbv1ofHkvNhwk9QugfRl9QaZUsXbaH4Af0O8RMQs5BTxfxIDLl+OgW7A75nk79cwEGZZJmx6WDubR26cq061GYGQZlDc9pY16+8KJ7BpdIuyOxUrM8P6i6f4a2WqRQELuhXqTfIBODE8/1kN+GfwEjoBX19e9yt3MzsLybN/ipyOFxBuzEkmIUcnyUfQ9j9jtHCTS/JPdknJG6FGmJXz8GqnOoYCyALYZ8J4wXukyQ4QrA5t8dGwwZStKKrt8QCQ9/qMGhz6jek55hk5Kcyf07Fy+Q4E6DT9eyAepPA2yTjDLeyH6OlnOJk1fRMujWxMfSv0ZryrlaYdFkxx4WDj
- 2OL1eO6e
- iu4mzCrGc8Ag5iQE74wyQwIhszfGWoiF8Ua4mQTMCNnE7keLS9nnUqcSVYqvLpahg0JdIcL04+VnRVwP74JGgcDiJTmdIx8RIC5CfNQk9ZARjhQATfnQUKVNXTdZa09w9HqjeYE+qo31hoA/vFiIqUkPTWY4BTKiPxFZyr9H3UtEQXh7XPv1RWNrJspDAzhAsZ+h65FarhgALVxEwwTKZuVYd+5nhjH6MeSMTtTj9LGqcgo4Tp3U9ceTyBb1zrl9RE9QfY25krPWUQNuiEs11EKizC28qyEUoo+crpv3dQTh7OZ8eQfvcydxsXITFEkehzdDFH38JZk6UKcvV+zqT9+54yIRZYWj6xkyzzxzkOoNuixepxQXZPhAd/sIZMNTu1I1/zXh4nFuthG8waKIfCu1RIg==
+X-HE-Tag: 1765553826-433012
+X-HE-Meta: U2FsdGVkX185RQ2Q43NYubF9pQotccBLRAuNy/8wqWd3ODNV72Y+XcdaTV/msJbqcvkoZYP5pYDxx+WcY0o+2GD+HPU31helz+h0ZexGJJQpNrRTJsXQarqbEBNgRDftNEYK3FUsTVBIVIxJ0oN5lmiqNoV2gIMqcmO1H7nrZDV7X2MNiGc7ErAAqcBVjN/55BGdEnset6vRVwlrc5Pb5Jt17/shbFX/R03y55CYX7EoWfHiVg9H1StIKvApiGfnj2m1nZFjt/kbL8whDvTkWwqaFBU/arJsqsMZCmdzxLK/ra0M1PbsAE5V0XCYa4XMIp3ARRT/C6DccgTLtGrAquUoBbmLbHogmug1VHkb8dXFu+wNJFf+arcjn1Iahl80Ip2C6w9AOHFXb1CLXpI4m1uWv38I7nhq4b6vFetzVrUe26on4i8ADSGEU8eBrE0bbXhw8qs+YUFDDUvk8meB05K+PqAfzsGbEhRo3BT53nsZ/flBaI27lJ5+Bd7i4a4IGTOtPsQ1KIpPxLfeEwTB3/OQj/0dbq2VK1fdNB0lO+Bj8f459jyPh2/NhujUCAe8hf4ONBUsvHyF6xn+Pq7dKa3JsF4lobGnTky9admTqpDsRmNEetRx2jFq1IKzLwm7+4cqNev9qy40kmwPQux2aIiTdMwXafTJ8JLLj0zCWemhdA1Q8Nrci19PLqyiA3lFZzpjvL0xjdONyfDASvESAo+X9WPPezp3bFB0wVy2B5cw0x45ZGTBYbGWxKfVKWRVeY4hOdBZS2SrCXvLwn0RTpYAfEhZonyqdPLS3N6FfGZDrbAXfh4ktT4vzjdmUo304wUCRxPuINtRzeWGyTgAJoxQ/PJE45Q1ZKz88YGv9MUO4BoXW6HmyyL56ah8VYgFnQm5HA69C85fT9k2M6cDRhvBPQ0oYmMVD5QP7ocBlf2TX2hBzMtdkD8X/S3qZ+GnWg2ILrqafVc5k24LbDD
+ JvQXmcvE
+ rrvR5z19SdOOacLqJ7b9z9nc+c7HN8GK4hDXnL19Jf1hEmYfUFtzbYx4C0rEaI+0r9fMRAgEU/s2XN9ztrc8vPrM1kfK+nHL/V2AWX6ZwympafC2MoJDfyjk9RgGWo4NeMon2x5rRBXcGmOi01naF7X/nwTYkXwh7Gr4I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,187 +101,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a page is freed it coalesces with a buddy into a higher
-order page while possible. When the buddy page migrate type
-differs, it is expected to be updated to match the one of the
-page being freed.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: d9771d0dbe18dd643760431870a6abf9b0866bb0  Add linux-next specific files for 20251212
 
-However, only the first pageblock of the buddy page is updated,
-while the rest of the pageblocks are left unchanged.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-That causes warnings in later expand() and other code paths
-(like below), since an inconsistency between migration type
-of the list containing the page and the page-owned pageblocks
-migration types is introduced.
+    (.exception.text+0x247): dangerous relocation: windowed longcall crosses 1GB boundary; return may fail: make_task_dead
+    drivers/pinctrl/mediatek/pinctrl-mt6878.c:1478:1: sparse: sparse: bad integer constant expression
 
-The issue is first exposed with commit e0932b6c1f94 ("mm:
-page_alloc: consolidate free page accounting"), where the
-warnings were introduced, but it is observed in earlier
-versions if similar warnings are added.
+Error/Warning ids grouped by kconfigs:
 
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
+recent_errors
+`-- xtensa-randconfig-r121-20251205
+    |-- (.exception.text):dangerous-relocation:windowed-longcall-crosses-1GB-boundary-return-may-fail:make_task_dead
+    `-- drivers-pinctrl-mediatek-pinctrl-mt6878.c:sparse:sparse:bad-integer-constant-expression
 
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Fixes: e0932b6c1f94 ("mm: page_alloc: consolidate free page accounting")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/page_alloc.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+elapsed time: 793m
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ed82ee55e66a..6e644f2744c2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -913,6 +913,17 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
- 			NULL) != NULL;
- }
- 
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
-+{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
-+
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
-+	}
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -999,7 +1010,7 @@ static inline void __free_one_page(struct page *page,
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
- 		combined_pfn = buddy_pfn & pfn;
-@@ -2146,17 +2157,6 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
- 
- #endif /* CONFIG_MEMORY_ISOLATION */
- 
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- static inline bool boost_watermark(struct zone *zone)
- {
- 	unsigned long max_boost;
--- 
-2.51.0
+configs tested: 217
+configs skipped: 1
 
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                         haps_hs_defconfig    gcc-15.1.0
+arc                            hsdk_defconfig    gcc-15.1.0
+arc                   randconfig-001-20251212    clang-22
+arc                   randconfig-001-20251212    gcc-8.5.0
+arc                   randconfig-002-20251212    clang-22
+arc                   randconfig-002-20251212    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                               allnoconfig    gcc-15.1.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.1.0
+arm                                 defconfig    clang-22
+arm                   randconfig-001-20251212    clang-22
+arm                   randconfig-002-20251212    clang-22
+arm                   randconfig-003-20251212    clang-22
+arm                   randconfig-003-20251212    gcc-8.5.0
+arm                   randconfig-004-20251212    clang-22
+arm                   randconfig-004-20251212    gcc-15.1.0
+arm                             rpc_defconfig    clang-18
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20251212    clang-18
+arm64                 randconfig-001-20251212    clang-22
+arm64                 randconfig-002-20251212    clang-19
+arm64                 randconfig-002-20251212    clang-22
+arm64                 randconfig-003-20251212    clang-22
+arm64                 randconfig-004-20251212    clang-22
+arm64                 randconfig-004-20251212    gcc-8.5.0
+csky                             allmodconfig    gcc-15.1.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20251212    clang-22
+csky                  randconfig-001-20251212    gcc-14.3.0
+csky                  randconfig-002-20251212    clang-22
+csky                  randconfig-002-20251212    gcc-13.4.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.1.0
+hexagon                           allnoconfig    clang-22
+hexagon                           allnoconfig    gcc-15.1.0
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20251212    clang-22
+hexagon               randconfig-002-20251212    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.1.0
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20251212    gcc-12
+i386        buildonly-randconfig-002-20251212    gcc-12
+i386        buildonly-randconfig-003-20251212    gcc-14
+i386        buildonly-randconfig-004-20251212    gcc-14
+i386        buildonly-randconfig-005-20251212    gcc-14
+i386        buildonly-randconfig-006-20251212    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251212    clang-20
+i386                  randconfig-002-20251212    gcc-14
+i386                  randconfig-003-20251212    clang-20
+i386                  randconfig-004-20251212    gcc-14
+i386                  randconfig-005-20251212    gcc-14
+i386                  randconfig-006-20251212    gcc-14
+i386                  randconfig-007-20251212    gcc-14
+i386                  randconfig-011-20251212    gcc-14
+i386                  randconfig-012-20251212    gcc-14
+i386                  randconfig-013-20251212    gcc-14
+i386                  randconfig-014-20251212    gcc-14
+i386                  randconfig-015-20251212    clang-20
+i386                  randconfig-015-20251212    gcc-14
+i386                  randconfig-016-20251212    gcc-14
+i386                  randconfig-017-20251212    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                         allnoconfig    gcc-15.1.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251212    clang-22
+loongarch             randconfig-002-20251212    clang-18
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                             allmodconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                             allyesconfig    gcc-15.1.0
+mips                          rb532_defconfig    clang-18
+nios2                            allmodconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20251212    gcc-11.5.0
+nios2                 randconfig-002-20251212    gcc-8.5.0
+openrisc                         allmodconfig    clang-22
+openrisc                         allmodconfig    gcc-15.1.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251212    gcc-10.5.0
+parisc                randconfig-002-20251212    gcc-12.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                    amigaone_defconfig    gcc-15.1.0
+powerpc                      ppc64e_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20251212    clang-22
+powerpc               randconfig-002-20251212    gcc-12.5.0
+powerpc64             randconfig-001-20251212    gcc-11.5.0
+powerpc64             randconfig-002-20251212    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251212    clang-22
+riscv                 randconfig-002-20251212    clang-17
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251212    clang-22
+s390                  randconfig-002-20251212    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    clang-22
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20251212    gcc-14.3.0
+sh                    randconfig-002-20251212    gcc-10.5.0
+sh                          sdk7786_defconfig    gcc-15.1.0
+sh                        sh7757lcr_defconfig    gcc-15.1.0
+sparc                             allnoconfig    clang-22
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251212    gcc-8.5.0
+sparc                 randconfig-002-20251212    gcc-8.5.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20251212    gcc-8.5.0
+sparc64               randconfig-002-20251212    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.1.0
+um                                  defconfig    clang-22
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251212    clang-22
+um                    randconfig-002-20251212    gcc-14
+um                           x86_64_defconfig    clang-22
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20251212    clang-20
+x86_64      buildonly-randconfig-002-20251212    clang-20
+x86_64      buildonly-randconfig-003-20251212    clang-20
+x86_64      buildonly-randconfig-004-20251212    clang-20
+x86_64      buildonly-randconfig-005-20251212    gcc-14
+x86_64      buildonly-randconfig-006-20251212    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251212    gcc-14
+x86_64                randconfig-002-20251212    clang-20
+x86_64                randconfig-003-20251212    clang-20
+x86_64                randconfig-004-20251212    clang-20
+x86_64                randconfig-005-20251212    clang-20
+x86_64                randconfig-006-20251212    clang-20
+x86_64                randconfig-011-20251212    clang-20
+x86_64                randconfig-012-20251212    gcc-14
+x86_64                randconfig-013-20251212    gcc-14
+x86_64                randconfig-014-20251212    clang-20
+x86_64                randconfig-015-20251212    gcc-14
+x86_64                randconfig-016-20251212    clang-20
+x86_64                randconfig-071-20251212    clang-20
+x86_64                randconfig-071-20251212    gcc-12
+x86_64                randconfig-072-20251212    clang-20
+x86_64                randconfig-072-20251212    gcc-14
+x86_64                randconfig-073-20251212    clang-20
+x86_64                randconfig-074-20251212    clang-20
+x86_64                randconfig-074-20251212    gcc-14
+x86_64                randconfig-075-20251212    clang-20
+x86_64                randconfig-076-20251212    clang-20
+x86_64                randconfig-076-20251212    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                           allyesconfig    clang-22
+xtensa                           allyesconfig    gcc-15.1.0
+xtensa                randconfig-001-20251212    gcc-8.5.0
+xtensa                randconfig-002-20251212    gcc-9.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
