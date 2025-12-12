@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DA8BD4415D
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2299FD44149
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3F1F6B0005; Fri, 12 Dec 2025 04:32:13 -0500 (EST)
+	id 73F406B0006; Fri, 12 Dec 2025 04:33:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8CA6B0006; Fri, 12 Dec 2025 04:32:13 -0500 (EST)
+	id 6F0296B0007; Fri, 12 Dec 2025 04:33:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C90456B0007; Fri, 12 Dec 2025 04:32:13 -0500 (EST)
+	id 5DECF6B0008; Fri, 12 Dec 2025 04:33:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B30EF6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:32:13 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50096B9A16
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:32:13 +0000 (UTC)
-X-FDA: 84210302946.25.BD9662A
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9CB92140003
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:32:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=DMpgfaqC;
-	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A24A6B0006
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:33:59 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F205B14047C
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:33:58 +0000 (UTC)
+X-FDA: 84210307356.01.541BB6B
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1664A40004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:33:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gP5FiKEc;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765532037; a=rsa-sha256;
+	cv=none;
+	b=XZxbnF9xlrQHKB5TliwqZ+cWC7i355AnMdVS3QiR4rOfrE5gEpcvRQIXfJjq5zaTnNo/rI
+	4lh90OJNUu3Pc9+HSJ3yfzTe5ISRzhVhj20lrhBxYH9HX+fx4Ws5NSaYw6IqXy/49OzoD2
+	aq/YrCAR2bYShxj00SMtYy2VtrpFYeo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gP5FiKEc;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765531931;
+	s=arc-20220608; t=1765532037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7N1yRupjJwsCEjdeUujuXdzSn7k5Mwr4a3y236fW66U=;
-	b=b3M33v2hZtUGWmCK/if+eXhr3Xq2FyMAodsLySTHxoKn8pAZEM0vwHf7b768MCjxQ9bNt1
-	7n9UnCwTQnr6gX0btwEwmDAGvTDT/0sZ2yFq9/wYKH1qPh7IbvjfHVbxMlqpjk9+TX9EHL
-	HIXP4tCRunQffmOlD9BCG5Dl/Hd1wmw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765531931; a=rsa-sha256;
-	cv=none;
-	b=GRKpV1SyImoq6T788dhwhJEd7jQAU8Xje6mRErZ7hXKlczf+ft8MtHKzFFF7mvt27zpXQJ
-	YXzOsfIbubhNeLXuDWmG/Cm83yKMhlnvhW/xK3+R0Abp6yS7w21DVWfyrOkGCpMBjYppea
-	rjeC38RYifXersu2ArPJkwisoZ6Yh74=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=DMpgfaqC;
-	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=pQbWCtHdrI7qQ4N4sW7tS14xKqY+Ou7bmuq3drTQLtI=;
+	b=xJcH8QT+Nv3oLuZgykWwKMFWmKm3OSPeIjez95sx9nZnAbv5KOZ/ze6CevL4QTJTRY5aC0
+	bib/VFTWABulYZkboZyjUJbhYatliUT9azMv7D1lQGYZTEbgorCFj/Wg5NAG5crDI1OKI+
+	Tbt4M2lZaPFjNdnq7l3eLftV31qHSko=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7N1yRupjJwsCEjdeUujuXdzSn7k5Mwr4a3y236fW66U=; b=DMpgfaqCYynagwlYCabdmyw/Bp
-	rUrSWkBegZ7jFRY2i5aeyB3mBsMgEJmvOI0UYVuZszBnKfB9R5n85wNsrF+pa+wV09POIzKpx0Plm
-	5ztxDsDOKPs08ziIzR4xEbQLew7usFxnN7+f3OYd+0FRhq3UKr+eIQumIXme//DjvI6A17dnCDjOv
-	UErEQ9Ybt3bC0AD21CkKRgFinT24xXYc+0CoUTjQkZa/8/sybPij8mY6g7IEQZKZbws0SII2upGj5
-	Pm0cIgInYYSL26iTrbPz5JyXnVLmPXf+7T6z44avAqu0UsbtenM0BV7SHv+qf468Pez8BP7yUSJsv
-	h8N4R/2w==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTyde-0000000GP06-2F8E;
-	Fri, 12 Dec 2025 08:36:34 +0000
+	bh=pQbWCtHdrI7qQ4N4sW7tS14xKqY+Ou7bmuq3drTQLtI=; b=gP5FiKEcmRnzQyUehVXnsV1XLo
+	4CcGaKrOQoiMISbVTofuAAzhJZgdbdZphc6+x1ybUzVkZ9ZIq+GUIyAW0RXaobcGzp3FoJSN6rFWv
+	0yhVMGdMzV2vtNMeuYgu5t8Zyu42infVTLpV1cfat8gOQ0liRPhAl4eLgDj43ybPYnnQcKV+ONTXe
+	Y/AKRBnafep3f9UBI2BEeoF+Qa7g1+EVNns6zvQakSyTIOu7q6cost+mJYrwRrG47Eqfq4pu7TD3X
+	n20VKo6HKyEjEjh14xxcfmEYEjGZ4QZ5QEkUMmF28XCiymvyS8qAbpHBDAWhL6ziTxLJdrPEApNBc
+	jWFa+7Rg==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTzWw-0000000FU4K-0MV6;
+	Fri, 12 Dec 2025 09:33:42 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8C24F30041D; Fri, 12 Dec 2025 10:31:49 +0100 (CET)
-Date: Fri, 12 Dec 2025 10:31:49 +0100
+	id 08ED630041D; Fri, 12 Dec 2025 10:33:40 +0100 (CET)
+Date: Fri, 12 Dec 2025 10:33:39 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Marco Elver <elver@google.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
@@ -104,25 +104,25 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
 	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
 	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
-Message-ID: <20251212093149.GJ3911114@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 16/35] kref: Add context-analysis annotations
+Message-ID: <20251212093339.GK3911114@noisy.programming.kicks-ass.net>
 References: <20251120145835.3833031-2-elver@google.com>
- <20251120145835.3833031-4-elver@google.com>
- <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOyDW7-G5Op5nw722ecPEv=Ys5TPbJnVBB1_WGiM2LeWQ@mail.gmail.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251120151033.3840508-17-elver@google.com>
+ <20251211122636.GI3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNN+zafzhvUBBmjyy+TL1ecqJUHQNRX3bo9fBJi2nFUt=A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANpmjNOyDW7-G5Op5nw722ecPEv=Ys5TPbJnVBB1_WGiM2LeWQ@mail.gmail.com>
-X-Stat-Signature: 66hzan9smt1ey87h74kegrtatum5e8xe
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9CB92140003
+In-Reply-To: <CANpmjNN+zafzhvUBBmjyy+TL1ecqJUHQNRX3bo9fBJi2nFUt=A@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1664A40004
+X-Stat-Signature: 4snsdt66fk8captdmtm8yzt6zbs41gjw
 X-Rspam-User: 
-X-HE-Tag: 1765531930-477294
-X-HE-Meta: U2FsdGVkX19exq7mGreZXzNlHt7/Z+iBioJHrbNIFRCRjfSUSnaZK5ESyhcgHj2/MGA03VkuxQUK3k8dUho9vdFjr1DJhPcfrHAfr8w0ZUdj1sNNrSwJfSwFQFjEFGNDQGz3FVr/Kz8EkQCr238YQm2byAYReGZ5GFBDwtLa+XqIAxq2XVDqYv/fQozouh1hNIlRW2/L4sr5MPOYtPOPP2rCYixsy6XxLWXbO6XjTH7aEoevJ7EcsblXS4sEaF6n67erlL4ARutwsBhZVSS1MguB0VHcfycQ/JWcHMz1PPsesotDn9QjZfl1zoAx2XQ2UQqpFTsTcR/QTdrFdD9/MwX6KXuDKwswqVi+Mm+Sud9AOoldIwsDbHY534ZBuOvWpS0l3vHEtYibfb/BJ6ZFezRWCT+sAIXMAfiaj6D0UoKg1/j9IHCEwoXq5AxRUhYZbK5VBvTRVDV4gLQin471qPKlSoNKAaWKLZMtBzEe6EhAvG1PYBZQenESPsOLAogvBultonvoCCWLWhKaTUENZBnItHil0iGyI2hvTutOX+xZksmACQWZYpPj33u5ImN4zGoO+CSMPSBCHFz8DBWPMsxD4jvsah1M7D0Yu9+fnYIMrNs4LZZQXRTYYqUxSpD81xj4uTjoW7/3hwoeAuKibovP2ZCSl9NzCotoZQHFLFvUQS9rzEBmlqOWLyRdCV2V6UHmJQ4eBb5kSibEAW5Pd7F+H9ROdsgiOeSBzsgT9B7MuBAfoudyaGTT1M+Gf6XyqsvQSiV1Y9h73ynniMcf39CAhOkNE6+QiXSzOijiQIroUT7pom37cgiCA37kVG2cU399JGZ+2wFSGLiHDThUEYcoFqoEh+lEOv1GmTT0BQUxHUIUZAKhuRMfORBgZcw1h1W4kaGhkccybi1O9lq6kix3PHdq6iQ85olEx69qV9FqRUPDbCbgqPoWIythZoHHmn9ELbwK2MhQyEBZO1p
- LuqeYrsU
- D9ou9wrDbuW6K8bPoDyr1B+uM5T9vDC5i/bq7wZ/DlCpZ6XEp7AE0CIvAZ/9V71wL34jHNxhnuaHkLK1AbGgVPAJy503KoYzK0CY81mkBkVNGzPurflN77M2dHoOA5uEiKNYtP9AE4UM6Mr+YxN2WLoHF3NRRjYHa9QvTb2I4YoyZqxk+HzvQbA22f9bSu49EKtF4V0ODGiYq2QUH+kvA6xIKKyuT24nwxVFRlCCkyu3l4CB3h6wj+zQOkj7Q07eIrMTLZp9isrnnXmIIe1CTO9pUSnBPZgVivCMk
+X-HE-Tag: 1765532036-504841
+X-HE-Meta: U2FsdGVkX18cxbXFEwOWBBjrl4XZiwiRf7Ekslm0S1Zn2yeacyZq8aBBto/V2/NLVC1OC+fUH5nrpX03H+0z9PiKNsFFFcejAVirnyftHmiNG/QveyPvLF2eMQNG9CocZS7/XfTM86ZvXEeG/6DfO7F5LkA41lNPMBZvkePPW6SmEVSwJUBFyxmVcmh3/WaA6AwPiOwQp/VMobmKOiswWwBIhnCqPGGAm8omtIB8Ll1bsOAq4HpW27heIvhbxdrTPgjC0kzy9cFhauo55TaG4vivCub7+xD6oZpx24PVeI5oNt0ZHZoHgHls+BKS/8KC94oqvbgPwE/lF9lP/gHu8Y9Sh6HQglgpey04tCAFLdlhgbWAfxou85qLCtmTQLHroBxaeCLgUGCBwzpYOYFRx6gjdyf+bm712XrqKgWllka9LFOUc/Kqdx3WNmkbNzJOt7VkDnzyzulbQ4tHD+WkDRYIlh2nDBJK9fEDNYVEnyA/F45y8C0rn1jhGlbRWIVVDNrtp7Uvg3ZNL0UAONllIi83Vm0nE/bf+lvkOArRLuMu6G981XZasf9HfMq0w1NgqH5F0/GGcT39m55oKfUoP6qaT3UR12jplDbNf1YGdZJZ5g+VZj5iGCeOxmw4dfI5wSzTRdZ6a5gPkBVmkbp4D3An+k8VUcnp6mDigrLUjvbfOJIEd82aZhZiQT4q4Y1VkiwJODO+ay8C0qiBl2VRBBdqirqZ/z6oePTg1H4L/2SJ5k9/3ObxUBSngoBH4Zzqv0X0SCFKGLCOTMOsrBcKZBsDe1v5UEx0sVdi5DlODmSNHqwCdGiOvDEGE/f8H8sQoFXArS2hHRHbwHFyDKcif6ohwwUI98Ng9tMlZnBU3aWd1xTLvsETbPN8PM9ZXx/id1YVr5qAh9COBV3tqEiM4B6rB/j15ss/9zqByAIbTYub73ssQOfEkIpTV4uK1AeAQphHzXz68NN6/HsbFnY
+ 0Qtq7a7Z
+ bA++WIN/IiM6EAZuQn20m9imZPHCE3q1RF7xt5H127Uvn2aZNjKelLUVDDT/GVUUFIe3uUINH7Z4MWVhGrTnomk1lKWOXL27roJjovHbm4n9BLVMhW8uNMHTsORia9yiWuTRusLhYeN4mkWjrVT/KWgGhx/YugmfPjQSbFyABCXCMifaRyvJhd2ReyUVfaDMThes2noO4kfyUT+zJpgpanVYjOgstVDHK9ilALQPFuzXm00cmeYAVDa0/Q0P2s/nBBgHsClrr8RIUMLKqAU+mpowEsiYZ93OyPUxuHqPIUio6RqaEZ5doOixMMg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,27 +131,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 02:12:19PM +0100, Marco Elver wrote:
+On Thu, Dec 11, 2025 at 02:54:06PM +0100, Marco Elver wrote:
 
-> What's a better name?
-
-That must be the hardest question in programming; screw this P-vs-NP
-debate :-)
-
-> context_lock_struct -> and call it "context lock" rather than "context
-> guard"; it might work also for things like RCU, PREEMPT, BH, etc. that
-> aren't normal "locks", but could claim they are "context locks".
+> Wrappers will need their own annotations; for this kind of static
+> analysis (built-in warning diagnostic), inferring things like
+> __cond_acquires(true, lock) is far too complex (requires
+> intra-procedural control-flow analysis), and would likely be
+> incomplete too.
 > 
-> context_handle_struct -> "context handle" ...
+> It might also be reasonable to argue that the explicit annotation is
+> good for documentation.
+> 
+> Aside: There's other static analysis tooling, like clang-analyzer that
+> can afford to do more complex flow-sensitive intra-procedural
+> analysis. But that has its own limitations, requires separate
+> invocation, and is pretty slow in comparison.
 
-Both work for me I suppose, although I think I have a slight preference
-to the former: 'context_lock_struct'.
-
-One other possibility is wrapping things like so:
-
-#define define_context_struct(name) ... // the big thing
-
-#define define_lock_struct(name) define_context_struct(name)
-
-
+I was sorta hoping that (perhaps only for __always_inline) the thing
+would indeed do an early inline pass on the AST such that these cases
+would not in fact require inter-procedural analysis.
 
