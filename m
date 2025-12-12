@@ -4,101 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B851D4415D
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CB9DD4415D
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B5426B0005; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
+	id 0A1E06B0005; Fri, 12 Dec 2025 04:44:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6665B6B0006; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
+	id 052B36B0006; Fri, 12 Dec 2025 04:44:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57C256B0007; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
+	id E832D6B0007; Fri, 12 Dec 2025 04:44:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 440F06B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9827591EC
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:41:15 +0000 (UTC)
-X-FDA: 84210325710.12.57D5B4F
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D4FE81A000D
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:41:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="jKl/sZPT";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765532474; a=rsa-sha256;
-	cv=none;
-	b=fDB/0fmT68FykCJdXi9EzvjOJOeyWrurVUJsV0hLSHEGLTxsEBJM433jZ4f+OqD53OpWOc
-	+QVWraqvAixc3CH16uj/iXnGvmCWyRrZBRhemZQoh7BAYul9QbKF+U0UOi7V8HNAf9HgJ+
-	sWtHm7hJIs3Kj2d1xwGhWylcT68nGos=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="jKl/sZPT";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D58F06B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:44:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D7D9135073
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:44:03 +0000 (UTC)
+X-FDA: 84210332766.01.816EEAD
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D0E8F4000A
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:44:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Ur4V8SWv;
+	spf=none (imf27.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765532474;
+	s=arc-20220608; t=1765532641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/1jh8eqqkY6vh/nK6zUDuHmQpjxacUEwYYM6l1Ih77Q=;
-	b=Y2Q0uhGN0LzVwXsvHEiaYT7mWScyACxjzh0vBQgy7v1rpw0hRHgvsreTVa5SjPTFTvCfC+
-	BgCEK8wH2qPGa9EnLRp+H4Fwa1mexiDARmPJ9hlBAeuA66k/u9TkAyDvCtDSXYjiAlP79g
-	zC0fW7Nftw03eg7rf+i/8kBZd16c1Ng=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1765532471;
-	bh=/DwHOk5c2eD0Vxh7f5OQ4V+UKKui+51GMERXKOPoGK0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jKl/sZPT5Fq8we2J4h12wq9dhaferqqG7WYrh7c5Y1k5yBsJRMxSPvRCYDSthsFe8
-	 pRqw/bWdb5arjO4jzO0ebG7e3egbR/5HaJg3gCz1rMcvTGYH23kRmB7RO/abMhPeXv
-	 pP44WpV+iM3lP2u6jLE3rcBHt99HTvhioEdkk9vV/zsqJzhBc+WelZKtTdeIp6hRZI
-	 kmpNosTBznVu+OWO723zn0UqOjgkh4gRNzv8gubsK5YawM0ijxqLCMQ3L+hxcgdI1g
-	 HvFUydetaOLNCQ1Pm2xQnAIFIdzuv4f22nuxZ8yOhxrtVyypGcGEw32L5sKR8OKSyU
-	 Ko6IEHLDYFUQQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4DBE917E0451;
-	Fri, 12 Dec 2025 10:41:10 +0100 (CET)
-Date: Fri, 12 Dec 2025 10:41:05 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Will
- Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Joerg Roedel
- <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-Message-ID: <20251212104105.6af97d05@fedora>
-In-Reply-To: <aTveh8c3RngvnIMp@nvidia.com>
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-	<20251128180255.GA836877@nvidia.com>
-	<20251212094427.2ec0b31e@fedora>
-	<aTveh8c3RngvnIMp@nvidia.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	bh=J0s9Z/Nw7eH3J6mljMw45LY45lUZplaK/cGrdA/YkXU=;
+	b=S6hCc1ZSpVuHFpbiU9MuK3TSaxBQBc+DIwIelz+HAROtnO+KpvofK9fy9dMviFfJqE6XXk
+	8BOxfU3PaEPdct+ng5uzowNuNlbTY9yYFdVq/+hK7PSNNaRK9jXJCBShlcrKucbTPzmMa1
+	Fm5n74qPOfWvZQi28zS2FGazkKLndOg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Ur4V8SWv;
+	spf=none (imf27.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765532641; a=rsa-sha256;
+	cv=none;
+	b=S3PHgpdM6bsUJOWdGAgygM2+qhVpXbpRJ9dkwPv8hcez2oivejy2lXWncuQguyX8DYSuw0
+	uAAYWiCduUxyPQ73pjM/mEy4KRAXiN5YP/xfwHHbJTIiLBut4sP+F4m6iR3V6vDokGYeT9
+	npKUdsUOpqh3Z5t5CN4VbpQXEw/chVM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=J0s9Z/Nw7eH3J6mljMw45LY45lUZplaK/cGrdA/YkXU=; b=Ur4V8SWvfQ6bSD1Jimbf2HVssZ
+	qtgtHbkdLRensVt0bGd9gmnk/6zpXiAQtBkoWUfgwj4Bf/1keaOG6pYGijSTHKAdKaLFq2VZYbFRA
+	hQ5a0RAvYfnxCKTYdyOPpUiIlu4T6yPz6EeldvhXavFMh83NzCTTWjQ0QSmqfAcLMgExspdRiuu5s
+	BCFQ5Us9cj0ZfN9IYbcwtcnFZDXYb59kyvH8kVVPhxxLkfxE2EPtxm4CVlUKWo7JOzF42LHRLV+VF
+	vLvu3eTnH3zISwXdT9whryYHXL8nvHtiIVOsIgPDjAPaaAgTfdwEXYqdH/6qEhUzMqg86r9b9ud4/
+	/tVR2YOQ==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTypH-0000000GQ2D-3yf4;
+	Fri, 12 Dec 2025 08:48:36 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2F0AD30041D; Fri, 12 Dec 2025 10:43:52 +0100 (CET)
+Date: Fri, 12 Dec 2025 10:43:52 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marco Elver <elver@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D4FE81A000D
-X-Stat-Signature: 1stt3jkataizsskkyxid4kegf3izfcxy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+X-Stat-Signature: ymz5s11ddozdtbc6hecndzr7rghpkh7i
 X-Rspam-User: 
-X-HE-Tag: 1765532473-766440
-X-HE-Meta: U2FsdGVkX1+lnMkt+IT+3eY2C/SFCGRG9gvO9qJxMIIEombj+voSJLvl3cDIdCaR3a+gr2D9rmu3RO7vxiWHmPZL+nLn34rjRHlYONta8ilbCSMQg14ptX+3lzG33aiyfOh8zQwawzFWIV0NzUX9vHDfq+1nBx5+b7UdU3rScHliXzmQXlW02kkGPn0yjbacSpLMv+Z96EXKD/nMzxW8G75vyUF0cTTJBJt3e60rKbJLAoIioMMPN6ht8eLtkxb3nA+KB9v6LtQAOs421XKPIXLXWEP3HAOJSQqojKaUXMB54hmuagXNNSx2UXekIYlp5Z4gszBxwe6KMojBwYB/eoRFqIbD0zt2DmyAiuN94RtA5U9b9xX51/m42kMBAOgQmS0cE0QiaGFRH5QHjxr4ZX+BCSMbtpB9TrbXNX0Di+X7EgBO4k3DQgcMv+Z/su//9HKvgmJYhyFrEXeplSi1WMVbQGTZHQvxfdXGX8qfB7anfXgyJ2SwpuG6m4HZRAQCwOoKI3L65F7z6n+IyP5gJiC+ZUv46dcVe2Y0AIty4LwiEwer0e7pxOSm8WOwTyV5PU6yehKXhv0SmccA/fdZvI0bWClSKVtiV32MEj1Q07VFn3X4oAi9dQHKP50extA+LBa29riL/7Z8E04s9M/ni5m1pOsYCh70WmAX8CNLRoGjohMj67ie8yVoQW+NC1+lXmz8xriuOdr9zxsUWpu+ZsTdoiT6FHgS9tv/DN11xYAabeqGVGjFmvJsGlJDu8N48Ud6UDFaSkX64sYNWF+LKTQpA9JDTEe5buAkEKnz5TykxaCs/yESUnLR23AmO+a61OlzEaOx9fL4WjmOc+zeTL8FS7Ibge0lyQDivLtGlHsjrNq0S2+4CsiuPu9i845icMhhhMWkJq8KKa2ftebu8aBCwPP5VU895quA8Uk61nz8M0GadumdkUHKS51byicumCaD0jbKSgUexfVgJxU
- wvIsl6PD
- VHBV56fjc7EKFJySCQ2FDxL+CKqiKesWYs/aTXSa/qA7sv0+A75AkMDNA0vMKcKfYAxzVN/3qYlExnayJOe4AV9O2fp1SjEDppsvO1xgOcoFFSXfYFBZqaK8LJ9oaGCGA4PeLgGOQdVfNk1HFtm1noJpx6XPD49yL9lj7IrvETzaY4p1CjdR0jPKNPjiY7dh+1wxw7k3895S2Hqzu16Au1pZrW23wBrl6ZGuXc+XmbQOKACW6X3OC8uUpdcYdcetr+IZbwhC+1hHFqAAfo0OHGqmiPdF+BxSkXOXeE4vXHVw+8gSk0068nmTopemrHeHEitXKT2R9SeMWJ0lwGNQMasPkS6vSYhU285VhOR3+A/HJ5YYQ/FvsiQGG3SuQTrzrUqMo1zKVn92z+lDNkEIPOYIeNLvJy0ufphzfMa2p0IFHkraj0AMGX3vCmqQCIHCWbIoKek4c+/MZ3S4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D0E8F4000A
+X-HE-Tag: 1765532641-460256
+X-HE-Meta: U2FsdGVkX1/elQq+uUhkU0yqg8QYVQ16feYVeWJ3H2WEelQkfe1fiBxZy5mtsLuHHKaFd3T1na689JaCdjWcXSnyBKdGSFprVBG2O62OXUvO3uDjqg0HyrA1w1KgSAVtjCpyzOxd3Yk2U8fzeaLUe/h7ERDQlxZrCJE+e1a5wGyvlXZehv5BYj/+CN3PyXGzxAoAyr093krc8uss1+GfeUJqangDPDeuXeOGxKzsQjGna0jy/OW+Z4kR+uHf2I9iJaOtVEgVwGHLRuPEH1Ho+iuEIURdNm97NrifTTso+xVISkQD3YCZc5ReBML02M6SddmSVXINXe4L3E7ioMsqURi8w/WIwN9NdJeHOk3mQaZ6vgrbJyfLF8J0L0dCrwXsZOygnK1vcnxZbNYDFctvKergHyBohCcD9aQhvuQHZtsbCo+YNvtHEBueJePsVxvwcNiiBLmy01medf0wk3Kh04XuwaH4ad+HqYh5YUH+HAA9LEP4lYyy/N48awv1T6y7MGYTpASZdSwbA6ESQs36xKs3lkDxwajKFmLu4uoLIUpB7vDy2XNJAXyJkoYJOhcx2eBcIyx1wOr8gTeECGHeqrSzi4zgyVB0EHL4l9CNHkzG6wJWv+ZZ1aJLxVlIB2pLevA8GYC4F7Vhr08jEPosRfrAjLEIMJdDr3uBPCV9Ze1A1lFvRkYjeTuCAOWFeljslB8jxRVgr/A3gRprWAVVJoWR5xE4UwbqVB0agOabueLxyoqKItKSySzW6dZa/+143Z2KJJQIna4DmyTgiuILV79TPNUpCbsUstijqcXyQsHs5w+nJbVmJ1X3e1/Jf+/0Yz4ux48wirWyFuuAYLNIpP7QqYr5yo7GEg930q8IUq4ySu+oB/KBoP0fANoquZh2IjOxE44wshf66Y833Y/vlxkV6cWcfOR7mzC6vMzWEUM35AHSaQDpUKSe04V/obP9No7nrtW4tVkKkuARyy+
+ vuPgmt94
+ Vp4nDXKjz7McdqjEPBE6eez2zbSptG7BUVcdD5x8L6VrEa5Cfll8MGZlUifkLiJS1eTzvsAOgLjGyDqlzJTXsL+HC9+3zzLvQ+0INvy8C3ONrhMyMixVQ+ntObaTvTlWPnJYg521Z2ncgDp2Xa4khf40QgTwbzSJHKJ+TYqXQfO8HEgrbxJTq9MhvRrq4vE3m3ZLegRvT7tPrfaV043Fk+Wd8EbNgVuGfAK6y7bM8+4swvVTnVGIe1+931ECXSzB5tCLOpmmNQFik3it/Kfdj30MqqoSBVDp6L3kh26Lssk/zbsrcd+bjcoORPQrJX7PXj93chY7Ou4ap6zOsQGUW4UV1C6E3l1jFhnfQdjNkpjLK9oJFPL8Agy97/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,92 +131,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Dec 2025 05:21:11 -0400
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+On Thu, Dec 11, 2025 at 02:19:28PM +0100, Marco Elver wrote:
+> On Thu, 11 Dec 2025 at 13:17, Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Thu, Nov 20, 2025 at 04:09:31PM +0100, Marco Elver wrote:
+> > > Introduce basic compatibility with cleanup.h infrastructure: introduce
+> > > DECLARE_LOCK_GUARD_*_ATTRS() helpers to add attributes to constructors
+> > > and destructors respectively.
+> > >
+> > > Note: Due to the scoped cleanup helpers used for lock guards wrapping
+> > > acquire and release around their own constructors/destructors that store
+> > > pointers to the passed locks in a separate struct, we currently cannot
+> > > accurately annotate *destructors* which lock was released. While it's
+> > > possible to annotate the constructor to say which lock was acquired,
+> > > that alone would result in false positives claiming the lock was not
+> > > released on function return.
+> > >
+> > > Instead, to avoid false positives, we can claim that the constructor
+> > > "assumes" that the taken lock is held via __assumes_ctx_guard().
+> 
+> 
+> > Moo, so the alias analysis didn't help here?
+> 
+> Unfortunately no, because intra-procedural alias analysis for these
+> kinds of diagnostics is infeasible. The compiler can only safely
+> perform alias analysis for local variables that do not escape the
+> function. The layers of wrapping here make this a bit tricky.
+> 
+> The compiler (unlike before) is now able to deal with things like:
+> {
+>     spinlock_t *lock_scope __attribute__((cleanup(spin_unlock))) = &lock;
+>     spin_lock(&lock);  // lock through &lock
+>     ... critical section ...
+> }  // unlock through lock_scope (alias -> &lock)
+> 
+> > What is the scope of this __assumes_ctx stuff? The way it is used in the
+> > lock initializes seems to suggest it escapes scope. But then something
+> > like:
+> 
+> It escapes scope.
+> 
+> >         scoped_guard (mutex, &foo) {
+> >                 ...
+> >         }
+> >         // context analysis would still assume foo held
+> >
+> > is somewhat sub-optimal, no?
+> 
+> Correct. We're trading false negatives over false positives at this
+> point, just to get things to compile cleanly.
 
-> On Fri, Dec 12, 2025 at 09:44:27AM +0100, Boris Brezillon wrote:
-> 
-> > > > +// These bindings are currently designed for use by GPU drivers, which use this page table together
-> > > > +// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations    
-> > > 
-> > > Now that we have the generic pt stuff I wonder if GPUVM should be
-> > > providing its own version of the page table implementation that
-> > > matches its semantics better.  
-> > 
-> > Not too sure what you mean here. Are you saying that we should fork
-> > io-pgtable-arm.c (or rather a subset of it), and have it all
-> > implemented in panthor?  
-> 
-> Not quite, probably next yearish some of iommu is going to stop using
-> io-pgtable-arm.c, and switch to the new stuff.
-> 
-> The new stuff has alot less duplication if you want to make your own
-> special stuff like this:
-> 
-> > against it. Now, I see good reasons to do that, like the fact we
-> > would be able to add features like batched repeat mapping updates
-> > (mapping the same page over a wide virtual range without having to
-> > duplicate the intermediate page table levels that are exactly the
-> > same),   
-> 
-> That's certainly a unique requirement and it could be implemented with
-> a gpusvm specific set of operations.
-> 
-> > or the ability to extend the mapping arguments with
-> > shareability/coherency info (that we can do by adding IOMMU_xx flags
-> > too). But there's also downsides to it, like the fact we wouldn't
-> > benefit from bugfixes materializing in io-pgtable-arm.c, if any.  
-> 
-> The new stuff is significantly modular already so this risk is a lot
-> lower, and we could further modularize things that are actually
-> duplicated.
-> 
-> But doing something like repeating page table levels will require some
-> fairly different unmaping logic already...
-> 
-> You also had the special allocator asks (and presumably optimizations
-> are possible there too) and probably optimizations like taking page
-> lists directly out of GPU structures instead of multiple calls and so
-> on.
-> 
-> When 6.19 comes out go look in drivers/iommo/generic_pt and read the
-> documentation pages that will generate under the kernel docs site.
+Right, and this all 'works' right up to the point someone sticks a
+must_not_hold somewhere.
 
-Ah, nice! I will certainly have a look when it's out. Thanks for the
-heads-up.
-
+> > > Better support for Linux's scoped guard design could be added in
+> > > future if deemed critical.
+> >
+> > I would think so, per the above I don't think this is 'right'.
 > 
-> Then you can think about what is ideal for GPU and consider what the
-> work would be like. My uneducated feeling is with gpuvm trying to be
-> common code it could also have gpuvm provide shared common code that
-> directly builds page tables in CPU memory using the above framework.
+> It's not sound, but we'll avoid false positives for the time being.
+> Maybe we can wrangle the jigsaw of macros to let it correctly acquire
+> and then release (via a 2nd cleanup function), it might be as simple
+> as marking the 'constructor' with the right __acquires(..), and then
+> have a 2nd __attribute__((cleanup)) variable that just does a no-op
+> release via __release(..) so we get the already supported pattern
+> above.
 
-So, gpuvm is one level up (it doesn't deal at all with any HW
-representation), but I guess we could provide helpers for UMA-GPUs,
-where preparing the page table on the CPU is a thing, and it could be
-that MSM would be interested in using those helpers too.
+Right, like I mentioned in my previous email; it would be lovely if at
+the very least __always_inline would get a *very* early pass such that
+the above could be resolved without inter-procedural bits. I really
+don't consider an __always_inline as another procedure.
 
-> 
-> > > IOW it doesn't seem right that common code would be making decisions
-> > > like this, the nature and requirements of the flushing are entirely up
-> > > to the driver binding to HW.  
-> > 
-> > We're not saying this will work for everyone, but rather, this is a
-> > default implementation that does nothing, and if you need to do
-> > something, override it with your own. I guess if that's really
-> > problematic, we can force the user to provide one and keep the NOP
-> > implementation on Tyr's side.  
-> 
-> In my view there is no possible correct way to use this page table
-> code with HW unless you also provide flushing ops. I can't remark what
-> is more rusty to do but having a default full of NOPS should at least
-> come with a comment explaining that the driver still need to provide
-> something.
+Because as I already noted yesterday, cleanup is now all
+__always_inline, and as such *should* all end up in the one function.
 
-I'll let Alice decide, but I'm perfectly fine with both options
-(NOP default with a disclaimer, or no default at all).
-
-Thanks,
-
-Boris
+But yes, if we can get a magical mash-up of __cleanup and __release (let
+it be knows as __release_on_cleanup ?) that might also work I suppose.
+But I vastly prefer __always_inline actually 'working' ;-)
 
