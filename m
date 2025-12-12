@@ -4,109 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 841A1D43367
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 02:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57B05D41D74
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 02:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B3D26B0005; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
+	id A9F2F6B0006; Thu, 11 Dec 2025 21:56:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D8C6B0006; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
+	id A77316B0007; Thu, 11 Dec 2025 21:56:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 804A36B0007; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
+	id 98CB16B0008; Thu, 11 Dec 2025 21:56:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 68A3A6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA9DCC03C1
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:55:29 +0000 (UTC)
-X-FDA: 84209303178.07.4053E57
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0E98A20004
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:55:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Q/rv8s9t";
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 87A9F6B0006
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:56:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 269B1B5BAB
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:56:15 +0000 (UTC)
+X-FDA: 84209305110.20.F38E70E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8B89940004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:56:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fHAW0ABX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765508173; a=rsa-sha256;
+	cv=none;
+	b=ArGIlBdqfhZQcgXyAxNB67uEoVSSOcIGWAJfTwaXV0obBsTucymsxcHLA97LXxgAt5AXvm
+	/C+qTblcKibDlgVidAENP1DOS70pBnl9g33RhoXd2zBcCs1SdSyDGB5trKRnSbL40p+mmb
+	1/wyjlwAHoirvA87h19QtF8XLQFiOUM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fHAW0ABX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765508127;
+	s=arc-20220608; t=1765508172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IHH7FISSfyu66uvyvWAbKeSkG4gSDQ0B0NkXAaJWnPk=;
-	b=H/AlqAXclJ0YIV6TAVzpnNkRFHoUFACCAehfV8dXn2DzddVK+15s3sNC/TgJRitgwYfdPK
-	AUXtvLeq9qqbvVZi7p7giIEeoyZL2/kDKfZG2/sOwhh9sR+wQL+HxL5CMzfjiHbUa2cUqI
-	plTPeYMHtE2pCgLaLga/tsQNuC/p5js=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Q/rv8s9t";
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765508127; a=rsa-sha256;
-	cv=none;
-	b=57HVjMRZI4QtttPgEYWqrycVxdLL/vX0lQ9YYzytjL8QHVhOcjCGyIHQvjNULA/Od5aN+K
-	Pjv51jTSDCYx7JPx87V9g4rfrqOl6xxEMl/3tiRjYsNmMnv9B2B32MDpmDSwpuHmX/MY8+
-	bBJxZG8d9OJIVsT6dimkj/KWtHxV70M=
+	bh=Gzz5DyjS/U3F3/cidHZBKsbb48AMl+Wwz7DbZpOjtuI=;
+	b=nXHoNVYj/EDF6KYwMofUF/A7zi971VwJB5j14JLCZReuseP7av8E8iUOz3E5+SWGRcqYfT
+	OfaukwwZ4+J7NddCkkXOgYoihQGxrUV/BJMPf1nbRH3dzsjT4zQO+Ey1kZ9liNzFme0vPY
+	JW7AyPO7W+RLTnZBp6qcqvjIIQPdy/0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765508127; x=1797044127;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t84hamvCTNn8P6GklBvJVrOeaVIe6R0pGBpn8MhDhdA=;
-  b=Q/rv8s9tjAVcfs6kQflDmdlT72un2k7l3sKt7QEsNus6ENT3t9nQcQJY
-   5cycgMovRsD/FIuq+OtwepdnZGAzaQkED6ScxFSmqhsGs7KsdQqDMjePk
-   kpBhgJGdf/w0nlVqd+XsG2X1yHDzIV/Qjk5bcz6lyFh7Nu67LnSJ5oiGN
-   eTRuaOwiLYiJFNmMjlsnL5wg68q0RguVkklAD/grRTK4uL16o6rhf+MZF
-   6HHvCVL/cn99lEkYCsOxm4WknQZp1ZsrsVc187tTJ/r2VRwebRbVBwAcT
-   NM4J2t/XEyeqlZmrvSFhRehRlFMW/LIwRCEJpXa30ZHr7LYEhgtOn00ED
-   w==;
-X-CSE-ConnectionGUID: rlu0jpHcThmk2bg455BFjA==
-X-CSE-MsgGUID: cOoCIzuuTSWqtAcvxM3l2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67429723"
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="67429723"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:55:20 -0800
-X-CSE-ConnectionGUID: 6LZGlbssSyWqRzU6u0sSjQ==
-X-CSE-MsgGUID: yv0vBOInTSuW28cqNqT7qw==
+  t=1765508173; x=1797044173;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kT137sNmfNB8Sc6qW8Hhi0yb56d3CUsss1jHlI43eOw=;
+  b=fHAW0ABX3zWOJ/72O7h6WheItKJ8NSjNwy9BGnW5U3TPv8fj5Um7++6C
+   jutl/kwHwcovSQ3sTvU6TRnhsrdO9Y0TqOGLV68h/x4t8NR0rLAINN48h
+   7genF8Y8K5NvcHZ7IvTbTZWEoNKU+45h3JndPS/pG09phijeNe/ICodLK
+   1xBH5NZzwj7EkaCbByYrw2oFi+1HBnq/ILFVeIl4bg+1y7eceZFDEZn9q
+   z+w2XxF5sfTdEyxVRhBTVeuKJbLs9AiIEhRketcPADcZ4H8kSQKptSR/G
+   bS0ZddzXCySyqStLC8lqIyVL0hPJeicAWRj7Z92030nOqBmCw2NUmZ7qC
+   Q==;
+X-CSE-ConnectionGUID: tOhcHb4gSxKZkyyaxgbKBA==
+X-CSE-MsgGUID: n6Yr2lrzS/Sj9Nl7P9nllw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67546828"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="67546828"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:56:11 -0800
+X-CSE-ConnectionGUID: gI04P57fSR2SYtMNoD/a5w==
+X-CSE-MsgGUID: ut7bpy5cR82ss1Mh0YQ5Ew==
 X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 11 Dec 2025 18:55:13 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTtJG-000000005PB-3q4X;
-	Fri, 12 Dec 2025 02:55:10 +0000
-Date: Fri, 12 Dec 2025 10:55:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chen Ridong <chenridong@huaweicloud.com>, akpm@linux-foundation.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
-	hannes@cmpxchg.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, lujialin4@huawei.com,
-	chenridong@huaweicloud.com, zhongjinji@honor.com
-Subject: Re: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen
- and non-lrugen
-Message-ID: <202512121027.03z9qd08-lkp@intel.com>
-References: <20251209012557.1949239-4-chenridong@huaweicloud.com>
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="196048871"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:56:06 -0800
+Message-ID: <aa14d149-dfde-44e9-8fb3-72cb9b0e6920@linux.intel.com>
+Date: Fri, 12 Dec 2025 10:51:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209012557.1949239-4-chenridong@huaweicloud.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: c1qboopt4uuk1gejgzieaysa7t4cycjm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] iommu: debug-pagealloc: Check mapped/unmapped
+ kernel memory
+To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, xiaqinxin@huawei.com, rdunlap@infradead.org
+References: <20251211125928.3258905-1-smostafa@google.com>
+ <20251211125928.3258905-5-smostafa@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20251211125928.3258905-5-smostafa@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8B89940004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: kdsdzjfihnxiqghh815xwg1nx45orqsn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E98A20004
-X-HE-Tag: 1765508126-198817
-X-HE-Meta: U2FsdGVkX18ofll1iWxSVrpf3elabovw9+MM3PEHb0b1wfFsEBwy9reHb0OG6Rj+pkVp+ojfJZKbmwqm6ioEQFlrRH/LPOdMOIblL272rvIxmWlC8ppC3XNPphgzvZ7e5MuyIf5E7Fu7ktfkOlWgKKGAT20jHQIGMbp+o9MWKS26ynE1gL6j+UkmwmGiOxHLrLt0NUg3EoDvVeZtpHw6qReJlp7ZRTYoK3sTSkCpfg3c3e3EI7v7Mlf0kR69r5ctknw/ZT67uEmcBHDUi/s5rQxJH6js7KUkgoTk7DJ8d1dpyvwfc0WSXFyNjwb82mIDX372+kCJ8ZVeMe5T05FFJoDL8vCx4cGgfe+7QPOjs506Xdavgx9QB3OY8Pt7le2dSXtL2ZvyGXbSH5mW2e3HEkQwCC8hH+E6jTWNR/xJogE20x/PiXe0YWzzMBVB2gCvfyusw8+OOS9YcnEDUwjBuUPtV67y2vzXJRao6OnahAaa+pRK8zsBNglZCH9tyDES3gvVeli4hZtLEGgJzvJqZEpVJfCju5BYdoZe5sYm12WKhvLmXyw/XQqrRTRv4D+Ed+SPMrKOvUJKsZng0yGmfjIOb0vBh7D8NntxmSl0Mpj6rfCKs5CxGMdhlfZhOYwwotix4NIDt3igomcSFFA/jYljAvTmtrAVHtCBit/x9e1XZNmxD9CtfTKa1yT7U8q2b16oGej3qf4MTXhDJRDeQjOClcKtxylTh7b4rR563ZjZHUrFvYcdkE0PpQtwu3TbQ84QMfSfzjV1aB1g5HbGBX8xMFM0A8fTwvBDra6jSxtOCQPiZGGSjtO2lvdjyn64PstvSlx0EzXzvvuqeLTR9GgI9rep9PooORdyGR/FcDqoEJv+tSRUvHAn/PVGmqntW99EquT0sU9WAh50kLGgAG29CMDLj3eN4WfqH9OJ3UwqyBDyEWkys2X2VIuw1PlVF9m7tIuVRYcdh9L66Xq
- iUp8glTn
- s3qczS3NKt4BclFlVIcpfHKVYcoopizzmwgbqMBsr9+9Tp+F2MXIySPBDPhCQkIDV6f9OLZE1wefwuBF/9qXNLp+elDd1khT/BP+0wSzhbE1zTg2TwG2CnuaL1mZHse6EGUpsJLFbRDp2UpFVcS8Gq0Crx/G8zVmtbTPc/3U0H+n+p3nAbx080rdYIJ66Hj3lPqiUGegbjtuYc95X+XtXeXyhCkBSGAu4pA272MdSTuM/o9FwbNF9yO7bMLJG8H+3LAYRp82yM7PFhG5ITwIrXWGPpLZsgB9i2g3Qss4LoNrdVRIupRdlnlyvWekVA9HNcwOpeJSebPDivxrb1eQujsLThBOTGxZHjR5qA7k32jsjgf4=
+X-HE-Tag: 1765508172-648761
+X-HE-Meta: U2FsdGVkX188g7LMH6vANSZHZTBFYR3IJ+E0sc7+aiFi0uZKx4zKLIElzbBSfzRks0tOeeR0INz0KY9kHBrPqxNH7O3vwj/1mCv/eObVqYEux5gzvkkwbS4rYaxQOnXmVffOTIyPkTt+4R8UIgdV92i7wqBEA7np4TM8k7eYlfjWycoQjBP5MRlHBsDmrQS9EALJbXNH8tPAT9mxn2iQM6sPNvAtOYiPyQjDUGj/+FKzmlBPnqYhDd57nyNQahqLqK9/r1N2M6lGcNkRJM3Rxrey2YrGePpFRZJgcgK8enh8TkVI4ed2qP6ijHw815STaLBQsXXmcVkbeI6up+JSnx2Vrm9el/8s72GArQbO7rE3Hy4Q8f9FJU3X1jxCDM824UUcCOsurLkKUCE7roa2VP8UN/9Ed68HVjsdDLZUFCVMujW4K+Z8bsgiOfMNhF21/p0AkSBA/ZUwzg5GJHA1A4GTiL4CQedFTBw56QLJ6fttqCwvV0Gbqx38nhE+lMUh9iXnD89kb8GUw/tCqScHMQqtyAB1hNX+G/HGGv8iB/Alzn31enHVZmSJxAgRVrW9o2fgfGeSdKUtBPkMAPcfsZro90ZGsxo5wtniWlcTTMmerTnXrA6a4jWdySMwk8aslSnu/bBMekKXSZvnBp1oZs3rWuZ8t1UWTTyqbEOAycZus8h+1VgLfMFErDhmIOIHOoEfpJuhtouT0cAp9Y35h6w0YFnK29GcLd8hvi0mpcAF2+rmdinmpQuvvkbGUgHPdHih8CZ9MMNZpx7JNVvN8zus1YtQyYn/ZHsWhT5xdiYBxVx+M5O7dybGF7LvKUKRraZwhEcdVdpOhoMX53AIqf4h8LVn0QTDuwma09lmJnes3xFgEvXzksO3pZjsTRZlzLShmi+9ap6STZDI71U2mLmj0f29zWU+5yim3CtTBeKcMPpmceHn45k0wmX+Ha00ImDfr524zkSIto0OkVD
+ WEfLfrh3
+ iCJ+FK/ntbS1GixdCTjsKxjxFVahRs1CeYssq4lRbmuNq0Z9K4A6B2WVvLfeNp2wQ5qX4lq5wYVNM9L8/DIVV6p6qtGznpYDr0EF2XW/qddD7e5lRy2In4mwc4xvPW645Xyl4SIgCVRb9HJ088QL3xUOgMVZeB/zlxss2tP2cYtR5+3vSrhNTrGZeqXWx8rbScoGaiT5307HlBKoMTSGFZq8jst2cvFUQ4xgFMIPH7d7ETYp6Nhjrz3zGySeqg3FjrzubvhzxelnBejpkjBRXw+AWkA68KCGYwTXD2vJXcxS1bAHMLbkZ+Relkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,30 +113,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Chen,
+On 12/11/25 20:59, Mostafa Saleh wrote:
+> Now, as the page_ext holds count of IOMMU mappings, we can use it to
+> assert that any page allocated/freed is indeed not in the IOMMU.
+> 
+> The sanitizer doesn’t protect against mapping/unmapping during this
+> period. However, that’s less harmful as the page is not used by the
+> kernel.
+> 
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> ---
+>   drivers/iommu/iommu-debug-pagealloc.c | 23 +++++++++++++++++++++++
+>   include/linux/iommu-debug-pagealloc.h | 14 ++++++++++++++
+>   include/linux/mm.h                    |  5 +++++
+>   3 files changed, 42 insertions(+)
 
-kernel test robot noticed the following build warnings:
+[...]
 
-[auto build test WARNING on akpm-mm/mm-everything]
+> diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
+> index a439d6815ca1..46c3c1f70150 100644
+> --- a/include/linux/iommu-debug-pagealloc.h
+> +++ b/include/linux/iommu-debug-pagealloc.h
+> @@ -13,6 +13,20 @@ DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
+>   
+>   extern struct page_ext_operations page_iommu_debug_ops;
+>   
+> +void __iommu_debug_check_unmapped(const struct page *page, int numpages);
+> +
+> +static inline void iommu_debug_check_unmapped(const struct page *page, int numpages)
+> +{
+> +	if (static_branch_unlikely(&iommu_debug_initialized))
+> +		__iommu_debug_check_unmapped(page, numpages);
+> +}
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chen-Ridong/mm-mglru-use-mem_cgroup_iter-for-global-reclaim/20251209-094913
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251209012557.1949239-4-chenridong%40huaweicloud.com
-patch subject: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen and non-lrugen
-config: x86_64-randconfig-004-20251212 (https://download.01.org/0day-ci/archive/20251212/202512121027.03z9qd08-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512121027.03z9qd08-lkp@intel.com/reproduce)
+Same here, possible to make iommu_debug_initialized static?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512121027.03z9qd08-lkp@intel.com/
+> +#else
+> +static inline void iommu_debug_check_unmapped(const struct page *page,
+> +					      int numpages)
+> +{
+> +}
+> +
+>   #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+>   
+>   #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 7a1819c20643..3763b71a7d3e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -36,6 +36,7 @@
+>   #include <linux/rcuwait.h>
+>   #include <linux/bitmap.h>
+>   #include <linux/bitops.h>
+> +#include <linux/iommu-debug-pagealloc.h>
+>   
+>   struct mempolicy;
+>   struct anon_vma;
+> @@ -4133,12 +4134,16 @@ extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+>   #ifdef CONFIG_DEBUG_PAGEALLOC
+>   static inline void debug_pagealloc_map_pages(struct page *page, int numpages)
+>   {
+> +	iommu_debug_check_unmapped(page, numpages);
+> +
+>   	if (debug_pagealloc_enabled_static())
+>   		__kernel_map_pages(page, numpages, 1);
+>   }
+>   
+>   static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages)
+>   {
+> +	iommu_debug_check_unmapped(page, numpages);
+> +
+>   	if (debug_pagealloc_enabled_static())
+>   		__kernel_map_pages(page, numpages, 0);
+>   }
 
-All warnings (new ones prefixed by >>):
+Other changes look good to me,
 
->> mm/vmscan.o: warning: objtool: shrink_one+0xeb2: sibling call from callable instruction with modified stack frame
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
