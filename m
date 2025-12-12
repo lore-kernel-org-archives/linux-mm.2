@@ -4,113 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA271D4336E
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 05:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3913D43363
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 06:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 492A56B0005; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
+	id 726BB6B0005; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C436B0006; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
+	id 6D7986B0006; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E3B16B0007; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
+	id 5ED676B0007; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 173BB6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1BAE12D88
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:57:31 +0000 (UTC)
-X-FDA: 84209761902.16.12CF3D4
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 07DEA1C0004
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:57:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=se4oZAcj;
-	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4722B6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5F0CC042E
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:30:02 +0000 (UTC)
+X-FDA: 84209843844.18.A6D198F
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 07DD6100013
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:30:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qh1LX372;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765521001; a=rsa-sha256;
+	cv=none;
+	b=eeFbEVLSsjXTN0n/pkCqFs1s08iyj9M/Wdgl3io4bipE5vHjQ5v0gvXzfQJqY1Iyx9jz7t
+	yqR8LEwbghGdS9iY/JYfQJ8yOOKzFwnEoqAEMZmuCWE3fnC4z7aLyiXj7TQUc4kmRub/IL
+	ixouDx/JQ/ylenIX6XZMiL/f4AKEZyo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qh1LX372;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765519050;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765521001;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
-	b=TKl274wFBS0ODt3yJ8aCj/qk1T6Ea2ak1VuQWSApT/bbraE8XXi4ivG31dgS55evMSGVyz
-	Jn8M8Qf2UGQSylInBv/8jFT3aEKE0oP+AzLpnAIigmg/5QumC6cByUHC0YW/e0kEu5NdJG
-	aNaNbAIdGOF6NPieb6o0kxj3G4eAeDI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=se4oZAcj;
-	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765519050; a=rsa-sha256;
-	cv=none;
-	b=GSwMnI4ksrFmz+QssqVkp4iC8QvcDHWykIove9LXFMouJMvOqUWRXbdkNwT15nQTlBX7SW
-	e3bAZ4tvY/VUV8fTAuieGjNj5fEoGZlhYpfQqbsvMJkn/VskvNxS9bGxFSRm/uebeFulzM
-	fj2p079LhsNIlcuEZsMpegnAVysUXlA=
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-78a6a7654a4so9435867b3.0
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:57:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765519049; x=1766123849; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
-        b=se4oZAcjHrdPZROx9G2ZwVivrRiu4YnCq50lZDZ+utEy6aNfis0idJxMEnrbcE9amD
-         IPExJe23ApKh2T5dtAoehZf1SJq2ttoXSlUDJHM3LxqeX3YelEj1JasRqUe6VC7xv2/k
-         IpMKyWSmB/j8MKglywpOjcCxmOdvL2yl9kvLO9b22KNmwnWqD0XZQIg3HH3b+Vc1in7x
-         JRL/fiZ9Egl1djQufQatBLsEFIkHugDtx8XhOk1f943+uaxBYaeITpS1U226TVzLpO0d
-         ZSVJY2tN+Op7eonJ2m/W3EB1njeHGyJYAHnJc0blmhTbpJwm3OZHNY0aNYMMfMfiG4W5
-         XiTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765519049; x=1766123849;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
-        b=bQLT9SHcBJJBGXsFSPtLD1RBZ5+gZ674c776W1I7WXN40z+xx+oGR5vdCnhUoLZBF8
-         BwMiEAyDDs28s5GTF0q04wmG1IEgdg1ku/XhI5apjiDcuagN/pDM/IZCNnhqhCKnH/nb
-         KH5RBWm63SUWjSJBX2uma682RaJ7ED5KrKQYXKjZKPWf7OC9LZjCl5syHVFx1hexs88b
-         /ua2JIXvF6DPauOzhxVnOLJvTk9GWgM0ejcaJ3CTQ28fAjIu+8ChPBXhfbp6R0mPAKOV
-         D6jSVEN/wy+olkLxKwViiDN/tlZMfGyr0TNiQfFAuNiFKi1MPBMVic4wpTecQCb5qYSt
-         Onjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbe0DxXQtt4B4Y3nIHb33Sq8qLXPqe1Qxj45TfgzlziyHBWov1vJ3l33f5/eVOEhM8E36KW+21Qw==@kvack.org
-X-Gm-Message-State: AOJu0YzgYO7Mc9FS16o7UFQ/UP6Z4X9aYsJOp8ZTT53Ho2fFVHAPUpig
-	NzepDJE4rljX1a9NoMTuRGMQ1bLSLb0pJMv4Fd6aR1aUyeOj6mHZSq1mZ7KmUbWa2A==
-X-Gm-Gg: AY/fxX6AfbBVfTet0x0VWqtO4tnFDj6wD9w3GmZ5/IjyJ5BMsMAwXWCg8C8Sm/lGQn8
-	5bgdu+6ZuUM46rGYii9zY4myJ7zfipRIHLAz24+mLAy3JeoTsc8VxsHhvAUat3cfVLoBkUGczqh
-	4cMy6n3ehNyICXG0SSP9RjbRQCD7H7DLIsuBlYNEyflsnjGHt7THVXuAvqcvEHOvvqy9V6GfgAp
-	pyAvmI+py8t1O3P7n759a7IFEaQ/bZL8lGdd0muSzYPAj4qLSecwhckCfi7J3RW0YSvNaxOnwad
-	I7qdEiTy0R5WIKZtnspaKH3V+LXZxEEkyG/PHtInN656keRbP899LD5dFHW/B0DrU+YU2J22KIS
-	hom4AtN/s0yJcy9yCg13B9L5Ff0waYwXxkEAYU1v+IvpvqtrJxA5UczoqdVKEzFb4q4g0gVytVy
-	aUD2Ohqwfm7GypFtDVI1hfaxj+tmz4Oejp8w7sDb6/E0WrZW/N9i7qi+nubrM+/8qfOxXSjp8=
-X-Google-Smtp-Source: AGHT+IGZuHDsISTjDfQK5H60ZIz8jILBSpG+DpOMHG7/zrdVqW5LxRspyhN1oRFnpxvNHaCcPwfZVw==
-X-Received: by 2002:a05:690c:6c86:b0:787:d1e7:e75b with SMTP id 00721157ae682-78e66ea2090mr8375797b3.64.1765519048813;
-        Thu, 11 Dec 2025 21:57:28 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e69ffa216sm1656407b3.15.2025.12.11.21.57.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 21:57:28 -0800 (PST)
-Date: Thu, 11 Dec 2025 21:57:15 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-cc: Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+	bh=K/5oi+83CBKKaWTURWV0mnEWv5TIfLfBd+3xTzWf0Jg=;
+	b=KhPTV6apG/Wy9Z07ZB4hXbs4cUODA7WAbUkWoem+R4SMOkP0XxYYOMqGGUUu/rnRVlcdSe
+	k1uX2DG2mafsVPD+pV6NnZxSQPRe6O6tD7lrs3kuaKAfOTgTMenH8Qr6kHgDIDNJdZhePj
+	cbXPeE349AHk5Pm3InDm8iNvtBOcolE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=K/5oi+83CBKKaWTURWV0mnEWv5TIfLfBd+3xTzWf0Jg=; b=qh1LX372w0ta30pPX89JVFqobP
+	O1t2/Y4PZA1ZCLgQnQa4/W37TZW42KS3Jjs7Mm90yoCoMCisImxQYTjXq/fdBtq3n8q0WCoQlHoOn
+	Q3JfCaRGMv8x6JwRs1b5xRaGDS9ABdVf980pFA27H0ADCnyvhBkdin8gm1Yl6WcUdU2/zU+gkXDJv
+	yma/qp8aj6D2XNJ+ugqhG5AwOOrEH77PCpHxVP+GavJdFKVSZHS79p6cXVwtN5zkHxvOxghkp36zB
+	oMdIgMsgJzIl/+RRLdREpDNHUFa49ilJPsRoFLwNiOiQviVdMQtA8Jum9PM+Vjx0EafaxqEl0RKU1
+	+iaiEWow==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vTwfa-0000000BlXc-1NdW;
+	Fri, 12 Dec 2025 06:30:26 +0000
+Date: Fri, 12 Dec 2025 06:30:26 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Hugh Dickins <hughd@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
 Subject: Re: 6.19 tmpfs __d_lookup() lockup
-In-Reply-To: <20251212053452.GE1712166@ZenIV>
-Message-ID: <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
-References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV>
+Message-ID: <20251212063026.GF1712166@ZenIV>
+References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
+ <20251212050225.GD1712166@ZenIV>
+ <20251212053452.GE1712166@ZenIV>
+ <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 07DEA1C0004
-X-Stat-Signature: suhy61p6x9af7t8zw1cux1o7acmsnz1n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1765519049-993188
-X-HE-Meta: U2FsdGVkX19w2QPSulH1oW37rNbGsW+P1//UNZtc2T14L7RfOutzmIWW6fEmKyMwwDmBG6g+3v7Xumpn3dmZebP6hCOCyAuSJHzBTvfD8v61g1ZeUZuT192ucX2Tv8JLGscOwFYhlzn4U+06ZkuQ143z50kQ18KRej+z7OYeEsBbRporlqfuR/gFAsE2nxTuAvmPjnW8SsUlQaB0bxJF/HgALqhR2oC2xVKhOfN8dZGrjG+QUsJppnbjzL3Tz7yZ5ONUa9xD+3d/r8ZTGpKrAkLkIiP70Xxm2mBEp0gsn7mSyBl9XSSdItkLuJf2d91irqorOSrk7Iftb5UAJNej0I0xTLGCvKihKw8x5OQ3Fq5JyxeM4SJkmxHwXwH99P34Fk8qjYFumDhQ1jGgdKPWjRGItTzoNN2C3nSFRsSRrVWIpjZ8qPNwe+j6ldGdUnRQt6TeQJBiLx5xbDdDgU9QMxRR8Q4sSV0Cdx1L7Pd3dZ0I1wV/UY/Fy8niUcL2+U2bta3ip7YE7RLzJnWQzJBJiR2PYrcg0oGtB2JlSgmn8FokEuteZ7j81Mmo9XfDsQa84Pqhxiyf2P0BDO4wEgVb3nyQHR2Af7MunivdXtzKu5ZUPK93GABBlnHptuimqSotAFxw6A+mkVc+jGbaph//Bg0u8IGLOsceIVmv/3sXR57062SZMLjeP2A2olh6lM0OkVbo3jfP/t4oejTjuws4Gom/j7dLYc1SI06NTZcfpHm/gxWQX25cTTWoroR702g9xRuh8RMUL+KKHsIQxYOWYWChkIQOXQ6GYpGGmZ2ZGIdam/xZtPr/53p42NE4elm8OxXYDaWcGxyOuLn5xrTNoaGliTCOGikIYohQEnUNHSm+zKwOZ4awVujfqN/PUq43lliVUq//0ch+rJXqHpicY8b2IdC6FPXamUFJeTnkTVNfLefotA2LsC6R0+0785MZmOdvCg4XTD7q7MY4JWz
- tkb4Vl+R
- GqbCQgZ3GFeRXFvWi90jdjTZgzk56vQ+G0vLi25t5cVyorVHhYelyhL80Lc+fNPwOG89RIMzryiiM2anw/uCGui6pvK3GCbwKpz3QNYHAFC7Kt2TvZvHyFukWa1sZ+hyICfjbrm+hN+PvGlMfyb8YYfTJUA/w9LpUu3oKqjQ6nGl7yODbbG2D+5S7nMB5by3aR6a3Xh1AO2eA64ieGDZvVUNJhnvbHGRgqVyOzTH8jU7C+wBb2cjTJbS8af7nN1+cton1tx8e6B5/IaaNO2AlNdJLvn/iP+JeAuiPan/l1WO3aIoBXKNafDDxYx/aWujRn39UTD9bSlMP/n2DIJLVICN53d/iPszBBUdLgl6ExdIabF8m8upZQGrqO3EooNf4EMDcjpMEwAjuB32T5J+yuMdxng==
+X-Rspamd-Queue-Id: 07DD6100013
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 6tws8etihuwnn7thosbpo68fybjj6z8i
+X-HE-Tag: 1765521000-467004
+X-HE-Meta: U2FsdGVkX1+KtVyMw98CsGA1yB6pjZvjqk5VM2NHFPvtKfkbs9rcj6XUY/4uWwmzNyjBR4nq+gKRp+6ax3Tm7uyqn0flZAGEdcXkR8sESCuIKfJmhLh6HqybossvEIjPCiekvt7NMxDrsA+MWwFhcxesv+5Sgv+DIeYW6acmW3m0RsbTfK3r17ie0LhooNZ9YcUjFJLiTO6gis6rro1uZGip3rSkmB7rhsc4MG8uhlcyltIHTM+NpaMtdFC/gkiTL16q4kzabtV4VoLqgWLK8YIx7lPHCQUklLVKJ2pvdVSH0Dce0cqy5ZwPQsJ/8tOqGZGTEZGnfvtGJoVmOIR8tbVtHI5wy1lysauJm76AD7ZJSUnM6bn4VQV6EYdQFZsBVRiCG8jEeVcG2yRgeHXWQq4CiUJFuZU44SucOXnbWsh53Q27B80JYM+WG/5Dc6KBaX7mHTYsNx7Y6AQf4CmoRALh1R88OtF+Eg7kp0cJS1dqEZkRz29QbmRtjCq+XEnb7wZdfk5FTTcs4s90u6ugRN8Ar281L935stfT8I39puea8ckZYgCo/+4Gwm7PEaxwT25m3vtDcCmb3stLISXaHK9n71uSiYR+RIDZCsWYiCgbWcguBdfwUe6wlYBW/o44zwOxc0+Vu6RqN/muT8a9A+dAPPBg3g/5ckY2MkCFA4CzT+EWMAkDBQzX3lKw5l0YDoYIDMWrw+Fsm2CLYlQQO4wtjVOeJ/vgOjcZgp70d5ehEVzmG8bU68wOvhhGi4mScFCsd+R2+/7suPuUKrF/ObAFVQRkgVd8PUtfK5ZOJNW2Dcf8WpcZcReZ8GFc3O8NyPi0FWoxNO+GNsyM2DQEHUi12iS6l1DO2/gVZt6wVcdBjkZzy12gMnv5/hrDp7cuOshjKir67qObAYRJ40ZXtdIuQeW3yBDZBd6I/YWrEfsNaoKuudKS3FPgPDOxambkAn9QntefakcLkKweQu9
+ Ml7jMjwL
+ XTa/iqNEwgHJIi1mEwVxTWEvZ7CIt2LNTaj0XyQJAvo1Kk83QhUSU4EEgliOqvoe+8bL6Iw3yK8yGOG0BKpgTjdZK1ciHRvATMeQZfa0Jo5+tzqzcuXptQpJKYnQ5avdX/6sMZ0XbWiXDPro7zIqBQlT107PVg9cAvzQonnExySVy7n+COFfTkFuzeWNLALPuLNZNJFx5EK/60z+HGlYdwefY8Y5oBrj9n95E/6ya/MGE48c2u35LvnrYSaPfTrovP3CADpuwwN2c6Grk4KLFh3xeVN3WgyniWSednIz4UmpgcOLt4PK9D9trCr9rbRWH+5GnMPbOM63fIJtGnWhDSHCOSrhQDDZWS8/uyWgXRKAkeyUzPQxdQZlWRRD950DbMWRzcb/KwAlMFeN4JhvbunymaL0LCwD8PDdK7E5dGhAZg77DR5pmtWbTrIMTNH9DIz5rgkRnkqdvz/eATBJrkohM+TCIn1NbTyaRbs+5QkeQiqk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,41 +95,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Dec 2025, Al Viro wrote:
-> On Fri, Dec 12, 2025 at 05:02:25AM +0000, Al Viro wrote:
-> > On Thu, Dec 11, 2025 at 07:56:38PM -0800, Hugh Dickins wrote:
-> > 
-> > > Of course, 2313598222f9 ("convert ramfs and tmpfs") (of Feb 26 2024!)
-> > > comes out as the first failing commit, no surprise there.
-> > > 
-> > > I did try inserting a BUG_ON(node == node->next) on line 2438 of
-> > > fs/dcache.c, just after __d_lookup's hlist_bl_for_each_entry_rcu(),
-> > > and that BUG was immediately hit (but, for all I know, perhaps that's
-> > > an unreliable asserition, perhaps it's acceptable for a race to result
-> > > in a momentary node == node->next there).
-> > 
-> > Hmm...  Could you check if we are somehow hitting d_in_lookup(dentry)
-> > in d_make_persistent()?
+On Thu, Dec 11, 2025 at 09:57:15PM -0800, Hugh Dickins wrote:
+
+> No, sad to say, CONFIG_UNICODE is not set.
 > 
-> Another question: is it a CONFIG_UNICODE build and are you running with
-> casefolding anywhere in the vicinity?  If so, does this thing reproduce
-> without that?
+> (I see why you're asking, I did notice from the diff that the
+> case-folding stuff in shmem.c used to do something different but
+> now the same in several places; but the case-folding people will
+> have to look out for themselves, it's beyond me.)
 > 
-> Because that's one potential area of difference between shmem and ramfs
-> (as well as just about anything else where tree-in-dcache might be
-> relevant); if that's where the breakage happens, it would narrow the
-> things down nicely...
+> (And yes, I was being stupid in my previous response: once I looked
+> at how simple d_in_lookup() is, I understood your "hitting"; but at
+> least I gave the right answer, no, that warning does not show up.)
 
-No, sad to say, CONFIG_UNICODE is not set.
+A few more things to check:
 
-(I see why you're asking, I did notice from the diff that the
-case-folding stuff in shmem.c used to do something different but
-now the same in several places; but the case-folding people will
-have to look out for themselves, it's beyond me.)
+1) do we, by any chance, ever see dentry_free() called with
+dentry->d_flags & DCACHE_PERSISTENT?
 
-(And yes, I was being stupid in my previous response: once I looked
-at how simple d_in_lookup() is, I understood your "hitting"; but at
-least I gave the right answer, no, that warning does not show up.)
+2) does d_make_persistent() ever call __d_rehash() when called with
+dentry->d_sb->s_magic == TMPFS_MAGIC?
 
-Hugh
+3) is shmem_whiteout() ever called?  If that's the case, could you try
+to remove that d_rehash() call in it and see what happens?  Because
+that's another place where shmem is playing odd games...
 
