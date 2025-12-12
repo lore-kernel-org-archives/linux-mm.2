@@ -4,115 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68B4FD43369
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 03:36:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F9CFD43369
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 03:37:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6DA26B0005; Thu, 11 Dec 2025 22:36:08 -0500 (EST)
+	id 864086B0005; Thu, 11 Dec 2025 22:37:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1EF26B0006; Thu, 11 Dec 2025 22:36:08 -0500 (EST)
+	id 83B236B0006; Thu, 11 Dec 2025 22:37:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33C46B0007; Thu, 11 Dec 2025 22:36:08 -0500 (EST)
+	id 72A5D6B0007; Thu, 11 Dec 2025 22:37:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FD876B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 22:36:08 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3157213AD02
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:36:08 +0000 (UTC)
-X-FDA: 84209405616.11.3A34FA9
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 31F33140008
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:36:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cMYegf1j;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD5F6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 22:37:22 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00ACE13051
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:37:21 +0000 (UTC)
+X-FDA: 84209408682.28.00345F6
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7F901180002
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:37:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jelNWPiD;
+	spf=pass (imf06.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765510566;
+	s=arc-20220608; t=1765510638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ofnmmsc+p8cbk8w5KbuxpSjDMLzqoPAmhlHL6cy9Bx0=;
-	b=fDf3DLeOjscdAw1Ayz/NorznhTXt+PWXtsxWseAHNFjFqp20TDQZQSnGBhh28TCCHecZB8
-	jVyxb8Pz45kSgO2mQorv9o25ehJWQG63UDE0kNDh6ParPcp/Urg8tAFbYwTxd4q5tJMyUd
-	EK00LDIOyRjQDZxTIrHDZDhGExnWTSE=
+	bh=wp+vTYCjH2BpXWY0mBvRIcmV+ZSaR++Da+3qfBFMKSA=;
+	b=FqY+7StYJxTX8rBz6/Z3MuiSazYXJJmu++5hVrWLOT7FWpOGlRtGQKsi8iNK/yRztzW5Qs
+	hEpf581wjNP1CPjBTVhratyVUDVyD0xRGwY1Y7UXiPHr29bkqxML62Q5+hrRX0EqU/Dt3k
+	NHYGqbl7vbR/UI0OPHTWq55ddbWpsP0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cMYegf1j;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765510566; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jelNWPiD;
+	spf=pass (imf06.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765510638; a=rsa-sha256;
 	cv=none;
-	b=vAkpfoAYsnnXkYrzxsklRYZGkyKFDOyy0NYCZttcJYHA1/DxzM5eU0Q/qlBsi1cK95yONR
-	FkQKsZCt0vsQTKLjDw71/RRpdxXyamY2i/UQe70EsFUzxP+xNPUft3n5pm5Aziw0Ofidhb
-	dWsGWOAvxPLuixXjYGogRq6CGyuJJao=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so1491438a12.1
-        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 19:36:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1765510564; x=1766115364; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ofnmmsc+p8cbk8w5KbuxpSjDMLzqoPAmhlHL6cy9Bx0=;
-        b=cMYegf1j0/BHs9nR2QgDWsXBPm1l+/DRcSiegZc78P2t8BmDVA8Ku7NoQlOjy975KJ
-         0ROFSGOeFiKhCH4fFb3W4iamJl7A+X6RzTJdlenpD8NwMczY86hfTtZJ8i+vkE34N7Nh
-         dUeZya44R8YAy2H+yrQ2mXNbGVqP2xJ1VtBwFj+BmxMzbOWWFEaTK5I8WM//2DSndgXo
-         bcqDgvyXduET7qwkJm8AVkm2ArS78evban08mSITI71NptrUIcm5IL6oK4w4QLOP5KQ0
-         RqYGbM9wm/+oZsXuC7+hgIJIdFpNpFWwCWzRC4Fu3ls3PFy+AmSf4NEsjAutUHvTuWYY
-         /VqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765510564; x=1766115364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ofnmmsc+p8cbk8w5KbuxpSjDMLzqoPAmhlHL6cy9Bx0=;
-        b=uOETYlt0DqE8Ir5QsmGHBFpLRqGvT8mAO70j8jO3koSGX9p/SpN23jNY0vs7yEtm6I
-         MBXdW6hUI5Ajf//pKLnCWc4gULZBFMR+MkaSEBnjf+KLQzwGhuCVzcp6XQGFobw2fJso
-         L6gi8bBPPiry84iLsmvEvW5hcYRN/EK1vf/4uF0DDjc/mMH18qFEksKulmbfFgm3I/mc
-         MfuxL+Abe662fp2ZQCqjVAoa3yfmgv7nOQ3iRh6yCc6eSFMVeVIJ/GCEJ89cU8HtXj/7
-         ARo9x1EFZB+jleUUkLslesVd/Kt5+r7xz36ATCfYoMryvgdr8KNeTHMHRJTA45Pxafs8
-         35dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOqhWbe6iE198EkmsVDpmaONAJ0tXzUOPUfn6tTTyZpKSRpQSSgffmxfLAWRxLQQY9rv6sCb5vGg==@kvack.org
-X-Gm-Message-State: AOJu0YwZzQbX9Ii2oy1+T3p+vwIvFccmQX32XWERJXzmi1448NO0UZYX
-	7LSkTNn24xDhxdDW4nHIQxpAtF/Q9IdK5h3XRzltIZn604+B8xT8KKQldRnE0xM6quVbvrc5tbb
-	d3UU3tfco6FL9dbCItuWjG4Aw+SfHgS4BNSmkgJ7KEA==
-X-Gm-Gg: AY/fxX4i6i0BducBx/bJ6LlfUxZcfbfJXEGoXnoNdY/jL0Yf8H4KVkCY0mHsTTZ7TiU
-	tppIOOT1m81iVrdS6AtMXB0+a9lgPROdq2GQ2fFKvR3C2qlzPYxpO4RWR7SsGcEqZfcH14/X8H8
-	dT/JlTpiy9FBaq67wogtwdhU3TkqdndI+2Blx/uXSAyvWrtnqB2mzpg/Vbh0/DYvrH5LaIHfbsN
-	bwsurRqhljcvd4uVn26///k1RXq3t/vqQkpUSP6E0DKOw6p/4u5dZfnFXrpJXFWJD/GXji1Bt9U
-	B0FuxitwDKZEmG+mMQlBEC57pK+tAQ==
-X-Google-Smtp-Source: AGHT+IES7BBbTn7tqCPfnDPHjSNdpqaXrpbRG6DqnnJ1DEXLbtMv8wmJUtOWcZP/vd9EsPmBwealpv5uJAbWVaKwNko=
-X-Received: by 2002:a17:906:794f:b0:b72:8489:7e65 with SMTP id
- a640c23a62f3a-b7d23c1e339mr40812866b.31.1765510564545; Thu, 11 Dec 2025
- 19:36:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20250909091335.183439-1-ajd@linux.ibm.com> <336c0402c59363956d0c4eefc1b8a059e1fcc8e4.camel@linux.ibm.com>
- <20250925161726.2b34890070e6d8dcf8ad3ba9@linux-foundation.org>
-In-Reply-To: <20250925161726.2b34890070e6d8dcf8ad3ba9@linux-foundation.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 12 Dec 2025 12:35:27 +0900
-X-Gm-Features: AQt7F2oPlCrCn0vgeBqPFjk6oJGdLPXS9LGfuM7Cqn1iLUHRy15krGx13xCnA8U
-Message-ID: <CA+CK2bDDZi0TR9fhAuKpxz+XJU6-rOS_iM-akU=oTb5wVoVxMQ@mail.gmail.com>
+	b=pUKoyivHhcxYmTMq8oq/z4mbiiP9QWXHLwBh3v02JmfEILHfGHQMsgZ2jd2MmvnbtE4PCX
+	4Ryf93Yd/j/gv1Up6wVbiZWiJ4DzQmTGscll1+DOsnuTev7ttx2sXJJSgSEsADaZt9NQmk
+	8rp5I0xYLrZ5D5hQtoIFCaM8rM46ZDk=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BC3DAlB022803;
+	Fri, 12 Dec 2025 03:37:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=wp+vTY
+	CjH2BpXWY0mBvRIcmV+ZSaR++Da+3qfBFMKSA=; b=jelNWPiDEORIsc+oAdJiOb
+	o9vpR6YQf8a5zsNb+S7U+1LN6TWDH/x32WyxTBNfAnl1Z9nWm5LVLQJ2+e07vvfk
+	1Aud37a770LgBDde6RHtaNGFINSllzeyZD20SnqVTZhxUpVFkzLdBiTeHu/9QCmi
+	FupUi/zKeEkzuukr8y5PkmHkcbfwLyNwbAiq6eIrGKhvp+kLyBBl8H+A18JI81xi
+	klyHVuD692tCsTiJbORCAGQ+7Re08ju+Q2TGVS1IoCZF0ArSxq7JU32oMQXvKHD0
+	w8zYC0BW7vA9d3Dae9MwsAjcAz6liBn0NTgnyZodwATXI00cBu3L/5hge4uUea5w
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc61u8he-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Dec 2025 03:37:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BC0gIQa028126;
+	Fri, 12 Dec 2025 03:37:11 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avy6ya1bb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Dec 2025 03:37:11 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BC3bA1B29295108
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Dec 2025 03:37:11 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A50CD5805E;
+	Fri, 12 Dec 2025 03:37:10 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D58A5805B;
+	Fri, 12 Dec 2025 03:37:06 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.90.171.232])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Dec 2025 03:37:06 +0000 (GMT)
+Message-ID: <13664f203137541ce8aba74cac3777099992e856.camel@linux.ibm.com>
 Subject: Re: [PATCH v17 00/12] Support page table check on PowerPC
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	x86@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	sweettea-kernel@dorminy.me, nicholas@linux.ibm.com, 
-	christophe.leroy@csgroup.eu, alexghiti@rivosinc.com
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Andrew Morton
+	 <akpm@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, x86@kernel.org,
+        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, sweettea-kernel@dorminy.me,
+        nicholas@linux.ibm.com, christophe.leroy@csgroup.eu,
+        alexghiti@rivosinc.com
+Date: Fri, 12 Dec 2025 14:37:04 +1100
+In-Reply-To: <CA+CK2bDDZi0TR9fhAuKpxz+XJU6-rOS_iM-akU=oTb5wVoVxMQ@mail.gmail.com>
+References: <20250909091335.183439-1-ajd@linux.ibm.com>
+	 <336c0402c59363956d0c4eefc1b8a059e1fcc8e4.camel@linux.ibm.com>
+	 <20250925161726.2b34890070e6d8dcf8ad3ba9@linux-foundation.org>
+	 <CA+CK2bDDZi0TR9fhAuKpxz+XJU6-rOS_iM-akU=oTb5wVoVxMQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fkmk79bikg58338gkr4489d3k1xmhenk
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX+kBUVpmMzDE4
+ RGj2CUtYWbrx/Of6PGswWBpTVaxGP3nwMJnxqHn9QiDDCAoiQit8W/rhik3ZjF7VM3ZQy69KSK3
+ iCpfEiC49mzCq/hExQeWrtPs+FgePUlvAAkKjC9g88OB7j/3sVeUXgdsld/KQsvBbvCmyMYEn/y
+ qeMU07abl6hWX4ojS+Mjks/PWvc5rqfiANkPjnyfMnd63LUykxH9T7HdI09JXvNavJML2w7/KTx
+ r7m/URDYkfciRWxHUM7Ew5SBhyBEbLPpFpi81h1QgOWAtswLCHNojjMLOetW+oj+lV9FfT0+9Ro
+ 5eUn+Dm4AbXk57q9B6bqFXxJtBkWN7Lj/yT993PG/odDHdAchrmCWUsV0dFxiaNdJEfzoZGUaeq
+ BocxCI++N4A16CPPI0nxK81kOXp51A==
+X-Proofpoint-GUID: 0mx0bl7tMI0Ev7mDlA5PrAzvdwe37wsq
+X-Proofpoint-ORIG-GUID: 0mx0bl7tMI0Ev7mDlA5PrAzvdwe37wsq
+X-Authority-Analysis: v=2.4 cv=O/U0fR9W c=1 sm=1 tr=0 ts=693b8de8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=vpjFdhQh-OGVaG3VjK4A:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-12_01,2025-12-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011 phishscore=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
+X-Stat-Signature: zw7f3ha3jpqafujoe753tqskhpbdb3qp
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 31F33140008
-X-HE-Tag: 1765510565-798782
-X-HE-Meta: U2FsdGVkX1/UjzUZ2u4cvXtpkNEAoXAR3Hmb8nWloBfGLkYLVba130Cu5Gkq9ab6cjX4+yrVupxrHc0DXYhnskOyxPHxzvakL09NV8UepT3OnNglVbJytWNue+9loCk08mFUFFXHvkNmLkYbJKCtqslbCzRSdaagSPkgC89H7JbmfXukUC+oYaiBbAWPEijQJgogpKhfkWJMRuFMjkaBHYGhx5dRZbxqNTcTiiyCmxbXMCaK/e5eC7lWjT3HIBnWnM9XrP6sndmBlMJnOuzOHlQDGlgw1YsAgIEEUE6sZNEa7JZybF8BHvftb9YsE4arlIzn1KIdSkx31SQLyfDCms3tFYicz3xA41kctB1+VJWDG48a8WkS0CRrX16OJYh/LD1E8aVz3MVypA2zG7oFJn1mDJMaPwDBTtddEyrwinMOCVp2nRUpN+Khe4et9uq5kdhdXt83KCXLf6yokfVfpmgH5FcfuX6RPONvL3mIPl/43POAiWjjRLUgbK8LJcNDILVkgvcHrHWjlyRzkOCZw0uwtvSdVgC0g4nCEmBUAQfHOxy1yA02e2WkC6DIxK7lBDJmlAgMCF4xxrHYDUirroY7ds8i8tJQmgHA7jdHN3wOQN5tiHpMl7mCxIknHw584fvU3dVOIGVqJ43jPXcOgT0oMCrftxvcqD/qlrqOymwmuHM38g6VuHw43rDl391PNageSTmAYPsHeQLVg5sxuMC2oH80X6lL6AijNhoRxnBVLbh/cZlOkWuMpqvxYnmNJa4kNGpdC/3nW7MP8uEdkzQwOjRBqQC6pRmd7bXu5YQx+qz+/OLZVjjxoa5xvKTJPSz0p3feSjfhdpW5LGeWI6qbo0e20er1Rg2wpuRaNOLY7b+BFhWQL3s8gXo33J+gfYq9HibqAG+aEjW96Ic3amv1RgwKKDzHP2zhj9gurx40bcG0EW6IDZCJ3ZMesoEb24C/fQG5oDh4IWaaUdk
- d5XX3pmm
- qcDpoqIp8lWUsKSvhAWyuuFmgleGo+JgIRlk/GPBW2Lyh+YA76csZ0mW+h70qd+TQOdDP7XJrQKJzqau7gqoQKdBGAz7MAeOmu9nZY9MSYjP2CnVTcIbC5NAB5e8grqTDPPACQYswWDiV6a2tBG4HOoiAC0XP3JzA5W9ET3sWLv+c3KvGmbZVTDgUgSdbJ3YbQSfwh3jx/2QAbsDblray5dy8P3guiwV2SmmdPhgEJih1zsQ429Zz6e1ck+3nH047fkRZJ0IDlkUN0jihpSEXOAOg7A==
+X-Rspamd-Queue-Id: 7F901180002
+X-HE-Tag: 1765510638-913036
+X-HE-Meta: U2FsdGVkX192sKOBOy4rrUkGLDAVxwHXt7qLzDvcB3mPunlxESDT5J4BH+ZVmtODT1Pc53jdiAnUNtlyy+pE7SpWE3YmMHzOdcx01gc6YGEdJKEpATYU43XIv4rxxbK2HvkklMWRcyBqNREitpLs6qo2zzrXenYhAVrN6/lOiQ5ytffDZcnXD3F5WyE+oq1Kn1VmVHJPpQ8iuf6t2c0byTUyWtSTqe42yWBIXbZS3KS+qeB+e7h2NB+mzDGD/3zhkhMAxFc4MIl+u7VBdiSXHq2N9/Yt+FXF+tmtZikk5P9ZIT4ST/N1JMTowf2WoKcQ8Vs5G2rhJgNHtbIeGK3Q+LCcySyRrShq4Nn0Gww2S6NtL3dMAoaqu3B18v8gBGreNJbbeeEpYUWN8DYQR1WlODON9bMAWPw74MKQwU/BwJYRU7foiWu90Ie0s3sSPNQbosnAwvG4YBt4mI5Selx0Q4ZIV+ES2tUbfQPO++Fq97LVbWW0D64qcurkf1pS4oBU04Qnpw7Wq7K9loos0HZcXxztUa/5bqsFn42kduA5OmheVGoA3467ujaaXrR/YKq29BdXS8Bui9CusVxtcOoajxhjQHs2ZOLbqiguBMvxGrcoY6n7LGiBuYmOfKsqLvNkyMjkOzU+gAnKboX3b2juzM5ZbomNPd6jGsCK0yxuHGu3zwbpweb7zYL2sPrDacnWrFQwnNCnGzBU86pf9i8jMjlDwHY3ZxldZfZFo5/TR9s/KIBOXQly1tiJydaLWyy3Pl5X08hS/1UxeT6uTuVYht78dfJLDsim2tsQi5irK1PdaL4+G09pAWBFNAgmm/0yP++GqEizBU1fWU+YrD8VjlrAQyrmerCa2+2Dz8GT3oYZfopX6qQZq+iEqfVkl/Sc9n0HTrTZHkYiYQ9NO29vozSVmre4N6yJnZ6gpcark62OPmhtR2NFigwv5wS1FKPIHdr3Iteljj9GHo3/PNP
+ 3+m0Jcm1
+ sQef1U2tpSAaley8MRIto+lSz3lXaL74O9lgmRS9Y7lVccboRQTo9iWO3zxCHs2zh91xiH/8Nb4Qld66l4ftduF+Tzwy8rD0DUwDXuaIBSQPi4LbGUJFVOX49Np6z0BfCXJ9JbZOkmGIyB9jSK/n+/3zngL9Qf3w4d0BvXYY2AAZfDB5BikjIoKmgt1qeRRZmC44uSYzzX8xnIMPB7mjtULBmzXMaXCBpnXfMhtHn5EeaZ5M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,60 +145,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 8:17=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Fri, 26 Sep 2025 08:42:35 +1000 Andrew Donnellan <ajd@linux.ibm.com> w=
-rote:
->
-> > On Tue, 2025-09-09 at 19:13 +1000, Andrew Donnellan wrote:
-> > > Support page table check on all PowerPC platforms. This works by seri=
-alising
-> > > assignments, reassignments and clears of page table entries at each l=
-evel in
-> > > order to ensure that anonymous mappings have at most one writable con=
-sumer,
-> > > and likewise that file-backed mappings are not simultaneously also an=
-onymous
-> > > mappings.
-> > >
-> > > In order to support this infrastructure, a number of helpers or stubs=
- must be
-> > > defined or updated for all powerpc platforms. Additionally, we separa=
-te
-> > > set_pte_at() and set_pte_at_unchecked(), to allow for internal, unins=
-trumented
-> > > mappings.
-> > >
-> > > On some PowerPC platforms, implementing {pte,pmd,pud}_user_accessible=
-_page()
-> > > requires the address. We revert previous changes that removed the add=
-ress
-> > > parameter from various interfaces, and add it to some other interface=
-s,
-> > > in order to allow this.
-> > >
-> > > Note that on 32 bit systems with CONFIG_KFENCE=3Dy, you need [0] to a=
-void
-> > > possible failures in init code (this is a code patching/static keys i=
-ssue,
-> > > which was discovered by a user testing this series but isn't a bug in=
- page
-> > > table check).
-> > >
-> > > (This series was initially written by Rohan McLure, who has left IBM =
-and
-> > > is no longer working on powerpc.)
-> >
-> > Is this likely to make it in in time for 6.18, or should I respin it po=
-st merge
-> > window?
->
-> The latter, please.
+On Fri, 2025-12-12 at 12:35 +0900, Pasha Tatashin wrote:
+>=20
+> Andrew Donnelan, looks like the merge window missed again, could you
+> please re-send this series so we could get it into 6.20?
+>=20
 
-Andrew Donnelan, looks like the merge window missed again, could you
-please re-send this series so we could get it into 6.20?
+Yes, sorry I have been busy and I am prepping this to send in the next few =
+days.
 
-Thank you,
-Pasha
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
