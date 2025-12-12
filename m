@@ -4,102 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22CEFD4336B
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 07:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA6BD43363
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 07:30:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AD6E6B0005; Fri, 12 Dec 2025 02:19:30 -0500 (EST)
+	id A6CF16B0005; Fri, 12 Dec 2025 02:30:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85E186B0007; Fri, 12 Dec 2025 02:19:30 -0500 (EST)
+	id A1E076B0006; Fri, 12 Dec 2025 02:30:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7748E6B000A; Fri, 12 Dec 2025 02:19:30 -0500 (EST)
+	id 933D26B0007; Fri, 12 Dec 2025 02:30:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 63FFA6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:19:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 094BE135018
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:19:30 +0000 (UTC)
-X-FDA: 84209968500.22.9CCE97D
-Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7DCAD1C0007
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:19:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=neGXABt7;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf18.hostedemail.com: domain of 815559068@qq.com designates 203.205.221.210 as permitted sender) smtp.mailfrom=815559068@qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765523968; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 82EC66B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:30:40 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F679B9807
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:30:40 +0000 (UTC)
+X-FDA: 84209996640.17.518372C
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 49494C0004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:30:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D5h6pXqu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765524638; a=rsa-sha256;
 	cv=none;
-	b=dlrTZ3QZohiIC1pmnyGgHkWC3LkAAxMR2PnGD53spy+k8NP/gcEeTBFFAVUxOOqm+qlRAk
-	d6bshvIVb3/oi/IeU6CTdSNgVCELKApGFOBQOH/94dDgxEFgVHX1vmVrlD/DOEIpnptoL0
-	+Dt8yxjdSF2yIP+opA2oCTfhq/3i7OA=
+	b=bot/mXJTdxo/BTmmvEPs8KD32XuVXS8DgCQBTxvQsa3D+eC8aQh8yKCYVJKumLqHhEK1+q
+	RB5IgnB+IoN2gKxBVJGM1kJhvmbhJoH9P3LvqOVEQHPZTlJHbiMk4m9lSZa6q1dYOzUtR8
+	yhSWomL38aGulAVViF+EXVqm2LrATeA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=neGXABt7;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf18.hostedemail.com: domain of 815559068@qq.com designates 203.205.221.210 as permitted sender) smtp.mailfrom=815559068@qq.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D5h6pXqu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765523968;
+	s=arc-20220608; t=1765524638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mggXY0hEXX7Wvtzw/Ni1MEaww90ZycISmTG5vKcc08o=;
-	b=VZShZZ5JcLx7bDCoSUZ8ETyUhznZBd6LJbU1jGVUpRRLVPZMLpaRi6TJ4VjfM1dl1NzDiM
-	f4LjnQJ5vR/cY7hJTJjJM541jESpjTpJx16f9FW+/tX/Pv3judJ6z4jxrBzFQQlxHAQKB4
-	kIWHN14ezPeQEScXJXdNJpWh1gswNik=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1765523964; bh=mggXY0hEXX7Wvtzw/Ni1MEaww90ZycISmTG5vKcc08o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=neGXABt7PD1fVlyx37UDRe/L8hvn/urFohHbD013TMezaBo0XYzgygCyaG/My1She
-	 SAyJzJI1dLS9D2j0S+rqRWcxgCtXCAP+gZ4BH5pg6TwN2oYjL2NhESsYbQIRzCpZua
-	 b8L4UVbsLQi6iZuoKAJC1OQ+FyOLclzLVjvlL5RE=
-Received: from [10.16.15.221] ([116.7.234.240])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 4D794A84; Fri, 12 Dec 2025 15:19:23 +0800
-X-QQ-mid: xmsmtpt1765523963tk375veap
-Message-ID: <tencent_A2549F7433365BF2FC86A5FE39F888956C06@qq.com>
-X-QQ-XMAILINFO: OAope3s6+8XpKB6h6zzft/8TsuoDRsDaH+tVKR3+mBNbVrL1SYJkjnVEQJslk1
-	 ngCiNEnOqBs8DpbcjiOG5OvfQ2//VufwubLxY0VN1S+/A2Gb/WoqpmnSxDACldyYYLo60jmFEg1s
-	 fKWK0F6OczXyIcSF+R0w+0ESpcjeKmrZ7hn1qpP9/Zv7Pduj7RN9k7sUaeaFXnWKFqGvoOdzgfE8
-	 2z3sfyuqSXTtR+AbITHG85lazpNVTK7ypoagy6amoIiaPThe5cZN0KvRdwnFY0CPRN7SAoA3XbNe
-	 D2WNUnSsJpZrLQFySC4r1I+3xne+EQV3s1p+VG0PYtOM76J0GO5EMqsi/PPJpn+WuiFk6sKLvQgf
-	 s2hWcy+uqiWKy/22r2hvWtdo+vui0FVAYcSxVylxTgolimy11sGlM+MllrciiAT37N3X8dfDBSrU
-	 M9i+fhwT2pgb7I5WI1mjNEFeWf/g6THTWrIYuX1edXnadBkOFeGOWmb1NFbanCksYBncMQA7Caj2
-	 7Qjlv6UeF9QuO7A69C2lHPtW3f/BNaD0sDSuHAoAzf3Vsza5T+LAPnHMYGe3sJfbmb0hoJAtAp2K
-	 8+94tuFMjsYGC5LRg9Llz2pNwbaReoXKr9Mn7rh9ONUimsLWlwc3DOts/SSId/PjiSwwEnq0yiBu
-	 YH8jeaOEAZ+A+4CI47Mxca4hnJgC666G0cVKTRrMx3Fd92UiR/aaeQHn0dowqnfn+X8j5RkE8DW4
-	 GhNSuiQ0fZj7+Pn7lAecWp/0sMi41Fctxm81+4OiQZIfsUQoA/ZdKYFib2lH+iG3P8Cd/0Im3EIO
-	 I6w9uUSVJ07hsBQ8TAVOSny4lS0e5MQ1EHRhnoja6MIpNl5vC+e3+9T6O6lpSNC217ZCRFnJmKUf
-	 /QhsD4DMsUKPxcVY5sV1ZXBHiJGxCzd1+aBnHBYbm6REgT6Uzv2pLE0OiaG1JYTgcISKV5Y3w0PB
-	 JkxTI/eS2sj+k7TlFr4DmAAFMLYeSE69idmNZ15jnRqrEkNw43exEYIl3JJD5YiBfdT8mFCYo4YH
-	 rdc1GKtQaKHs8eTjhb8DQDg3W72eugjFcxyonRjsSQplIbnOmo
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-OQ-MSGID: <c1b71a4b-69a5-42d5-a578-cabcfb02ef92@qq.com>
-Date: Fri, 12 Dec 2025 15:19:23 +0800
+	bh=gbY/nvu9k0jdFLf6PceIz4U/m+vG+cifGKFXmRqaXwk=;
+	b=62BjxvBwOw+Hv2GvKepowdrnA48/vTr69cCnX5o2EJvUuxWxuY+HpgJhGg8d6opi/0o/Hj
+	cWR+G6ASpJ35sKEf7SqzxEVG4TRIU3UdxeDAZCol/CwfNYb4Mk/V48MaXko0l4B6Kq3qmC
+	lg81hizei3SHqNf0XeOi/CXtiyPr5q8=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64472c71fc0so828683d50.0
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 23:30:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765524637; x=1766129437; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbY/nvu9k0jdFLf6PceIz4U/m+vG+cifGKFXmRqaXwk=;
+        b=D5h6pXquqah6+n23X6i1YPjMCGywGSfDo8as96uEo8zbkBYUlX3POZpdb/WX9XQp2D
+         mD4FEOaVoiUI/UBAArZAdjF3Nvw4Uhk+vX9+SH4s/wDUfXlZJnociCwEQlmnf/rfdSfO
+         vND3XFlnczegFnLd1qpNYwSTHOj8RSl7o/IX9FCTGxvjnxMgQdYVvcbKMPyUvYfWw1bp
+         95GSJTVFuj5vjpGz+XWAkpL1vV+vhBzWQWT6yZTinqQGEkx+KWG8clXhl5Q61W2yVFOd
+         N9Z2U1F2TEtLPB9K3IExtAa3MJP8MQKegreLPeYtyFBBAkr014HQBGDsEvqOhWyuHioU
+         7paA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765524637; x=1766129437;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gbY/nvu9k0jdFLf6PceIz4U/m+vG+cifGKFXmRqaXwk=;
+        b=d2V2QdGERkmGPB9FE5+o4zwsMwY9FXdbX9QoJh0mir0ATUpmTJF4S1BEVwBoo0OAQz
+         XEodCn00kH6NLrU5AO/DnyEOXbQylCsKyjC34v4kc16l0Op/mv9vcpUSSnrFsGaSVLJK
+         sBlsbO0/tS8KwDjKxklNguDsrRJlGF0PiVsiUgB4iUkrtVe2SSOCcz7Bf3JJeCBudPAF
+         jMAsdGRzsJs5/Yww9WJVEB/PpoJaD5iR1H56jdRyCme0jnEL09muWUvLdZSGvyKnqyE+
+         SHSTRFSfiHhZB3DBjJqA4l2MSu8oT+gAEEtKlUEBPWbEnERr1+pvl7L1WD9LTsn0fzU+
+         znjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXR1ow5pBrdTyhqHU+5rztcf8AiCuz3oBgCiZnhqvrPcm2mrXl/E+9Xf3P8/WOxN254CFXaXObO+w==@kvack.org
+X-Gm-Message-State: AOJu0Yy/XvJwNgnQS1YvIUQ1tUbfE7ZaENk+J4Y+pNXQ6GLyrq5INT+9
+	bDxf6wD0sSa3RHMAVXsggWca4csbOojkrwxQhViSxrfRAlF3lALDSXiWednGjp+4msyZOtEVBgf
+	JWGPtgKFTHvtf7NA0HVkv27xfFTjE8lU=
+X-Gm-Gg: AY/fxX5Z8J+5HLWCIszLiy6rz0rnqZB7kx8yGH+nrWV1aPDWTunfHbCwvUzjwCHPVvy
+	NoYzz7vyfTu10CTJF/gwkE9zC1csI4+e1NRRZY3yetby9YnBHXnnQyxrAGjzbO8sS9Eop0DSX/t
+	0/5ThpbaBmIOz21QIddV+JQ02mPYB7C9zNWUL9o4fTQdUDJfwsTcqfUeOOkXswix3NyOkFQZlFW
+	rKgxRiGxUC39kujVJ17eeJ4L5wxkOY+tc+um7E6TTOGUEmBAmjWVexSqPQcWeNTSJl8ce5G
+X-Google-Smtp-Source: AGHT+IEzDVXB1bjCbfAIBeJJ9LVwd+PZ1SexNTZG4im+40TkPh9ylFdtSqrLakFNNss0Y8TrUpzAomad+Rqj/W8ypP4=
+X-Received: by 2002:a05:690e:14c6:b0:645:591a:cb60 with SMTP id
+ 956f58d0204a3-645591accffmr68426d50.81.1765524637312; Thu, 11 Dec 2025
+ 23:30:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gfp: cast GFP_ZONE_TABLE entries to long to avoid
- shift overflow
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <tencent_917BFA629ACDD8A2E6A32C53CEA147C66409@qq.com>
- <20251211120448.817a352350813ae84cb600b3@linux-foundation.org>
-Content-Language: en-US
-From: Yankai Xu <815559068@qq.com>
-In-Reply-To: <20251211120448.817a352350813ae84cb600b3@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7DCAD1C0007
-X-Stat-Signature: tisdfxpkfdjj7epwayo5zwg454qit8dp
+References: <CAHOvCC6ixeLQeTJANkAvQhRviLyr7=xNBs-_jeKEo+qF6E3qAg@mail.gmail.com>
+ <20251212034613.41033-1-sj@kernel.org>
+In-Reply-To: <20251212034613.41033-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Fri, 12 Dec 2025 16:30:25 +0900
+X-Gm-Features: AQt7F2qCMypcBYiHBd8_DY3c8sXx5SQAojnD2TiuRCXQxR3VNlNM3OEJCHwUvv8
+Message-ID: <CAHOvCC4h_pv59Eb8euiv_=oQ600qJOjs8P8Onc39NrJnEaEV8w@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765523967-96803
-X-HE-Meta: U2FsdGVkX1+hzfJVXL/Y3vJAFa+S5tjF2km4daL6AzZP65EQPNRTC2swlcf94aHxETOPhqgFOJcFQyXHWZYi4OpX2ejmCO+oD7mUN8FnqyV3p7p+5JdCFUX7boaqwCdWiEwmOhVRz0fBoqLHF7wBfTSCAujI81u3I+US2EqNBNGVHJKJ075hNEw5krDKadEQO5Trl/fx0/zbWhGB/fdhv05lrj+3kE2jDHbr/XKg8qtR5DkW8IX33oGswzxRELjny5NHZAfNFKPjRS35Td5iK5NO2vUS7nzQ004agyyHGO1eaQheNJ3Ollt4Zv3xQXU2oesnbRyyw53/qSXwakjyjKpbiltLvtvEVEuTWaplQpZQZsmkHVfuEVag53v8lIc2EMCqrulRy290UwJtsxmwpt2i7b8M9sAiCq4D4F5ba4zCWIFZAv5Ve9PgxCXvjsO9+6Iipzj/e/o+1p7C16yCjN0cGN7C3j18D0UsV/ipR7DBXxe6lrGvvfI2jdw9pegPpX8cQ3KCP/1m+DOtctoObeu6J3uYrw5DY2gTQfJyi8lHB6oKGQAiOOhIKwgaQd1xvka7QbxVoXT5U2AWer7Sx3zsYUDlbMTg3Of2Q5iH1LfxwBRTm01XZbVAD22pHWHjA9/1AqMiCWsl3vDdZizO4O1b7p6cCeJ/2wWhDEDnhcP/7Nc+L+d/iTGGAkz6ahgo43+s768ojpkeTnUbiqppgvFTEPAHrTXsSr2LsXIbbsj8uz0NVRfYI1gIkbFc58hFO8y8brf9ZPdHx0OiGZ+yUBMbmbevxuOtPPA7I7rEtt5nrQ572Ps1QkQZIL5RewbQ1VriYij2sp7vkVvFMJBhMZtQVuE3/FdWsvysoKKk4X7SsmvsL+bcE6Zloi0/7zufvFdgcTfP5ga9wlT9JY9wjV3Aoqv3RlbEZGi37RhK78E5doi6Bmphre4JpbF/drYK1A03rwmX4IBQ8UcNTAz
- CAjpNWd2
- xxc6lpcJW9upZDYfmJ34AxSqKUlli8Awh/QWKakRltqqECjRYA+/A31eiDsUK1Ru8+DML5MKJ+eSo0bGC+O+UhT/OvMfDRCttls8cwbskWzmOOkCr1BQsRBMR23801YdRItWOKgNUco/Fj0SuAWvsLvLBH3iI2DoVp51SPsbSGbYoALEEXDuC/T2B5ONk6b0CUyxHiUgw/ZjxkVJ5p0vswRNpCq7DryS3WGDONgcz/Z9IQaw9Uzh1tmObCBWk2ddlsjXvYEonXktzcP0kKnOJ+sbhUJdgQKx1rFR9bbmJaN7IStSCXh61TlWpqh76d9McN365jtrRkBoIzalZ1k5kAiaqmNDJT9TKFPONYthWqFvbwNyQ8lTxnN/QeQtkZZf4d3Tw2wxu4ix/oexnqwvvVFfF5GRH0LJg3iCsJeObWeGTHxixP5D6rzoRSlDxnFSb0cRspAnBHpwm+dXx5s2xiez9xsUKAvzbv/xi
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 49494C0004
+X-Stat-Signature: esgsnaq19crspdcunwuz5bxo17g6qzpx
+X-HE-Tag: 1765524638-982395
+X-HE-Meta: U2FsdGVkX1/093STttCpAjrEqlanGgXSPre1G18LrEwHa4SFKr8xGIgXr5nFEsSlph1P9IBoKMmme9/ddgEdTtukl3M3vHrQKoTlxUsXd9Vp7YL+YoxOnI+vffyapsXAdX9uybHVvjGuSFZzsxAbX3tmlzyTndoEHuzoOsO0erDbt2mxApUUAk0qUiGK9jlbvGNBuzoEzecbKaCKjDu0N4eR+65WLG+V/8OB71AgY8+MkZBR5jowO+B6AydmlbdXwckbc1eJmlZWxoE42vLwCu/IxzHqjz5HDgpsYP455sodqC9r8R6uxdtVZc+WQFC2niId7GQ5+83DoXv9FoBNQAp/ZpPIBLHWoIJm5Hy6A/YUHntTSRPGvToWjpd7PpW61Krw6OGJ1dmy3SEI7gUDcrtYNEvXZ5s0Mldsw5cLzpzFK2rbiAA7mWgvczJ6xh/Um6k/BDtmIiAA4rULKfORNGugdQL81H/yyHjqTQF/mIQHkAX3lmei8xQShYtxXcdzZhNWWDMRDG7TlqMZmX0GFovY/E7lFv1H97xcwr4MWvnjC4WL5jkkaiOGDzSyYGqwmVf3ZD+1xw6zvHvKvhFRelfnRt30LvK1PLbW6P2GqKgmdRoidqSTbyQ7NDs05OMEHFFVapkJtHIQGx5SyiMmvsSANS3jA9NqxNYu6gfE4zdtgxO6g/jBZHh5ssC6qhyW6Rzshhb8iKu5Ib2evpT2WQRPBB55Ned7t2kwYtVEwNPVMvXhBbZD9Cf9GUKppPK0C6M/aBcg4NLNPPTN/4Mssu8ChDXFsdVIeVpbdjIyCWYD436sKRGrPfBqQS8xCfErcCz1nGTrCW/FhsUBra5jNgASI0HKCiz4rVNh0BlqhHkZ2La6+brvUjdLUZwTavzEIDm6JinVhjxBuAEO6/5wwp8lhv3YHPZWXt8PMzc8OWVQ/nhssSiUbu5K+30FcuX8FeVQo5/wtjUMDya1iaW
+ ABbXDq83
+ PQGi1ESt0DwlUhXePx9Q4dFVtmxImyKD0fUcIENmdETQZYTqFDFtWLFIeFet2GgZzxXj0M1dXCgoESNCce3LsyQillxt30U/WMzjbZrf0n2S/RzBof6Y97zfo/NRqByFUICrCSfzeh0Yp+ToZYDOvw1KbdWqXvIS9H+nznJrHOIRQGOM3MmLO20ZKhpih/cfjMvj24rXrlBSuWwax3Hn8iVHxMYCQ39RLX+PKKw0vzksaQ8ON7i6Uk8RtCCV3N1FOLqIpE8wFPlAScwRDZ/Al78XZ0Kym+hkdPTHpga9B84WfCGjndfYdKmNBwDyFJVx653ka2krrPkQHlT+8PkCV1VUCx2lKdi7d4ZGLXjpvxd9dK1rgbdobMs83/58fSDH6zQwDIb531GVP1W0t7uV/jY5qOwTnPnL06UI9QQsyCnSj7L3Y8FTT1Wt+7QQtSbnkR769
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000967, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,31 +113,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Fri, 12 Dec 2025 at 12:46, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Thu, 11 Dec 2025 17:13:09 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Thu, 11 Dec 2025 at 16:54, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Thu, 11 Dec 2025 16:38:46 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > On Thu, 11 Dec 2025 at 15:04, SeongJae Park <sj@kernel.org> wrote:
+> > > [...]
+> > > > > Sounds good.  Would you mind sending a patch for that?
+> > > >
+> > > > Would you like me to send you the patch with only the comments corrected?
+> > >
+> > > I was just asking your preferrence, and seems you have no strong one.  I will
+> > > do that on my own unless you mind.
+> >
+> > I have been argued the following so far:
+> > "I proposed unifying them into kmalloc()/kfree() methods and
+> > removing the dealloc_on_cancel."
+>
+> Based on your previous email [1], I understand you argue this patch is better
+> to be merged as-is, though you agree it has the pros and the cons.  And
+> therefore you are letting me to make the final decision.
 
-Thanks for the review.
+There are pros and cons to both, so I agree with your opinion.
 
- > Please quote the compiler warning messages and describe how to
- > reproduce this.  Please include this info in the patch changelog and
- > maintain it.
+>
+> I was implicitly saying I show the cons more than the pros, so don't want to
+> merge this as is.  Sorry if it was too implicit.  Hope now my opinion is
+> clearly reached out to you.
+>
+> I also suggested making the comment better, and you agreed it but I understand
+> you are not interested in making that change.  I will do it.
 
-I have included them in patch v2. Here's the LKML link for reference:
-https://lore.kernel.org/lkml/tencent_DAB2E2BC61A449B6AC4FA9798C4D75BED705@qq.com/T/#/u
+I can also send you a patch for the comment.
+But, I've been looking at the documents you've been working on lately.
+It would be nice if the documentation could continue to be improved on your end,
+so that there is no confusion.
 
- > >  #define GFP_ZONE_TABLE ( \
- > > -    (ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)     \
- > > +    ((long)ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)       \
- >
- > It would be nice to find something nicer than this.  Perhaps a type of
- > something was poorly chosen.
-
-ZONE_NORMAL, ZONE_DMA32, etc. are enum values, which has an underlying
-type of int. Changing either the underlying type or the enum type
-itself is not feasible. Moreover, the shift overflow only occurs inside
-GFP_ZONE_TABLE, modifying other code might be unnecessary. Adding
-explicit casts seems to be the most straightforward solution here.
+>
+> So, all is well and no more action from your side is required.
+>
+> > I apologize for not being able to respond promptly and smoothly
+> > this week due to a busy my external lecture schedule.
+>
+> No worry, take your time.
 
 Thanks,
-Yankai
+JaeJoon
 
+>
+> [1] https://lore.kernel.org/CAHOvCC6bJLf=LuBpm90n5poz8Sqhz9wjXtk5ypbPwkvhb1ptag@mail.gmail.com
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
