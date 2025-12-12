@@ -4,116 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DCFD4415B
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:12:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB98AD44160
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA3A6B0005; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
+	id 1095D6B0005; Fri, 12 Dec 2025 05:15:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9B4E6B0006; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
+	id 0BA3E6B0006; Fri, 12 Dec 2025 05:15:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB08E6B0007; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
+	id F11EB6B0007; Fri, 12 Dec 2025 05:15:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AAF976B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5765813B1F3
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:12:39 +0000 (UTC)
-X-FDA: 84210404838.22.AFA2F59
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 81839A000E
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:12:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pSTVJiV8;
-	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id E09436B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:15:37 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7E821A04BB
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:15:37 +0000 (UTC)
+X-FDA: 84210412314.11.D541ED4
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 30EBF120014
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:15:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765534535; a=rsa-sha256;
+	cv=none;
+	b=IaFETTMHORtxqG1keNBWsENgftk7IgbgA0wLR/cQddv9cjyhpEDYEv68pe+AXHnlIHpnlI
+	Bq3N1Pvv0p4QoMacj60s3xs7Sc6VNUSB/HDmGjzm83BG4ZJZCfuX7pPRLGbG3ZtOrcAg3R
+	bn2iP88uJaJjwGUHvPKyuJ7AnLPpNIw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765534357;
+	s=arc-20220608; t=1765534535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
-	b=mnc8LDslIQwRhbmDbIhMoo85VkwgLgh6tHza4GsY+dA4oTB5pTVKcsUWivJfz5xjhOnzqv
-	AWcNFfpjjuM4v+RW82pRWuMOB5w8tVhBMgtD5BzcWJ0WMiiesRT4UL2BzIj/+jdDF7L8jc
-	8+sj6E7s3dYKFqSwQaPM/Sfqrf4RAd0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765534357; a=rsa-sha256;
-	cv=none;
-	b=0+ehFTHOsUv94ZQcW4UXI713RYKhRDhXv1fodfjkA2pu5KQ7sGdgI37/BP7uI6r4IPWaWY
-	8bRsu7Cgc5JAUbEk6Gw2AkOA6VsVRA3F7nQEdG9XjyhULPWPrjG7OipD1Bil0FxmmtJtxB
-	wA9AYCOwDSxctkWL3cybrb42I+xiYdA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pSTVJiV8;
-	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6446c1a7a1cso1013704d50.3
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:12:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765534356; x=1766139156; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
-        b=pSTVJiV8lH3t+89Uq44702Dped6sLH0HUqdb39nt+t1pXCjR8k8395YwrOiP06P1QV
-         f+uaUYoCwDSpPZ0H15eVrb8mSKhyqDC9IxkJQu2tvVyoxwzen3dDWhGEhWLFCdF34di1
-         DBh5ffrPKs6VCf/Bo4GdzZU41qV2G2SKXwdHUgdAKfMV0St+atDh1ohGdPY2+lv/IWSt
-         RhLig9F1nftGZlCF88e2sTMkDLF869I0vJ6itJQ+HsfqglhPwUBzr5BhOp2YTCVP2XRU
-         VGSQApg1G30rIc4cq+/5qJV19PYlPj/C5iobWCawPYUI34PgV8CNQ3oUb0W7GEq9toHa
-         8gLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765534356; x=1766139156;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
-        b=lSL4kFMzIkM6qXwdnu46YUb5G/o7FgXygNnLrF3Jq6kT3N1y8ipI64WQhO/QLuQnmE
-         BHSFCagMevXfgHjJ2PgC0qWs7cVtxPrmORo+9hCkcUcKW93DJf2A6szViikYe+R5vzsn
-         yGZvvvjIaSwXl34RDtea8WBHC6r3qfjQgWJUGjDdahcsbQbfeRordil0x4e66cJKDCGV
-         9Z35X2p1mvE8zBgPuGHA40hroaqiidiMqk1Lc4lS2svi6NWEEPHaC48roTt1amJsrJC7
-         WcgLFFmhnrpTkpoSJniZo5CgDorfiIkj9nRKQnPbxTzNvKI6OJnuguOk7bRlAP4awmRu
-         sGpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUw+0u8XZDH5BC9xcGCFB99AX7Kw53wE+4q/CBwZcf5/NjEfhOw0dBkZGLMKtyIN785fvlQlzOygg==@kvack.org
-X-Gm-Message-State: AOJu0Yx0nA5Hxq1dyaWhd6xBv6dqUGQr56+vwmuh1RnI2QUGJD/IJdNR
-	tmVP/TFciSiLEpYY5fQwbVh1YqoQrmZVel4uMtEX8PCq393Ex0uLYet8KHwNAoO4dw==
-X-Gm-Gg: AY/fxX6F6k249hdUWGMktkTYf42h+xtTV0oTNUNewDt8RlKbTNf4zF88wY1HQXYH0Lj
-	tIs6OjnD3Zja+sX5RvJXGPxjNB8OkbHliakGz/kioBrt19QZw8X++XLHFIdyDmUE3F4m5Qooz4e
-	8wp35PFnUdmvLW2iEr3hcXcH82r+l17t2V0NDkXrZauQ9c8jgQGyEvkxDOIWCLWNsN/gxUK1Orq
-	VcXB7FFwTaixQ7wkcA+YNnK0TO+g6DVLHUY32TymnRzCpi1cFV4whlza3KQ/wt0nuAIIcY6rdRT
-	LcDYRrblqdii0RhDsrpFQRf4N1iyKMUxWfHuS0BGprp6AkzYGth3j9EDQ47t42x4fiFa9rtgOqW
-	qNmnxSM/Z7lKZQ2+gdvy2kCr3zgsCZGhOTPQrgaxxXPw5Wboj7dN4J5jIGedmR1F1UW9pCKDI/o
-	fNnsMtz+Dt9wgDi3v8XRHj+F9qPoFsfDHcNIFHFYAid7f+ozOQRIkPdZFW1nttDhqg2tV4346vg
-	+QcHDDLmQ==
-X-Google-Smtp-Source: AGHT+IGKtXEzcTRKcustuNEfSG9GQgq2I5s1vamHi1Jm95rHy6d13FrXiicoayqFzE3hF90bPUJ+gA==
-X-Received: by 2002:a05:690e:4105:b0:645:591a:cb5e with SMTP id 956f58d0204a3-645591accdfmr267163d50.5.1765534356223;
-        Fri, 12 Dec 2025 02:12:36 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e6a46397csm3097617b3.53.2025.12.12.02.12.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 02:12:34 -0800 (PST)
-Date: Fri, 12 Dec 2025 02:12:17 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-cc: Hugh Dickins <hughd@google.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: 6.19 tmpfs __d_lookup() lockup
-In-Reply-To: <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
-Message-ID: <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com>
-References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV> <8ab63110-38b2-2188-91c5-909addfc9b23@google.com> <20251212063026.GF1712166@ZenIV>
- <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hNvmySt7X8q194zRoeeRFkFhmCkwpWfxUHT2QHcboxs=;
+	b=RspYmIvhYgm+TSy6iTWlFAl0nA+QA7RtJEP0N+IXf6MWXNJC57fDBGfhXZOdBZGZ/EJcPC
+	dayHgMM1LG7UuQ68pks161BkTcRxcpckLeKxYVIRwWIX+VhGUxaH+Ia23OSFUR/sbaDbBq
+	0ZrnjT/fVdHYXt06ZuNqGnokceEjWVY=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dSQLk2Y6BzYQv5w
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:15:10 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id A551B1A1A5E
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:15:28 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP1 (Coremail) with SMTP id cCh0CgCHwX096ztpFD3hBQ--.55276S2;
+	Fri, 12 Dec 2025 18:15:26 +0800 (CST)
+Message-ID: <3eefcf06-e33f-4f5f-bba1-6d53ddc495d5@huaweicloud.com>
+Date: Fri, 12 Dec 2025 18:15:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 751xnfnybkd485ju6e1bu5xyc9cskhci
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 81839A000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next 0/5] mm/mglru: remove memcg lru
+To: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ zhengqi.arch@bytedance.com
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
+ zhongjinji@honor.com
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgCHwX096ztpFD3hBQ--.55276S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGw4DurWxAF4xJFW8tF13Arb_yoW5Wr1rpF
+	Z3WasIka1rArW7X3Z7KayUu3y8Za1xAw47Wr92g3yfArnIya4ktr47tw4rZFWUCrWSqry7
+	Xr98u3W8XF1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-HE-Tag: 1765534357-929389
-X-HE-Meta: U2FsdGVkX1/61OJP58wgMv9v4XzQiZz8DfL9nqECztoFdUg34nG87bbhcQtqP6KWmH8kA7fX5VAVA6ZLBCeVefLeNJyPTWdPsuc/LZFAdBs7V6lu/DP1ziqYtbl8Tb7Zky+TXp0graTpGvJmHMWdfXVKk6lPXNVZsBFB8qtngGu2rXrfRx3txO4dWp4YK5oczh8BubbWHdSNtV2hDT9ePBJfQGODA1r36WeyCibnJDm203sDOGYJwN2SmFONeAJ8ic3SjJ/AZO5VSILxg6C4Gl/IEEze1FXwu4n4tajizHR9AXGk4aRAzFxxn5F05E5/0BW8Gkt15Z7Rbf/7VTo2AOeDs2HJSqsj+X0+Sons6XM+Ti8tOKHI3XMfgh7YgMy5sc9U/HhWLsyr/jFNfOQdnzes+Y3Pgq5YeywGsHf98OhxNgzAwxEeDICuxTLwW4M9J03oSdQr+IugXmdrijL/CeVapSZpVyneuhr/F/Hj2JPPmNUefNNhw6UHhiM1pPtwyw6+10MnLYlJhbKrRvVEa0NqzqOi/6yp7KHkruPz6u9H3zMg4WTp3dwXDXx61mx1sOtX+8BRRUMEFA8lRfFELf1CniUGacg4Cw5NsU3T4MkmjtkEg6lI1TdV9ok6Jo1XPWo3UeKcIB4O8N/nMxlIXgQ+D27jcyZf0VhKz5Jh/w7iSE96XPAGoxaYpn+mTMUxmj3J7c7b4W1Rl49Xn7s6YWBbvLraWx/k3CKvh8Wegiuw73NIVjeOnOMlOSjuOVbaLaWOI6+nEPA1n+Tbf8XQojVRhnK83heFYTFXiQs1Ba6g/D3RhN7qeN+WrDf9Gvvdo/iWp5fRxyMy16Q7N57kk2mYXUO7qja/LYWVEvODVxvp8P0YQOQf48AsxLYb9PUQXag3ncQs8FSVWMP78rPYHMQ9zQbbVh3K/vMCXo5vM165T2hzcu0PfcE68BqDdN1mjo3Gz8ePPQ3GoJvTlM7
- dP8TGusk
- 2lFwhiVhs/GGsd/6N3FVXWshK0+aoaj/dYHs4Hqt2N5XFWhB1gHY7JoaZiMo32HP5KjPEtmd6GFlqbH3B3bFJrpPgozB55fGdx3wtJBVjM5wtIBVd0jOTXrwVakdxPAAB6KJQip0V5daULmM1zV6J1e0zgChNkw+h9anEkSDV9IANBwaSpK/sNpvSp2+XNnKiNaWK5SrBtcjtkf1GfOSqHC16xhyKMUuQoWxCxD7LcN2s8Uah9/kzjCQd0CZa0LOTcCu0dwr9F4k01ozZTC6iy/Z86rSgHlZ0wUrnF9S5WJWLLPOF900Ls5wQbO1ipzc5vBy59Qxe9mhbV08iqcZVka5SIpXjI2670E16LG1Pv2A5JusTe52RkBpmsZcV44rzT3LxCrdg2G1MT80=
+X-Rspamd-Queue-Id: 30EBF120014
+X-Rspamd-Server: rspam04
+X-Stat-Signature: wag8yh5ozpm6bijygryzmhek13e7hm6i
+X-HE-Tag: 1765534532-308233
+X-HE-Meta: U2FsdGVkX18dZxSVUx8wgsDhi5Xe8GpMTspQVlppr0uhr/Geinry2NYEIfrS6VpGE4pCQDsX+2rO2mYCit/G+554iRMH5xQb/Zyk8JnTSJHRPVzQ1vr6WIqoRc9sro8Y/Z3dgc33nrbcIvt9fmzIXuvWw83nFMeXwaBL2cUFAI0KOy5g+USeKUM0SvvFn6Ghy/9D61X6rtTxqEv7l+yjHL8bPGO4O6MbjI43kdGSDzdB51PN8Iq68PTcvnr2lrYbPsUYG+TGPxJA8JcIEJrsdH7YUZEOAqCW6xyla1sgsh8Ny1BwaUk+eAJgbK/uZdtzeWRzFHKBnUeQz2yKpIChbyIQM78+iO4MDRDyk1AXcEKQIK6jxJgyeoIvV6TBariWtNnkm8pFIe9MtF7yLpKe3LBU1ngHBbVet6SyDGrpq2HSvtcWHON0SNW86iWlLnuSDlEXs4k9tOxCyF/aMf46VDHXgtB+OcSScMdIp2LB1JUCJzMHTSAheSwG/oX3mf3cQT8bKoawRkyq39SpWfqyMqPkaj8zelN0lm1rFSvc+S8SFVOzE7vbVheLhCnlfD7zXKyOlAvajQmgq5INBhFkcskGP90MaNPh1QOWcxvT8eN78rorTmEvrXbXKH4u2QOx3kTbKEbYIgrmkm0s3AIV/CJpmcMfBlPemwOdbUX+W5NysRvQ8bd68qC8bx0qGx5/SiLWUB+2RZZcs62B3aiLQ4pU4RJsiZ7KJpN3zweqF681DMYvoUi72yzPu+QOM54YuzykyL3Zy88G+ajzyHfYFHrxqI5bcn+JubXANCn5iEAG1WzrVB4+HwbKzQtdlr+VklNKazr4d3MvkFbbQ8IAmudkA/PtQ4/F0VB8MNK6YPmWfK5nOgc2D5ggrTr78TNLSswVcRnrndFj3kQW/LUlHLHprI7P3kyLkrlvQviS6hzMXdEnoeVYvS5Aqyr4CSXcBI+YKYe+rdSvqFuq+QM
+ UjYpFUM8
+ mhc1cHIdrdpAkfik50vR1FohmQS0WklgumwUMhLQoI/4uZTJAcC6j7Hittx3hXzcp5rVu5vGK58RK9QcKoXGjmhM7mQYvJFeLWayS8ouSvMxsL+4wX+J0UKe9XSOY3o2mG+2qAnYMDTAlEmyu4gIq7Pfs3E3QIjarUTVA3ihwO8bJrFii158btr7y7oW9geKTeI3DZwUvnsk/bgq5sHe7DL0DNQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,73 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Dec 2025, Hugh Dickins wrote:
-> On Fri, 12 Dec 2025, Al Viro wrote:
-> > 
-> > A few more things to check:
-> > 
-> > 1) do we, by any chance, ever see dentry_free() called with
-> > dentry->d_flags & DCACHE_PERSISTENT?
-> 
-> No.
-> 
-> > 
-> > 2) does d_make_persistent() ever call __d_rehash() when called with
-> > dentry->d_sb->s_magic == TMPFS_MAGIC?
-> 
-> Yes, both if shmem_whiteout() does its d_rehash() and if it does not.
-> 
-> > 
-> > 3) is shmem_whiteout() ever called?  If that's the case, could you try
-> > to remove that d_rehash() call in it and see what happens?  Because
-> > that's another place where shmem is playing odd games...
-> 
-> Yes, shmem_whiteout() does get called.
-> 
-> And when I remove that d_rehash() call from it, 269 476 650 and 750
-> complete without locking up.  And when I remove the WARN_ON()s
-> inserted for 2) and 3), then they pass.
-> 
-> You are very much on the right lines!
 
-Well, more than that: it's exactly the right thing to do, isn't it?
-shmem_mknod() already called d_make_peristent() which called __d_rehash(),
-calling it a second time naturally leads to the __d_lookup() lockup seen.
-And I can't see a place now for shmem_whiteout()'s "Cheat and hash" comment.
 
-Al, may I please leave you to send in the fix to Christian and/or Linus?
-You may have noticed other things on the way, that you might want to add.
+On 2025/12/9 9:25, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
+> 
+> The memcg LRU was introduced to improve scalability in global reclaim,
+> but its implementation has grown complex and can cause performance
+> regressions when creating many memory cgroups [1].
+> 
+> This series implements mem_cgroup_iter with a reclaim cookie in
+> shrink_many() for global reclaim, following the pattern already used in
+> shrink_node_memcgs(), an approach suggested by Johannes [1]. The new
+> design maintains good fairness across cgroups by preserving iteration
+> state between reclaim passes.
+> 
+> Testing was performed using the original stress test from Yu Zhao [2] on a
+> 1 TB, 4-node NUMA system. The results show:
+> 
+>     pgsteal:
+>                                         memcg LRU    memcg iter
+>     stddev(pgsteal) / mean(pgsteal)     106.03%       93.20%
+>     sum(pgsteal) / sum(requested)        98.10%       99.28%
+>     
+>     workingset_refault_anon:
+>                                         memcg LRU    memcg iter
+>     stddev(refault) / mean(refault)     193.97%      134.67%
+>     sum(refault)                       1,963,229    2,027,567
+> 
+> The new implementation shows clear fairness improvements, reducing the
+> standard deviation relative to the mean by 12.8 percentage points for
+> pgsteal and bringing the pgsteal ratio closer to 100%. Refault counts
+> increased by 3.2% (from 1,963,229 to 2,027,567).
+> 
+> To simplify review:
+> 1. Patch 1 uses mem_cgroup_iter with reclaim cookie in shrink_many()
+> 2. Patch 2 removes the now-unused memcg LRU code
+> 3. Patches 3–5 combine shrink_many and shrink_node_memcgs
+>    (This reorganization is clearer after switching to mem_cgroup_iter)
+> 
+> ---
+> 
+> Changes from RFC series:
+> 1. Updated the test result data.
+> 2. Added patches 3–5 to combine shrink_many and shrink_node_memcgs.
+> 
+> RFC: https://lore.kernel.org/all/20251204123124.1822965-1-chenridong@huaweicloud.com/
+> 
+> Chen Ridong (5):
+>   mm/mglru: use mem_cgroup_iter for global reclaim
+>   mm/mglru: remove memcg lru
+>   mm/mglru: extend shrink_one for both lrugen and non-lrugen
+>   mm/mglru: combine shrink_many into shrink_node_memcgs
+>   mm/mglru: factor lrugen state out of shrink_lruvec
+> 
+>  Documentation/mm/multigen_lru.rst |  30 ---
+>  include/linux/mmzone.h            |  89 --------
+>  mm/memcontrol-v1.c                |   6 -
+>  mm/memcontrol.c                   |   4 -
+>  mm/mm_init.c                      |   1 -
+>  mm/vmscan.c                       | 332 ++++--------------------------
+>  6 files changed, 44 insertions(+), 418 deletions(-)
+> 
 
-But if your patch resembles the below (which has now passed xfstests
-auto runs on tmpfs), please feel free to add or omit any or all of
+Hello all,
 
-Reported-by: Hugh Dickins <hughd@google.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Tested-by: Hugh Dickins <hughd@google.com>
+There's a warning from the kernel test robot, and I would like to update the series to fix it along
+with any feedback from your reviews.
 
-Thanks a lot for your very quick resolution!
-Hugh
+I'd appreciate it if you could take a look at this patch series when convenient.
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4023,18 +4023,7 @@ static int shmem_whiteout(struct mnt_idmap *idmap,
- 	error = shmem_mknod(idmap, old_dir, whiteout,
- 			    S_IFCHR | WHITEOUT_MODE, WHITEOUT_DEV);
- 	dput(whiteout);
--	if (error)
--		return error;
--
--	/*
--	 * Cheat and hash the whiteout while the old dentry is still in
--	 * place, instead of playing games with FS_RENAME_DOES_D_MOVE.
--	 *
--	 * d_lookup() will consistently find one of them at this point,
--	 * not sure which one, but that isn't even important.
--	 */
--	d_rehash(whiteout);
--	return 0;
-+	return error;
- }
- 
- /*
+Hi Shakeel, I would be very grateful if you could review patches 3-5. They combine shrink_many and
+shrink_node_memcgs as you suggested — does that look good to you?
+
+-- 
+Best regards,
+Ridong
+
 
