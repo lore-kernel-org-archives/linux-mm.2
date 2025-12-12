@@ -4,88 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E897D59F52
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 23:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E118D59F53
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 23:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 775506B0006; Fri, 12 Dec 2025 18:11:55 -0500 (EST)
+	id 352406B0005; Fri, 12 Dec 2025 18:48:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74CC96B0007; Fri, 12 Dec 2025 18:11:55 -0500 (EST)
+	id 304136B0007; Fri, 12 Dec 2025 18:48:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A4D6B0008; Fri, 12 Dec 2025 18:11:55 -0500 (EST)
+	id 1F1616B0008; Fri, 12 Dec 2025 18:48:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 557006B0006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:11:55 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDC87B855C
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 23:11:54 +0000 (UTC)
-X-FDA: 84212368548.02.1A39ED1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 036B210000D
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 23:11:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4Or2xyS;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C3056B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:48:08 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98EABB89FF
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 23:48:07 +0000 (UTC)
+X-FDA: 84212459814.23.4F174D4
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9FF4640003
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 23:48:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=1DZrOSHE;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="C LT5ut7";
+	spf=pass (imf12.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.154 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765581113;
+	s=arc-20220608; t=1765583285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RxNakWe3sHRyKec/cOeTnRHVmGw9RtxH9wyk4eABYBI=;
-	b=ly/oO6Kd4RLU+5VxPrET4d+C6Cc43wUSJWRncyTzf+yXfAQ6n+jJ9A4+23orK373Uc3FZw
-	Eys7fbXF//r5KPgRUdBCPQsjjtv5HiiRchIGsx2kN6g6gNGypQAuTzEmjPwa7hRkTM3Q4N
-	iyb6eIEz4sKToteZSl12Gr8NisGo8WA=
+	bh=W9TXVWpHLXJtDlvpLHB65RP0R7uQG8nC3Fdf5xQm6B8=;
+	b=bt3Xz8tKXTh/BKM/EsuYqkHQGaE4aejxkYuJrfdxXAYAa8P/p6XRsYD2P+6zR7IVCfSe3/
+	GKTLcSt2SoY+uAV0rMWIJrdbCo8yaZ9PmGT3Iz2pfFUIxVCMeIwyqup4k84w1vPU0eUO6R
+	PfTx/O1i3kAlp9RWAhcfrDKRy2vFSrw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4Or2xyS;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765581113; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=1DZrOSHE;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="C LT5ut7";
+	spf=pass (imf12.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.154 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765583285; a=rsa-sha256;
 	cv=none;
-	b=04Mwc7FvUtotB9WyfkrjSKaohLk7DHZrr9/ZlvOPx2Yqp9/cPZDb11fT6qo9NvTa3Ey9Dl
-	OfFs4d0imfmD2OMyxzLRI93JkiI2jNEErYCEsegEMlXUIFJHm2ESZdBxH3ssLnK8skBy8S
-	TI24aAVKenA204CPhQa2COhORtY6UaU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14AEA40361;
-	Fri, 12 Dec 2025 23:11:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F09C4CEF1;
-	Fri, 12 Dec 2025 23:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765581111;
-	bh=P3uU7ajhp4vqPPW35PSbg+rdWdrGLIQGgY65lb1tkc0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4Or2xySrQs91xkZYelAnLmWEzQ0ifu8RgboOCiScqQ2E8FpRgF5huJa9ljamuu5Q
-	 vDbk/hCr2S+yMhWL/1onf+bZoRA+AaIAqZDjcpvEzx4JQbLADKJx8UfZscGmdqv1XH
-	 RyGrc8b4w9zRl/vDEXBHfp8V0hkvBQaxjRvP3OuBJMFfGJsjtKxx8sAI+zU5oLGNgv
-	 zgK/hlW+8TGLHJ/pvv6Dl0UOHTiqFfVf6MFH86iDKmbPXF/EMvquCbEY+rsDumCUu4
-	 R+6XabQ/RRf0UIPX6HhajYlGOGsG26HQrwVSby2MbGrXhMOp3v4f6kStYYG70VouC6
-	 0xugyYaCkp5Ew==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 07/37] mm/damon/core: apply access reports to high level snapshot
-Date: Fri, 12 Dec 2025 15:11:47 -0800
-Message-ID: <20251212231148.49843-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC4WQPo5HrCJ+958t1ab2NDzbg493XYarqACARTpYskVzQ@mail.gmail.com>
-References: 
+	b=oye4BFMhvy6f9EpWgWQ3rTHGvkbn+9fS9OFxSHEzcq+XImE6tkluPVyrKpkpWhKBtzFRCb
+	ykR9unPjM2Oo76FwGwQOXhHHHmpgCU6IcAl6uH6p2cnkPPW2XoJYLsBPRv26/QSMy4PcLW
+	CxOZQjJehmj/IvrCiI2JGXQm8jRa6DE=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E6FF114001FC;
+	Fri, 12 Dec 2025 18:48:04 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 12 Dec 2025 18:48:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1765583284;
+	 x=1765669684; bh=W9TXVWpHLXJtDlvpLHB65RP0R7uQG8nC3Fdf5xQm6B8=; b=
+	1DZrOSHEWSaX3XkP88w8X+/lMkOOHcZEZB940z2Ofk5NpYAbkuxFSy00o79V3ZV4
+	Xc3IEI1Gx6mRdESMYo4VqZ20Mrd+U4NCGzWncUdFaBP3Fi5FElaxj6snPDFE0MU2
+	lj1fs4U9k4SggxzuQDtUVSpn6G80fCIETEgtUwk0rM1bvS9ul0tN3DsghMEruLQV
+	M4CVZnPZ7AJvnJSTAH/W9swOU3EBSkz5cRGij0IBGMi365cZ4n2lk561X19PNzDW
+	uFdBOY9a+8Uns3oPGjHE3Ys/VdnacyImiS3wt86ITVWb9jDpcAMFzrCOdpWVSJ0Z
+	fx7LnZSBtmQ3hQicAWpr/Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765583284; x=
+	1765669684; bh=W9TXVWpHLXJtDlvpLHB65RP0R7uQG8nC3Fdf5xQm6B8=; b=C
+	LT5ut7GZaCtq8BU02crDWkE24z2UscNkCREB+vs/1u12Tce92HTAdBwJ8f2LvG0f
+	F0ku0rBYVjHRlnZS4JsyEuJI0TgmWCMABdDB4gOs2jltU4g31uwzkBTrOy+B9yo8
+	zKiqxZYtPhVl+uOf2tdVy26bemNvP9HB4+reKEtdaDDS3+1BmNfLiZs3MGe+pTRF
+	K5g/71scGJ1sWWWZkZORhp+0E8VTp+JntUMJYEH9u9sq4pU+A3mjbRaOD1gPY73A
+	ih6fsPTlXy+6/er/cd9OqBHHsvBQ+XmzxDndhAGu6ZfARYEfX63TytyLeITmnFsJ
+	ZeBofGbv117E95fGD34hA==
+X-ME-Sender: <xms:tKk8aQX6cp5HO_gokUSEOFam63oerwI3eO-Wn-i6ePHOYbzWf_lYAA>
+    <xme:tKk8afwvMGZyTVrHjT-nvVORRSlvWd3pmvCxzDMRHwHrOeoe0qv_UuziakTDKA0Zf
+    zW_8PcdNdY6wWECX5nEp_KlTejivc3U7E_0IavCgqgkEYMfqQCr4A>
+X-ME-Received: <xmr:tKk8aYNUKc5qUa_SVNgYBvscPpsYApi--brKofNa6841tVK2HIjjkdJb>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleehgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkjghfgggtgfesthejredttd
+    dtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhhrgii
+    sghothdrohhrgheqnecuggftrfgrthhtvghrnhephedvtdeuveejudffjeefudfhueefje
+    dvtefgffdtieeiudfhjeejhffhfeeuvedunecuffhomhgrihhnpehkvghrnhgvlhdrohhr
+    ghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudejpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpth
+    htohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehnvhhi
+    ughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprhgtph
+    htthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhmthhh
+    ohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
+    gurghtihhonhdrohhrghdprhgtphhtthhopehlihhnmhhirghohhgvsehhuhgrfigvihdr
+    tghomhdprhgtphhtthhopehnrghordhhohhrihhguhgthhhisehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:tKk8aZqz90rPtd-LBFImpOT3VRDxAAWLD22Le4uK9e71EHEtn_q99A>
+    <xmx:tKk8aX-eTUKtMHd33mXZoboaaeShWwxvHNPWhkKiybM7C1E_ca__7w>
+    <xmx:tKk8aX04fPDhgBFtbmrP8Ehr7IZmC7J9vi1gJ7d7AswTm01hh7fZnw>
+    <xmx:tKk8aSAaJcIcj2JAXOegFPF28IaJpUv7ht6UFI5bdW0sdSR_nmfQFw>
+    <xmx:tKk8aWywaqytJhxzbTZBoJ4YftNYW1tgIyETuBZ9xUK2o6AQb3zsU3ZG>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Dec 2025 18:48:00 -0500 (EST)
+Date: Sat, 13 Dec 2025 08:47:57 +0900
+From: Alex Williamson <alex@shazbot.org>
+To: <ankita@nvidia.com>
+Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+ <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <akpm@linux-foundation.org>,
+ <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <cjia@nvidia.com>,
+ <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
+ <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v1 3/3] vfio/nvgrace-gpu: register device memory for
+ poison handling
+Message-ID: <20251213084757.0e6089f7.alex@shazbot.org>
+In-Reply-To: <20251211070603.338701-4-ankita@nvidia.com>
+References: <20251211070603.338701-1-ankita@nvidia.com>
+	<20251211070603.338701-4-ankita@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: dcd19jjedap3jyrfdrhqinmiz6efq6ar
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 036B210000D
-X-Stat-Signature: iwgzej7z591497ynjw9ne59tzbwchw7e
-X-HE-Tag: 1765581112-729196
-X-HE-Meta: U2FsdGVkX1++eZNcIXjDupzr+mor/AFXRnHiiyoe3xASmM8TrnHPyU7HhDuOmw8Hbx/MDg+zZrLmzBthKrXQBS2Cc8O+qZR3Jle8FfPoigWQ40cB5o5Xr2jb9KA+sWe1GtrJnr5ekf688STnbdyLT6g7sRkrqbNW+t2via5LyQ/MQzIKzPStLl/RW3KMe7ZFwZ9RSxUTYiNeM/TNLnyEIgGQv5uWW2fvDBMh2Cqy8fYCWuneOiXn7XQ8InwZVn/tdUpOCcOZthS5NXs2eYuo5yirmW7ax/109Dxvz5/e/BZ2CEsRIgGgJ9gUMPU57J4twDLFrmujxLKAWJDHHu2uq9Ss1uOQpA2y1WWz2aYg1sbeqW6kykp32kmfkozRloKJKuNIsLRFKIqQBZpEMGtMHIddNIB1Zbt2VuGeVuhJvBUJBgMHuTFMspWLoPQPHjTrqHhMKbQYYyswOOGqx6nesLrzipwZrsrtjC8w81wncI3PjQG7R0vamiG17fUnqgfMC9mtP4XxFYrjjCnIvxb2QRpioDz68RtNKKmL5hkxuGIqx8NWUcD8kOto75O+K7Xln08w2BEHlEVLRIpfqE28m9bk21YIxGJsBn7aj/kGm8fJpmI+zPSHWKNDj2JT2YU7axqmSpIPJt93GWSbMLK19oDF3dlKRdK3/aMa2Lksc1R+bQYA83j2glFndsNLmctUowuKgcetx3O5QnT5CsSVmBtiyoq4mJYFoUJgmOzHVNTHj2dc5l2WKp9TFFx8VpeuSdnYQnbVABKc0vqegU0O2ouG6y4NilGxUTubZC0k+u1su7IuIv2adDYCQ05sSxLXqVAZi2bEzXPcVn8flFaC2XYrVDtoSCUyd87nbTr4yn72WArgRudcaTok5/lA2hTmeRryewXXC23wc+t2wh04Eo8AeqKAebHdkBGt2xM+mavMUeXP72d3cDt3YAzSj6xWqdYODU2xy39Pnyyd3cs
- hkV5iT+M
- xPfFd/fXNT6EAuYpcm0cSiBixueDlKZYBki0TXhgjoAQzmFiAhmwg6CvkZc3hGHlj5/cFejTXmPXhvGnDY1lq6tQSvK3mFesqajv2IsEmkhBFtcJGOXvfoKuAs9DMXisXR5mbVbjJFhyCJEStg6KA+1O4vmvc8B2iBTX9BLl7hrJguiyHI+uRS/lA5DfX0W5Si+Z5T50QUyHb2E1LXg3EjfT81Q==
+X-Rspamd-Queue-Id: 9FF4640003
+X-HE-Tag: 1765583285-430243
+X-HE-Meta: U2FsdGVkX19NxZOKYTyWV+wzDEqpGWJuZLP5zsNeLHa4DAR7nKOmI+yCO0EBXw9eLNnVM0WuyUpEeLirnVlHjeKmVelMzysiHz2hQkbSiVOpEdG6Vp+pGMJHEUFcwl5Yik7Egnt3AYKWvN8PhleNlLY4bxZG0Y42Z9gYgbJuRBmuR1lmW6wnHt4Fwv6PogvWfK8tU6qdt7IUWav+0xGIFPsBSo3EJ4hjVjG7c41E0lbqao9EDOVOvTiZSIlWGfKS3b9hX/dfSMxziCZES78+z6OzO9vdhzATEepWwOVQU3Xv+74RS+cXbPq2JwsPdsF1rzNGjZE9AN6qZjYYidl4SlL8VfrVZZSWtKLMOb/Um/+foKJRKoaXoyOw8y40X9L1ruqymCG+rz4bwvavEgQqKW4xb/YztY0GKpNI9LTwi0H5ojauuM6imoxqIaBA7gJ+gH638qSzUadcIQz+Imi05biJ2j7vfJCtbqiMBu647Udk5KSPd8y6fyhI4fRRJTs3HOmYS7dtg/LkadbM6wRjSSpGzxxO54aloljvFKrXjlbzcZVNP2xnwGxFtbzoZFJ/3buAooYn3GzSECKg2T3zEI7j4VsRQ/0Yh7GVmY43cCIhrqOBbJIJ/U4hemKhsvjnKYECfqkqE2CQvm4QjNvP7D0ogpENmjoem+4xbKgevNkAhGGfIF8lalTWbnfIsVgQG10IzwSIeSbpzhcNz+xjEkMdWlhK6SbnR8CBcA7vEMvlAABxojKl6jCt77fri4fffmb7JTAahgEm7dpYIQhC/kFLQ9lFjN9Z08eOGJxaRFr8fe97kNIpmvJZVQYnH5XMi0LiB1ZzIJw4LZvaRHZTdt1Uf2nPXSAK35EQUVcv1THeohOBQpSYCV3M86slnJLh260f4nfcBZ1Kb0sP0L+/jLd9k09NKcB2XL/cuJtDyASe5LzRz0ZYL7Ouo4IsycxeCoqC+Dy5/7kwV6/0V20
+ h3Tss+oG
+ twkIM2qlva/SdiuIahl0GDS0z4dJWkaA0iZkVNi1JRR/7n/OdifmhWoNIvhlCbx26E7xssEmkfiS8NYVlzx1tDiHdfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,104 +141,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Dec 2025 22:20:04 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+On Thu, 11 Dec 2025 07:06:03 +0000
+<ankita@nvidia.com> wrote:
 
-> On Mon, 8 Dec 2025 at 15:35, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > Now any DAMON API callers can report their observed access information.
-> > The DAMON core layer is just ignoring those, though.  Update the core to
-> > use the reported information at building the high level access pattern
-> > snapshot.
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> It seems inefficient to repeatedly access the damon_access_reports[1000] array
-> using a for loop in the kdamond_check_reported_accesses() function.
-> It is inefficient to for loop through the entire
-> damon_access_reports[1000] array.
-> When CONFIG_HZ and jiffies are increased as follows and
-> damond sample_interval is 5000us (5ms), the time flow diagram is as follows.
+> The nvgrace-gpu module [1] maps the device memory to the user VA (Qemu)
+> without adding the memory to the kernel. The device memory pages are PFNMAP
+> and not backed by struct page. The module can thus utilize the MM's PFNMAP
+> memory_failure mechanism that handles ECC/poison on regions with no struct
+> pages.
 > 
-> CONFIG_HZ 1000, jiffies == 1ms
-> damond sample_interval == 5000us (5ms)
+> The kernel MM code exposes register/unregister APIs allowing modules to
+> register the device memory for memory_failure handling. Make nvgrace-gpu
+> register the GPU memory with the MM on open.
 > 
-> reports_len(==): [0 ... 5]
->                                                      [*]
->         0    1    2    3    4    5     6    7    8    9        997    998     999
->         [====|====|====|====|====]-----|----|----|----|  ....  |------|-------|
-> jiffies++    1    2    3    4    5     0    0    0    0        0      0       0
-> damond_fn(sample interval)      -5[0<]
+> The module registers its memory region, the address_space with the
+> kernel MM for ECC handling and implements a callback function to convert
+> the PFN to the file page offset. The callback functions checks if the
+> PFN belongs to the device memory region and is also contained in the
+> VMA range, an error is returned otherwise.
 > 
-> reports_len(==): [997 ... 2]
->                                   [*]
->         0      1      2    3    4    5     6    7    8    9        997   998   999
->         [======|======]----|----|----|-----|----|----|----|  ....  [=====|=====]
-> jiffies++   1001      1002 3    4    5     6    7    8    9        997   998   999
-> damond_fn(sample interval)
->                             -5[997<]
+> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.com/ [1]
+> 
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 116 +++++++++++++++++++++++++++-
+>  1 file changed, 112 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index 84d142a47ec6..fdfb961a6972 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/jiffies.h>
+>  #include <linux/pci-p2pdma.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/memory-failure.h>
+>  
+>  /*
+>   * The device memory usable to the workloads running in the VM is cached
+> @@ -49,6 +50,7 @@ struct mem_region {
+>  		void *memaddr;
+>  		void __iomem *ioaddr;
+>  	};                      /* Base virtual address of the region */
+> +	struct pfn_address_space pfn_address_space;
+>  };
+>  
+>  struct nvgrace_gpu_pci_core_device {
+> @@ -88,6 +90,83 @@ nvgrace_gpu_memregion(int index,
+>  	return NULL;
+>  }
+>  
+> +static inline int pfn_memregion_offset(struct nvgrace_gpu_pci_core_device *nvdev,
 
-Please use fixed-length fonts for something like above, from next time.  I
-fixed the diagram with my best effort, as above.  But I still fail at
-understanding your point.  More clarification about what the diagram means
-would be nice.
+Per Documentation/process/coding-style.rst this doesn't meet the
+guidelines for being declared inline.
 
-> 
-> It seems that only the section corresponding to the sample interval ([==|==])
-> can be cycled as follows.  And, how about enjoying damon_access_reports[1000]
-> as damon_access_reports[500]?  Even if it reduce the 1000ms to 500ms
-> array space, it seems that it can sufficiently report and process within
-> the sample interval of 5ms.
+> +				       unsigned int index,
+> +				       unsigned long pfn,
+> +				       u64 *pfn_offset_in_region)
 
-Are you assuming the the reports can be made only once per 1 millisecond?  That
-is not true.  The design assumes any kernel API caller could make the report,
-so more than one report can be made within one millisecond.  Am I
-missingsomething?
+Is a pgoff_t more appropriate here?
 
-> 
->  static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
+> +{
+> +	struct mem_region *region;
+> +	unsigned long start_pfn, num_pages;
+> +
+> +	region = nvgrace_gpu_memregion(index, nvdev);
+> +	if (!region)
+> +		return -ENOENT;
+> +
+> +	start_pfn = PHYS_PFN(region->memphys);
+> +	num_pages = region->memlength >> PAGE_SHIFT;
+> +
+> +	if (pfn < start_pfn || pfn >= start_pfn + num_pages)
+> +		return -EINVAL;
+> +
+> +	*pfn_offset_in_region = pfn - start_pfn;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline struct nvgrace_gpu_pci_core_device *
+> +vma_to_nvdev(struct vm_area_struct *vma);
+
+Ugly line wrapping, try:
+
+static inline
+struct nvgrace_gpu_pci_core_device *vma_to_nvdev(...
+
+> +
+> +static int nvgrace_gpu_pfn_to_vma_pgoff(struct vm_area_struct *vma,
+> +					unsigned long pfn,
+> +					pgoff_t *pgoff)
+> +{
+> +	struct nvgrace_gpu_pci_core_device *nvdev;
+> +	unsigned int index =
+> +		vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	u64 vma_offset_in_region = vma->vm_pgoff &
+> +		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+
+It's still a pgoff_t
+
+> +	u64 pfn_offset_in_region;
+
+As is this.
+
+> +	int ret;
+> +
+> +	nvdev = vma_to_nvdev(vma);
+> +	if (!nvdev)
+> +		return -EPERM;
+
+More of a nit, but the errnos seem like they could use a little more
+thought.  The above is more of a "not my vma", ie. ENOENT.  Failing to
+get a mem_region associated with a vma that is confirmed ours is more
+of an invalid arg, EINVAL.  Ultimately the question though is does this
+pfn land in this vma and if so provide the pgoff_t relative to the vma.
+So maybe a pfn unassociated to the vma is more of a bad address, EFAULT.
+
+> +
+> +	ret = pfn_memregion_offset(nvdev, index, pfn, &pfn_offset_in_region);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Ensure PFN is not before VMA's start within the region */
+> +	if (pfn_offset_in_region < vma_offset_in_region)
+> +		return -EINVAL;
+
+This is really just another version of the pfn is not associated to the
+vma, the only difference is the pfn lands on the device, but still
+probably -EFAULT.
+
+> +
+> +	/* Calculate offset from VMA start */
+> +	*pgoff = vma->vm_pgoff +
+> +		 (pfn_offset_in_region - vma_offset_in_region);
+> +
+> +	return 0;
+> +}
+> +
+> +static int
+> +nvgrace_gpu_vfio_pci_register_pfn_range(struct vfio_device *core_vdev,
+> +					struct mem_region *region)
+> +{
+> +	int ret;
+> +	unsigned long pfn, nr_pages;
+> +
+> +	pfn = PHYS_PFN(region->memphys);
+> +	nr_pages = region->memlength >> PAGE_SHIFT;
+> +
+> +	region->pfn_address_space.node.start = pfn;
+> +	region->pfn_address_space.node.last = pfn + nr_pages - 1;
+> +	region->pfn_address_space.mapping = core_vdev->inode->i_mapping;
+> +	region->pfn_address_space.pfn_to_vma_pgoff = nvgrace_gpu_pfn_to_vma_pgoff;
+> +
+> +	ret = register_pfn_address_space(&region->pfn_address_space);
+> +
+> +	return ret;
+> +}
+> +
+>  static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
 >  {
-> -       int i;
-> +       int i = damon_access_reports_len;
-> +       unsigned int nr = 0;
->         struct damon_access_report *report;
->         struct damon_target *t;
-> 
-> @@ -2904,16 +2905,18 @@ static unsigned int
-> kdamond_check_reported_accesses(struct damon_ctx *ctx)
->                 return 0;
-> 
->         mutex_lock(&damon_access_reports_lock);
-> -       for (i = 0; i < damon_access_reports_len; i++) {
-> -               report = &damon_access_reports[i];
-> -               if (time_before(report->report_jiffies,
-> -                                       jiffies -
-> -                                       usecs_to_jiffies(
-> -                                               ctx->attrs.sample_interval)))
-> -                       continue;
-> +       report = &damon_access_reports[i];
-> +       while (time_after(report->report_jiffies,
-> +               jiffies - usecs_to_jiffies(ctx->attrs.sample_interval))) {
->                 damon_for_each_target(t, ctx)
->                         kdamond_apply_access_report(report, t, ctx);
-> +               if (++nr >= DAMON_ACCESS_REPORTS_CAP)
-> +                       break;
+>  	struct vfio_pci_core_device *vdev =
+> @@ -114,14 +193,28 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+>  	 * memory mapping.
+>  	 */
+>  	ret = vfio_pci_core_setup_barmap(vdev, 0);
+> -	if (ret) {
+> -		vfio_pci_core_disable(vdev);
+> -		return ret;
+> +	if (ret)
+> +		goto error_exit;
 > +
-> +               i = (i == 0) ? (DAMON_ACCESS_REPORTS_CAP - 1) : (i - 1);
-> +               report = &damon_access_reports[i];
->         }
+> +	if (nvdev->resmem.memlength) {
+> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->resmem);
+> +		if (ret && ret != -EOPNOTSUPP)
+> +			goto error_exit;
+>  	}
+>  
+> -	vfio_pci_core_finish_enable(vdev);
+> +	ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->usemem);
+> +	if (ret && ret != -EOPNOTSUPP)
+> +		goto register_mem_failed;
+>  
+> +	vfio_pci_core_finish_enable(vdev);
+>  	return 0;
 > +
->         mutex_unlock(&damon_access_reports_lock);
->         /* For nr_accesses_bp, absence of access should also be reported. */
->         return kdamond_apply_zero_access_report(ctx);
-> }
+> +register_mem_failed:
+> +	if (nvdev->resmem.memlength)
+> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
+> +error_exit:
+> +	vfio_pci_core_disable(vdev);
+> +	return ret;
+>  }
+>  
+>  static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
+> @@ -130,6 +223,11 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
+>  		container_of(core_vdev, struct nvgrace_gpu_pci_core_device,
+>  			     core_device.vdev);
+>  
+> +	if (nvdev->resmem.memlength)
+> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
+> +
+> +	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
+> +
+>  	/* Unmap the mapping to the device memory cached region */
+>  	if (nvdev->usemem.memaddr) {
+>  		memunmap(nvdev->usemem.memaddr);
+> @@ -247,6 +345,16 @@ static const struct vm_operations_struct nvgrace_gpu_vfio_pci_mmap_ops = {
+>  #endif
+>  };
+>  
+> +static inline struct nvgrace_gpu_pci_core_device *
+> +vma_to_nvdev(struct vm_area_struct *vma)
 
-So I still don't get your points before the above code diff, but I understand
-this code diff.
+Same wrapping suggestion as above.  Thanks,
 
-I agree this is more efficient.  I will consider doing something like this in
-the next spin.
+Alex
 
+> +{
+> +	/* Check if this VMA belongs to us */
+> +	if (vma->vm_ops != &nvgrace_gpu_vfio_pci_mmap_ops)
+> +		return NULL;
+> +
+> +	return vma->vm_private_data;
+> +}
+> +
+>  static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
+>  			    struct vm_area_struct *vma)
+>  {
 
-Thanks,
-SJ
-
-[...]
 
