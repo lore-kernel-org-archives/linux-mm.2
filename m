@@ -4,99 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94AB3D44149
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 08:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE0DD4336A
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2936B0005; Fri, 12 Dec 2025 03:44:40 -0500 (EST)
+	id CFFD76B0005; Fri, 12 Dec 2025 04:13:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7A4C6B0006; Fri, 12 Dec 2025 03:44:40 -0500 (EST)
+	id CB04B6B0006; Fri, 12 Dec 2025 04:13:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98FFA6B0007; Fri, 12 Dec 2025 03:44:40 -0500 (EST)
+	id B9E526B0007; Fri, 12 Dec 2025 04:13:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 84F926B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:44:40 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E1961A0317
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 08:44:40 +0000 (UTC)
-X-FDA: 84210183120.09.8705F62
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2D9231A000D
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 08:44:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=nXdso5e8;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765529078; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A731B6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:13:55 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DCAD13B194
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:13:55 +0000 (UTC)
+X-FDA: 84210256830.27.FFFBF92
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5CE5B100013
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:13:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="uKg/GSQK";
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765530833; a=rsa-sha256;
 	cv=none;
-	b=ki2iR4X7xbMuK8vkITpAH70zKHJBuWU4zVKQyxpRWudQWfJjdHRvfp9qhtHbkwNnu4Dd8m
-	AKFBOuOwR++gxwZD/OkKoeFMVh0aOTlKijBiuv4vCJykipJjvdy73t0J7UXC+EprezC0IL
-	HFFXmagl3diPEEvQWyw8DsijXR2LZKw=
+	b=B8byFhUNk2vol0+ImzYODZE3ZuxmVuyRDgEX3WBC54QJKlI0z8sCxjV3xKNs+DVrM8wNlw
+	sXM+XdDxQawHq381mlKF++/31SSlWdJiiyNHOR5RQJDFBLXtm0S/QMR/hGfJrXDdUoB3nk
+	RV4yhHRYkr3MRprp5GYtgTtUoEjNxkk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=nXdso5e8;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="uKg/GSQK";
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765529078;
+	s=arc-20220608; t=1765530833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vAYLjTJDqvg81ZKTZa2xcGlTQMi7ddtiNuDniSW7pgA=;
-	b=uNZKG7cO0fI9fXS6bBV65Oz6vDXLbBUbBTcDynYjk8eNLMGgLpEBA/z3KiPG+/DmNzf7xI
-	sgg6u2SWDZOXp5m7W80mVSz7TFxuyb1pq5pZxmoEdm3WN+atPtzPkJeA+U9WNZt9mUMKQb
-	+/uuT/B6jAkVPHaEy46tGFEa4zuhKDI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1765529075;
-	bh=YlZVG6EILJaffJguwlBqnLil+hF3zrisdr9uOMs57Ig=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nXdso5e8mTqNIXLu2cVx7wFXHiG+nieYuTSpMvTYVrQOCAy04g0RVrCJDC1jKcsf/
-	 z0TpLcINPiOgkvn89GyoInLC/fMKhhExVgksYk9kl348oFtQvU+3Xp5dCeKMTBE+7/
-	 J5t5NTqbN4TXjDrTSNl+M23Dd+nCvphe98UBxOo+xkMy6PpX4LrqTzTH5J7zEaM7sa
-	 AYDBhI+EyFH1Jftx99sWy/T5E9i1SbycuXsGD5gXCV3lGnlTA8K4lIz02YXmMgQ3qg
-	 uep/GimQQe3QQkRfMcc4QE6WqcrwRGVDTqnoCbcjYdnH5bIJoK94Dy6/mgLKAO9Cgo
-	 7K5ANLzcoUT+w==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6FF6317E1135;
-	Fri, 12 Dec 2025 09:44:34 +0100 (CET)
-Date: Fri, 12 Dec 2025 09:44:27 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Will
- Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Joerg Roedel
- <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-Message-ID: <20251212094427.2ec0b31e@fedora>
-In-Reply-To: <20251128180255.GA836877@nvidia.com>
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-	<20251128180255.GA836877@nvidia.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=za3Z6nCogcC2rSrqJPImaYLaC5FD9fqlNIQmXXHpQIY=;
+	b=yIC2gRvdaQ6QjxQmM02FpyOzJ7lkbvv/o9PLqCwPKbVAPm44cp59CeGGsN7g0yht+S2lrF
+	cf/0uFGubeFw8fjwZrYMvDXSbzBLp1EVGYj//KOBmNdpJLxvqz8ssxKeFTTTSlMA08VdjD
+	/QJdLd2lKYCnnd24n5RK7/M549cRTB8=
+Received: from pps.filterd (m0499198.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BC90N7q144497
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:13:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=za3Z6nCogcC2rSrqJPImaYLaC5
+	FD9fqlNIQmXXHpQIY=; b=uKg/GSQKP65HHIXIU/0QSpgmKz0ZJ4mRqkKK0wXo5X
+	4p31jMkn0OhTgbSuRyvk+bMLxQmI/TdY8r9vZfeUc2AlUqm+gfU3otqXmISQCjOu
+	ydBvK32hqIcxPh139Zy+AXkgKY9qjEtyEaWFwmHClh4bWfpZDlZQ4YYtXF++MeHu
+	02LCDVqak3NcTydE2pt3knXB7DVFhmVf7oraRiG5vDoI44eQG2VLZREASUW46fXo
+	j9dZReDVYy2mdV13vlmgY+55fRCWQzDz0KmEpPCZY4v4BfbvLaXjtxH9sZ1/DhsZ
+	yUq+XbpvKtvgrWAWl7JMk8Pbl0wG5OmkUqJEcj2EukrQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4b07h2j11d-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:13:50 -0500 (EST)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-29f29ae883bso3841125ad.3
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 01:13:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765530830; x=1766135630;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=za3Z6nCogcC2rSrqJPImaYLaC5FD9fqlNIQmXXHpQIY=;
+        b=gu1TbXQxB4zV/56aaZvf4encZ2zZjJRzsCHsuCE09/5iYTydRYcBLF3Y5daZyiaZas
+         tpUf3e6T/mQMivMNRvavJoo2O31YLzMUsI9VdgdQIWUpG6PR1hgCqaO0YRmL5uhX9YfU
+         sJbOx+rwWsFNh3YOXscuUFZwrwuotRTlR1Flc+Knm22cg49nADzcTKkRGVx8XqgZBh2v
+         fsOhcZmaS8gZ+vXCpzJO9pgofCLYYVZ4FaxJZj0dvnkIa35K8XW5Eu1RMRpHoKccgVNZ
+         K9+XAabIZow/bDw/bhzxF9NBwM/87TJwsVUIbtlmDwySI8ErdOckjpMdcLUm1vPIh5so
+         yLXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVExDmMiV4xgG8jT86x3UF0joaqHpHLZ+H2WTQk1iJH+Sva1X213uQVO0cXPSnuBw44aqlWRKZzHA==@kvack.org
+X-Gm-Message-State: AOJu0Yzo0Z+i1YnTiCEhE891NxhTslS7CWonE1eRWpNwruKsVgiLXmfa
+	Yga9ZyPV+KfTncaG4n2LtzWIPkuWlnPqz7WvHS/DR3mmDPP/QEZCPHFNjYEno0PYe+2HeVgfPtt
+	Tyf8bVmbaeffhOi9m2ASqRxTAD/mTwEyFR/vVacdeFUMmK5Mre2cnZvu+
+X-Gm-Gg: AY/fxX5Vh0cG2SaNWe0NO8yYIjrJM8x8UjrNxQ/R/omzcVj5u5Ig+YxZU0krAi/ZDkL
+	3AvUwqpVG2qS69QWX8aJFk9I+cT0mYHmph9Ry1OwNP7WxURYSjW4YgcZLb6iYiHg4AK+xOh437D
+	sK43xHirEuXoheAXFDkAeg0GQgzTw4K8BwikIWn7hJTke2YAiuSPUPUuAjbjJAfW+O3b+vEsFBa
+	rSTNa9nWm1g+lPeDyUKblZHfInEP0lLhwJ/qmgOXHPtfslqHvibv+McZUudsHo3TgyGNQhZmTUo
+	cfgrlrmq9mBAjyBTVcL2hCrjBWjtzwj3Qi4Ts9HOziIg1eXzZV5NB3u6WZmo/3e4iOIdMo5MCET
+	4UWeoxlgMuvj4jQpi0fwC/JjU0MY8HolMGpGLBDeLfi9nxubz1eHdiojU
+X-Received: by 2002:a17:902:da90:b0:298:68e:4057 with SMTP id d9443c01a7336-29f26f02492mr12993335ad.59.1765530830001;
+        Fri, 12 Dec 2025 01:13:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6sKbsPSYsaMyhULdwVqz1JoQu+BSE8km39oGocnv1+kBEsKkLBQeMpkHcDjKtUuydOVQxbw==
+X-Received: by 2002:a17:902:da90:b0:298:68e:4057 with SMTP id d9443c01a7336-29f26f02492mr12993135ad.59.1765530829488;
+        Fri, 12 Dec 2025 01:13:49 -0800 (PST)
+Received: from [127.0.1.1] (p99250-ipoefx.ipoe.ocn.ne.jp. [153.246.134.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea016e57sm48497255ad.63.2025.12.12.01.13.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 01:13:49 -0800 (PST)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH v2 0/2] x86, mm: minor tlb_flush tracepoint adjustments
+Date: Fri, 12 Dec 2025 04:08:06 -0500
+Message-Id: <20251212-tlb-trace-fix-v2-0-d322e0ad9b69@columbia.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2D9231A000D
-X-Stat-Signature: qeiougufqb5b69mi643jzf4ohqpkutaa
+X-B4-Tracking: v=1; b=H4sIAHbbO2kC/3WMQQ6CMBAAv0L27JrSUARP/sNwoO1WNkEwbWk0p
+ H+3cvc4k8zsEMgzBbhWO3hKHHhdCshTBWYalwch28IghVRCyQ7jrDH60RA6fiPpXrfOXLSWLZT
+ m5ano43cfCk8c4uo/xz7VP/vvlGoUKKlvjOpco4S9mXXenprHM9kNhpzzFzEpeemtAAAA
+X-Change-ID: 20250528-tlb-trace-fix-eb9b6fc7bb26
+To: Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Ingo Molnar <mingo@kernel.org>, Rik van Riel <riel@surriel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        x86@kernel.org, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        David Hildenbrand <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        Tal Zussman <tz2294@columbia.edu>,
+        David Hildenbrand <david@kernel.org>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765530499; l=788;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=RQs+Cr//EkA08UpbUBYAdwgnHf9vZ+MF64Ay7/KhotQ=;
+ b=HNx9jzUDiAP5JSX3noLQxFsehtAhFIOg4dMKrEKthREshjiRp5BImwVYJwMexc6sxNAWzyZPY
+ sa/Ub59Y1T7D4+rjSgEPJvT53cMT2cdm+oFqczWFoehSiGm+14I70uS
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-ORIG-GUID: 9OXOQHFI3kLgUIKTZaC899P0VqicoIkM
+X-Authority-Analysis: v=2.4 cv=Vd/6/Vp9 c=1 sm=1 tr=0 ts=693bdcce cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=gC7H+NTNV8TiHuUi9Bl0tg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=D63WkmDjCBH-idvp9jYA:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-GUID: 9OXOQHFI3kLgUIKTZaC899P0VqicoIkM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEyMDA2OSBTYWx0ZWRfX33SuwuLkHJP8
+ lMg7Yq9D3uW1IoZt40ni0/+o6tCDf4ygnNb5QMNPi9tBWOqIrNQktHLvlZj1zfxKI1gMak3QZpH
+ wnLCYUIdC4uRv9oS9LBOS5xvNgggvJpkBZYAwtamBkQ9qmlJDrJ/OK6U6yZBm1AijAm0NKT/02R
+ Ifj1ReuNmS2EbQ7ApwdGReVsVA1LLxUluL+PDz/V/0c1iqe74oDdaxDRy4yIygEUZFBypmfTumU
+ nVsmc0SE3K+F5w51JImBalqbn0d6JZvOFXZ1ztPmZG8S+IVN5xLmIBUrlk5dgxAwOcuxBF2pRAQ
+ N4GXqSzg068vmYSQtgD2abJeD5jd4A5+w6OaWfZ6+UqGGsbYkp1HN9XEfYrXSfjBVbzGn7r6Ouu
+ q9ehlK3mV2+9Tc6D17e3SrIz8iTBJw==
+X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11639
+ signatures=596818
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=10 bulkscore=10 priorityscore=1501 adultscore=0
+ lowpriorityscore=10 phishscore=0 malwarescore=0 clxscore=1011 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512120069
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765529077-730238
-X-HE-Meta: U2FsdGVkX1+z8Z4BxzaC15cLiM3QIFqAZlpGV7q041PTTwk+FZZ6J9rGOLo1ziMHIv+r4oOCdNF5GcU3cRl29uCKBDCYIgAPB6ImYFgcFFWeDTjVjSkCrd4E9h5KT8MuiIevZ5ocfxPLmOKmm47AfWvX0AM5BhDo434KWlgzT4w0y61mzOOti0mBbMHnyQ61yoYlD4aaSsysbUlwrFgBWRx6KugDpbXsGwSqwq1CyGenq36/B9ZDdb9KAhiUMbXftrrFOBUJpYp2ZUthkRnlRwyexqMhNWbPbPWI4npk12QuFK4ukTxosagD5RI1K3FGe1nGpNj4h44ZB1ajPRdtxmrBOUL+FzwhRxPic08ZOEq1cobVSNztRhkHQRDXPxyUKIlaJidtAjE6gct40xHOw6zE5vvSYo/gkN4k7PenxEpUh1v1JZsxGNdHnF44MdEc7m4kq11wbldvq3r9oxji7+bq0BiqZhH3GKlHxTmIe+zxrZ4r1vpbEIakXygIHeCPWFyvYgh7mEhnyCdfm9ieMIAVDs2pqbI6WitkrZooA3N7sgHExY033SkOcnoCAV3HyfCoZF7XyD9ndSeZJETmX4FPAg8T6LG3rcZGHC/XONFvwym67aOXmYNM48fIQzLMoD/TZESnegnOsrUXfGIu3WaUGZkGZA4M2GxqmyRHSbPY1RwmdLPRrqP6D+Op4Ew2GbzjBJmmyKoNfcz8LHPT5DrrxRRuLAwRIXFt78IrTH+bM4D+DPjRIVFTA0gSO4LyN6GGlcU+vltSrqtZ3on6/7npwNmsR+oqZweN45udJiiA2LCr3jyzvoISXMkqrK6a7Kd8mEFfB/Im8Mdn6L40E6T686FZSCs4gMEjBUqibfZB3fNdcsMQ1p5fZ8Gubnlf9+38Y4udJ/7rnhpqrnhPaI8ZrnBpeOpDX25y7g+WaKbUN+q5ju8dflpYVPstiI8lFkg4zoIu2NkHegq3I9Z
- UJDzhoIW
- /ynDjdqMC7+Uqoq34KKgSD0mlqmJr3/AGX4kwsY7E6b7T5N5tMqO3zdH42K2rpxlizlAFId7v+8xXk2b9opG7ZvYx/XYcx3eMDVLyeCceUCnxcmm3SZVslETD5YsYs6dmfvp3TxZsY3AzR+9AIMzxsD9h3CynjCgz0qATD/v6GEQpbWlhTRlxLOIbwSoaUQX41GN5JGntSjjZntknSCdhRaDsZAL7Lonxu+Ev3YXgdvuaJfO6jSwRW4XBQrNuWg6GK8cUtvkbEPLChGcQZ/R8F5bqrGNE0tde7Ld+mIofLYw7bEyM6krds4g349rVpE7cn0aztDCa8yAqzHDhZvjCNqVaK/Q9eR/IXp66ftljUg/uydweS3HtFkZTnon6Pz6TPFmQPb6Sa8mv9yuoq4UICU3uvhKRfY0GZMTZ/L1N8WgU6n/CMMSVt/CRLo9LjDrDUF0Ji+KvcUGtADU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5CE5B100013
+X-Stat-Signature: bfptdud3hwkgmcczhfcped9dhs8j5jq6
+X-HE-Tag: 1765530832-344541
+X-HE-Meta: U2FsdGVkX185qSyKC6nejbGa25wm4h7nwd88ndPs1ZR3Oi35psZSXCItIQWu8opCW5eowP1XqBmkUzRtwrmmYxWUtecawyig9r2H9Yts5MzTxaKAqYvHgsZ9OBqCpKAg7CKzX1wsQWQdHWWpfuGKz5xDOdbuCGPsfsw6XgOuHRz8lQfcvjqBgn4JMIg4bILUfNQdIFWkY4yGMq9VnZNAVu80mGCSxkRCDRvVdJGa6X6kBovrf9yhyAnn4VYYqBKtHrJXOXhH7TPZQzzQ5O/ENodPXXd/v7K3TNRHQTDMmtymeHh5Iui0TwkPJ9BuPfFztrBayRcrlFaNh2YjsBnIYJKbJi5zLhpUwrc+OlE850DRLQCOxMuw4leIGG4tg/Jg+XkvMmKqLeiTh3ECwnBxNczCUsG61hh+dBHxfX8KVKDCgxHk2QQaF+hfoRNT5TybtJlw8WTwYdd7/1MEV1tx+/4fhFw4zTxEmL/f5n/pxaiMyvBTXB0Ir4mzQL52mVRebZ1sYyFKzNMrCmChWUipqEBv4wEUkCY0t6BKngF/gaucZBV6NmIp43TeRCY6mZnCXcZNRU6AAodpU8OB0JDvjCI2YXSjRKt476PtgRNx/ZNbkQbsAg9ws0mDhnH62cOFXFS5/DrDjXXHKL5FQqRe0ObTfY8HTLOC1GHaf3+8CgYPJLIzaDBKdud47j0KIhNz5EXDTKIjFY/jnCnBXin2li01hGuwiggBC38IUf74Fuz0DGh/qy2tzgc3MKln5Mr3mPCgOGPhC5sbBXM5Cwap9984rW6zRO9r9eUmEW8sR+4goTL9T3W6AhFo1pnSjjed06LVrxUYNXuMGHE1aiYDmNFplshbznCgZsHasA+2/crAn4Dgt9A5pvbccSGc57SEn7poUjh8wJR2SIdCMGEnRFeHE57UUHFEqAO3q3P4rq09829MQtpcZJGo+bHMDnJ4jkvS4uOdn2JLor4O+7+
+ d3/FMAYn
+ I3ifWfQL8Dd4Y7njd4gCt/FV0U55i8T1XOSAY92y1B7I4l9xXxgHn3T5BzNaZgE2gMTCSPvwhTpAtCfWOieAuHlfrDgUtiX5oM5hElTAPfLFstmXfu8WL8g0/4ynzRsEf7ctGatle0XA2rYMIcT6EbTBMnd2cLdT24OI7X57Ec5FfEG1HmZB/0Wi6KgVMcQ9RJRRCHJmDCX94aGxfTXOD46e2McQzqnDm3657dRU7NrEeaC6SOdGht/eiyGVfK58XqbplRdnOFwwNQYPGP1+ChjieK7Fc1vWJODMgzpq8mRHKrPc8Lz7UJiFYzlEQKewlKpchma5sb953jAdc7p9uHnXszp6MZtevA96GNb3JIfxpLnpMoYjlpyWaSW5fB6W1tyGCigF0I2tYYeJ+9gTUAr/dF6XLZAg7NWgPL4t3WJc3g+GfcrNv4ERnsU93aBhV9zBC1ij5zNTU4IRMI1+sX2MKW+nrFrhUBeqM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,81 +171,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+One minor fix and one minor cleanup related to the tlb_flush tracepoint.
 
-On Fri, 28 Nov 2025 14:02:55 -0400
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+---
+Changes in v2:
+- Propagated tags (thanks David, Rik, Steven!)
+- Added MMU Gather maintainers to recipients
+- Rebased on master
+- Link to v1: https://lore.kernel.org/r/20250528-tlb-trace-fix-v1-0-2e94c58f450d@columbia.edu
 
-> On Wed, Nov 12, 2025 at 10:15:00AM +0000, Alice Ryhl wrote:
-> > +    /// Map a physically contiguous range of pages of the same size.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * This page table must not contain any mapping that overlaps with the mapping created by
-> > +    ///   this call.
-> > +    /// * If this page table is live, then the caller must ensure that it's okay to access the
-> > +    ///   physical address being mapped for the duration in which it is mapped.  
-> 
-> All the iommu page table code runs with a caller provided locking
-> regime.
-> 
-> The caller must effectively hold a range lock over the IOVA it is
-> mapping/unmapping/iova_to_phys'ing and it is illegal to race those
-> three functions with overlapping IOVA.
-> 
-> For example the caller cannot map to IOVA A-B while unmapping C-B or
-> iova_to_physing(A).
-> 
-> This locking detail should be a safety statement.
+---
+Tal Zussman (2):
+      x86/tlb/trace: Export the TLB_REMOTE_WRONG_CPU enum
+      mm: Remove tlb_flush_reason::NR_TLB_FLUSH_REASONS
 
-Sure, adding this to the list sounds good.
+ include/linux/mm_types.h   | 1 -
+ include/trace/events/tlb.h | 3 ++-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
+change-id: 20250528-tlb-trace-fix-eb9b6fc7bb26
 
-> 
-> > +// These bindings are currently designed for use by GPU drivers, which use this page table together
-> > +// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations  
-> 
-> Now that we have the generic pt stuff I wonder if GPUVM should be
-> providing its own version of the page table implementation that
-> matches its semantics better.
+Best regards,
+-- 
+Tal Zussman <tz2294@columbia.edu>
 
-Not too sure what you mean here. Are you saying that we should fork
-io-pgtable-arm.c (or rather a subset of it), and have it all
-implemented in panthor? I actually asked Rob if that was a good way to
-go when rolling out the initial panthor version, and he advised me
-against it. Now, I see good reasons to do that, like the fact we
-would be able to add features like batched repeat mapping updates
-(mapping the same page over a wide virtual range without having to
-duplicate the intermediate page table levels that are exactly the
-same), or the ability to extend the mapping arguments with
-shareability/coherency info (that we can do by adding IOMMU_xx flags
-too). But there's also downsides to it, like the fact we wouldn't
-benefit from bugfixes materializing in io-pgtable-arm.c, if any.
-
-It's a discussion I'm fine having, but it looks like even the IOMMU
-maintainers are not on the same page here ;-p.
-
-> 
-> > +// on the page table, and in that case you generally want to flush the TLB only once per GPUVM
-> > +// operation. Thus, do not use these callbacks as they would flush more often than needed.  
-> 
-> This doesn't sound quite right to me, the flushing requirements are a
-> consequence of what flushing HW is available in the xTLB that is
-> caching this. The flushes generated by the common arm code match the
-> ARM64 architecture semantics. If the GPU has different semantics then
-> it can do something else, but one must be careful not to match a GPU
-> that is expecting ARM semantics with "do not use these callbacks".
-> 
-> IOW it doesn't seem right that common code would be making decisions
-> like this, the nature and requirements of the flushing are entirely up
-> to the driver binding to HW.
-
-We're not saying this will work for everyone, but rather, this is a
-default implementation that does nothing, and if you need to do
-something, override it with your own. I guess if that's really
-problematic, we can force the user to provide one and keep the NOP
-implementation on Tyr's side.
-
-Regards,
-
-Boris
 
