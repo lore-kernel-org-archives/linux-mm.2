@@ -4,152 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88D2CD59D84
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A378BD59D82
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 794226B0006; Fri, 12 Dec 2025 13:33:24 -0500 (EST)
+	id 1366A6B0006; Fri, 12 Dec 2025 13:37:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 744906B0007; Fri, 12 Dec 2025 13:33:24 -0500 (EST)
+	id 10E346B0007; Fri, 12 Dec 2025 13:37:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 632F56B0008; Fri, 12 Dec 2025 13:33:24 -0500 (EST)
+	id 024BE6B0008; Fri, 12 Dec 2025 13:37:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 518076B0006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:33:24 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F397889037
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:33:23 +0000 (UTC)
-X-FDA: 84211666686.25.1EF696E
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0D9E5A000E
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:33:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=BRHLd+A2;
-	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E1F2A6B0006
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:37:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 972E2B7A88
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:37:39 +0000 (UTC)
+X-FDA: 84211677438.13.59E5A06
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AD03640010
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:37:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="e4w/Ay9u";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of smostafa@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765564657; a=rsa-sha256;
+	cv=none;
+	b=TgxCElFPm87lK6vtPHSAzt6M6aPMnmrIscsYH+Lgv3x3qMxhplWRNQe4TWko1ToCro1Vli
+	vy8YSW0KvOaVnGoROm75arA/varhMRtKdpiNIcLAtGQT8etAJUNlv4zr8HAah43vRZavej
+	3QJe4ias6FmEyrp9eVNs0cbmvOmRdAQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="e4w/Ay9u";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of smostafa@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=smostafa@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765564402;
+	s=arc-20220608; t=1765564657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
-	b=2mEnC2EPEB6TR/D1HdmkYSz2mSgcSwTdqEz+SD+63jq+9J1MiYxiFUflcLEGeD26stgaFg
-	Qx3wabSs6S4GH3m/dZ9aC5t9G91ILd31TeAfDKDfh3872KmLoNKYp9tdvXzbtsCwnn9cP8
-	fVox84nKnddBmsB+XMEih3uT2jhWlis=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=BRHLd+A2;
-	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765564402; a=rsa-sha256;
-	cv=none;
-	b=IaEh/n66iWwJND+k6RbtQ7xF60L0tRUJLyvtgRGZEWDTIrrrA63R7+K7dBt1G4d+ok/h+z
-	RJP/r06blPVEB4TW05TNqIw5CzokZVHgdXM7KBz4b9dX6DXf3rR9Y3kAyQlrPhbZxsZCGB
-	iO/3m6J3EUFWJStVvU5E/nYqBe1YcYU=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-298145fe27eso22059275ad.1
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:33:21 -0800 (PST)
+	bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
+	b=rWCYKVk41Ls8cdIHiFGBWUlnXNcPDQzVubr9dE2GvNMr8nZATjviCLNlNZMMtCgjyy5Qo7
+	uel9fnA4Dtl8hKG85Odl7HZW0ZWbPtGzZ0pbiCHJcV8b7gHJL85nvajz7IQUXbFNtFC6iF
+	vOyIwI45nfnajUpNYr1Eml6ZktyOP74=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so180625e9.1
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:37:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1765564401; x=1766169201; darn=kvack.org;
+        d=google.com; s=20230601; t=1765564656; x=1766169456; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
-        b=BRHLd+A20Djvk0t/PTIymTj1G5Glrz+WYGRhgzzHf7qbHtwRE/uO7p3mZ5mFq0S9z9
-         XI7u+h8LCB5UEjkdgpc9iA5Ux35bVTre0hKVAflIJUYV037O1ZxyaSkdswx2wkAlyq60
-         cV2w1ThBTzo2Us73gXEr9kfuGOqDAc8W41casb9CaVZ+e60AZUsQkCPSl1UaK5qthqOu
-         FTjXZOhQUY1Wr/FB0Jxdywf+3GwKRDIC9gRhrmGKuwJvnrKvVGV7WVwRhYoC31vq7PWt
-         hI4PFHOxMmb4//lKHogDKhEdDLlOXq6y3LO9jHmIppdjqireMdDnCvqkkMo6cP2gWu0n
-         QdCQ==
+        bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
+        b=e4w/Ay9ukdvXjNj1ug8TfV574T356TDIzi1oSvlHxsC7SEIWOg519epuofhdQggX7L
+         YKSqd+Zj2qjA1bzn/Xb6JhlisF756SF/Q4t1yVj3dkY2e+5dVj/J7IMQxJGwhhCw1Xlf
+         1OzKr6SyrWewkLjeyk41tRTqLtDu05owdn7xp2rY8RnsbZRVZK53rU3/8cTkqBtnkoWj
+         75FOK5peGx7C/DNjY0kcOhU2tG5NJx/CX2Ib3hYMl8YH0x8IUPqbjf8UxhKPgquhk8BK
+         gAQqsza2fKL+R8T/qew+ApmbI5243TIQDrmAu/Xlhj5FNiSKE8cryBQPR2Qs43Wv+1ao
+         yGOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765564401; x=1766169201;
+        d=1e100.net; s=20230601; t=1765564656; x=1766169456;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
-        b=GxUgRmainqF5vIMyPyTwdn7bQIE4bXUOvtJzVY2rvgV6qeUbW+gXUAic2Yk5uzANtG
-         vjDcpX+qGYvvZAYEFnLj6dYIgDpprmR0sN+HEs6wp3Vbry59WtOiVlkTIISQIi3Omsb2
-         cs/iDh5Yirc9HoAua6DjHZvvbgDPdI/P5hTmgnn0OfQ5mvQGCsL22bAYrh4T0280fEy0
-         J1TN1gnBwUvYBay1mNEMMfH0pU9N2E/3CnGD1xQ78SJmkx1byyh9IWn74sm72kQ4smbK
-         xYGtiB+GyVwiUfRIVrUyO3RGfq4yQliPTHqIf/uRygVz1UsFTMgng0/QwRk24nhHn6pY
-         tSXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1g+yKyOO2rOBhPVDolI7YaE+l5uEQWqk8dPCMw137gy++tM9CGuAfVq9d0TUdZqPAeADZ7CkaZQ==@kvack.org
-X-Gm-Message-State: AOJu0YxGVfLoYD7zDqCLOeqTkVzdcq47zmmE3tCOq3OU4GiTc/f6fmNX
-	Bct+F6xAk6g8Q+pqXJ6oMKZtjtidyVQaddbX7WjXVv2rKCWzYrL7oh6zlt63oQ7Nju0=
-X-Gm-Gg: AY/fxX6zLhKdlPMRkOJqDhpH3q6hfS81R1NwQqMjE7nwdI60vWn5TzvVNV94EIZNayg
-	wi9fLA7/aN2yh383JL4bTRmYWSjUno7uB0RZM7SGlpCOtiNg30NqUCLcWVIC+Pi+7RSWYLSygCs
-	KOE5agDkWH4lsAc4em1ELXOnEjDJLN74bRxNmMf2eqdqseOianLYFdRkQn4nhKSt5cqYAxiamNO
-	Hr8r2dQq9j9hIQuPvePzrHWfa+Pz3Ge/fUOHtso8NLeKcuBspDH4OnEfggatr+cXHupKhUf+Tpc
-	dR5P7c3xSFvzqPz9XOK05SAiPNjM8KxHJHh2CXZWbfRyV5EyBjROTorPGbT6mUqR2gL2t6VhgJt
-	0i3uqX+9C+UvrB/SZiFTLJ6fuKvoRpQ3d1uO/QcpvFbmbk9KRP4fbve2mXqoQ6iJIBCuB1CUIHK
-	wV3V+KGcGJCmikAKDP5RYr
-X-Google-Smtp-Source: AGHT+IFtnl41QfJeu3IJ/uV+L4EiFBX8zP0ux5EampS/J9pJIP4sBjIMESLAF9z1UPcxbBQKr8xzaw==
-X-Received: by 2002:a17:903:22cc:b0:29f:2456:8cde with SMTP id d9443c01a7336-29f245690bdmr29337135ad.4.1765564400511;
-        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea04b7bdsm59970265ad.85.2025.12.12.10.33.18
+        bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
+        b=fPndK+isl+iPrIMnAd51lSyo3Bt4MNoHwUPawre6It5NpJtZBvantxbXLrN0zzWKk7
+         bFOgfKoZY7gE0qgaxb+ecvia14ViG3JVK3GJyG9Dm/IgWSnzIDNFYUCQXe0sAw2jZaVR
+         eTxOiX5uSeNHRiAJz0yUcTLpju7gGSPL1Nq6c/hXzIu3/unsSKMwB5WxDEyKx6KCbWlB
+         CJOe2jY76y5yzBo8zMC3zCx3RL/+YANBdiv779fP11cravsEMKkrWlEI33eqd3Hu756e
+         TAZ4clvMy5Z775itRnpWvU+yZsARbc2tOhQacwn5YlvTdLS3WAPJqFkzWQw0R67wLgXr
+         SnKQ==
+X-Gm-Message-State: AOJu0Yx0aLnOXtfNCSV/jqqTQwkx6xz33swGvzQVNOCsNDsOONPVOic+
+	WuP2vQxfTa95y5H1fEbK2y0O7HCTPFZIZL/IiRXrRKGHWqXGZHZ1X6NE4NBrXx21Bg==
+X-Gm-Gg: AY/fxX4gTln6TCBSYG6X+CXriCtVM6tcyveKjkcgyLdQ5AtQyKRQfymTwGpnZiz/suV
+	XlbQKIEkip5tW1etTLO6kEgDzIv1zqe47uv3MGoirHP+I43aPcb1ZPtlCkmk2OLkcD4nIqO5dO7
+	Mc05HsBMsYjLEOntpg99LSmeAf2nYSAnYrWPlTCbQjb7FlQ28G+yZjL1tUK4jTEIU03NbiqL76N
+	8dh/BL2XI4y4xARzljHuWu6ON14wcPVBQN740hyA3mZxil/kSwZwkgkMR9nRRV3ZpW5W/fU7RI+
+	7N2r37neBxArXASGpossD7E5Y8q4zUIFGm6Lp94Fc/u9spzpyxvFnpUcmcIRldh1qTAUNe104AJ
+	UZe7IIzSFJ1B0dtwHZsrJvgCkKhGtqn6HpJ3rdllFQSkei2XKehNH5DjJwikJaZ4jYCtWvtl5QQ
+	XoIt07XdB2LySMxmkT+7QWpTum+A8yrh3e/o/+fKys0Lk1n9D6XA==
+X-Google-Smtp-Source: AGHT+IHzdWN4hpt7McD7KCWGDX7vpqcZJcLk3uQhWd353UqV22b/mGz1ioCMGsLdTgWVBmvLQWc0hw==
+X-Received: by 2002:a05:600c:83c4:b0:477:86fd:fb18 with SMTP id 5b1f17b1804b1-47a94869ebbmr37675e9.8.1765564655960;
+        Fri, 12 Dec 2025 10:37:35 -0800 (PST)
+Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f6f2238sm16173315e9.13.2025.12.12.10.37.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
-Date: Fri, 12 Dec 2025 10:33:16 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Paul Walmsley <pjw@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
-	cleger@rivosinc.com, alexghiti@rivosinc.com,
-	samitolvanen@google.com, broonie@kernel.org,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
-	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
-	Charles Mirabile <cmirabil@redhat.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-Message-ID: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
+        Fri, 12 Dec 2025 10:37:35 -0800 (PST)
+Date: Fri, 12 Dec 2025 18:37:31 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
+	rdunlap@infradead.org
+Subject: Re: [PATCH v4 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aTxg6yHWdFrW41ZC@google.com>
+References: <20251211125928.3258905-1-smostafa@google.com>
+ <20251211125928.3258905-2-smostafa@google.com>
+ <341bbfd9-e6bb-4d1e-b9c0-9077dc3eaba3@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: uecbumijhfwcamrfnhirdg8kg3gboh84
+In-Reply-To: <341bbfd9-e6bb-4d1e-b9c0-9077dc3eaba3@linux.intel.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AD03640010
+X-Stat-Signature: kbgzhim7tuggfsauu14qjqtmhx1d3sad
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D9E5A000E
-X-HE-Tag: 1765564401-621346
-X-HE-Meta: U2FsdGVkX18iCoCALFEZ/+oWxYKN07Egd0EFkgGUrce/AAZMhKNyR0rHE3MVFxw1NY9jtOgB0BA0S2ORu9ODLTt6+/TEshZotsUbddls5q5o8sI8d13czaFQycsB6JYMow8x3QnpS1BnfhEvvsA2il/6XvWg5qdUzGdkoVLDF5aRNZEFqJbExHjqY3VT3RG+/sIkFD12cpGtQ6Yxxe22sf9Ub/9L/xkA00vPfgsdZCO/pUH66JWi3Og3cRtbK2Pyz7Ohrh99dtf82cOIRAaVyC+UmD/HGgFuYTofFEWR+ntiwjZPYnfu5ss9DedL8M4vhTkrBlgqlc4DsHx0vqxmguuFsIOPLvWVua9aI0D0OvrS21EANbhW0PPHcoT2bslD/zYFWYjEqrVZkDNSZnI9W/VCBx7bh9xlY80b0CNznkDDB9k6qB+fNfYWnuYWwXV4eRbxzYR1u7w/Vbu9D+vmJtclY+0OxBRafPeTEOrnN9MZ1B/BrQHyGs8/YBUBwN/iRcq6dc79dAna9ejWKZjB+9GT2VUeQZ7nDIor9Juvok4Zfpj2iZPR4t8SBRMkLla0ky/QH0h8LII3EeNO9Ymoo+Qns+Wknt+z9AQQUrVvBsSwCogaRRHZgwQB9b6fa8T22IUfhwDXUPZJtg86Zo2xXsCCUFj01dXYhPhOjgvuI3bxhxNbmFma2sf37Ev6K17yo75zEkZZpU7cZ4e0p2rEcv+gYS0PbEISRNe03ZmOy/4dvXfVIBg+zX+rrweQtRgjjHex/SAy+Z+0Qm8fJ4eMOJhNr2OPerthYC1b7Si8/cAE7cTRpQItn8kWmnHiIt+gJWxmxgArmv87tYhTT/zymxIWuWvhbWh93KgNw8F3yshQNsNer4JOuv5vwIS5ph9NoIBa5rDav8BelDygHDLoYZ11OcTCVvYmMQgyRKRzPpaMN1UHgRAHaeDXy1dJYEXUM29CZ4xz0oI0c1xlGE8
- 1dv2xAJb
- /GMLiwWFZP+43qrJTVDQ9C/NA7zduopiM0aip9e318XlvkjISBh0j29CVcLkNhfM99zs5nrjWDYIHRSfdfMVlC3EKrVpMENA5NHKjbuVoYNMovCs2Qsw09ThDOqn1oTxEL0hEwKW+oWhSkO3y0O6IioFxYNd46diCFZnfaJ0gl4RT/rlTxLImhDGSr6TMbsnIT+Zp4wkGuSH7aNrU1yExitXHy0wA7N0Nl++Bg4VJ7tY+GxidrgyBpSlhASWRBt+PJkIqjsrMD1uyseyvJwsUYSsmbST99H8fiIACUVDQRGjNkqTg+Ljatf9Xz9Bgwn375L2njKbuLUvACN7hSzVgRBFiJoKl/7LReZ8nN/ayQmIAXLQX9RsB3yhU746n3/zpeJu48dUDn31BEk0=
+X-HE-Tag: 1765564657-54442
+X-HE-Meta: U2FsdGVkX18ZrtuVM89DZcjohXncdDrtD9wNPRLXFhWiJx/HOS1wNRmulBgu7TpoERgaxQYKLlW4bnhsSfB9MAMEkDyPqrLJtDUxHhcxko9VtNEolhHXgs4XlAP4nPMIOUi1GafNQEcgifE0JYocbLuH0YBVOgq8t8bcHNa/pgmaKyFMbzdKkpVXNWY8K6uOmaYwOIn6u5QBL348Ck08SA44YoDCrxfKBO+j+10ZyG5Mr4eF4T6ENnutiWPz5xTIFcRdo7wHDSoBQWC4ANjgbeXj9VohyGI4Cldlkkkd/D2VUuST9xT7qfuPMUJ5dELfXY2I6yYbbG8jgx8xRCTYo3sCVCJXannfCgFQl3BzZbr/h5d1R4F/0lKqNN0tk6cAxjYIt1NXgotvo6pcZ4E5MjArZ+yeee3xAOkMsxIoZ/q/jhElSyBOWY9zi3AXj632EGZs9/aIiy6wnBzGs2alHVIBHHSUhbFb+F1nlTM3pHQayAHlaVo0UAxAPD1tb0hP1kVjd4v8uXA1CCrTqEc+LbVnPgy4FyDW9S0jaelR3GfoFLr+DubODMYWPYqP4kUB4Y2mP7+sEVGVgYTWu6ycrQgct7Gc0m9e3wjHk7v6qrYf+80KjbmHiRZ+l564Egq4KWsmrxFfbFsBw74BwiFeOVArQyeFIpuQ640on9bNryIWkAPbQ7HhLiB85nW/nO2i6FOO698JkcTfPQ339opHCTcMjS5TJA5A5l4J9iCJDQvNAJJCaUNBQeXtDHvTZXaZkEqtMyaCfm3/I7tFD/PLVfXp0GMlrTf49hKq9O91IrQ9Qm6yXRFCxe3Zz2Me0Xx2fIMLTLVLuAT50ec2c8JIQViNd02d73vjcy2cLd/04OP8aIeS3J481+wzMw330ImBQNGPYvO2OZqbMVkCGdkULhkpooOlhq1cjhT5ZquNUVEasF2L3qJ24CrVpk9iuTge22bibIobUNq8EEg6T6H
+ ny7YWb/Z
+ Yf5SywjobNIHASqNHGRlnn4LgnFzRQvvE0hNpJTVnHuYF3D1dTctLDOZG9s7pqVF9ZdAJ7VDJAASlD7idz3rApdMkcszx9QCqNtf4Ixt+Ir6+aTcqm+ztJ6XGRCRpSfcLdev1NI8yXftrLi9thSSI93ddBIjL9b6DCObqiCLoFNhsQsWlZTTqBKgtEPF1AFt7p0uA2wsOY0TmCaBMFNvTAb0CZ5FINsbd3m1ca6qMt+nbCuy+1lEgd1v0qlOUFuB1SwPFfUoMDPpRbFljYoFQkASNRtpN03jhXs2XofO0z7odMRScPq0Z/JtxOP7PNGPv+XT6NV5rpTztVSCCKdwJa1vmEeBAzPz12VS/50xZUzdJjd+fC0mJNSOuOJnu3HYgOC0Qsdusac14jDxXs+RrfZdIHclwU5zEiR3RWAz+VbsYsRc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,57 +125,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
->On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
->
->> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
->> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
->
->Deepak: I'm now (at least) the third person to tell you to stop resending
->this entire series over and over again.
+On Fri, Dec 12, 2025 at 10:17:11AM +0800, Baolu Lu wrote:
+> On 12/11/25 20:59, Mostafa Saleh wrote:
+> > Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+> > page_ext.
+> > 
+> > This config will be used by the IOMMU API to track pages mapped in
+> > the IOMMU to catch drivers trying to free kernel memory that they
+> > still map in their domains, causing all types of memory corruption.
+> > 
+> > This behaviour is disabled by default and can be enabled using
+> > kernel cmdline iommu.debug_pagealloc.
+> > 
+> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > ---
+> >   .../admin-guide/kernel-parameters.txt         |  9 ++++++
+> >   drivers/iommu/Kconfig                         | 19 +++++++++++
+> >   drivers/iommu/Makefile                        |  1 +
+> >   drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
+> >   include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
+> >   mm/page_ext.c                                 |  4 +++
+> >   6 files changed, 82 insertions(+)
+> >   create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+> >   create mode 100644 include/linux/iommu-debug-pagealloc.h
+> 
+> Do you need to update the MAINTAINERS file, since a new file (iommu-
+> debug-pagealloc.h) is being added?
+> 
+> > 
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > index a8d0afde7f85..d484d9d8d0a4 100644
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -2675,6 +2675,15 @@ Kernel parameters
+> >   			1 - Bypass the IOMMU for DMA.
+> >   			unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHROUGH.
+> > +	iommu.debug_pagealloc=
+> > +			[KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is set, this
+> > +			parameter enables the feature at boot time. By default, it
+> > +			is disabled and the system behaves the same way as a kernel
+> > +			built without CONFIG_IOMMU_DEBUG_PAGEALLOC.
+> > +			Format: { "0" | "1" }
+> > +			0 - Sanitizer disabled.
+> > +			1 - Sanitizer enabled, expect runtime overhead.
+> 
+> "iommu.debug_pagealloc=0" has the same meaning as "unset". Would
+> "iommu=debug_pagealloc" look more appropriate?
 
-To be very honest I also feel very bad doing and DOSing the lists. Sorry to you
-and everyone else.
+"iommu=" seems to be x86 specific. I was following the pattern for
+"iommu.passthrough=", "iommu.strict=" and also as "debug_pagealloc="
+has it's own command line, it made sense to design this way.
 
-But I have been sitting on this patch series for last 3-4 merge windows with
-patches being exactly same/similar. So I have been a little more than desperate
-to get it in.
+Thanks,
+Mostafa
 
-I really haven't had any meaningful feedback on patch series except stalling
-just before each merge window for reasons which really shouldn't stall its
-merge. Sure that's the nature of open source development and it's maintainer's
-call at the end of the day. And I am new to this. I'll improve.
-
->
->First, a modified version of the CFI v23 series was ALREADY SITTING IN
->LINUX-NEXT.  So there's no reason you should be resending the entire
->series, UNLESS your intention for me is to drop the entire existing series
->and wait for another merge window.
->
->Second: when someone asks you questions about an individual patch, and you
->want to answer those questions, it's NOT GOOD for you to resend the entire
->28 series as the response!  You are DDOSing a bunch of lists and E-mail
->inboxes.  Just answer the question in a single E-mail.  If you want to
->update a single patch, just send that one patch.
-
-Noted. I wasn't sure about it. I'll explicitly ask next time if you want me to
-send another one.
-
->
->If you don't start paying attention to these rules then people are going
->to start ignoring you -- at best! -- and it's going to give the entire
->community a bad reputation.
-
-Even before this, this patch series has been ignored largely. I don't know
-how to get attention. All I wanted was either feedback or get it in. And as I
-said I've been desparate to get it in. Also as I said, I'll improve.
-
->
->Please acknowledge that you understand this,
-
-ACKed.
-
->
->
->- Paul
+> 
+> > +
+> >   	io7=		[HW] IO7 for Marvel-based Alpha systems
+> >   			See comment before marvel_specify_io7 in
+> >   			arch/alpha/kernel/core_marvel.c.
+> 
+> [ ... ]
+> 
+> Other changes look good to me.
+> 
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
