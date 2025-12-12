@@ -4,109 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6EA1D4336E
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 05:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA271D4336E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 05:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DCB6B0005; Fri, 12 Dec 2025 00:53:26 -0500 (EST)
+	id 492A56B0005; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE796B0006; Fri, 12 Dec 2025 00:53:26 -0500 (EST)
+	id 41C436B0006; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 415006B0007; Fri, 12 Dec 2025 00:53:26 -0500 (EST)
+	id 2E3B16B0007; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 30BC96B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:53:26 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8AE4DB9557
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:53:25 +0000 (UTC)
-X-FDA: 84209751570.15.460D7CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 039211C000F
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:53:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AyO/BSfw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765518804; a=rsa-sha256;
-	cv=none;
-	b=zm0dxSrswewTYx08+qiuQLcgQdUeweDqk+W3FiVzdXkkBbzQWmSuoj/wPMzauSaT81mTr3
-	PYPQlHX6I89ht6njiJfEJwjahslpWYanQNs4nsb6ZkaIKOyKftLhlw+wejKk0l4qgQ6619
-	T5UEH63E6VqkZ7kJYq5YRwTTlfDk7bw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AyO/BSfw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 173BB6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:57:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1BAE12D88
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:57:31 +0000 (UTC)
+X-FDA: 84209761902.16.12CF3D4
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 07DEA1C0004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:57:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=se4oZAcj;
+	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765518804;
+	s=arc-20220608; t=1765519050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30hPC0hElSFF9/8gZsxu8yAR32063paPvI5Y2VDcdDY=;
-	b=VRM8UKdq+mdtOIK96dedHypBowxnm/z5eL5iVwm7BhqwMrzR7xK8yhakw7dX8YIYVuwK0o
-	NlLNv+AxijDXdvSb45AnJ4tDeDtacKtjM7A4GhlJhxhKtpyKLxJEOidI5eybu0+DF8Q/pA
-	CNh53EKRBzbI8oELGVD8EaXgjuoM1Os=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85EA040ACD;
-	Fri, 12 Dec 2025 05:53:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C7EC16AAE;
-	Fri, 12 Dec 2025 05:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765518802;
-	bh=hqZiXxUv6smJHZEauESfPalDA9+KANqTpadXMEusfNw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AyO/BSfwTPEnPYiKTNe49XE5ReOcZayLHxn1jhIueisyharCn+IGjtVnILr1TyT4G
-	 nKspnHRVYrODD0i8/slxWhZO45GVoryW8+V/nxlc/cl74nTuJRbLhh3ggNHZOEBuYb
-	 QDmLjiWrVjXjswh87/9uwuRkEI8eFewPySbNTeNTwGLTcMN1WG3UEMMW4dyWT3R8WC
-	 usqvWUjSdiWX6RPs7TcBpBmWUvNqIWTkoQltHM7P5Np0sArdIfW5uDHthsrsmogOdO
-	 hIkW5ifAR2CVWEU0QaSLWbDYhAy2B4dDGsH3opzA5PTXmucpnskg1uCN7anY9zjNbX
-	 o+vLEGqelWAfA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F34E13809A37;
-	Fri, 12 Dec 2025 05:50:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
+	b=TKl274wFBS0ODt3yJ8aCj/qk1T6Ea2ak1VuQWSApT/bbraE8XXi4ivG31dgS55evMSGVyz
+	Jn8M8Qf2UGQSylInBv/8jFT3aEKE0oP+AzLpnAIigmg/5QumC6cByUHC0YW/e0kEu5NdJG
+	aNaNbAIdGOF6NPieb6o0kxj3G4eAeDI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=se4oZAcj;
+	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765519050; a=rsa-sha256;
+	cv=none;
+	b=GSwMnI4ksrFmz+QssqVkp4iC8QvcDHWykIove9LXFMouJMvOqUWRXbdkNwT15nQTlBX7SW
+	e3bAZ4tvY/VUV8fTAuieGjNj5fEoGZlhYpfQqbsvMJkn/VskvNxS9bGxFSRm/uebeFulzM
+	fj2p079LhsNIlcuEZsMpegnAVysUXlA=
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-78a6a7654a4so9435867b3.0
+        for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:57:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765519049; x=1766123849; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
+        b=se4oZAcjHrdPZROx9G2ZwVivrRiu4YnCq50lZDZ+utEy6aNfis0idJxMEnrbcE9amD
+         IPExJe23ApKh2T5dtAoehZf1SJq2ttoXSlUDJHM3LxqeX3YelEj1JasRqUe6VC7xv2/k
+         IpMKyWSmB/j8MKglywpOjcCxmOdvL2yl9kvLO9b22KNmwnWqD0XZQIg3HH3b+Vc1in7x
+         JRL/fiZ9Egl1djQufQatBLsEFIkHugDtx8XhOk1f943+uaxBYaeITpS1U226TVzLpO0d
+         ZSVJY2tN+Op7eonJ2m/W3EB1njeHGyJYAHnJc0blmhTbpJwm3OZHNY0aNYMMfMfiG4W5
+         XiTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765519049; x=1766123849;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i21Se228o7e5LfVMJKhazW4UhnTrDBucZ7bfhKbl75Q=;
+        b=bQLT9SHcBJJBGXsFSPtLD1RBZ5+gZ674c776W1I7WXN40z+xx+oGR5vdCnhUoLZBF8
+         BwMiEAyDDs28s5GTF0q04wmG1IEgdg1ku/XhI5apjiDcuagN/pDM/IZCNnhqhCKnH/nb
+         KH5RBWm63SUWjSJBX2uma682RaJ7ED5KrKQYXKjZKPWf7OC9LZjCl5syHVFx1hexs88b
+         /ua2JIXvF6DPauOzhxVnOLJvTk9GWgM0ejcaJ3CTQ28fAjIu+8ChPBXhfbp6R0mPAKOV
+         D6jSVEN/wy+olkLxKwViiDN/tlZMfGyr0TNiQfFAuNiFKi1MPBMVic4wpTecQCb5qYSt
+         Onjw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbe0DxXQtt4B4Y3nIHb33Sq8qLXPqe1Qxj45TfgzlziyHBWov1vJ3l33f5/eVOEhM8E36KW+21Qw==@kvack.org
+X-Gm-Message-State: AOJu0YzgYO7Mc9FS16o7UFQ/UP6Z4X9aYsJOp8ZTT53Ho2fFVHAPUpig
+	NzepDJE4rljX1a9NoMTuRGMQ1bLSLb0pJMv4Fd6aR1aUyeOj6mHZSq1mZ7KmUbWa2A==
+X-Gm-Gg: AY/fxX6AfbBVfTet0x0VWqtO4tnFDj6wD9w3GmZ5/IjyJ5BMsMAwXWCg8C8Sm/lGQn8
+	5bgdu+6ZuUM46rGYii9zY4myJ7zfipRIHLAz24+mLAy3JeoTsc8VxsHhvAUat3cfVLoBkUGczqh
+	4cMy6n3ehNyICXG0SSP9RjbRQCD7H7DLIsuBlYNEyflsnjGHt7THVXuAvqcvEHOvvqy9V6GfgAp
+	pyAvmI+py8t1O3P7n759a7IFEaQ/bZL8lGdd0muSzYPAj4qLSecwhckCfi7J3RW0YSvNaxOnwad
+	I7qdEiTy0R5WIKZtnspaKH3V+LXZxEEkyG/PHtInN656keRbP899LD5dFHW/B0DrU+YU2J22KIS
+	hom4AtN/s0yJcy9yCg13B9L5Ff0waYwXxkEAYU1v+IvpvqtrJxA5UczoqdVKEzFb4q4g0gVytVy
+	aUD2Ohqwfm7GypFtDVI1hfaxj+tmz4Oejp8w7sDb6/E0WrZW/N9i7qi+nubrM+/8qfOxXSjp8=
+X-Google-Smtp-Source: AGHT+IGZuHDsISTjDfQK5H60ZIz8jILBSpG+DpOMHG7/zrdVqW5LxRspyhN1oRFnpxvNHaCcPwfZVw==
+X-Received: by 2002:a05:690c:6c86:b0:787:d1e7:e75b with SMTP id 00721157ae682-78e66ea2090mr8375797b3.64.1765519048813;
+        Thu, 11 Dec 2025 21:57:28 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e69ffa216sm1656407b3.15.2025.12.11.21.57.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 21:57:28 -0800 (PST)
+Date: Thu, 11 Dec 2025 21:57:15 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+cc: Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: 6.19 tmpfs __d_lookup() lockup
+In-Reply-To: <20251212053452.GE1712166@ZenIV>
+Message-ID: <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
+References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <176551861579.2032148.13920544388182691102.git-patchwork-notify@kernel.org>
-Date: Fri, 12 Dec 2025 05:50:15 +0000
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
-In-Reply-To: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
- lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
- ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
- jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
- zong.li@sifive.com, david@redhat.com, andreas.korb@aisec.fraunhofer.de,
- valentin.haudiquet@canonical.com, cmirabil@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 07DEA1C0004
+X-Stat-Signature: suhy61p6x9af7t8zw1cux1o7acmsnz1n
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 039211C000F
-X-Stat-Signature: tsdcne75db5xajhqzpsskownhhditc4b
-X-HE-Tag: 1765518803-366495
-X-HE-Meta: U2FsdGVkX1+rL3FSUs/QHWIWM08SQ2MAhWiOBsK5VKSVygRmh/hilOQAxGOL8SqwKQzwRDlaybhsAyEGby/ZeyjkQrAl8PN3fGDP/lKwY5HnDOYUyFd5qa57hc6M1Un+i6fyTBnz3MVKzNF1y9XEDryNjjU88Kl6mCDCbxt3F/E3uoFXjCHRj6UfFKK3orkf0T6prLDgcyhR8UndJPGWRxhFwmlLqaWpC21YN1rLUMmPPG315n+0yfQHqNwbPIqf6ZZA2XYIHgNkl3Xyl41ohOHq1Qq49CNU6QCkrJJjiBW47wTOTro6qDBWQMd1QFJgX4B5kBe+gyqy4Z5J3z3wNg7VKwR88MX1kc6o2MmNNU6OPp/Q3GyIfneP4a/muYSf7DKH95IZH760xVaWn8NYApjIES8LqeEnL7jjcvKX6dzkxYMNiU3TPxbD/yIDTy0Ld+b2Aj5EpkYc7XX6zEcr0ex6ETus7AocfUzmuc0+reMXMuq79+7/nZIQkOqFnr2jKrE6e134yKIPz26teSYChfkzuSoHa9FVGMUEAnpVHIlnSzHzuuk3U/UAVHN0TvvWCIqNboX6TzTTwYNRT2OJzpB7+7zP3DhG1aduqYVAalmtFJxY0aTAiPmWWo4dPDmfkAgGKG5sPjtKeFe+DSlCXdUmq6nsGMzTVIHNz942ZpTe7kWfBrcQ/sBSezmd+Yzpt/a81PRZq56tNj55dU2OKTtO2SFBdVzcRK5mlONPEmT5FZR1mrU71hCWYJkvKY8HPJwZQ30l/dcnIYYOePC80cg04waeDXKoiPHHvT1hJiO+wRZ1k0hizKo9O9GmmZwaUV9GwAhqvssh+Oh1vm6/zhaMiHHC2wWCd4I5oU4uon3gB0MIruj4GjnhVE5f7kpV6lZD0Zkaf9LQji+Bp3glbvdumIl21Z/OuS/2b7x07KxOjMBJUhLtxbW1XVGHOooY2K9/BLj37DNNNAZWwpF
- /45Uq/mp
- yqI3fcAgnPki4uhWqB1Tg7QAuUfZU1sXw6vaK/EdeKTWoD6PYYepufxAqWrlA4+6lMyHKwM8b+rlO4JY=
+X-HE-Tag: 1765519049-993188
+X-HE-Meta: U2FsdGVkX19w2QPSulH1oW37rNbGsW+P1//UNZtc2T14L7RfOutzmIWW6fEmKyMwwDmBG6g+3v7Xumpn3dmZebP6hCOCyAuSJHzBTvfD8v61g1ZeUZuT192ucX2Tv8JLGscOwFYhlzn4U+06ZkuQ143z50kQ18KRej+z7OYeEsBbRporlqfuR/gFAsE2nxTuAvmPjnW8SsUlQaB0bxJF/HgALqhR2oC2xVKhOfN8dZGrjG+QUsJppnbjzL3Tz7yZ5ONUa9xD+3d/r8ZTGpKrAkLkIiP70Xxm2mBEp0gsn7mSyBl9XSSdItkLuJf2d91irqorOSrk7Iftb5UAJNej0I0xTLGCvKihKw8x5OQ3Fq5JyxeM4SJkmxHwXwH99P34Fk8qjYFumDhQ1jGgdKPWjRGItTzoNN2C3nSFRsSRrVWIpjZ8qPNwe+j6ldGdUnRQt6TeQJBiLx5xbDdDgU9QMxRR8Q4sSV0Cdx1L7Pd3dZ0I1wV/UY/Fy8niUcL2+U2bta3ip7YE7RLzJnWQzJBJiR2PYrcg0oGtB2JlSgmn8FokEuteZ7j81Mmo9XfDsQa84Pqhxiyf2P0BDO4wEgVb3nyQHR2Af7MunivdXtzKu5ZUPK93GABBlnHptuimqSotAFxw6A+mkVc+jGbaph//Bg0u8IGLOsceIVmv/3sXR57062SZMLjeP2A2olh6lM0OkVbo3jfP/t4oejTjuws4Gom/j7dLYc1SI06NTZcfpHm/gxWQX25cTTWoroR702g9xRuh8RMUL+KKHsIQxYOWYWChkIQOXQ6GYpGGmZ2ZGIdam/xZtPr/53p42NE4elm8OxXYDaWcGxyOuLn5xrTNoaGliTCOGikIYohQEnUNHSm+zKwOZ4awVujfqN/PUq43lliVUq//0ch+rJXqHpicY8b2IdC6FPXamUFJeTnkTVNfLefotA2LsC6R0+0785MZmOdvCg4XTD7q7MY4JWz
+ tkb4Vl+R
+ GqbCQgZ3GFeRXFvWi90jdjTZgzk56vQ+G0vLi25t5cVyorVHhYelyhL80Lc+fNPwOG89RIMzryiiM2anw/uCGui6pvK3GCbwKpz3QNYHAFC7Kt2TvZvHyFukWa1sZ+hyICfjbrm+hN+PvGlMfyb8YYfTJUA/w9LpUu3oKqjQ6nGl7yODbbG2D+5S7nMB5by3aR6a3Xh1AO2eA64ieGDZvVUNJhnvbHGRgqVyOzTH8jU7C+wBb2cjTJbS8af7nN1+cton1tx8e6B5/IaaNO2AlNdJLvn/iP+JeAuiPan/l1WO3aIoBXKNafDDxYx/aWujRn39UTD9bSlMP/n2DIJLVICN53d/iPszBBUdLgl6ExdIabF8m8upZQGrqO3EooNf4EMDcjpMEwAjuB32T5J+yuMdxng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,84 +119,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
-
-This series was applied to riscv/linux.git (for-next)
-by Paul Walmsley <pjw@kernel.org>:
-
-On Thu, 11 Dec 2025 09:20:33 -0800 you wrote:
-> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
-> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
+On Fri, 12 Dec 2025, Al Viro wrote:
+> On Fri, Dec 12, 2025 at 05:02:25AM +0000, Al Viro wrote:
+> > On Thu, Dec 11, 2025 at 07:56:38PM -0800, Hugh Dickins wrote:
+> > 
+> > > Of course, 2313598222f9 ("convert ramfs and tmpfs") (of Feb 26 2024!)
+> > > comes out as the first failing commit, no surprise there.
+> > > 
+> > > I did try inserting a BUG_ON(node == node->next) on line 2438 of
+> > > fs/dcache.c, just after __d_lookup's hlist_bl_for_each_entry_rcu(),
+> > > and that BUG was immediately hit (but, for all I know, perhaps that's
+> > > an unreliable asserition, perhaps it's acceptable for a race to result
+> > > in a momentary node == node->next there).
+> > 
+> > Hmm...  Could you check if we are somehow hitting d_in_lookup(dentry)
+> > in d_make_persistent()?
 > 
-> v25: Removal of `riscv_nousercfi` from `cpufeature.c` and instead placing
-> it as extern in `usercfi.h` was leading to build error whene cfi config
-> is not selected. Placed `riscv_nousercfi` outside cfi config ifdef block
-> in `usercfi.h`
+> Another question: is it a CONFIG_UNICODE build and are you running with
+> casefolding anywhere in the vicinity?  If so, does this thing reproduce
+> without that?
 > 
-> [...]
+> Because that's one potential area of difference between shmem and ramfs
+> (as well as just about anything else where tree-in-dcache might be
+> relevant); if that's where the breakage happens, it would narrow the
+> things down nicely...
 
-Here is the summary with links:
-  - [v26,01/28] mm: VM_SHADOW_STACK definition for riscv
-    https://git.kernel.org/riscv/c/e53803e4a8c5
-  - [v26,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
-    https://git.kernel.org/riscv/c/d6c9672baa77
-  - [v26,03/28] riscv: zicfiss / zicfilp enumeration
-    (no matching commit)
-  - [v26,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
-    (no matching commit)
-  - [v26,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
-    https://git.kernel.org/riscv/c/2acf75f432dc
-  - [v26,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
-    https://git.kernel.org/riscv/c/813c549f5b08
-  - [v26,07/28] riscv/mm: manufacture shadow stack pte
-    https://git.kernel.org/riscv/c/d3cea05f52a7
-  - [v26,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
-    https://git.kernel.org/riscv/c/444404ff99bf
-  - [v26,09/28] riscv/mm: write protect and shadow stack
-    https://git.kernel.org/riscv/c/5da46726825d
-  - [v26,10/28] riscv/mm: Implement map_shadow_stack() syscall
-    (no matching commit)
-  - [v26,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
-    (no matching commit)
-  - [v26,12/28] riscv: Implements arch agnostic shadow stack prctls
-    https://git.kernel.org/riscv/c/46f2da262367
-  - [v26,13/28] prctl: arch-agnostic prctl for indirect branch tracking
-    https://git.kernel.org/riscv/c/5b23a2d70976
-  - [v26,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
-    https://git.kernel.org/riscv/c/2b1bd48147c5
-  - [v26,15/28] riscv/traps: Introduce software check exception and uprobe handling
-    (no matching commit)
-  - [v26,16/28] riscv: signal: abstract header saving for setup_sigcontext
-    (no matching commit)
-  - [v26,17/28] riscv/signal: save and restore of shadow stack for signal
-    (no matching commit)
-  - [v26,18/28] riscv/kernel: update __show_regs to print shadow stack register
-    https://git.kernel.org/riscv/c/35d89b5390a9
-  - [v26,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
-    (no matching commit)
-  - [v26,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
-    (no matching commit)
-  - [v26,21/28] riscv: kernel command line option to opt out of user cfi
-    (no matching commit)
-  - [v26,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
-    https://git.kernel.org/riscv/c/ef83c58ab12f
-  - [v26,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
-    (no matching commit)
-  - [v26,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
-    https://git.kernel.org/riscv/c/fbe7823a03f1
-  - [v26,25/28] riscv: create a config for shadow stack and landing pad instr support
-    (no matching commit)
-  - [v26,26/28] riscv: Documentation for landing pad / indirect branch tracking
-    (no matching commit)
-  - [v26,27/28] riscv: Documentation for shadow stack on riscv
-    (no matching commit)
-  - [v26,28/28] kselftest/riscv: kselftest for user mode cfi
-    (no matching commit)
+No, sad to say, CONFIG_UNICODE is not set.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+(I see why you're asking, I did notice from the diff that the
+case-folding stuff in shmem.c used to do something different but
+now the same in several places; but the case-folding people will
+have to look out for themselves, it's beyond me.)
 
+(And yes, I was being stupid in my previous response: once I looked
+at how simple d_in_lookup() is, I understood your "hitting"; but at
+least I gave the right answer, no, that warning does not show up.)
 
+Hugh
 
