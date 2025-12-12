@@ -4,97 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15043D43363
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 07:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3FED4336E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 07:10:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16CF46B0005; Fri, 12 Dec 2025 02:09:32 -0500 (EST)
+	id CB8D16B0006; Fri, 12 Dec 2025 02:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11E506B0006; Fri, 12 Dec 2025 02:09:32 -0500 (EST)
+	id C6A1B6B0007; Fri, 12 Dec 2025 02:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033B96B0007; Fri, 12 Dec 2025 02:09:31 -0500 (EST)
+	id B7F8E6B0008; Fri, 12 Dec 2025 02:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E61366B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:09:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D22313B05E
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:09:31 +0000 (UTC)
-X-FDA: 84209943342.14.9E45A27
-Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9B0E740006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:09:28 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id AAB806B0006
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:10:27 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BE5B13B062
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:10:27 +0000 (UTC)
+X-FDA: 84209945694.25.893F035
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B811440004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:10:25 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=r2VaPkgp;
-	spf=pass (imf04.hostedemail.com: domain of 815559068@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=815559068@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765523369;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IXNkv6VDsX+5RxmtyeI90QUmoZKQ3Q77u5K0IV6GAqY=;
-	b=OnmnWt/UyMdIuzjlA6S3WXjyKXTMbcJ1VsWtEpeQQHrAMAU5Bl8Nx3BdgeZ3Fvp8Oy63jA
-	BxQWNwJJEe1YmFFom2as4dwl4yOlnsEYTcSusWu13Lufo58oh67/gzEPAXUTxu40hPMa7l
-	7KdKnQYGkR2fhKpQ8thRX0++AE7cBRU=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f3JaFo7U;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765523425; a=rsa-sha256;
+	cv=none;
+	b=bmzToi2lUAU9fgXTsn+BCgVyQUFuainNRs9gfPhXsPuUnjKnfc5Sep+lyxzLoAw43sZm5b
+	wS5C1T0Mm1qi6fI6/xWV/o8FqmRWrYvhwAtlbBLMrf2F9B6v6nSb8bZdqVvW/znDK18REQ
+	AM18Xq7tTuCsxSXXXg2lBw2LTWzeCyU=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=r2VaPkgp;
-	spf=pass (imf04.hostedemail.com: domain of 815559068@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=815559068@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765523369; a=rsa-sha256;
-	cv=none;
-	b=x0sLcpNluCXnocPsLefOwTcBHYVRd++G335ywfSIGd+pW+PwCLQiSVo/jraqCSmLJzH2NI
-	H/m3fNrwQWnSrcHOGurwyS5FS4TK//wczTcTnxfpL7WDMPYTooo5FkDwLq2sFy7sy81Dnd
-	FQpGpjaZfU7ZrlOmclP+tHA5qF9VRlk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1765523364; bh=IXNkv6VDsX+5RxmtyeI90QUmoZKQ3Q77u5K0IV6GAqY=;
-	h=From:To:Cc:Subject:Date;
-	b=r2VaPkgpSpUD9wthSVKnlmNYzS7oXowkmLbknut0mv/E8lCsod5yv4XjdoyES7Yqm
-	 3xhaAjbQMugX9HUcruaU4oUbec3mYfjpUKfZ/6+vfKgUT2izBx4QCw4PNKcvEprFHl
-	 p1vGL8u46bNTaLv/ntDdidL1VmsCvYQzFCBBtcBM=
-Received: from compass-pc.sustech.edu.cn ([116.7.234.240])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 2560E84B; Fri, 12 Dec 2025 15:09:22 +0800
-X-QQ-mid: xmsmtpt1765523362t466ehdmn
-Message-ID: <tencent_DAB2E2BC61A449B6AC4FA9798C4D75BED705@qq.com>
-X-QQ-XMAILINFO: NnYhxYSyuBnLxXPBpZ5nZNUa9x5wz+dRk4u0AaFol8ukPFP689jVoMyjEm2vvJ
-	 V6mx1LEYOQiDURQXLw1Bkj70LKG6zwchaMcO+4p0OIZ12PxCUyAYY34YAR3Z8B8EK+seJ9abwnpg
-	 5AGOeL3gayd4w/wokklye+RtSXV0WV2akmYxfUCpLFKLkDyIIUgO68VdzFQF+AGDr7a/ye3bz5NI
-	 vU3Arw4OxLInPi6H7TiqxE3gijqw02Ml8MOo/9w+wlKsQRqtNqyY8DLQgFuzIF569aDrpLgYTwuP
-	 PDZ7N9AQ3n8uqAeCeL1Dh77DoFpxhdHbwwoOjYIjtL3NSm0lZ68Gk8xR4rBnTvtF9XRVEOfwzguV
-	 i0dEzugQMhjQHQxqUbMN24c96ozxlrHngXehRGGpFkIw3yYGcQ3yiLF2+q/XLpEGwHLujRQ8bpvw
-	 otVCe3eYnMkhavpY9I0XvsG7d4vabfz1Yz0QM0en/pdTSsYx2YmUA8VM0vnK0opa2FpShEIrxEQ8
-	 Gj8+PJiEB1OSiEPRTvr3j1BB9nzjlDdKs8emy58aEn0xnWmGSA43LgnMgl5ffCAuewm5tQzl2WAN
-	 dA+uWkWrm+jdrpjJhj43QKstExbyShJ/MBlgWO1faHItv507AWyJecobAlVYglLPdU17fBqmto8T
-	 0avQU2IE0BM4x/V5Mt6DYlWTL6BazcC6Hx5DFnvT9DlnJ9TG+1/Zhgh3alkZSaab7xCv9L/biGsJ
-	 On5sUiH7+zh3nZe36HGLRKH7t+bFwjv02qEZJ5chLEnROeqHEIhGUIlFYttDCwAJDRq6PkwOtCZQ
-	 kSxpSZkdrL3KYnyG14EXYtFxQBobUTsXRaHO3N3sD8mtRO7htinOn4sIiW8patb1cgJt11yFZdAq
-	 iutExiRISz9gfWsq0SfbTcIV/l07VTin7vZbeQiYo+p4jLM/I0H6ynLpOPOhRbUZAS4zST1FqWpa
-	 PtAe5Qt0ER4u7lTCNwjjK1QQhWL/PqbC4hWcF2NIqq/sPxcGA9nDO0TJNhT4Q3OITewGvE77wb2i
-	 890X8j3uZz/8rDy4ACnerPq/6U5BU=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: Yankai Xu <815559068@qq.com>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f3JaFo7U;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765523425;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2pvdkMLWPdG5VVT7KfXe00TlErXl7F/pBUH6TeedTlw=;
+	b=d8eGJ3BcdZuJ0+a1hSoLFuGPqz4jIfhfsowWok4P4ijb2EFAMADi+fEXgVa2eVOvGMRiIu
+	WZ1ChHam2d/dAGpIhgIU/h3INpyuuKY2daf7VLXS+UQV1kb83uhE6r/8/+uhCDqEZhyc2L
+	w5jog2Z0e3QdUx9c020NMQzE/03yukc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 83DD64415D;
+	Fri, 12 Dec 2025 07:10:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C211C4CEF1;
+	Fri, 12 Dec 2025 07:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765523424;
+	bh=dqVIubbkQVRJernqv5F3ELaqr4N3SUKjeivqxVsqbc4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f3JaFo7UNgQ1cS+tGpxQlQlH1Sdo1Fg6Esq7jGLZmQx4SnuABcKWUEiiAOvNYl99G
+	 8GMkZzyMNFS8wxZ5qdAPs6tbEevDiwFqkhD3xQOieDms+iq8ESZqxQ8PuJH1M68h7r
+	 R79RosnaRONJ+nN3JYvRUQ5V78dgIF1gEg2Ak5EY2iADIk8Q1qU9B6C2v2aVCimv0w
+	 7+BRkpmK53dtEDF45oj//0VTQsqmtyYCegCUMUbV58F/xryXFrXxM8+iM+kio4pvy/
+	 an5aeJB30efMoSJ1ijOs1Z1cR1IJGaRbl0+i1f6caBQXTcvfz9RPPPodCeOXEJltk2
+	 hoYGctWHYUbIQ==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Yankai Xu <815559068@qq.com>
-Subject: [PATCH v2] mm/gfp: cast GFP_ZONE_TABLE entries to long to avoid shift overflow
-Date: Fri, 12 Dec 2025 15:09:16 +0800
-X-OQ-MSGID: <20251212070916.1352555-1-815559068@qq.com>
-X-Mailer: git-send-email 2.43.0
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>
+Subject: [PATCH v2 0/4] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
+Date: Fri, 12 Dec 2025 08:10:15 +0100
+Message-ID: <20251212071019.471146-1-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9B0E740006
-X-Stat-Signature: mq4tuypnufkey7e4ibm6oz9chzisp7zu
-X-HE-Tag: 1765523368-309958
-X-HE-Meta: U2FsdGVkX1+ovUR1eAmSupC58pqW5Rs9/AOafdADhnwxnM6N7nOlrsOkGHbKygisslkdiUuHDt/N3DK1qt+AvM+r2j/285y99giprKlFqDpeH02jlIG0qYzk1ozSESdf45kh7mgtFFy+X2uszrB8gIInSLc4Zc1mCEJ4hG0caElDoyb997BdKQMsrrItlmlAitsvCao5o6SBkowGapgEFNWE943vUkb+m49ceuXGagY4TemDBxgUiQeN08Fp1QqWgBBa4Yj1rOt5UkQQPeYZMc3ngDpHVicYjw2M8QvNgJJLrA17BJitR7HSdZRhtTmb3tlyRtzST20MAeFm2sy1cEEM2VYpOpLwQHqaqHGAOlz13BFA79ChNAato6OfTZEMgJCbh9zfPxhM8IYLRykdQA0sREhWqvX9V5Gj9zYBUS2JWTx2aBN1Wz/EX6zozIBHlReBAfq5uZPL7Ed+LtKoFK2yRLW6wdnWHxPL20vGc1hFBxDk9hx7oZAfSobeBLgdDtf9Qg7uJWZaKTZFwQb2R2vrPZPDFismgpVQ3fXT71MwKYkNY+CPszKIbEe3yMSpn5ASHZkr19V6xwvULfWcdQFwPzPNZ3W7GnUjwatKIiqHkOpHnJmufQRzWODBD0zZgH4a38q13Nqajh6rN8WGllMQ7YQ6Fs4hVHamwAOg//bkxzebUBovHXuk9LL7TF+coyeddOPEumZtBF8+BneGExMdNOmDUKYSaz8hN+sJOQ8dDJUehrGwXas7X6nuX/JGwur90TeluWG4fKzeiLCRZrncgWpq7O5a9mQS12q8zPEd9LzKkZJaHg7LNAZTxaTD2AUqYzh7NpoJIN0z2Zr5/VYd72F2zLCLW6dpe4bZcpQb/jOWv0qU4nu7kr7eR7/KjsUIegiWwMVG8+IktS12wwDgfEAgoQIXOqSmWVbu2oTqUcPl6u3BRF34cOgN/BQzp9YH9gyqOsd3QElQYyV
- +oiMb8AF
- YF7yEXIsbaS3LR1f3y9XH3FCefSKCZa3RnO+SOwfmyOcnKvgmIbe7B17iMAU8lRdz0IBqdruCaHVYv+wNMkphdUtHN6AW1OVEFNgFVf0Iy/H0a1Qf9Lx6ZVAlL7xppuFE0FuNJYpLrxK/ZzQ3aE3VdglX7ePMoR+az2fAQhPkINhtXqRBjvKtld6oSS59su1wcA6vKGFVhPc2G4WanaxRb8Hcec/cEiq0KAqNEGHkVsdQMmYEubnmHSpbAWURGs4HesZPzEotyPk1M1xLuAeBMNkdpYw0DCySijOxb6GxNgYUaJ4bcjN9WqGxU6+qC3diIOo7wfAAWJ/P2W1JOurAX+38jDG7aec3B3jrAbzrUrpvDeb3/CmZ7u9eW7vGThWzWOjC
+X-Rspamd-Queue-Id: B811440004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: p4pajd1s1oc71ypp41yn8kw6og1t4fa5
+X-HE-Tag: 1765523425-81714
+X-HE-Meta: U2FsdGVkX18UnHCZRFa922CA9ZXpij573WHx2vMSVSq0RPikyjBrQf4G+ZroWAAyflVx07Bj1dhkG96PbQrwa5p8nn/BEf90WCQ9oNhnJxCSZ+pi3SR6R/OU7mS12bSSzev3SzNJ6rC3VuLXg2WWJ0Y5lNYtRpwJLrDa6RQVBurlVaporBAYycmvXdKxY+qyI/r4Xbut1R2UC0ljREYNXo+vAnH/UAwJ11YdAGc2j6ti7F1r+LrALwlWMqTpvd89zyay9NQVgvhlC58txjGpvu2KeMFdtRIE8LeslGU+NXk1qkXYfg9YQvdqcE8e9oL5cHnYmvvFTbORz0Wkz4AqXU26aLydpnRCtFlLPI30ehwuEkxG2NOXRFgdN8h2bka3T3265iXGrP90jRa4Wo4KnLcoiHUBnup9k5nhtTG4JvFzXHzpC79GI7k3vYZRE21H8QbkqVUJiJWqZRCQmN/YKhTVDjnNudqFSyJ9z6uoNDivBlI8ybHBgwGZ8C9f3JxXfJL7T7+pGVSgyiUD9xKU66CDYipE7xi9vPi3nZSaYREqHmOrQWGEmUBhMZCPpS2/BygsYsO2kg/GOKfSzSYtiFoLRSlV8fjtQd5nxBFQ0F1eaGFCfbSQ5nROE7lLUBkZm8QZMW2jfrzBqKnfWQy2s8kl1wlk9oClP73CFCgDPznadcsU79jjIPfbgQb32UPkD1AqOtzXHLjqYwdbUu1W/DNXUCdN56qCssbFgeakEFcId2diOUcEmE4D9RA+WmxNRc9ves7C7svihYhJ9jvTV3WVSC0CzX8KdUM36BAOpM7nqnpnTnKeb3Ez6sZSHz4sKJyPO5mOy6HEQCc78FjEGvVm/qCRcg6xbeKVZ4o+Va4T+X5v2Jl4lB1J9ZJNi7aO6UXiRIe7U9W8loWDKHkAwH6EjYp87z7SYO6yjGt5jzksMjTYM5ebi3fF8HufukWfqhUjFMtw0fK0GTgay2Q
+ U0aMWqd/
+ Ka7sLBX2jBlHpzrR5AFQE1oBOOMmklAzajiPpqZdiNZlg7esoJFFloG762O4bp1DdA/IFdY/OEArbeUzOdVa7T0iIzkvjULNF2Z43tiYGDZF0e2IjhO+WpJLMnoJwGcUW+JOJcjeopNNutCVJnIaZ8CHZ/DLCQYQOGyXUYgHbcyFKRO0a31VeDaTa2CrDlTxHm+/T/YtkBp0vvK/SlHCcirP2E6cftYngAp0it5OYPRPUaUnnualhBeV/DCkbjzZd+yXH8fnhNKP3qTcEwTjfrOQNIqYDLnjbNsU8LbPY3nue2h61fizHcMX0VTn4WRUEEKqTa+THPofoy4EqjS42Tq6lD3SP5St0y7gqEJOI54Z185fmYuN5DvM3/ke9U/jU1ADSxCUh4Npm1RsNeW2Ilm1tC0yUulRlmS2V+XJQ6Edy4KPdFHRc0tNTG8pjWwOAFFWFQnIVy5A/rdLefPPFHr/P31O2rLJBYHkfKQJOkvpjlqc2Eqv2VOycOsd3VvK9rvl2a0FevYCrdw8P/fZX7MXZyjWiINZ3nuVF1h1q11Ba9V/wFPoj3YyMhSGA58LJ7pjwZrY6EjxJUw3W1aipcYpuyxbhFZlZCfYNbTGoqTJjWiYSBEEL11IH3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,72 +108,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a new zone is added to enum zone_type in mmzone.h, the existing
-GFP_ZONE_TABLE macro causes a compile-time shift overflow:
+One functional fix, one performance regression fix, and two related
+comment fixes.
 
-  CC      arch/x86/kernel/asm-offsets.s
-  In file included from ./include/linux/slab.h:16,
-                   from ./include/linux/crypto.h:18,
-                   from arch/x86/kernel/asm-offsets.c:9:
-  ./include/linux/gfp.h: In function ‘gfp_zone’:
-  ./include/linux/gfp.h:132:27: error: left shift count >= width of type [-Werror=shift-count-overflow]
-    132 |         | (OPT_ZONE_DMA32 << (___GFP_MOVABLE | ___GFP_DMA32) * GFP_ZONES_SHIFT)\
-        |                           ^~
-  ./include/linux/gfp.h:157:14: note: in expansion of macro ‘GFP_ZONE_TABLE’
-    157 |         z = (GFP_ZONE_TABLE >> (bit * GFP_ZONES_SHIFT)) &
-        |
+I cleaned up my prototype I recently shared [1] for the performance fix,
+deferring most of the cleanups I had in the prototype to a later point.
+While doing that I identified the other things.
 
-This can be reproduced by adding a new zone:
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
 
-@@ -868,6 +868,7 @@ enum zone_type {
- #ifdef CONFIG_ZONE_DEVICE
-        ZONE_DEVICE,
- #endif
-+       ZONE_FOO,
-        __MAX_NR_ZONES
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
 
- };
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
 
-This happens because the left-hand side operands of the shifts inside GFP_ZONE_TABLE are enum zone_type, which is of type int. The shift is logically valid because it has been checked by 16 * GFP_ZONES_SHIFT > BITS_PER_LONG previously.
+I added as much comments + description that I possibly could, and I am
+hoping for review from Jann.
 
-Fixed this by casting each value in GFP_ZONE_TABLE to type long.
+There are plenty of cleanups in the future to be had + one reasonable
+optimization on x86. But that's all out of scope for this series.
 
-Signed-off-by: Yankai Xu <815559068@qq.com>
----
-v2:
-  - Added compiler warning messages and reproduce steps
----
- include/linux/gfp.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Compile tested on plenty of architectures.
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index b155929af..e694f3103 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -122,14 +122,14 @@ static inline bool gfpflags_allow_spinning(const gfp_t gfp_flags)
- #endif
+Runtime tested, with a focus on fixing the performance regression using
+the original reproducer [2] on x86.
 
- #define GFP_ZONE_TABLE ( \
--	(ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)				       \
--	| (OPT_ZONE_DMA << ___GFP_DMA * GFP_ZONES_SHIFT)		       \
--	| (OPT_ZONE_HIGHMEM << ___GFP_HIGHMEM * GFP_ZONES_SHIFT)	       \
--	| (OPT_ZONE_DMA32 << ___GFP_DMA32 * GFP_ZONES_SHIFT)		       \
--	| (ZONE_NORMAL << ___GFP_MOVABLE * GFP_ZONES_SHIFT)		       \
--	| (OPT_ZONE_DMA << (___GFP_MOVABLE | ___GFP_DMA) * GFP_ZONES_SHIFT)    \
--	| (ZONE_MOVABLE << (___GFP_MOVABLE | ___GFP_HIGHMEM) * GFP_ZONES_SHIFT)\
--	| (OPT_ZONE_DMA32 << (___GFP_MOVABLE | ___GFP_DMA32) * GFP_ZONES_SHIFT)\
-+	((long)ZONE_NORMAL << 0 * GFP_ZONES_SHIFT)				     \
-+	| ((long)OPT_ZONE_DMA << ___GFP_DMA * GFP_ZONES_SHIFT)			     \
-+	| ((long)OPT_ZONE_HIGHMEM << ___GFP_HIGHMEM * GFP_ZONES_SHIFT)		     \
-+	| ((long)OPT_ZONE_DMA32 << ___GFP_DMA32 * GFP_ZONES_SHIFT)		     \
-+	| ((long)ZONE_NORMAL << ___GFP_MOVABLE * GFP_ZONES_SHIFT)		     \
-+	| ((long)OPT_ZONE_DMA << (___GFP_MOVABLE | ___GFP_DMA) * GFP_ZONES_SHIFT)    \
-+	| ((long)ZONE_MOVABLE << (___GFP_MOVABLE | ___GFP_HIGHMEM) * GFP_ZONES_SHIFT)\
-+	| ((long)OPT_ZONE_DMA32 << (___GFP_MOVABLE | ___GFP_DMA32) * GFP_ZONES_SHIFT)\
- )
+I'm still busy with more testing (making sure that my TLB flushing changes
+are good), but sending this out already so people can test and review
+while I am soon heading for LPC.
 
- /*
+[1] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+[2] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+
 --
-2.43.0
+
+v1 -> v2:
+* Picked RB's/ACK's, hopefully I didn't miss any
+* Added the initialization of fully_unshared_tables in __tlb_gather_mmu()
+  (Thanks Nadav!)
+* Refined some comments based on Lorenzo's feedback.
+
+Sending it out already as I have some spare minutes and we should start
+queuing the fixed version. Maybe there will be some more comment changes
+later based on the discussion with Lorenzo.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Uschakow, Stanislav" <suschako@amazon.de>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+
+David Hildenbrand (Red Hat) (4):
+  mm/hugetlb: fix hugetlb_pmd_shared()
+  mm/hugetlb: fix two comments related to huge_pmd_unshare()
+  mm/rmap: fix two comments related to huge_pmd_unshare()
+  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+    using mmu_gather
+
+ include/asm-generic/tlb.h |  74 +++++++++++++++++++++-
+ include/linux/hugetlb.h   |  21 ++++---
+ mm/hugetlb.c              | 129 ++++++++++++++++++++------------------
+ mm/mmu_gather.c           |   7 +++
+ mm/mprotect.c             |   2 +-
+ mm/rmap.c                 |  45 +++++++------
+ 6 files changed, 184 insertions(+), 94 deletions(-)
+
+-- 
+2.52.0
 
 
