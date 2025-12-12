@@ -4,111 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B15FD4335B
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 00:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04F78D41D74
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 00:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD6276B0005; Thu, 11 Dec 2025 19:49:07 -0500 (EST)
+	id 4B2106B0005; Thu, 11 Dec 2025 19:55:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7F616B0006; Thu, 11 Dec 2025 19:49:07 -0500 (EST)
+	id 462B66B0006; Thu, 11 Dec 2025 19:55:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6E926B0007; Thu, 11 Dec 2025 19:49:07 -0500 (EST)
+	id 302D66B0007; Thu, 11 Dec 2025 19:55:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2BA6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 19:49:07 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0FB1A134D35
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:49:07 +0000 (UTC)
-X-FDA: 84208984734.12.C02B5B2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 36411100006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:49:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="k/xuhmZd";
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 154AE6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 19:55:20 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9AF508A43C
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:55:19 +0000 (UTC)
+X-FDA: 84209000358.24.5D57A4E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D00A1A000E
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 00:55:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gj5wa3jL;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765500545;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765500916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jeva+36fJ5P0pjrBn18SToG5hocs24JqlFJeTx/gCRc=;
-	b=o2DdLmdisVmDw1QjrcujD25L1R/fG5UlDXpjMdWEoP+YJW5KSQHOAn9VR+jB52bS/Zcaup
-	8omOwoMaX0yZhhfSEiS2QxjyHM0Zx6MyyyP2OYVQSOoftPDzDBVCG4Ujjdu+xJOTFyHiJA
-	bRp4yJ5RoA/MaeMdjJpfJ2iqfI3LxI8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="k/xuhmZd";
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	bh=E+RR13g8LnHwSu3tvEqt+Rq1V7mCHniE2TbcE35ivvE=;
+	b=bhetXxRABgGhq2rrpuOEO0BS9dxZRcyEDIOsgo4DZ6HVL0AvWtlDmdsZR/YdN85UwYjLTj
+	8/s07QOiiFhVOVUt3iQfMtZJPdvvNmP7gkase+vq3buhQlIZ8CK2C30TP6t74a3Q/Z0+Ff
+	Mnn5pY23E+12GmR1iSz/czdY/ZfgJ1o=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gj5wa3jL;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765500545; a=rsa-sha256;
-	cv=none;
-	b=dbXoFEsNxYBmAMscWbphELuJ2+RBdEZLRe3Sa+2kusNuKA2ojwe7vZIkNIay4ibddA8Uwn
-	tH87fyf+CKjG8K+lZiIccyV11xwi7s0MA3qazYyOJoXRKkmi6VYsaf9A6OKAqoq5/9B2Sd
-	hAZdpObzIJ4NkXhBU5VNS/cSa1splL8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765500916; a=rsa-sha256;
+	cv=pass;
+	b=7iHsHoQEcuiLonbsTY/WKHdW+rekHduIPxLCu8+8XM/Y9/BOYMLqptnoS3QUtWeW8HS9nr
+	3ciC1PbRB+UmGr6pCX5wCCN1RrSAjDoGgSr29c7VBbAJVTpjglhFthZF2R90zhnbwtJicX
+	ohF7CY1Z7CGb4SN6k6iJ9fEA3Hdb9gs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765500544; x=1797036544;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hAe6AAOvyOebdWwsY5kojqH4D7Nkm+axQcV4KqQWf/I=;
-  b=k/xuhmZdjKRbPMawnL/S10mKrB3zU/EGiuKCK+px0WLjFbJjeVF7B8xT
-   Af1C5VxqXDS4HdQj46fimFL4FWDXJgbqb9NbHAA5Cw3idmOvcU/sfXj8W
-   4JBPHz4y5m5803SjCyn6JsBJ5ln+nWU6A5J3mio2n8KSEnXaDOs1Rydiy
-   WfM88691i8HH+Akfxc1BOJwNAexrEbAky+xC3hLpHm/19jE8I8swcXQlJ
-   YP9/kyz1NOAfqfo7zDablD0H/Ht1Wjr0v90ol76Fl8fqCyeFiltQYg8bD
-   FmToGPStyIUQpAbACYZcAgWAFIawKEarez59CCN6YnrUFAJ5grgvrbcFE
+  t=1765500915; x=1797036915;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=zUl9ayH+za18F/N6VfOf2pOlN3lqy2IvmLHSs+36GGE=;
+  b=gj5wa3jLkheLoSsRgtHDmzaF57m1YaIgKFzmMb8P9mhUr6zr8qpyz3Ai
+   POW7bhpaHtHZZWTDP30C1ZwkTupS0ULGyMb8xT1eCzTtIh47Zo4juMWiN
+   lY+hNb8mgdiRYTkplXdAsS5vR1Dy+7ay77f2lDI2AxEdyY3P9uU6f7gmm
+   mgrmFzFsKa/NpUI90F6F0ZzN9LSC2YnQu3+3m8GMmxmxb49urmbw4EMql
+   c7l8L9GTjKyp1HvnjWw+RfYZTIVKlhrTo3vfN4L47WYwyhq3xYtJP+D5v
+   aMjLtbZuFyw/LRfz7jMtcMRjpln9Abs9bAuqXAQCEqlrd5JlcXqbYZnB7
    Q==;
-X-CSE-ConnectionGUID: uPOOtPH1Q1O9QSMeCd5+Gw==
-X-CSE-MsgGUID: aBIPBLz1TjG2ySVphCq8kQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78114224"
+X-CSE-ConnectionGUID: nCE93M16QqWg8QJn3RCqpw==
+X-CSE-MsgGUID: wY/0ju0rSyCOHcYMb8+TSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71116935"
 X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="78114224"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 16:49:02 -0800
-X-CSE-ConnectionGUID: 31ljWDxmTvqtOvYRtR4LDQ==
-X-CSE-MsgGUID: 9vwaFrSoRJqSM2OGFXVN6g==
+   d="scan'208";a="71116935"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 16:55:14 -0800
+X-CSE-ConnectionGUID: 8cpZ4/S5T/mOQlj4hozp+Q==
+X-CSE-MsgGUID: ohpFeEvHT1yJuo6Mq5+37w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="197756649"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 11 Dec 2025 16:48:59 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTrL7-000000005Fl-1fJF;
-	Fri, 12 Dec 2025 00:48:57 +0000
-Date: Fri, 12 Dec 2025 08:48:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Gavin Shan <gshan@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Samuel Holland <samuel.holland@sifive.com>
-Subject: Re: [PATCH 1/2] mm/debug_vm_pgtable: Use set_pXd() to write page
- tables
-Message-ID: <202512120808.akRJJMa7-lkp@intel.com>
-References: <20251211081117.1126521-2-samuel.holland@sifive.com>
+   d="scan'208";a="196028232"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 16:55:14 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 11 Dec 2025 16:55:13 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 11 Dec 2025 16:55:13 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.21) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 11 Dec 2025 16:55:13 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pm5EGWmOuH1MUNwM9833XBcGxYsluA2wsYnuBbae2ahXe9keJXtXxOBYk5uWxrv45R4ZEKt0mUwQuzQjy0nvRaCl2PCMmk9hJ9n2i9YvnUpOwZyvISWkcoCi3owgTNt//z9guQIra68sIm7vNe1L3NL+OqPTdVKe+sFkQybgCDPFx55iA9aEwy7moDjx0qbysMO7V+KYBrtlHMaC+WJ5cBE1i4Rj0bqnqEyMApSxDs93U+RsPjT9I910mfxezRKyDxD1sTf4egVcaYHa/ksAkcMjLkh4uR2T2evZ9a09rIvKRcp/GgZHWoa0NaQ5HweDmGTC6Us2JDs/FgnB8ec75A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E+RR13g8LnHwSu3tvEqt+Rq1V7mCHniE2TbcE35ivvE=;
+ b=dat1/4hLCm2kbOfJXjCzCz2rt+jIiyeuXI7b3nKLbRad6PBHHO0Lvgu+ct73gzYm7XgjG8Ehfq8+NkuLMe4KT2xfJajBBUIPAC8Gl7YPykoNUhNRa2VFEoI68xD3zGvWIDlns9VHA0BnUlbZVOzHJedXlck8MhjHOJIJsR3+C1pyh7JhbHLNHnir5lYwvuexL1Vz24xlMY+mzw/NCHNvqGufZ8fB8CWu4sauWJec0ZMVmzdnHojmJ9xBWIlPJMCVqs4qL62aSCizYh+qqH/vSnHSshQyG9iP388f3mrxEmNexqt13SD9TKmLUaOTA8Yd5PsMFS/dMaCi9lrYEqDo+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
+ by SA1PR11MB6664.namprd11.prod.outlook.com (2603:10b6:806:258::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.11; Fri, 12 Dec
+ 2025 00:55:11 +0000
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::662:dcf4:b809:4860]) by SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::662:dcf4:b809:4860%5]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
+ 00:55:11 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org"
+	<sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
+	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
+	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
+	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources exist
+ from pool creation to deletion.
+Thread-Topic: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources exist
+ from pool creation to deletion.
+Thread-Index: AQHcTWsygycgPn5uUUWANDAP/laxYLTxHCiAgCxKvnA=
+Date: Fri, 12 Dec 2025 00:55:10 +0000
+Message-ID: <SJ2PR11MB8472E5CE1A777C8D07E32064C9AEA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-20-kanchana.p.sridhar@intel.com>
+ <yf2obwzmjxg4iu2j3u5kkhruailheld4uodqsfcheeyvh3rdm7@w7mhranpcsgr>
+In-Reply-To: <yf2obwzmjxg4iu2j3u5kkhruailheld4uodqsfcheeyvh3rdm7@w7mhranpcsgr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|SA1PR11MB6664:EE_
+x-ms-office365-filtering-correlation-id: 8f725302-32d4-4c23-615c-08de39191a32
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?6Sf66qoRjnYvi3hoGwHWl+XYc6WSBAh6msllELyjasC8GuDcboklQYpbZ1/Y?=
+ =?us-ascii?Q?G3yHqOno0DqeUligZz/kDVldQ3/WWv17386V4LHD2+gOBDrtHtcUi8Gg1T6R?=
+ =?us-ascii?Q?tMLEKSOhrAbOfSrbEzHL6ptgKij0Aghb0uKIM8RwHSQRih0mfD627vLhc46u?=
+ =?us-ascii?Q?5GifSJSecP/C2Whg4QQVIItd69ZVMZOWqRaILh9NQVHnhJQDim371Ot8yq0g?=
+ =?us-ascii?Q?6s6NuGMHG53fDpT3ujVmZ6Vz4B1XZrWXiMmmSJac+Cie/Ws7r5xKOcYsxvQE?=
+ =?us-ascii?Q?MuEK8BOM+P6c7xpL+tMZzI24VwVwCM6ku69Sg6Msy/7TLapLRga8fA1gPNe+?=
+ =?us-ascii?Q?07+DpHKx2KlJCy+mxOcSG2egOWcCiOj8wJsUyqph8nkh7SsK1i+b1bo8sRC+?=
+ =?us-ascii?Q?SpWeZHvu+AvpSTwNgoAPGgf3RfLFrxtalBQP1m/whu9WYY90KbBQo5SFVpk3?=
+ =?us-ascii?Q?Civ6ckTUBOF3IVohyWFglv9eCd5vHaWBVMG/39YUswkB+hxyC/Y9kd4k8MGN?=
+ =?us-ascii?Q?9FyZRLM2VxwOChTHjuyl2W3tyxWdIyunsQJ1NmX2l7Y6EDfU2E+d2RtAle/Y?=
+ =?us-ascii?Q?+O3i0Xw29XgpnpZ3shmzlaHG0z/d1C/DVmd+YmP1xVsZyUMtuIqxdGa7KH8W?=
+ =?us-ascii?Q?rNviUStaX4FK7rUojTN6p7U/6BkjT190XsTM9ToMN631suohgHt0Fbm15Yvc?=
+ =?us-ascii?Q?jHoNxumWOEnHp9iqY7BGmVvY8wQvLdWFbacbrwaGnxl00qnWtHgdCIYelWyI?=
+ =?us-ascii?Q?cLFbaEpsOP7cvt43l/16oIQxkeWQ7YCg5KpgnZtGNKD4/aM2UFdO6Jnu+0jB?=
+ =?us-ascii?Q?6V9J0iIJfbAGuEGL47/hxo54SJPRbZ+D7IR9o0WoAVsLYn4gSggh8Prpde4h?=
+ =?us-ascii?Q?uwPBmSsjO5krskk0v4pe2WL/+7kkoAngFYzNQhWp6n2AEFhkKhblfRjKVyp/?=
+ =?us-ascii?Q?ecLluojtoIJGNxjog18OC8hHVE65N4F6PVYbmHWLN6+kaMRhmHTrwfV50OAh?=
+ =?us-ascii?Q?son4HosP2CVWZSDDbjuzlVMoWDvGCszpUPl+tBxqNWEjYmvdT5+jh6tAsCg0?=
+ =?us-ascii?Q?ZBlQdgOCWo6KGwGZlzmMJ8uuWC4e82wUKRva12fmn8juvBFDZD5sIvpGSXgp?=
+ =?us-ascii?Q?A5Yn3hiKY4kAP501nx16IHk+BAF/izMBCA1E/rmhPvvqH6wDSMbv3toU+jVO?=
+ =?us-ascii?Q?CDxa6lz3/hVrOmgpoyBDD2LHoSDBeFBVFtZ9jcegnIt7aaQfO8FB0v37Mzey?=
+ =?us-ascii?Q?S7FYIIyvBJUr8GxjtLyhvJWahHvk4l7N3Qd99v6oWWu1uJAibKvpBicOrKN9?=
+ =?us-ascii?Q?O3PZ7oXOU2fQfv9ljeeyOjc2KSQ6Aqj8U4ILhLQpwtBHSuSn6+WKJUz+HRCm?=
+ =?us-ascii?Q?k8u5UGakxGykrf8U6aVlUuPuvnN2srXAyfqB5sfsoC2351pbgFxE39i1b5Cr?=
+ =?us-ascii?Q?QS3Nvi93JEb9Nh0T6PzAuizTbXU6I/q6d35d05o0WJgtqbmhhREwD1ATdIfm?=
+ =?us-ascii?Q?OTyFqv7Q7oaCaF6BLhQ9JoJUfrzzuFMs+O25?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?EWbbqjH/l9W3OLQ3lHaUOs0mnI9uE2wMNncrujabw9rGthbVff8DY6IzOur0?=
+ =?us-ascii?Q?/IYN6tsCeBPOjslEVzQWgHDPihX/7FyCQrhrXXGd9Xvli2r4SbzGDfgLS7ZG?=
+ =?us-ascii?Q?Lz+JvUQ+6j5lYRXJwXbWBySiVmfLeDn9+WCA5qiMX9Ybh+QyB+6daR8uBw4M?=
+ =?us-ascii?Q?L36fYJvp0+QvUhgAaZa5AChFW/43drQCa7sdl8mXdKjezcpsBlh3+nFGUk3Y?=
+ =?us-ascii?Q?85vCnlR6CFUZ14vjzv6Zz4ufZrMiSX841Ehtyg/ZI7zDs/Ke2ultnNJB/9ZP?=
+ =?us-ascii?Q?INJhzTny25qkjmv1SZ3NwLHoWceqZgoqU1ruVrQrXWPSMLi+v4uufnkEcUAo?=
+ =?us-ascii?Q?z2uhk5aSHDBp1hDwKYL0Wyj1DafNlGryMEzWTvb5MmlJV7CE7kUOxSeLEw4D?=
+ =?us-ascii?Q?z02iBClN/+ZoJdoSAjkO8GH1uxUH7r2ks7EXCIvbkyHdnt2OnmdVldDwXamJ?=
+ =?us-ascii?Q?u2aUx7x8I8xSOvFZP0INQRzwpN8JwMaziqPUhY5lmcF+orWEQBAVdoR6UfoA?=
+ =?us-ascii?Q?tsFyLA/lqjuvK9IGeSrl/c8S08WdDMu0bWB7npcc35m171Sy7Zosd0rcAyTy?=
+ =?us-ascii?Q?h8I86k+6YjaMz7HXdwvtjo/C0EkJ8VITejdPilw94iJg1b4Ds7GCbP312w0j?=
+ =?us-ascii?Q?ZkgRa3+p+WMhEigZVCpqIWT599GQQhjY364wbX0/5ofcB/RQT2pZGHIAm0T0?=
+ =?us-ascii?Q?Y9vGucpBjlW1cB8JEr7C9yKSQTocxhj1pfI473Q0i/22leIj+MQa4J4GaAuf?=
+ =?us-ascii?Q?vktRXoRnWqEKkSz+Li5ChQSZFKG1XX/NzkGG4fYZVxEgJOfmNvskw11xcW5G?=
+ =?us-ascii?Q?C+798oGs5pXWnOuKp9Y3xpP6RqPYdjpnDfSlAOSzwX665eecoduMRmVjW/My?=
+ =?us-ascii?Q?woa0FJZ0LYRbUTZr9lfWV1eVGgNlOwOfGE7pf3572KDmektmciDxJs07rxKf?=
+ =?us-ascii?Q?qceQq4dNR8dZZxxJucw750pIpgVF9sZ9E8Tc04GSoe8hmiOGa7cIxYETYj1J?=
+ =?us-ascii?Q?9tjFR/SnZFwpvwCFN9wLhJq2bhxxdJOAj1qW3ue2DxZvxnpkFWOFPfKgjfeU?=
+ =?us-ascii?Q?NIg7GRCGsDOfHTCyqfYVtI/kER1AOyv5/+GQSqY846lyCIO4SdN6s3d+ipLM?=
+ =?us-ascii?Q?EHxTZNjBHyKNYwXgTwohTJx+axHK2HgQcMDdehpfO8RgqUP2kV9+qugGWlOK?=
+ =?us-ascii?Q?Nsqfx/6PIlri/3DzAYfDtMUnWvUdO8dh+Wm3Bzm6VrsIjZJ518twZDp9DSS7?=
+ =?us-ascii?Q?InCExB7Z+fhZzn/SVF+0SYlmXavIB+cEN1aUu1fTSMaHcmCHXcgpxavUC4fN?=
+ =?us-ascii?Q?aFMqjblgbAVBf0tJRMEG8+EofTSauDcyj7Ipzi5HNZ6Q3q4C+MHe2ml6fBRs?=
+ =?us-ascii?Q?/3XaS9ow9LVQ1p6T9+mhXwIF3hEc9JPFM5iFcX0GSHCWPkiczVBhc5F0iOUr?=
+ =?us-ascii?Q?/yG74gu1HAgapbfIe3dX+qnQCHmCcXALZvMDFAMAZk+Ac2+mey0kGB8hY5lj?=
+ =?us-ascii?Q?Ue9fnsKxn7oBB8T/eqJEH1a2SBgVvFN/UahTMTrnKcG1u0xmvb/AaxR+glWQ?=
+ =?us-ascii?Q?OGJYWMia9o3/zd6YVDtQoLJ/4Ihhi6T83X3avy9Ugf5RI3GbaUFUK0TzM9fB?=
+ =?us-ascii?Q?tL7EpPvnvOdHgLmfNpU583iEiVfoz75Tw4fMixOZrXE3MslddoqfZz/9hkvf?=
+ =?us-ascii?Q?Wamp+w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211081117.1126521-2-samuel.holland@sifive.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f725302-32d4-4c23-615c-08de39191a32
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2025 00:55:10.9361
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IKmwfxeRrH/BM6Wj9GotRo8ZiblJ6sBKWVfVzrQtHB96zL4eB5uUjN2/KSKVPHdkQk3dGo9ecoPHifKgem2/PkPO2qOcvAYgNZysEid/6Uw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6664
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 36411100006
-X-Stat-Signature: qm5npsf95h7np4nxxbfqjycxe9nbetzc
+X-Rspamd-Queue-Id: D00A1A000E
+X-Stat-Signature: iap1gkjudp1jozobyzenqm43iy4gncyo
 X-Rspam-User: 
-X-HE-Tag: 1765500543-645101
-X-HE-Meta: U2FsdGVkX18cvPYT/Ob2J+6g8H5PThry52ysONh4K2RDOAu4o8zb15jiliLCMePSYAzNganRjZOIY/Dnygyt5IKTGs4Bid7F4sN8CFVfNrqKA4Pg8zCfsLOci2cmZloAmHfjmogoegPhiAeBZ+Nu/aplaZdvDptrquvKwKpd0k16vbW8hKUo7Z7GG3FGjUG1zhmM15r1wBHwBjjcsxyAxMoHYPBmPEFl0GhF4Qa87ZG3rNHz0ODde2LNMqjlXntnFhFWk0iJM/2OzZiGEmMwDogc0LJXk0hSfL9LYCi5VVpPKpuT5w6x9+0NvoYHKHwYv/8XqaOfp8Ln/A6w7NoJ/1DYGhSiuilniiw7enfHA9L61RAfov4LocFiOFozr+usrp2I5NVfMCuBuSQN2LID6KpHwICVvjFHuBJEGJHn4iQ9YRr3HzBzCdUspHq6ydEM1bdqTObGAQnaW0e+Eh2/j6o3yaGTjDgrHEIK0DTX4iWjsq0p/CRBsNz4lQCQjKZN/M0kxfVqdnebJydVqqg4iFQvZ6unUPQBfofz+EZupIXFpBihqLdk0dyQQDysUuHC2xH6NpLAct1k3d8NCSrqnO+ZxZZl2bvqYIrDVjqNbQreznuRlsqepCgfboJkft2J76FoBvXXm+1dPMxXUmCvxhZ+Zfckad4glGMhnRv2MJsc/x8lqTulvcY0XsZ0ep6uqmWYj12nsCYW50yRDbcyWPCNvZBLaxZSOLvwslgfFo6+HnurP9sKhh/wDreYk4hNJgjaXN5rB5PCK39lOg110Z/hXser33MYegzUtQ80SFdc2DszNBniWxIz1iqNoPMRs1mJ6w8ZVYBvwddtdmtnHsG6uczX+MueQDUAlcPYs55pCe6PaHVJCMjIYxBWJkdMh43nP+mk/INamcub27VisB5ZVpO89aamwb333Kkzs1IkeT0RPnc1BlDM/4fxqw3SaoGK9Miwh7nTlN+H0Dv
- bg7NUIhL
- qmxrb/a2Vt8DvnVOiggP6EUs6F4k/HabUV9V9cKs4mxqyeh4R2HcW/7p6e9WDpcey92dVJNo7vPFX31titmuUofxHGrP2r1B1vfFkQOGVtyCvZUsPznoPYmIsu+qJn+nW6AeBCiNJgms8rPo2iB+bmg5yqeROZvryNYKyO9TwM+HDWXpOtiy5igyON6Z94Z7orxi5YII4R43If/qYDVex+6UXJ0xmbcex9KqY60hp74k5YA1ghRl+XVpLATmaS3LZIEyD0FuHdkYrdf829dt2b4uY/Y8NFRu1Tu6D+r9RZBa2RaK/q5tkbSIvZBMoMAcm61tmxMCKdvW4NpEQL8UcwH2KtJCvtDVoKWZ3ty6TRnzutyM3MCLMwUsGTDMCwGq7YOANQXXzFCkho8HhTpGk4npJ8oxX4XVxzDLkElGKUzSbNKqCeODqi8zgVg==
+X-HE-Tag: 1765500915-842660
+X-HE-Meta: U2FsdGVkX1/nivuVeb2r1MoZIs3W3pJnrzHXISBLfwtvx+G6GvW8A0rN5n5/2zNPaA1DTlvXXTg3G+emmXqR/grH7ao0d3cKaYvBgrFCKALUuUF/GUbTZULWhksmUNsfAS4Xt4ZD5szj5+2aiu/ZpG2TI8RqjTxXNCDOKr8JxcY/U9yfPvL0dSPJWh6mk2zHSFqxBHLDH1D378JXD7kwsxKvcvXEjlq+XAqR2BlAeXhnNfmDZwVW0Aqcexy89TPydT7NoR6qkb433vGxWuyly7BelwZdThCJFn245phC6Lb7nnzz+nQcg+rc+qW/DDtMPJ9R1ysPRFh+K/UeyEQOpTH2Rht31Ale2Uvb2WQG07tv90zbbQTE8Q+Ym+SX0DTel9LHyYw8SSBN33qedjEnTbZe+JSLF95SBEoUCeriDkqR+7qd82SR64Kp8pSqFCbuZT09wKexksQt8A/rG8msNKyVudahS3kpgrKuc+962Tnb+AQfzuJBBiPGDIobdYtspUrEbjLKyy6k9ZrJdpqr8VXGp5XH/TKWcdNSVU3/wEVvIdNnX502U0bzNYiaJ0mklMbNIJd9DLlLkY9J332wjLQzx/Rifc/9b46GCrdkDUUmp2NuhgFA420VRAukYsdA6SVI7RHQAXpfOz14xJgH8pZkbC3Vm1VNLhdurvFywGXg3aEzLKg/ATUUFc6rgD4Qsg8VJEpCOcUBgzu4YZfBIGh3q/riTYENQ94qZDeyuzfCY/w/kUR8rBk4D5Z+MkmXQXYZVINYAALoIjHpZCwT0Zf6Q/O5L6QZEQYwMhO+j2N0+MrQx62ELjGF/vcfoVJHD6dOUed07Xa0R4qjU7wmuuZ97mAkUm90tB6ta5ccngeNUbinCaNF1oqJP9uaqSQpTaLiN/8MVc1fC+kRmns3f+ZEVSO866cnc8zale7w2vr9U9I/tr1x55Fa1mFyHUHUaXcXMf7i5G73N2/vr8H
+ A/vgfOxG
+ A8dBn0cZ7MSwtrYsRxKf6PWxlWzVDror6+bhg2khSGCTsMMjLvSIT87yyeKures0hoes3ca3sA1vSoF1Sg5xsMfmU18VUOk/cbPBMmsUNk9H3y/fBuSoYNz8mIk8/Y38X8oO6Z8yDjPgtT5qWoiBGBcFCUNNrHOmyyrMDkq9YECQ8Clht+mcJR20VnqZJ+kiDBJDuRDDhjLQH0oLOnsuyNg2KzigwXlMD7cejXFqDV7TAMgiQvMm3wHznKqAWYFp02dXwpbNA3kFQvSOlJDX7nxyz8hBosf9iPBy9rzeS/EjVSaikdhddywcSFoTbRZcxbRVjsZfOwfhJ4mU4bkdamoNYDSOf7DEaV+JOEAaIziVtGfF8cwn37xtCgp/KENn2HnLi8Mbd89i0gx6OVMV/uLCjGbDIGrCYMySaZSPkqTWXPYAd2V5fM+u7w1jxdzvC1WsjBO7cvcwz7B5NPESOY5w/glxhx1XYQBvjRlipiSLl0vyzNFp1raybwN5pmgvyRZNMGBtuRa3qInXifu5+2Jc8aLcs3X7mdtBKZTRpvvk1249YAgEWmrcdTuOFj6mO+Ki6/wuOQ5PL/KnjRAy3GiEyaTe+uUTK3vPuwVwDktUdMI6+6dXMjfh8XRXBfXKqSpqp3+EtsC6LOEmRR+3k3DVzp2pci9NmfR7QJNC0kCHZ/BhD9jndCBpJWCPAGJZNPUH/B02+8XSSgkHrXwpDEiA8Ar0DZY83KcPgoPCsuFIJ0ogSK1nHEW5WquhRBm5pWAyqzHohzEM+bqeR8DhpYKpsbb1Xy4qAeq6HxT/QhOGhC2bura+HRolr4r/owSDD3f4Yt7lgZXRyMWP3+wH79c5tEdEt+VLzcDSyCQXaLtLNlhC/z8V4Mdsib+fOV+p4fyivXnrQnGIK0rn+E2ZE364SVTkQfv8FofU7KDidSIbxKWLgPsRntn8vc++mK2jAzzffTLfgneypNxkO75CDhRNQECnH
+ 1pRXLxRQ
+ 15SU5eMWnxjBbvVG5YQw1KdbhRtrvh39CNPj29qMhW4mQC679/Uxelm4XlnHrFk3CM+SGN8XdLYgnCheCGBQH0ZGfkV/1WLxmVD4bdJyG/oBsOSlu/lkSnNkC2B2QxRi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,96 +240,389 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Samuel,
 
-kernel test robot noticed the following build errors:
+> -----Original Message-----
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Sent: Thursday, November 13, 2025 12:24 PM
+> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
+> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
+;
+> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources
+> exist from pool creation to deletion.
+>=20
+> On Tue, Nov 04, 2025 at 01:12:32AM -0800, Kanchana P Sridhar wrote:
+>=20
+> The subject can be shortened to:
+>=20
+> "mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool"
+>=20
+> > This patch simplifies the zswap_pool's per-CPU acomp_ctx resource
+> > management. Similar to the per-CPU acomp_ctx itself, the per-CPU
+> > acomp_ctx's resources' (acomp, req, buffer) lifetime will also be from
+> > pool creation to pool deletion. These resources will persist through CP=
+U
+> > hotplug operations instead of being destroyed/recreated. The
+> > zswap_cpu_comp_dead() teardown callback has been deleted from the call
+> > to cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE). As a
+> result, CPU
+> > offline hotplug operations will be no-ops as far as the acomp_ctx
+> > resources are concerned.
+>=20
+> Currently, per-CPU acomp_ctx are allocated on pool creation and/or CPU
+> hotplug, and destroyed on pool destruction or CPU hotunplug. This
+> complicates the lifetime management to save memory while a CPU is
+> offlined, which is not very common.
+>=20
+> Simplify lifetime management by allocating per-CPU acomp_ctx once on
+> pool creation (or CPU hotplug for CPUs onlined later), and keeping them
+> allocated until the pool is destroyed.
+>=20
+> >
+> > This commit refactors the code from zswap_cpu_comp_dead() into a
+> > new function acomp_ctx_dealloc() that is called to clean up acomp_ctx
+> > resources from:
+> >
+> > 1) zswap_cpu_comp_prepare() when an error is encountered,
+> > 2) zswap_pool_create() when an error is encountered, and
+> > 3) from zswap_pool_destroy().
+>=20
+>=20
+> Refactor cleanup code from zswap_cpu_comp_dead() into
+> acomp_ctx_dealloc() to be used elsewhere.
+>=20
+> >
+> > The main benefit of using the CPU hotplug multi state instance startup
+> > callback to allocate the acomp_ctx resources is that it prevents the
+> > cores from being offlined until the multi state instance addition call
+> > returns.
+> >
+> >   From Documentation/core-api/cpu_hotplug.rst:
+> >
+> >     "The node list add/remove operations and the callback invocations a=
+re
+> >      serialized against CPU hotplug operations."
+> >
+> > Furthermore, zswap_[de]compress() cannot contend with
+> > zswap_cpu_comp_prepare() because:
+> >
+> >   - During pool creation/deletion, the pool is not in the zswap_pools
+> >     list.
+> >
+> >   - During CPU hot[un]plug, the CPU is not yet online, as Yosry pointed
+> >     out. zswap_cpu_comp_prepare() will be run on a control CPU,
+> >     since CPUHP_MM_ZSWP_POOL_PREPARE is in the PREPARE section of
+> "enum
+> >     cpuhp_state". Thanks Yosry for sharing this observation!
+> >
+> >   In both these cases, any recursions into zswap reclaim from
+> >   zswap_cpu_comp_prepare() will be handled by the old pool.
+> >
+> > The above two observations enable the following simplifications:
+> >
+> >  1) zswap_cpu_comp_prepare(): CPU cannot be offlined. Reclaim cannot
+> use
+> >     the pool. Considerations for mutex init/locking and handling
+> >     subsequent CPU hotplug online-offline-online:
+> >
+> >     Should we lock the mutex of current CPU's acomp_ctx from start to
+> >     end? It doesn't seem like this is required. The CPU hotplug
+> >     operations acquire a "cpuhp_state_mutex" before proceeding, hence
+> >     they are serialized against CPU hotplug operations.
+> >
+> >     If the process gets migrated while zswap_cpu_comp_prepare() is
+> >     running, it will complete on the new CPU. In case of failures, we
+> >     pass the acomp_ctx pointer obtained at the start of
+> >     zswap_cpu_comp_prepare() to acomp_ctx_dealloc(), which again, can
+> >     only undergo migration. There appear to be no contention scenarios
+> >     that might cause inconsistent values of acomp_ctx's members. Hence,
+> >     it seems there is no need for mutex_lock(&acomp_ctx->mutex) in
+> >     zswap_cpu_comp_prepare().
+> >
+> >     Since the pool is not yet on zswap_pools list, we don't need to
+> >     initialize the per-CPU acomp_ctx mutex in zswap_pool_create(). This
+> >     has been restored to occur in zswap_cpu_comp_prepare().
+> >
+> >     zswap_cpu_comp_prepare() checks upfront if acomp_ctx->acomp is
+> >     valid. If so, it returns success. This should handle any CPU
+> >     hotplug online-offline transitions after pool creation is done.
+> >
+> >  2) CPU offline vis-a-vis zswap ops: Let's suppose the process is
+> >     migrated to another CPU before the current CPU is dysfunctional. If
+> >     zswap_[de]compress() holds the acomp_ctx->mutex lock of the offline=
+d
+> >     CPU, that mutex will be released once it completes on the new
+> >     CPU. Since there is no teardown callback, there is no possibility o=
+f
+> >     UAF.
+> >
+> >  3) Pool creation/deletion and process migration to another CPU:
+> >
+> >     - During pool creation/deletion, the pool is not in the zswap_pools
+> >       list. Hence it cannot contend with zswap ops on that CPU. However=
+,
+> >       the process can get migrated.
+> >
+> >       Pool creation --> zswap_cpu_comp_prepare()
+> >                                 --> process migrated:
+> >                                     * CPU offline: no-op.
+> >                                     * zswap_cpu_comp_prepare() continue=
+s
+> >                                       to run on the new CPU to finish
+> >                                       allocating acomp_ctx resources fo=
+r
+> >                                       the offlined CPU.
+> >
+> >       Pool deletion --> acomp_ctx_dealloc()
+> >                                 --> process migrated:
+> >                                     * CPU offline: no-op.
+> >                                     * acomp_ctx_dealloc() continues
+> >                                       to run on the new CPU to finish
+> >                                       de-allocating acomp_ctx resources
+> >                                       for the offlined CPU.
+> >
+> >  4) Pool deletion vis-a-vis CPU onlining:
+> >     The call to cpuhp_state_remove_instance() cannot race with
+> >     zswap_cpu_comp_prepare() because of hotplug synchronization.
+> >
+> > This patch deletes acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock().
+> > Instead, zswap_[de]compress() directly call
+> > mutex_[un]lock(&acomp_ctx->mutex).
+>=20
+> I am not sure why all of this is needed. We should just describe why
+> it's safe to drop holding the mutex while initializing per-CPU
+> acomp_ctx:
+>=20
+> It is no longer possible for CPU hotplug to race against allocation or
+> usage of per-CPU acomp_ctx, as they are only allocated once before the
+> pool can be used, and remain allocated as long as the pool is used.
+> Hence, stop holding the lock during acomp_ctx initialization, and drop
+> acomp_ctx_get_cpu_lock()//acomp_ctx_put_unlock().
 
-[auto build test ERROR on d358e5254674b70f34c847715ca509e46eb81e6f]
+Hi Yosry,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Samuel-Holland/mm-debug_vm_pgtable-Use-set_pXd-to-write-page-tables/20251211-161254
-base:   d358e5254674b70f34c847715ca509e46eb81e6f
-patch link:    https://lore.kernel.org/r/20251211081117.1126521-2-samuel.holland%40sifive.com
-patch subject: [PATCH 1/2] mm/debug_vm_pgtable: Use set_pXd() to write page tables
-config: powerpc64-randconfig-r054-20251212 (https://download.01.org/0day-ci/archive/20251212/202512120808.akRJJMa7-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512120808.akRJJMa7-lkp@intel.com/reproduce)
+Thanks for these comments. IIRC, there was quite a bit of technical
+discussion analyzing various what-ifs, that we were able to answer
+adequately. The above is a nice summary of the outcome, however,
+I think it would help the next time this topic is re-visited to have a log
+of the "why" and how races/UAF scenarios are being considered and
+addressed by the solution. Does this sound Ok?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512120808.akRJJMa7-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/debug_vm_pgtable.c: In function 'pmd_huge_tests':
->> mm/debug_vm_pgtable.c:448:2: error: implicit declaration of function 'set_pmd'; did you mean 'set_pgd'? [-Werror=implicit-function-declaration]
-     448 |  set_pmd(args->pmdp, __pmd(0));
-         |  ^~~~~~~
-         |  set_pgd
-   mm/debug_vm_pgtable.c: In function 'pud_huge_tests':
->> mm/debug_vm_pgtable.c:468:2: error: implicit declaration of function 'set_pud'; did you mean 'set_pgd'? [-Werror=implicit-function-declaration]
-     468 |  set_pud(args->pudp, __pud(0));
-         |  ^~~~~~~
-         |  set_pgd
-   cc1: some warnings being treated as errors
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for CAN_DEV
-   Depends on [n]: NETDEVICES [=n] && CAN [=y]
-   Selected by [y]:
-   - CAN [=y] && NET [=y]
+Thanks,
+Kanchana
 
 
-vim +448 mm/debug_vm_pgtable.c
+=20
 
-   433	
-   434	#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-   435	static void __init pmd_huge_tests(struct pgtable_debug_args *args)
-   436	{
-   437		pmd_t pmd;
-   438	
-   439		if (!arch_vmap_pmd_supported(args->page_prot) ||
-   440		    args->fixed_alignment < PMD_SIZE)
-   441			return;
-   442	
-   443		pr_debug("Validating PMD huge\n");
-   444		/*
-   445		 * X86 defined pmd_set_huge() verifies that the given
-   446		 * PMD is not a populated non-leaf entry.
-   447		 */
- > 448		set_pmd(args->pmdp, __pmd(0));
-   449		WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
-   450		WARN_ON(!pmd_clear_huge(args->pmdp));
-   451		pmd = pmdp_get(args->pmdp);
-   452		WARN_ON(!pmd_none(pmd));
-   453	}
-   454	
-   455	static void __init pud_huge_tests(struct pgtable_debug_args *args)
-   456	{
-   457		pud_t pud;
-   458	
-   459		if (!arch_vmap_pud_supported(args->page_prot) ||
-   460		    args->fixed_alignment < PUD_SIZE)
-   461			return;
-   462	
-   463		pr_debug("Validating PUD huge\n");
-   464		/*
-   465		 * X86 defined pud_set_huge() verifies that the given
-   466		 * PUD is not a populated non-leaf entry.
-   467		 */
- > 468		set_pud(args->pudp, __pud(0));
-   469		WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
-   470		WARN_ON(!pud_clear_huge(args->pudp));
-   471		pud = pudp_get(args->pudp);
-   472		WARN_ON(!pud_none(pud));
-   473	}
-   474	#else /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
-   475	static void __init pmd_huge_tests(struct pgtable_debug_args *args) { }
-   476	static void __init pud_huge_tests(struct pgtable_debug_args *args) { }
-   477	#endif /* CONFIG_HAVE_ARCH_HUGE_VMAP */
-   478	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>=20
+> >
+> > The per-CPU memory cost of not deleting the acomp_ctx resources upon
+> CPU
+> > offlining, and only deleting them when the pool is destroyed, is as
+> > follows, on x86_64:
+> >
+> >     IAA with 8 dst buffers for batching:    64.34 KB
+> >     Software compressors with 1 dst buffer:  8.28 KB
+>=20
+> This cost is only paid when a CPU is offlined, until it is onlined
+> again.
+>=20
+> >
+> > Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+> > ---
+> >  mm/zswap.c | 164 +++++++++++++++++++++--------------------------------
+> >  1 file changed, 64 insertions(+), 100 deletions(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 4897ed689b9f..87d50786f61f 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -242,6 +242,20 @@ static inline struct xarray
+> *swap_zswap_tree(swp_entry_t swp)
+> >  **********************************/
+> >  static void __zswap_pool_empty(struct percpu_ref *ref);
+> >
+> > +static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
+> > +{
+> > +	if (IS_ERR_OR_NULL(acomp_ctx))
+> > +		return;
+> > +
+> > +	if (!IS_ERR_OR_NULL(acomp_ctx->req))
+> > +		acomp_request_free(acomp_ctx->req);
+> > +
+> > +	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> > +		crypto_free_acomp(acomp_ctx->acomp);
+> > +
+> > +	kfree(acomp_ctx->buffer);
+> > +}
+> > +
+> >  static struct zswap_pool *zswap_pool_create(char *compressor)
+> >  {
+> >  	struct zswap_pool *pool;
+> > @@ -263,19 +277,26 @@ static struct zswap_pool
+> *zswap_pool_create(char *compressor)
+> >
+> >  	strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
+> >
+> > -	pool->acomp_ctx =3D alloc_percpu(*pool->acomp_ctx);
+> > +	/* Many things rely on the zero-initialization. */
+> > +	pool->acomp_ctx =3D alloc_percpu_gfp(*pool->acomp_ctx,
+> > +					   GFP_KERNEL | __GFP_ZERO);
+> >  	if (!pool->acomp_ctx) {
+> >  		pr_err("percpu alloc failed\n");
+> >  		goto error;
+> >  	}
+> >
+> > -	for_each_possible_cpu(cpu)
+> > -		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
+> > -
+> > +	/*
+> > +	 * This is serialized against CPU hotplug operations. Hence, cores
+> > +	 * cannot be offlined until this finishes.
+> > +	 * In case of errors, we need to goto "ref_fail" instead of "error"
+> > +	 * because there is no teardown callback registered anymore, for
+> > +	 * cpuhp_state_add_instance() to de-allocate resources as it rolls
+> back
+> > +	 * state on cores before the CPU on which error was encountered.
+> > +	 */
+>=20
+> Do we need to manually call acomp_ctx_dealloc() on each CPU on failure
+> because cpuhp_state_add_instance() relies on the hotunplug callback for
+> cleanup, and we don't have any?
+>=20
+> If that's the case:
+>=20
+> 	/*
+> 	 * cpuhp_state_add_instance() will not cleanup on failure since
+> 	 * we don't register a hotunplug callback.
+> 	 */
+>=20
+> Describing what the code does is not helpful, and things like "anymore"
+> do not make sense once the code is merged.
+>=20
+> >  	ret =3D
+> cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> >  				       &pool->node);
+> >  	if (ret)
+> > -		goto error;
+> > +		goto ref_fail;
+>=20
+> IIUC we shouldn't call cpuhp_state_remove_instance() on failure, we
+> probably should add a new label.
+>=20
+> >
+> >  	/* being the current pool takes 1 ref; this func expects the
+> >  	 * caller to always add the new pool as the current pool
+> > @@ -292,6 +313,9 @@ static struct zswap_pool *zswap_pool_create(char
+> *compressor)
+> >
+> >  ref_fail:
+> >  	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> &pool->node);
+> > +
+> > +	for_each_possible_cpu(cpu)
+> > +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> >  error:
+> >  	if (pool->acomp_ctx)
+> >  		free_percpu(pool->acomp_ctx);
+> > @@ -322,9 +346,15 @@ static struct zswap_pool
+> *__zswap_pool_create_fallback(void)
+> >
+> >  static void zswap_pool_destroy(struct zswap_pool *pool)
+> >  {
+> > +	int cpu;
+> > +
+> >  	zswap_pool_debug("destroying", pool);
+> >
+> >  	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> &pool->node);
+> > +
+> > +	for_each_possible_cpu(cpu)
+> > +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> > +
+> >  	free_percpu(pool->acomp_ctx);
+> >
+> >  	zs_destroy_pool(pool->zs_pool);
+> > @@ -736,39 +766,35 @@ static int zswap_cpu_comp_prepare(unsigned int
+> cpu, struct hlist_node *node)
+> >  {
+> >  	struct zswap_pool *pool =3D hlist_entry(node, struct zswap_pool,
+> node);
+> >  	struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool-
+> >acomp_ctx, cpu);
+> > -	struct crypto_acomp *acomp =3D NULL;
+> > -	struct acomp_req *req =3D NULL;
+> > -	u8 *buffer =3D NULL;
+> > -	int ret;
+> > +	int ret =3D -ENOMEM;
+> >
+> > -	buffer =3D kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
+> > -	if (!buffer) {
+> > -		ret =3D -ENOMEM;
+> > -		goto fail;
+> > -	}
+> > +	/*
+> > +	 * To handle cases where the CPU goes through online-offline-online
+> > +	 * transitions, we return if the acomp_ctx has already been initializ=
+ed.
+> > +	 */
+> > +	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> > +		return 0;
+>=20
+> Is it possible for acomp_ctx->acomp to be an ERR value here? If it is,
+> then zswap initialization should have failed. Maybe WARN_ON_ONCE() for
+> that case?
+>=20
+> >
+> > -	acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0,
+> cpu_to_node(cpu));
+> > -	if (IS_ERR(acomp)) {
+> > +	acomp_ctx->buffer =3D kmalloc_node(PAGE_SIZE, GFP_KERNEL,
+> cpu_to_node(cpu));
+> > +	if (!acomp_ctx->buffer)
+> > +		return ret;
+> > +
+> > +	acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0,
+> 0, cpu_to_node(cpu));
+> > +	if (IS_ERR(acomp_ctx->acomp)) {
+> >  		pr_err("could not alloc crypto acomp %s : %ld\n",
+> > -				pool->tfm_name, PTR_ERR(acomp));
+> > -		ret =3D PTR_ERR(acomp);
+> > +				pool->tfm_name, PTR_ERR(acomp_ctx-
+> >acomp));
+> > +		ret =3D PTR_ERR(acomp_ctx->acomp);
+> >  		goto fail;
+> >  	}
+> > +	acomp_ctx->is_sleepable =3D acomp_is_async(acomp_ctx->acomp);
+> >
+> > -	req =3D acomp_request_alloc(acomp);
+> > -	if (!req) {
+> > +	acomp_ctx->req =3D acomp_request_alloc(acomp_ctx->acomp);
+> > +	if (!acomp_ctx->req) {
+> >  		pr_err("could not alloc crypto acomp_request %s\n",
+> >  		       pool->tfm_name);
+> > -		ret =3D -ENOMEM;
+> >  		goto fail;
+> >  	}
+> >
+> > -	/*
+> > -	 * Only hold the mutex after completing allocations, otherwise we
+> may
+> > -	 * recurse into zswap through reclaim and attempt to hold the mutex
+> > -	 * again resulting in a deadlock.
+> > -	 */
+> > -	mutex_lock(&acomp_ctx->mutex);
+> >  	crypto_init_wait(&acomp_ctx->wait);
+> >
+> >  	/*
+> [..]
 
