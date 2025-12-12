@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF79D4415F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66BBBD44166
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D2BA6B0006; Fri, 12 Dec 2025 05:16:10 -0500 (EST)
+	id 3FB6D6B0005; Fri, 12 Dec 2025 05:38:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AA0D6B0007; Fri, 12 Dec 2025 05:16:10 -0500 (EST)
+	id 3AC276B0006; Fri, 12 Dec 2025 05:38:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C0456B0008; Fri, 12 Dec 2025 05:16:10 -0500 (EST)
+	id 29AAE6B0007; Fri, 12 Dec 2025 05:38:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E5246B0006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:16:10 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14FD58A8AA
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:16:10 +0000 (UTC)
-X-FDA: 84210413700.24.D543CEE
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 356201C000F
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:16:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=spMUWl13;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 186E96B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:38:34 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD8421604D8
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:38:33 +0000 (UTC)
+X-FDA: 84210470106.20.2091EE8
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BBB5940010
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:38:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="EwRlEg/r";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765534568; a=rsa-sha256;
+	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765535911; a=rsa-sha256;
 	cv=none;
-	b=Ct+0zADq9F+/XMZ7E1Zfl+5yiE6CH7hWNhT6lErLMB9Rr2h21ff+gWNdxfo73fAhWQOoRL
-	2Cg3uw3IPJKhxUXkKK5dEhwB7ikTUzj/2MhtX1kw6XNd6U5W6Aa/eHdBNeWzqP4kcjnzZ4
-	68qee+VTp4IW5vQtmGxa0pVmzFnJFqw=
+	b=x7jy+WnVWYwwtDlj1tEQiBfuku6DQd1/F6aDCHlyDvn0/sJPC/x1fcAnjGbNvLLV5aPYa8
+	dY00l/h2IhWCRPA+uJrmUhHYk9ofK5VJZCNz5ZX9GE6jJzB5zA9LlckrSQ3Z/qHDR2K25r
+	rARZ2t4WcomYBUi+Cwz7sdFJfhAHaKg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=spMUWl13;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="EwRlEg/r";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=elver@google.com
+	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=elver@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765534568;
+	s=arc-20220608; t=1765535911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yy8AVUr1WzoEhC0gwViTyIIecU1pDeO+TdO72jBT6kg=;
-	b=DkKBsEgyNoYgeKRbhHQdWkxEwIZWaezEOC7sItA42I4ibIaIwM03pQcFXSE6YC84cC7CmQ
-	rKqZHEge4E42ZjTDrY/nbj61gBcpuKLglSqZ/6FmXouq7tiW5+1BZ2z9QP1cp05hjCvzFj
-	qHplNupAVNsiwDPSYe9HZMWOV+HEWK4=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c03ec27c42eso635440a12.1
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:16:07 -0800 (PST)
+	bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
+	b=rrT0M/JpFVn02G+fmo8rZeliFUINiMPHydFeqrkLnUfeQqf1v/0GnwkLRDHcJ2ywvDWA0E
+	AjbQHJ0l0ga+83qsyzZcLiDrK6vY83Jw2K47VmWDqE0mj4leieoisGFirWYrPJu0DQSEN2
+	cBogS6lU7V/+vDq1HTjQdy8FsfhB/Uo=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2984dfae0acso18533325ad.0
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:38:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765534567; x=1766139367; darn=kvack.org;
+        d=google.com; s=20230601; t=1765535910; x=1766140710; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yy8AVUr1WzoEhC0gwViTyIIecU1pDeO+TdO72jBT6kg=;
-        b=spMUWl13Y6I3laBCC7i+8RD2Gc8yIeqtrRkIzzKgXuV7spIRpBhHeel8IrwcpCTv/F
-         YQboWuLkem4fOLS9RgE0Ehd6S3QqNIbe3zZTlK62OtOkZOdVa5kSn1xeK+cmXc2Zbx6+
-         NpU/Fky+6x/ozxwjgoHdYaql+PZYtRfuRE5J/jOVtAiH2+w8SlLdigZqDkkKUWt7hDlE
-         AeKX2eKbWaji2qYTlky3ocb9P9QyxmBh6nq7Ox0CdMDELqYbQN6nsj6BqMAxwqK18c/c
-         KyPG7hngRSI2Wdk/6M7kPMSsWNrUuOciukC+a02kvsCrV85c0RoLVSTwfUemDU5bx7U3
-         eDEA==
+        bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
+        b=EwRlEg/riN36kdW0YKU/3uhZtlGyXAlMxRzuATbmBxGXXNjboVFCRehQ53H+pm0mWQ
+         KFfroGXt4AM68uf7Qa3heXIa1SQL0u/3BEVHevRcR/AC3AOxr0nFxUqTBIdDzH+TX1UC
+         cZgzxGsbDl7unmrmyfr7iImS43tVk/26VDxsJ+knZjkCbxRd7O4vPNlrWixalRlQ01sW
+         o8RmoYYXjr8JMFG538Bc9EmUO75w8cfpoHvAesPSU7FB4i79ZKHQzuL6keFk0Jw6JkBN
+         FrZLtC+faxK/aMKqcgsOSYI3NtAigSUF8ko+HmXgdyY+K8jspaPMSZ5QwsqLXwgGkK8J
+         6FWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765534567; x=1766139367;
+        d=1e100.net; s=20230601; t=1765535910; x=1766140710;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yy8AVUr1WzoEhC0gwViTyIIecU1pDeO+TdO72jBT6kg=;
-        b=fZ8IzV/hX4vsvMFQ+ejIAZ2FCmgowF4b9t9OS22IA5gCuoyYl0Zvlh18yqmAQ3u0Un
-         kT1wzeCJmQ9PuSVnBiYDqCSZnyFVm+JjIDe855Wk3k2/sFRswFwQs8sH29g3Ip+DLoR+
-         AG8vE36UBY42rQN5EZGKOXsyJa3foQw99CuIfbhtsElHx57RpIKXukoBup1hR1HTc3NN
-         yL+oU4u86gFGsooZKu7Wi60PYhpXUwHRGqspkU+s09exT3oMLP3TGbnFDRrvQ3pLhrHJ
-         d4xyMxBhDLNc4+q8zcU1JsX8s+hZmLgeyvdR5hCZ/+hT4dmloFCsphdZxRpX2wkVJCuV
-         j4iA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRuG7YdIGXlmgZ6sb8w6jfG+eEh7eHza8DLa2nesE/eXiTiMWIid8pMSRGS1l8rgpv1u45BoXMBQ==@kvack.org
-X-Gm-Message-State: AOJu0YzSJQFrJlcci3kfSKSyrQEE4uMsdIycOTWWCVGj9JtqvaB4uNn3
-	Y47NJ1GOyNQr6jIJ1vC6XIOVJeSxJDWWhbWW/wu1QPND5VtgT9cHrkNGrP0XBOIy4rhNWbc2p93
-	iVUZvnpLTBopxOpnibFlOHU8skqHgfdg+PoqtHLV7
-X-Gm-Gg: AY/fxX4FdPqHujJEg0ieFB1QIR4Z/vvzV28r8wtpZ2YrPLtAKZwfaekdMqvtqHFtLy0
-	u88OR3XeSwMkw1YBCLxVlhaqE7/10kOhMmt6Ctr5CEw70wDCPx6tuSQCptFH51hVErAIjjXHJPf
-	eyuMVtT8KTYp5Gf+Usu9Yb5+DPsB1ewv0B3P6gQbphi3i1iWJwuUOUnPqr/CDqCsJf2x2TVMQth
-	xcINP9ktqU4dS9hPvt9f2XMgVO+KMqbwDvh6Ry6WzQspygseTEoYCgD6e9tdBzkHAKH9iZ4dgrD
-	SYJeE+H9s13WlAvVoV5m351Hnri+oiHEHNxjzQ==
-X-Google-Smtp-Source: AGHT+IH8fq53xzz4VEeZIfjpPn2aDZft0vSRUPpE08Jgar7Bwxv93jAlmI/oD2Bc5sYJ04yKuPnrNx+rDd5kmEFlwB8=
-X-Received: by 2002:a05:7300:2aa5:b0:2ab:ca55:89b4 with SMTP id
- 5a478bee46e88-2ac303f2fbcmr872533eec.43.1765534566419; Fri, 12 Dec 2025
- 02:16:06 -0800 (PST)
+        bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
+        b=GbjNymF+FXvDBedz96EJCBhdnBvblpmjttSHGlMueGxe01fDdLoBySP1xwCd+FjY7A
+         AyTiPeC7x3cvObVASrIumZ5dDN9bYcBjdcMLzPW+XT3V9+0GvqGOCmIq4NWim+Dheiuv
+         SCu100MG+qYni0EkuwOrGOcVEeW0zHzNbDddgoSd0Y09w3YYadt+lbvsLCGYzdGyAjR/
+         3gs94QttvAnXkrdAoTAQJBl3JWf5j9uwLufL2rlPdV+skfJfAwQ7t8OyBJuO+OBr2DCV
+         jMJKNg0SefuIbQkUR0SpjxKRO6bvyZjSRzhEGz+IdagVy489ukRWdS0ocNwqKRTNaoh6
+         neug==
+X-Forwarded-Encrypted: i=1; AJvYcCUyhIDZDcYy/hoZjlnWWswX+T8E4xhUkUoHB9sEffFLfR/PT6sdjNHF33iL3qfZ26206XdrEXCkvA==@kvack.org
+X-Gm-Message-State: AOJu0YyBmZAQrAVUn/2pbzzkkR2t0XtAHUb5nVDvFU3pmp51M1PVNNPB
+	5Dai8f11gQzIG+fL8ns/FHRbgFWTeBdMI1r/E9FVRKVpX1fpsurgCw0twcmrcIFfuO5kr/ZTjSI
+	sCZ/C8jokEmkb5VJCKJDbvsSx31t7ZpMIv1z21Oa9
+X-Gm-Gg: AY/fxX56gC8r/LC0PqWtClQmD40SHKpAzLPbmx3kUiQnlBG/TGX1/Z0i7xatGlHIAPP
+	DwrxzZQgx307KDjBlPTKyqo9GOz2C3GU2QzE9UFYqa0AiA6uvJfK+02ePmFYYFFuJkZvjduXDJ+
+	hywbt83r5PE1iFwmihajSZKTQAnmrswlKvWjTKo1cxqAP3PfhIznZj3JpMfMhvlnc7e0R590AqW
+	3pRUaJF4ZoA4sad2h1Bf1V9IEKD071JSqjXW+NkQwOagGNGg2qYuf5WDkLW3tX7iY4toPDSH7Ak
+	X1Tnv8o5YLSUP0GY2/Q+ZsY3MIE=
+X-Google-Smtp-Source: AGHT+IHEQqbAgYefprbsSuiVLt7KDiCECxoW496oPYm+Bj8DbPCCV7ccSZXk9zoE7kqarbEHot35Mb+a9uphNkvnkwk=
+X-Received: by 2002:a05:701b:2719:b0:11d:c86c:652e with SMTP id
+ a92af1059eb24-11f34ac540dmr1125346c88.5.1765535910093; Fri, 12 Dec 2025
+ 02:38:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
- <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com> <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com> <20251120145835.3833031-4-elver@google.com>
+ <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOyDW7-G5Op5nw722ecPEv=Ys5TPbJnVBB1_WGiM2LeWQ@mail.gmail.com> <20251212093149.GJ3911114@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251212093149.GJ3911114@noisy.programming.kicks-ass.net>
 From: Marco Elver <elver@google.com>
-Date: Fri, 12 Dec 2025 11:15:29 +0100
-X-Gm-Features: AQt7F2qb9ENq_mtkRfqCrKNBJnxHOwKNFDuSBIrcF4bjbeWckbG0712gmoUp-Ao
-Message-ID: <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context analysis
+Date: Fri, 12 Dec 2025 11:37:51 +0100
+X-Gm-Features: AQt7F2qnWyV-H6zf6AeMnZTuFb_nb7UwLLraoghpFqSJ0q6RecRlENqaq0woPuo
+Message-ID: <CANpmjNPcw5AnpLpaFvyRee7mH12Ym-NKTx331xXEusK5zpiscA@mail.gmail.com>
+Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
 	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
@@ -121,14 +122,14 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: BBB5940010
+X-Stat-Signature: yt31gihrgtbmx13iw7ofitm8a1dywkw8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 356201C000F
-X-Stat-Signature: sn6uaqyn95rckkykgng86dpoi5ghi5od
-X-HE-Tag: 1765534568-990621
-X-HE-Meta: U2FsdGVkX1/4p+L6oB2ZKPSkgN4mLeb2P+KKrh94YAYIiEj2UpD3dgszFATd9XYhHtFWsXDtcbBSmx8QAQBT7HBpK3BUOC6+zJn0601qTYzgvoISl3Glt5A42rWYJaQJK/K4EQIzNaFqMlv+z07OxbPKMOD77WxXULUfjvgdfhhcWDVGgjQ8XPaesYKn1xPF3zj0IxypYvYVF1PpgWHYqMMRJQgZbRqocRaeR16yUEmbGiFi2waPPTdHN+7N2Fy4hJ2OmfdPDVlLszaTSlBzH9EEsUMNxsaRDJQ5+LM9rRNHDJsEf/zpG/bHwHM5WB3YkoN4CJwnFEwGJ/RGUOMjoKRUxtoW3pvU4pNXCkgur1mvxBtS4CzAScWontinGjte/Xu3LoocsxVylUQimZMH0K+7fuVKYqyUH8yljNBvStT99TqLBrsxQxV1zcG7tYzKYl/dC2xJgQcpO3lp/w2Ki/pAVGxJmFDZ5nR7XuVN9tvR2IMzXG/WMb6hJ7Y8y1IUMPcSPgugueDlWrutObVG/m6J+eXbAQGiVo9YwnZqOf9StzAxrEW5jAN4wq0ywPLCnLwACwoKMXQ4A51SsGcEAJx5drWlD2TaJ5i8mcUDTlPCFwNNQDLXwUOALxrlOK71zQSEIIt5m9sBA1sqe3M7Qk/itUhc0M48I34J0eQJaehXQO/RZ0hf7aSMjdVdcIK/VoIcr/P/PkHM2IxqtivJJB3Z1RsJZZ2dmLVvotRFkB/QZzJkdHO3NtnwGJlH8YgS7tGPoNLAcv/6ZRzrVLvExXeOeEIKjU4jnFM/IIO1CrCB6cXIl0ASh+d0dg2Qyw0u25/q27ZdvzaM2lqzNG0rPs688EfLMTKOBIVws+KJGDiL2TM6jDlK06OeVmlQNi8WokjQrbCX1oKGldrb19LU4cr4UaR5SnQ4M6r3PHLa8L0AFcIjIpcj9CAjepIQ0g2SP7WSZRdDU2oDiAxcUCc
- cxPM4ukF
- SAOcVvtyXAZvDAyn/rBRkla0xL1k/VLA7CtZTYUCKR7qwJm7aifqKePH28Sx7Ev2shG3bcfV5gbxhoGqgJYN7GJcCkv05HoE9Wvl+kqO6fkOq7y/bysIwVrA67gVjzkJjxBJLbgx6Mr3RQs2YG+A6sIVzpLik+ZHQjhVc+gdN3tETfbD5GZf3tm/8J21V0A3V1ZM3BpMt5fEEyiiLGrHkA4ylEwApyKDUOmGOEFLbHfmmZ6yQKk1/1UDXmMPWawCnwhBHeFvrz6+TQqXHaVwyUBhxqHAOhNXWkjhixW4crVKC9bCKDuNLF3F6PtleoF5qC/CT2hAT+XccmdU=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765535911-34285
+X-HE-Meta: U2FsdGVkX18sm0NiC5Q0UeBvJHdCnyjlG7tOSdKnCNsv3mC/ozi4tRXWgTLBiXbH8JVID1lQeokYNTtAgfiT8BxAMwz8ra4+ptc7EWmUpO89jBbbrhJYkEOlYEQqTXFLs2fbO4qZykQk7onit682ak7EJuGoGMq2CyIVeEO9Z97lPHalTQuVu26Ct71VjOypuJ4B2tKAOazjWCU67Eh7htGUbLOdN/no2SpCD7rdB0EtUI1yoseWgmTHCP519O8zNICz8FwcxtuGYj8P2LGC54NScsUl+0mNr4rPfUFvaLuUwwYsAgL9wz/r6yMhcMYSfAguoO3wZJTTISi8vNs16FHdJklr3dLPG2HV3MFxIW36I3YWLp6VYGW70uNItwk41/t84+WrVJ5JgeOcoflNxl3tveQN/3Z9IZt4P/26rZFLcq07hvddBdbB04zZti6eIzeBYsfqzeagQPWb3lgyEXV7i/q2diva6Jp6Dn+5A9SmfoWyARW3GfW9fd8nxZxfYM5hN8vtJnQyVNTTUY1fFcB1emgmh8+WNTCYhLV/ZXifT96JB0q51K2ODqHgMouVFpj6+B+qKQEG5EZ4WJ7ctuifK2oOVvAKTNQtNKDgtBIm0Y+2d766toihGnYYYE59RZ75UOpGq6JmfeGWoSxHfVswbIsOt2G79osWteCvPmhaAuEJ84sY2UoSnWfWPc5/LZ/mJsH4Xo9ZVcvSHnh0lfUMCEPlpOpzbe+rsm8sFkxEeDPIl3qCS9M1U0pAjrh4vK59wr5cZMe194uzZiWKu1eYQVs0gs/3tNUNDUiI9q7LMwsCnUncdKOKNbeJKDxDuOdCgsLlfm4Pk224bnMlgVa/cic2VgzOb2lUlQNK4u21DRyPBCaMJHgtdbU1vuOBR6b7FdA0E9wrJpp1FZ6c4PApaF1kn5qOxZTxw5v+TH6adf62KoRydC5FdwFY2gyz4lDklLObyy9DbIuMgvM
+ l3D22wOd
+ ncDYY/AEl8hMojT+93F/vc6zS3dSxDFwR4dw248A/4WRIyZF1LvXhCdkMFMYDK6d8dN5c9KVdFnx8jUMdGVwESUM+KLW9g18MI2pC7CxIhTbD5Fmob0K3D8RZUFS/T+xO4V4mmw6lqQTjzWS+MMLt1X1OmQGrS8tRHGDGOKJMis9b/vnkLh+Zx4U4rkwyw/lhcsVIEzI6NGbo/ju9UrGfeU1JcvX0RWKrfwkAXcTzV7bY7DKAC6BautOa3+fMXzNWcC0W8iQ1iDYHxaS9zqrPKZl+CbD4RL8kZZ6e5zPX35+z1UdffeR0x0rr+zcPg5p9VTcp7RTVrQVeaS0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,58 +138,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Dec 2025 at 10:43, Peter Zijlstra <peterz@infradead.org> wrote:
-[..]
-> > Correct. We're trading false negatives over false positives at this
-> > point, just to get things to compile cleanly.
+On Fri, 12 Dec 2025 at 10:32, Peter Zijlstra <peterz@infradead.org> wrote:
+> On Thu, Dec 11, 2025 at 02:12:19PM +0100, Marco Elver wrote:
 >
-> Right, and this all 'works' right up to the point someone sticks a
-> must_not_hold somewhere.
+> > What's a better name?
 >
-> > > > Better support for Linux's scoped guard design could be added in
-> > > > future if deemed critical.
-> > >
-> > > I would think so, per the above I don't think this is 'right'.
+> That must be the hardest question in programming; screw this P-vs-NP
+> debate :-)
+>
+> > context_lock_struct -> and call it "context lock" rather than "context
+> > guard"; it might work also for things like RCU, PREEMPT, BH, etc. that
+> > aren't normal "locks", but could claim they are "context locks".
 > >
-> > It's not sound, but we'll avoid false positives for the time being.
-> > Maybe we can wrangle the jigsaw of macros to let it correctly acquire
-> > and then release (via a 2nd cleanup function), it might be as simple
-> > as marking the 'constructor' with the right __acquires(..), and then
-> > have a 2nd __attribute__((cleanup)) variable that just does a no-op
-> > release via __release(..) so we get the already supported pattern
-> > above.
+> > context_handle_struct -> "context handle" ...
 >
-> Right, like I mentioned in my previous email; it would be lovely if at
-> the very least __always_inline would get a *very* early pass such that
-> the above could be resolved without inter-procedural bits. I really
-> don't consider an __always_inline as another procedure.
+> Both work for me I suppose, although I think I have a slight preference
+> to the former: 'context_lock_struct'.
 >
-> Because as I already noted yesterday, cleanup is now all
-> __always_inline, and as such *should* all end up in the one function.
+> One other possibility is wrapping things like so:
 >
-> But yes, if we can get a magical mash-up of __cleanup and __release (let
-> it be knows as __release_on_cleanup ?) that might also work I suppose.
-> But I vastly prefer __always_inline actually 'working' ;-)
+> #define define_context_struct(name) ... // the big thing
+>
+> #define define_lock_struct(name) define_context_struct(name)
 
-The truth is that __always_inline working in this way is currently
-infeasible. Clang and LLVM's architecture simply disallow this today:
-the semantic analysis that -Wthread-safety does happens over the AST,
-whereas always_inline is processed by early passes in the middle-end
-already within LLVM's pipeline, well after semantic analysis. There's
-a complexity budget limit for semantic analysis (type checking,
-warnings, assorted other errors), and path-sensitive &
-intra-procedural analysis over the plain AST is outside that budget.
-Which is why tools like clang-analyzer exist (symbolic execution),
-where it's possible to afford that complexity since that's not
-something that runs for a normal compile.
-
-I think I've pushed the current version of Clang's -Wthread-safety
-already far beyond what folks were thinking is possible (a variant of
-alias analysis), but even my healthy disregard for the impossible
-tells me that making path-sensitive intra-procedural analysis even if
-just for __always_inline functions is quite possibly a fool's errand.
-
-So either we get it to work with what we have, or give up.
+Note that 'context_lock_struct' (assuming that's the new name) can be
+used to just forward declare structs, too, so 'define' in the name is
+probably incorrect. And to avoid more levels of indirection I'd just
+stick with one name; if 'context_lock_struct' isn't too offensive to
+anyone, that'd be the name for the next version.
 
 Thanks,
 -- Marco
