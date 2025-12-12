@@ -4,125 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 107F9D59D84
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E12D59D84
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:43:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A22D6B0006; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
+	id DA1686B0006; Fri, 12 Dec 2025 13:43:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 779846B0007; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
+	id D51736B0007; Fri, 12 Dec 2025 13:43:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7146B0008; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
+	id C40766B0008; Fri, 12 Dec 2025 13:43:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DAAF6B0006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4FC914026F
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:39:06 +0000 (UTC)
-X-FDA: 84211681092.14.0D5DF54
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9634B4000D
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:39:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZLd2qGxL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765564744; a=rsa-sha256;
-	cv=none;
-	b=hU5xvLy0T5/GBx+HEbBIZf2E5j4ZBToDRKb096RUJnPQebWFeJtxveIavph6EtV7Jvhezf
-	RPp+gpSKtQnVz4Tld4nAAG+cldgmYxipO3gJT060kKVQbU4Lw9CpN4lu9N0n+nQYAECk2l
-	HqS6vKQgCk8GAIClOUJ5rBb7VWvXiy0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZLd2qGxL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABC786B0006
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:43:47 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5AE071A0297
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:43:47 +0000 (UTC)
+X-FDA: 84211692894.19.0557C4F
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4F43D1C0002
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:43:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R1ADOYHl;
+	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765564744;
+	s=arc-20220608; t=1765565025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
-	b=qEgPXlc0V3vWYEhIZt+FlxsdIHCJf27AC3Qy36vubGdBWqSvKgr1r/WGDwlKoK+PTbPE2p
-	Fsb1v+tQDYHrBIof9aTcKuBSuxp9Db893VleiQ98Z2h/TXIS7e8oEvH3wEci72VVvsFBuD
-	8pA+1RJJn2YxOp5YkKUaJuaaikunDFw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765564743;
+	bh=kkoC9XWWPULzArIPL3U+sa96HBni49Kt2rCzkNlq5t8=;
+	b=8I5rF1jO+JDI4iOIEW0nqxFafy/BDPaOyFcbPRv3EQMziiCAt8y5iPJJEZgfPd2vzzNQpX
+	WzsNHI51Ubc9g63DqOVz7meTTCxK4yLKfR1YcELz8Y1NQSfnoxYmmCMd+8g/sEowc8CA00
+	gHViBsyl1mNgFhiLt9fyplnyVv6A9xM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765565025; a=rsa-sha256;
+	cv=none;
+	b=reqp7Hb6/EdaSr/CHAThjUz9+7UsEi1ZZ3XSDjnfYsTHuP610ooX/afq/ADhqqu/dHGYlI
+	9vCUoW95TbyP6lHjQvb69fHIF2powUvfljE55cZp4MFDSxNWtutT1tKSGj+de+63Xa4LH2
+	zxxcUk88YgEWCnei7T1A6bSFXu98SN4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R1ADOYHl;
+	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 12 Dec 2025 18:43:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765565022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
-	b=ZLd2qGxLyy5fXjaMTkpl4s6q0lFWT8l+cI1nxpSltqbrllSVoiIt6DR99jnvc0dbi2m9E5
-	QtffA+YBpYC7Oqih8QU8zIduWPuh2So8yIExSOJK/FXvhzhouOjfmvkO5EjHOdAPCafVJC
-	tjiOYNkIxO/D7AVY5v/qmpBnK+Bk+f0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-7DYccD0tMii_6tjY7Jqk0Q-1; Fri, 12 Dec 2025 13:39:03 -0500
-X-MC-Unique: 7DYccD0tMii_6tjY7Jqk0Q-1
-X-Mimecast-MFC-AGG-ID: 7DYccD0tMii_6tjY7Jqk0Q_1765564742
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6409f6d6800so2939060a12.0
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:39:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765564742; x=1766169542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
-        b=KGfluoD7e4+O/n8/tugXp7qlBY5ZPsFgJuwkcXociMaSFE1oOGlLsT2R3wNPXNgd2G
-         G1xVUUCn1AvtAecRX+QWURQ4o36ssmKFjERZhgrB0ZHQWjmG+0rekqo5qc6SnJCoBGJN
-         BtBhCU25RfXQgySoHadPME6rGHe9ZEw8OlcNOEM1ZrZ/rD9LWQ2PkBHNtd7smAtU2SxY
-         NuAL+DyGh+uzGaUpxvvi7muxsqRjH9QJSL58Mn5Br96Y/rr8HbtVOCmnzytj9WK8FFpX
-         VU8nIZScLi/hneMks7oaYQrTuzmykiSpkQT3DPGNE4axaCd+5S4pARnZqJSyTL3/yGpp
-         DbAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUedxKkLa5sZflaQW/4aGYBh2c1dCi0Sa6uLI3yS5jKm8A2XPnhNMJ21EYYAlt6DvvsMe0ZFEsHng==@kvack.org
-X-Gm-Message-State: AOJu0YwvXnqI19NujcI5knJBxg2VLZqrWbnAKJ94lN7rrFFKC+pQ0pb7
-	W1Dg5MxE4S+mala91/1YZ+0JFMs3JM8zNHcwLyciGApSDBeggmtQby/BXWDbtoroyA1fF14Jxje
-	zYrMC3muhAFxGwrTVd4umYHPZjCwZYc4l+GU4I9fAZMS6AfJiFekK0Xay5Mir8tX5jOYKchKLVf
-	Mjot1FvZIGP5WV/IYU1TeiIG57WQ==
-X-Gm-Gg: AY/fxX4f6M6ObkEz23udiJsZfE0ZelFoPTYph6kBiatKWW9YSn4AlPaEC6doUmmKTOb
-	DHP9i86E86oS1Z0g3kST5PpeYhNtQQlB0ZtbEDta5QoTtbTtxZMd4N22AD9gASmgYbl2CVlpqUy
-	YKHyHEnmBRSHHLtwLqkUERLRlVRnVW7C+aTIdJ7xXGkLXG/MQvKzE04bbpTkZf
-X-Received: by 2002:a17:906:9f88:b0:b72:6a39:49d7 with SMTP id a640c23a62f3a-b7d23c1b192mr329954966b.33.1765564741591;
-        Fri, 12 Dec 2025 10:39:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFH5hEfEk+Qd/TQuO5dmZhx0Ve9hkd3hngFGgcBfMa/BZ+7n602U9F6HYZJh/uoPAXYcPduxx52GHJ646gbZCw=
-X-Received: by 2002:a17:906:9f88:b0:b72:6a39:49d7 with SMTP id
- a640c23a62f3a-b7d23c1b192mr329950666b.33.1765564740878; Fri, 12 Dec 2025
- 10:39:00 -0800 (PST)
+	bh=kkoC9XWWPULzArIPL3U+sa96HBni49Kt2rCzkNlq5t8=;
+	b=R1ADOYHlub0M/KbSRdIhf2T3VCcTZxmsBlp3fmVIgDnB7ES/8Mw38pY+Qt+KmtpqY3IO5x
+	BOFAg1tfc8BxdsoGt4SpVEMUFCTU1MABXowIbbwvKUI579zeH9UthNlKEF4BCi1FzBxZrT
+	l51kTl7BM5XwHYt5sC9AUzJz2YyjWzw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"sj@kernel.org" <sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
+	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources exist
+ from pool creation to deletion.
+Message-ID: <ckbfre67zsl7rylmevf5kuptbbmyubybfvrx5mynofp3u6lvtt@pm4kdak5d3zx>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-20-kanchana.p.sridhar@intel.com>
+ <yf2obwzmjxg4iu2j3u5kkhruailheld4uodqsfcheeyvh3rdm7@w7mhranpcsgr>
+ <SJ2PR11MB84729A04737171FCF31DB9FDC9AEA@SJ2PR11MB8472.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20251210200104.262523-1-dkarn@redhat.com> <aTnn68vLGxFxO8kv@casper.infradead.org>
- <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
- <aTwIAwjeSrALbVww@casper.infradead.org> <7pottkepdngwjiz6mi6rby67a2xpm65ulx3oflzhrv275efq3y@e64lbkl767eb>
-In-Reply-To: <7pottkepdngwjiz6mi6rby67a2xpm65ulx3oflzhrv275efq3y@e64lbkl767eb>
-From: Deepak Karn <dkarn@redhat.com>
-Date: Sat, 13 Dec 2025 00:08:49 +0530
-X-Gm-Features: AQt7F2o9HVOS9-O3c1b2kzj6ir7__uDkNTKy0pS9_N14HeUb4y18fmVn6ULV2e4
-Message-ID: <CAO4qAqKX=LA1PHjGJ0BO1YWE04BneJmZmximqqF0BQ1i6emhNA@mail.gmail.com>
-Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
- mapping with no release_folio
-To: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Gynr5M_C8LNE-Ovb0xesbkuDQ5rmrHI50erFTlJ6q_Q_1765564742
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ2PR11MB84729A04737171FCF31DB9FDC9AEA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ridipsyqf9q5n9196on1gytwpqz14q7r
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4F43D1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9634B4000D
-X-Stat-Signature: jrc6pf7wxkz8qsn8oghk89mmjszxhde4
-X-HE-Tag: 1765564744-656622
-X-HE-Meta: U2FsdGVkX19fYK0OZb7Na3zwreWf3nO32rc3MzZpqFFs2NiwrBV2KCSqZRju7DGofdditSYuWppuZDFb5g7++Jl1dVCiyRNwX5YKepzoDxfqIPcp3atM8X+bdLbThlhSod+Ed8bzJO8Sc6HyRKnJgBOo3SapPl3f962uOfHxRHd09tZvvivaQKjI9ZdqS5acx5WPRmnbxC8z7MeULiSAvxCtW0RCTSNr0sOG7effwxvYZv6cNcHyyIH37N8jLDqH83izMAcY0CV0FED9yzFHdT6x1mmFT4tHQrLd1Ld2noB9a+k6/QAqqCaMrEb1i43jUj/ajpN4/r7ycDWENLPDGHcDv5MYQyjPXxbuGNynSsE+LiiWlYG8vfT9W0yITsmv1r+SkygnVskFonN6tZ7ls9zjokjmRkINJZHT0pcp0GpMN1eFMS55BNSvIU8xwWsk7/+Px/UVg2SgwLzbLdNb2X4Qi+oKSIsIgg+AtBSdptt5ldYN77N7EEJ5Cdh62trlHZAWe6rlFuSG7YG28DtIqA7VnCakVaznpNEmm8cJec8RW4vLCuBl2TIOqxLgOvATscp45fH0IMUdA5C5ZbojaNTcdLXihRFSp8JZb9cTuTm9G9czR6islxDwKhVvTLIQtHhB9ZBeTMjWdgXNix/wYdMwRBC+fpFZWCZI+2ws8g1uXk7sFKy6ZZhcWZUv4HgZrdWiqcOeCiMvXRnjetxJDnB2bNmzAVNtC3kxTD0U3isUjvRWuO4VijOs/aOjXVXPc0NGxE1mQcTCvsVEp+87/RY3Ts5pT4r2slZZLrrkCH6dA15nEiFRA6Uuu0aM3RsEGKbxeGF808idNVQv7yKnh9RrcEobkKoUN0j4GzL2byn1oxyiJbzq97x1Z3tVszgoEKdtWLBDUJZjFSYDqE6pqK6Xk+Ex1cjsHeAni9qHxV3jGv1APAGT6Xpe0TmgQx+KnIsBMfqFEDTiV+mFDVC
- bbuTHdaf
- EHbmmcLCGsv4yBP3UzbSzf29vnI5JKWAZyovhkHRAcuPCLXysPpmfAQ5np0s365LjBd+A8STyTto3hQ3Tn7n/HK41uwzrTTZ49c1fxdMkXE1ERq8jAHUHX+cZhvbyHvjsyi1MX8j8Z2d6KMDFIGDJ3QXpYSi4M7rpRa3DvkIuX9/nFkOdTytCyFgI4/4SOEZ/ak0PDC1C4XAHvGm+EP4gPKUCF2xwdLBFkYSFrbYyDp1APaA6Ss3DzOe90/kEb/RlEAorrWvI3gIxMm29QBfmLzg1sAfLyIh2V9MxSC2gBh7C2zq/NxAcT0igUg==
+X-HE-Tag: 1765565025-24389
+X-HE-Meta: U2FsdGVkX1/FU7R1/pcaKjhxTGiZCdZLYoh4LIRloxaGllKOQ4Q2a8i2YWiX4+WixaH/L7IQrj1WyiCU6QMwJOEQFs96ayrT3de8nowviLC1asSs1byCfq2oykoFGu3ULgoBEyvqzkBPnbuC2x0Y6n2ebb0yTK3aUP2GT2dgj3wGDbPqS8tEpaNZqExdnLDUh67FsWS9Cs1oke9R6Z9UfFmT/ebG2aIv6zNEYxbIJA17kRIBGbc8rQBgorThd9XpL5EsZY5qE8h6rou38kvPyVZjKU8/p1vS478yop9jmCOY6dPC+II1ytjNENDn79gI9QU2GHAXx7eS5tbxZAyJY+jpfJyM9avfY3lbN6ngte/mmIgvLwSxslShbr15wVUzTapoal1+pdBveW4A3Us1QG3XG3x8T3YUV1NWWoX5c74MbrLVktzCb7NuQcTkqEGWI9WpybbrcjNfADVJ6Z6xLTLmpyGFzEwq2+07L7UfUHHFHqm5TwAsUHlFFfPFh8CgRiRkrfB9CwCVoA8ftPm03Ni4GcYNJEn9rjaa2D2rC4hP8SWIjsb0UKrzJ7uRP0OsU6DrLgABuh3uS5Rj6Vly1qOkbkVywS0rARam89ZjyuqL0hvc2YI0FOtUW2eMUU/9lji/UNJsp1qZe7ntiXAuZPelbk14GIbrUcoxIm3IDzHBDoqIKxdYClBUTc18p6qXYUGbrkw3jb6KcUy+ZHa2am0ktEHWbzCDx7ZoWK4tqs9C5aG+8Rf/lGFh1rJKVlBhFDuEPXoL7HYvIIkbNgN6aJ+yNFfi0y7i4Xqoywkdm6vu7dcpvmSG+6Fw+bwziwMQpOtf1IFtNzfuDgDbIQMVletJP1aP7NopG8e0So5rDFIVsMsU+CLxvezQ2doPSVbZYHTzcNXiuWEUzwMPVoSxKKqZDuQtbHk/JGNAVsJ9mw6raUUIYZymWC9x6zfuAYNSpNRQB+y5vYicLlJ0wf4
+ aidMlKJ7
+ Xo3mE8UwY+6zcno4fWueR2vuFkHKmOXLx0uTO6wjJHZiWdnKvNTCYN2Em955t5oBjEvICUi3gPLkkwvn+Ar0HRENWpDhhySIDBUZRDkG5sG+F+AHMpoGo/Jpe69ut7jBWKAZMSIXaNKkqa7rFyv2LzG5nutodmQkvKnmNJKrkb9vk/XyBTBEcSSJnrwkSEXeQmyAEowImYaOEWO8JXPHdU9suqmmxenqITH3SLQPqRTClDbco8owmIEvcPg17MGT4AX7hzUwQ0dcKExTE+ZqYZigu/oX7ZidTRWE6+QTGHOj+h+Edg3UC3o/JS7vZz0e+gfoDsINg/RQmNWY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,82 +102,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 11:17=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Fri 12-12-25 12:18:11, Matthew Wilcox wrote:
-> > On Thu, Dec 11, 2025 at 10:23:13AM +0100, Jan Kara wrote:
-> > > On Wed 10-12-25 21:36:43, Matthew Wilcox wrote:
-> > > > On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
-> > > > >  static inline void mapping_set_release_always(struct address_spa=
-ce *mapping)
-> > > > >  {
-> > > > > +       /* Alert while setting the flag with no release_folio cal=
-lback */
-> > > >
-> > > > The comment is superfluous.
+On Fri, Dec 12, 2025 at 06:17:07PM +0000, Sridhar, Kanchana P wrote:
+> > 
+> > >  	ret =
+> > cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> > >  				       &pool->node);
+> > >  	if (ret)
+> > > -		goto error;
+> > > +		goto ref_fail;
+> > 
+> > IIUC we shouldn't call cpuhp_state_remove_instance() on failure, we
+> > probably should add a new label.
+> 
+> In this case we should because it is part of the pool creation failure
+> handling flow, at the end of which, the pool will be deleted.
+
+What I mean is, when cpuhp_state_add_instance() fails we goto ref_fail
+which will call cpuhp_state_remove_instance(). But the current code does
+not call cpuhp_state_remove_instance() if cpuhp_state_add_instance()
+fails.
+
+> 
+> > 
 > > >
-> > > Agreed.
+> > >  	/* being the current pool takes 1 ref; this func expects the
+> > >  	 * caller to always add the new pool as the current pool
+> > > @@ -292,6 +313,9 @@ static struct zswap_pool *zswap_pool_create(char
+> > *compressor)
 > > >
-> > > > > +       VM_WARN_ONCE(!mapping->a_ops->release_folio,
-> > > > > +                    "Setting AS_RELEASE_ALWAYS with no release_f=
-olio");
-> > > >
-> > > > But you haven't said why we need to do this.  Surely the NULL point=
-er
-> > > > splat is enough to tell you that you did something stupid?
+> > >  ref_fail:
+> > >  	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> > &pool->node);
+> > > +
+> > > +	for_each_possible_cpu(cpu)
+> > > +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> > >  error:
+> > >  	if (pool->acomp_ctx)
+> > >  		free_percpu(pool->acomp_ctx);
+> > > @@ -322,9 +346,15 @@ static struct zswap_pool
+> > *__zswap_pool_create_fallback(void)
 > > >
-> > > Well, but this will tell it much earlier and it will directly point t=
-o the
-> > > place were you've done the mistake (instead of having to figure out w=
-hy
-> > > drop_buffers() is crashing on you). So I think this assert makes sens=
-e to
-> > > ease debugging and as kind of self-reminding documentation :).
-> >
-> > Oh.  So the real problem here is this:
-> >
-> >         if (mapping && mapping->a_ops->release_folio)
-> >                 return mapping->a_ops->release_folio(folio, gfp);
-> >         return try_to_free_buffers(folio);
-> >
-> > We should have a block_release_folio(), change all the BH-based
-> > filesystems to add it to their aops, and then change
-> > filemap_release_folio() to do:
-> >
-> >       if (mapping)
-> >               return mapping->a_ops->release_folio(folio, gfp);
-> >       return true;
->
-> OK, yes, this would work for me and I agree it looks like a nice cleanup.
->
-> > (actually, can the !mapping case be hit?  surely this can't be called
-> > for folios which have already been truncated?)
->
-> You'd think ;). There's some usage of try_to_free_buffers() from the dark
-> ages predating git era in jbd2 (back then jbd) which is specifically run
-> when we are done with journalling buffers on a page that was truncated -
-> see fs/jbd2/commit.c:release_buffer_page(). Also there's an interesting
-> case in migrate_folio_unmap() which calls try_to_free_buffers() for a
-> truncated page. All the other users seem to have a valid mapping.
->
+> > >  static void zswap_pool_destroy(struct zswap_pool *pool)
+> > >  {
+> > > +	int cpu;
+> > > +
+> > >  	zswap_pool_debug("destroying", pool);
+> > >
+> > >  	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> > &pool->node);
+> > > +
+> > > +	for_each_possible_cpu(cpu)
+> > > +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> > > +
+> > >  	free_percpu(pool->acomp_ctx);
+> > >
+> > >  	zs_destroy_pool(pool->zs_pool);
+> > > @@ -736,39 +766,35 @@ static int zswap_cpu_comp_prepare(unsigned int
+> > cpu, struct hlist_node *node)
+> > >  {
+> > >  	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool,
+> > node);
+> > >  	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool-
+> > >acomp_ctx, cpu);
+> > > -	struct crypto_acomp *acomp = NULL;
+> > > -	struct acomp_req *req = NULL;
+> > > -	u8 *buffer = NULL;
+> > > -	int ret;
+> > > +	int ret = -ENOMEM;
+> > >
+> > > -	buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
+> > > -	if (!buffer) {
+> > > -		ret = -ENOMEM;
+> > > -		goto fail;
+> > > -	}
+> > > +	/*
+> > > +	 * To handle cases where the CPU goes through online-offline-online
+> > > +	 * transitions, we return if the acomp_ctx has already been initialized.
+> > > +	 */
+> > > +	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> > > +		return 0;
+> > 
+> > Is it possible for acomp_ctx->acomp to be an ERR value here? If it is,
+> > then zswap initialization should have failed. Maybe WARN_ON_ONCE() for
+> > that case?
+> 
+> This is checking for a valid acomp_ctx->acomp using the same criteria
+> being uniformly used in acomp_ctx_dealloc(). This check is necessary to
+> handle the case where the CPU goes through online-offline-online state
+> transitions.
 
-Thank you Matthew for the suggested change. Your suggestion seems to make m=
-ore
-sense to  cure the case. If my understanding is correct, with this
-change the failure will
-happens in filemap_release_folio(). The current change isn't solving
-the case, as it
-doesn't mandate FS to declare release.
+I think I am confused. I thought now we don't free this on CPU offline,
+so either it's NULL because this is the first time we initialize it on
+this CPU, or it is allocated. If it is an ERR value, then the pool
+creation should have failed and we wouldn't be calling this again on CPU
+online.
 
-As Jan mentioned, about the jbd2 and migrate_folio_unmap() cases
-(honestly new learning
- for me, @Jan) this change should be okay. I will try and do some
-tests with this. I will share
-the updated patch.
-
-Do let me know if I missed anything.
-
-Regards,
-Deepakkumar Karn
-
+In other words, what scenario do we expect to legitimately see an ERR
+value here?
 
