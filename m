@@ -4,126 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C72ED4415B
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DCFD4415B
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 10:12:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EDE66B0005; Fri, 12 Dec 2025 04:59:59 -0500 (EST)
+	id CEA3A6B0005; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99E726B0006; Fri, 12 Dec 2025 04:59:59 -0500 (EST)
+	id C9B4E6B0006; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88C866B0007; Fri, 12 Dec 2025 04:59:59 -0500 (EST)
+	id BB08E6B0007; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 70CF66B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:59:59 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E63FE1404A0
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:59:58 +0000 (UTC)
-X-FDA: 84210372876.02.E6BD6B5
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DCC2E1C000E
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:59:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=q4PvE8q1;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765533597; a=rsa-sha256;
-	cv=none;
-	b=h3IHF08eXgFwigx7sgHY7IRrsdmjtt3IqYGPgQhgs1dxRPxByMOjtSlfbdl4Lz+fjCEwWK
-	Pb/p/Fg1kRQIplXVMfHLDVRwBtMH40/UUJLhfJhXETkItZQI8hi9yJ9dzoSwdW2BgamWhy
-	0IQBRPbGkdy0DqslqguykwHRkJYyQVE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=q4PvE8q1;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id AAF976B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:12:39 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5765813B1F3
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:12:39 +0000 (UTC)
+X-FDA: 84210404838.22.AFA2F59
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 81839A000E
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:12:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pSTVJiV8;
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765533597;
+	s=arc-20220608; t=1765534357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KSM4F9EPA4VrHSATWZaVBC81vHU19MDt0Mi2nP4hTcc=;
-	b=T2QpXR86+Fe41Z5Kas5xvQ7rPHqd81KRipzszxbocEOeeF3C1mh6JLRJJTA72V8OlmYlLk
-	RYp3gxYnqFN5aN2b+ht72m0os9mxBNhoW1OhzyXNuxrGX3M917srbXoUm7mRFCPzg+SNr0
-	1FXaUAkkH6MQX40cFvLZoNkbXhllFhc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KSM4F9EPA4VrHSATWZaVBC81vHU19MDt0Mi2nP4hTcc=; b=q4PvE8q1MvSUiSan/OQUGVyWjB
-	ey3Vrr3EGE7ZCZmMa2Q5RwD0Szf9yfpU9MDTOfKLxI7g78pi/86AKrvVEuYcUelT9SACClEtReQ4X
-	YNEkxxEaf7Hj9lNNnecfwhhDw1JKhrgqon3hzMPEHvfRHMJXy1vuCRSOG+gKzHjH2areb2zIxNWHh
-	qOvFVdyLVG1PxCmb11XYlPZWPjNmgL+p7J2n6WI3MKlwAD2OTti/zPQ4/lFxl9n6UUlXKAIOqZVnk
-	2PnlnDVtTKp1PmPbGh5hRrZJfLK1yNLydbSCrVXlmnCktKj94YkiTNcHA+X+aMnJQX32qELAPOp7s
-	fhefkUvA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTz4d-0000000GRLd-1uSY;
-	Fri, 12 Dec 2025 09:04:27 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C2F3930041D; Fri, 12 Dec 2025 10:59:43 +0100 (CET)
-Date: Fri, 12 Dec 2025 10:59:43 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Marco Elver <elver@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 07/35] lockdep: Annotate lockdep assertions for
- context analysis
-Message-ID: <20251212095943.GM3911114@noisy.programming.kicks-ass.net>
-References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
- <20251120151033.3840508-8-elver@google.com>
- <20251211114302.GC3911114@noisy.programming.kicks-ass.net>
- <CANpmjNObaGarY1_niCkgEXMNm2bLAVwKwQsLVYekE=Ce6y3ehQ@mail.gmail.com>
+	bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
+	b=mnc8LDslIQwRhbmDbIhMoo85VkwgLgh6tHza4GsY+dA4oTB5pTVKcsUWivJfz5xjhOnzqv
+	AWcNFfpjjuM4v+RW82pRWuMOB5w8tVhBMgtD5BzcWJ0WMiiesRT4UL2BzIj/+jdDF7L8jc
+	8+sj6E7s3dYKFqSwQaPM/Sfqrf4RAd0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765534357; a=rsa-sha256;
+	cv=none;
+	b=0+ehFTHOsUv94ZQcW4UXI713RYKhRDhXv1fodfjkA2pu5KQ7sGdgI37/BP7uI6r4IPWaWY
+	8bRsu7Cgc5JAUbEk6Gw2AkOA6VsVRA3F7nQEdG9XjyhULPWPrjG7OipD1Bil0FxmmtJtxB
+	wA9AYCOwDSxctkWL3cybrb42I+xiYdA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pSTVJiV8;
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6446c1a7a1cso1013704d50.3
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:12:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765534356; x=1766139156; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
+        b=pSTVJiV8lH3t+89Uq44702Dped6sLH0HUqdb39nt+t1pXCjR8k8395YwrOiP06P1QV
+         f+uaUYoCwDSpPZ0H15eVrb8mSKhyqDC9IxkJQu2tvVyoxwzen3dDWhGEhWLFCdF34di1
+         DBh5ffrPKs6VCf/Bo4GdzZU41qV2G2SKXwdHUgdAKfMV0St+atDh1ohGdPY2+lv/IWSt
+         RhLig9F1nftGZlCF88e2sTMkDLF869I0vJ6itJQ+HsfqglhPwUBzr5BhOp2YTCVP2XRU
+         VGSQApg1G30rIc4cq+/5qJV19PYlPj/C5iobWCawPYUI34PgV8CNQ3oUb0W7GEq9toHa
+         8gLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765534356; x=1766139156;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tyiWj+teLSvOcemqfQ8kWGe8XZlNZ+qzMwX7g7wGHpA=;
+        b=lSL4kFMzIkM6qXwdnu46YUb5G/o7FgXygNnLrF3Jq6kT3N1y8ipI64WQhO/QLuQnmE
+         BHSFCagMevXfgHjJ2PgC0qWs7cVtxPrmORo+9hCkcUcKW93DJf2A6szViikYe+R5vzsn
+         yGZvvvjIaSwXl34RDtea8WBHC6r3qfjQgWJUGjDdahcsbQbfeRordil0x4e66cJKDCGV
+         9Z35X2p1mvE8zBgPuGHA40hroaqiidiMqk1Lc4lS2svi6NWEEPHaC48roTt1amJsrJC7
+         WcgLFFmhnrpTkpoSJniZo5CgDorfiIkj9nRKQnPbxTzNvKI6OJnuguOk7bRlAP4awmRu
+         sGpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUw+0u8XZDH5BC9xcGCFB99AX7Kw53wE+4q/CBwZcf5/NjEfhOw0dBkZGLMKtyIN785fvlQlzOygg==@kvack.org
+X-Gm-Message-State: AOJu0Yx0nA5Hxq1dyaWhd6xBv6dqUGQr56+vwmuh1RnI2QUGJD/IJdNR
+	tmVP/TFciSiLEpYY5fQwbVh1YqoQrmZVel4uMtEX8PCq393Ex0uLYet8KHwNAoO4dw==
+X-Gm-Gg: AY/fxX6F6k249hdUWGMktkTYf42h+xtTV0oTNUNewDt8RlKbTNf4zF88wY1HQXYH0Lj
+	tIs6OjnD3Zja+sX5RvJXGPxjNB8OkbHliakGz/kioBrt19QZw8X++XLHFIdyDmUE3F4m5Qooz4e
+	8wp35PFnUdmvLW2iEr3hcXcH82r+l17t2V0NDkXrZauQ9c8jgQGyEvkxDOIWCLWNsN/gxUK1Orq
+	VcXB7FFwTaixQ7wkcA+YNnK0TO+g6DVLHUY32TymnRzCpi1cFV4whlza3KQ/wt0nuAIIcY6rdRT
+	LcDYRrblqdii0RhDsrpFQRf4N1iyKMUxWfHuS0BGprp6AkzYGth3j9EDQ47t42x4fiFa9rtgOqW
+	qNmnxSM/Z7lKZQ2+gdvy2kCr3zgsCZGhOTPQrgaxxXPw5Wboj7dN4J5jIGedmR1F1UW9pCKDI/o
+	fNnsMtz+Dt9wgDi3v8XRHj+F9qPoFsfDHcNIFHFYAid7f+ozOQRIkPdZFW1nttDhqg2tV4346vg
+	+QcHDDLmQ==
+X-Google-Smtp-Source: AGHT+IGKtXEzcTRKcustuNEfSG9GQgq2I5s1vamHi1Jm95rHy6d13FrXiicoayqFzE3hF90bPUJ+gA==
+X-Received: by 2002:a05:690e:4105:b0:645:591a:cb5e with SMTP id 956f58d0204a3-645591accdfmr267163d50.5.1765534356223;
+        Fri, 12 Dec 2025 02:12:36 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e6a46397csm3097617b3.53.2025.12.12.02.12.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 02:12:34 -0800 (PST)
+Date: Fri, 12 Dec 2025 02:12:17 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+cc: Hugh Dickins <hughd@google.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: 6.19 tmpfs __d_lookup() lockup
+In-Reply-To: <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
+Message-ID: <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com>
+References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV> <8ab63110-38b2-2188-91c5-909addfc9b23@google.com> <20251212063026.GF1712166@ZenIV>
+ <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNObaGarY1_niCkgEXMNm2bLAVwKwQsLVYekE=Ce6y3ehQ@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DCC2E1C000E
-X-Stat-Signature: 1tp3y6sdod3fye3qdtr34dubosaym8td
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 751xnfnybkd485ju6e1bu5xyc9cskhci
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 81839A000E
 X-Rspam-User: 
-X-HE-Tag: 1765533596-476328
-X-HE-Meta: U2FsdGVkX18a4fe6eGPVhXD+ERoqWRa1o2rPB5NVFm3hp9wDyEP8fxQpefZpFyJSBHPPfp3rg9XBJ0eRDS+aR9DJmKfqe23BnqFyh6CdPn4OvzLtmXwzUblCYJeiOpmlm2yWyFayQXDs9TiYvR5jrgomNFrh5YltcE7jJq6GvpF+XoX3PxV77Al5RaF2X+IM3gfcKORgrGS5vEtKYSFINE0MfBN1/ICniZnvftPThRbTpfLnPrdhqzaptfhiJDprUE5su6GrbH8kO0oc8KdOtxofpnLUnHmolNGgESrB7qbC7NJE3CY2EUv8FVewFrJkEkI8Vg8x77QeVBh/PRd9CqlRv/Vi5NCzKr6cte+cnL6sg44d+5WB3XptCPS2Zkia3HfBXnjM6xPZBNLV7Z17ZKrr+Tds8O9CUHHGOwaoXOODYESKWCe0UjJR1G2CB27hNQXI3hyBfaRmccO4bmeCstJZX7EDNnodIdrzhkghauY0JWfR3dTvBupGZSsZDi9+M2IKPTC3/Y1sN3P9u9nxLG0AhQkJFlbVfYcuLLcjhe/lOfbHBLugIP5cVXI0E+mZaYP7bHuLlhsRhTw4wQHeM0NqkRhE6yTtydkN2kK8Y+5sR/KbizRnweEPDrP2eamBFIUxE8eQp/byyaFcC3w/wPkGoWxxR91qE51l1xY/vBw6RegyQohMXrEYROvZDf0Css3vmW8UvCfUncvoLVwbsXw7SQisfEXIBY4AATc0UtIXsC8X9VKIMudStWPVqev3jCfKijNr0s+O7ztmcOTRNs6i4Ewiwhr9tkY/otMXe468zkFRUWUjlICYb0qGDd2humyhOyT5qQMVViCRdO8NkdfI+diqJ0OUHvDKgWIuq2GEAOYRKCZXWnkFLX98255dYrwc0fVZUVh52afveY/CUQ8X5B6OGYYqqtD9soncy02GWD4ijFx16M/dgr9q62Wpdj2lfCLKkvr0exvYRzw
- wTZujDyR
- DTsVtQFW4coB9lh6D6KeDF1ZEDpNfstAWubqCWTY8NaUexIB75y2zeMvpKEUA0NS7n57s1QObBbOlDTIaiy+yIvJU4yMGm6vE6pEm7NSZJGcRx2yjw2KW0u2T8jGK8OCh3zP5fNzwHU/f6H9S0Mwtk04UBCxCOyQy590VOfyx2VRRtIzsCaSvIbkI3NK6daXjYLiKqXwRwP8/ZRGC/Q7MTZG49LIx1/vr6kuTB4BwM/Yd+I0JAPoDsZmQzmE7iu8b5zCYgqlWNueGcWx3iaFBZn5HLehJZkaa3PVg
+X-HE-Tag: 1765534357-929389
+X-HE-Meta: U2FsdGVkX1/61OJP58wgMv9v4XzQiZz8DfL9nqECztoFdUg34nG87bbhcQtqP6KWmH8kA7fX5VAVA6ZLBCeVefLeNJyPTWdPsuc/LZFAdBs7V6lu/DP1ziqYtbl8Tb7Zky+TXp0graTpGvJmHMWdfXVKk6lPXNVZsBFB8qtngGu2rXrfRx3txO4dWp4YK5oczh8BubbWHdSNtV2hDT9ePBJfQGODA1r36WeyCibnJDm203sDOGYJwN2SmFONeAJ8ic3SjJ/AZO5VSILxg6C4Gl/IEEze1FXwu4n4tajizHR9AXGk4aRAzFxxn5F05E5/0BW8Gkt15Z7Rbf/7VTo2AOeDs2HJSqsj+X0+Sons6XM+Ti8tOKHI3XMfgh7YgMy5sc9U/HhWLsyr/jFNfOQdnzes+Y3Pgq5YeywGsHf98OhxNgzAwxEeDICuxTLwW4M9J03oSdQr+IugXmdrijL/CeVapSZpVyneuhr/F/Hj2JPPmNUefNNhw6UHhiM1pPtwyw6+10MnLYlJhbKrRvVEa0NqzqOi/6yp7KHkruPz6u9H3zMg4WTp3dwXDXx61mx1sOtX+8BRRUMEFA8lRfFELf1CniUGacg4Cw5NsU3T4MkmjtkEg6lI1TdV9ok6Jo1XPWo3UeKcIB4O8N/nMxlIXgQ+D27jcyZf0VhKz5Jh/w7iSE96XPAGoxaYpn+mTMUxmj3J7c7b4W1Rl49Xn7s6YWBbvLraWx/k3CKvh8Wegiuw73NIVjeOnOMlOSjuOVbaLaWOI6+nEPA1n+Tbf8XQojVRhnK83heFYTFXiQs1Ba6g/D3RhN7qeN+WrDf9Gvvdo/iWp5fRxyMy16Q7N57kk2mYXUO7qja/LYWVEvODVxvp8P0YQOQf48AsxLYb9PUQXag3ncQs8FSVWMP78rPYHMQ9zQbbVh3K/vMCXo5vM165T2hzcu0PfcE68BqDdN1mjo3Gz8ePPQ3GoJvTlM7
+ dP8TGusk
+ 2lFwhiVhs/GGsd/6N3FVXWshK0+aoaj/dYHs4Hqt2N5XFWhB1gHY7JoaZiMo32HP5KjPEtmd6GFlqbH3B3bFJrpPgozB55fGdx3wtJBVjM5wtIBVd0jOTXrwVakdxPAAB6KJQip0V5daULmM1zV6J1e0zgChNkw+h9anEkSDV9IANBwaSpK/sNpvSp2+XNnKiNaWK5SrBtcjtkf1GfOSqHC16xhyKMUuQoWxCxD7LcN2s8Uah9/kzjCQd0CZa0LOTcCu0dwr9F4k01ozZTC6iy/Z86rSgHlZ0wUrnF9S5WJWLLPOF900Ls5wQbO1ipzc5vBy59Qxe9mhbV08iqcZVka5SIpXjI2670E16LG1Pv2A5JusTe52RkBpmsZcV44rzT3LxCrdg2G1MT80=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,43 +122,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 02:24:57PM +0100, Marco Elver wrote:
-
-> > It is *NOT* (as the clang naming suggests) an assertion of holding the
-> > lock (which is requires_ctx), but rather an annotation that forces the
-> > ctx to be considered held.
+On Thu, 11 Dec 2025, Hugh Dickins wrote:
+> On Fri, 12 Dec 2025, Al Viro wrote:
+> > 
+> > A few more things to check:
+> > 
+> > 1) do we, by any chance, ever see dentry_free() called with
+> > dentry->d_flags & DCACHE_PERSISTENT?
 > 
-> Noted. I'll add some appropriate wording above the
-> __assumes_ctx_guard() attribute, so this is not lost in the commit
-> logs.
+> No.
+> 
+> > 
+> > 2) does d_make_persistent() ever call __d_rehash() when called with
+> > dentry->d_sb->s_magic == TMPFS_MAGIC?
+> 
+> Yes, both if shmem_whiteout() does its d_rehash() and if it does not.
+> 
+> > 
+> > 3) is shmem_whiteout() ever called?  If that's the case, could you try
+> > to remove that d_rehash() call in it and see what happens?  Because
+> > that's another place where shmem is playing odd games...
+> 
+> Yes, shmem_whiteout() does get called.
+> 
+> And when I remove that d_rehash() call from it, 269 476 650 and 750
+> complete without locking up.  And when I remove the WARN_ON()s
+> inserted for 2) and 3), then they pass.
+> 
+> You are very much on the right lines!
 
-On IRC you stated:
+Well, more than that: it's exactly the right thing to do, isn't it?
+shmem_mknod() already called d_make_peristent() which called __d_rehash(),
+calling it a second time naturally leads to the __d_lookup() lockup seen.
+And I can't see a place now for shmem_whiteout()'s "Cheat and hash" comment.
 
-<melver> peterz: 'assume' just forces the compiler to think something is
-  held, whether or not it is then becomes the programmer's problem. we
-  need it in 2 places at least: for the runtime assertions (to help
-  patterns beyond the compiler's static reasoning abilities), and for
-  initialization (so we can access guarded variables right after
-  initialization; nobody should hold the lock yet)
+Al, may I please leave you to send in the fix to Christian and/or Linus?
+You may have noticed other things on the way, that you might want to add.
 
-I'm really not much a fan of that init hack either ;-)
+But if your patch resembles the below (which has now passed xfstests
+auto runs on tmpfs), please feel free to add or omit any or all of
 
-Once we get the scope crap working sanely, I would much rather we move
-to something like:
+Reported-by: Hugh Dickins <hughd@google.com>
+Acked-by: Hugh Dickins <hughd@google.com>
+Tested-by: Hugh Dickins <hughd@google.com>
 
-	scoped_guard (spinlock_init, &foo->lock) {
-		// init foo fields
-	}
+Thanks a lot for your very quick resolution!
+Hugh
 
-or perhaps:
-
-	guard(mutex_init)(&bar->lock);
-	// init until end of current scope
-
-Where this latter form is very similar to the current semantics where
-mutex_init() will implicitly 'leak' the holding of the lock. But the
-former gives more control where we need it.
-
-
-
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4023,18 +4023,7 @@ static int shmem_whiteout(struct mnt_idmap *idmap,
+ 	error = shmem_mknod(idmap, old_dir, whiteout,
+ 			    S_IFCHR | WHITEOUT_MODE, WHITEOUT_DEV);
+ 	dput(whiteout);
+-	if (error)
+-		return error;
+-
+-	/*
+-	 * Cheat and hash the whiteout while the old dentry is still in
+-	 * place, instead of playing games with FS_RENAME_DOES_D_MOVE.
+-	 *
+-	 * d_lookup() will consistently find one of them at this point,
+-	 * not sure which one, but that isn't even important.
+-	 */
+-	d_rehash(whiteout);
+-	return 0;
++	return error;
+ }
+ 
+ /*
 
