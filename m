@@ -4,119 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A378BD59D82
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:37:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 107F9D59D84
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 18:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1366A6B0006; Fri, 12 Dec 2025 13:37:40 -0500 (EST)
+	id 7A22D6B0006; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E346B0007; Fri, 12 Dec 2025 13:37:40 -0500 (EST)
+	id 779846B0007; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 024BE6B0008; Fri, 12 Dec 2025 13:37:39 -0500 (EST)
+	id 6B7146B0008; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E1F2A6B0006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:37:39 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 972E2B7A88
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:37:39 +0000 (UTC)
-X-FDA: 84211677438.13.59E5A06
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AD03640010
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:37:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="e4w/Ay9u";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of smostafa@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=smostafa@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765564657; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DAAF6B0006
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:39:07 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4FC914026F
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:39:06 +0000 (UTC)
+X-FDA: 84211681092.14.0D5DF54
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9634B4000D
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 18:39:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZLd2qGxL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765564744; a=rsa-sha256;
 	cv=none;
-	b=TgxCElFPm87lK6vtPHSAzt6M6aPMnmrIscsYH+Lgv3x3qMxhplWRNQe4TWko1ToCro1Vli
-	vy8YSW0KvOaVnGoROm75arA/varhMRtKdpiNIcLAtGQT8etAJUNlv4zr8HAah43vRZavej
-	3QJe4ias6FmEyrp9eVNs0cbmvOmRdAQ=
+	b=hU5xvLy0T5/GBx+HEbBIZf2E5j4ZBToDRKb096RUJnPQebWFeJtxveIavph6EtV7Jvhezf
+	RPp+gpSKtQnVz4Tld4nAAG+cldgmYxipO3gJT060kKVQbU4Lw9CpN4lu9N0n+nQYAECk2l
+	HqS6vKQgCk8GAIClOUJ5rBb7VWvXiy0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="e4w/Ay9u";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of smostafa@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=smostafa@google.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZLd2qGxL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765564657;
+	s=arc-20220608; t=1765564744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
-	b=rWCYKVk41Ls8cdIHiFGBWUlnXNcPDQzVubr9dE2GvNMr8nZATjviCLNlNZMMtCgjyy5Qo7
-	uel9fnA4Dtl8hKG85Odl7HZW0ZWbPtGzZ0pbiCHJcV8b7gHJL85nvajz7IQUXbFNtFC6iF
-	vOyIwI45nfnajUpNYr1Eml6ZktyOP74=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so180625e9.1
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:37:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765564656; x=1766169456; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
-        b=e4w/Ay9ukdvXjNj1ug8TfV574T356TDIzi1oSvlHxsC7SEIWOg519epuofhdQggX7L
-         YKSqd+Zj2qjA1bzn/Xb6JhlisF756SF/Q4t1yVj3dkY2e+5dVj/J7IMQxJGwhhCw1Xlf
-         1OzKr6SyrWewkLjeyk41tRTqLtDu05owdn7xp2rY8RnsbZRVZK53rU3/8cTkqBtnkoWj
-         75FOK5peGx7C/DNjY0kcOhU2tG5NJx/CX2Ib3hYMl8YH0x8IUPqbjf8UxhKPgquhk8BK
-         gAQqsza2fKL+R8T/qew+ApmbI5243TIQDrmAu/Xlhj5FNiSKE8cryBQPR2Qs43Wv+1ao
-         yGOg==
+	bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
+	b=qEgPXlc0V3vWYEhIZt+FlxsdIHCJf27AC3Qy36vubGdBWqSvKgr1r/WGDwlKoK+PTbPE2p
+	Fsb1v+tQDYHrBIof9aTcKuBSuxp9Db893VleiQ98Z2h/TXIS7e8oEvH3wEci72VVvsFBuD
+	8pA+1RJJn2YxOp5YkKUaJuaaikunDFw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765564743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
+	b=ZLd2qGxLyy5fXjaMTkpl4s6q0lFWT8l+cI1nxpSltqbrllSVoiIt6DR99jnvc0dbi2m9E5
+	QtffA+YBpYC7Oqih8QU8zIduWPuh2So8yIExSOJK/FXvhzhouOjfmvkO5EjHOdAPCafVJC
+	tjiOYNkIxO/D7AVY5v/qmpBnK+Bk+f0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-7DYccD0tMii_6tjY7Jqk0Q-1; Fri, 12 Dec 2025 13:39:03 -0500
+X-MC-Unique: 7DYccD0tMii_6tjY7Jqk0Q-1
+X-Mimecast-MFC-AGG-ID: 7DYccD0tMii_6tjY7Jqk0Q_1765564742
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6409f6d6800so2939060a12.0
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 10:39:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765564656; x=1766169456;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pSEL5ePgx5RjiFkm4T13sS/CnpCa9se0VHC4VBAtFtg=;
-        b=fPndK+isl+iPrIMnAd51lSyo3Bt4MNoHwUPawre6It5NpJtZBvantxbXLrN0zzWKk7
-         bFOgfKoZY7gE0qgaxb+ecvia14ViG3JVK3GJyG9Dm/IgWSnzIDNFYUCQXe0sAw2jZaVR
-         eTxOiX5uSeNHRiAJz0yUcTLpju7gGSPL1Nq6c/hXzIu3/unsSKMwB5WxDEyKx6KCbWlB
-         CJOe2jY76y5yzBo8zMC3zCx3RL/+YANBdiv779fP11cravsEMKkrWlEI33eqd3Hu756e
-         TAZ4clvMy5Z775itRnpWvU+yZsARbc2tOhQacwn5YlvTdLS3WAPJqFkzWQw0R67wLgXr
-         SnKQ==
-X-Gm-Message-State: AOJu0Yx0aLnOXtfNCSV/jqqTQwkx6xz33swGvzQVNOCsNDsOONPVOic+
-	WuP2vQxfTa95y5H1fEbK2y0O7HCTPFZIZL/IiRXrRKGHWqXGZHZ1X6NE4NBrXx21Bg==
-X-Gm-Gg: AY/fxX4gTln6TCBSYG6X+CXriCtVM6tcyveKjkcgyLdQ5AtQyKRQfymTwGpnZiz/suV
-	XlbQKIEkip5tW1etTLO6kEgDzIv1zqe47uv3MGoirHP+I43aPcb1ZPtlCkmk2OLkcD4nIqO5dO7
-	Mc05HsBMsYjLEOntpg99LSmeAf2nYSAnYrWPlTCbQjb7FlQ28G+yZjL1tUK4jTEIU03NbiqL76N
-	8dh/BL2XI4y4xARzljHuWu6ON14wcPVBQN740hyA3mZxil/kSwZwkgkMR9nRRV3ZpW5W/fU7RI+
-	7N2r37neBxArXASGpossD7E5Y8q4zUIFGm6Lp94Fc/u9spzpyxvFnpUcmcIRldh1qTAUNe104AJ
-	UZe7IIzSFJ1B0dtwHZsrJvgCkKhGtqn6HpJ3rdllFQSkei2XKehNH5DjJwikJaZ4jYCtWvtl5QQ
-	XoIt07XdB2LySMxmkT+7QWpTum+A8yrh3e/o/+fKys0Lk1n9D6XA==
-X-Google-Smtp-Source: AGHT+IHzdWN4hpt7McD7KCWGDX7vpqcZJcLk3uQhWd353UqV22b/mGz1ioCMGsLdTgWVBmvLQWc0hw==
-X-Received: by 2002:a05:600c:83c4:b0:477:86fd:fb18 with SMTP id 5b1f17b1804b1-47a94869ebbmr37675e9.8.1765564655960;
-        Fri, 12 Dec 2025 10:37:35 -0800 (PST)
-Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f6f2238sm16173315e9.13.2025.12.12.10.37.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 10:37:35 -0800 (PST)
-Date: Fri, 12 Dec 2025 18:37:31 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
-	rdunlap@infradead.org
-Subject: Re: [PATCH v4 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
-Message-ID: <aTxg6yHWdFrW41ZC@google.com>
-References: <20251211125928.3258905-1-smostafa@google.com>
- <20251211125928.3258905-2-smostafa@google.com>
- <341bbfd9-e6bb-4d1e-b9c0-9077dc3eaba3@linux.intel.com>
+        d=1e100.net; s=20230601; t=1765564742; x=1766169542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=S+hpqhx3308ATwYzN1NtxlgmadEIegTDoxPGbpzieio=;
+        b=KGfluoD7e4+O/n8/tugXp7qlBY5ZPsFgJuwkcXociMaSFE1oOGlLsT2R3wNPXNgd2G
+         G1xVUUCn1AvtAecRX+QWURQ4o36ssmKFjERZhgrB0ZHQWjmG+0rekqo5qc6SnJCoBGJN
+         BtBhCU25RfXQgySoHadPME6rGHe9ZEw8OlcNOEM1ZrZ/rD9LWQ2PkBHNtd7smAtU2SxY
+         NuAL+DyGh+uzGaUpxvvi7muxsqRjH9QJSL58Mn5Br96Y/rr8HbtVOCmnzytj9WK8FFpX
+         VU8nIZScLi/hneMks7oaYQrTuzmykiSpkQT3DPGNE4axaCd+5S4pARnZqJSyTL3/yGpp
+         DbAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUedxKkLa5sZflaQW/4aGYBh2c1dCi0Sa6uLI3yS5jKm8A2XPnhNMJ21EYYAlt6DvvsMe0ZFEsHng==@kvack.org
+X-Gm-Message-State: AOJu0YwvXnqI19NujcI5knJBxg2VLZqrWbnAKJ94lN7rrFFKC+pQ0pb7
+	W1Dg5MxE4S+mala91/1YZ+0JFMs3JM8zNHcwLyciGApSDBeggmtQby/BXWDbtoroyA1fF14Jxje
+	zYrMC3muhAFxGwrTVd4umYHPZjCwZYc4l+GU4I9fAZMS6AfJiFekK0Xay5Mir8tX5jOYKchKLVf
+	Mjot1FvZIGP5WV/IYU1TeiIG57WQ==
+X-Gm-Gg: AY/fxX4f6M6ObkEz23udiJsZfE0ZelFoPTYph6kBiatKWW9YSn4AlPaEC6doUmmKTOb
+	DHP9i86E86oS1Z0g3kST5PpeYhNtQQlB0ZtbEDta5QoTtbTtxZMd4N22AD9gASmgYbl2CVlpqUy
+	YKHyHEnmBRSHHLtwLqkUERLRlVRnVW7C+aTIdJ7xXGkLXG/MQvKzE04bbpTkZf
+X-Received: by 2002:a17:906:9f88:b0:b72:6a39:49d7 with SMTP id a640c23a62f3a-b7d23c1b192mr329954966b.33.1765564741591;
+        Fri, 12 Dec 2025 10:39:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFH5hEfEk+Qd/TQuO5dmZhx0Ve9hkd3hngFGgcBfMa/BZ+7n602U9F6HYZJh/uoPAXYcPduxx52GHJ646gbZCw=
+X-Received: by 2002:a17:906:9f88:b0:b72:6a39:49d7 with SMTP id
+ a640c23a62f3a-b7d23c1b192mr329950666b.33.1765564740878; Fri, 12 Dec 2025
+ 10:39:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <341bbfd9-e6bb-4d1e-b9c0-9077dc3eaba3@linux.intel.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AD03640010
-X-Stat-Signature: kbgzhim7tuggfsauu14qjqtmhx1d3sad
+References: <20251210200104.262523-1-dkarn@redhat.com> <aTnn68vLGxFxO8kv@casper.infradead.org>
+ <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
+ <aTwIAwjeSrALbVww@casper.infradead.org> <7pottkepdngwjiz6mi6rby67a2xpm65ulx3oflzhrv275efq3y@e64lbkl767eb>
+In-Reply-To: <7pottkepdngwjiz6mi6rby67a2xpm65ulx3oflzhrv275efq3y@e64lbkl767eb>
+From: Deepak Karn <dkarn@redhat.com>
+Date: Sat, 13 Dec 2025 00:08:49 +0530
+X-Gm-Features: AQt7F2o9HVOS9-O3c1b2kzj6ir7__uDkNTKy0pS9_N14HeUb4y18fmVn6ULV2e4
+Message-ID: <CAO4qAqKX=LA1PHjGJ0BO1YWE04BneJmZmximqqF0BQ1i6emhNA@mail.gmail.com>
+Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
+ mapping with no release_folio
+To: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Gynr5M_C8LNE-Ovb0xesbkuDQ5rmrHI50erFTlJ6q_Q_1765564742
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1765564657-54442
-X-HE-Meta: U2FsdGVkX18ZrtuVM89DZcjohXncdDrtD9wNPRLXFhWiJx/HOS1wNRmulBgu7TpoERgaxQYKLlW4bnhsSfB9MAMEkDyPqrLJtDUxHhcxko9VtNEolhHXgs4XlAP4nPMIOUi1GafNQEcgifE0JYocbLuH0YBVOgq8t8bcHNa/pgmaKyFMbzdKkpVXNWY8K6uOmaYwOIn6u5QBL348Ck08SA44YoDCrxfKBO+j+10ZyG5Mr4eF4T6ENnutiWPz5xTIFcRdo7wHDSoBQWC4ANjgbeXj9VohyGI4Cldlkkkd/D2VUuST9xT7qfuPMUJ5dELfXY2I6yYbbG8jgx8xRCTYo3sCVCJXannfCgFQl3BzZbr/h5d1R4F/0lKqNN0tk6cAxjYIt1NXgotvo6pcZ4E5MjArZ+yeee3xAOkMsxIoZ/q/jhElSyBOWY9zi3AXj632EGZs9/aIiy6wnBzGs2alHVIBHHSUhbFb+F1nlTM3pHQayAHlaVo0UAxAPD1tb0hP1kVjd4v8uXA1CCrTqEc+LbVnPgy4FyDW9S0jaelR3GfoFLr+DubODMYWPYqP4kUB4Y2mP7+sEVGVgYTWu6ycrQgct7Gc0m9e3wjHk7v6qrYf+80KjbmHiRZ+l564Egq4KWsmrxFfbFsBw74BwiFeOVArQyeFIpuQ640on9bNryIWkAPbQ7HhLiB85nW/nO2i6FOO698JkcTfPQ339opHCTcMjS5TJA5A5l4J9iCJDQvNAJJCaUNBQeXtDHvTZXaZkEqtMyaCfm3/I7tFD/PLVfXp0GMlrTf49hKq9O91IrQ9Qm6yXRFCxe3Zz2Me0Xx2fIMLTLVLuAT50ec2c8JIQViNd02d73vjcy2cLd/04OP8aIeS3J481+wzMw330ImBQNGPYvO2OZqbMVkCGdkULhkpooOlhq1cjhT5ZquNUVEasF2L3qJ24CrVpk9iuTge22bibIobUNq8EEg6T6H
- ny7YWb/Z
- Yf5SywjobNIHASqNHGRlnn4LgnFzRQvvE0hNpJTVnHuYF3D1dTctLDOZG9s7pqVF9ZdAJ7VDJAASlD7idz3rApdMkcszx9QCqNtf4Ixt+Ir6+aTcqm+ztJ6XGRCRpSfcLdev1NI8yXftrLi9thSSI93ddBIjL9b6DCObqiCLoFNhsQsWlZTTqBKgtEPF1AFt7p0uA2wsOY0TmCaBMFNvTAb0CZ5FINsbd3m1ca6qMt+nbCuy+1lEgd1v0qlOUFuB1SwPFfUoMDPpRbFljYoFQkASNRtpN03jhXs2XofO0z7odMRScPq0Z/JtxOP7PNGPv+XT6NV5rpTztVSCCKdwJa1vmEeBAzPz12VS/50xZUzdJjd+fC0mJNSOuOJnu3HYgOC0Qsdusac14jDxXs+RrfZdIHclwU5zEiR3RWAz+VbsYsRc=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9634B4000D
+X-Stat-Signature: jrc6pf7wxkz8qsn8oghk89mmjszxhde4
+X-HE-Tag: 1765564744-656622
+X-HE-Meta: U2FsdGVkX19fYK0OZb7Na3zwreWf3nO32rc3MzZpqFFs2NiwrBV2KCSqZRju7DGofdditSYuWppuZDFb5g7++Jl1dVCiyRNwX5YKepzoDxfqIPcp3atM8X+bdLbThlhSod+Ed8bzJO8Sc6HyRKnJgBOo3SapPl3f962uOfHxRHd09tZvvivaQKjI9ZdqS5acx5WPRmnbxC8z7MeULiSAvxCtW0RCTSNr0sOG7effwxvYZv6cNcHyyIH37N8jLDqH83izMAcY0CV0FED9yzFHdT6x1mmFT4tHQrLd1Ld2noB9a+k6/QAqqCaMrEb1i43jUj/ajpN4/r7ycDWENLPDGHcDv5MYQyjPXxbuGNynSsE+LiiWlYG8vfT9W0yITsmv1r+SkygnVskFonN6tZ7ls9zjokjmRkINJZHT0pcp0GpMN1eFMS55BNSvIU8xwWsk7/+Px/UVg2SgwLzbLdNb2X4Qi+oKSIsIgg+AtBSdptt5ldYN77N7EEJ5Cdh62trlHZAWe6rlFuSG7YG28DtIqA7VnCakVaznpNEmm8cJec8RW4vLCuBl2TIOqxLgOvATscp45fH0IMUdA5C5ZbojaNTcdLXihRFSp8JZb9cTuTm9G9czR6islxDwKhVvTLIQtHhB9ZBeTMjWdgXNix/wYdMwRBC+fpFZWCZI+2ws8g1uXk7sFKy6ZZhcWZUv4HgZrdWiqcOeCiMvXRnjetxJDnB2bNmzAVNtC3kxTD0U3isUjvRWuO4VijOs/aOjXVXPc0NGxE1mQcTCvsVEp+87/RY3Ts5pT4r2slZZLrrkCH6dA15nEiFRA6Uuu0aM3RsEGKbxeGF808idNVQv7yKnh9RrcEobkKoUN0j4GzL2byn1oxyiJbzq97x1Z3tVszgoEKdtWLBDUJZjFSYDqE6pqK6Xk+Ex1cjsHeAni9qHxV3jGv1APAGT6Xpe0TmgQx+KnIsBMfqFEDTiV+mFDVC
+ bbuTHdaf
+ EHbmmcLCGsv4yBP3UzbSzf29vnI5JKWAZyovhkHRAcuPCLXysPpmfAQ5np0s365LjBd+A8STyTto3hQ3Tn7n/HK41uwzrTTZ49c1fxdMkXE1ERq8jAHUHX+cZhvbyHvjsyi1MX8j8Z2d6KMDFIGDJ3QXpYSi4M7rpRa3DvkIuX9/nFkOdTytCyFgI4/4SOEZ/ak0PDC1C4XAHvGm+EP4gPKUCF2xwdLBFkYSFrbYyDp1APaA6Ss3DzOe90/kEb/RlEAorrWvI3gIxMm29QBfmLzg1sAfLyIh2V9MxSC2gBh7C2zq/NxAcT0igUg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,69 +131,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 10:17:11AM +0800, Baolu Lu wrote:
-> On 12/11/25 20:59, Mostafa Saleh wrote:
-> > Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
-> > page_ext.
-> > 
-> > This config will be used by the IOMMU API to track pages mapped in
-> > the IOMMU to catch drivers trying to free kernel memory that they
-> > still map in their domains, causing all types of memory corruption.
-> > 
-> > This behaviour is disabled by default and can be enabled using
-> > kernel cmdline iommu.debug_pagealloc.
-> > 
-> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > ---
-> >   .../admin-guide/kernel-parameters.txt         |  9 ++++++
-> >   drivers/iommu/Kconfig                         | 19 +++++++++++
-> >   drivers/iommu/Makefile                        |  1 +
-> >   drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
-> >   include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
-> >   mm/page_ext.c                                 |  4 +++
-> >   6 files changed, 82 insertions(+)
-> >   create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
-> >   create mode 100644 include/linux/iommu-debug-pagealloc.h
-> 
-> Do you need to update the MAINTAINERS file, since a new file (iommu-
-> debug-pagealloc.h) is being added?
-> 
-> > 
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index a8d0afde7f85..d484d9d8d0a4 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -2675,6 +2675,15 @@ Kernel parameters
-> >   			1 - Bypass the IOMMU for DMA.
-> >   			unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHROUGH.
-> > +	iommu.debug_pagealloc=
-> > +			[KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is set, this
-> > +			parameter enables the feature at boot time. By default, it
-> > +			is disabled and the system behaves the same way as a kernel
-> > +			built without CONFIG_IOMMU_DEBUG_PAGEALLOC.
-> > +			Format: { "0" | "1" }
-> > +			0 - Sanitizer disabled.
-> > +			1 - Sanitizer enabled, expect runtime overhead.
-> 
-> "iommu.debug_pagealloc=0" has the same meaning as "unset". Would
-> "iommu=debug_pagealloc" look more appropriate?
+On Fri, Dec 12, 2025 at 11:17=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> On Fri 12-12-25 12:18:11, Matthew Wilcox wrote:
+> > On Thu, Dec 11, 2025 at 10:23:13AM +0100, Jan Kara wrote:
+> > > On Wed 10-12-25 21:36:43, Matthew Wilcox wrote:
+> > > > On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
+> > > > >  static inline void mapping_set_release_always(struct address_spa=
+ce *mapping)
+> > > > >  {
+> > > > > +       /* Alert while setting the flag with no release_folio cal=
+lback */
+> > > >
+> > > > The comment is superfluous.
+> > >
+> > > Agreed.
+> > >
+> > > > > +       VM_WARN_ONCE(!mapping->a_ops->release_folio,
+> > > > > +                    "Setting AS_RELEASE_ALWAYS with no release_f=
+olio");
+> > > >
+> > > > But you haven't said why we need to do this.  Surely the NULL point=
+er
+> > > > splat is enough to tell you that you did something stupid?
+> > >
+> > > Well, but this will tell it much earlier and it will directly point t=
+o the
+> > > place were you've done the mistake (instead of having to figure out w=
+hy
+> > > drop_buffers() is crashing on you). So I think this assert makes sens=
+e to
+> > > ease debugging and as kind of self-reminding documentation :).
+> >
+> > Oh.  So the real problem here is this:
+> >
+> >         if (mapping && mapping->a_ops->release_folio)
+> >                 return mapping->a_ops->release_folio(folio, gfp);
+> >         return try_to_free_buffers(folio);
+> >
+> > We should have a block_release_folio(), change all the BH-based
+> > filesystems to add it to their aops, and then change
+> > filemap_release_folio() to do:
+> >
+> >       if (mapping)
+> >               return mapping->a_ops->release_folio(folio, gfp);
+> >       return true;
+>
+> OK, yes, this would work for me and I agree it looks like a nice cleanup.
+>
+> > (actually, can the !mapping case be hit?  surely this can't be called
+> > for folios which have already been truncated?)
+>
+> You'd think ;). There's some usage of try_to_free_buffers() from the dark
+> ages predating git era in jbd2 (back then jbd) which is specifically run
+> when we are done with journalling buffers on a page that was truncated -
+> see fs/jbd2/commit.c:release_buffer_page(). Also there's an interesting
+> case in migrate_folio_unmap() which calls try_to_free_buffers() for a
+> truncated page. All the other users seem to have a valid mapping.
+>
 
-"iommu=" seems to be x86 specific. I was following the pattern for
-"iommu.passthrough=", "iommu.strict=" and also as "debug_pagealloc="
-has it's own command line, it made sense to design this way.
+Thank you Matthew for the suggested change. Your suggestion seems to make m=
+ore
+sense to  cure the case. If my understanding is correct, with this
+change the failure will
+happens in filemap_release_folio(). The current change isn't solving
+the case, as it
+doesn't mandate FS to declare release.
 
-Thanks,
-Mostafa
+As Jan mentioned, about the jbd2 and migrate_folio_unmap() cases
+(honestly new learning
+ for me, @Jan) this change should be okay. I will try and do some
+tests with this. I will share
+the updated patch.
 
-> 
-> > +
-> >   	io7=		[HW] IO7 for Marvel-based Alpha systems
-> >   			See comment before marvel_specify_io7 in
-> >   			arch/alpha/kernel/core_marvel.c.
-> 
-> [ ... ]
-> 
-> Other changes look good to me.
-> 
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Do let me know if I missed anything.
+
+Regards,
+Deepakkumar Karn
+
 
