@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3913D43363
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 06:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30FCCD4336E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 06:47:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 726BB6B0005; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
+	id 57BF06B0005; Fri, 12 Dec 2025 01:47:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7986B0006; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
+	id 52D5E6B0006; Fri, 12 Dec 2025 01:47:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ED676B0007; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
+	id 442A06B0007; Fri, 12 Dec 2025 01:47:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4722B6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 01:30:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 33E5B6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 01:47:10 -0500 (EST)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5F0CC042E
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:30:02 +0000 (UTC)
-X-FDA: 84209843844.18.A6D198F
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 07DD6100013
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:30:00 +0000 (UTC)
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A919A1604B1
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:47:09 +0000 (UTC)
+X-FDA: 84209886978.18.69E63D1
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B906E100005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 06:47:07 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qh1LX372;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765521001; a=rsa-sha256;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B+XC21ml;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765522028; a=rsa-sha256;
 	cv=none;
-	b=eeFbEVLSsjXTN0n/pkCqFs1s08iyj9M/Wdgl3io4bipE5vHjQ5v0gvXzfQJqY1Iyx9jz7t
-	yqR8LEwbghGdS9iY/JYfQJ8yOOKzFwnEoqAEMZmuCWE3fnC4z7aLyiXj7TQUc4kmRub/IL
-	ixouDx/JQ/ylenIX6XZMiL/f4AKEZyo=
+	b=eSqIyts4/Nd6oGEi+W8g84mZrQxOBvtyyXU2GH5VkUNygJQzVPIDyWrADrdPIkCUkZE+83
+	7zFa7OHZvzAxbwKgbkKZzGeeHEoCj1bUPzFXVF/9ke4Fri50Ruc4L3xvQxPJCCk/rdI3qn
+	wjCU5eCC+6ikEXBXsu16ovsmtt4KBmw=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qh1LX372;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B+XC21ml;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765521001;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765522028;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K/5oi+83CBKKaWTURWV0mnEWv5TIfLfBd+3xTzWf0Jg=;
-	b=KhPTV6apG/Wy9Z07ZB4hXbs4cUODA7WAbUkWoem+R4SMOkP0XxYYOMqGGUUu/rnRVlcdSe
-	k1uX2DG2mafsVPD+pV6NnZxSQPRe6O6tD7lrs3kuaKAfOTgTMenH8Qr6kHgDIDNJdZhePj
-	cbXPeE349AHk5Pm3InDm8iNvtBOcolE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K/5oi+83CBKKaWTURWV0mnEWv5TIfLfBd+3xTzWf0Jg=; b=qh1LX372w0ta30pPX89JVFqobP
-	O1t2/Y4PZA1ZCLgQnQa4/W37TZW42KS3Jjs7Mm90yoCoMCisImxQYTjXq/fdBtq3n8q0WCoQlHoOn
-	Q3JfCaRGMv8x6JwRs1b5xRaGDS9ABdVf980pFA27H0ADCnyvhBkdin8gm1Yl6WcUdU2/zU+gkXDJv
-	yma/qp8aj6D2XNJ+ugqhG5AwOOrEH77PCpHxVP+GavJdFKVSZHS79p6cXVwtN5zkHxvOxghkp36zB
-	oMdIgMsgJzIl/+RRLdREpDNHUFa49ilJPsRoFLwNiOiQviVdMQtA8Jum9PM+Vjx0EafaxqEl0RKU1
-	+iaiEWow==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vTwfa-0000000BlXc-1NdW;
-	Fri, 12 Dec 2025 06:30:26 +0000
-Date: Fri, 12 Dec 2025 06:30:26 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Hugh Dickins <hughd@google.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: 6.19 tmpfs __d_lookup() lockup
-Message-ID: <20251212063026.GF1712166@ZenIV>
-References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
- <20251212050225.GD1712166@ZenIV>
- <20251212053452.GE1712166@ZenIV>
- <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
+	bh=qLUft9+c7O2zPq9tN76DdeBfT+fs7dXB/08o8SAMub4=;
+	b=HlqW82hqiws72AUNIg6+y6BPqM3lxnaYNmrn7uusWaiEkVxoiVs1qMh95OSleIy8nQR6va
+	O5bVzbogJAkSy/i7NJ9WmlgTmel5tN4Hc/DXeHn6Emh3ub5+GN8rMflutHJUjmQocSS+d+
+	6BWXD+EVW77XW43POiYqfr/CQGaAWhM=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765522025;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLUft9+c7O2zPq9tN76DdeBfT+fs7dXB/08o8SAMub4=;
+	b=B+XC21mlZA3Ao1b7UuoXohJSHGGu1NifIskULhjfBIe7T5R8K3CnirKzhW/3VqpzHT3JnA
+	CTqOeSY1aFOg/uhT6ThdQ80x/CvebeIykqf5+s0EVh2+N3foEhJkbXCRj/vZspPffHHESb
+	kPvzz346KGVc7iCWWtWEuOssKKQgQ+E=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <5twlonzi3rooao7gyp5g4tyaeevemcx6qhuf4xvdtsi2cykuo4@wrhxmxz63wvn>
+Date: Fri, 12 Dec 2025 14:45:42 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Usama Arif <usamaarif642@gmail.com>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4707A7AE-B8A9-4A56-B292-E590E91A9980@linux.dev>
+References: <20251205194351.1646318-1-kas@kernel.org>
+ <4F9E5F2F-4B4D-4CE2-929D-1D12B1DB44F8@linux.dev>
+ <m63ub6lxljw7m2mmc3ovbsyfurl7hp4cvx27tmwelcxxrra5m3@eva5tqcdjxtn>
+ <6396CF70-E10F-4939-8E38-C58BE5BF6F91@linux.dev>
+ <5twlonzi3rooao7gyp5g4tyaeevemcx6qhuf4xvdtsi2cykuo4@wrhxmxz63wvn>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B906E100005
+X-Stat-Signature: qp9n1qm8hqekf5zuhamo7xg5nsnpuunj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07DD6100013
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 6tws8etihuwnn7thosbpo68fybjj6z8i
-X-HE-Tag: 1765521000-467004
-X-HE-Meta: U2FsdGVkX1+KtVyMw98CsGA1yB6pjZvjqk5VM2NHFPvtKfkbs9rcj6XUY/4uWwmzNyjBR4nq+gKRp+6ax3Tm7uyqn0flZAGEdcXkR8sESCuIKfJmhLh6HqybossvEIjPCiekvt7NMxDrsA+MWwFhcxesv+5Sgv+DIeYW6acmW3m0RsbTfK3r17ie0LhooNZ9YcUjFJLiTO6gis6rro1uZGip3rSkmB7rhsc4MG8uhlcyltIHTM+NpaMtdFC/gkiTL16q4kzabtV4VoLqgWLK8YIx7lPHCQUklLVKJ2pvdVSH0Dce0cqy5ZwPQsJ/8tOqGZGTEZGnfvtGJoVmOIR8tbVtHI5wy1lysauJm76AD7ZJSUnM6bn4VQV6EYdQFZsBVRiCG8jEeVcG2yRgeHXWQq4CiUJFuZU44SucOXnbWsh53Q27B80JYM+WG/5Dc6KBaX7mHTYsNx7Y6AQf4CmoRALh1R88OtF+Eg7kp0cJS1dqEZkRz29QbmRtjCq+XEnb7wZdfk5FTTcs4s90u6ugRN8Ar281L935stfT8I39puea8ckZYgCo/+4Gwm7PEaxwT25m3vtDcCmb3stLISXaHK9n71uSiYR+RIDZCsWYiCgbWcguBdfwUe6wlYBW/o44zwOxc0+Vu6RqN/muT8a9A+dAPPBg3g/5ckY2MkCFA4CzT+EWMAkDBQzX3lKw5l0YDoYIDMWrw+Fsm2CLYlQQO4wtjVOeJ/vgOjcZgp70d5ehEVzmG8bU68wOvhhGi4mScFCsd+R2+/7suPuUKrF/ObAFVQRkgVd8PUtfK5ZOJNW2Dcf8WpcZcReZ8GFc3O8NyPi0FWoxNO+GNsyM2DQEHUi12iS6l1DO2/gVZt6wVcdBjkZzy12gMnv5/hrDp7cuOshjKir67qObAYRJ40ZXtdIuQeW3yBDZBd6I/YWrEfsNaoKuudKS3FPgPDOxambkAn9QntefakcLkKweQu9
- Ml7jMjwL
- XTa/iqNEwgHJIi1mEwVxTWEvZ7CIt2LNTaj0XyQJAvo1Kk83QhUSU4EEgliOqvoe+8bL6Iw3yK8yGOG0BKpgTjdZK1ciHRvATMeQZfa0Jo5+tzqzcuXptQpJKYnQ5avdX/6sMZ0XbWiXDPro7zIqBQlT107PVg9cAvzQonnExySVy7n+COFfTkFuzeWNLALPuLNZNJFx5EK/60z+HGlYdwefY8Y5oBrj9n95E/6ya/MGE48c2u35LvnrYSaPfTrovP3CADpuwwN2c6Grk4KLFh3xeVN3WgyniWSednIz4UmpgcOLt4PK9D9trCr9rbRWH+5GnMPbOM63fIJtGnWhDSHCOSrhQDDZWS8/uyWgXRKAkeyUzPQxdQZlWRRD950DbMWRzcb/KwAlMFeN4JhvbunymaL0LCwD8PDdK7E5dGhAZg77DR5pmtWbTrIMTNH9DIz5rgkRnkqdvz/eATBJrkohM+TCIn1NbTyaRbs+5QkeQiqk=
+X-HE-Tag: 1765522027-94815
+X-HE-Meta: U2FsdGVkX1+JHVg8oijc7rqTNuMgacLl96oEeRZ7jc9cdWM8EdsKSzqm2a2PaPS8jxNXHJWDQT9Al7vHfDmwyp8k/lbVWDzv5owmvprxNUQRu2h7OcT9PmbZrx6mHrUCiAaNISCm8RzRXhwwMgYC14/AMv4FMxA9drPOsSM1YTniiLU52M3LF5CXGk4FBgwiRtsb8l6/2Kq2g3ibgo32pCC/1uMobpGwE0WtZtOxZeUAB7+clLp+418/2a+wizBpMDM3b3epoquHSGbbqja0bPizPpyl3+CkALi2Ingylw6yKIYoL7kaL4M3sl3H6Qr/UvCPJ6d04WK6wkGr3fQRo+NNXaEM5QbC/0fkQj8lca+m4K5AxQJ9V3ujJ/y9wrLmPu1NkeP+IjKniQcqTmdkbBNe0v3MLRHXn3TqRJRn8QWYTgXoQm+2vueMva3Cg0+TZzmpX18S9f1upEL4rYsYZ+YsY68qf2j7fakANOItTXxn7UegOR+dt4SQDvyUtcKrWhRbyiT7bAxgo8bbYkNZSxr7o1/jrbXzmTARIGPuDGg1pIHVzzyF+86q96xO6+P/l2cx6m790TdpKfIyBnipQ1hwlzHxxuCySUFUFhkbdpEzTU6alcQxZqn4D7dfSCy9rPeNpPhg+dJwxpB+Y7ND0FmVxPzoulPgdFLwrl7vTod46P2bEDcuapzeukCBc150SidF+Cn4MTGV3U5X6gcCd1v3qchxBouZnAUCIAUZL59iCLYBz5ZwCmp8PMmtEJPo0SHAzByJZFYx2vCyV4h5mNhtwDb03l/UPyaa4FMg3jL8rJvLDhl87DqNIAA/Zef0ZA1xdh5j6G+SVNsIbAjo2v+AhysxmrbDkz2oddQTl1t8eDIEbcnUZu8Zf2wg+KekuX7K2vJaguz5u6XfOkWS+B+82I6QCp+38cPY3U7TJNsac6Dz9SnGStkCpVh1AZz1kUpbdKEReBiQwIDGNL3
+ XUmJSURI
+ dv5xliDuBuX+78l3CqtITgrmKiq2K1gqymxNswcqgMDTZQJQHaWLKjUP4lfaOM6Uw8BtsnY7+Er6Da5P5CwzXXZegi7cff+VbKGwpI6mRQpQ0CmqHLziK2ZF7W3XwgJI8ooM0iQedjZAqWrLPmEfpBurfhlZVhGKTDm6Nw9mUvSeaRM2xsW0bo0tTEP2JsYKdOWD8dxsNHrdiQ/w+drE3Q/X0REJbSd8FrJOGc8+SZP9uD9Mxm+w0iXZ9bOZ9T+ZdEvRq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,28 +110,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 09:57:15PM -0800, Hugh Dickins wrote:
 
-> No, sad to say, CONFIG_UNICODE is not set.
-> 
-> (I see why you're asking, I did notice from the diff that the
-> case-folding stuff in shmem.c used to do something different but
-> now the same in several places; but the case-folding people will
-> have to look out for themselves, it's beyond me.)
-> 
-> (And yes, I was being stupid in my previous response: once I looked
-> at how simple d_in_lookup() is, I understood your "hitting"; but at
-> least I gave the right answer, no, that warning does not show up.)
 
-A few more things to check:
+> On Dec 11, 2025, at 23:08, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> On Wed, Dec 10, 2025 at 11:39:24AM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Dec 9, 2025, at 22:44, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>=20
+>>> On Tue, Dec 09, 2025 at 02:22:28PM +0800, Muchun Song wrote:
+>>>> The prerequisite is that the starting address of vmemmap must be =
+aligned to
+>>>> 16MB boundaries (for 1GB huge pages). Right? We should add some =
+checks
+>>>> somewhere to guarantee this (not compile time but at runtime like =
+for KASLR).
+>>>=20
+>>> I have hard time finding the right spot to put the check.
+>>>=20
+>>> I considered something like the patch below, but it is probably too =
+late
+>>> if we boot preallocating huge pages.
+>>>=20
+>>> I will dig more later, but if you have any suggestions, I would
+>>> appreciate.
+>>=20
+>> If you opt to record the mask information, then even when HVO is
+>> disabled compound_head will still compute the head-page address
+>> by means of the mask. Consequently this constraint must hold for
+>> **every** compound page. =20
+>>=20
+>> Therefore adding your code in hugetlb_vmemmap.c is not appropriate:
+>> that file only turns HVO off, yet the calculation remains broken
+>> for all other large compound pages.
+>>=20
+>> =46rom MAX_FOLIO_ORDER we know that folio_alloc_gigantic() can =
+allocate
+>> at most 16 GB of physically contiguous memory. We must therefore
+>> guarantee that the vmemmap area starts on an address aligned to at
+>> least 256 MB.
+>>=20
+>> When KASLR is disabled the vmemmap base is normally fixed by a
+>> macro, so the check can be done at compile time; when KASLR is =
+enabled
+>> we have to ensure that the randomly chosen offset is a multiple
+>> of 256 MB. These two spots are, in my view, the places that need
+>> to be changed.
+>>=20
+>> Moreover, this approach requires the virtual addresses of struct
+>> page (possibly spanning sections) to be contiguous, so the method is
+>> valid **only** under CONFIG_SPARSEMEM_VMEMMAP.
+>>=20
+>> Also, when I skimmed through the overall patch yesterday, one detail
+>> caught my eye: the shared tail page is **not** "per hstate"; it is
+>> "per hstate, per zone, per node", because the zone and node
+>> information is encoded in the tail page=E2=80=99s flags field. We =
+should make
+>> sure both page_to_nid() and page_zone() work properly.
+>=20
+> Right. Or we can slap compound_head() inside them.=20
 
-1) do we, by any chance, ever see dentry_free() called with
-dentry->d_flags & DCACHE_PERSISTENT?
+At the same time, to keep users from accidentally passing =
+compound_head()
+a handcrafted-on-stack page struct (like snapshot_page()), Shall we add
+a VM_BUG_ON() in compound_head() to validate that the page address falls
+within the vmemmap range? Otherwise, compound_head() will return an =
+invalid
+head page struct (it is an address on the stack with arbitrary data).
 
-2) does d_make_persistent() ever call __d_rehash() when called with
-dentry->d_sb->s_magic == TMPFS_MAGIC?
+>=20
+> I stepped onto VM_BUG_ON_PAGE() in get_pfnblock_bitmap_bitidx().
+> Workarounded with compound_head() for now.
 
-3) is shmem_whiteout() ever called?  If that's the case, could you try
-to remove that d_rehash() call in it and see what happens?  Because
-that's another place where shmem is playing odd games...
+I don=E2=80=99t see why you singled out =
+get_pfnblock_bitmap_bitidx=E2=80=94what=E2=80=99s
+special about that spot?
+
+>=20
+> I am not sure if we want to allocate them per-zone. Seems excessive.
+
+Yes. If we could solve page_to_nid() and page_zonenum(), it does not
+need to be per-zone.
+
+> But per-node is reasonable.
+
+Agree.
+
+>=20
+> --=20
+>  Kiryl Shutsemau / Kirill A. Shutemov
+
+
 
