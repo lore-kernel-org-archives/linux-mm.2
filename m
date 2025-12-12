@@ -4,86 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 031F9D43369
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 03:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F048D43369
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 03:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62FA96B0005; Thu, 11 Dec 2025 22:46:19 -0500 (EST)
+	id B50D06B0005; Thu, 11 Dec 2025 22:56:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E0406B0006; Thu, 11 Dec 2025 22:46:19 -0500 (EST)
+	id B025A6B0006; Thu, 11 Dec 2025 22:56:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CF216B0007; Thu, 11 Dec 2025 22:46:19 -0500 (EST)
+	id A18376B0007; Thu, 11 Dec 2025 22:56:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35C466B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 22:46:19 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0065C1A0403
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:46:18 +0000 (UTC)
-X-FDA: 84209431278.06.50826D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6BF8B40006
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:46:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C4QZX/JD";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7CF6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 22:56:06 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24F3884EC8
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:56:06 +0000 (UTC)
+X-FDA: 84209455932.11.8BFE07D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F37F740002
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 03:56:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765511764; a=rsa-sha256;
+	cv=none;
+	b=jHp4TcJFtTG+WSdo4fiSgv5DYTFwBqdAPWiRF7MBSLgYGRH4HoKd58y+BnR28IFA+QlKmd
+	PuK0foB8QV5nouvx5N++A5wrtOuFRWlYfLyYAbIy3BEYEeI3bfhm7Ph1jbHBDS69KNdQKb
+	Ln5QNRyQgYqKsRHGEVODXZJCApN74Bw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765511177;
+	s=arc-20220608; t=1765511764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yCl7lxaeUL7yy0JNSl41xrCAb4aCZBcyKphqll9vbX0=;
-	b=m8YYWiK6iOfaERai8Ro+AZgeQzaSPw3G9Qz3o0dHQnTGkfqfdFwcsX0QsARFg2+0PspMFT
-	o3ayA9V0wY3HMQ0Gt4dKZeYuXGLT8kqjE4bKV63hKSLnGAZXrjAlJ4ft9eqKE/dXwmxH2N
-	Gzw7eI9Crgy02XByRI/C4//1thEbOPg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C4QZX/JD";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765511177; a=rsa-sha256;
-	cv=none;
-	b=0CfHAD6l1+7OJ7gJXky9ihQ8Z5drM058JTa4L3qA5hF1zpYY/nDTO2P5jOWubsQV5XTg0i
-	ImgvIiTR7/5D6OFEom8tof+OlMe9D8D//uFVtRoDJ89kWsPODj1NBKsVdVjAg9j5fNK6+R
-	mHT321RApM8lCkf/S6UAnC67n27wU/I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA3A660122;
-	Fri, 12 Dec 2025 03:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F894C4CEF1;
-	Fri, 12 Dec 2025 03:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765511176;
-	bh=qWErqwHAXMoJbr0ah1yv8tAp2YJDlDct0fUARVDvVi8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4QZX/JD1nZN7473nf5CYMKQ0CFajZXk8vZziiCmrLgU2wuvXn55tATlM/mJvmK1w
-	 6CIFM0Yh/83i+ThQSdmg5FIsxBkfKvkHApjPaIRqZlOFDdKIt5xUvOWK1rLfW/5zty
-	 eFtABNX2glTPZuwG7CVCEliHWQT7Zx+SMaPhWw7i3vq/qx8tVSzVaemxW0WSqc8xXQ
-	 I30rOT8i4WFzx1/vZHX+cWQpXjrpqbK3C7nQoY/xfDzKbNOAajcnvEV36Bam4cbNIh
-	 qSPA4pCkOjZUzEiLkyzGl0BHBizALqxRMCG0FVSv9MykJZpRUQZmvQZC78aZ4PNCmZ
-	 cagh4AXKUb6nQ==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: modified damon_call_control from static to kmalloc
-Date: Thu, 11 Dec 2025 19:46:12 -0800
-Message-ID: <20251212034613.41033-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC6ixeLQeTJANkAvQhRviLyr7=xNBs-_jeKEo+qF6E3qAg@mail.gmail.com>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F0/99pot1l48NrQK/S1jTn1DVlAAEGasXemlJ5x89sk=;
+	b=23ieVljkix9f3tpr0oErXR6z/SXQ9SWLQ45kC0+JGETdYk0lMYSd1MKINxonbspPF3S1FT
+	GtP4dQG30eIiGCB89lPgn6uWn4An7fvXhS3quDs2pfXZPdce3LY9GXXFpBS1GdPGN5OXEi
+	kefVYr2D83aBboUCjfFl+5MbVi2u1NU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 930D71063;
+	Thu, 11 Dec 2025 19:55:55 -0800 (PST)
+Received: from [10.164.18.59] (MacBook-Pro.blr.arm.com [10.164.18.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CF28B3F762;
+	Thu, 11 Dec 2025 19:56:00 -0800 (PST)
+Message-ID: <9baf5ba4-fe44-4b0b-a249-5535e68068f8@arm.com>
+Date: Fri, 12 Dec 2025 09:25:57 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6BF8B40006
-X-Stat-Signature: xe9rwbdqcrf4exya8dz5ctkeaqt6fben
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+References: <20251021194455.33351-2-vishal.moola@gmail.com>
+ <66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com> <aTn0FZig5a_DpTJg@fedora>
+ <d108a8ce-8919-459d-aeca-dfa75cab54e7@arm.com> <aTrlwpeQyvM9_FX-@milan>
+ <f5bc0a98-3ab2-4dad-bf05-917528744ef7@arm.com> <aTrwN_C0JI7BuKeV@milan>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aTrwN_C0JI7BuKeV@milan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F37F740002
+X-Stat-Signature: c8jqpi57h7eoyjd9tb6ttkam3jqeqpg9
 X-Rspam-User: 
-X-HE-Tag: 1765511177-880686
-X-HE-Meta: U2FsdGVkX1/TCMSVTuJ5OYuq0ouZdR/vHtpCxG6HbryysGpoM25s9VQKuMZOEjqQP7whgaC+6G3jKETV67e5YZKuqHo7nghJwyadUlOVP5pZOmCU1Ddd+X4beSo+KjxP1A8cUqqE70xZ4JhNstnMMo0jp09bjbYgDfiyLc9mojGsBM+Ua7gCtLeXSZMHhXgUADpCB2BeZU+tYGS2xbIN+IHOlpdxAAUOa2u5w+Skqx4AADZ43UD6dDjPgq4lI2fdERXYtZUJpOXTQJ/Zo3D+OiVd8KuwMfpwphzK1ol2kHEzITbpLZW6+CS6fLOYUYQ6X4WcPbtUa1+tu/dgmt++YDFb54EWe8Mt5lw2P70ergTmGdtw10QYvdHnyXc9Ti1ZlabzIzy0vCFWX1K0K+UWbNWLvmvmlZkuhVfyKKj1YD//iDPV4gNvH1e3cOiqOQmhxtCMrX21lQWYfQB+ySudACUKk98qBDEb+rE3FCPt1S0cEdsJHn7bsR1U5TqnX4z/9o1LhXyRXy8/Ca9APwNzGblehxRmbJGgJXInanVrfMmu4xl4shIIsVEoBsMOJdOuavp4jBiV9MHK7ykCCUuNv5veththoGG9T2gQQFIfTPaCTSK3wsy4nN5P7oRNSnILWGRhX2BommOmhzyH94BrGOwyYATnktDpi8MHLwzdl26Q0BCEfWRhp7x0jGWUVwhEM1pzt20QefQ6NYJHRDU1P0HgMHhy5iMDrLk3p7zoQ9JE57zrtQFTrjQJn9TzNjOdeImm+CP3kkw6TmUZ+n7TMPgvQod91sH1Qu0itpW+qYAz3+wbZApYq1tXvXjipZkEA3jpuuco6HqPF09zxd67HS81uJbYnf7FUo1p1iELXZ+Ex85flOFIVcN9bvIzMPtPugsKoPvfF3VUU2WI8yl/WzuimR0AlfzzCjBlhua0ENClKbKAEZ0o9oEpZlPbE7efVg82jgMpMrqfuNcLUSt
- iCl4Y+AD
- aZ6wur5qxDzXbGkiV4jC+nyOAw/xy0KMRBeuB+oq/OXtcHPq/4ciQuyj87OsHaSStFXxrcrHGPvkyQu4K+DC3hdTONV26jgUiYMUwWyn7ti8kz0wC4fknNaN8sv8hbKOtoKoHXv8Sx/aZZL7e0EraS8p+b7b+01H1AhVmloaY6tIyP9znOIOB8MllQWgdcVuAOXMpc7+2dDNH4N+Ch7VFxRs5GYerySwnO0AWOkgwdH/a9FLY4FYA7E6JqYGyE/3Liiib8QyRTHXLsXOQeXPhHORwa/vDYT/4YeqrP7lrQk8GYU4=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765511763-633618
+X-HE-Meta: U2FsdGVkX18f5CbD5ZXqrKgwKheH7dOTfhBrrLgvGgmONAMStWcY9vlPmPIg4lMzjbpoTxRBlkleRZp5JOh+2gHvA/AORrmZb0ajXDtlr0CqbKUh2BAJIlzWohvSsr9TcFsYaJfsSri5OkUntbogytyPdmsW3/3SdtsasPLP6kWgIAXUxtXc3AjvzG7ywNrmOHtSlHfhbsGVeUBMejmHnUrtsWJJlm6K1O8tsjjN1T/0Q2bdhyD5Odb5w8QKHC6wwV/hemppHtEGPRC/2qrFnWbgz+shUEHvKmXDG9BBcNwoKlrSJjtSPAonQmS5PbAn4IJROEJ8udHeHYLO3bjKYP+jyzrHi/1iTYUGF8k/DDsBzdqCn/4raZQ7irahY1EUO3lhdXZufwtf40YSaPmcGiLjP/2ktAeowsdE6330cMpNRvch4ew/+Q7pcO1nBSKI6dzx0TX0WTIJfMbEPKh4pD0/a4ZCf3mRnZRpe0vxAkyFbqmYrYbVIc0I8GIOcG+sqvzyx70aOM50lzg02HSNphKHUCb1sdbkQmJ9wBtZVReJb3xOrAWM3N86hmiODOJprfq8NHFWZIRV4JR44wOu/bpPJocAwgYfqRt2oUlfi1wEJepxopE/XjK/vt2wozbvji9J2wfV0tskgB6jKvPUY1DBpk1irKQtEia+SBDbtEBrq/GTA1xVRJjF6gIev1sdoYqiP0bhNZFWxwoKkYjR6ddL4OT1RDxSx8Vne8GMAoYgKmWqdACRCk3+I8XzYrOFSD7Io4fZ76IQ854JJqRw8+Yp+Jwe9Jed7sS9g8NbDYg8SysWpD9ldSZFSiVzaNaCM/9N6UYmF7UxLrrk/5+Oz7jkNoWslSykhfVbjKAYncXlY48nFFF/3FAZzbj6G0BdquyhHk8ALiMHlexEZu1T9BjwcRPlkbrYKJiUATpyZeIdNsxJZFbhE5F8dy6be/GTIUjJsZxe2kvaqsbrujN
+ GU5dLD+K
+ bNXkNoMIBYnTfOKdfa0I5NVD7OyRnMSyckoLbYJwUcDplrw7aO9LtJ/oUutalw8vC553pPbWwt461ItQRKcCgRZGMpKdXUt/UXgK7M6Ymfe/+Cb+iAgaqfhRE62mOW8/N/cJkILHDgiLEg1mpYMO3AQRdDenNBuWWrrtqsSGR8W65p2u8nlDYi7X9CqMyIR2yZAYd7xFOHP5MMCvjX16AhCi80/eCuwHi/5g8ck/Gd7zXcNh6u8BLAw44cIzQk8nDi7jJqC6YFatXwqJvifQz5iQvJYvQHegeSiWL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,48 +90,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Dec 2025 17:13:09 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 
-> On Thu, 11 Dec 2025 at 16:54, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Thu, 11 Dec 2025 16:38:46 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> >
-> > > On Thu, 11 Dec 2025 at 15:04, SeongJae Park <sj@kernel.org> wrote:
-> > [...]
-> > > > Sounds good.  Would you mind sending a patch for that?
-> > >
-> > > Would you like me to send you the patch with only the comments corrected?
-> >
-> > I was just asking your preferrence, and seems you have no strong one.  I will
-> > do that on my own unless you mind.
-> 
-> I have been argued the following so far:
-> "I proposed unifying them into kmalloc()/kfree() methods and
-> removing the dealloc_on_cancel."
+On 11/12/25 9:54 pm, Uladzislau Rezki wrote:
+> On Thu, Dec 11, 2025 at 09:13:28PM +0530, Dev Jain wrote:
+>> On 11/12/25 9:09 pm, Uladzislau Rezki wrote:
+>>> On Thu, Dec 11, 2025 at 03:28:56PM +0000, Ryan Roberts wrote:
+>>>> On 10/12/2025 22:28, Vishal Moola (Oracle) wrote:
+>>>>> On Wed, Dec 10, 2025 at 01:21:22PM +0000, Ryan Roberts wrote:
+>>>>>> Hi Vishal,
+>>>>>>
+>>>>>>
+>>>>>> On 21/10/2025 20:44, Vishal Moola (Oracle) wrote:
+>>>>>>> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+>>>>>>> allocator. Rather than making requests to the buddy allocator for at
+>>>>>>> most 100 pages at a time, we can eagerly request large order pages a
+>>>>>>> smaller number of times.
+>>>>>>>
+>>>>>>> We still split the large order pages down to order-0 as the rest of the
+>>>>>>> vmalloc code (and some callers) depend on it. We still defer to the bulk
+>>>>>>> allocator and fallback path in case of order-0 pages or failure.
+>>>>>>>
+>>>>>>> Running 1000 iterations of allocations on a small 4GB system finds:
+>>>>>>>
+>>>>>>> 1000 2mb allocations:
+>>>>>>> 	[Baseline]			[This patch]
+>>>>>>> 	real    46.310s			real    0m34.582
+>>>>>>> 	user    0.001s			user    0.006s
+>>>>>>> 	sys     46.058s			sys     0m34.365s
+>>>>>>>
+>>>>>>> 10000 200kb allocations:
+>>>>>>> 	[Baseline]			[This patch]
+>>>>>>> 	real    56.104s			real    0m43.696
+>>>>>>> 	user    0.001s			user    0.003s
+>>>>>>> 	sys     55.375s			sys     0m42.995s
+>>>>>> I'm seeing some big vmalloc micro benchmark regressions on arm64, for which
+>>>>>> bisect is pointing to this patch.
+>>>>> Ulad had similar findings/concerns[1]. Tldr: The numbers you are seeing
+>>>>> are expected for how the test module is currently written.
+>>>> Hmm... simplistically, I'd say that either the tests are bad, in which case they
+>>>> should be deleted, or they are good, in which case we shouldn't ignore the
+>>>> regressions. Having tests that we learn to ignore is the worst of both worlds.
+>>>>
+>>> Uh.. Tests are for measure vmalloc performance and stressing. They can not be just
+>>> removed :) In some sense they are synthetic, from the other hand they allow to find
+>>> problems and bottle-necks + measure perf. You have identified regression with it :)
+>>>
+>>> I think, the problem is in the
+>>>
+>>> +   14.05%     0.11%  [kernel]          [k] remove_vm_area
+>>> +   11.85%     1.82%  [kernel]          [k] __alloc_frozen_pages_noprof
+>>> +   10.91%     0.36%  [kernel]          [k] __get_vm_area_node
+>>> +   10.60%     7.58%  [kernel]          [k] insert_vmap_area
+>>> +   10.02%     4.67%  [kernel]          [k] get_page_from_freelist
+>>>
+>>>
+>>> get_page_from_freelist() call. With a patch it adds 10% of cycles on
+>>> top whereas without patch i do not see the symbol at all, i.e. pages
+>>> are obtained really fast from the pcp list, not from the body.
+>>>
+>>> The question is, why high-order pages are not end-up in the pcp-cache?
+>>> I think it is due to the fact, that we split such pages and freeing them
+>>> as order-0 one.
+>> Please take a look at my RFC:
+>>
+>> https://lore.kernel.org/all/20251112110807.69958-1-dev.jain@arm.com/
+>>
+>> You are right, we allocate large folios but then split them up and free
+>> them as basepages. In patch 2 I have proved (not rigorously) that pcp
+>> draining is one of the issues.
+>>
+> You sent out RFC 12 of NOV :-/ I have missed those two patches from you,
+> even though you put me into "to".
+>
+> Appreciate that you point me on your work. Let me have a look at this.
+>
+> Could you please resend RFC based on latest code-base?
 
-Based on your previous email [1], I understand you argue this patch is better
-to be merged as-is, though you agree it has the pros and the cons.  And
-therefore you are letting me to make the final decision.
+Yup I'll do that. I was trying to get some perf numbers from LTP - fsstress,
+but the variance seems to be high on the system I am testing. I would
+appreciate if you or someone can run some benchmarks (filesystem is what I
+believe would benefit).
 
-I was implicitly saying I show the cons more than the pros, so don't want to
-merge this as is.  Sorry if it was too implicit.  Hope now my opinion is
-clearly reached out to you.
-
-I also suggested making the comment better, and you agreed it but I understand
-you are not interested in making that change.  I will do it.
-
-So, all is well and no more action from your side is required.
-
-> I apologize for not being able to respond promptly and smoothly
-> this week due to a busy my external lecture schedule.
-
-No worry, take your time.
-
-[1] https://lore.kernel.org/CAHOvCC6bJLf=LuBpm90n5poz8Sqhz9wjXtk5ypbPwkvhb1ptag@mail.gmail.com
-
-
-Thanks,
-SJ
-
-[...]
+>
+> --
+> Uladzislau Rezki
+>
 
