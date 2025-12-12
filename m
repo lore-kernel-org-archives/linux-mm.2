@@ -4,119 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FDC5D49224
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 13:13:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D480D49220
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 13:20:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72D946B0005; Fri, 12 Dec 2025 08:13:23 -0500 (EST)
+	id A20E26B0005; Fri, 12 Dec 2025 08:20:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DEB76B0006; Fri, 12 Dec 2025 08:13:23 -0500 (EST)
+	id 9D1B96B0006; Fri, 12 Dec 2025 08:20:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CD726B0007; Fri, 12 Dec 2025 08:13:23 -0500 (EST)
+	id 8E7616B0007; Fri, 12 Dec 2025 08:20:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF9D6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 08:13:23 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E55D686838
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:13:22 +0000 (UTC)
-X-FDA: 84210860244.26.26013BE
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0785A80015
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:13:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DOf5272k;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765545201; a=rsa-sha256;
-	cv=none;
-	b=LGVNMT7RgCtwh1vBLtclMz/gzMICbNfWaZBUCKPSov0U+rboiBac6CM7A9zoWxReHoqlTx
-	SxVI4UsQkiazVzKhnE9U1cQLwqVqPB5/0iLdDZYrIfaKOE44BeJ/+QoHZgZwTDdfqEhz/C
-	ewk0wI2ZhMB3wo94sxsYtHkyZRL0AXY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DOf5272k;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F59B6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 08:20:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1EDB31A0179
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:20:18 +0000 (UTC)
+X-FDA: 84210877716.21.86E997A
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 43DFAC0002
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 13:20:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h3fxL8Hf;
+	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765545201;
+	s=arc-20220608; t=1765545616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lRENsSGe42QcAlN79Aq2vwZsd9IsPf+GAuC01/5784A=;
-	b=CXCNOOZsFMdKVjLMY/PsxqGwQG/Sghu3w8istclpu9XUnXUjwciRS3/rSHJfreZ7bv60R1
-	uW+CoblRQnmmRPwNf4O8ULhTBfzVlJ68dxquF8pq1dnuELZpeM9syGGH2kvanA66z65VAi
-	/xt3y173MqUd4Gpm70YJc4BHplPeueA=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b79e7112398so231331166b.3
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:13:20 -0800 (PST)
+	bh=gzHnejj8FlvJoZPTI0Iwe9LyfECd4OIzjxmqM5a/Z6Y=;
+	b=lt3T9K9Str04kSpMUzEFAn++QIgPa6GJLP5YYqylNypYtdAYoOFfJFMBdyJ/75IxyIABgn
+	C/Lede5ZKaQazkJ5/34WO56K6ivPTmFKd2zBxJubHeKbBMvGltjKNe6PNos3z57q+hwziy
+	ubBoofBPvfY6ETQvUjdHyD40LmMAp/I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h3fxL8Hf;
+	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765545616; a=rsa-sha256;
+	cv=none;
+	b=H9+NAuh+NRvQZV7ziT2GD1gSNHmU9G1oCRricX+dWG8vsEO64fXzyFns8385ni43Sbq/78
+	ZeSXpr7T4l/Bz9h7LBHY5Ny364zOfNmvxjuvRHeqMK7fKoFUGWbWGtQBLtmdYQV+UjOKWj
+	GXY0XP+RGYeJcasXiJVwXIAdOedxAYQ=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-640c9c85255so994492d50.3
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 05:20:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765545199; x=1766149999; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lRENsSGe42QcAlN79Aq2vwZsd9IsPf+GAuC01/5784A=;
-        b=DOf5272kYxXVJbtK/PAEaFk7+fo3UmoiW3XZHFfaPERtBNkIWILvvD2LFKWMiUEju5
-         ORQc862K6z7DMqUjJuALyRb96s+KbOyEEZDfOeELmA/Hcrx+phIPfGMcgPrz8G3FczNZ
-         Kl2CEoJ3QhWaJ9KL/1G8GWOT3Z6cbJVHULcwK8jrRWA/7dbJ4ziCNPYwNkhZVPg4tEcn
-         HLbtj2xW6q25hcREWe69rtGWbP5smBZzgJH1+JPWUEawJH59omqH/7dEGe2Q8YaGpodo
-         xLk7khodAtSYZXcjz+hhdtzfMugyRdtGYDV1fNsiGTghIuzano8+TAC3BV87bwoyXddo
-         66Xw==
+        d=gmail.com; s=20230601; t=1765545615; x=1766150415; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gzHnejj8FlvJoZPTI0Iwe9LyfECd4OIzjxmqM5a/Z6Y=;
+        b=h3fxL8HfGgVEz8hcr1aFvqnBpdSoiRtug5QPM/IQ7Xr+xAtmSREUHbraKyiSSgjYwy
+         08pLZmDZHY2QVMXRmrYQ/aOEs4V7bBy25Fd3JL6Pyg1pQpKMxjXn71JMcV7iTQq/LYoc
+         1aAR/jX85p9ccuHWfpH1lSKvPe5E1cGhxxw4Sx6lhkTIXMRqD4pAjSGMF136aF22mACb
+         /cYJwm214LddkwZXll19S1wf3riBAzA0V9Ddc0K85FLRMRuN4X2QpsuOMeNDgK5u/j2s
+         bDKkupmmXm0MtOHHt9usQqA/6c3vkMthKws6nWmGVx0r7F21v3wrLKlKnREx8DnQZE6T
+         jC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765545199; x=1766149999;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lRENsSGe42QcAlN79Aq2vwZsd9IsPf+GAuC01/5784A=;
-        b=BTIQvQS1MsRvE6WlQeZKQKMFMEzhZeCdxus3ZUPcynpgkGoJ9UMnD9oOi/1EmmkgRX
-         ScDdyoRIuiCTvq8lp/Y4etGnzE3x8dhPY6unLfc8TyZzL0XYAGiHFaTxt7Ah1L40Ec54
-         NRjbWnKV2hdntaM6rXxR9LO673gfRy5OeEmgyezioUQgRiROMJo9E8ADIkEpxxfJshzx
-         bsy2of6VZuSVTnVxPZ2wz5MNcY6haNVHhcqmdG98VHs09vmfMA8TBaiyWh2+o9i9UXVK
-         KYF4oD6vcMHTtHkFy1PARJDY6JjUFEXHZl3jVcRT/T1eUmbqCbHZBMq+wNi9EtaRCQEK
-         iw1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV0NizavM7UQReYOaLAQehagRU2h+Bra9nynD8HQCR6Bx3Rt/nqs6pS6kOgaR3yNZNDgjpG/l1/Uw==@kvack.org
-X-Gm-Message-State: AOJu0Yxa+brltjsVr1Qv5Z7ZNMsIa1ff91imSgg+5wzqJtcYLv045D0Z
-	+/fnq1GMHzxqiW3M0wM12A9mYj+AL90ntzhrJRnkACrXkUIXSxWAk4HfU7BmNIVj9eHt3escO+6
-	QITPwBwRzfWmczLMbifEOIFsY6ZH053M=
-X-Gm-Gg: AY/fxX6Vl0tvWNELgD7vH0DvIabmjR+L8fbEotdnFnoqZMWhOPcOXJfKwGoHcHA486G
-	pITu+NS+gTC0AvpUirTkJzKYojPPvoFShqDd+MXzhztog6SUV3AE3X870B9TbLkfJa6fRnT+2g2
-	js//ZDFuw7xYB3sz30Hxwad5D4mXr2JfpvbvTFLIwJ5hur326KJAAzAvCHKwd/AN54NNZuVeIel
-	3wTOWFIVBAcxm/AGxiEgNBQ7nQAR4HuQakv1MnA1HOdaFY2/3kFcxwgPZKuuTinOGtaKbbNMnQc
-	Yb7Srp8PdX9snsTwN1lN+rRmsU8KtKFSC901dw==
-X-Google-Smtp-Source: AGHT+IGeUEdWSo0UQylax8AjTeoevB9lbUHZGK4SebEVQVrrrNJyb4PU3dS4H5lqX50viNblVESEPsMllC6umiUgfDY=
-X-Received: by 2002:a17:907:960e:b0:b76:25fd:6c26 with SMTP id
- a640c23a62f3a-b7d235c845cmr198331066b.6.1765545199142; Fri, 12 Dec 2025
- 05:13:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765545615; x=1766150415;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gzHnejj8FlvJoZPTI0Iwe9LyfECd4OIzjxmqM5a/Z6Y=;
+        b=mmDjY4t+0HrTT5fkFvV5fJJwalrGEH+N5TnEoWhCs9z6i5r9cxZM74yWIvxLl8QaOY
+         6H6CugqkUTn6Gz6v2eCpQ1zsUGCtLuB80PSmyxa3PfUVBGjuXMiJcyKLq76Jhe9ftvY5
+         aKp/bkwf9Xb1uU9k5RgaIDDoDFn+qudSBcvHnqRdgyvrHdkhoLpIGpiMwXK0sTt++ul+
+         4cQ2X23+TxjDtva20GpKLC5f55JeLWFZdTlae7Y5xDrXGdcKansQop+bIx3y4LYCQ3D1
+         7EdNTWIuS1zSbJGdZG6Kf4MJjBJ17rkjGeg4XsI1HTwImCuFWtZvCiZlylMrPG2EizuQ
+         HOAw==
+X-Forwarded-Encrypted: i=1; AJvYcCW6zl/yMOBNODfvNesikBthGf+Jw56jhKyjm53Mvf1QWj2hLyB79hR/BP5PhGfMyruGAc9FjcGhaw==@kvack.org
+X-Gm-Message-State: AOJu0Yzrp2zKCoULoMLGKpq6ToNqKTJppcoxjmcswBqgL6eo9h0BKiXW
+	45Nj7FDm9LaU/BmkrDI83JJyGlpy2AMwhHr94iOiPcFV/X0X44q7R+IH/b8k4gyF8EJG8EP89IN
+	QbxlsmjGs9Dns9diVrkLa/tlOZMXKdb4=
+X-Gm-Gg: AY/fxX7DkzeddwK+HSKAT7p3MBUn8faGSskVK2hlhAabavBE/dT2m9mYVTPEOY8z0Fx
+	/w81J9Hz02E/STazJxEP2uzGcWeLQ8F4UjS7QRMZCNB9W6wlc0pNDOBlXGRoT3rexDRdyAAZmV+
+	liZFI29xhUbwuYpLYnxNr93sKmgbnv1fiK+GPvcbwo9t4fR7U1dfF59MlSkKWvqfU1y3T5L5rtC
+	ekqtICvkEGEaAXgbYBHJh/Mwi8Q7030GLU9XhkbdKFHvYsWCz8/xiv7x4a37syY1a6bAhhX0Rew
+	Ex1hyec=
+X-Google-Smtp-Source: AGHT+IHnkwapZuSfPrtWGxGZpc4G+TYqUmEglUfs7oJm1L366fuFdiHWGE/dajxKNzADDxbDcuoHYHvJHC5Sy26zlx4=
+X-Received: by 2002:a05:690e:13c2:b0:640:d31d:6ed4 with SMTP id
+ 956f58d0204a3-6455564ef81mr1316411d50.51.1765545615251; Fri, 12 Dec 2025
+ 05:20:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
- <20251205184342.2cfcc73e@pumpkin> <4eea9138-3853-457d-9113-e3caa7f00437@lucifer.local>
- <20251205213449.12bf4819@pumpkin> <d8bcc6b5-eb75-4a0f-99a1-295dcb04dfe8@lucifer.local>
- <e7fb4a23-5ece-4a03-8f0d-58517c388eb7@lucifer.local> <7006fa60-f4d3-4e7d-8c2b-974e9e4a1224@suse.cz>
- <ek7v5vxht56g77kbojo35eqdcqdmxjvguf3tp5wnfydopbthb2@xie6b7r53ote>
- <CAGudoHHFeuEQ0kBYfrYuUPxNQdw4YHNG81JiHPFHq0evUcEczw@mail.gmail.com> <20251212130243.03538bc3@pumpkin>
-In-Reply-To: <20251212130243.03538bc3@pumpkin>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Fri, 12 Dec 2025 14:13:06 +0100
-X-Gm-Features: AQt7F2o4lX6_1PZCowg_bAaBC6l5PTQi-AggdPUIRfEMVW00qQ_ebTHC2K6_0l4
-Message-ID: <CAGudoHHZfd1C1cLU_N+VNO2pSMZhHcFOoBNPR-RYN+NgRGoHEQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251208062943.68824-1-sj@kernel.org> <20251208062943.68824-8-sj@kernel.org>
+In-Reply-To: <20251208062943.68824-8-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Fri, 12 Dec 2025 22:20:04 +0900
+X-Gm-Features: AQt7F2rwF43VTf84s_zacyLJLnB4XlNKOig3wI6N8NrIFP5vpH9CYdsAr_9HKVc
+Message-ID: <CAHOvCC4WQPo5HrCJ+958t1ab2NDzbg493XYarqACARTpYskVzQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 07/37] mm/damon/core: apply access reports to high
+ level snapshot
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0785A80015
-X-Stat-Signature: zj3zxcjwhjac36ci5fodohbnu8hgr1yt
+X-Stat-Signature: k968cfd5wnfy8c1bhuo51ob4epcqf47r
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765545200-578070
-X-HE-Meta: U2FsdGVkX19q6qvTAKlOadsRXQ7+boW8NhNE7d9YYkAcqlwtDQBL4L5WblcMTrlu2Z6ZQWkWXiXqAkkoysZQgIOeTQf+qpdjuZDmF8XB/biOAVuHNRzdehIt9dHZINZSAeLYtSSxxdk05AULcAK4fWEdc573g4go1VAuOZU3GXMmmqDW4GH9yhdYXBIU6hLeUPaCwWfpaH+dRLx2KxTowcBCIPMAAGkwomhMWdHsEpHxX87L/3apYZF6C+Er01CeARu4qMs0/OwPwi/c446kgrpHN7B/fVX4YQ6xxpH67f881RHtCAvIzwZYvk9nEQPC/K963Sh/oyt/qLkSq2BE6xM9wuWuY9IbwUY43o6d7Ik6GRdF3rDSBI1VAPtMFvP2u9pKy65+x+QKnU0OFbXeRwueHCrU9oFyCCh/t604eYx3xyvXHVIgAff52MGzQXwRhEVyRPFXRNHj9Qwh09MeV9MHRyxFf90MqrwALKcecTAmFCC8kuqwloPKHft2SMjbkVPRGE+gyZYRC0Hkky3/XOIzQUhm7RK6hexGtBj4DJ2kgoHyH3FPs6+Cl+KYWDBipOaiXAhlJuPt+HXFDgD16Awxz5kAwQ/Q2jlSqe/ERfdieNlbpgotwT+gy23xOSnOoD65SwE5CDXiOMuACRoWZyxYAJgQKbvQi4VBMsQLGFnCJndHNUh51KaDOZJRHkB0ueYv+Hc1rUwtbC8bOlkphQlgxAx5IvyrhGemnB/8XWlFI7wm1kFZlMeKAAs+phQW4RrfSxNQYX2r+2GRDYQtAACcf2KXrLAFKZyu+Ml+nAIFhnVzjHSiwTuY3WLRV1StvJ4tymnfoGu8LaflRVGfDni48hLR6E26XGzgilCbNVMc8rACO2Qr+m72BynWxPspAGmFEtNfASi/TNTJdjhuWMM2jw5Lbkz6Bw8UWDn1aay5b2w01erH5FpEZpGGs+BH1dNIIc6Tjft0W14lkTL
- 9NS2R0XQ
- kv6YYWLOUWmSSrTCjXlhnCFGec0o5O3Gwwzy0MHjF6XmTlsXHHOqHu/GaK3DWH4zIr0CuQ1Op1UULymYd1H2jN8bFERI4F010gmf+1t2KAI0harOFzs11DOT13x2I0kZdOtuWmHHWFBDrz3QasZZPLs4rLFyijvJWt1QmgiKNYxxlgi1HZjlytDjOsVYWOt+7UY3WdTp7u10l8MeBmOaqe4fHCzSWhpkKbr9A68nY/c+ppUVRY6TH9yPcs8B5HagG7vk4flm137k+clecAETFs3ejFOCUsx0ob4VVQjC/tRXECX8qBrFUbbvhiRtqovwZV7gUnZ59gSRikurVeP4168lIKS4ktyVat7QUzeIweow/qprD5xKjSNZMaoKWOLT4kb4vQC6Wc/na5oqIPBklmKfGgTclXfBr2VkD2tfD7OCzPC1XYFCEo1N03k2IMDv+HR55
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 43DFAC0002
+X-HE-Tag: 1765545616-821571
+X-HE-Meta: U2FsdGVkX1/m0OrowzkfsuKAdmOCko9gqHQdxRfZbSTxwJ92zOB2WCeZFfwLO7SFjkgJlYPhwZi5xq3cF+6fDEy8F6oaWcz975nLcrHvqCVt6KpZX7V6ko0B72z8oR38HavmITlzfgt52cDeVjJ/NoNtLQzgqPRaUyDBukxniQdS3Oy2egzDU3yvErIxz1Xz1iebSNF83lpF6/RrY7bvo3JbWQkMPtmvpgZaqUC6KOrGWDFiC5rX3308dYLWgDoES+ycZObbanZPAWkdcggUG4oDWf5CS+LYRyoxenOxUzFsIQT5Xbg+bNel/olzzi2RlKEdb4AMcCLfkprZ65DRw5RV2K1I3rgASgO7g5OKfSrTGihrGIsvngbdsd7lbP7EXXV9Fv+S2++gNLqA3ciE/Ai9xRSLL9sVfRl25JUpkuW+ZGU+blpONqn85NIo6VpdeSzY6VD5XYPUU08mhYyJk+hSW2/JKtm6QtIgp5Df9opaJAeJCBD3XDUnkCWeckFbHAjUVYutmMpaMpXplpP6ccZw09Yxs8C4vD3sWRNqrzwfmuA/RJmzS4qNBBPMRq3a3rHIGwI7izRpDv8fKzLNKK6MEGADE5UImQfkvqvz4Br2BNzLT7TqwgbE4eCt8yPwWACIw8yEPU+XIJLJ6atyiz/gpcGnBe6ci6dg2QYS7E5FhsKqtJnenG5eU7hb7GbZ6L8RAff15CuqzehxDToI81Yys3s6ztXw86uN6BRtkD869gEE/I3RocakuxrJcJ015sEEneEsnb4V7YNZ2/Cykt9W6hU9e1dbIGmqMuGtYTgdeSY3PdxvBLm/3qXcVCM4FrIPSZFVHTGjxjFyzIs4+ook9N5kHk5G6srHBT8Nr++1hgt8Nv3s4V3LEOcN2vj5pAKmQ0BufKfEVqGZh20B2GoQTZkovJYej7BZQ6QelLCc9ATdp4Da38SA//5aAM3DuOdMUAXk5khClBUWUT9
+ MXAJ+dQg
+ 4+3cVmOtWuxzplOCd2llxdinJSoxyF4teTJyuEcstoq78qoQUBUrUZHuz6NSaoU2ywR3nY0Q/6VfTn/47BYmIaQReGozSj2ih7GlRIbPZ/uOwyzZIyFfvtpkRz1aHcwLecZugo5W/wPOBkk/EhwXBJuVheTELuB/rVaRqnSghyjjY3MAOgE5WtO33Mk1vVWxqm9fXHIXPwNhgGEgBgUF61uOINk1UcPKdZKkJK+sD5E8u4kHtz6jVcrzJ/Rx4CgDKo+qoXKEBoYlwovT7V9vEesj1lokaQeNq+uBQ11B1o4iw9kLd+/ijVkLOnrLqr2dVRusg5YbOPCNGuX5j1lFdQs02dxHoYmh6/Wn7iTHVL+jE8qw7Pc7F4Q4lGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,39 +115,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 2:02=E2=80=AFPM David Laight
-<david.laight.linux@gmail.com> wrote:
+On Mon, 8 Dec 2025 at 15:35, SeongJae Park <sj@kernel.org> wrote:
 >
-> On Fri, 12 Dec 2025 13:24:57 +0100
-> Mateusz Guzik <mjguzik@gmail.com> wrote:
+> Now any DAMON API callers can report their observed access information.
+> The DAMON core layer is just ignoring those, though.  Update the core to
+> use the reported information at building the high level access pattern
+> snapshot.
+
+It seems inefficient to repeatedly access the damon_access_reports[1000] array
+using a for loop in the kdamond_check_reported_accesses() function.
+It is inefficient to for loop through the entire
+damon_access_reports[1000] array.
+When CONFIG_HZ and jiffies are increased as follows and
+damond sample_interval is 5000us (5ms), the time flow diagram is as follows.
+
+CONFIG_HZ 1000, jiffies == 1ms
+damond sample_interval == 5000us (5ms)
+
+reports_len(==): [0 ... 5]
+                                                     [*]
+        0       1       2       3        4       5     6    7    8
+9     997  998  999
+        [====|====|====|====|====]-----|----|----|----|  ....  |------|-------|
+jiffies++    1        2       3       4        5     0    0    0   0
+    0      0       0
+damond_fn(sample interval)      -5[0<]
+
+reports_len(==): [997 ... 2]
+                                  [*]
+        0           1            2    3    4    5    6    7    8   9
+    997    998   999
+        [======|======]----|----|----|-----|----|----|----|  ....  [=====|=====]
+jiffies++   1001       1002   3   4   5    6     7    8    9       997
+  998    999
+damond_fn(sample interval)
+                            -5[997<]
+
+It seems that only the section corresponding to the sample interval ([==|==])
+can be cycled as follows.  And, how about enjoying damon_access_reports[1000]
+as damon_access_reports[500]?  Even if it reduce the 1000ms to 500ms
+array space, it seems that it can sufficiently report and process within
+the sample interval of 5ms.
+
+ static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
+ {
+-       int i;
++       int i = damon_access_reports_len;
++       unsigned int nr = 0;
+        struct damon_access_report *report;
+        struct damon_target *t;
+
+@@ -2904,16 +2905,18 @@ static unsigned int
+kdamond_check_reported_accesses(struct damon_ctx *ctx)
+                return 0;
+
+        mutex_lock(&damon_access_reports_lock);
+-       for (i = 0; i < damon_access_reports_len; i++) {
+-               report = &damon_access_reports[i];
+-               if (time_before(report->report_jiffies,
+-                                       jiffies -
+-                                       usecs_to_jiffies(
+-                                               ctx->attrs.sample_interval)))
+-                       continue;
++       report = &damon_access_reports[i];
++       while (time_after(report->report_jiffies,
++               jiffies - usecs_to_jiffies(ctx->attrs.sample_interval))) {
+                damon_for_each_target(t, ctx)
+                        kdamond_apply_access_report(report, t, ctx);
++               if (++nr >= DAMON_ACCESS_REPORTS_CAP)
++                       break;
++
++               i = (i == 0) ? (DAMON_ACCESS_REPORTS_CAP - 1) : (i - 1);
++               report = &damon_access_reports[i];
+        }
++
+        mutex_unlock(&damon_access_reports_lock);
+        /* For nr_accesses_bp, absence of access should also be reported. */
+        return kdamond_apply_zero_access_report(ctx);
+}
+
+Thanks,
+JaeJoon
+
 >
-> > So I had a look where the timing difference is coming from and I think
-> > I have the answer: init_ipc_ns does not have a guaranteed cacheline
-> > placement and things get moved around with the patch.
-> >
-> > On my kernels (nm vmlinux-newbits | sort -nk 1 | less)
-> >
-> > before:
-> > ffffffff839ffb60 T init_ipc_ns
-> > ffffffff83a00020 t event_exit__msgrcv
-> >
-> > after:
-> > ffffffff839ffbc0 T init_ipc_ns
-> > ffffffff83a00080 t event_exit__msgrcv
-> >
-> > This is the pervasive problem of vars from all .o files placed
-> > adjacent to each other, meaning changes in one .o file result in
-> > offsets changing in other files and then you get performance
-> > fluctuations as not-explicitly-padded variables share (or no longer
-> > share) cachelines.
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  include/linux/damon.h |  1 +
+>  mm/damon/core.c       | 68 ++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 68 insertions(+), 1 deletion(-)
 >
-> Those look like text symbols, not data ones.
-
-I don't know why it is annotated with T.
-
-There is only one symbol in the kernel with that name and it is the var.
-
-You can see the same thing for other vars, for example:
-ffffffff83808040 T mmlist_lock
-ffffffff83808080 T tasklist_lock
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index b8ebb2aa02c8..b04c2e36833a 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -83,6 +83,7 @@ struct damon_region {
+>         unsigned int age;
+>  /* private: Internal value for age calculation. */
+>         unsigned int last_nr_accesses;
+> +       bool access_reported;
+>  };
+>
+>  /**
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 296117d5e7f7..a14754a47c7f 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -137,6 +137,7 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
+>
+>         region->age = 0;
+>         region->last_nr_accesses = 0;
+> +       region->access_reported = false;
+>
+>         return region;
+>  }
+> @@ -2745,6 +2746,68 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
+>         }
+>  }
+>
+> +static void kdamond_apply_access_report(struct damon_access_report *report,
+> +               struct damon_target *t, struct damon_ctx *ctx)
+> +{
+> +       struct damon_region *r;
+> +
+> +       /* todo: make search faster, e.g., binary search? */
+> +       damon_for_each_region(r, t) {
+> +               if (report->addr < r->ar.start)
+> +                       continue;
+> +               if (r->ar.end < report->addr + report->size)
+> +                       continue;
+> +               if (!r->access_reported)
+> +                       damon_update_region_access_rate(r, true, &ctx->attrs);
+> +               r->access_reported = true;
+> +       }
+> +}
+> +
+> +static unsigned int kdamond_apply_zero_access_report(struct damon_ctx *ctx)
+> +{
+> +       struct damon_target *t;
+> +       struct damon_region *r;
+> +       unsigned int max_nr_accesses = 0;
+> +
+> +       damon_for_each_target(t, ctx) {
+> +               damon_for_each_region(r, t) {
+> +                       if (r->access_reported)
+> +                               r->access_reported = false;
+> +                       else
+> +                               damon_update_region_access_rate(r, false,
+> +                                               &ctx->attrs);
+> +                       max_nr_accesses = max(max_nr_accesses, r->nr_accesses);
+> +               }
+> +       }
+> +       return max_nr_accesses;
+> +}
+> +
+> +static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
+> +{
+> +       int i;
+> +       struct damon_access_report *report;
+> +       struct damon_target *t;
+> +
+> +       /* currently damon_access_report supports only physical address */
+> +       if (damon_target_has_pid(ctx))
+> +               return 0;
+> +
+> +       mutex_lock(&damon_access_reports_lock);
+> +       for (i = 0; i < damon_access_reports_len; i++) {
+> +               report = &damon_access_reports[i];
+> +               if (time_before(report->report_jiffies,
+> +                                       jiffies -
+> +                                       usecs_to_jiffies(
+> +                                               ctx->attrs.sample_interval)))
+> +                       continue;
+> +               damon_for_each_target(t, ctx)
+> +                       kdamond_apply_access_report(report, t, ctx);
+> +       }
+> +       mutex_unlock(&damon_access_reports_lock);
+> +       /* For nr_accesses_bp, absence of access should also be reported. */
+> +       return kdamond_apply_zero_access_report(ctx);
+> +}
+> +
+>  /*
+>   * The monitoring daemon that runs as a kernel thread
+>   */
+> @@ -2790,7 +2853,10 @@ static int kdamond_fn(void *data)
+>                 kdamond_usleep(sample_interval);
+>                 ctx->passed_sample_intervals++;
+>
+> -               if (ctx->ops.check_accesses)
+> +               /* todo: make these non-exclusive */
+> +               if (ctx->sample_control.primitives_enabled.page_fault)
+> +                       max_nr_accesses = kdamond_check_reported_accesses(ctx);
+> +               else if (ctx->ops.check_accesses)
+>                         max_nr_accesses = ctx->ops.check_accesses(ctx);
+>
+>                 if (ctx->passed_sample_intervals >= next_aggregation_sis)
+> --
+> 2.47.3
+>
 
