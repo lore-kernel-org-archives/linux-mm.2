@@ -4,124 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46719D4415D
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B851D4415D
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 09:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7DE66B0005; Fri, 12 Dec 2025 04:37:46 -0500 (EST)
+	id 6B5426B0005; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2D916B0006; Fri, 12 Dec 2025 04:37:46 -0500 (EST)
+	id 6665B6B0006; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91CA06B0007; Fri, 12 Dec 2025 04:37:46 -0500 (EST)
+	id 57C256B0007; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2B26B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:37:46 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23C88135064
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:37:46 +0000 (UTC)
-X-FDA: 84210316932.03.C9655E4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AB1A64000A
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:37:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X6ZMKF5w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765532264; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 440F06B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:41:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9827591EC
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:41:15 +0000 (UTC)
+X-FDA: 84210325710.12.57D5B4F
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D4FE81A000D
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 09:41:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="jKl/sZPT";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765532474; a=rsa-sha256;
 	cv=none;
-	b=Y81r7d4TkAKkSWLysh4Tnkzt3PH58mHl5BZcUf+g8wHjOL3zsVyfqCtSib5HPwJRA+ar4Z
-	Kz+z1mvi4fG3TpI1ejCN09aDtqGzuj+UQWLaeaIGlfrHcw/4pSPSetC+owdgs5LacGU5XZ
-	n61yxAbCmQkHKwRxHQ4/0b7SKy+Kt/o=
+	b=fDB/0fmT68FykCJdXi9EzvjOJOeyWrurVUJsV0hLSHEGLTxsEBJM433jZ4f+OqD53OpWOc
+	+QVWraqvAixc3CH16uj/iXnGvmCWyRrZBRhemZQoh7BAYul9QbKF+U0UOi7V8HNAf9HgJ+
+	sWtHm7hJIs3Kj2d1xwGhWylcT68nGos=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X6ZMKF5w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of dkarn@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dkarn@redhat.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="jKl/sZPT";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf19.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765532264;
+	s=arc-20220608; t=1765532474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2IeK2fmxKCyYFISZ4y5sIfqoCgkHvoGQR0PUve4ax1s=;
-	b=YxDcxyRoh2r0dKUHK8duGd0jbGO5gnydYcZVMR1wblN5eVsI4R+3g4UJHue2QP8Dpc+l9Q
-	iIAIYYNzPZL0SGnrtmlW3fiBtkDn3DU1PIyTh5V0Q/ePtJ6ARhDhHQvl6ZD93OzYChOQVE
-	GZypaTmWPfPW8roDGFO5As6Buz4Mblk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765532263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2IeK2fmxKCyYFISZ4y5sIfqoCgkHvoGQR0PUve4ax1s=;
-	b=X6ZMKF5w9kWDE9PXUsXsbHxdy/qsK2CgyfGqGUdYRtjJSGFtSE+T9zt7Iz8SXDKvAxtH4k
-	T6uqEOVrZugQxavZ0JZesJwgcn1uc+QUcER5NHYgpURvzLtCi8Dz1njyDXiCH1Ti3kWWRo
-	b9B3gLO4rFEW6YhQ892qME6sWZvFNec=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-4C47GY3sP_OnUj3zfbJkIQ-1; Fri, 12 Dec 2025 04:37:41 -0500
-X-MC-Unique: 4C47GY3sP_OnUj3zfbJkIQ-1
-X-Mimecast-MFC-AGG-ID: 4C47GY3sP_OnUj3zfbJkIQ_1765532261
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b79e98a23c5so153337866b.3
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 01:37:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765532260; x=1766137060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2IeK2fmxKCyYFISZ4y5sIfqoCgkHvoGQR0PUve4ax1s=;
-        b=HTTp3JP1ayYEft33ZIOmzq4xKU/IALB1wWhRcLShHTojTjBt02Okw12Dw3beHgiaVI
-         /H3JIJiUbUgkWhIu0rm1dhLt/7mgGCDsTjc4SPj4LFiqd9WKqbJgxxa67NxbQpekGR4e
-         FAu16qdcCGbIBCYd12sOYYuhObe0WuvMOlZZsqWdO3OVWg2KzXCrlmgLHLlIS8nkTp2m
-         oadMyzz52OG3v0iHzolXqCYtv3q4GpKZIL2MviK7T1MBUlG+lq98riV5R2lrfWeExIYI
-         rq/Iw5uF715MVmBt0+RcMcwT75bb1PQORCCUH5zjnuTHYvdzz6iFvU3Cx79ncxy3Cqpi
-         GekA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxNp39La30tmshvgOwFQR4TQWcmSgAzns8p0B/AIKuUr7uAvzb3c8MAPW3AlhAmHKfSYxhQX4ZdQ==@kvack.org
-X-Gm-Message-State: AOJu0YxLok3fDBd9MVGOQMwX9IxOOs9Mprc9XjhlGE+y+UpmNLYn1G5A
-	+G+dJgZ12+2zdlvP3y4P1GJUo7Bg1ber0LFzoqrcNKTWHcvPUYoukNwxl9hx2zfs1/zUTiMlb/T
-	wmjGVo16mrBGJsmXkBOkxcwcnXEBx0rmAui5Uo9s5sZd9gukCgYjv39BOZqT51j09zu0KCWdq6+
-	RRq535e52wCVy6BhaJGRBsb8HAOA==
-X-Gm-Gg: AY/fxX7KnK5RwRrmUgzOn8j3liu4aNgq9EXsNLK1ObjJOtf4h+okP0yBKnikDFGAlPH
-	AmAEzZe7mQjE2ls7v6sZmlprw0BxGTj+tPl3GtoK0Pdd+a74JAyEgivDMVTcnVkMt48/x4zcT6c
-	B1wJ2fqtaWzuCjAYhpUK/Gvs4m2IgYOOdrKIq0HAtO8GP/EX6oV92+v0TunfJ9
-X-Received: by 2002:a17:907:7e8a:b0:b7c:eb19:2094 with SMTP id a640c23a62f3a-b7d23b84741mr119341766b.48.1765532260496;
-        Fri, 12 Dec 2025 01:37:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGKs+YSpkXeGFW6Wdv9ENF6584RosIUQzla+swfnaa2obStfpBKi31WCvIbxALTkc4KySlIExdmg14SQGDHhR8=
-X-Received: by 2002:a17:907:7e8a:b0:b7c:eb19:2094 with SMTP id
- a640c23a62f3a-b7d23b84741mr119339266b.48.1765532260057; Fri, 12 Dec 2025
- 01:37:40 -0800 (PST)
+	bh=/1jh8eqqkY6vh/nK6zUDuHmQpjxacUEwYYM6l1Ih77Q=;
+	b=Y2Q0uhGN0LzVwXsvHEiaYT7mWScyACxjzh0vBQgy7v1rpw0hRHgvsreTVa5SjPTFTvCfC+
+	BgCEK8wH2qPGa9EnLRp+H4Fwa1mexiDARmPJ9hlBAeuA66k/u9TkAyDvCtDSXYjiAlP79g
+	zC0fW7Nftw03eg7rf+i/8kBZd16c1Ng=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1765532471;
+	bh=/DwHOk5c2eD0Vxh7f5OQ4V+UKKui+51GMERXKOPoGK0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jKl/sZPT5Fq8we2J4h12wq9dhaferqqG7WYrh7c5Y1k5yBsJRMxSPvRCYDSthsFe8
+	 pRqw/bWdb5arjO4jzO0ebG7e3egbR/5HaJg3gCz1rMcvTGYH23kRmB7RO/abMhPeXv
+	 pP44WpV+iM3lP2u6jLE3rcBHt99HTvhioEdkk9vV/zsqJzhBc+WelZKtTdeIp6hRZI
+	 kmpNosTBznVu+OWO723zn0UqOjgkh4gRNzv8gubsK5YawM0ijxqLCMQ3L+hxcgdI1g
+	 HvFUydetaOLNCQ1Pm2xQnAIFIdzuv4f22nuxZ8yOhxrtVyypGcGEw32L5sKR8OKSyU
+	 Ko6IEHLDYFUQQ==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4DBE917E0451;
+	Fri, 12 Dec 2025 10:41:10 +0100 (CET)
+Date: Fri, 12 Dec 2025 10:41:05 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Will
+ Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Joerg Roedel
+ <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH v3] io: add io_pgtable abstraction
+Message-ID: <20251212104105.6af97d05@fedora>
+In-Reply-To: <aTveh8c3RngvnIMp@nvidia.com>
+References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
+	<20251128180255.GA836877@nvidia.com>
+	<20251212094427.2ec0b31e@fedora>
+	<aTveh8c3RngvnIMp@nvidia.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20251210200104.262523-1-dkarn@redhat.com> <aTnn68vLGxFxO8kv@casper.infradead.org>
- <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
-In-Reply-To: <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
-From: Deepak Karn <dkarn@redhat.com>
-Date: Fri, 12 Dec 2025 15:07:28 +0530
-X-Gm-Features: AQt7F2pbIgM3tqCd4EBNu9cORYdXSy43drqVb-wsluyzXe0wXWGaXmMb9M_9TLU
-Message-ID: <CAO4qAqJVn95XZUfrYm4th=-bqWPcndTf3OzUaNkBho1=EvTUKA@mail.gmail.com>
-Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
- mapping with no release_folio
-To: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XyxSH-JPGELH6_nAnrUFNeTOKTqG7hg8XdT5bUjlg4s_1765532261
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AB1A64000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kw475axaqsryegckpash7hnemec8c3qw
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D4FE81A000D
+X-Stat-Signature: 1stt3jkataizsskkyxid4kegf3izfcxy
 X-Rspam-User: 
-X-HE-Tag: 1765532263-381273
-X-HE-Meta: U2FsdGVkX18KKWfXX86MN0iVZqDWnv6ThF/aMhbegBi7YWC8xPYg6nDHkIbc+QT8VbWJ5O3aRnKReLj+XIy+8DDrytsXyCdBYfNFyLqsK483C2AQgoL7MoxPueXtc02gpTnUTpo+/eJcba0zt+mdDWeHCXUuNYjjO0lrm8Se9sYNKQsjHTEWHyYsfsGOg565PFPY27YtvkDdmVIub96YLs1uYfy4HLwJv/ZtJJv7JiYx6q1PUAhp+X1PBefDH4fbvGwe45IiIAbWA+o4AEFUW4eTQsvQvHsOqER6KMWvyBO0X83gygob2ZtFQeQ27q92IrKoBuk2AfcJ5K/Qa9lbnxomhYAascrsbAiU1njnsvpFH6Zrn+vxKvtt+4wnF9s1tPsU3gkk/IKrUGRG8p2HXzZkU0Cx2wxxxL8utBxuxXRAJvP0dSb5bwLZ+caroQB18m4NEMGdR86VRt9JtCKgZb3JJ4NEU4YB8Mq5opalsj1AgfwEc/KcygHKw3TssscukZKda6soplSLc0F1u3zOnbo7+HJBX1Nt5e1CdKBqi/Va6OdtvDTrcsyZzvPbM2xWDa32wEPhh1LDiJukXjbQNXXsRKnZJdTWMzby6fXE2AulXU8XNnDdi/nsIobsRDfQ3U1w4fZGz8TYNgyog0L5fo8U5naOb2HZHzUp+ixBSt5zDzcU/4C1/BA6Cq/SkUIx65/JuH8JAjDgROBu/0hR68R0nmcwys4KjDmoJOrqcEDq0XQp8xHxLMmqohmsSb9PldBZCCUq453TYYrPYYOx31NYNqxg4KGrHUz1dQPlg78P5V25RBvBTPLOjeQspUCZ05V6iwfADot6HN6su6CSE74LvXs7dBSFJ/52m2D3K2U5N+88G6c7N7yIrtBn1jt3FYFUh3uDL0e9gjmtOoDI0R/qAtbpxFmJpnD0Wethl7aKCwgJojV4QTw/fldPpG4Gk7ka1Mwt5Nqt2Bm74NI
- pRUzviS2
- B+q6a3xymuH4CaJFCAlSl/PYMkj6kVrdcukSby41OwwpyRhnDBCqWcQ26o+vjzN/qeqk8eZHsG6PI6soyui/qiZOVM8EwSYPf1RD8tgoVoueG3dV10efiqZYHQTus3XD2G9WWAIlf+NBa73FiU3tzKUz4Dokzmpr0Ht50EHNaxeCC00tBW5MrDQTRnAhpdyfDnOaiND8UjfrosM7t39g5S2Z//J14veI7/W0GinwpZxOWGo0hegpRpAgRAKEs6tyxM7jvqSwVkPs6thlwEaGxSnQB7ltQ6fcttw+cuYHLFJJURr+43fF8boYFRQ==
+X-HE-Tag: 1765532473-766440
+X-HE-Meta: U2FsdGVkX1+lnMkt+IT+3eY2C/SFCGRG9gvO9qJxMIIEombj+voSJLvl3cDIdCaR3a+gr2D9rmu3RO7vxiWHmPZL+nLn34rjRHlYONta8ilbCSMQg14ptX+3lzG33aiyfOh8zQwawzFWIV0NzUX9vHDfq+1nBx5+b7UdU3rScHliXzmQXlW02kkGPn0yjbacSpLMv+Z96EXKD/nMzxW8G75vyUF0cTTJBJt3e60rKbJLAoIioMMPN6ht8eLtkxb3nA+KB9v6LtQAOs421XKPIXLXWEP3HAOJSQqojKaUXMB54hmuagXNNSx2UXekIYlp5Z4gszBxwe6KMojBwYB/eoRFqIbD0zt2DmyAiuN94RtA5U9b9xX51/m42kMBAOgQmS0cE0QiaGFRH5QHjxr4ZX+BCSMbtpB9TrbXNX0Di+X7EgBO4k3DQgcMv+Z/su//9HKvgmJYhyFrEXeplSi1WMVbQGTZHQvxfdXGX8qfB7anfXgyJ2SwpuG6m4HZRAQCwOoKI3L65F7z6n+IyP5gJiC+ZUv46dcVe2Y0AIty4LwiEwer0e7pxOSm8WOwTyV5PU6yehKXhv0SmccA/fdZvI0bWClSKVtiV32MEj1Q07VFn3X4oAi9dQHKP50extA+LBa29riL/7Z8E04s9M/ni5m1pOsYCh70WmAX8CNLRoGjohMj67ie8yVoQW+NC1+lXmz8xriuOdr9zxsUWpu+ZsTdoiT6FHgS9tv/DN11xYAabeqGVGjFmvJsGlJDu8N48Ud6UDFaSkX64sYNWF+LKTQpA9JDTEe5buAkEKnz5TykxaCs/yESUnLR23AmO+a61OlzEaOx9fL4WjmOc+zeTL8FS7Ibge0lyQDivLtGlHsjrNq0S2+4CsiuPu9i845icMhhhMWkJq8KKa2ftebu8aBCwPP5VU895quA8Uk61nz8M0GadumdkUHKS51byicumCaD0jbKSgUexfVgJxU
+ wvIsl6PD
+ VHBV56fjc7EKFJySCQ2FDxL+CKqiKesWYs/aTXSa/qA7sv0+A75AkMDNA0vMKcKfYAxzVN/3qYlExnayJOe4AV9O2fp1SjEDppsvO1xgOcoFFSXfYFBZqaK8LJ9oaGCGA4PeLgGOQdVfNk1HFtm1noJpx6XPD49yL9lj7IrvETzaY4p1CjdR0jPKNPjiY7dh+1wxw7k3895S2Hqzu16Au1pZrW23wBrl6ZGuXc+XmbQOKACW6X3OC8uUpdcYdcetr+IZbwhC+1hHFqAAfo0OHGqmiPdF+BxSkXOXeE4vXHVw+8gSk0068nmTopemrHeHEitXKT2R9SeMWJ0lwGNQMasPkS6vSYhU285VhOR3+A/HJ5YYQ/FvsiQGG3SuQTrzrUqMo1zKVn92z+lDNkEIPOYIeNLvJy0ufphzfMa2p0IFHkraj0AMGX3vCmqQCIHCWbIoKek4c+/MZ3S4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,41 +107,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 2:53=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Wed 10-12-25 21:36:43, Matthew Wilcox wrote:
-> > On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
-> > >  static inline void mapping_set_release_always(struct address_space *=
-mapping)
-> > >  {
-> > > +   /* Alert while setting the flag with no release_folio callback */
-> >
-> > The comment is superfluous.
->
-> Agreed.
->
-> > > +   VM_WARN_ONCE(!mapping->a_ops->release_folio,
-> > > +                "Setting AS_RELEASE_ALWAYS with no release_folio");
-> >
-> > But you haven't said why we need to do this.  Surely the NULL pointer
-> > splat is enough to tell you that you did something stupid?
->
-> Well, but this will tell it much earlier and it will directly point to th=
-e
-> place were you've done the mistake (instead of having to figure out why
-> drop_buffers() is crashing on you). So I think this assert makes sense to
-> ease debugging and as kind of self-reminding documentation :).
->
+On Fri, 12 Dec 2025 05:21:11 -0400
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Thank you Jan for your response, as you highlighted adding this change will=
- help
-with early warning, making it immediately clear during filesystem
-initialization.
-Also as Matthew stated, the comment is superfluous and doesn't serve
-any purpose.
-I will remove that comment in another version.
+> On Fri, Dec 12, 2025 at 09:44:27AM +0100, Boris Brezillon wrote:
+> 
+> > > > +// These bindings are currently designed for use by GPU drivers, which use this page table together
+> > > > +// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations    
+> > > 
+> > > Now that we have the generic pt stuff I wonder if GPUVM should be
+> > > providing its own version of the page table implementation that
+> > > matches its semantics better.  
+> > 
+> > Not too sure what you mean here. Are you saying that we should fork
+> > io-pgtable-arm.c (or rather a subset of it), and have it all
+> > implemented in panthor?  
+> 
+> Not quite, probably next yearish some of iommu is going to stop using
+> io-pgtable-arm.c, and switch to the new stuff.
+> 
+> The new stuff has alot less duplication if you want to make your own
+> special stuff like this:
+> 
+> > against it. Now, I see good reasons to do that, like the fact we
+> > would be able to add features like batched repeat mapping updates
+> > (mapping the same page over a wide virtual range without having to
+> > duplicate the intermediate page table levels that are exactly the
+> > same),   
+> 
+> That's certainly a unique requirement and it could be implemented with
+> a gpusvm specific set of operations.
+> 
+> > or the ability to extend the mapping arguments with
+> > shareability/coherency info (that we can do by adding IOMMU_xx flags
+> > too). But there's also downsides to it, like the fact we wouldn't
+> > benefit from bugfixes materializing in io-pgtable-arm.c, if any.  
+> 
+> The new stuff is significantly modular already so this risk is a lot
+> lower, and we could further modularize things that are actually
+> duplicated.
+> 
+> But doing something like repeating page table levels will require some
+> fairly different unmaping logic already...
+> 
+> You also had the special allocator asks (and presumably optimizations
+> are possible there too) and probably optimizations like taking page
+> lists directly out of GPU structures instead of multiple calls and so
+> on.
+> 
+> When 6.19 comes out go look in drivers/iommo/generic_pt and read the
+> documentation pages that will generate under the kernel docs site.
 
-Regards,
-Deepakkumar Karn
+Ah, nice! I will certainly have a look when it's out. Thanks for the
+heads-up.
 
+> 
+> Then you can think about what is ideal for GPU and consider what the
+> work would be like. My uneducated feeling is with gpuvm trying to be
+> common code it could also have gpuvm provide shared common code that
+> directly builds page tables in CPU memory using the above framework.
+
+So, gpuvm is one level up (it doesn't deal at all with any HW
+representation), but I guess we could provide helpers for UMA-GPUs,
+where preparing the page table on the CPU is a thing, and it could be
+that MSM would be interested in using those helpers too.
+
+> 
+> > > IOW it doesn't seem right that common code would be making decisions
+> > > like this, the nature and requirements of the flushing are entirely up
+> > > to the driver binding to HW.  
+> > 
+> > We're not saying this will work for everyone, but rather, this is a
+> > default implementation that does nothing, and if you need to do
+> > something, override it with your own. I guess if that's really
+> > problematic, we can force the user to provide one and keep the NOP
+> > implementation on Tyr's side.  
+> 
+> In my view there is no possible correct way to use this page table
+> code with HW unless you also provide flushing ops. I can't remark what
+> is more rusty to do but having a default full of NOPS should at least
+> come with a comment explaining that the driver still need to provide
+> something.
+
+I'll let Alice decide, but I'm perfectly fine with both options
+(NOP default with a disclaimer, or no default at all).
+
+Thanks,
+
+Boris
 
