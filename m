@@ -4,93 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98907D4921F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 12:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 443D9D49220
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 12:25:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECD8E6B0005; Fri, 12 Dec 2025 07:18:22 -0500 (EST)
+	id 912946B0005; Fri, 12 Dec 2025 07:25:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5366B0006; Fri, 12 Dec 2025 07:18:22 -0500 (EST)
+	id 8C3C66B0006; Fri, 12 Dec 2025 07:25:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE1C46B0007; Fri, 12 Dec 2025 07:18:22 -0500 (EST)
+	id 7D8586B0007; Fri, 12 Dec 2025 07:25:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDCC96B0005
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:18:22 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E57712F6CD
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 12:18:22 +0000 (UTC)
-X-FDA: 84210721644.16.6CE1A4E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 74D9440012
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 12:18:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cfKnlzfV;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765541901; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA496B0005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 07:25:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15DCE16011C
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 12:25:16 +0000 (UTC)
+X-FDA: 84210739032.12.AAB34B4
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3040A140005
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 12:25:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=avJC2+DB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765542313; a=rsa-sha256;
 	cv=none;
-	b=W6mZbi5Fa+vDHGA46BQqgJbbtVOtPjcz8ZrWf7tr5j3jHd/R0bYrsfmtUfnSb03Xck0RUT
-	Adv6fGxj/Hv+7KfTbXKKvBJlxymtora5u5HHwygdnjAOsMFAqMC0IVv+nDae6ZvJVb42Jh
-	CwWm57Xmh3n7NMiKv+QU6LNXN1gvSqk=
+	b=FI3ImA09qa9J6xxHQ+mXGMoN34ZnwCljOxFpOSZLI3fPofjy1DBxhKNkSo8sh7r/pKq/21
+	znjMUhG5UyWHTp/xISqUWCJSqfmLrIh1/WJ1QLIaSTiw8PnyrNgEEDAtkdcf3PP1sdq0Ri
+	l1TSrRIy7xrL09oREIFHShiloRukUwo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cfKnlzfV;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=avJC2+DB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765541901;
+	s=arc-20220608; t=1765542313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4e7B+E8LkBy1p188ZJwv5Wln/swonn5oRIyMMDWppE=;
-	b=3Er60qtnC7gobxCC9S/0lhK7JR7vP0aj45ZLaXYyu/lFgVPgRHiR5tWBKzRs6ZKwyG8peL
-	/hbhCRL6sCQ81eAjCEhinJAIFXOTQho0/0cGwGCvwLOYmr7js0FGAw4WnYAQ5JCKwIDCMS
-	Zqaf2H6UZt0DDcRg/qSCGGKcECeUmX4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=w4e7B+E8LkBy1p188ZJwv5Wln/swonn5oRIyMMDWppE=; b=cfKnlzfV9QrsH5hMOhmPUAJhXy
-	XjEPNpRNJpEyUWUD58b2u3CldeYoF3Yxr90xzhUkPWmFS1Icv8hUVhfORCvWwE7UHE+RlwbWt7xVO
-	vUeggPll8nmxfPGQsbuyfrPGqVqU41vL0lNYf7j8jUjLggJ8BRxZWITJ3vVe51BDVUW0hqkQupPc+
-	f7WZx7HJjp4C3PcTjQnbWyuhUOFOYenRuQWMtitcijzVGhxR915iboxfs7Ee1vZy32cOADi1nX5gw
-	D3x1yPOOSDbg/a0QcNlh5HrUrMb5n1ze3FR3M6LvMSEFYshjNaC35qw1f9xyIoqiBFvyMG1c8MC0u
-	uyKZfm9A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vU267-0000000FfEK-2ukU;
-	Fri, 12 Dec 2025 12:18:11 +0000
-Date: Fri, 12 Dec 2025 12:18:11 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Deepakkumar Karn <dkarn@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pagemap: Add alert to mapping_set_release_always() for
- mapping with no release_folio
-Message-ID: <aTwIAwjeSrALbVww@casper.infradead.org>
-References: <20251210200104.262523-1-dkarn@redhat.com>
- <aTnn68vLGxFxO8kv@casper.infradead.org>
- <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
+	bh=o2B5KGSSgpqbVQsLfnIbvylo11sIFz83vA5vm8hf+AU=;
+	b=SQdFvn+nkVzXR5/mUAeH0cwEcs47raK38hBUggXbEZtI8uLelXx4LQi+UoCET9XaY/X4oa
+	y7tzPpgAQ8OkJBVTxdM3drVBDexmQ8JyTIh1bCR3R+gh7VgEDfUGhx+kncODHK5EMSUT+1
+	00W1FwTuLDG9LoxiRMwN82aLWJcsYIc=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b73545723ebso210107866b.1
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 04:25:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765542311; x=1766147111; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=o2B5KGSSgpqbVQsLfnIbvylo11sIFz83vA5vm8hf+AU=;
+        b=avJC2+DBlGQnPJOhm/3MvhtmjUzSV5pmP3u1VKxAMusS/iO1iIh4TrwIaIWMsiK1e9
+         Cyo8Uz0T8gdczUU+MbpN82RftnoSE3nYjwEfHQyDyQ788MqHRKTe+ag4KTgFK3v2IsLT
+         h8+a6qS0A9DYWGM9TQqXdOQFck7pNUhVT2SiWKlBgzcs3DP5apC+UV2EBFpdOQDgj1DT
+         yw+Li3ApoVmDVgBJqN03isFcFF+AV9a5J3IXIC0CaYteXCyw/lyfD/OD+5G1/+m+ul3L
+         z7d0RmuJhCCStcFryZaI3dX9CG/Rtm5CcmDAfUWyLLcWshRMzm2RaeEiqUrn+1A8ueE1
+         OAcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765542311; x=1766147111;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o2B5KGSSgpqbVQsLfnIbvylo11sIFz83vA5vm8hf+AU=;
+        b=jbpKkKfnN4s63r5/AkQcQ9gaipFYmS+Ts9BEuAtZDz7pb+La6s7USdULkclBs05Wgv
+         FNQPmK7PddIb5GISi3HG7IQPaKHT6gi9PdkTqfr6hDQdSNEtzJWK2hDNLs1ewGBqD6mb
+         nDmefFiVeOSXyzlcVB+w67FM3RGQG8CHE9DzK+uRdMsN8fRYQ+iMn2if6F3RqCaSozQc
+         7NqtCC96TalnWHejhIy5zrBFHsOa8hHtMSdSra40HYiCIkmwE/OIhvKzYLZlFEMwdCPw
+         RqKE3GYyNuRBJGaAoKxK1lgGAks6kKd/S+R/SuXMQ4XkwRfrEwbys8gK4Ilh/qTWRlNw
+         UfsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXr7TnCr6dJFjsV6I5dzCIfouryt+x8u0uaD1sefIjdM7WPae9N1vxgXsH8dLXk7LFwAuePXB4QOg==@kvack.org
+X-Gm-Message-State: AOJu0YzRr6iZZk22AKZHYcWFtNjjYb1mlcNFecoqJGF68KAAdybNig2n
+	M8QSU+5dBRshm9tKb3dChkf3bDgcMhZ2tlN0XHwkVUZnPuPnFXAfP7eahhtbf06rQfGYtJ8BZrO
+	08Ye+iL5mX+759sLJ9p5m52BQ+Zn47+c=
+X-Gm-Gg: AY/fxX7/ZY8NFHsmMC0SUtdkqEIo0JIrIWgDy5WlCEVk76ipdJqpStS1n9jmyK4mnc7
+	0oX8d8tO9dq6qvMs15AKfCgy7JhFDTYdmzS7i6DX2cKOeiDzBuEG6bc+k6LoJ+/GYBR2hgiQz/G
+	dM+9IR2emDld+qzMGMCuOT1eKrQ7oTjtsB6dc7r4svLwi02zr3eZ3pxN6MzChU5nDMwN2DvP7LN
+	gEDb1rOrqzkwSj016Fr71hio4dmp2NUmGbKqbQgp/zVi7fR6O7+tQAHJcheLOnq/ewKg4H/ulko
+	vpy4BBloAKYbie2kjxXyi3gYNss=
+X-Google-Smtp-Source: AGHT+IHtPTPqM6dw5zzwfpVCrXHy6cLoGesd89E3gnCTycntB/Ga4Z8Q91hytn/mvnR6kQDjawu1VndVqXEOuM2AKLc=
+X-Received: by 2002:a17:907:7fa9:b0:b73:737e:2a21 with SMTP id
+ a640c23a62f3a-b7d23b1d62dmr194414566b.54.1765542311238; Fri, 12 Dec 2025
+ 04:25:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5edukhcwwr6foo67isfum3az6ds6tcmgrifgthwtivho6ffjmw@qrxmadbaib3l>
+References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
+ <20251205184342.2cfcc73e@pumpkin> <4eea9138-3853-457d-9113-e3caa7f00437@lucifer.local>
+ <20251205213449.12bf4819@pumpkin> <d8bcc6b5-eb75-4a0f-99a1-295dcb04dfe8@lucifer.local>
+ <e7fb4a23-5ece-4a03-8f0d-58517c388eb7@lucifer.local> <7006fa60-f4d3-4e7d-8c2b-974e9e4a1224@suse.cz>
+ <ek7v5vxht56g77kbojo35eqdcqdmxjvguf3tp5wnfydopbthb2@xie6b7r53ote>
+In-Reply-To: <ek7v5vxht56g77kbojo35eqdcqdmxjvguf3tp5wnfydopbthb2@xie6b7r53ote>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Fri, 12 Dec 2025 13:24:57 +0100
+X-Gm-Features: AQt7F2qEtJQL_ss5biK6_DWUiy7SS13hcWVeIFziTVpu9fwvSxanTRV5-vuBYE8
+Message-ID: <CAGudoHHFeuEQ0kBYfrYuUPxNQdw4YHNG81JiHPFHq0evUcEczw@mail.gmail.com>
+Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Laight <david.laight.linux@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3040A140005
+X-Stat-Signature: ag5qsoof58khcia4zeu8nq6cxh3g5iaa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 74D9440012
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 8u45z9bo48zb8nqx533967s7czq5zxwy
-X-HE-Tag: 1765541900-804373
-X-HE-Meta: U2FsdGVkX19XQ62HlYVGCYI422eFNRenQO/xMNPuyBatmeUol+Uxgw0VNBQzET3xDfKvu2y4gk0aKF1LPCbiJmz4EBq8yOwTRSaCFVRHAPB3AxjPaHGw47sdtk854Ewb5k/AQb26Lh+VQdTWDmEnIUp82T/T1xTVAlSXKb6juFkWGmmknnfosM2qxTHHDqWQ9Er2ASJ637Y8QyRkYFJBfMjikx0LO8Vw6z8zRbI3YU4H450eMvobzYzvd9+Uk9T4wP2hmW6J99SGD/w8dMH2JDtlrJyNxRVz16l2zEtsyc7vkMoIOermmj10UbXmZIx0cFcLr7bXFH23pEsRXEr1tk8A/PGXTDoWvluWgXFEheU/nhWBT4shk+RufytQFpQtdBKWZMTdSjYw/dbJRutB+omc+oVvRfiG00+FaSeuTX7rZMXiy+IGy4AYAPWAcjlj4laVm20wZEAi36t32hJUOcHhhPD6v6DBXSMwqoWc57OplRhr0ofS+DUMPLMwktWUHBupkzYZ4fay1du8am0RO2/lOV5gfC27Q62mR4xJ+I6i7Aez2Brw1Zq1buJJsSLxAEG0Hx3IpDWFl8Jx+LLzA5zUijmmubVHtVBjkk5XRjKWI/dJBnqs7/jN6EmVODhZoB5YuDA0FxA3PHzwn3LSsnSX6UZ3MDqbdOMFHMzZLjPgUGDSNNTms3TwtRiSJBuOrLYEir8TZRwFV/igtI2BmCGnss91w6nkJOWDBElU2WiQCr7gR+1DP/AvxLZ1QsVaSz0pMPFEcOwkh/wWk2E8/fTpqZbWMRbspA4woEgIFI4OIhuR8ijfqhRNyjVge1BbNbMYzP3/fHLOgqzOnz6G1p9n6lOXaPhdIQQ7Me5FZ+xZr/9Zwq5PZjaJ53SHF/xZ53I1giCQh7YtJa8oMUFf253E3XgEyp9WomCle1SYrqfdqZzFwzuZajIRNB2CQfp9mb4c66S10G0MHkXDzH3
- NZ90WA7n
- 7xn+C
+X-HE-Tag: 1765542312-589497
+X-HE-Meta: U2FsdGVkX182GdAM7O3ua6yKpPHBvaS3RuYGZS+bRRExj9Aeqk7B0lXGnGcUZ/kg4XDfTOA3ESXaxwcq3/FZwPb0f4A5Gejb+IiSKIDlWM5j1hR7coQu7PCsodC9lmWEpYVgqTQihsFzTE3aIov+S4Cpf3f15xzL5+dP6sKHKCAB+gopcSiDIAb7zKBrm1qG0TxEW5h8Q+LNPjyjrkjWG0RlE3B/9zisL6RodkmUogjXMPT9aPrYO3E1ysLdonFvsunYdZfK1I4hjao4bHu1IEFi6qlWz0tSUsZNsHINfHzQps7OHL6EVnfhnAz+OKbiRFPrNHMZo9O+74u8DlodgOjwnVcmIhXeGFykBPf6hRLSKF9kZhMAJXXB4j3hgUodbvgFKv7X9pOtmbesuKoBtRczRIPmMmLAEfw1812FbS4EF+oLK4xz5khLvG8kCjmv6pIEwkjs4UZ6vO+vpNtMWQNCSquYsHyyY+i3vJ3gm6AuwFsBCK+50pqwTKJJx9pv+0fEbJE0e0+bSDQFUc6SwFyG2D+LgsQ2gU2/tNpuqJVWn3ZMUUvvoTinfEcpve9523Ap/1qnU1G3AQVUtVRdHpYtfodGCb0P6whqpH6t0dPVFOHw034fhHexxy+SjHTU84j5GcYIUOdDKs3KHnQd89j/iilcV8JX7wx8zuNhXOIggzoQ/8kWmU0CZSvwduC98liYQXPt5WL6chi4Ok4PX6zcHx+rggb5G8V2qTXb49FwULOs1/w0vTECJvQO89fgP4JyClJBu6bpHna1DXqpHmO0p9cigmScN37umizzLhAPW3EujqLOnc5tF3krEarLTl/c3Eqg+tSs9sZDz5449S2KJ/aS7MWWxPVECnEUC70MY++1O2UtP/G+YSIyMVTSsBEVIpUYYzFHd9Iv9v28djVqKWKe0At1Hl24WAuSZ7CIocaMRVtp2jk99nGIglCf5sTDRTyNRJQUTtRzFbB
+ +V0EgJZs
+ gDQif3YJlWBUeQs1eqwQWPWDUQkwRlm1TmRe6nHk6FPFB6WaOCenRrGBjMbucXvL9T7a0wGXOuwn4R5NuQkiquC7HBosDffT6MXAFQdpyITb+zcGKfg+sZ9C9Bvqfnm92xSavB3VDQL5iZcZ8T+ipRxVn2PBnIJzPBeInk83sIdwsspFykNOOwwfuyzMv5TwIC1HkMnZGA5qSWnfE0yJ/6nyvEE6S6XwWYOQU57JV7F/fQZcPa3+QHg2M+9Fz+3+c1KXpMaMsUmTm/5PLG0/1BUNM7tD8qlbm8yEizms5SJH/bFQLZ4krQapP3GF95tgKLdzWvQzlfLleBpEoOLArPM5O+5TwCKoSLQBTp/QLphvUk8q6ojXwQ67sJ7krS9tmQUUM/meic3yzxdRKhHW+gD7H3ABLf6PGQJW+4mYeVrapGLqkhR96yMo0SSueV1AA8A4T8gZi/LAtpyRAB4g33sa+5ReiJhIR0jqp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,45 +121,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 10:23:13AM +0100, Jan Kara wrote:
-> On Wed 10-12-25 21:36:43, Matthew Wilcox wrote:
-> > On Thu, Dec 11, 2025 at 01:31:04AM +0530, Deepakkumar Karn wrote:
-> > >  static inline void mapping_set_release_always(struct address_space *mapping)
-> > >  {
-> > > +	/* Alert while setting the flag with no release_folio callback */
-> > 
-> > The comment is superfluous.
-> 
-> Agreed.
-> 
-> > > +	VM_WARN_ONCE(!mapping->a_ops->release_folio,
-> > > +		     "Setting AS_RELEASE_ALWAYS with no release_folio");
-> > 
-> > But you haven't said why we need to do this.  Surely the NULL pointer
-> > splat is enough to tell you that you did something stupid?
-> 
-> Well, but this will tell it much earlier and it will directly point to the
-> place were you've done the mistake (instead of having to figure out why
-> drop_buffers() is crashing on you). So I think this assert makes sense to
-> ease debugging and as kind of self-reminding documentation :).
+So I had a look where the timing difference is coming from and I think
+I have the answer: init_ipc_ns does not have a guaranteed cacheline
+placement and things get moved around with the patch.
 
-Oh.  So the real problem here is this:
+On my kernels (nm vmlinux-newbits | sort -nk 1 | less)
 
-        if (mapping && mapping->a_ops->release_folio)
-                return mapping->a_ops->release_folio(folio, gfp);
-        return try_to_free_buffers(folio);
+before:
+ffffffff839ffb60 T init_ipc_ns
+ffffffff83a00020 t event_exit__msgrcv
 
-We should have a block_release_folio(), change all the BH-based
-filesystems to add it to their aops, and then change
-filemap_release_folio() to do:
+after:
+ffffffff839ffbc0 T init_ipc_ns
+ffffffff83a00080 t event_exit__msgrcv
 
-	if (mapping)
-		return mapping->a_ops->release_folio(folio, gfp);
-	return true;
+This is the pervasive problem of vars from all .o files placed
+adjacent to each other, meaning changes in one .o file result in
+offsets changing in other files and then you get performance
+fluctuations as not-explicitly-padded variables share (or no longer
+share) cachelines.
 
-(actually, can the !mapping case be hit?  surely this can't be called
-for folios which have already been truncated?)
+I brought this up a year ago elsewhere:
+https://gcc.gnu.org/pipermail/gcc/2024-October/245004.html
 
-Then you get a nice NULL pointer dereference instead of calling into
-try_to_free_buffers() which is as confusing as hell.
+maybe i should pick it up again and see it through
+
+as for the thing at hand, someone(tm) will want to make sure the
+namespace is cacheline aligned and possibly pad its own internals
+afterwards. Personally I can't be bothered.
 
