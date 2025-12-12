@@ -4,106 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FBF9D43367
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 02:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 841A1D43367
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Dec 2025 02:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE2816B0005; Thu, 11 Dec 2025 21:50:16 -0500 (EST)
+	id 9B3D26B0005; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A931C6B0006; Thu, 11 Dec 2025 21:50:16 -0500 (EST)
+	id 93D8C6B0006; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A9B66B0007; Thu, 11 Dec 2025 21:50:16 -0500 (EST)
+	id 804A36B0007; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 86A566B0005
-	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:50:16 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11A2AB8F55
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:50:16 +0000 (UTC)
-X-FDA: 84209290032.02.6D5BBA6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ADB3B18000A
-	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:50:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fK0B1b5F;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765507814; a=rsa-sha256;
-	cv=none;
-	b=n45Lf4A8FzJxGLrXSvzqTVnFT7s0k4/opHhLR+NeabXnZvLpJJkpb2lluYS0rWQtAOYn/8
-	E0lbjbjBtLWQtFgVcWy8884so2BnNiPzOBDaLQPI2JmaVmO+gacKreGTnq0hfv2dQCjOK3
-	qibedYQpquPx/1RYhenhMB/4GhFRSE8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fK0B1b5F;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 68A3A6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Dec 2025 21:55:30 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA9DCC03C1
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:55:29 +0000 (UTC)
+X-FDA: 84209303178.07.4053E57
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0E98A20004
+	for <linux-mm@kvack.org>; Fri, 12 Dec 2025 02:55:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Q/rv8s9t";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765507814;
+	s=arc-20220608; t=1765508127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sn5bXUZ9CfBxwfGQomoxp+jKTEdCiXAXLkMqyUgILQw=;
-	b=3OCc+1+MWjlOSWRt88uH0kM6TIvm7iB8YGQBf1xMHVgRB24hGYyHlh83ElX6Ih3+vXDSKK
-	4ZN9n+FizzxmvSe6xlZ3OddnTPhXG7QyWCH6nyDwlWqKAx/grPDP4k/j9kRplLu4rpWE6c
-	K+oeN9VcWiLKPpJwpwVdhdfhhwT5/+Y=
+	bh=IHH7FISSfyu66uvyvWAbKeSkG4gSDQ0B0NkXAaJWnPk=;
+	b=H/AlqAXclJ0YIV6TAVzpnNkRFHoUFACCAehfV8dXn2DzddVK+15s3sNC/TgJRitgwYfdPK
+	AUXtvLeq9qqbvVZi7p7giIEeoyZL2/kDKfZG2/sOwhh9sR+wQL+HxL5CMzfjiHbUa2cUqI
+	plTPeYMHtE2pCgLaLga/tsQNuC/p5js=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Q/rv8s9t";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765508127; a=rsa-sha256;
+	cv=none;
+	b=57HVjMRZI4QtttPgEYWqrycVxdLL/vX0lQ9YYzytjL8QHVhOcjCGyIHQvjNULA/Od5aN+K
+	Pjv51jTSDCYx7JPx87V9g4rfrqOl6xxEMl/3tiRjYsNmMnv9B2B32MDpmDSwpuHmX/MY8+
+	bBJxZG8d9OJIVsT6dimkj/KWtHxV70M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765507814; x=1797043814;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=g0azLKHQPuviLzNQ7aFttbhCLkEnPceuCV02p/FafUQ=;
-  b=fK0B1b5FgV8W5AIkU0Z2y7P2lWdLpDRJ0yfVwYthBuwgdqxPEy2//lho
-   tfiMvK5rShfLHTzeWuN0Gm+797dQEKr5ltn1Dl5TQnnW579lzmevVpcHK
-   O3su75WSQmKjrtGX4rL+oM3kbrHVfvDx6xrBpdeGpaUc7hdJ7bZ8RPv/N
-   RFwXULgxyefZ+NCIIOrin0xFJdZkg1kyxUwfsXzbGXlkDaaS5ibxgLZpO
-   Hfncl3SKUEwSGQbRijjRbADQ3lb2rcYVjgO07+8ByS1+bu5Ov+3kWmQJm
-   p5IEcxaw2qTwJXz3GNJJcWVo4RBf2d6bU3CAQQU1QtH+MRX3xkYCeWucg
-   g==;
-X-CSE-ConnectionGUID: OO+YJeC0Rpe9RHArQGozUQ==
-X-CSE-MsgGUID: +cbMDK19TjiYr6edXHtiBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67383777"
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="67383777"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:50:12 -0800
-X-CSE-ConnectionGUID: BT9+dIZKSmaXQuTxaIAXYg==
-X-CSE-MsgGUID: eM42Sz1IT66EE2en6ly2vQ==
+  t=1765508127; x=1797044127;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=t84hamvCTNn8P6GklBvJVrOeaVIe6R0pGBpn8MhDhdA=;
+  b=Q/rv8s9tjAVcfs6kQflDmdlT72un2k7l3sKt7QEsNus6ENT3t9nQcQJY
+   5cycgMovRsD/FIuq+OtwepdnZGAzaQkED6ScxFSmqhsGs7KsdQqDMjePk
+   kpBhgJGdf/w0nlVqd+XsG2X1yHDzIV/Qjk5bcz6lyFh7Nu67LnSJ5oiGN
+   eTRuaOwiLYiJFNmMjlsnL5wg68q0RguVkklAD/grRTK4uL16o6rhf+MZF
+   6HHvCVL/cn99lEkYCsOxm4WknQZp1ZsrsVc187tTJ/r2VRwebRbVBwAcT
+   NM4J2t/XEyeqlZmrvSFhRehRlFMW/LIwRCEJpXa30ZHr7LYEhgtOn00ED
+   w==;
+X-CSE-ConnectionGUID: rlu0jpHcThmk2bg455BFjA==
+X-CSE-MsgGUID: cOoCIzuuTSWqtAcvxM3l2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67429723"
+X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
+   d="scan'208";a="67429723"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:55:20 -0800
+X-CSE-ConnectionGUID: 6LZGlbssSyWqRzU6u0sSjQ==
+X-CSE-MsgGUID: yv0vBOInTSuW28cqNqT7qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="201380653"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:50:06 -0800
-Message-ID: <dd62c21c-6ac5-4e30-b173-d1fa5dcf019f@linux.intel.com>
-Date: Fri, 12 Dec 2025 10:45:24 +0800
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 11 Dec 2025 18:55:13 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vTtJG-000000005PB-3q4X;
+	Fri, 12 Dec 2025 02:55:10 +0000
+Date: Fri, 12 Dec 2025 10:55:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chen Ridong <chenridong@huaweicloud.com>, akpm@linux-foundation.org,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	hannes@cmpxchg.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	zhengqi.arch@bytedance.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, lujialin4@huawei.com,
+	chenridong@huaweicloud.com, zhongjinji@honor.com
+Subject: Re: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen
+ and non-lrugen
+Message-ID: <202512121027.03z9qd08-lkp@intel.com>
+References: <20251209012557.1949239-4-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] iommu: debug-pagealloc: Track IOMMU pages
-To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, xiaqinxin@huawei.com, rdunlap@infradead.org
-References: <20251211125928.3258905-1-smostafa@google.com>
- <20251211125928.3258905-4-smostafa@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20251211125928.3258905-4-smostafa@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ADB3B18000A
-X-Stat-Signature: r6ze83jtpzraqytsw3m4syj9ax1f4trm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209012557.1949239-4-chenridong@huaweicloud.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: c1qboopt4uuk1gejgzieaysa7t4cycjm
 X-Rspam-User: 
-X-HE-Tag: 1765507813-266687
-X-HE-Meta: U2FsdGVkX18dNKU5yx6ssnmJ4WGZdsHrmtpocwap0iUGTLLwWRg/ZcPGoqUxfJYcrKC76Lqi+8ksHnwc/QdVnf1OgopuSpS+WYISH91HmH0t9N3BR2X3PUYfjoRJmCqbf3kxH6rRy08MevLVAmaUmrEwUcUiBkkYIFCowVQCG71CgjoDqHwOmrGfDKbkAF8PXdXBqSiFl4QGwx7R5MYi1LEa0E90t+kzBkSA6oWxq6vVNYBB/OotaTeFNBfQ2qRF4NviB/B/qPLg7RmRAtfjfBypGnYxBgoOY5TiaqzhJwB8J9QQWwYx/grbSEMeR+s2n1JT9uxxDpos2ysp9icSkFRFBS7PZxj3zy1hgTogODKkrCDpu1OYbOKMFMk139AM8ZVO2GJ4mkaYayxOr6i96OHisq7//3Nl6KQxBicDyXObrEVvCjQQQt9Mwad68JsSjHT+1d6pqy0vTppBFfEJw/hEAxm5Me/qNYQTmP5CBIH5RyBUZ/rle9bKQsh6hPWgkZ2B3QG/iaHMECCIgIR5mj08oO9VxnIeD8f32OnRbvng0LVXT/59GKZeps/agCbB/UxbwmZzFkO4CFhiI6Dd7RXCRkQebX9ZcN2yY4yhykCTOcWK/mWuEex/MZyc9kUeomy7taO/YgYkXtfJzpNczdidixJo6f4qvu4xPsRzucoU/5u8gQEqHj547hy1UtJVGA6+fqnOmwJiKWp4F4xrOvIt4zxRdr7oC1LRO9poisuzcwRcNZd1uqfHI3O/mhYH9tu63SepPfAEn1EkootGNWbfnnatl00BSU3COZKNbg8aDcE3Y8+KUlgquF6QDBSARl+1Xx7toGLLJkCGo9as9oeUg8eCeiIGsXWvjqxAMBqiPz8bI5Yp9OVmGGCma2L1SypdkF0Oc8kcXYIv8Kepo2w2PDx8X3KpM7U/0w7DzbgHmcQwG2yYoL9uOPEq+13vVBKF5AgtdHopLXn3voL
- V3rsfe9D
- 3RcOYgDemcxGepba2J8TZwSG83DhREhFF9lPGcZ9c89S71bKCvUsxVB6QV6mTak60e1f7OFIoRb7TF5WuXLMwaD7vZCuGoyV+wR0aSEHt4eZ/ce2gwvNpiNtrG6w4cJHDVR6LGVKLEPM4stgfr4eTKjUB4RVzir2MYU5/fDyym6Keb1oep/pxBqm0ImjwwAZWWGm2rEWfsS38NmKRIJpaIrzHQR2aLgE0I3gIyYO+wisEMwYukvzLFTM4Jw==
+X-Rspamd-Queue-Id: 0E98A20004
+X-HE-Tag: 1765508126-198817
+X-HE-Meta: U2FsdGVkX18ofll1iWxSVrpf3elabovw9+MM3PEHb0b1wfFsEBwy9reHb0OG6Rj+pkVp+ojfJZKbmwqm6ioEQFlrRH/LPOdMOIblL272rvIxmWlC8ppC3XNPphgzvZ7e5MuyIf5E7Fu7ktfkOlWgKKGAT20jHQIGMbp+o9MWKS26ynE1gL6j+UkmwmGiOxHLrLt0NUg3EoDvVeZtpHw6qReJlp7ZRTYoK3sTSkCpfg3c3e3EI7v7Mlf0kR69r5ctknw/ZT67uEmcBHDUi/s5rQxJH6js7KUkgoTk7DJ8d1dpyvwfc0WSXFyNjwb82mIDX372+kCJ8ZVeMe5T05FFJoDL8vCx4cGgfe+7QPOjs506Xdavgx9QB3OY8Pt7le2dSXtL2ZvyGXbSH5mW2e3HEkQwCC8hH+E6jTWNR/xJogE20x/PiXe0YWzzMBVB2gCvfyusw8+OOS9YcnEDUwjBuUPtV67y2vzXJRao6OnahAaa+pRK8zsBNglZCH9tyDES3gvVeli4hZtLEGgJzvJqZEpVJfCju5BYdoZe5sYm12WKhvLmXyw/XQqrRTRv4D+Ed+SPMrKOvUJKsZng0yGmfjIOb0vBh7D8NntxmSl0Mpj6rfCKs5CxGMdhlfZhOYwwotix4NIDt3igomcSFFA/jYljAvTmtrAVHtCBit/x9e1XZNmxD9CtfTKa1yT7U8q2b16oGej3qf4MTXhDJRDeQjOClcKtxylTh7b4rR563ZjZHUrFvYcdkE0PpQtwu3TbQ84QMfSfzjV1aB1g5HbGBX8xMFM0A8fTwvBDra6jSxtOCQPiZGGSjtO2lvdjyn64PstvSlx0EzXzvvuqeLTR9GgI9rep9PooORdyGR/FcDqoEJv+tSRUvHAn/PVGmqntW99EquT0sU9WAh50kLGgAG29CMDLj3eN4WfqH9OJ3UwqyBDyEWkys2X2VIuw1PlVF9m7tIuVRYcdh9L66Xq
+ iUp8glTn
+ s3qczS3NKt4BclFlVIcpfHKVYcoopizzmwgbqMBsr9+9Tp+F2MXIySPBDPhCQkIDV6f9OLZE1wefwuBF/9qXNLp+elDd1khT/BP+0wSzhbE1zTg2TwG2CnuaL1mZHse6EGUpsJLFbRDp2UpFVcS8Gq0Crx/G8zVmtbTPc/3U0H+n+p3nAbx080rdYIJ66Hj3lPqiUGegbjtuYc95X+XtXeXyhCkBSGAu4pA272MdSTuM/o9FwbNF9yO7bMLJG8H+3LAYRp82yM7PFhG5ITwIrXWGPpLZsgB9i2g3Qss4LoNrdVRIupRdlnlyvWekVA9HNcwOpeJSebPDivxrb1eQujsLThBOTGxZHjR5qA7k32jsjgf4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,79 +115,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/11/25 20:59, Mostafa Saleh wrote:
-> Using the new calls, use an atomic refcount to track how many times
-> a page is mapped in any of the IOMMUs.
-> 
-> For unmap we need to use iova_to_phys() to get the physical address
-> of the pages.
-> 
-> We use the smallest supported page size as the granularity of tracking
-> per domain.
-> This is important as it is possible to map pages and unmap them with
-> larger sizes (as in map_sg()) cases.
-> 
-> Signed-off-by: Mostafa Saleh<smostafa@google.com>
-> ---
->   drivers/iommu/iommu-debug-pagealloc.c | 91 +++++++++++++++++++++++++++
->   1 file changed, 91 insertions(+)
-> 
-> diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> index 1d343421da98..4639cf9518e6 100644
-> --- a/drivers/iommu/iommu-debug-pagealloc.c
-> +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> @@ -29,19 +29,110 @@ struct page_ext_operations page_iommu_debug_ops = {
->   	.need = need_iommu_debug,
->   };
->   
-> +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
-> +{
-> +	struct page *page = phys_to_page(phys);
-> +	struct page_ext *page_ext = page_ext_get(page);
-> +
-> +	return page_ext;
-> +}
-> +
-> +static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
-> +{
-> +	return page_ext_data(page_ext, &page_iommu_debug_ops);
-> +}
-> +
-> +static void iommu_debug_inc_page(phys_addr_t phys)
-> +{
-> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-> +
-> +	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
-> +	page_ext_put(page_ext);
-> +}
-> +
-> +static void iommu_debug_dec_page(phys_addr_t phys)
-> +{
-> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-> +
-> +	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
-> +	page_ext_put(page_ext);
-> +}
-> +
-> +/*
-> + * IOMMU page size doesn't have tomatch the CPU page size. So, we use
+Hi Chen,
 
-s/have tomatch/have to match/
+kernel test robot noticed the following build warnings:
 
-> + * the smallest IOMMU page size to refcount the pages in the vmemmap.
-> + * That is important as both map and unmap has to use the same page size
-> + * to update the refcount to avoid double counting the same page.
-> + * And as we can't know from iommu_unmap() what was the original page size
-> + * used for map, we just use the minimum supported one for both.
-> + */
-> +static size_t iommu_debug_page_size(struct iommu_domain *domain)
-> +{
-> +	return 1UL << __ffs(domain->pgsize_bitmap);
-> +}
+[auto build test WARNING on akpm-mm/mm-everything]
 
-The changes look good to me,
+url:    https://github.com/intel-lab-lkp/linux/commits/Chen-Ridong/mm-mglru-use-mem_cgroup_iter-for-global-reclaim/20251209-094913
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251209012557.1949239-4-chenridong%40huaweicloud.com
+patch subject: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen and non-lrugen
+config: x86_64-randconfig-004-20251212 (https://download.01.org/0day-ci/archive/20251212/202512121027.03z9qd08-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512121027.03z9qd08-lkp@intel.com/reproduce)
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512121027.03z9qd08-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/vmscan.o: warning: objtool: shrink_one+0xeb2: sibling call from callable instruction with modified stack frame
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
