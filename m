@@ -4,117 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 896A0D5B15F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 18:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66EF9D5B15F
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 19:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFE166B0006; Sat, 13 Dec 2025 13:56:18 -0500 (EST)
+	id 5D3476B0006; Sat, 13 Dec 2025 14:53:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5AE6B000C; Sat, 13 Dec 2025 13:56:18 -0500 (EST)
+	id 55D606B0007; Sat, 13 Dec 2025 14:53:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B66166B000E; Sat, 13 Dec 2025 13:56:18 -0500 (EST)
+	id 3D6476B0008; Sat, 13 Dec 2025 14:53:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA776B0008
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 13:56:18 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E317135EAE
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 18:56:18 +0000 (UTC)
-X-FDA: 84215353236.29.9083A12
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A69F540008
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 18:56:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=pfM5tXmx;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf17.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765652176; a=rsa-sha256;
-	cv=none;
-	b=ifH7ywMXt4Vpwn8SKFDC0bI8LMoNVHMdKXLwZ7zJuRcsEiuci9bSqOXM6MvmMeYOmZ1IFH
-	EYxT12CkAV4A2pEwPbB4mVF1mViNkf1fXJxTShmQ6wi+sjrPDhF8LYYtHlWER+Q9hl3oH3
-	2LRHGvOQyKzCy+PJb0EbdA/ko88T35U=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=pfM5tXmx;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf17.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765652176;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 235056B0006
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 14:53:27 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D3A58B57E
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 19:53:26 +0000 (UTC)
+X-FDA: 84215497212.05.F592F59
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 13F681C000E
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 19:53:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hqbRMM06;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765655603; a=rsa-sha256;
+	cv=pass;
+	b=n2n45WpedolQLSh4/y/sETf0IMl/+erdokpbNZY1hJV6/gavVNxhiP/reTlXP8hMYu6QsV
+	gW0i3elDDvaMDU8iJkgInqjH6jf75IVVGNjYD2bA5vMlY5kEBQtMqW3LPVIAviCGSLZCRw
+	bs/lX9QDYPVrVLPwnaqvUth+doS5NDI=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hqbRMM06;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765655603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SvNKZ9aFwfw+fFYNP08/KsjB3S08HXQk+/VOcOlRasA=;
-	b=DwtpnbgclmxPF2Ke5swzd5EBa72oBKHhnadaMr8nLYr5F+3bdcdHT6R6moaSB/wZg8R4p3
-	DQGI/6EHkxTojilGqHS0Q5sceVBN/lRUkvtukESNH4XTGF3Vh5sMWXZphWkGtvJIzn6f77
-	AE7is9cgqN36dPlQjffUGkWNsiCpI/U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1765652176;
-	bh=SvNKZ9aFwfw+fFYNP08/KsjB3S08HXQk+/VOcOlRasA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfM5tXmxhTIBKdsqblwHY06UFuxpxqvjYcn3qLIVv8pcJzxc/oLE4OC5fq9CiMUxm
-	 Mkfae6mICbnp+md+7Dcpe5o2mFcvxcBG/DA1dpTAPU45Iy12aoc15veaGbyU8IEDJc
-	 d8akVDytsD951J1MKy+Y+iV01BOApMk2RZ91S4AKnaW6U0xirMDTt6F0qxOqD+UkSb
-	 YNdePeQgOEAIm6T7VZY7RsU/B5a9f+dB7muzzcmD1WqVckW5Dyh/zlNtc3r2KNn1F0
-	 0RfYbponls3kANgLt2ZB83MoLXpPtCczfFByex0unCs+AtIgKAaqVUL6rHxhFog5bH
-	 +GV5Ol+FVerHw==
-Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dTFsW5Q6SzYmx;
-	Sat, 13 Dec 2025 13:56:15 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>,
-	christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH v10 3/3] mm: Implement precise OOM killer task selection
-Date: Sat, 13 Dec 2025 13:56:08 -0500
-Message-Id: <20251213185608.3418096-4-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251213185608.3418096-1-mathieu.desnoyers@efficios.com>
-References: <20251213185608.3418096-1-mathieu.desnoyers@efficios.com>
+	bh=4OTuu1tHdOqy/dVw0nARqupmCGs4SjMVem7Vv3xtBVw=;
+	b=So5waX6mJ+3nqwqL/GZZbl39wK1Rbvb1PbQBKZW7QqTCEBF2CmZOBeFcHYvQRyvj3CkbtC
+	Bbq6KIm4QjdpJnZNNWMxrU1zPMXpB6fg7NqnbiKjJsBjdhItKvP9DZXWAR++bqoncbrlpM
+	RF999YiQVIFt+Y22zZ2XjKUEN8a4kf8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765655603; x=1797191603;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=CdIxxYSYf4eXCLJKq/DnZndJwMiLzRGz4d2cSA5blLk=;
+  b=hqbRMM06umtl62uWCr00LjBvGmdJIq5Zl6f/7r3jj08yALXwCpiC3MAZ
+   qVV3CovJm+4m1l3IjalHYPTsd63S4hMQqI70Y86ZIGNMI314VZfz6ytVG
+   K/yL6CUdYveaqeziZTkjqFsfGlzF33eq4moZLuYLPbFCB+3KPHpgmlnLb
+   rwDnzwqQdbtDTYRHxK5ItTsqmcVOFAzU6K5P4sHFOTdtlNBt1lvqp6Y9a
+   cMVCRwj6BpF8C9Z46qRUPyq4xWyevYTHdP0Eax+OH35lZpRZCBsyD5U4n
+   trtUkypDPfRh6qM6eOxj0z+VPZQ/0+/jXT8l35XMd4ulwPJQASiB1O+JY
+   A==;
+X-CSE-ConnectionGUID: vWWK52VCS3Gp/wgz+BqeBw==
+X-CSE-MsgGUID: v4ZS9rOWQT2otyu/a3wvfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11641"; a="71249380"
+X-IronPort-AV: E=Sophos;i="6.21,147,1763452800"; 
+   d="scan'208";a="71249380"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2025 11:53:21 -0800
+X-CSE-ConnectionGUID: OS+ct2eJRxKPX/F7a0vHQw==
+X-CSE-MsgGUID: kRH6O69YRGuGDiGFmiXSKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,147,1763452800"; 
+   d="scan'208";a="196438615"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2025 11:53:20 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sat, 13 Dec 2025 11:53:19 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Sat, 13 Dec 2025 11:53:19 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.69) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sat, 13 Dec 2025 11:53:19 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jyQv/0Zj7zlM+6De3iNxLD8sDherp4DS3yfsYCiRg9eS99yNjmqNOpGrQksKjTpVISNlKvzjgm/yMEm6ufl0QSpCuIUmTPFyAHVTmsQpdoHctjjZPCM7F4nMVX3nY1+HhDCJd0RZYd5TlgZ2jbo4ApdOl1iEVdayaXrAhVN9L79CRKP6VlFg0B/H43jISy0GbE6N4GPrgy6/w9zi+axjKloMZilPMyrQcIXbCnNbGbO51th/Hg/FJBwyHSv3ZW5UtzUVxRmIMkAsgwCFBWJMReJd/ODCc8xL7o9rPtkwftp/mTcIEM/lG03E/afBDW+TVqIBGJp5oTaPiLtNho9YiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4OTuu1tHdOqy/dVw0nARqupmCGs4SjMVem7Vv3xtBVw=;
+ b=ijTTGSBrW2HIABnT//E+6i4Us3qHCRrNHHU+YorYGAtvw6P9LSD9KRfB3uWHda720vc9GVfgsw9ACUo2UexQV+QrK3O1fJ2onSeFP8r2prEtb76Q6dZQ9JCoJb4d4nitoOiiCzG5jC29RTAsTJFoRqXw7U1OAeV3lBWf8heYLMiRuXdI/FnL2aesqzYXJWJSm+wVLoVPSPOJZCyj/YEfuBH0PSIx8jr9KCqTR250EAtvg34Lv1Dtd/u+gCsqRtC2ncLw7O0w+9/WwN93DMUeIBwnVG5z8gxAlp5K/0EH4dLmJjQdnF2NXOE2c5XeXadsv5Bkiz0giHbSRX8JLSU5Yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
+ by PH0PR11MB4838.namprd11.prod.outlook.com (2603:10b6:510:40::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.11; Sat, 13 Dec
+ 2025 19:53:17 +0000
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::662:dcf4:b809:4860]) by SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::662:dcf4:b809:4860%5]) with mapi id 15.20.9412.011; Sat, 13 Dec 2025
+ 19:53:17 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org"
+	<sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
+	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
+	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
+	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources exist
+ from pool creation to deletion.
+Thread-Topic: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources exist
+ from pool creation to deletion.
+Thread-Index: AQHcTWsygycgPn5uUUWANDAP/laxYLTxHCiAgC1uKYCAAAlEAIAAIBNQgAAd0gCAAWY5MA==
+Date: Sat, 13 Dec 2025 19:53:16 +0000
+Message-ID: <SJ2PR11MB84729257422FACB33E315958C9AFA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-20-kanchana.p.sridhar@intel.com>
+ <yf2obwzmjxg4iu2j3u5kkhruailheld4uodqsfcheeyvh3rdm7@w7mhranpcsgr>
+ <SJ2PR11MB84729A04737171FCF31DB9FDC9AEA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ckbfre67zsl7rylmevf5kuptbbmyubybfvrx5mynofp3u6lvtt@pm4kdak5d3zx>
+ <SJ2PR11MB8472C23A8E67F71D207D66E1C9AEA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <qbrym673jqbz4kaqqzhgioh7vhiq55pqdxyvlwgfle5yqlbtln@xjxem4dbwca7>
+In-Reply-To: <qbrym673jqbz4kaqqzhgioh7vhiq55pqdxyvlwgfle5yqlbtln@xjxem4dbwca7>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|PH0PR11MB4838:EE_
+x-ms-office365-filtering-correlation-id: f07491fd-de46-44cb-17ec-08de3a814239
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?saCGcsx6qI2M2Y+v2X5z1IrYKTLA2Qv61njSEGENqBG+yI5lFSS4wEWh4htd?=
+ =?us-ascii?Q?1M4Ziehahjo4iA9QH4tuLK7ON86xX/PjyYKMeHMFsnmtBEYxGFlVnCDpSRV/?=
+ =?us-ascii?Q?40T9VA5rOeKK1krbZ7goVQCWZ7N7AjPU4dzf1Y5txs1tO/PtRlSBibtlQ6h8?=
+ =?us-ascii?Q?7dGLBEl2GqjZi922S+pBW3fQ38rMYD4qJcDDNZkYKgFV88CFgJS4pTbZnqVn?=
+ =?us-ascii?Q?Xb7TglyVJsebDPn/dHhutikXO7mOAKDYHrq4jnZKMnkWA3ncLbd0amgVeIZ3?=
+ =?us-ascii?Q?2OmH3FejkRg2iC8ik8K7UuNtTz5dEsYBJI2Fy/d0iw4NNJZSsZtKcDiEEUZ5?=
+ =?us-ascii?Q?c1EEV5iYjIXUaWoWnvMwneg2mMYmJcN1+/DXnyzloA1LhStRKKnxnd/HHF5I?=
+ =?us-ascii?Q?QqoTArA9JcIfiq46B621yobGkZggegyhIWvrTN9z/6N71xUaxpgnQkfH1WEl?=
+ =?us-ascii?Q?/0wppYeLEojr/IlOgUjOWh8nX/j5qOHPC9EGciJ0ZVtBHWUt4gmTzmRtatzB?=
+ =?us-ascii?Q?aFVIjeakrUuwLwy4iNZCHWXljPlcsYQOt9jiyWRI3uREunm06i80p4HCVX9Q?=
+ =?us-ascii?Q?w0UFCrgorDG6Ph7480abkaK6E+JVWw4JEUJhWeB5EzSg7Zzeuz1gV7Gw5Xx2?=
+ =?us-ascii?Q?WuK75dBt+7DAiFUtuQyA1AGW4F7JBHtfb3tTSg9gQv6Kzt+T+GYQzsRTaXFG?=
+ =?us-ascii?Q?7/ehzYnf8GqlQY6GSjtIEAhyDKiEtMv2LJhYtxqffTNnNWMHGYgDdbujEDpj?=
+ =?us-ascii?Q?VnVxrM0J7qXX1E+9N6m4gF4b+MXYxtu4gOF0oJ9w47paOBAc0O6bsk2CC05r?=
+ =?us-ascii?Q?ncFrcSHlucO1SF1k55Xah8xVt1QnMUKLstlU3LaIGkx1O3q2FS9DuUfEqjKd?=
+ =?us-ascii?Q?duSRLD2jvmFiGWfoMO6vfmbpJV6clNoks+H13m/+PXnKLQ5acIosPfPja94m?=
+ =?us-ascii?Q?iUjejj6mjjeRMxUxggeS1cmeBIw2wK1eBJUMB5eY36OUoMGTktAsZKAkv+Ym?=
+ =?us-ascii?Q?bnAc2dRaid5yrCJM6uvgOsRWwKIhbZtjgHysCmiAes2cWxuXluW31s/SJ7NW?=
+ =?us-ascii?Q?zo8LGcNMtPjlS9zzdYlX9FH8kTEOuvHNbxNUbfSM4uzpufDqjWsUwufoq1YV?=
+ =?us-ascii?Q?/rcBil71XcUwFbYFwUZLZ9XNbMgEqwDoyYMeQM61Xf1bHQSqKYWOLwxhQ+/s?=
+ =?us-ascii?Q?0Mn6ayDJYOO0UmDRYvfDKUW8iXKLClqeJ1Y+oPJsUf6VzKxGHDj+VzRG8NA4?=
+ =?us-ascii?Q?oKnYf48yI0LJ3dy0km6tUGJpe0s6CIOiIlDTrMUFFcNETpGnAEC6K2HmXXy7?=
+ =?us-ascii?Q?x4Jo55ApvXtIv1ShVSgVLKDDPzhMpbvHqlN/X7t/RntVC+LRr7c0nNXtkrjU?=
+ =?us-ascii?Q?zlnYasTiyFT9XnDiVj1NUj+fctiz1t6P9rz3SdNODFBWIVfpDUYHpG96Cd6W?=
+ =?us-ascii?Q?bkrgkv7CO0fy1cbGEp8/CHEaPiao+Rpbw+U1NifNp/3LAKNsnkFh4Cn15kv1?=
+ =?us-ascii?Q?1hLa7vosJjcZso6AyT4hkyFaIQMk4BFtKawT?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qxeDE4n59PasH60D26jdICD4nWdTddXR1gPJrnpGshW8BOymNjRcC6F3wMqC?=
+ =?us-ascii?Q?zDBzgJ0WFOhWnPsn9C8GXGbsddcrElCh5hYQZoLEjiG+nXkRYfdXzvKQolqs?=
+ =?us-ascii?Q?i5uwjd1GSrnUpwA2+9SvXeJ13faAkCnJn3TdkGuamVHczPPEM5ewCMp3/wyT?=
+ =?us-ascii?Q?pN/X+CQBAT/rW3oOgv4lS505Zy8QHn2WXaLWNGdVDjQHfXvjFK0nDL5NN/lO?=
+ =?us-ascii?Q?mpQfp/8yMwDmSaEgwwswvCj8DeTngU60yd90/uTBCXzyr5I7jsv9k6G5HTPz?=
+ =?us-ascii?Q?FHYHPRr+5RoEgOTCbei1dediPmW9Spcfm55kO0b3yOoLJPv/p84Qtz8VKxUz?=
+ =?us-ascii?Q?ekQR322PpskpAKuwVfEDfiwlzXhIcjXWnz7jtcalCBapnswCRZUPW2cS0aiI?=
+ =?us-ascii?Q?lhRqiUmqh3VKkScQCa2i9F1X89BzglG6ZRMr4dH0wPr0ZV7a8e3RPElo2gvk?=
+ =?us-ascii?Q?OLHuv7w3KTsRsN465+QvBBZolj9rHBaclv4W16slxJAod0UKDP+7e7OYStQM?=
+ =?us-ascii?Q?cgy4BOR0onVPiIeTB8hhIkK/ayiUrDNub5C9cyy9DGFVVtzKP0oFvbYY6Brw?=
+ =?us-ascii?Q?b8IZGQ2Iab3RcG98MMWhUS7zJlURMWaoeufCWUR2VNbY43ITFOkEeyNlc056?=
+ =?us-ascii?Q?2PcLM8Ux7yXQs/LitaH2T778uI7KDdC6MVrH4EtUrKzxQcV3KyayXsNqSG3q?=
+ =?us-ascii?Q?GxwNR3fnO/lphV+CnccA3yHXMdrBsCrRSLUnIcJwmLJPH9q2qY2gMshIJlXZ?=
+ =?us-ascii?Q?O5iMBA8woGi2BUHg3chtC3KESDrJ8MOyd6fa1Pvq55PYCsFGQuW/vNX0aXtw?=
+ =?us-ascii?Q?s7ElFI8E1MgfLxFw5i5l5ZlOBAnvJJpYIujbceUdgTO4NAA7SzIfA/K1TnU+?=
+ =?us-ascii?Q?dPGbZ20mt4a6O02Kih3WwsR7+9MMcmvTu6d3KczH+AEYMF6+ex200gIAWDy8?=
+ =?us-ascii?Q?q3dj5Xgs/we+TEQaWj0jFdlfUzc2y2UMxkGu02Gmod9sayjuhTwjmtT85nsC?=
+ =?us-ascii?Q?YfuANz+nJhazV+RrbhgSw0LYKfu/GVvZ84e6k+doEk8IOz3pEP5ciMwVi+p/?=
+ =?us-ascii?Q?/95vTjVsr0rTR02f4lsHuII+oTzccVXqNMolGqAWJG0Q68ZtinleW0MAO0wL?=
+ =?us-ascii?Q?F154AMlHPAY9pwb5skgEWZcajej2qhjIzEScMhPYAf4uMGc1DiQREK+sMBUS?=
+ =?us-ascii?Q?dk1/IGPFvsw4edAdLskgIL6GKqSt/vr9ShHOmcnyBuOFQ36zsjL7RGEFvoGs?=
+ =?us-ascii?Q?ZozLMY9cApZ85F8YgotDfYvMH3RsXZO0r/Xns6NsVY21alc97pA2GRVpToal?=
+ =?us-ascii?Q?CHwPhoNY07dRSDNSWShCZodOeLIM8vcFV3rarhcGy81jMqTziERrvxBigGre?=
+ =?us-ascii?Q?sIdMuq0GmwIYEI7kN9UbkIWcs+ieXT9Nm8xOG2+vpiPXNYmdUOv+bJXgQCxX?=
+ =?us-ascii?Q?d5M0P4lirsexxAWKo6QoCCDZ7GtjyDOoqS+RFdMo/kTzbRbJmquNUDtQ5IMW?=
+ =?us-ascii?Q?1UusMNEpIFuzryHPpCJX20v99liF4lZ6ZToBFqyOLRvJyGnM5rINrvLziYi3?=
+ =?us-ascii?Q?eOVsZV5QPWd9k68T2DJMaHtjLu4MuogunFbIb2SD8Lti+zUesKBDDMWq7JeD?=
+ =?us-ascii?Q?Dg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A69F540008
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f07491fd-de46-44cb-17ec-08de3a814239
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2025 19:53:16.9016
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cUdClJH+1wEkT1l3TUuef5jvhbJvi1TUtbPw3oIq0b8RzM64z8pWG2H8yUI1g5JFw33Ejaa2eysOeO7GRvH3LHCDRvzpvqnjgnkk7jDfWlY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4838
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 13F681C000E
 X-Rspamd-Server: rspam03
-X-Stat-Signature: bt5eemyehz88fnsnmzzxgjjxa6bfba98
+X-Stat-Signature: ifhfj1pf7j1ranbpgy6khjkjzbksap1c
 X-Rspam-User: 
-X-HE-Tag: 1765652176-205284
-X-HE-Meta: U2FsdGVkX1/e9N+qqUnAXgE3E5j3i5L4BaGESadKyQVeZYzkbj1+Njz100xtAKL5C8Rjs+1HzBTHAc9kNo0gmxq9sCKnQPYZa1xKXc7jyGPnoUhmsBZJ/jIZVKSz8p/wv4zqVTWY/lMMUJjfjk3CIhScGIavoCcpvgkRLxIEQzkI9t/wn29TtlOHuBMSZCiF3t412EgjhqWQZzwmESHYlbvBARZQqq8kZ3mpZRaDvpKTqH/fbuXLxoP1rZeyzjV2t2SO6x6KKGWDbNXkRlWy6ODHmEKRHtw4+tl1TuBqviDDz96RCMyXZxoXpVRF1e9hfYrKROHSDZJimOEBTwi/mae9EQdZJvERasG+zi+e6FI5sawgJP3fJcq9+JIFo+6W6enVlpIGwm6zwQKrjht+sFrHDxUOLWnfCAZtCXP1CXxtouY1vYlNQQk4fCSIlQu5HSvHMPwWeEdwcEa4+2qhFzJN2Ap/c3kp323iHYw5AIQwmfKQfvjcu9I+cA08/dWXEXdbPqcLSIuuKFcBZDoqbpf4v2lmwfA8kCUJf6v9CjGBwRwnlsnk71ZOoV8grehW80e/a6BDYEZEAFYN8Qw4EfY/6t6+yo7JPlvC2gqs+5CQ5zqczbVhPs9OFt2g2UX3n1GSDc1iIaANGkD2F6Zf9nEf1vm360lFdNrX+2i05NB7jlVdqJqapaJh/bj33mXDggFhXCKk0pT8V+bB8sLl29uQpcRzcuLJq6YlEDgRRL33UhP4ssXBjP11P17xGHyRYEP9RbdjSkQyZQgsUaTNrhL9uwWd/N6QVzisG8OFyubSiCiUCqabmRPMrq8Yq6XsslFHz74Pf+tgdFnch9b5YIK8sUKI/Q5RsYplamQ6H5TFGimgXLfed9tlJbCAXKUZCv1dd/CItb+5NeLf47ZZf0M9bEqMUc7Z8D5hrfsHWQDaQiKRVCqB8UxJCDTe+4EnN5uOhZOnN9CXlFwoCn3
- DFHK6Uu3
- ekGchXY+4st9yF3aF8aEss+V+4xQPv2Va8O5qCEciko0MCmGUYk0J6FBQMpW/vtjKK606gfAZXm9R+omtpsQ416c1OBA2OOd3qUFz8FUWkeuKUdjQ6ZeLPghzY/xHI8/3UnkU66ex4KlNKjX8CKedX++hlTVm6wFfbgc6+O/CfMYT8UwjtXKm0lIawmaIDJnW0ndW8JLofc5/3t2WJR2hnrWi99kfkhTG07MS95zAk3nQ5R9vdfbnaXzFKmBTE1u3eizTcxPakhP/Om077NtaeP6yP+Jt7GKvJpcU5W76dcsXkmilrDUwfP35TCfWY2nPGYYTm51Jmx8+0kZXGlvNqqQFdVu3yQWMe97wYWVQwaeNvxaxREiVhZUmvWM45/W7n4ehuxLHZVa0yADNupMurCfbJDQ6iTc2EekBbOFU6OjvsB8sFskbojfQcXeM9mOjJJwekuAqAsd3cL6S1OasQ2qvnToKM+CCX7Oaiu+cJx8qgiC+lGfT1ZogOsDditpMMNrMB8Kfjb6SeGkDUyK+vc9j3iSl/QgFCaXILTf5rSRWb0lsP/9ayMaZJhijgtBOJH4wGIbrNBhoAgAWbEesDob14NzHjKU+yB5y3zY91g6j2Q3A7Ik5MakbjqYG8KO41Iyu9zAuAkVFLmIrasqpuYO4gywkTaouM8fSw+GpnTQTxYhGM39YpYCXCL1FPVa9X2uEOI7fq35PEnHMqmM0VChlXgH71XxxeHpjPBbPTzWMbC8xgEFF5MOoVLZO1nMt1fjYFLS7hUC1h/ssE1E5peaIi4F7Mp8z7Q3tPdktHLVY3CdQ92w29akEzkcTs6Z/zs/He0mShlPXmu/fX9kV0ssyhBmRvndRmG8kuPBPyH7XkaHoGtpujrUmEQwshrP4RQJiosNZtREFlXE+qKfFS1Q7euKHyJu6URqW6QGARot/q/tB6Q2IMNnVk0TKvBntx/Sb6rcbLhaQmvb/2RliDmcVcEau
- PnIAN/pt
- V5rCYksNZWJWu4Ssi8OxtWvLOsSPnY5WXeUtZ+RMqbc=
+X-HE-Tag: 1765655601-76528
+X-HE-Meta: U2FsdGVkX19vksA3DVCDxdjLVptYyl8S2NVsqV7jJnYcQdH14cpEAas0k0dFCmfdEFmXLw0b8+1VLK3CvurYf+9zUx2ovHbABizR/CaCXVB37YhkVMeCuCEq9mjCNtM/NEo9aoIY+atO3WjZJXAdD2vf1/sxG91Nsty20KD+uzV6wvM8foWMC8p+DHhdcIx9wIyl20p8PZQlGl1TgZfyOIGwtpL91d6LV8ZRc7NR21NeYgqYHCM3oUvK54V1Suwozh4uYpwFVENDuzqrGdkPJr8j1fc61Ee/77j0vlFoCe7yJ3Sbbq6DuZ93htIrrLEZQc/u9cAzsqvq9mTiZFuk7V+Ve+U/+AgEhUZV/MywZa0Vstzhtag3lgSuI3VLSbYMRvxZ/1jLodl9oo7YNbJGw2kp/O99VKMrx0LTN88C48mFsNBQunNJniuNn0PA2o6Q5T67gDsARcvYk2MdKlzu1SsM7cuWVC9M50G8mPba+5df9VPMVcLRw1Hn4kjVXovgbDA9l+Fb0YQQU+9KrFYGWUekG0u0J0qnaln1QqUnhsTZT4H8dR9fyujd2VjQ5wXykdgDCPcn5OIMYVPjfa7JBrXuJY/8jastb+LEv11HaSA8XLfYq9hQxRsIie6JfK+X3QTYQ4CA9BLyJVXNDomP3Dzx9tns3XzsxD2JYY4XV9Li7Y1ilhdzPBtaMKYUCO+WRb9wCg7G79l8nLzitQ/rBYLx4CIja2fAn31JKqjOBF1nP0zViq8fTYhN4FKDHlY8zQdqaZaq7GvTxIuyOTGKhieo29bIkWtL2ZpaURyqPfu26hDvqfVo0Wju1NYIunqD5qyvFFhydLUICgQiKryBDWTIWOx7W7TWMywuGmClw40wolbT4yKKJ42pU2jp4X8M05QZ2SqhDpXYDCxQlhRFFTJJ3PdjR7yfomBC/mXuP/Bosx26EVdPGA652dDLCzjuDqmANmwlRChROzk5Dtq
+ tjqZB2a6
+ k1bIOHCqSxoAv92ne0MZMxtkUbpaHeT1+6Z7NGtNrnemltDrijvSJ2RIjaUxuQQWT1auQN4nq/4r6BfQwaAmB8IAqVw/9/HTGc6v2mrLfXF/4lKfgIIStsMFlNXL4olZduVqlLXEJZSqHglFvP5wD6cK0100LNq5NntB0YJef1YQrbHRMT0nXYgRMZgogbODMsR1hdiPdrbM5jIno86Tk/aKIggTMX5WSUkpFPCF3yBg4F1Y0q6dT2lXJzDrTaUhgdoIHtyQ/HUXXJYUl1UZZAhDy+HjLLy00T+0vQHmn3dUO7WLPiVzjeN2wPAdH51zpHR8JFOP66pzreb6VCNYt4FyXUS6LsaiIxXh3a8MTG+zvV29v1a0QKlWn1nUJTb2L4uGacf0viI+Mtwed2WIzWfrc13eW1aU2W3+uCBMfGsOUzThFXdNhLjbqCmAjjJE3KXbGNayGKfrNBHMuRtQxr6CIY7woqJHem9S2xe++yMTVsrqYixz5P77sIJonp95BxgLPoLARvFtw4vKAhRqbYqx8F+dHI+pAxmsgJ5Vd5Z5+bh9++wyUaJsMVcRNF00t6+wggKx9TexV/nnSC5bxEk4HR5k1m3b40s3B71ort4eeVukHEGsMCT/Xpmneus6z8Ni+QtKja+Jv3553W+yxE/ylj4OOlzaWiPk7LfdkgoIzYNN9EEIJ/akerl0ZnUDItv7T050WsfySoG4vC+SCXglvrnZaje8Ypa3VbScFCfZJY5qwt9SZRXm+lOsWAWn4nRsyN95a/BCyMep5xQ3gTFUtPM+Md5NQU81Huuj8vmYVP5ZyBSojpLjEX/30Cc9NsBvKm8ME57NhWex1eI7YPJ+u757dMBQNV9fuGzAjLL6QYTYHQdpihgF726Dn29D24ecTVnX3SvtsJWDrHpIv8oYYKVcnBPu1DJO9uoFBocUMlwb8DgUz+ZXGjSZbSRHMuxAj3rkOoHUFl9LgUpDvhiVL9nhx
+ h/4R8pTB
+ USoemhQ6onocJzHlPoXONM4oVGsZLk5CcHc8rheg63th10qksir1v2DwM+x1DKaTZZ41kmb8O1GebdQmCGoLBPQvozbhMYhsr5+u4wzTY0gxVU77uHhfRRha0WZiXatU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,378 +243,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the hierarchical tree counter approximation to implement the OOM
-killer task selection with a 2-pass algorithm. The first pass selects
-the process that has the highest badness points approximation, and the
-second pass compares each process using the current max badness points
-approximation.
 
-The second pass uses an approximate comparison to eliminate all processes
-which are below the current max badness points approximation accuracy
-range.
+> -----Original Message-----
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Sent: Friday, December 12, 2025 2:25 PM
+> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
+> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
+;
+> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v13 19/22] mm: zswap: Per-CPU acomp_ctx resources
+> exist from pool creation to deletion.
+>=20
+> On Fri, Dec 12, 2025 at 08:53:13PM +0000, Sridhar, Kanchana P wrote:
+> [..]
+> > > On Fri, Dec 12, 2025 at 06:17:07PM +0000, Sridhar, Kanchana P wrote:
+> > > > >
+> > > > > >  	ret =3D
+> > > > > cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> > > > > >  				       &pool->node);
+> > > > > >  	if (ret)
+> > > > > > -		goto error;
+> > > > > > +		goto ref_fail;
+> > > > >
+> > > > > IIUC we shouldn't call cpuhp_state_remove_instance() on failure, =
+we
+> > > > > probably should add a new label.
+> > > >
+> > > > In this case we should because it is part of the pool creation fail=
+ure
+> > > > handling flow, at the end of which, the pool will be deleted.
+> > >
+> > > What I mean is, when cpuhp_state_add_instance() fails we goto ref_fai=
+l
+> > > which will call cpuhp_state_remove_instance(). But the current code d=
+oes
+> > > not call cpuhp_state_remove_instance() if cpuhp_state_add_instance()
+> > > fails.
+> >
+> > I see what you mean. The current mainline code does not call
+> > cpuhp_state_remove_instance() if cpuhp_state_add_instance() fails,
+> because
+> > the cpuhotplug code will call the teardown callback in this case.
+> >
+> > In this patch, I do need to call cpuhp_state_remove_instance() and
+> > acomp_ctx_dealloc() in this case because there is no teardown callback
+> > being registered.
+>=20
+> Hmm looking at cpuhp_state_add_instance(), it seems like it doesn't add
+> the node to the list on failure. cpuhp_state_remove_instance() only
+> removes the node from the list when there's no teardown cb, so it will
+> be a nop in this case.
+>=20
+> What we need to do is manual cleanup, since there is no teardown cb,
+> which is already being done by acomp_ctx_dealloc() IIUC.
+>=20
+> So I think calling cpuhp_state_remove_instance() when
+> cpuhp_state_add_instance() fails is not needed, and I don't see other
+> callers doing it.
 
-Summing the per-CPU counters to calculate the precise badness of tasks
-is only required for tasks with an approximate badness within the
-accuracy range of the current max points value.
+You are right. I too have verified this. I will create a label for the call
+to acomp_ctx_dealloc() and fix this.
 
-Limit to 16 the maximum number of badness sums allowed for an OOM killer
-task selection before falling back to the approximated comparison. This
-ensures bounded execution time for scenarios where many tasks have
-badness within the accuracy of the maximum badness approximation.
-
-Tested with the following script:
-
-  #!/bin/sh
-
-  for a in $(seq 1 10); do (tail /dev/zero &); done
-  sleep 5
-  for a in $(seq 1 10); do (tail /dev/zero &); done
-  sleep 2
-  for a in $(seq 1 10); do (tail /dev/zero &); done
-  echo "Waiting for tasks to finish"
-  wait
-
-Results: OOM kill order on a 128GB memory system
-================================================
-
-* systemd and sd-pam are chosen first due to their oom_score_ajd:100:
-
-Out of memory: Killed process 3502 (systemd) total-vm:20096kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:72kB oom_score_adj:100
-Out of memory: Killed process 3503 ((sd-pam)) total-vm:21432kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:76kB oom_score_adj:100
-
-* The first batch of 10 processes are gradually killed, consecutively
-  picking the one that uses the most memory. The fact that we are
-  freeing memory from the previous processes increases the threshold
-  at which the remaining processes of that group are killed. Processes
-  from the second and third batches of 10 processes have time to start
-  before we complete killing the first 10 processes:
-
-Out of memory: Killed process 3703 (tail) total-vm:6591280kB, anon-rss:6578176kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:12936kB oom_score_adj:0
-Out of memory: Killed process 3705 (tail) total-vm:6731716kB, anon-rss:6709248kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13212kB oom_score_adj:0
-Out of memory: Killed process 3707 (tail) total-vm:6977216kB, anon-rss:6946816kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13692kB oom_score_adj:0
-Out of memory: Killed process 3699 (tail) total-vm:7205640kB, anon-rss:7184384kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14136kB oom_score_adj:0
-Out of memory: Killed process 3713 (tail) total-vm:7463204kB, anon-rss:7438336kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14644kB oom_score_adj:0
-Out of memory: Killed process 3701 (tail) total-vm:7739204kB, anon-rss:7716864kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15180kB oom_score_adj:0
-Out of memory: Killed process 3709 (tail) total-vm:8050176kB, anon-rss:8028160kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15792kB oom_score_adj:0
-Out of memory: Killed process 3711 (tail) total-vm:8362236kB, anon-rss:8339456kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16404kB oom_score_adj:0
-Out of memory: Killed process 3715 (tail) total-vm:8649360kB, anon-rss:8634368kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16972kB oom_score_adj:0
-Out of memory: Killed process 3697 (tail) total-vm:8951788kB, anon-rss:8929280kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:17560kB oom_score_adj:0
-
-* Even though there is a 2 seconds delay between the 2nd and 3rd batches
-  those appear to execute in mixed order. Therefore, let's consider them
-  as a single batch of 20 processes. We are hitting oom at a lower
-  memory threshold because at this point the 20 remaining proceses are
-  running rather than the previous 10. The process with highest memory
-  usage is selected for oom, thus making room for the remaining
-  processes so they can use more memory before they fill the available
-  memory, thus explaining why the memory use for selected processes
-  gradually increases, until all system memory is used by the last one:
-
-Out of memory: Killed process 3731 (tail) total-vm:7089868kB, anon-rss:7077888kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13912kB oom_score_adj:0
-Out of memory: Killed process 3721 (tail) total-vm:7417248kB, anon-rss:7405568kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14556kB oom_score_adj:0
-Out of memory: Killed process 3729 (tail) total-vm:7795864kB, anon-rss:7766016kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15300kB oom_score_adj:0
-Out of memory: Killed process 3723 (tail) total-vm:8259620kB, anon-rss:8224768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16208kB oom_score_adj:0
-Out of memory: Killed process 3737 (tail) total-vm:8695984kB, anon-rss:8667136kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:17060kB oom_score_adj:0
-Out of memory: Killed process 3735 (tail) total-vm:9295980kB, anon-rss:9265152kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:18240kB oom_score_adj:0
-Out of memory: Killed process 3727 (tail) total-vm:9907900kB, anon-rss:9895936kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:19428kB oom_score_adj:0
-Out of memory: Killed process 3719 (tail) total-vm:10631248kB, anon-rss:10600448kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:20844kB oom_score_adj:0
-Out of memory: Killed process 3733 (tail) total-vm:11341720kB, anon-rss:11321344kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:22232kB oom_score_adj:0
-Out of memory: Killed process 3725 (tail) total-vm:12348124kB, anon-rss:12320768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:24204kB oom_score_adj:0
-Out of memory: Killed process 3759 (tail) total-vm:12978888kB, anon-rss:12967936kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:25440kB oom_score_adj:0
-Out of memory: Killed process 3751 (tail) total-vm:14386412kB, anon-rss:14352384kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:28196kB oom_score_adj:0
-Out of memory: Killed process 3741 (tail) total-vm:16153168kB, anon-rss:16130048kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:31652kB oom_score_adj:0
-Out of memory: Killed process 3753 (tail) total-vm:18414856kB, anon-rss:18391040kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:36076kB oom_score_adj:0
-Out of memory: Killed process 3745 (tail) total-vm:21389456kB, anon-rss:21356544kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:41904kB oom_score_adj:0
-Out of memory: Killed process 3747 (tail) total-vm:25659348kB, anon-rss:25632768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:50260kB oom_score_adj:0
-Out of memory: Killed process 3755 (tail) total-vm:32030820kB, anon-rss:32006144kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:62720kB oom_score_adj:0
-Out of memory: Killed process 3743 (tail) total-vm:42648456kB, anon-rss:42614784kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:83504kB oom_score_adj:0
-Out of memory: Killed process 3757 (tail) total-vm:63971028kB, anon-rss:63938560kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:125228kB oom_score_adj:0
-Out of memory: Killed process 3749 (tail) total-vm:127799660kB, anon-rss:127778816kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:250140kB oom_score_adj:0
-
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: christian.koenig@amd.com
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-mm@kvack.org
-Cc: linux-trace-kernel@vger.kernel.org
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
----
- fs/proc/base.c      |  2 +-
- include/linux/mm.h  | 34 +++++++++++++++++----
- include/linux/oom.h | 12 +++++++-
- mm/oom_kill.c       | 72 +++++++++++++++++++++++++++++++++++++--------
- 4 files changed, 101 insertions(+), 19 deletions(-)
-
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 6299878e3d97..fa48411835ba 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -589,7 +589,7 @@ static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
- 	unsigned long points = 0;
- 	long badness;
- 
--	badness = oom_badness(task, totalpages);
-+	badness = oom_badness(task, totalpages, false, NULL, NULL);
- 	/*
- 	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
- 	 * badness value into [0, 2000] range which we have been
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index cd81fa8924eb..84a67036d010 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2702,14 +2702,32 @@ static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct m
- /*
-  * per-process(per-mm_struct) statistics.
-  */
-+static inline unsigned long __get_mm_counter(struct mm_struct *mm, int member, bool approximate,
-+					     unsigned int *accuracy_under, unsigned int *accuracy_over)
-+{
-+	if (approximate) {
-+		if (accuracy_under && accuracy_over) {
-+			unsigned int under, over;
-+
-+			percpu_counter_tree_approximate_accuracy_range(&mm->rss_stat[member], &under, &over);
-+			*accuracy_under += under;
-+			*accuracy_over += over;
-+		}
-+		return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
-+	} else {
-+		return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
-+	}
-+}
-+
- static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
- {
--	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
-+	return __get_mm_counter(mm, member, true, NULL, NULL);
- }
- 
-+
- static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
- {
--	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
-+	return get_mm_counter(mm, member);
- }
- 
- void mm_trace_rss_stat(struct mm_struct *mm, int member);
-@@ -2750,11 +2768,17 @@ static inline int mm_counter(struct folio *folio)
- 	return mm_counter_file(folio);
- }
- 
-+static inline unsigned long __get_mm_rss(struct mm_struct *mm, bool approximate,
-+					 unsigned int *accuracy_under, unsigned int *accuracy_over)
-+{
-+	return __get_mm_counter(mm, MM_FILEPAGES, approximate, accuracy_under, accuracy_over) +
-+		__get_mm_counter(mm, MM_ANONPAGES, approximate, accuracy_under, accuracy_over) +
-+		__get_mm_counter(mm, MM_SHMEMPAGES, approximate, accuracy_under, accuracy_over);
-+}
-+
- static inline unsigned long get_mm_rss(struct mm_struct *mm)
- {
--	return get_mm_counter(mm, MM_FILEPAGES) +
--		get_mm_counter(mm, MM_ANONPAGES) +
--		get_mm_counter(mm, MM_SHMEMPAGES);
-+	return __get_mm_rss(mm, true, NULL, NULL);
- }
- 
- static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
-diff --git a/include/linux/oom.h b/include/linux/oom.h
-index 7b02bc1d0a7e..ef3919e4c7f2 100644
---- a/include/linux/oom.h
-+++ b/include/linux/oom.h
-@@ -48,6 +48,13 @@ struct oom_control {
- 	unsigned long totalpages;
- 	struct task_struct *chosen;
- 	long chosen_points;
-+	bool approximate;
-+	/*
-+	 * Number of precise badness points sums performed by this task
-+	 * selection.
-+	 */
-+	int nr_precise;
-+	unsigned long accuracy_under;
- 
- 	/* Used to print the constraint info. */
- 	enum oom_constraint constraint;
-@@ -97,7 +104,10 @@ static inline vm_fault_t check_stable_address_space(struct mm_struct *mm)
- }
- 
- long oom_badness(struct task_struct *p,
--		unsigned long totalpages);
-+		unsigned long totalpages,
-+		bool approximate,
-+		unsigned int *accuracy_under,
-+		unsigned int *accuracy_over);
- 
- extern bool out_of_memory(struct oom_control *oc);
- 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index c145b0feecc1..e3f6ca500701 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -53,6 +53,14 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/oom.h>
- 
-+/*
-+ * Maximum number of badness sums allowed before using an approximated
-+ * comparison. This ensures bounded execution time for scenarios where
-+ * many tasks have badness within the accuracy of the maximum badness
-+ * approximation.
-+ */
-+static int max_precise_badness_sums = 16;
-+
- static int sysctl_panic_on_oom;
- static int sysctl_oom_kill_allocating_task;
- static int sysctl_oom_dump_tasks = 1;
-@@ -194,12 +202,16 @@ static bool should_dump_unreclaim_slab(void)
-  * oom_badness - heuristic function to determine which candidate task to kill
-  * @p: task struct of which task we should calculate
-  * @totalpages: total present RAM allowed for page allocation
-+ * @approximate: whether the value can be approximated
-+ * @accuracy_under: accuracy of the badness value approximation (under value)
-+ * @accuracy_over: accuracy of the badness value approximation (over value)
-  *
-  * The heuristic for determining which task to kill is made to be as simple and
-  * predictable as possible.  The goal is to return the highest value for the
-  * task consuming the most memory to avoid subsequent oom failures.
-  */
--long oom_badness(struct task_struct *p, unsigned long totalpages)
-+long oom_badness(struct task_struct *p, unsigned long totalpages, bool approximate,
-+		 unsigned int *accuracy_under, unsigned int *accuracy_over)
- {
- 	long points;
- 	long adj;
-@@ -228,7 +240,8 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
- 	 * The baseline for the badness score is the proportion of RAM that each
- 	 * task's rss, pagetable and swap space use.
- 	 */
--	points = get_mm_rss(p->mm) + get_mm_counter(p->mm, MM_SWAPENTS) +
-+	points = __get_mm_rss(p->mm, approximate, accuracy_under, accuracy_over) +
-+		__get_mm_counter(p->mm, MM_SWAPENTS, approximate, accuracy_under, accuracy_over) +
- 		mm_pgtables_bytes(p->mm) / PAGE_SIZE;
- 	task_unlock(p);
- 
-@@ -309,6 +322,7 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
- static int oom_evaluate_task(struct task_struct *task, void *arg)
- {
- 	struct oom_control *oc = arg;
-+	unsigned int accuracy_under = 0, accuracy_over = 0;
- 	long points;
- 
- 	if (oom_unkillable_task(task))
-@@ -339,9 +353,28 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
- 		goto select;
- 	}
- 
--	points = oom_badness(task, oc->totalpages);
--	if (points == LONG_MIN || points < oc->chosen_points)
--		goto next;
-+	points = oom_badness(task, oc->totalpages, true, &accuracy_under, &accuracy_over);
-+	if (oc->approximate) {
-+		if (points == LONG_MIN || points < oc->chosen_points)
-+			goto next;
-+	} else {
-+		/*
-+		 * Eliminate processes which are below the chosen
-+		 * points accuracy range with an approximation.
-+		 */
-+		if (points == LONG_MIN || (long)(points + accuracy_over + oc->accuracy_under - oc->chosen_points) < 0)
-+			goto next;
-+
-+		if (oc->nr_precise < max_precise_badness_sums) {
-+			accuracy_under = 0;
-+			accuracy_over = 0;
-+			oc->nr_precise++;
-+			/* Precise evaluation. */
-+			points = oom_badness(task, oc->totalpages, false, NULL, NULL);
-+			if (points == LONG_MIN || (long)(points + oc->accuracy_under - oc->chosen_points) < 0)
-+				goto next;
-+		}
-+	}
- 
- select:
- 	if (oc->chosen)
-@@ -349,6 +382,7 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
- 	get_task_struct(task);
- 	oc->chosen = task;
- 	oc->chosen_points = points;
-+	oc->accuracy_under = accuracy_under;
- next:
- 	return 0;
- abort:
-@@ -358,14 +392,8 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
- 	return 1;
- }
- 
--/*
-- * Simple selection loop. We choose the process with the highest number of
-- * 'points'. In case scan was aborted, oc->chosen is set to -1.
-- */
--static void select_bad_process(struct oom_control *oc)
-+static void select_bad_process_iter(struct oom_control *oc)
- {
--	oc->chosen_points = LONG_MIN;
+>=20
+> [..]
+> > > > > > @@ -322,9 +346,15 @@ static struct zswap_pool
+> > > > > *__zswap_pool_create_fallback(void)
+> > > > > >
+> > > > > >  static void zswap_pool_destroy(struct zswap_pool *pool)
+> > > > > >  {
+> > > > > > +	int cpu;
+> > > > > > +
+> > > > > >  	zswap_pool_debug("destroying", pool);
+> > > > > >
+> > > > > >
+> 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+> > > > > &pool->node);
+> > > > > > +
+> > > > > > +	for_each_possible_cpu(cpu)
+> > > > > > +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx,
+> cpu));
+> > > > > > +
+> > > > > >  	free_percpu(pool->acomp_ctx);
+> > > > > >
+> > > > > >  	zs_destroy_pool(pool->zs_pool);
+> > > > > > @@ -736,39 +766,35 @@ static int
+> > > zswap_cpu_comp_prepare(unsigned int
+> > > > > cpu, struct hlist_node *node)
+> > > > > >  {
+> > > > > >  	struct zswap_pool *pool =3D hlist_entry(node, struct
+> zswap_pool,
+> > > > > node);
+> > > > > >  	struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool-
+> > > > > >acomp_ctx, cpu);
+> > > > > > -	struct crypto_acomp *acomp =3D NULL;
+> > > > > > -	struct acomp_req *req =3D NULL;
+> > > > > > -	u8 *buffer =3D NULL;
+> > > > > > -	int ret;
+> > > > > > +	int ret =3D -ENOMEM;
+> > > > > >
+> > > > > > -	buffer =3D kmalloc_node(PAGE_SIZE, GFP_KERNEL,
+> cpu_to_node(cpu));
+> > > > > > -	if (!buffer) {
+> > > > > > -		ret =3D -ENOMEM;
+> > > > > > -		goto fail;
+> > > > > > -	}
+> > > > > > +	/*
+> > > > > > +	 * To handle cases where the CPU goes through online-
+> offline-online
+> > > > > > +	 * transitions, we return if the acomp_ctx has already been
+> initialized.
+> > > > > > +	 */
+> > > > > > +	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> > > > > > +		return 0;
+> > > > >
+> > > > > Is it possible for acomp_ctx->acomp to be an ERR value here? If i=
+t is,
+> > > > > then zswap initialization should have failed. Maybe
+> WARN_ON_ONCE() for
+> > > > > that case?
+> > > >
+> > > > This is checking for a valid acomp_ctx->acomp using the same criter=
+ia
+> > > > being uniformly used in acomp_ctx_dealloc(). This check is necessar=
+y to
+> > > > handle the case where the CPU goes through online-offline-online st=
+ate
+> > > > transitions.
+> > >
+> > > I think I am confused. I thought now we don't free this on CPU offlin=
+e,
+> > > so either it's NULL because this is the first time we initialize it o=
+n
+> > > this CPU, or it is allocated.
+> >
+> > Yes, this is correct.
+> >
+> > > If it is an ERR value, then the pool
+> > > creation should have failed and we wouldn't be calling this again on =
+CPU
+> > > online.
+> > >
+> > > In other words, what scenario do we expect to legitimately see an ERR
+> > > value here?
+> >
+> > I am using "(!IS_ERR_OR_NULL(acomp_ctx->acomp)" as a check for the
+> > acomp being allocated already. I could instead have used "if (acomp_ctx=
 -
- 	if (is_memcg_oom(oc))
- 		mem_cgroup_scan_tasks(oc->memcg, oom_evaluate_task, oc);
- 	else {
-@@ -379,6 +407,26 @@ static void select_bad_process(struct oom_control *oc)
- 	}
- }
- 
-+/*
-+ * Simple selection loop. We choose the process with the highest number of
-+ * 'points'. In case scan was aborted, oc->chosen is set to -1.
-+ */
-+static void select_bad_process(struct oom_control *oc)
-+{
-+	oc->chosen_points = LONG_MIN;
-+	oc->accuracy_under = 0;
-+	oc->nr_precise = 0;
-+
-+	/* Approximate scan. */
-+	oc->approximate = true;
-+	select_bad_process_iter(oc);
-+	if (oc->chosen == (void *)-1UL)
-+		return;
-+	/* Precise scan. */
-+	oc->approximate = false;
-+	select_bad_process_iter(oc);
-+}
-+
- static int dump_task(struct task_struct *p, void *arg)
- {
- 	struct oom_control *oc = arg;
--- 
-2.39.5
+> >acomp)",
+> > but use the former to be consistent with patch 20/22.
+> >
+> > I cannot think of a scenario where we can expect an ERR value here.
+>=20
+> Yeah maybe do if (acomp_ctx->acomp) and
+> WARN_ON_ONCE(IS_ERR(acomp_ctx->acomp))?
+
+Sure.
+
+Thanks,
+Kanchana
 
 
