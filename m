@@ -4,135 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A55DD59F7A
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 08:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E15F6D59F6F
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 08:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 702E16B0005; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
+	id 556696B0005; Sat, 13 Dec 2025 03:00:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68CC76B0007; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
+	id 5075A6B0007; Sat, 13 Dec 2025 03:00:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52E4E6B0008; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
+	id 3F6286B0008; Sat, 13 Dec 2025 03:00:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E0C56B0005
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE9DF1A055A
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:13 +0000 (UTC)
-X-FDA: 84213699906.28.9DFAC55
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8341A180016
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b=PD7k7SrW;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d b5hIDJ";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf24.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765612811; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 30D6C6B0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 03:00:58 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE5C81A055E
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:57 +0000 (UTC)
+X-FDA: 84213701754.16.DB4A01A
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D3999140005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765612856; a=rsa-sha256;
 	cv=none;
-	b=BokS1dxUcImi7UZSR6iocCQWerRN84s7Kq1fc+7U6qqyuf3zQ5T2TfHcaF3eQ6GT/lW8yo
-	xfLSPVX9TFnV8WTmRcvcNYpB8XmGWrqerxwjvidcC7tV2TOrFO6msB1zgafEL5bUTEWQaP
-	HFlQCRbN2DLrosvlZ+jAf+hArkrZzqA=
+	b=zxeL7twRHuTInAXsAGzZp5VaJKEGF80sP55Evy8ZlixihnBoJRJ1XdURFm/18HlDQE4Eua
+	qb1A8+zNOeQx6m1GwUqwkDZ3qvE41SVn4aNZJVeUS5VmqMY1nIPwtb4TVZ3UclYaNWcsbF
+	ZV4rPbuMLP8C67nOTO7AejzewEQogDI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b=PD7k7SrW;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d b5hIDJ";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf24.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765612811;
+	s=arc-20220608; t=1765612856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=;
-	b=WgwzsI9AbbZWOESOf1lKmggH4GtXS3+havp266U2Q8i1zHuHxSvCOltxsYiD4HC/VIdc+p
-	jS5coM6KgQgFyOQE4xAkFFJSfKjoNGstLfBVDUmeFY1NCCERMJKoNSdE+o3sNdFsl20SsQ
-	74sPPXK7Oexba+HR/LHVg06b8Y22e/E=
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.phl.internal (Postfix) with ESMTP id 9E74EEC0571;
-	Sat, 13 Dec 2025 03:00:10 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Sat, 13 Dec 2025 03:00:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1765612810;
-	 x=1765699210; bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=; b=
-	PD7k7SrW+VLJLCwifJ5cLDKSHOPAtI3Nq6ft0mZE/r7pGm0YRIjjxRMUA//oqvUR
-	N2XYY8qETgbHaPH46U1og3bwYSjQt+tr7PmDmFhWtZYkR09XHl1s0vNyGhxNFUU9
-	fHWj6w7v9XvOJKYC9k5UHhUkFAPUwdrKN5KWHwPMBJmqskNuAMlord9myRNCV2bB
-	hcp/Kc4JF6Jj6JAr2w0xtmcMgAFeAddfk7DtGSI2weHhNekGkxxVZHp6lEdUoDeo
-	Fdd4RTw84fYPjeuidCq8QHKERicP5/B2+kVdRmTIfF8QyPRtlTcVM5KSJq+7HxbG
-	OduxX7EQqP97kOhI5tPaQQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765612810; x=
-	1765699210; bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=; b=d
-	b5hIDJicNFH3b9OB0jJB2phHJ3qewHZuZCoujThWEntl1lDuDeAgS73te5jhO4EF
-	9Q/yOTYFtUIXtfJNNnZ1CP64XhMGEqWo6pCMRY+E1aPGOLcARoPBNxwkXBPV/zC6
-	ITN8RksTZFprefNBs+MxJp3vh74/q4k3Qbu/KzwqaIfXPFBDolTgqNGFKwwznyfS
-	uy/Ph95RTFkgBqKoh+k5KizLhDQKwB6XIn7KvAJXX7CHryeFE5F2MsUx2LnS4jkm
-	4iCZJOCN7Gd4n89Lt0UzuMTtNM6vPE+xDSf9wlO349ObeyP6C87a/iWIzX4hGv3R
-	SIyS1jdQqEZGGUMgMANqA==
-X-ME-Sender: <xms:CR09aZ0se5d3fy_spLds3LVWykP23hi5QJ_eccTKLMMaT2yakXNTEw>
-    <xme:CR09aZdYqUErkr3zt0uuDzHNmoy5bH0Q8A7iugKAOQG7ZGxHf98FfWT343M3rveIW
-    360q_eOPk2tYN3JGbXQ1UWkTEFSIKg2ezIkc3hg62vQbrJxBdnbUQ>
-X-ME-Received: <xmr:CR09aSag5YeKcHmQCnWMWnKF6g3erPdMltjQi4jA1YVdZW2pcNlqKwcl>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkjghfgggtgfesthejredttd
-    dtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhhrgii
-    sghothdrohhrgheqnecuggftrfgrthhtvghrnhephedvtdeuveejudffjeefudfhueefje
-    dvtefgffdtieeiudfhjeejhffhfeeuvedunecuffhomhgrihhnpehkvghrnhgvlhdrohhr
-    ghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
-    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudejpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpth
-    htohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehnvhhi
-    ughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprhgtph
-    htthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhmthhh
-    ohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopehlihhnmhhirghohhgvsehhuhgrfigvihdr
-    tghomhdprhgtphhtthhopehnrghordhhohhrihhguhgthhhisehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:CR09aWXS5_16LGB8Zv-_B0guUAGOluib79melqLDniY5OlYEwDI3jg>
-    <xmx:CR09adRYhMy-CWM-TT_seE_oFA2Bk7s7FFFGh988PjaW2-8cjwRW5A>
-    <xmx:CR09aTEUGmVjFZuiM6tjs9PJv1_a7j10QHjI_kTDcTnLLGmL0LeLNA>
-    <xmx:CR09aUdBYE-UU5jPFlusESAWcmhzir2Gv4JT7HUM7dfRQxq4KivpMA>
-    <xmx:Ch09aS6qUcggBsvuf3RJTQtwZHXzdMqLHkGhpRpB3Dqw8-TVvl6jGrgq>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 13 Dec 2025 03:00:05 -0500 (EST)
-Date: Sat, 13 Dec 2025 17:00:02 +0900
-From: Alex Williamson <alex@shazbot.org>
-To: <ankita@nvidia.com>
-Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
- <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <akpm@linux-foundation.org>,
- <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <cjia@nvidia.com>,
- <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
- <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 3/3] vfio/nvgrace-gpu: register device memory for
- poison handling
-Message-ID: <20251213170002.5babbf70.alex@shazbot.org>
-In-Reply-To: <20251213044708.3610-4-ankita@nvidia.com>
-References: <20251213044708.3610-1-ankita@nvidia.com>
-	<20251213044708.3610-4-ankita@nvidia.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=uwMoXNDgoraLN2s2u+sQU14RS7UZ7t31vygWf6FGxo8=;
+	b=0p1KsoC56IwCctrC/UtmOpTVgCEC7DtBYZ/gobEWO7bbh99pa2dFbdQiaSh4Qty9W85AY8
+	/gaVNHUXFkKbl0WruIfCPfVn3pGbuen/IY4/DSW2pF6egZNqmE/XLNyzujIgGK/15itIDh
+	0IMI5DOuoiWrW6H/QCf5b00nsXIMm64=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a09d981507so719905ad.1
+        for <linux-mm@kvack.org>; Sat, 13 Dec 2025 00:00:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765612855; x=1766217655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uwMoXNDgoraLN2s2u+sQU14RS7UZ7t31vygWf6FGxo8=;
+        b=dBlWm4U0CJp4Jtk051Ktys9o/EVupf+H1QKEYVApGVYvEkfLmy+HF4JJ+rSOTtWPNS
+         vhw9mC/Jf1CW23FkRkEenZ7VXsrjdgwH0CTRN98tZYmcmuxA+guPujdTWpzgVS/md/9A
+         KUKTABkk9cQ1mKlvy8wgelIX7nHjYUzp01fl+9dvBiFpvl7C6GVw7NyxepkI0Yg7YUL/
+         lJq32mLcaMqSNrJ3T5/Gx+fttN9U123ZD9mJaX6cms0W+yJczjbWipNwkQevpMlw+yJx
+         Q6Jti/5YNnIZuaUsAHY29qvImIqMP/2po5xEt1TmSCIGBuX4t4HlGcQo1FV5xZLg2MlS
+         gGVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKRClOcOx62rPuBnI6GcrfpLw+wZMKHgNtcyxl3zPTpvDmMxMNJkp/R/8igmPpZQRdt3oEhEfT3g==@kvack.org
+X-Gm-Message-State: AOJu0Yzl25hWzL0JAvwO7ySqLgX0wIuzoLbHXn3N388f/qi1KxokFGZR
+	KopkEqNYPAHaKBhrX6fxrRkxozPx7NKrPW16PJUDD5kOO3XGxfTfwPgQ
+X-Gm-Gg: AY/fxX5GgRjajvoXKDgCLbVGCX2hk+0zt2C4K69KQLHbOrgK1sm6pmmluNYHonRqSWg
+	l3qIugJ9+ET1jp17KH9tirqnZ6Si42oeH2Rit1+Xta5as19mCK3/t53P9bzkbY5HoC1TKq3jl9K
+	TLES3rHJuJBOfMvaREHtYb7lU9q7SOqtEfPERM2j/m3kcMHOwh1sNfiBnJyNpSsreEU/4AH2U5Z
+	FcCXds6C+Zr1sZcZ6eCJcHlD+pXFPkRGPworVTFubRfU0qmztutTqfdkOzuWwckxYAcpDZrWow4
+	GLzuoNme7NU3x76kQVqM/OJqWEYr7kmTS/dJrnNVd+qW1XeoHeD1111xB/4OY3MxQC7kPTT+nX6
+	GUSxhp2oUrlztS+1d7v+dq1S3SWpZraoctwj8jPMtU3BLOOgFvLoXILCA2E72r12IbctTrHpd5K
+	5fOX3Ud80DZ21Yzvf69QQBQk4JUg==
+X-Google-Smtp-Source: AGHT+IH/JoAGIeWkbC5Ijwb4LT700SBRuvmuttOCUbTdCoNc0d7rgbi/92X8za8oyhtLlyVRSzlnrA==
+X-Received: by 2002:a17:903:1c3:b0:266:57f7:25f5 with SMTP id d9443c01a7336-29eeea041c6mr87005275ad.7.1765612854584;
+        Sat, 13 Dec 2025 00:00:54 -0800 (PST)
+Received: from localhost.localdomain ([45.142.165.134])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f05287fa3sm53149155ad.5.2025.12.13.00.00.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 13 Dec 2025 00:00:54 -0800 (PST)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	ioworker0@gmail.com,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFC 0/3] skip redundant TLB sync IPIs
+Date: Sat, 13 Dec 2025 16:00:22 +0800
+Message-ID: <20251213080038.10917-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8341A180016
-X-Stat-Signature: a83tqkg5zrw81nqt5ocxynxn8ai4e5mt
-X-HE-Tag: 1765612811-609087
-X-HE-Meta: U2FsdGVkX1+wtjzuXkKdAaGMbLa38XmeXG33yUBKckjP3/21B7+gJ/R9lAFd+bG0nkJKyCzYwkYFM3p+imAcFRou2itDDhjbIwt8nsrbZgaSCIP2dqiF7pnYyFRnVYHJbxavVdK6m3cEFZKCp3eQoin0G2vHANnx6RvF3fP0R7U3+vScS5ciNobbBZzw/KdRMfxp84yRNJeYGxute7VxneLwt6xP195VTbRDx8Ilu21H2JaGiJ+GJ7zVuWhuaDRXWcDgqbSNPIDxlq1OKrMy3RW0h5AdICZgDbXX1MVzmuntsIB+aiU8m6T3IrOy3HkRMbfxcdTU4iDytyl2+Vq0PtbQUHUxia/iZwTSPdliozpTxpgDUA0SrlErD1Dyw1YyVQa6TT1T6NKv32SapkpMsgbSJjeBYEtChn/ucENXhFbI16IiPFfN9g0uHV4ixXZgH9X0hU0yI6rgkN15CixYXdVoXGwI6WsiB8dNQ+RL9KJrkJfCfS40Txns9Mp4npUGlrkeCw9PIXyK8BnHTIyBVusNMd2aE4vYRrp4yuVtS75huYb0Fouu1kcqsKDpd1yfWXzA6t1CBkHH++r+b7rEPrwEWdnC3W0gYgIDbijvt5Aw1emtYpWwq86WEhLebRyHyVCoPdPRw7u6Hu2oMsiRPvEVSlxQZRndGPoam81TJfdpNLWsrh/m1ki1zqam9KBd3UfuBTfTLMyAwOaKYmuClZWzKwKkCFAkddX9K4fFY0cINMUU9qDRk2iouQzjaN1giRxuQGHc8HJhuNK8Q1/ZMSVVUsQ6RNkEwmvdTKWJdCuuXFeA1ok8fKluepKSFBdhXjno6UQj2SsdyNa9oTbIAN+u0he8jCu3V1X+qrvKrNMqXWXqX1TUPQ909YdtfkMLd62n15Le5fIjOYtf2nEJ6kr0r2S6ROxdFUCXjpBHCD/hmlmS6DEwz3GVBjqBcF+Ewtiz9V/UFwtIR1xQV3S
- arzPKu6t
- ZPl7bep598nazRbEa5VPUjwyW7wYquPrmU+yPGyODOkn5xrOeKLrPDAa8G11eraq2QO4ZhLZgpb6WWnTphHdKVxJD5hZavFsaz71yhkUQaPNLQo9xXmGv6UMna6I/8Sg3fg5vQtst+6mNDZJjXL1JNqRXb4HSUbI6btDr9lcT4Q4o+Eg4hhmLWyS1hyPeTdiQhfUWdjLgyN+gvuLz/xh6eSVg34SBQCqH+jcwka/wd1t/vJ9zu4BtE6Sl+kj8bTW4LL9ukffgyhoI7QMab9UcMlfQWfccaIV0joCX53o+MSR/UXbqa99gcxNNfnSri4W3CNo3UqesN7H6U1TEXnTQesiOPkLJ0FP5wsXG3krWdU3ORAKKrJt7OlL1ThCZRIHjoA4QfBZr0FCERCFHlMv7nQekL/rP9dzLuTJYoVg6S+LfKLDjgysD8SzCnaJEws/LjgEGfOG+iSBvmGHFwg7TS8TxQJhk/8e2GgApJpLNr0nhgaancKeEq/BV6gTUMyZfsm9zTu3o2mP2KLhBEiOqec3Y81+xSsEp+f+z
+X-Rspamd-Queue-Id: D3999140005
+X-Stat-Signature: o9q9mmmws3s9p7ui8icgz6ryitbne79u
+X-HE-Tag: 1765612855-546600
+X-HE-Meta: U2FsdGVkX1+mPVn/KsuDK1uKt2J9OLpQazsJQee+E4W9hPh/CX8BbATfz14E9S4icQOkc6c/fuu8WiLRPiLKnI1sjKRvX1cfy0R1wQEJwgLLeXVkfhpbN7/MxCdrWkoue1lWDIcgNHCu+B21G9BVOwg1PctZEgU9TQHRBia72DVSg4YrvBZiUYKkl77oxwZqeXK4P7dP46bLEEnyElyPWOEztZP6GvKj3rvIsZw1gMntjUrz1YpPB8PZJ9ItzBclRX0iIrqxAIzBXNsZiIeHw+ysacMFjYFPwPbk6Yo6rLPUfdlPymzaQitnzN11BJY61gArE6vLiVM1FpSPNivy+akjxJdlJdgC4PnBbWQaD1yFe4+beG22DFpLJqY4MfJ0v+CmOccr3iMvJQt5cVC1/b+nQEr8Ndlrnug5sH5YpD1nkhw4vI8P8qdnTwj3S2DXooSHw1m/RFYdstGtQDojNYwhht30Q87QDHryXUn/l+b+beLh13eU/tJhHCPlus7SL3B7njG3l4KM8Sydd28dNxTudwAiaejSimZ59/UlBIA4Dlb8929etspL+gCRK7hWoJx/YyJ7EzoOLMjzUR0tjQL3QSEyK3l0FZXeImzT5eAP4USrzX2cPGP2BTL1H//fe5WyxEJFQDK+2t7zuJ0GbYItBJ120sl/UBhjMJfD+C3T7aUXU203MfnKFuaxTV/tXHdzT3m7b+Wmvy8sEGqNh2QdZtFiV4m9FznqyoJJFLydYzZin/CAB6AGHRxyRhzbQ7y/v4liLIXE/dbLZZdgTuCZML2KBHv5bATPu/tSXZKekwUvk8EbeK5fwyJifBVOJlR6xTPOr6E+Cn7ua8Gvv3WUW1apJD1r9yYe76ZEELPP2OBPC2uZH/jB2UCP3Ck3hkHedenIOlBmpHillnBNqhqGv3Qzqn4UlYvs0I1wbRMKGJ0GV516GYvUyTeEoqY4kW70ij2aj/osX4dIxwI
+ E9BM7b+z
+ ozEPjM8IDPDJiAC0U5OVFT7mUy2IrJjtGXYpzdsoX9sjxCiZcQRT7t5L5UCHyFVeqYuXRqNwFvG7DkEQMePVOh08p44lYMmpsbogVFoocNoi7+h0bOuS38El5vDlOgPSq7ex3jw558JsWcFNOBMoM2uV52+xyftTD5P0Fo6WNxwzK5jj0GJabRtNIeAXd1+hwlvdF+BBAt8jBO5F2L3EWz1nWC2AJeRum3rg4sPMBBzSoZ4gp1y5mcYrlOlMbCJsXcNtETsIpx/dLhSzkhAh0hT1qWBaur8fGiyO7o8UDpxh4Qh79x0qImMF3co6FJ7SrhoJ5qUmGI/uQDQreInpOUfVhspai89WoTlCyCye9SI1JKdDZXzu0usgimk81NQYvfrbLmQix9PGqiMuJqWYJh8WOn04oyXh54rF9St/iNcWl/NSz3+SZTfVcYHBNGJylzuMS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,214 +131,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 13 Dec 2025 04:47:08 +0000
-<ankita@nvidia.com> wrote:
+Hi all,
 
-> From: Ankit Agrawal <ankita@nvidia.com>
-> 
-> The nvgrace-gpu module [1] maps the device memory to the user VA (Qemu)
-> without adding the memory to the kernel. The device memory pages are PFNMAP
-> and not backed by struct page. The module can thus utilize the MM's PFNMAP
-> memory_failure mechanism that handles ECC/poison on regions with no struct
-> pages.
-> 
-> The kernel MM code exposes register/unregister APIs allowing modules to
-> register the device memory for memory_failure handling. Make nvgrace-gpu
-> register the GPU memory with the MM on open.
-> 
-> The module registers its memory region, the address_space with the
-> kernel MM for ECC handling and implements a callback function to convert
-> the PFN to the file page offset. The callback functions checks if the
-> PFN belongs to the device memory region and is also contained in the
-> VMA range, an error is returned otherwise.
-> 
-> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.com/ [1]
-> 
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  drivers/vfio/pci/nvgrace-gpu/main.c | 116 +++++++++++++++++++++++++++-
->  1 file changed, 112 insertions(+), 4 deletions(-)
+When unsharing hugetlb PMD page tables or collapsing pages in khugepaged,
+we send two IPIs: one for TLB invalidation, and another to synchronize
+with concurrent GUP-fast walkers. However, if the TLB flush already
+reaches all CPUs, the second IPI is redundant. GUP-fast runs with IRQs
+disabled, so when the TLB flush IPI completes, any concurrent GUP-fast
+must have finished.
 
-I'm not sure where Andrew stands with this series going into v6.19-rc
-via mm as an alternate fix to Linus' revert, but in case it's on the
-table for that to happen:
+This series introduces a way for architectures to indicate their TLB flush
+already provides full synchronization, allowing the redundant IPI to be
+skipped. For now, the optimization is implemented for x86 first and applied
+to both hugetlb PMD unsharing and khugepaged. I will dig into other
+architectures later, and folks maintaining other architectures are welcome
+to help out.
 
-Reviewed-by: Alex Williamson <alex@shazbot.org>
+David Hildenbrand did the initial implementation. I just built on his work
+and relied on off-list discussions to push it further — thanks a lot David!
 
-Otherwise let's get some mm buy-in for the front of the series and
-maybe it should go in through vfio since nvgrace is the only user of
-these interfaces currently.  Thanks,
+Lance Yang (3):
+  mm/tlb: allow architectures to skip redundant TLB sync IPIs
+  x86/mm: implement redundant IPI elimination for PMD unsharing
+  mm/khugepaged: skip redundant IPI in collapse_huge_page()
 
-Alex
+ arch/x86/include/asm/tlb.h | 17 ++++++++++++++++-
+ include/asm-generic/tlb.h  | 22 +++++++++++++++++++++-
+ mm/khugepaged.c            |  7 ++++++-
+ 3 files changed, 43 insertions(+), 3 deletions(-)
 
-> 
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index 84d142a47ec6..91b4a3a135cf 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -9,6 +9,7 @@
->  #include <linux/jiffies.h>
->  #include <linux/pci-p2pdma.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/memory-failure.h>
->  
->  /*
->   * The device memory usable to the workloads running in the VM is cached
-> @@ -49,6 +50,7 @@ struct mem_region {
->  		void *memaddr;
->  		void __iomem *ioaddr;
->  	};                      /* Base virtual address of the region */
-> +	struct pfn_address_space pfn_address_space;
->  };
->  
->  struct nvgrace_gpu_pci_core_device {
-> @@ -88,6 +90,83 @@ nvgrace_gpu_memregion(int index,
->  	return NULL;
->  }
->  
-> +static int pfn_memregion_offset(struct nvgrace_gpu_pci_core_device *nvdev,
-> +				unsigned int index,
-> +				unsigned long pfn,
-> +				pgoff_t *pfn_offset_in_region)
-> +{
-> +	struct mem_region *region;
-> +	unsigned long start_pfn, num_pages;
-> +
-> +	region = nvgrace_gpu_memregion(index, nvdev);
-> +	if (!region)
-> +		return -EINVAL;
-> +
-> +	start_pfn = PHYS_PFN(region->memphys);
-> +	num_pages = region->memlength >> PAGE_SHIFT;
-> +
-> +	if (pfn < start_pfn || pfn >= start_pfn + num_pages)
-> +		return -EFAULT;
-> +
-> +	*pfn_offset_in_region = pfn - start_pfn;
-> +
-> +	return 0;
-> +}
-> +
-> +static inline
-> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *vma);
-> +
-> +static int nvgrace_gpu_pfn_to_vma_pgoff(struct vm_area_struct *vma,
-> +					unsigned long pfn,
-> +					pgoff_t *pgoff)
-> +{
-> +	struct nvgrace_gpu_pci_core_device *nvdev;
-> +	unsigned int index =
-> +		vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> +	pgoff_t vma_offset_in_region = vma->vm_pgoff &
-> +		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-> +	pgoff_t pfn_offset_in_region;
-> +	int ret;
-> +
-> +	nvdev = vma_to_nvdev(vma);
-> +	if (!nvdev)
-> +		return -ENOENT;
-> +
-> +	ret = pfn_memregion_offset(nvdev, index, pfn, &pfn_offset_in_region);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Ensure PFN is not before VMA's start within the region */
-> +	if (pfn_offset_in_region < vma_offset_in_region)
-> +		return -EFAULT;
-> +
-> +	/* Calculate offset from VMA start */
-> +	*pgoff = vma->vm_pgoff +
-> +		 (pfn_offset_in_region - vma_offset_in_region);
-> +
-> +	return 0;
-> +}
-> +
-> +static int
-> +nvgrace_gpu_vfio_pci_register_pfn_range(struct vfio_device *core_vdev,
-> +					struct mem_region *region)
-> +{
-> +	int ret;
-> +	unsigned long pfn, nr_pages;
-> +
-> +	pfn = PHYS_PFN(region->memphys);
-> +	nr_pages = region->memlength >> PAGE_SHIFT;
-> +
-> +	region->pfn_address_space.node.start = pfn;
-> +	region->pfn_address_space.node.last = pfn + nr_pages - 1;
-> +	region->pfn_address_space.mapping = core_vdev->inode->i_mapping;
-> +	region->pfn_address_space.pfn_to_vma_pgoff = nvgrace_gpu_pfn_to_vma_pgoff;
-> +
-> +	ret = register_pfn_address_space(&region->pfn_address_space);
-> +
-> +	return ret;
-> +}
-> +
->  static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
->  {
->  	struct vfio_pci_core_device *vdev =
-> @@ -114,14 +193,28 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
->  	 * memory mapping.
->  	 */
->  	ret = vfio_pci_core_setup_barmap(vdev, 0);
-> -	if (ret) {
-> -		vfio_pci_core_disable(vdev);
-> -		return ret;
-> +	if (ret)
-> +		goto error_exit;
-> +
-> +	if (nvdev->resmem.memlength) {
-> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->resmem);
-> +		if (ret && ret != -EOPNOTSUPP)
-> +			goto error_exit;
->  	}
->  
-> -	vfio_pci_core_finish_enable(vdev);
-> +	ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->usemem);
-> +	if (ret && ret != -EOPNOTSUPP)
-> +		goto register_mem_failed;
->  
-> +	vfio_pci_core_finish_enable(vdev);
->  	return 0;
-> +
-> +register_mem_failed:
-> +	if (nvdev->resmem.memlength)
-> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
-> +error_exit:
-> +	vfio_pci_core_disable(vdev);
-> +	return ret;
->  }
->  
->  static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
-> @@ -130,6 +223,11 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
->  		container_of(core_vdev, struct nvgrace_gpu_pci_core_device,
->  			     core_device.vdev);
->  
-> +	if (nvdev->resmem.memlength)
-> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
-> +
-> +	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
-> +
->  	/* Unmap the mapping to the device memory cached region */
->  	if (nvdev->usemem.memaddr) {
->  		memunmap(nvdev->usemem.memaddr);
-> @@ -247,6 +345,16 @@ static const struct vm_operations_struct nvgrace_gpu_vfio_pci_mmap_ops = {
->  #endif
->  };
->  
-> +static inline
-> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *vma)
-> +{
-> +	/* Check if this VMA belongs to us */
-> +	if (vma->vm_ops != &nvgrace_gpu_vfio_pci_mmap_ops)
-> +		return NULL;
-> +
-> +	return vma->vm_private_data;
-> +}
-> +
->  static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
->  			    struct vm_area_struct *vma)
->  {
+-- 
+2.49.0
 
 
