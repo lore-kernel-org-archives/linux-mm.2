@@ -4,88 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB17D59F6C
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 05:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 679DCD59F6D
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 06:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B454D6B0005; Sat, 13 Dec 2025 00:53:41 -0500 (EST)
+	id 7E8A56B0005; Sat, 13 Dec 2025 01:48:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF65B6B0007; Sat, 13 Dec 2025 00:53:41 -0500 (EST)
+	id 7BFC66B0007; Sat, 13 Dec 2025 01:48:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0AD26B0008; Sat, 13 Dec 2025 00:53:41 -0500 (EST)
+	id 6D5FE6B0008; Sat, 13 Dec 2025 01:48:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7F36B0005
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 00:53:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 046A05917B
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 05:53:40 +0000 (UTC)
-X-FDA: 84213381042.27.5738422
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5AA261C0007
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 05:53:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=So410YQ6;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2376B0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 01:48:46 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE4711357AA
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 06:48:45 +0000 (UTC)
+X-FDA: 84213519810.09.37F82AC
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DED30C0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 06:48:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=CNk48hdC;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf28.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765608524; a=rsa-sha256;
+	cv=none;
+	b=LA1xrUscJjmk+2RBQa2Bq3cQY6ba/yw/G2EBK5j1szCZQmufowvqCaKyeUp3DPnuOZSTlD
+	DXd3L3uqhcpTNT4VO4kTeFeYCKDHyJhkazPjSek+KZJwBLEmY8MIGw1HXXEKtn1Fw8CBQa
+	lJEjUPhlOJ/dSxcTZSwa+mv5ozCKYzY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=CNk48hdC;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf28.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765605219;
+	s=arc-20220608; t=1765608524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSJV9aJqSvYHMMuhw4qg92a34nPkAO6Mx9DdJoEqBsg=;
-	b=HPR6BzSHNm2nX9aESjyuzf8ifUvfIvvO7j3qVnGW6czXyHWzbGJh2V9/WfKCNy9kuUMTu8
-	f6KhPHWVGrPtZVD0swqAY4riSSjemsLNOwwY3kZtR+iHIyX/9tCuczKlB0MlkD9pl7Pihq
-	X42WQWy3F7IynY8XI/ZmprqDhdQgPUA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=So410YQ6;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765605219; a=rsa-sha256;
-	cv=none;
-	b=cf3f3SJG0IJ3zbJdb4f8IG+rv2/kXjtsVNLxWaedVEsPbAOPPSiXTgnhSV1/b/WgIfdhHS
-	1t1lBac9fUgyQAsihdbpU2lbCATzS1s1uj4gWfjfpAdOPW+DtBofd/5c54+XtdPsJDIBUT
-	YA85HgUN6sthE2wB43IY5oAOa+2XJZ0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8ED3E600AA;
-	Sat, 13 Dec 2025 05:53:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A307C4CEF7;
-	Sat, 13 Dec 2025 05:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765605218;
-	bh=Wccp+wZXScgD8eLeujdXQFZ/mmoEHYeNoY4rN4AzM+s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=So410YQ6KPo6pKsazNewNsZwmkjx1uv56FwCs5LKCdpaAhqfwNKHd2w/UkMnSPDj5
-	 umohLOb8ZXoe1fecaDJkCrJT+Bvjlae+fr5JDcKos/Nk/zekY0DGBg1x1T6/52qUGv
-	 HUzJDPCtlKvvDVxU7OvOcA0ekgZBJklfeHbrwFajcEL84rPyLwM/4H3lVHHuASGn+r
-	 tHY+3KJZh4xRXDoRpkMjZghg3LCPlcGen/JUapCj9FRd+kz/jl0HZb7I5TKSPOYs2k
-	 A3PbECVA+IJLqgrL/ZMeRjKGJf5yE4zb8FBKihMdmBhRcvGizjvEDdh4jCpN7sJdds
-	 wMl3mTo235Mdw==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 07/37] mm/damon/core: apply access reports to high level snapshot
-Date: Fri, 12 Dec 2025 21:53:34 -0800
-Message-ID: <20251213055334.51806-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC5izV51xSXFBBijVOCaffwimbmEe6YPk2AVJWXAK59t+w@mail.gmail.com>
-References: 
+	bh=OSPLFg4W3QR5ByFn0Z+25izVWJy4kGkKLbWih19PHZA=;
+	b=bxHvDq3Bnc79Zms1fY7oN00rphPX9mRtBGp2mNEcchPfm9Lybh4B8WO5XgmXADxqhQd7+X
+	5u6neTpMyfe989QrybD54sJod2vtKtrMcPWQ0rJr4iVbfwRkCDbjXKDJI2Kx11+F6Q/wyd
+	YWB7w5Bo3RT0jZ2HUnAk+WOuDXXegxw=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7b89c1ce9easo2211578b3a.2
+        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 22:48:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765608523; x=1766213323; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OSPLFg4W3QR5ByFn0Z+25izVWJy4kGkKLbWih19PHZA=;
+        b=CNk48hdCcLnFPIgQ4PnvEn60T+RKgpRs4TiCtaxNVzcBCS0gXbnmCd2/RfhCf/3pMH
+         Gtf43IKiX1JqOEAgk9trs0+BjmMKE4GKOqCQfoMdU41eHuzWAVGkZCV5ejbHZbzGl7Kd
+         j4z3JjTnegzkMNfZLOEjxFPRE5v8UJMtbOT2VObGNIXZEE9EGDn3TFS0NCOU1q/5lFTo
+         d0/eAu7TgUpaYGGwoSoE+ik8U4b+Z+937YAjthkbNgEeQi80qtj0oJXFW0JWBZjrvufv
+         2GlWddkRi4ChkqkfDKKuOnbws6wmqWaESWXKk+LJeFZPyAdli2e+/V59RKDYCY1ysBHE
+         lWOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765608523; x=1766213323;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OSPLFg4W3QR5ByFn0Z+25izVWJy4kGkKLbWih19PHZA=;
+        b=NxLtw/ZpMCKqTMXrK0OVlYCFCMQjQIkoW3iq52h2+zrXWsDsJiZfJF8f7OTKf/KxSv
+         u4nhM2yhLHBxlbkZ3wawDy2E945UWsjsO9zDa7I8FcQHA7Dyelh158IU0+nCotlJMGBJ
+         SuEjfDiyx3WwoMObfPG4fkQaYSSVelC9SRANzraR/qQkHtc/rQCfbubYiF846wMvoiJn
+         HzxT9fas7eE3hw/PnSDDRXiPogdOgtaR3jQIUhAwPqjJ4wyuX0F/DO/aCmG1u1aAeEJg
+         F2P9zF0WLFkDWrfs544W9Ot/hCU17JT5DOyhAcPsL1rf7wDolpD20v0kd1pD/iZXXzsN
+         phtA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeuE0lXBOInSt0bLlLwOlRYaus8ccpryb8vw9iG/DdkLkbgODDHQCEraXXAL2RRW/WnZo43Emv4Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx3+QGjjkz3+zIn2wkMUA0iFn2PBQu7o79dAQBHaclhSbzoZr78
+	GxwsfTV/FfWDEz75fA3qinkXbnxtSFlkMiDGHNQ0hVu0FsR6DINGVv2AaDoLW/+9oKc=
+X-Gm-Gg: AY/fxX6Bm5QPBcO/VcYZoKH40svgBFmFLO0+9WKE4L97E2nWn21WnoW7rmEjdXrJOaV
+	2rMkAMRU+WFoINGBNORdJDyYAD/Q24fNH8a8w2OtypFwc7tvrmucUAk+3HLaKB/yf4PSU4iDcbk
+	pB02WsS8OXVzKzIf7S9hQ+ll7p5bWJ+K0EAoeARy7X5tKlh5iz/3VpVOmAS+ALCTJUJ9w0IZ4go
+	5mZQiT6a8xh07BLGIPX4bzpyJPRRRwgn3ixb3Xi7gQGbNW96/Afkowntn5ahOcSKPcRhMPqiKHf
+	1wUVGe7LMzD5GvTylx/9FWLSX7yqOSXoxQn+CB2KbCsnN2ZzHWmMPkU4YO3KxdUMElshtsA/Thi
+	RFdJitamKAIaGorfBKD8SW6sbpD26fDzFXeRIemaZOKA/G7VooCvx88R/EKxpUdtHN6AC5ivaTV
+	3sIixUj1b0qw59IcVgij7LR8u2Sz+poUwDs9iBq1vQ5qGJ9UP/2+S45gxOCwYtRA==
+X-Google-Smtp-Source: AGHT+IHwMXPg7Qn0Ef9xWbq83SFpsB1sFhZLa5C8vjkRdWjkXJZFN6bz1qhctibBoHiLjB/xaNqEfg==
+X-Received: by 2002:a05:6a00:1c99:b0:7e8:4471:ae56 with SMTP id d2e1a72fcca58-7f6694a964bmr3530338b3a.34.1765608522549;
+        Fri, 12 Dec 2025 22:48:42 -0800 (PST)
+Received: from [10.200.3.203] (p99250-ipoefx.ipoe.ocn.ne.jp. [153.246.134.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c4ab52aasm6927000b3a.38.2025.12.12.22.48.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Dec 2025 22:48:41 -0800 (PST)
+Message-ID: <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
+Date: Sat, 13 Dec 2025 08:48:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/26] Introduce meminspect
+To: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
+ pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
+ mhocko@suse.com
+Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
+ Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
+ Shiraz Hashim <shashim@qti.qualcomm.com>,
+ Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
+ Will McVicker <willmcvicker@google.com>,
+ "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+From: Eugen Hristev <eugen.hristev@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DED30C0005
+X-Rspamd-Server: rspam03
+X-Stat-Signature: r89hrugw6ffr1rhum3f5jic98sot7qbz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AA261C0007
-X-Stat-Signature: 16hfwcsubqjjmguufq35aknre5si4uea
-X-HE-Tag: 1765605219-510491
-X-HE-Meta: U2FsdGVkX181Va7ToyPE0+pEkWRSQrlnXZfLFApUCKyZE6IKIzPiEwpLEthfY4cujkOUlCZR9YMp8DDm9MF1pzUzeOzRAMUlPbM/b44pw01hIO1AIug8ADF509rBtwH9KQtorQqOkbfqmmmXikSel9ljypTPV5O4M4PwM4zeXA1SVRvrLm2Wn4McRzESdHS9dC1KmxPljpmTpoZ3Fsww3tlEgmtfpY0dkK1LJFjXpg0PEbGwPTvfSvgfo+vvYjfl8a6rYVJdmc100u9LpDABfoY/NMWykfNTKIlO+wa8DrMeWIAZTk6vwFU3u8PcrXxsfCXuN3vsrvU2E9U9ENl9QxMUGcWEe1qMNWJ97x0Z1bViIocQozc4V+AnfsYBI6FKu49A/+8rzdnXCa3rY3/UPaX8HO7cu7QUFc5Dtitk9bQlTKp0y0F3DoXZAmQUDXk/INbX+0FvH5AiwPURzrWyYUk8F0Bk5+yxsZZwLqIm68Wf9h4ZFExtDzM8XS+dsSb+cOcghUF9Jc/3dOzqUDQ9DZCI3+mS3Z8JcnkvuDDnIpiS3RnkTTSjmMteWi2Wj8ppoCzu3m0eabo0pTIYCYrzuBL2rPS1XVNnEeDwiZEKyJEh64O8GCpfrbbhCmTTJCgneNme3afWsQ3yXEf674g/+HKoupPd4MHRqxrBpNAb8Eh6McpxhwEIM6Zv1Tlf9u81tpwFoPK1NviCdBMesh7d3ksVPihyZuUGFBWZ6NgkJD0S6kFcBto5N4TPOkuiv26Z+fyjq+fDmIuruK0bs0J5y1gPk3FQ+UcN26Gs2SFDOTbxGhRBpUobMIpfhR7RsEyMiwa+yzs2YMoHxD0S6o1t4sQxlvbFkVtk4pylZhS2klXp9czFqqTGvH9C71kR/T1kn50ltHoRXCsKAtb1PXIvVc/zK/xAQ3GguOKe50v3XO5Bdsyf7qz3BJKHqSsHdUFjqBpO1Jme25mk1PK5CB+
- hwDbtINk
- ViZfoIXZh8Xtm4KsKFJEe818MU5cJWhi0WoNcmyfJxATPy7NBBMUkuQSqpcCweteomi8IGi5mHlaTwatPM8dzGiqXjvPgO01U8q7MxeHfB0t7ITdrP9xpuWAropF/cEASDZNEoHyJsFCetvVz+ctpySHFmQRWKe90QPgniq8J3wVgjwrU7uHQm2OquuIi06gYRSRl6KKSxHqvOZIKSoZhI2Koaw==
+X-HE-Tag: 1765608523-884405
+X-HE-Meta: U2FsdGVkX1/kK6FmHrFImDM1jG+MFb/QD7Z00tp7yTFG+1GuCVKU93ylisls4NEaWb3Mb3TyKv+9c9+lM56rindoRzSy+ulk+aoTQMyRH4o+Bjh/MLb8SnmrxgjZnJ+I/LtXeHvwt5Qxf0TNMe8z7rN5MM4va4yjwhmc3egbVdPsJlsFMBcOHwTyhKcJuKnIFFRoFL779OGaCDhUHHJZZqERUPBq7pzLNbKwBfpyAWlUk/jfmzlU5hVKq1zKwqn1tY7FO314a9nHZB5f/UpLfxWQoEDBLTOq/sCaEeKZlfzwyPdJ9BcjuGjhQJkSJx74IfbUz+92gmfuK+VclDWE00Oh5NmPTcEwUM+aA/Kz8nUctYmvMoMpuRu6djDeHR+F9jvq29uW8ETm2reNogsXNXIe9GUbHX9/XNEyR8JjBH/0Fk/kbliM5tZ5lqA6SUggi02PIHsFpGeswWDYw2KDfI1kBEz43vjEAPSiJQ3g2gjBXJ6HWmea78ylpHFESu3EQLdsN/jFGmrL0IjTtDLu2IxssZ93/a4N50s0ca62EqQT8W1ZXNNuQAzDsmYjzM/CMOcj9mTGYMuRT5Dhv/g9Y51E74GwRoUPDoOJ4kuhYWcMF5leTGH6CTcpZu6iMdOJZjnmpGz4oyLJiGrE9ad8owoQ2EMyY71uDIWPOBQ1vkVNp8e4KXqvPDEAMXHhmHhryE2EkTH54gpaEFl1kM0HX4soZal1AgMbcrYRkWZy8wSv03KvyPC4l0gP6FbCQAvGa8Ppc0AucVDo99IAYHJPogKt/LzU+iHgMZEgd7FhqZYDT+z7oF9LCUzP5Cjq/DKUwJOuqEcfQ+XpcrWHo6S706s9/tQXHprv4UO5bMC2AW4e+WYEt9sEsec5KkajpaCz4Ov5/GKoG/c1qOMJI0bdKn0fQleaBWs6vFixo6snEhlCx/vGv4Z3uUuDXoLKluPP4h/prIDNwqZcLV02+J/
+ G6RjOYQO
+ 1ii02TGwLli6KXClprviUjG20wes2lQmNmRFLZxgootZn+H2gNX7bAqUTehbM78+SOSiAHxk1/1iupxpCKeaLyMYf2GjbTfTqYtbm53aYkQ8CcFCloCqRGrLI28Hm55uVWrZ+VaSYl0c7cxDoKFVn/aYt4tw/lpQaus1pa2vFoKFinS/1mJzFdGrxOQyDMOp/VaYT6D8Vrvc/YqqFc57q6IrJR8hmRKiskqE4GFNekudjqz0FWb7pJUlpqHBlTDA79YiEUdzyiSr0pZqONaFSbIIw7KgKsMobNSiiJk0ufbn3B1lQMN32ffBEjKCq9EzECj4NmUXW1kwhcSIEJx11UFsSUfluQZEiUcKt9MzB5R0U1l5QIK4rPDz7VlkFnneMeQRZyUQEJsXEg0qT3TxeV2+bSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,190 +134,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 13 Dec 2025 13:09:37 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-
-> On Sat, 13 Dec 2025 at 12:21, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Sat, 13 Dec 2025 10:10:38 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> >
-> > > On Sat, 13 Dec 2025 at 08:11, SeongJae Park <sj@kernel.org> wrote:
-> > > >
-> > > > On Fri, 12 Dec 2025 22:20:04 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> > > >
-> > > > > On Mon, 8 Dec 2025 at 15:35, SeongJae Park <sj@kernel.org> wrote:
-> > > > > >
-> > > > > > Now any DAMON API callers can report their observed access information.
-> > > > > > The DAMON core layer is just ignoring those, though.  Update the core to
-> > > > > > use the reported information at building the high level access pattern
-> > > > > > snapshot.
-> > > > >
-> > > > > It seems inefficient to repeatedly access the damon_access_reports[1000] array
-> > > > > using a for loop in the kdamond_check_reported_accesses() function.
-> > > > > It is inefficient to for loop through the entire
-> > > > > damon_access_reports[1000] array.
-> > > > > When CONFIG_HZ and jiffies are increased as follows and
-> > > > > damond sample_interval is 5000us (5ms), the time flow diagram is as follows.
-> > > > >
-> > > > > CONFIG_HZ 1000, jiffies == 1ms
-> > > > > damond sample_interval == 5000us (5ms)
-> > > > >
-> > > > > reports_len(==): [0 ... 5]
-> > > > >                                                      [*]
-> > > > >         0    1    2    3    4    5     6    7    8    9        997    998     999
-> > > > >         [====|====|====|====|====]-----|----|----|----|  ....  |------|-------|
-> > > > > jiffies++    1    2    3    4    5     0    0    0    0        0      0       0
-> > > > > damond_fn(sample interval)      -5[0<]
-> > > > >
-> > > > > reports_len(==): [997 ... 2]
-> > > > >                                   [*]
-> > > > >         0      1      2    3    4    5     6    7    8    9        997   998   999
-> > > > >         [======|======]----|----|----|-----|----|----|----|  ....  [=====|=====]
-> > > > > jiffies++   1001      1002 3    4    5     6    7    8    9        997   998   999
-> > > > > damond_fn(sample interval)
-> > > > >                             -5[997<]
-> > > >
-> > > > Please use fixed-length fonts for something like above, from next time.  I
-> > > > fixed the diagram with my best effort, as above.  But I still fail at
-> > > > understanding your point.  More clarification about what the diagram means
-> > > > would be nice.
-> > >
-> > > Thank you for readjusting the font to fit.  The first diagram above is when
-> > > reports_len is processed normally starting from 0 to reports_len.
-> > > The second diagram shows the process where reports_len increases to its
-> > > maximum values of 997, 998, 999, and then returns to 0.
-> >
-> > Thank you for adding this clarification.
-> >
-> > > The biggest problem here is that the latter part of the array is not processed.
-> >
-> > I don't get what "processed" is meaning, and what is the latter part of the
-> > array that not processed, and why it is a problem.  Could you please clarify?
-> 
-> I'll just organize the code related to this issue as below.
-> This applies when kdamond_check_reported_accesses() is executed
-> when damon_access_reports_len becomes DAMON_ACCESS_REPORTS_CAP.
-> 
-> void damon_report_access(struct damon_access_report *report)
-> {
->         ...
->         if (damon_access_reports_len == DAMON_ACCESS_REPORTS_CAP)
->                 damon_access_reports_len = 0;
->         ...
-> }
-> 
-> static void kdamond_check_reported_accesses(struct damon_ctx *ctx)
-> {
->         for (i = 0; i < damon_access_reports_len; i++) {
->                 ...
->         }
-> }
-
-Ok, so I understand that when damon_access_reports_len is reset, the reports
-that stored at the end part of the array is simply ignored.  And your suggested
-change can fix it.
-
-> 
-> >
-> > >
-> > > >
-> > > > >
-> > > > > It seems that only the section corresponding to the sample interval ([==|==])
-> > > > > can be cycled as follows.  And, how about enjoying damon_access_reports[1000]
-> > > > > as damon_access_reports[500]?  Even if it reduce the 1000ms to 500ms
-> > > > > array space, it seems that it can sufficiently report and process within
-> > > > > the sample interval of 5ms.
-> > > >
-> > > > Are you assuming the the reports can be made only once per 1 millisecond?  That
-> > > > is not true.  The design assumes any kernel API caller could make the report,
-> > > > so more than one report can be made within one millisecond.  Am I
-> > > > missingsomething?
-> > >
-> > > jiffies 1ms is just to simply unfold the passage of time when
-> > > CONFIG_HZ is set to 1000.
-> > > This is a simplification to help it understand the flow of time.
-> >
-> > So I understand you are saying that only one report can be made per jiffy.  But
-> > that doesn't answer my question because I'm saying that design allows any
-> > report at any time.  Any number of reports can be made within one jiffy time
-> > interval.
-> 
-> The input events are what you pointed out, but when reporting,
-> it is processed in jiffies time with time_before/after().
-> So we have to take everyone into consideration.
-
-I don't get your point yet.  Can you please elaborate?
-
-> 
-> >
-> > >
-> > > >
-> > > > >
-> > > > >  static unsigned int kdamond_check_reported_accesses(struct damon_ctx *ctx)
-> > > > >  {
-> > > > > -       int i;
-> > > > > +       int i = damon_access_reports_len;
-> > > > > +       unsigned int nr = 0;
-> > > > >         struct damon_access_report *report;
-> > > > >         struct damon_target *t;
-> > > > >
-> > > > > @@ -2904,16 +2905,18 @@ static unsigned int
-> > > > > kdamond_check_reported_accesses(struct damon_ctx *ctx)
-> > > > >                 return 0;
-> > > > >
-> > > > >         mutex_lock(&damon_access_reports_lock);
-> > > > > -       for (i = 0; i < damon_access_reports_len; i++) {
-> > > > > -               report = &damon_access_reports[i];
-> > > > > -               if (time_before(report->report_jiffies,
-> > > > > -                                       jiffies -
-> > > > > -                                       usecs_to_jiffies(
-> > > > > -                                               ctx->attrs.sample_interval)))
-> > > > > -                       continue;
-> > > > > +       report = &damon_access_reports[i];
-> > > > > +       while (time_after(report->report_jiffies,
-> > > > > +               jiffies - usecs_to_jiffies(ctx->attrs.sample_interval))) {
-> > > > >                 damon_for_each_target(t, ctx)
-> > > > >                         kdamond_apply_access_report(report, t, ctx);
-> > > > > +               if (++nr >= DAMON_ACCESS_REPORTS_CAP)
-> > > > > +                       break;
-> > > > > +
-> > > > > +               i = (i == 0) ? (DAMON_ACCESS_REPORTS_CAP - 1) : (i - 1);
-> > > > > +               report = &damon_access_reports[i];
-> > > > >         }
-> > > > > +
-> > > > >         mutex_unlock(&damon_access_reports_lock);
-> > > > >         /* For nr_accesses_bp, absence of access should also be reported. */
-> > > > >         return kdamond_apply_zero_access_report(ctx);
-> > > > > }
-> > > >
-> > > > So I still don't get your points before the above code diff, but I understand
-> > > > this code diff.
-> > > >
-> > > > I agree this is more efficient.  I will consider doing something like this in
-> > > > the next spin.
-> > >
-> > > What I tried above is to process the current array [1000] as
-> > > efficiently as possible.
-> > > But, if I think again, It would be better to store it in a linked-list
-> > > and process it
-> > > in FIFO mode whenever requested in damon_report_page_fault(),
-> > > damon_report_access(report)
-> > > instead of storing it in an array.  I'm also analyzing the source code
-> > > starting this week,
-> > > so I'll organize it a bit more and get back to you with my opinion.
-> >
-> > I personally don't feel linked list is specially better than the current
-> > ring-buffer like implementation at the moment.  But I would be happy to learn
-> > new ideas.  Please feel free to revisit when you get a chance.
-> 
-> I agree that the ring-buffer you mentioned is good.
-> However, if this is not well controlled, it is less efficient than FIFO,
-> so I am analyzing your source code a bit more.
-
-We consider not only efficiency but also simplicity.  Please keep that in mind.
 
 
-Thanks,
-SJ
+On 11/19/25 17:44, Eugen Hristev wrote:
+> meminspect is a mechanism which allows the kernel to mark specific memory
+> areas for memory dumping or specific inspection, statistics, usage.
+> Once regions are marked, meminspect keeps an internal list with the regions
+> in a dedicated table.
 
 [...]
+
+
+> I will present this version at Plumbers conference in Tokyo on December 13th:
+> https://lpc.events/event/19/contributions/2080/
+> I am eager to discuss it there face to face.
+
+Summary of the discussions at LPC talk on Dec 13th:
+
+One main idea on the static variables annotation was to do some linker
+magic, to create a list of variables in the tree, that would be parsed
+by some script, the addresses and sizes would be then stored into the
+dedicated section at the script level, without having any C code change.
+Pros: no C code change, Cons: it would be hidden/masked from the code,
+easy to miss out, which might lead to people's variables being annotated
+without them knowing
+
+Another idea was to have variables directly stored in a dedicated
+section which would be added to the table.
+e.g. static int __attribute(section (...)) nr_irqs;
+Pros: no more meminspect section Cons: have to keep all interesting
+variables in a separate section, which might not be okay for everyone.
+
+On dynamic memory, the memblock flag marking did not receive any obvious
+NAKs.
+
+On dynamic memory that is bigger in size than one page, as the table
+entries are registered by virtual address, this would be non-contiguous
+in physical memory. How is this solved?
+-> At the moment it's left for the consumer drivers to handle this
+situation. If the region is a VA and the size > PAGE_SIZE, then the
+driver needs to handle the way it handles it. Maybe the driver that
+parses the entry needs to convert it into multiple contiguous entries,
+or just have virtual address is enough. The inspection table does not
+enforce or limit the entries to contiguous entries only.
+
+On the traverse/notifier system, the implementation did not receive any
+obvious NAKs
+
+General comments:
+
+Trilok Soni from Qualcomm mentioned they will be using this into their
+software deliveries in production.
+
+Someone suggested to have some mechanism to block specific data from
+being added to the inspection table as being sensitive non-inspectable
+data.
+[Eugen]: Still have to figure out how that could be done. Stuff is not
+being added to the table by default.
+
+Another comment was about what use case there is in mind, is this for
+servers, or for confidential computing, because each different use case
+might have different requirements, like ignoring some regions is an
+option in one case, but bloating the table in another case might not be
+fine.
+[Eugen]: The meminspect scenario should cover all cases and not be too
+specific. If it is generic enough and customizable enough to care for
+everyone's needs then I consider it being a success. It should not
+specialize in neither of these two different cases, but rather be
+tailored by each use case to provide the mandatory requirements for that
+case.
+
+Another comment mentioned that this usecase does not apply to many
+people due to firmware or specific hardware needed.
+[Eugen]: one interesting proposed usecase is to have a pstore
+driver/implementation that would traverse the inspection table at panic
+handler time, then gather data from there to store in the pstore
+(ramoops, mtdoops or whatever backend) and have it available to the
+userspace after reboot. This would be a nice use case that does not
+require firmware nor specific hardware, just pstore backend support.
+
+Ending note was whether this implementation is going in a good direction
+and what would be the way to having it moving upstream.
+
+Thanks everyone who attended and came up with ideas and comments.
+There are a few comments which I may have missed, so please feel free to
+reply to this email to start a discussion thread on the topic you are
+interested in.
+
+Eugen
 
