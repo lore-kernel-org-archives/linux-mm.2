@@ -4,130 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4BE5D59F77
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 07:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A55DD59F7A
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Dec 2025 08:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 161706B0007; Sat, 13 Dec 2025 02:23:11 -0500 (EST)
+	id 702E16B0005; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1390C6B0008; Sat, 13 Dec 2025 02:23:11 -0500 (EST)
+	id 68CC76B0007; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0286C6B000A; Sat, 13 Dec 2025 02:23:10 -0500 (EST)
+	id 52E4E6B0008; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E7F976B0007
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 02:23:10 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8AD31A0511
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 07:23:10 +0000 (UTC)
-X-FDA: 84213606540.13.01676F0
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 899854000B
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 07:23:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=PsXrTdO0;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf12.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765610588; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E0C56B0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 03:00:14 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE9DF1A055A
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:13 +0000 (UTC)
+X-FDA: 84213699906.28.9DFAC55
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8341A180016
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 08:00:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=PD7k7SrW;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d b5hIDJ";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf24.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765612811; a=rsa-sha256;
 	cv=none;
-	b=xuKwTil+JYHbvf1HyUwn/7kgxblo7LsCBQk8IIhQe1UWf/5O+FocrnbmXvrKCRJGxgMYiJ
-	2qG6unpmOA4VBvoUnbOK6qHSgNvzvQ1Qe/W1bPEyXOZCXrNTuAnuaU2KqOG/c4lzq1LwYC
-	tia0dzd3GSwEgeyHUWiiewZax4rYBvg=
+	b=BokS1dxUcImi7UZSR6iocCQWerRN84s7Kq1fc+7U6qqyuf3zQ5T2TfHcaF3eQ6GT/lW8yo
+	xfLSPVX9TFnV8WTmRcvcNYpB8XmGWrqerxwjvidcC7tV2TOrFO6msB1zgafEL5bUTEWQaP
+	HFlQCRbN2DLrosvlZ+jAf+hArkrZzqA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=PsXrTdO0;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf12.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=PD7k7SrW;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d b5hIDJ";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf24.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765610588;
+	s=arc-20220608; t=1765612811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qS/a8O0BbZSZZsXyGtd7peZrK8putFww9+X+USFCeDw=;
-	b=s25CuHnl1/VzmHCi5uwQY+WEx+fD/h1StHVAK/FHso3b9Xk+JYiMyP/ksZ4G0CgtAi4lS1
-	+9y1nSWy0Ld3jGgZwmfE74ZQkSZtiEblLjolHCDzlo5Dg2mkQamP1WuRSp9PnYY4KYTF4v
-	w/Hf5h04IjQs+dh0Dh/r04ITlKkxKIs=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29f2676bb21so15904505ad.0
-        for <linux-mm@kvack.org>; Fri, 12 Dec 2025 23:23:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765610587; x=1766215387; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qS/a8O0BbZSZZsXyGtd7peZrK8putFww9+X+USFCeDw=;
-        b=PsXrTdO09ouRbYNBstlYnK+RcWGzTAUYUUu78HIXI85ZfEhlNI6hSVpOOT0LI9ItSA
-         vk7+KW2Br7jo1eUyp+v0h0tOVZ0V3oucHiGerHSsRjt8BaNYprP1dl+HKperMAUhjzc4
-         ocalq46wq7uzQOwes4Tvm6gxi7hJd5WUwFApuQQxjmYnoGrc9iYO/xghiA1qfF6Q8CiQ
-         x8cvF5hr3GQjNy4/b4xMluI/6mSggjkmKWu6MZjT/l1DFcpcAL3JSDZyoREdSYuMRxEs
-         Qa+sNkVvrgriG3YvH70tApYm8Jdtod+cte6Qk8ybn05LnQq87RuGcuZdIEoTYRA4xzaQ
-         y/yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765610587; x=1766215387;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qS/a8O0BbZSZZsXyGtd7peZrK8putFww9+X+USFCeDw=;
-        b=Sj2xSQ4g7nvj/JFEiqcFhT+nJ5aAVIt1Ruyn32L5JUn+lYtFmFpXWCnPoCO8yPCu8w
-         Zry9Hpkd9AGlQBkELr6WkrMJeLvOfAtY9sos8E7x31Pjvkq1BRxPKKTS6MCx94F5DrHx
-         9S7ZaxnuXyWr3MHgrc8SQlApfPqmTxPs/L619cWxWskM9St3UF6iXrvjFwrWG7xHZV/w
-         AFkVtRmlqpABRV79bkbT+4ASwg0jdYYLDtOMZSLmuW9nyTmJ/iK/v93m5RYa+hMn9cvP
-         ok0qrI6K2TRTqOD2dx5oVjgAihc02KeZBDSGOxWNdO+Gqa3CQXv8NYQW+9FGpOkY+ZKq
-         kqOg==
-X-Forwarded-Encrypted: i=1; AJvYcCX8Tv36QkaLvcO6LN3vtR0e8ru1o3ViNqwQZ/O7ADSqMPRv/++F2RzPIQ2CLJrFIBEACpux3r3x2g==@kvack.org
-X-Gm-Message-State: AOJu0YyvViID7eHN833QjyT2oHszgPCQq6Pkk4D+zKFdHGXK+qZ7NN+E
-	tiGREKykWsW1gN11Ot4XagBWoB+knfYbG0z6Y1cQAINF+1u8MpfD3/aXwqDyFNTKtuI=
-X-Gm-Gg: AY/fxX6IsvHKlwXjQkWFbT0l2t6zbTHF3Fs6tmRh08L6iwZC1v34aaMnuMT2OFx1HfT
-	l5X1j13fI6wrInN2vdBZpBcZG7tX29tD4ediNTxuyyUel0dtOyY5rU6ye3sJLSqVlgFYIVrn5Rs
-	W7hPK/E7kw5TcSbX9qFlDbawnbs6NAvidpy/RP5rBMl/SHg2sSRbA8IN1wcajo5EYWDW+SmTI9H
-	qmcJdmHgSxWQveFhMbaQFfmQ2+5QF+xY9ACqRzH8Zp7tYFA0YLZxpI84qpL8s7MiCfNYosAEipw
-	pGCzQjXpBzr5JvOKo38cgK2E0Rbe9XdkST6oMgQesNygeRgLnKpxiDZwPA1TC6LsdT6lHGv0ujz
-	wLAryoj+waQ9E7co3mOCUxN0d3Er+CEh4JL+BRS34Lrj8B6h+ro9ShZxS6DhPFPfAMzq4PnauYS
-	ZROE/HpKWV4s/3OgsDA+SUrZJAJqMyDJ/nK/knvOZPU6F8MtmmbYM=
-X-Google-Smtp-Source: AGHT+IF5ZAK05FTZM7z1I/Tfu2uwtqip2Rr6c/twbgvqZujsfkv8PIP29+IUmV2/Et+MT9YWs2FBBQ==
-X-Received: by 2002:a17:903:2c07:b0:29d:df04:fcdf with SMTP id d9443c01a7336-29f2436dfb5mr47558295ad.42.1765610586985;
-        Fri, 12 Dec 2025 23:23:06 -0800 (PST)
-Received: from [10.200.3.203] (p99250-ipoefx.ipoe.ocn.ne.jp. [153.246.134.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f2563b116sm39121255ad.102.2025.12.12.23.22.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Dec 2025 23:23:06 -0800 (PST)
-Message-ID: <c3db6ccd-dfc7-4a6a-82b7-3d615f8cab4f@linaro.org>
-Date: Sat, 13 Dec 2025 09:22:56 +0200
+	bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=;
+	b=WgwzsI9AbbZWOESOf1lKmggH4GtXS3+havp266U2Q8i1zHuHxSvCOltxsYiD4HC/VIdc+p
+	jS5coM6KgQgFyOQE4xAkFFJSfKjoNGstLfBVDUmeFY1NCCERMJKoNSdE+o3sNdFsl20SsQ
+	74sPPXK7Oexba+HR/LHVg06b8Y22e/E=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9E74EEC0571;
+	Sat, 13 Dec 2025 03:00:10 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Sat, 13 Dec 2025 03:00:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1765612810;
+	 x=1765699210; bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=; b=
+	PD7k7SrW+VLJLCwifJ5cLDKSHOPAtI3Nq6ft0mZE/r7pGm0YRIjjxRMUA//oqvUR
+	N2XYY8qETgbHaPH46U1og3bwYSjQt+tr7PmDmFhWtZYkR09XHl1s0vNyGhxNFUU9
+	fHWj6w7v9XvOJKYC9k5UHhUkFAPUwdrKN5KWHwPMBJmqskNuAMlord9myRNCV2bB
+	hcp/Kc4JF6Jj6JAr2w0xtmcMgAFeAddfk7DtGSI2weHhNekGkxxVZHp6lEdUoDeo
+	Fdd4RTw84fYPjeuidCq8QHKERicP5/B2+kVdRmTIfF8QyPRtlTcVM5KSJq+7HxbG
+	OduxX7EQqP97kOhI5tPaQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765612810; x=
+	1765699210; bh=4cKpV/fyfVbQhCD31q9uz0Vr0824m5w2xINKUH++CfU=; b=d
+	b5hIDJicNFH3b9OB0jJB2phHJ3qewHZuZCoujThWEntl1lDuDeAgS73te5jhO4EF
+	9Q/yOTYFtUIXtfJNNnZ1CP64XhMGEqWo6pCMRY+E1aPGOLcARoPBNxwkXBPV/zC6
+	ITN8RksTZFprefNBs+MxJp3vh74/q4k3Qbu/KzwqaIfXPFBDolTgqNGFKwwznyfS
+	uy/Ph95RTFkgBqKoh+k5KizLhDQKwB6XIn7KvAJXX7CHryeFE5F2MsUx2LnS4jkm
+	4iCZJOCN7Gd4n89Lt0UzuMTtNM6vPE+xDSf9wlO349ObeyP6C87a/iWIzX4hGv3R
+	SIyS1jdQqEZGGUMgMANqA==
+X-ME-Sender: <xms:CR09aZ0se5d3fy_spLds3LVWykP23hi5QJ_eccTKLMMaT2yakXNTEw>
+    <xme:CR09aZdYqUErkr3zt0uuDzHNmoy5bH0Q8A7iugKAOQG7ZGxHf98FfWT343M3rveIW
+    360q_eOPk2tYN3JGbXQ1UWkTEFSIKg2ezIkc3hg62vQbrJxBdnbUQ>
+X-ME-Received: <xmr:CR09aSag5YeKcHmQCnWMWnKF6g3erPdMltjQi4jA1YVdZW2pcNlqKwcl>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkjghfgggtgfesthejredttd
+    dtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhhrgii
+    sghothdrohhrgheqnecuggftrfgrthhtvghrnhephedvtdeuveejudffjeefudfhueefje
+    dvtefgffdtieeiudfhjeejhffhfeeuvedunecuffhomhgrihhnpehkvghrnhgvlhdrohhr
+    ghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudejpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpth
+    htohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehnvhhi
+    ughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprhgtph
+    htthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhmthhh
+    ohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
+    gurghtihhonhdrohhrghdprhgtphhtthhopehlihhnmhhirghohhgvsehhuhgrfigvihdr
+    tghomhdprhgtphhtthhopehnrghordhhohhrihhguhgthhhisehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:CR09aWXS5_16LGB8Zv-_B0guUAGOluib79melqLDniY5OlYEwDI3jg>
+    <xmx:CR09adRYhMy-CWM-TT_seE_oFA2Bk7s7FFFGh988PjaW2-8cjwRW5A>
+    <xmx:CR09aTEUGmVjFZuiM6tjs9PJv1_a7j10QHjI_kTDcTnLLGmL0LeLNA>
+    <xmx:CR09aUdBYE-UU5jPFlusESAWcmhzir2Gv4JT7HUM7dfRQxq4KivpMA>
+    <xmx:Ch09aS6qUcggBsvuf3RJTQtwZHXzdMqLHkGhpRpB3Dqw8-TVvl6jGrgq>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 13 Dec 2025 03:00:05 -0500 (EST)
+Date: Sat, 13 Dec 2025 17:00:02 +0900
+From: Alex Williamson <alex@shazbot.org>
+To: <ankita@nvidia.com>
+Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+ <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <akpm@linux-foundation.org>,
+ <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <cjia@nvidia.com>,
+ <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
+ <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 3/3] vfio/nvgrace-gpu: register device memory for
+ poison handling
+Message-ID: <20251213170002.5babbf70.alex@shazbot.org>
+In-Reply-To: <20251213044708.3610-4-ankita@nvidia.com>
+References: <20251213044708.3610-1-ankita@nvidia.com>
+	<20251213044708.3610-4-ankita@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] Introduce meminspect
-To: Randy Dunlap <rdunlap@infradead.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, corbet@lwn.net, david@redhat.com,
- mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
- Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
- Shiraz Hashim <shashim@qti.qualcomm.com>,
- Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
- Will McVicker <willmcvicker@google.com>,
- "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
-References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
- <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
- <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
-From: Eugen Hristev <eugen.hristev@linaro.org>
-Content-Language: en-US
-In-Reply-To: <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 899854000B
-X-Stat-Signature: qqewxrrnhrimzjzjz6bhq7rpf4k8xfxy
 X-Rspam-User: 
-X-HE-Tag: 1765610588-469904
-X-HE-Meta: U2FsdGVkX191I1RpCCCP2tpIGFcsoBy68rHLYpfK9VMAhzzUAk08SlWplCjiBWTkeEf3ZL1d0vLj9WGQlpC5WBcyuXk1fOABhkGEJkWYG3DZAifsaZ5WAnrLeJRS5NpczL67wC4yS9BOa3FYvHm073yrH1PsNQYMWSqJMaqxImgRL79i1HDTXCKh2/u7Glm9ELo7VtrF4bqn0vNggA8Jed5AjxgKpaGycRJu6PnSmFWiV8CHBTqLuIFjHklykrowFKcYOZBxMO+eguBEvwrnswTitppxR4idZa4lUVRJgLbHMUd5iXgYWj9T8CS+1qdNSk++5olMHpQvzQ34tObxiyF1AZtkhEIgjA5OvZ27sZopTMp8LJmBewNRdtYyddu+mxUl2K/0+OxeHuktHM3rh+9zwSxAVoEgp6ubMTnIPlyv1s3yzGcsyQXQfMpjoteHVrNB9mR58uwCUX5DAJQ9DckxdrOndjQXlVB7joL4Y3F11aP1v0WrrL3JeWEme7X3UYF+p8KzOaDFgbyrunDfzNMcEDJRiLLHC25fgHeo6GmOT01/G/hJjRGvW5RFFgL5uXVQ7ADHoZsHhGKzpFN8y7fLRbwy0Yk5Fkgbjx89JTmezGJnRdhMuS5tMubzoyy4z1iSYFlGTEEiTVfUClCWIr6Ck5QHkyO2oyAYCmRyqC8YVqxKkf7iHDRcop0Ueg/Yrlc3IoxIxAuRsMqjSRTVwFulVPpoEXJpVVVGvnihU6JTe4sYKUy2M4mYZGN3ks3iUZ1xRUODey4ehmhee+qdgovSVHLDxgTWnObAOgMHmafRc7RtWbCxCimzc4mO2OYdqlUuF6XX77/y7kIpxPgkD273hjZcx2irbBJfdQhse0hgwwzzv+3GQbishJYiGp8Kkzv8x74MPnJXwjU3JgSeFFdnpZOWRyhzDZ1P3NiUaqr3IDxkh/L5dLIAySNzN027tlr2po4RgfXqOsjMYJi
- Y6u9dGA0
- ep7HAjQc0Fi9ijhFph2nN7MG2Q6uOTfDA6IPUkN75CnuzQ7vgS+OUGz6BSD0+gaJ39mnxMqk9ysWIDo712iogDA+1kZHtbDXjRBBHGm9fV4+1OFJ1NnDoLZoYNIGEfL+5TlIJ/UZ+fQC9FhlXlg2sPJBB+nu0hxioxkx2xb31+SramhlV/G1bI+9v+uwgMeyopD4T5FU9sw5F2f85CbHffmk7aV6Hewwq2Tw8wH+C7GDxv6WlxXeqb9mefLQnwCDQVUR3RgjuCyT4pplmFqbyfUIKqDIDN5Onkzhn/YtZ41IwweAkKslZM9iqVELa5zRSj1X2LBx+OLE/Kw/xMjhjBZdig8NTy0WRiiMPdobeYLhUASvkQnRq6hFQL/P7HkBUzqsFHIOIgwdr1ibbsLv0p6jictRaV/mMJyr+Ir87u/39okXchZaBGIHp5fVD3SD2zKp1/zwXJlvqhub2LILlwhlriEI1bUDWIhTwGx8xu9eF7QCNE9tl49jvJWGGlfwMOSQsD6KIJMlpyyi9/2ijsgSotg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8341A180016
+X-Stat-Signature: a83tqkg5zrw81nqt5ocxynxn8ai4e5mt
+X-HE-Tag: 1765612811-609087
+X-HE-Meta: U2FsdGVkX1+wtjzuXkKdAaGMbLa38XmeXG33yUBKckjP3/21B7+gJ/R9lAFd+bG0nkJKyCzYwkYFM3p+imAcFRou2itDDhjbIwt8nsrbZgaSCIP2dqiF7pnYyFRnVYHJbxavVdK6m3cEFZKCp3eQoin0G2vHANnx6RvF3fP0R7U3+vScS5ciNobbBZzw/KdRMfxp84yRNJeYGxute7VxneLwt6xP195VTbRDx8Ilu21H2JaGiJ+GJ7zVuWhuaDRXWcDgqbSNPIDxlq1OKrMy3RW0h5AdICZgDbXX1MVzmuntsIB+aiU8m6T3IrOy3HkRMbfxcdTU4iDytyl2+Vq0PtbQUHUxia/iZwTSPdliozpTxpgDUA0SrlErD1Dyw1YyVQa6TT1T6NKv32SapkpMsgbSJjeBYEtChn/ucENXhFbI16IiPFfN9g0uHV4ixXZgH9X0hU0yI6rgkN15CixYXdVoXGwI6WsiB8dNQ+RL9KJrkJfCfS40Txns9Mp4npUGlrkeCw9PIXyK8BnHTIyBVusNMd2aE4vYRrp4yuVtS75huYb0Fouu1kcqsKDpd1yfWXzA6t1CBkHH++r+b7rEPrwEWdnC3W0gYgIDbijvt5Aw1emtYpWwq86WEhLebRyHyVCoPdPRw7u6Hu2oMsiRPvEVSlxQZRndGPoam81TJfdpNLWsrh/m1ki1zqam9KBd3UfuBTfTLMyAwOaKYmuClZWzKwKkCFAkddX9K4fFY0cINMUU9qDRk2iouQzjaN1giRxuQGHc8HJhuNK8Q1/ZMSVVUsQ6RNkEwmvdTKWJdCuuXFeA1ok8fKluepKSFBdhXjno6UQj2SsdyNa9oTbIAN+u0he8jCu3V1X+qrvKrNMqXWXqX1TUPQ909YdtfkMLd62n15Le5fIjOYtf2nEJ6kr0r2S6ROxdFUCXjpBHCD/hmlmS6DEwz3GVBjqBcF+Ewtiz9V/UFwtIR1xQV3S
+ arzPKu6t
+ ZPl7bep598nazRbEa5VPUjwyW7wYquPrmU+yPGyODOkn5xrOeKLrPDAa8G11eraq2QO4ZhLZgpb6WWnTphHdKVxJD5hZavFsaz71yhkUQaPNLQo9xXmGv6UMna6I/8Sg3fg5vQtst+6mNDZJjXL1JNqRXb4HSUbI6btDr9lcT4Q4o+Eg4hhmLWyS1hyPeTdiQhfUWdjLgyN+gvuLz/xh6eSVg34SBQCqH+jcwka/wd1t/vJ9zu4BtE6Sl+kj8bTW4LL9ukffgyhoI7QMab9UcMlfQWfccaIV0joCX53o+MSR/UXbqa99gcxNNfnSri4W3CNo3UqesN7H6U1TEXnTQesiOPkLJ0FP5wsXG3krWdU3ORAKKrJt7OlL1ThCZRIHjoA4QfBZr0FCERCFHlMv7nQekL/rP9dzLuTJYoVg6S+LfKLDjgysD8SzCnaJEws/LjgEGfOG+iSBvmGHFwg7TS8TxQJhk/8e2GgApJpLNr0nhgaancKeEq/BV6gTUMyZfsm9zTu3o2mP2KLhBEiOqec3Y81+xSsEp+f+z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,132 +141,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, 13 Dec 2025 04:47:08 +0000
+<ankita@nvidia.com> wrote:
 
-
-On 12/13/25 08:57, Randy Dunlap wrote:
-> Hi,
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> On 12/12/25 10:48 PM, Eugen Hristev wrote:
->>
->>
->> On 11/19/25 17:44, Eugen Hristev wrote:
->>> meminspect is a mechanism which allows the kernel to mark specific memory
->>> areas for memory dumping or specific inspection, statistics, usage.
->>> Once regions are marked, meminspect keeps an internal list with the regions
->>> in a dedicated table.
->>
->> [...]
->>
->>
->>> I will present this version at Plumbers conference in Tokyo on December 13th:
->>> https://lpc.events/event/19/contributions/2080/
->>> I am eager to discuss it there face to face.
->>
->> Summary of the discussions at LPC talk on Dec 13th:
->>
->> One main idea on the static variables annotation was to do some linker
->> magic, to create a list of variables in the tree, that would be parsed
->> by some script, the addresses and sizes would be then stored into the
->> dedicated section at the script level, without having any C code change.
->> Pros: no C code change, Cons: it would be hidden/masked from the code,
->> easy to miss out, which might lead to people's variables being annotated
->> without them knowing
->>
->> Another idea was to have variables directly stored in a dedicated
->> section which would be added to the table.
->> e.g. static int __attribute(section (...)) nr_irqs;
->> Pros: no more meminspect section Cons: have to keep all interesting
->> variables in a separate section, which might not be okay for everyone.
->>
->> On dynamic memory, the memblock flag marking did not receive any obvious
->> NAKs.
->>
->> On dynamic memory that is bigger in size than one page, as the table
->> entries are registered by virtual address, this would be non-contiguous
->> in physical memory. How is this solved?
->> -> At the moment it's left for the consumer drivers to handle this
->> situation. If the region is a VA and the size > PAGE_SIZE, then the
->> driver needs to handle the way it handles it. Maybe the driver that
->> parses the entry needs to convert it into multiple contiguous entries,
->> or just have virtual address is enough. The inspection table does not
->> enforce or limit the entries to contiguous entries only.
->>
->> On the traverse/notifier system, the implementation did not receive any
->> obvious NAKs
->>
->> General comments:
->>
->> Trilok Soni from Qualcomm mentioned they will be using this into their
->> software deliveries in production.
->>
->> Someone suggested to have some mechanism to block specific data from
->> being added to the inspection table as being sensitive non-inspectable
->> data.
->> [Eugen]: Still have to figure out how that could be done. Stuff is not
->> being added to the table by default.
->>
->> Another comment was about what use case there is in mind, is this for
->> servers, or for confidential computing, because each different use case
->> might have different requirements, like ignoring some regions is an
->> option in one case, but bloating the table in another case might not be
->> fine.
->> [Eugen]: The meminspect scenario should cover all cases and not be too
->> specific. If it is generic enough and customizable enough to care for
->> everyone's needs then I consider it being a success. It should not
->> specialize in neither of these two different cases, but rather be
->> tailored by each use case to provide the mandatory requirements for that
->> case.
->>
->> Another comment mentioned that this usecase does not apply to many
->> people due to firmware or specific hardware needed.
->> [Eugen]: one interesting proposed usecase is to have a pstore
->> driver/implementation that would traverse the inspection table at panic
->> handler time, then gather data from there to store in the pstore
->> (ramoops, mtdoops or whatever backend) and have it available to the
->> userspace after reboot. This would be a nice use case that does not
->> require firmware nor specific hardware, just pstore backend support.
->>
->> Ending note was whether this implementation is going in a good direction
->> and what would be the way to having it moving upstream.
->>
->> Thanks everyone who attended and came up with ideas and comments.
->> There are a few comments which I may have missed, so please feel free to
->> reply to this email to start a discussion thread on the topic you are
->> interested in.
->>
->> Eugen
->>
+> The nvgrace-gpu module [1] maps the device memory to the user VA (Qemu)
+> without adding the memory to the kernel. The device memory pages are PFNMAP
+> and not backed by struct page. The module can thus utilize the MM's PFNMAP
+> memory_failure mechanism that handles ECC/poison on regions with no struct
+> pages.
 > 
-> Maybe you or someone else has already mentioned this. If so, sorry I missed it.
+> The kernel MM code exposes register/unregister APIs allowing modules to
+> register the device memory for memory_failure handling. Make nvgrace-gpu
+> register the GPU memory with the MM on open.
 > 
-> How does this compare or contrast to VMCOREINFO?
+> The module registers its memory region, the address_space with the
+> kernel MM for ECC handling and implements a callback function to convert
+> the PFN to the file page offset. The callback functions checks if the
+> PFN belongs to the device memory region and is also contained in the
+> VMA range, an error is returned otherwise.
 > 
-> thanks.
+> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.com/ [1]
+> 
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 116 +++++++++++++++++++++++++++-
+>  1 file changed, 112 insertions(+), 4 deletions(-)
 
-This inspection table could be created in an VMCOREINFO way, the patch
-series here[1] is something that would fit it best .
+I'm not sure where Andrew stands with this series going into v6.19-rc
+via mm as an alternate fix to Linus' revert, but in case it's on the
+table for that to happen:
 
-The drawbacks are :
-some static variables have to be registered to VMCOREINFO in their file
-of residence. This means including vmcoreinfo header and adding
-functions/code there, and everywhere that would be needed , or , the
-variables have to be un-static'ed , which is a no-go.
-This received more negative opinions on that particular patch series.
-The annotation idea seemed cleaner and simpler, and more generic.
+Reviewed-by: Alex Williamson <alex@shazbot.org>
 
-We could add more and more entries to the vmcoreinfo table, but that
-would mean expanding it a lot, which it would maybe defy its purpose,
-and be getting too big, especially for the cases where custom drivers
-would like to register data.
+Otherwise let's get some mm buy-in for the front of the series and
+maybe it should go in through vfio since nvgrace is the only user of
+these interfaces currently.  Thanks,
 
-How I see it, is that maybe the vmcoreinfo init function, could also
-parse the inspection table and create more entries if that is needed.
-So somehow memory inspection is a superset or generalization , while
-VMCOREINFO is a more particular use case that would fit here.
+Alex
 
-Do you think of some better way to integrate the meminspect table into
-VMCOREINFO ?
+> 
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index 84d142a47ec6..91b4a3a135cf 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/jiffies.h>
+>  #include <linux/pci-p2pdma.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/memory-failure.h>
+>  
+>  /*
+>   * The device memory usable to the workloads running in the VM is cached
+> @@ -49,6 +50,7 @@ struct mem_region {
+>  		void *memaddr;
+>  		void __iomem *ioaddr;
+>  	};                      /* Base virtual address of the region */
+> +	struct pfn_address_space pfn_address_space;
+>  };
+>  
+>  struct nvgrace_gpu_pci_core_device {
+> @@ -88,6 +90,83 @@ nvgrace_gpu_memregion(int index,
+>  	return NULL;
+>  }
+>  
+> +static int pfn_memregion_offset(struct nvgrace_gpu_pci_core_device *nvdev,
+> +				unsigned int index,
+> +				unsigned long pfn,
+> +				pgoff_t *pfn_offset_in_region)
+> +{
+> +	struct mem_region *region;
+> +	unsigned long start_pfn, num_pages;
+> +
+> +	region = nvgrace_gpu_memregion(index, nvdev);
+> +	if (!region)
+> +		return -EINVAL;
+> +
+> +	start_pfn = PHYS_PFN(region->memphys);
+> +	num_pages = region->memlength >> PAGE_SHIFT;
+> +
+> +	if (pfn < start_pfn || pfn >= start_pfn + num_pages)
+> +		return -EFAULT;
+> +
+> +	*pfn_offset_in_region = pfn - start_pfn;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline
+> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *vma);
+> +
+> +static int nvgrace_gpu_pfn_to_vma_pgoff(struct vm_area_struct *vma,
+> +					unsigned long pfn,
+> +					pgoff_t *pgoff)
+> +{
+> +	struct nvgrace_gpu_pci_core_device *nvdev;
+> +	unsigned int index =
+> +		vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	pgoff_t vma_offset_in_region = vma->vm_pgoff &
+> +		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+> +	pgoff_t pfn_offset_in_region;
+> +	int ret;
+> +
+> +	nvdev = vma_to_nvdev(vma);
+> +	if (!nvdev)
+> +		return -ENOENT;
+> +
+> +	ret = pfn_memregion_offset(nvdev, index, pfn, &pfn_offset_in_region);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Ensure PFN is not before VMA's start within the region */
+> +	if (pfn_offset_in_region < vma_offset_in_region)
+> +		return -EFAULT;
+> +
+> +	/* Calculate offset from VMA start */
+> +	*pgoff = vma->vm_pgoff +
+> +		 (pfn_offset_in_region - vma_offset_in_region);
+> +
+> +	return 0;
+> +}
+> +
+> +static int
+> +nvgrace_gpu_vfio_pci_register_pfn_range(struct vfio_device *core_vdev,
+> +					struct mem_region *region)
+> +{
+> +	int ret;
+> +	unsigned long pfn, nr_pages;
+> +
+> +	pfn = PHYS_PFN(region->memphys);
+> +	nr_pages = region->memlength >> PAGE_SHIFT;
+> +
+> +	region->pfn_address_space.node.start = pfn;
+> +	region->pfn_address_space.node.last = pfn + nr_pages - 1;
+> +	region->pfn_address_space.mapping = core_vdev->inode->i_mapping;
+> +	region->pfn_address_space.pfn_to_vma_pgoff = nvgrace_gpu_pfn_to_vma_pgoff;
+> +
+> +	ret = register_pfn_address_space(&region->pfn_address_space);
+> +
+> +	return ret;
+> +}
+> +
+>  static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+>  {
+>  	struct vfio_pci_core_device *vdev =
+> @@ -114,14 +193,28 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+>  	 * memory mapping.
+>  	 */
+>  	ret = vfio_pci_core_setup_barmap(vdev, 0);
+> -	if (ret) {
+> -		vfio_pci_core_disable(vdev);
+> -		return ret;
+> +	if (ret)
+> +		goto error_exit;
+> +
+> +	if (nvdev->resmem.memlength) {
+> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->resmem);
+> +		if (ret && ret != -EOPNOTSUPP)
+> +			goto error_exit;
+>  	}
+>  
+> -	vfio_pci_core_finish_enable(vdev);
+> +	ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->usemem);
+> +	if (ret && ret != -EOPNOTSUPP)
+> +		goto register_mem_failed;
+>  
+> +	vfio_pci_core_finish_enable(vdev);
+>  	return 0;
+> +
+> +register_mem_failed:
+> +	if (nvdev->resmem.memlength)
+> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
+> +error_exit:
+> +	vfio_pci_core_disable(vdev);
+> +	return ret;
+>  }
+>  
+>  static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
+> @@ -130,6 +223,11 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
+>  		container_of(core_vdev, struct nvgrace_gpu_pci_core_device,
+>  			     core_device.vdev);
+>  
+> +	if (nvdev->resmem.memlength)
+> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
+> +
+> +	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
+> +
+>  	/* Unmap the mapping to the device memory cached region */
+>  	if (nvdev->usemem.memaddr) {
+>  		memunmap(nvdev->usemem.memaddr);
+> @@ -247,6 +345,16 @@ static const struct vm_operations_struct nvgrace_gpu_vfio_pci_mmap_ops = {
+>  #endif
+>  };
+>  
+> +static inline
+> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *vma)
+> +{
+> +	/* Check if this VMA belongs to us */
+> +	if (vma->vm_ops != &nvgrace_gpu_vfio_pci_mmap_ops)
+> +		return NULL;
+> +
+> +	return vma->vm_private_data;
+> +}
+> +
+>  static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
+>  			    struct vm_area_struct *vma)
+>  {
 
-[1]
-https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
 
