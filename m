@@ -4,96 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EEC6CFD314
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 03:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFABCFD314
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 04:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 875546B0007; Sat, 13 Dec 2025 22:30:20 -0500 (EST)
+	id 780A76B0005; Sat, 13 Dec 2025 23:15:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84D0E6B0008; Sat, 13 Dec 2025 22:30:20 -0500 (EST)
+	id 70A216B0007; Sat, 13 Dec 2025 23:15:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763086B000A; Sat, 13 Dec 2025 22:30:20 -0500 (EST)
+	id 5D2286B0008; Sat, 13 Dec 2025 23:15:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 63DE96B0007
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 22:30:20 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04604C02B2
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:30:19 +0000 (UTC)
-X-FDA: 84216648600.25.F40907F
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5C3D340009
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:30:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=aMsawhgh;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765683018; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 452F26B0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 23:15:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A56A58B667
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 04:15:11 +0000 (UTC)
+X-FDA: 84216761622.04.FC801BE
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DA94012000C
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 04:15:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OFpDVJjB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765685710; a=rsa-sha256;
 	cv=none;
-	b=MLtWWDz4uSG1a4YLI1wzIeU3wlj1lh5KztUce3GgF85Y3o6eDWqdP/4LYUX3y0R7aQVlxb
-	UAm6nA4gzLFTsAFxRmqFKz3N1G3hAQQtCZdojdaEg9OrLPXxl/ExPQGfm2zm7fHqHUlxRF
-	WvsX8bUi9xpr+xra7K2I8qSk/yFaV24=
+	b=mBayLA/kP24rCe3+I+GGLGCHx2k969DcyIdib2rS0r1/PggqIlyZmN30YNFu9EWBeTu4fI
+	U+Jk9qtR/I5mxfE8NagTmixOuJ3Hgw9kzRt3ly+jpMUbCwxMKMmW8hBZ48UcFSxYJdHRlS
+	ig4DD6Fg64Vwy20d8vsO81BB4GTYg7E=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=aMsawhgh;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OFpDVJjB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765683018;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765685710;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KGi9KZh4n2dTU/mRqjBgfYapN1MvgzZFugI9Jrcbsco=;
-	b=yxDHze3Li0Kgc58Fj6maN9ntp+Rqdr/5HvPnOufJnvsFvRJA5O5x2rrft8dJhBxkt0Hg16
-	Mi2kOxPfgxgM/iF/mQNmqJnyUTnqXI/YlBSyBwEm3PehsjqVizw3JqM7YBEfPBJ2isKUQ6
-	LpVj9Eco8EmNsSrqX19bJ5Gr3kxrUlI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KGi9KZh4n2dTU/mRqjBgfYapN1MvgzZFugI9Jrcbsco=; b=aMsawhgh9BwqrryYqi+W+63jCO
-	/Uuz/A7YCu8QXbC/ErbOjU6LOwABRhf3q5lgdCSt0GA2xwcjXHUjz6f6lzEnVkGBMK/R08zXRR4Yh
-	fikqIljLdNfWREWEJAb7ekS2vjlWfgzgH1ACqZI+/oEkmi9sb8e+o7ft8vgMyRAtW/BiicIJa1xa9
-	8LPsI6nhMxZqyT4frifavmMcSGJkP6k68sldjPM+BCKrRwP2OG6Xt132Fw3K5rfqu8Pd8s4y2XGpg
-	DGqdbiTbqwgH4uuR8BCZHo3K2Tjhi0b3IhKmMlP0sV2IIYNvViOgWQ/PTvnB5FCLeTqV12GBPlV1I
-	u9GRaM+w==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vUcor-00000001yMh-3YW7;
-	Sun, 14 Dec 2025 03:30:49 +0000
-Date: Sun, 14 Dec 2025 03:30:49 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Hugh Dickins <hughd@google.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [RFC][PATCH 2/2] shmem: fix recovery on rename failures
-Message-ID: <20251214033049.GB460900@ZenIV>
-References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
- <20251212050225.GD1712166@ZenIV>
- <20251212053452.GE1712166@ZenIV>
- <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
- <20251212063026.GF1712166@ZenIV>
- <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
- <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com>
- <20251213072241.GH1712166@ZenIV>
- <20251214032734.GL1712166@ZenIV>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Sdsg4erWIutvgEa7dX1ZHucXpg/1kUTw5cVvZEYCiLk=;
+	b=8iMeYCkUWaeMIB7Hzu8hU/fOT+1NYly5GmxORfYmymNruiQlwf8isZgM8iWWjwTl9swrS8
+	zis/VDP0PEUa+upjX0HbiZlSpRV2KHW5NNgBqO6LsjwdmTAvJ/sS7wsO0iElV+/q3dy2KK
+	FS5mLLmz5sGSkIsznfYILrXRiW863GU=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29f02651fccso451725ad.0
+        for <linux-mm@kvack.org>; Sat, 13 Dec 2025 20:15:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765685709; x=1766290509; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Sdsg4erWIutvgEa7dX1ZHucXpg/1kUTw5cVvZEYCiLk=;
+        b=OFpDVJjBTIqcSU5wXBheR8QoNzxicp8xvlmmZoXIiQx4whoofgXn/e1NTYfzw8YzDc
+         HpEENH0cAiaGibhBB2WuSnKCnvEzdeBEPKgDm0qfZsyJMpw5Bsx/5yubSozkcFFNUVxG
+         l5IC8SwRlGSznFsrbCu2LhPS6sIS1awbZcDNxDUXcdWzbL7LNZ59bRSwYRUFwWTGAlEo
+         it0fEUGmCQxQW8v9QDIDXRHIhATR5ZW1DXLJe7Emg6Td+npsHR87U1Kke17bcvJc65ol
+         kMvKl1TAlvKzuI4mMiYF5dVGEinucQiWoM1KYEtrf1HjsWO9ZGCThWzNMjVJVW1kShlK
+         Lt7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765685709; x=1766290509;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sdsg4erWIutvgEa7dX1ZHucXpg/1kUTw5cVvZEYCiLk=;
+        b=m521edkJsu8L/YfXCdnw1Fk62f+EU+GEZuwzDSyRfJTaOIvbVPgjCOHDwcRXVysyw8
+         dCWXcAJUm5hJofdM7akjy7+KOeR3fEoIM+kaPAltJnu0QDPSckYtv86G/ChWOUTHDKw8
+         JeXobvCGQ9joutvs7URpwygKQt0CA9fq6wYWO3NXn7zp47mDh69ip+uOboffS/WjpXKr
+         CFa6ludy3NHBwTkxsJLwPx/VuXge/Z2PGirspV81/QkYuxEGtyY3wrg50nNPdtvyfeKH
+         XcEOwp5meiWCu/vXCNHNqMxHjWlKfrT1uevTXZwpQUiE+uyULnxJpo5JjRMqMw8UeJUM
+         ld9g==
+X-Gm-Message-State: AOJu0YwfCBZrC3+qIlRYZJGScqWJPwDBOgmtJREeCSvPsTaL50WOShVG
+	242DLcBKqCU+G6Ln3ttGyxDd8tcZTKT0OC8FeByE8af/vEnI1D2uEOvREo4b+9IMAA==
+X-Gm-Gg: AY/fxX6BCFeC5LM30b9AGHga2uoRtsq/Nn+kLieY3+8hV9hgIm2hzIGP1E75jPG/0pJ
+	SDJ8s0oP0oNCOIfk91osJXl3vaarxpYsLT/tLI1eS3FwrZqiJpAFCoLRrQfm6oZIWGd5qWt7wRp
+	k9nrb+Pu7n2RleJkgRgQpW0FERhXSzK0nNrEgSbQHAeZmh/AVxXgx0AdhaT2uec6E491Iuc876Z
+	sgVwj+Y6vQ2u9axb4DmGKNM0qtvgtzASTn32ezxljmXm2KFaexhEPVoSEKGZ9S8mm5LZTiI249A
+	CiDimrY29ru56Miaz7R8pa3ROefPr78lXCQhUaIBt8DW/LXqcsRwyxWVw1VwdQldLHXNfzwqepw
+	3N6E033TP0qh3R2ys29ms+aDCCF9+D0ELR26Il5dUzN1mkhO0+3Xc3PFVU5+WXt/LEZmMNWZl4u
+	vgMxZdAKcv92Gqi+GlsrIPYv5b/LjCWz60js38GC3BNtBT3rYSzKlsEVqPivtyswdIFe5cZsSGV
+	pFhloqJlZlGmSBKXOepNTPg4SrsUGvBymz79bU=
+X-Google-Smtp-Source: AGHT+IExXFmG4ZkryCzQAXH2+nkErBtP5RMjFwMlasAYbVEuysL//WH3R+aZs7pF+b/vG6hdceMudA==
+X-Received: by 2002:a17:903:1b63:b0:298:45b1:6ef4 with SMTP id d9443c01a7336-2a09060d850mr2737425ad.12.1765685708353;
+        Sat, 13 Dec 2025 20:15:08 -0800 (PST)
+Received: from [2a00:79e0:2eb0:8:54d9:374:d4d6:8842] ([2a00:79e0:2eb0:8:54d9:374:d4d6:8842])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea06ae3bsm96645555ad.93.2025.12.13.20.15.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Dec 2025 20:15:07 -0800 (PST)
+Date: Sat, 13 Dec 2025 20:15:07 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    David Hildenbrand <david@kernel.org>, David Matlack <dmatlack@google.com>, 
+    James Gowans <jgowans@amazon.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+    Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from December 1, 2025
+Message-ID: <02fa839b-2e4a-20f1-9eaa-03df5947976c@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251214032734.GL1712166@ZenIV>
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DA94012000C
+X-Stat-Signature: k963efj6je41kfrwuonmshmap13zogcu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C3D340009
-X-Rspamd-Server: rspam10
-X-Stat-Signature: xddczoqkkge7bc83kbsng3r5sy3p8zc6
-X-HE-Tag: 1765683018-865233
-X-HE-Meta: U2FsdGVkX1++qCTEmH7qGQlqdJq0CEfZoBvTkQjCs96zNhmJEHt9JaXWAgO999ZKx25kiG4bWh22GWDUNMoQj+I6TUa+r9Zv9D/Zp9NhHldVXouCPoGFES3NiVGdCjYOgwLkI+jOeo367QxQKXB/DAffLVldL09EtOxLO/CiDCipJHPHSGgmH6kCdHz56uRVryG6Tgc+J0i/AVWOE8/tWDCvV3Hy1iToybknw1ESG4YEPTkL7986SSRFKJ8Uh+Q6R78wpDt8wQGWEDNg4QoWX4zZS752ytF2v2FKeL2Cbo1ZOZ0Vm5W4CUhPqgySPA8kWUm0IwvHfPxAZjOxbRj1aL7l9f8EzoIYO81urE9qoMVkUX8bmtEOK8t8TIeFM97CCEuwbcDDJNOjYWss48/GnSJa1EeRPAHHFD95Y4rEEVpYiafHIiiOyiW+6EeZuq8I6ryfxn1XNkd9N00oly7I9e1TaIdg0yV7ME1wIG+Eq1vhji58RG9O/PQpTA34iauMnAsuadBi6ENKGLbe3TPRcp/joOKYdqRam6wqbqA+ivNLW7R4a91MWyMoqEUA+UQfp2GnKsZ316XCYQ440oqM5leMVH+BMhrqvMBrZ8hFvdUXAb21oreTjzSV9g+fpq1ur6Gdf7I2QQXtlxypKyYpZQr99pXlr+7D/WU/j3GLqnAzMJcPKLVHNicRNHNN1z/DIMwHtuKmdzHdKoD3WpLiYAsekyNGfjkkRYCOOFaJyAwoSnf8mAAF4jtRw/NHejZINv8uX0BV46+ZJhmRaM0ljhtUgT8I0B9IBFZgyM8wQLnColI4ZTMxg6AXRxLoxb/9SGnCAd8GfXXXU4bEQ3HBX9P18D+U34GV1+0tK7TverK10KCxxd2fkdN3yiL0HKhPVdtPGQjJjWlVwA4SatvzvNg7kKpZAMi131IRmDJV2dPJN6Li9uKgET4FhOpqNcyANKGH+9sjJCXtPjURCBS
- qDP/nlHj
- RGX20FkfjzTrVLLEvyklG0x59mk2MSMZTvv5xGi9C7CcMrmaWb9BKEdUAxA77jch84rbxesjEKorMdqZH3PnasadlzKp17R6HaahuM4G5EFgaeVgppWKdRgQa7hcAZ5sbR/tXD8KJkxoCqiEFraWtnx7n+UCFEzO2rMaPUxW/oUbYWFUXrfQfvIxR9ITI6T1tX7VVZPgjxTHgcdzr3/vIwN11LmpkzUSXQZwHOH0jzTS6nReITPgSpk+bk8iHk2NYhQmAjM0QpulUaVvHvaais8BlX10Tt2+FFttWAjFkjBdUDA9RvM7yEUUabi6H/WTW9GCfEI7gLeg3DJytvUN7bh1W/h4FnfLjnHX/2IPQi0PxA/fM/wgmMz1G3iiPkkUHCXzisk+UIZbUnHLZVwOwB6K7ailCeMoNyDMDWxEsYHwqE/fxHTmpUR13eIeAoqq0l37csaQ7Za3B5rY9nMOJIJ43CTljLmjc86+SenqoBMOtucA/n6/pWykjtw==
+X-HE-Tag: 1765685709-596137
+X-HE-Meta: U2FsdGVkX19yxEUWdATLMw+g0YB7GPsnhbNoEwHvzdzphm0FYdFflG8XriuZdj3r98H7o6qYJmx1atBNUyB8/twPgAnPNuwTawcjDh8+GXrUX2JzyAt1z6SFLm69uyhTzjy7dXN9Jwtd6kudelG+/sZ8v+za8B3U7iMAEGH4yGAIy+rfldR+4+vIA/FmZTmZUl+xeVQ0PRDVLcxxsLpvxztdI10PZX7S8jOaq8eE0lTL4ASO8d6vcJ6LoPEBP2JkaeCEFaKtH5ODZRCAa1m8uy9hZUpH0nWWIp012Hj9Ln1SKHQCma8DXjwqrbRYafeq4Sy0KH3eVK8gEiyFR/k8P3koSnKAOysG/wTgiEsq/pjyeRUY+3VejhygbGziCLadTbAF4UZvr2cuUPWKsJn6PrOoZipbyqrt21QMQFBaNSEazXdCPfn4Zp48S3KbNjbezYamoh6Vcz+VJO/wuJ+Gizh5xl24iS0vd1791ahtqUVnmSQ/4BfMpHbbLlHUBNthfLGydOmzMP5SPGeqQ3NoaPDWbHSdeS0aXCC008EwwernehhW/XzLcXIpVH5l32S+jgz7BC6beF1GLtWKIw3c6ivQujqyJxM55NTdJWA+ileP2jH9jCgZuWdwuL28IFT0plBYaIn0UlxSrzyPNlzMzdb/rxXsXCuGztduB+CbxenGQ0J70UpF5teGJctsH+ZXKmLXQ4LBEWrUPMDxdtcVbE4WSRHASQ1oF+H8J2VNirmNdpkWAU89+AE7gVHgKUnKrNKgqvDUTMEpdcM+Jlwija2UO7sayS+6clVQ5ho11au/RGbUOp+YenAqzI0kX+pQCcbTbTdMclYMHq0WFpQd/EMYkROE2SUDpAIMdbthghJVZbvNTQ0+G7t09Lqtbuq5TMC6CCOEm+RtbuRutoUm2SZKTzJzq8mVhBxPXcogL7zQAOPiCs6h3Y5627TT1BaQE21zeSpJqe8xIEYsyyb
+ o6vuBdkU
+ rqp0DCqTalwS3XqfpNvdQIhQQz/vrmcRKQ1h+VbLibVYBoKEDzDqmuZxlOJaUhe4MFIGIFhfU4mWck2OLkX+k3Tahnz0f8zit07phSRdfXGPl6Y3wiq1lYSWkIJbALh3YiJixopcWX99IYhqk9+qdDNu3LpSn0VaQ2IIScFiVyVPH2XNjCYD/pjc/ESkqzLlndYDz9p47DhtZzjw3K3tGdY4r7SQW4sag6XZC0RBBybfSoOWlktyNIsLIYEljC/om6+VQ2awOfzM/We3VnIuVvnbhRP/AvT75OiFTnrer1CBgcnQsoGoRHKO2vcy+q/CzJcn6cUcylB86Mv2DAp8dxu3LtUm0B7tfEwcKIrTH7V08pfl/i3L1atEdGl/eJVlFU8GWNf69zjqeoVAR+xF2UeHXkjUnUnJYf8FV8G7XhvHMOysnuZXtFR6kdhmEVZ/vVEP6Ct4yKCWTHkA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,171 +121,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-maple_tree insertions can fail if we are seriously short on memory;
-simple_offset_rename() does not recover well if it runs into that.
-The same goes for simple_offset_rename_exchange().
+Hi everybody,
 
-Moreover, shmem_whiteout() expects that if it succeeds, the caller will
-progress to d_move(), i.e. that shmem_rename2() won't fail past the
-successful call of shmem_whiteout().
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, December 1.  Thanks to everybody who was involved!
 
-Not hard to fix, fortunately - mtree_store() can't fail if the index we
-are trying to store into is already present in the tree as a singleton.
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-For simple_offset_rename_exchange() that's enough - we just need to be
-careful about the order of operations.
+----->o-----
+Pasha updated on the state of stateless KHO :)  Jason Miu sent a recent 
+update which received feedback internally and then will be sent again to 
+the upstream mailing list.
 
-For simple_offset_rename() solution is to preinsert the target into the
-tree for new_dir; the rest can be done without any potentially failing
-operations.
+LUO v8 has been merged into stable and is scheduled for merge into 6.19 
+now that the merge widnow is open.  For LUO, there are a few patches still 
+outstanding: end-to-end testing (there is one patch that allows for 
+creating a VM to do automatic testing) that is postponed, a change to 
+preserve file life cycle bound global objects (no user in original patch 
+series) that is postponed, and a patch for an internal API to retrieve 
+struct files and get tokens for dependencies (no user) that is also 
+postponed.
 
-That preinsertion has to be done in shmem_rename2() rather than in
-simple_offset_rename() itself - otherwise we'd need to deal with the
-possibility of failure after successful shmem_whiteout().
+Whichever user is merged first for preserving file life cycle bound global 
+objects will upstream the overall support.
 
-Fixes: a2e459555c5f ("shmem: stable directory offsets")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/libfs.c         | 50 +++++++++++++++++++---------------------------
- include/linux/fs.h |  2 +-
- mm/shmem.c         | 18 ++++++++++++-----
- 3 files changed, 35 insertions(+), 35 deletions(-)
+----->o-----
+Jork asked if user mode tools intergrate LUO into systemd.  Pasha said 
+that luod will be integrated with systemd; the design proposed the way it 
+would be integrated.  luod would be holding the sessions through the 
+reboot command so that the VMM can exit.  Jork asked where the designs 
+were, Pasha pointed him to the cover letter for LUO.
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 9264523be85c..591eb649ebba 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -346,22 +346,22 @@ void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry)
-  * User space expects the directory offset value of the replaced
-  * (new) directory entry to be unchanged after a rename.
-  *
-- * Returns zero on success, a negative errno value on failure.
-+ * Caller must have grabbed a slot for new_dentry in the maple_tree
-+ * associated with new_dir, even if dentry is negative.
-  */
--int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
--			 struct inode *new_dir, struct dentry *new_dentry)
-+void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-+			  struct inode *new_dir, struct dentry *new_dentry)
- {
- 	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
- 	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
- 	long new_offset = dentry2offset(new_dentry);
- 
--	simple_offset_remove(old_ctx, old_dentry);
-+	if (WARN_ON(!new_offset))
-+		return;
- 
--	if (new_offset) {
--		offset_set(new_dentry, 0);
--		return simple_offset_replace(new_ctx, old_dentry, new_offset);
--	}
--	return simple_offset_add(new_ctx, old_dentry);
-+	simple_offset_remove(old_ctx, old_dentry);
-+	offset_set(new_dentry, 0);
-+	WARN_ON(simple_offset_replace(new_ctx, old_dentry, new_offset));
- }
- 
- /**
-@@ -388,31 +388,23 @@ int simple_offset_rename_exchange(struct inode *old_dir,
- 	long new_index = dentry2offset(new_dentry);
- 	int ret;
- 
--	simple_offset_remove(old_ctx, old_dentry);
--	simple_offset_remove(new_ctx, new_dentry);
-+	if (WARN_ON(!old_index || !new_index))
-+		return -EINVAL;
- 
--	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
--	if (ret)
--		goto out_restore;
-+	ret = mtree_store(&new_ctx->mt, new_index, old_dentry, GFP_KERNEL);
-+	if (WARN_ON(ret))
-+		return ret;
- 
--	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
--	if (ret) {
--		simple_offset_remove(new_ctx, old_dentry);
--		goto out_restore;
-+	ret = mtree_store(&old_ctx->mt, old_index, new_dentry, GFP_KERNEL);
-+	if (WARN_ON(ret)) {
-+		mtree_store(&new_ctx->mt, new_index, new_dentry, GFP_KERNEL);
-+		return ret;
- 	}
- 
--	ret = simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
--	if (ret) {
--		simple_offset_remove(new_ctx, old_dentry);
--		simple_offset_remove(old_ctx, new_dentry);
--		goto out_restore;
--	}
-+	offset_set(old_dentry, new_index);
-+	offset_set(new_dentry, old_index);
-+	simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
- 	return 0;
--
--out_restore:
--	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
--	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
--	return ret;
- }
- 
- /**
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 04ceeca12a0d..f5c9cf28c4dc 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3247,7 +3247,7 @@ struct offset_ctx {
- void simple_offset_init(struct offset_ctx *octx);
- int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
- void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
--int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-+void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
- 			 struct inode *new_dir, struct dentry *new_dentry);
- int simple_offset_rename_exchange(struct inode *old_dir,
- 				  struct dentry *old_dentry,
-diff --git a/mm/shmem.c b/mm/shmem.c
-index d3edc809e2e7..4232f8a39a43 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4039,6 +4039,7 @@ static int shmem_rename2(struct mnt_idmap *idmap,
- 	struct inode *inode = d_inode(old_dentry);
- 	int they_are_dirs = S_ISDIR(inode->i_mode);
- 	int error;
-+	int had_offset = false;
- 
- 	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE | RENAME_WHITEOUT))
- 		return -EINVAL;
-@@ -4050,16 +4051,23 @@ static int shmem_rename2(struct mnt_idmap *idmap,
- 	if (!simple_empty(new_dentry))
- 		return -ENOTEMPTY;
- 
-+	error = simple_offset_add(shmem_get_offset_ctx(new_dir), new_dentry);
-+	if (error == -EBUSY)
-+		had_offset = true;
-+	else if (unlikely(error))
-+		return error;
-+
- 	if (flags & RENAME_WHITEOUT) {
- 		error = shmem_whiteout(idmap, old_dir, old_dentry);
--		if (error)
-+		if (error) {
-+			if (!had_offset)
-+				simple_offset_remove(shmem_get_offset_ctx(new_dir),
-+						     new_dentry);
- 			return error;
-+		}
- 	}
- 
--	error = simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
--	if (error)
--		return error;
--
-+	simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
- 	if (d_really_is_positive(new_dentry)) {
- 		(void) shmem_unlink(new_dir, new_dentry);
- 		if (they_are_dirs) {
--- 
-2.47.3
+Pasha noted that the source code for luod would be open source and added 
+to our GitHub.
 
+----->o-----
+David Matlack updated on the status of his VFIO series[1] that was 
+recently sent out; some feedback was being provided upstream that he will 
+be iterating through.  This series is largely mechanical to add the 
+plumbing to preserve the VFIO device file descriptor across live update.  
+Actual PCI device preservation will be built on top of it.
+
+Pasha discussed BDF for PCI device preservation and whether we should use 
+a path instead, which shouldn't add much overhead.  He opined that we may 
+need to preserve devices that are not PCI, like TPM.  Chris Li noted that 
+the bus number is assigned from the ACPI table so you need to infer that 
+the root is flat and that the first bus number is the slot, but that's 
+ugly.
+
+David said that for non-PCI devices that these would likely need their own 
+solutions.  Pasha asked if the PCI device preservation would be extendable 
+to non-PCI devices if possible; he acknowledged that BDF can't change but 
+still wondered if there was a more common way to preserve.  David 
+suggested that anything here could be added incrementally on top later.
+
+For PCI assigned buses, Pasha suggested ignoring this parameter or disable 
+live update if the parameter is set.  It opened up the general question of 
+how we should handle conflicting parameters -- should this be handled by 
+VFIO or by LUO?  Chris suggested bailing out when the buses we care about, 
+i.e. those involved in the live update, get changed.  Pasha suggested we 
+could allow the auto assignment on first boot and then ignore the 
+parameter on live update.  David suggested that whenever a PCI device 
+needs to be preserved (a callback into the PCI subsystem), that code can 
+check if this option is enabled and, if so, fail.  The next kernel would 
+still need to check and perhaps panic if it's set.  Pasha compared this to 
+sanity checking the memmap for the new kernel which would be required for 
+consistency.
+
+----->o-----
+Samiullah updated on the status of the IOMMU preservation series that was 
+going to be sent before LPC which was building on top of the VFIO series 
+that David sent out above.  There will be no autobind in this one and it 
+is using internal tokens; the LUO get token API will be integrated later.  
+This is currently planned as an RFC.
+
+Pasha asked about the lock-unlock functionality and whether Sami thought 
+that this was lagging -- Sami said that it was actually better now because 
+there's better flexibility.  David said that the only locking for his 
+series was synchronizing finish when the FLB is freed with anything that's 
+using it.  Anything using it already takes the mutex.  If you try your own 
+locking, then this ends up in a deadlock that is mentioned in the cover 
+letter.  Sami did not encounter this issue.
+
+----->o-----
+Pratyush did not have updates for the HugeTLB + 1GB page preservation 
+support but was hopeful there would be an update in the next week.
+
+He also updated that end of this week or next week he was hoping to have 
+an RFC to share with an early implementation for versioning support to 
+discuss at LPC.
+
+----->o-----
+Jork discussed measuring KHO recently for internal use cases and found 
+that traversing the preserved lists and inserting them into memblock took 
+the majority of the blackout time.  He asked about the later agenda item 
+for deferred struct page initialization.  Pasha said that was actually 
+unrelated to the blackout window, it's rather an incompatibility with KHO.  
+He acknowledged that KHO is very slow at inserting the memblocks, we need 
+to address this scalability problem.  Pratyush had some ideas how to 
+handle this, but none of them are easy.
+
+----->o-----
+There was an update from Ackerley on guest_memfd support for 1GB HugeTLB: 
+he was working on qualifying an internal version and was hoping to get 
+reviews on extending xarrays to support splitting to multiple levels[2] 
+which was a prerequisite for the series.  This was on track to post by 
+early next year.
+
+----->o-----
+The December 15 instance of the meeting is canceled due to LPC travel.
+
+Next meeting will be on Monday, December 29 at 8am PST (UTC-8), everybody
+is welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Topics for the next meeting:
+
+ - update on the status of stateless KHO patches from Jason Miu
+ - update on the the status of LUO v8 for Linux 6.19, any patches that are
+   still pending after upstream merge
+ - discussion on design and status of luod as well as its integration with
+   systemd
+ - update for the VFIO patch series to preserve the VFIO device file
+   descriptor across live update
+ - timelines for PCI device preservation on top of VFIO patch series
+ - next steps for iommu persistence to build upon the VFIO patch series
+   once that is merged
+ - status update for HugeTLB + 1GB page preservation support that was sent
+   out in preparation for LPC
+ - continued discussion on versioning support for various components for
+   luod to negotiate
+ - later: update on status of guest_memfd support for 1GB HugeTLB pages
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update, including deferred
+   struct page initialization
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1]
+https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
+[2] 
+https://lore.kernel.org/all/20251117224701.1279139-1-ackerleytng@google.com/
 
