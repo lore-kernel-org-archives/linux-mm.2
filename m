@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E26CFD314
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 03:27:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 019D8CFD314
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 03:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4509D6B0005; Sat, 13 Dec 2025 22:27:10 -0500 (EST)
+	id 602666B0005; Sat, 13 Dec 2025 22:29:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FFAD6B0007; Sat, 13 Dec 2025 22:27:10 -0500 (EST)
+	id 5B2596B0007; Sat, 13 Dec 2025 22:29:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314736B0008; Sat, 13 Dec 2025 22:27:10 -0500 (EST)
+	id 4C8BF6B0008; Sat, 13 Dec 2025 22:29:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C9BF6B0005
-	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 22:27:10 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 786E8135BC1
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:27:09 +0000 (UTC)
-X-FDA: 84216640578.08.E41B039
+	by kanga.kvack.org (Postfix) with ESMTP id 36A7F6B0005
+	for <linux-mm@kvack.org>; Sat, 13 Dec 2025 22:29:42 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E09D5C09EF
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:29:41 +0000 (UTC)
+X-FDA: 84216646962.06.6D86FE3
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8DE3B40004
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:27:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=WLn6X98r;
-	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by imf21.hostedemail.com (Postfix) with ESMTP id 469A71C0004
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 03:29:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=e9JlrV7O;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765682980; a=rsa-sha256;
+	cv=none;
+	b=ptmrvTyT7rM+wnRwgZE5PN8WMZ5EPVxKapSBrARCHLXi55XaE8/nccaAPVNjHC0M62JZ17
+	vR7eD27ET9+yocWxLjQqTYwl2wx8oxh40i5xKTivMLW9Z7XC8u2K6EHtWkv5SYnYr0pMxT
+	NRF8kDSlsNNKn1L0sZ7/1cWwJVYHqIQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=e9JlrV7O;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765682827;
+	s=arc-20220608; t=1765682980;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=daKyAtCUV+qOiVIBB6oUwMd/W2Iw3WrV8/lwVUqgVdk=;
-	b=qgdZzAC0Metn2vNQZQcq0k0aH5CINRz6PdyD9yfTCnz9rr7FSQ3zYOhnwxkMwjwfBGlvRB
-	qiZbjJNg3H0WdYduitFEzEBC7J/J4nvqIjhGzpeRqTxXowMPee7sbQ7hkUpcGUffPJ5/Dd
-	2sWt71PLM6d0oQgOEhYQu0x29YM19SM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=WLn6X98r;
-	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765682827; a=rsa-sha256;
-	cv=none;
-	b=4nNi/QM4VBK5HAwkk1vHXGf0+3BMO7OaBAmep5Zy30Md6CvmC241zy/5xN4flSc2iXvrtt
-	eeIJo5kdghM0i35utaUPviFcO2OB0fh/4q2Kf8lEaGgMmxhTWgoatd2J4KPX0HcnCfQEfW
-	RL7gGoN0b9afop/UapXWLPl0M1wb+Ag=
+	bh=nE0cZnkh09VtJ5FOhMNWibUYyxBs+jVfTjb1515cegE=;
+	b=iPRgkBFCl39564AqwO1t0kkWkoucIh9KWdTMpylslpijY3QeNxKNnkaB6of30Ebb+U69iA
+	E7O8A4a+3h9fa2YyxdN2R/HxQtxc0SkuhIMZdFARuWOqaWQhN9ZdbyXAZwror3aogzEAJX
+	vneyadhB3C+ZYJn2/g1PPdJH74cdTNA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=daKyAtCUV+qOiVIBB6oUwMd/W2Iw3WrV8/lwVUqgVdk=; b=WLn6X98rc27kiAai7WW2purgsD
-	PKB6n2bP7EMLo9Pp0ws7+mM6eKdQlwNtQeE+E/YhV6MdDAgkSeOj03C5CoYibGm51ZliSFVXDODg9
-	qG1d2iZjMPiZs6CKefsV/QPf0kHNL5EQmzF5Gz/KRYpwLaWFZlBbtwMGThm2YyV26ufmpd0gQxrM2
-	lUqr2KPus2yAsz/nKm6I36FaT6EJeFGFeayXS0pEChOLLq3+c63uNHdNz7r59yjdpETdp8D4rSLqS
-	BtNr72QOaHK/kw12Wixk1bzdZavqFztJ9xabDkrb3UHDuomnjMxvJUTd2Cigqfn7kbZv4Qyx7Y45e
-	yVrr+RPA==;
+	bh=nE0cZnkh09VtJ5FOhMNWibUYyxBs+jVfTjb1515cegE=; b=e9JlrV7OFkArFVQ7jktGJCTBdK
+	HDNFyg1yNd6rDN47QJuD92x88JUfhqmwtRz2hEXmH28T9kwED/2zdz4pDEaPy5BHBp54uX2hDiou6
+	N+b/+YrfpTKrXEkxGaOQ0d4dwutVuF4UfWC476aPYmEhZ1lc+80+GJheEHI/YvPVpE7HvN4DRmilK
+	9lAzxrBOABTsarCtxvhjqvnRiig8q2R0TthUWoV5QL6giyTPQLualAwDA7q7HDfL75dy9ypix4I4L
+	5iNuUil1e70OPMCiJjQhlZQBc+otV/H8qqwEhW4YD3DlsGXj16vKM7YsM37VftWlRnlUzW1MVpICn
+	gDxGu2YA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vUcli-00000001vqe-1yAt;
-	Sun, 14 Dec 2025 03:27:34 +0000
-Date: Sun, 14 Dec 2025 03:27:34 +0000
+	id 1vUcoF-00000001xok-1DQ5;
+	Sun, 14 Dec 2025 03:30:11 +0000
+Date: Sun, 14 Dec 2025 03:30:11 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Hugh Dickins <hughd@google.com>
 Cc: Miklos Szeredi <miklos@szeredi.hu>,
@@ -71,8 +71,9 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: shmem_rename() bugs (was Re: 6.19 tmpfs __d_lookup() lockup)
-Message-ID: <20251214032734.GL1712166@ZenIV>
+Subject: [PATCH 1/2] shmem_whiteout(): fix regression from tree-in-dcache
+ series
+Message-ID: <20251214033011.GA460900@ZenIV>
 References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
  <20251212050225.GD1712166@ZenIV>
  <20251212053452.GE1712166@ZenIV>
@@ -81,18 +82,19 @@ References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
  <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
  <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com>
  <20251213072241.GH1712166@ZenIV>
+ <20251214032734.GL1712166@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251213072241.GH1712166@ZenIV>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: dokfbzzff5okbpoochm6wj67j7z8em7k
+In-Reply-To: <20251214032734.GL1712166@ZenIV>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8DE3B40004
-X-HE-Tag: 1765682827-401810
-X-HE-Meta: U2FsdGVkX19vWiJiTaidQ5Eu3QSVPR0P3t7sly6HRQBqocSuSfH5FDyCm4F2hIIhvFXFZYSqzBYj9eqsnBmusQfyq01nXknaaKwnKSQRPhB4pwZdM03UhRD3CqNv0cZalREfvmJK2phOsJB9lrK7gIU0DLDb1YZmhGqYXF2jxtijQNN2qGfKvW2vRnwA1kkeBL7Um1q9KsnVvkKv8CVr1EVGt4XWqDXeRsifV0m4+m7pgU68cyd78jS51AiwK2oTRrSZZHo6uV+vVKZlNkFcVqdh3qCkRRqQ7ydd1JvyPy6N42wf6ceVF9pWrMqXpPfxuK2bda914uzTgnnnJokFgzQf5s3eo2S/ZiVWhpm3txjD1xbhRHKDefwmm2pKDz5EVmYP/wrB1NZokOwjzJrKH5hLugJfMqKh45IS9djN8B23TXK5GQ3Lv57pvNZ/pvTCaq0tpOAKhYfefPaf7mpELxbT48Eh5efz8rt/DGO7/vnHcHt0Vdax5EN62y46Xk1akTOXE/do5TTXol8n+KQdCKQCugMGqxw9+GnuD8cMQpJ0LfrQt/NFu4olPGwMktGRO/okAnHpddmvVyiZA6OzERRH2ryn17oNtfsnZvW+891Onr56gCtRey73FJquzeG7dIOGd9p8mgIlA+SIxVdYLpUhTDG7IlrXSvJ/LqLPysn7cBiL1sDkkSQiNaBqWRAp/B/DMyI9KOqYeUnwQDVVSB7SRifmDkC8346pLToSJuFB3foj4lyuhJh2EftO2OYOpCUzMQaraaCJZYclUjUOCPCvuRTsJc6Eadyy/ASu/5n/KVTZhO/MrFG6Q9DjiqqdsSYGHeFQFKs9wmon6XHPTCexturRwFqgdcaH4/4lmPKH0V8JCLtUCCOqiPsq06EDepfYLeMM2aWkT4JIwrNzPz8A2UvMJtLaaHXSMZi9zOJQ8JDVs/3HEis/4sZR3DE/z/L59xn+XJxwl43wvqJ
- pGEjhwwD
- bVd3LGOjmU9/iMXiDsMgJ+BtUplS9qJaOz4HhxNYh6OGQmPKfRg14Hapm533UCEjhEjy7yqxpDdi4JMNf/mpPsEdkFfYnh070NEhY8PuB6kOrpXd4oYsZjOIXrdbStU7KJfbLIcjkpVPy+mzoaN/73UGRq3VAzI2tQS+A/5Ip7uitxqUOsw6PZHZwPh5A6iad8RHjy6+de6+AzKykV/arkjHUd4X2T0W/GS+opmDJMjkGGD5dqlWpfdj6rVmJzbp8nMLrR4pnhXsUPdUebI0zkyVZGX+rCcJRa6YZSwcCsnNQazJI+qu8nc5NkzeOUIWcTMtHOMqeSbufU82eWrUUGRoXNmX8U/5kPrsVm6uoocl/Din0nVVhdRqHn8Ox9+UbHaGMR/DSyJtLzDjZJSa91uL2hV7Wm1e639sh2/Ix6ywLT9icH6WvPzdq0Yh8MQRssXhgYakaECb+rlIhZ8NZjPsvEaYnI7Gt4+VKBMUzvMppE3DlbYfkVii/AKiYR3NurkT2
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 469A71C0004
+X-Stat-Signature: qcmeip5epfnr1gf5niznqhsowrjpgawo
+X-HE-Tag: 1765682980-830294
+X-HE-Meta: U2FsdGVkX18pGIP5f/mmRcSF9VgD9wWMM0+31K/TbwTsG9uzSj1Zm0Bw4QMmQZfv/0/RVdvJUzBK6ec6wKAA9ngryOLLuV3jUB9WDs594At43ZlnNXDS0clR67ipQX7gQTJzGGK0WE6gmJmcKHxmQcnKPeGz0kBW0zpCCbLlslbINECs4sqtCEnIR/8hrdsz29bKSioMVQ+9jQSRq8enDhLYWwN6p3GApxFFd2+2y9udYZXO7f6aWdD5EFM3U9oc0k9wX0XhURutNMsFRC7idT/TcbNXY6G2V/i7kW1pO2J6mMFpEenC+GVW8YfryXiYFKT8XRYSwY4MdTFBMhVzdHPNl2m+jHGmfqd1hWWA/BE1kFCfw1pKGllTzBiug6fg+vZeoC8tpD5w0L39zuhBcsBHGF5o0oCPBgbl6XOXQyyX22FGld3g+6UKsiKvsaEJPyn61lI/BDtqBDgCibZhPEDgZL4bapwj58sGmsOPR22o6nkBZMdn0hjArolxGF7M/yAYp2BJK8TlH7uj8hU1qGpLX5qvXS2VH565rq7qWUbJQ3VWyclzr681k8eLEs0pNrn55XHvUkuRGmkIWkFol/g34Z8r+colwaKpJ0Txw4ogJmJuOfiifvkyDFvkqC+pYjMPPiNpBbElHwC53q50ZluuSiUhZ9103RI0FrmV60gP6t9FQ4CgLUSaWtpTkQ+vQYUhaM4R0ftqg0tipH3MpZw2orN4jtDIZbL4vAHjlzWAJg+CgA4zcY5jIvdyK0OjVgbMWt9j/ql8mMefmUdUs5JNvqDQC/URVRkWRMVh8xjmXFdP/hkk0LDeSyxw/ePR6NEASfwKLHljCD6SuVQMMyhowX+koPDe1qErQBZTX69L6m4lSfPDDO0gB0soO1rcCqvzq2qgIKmVJGHutST4Bikcofij3AzYeNUuGw5pTILP/kBLBF6XXTb48Y3XvimQ0zhUnLr10mplWl299lR
+ J9XeyMXs
+ EqQS0ainIGTFtjslwz3XbyXIbM+BBlrVSiAAgssdmMdKdUizUFYTKh2Cho1MVBAO3JbwwvR24UwHWKZKZaeLn83c/IFRiyF71FfbX9VDCcqe+qAAcO9WP3X6wxspYcK5gWGt/cP/at0iNFfvil2HxuKXSPB60Ma199f8ZswEB7Xb/zrpE98y8pJoO8OCZOJkIaHs4GPCvmTAx8oXsfjFqqsbSL0qkH+vQ8RRsLjSLrm+Fa7NmrjiyM/ML7CmanTFpqDLqKWzQK6Z4+qGBMaN+GLCOUGCk2IH9GLLYpNXkIzYG9lvnKe8zQ6aipqe5JrENyDe9QurNMVAyAmIyrEPBuaiOi2hL0DPGZX9f3xs2y8bXp4IKpIz/hRrrWadZ15neHB0s+nfAKcEHkDbsUDjjN6PVmnpsCUT7S+HIlgDMdHXHZxGDEi9FrXFGOFCvWikHmCaBshyKVlvQjBjJDWkWrK93J7aVIpjQBvx8atUxdDN27EAMqu37YSzuOYo2mkteooSLX5NqaMtYLcVraPf3MSwXiOQm/iUxzfneJCiw8mAVwaSFuL6wMmDWWcMvnOl5zGlr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,24 +103,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 13, 2025 at 07:22:41AM +0000, Al Viro wrote:
+From 3010f06c52aa7da51493df59303ea733a614597b Mon Sep 17 00:00:00 2001
+From: Al Viro <viro@zeniv.linux.org.uk>
+Date: Sat, 13 Dec 2025 12:36:15 -0500
+Subject: [PATCH 1/2] shmem_whiteout(): fix regression from tree-in-dcache
+ series
 
-> 	What I'm going to do is a couple of patches - one fixing
-> the regression in this cycle (pretty much what you'd been testing),
-> then a separate fix for stable offsets failure handling (present
-> since 2023).  I'll feed them to Linus; I hoped to do that with
-> old regression fixed first, to reduce the PITA for backports,
-> but if I don't have that debugged tomorrow, I'll send the recent
-> regression fix first.
+Now that shmem_mknod() hashes the new dentry, d_rehash() in
+shmem_whiteout() should be removed.
 
-OK, I think I've got it; see
+X-paperbag: brown
+Reported-by: Hugh Dickins <hughd@google.com>
+Acked-by: Hugh Dickins <hughd@google.com>
+Tested-by: Hugh Dickins <hughd@google.com>
+Fixes: 2313598222f9 ("convert ramfs and tmpfs")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ mm/shmem.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #fixes
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3f194c9842a8..d3edc809e2e7 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4019,22 +4019,10 @@ static int shmem_whiteout(struct mnt_idmap *idmap,
+ 	whiteout = d_alloc(old_dentry->d_parent, &old_dentry->d_name);
+ 	if (!whiteout)
+ 		return -ENOMEM;
+-
+ 	error = shmem_mknod(idmap, old_dir, whiteout,
+ 			    S_IFCHR | WHITEOUT_MODE, WHITEOUT_DEV);
+ 	dput(whiteout);
+-	if (error)
+-		return error;
+-
+-	/*
+-	 * Cheat and hash the whiteout while the old dentry is still in
+-	 * place, instead of playing games with FS_RENAME_DOES_D_MOVE.
+-	 *
+-	 * d_lookup() will consistently find one of them at this point,
+-	 * not sure which one, but that isn't even important.
+-	 */
+-	d_rehash(whiteout);
+-	return 0;
++	return error;
+ }
+ 
+ /*
+-- 
+2.47.3
 
-individual patches in followups; the first one deals with this cycle
-regression, the second - with older bug in shmem_rename() failure
-exits.
-
-Folks, please review.  If nobody objects, I'll send a pull request on
-Monday.
 
