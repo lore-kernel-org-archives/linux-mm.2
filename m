@@ -4,129 +4,241 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C05D3E787
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 06:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09ADECFD314
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Dec 2025 09:15:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B58846B0007; Sun, 14 Dec 2025 01:56:29 -0500 (EST)
+	id 8B7B16B0005; Sun, 14 Dec 2025 04:15:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B08076B0008; Sun, 14 Dec 2025 01:56:29 -0500 (EST)
+	id 869AD6B0007; Sun, 14 Dec 2025 04:15:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8236B000A; Sun, 14 Dec 2025 01:56:29 -0500 (EST)
+	id 70A2F6B0008; Sun, 14 Dec 2025 04:15:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 882F46B0007
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 01:56:29 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A5136B0005
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 04:15:08 -0500 (EST)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1299C1A09C5
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 06:56:29 +0000 (UTC)
-X-FDA: 84217168098.16.33EC20F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 54064A0003
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 06:56:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c/af4ehC";
-	spf=pass (imf15.hostedemail.com: domain of alexs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alexs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765695387;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2EEB1A09ED
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 09:15:07 +0000 (UTC)
+X-FDA: 84217517454.16.36B13FF
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011026.outbound.protection.outlook.com [52.101.70.26])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D4D421C000E
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 09:15:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=K3L4gWxk;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=K3L4gWxk;
+	spf=pass (imf18.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.70.26 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765703704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=apGqneViZBsG0Sxhjrh0GEOqlCJn9cs/szQcSZ3tuEE=;
-	b=mJuZ5Ojmbql+4lDHjYRZds3WjKUIfsI7W+N0lsrvsvw0iQQrtelIfeg6MH9Te22rIYcase
-	xKRY7SzeLli7/Q57cfRlMgx/z85hVoRrHfi77kgBFe15+WeA/FOta5W3RCC/DBZFihwfZr
-	VrSmow8j+nyzBwjUxVUX6tzF+S8zjMQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c/af4ehC";
-	spf=pass (imf15.hostedemail.com: domain of alexs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alexs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765695387; a=rsa-sha256;
-	cv=none;
-	b=bN+0SsKMgrO1IStb11ZJObmU9vPcootxobWYWCxUzvOi5Ql2fussrAkVTHSzG9CYrD5Rar
-	IKFd78YUMBlaY2sYoqfmDDLhkeqLDIRI6GyMSAWApLOXrWFwMmxXhx8N6J9YAA5FnkGNbr
-	gDbV5eyFmtThJQ5+Vy5hcCQcYw+/jlU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF1C0401ED;
-	Sun, 14 Dec 2025 06:56:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F724C4CEF1;
-	Sun, 14 Dec 2025 06:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765695385;
-	bh=rNokNUbqhtDAZzRvGy68XrNneuZAbKP4ZIJlFMKF+7U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/af4ehCIryGWDPXN8wqNy/88J0nXqpVQGHfqT2+toiUwTP+C5J5RtU9Geyw2VF0p
-	 QklRyp0qRhxs2uNnXKsuFbrGQWuVRKkwOznqKwNyMQ08nPkeKu8AT+vSKcJWGZRbJO
-	 SWUiE+ata5yHDPcug0nZnZ9bCIjH71HjJJpZNSNn2ivRvv+Io94l2TRfBiZK2mBtHo
-	 hkL5VrDGRW4/PzdFMq9L3tNB1EnsVC8laoIofiC/y2FO28Zz5QyMKGgbNBL7ThA2xf
-	 2G5seFkvmZm6EfVw5Y8/g6FTtlsCMWO9JubLhTHribjDG3T2/qZGR26d+3tpea+B2I
-	 7q/v9Rx2Ou0Fg==
-From: alexs@kernel.org
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: Alex Shi <alexs@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [RFC PATCH 2/2] mm/pgtable: convert pgtable_trans_huge_withdraw to ptdesc
-Date: Sun, 14 Dec 2025 14:55:46 +0800
-Message-ID: <20251214065546.156209-2-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251214065546.156209-1-alexs@kernel.org>
-References: <20251214065546.156209-1-alexs@kernel.org>
+	bh=b93ykCeHZBH8Z/XOC/fjFQlu4jKvjo1vZayjxzaZf+s=;
+	b=q6B+fZfNBmX/z3EFT/cArlIYZG0avVjZLk+GoPSqQiNNytWImi+YkeBFRHPC3UwTySbOgy
+	aVyAypdkm5WFR5lhxMOMs/MRe7X0Unmi1SSJixbHMUkIH1FgIAPzsDiTPes94tHFbnElXy
+	4xjVeagC8lDHOk/TCmEGVnvF4GuCESU=
+ARC-Authentication-Results: i=3;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=K3L4gWxk;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=K3L4gWxk;
+	spf=pass (imf18.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.70.26 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1765703704; a=rsa-sha256;
+	cv=pass;
+	b=S6A8SyL1rqk2hxy9T+GLYguQ+x4gnDkyp5NugHvPjHd1JhrseQJG0S4YFRgBfmMc2rC6ZS
+	tARo0laTbGXArl/711KcP3jYzSk5WDBUSrOLnvZ1iozvg92/9lh0olmHxlNhy2cru0+Rjo
+	wVDWogTP746WmkoKE1pW9LSyUe7LX10=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=ksjbBLk4zfohpttL1kO8Ir+pyZxzo3or3jQKobam99C/1eDNtrM5bPD8uuP2U+mMlSZs9kT7k4KnK7CqDt/Xh0iUz0ZGMo5BWIzSv8lXKIamaU6sHF8wX/fmnZ6fZuc/U73PllbiMRh2t8NaMzCzL4ednhan5ZxGYSGpWzej8AfvPRlgPseudwBu+9n99ClCfCdfipxb6P1yUz6LvQDt1eyOcKrx8bD5u7j1aCHe5wv31hiF3MBw8Zs43zkzhVX768QHM8AUyIgMNbMtjmXug0cVGSlhWFTRfNYppoa4MRBdyjbiTA6zw+YRJ9Q4qL4Th4wWU2KqugE1UwrsDkC05w==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b93ykCeHZBH8Z/XOC/fjFQlu4jKvjo1vZayjxzaZf+s=;
+ b=tImhT97iT3oGnld63XPPM/KS5/W+LokkuDsGLE++gNhXLWf0pUzkMpQom5lXMUo5tbVcdgzjjdekWp/Wl7T150L/nmVD8+engOhcO9CtfeBliM2Nrgz/5axNLeZDv7e/Zp2Z6bbpCGT8bv1v8OrAn6cuu0Nl3oTX6tf1iupGnYdIc+osRDABSGA6ruxYjIPdxUmTka3EosAtblxuxOnz10HD+2Q77AzhSpTpgLoFk+MvXp9+Fbg7LRssZBwVBe7re9HKuQ8uZHXpwYT+WuUqzLw7tWBAJQjvQxdIs+O7egpR8JPvTT7osP40ZaJT3Hc30+43BTkGR8YUqfmGeXX5bQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=google.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b93ykCeHZBH8Z/XOC/fjFQlu4jKvjo1vZayjxzaZf+s=;
+ b=K3L4gWxkyVM1I4GWKkc3MrGogpaTjmUdCUQs9CpV5e1zNounr3Rn+YmeTzTWLfky+G7h8rOE3zCTK7uklAn4aHH53HFPtrjmdedVWSfHY3xeRuahgZPHIkFk8Kau3SUBGVLvicuE+PP53zPQ5TuihdG5ilPZedi22nzGLXJpnBo=
+Received: from DUZP191CA0012.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f9::6) by
+ GV1PR08MB10956.eurprd08.prod.outlook.com (2603:10a6:150:1f4::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Sun, 14 Dec
+ 2025 09:14:55 +0000
+Received: from DB1PEPF000509F0.eurprd03.prod.outlook.com
+ (2603:10a6:10:4f9:cafe::90) by DUZP191CA0012.outlook.office365.com
+ (2603:10a6:10:4f9::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.13 via Frontend Transport; Sun,
+ 14 Dec 2025 09:14:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509F0.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.8
+ via Frontend Transport; Sun, 14 Dec 2025 09:14:54 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RDGsWBeRKpLSF98ctjoRGkt/80O8zuIYPeWiOh28O2An8gdfYy1n3MGdCCn+KMz6YNSl6Jz0ignSlRwLbmPN+s/g0lYAKg+mEllbltP2VaZXxrFAA220hRvuqOo06tderuej5glgNA0xqhEcjSP2mbeRVlEJy0U9kw1Uq2DHp4atoZVZbPVgssvTCE0exNqZUSFCa0GyO13SmzhZT+o2jLAFElkMsraOeax4xp0h0GtDR0OfvIgkoVNX6+Qtk+7Mc+uTpIx29bKxZkpxxwFokMke7JubX/+k4QyNBItaUbknYEKKfqPv6gWcjvNyV+71RQaZSI/K11WD9psuWBbycw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b93ykCeHZBH8Z/XOC/fjFQlu4jKvjo1vZayjxzaZf+s=;
+ b=YVPriVUxgxCzm9irECmpuWyKDtzIvH3WXctg2BRjYQrLTj9N1vQ8R+e8rf0m3EcU3BAIBaWfOFX/ahXm+hU31SZ++tWurBb+19l6M9WBVT1iFfN9Rwm1LdRr8MSBavyEQb71ebzXj+Gn7Egxr6udwGpEBvw1asOHfMDpKskUvqY2NjHpvaerrJoRZOgpd548pf092a5ygAh4oTXliXx/ddAGYYq3WQpVDhy/lkIhila6Blvg0lcypcVHlz37ZTpuviGI/fGCt05/D4GttsVWgpeL5AW85hlR0TnbmplkMWHNgQ1H182mGXTIAPH3DkNj+nJO7ULvgXbQOt0aHeTsdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b93ykCeHZBH8Z/XOC/fjFQlu4jKvjo1vZayjxzaZf+s=;
+ b=K3L4gWxkyVM1I4GWKkc3MrGogpaTjmUdCUQs9CpV5e1zNounr3Rn+YmeTzTWLfky+G7h8rOE3zCTK7uklAn4aHH53HFPtrjmdedVWSfHY3xeRuahgZPHIkFk8Kau3SUBGVLvicuE+PP53zPQ5TuihdG5ilPZedi22nzGLXJpnBo=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by VI0PR08MB11842.eurprd08.prod.outlook.com
+ (2603:10a6:800:316::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Sun, 14 Dec
+ 2025 09:13:52 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%3]) with mapi id 15.20.9412.011; Sun, 14 Dec 2025
+ 09:13:51 +0000
+Date: Sun, 14 Dec 2025 09:13:47 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+	haoluo@google.com, jolsa@kernel.org, hannes@cmpxchg.org,
+	ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+	rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+	ryan.roberts@arm.com, kevin.brodsky@arm.com, dev.jain@arm.com,
+	yang@os.amperecomputing.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
+ stop_machine()
+Message-ID: <aT5/y3cSGIzi2K+m@e129823.arm.com>
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <20251212161832.2067134-3-yeoreum.yun@arm.com>
+ <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+X-ClientProxiedBy: LO0P265CA0015.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:355::6) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 54064A0003
-X-Stat-Signature: qahx98xh9oczkej6c8b5g6fmzmkk3xbc
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|VI0PR08MB11842:EE_|DB1PEPF000509F0:EE_|GV1PR08MB10956:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c4c0213-dd4e-4f79-f0eb-08de3af13ed5
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?us-ascii?Q?6IRJ6Gowh2yuRRbdYw6UInpm0WR9GO/o9QhY9rdy80nUP1/yS++pnWbLz3n8?=
+ =?us-ascii?Q?YcLppcS/io2ln24R44P5c2ZLwiE2daOwHgHjDj/B49N+AVjwhps5nQzIPAHJ?=
+ =?us-ascii?Q?f1DpP+LEqJJQkHZJRUL4JeuL0/I965seEwzaWMi4X6GT7ujzfP7AtPHJTBDU?=
+ =?us-ascii?Q?OWdHHnRcU0zqMUQYYKbd4ySJGlLrs4n9pyuCrpbq/Z9a0wvuXf/isF+2LXnh?=
+ =?us-ascii?Q?XhZp1I9Qg7SfkGkEMHIYTy1maVQfOxVb8/pHIqflhZ1a2+Ec3YhCVGHmAzEX?=
+ =?us-ascii?Q?W4Vtwft/2HRsTRe0GmOMAdXH4JjCPJjBQ60u5kQKwf+EcgPETmOd3m4LekIm?=
+ =?us-ascii?Q?uwTGfcDUoD/9VikR4dJ6v2MX66n2lNlaM35oLenPzHVN9neaTUyraFFzinxT?=
+ =?us-ascii?Q?xQgkkNXeVK2Uv7V0pUy3YldVSsD4O/WHR6yVIJMazGTjBKsJb6APyo/fEJrQ?=
+ =?us-ascii?Q?ztLUk7XaH20v8q4lCb4F8cPl2Gdr/RGaMABBQPL939KDVNbrOb4lXs4jDZKS?=
+ =?us-ascii?Q?yBNHd6KKtKXXR7yqdkTgHmoL6gF/RSdffqgo7ICWFbuRb6P1p7E6MAosmL8N?=
+ =?us-ascii?Q?w8USmQt4Ev++cp/9nCNMDdcATULo/XHOMxZLKUmeM/N7TFSjOS13Xb0D/Q1Q?=
+ =?us-ascii?Q?79SEcD5ZTpHShumlrbUdRQxDW+k3p43uD8NJiWF5sWMeCcCHhYin8woevQPo?=
+ =?us-ascii?Q?5fu0mKq00b6eVpDMJPxd2bRI8WeZbpD4F1hWiP9B2DCUfMmIWI/R4mSS0EPr?=
+ =?us-ascii?Q?Lc+V6U6BsE0PWkgLVh2fk4uRqbOVpE7HmuZ8X/pB6+ybJugjUBlvbURZYnSU?=
+ =?us-ascii?Q?19mkZ1DXULQsfLw/u9jKBMKFudZXp7AT7NRNBzYa4YaZ82SaVFpVAG6a4ebL?=
+ =?us-ascii?Q?wlV5RQ1MU0VxLQVGIKI1FHHybpfWdeVkx8pDehX90LIzbqWKk1YbZw9kaZ0A?=
+ =?us-ascii?Q?USgaqyvtA+RoX2cfiteUbwkFWKhie6MG2M7L59holwG3S1wCjqi/hf4t2JXU?=
+ =?us-ascii?Q?FcTK4QYCCDeJaXSO/SeJQemKrLyjynIozV/rzSseMuK8MVW4ukgTfCVGCZSo?=
+ =?us-ascii?Q?yTx8NQGdxxgtFKtDMreUN3HrGtumEKxIeO3kS55hZLPbNGIopjeUj85iBxWS?=
+ =?us-ascii?Q?cC7LASAp1PLMPMN20exi1w3apiRS1etvehpOSJg9Y+bAWmhSBVq9JDCMmomw?=
+ =?us-ascii?Q?WCSIwLrALlusxt7VyENKZDQQHa1uraUE8HHH+e+b2iqTzwWkL4kzy/Wojbgu?=
+ =?us-ascii?Q?l1bwuAGak4LGCg8+6nb3++VSM4Hn8mesEpj+tgjRMu2fm57wThsSxVSHu9F0?=
+ =?us-ascii?Q?1B8txukmiMAy1AA2GHzPV5za/C4cXvH8gYK37cUJ6e9ItaatbQ/tH5qBhaci?=
+ =?us-ascii?Q?NPe0yLex0bwl+ZWaiYLxaBWjBH0o9XTLFXPHG4dhIaz43qVXsEwDmjP0s3EW?=
+ =?us-ascii?Q?AIl6NStdrlEgi0pod9P1v8DQ05g7k8yN?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11842
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509F0.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	6f7b8df9-e191-4617-d229-08de3af118e0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|35042699022|82310400026|14060799003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Uc1hdp3LbG+EOk5U1URomkeCVRuqrjZp0TYYJNas5M67mXu4a1NbJ3wzfjNm?=
+ =?us-ascii?Q?f6RtYJB3eV+BRQsFDKfoROahWyJT1lfRmx9ZS5IzwMDptnIhNw4QyYj8qmsI?=
+ =?us-ascii?Q?FmllCq0hGCpgTH5qnQtcyv1QI0NEbFEYarL9bqFdIhsqBUQSCIJBu0O+hcCj?=
+ =?us-ascii?Q?rtpGelYq05NPEekJa9jgU+NXrqUGSwolnjGX7c8pqVm6B/6MqP8bmHphn5zk?=
+ =?us-ascii?Q?xbA+yTOUog66joxTG3mwlNeF+URLBRVUNMMkExNSNBX7EVx4MWb7Q2OJ3ARw?=
+ =?us-ascii?Q?6EszGAinGP9++xMWDycgjpmrHRE9xlqbgsZPIRloUj2QeJcplYauc+ojqN63?=
+ =?us-ascii?Q?s5YC/AhfkX/YmW+XyNyh1EEQsZRW5e6KCJIr6z6Tux38LmVF0EGWUO7dAUaS?=
+ =?us-ascii?Q?gOyR/fZG0pFHSTBjq5uOhW1RybGyTiM5MgpR5BXny45umExe4GcYVYxcOMUf?=
+ =?us-ascii?Q?P2FBhNTgjqAkVYUGUzpcaXEk4lJmLR1YxRqo8stbCzcf7jeKTNpkZKluyg7m?=
+ =?us-ascii?Q?OxrzGkrILxoZtoKShePQ8hX9owUMZz+4+XE77DpXa+1m4zUHsmVr0xIP12Fv?=
+ =?us-ascii?Q?dABCWSORW52e6bgoZ4JidFCPfXCqjiYdV+1ST6F1mR2+56spxvKZfdguceNl?=
+ =?us-ascii?Q?PoDHCb6WbS14ede3CAM+cXFA7fNZzpUfkmvFBVMkd8H0ffCHnFr/UmMv32VO?=
+ =?us-ascii?Q?5YXpBS2HUbKa+i/qRpUqu1bSv74/gCkE5LxlHrv5w8h0YbPtv2+mfoWTC6bd?=
+ =?us-ascii?Q?GvjBDBZP1GlUPb6hg3o0URWsgBS+GQGTcUtOVcKzUxdKkEBDnsSNPiKaoOkn?=
+ =?us-ascii?Q?sn4vwWvFcWQoJX64bDoBeTfyaCyAQuwb4ZxVR6poNot99WHcm6J0Pjtcw4xn?=
+ =?us-ascii?Q?b4jGlG5P2skd4ZoKoS7V4MSyO2KEbeKR/DEHjAu0LI7DSCRUht9hv1+71n+h?=
+ =?us-ascii?Q?Prb/nMIYdmJ7AExa+Tu/5VGYHnP/mek2aH10M530k/zg4zAv1oF19wMg+JdP?=
+ =?us-ascii?Q?uCVj9HmnP/El9mYWbDBsZOUIc87oCZLIpphIFA3mllHLeK2GvLnuh4XV3fHP?=
+ =?us-ascii?Q?M3ZZoGh00eRih9H479SniOZovvN0u9tg2eMgsLxrT/yY6j2BcBbbpbvF1Kgq?=
+ =?us-ascii?Q?dOdVhcxcO/NRVzDZmFpjQuBOCnQMe0mNjDbv7YM9+qc+fMsO4Kda8Rs2tBJw?=
+ =?us-ascii?Q?RiDG5v0zZkNzkCFb/gzU8j33myig3t8w7YpDJ46Fcs+jGC/yHIxQAXrrrUvl?=
+ =?us-ascii?Q?BOMRF6nz1asOJrhdy3EsJlXoVwK82RjXpEhJrXgg3vYgnu71u65Y8csnGS/6?=
+ =?us-ascii?Q?wbBsoNcbAQR1h6JQ54FhlU+P5r+x4aPDWN15vKKege9X2c/oqg2xUPWDzkqj?=
+ =?us-ascii?Q?DdRHk7Up5FoM1VqMYK6FdZYz2UKEHYzKEYFCj7OsGnwtEJ9IrLstezpTRMtJ?=
+ =?us-ascii?Q?w4T35oJTBDClFx0HDJKHgbxN168IPG6fxJ9GStgfLGKogkOGe59NQCyfpjIg?=
+ =?us-ascii?Q?2byTLQjaIYbbjCD58bpDVK/zmYQQZIbkmTqZgkRCcopXaADet3GIE8N/oh4Q?=
+ =?us-ascii?Q?LQaOj24gkDWGoMN7Bhg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(35042699022)(82310400026)(14060799003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2025 09:14:54.8307
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c4c0213-dd4e-4f79-f0eb-08de3af13ed5
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509F0.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10956
 X-Rspam-User: 
-X-HE-Tag: 1765695387-262751
-X-HE-Meta: U2FsdGVkX184MqEg5s5UiPTJ3/OU/kJMHXVjEFl7KhvqWMaLE36/bjhKWgkPyjULeL6z2g3qpZ/gFkvqK2OgV25Pl/e9h+6SebuJVvW1cUuqUAGPC8nqv5jAm1d6aF/nvNU7v3z7miYPfgk22lDLO8z61Cdk6P8ts5sO5pAUADdo3mqNzZIqPu4l7ypuyLiZrsutJeYgU0+cMn1NuYEF8zBc1ybBxAbFfhBmjWfmFIpfYTvsDSjqfvx7FIAq3FHfQYrXGjZjzdoMVpce1PzWv6vwA5Holxg0OE63m3WgJmm1jjtub5aJo04NbGbNJZMBPXVJ6w9HxqxGOB8P0Jp9yOV0jHs+uEqEbkPJ6lqI1KHDhfXg64G86keauGuqWzkdTfAY+R/yrwyiYjX4mCLASI8f7/vwO7MT6+bboMwSDzsH11bXwEtk7RQssZvM6iYyHMWH4Zo+DchMJ2GCrTTGIin5z5MclKpFzV1kXOH8KI5i/8OOljklOgGNhAtk3NAzSxkCdoT1y8+5m5lf5KEIBLoPWj1sduz9qLbGw58zgb/0Jg7AbVYJ7pEPYMlax0sexdDPREnqzjX/LI0v20RJVdNgm9672q46qJNrFYPVwpqYm1aJqyPl8l3nPIeLOEc7NpASmxeipSW6rmtSEKZO/9Cirp216M9q+2LEooUJ42sToj/Aa2M/UI0jUcfMct6OzeLEqYqkEYut9ovElXFHN93SjjtaCg27rk2CBA6E+1zWBB4a9l6tvm32THevaqGYZec0GZaHZxp/x9GJiBznXp5gccUwwOJprffSnWUuvLFbnNQRp+V0Sy0XzgAjIJttxGP9Im1l3SRh2d9A2Ss5XjwWQ8X+HywrY0a4rMzG7MaVGu9IaMkZ7aoM23Bp3JcVUR5mhvEDiJyFQo1CnvNuha6Phvq2B8Qoc1L5g/aNquacduaOPnecGtssWRLxN6H/nKCVbq7K+55f0/f/+bX
- /ZcU246E
- QwZVbFaQvVuf6xffAvlsGQflpDrnHnHKslzpkw6H8rJLP4G0mXO4gh0HnAaAajPXaUqYbPVoOqLaSC5JtZSlEwO5Y9de7nGl1uMQhF43rN7Y8cziLPol756APKP0qM46laeghkkr0FcyfEqPG0oGGaSmGlO4xQOV5iiE2x7HR7ya/wvnaeYNK481SULRP40tEjHMFdk9HDkGi2OU7USC5kzggVEUYU8rt8Yac/vVeFl5zZBnkJBs8FbXBDeOlvxQ3kMNtSO28KIF82KkpwQ+ecriQMn7o4lgzgzEY4g4CtKRX3ennq+7xaHPV0DpCDybHbcXInNF254XnOuEPwrLIOkT0LPL1Py/jTvd0Ip7m+YtCzXTFEIIDeHQOm+IkMWigPzdBuup6Qz+oXfFLHcwO/jPEdELZF7kYPn2bBiFxRcgDZ1eqOru7FZiHJpL2wV65pTwEUe/BcySa3ff6Zi5CcyMaLOcCTH5NJkVUhRPOyrGXPyxWk+qvKNdPAT8iBuhhVMRekSt+GYe/rudqaplcgxpF7UR9LMQsX59hgFVGqzR3euZK8USYlVCsSyg0CH/CwvYYWhwEBb5w0PexG7bd09hZuzS/09qC4JIsRPQ6NtfzR7kMtvYksbpqDQbHaNY4fUZEflKLwqnJSJcKLnyu3qLO8LmIDgrjplhIhpg3QZG4txRr9/q6CoR3RvCdopAKjVxcLVl22aZaxw3dvjGNnXcoUMl1XbUXnBSdJJbuYsilUSfs81QOLZdNOT/of/iPUcIiS8IPqcViT+QYanFeYQustl2dIFoEo/2siS94OHcCoiy9y3L1bDqIv/4TrnLKQfBj7ZgOpZGBfC2QbdxXFIzwASVQDX36TErFrn8vmaDxVZDgPJvwIXeSCpnce/Mm9avpgDFMaurv//F5wU5LEggWAqqdvuAcUXn5gOy60iaPVrpTMQ69qM23dOgwCnXZBccPQz0dktHM0+49uQNfVWPzY2CN
- X7Jlzdnh
- s1I1tyX2Ir14aVjIepsX3UMxTuAbZVvsqaEFBPSkQ0uvijCcBBnwUba8KVNUI/PM2QPy2X5giyWg1dtIuuDYG90PXSIf5n9max6x9crFZz8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4D421C000E
+X-Stat-Signature: q7ka7nuqd5af1k7xuemd35d4iduwz5ki
+X-HE-Tag: 1765703703-177439
+X-HE-Meta: U2FsdGVkX18wWuGZ8XS0B6mLFRMgymObFKDHcqTwzfZyXQSwzk9BF45naWMX7gcOQa5C1YCRA/vZbdsDMA8t6lohiO3Xi43FNMewYwdy0bvjnBDSzbNf/yjQJbekmVvAflFhL4nq2c+Nw5PfAg9S1FiMm5y5USQnJ9iXsao0WdZyp+8N/ce2DFNCtOlehtl2j+Fl4WefwWOXYlLM8jhIKVOMIsmvziXOs3wG+OzweriOfWfH79RbnAkylN8emaw9+4xTov/aiFjzWFD0Xxjw/Yw5dMShylmsmdNj53h3ZVfG1CQIEIJVUKvDBk8KKkEBCuVZpHlclForNV3BDFOIs14dLRNRBwOtI6MntXzNS3G0eU9enXbZuMZf72Tee/Ip5hjl0PH6nEL5Sps7g9/y/J99GxcfrnmT1q1oOuS8+v5H1mkLelh0YKOL0/X1H9YklIO2gUcBELJoYgsJLKr3RkIJ+3S7jG/QZkGLH+Owqb3sK2eot6Bpd0+lFPsaWI0v8leYG49qU/DYdbHc176UvOkmezqanG57Lc9itpklYndLdVf4fZh6sA9fsHDvXMsoMmCxtU64AUruh25/n/vPz2SNGx2RCQzuFJ4bk1TF83IPN8eBhsHhg71Nnp6HZbEJhKMCTG+a0KYAhO8brOP/oy8xOkhQzqItzHaqfENgRa28pvjaHYMDN96FHsCob267aPR/YkEmq7h9oMLdrykeDPRwYNfPQBI6UqqmELV5xRJ9bh6CPBqmy4EmCp+MFCQJNrl7EC76XTIekNePqH/fevEwHBTwxIt4yieJZfPRACZu2lWJCSsuarjRSazJYVbN6Q+nt1LQKVB8/hB5hHB8n9WFYrbTDHJqT5N4WpDeiGRCXibYP3w9PyNFHTXZRV/vq14gXMHYQ88rVBYgkJckGvLA9GcR03FwxK8KnAuO7BOvyDTOdfeARRnL6/8Ji+/ICSVTBlvoEVHCn3zukV8
+ St1PUhvR
+ DDbARvaV/DBgoP6bDuxdn8FB90iK8ecv0AIwFxnhQkmXNROCNxZkdAHU4c10cYEh+NgL92GbkPTliKXNckawM1/sJo1ucN9HR5IQ7MAlSyJi557Nx+5fKthIfQ6yvnWFFHP72wti/wQoNPiqFcBFfDY2yLLga9qPnFTA2VY48GRA+aSdCeBjb7goEury+kPjFlrFcmwOnrYoNQL5QzHmob6uN0HZ0ZPYfitiKQuzt5hJbllLNnHFuqpRpYFZMtKe+rsM7KCLfvcyBSIVFXhhzBVMaUW2gJJqCN1YGBdWnDcKyNGifbIeIEhwdTpEkbpBb6a3UdEZelxsxRWz3jJ9A0BPnxejjVd9ObtCb7t7tvGTyE27FodDPbLmw8HlZ8mKjH0XsGlCPRgBmHNm+ORbqWn+IIZoONfCJR2Y2Xiu1nl2zdwlueTsfIYYL+ktGeUyfnMMHWsQzXQ/g+Fzb6V9MZtCmDvdbsOkf9ETn+PFcsdyHFzVmle1UIL5p/gl6VS6jzjdgWSTIGovulwUFtO19auyNGpz3pDMPioLychoXOBMvFOoXQWCbLBguPe2qWMg0VbkbCBJ0BYDMe/ZBdYNkKE0G7eKspme/g/Gobr7R2O5R3c4UY9by+nse4P6JGuETQf/P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,253 +247,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Alex Shi <alexs@kernel.org>
+Hi Brendan,
 
-Following the last function change in pgtable_trans_huge_deposit().
-this time we convert the return value for pgtable_trans_huge_withdraw()
+> On Sat, 13 Dec 2025 at 01:18, Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+> >
+> > linear_map_split_to_ptes() and __kpti_install_ng_mappings()
+> > are called as callback of stop_machine().
+> > That means these functions context are preemption disabled.
+> >
+> > Unfortunately, under PREEMPT_RT, the pagetable_alloc() or
+> > __get_free_pages() couldn't be called in this context
+> > since spin lock that becomes sleepable on RT,
+> > potentially causing a sleep during page allocation.
+> >
+> > To address this, pagetable_alloc_nolock().
+> >
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  arch/arm64/mm/mmu.c | 23 ++++++++++++++++++-----
+> >  1 file changed, 18 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> > index 2ba01dc8ef82..0e98606d8c4c 100644
+> > --- a/arch/arm64/mm/mmu.c
+> > +++ b/arch/arm64/mm/mmu.c
+> > @@ -475,10 +475,15 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> >  static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
+> >                                        enum pgtable_type pgtable_type)
+> >  {
+> > -       /* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
+> > -       struct ptdesc *ptdesc = pagetable_alloc(gfp & ~__GFP_ZERO, 0);
+> > +       struct ptdesc *ptdesc;
+> >         phys_addr_t pa;
+> >
+> > +       /* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
+> > +       if (gfpflags_allow_spinning(gfp))
+> > +               ptdesc  = pagetable_alloc(gfp & ~__GFP_ZERO, 0);
+> > +       else
+> > +               ptdesc  = pagetable_alloc_nolock(gfp & ~__GFP_ZERO, 0);
+> > +
+> >         if (!ptdesc)
+> >                 return INVALID_PHYS_ADDR;
+> >
+> > @@ -869,6 +874,7 @@ static int __init linear_map_split_to_ptes(void *__unused)
+> >                 unsigned long kstart = (unsigned long)lm_alias(_stext);
+> >                 unsigned long kend = (unsigned long)lm_alias(__init_begin);
+> >                 int ret;
+> > +               gfp_t gfp = IS_ENABLED(CONFIG_PREEMPT_RT) ? __GFP_HIGH : GFP_ATOMIC;
+> >
+> >                 /*
+> >                  * Wait for all secondary CPUs to be put into the waiting area.
+> > @@ -881,9 +887,9 @@ static int __init linear_map_split_to_ptes(void *__unused)
+> >                  * PTE. The kernel alias remains static throughout runtime so
+> >                  * can continue to be safely mapped with large mappings.
+> >                  */
+> > -               ret = range_split_to_ptes(lstart, kstart, GFP_ATOMIC);
+> > +               ret = range_split_to_ptes(lstart, kstart, gfp);
+> >                 if (!ret)
+> > -                       ret = range_split_to_ptes(kend, lend, GFP_ATOMIC);
+> > +                       ret = range_split_to_ptes(kend, lend, gfp);
+> >                 if (ret)
+> >                         panic("Failed to split linear map\n");
+> >                 flush_tlb_kernel_range(lstart, lend);
+> > @@ -1207,7 +1213,14 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+> >         remap_fn = (void *)__pa_symbol(idmap_kpti_install_ng_mappings);
+> >
+> >         if (!cpu) {
+> > -               alloc = __get_free_pages(GFP_ATOMIC | __GFP_ZERO, order);
+> > +               if (IS_ENABLED(CONFIG_PREEMPT_RT))
+> > +                       alloc = (u64) pagetable_alloc_nolock(__GFP_HIGH | __GFP_ZERO, order);
+> > +               else
+> > +                       alloc = __get_free_pages(GFP_ATOMIC | __GFP_ZERO, order);
+> > +
+> > +               if (!alloc)
+> > +                       panic("Failed to alloc kpti_ng_pgd\n");
+> > +
+>
+> I don't have the context on what this code is doing so take this with
+> a grain of salt, but...
+>
+> The point of the _nolock alloc is to give the allocator an excuse to
+> fail. Panicking on that failure doesn't seem like a great idea to me?
 
-In future, we could do further to convert more pgtable_t to ptdesc
-struct and then replace the pgtable_t to ptdesc* except s390/powerpc/sparc
-archs.
+I thought first whether it changes to "static" memory area to handle
+this in PREEMPT_RT.
+But since this function is called while smp_cpus_done().
+So, I think it's fine since there wouldn't be a contention for
+memory allocation in this phase.
 
-Signed-off-by: Alex Shi <alexs@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Matthew Wilcox  <willy@infradead.org>
-Cc: Magnus Lindholm <linmag7@gmail.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christophe Leroy  <chleroy@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/pgtable.h |  8 ++++----
- arch/s390/include/asm/pgtable.h              |  2 +-
- arch/s390/mm/pgtable.c                       |  4 ++--
- arch/sparc/include/asm/pgtable_64.h          |  2 +-
- arch/sparc/mm/tlb.c                          |  4 ++--
- include/linux/pgtable.h                      |  3 ++-
- mm/huge_memory.c                             | 15 +++++++--------
- mm/pgtable-generic.c                         |  4 ++--
- 8 files changed, 21 insertions(+), 21 deletions(-)
+Thanks.
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index f10736af296d..3485de5178b5 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1328,12 +1328,12 @@ static inline void pgtable_trans_huge_deposit(struct mm_struct *mm,
- }
- 
- #define __HAVE_ARCH_PGTABLE_WITHDRAW
--static inline pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm,
--						    pmd_t *pmdp)
-+static inline struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm,
-+							 pmd_t *pmdp)
- {
- 	if (radix_enabled())
--		return radix__pgtable_trans_huge_withdraw(mm, pmdp);
--	return hash__pgtable_trans_huge_withdraw(mm, pmdp);
-+		return page_ptdesc(radix__pgtable_trans_huge_withdraw(mm, pmdp));
-+	return page_ptdesc(hash__pgtable_trans_huge_withdraw(mm, pmdp));
- }
- 
- #define __HAVE_ARCH_PMDP_INVALIDATE
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index e45cb52a923a..5f7fab7b121b 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1754,7 +1754,7 @@ void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- 				struct ptdesc *pgtable);
- 
- #define __HAVE_ARCH_PGTABLE_WITHDRAW
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
-+struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- 
- #define  __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
- static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
-diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-index c301af71b3ec..6e53a30dd3ae 100644
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -534,7 +534,7 @@ void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- 	pmd_huge_pte(mm, pmdp) = pgtable;
- }
- 
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
-+struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- {
- 	struct list_head *lh;
- 	pgtable_t pgtable;
-@@ -555,7 +555,7 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- 	set_pte(ptep, __pte(_PAGE_INVALID));
- 	ptep++;
- 	set_pte(ptep, __pte(_PAGE_INVALID));
--	return pgtable;
-+	return page_ptdesc(pgtable);
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 4b7f7113a1b3..29fc86175300 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -995,7 +995,7 @@ void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- 				struct ptdesc *pgtable);
- 
- #define __HAVE_ARCH_PGTABLE_WITHDRAW
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
-+struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- #endif
- 
- /*
-diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-index 5dfee57d2440..8b00b62c06bd 100644
---- a/arch/sparc/mm/tlb.c
-+++ b/arch/sparc/mm/tlb.c
-@@ -284,7 +284,7 @@ void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- 	pmd_huge_pte(mm, pmdp) = pgtable;
- }
- 
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
-+struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- {
- 	struct list_head *lh;
- 	pgtable_t pgtable;
-@@ -303,6 +303,6 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- 	pte_val(pgtable[0]) = 0;
- 	pte_val(pgtable[1]) = 0;
- 
--	return pgtable;
-+	return page_ptdesc(pgtable);
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index a5b1e3f7452a..4b20b3d7aaec 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1021,7 +1021,8 @@ extern void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- #endif
- 
- #ifndef __HAVE_ARCH_PGTABLE_WITHDRAW
--extern pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
-+extern struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm,
-+						  pmd_t *pmdp);
- #endif
- 
- #ifndef arch_needs_pgtable_deposit
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ff74bd70690d..6f6cdb3ae888 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2334,7 +2334,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
- {
- 	pgtable_t pgtable;
- 
--	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+	pgtable = ptdesc_page(pgtable_trans_huge_withdraw(mm, pmd));
- 	pte_free(mm, pgtable);
- 	mm_dec_nr_ptes(mm);
- }
-@@ -2492,10 +2492,9 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		VM_BUG_ON(!pmd_none(*new_pmd));
- 
- 		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
--			pgtable_t pgtable;
-+			struct ptdesc *pgtable;
- 			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
--			pgtable_trans_huge_deposit(mm, new_pmd,
--							page_ptdesc(pgtable));
-+			pgtable_trans_huge_deposit(mm, new_pmd,	pgtable);
- 		}
- 		pmd = move_soft_dirty_pmd(pmd);
- 		if (vma_has_uffd_without_event_remap(vma))
-@@ -2710,7 +2709,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 	struct page *src_page;
- 	struct folio *src_folio;
- 	spinlock_t *src_ptl, *dst_ptl;
--	pgtable_t src_pgtable;
-+	struct ptdesc *src_pgtable;
- 	struct mmu_notifier_range range;
- 	int err = 0;
- 
-@@ -2801,7 +2800,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
- 
- 	src_pgtable = pgtable_trans_huge_withdraw(mm, src_pmd);
--	pgtable_trans_huge_deposit(mm, dst_pmd, page_ptdesc(src_pgtable));
-+	pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
- unlock_ptls:
- 	double_pt_unlock(src_ptl, dst_ptl);
- 	/* unblock rmap walks */
-@@ -2962,7 +2961,7 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
- 	 */
- 	old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
- 
--	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+	pgtable = ptdesc_page(pgtable_trans_huge_withdraw(mm, pmd));
- 	pmd_populate(mm, &_pmd, pgtable);
- 
- 	pte = pte_offset_map(&_pmd, haddr);
-@@ -3169,7 +3168,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 	 * Withdraw the table only after we mark the pmd entry invalid.
- 	 * This's critical for some architectures (Power).
- 	 */
--	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+	pgtable = ptdesc_page(pgtable_trans_huge_withdraw(mm, pmd));
- 	pmd_populate(mm, &_pmd, pgtable);
- 
- 	pte = pte_offset_map(&_pmd, haddr);
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 220844a81e38..a95d9309215e 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -179,7 +179,7 @@ void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- 
- #ifndef __HAVE_ARCH_PGTABLE_WITHDRAW
- /* no "address" argument so destroys page coloring of some arch */
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
-+struct ptdesc *pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- {
- 	struct ptdesc *pgtable;
- 
-@@ -191,7 +191,7 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
- 							  struct ptdesc, pt_list);
- 	if (pmd_huge_pte(mm, pmdp))
- 		list_del(&pgtable->pt_list);
--	return ptdesc_page(pgtable);
-+	return pgtable;
- }
- #endif
- 
--- 
-2.43.0
-
+--
+Sincerely,
+Yeoreum Yun
 
