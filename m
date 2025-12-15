@@ -4,129 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E97D5B871
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 21:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CFBD5B871
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 21:47:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906E96B0088; Mon, 15 Dec 2025 16:40:56 -0500 (EST)
+	id AFF286B0088; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E87D6B0089; Mon, 15 Dec 2025 16:40:56 -0500 (EST)
+	id AAD126B0089; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7B16B008A; Mon, 15 Dec 2025 16:40:56 -0500 (EST)
+	id 9ABA36B008A; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EEBD6B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:40:56 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10317B8D26
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:40:56 +0000 (UTC)
-X-FDA: 84223025712.13.727D939
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6247A80009
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:40:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qJFBVJaC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765834854; a=rsa-sha256;
-	cv=none;
-	b=lXTZr1511W0d0+QHaNdscDSYHLW84A2xg6ClK/2kDUOvOvyF+jtG73ycombK1TP37ODqwR
-	piqZhd/4qYpAF8xA7krfXXIJyuy+GQUyMEcVFdkABy8U4vjspf8zyhr6CIqv+g7SPjdWOc
-	rz89Nkq0C/+QVeoTXPdGkOaS88jxFRc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qJFBVJaC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 869966B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 247F288B80
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:46:59 +0000 (UTC)
+X-FDA: 84223040958.30.76E7721
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E2D0BC0010
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:46:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W5NEeG0d;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765834854;
+	s=arc-20220608; t=1765835217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ReJbb2QYcRTe1sN1kR2drh1hU6eWHE+ARxQsZGppZsU=;
-	b=gq4/ynYcGVlr1zK7UxCut2suV8J57cSXVOfL4ieiOOiq/t+ecfUW6yd7LzzED3navGNUYh
-	QWhLak0kI+6kXYCbJU8wtRE2BPzDAPD4Ic3k5f7qCQfz8flI1Z1uB/SisO7vkHQ35nJjjh
-	+DVfoAseGCJcKeYoTfO9CRI6NWUg2rQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAC11440D9;
-	Mon, 15 Dec 2025 21:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486BC4CEF5;
-	Mon, 15 Dec 2025 21:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765834852;
-	bh=8+QhW2cFWJDaIsuT5yDSI4nyUtquLCwiDgHnqtP3F00=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=qJFBVJaC0an3Wy7ck/NW3yKgi9jI3ce1I7gVQW8XUmK+OrJgE8FAW+WL7g4D9LvFe
-	 /YXSYPoFx2CSzUrpqi11o2qDr8G6z/1Di0ZaklBXTyTMLUzpgYiEXa6CG+nuC9aEPB
-	 oPLpWQpGwbvBrApASVSXJtWBeD5j9+j8eCEqoYfQukbOTAQU4/7mRVkdeQh7josQjH
-	 EqqCHJPOqdShwjRa6dHuASX87J1if9DJv4RbmhpyPx7LNZQF9y9tpD3TU8/KUvv9Fl
-	 o6XLqSg9GmBVn/+MChjQ3SmuTHxo55lUfl8ovjSyyVqKmJtl1P2uKHl4dlIN5739w4
-	 bHhzsM+PVC1lg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Dec 2025 22:40:36 +0100
-Message-Id: <DEZ47GQSH2NC.UBRRY2WDHUJJ@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Elle Rhumsaa"
- <elle@weathered-steel.dev>, "Carlos Llamas" <cmllamas@google.com>, "Yury
- Norov" <yury.norov@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- <linux-block@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Michael
- Turquette" <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
- <linux-clk@vger.kernel.org>, "Benno Lossin" <lossin@kernel.org>, "Thomas
- Gleixner" <tglx@linutronix.de>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, <linux-pm@vger.kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "Serge Hallyn" <sergeh@kernel.org>,
- <linux-security-module@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Robin Murphy" <robin.murphy@arm.com>, "Lyude
- Paul" <lyude@redhat.com>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- <linux-fsdevel@vger.kernel.org>, "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Jason Baron" <jbaron@akamai.com>, "Steven Rostedt" <rostedt@goodmis.org>,
- "Ard Biesheuvel" <ardb@kernel.org>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Rae Moar"
- <rmoar@google.com>, <linux-kselftest@vger.kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Andrew Ballance" <andrewjballance@gmail.com>,
- <maple-tree@lists.infradead.org>, <linux-mm@kvack.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Vitaly Wool" <vitaly.wool@konsulko.se>, "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>, <devicetree@vger.kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- <linux-pci@vger.kernel.org>, "Remo Senekowitsch" <remo@buenzli.dev>, "Paul
- E. McKenney" <paulmck@kernel.org>, <rcu@vger.kernel.org>, "Will Deacon"
- <will@kernel.org>, "Fiona Behrens" <me@kloenk.dev>, "Gary Guo"
- <gary@garyguo.net>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
- <broonie@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Vlastimil
- Babka" <vbabka@suse.cz>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Ingo Molnar" <mingo@redhat.com>, "Waiman
- Long" <longman@redhat.com>, "Mitchell Levy" <levymitchell0@gmail.com>,
- "Frederic Weisbecker" <frederic@kernel.org>, "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>, "John Stultz" <jstultz@google.com>,
- <linux-usb@vger.kernel.org>, "Tejun Heo" <tj@kernel.org>, "Lai Jiangshan"
- <jiangshanlai@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Tamir
- Duberstein" <tamird@gmail.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 00/46] Allow inlining C helpers into Rust when using LTO
-References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-X-Rspamd-Queue-Id: 6247A80009
-X-Stat-Signature: oxs9n9mebm5e6qgk3icodut8dntupa5i
+	bh=AxSW4fIWO4i8gI2igd4FMfJEOZ1mgZAw8yhVXnvz7C4=;
+	b=ryJMlf/HWz7l+bMB59CXfD8orsH9Utt0ty3IaIxHVhq8lEeGBRmrmiLmXfyVKc3R9rz1h1
+	aldQCh4IN/6dFU5L/asqoTF42h2KkaFCYDZ9RRffStxAq7MHnat4OMeKNy7Amn07r76Gzl
+	yIOFX9poG/qTnArBFGiXwgGCj9+6RSE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W5NEeG0d;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765835217; a=rsa-sha256;
+	cv=none;
+	b=RWd2gXfkmDktYRCMmFtTqCPHhmTMg6QyURKqRUrTuYPMfgo2NL8lS45P7nFJwkx37G8WYf
+	ZRcCPMTnK0k8+Qme3hRzvSqPiNTL48LAmezion6wSSi2FY8gUkC9est16Q1vyH1n9koAdm
+	kLFcZ+NiionPjOjBR2HheR4lenRUWcc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765835216; x=1797371216;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=trM+M4QWlPMwrIRXs3ufU2ehi6OBpE+fjV0e0JqogMA=;
+  b=W5NEeG0dVWbZ3ENCLqpAqIi9BN+riGo/i6OklA9gOlKKQyGG/SwFqvgC
+   HEbRHk6e8MzAh7kU996Az+8vzR/AZd0pagzW/mKefiaVJz3vHad4d5rJm
+   749t6OKnQP4aUMC6bK1pcmXXWbCMdHZE2clBrTrjLjwwYIjmpuKEOox+E
+   a+1qybsypJ+He/kBU7LUpb3fhaZKmPgBEEZL6hajpML7Kxx6cCcg3SS2y
+   4QdTh1ptDHvt/JIwPFBCS+66vCMqVCuZB8uHWKyvKFMjvHRXoiX5rjy/c
+   kwUflNEdGJnT9K7Rutez5ae221H85xHUtg5ojsa+xe/x0IS/Ddu07Pfgl
+   Q==;
+X-CSE-ConnectionGUID: qUbjSQXCSE+c1dT+R+/Nhg==
+X-CSE-MsgGUID: +LUb3xCVRWu/d0KF6jv7LA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="71604153"
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
+   d="scan'208";a="71604153"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 13:46:54 -0800
+X-CSE-ConnectionGUID: UQpqC+doQ0e58cbkNCB9AQ==
+X-CSE-MsgGUID: 8CyXTd/xTyq7QaZHIpvB4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
+   d="scan'208";a="235238849"
+Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 15 Dec 2025 13:46:50 -0800
+Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVGOd-000000000qT-3rAg;
+	Mon, 15 Dec 2025 21:46:35 +0000
+Date: Tue, 16 Dec 2025 05:45:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ziy@nvidia.com,
+	npache@redhat.com, baohua@kernel.org, lance.yang@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+Message-ID: <202512160533.KuHwyJTP-lkp@intel.com>
+References: <20251215090419.174418-3-yanglincheng@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215090419.174418-3-yanglincheng@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765834854-501954
-X-HE-Meta: U2FsdGVkX1/swyo6vpMggmOpAcRieYNJ153gcAbwflZkTxYP6gWQvhEzZLaguiEB/7eJEgqx1chnQv4cns6tmBBA/Ep+r1y40cMISeRCUF195UyajjhvIFApe6kmyxRR4yMZT+NaVkO22gmwKE7pXG4ubn16aPsMN4GRhra3bEehdTLoft8gerhkjJCtRlUdcVCc+mQk0BD5vOBOwnbo5Ch96Xok9v4zSHMmznudeKimaT8jH+aJOlZUEZoJV6IrmcC8PT/VmTeDj2mKrQMO/CU2pkORhg+ba8rXfPujnkiSfGqajLyEawsg5IyHKLxdyHK9r8EeVydj3pTMt/Jq2SdXmy006rkDoyfDfixhgtO8hB6FXfDclL62yc/T1OLKY+eBoy/SBmIDWBu7QgcohiDJl2YnGvxKUKk2jIRY8zQvj2KKNrB++7n0y6GpCDQNe1sxAVhT6k+97jRDUqcaZIrNy/eJ5vyZURv4+icHueGtVfv69KhTgo/vhXQmaG7oAfibmpciPF673OZMocKXthpiqwQsGf+So7PNUh8lSeB+sRZd/K74aRmb5oUawV6t7+hbJuCQPXc65jdhjI4hg/bk8BVmdPhAJHnFQP3pwr1y8fo54FufitelwvjHV2OzQKVOD7doW2JGZLm/nCpgPRQAX0C/VA6MooIaPkdgyjI9P/jl40157OkVq2OZqwxsi9FwDCSONUKj8YKJJpk6rBRO1iLUqlqK8P3VB6828JoV8yBWUFoMjAizlgUcrlpH9N6iB3Wau8n7dhMjgKgYd2OLlNjI8o9ac/GMHoItkBmHqISHXn//zo0Po/MO9jp7bEOc7AkR+v+FY+wosmIeFDZugWUpzL+rXsv5IgmLrf68fLSaJwXpCWsVBOI0IgaIADEbevfcUEbz6h5Hp/pJmivFhkQpNHQGZ8VSAUs2OhD1z8/CxlfPmVaQdK6xnZfpK4Yk/i/axU1z7r+LLyv
- BQxmHQny
- C9PI58dC/d3zC2ZOOW2wmhDPsqseZBsR0hc9Iq7iHfzeo5Lu1bjVll/x8ivSeQVvJ7TXXZui5iDgNqJLXZdujLzp3Mmbe8z4I6hcJvGdT5TIYalgHsnfnzkc+G4sHjavLfbOXYeiIMgb+NB2WYjKYIVuFqLMQu+T2vr96/QbkmSEQ9rhp4pAKCmfEbJLlW9FlTPuPB+jeNPAKQVYLnPt7tT9qmrbSyYL58zgJVWa/NUGlvEeYAXzBr1/04VJBUinWJtUPfGe1vKJMTIT5eRfKCgAtYxuyRoib0QqLICtVqaEw6zv6/rJDdUrkVFhDLCg9/VOloF6YXNQufYEAtGFzTZcNI38cOvVaAe/R
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E2D0BC0010
+X-Stat-Signature: 6tk6nuuc8ebk7xfwq4wogjk1ijeec7w7
+X-HE-Tag: 1765835215-880688
+X-HE-Meta: U2FsdGVkX18wm55xvd5gorkYv6PkkQQgoY++W6Nsc124VQ+9KHfx6s4fiz99dfuQkRWHneuW25re5grQ9KpmSOKeqgr93JIcV05kMW07rbknfXOcLbBLFtQUZupO7kZh6DjO2LsBSvfK78ikxNOIkiZpLAOageNEZ2p/Ww3fdc4NYFMeKBxViAz4u6c6hH+AWMTv0WJL62wsE0uft0eHJKEu+5c7ph/BtcB8jkfWB2E1TzwqY8IRsqaXzRnOBGn1LY1vXh7vYn0qxlBm1/8kMXDZtOMGWVJk2BTK5v6Mw24b6+idw+jRw1Jd2EW5jkXZaJBh5j97RMCyEP4ER7sBeQ7kP2FQdawsf2eNWzKxubIcDuRi34YdMU1i9u+sCRQpVug+tdPS2byGMEc7NzuQ+kkPpXqNPONqyPQtcwh2kEWp7AX/flZl5flQLw5kmJLDKGsw317Ph7mYUJMZz2d8TKsyE0ihM/ap9p9M9vgMpwN83p1gfChUnOZtZH3ySBfzCbm4aUzdO6txmCcCaP4g7HbohTLeFnMjhuKCqh5i/cH9fh4Mw+uO9Ov2b9CEYUfd5pXgIWZb1X82OSOPa3nEK+Me+FC23iWDn9wLp6fV/wJxZhw/x5TrmpWf6yqRXzh3oXGDti20pjBsU19O/Ill9DMYhEfbTw9Hg/yEZH5MMvaGuzuBJrGQlqHsrFDstGYyIOlhHAdZYEsPPeSqqOSVKf0t84L6yrgRpqzD3LmvzV+JateMzb6ydMTZyWqBCejV2aZdb4qTWlI60xGBtJ46V5wS+0OwxKNjSN7/Y9bT/9Q0Mc7EKOwb8a+OgmMVpX8pusKQbIhr+hKk4bbWqqMdmJ26mUxmySVYUSbCl9/n7EDmCAOZnQ59S+JgU6P0oJkC3GaeRt+uaii8HLJFlZjB+Ul+prPClCwnJdCDazyTGVmv4IMzPdtUf3BUHlyDq1GHBuxy/gmJXgccY+mwl/X
+ etK7FM8b
+ eIe20YNxcHiTxLZzfPzczHeskeroPnpaN0dOj6CbzRRrcuV5/bm446K7DydEbQig237AK+MFyUww5tmo6kne6YzCk5Zq+GhieJVn0mwtXrcjbLsM58ooEZEqUIFL0u663a8KfKpAwA/xukYyxsdMBFAehPpQezMtIjhrFw9G8POUwsQg0Act4pMd3cdkOiub9QjcTUqgVD/aQiVUBJUPoG9qwmJL3dqywbwduqTlz3L3G/jcyVx2DH3/q0e7878HLaG5zN4+oAk0R/hTJYxQMC4YgzXzKB9jeheX6agau47y3UFI5jUX51yilUKXqd5tcbgtdUY51PMNjayJHFMJKl1tqpv0uLTMZRA7q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,21 +111,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Dec 2, 2025 at 8:37 PM CET, Alice Ryhl wrote:
+Hi Vernon,
 
-Applied to driver-core-testing, thanks!
+kernel test robot noticed the following build errors:
 
-> Alice Ryhl (46):
->       rust: auxiliary: add __rust_helper to helpers
->       rust: device: add __rust_helper to helpers
->       rust: dma: add __rust_helper to helpers
->       rust: io: add __rust_helper to helpers
->       rust: irq: add __rust_helper to helpers
->       rust: pci: add __rust_helper to helpers
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on linus/master v6.19-rc1 next-20251215]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-        [ Consider latest helper additions. - Danilo ]
+url:    https://github.com/intel-lab-lkp/linux/commits/Vernon-Yang/mm-khugepaged-add-trace_mm_khugepaged_scan-event/20251215-171046
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251215090419.174418-3-yanglincheng%40kylinos.cn
+patch subject: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been collapsed
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/reproduce)
 
->       rust: platform: add __rust_helper to helpers
->       rust: property: add __rust_helper to helpers
->       rust: scatterlist: add __rust_helper to helpers
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512160533.KuHwyJTP-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/khugepaged.c:2490:9: error: use of undeclared identifier 'SCAN_PMD_NULL'; did you mean 'SCAN_VMA_NULL'?
+    2490 |                         case SCAN_PMD_NULL:
+         |                              ^~~~~~~~~~~~~
+         |                              SCAN_VMA_NULL
+   mm/khugepaged.c:50:2: note: 'SCAN_VMA_NULL' declared here
+      50 |         SCAN_VMA_NULL,
+         |         ^
+>> mm/khugepaged.c:2491:9: error: use of undeclared identifier 'SCAN_PMD_NONE'
+    2491 |                         case SCAN_PMD_NONE:
+         |                              ^
+   2 errors generated.
+
+
+vim +2490 mm/khugepaged.c
+
+  2392	
+  2393	static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+  2394						    struct collapse_control *cc)
+  2395		__releases(&khugepaged_mm_lock)
+  2396		__acquires(&khugepaged_mm_lock)
+  2397	{
+  2398		struct vma_iterator vmi;
+  2399		struct mm_slot *slot;
+  2400		struct mm_struct *mm;
+  2401		struct vm_area_struct *vma;
+  2402		int progress = 0;
+  2403	
+  2404		VM_BUG_ON(!pages);
+  2405		lockdep_assert_held(&khugepaged_mm_lock);
+  2406		*result = SCAN_FAIL;
+  2407	
+  2408		if (khugepaged_scan.mm_slot) {
+  2409			slot = khugepaged_scan.mm_slot;
+  2410		} else {
+  2411			slot = list_first_entry(&khugepaged_scan.mm_head,
+  2412					     struct mm_slot, mm_node);
+  2413			khugepaged_scan.address = 0;
+  2414			khugepaged_scan.mm_slot = slot;
+  2415			khugepaged_scan.maybe_collapse = false;
+  2416		}
+  2417		spin_unlock(&khugepaged_mm_lock);
+  2418	
+  2419		mm = slot->mm;
+  2420		/*
+  2421		 * Don't wait for semaphore (to avoid long wait times).  Just move to
+  2422		 * the next mm on the list.
+  2423		 */
+  2424		vma = NULL;
+  2425		if (unlikely(!mmap_read_trylock(mm)))
+  2426			goto breakouterloop_mmap_lock;
+  2427	
+  2428		progress++;
+  2429		if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+  2430			goto breakouterloop;
+  2431	
+  2432		vma_iter_init(&vmi, mm, khugepaged_scan.address);
+  2433		for_each_vma(vmi, vma) {
+  2434			unsigned long hstart, hend;
+  2435	
+  2436			cond_resched();
+  2437			if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+  2438				progress++;
+  2439				break;
+  2440			}
+  2441			if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
+  2442	skip:
+  2443				progress++;
+  2444				continue;
+  2445			}
+  2446			hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
+  2447			hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
+  2448			if (khugepaged_scan.address > hend)
+  2449				goto skip;
+  2450			if (khugepaged_scan.address < hstart)
+  2451				khugepaged_scan.address = hstart;
+  2452			VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
+  2453	
+  2454			while (khugepaged_scan.address < hend) {
+  2455				bool mmap_locked = true;
+  2456	
+  2457				cond_resched();
+  2458				if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+  2459					goto breakouterloop;
+  2460	
+  2461				VM_BUG_ON(khugepaged_scan.address < hstart ||
+  2462					  khugepaged_scan.address + HPAGE_PMD_SIZE >
+  2463					  hend);
+  2464				if (!vma_is_anonymous(vma)) {
+  2465					struct file *file = get_file(vma->vm_file);
+  2466					pgoff_t pgoff = linear_page_index(vma,
+  2467							khugepaged_scan.address);
+  2468	
+  2469					mmap_read_unlock(mm);
+  2470					mmap_locked = false;
+  2471					*result = hpage_collapse_scan_file(mm,
+  2472						khugepaged_scan.address, file, pgoff, cc);
+  2473					fput(file);
+  2474					if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+  2475						mmap_read_lock(mm);
+  2476						if (hpage_collapse_test_exit_or_disable(mm))
+  2477							goto breakouterloop;
+  2478						*result = collapse_pte_mapped_thp(mm,
+  2479							khugepaged_scan.address, false);
+  2480						if (*result == SCAN_PMD_MAPPED)
+  2481							*result = SCAN_SUCCEED;
+  2482						mmap_read_unlock(mm);
+  2483					}
+  2484				} else {
+  2485					*result = hpage_collapse_scan_pmd(mm, vma,
+  2486						khugepaged_scan.address, &mmap_locked, cc);
+  2487				}
+  2488	
+  2489				switch (*result) {
+> 2490				case SCAN_PMD_NULL:
+> 2491				case SCAN_PMD_NONE:
+  2492				case SCAN_PMD_MAPPED:
+  2493				case SCAN_PTE_MAPPED_HUGEPAGE:
+  2494					break;
+  2495				case SCAN_SUCCEED:
+  2496					++khugepaged_pages_collapsed;
+  2497					fallthrough;
+  2498				default:
+  2499					khugepaged_scan.maybe_collapse = true;
+  2500				}
+  2501	
+  2502				/* move to next address */
+  2503				khugepaged_scan.address += HPAGE_PMD_SIZE;
+  2504				progress += HPAGE_PMD_NR;
+  2505				if (!mmap_locked)
+  2506					/*
+  2507					 * We released mmap_lock so break loop.  Note
+  2508					 * that we drop mmap_lock before all hugepage
+  2509					 * allocations, so if allocation fails, we are
+  2510					 * guaranteed to break here and report the
+  2511					 * correct result back to caller.
+  2512					 */
+  2513					goto breakouterloop_mmap_lock;
+  2514				if (progress >= pages)
+  2515					goto breakouterloop;
+  2516			}
+  2517		}
+  2518	breakouterloop:
+  2519		mmap_read_unlock(mm); /* exit_mmap will destroy ptes after this */
+  2520	breakouterloop_mmap_lock:
+  2521	
+  2522		spin_lock(&khugepaged_mm_lock);
+  2523		VM_BUG_ON(khugepaged_scan.mm_slot != slot);
+  2524		/*
+  2525		 * Release the current mm_slot if this mm is about to die, or
+  2526		 * if we scanned all vmas of this mm.
+  2527		 */
+  2528		if (hpage_collapse_test_exit(mm) || !vma) {
+  2529			bool maybe_collapse = khugepaged_scan.maybe_collapse;
+  2530	
+  2531			if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
+  2532				maybe_collapse = true;
+  2533	
+  2534			/*
+  2535			 * Make sure that if mm_users is reaching zero while
+  2536			 * khugepaged runs here, khugepaged_exit will find
+  2537			 * mm_slot not pointing to the exiting mm.
+  2538			 */
+  2539			if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+  2540				khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
+  2541				khugepaged_scan.address = 0;
+  2542				khugepaged_scan.maybe_collapse = false;
+  2543			} else {
+  2544				khugepaged_scan.mm_slot = NULL;
+  2545				khugepaged_full_scans++;
+  2546			}
+  2547	
+  2548			collect_mm_slot(slot, maybe_collapse);
+  2549		}
+  2550	
+  2551		trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot == NULL);
+  2552	
+  2553		return progress;
+  2554	}
+  2555	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
