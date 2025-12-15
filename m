@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA95D5B16E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D642D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD1B6B0007; Mon, 15 Dec 2025 06:39:13 -0500 (EST)
+	id 28F276B0008; Mon, 15 Dec 2025 06:39:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A30146B000C; Mon, 15 Dec 2025 06:39:13 -0500 (EST)
+	id 1F1AC6B000A; Mon, 15 Dec 2025 06:39:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8340D6B0007; Mon, 15 Dec 2025 06:39:13 -0500 (EST)
+	id F11B06B000C; Mon, 15 Dec 2025 06:39:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 67E126B0007
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:13 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32B38134016
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:13 +0000 (UTC)
-X-FDA: 84221509386.01.5EC8721
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EFB8280011
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WVsnI196;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798751; a=rsa-sha256;
-	cv=none;
-	b=3N4OzoOGZJo0s5MhObzAcDInHNmHIl+RtIRLGJNTpHBOfrw8ca5AiN3oGYGG/07vzRSwei
-	KZ4ba7KkhNAadRLu8G6BlRCOlC/IzJe0HXVwFgLKo/iTolXv8419u2LWRt7ZV8jmp2Tv7t
-	yPU61sktu7uvxCYwRLnMCuKA6YjicW0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WVsnI196;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DF3496B0008
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:14 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8ABB713862E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:14 +0000 (UTC)
+X-FDA: 84221509428.14.0D0E130
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 73CA3A000E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iiONWOy4;
+	spf=pass (imf25.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765798751;
+	s=arc-20220608; t=1765798752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SOExJIUd6SMMpu9ecZcijfoRnX+3TKAUcxRzAMDO5OU=;
-	b=8oJ7LpCKciD3pe2SO5UnVRbsC5IQ97ur75tsLwFmSL8qseartZ1tZ8lV1d2B176f6xIP+P
-	WqNYTg399VjuBQWCYTeP8jFPxDUC+E1MCt5j/fuTJYltzsct8iSkrvt4thAScXIUkRkVIP
-	84VVjbLqaOP4le1vDkQ1GzmahNBB3yE=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c93e0269cso522482a91.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:10 -0800 (PST)
+	bh=H6vVzDCLpyU2LgSSSdcXlxGJ4GVOIz+XeeVoTvfPkdk=;
+	b=sQ/Ssnhgv6bDjbMUoraSOmUbZH8wHmQyAOf2xCKJpFX4IkllBMCoUSnE4/OAzBNMvMeJ2z
+	w7a/9PxnP4vjnHfnhVjkpoACGIW7jFc6LDdEMIZTLA0B8oOksDd4Gn/p6UmgzHuJFmPXFg
+	9+T6fN23rYZIuVJ6U93FXrU8puGZz8E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798752; a=rsa-sha256;
+	cv=none;
+	b=gm+Pr7DqBcG73eu4YwqSrNv8BsHYXkW3P4fE0kZnGrCmUXFmkhrxMUSiMYXmojerI6UrS9
+	5Fxs792swslwjf/JSJ3mai6m2b+uRdcDC5SU0AHwGIGoTWMdZZFoDCsX1J0QdN8Qu5WVrC
+	m4dkw+txNPaRYrrghfFDjiYw/WY4cng=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iiONWOy4;
+	spf=pass (imf25.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7f216280242so956416b3a.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765798750; x=1766403550; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765798751; x=1766403551; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SOExJIUd6SMMpu9ecZcijfoRnX+3TKAUcxRzAMDO5OU=;
-        b=WVsnI1965KFHkPqb8at3sGNN4TuXdSStwWh0kTXXDB+kBAQEPVg4yXQU0lWSqQyUlS
-         zaCGNmykiLHAPfEoRyjtt7TsPsP+2/RvzJp19VX9Vd7VjqUYz2lGIlzJ57XHKzniRS8D
-         WnM8DVuUnr4b4PqHwCR2V4hjCgNBnbXG7BPGXqCfQj4oBAbGGrM3786U6QIXQb2rwA2r
-         wPBGcTlGrECB0g4Pmq5jvgMGF6IAf40JBVNYS001DhUhhqrLg51H2KexpaM125R97kmy
-         /ijzC550/KD4/NMaksidPeV4F+RvZplR3gWD5N2a5eYKXzjzkfTqIJB+BKRZwvkq0KfZ
-         xf9w==
+        bh=H6vVzDCLpyU2LgSSSdcXlxGJ4GVOIz+XeeVoTvfPkdk=;
+        b=iiONWOy4lUdBoCDn2EudUtPZI0h9sruqxm9XFk2kW/QtnTcKOcNGcjJcePQIdW0aIh
+         ErJowF/qkTIerprlALR8zrKGunNSGPPhBba98eaD0Ti77QvTKTgBHAzDpgQMJ0+d66aR
+         YUzFVi5Z5gbedvmdxM6nbkuSv3b+bRgbGnDmWCR1OcVB6A26jBbK2NNSeZ5n1tvB+yYY
+         eG+xVakWBvCURbViE/3lZsI/KXM0f5Gh2rw/+ZsH7RlQ7wzeYJJGyf27YdFngshxTHY2
+         rkOflfphs1AEPjxVsaPW1wUj4cpIH0xMTk3GTaxjAwMyh6a4/QQap1mePGccEwz1QSfd
+         bZSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765798750; x=1766403550;
+        d=1e100.net; s=20230601; t=1765798751; x=1766403551;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SOExJIUd6SMMpu9ecZcijfoRnX+3TKAUcxRzAMDO5OU=;
-        b=ngWBymHXH0ryzQs171D44MpInSpsNdCZyjknlEUjZrpuzwX/Sq4WRGg2jn1AXpQ3+s
-         ko7YZhQLt+h5t+kgCFx2Y/E2kWMvys+Pu5QPcoOkMPX7Ejeq0myMUC6P1g1ai9LFhU+r
-         /SMPBQ9aBQ0YFW95YjQClV9v3OOyjVh2//rYoeGRxhApgIorbAdi50v+6fRcTTW7aNjp
-         Mvtf3IveKQS7S3sG6ws2hWhAdHGjYKzAI1RdGkLMNQpIgxBMwkwfb9cXFy9RC8sV9iZh
-         30a1JhDJ89P5SO/lGGqS+N77LN814upKggDCHLzpuPbgKRK86tQqdbnLJtFjzkcpgL/I
-         Sr8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUC9XrOytg1Uig/U4yzG2BZcojA8sFABfQcvvkZDI0wzmXRbV8ar+7dInfFqEAV/EjASd9z7MNUPA==@kvack.org
-X-Gm-Message-State: AOJu0YxaPlZMTyhm7vEEDAlb7b+3VFM0UcxAcESUgrl0IzGfNdCUztee
-	Ofjg4Xb3OyQXPBty6GsJO4FSj5Bl6rveiGQ/NgBlTW03wONRKuZD0clc
-X-Gm-Gg: AY/fxX5g14Py72fxA44P7++M4eTSrFBHNzaP84/G4eGAiqYFY+ITfP4fGMyWTwQcfK5
-	fvhrO3mXJ4xcybcacfzXImDne8Yo5KcyCgKIyfHn2Mj4FtCCeW4L6ab+oTl+LkpKLhdmhNEXpar
-	Bejbo1gKCNlL4QMyoK4YVJerV5Fqrin0dhgQJVXfCsr+h0fO5Cz7PWOayvnaDRMTFrj/f0erUIi
-	Pm7aZZCZYWIYbnlc0L2BitZwmRcA0HR0iOGDunFMX+qyNZaU67KwzYvDHFIKY/M5HO2w+laeCrg
-	ms3tL8bLJYolZx+MtnwTw/cLx/532n/2EDI7SiIHhgg/LOiv4AZC2xymojv+EHtfUr4moqRPd56
-	/57wvH2p2CtmjPnlDqSGvNac/xTTa60ZoG0JnPibHIj6yXkDDgFnAUlV2kJoLm9G6HNwZIeEFgv
-	mpd0+4w8UFv2NgJyf7vrEo6g==
-X-Google-Smtp-Source: AGHT+IEi7Much+ynnSaGi+9pLWL2hRrocApHWp5vBqFK1ft2pjcvnQtgIu8VXEyupMREgh2/mG55NA==
-X-Received: by 2002:a17:90b:2e03:b0:341:1a50:2ea9 with SMTP id 98e67ed59e1d1-34a926d9c70mr13163422a91.16.1765798749780;
-        Mon, 15 Dec 2025 03:39:09 -0800 (PST)
+        bh=H6vVzDCLpyU2LgSSSdcXlxGJ4GVOIz+XeeVoTvfPkdk=;
+        b=T0EiKwRMeePD8hXdRuB4hTjd1u5d1HJv+MDttrfBBTk7FJW/ssOkeBT0cuZT61LyLl
+         KTTEu9u5nrk6IS2Fd49infjIcvN7UiiuYepfzkD22zWbtq72cSnT/rH0cnStrGuh2KHp
+         cvKq3nhKyBG2kk3DzJeaHf7tzEjxBfbjQ8aAS7krv3BPaS00hi6eWu7JCIjmYpas+OTb
+         MQVEvaMvTL4Cs/8FBe4vGWB83sKSZFnK0cKnqoNiDi+7Ia2I0Tw0yxKXaW2nGTDNGrlJ
+         WlhY2YZ3P+nwpIHN6ENfitfpogEwGz0AlMBpUPAp54x8ttMu96hNII6dD7elQN+d/DNA
+         KTWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMdLkgoy5qo/p75LeCvQrf0aCq0dzj9Yu4z2nZ107mRe7lgsAS6bmbROpeINZnvRDRw8EmcnGglQ==@kvack.org
+X-Gm-Message-State: AOJu0YylkXJ74EBbFrnIl03vAUXakxRpov93fk2bdIPd7KCwcTJgbOJT
+	2/YzCX5Dkbo4irbRxni9hEOGMGD19fteWNvTvQ9odVexUdGNfp2vjsye
+X-Gm-Gg: AY/fxX7YgDRLShrSVdy3aKzLh8xF+6iJ3MBoDhjYf7yXTDt/F/4m2JCtQu/yJ2kTdkR
+	4AfcORqi2DppLfTb4rIEdwn3VKBd+2T/r/vIzUdmNh/NLCTjPhMa5XWStDHwLqE8HfBXuah/llI
+	YfEZJt4c+s8rN7kkNBolB7t6UcAbda25IyGmP+WFg6VqTtt1DnE3CW+nZWMWBzriW89QOar+Llk
+	KqrNoZA3RxcVxTjxQGYn6bgC/lqnZWDtmy9jhh1M7rD4Fj0PxyAfw99OUGRXqPippsOxayBIU38
+	pkPVwvIPf1AlYUKevLh/hVkdIs4Fdj2AYOKrkfDBkC4r5UXfQTXsV+3fFog87OADEYlwFpnqgRC
+	FBjTv4+PpvzCk3FcVFbbly19zqMPJ+odvA5S2eueld5quwnLAUDDBTErMUjWqV3aQD6RspMcyMc
+	2U48OZQVfUusw=
+X-Google-Smtp-Source: AGHT+IFlU3I+cKXX8C9kVGFzGiJyAz7/LTk2+tkj0Oiyk+q1A92AqVW93jQniiO/3heM3uCR/CKzzA==
+X-Received: by 2002:a05:6a20:728e:b0:366:14b0:4b16 with SMTP id adf61e73a8af0-369aa740ecamr11005465637.33.1765798751132;
+        Mon, 15 Dec 2025 03:39:11 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe294a00sm9273005a91.12.2025.12.15.03.39.07
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9b3850csm133388085ad.17.2025.12.15.03.39.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 03:39:08 -0800 (PST)
+        Mon, 15 Dec 2025 03:39:10 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id EAE05444B390; Mon, 15 Dec 2025 18:39:05 +0700 (WIB)
+	id 1D26D444B391; Mon, 15 Dec 2025 18:39:05 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -180,24 +180,24 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
 	George Anthony Vernon <contact@gvernon.com>
-Subject: [PATCH 01/14] genalloc: Describe @start_addr parameter in genpool_algo_t
-Date: Mon, 15 Dec 2025 18:38:49 +0700
-Message-ID: <20251215113903.46555-2-bagasdotme@gmail.com>
+Subject: [PATCH 02/14] mm: Describe @flags parameter in memalloc_flags_save()
+Date: Mon, 15 Dec 2025 18:38:50 +0700
+Message-ID: <20251215113903.46555-3-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=962; i=bagasdotme@gmail.com; h=from:subject; bh=yvRLY8BHqBHKchvPjcPm3zDNVddYxArgXi7Qv6PDXBI=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4MeLjlRVOvo/zL51uM7fT8nbubcy37qLGeos8/kb VKe75YIdJSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiGosZ/mm4fru/UqLr5XIZ H96Qry1BDLd3LedR2Gkharj+Q1jej2pGhm7zlf21hfvmpVcxGBvN2yCmrfs71+wCw2eFqbVucQl NvAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=950; i=bagasdotme@gmail.com; h=from:subject; bh=zaXx2zRxHwtjfsFTgY05kdIMv0UeQBx9b1FFiByYYYk=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4N0b+unPg8UXJx6+/+iP9I7pV1rdBYrPMm9NqGYl enCm2OnOkpZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCR246MDN8qzkf5GvF8u6h8 fK78A+u9Z2vjTS5MNJ2mcnT+/S07J0sxMvTNsLugLdEgeebaKl/Lt7ZFnv2pX8UvGPzINA+RNZw /gQsA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EFB8280011
-X-Stat-Signature: hpi8rdz1yjwr4rn6as1ruzcui6sfskou
+X-Stat-Signature: i8z58o5mpkxtbmz8mbai46cifhg4m98r
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 73CA3A000E
 X-Rspam-User: 
-X-HE-Tag: 1765798750-305124
-X-HE-Meta: U2FsdGVkX18+Wz72dsKuOU+44EP6yQudFSoYXv2S9LIljs4WE+Cf1QImQcLn1mjK3/Z9WTkae2SZViFsIhmxBWS1zt1eCFMAUH8/Gf1zZv8sAQPtvhqVTvxG8lUl8siPX7/37Ki2zYVojT8Kqfvx+W2YnlNX9JE0aDBMZinYz7GaR4WYWxQxHyRg30MSUPlhdz5nu84PtBZt9+wq55OkA+jQ3bu4yzI+Y+0FLI1EcD9uBvIQ0e6auYrQKJlYlMZNiqGZxDcuSxSQzgpw8psUPQmdxcSuyskEYR0ULsjkwmA8ktS3q2NVGy0twehYKXBUe9QUyAl1HfV2N6wd8Ib4sCEu8ow0l4wh3stOH3PPVNzI0cNZXRZP5CQYHKJ3r784ZAn5DmrsTY9wvWSDAz0k7AVG+VJb4bxrunCvmsbueX6TncFaJ5ADpECfE/rH42CyO/rRNxu0/tkPKyjhPdNNMpS51Olj0cJ6h1RTxwmOCUN6z7PXkgx8cEVcF8rybgehrHCD4orUDeF7QyOkNQ+yeTnZlZKCM9bvu06tjYtc/ubR+5f3knaIHKeypbJP7AgOZJBro8qwYUn4Q+FLJlkyNALyazCs27wsrqie5xeh8ZBBKGYY/bm2XV3wnUw+B+KT9dNf9bIZyMOeiErign18+koDe7zccZ9E4/DRXSgGG1TxhsZUY9t+Ku0PWhtsb+KNR/AFYm4kedw7HKGCCTxqNyhZxKIdiCEPxUUa33boqc4kDJfDmt7JO0B4H5Tg+hLxkYZJXO4QZx3LGXUOpgE15rP+f0l0I3540LOapAuc1Rpy4I0RZ9LBm+ppNQ0dw/mLV17p5DaIGCXm6cXe5l0djw0zhFHxduR3XaZlHpRaePfqx89S+62d5uZ/PIZvvvhKqC68pbk5CW/DO9Odf/L1KvhI/odrayzELE1SMsmnzzGmOF3UhA0D8slE6esNByrbQQJAkUJl7H82zTlitf6
- +abr2zHD
- WsjLSIUYxz0V8a23p9vxkhFtZxQ8lzhzk92JcFvMOimiveU0t6IFIR9AYTeJulImWcV5FQN4SbaSi4M+RAtqzUp8hJ9bqBWQvJMSz7MF+t19zGgUD0Q81VWmZBiX0PIJCYAkm70VfnLMGwiK22WrA7tWvBm74t36d1uZB1f0wGj/EdpScqv9VrR1ZyXxq0FUD8Hugy82jV1TG0a2FFDw525XRIl+dMGdbe9gZ5fLX5LA9M21h0/KfNYYNeSV8LSj5sqj3IPmbOnfchH4g/46IGHWNIpET4zmDx90/HDZ40NF04hW1FY9MFVBRkic19I5sxnN/wdKmiBsfjzQtQzhNGuJHnnBr93BBUU8k30t+ve+OvZcHNsjxxx8na7kLT82W74PqCBWbjK3kDxTtQ1tru7j2od/bMLOWiYqX+HG6kAJdUqjyxFDhQ4YbiD4NRtO/MVHm2NbRRothzpNgesyor0XY2gaVh9E/WBvcoC4HPCh0mfP7GlQyUVJE/Q==
+X-HE-Tag: 1765798752-982406
+X-HE-Meta: U2FsdGVkX1/4z+VRAFnw6BaN46Fz6LiXr8cepyeN38adhmpL80225EUl8ZqA+5nk6PmfUBoaLG5FAYZHqA0cU1Stwugj3ctqXW619KrZxP6QgYukYhhnWdxdlXiCtgSXZVurPtt2OUKkmgfaULr6PJtMosktPobGPNPReXETD/qpklHa6x4cySNA0qCK3XEXT0AiR5t/Jd1IqQQla+MsTrUk5NSaCOUL9aw1aHmoqPPuORs8tILwgqym+SDcFGgvHDEK6ob4XHNiV7dPM/k0wfnuwnkz32poPOAg+FRjfgMXlLtAGv/WYHNYW3Ir6v2fwIQT6kqLZER6HwyubyhDkTLDgWBvZcyiOI3t+tfijpbt1N50oowZ73OtLxtIDiGd2JAffRPZQPl3RWcJOqnkqJIBbGiem95kiSpAAziZdLOynhAFUQCaxdbXflYxiUaBixw/SQS0wkPa86qa4Ej8zsKc6VqdrXP17Atjs995XOGdzlgHwn2Dym3VKOgff5AWYq4CxGrHV/f6u3NKQgzju0VapsyskHiSMpZUU9Y+s/W7CxwCR/RVjYr1nDlNetSIcViq7aCPzHGxtmlu5985YmJsI0iENgj7GKmWEkOX7aCiXKRLoXT91Fmda7o0X9MeeXfuisllvFAe7FyhrFJE2r4oagh3HkzAYfcX7Qf+ipbXm/nrvt+oRLzvWFl1ynt0Jry3D+gmqAksETSWAb2wOgFSqYYNZGN4ZJf/b3yCZo48x+P8s/9rUDLedpiYIbtrtK1crQmpse4TygGoBIcPeUdlulSMdEzpcs6153k+GbuODbxf8OvokmquDzWRF+FNVUe5afFAgmxXMFAa62TRGXIuB9OsyClgu2aCG/EAWe+xtSehxSMTH5cgJR5W1XWiXkOE98tgEK5jF3UnOkboot1vUBQGYeCPE5m1p5oW6hwRPA+DAOWa9ricvSj/um+AHX8Lf6QlPWzHuf22Um2
+ KDZRCQKY
+ kUADFMpQcRQ8EefKMAgYmmNGnoMwU6cZRnPFPlhXus3Azj2A6RLj89MtVayjyP3EaJH3x+DYkOgfG4sOyvaTBdned42SuQABh+IxCH3OBumxjd1bwJ1Dy6KrS6Xl1LRNDqm20N9wzQG3XbAY4zCUyG5HZBjCLwKaqw5yYwszWpiI0VzG4vFLGI/UOTB0F/V3/JmGMI3rk5O+hiNFMhyzhgfhXGouqk6L9D3VXTth9OT2mVqXuUaPDcsmOIMhartPHALcT2AI9OhuSGDtb4/XW8A506NtvWYZYwtfumChDREDunAOq68xBM7o3mJ1CAhL6pbG7kgi+3bRBM2ylxKUtfLoIiFrjgloOBonUD31fp8hqpelcvCrfjQ1w9+0Cs3r1fqubYHRr9vEVJM6DcYN219Rv0kQbTkwIUkuBnjvByK/ZFYM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,28 +208,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Sphinx reports kernel-doc warning:
 
-WARNING: ./include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
+WARNING: ./include/linux/sched/mm.h:332 function parameter 'flags' not described in 'memalloc_flags_save'
 
-Describe @start_addr to fix it.
+Describe @flags to fix it.
 
-Fixes: 52fbf1134d4792 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
+Fixes: 3f6d5e6a468d02 ("mm: introduce memalloc_flags_{save,restore}")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- include/linux/genalloc.h | 1 +
+ include/linux/sched/mm.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
-index 0bd581003cd5df..0ee23ddd0acd3a 100644
---- a/include/linux/genalloc.h
-+++ b/include/linux/genalloc.h
-@@ -44,6 +44,7 @@ struct gen_pool;
-  * @nr: The number of zeroed bits we're looking for
-  * @data: optional additional data used by the callback
-  * @pool: the pool being allocated from
-+ * @start_addr: chunk start address
-  */
- typedef unsigned long (*genpool_algo_t)(unsigned long *map,
- 			unsigned long size,
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 0e1d73955fa511..95d0040df58413 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -325,6 +325,7 @@ static inline void might_alloc(gfp_t gfp_mask)
+ 
+ /**
+  * memalloc_flags_save - Add a PF_* flag to current->flags, save old value
++ * @flags: Flags to add.
+  *
+  * This allows PF_* flags to be conveniently added, irrespective of current
+  * value, and then the old version restored with memalloc_flags_restore().
 -- 
 An old man doll... just what I always wanted! - Clara
 
