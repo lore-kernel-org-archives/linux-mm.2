@@ -4,193 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C94D5B868
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 20:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9D4D5B86B
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 20:46:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5D576B0088; Mon, 15 Dec 2025 15:42:04 -0500 (EST)
+	id D257B6B0088; Mon, 15 Dec 2025 15:46:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B056B0089; Mon, 15 Dec 2025 15:42:04 -0500 (EST)
+	id CA7D16B0089; Mon, 15 Dec 2025 15:46:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DF0E6B008A; Mon, 15 Dec 2025 15:42:04 -0500 (EST)
+	id B7B946B008A; Mon, 15 Dec 2025 15:46:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 71FE76B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:42:04 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F225856FBE
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:42:03 +0000 (UTC)
-X-FDA: 84222877326.28.8226C05
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 85BE910000E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:42:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QYINGqbb;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E7356B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:46:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43C1EC0373
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:46:32 +0000 (UTC)
+X-FDA: 84222888624.16.D5E2BF3
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 220111C000F
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:46:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=G4CJc3EU;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765831590; a=rsa-sha256;
+	cv=none;
+	b=4Dts7+/ioFuTsiUXO4PV7dqT4wcn0ljwzRnWclAxBmNO7H57BuhksSUhFwR65b5gWq6kDi
+	GMHyFI8ar7nJ0p9mywq3yPOwfBRhh+4kW/z4f8UBt3J0p066pm0cw+Q2sX1XrbwwoXTPlb
+	bg/76598ecXzjeY78HzoXd9jpMjwHmg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=G4CJc3EU;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765831321;
+	s=arc-20220608; t=1765831590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIugujDFg05cEDjSFPsNuy7/nXwlnSCGQEq9oeQZt8U=;
-	b=SjKOz9JP3rqE+ol4xstsJq6obemm8j4XXQglH+Zg21wckwIG0E2VFMYdUwvZfFFxBytpZo
-	JirHOJUxkfx4Rdk7YhOedHHwMtBlB23n5lFaqnilaQh/dPCx41C/vU1VCfbzzi5T7p0shR
-	2+xLPAq1t8+8I7Pidhoz6wpjV7oO19U=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QYINGqbb;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765831321; a=rsa-sha256;
-	cv=none;
-	b=qJOnwZfd5MzjGl/BonPBlhr7jE0F9ceXSeUCFJtPV4pB277mYXoaX8uvVAaTrPA/WOSwi3
-	Wq40WSqNH32TPnRUOzONGubpKc0s3IHONr6NiFuIEmU4qDP+5gXRLkY3FnOegmrCWjT5Xq
-	lkfoX3/Uc3x3miNrWDcmfCqE+da99Fo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765831320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vIugujDFg05cEDjSFPsNuy7/nXwlnSCGQEq9oeQZt8U=;
-	b=QYINGqbbRc/FUPodLAsCOdI6iNJAWOz0cigxmje7v9iWY2vLYqh+36mxn5Y5flqd6pqz7Q
-	KThVt3n4fWMSeeREoC+OK4qOLZvpPJorz6TWmltzE9jEw1AlT0V4F5jCrS9JShHdvJgRj5
-	Y5Ftn3TVUE0L6Aa/NL+XTp0JrK0Vumc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-gocGmutVPDCRFXZxef_fyA-1; Mon, 15 Dec 2025 15:41:59 -0500
-X-MC-Unique: gocGmutVPDCRFXZxef_fyA-1
-X-Mimecast-MFC-AGG-ID: gocGmutVPDCRFXZxef_fyA_1765831318
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-477cf2230c8so37539395e9.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:41:59 -0800 (PST)
+	bh=c/5OmwgaCDghH9Y+B9p9dsz0t3uJjAxYmjjcZ3Iaws4=;
+	b=SOcZ+D7OJfo5j+SBUaxGR7G+9L2RHvmJGgrxKFKnftkfP1v7Tl7WJ6kfHBCfcWSB6P8lQQ
+	/STR/HXOclEzODlfcGhWDE+3RUAXMxVvRjbPz1fjSpVFqvtf94RNGwouUfeKPSuOd9qzvG
+	mS5BIwDD1ZVl3A6XH6r2mVptlOymeww=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88a379ca088so13799266d6.0
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:46:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1765831589; x=1766436389; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c/5OmwgaCDghH9Y+B9p9dsz0t3uJjAxYmjjcZ3Iaws4=;
+        b=G4CJc3EUkAQmkCGNijE0pzxej+UB9pHPZ1Q9MoHPRnwWhAhQaVWwcPUUso1JRIESAP
+         iTJJmBL65ms4jYB9S4ZSJutlFU4EHyILruEEu6k26PXav7VV/Y3RdhIJS6y8cAUQot6E
+         BGB17yEQBPCv+Yg49YSuE/bizAzvV3k30b1o0xfwFpMIn2hkd9BlSRkc2vFuJsXY7v4r
+         zCmwLN61ovesamLLT1fBhW9srmvltrf5mvGO6G9c2ZIh7z6zeCt85xt6ifPEJDaNGlfY
+         qG0PR6xcK1slYWhoSi3/6/s3IGVaxIEl6DbFbQoFXgQ88ieLi0LfzWEkq2Gr/g8+2dk0
+         fYkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765831318; x=1766436118;
+        d=1e100.net; s=20230601; t=1765831589; x=1766436389;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vIugujDFg05cEDjSFPsNuy7/nXwlnSCGQEq9oeQZt8U=;
-        b=Dlh2sBECBKSBoO6CzwgJzwAlL8zNf8PAJW41g+D199gX9OMtm7/3YC6dhvsXLKaOB9
-         synu7Xz67LiEuuhW6ZNffuMlJ66VeL5avE27LOGC9CAKzOAHbDFbjYgfKInE8vkiGQp/
-         S3rth38XQsy6d2v2Ubs8FZd08d0ZRIB4IdNN6w53DEQYdTi9IutELkdZiO6XH/luXWHF
-         8zJD6LyTyY84GPo818smYEz0rmuy0X0nlnGuyJmPR5aTe98yMiwvOcy2Rc8otNVfFa1Z
-         d04qD4psFE+3v4y5U12kZN0MHzu9y5cg1pYadDg6F38vgoRKaqCU+Y2GhEC3jLY4Xz2J
-         mnpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDS72Nl2T6qpfvp8hLDl8X2klGwmxUhpEPt1/K140XGb/B6j7BOCNxIYW3soEeWvF5AQkCqakNQw==@kvack.org
-X-Gm-Message-State: AOJu0YxOP9lBvx4BHfgmkY+GfJIgvKIWD0rrFevVwxpPesaBrkLZHPsx
-	mnyKXuPHANvnZnj54fBTjYV39rewDiLPXK9WNg6zDnqK5fojwmwG0BFYLqK/xq3tfG1vjQ6dc7H
-	/TpVmpE4lUZhHyKOyGjqSglq3LNsb+2bmMIS1qZSs4/+EZF8CO/VX
-X-Gm-Gg: AY/fxX5xi638oNuKHh0RcEZv8MyExDpy7ZJQy79JiFvnTcbYkADcyDI/PJ6xobKigvq
-	/WGas6dKIbVey+gU32gVMOk3WWNRU2QrrfjahXlJjBtHj9x2sqMKTlI968umOJmlP6eqmGt3bU7
-	Hh/jLQWwI1kx++4qICrPggCcQ25SbpQDABk/N1Oz9tUmK3wBS9eR71rYLbaxfoV8dEusH5YhGlW
-	reSmvc6DkZ/J5Acix3GUUKpjSlwHwztRv1o5aJrbLUEzdigJTUIYmqWkQsLVWQUwP7Z61VA1N5t
-	3JmFAGx11y1wB/3skz8uLa6Pr4VL7n06vU2hxcI4WKufS+CwzrXOE4I9wCg9JmxvHTJVVE8/pdL
-	0RPPleUDTLcmy1aNrOEPl7jhEAcCjA0nbIw==
-X-Received: by 2002:a05:600c:6290:b0:477:76bf:e1fb with SMTP id 5b1f17b1804b1-47a8f8cdfd1mr164694925e9.16.1765831318234;
-        Mon, 15 Dec 2025 12:41:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpvKxyv9KrTZN+I+gLKkWZxXPblkRG4VaB9KOKEG2SIjVVbTsH1HJ4pcy9Q9bDzIs00zZydQ==
-X-Received: by 2002:a05:600c:6290:b0:477:76bf:e1fb with SMTP id 5b1f17b1804b1-47a8f8cdfd1mr164694005e9.16.1765831317597;
-        Mon, 15 Dec 2025 12:41:57 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-31-118.inter.net.il. [80.230.31.118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f6f26ebsm211656485e9.14.2025.12.15.12.41.50
+        bh=c/5OmwgaCDghH9Y+B9p9dsz0t3uJjAxYmjjcZ3Iaws4=;
+        b=nHFP2w2pR54eHhUB1/RDqOps0CnJY7+5YVCE1RowURLw/pFTmTrNzrzGMzDBq9AesA
+         hdpU0Wx6/w8mP4dkshxOKpvaCiC2M2Uj757EWhlK2bSlUKKsnCJt0z3ToRVc5miF25ib
+         z5/Z8DJoek1E//QgaIUy2XFbZDqI8tMrqYSr59DIRAqTLV6MVycdS4JYK7heYSy5kFLs
+         3FZ9LOR242Y6gZyiSw4YqlUrf+QzITcxrFMeYgpAhiSOvcdh8Egwgi3J3uSjdTo9Je+p
+         RRZk51frtwJFKNv1RsjaY6O5Aq/xPLX4dtd239GU0A0tvI04v3zEC3+5YRiuHDQj+sqe
+         W2dA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaP3LSvJ/vjERMbfGz5jyc/GXuN8UGlVIZw8aRqoBoS3GmTVF7zi8pDWN5SHrVfOs0zsqIeS/fuA==@kvack.org
+X-Gm-Message-State: AOJu0YyXsn756mMAcF3xB6eBIlErjF2We2b3py3l8w9AA1lXCqkE8OqA
+	bb9MaSIukHgyrQJCYjj5mDVvSRJCNN4z7s9PbimYJ3FnZRO+Ct8ruBLQRiL6nh/OzLs=
+X-Gm-Gg: AY/fxX7Ve3BdqYMA9tMk4xWoVIt2EHbb1jbcG5tjo1SZrG8qekpY/90iwVOgjNsQ2JE
+	xkbM+8LzxpnOf3nPjBCBc4qaoxZ0caJlbE72Sr1a7OHwVsYb930UL3vo5EOUycxlQXS7T6vGR2Z
+	g6RuItYV60kWDzerqkCY6kOuKopYkjEhqALvUd6ASwZCZtBkZftAyc6eVIvhkbb27WO9OyqVUk4
+	OIKEe3rFpz+5Ft2KFQiuYsQOS0nR8Rqi7RbiVYFNmn+xNGYchJ+PquXRMC6K6CbeQkjA69ZkBKh
+	p3oYOMoKGzV06QM1gAgbfSOmbvKerdt2Zdu3KQQJT0WsKBk49hDMeZdzqQBVdDp2tfwSiikBTlc
+	e9smdiLQXWdx64J/xm+6TqEqXkcdC3WWShcFlGAtwGtSA2+FzaSfXgoXeB6F7SF+7PnM8M4EV/S
+	zyA3x65qGokA==
+X-Google-Smtp-Source: AGHT+IEECaGepI8b2WL9DLllMIh/MG6dmTXrWRWKDLKwFMYbp3fGB5X/Ym5XHJbEgAFZKvqnX0dTkA==
+X-Received: by 2002:a05:6214:4906:b0:88a:2f0f:c173 with SMTP id 6a1803df08f44-88a2f0fc33emr107185346d6.68.1765831588949;
+        Mon, 15 Dec 2025 12:46:28 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88993b41dc9sm59677586d6.9.2025.12.15.12.46.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 12:41:56 -0800 (PST)
-Date: Mon, 15 Dec 2025 15:41:49 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Filesystems Development <linux-fsdevel@vger.kernel.org>,
-	Linux Media <linux-media@vger.kernel.org>,
-	linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com,
-	Linux Virtualization <virtualization@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Network Bridge <bridge@lists.linux.dev>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	George Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>,
-	Cruise Hung <Cruise.Hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Dominik Kaszewski <dominik.kaszewski@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Alexey Skidanov <alexey.skidanov@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Harry Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>,
-	NeilBrown <neil@brown.name>, Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>, Ivan Lipski <ivan.lipski@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Roopa Prabhu <roopa@cumulusnetworks.com>,
-	Mao Zhu <zhumao001@208suo.com>,
-	Shaomin Deng <dengshaomin@cdjrlc.com>,
-	Charles Han <hanchunchao@inspur.com>,
-	Jilin Yuan <yuanjilin@cdjrlc.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	George Anthony Vernon <contact@gvernon.com>
-Subject: Re: [PATCH 06/14] virtio: Describe @map and @vmap members in
- virtio_device struct
-Message-ID: <20251215154141-mutt-send-email-mst@kernel.org>
-References: <20251215113903.46555-1-bagasdotme@gmail.com>
- <20251215113903.46555-7-bagasdotme@gmail.com>
+        Mon, 15 Dec 2025 12:46:28 -0800 (PST)
+Date: Mon, 15 Dec 2025 15:46:24 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Dipendra Khadka <kdipendra88@gmail.com>
+Cc: akpm@linux-foundation.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memcg: reorder retry checks for clarity in
+ try_charge_memcg
+Message-ID: <20251215204624.GE905277@cmpxchg.org>
+References: <20251215145419.3097-1-kdipendra88@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20251215113903.46555-7-bagasdotme@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MUR3EFxF1_38oR-qj600LJ7524rreBoiRFvJPDkvEjw_1765831318
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 9zmufu13x7gtp1qsmkqur1h96aam8duz
+In-Reply-To: <20251215145419.3097-1-kdipendra88@gmail.com>
+X-Rspamd-Queue-Id: 220111C000F
+X-Rspamd-Server: rspam03
+X-Stat-Signature: txmqjkp1krsdwr7zsfb48ag5y7cin4ik
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85BE910000E
-X-HE-Tag: 1765831321-700900
-X-HE-Meta: U2FsdGVkX1+94l/eoOBeFAFl2viZEytMblsZXuuNa85TI1pCEJfSq6LvQbYLW4nyRuze21Va/xMYvFtSYSO1sYGM0w2aMFLo9eu63Vv4JTZywgmpNGCYAd2OKrRiKUH5CPP3OO+qJxnCeF3LggyX+Xr7l+wZ6s/xBu2KKlJUcxGmXCwTVWEbE0lnXBVkOkPx53zR1ffqp6BAvLTIJ0Ioln4gfLz8D7trlLWVBkZMzJC968t4PZQl0BbtXXZdnjq3Yxskk778dfCqoTkRRIcT8qAQd2CF9bYsJPVlsVBaVCFtmE7WlOgINVl3/857pyqU/jykKPjlUefuz85ToLSWahxlFQ52zoCUdEiA5utA4IKvlE1i1MYEykuYTtfBFP1YLuvqaK+ro0ezX+FRIV0g59nbtx6k1BVmbyMHNjfgo3SkKC3e2AnDfdhmK4cVJUuM+wrZtFg43lZByNRt15+GFd0RVtIHMf9nhXlx5FaQVKlq2kNtev0PxCC+QKWmp4AAwzYOfCF3ZdQOC+TxprvBtIu8VbW/MJmixWtB24nAnM0wSkhfYCUgS0Z9xh2REuLnXCbaidgqyeXrOMKmfGgNdKhqnVM2eL3E2LFsXbtzRm5d8vrJTwsQ3/MQChqAYTbAuTQfzHNYiq91n5GWh9e9Zivtk5p/s6a4sX0I91SqYQWVk/kTV3rv3OaSHEPkEgESJk3fbEjrU0MeADHhJDhXJUrCJeI05qrHwPK1u0lR9L2NS+hIIHugynU8RsGfmyThNbyvLJ7hYrSY6I9ElxW55U7u0McVc0yBKcL+JWoFapsDm8BNQaUwVybSxqxkrIGb4DkkZdDPOT5y9Su41Tu5Q9skw7cDZvd6mp2rYzc6b4xQplcwoAm+2h310hDQJWDOX8dOCZSkJMM8QwUCWlMNcpMIZtyCkIhqHn5HpNfOYN+Kd0uotifpyI1t0abMEuZrTuJdiX48IAuZThhHFh2
- 8rBsWuqx
- 1JhL2ERaCrqHt53ZNyP5kSX8RkgX5z/XbBYUesRCUF0i4NOOdhanqyjKqFs2oROjY9BF6LoIrkt/EQdi4jgxw9ivhP8se91EXutm+129Z0WgJ2Td8piutlgSEXgfffv6pKwzV4dG6PRnFHFOOOWfAGKZ1T2nxbaVLNNs+U4oBJzsAjwCxVrpP21IFjYrL+Bvqo5tExdRzVng0i5TyIYJYMvXqVxTZCsaYK7Aq48CjSvnMNHQLW43z2n8csf33mlfy3/KYpxS7FVl+YGo7CFeuGIx3P3/KfWypf1GiZmwfR3FwmjNpyo0wMw1RHMVRe4ZLgXI10HcHDIchBRw0AtDbXSsbIi7vubrJcGLAMP6lWfTSZ06dXa422+44AW1g9AWfo1d4olG9zg0MZRRmDDMvttTcU1wjPQbBpZ8v8C9xQha/wjroP2+tc3IgyQ==
+X-HE-Tag: 1765831589-280885
+X-HE-Meta: U2FsdGVkX18TLfh/tBcZQRktFHGdqZzTTdCPEeKFP4FbQYNSlHYvdzr7UqBV48UxXjVgWe/2srCvevLgSk3FYwQwauYHJSjXO4B6RDuvPE0tOD2Wr5zAFucJskkcW47Ycw5w1cFCfETbUp4UNidFABYM7/CBPkoKadL9h4xdgS7WivYjgOWoycK52s5DUbWf7/lm1gXb04TlffTyQaCkqgxOIC3v5jDNbpoyuysPdlC7uol3v/VR8+W/GSWFWd2blpPKNmMuLhELeUmdPIwtpGOf5gLEzt1ug7uPrDDzBT5ILQqKZlU5s9OrfOFcqyQqFgG6Bb4fUSu+t2a0QcQi92rGvEnaxCe5xpKKL2BIFToevUoaG7fEHZCNLuLl8wK6dqwrNN5YmlTDWfNPkjG5tL7cH8xIqkyGXqXpASFq+u+Dlve4oUSws2kVHOzuCHCWeIRfekEFM4hDXyd5DFCJDmHyyLoC04X7xde0UEeigQk/lMDcmUtHLKzNL1MdpZzo0sOytuUHeBkq+RP7DvILvJGWNpfdbrGYwFX099e4tHMpzmIWDPeZVx1AMFxKoqWTNGzOynklg5WcGjlw6gw8C/GcmYXTDILrkK6NBYSYmyfJV48Rqt2/nMutNwwo9XLj4BUZGFPtb5ttV0dO2ybA6945792h6mdagGielumWMFOk6F1JEVBozf44hbJ3pZ+MSRldiG1EHNuMIjrh3uedpmLyI1i0aiMB5bWnF5z6ep2MnZ0ToTxJvunu2sTKkrtTtmscGEZ/FRy3ieJsaGM0zL6qmUcMxhf+isOdRcSKKGl0lOR6DJ9NLYC22F7aqM/1rVVmEBE1drDpTv3/wbpP1vctoNFNaEQt5yMfKE+8u3VV+R8hpfGO2f8OMYedmgJo20rLXQNXhVc7GX9P2aFiOjVLPOeWNQqILBhCXR9G+f1CaRVnY6qGakig77F99Wt+1c3HQGGDdZa0plP1lEd
+ qe1PsAtQ
+ Cj/PqHp4JmEkdQW4iCfEkYAcamnXjPXhVux5zkxJJ8gmtzQ9elyb/E01fQdZ77iyTXRaiNwTO71BM01QZQ9kDKJkTSCiMiEWAQmwckwPXawsy5tWF6DAq/sYXx9NF3hXaEBLd2kGjK8My+H04pRIiMqIjW0oiWRIHMXiY/eIwGK7zwrR2/n288EuhwQZTgFChsN2yvnfKNUD+UrvOJ9SJS+p959OFkah+OKTpAFOxANQyomYkkOTxtx9dbTWNLyOO6hLaZLma8l5jbACfPezIFVifiwUfSDzfDKOQLiR423YQKcJOOcOG5t3K44o6uTaXbg6vYLXLLMHcHSe9OxBR2kjygq4w/9yFnb2h5Xddt6H4VV+TpDnm09hpKkOa+oXRCXgPPbgHZ0209EXcByNvaeoP1wuvzo8Jqy4UE9+lAAiUo4dHv0/QZXcevLt0ZufMdPNM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -199,42 +121,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 06:38:54PM +0700, Bagas Sanjaya wrote:
-> Sphinx reports kernel-doc warnings:
+On Mon, Dec 15, 2025 at 02:54:19PM +0000, Dipendra Khadka wrote:
+> In try_charge_memcg(), reorder the retry logic checks to follow the
+> early-exit pattern by testing for dying task before decrementing the
+> retry counter:
 > 
-> WARNING: ./include/linux/virtio.h:181 struct member 'map' not described in 'virtio_device'
-> WARNING: ./include/linux/virtio.h:181 struct member 'vmap' not described in 'virtio_device'
+> Before:
+>     if (nr_retries--)
+>         goto retry;
+>     
+>     if (passed_oom && task_is_dying())
+>         goto nomem;
 > 
-> Describe these members.
+> After:
+>     if (passed_oom && task_is_dying())
+>         goto nomem;
+>     
+>     if (nr_retries--)
+>         goto retry;
 > 
-> Fixes: bee8c7c24b7373 ("virtio: introduce map ops in virtio core")
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> This makes the control flow more obvious: check exit conditions first,
+> then decide whether to retry. When current task is dying (e.g., has
+> received SIGKILL or is exiting), we should exit immediately rather than
+> consuming a retry count first.
+> 
+> No functional change for the common case where task is not dying.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+It's definitely a functional change, not just code clarification.
 
-> ---
->  include/linux/virtio.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/linux/virtio.h b/include/linux/virtio.h
-> index 132a474e59140a..68ead8fda9c921 100644
-> --- a/include/linux/virtio.h
-> +++ b/include/linux/virtio.h
-> @@ -150,11 +150,13 @@ struct virtio_admin_cmd {
->   * @id: the device type identification (used to match it with a driver).
->   * @config: the configuration ops for this device.
->   * @vringh_config: configuration ops for host vrings.
-> + * @map: configuration ops for device's mapping buffer
->   * @vqs: the list of virtqueues for this device.
->   * @features: the 64 lower features supported by both driver and device.
->   * @features_array: the full features space supported by both driver and
->   *		    device.
->   * @priv: private pointer for the driver's use.
-> + * @vmap: device virtual map
->   * @debugfs_dir: debugfs directory entry.
->   * @debugfs_filter_features: features to be filtered set by debugfs.
->   */
-> -- 
-> An old man doll... just what I always wanted! - Clara
+The oom kill resets nr_retries. This means that currently, even an OOM
+victim is going to retry a full set of reclaims, even if they are
+hopeless. After your patch, it'll retry for other reasons but can bail
+much earlier as well. Check the other conditions.
 
+The dying task / OOM victim allocation path is tricky and it tends to
+fail us in the rarest and most difficult to debug scenarios. There
+should be a good reason to change it.
 
