@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C91BD5B175
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 15:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92318D5B17E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 15:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C68896B000E; Mon, 15 Dec 2025 10:04:08 -0500 (EST)
+	id 05B1D6B0010; Mon, 15 Dec 2025 10:04:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C23776B0010; Mon, 15 Dec 2025 10:04:08 -0500 (EST)
+	id 00B696B0011; Mon, 15 Dec 2025 10:04:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08846B0011; Mon, 15 Dec 2025 10:04:08 -0500 (EST)
+	id E3CB86B0012; Mon, 15 Dec 2025 10:04:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ED886B000E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:04:08 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BB5389573
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:08 +0000 (UTC)
-X-FDA: 84222025776.28.A864B2A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C8F756B0010
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:04:13 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 932B313554B
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:13 +0000 (UTC)
+X-FDA: 84222025986.06.89FE45F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5555D140013
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id CD6F21C001D
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765811046;
+	s=arc-20220608; t=1765811052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8PjcRxlbU/ydtWRj6Ipq1dnPy+qOjNejDozpydmwU0s=;
-	b=1jVdG8zMUDOXLVB/gylu5ruCiz5yZJrOnY3D9OiwMSI7UwFWQEMDlIg2WRLI76uP72t9Fe
-	7jflDg53XZG8ayGbZyL1VkIdQLgimSPdBglSij4HWLijRwALnOGy8dic9h+iT4B0C6y9RS
-	/Xjpn+3eBSjnlIAC7Xpv7UaRFe8QFXw=
+	bh=EEqXsUcJNX1FcbTINZAFLtrsNhnIjFtm60kiHQxHBIQ=;
+	b=z8UV1Y86Rg97YUKv4V9RSHSyJHh7nRfSsXbvhgyely6/5nhI5MSGEw1CCQQfEEAXr9VnXN
+	AJpEbbsLJ5IBaSOmI62NjFzAimVTnDs5Ucc6dxDHhZEm0wquH6BFm30X3vRl22eJOYb1o6
+	OZORzD0BNmFmdAicwDEc6MTN5cXVuWo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
+	imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765811046; a=rsa-sha256;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765811052; a=rsa-sha256;
 	cv=none;
-	b=4XU3aIfUU3cSQoATPIkJ9RPYmR6Ng1Q/67u4VeQ+W8rzEht3RVUXsWO0N4opSanb7QD+iR
-	VqyGzWEF+DJ9TM1XV7uC4I790rw3ORf4S3FB5zkGT174EkrTlU+vl+gfKyD2wIRi5hOnAZ
-	zZ2MyBUMQC6dvvMhfCjfdAPCEej3s5Y=
+	b=E1hdD/DKRHVe+r7WxWP5uUuI7mAfm9qT1a34mJ0kn8vk1GfzxECxzmSJupaPCS8bv8iI82
+	nHiHutCyTpR/LzVBDyCSy5CSYQ/ANbcrH7qc4t3iLMwG8I57IqKsVWg2bhswdn2+30zSkg
+	ZaXMfN8aKYJIusFgmKKAbQDODthNFtc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B751168F;
-	Mon, 15 Dec 2025 07:03:58 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD0151691;
+	Mon, 15 Dec 2025 07:04:03 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A0493F73B;
-	Mon, 15 Dec 2025 07:04:00 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BAB283F73B;
+	Mon, 15 Dec 2025 07:04:05 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -95,22 +95,22 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v6 05/14] mm: clarify lazy_mmu sleeping constraints
-Date: Mon, 15 Dec 2025 15:03:14 +0000
-Message-ID: <20251215150323.2218608-6-kevin.brodsky@arm.com>
+Subject: [PATCH v6 06/14] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+Date: Mon, 15 Dec 2025 15:03:15 +0000
+Message-ID: <20251215150323.2218608-7-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251215150323.2218608-1-kevin.brodsky@arm.com>
 References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bad58eda9q8s745bcdzwtshjwt64hdhe
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5555D140013
-X-HE-Tag: 1765811046-207194
-X-HE-Meta: U2FsdGVkX18yPpHJmcNfgVme4bAHZQB9bO4njWxqg5jcXHWKbVk7oZqszvyZQHss0cAcwJEVI5CbFSo7lT+FyTV7VMprZ0SjhYLhJlcn9eXZ7AaYDrTdqGe9JvPqDr+su4YLe0ifG85g1irhaswQMdCi384i/DdIcO6PLKdOoULes7GU57MywXKyjnDGZoCTtqaGR4eeD6D6hiomCaRzp9brqaiVPnJe8pRu13/M9SAamqD7xrpxnqgCHpykgCBtD8IvKlUwmtUwCEi9yn/ZdlP7a+dSm3fAaQkLeur9DXrGrq0UDgTmYb97gOnuxrSEpOae/GJI3ts3DqdOMuvlwLjR83AAEOkpO9IM24V+e2XVRwzZ79tkxETJd/GLgDpF8Zyj/4Nq01U/eLrtOgSSDXpKcs459M7ahHGMh2MrwZ92RYmlnOHqyLbMbd6GknZOJxVLm8ZX7sqP3+vbFvnX+jpHJeRhSAzV+Po3j1uOPKEq6WemK3VvCjE0ark53E0e7ZhtHeB21K4J3CU0vvX/S9GK5aXQhMudWkVhS4voFbTf18QlST9xfEOt6DX5fgnm4UXdVbNSiaJFjBPyAu2fxoah71yw9bkVhr+c/nfTE/N5rSUcaGlHRoOw5XfTibuom8sjRmpclmnd9Erdhil3+9iHaVdEeAdumg2GJ4igbmUcU/3LK+E2biMIy4qIKPL1kTrB/RiTrBZVOxPFetcUgQxTLScxRetW3FxKTYy7IMlDnLvPNH6xS54BeUvsZ8IhIdw7xWNlO7tyXxI1xfEUFNE5cIvtu1m2kMrsAn0LrJ4YTupeplcBGfzrNXo5bheCVhWQd3PDsat6Ha2js2mfJYAXQ+FUGW/hCWbfcNgzfNnvXz0DxK4C4ght0xPtfr4iGy8AFuu1LgG5Y+35t5ejcYZ02rZLseZAhtG10KKRg3YT4xkmwgfpoO+hQu9UA3GPW0fwKQXjLtGl+RTUPaP
- 9SfmNFoP
- WG/Rm7U5bTTKRDBuNhLpDqDTl1bUfiZzE05pWK1hDzRZCn8IZqGYNE3kkxSBOapTGwwTbRdikHnyKabMcJP8kU4NPQyk3cteAvvIKYiuAlYSsxr+iB5tovUy6IeoOS6WiBag7qX15RPrZRUIjQdZ2s9xw6JlnGIAaRSmS8HQqa9WfW0KwqG6PUVMnq2F4qQUQmRLmMnmNmuwBKSoKvJhTAniUVgRuoBbyDy0DrWL4rboY4Od7hPHtU75mcrU2QVMM60X/g0ILoGK2yYgiQV0OGRu8+Nz5aEKRIi5nV3LsdmXCBRd0IycW9idkYA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CD6F21C001D
+X-Stat-Signature: zk98z3sppkmx8hbpe4ypsqic34ezxemx
+X-HE-Tag: 1765811051-290193
+X-HE-Meta: U2FsdGVkX1+j4VRywcd0e/RiNT+HjpgFt8nuwoYS0EIyo9KDThHEnVvc99RCodc0bxE7jWhA706/3YAkrYNsavgNwLD9WsTYn2ZMso40wik0dcZevH0jk6QhSG4kZULKShyUiz3Cygh642CBqGuKaEFMRrCuz36Q1Ihtaz0a5A63oDL5e6jlqb7YaMe6Rk/E7olda60Tr5/hTeOTgGoBQxCoqiCGfde3F8lm2SWdPDma+cEYpVAfZ/kn6siNMyJPZg4NT9nzLQASzxAaA9wFY/SXysga56PHRrewdBYBOOjggpcEoFeOreLUyLkHIfr5ro7QZdP5+6DHuJovIvqPf2y5XvM6nv2LOXFPGsJsj5TWH0puoKdsarLmHIY70FN+oVZvJJr4fiAXH4ISVRNkmA5R4lU6AGpEEMB8tM2YTz+4hOJKsY50cEJbyGr/oidtzRkUh78Sl8ZINlYy31K3p32rnQibn2KCauXkYAaAF910hzE/9HAxX+bM9Sx2ai3qiIJiUFkstPWLB2jdxjheCoAS5LnQBoMYQXHjpHsVgASUAJ4+Iqcgn3LMApcXO6vK38gmC3VfvwJxYynxrNm9G+8xel3JiG7U9ghivMmYqEWGq1O9u5tbx9OQXJ1la5SAJ+qrW6qOsSz4C4NwPcCbCaMNz+TpoZKvYcx/+GtHQc+jO9MS4q59+QcRSK4/hYiq8zagc6ycPcJ8r0mzoAkdAqfaqX6lr97uq1389WQHTVUvRi9mXLrqSLitqnOgw4EA6PsIz0JsFuY9sz9pNfag9xRTMnstl+R8ve1FGlrbfG7dhNilPIfbdEE5lfMd9NVAjxHouZUbSmyxQU/5KZmVF/kOk9rHaBL9l7EaoF/GRSkQjXGHkTQaFyQ8HSEBVdX5RDwE5W8AINfcbb8F9WdHjMhCGp3ILQ/fnHSPn80+cGpOybRiCfhwZkoYOZqRs+jqabAiE4x2hbV65viW1jk
+ S10C0rT1
+ tY04BRZcgypM3dzbfYktex4U6xv2ozzA7/oSxQaQSJ7dOez7S6CCDw+zmlcBrthwPk+AAhEH7TDVUJ00hPZbglkvnxvOasFkSclVKvQPDfIdBxSz+UYZhcfwVHtIfzuImSnV/oPgBstqpVPWBLs7J6vtF4W7Vlu0RrAtfIAb5T+MgAl3Xz8/y8Ew+cMhAdMG3805A5oA8ov0nqs1U9/5wgQPKz11zDODjuww627sx6xyehv+V+bJFYIU+HVz7pZgYTzRThuZQ69nTqeKUPlJgN1ijW22+kiOJM1EsSWdypAvUtq8TtgKDqRGsSbNT/voiY6Vy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,44 +119,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The lazy MMU mode documentation makes clear that an implementation
-should not assume that preemption is disabled or any lock is held
-upon entry to the mode; however it says nothing about what code
-using the lazy MMU interface should expect.
+Architectures currently opt in for implementing lazy_mmu helpers by
+defining __HAVE_ARCH_ENTER_LAZY_MMU_MODE.
 
-In practice sleeping is forbidden (for generic code) while the lazy
-MMU mode is active: say it explicitly.
+In preparation for introducing a generic lazy_mmu layer that will
+require storage in task_struct, let's switch to a cleaner approach:
+instead of defining a macro, select a CONFIG option.
 
+This patch introduces CONFIG_ARCH_HAS_LAZY_MMU_MODE and has each
+arch select it when it implements lazy_mmu helpers.
+__HAVE_ARCH_ENTER_LAZY_MMU_MODE is removed and <linux/pgtable.h>
+relies on the new CONFIG instead.
+
+On x86, lazy_mmu helpers are only implemented if PARAVIRT_XXL is
+selected. This creates some complications in arch/x86/boot/, because
+a few files manually undefine PARAVIRT* options. As a result
+<asm/paravirt.h> does not define the lazy_mmu helpers, but this
+breaks the build as <linux/pgtable.h> only defines them if
+!CONFIG_ARCH_HAS_LAZY_MMU_MODE. There does not seem to be a clean
+way out of this - let's just undefine that new CONFIG too.
+
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/pgtable.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ arch/arm64/Kconfig                                 | 1 +
+ arch/arm64/include/asm/pgtable.h                   | 1 -
+ arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 2 --
+ arch/powerpc/platforms/Kconfig.cputype             | 1 +
+ arch/sparc/Kconfig                                 | 1 +
+ arch/sparc/include/asm/tlbflush_64.h               | 2 --
+ arch/x86/Kconfig                                   | 1 +
+ arch/x86/boot/compressed/misc.h                    | 1 +
+ arch/x86/boot/startup/sme.c                        | 1 +
+ arch/x86/include/asm/paravirt.h                    | 1 -
+ include/linux/pgtable.h                            | 2 +-
+ mm/Kconfig                                         | 7 +++++++
+ 12 files changed, 14 insertions(+), 7 deletions(-)
 
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 93173f0a09c7..3fb4603c0e16 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -35,6 +35,7 @@ config ARM64
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
+ 	select ARCH_HAS_KEEPINITRD
++	select ARCH_HAS_LAZY_MMU_MODE
+ 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_MEM_ENCRYPT
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 64d5f1d9cce9..f7d66c261347 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -80,7 +80,6 @@ static inline void queue_pte_barriers(void)
+ 	}
+ }
+ 
+-#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+ static inline void arch_enter_lazy_mmu_mode(void)
+ {
+ 	/*
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+index 2d45f57df169..565c1b7c3eae 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+@@ -24,8 +24,6 @@ DECLARE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+ 
+ extern void __flush_tlb_pending(struct ppc64_tlb_batch *batch);
+ 
+-#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+-
+ static inline void arch_enter_lazy_mmu_mode(void)
+ {
+ 	struct ppc64_tlb_batch *batch;
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 4c321a8ea896..f399917c17bd 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -93,6 +93,7 @@ config PPC_BOOK3S_64
+ 	select IRQ_WORK
+ 	select PPC_64S_HASH_MMU if !PPC_RADIX_MMU
+ 	select KASAN_VMALLOC if KASAN
++	select ARCH_HAS_LAZY_MMU_MODE
+ 
+ config PPC_BOOK3E_64
+ 	bool "Embedded processors"
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a630d373e645..2bad14744ca4 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -112,6 +112,7 @@ config SPARC64
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+ 	select ARCH_SUPPORTS_SCHED_SMT if SMP
+ 	select ARCH_SUPPORTS_SCHED_MC  if SMP
++	select ARCH_HAS_LAZY_MMU_MODE
+ 
+ config ARCH_PROC_KCORE_TEXT
+ 	def_bool y
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 925bb5d7a4e1..4e1036728e2f 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -39,8 +39,6 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
+ 
+ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
+-#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+-
+ void flush_tlb_pending(void);
+ void arch_enter_lazy_mmu_mode(void);
+ void arch_flush_lazy_mmu_mode(void);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 80527299f859..2427a66cb0fe 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -808,6 +808,7 @@ config PARAVIRT
+ config PARAVIRT_XXL
+ 	bool
+ 	depends on X86_64
++	select ARCH_HAS_LAZY_MMU_MODE
+ 
+ config PARAVIRT_DEBUG
+ 	bool "paravirt-ops debugging"
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index fd855e32c9b9..4f86c5903e03 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -11,6 +11,7 @@
+ #undef CONFIG_PARAVIRT
+ #undef CONFIG_PARAVIRT_XXL
+ #undef CONFIG_PARAVIRT_SPINLOCKS
++#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+ #undef CONFIG_KASAN
+ #undef CONFIG_KASAN_GENERIC
+ 
+diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+index e7ea65f3f1d6..b76a7c95dfe1 100644
+--- a/arch/x86/boot/startup/sme.c
++++ b/arch/x86/boot/startup/sme.c
+@@ -24,6 +24,7 @@
+ #undef CONFIG_PARAVIRT
+ #undef CONFIG_PARAVIRT_XXL
+ #undef CONFIG_PARAVIRT_SPINLOCKS
++#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+ 
+ /*
+  * This code runs before CPU feature bits are set. By default, the
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index b5e59a7ba0d0..13f9cd31c8f8 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -526,7 +526,6 @@ static inline void arch_end_context_switch(struct task_struct *next)
+ 	PVOP_VCALL1(cpu.end_context_switch, next);
+ }
+ 
+-#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+ static inline void arch_enter_lazy_mmu_mode(void)
+ {
+ 	PVOP_VCALL0(mmu.lazy_mode.enter);
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 652f287c1ef6..1abc4a1c3d72 100644
+index 1abc4a1c3d72..d46d86959bd6 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -225,11 +225,15 @@ static inline int pmd_dirty(pmd_t pmd)
-  * up to date.
+@@ -235,7 +235,7 @@ static inline int pmd_dirty(pmd_t pmd)
   *
-  * In the general case, no lock is guaranteed to be held between entry and exit
-- * of the lazy mode. So the implementation must assume preemption may be enabled
-- * and cpu migration is possible; it must take steps to be robust against this.
-- * (In practice, for user PTE updates, the appropriate page table lock(s) are
-- * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
-- * and the mode cannot be used in interrupt context.
-+ * of the lazy mode. (In practice, for user PTE updates, the appropriate page
-+ * table lock(s) are held, but for kernel PTE updates, no lock is held).
-+ * The implementation must therefore assume preemption may be enabled upon
-+ * entry to the mode and cpu migration is possible; it must take steps to be
-+ * robust against this. An implementation may handle this by disabling
-+ * preemption, as a consequence generic code may not sleep while the lazy MMU
-+ * mode is active.
-+ *
-+ * Nesting is not permitted and the mode cannot be used in interrupt context.
+  * Nesting is not permitted and the mode cannot be used in interrupt context.
   */
- #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+-#ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
++#ifndef CONFIG_ARCH_HAS_LAZY_MMU_MODE
  static inline void arch_enter_lazy_mmu_mode(void) {}
+ static inline void arch_leave_lazy_mmu_mode(void) {}
+ static inline void arch_flush_lazy_mmu_mode(void) {}
+diff --git a/mm/Kconfig b/mm/Kconfig
+index bd0ea5454af8..62073bd61544 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1464,6 +1464,13 @@ config PT_RECLAIM
+ config FIND_NORMAL_PAGE
+ 	def_bool n
+ 
++config ARCH_HAS_LAZY_MMU_MODE
++	bool
++	help
++	  The architecture uses the lazy MMU mode. This allows changes to
++	  MMU-related architectural state to be deferred until the mode is
++	  exited. See <linux/pgtable.h> for details.
++
+ source "mm/damon/Kconfig"
+ 
+ endmenu
 -- 
 2.51.2
 
