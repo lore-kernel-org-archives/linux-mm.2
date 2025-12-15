@@ -4,156 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BA0D5B16E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 13:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75879D5B174
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 13:59:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E716B0006; Mon, 15 Dec 2025 08:39:04 -0500 (EST)
+	id CC72A6B0006; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCF646B0007; Mon, 15 Dec 2025 08:39:04 -0500 (EST)
+	id C776A6B0007; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABDEC6B0008; Mon, 15 Dec 2025 08:39:04 -0500 (EST)
+	id B65C36B0008; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A54F6B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:39:04 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 408D2135142
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:39:04 +0000 (UTC)
-X-FDA: 84221811408.03.C9E9BEB
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 258C9A0016
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:39:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bNtsXmlk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765805942; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A5C136B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56632B7273
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:12 +0000 (UTC)
+X-FDA: 84221862144.01.06FD3C6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1AD681C0010
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLrKnES5;
+	dkim=pass header.d=redhat.com header.s=google header.b=cFlBbPcT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765807150; a=rsa-sha256;
 	cv=none;
-	b=JfyVJtvo7Ke0rAKG+xIapFjD4Wa/GzXkN7MEp4i42MWOsSDbl3uB0Xl06zp5Bvcb3rf+Km
-	+e5JtdqOs/rhSQZSo328fnGTEVS1xneOt0HnaBz3IX9hWt8hsmRNKUDWYkhayXh5+48VoR
-	ZbsKWKp5aJHntMGRXd5CROpUQkJpQPU=
+	b=2iPUrvYdKJogvP04DWbaWxe38Xsc1ZH7YKWNwjxuOQm5/nRleZ2TlPRt6YQ/kx24nRDifi
+	3GDjwOmdPYU4mAviDFS2RfSmqC6bpqvtvLAvrt+7lp1JopdVSpoogxHUKEFSnW8S1kUelF
+	03zEdOrPdp0dVI6hco+AuYNNA1MH1i4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bNtsXmlk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=elver@google.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLrKnES5;
+	dkim=pass header.d=redhat.com header.s=google header.b=cFlBbPcT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765805942;
+	s=arc-20220608; t=1765807150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HP7wXZoAxj3YG64MFXhffqc9TkW1sld9ucKsb/6ZFh4=;
-	b=505EnWFGeyKouKYL3lYU2gsrR70MBqHqQSGHSuAbTyfe90gd44aHK9Hyo0R0x8luLuzTzW
-	NpG/r9e2+GtwjeYKpMuu3lmLfqMSpSC3njxM9zvJs24a8wldHBMU1wwijaeEgPK5TxHnWm
-	fuM+M7knUH6ixxZW3uZQBdDd6Yp5J+I=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb3801f7eso1693712f8f.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:39:01 -0800 (PST)
+	bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
+	b=MnnRyvNh3UrAqRaAD6g1tZ28AvZO+RMjOFDx9V7/wGFmVCKidSHw7+aUSXj03aRt9x25M4
+	Ckxmu0nq2SiLuSgwI50O2oAz760qpTR6knuP6zQ2EkXGhe+FirQjbG1fVUfVSM5SBD3h+Q
+	tgIZb2D4mwTaV/5ccelFnXDbuCbb4b4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765807149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
+	b=PLrKnES5VVMlwfJXVGQqt+vJ3Jq5vo3CXkiQIvJnoqHEOLIifjwd8v6cx6/yOmEWHVoRE+
+	sBUdFDDW86LbQl6my7mXyEZwDvLK/4mKTFsU67UPlDoNIsZXuMZ9zXWWV3lPwUfZQSOKpY
+	KEdoSpJGOthz/4r9ybQfMbeFV7XaYKU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-ETEgWj7QNzG-K1ekZSNRuw-1; Mon, 15 Dec 2025 08:59:07 -0500
+X-MC-Unique: ETEgWj7QNzG-K1ekZSNRuw-1
+X-Mimecast-MFC-AGG-ID: ETEgWj7QNzG-K1ekZSNRuw_1765807147
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477c49f273fso36719125e9.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:59:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765805940; x=1766410740; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HP7wXZoAxj3YG64MFXhffqc9TkW1sld9ucKsb/6ZFh4=;
-        b=bNtsXmlkzNYfWloHSCeu6B8MPCvvN/t+LvsUzoGFP9x0UaI7AVdH9aBDo9E+1eihHn
-         9DHt+m48SaKBCp8d95Z3utDD1H/yqjZpvrliv5wA6/gUBJx8g5wXsFDyB1XDcfhDzh8Y
-         pK25RVQW4U0WW9v7gyB7rODz53ekQbcCmzo/tB0QkLI+aFKTYfJd4xykyWkxGzTC3MN8
-         FBZjVfAiwonvPKFwvzZ3FSlba63JnR28z77FQ/A75aFtj55xsJfonlE6FStpwFEMkYqO
-         lnQaQh57wbSmts5XgAfoRVCmArncSxOykikT/PBrFVbT8//+0CpLl5R5xlZj2h8Kvt8I
-         NYtw==
+        d=redhat.com; s=google; t=1765807146; x=1766411946; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
+        b=cFlBbPcTJNoGhwszT4QlUwsaqKPM7ZVPuxAZoRBxk6jQI86LoEs93zVC66Q+g5a5A6
+         RRdIAdhAFJLH9SVK1u1W6YKzS+VeJJfU0Lr9CozvNKYtI9oMByr/UYdHZd0OzA9kOuQN
+         +KKnIZoebm3o43ERT9zLyedSKdHfngbXbveUi5A+OkdwG2Rk/O05zFMpZlSUE2dpi5x3
+         DB6zcMGSCoJM3FlTLJq/QguBIdUa37z+0ael4zOrjQMh8hfv7f8NInFUhX0xV0ZHZmuV
+         L2R2iyyV4Hxka/cT11qOPoLTXLX0dfefw4l9qbsfajzONzeXfFjB9Xc9m4D9p7EBnsib
+         lMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765805940; x=1766410740;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HP7wXZoAxj3YG64MFXhffqc9TkW1sld9ucKsb/6ZFh4=;
-        b=r9f0U6mA7JXwKZrPJlX6aoCsCnJPzaV5L7Ku6G05t9vGfjakB0486qMP2aShqDbGFX
-         f6LB6EViWmXP8xFunjE+x2JP/uBDZ/lk1t7gomLbxgVg3iPCtxiwnzMmfpU2ojXJcV0X
-         sKCqjEAVKJM56Vl1F/lHLJS6GXTiwdAfGLtyoNLO84IPdbJtJKtkjYxOSuwgecxLzCk0
-         prgjI2bdogSvzNXGfMmYhEoK0lRkok5lPK6VzbhWxZ0Y9n7Cd3dxI2SyrbbQ5TtIV2LX
-         Ty4EeOwIazrbDszSc3w4QJfalimgdq2Xt0vceE9q5nup+eugqmDQh+5HfHPdtEI5pCGw
-         Zkog==
-X-Forwarded-Encrypted: i=1; AJvYcCVFFToYP6bpes+p5P+C5FKL8tedXpRfvYkKMomVOYmmvjn8c2UXkZVWhNOe/LvksG9WpdS97HVjwg==@kvack.org
-X-Gm-Message-State: AOJu0YyLNIkArZMs/NUs0OeRxXebS1q/57FCfCJ9CuGM8VsPCISPfm/Q
-	cQotp3MhWtWXHz2T+yOolFCNqxJz32lDxvBtMYYf9Y7imqbAXSz1JrDFCSpqqT+w0Q==
-X-Gm-Gg: AY/fxX46YW3xX7gNUfDA77xFpqLV+iUdpSBBngCGY4mPLcNjTENbklkE+yQ+WPC/T6C
-	2xUinpPnW5evvewkBto1H1hT3tRcQfKJOUrPvY2v47XhmCb8MXZjVZGc8CDc4vVxhBkdQSXV9Z6
-	AEChudwY+dfOXsgZqXMNeiYeVRyuqxakWrzWezrgm52m0vVnqvZHbe1YtYkQAU821b/+rlO5JBI
-	kJrzbYOCWW63g9uSXUcWLw0UV1X6j8KPyO7kAUAku4OGG3eswy5U5pP4aD/eVl67ooLgUmwmQx9
-	6KkhSi9QjSu8tep+ArKB2Hhxmq3cSItX0uLKUMS17hioKRfoMDZeKxtFd5deKtmavz14LAU9Ijj
-	OVTUCzomd+PNNk4PZ4fARI2DvYhy9P5l6ru9D1DLt3Cvh5XHrangzMdt6FvmSer8DvfbaI86iT8
-	eS9TfzpZrVpnIM5y+X65o6PK+g4VU/CJC8YQSfE4+TO8x72LQI
-X-Google-Smtp-Source: AGHT+IH6RRE6qce8+BKlIh2iGfXIIE/0drfAuueOfe5s5dH/DcFdShyJ99GxaUFmEfIgshY9jhag6g==
-X-Received: by 2002:a05:6000:310f:b0:430:f7dc:7e8e with SMTP id ffacd0b85a97d-430f7dc809cmr4594614f8f.34.1765805939977;
-        Mon, 15 Dec 2025 05:38:59 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:5741:4422:4d1d:b335])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fb68866f3sm21319081f8f.36.2025.12.15.05.38.57
+        d=1e100.net; s=20230601; t=1765807146; x=1766411946;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
+        b=lgwufLe0bf17TlWrbD9oeDrFE2vk3ncjTAp0UipjqXVVm4BEaVCM5UW55N1vactZQe
+         A2roZW1O4JInU5/MBsRBq+M9k3TTutwrEEImZ4MZey/3HIQzx26Xy9AR4T+UzZ78krN4
+         dEDvHbAaMzBe3c8e5aaIzdcQ0aKnsZk1gLKjjDhuvQLmi8wd0DvmTwvsxjlFS87HxPQX
+         K6n+k1zY7APUdwZf2YLMZB36Z2e1GoRV6gYIDXoBR7DHANXMEqC4oQFsqsxmO2/lHgxu
+         BppJYacU+B1DJBzEhquDscDn4BDBL3QB5paWttxMgVSDp05DRhAOMrO4ZJdmsoJJzIYv
+         8MQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUl8QArS/OP38rscDS32kMUD1bSQJUgNtyOAvyAVmeXGuGlulzjNeCGlC5E3OmlgXDv5JG5bAM+1A==@kvack.org
+X-Gm-Message-State: AOJu0YyjbWuTNWDZU+dOpqgPlULr9RTiMMzJQR8EKK4Ril1hLpOiG3Wz
+	voWz7ut8aWytAv7FOmrTKESgdlFNSO8fovTO1HgXzVjR/0qpSRBBPE0MZJFlibI6+Zq8AQiuyL8
+	d4Z+iG8fQpuILh3zVaF9XADvTkDp4g7j821swg2B0slFt6eqDQ78Y
+X-Gm-Gg: AY/fxX7C0ALEZIkCBwvUhZCZPLvwfeeSCtq2dPOd7Nc6EnQmplQh41k6gmVgMBGDQBs
+	ys3QPWgZb4+uMeKxmom/x39wf3qXG4Ixm1aHd3FP4z4wpOxwZnij1SjYJBE9dZO1AHPkNajqQCj
+	aetQG9Po49tdDbKwVrxTK3NzXiMiJzyK7OXl4++0lWDBgtSxR1j2E4nGFiMjQQr7/VSCcXXjaQU
+	BRiB9wGd9wj1ckuOCatJQ9hyGU6jB5B9LUfx7qMFYc5V6p7iT8d6hCpDs6iWMulo0NWZoM/3UEY
+	Z2avC65RE9xYevwuns4ZR2oTYpFnCght8HqwibyvKEO0MwCvg+t9Z5pVWR/VfItMwab3Mb7XjBZ
+	4X6hJ
+X-Received: by 2002:a05:600c:a40e:b0:477:b734:8c52 with SMTP id 5b1f17b1804b1-47a900bd6cfmr88610685e9.14.1765807146410;
+        Mon, 15 Dec 2025 05:59:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqFocdgwq3FCiLwNZCPP3yGh7X+/+A4X5ZrVtcOGVh8JXh/FPlhQAyGrD/wsm7r0PlrPxysw==
+X-Received: by 2002:a05:600c:a40e:b0:477:b734:8c52 with SMTP id 5b1f17b1804b1-47a900bd6cfmr88610465e9.14.1765807145881;
+        Mon, 15 Dec 2025 05:59:05 -0800 (PST)
+Received: from localhost ([82.66.159.240])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f4a3e9fsm187336645e9.6.2025.12.15.05.59.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 05:38:59 -0800 (PST)
-Date: Mon, 15 Dec 2025 14:38:52 +0100
-From: Marco Elver <elver@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
- analysis
-Message-ID: <aUAPbFJSv0alh_ix@elver.google.com>
-References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
- <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
- <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
- <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
- <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
+        Mon, 15 Dec 2025 05:59:05 -0800 (PST)
+Date: Mon, 15 Dec 2025 14:59:04 +0100
+From: Maxime Ripard <mripard@redhat.com>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: "T.J. Mercier" <tjmercier@google.com>, 
+	Eric Chanudet <echanude@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>
+Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
+ in memcg
+Message-ID: <20251215-garnet-cheetah-of-adventure-ca6fdc@penduick>
+References: <20251211193106.755485-2-echanude@redhat.com>
+ <CABdmKX2MPhw121ZG8V+f-XoOReUsCdmcug-cWDg=3WZcJ=NHHA@mail.gmail.com>
+ <20251215-sepia-husky-of-eternity-ecf0ce@penduick>
+ <07cdcce2-7724-4fe9-8032-258f6161e71d@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="l7ljucmjyhr7i7d4"
 Content-Disposition: inline
-In-Reply-To: <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+In-Reply-To: <07cdcce2-7724-4fe9-8032-258f6161e71d@amd.com>
+X-Rspamd-Queue-Id: 1AD681C0010
+X-Stat-Signature: 3s6gjw9ykgifp5c1q8gg6yh873gsad1w
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 258C9A0016
-X-Stat-Signature: ykgeigaq6ym3iifbfaef5mc3jgfzhwg4
-X-HE-Tag: 1765805941-2882
-X-HE-Meta: U2FsdGVkX1/nJMlTm46Vc3gOuNkhQa2AajtN7Kg0YymyUp1GO9z0cvWb+RFso+qdDgLmE+8mw+pEwLn8Eul1PEL2uqUR3aLvYqGvbGFebp0ueb8X5V2IWTc9zcBdRLkPjdou1epP8U65z9PrVlWySdm1xd3d/Cds0L7P5autrv2s43NE4sneTDaqfd+jgOBl6hIv0mb2BBWQ8fHKfwMgyBRJNhPDP40GwvN83HvMK3thqChBw4nSqR5A6XI0STzffXkhAcCayY+WKGfPJFWaxqo9v0ttipRUD7V/87oXjNVbnMpIdgCTM/BkcRQMT/DTWs34MWXW21zjjQZiXcUahkmSe253O+39HCXdAyKHYjD6RbQ+zoo+9SGgqDZsoafeUwx6hTPtH/7HMtCt+WLB5ehOR54zel2QBTlGKz1+uQnWOvYlU+d4qTX3aRrqGOXQQLG1M4tNsVNFmujTHtW3fh3D3Lx/al6qrFkRbSaBS8hEZw40OoGNtDJw8/gcevOS+Hany/WMAEv4XpKuMUZoyHmrVUjF93+/tL0Y4NtZ+hr5RItrf9vYl3GWYsdavaG1zUICooCIaAjpYmBdxL3sODHWAPf3dCpoKWIQWY+P3iFsS5cD9bMns3+34Gqns8JFpT1ez9Z4wDR3kZG1cx2ZZSVMT59O5VV8E5bbRp4xTpQ3f6/sToSAHBo1NQiiQ58f0LZd/BAJiKNBqBcuGqh66ff4kSRCbEjZBQwPmi0Z8mNQ0Xy2HAVLMlm7y1rCu/CroiTmuczpGVxBBjz4XyQG43odVwjo3PEejVjCtucQcs7gitDjt8gprDjCwTIDO5lpsJYSrMGzQgRn6Z32l9bU7OHnbPmzMWULpYFlmgKzp654IchEQq90+D89dBfQgKpUJfBAcmmBmuGlfknCXSEYsrjhXdLLQv7ZIGjX8Kigu/AwqkgoQw4iR9XuiAg5EMJyB8ix8dzd0r5A6iyopmG
- cuo4I51U
- NaqdOoqO6ew91ILpchj/8EOcL79Drd6/HQvjpuBY53qyJYEyfahL5Tg52mR3EwcOL6hPk9FrSFAmV+Z23rn+rG+QRcP3YUVas4PgdFBneKbdkHVntRrGRSVKowJHNXUXrGvJwA54Qx5mZH2qbYgBtSuES/JbOzRip/TUoZpLPHt0XF+izd5kTABAKtBTzjTK6815+GlP3mlsYByyRxQmpY/y7aBoxlNTNLkczrJSL9g/gHaOtoBa/gfqdpc/h0zP6Fg2oig13+LaHcdXwwmcf5Q+agRlxBizewvuHbzyHl0b6O4p3cnbvkAb3RC+DLqHQWPg2+flHGMI3CmmRb24Ybv7KLGczCj8EuvBvDvuof+ymniianJARZsvjsKBWgkGpUdv9HmyfqnMJF4KEvgCjVe5REsKiuQ/Uos52Md6xJXptv+P+9jqbk+hWdIfqjmMj4u11McqWiNqI6XPRvJQ0UgVkRIsJMwz2F30y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765807149-935556
+X-HE-Meta: U2FsdGVkX19luOQPlKhJU0sppMRtwkPGdvcBaFlS/e69SggNR/kZtjsJ/qM1MUEYxcfZmw2kfq0UVvy0rX8PByra4JwaFZARnhiDs5khfXI29xW45iri3BG+8beF2kmAyOVOPnlpSv/p9eJWKY9y4OyBA5bdttUnZZWYFnLBWKClpeS62GFDJjImsi+2QAYEAJWxAKbeEtMIfLTTXQpt3yWXS5VJwg6e/Lq90jtFdapa5+7MwC7JN+LEGdMqBQJRcYfXKwvOGtpHwFcQfHiu2ocPX78izd+xdVRrx9FM8B5TZp4WlM5jFIJFUiVPAtG5ww2OwmoAB3rxlxx/2gOVJXMr/BKst/5vgBw/oH6GdzLJ1m78UgxBULTYQbsXwH9cFkNafhUKVMsbKOl/sXKtTnQnyRqIqqnMwbfsFE2iOUMbwZO+J6iB/WDiXR/vnAkjNMliJrWyCgvz74STRGV0czevt1gDdurRkQg4IFgdL9EI40lHjFHHrmLPAVx7dUO9KL4gg/e+Jwnze9joIoG9S0AU1u1KFpBlLLYIQ0c8Wtb5r1aeliHWd5BK7C5z7skDDcqgQy1L3+0d6dotCncgBc77UWZEM/9nxUy/oh8h8zBXQi2e1AT7gY0csF7TOSqnCaCGU3OQf47KEcpN5ukiJi1MxAajN8l6B/bOrRl6/RPOLYblYjvGNfIL71dwV5QxfaLELP01YwroJJ1R61BDOnQHkeDyC6yGLkHIXTQnk1qc+8TUamZaE6/hBYqAcZ8KOcoXJyNxKuHyl8480rScnRqIoOl0ot3Uw3Ifz+p0l59OgIAiu6eZo07JfKXM/WCe8rJDBt1yLL6ZVQk6TMo/+IhWYlVWnJTKvUPivIflH4z1tsO3riMuyzjhpW+i3aySYQcb67xPjN5ZwA2NoQJXOEmQxqMqBpAoPAOX25BJ5E8Ho9DWvc3XuHWTg0AOqFGYxI81vLQuO9TNzJfeZl3
+ gV87dUO/
+ fN+swZ68fD3AQcmYeHm45u2cUCi9j6wRtfl68mG1Xw9mesLUTeEnnxq41r5RpNKNpR5pc1gsPvyLqhxBGiQ/F2sr2Be4+Ieg8vJKcp1wf0XR92mnZuSQvgk7n15RdVuM6HsKIWDqvjAkzQGBW0yO5Uep3Ac/aBJBOhWuc2N0IHTx4lPiz7sQ4WRQsrSkfnWWInlGB6OSAISW0v9HnpETsZ2lOjATasrGgAlHwLwHE5vi3Ti8DPWmhMAnkD5SFB3FXbECeaGZUd7JHX4T95VdNNYO6el2vL/yCj05JZ9dHR60hm/+tOHnrjAwzsvEXxi4V956JlXh06SehdBWAGe6f1VLhmH8Qj5WMXHp8oHudj7kjAaDBJoWHFY5isw5aqZggT9BJxN7+IhUgHAtAwSlXOp9c4UXCdLyzXsTrJPVrGgELR64AeFCWWz4CvLhJ8o89Yo30c7XRN7er6JmncziCkX3Cofl2UiTXONNU9hhdTBjV+pidYblHxjOdY6OK6xoyQ/5/KOjQUst62C1wiP2IAxCnAStM8xmfjeEXROI2UvaBpnHo6v6uakRH1FOLRZanqUhLQcLpFvht7hw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,132 +146,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 12:09PM +0100, Peter Zijlstra wrote:
-> On Fri, Dec 12, 2025 at 11:15:29AM +0100, Marco Elver wrote:
-> > On Fri, 12 Dec 2025 at 10:43, Peter Zijlstra <peterz@infradead.org> wrote:
-> > [..]
-> > > > Correct. We're trading false negatives over false positives at this
-> > > > point, just to get things to compile cleanly.
-> > >
-> > > Right, and this all 'works' right up to the point someone sticks a
-> > > must_not_hold somewhere.
-> > >
-> > > > > > Better support for Linux's scoped guard design could be added in
-> > > > > > future if deemed critical.
-> > > > >
-> > > > > I would think so, per the above I don't think this is 'right'.
-> > > >
-> > > > It's not sound, but we'll avoid false positives for the time being.
-> > > > Maybe we can wrangle the jigsaw of macros to let it correctly acquire
-> > > > and then release (via a 2nd cleanup function), it might be as simple
-> > > > as marking the 'constructor' with the right __acquires(..), and then
-> > > > have a 2nd __attribute__((cleanup)) variable that just does a no-op
-> > > > release via __release(..) so we get the already supported pattern
-> > > > above.
-> > >
-> > > Right, like I mentioned in my previous email; it would be lovely if at
-> > > the very least __always_inline would get a *very* early pass such that
-> > > the above could be resolved without inter-procedural bits. I really
-> > > don't consider an __always_inline as another procedure.
-> > >
-> > > Because as I already noted yesterday, cleanup is now all
-> > > __always_inline, and as such *should* all end up in the one function.
-> > >
-> > > But yes, if we can get a magical mash-up of __cleanup and __release (let
-> > > it be knows as __release_on_cleanup ?) that might also work I suppose.
-> > > But I vastly prefer __always_inline actually 'working' ;-)
-> > 
-> > The truth is that __always_inline working in this way is currently
-> > infeasible. Clang and LLVM's architecture simply disallow this today:
-> > the semantic analysis that -Wthread-safety does happens over the AST,
-> > whereas always_inline is processed by early passes in the middle-end
-> > already within LLVM's pipeline, well after semantic analysis. There's
-> > a complexity budget limit for semantic analysis (type checking,
-> > warnings, assorted other errors), and path-sensitive &
-> > intra-procedural analysis over the plain AST is outside that budget.
-> > Which is why tools like clang-analyzer exist (symbolic execution),
-> > where it's possible to afford that complexity since that's not
-> > something that runs for a normal compile.
-> > 
-> > I think I've pushed the current version of Clang's -Wthread-safety
-> > already far beyond what folks were thinking is possible (a variant of
-> > alias analysis), but even my healthy disregard for the impossible
-> > tells me that making path-sensitive intra-procedural analysis even if
-> > just for __always_inline functions is quite possibly a fool's errand.
-> 
-> Well, I had to propose it. Gotta push the envelope :-)
-> 
-> > So either we get it to work with what we have, or give up.
-> 
-> So I think as is, we can start. But I really do want the cleanup thing
-> sorted, even if just with that __release_on_cleanup mashup or so.
 
-Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
-abstraction. For that one I was able to make it work like I thought we
-could (below). Some awkwardness is required to make it work in
-for-loops, which only let you define variables with the same type.
+--l7ljucmjyhr7i7d4
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
+ in memcg
+MIME-Version: 1.0
 
-For <linux/cleanup.h> it needs some more thought due to extra levels of
-indirection.
+On Mon, Dec 15, 2025 at 02:30:47PM +0100, Christian K=C3=B6nig wrote:
+> On 12/15/25 11:51, Maxime Ripard wrote:
+> > Hi TJ,
+> >=20
+> > On Fri, Dec 12, 2025 at 08:25:19AM +0900, T.J. Mercier wrote:
+> >> On Fri, Dec 12, 2025 at 4:31=E2=80=AFAM Eric Chanudet <echanude@redhat=
+=2Ecom> wrote:
+> >>>
+> >>> The system dma-buf heap lets userspace allocate buffers from the page
+> >>> allocator. However, these allocations are not accounted for in memcg,
+> >>> allowing processes to escape limits that may be configured.
+> >>>
+> >>> Pass the __GFP_ACCOUNT for our allocations to account them into memcg.
+> >>
+> >> We had a discussion just last night in the MM track at LPC about how
+> >> shared memory accounted in memcg is pretty broken. Without a way to
+> >> identify (and possibly transfer) ownership of a shared buffer, this
+> >> makes the accounting of shared memory, and zombie memcg problems
+> >> worse. :\
+> >=20
+> > Are there notes or a report from that discussion anywhere?
+> >=20
+> > The way I see it, the dma-buf heaps *trivial* case is non-existent at
+> > the moment and that's definitely broken. Any application can bypass its
+> > cgroups limits trivially, and that's a pretty big hole in the system.
+>=20
+> Well, that is just the tip of the iceberg.
+>=20
+> Pretty much all driver interfaces doesn't account to memcg at the
+> moment, all the way from alsa, over GPUs (both TTM and SHM-GEM) to
+> V4L2.
 
------- >8 ------
+Yes, I know, and step 1 of the plan we discussed earlier this year is to
+fix the heaps.
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index b5563dc83aba..5162962b4b26 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -1249,6 +1249,7 @@ struct ss_tmp {
- };
- 
- static __always_inline void __scoped_seqlock_cleanup(struct ss_tmp *sst)
-+	__no_context_analysis
- {
- 	if (sst->lock)
- 		spin_unlock(sst->lock);
-@@ -1278,6 +1279,7 @@ extern void __scoped_seqlock_bug(void);
- 
- static __always_inline void
- __scoped_seqlock_next(struct ss_tmp *sst, seqlock_t *lock, enum ss_state target)
-+	__no_context_analysis
- {
- 	switch (sst->state) {
- 	case ss_done:
-@@ -1320,9 +1322,18 @@ __scoped_seqlock_next(struct ss_tmp *sst, seqlock_t *lock, enum ss_state target)
- 	}
- }
- 
-+/*
-+ * Context analysis helper to release seqlock at the end of the for-scope; the
-+ * alias analysis of the compiler will recognize that the pointer @s is is an
-+ * alias to @_seqlock passed to read_seqbegin(_seqlock) below.
-+ */
-+static __always_inline void __scoped_seqlock_cleanup_ctx(struct ss_tmp **s)
-+	__releases_shared(*((seqlock_t **)s)) __no_context_analysis {}
-+
- #define __scoped_seqlock_read(_seqlock, _target, _s)			\
- 	for (struct ss_tmp _s __cleanup(__scoped_seqlock_cleanup) =	\
--	     { .state = ss_lockless, .data = read_seqbegin(_seqlock) };	\
-+	     { .state = ss_lockless, .data = read_seqbegin(_seqlock) }, \
-+	     *__UNIQUE_ID(ctx) __cleanup(__scoped_seqlock_cleanup_ctx) = (struct ss_tmp *)_seqlock; \
- 	     _s.state != ss_done;					\
- 	     __scoped_seqlock_next(&_s, _seqlock, _target))
- 
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
-index 4612025a1065..3f72b1ab2300 100644
---- a/lib/test_context-analysis.c
-+++ b/lib/test_context-analysis.c
-@@ -261,6 +261,13 @@ static void __used test_seqlock_writer(struct test_seqlock_data *d)
- 	write_sequnlock_irqrestore(&d->sl, flags);
- }
- 
-+static void __used test_seqlock_scoped(struct test_seqlock_data *d)
-+{
-+	scoped_seqlock_read (&d->sl, ss_lockless) {
-+		(void)d->counter;
-+	}
-+}
-+
- struct test_rwsem_data {
- 	struct rw_semaphore sem;
- 	int counter __guarded_by(&sem);
+> > The shared ownership is indeed broken, but it's not more or less broken
+> > than, say, memfd + udmabuf, and I'm sure plenty of others.
+> >=20
+> > So we really improve the common case, but only make the "advanced"
+> > slightly more broken than it already is.
+> >=20
+> > Would you disagree?
+>=20
+> I strongly disagree. As far as I can see there is a huge chance we
+> break existing use cases with that.
+
+Which ones? And what about the ones that are already broken?
+
+> There has been some work on TTM by Dave but I still haven't found time
+> to wrap my head around all possible side effects such a change can
+> have.
+>=20
+> The fundamental problem is that neither memcg nor the classic resource
+> tracking (e.g. the OOM killer) has a good understanding of shared
+> resources.
+
+And yet heap allocations don't necessarily have to be shared. But they
+all have to be allocated.
+
+> For example you can use memfd to basically kill any process in the
+> system because the OOM killer can't identify the process which holds
+> the reference to the memory in question. And that is a *MUCH* bigger
+> problem than just inaccurate memcg accounting.
+
+When you frame it like that, sure. Also, you can use the system heap to
+DoS any process in the system. I'm not saying that what you're concerned
+about isn't an issue, but let's not brush off other people legitimate
+issues as well.
+
+Maxime
+
+--l7ljucmjyhr7i7d4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaUAUIwAKCRAnX84Zoj2+
+duttAX9Ga4fqCYlX2dwZgwnc6nPNr0N4H4lEcTNLVs1FO6VC/tdfQXgym9Jnci7z
+b5tpPZkBf06sCKJuANIMHhKZwJ4dsNb9bC0X9JuS9CoEhy2fKPraCO3Vf1oezx0e
+uJhMcKjuFg==
+=SrQ0
+-----END PGP SIGNATURE-----
+
+--l7ljucmjyhr7i7d4--
+
 
