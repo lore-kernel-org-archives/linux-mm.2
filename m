@@ -4,101 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A80D41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:38:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9B5D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:38:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A51046B0006; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
+	id 2FEDB6B0008; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01846B0007; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
+	id 2AF486B000A; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F0246B0008; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
+	id 19DB36B000C; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 75D076B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5E13140E69
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:31 +0000 (UTC)
-X-FDA: 84220902822.01.5882D10
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1290E40007
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765784310; a=rsa-sha256;
-	cv=none;
-	b=caoMZ/pGvnhkR5F0NaKx63JrOQ2zfyEt3kehHm7cw5JC5kbd0CIM59K/0/IWVnlP28qGsK
-	gvPACo1xk3RUgVUOKlREmDOj2AsmpB1RDCqOOq0mkejXg5nBHK4EQFuaQvgDg7DF6HAFOn
-	OpYlGnbn/eYzxjAVRYQ0ZeLUMvLnAuQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 05CEA6B0008
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B382D13210
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:43 +0000 (UTC)
+X-FDA: 84220903326.27.4BB5571
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E11F61C000C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Z3pEIyZS;
+	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765784310;
+	s=arc-20220608; t=1765784321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dFBLUyUvGjBsuLLQvurq7Q9RL06UN9yGTtA1H8tq3v4=;
-	b=gnC2xVgRm6Q4att7m/YBxeR3sCmBQp9FSVPA8xHeo/b3o1y5bYjR7lfOG9D5lcqgWrXg1k
-	nfUReEwufTAzhjI4t11MA8NOEx+nUJ+mJTn7d+VbCzOgV5oS4GxJQPVIoRTHuEQ3gJOZ27
-	3+r/CjzgMHgFM7zFLqa9Jnm5BLH7L2M=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVBjy18l7zYQtrL
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:37:58 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 5297C1A01A3
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:38:21 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP1 (Coremail) with SMTP id cCh0CgBHtOnpuj9pnAsAAQ--.24033S2;
-	Mon, 15 Dec 2025 15:38:18 +0800 (CST)
-Message-ID: <3edf7d6a-5e32-45f1-a6fc-ca5ca786551b@huaweicloud.com>
-Date: Mon, 15 Dec 2025 15:38:16 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
+	b=aZw1u7CAiI8oc8DBpQrgIhhmDag+wSJqHoUJmAq3G30Py+H0Q7CfCeV2v/TYpxJHitL9Hy
+	uEOv8i2ZNs+S7W5l4ealyMqjFaOGh7d8QvyCxUvz/ed8hIyjGtP8G1wSjpEgcWqTFn3MO2
+	xcCIywI0fTwQ1ZlB66kT/h1TVhtP+RE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Z3pEIyZS;
+	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765784321; a=rsa-sha256;
+	cv=none;
+	b=kykRc1xy0TNjKaOmPAnc/uuLKRTS+zjKa39lWpM2x+MgaGJWm5TdPvwHGVxa2jAfXjZWxR
+	7XSxOZJuTSAhZ7clH85PiBdHUduaL4duGQuf0RUDn234Y0Gb0EvlcCcZ+yzJPrzy/EBOkn
+	wu3Lg0ckqYyaSQu1/gmp82ZoxoCV9Fg=
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6446c2bbfe3so2807519d50.1
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:38:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765784321; x=1766389121; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
+        b=Z3pEIyZSLrOfw5TwpI+wdfTviMVlTNGNcqaT+0JTBsiaKJwIeVGzwxHjq8mvd99UWK
+         8IsGn102+GJEFUNcAaMGOfkFFjdKTOOW9AGtL4OYLTT7uADK1yZGw622iMZkXfDwEEFC
+         Oql95sBzuOlTwffJ0qUGv4aePL9DfduzTR45gHrsMPLjk1yLBVbKag0V9ra2dfhmz9/c
+         aSZrLlSt9r9MEmQcwXirrMxXdnrmCstnL4huI3oRnXKWikB9QdBgUyZ7vJTjToSS0cMb
+         lhz/K61GlsLQ9B0DG5Lpyr5xemHd0aJ/FJWDLGQXRQVgdZs/p5C7j3XgrG4sF/AR4gJ1
+         nTGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765784321; x=1766389121;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
+        b=o1BuswixVYw1yw4D0BAxZjLutM263nhLA/qYZ9nEUbKXpImtxH4+YRKt3FSoS13PTE
+         lb2TQknrluofXaBE2RE+qzYnO67agP6oxpjbUJjasSpnZnsfGgwu/mFPeJojI5clciYb
+         v/rJbOKDi1uQsvILLOU9kPa95ChWo3PJdrslyBP9/h/GJtaKdqCPoKnHA7w9GvqNt9pD
+         7TJKaDlBga/QKipVAoOWVfYCD+eUhdbjzq4EJOfxwz8KMbYy0AzGT+LMsJwNHM36jFCr
+         M6XjWM+tkmPWoPAFh4ErQEvhUotFCerGlMuVCrc2VKGfAFUyilY/lD0w6XX7Lf+oyIRR
+         Z4dA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWjOyYrYxh41waOROO4o8plrqcv3JvEbfI8CfQFulOS9Q2+BIuS5dwEN+fzmMPO/SBSZ3GUs+s+Q==@kvack.org
+X-Gm-Message-State: AOJu0YyuqkaaDjM03YSlfLFVNME/bd4b2FmGDsqKz73Z+DfQkLrFkkvO
+	C48cc6S2b79Djx/8+MruOo3A9aLfdvl+f5uz9ATPH/kZwJ612EzT5H6joM51W3uUYg==
+X-Gm-Gg: AY/fxX5J99PzNrZWH1pdnl1+lIeH10En5XEtbYZOZJ+OPEvt2w1VTiq+sDnYhI2TVoN
+	+EeJPgu9Dau6d4tRvckKZVSi5JtXUKq2qh9VJ+5QNahZSBBBIQHwB+Q1pO8ouw+3rcIa2S/Zx+m
+	RjOTpShHzLeaX56FA5y9akTSJmiI9uhvV2j1lnaO9bcjKpGK/+1tvX2VYcd+kK0W6WwQbtq03an
+	Ymtq2E9jKzXsB4Tx5kArvSkY+ZDBU/yvKSL+myiiRvjPtQTK+JVflQ37DtGZ8e4YhX8z2llUFTf
+	l9l9jbK/yqW6WE/PaAvb9Duo7k+nItuJSu3sc1aK2qw3xkbwe09KjmPn+ZuaJ03kRZoPTqGumHM
+	sq7bQdMxJe0jf7uQRD0++QT14bLt1Xc56nUYMwW/xzOU6MxCq1FkRFMV3gHq1JwWb8M9KWiSF8H
+	8OPX/hPcb5Z1dZbr8SAMKS507bVNE8mAFqp0HGdHNIv7g7aTkG9G151wndhivbOMffxDMiDhA=
+X-Google-Smtp-Source: AGHT+IGWwU3CR/BLGGM37Mj6ED/FrmrwwoSCDyBwGpC4O4RY5GWa1NaXFkGRwTEcuL+iHjjMa3Jb3A==
+X-Received: by 2002:a05:690e:d8d:b0:641:f5bc:68d3 with SMTP id 956f58d0204a3-645556680dbmr6576002d50.80.1765784320678;
+        Sun, 14 Dec 2025 23:38:40 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477dc673asm6105794d50.25.2025.12.14.23.38.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Dec 2025 23:38:39 -0800 (PST)
+Date: Sun, 14 Dec 2025 23:38:28 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+cc: Hugh Dickins <hughd@google.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    Chuck Lever <chuck.lever@oracle.com>
+Subject: Re: [RFC][PATCH 2/2] shmem: fix recovery on rename failures
+In-Reply-To: <20251214033049.GB460900@ZenIV>
+Message-ID: <8a925e3f-bd27-ac32-841a-a79690d971d7@google.com>
+References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV> <8ab63110-38b2-2188-91c5-909addfc9b23@google.com> <20251212063026.GF1712166@ZenIV> <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
+ <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com> <20251213072241.GH1712166@ZenIV> <20251214032734.GL1712166@ZenIV> <20251214033049.GB460900@ZenIV>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] mm/memcontrol: make lru_zone_size atomic and simplify
- sanity check
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
- Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Kairui Song <kasong@tencent.com>
-References: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgBHtOnpuj9pnAsAAQ--.24033S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF48Xr1ktw1DXw17KryxAFb_yoWrCr4rpF
-	ZIka40yFZ5ZryY93sFya1Dua4fZa1xKayfJr9rWw1UAr1aq3Zaq34UKr4fuFWUAr95GF4a
-	qF90gFW8C3yYvrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: uozqhja9ga9mqpxtm1f9nfsm8iur1cwh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1290E40007
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 39bhseuk8uykxs1x5inccyte5uxosnje
-X-HE-Tag: 1765784306-62848
-X-HE-Meta: U2FsdGVkX1/GnfpMKPRuCow367BDbP4yZyWmh+wN43gKgAAjtQh985FoCAp/w1WUzlqWfSWCXFCELtYZwuuQbcJoE2wYijoqg51f+kSTT6hLeu4ZNmLYl5ROkTVAzuvNIFg8jKIgRaWUTi+ibpZLhZUXRP0pTnhhjLzcofbwuvnWFu1ZG+HB8tSv0JXyJbk0iQ/+14L0CvuZc16Egicb/zfJwLLEAjTtWHt4eBYIJxJdayzLdEAPH0D2TUepk7fBIhim63tG/VqTqVziOdO4VUyhpOrHm+hcMkNuNKV2ki7b9wQU9k0Yk5c2TXyH1ZsSMMD1W/E9VqIQ/jZxMbulIi/bUHLDBgc+7Y12nowp5DPMY7RhnG7ck7N5htaEp1w2+l6i0YEdNT9SiPOksio762N9sLUt4KVLdjhw3pftN6hd46HxdukkPbYLlpwAdg5bOyupXzZ7g7pKgc8CVyF/0ExXR/gpUqC14qutZI2MrRI9WMvcxEJDjjVv464F48IEKq6GdHDIropZMu506sbilt06vh+YKzO+ml2Gc1EtQR5aDYPcqEpxb0BQBuyEBiV9Wn4HcgEg0IOXJ6bsdsJI0exvZZ5tDfv0mo8V6ul0gxx+3bPCuN5jZMhUR3AugIYZds8K1WM7mK6VduJ09qPu9Ui60XGKbI/7T+d86DutyD9wNDFZbQAdOLftorrPOOXZ/EUJH9dz41v2HMX/+ghsfnOoh+GCV9gL6rOVIOFIF63bbISQbtVfGUGoUHI6QxUurJ4/BGK7jmSAUNRHlw8e6Dqw3abT7GgaTJbi3lFMQsDqYg5UsDR0wJY/v669JkAgxoYzkc9lxlg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E11F61C000C
+X-HE-Tag: 1765784321-43782
+X-HE-Meta: U2FsdGVkX18T74uOM61cyGNkDeyPy9FyE/d80fI3MicBdNRAJfhGu8SKl0rVqdfYkn/dUIYOrmnzPwLzGxsbjwqrHayumSgTBmcfny/jNLLOdsfJjAxYfLkrDzTpyVd9DdE3PWc03HwcLzv0RLHBnF7WexbcSisezv1tYp3oYgKxrDhZPuiZU+0tqED1+AL62MwFcXkX1ufAxDPyuDjVg0qOtrSRtdT25nrfRjDhV//UynJuei3i5oG5ef83tlTCe4jI2LUZlhidoBjw2Nn7cVw1bv4xkq50X0LpGrfL7HrSa/xhQoxJLHvDWWXC8A2Amhn5LAhuI9Zr4B/DizLTKSbD7qnRzmHm9/Xx6NdN+5bFMLiquxwQp1TdwqKQ31dajizV9xZtO51Bk76UDgnu27qw3r8xHOPBR2P35nuoVyLZNh0Dqr0ueOv36gaR4BoTsxtCZIf3Dcnfb39Alq6rgGtrFIJx2ps3s73iUUyPvHCBnNNuV6Ine7pdfgffusf37P3f/r6L5VfNIGqOZSrwO+oggM5P8F0GFxMUU7S2P10Q9uxilhrt26XS91SbqZ4JrkwkPbBLy88VIgDCSV6l28SLAP7Kb8eIy6BJO1IxkscGd/x+UkEWDNrwhvOZtbngBmeDLfX1gY8TrtVwtf0qTOL7vWZBX02p+Cw+zJpTu6gd2mG/K8+tkYzVfIaZGuV+mD+2k65WVVQoVMAZj2qxbhskiMWYB/GtEeC8YR7e+1ZNHRm7YOYub4KSLNg6PuG4ZvvhrCqIXm9FV/7UE6jzeG4QYbaGGqs3YCG3ycA12ilvX2v90E1NfVlhOShEhOvl35eKU2JkVpM9Ca7B7rLbhf+qS4XRtnV150FCpKytaJXBXduvN+8JAXve3+PwkwPkLjPC2w7MvpD4Po6AVyMsqZjIBtE3fSBfpl1oWsE0zylDXBdM/nS4qV3V0yM8JsWJ3UcfJghoa7hxE0RrYRq
+ aW9jNaZA
+ AkAeeB7qj0zCWf+785SLHPmfXckDQwkxURX47P417hrvhfJNwSsAljAKp3Wt6EUTRtr0ZNulHJh3Wgmb7MHHVUX9/h1QbnOhMaprhxYSLLmJG3GvpHbH3fBS3Zh3qS+hD9hcC8FA+hx9GV7Ab9HkZ2UZOewBHWiccFYgAiXQ079o9a5CgPx9dKMMfcDvj76WdjOiuZd/Wj4XlC8evgGDn56Oaam9vZimgoKJO1kqVh1JlmZWitAc/HYsX0n/H+ba1abQAubGgzpI7n5oBYSDnmvrzMhujj7m9IhqOg8qYwMtvJzOOm6lwBQ9kMTGiSFhQ1X0YriSg+/0/3V4OS7X1Hsvs1I72rVXB8u/Ic0k4fZn6gbZ/KP7qzagcxdyD5GI9/GHibepet2x+iMUprzyPq0B0E8jdWIejFNqd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,127 +123,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 14 Dec 2025, Al Viro wrote:
 
-
-On 2025/12/15 14:45, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
+> maple_tree insertions can fail if we are seriously short on memory;
+> simple_offset_rename() does not recover well if it runs into that.
+> The same goes for simple_offset_rename_exchange().
 > 
-> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> introduced a sanity check to catch memcg counter underflow, which is
-> more like a workaround for another bug: lru_zone_size is unsigned, so
-> underflow will wrap it around and return an enormously large number,
-> then the memcg shrinker will loop almost forever as the calculated
-> number of folios to shrink is huge. That commit also checks if a zero
-> value matches the empty LRU list, so we have to hold the LRU lock, and
-> do the counter adding differently depending on whether the nr_pages is
-> negative.
+> Moreover, shmem_whiteout() expects that if it succeeds, the caller will
+> progress to d_move(), i.e. that shmem_rename2() won't fail past the
+> successful call of shmem_whiteout().
 > 
-> But later commit b4536f0c829c ("mm, memcg: fix the active list aging for
-> lowmem requests when memcg is enabled") already removed the LRU
-> emptiness check, doing the adding differently is meaningless now. And if
-
-Agree.
-
-I did submit a patch to address that, but it was not accepted.
-
-For reference, here is the link to the discussion:
-
-https://lore.kernel.org/lkml/CAOUHufbCCkOBGcSPZqNY+FXcrH8+U7_nRvftzOzKUBS4hn+kuQ@mail.gmail.com/
-
-> we just turn it into an atomic long, underflow isn't a big issue either,
-> and can be checked at the reader side. The reader size is much less
-> frequently called than the updater.
+> Not hard to fix, fortunately - mtree_store() can't fail if the index we
+> are trying to store into is already present in the tree as a singleton.
 > 
-> So let's turn the counter into an atomic long and check at the
-> reader side instead, which has a smaller overhead. Use atomic to avoid
-> potential locking issue. The underflow correction is removed, which
-> should be fine as if there is a mass leaking of the LRU size counter,
-> something else may also have gone very wrong, and one should fix that
-> leaking site instead.
+> For simple_offset_rename_exchange() that's enough - we just need to be
+> careful about the order of operations.
 > 
-> For now still keep the LRU lock context, in thoery that can be removed
-> too since the update is atomic, if we can tolerate a temporary
-> inaccurate reading, but currently there is no benefit doing so yet.
+> For simple_offset_rename() solution is to preinsert the target into the
+> tree for new_dir; the rest can be done without any potentially failing
+> operations.
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> That preinsertion has to be done in shmem_rename2() rather than in
+> simple_offset_rename() itself - otherwise we'd need to deal with the
+> possibility of failure after successful shmem_whiteout().
+> 
+> Fixes: a2e459555c5f ("shmem: stable directory offsets")
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+
+Well, what you say above, and what you've done below, make sense to me;
+and neither I nor xfstests noticed anything wrong (aside from one
+trivium - I'd prefer "bool had_offset = false" to "int ...";
+maybe placed one line up to look prettier).
+
+But please don't expect proper engagement from me on this one,
+it's above my head, and I'll trust you and Chuck on it.
+
+Thanks,
+Hugh
+
 > ---
->  include/linux/memcontrol.h |  9 +++++++--
->  mm/memcontrol.c            | 18 +-----------------
->  2 files changed, 8 insertions(+), 19 deletions(-)
+>  fs/libfs.c         | 50 +++++++++++++++++++---------------------------
+>  include/linux/fs.h |  2 +-
+>  mm/shmem.c         | 18 ++++++++++++-----
+>  3 files changed, 35 insertions(+), 35 deletions(-)
 > 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 0651865a4564..197f48faa8ba 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -112,7 +112,7 @@ struct mem_cgroup_per_node {
->  	/* Fields which get updated often at the end. */
->  	struct lruvec		lruvec;
->  	CACHELINE_PADDING(_pad2_);
-> -	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
-> +	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
->  	struct mem_cgroup_reclaim_iter	iter;
->  
->  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
-> @@ -903,10 +903,15 @@ static inline
->  unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
->  		enum lru_list lru, int zone_idx)
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 9264523be85c..591eb649ebba 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -346,22 +346,22 @@ void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry)
+>   * User space expects the directory offset value of the replaced
+>   * (new) directory entry to be unchanged after a rename.
+>   *
+> - * Returns zero on success, a negative errno value on failure.
+> + * Caller must have grabbed a slot for new_dentry in the maple_tree
+> + * associated with new_dir, even if dentry is negative.
+>   */
+> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> -			 struct inode *new_dir, struct dentry *new_dentry)
+> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> +			  struct inode *new_dir, struct dentry *new_dentry)
 >  {
-> +	long val;
->  	struct mem_cgroup_per_node *mz;
+>  	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
+>  	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
+>  	long new_offset = dentry2offset(new_dentry);
 >  
->  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
-> +	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
-> +	if (WARN_ON_ONCE(val < 0))
-> +		return 0;
-> +
-> +	return val;
->  }
+> -	simple_offset_remove(old_ctx, old_dentry);
+> +	if (WARN_ON(!new_offset))
+> +		return;
 >  
->  void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 9b07db2cb232..d5da09fbe43e 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -1273,28 +1273,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
->  				int zid, int nr_pages)
->  {
->  	struct mem_cgroup_per_node *mz;
-> -	unsigned long *lru_size;
-> -	long size;
->  
->  	if (mem_cgroup_disabled())
->  		return;
->  
->  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	lru_size = &mz->lru_zone_size[zid][lru];
-> -
-> -	if (nr_pages < 0)
-> -		*lru_size += nr_pages;
-> -
-> -	size = *lru_size;
-> -	if (WARN_ONCE(size < 0,
-> -		"%s(%p, %d, %d): lru_size %ld\n",
-> -		__func__, lruvec, lru, nr_pages, size)) {
-> -		VM_BUG_ON(1);
-> -		*lru_size = 0;
+> -	if (new_offset) {
+> -		offset_set(new_dentry, 0);
+> -		return simple_offset_replace(new_ctx, old_dentry, new_offset);
 > -	}
-> -
-> -	if (nr_pages > 0)
-> -		*lru_size += nr_pages;
-> +	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
+> -	return simple_offset_add(new_ctx, old_dentry);
+> +	simple_offset_remove(old_ctx, old_dentry);
+> +	offset_set(new_dentry, 0);
+> +	WARN_ON(simple_offset_replace(new_ctx, old_dentry, new_offset));
 >  }
 >  
 >  /**
-> 
-> ---
-> base-commit: 1ef4e3be45a85a103a667cc39fd68c3826e6acb9
-> change-id: 20251211-mz-lru-size-cleanup-c81deccfd5d7
-> 
-> Best regards,
-
--- 
-Best regards,
-Ridong
-
+> @@ -388,31 +388,23 @@ int simple_offset_rename_exchange(struct inode *old_dir,
+>  	long new_index = dentry2offset(new_dentry);
+>  	int ret;
+>  
+> -	simple_offset_remove(old_ctx, old_dentry);
+> -	simple_offset_remove(new_ctx, new_dentry);
+> +	if (WARN_ON(!old_index || !new_index))
+> +		return -EINVAL;
+>  
+> -	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
+> -	if (ret)
+> -		goto out_restore;
+> +	ret = mtree_store(&new_ctx->mt, new_index, old_dentry, GFP_KERNEL);
+> +	if (WARN_ON(ret))
+> +		return ret;
+>  
+> -	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
+> -	if (ret) {
+> -		simple_offset_remove(new_ctx, old_dentry);
+> -		goto out_restore;
+> +	ret = mtree_store(&old_ctx->mt, old_index, new_dentry, GFP_KERNEL);
+> +	if (WARN_ON(ret)) {
+> +		mtree_store(&new_ctx->mt, new_index, new_dentry, GFP_KERNEL);
+> +		return ret;
+>  	}
+>  
+> -	ret = simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
+> -	if (ret) {
+> -		simple_offset_remove(new_ctx, old_dentry);
+> -		simple_offset_remove(old_ctx, new_dentry);
+> -		goto out_restore;
+> -	}
+> +	offset_set(old_dentry, new_index);
+> +	offset_set(new_dentry, old_index);
+> +	simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
+>  	return 0;
+> -
+> -out_restore:
+> -	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
+> -	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
+> -	return ret;
+>  }
+>  
+>  /**
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 04ceeca12a0d..f5c9cf28c4dc 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -3247,7 +3247,7 @@ struct offset_ctx {
+>  void simple_offset_init(struct offset_ctx *octx);
+>  int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
+>  void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
+> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+>  			 struct inode *new_dir, struct dentry *new_dentry);
+>  int simple_offset_rename_exchange(struct inode *old_dir,
+>  				  struct dentry *old_dentry,
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index d3edc809e2e7..4232f8a39a43 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -4039,6 +4039,7 @@ static int shmem_rename2(struct mnt_idmap *idmap,
+>  	struct inode *inode = d_inode(old_dentry);
+>  	int they_are_dirs = S_ISDIR(inode->i_mode);
+>  	int error;
+> +	int had_offset = false;
+>  
+>  	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE | RENAME_WHITEOUT))
+>  		return -EINVAL;
+> @@ -4050,16 +4051,23 @@ static int shmem_rename2(struct mnt_idmap *idmap,
+>  	if (!simple_empty(new_dentry))
+>  		return -ENOTEMPTY;
+>  
+> +	error = simple_offset_add(shmem_get_offset_ctx(new_dir), new_dentry);
+> +	if (error == -EBUSY)
+> +		had_offset = true;
+> +	else if (unlikely(error))
+> +		return error;
+> +
+>  	if (flags & RENAME_WHITEOUT) {
+>  		error = shmem_whiteout(idmap, old_dir, old_dentry);
+> -		if (error)
+> +		if (error) {
+> +			if (!had_offset)
+> +				simple_offset_remove(shmem_get_offset_ctx(new_dir),
+> +						     new_dentry);
+>  			return error;
+> +		}
+>  	}
+>  
+> -	error = simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
+> -	if (error)
+> -		return error;
+> -
+> +	simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
+>  	if (d_really_is_positive(new_dentry)) {
+>  		(void) shmem_unlink(new_dir, new_dentry);
+>  		if (they_are_dirs) {
+> -- 
+> 2.47.3
 
