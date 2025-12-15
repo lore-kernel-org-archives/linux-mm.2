@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2153CD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC5FD41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BB5B6B0012; Mon, 15 Dec 2025 06:39:22 -0500 (EST)
+	id 54E886B0023; Mon, 15 Dec 2025 06:39:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945136B0022; Mon, 15 Dec 2025 06:39:22 -0500 (EST)
+	id 463366B0024; Mon, 15 Dec 2025 06:39:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7086B0023; Mon, 15 Dec 2025 06:39:22 -0500 (EST)
+	id 241F86B0026; Mon, 15 Dec 2025 06:39:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB3B6B0012
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:22 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2AB8186732
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:22 +0000 (UTC)
-X-FDA: 84221509764.08.26618E3
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 25C101C000F
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LSuYQoTr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798760; a=rsa-sha256;
-	cv=none;
-	b=p87/vmVqRapnXrktSsUKP9/DMbDSGsRlq1p2BUIPTfmZTtvs2zQYEABouCVGWnkP+hGIh8
-	WRmjYxYf1oWRgT1TR5wpZ8rPX2YC8eBOsxuwSBZu7NbMiXXF9OzYoE1osQD2Sm4Ulm060K
-	uDcxJOSbM3chDGfIVJOVm+UHlOY2/G0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LSuYQoTr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0BDB66B0023
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:26 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CAAD686148
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:25 +0000 (UTC)
+X-FDA: 84221509890.07.EDB5304
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C3724140005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TVKrju1X;
+	spf=pass (imf09.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765798760;
+	s=arc-20220608; t=1765798763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XhdWc9MI61x0CV5VCAtcSDjXy8TDKlNky9k0yGxBSF0=;
-	b=eSA/t4GBosSzZ9TYxEsNdYG/akqoQXihyYuk26zNa5XSgDou9S2+ssUFADHJBFLM8JwPY/
-	Vkxl/pUjYkKBZepXGxPnBfcMFUHjqZC7R8gJH97nEXUxRXKI0HlY+VxaXhP/fntIk2Va3U
-	nVYn2cjahOtSAjaLOh2q9EOXzO587lc=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so2341271b3a.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:19 -0800 (PST)
+	bh=c1jHunOtVkIwedmQvRsrzJgL7loZmMhygmTOE5iX6PY=;
+	b=7IKcdulVPNMA3wTmp5iaQglWTCkupzr+BI+jUa7/aL/twJ/pwKvq8WFK1iBRvQQPE0xCz6
+	MMb8S3yKFZiCGMfA3WlCsY+hFo/eKGoBL1EzPLVOJRMnJbdUTW5ed0jCjHn26AVXMq54MV
+	hnMtXnzKpRLVLfCcABewaCQIbYZcKBQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TVKrju1X;
+	spf=pass (imf09.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798763; a=rsa-sha256;
+	cv=none;
+	b=Xv1C1AcdveFdrl5/3UJ1TU2VDcJ8IW3ep/04man9ZcGJ1uJfMMd9KeF2QdX0oshe7YVwqo
+	0TTvxwyX/o+ZinJ47ttbybzgvfqr0XLbt2RXbaIs85MIriTUVK2BHN6VDQQfY52fiXIJRk
+	mYnXnmOEntMV9piDgAtieE0G+pc7Cio=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0b4320665so18484025ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765798759; x=1766403559; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765798763; x=1766403563; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XhdWc9MI61x0CV5VCAtcSDjXy8TDKlNky9k0yGxBSF0=;
-        b=LSuYQoTrm93U9lin0vOJ4pr2BuqiZuObAs/dMmv0QpEl1t/5rYWx84QL5B0dFCyNkz
-         m2GogiI7vxUlV8F9UdKVfOCIa2524Y3CgpU5loUA9LDDHGBdZ6DxhhzJ7rGPMaf/OBP/
-         zx6Cq5QcKtV8213qW1JGJ5vRnHtK0eMPxsUWy5Rx84mcm/LrFq1Fz6snDJyByoE6tkL9
-         +tfE048wjqumOzLWKSY+ss0EiwOD1Q9CtWmyWhbXx3V+Bzen1NIVWOhZ6YfFMULu1BuD
-         SL2X1ACrJyFHgYBo6SEAsl1tUF8SmY4OXDG8qRFnUC0d98wGstiL6bLvRdcv24sxw0YA
-         1jWg==
+        bh=c1jHunOtVkIwedmQvRsrzJgL7loZmMhygmTOE5iX6PY=;
+        b=TVKrju1XiOMHDnP0wIZaF4Bp7u1Y/pvfxyCDbxPJzsbdoTi3sJho2IWGBrdQfJX2WL
+         GOi4DnOCvu0tVwDrPxAq7bBKv+BwA3awv5fSNoe530vjlu66lLmVxkKlbflMgAgRizPX
+         /KTyZdB5k97Ddrg3zJjq2RzQRnuYAPWtiNRpH0NvUjNZMCXOOK+4mJfzhwx+BvJTsbNF
+         bn/5tDdWxa9P/8OGL7ib1vYhFAdvtZ7+Z3XfsPB0VaKdMVcO1f221dKmh+/SKR71a/PS
+         jaO6FghY6ELDtMu8ptJr0xTg+uVa/ZAuJ1KRWcK3wRFMxcMsNqqJlOMEFwvnAEQb+wK/
+         J6Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765798759; x=1766403559;
+        d=1e100.net; s=20230601; t=1765798763; x=1766403563;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XhdWc9MI61x0CV5VCAtcSDjXy8TDKlNky9k0yGxBSF0=;
-        b=gsefy18LbbTMnStxioN+O2IJ/qeK3kv628WaCHQRjyl4o0N3NfrP8zWu2k64gZk/wP
-         SFeMR8nPWGaNhKgiN4pIFYYQwYmFLhC0MS4LUHndSrMqLA4QR3H++iutNpH6xJqfCWzk
-         WJu1CzltZPuIyKYLNXzTFZjDcMLrz3TIgvINl70jKyQhEjSqCd1wTU2+zRJQCb04bvyE
-         G3RtP5n/2eh/0yEL08EqWss49ddTgXUuH7uWiNN0zToSwVYxv0e6HbqRwz27bsMNyYSB
-         QIxEpB5iZXo7GdoAICQ9+Z45J5QrK6qMK7QW4i/2lB2eMHLTffax7omAquubAQionhHB
-         XkwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOorSplBnet82wPXSNhBZyPKnbi9q1aUdRvJqD5ztz1KApM/gReCHzRj6Afg8cbTMeVIw28qAaxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzf0uCtpyz88ETuMBkAs/QMHj43Mb/wJVKQ+SYJpb0FL35X0aO3
-	UMIrLxYKeBo44ts5FoEhw49j5F3clWNQlCEIqf8LMhqoh2/nCSAZl9vv
-X-Gm-Gg: AY/fxX4N4ZzIAycJq7tMmCuAwhp6KLBTehQ1DKt2axkqLyR4PuuuV51oIiyAKEByyC7
-	jlobPviZq9kp3unsv9d9okw7oQxZDM4Wo8kpQyZ8ks5peTP/gGOryEpGG6cPVAsuGBSxAgMnPq/
-	PCQX/SmIuo58BTYDFFcxFMuJJRBpYV0b0tNmsY1bWxho7rrpz1G0/M1Nkxg9jQsjaTIxPBof9uN
-	YbXVDrSFnDP/MNIhCB1YOgBZf4MXEwB8G19DgsY7ENn1tO00+AUzqQcvWU+MjMQ5MybbWpXx813
-	bMk4QDw23Cn68ZN+RQmKNS+9CiQFLZuzx+p7BushXRwAFLO6NT6kDjg7Xsa04mlm2XtcmabsM38
-	UWTCTTnDD+7OYDY4IN2taJuay9GRcBE+c1dU+GYT8O2widUZXV+cZj3rwqBJ606qnSC/vJHSSp0
-	wAa9A6CikuPFY=
-X-Google-Smtp-Source: AGHT+IEml9qI+VrrnmRfetIj/W3ZZs/y3fpGJeeY3YNSfL1Lp+Ud1G2wHo5sReKCb7zM9fF8T1soPQ==
-X-Received: by 2002:a05:6a00:4211:b0:7e8:4587:e8c8 with SMTP id d2e1a72fcca58-7f669c8ea65mr9926386b3a.59.1765798758916;
-        Mon, 15 Dec 2025 03:39:18 -0800 (PST)
+        bh=c1jHunOtVkIwedmQvRsrzJgL7loZmMhygmTOE5iX6PY=;
+        b=kokqGFTEGdGDUsjUu9Iqjvq0WiUGqQ1kYYXAkFwSRoliiQzGRQsK01yHL/bHqMlXEt
+         CHFTk88CdN4FJOIBmAMpYXFfsrQE7WySBCBTQMAQ5ZRvQUWLVDyvl79zUwqiDdpHOh3z
+         PXazajr1c2tcMMK2lqP5/ZlHbu5iPTYP2xaaPcyGzI6nbtUvJ2lOva/QWn8fCa0hqH01
+         xHeegD8rXmD/of5sI2i1kjeSFrq5FH6E3sSjZ7VbL58DllsHjtDHvdQBy7NtCnBt79G/
+         tHv3Q+zznNCWmFDNQsW+8dSpWOEWP0HdxV/zX93WDi+TxM01EgSjG/2IwRXmd1yPGUnp
+         maqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLYiGoYv8BciydOzwvhNJThOZHe8Boe+gIt0uoG7oq4a2k46yv3V8QU/7H+n/6KaUMAFQ1s5aihw==@kvack.org
+X-Gm-Message-State: AOJu0Yxr/PJXsw003k8lWBX4D16jApYYiBDz/PAFZAzJ4k5TvjZ0nCqC
+	505wRx2+GKvlAWbVfcK+n4wRT0iflRq/UeWuSllugt8TyX+cUk/kzcbg
+X-Gm-Gg: AY/fxX4Yt3Bsaag1CEDgRrXFLHRBR0bg8HQipAvQDHU2FJzkBzCmW2n6WvzEcVprlkD
+	i0NDE0TQdFJ/vig9v9PS+gXY6HsGQxVN9seGWu/a7zNcTxh95n2lv79NbNNlt9imlJG9ZYupIwm
+	a9uYCfxF7U7Z1geWNEF85WoFBfT29R5H/zaqfgzh3e/D9Yzf5Ffl0L/0smRz1th9T2r3LiDVaY2
+	4OG+z3IaEVIEESKNrcgpolNv4c6V+1UtavFQEfOADrie+ODZKlYk+n5y6rzTLJPAFhSCJJyxKD2
+	rINHy5WdWLRX/2afp7yQdr76jnH4iD7rE+2d8B92pPeRSDzavjE60/5EUipR/Yev4linOzWhXyr
+	S8R9AoldPoPc6Uct+JRhyyi9Acvy9UhFtFwoebgNi9/duWkKm5beB+n6zj0gfY9D2H5NjEPQtqP
+	o10JbFJ98K4rE=
+X-Google-Smtp-Source: AGHT+IGkBlvtTJJI36YenJR2Mj5A83uVH+1orPi0BLwAvata7acR5hue/qogcd9VSy03MC0if9MWYQ==
+X-Received: by 2002:a17:902:dad1:b0:2a0:b066:3f55 with SMTP id d9443c01a7336-2a0b06646d5mr58199625ad.10.1765798762558;
+        Mon, 15 Dec 2025 03:39:22 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c566c7cfsm12487742b3a.67.2025.12.15.03.39.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d394easm129684215ad.25.2025.12.15.03.39.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 15 Dec 2025 03:39:18 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id BCD48444B396; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
+	id DE7F144588D6; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -180,24 +180,24 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
 	George Anthony Vernon <contact@gvernon.com>
-Subject: [PATCH 07/14] fs: Describe @isnew parameter in ilookup5_nowait()
-Date: Mon, 15 Dec 2025 18:38:55 +0700
-Message-ID: <20251215113903.46555-8-bagasdotme@gmail.com>
+Subject: [PATCH 09/14] drm/amd/display: Don't use kernel-doc comment in dc_register_software_state struct
+Date: Mon, 15 Dec 2025 18:38:57 +0700
+Message-ID: <20251215113903.46555-10-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=946; i=bagasdotme@gmail.com; h=from:subject; bh=ZF9oIk+6VfTU18bKiromuOjnT5V3QoMoKRjEOTmh6aM=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4NPZboGqi8J0lGIEPx09J91+O5zYvcmVc9uCnNeq KyqY9/YUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgIloczEyXFE5FS25V7U4nF3s wsyajN23tv7S0jlgc8jW4LrtPJ7fvYwMd203HZvEp7U3/4W850Q53mn2BsnZf49w2jwWklnFefM GBwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; i=bagasdotme@gmail.com; h=from:subject; bh=g0JdaQypaND4lTcW0ZqbYUYcFFa4BCtHp67rCXQ3qdI=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4OZ3cRMgut038Q1Mvx+WnR34qt26aRSjxQZU2vjg 6FirXs7SlkYxLgYZMUUWSYl8jWd3mUkcqF9rSPMHFYmkCEMXJwCMJFN+xkZVrl1e0394/7u+RLu +RrXLfO4ZDZ3GN7cIROa8FQ8sjv1CCPD78WiQS1yNZrTC6Ti9OZz7YjK/sxnP51XNFzRTCM96w0 nAA==
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 25C101C000F
-X-Stat-Signature: h1aokpy6gnxaopnjkh5jtna84iitqiy7
 X-Rspam-User: 
-X-HE-Tag: 1765798759-145723
-X-HE-Meta: U2FsdGVkX1/ji+E4qRLkyMdwG0KEoGIZaao2yf6Caiusrq+jm5q3mcOZ+wK4ReyQHxwAxaLRbCYKknrgxoEdAaH1SoX5bRm3mNJOF0f7ueHIXDEzHqyFaGzpZk8qu7/E1rIsCibqq2nA293ul6FLxjl7vI7QdqfcUXlwGsi0Bs7UbCg7iwHnkFUX5oP+uc9U7vrWV6VlqSF9+zUIijC9ix/+TMPxnUbTmvd4mR7dZofw6U5FmRQFZExzasErHNK0diG2fPax+Q+o2uKtIyJIrJ8x1ERAkbhDYHNA/hlPM1T3nTkc/zypBEyTtf103Bqc5KXvdogRn47k6GoXKRZn6N7HPpSrRFGJQhoBSW+qNGwv1oNyuGCstR1PgqIlsGTUoAfSXc3Js6BRxmoEA9ikggV3CeAtC9XeUq/IR+deR6um4UFcfeXBsnf0B5VxVfil6D2HKIOqkSn7UsJ9pCeuTmzjDEnlHamhb1tyGMjCmhxmkZvWVUMCi8MEq4M/DRbvNKSMYZAOeK1UD+4Kh0LicG6gAbx7mpEw7HyzUmvcDwNPyHKgDoVr7wMulAMjRWFZHJXegQAYmiq1jQ9tzZ4fLkB7NZ2F8vHi801qe4yEMKIFolOP03KhCdDqfttFh3tv1hoq5TQoCNQ48UgYnzBL/y2vOnZGqPqQXYqTIK2+fIBMe2XGJHzDhzzupG1ioVFwnSggh7xlAJZg1kaaTIe8uO9QHx7TNEBpQm8tuW41HVUeAYlbTb6kRVUoMJvzHjdoLM/kKFoYcQGApWQ5MMjAjEP2+QBRS1yBFw/qlFGWWD6pxinRLyyl74jSshCWg6BCxDLMkqYKDw2IXOXpgP4AEESrQn78Zd3+6fuzN6JHgl41S1puA3aNpkT4SLB94oNQKgUOomMqfPng4vjRDgOOU+ez6ZSGPZKJWZtQ7jEQLh5940Sx41NTLGufdEle8v9+42RUln0ijkbEiEWNq/1
- d6iXV/m6
- atrK1AfJNGOVIzEkyq3risHeV1ectZStj1VqDBdlh2sMjViODf1vEilOiBBIo16FuA9XyisqLkS1miBtngeN6fvOm8dnwRvJK8vCvnDOlYASO/1zqkZg4EQUzikpp6yx4zEKBCW8x0MZ09YORwF+6wqdZNPuWICdguYoh/AGgkuvGTp8raOjKXz9XQSU4yip0nuE9LzKibuDx9jSyjFum/Plx7OV3aFELDrF1u8eS21qlnqOvzzTJQh+L51b1I1lppugay2Waq6J3F7hyynhvaMUfcSnypXvt8TFRO0E6q4V353H1zacEZcwWzxee8OgAzAfLyOqP8CW8uQ2c4x6AqXh0DvbLxXlKkn9tvuDQetDfGGjV5jGs6fWF6rn8Io48P0PEJNGtcRBhyGy3eYtwNCFLG9Qn0h9goYLvtev6fkNZ7xA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C3724140005
+X-Stat-Signature: uqiaarrxoa16cn54jcce7ync5z5bbrgg
+X-HE-Tag: 1765798763-656533
+X-HE-Meta: U2FsdGVkX19dtXZfdgGNUp3c6zP0WOBeJbR8LctIDL7pcNzUtlCF3aP6JWuFJErD1DdeWEo8YxFGMADJej+Yj7scuauLrShGFX+iFTnqI1WPsuAaX/49d5tXeBE/ZXeOhyejq6pjO/WN4DIDn7klv1dkz6mz6Akq1EMC67GXhEv17nUYRRPRNkphhpTAwIy7KDYXUYXPG8AFDHU0jfd2jlqyiZfZOAPpOpgemkdrdsUrHQDBbN5339/RciZMThi/pEws36oSCpme13665zcitIip5zQKDLxjeX3vHUy58qmBdE6uoYL008VVMmgVkMYJTqxmbhGZOt9A12kjWwqGl8HcCKnR9snET71UuKZ2ODnNZ0S8+FLx3X6Ee8NHvvl4oRn9QKw6mFVU4O3zvaCK3qQ3BNsYZOKYJthFdCOXhke2K1L/xg0gJfkITlaD2CIei7faYZjm6reAb2/MEhCU6FoZlQL5Nt081YAoBFMJCtDoBIk7j4DGpXL3kJiaBGfqpoZiM0pKVc0IX+QQazl2E8Z5G9Wy7TGTk7zDYkjseLtsSf39cwnzARtdxW/FrHgvehdNCRoaTajGAKkIShHKOSVP4c1hxJkNCTd3D4ibn6HXnsyxRIfYTFMBK1ijYtdOCLGtnpvHZI/KErAvJcAXOFAKWNqh8XU3stHR799X3aeTdaDWG0iTgexQYcmRE7OJaGPR0zNHwRLslI2IkaY3TahyJEq+P+e6qPHjFt3BtSFNbavtO4Peq5q/EXBnhNeik072Koq0GqJhfkpWvdHgqt6+FICJhRouQljV93TnPMi7wNS8Su8W8war9sQ/SwNPdNqszqj3Lf/1mLWo0ixLviIyR7f70yQataZ3WDP/p+hVhGQI7ru1hIfgJIg/5HtfCQTKgN9s4TJWWblTX9kkvVKC7SZCJhjbHIiyNwP3CY2yBPORjq5B09o+2ZZWu9uT5pyDmTakxojNLT4wa4y
+ m7MsdOe6
+ kqmV8YPUmfzS+sSM5tu47eD3TMKX8tMPu7Nn0a64tsu/bu+8nptRZiIscZeARFyxAf4KmbkERyMxFIr3KeA0AXYYNQbCF1PWed21N6xVUH/0irrE5VTfs21k0wy8ZoNpCXjev+rmvO/8u1clMafJlkolC4bQIXMOGX4NGD4vv8iHVvvWHaqWWarfPt+AK0oivMqtWOqsvPZUJfiOWpkp//YVCcAUcTStl2OHOpWQx8jDrgWVQ56tHPN7uT81tJAXsVYV32IjARX1jziF6pyM2tGz2ppluZ5W3agq1D4w63aLt23TA1mIJ0Uzhe77+DYqS6JWQdGDKlSrTKxPpXQfAUoyH6C8RBBsSoTERPFj4IPbP+czp+Uq2tgZkHvGQToxL55AFyl5Jaht/dFh7j825MEUEnQ3jJI58899vFIMX5Cm2Bl7DGI0BGBQu3KbwCF7R1jz62MDoF+hUqQc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,28 +208,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Sphinx reports kernel-doc warning:
 
-WARNING: ./fs/inode.c:1607 function parameter 'isnew' not described in 'ilookup5_nowait'
+WARNING: ./drivers/gpu/drm/amd/display/dc/dc.h:2796 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
+ * Software state variables used to program register fields across the display pipeline
 
-Describe the parameter.
+Don't use kernel-doc comment syntax to fix it.
 
-Fixes: a27628f4363435 ("fs: rework I_NEW handling to operate without fences")
+Fixes: b0ff344fe70cd2 ("drm/amd/display: Add interface to capture expected HW state from SW state")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- fs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 521383223d8a45..2f4beda7bb8841 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -1593,6 +1593,7 @@ EXPORT_SYMBOL(igrab);
-  * @hashval:	hash value (usually inode number) to search for
-  * @test:	callback used for comparisons between inodes
-  * @data:	opaque data pointer to pass to @test
-+ * @isnew:	whether the inode is new or not
-  *
-  * Search for the inode specified by @hashval and @data in the inode cache.
-  * If the inode is in the cache, the inode is returned with an incremented
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 29edfa51ea2cc0..0a9758a042586f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -2793,7 +2793,7 @@ void dc_get_underflow_debug_data_for_otg(struct dc *dc, int primary_otg_inst, st
+ 
+ void dc_get_power_feature_status(struct dc *dc, int primary_otg_inst, struct power_features *out_data);
+ 
+-/**
++/*
+  * Software state variables used to program register fields across the display pipeline
+  */
+ struct dc_register_software_state {
 -- 
 An old man doll... just what I always wanted! - Clara
 
