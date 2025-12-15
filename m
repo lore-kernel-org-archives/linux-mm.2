@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFC76D5B17F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 15:04:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 064E2D5B17D
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 15:05:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A7156B0031; Mon, 15 Dec 2025 10:04:54 -0500 (EST)
+	id 69DFE6B0062; Mon, 15 Dec 2025 10:04:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 256CB6B0062; Mon, 15 Dec 2025 10:04:54 -0500 (EST)
+	id 627A46B0088; Mon, 15 Dec 2025 10:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F86C6B007B; Mon, 15 Dec 2025 10:04:54 -0500 (EST)
+	id 4F0136B0089; Mon, 15 Dec 2025 10:04:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6DE6B0031
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:04:53 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F6CF13A4C8
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:53 +0000 (UTC)
-X-FDA: 84222027666.15.12633E7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 376CD6B0062
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:04:59 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06A4813352C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:59 +0000 (UTC)
+X-FDA: 84222027918.02.0C06D75
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C89AB80008
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5790016000A
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:04:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765811092; a=rsa-sha256;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765811097; a=rsa-sha256;
 	cv=none;
-	b=MHWSDeExqUY5OSny2BqecvFCx+6bKDwhVp6x2yVD+LsFGHGcY38AfuJ9cqhFqqtaEBkpb3
-	w7vVxLPSVp5cIcaxFb4twRM2cW/CPi+h2TE05sSzBwzMZH7BccQGTFv23BeDB0z6k3koup
-	s512V9ErNjQ4EMwUBLowowJCu+HHdAw=
+	b=6A2HtfrJqxZgh3fn0Uj8tuaLgOzPIkmrA1EQy8WxIXEf7nw5uHCVBcI8xHKlPnZq3o6YnI
+	3muxZ96CGsFxkeFO9FOTOKCHPZzRpAYklEiY9JfdSdWPqgOWSHWdPC1XCsQGRLZu4UQBse
+	Dltypd2JEVrDVqZob/VIjYbAbsVWKP8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765811092;
+	s=arc-20220608; t=1765811097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xxSLVM+IHWkxynMc81b6HpOJrhDmgKn1o6W8d+VcpvU=;
-	b=wAOUKDFABG+4Ogzx11Xnp46loH4oUBFzve1C0VRH5SFhKM1bDvnjKegwCkkSDmSKqcsTv4
-	RgbiCSPPqWKlqUEb3NZqXCFyiht+JWsg/FgdkhguqqW9Hdck1jn4y+l/ABPkjDNqOnI4g8
-	5hpXL7Rs3wWQYr1v18zR60BTy7qWs/w=
+	bh=c1HVE5iTJsVXawLpc/SH/1Lz2/bA9CTwze4YimX69RY=;
+	b=rtZEPXb6o13cOYgUVYFWCqRWrY99KwDssR1nVHufQ4rJu1WuLKxrdzuGAF63RQXMSwrOWz
+	tQGBrcE94vVW1zo/f1TZmJEMmrK0LRvCBjekgzo7/oxDVfBpboXPr1EZAwgWXUHWH5HATh
+	GrD5z+QVMvLyduACizqhsTixgH/PMxs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C3DCB16F3;
-	Mon, 15 Dec 2025 07:04:43 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 62D991713;
+	Mon, 15 Dec 2025 07:04:49 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 858633F73B;
-	Mon, 15 Dec 2025 07:04:45 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 41F803F73B;
+	Mon, 15 Dec 2025 07:04:51 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -94,24 +94,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
-	x86@kernel.org,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: [PATCH v6 13/14] x86/xen: use lazy_mmu_state when context-switching
-Date: Mon, 15 Dec 2025 15:03:22 +0000
-Message-ID: <20251215150323.2218608-14-kevin.brodsky@arm.com>
+	x86@kernel.org
+Subject: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
+Date: Mon, 15 Dec 2025 15:03:23 +0000
+Message-ID: <20251215150323.2218608-15-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251215150323.2218608-1-kevin.brodsky@arm.com>
 References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C89AB80008
-X-Stat-Signature: w4mqjrsyfwzqccfcy7zbxsjwazfwwwqd
+X-Rspamd-Queue-Id: 5790016000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ezytfcfsgcq8y15pg5o8rmatbj1exorq
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765811091-693064
-X-HE-Meta: U2FsdGVkX1+jANCPuWRHRCQj+/Mhy77c6NQaI1K5F6OSYCI5LTDpY5nqFmv3+ypYIC/YUPbdZdJ/RsD8dbDJrswMz641Mqpnf4/k739ZH3UJWpjcp2ETkyIl3e5n5Paw3ljYHUB0a5K+beinWpbdQ0dh7w+jLR4COhnfoMWlSx700OGjSlS2I2lst1iIwRv4D5QdJtdksIlYNbv50VYfjoQG7DnvYTW+tTL56/JQbVXYJLIty4W2aPTBXhfRM8ZOao2P7hoeOhYuUt0WSwqIWd7tK56txRNCIUHUFq+jS6orcZj70aa69wayWJuwdSYlZrdOEs2rbHuM26g/eKAAr76QQ/cnO4geJb2GsjhGx1evTYZSlGYPbLnhXey15M5kjVZc/A6e4upIu50fyGiiqbQcyIeXmU+EV/T2jyK+V+uPVC3hq7SmDg8WNEjnCgagY1iqsicTi+g/P0M72vb3JldO3TWAZgeRRWa7Q2isfxrMyzDmxzrVqFXyWbX9l4Z659UbxrmIF7RUoNY/BxhMhky52FYfrdZfwLeFuF0AJbyK/rC9w8+xMBvolVnCwbSuKuyhEPPhdkML4d8hm0m8um7cnGp8BrdIEd35bYO6H8k66dlbDytCgGm1CxJL1vjzRuo4r6JUOjjprAHLQdja2uu+P19Ldp5NAchp73HifNT3SI9AWibLkpqbOMCJ91B6vXJYIeUZ5kbIAlgmb4ApNZkEOgCnjUcjOhl+UcJQtms8wMQ8M12Kie5Pv0DSwFPWNkxD3JaL+UDh82Ab0ACZFyEWO38BobajXMs5mqkjX5u2z0XQts7Q+In+sKXZpVDLL/fbdadL4IbCcgDxX3zjLf+5FsURa6Cqv2BP4afo9QNPeBFPf+bCD3BPF/1vwgu/N0SeLZj8j/KGf3r32s6j+h1+/hb7j59aHSzLa3SqXOkneuXkazuqHRDLJQh+NLuEv4NRlBsaxZuOV0Bgih0
- ftM5M0ed
- tgr6usmsS41yC9U+3M9mrR7qDgTgN0II+YpPX/yoCn3C/NpPTDfwJIMThVjr/2dCWcHAqomfCPVictdMB5yQ3wLrN9x+HysZGRdJFDypL15fhxQrMC2ITSu+vs9dI4R2VSkRLp9yqZ4GfzlyuvNlhZdxxbFez4FnfAXuDahDrAP1dMEsDRxSqhIjCrL7gUOjetxndA3BYlEKznR8FC9f5GzL8pUjQclKwcKeAVzzlcYCnDMlaUqgT6Afytsk+SEL/8QQqzOwmtrwJpQiluXXoYiILOK6nfcMapQZLQ6TN1zvfdeWzvNq6i9mc0ULbpm7QNku6u/TX4QvzY5jJuiD1H5G0qkbET6Z2DUPx
+X-HE-Tag: 1765811097-667963
+X-HE-Meta: U2FsdGVkX18dR7sfsiavMbHSgbTf/ii4rjQ5PP07m4DrhFG109pQz/vHqsMzKm0s8aexG3jHHO0bK3NsIlu2Yl6NU16nlY7lJlXgjrrqiPMmzhpWH9TBbentUNHN4cdX+i2aCP8Yn16ipIfQbfboWK4ZuxTh4CqbKZTCqqeZnNkALDYLXoDhzvI2PVvJDW1p5KAFYAbfHbXCm8fJrWmdWqn8pz3K5C8Hzffs9q/vw/ruSfHW7EcfflZ9stWhUtKotoYx4hAhhOkaYPJsUhYzil49NPH7CBzx/JBU4zNpHiyusfgtoQ2WJ4wgxJgqr+vP+RKZEo3O6pr69g5usx7PaT8WU3FmbNbze/WKI+Bb7YzyzYcHC91EWn35D1G/JUTV5k448gfIYy3CONUvG6tPgr4ipMUDCyS70lJvlNbzIx9OoNyVZFuOSNXe75HFteYm9Ix/228EvymgDv1NQS+K2udFj6WT9/nO8az2YfVfozHTwU/lHdJ209PdUiW3CXBmR7dybmOCU1DYdrHdcvDGjynl6gbGKpJGFB63Q/ZmjikMEycIIUzyeBqAD0M2SLVnk4T5XZ3u6Hyu4bErWzAEwcMfV1wdyRx3IjmEdbrFLMTHnIQsbr/3iY1VAk+G0PKig4v92XbCxmWU0odQM7KXDEMUB75XsGAQMqATtgin1wPjFrYEHV37eK8CyCOZrEe8Q5D+ZqbpRPYsgdvhJoSrb1WHYr8LalnD3h9JavNrt/TyOnFPboeGauCLy6X69arfblJ6A5df35TmMlOuLEQjCvw0vZT45c1hwtZ8cR8cSf8xwwSh5Dnlo0vC5oO1gO2Mh3cjJLNwbeeOGdq0NGWs/PVclBemlzBCV7YTGeGSJCK1p0ddaqWH7Dr6K/TVd14nHJEDhMO//wsQaUVfUrUGyUXztZCk5nBNA53q3bXhgyd2QqZlZefmG5C7DwMfxi4cBn9x6MZoOZWgUh3mUdo
+ 7KuUeRsj
+ dOFGBhUTrtyv63TDuIg9toXovbw9HJGwCz6axKHDMPDuWnwyPiyn7L+rlViV0j/Pi8QsieU7/3xg65hthTV5ouA5ExFMWwioMFxTaTIUbpnEgVqTiiw1eX+ceI94toVv6VV4w/WEF/5Ec+mLLvodVTOs2Pwddjgixnqu1KrHdl5c0miGF+j6aOgRjO8hkqeRwAFOcjJxeBu8NMxzfnxAtsKVpt66wOxPjQuzW36/uuFMiktPWtbko9Go0PlomQirNuagDvPGYt8zHkZ2dSvcGM2wPTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,66 +119,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We currently set a TIF flag when scheduling out a task that is in
-lazy MMU mode, in order to restore it when the task is scheduled
-again.
+Add basic KUnit tests for the generic aspects of the lazy MMU mode:
+ensure that it appears active when it should, depending on how
+enable/disable and pause/resume pairs are nested.
 
-The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-mode in task_struct::lazy_mmu_state. We can therefore check that
-state when switching to the new task, instead of using a separate
-TIF flag.
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/x86/include/asm/thread_info.h | 4 +---
- arch/x86/xen/enlighten_pv.c        | 3 +--
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ mm/Kconfig                     | 12 ++++++
+ mm/Makefile                    |  1 +
+ mm/tests/lazy_mmu_mode_kunit.c | 71 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
+ create mode 100644 mm/tests/lazy_mmu_mode_kunit.c
 
-diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
-index e71e0e8362ed..0067684afb5b 100644
---- a/arch/x86/include/asm/thread_info.h
-+++ b/arch/x86/include/asm/thread_info.h
-@@ -100,8 +100,7 @@ struct thread_info {
- #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
- #define TIF_SINGLESTEP		25	/* reenable singlestep on user return*/
- #define TIF_BLOCKSTEP		26	/* set when we want DEBUGCTLMSR_BTF */
--#define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
--#define TIF_ADDR32		28	/* 32-bit address space on 64 bits */
-+#define TIF_ADDR32		27	/* 32-bit address space on 64 bits */
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 62073bd61544..ac48deb44884 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1471,6 +1471,18 @@ config ARCH_HAS_LAZY_MMU_MODE
+ 	  MMU-related architectural state to be deferred until the mode is
+ 	  exited. See <linux/pgtable.h> for details.
  
- #define _TIF_SSBD		BIT(TIF_SSBD)
- #define _TIF_SPEC_IB		BIT(TIF_SPEC_IB)
-@@ -114,7 +113,6 @@ struct thread_info {
- #define _TIF_FORCED_TF		BIT(TIF_FORCED_TF)
- #define _TIF_BLOCKSTEP		BIT(TIF_BLOCKSTEP)
- #define _TIF_SINGLESTEP		BIT(TIF_SINGLESTEP)
--#define _TIF_LAZY_MMU_UPDATES	BIT(TIF_LAZY_MMU_UPDATES)
- #define _TIF_ADDR32		BIT(TIF_ADDR32)
++config LAZY_MMU_MODE_KUNIT_TEST
++	tristate "KUnit tests for the lazy MMU mode" if !KUNIT_ALL_TESTS
++	depends on ARCH_HAS_LAZY_MMU_MODE
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to check that the lazy MMU mode interface behaves
++	  as expected. Only tests for the generic interface are included (not
++	  architecture-specific behaviours).
++
++	  If unsure, say N.
++
+ source "mm/damon/Kconfig"
  
- /* flags to check in __switch_to() */
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 4806cc28d7ca..98dbb6a61087 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -426,7 +426,6 @@ static void xen_start_context_switch(struct task_struct *prev)
- 
- 	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU) {
- 		arch_leave_lazy_mmu_mode();
--		set_ti_thread_flag(task_thread_info(prev), TIF_LAZY_MMU_UPDATES);
- 	}
- 	enter_lazy(XEN_LAZY_CPU);
- }
-@@ -437,7 +436,7 @@ static void xen_end_context_switch(struct task_struct *next)
- 
- 	xen_mc_flush();
- 	leave_lazy(XEN_LAZY_CPU);
--	if (test_and_clear_ti_thread_flag(task_thread_info(next), TIF_LAZY_MMU_UPDATES))
-+	if (__task_lazy_mmu_mode_active(next))
- 		arch_enter_lazy_mmu_mode();
- }
- 
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index 2d0570a16e5b..9175f8cc6565 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
++obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+diff --git a/mm/tests/lazy_mmu_mode_kunit.c b/mm/tests/lazy_mmu_mode_kunit.c
+new file mode 100644
+index 000000000000..2720eb995714
+--- /dev/null
++++ b/mm/tests/lazy_mmu_mode_kunit.c
+@@ -0,0 +1,71 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <kunit/test.h>
++#include <linux/pgtable.h>
++
++static void expect_not_active(struct kunit *test)
++{
++	KUNIT_EXPECT_FALSE(test, is_lazy_mmu_mode_active());
++}
++
++static void expect_active(struct kunit *test)
++{
++	KUNIT_EXPECT_TRUE(test, is_lazy_mmu_mode_active());
++}
++
++static void lazy_mmu_mode_active(struct kunit *test)
++{
++	expect_not_active(test);
++
++	lazy_mmu_mode_enable();
++	expect_active(test);
++
++	{
++		/* Nested section */
++		lazy_mmu_mode_enable();
++		expect_active(test);
++
++		lazy_mmu_mode_disable();
++		expect_active(test);
++	}
++
++	{
++		/* Paused section */
++		lazy_mmu_mode_pause();
++		expect_not_active(test);
++
++		{
++			/* No effect (paused) */
++			lazy_mmu_mode_enable();
++			expect_not_active(test);
++
++			lazy_mmu_mode_disable();
++			expect_not_active(test);
++
++			lazy_mmu_mode_pause();
++			expect_not_active(test);
++
++			lazy_mmu_mode_resume();
++			expect_not_active(test);
++		}
++
++		lazy_mmu_mode_resume();
++		expect_active(test);
++	}
++
++	lazy_mmu_mode_disable();
++	expect_not_active(test);
++}
++
++static struct kunit_case lazy_mmu_mode_test_cases[] = {
++	KUNIT_CASE(lazy_mmu_mode_active),
++	{}
++};
++
++static struct kunit_suite lazy_mmu_mode_test_suite = {
++	.name = "lazy_mmu_mode",
++	.test_cases = lazy_mmu_mode_test_cases,
++};
++kunit_test_suite(lazy_mmu_mode_test_suite);
++
++MODULE_DESCRIPTION("Tests for the lazy MMU mode");
++MODULE_LICENSE("GPL");
 -- 
 2.51.2
 
