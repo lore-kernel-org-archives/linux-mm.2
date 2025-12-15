@@ -4,239 +4,264 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99001D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 10:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C2F0D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 10:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2BDD6B0006; Mon, 15 Dec 2025 05:07:21 -0500 (EST)
+	id E69CD6B0008; Mon, 15 Dec 2025 05:07:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDC686B0007; Mon, 15 Dec 2025 05:07:21 -0500 (EST)
+	id E416D6B000A; Mon, 15 Dec 2025 05:07:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7CD66B0008; Mon, 15 Dec 2025 05:07:21 -0500 (EST)
+	id CE32D6B000C; Mon, 15 Dec 2025 05:07:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C63D86B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:07:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66B4F60E7A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:07:21 +0000 (UTC)
-X-FDA: 84221277882.10.4B6CE6F
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D2F12A0010
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:07:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PKj6Fu5Y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=HgZD1vXi;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765793238; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB55C6B0008
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:07:56 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DAF0C02D3
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:07:56 +0000 (UTC)
+X-FDA: 84221279352.27.1F62378
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011045.outbound.protection.outlook.com [40.107.130.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DF92440004
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:07:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ni+7SixG;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ni+7SixG;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf07.hostedemail.com: domain of YeoReum.Yun@arm.com designates 40.107.130.45 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1765793273; a=rsa-sha256;
 	cv=pass;
-	b=yQay8VswJdYREht+vgoMsB06kI7yC8oMSU2FiXtVuNyiqIKZ/RmoG/KDfLTuCAhTdgstXw
-	FzH6KMaYmsBmtUgnDLHlkb/zup0NhKDegpUiU9m3OvvUmlDW8z7YVL2QGLZ+4xcp5Qn997
-	DkreZ1WrpC5Jj4zQ8WhoGn15j/7kZOk=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PKj6Fu5Y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=HgZD1vXi;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765793238;
+	b=h6wkmtJi6cHLayq6rBpxkapGYu0L6HhEcy0ywxo9yOhcfpP5FD34WLCBzouAWVPTZxsjin
+	I8zkCj6GMc8R3XsCMvXUErfzyiblggNUsAlWoUBPMlVm6U5x/A9ATI1gL1qz0GuTbdW2vu
+	lqNU0TbTf3EgCGveb2lziFodtdbXs2M=
+ARC-Authentication-Results: i=3;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ni+7SixG;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ni+7SixG;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf07.hostedemail.com: domain of YeoReum.Yun@arm.com designates 40.107.130.45 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765793273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gF80QiiyiPB4RZYFkCgtZMjdu5m6Gsq/uTSKXnYSzq8=;
-	b=A/7TgCXGUlS/BPp4JxG/khnqJ7QPKMB9cFypeTlD4Gr3byLIVhT13RmbJv1UWpC42yQ/T3
-	x12VvyU4L4Oxoz1LWURKw0QIf1SUDF4rhiVUzur8e94RnVTHGYBtZRrpD6fNztTBXYFHjG
-	v5o9NbcrpEPadnPu7laoNY5CdC0fWvI=
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BF9up5n1921298;
-	Mon, 15 Dec 2025 10:06:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=gF80QiiyiPB4RZYFkC
-	gtZMjdu5m6Gsq/uTSKXnYSzq8=; b=PKj6Fu5YQyENqZz1Eq6RHAECvsAmO3fHFf
-	QLCRcYh1c+D8AZ35/mW+x2oadjK1GECGVqKbdfRp/tDcxZV1rtYlL6cQngkPaFgT
-	95K+/nslWaW3goOpV0SU1iEokdgMaxyMu2b2CAqV9Z3jlUbcdfIZSwb5eoajNVoU
-	w3DuKt7XfYWWWe/P6amA4EVi8/wFcSzAJC4XCJx5o20TyUQTIpXnjHfPwdNR+AAC
-	9CHFi6G7KwJKimVJX3btmVMd1YVxb3N776mV6qRuqADgm6tOuaiYsiMObqr12ljx
-	YyICTN2LOGNhUXzUsm+eV1uC60Lze86jJQGXS/sLOaDIGHHAHnPw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b0y289t6q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Dec 2025 10:06:58 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BF8RDHN024480;
-	Mon, 15 Dec 2025 10:06:57 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010016.outbound.protection.outlook.com [52.101.56.16])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xk90u8u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Dec 2025 10:06:57 +0000
+	bh=KGIRq0E9K4iLo5rVR6sOX3z6XnMD3R4ajv9E7JKv9jA=;
+	b=5li59/NjPkJ2TQXNZvg6JNecA5kJdnECcwoYUfk0F+cYHxuyxMp/n5fxXTNlj+F+pyEIyb
+	J0Bww8hb9eMs7sLyuWEjg51Ld+BzY6A0/sj+OdhCsQ24X6sre08GTjHlJw69axPUENKYQH
+	Q5Gq5EaByWSUV0jVeX9+AgCBNiX6eDw=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=AoDc7Qlsl1OhxAkYrKni0MSg5yegjqG1TCeHLc9eekeAmPm5oOpr7xN6Vhxe7JIRqgWc+0Eoj70oDnczMoFDFLYvoHZYdoZd/EVIiWolVfKWZekfYiWPJbL5yoU3+3P/mFJs9wP8F+XgAKUFt6kU26GUzW+kdRspvbshnQWzmq5Rvw04IPF28AywPgsVibZ9n/akkxsRBiKWZMI7eBIo8wLZwXktqC1lB+ig0n45Px4eZLWbIjejxCsPeaUkEGLpn+zani7eXuktA2dw2J6KHhDgY9igZrKtZpr/2QYTafumBaijgZu4Kj0OhBH+b/E5PL7t0ObEcm1k0WLC92j9nw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KGIRq0E9K4iLo5rVR6sOX3z6XnMD3R4ajv9E7JKv9jA=;
+ b=xBy933rBtanxVbMvlSgm4FiW8fullH6w+tPf6X6ZqTIlozIlzRGX5gpqSyku+4mR1oGUTGILRY0TFjTSRIh2XMiB8M5MOrC2fUBKAaZ5yZ0qzhQBRFyFRK36twnI+dwqjk75+nsy7nvwbzHGBgUBO+j0rk/6HgAIREOPSH5VupjN0ANGHCBrezt3ekOmNuBoyvGUND6XLXzZf/ViFsuiUAoqn0EVUfNuQvbF+cqK81eRV0qiv+114x1ah/Th/sO2kzKBAD9juY8L1jY60xuwEy3kTrBQXbdkDclkVF2E3TrsqN/V8ZJIN4EGRw4pJUqcV+XJ9IOKQ+dz5xvlmuYSSg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=google.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KGIRq0E9K4iLo5rVR6sOX3z6XnMD3R4ajv9E7JKv9jA=;
+ b=ni+7SixGYmO+qgVXC/RJlqSEYNtFU4q8/wZsWKVPTpA71tCXnClZDdSu2h4jvLqiTQZ+uYTCCdBavY7NrcdZYt4EAUG7k8yjYrjX+y+0nLM+gPVN3n35deXBptxFfHzSVwUPyppgtcxAfzNGEOu02nRSRsDoppdFzWpHRo7sOyI=
+Received: from DUZPR01CA0280.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b9::26) by PA4PR08MB7642.eurprd08.prod.outlook.com
+ (2603:10a6:102:260::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.9; Mon, 15 Dec
+ 2025 10:07:47 +0000
+Received: from DB1PEPF000509F1.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b9:cafe::85) by DUZPR01CA0280.outlook.office365.com
+ (2603:10a6:10:4b9::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.13 via Frontend Transport; Mon,
+ 15 Dec 2025 10:07:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509F1.mail.protection.outlook.com (10.167.242.75) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6
+ via Frontend Transport; Mon, 15 Dec 2025 10:07:46 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CLtlOmFeaqyoAnBPSGUPMNyGZMn4Xv4tXqSfoImjB+zfGPyPYqx8XxlvXuHDOGqaUr6+hss0lsMZr+bVLRjAy++CUGGuGoJIwdH4iHRjiYzRtI6skX680AyL9i3ONcDzJW6xlEo0SGqdiZC99MpGpupko9blXxKBMWIzkEf5po1uIZ+gF5KExkgCcVdLbXBdsdVoDadqpkKxwlhBDarR2+HC0W46FcXaqa2v0K0NmW/XUWaiTj5Br+zRyUIKqQ+CyPuc0xepWZJixn8wTQRaEc4SBDwUuE5Vt2zliqe2y1za7tp6Z25KbWunWrJGUv6NdjLG6tZj3UEAc9qb5qy5yQ==
+ b=NyccDOf6BBG2i4rGzfJqK41BGpgZClxFfnZAtLU7z3PjeubxIkl2T8Jj+UsOurKSs8UrsrObSyEYZSeLYL53jAk8NiDcrg3PNQ0ZspOCZPwrb8KRwQ8HDF3Ar1KCXYgtaUz8MhI7B3taRlnCdSMz70pgQPobJX4scOnQly7ERTNsbNWRVhzIvn6RtYUZlxDOSbilh2J8nE7DuN/LYdq2dHTmmaXgtzRD3UCzjukayLRUzXRrCCDE54AJJ2FyLZ54wVVb6zhuH2LbQ+kLWr83NtHSWla+gQ3We9ChfXxqY7ed6zdziLSXnIjeGYP3KB2jJB4VxirIWqgdTeWwEOkk2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gF80QiiyiPB4RZYFkCgtZMjdu5m6Gsq/uTSKXnYSzq8=;
- b=OHRkwEdUEIGZFb88k2mZfgFCRXhBv5exI+bmH3M9QccvgmNJkRqueZLdQdtS4yN/M5n16ueIAF6xLI/bwrJhfenu1M0a59iih+DBROoEo5qtnmEyURQTExtxxpyfcqeQOwAYuGEeS/doWsKKSro4Hp8hnHV2yW2oOAWjfAZDtQY2+YU21i/t/iRY0Y9VgidvkGOiQ1OPK36R/mPk7dL5S5rhCKWeZXD1VaUtRO7tRLWGJqnxqGPxkfSZjiCa8JMATmtgKJ+lKyOiQgdGvAlT2QE+ioRtlYBNQLc4sHISfcJycKWeFG7tfbFXu5E8SU3c3WWGEIaEoFCGT2QDxvqYLw==
+ bh=KGIRq0E9K4iLo5rVR6sOX3z6XnMD3R4ajv9E7JKv9jA=;
+ b=o2lcTFovJjSi5TYkT3bstlgdT6upO9/CFclAF2sDfmxDMZJ+zNQ0IDodDuvxTqMwJ3TGXkBmzRUmPnsJ7hU8IgAJaaNzuLPsPMrQAVVOOPjhJxpahx82X09IrkWhyUXjp0BK76sbZXpjs3+3/jCTS118JknZOlx3uF+6mEsRmjSvieYxtJMXUvykOoaT5OBTfm07h0m2g4zasuJiJVwYc4FrxBNKNqmjtJqmnay1RkAQc7S/bCUM6OzPqrC56nc8ohXDxo0pS2iTIEHHpPKoWHYAKyh3aTq+JVHmhboU8DNX5fJT9R25NLCzWxldF9sbdliBjaNtBI48GQ5IQNyKVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gF80QiiyiPB4RZYFkCgtZMjdu5m6Gsq/uTSKXnYSzq8=;
- b=HgZD1vXiqD7dOOLMdhjQ3zUjN+Z8E34rH68J4CQ32W9T0PRj2X/WzFVmc/MmpYJ4JpnWWULCefmUz54Kw3wa0/VIg9oVOSdpcTrHK5bVOTO+Z1twqNtg/bmOZDgc7qS9k0pPkeMHZdiMYTKorv4SIDHr5OtDog1iS8HsB9cSEfw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by LV3PR10MB7796.namprd10.prod.outlook.com (2603:10b6:408:1ae::6) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=KGIRq0E9K4iLo5rVR6sOX3z6XnMD3R4ajv9E7JKv9jA=;
+ b=ni+7SixGYmO+qgVXC/RJlqSEYNtFU4q8/wZsWKVPTpA71tCXnClZDdSu2h4jvLqiTQZ+uYTCCdBavY7NrcdZYt4EAUG7k8yjYrjX+y+0nLM+gPVN3n35deXBptxFfHzSVwUPyppgtcxAfzNGEOu02nRSRsDoppdFzWpHRo7sOyI=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by DB9PR08MB9804.eurprd08.prod.outlook.com
+ (2603:10a6:10:45f::12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
- 2025 10:06:53 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9412.011; Mon, 15 Dec 2025
- 10:06:53 +0000
-Date: Mon, 15 Dec 2025 10:06:51 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        Prakash Sangappa <prakash.sangappa@oracle.com>,
-        Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-Message-ID: <07e8b94e-b4a1-4541-84ed-a5d57058d5a1@lucifer.local>
-References: <20251205213558.2980480-1-david@kernel.org>
- <20251205213558.2980480-5-david@kernel.org>
- <c641335e-39aa-490a-b587-4a2586917bc9@lucifer.local>
- <9ac7c53e-04ae-49f3-976d-44d1e29587d1@kernel.org>
-Content-Type: text/plain; charset=us-ascii
+ 2025 10:06:43 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%3]) with mapi id 15.20.9412.011; Mon, 15 Dec 2025
+ 10:06:42 +0000
+Date: Mon, 15 Dec 2025 10:06:38 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+	haoluo@google.com, jolsa@kernel.org, hannes@cmpxchg.org,
+	ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+	rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+	ryan.roberts@arm.com, kevin.brodsky@arm.com, dev.jain@arm.com,
+	yang@os.amperecomputing.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
+ stop_machine()
+Message-ID: <aT/drjN1BkvyAGoi@e129823.arm.com>
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <20251212161832.2067134-3-yeoreum.yun@arm.com>
+ <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+ <aT5/y3cSGIzi2K+m@e129823.arm.com>
+ <DEYOI8H2OESD.1H56D3H8HKILB@google.com>
+ <aT/WOAr4osoJWaMS@e129823.arm.com>
+ <DEYP7JSVTB9D.3EFN2KEHH3O79@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9ac7c53e-04ae-49f3-976d-44d1e29587d1@kernel.org>
-X-ClientProxiedBy: CPCP307CA0004.DNKP307.PROD.OUTLOOK.COM (2603:10a6:380::17)
- To DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DEYP7JSVTB9D.3EFN2KEHH3O79@google.com>
+X-ClientProxiedBy: LO3P123CA0005.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:ba::10) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|LV3PR10MB7796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07ccabe1-e0a7-4f57-6508-08de3bc1abf2
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|DB9PR08MB9804:EE_|DB1PEPF000509F1:EE_|PA4PR08MB7642:EE_
+X-MS-Office365-Filtering-Correlation-Id: a26f722a-8b62-479f-26e3-08de3bc1cbb8
+x-checkrecipientrouted: true
+NoDisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?utf-8?B?OGNTU05FTHNaZTAvZlRQVXhrNUUzTEJSdng4aEpqcVIyQm5VM3Y0OGx5MXZw?=
+ =?utf-8?B?Y0FsdXNWcTYyNlFVRTRwamdvNktjcUNIOEY0bUtmWVduTmptZWFlUEVCS2o4?=
+ =?utf-8?B?bUo5aUQ1ZnVTT3ljSVhEOVU4U0NSeE9OMHg0QUVnaXdHT0U0K2poN3pqMEJZ?=
+ =?utf-8?B?bGYzK0RUYVIvRTYrSzVNYXhFSGlIR0dNd1hOQ3I3MDRtdHhVS2ErVFFEVW5s?=
+ =?utf-8?B?TEV6WXZQS00yY2RCcUZqcGt2Q0lTSmVmTklITU03WUFaZlA5WllLL0hlak5o?=
+ =?utf-8?B?NVVKczNoa3licHd6YzhKdWNlQ21WQWo3aUtXbWVWQmpPNHJYQVVjdUFDNG84?=
+ =?utf-8?B?NHIxRTQwTi9xRi9DLzUyYWluZTRRazdvc2pYS08xUlRhM21FNXp6MUowUzN5?=
+ =?utf-8?B?eFprdWMzMU13dUZiV0NFcXovUy9Bd3pMUENKbUtmcVcwRHRYbkw5dC9mUkx6?=
+ =?utf-8?B?QnB6SkpsRThGYUM1bzZ2QUNSUmt2aFRhTGVFckcyTFV1QWZzUmRhZHhmaDFI?=
+ =?utf-8?B?Q1A5aEFHcU16bi9EcHQ5VkNQbFdmeVh3bFd1OXh5WkhnUmM1WVl2dFhuY004?=
+ =?utf-8?B?ampMVHhUbHFYREhJN1pBU1BMMnVTN3BPZVNHYUlPQkJIYzJ6ZktmR1hLdzU2?=
+ =?utf-8?B?NldNVm9IbWdIUzVHUlFyQ25DMi9IRlZuVy9XYWc0NEJWZ094TzBuWHlBU0ox?=
+ =?utf-8?B?SXZQQ1AzaXV6dnRPNE9FNDhsTWFTR3FtSFJrN2o4UXlRRWFSQkJCdHJCVWp5?=
+ =?utf-8?B?WjdXSy95THRqMDhBVlpPUTdJNHpsRFlGeE4rVHRkNmRZcmJBMXZLUGxVK1Zt?=
+ =?utf-8?B?MHBxdmYzY3EzRm5MK0JSSUh3bFpDYkpMQlJrTWVjdU4rU1lMTHBVR040YVVr?=
+ =?utf-8?B?ZUttYjcvb1VxblpBU0JlS1M4VDlUUExzTmQ2cFFKajc1V2s1MUU2MXhYNHZs?=
+ =?utf-8?B?M3JhNjBzWEpHQmoxa09sVnZNNXpDaitGMG9Cdjk4cXZWQW9RRytsN1hZclg4?=
+ =?utf-8?B?MWFES01JeENPUkxhQk0yL2l1RmQyT0c5YzI1L2FaZUk2Nk1hd01TTnhNZGVa?=
+ =?utf-8?B?aFMxMzFEcGRhUk4rQmtaT1pPK3MxWWNQakRaMHR6aSs4dE5FQXlSLytKMzVP?=
+ =?utf-8?B?S0dNcU9oeWZCWnNuQ3ZkaGdSUlhvRUtid25VaUZYZlkzalNhV3oyRWlGMEE3?=
+ =?utf-8?B?T25jeGRKNVBaTHYyMHZab055SndJZnp4WXgyaE16eXRQTkpBTHlWeVdTWjZE?=
+ =?utf-8?B?WkpKZHZSVzMya3lGVC9VbURFSnhtSWlVQlZGalR6NktMRWtZWHBvci9BOG1K?=
+ =?utf-8?B?UCtTU2JDb3RmOE5HZVRwWnJTWnNMaG45K2tlMXNKYW13ZWxISDErOFBFRUV0?=
+ =?utf-8?B?Rng0VTJjd2diaGlEQ2UxMWp6U2t4K1BqMldmbG1qcGZ6WS9WQ3IzdXBiL0dE?=
+ =?utf-8?B?dGxlMnltODgwbkZWWExJY0s2K0c0K2QzcFlpMHpoUEVVZGdJSlJRQTZWcHNq?=
+ =?utf-8?B?NkxNelFpaXQrTVBuSXZKZzJwRTl6NERsK2FGdFI5SWYvTmJlQlQwOFFVTzcv?=
+ =?utf-8?B?NUNjQVpZdlhKSGE0RGZjK3h2MkwydzBibFpMMjF2ZGIyYU9sYkg3dXE1WlQv?=
+ =?utf-8?B?elpqRExYbmF5cWU4dEVsMGVXT2dSYU1PbVBMalhDQ09XMURZd0xEcUowYjRr?=
+ =?utf-8?B?VXVEUk1hWDBSSXcxWEZVVDF0QmdxWlJTSHZTbjltK0krc1I0am1BSXRsbWlH?=
+ =?utf-8?B?MHVLc3ZkWWZDandZcHpXSHZFdHFIQjZFUU1NbXZrQ2J6WHNMR1lMak5COHVW?=
+ =?utf-8?B?ZTU4TmE3TEdsZisrUjFqV1VSSXlGT3VzSGlXK0JqVmtYOU51SkhTQUxheEtO?=
+ =?utf-8?B?L3N2T1I4ZVVLcWhKeGh1emIxTUQ5ZWlnd2wyMW9OSTNVc0dycVk1T2lZemNV?=
+ =?utf-8?Q?SVkaxDxbUnHlg+c8YaDmilvEWQw2houn?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB9804
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509F1.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	6cba7bb2-7d07-4016-7506-08de3bc1a55f
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|14060799003|36860700013|35042699022|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZQhRLggU7LYF5fMUe2OXqmNq9T57Hvc3tiiErdI9O1zo5MTZ4y/XjOe5BPYG?=
- =?us-ascii?Q?4PQYQ6mK0gdTvrh+OUI3+gLos4SK+CCcI6aI0XgPeAup/nkE3NnEvT2itfD7?=
- =?us-ascii?Q?GPjVmEIj3yjzzNb8li7Ku4t5o3uwxAonE2pCkxkRfrKlGwN0IvyBMdNF+zNt?=
- =?us-ascii?Q?hNwNaY+rbtfmuH0sR8knucAvsvs+bPExtXP8h6vnD6Fwud5RvE3dhQJ0Kg4e?=
- =?us-ascii?Q?6ZcET745bdLkN4uhq/dzOqtuOsSxt5CBGqwLR6IfQPotOCmdQs6XAKQmFQbx?=
- =?us-ascii?Q?Qpb1WMqVBntkquU+9SLLqbgzCkTVRE/M8jUOdpdrXrWj0/YFB1e5ULHdZbBr?=
- =?us-ascii?Q?eIYhOe+5VXIdUYfAKrA6VRvD9lx8YLdfQ+4YWV+QcGE4VJhSyRrp1lVr5RfY?=
- =?us-ascii?Q?LW8H35lA3UeDwYIfyqFDw6+6XRvojEh1KU/mP9+Y3tbHZM4t7rU2+M03TphQ?=
- =?us-ascii?Q?93EOR99p/H0mbnltAf1WXjLraO7WIkikJTt7FnE9z3s0g7PMBTNp5Bo8Tlhq?=
- =?us-ascii?Q?5+vjAEKl2WM3+QXgRWKRbNIAm/wy5X7uBu3d2r43CWM4u+lL4p6f6JVb1hFh?=
- =?us-ascii?Q?aFTb8jaA4PqjqNwHHCQZzl2iRieJD3e1tddrnETk0j8OmyWEBpUX9ZbcmPVi?=
- =?us-ascii?Q?H8prMfCVgKLnR+psr1KX9MoS1Ko73me9fQPzG4r6g95QqRI9ydNEtIrMp2oU?=
- =?us-ascii?Q?GBPaWnX73d33Zk8hqMkGDoXLewAOUasMDO7udMlLZvIG8Ivxqz/i63oIhvEF?=
- =?us-ascii?Q?vo+162ELLA58oTzAJv5ciy/EC0j0VnexapDVW30wc5pIsJ/ABUpkj3vTJy79?=
- =?us-ascii?Q?JU99MaV9ZQI2FNvutsLwojDJAv04Z7BVmWe968iSmhC9VodmyfJcaRxgYjOh?=
- =?us-ascii?Q?9YeULC62W3VCwoCk+Yw82xGe66wn2YoRTuBL/DkeGuR5/c0fw6ZY/3U2P0iL?=
- =?us-ascii?Q?nTkVCz+Bl2qR4xJ2fMU8LtIupZJeiKAe9rNZ4HfxvNuFAnU2lUxxHJd9SsRw?=
- =?us-ascii?Q?MRAmif3rPaPlbbCYxrf3Au2OOYm9TQdNaDN0dxKvuRmn7cfjeo0u1JGvOwWn?=
- =?us-ascii?Q?fKZdoWqRdYtfCkLpUubZuz3t+lfHIn1YmuIrAiHZjOYj0iBQrOBYgVhNM2BO?=
- =?us-ascii?Q?phkegr19yuHFIs2TrV3AzcnLCyhhLA1ncCROPJHOsSJeMeQpgBB079T70srT?=
- =?us-ascii?Q?BJHYaFnsd4u9LGmQ/ddaIkcGTtf0kG4lD60vE25IHxUQdKav0W7NlRF3a2MQ?=
- =?us-ascii?Q?1J3bD2z+dg27ETYQQdr8GhcSCRhyO4yaqefCeMcFad+9Fq/JJMhKPMFt20bP?=
- =?us-ascii?Q?xrdRUQA5X2zZeXv85wiN3dTnJs0+DNQSUHIc6yBzp+G15FPn5CGzRQc53ijh?=
- =?us-ascii?Q?SYkcfUhFz6jOiW6vdOyvrigKxKjOFe4xMbxKx+/jdeS1p/QWtvfJviVUQZ2L?=
- =?us-ascii?Q?HwEkWGsHFalihs3HIQyNmYHYsll3uUhY?=
+	=?utf-8?B?dXNIeTNKK3h4Y0Uxdi96NUJ5NzdLVnlRN0FhSnY3dGdiNFVNUVZiOFpWQ0VM?=
+ =?utf-8?B?VlpQQjAyUGVJTjYwVzc3eVVHMUFoc2lhaVlwK2hETVJ2ano2d0c3QWRkTDU0?=
+ =?utf-8?B?N09JdlJLZUdOQlpkOFJUQ25iRmVaMk5OV2VsQk80akpQRm1lblJUOVJJazRt?=
+ =?utf-8?B?cjhXZm83djhNSCtxSzZCVXJzelhJbmJENFFldG5PcFA5MVdDNnZnMC9qU29I?=
+ =?utf-8?B?SDRrdDRVYU5QNHlDcjlwWWRVeXBMQk11a0trTyt2eWZqZ05WWXVZbmlEL01M?=
+ =?utf-8?B?Sms5REhydDRhNGJlTlVOczFVaXR4OG52K25wRDlxZGdtV2QrSm5aSjZHTW1l?=
+ =?utf-8?B?ZW1sdWhpaHdTd2pkeXZJRkUyKzVTWkd2NHZFVTNFaWpwTVZWZDVMMkJscHI3?=
+ =?utf-8?B?SDVDWkpQZEhPMGpkUE9ybnk3R1FwT1BPZTFqOFZUUFZHZzBwZ0svRVUyaDdv?=
+ =?utf-8?B?OURXSGdKazlUYnA0UXFRS25jL0Q1dGdRRzZnRDVmbVhpU09ZbHMyWC95YWxF?=
+ =?utf-8?B?bFlkSkZwbUxSTmpuN01PZ2NGOGJOeFY1V05STGtaTVJIcDJibVE0OXVBRmVK?=
+ =?utf-8?B?cGsvQnh4MW0ybllldHFDMWJZTXNTSzk1NkU1M2RaM0szRmVtWUpNTWt3eU00?=
+ =?utf-8?B?VFZ3SUZ3aWpBQ3JWbHhIZVYrUTVVYUN2U2pRY0djQ1g4bSt1bE50WnJCODRK?=
+ =?utf-8?B?ZmM2YzIwMTlGWlBoaThCdW9HYnN6TEFwTkdycWN6UENUZEdqbVpnSUtaeGN5?=
+ =?utf-8?B?QU84VWwxWU1EVDBrUXdibzJPVnVrb0NKVXVmZjNYY1cyMjZYZWVQbHBPeXRZ?=
+ =?utf-8?B?NlJHV3M0bTBYejdDZzlnMTdHT0RsMlZ2QitGYmYzQzNYSVZaK2cwSU50SXo4?=
+ =?utf-8?B?VStJMzk2bHdyd3BqSWYzd3NTSlBUelJoY0dDZnIrdUxRRDlXd21qbTgwcjUv?=
+ =?utf-8?B?QUY5OGs4WDVvVTNVeVhLT3FVNWphSkNpQUJLQVlVS2xDVTAvZVpqTTZXeU5L?=
+ =?utf-8?B?V1lEdTkyeWMzbFc4cjFYanBhNHpKbGVSVjBPY1lYYkVaSEtJZDVzMkhxV1pv?=
+ =?utf-8?B?dUZUZjUvYVdVTlM1U1FhSjdoeUErTzBHUnJOUkVGM0doMEVhVE9scWxYK2Y4?=
+ =?utf-8?B?aFFQSlhicm9ieGdCeEJIaVF4N0NMeVU0QXc0ZEpaVi93YTBwcFlpdXQ0bnpr?=
+ =?utf-8?B?MTd4SmNZb0NDMnJzOFk5VUZrMTI4WDk2dmJRaUc4ME0zKytWUEdDUkxCUlA0?=
+ =?utf-8?B?S2lwcWJWNmExQmZuK2hGeUN2K2tTejdpNEh6Y3JtQ0Y4V2c3NVhGa1BmVTgx?=
+ =?utf-8?B?N3pOVjg5N2d6WG1ZLzEvZTlBMzhCQzRqSDY4V0hCR0tROTllMkh1aWdlQXdV?=
+ =?utf-8?B?WmJqRU5vbkF6SXQrcmE3NEdKNEdUZUtXS2o4NXVjL3dGRzJoQVBITER2ZjRB?=
+ =?utf-8?B?WTZuMGZWanJqRkhxVXZEYmt5TkR2MXFVTEZuNzdsTG9mRFNVb3Z3VUlJTW4y?=
+ =?utf-8?B?QlpHcUgxek13MzNGcGVsVkFVQmIzNm5pSE5ZclhnUlNVbUZHd3M3UHlHQ1NC?=
+ =?utf-8?B?bDRab1FuNnNibFZTRkRVcWtJZ1ZrVit4LzgwbHZSVUZMdFEzQkZtejh2c3lF?=
+ =?utf-8?B?VmRNcFNhcVlHdVpGV1ZWVHozSXRmYjE1UW91c0lGTUdGZkhWejI0b01IMVJC?=
+ =?utf-8?B?TStqNk4yS2psc1o0UHNUcXl5UEtlQ2krSHJqMUNGV0pNRWkzSVFpTURydWhY?=
+ =?utf-8?B?SzlYT20zeDg3M1M4M2p4M29TZkx6OWJJMFltZ3NYN3E5WjB4OHhyMW9Nb2tT?=
+ =?utf-8?B?aDR5S0hmNTFFUFZKTGdlT1NkWTVSUHBVQ1Nxa2lCNUYvODloYVFiZkFrOTNa?=
+ =?utf-8?B?QzcxY3R1UjUva3V0Yi91NmtlT3pTQmhhcXplb25QazNmR1dKc1FCSkxkV1l0?=
+ =?utf-8?B?bjFmd3RkaU5RYWJKbFQrdWU1dFI5cVk1Q2pWYXR6RzVNOVpxdmhrMFNRenhp?=
+ =?utf-8?B?M3ZLeUlRSm8wdUY0eXF6dEJOZi81dW1Ic1p1NzU2NlVXWWY1VDN6SzNHa2dT?=
+ =?utf-8?B?dXhPYld3NEs2VG9vN1lHZ3RKZElRdFZBeEdyZHNzdm9DY0R6V0k3dzNyc1V4?=
+ =?utf-8?Q?xtbE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Xx2u0TGW4noMUeuLdKBFXYmZO2nLRMItTfN5kAmDUbLUHiJVWSyjx8vyqXX5?=
- =?us-ascii?Q?qCiiEot0ft2bSQfD+jUaOUH6QXK5cxL8UaG5qy8DTEt89faBA0JeW9/mmhGV?=
- =?us-ascii?Q?D4dE0yxBboFfGjMEP4KQmLNMtQh75Wq4mjZ0407/qksClvxQLmzX0/ind0Zp?=
- =?us-ascii?Q?C1QbT/VHBfonxHNjNDY6mt+K7EgLd9Ju4plDQ/KlwomGvZylXfxwVI5SXnLG?=
- =?us-ascii?Q?mRIdJj8LBjgWTTM8dF+Jhgi1W53PlfTyX7lOUN08A6wZcSOW9Opdstn/Rd/T?=
- =?us-ascii?Q?oeVnjcU+N6TCwnmz+4qOZ34FX8L48VRCbySRXudCaIGXQdQCouwW8tCtPDEt?=
- =?us-ascii?Q?4Tb5lxPTDfyORqb/AMkJwo+/gypH6us0bsa6QwWcW7SC6CnFibhMaQBE+Cq5?=
- =?us-ascii?Q?t7CvVHiFiDuNP1r5T6HaG6kIIDspavaDpb3f/cttigKVzf1cAOnSU9x1k8Dx?=
- =?us-ascii?Q?pHyMNHNMgmGWLA77iz7cLNMtsYzBL+jCyvNN8/h3h3UxiHgB+xi6hlGXIH2b?=
- =?us-ascii?Q?P7wgyIQb/Z9JUP55HmfJ/RvaQcBPppmM5JJRftEm8so3r7vFmK1fDbWPXx2a?=
- =?us-ascii?Q?EhRBobTHVZ0cqU24aG6AV4zG2EayjTijv4bwjCF+POq8iC9XzGqwMP9JsiF2?=
- =?us-ascii?Q?TSQhTvFfQ3uf5oAgS06S/66zanScWd8Alx871yVdpg7rt7lPHgYr6vaBxV8K?=
- =?us-ascii?Q?yMHKDvmulS55HmYSStcNqbaWSmdaxdall/PIV2aRcoxYsbEHnOeYP1vLAUho?=
- =?us-ascii?Q?+9ugzrRTUsrS62sfYoddRvFom29/DdfpXmyHQ14/PaGmofcHaMsYvMADq9FS?=
- =?us-ascii?Q?ZSotZWhPOjNo7g5a9KphDo02Abrx2D5gRNnCcL2LQY+x3aUqmgWYVKU8pvnl?=
- =?us-ascii?Q?Wjeu/y/5JC9+uiyLnhROcX6oa4RFLgyLoAD7brSIbibsJ4A9dw1TcNOFR3BR?=
- =?us-ascii?Q?AiAZGWUT7Vo4cMDtKnOSS5j3uJLeDebfHaM+Y6oyXLDoGoPEJLxJvGMcSQWx?=
- =?us-ascii?Q?nCh6tRgLvWrh3dnQZrxe4V0PYMf//9lKX4eglPVg4ibK2lNFUTbgfsvSiHqc?=
- =?us-ascii?Q?ZbOg+JBuZPql26hqD1O7HM4JcxnGDe/aPwRiniCfNuMGJUhrGignWIK5FEfk?=
- =?us-ascii?Q?Kkq9we7c/GNg/79W1RK4ueWFNHtyOah+Q5wXhH5udT3BjFV/b6e4ceGIYEdY?=
- =?us-ascii?Q?AN+W1n85NNBs+kvhrSONmVxs5dDtR4w+YLwauO0NNEsQmegC2piwDBOrbop/?=
- =?us-ascii?Q?iyZAySZStsLLf+N9o61LcmpR41zSZ3Z0uBeiMI7VVvq3M+feMInKaHRb6TtS?=
- =?us-ascii?Q?8OaZgbQ1hte7cD/8AunSE52uuRb84EpG9kNKmqad0zA8uj7At6pgAT5yVldv?=
- =?us-ascii?Q?AcikfgK8CstXSe97yntHNdvKsEYZDDb++9SQcth0p10XPTA1oshrC7Q51QE9?=
- =?us-ascii?Q?QKsGs2WUbqVMdP0RRKNkvBN1kNqnXH+Cd07z5Z4uSctkeN294a4AwbgeL7/y?=
- =?us-ascii?Q?w0A2Mha26F2RJIB3wbUPXTHIllVH8GNU+rJzT/sI+dTHgBtsAJk+IHsDak+b?=
- =?us-ascii?Q?SG5jYxViuKwq4ai5HDqiCaTv7L/AfTV9QiLzMQP0QLWYFLRSmJWhzVg6Be+a?=
- =?us-ascii?Q?aw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Xs7qeUUx6BI8LHr4NiprZdAcJCjZERYGRJJOZL76SpxvCYMT5ta3pZdp1SJP3bqPWga3ppMqFdGpaLezhndOkScXemRwl4/UtMwOCFKY01oDWTmWzvgr1bYAeeL3RvkiCgEZrlD66dJO2bpLm0YvAy+bL2KbnBWrTJzcLtKYqThNLXIgH2QiRIrIFGgpfr68ZP59Vm18TUBgmJLuMT0rK6qdbDTurdXlSkFOJLE0VyWFKRp9yTcfkKWdnX8CVfah0OqG0hyH9oH61quqHjZIRhobtteIi90HO4sBYFMgpbG34yriRzzz9lBjy/nAr3l59VI6SAX5W30N8j90llnf85haspyNl0p2U3oLnFNr9SCpeP3yQVbWMkvJwfHZ/jdylpDFiijrLaGCizQ30j4jiFy/tcrlTDQlCuwBux9jK6SMFYVlyv3BT12beuLB7UeGBJD9T5kcLhQL6NfEgWCDWsinKhboCbAoI67ElPX2ALua/dM1LlGOzUBdqkKY/f33PyR3w0lEPxuSuPn5mTqZf7lyDgD4nixqQL4t6arYatxbQZVsbwPKs0urxtqh2IzuStH1IRZicoY9zsRieavd/VcuatkceJroqKJjiVeS2qI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07ccabe1-e0a7-4f57-6508-08de3bc1abf2
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 10:06:53.5909
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(14060799003)(36860700013)(35042699022)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 10:07:46.5160
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0MkZayLc2hA+Mu35+/Ig7a0sHiw7NWr26zPJ3kWKxq0sI6ZV/CA+AvRTPqUkj0G5bD7IvN3m2dE/ASGJ8MmGU5wOyOFEfFW7XUJMZ9w9ERA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7796
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-15_01,2025-12-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
- suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512150085
-X-Proofpoint-GUID: O-fg9ZUp5qgMOY8-LezrgsF2P7XoAZJz
-X-Proofpoint-ORIG-GUID: O-fg9ZUp5qgMOY8-LezrgsF2P7XoAZJz
-X-Authority-Analysis: v=2.4 cv=fOQ0HJae c=1 sm=1 tr=0 ts=693fddc2 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=YwKLSiNDGmng8sCRZUcA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDA4NiBTYWx0ZWRfXwvWR1h1qZXFt
- 6e5PW3pZR5sYtL3wuMJG4kQx407ww3AD7WSh2xnOf+BZrsTYXj7sj3sEdx2YVOmJUCQGdHlTAro
- tzETPo4qxbcI6AWWt8vBBNNPOSz7kpGQIuASB/j8vCq7T/cwSMyFrgTpdus9rz5PzlwjV3+wyog
- lXE52XU0NjIurdJHRKy6MdLALQXiL4E6yu8BVCGPZg6DprOcSlf5cgztcK7uf1OLuG+J4+YIJSQ
- NGnoImiBCU2yLp5EWgsKAscdUPLDhF4j0JiJwWb7vLAA6dTKdTiufjTdu8LU2/Znkh+HPBqXFBf
- w/wOEo197sM0UI71mxEaJ1MoNSSTOOBbIf+YHOUve8DTMCiKEj/i5GqxWPw8AeJyOuB4xljFkLN
- 5O6HQxJEIuROgZ1BFBYmFjwqRw/ENg==
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D2F12A0010
-X-Stat-Signature: z6ba5cot1srpocjkcxqqomxnjqbmuqnd
+X-MS-Exchange-CrossTenant-Network-Message-Id: a26f722a-8b62-479f-26e3-08de3bc1cbb8
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509F1.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB7642
+X-Rspamd-Queue-Id: DF92440004
+X-Stat-Signature: wuopq9id65rp9y4axh8e8jp9g8uzohy8
 X-Rspam-User: 
-X-HE-Tag: 1765793237-100704
-X-HE-Meta: U2FsdGVkX18C4JbcarNnPbTVrG/rUGnebEV1kYNuHWxtSkZR7Yjh3Ozo7qt5rxAgV2nG1I0cs61bBjKB1TDPTew98NruxnQPGLHZBtbZeyO/zJt1iKJCcH71JcES2AW1e9zzA7TKT/aLXMDOJXZdVZTvQwOJU99rmoKvQP+1vNH3UnNck8TVhYrSQoLc9muj+IF6sZvn8INe/fnGwY2xoV+AnPCmtuOsHCWZCT8sYTTlQAN1FCJfp2fvCo+5PB8/e3a6vE6Rx765VuNJXEQvOpkU8+9bG7lyGKZBDunVLRyBcWsJH61XyW2yMq7+s9KhREFdBKdZK0zjWb9RYAKinpMZ+Wmne4u+pgxfiEGy+ly4ILeYRwQnr7Q6cPIABk+t1iUuE+AT5N47zAgWaafvELKGBRW38r36Bqj8TXA5vW1tWf3DIbT7CvaqNwWqzOx8SvT13fh/xNrbjHwky6VG7a2FF55AuZa9FtaY+ace2D0jHEk+noe4J2lRbsLfMSLEyThiu7qke2DkiBbbT1EOKr3Pp+FSzXxCOkKhgQlaXcniFqX/9r6Wi/gTI+QxwuDDTluXHzQ6A11YLgz78nQKF/C2Z0YZtip6ZE3IuiGT4WDazAX/qk+ClaY51rLcCNd/w/Ckeb4kK0Q7VNP0B6OhfOGE+JkXsMKz8k3d6qhlFT7v+we30bN9BadD3Ws3e0G4AMH33I0u2e+8uCMAz2frPJ1s4eWNyj5nykibAkZDty70WGZ2UKKplF7J0j+D5L8s0+T9qBUi26DmQ5UeJASG7opLL76K8tYYiNmGsL6sEwgEyoacgSoR1Et1TYFNCf0Z9rmldb2aG3q+aIEEbETmnWnuwiutFR6xpXPS4tHDVfRnI0hyX+wXfhpUS7hcxbscm6cf0p7vMuHHjT3Z64OWLCt0LqxjdPkvsvhUIm9vfPmEp9MHKn6t6lgg9qkAh4jXP9oyK14hdpkB1ih+los
- oFNCvB71
- r2DkoeIWPvaY00qP66UJ/RQsJjohrKNXqwTRzHxTqrNDJleFGhY5p0h6ljTw7jvcEzCMJ5fQnnMipyY00U2g48VjRAOouGJvTxY92+vwtQa+VhfeqbYiILTJVAXDjiax2Oeh8ZGRT8wjKgkXfDZROB9vffc/mx5LspIWlWganof5VbiJARFjpILIYm0QCWX30MqyrODnLVwLaex213WhhOWg1RUKh1ZfGeYXhkdiZ52RdGVZE4SxQQXfDVnJ9g6VM3f0lxO2OQyfahDfM/OEo+nZuBsh1N+bVnYInVDuyg6eR1sWmNtxZXcFHs2W9cERTvlNGHdtiHm+S7zSbEmh+BsBZFiMiNOWGxv/IuGIHfFKPylXI0SXLHPAE7dJl+cBV/5l8lYvnhGe+Azm1PCtCaSiINRdkbNIkxhRkAkY5xNJQjNs8JafJAsweRx8TlTIx81Tb0bErlcUzUP2LJASc/lJ1sk6KwbHwNL5ABJg6NujDAEpTG8/F12CzsOaaFnyyEYop2mSX0xh7RGuOCY1BOHrK9uO3x/k28PRAmBuTt56pXWybQKPOM/u9rvqZk9yiaQRb4nV5VnPnUMRBJ9C8QpIkyNX4uOTE8HjXFaGJFxfhKqss/9lLANDpv/9N2cwySu4fSpbg4mmFWNhnlxl8bB/3CcFbGswQP9hX7VmlmCQip21ZXxM8TVdI+RPN3UoRVWMLBdCyBN0Va4M=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765793272-398759
+X-HE-Meta: U2FsdGVkX1+92FqQW7Wfxp/jFbmC7SqjcdTxfuAqGg1RBJ7jMx0eG6Hvh5Q8SbQVgc2liDGaR7flUns63XpwfWCdraVQ2KkGKVQ/sFq8lVH4wIqA9gP+y3bC6LUXIEY023XJ9+io/22gpbwGFb1QX9ZCpzmgIxrdn4DMc7p2njK9W8DOSocuUNJEEcw2NiKAG+lLYjnltRzH60NCK2WkSXdlqUKjG+UO1keYUhRS/E4EYemXdwq5/ygGintm7Y22VMkKou1bo8DU94tyiw/bEDIyZqsBfFXj+zKOyJBE4CrbrohNdcGGnSUnCCQCllCDjdBqDkvm9dWsztwL3SyQ4ZFdQYlToaYbzSL+3O8k0cCZM/+fsJAgQXpZknQKqSviUKCSGFqtbpxljQjqG2sTYYHVA0sKfXTkQefeB/zjDhrhslLERuHOyp0p+NG6YGtdGRxjgu5MURx/T2iCu8w5GKc9ZX6ERMheR9JyZbTIuDIJm/izdJKcb0ga8cO7d0kyniis8c4kOjL5tdy76x87OpgsdnYAM3kUXXT0NizXwiBbHsG06p4Ca6xnqHOA1RtkAPCft6azY8zzThCmrjQlC/C0Km+DO7XcuTMUqcli67LrFtKECh7G96B2EgpdXjcs/d3BIpIjqrsi9alNZAk/K/VK+sdam5x+xLSy0SMhMLIWmqNVsg1VA6Cfhz4RrgRhcT7zUAl8RvxxcUdrpTAmzQu/JYw6agssvTsM5a/njrplXZiKWT5Oj53s4KvgKm6Zqrq88t3bQ0No4SNBYE8oFOHWNoTWytQSeJM+cWCooRzVhzC51XRs6tbDfOKScUYNRQFoFZKYwU41AgV/1w9M+g0+YmRTsgWwAZEBu/mi2bq9U4yxVXXvQQDIDt7iSS1hlWsNFWTGsKpPV+JJr0yaSEsltL5K8a/KDKPoUjTSBQJ6jyRTbZDD6gwmeMO3pG4vOBBXGNqz6PMxI9b+HXI
+ 0jCEUl5W
+ tvK7N+e1gcFB6rBzu/X1n6hl1nAVk9zRfrDpz1GNh7KV50PY22OcQRGb+gU3OLY43ryayoUjqoysReSQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,463 +270,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 11, 2025 at 03:27:29AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > (2) tlb_remove_table_sync_one() is not a NOP on architectures with
-> > >      CONFIG_MMU_GATHER_RCU_TABLE_FREE that actually don't need a sync.
-> > >
-> > >      Take x86 as an example: in the common case (!pv, !X86_FEATURE_INVLPGB)
-> > >      we still issue IPIs during TLB flushes and don't actually need the
-> > >      second tlb_remove_table_sync_one().
+> On Mon Dec 15, 2025 at 9:34 AM UTC, Yeoreum Yun wrote:
+> > Hi Brendan,
+> >> On Sun Dec 14, 2025 at 9:13 AM UTC, Yeoreum Yun wrote:
+> >> >> I don't have the context on what this code is doing so take this with
+> >> >> a grain of salt, but...
+> >> >>
+> >> >> The point of the _nolock alloc is to give the allocator an excuse to
+> >> >> fail. Panicking on that failure doesn't seem like a great idea to me?
+> >> >
+> >> > I thought first whether it changes to "static" memory area to handle
+> >> > this in PREEMPT_RT.
+> >> > But since this function is called while smp_cpus_done().
+> >> > So, I think it's fine since there wouldn't be a contention for
+> >> > memory allocation in this phase.
+> >>
+> >> Then shouldn't it use _nolock unconditionally?
 > >
-> > Hmm wasn't aware that x86 would still IPI even with
-> > CONFIG_MMU_GATHER_RCU_TABLE_FREE??
-> >
-> > But then we'd have to set tlb->freed_tables and as per your above point
-> > maybe overkill...hm one for another time then I guess! :)
+> > As you pointed out, I think it should be fine even in the !PREEMPT_RT case.
+> > However, in case I missed something or if my understanding is incorrect,
+> > I applied it only to the PREEMPT_RT case for now.
 >
-> I have a prototype patch to handle that, Lance wants to look into polishing
-> it up :)
+> Hmm, I don't think "this code might be broken so let's cage it behind a
+> conditional" is a good strategy.
+>
+> 1. It bloats the codebase.
+>
+> 2. It's confusing to readers, now you have to try an understand why this
+>    conditional is here, which is a doomed effort. This could be
+>    mitigated with comments but, see point 1.
+>
+> 3. It expands the testing matrix. So now we have code that we aren't
+>    really sure is correct, AND it gets less test coverage.
+>
+> Overall I am feeling a bit uncomfortable about this use of _nolock, but
+> I am also feeling pretty ignorant about PREEMPT_RT and also about this
+> arm64 code, so I am hesitant to suggest alternatives, I hope someone
+> else can offer some input here...
 
-OK cool.
+I understand. However, as I mentioned earlier,
+my main intention was to hear opinions specifically about memory contention.
 
->
-> [...]
->
-> > > +++ b/include/asm-generic/tlb.h
-> > > @@ -364,6 +364,17 @@ struct mmu_gather {
-> > >   	unsigned int		vma_huge : 1;
-> > >   	unsigned int		vma_pfn  : 1;
-> > >
-> > > +	/*
-> > > +	 * Did we unshare (unmap) any shared page tables?
-> >
-> > Given mshare is incoming, maybe worth clarifying and being explicit about
-> > hugetlb in both comment and name?
->
-> I think we should instead call out mshare eplicitly, once we know what that
-> would need here.
+That said, if there is no memory contention,
+I don’t think using the _nolock API is necessarily a bad approach.
+In fact, I believe a bigger issue is that, under PREEMPT_RT,
+code that uses the regular memory allocation APIs may give users the false impression
+that those APIs are “safe to use,” even though they are not.
 
-Right, fair enough.
-
->
-> In general, I don't think we'll really use the "unshare" termonology a lot
-> with mshare, as it's not really something transparent. In the mshare world
-> it's simply an unmap in the mshare-owner MM. (mshare_detach similarly is
-> rather a unmap operation)
-
-Right yeah. By having an owner mm we keep things simpler than they'd otherwise
-be.
-
->
-> Long story short: I'll lean towards keeping this here as it is and not
-> creating even longer names.
-
-Ack.
-
->
-> >
-> > > +	 */
-> > > +	unsigned int		unshared_tables : 1;
-> > > +
-> > > +	/*
-> > > +	 * Did we unshare any page tables such that they are now exclusive
-> > > +	 * and could get reused+modified by the new owner?
-> > > +	 */
-> > > +	unsigned int		fully_unshared_tables : 1;
-> >
-> > Does fully_unshared_tables rely on unshared_tables also being set?
->
-> See below.
->
-> >
-> > > +
-> > >   	unsigned int		batch_count;
-> > >
-> > >   #ifndef CONFIG_MMU_GATHER_NO_GATHER
-> > > @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
-> > >   	tlb->cleared_pmds = 0;
-> > >   	tlb->cleared_puds = 0;
-> > >   	tlb->cleared_p4ds = 0;
-> > > +	tlb->unshared_tables = 0;
-> >
-> > As Nadav points out, should also initialise fully_unshared_tables.
->
-> Right, but on an earlier init path, not on the range reset path here.
-
-Shouldn't we reset it also?
-
-I mean __tlb_reset_range() is also called by __tlb_gather_mmu() (invoked by
-tlb_gather_mmu[_fullmm]()).
-
->
-> >
-> > >   	/*
-> > >   	 * Do not reset mmu_gather::vma_* fields here, we do not
-> > >   	 * call into tlb_start_vma() again to set them if there is an
-> > > @@ -484,7 +496,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
-> > >   	 * these bits.
-> > >   	 */
-> > >   	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
-> > > -	      tlb->cleared_puds || tlb->cleared_p4ds))
-> > > +	      tlb->cleared_puds || tlb->cleared_p4ds || tlb->unshared_tables))
-> >
-> > What about fully_unshared_tables? I guess though unshared_tables implies
-> > fully_unshared_tables.
->
-> fully_unshared_tables is only for triggering IPIs and consequently not about
-> flushing TLBs.
->
-> The TLB part is taken care of by unshared_tables, and we will always set
-> unshared_tables when unsharing any page tables (incl. fully unshared ones).
-
-OK, so is there ever a situation where fully_unshared_tables would be set
-without unshared_tables? Presumably not.
-
->
->
-> >
-> > >   		return;
-> > >
-> > >   	tlb_flush(tlb);
-> > > @@ -773,6 +785,61 @@ static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
-> > >   }
-> > >   #endif
-> > >
-> > > +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-> > > +static inline void tlb_unshare_pmd_ptdesc(struct mmu_gather *tlb, struct ptdesc *pt,
-> > > +					  unsigned long addr)
-> > > +{
-> > > +	/*
-> > > +	 * The caller must make sure that concurrent unsharing + exclusive
-> > > +	 * reuse is impossible until tlb_flush_unshared_tables() was called.
-> > > +	 */
-> > > +	VM_WARN_ON_ONCE(!ptdesc_pmd_is_shared(pt));
-> > > +	ptdesc_pmd_pts_dec(pt);
-> > > +
-> > > +	/* Clearing a PUD pointing at a PMD table with PMD leaves. */
-> > > +	tlb_flush_pmd_range(tlb, addr & PUD_MASK, PUD_SIZE);
-> >
-> > OK I guess before we were always flushing for each page, but now we are
-> > accumulating the flushes here.
->
-> Yes.
->
-> >
-> > > +
-> > > +	/*
-> > > +	 * If the page table is now exclusively owned, we fully unshared
-> > > +	 * a page table.
-> > > +	 */
-> > > +	if (!ptdesc_pmd_is_shared(pt))
-> > > +		tlb->fully_unshared_tables = true;
-> > > +	tlb->unshared_tables = true;
-> > > +}
-> > > +
-> > > +static inline void tlb_flush_unshared_tables(struct mmu_gather *tlb)
-> > > +{
-> > > +	/*
-> > > +	 * As soon as the caller drops locks to allow for reuse of
-> > > +	 * previously-shared tables, these tables could get modified and
-> > > +	 * even reused outside of hugetlb context. So flush the TLB now.
-> >
-> > Hmm but you're doing this in both the case of unshare and fully unsharing, so is
-> > this the right place to make this comment?
->
-> That's why I start the comment below with "Similarly", to make it clear that
-> the comments build up on each other.
->
-> But I'm afraid I might not be getting your point fully here :/
-
-what I mean is, if we are not at the point of the table being fully unshared,
-nobody else can come in and reuse it right? Because we're still using it, just
-dropped a ref + flushed tlb?
-
-Isn't really the correct comment here that ranges that previously mapped the
-shared pages might no longer, so we must clear the TLB? I may be missing
-something :)
-
-Or maybe the right thing is 'we must always flush the TLB because <blahdyblah>,
-and if we are fully unsharing tables we must avoid reuse of previously-shared
-tables when the caller drops the locks' or something?
-
->
-> >
-> > Surely here this is about flushing TLBs for the unsharer only as it no longer
-> > uses it?
-> >
-> > > +	 *
-> > > +	 * Note that we cannot defer the flush to a later point even if we are
-> > > +	 * not the last sharer of the page table.
-> > > +	 */
-> >
-> > Not hugely clear, some double negative here. Maybe worth saying something like:
-> >
-> > 'Even if we are not fully unsharing a PMD table, we must flush the TLB for the
-> > unsharer who no longer has access to this memory'
-> >
-> > Or something? Assuming this is accurate :)
->
-> I'll adjust it to "Not that even if we are not fully unsharing a PMD table,
-> we must flush the TLB for the unsharer now.".
-
-I guess you mean Note or that's even more confusing :P
-
->
-> [...]
->
-> > > +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
-> >
-> > OK I guess we need to add these to cases where we remove previous entries
-> > because before we weren't accumulating TLB state except in
-> > __unmap_hugepage_range()?
->
-> Exactly.
->
-> >
-> > >
-> > >   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
-> > >   		if (!dst_pte)
-> > > @@ -5136,13 +5137,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
-> > >   		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
-> > >   	}
-> > >
-> > > -	if (shared_pmd)
-> > > -		flush_hugetlb_tlb_range(vma, range.start, range.end);
-> > > -	else
-> > > -		flush_hugetlb_tlb_range(vma, old_end - len, old_end);
-> > > +	tlb_flush_mmu_tlbonly(&tlb);
-> >
-> > Maybe:
-> >
-> > 	if (!tlb->unshared_tables)
-> > 		tlb_flush_mmu_tlbonly(&tlb);
-> >
-> > To avoid doing that twice? Not sure if so important as will be noop second time
-> > though.
->
-> No,  see the existing code on the !shared path: we flush even if we didn't
-> unshare anything, and I am not changing these semantics.
->
-> The huge_pmd_unshare_flush() will skip the second tlb_flush_mmu_tlbonly().
-
-Yup ok not a big deal
-
->
-> >
-> > > +	huge_pmd_unshare_flush(&tlb, vma);
-> >
-> > OK I guess the semantics are
-> >
-> > huge_pmd_unshare() for everything that needs unsharing, accumulating tlb state...
-> >
-> > huge_pmd_unshare_flush() to, err, flush :) followed by tlb_finish_mmu() obv, and
-> > with i_mmap lock held...
->
->
-> The tlb_finish_mmu() can be defered, as it's mostly for safety checks in the
-> hugetlb usage here. For pure unsharing, huge_pmd_unshare_flush() will do any
-> flushing early.
-
-Right.
-
->
-> >
-> > > +
-> > >   	mmu_notifier_invalidate_range_end(&range);
-> > >   	i_mmap_unlock_write(mapping);
-> > >   	hugetlb_vma_unlock_write(vma);
-> > > +	tlb_finish_mmu(&tlb);
-> >
-> > Does it matter that the hugetlb VMA lock is gone when we invoke
-> > tlb_finish_mmu()? I'm guessing not.
->
-> It shouldn't, as it's mostly safety-checks only for our use case here.
-
-OK.
-
->
-> >
-> > Kinda wish we could wrap these start/end states, it's fiddly to know that
-> > you have to:
-> >
-> > - call huge_pmd_unshare_flush()
-> > - release i_mmap lock
-> > - unlock vma hugetlb (ugh god don't even get me started on how that's implemented :)
-> > - call tlb_finish_mmu()
-> >
-> > Obv. this kind of thing can be part of future cleanups
->
-> Yes, not messing with there here :)
-
-Fine.
-
->
-> [...]
->
-> > > +/*
-> > > + * huge_pmd_unshare_flush - Complete a sequence of huge_pmd_unshare() calls
-> > > + * @tlb: the current mmu_gather.
-> > > + * @vma: the vma covering the pmd table.
-> > > + *
-> > > + * Perform necessary TLB flushes or IPI broadcasts to synchronize PMD table
-> > > + * unsharing with concurrent page table walkers (TLB, GUP-fast, etc.).
-> > > + *
-> > > + * This function must be called after a sequence of huge_pmd_unshare()
-> > > + * calls while still holding the i_mmap_rwsem.
-> > > + */
-> > > +void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-> > > +{
-> > > +	/*
-> > > +	 * We must synchronize page table unsharing such that nobody will
-> > > +	 * try reusing a previously-shared page table while it might still
-> > > +	 * be in use by previous sharers (TLB, GUP_fast).
-> > > +	 */
-> > > +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-> > > +
-> >
-> > Extreme nit: inconsistent newline here compared to elsewhere :)
-> >
-> > Not even sure why I'm making this point tbh
->
-> Inconsistent with what exactly? I prefered separating the
-> safety-check+comment that explains why we check for the lock from the actual
-> logic that carries out the actual logic.
-
-As I said, I'm not sure why I made the comment :P not a big deal.
-
->
-> >
-> > > +	tlb_flush_unshared_tables(tlb);
-> > > +}
-> > > +
-> > >   #else /* !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
-> > >
-> > >   pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-> > > @@ -6947,12 +6957,16 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-> > >   	return NULL;
-> > >   }
-> > >
-> > > -int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
-> > > -				unsigned long addr, pte_t *ptep)
-> > > +int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> > > +		unsigned long addr, pte_t *ptep)
-> > >   {
-> > >   	return 0;
-> > >   }
-> > >
-> > > +void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-> > > +{
-> > > +}
-> > > +
-> > >   void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
-> > >   				unsigned long *start, unsigned long *end)
-> > >   {
-> > > @@ -7219,6 +7233,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-> > >   	unsigned long sz = huge_page_size(h);
-> > >   	struct mm_struct *mm = vma->vm_mm;
-> > >   	struct mmu_notifier_range range;
-> > > +	struct mmu_gather tlb;
-> > >   	unsigned long address;
-> > >   	spinlock_t *ptl;
-> > >   	pte_t *ptep;
-> > > @@ -7229,6 +7244,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-> > >   	if (start >= end)
-> > >   		return;
-> > >
-> > > +	tlb_gather_mmu(&tlb, mm);
-> > >   	flush_cache_range(vma, start, end);
-> > >   	/*
-> > >   	 * No need to call adjust_range_if_pmd_sharing_possible(), because
-> > > @@ -7248,10 +7264,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-> > >   		if (!ptep)
-> > >   			continue;
-> > >   		ptl = huge_pte_lock(h, mm, ptep);
-> > > -		huge_pmd_unshare(mm, vma, address, ptep);
-> > > +		huge_pmd_unshare(&tlb, vma, address, ptep);
-> > >   		spin_unlock(ptl);
-> > >   	}
-> > > -	flush_hugetlb_tlb_range(vma, start, end);
-> > > +	huge_pmd_unshare_flush(&tlb, vma);
-> > >   	if (take_locks) {
-> > >   		i_mmap_unlock_write(vma->vm_file->f_mapping);
-> > >   		hugetlb_vma_unlock_write(vma);
-> > > @@ -7261,6 +7277,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-> > >   	 * Documentation/mm/mmu_notifier.rst.
-> > >   	 */
-> > >   	mmu_notifier_invalidate_range_end(&range);
-> > > +	tlb_finish_mmu(&tlb);
-> >
-> > Hmm, does it matter that if !take_locks, the i_mmap lock and hugetlb vma
-> > locks will still be held when tlb_finish_mmu() is invoked here? I'm
-> > guessing it has no bearing but just to be sure :)
->
-> See above regarding safety checks.
-
-OK yeah, I didn't think there'd be any issues holding those locks here.
-
->
-> [...]
->
-> > >   #define CREATE_TRACE_POINTS
-> > >   #include <trace/events/migrate.h>
-> > > @@ -2008,13 +2008,17 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-> > >   			 * if unsuccessful.
-> > >   			 */
-> > >   			if (!anon) {
-> > > +				struct mmu_gather tlb;
-> > > +
-> > >   				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
-> > >   				if (!hugetlb_vma_trylock_write(vma))
-> > >   					goto walk_abort;
-> > > -				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-> > > +
-> > > +				tlb_gather_mmu(&tlb, mm);
-> > > +				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-> > >   					hugetlb_vma_unlock_write(vma);
-> > > -					flush_tlb_range(vma,
-> > > -						range.start, range.end);
-> > > +					huge_pmd_unshare_flush(&tlb, vma);
-> > > +					tlb_finish_mmu(&tlb);
-> >
-> > Not sure if it matters, but elsewhere you order the locks as:
-> >
-> > - huge_pmd_unshare_flush()
-> > - release i_mmap lock
-> > - unlock vma hugetlb
-> > - call tlb_finish_mmu()
-> >
-> > But here it's:
-> >
-> > - unlock vma hugetlb
-> > - huge_pmd_unshare_flush()
-> > - call tlb_finish_mmu()
-> > - (later) release i_mmap lock
-> >
-> > Does that matter in terms of lock inversions etc.?
-> >
->
-> I had a cleanup patch to change some of that, but I decided to keep it has
-> is for this series: flush the tlb and issue the IPI while we still hold the
-> page table lock.
-
-I guess my concern is lock inversion, but not sure there's really any chance of
-that here.
-
-Lockdep will help point it out if so :)
-
->
-> (no idea what the hugetlb vma locking even does here, and how it interacts
-> with the existing TLB flush -- not touching that confusing bit :) )
->
-> Thanks for the review!
-
-No problem, thank you for the series!
-
->
-> --
-> Cheers
->
-> David
-
-Cheers, Lorenzo
+--
+Sincerely,
+Yeoreum Yun
 
