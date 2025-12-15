@@ -4,135 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B32BFD5B16F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 13:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C269D5B16E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 14:00:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 266206B0007; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
+	id 7E8556B0006; Mon, 15 Dec 2025 09:00:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 216726B0008; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
+	id 7BFB36B000A; Mon, 15 Dec 2025 09:00:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 105A36B000A; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
+	id 6FD546B000C; Mon, 15 Dec 2025 09:00:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D296B0007
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:59:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A84E3C021F
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:16 +0000 (UTC)
-X-FDA: 84221862312.17.DEE5704
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 172C71C000F
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0ZSvqo9;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 608A56B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:00:53 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE50FB7497
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:00:52 +0000 (UTC)
+X-FDA: 84221866344.21.C9D02C4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 179C7A001B
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:00:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=le4XRb1X;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765807155;
+	s=arc-20220608; t=1765807251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B92+NivF60LJZLsL0UwK1xRxjOVxI+ZR0FYvLwpZtsA=;
-	b=VctE3uQUOpiow4dJK8tqElgfXidLJG2PEMVyr0uyhVzr9RLVQDxS/3RQtWyF1ol1fqOv0u
-	DqdJWPW91OK2QyCfz9W58HkyPqSZue7AEpAPFFqI91QK6+VODhVKYiyx3qOJLKFDLcp54Y
-	N2tXKwAP4PxpV+yGOzrcMOUscO2bZdo=
+	bh=rkCYGiCYJi+miO4Sgpe6xzcq/dDOhFl6pIaaLHV9nqM=;
+	b=B4q1cp+H+l6f+xUL9PwNd1mgoSR0FvIfMXCJB/pBWwrbZ0DvUgsPnroodkBervPDjqiWIi
+	LH1RK+JoM1HRk62TcgpiYdvZ+g8njGs+zNHaVrzSV7qZqECeQaECku6xEspF5nBrTKJYDH
+	zptuhKT/dgdsjog2av0lON4Yvlyh+Fg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0ZSvqo9;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765807155; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=le4XRb1X;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765807251; a=rsa-sha256;
 	cv=none;
-	b=hOc4iSiG6J/SVzQ5AiOiKNAWLR6K241orW/9wOEWdRb1ur2cbJ8Xb3hl0iR1hzdM0Gfp+g
-	PjZG+N8Ea2DE5/KdglrmUPCfU5Xiu2Ndq2Mi4RR0blW0IEyeEnywsvPh2r3ZxL+4k8ed5L
-	k+djRETZ8QAWOcMwdH7BVuifgcMWymA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3511360150;
-	Mon, 15 Dec 2025 13:59:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84039C4CEF5;
-	Mon, 15 Dec 2025 13:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765807153;
-	bh=YQ0YmiEKTBiByyCk2XIiAXJahBqdOSyVHDmgyhFstuo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=K0ZSvqo9FNH+vPZrOVLOU5ZraIN5/Hx4lzXEVk8deQoFTzZrfVB3Sn8wUVb8UaBDT
-	 IPKJL1FeYjBc4++kymDagnMFo+aO6gmHV+UWQO7cqHTOD6VMMtizrJjRFLGRY7Ee7L
-	 w4mP9rPOGGMbKthLu+r5v9Ru7rhk3vDAc1XCmmrB5wHkqvV8acOQhuC1BVzlP5ME/H
-	 H7EzKs7+bvfSkQA41DZXMI2/LRypKRi0eSe24U8EkDVDNspUAYXac7itmfYbMOTmxv
-	 x+MHyD8AednEYtbIisGEt5V/tIfQDU8l0ImBMScwR5yt2mJk+grnKjhIaLlaCyGSER
-	 QNwLC455/HDNw==
-From: Mark Brown <broonie@kernel.org>
-To: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Elle Rhumsaa <elle@weathered-steel.dev>, 
- Carlos Llamas <cmllamas@google.com>, Yury Norov <yury.norov@gmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
- Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
- Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
- linux-security-module@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
- Robin Murphy <robin.murphy@arm.com>, Lyude Paul <lyude@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- linux-fsdevel@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>, 
- Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Ard Biesheuvel <ardb@kernel.org>, 
- Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
- linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Vitaly Wool <vitaly.wool@konsulko.se>, 
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- devicetree@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- linux-pci@vger.kernel.org, Remo Senekowitsch <remo@buenzli.dev>, 
- "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, 
- Will Deacon <will@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
- Gary Guo <gary@garyguo.net>, Liam Girdwood <lgirdwood@gmail.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, 
- Mitchell Levy <levymitchell0@gmail.com>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- John Stultz <jstultz@google.com>, linux-usb@vger.kernel.org, 
- Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
- Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>, 
- Rae Moar <raemoar63@gmail.com>
-In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-Subject: Re: (subset) [PATCH 00/46] Allow inlining C helpers into Rust when
- using LTO
-Message-Id: <176580714194.161338.1959594276727103368.b4-ty@kernel.org>
-Date: Mon, 15 Dec 2025 22:59:01 +0900
+	b=F7NlA6HYLERs+6hmAKgz8c1Tz2M5RmvBCHx/n5Oyzh1NjBg3GEMgl7UzlvcWWbTOU3NMYT
+	bJSZtnauQPFrs+OY/KlK37kcLHcV13U88efXoa9OJDlFeCIe2s2tkywB2v/P2wbyiRB4Xa
+	kmWbpNa0SClx+0zoe3rQZQCze2vmZV4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rkCYGiCYJi+miO4Sgpe6xzcq/dDOhFl6pIaaLHV9nqM=; b=le4XRb1X/irlAOoRpHp/4YebJK
+	rDsR2KgG+emZE+CZTmEosUoyRJ8H/f6ngj/KdzlvvIq8eU00Rb8vD4ygnKsyBNCUMLfLodZCNORZX
+	Fg5iafDkoVb5F1LIitOytK6BCojhwCPKGualr1r/Vyoqqr216nhpi8D7lKEvenSGCg1Irvb6y/lAI
+	6mhXS2lgZ4/XpVgKuONdgPli87rt2Ilw2VOpEwlQfbY89E3ReoqkznnEGxLbs+CI8PhoQKRmkCNVL
+	sG+dusE2nYM0rQJhm1RYxJWYCFKKlv+r+lOonynJRewO3VSUT1ChIQhsD08UMbEF0xzia4ybuec0E
+	NxxLj5Cg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vV97f-00000001zD9-3tD3;
+	Mon, 15 Dec 2025 14:00:24 +0000
+Date: Mon, 15 Dec 2025 14:00:23 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zhang Qilong <zhangqilong3@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	corbet@lwn.net, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH next 0/2] THP COW support for private executable file mmap
+Message-ID: <aUAUd_XJPVsl_CZL@casper.infradead.org>
+References: <20251215123407.380813-1-zhangqilong3@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
-X-Stat-Signature: e5ytn1fh7d4bhtdf59hax496pha57q7z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215123407.380813-1-zhangqilong3@huawei.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 179C7A001B
+X-Stat-Signature: r7rj8oq5pc7ypufn7mpoeax48gon5bp8
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 172C71C000F
-X-HE-Tag: 1765807154-325232
-X-HE-Meta: U2FsdGVkX18ad0VKJ5VZRx1x1IUMFLiDq+BPpmC8GcjQsPw3STedByJboAvM4Fyw5KXGvPWnsalVDXua9P9+otNuZe6dZEatSQXjLAPoZQ5Ajl+Kyq0eEkP3pPEvpYqY1nPNmPtC+RRZQxEGemP7vfDdT+Cx2kSMu0w/I8UCEfTE/cNXq96eoCGXkEyfktnOirRgz+NW+kaftdBu/TwrDbNKL/0xz6AIrnEc0F4aJAliSwJtNx1bGbglntsuGjA3riYajvz7wcZ+TPlGr3MYy3UKVKFbnOb+iSv5u1YwSnmvYWg3OECbNCTqW49hthvLPZajcXo8D+M2x8tMSEF+dt+gCYuCoqTaPvrQrkQTAcbk7ErTUVqZKofXqmk7nznA3D+yu5XUdYdxO4lqRe/pe0xQGChRPXovwMS75izcUFEZ039CXrpI5fm9CIEUA5bHLtfKLR3rbrTISpQzHQZd+7/kqy3oXMA167z02WeafcD0KJVxIzSNEHp3ihsM/qzz0WGw7ieMCJBYKPfcfytewhcYicqjKo/a2bIEsB2LsUVAj1Jslgl5muYdQWMjmWN2xcJdvPcZfYpUhwEbZ/omb0PGcqk/ChngVXFJCaIdyNZZmR+aIfwg9hvRv02gswi9xf9U+qRngGHKXsY0mFaAh7GgHbk4Af29xEFGX+87b2zTnEZRTcm4yqBGdSJ50t3sXTe1taP9mrDHg3zixzaRgfdquVKOvVM/MpqYYQ3HVeCnFMIySNTgbPU6K6Caj6U7qGyxKrAsUIoz8uXIPNZAiAelkU2uCfKYFCCyzj5pgYAgfClqjq1haNwJasP6vMRDai2rzdrc3Y4e3xdJcYwcahUKcMTy4eCuITa+dTrPFW5SYp/G3mRrMymS4gcPr1WmiD5RaZ1gE5fkONysKMjSmIZYpVHFv2NYS9f4pb0x4Q4O6aLK9g5FiokozlJ0q5R1BMvjZgZgtsDbYlp3lxV
- s5ANbXnD
- OAnEi2tPWW2jzEschMAkWUC2nvQ2mILcb9wYI/RpE0j/A76JBC24ENvj4Pi9t+hn5uZhwuOu7iJn1zq6GiFUMB3efNxe08/GdmZZA5yJo2iYcIfd1CynuARwvCWc7dmjlNL7Uk9xp0oZiUWIUIEGJL5B6W0K/gtqaRdMGMRH1KKqpZ6llArg5mi+qN+nOUVPZaPgCGbRBBLbVeLdaFbZ58N7CF+jN7mp0GZBVR533sENLzo5ClyUqdx84mWJcWj/4emZWmP32gcdYq89SAGNAktaRs4FiKucV1y87sx+qr318HTN9E3vuPQHb0A==
+X-HE-Tag: 1765807249-203070
+X-HE-Meta: U2FsdGVkX1+BF2i66bUQonfLg4Qm54ZvJbAFg+1VYIK8A2VRqaypupiafQvjoI1+sF07vkr60sH2oZt8ACAzdwTWFJ2Fmn+vIp0WsA3mg54oya+bGZH9PF1rANvPP0k3nVCcWNDcDoLEs0b0O8ABxL0E0Xli0uWDmy07W4dOCdN7ZRfqgV4W6/vGbS4qRDcUlZplZh000OS1Fa89CKWpM69WJ7ajYTwDhjm1GbJYz+zpC3Bi9uwm/BO9yDoKHa17n2TTdYGlyh5wzwODa+rsdBx/Q6qPH2C0F7hRq/SGN4uHqueKdVuCoYKeWDaKll8xDcss4TzxHdYgUG01c1gg9fKqKbQzXta79idPIimXuy4MHK0pEmTIlW5L/545vyd4qg2FupW8gh81qL8Xto6FfJFTV8lCYHdGWCQsWl5gFPfLuJXZHlOuLWzq0/DyM3YrDGlk6ZXS8vTnlpCzF35eBbHQauYcawis+3xID0vl3Vq98iBkVEfu3zer5U20fhMDA4Id1vM4TbCWgNBN3k3gMGWjkdLpJARmv+jl8wFHZlPTvMO1EESDfV5QJDKmA9NuuOZ1qJjFvQ/TwvD14lGRz93R1gvZRBBOF51y06hDRiJ5oKDE1ifTy7y8/iD5QmPk++Fa/MEPDY9RCPtlXtDMRcgoqfMv1wDohM7nUIn6BNybsoTC4hGG+KixiI2FFlGbVJM46r8UmMPDSnbSARe38ezfUv9PdOYsa1vqylY+/1rglmlm33UL/zdRGQMX7Ak9W66EKfIoSKwzyfdZqpQ1b1xDtuGtGktsp56hwFqUVcIFesD4m4jy+V08Ie/6+hA9MhM5uoDlcXgPeGXxuZtc4YQBpdoj9wpyCxYgbNrRdJEZ+eubsXK36uPmPlIk65PbDZc5Gcj5msIIIz3MX8DcW6XHikhMBc5TX3XibgKAn/yofbtCpz3UxoS31yRcHMTX7pmXPWDaPrWMluUU6Xl
+ j031h3g7
+ RPf0goXlpJqqyanIYJAQ37+r4hDdTRIQ6xUMPFx4Hsgzlo2romFcgSIATakmgM2SQLIduNluOhqvxV0781AT70VuJyzSLoO0gtDIGkYeV1eaISXlfSYLAo7S2F+rssExEWx1hrV/TzZudCWxbwdStIKsbq3sww7Ukdg4vH+89MDry3iqZJ8oVkhZoPYtSncAVVcFIx8wzwmjOIF45RDoV88CLcN17x5R/dZd6UKykJ7ngnsabZ8pmaC0ShslsrXb+uqym
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,43 +95,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 02 Dec 2025 19:37:24 +0000, Alice Ryhl wrote:
-> This patch series adds __rust_helper to every single rust helper. The
-> patches do not depend on each other, so maintainers please go ahead and
-> pick up any patches relevant to your subsystem! Or provide your Acked-by
-> so that Miguel can pick them up.
-> 
-> These changes were generated by adding __rust_helper and running
-> ClangFormat. Unrelated formatting changes were removed manually.
-> 
-> [...]
+On Mon, Dec 15, 2025 at 08:34:05PM +0800, Zhang Qilong wrote:
+> This patch series implementate THP COW for private executable file
+> mmap. It's major designed to increase the iTLB cache hit rate for
+> hot patching application, and we add a new sysfs knob to disable or
+> enable it.
 
-Applied to
+You're going to have to provide data to get this patch in.  We've
+deliberately not done this in the past due to memory consumption overhead.
+So you need to prove that's now the wrong decision to make.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[35/46] rust: regulator: add __rust_helper to helpers
-        commit: 03d281f384768610bf90697bce9e35d3d596de77
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Microbenchmarks would be a bare minimum, but what are really needed are
+numbers from actual workloads.
 
