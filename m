@@ -4,172 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93C5ED5B16E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 14:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BAF5D5B177
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 14:48:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 032476B000A; Mon, 15 Dec 2025 09:30:54 -0500 (EST)
+	id D2B626B0006; Mon, 15 Dec 2025 09:48:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F251E6B000C; Mon, 15 Dec 2025 09:30:53 -0500 (EST)
+	id CDCA36B0007; Mon, 15 Dec 2025 09:48:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14256B0011; Mon, 15 Dec 2025 09:30:53 -0500 (EST)
+	id BCAD36B0008; Mon, 15 Dec 2025 09:48:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D17836B000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:30:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C7E8B75F4
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:30:53 +0000 (UTC)
-X-FDA: 84221941986.28.0F80703
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F00D04001E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:30:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j537QsDg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HCL1oKHE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j537QsDg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HCL1oKHE;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC546B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:48:07 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5140714028A
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:48:07 +0000 (UTC)
+X-FDA: 84221985414.01.E8F986F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 942DF1C0011
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:48:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="niGNJ/9n";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765809051;
+	s=arc-20220608; t=1765810085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uOjQ326N1+1XAMUcwl6LgXVQlD80kPfn9sCwPFYyM5w=;
-	b=hT3idh8pPlQOVa4dN74zl3As4WBZXRhEWT9fAUvLDO3u8qNFOpRjVIMOuMi9IGdJbdbYJx
-	dBSC5HgugbT4Ym/AD0gVhR58ZK68Aso0DaNiNLbXWJ1WUj7BoeOABuxh5K8Ao21eB7TnXn
-	Fdg4YJCtZ1Q6DSY7cR4zuB7pZmgtkZI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j537QsDg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HCL1oKHE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j537QsDg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HCL1oKHE;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765809051; a=rsa-sha256;
+	bh=i7cw+Cky2EXd7nNEV08cJV+90MTvKcu3DzOBFdzndQE=;
+	b=whm3jcYPh3iHcMgecj+xrXrHoumNn+q7HgHjPpCZLQUdr/yQYO8I3iDV1dhmXRNgNup+SK
+	rFOroJ/WzsTJ/X3ibZ2ptGUYs/CzibBbjdZ6La8hY+q5iISnimT9lJk/04iMwkgTB24oOk
+	7c4yBDemEgqPszRpIO4e2hLHoP8ULEQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765810085; a=rsa-sha256;
 	cv=none;
-	b=EzWKW0Hl+PeH4tV4szUWhdF5uY30jr9uXmqnr2duGoY9MHTF5f+yzDugrnU33Fg1BeINch
-	A8ZDTc4eUkNEVaU6EWUM709mJJ/PFY8W3t7tnMsuKLySMlCS62LmT70XXee9zk6QCHGuiH
-	qBDGmEXFgW8sIVyE3H/yB3uzrFzI8lA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3076A5BDC1;
-	Mon, 15 Dec 2025 14:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765809049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uOjQ326N1+1XAMUcwl6LgXVQlD80kPfn9sCwPFYyM5w=;
-	b=j537QsDg4k9sEYNfeWpz574vSCcbZW/I6BKptvWUuzXmL5lFADsbtf7JnjAFvNM6qVBrCM
-	coKNVOSCzZW6TXEFCbJ3JalykPTSyt+V6BeQMPmNW3y/QP7kY7a0LPD+lxc/U0KvxJ98jt
-	DGCKDErOBADymFJ0YHo87jjtbUMZjFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765809049;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uOjQ326N1+1XAMUcwl6LgXVQlD80kPfn9sCwPFYyM5w=;
-	b=HCL1oKHEOBQa8/63tVGSZAsPl83Vdu5wRMr3aG2jHwtw7uTE80O3AdRnLtGuyeBIOL/Tao
-	YAfGfv48KwjYEgAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765809049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uOjQ326N1+1XAMUcwl6LgXVQlD80kPfn9sCwPFYyM5w=;
-	b=j537QsDg4k9sEYNfeWpz574vSCcbZW/I6BKptvWUuzXmL5lFADsbtf7JnjAFvNM6qVBrCM
-	coKNVOSCzZW6TXEFCbJ3JalykPTSyt+V6BeQMPmNW3y/QP7kY7a0LPD+lxc/U0KvxJ98jt
-	DGCKDErOBADymFJ0YHo87jjtbUMZjFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765809049;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uOjQ326N1+1XAMUcwl6LgXVQlD80kPfn9sCwPFYyM5w=;
-	b=HCL1oKHEOBQa8/63tVGSZAsPl83Vdu5wRMr3aG2jHwtw7uTE80O3AdRnLtGuyeBIOL/Tao
-	YAfGfv48KwjYEgAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 15D7A3EA63;
-	Mon, 15 Dec 2025 14:30:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vOf9BJkbQGkvIwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 15 Dec 2025 14:30:49 +0000
-Message-ID: <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
-Date: Mon, 15 Dec 2025 15:30:48 +0100
+	b=F4uQPJycML5vs4VdfJjeGq/t+VcKuwE99QSk4xS6SLMATNBG4G8Adkrv3dmPKY3wqPtCCi
+	uxAZ8dDlNhRGgX9oC+2XebqNSshjxVvdVcWiaNrs/rsxdaeHovJByw/vIunyZXqSyagOme
+	KaoW8XQOr1fxoUqTaGjQgP2T47UkHRs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="niGNJ/9n";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EC2D960133;
+	Mon, 15 Dec 2025 14:48:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7732C4CEF5;
+	Mon, 15 Dec 2025 14:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765810084;
+	bh=mV3B6xzBDJJhXBY0+MuZ/E/eWrtZv1dU8DuL0QrCJos=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=niGNJ/9nLNAcG7+GscG5rl1VsKZF8bJb/qYslvcYV+zGeLxb07aeoEgPu7HJ/Sthn
+	 mFTV0AClsXOnG6AmRKVOtCOwiVhUW36xovmM47DlfU7ZCIr6Z78vylhzbYZeYBBp0T
+	 KwZ9YbjhYZ2JsYtvfh/0rnU5uqCmztM9pKxAGGrGEP6Re38zxFnZcTuZ7jBF+M4+Nc
+	 Gw46iMjDQex4/+CrSySB+0oOSvSsgZjB1M6y6aarXaxSVBZ28Oz2q5IqAWk1XNGGNt
+	 liezIwU5PL2imabkYE7mALE09KoTRj0q+rKwxm0xnNvUyvIGkQmPtwj4PbFejZ6P4t
+	 3SE3nGyR6NsIg==
+Message-ID: <937a4525-910d-4596-a9c4-29e47ca53667@kernel.org>
+Date: Mon, 15 Dec 2025 15:47:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
- __pcs_replace_empty_main()
+Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
+ unsharing PMD tables using mmu_gather
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
+References: <20251205213558.2980480-1-david@kernel.org>
+ <20251205213558.2980480-5-david@kernel.org>
+ <c641335e-39aa-490a-b587-4a2586917bc9@lucifer.local>
+ <9ac7c53e-04ae-49f3-976d-44d1e29587d1@kernel.org>
+ <07e8b94e-b4a1-4541-84ed-a5d57058d5a1@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-To: Hao Li <haolee.swjtu@gmail.com>, akpm@linux-foundation.org,
- harry.yoo@oracle.com, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251210002629.34448-1-haoli.tcs@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251210002629.34448-1-haoli.tcs@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <07e8b94e-b4a1-4541-84ed-a5d57058d5a1@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 4a6yf5cg6ukzzmp49q3685zhcnsdd38x
+X-Stat-Signature: osp5d9c5h5xjjjojtf13d7k6bx66i641
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 942DF1C0011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F00D04001E
-X-HE-Tag: 1765809050-368479
-X-HE-Meta: U2FsdGVkX1+9Kzw/nOIAKbaf1XqTRDMov5onU7fEEIf0ugnn05MbEI16vs6sm98bLzc18YKvAyCIlrX6jFS4RewljyEKgir2zElnqthyAh9YsNkKgQS/FO3avUWH6IElIaYWxWQtU+tbETru3X4xYVy6iAzDUtysaXOxbjCMpMiU3HgOy1DR45yYodaWaqg3ECmUvwDTMijR0AukSk/5xgdWHwGVv0eRkrTwnWUQv9AcryPhvqiVq1N5osdzixaZnQiZpP7KhnUUW6YyupqnlqGBmFNgRQmpDBtQDvkFW0qjmTyBCsDq1mUjRNsUmFrDnlLYapg15+xNXa0ZJoOoG/+DgjCHlwe5Q7VX18abvHV+J/CNmLBAScTKMOZo6lS3dSoIW95JGQ8DSwwIwzVm0A6Goaf3whoza5RqZcAMhyvLOvV30kQRgMNPnGsGl3xzopdWQHAk0G1YA7qCflJ1gY7PMpTSkuwfDCt2BrdKD3bjiNuRCLkXSohqRqCEbFs6D6M3RpSW/0cOvdGF5cJ5rzLeXrQtG1gk3B4U6gbnNBl9+IbH4aFhuFtYatyaDdCHx8elauybZSes0c1G2pIMbaG1h2VXQQYoo++jLh+gzGb6roDKyv4ZRidhh388ZLY0HfpvQ0GsvKiVEKVuCbLOTy+3iMnXDmjybvUjemdBdC+v/QI4An7OIBbN+5J3HXqI38oYbNoXyrWAs5pLCN/tk6u/qkUC/YQi7fWCUUw4fDVwUyg+elc4jIAHUBeSi2II4YKyEvhn/eJKEKNLW5womXZvyOjvM2sVK/3uWgMlwWUXfr2U8gSE6fpBXo3qJxQNF9TVhSkuMkuXmTadaujLFtM/bT/CdGAzfVgOvWBf/WN2LATspXSLU15Z/ygR4NdGKUR0OAy4XX9EtSwiBZi0J8swB3ATcP8viOQyRleTkTx4o4ZL91ZkMRN7iBK0etA4IitSZq7Cksjt5uxICTc
- gAOiyL65
- qWR/CddHZYclTtzzXwjNN6EY6hlcEun0nkWQqx5V6oc1QjHhq8JI2gW5mB8PdrHE/EuYwUaiQ/ElUEDce3WVmrdfpGsViYutBYireysxxMkGjgLJLQakYwoaCmefvrIfywte0TEhXuIXOwtok8mqagQ8j4WAaplH5CAnpqixPEzauss1ybVViKiSq9FmK1kNSIP68CUAncUeWe+0X5JoYeS4nkjcmYiQ7K+h3wl8wEYGbgXcnS9kmFzDij0h/euBYS+Tatq0yPQ07zQ8CLC4SASlPuHMhifpohImO1UHh3RloOGZxqDqdNbTjYKgXLz4dhPbnMFv1Q3RHlIeFYNNBeaKUBWnjiIMLmpmrEE0V/E31zcCWrw/Uk2iBYxa7ec3ECsQ840bdk3qc/2pQrWPlZV4JybYzdV5Zy/EY/465RqSnits=
+X-HE-Tag: 1765810085-858774
+X-HE-Meta: U2FsdGVkX1+PYc1AKhDJK5Kw5Oy4kjf8f7IcLZRQr+Dm0uAfBEuKLA+NFNsu/9EmVwpTSbNPd3qhXvmE9Mo+jtZCk6LQePEY5j8ZEG6d6YDs/yZ5UJzWYW8leqsUs1XrXL2qiaML1cFDxxQubmYVQSXBUOiKxorSnskmBg1LuNQjWJweYU+wC6rc6L1hqi46vMTCTnBe7futx+MH5TqDjo1l79VUEtapIUD7pl0ULUgdLV6TWdsj7A6UimmcwmANdINrR0R5Mv31VKRjYzqEAtY4RnYItug2N6VGGefE1AI8g59hWW4ZseHXAJRgd+LHxpwNxJOJ/GCIon8swHDJ4w+vhF4g5yoVMZCWAh3nuA08bHeu3ms64bIu3uVQRFLNMxFC8weoLN0N+SFCrjLnOq+RbjjR3XjG0U4k1iXN7DZFzI+I1hXANdgEPNx2G10IsWSPXgIASdNJcd+TglsvjlIX8A10OU4fHO7kTkL62D2crQCrG9nGOfKH8/rjx4rg6NBxeqMY1V9EW0MBqszAvD7CD3Jt0hYuLEEbraxJ4r9UzMyB7rDXw00NLS/5xBFdJkJDNq6gcFKtq6R4L1j1Vb72U9Ejv/eumddeXZ7G17R7F+0nk+XeoZx9BGhE4JWf6HQZkpeDiqToQ29e0kqoXJXNqu1gP3T81QdFqEFZfTB6PDWs6an9TirJvWJHeGyDlx3wsC1DzoKViZhf2Cwc763s9wIkaiF53jbewT3HKwBy14rBYgyHlAeBG9PVmwF4yhEjC3KmOGkHsbgGNAqpskc/8uuKN8Vvpk8TWv5KpcbEfiyW7wiiVw0hC3d6vN85fxm8O0VvfSjTHwfJXSBRY/eEs/8qaq94bggn3w1qq2GRtAJ+FYS3YgSV7KaHVuzld03g5pch3muu3VOmN0VngN2owrRLG/3b1W1ZPkHi4FGZLzyWWmSSIDiSFjW/HJmJZ1BZKQMtq9nC9warLLe
+ HzUPOHXq
+ soOQ8Nu9Mof4VHnX1KIeTwoPXa9+AuA8c6awY/mxBOsj6Z5aK/S1sCWUDv8wrohLpBI6vk5BYCtF+aeHLCIm+9Z1IyGxNx78sD46UzznIHyeM+ZcUvb/v5HyOMcdPlmsEu0cZdZzWE6tdvvJzxi+hH+9kjAoTmRcDsBBNNPVaulDOUiVMUQaubi9XmGvafM/GzBL4djLznXOdivU9U6LNesB2pulwMiLgGDIe96Igdg6hvdQ2xKNymLZL/KHScCePY1tahc4oGB7oxRBTvMn4mUTIcd4xLipLaSPYtA8k1EI/g+wfUdMCJAwd3LM+tpaA1JFAzs5VxzOReZKFAGkcC/rQb+Sc784U7JZpJN/D4td48BRcqUzYXPzZqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,76 +109,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/10/25 01:26, Hao Li wrote:
-> From: Hao Li <haolee.swjtu@gmail.com>
-> 
-> When __pcs_replace_empty_main() fails to obtain a full sheaf directly
-> from the barn, it may either:
-> 
->   - Refill an empty sheaf obtained via barn_get_empty_sheaf(), or
->   - Allocate a brand new full sheaf via alloc_full_sheaf().
-> 
-> After reacquiring the per-CPU lock, if pcs->main is still empty and
-> pcs->spare is NULL, the current code donates the empty main sheaf to
-> the barn via barn_put_empty_sheaf() and installs the full sheaf as
-> pcs->main, leaving pcs->spare unpopulated.
-> 
-> Instead, keep the existing empty main sheaf locally as the spare:
-> 
->   pcs->spare = pcs->main;
->   pcs->main = full;
-> 
-> This populates pcs->spare earlier, which can reduce future barn traffic.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Hao Li <haolee.swjtu@gmail.com>
-> ---
-> 
-> The Gmail account(haoli.tcs) I used to send v1 of the patch has been
-> restricted from sending emails for unknown reasons, so I'm sending v2
-> from this address instead. Thanks.
-> 
->  mm/slub.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index a0b905c2a557..a3e73ebb0cc8 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5077,6 +5077,11 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
->  	 */
->  
->  	if (pcs->main->size == 0) {
-> +		if (!pcs->spare) {
-> +			pcs->spare = pcs->main;
-> +			pcs->main = full;
-> +			return pcs;
-> +		}
->  		barn_put_empty_sheaf(barn, pcs->main);
->  		pcs->main = full;
->  		return pcs;
 
-Thanks, LGTM. We can make it smaller though. Adding to slab/for-next
-adjusted like this:
+>>>
+>>> As Nadav points out, should also initialise fully_unshared_tables.
+>>
+>> Right, but on an earlier init path, not on the range reset path here.
+> 
+> Shouldn't we reset it also?
+> 
+> I mean __tlb_reset_range() is also called by __tlb_gather_mmu() (invoked by
+> tlb_gather_mmu[_fullmm]()).
+> 
 
-diff --git a/mm/slub.c b/mm/slub.c
-index f21b2f0c6f5a..ad71f01571f0 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5052,7 +5052,11 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
-         */
- 
-        if (pcs->main->size == 0) {
--               barn_put_empty_sheaf(barn, pcs->main);
-+               if (!pcs->spare) {
-+                       pcs->spare = pcs->main;
-+               } else {
-+                       barn_put_empty_sheaf(barn, pcs->main);
-+               }
-                pcs->main = full;
-                return pcs;
-        }
+__tlb_reset_range() is all about flushing the TLB.
+
+In v2 I have:
+
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 247e3f9db6c7a..030a162a263ba 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -426,6 +426,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+  #endif
+         tlb->vma_pfn = 0;
+  
++       tlb->fully_unshared_tables = 0;
+         __tlb_reset_range(tlb);
+         inc_tlb_flush_pending(tlb->mm);
+  }
 
 
+>>
+>>>
+>>>>    	/*
+>>>>    	 * Do not reset mmu_gather::vma_* fields here, we do not
+>>>>    	 * call into tlb_start_vma() again to set them if there is an
+>>>> @@ -484,7 +496,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+>>>>    	 * these bits.
+>>>>    	 */
+>>>>    	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
+>>>> -	      tlb->cleared_puds || tlb->cleared_p4ds))
+>>>> +	      tlb->cleared_puds || tlb->cleared_p4ds || tlb->unshared_tables))
+>>>
+>>> What about fully_unshared_tables? I guess though unshared_tables implies
+>>> fully_unshared_tables.
+>>
+>> fully_unshared_tables is only for triggering IPIs and consequently not about
+>> flushing TLBs.
+>>
+>> The TLB part is taken care of by unshared_tables, and we will always set
+>> unshared_tables when unsharing any page tables (incl. fully unshared ones).
+> 
+> OK, so is there ever a situation where fully_unshared_tables would be set
+> without unshared_tables? Presumably not.
 
+tlb_unshare_pmd_ptdesc() will always set "unshared_tables" but only conditionally
+sets "fully_unshared_tables".
+
+"unshared_tables" might get handled by a prior TLB flush,
+leaving only fully_unshared_tables set to perform the IPI in tlb_flush_unshared_tables().
+
+So the important part is that whenever we unshare, we set "unshared_tables".
+
+[...]
+
+>>>> +{
+>>>> +	/*
+>>>> +	 * As soon as the caller drops locks to allow for reuse of
+>>>> +	 * previously-shared tables, these tables could get modified and
+>>>> +	 * even reused outside of hugetlb context. So flush the TLB now.
+>>>
+>>> Hmm but you're doing this in both the case of unshare and fully unsharing, so is
+>>> this the right place to make this comment?
+>>
+>> That's why I start the comment below with "Similarly", to make it clear that
+>> the comments build up on each other.
+>>
+>> But I'm afraid I might not be getting your point fully here :/
+> 
+> what I mean is, if we are not at the point of the table being fully unshared,
+> nobody else can come in and reuse it right? Because we're still using it, just
+> dropped a ref + flushed tlb?
+
+After we drop the lock, someone else could fully unshare it. And that other (MM) would
+not be able to flush the TLB for us -- in contrast to the IPI that would affect all
+CPUs.
+
+> 
+> Isn't really the correct comment here that ranges that previously mapped the
+> shared pages might no longer, so we must clear the TLB? I may be missing
+> something :)
+
+There are cases where we defer flushing the TLB until we dropped all (exclusive) locks.
+In particular, MADV_DONTNEED does that in some cases, essentially deferring the flush
+to the tlb_finish_mmu().
+
+free_pgtables() will also defer the flush, performing the TLB flush during tlb_finish_mmu(),
+before
+
+The point is (as I tried to make clear in the comment), for unsharing we have no control
+whenn the page table gets freed after we drop the lock.
+
+So we must flush the TLB now and cannot defer it like we do in the other cases.
+
+> 
+> Or maybe the right thing is 'we must always flush the TLB because <blahdyblah>,
+> and if we are fully unsharing tables we must avoid reuse of previously-shared
+> tables when the caller drops the locks' or something?
+
+I hope the description above made it clearer why I spell out that the TLB must be flushed
+now.
+
+> 
+>>
+>>>
+>>> Surely here this is about flushing TLBs for the unsharer only as it no longer
+>>> uses it?
+>>>
+>>>> +	 *
+>>>> +	 * Note that we cannot defer the flush to a later point even if we are
+>>>> +	 * not the last sharer of the page table.
+>>>> +	 */
+>>>
+>>> Not hugely clear, some double negative here. Maybe worth saying something like:
+>>>
+>>> 'Even if we are not fully unsharing a PMD table, we must flush the TLB for the
+>>> unsharer who no longer has access to this memory'
+>>>
+>>> Or something? Assuming this is accurate :)
+>>
+>> I'll adjust it to "Not that even if we are not fully unsharing a PMD table,
+>> we must flush the TLB for the unsharer now.".
+> 
+> I guess you mean Note or that's even more confusing :P
+
+:) Yeah, I did that in v2.
+
+-- 
+Cheers
+
+David
 
