@@ -4,123 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A99CD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 08:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D894D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 08:47:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 856246B0006; Mon, 15 Dec 2025 03:43:58 -0500 (EST)
+	id 8F99C6B0006; Mon, 15 Dec 2025 03:47:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8069B6B0007; Mon, 15 Dec 2025 03:43:58 -0500 (EST)
+	id 8A98F6B0007; Mon, 15 Dec 2025 03:47:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C926B0008; Mon, 15 Dec 2025 03:43:58 -0500 (EST)
+	id 798566B0008; Mon, 15 Dec 2025 03:47:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FAE06B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:43:58 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CEAD513C471
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:43:57 +0000 (UTC)
-X-FDA: 84221067714.16.83C585A
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B3C97180008
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:43:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FUAqz2sc;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765788235;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 682A26B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:47:27 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33086140DF8
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:47:27 +0000 (UTC)
+X-FDA: 84221076534.30.01E6A7B
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012016.outbound.protection.outlook.com [52.101.48.16])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3F158180010
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:47:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TariI9ek;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of shivankg@amd.com designates 52.101.48.16 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765788444; a=rsa-sha256;
+	cv=pass;
+	b=HVnQTpMK/kujMB6d6MtOajekwDU0YjQpj+ACufm6U/WyM7UxvOj80zgiqUchlWMyFC6tY3
+	Tuj+CQmAK5xh7ZsEAN0dtcm9mAKTaOO64nBYZYxSfiRLzaw9/4qV+L3SlbfjVraCEQCawD
+	rzfcQk4eMrnXU5DmC9CDssp736vdGRA=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TariI9ek;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of shivankg@amd.com designates 52.101.48.16 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765788444;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NYenxtkhvUimYIpfVfB8PwA50IBcJ8jsB0avQ/w1o/Y=;
-	b=sp7/2Up4rszM8EduEoI9TPZOI9vzSkGA/lKpsP5khTVpFiuZrU7Um4Vz4koZyRJjYvkt+M
-	fD/rboAWSz40SEX7uwlbvZFr5U8TReMZWB8HXaKKSwBpz8HEkHHaniqzhQaj2jKAThRLTI
-	4ynMmnkJmBW3Zqb/IX35uEW8iYM3qjo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FUAqz2sc;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765788235; a=rsa-sha256;
-	cv=none;
-	b=x0fCVjk6d8tfrskbmEzI8+vgiDW+zuSYdJVauZRoahm5DVhDmjWzjnrtshXMhJbfw0DeGM
-	ukGpW+i4vZUjo2+w4qgEbWvcCnVncQkQDH9ubUBnDwv+dh1w6oPqDwMj/S/ud8HM+Q8mmy
-	40IAKmRXpKteIX7sU1WYnhLdyYla4D8=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-647a3bca834so4866960a12.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:43:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765788234; x=1766393034; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYenxtkhvUimYIpfVfB8PwA50IBcJ8jsB0avQ/w1o/Y=;
-        b=FUAqz2scNrqFTEegvyQR/kRUZmKT07IbGJ8m8PZkO8+HraLhFkxLaKMmHG2veCXpTS
-         vs505/ymGmzaGvEpMGDcB50rks1PmQChQ+b+7uHVS8CWul7IAYL2R3xhQ0UtC73sDKW0
-         Y49Jhv9pe//ezOHXF8q6NeuGiYfcNArzCR3WsFYmni6J6CQQMaCE5bhMAMuGEFFGXU/S
-         mX5QdYoxNwQsaQAU8SsmePaSbkNy5RbizkGk8aMHXNRWoGfFPxC/ReSQWdIK+/jkP2qf
-         UxOgcU0HfM1lmobYMvMzAonoszm1bm4TgcAi3jBquO+nMhx8rF63Q6ovRqF5HZKZm9lk
-         RAxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765788234; x=1766393034;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NYenxtkhvUimYIpfVfB8PwA50IBcJ8jsB0avQ/w1o/Y=;
-        b=s3o5WPs7xvJmR045Eu3FIwxTp9j8wiGCD9JIwMinIGD4NKGLQ2IZhTbeIX5Mo0Cq4w
-         b9o0rulNvEduO7tErvKCQ+RwWeu3WZj8K6E/ja7XjPEn+A4Wpm+c+TzMs0g5M3EOa4hf
-         iCdMsLUUFc1vYZcWXdTjUgvaggo4EY4Jpji6w6bHFwyVjDYSGx7YnFEZi7TlmnS8hbny
-         v43JRLss7vSVnhL9n6eHcBI1xGQ3co8XEBbp3ymSA6bsf075iHZL+sF+5rpCJIyuZf2m
-         K6BF1ZjSFiBexOlFBWd3CRYn0516nc8J8GaO1xlQP1Y1T1Mj/KlFoNKW2te5QRXQ8SlI
-         ln6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUC5kn/rZpIB9gFT0ey6GS+XfH2r8HzqrRQqhdj8qesECcjnDfnOJ+Q3g/cr5IJaFCUYw4b9VckbQ==@kvack.org
-X-Gm-Message-State: AOJu0YzpLaRxBzOGR7+3+pLVctxYxR6LGRrbrNpi140xa5hogBObzdCG
-	/uCi4QDJtvFRcpn7Bpxy6WG/DxM8jDQgJxHj5OcZvAycpPQ+CoIoODzt
-X-Gm-Gg: AY/fxX42fTGJm9md5J7cA9FWPGVV7l78im1gjVioihBCl7E7mmH2k8YcD7Z1nrI1t1w
-	7FETxub0oVIVUGWBC6xSI6NUBFzfYQLMQFHLz0UDUzn23vG6UacDGHBL1Svxdl4zBL5tJDElIf7
-	gzJ6Zm/mdB+OVSA0AVBz7ybtJmrwx7L0BIGbvKEXLuvHh3Ge3j4fx1eEyT7tNte5JrwopOwhEHV
-	hD1oZe8Ntz+HKQx8M+inRacXob+UgA0PVpxkd7G0wPTHSL7Qd0X+IXhy9vyn1gRHbd1J29pv5fR
-	jpZeU6lkuprbpH4Uy8BzuSpFHxxSb10OxyCZaAw94FeD7+EU+bBEYDfD+yxeQuOjnYzWS/qexCh
-	hZCa/3po+3B7woWujZ8AuZ6oJzYM6qKFP4Ah1ASMz1auGdio8I8wgYU9DHXKPC260l7IId66i8F
-	D9NUCCTut+Iw==
-X-Google-Smtp-Source: AGHT+IFdjfDKk3DEn67pEaLWn7zpmFg6W5CVuJICS7ljWj7zGdT9JY4jY+0P1WqvKH6W6XqgMtoJNg==
-X-Received: by 2002:a17:906:9fc7:b0:b77:1b03:66a1 with SMTP id a640c23a62f3a-b7d23a971acmr941683266b.41.1765788233922;
-        Mon, 15 Dec 2025 00:43:53 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cf9f38778sm1345724766b.0.2025.12.15.00.43.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 15 Dec 2025 00:43:53 -0800 (PST)
-Date: Mon, 15 Dec 2025 08:43:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous
- folio remapping
-Message-ID: <20251215084353.nmznnnmcpcqo4ldy@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251215004836.694-1-richard.weiyang@gmail.com>
- <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yvJvyZpKzWgSapZy/mDwanRSyVEqfh2pWtEoiEGZwq0=;
+	b=lmNejHQRuwnuAMv52cH0BBtyeYMSW1iF8ddrPBPS3nfDAyvn8vSkhIq4ddunVWmKnCX1tg
+	/Hr0uh5ucBMRH/mOlWRrH2p/VGZ8kGhSJuxWJlQ1CXGXXJjl/iUJpiE46x0W8A9CSGgnkR
+	hDo9zXpwgehYtgG8OMn1f/S25xg7C2o=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JXNneNRz6RVZiNTEMYF+NnljNQuWLVFq8qVGWWpy2HKGF6sBy0Gl3d+zZbSao3WKPeOflz3oQQ9FsRulVHbPyUeGKUp6C96Ktt1jLGzeWNfT1f3AWEqL42bKc91OEcxApUPWjVW+5IrAtzv+8FMzatXoXZrh0sdh7tQZjQX+VcBfTYPeCTzOxWMer5V/XjowrALE4YfzP5/DPV84Ma8uLmlmUyqXzZl0WAW0EZ83gQlha2Jnm9thNR7cY2hpU03seE45pd3avCUdK+xa3UGbag5h9TBnCa1uuO9Ych2/QEwm2SDOeHL/xnM62g2eBp1r/yahEg/Gokb5bO7chM+OBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yvJvyZpKzWgSapZy/mDwanRSyVEqfh2pWtEoiEGZwq0=;
+ b=Rp0WSLaGJ9D8zlMQOVUeoorVDcXxkotx75L6udK2m3SP/zfwYa4FL0/2bndxwaDKeCaQXJEa6dCvISu5WhJzj/UbQZ5xO5SP3l4WLoAthBCI1FGXnB78HMslXC8O78Rhk4TcXGBH4reLleqvaapgPp9NGupuq7F8KPlhUfjTDrivht096VvSlE8CtCd6TZR1Di5CT5FB65wqiBGW4HGrwsUlDjKaCwd5hJCLjqSOeYXR//Hq+K7L3kyAuAvyJEzdeY/V/Fu3yJT8rDZxBnzUujdqO8fJxZuw0gatG5mx01p486YVerMr33GqxYPG7q6tGDKZav5GYiGaeOotvv7fDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yvJvyZpKzWgSapZy/mDwanRSyVEqfh2pWtEoiEGZwq0=;
+ b=TariI9ek7TY7QmcUAyRB8nX2shavZRoWwrIgq7AfMUuoyzH5nnnxE1ooyen7f2dLRr4LjT6DxYpj0mNelOSrT7vQ6kBTWViEzInhWjcDE4bb9bc/W2yH0u8ItLHCzXt4j+ykItTUa3KXJqcq1FFM6BdYgqR03hTjqaptR79TxpA=
+Received: from BY5PR04CA0018.namprd04.prod.outlook.com (2603:10b6:a03:1d0::28)
+ by SN7PR12MB7955.namprd12.prod.outlook.com (2603:10b6:806:34d::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
+ 2025 08:47:19 +0000
+Received: from SJ5PEPF000001D5.namprd05.prod.outlook.com
+ (2603:10b6:a03:1d0:cafe::8) by BY5PR04CA0018.outlook.office365.com
+ (2603:10b6:a03:1d0::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.13 via Frontend Transport; Mon,
+ 15 Dec 2025 08:47:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001D5.mail.protection.outlook.com (10.167.242.57) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.6 via Frontend Transport; Mon, 15 Dec 2025 08:47:18 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 15 Dec
+ 2025 02:47:13 -0600
+From: Shivank Garg <shivankg@amd.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Zach O'Keefe
+	<zokeefe@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <shivankg@amd.com>
+Subject: [PATCH V4 0/2] mm/khugepaged: fix dirty page handling for MADV_COLLAPSE
+Date: Mon, 15 Dec 2025 08:46:15 +0000
+Message-ID: <20251215084615.5283-3-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D5:EE_|SN7PR12MB7955:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5043660f-133f-4d13-1e20-08de3bb68e32
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zAK31v2/bD77uuaMHyHqTlBVOy6+fq0vTelV1Jl0x7JNNdJdIGi0AlIkIkAF?=
+ =?us-ascii?Q?EcWC/zsTtjaaeoFizDaUpo0Jfwy86R9fN0DpazPB5vgWz33gLavDNO9HYqGP?=
+ =?us-ascii?Q?85XyuIufaVbOIj1LlzxZy/zwIjq9kZQg+SO+u0C9qw5e+7lyAEkf4txwDIrw?=
+ =?us-ascii?Q?A9IG6fNtbK74m/Y59IzMP+gUrrNLSmkDsfaztaIPfreb4YueQNtssJWqRLdS?=
+ =?us-ascii?Q?EjQk8r6gUbDBwzCMBGW+dJ66bouSKtc6P5WvJ4cy+8cRxvZ2dwZ+lhs/90rL?=
+ =?us-ascii?Q?BTMfVEWcFx461inaVFcJxr/DbHATgGdmH8xOYiNE5zvAjjypyzFka0nRg9Ks?=
+ =?us-ascii?Q?Nbm9Hsx9Nrc9LGPBEf1SDKL4XnAs/Oh+hJMEBdshcxf+GDtFQ+e/bEh9Mj/v?=
+ =?us-ascii?Q?IZgSPfTuQp5rgo1jQ6+DQFrhFHUh5/ZOcpzMbfwcMOFXVnk7ybP4ZsL6rufl?=
+ =?us-ascii?Q?ZCsCYOO+OeLWgLV/lAGo7V3HE7l4I1SdtPDh5muYSBKJH5WnAvDTCh/9lhm5?=
+ =?us-ascii?Q?UAcwjcXh4a3SHEJxYHGGooDJ7uZ11W2+IXfUUYvc/dt6Mei9ztpup5iixyDH?=
+ =?us-ascii?Q?dhrxJ8JsokkIxl4DEVmdz+TTYWoVJxVWJIAb0DFFufIGT35OGNAY5RmKX3/Y?=
+ =?us-ascii?Q?DbKe9SFHkHVyKA1q8rlXe4W2H0xqwgmoDPibXXxkjan69vvq7xJkE9q1+XMH?=
+ =?us-ascii?Q?dhLlD28Fvv8HpJLfBSqDjDCjDJD3dAOxyJNDOvDj4R7F6HOPw87HkZB7VSrz?=
+ =?us-ascii?Q?Hl4hquxKGiKE+xq1ELQmYljM1Dec0rUuaWlBXDVqF+hhtYadGQGhg0ob563n?=
+ =?us-ascii?Q?YwJWJttGx2+njBe4gubwPfk5nAEIKvktmvCBJA1W6te29KZgaHOj7EELGphu?=
+ =?us-ascii?Q?xAw6ah1kVGf42nXLhT/2/oSh7v76ok4m/U3UqaRWxivmi9eS6M+bNJNFK7NO?=
+ =?us-ascii?Q?LzDmBsYQiYIP5ewzHC/Emma6NO5asswlUy3r1ye+H0+VNXVmhCDWo7SgWQ2M?=
+ =?us-ascii?Q?v/2XEs5rfMNsbluvxtiH6IaROtiRb9bCq7iof63eFsJDIJlRleZlhzGkBSo9?=
+ =?us-ascii?Q?zOfzV94quv5UtDv6Pm+6TSuI5z9EmuZDEq3Y/XmVyn+DbHtqczjgX0naT23R?=
+ =?us-ascii?Q?MMmjesKOEb6TKZqkNcinF8hF0Kda+9fPU/1mk3f4ZFz9VupiGKeklsamXvrD?=
+ =?us-ascii?Q?I0P5ifVqgjWJKZ3g7aAZVYq02p/ft6+z7QPKLetBSDjnbl0NXby9WgOgq0N2?=
+ =?us-ascii?Q?bs66L0TOdQg4Z8gWux5k3fTNY7xeWsazu9pO20vFn7W1eNZKsVGdq1JXgLfU?=
+ =?us-ascii?Q?2iKvorWQ9Nxk17LJR3wM9aSsX29jJq6qAssUptaoapBDeRlQJ2LBUq1kN5qS?=
+ =?us-ascii?Q?SCOy6K8mKDPqw1z9QJrsvIr/VS4uh3oIGMVljdYs1hvmdAxqd+c8t7MJHqe/?=
+ =?us-ascii?Q?aPmov7XeLPX3DRK3vB6k/lg+nEAgRgE30X1x2Ed4nl4ve4Z1IYrsekaoioV1?=
+ =?us-ascii?Q?PCr4ZM3YGywmiTiFAmLbgzwDqs08LOw0cbvfEqEe68Un4ym0Vbunf6nQy7uH?=
+ =?us-ascii?Q?cXjhvOM3MpRLLmDg0pM9JcRs9PkvgHJ4vCtgrWGw?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 08:47:18.7586
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5043660f-133f-4d13-1e20-08de3bb68e32
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D5.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7955
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B3C97180008
-X-Stat-Signature: 9n4kekhih3gxmeubuehisad5n4anre4h
-X-HE-Tag: 1765788235-635270
-X-HE-Meta: U2FsdGVkX1+t/pDBxNa5Fou18abDw5CpiluvmAYislivYXGKqFj+OErxJ2qZjr6e+kMeJcdZwp/VLNPmb6KnSZkViKPedlQL2erwyIlCia7NXrDdvPgsMUksdEL+qtli+fyLksV1rD53emThp1DEhoZEeMljBhVhI6q6J3rORxAXKpw/Y5P39JroTaZe5BpF4x4Ow1h0tS75qr0GO9LCBmtOJzBIvlBB47/qBtefGc7TBfzlAHdzXu/rreTCjgB9wHQDGorMbmyELk7XvtL5zqOpzgwCTWicfURHF1kBehmMhygxul9CVoW8yBGgPzFVkvzLfv6TiwWhCV14fO/U5vgwVaboxB7+501/UbKqwTAa/jvKz0ljSwesc3iVAQP/BT6lvR5DiINALq+zPjxSXtQKX25xkxxHBgZKw32QGIHRwe70gsHVNIwEce/G68X5jOL5msRVbMUYsnQP++2KxHGkZivAhZ99HeZ+c7gS4M4BEe1W0K1T8cORb5Qoi7YadNSXs1rByfi8WL20OaEnZY+s21zYSMUklcCBKva7G9aKMpYZJKskD2/qNauyd9vMt32EnQKQqT2+ZaztT8k5Mw1F3bNDHOBo3OZiG2W/vokxyP6Zn98vcfVqXokENr2bXIUCI7fKXgPZFnMyutGsNEg2U/78lQp5nkunH5wn4Mr+dZdBPlok2xFtiGqJ/xYffGeLq9DS++K2az9Bq/fvsnKYaQiRxLkKFjzOVdUN/5wSohYeHzxybQTk9gLFyG/QpuOeqi38HnK5VHDonuiWCWtE8EDyXivO4AVkp3B5SClaD/PsJSmISQlo/vGUb4YGG+m0yFlTZQ0FC4Yk4ILZPfVjjM/3Ti2ZymNyOBVYdhUTbTJ7RQgBp/CGQgGmkCfo4eCoqlL4MWBL7MliAC0Nmw4mAcR1pYqJjOxiHGtaTDrWsQm54ghNKky1/IMnqZ32r/L/UcxULVie+7595Cq
- Z713uybI
- cYjEfoNFCNS5YUgyRN77riK79Aj5PSJ2UeX0lwjpZQOHdmphgQuY1MN3TD4uWZzp8M/0hyFpDCp2/CGN/MggRn0YxuZh/ZxJZb9Ki4oC0tXoPD+N3zgvqNu5amcRjerz1OrRjgPvKrW4J61RIJw21Y86N54+K8MhtUasI2OBFFGfP8l0JmVYaoWngFKixtOJEvrTh/16M+DQG/hKzGul3s8TscnUeIhslRYJXerYp3H5mmLzqOzKv0cACC/uOrRhPY4l6MBBl+Oail+ujxl3UlTVZOrGLrX/xKJowwt0HvACYfqZtmuT6uw7n/rK8MdBY2HXutdgbvrAA8JBQJWxd4ZGw617NDcR7n3WTk3uwcyFfETNbtIG5fW9DdX5zU0u7E/5rbNkQ0nqGuFH3F/gO2xypEvu84o84aDetYGUxnj8uVrR+dW5VHha/14BFLkUQHqvogxDeTBYq+awnr5Cj/c+wqbBHlZNKYdHYHqcrud+vbbAb8wSn+ati05IQ0hnKHWa5aX1RQjnjuW7PKgpRkHFdj748Vl2yEGAu/srTSxA8oXla4iJDvoWd5KxvbUZamMVq5oq6TGa/y2taIvKW6rs6wKCeUVOGS3z9ktqq1NMT3sqjnSjwrRzrSUMjtpswQ7mExQ8Sn60oghCGqRxd59dfIxwCUXjPSslPhJtGJfl3cEOw/E33m8Dnbe7lxJF6x6JNOlWI0w0pxFB08SNVOjnnQYTqX7w/heLR1O42amKWJnb92oiQNvFqEWvVDLUc7aWaRZ4KTwUo9esxRX9cYg0EA1BcbV43C6wbmts6Fwg+c2yPrfIpnWgI7vvmsUXNLakH
+X-Rspamd-Queue-Id: 3F158180010
+X-Rspamd-Server: rspam10
+X-Stat-Signature: a3km7wcimd58x9ur8ig7nmjuzh7exgmp
+X-HE-Tag: 1765788443-539387
+X-HE-Meta: U2FsdGVkX19kW6E8xo0SnOtqzigZJYu6wySSLyEVesYEo8FCy9kP5subltqPrbRqA3bo6VXEl+4O2eRguP7YwX6jyRXzFkadi3mAgT6c/EMzqEdJITqCkFNnSK7fa5x1VyI8sIuT9BR9pDWn7VtVaMcsIzflinuL29W6nWFZFoDRa4gVrJQ16fEH03nCZqciW/UrPBuOQpZaUmjhY/82g0k5Axqmmu30bJV4BnfW9t8YLexu1Xc3iniZXEzL1eEutvAR2k9o0492yixqsHlyEoEO48NkJS2iNc6PI1SZXWwzy/ju+L/uIwNa7cAxRGXLxNILvFKPSq41HLN5XS4pxTncGhDA2hNn4JbWSzER+aFhTz+4X+mPKISfkX4G41PQ2MTwnjPyP4wLT3B2Yp/YHedDbmSILMeKy1VWH0WLPha64VcNseiH1goufbwjrU6dQTXQ2UB1sMshWmV0BuBtCRFE4e5504tYBCF9uEcXtyCy40uXIZvgZrlWNvbcT8ueqk5XH6VtA/MuWok+f89Z2QL5Gg8mDF4fouKZ+DYYFCuNp6lLg+iynsifGzw1MndhqlWYG/lA+cK0CQdgAPjrnnOJwSns0OVElvTl5o18jW8JTMvHEAWpxzY3EaBBeSJKndoS4clTYW1yT4CAf3l9hDYmUvcdoZVMiGVrETp2pW3El48/dCD24l/9cWJN8w6hk97ZCdmuWJEyFuOKe7CGdETBOGN7lnW4B8RFm7P2XjOhhWxJzSS4EQOwzyC/8J+47+G8IxzERZ71QY3xW+SlISKTL7RJ6dQZLKvNdZ/NMV9rH5BS+IgwOVYb0wLsZ1YTBF4ZwGNleSSp6Ovg1WcugzzdAwaCk7v8UbVATd/xuxJZdOK7EpDivQSuizfrEysUBS1yAGZf6KXrrW3Cf8uI+3KI2YDQt/BBTANGLPV+LXePqQpj/gNk9jqjG6FYcU82QyxjXoBhJB1uFXjdj4L
+ Ggccr0Yo
+ QYZ3C3ukHyOAEVrjfjmA1ulkws3GmZkHAPRQ2dmBWX8kzhGLkDmN/CNhJiP9+0I3HN25hm7Qz3AT+r7lzpDWQVYZ6TtmmpDocpgmCyCAEWb+oCqD+YbBjflCfhEg8mA8K6QJUyDReFuY6v+tZJ3H1wwXpCXnOjHJOyiZ1C9lRo4dugN3l09KNxcTakP4pYcshmuCH2dDhpC4ofbukmnruyD93bniQ0A0e8H7nr0yIAQkTx+J83Z5prhXEFV1SmbQlD2mDz7gjjt6pYa9IQH4uiMJ5702yi2XXAXH0mCDQhy5yl+7wbJj5+CCMLhjLaS791hvixIRrMdxKrbhCW6/EGBuSUbXGxcnL7kvB+hk6TWi30akt6rVa1/J9ZfKBqRBLATnaqE9Nso32ay9Bp4ttTNfEDCkRtHuIHpBVFvVFz4FCv9u12UEWK4Vu7CK9P63M3i90yI2E75BLE/ZlDjWCa87x7i3QIfFRYxJN5aPJmMR3xKh8vkDubYvVUy5yXdxoM9iuf6i4H2KY7J8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,61 +175,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 10:31:15AM +0800, Barry Song wrote:
->On Mon, Dec 15, 2025 at 8:49 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->> After splitting a large folio, it is necessary to remap the resulting
->> anonymous folios.
->>
->> The current implementation determines the end of the remapping process
->> by counting the number of pages that have been processed.
->>
->> Since the final folio in the sequence, end_folio, is already known and
->> tracked, this commit refactors the remapping loop to leverage end_folio
->> as the termination marker.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->>
->> ---
->> v2: move folio assignment in loop
->> ---
->>  mm/huge_memory.c | 13 ++++---------
->>  1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 40cf59301c21..fe812d9c7807 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->>         return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
->>  }
->>
->> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
->> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
->>  {
->
->Do we actually see an improvement in readability or performance?
->The existing code feels a bit more readable to me; nr is clearly
->the number of pages :-)
->
+MADV_COLLAPSE on file-backed mappings fails with -EINVAL when TEXT pages
+are dirty. This affects scenarios like package/container updates or
+executing binaries immediately after writing them, etc.
 
-Hi, Barry,
+The issue is that collapse_file() triggers async writeback and returns
+SCAN_FAIL (maps to -EINVAL), expecting khugepaged to revisit later. But
+MADV_COLLAPSE is synchronous and userspace expects immediate success or
+a clear retry signal.
 
-Thanks for your review.
+Reproduction:
+ - Compile or copy 2MB-aligned executable to XFS/ext4 FS
+ - Call MADV_COLLAPSE on .text section
+ - First call fails with -EINVAL (text pages dirty from copy)
+ - Second call succeeds (async writeback completed)
 
-Currently end_folio has been used in __folio_split() and
-__folio_freeze_and_split_unmapped() as a termination marker. So continue to
-use end_folio here as a termination marker looks consistent and improves
-readability to me.
+Issue Report:
+https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
 
-But yeah, this is my personal preference. If it is not the case, I am fine to
-keep as it is now. :-)
+Patch applies cleanly on mm-new (https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/log/?h=mm-new)
 
->Thanks
->Barry
+Changelog:
+V4:
+- Rebase on mm-new
+- Fix spurious blank line (Lance)
 
+V3:
+- https://lore.kernel.org/all/20251201185604.210634-6-shivankg@amd.com
+- Reordered patches: Enum definition comes first as the retry logic depends on it
+- Renamed SCAN_PAGE_NOT_CLEAN to SCAN_PAGE_DIRTY_OR_WRITEBACK (Dev, Lance, David)
+- Changed writeback logic: Only trigger synchronous writeback and retry if the
+  initial collapse attempt failed specifically due to dirty/writeback pages,
+  rather than blindly flushing all file-backed VMAs (David)
+- Added proper file reference counting (get_file/fput) around the unlock window
+  to prevent UAF (Lance)
+
+V2:
+- https://lore.kernel.org/all/20251120065043.41738-6-shivankg@amd.com
+- Move writeback to madvise_collapse() (better abstraction, proper
+  mmap_lock handling and does VMA revalidation after I/O) (Lorenzo)
+- Rename to SCAN_PAGE_DIRTY to SCAN_PAGE_NOT_CLEAN and extend its use
+  for all dirty/writeback folio cases that previously returned incorrect
+  results (Dev) 
+
+V1: https://lore.kernel.org/all/20251110113254.77822-1-shivankg@amd.com
+
+Thanks,
+
+Shivank Garg (2):
+  mm/khugepaged: map dirty/writeback pages failures to EAGAIN
+  mm/khugepaged: retry with sync writeback for MADV_COLLAPSE
+
+ include/trace/events/huge_memory.h |  3 +-
+ mm/khugepaged.c                    | 48 ++++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 4 deletions(-)
+
+
+base-commit: d0a24447990a9d8212bfb3a692d59efa74ce9f86
 -- 
-Wei Yang
-Help you, Help me
+2.43.0
+
 
