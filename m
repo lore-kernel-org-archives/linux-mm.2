@@ -4,140 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75879D5B174
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 13:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B32BFD5B16F
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 13:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC72A6B0006; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
+	id 266206B0007; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C776A6B0007; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
+	id 216726B0008; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65C36B0008; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
+	id 105A36B000A; Mon, 15 Dec 2025 08:59:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A5C136B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:59:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56632B7273
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:12 +0000 (UTC)
-X-FDA: 84221862144.01.06FD3C6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1AD681C0010
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 01D296B0007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:59:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A84E3C021F
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:16 +0000 (UTC)
+X-FDA: 84221862312.17.DEE5704
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 172C71C000F
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:59:14 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLrKnES5;
-	dkim=pass header.d=redhat.com header.s=google header.b=cFlBbPcT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765807150; a=rsa-sha256;
-	cv=none;
-	b=2iPUrvYdKJogvP04DWbaWxe38Xsc1ZH7YKWNwjxuOQm5/nRleZ2TlPRt6YQ/kx24nRDifi
-	3GDjwOmdPYU4mAviDFS2RfSmqC6bpqvtvLAvrt+7lp1JopdVSpoogxHUKEFSnW8S1kUelF
-	03zEdOrPdp0dVI6hco+AuYNNA1MH1i4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLrKnES5;
-	dkim=pass header.d=redhat.com header.s=google header.b=cFlBbPcT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0ZSvqo9;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765807150;
+	s=arc-20220608; t=1765807155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
-	b=MnnRyvNh3UrAqRaAD6g1tZ28AvZO+RMjOFDx9V7/wGFmVCKidSHw7+aUSXj03aRt9x25M4
-	Ckxmu0nq2SiLuSgwI50O2oAz760qpTR6knuP6zQ2EkXGhe+FirQjbG1fVUfVSM5SBD3h+Q
-	tgIZb2D4mwTaV/5ccelFnXDbuCbb4b4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765807149;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
-	b=PLrKnES5VVMlwfJXVGQqt+vJ3Jq5vo3CXkiQIvJnoqHEOLIifjwd8v6cx6/yOmEWHVoRE+
-	sBUdFDDW86LbQl6my7mXyEZwDvLK/4mKTFsU67UPlDoNIsZXuMZ9zXWWV3lPwUfZQSOKpY
-	KEdoSpJGOthz/4r9ybQfMbeFV7XaYKU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-ETEgWj7QNzG-K1ekZSNRuw-1; Mon, 15 Dec 2025 08:59:07 -0500
-X-MC-Unique: ETEgWj7QNzG-K1ekZSNRuw-1
-X-Mimecast-MFC-AGG-ID: ETEgWj7QNzG-K1ekZSNRuw_1765807147
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477c49f273fso36719125e9.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765807146; x=1766411946; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
-        b=cFlBbPcTJNoGhwszT4QlUwsaqKPM7ZVPuxAZoRBxk6jQI86LoEs93zVC66Q+g5a5A6
-         RRdIAdhAFJLH9SVK1u1W6YKzS+VeJJfU0Lr9CozvNKYtI9oMByr/UYdHZd0OzA9kOuQN
-         +KKnIZoebm3o43ERT9zLyedSKdHfngbXbveUi5A+OkdwG2Rk/O05zFMpZlSUE2dpi5x3
-         DB6zcMGSCoJM3FlTLJq/QguBIdUa37z+0ael4zOrjQMh8hfv7f8NInFUhX0xV0ZHZmuV
-         L2R2iyyV4Hxka/cT11qOPoLTXLX0dfefw4l9qbsfajzONzeXfFjB9Xc9m4D9p7EBnsib
-         lMxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765807146; x=1766411946;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fxDTKwhMmaT8yFIgWPPRxzSP91DdXIWwn+nIL+l50K8=;
-        b=lgwufLe0bf17TlWrbD9oeDrFE2vk3ncjTAp0UipjqXVVm4BEaVCM5UW55N1vactZQe
-         A2roZW1O4JInU5/MBsRBq+M9k3TTutwrEEImZ4MZey/3HIQzx26Xy9AR4T+UzZ78krN4
-         dEDvHbAaMzBe3c8e5aaIzdcQ0aKnsZk1gLKjjDhuvQLmi8wd0DvmTwvsxjlFS87HxPQX
-         K6n+k1zY7APUdwZf2YLMZB36Z2e1GoRV6gYIDXoBR7DHANXMEqC4oQFsqsxmO2/lHgxu
-         BppJYacU+B1DJBzEhquDscDn4BDBL3QB5paWttxMgVSDp05DRhAOMrO4ZJdmsoJJzIYv
-         8MQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUl8QArS/OP38rscDS32kMUD1bSQJUgNtyOAvyAVmeXGuGlulzjNeCGlC5E3OmlgXDv5JG5bAM+1A==@kvack.org
-X-Gm-Message-State: AOJu0YyjbWuTNWDZU+dOpqgPlULr9RTiMMzJQR8EKK4Ril1hLpOiG3Wz
-	voWz7ut8aWytAv7FOmrTKESgdlFNSO8fovTO1HgXzVjR/0qpSRBBPE0MZJFlibI6+Zq8AQiuyL8
-	d4Z+iG8fQpuILh3zVaF9XADvTkDp4g7j821swg2B0slFt6eqDQ78Y
-X-Gm-Gg: AY/fxX7C0ALEZIkCBwvUhZCZPLvwfeeSCtq2dPOd7Nc6EnQmplQh41k6gmVgMBGDQBs
-	ys3QPWgZb4+uMeKxmom/x39wf3qXG4Ixm1aHd3FP4z4wpOxwZnij1SjYJBE9dZO1AHPkNajqQCj
-	aetQG9Po49tdDbKwVrxTK3NzXiMiJzyK7OXl4++0lWDBgtSxR1j2E4nGFiMjQQr7/VSCcXXjaQU
-	BRiB9wGd9wj1ckuOCatJQ9hyGU6jB5B9LUfx7qMFYc5V6p7iT8d6hCpDs6iWMulo0NWZoM/3UEY
-	Z2avC65RE9xYevwuns4ZR2oTYpFnCght8HqwibyvKEO0MwCvg+t9Z5pVWR/VfItMwab3Mb7XjBZ
-	4X6hJ
-X-Received: by 2002:a05:600c:a40e:b0:477:b734:8c52 with SMTP id 5b1f17b1804b1-47a900bd6cfmr88610685e9.14.1765807146410;
-        Mon, 15 Dec 2025 05:59:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqFocdgwq3FCiLwNZCPP3yGh7X+/+A4X5ZrVtcOGVh8JXh/FPlhQAyGrD/wsm7r0PlrPxysw==
-X-Received: by 2002:a05:600c:a40e:b0:477:b734:8c52 with SMTP id 5b1f17b1804b1-47a900bd6cfmr88610465e9.14.1765807145881;
-        Mon, 15 Dec 2025 05:59:05 -0800 (PST)
-Received: from localhost ([82.66.159.240])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f4a3e9fsm187336645e9.6.2025.12.15.05.59.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 05:59:05 -0800 (PST)
-Date: Mon, 15 Dec 2025 14:59:04 +0100
-From: Maxime Ripard <mripard@redhat.com>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: "T.J. Mercier" <tjmercier@google.com>, 
-	Eric Chanudet <echanude@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>
-Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
- in memcg
-Message-ID: <20251215-garnet-cheetah-of-adventure-ca6fdc@penduick>
-References: <20251211193106.755485-2-echanude@redhat.com>
- <CABdmKX2MPhw121ZG8V+f-XoOReUsCdmcug-cWDg=3WZcJ=NHHA@mail.gmail.com>
- <20251215-sepia-husky-of-eternity-ecf0ce@penduick>
- <07cdcce2-7724-4fe9-8032-258f6161e71d@amd.com>
+	bh=B92+NivF60LJZLsL0UwK1xRxjOVxI+ZR0FYvLwpZtsA=;
+	b=VctE3uQUOpiow4dJK8tqElgfXidLJG2PEMVyr0uyhVzr9RLVQDxS/3RQtWyF1ol1fqOv0u
+	DqdJWPW91OK2QyCfz9W58HkyPqSZue7AEpAPFFqI91QK6+VODhVKYiyx3qOJLKFDLcp54Y
+	N2tXKwAP4PxpV+yGOzrcMOUscO2bZdo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0ZSvqo9;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765807155; a=rsa-sha256;
+	cv=none;
+	b=hOc4iSiG6J/SVzQ5AiOiKNAWLR6K241orW/9wOEWdRb1ur2cbJ8Xb3hl0iR1hzdM0Gfp+g
+	PjZG+N8Ea2DE5/KdglrmUPCfU5Xiu2Ndq2Mi4RR0blW0IEyeEnywsvPh2r3ZxL+4k8ed5L
+	k+djRETZ8QAWOcMwdH7BVuifgcMWymA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3511360150;
+	Mon, 15 Dec 2025 13:59:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84039C4CEF5;
+	Mon, 15 Dec 2025 13:59:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765807153;
+	bh=YQ0YmiEKTBiByyCk2XIiAXJahBqdOSyVHDmgyhFstuo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=K0ZSvqo9FNH+vPZrOVLOU5ZraIN5/Hx4lzXEVk8deQoFTzZrfVB3Sn8wUVb8UaBDT
+	 IPKJL1FeYjBc4++kymDagnMFo+aO6gmHV+UWQO7cqHTOD6VMMtizrJjRFLGRY7Ee7L
+	 w4mP9rPOGGMbKthLu+r5v9Ru7rhk3vDAc1XCmmrB5wHkqvV8acOQhuC1BVzlP5ME/H
+	 H7EzKs7+bvfSkQA41DZXMI2/LRypKRi0eSe24U8EkDVDNspUAYXac7itmfYbMOTmxv
+	 x+MHyD8AednEYtbIisGEt5V/tIfQDU8l0ImBMScwR5yt2mJk+grnKjhIaLlaCyGSER
+	 QNwLC455/HDNw==
+From: Mark Brown <broonie@kernel.org>
+To: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+ Carlos Llamas <cmllamas@google.com>, Yury Norov <yury.norov@gmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
+ Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
+ Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+ linux-security-module@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+ Robin Murphy <robin.murphy@arm.com>, Lyude Paul <lyude@redhat.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>, 
+ Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Ard Biesheuvel <ardb@kernel.org>, 
+ Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
+ linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Uladzislau Rezki <urezki@gmail.com>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+ devicetree@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ linux-pci@vger.kernel.org, Remo Senekowitsch <remo@buenzli.dev>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, 
+ Will Deacon <will@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
+ Gary Guo <gary@garyguo.net>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, 
+ Mitchell Levy <levymitchell0@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, linux-usb@vger.kernel.org, 
+ Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+ Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>, 
+ Rae Moar <raemoar63@gmail.com>
+In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+Subject: Re: (subset) [PATCH 00/46] Allow inlining C helpers into Rust when
+ using LTO
+Message-Id: <176580714194.161338.1959594276727103368.b4-ty@kernel.org>
+Date: Mon, 15 Dec 2025 22:59:01 +0900
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="l7ljucmjyhr7i7d4"
-Content-Disposition: inline
-In-Reply-To: <07cdcce2-7724-4fe9-8032-258f6161e71d@amd.com>
-X-Rspamd-Queue-Id: 1AD681C0010
-X-Stat-Signature: 3s6gjw9ykgifp5c1q8gg6yh873gsad1w
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
+X-Stat-Signature: e5ytn1fh7d4bhtdf59hax496pha57q7z
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765807149-935556
-X-HE-Meta: U2FsdGVkX19luOQPlKhJU0sppMRtwkPGdvcBaFlS/e69SggNR/kZtjsJ/qM1MUEYxcfZmw2kfq0UVvy0rX8PByra4JwaFZARnhiDs5khfXI29xW45iri3BG+8beF2kmAyOVOPnlpSv/p9eJWKY9y4OyBA5bdttUnZZWYFnLBWKClpeS62GFDJjImsi+2QAYEAJWxAKbeEtMIfLTTXQpt3yWXS5VJwg6e/Lq90jtFdapa5+7MwC7JN+LEGdMqBQJRcYfXKwvOGtpHwFcQfHiu2ocPX78izd+xdVRrx9FM8B5TZp4WlM5jFIJFUiVPAtG5ww2OwmoAB3rxlxx/2gOVJXMr/BKst/5vgBw/oH6GdzLJ1m78UgxBULTYQbsXwH9cFkNafhUKVMsbKOl/sXKtTnQnyRqIqqnMwbfsFE2iOUMbwZO+J6iB/WDiXR/vnAkjNMliJrWyCgvz74STRGV0czevt1gDdurRkQg4IFgdL9EI40lHjFHHrmLPAVx7dUO9KL4gg/e+Jwnze9joIoG9S0AU1u1KFpBlLLYIQ0c8Wtb5r1aeliHWd5BK7C5z7skDDcqgQy1L3+0d6dotCncgBc77UWZEM/9nxUy/oh8h8zBXQi2e1AT7gY0csF7TOSqnCaCGU3OQf47KEcpN5ukiJi1MxAajN8l6B/bOrRl6/RPOLYblYjvGNfIL71dwV5QxfaLELP01YwroJJ1R61BDOnQHkeDyC6yGLkHIXTQnk1qc+8TUamZaE6/hBYqAcZ8KOcoXJyNxKuHyl8480rScnRqIoOl0ot3Uw3Ifz+p0l59OgIAiu6eZo07JfKXM/WCe8rJDBt1yLL6ZVQk6TMo/+IhWYlVWnJTKvUPivIflH4z1tsO3riMuyzjhpW+i3aySYQcb67xPjN5ZwA2NoQJXOEmQxqMqBpAoPAOX25BJ5E8Ho9DWvc3XuHWTg0AOqFGYxI81vLQuO9TNzJfeZl3
- gV87dUO/
- fN+swZ68fD3AQcmYeHm45u2cUCi9j6wRtfl68mG1Xw9mesLUTeEnnxq41r5RpNKNpR5pc1gsPvyLqhxBGiQ/F2sr2Be4+Ieg8vJKcp1wf0XR92mnZuSQvgk7n15RdVuM6HsKIWDqvjAkzQGBW0yO5Uep3Ac/aBJBOhWuc2N0IHTx4lPiz7sQ4WRQsrSkfnWWInlGB6OSAISW0v9HnpETsZ2lOjATasrGgAlHwLwHE5vi3Ti8DPWmhMAnkD5SFB3FXbECeaGZUd7JHX4T95VdNNYO6el2vL/yCj05JZ9dHR60hm/+tOHnrjAwzsvEXxi4V956JlXh06SehdBWAGe6f1VLhmH8Qj5WMXHp8oHudj7kjAaDBJoWHFY5isw5aqZggT9BJxN7+IhUgHAtAwSlXOp9c4UXCdLyzXsTrJPVrGgELR64AeFCWWz4CvLhJ8o89Yo30c7XRN7er6JmncziCkX3Cofl2UiTXONNU9hhdTBjV+pidYblHxjOdY6OK6xoyQ/5/KOjQUst62C1wiP2IAxCnAStM8xmfjeEXROI2UvaBpnHo6v6uakRH1FOLRZanqUhLQcLpFvht7hw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 172C71C000F
+X-HE-Tag: 1765807154-325232
+X-HE-Meta: U2FsdGVkX18ad0VKJ5VZRx1x1IUMFLiDq+BPpmC8GcjQsPw3STedByJboAvM4Fyw5KXGvPWnsalVDXua9P9+otNuZe6dZEatSQXjLAPoZQ5Ajl+Kyq0eEkP3pPEvpYqY1nPNmPtC+RRZQxEGemP7vfDdT+Cx2kSMu0w/I8UCEfTE/cNXq96eoCGXkEyfktnOirRgz+NW+kaftdBu/TwrDbNKL/0xz6AIrnEc0F4aJAliSwJtNx1bGbglntsuGjA3riYajvz7wcZ+TPlGr3MYy3UKVKFbnOb+iSv5u1YwSnmvYWg3OECbNCTqW49hthvLPZajcXo8D+M2x8tMSEF+dt+gCYuCoqTaPvrQrkQTAcbk7ErTUVqZKofXqmk7nznA3D+yu5XUdYdxO4lqRe/pe0xQGChRPXovwMS75izcUFEZ039CXrpI5fm9CIEUA5bHLtfKLR3rbrTISpQzHQZd+7/kqy3oXMA167z02WeafcD0KJVxIzSNEHp3ihsM/qzz0WGw7ieMCJBYKPfcfytewhcYicqjKo/a2bIEsB2LsUVAj1Jslgl5muYdQWMjmWN2xcJdvPcZfYpUhwEbZ/omb0PGcqk/ChngVXFJCaIdyNZZmR+aIfwg9hvRv02gswi9xf9U+qRngGHKXsY0mFaAh7GgHbk4Af29xEFGX+87b2zTnEZRTcm4yqBGdSJ50t3sXTe1taP9mrDHg3zixzaRgfdquVKOvVM/MpqYYQ3HVeCnFMIySNTgbPU6K6Caj6U7qGyxKrAsUIoz8uXIPNZAiAelkU2uCfKYFCCyzj5pgYAgfClqjq1haNwJasP6vMRDai2rzdrc3Y4e3xdJcYwcahUKcMTy4eCuITa+dTrPFW5SYp/G3mRrMymS4gcPr1WmiD5RaZ1gE5fkONysKMjSmIZYpVHFv2NYS9f4pb0x4Q4O6aLK9g5FiokozlJ0q5R1BMvjZgZgtsDbYlp3lxV
+ s5ANbXnD
+ OAnEi2tPWW2jzEschMAkWUC2nvQ2mILcb9wYI/RpE0j/A76JBC24ENvj4Pi9t+hn5uZhwuOu7iJn1zq6GiFUMB3efNxe08/GdmZZA5yJo2iYcIfd1CynuARwvCWc7dmjlNL7Uk9xp0oZiUWIUIEGJL5B6W0K/gtqaRdMGMRH1KKqpZ6llArg5mi+qN+nOUVPZaPgCGbRBBLbVeLdaFbZ58N7CF+jN7mp0GZBVR533sENLzo5ClyUqdx84mWJcWj/4emZWmP32gcdYq89SAGNAktaRs4FiKucV1y87sx+qr318HTN9E3vuPQHb0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,98 +141,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 02 Dec 2025 19:37:24 +0000, Alice Ryhl wrote:
+> This patch series adds __rust_helper to every single rust helper. The
+> patches do not depend on each other, so maintainers please go ahead and
+> pick up any patches relevant to your subsystem! Or provide your Acked-by
+> so that Miguel can pick them up.
+> 
+> These changes were generated by adding __rust_helper and running
+> ClangFormat. Unrelated formatting changes were removed manually.
+> 
+> [...]
 
---l7ljucmjyhr7i7d4
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
- in memcg
-MIME-Version: 1.0
+Applied to
 
-On Mon, Dec 15, 2025 at 02:30:47PM +0100, Christian K=C3=B6nig wrote:
-> On 12/15/25 11:51, Maxime Ripard wrote:
-> > Hi TJ,
-> >=20
-> > On Fri, Dec 12, 2025 at 08:25:19AM +0900, T.J. Mercier wrote:
-> >> On Fri, Dec 12, 2025 at 4:31=E2=80=AFAM Eric Chanudet <echanude@redhat=
-=2Ecom> wrote:
-> >>>
-> >>> The system dma-buf heap lets userspace allocate buffers from the page
-> >>> allocator. However, these allocations are not accounted for in memcg,
-> >>> allowing processes to escape limits that may be configured.
-> >>>
-> >>> Pass the __GFP_ACCOUNT for our allocations to account them into memcg.
-> >>
-> >> We had a discussion just last night in the MM track at LPC about how
-> >> shared memory accounted in memcg is pretty broken. Without a way to
-> >> identify (and possibly transfer) ownership of a shared buffer, this
-> >> makes the accounting of shared memory, and zombie memcg problems
-> >> worse. :\
-> >=20
-> > Are there notes or a report from that discussion anywhere?
-> >=20
-> > The way I see it, the dma-buf heaps *trivial* case is non-existent at
-> > the moment and that's definitely broken. Any application can bypass its
-> > cgroups limits trivially, and that's a pretty big hole in the system.
->=20
-> Well, that is just the tip of the iceberg.
->=20
-> Pretty much all driver interfaces doesn't account to memcg at the
-> moment, all the way from alsa, over GPUs (both TTM and SHM-GEM) to
-> V4L2.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-Yes, I know, and step 1 of the plan we discussed earlier this year is to
-fix the heaps.
+Thanks!
 
-> > The shared ownership is indeed broken, but it's not more or less broken
-> > than, say, memfd + udmabuf, and I'm sure plenty of others.
-> >=20
-> > So we really improve the common case, but only make the "advanced"
-> > slightly more broken than it already is.
-> >=20
-> > Would you disagree?
->=20
-> I strongly disagree. As far as I can see there is a huge chance we
-> break existing use cases with that.
+[35/46] rust: regulator: add __rust_helper to helpers
+        commit: 03d281f384768610bf90697bce9e35d3d596de77
 
-Which ones? And what about the ones that are already broken?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> There has been some work on TTM by Dave but I still haven't found time
-> to wrap my head around all possible side effects such a change can
-> have.
->=20
-> The fundamental problem is that neither memcg nor the classic resource
-> tracking (e.g. the OOM killer) has a good understanding of shared
-> resources.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-And yet heap allocations don't necessarily have to be shared. But they
-all have to be allocated.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> For example you can use memfd to basically kill any process in the
-> system because the OOM killer can't identify the process which holds
-> the reference to the memory in question. And that is a *MUCH* bigger
-> problem than just inaccurate memcg accounting.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-When you frame it like that, sure. Also, you can use the system heap to
-DoS any process in the system. I'm not saying that what you're concerned
-about isn't an issue, but let's not brush off other people legitimate
-issues as well.
-
-Maxime
-
---l7ljucmjyhr7i7d4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaUAUIwAKCRAnX84Zoj2+
-duttAX9Ga4fqCYlX2dwZgwnc6nPNr0N4H4lEcTNLVs1FO6VC/tdfQXgym9Jnci7z
-b5tpPZkBf06sCKJuANIMHhKZwJ4dsNb9bC0X9JuS9CoEhy2fKPraCO3Vf1oezx0e
-uJhMcKjuFg==
-=SrQ0
------END PGP SIGNATURE-----
-
---l7ljucmjyhr7i7d4--
+Thanks,
+Mark
 
 
