@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB2FD41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2B02D5B172
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:39:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BFC06B000D; Mon, 15 Dec 2025 06:39:17 -0500 (EST)
+	id 8A9DE6B0010; Mon, 15 Dec 2025 06:39:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749866B000E; Mon, 15 Dec 2025 06:39:17 -0500 (EST)
+	id 8337C6B0011; Mon, 15 Dec 2025 06:39:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EA536B0010; Mon, 15 Dec 2025 06:39:17 -0500 (EST)
+	id 65F176B0012; Mon, 15 Dec 2025 06:39:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E9F86B000D
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:17 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F35B6551B3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 523D26B0010
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:39:19 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1170C8634C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:19 +0000 (UTC)
+X-FDA: 84221509638.21.29F7638
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0CE5A40008
 	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:16 +0000 (UTC)
-X-FDA: 84221509512.28.FC7F3BD
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EB583A000E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:39:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K921nKO9;
-	spf=pass (imf25.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XHlu5xdm;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765798755;
+	s=arc-20220608; t=1765798757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yYIA++CxPIcYPKgHl3oGianXtJJpe/hDcX33067gP64=;
-	b=Gp+tW3iKeWcdGxPYZgx73T6r7niyvk/6Jw/08IqUCJqFijhGNSJXKsN+IK0faPrsjc+FfT
-	CiAviFt2jW3gOKYHXvDa8i1UyLYOusxKSWokzhcRNiuZMCxXgOkJa02okB6SxhJ25Zh/av
-	VDTPf059tkruOFcrFcxtgL8T8v7EXNo=
+	bh=9thXFyBI9wECeAoZwvjVxFD8Ol9j6G4X/I1qZGpsX1M=;
+	b=7wgTRrj6PrKO6Sl894DIy6jXnyKzeTxBqUbZSq2BW/cCHxkY0Ufn9JwAnpA3lvPYvxg6eM
+	BHzRp0PfCZl1D/B8q3f41y6xQNSUXh+VxIojNlkC32GetVEsd5byRS7h/qSJLakGJxwI1f
+	O1kw7zhUm85qsi+EaFY8/kwlzRNg4aM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K921nKO9;
-	spf=pass (imf25.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XHlu5xdm;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798755; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765798757; a=rsa-sha256;
 	cv=none;
-	b=iTkEgNkrYktWpvyptnzJtxfloqaMXl1fS4R0yblP1ekP18fxVOdukCUilpvOiE3jMkJDZG
-	PvatjCIe0pgoCg8BSzSKAJdU0+eQhpMcXDsa7kpfSzjS7Q7NdMNviKWU5LoeSH5wbjI1ft
-	lbdNqzWIV4ZE9D3+jPRzCyTNgv2YLPE=
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso3579505b3a.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:14 -0800 (PST)
+	b=WbO1htYPw1GeLMdOrbaz0+gb6bzLb1IarnIqonIs9mjdcFgI5/+e1+nGj0Dm6EnlmgMBd+
+	fHGmYCPqBK3+SJvMXKRPUP1WaOPMLKlCmJpDdsU3HbhSyfSPNhAXkg0IelXwAJVbFQaoOZ
+	5dnYzS8aVE+OZzro3iv3k0mRt1GTh70=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34c3cb504efso1703642a91.2
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:39:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765798754; x=1766403554; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765798756; x=1766403556; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yYIA++CxPIcYPKgHl3oGianXtJJpe/hDcX33067gP64=;
-        b=K921nKO9G2Ly6PDLHEVgZuBA9YtMAA3anObBIPexc45+tfLSy5oSnE5xr4zzys8P8n
-         ERCRki0Q+/h19irEpKTjR5eYapdaHhDNjtZWmftG9U3Mz/Y7rHAqQySQ7NiAEUIrso4J
-         BB5OTAoKpAgtiLNARPpLECnDzifGXCvHf7K3HKOoGTT4+lRJrZG57q9Ejx5MmodNT7Md
-         s0mDpShj1feppEu4ZdWQCseswmfnCIE403Z3JtdmzXx7W0cIt+GQXXXDdWYDBuYOG1tM
-         nXNPsG1PfwxCc+54cXtt/mM2WbyhYvbTZm964pwicJxVngaYjZC5qkmEwkIVPSV/AYF6
-         uK6w==
+        bh=9thXFyBI9wECeAoZwvjVxFD8Ol9j6G4X/I1qZGpsX1M=;
+        b=XHlu5xdmsEn1DPL5Z4XtfrgLhGqBEiDF9Mne4K07dd3TDBODdBga5OlJ44f/GQwilH
+         syrcK2UJGot0yAAnDgeurHO8eihl/6wphMOMx+FjiGNWsLaKNzmhLesmnnlXBjqDUYK1
+         NhKKbV2KP77AEUbfs1eqPfGO2o26vbsLnkmsbjEVNudgPKsu69Ua2EjUyRR7rawO20vD
+         0IgoYFEhD/qCoDZvDhhXDApZbrXbn8pzFzSoOwxqJbCAjDHyage2gioV4pT34Tz284Dw
+         5AIx6w7HX8XurKprha0xS/z9dsDke9fgbzcLs+Sjn7duBOLNPF8CKayz/rWmJQXEHLfe
+         6Vew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765798754; x=1766403554;
+        d=1e100.net; s=20230601; t=1765798756; x=1766403556;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yYIA++CxPIcYPKgHl3oGianXtJJpe/hDcX33067gP64=;
-        b=sR4tfIGHGpqkJ+ExljyE1aRML4j+cy3jBOj3iduu5S9qQJu9u3aFjKdLS55A1hn0zl
-         GsJeIEgxJ5pXj6xiotR6WgtzN8tBDz6uL9oRItHDAOq0O8Xl28+4VEJOqlR6yCEo5VpX
-         YmpeIrRlzTQkXm+ejGnx9KmMl1GXAfRw9yvFKkPJ0+OZ4MSBFcf7r14AqhMS5WdUXlgY
-         qC/gy+oeaPGcXWstN+3kjcccJYAJgi+riY2h/fdVwRKpXoAgWH90XzZFU1Fb91SzahbV
-         /NBZrii+QeF0Dv3YOuH/NIWplrDHYOZlLwdQG53URlnVSH59xhUA/SAH29CSUmPuidSU
-         B6rw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMtYHeW5qiiFiO7zC+jjSaugEdz7fzSKDK3ZPAAg2sfinQ3/ZkoNoPGtON8hZxNpUZQ0EWMzG8sw==@kvack.org
-X-Gm-Message-State: AOJu0Yx6aNTnHRVX7kR7jdbwbQ74Rm16dET4M93Z7KIxYG8s2tPe7TtY
-	WkebxWAlc8iFED6LRGdKLNrGVBYtPkhNA9VmoEMRhlGoHUSvrm91tF18
-X-Gm-Gg: AY/fxX5wmqCSmq681/ONcROthBzSBxfF5ZRMptWdpobn9LNMrOu3BE9LKdD+HWcVQw+
-	WGVNoPF4Re8u/clGIRebo2wijoqe4rNuDJYapel4ARheRa7lO+HHlNtjgLs6uXLq3Ij9a01NdcV
-	VruZlLrfD+sr4Io1r+PYZPEHzcEf+b3jdlJLjU/u9y+kUC7jPLq1ZPSdXWH7PG33ORXwYZZ6Lv/
-	V6TIVMCkA4ED6nUT/EffqM4kFdiacyWn8FGVKY4FJ456kIQGsWL/XPEy7+rElSo6W3TzZD3f4gT
-	5+olD4GEzVu46Kg2hQOQdN1Lwc8QVe9K9Xtnpdw/8g3YNUAO/S6ckrHb4HNhymM+esAa1b9St8A
-	d03Qyd/YqKMOtwV4xH/Vv9iduAQVOTKXDilBTgehz2w1n1MVJiH0GWhM4Jqmfz2BBkX/NxWDyAO
-	CS3gdLC5Q+I/0=
-X-Google-Smtp-Source: AGHT+IHZqxApH7RH4SvWeJJw7f7kzbBWfG87+pyKENlTOJ0etjJH+97jX9IVf9ZouLQDPcaXmCZT+w==
-X-Received: by 2002:a05:6a20:3d8b:b0:35e:11ff:45b4 with SMTP id adf61e73a8af0-369adfb3407mr9418258637.21.1765798753761;
-        Mon, 15 Dec 2025 03:39:13 -0800 (PST)
+        bh=9thXFyBI9wECeAoZwvjVxFD8Ol9j6G4X/I1qZGpsX1M=;
+        b=sM5bJE07UPlxw66LOEDkh/Oe8T2SekFdxemwDotDN6yQ5N8/QbE6nSCaH15QIdbYgZ
+         JtNQMv2d78zrtWNtAND7andi6jdmtwlGWHYJVJy949d6UKtVrMPU4HTLGwNuyCxw/GmB
+         Gx13QiIFaKcYo/fiq+XXBzT1JOjzeMl/P+AH38QT1AYmbLaNwkQFO46J7yGnm/uvO5r2
+         gGNUKf9osVw1YFjea+1seUqGOxAhDPRDzB75xY6fhOfm2WfmVtYdVCm0LL5avpNa4MEz
+         W5qR4/vTP7MD4wGX+1D8Ijk3GHHa/B76fq0TBO50JitTHf5z02gz7Bfk2mhDVwm63XcE
+         8wNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUze7ssEo4grKDbF/qGcv1f36eMTJjxEe5zwMrXU8nDyvP7hg6CDkj6UDI3gdPkAo6mOqXkGEXeCg==@kvack.org
+X-Gm-Message-State: AOJu0YzQDQbLBHtqC6PJEN5dAgIQDzlCqnTfixkY27FyilF05GAXX1/g
+	3PhYM9NzyFykTVXZ/boxrtM481CFX6gjObcG6zQ4uKjr5pBGZfyxldMW
+X-Gm-Gg: AY/fxX5XIwtUmHn9rqokzQEWe1SFhLYXuf0sT8HVFalHOR1qJH0AIclStYf5Bs62f/g
+	3CkqpYbQm/i2tg7nsnQ0q2h85H0vvkyVA9UZ/6FlcfBXOuNjt6lr7LIhov5vIbW42ILKAYhXKJ+
+	vJxKM8bDtrQLIW9ahR5r5F4mx+m+15jsUQnIYlDOkvbmb6Xm+hJY9VTXxrrDKw/TnDh+IIFTw5z
+	HVkulxDjhewyL9inr+8iuwOewPa/VZDzk18/xbbJCSSy42XYkvLAydSNQL0k2KRplDtcbKF/eJl
+	0dH+73C2iHKOOjlxJ27Q0Tk2qiKkZEdse0zZV9bNZcIo9RLfNH5K8k5NxJKpYW37sNokOttHiCB
+	61JhdcdfMNlik9uvbo8FlrdOeLwwn9SHhrC0btNPTRpv+23UaViBA70fDMkJNu5vJ26Mm4amEMC
+	tBdft+edZ9cOs=
+X-Google-Smtp-Source: AGHT+IE3LQMlInYBtZW6kVYJLJE4CFzfJfm+/f5olU3OmDWyxxykzQlHP1rsXKl8Sxl863J3gFT+2A==
+X-Received: by 2002:a17:90b:4b47:b0:33b:8ac4:1ac4 with SMTP id 98e67ed59e1d1-34abd78051dmr11974090a91.35.1765798755860;
+        Mon, 15 Dec 2025 03:39:15 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c26eb0f6bsm12221315a12.14.2025.12.15.03.39.11
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe294892sm8918293a91.10.2025.12.15.03.39.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 15 Dec 2025 03:39:12 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id 70D25444B393; Mon, 15 Dec 2025 18:39:05 +0700 (WIB)
+	id 9EFFF444B395; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -180,24 +180,24 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
 	George Anthony Vernon <contact@gvernon.com>
-Subject: [PATCH 04/14] mm: vmalloc: Fix up vrealloc_node_align() kernel-doc macro name
-Date: Mon, 15 Dec 2025 18:38:52 +0700
-Message-ID: <20251215113903.46555-5-bagasdotme@gmail.com>
+Subject: [PATCH 06/14] virtio: Describe @map and @vmap members in virtio_device struct
+Date: Mon, 15 Dec 2025 18:38:54 +0700
+Message-ID: <20251215113903.46555-7-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1025; i=bagasdotme@gmail.com; h=from:subject; bh=sT1prVB7LRNvf/W4XodTbc9bjm2B3700BxVWkrXUues=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4OyyibMaS/TcJdL00op76xZei7L2Pv7hFORU9uuV vT80n3YUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgInIP2BkeHzeo3teoLm8pE9N cXOPl0J5QO7s9Yesjvev3nrjTaKBPiND/5K7Lkx+c2t1WS5sWq6V/2tGhSPf8dA5nnLdX2fcuhb OBwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1385; i=bagasdotme@gmail.com; h=from:subject; bh=bVwk3E00Ao0/BsL4XlONNDCfpFF0qzpzGvJu4GqJ/kY=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4N3qByLSAtcbrWEYbHxfzPeVTVyK4Naco81fnbf9 sGw4M+ujlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAEwk4Ckjw37unJpIS7sDggaL LUJm/L7quGjlN51XE6JFNZoPynqvOsvIsMhqy5y4fbtebC8768S8lM/yytfC9QdFWExtD//Srpa 6yQYA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: i3irb8ewyh6fw7xefkreiqhcdjcawzm5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EB583A000E
-X-Stat-Signature: wgwcykfxir8pdq8sc3dt7syejwn1btcy
-X-HE-Tag: 1765798754-844652
-X-HE-Meta: U2FsdGVkX1+gCmfIlXCKUVFJs0OYI/cjfyJkIDTd+I6Sj64unDc6ITfaT0BXuw7DAARN80i/QlHtqjLZBQkMJB6b68SMEVUDXRqOO0zGYR3boAHj330aGskAau/129V5FTlCphiGNzxJRIGk7kB+o8bqcMWBzl1MrdyYITDRbcS4Ir/sf6cT934z9I94qmEDLVO80mavXKh5YsHNR5ePeNmIcznBsSugkEN5rQr3oS+4+ud4Rh5/Frah9vMOz/Od+Uws5NwJS05MIQi2GfbqJSNFhLtvUeRaEeTu2C78qGWw55Y91cY7kDTESK6EDwCamWbmRKU+K6jp4lD77nltCiBs+YRPAcijcK7FaFLUGkr86Z0pdsrJvAcVT1ZEVNxkbWhb+QXsBV0YPZCOxiVx+egPeWk6JhXmfHXmmiZmOSCoJQuYSbLwEgd3de0GAUOk/nlbpbZHv9VpWYEgxmlF2ffmqOIcej7INEULoLW/7ByEqeUTe/9lxIMfdPo8rlJsiMxEOggBRcXIe72u2YsXBL1oCLWy8JK5kWwEVewb2iNpkgW1tGo+Jc7AUg1H2FrfAZjDgZeXlRTo8J1QprBRr3yCByLIXfZ1KvrmM3FmpAf0lljr8UxExXmZsijYafKjxf6kX+Gvgj4TT/oeuROWAMP3baNhSCjpZRgRBSNjP5LkfnlKHpaqUiNSlhI1aPupUXCDgEqqQE1rrDXFtYumIgkgUQ+fyQ3E1bXJ5Se45UF+HU2GW04s7/wGZt2+xirKjkHJvRdRRc4vHdtTOnf/X9L1BjVrjj6HyI9wJ50AmuUMt3fegmWukCBnB14RHZemdfuPa7LB9Dv14zwZT9am6HlXB2S1HD35dEA2U1t3mcZftcWluL6rlFzxBOjUt5bVcks9Phd0mpnjL28+E8/1s3Of2YiKy/HUacTX5UKkh7DH9bYOZHN2tQ+K+PAqMfDesqIFP+cCSTwTIO90ejw
- cgMAi2M/
- N7Ma7DRiW+o58rhnL0wZn8lq9NspcnKoQnII/luGZxg603Ur3UVhMv7OPp5HXIOj58kmhFc6Wpw2Nr3bxy8tyxQJmmc0y/y2i7M1zNhr4jXhFValaGV1tK7GUMi54YureoETjwlxDtY+Ep9032zjy1u07jYDNx7kFKtVCDBgmsLT9kTCw0dI2Z52uGAEMF68eCtCb32nSIp88KW8xzZW/jBhzEFoA4bcuKEJfNraZrSeF5WP+n/rXb1hCedUXEvdur/JEr+7M1tJzhtisC+271S0m4G8/1K09Z848D/HDkujBoJZSBDLRK1YNIS/LG5d/qE/akAknv7ExcXn7XdVknb+2ydqDSEyxNSSznlPKfXQYgWIecXkOrCxTFBYeuyLO95SPa1h4pcjmEJOnJCHxdYJhlkEo5+0+UXRShm1g+BH711Aa/AqSqjCKSNQwixsx4SRf/ThZ08cS0pu5c6IkKB1dwe2gK6UheEgSloYTMPnv1DN2duyeLMzs0Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0CE5A40008
+X-HE-Tag: 1765798756-540961
+X-HE-Meta: U2FsdGVkX19+xsYfwmDyztgF389CGO5IIV7nwdDrzNgVf00zR+hHQTNJfHWyKeZ7uLUHScPIvAabMbB2gzU4w016dbs0lpteDGoD5IDkf0+NgNqJura7LMrRw/fj66ilCO6Kdw55T3euuqsnyjv7yTGULfycDsttrq8uSlXDdsYMtVrK+3SnT/taVD+mNhEklCQW9vrSSaeXoNjGpH8M3huiB4OtkVezcGAZAfmasI+T6gYOBHFntDFSNZFPl81oARM4xHr5m0gxaGjtNCUQYJDTAZ8FN3nJ+Wp0NDUHTfWNcVKdwLbXtEzQK3hQ5Q010CppAct3Df7qrqfYMQYgY+gTyW+tyclsm6rgJrgJzpiD/pBuxvbbD5op5EOWpyJ7aHg158iZ60x9FoQc9m5uDqb2OFTbEwUdh97HDao32JA2Ga7fP+UzqKRCpGhOYd690JIMYr7C5+T7NATvUd9qhLfdFgPY1NJFC8QyiBEODF9Dn0xz+WIkU36/m0PYc3Mr25NPjeu9Y3cjO8AOab4yXgtQ5t0OiJM/QCeyWCiY/GbL5zvImTTFd+RNaKG60MjPvX4IaJ9MDeqjYbWBVRZNsdJYMZcbPw4IeYLQPSRKaW+Y6dMjRSefharFn7/KVEXH8G8dMhv7OEaPAhZbZO+p8kpHKMMmZxUSf5o2nKUqylqTNstGAsON7TWid85LLxcmbLUyzBppYf2p9yQ84XqGY2CaszMNPnm8E1zPJg95nQJcBFnRMQvQAsy6hXvyA9z2JxNrMv8ib49GYkAihhXBBKO78WtBNNJtWbTS7gLBoTqtopXp2XDgyiO7Jz2ZWP98hmcmF3HK4hLLBf6SJdXOPaAdj4/XHjjJknE4WhsNMXcmrWWTCA6TsbyVpcGR/d1wjZTiiqsCg8NCTRcgcen+PdxEbKedWJa++q61GKOGRPaa6qRfQbcytyIkZXNrmZmsysEuWfSecJbjeu/ZuAV
+ levalqEd
+ E+Kut1eRb/hq0lv0Yv81UvFyKKNvZjI6ooFAwqFwUYx1jsIM06wPk4ysXVH+ExiZCGYOO1K+Glgl2i7PopZygmDCbf+tmA15ZfnJl11LTEfte/LVdBKGjcOO48R6b8ve+ZnJXQLg0KAY8HUq25cQLvGZhho0XvWRsrHQic1zW27lBZoODsl8a6z6bx6CYU9pxCRZA3S0VbVis0/xBmD7glfJAdoMJ49zM/4pgI97h47cX+rCy750VqYdleI9Tit20vy91oEkp/ejv0xT6IMgjPlVklqzIFDu5i/d/jCEwUjNUf3bTYar3mhjywrWEeW9efFzYqXU3QnjK3+Q6Me2wpzWxtKtpN9m9OrMsqL8axvcLje+lXU6ER8qiib0OCtqURj5tlxEg5Nsv6Jjw2KFMmjgDaFlx8KtkqeMUwEX+spKEvK4tlbXu0SxOZdMeU4PUBpZsgCbdu6bIxZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,31 +206,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sphinx reports kernel-doc warning:
+Sphinx reports kernel-doc warnings:
 
-WARNING: ./mm/vmalloc.c:4284 expecting prototype for vrealloc_node_align_noprof(). Prototype was for vrealloc_node_align() instead
+WARNING: ./include/linux/virtio.h:181 struct member 'map' not described in 'virtio_device'
+WARNING: ./include/linux/virtio.h:181 struct member 'vmap' not described in 'virtio_device'
 
-Fix the macro name in vrealloc_node_align_noprof() kernel-doc comment.
+Describe these members.
 
-Fixes: 4c5d3365882dbb ("mm/vmalloc: allow to set node and align in vrealloc")
+Fixes: bee8c7c24b7373 ("virtio: introduce map ops in virtio core")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- mm/vmalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/virtio.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index ecbac900c35f9c..2c3db9fefeb7ab 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4248,7 +4248,7 @@ void *vzalloc_node_noprof(unsigned long size, int node)
- EXPORT_SYMBOL(vzalloc_node_noprof);
- 
- /**
-- * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
-+ * vrealloc_node_align - reallocate virtually contiguous memory; contents
-  * remain unchanged
-  * @p: object to reallocate memory for
-  * @size: the size to reallocate
+diff --git a/include/linux/virtio.h b/include/linux/virtio.h
+index 132a474e59140a..68ead8fda9c921 100644
+--- a/include/linux/virtio.h
++++ b/include/linux/virtio.h
+@@ -150,11 +150,13 @@ struct virtio_admin_cmd {
+  * @id: the device type identification (used to match it with a driver).
+  * @config: the configuration ops for this device.
+  * @vringh_config: configuration ops for host vrings.
++ * @map: configuration ops for device's mapping buffer
+  * @vqs: the list of virtqueues for this device.
+  * @features: the 64 lower features supported by both driver and device.
+  * @features_array: the full features space supported by both driver and
+  *		    device.
+  * @priv: private pointer for the driver's use.
++ * @vmap: device virtual map
+  * @debugfs_dir: debugfs directory entry.
+  * @debugfs_filter_features: features to be filtered set by debugfs.
+  */
 -- 
 An old man doll... just what I always wanted! - Clara
 
