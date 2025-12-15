@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88065D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 09:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 774D6D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 09:06:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5DE6B0012; Mon, 15 Dec 2025 04:06:27 -0500 (EST)
+	id DFAC76B0024; Mon, 15 Dec 2025 04:06:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBC716B0022; Mon, 15 Dec 2025 04:06:27 -0500 (EST)
+	id DD2E86B0026; Mon, 15 Dec 2025 04:06:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2E16B0023; Mon, 15 Dec 2025 04:06:27 -0500 (EST)
+	id CC1BF6B0027; Mon, 15 Dec 2025 04:06:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C99206B0012
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:06:27 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B61DE6B0024
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:06:30 -0500 (EST)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 730AF5D952
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:06:27 +0000 (UTC)
-X-FDA: 84221124414.22.7A0CC54
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 753DB1C0012
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:06:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Luzz+Lu6;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80D825D941
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:06:30 +0000 (UTC)
+X-FDA: 84221124540.22.6AC370E
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7E8361C000E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:06:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DG0Avt6h;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765789585; a=rsa-sha256;
+	spf=pass (imf18.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765789588; a=rsa-sha256;
 	cv=none;
-	b=be/KtI4YAr1i/jTZEvFMkiiSssOwLxqK6ocq2tvnKsT1eH4ZRPIOfDO2/LoPEiHnmhrfVY
-	hPIfy3u9nW8irdAtIcyDC4wMRofSUk10uFzzAxe1fE6rBu5CSTuTL+/CKscdVhyUl7FNJ9
-	NNg3KzuMTK/NdcDRrmjpLt+hWa+hWKM=
+	b=6nGrvPIEC/0GzSVjUq7+7QZhggtzvg2cWN4gzdlEbGUkXJCJqG9V6jDPCCv18okGCG7DMc
+	rOZVJweOBbwUKDBdlGXkRI+DR1ANFbMcHI2DTIqFtasN0W0iFt83dDnBSqDURXbuEtPsoR
+	KKQelLILIhGg8I1ZGlp40qzryPl7QLA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Luzz+Lu6;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DG0Avt6h;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+	spf=pass (imf18.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765789585;
+	s=arc-20220608; t=1765789588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NmcIU9qlUpZvwHLYQ6LJ9BQcVZiKr95F6LsU889+bmM=;
-	b=m67VZ9aFJzXoxOiijwD8pBo/Bi/qdc8Re39nCWfiRIkvqX/OnMGMiNG9XgNlIRqXe6iSN9
-	JMiP6mMZbYJEsP4mT7Hg2Kd8tQfAvwWyvy61nnhzXY5hfHjMrrGuwGNEB+cWxjj4eJi0Ll
-	L5tjbKYd4oj1mASln720eCySD0IIWH8=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso3432760b3a.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 01:06:25 -0800 (PST)
+	bh=fHlq5O2U4Y391ivye8Dbi23NfhTsn0lBjEKHffIvPIE=;
+	b=2dKeWERyMieSoYQOyKHTif0aNJNej3F6QKbIa37JKjUjEdqwlcoP40JtuWjDGNUHERMSVH
+	+sNFjiNNIMmeIAiv4qul4h36Jgwh7X2Lfpp+P5FshzzQb8gLH9UyyoEjJ2Bkf2DmcGHtU0
+	IJED2HtGeGqTKw18q3Yyg6r61i3W2oA=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso3992421b3a.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 01:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765789584; x=1766394384; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765789587; x=1766394387; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NmcIU9qlUpZvwHLYQ6LJ9BQcVZiKr95F6LsU889+bmM=;
-        b=Luzz+Lu6rlVUUBaZcKg4C2jzWVYOZnR/LPHgMUsZjCgi7skpTFzQ3f0I5eNVXSWgr+
-         S5gqorAGgke7xmDIbWj3+KP2BkVoZq0roBGJFcusZM+zeDO0fyHhhz54YxUtnLkGmIiw
-         xVAgXF7mWjLKrEuebtWOhP+hOR6ZVwinzKvq+STYJ03lpYrmJPjSsuxo/wwbplG9JSQO
-         QzfaMEJSxhlHD9N5R9AT3BJvhZNg9FTwgyiXPuDkw1KGubqhqRAiPKH9rCUnvwB3qrVZ
-         btyHvSsnAiuc9JT5TcylZtswjvjyv1YXLbT1gyW9tLTvGFSgUsOLK5eKJYtkXruSWaFK
-         f1NA==
+        bh=fHlq5O2U4Y391ivye8Dbi23NfhTsn0lBjEKHffIvPIE=;
+        b=DG0Avt6hhMgeageBC3K/CDt5koqDJVBaHFuFy47BVF1lxfWjby0KgzibAn+HpdqwZQ
+         FFiiRlyV2wVWdMTkl2goKkAbi76la9hkprGgScFBEIFpvWJNQudNvla1rhSnvds2TPXz
+         m+5TCvNzStaGfk9vr+b7dcCUC41oqmSg1WgAFiug1emWmpC+bawXJvQQFQi4Xe15Vw9R
+         G0giP2zBuHOfCB3+prIKTpfyTGQ7syD0EcU9RQhcTAmVHDE6eq8bSR5yTCFqni5n3NP/
+         3hNhRCmB4JKN1zRJl8cLmB1/yqsMdrsBRS+ObkLHVXsUX0P7BaVf9DLZfEvqjG3VaI9q
+         oA6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765789584; x=1766394384;
+        d=1e100.net; s=20230601; t=1765789587; x=1766394387;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NmcIU9qlUpZvwHLYQ6LJ9BQcVZiKr95F6LsU889+bmM=;
-        b=e3IYV4Np8Cy+6UwuEBkqL73Jv/WXcfeFTbPwZlOXC7CoDNrDvhpAne7ixE2SvJqpEJ
-         75a1V0fU9oqmJgs0S3wG3pvYIICBC+NcMJe74LK+OJmkA7Ad6KEP9QutWjwDvE0oU8He
-         JGZHbL/+Jby+vVdgTC6itVeNZ3BNOWCebPfjQCtifa80zwWpBWK0jLC/0e0iebw1U7dq
-         Y44GL4C2tIPkzy3ILfSiPUzA5wvolDZ7jBmgl19zX1VjTGva/fgy/Eoifoxanzy3a9F1
-         rYf0tPzW7I5czHMFPBIsLPe9brGpeG4PiJAppYqCgn+dRYsmc5lLm8AF7yXGuzl1RtjI
-         3Fsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXVLmfqHnxBudN6hsKtShu7tbgtzg74ohsNA6et42jkEJEPTNWv1qjWiw6yj2B+G4PKBDvNc8SmOg==@kvack.org
-X-Gm-Message-State: AOJu0YyeoMi92g8dsR2/zZWmSt/8Ybjl/MBgpRpIB2470EdX2mayjMAe
-	hVc95HNcuIKpCsLP6b7hYpnkh1REiJlv7SgsVZAujs45T9rp3Y8xJzoG
-X-Gm-Gg: AY/fxX6zlhapRAouQBmfh3lGMEkdmMwgOLc0ZaqUUG4mvwdw2zTtx2N+qCz1dlBG1GZ
-	dHXMNK+MlVI17zUB7vkJmBOkMU1ffocZ30qZJMo7QhaPDDfiNZGstx1a3blLaFojzZyptyzwj7W
-	5QPfXO2t07MJHiw6c9XcKeCmsYZgvZ7U+qZbhIRqwwfaPYdHT2+POeJ4+RvUHHJMh3LLLhrZszx
-	RM8olupkH/KDrkMCON9gNLtqYuK0rrvtzZZCBJRw9FDBk49zrwX2v7jOI5pyOc0TBkWP49bWSb4
-	2Mj3INH+gTBeAvCywsol6M4xwFKpEdz8F3reahZZx11JdqNiYROx12ghn8Py1Ptd+0VwZYqZ2MF
-	/Lt1z+nGqPpjjyQoPS/SvW72auNSlBshZQDMNJ3chlIA6/LHB0ost9GeTraVlYJB9ycBKTPw7Tu
-	9a+zoxEg8ewkEmX0jdWweCl09EHscQpg==
-X-Google-Smtp-Source: AGHT+IEPI+nTV1vhiglExDtSpRez29RRQ8Wci1gwL6qRWUlWpm/mQuVAr7V1HihJUsx0PLEtt8CIig==
-X-Received: by 2002:a05:6a00:3697:b0:7b2:2d85:ae53 with SMTP id d2e1a72fcca58-7f66744661fmr9423954b3a.8.1765789584199;
-        Mon, 15 Dec 2025 01:06:24 -0800 (PST)
+        bh=fHlq5O2U4Y391ivye8Dbi23NfhTsn0lBjEKHffIvPIE=;
+        b=H0Dy4Oo8x9GPP82/TkxyEQ4hwFR3O3LrV217CDV8iZv5hPrlHH7CwKo1XuLkXsW2Nv
+         0wkOioJJfbdxL2o/ra79a8PI0M+gNHRCvAFW9MYvZ1VnHwRZYFH5XNtE83BAFchZMCeP
+         ik7q7wz2jXL4hamPZiLU8kDWDrgz5OOcap8QmplroNq6omxFrOiljg6sXm7Ile/28EK6
+         bDFm9DJQRwmVyR6GAlcb2hIwUhsUGjc40rpxAE3r400S1Zx7O/4eczO/JriA2D2GDY+q
+         jC2eaQ2LQi/iXc2ND3zaXpm5vPApAxoM1024a4OOTrSUiYn6vBNJ7Jf2vKkTkBLrt479
+         uJZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPjnBpLWAm/8Soipu8SHqO+zOVYp3kMq4oOFRuHbsigkAO5fi9IU96lIO1Lj3CoQh4qFiFrrUh3A==@kvack.org
+X-Gm-Message-State: AOJu0YxzM0jSAwydFVpdWmhYISZ9QB30xmX3ip2lzrjje1rpwcunqWLE
+	zQIBqXn2U2Tmt3zzm2exyc6nwK/dNwOxcJiwp6q2glOhL+ZAJdmIdOA42yYJt/LLWYI=
+X-Gm-Gg: AY/fxX4nysZn9NqsQHOGpO73TZvxd0UC+505ypr5cnSsu5660avWj8GOxHAlKAUIpuX
+	HY37Pzv+Cf0oBjVPFvRiiS8D3fRkWO74sGyG1R01dxjbmgh4ulH7RdmSebT4TSZOpKnIkhWgcN7
+	L9grp5bbRdqNUfRud+BHezhn6VeLho9B67JOEhulr5N5EaigPgeQ9WcB9Z+fxOTWe84q250eLtC
+	9udPH4X8lPRGzlumDL5mRU0yrhll51It/nsqjzmYYvD70BY3eQXdvP+CQmDNFXvRVdFRjkK7dQc
+	XuAdyw8B40kOx76U35foeFgO+Of6xhIdQME13A0pbaZ3L11oP7ccVDnVD3DO0YUrZZ9E8z1OaPD
+	JCt9WGzIiobFzpR0hLGHL0Fh45l8huZAGVadNv2Dh4ZCQg/6HC5KvBACtcUq42QBBnl8VnMb7Ra
+	80jumMjrr3JSdPXuuw6EQGyI+/yJ2JcQ==
+X-Google-Smtp-Source: AGHT+IHYADMjuET4kHZxSorC57UbvUxdSQ8+E3XkBJFAdBGpGyt2UvW855XokwZ+T543AobCcPohQA==
+X-Received: by 2002:a05:6a00:a381:b0:7f6:2b06:7134 with SMTP id d2e1a72fcca58-7f6694aa6dfmr7999408b3a.32.1765789587269;
+        Mon, 15 Dec 2025 01:06:27 -0800 (PST)
 Received: from localhost.localdomain ([114.231.217.195])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c5093a40sm11993160b3a.46.2025.12.15.01.06.21
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c5093a40sm11993160b3a.46.2025.12.15.01.06.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 01:06:23 -0800 (PST)
+        Mon, 15 Dec 2025 01:06:26 -0800 (PST)
 From: Vernon Yang <vernon2gm@gmail.com>
 X-Google-Original-From: Vernon Yang <yanglincheng@kylinos.cn>
 To: akpm@linux-foundation.org,
@@ -103,22 +103,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH 3/4] mm: khugepaged: move mm to list tail when MADV_COLD/MADV_FREE
-Date: Mon, 15 Dec 2025 17:04:18 +0800
-Message-ID: <20251215090419.174418-4-yanglincheng@kylinos.cn>
+Subject: [PATCH 4/4] mm: khugepaged: set to next mm direct when mm has MMF_DISABLE_THP_COMPLETELY
+Date: Mon, 15 Dec 2025 17:04:19 +0800
+Message-ID: <20251215090419.174418-5-yanglincheng@kylinos.cn>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215090419.174418-1-yanglincheng@kylinos.cn>
 References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 753DB1C0012
-X-Stat-Signature: 76f3nznyj7zk9fx5o1z7ytwahjkg7rgz
 X-Rspam-User: 
-X-HE-Tag: 1765789585-459578
-X-HE-Meta: U2FsdGVkX1/zbRaCMTTate15r86oWM3vBtIbmHLBoOemknWHyQZuXsbZEIAsamAbw0gYpAb1bCnOiAT1+Rv6dl2MnT2fazCoXB+4SS61Pz/5R3T3u/2IxqRfhVfkKbqyJmVAxVL5xWZ6Ql199SrNEl8NRiKflX+zRDKqMVcVevBxsS7taoMJ54dHHDX8BuOuFDD5j3iyLI/QwmZKpuCWF7aPZY9Bbt1c5nP22Y8amAGu0Id8Rl+qPHI4cKmzvAUYUYCdsE0reHhAHZsZ1N68Jh9R0rphOtQwCF150UEdy4JyPh2tSYJ9kryILamDMVsjPuFmo5pKoix/ME3H0UFKYcOM7bgnwYDtiOLxcTyzG93QQsTssRUyDIS5lVJiuk4Lb/C7nwWvdsG6HP886Ur+0CQYsbBl4xfv3cz/lyUbYZjBtnAHPAzXFyBzvNMWPaIDnygoXZxxHj1sPArAudWRsQx8Z/JybvABXgLpNcdVeCeeBnopjohPthsdaaxjA8IeeP1gPQvUleBm6kjQzKFddjmJJHtT0GMK6UBFsv6Rks2DLrSI4PEthXSORegvhtPi3WE2Ngim5JvVFIUM8QiLSAdyIsMcjRtnadmlya+Y29Kdai4hUP9yI/SMsIwyQwb5nCgx5cuHrm2vv2R54lHKePjkf6FC8Ms7uJhb10oxooY6nwKnFmlAn4GTQX74ZkMOT1eJraAwnUpI/W5s/OgSePhlOd+qRqUcs4/mjasM5c/8SHEI7E+A51+cZxPBVOaze6aqXfyq8MdgPFXNaKFGRjwJr0qCzwCIm2gE+Rf8UgfX5I6/RmnH7KBCfBogp71TaImRixb3nZu0xmZoK2+gN/rFFwlCTdrK47HhqGzIR2bgOHzZzP2DSwGrmgyWEVDqEHmOw4jXC/IrEWR66YbvRroM+WTWH9oVF0aelcfltCviHKkJylFtivdfaEaPZX1d1BzK2N6WZqzJJT67EWq
- 6WVNnqrj
- 8w7WHdghJjhMyNZz+LKquaWAIIvWDH13HOIyV7gSqCsFUZcmmGRL6mJUPWc2P/A0keNElrbopv8UkUX2nNPBdfMqG8xdWKAEfFbt0HOpReUj9R6T8s5DKodUTNAR+q0tvIPnMi9oqiYXWSim5kvySPRWvdiKVa/lsbTKBJ8sBcVW9xMEEntiagSJfDTdkHTIcbdjyQ/VmsSDj5Tv2ySPo6g9zEFXoOf9zQg8MrZUu2KYCrVGBgvVGA1LJ7EqL2mkE1Wgin6oy+WU20djFMCM3hHuI9nEjAiQPjKVk+mH+YgTssqlAntC9JdSaR+oacNLScXYGEhovGQczPxi+BFl+xVAuhc4gXQknlOjAvvKTAFN/coAaHIzIEd1II0C64pYF6DyUi9o3Jor127uutlt6ZpmivpwaRdSyCuMSb6XzghToMwHD0md8//7ij3+eS3RdR59MEO2fdE5lX5DryOtnMsLfnkaOGqR7zUvMvqTcC3ZOdoA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7E8361C000E
+X-Stat-Signature: 7merztguh9qa1kffnae4kknj9jm9e4w9
+X-HE-Tag: 1765789588-455233
+X-HE-Meta: U2FsdGVkX1/LiR/mYbeQKUxBsV8eXAdIHKEbBbDdD5XNj4OO5Y5YRnhPDpyimYce/xhk3wVOmCh6WWrKk/dHocSiZsZJsaSga/tKUO/1TfGRaLnkN7E1aGUaO3lNoDE0mdJ8GJQcQC9CvgihuiYs4te6YYna/glnnFesTj2b0WcBWABeUHGh2/GJIKg/T7mSAPcUqY6YrJSikQ5YTHZbG8L9QaOkUpoEDxa6gz615FMIUph0LuGmjmwpSzkYgoTND/7AieT/Shn6i5QqZ4jxocKRR2XTlqGdrPVA/x6gEU+fxTXZePtO5wzi9DDvUO3T0jnL1m0VyE1wIHWnfXS6oa/NV8LMKBKlpeofj0UQA9urVOKpy2+x0AWx9iGB/7hlI14gpKx0Uon2gGNAj3gox7o0RKeoccnatMlUueqXMz6dSXSvR+5k9iLsckS1xAOxhgrMbRpLiXwQmie17MAvtcqaZt2Zx7GgvtW3DpEcULxWYm7DolJogYNa+aWH3JX+BMl3Of/xl1kScFnHPEb+9wr0mUlBSicbnhZANBiNOoyghMB1q3WAer1P6BaefmYHKtAaz3H+x2n+c2E5bUse+SKTbCyASy8kqPPEAWFD6ozi8oLc+8+EAiJJBwToN0Ykkcha8dPH1Ck7QivcOr/zacvxSu5iPYkqntG2MFN631dNNGgRRqKzBRXprkuQAkB1XPRhNkSO/nLT708/ookQG+5bC7MWuGTWN3TU7s0Kdu9Z5fU0uvcy8aDOUTNrF23qjjtc4OuP6z1+IeDzCb0zsLU6DCc5fHyRn3tU5XfLPdMZ3LuRaAXNhA1ce+SFZV33CaUfJUcgTZmlyUHq0WtsMLK6AE1xCnQ+SOGWX5BrxKMXJdQTh7+y73sOTB2itz7++AWIsRwlK9ggCdr9ptK3iYZh29bws9zoLA76NjcxnhG7Zx4RpGqG3wHREmUZ6Q2WukrZfIKCH5PdGqMyGDx
+ jZZzX5OK
+ B1uW0DbI/YOk0OUFIUw75n4PSBqz4VPgb3cXvbRl3k85sDaCMXghzvYSieIwTcgih2ky1LZK/36qSORcAhs64VfZ7+0R2I2jqwWAoyzDjeNEdmuIiS/bqOB+YCgIg1AqbrqWceVnPsKBO8SgH10UzPL+WgEmRWdleroCNLEGcF89fau8ZCN/Y0zRCSEQHYDZYu89DmVmdo1d7U1+dSmAfnqid4NO7PleRgHx1riBZQcfNTbobqqNbdTKfGDsQphtySU4yqLFfxFEmYdUcpQAIeX3Ii/3Ps2Cx1tDNtqyg6Y2K1zSB4pOIZ5a9QplpQDIMpan9XJMF0Z3bsxkJUt5hBrULc8ls3xA5cWTF8LdDmc/xnr2caYLQ8nwcSegxs6Ec2O40BgLceckh1bgyJsc8JeAHO1+v/kJMPSPFKP0VUzlpO2kkjsIYYWJSAOmBMC67eFlNFok9nZCMw8i+hJcG0eCTFkGwQhwLuCIx0r76L6QkBrk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,104 +127,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For example, create three task: hot1 -> cold -> hot2. After all three
-task are created, each allocate memory 128MB. the hot1/hot2 task
-continuously access 128 MB memory, while the cold task only accesses
-its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
-still prioritizes scanning the cold task and only scans the hot2 task
-after completing the scan of the cold task.
-
-So if the user has explicitly informed us via MADV_COLD/FREE that this
-memory is cold or will be freed, it is appropriate for khugepaged to
-scan it only at the latest possible moment, thereby avoiding unnecessary
-scan and collapse operations to reducing CPU wastage.
-
-Here are the performance test results:
-(Throughput bigger is better, other smaller is better)
-
-Testing on x86_64 machine:
-
-| task hot2           | without patch | with patch    |  delta  |
-|---------------------|---------------|---------------|---------|
-| total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
-| cycles per access   |  4.91         |  2.07         | -57.84% |
-| Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
-| dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
-
-Testing on qemu-system-x86_64 -enable-kvm:
-
-| task hot2           | without patch | with patch    |  delta  |
-|---------------------|---------------|---------------|---------|
-| total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-| cycles per access   |  7.23         |  2.12         | -70.68% |
-| Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
-| dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
+scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
+reduce redundant operation.
 
 Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 ---
- include/linux/khugepaged.h |  1 +
- mm/khugepaged.c            | 14 ++++++++++++++
- mm/madvise.c               |  3 +++
- 3 files changed, 18 insertions(+)
+ mm/khugepaged.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
-index eb1946a70cff..726e99de84e9 100644
---- a/include/linux/khugepaged.h
-+++ b/include/linux/khugepaged.h
-@@ -15,6 +15,7 @@ extern void __khugepaged_enter(struct mm_struct *mm);
- extern void __khugepaged_exit(struct mm_struct *mm);
- extern void khugepaged_enter_vma(struct vm_area_struct *vma,
- 				 vm_flags_t vm_flags);
-+void khugepaged_move_tail(struct mm_struct *mm);
- extern void khugepaged_min_free_kbytes_update(void);
- extern bool current_is_khugepaged(void);
- extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 1ec1af5be3c8..91836dda2015 100644
+index 91836dda2015..a8723eea12f1 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -468,6 +468,20 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
- 	}
- }
+@@ -2432,6 +2432,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
  
-+void khugepaged_move_tail(struct mm_struct *mm)
-+{
-+	struct mm_slot *slot;
-+
-+	if (!mm_flags_test(MMF_VM_HUGEPAGE, mm))
-+		return;
-+
-+	spin_lock(&khugepaged_mm_lock);
-+	slot = mm_slot_lookup(mm_slots_hash, mm);
-+	if (slot && khugepaged_scan.mm_slot != slot)
-+		list_move_tail(&slot->mm_node, &khugepaged_scan.mm_head);
-+	spin_unlock(&khugepaged_mm_lock);
-+}
-+
- void __khugepaged_exit(struct mm_struct *mm)
- {
- 	struct mm_slot *slot;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index fb1c86e630b6..3f9ca7af2c82 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -608,6 +608,8 @@ static long madvise_cold(struct madvise_behavior *madv_behavior)
- 	madvise_cold_page_range(&tlb, madv_behavior);
- 	tlb_finish_mmu(&tlb);
+ 		cond_resched();
+ 		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
++			vma = NULL;
+ 			progress++;
+ 			break;
+ 		}
+@@ -2452,8 +2453,10 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 			bool mmap_locked = true;
  
-+	khugepaged_move_tail(vma->vm_mm);
-+
- 	return 0;
- }
+ 			cond_resched();
+-			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
++			if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
++				vma = NULL;
+ 				goto breakouterloop;
++			}
  
-@@ -835,6 +837,7 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
- 			&walk_ops, tlb);
- 	tlb_end_vma(tlb, vma);
- 	mmu_notifier_invalidate_range_end(&range);
-+	khugepaged_move_tail(mm);
- 	return 0;
- }
- 
+ 			VM_BUG_ON(khugepaged_scan.address < hstart ||
+ 				  khugepaged_scan.address + HPAGE_PMD_SIZE >
+@@ -2470,8 +2473,10 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 				fput(file);
+ 				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+ 					mmap_read_lock(mm);
+-					if (hpage_collapse_test_exit_or_disable(mm))
++					if (hpage_collapse_test_exit_or_disable(mm)) {
++						vma = NULL;
+ 						goto breakouterloop;
++					}
+ 					*result = collapse_pte_mapped_thp(mm,
+ 						khugepaged_scan.address, false);
+ 					if (*result == SCAN_PMD_MAPPED)
 -- 
 2.51.0
 
