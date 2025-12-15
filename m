@@ -4,109 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3729CD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 04:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78184D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 04:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA5E6B0006; Sun, 14 Dec 2025 23:13:10 -0500 (EST)
+	id C4C326B0006; Sun, 14 Dec 2025 23:22:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C24C6B0008; Sun, 14 Dec 2025 23:13:10 -0500 (EST)
+	id BFCF86B0007; Sun, 14 Dec 2025 23:22:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8676B000A; Sun, 14 Dec 2025 23:13:10 -0500 (EST)
+	id AC4BE6B0008; Sun, 14 Dec 2025 23:22:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0626B0006
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:13:10 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AA3D140DE9
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:13:10 +0000 (UTC)
-X-FDA: 84220385340.28.6DD450E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3034940002
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:13:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X7Y7eIok;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 974086B0006
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:22:50 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4781F160E09
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:22:50 +0000 (UTC)
+X-FDA: 84220409700.26.B028FC6
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 779E840005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:22:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765771988;
+	s=arc-20220608; t=1765772568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tfnd8QOpt3biOWyVmRNtULIkeysgwJ1eAPZzg5ISCgk=;
-	b=fGx2ekWHGN40kj23cd5JXwnziW7KKEsos8XQGHTUQQ7z5ciFKAVnzVmy4oepSmh8gZ/7ZZ
-	lYX5o2MGyDUkT98HnYz1DeTE0gnrmz9kIxZdM2wFe+RLXHJdS/RFzHon8LH7wh//gcLJjD
-	OMxlNq62HwIEpgbOrX0NpPS6h48H9Yk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X7Y7eIok;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765771988; a=rsa-sha256;
-	cv=none;
-	b=wyEdIjR/EDyxpAfkRLP+/SP7R49f1S6rt/d4Gzb4Oxc9jrOqHZ13a5A8ktnkqall++widy
-	XadGjY98rPmUNrUsRpz5x6KutObmuElPKCLHpDnZvRgUd+Ez00FU9B7PxknMQbipReBjju
-	Ip+PFA4lP1PHaUyjTGvC4uvFc4nLoLs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765771987;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tfnd8QOpt3biOWyVmRNtULIkeysgwJ1eAPZzg5ISCgk=;
-	b=X7Y7eIok70fh0XIR8PqqdBIH6OdXmn39oxfmqCsl1TZ6qCF2L5kApSdSpo3oDLnqo41Mgn
-	s/LQBvc/37xCK4suBDngm601JC4hkNbMzlqAyoddm2ZKrz7oMmDsFLtQV6SnT5usIrv/Yj
-	aJgtlWy6ALcOKbxtmEPfGbOk9MaQbWU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-RTWczNdqM_6uP8R1vnF15w-1; Sun,
- 14 Dec 2025 23:13:00 -0500
-X-MC-Unique: RTWczNdqM_6uP8R1vnF15w-1
-X-Mimecast-MFC-AGG-ID: RTWczNdqM_6uP8R1vnF15w_1765771978
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9CC91956050;
-	Mon, 15 Dec 2025 04:12:56 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.95])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E9A819560B4;
-	Mon, 15 Dec 2025 04:12:54 +0000 (UTC)
-Date: Mon, 15 Dec 2025 12:12:45 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v4 10/19] mm, swap: consolidate cluster reclaim and
- usability check
-Message-ID: <aT+KvZplFPimgStY@MiWiFi-R3L-srv>
-References: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
- <20251205-swap-table-p2-v4-10-cb7e28a26a40@tencent.com>
+	bh=casHpM5q26fpza73Zfhs10JjBi0kOJjUbILhlrEs+hY=;
+	b=723puG4Pb4HYik2hzjzBb9R6gPHVhbOK1Cmj1AmeaK4wTVmtpqt2irNdCu71FXYO35mVN6
+	QVnhI3XzCYjrLxv8K7A3iczPWUSfbUSqON/JR43SxuvHQzDpJ4vHB2u/5v+n/NMxkQg3Ir
+	AQvTQuNj9rsURGCmkbEB7e5GHpfh6Is=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765772568; a=rsa-sha256;
+	cv=none;
+	b=ZKfNNlEln2MNPbeFp29HUZVe08Zvmqs1kbY6mcX36kGKB829u8QBfyfZRU9tzzGin+a87o
+	6Dk/5wG7nBC1kiayOp5X5BSnIZaTlUT5dM1gdcl521Zl+7VnZUK90bh0zirmDYzKkSbO58
+	qw8ojVnIc9U4UFdyAhbzWrUnjzZ3VsE=
+X-AuditID: a67dfc5b-c2dff70000001609-7d-693f8d13c060
+Date: Mon, 15 Dec 2025 13:22:37 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	wsa+renesas@sang-engineering.com, dave.hansen@intel.com,
+	geert@linux-m68k.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v18 25/42] dept: add documents for dept
+Message-ID: <20251215042237.GA49936@system.software.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-26-byungchul@sk.com>
+ <aTN38kJjBftxnjm9@archie.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251205-swap-table-p2-v4-10-cb7e28a26a40@tencent.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam02
-X-Stat-Signature: kafd6xu689iq7ar1eh3yek51141ohhnc
+In-Reply-To: <aTN38kJjBftxnjm9@archie.me>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTdxTG97/v1Ha5FBz/SbIs3cgm821Ek5OgsA/Ldr9t0ywhmmXrxp00
+	vJmiCCQmlYl2BDJ6M2C21RWUWqGKUgV0NkF0xQ4bCiI2sbSKFUawMWNULLWwVmLml5NfnnOe
+	J8+Hw5HKU8w6TlO2X9SWqUtUjIySheXtG9Ma8zVbLk+9D/5giAZzt52BuKmPhVv3ainwnu9C
+	EIzoESzGTCTUXVmhIC65WFhxuhDM3ZhH8NTagGD2z88hHPyDBmtomYDQwDEE8ZZi+L3dwUDM
+	M0JCa7MXwSVXAIHTVsvAndCbMB55ykB41EyApdZJw+jtOQQnTBKClhM9FIzOvSDA3yIRELRO
+	UzDc1E5Ay8UMMLX+RCTG3wRErZ0sWHVZMGUzJgpZysHVNcOCOzBBw9y0xECf7gELC+MPCbA3
+	TJOgvxqhoO3oaQqOn/QzcM3ppkAfX0Dg6p8ioOHCZRoC9hUadKZFGsa6vBR0z/gIcBvPUnDf
+	8wsLI1fP0dBxb5SAhw98NDg8t0nwGhrpTwqFTkcvIdSNxRnBftKOhNiShIS6pgR1DD9hhKXI
+	XUb4qx0Lp39eIgSDZ6NwxTjJCpaeA8KRm2FacNiyhVPXZgmhbT5Cf7l+t2x7oViiqRS1m/O+
+	kxU1xZ/Q+37bWdXqNlM6ZM2tRykc5rdicyyKXnH9rRidZIrPwv/M1rFJZvgPsM8XJZOczn+I
+	3Y7nCV3GkXzzOzju6nppTuNzscVnIJKs4AGf0Z9DySMlfxjhoRs2anWRit3HQy+Z5LOxb3k2
+	YeASnInPLHNJOYVfjyf1q+dr+ffwQO8QkczB/FQKDtd72dWmb+PrNh/VhHjja7HG12KN/8da
+	ENmJlJqyylK1pmTrpqLqMk3Vph/KS3tQ4nWth17s6Ufz3l2DiOeQSq7wXsrTKGl1ZUV16SDC
+	HKlKV+h9CUlRqK6uEbXl32oPlIgVgyiTo1QZipxnBwuV/F71frFYFPeJ2ldbgktZp0NrMw5u
+	u9s9vwF//+PEYmPW+fyz6QbP+J2gnWxeiP4r31yQ/Wzg05FtqUhnLmjNcU5u71/zxQW3vLeo
+	uPvdmcdy41vN0qCkfJTac8xUMxC4mVmztyNKq3celnQFO9ZczPv6jZyPJr/xK/RtVTXWXYfY
+	3MDY8K+SP+2rkcr8z4b6JgwqqqJI/XE2qa1Q/wdSUvmTtgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0xTZxzG877n0kO15qxiPMHFJV2M4qLOqMlfcczb9OgicUqyxX0YjR6l
+	4SJpBcXNS8HG6txSGttKCw6ZVMdNKQp22IggRawo9UYjYtVUZgXEC1W5tOxUs8wvb37v8zy/
+	5P3wMoR8jIpjVJnbBXWmMl1BS0lpUkL+LPlvX6u+fPIsAfS6vXDfH6DgrraRhNCgnoSi05U0
+	hG31EtA7Cim40plHQkd1BQJ/SI/g7YiNAJ1zjISw0S2BwaEuCZi0CMZcbgRmr5EAX8dFAirP
+	ajG8PhOhobf5FQLTowANlqCWhAH7YQTWHpsEgi2roN/fQMFY9z8YOt/0IbAHIhgCjQcQhM1p
+	8EdpraibX9Aw0n6DAIupA8HxR90EvAo+RHDW/QCB61QeDU8M5wi4FZgAt0MDNLSZfqWh31uE
+	4fkZGkryXBR4r/UiKLYZEfTcc2HI//M0DeZiBwnOh39LwNs7iuG+2YihwrEW/PYeEjyGUiw+
+	V1zVTAabJR+Lx1MMpqoGDEP2csmSMsS/1f1O8uW1dZjX3QzTfOWxSsSPDBsRP1iWT/A6g3ht
+	7hsg+P21O/gyTx/ND4fu0LzrTQnJXy3l+BMHhzFf0D6Ld1q7JeuWbpQu3iykq3IE9ZzEFGmq
+	IdxHZR1dv9PSVkTuQ/aEQyiG4dj53KErI1SUSXYa9zKok0SZZqdzPt8QEeVYdgbXVvtOzKUM
+	wZqmcmF3BYoWE9kErsRXgKMsY4E7qa9C0ZGc1SKutfkU+aH4hGsrDLxngp3J+SJBUWBEnsKd
+	jDDROIaN57r1H+aT2M+5xrpWbEAy60e29SPb+r9dgohyFKvKzMlQqtIXzNakpeZmqnbO3rQt
+	w4HEb2nfPVpwHg3eWtWEWAYpxst8DYkqOaXM0eRmNCGOIRSxMr1PjGSblbm7BPW2n9TZ6YKm
+	CU1hSMVk2ZrvhRQ5u1W5XUgThCxB/V+LmZi4fYia6pm0wuP/7PhWk/sH97fP93y6fLTKefhC
+	/LrCc47vVlYvDNZ512/ItQh/eZ6uRslHq49Mr7+OS3f/3B65nDg8cW/9pWXZG7eoQj/Gxyz5
+	oji5a03nwqSO+VkTmmrolMfSAnrl4q+SF81bPffIpdhN4dvxC/offzMw7pcW37QVfE2cS+lU
+	kJpU5dyZhFqj/Bcf4v0VkgMAAA==
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3034940002
-X-HE-Tag: 1765771988-535145
-X-HE-Meta: U2FsdGVkX1+V6C7+JiZnjpJuOwVzYD/wXs471zqN90BvdhM4N26nyVT4fpEO5Nn27XxLBKOG/eJQoPh7f0DrjuamGfdE5M5ObBDC9MdxZrr/g2/S158k60DAlPNUUBae+iMPlYoOlXAGMumZL7R7AwrSB95HlxflMllUneST7dbTbdR68PvUQBJq7QvcYr/iBRFRwpFJV+eVlEXrEOVimPSHYUB8Ygb2kM+QZWXwlXVdWXc7zB4Yg/1VfrK5jrBLwQswhWltwW70YujhNQ3t29qHfHEAZkdi/63lMwv5sdTG3mHl10YMRFu0XKYPDuG3VqpRJvO18/c/5IvS4VafeBtg19jwbXzuCFphITJ+5mSVfyQKSZDWoRAejmebKSf2Z5nirc1LTPKa/OiMQvkM2bcic2Nkfy+UjkKmczWBxGOQeHGb3bx9lG6lJ1Afg8UFUgumnMPy30HUxDSzlxcPSUUsIvA8B4oHRx8h8DROBzWcBMA37fNmpm7ZGJWzkQkEHmNlav+gYlNVRVNDjQEL5tcRkaZoKCyWKt6YNCpiwBQScoJ8UUJUJkFUt7L9Z31ebaQ20cJworfsgZusLlqsdTLUq/tGyg6JM/PAYsBo7W8cDJQI/rONzDM3UsX97vH48gGgdCesylf+AOVAa48afJSewuRzF8FnMX5vCTWr0ZymYl1Fj8focSPt3DTY6fD6r791r+AF5Sb4GVv7luetrq/M35lIse+T20WnDvsJZWUu9b2RMd2TU+cWVrXzHT9HylIvKo4qZ8NVpmvGk6J4Eyetrg70+8M31pGQ2qHRwaYgvU77J7bTxpCg1xhpx9t7lIl2xJCgQBVpMG5Yu4HxuITC2WFDKhLgrltVC9gVxz9W8U7M9zgTerWdT7RxAJCpuAG+g0EX1FTskYQ7rdSdkKGwaTIIVRctUqp4VtCKf3Kqxxgufy6QIwC6Xu9vFhC80rp++g5m9b6W5EJypue
- oUldShJW
- h9OiQ4sW8endRHSHwgtSBe6HWaovlxr7mXnIXA0iw2Id234sGmkcjHq4NrdDFjMEry0Q9eVOf7/sZTyT2KsfqmLcrbhX+zYfF5s+377G3Mt06M6U=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 779E840005
+X-Stat-Signature: nmyipxwenaoxyybbrhq4a3eynmomz9gh
+X-HE-Tag: 1765772567-405084
+X-HE-Meta: U2FsdGVkX18w2rj2NkwBUkFTNjlnp25kwpBjkEEDbxaQ16HRfaVmJypnOW6WQxdiXrwjLzjAtHop3msdMlMbv82XsCG7eEL6Wf/VXObaNUqTIjAxGpED5JvkzwFGLv+RLzvAAG4nalctRtYw+DTWXk5/Djt19fC1hKzbChdG9kB2w7hpEj0b773pcv2+QeBttdWgm94YYUK7SuTgQLpwPx7dC8ubyIAeXSUqcM5uBAI8d6C3vVn9+Y3RwYJK+5cyajF64dpib51BP/iReUFtMI505Q2wcpSHT21M8jJYJzhJIKVKUOqlrzXhSpTvaEujWDnVgrNejE5spzHz4H+Yj09tRImUWZcXVgd9BHKnxR9sc2BdThf5LKeZl9m0LdvqJH9zkInX7gjx44UYcFif31NRzKhvOobWKlh7GprBTxrTQOSEhqBSdxa+1AyVcUsULA26TnSlkIpdGY0ywRCVBGgKm11zvTKxI4bDsslVUOGeOs9OFj2OlZh/djRCCqpk6iOnZRlx+7MEFAGV8fA6Z/1PegCXTXJls75z2ht0MfE4g9VA8YxP3uM67J1BNZ+sc10eRGsMWrbEqZQaWxu8Fl3y+uWND5ZNrQWUKQ/NwT6IHs8atZiGYGX/oHZafUHRTIalmBvMPhe51Z1UgnH1PmPv5DBPgnaoHLx+qszVSd2eRw19eS+r+gfaA/tBjZHchtylGkuSJEwg44zIzRP47f02bkGVjjR3f7YSKSfy1fDEzYnJQwUHeoWl7+scPmm9S1c4Jbnad2qAEHQJyfb7z2y8wzSXn6DZGwo8k67tUiQ3OAVQMi8wWH2TSMfpEeSqBZIIxjmhTB3/h0t4yc2011mlJrwaS49/t4VKAlFsAY6/uNRfwUms5nNi9Oux/S0NHYlSb83HsCnJfpqsc8+JTp5M4b5NZGURnOOYdynuv7VtndiwXR1QNYVSljjVINC2QIiIZa67WOttZCaj8dH
+ CIiPx9gc
+ T0dIZHdwXtpcJUf0KDirEwili//24FVOdI7oWCE6ExePWfg9keOE4jv2LuH6chU9GD49cjUv4GmIPBkdIKLmXTqIeXCpRoXjknUaL4p0rNhKS6gPsiXMM49cEf8jRAh616uJoNbpa7EiMZPSkdrXlG7M9g6e7Cyr2sjdg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,138 +176,375 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/05/25 at 03:29am, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Sat, Dec 06, 2025 at 07:25:22AM +0700, Bagas Sanjaya wrote:
+> On Fri, Dec 05, 2025 at 04:18:38PM +0900, Byungchul Park wrote:
+> > Add documents describing the concept and APIs of dept.
+> > 
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> >  Documentation/dev-tools/dept.rst     | 778 +++++++++++++++++++++++++++
+> >  Documentation/dev-tools/dept_api.rst | 125 +++++
 > 
-> Swap cluster cache reclaim requires releasing the lock, so the cluster
-> may become unusable after the reclaim. To prepare for checking swap
-> cache using the swap table directly, consolidate the swap cluster
-> reclaim and the check logic.
-> 
-> We will want to avoid touching the cluster's data completely with the
-     ~~~~~~~~
-    'want to' means 'will'?
+> You forget to add toctree entries:
 
-> swap table, to avoid RCU overhead here. And by moving the cluster usable
-> check into the reclaim helper, it will also help avoid a redundant scan of
-> the slots if the cluster is no longer usable, and we will want to avoid
-                                                       ~~~~~~~~~~~~
-                                                        this place too.
-> touching the cluster.
+I'm sorry for late reply.
+
+Thanks a lot!
+
+> ---- >8 ----
+> diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
+> index 4b8425e348abd1..02c858f5ed1fa2 100644
+> --- a/Documentation/dev-tools/index.rst
+> +++ b/Documentation/dev-tools/index.rst
+> @@ -22,6 +22,8 @@ Documentation/process/debugging/index.rst
+>     clang-format
+>     coccinelle
+>     sparse
+> +   dept
+> +   dept_api
+>     kcov
+>     gcov
+>     kasan
 > 
-> Also, adjust it very slightly while at it: always scan the whole region
-> during reclaim, don't skip slots covered by a reclaimed folio. Because
-> the reclaim is lockless, it's possible that new cache lands at any time.
-> And for allocation, we want all caches to be reclaimed to avoid
-> fragmentation. Besides, if the scan offset is not aligned with the size
-> of the reclaimed folio, we might skip some existing cache and fail the
-> reclaim unexpectedly.
+> > +Lockdep detects a deadlock by checking lock acquisition order.  For
+> > +example, a graph to track acquisition order built by lockdep might look
+> > +like:
+> > +
+> > +.. literal::
+> > +
+> > +   A -> B -
+> > +           \
+> > +            -> E
+> > +           /
+> > +   C -> D -
+> > +
+> > +   where 'A -> B' means that acquisition A is prior to acquisition B
+> > +   with A still held.
 > 
-> There should be no observable behavior change. It might slightly improve
-> the fragmentation issue or performance.
+> Use code-block directive for literal code blocks:
+
+I will.
+
+> ---- >8 ----
+> diff --git a/Documentation/dev-tools/dept.rst b/Documentation/dev-tools/dept.rst
+> index 333166464543d7..8394c4ea81bc2a 100644
+> --- a/Documentation/dev-tools/dept.rst
+> +++ b/Documentation/dev-tools/dept.rst
+> @@ -10,7 +10,7 @@ Lockdep detects a deadlock by checking lock acquisition order.  For
+>  example, a graph to track acquisition order built by lockdep might look
+>  like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     A -> B -
+>             \
+> @@ -25,7 +25,7 @@ Lockdep keeps adding each new acquisition order into the graph at
+>  runtime.  For example, 'E -> C' will be added when the two locks have
+>  been acquired in the order, E and then C.  The graph will look like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>         A -> B -
+>                 \
+> @@ -41,7 +41,7 @@ been acquired in the order, E and then C.  The graph will look like:
+>  
+>  This graph contains a subgraph that demonstrates a loop like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>                  -> E -
+>                 /      \
+> @@ -76,7 +76,7 @@ e.g. irq context, normal process context, wq worker context, or so on.
+>  
+>  Can lockdep detect the following deadlock?
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -91,7 +91,7 @@ Can lockdep detect the following deadlock?
+>  
+>  No.  What about the following?
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X		   context Y
+>  
+> @@ -116,7 +116,7 @@ What leads a deadlock
+>  A deadlock occurs when one or multi contexts are waiting for events that
+>  will never happen.  For example:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -148,7 +148,7 @@ In terms of dependency:
+>  
+>  Dependency graph reflecting this example will look like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>      -> C -> A -> B -
+>     /                \
+> @@ -171,7 +171,7 @@ Introduce DEPT
+>  DEPT(DEPendency Tracker) tracks wait and event instead of lock
+>  acquisition order so as to recognize the following situation:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -186,7 +186,7 @@ acquisition order so as to recognize the following situation:
+>  and builds up a dependency graph at runtime that is similar to lockdep.
+>  The graph might look like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>      -> C -> A -> B -
+>     /                \
+> @@ -199,7 +199,7 @@ DEPT keeps adding each new dependency into the graph at runtime.  For
+>  example, 'B -> D' will be added when event D occurrence is a
+>  prerequisite to reaching event B like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context W
+>  
+> @@ -211,7 +211,7 @@ prerequisite to reaching event B like:
+>  
+>  After the addition, the graph will look like:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>                       -> D
+>                      /
+> @@ -236,7 +236,7 @@ How DEPT works
+>  Let's take a look how DEPT works with the 1st example in the section
+>  'Limitation of lockdep'.
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -256,7 +256,7 @@ event.
+>  
+>  Adding comments to describe DEPT's view in detail:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -293,7 +293,7 @@ Adding comments to describe DEPT's view in detail:
+>  
+>  Let's build up dependency graph with this example.  Firstly, context X:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X
+>  
+> @@ -304,7 +304,7 @@ Let's build up dependency graph with this example.  Firstly, context X:
+>  
+>  There are no events to create dependency.  Next, context Y:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context Y
+>  
+> @@ -332,7 +332,7 @@ event A cannot be triggered if wait B cannot be awakened by event B.
+>  Therefore, we can say event A depends on event B, say, 'A -> B'.  The
+>  graph will look like after adding the dependency:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     A -> B
+>  
+> @@ -340,7 +340,7 @@ graph will look like after adding the dependency:
+>  
+>  Lastly, context Z:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context Z
+>  
+> @@ -362,7 +362,7 @@ triggered if wait A cannot be awakened by event A.  Therefore, we can
+>  say event B depends on event A, say, 'B -> A'.  The graph will look like
+>  after adding the dependency:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>      -> A -> B -
+>     /           \
+> @@ -386,7 +386,7 @@ Interpret DEPT report
+>  
+>  The following is the same example in the section 'How DEPT works'.
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -425,7 +425,7 @@ We can simplify this by labeling each waiting point with [W], each
+>  point where its event's context starts with [S] and each event with [E].
+>  This example will look like after the labeling:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context X	   context Y	   context Z
+>  
+> @@ -443,7 +443,7 @@ DEPT uses the symbols [W], [S] and [E] in its report as described above.
+>  The following is an example reported by DEPT for a real problem in
+>  practice.
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     Link: https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+>     Link: https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+> @@ -646,7 +646,7 @@ practice.
+>  
+>  Let's take a look at the summary that is the most important part.
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     ---------------------------------------------------
+>     summary
+> @@ -669,7 +669,7 @@ Let's take a look at the summary that is the most important part.
+>  
+>  The summary shows the following scenario:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context A	   context B	   context ?(unknown)
+>  
+> @@ -684,7 +684,7 @@ The summary shows the following scenario:
+>  
+>  Adding comments to describe DEPT's view in detail:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context A	   context B	   context ?(unknown)
+>  
+> @@ -711,7 +711,7 @@ Adding comments to describe DEPT's view in detail:
+>  
+>  Let's build up dependency graph with this report. Firstly, context A:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context A
+>  
+> @@ -735,7 +735,7 @@ unlock(&ni->ni_lock:0) depends on folio_unlock(&f1), say,
+>  
+>  The graph will look like after adding the dependency:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     unlock(&ni->ni_lock:0) -> folio_unlock(&f1)
+>  
+> @@ -743,7 +743,7 @@ The graph will look like after adding the dependency:
+>  
+>  Secondly, context B:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>     context B
+>  
+> @@ -762,7 +762,7 @@ folio_unlock(&f1) depends on unlock(&ni->ni_lock:0), say,
+>  
+>  The graph will look like after adding the dependency:
+>  
+> -.. literal::
+> +.. code-block::
+>  
+>      -> unlock(&ni->ni_lock:0) -> folio_unlock(&f1) -
+>     /                                                \
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/swapfile.c | 45 +++++++++++++++++++++++++++++----------------
->  1 file changed, 29 insertions(+), 16 deletions(-)
+> > +Limitation of lockdep
+> > +---------------------
+> > +
+> > +Lockdep deals with a deadlock by typical lock e.g. spinlock and mutex,
+> > +that are supposed to be released within the acquisition context.
+> > +However, when it comes to a deadlock by folio lock that is not supposed
+> > +to be released within the acquisition context or other general
+> > +synchronization mechanisms, lockdep doesn't work.
+> > +
+> > +NOTE:  In this document, 'context' refers to any type of unique context
+> > +e.g. irq context, normal process context, wq worker context, or so on.
+> > +
+> > +Can lockdep detect the following deadlock?
+> > +
+> > +.. literal::
+> > +
+> > +   context X	   context Y	   context Z
+> > +
+> > +		   mutex_lock A
+> > +   folio_lock B
+> > +		   folio_lock B <- DEADLOCK
+> > +				   mutex_lock A <- DEADLOCK
+> > +				   folio_unlock B
+> > +		   folio_unlock B
+> > +		   mutex_unlock A
+> > +				   mutex_unlock A
+> > +
+> > +No.  What about the following?
+> > +
+> > +.. literal::
+> > +
+> > +   context X		   context Y
+> > +
+> > +			   mutex_lock A
+> > +   mutex_lock A <- DEADLOCK
+> > +			   wait_for_complete B <- DEADLOCK
+> > +   complete B
+> > +			   mutex_unlock A
+> > +   mutex_unlock A
+> > +
+> > +No.
 > 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 5a766d4fcaa5..2703dfafc632 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -777,33 +777,51 @@ static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
->  	return 0;
->  }
->  
-> +/*
-> + * Reclaim drops the ci lock, so the cluster may become unusable (freed or
-> + * stolen by a lower order). @usable will be set to false if that happens.
-> + */
->  static bool cluster_reclaim_range(struct swap_info_struct *si,
->  				  struct swap_cluster_info *ci,
-> -				  unsigned long start, unsigned long end)
-> +				  unsigned long start, unsigned int order,
-> +				  bool *usable)
->  {
-> +	unsigned int nr_pages = 1 << order;
-> +	unsigned long offset = start, end = start + nr_pages;
->  	unsigned char *map = si->swap_map;
-> -	unsigned long offset = start;
->  	int nr_reclaim;
->  
->  	spin_unlock(&ci->lock);
->  	do {
->  		switch (READ_ONCE(map[offset])) {
->  		case 0:
-> -			offset++;
->  			break;
->  		case SWAP_HAS_CACHE:
->  			nr_reclaim = __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
-> -			if (nr_reclaim > 0)
-> -				offset += nr_reclaim;
-> -			else
-> +			if (nr_reclaim < 0)
->  				goto out;
->  			break;
->  		default:
->  			goto out;
->  		}
-> -	} while (offset < end);
-> +	} while (++offset < end);
-                 ~~~~~ '++offset' is conflicting with nr_reclaim
-                 returned from __try_to_reclaim_swap(). can you explain?
->  out:
->  	spin_lock(&ci->lock);
-> +
-> +	/*
-> +	 * We just dropped ci->lock so cluster could be used by another
-> +	 * order or got freed, check if it's still usable or empty.
-> +	 */
-> +	if (!cluster_is_usable(ci, order)) {
-> +		*usable = false;
-> +		return false;
-> +	}
-> +	*usable = true;
-> +
-> +	/* Fast path, no need to scan if the whole cluster is empty */
-> +	if (cluster_is_empty(ci))
-> +		return true;
-> +
->  	/*
->  	 * Recheck the range no matter reclaim succeeded or not, the slot
->  	 * could have been be freed while we are not holding the lock.
-> @@ -900,9 +918,10 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
->  	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
->  	unsigned long end = min(start + SWAPFILE_CLUSTER, si->max);
->  	unsigned int nr_pages = 1 << order;
-> -	bool need_reclaim, ret;
-> +	bool need_reclaim, ret, usable;
->  
->  	lockdep_assert_held(&ci->lock);
-> +	VM_WARN_ON(!cluster_is_usable(ci, order));
->  
->  	if (end < nr_pages || ci->count + nr_pages > SWAPFILE_CLUSTER)
->  		goto out;
-> @@ -912,14 +931,8 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
->  		if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
->  			continue;
->  		if (need_reclaim) {
-> -			ret = cluster_reclaim_range(si, ci, offset, offset + nr_pages);
-> -			/*
-> -			 * Reclaim drops ci->lock and cluster could be used
-> -			 * by another order. Not checking flag as off-list
-> -			 * cluster has no flag set, and change of list
-> -			 * won't cause fragmentation.
-> -			 */
-> -			if (!cluster_is_usable(ci, order))
-> +			ret = cluster_reclaim_range(si, ci, offset, order, &usable);
-> +			if (!usable)
->  				goto out;
->  			if (cluster_is_empty(ci))
->  				offset = start;
+> One unanswered question from my v17 review [1]: You explain in "How DEPT works"
+> section how DEPT detects deadlock in the first example (the former with three
+> contexts). Can you do the same on the second example (the latter with two
+> contexts)?
+
+Did you mean to update the document with it?  I misunderstood what you
+meant but sure I will update it as [1].
+
+[1] https://lore.kernel.org/linux-doc/20251013012855.GB52546@system.software.com/
+
+Thanks.
+
+	Byungchul
+
+> Thanks.
+> 
+> [1]: https://lore.kernel.org/linux-doc/aN84jKyrE1BumpLj@archie.me/
 > 
 > -- 
-> 2.52.0
-> 
+> An old man doll... just what I always wanted! - Clara
+
 
 
