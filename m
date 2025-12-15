@@ -4,115 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6035ED5B16E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 00:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C18D5B16E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 00:53:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68EE76B0006; Sun, 14 Dec 2025 19:49:12 -0500 (EST)
+	id 4774C6B0006; Sun, 14 Dec 2025 19:53:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63FF76B0007; Sun, 14 Dec 2025 19:49:12 -0500 (EST)
+	id 428256B0007; Sun, 14 Dec 2025 19:53:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554F86B0008; Sun, 14 Dec 2025 19:49:12 -0500 (EST)
+	id 3162F6B0008; Sun, 14 Dec 2025 19:53:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 458FD6B0006
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 19:49:12 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1B15140D11
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:49:11 +0000 (UTC)
-X-FDA: 84219871302.13.395EB2E
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 07D8440004
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:49:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OW6rAyF6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765759750; a=rsa-sha256;
-	cv=none;
-	b=7hspqrexFxQAIKfkFaXmr9vWHSQe/3rfr8JqKQ8mS+EElIhAqqmrgneq5IICZoO9n7VQdg
-	O19Tn4RAlKvkb8JVQU7sP6iMhaWYnGJlPfHkXvNqBzVwBBM+kklLM4UjjgGE48jPFliJDO
-	Kjeygh3W1bpLSJOblEzgyn37VUwjIkg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OW6rAyF6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 206746B0006
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 19:53:27 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E674EBE188
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:53:26 +0000 (UTC)
+X-FDA: 84219882012.24.B4FBFD1
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 060DA1C000C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:53:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XhsVXHkP;
+	spf=pass (imf18.hostedemail.com: domain of seakeel@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=seakeel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765759750;
+	s=arc-20220608; t=1765760005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=hJ2lg3lS+JwkZjRv6xXwi+41bPyQQQwdE6As6qZ1lO4=;
-	b=YeM63D47xJPckBV1CRN1cHjuFIDanP8iWsbiLupIF1p5dvVSDQjgTOvGTV/Gq/qQduw16r
-	hAtt1/wlSfMt+pGGyU6PpTe5DFvZzRLMgC+WgVqqOJY75K8vWMWY9fZw3TY5HCfROj8vD3
-	ovvYYevNzB6m5zVg44NPD/0vbKhLj1o=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so4527210a12.0
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 16:49:09 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=F9g3zA8+/SS364XH9Hr1y/D4AwnbgxagYZf00bypWxY=;
+	b=CGbUVQz0XDR9FDmjBF0AKUwZEh4I5J3uNulK27oJWh9c+RoWh5llakac5uky8sXhC6llGz
+	auDQjlWh9++9B445I0UOtjBdfR7eX5cxBKO9/STMvKo65vVWuPJx4h9+zmlpA+2guXgbcj
+	lSQz7dNbcZKspGSy7nkUPxbVa5fHW3I=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XhsVXHkP;
+	spf=pass (imf18.hostedemail.com: domain of seakeel@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=seakeel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765760005; a=rsa-sha256;
+	cv=none;
+	b=NcETw1YaDlcCFO0S/KpiNAaNz1x+uPmOaSR0NKX5fYIvtXl0SqT0VlADzFAugPCquKF8y1
+	idwLIEZww7pH2cZa/8WiqKgqtcG1iFdHSXuOZ9YzlnkT/07dM4LNC/tgB3TAafxw/2AZ6Z
+	HhdU/uiHH4EKVL6MOOz8V7Bq6T5JPIQ=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78c8d74bf4cso22822037b3.1
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 16:53:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765759748; x=1766364548; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hJ2lg3lS+JwkZjRv6xXwi+41bPyQQQwdE6As6qZ1lO4=;
-        b=OW6rAyF6CzOjc8FgxafeYSCXDY1qsLAtm6CNe84Fdw+o0wcOzt1AEZrx7V/Eq1gPHo
-         sSbgVfJ3iJyBzEMGa1hyVjxcludMfDYEmkQ/3Hd68vj9PfdJtB+GRPVV+3GaMFSR05MB
-         2xJV6YBgjYrk0rpzdeMtjjrRGHax5VdTat6USJF6FxVtftM+iZwRdvika8fi3NwJuulv
-         oVqlh/x7WtYEwIrHMqAgl1VqRnqPtvfrnCJthc+WHz1omzQUAt2C3wItKtHsyIbdVUWz
-         P+lccuxSWl/w4NU3eM5a+rCL+FKxglL2OoxDykq9bLNuQuZYTf+Z6WXSuMml7dVkEqKT
-         Z/Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765759748; x=1766364548;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20230601; t=1765760004; x=1766364804; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hJ2lg3lS+JwkZjRv6xXwi+41bPyQQQwdE6As6qZ1lO4=;
-        b=DcN4Tu2LvY6tiWobE+SIU09n6lbqZ5+5txFkYdz2aZN6h5NRG2Ga9IPvZuUY2t7VOr
-         COgkNQ+LQxikiTYLCYLpol175DOs0erYpUjrXYM+rFMvFJneanrBF1Z5PXWJtKSzuM0w
-         bvGs1O6jESJQGul2BXEOKz9cRguDnD736IHYsuLocIa+UWGopIWEeBjBZffNVGjKP3fF
-         gqjcFmToCs8MDMPPfL44nsqPpuVFjInFV9M5BPPhj+A1YGV2ttI0ooHhEHTVoAmA3bl1
-         eH8WS9J3iwAmAruIWbqJqDv4XBdUt49kzGnzdV9O5PIlvd9dmuxiPb8O02nDU7d0jJ8l
-         5riQ==
-X-Gm-Message-State: AOJu0YzS2zRgiSH3IU1ZimhiAtnYuBZc0tl+MwNR+BeBimVOxsmTCp6V
-	VDDR2V5kL4ldMjne+uH44llq9ayM4Yo7MECVJaUaTogg37lqW2ILkBkX
-X-Gm-Gg: AY/fxX6DUN5oG2uUxszj2TZ2TlrWp9O8UWsEOpuPFxqV3kwXRP4kcBybS/QOclEad0b
-	YiGb7FGcsci8K/pjUlwdDIqBfOLqTQbM0DygpQBd7OJBUZg6pl2tKfAv6D8NRKR4R99E0gNipYo
-	/M+p1t3J0wvGsyX1qaXGvP7pso2xra7zLqrWJ1xgx6pT2yFsyy6JE7gOwsF3mLI1Ex3j+Ut4v/V
-	rAfdTfGNZpjMRqD8C5xXRgKEvnNJ+usKUubbAwlRvq1b+nEwu7CPiWdhmgeSQdE2RuAg7LzHbXz
-	ulGl/R0LatBAbRoUFQZNJ+vnEEsFs/Olvb6kGn1MMll6tdbeOhRYCLx8WosCJzz+OLm2JZKqKrJ
-	PgRV0rAfOj7bSsIrgqhoq4kC90bk6BV+W0XzPfkV31TK/iXvLpdCQI6eatSNFtHEbegj56mUbtA
-	zL3XdWeCB/fw==
-X-Google-Smtp-Source: AGHT+IH8D0xsh2ip9JpKzMLa7+7/po2CRhAaTU42uOPwDM7vpX6PItQ8Vh7fljqXnTWm8mMRZKt9Ow==
-X-Received: by 2002:a05:6402:460b:10b0:649:a63f:bea9 with SMTP id 4fb4d7f45d1cf-649a63fc03dmr6230973a12.16.1765759748300;
-        Sun, 14 Dec 2025 16:49:08 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6498204fbb3sm12026540a12.8.2025.12.14.16.49.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 14 Dec 2025 16:49:07 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous folio remapping
-Date: Mon, 15 Dec 2025 00:48:36 +0000
-Message-Id: <20251215004836.694-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+        bh=F9g3zA8+/SS364XH9Hr1y/D4AwnbgxagYZf00bypWxY=;
+        b=XhsVXHkPTAZtxyW7UXw4aIKhDBcVlurWizF6/3WopSa+0C06Mya7+kl6dxbmF41gg6
+         6GuzqIOXfwrU7TyEAnxG1r9+Xu/nV2BMam0w/TXjZV/ORl79WRQid8KLf3Bw7R2Pzl29
+         lO2oB/oIJa4pMVYR5UETQPvTSvhMPzarw3fQp3FH3xhzknn18jDjAV3cAzk+B7OHB7g7
+         sBYqZhaVxBBe6M0qFTlao7Cnx0Tu8zAU8lEMrslCXTSJ3sRQcZG4WrL/1QdLVCiIy0NU
+         DEkbkuaXxrp052pUZPV3KqYVGFRUadz49NYPDkdlcvQ6Gixe+dxdLeKIaK1LPZhp6rq9
+         Gryg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765760004; x=1766364804;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F9g3zA8+/SS364XH9Hr1y/D4AwnbgxagYZf00bypWxY=;
+        b=v7GC035jvbtN5Rtmzj/JU1BPyxAeIy1IoS25qczrs3VehBQ2bGQGad6GaWic5v+obm
+         Xdvx4Di3t3mkxJEP2ulUAJr26Ze/Th5q6UdfZdyB0p3ObvBflVWs97jnvsCB/SuaAlCK
+         fKuCjPtTD9TJcyTFuE8Hh23vNiYcA4enZtnN8kbnJe9ia1lXDdThpt9TEcGnihIQENpj
+         yNlWjlv6hwTiljUYozK4zghyAOf1ihaXopEXXfMgAYDf4evcvqe0IuL7smIRmB3Xi6ym
+         aUGeGO+h5lfrUyOM5tcZ9Kpi9WxIbxAhupB+cKh6ao9yra7KLWZjuCOUGMju4tBD9Eo7
+         6o9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVNDxZZoF5kMtSycHQt+aQOfQ4A+aMEYn1wa+7DEbBmC4/GPhVar4Sa4fG1qFDr47ZJE2Usj6PRQA==@kvack.org
+X-Gm-Message-State: AOJu0YyhDKLTJwX11vrhxlptJNmVPLNz8mjWh+8/kwyy4+A2Cjs6Hsua
+	GXZw1rnDzW8pyf68pyAW0UXxdUwk0e+6xkFaQOS6ILJUtSg60I/8kYck
+X-Gm-Gg: AY/fxX5GzXAvqlnJv1smt7MoOCoYgFGDrax7hR6QtWUVagKd95zwasMbXsO2cMGJSFR
+	4bHDchaI+wdlKYJHVcdsDtFzFk+urN0GyGmrYWoqKm3Yhmj7ZnfWxeXGEq3zqOw6Nr9T/q4skt2
+	OsKKK6faQmPGx4tg7zJ8kJ32HMS/3eeiMMedsaNIsx5fColffQYmiDY6J82mLUj9UnJuh4F7Js/
+	5zaV56fj5MfVZCdPfUITaRKIiAVYMgalLQ/nGZ+I+BhJstSkLBXDGel2Ka1krinNZmGUXbguieS
+	ki9z4gztLmU3wFFCX/Ex/EcJKz7KGyqrsg17DBTG8ZjeESH7W5njGoGa1UYsl8zdxvlxmhA9nDj
+	KqIAJP0A+eolWM0a4hfZaDTSTh9Y2TXRsPYwsAAql23xNxoAmXtetAejNQdmDaT+uZPGFu10oN4
+	qltIza32y2sqA/hYVBHO4n1w/q6CDm1jswLknbjw==
+X-Google-Smtp-Source: AGHT+IGymE1URbEHDhw5BX1nzGOTECoWjlfm2zsVFVoPWPkTZrOWD3CnCtM5DT/uUKOVkJdBDZchkQ==
+X-Received: by 2002:a05:690e:b8f:b0:641:f5bc:6950 with SMTP id 956f58d0204a3-6455567e9admr7325417d50.84.1765760003993;
+        Sun, 14 Dec 2025 16:53:23 -0800 (PST)
+Received: from [192.168.2.226] (104.194.78.75.16clouds.com. [104.194.78.75])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477db6599sm5753649d50.21.2025.12.14.16.53.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Dec 2025 16:53:23 -0800 (PST)
+Message-ID: <52e2c1eb-67cf-41ee-9088-760fb6258153@gmail.com>
+Date: Mon, 15 Dec 2025 08:53:07 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] mm/pgtable: use ptdesc for pmd_huge_pte
+To: alexs@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Thomas Huth <thuth@redhat.com>,
+ Will Deacon <will@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Magnus Lindholm <linmag7@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20251214065546.156209-1-alexs@kernel.org>
+Content-Language: en-US
+From: Alex Shi <seakeel@gmail.com>
+In-Reply-To: <20251214065546.156209-1-alexs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ynn8ckzawfc338foeyxmuspjnsq6oy9z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07D8440004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: bw1sst1rq6ehp8y3km943556wx3fr3wk
-X-HE-Tag: 1765759749-351818
-X-HE-Meta: U2FsdGVkX19zWMVOmOAoQtnrchcNu0wY16Uucj+oAXvPjvgXwp8HNBqvPuIqyixAtRHK7VVe+xvXbcmZcXfS1MFRhlbWVs4VM8Ipq+oTxGdbQewdvD0UENTONuGdoYJTDyfrYScnaBckOVG0m2+3GfRmEdoePkVJ/ndyzBgW2yViSJ+SgQUBFYA78JsPYuXs80bXaESZFrhWet7Y64/b0FnB79EMY2ktdnjxd6EyDPt6HHNmxy0s+0/cWCs/zsVlNAhb/FEFhkRPdsZ3jY0BFyikPRUO8r2L71JEcWqqJx0R3+n9p1V+sj+Of7NldmuJ5KHwWPlpKIu0R9JKme1icpVLDyi4sD1NSP0t89Nd7m5PTumywZzIDghT2uwSwtfooRccN3WjOHSrQnpVBpK12yULGLeg32OBT3+b0Ovbf7EuqHQbtnRW9HQYKUlfryD8dx1K/gct2Zs5RmgukOLPzhbipWqrmGSbpHaMCJRobH9CvW2Ls0zLvHkxmusojq/esV3LnKwiPLBAGkMXcbi8E/IgXdcV9/M/YOzpfwRbm5kcPq7Lmbdof2397m4/yTT1S83g9g0b5A6pSv+X09wBYhIiOXX0xZzMZdM/wXKa5mRDMzNuK/+P9quvDiYnZkec0wHmIpkIzCZnLS/17C0jk9kHK8OqGMiyly2C9hTJ3g6sjlD9cf/BqefXA1Ku79SL60oRF3k/Jq2WVEHLMFE6nkM6EnIKj/fM6Hn0YzWFwKoHbRihvz//kB5WdQHTl/OdrFD9ev7CMqxGntsdlFrpQDYFJPJDQ/o1F7kUaURKjim4I6Qd68rNpq5/nP9EeQFypXlCmxBVNuALuw1WBnQjAup5/y/uO6Ny1XCUj8sSzGlUzEUVyJ1YwNlnZzfs8r9EvFljXN5ddUsE2Ej8b0GgroroiLceUWD/RjFDgEOYHtFB0M5H9g2J6MWaQsyg4xUSimYWov/8LUQXLNqIFDq
- SJ+9HX0E
- JNVbZhsTwSf4QZgrNG/NL7g9LhE68jQO4AtMcayZIoO0yOcwRsv2XAaRZtNMxrfohIYvtMMt45l+qauv0BGJf2533enLVWXiu/62L1IowTZIN/4CG58Wx1btaXIzDnkqk4MQ7LjqiX525oUlIswA5xySEy2DRusftZnXnuC+rTT70/19hajqXL5uFxL6lmqbdVXv137uM1c9x1azKljtH7beuVgwnXer1DncL/VTalBDkxxuZxmxALYt3Hi4lBJSd89nsl6CXE3EDs2pH4/jgm9PxJ8+zEjFuIzvAs+fESTOGzR1crpEsXIyn1w1E83CbBKY6aSyhoPvePDilfqHo12GqosnBB6tcZnot65j0Hpk6mLC9gJzzhbb7nH46OBkKQJ9o4QlJB6Hm01uz77XKacx50FZ1oCzJeDPvqmvYh/6pt5MZPQnejVyA7WS7mhgv5kCtAHaQXMBvmaGPkRy7vy3OVEsYiJ2GXv83hGpeWSsy4rugkHC+laARCiUH87jjLlLTYw01oAl4Moqf87mrylZ9TO6Csw9lriOH1PG7/VVWvl1Qa5inD9D+u9IcxirVUsssonAbdAw+gHfbJRLs8E0vlg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 060DA1C000C
+X-HE-Tag: 1765760004-949753
+X-HE-Meta: U2FsdGVkX181G/Gd+Hc/wdcnrg5KaMMXFMUu/4SzeP2veWPtIQkSByPvClTGXrOLpfAboNbRdWOGLjAJU17e/vqqaQvCdyp08sPMpfFTXP49haUCH6VjacgtmpMxwW4nxwl9f+PFqy4OqyXxPnZ7VpeH2sOjtMAqF1nnUnQtg64TRI6BlQKJdRurBmf3NznezQN7no84OcScfEs/cFuCWlCKZYL1oa6+OJWXaKaSQPU7S/H0cbGJqJmxqTfEmFkVhKf9spyrC3ll4i8vT/Opd6IzJ1W1VuQhjZ6NUVH3y5h4IXtZWjg6sIRdEOrrjFK0I/xv+EMyANwz7Nd6KiLVbX1Uw9cx9NmITSSxn98tfHaHQ+EoHYRJ1tqVKCJfD3ynQWNOaB2tjI2prrRqksdYkeDaIB86KJfNgCUuU0ZYU1h49uLk2WeYT0X+A1Svdh5hMJSpxpq0jD+quiU3y25iqmjTSXb2o6sqP/eauaOyZWz1nWIsgaz4a9y4gNjVEKpSs45moROy5F2B+b0Y76vNDZIKJH4baBJdoMVBD8ZwRi3rObh7NhwxVurm4I/nET7WH53VdzObm5cMDOJDSBwMYcgwqzmfPqZZ6iZEhOIYl4SJCW5I6JDTENE1Hhke+Q6uvnLyRnQvZSE98KYtXbNfzA1G9xJ9wNsisXisSYanTUxeSbKl90C9ennOmD+YFxmXfsP7gubHS7KxZs+CU4e0fgD9IWN3q47tMEgqfa78Mde16WJ8vfqJULiY78uXh4dflJNKkVVJ7mLMq+wKTRzxh5BAE0nUCFNssJsKo1I9jbfdAULCL1hmIHBYm1IcRYCXBBnI8vnRvR6h0ceiTa+pl30CM7kLqHSx42cQoNFVHkAiLUH6hg4pREl3o4m7yYcTWl/wWIuKrVJUgcKI50Y+hxO7wLaDD9EfJvfLdVmOiKxVzn19kJlWSbs7NWnuBpB7sPWhFhC44Paq9VHWhFJ
+ H4XBfEO1
+ GO3GpkAy9lW2lQ+pvITgCeNcYhK/3fVUo/gXtjyY1p1IBjPsuotl4kxGcNiOjqhlrPKlNQ9Y4dTw1scLSiRLaEk9mnxS8JZMNO5C3sOqWFPaaR6Hk4DuTjh04LmAPAyLt2TE1bifM1RC3jASjgdmLcHQS4Fy+bahoLbbu2JJJ0OxBC3mJuu8N3gRTU4G8V4qqZawGfOorHuul9aOqF8jrqwLoGaWDEdxOKutcCYymc0Q282nGbXLuzqatD2aNErTg5aXPxcP7KGXJwk/ZgEl9nwSEJxqBI/Z4SvECIzmuXqu9Ox/PFQY5A3hfse5Ts+1bghxwVobcVNNPkdVAzcjayO/dbMcMGbsPt0/B19GHvnGvsByfHAXhTjt1m8CJ8Ljuj0KtQx1SnUM9PUfMEUTL3Y1zhuOu+WqLb+RjroRO/f/vNYgXyRHtAEXHv4y6z8pTIKHwlb470iYm6CX+rdIILyyeylFoRVseyh/qd7DNJH/DI0F06K+vgTzP6eYbcvUHYlsSgeK2u23GuneLpsnC4v5B0VLQSpwUXa3FLKWlku7YHq9/uiZHhv51sd75TmqEoZvM0yeHX126Mfs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,63 +146,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After splitting a large folio, it is necessary to remap the resulting
-anonymous folios.
 
-The current implementation determines the end of the remapping process
-by counting the number of pages that have been processed.
 
-Since the final folio in the sequence, end_folio, is already known and
-tracked, this commit refactors the remapping loop to leverage end_folio
-as the termination marker.
+On 2025/12/14 14:55, alexs@kernel.org wrote:
+> From: Alex Shi<alexs@kernel.org>
+> 
+> 'pmd_huge_pte' are pgtable variables, but used 'pgtable->lru'
+> instead of pgtable->pt_list in pgtable_trans_huge_deposit/withdraw
+> functions, That's a bit weird.
+> 
+> So let's convert the pgtable_t to precise 'struct ptdesc *' for
+> ptdesc->pmd_huge_pte, and mm->pmd_huge_pte, then convert function
+> pgtable_trans_huge_deposit() to use correct ptdesc.
+> 
+> This convertion works for most of arch, but failed on s390/sparc/powerpc
+> since they use 'pte_t *' as pgtable_t. Is there any suggestion for these
+> archs? If we could have a solution, we may remove the pgtable_t for other
+> archs.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-
----
-v2: move folio assignment in loop
----
- mm/huge_memory.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 40cf59301c21..fe812d9c7807 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
- 	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
- }
- 
--static void remap_page(struct folio *folio, unsigned long nr, int flags)
-+static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
- {
--	int i = 0;
--
- 	/* If unmap_folio() uses try_to_migrate() on file, remove this check */
- 	if (!folio_test_anon(folio))
- 		return;
--	for (;;) {
-+	do {
- 		remove_migration_ptes(folio, folio, RMP_LOCKED | flags);
--		i += folio_nr_pages(folio);
--		if (i >= nr)
--			break;
- 		folio = folio_next(folio);
--	}
-+	} while (folio != end_folio);
- }
- 
- static void lru_add_split_folio(struct folio *folio, struct folio *new_folio,
-@@ -4066,7 +4061,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 	if (!ret && is_anon && !folio_is_device_private(folio))
- 		remap_flags = RMP_USE_SHARED_ZEROPAGE;
- 
--	remap_page(folio, 1 << old_order, remap_flags);
-+	remap_page(folio, end_folio, remap_flags);
- 
- 	/*
- 	 * Unlock all after-split folios except the one containing
--- 
-2.34.1
-
+If s390/sparc/powerpc can't align pgtable_t with others, we have to keep 
+the pgtable_t to bridge different types. But we could take step to 
+change pgtable_t as 'struct ptdesc *' in other archs. That could 
+simplify and clarify related code too, isn't it?
 
