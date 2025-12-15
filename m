@@ -4,141 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA06ED41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:10:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A80D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D6DE6B000A; Mon, 15 Dec 2025 02:10:49 -0500 (EST)
+	id A51046B0006; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 587D76B000C; Mon, 15 Dec 2025 02:10:49 -0500 (EST)
+	id A01846B0007; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44FF96B000D; Mon, 15 Dec 2025 02:10:49 -0500 (EST)
+	id 8F0246B0008; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 318516B000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:10:49 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 75D076B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:38:32 -0500 (EST)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3A01BE538
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:10:48 +0000 (UTC)
-X-FDA: 84220832976.01.1F40398
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CA6BCC0004
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:10:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765782647; a=rsa-sha256;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5E13140E69
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:31 +0000 (UTC)
+X-FDA: 84220902822.01.5882D10
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1290E40007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765784310; a=rsa-sha256;
 	cv=none;
-	b=oMlEOswkdxYZcyeu0aV6CJ1WqQ6O0nIAXsUr8CAuBQEZrzYKA1NKST8BSwr3pgvn1z+Yy3
-	KhB1eOmq7sRjM4XsHk79138aUJ/mLMDbztI6ZEV09cihSjlcnvdICbtd8n43eRFMtTuZy5
-	4X6GUDF9rlzmFr5XV1dscpTXw+gGVv8=
+	b=caoMZ/pGvnhkR5F0NaKx63JrOQ2zfyEt3kehHm7cw5JC5kbd0CIM59K/0/IWVnlP28qGsK
+	gvPACo1xk3RUgVUOKlREmDOj2AsmpB1RDCqOOq0mkejXg5nBHK4EQFuaQvgDg7DF6HAFOn
+	OpYlGnbn/eYzxjAVRYQ0ZeLUMvLnAuQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765782647;
+	s=arc-20220608; t=1765784310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=qJnLoOdWA5W0i+DumM47axkaIzm3dkD3Z2w9f2KLHyA=;
-	b=gGPlv99j/QUQHXJ/8AOvJrrekODgZA2YY2qUGFndbhY0oligD/0TfaEEJsYI2pNWikNjtG
-	4/Z4v2FSo1ruh/zdhkO4iZR2WLLrhdUxDr6K5xZ9COXLIqqrcBuAbzvDCIjladco+nEjDM
-	AX0dXR6hXawHJiSh+knL03lCPZXE2R8=
-X-AuditID: a67dfc5b-c45ff70000001609-60-693fb470c4fe
-From: Byungchul Park <byungchul@sk.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com,
-	harry.yoo@oracle.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	horms@kernel.org,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ilias.apalodimas@linaro.org,
-	willy@infradead.org,
-	brauner@kernel.org,
-	kas@kernel.org,
-	yuzhao@google.com,
-	usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	almasrymina@google.com,
-	toke@redhat.com,
-	asml.silence@gmail.com,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au,
-	dw@davidwei.uk,
-	ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: [PATCH 2/2] mm, netmem: remove the page pool members in struct page
-Date: Mon, 15 Dec 2025 16:10:01 +0900
-Message-Id: <20251215071001.78263-3-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251215071001.78263-1-byungchul@sk.com>
-References: <20251215071001.78263-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0yMcRzHfZ/nued5Om6enfBgw25oGuXHsY/NzyFfVluGf8rG0TP30K/d
-	VUpjl7J+cEmJXLVdKP0iu9IvpVypw0YLOcOVKzWkiNKVX9fRf6993u/3668PS8oTJHNZMTRC
-	0ISqghW0lJJ+nnZ1eXjFJnFF131vyCkrpaFkNBpudFVLwFHaR0BOcSWC747XDPypb0HwrbmV
-	hk9NQwiu5Y2QkPM0gYLhsjESamr7EHzMuknD+xY7AyUmP+gs6KWgLrGKBPt5Cw36hHES6h0D
-	DJyuLnSKy3UMtFWmSuDiWD4JVbouBp7V5tBgK/0jgV6znoKHhiIKvmQ2k9CZuhlajLNg5HE/
-	guayKgJGzuXS8OJKLQF36l8wkNFupKE7oRNBe5OdgsyfSTRkx6UiGB91KgfSvksg+4GN2eyF
-	46xWGjf1D5K4ougVgTuyLlDYeu8RgWsMbxlsNEXi8kJPnGJtJ7GpOJnGpqF0Br/pqKOxJWuc
-	wjXv1uGa6m8E1scP0P4zA6Trg4RgMUrQeG88KFXrLYHhX6dHX09uJXQoRZaC3FieU/J6SyYx
-	ybavPeQE05wHb7U6XOzO+fG3Kp+jFCRlSW6A4esaftATwQzOly9yDLtKFLeYv9OZ5hLJuDV8
-	S+PZ/9IFfMntRlfHjVvLX3t7CU2w3NlJ/3DZJeW5RpZ//HQQ/RvM4e8XWqk0JDOiKcVILoZG
-	hajEYKWXOiZUjPY6HBZiQs7fKDj5M7AaDbXtMSOORYppsraKjaJcoorSxoSYEc+SCndZktV5
-	kgWpYk4ImrADmshgQWtG81hKMVu2auR4kJw7oooQjglCuKCZTAnWba4OndyxfOHqjNK4L6JH
-	Ul7Yr9it5T6DG3arGUProe2taE6vJTkAHg2bdvmX7Kyw4Z7IGe2ORI/i37xO5Mz2qUuM3Q+K
-	EjdpZFqDURHrVxvgFq+0+Xsr+5RH7fN3+eQSS/cH7j71spBce2ZR3r6GZZot+fufxO+9q/ZN
-	7vIM2+b3vkxBadWqlZ6kRqv6C7PmDPEXAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWRa0hTcRiH+59zds4cjo5L9GRhNIvATLtovGGUUtKf6PaljC7kyEMbXtlM
-	NLC0DC+1ZV7KdMaksua15t1mhTNvBYWlnEqdWdl9lZo5tWwafXt4fw/Pl1dMyoYpD7EqOo5X
-	Rysi5bSEkuwKPLMqtmazanXB2cWgryqnoWwiAW4ONojAXv6eAH1pHYIx+ysGZprbEIy2ttPw
-	2TKC4FrxOAn6J6kU/KyaJKGx6T2CT/kVNLxrG2KgzLQTrCXDFJjT6kkYutBBgzZ1ioRmu42B
-	0w23HOHqZAYsRZ0ieFqnE0Hu5A0S6pMHGXjWpKdhoHxGBMMtWgo6C4wUfM9rJcGqC4I2gxuM
-	P/qCoLWqnoDx80U09FxpIqC2uYeBnG4DDW9SrQi6LUMU5E2n01CYokMwNeFI2rLGRFD4cIAJ
-	8sMpgkBjy5dvJK4xviBwb/5FCgv3ugjcWNDPYIPpOK6+5Y0zhW4Sm0ozaGwayWZwX6+Zxh35
-	UxRufL0BNzaMElh7xkbvcTsg2RjOR6riebXfpjCJUttxMPbH/ITrGe1EMsqUZiInMcf6cwM/
-	3pKzTLMrOEGwz7Eru5OrrHuOMpFETLI2hjPf/0XPDgvYHZzR/nNOotjlXK01i5hlKRvAtT04
-	R/yLLuHKbj+Yc5zY9dy1/ktolmUOJ/vjZZSFJAY0rxS5qqLjoxSqyABfTYQyMVqV4Hs0JsqE
-	HN8vSZq+2IDGnm1rQawYyZ2lwt1NKplIEa9JjGpBnJiUu0rTBcdJGq5IPMGrY46oj0fymha0
-	SEzJ3aXbQ/kwGXtMEcdH8Hwsr/6/EmInj2SEf3cewoF2l3B3yphbsndC1hqS/XVZ1+N04mtQ
-	O0EGp9j9mGHPkPaRrZK+e0Ej1pt3Fn446+W12axweTm4v8QWuuXg0uCcNOXtCu2+w8Y/b3WV
-	XtosF2cf/y2CxMNnRcLulevWKh9dTYn3jDAzzhZ78cnthZPSiVO6K/onSVGUQU5plIo13qRa
-	o/gLKI2TbfkCAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CA6BCC0004
-X-Stat-Signature: 6dxoi1nh8ch4oe6f53ufiyypcek14bu6
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dFBLUyUvGjBsuLLQvurq7Q9RL06UN9yGTtA1H8tq3v4=;
+	b=gnC2xVgRm6Q4att7m/YBxeR3sCmBQp9FSVPA8xHeo/b3o1y5bYjR7lfOG9D5lcqgWrXg1k
+	nfUReEwufTAzhjI4t11MA8NOEx+nUJ+mJTn7d+VbCzOgV5oS4GxJQPVIoRTHuEQ3gJOZ27
+	3+r/CjzgMHgFM7zFLqa9Jnm5BLH7L2M=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVBjy18l7zYQtrL
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:37:58 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 5297C1A01A3
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:38:21 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP1 (Coremail) with SMTP id cCh0CgBHtOnpuj9pnAsAAQ--.24033S2;
+	Mon, 15 Dec 2025 15:38:18 +0800 (CST)
+Message-ID: <3edf7d6a-5e32-45f1-a6fc-ca5ca786551b@huaweicloud.com>
+Date: Mon, 15 Dec 2025 15:38:16 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] mm/memcontrol: make lru_zone_size atomic and simplify
+ sanity check
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
+ Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Kairui Song <kasong@tencent.com>
+References: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgBHtOnpuj9pnAsAAQ--.24033S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxuF48Xr1ktw1DXw17KryxAFb_yoWrCr4rpF
+	ZIka40yFZ5ZryY93sFya1Dua4fZa1xKayfJr9rWw1UAr1aq3Zaq34UKr4fuFWUAr95GF4a
+	qF90gFW8C3yYvrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-HE-Tag: 1765782646-852937
-X-HE-Meta: U2FsdGVkX1/uSD3huD+raaD4hr5UjOYbKym35zMhLcjY3R24haHM3IVwNCtEnMe8rXVUzWQdaXWvXerpo34MrpamBnRZ2kLCULo0URyowhpAtRhjIKetx29jQiA9XjmV+X65d5xt+3A/6/kQ4cqmF8JZ61wsHxZ9iwexBeP8dQ/zBlR046ppvYO8z3Crd+XS/kKOwzVN9WcpSyF6APgww9r102A+jJvmje8cKNVnlxuhkGHhWBMn7+d8ZXo1Sw3v7kbcmtrfQfhfP4eZ8DMFgmhQ1w2aX2SZP+J94UDcG+SP+l8q12Pz++2cVZTNy2LUu91guLmZfz0AEPEvLA8nil5bAVxwcCODJv03FQ6U3p8zBCG9oORUDpj0/EHuOWEm7ArsEv0hsWjy/NwMUh0rDTRrkQl5WMNVBaogeAaDiAJmyVfjWTOKVN7pV4zDz7JgqXDwhWHCf+KxPVY5YgmBHNMFoCMeGA0PjuBCk2lYNf8pvlyB3Yxa6uzNId5Yob4mcEe4qabdJQPbjYm5bHqKSj9dNcvpnpWHyfmPA+U93VByBJFctIxdGqlEYBzzphmBKOwMSGYJXOLZbDJ1kN2vofXsYqUs30fEzCThAch0sXlk/RGENUTznrb3MyXRihnK4aP9Qvm9gjgirdFOzDcdeiGz4A+G1wkJ41QAxtCgudQPRY1vJW8aK0ilap+nMsU1XEueamDjiIPIX6UFhni7AtH8X083g//AYo7Rw64q+eb394wU+BliyIhxx1/Evmt/Qs2Yndc9qsvMjv8AVoMyOl8TwAa1+EUj0j6Ety/DutJ/cYFkvo43Nf0dYiAE7awmgOIsfvkOCwRyqB/uXK0Y0Gu7oVbdFNzKr9J4WhkcSUMiUWpd+4/akzXBWe9W3u/jy6P0khtrA+EYl7GAVaG4OdN3Rp7DmSRF9r+epemv+wAde8/qSvF06ePu3hyy7SdHcjKnaH1PPTxI9O+X+3H
- Nr15m7i0
- iH64eu+IlZZgBvZATs0W2po1e7H0mb6SvXRexR1+oZYPnNaw=
+X-Rspamd-Queue-Id: 1290E40007
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 39bhseuk8uykxs1x5inccyte5uxosnje
+X-HE-Tag: 1765784306-62848
+X-HE-Meta: U2FsdGVkX1/GnfpMKPRuCow367BDbP4yZyWmh+wN43gKgAAjtQh985FoCAp/w1WUzlqWfSWCXFCELtYZwuuQbcJoE2wYijoqg51f+kSTT6hLeu4ZNmLYl5ROkTVAzuvNIFg8jKIgRaWUTi+ibpZLhZUXRP0pTnhhjLzcofbwuvnWFu1ZG+HB8tSv0JXyJbk0iQ/+14L0CvuZc16Egicb/zfJwLLEAjTtWHt4eBYIJxJdayzLdEAPH0D2TUepk7fBIhim63tG/VqTqVziOdO4VUyhpOrHm+hcMkNuNKV2ki7b9wQU9k0Yk5c2TXyH1ZsSMMD1W/E9VqIQ/jZxMbulIi/bUHLDBgc+7Y12nowp5DPMY7RhnG7ck7N5htaEp1w2+l6i0YEdNT9SiPOksio762N9sLUt4KVLdjhw3pftN6hd46HxdukkPbYLlpwAdg5bOyupXzZ7g7pKgc8CVyF/0ExXR/gpUqC14qutZI2MrRI9WMvcxEJDjjVv464F48IEKq6GdHDIropZMu506sbilt06vh+YKzO+ml2Gc1EtQR5aDYPcqEpxb0BQBuyEBiV9Wn4HcgEg0IOXJ6bsdsJI0exvZZ5tDfv0mo8V6ul0gxx+3bPCuN5jZMhUR3AugIYZds8K1WM7mK6VduJ09qPu9Ui60XGKbI/7T+d86DutyD9wNDFZbQAdOLftorrPOOXZ/EUJH9dz41v2HMX/+ghsfnOoh+GCV9gL6rOVIOFIF63bbISQbtVfGUGoUHI6QxUurJ4/BGK7jmSAUNRHlw8e6Dqw3abT7GgaTJbi3lFMQsDqYg5UsDR0wJY/v669JkAgxoYzkc9lxlg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,63 +107,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that all the users of the page pool members in struct page have been
-gone, the members can be removed from struct page.
 
-However, since both struct netmem_desc and struct page still share the
-same space, the important offsets should be checked properly, until
-struct netmem_desc has its own instance from slab.
 
-Remove the page pool members in struct page and adjust static checkers
-for the offsets.
+On 2025/12/15 14:45, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+> introduced a sanity check to catch memcg counter underflow, which is
+> more like a workaround for another bug: lru_zone_size is unsigned, so
+> underflow will wrap it around and return an enormously large number,
+> then the memcg shrinker will loop almost forever as the calculated
+> number of folios to shrink is huge. That commit also checks if a zero
+> value matches the empty LRU list, so we have to hold the LRU lock, and
+> do the counter adding differently depending on whether the nr_pages is
+> negative.
+> 
+> But later commit b4536f0c829c ("mm, memcg: fix the active list aging for
+> lowmem requests when memcg is enabled") already removed the LRU
+> emptiness check, doing the adding differently is meaningless now. And if
 
-Signed-off-by: Byungchul Park <byungchul@sk.com>
----
- include/linux/mm_types.h | 11 -----------
- include/net/netmem.h     |  7 ++-----
- 2 files changed, 2 insertions(+), 16 deletions(-)
+Agree.
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 9f6de068295d3..46d3c4b52cc10 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -114,17 +114,6 @@ struct page {
- 			 */
- 			unsigned long private;
- 		};
--		struct {	/* page_pool used by netstack */
--			/**
--			 * @pp_magic: magic value to avoid recycling non
--			 * page_pool allocated pages.
--			 */
--			unsigned long pp_magic;
--			struct page_pool *pp;
--			unsigned long _pp_mapping_pad;
--			unsigned long dma_addr;
--			atomic_long_t pp_ref_count;
--		};
- 		struct {	/* Tail pages of compound page */
- 			unsigned long compound_head;	/* Bit zero is set */
- 		};
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index 2a73b68f16b15..01d689de11511 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -42,11 +42,8 @@ struct netmem_desc {
- 	static_assert(offsetof(struct page, pg) == \
- 		      offsetof(struct netmem_desc, desc))
- NETMEM_DESC_ASSERT_OFFSET(flags, _flags);
--NETMEM_DESC_ASSERT_OFFSET(pp_magic, pp_magic);
--NETMEM_DESC_ASSERT_OFFSET(pp, pp);
--NETMEM_DESC_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
--NETMEM_DESC_ASSERT_OFFSET(dma_addr, dma_addr);
--NETMEM_DESC_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
-+NETMEM_DESC_ASSERT_OFFSET(lru, pp_magic);
-+NETMEM_DESC_ASSERT_OFFSET(mapping, _pp_mapping_pad);
- #undef NETMEM_DESC_ASSERT_OFFSET
- 
- /*
+I did submit a patch to address that, but it was not accepted.
+
+For reference, here is the link to the discussion:
+
+https://lore.kernel.org/lkml/CAOUHufbCCkOBGcSPZqNY+FXcrH8+U7_nRvftzOzKUBS4hn+kuQ@mail.gmail.com/
+
+> we just turn it into an atomic long, underflow isn't a big issue either,
+> and can be checked at the reader side. The reader size is much less
+> frequently called than the updater.
+> 
+> So let's turn the counter into an atomic long and check at the
+> reader side instead, which has a smaller overhead. Use atomic to avoid
+> potential locking issue. The underflow correction is removed, which
+> should be fine as if there is a mass leaking of the LRU size counter,
+> something else may also have gone very wrong, and one should fix that
+> leaking site instead.
+> 
+> For now still keep the LRU lock context, in thoery that can be removed
+> too since the update is atomic, if we can tolerate a temporary
+> inaccurate reading, but currently there is no benefit doing so yet.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  include/linux/memcontrol.h |  9 +++++++--
+>  mm/memcontrol.c            | 18 +-----------------
+>  2 files changed, 8 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 0651865a4564..197f48faa8ba 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -112,7 +112,7 @@ struct mem_cgroup_per_node {
+>  	/* Fields which get updated often at the end. */
+>  	struct lruvec		lruvec;
+>  	CACHELINE_PADDING(_pad2_);
+> -	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+> +	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+>  	struct mem_cgroup_reclaim_iter	iter;
+>  
+>  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+> @@ -903,10 +903,15 @@ static inline
+>  unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
+>  		enum lru_list lru, int zone_idx)
+>  {
+> +	long val;
+>  	struct mem_cgroup_per_node *mz;
+>  
+>  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+> -	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
+> +	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
+> +	if (WARN_ON_ONCE(val < 0))
+> +		return 0;
+> +
+> +	return val;
+>  }
+>  
+>  void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 9b07db2cb232..d5da09fbe43e 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1273,28 +1273,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+>  				int zid, int nr_pages)
+>  {
+>  	struct mem_cgroup_per_node *mz;
+> -	unsigned long *lru_size;
+> -	long size;
+>  
+>  	if (mem_cgroup_disabled())
+>  		return;
+>  
+>  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+> -	lru_size = &mz->lru_zone_size[zid][lru];
+> -
+> -	if (nr_pages < 0)
+> -		*lru_size += nr_pages;
+> -
+> -	size = *lru_size;
+> -	if (WARN_ONCE(size < 0,
+> -		"%s(%p, %d, %d): lru_size %ld\n",
+> -		__func__, lruvec, lru, nr_pages, size)) {
+> -		VM_BUG_ON(1);
+> -		*lru_size = 0;
+> -	}
+> -
+> -	if (nr_pages > 0)
+> -		*lru_size += nr_pages;
+> +	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
+>  }
+>  
+>  /**
+> 
+> ---
+> base-commit: 1ef4e3be45a85a103a667cc39fd68c3826e6acb9
+> change-id: 20251211-mz-lru-size-cleanup-c81deccfd5d7
+> 
+> Best regards,
+
 -- 
-2.17.1
+Best regards,
+Ridong
 
 
