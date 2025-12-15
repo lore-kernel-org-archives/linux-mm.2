@@ -4,134 +4,259 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F615D5B16C
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 15:53:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D48D5B16C
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 16:04:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560186B000A; Mon, 15 Dec 2025 10:53:59 -0500 (EST)
+	id 3A3A26B0007; Mon, 15 Dec 2025 11:04:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 537806B000C; Mon, 15 Dec 2025 10:53:59 -0500 (EST)
+	id 354586B0008; Mon, 15 Dec 2025 11:04:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44DBF6B0010; Mon, 15 Dec 2025 10:53:59 -0500 (EST)
+	id 1CDB86B000A; Mon, 15 Dec 2025 11:04:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 33FB66B000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:53:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAD3E13A574
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:53:58 +0000 (UTC)
-X-FDA: 84222151356.07.C3361CC
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0D889100005
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:53:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qndgzwdc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765814037; a=rsa-sha256;
-	cv=none;
-	b=jGTLrPUpo0Zh0I03W8wbTIWi5yvEaHbvrglTTHjMmmewEGanhHa4eVVMi4N7VPhFmXbmXE
-	AnoXcs5xKiCSpEVinCe4/lzUd13U7SaeG88wINK/Q4DiPPK7iLwuomjok++vskH/3Xiafi
-	Ij4Ta8Q2sG1jY9RjOOKN9C3B9qf6K+Y=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qndgzwdc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765814037;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 00E3D6B0007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:04:14 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 644B7B7EE4
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:04:14 +0000 (UTC)
+X-FDA: 84222177228.15.DBEEF50
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B43671C001E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:04:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=H3ZTpvXO;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="TkdZIEO/";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765814651; a=rsa-sha256;
+	cv=pass;
+	b=rPp89k4lYmZAcHWgvKZpNDneYJAIvKxGUAe5P/mLfldhFzfw1sVx1AnCALJVKBEBNSuC2c
+	rtGfXY/iTAyVhSzxPegxp+LstOUHzc2Ndl+IIusIRD7m8k3jH/ef6ohoY9vZBiAYGIhJnK
+	JldjBcbqBsitKHw28lc4NCyw/10hxs8=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=H3ZTpvXO;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="TkdZIEO/";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765814651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
-	b=hM5qkWuYXYTQT4q9TZMNpANW6yyQFr1K/ZIum5+kfx5eBZHc9lu+91puBCHmprgA+4eprW
-	cSZ8MgdbVcsiujPUW4CkleWDc3hYkBkVrBQuJpNNPf123la9uv2Q9ipuk4eJYnq4lWa/6B
-	XMHDYhvtF4mr8kmT+Q6Te0kKqrQaRA0=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a087b2a9c0so26289515ad.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:53:56 -0800 (PST)
+	bh=xj1DqEc2u/+4728AcmlY6d5yUyZwtrqS5cVpR47JdyQ=;
+	b=c2pQjASp/pbwj1pIkbleUlZn5++tU+58h1ovcf0V7r31UlT8c5MemVuNEukbkrqdplt4il
+	iNIDzI4Qsbmrs7oIGXaxqxgLpzsNHpGMuF4/Qb/KLGGyD0HY2DfjVHuE7592tQZVSqEwj4
+	K1lbiYOev2T7isUlPeea82IfpDaCod4=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BFFNpUB2398829;
+	Mon, 15 Dec 2025 16:04:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=xj1DqEc2u/+4728AcmlY6d5yUyZwtrqS5cVpR47JdyQ=; b=
+	H3ZTpvXOwWS1Dynfe+cWrpqeoYTmbTRpIbXZ6c4KZAFydRQu3Y1DcEHZwl+2P9+e
+	8cvk6V9ti+83lrWGPHVCqmUqj0GYaxzVVg1acxx40alMg3fK/KvP6SUyNNrJYFWv
+	0K9izHe8tD4aOgE9RUtclBsPGFvf+o8MHh9Kjuwcs7NOD0fXExJp2q3PmbnWpUMz
+	UwNhBUfzRYCowTPu3kX3VPWd1pE6qXSgN95ms8XUMB+rG2VJq1Bpa5CF04oWFgzS
+	kWPNWuG4UcdWxH1HtNeR4ixVwkHw4zRnQFZTBX/nTA/2+9YrnR2BNfbK6cNt71CI
+	+GaF5EWonK2J+ltQGxdgZw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b10prj9ur-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Dec 2025 16:04:05 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BFFIi85025214;
+	Mon, 15 Dec 2025 16:04:04 GMT
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013009.outbound.protection.outlook.com [40.93.201.9])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xk9cbq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Dec 2025 16:04:04 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sj0Th0BL30D+e1jjMIzSIXBbLgZVBKdZyakD72lcq3rfgOkFVWern2SNfBaFbLLUNJenLmLIoLNQNy4+oNm9U7dw/gjYt4GVN9kzMZbuvpsWNG8Slhr3Hi3oe3HxoDC2SmHcqkKVN5KhoARwjthJRLUzzMBTu0I9AWTCrBDoP4j/AoJGjAjorHxINy9HdUPQGc+Y1vlERe9N5YXDqgyLIXrs24L2+2k0u7+mF7lBZA5mxxLOesXb6To5veJjTukxsHKWtJkDqDShTeA8YkldkU0ysRjVgOc3+yx+iOki2vR2tjFqSITxU5aQ8jAc3wvdxbOPXF9lfFE1rf6i8VO31Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xj1DqEc2u/+4728AcmlY6d5yUyZwtrqS5cVpR47JdyQ=;
+ b=MtWSN6HQxwtGCorZbhpEEKThFoqEaupVGrRfQxISGyReIKWQ5g2ZvwpA6k3Z3iwGDJkK0CBq9W/AzzKspjs8anbWGRuGWOXecQJfH2Qvdt+qxXHFpG2s/yNuBgnA3RWSDfMtYQZptsvoXSOmK6zVqtt+WZckb3+ZD1Tm9ek24o01zO368I46mKduaUAPig0G7uwslTdQ9RHH0zLkk3lx8w+gLE/TRqe0NQmA4H6n3nwQUFuF5qeyInuQSwr+dWIXen4ESfaqIs7L9k4mXqV7DoOaDLSCm8TcxFN54fA43Ae8E/wdQkTwJs78iczdtOhXJoJV8PiVTdTNQaOF1DaY1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765814036; x=1766418836; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
-        b=qndgzwdcKHpWqWUdZUOfa9tDDXpOw8mJ7Xu1rGDprhOC1iO19ih84ymhuzYAfdib8T
-         gDUQiTmoXEgna7SfdpcchsIS2mrCd+l9hR3jw2j64HajxMUnIiDv22DqUw66mWNNn/P9
-         SeeQkqZMhnuAWOG6+UDssGYVm3E6mQqYJYLfRZzRVoYPWgp0b7we3WymRvLkcyu7r951
-         kROrTMveG8V8f+mk8G3keiwrVWK9KmKi1y6/O0FczcWFJyedUkCAPjbhvpqAp2sQsSrs
-         MuZG6ve5Lq25BMtBe8sKtQG5bqanXJvGG+45c5jWiSlWPl8jOuTpqPdd/J5fUMxBNZA1
-         9Gfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765814036; x=1766418836;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
-        b=PU37TQnCHIkc71TsnoQ6rqwOvFXWttJ6xYFuSVyByxgzjZfXIlgLcj6fTpe9H3XWzW
-         T+utxnUcJQhtbXcn1vl5ZW8LhvzUMCqrT7j3jUFW9FGW5ulkwvCZKLGvzXYyurdPh5Wk
-         PJHMTPrk+L3/Dk9/c3cNkaFbLTZos2oVhpKG0QzEtRG6n5xWAw0Nec2c2CKfT6o4UQB4
-         XADcKK6t39YtqWSQlECm1HFkXJoGIRZtyLsvMgQPIvezH2DEeV0LHp6HRZRszOf6xQ8L
-         Ts9FV5GKrGgjj1qp5skC9Wsd8aXIAKqGbf10GaIEcFHtdHnI9W8/ps/rhJIP1U/o/njY
-         O7/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWKwHZ/YkdOPI0pv+rupprg3CmZGx7wIk2Gs7cju3Q529YTPLLelAwxrAFhyR6TAA8SrTWBS/gbEg==@kvack.org
-X-Gm-Message-State: AOJu0YwO3VH6GSFmPqD3ynpKKg4eqsSEjUgG/g1+zi0krCDj4QJGf1FA
-	8bs+LOMiyC7AaddBib1zbpRCSqnSrriYQDOpIWhaXS5vGKixDN8iaMsiQVFPx5SS/5hrXp3LlCL
-	wpphS3UtIek7ZjYwKMHjgh/1pbsvTGIvcZLyVaUO9
-X-Gm-Gg: AY/fxX67utjML6zGucVgZJgiaEz4/D0CeIzOzl52x6Y/H4Fc3ogjITLLiXHnVozSRxH
-	lHp4GKb2MMyyg3gT7AaeWOyF/f4hjXJbnrQ+B8rnottIdUdNrepVYLTTVZ3wdKBePEd9UMZ84yg
-	9+1xDtOvPTDvd8Trh+BlpUj0/3jdYblGjwLv+fWqbfTnBdF9koMQ4NzhG5UFJ/lS+cMz8VGrtLc
-	z3F9jt2bXeE3ntFUXKC3Ov+hnAh9EwJTzMeXXronq4iZgpo5Q/H6MOWOT107uwsH9+5pkEGoJUQ
-	XUF0GNqSkqjymgKEPXHuPbyFLQ==
-X-Google-Smtp-Source: AGHT+IEqHtbIkXeCrxZ7N2Is3Z0BKjAm77k3VHnhb//Mc2q6P3kqxs3MPR3a7KluXzGQE7f0g+lEq90Z0zzfwOCm1e4=
-X-Received: by 2002:a05:7022:1b0c:b0:11a:3483:4a87 with SMTP id
- a92af1059eb24-11f34be9ca7mr8171406c88.13.1765814035105; Mon, 15 Dec 2025
- 07:53:55 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xj1DqEc2u/+4728AcmlY6d5yUyZwtrqS5cVpR47JdyQ=;
+ b=TkdZIEO/OLC94xLFdXRiwiDl+APa5sH21jCA5vs6+uoWagZD4yaEjY1hOmEi/3kPpTBY8BOztlbGUqm4NHPixYuCIykAtCfPyi73nCc5/QKOhqHoK5zrcubV2xoHd+pezf0n47YK1PxHrmXfG6SXkkRJ4nhfICKf65ew5SlO6Vw=
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
+ by LV3PR10MB7796.namprd10.prod.outlook.com (2603:10b6:408:1ae::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
+ 2025 16:04:00 +0000
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::743a:3154:40da:cf90]) by BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::743a:3154:40da:cf90%4]) with mapi id 15.20.9412.011; Mon, 15 Dec 2025
+ 16:04:00 +0000
+Message-ID: <02e4f1d6-f16e-4c0f-89d3-c75eea93b96f@oracle.com>
+Date: Mon, 15 Dec 2025 11:03:58 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC][PATCH 2/2] shmem: fix recovery on rename failures
+To: Al Viro <viro@zeniv.linux.org.uk>, Hugh Dickins <hughd@google.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>,
+        Christian Brauner
+ <brauner@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>
+References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com>
+ <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV>
+ <8ab63110-38b2-2188-91c5-909addfc9b23@google.com>
+ <20251212063026.GF1712166@ZenIV>
+ <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
+ <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com>
+ <20251213072241.GH1712166@ZenIV> <20251214032734.GL1712166@ZenIV>
+ <20251214033049.GB460900@ZenIV>
+Content-Language: en-US
+From: Chuck Lever <chuck.lever@oracle.com>
+In-Reply-To: <20251214033049.GB460900@ZenIV>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH5P222CA0020.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:610:1ee::12) To BN0PR10MB5128.namprd10.prod.outlook.com
+ (2603:10b6:408:117::24)
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
- <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
- <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
- <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
- <20251212110928.GP3911114@noisy.programming.kicks-ass.net> <aUAPbFJSv0alh_ix@elver.google.com>
-In-Reply-To: <aUAPbFJSv0alh_ix@elver.google.com>
-From: Marco Elver <elver@google.com>
-Date: Mon, 15 Dec 2025 16:53:18 +0100
-X-Gm-Features: AQt7F2oxzebZt0rcTkreaKMT4PDBgj_kZoo-YwczNEo1aa0S6zPi6Xbs61JFiQg
-Message-ID: <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context analysis
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
-	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, Chris Li <sparse@chrisli.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
-	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|LV3PR10MB7796:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90c3024f-39fc-4661-b855-08de3bf38f9f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eTZ4UzExODcyb2dZbWVGNEZoVW1kYXJ3TExDMS9ldDFWWmJjdktSVlVLNDBk?=
+ =?utf-8?B?OWU4dHhoRFc3NDZzU0R5MFV3aEtlYWdmd3pieXRpYnpkUUs4UjdrU1BZL3Js?=
+ =?utf-8?B?N2RxN0dVeXhQMllCZVYwRE5KWFhITS9MWkoxSkt0c2Z0OXR2YjJtNnZSTktX?=
+ =?utf-8?B?azc3a3p3bEZsSXBKN2JOWkJPS3EvQlBHVk1iRGNHanYrTUZsclo5SFEzUXVl?=
+ =?utf-8?B?Mk5jajA4UHI4UU9TWXRlSHNlQVQ5c1FhNGFsUE5JNzVTWHNNZ3A2T2dzQm9Q?=
+ =?utf-8?B?S2RMUERIUG1ZWlNNYmY4bE1NNDF2N0h1QUNtZzJVWUY4VUFFb1BDK3dSS1k4?=
+ =?utf-8?B?bE85ZnVaK3FDM2lENHh3TkZJeEwzZ1pQUkUzM1pNYms0eTd0eS8vMHRJWVEv?=
+ =?utf-8?B?MlVsVWVOc1g4VWwwVnlTMWQ1bjVya3l2THFKNXpvNWlxaVdFNVpqU1R5VFkw?=
+ =?utf-8?B?RDAydi8vRy8waEh4WmtFQUx4eHlyblJVQUZwWEdjZEpiNDJXYmpyVml0UGRt?=
+ =?utf-8?B?SU9mNEZaVGFkcEt5eVNFblN0WnJTM3FFLzNEMzcvTW5VRFAyeWlJR2NIZXgr?=
+ =?utf-8?B?WmJpMHNib3FMTGNqT2tPaTE0bFZuNDI2TEFqdTJaNWxkZ3c3RCsyOU1oOGFW?=
+ =?utf-8?B?NDkvSlEwOXUzWktNbmpzVklxQk03aitwUy9xWVJKTVY4Z1Q4YVlIM2dLbGRr?=
+ =?utf-8?B?akpYRUpMTWpldFZjZWljSVpsZktzUmZZTFNsRmxoRHNPOHNOVVQ5NVpXNXNC?=
+ =?utf-8?B?TEV5R2pSM1Z1VmE1SlNDTlhvRjNrU2F0SjF4ZnU0ZmxxcnlvWndBSFNvbEpy?=
+ =?utf-8?B?dmt6a2ZEd2M5d0x4U0ZEOFpkeGZqSFVvN3JtMnBnUmpKM04xdmdYaHlMRmtH?=
+ =?utf-8?B?ZExYNmhGNlduRGNsTy9TUkxQVnR1UklnMW1OUjQ2TTQxZHFGK3lKTG83QU5R?=
+ =?utf-8?B?Uk4zbFVKVzM2bkJISmEwcXlqMUs3aE5zajg4N3B6M2JnYk13SFNhMTlSVkJX?=
+ =?utf-8?B?VDJWdWZyVTdBQkJGRDlNbDR5N3hheUduQS9aYy9GRlVoVm5QeEtXSGswUzdl?=
+ =?utf-8?B?andaUzBEbWlXOWFQRVhBcUxCeDh5VUM4cXI5bzB1NXhSR1FsYXdpRHVzbkE5?=
+ =?utf-8?B?TVdib3MvNWRxaWFKWUNtR3ByY1A2Y0wrS2dOSCtRU20xM3dWRGx1MG8xbzVz?=
+ =?utf-8?B?VktkM2FjYU1kS2Zrd2hQeDAxMXp2Z21XQmNVSk5SeUVzL3cwWUo0a2xoOVVv?=
+ =?utf-8?B?Q3BQSXJiM1laTWw0M29nNWpidEJERzRPNTJNQTNhN2VpQlRQcFFYT01YUjJv?=
+ =?utf-8?B?cXlaRWhHbjBzeXdML3Rvc3lKN2pFSDkvWFV5MHN4VS9jcTluUmY1TnlWbGdF?=
+ =?utf-8?B?NWRWclpYU1J1Z0JtZWhvQjJ4cUoxRmYxS2dOOWczR2xGaVFVR0NEVlBlcHhY?=
+ =?utf-8?B?bXRaU1FjQXJES251T2NoQ2J5UCtFNGhzbWFISHZnMFFyOTJ2K051b0hpeE1M?=
+ =?utf-8?B?RXV6UC9VTHdGY2RWVjdFVUpFUW0ya0JQZW9meU5oc1NuUTdlVHd5c1pZbExC?=
+ =?utf-8?B?UUNaTDBPdzZHRGtzYUNaVExsTHZFZ3o5YkY3WGw1ai9PZlZreXZQSGIyc1o5?=
+ =?utf-8?B?bFlTQ25HV2dRU0lLaDltalNMWVlSdnNCTjhzeTN3MFQxak9jUjIwczBLWmda?=
+ =?utf-8?B?b3QxcEVsRzlMOVVBbzZSNVBDL2EyYUQ2a2thdERQYUVPRVBScTU4YXVZc1F2?=
+ =?utf-8?B?MmZXZVkrUDFSYXpKbXdjVXdLL3JWcXFqcjFaeE5XS2FNeGRmaDJNaGphTUF4?=
+ =?utf-8?B?VExzM3JGNGxHbUcvRy9NY1Q2aUlVanBVZThhUEgzRVVvRnVTQ21kcWZVOWpp?=
+ =?utf-8?B?bm13cGtDS3IwOU5QZ0JjaW5OcE5qTzlwRVdNcUJNSnIvWDQySm9xR1ZqdTk3?=
+ =?utf-8?Q?VCYQS43L0s2euh1j4s4lBLyupHCB5xWn?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V29QdEpQNk9UbkxIQWN5SS95R3RiMk9lbGxuSmdTZHNHc0lUSnNnc0E2eE1i?=
+ =?utf-8?B?Mit4QTE3QTJRTE9Ec3B4bHNmSmg3dW1XSG93MS9XL1VLaFJLdUJDTFZnd3JJ?=
+ =?utf-8?B?ZkJRc0orZG9kUk94SVlMaUxVYXA4WXp2Rzh6ZVU1TzMzZzBoMHVrN2xDMEd2?=
+ =?utf-8?B?T0RnL1hOS05ZOXA5T2pDWkRUWE1oMmNYVnNqcWNod0IxaW02Z2oyeFU2Tmpq?=
+ =?utf-8?B?eXdSL1hzdHA5dy83QjAweHVEYjNYZlFqVVZwTys2TnJ5dTZGbmtBdWIvTklv?=
+ =?utf-8?B?cGtyOThaRFRDTnR1cEN2RHNQNTdqeVdMc29DSXJNak4xMkN1ZzErU2lEQVZq?=
+ =?utf-8?B?UTJKUnJaeFJNTVd2anlWSDFIUFozZ2hta2JiOUU3U3VFUk9pRnQyZHJMOEZw?=
+ =?utf-8?B?UENFV0N2ZXVZYmYyeFVMRXVlUGtkY0JISDlBSE84elNJZTBlaHpycmlMQUF6?=
+ =?utf-8?B?UmNSdEppRXpRQkJYTUpkaHJwOU1PNitnN2tLNVZhK0lteEhvRVgza0R2VVVj?=
+ =?utf-8?B?cnVWVHM5WFV2TEdoRVk1clljTmNrTis2SkYzUGNMMUhFT0I0c0hxcVNTdlRZ?=
+ =?utf-8?B?V0dLcy84Q3dobFhsMFdscis1VTk0TThGT3JTVkFnRTRNWktzMFFLT2xRT1ha?=
+ =?utf-8?B?SzRwMnNhT0VlZ2ltSUhZOEU3SDZJS2IwWHIvRGJtN0w4Q1Q5eXhIS3pjMFdI?=
+ =?utf-8?B?UUNmT2ExS3o5bU52c0l0NDZYY2plcmNNWW5DUjgrMi9VQ1lmeFhxS1ZHbnNB?=
+ =?utf-8?B?eW4vbDYySlVBZ016MW51U1hNTHlhOTVodUo1UWxtOUo0SG5sNzhnbDBodnM4?=
+ =?utf-8?B?NThQVDlUOWNtSy85aGRmYk5EUlBKK04wNy9oZjNPR0FmKytCeUtlWGc3dFQz?=
+ =?utf-8?B?RmVqRVh3WnhJMVg1YmI1aWNKK3VONHVKU1dDRDBVa3FjL044ZFpWcVAwdTVs?=
+ =?utf-8?B?dngxSTczZ2kwKysrdWcxanB1R3BscTk1S0pLRjBxZkd3RUpwbXU5d3EzY2FD?=
+ =?utf-8?B?dG9SbHNNcTdlNjhzdnk2TUhzK29Xa2dYSURPdzFVTDQ3eEw4dGE1VG9HZjY0?=
+ =?utf-8?B?aTlIVU55cDV1MkpIYkJ5azMrWnJQUko2dkhuVWZXdVlMMHNhVFdzNHdmQ3Zq?=
+ =?utf-8?B?UGlqQ0h5dVh3WXlQb2w1N1JjTGR1cWgvL3p2L01PdUM2NExkdTM3Y0g5ZEhs?=
+ =?utf-8?B?dHZOUFgxMzVDeCthaE1QYnJaVEJYaTVjVXN1bWRaaUN1eGdZMUZ3QTU2WXV1?=
+ =?utf-8?B?SU9COXBqcjh1TkdNVHUwYWFEZEh4V0dWM2grSS9KMzdEaHZWdmhVeHA5NWww?=
+ =?utf-8?B?N0tUMDNVRlk0NTVCZWJWMHFZRFJURWp3K2NEd2p0NlVhSE16VUNqa1RWeDlJ?=
+ =?utf-8?B?Z2Z0MVF5aGRIWUtvamR5V1pkYmZFSG9XTFpYOGwvOEVqdTBmUzJuSGZ4dGZl?=
+ =?utf-8?B?YXk4V1R6V0ZxclVPQUgxcEc4d1IzM3N0V08yVElYM1NOYWZXUnROQ1dMWWVi?=
+ =?utf-8?B?T3M2WUluTVdQUzZ3RnNHYWk0Y3lUSkU3Q1ZvWGtZam5uVGlLT21uRUFoNCsz?=
+ =?utf-8?B?S2J4UTVzQlBsOFNreXdEaGlEZjJ4SGoxc0E0bFFHZ3QxSktJbktDcXEySllM?=
+ =?utf-8?B?WWZLSVltYWtBcTBueTFPbGZaL2pRaE1zanVXSjBySWJRV1ZQcVMrb1VSTDJa?=
+ =?utf-8?B?aitDOGVZMWkxeDA2K3JZblkwMFNPZ015ZXhiQjZNWUg1SmFPdmRtNzZPNGZB?=
+ =?utf-8?B?aDVyTnJaUm03ekVUZ1o3UVRiRWtHZFJTS21qcEpVMDFVcFVNbEQ0SFZSTkxQ?=
+ =?utf-8?B?bXpCQ3ZsZ3RjZk9LQUhkay9KZ3BtdnhrbWNvYjROR3hmdGo5NXJnU08vekRE?=
+ =?utf-8?B?ZENKdjI3MU5GT1pMZkRWYmJFNnlVUEhvWFhTeXRDWjFlck1MRXVUeS80Umkw?=
+ =?utf-8?B?dHhNQU5uN05JT3lGdm1qSnNtcUdHSVRXb2JGeHVmeDZmelJ1M0lkeTRSKzdN?=
+ =?utf-8?B?VS9TVUg5ZkZSM1FUUlBIU1g4bXN1NFZEY2J0U0dUeFVnT3Z2djN3YThlRU1V?=
+ =?utf-8?B?Q204UlQ4bkhhbG5rbTYwbkY4N3JwSm1sRWx6cDJUZEkwTTZkTDdiZHpBZUVT?=
+ =?utf-8?B?MjlKT2RnZHRpcEd0ME1yNW1ieTRyN0ZpZmJVcGRYNzFFeHZhNEZNaWY1L0RQ?=
+ =?utf-8?B?dnc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	OeFNu7LQAcnqo9o9a13mP3VzQrabaT2gT3BO7ycxNfsVGQ4r9wuY3wst6QaFpu9X8uRKN4j8fB6/xPfMO0GnybJca7ft+VevPvyg5iTlTGSklO2x6CsoJ0fSdGTpKdsTWCZmK9e1vv/FEqxYVVAPiYAUJzhG1bGtQsK6DhU7AtZHDuS1vwQv3gQ31XQKxhB5ezh5Um7YDUEhvIazuMH14ADFPnNTMnkI0VQFykbCQaLMEBQFiq1wyoK9x04A0qVmTsSKt0em4zSpWE2jTB7w2ufUQoSV91si3m6jwvvaAilvDpoq+p9Djoby7fE/7d5Pa8AKgIDdPRrwMatmrLccBE/ivHnB0sHiqpnpcIDDtdKtGM3sJx2rXPeZyUuKwKU8MfaZzU4A2N1XTCDqo7Vs5cr4fUUtmcS+t65y6XUblLz2QMDsW2fBD1ZmS8fVnLBz22c/pEDRI89f+kyNjrm+qUiY/HRytZKx5EVRF0onRHFjPNPnTlhowjasMeh2CgYZExSqKKy/zNW2RNemCELMar1t4Q5jIfX+WAveHTdj34H6l0GcUddMSnIAlJg0liAlNcQRpaWHxIDHDA7LZQH8Dhb/Nycy/wUZe3w4Pux7jw0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90c3024f-39fc-4661-b855-08de3bf38f9f
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 16:04:00.7228
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m4VYpxqmB+yBAz+PtyFWu3F8bzHH0S8j7HerxY+nRgmqtuehSSBiLioZw7qtvsph+jgp+TxQIrsRzW2aK0A+7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7796
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-15_03,2025-12-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2512150139
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDEzOSBTYWx0ZWRfX3vW+9ocI/fBN
+ 7kXRmbVvhpkFotSU/LgYznDxJwLuPjDLXRzQ/YfR9OY3f+8Na0r51U08VUsvQcvVYFtcTvxnNNb
+ PrTq6rWvkvMi7c6VjiKRgwuOkLjQqZTrxudVFxde4UKW1YJvMTZ5TurF0Oov3YNdrC4O/1tmtKD
+ 49glmg9+sGNic7PLOTPojsleitq8tCK6xLJKlenRTeYc0AuhUun31PPRAWAHAb+G4Peli8aMB9e
+ 9BN7pFlI1wcglfH03nzNwNgAS6CBj/7DaETZo3lkk7eXU5rDvbdxb7Yvd4bWggz1sCw3y2pQprz
+ d0VVr6aF9VTqU9X2ayF9R8R7uVdwp+oUzjZpO5uMeRgULg5eYkoE4HE2zcJzey2O7FUmHQBWcX5
+ CgYJ6SwfcScn9Y2fvpYAjhqMqjJ5Dg==
+X-Proofpoint-GUID: o05mN8Oa45dh1b7aWykt6vDJ5HzbzBtd
+X-Proofpoint-ORIG-GUID: o05mN8Oa45dh1b7aWykt6vDJ5HzbzBtd
+X-Authority-Analysis: v=2.4 cv=dParWeZb c=1 sm=1 tr=0 ts=69403175 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=drOt6m5kAAAA:8 a=yPCof4ZbAAAA:8 a=vg8JRtLtKrb0S5RSmSMA:9 a=QEXdDO2ut3YA:10
+ a=RMMjzBEyIzXRtoq5n5K6:22
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0D889100005
-X-Stat-Signature: pfspidjdt4mqi4ww1ag5eiw5cusa99mj
-X-HE-Tag: 1765814036-268012
-X-HE-Meta: U2FsdGVkX19/OoNcIVBrgXVwUFWC755SQCs8CsWLc8+u165gAkTbxHfKBq4iIh3N52WrfEScH+dlNOnDJP8yRvkYuRtQ9vLY2DReBTHhHhhfsChzyLaRxbO+DRwKvcA5M7Yt6P1yHf8vg8lObWjReyOp2kmDUzxac6q2L4mYfwkAluYyMJx7KcPQqjkc6YVG4DjuSC3XZAbdD7qgDcfbVOMwklLowGFszWyKymfBxDXDDRS7ktpPtiE2izMa0zOlGXgvqtRJQ7nbdVJFjUUvRXkf+Imbfl91c/qkkVDlmshma7S8rhhDLKpmn3C+DMs4Bq1DeeXuuNtMpzvlm92aX4BcLFNSBGIwKfJNv56RtW7E9JtENcSgrLAudr0IYaKMZ5cZEeD1CSCw4TsNc2R7dCxNSzm58LS9cCZrIkJGikw2U3jsK+7HXXHll5E9ZS2YIeJbZD3iLp5tQm+gntwdI5IaXHOHmn+v3dmeei40q3K5fUTMrb8Nbvby/lYwR1WRoJTO/cmOGaqUy/pvSQ3xRCQGkkLERuDtn7KxG8q5262XVXDPfTz29IDvVhERHOgVOHnanqrhytD2OZVZYgvoZImrAOKTbEIt+pNCtXya79abd5HayXyZjF7ucXoHDLEMotCtkfdZx3eS2LN7Kx/J6uQxUNkr4xrmSxwqGpGnsgczoPtLQdUOd5C+FQTB5tRp6qGzBIqe8CKR9M11ypQRYW/9iVuLweoYOIlJwGigho4agOi3lyoQIiZ5hbDNhX+CoCk+8jr777d0IJ2IVVwodIcSC+M2jIt41R7U1y3DUzX72F18MXZV3Dttlm56adEh8wDO7Qu5g3ryswrvumjBLHNk+CPjHTtnu2UFQ6BeXxO/rjp1NkYWwOUeLYohoiGCm2gdDsWW9LmVyHFIFuE7Je2QISRPF4j1GmfQ4b3X40RAOhlyapigeGgz7rX5yXGAvE7q2PURTHrY4vtGL+U
- NNAJpGHH
- HGVWmGF4ni1dU7eCnJJbMYQ6mHgdoGAFQf4ynODBCGzUx3BNKnvhwO3ZGInmCSJd7FAwNtMuO2/rIOiZGnEqEKxK8luaqoD4JuVnvXurUTqjDJ0mpsJeZcUkPim2druEP28SQdE2JG1WQ5LPNf+jXMqSYd/3tLf7gXcaBMirZij02Mxvrxx4F4DG5+6KKkPu1EQNsi92U0lHgpIqu9Ac1T6clnHZ/odB2b88qogjk9pVlzlstfacVNOPPY3gV3q1bTlPAH86Jq39zrRHXeNHmSuXuEECTdvCXMCA7l0xTX7Dvr0zkf7YpIIO9dHmhFARRp0sSVvsO+vxuWTnizYiaIFB910oNU7BZj8kv
+X-Rspamd-Queue-Id: B43671C001E
+X-Rspamd-Server: rspam10
+X-Stat-Signature: mgn1fm854we87c4kpoi873ofazib8do8
+X-HE-Tag: 1765814650-917212
+X-HE-Meta: U2FsdGVkX1+2juN2y58AOv4tbtd+SnvVBmd8YddXbRAxwC9aL9QMSZDsIN3P+6sH5a0A6XlsQRXnmBrhbRCq9V4ejoVdhApcrws5pgOaPbnoD5PWvNhGi1oxLDRe81R42ASyJXvZGqknPDEFO72GzHH3Bs36vk62jt7jNUfxJMYr7nk+Bjk/lA+l+Sw/9r9DaIOAdUckPY+36g+Nt3s7iJqNAYjFwko0qazaT7epwXqCmy//sYtzX8QvVdOqr48ZPO0YgfljrJ9kX4vvREPm82V0n8BTWol3ld4UKt6cGkBvwlmt8ZDy8cc1SiIbylPU2f0S5Zl+zFUxvLNy2A5qS2v1wgCtkJI6RIajTd9pBUWH8YUJo8avuJPRVj66grOS8rV+xIUR9HvKXrTY7xmv+0Cdc+bH0OKj9gV/wRm6WHUg/Rg9Owi0iFs/GYRLFDTdNXSO5eUscto8lvbi44QlgEJ1zZLKkX3pUoNK2STZTrlhoX+L7zIxXQTCz0Zg+0uMbzSE7fNgci0eoWOZc26GT0iuYKDmkF9zMaWC4rirfNcNTO1RaKdWJLBKepLXCq55x7LZKqrxoX/YRnLmxm92Mjon9sPVDTyppvpwbgaUgFvSEZd82hIMMR2JoAqKUVOqqdCWk7uaggB81gT7IwlP71QJwOg3VwZZQaegxdfpGzPGVbI6G1EVxBXx21HRyAYX6AjCkuPqZSfdCJ5CDZbmzCGJh5s57VjIW6OFF2b9SL/O8TM7t1Wm2luoI5qP/H4hj34pBT0crdPrtlmjNLwlEaVwSfstFl13udMXtYJo8mW3r1ZkfGK5qpo5ifU6X7iJ5abrBO8dhgYYScaEGkietYBfBYDwGAksm9YvIlmjs1Y3IsnUcE8Ffn3Mhwboh2NsPvru1IJQHRC1DDMzgvqTTkxqlCM7q9e7n03s8OfN6Si2AijzL8JUQr6cw3YaiV+TnG6YGJwPA0kEo/NmjWJ
+ 0IIuil15
+ kwEN+XsHEJ8f2RrZGwAvrRalZUqWj9BQEsdwSO5/D+A1WfmZoQxQn89jUXRO9i+TtZeNPWaZMckBBJIvChYE4ZzipNipwdD95YXnf6jokUMf29MqnanjHdwPFBwAj6M3E5D22JZ0evTKHDIezrhHFWnaHrkET7nOlEbJEd4hQ4SlnhI1ZHC5jfYn0xiVwupX3+s7Mvdo0iomjTSX4PKn4gJzIV3b2Ji0VmHsoWDXgllqM0QciNypVM1DW3qoZo/KsnJlG5MlVrU1Axwo+U1uoOWaxyNQMCVwNqF5r+F1pMLHV4biGIvpANiUGUAJwRPVpkk/Nr6GLm7Xe3znNJuxrloo6clJGk7CmxK+ppHty1LY88U/EgxCSoMVAHbATq9BpgdYZx0O2/b5OChaTZdw2PNuiJz5T+7sP1pWcxHvsbnc6+OM+CpxWOhldOLJmpRUw4ywqzVJfCPrLPAM6yfzvHl2OoCnqxlabQMcv5C/u5VQ77zt5xrgq+uD+Ji7xp3O0ymnPnm3PpywVDnsbsAwqcSzhfCRIzPohVx1UEtHpTqJogp8FYfJq0GKIrepLqoPAeHLnOq9BF+85+D3dmton2kvk4fsEslr3BMakCzZ5LUEv+VxD/KvS3EbcESBYIeFDQX8z6OGHCfanVgZBKjNC9qvpVydcm6R5zfzTZ2fxsu3H9Uzpl6EY/M0Bj8DtKx5w5atEOo6y2CugoJbsSO8z/vIKew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,101 +265,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Dec 2025 at 14:38, Marco Elver <elver@google.com> wrote:
->
-> On Fri, Dec 12, 2025 at 12:09PM +0100, Peter Zijlstra wrote:
-> > On Fri, Dec 12, 2025 at 11:15:29AM +0100, Marco Elver wrote:
-> > > On Fri, 12 Dec 2025 at 10:43, Peter Zijlstra <peterz@infradead.org> wrote:
-> > > [..]
-> > > > > Correct. We're trading false negatives over false positives at this
-> > > > > point, just to get things to compile cleanly.
-> > > >
-> > > > Right, and this all 'works' right up to the point someone sticks a
-> > > > must_not_hold somewhere.
-> > > >
-> > > > > > > Better support for Linux's scoped guard design could be added in
-> > > > > > > future if deemed critical.
-> > > > > >
-> > > > > > I would think so, per the above I don't think this is 'right'.
-> > > > >
-> > > > > It's not sound, but we'll avoid false positives for the time being.
-> > > > > Maybe we can wrangle the jigsaw of macros to let it correctly acquire
-> > > > > and then release (via a 2nd cleanup function), it might be as simple
-> > > > > as marking the 'constructor' with the right __acquires(..), and then
-> > > > > have a 2nd __attribute__((cleanup)) variable that just does a no-op
-> > > > > release via __release(..) so we get the already supported pattern
-> > > > > above.
-> > > >
-> > > > Right, like I mentioned in my previous email; it would be lovely if at
-> > > > the very least __always_inline would get a *very* early pass such that
-> > > > the above could be resolved without inter-procedural bits. I really
-> > > > don't consider an __always_inline as another procedure.
-> > > >
-> > > > Because as I already noted yesterday, cleanup is now all
-> > > > __always_inline, and as such *should* all end up in the one function.
-> > > >
-> > > > But yes, if we can get a magical mash-up of __cleanup and __release (let
-> > > > it be knows as __release_on_cleanup ?) that might also work I suppose.
-> > > > But I vastly prefer __always_inline actually 'working' ;-)
-> > >
-> > > The truth is that __always_inline working in this way is currently
-> > > infeasible. Clang and LLVM's architecture simply disallow this today:
-> > > the semantic analysis that -Wthread-safety does happens over the AST,
-> > > whereas always_inline is processed by early passes in the middle-end
-> > > already within LLVM's pipeline, well after semantic analysis. There's
-> > > a complexity budget limit for semantic analysis (type checking,
-> > > warnings, assorted other errors), and path-sensitive &
-> > > intra-procedural analysis over the plain AST is outside that budget.
-> > > Which is why tools like clang-analyzer exist (symbolic execution),
-> > > where it's possible to afford that complexity since that's not
-> > > something that runs for a normal compile.
-> > >
-> > > I think I've pushed the current version of Clang's -Wthread-safety
-> > > already far beyond what folks were thinking is possible (a variant of
-> > > alias analysis), but even my healthy disregard for the impossible
-> > > tells me that making path-sensitive intra-procedural analysis even if
-> > > just for __always_inline functions is quite possibly a fool's errand.
-> >
-> > Well, I had to propose it. Gotta push the envelope :-)
-> >
-> > > So either we get it to work with what we have, or give up.
-> >
-> > So I think as is, we can start. But I really do want the cleanup thing
-> > sorted, even if just with that __release_on_cleanup mashup or so.
->
-> Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
-> abstraction. For that one I was able to make it work like I thought we
-> could (below). Some awkwardness is required to make it work in
-> for-loops, which only let you define variables with the same type.
->
-> For <linux/cleanup.h> it needs some more thought due to extra levels of
-> indirection.
+On 12/13/25 10:30 PM, Al Viro wrote:
+> maple_tree insertions can fail if we are seriously short on memory;
+> simple_offset_rename() does not recover well if it runs into that.
+> The same goes for simple_offset_rename_exchange().
+> 
+> Moreover, shmem_whiteout() expects that if it succeeds, the caller will
+> progress to d_move(), i.e. that shmem_rename2() won't fail past the
+> successful call of shmem_whiteout().
+> 
+> Not hard to fix, fortunately - mtree_store() can't fail if the index we
+> are trying to store into is already present in the tree as a singleton.
+> 
+> For simple_offset_rename_exchange() that's enough - we just need to be
+> careful about the order of operations.
+> 
+> For simple_offset_rename() solution is to preinsert the target into the
+> tree for new_dir; the rest can be done without any potentially failing
+> operations.
+> 
+> That preinsertion has to be done in shmem_rename2() rather than in
+> simple_offset_rename() itself - otherwise we'd need to deal with the
+> possibility of failure after successful shmem_whiteout().
+> 
+> Fixes: a2e459555c5f ("shmem: stable directory offsets")
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> ---
+>  fs/libfs.c         | 50 +++++++++++++++++++---------------------------
+>  include/linux/fs.h |  2 +-
+>  mm/shmem.c         | 18 ++++++++++++-----
+>  3 files changed, 35 insertions(+), 35 deletions(-)
+> 
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 9264523be85c..591eb649ebba 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -346,22 +346,22 @@ void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry)
+>   * User space expects the directory offset value of the replaced
+>   * (new) directory entry to be unchanged after a rename.
+>   *
+> - * Returns zero on success, a negative errno value on failure.
+> + * Caller must have grabbed a slot for new_dentry in the maple_tree
+> + * associated with new_dir, even if dentry is negative.
+>   */
+> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> -			 struct inode *new_dir, struct dentry *new_dentry)
+> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> +			  struct inode *new_dir, struct dentry *new_dentry)
+>  {
+>  	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
+>  	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
+>  	long new_offset = dentry2offset(new_dentry);
+>  
+> -	simple_offset_remove(old_ctx, old_dentry);
+> +	if (WARN_ON(!new_offset))
+> +		return;
+>  
+> -	if (new_offset) {
+> -		offset_set(new_dentry, 0);
+> -		return simple_offset_replace(new_ctx, old_dentry, new_offset);
+> -	}
+> -	return simple_offset_add(new_ctx, old_dentry);
+> +	simple_offset_remove(old_ctx, old_dentry);
+> +	offset_set(new_dentry, 0);
+> +	WARN_ON(simple_offset_replace(new_ctx, old_dentry, new_offset));
+>  }
+>  
+>  /**
+> @@ -388,31 +388,23 @@ int simple_offset_rename_exchange(struct inode *old_dir,
+>  	long new_index = dentry2offset(new_dentry);
+>  	int ret;
+>  
+> -	simple_offset_remove(old_ctx, old_dentry);
+> -	simple_offset_remove(new_ctx, new_dentry);
+> +	if (WARN_ON(!old_index || !new_index))
+> +		return -EINVAL;
+>  
+> -	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
+> -	if (ret)
+> -		goto out_restore;
+> +	ret = mtree_store(&new_ctx->mt, new_index, old_dentry, GFP_KERNEL);
+> +	if (WARN_ON(ret))
+> +		return ret;
+>  
+> -	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
+> -	if (ret) {
+> -		simple_offset_remove(new_ctx, old_dentry);
+> -		goto out_restore;
+> +	ret = mtree_store(&old_ctx->mt, old_index, new_dentry, GFP_KERNEL);
+> +	if (WARN_ON(ret)) {
+> +		mtree_store(&new_ctx->mt, new_index, new_dentry, GFP_KERNEL);
 
-For cleanup.h, the problem is that to instantiate we use
-"guard(class)(args..)". If it had been designed as "guard(class,
-args...)", i.e. just use __VA_ARGS__ explicitly instead of the
-implicit 'args...', it might have been possible to add a second
-cleanup variable to do the same (with some additional magic to extract
-the first arg if one exists). Unfortunately, the use of the current
-guard()() idiom has become so pervasive that this is a bigger
-refactor. I'm going to leave cleanup.h as-is for now, if we think we
-want to give this a go in the current state.
+Under extreme memory pressure, this mtree_store() might also fail?
 
-One observation from the rebase: Generally synchronization primitives
-do not change much and the annotations are relatively stable, but e.g.
-RCU & sched (latter is optional and depends on the sched-enablement
-patch) receive disproportionally more changes, and while new
-annotations required for v6.19-rc1 were trivial, it does require
-compiling with a Clang version that does produce the warnings to
-notice.
-While Clang 22-dev is being tested on CI, I doubt maintainers already
-use it, so it's possible we'll see some late warnings due to missing
-annotations when things hit -next. This might be an acceptable churn
-cost, if we think the outcome is worthwhile. Things should get better
-when Clang 22 is released properly, but until then things might be a
-little bumpy if there are large changes across the core
-synchronization primitives.
 
-Thanks,
--- Marco
+> +		return ret;
+>  	}
+>  
+> -	ret = simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
+> -	if (ret) {
+> -		simple_offset_remove(new_ctx, old_dentry);
+> -		simple_offset_remove(old_ctx, new_dentry);
+> -		goto out_restore;
+> -	}
+> +	offset_set(old_dentry, new_index);
+> +	offset_set(new_dentry, old_index);
+> +	simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
+>  	return 0;
+> -
+> -out_restore:
+> -	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
+> -	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
+> -	return ret;
+>  }
+>  
+>  /**
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 04ceeca12a0d..f5c9cf28c4dc 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -3247,7 +3247,7 @@ struct offset_ctx {
+>  void simple_offset_init(struct offset_ctx *octx);
+>  int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
+>  void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
+> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+>  			 struct inode *new_dir, struct dentry *new_dentry);
+>  int simple_offset_rename_exchange(struct inode *old_dir,
+>  				  struct dentry *old_dentry,
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index d3edc809e2e7..4232f8a39a43 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -4039,6 +4039,7 @@ static int shmem_rename2(struct mnt_idmap *idmap,
+>  	struct inode *inode = d_inode(old_dentry);
+>  	int they_are_dirs = S_ISDIR(inode->i_mode);
+>  	int error;
+> +	int had_offset = false;
+>  
+>  	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE | RENAME_WHITEOUT))
+>  		return -EINVAL;
+> @@ -4050,16 +4051,23 @@ static int shmem_rename2(struct mnt_idmap *idmap,
+>  	if (!simple_empty(new_dentry))
+>  		return -ENOTEMPTY;
+>  
+> +	error = simple_offset_add(shmem_get_offset_ctx(new_dir), new_dentry);
+> +	if (error == -EBUSY)
+> +		had_offset = true;
+> +	else if (unlikely(error))
+> +		return error;
+> +
+>  	if (flags & RENAME_WHITEOUT) {
+>  		error = shmem_whiteout(idmap, old_dir, old_dentry);
+> -		if (error)
+> +		if (error) {
+> +			if (!had_offset)
+> +				simple_offset_remove(shmem_get_offset_ctx(new_dir),
+> +						     new_dentry);
+>  			return error;
+> +		}
+>  	}
+>  
+> -	error = simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
+> -	if (error)
+> -		return error;
+> -
+> +	simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
+>  	if (d_really_is_positive(new_dentry)) {
+>  		(void) shmem_unlink(new_dir, new_dentry);
+>  		if (they_are_dirs) {
+
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+
+
+-- 
+Chuck Lever
 
