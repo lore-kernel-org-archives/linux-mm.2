@@ -4,105 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CFBD5B871
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 21:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C39D5B872
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 22:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF286B0088; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
+	id 511286B0088; Mon, 15 Dec 2025 17:31:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAD126B0089; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
+	id 494B56B0089; Mon, 15 Dec 2025 17:31:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ABA36B008A; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
+	id 368A86B008A; Mon, 15 Dec 2025 17:31:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 869966B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:46:59 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 247F288B80
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:46:59 +0000 (UTC)
-X-FDA: 84223040958.30.76E7721
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E2D0BC0010
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:46:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=W5NEeG0d;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765835217;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 19CB56B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 17:31:52 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC7625893D
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:31:51 +0000 (UTC)
+X-FDA: 84223154022.06.7AC3B43
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AE226180014
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:31:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=epveuxWJ;
+	spf=pass (imf16.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765837909; a=rsa-sha256;
+	cv=pass;
+	b=ZfdHcn9mXrJjI4sw2D9tIuKb5BCrpijZrenJfiwtWsvCH0u5pYJO4TnfJNwamoRA3IkGvg
+	Y+/M6WoqMCgRabavJTt0WGABs4x3NvXL6O+xLoVsMhvKSZb9gqRCftyYgYtQ9tB/FSdDFb
+	Lzkw4Io28+FgoJmtAs1AA0tPLVsK7yQ=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=epveuxWJ;
+	spf=pass (imf16.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765837909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxSW4fIWO4i8gI2igd4FMfJEOZ1mgZAw8yhVXnvz7C4=;
-	b=ryJMlf/HWz7l+bMB59CXfD8orsH9Utt0ty3IaIxHVhq8lEeGBRmrmiLmXfyVKc3R9rz1h1
-	aldQCh4IN/6dFU5L/asqoTF42h2KkaFCYDZ9RRffStxAq7MHnat4OMeKNy7Amn07r76Gzl
-	yIOFX9poG/qTnArBFGiXwgGCj9+6RSE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=W5NEeG0d;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765835217; a=rsa-sha256;
-	cv=none;
-	b=RWd2gXfkmDktYRCMmFtTqCPHhmTMg6QyURKqRUrTuYPMfgo2NL8lS45P7nFJwkx37G8WYf
-	ZRcCPMTnK0k8+Qme3hRzvSqPiNTL48LAmezion6wSSi2FY8gUkC9est16Q1vyH1n9koAdm
-	kLFcZ+NiionPjOjBR2HheR4lenRUWcc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765835216; x=1797371216;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=trM+M4QWlPMwrIRXs3ufU2ehi6OBpE+fjV0e0JqogMA=;
-  b=W5NEeG0dVWbZ3ENCLqpAqIi9BN+riGo/i6OklA9gOlKKQyGG/SwFqvgC
-   HEbRHk6e8MzAh7kU996Az+8vzR/AZd0pagzW/mKefiaVJz3vHad4d5rJm
-   749t6OKnQP4aUMC6bK1pcmXXWbCMdHZE2clBrTrjLjwwYIjmpuKEOox+E
-   a+1qybsypJ+He/kBU7LUpb3fhaZKmPgBEEZL6hajpML7Kxx6cCcg3SS2y
-   4QdTh1ptDHvt/JIwPFBCS+66vCMqVCuZB8uHWKyvKFMjvHRXoiX5rjy/c
-   kwUflNEdGJnT9K7Rutez5ae221H85xHUtg5ojsa+xe/x0IS/Ddu07Pfgl
-   Q==;
-X-CSE-ConnectionGUID: qUbjSQXCSE+c1dT+R+/Nhg==
-X-CSE-MsgGUID: +LUb3xCVRWu/d0KF6jv7LA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="71604153"
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
-   d="scan'208";a="71604153"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 13:46:54 -0800
-X-CSE-ConnectionGUID: UQpqC+doQ0e58cbkNCB9AQ==
-X-CSE-MsgGUID: 8CyXTd/xTyq7QaZHIpvB4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
-   d="scan'208";a="235238849"
-Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 15 Dec 2025 13:46:50 -0800
-Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVGOd-000000000qT-3rAg;
-	Mon, 15 Dec 2025 21:46:35 +0000
-Date: Tue, 16 Dec 2025 05:45:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ziy@nvidia.com,
-	npache@redhat.com, baohua@kernel.org, lance.yang@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
- collapsed
-Message-ID: <202512160533.KuHwyJTP-lkp@intel.com>
-References: <20251215090419.174418-3-yanglincheng@kylinos.cn>
+	bh=MDoS1wcUn46c1o+kUt4Dase0a7E8ksrz1tIiI0QmEA0=;
+	b=eOB7gVNaFr/tO6RGciW9LUEP9nOd/6PkDfZT93lOa21zNJqLvti6yiBkgEcziaAVuYcyz8
+	Azvg01qfVDHoKTkhSpsewXcRpcX6sAM3imFpJbfr9R/T1vEf5KZtZCRcqorLlAHcTXs1/C
+	AEk55OMxbVq2lumbOYnjJ3QMRXmxS1M=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0d06cfa93so29395ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:31:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765837908; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D42ty/+S+s7nY7NWxZYQNiqyKJc1aIrkbsWNvlAbIdsoS6sMkzI+z1wvWnbfmA75il
+         AVyldpco/vC0HGIWmatzSBdDqt9Kwwm+3KrGXolntJhOaG92UwGezjHKO1S/71GH6KyW
+         BPxACfBZakzvA33/H7Rmc2vCKGFJzROHJvUs+AIXQqeyx81k0Nrn7Tgt09vP/MJbCcju
+         oVKu5P5gHHDyaWsimbEhgdloQWbJmiLVxHlBLOkitrqfaCnYwrkxDj8Zx7Yu9KG24O1X
+         QyaUootm82jnT3B9fmjWPs/oEbWJNRDjuzCJWu2vlsK9ErxETH8kwb8c21IqCISm3/tf
+         uzbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MDoS1wcUn46c1o+kUt4Dase0a7E8ksrz1tIiI0QmEA0=;
+        fh=4/W5RV6sYrwodtBAb241EiK/gwCuCXxAH+aWm0prttU=;
+        b=QK+3UObDj4+WcX15Kh9cdam+SHyFudHlApasXWjvlBIrlk+J/wp0jjCJrxQzXteqMn
+         maLykswxpg14ZoNVHaz67S3OUXUW0rvY3s4xVqT3wYQZK6soPcGQuoaCvR3If/XT/bK5
+         BsD6BaIO1d+iw+7FWXESYSLoeFj9LbvvUsC7a98sn0km3cgSD0ktOF8DWp5ylFc9xMmq
+         6tw5xthiMzyS2dKOCyZOs3lncR9yNejf3nqwfizf5Cyai1204UrCP2wgiyRDq5DnuF1o
+         TKX2MwhmUGZGgboSptN5lbgxOZzgHsCqOIR27y/egyxHMSx/frwc02/nInTeSmvP7Ht2
+         S80g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765837908; x=1766442708; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MDoS1wcUn46c1o+kUt4Dase0a7E8ksrz1tIiI0QmEA0=;
+        b=epveuxWJ0rwZ70XKq15NEX0VNjNtx/NtOQc9FYIytctTqBtDKUDa6nxL49FIsaUS6Y
+         mDZXApH4+ZUn0/mO4Xq4VNrBvTE8uReHPHcHxTsEoUrYgy3GrbMfIgrGRPr6D29YKTkK
+         1JweJIJnNT34XuyufGpW1v6SiT76G/cvdmpfWleGEHNffeK0lN1+MKzC/F6MU5nB0Uag
+         v81Epkxf22IUEaGDR/wu/WF/dRtv0ol8MKAq8sKhWudeWTiUrxLqd23yUYVRQlG+gjeJ
+         SGruMq8OFBOkqS70VJMVs1QvXDU2wCLGyTU791QDFzbD0X1/RJMyi9xw2TQbY7o898VI
+         zunA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765837908; x=1766442708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MDoS1wcUn46c1o+kUt4Dase0a7E8ksrz1tIiI0QmEA0=;
+        b=aPLVhOB/Qjm8SwQcFcqwTw5+fBhJjxRqobm7YMpdsUptVume+5lR+HOl69kLw2plHp
+         ZtGq3divMdw9RD249SJLQty2CYLlnlB5YNZAAuBUiCJk1aABfFqRxLHkkSwT3JeuveUm
+         Y9jov+ybDt/Qbj1uD1T/KEp9sL1mabon5HMeDBPuurHGo9IBF2+u+b/xzaUJIcmwph4+
+         4/qkxjauMocN1k7npby2+qQ9H8t86J72u2zLYgFb2eHHAkW13GF/aYbSxofReZASmb25
+         R/fStXU5sp0wEYXtaWVEHooAZtG103h4eU/MszZL9xJ0zqbFU2VymYX2L2j5ZImvo6TC
+         zC1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWr7LrZbBKv7nDfnotiuqGPeZdnGcjVNRmd7XYPenHZOW5B0hLrKlsrjiV4Wx+HaTeDAfxkbrBPzQ==@kvack.org
+X-Gm-Message-State: AOJu0YwLaBQ8CBM/6H6Syx/Q6edEU1ymDUz2WFgZUVr4YRaNLFowJxao
+	SnegvxofYBcJ2qpE+Fyl85QXjsyLmYuGcuaUSeSwCSF3h8hkttFPxVfsq7HQlONHwjXiJrm3ZLb
+	kyXvT5m8UvXeFmyN1oe2PwbMAx3HAotr1wiKltQtO
+X-Gm-Gg: AY/fxX5kLMbrDhRKMSkDZ27GkO8HOXqdO7sGpZYVpnxrWcId0BchT5yPnP0uYuunGBQ
+	TsTFA+soVlLSUf45xx5O7cfBryOXzdqT1/uo/khK/K+buuqk4QIL01QHuO6HZaFMiMh57jARsl2
+	PVh83ta1F0CB/Sa7ujN7pfNzYz1EXFQRvg9+9KU7zZtYV4X5DrkZKngPfvidkzp3EIgmR7M+S2Z
+	Y/XRjlXIOw3j8KEc5bfiHRV8n1ot8nlZsKLWbLPcSUREIcFVx57x2vaQdgiBRX126DPT6JWbVA4
+	7+izkJA+9bFaPWBDE2PdH+yA2DxvbjYHgqZqBut2ZKku5zwJ6gPqW/c=
+X-Google-Smtp-Source: AGHT+IGRIaboGVckS9g/qPRFtli3PshYjyLF2BM1BK7omXduoKeTI2/kIP9p0srIwsjovp30ojTHhjVXymdM79d4KN8=
+X-Received: by 2002:a17:903:15ce:b0:29f:181c:1f0 with SMTP id
+ d9443c01a7336-2a0906f3886mr5554235ad.11.1765837908008; Mon, 15 Dec 2025
+ 14:31:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215090419.174418-3-yanglincheng@kylinos.cn>
+References: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
+In-Reply-To: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Mon, 15 Dec 2025 17:31:12 -0500
+X-Gm-Features: AQt7F2r0EuuPIfhwSJRS6i_Tjcekk7gDmjBvcasparsnwyKoYpM333lodRLuq38
+Message-ID: <CADyq12zu_o1fEz2B0nrZUFhbnEgiLPVkJv4ku5mrXYNBBNQ-Dg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] zram: use u32 for entry ac_time tracking
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	David Stevens <stevensd@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E2D0BC0010
-X-Stat-Signature: 6tk6nuuc8ebk7xfwq4wogjk1ijeec7w7
-X-HE-Tag: 1765835215-880688
-X-HE-Meta: U2FsdGVkX18wm55xvd5gorkYv6PkkQQgoY++W6Nsc124VQ+9KHfx6s4fiz99dfuQkRWHneuW25re5grQ9KpmSOKeqgr93JIcV05kMW07rbknfXOcLbBLFtQUZupO7kZh6DjO2LsBSvfK78ikxNOIkiZpLAOageNEZ2p/Ww3fdc4NYFMeKBxViAz4u6c6hH+AWMTv0WJL62wsE0uft0eHJKEu+5c7ph/BtcB8jkfWB2E1TzwqY8IRsqaXzRnOBGn1LY1vXh7vYn0qxlBm1/8kMXDZtOMGWVJk2BTK5v6Mw24b6+idw+jRw1Jd2EW5jkXZaJBh5j97RMCyEP4ER7sBeQ7kP2FQdawsf2eNWzKxubIcDuRi34YdMU1i9u+sCRQpVug+tdPS2byGMEc7NzuQ+kkPpXqNPONqyPQtcwh2kEWp7AX/flZl5flQLw5kmJLDKGsw317Ph7mYUJMZz2d8TKsyE0ihM/ap9p9M9vgMpwN83p1gfChUnOZtZH3ySBfzCbm4aUzdO6txmCcCaP4g7HbohTLeFnMjhuKCqh5i/cH9fh4Mw+uO9Ov2b9CEYUfd5pXgIWZb1X82OSOPa3nEK+Me+FC23iWDn9wLp6fV/wJxZhw/x5TrmpWf6yqRXzh3oXGDti20pjBsU19O/Ill9DMYhEfbTw9Hg/yEZH5MMvaGuzuBJrGQlqHsrFDstGYyIOlhHAdZYEsPPeSqqOSVKf0t84L6yrgRpqzD3LmvzV+JateMzb6ydMTZyWqBCejV2aZdb4qTWlI60xGBtJ46V5wS+0OwxKNjSN7/Y9bT/9Q0Mc7EKOwb8a+OgmMVpX8pusKQbIhr+hKk4bbWqqMdmJ26mUxmySVYUSbCl9/n7EDmCAOZnQ59S+JgU6P0oJkC3GaeRt+uaii8HLJFlZjB+Ul+prPClCwnJdCDazyTGVmv4IMzPdtUf3BUHlyDq1GHBuxy/gmJXgccY+mwl/X
- etK7FM8b
- eIe20YNxcHiTxLZzfPzczHeskeroPnpaN0dOj6CbzRRrcuV5/bm446K7DydEbQig237AK+MFyUww5tmo6kne6YzCk5Zq+GhieJVn0mwtXrcjbLsM58ooEZEqUIFL0u663a8KfKpAwA/xukYyxsdMBFAehPpQezMtIjhrFw9G8POUwsQg0Act4pMd3cdkOiub9QjcTUqgVD/aQiVUBJUPoG9qwmJL3dqywbwduqTlz3L3G/jcyVx2DH3/q0e7878HLaG5zN4+oAk0R/hTJYxQMC4YgzXzKB9jeheX6agau47y3UFI5jUX51yilUKXqd5tcbgtdUY51PMNjayJHFMJKl1tqpv0uLTMZRA7q
+X-Rspamd-Queue-Id: AE226180014
+X-Rspamd-Server: rspam04
+X-Stat-Signature: wq7yttu7x1kewzcj1xainnn3ayt4fd7x
+X-HE-Tag: 1765837909-747605
+X-HE-Meta: U2FsdGVkX18Kztnfhxe99qOekgao+2WR+ctqgjzzM04TFPfm5M0K7pye3F3rPO8SgZUaJUcSWIg0iIMgn2NaGGbmKoTbYVGUMfBvnc78lgP6eDeFRGtonmsUzjJVPivjZrlXlx1N6mzTTF19es0AMZDuUZwavcn+mG2yCNZtmQicF7SvLYaJ8xOm/yHEGThcx1Ds0LJe48Vd667RRgfA2vNuNiXiPnU8eeKZC1oUE8D+m4t7AKpPmRIqYXypx6iols3w/30V3OYm14+lZcxgvT5qV+3RGeECA9kRUxzRE0dvfta0JHC3Er14lyLHBTBzYd2VAB4M4J9ex+SI/x1W7jkSnuDjRhN8+qqEzOzoHGnziIcRlXewsiFMUf/+8K8B8BZZcGN4EdOdqwBWKKP3zXwo2TfX5oaL4dOJqSmhkihtBycxz74n/HEtFV1R4VdinyiHgGFJjVkcMMwT6lhHtBjUmSGn0757E2gEt3z5Feh2mblfDW1fjJQmkonFGu1PFsFQNczrWDKf4G85YcJeLb0MyGoF5gBlpaNLbpnHRo+rHN0IjQTu0a5xrrpDm6qjdv25n85mbOAWv9NyBoYIeLhs1iQpCrm593JfAGeq1a3HRUy1K4eMsBLubDR3qsB60xQGt2yBTqiEmWUHy3ggXKMnMpBRfE81k9wy2QDW1Wj5oeDXfgbop1wMAERCfxzDnE/GF3PXi+KOKF6TUTGyDFXPvcwB08YrWuKRrqYJ7ZFaFoUQuxa835CbGV8vBoyOo+QxR7Dmkwc15iq0anh0XyS3fU9lJZ805KKMeE2JCXSCpdFJHTL96jNSAszKXer2ZHnwUIXe+ixGDP/BMOr4rDWjZpFJYBU4mr/M0vtRjeCUol0CqmsBO49eJH0joWjeYBKI8UcgK2BcoPtxPgwW8b9xQ/s2bo9m70wDcmtN+HaPfBW5a456m675JS6uvYsSqWvah+tOKQ3TmuEXmO8
+ 6GnINf1L
+ jM2Y9p0IQIvs+fQYj8BeSH9rkCFCGCu4VWgiIjIPdDckosNg/DFpMlBB9LN0c26N9zPq7xYa9fyxm0KOivM+9VqCi7bXPXgup8xxhmPSO9TFLrDy75JZeX3pKKL6nHQFEuIMyEBqdYt7Y+S/VP8TUF5hu8XSss6A8DfnjONdVZv+ziBSNAT9458kqOFLgRmdBpHmXtjhLq/CgVXAs8+P1WjZ0JUOCxXMD/7LH7VbBa38HFOMkYHnTR3LzcwwmcAdyVHXAO84fOsbSiQ67S3thZ77hpGM9lTp0HMdHZcu5i1+gSWh198uxry2PhPEDwlwq+e7IdH9QnevbGEQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,212 +141,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vernon,
+On Mon, Dec 15, 2025 at 12:47=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> We can reduce sizeof(zram_table_entry) on 64-bit systems
+> by converting flags and ac_time to u32.  Entry flags fit
+> into u32, and for ac_time u32 gives us over a century of
+> entry lifespan (approx 136 years) which is plenty (zram
+> uses system boot time (seconds)).
 
-kernel test robot noticed the following build errors:
+Makes sense.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v6.19-rc1 next-20251215]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> In struct zram_table_entry we use bytes aliasing, because
+> bit-wait API (for slot lock) requires a whole unsigned
+> long word.
+>
+> Suggested-by: David Stevens <stevensd@google.com>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vernon-Yang/mm-khugepaged-add-trace_mm_khugepaged_scan-event/20251215-171046
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251215090419.174418-3-yanglincheng%40kylinos.cn
-patch subject: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been collapsed
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/reproduce)
+Reviewed-by: Brian Geffon <bgeffon@google.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512160533.KuHwyJTP-lkp@intel.com/
+> ---
+>  drivers/block/zram/zram_drv.c | 60 +++++++++++++++++------------------
+>  drivers/block/zram/zram_drv.h |  9 ++++--
+>  2 files changed, 37 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 67a9e7c005c3..65f99ff3e2e5 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -81,7 +81,7 @@ static void zram_slot_lock_init(struct zram *zram, u32 =
+index)
+>   */
+>  static __must_check bool zram_slot_trylock(struct zram *zram, u32 index)
+>  {
+> -       unsigned long *lock =3D &zram->table[index].flags;
+> +       unsigned long *lock =3D &zram->table[index].__lock;
+>
+>         if (!test_and_set_bit_lock(ZRAM_ENTRY_LOCK, lock)) {
+>                 mutex_acquire(slot_dep_map(zram, index), 0, 1, _RET_IP_);
+> @@ -94,7 +94,7 @@ static __must_check bool zram_slot_trylock(struct zram =
+*zram, u32 index)
+>
+>  static void zram_slot_lock(struct zram *zram, u32 index)
+>  {
+> -       unsigned long *lock =3D &zram->table[index].flags;
+> +       unsigned long *lock =3D &zram->table[index].__lock;
+>
+>         mutex_acquire(slot_dep_map(zram, index), 0, 0, _RET_IP_);
+>         wait_on_bit_lock(lock, ZRAM_ENTRY_LOCK, TASK_UNINTERRUPTIBLE);
+> @@ -103,7 +103,7 @@ static void zram_slot_lock(struct zram *zram, u32 ind=
+ex)
+>
+>  static void zram_slot_unlock(struct zram *zram, u32 index)
+>  {
+> -       unsigned long *lock =3D &zram->table[index].flags;
+> +       unsigned long *lock =3D &zram->table[index].__lock;
+>
+>         mutex_release(slot_dep_map(zram, index), _RET_IP_);
+>         clear_and_wake_up_bit(ZRAM_ENTRY_LOCK, lock);
+> @@ -130,34 +130,33 @@ static void zram_set_handle(struct zram *zram, u32 =
+index, unsigned long handle)
+>  }
+>
+>  static bool zram_test_flag(struct zram *zram, u32 index,
+> -                       enum zram_pageflags flag)
+> +                          enum zram_pageflags flag)
+>  {
+> -       return zram->table[index].flags & BIT(flag);
+> +       return zram->table[index].attr.flags & BIT(flag);
+>  }
+>
+>  static void zram_set_flag(struct zram *zram, u32 index,
+> -                       enum zram_pageflags flag)
+> +                         enum zram_pageflags flag)
+>  {
+> -       zram->table[index].flags |=3D BIT(flag);
+> +       zram->table[index].attr.flags |=3D BIT(flag);
+>  }
+>
+>  static void zram_clear_flag(struct zram *zram, u32 index,
+> -                       enum zram_pageflags flag)
+> +                           enum zram_pageflags flag)
+>  {
+> -       zram->table[index].flags &=3D ~BIT(flag);
+> +       zram->table[index].attr.flags &=3D ~BIT(flag);
+>  }
+>
+>  static size_t zram_get_obj_size(struct zram *zram, u32 index)
+>  {
+> -       return zram->table[index].flags & (BIT(ZRAM_FLAG_SHIFT) - 1);
+> +       return zram->table[index].attr.flags & (BIT(ZRAM_FLAG_SHIFT) - 1)=
+;
+>  }
+>
+> -static void zram_set_obj_size(struct zram *zram,
+> -                                       u32 index, size_t size)
+> +static void zram_set_obj_size(struct zram *zram, u32 index, size_t size)
+>  {
+> -       unsigned long flags =3D zram->table[index].flags >> ZRAM_FLAG_SHI=
+FT;
+> +       unsigned long flags =3D zram->table[index].attr.flags >> ZRAM_FLA=
+G_SHIFT;
+>
+> -       zram->table[index].flags =3D (flags << ZRAM_FLAG_SHIFT) | size;
+> +       zram->table[index].attr.flags =3D (flags << ZRAM_FLAG_SHIFT) | si=
+ze;
+>  }
+>
+>  static inline bool zram_allocated(struct zram *zram, u32 index)
+> @@ -208,14 +207,14 @@ static inline void zram_set_priority(struct zram *z=
+ram, u32 index, u32 prio)
+>          * Clear previous priority value first, in case if we recompress
+>          * further an already recompressed page
+>          */
+> -       zram->table[index].flags &=3D ~(ZRAM_COMP_PRIORITY_MASK <<
+> -                                     ZRAM_COMP_PRIORITY_BIT1);
+> -       zram->table[index].flags |=3D (prio << ZRAM_COMP_PRIORITY_BIT1);
+> +       zram->table[index].attr.flags &=3D ~(ZRAM_COMP_PRIORITY_MASK <<
+> +                                          ZRAM_COMP_PRIORITY_BIT1);
+> +       zram->table[index].attr.flags |=3D (prio << ZRAM_COMP_PRIORITY_BI=
+T1);
+>  }
+>
+>  static inline u32 zram_get_priority(struct zram *zram, u32 index)
+>  {
+> -       u32 prio =3D zram->table[index].flags >> ZRAM_COMP_PRIORITY_BIT1;
+> +       u32 prio =3D zram->table[index].attr.flags >> ZRAM_COMP_PRIORITY_=
+BIT1;
+>
+>         return prio & ZRAM_COMP_PRIORITY_MASK;
+>  }
+> @@ -225,7 +224,7 @@ static void zram_accessed(struct zram *zram, u32 inde=
+x)
+>         zram_clear_flag(zram, index, ZRAM_IDLE);
+>         zram_clear_flag(zram, index, ZRAM_PP_SLOT);
+>  #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+> -       zram->table[index].ac_time =3D ktime_get_boottime();
+> +       zram->table[index].attr.ac_time =3D (u32)ktime_get_boottime_secon=
+ds();
+>  #endif
+>  }
+>
+> @@ -447,7 +446,7 @@ static void mark_idle(struct zram *zram, ktime_t cuto=
+ff)
+>
+>  #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+>                 is_idle =3D !cutoff ||
+> -                       ktime_after(cutoff, zram->table[index].ac_time);
+> +                       ktime_after(cutoff, zram->table[index].attr.ac_ti=
+me);
+>  #endif
+>                 if (is_idle)
+>                         zram_set_flag(zram, index, ZRAM_IDLE);
+> @@ -461,18 +460,19 @@ static ssize_t idle_store(struct device *dev, struc=
+t device_attribute *attr,
+>                           const char *buf, size_t len)
+>  {
+>         struct zram *zram =3D dev_to_zram(dev);
+> -       ktime_t cutoff_time =3D 0;
+> +       ktime_t cutoff =3D 0;
+>
+>         if (!sysfs_streq(buf, "all")) {
+>                 /*
+>                  * If it did not parse as 'all' try to treat it as an int=
+eger
+>                  * when we have memory tracking enabled.
+>                  */
+> -               u64 age_sec;
+> +               u32 age_sec;
+>
+> -               if (IS_ENABLED(CONFIG_ZRAM_TRACK_ENTRY_ACTIME) && !kstrto=
+ull(buf, 0, &age_sec))
+> -                       cutoff_time =3D ktime_sub(ktime_get_boottime(),
+> -                                       ns_to_ktime(age_sec * NSEC_PER_SE=
+C));
+> +               if (IS_ENABLED(CONFIG_ZRAM_TRACK_ENTRY_ACTIME) &&
+> +                   !kstrtouint(buf, 0, &age_sec))
+> +                       cutoff =3D ktime_sub((u32)ktime_get_boottime_seco=
+nds(),
+> +                                          age_sec);
+>                 else
+>                         return -EINVAL;
+>         }
+> @@ -482,10 +482,10 @@ static ssize_t idle_store(struct device *dev, struc=
+t device_attribute *attr,
+>                 return -EINVAL;
+>
+>         /*
+> -        * A cutoff_time of 0 marks everything as idle, this is the
+> +        * A cutoff of 0 marks everything as idle, this is the
+>          * "all" behavior.
+>          */
+> -       mark_idle(zram, cutoff_time);
+> +       mark_idle(zram, cutoff);
+>         return len;
+>  }
+>
+> @@ -1588,7 +1588,7 @@ static ssize_t read_block_state(struct file *file, =
+char __user *buf,
+>                 if (!zram_allocated(zram, index))
+>                         goto next;
+>
+> -               ts =3D ktime_to_timespec64(zram->table[index].ac_time);
+> +               ts =3D ktime_to_timespec64(zram->table[index].attr.ac_tim=
+e);
+>                 copied =3D snprintf(kbuf + written, count,
+>                         "%12zd %12lld.%06lu %c%c%c%c%c%c\n",
+>                         index, (s64)ts.tv_sec,
+> @@ -2013,7 +2013,7 @@ static void zram_slot_free(struct zram *zram, u32 i=
+ndex)
+>         unsigned long handle;
+>
+>  #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+> -       zram->table[index].ac_time =3D 0;
+> +       zram->table[index].attr.ac_time =3D 0;
+>  #endif
+>
+>         zram_clear_flag(zram, index, ZRAM_IDLE);
+> @@ -3286,7 +3286,7 @@ static int __init zram_init(void)
+>         struct zram_table_entry zram_te;
+>         int ret;
+>
+> -       BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.flags) * 8);
+> +       BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.attr.flags) * 8=
+);
+>
+>         ret =3D cpuhp_setup_state_multi(CPUHP_ZCOMP_PREPARE, "block/zram:=
+prepare",
+>                                       zcomp_cpu_up_prepare, zcomp_cpu_dea=
+d);
+> diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.=
+h
+> index 72fdf66c78ab..48d6861c6647 100644
+> --- a/drivers/block/zram/zram_drv.h
+> +++ b/drivers/block/zram/zram_drv.h
+> @@ -65,10 +65,15 @@ enum zram_pageflags {
+>   */
+>  struct zram_table_entry {
+>         unsigned long handle;
+> -       unsigned long flags;
+> +       union {
+> +               unsigned long __lock;
+> +               struct attr {
+> +                       u32 flags;
+>  #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+> -       ktime_t ac_time;
+> +                       u32 ac_time;
+>  #endif
 
-All errors (new ones prefixed by >>):
+Why not just always enable CONFIG_ZRAM_TRACK_ENTRY_ACTIME now that it
+doesn't consume any additional space? Also, why can't we do this with
+a single unsigned long flags as before and have a simple method that
+isolates and casts the lower 32bits as a u32?
 
->> mm/khugepaged.c:2490:9: error: use of undeclared identifier 'SCAN_PMD_NULL'; did you mean 'SCAN_VMA_NULL'?
-    2490 |                         case SCAN_PMD_NULL:
-         |                              ^~~~~~~~~~~~~
-         |                              SCAN_VMA_NULL
-   mm/khugepaged.c:50:2: note: 'SCAN_VMA_NULL' declared here
-      50 |         SCAN_VMA_NULL,
-         |         ^
->> mm/khugepaged.c:2491:9: error: use of undeclared identifier 'SCAN_PMD_NONE'
-    2491 |                         case SCAN_PMD_NONE:
-         |                              ^
-   2 errors generated.
+static u32 *zram_get_actime_for_slot(struct zram *zram, u32 index) {
+  return ((u32*)&zram->table[index].flags) + 1;
+}
 
-
-vim +2490 mm/khugepaged.c
-
-  2392	
-  2393	static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
-  2394						    struct collapse_control *cc)
-  2395		__releases(&khugepaged_mm_lock)
-  2396		__acquires(&khugepaged_mm_lock)
-  2397	{
-  2398		struct vma_iterator vmi;
-  2399		struct mm_slot *slot;
-  2400		struct mm_struct *mm;
-  2401		struct vm_area_struct *vma;
-  2402		int progress = 0;
-  2403	
-  2404		VM_BUG_ON(!pages);
-  2405		lockdep_assert_held(&khugepaged_mm_lock);
-  2406		*result = SCAN_FAIL;
-  2407	
-  2408		if (khugepaged_scan.mm_slot) {
-  2409			slot = khugepaged_scan.mm_slot;
-  2410		} else {
-  2411			slot = list_first_entry(&khugepaged_scan.mm_head,
-  2412					     struct mm_slot, mm_node);
-  2413			khugepaged_scan.address = 0;
-  2414			khugepaged_scan.mm_slot = slot;
-  2415			khugepaged_scan.maybe_collapse = false;
-  2416		}
-  2417		spin_unlock(&khugepaged_mm_lock);
-  2418	
-  2419		mm = slot->mm;
-  2420		/*
-  2421		 * Don't wait for semaphore (to avoid long wait times).  Just move to
-  2422		 * the next mm on the list.
-  2423		 */
-  2424		vma = NULL;
-  2425		if (unlikely(!mmap_read_trylock(mm)))
-  2426			goto breakouterloop_mmap_lock;
-  2427	
-  2428		progress++;
-  2429		if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-  2430			goto breakouterloop;
-  2431	
-  2432		vma_iter_init(&vmi, mm, khugepaged_scan.address);
-  2433		for_each_vma(vmi, vma) {
-  2434			unsigned long hstart, hend;
-  2435	
-  2436			cond_resched();
-  2437			if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
-  2438				progress++;
-  2439				break;
-  2440			}
-  2441			if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
-  2442	skip:
-  2443				progress++;
-  2444				continue;
-  2445			}
-  2446			hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
-  2447			hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
-  2448			if (khugepaged_scan.address > hend)
-  2449				goto skip;
-  2450			if (khugepaged_scan.address < hstart)
-  2451				khugepaged_scan.address = hstart;
-  2452			VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
-  2453	
-  2454			while (khugepaged_scan.address < hend) {
-  2455				bool mmap_locked = true;
-  2456	
-  2457				cond_resched();
-  2458				if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-  2459					goto breakouterloop;
-  2460	
-  2461				VM_BUG_ON(khugepaged_scan.address < hstart ||
-  2462					  khugepaged_scan.address + HPAGE_PMD_SIZE >
-  2463					  hend);
-  2464				if (!vma_is_anonymous(vma)) {
-  2465					struct file *file = get_file(vma->vm_file);
-  2466					pgoff_t pgoff = linear_page_index(vma,
-  2467							khugepaged_scan.address);
-  2468	
-  2469					mmap_read_unlock(mm);
-  2470					mmap_locked = false;
-  2471					*result = hpage_collapse_scan_file(mm,
-  2472						khugepaged_scan.address, file, pgoff, cc);
-  2473					fput(file);
-  2474					if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
-  2475						mmap_read_lock(mm);
-  2476						if (hpage_collapse_test_exit_or_disable(mm))
-  2477							goto breakouterloop;
-  2478						*result = collapse_pte_mapped_thp(mm,
-  2479							khugepaged_scan.address, false);
-  2480						if (*result == SCAN_PMD_MAPPED)
-  2481							*result = SCAN_SUCCEED;
-  2482						mmap_read_unlock(mm);
-  2483					}
-  2484				} else {
-  2485					*result = hpage_collapse_scan_pmd(mm, vma,
-  2486						khugepaged_scan.address, &mmap_locked, cc);
-  2487				}
-  2488	
-  2489				switch (*result) {
-> 2490				case SCAN_PMD_NULL:
-> 2491				case SCAN_PMD_NONE:
-  2492				case SCAN_PMD_MAPPED:
-  2493				case SCAN_PTE_MAPPED_HUGEPAGE:
-  2494					break;
-  2495				case SCAN_SUCCEED:
-  2496					++khugepaged_pages_collapsed;
-  2497					fallthrough;
-  2498				default:
-  2499					khugepaged_scan.maybe_collapse = true;
-  2500				}
-  2501	
-  2502				/* move to next address */
-  2503				khugepaged_scan.address += HPAGE_PMD_SIZE;
-  2504				progress += HPAGE_PMD_NR;
-  2505				if (!mmap_locked)
-  2506					/*
-  2507					 * We released mmap_lock so break loop.  Note
-  2508					 * that we drop mmap_lock before all hugepage
-  2509					 * allocations, so if allocation fails, we are
-  2510					 * guaranteed to break here and report the
-  2511					 * correct result back to caller.
-  2512					 */
-  2513					goto breakouterloop_mmap_lock;
-  2514				if (progress >= pages)
-  2515					goto breakouterloop;
-  2516			}
-  2517		}
-  2518	breakouterloop:
-  2519		mmap_read_unlock(mm); /* exit_mmap will destroy ptes after this */
-  2520	breakouterloop_mmap_lock:
-  2521	
-  2522		spin_lock(&khugepaged_mm_lock);
-  2523		VM_BUG_ON(khugepaged_scan.mm_slot != slot);
-  2524		/*
-  2525		 * Release the current mm_slot if this mm is about to die, or
-  2526		 * if we scanned all vmas of this mm.
-  2527		 */
-  2528		if (hpage_collapse_test_exit(mm) || !vma) {
-  2529			bool maybe_collapse = khugepaged_scan.maybe_collapse;
-  2530	
-  2531			if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
-  2532				maybe_collapse = true;
-  2533	
-  2534			/*
-  2535			 * Make sure that if mm_users is reaching zero while
-  2536			 * khugepaged runs here, khugepaged_exit will find
-  2537			 * mm_slot not pointing to the exiting mm.
-  2538			 */
-  2539			if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
-  2540				khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
-  2541				khugepaged_scan.address = 0;
-  2542				khugepaged_scan.maybe_collapse = false;
-  2543			} else {
-  2544				khugepaged_scan.mm_slot = NULL;
-  2545				khugepaged_full_scans++;
-  2546			}
-  2547	
-  2548			collect_mm_slot(slot, maybe_collapse);
-  2549		}
-  2550	
-  2551		trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot == NULL);
-  2552	
-  2553		return progress;
-  2554	}
-  2555	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> --
+> 2.52.0.239.gd5f0c6e74e-goog
+>
 
