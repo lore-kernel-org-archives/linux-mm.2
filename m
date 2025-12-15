@@ -4,116 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67307D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F94D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:48:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4166B000A; Mon, 15 Dec 2025 00:47:42 -0500 (EST)
+	id E94C86B0006; Mon, 15 Dec 2025 00:48:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBB2C6B000C; Mon, 15 Dec 2025 00:47:42 -0500 (EST)
+	id E45276B000D; Mon, 15 Dec 2025 00:48:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD2506B000D; Mon, 15 Dec 2025 00:47:42 -0500 (EST)
+	id D34806B000E; Mon, 15 Dec 2025 00:48:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF266B000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:47:42 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55E8B14032E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:47:42 +0000 (UTC)
-X-FDA: 84220623564.07.B0040A3
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 74E0B180002
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:47:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=WCGxQT9c;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765777660; a=rsa-sha256;
-	cv=none;
-	b=ffosP7eVHzMZLatY2f7F1YQREB8H/UPL35Q0KYHzsGklrAXFeUEoZk5DsPfPCqg7oUlQ0s
-	2GUGO8DDxb5fy0MyByDobfo0LEig2rNUW1mooVhqrxuxX5//4/DVbNpHw5FNipmxbEB12j
-	TdzU9oCUp6L2MGss1YS9wi7izgLbEX8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=WCGxQT9c;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id BA39A6B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:48:40 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B469BE4AE
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:48:40 +0000 (UTC)
+X-FDA: 84220626000.09.D726BC0
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 53A391C0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:48:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GHlnuLzp;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765777660;
+	s=arc-20220608; t=1765777718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U4bgQIWtnTguUUfAUeAsZ365C0z4iWE0GTuA5IhKscc=;
-	b=tO2jK4L7E++QPFDORyE1PG0hGURWgSGNn6Vg7W1refcmTsZUD8ptWQT45mmptr2ehAkRA8
-	+P9OFJOfFU2c24zVlmB8o6cWQzTvJAODfmPRQkwUGR7xnQEqDc2HdJYkuLtR6cxYfSzpJ4
-	94S3BVMhWYZBeGeaJ6vp1miPAd2/i3k=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0c09bb78cso6878475ad.0
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 21:47:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765777659; x=1766382459; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U4bgQIWtnTguUUfAUeAsZ365C0z4iWE0GTuA5IhKscc=;
-        b=WCGxQT9c2ufeybjiy7t/6+sUJpfAYdulPtYhjVV3BCLfhPwjhquHPVV9QUICJjK6ZJ
-         FQmsKfap+x+PvU1titif10oymSKnmaTyNL6UtluPP3sfVSvb2E5X39leaf+2aWZtq2Ia
-         Zc7YdipOYr5rfDzibdV50//E+GbBPWgvdPvpc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765777659; x=1766382459;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=U4bgQIWtnTguUUfAUeAsZ365C0z4iWE0GTuA5IhKscc=;
-        b=tSdxfSFK4moWIO+WdaurmDGkQRLQf220uBiIq/nipY0t3mTByoymenNuBL4WkR+Buw
-         YuSxXEqamm0EdzBkRaS96BXW/sqXXr8K8Psn282HqVO/d/Dlww0btPGK56MZPAWRY4AP
-         2AF/fz6RovLcIArE3M5Iaeb0PWPr2Bx8xcNXzbtOUd/uUTDYWH3GM+7XHnGO5rEGSFbj
-         6ty80JONARhYgaVaS7Ftk3gNF7cajVrsBICCE7KIZVTduRWIWamzkXBAmMBrfLB/Kllv
-         T3HL57z+SBLLUIMb09BLhhoyA5X5BdOu0lTx1VN6EE6bjQAl8zaLb+jX6+FbTtyAo8g/
-         xsQg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0gK/n/OXtnNbv4VWXZAFb/iaBuaGfxS6MQ2eM6ZbGCD7JYegBOZA+39tKJsft3MAWwe7Oj+DrzA==@kvack.org
-X-Gm-Message-State: AOJu0YzWTBVpigCBj8DXU3hw8EWu/hmq80RcPeZsljW7w3KGTaySJQvs
-	XcVloRu+bUcsR7JzK1Owl5obTpiLZu6EdkPgcYNuY+ZnuclmY/MDuTfTrFIlqyDwHg==
-X-Gm-Gg: AY/fxX4INQxwMOzrYM3XuVUYoYOxP2ZiaT2mTGk45cDrU3SY7dTkFho/Ir7udtMPmr7
-	ilUTKnKtE2amFt5mRxo5I8sosfcHIeJ5YUGRE3bO8erORyGsLbEa8TOkevXO873d9SqI3fAVjrz
-	qbAbGqQj7xsIeT3zJRCnGoeZCKL1hDe/mu/kf0tJkcgMDrl9pV2nEe/JU2Qu85KvDZKTojRm6d5
-	I76I7GIp1GIkTKPLu4rkUayg0M1vWFUDas69SKpxhJglWz9vdmjWymEdeqnA0vZByOXKi7zkLg+
-	NkZAqdLl+h3DaQDPYTaEKF6hHtLoAAe8ECCmQ5UJtNvFhRqLmJIJsKoheMstFQEYrJuFS+exzLN
-	jj8jOvrNmfuhpWfmvbTAoWCBRWOuGjiwXQUQbSmLTZq12Iev10p7pZ9mQ27w/tElPg2oLYONJSc
-	QYBXhzZTZLi4q/4cZvALpGDXVjAk12WSW77vhJD4xGkMcdhZ6CNBthsmQao5Bvk6bNr1sDZdZvL
-	g==
-X-Google-Smtp-Source: AGHT+IH1pv7Qw3Bz8dzGDa2+eo2pIwyjJURHPjoe4mHOqDp2Z8Kt8ofVXUXNMGs7j6q5q25WElVfKA==
-X-Received: by 2002:a17:903:38c5:b0:299:daf0:e044 with SMTP id d9443c01a7336-29f24e6f768mr110715045ad.18.1765777659360;
-        Sun, 14 Dec 2025 21:47:39 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:88fa:c762:fe19:6db7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0bb39db53sm36391945ad.11.2025.12.14.21.47.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 21:47:39 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Brian Geffon <bgeffon@google.com>,
-	David Stevens <stevensd@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 3/3] zram: trivial fix of recompress_slot() coding styles
-Date: Mon, 15 Dec 2025 14:47:13 +0900
-Message-ID: <ff3254847dbdc6fbd2e3fed53c572a261d60b7b6.1765775954.git.senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
-In-Reply-To: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
-References: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
+	bh=pXBFQTQkWArDGCGQE3Qb4WRg56aochoyiuY4gkYroaU=;
+	b=VRPQ+udhgDjcCmjBLeDCICEpfAfO774U+fzuq4La0NI1xjIe/2PsG3O4WdFXWcvHTNHDcS
+	C1t59ZqBJkiBo+NPyKN65hdCa42ilqSjNP2Wxscc3XIN3I/xMkTvWX73kWBWCMFLhfxKfy
+	ZF/19UessASWaF/HWeG5ap2ScTsnctg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GHlnuLzp;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765777718; a=rsa-sha256;
+	cv=none;
+	b=YxvMYB3Wq8rKLTd+2O3jF7tTxsnKMOY5KNAZb6HVPS2Y0dsoXJbprs9ArHaaTTb/3zTVoI
+	ELnMXvEDLXKjQ5Lotq7RXtyIF/mpOP5hW52iTImhH2vL9PO41oRbp/m+gFhlJXfcnDn7pv
+	h7u7M/MfffRIQbdi5iW/Ht2rNrm2M6E=
+Message-ID: <4ff8abad-186a-41b7-a269-70e9b1dc61e5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765777711;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pXBFQTQkWArDGCGQE3Qb4WRg56aochoyiuY4gkYroaU=;
+	b=GHlnuLzp2XpmhCe7oRyppfHdyNfxGKYqQfvQfWKjYPAn57gO0JVV0fnA+AE3r0S0T4/GjV
+	BR+ndZZ1ouw40aLma2uks6FFuAGjhdDsi29MQhXZERTN8qxw6Pc0+YzqGS8n7MPEhNqNSB
+	gqbmALHgoIL0bLQmi+6vAqrgT2OxvXo=
+Date: Mon, 15 Dec 2025 13:48:14 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74E0B180002
-X-Stat-Signature: mqp5ysmtff5egu7mnigp4sy6e8uajcd8
+Subject: Re: [PATCH RFC 1/3] mm/tlb: allow architectures to skip redundant TLB
+ sync IPIs
+To: akpm@linux-foundation.org
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, shy828301@gmail.com, riel@surriel.com,
+ jannh@google.com, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251213080038.10917-1-lance.yang@linux.dev>
+ <20251213080038.10917-2-lance.yang@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251213080038.10917-2-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765777660-528505
-X-HE-Meta: U2FsdGVkX1/UKioZWHrcYTgUfgtlfRz0p0pNjI6dm9g30vp1KQVh6LuQcblg9acDNzkRuTnV310giE/rKe8aOcHLr9SvkXaiUv3Le4WY8ynlSOtmhp/WzbBvwnaJtv6va2oi5kbQ0zCJcq1YppDYXif5ho3LGME7u4GNJcjmBM5itjHRDgWaTvTOG63RMKbVcHM8xwqnlCooTczI1uW4YVI7gXu9fAigB6AEwDbqIB1KcETcGdrze06727QW3qNHrBfKLgbYJHXgYatIL2Jnu5QasCCAhbof4wUoKISwW9/gSsa+XZBirbYt/yI/fF4G8pmgNcuhTqNlesomZ3d9xOFxXnzlJrEnqu0opfchsuK8+JtoLunmmoSlWooPoZHxostUCOOR/BuZxddxxF4t3hllAwZwIv6LwCaDmZTyjepcpf27jjUJrYHVXqnuu7dvtU+ciUCMlN8HGVMbL3kDIysCfPGfUo60N1NjlrTHz6xcg2AJ+rd2DlaI/opgdPdHqR2vQTnXBefxhl1bQCX7yGsvQz5P4lBrTF/wtNU13Y9dEhVBy0iK1KBmjb+q6dRAKnG1FKgKB4uwp+bBmldiUEC+L4sBh669AuDm7HQtC1isjtoBcL/l9ecms1vlIXiboewymDVOzWxSgXSKP9d+Np/wZ5JK/JPIclv+4fVLvqos0ycwhXj2/+BrJFX0U/tCjR6gOTblkSWldFkq/9VcNImJ7aqd2bRR+k5BwajLqQXrDBLgbtwKw5T8SUIyDX0oHIhNUIBXyoJIrQuklzR27pa1E0+mdLsR/n9e8QxHFjMsD7YCpjnVlhkaKaawDISAkegRqABe24WiB2RH2g0ZhSgAcsW9gHnA/3bAY+n4H58s4VJUg16igUiZWbiWGDIMsv4Y4ju1jjGBO9J5Ksk+62exWtd+P4EHb3E40Q2E+NEv4CRH6YIlrsRvowQOF4AiH4ssIia8eeTqXzfBFb4
- kyc4+hfi
- eh7SG4KKZmyefnx7e9EM29Hep92IhQ9YXsh5aeRfSLnme3/QdUZhx7eRvWyh+SQz9DDV7mxGuQimtMPTijy9EoRdYX1WOW5OPyAupiRDLs9xSUiL94/5Dn9OSu46mbcsbHKcKdW/+8HbcjlR5mUSdgRdhyvkX2kQZI+6CLaSf9N284py5TFxD5as1P2Mo2zWYzZ+X1/yvbKlsSsWol7weUKaBt22r75Lueo1DXLIh5n6PYCUmyaZwji+82CmPlTiwjiqfgE7Dt+jTjJu2IGabmvrLrp/eu45vJoQy046ZB2vpOKM0DUOnalRCucFoU2YN5cLNTGf6H9uiBASz1OPlHlFUBrcjoyo45CXi
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 53A391C0006
+X-Stat-Signature: 6g5xzs36u843i3egupt59qx63pe8hb57
+X-HE-Tag: 1765777718-782987
+X-HE-Meta: U2FsdGVkX1+PRaYh67nlzUjumDzpj1fuphF6SPLWWxPjG2rOnJjOgx1RiwFg6rRUZvTceBJVVjdyWINCZU+HaGbWmDhvZ/5a34X4yXvY6sSdph7fkUdH5F/6v7CdrqABtIdSZZ0fWKVYxMCeIzHXvXVZ/ovuAmVi2uXup5r58pz2jdGEYfQyAzRwk8UnrTUNy8Y0BZZbWP9XfGJ6IUbtEALYmZeyubSha6rebPEq+//FrZIVPFlTFvIzYnBd/JXyRc8fq4rzgt6I3XF2RR+BOJJLqZX6+/wHLyKkmNkjEhtruRZe3I328x+t615JitexxxzjW9X0wYIXEvMYqP3iVoj0HR+VStBbQEn1/mtpTBAw3cEIc3sUN4whEUgUpLoneljzRx5fJb8O2+oGgqaJdblGdhJr8vXfUFGl1VoWOlTEyh/4IEIurRu5Rl4TdvVdNOnznNFd0HvyJmx/ZVB1oIasOis7UZqi7Pi/KS/zQxJ+UpJgRbPZS8H862emCT544dn+voZNC/XOTDrTPw85qXML05QmmWjHvCSy8bvEXtXna3f6A7ih6zfZNstRqzbUGyQTFdHlWoXZTpNuFIn2kG0woJMIDxJYABTWjZZJsTY/QW0VWM6f/1OYAYKZkqfkkp49eUBJRx+bjrj1/NeoBuIvPhn3tgdib8FR2V7uwZkqA9wnPuRbObSsWgFWgTUVbvXKMDUZmtNhcv7Ucr0Sr1yEY9EysJ4KKvlga8B8ZY9VGYmoPxen7mIX0gWaZ1dB1H4vKClptqEPfs0sjC1lOeEcLpoK6dcl6ge0hPCDb8s4WlUo9G2DxrlLuEXU78ag8qUl2Wap4Bm3fI78TsIkTky36ntiKdkVxeKkT7+LQo0/lr7FLAT7D/CNXBa9ixwbQzs24HYlbQb2CP5fLGPhLjTTAWRGk1xc8S3yUitml0rtyJYmPn94YlUURyY5nqy5e9EdsDvvJx1S36ESDzO
+ 5VnvA+oe
+ Ys6j6R3CaKQXlqYUZtDhoBn7578N7ZUIR6S+RAQd4RqMb2Sx20ZTCCB92h9kZyRlAM/e9OZMfrafJb6iG7wfpg7zV+Z1hTwzvZu3Fura8sz+HHnh/KxOnMUapqDJauUb7WDLwx2egTp7pwxCZpIACP20Zoe6O4Xleewpc7LLayQpqmYAOSKUqx/ZnuJfddQ9pRz2fPNWubY8Baev7xp6Etlw7/iAJqq2w8S8iHWLQDErYOdekOKgXkNYEgawAgg89h/Z9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,40 +99,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A minor fixup of 80-cols breakage in recompress_slot()
-comment and zs_malloc() call.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index f00f3d22d5e3..634848f45e9b 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2517,14 +2517,15 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	 * avoid direct reclaim.  Allocation error is not fatal since
- 	 * we still have the old object in the mem_pool.
- 	 *
--	 * XXX: technically, the node we really want here is the node that holds
--	 * the original compressed data. But that would require us to modify
--	 * zsmalloc API to return this information. For now, we will make do with
--	 * the node of the page allocated for recompression.
-+	 * XXX: technically, the node we really want here is the node that
-+	 * holds the original compressed data. But that would require us to
-+	 * modify zsmalloc API to return this information. For now, we will
-+	 * make do with the node of the page allocated for recompression.
- 	 */
- 	handle_new = zs_malloc(zram->mem_pool, comp_len_new,
- 			       GFP_NOIO | __GFP_NOWARN |
--			       __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-+			       __GFP_HIGHMEM | __GFP_MOVABLE,
-+			       page_to_nid(page));
- 	if (IS_ERR_VALUE(handle_new)) {
- 		zcomp_stream_put(zstrm);
- 		return PTR_ERR((void *)handle_new);
--- 
-2.52.0.239.gd5f0c6e74e-goog
+On 2025/12/13 16:00, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> When unsharing hugetlb PMD page tables, we currently send two IPIs:
+> one for TLB invalidation, and another to synchronize with concurrent
+> GUP-fast walkers.
+> 
+> However, if the TLB flush already reaches all CPUs, the second IPI is
+> redundant. GUP-fast runs with IRQs disabled, so when the TLB flush IPI
+> completes, any concurrent GUP-fast must have finished.
+> 
+> Add tlb_table_flush_implies_ipi_broadcast() to let architectures indicate
+> their TLB flush provides full synchronization, enabling the redundant IPI
+> to be skipped.
+> 
+> The default implementation returns false to maintain current behavior.
+> 
+> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+>   include/asm-generic/tlb.h | 22 +++++++++++++++++++++-
+>   1 file changed, 21 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index 324a21f53b64..3f0add95604f 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -248,6 +248,21 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+>   #define tlb_needs_table_invalidate() (true)
+>   #endif
+>   
+> +/*
+> + * Architectures can override if their TLB flush already broadcasts IPIs to all
+> + * CPUs when freeing or unsharing page tables.
+> + *
+> + * Return true only when the flush guarantees:
+> + * - IPIs reach all CPUs with potentially stale paging-structure cache entries
+> + * - Synchronization with IRQ-disabled code like GUP-fast
+> + */
+> +#ifndef tlb_table_flush_implies_ipi_broadcast
+> +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
+> +{
+> +	return false;
+> +}
+> +#endif
+
+As the kernel test robot reported[1][2], the compiler is unhappy with
+patch #3:
+
+```
+    mm/khugepaged.c: In function 'collapse_huge_page':
+>> >> mm/khugepaged.c:1185:14: error: implicit declaration of function 'tlb_table_flush_implies_ipi_broadcast' [-Werror=implicit-function-declaration]
+     1185 |         if (!tlb_table_flush_implies_ipi_broadcast())
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    cc1: some warnings being treated as errors
+```
+
+I'll move tlb_table_flush_implies_ipi_broadcast() outside of
+CONFIG_MMU_GATHER_RCU_TABLE_FREE in next version, making the complier
+happy on architectures that don't enable that config ;)
+
+[1] 
+https://lore.kernel.org/oe-kbuild-all/202512142105.NXwq6dfP-lkp@intel.com/
+
+[2] 
+https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+> +
+>   void tlb_remove_table_sync_one(void);
+>   
+>   #else
+> @@ -829,12 +844,17 @@ static inline void tlb_flush_unshared_tables(struct mmu_gather *tlb)
+>   	 * We only perform this when we are the last sharer of a page table,
+>   	 * as the IPI will reach all CPUs: any GUP-fast.
+>   	 *
+> +	 * However, if the TLB flush already synchronized with other CPUs
+> +	 * (indicated by tlb_table_flush_implies_ipi_broadcast()), we can skip
+> +	 * the additional IPI.
+> +	 *
+>   	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
+>   	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
+>   	 * required IPIs already for us.
+>   	 */
+>   	if (tlb->fully_unshared_tables) {
+> -		tlb_remove_table_sync_one();
+> +		if (!tlb_table_flush_implies_ipi_broadcast())
+> +			tlb_remove_table_sync_one();
+>   		tlb->fully_unshared_tables = false;
+>   	}
+>   }
 
 
