@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 503FBD5B16E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26C5D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97D3A6B0011; Mon, 15 Dec 2025 06:48:43 -0500 (EST)
+	id 64A2A6B0022; Mon, 15 Dec 2025 06:48:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92DF76B0022; Mon, 15 Dec 2025 06:48:43 -0500 (EST)
+	id 5FB1A6B0024; Mon, 15 Dec 2025 06:48:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F5FC6B0023; Mon, 15 Dec 2025 06:48:43 -0500 (EST)
+	id 4EA0D6B0027; Mon, 15 Dec 2025 06:48:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0506B0011
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:48:43 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2198BC0168
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 32AB66B0022
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:48:45 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 09B761DF6AB
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:48:45 +0000 (UTC)
+X-FDA: 84221533410.07.7ADAC90
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2F80540007
 	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:48:43 +0000 (UTC)
-X-FDA: 84221533326.02.12AB6E4
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1906CC000C
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:48:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RUYaZFSG;
-	spf=pass (imf28.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TIWkEllh;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765799321;
+	s=arc-20220608; t=1765799323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JUAs+7T6aM5YvKJFQXSXqoVkTtSxZtzq470O+YaXF94=;
-	b=N+6q3P9bJZeK1VlGecmIQiE0smTtudMaOBy6KF44JAETyiKvc+Rvqsc+sxOU2i4h+y0UDt
-	knFuJ7yS0DLWbXgATnwuEFbRRDaDjjuYI08Qq4I607QIcOfjZ0AB9eG22CGX4neu46CA43
-	LULxqjCvH8Csop6XR6voDc0oawFRtAs=
+	bh=6HauKBmXABfepG7VVzo5pWgXSZcUBePm/ZvLfsSGC9U=;
+	b=rrRLT9F/k+5ZtKejKpnutUslHjiRMrXLxs3Z4sZNdeptySZodCyBj+8MkLqdDecmm7NVmj
+	pdlNabM6P5wk0R+U+lj0yI+sA3ICxOberglxGNLLZSLDC9CJdvyQiX3vd2jKts0v0P1GIk
+	W7Wk6xupM6n2wjeQ5iaVYfNIM+iA3tQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RUYaZFSG;
-	spf=pass (imf28.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TIWkEllh;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799321; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799323; a=rsa-sha256;
 	cv=none;
-	b=DW4DZtArvK3WpCMOmUlnHxk009xmbkqpTktlFQlGWkcQ0Hw2SCoeRcJLZaKgITnTvLzL8Y
-	pWCz1gJDdAQwcd2Z40qWHBfhx8gGZfQznvBVNDTIHCVSwkoVaPrEXnXeevHEwp2JpFDTYK
-	bPEHD9ZbunOUcIS3fupkhNS8m5Y2SZs=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso19640535ad.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:48:40 -0800 (PST)
+	b=KduPAx73JSc9j548aVkqFCP814jDOgO2F9ztM3PVZZJJNVHdD4I541xjcXVSuB/W2H6pZK
+	XCxMwox6a4B+C1yR5pSmJLm+XuqZkvxGlaNvDt/JEF7251vOiQOnENSXKFpJti67//5qgC
+	ivzGpoLwr7TRSCGzBYhAH7v5aiKHxM4=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a0d52768ccso12880425ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:48:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765799320; x=1766404120; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765799322; x=1766404122; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JUAs+7T6aM5YvKJFQXSXqoVkTtSxZtzq470O+YaXF94=;
-        b=RUYaZFSGtVdN2h8SIpHzs8V1cYpp2dcQIj7dKrpzxGeUcnrMmpHZNVBJQdS1g2x9JX
-         hwUhOgWtyXoCKGjEJuY/2EPcgl+cNT8N9dGJsidQKCk/Tvu/fVylMLKWR5LOk5t9mUgv
-         Qf04B3nYCd1FXjbwX9xMpwQ4N0TbERAhulVhSnOE5Bgqg/5JoX1JKDV2aKhzOzmrjBY4
-         6hO1gT29RnCYqjXPyuIF3Ka/TcHqHgHBWe6Z0bj3hq1y/OQKRUKVhstZQJ+jR+Zba+n6
-         KIiWG9GWj5twtP+67sv+7SXNhWh/z76SampDzNC2MO2m4ZLwNUgAOkcnqrIDf66xmUba
-         ft3w==
+        bh=6HauKBmXABfepG7VVzo5pWgXSZcUBePm/ZvLfsSGC9U=;
+        b=TIWkEllhI9HQvX6xPF9X2hPh8sijo51F6y2/zkys5CFpUKavwq4vOJTJx/axD/78Cd
+         4Oys57Fo6pprwNdgbNR3/ZavD2ZL49Uk8yrZlXI1NenTkgTXrCqbiz5JPYRWFjYscjrA
+         PVNgUyIYawtb9P0H5Qpi3xdkQ6wQRNl0WECdRy0b8C2Ria9i6TrW9jBtDkzaNI5VR/cL
+         z+E2QhWfG6+K0kTVvUwFKE4AuXcy7aQYuwdUaepOUHsH5Obe5aJ4sstk1GvaP9NkiBHN
+         VT31NfHAVL0opvf2CW4VCghb1TNm0vMWoPrQjCrJoz81KLeWoDvI7ze/Gl5QhMkYWsdT
+         /B8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765799320; x=1766404120;
+        d=1e100.net; s=20230601; t=1765799322; x=1766404122;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JUAs+7T6aM5YvKJFQXSXqoVkTtSxZtzq470O+YaXF94=;
-        b=VF0pzoBgdofTP5op1PZsVs5qbDgb3V8nCNwShuhKo8zWqMY4Pl3w/j+Pb9muMMJhcY
-         BVYxscg1uwx8jT0vddRKjblx5unpCPXcPfV+a2aHW9OMLq339tVUciGguVI0Kdh0MglJ
-         4MChOnvjXGuiC8yZUG3N66chyN2urp5trSZWMswWDNR1qrzsj2tecH0LKbWBEbaVZy3r
-         o0ID4nFAtlOJRu4uQVshRUSFuMp166xwH5vJNEro0gzyCTm3VywEV8sMy7WHk7ixRD5o
-         1PVC822qBjk19WaaF4QL8FKU0PbcYXiLYpW1YlfVWefT5B5xYr4jGH9vAmbA6jegHbSh
-         HCrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZCHGHMXH8VjwKEu7HFc5ZwoJP62ZPW6L1j1faosX1DguzSNdjdgm6AYUP+7U3jNVSonZW1F6GqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz3y6aTJIFu6RfXKtnTAiFWsEjf0Jt3xfhRiG5DIUYjDpwgkVtJ
-	aXzOZJxz3IJ88KEz41sqjTFQS9RSqYaX/gGq+rRLqo0Fx5umNkEjawya
-X-Gm-Gg: AY/fxX43YnaKYKffydqP09HdvdXTlPMl5h7G5Q9Xb+tyQuVSiughmVhSea4Oy0Ghh+4
-	HAREXiY17cXUuzrnHGamFDD4eryP9EaVof+4Intn04sqQHD9dOdBL1yEaMy02YkdtutpTjE10cD
-	t8kIwb3KzHVtyyvU53qvbZT11BFOO6oqC/lUVRTi3WpTw4gC6FTCQMnTNOdYZ/lM5oxlWOwS7g4
-	Rn9r5wixGAEC42g9hDlamiZg8SB06EvkYGN/rynUVMHrUZre6K4CH2IIWowy5dlDHviqyahjVem
-	bQiuP2rAWzr9eOerAALVRId9I595UG/ZO5315g2eizRlk6A0aQbUDZOuY6EeXSenmsHaPamjWGP
-	8twBUIOgu7GFzVEB+RZvNT9nD9vaMCaZTeDHHP86EtW6t5KvKm6W2HZt2y329aQQyALwduI5LZA
-	Y0K3WSTn4zoRo=
-X-Google-Smtp-Source: AGHT+IEA4ldqjntSU1IZe10aX19mQKLjoCVDqCMnCNeqo44SOanRLtLHyqhQX8MxC8RVHbAWKM2xrg==
-X-Received: by 2002:a17:903:1a2e:b0:2a0:b02b:2105 with SMTP id d9443c01a7336-2a0b02b228amr63659225ad.56.1765799319837;
-        Mon, 15 Dec 2025 03:48:39 -0800 (PST)
+        bh=6HauKBmXABfepG7VVzo5pWgXSZcUBePm/ZvLfsSGC9U=;
+        b=LSHBSDBrMBHJ3FekbAOLIhw6Mz+/si6ESWseLvCZXvVewrvCkl6D1euOYWVgRJNAWh
+         XI33UKB5NERjo/i7gSVxgYWkIyhhtm7+DT0vZ8fxeBRGMD+x8R1Ak0e2dnWunLSCWBZb
+         b720FloAiSRJFaty5jYucnZz+w0u7/4Y/RQZVlxVaNlya1tBNX1qZw+6jwzB+XvmIQO9
+         1OniCh7h4GuUNNkajkgAdWuBs/gYrc8lvpIHxhdsNZstuy2cqmvW2SywVy2O4Rbfnj5I
+         s92C1rwK7e1xSClWp2jgjURiScckV+sRmVizCi5jpt9WqtdyodLSOmmHsQonCQKDz2Tb
+         Ywog==
+X-Forwarded-Encrypted: i=1; AJvYcCXue4LwZAlch/HlYxfcxSy4eqzkQPMT/T7JcsvQov6dDq06Oy1fo/WCBk98dLt3hqSql/AtBpcdnQ==@kvack.org
+X-Gm-Message-State: AOJu0YwoQJjy+jl7zvGoGc3aCYIKffKZEQjMNzb86uegGklk8axKl38k
+	gAJjG6ph9znOkygv9xJDRrvO3CmlGPCCzRZHihjIpD1bWdT7zarLvzfd
+X-Gm-Gg: AY/fxX6pVFIV1+0IBgi9Rxo4hO0ZXXSHz2w7KRtHL722WQdovR8zVG0He1DcyS9DfAn
+	0iNq+hWV8YrVElFKvrI3V2FjbKYf7L+fvznsn374re0p6wBF08MdLb5h6UMOr4lceNWGEKb5qmf
+	d5efDkx9kEpueSDuK71+TLzGtsyf7VKYbjgIBWd5HJl88zgDf8gCEzxqxrk7ZKeG5a9FCDGzbBl
+	pe7MVGNZWgcM7nTW3n9iGFnrYEsTFvMmmfCWliMYSNFdKh4Qh5GHvU2dyRHHqkiK/Sb9Hw6o/7n
+	RSg6rYGfYNiA/5C7rb8H0qqWbnsXjS9+4LYDiolpU8TCg+2/kdye+dgR1ttIf7UzUXcCKIxJFXT
+	7/PmSr90S6OHDBHQVINceFUJfZtkqW0tIpGIrzpdhrVhq+DjeuIv/wxO+Xckhq+zGPn5EfIf6D7
+	yfN19ajuzChaE=
+X-Google-Smtp-Source: AGHT+IHfPz2x7Vw5nYSquN5rdr59IqpuimzSW/oHADfYTkii49T/33BfFck+CRU3WD2YFqFgGY1MBw==
+X-Received: by 2002:a17:902:ccc8:b0:2a0:823f:4da6 with SMTP id d9443c01a7336-2a0823f4e6bmr66287715ad.50.1765799322057;
+        Mon, 15 Dec 2025 03:48:42 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0867ebe9dsm77190525ad.40.2025.12.15.03.48.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f271bc8a0sm97458185ad.92.2025.12.15.03.48.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 03:48:39 -0800 (PST)
+        Mon, 15 Dec 2025 03:48:41 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id 46E2D447330A; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
+	id 1E64B44588D7; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -180,24 +180,24 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
 	George Anthony Vernon <contact@gvernon.com>
-Subject: [PATCH 12/14] drm/scheduler: Describe @result in drm_sched_job_done()
-Date: Mon, 15 Dec 2025 18:39:00 +0700
-Message-ID: <20251215113903.46555-13-bagasdotme@gmail.com>
+Subject: [PATCH 10/14] drm/amdgpu: Describe @AMD_IP_BLOCK_TYPE_RAS in amd_ip_block_type enum
+Date: Mon, 15 Dec 2025 18:38:58 +0700
+Message-ID: <20251215113903.46555-11-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=982; i=bagasdotme@gmail.com; h=from:subject; bh=kdwYayfiPuGdbX+6/rKZkI1jkonQkDY24KG3T7ZKuZA=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4Pfzvv2aMJ6/2fiW3RmVPTpTFSM/fBW4Nu0ikdP3 J/+EMyq6ShlYRDjYpAVU2SZlMjXdHqXkciF9rWOMHNYmUCGMHBxCsBENP8y/FN2WnBW9dYhDc+y QzUe+4R7v/wRO/L/c0NDkJC4klf71CqG3yyrLnq/ur5px+nadXME75rW9sxVOp7eMOmL58xwZZ6 TlnwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1065; i=bagasdotme@gmail.com; h=from:subject; bh=UEs/C9BYSnit6YUYNsXI/TPVZ8wlbVWtOoMfZCt2Czk=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4P/rZd71fJeeea2Y6ze7l+/BUWfvZxbPVvJ7FLhc b8Ca2nfjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAEzkQCXDH065v1Nu7J+SJNXm fKBEpbzzpEZrbklCWe8WSUFLrulTkhn+J33s75ffwvJ3fu98iUql0+pnUqJKXmg5a8ursxTsZFv IBQA=
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1906CC000C
-X-Stat-Signature: emz5mp8xe8q93dabgwgcf9uiaoc3rimy
 X-Rspam-User: 
-X-HE-Tag: 1765799320-879469
-X-HE-Meta: U2FsdGVkX1/BnBRzl3jlxrU/cu04hCBIF2w0YU1RX8S22z/pRMPrN6Cvd4fLsV5Guaa31dIq03ftyfeMf1gjH83mA57fDtgrFxy142LqHJmEPf/MBWF/IOnzYkRkmKrOTK5gEi60st9haxzk+CklXVK0TP7s87d7epPLrW0icMbp0xUJhqSsq7DSfR3J6rw1vpWUfphqsybeveDwJoZIsU/IVuTEiKmKzbA0CYBG6yBA2CzQXaMxDBGSspQcR5vDC59pcSH/EHzNjqymJ/qADLJ2MgJBZbPtbSUFbCFJihNE3l9ZoFFyR2HriXx0p6MsoC3Zhgtuta+bDBfTJfFrb0D2lopt1POoFZAqbfrc2BCChs7S1N8K8q8dl5buI/DJ62VDjOWf8c1yVMzTkUdhuC9Lyp7+XhR/TDDrf/Vfw32jgIk6c37/yuZmX/Fvse6ErqeO9ZJkT51h4nk3gF+1buqjVfAWjgHdoeiGK3VsgAb5vG/z8y+Owx9SCizuxFmEIfPqzCxM2BDIW+jVFgqbU6HvYa9mo83OMLRKWdTHMjHWFww8Zqxtbgif/8pw2pnewsU9O196Vv0udaDr3nrgll42BFvhDxYYq2/ejusWhjNV1kHXobVu9iJsbYIrcb4P2G42G++36RKWH5Nj6SU7OVnMjF12y7TH5Wz5LIup8ZUX5nKPkTbwTbjbXyw2OzyRVr1NSX+Djx2cOxUE/12Ed4dY7ENVsqCFtRUv1F/u+QwyGAzl+FgCoXWpZ4SNxfjps+3eYaJj6UNtyma/N5fKSULFAOxU7oodBI09hWmd7A6+cHvOdfp4mR5mcKzKxmRn47+SCWee/njE9ycqNZ46TElXz2UzkPNMMEkguerY/KtyTDlxrJsXDS6kbpVtpw1ySwTkGrUGapmwtDNgAXLCpbMDtFRFU/ieyndPEFKtWN0d8HTuUNwVXvfntjcu8PphKGzo7GcSwfVVk9XF3gh
- DL/GhXMs
- btjSctzWfO8bTTdyWUR5ka9n85jSl3fdlj2k5v99IVlHBzTKflOEjN2nBJBArPEkVvfc/KAJgsQ2/eN0VccIw8IkXIB1kPdYgNDQidsBxlrfcDJT4WYfBdbnn7f+xX6pqLIkehFBFSg/x1mDzyu1ULLTKF4KCy4VsOqKBpHi/HLz05UEbppBcdGfjZxsdj+J0UgcrrBD6gcbQUtxMIUZ6QYgf7qhA7EakNcSlmh4035ssIni5DvbfgLxNFHF5+BAj/QRdVXpJSYjopNI7EHMnxImAUY0RWP0BuAxvcqNKQUFc6WgmBW4sssdjKwz6bpzeWzAZkgr2tZivpuTFvFW/xIDHQhJqROnGYZP+79UhuyjVzNC/nFQJQ3bVLke+BIg9XEKEazaSN+fra8RqqEleMlFrspX8rYLF5uO+04XX9rIwxmZwSs/XPez2f41SZTkkK/yCgFhVCDm1q7I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2F80540007
+X-Stat-Signature: af4epub4haehfie66cirset5z7ksa8ed
+X-HE-Tag: 1765799323-378246
+X-HE-Meta: U2FsdGVkX18k/NM0Ho5kXS28e3qbX2rwdWf1lUJaI8cNpaKa3n1nMvKLJAoyPc4Z/sRZvqDc1HljqhhQclYxgpg5wE0ZCZOd/+pkcCfpmNpR26b1nMGVOiOrSz9vI2ftbz8xwKv4Z6oodMvKhcXpy8AeO59Mkdo3RMoycHSbCRpSPekVR3vylStPvgRTRTlvA2nBnBxaTWq8T1KMmPF8hurerMGN0JctXOWiYjJq4TQmb5Xat0XnbPyy7tadoy1kJtEgT6y0TbC5zjarV8qoy2PjJvsMM/LWRN8TB3kNeQ0h+ykGw8lcxnFLqbvE5iw4r3ia8Q8XolcwYG+2UFt5xNYgt4hll0wOZ67weSrpbxiC9k0AhN1/BNgj03oaj68vXgFfKtmbhBexELMm96Yw4r1oowlpnQmO4JuqKTALwLl9l0YwWjv3uteLu4YvV31x78Vj8+r9FO4jgSmW9jIxuiMi9CJQY2CbBBj69olvIHPgB+hPtvFr16moKMc3wHMxeUKIdTk1j1Q2vChrIjJUQoM27MYOtf489uRac+KKNBqxZQz6YpKUmmzefxPYfIDfqU8EADkkLHm7bJE9eGXtPlqcoLuc8eHzgqocVumcrEWRTeBlX0sWe5IA736g2V/jo64mQ37uZs92U9iZc4nv7/hkh0ddbmfYImsBspYZ1lkl0ITVfNBVPcdTt5hOuKCmczlAKh2dJ3g7FyolO1wxtA4e1u1SaC81DCpYNsW/l/bxymyUhYOsGRoepoSuW3/0Ir6XGe06gGaHAGuGfJq/imwH2//zpnEkxUOA0Zs8jGLOd2yyQe0su01hXquhCs4p6BfE4GjxydhC5ozepVMfPvXPLLghANd1spShXvBRBQowfWSMm4UYRfdyYjj9r4csLpEureBkTk2uQIcwJfrHjDWYoYoQx+BfBX/iQuv+Ur4BVcJCh9R9tl5keYL2XL121lmw0EYbzjYx60q640f
+ CZ03HDey
+ auZsOGVwSakqUhTKCz+TvmJPpWX7IFYJ0/KC6In46YGZS7B2G9dUpActWBbstKMlM6a3fE11yINmKx1ShD17Kv1b/OjtBpMJopY07mCjiCRPeA5Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,28 +208,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Sphinx reports kernel-doc warning:
 
-WARNING: ./drivers/gpu/drm/scheduler/sched_main.c:367 function parameter 'result' not described in 'drm_sched_job_done'
+WARNING: ./drivers/gpu/drm/amd/include/amd_shared.h:113 Enum value 'AMD_IP_BLOCK_TYPE_RAS' not described in enum 'amd_ip_block_type'
 
-Describe @result parameter to fix it.
+Describe the value to fix it.
 
-Fixes: 539f9ee4b52a8b ("drm/scheduler: properly forward fence errors")
+Fixes: 7169e706c82d7b ("drm/amdgpu: Add ras module ip block to amdgpu discovery")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 1 +
+ drivers/gpu/drm/amd/include/amd_shared.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index 1d4f1b822e7b76..4f844087fd48eb 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -361,6 +361,7 @@ static void drm_sched_run_free_queue(struct drm_gpu_scheduler *sched)
- /**
-  * drm_sched_job_done - complete a job
-  * @s_job: pointer to the job which is done
-+ * @result: job result
-  *
-  * Finish the job's fence and resubmit the work items.
-  */
+diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
+index 17945094a13834..d8ed3799649172 100644
+--- a/drivers/gpu/drm/amd/include/amd_shared.h
++++ b/drivers/gpu/drm/amd/include/amd_shared.h
+@@ -89,6 +89,7 @@ enum amd_apu_flags {
+ * @AMD_IP_BLOCK_TYPE_VPE: Video Processing Engine
+ * @AMD_IP_BLOCK_TYPE_UMSCH_MM: User Mode Scheduler for Multimedia
+ * @AMD_IP_BLOCK_TYPE_ISP: Image Signal Processor
++* @AMD_IP_BLOCK_TYPE_RAS: RAS
+ * @AMD_IP_BLOCK_TYPE_NUM: Total number of IP block types
+ */
+ enum amd_ip_block_type {
 -- 
 An old man doll... just what I always wanted! - Clara
 
