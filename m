@@ -4,99 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4DD7D5B86D
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 21:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63444D5B866
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 21:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D310D6B00A0; Mon, 15 Dec 2025 16:17:29 -0500 (EST)
+	id CC5CB6B00AA; Mon, 15 Dec 2025 16:18:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC256B00A1; Mon, 15 Dec 2025 16:17:29 -0500 (EST)
+	id C78BF6B00AB; Mon, 15 Dec 2025 16:18:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCD8B6B00A2; Mon, 15 Dec 2025 16:17:29 -0500 (EST)
+	id B6E7B6B00AC; Mon, 15 Dec 2025 16:18:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 976F16B00A0
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:17:29 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6626FC0316
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:17:29 +0000 (UTC)
-X-FDA: 84222966618.17.A892DD1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9CB031A0015
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:17:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B0NW+ThO;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765833447; a=rsa-sha256;
-	cv=none;
-	b=tKiZN8HqWSZwnjjcknK3Hbs/pIikSGfSH7+sAvZ5wpfxBdHqKzQmo7A+9YDUfh+P5/PnKZ
-	LJ282LUqTIxX7L+pOdg5lxg/3MUHYHAFdJOe5zOvD9+th3pR2saOFyufforZfekM5qWde5
-	Sbynk1gmoaaKzl+eSuvz3SnR3OSBnxk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B0NW+ThO;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 99E2C6B00AA
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:18:00 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F9E71603A4
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:18:00 +0000 (UTC)
+X-FDA: 84222967920.06.1CC29B8
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7EB6B100012
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:17:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tb0gRwKT;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765833447;
+	s=arc-20220608; t=1765833478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PTSOH2pctXhaKsGHgvQmmsRPhPghSOFVRWwpawQqEhA=;
-	b=b1yHHQ+FpOT3AEKAw+Mf4LL27HRO6jvec3F5V6OT/SmBvTb+Y9laXi4fYbQ+paNkE41EAx
-	l/C97oyois6OR5mg2Dd/Unw0hw+JIteytscl576BvzXO0bHvDrVvhHL+BeBzVh5N/svoej
-	C25q4kVC7rDgbb+a+JJqd3TSxKs0+hc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765833447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PTSOH2pctXhaKsGHgvQmmsRPhPghSOFVRWwpawQqEhA=;
-	b=B0NW+ThO4NDW8t24Ach+dPcV8oqnC9z4IdC9lf/Er0TkBDfdHpoGdQiFcX9FVLP9CwOtN/
-	VgrgQUjr7sPqrjfDYUOYdftr72aD7ZSTCXn8IgrzLxoc+olAyFDzAd/7WonmCer/r7G+sY
-	E9uO4g5n0Oe9QAIvnpu4iIP0BOrPhak=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-127-ZCqkKNbwPXKyRb718mBwbQ-1; Mon,
- 15 Dec 2025 16:17:21 -0500
-X-MC-Unique: ZCqkKNbwPXKyRb718mBwbQ-1
-X-Mimecast-MFC-AGG-ID: ZCqkKNbwPXKyRb718mBwbQ_1765833440
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 46AD61800245;
-	Mon, 15 Dec 2025 21:17:20 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.80.180])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 244601955F21;
-	Mon, 15 Dec 2025 21:17:19 +0000 (UTC)
-From: Luiz Capitulino <luizcap@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org
-Cc: ryan.roberts@arm.com,
-	akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com
-Subject: [PATCH 11/11] mm/thp: x86: cleanup PSE feature bit usage
-Date: Mon, 15 Dec 2025 16:16:53 -0500
-Message-ID: <327e07e0ff3579857b11d14c837ac6231cd113b4.1765833318.git.luizcap@redhat.com>
-In-Reply-To: <cover.1765833318.git.luizcap@redhat.com>
-References: <cover.1765833318.git.luizcap@redhat.com>
+	bh=rQYOTwdjJwYgvuX1nPstCicu4NCv26qFYc5XYhTLu6s=;
+	b=hcOXzgktE7cY0CBkzf78v95XE1Bwtd8DvJ1wYkCINLsypC92G2KqHEzu1naBHkGiYeYuHT
+	ah3sIb5XtM5eo0LhxeEmvgAO5g/6ZHTzxGEnoPfiP6lHMRuiIAx3pdANwEArMG4urMe3oq
+	uD9PCAelgZ9EddZGMP4IZ5nJeDf/uIA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765833478; a=rsa-sha256;
+	cv=none;
+	b=ULLKjQUeHWlIo7mHuJOnDCkepmnyU0sbApF6UcCSkskoQ8GxfV69dNm/Gkjnl/qat49UGz
+	lw0a1KCZdWWRrvSf2XgwWWK9riVhlt3E+3DINw1I2OB8MJmQahx99EDZilx8s9QXUrzT3W
+	mW7IzjaVBoQjSlDGq7DxE9V+V2k57ZM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tb0gRwKT;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4f1ab2ea5c1so50682061cf.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:17:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1765833477; x=1766438277; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rQYOTwdjJwYgvuX1nPstCicu4NCv26qFYc5XYhTLu6s=;
+        b=Tb0gRwKTDeDmXlTHOtIVLpfpR+inb5K0kGcGIrujTPPhPMfwFe/4TTe9oQv5Vm9sb4
+         iFZjU2rg2sX1qSZ8ThbUbXB4viM+ua2+/yanqdzZDQewCXeYUWVaQCfZLTmM1pjsfFFT
+         exr9DN54VUnHgMEF8vLF916UsMXx50wV52zDbaT8ANOSGo1lilhIePO+4Rkoi1XsDXel
+         TLN+XxM3uwJUZeHwDLWroDktHshrj3J/Mju3zmdaacv7v7L01cHpsMpsTumCffKNhBRy
+         pGVPxDGvIS2SjbSPL0klLnE0dFA4zdGQhaszzeUn6DH4VtMFa0KU+ktcMs1P/up80pR0
+         jqvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765833477; x=1766438277;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQYOTwdjJwYgvuX1nPstCicu4NCv26qFYc5XYhTLu6s=;
+        b=VXEcPogCVpBq9lQSVwEwIW44EtoT5YkosOoLHnsltE70aWICTNG35ni2JqA2A0pCKv
+         X3sjAiGYZQmcaXcPuJEAd4vJrFNKI9IkUHxpwum4PQ2ES9eyLbjApy36NkH/08L/BUPi
+         jIfAfQ/rfUI0iSmC+GkkVGtiCexbG/XbmHO4wnIyk59x+29CjJhXliNET4FWbRWWS1zo
+         qVlXB4MPX5dCJMAhXln9mQOx6Upk1uYQACx7sVHkhgVGTtmgPuNs27ivBSPcfewU3jhL
+         08dHdOIMufnPGRoHL3tSCpDg1PY5yOvTZ88j72D6WiWim99szOiHVpNsHjR1Osf6ohlt
+         zrog==
+X-Forwarded-Encrypted: i=1; AJvYcCWEDjxEd2EL2XlGYOBGeux3oIlNz152Ckj8U7Z2WmDtW9UvaOfypytwwy1nNUFJ54iqxMdoDjpxKw==@kvack.org
+X-Gm-Message-State: AOJu0YxTD57P7n0yxh6cSDl1198Z36Zj1HZKDL1g8OKQpAFOGeoM//m8
+	syJ8Ivn9S7vL6rkm3ZwG2vrK2MWrJvMEflTn/Ne7ZD0AS4KN2RdFjFOxcKJT/rvKFNA=
+X-Gm-Gg: AY/fxX62fjnOJjEU2VaHLcJG39lc5whdOtbbG/I+93ab3fIUvLfz6HOCaZ0DP1PNGFM
+	Az1Ht4PQQHJnmmBnGTneV+TvR8C8b43E7GSs9uHp7YTHe6p4LB52oO8pKExaPQEYusnQoHgWDfO
+	/sUAdcGQ+IioZ6zHx2o5WHjAJBETy3UNVZi3h0VxA6XsYJUJkR56XooXZ7A7tQWPvFhYVvpoan5
+	/Axy3NvMqxj9znMSd/bfbKQ1C4teymzOZFHqQ3y9+6qSjOKpD22RrJhApeiRaaE77XZh8KlYhZ/
+	8Xi3B062rODtD6gvUyaxHnl0lwh9iiGgdZJLBW2E7ZGjdzF35skouDcRjHCK6fyoW/tfGPWy3zR
+	RAN5KAKm6pPkB4hN2I74ggVf3L8+tXW732A8KdBK+uwLR8g47j9lc3kMiu9gM2rAS0RWM/VzmnZ
+	ScmUQiJZBndA==
+X-Google-Smtp-Source: AGHT+IExtT3C2ce1bnbMtFFEc4vbTu4xnrtsiKWUFgckjaMMD6DyYbjwCUrjL+1tWyqf3FThMCPBWg==
+X-Received: by 2002:a05:622a:4109:b0:4ee:2420:4f7a with SMTP id d75a77b69052e-4f1d047a1aamr167228381cf.2.1765833477067;
+        Mon, 15 Dec 2025 13:17:57 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f345c2e0ecsm2877711cf.19.2025.12.15.13.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 13:17:55 -0800 (PST)
+Date: Mon, 15 Dec 2025 16:17:54 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	lujialin4@huawei.com, zhongjinji@honor.com
+Subject: Re: [PATCH -next 4/5] mm/mglru: combine shrink_many into
+ shrink_node_memcgs
+Message-ID: <20251215211754.GG905277@cmpxchg.org>
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+ <20251209012557.1949239-5-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Queue-Id: 9CB031A0015
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 5kt1edziyza6f9ms3u5pannmwn9djuhp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209012557.1949239-5-chenridong@huaweicloud.com>
+X-Stat-Signature: jz8omh9hme8uj96tfyw3w7udzzgyrjue
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7EB6B100012
 X-Rspam-User: 
-X-HE-Tag: 1765833447-698739
-X-HE-Meta: U2FsdGVkX1/6Y64ZTewUu6llrecxCGXEfWiN9zFqoSV1vjgWYaNLfTc0hI6gLWmt5l91wQ1SK3cxpiIDSCqZJsS0pDqGPNXvdm4S42LleRgsf5pz07r/QL38TkOvoVLMZTyr7QGFIAqw6SkFHyBWe8M8h/xcPix2BNzuBk4xh/kzNoDT4QGT0UGpNym6pNROZO9SCmXrGrVSOgy6naAigjL09CRvFhaoF1VpaSJmTvZS1bspYJ1jvWGZ8ZZppsmm9dDAIuGTt2cYfIrhIyV8xfhRgA6DZkNRvvDB6TbAUv5dolWN3lHkjSav3+p3FQLgtOjS5ZaU7VeAxxOHRY7z+VnK6YWBduBSNrWEM38q2eFt++Jz3oYgenJPwWcY/akNopZQCnjAM761S0uRg6gNNDYo2fxp1Ht2K4x7nH08kRl6fpBVwovfj/gcnzXLkNjeJS+/Pl9wvzzO5B3dkHR2V1egR9NbLjPZknXrfFbbinvIzfAxEW0z5Tmq8tkNhsh39/nhuTG9xR1BL7IAvC65Z1r9l2tVi3JKsq1KfYjbzOV+5k8zaq/KKSRbpLKkkDv4pXYV9P9ndsEqdDLCjfJl0HWKS6y2MavR1uJVKUueq6qS7rzAMrToy7ASYSxR9dV2M293ih7sP+iFguVnrjk9YzTjaGWX+E/ybf1qfBILYHmOSstmAp09qdmHQLnImawz7egkStsNZMODCpqnnA+ybn8xRPJs3E+POJ5bnnXOPgEApUf7IYtZPmJsTi7S+WYMteN8Jc3K2pHm6qBzD/It5ZbHBaGS18cTLs7ppkNARQI2Vq6ehTkbEsQo1g86c1TdibAh1Vs22KlE+qWjw7R+w/+PL9/3agsWK2lpL4959A0/DMc6+oiwTwRcYwHGN1aNFptH2Fi9w+Sg6NP5lipkgDDocoTAwdt5w3HXfFxcNogiyyeX4FFWAbRBWDqFANgFiC4KsCW/i0PLAZ5jXXH
- f1k4gBa7
- pweQYVZz05Pr8M1xDbqinOex5+GUXurExTd5pjx0WZ5h7p4GtXqPISvrsApfUc56rUB9COmbJHh5eLlaP2Grt0USMhIM598uwrCqS2jrOiCyEVNWJ0UjVMvspaMdl5Fb8LXDo2siDlFX8SmalKJm5Lznxd2lxg5dWvZuRCAeZ2+1j8O1kISyb1pVhA3CTX/zknlbvArOG1v7dRcq3wH7kwMSiImOBzJOqomlh5UZpBZ+5K6jMnYLqRgnym0nCO4OJzuKFwuthjVAdhrnrcHdV3Bxhzl5xu3PRsgmXYokMAHnqF2qu4rrG6fHeZYzU0u4XuI364J0PzXbv3HQ=
+X-HE-Tag: 1765833478-92146
+X-HE-Meta: U2FsdGVkX18PzPwwdoS04e5gjWRThuGx7PO0vGSqm2qFhCkOskMwckx1fUwfZ50djw8l+FzKhtzOY0QC7v8SFtUVOeGyxNbWLKotUbFt+4/VsRSwzCNgA4DeXNjaiYunt/HDPCB89mr/Nho2GKgu5wCHwTmlvgsY1w50qkUtlHiOL2gli87+VZlzVGMgggTAreiRJCcgLYnL7xSoJ+n8FjzAlVp3ZdwR+piLtWkwRQiU2J7dAnX/OQblN7tC85ZXoqtakKYFSeqp2DaA/dX0ZdgpCgbUUe0Kxexda4I2E2DX9CPEeFe4PYZKexM5hhF/vJQHJePMlRkNqQuBHFwsUfcP3l/ZA2V4KL1vpqslchQss8wqb5P0XjzvvO37X9CbXzXSwUXVTk1ju7y+1fpmw3W1WUGwi/WrOS9vzvTAIktzkrnk1eUbJicaEoERc1TRksvN20mXODkdLpzEPZbD4ZjeNMIzUh6KuWEYVCnn8a2dNQ4vkSEQckiasOYj5cZDrtvGw9zkGfRw6fZ3xJkWP7df92z7bY+Uk6UaZzr6fi8J+5jb/qydm8XHFh2IlqRC8yCsv6eMvFe8BGjKi1mbQ+R79r/cUO4YH70EVZnwYhYmvZSsXrLH/Za1uC6kfdWHBA/4EG+0fqr12M0llW4kbl/96/bmlDW3hKsaHwxogZXH5AVw59khFMhCRKR7FUCEkZlMBu3k+SzP0c/8kvQaCzj8NJpz12HcmAZ7CqxQ4Lkrikv5fiefrawqT3xMeo5qeQDC8wYNTUH2lTO4wJVxktRvjZCaXT5qAijcEf/ZSDl9EgdSFLZd0iVfBC3VB0PMNqc4MbAByYMt3c7x4emZcjel3HC93gZBBR4GZfHa7ZN9xfNATPKtqKFiZTCoG5P1bX7J2dVkoW0RWyqW5cfzB8cXEzQtabW0BTFoZM0aaU4qYq+0tgZVJzvp2VpAD5/TyOsD5YlitnX9Fnwco5s
+ Kpw0Pxq1
+ gCVNG4kWnV5dFQJ1O64uH8rSDkfrbhVilDHJB535zFq20wsQNoyP7kg7xtBipb0qNvEnOfDxqHEK/F5xChLo+RzcmzVzdcPO+gOCl04R1XYfb/fa4iQglsBBl6DW49JOTieBgp1z+ALFhs6ukKDMpFyodJBGzAS6Ui2Zkl26G62os0YKJ+WosPsoDdLuKoEz2cZyVz5Sm+B3hnX7Zj5AinVtjZIgnZ4qTYIjTJwjpSfs7isR20K2WiZ1DNuOTU9tcApkb5NfxGuRVqaBK0oK+6Kkm5Pz88CccyAswezvYisNRJpf+MGHm7c0I0QR/L1EYHsrtT4irwxmNxZzOE01PwekgPbb7hRdY+6HfQNX9sPPqAIUEipDxa5zp8O0AhMtzVj9RsiiEoLWi39sfIrj8hE1gaaZXbixq+o+g/gg5k+/oHJexuV8FGfbdTmiCyF9KtjFgvQ54UZmlZoo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,57 +127,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Historically, THP support on x86 checked the PSE feature bit to enable
-THP. On 64-bit, this check is redundant since PSE is always enabled by
-default for compatibility. On 32-bit, PSE can enable 2 MiB or 4 MiB
-page sizes so it must be checked. To clean this up, this commit:
+On Tue, Dec 09, 2025 at 01:25:56AM +0000, Chen Ridong wrote:
+> @@ -5822,6 +5779,12 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
+>  
+>  		shrink_one(lruvec, sc);
+>  
+> +		if (should_abort_scan(lruvec, sc)) {
 
-1. Drops arch_has_pmd_leaves() from common x86 code. For 64-bit,
-   we assume PMD-sized pages are always supported
+Can you please rename this and add the jump label check?
 
-2. Checks for PSE only on 32-bit by implementing arch_has_pmd_leaves()
+		if (lru_gen_enabled() && lru_gen_should_abort_scan())
 
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
----
- arch/x86/include/asm/pgtable.h    | 6 ------
- arch/x86/include/asm/pgtable_32.h | 6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 08d109280e36..55b88de5178f 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -313,12 +313,6 @@ static inline int pud_trans_huge(pud_t pud)
- }
- #endif
- 
--#define arch_has_pmd_leaves arch_has_pmd_leaves
--static inline int arch_has_pmd_leaves(void)
--{
--	return boot_cpu_has(X86_FEATURE_PSE);
--}
--
- #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
- static inline bool pmd_special(pmd_t pmd)
- {
-diff --git a/arch/x86/include/asm/pgtable_32.h b/arch/x86/include/asm/pgtable_32.h
-index b612cc57a4d3..3bd51cfa431e 100644
---- a/arch/x86/include/asm/pgtable_32.h
-+++ b/arch/x86/include/asm/pgtable_32.h
-@@ -45,6 +45,12 @@ do {						\
- 	flush_tlb_one_kernel((vaddr));		\
- } while (0)
- 
-+#define arch_has_pmd_leaves arch_has_pmd_leaves
-+static inline int arch_has_pmd_leaves(void)
-+{
-+	return boot_cpu_has(X86_FEATURE_PSE);
-+}
-+
- #endif /* !__ASSEMBLER__ */
- 
- /*
--- 
-2.52.0
-
+The majority of the checks in there already happen inside
+shrink_node_memcgs() itself. Factoring those out is probably better in
+another patch, but no need to burden classic LRU in the meantime.
 
