@@ -4,87 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D379D41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03154D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:57:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0CE36B0026; Mon, 15 Dec 2025 06:52:57 -0500 (EST)
+	id 5480D6B0027; Mon, 15 Dec 2025 06:57:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABCA86B0027; Mon, 15 Dec 2025 06:52:57 -0500 (EST)
+	id 4F8676B0028; Mon, 15 Dec 2025 06:57:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2376B0028; Mon, 15 Dec 2025 06:52:57 -0500 (EST)
+	id 413F76B0029; Mon, 15 Dec 2025 06:57:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CC256B0026
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:52:57 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30352160179
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:52:57 +0000 (UTC)
-X-FDA: 84221543994.18.CE098E7
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 14D2A2000D
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:52:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MQzFIe1u;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CBC76B0027
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:57:36 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9BBC3B61DA
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:57:35 +0000 (UTC)
+X-FDA: 84221555670.02.EBFCC16
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 95F1DC0007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:57:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GsUDtQxg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799853; a=rsa-sha256;
+	cv=none;
+	b=fhrKLpLl2Fxd0pa2JbgOj11CiK9PoPldv2q/HJQKqtqLWtdxx+t0YhQjeDKfVozcOV0h+q
+	SEIxYknaBE8B1XvUSGsHlRy6b6PpDuEdduXNptQY6yBB+Kc2s1VlBwB0gIP2EXxd8bGo1j
+	rGyPH165rvyRXbIJCgiAop4UcJt86hM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GsUDtQxg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765799575;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765799853;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7cQYxfBPRJcF5S1TMSPza6K50zYaV10A2qSGRFJubCc=;
-	b=UvFRS5hAfxOLiKCmYgTBrtRFx9at6FZMyioEoQOaPY5/b4v0btProFN5pHb8Oh0cJF24vb
-	5gj+3MsJDype7NAo8sgAxWPTpUtoPPv3mg/iB6l6qj8MftLz6n3BWHNY2+jqtXR7I66hzF
-	YpD2AfhBOUp0/jVf6VpB7xL1DN/LPNs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MQzFIe1u;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799575; a=rsa-sha256;
-	cv=none;
-	b=KlpMvSlK1n2Pkpv4Sh2MdTJCe3ueCEsgwEU7rWnBM7a3ecZ5oPRdeKuy/XsiVp3e+2mRC8
-	c2h9MpkfQ9XxWzRgX5jr1MGPMsL+i+yan83rzLsLI7uwxXUCiu+Zn5HCZRi75FIP5Zi1Jo
-	kx5K7Mbb5LviyrQSQxAB0/15/GXfmPs=
-Message-ID: <d03d6ea7-68fe-4eb5-aa28-1020f3382f4d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765799572;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7cQYxfBPRJcF5S1TMSPza6K50zYaV10A2qSGRFJubCc=;
-	b=MQzFIe1uEhAs57vDWRBRX1GyH5711PK2mxahYZ+t5MSG54KCBwhdNQhem42uhVt9xB5Noc
-	s5PAktEasWnBuqvRPkNW/2DV1FgsSBiaAGXtraF70nnoQWGDNwI3AIRFVsNrTROaEwoYmm
-	TZGuRHnUXM9qUJUeEvL2QaiLNDT6wa4=
-Date: Mon, 15 Dec 2025 19:52:41 +0800
+	bh=Flwk3C9sGIKtHVgz7EWy4WDHMBBZcG8HtkdXRgtuUk8=;
+	b=nXtXkYhmUfb6M3tLpt71TXSdrJd69PtS9pjrrp55vJh2XUgh4o/f3smCCVbWWdp1FssIrb
+	SAfVWaDmPGTeVXsjMpIboThMbidC6Zhr1AHYxTgqUTYAafUm2rrVHwsOKxgC9RTKS5ND7n
+	tzonqrQp2l+kHfYdXxO3PtXKMsIg5ro=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b73a9592fb8so725995766b.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:57:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765799852; x=1766404652; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Flwk3C9sGIKtHVgz7EWy4WDHMBBZcG8HtkdXRgtuUk8=;
+        b=GsUDtQxg0XdzhJpAfCIYIyGlKbR8ap1GAgC25PYvSpJJH0Ms+8ePaAoDW5AIdGC0dv
+         yoUfjG8i0Icedfc6hHB/KAyX8G75XDedQv0QXFYBt8Zjpq+Zn3o5//AVwzt2KRpOVoD5
+         ZeBqJ5KuuA30zfLkuu68WUKAt5EGLELmkTtJ9tAtQmjBL9IeKAoxUJIrQXoxjLanOSuz
+         Wu2KsB9iYtTyVlHApE5yKpV1it/6aXaht9N0B2eveHedCjFyIJpQfE+cki5HLW3nKde+
+         K0KAlUB31GQmU1GNaViTJ+iYe+knaCaeerv7DZsPI8ET+/v3lU6go3E6fS3o3JK8qShd
+         C6wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765799852; x=1766404652;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Flwk3C9sGIKtHVgz7EWy4WDHMBBZcG8HtkdXRgtuUk8=;
+        b=MxcZ1QZlTDoCn50C/2VnGffXclMJB2a+Wvb6OlJie4nPEqdzQVxv/oateXQXAId6/v
+         M3r09sqzvRd3KayVeAhWoRuvuRb3A/w9oNdHvt2WcnrPuxhRdgd2ls3ShVfJIogCh7H3
+         qKE+W3tvfBeQ/WEmRS7qJ7/Ph9R4bvaR9wd0wSGp1c/qb07LnL9kg0LTJL15/UkTzfGG
+         Eka5WIwweRF5n3DzC0Y8Joz4Wzemf2X9xQpqGaQldxuaqy/OzT2NhmSlwQPyDK78VrJl
+         9O3wKJbrbsDSRjcDIyYzLWwsShkvfjOoojKKJjSgZu7b6zeLhjbJXWBBy51RkuytRNHS
+         kQNg==
+X-Forwarded-Encrypted: i=1; AJvYcCWP5bW+zwLNwl7wibbrKLINdwb0ysQPOcxxHZaD47kebrzJ/HEUCZyneQ/dmOzXUW6fMLWIv2ZXYg==@kvack.org
+X-Gm-Message-State: AOJu0Yw+cDX2hEvsskhqKZf/VnRWQEGpE7f2SdArslB+86miCpFOAZNW
+	Oc+3KgPUNMvMuytwL33URAMEWhrIM4dIEL/C9HUpI8BqKqXtIeWu4Da3
+X-Gm-Gg: AY/fxX5lbpxQgG5uyzYdoeSEQioEikiyWO3iFIUKAzjEKhZhOeTvD/ACeNT47Lya2jx
+	Ji/GrwG9g24CUcjVLfB5LFmVK1lqP6DkHwge37ElZ/YEnn0Zmak44FSRdfGdGzzE91Nz8HtenSc
+	FpQfv96wOw0XTclmZ8eIIWJYRKcxq9gxJTjxhj8sjCuDwN2cQr2ObomEIdkZn1xvhwZxAXSg4zR
+	yB29lC25vkW60djQosD9a2El5oPAl/i67f+AKbkkL9tM2GbXTxtfW/o0ugipThIyJdy5fSTRag1
+	ukxvlkGljNntFpY2GyLgw+lkR8I7y+vy1bBeRSsDN2lg0pD7wkLxkPkfnoB2fWJ//292zipK4Wq
+	6prTrc6gM1PAsrOEe4p/zbF7z9ccqYWExKnUmjiKxoG7TAI2N6VdKbrXYXbbj6dqh8xljJyjVZS
+	TrvLfx/PuA4Q==
+X-Google-Smtp-Source: AGHT+IF5BV3kIQgvVFr4NpWOf5xsHeoLYqoBpphtyDqGXNbnVZE8JBJ1zIZVTDsh3qNzzztN06HFtA==
+X-Received: by 2002:a17:907:7210:b0:b7a:71b7:2409 with SMTP id a640c23a62f3a-b7d217ed026mr1368445266b.15.1765799851129;
+        Mon, 15 Dec 2025 03:57:31 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa5191fasm1351584166b.33.2025.12.15.03.57.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 15 Dec 2025 03:57:30 -0800 (PST)
+Date: Mon, 15 Dec 2025 11:57:30 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous
+ folio remapping
+Message-ID: <20251215115730.v462lhxeqrofjtfj@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251215004836.694-1-richard.weiyang@gmail.com>
+ <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
+ <20251215084353.nmznnnmcpcqo4ldy@master>
+ <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
- collapsed
-Content-Language: en-US
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: ziy@nvidia.com, npache@redhat.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, david@kernel.org
-References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
- <20251215090419.174418-3-yanglincheng@kylinos.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251215090419.174418-3-yanglincheng@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 14D2A2000D
-X-Stat-Signature: sx7zxei3fpkmdasa7wqkzczwjf6w79k4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 95F1DC0007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: y1hzrrncfy6dpyetf3pon6wc4y6scx58
 X-Rspam-User: 
-X-HE-Tag: 1765799574-56427
-X-HE-Meta: U2FsdGVkX18qpUzf6gsBfO0U+J26joWyZTL1qtWmt3yAY6EzD98tPLpZQCwaJW4mcnmLYfpBzcAuqUMx/7XUflY+/EievJQoR1PQhvKv394cFYExYcEvHePPYrlwmlMxxahDLLQbahTL+1JAhVjSt/Nlo+nAYZTrjrJCZyFdEyLpOuoXtZjEdmfQAJ6nU8q0Mhu+OJCAsjxkdpAgMm8w3ycr6+DjsduPxhm0TJ0jx6MWgTwejiNinjXWIC/Iji/CUuVNjjKRoRTnCV2rEe++7rw+VAPNS5vWkVcx2eydzlvXHVVx/720n+M14hYUvUL3aUQkIOiYVFFsYK31YWLuVrcxGACenbUrm51KdaMcRBzIrduFtqcWVdMb7yLgvDKXE8b4gPDv08XH4HDCMP1cGNyaysgh+7pLBqW8A6oByZIZ7dFxMUoVhoYcfEFKAd+PHG1QLT24kE2ozSIhX9/cVF0SmPWqeZqKaPO6uFcelK4eTo4TZ8nW9a3TmxGf2JhxT//mWve+43GAVMgtzD7jGCSu7uzExI7k+YLhkS2v3/n0rT0anmmD6HNdQItbN6V9MOwwpRa0w11/GFMZmYbn7z+Fn3KRJgFHhwGwd7SEjloCfbZyk0sb9HuawMdrfQUwzndrrqPc3CN+eSBrvBMaXffxwjQlYiKu41rkqVcUWAq+2RMEjYFju7zVNEeHCyCkHKNYbTjP1zLLdfaz3elZqA4HFDiYLwMSZ7q+ZISFkom0nld2TSP4xT2F9FIkAEYU5e86/IhRdHV6bmuD6y0HAp3kVi7UIoWM32h2b+4t0nwwCQTb6KdgeCcPD/qcaJqEOAdfzO+DpM/iCc3QhWxoVKCqmoZmSal0+i4gzPEVsWp3lSw5R+K5kykrFFd3YD1NCZjBAbyM+wdIfRwitO8xD9tQu8ltoaflTpXVYp8FrQgSPAw5ufCFb8Eghe/M98qP8KqdbS/g1S6zWz3Qr+l
- 64xSwrjd
- ySZdS7sgvtxRkgjmrmDod6Lh8dFQvBmWTiUrgqDVvaKInzVfC1YPvsNNQpzaPiz5Xk/1OBDpINoKwxnZzrfD7UAyEdLLHiiFFs3kOZ2oUpyOwKeBkahqyjY0CXsbfUEbZqpW5tEdp1XJ6ygDw/EUqHUNCeZ+wIfzcxKYdzoDw5XShQRLHTgwnc2X5SpNJ4uhMXT2F6bmlV9Bbx0DtvI0phGaDI0UjaBjEA/HeJ5xOAAF1TKQ6RksH5uXObw==
+X-HE-Tag: 1765799853-536235
+X-HE-Meta: U2FsdGVkX1/cUpjKe9+efQkB7b4uO5Rfsg0sx58KxXdEY5WNytx4niEkZWNw6YS+etmL+nFHy+jaTW7iUUJN40lhX0KIXXLKirdSru89KZpfW4AmBNDx4gMaPenvg5qnMMAvfwpvG9lE1Bfut0QLOF6ya9cOqjugkbQ4r19T02xaascr2GVnGh4P+n3dwDVlOf61TRp+skDRxg1DkNlDztC1tGg3IY7C9JJOdDBSr+oUqtWD0zuh63DQNR47Sb4nd5sCop2ZVI2mRh3SlbTRnKHSjknZuNsNnus71jwuFHsa/EVcpzf4N0UgdlvLBxGGm2jGsb69tAWPv2po31W1LecNUF9GIZY1axp1gUcKhkQdatZUjZI4QwgA6kMxygEPGvMXTWPjED11aLF5HKV01iGkdooUyf+AgtC/30l3e4AEmk3QURBmf27QsYbFjxnQ7DQOxI0fOFPKKj4eoRDEM/GYJzvq3S0xOy485veLZbcCSOU3ed1FdEbkpsy484W47mFvf0iyp4091CVpxKHJXe9vRJA1XlemHB9BtvAECCEEAQqGFoE5fJUKVHYgwY94EjLMF7voMjq5TxxF08qzYpGnlWuSsWDC00dQi0iGUpaT9HkRI6vZm/s5KprrHtg/v7EGdcGcTIDjnpwdBwUNHiJa6kJjZFHJlTkeHWliv72UkiqvUr4imjYd8h0MJFjuZM7L/AT/jblIqeCTjyILeJVizrT2WMbaJnICxab+bg6Pzt3m8sPivPztH9GhLN+ZwW1eCKbYMb9WNe5DhzhPgQnOUVo87AxJ01y87CPgC4e9X80gVZp3K7VtjiNd8CudBlod1r+AQ9Q3JWk+ScBTBDqkpLXXDh2hVKjJZOgP41bIdzZM/VD0qmOj9q0Z6knd5riXGc8DKIw3OMXuG6kYHO9UDFE1Kv9xNlH1EXo7JvGSODbnP61Z+eev4KmhUfLOC7uf7Mjr/pJQyLp+OVr
+ PP4KisFl
+ tllVwuShwx7RIyVooeZXrBFBFnSaRP1zpTiqd/sOUzrW/wNXubzLMOyJRVEoHpvo0CnOlLqkDtTUa1id5poZhzok3n1afPMXLdSuic26m+9mKfD3vHPmodsUNWdw4YIqEHXLTthrWAo9jS8kwMiaJf13Ayr+kvnaUnefbINQINT8BRd5KVArwyGKEK4WSKhttrzujM/si3EafvOHwtqQbcZNAXz0B+JGLNiq9HonwpoRpw3NAqEkTrAfpLyhmgWXyWKv7BaZHrHiH+0X4EviZDnm5mLr28U9kYIn9iU+/KyS6gfTMlZU0KuXUL6TSi5G7YN0ygEwATdp0cbnlNopjQ6ywGtaeduOyq044XtH9ndJRLsh3MpoFfUsNe5SahgrfhZ3pBweshVw6kuRaNKKNniiP7xDS+mqHGFt/XQ9PgPZvyLjM6Hw78D39k029IpnsXOZBd3QRHyWuQLTwM+QLO3JXRYlh06oFtf7ryqrqyaQXOC6PJyA7epQxZ/PSR9t7USpsEz79u/DemJFXEs+h6ynr68gd7rFtwZVFcgJkPYxZenHQBAlJE0ejrBkNQCsqTEQvahKgSx4GpchpT9U7bOwGwrc/fb7xA5EtkqVDiTZqDVrJ5Bt9sNoYqaffTD5p0ZnZeaTXDnC4YImkKfLq+NhXUEn5cSn5O6DN/p2RuUOspJtXL0IAc9Ys5LjsKqJJC7ZpzxHXInwdW+Dyt4w5QfvmI3ZSaCTkZYAolhsgG2f8Hif1kurvcWKbe7qQYmw2gYRB/mOTqeN0pfWQTXelo1UZlqsq7q4Vw4H7TK+EE/t2ycgqoMLHMxTQRTnxR2qm3X9H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,153 +131,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vernon,
+On Mon, Dec 15, 2025 at 05:15:17PM +0800, Barry Song wrote:
+>On Mon, Dec 15, 2025 at 4:43 PM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>
+>> On Mon, Dec 15, 2025 at 10:31:15AM +0800, Barry Song wrote:
+>> >On Mon, Dec 15, 2025 at 8:49 AM Wei Yang <richard.weiyang@gmail.com> wrote:
+>> >>
+>> >> After splitting a large folio, it is necessary to remap the resulting
+>> >> anonymous folios.
+>> >>
+>> >> The current implementation determines the end of the remapping process
+>> >> by counting the number of pages that have been processed.
+>> >>
+>> >> Since the final folio in the sequence, end_folio, is already known and
+>> >> tracked, this commit refactors the remapping loop to leverage end_folio
+>> >> as the termination marker.
+>> >>
+>> >> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> >> Cc: Zi Yan <ziy@nvidia.com>
+>> >>
+>> >> ---
+>> >> v2: move folio assignment in loop
+>> >> ---
+>> >>  mm/huge_memory.c | 13 ++++---------
+>> >>  1 file changed, 4 insertions(+), 9 deletions(-)
+>> >>
+>> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> >> index 40cf59301c21..fe812d9c7807 100644
+>> >> --- a/mm/huge_memory.c
+>> >> +++ b/mm/huge_memory.c
+>> >> @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>> >>         return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
+>> >>  }
+>> >>
+>> >> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
+>> >> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
+>> >>  {
+>> >
+>> >Do we actually see an improvement in readability or performance?
+>> >The existing code feels a bit more readable to me; nr is clearly
+>> >the number of pages :-)
+>> >
+>>
+>> Hi, Barry,
+>>
+>> Thanks for your review.
+>>
+>> Currently end_folio has been used in __folio_split() and
+>> __folio_freeze_and_split_unmapped() as a termination marker. So continue to
+>> use end_folio here as a termination marker looks consistent and improves
+>> readability to me.
+>
+>In both cases the variables are temporary, and they look fine within their
+>own self-documented contexts.
+>
+>Now that we’re crossing two functions in the context of remap_page(), this
+>doesn’t seem to be the case, though.
+>
 
-Thanks for the patches!
+Thanks for your feedback.
 
-On 2025/12/15 17:04, Vernon Yang wrote:
-> The following data is traced by bpftrace on a desktop system. After
-> the system has been left idle for 10 minutes upon booting, a lot of
-> SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
-> khugepaged.
-> 
-> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
-> @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
-> @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
-> total progress size: 701 MB
-> Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
-> 
-> The khugepaged_scan list save all task that support collapse into hugepage,
-> as long as the take is not destroyed, khugepaged will not remove it from
+>>
+>> But yeah, this is my personal preference. If it is not the case, I am fine to
+>> keep as it is now. :-)
+>
+>I personally find the existing code clearer, but I’m also okay if
+>others like your new approach more.
+>
 
-Nit: s/take/task/
+Thanks
 
-> the khugepaged_scan list. This exist a phenomenon where task has already
-> collapsed all memory regions into hugepage, but khugepaged continues to
-> scan it, which wastes CPU time and invalid, and due to
-> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
-> scanning a large number of invalid task, so scanning really valid task
-> is later.
-> 
-> After applying this patch, when all memory is either SCAN_PMD_MAPPED or
-> SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
-> list. If the page fault or MADV_HUGEPAGE again, it is added back to
-> khugepaged.
-> 
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> ---
->   mm/khugepaged.c | 35 +++++++++++++++++++++++++----------
->   1 file changed, 25 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 0598a19a98cc..1ec1af5be3c8 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -115,6 +115,7 @@ struct khugepaged_scan {
->   	struct list_head mm_head;
->   	struct mm_slot *mm_slot;
->   	unsigned long address;
-> +	bool maybe_collapse;
+>Thanks
+>Barry
 
-At a quick glance, the name of "maybe_collapse" is a bit ambiguous ...
-
-Perhaps "scan_needed" or "collapse_possible" would be clearer to
-indicate that the mm should be kept in the scan list?
-
-
->   };
->   
->   static struct khugepaged_scan khugepaged_scan = {
-> @@ -1420,22 +1421,19 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->   	return result;
->   }
->   
-> -static void collect_mm_slot(struct mm_slot *slot)
-> +static void collect_mm_slot(struct mm_slot *slot, bool maybe_collapse)
->   {
->   	struct mm_struct *mm = slot->mm;
->   
->   	lockdep_assert_held(&khugepaged_mm_lock);
->   
-> -	if (hpage_collapse_test_exit(mm)) {
-> +	if (hpage_collapse_test_exit(mm) || !maybe_collapse) {
->   		/* free mm_slot */
->   		hash_del(&slot->hash);
->   		list_del(&slot->mm_node);
->   
-> -		/*
-> -		 * Not strictly needed because the mm exited already.
-> -		 *
-> -		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
-> -		 */
-> +		if (!maybe_collapse)
-> +			mm_flags_clear(MMF_VM_HUGEPAGE, mm);
->   
->   		/* khugepaged_mm_lock actually not necessary for the below */
->   		mm_slot_free(mm_slot_cache, slot);
-> @@ -2397,6 +2395,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   				     struct mm_slot, mm_node);
->   		khugepaged_scan.address = 0;
->   		khugepaged_scan.mm_slot = slot;
-> +		khugepaged_scan.maybe_collapse = false;
->   	}
->   	spin_unlock(&khugepaged_mm_lock);
->   
-> @@ -2470,8 +2469,18 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   					khugepaged_scan.address, &mmap_locked, cc);
->   			}
->   
-> -			if (*result == SCAN_SUCCEED)
-> +			switch (*result) {
-> +			case SCAN_PMD_NULL:
-> +			case SCAN_PMD_NONE:
-> +			case SCAN_PMD_MAPPED:
-> +			case SCAN_PTE_MAPPED_HUGEPAGE:
-> +				break;
-> +			case SCAN_SUCCEED:
->   				++khugepaged_pages_collapsed;
-> +				fallthrough;
-> +			default:
-> +				khugepaged_scan.maybe_collapse = true;
-> +			}
->   
->   			/* move to next address */
->   			khugepaged_scan.address += HPAGE_PMD_SIZE;
-> @@ -2500,6 +2509,11 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   	 * if we scanned all vmas of this mm.
->   	 */
->   	if (hpage_collapse_test_exit(mm) || !vma) {
-> +		bool maybe_collapse = khugepaged_scan.maybe_collapse;
-> +
-> +		if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
-> +			maybe_collapse = true;
-> +
->   		/*
->   		 * Make sure that if mm_users is reaching zero while
->   		 * khugepaged runs here, khugepaged_exit will find
-> @@ -2508,12 +2522,13 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
->   			khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
->   			khugepaged_scan.address = 0;
-> +			khugepaged_scan.maybe_collapse = false;
->   		} else {
->   			khugepaged_scan.mm_slot = NULL;
->   			khugepaged_full_scans++;
->   		}
->   
-> -		collect_mm_slot(slot);
-> +		collect_mm_slot(slot, maybe_collapse);
->   	}
->   
->   	trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot == NULL);
-> @@ -2616,7 +2631,7 @@ static int khugepaged(void *none)
->   	slot = khugepaged_scan.mm_slot;
->   	khugepaged_scan.mm_slot = NULL;
->   	if (slot)
-> -		collect_mm_slot(slot);
-> +		collect_mm_slot(slot, true);
->   	spin_unlock(&khugepaged_mm_lock);
->   	return 0;
->   }
-
+-- 
+Wei Yang
+Help you, Help me
 
