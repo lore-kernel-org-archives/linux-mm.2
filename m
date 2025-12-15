@@ -4,118 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9BED5B857
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 16:28:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 069B5D5B84C
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 16:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F29D66B0006; Mon, 15 Dec 2025 11:28:47 -0500 (EST)
+	id 60E686B0005; Mon, 15 Dec 2025 11:33:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDAAE6B0007; Mon, 15 Dec 2025 11:28:47 -0500 (EST)
+	id 5E6636B0006; Mon, 15 Dec 2025 11:33:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF09F6B0008; Mon, 15 Dec 2025 11:28:47 -0500 (EST)
+	id 4FC026B0007; Mon, 15 Dec 2025 11:33:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE3E06B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:28:47 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 854C51A031D
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:28:47 +0000 (UTC)
-X-FDA: 84222239094.19.46B87B6
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A12E5A0007
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:28:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PL1JWJNK;
-	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FB566B0005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:33:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC71DB824C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:33:48 +0000 (UTC)
+X-FDA: 84222251736.06.C605879
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7D397160023
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:33:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=0pafP8yr;
+	spf=pass (imf08.hostedemail.com: domain of axboe@kernel.dk designates 209.85.167.195 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765816125;
+	s=arc-20220608; t=1765816426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TWw+tWmkHo6tPMqmZEk9P+niRGJoCGV4ZzodtDdGtk0=;
-	b=CcPGc4o19hZatODRkJwjcjQwfE49THxXGbIrTyGgc/uNtmA67/AAt4ReHKgED+0ZAbXdWM
-	Em8MQXRPAFBGAooouGQCAOBWQ6WXGDCJbUich+N6OUqwsY/fBoR7jLAOznaQV92qaTXSNR
-	tqZNfbp6S/PPo3arz6m9+iZYhnp2674=
+	bh=aOeEbLkJ4NhNzPDHOpRcyVg6rwLKPErmDWJiIVC5mM4=;
+	b=mZqSoKzv25fut8zSP6PHQ9zf2TArlUicii6k2zVYaNXO43kPVlHuu9bhg4/AdhDtk9VbyN
+	URfddkJ2Qm39RgMS1o/M7h8YWzJb067tO3dMaB0uqX+a33RpjbUlxsy0Wc2doYolkrd2oK
+	dIZzXN/PqUJqBzIKEdUYcTXVzijMoL0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PL1JWJNK;
-	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765816125; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=0pafP8yr;
+	spf=pass (imf08.hostedemail.com: domain of axboe@kernel.dk designates 209.85.167.195 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765816426; a=rsa-sha256;
 	cv=none;
-	b=yiA2bLNtJuepdilTxSuqvo6yDppfeD6F6tHcmp+26Cf1pY72MTCrPGyzod6yzqOQHQiqI5
-	ehGirQuLyGEtLMJz6sbK50ElutlSFj11dZs4M82vsRrHrI89fLxHFYBekB0CiwP9b6auNQ
-	bt363+O2wQlq7yOLAmPNtaSLYW1QSpw=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa4so2581145f8f.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:28:45 -0800 (PST)
+	b=GqFNbUK2lhETKjxAtutD0ow0LNkGonpUwkrwAU5wLI1TAFMjr6i550NYmhscM8hL+Tp9sy
+	8D5zFDc5VI8YQuUmAvB8804nS0QXnIQYdhfXdgBdUPv+FElhIS/IeAanUr1BWEnV4SOJ4E
+	PDVe/SF52oAnLAd2s12XtxbdExcSHCE=
+Received: by mail-oi1-f195.google.com with SMTP id 5614622812f47-450063be247so1644585b6e.2
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:33:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1765816124; x=1766420924; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TWw+tWmkHo6tPMqmZEk9P+niRGJoCGV4ZzodtDdGtk0=;
-        b=PL1JWJNKPm7R/Y2eiOD4LLJoJ5QzVEj5stoqMIR6Z3NBJUDLD/3841TaeJLvPjHzWw
-         aNJqpGbtIU3HK0dvPcHSMTkNjMmcuhD3XAkmuUe2+x/Uc6ESpdJtRiry6SifWj5aZuf3
-         zlwEeOIj3AkQ34X5yUVa16THF0Wd760oBjshrEY+2m6+Ao4KutxJgNWUfjDbCEBBFAgV
-         XvuFegpUqZQ+j41jygatnQeJU6FdfY0jDx7bCqOboorWtwtQeb5GLmrfdiYpn4s0R1eR
-         Xs3+fMDqLr2UcJAUF3Iri3zWWP27QlYIv0quXTb/sJ812uHGNSAxPi+dCh1XF7Zc/BI2
-         gDAg==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1765816425; x=1766421225; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aOeEbLkJ4NhNzPDHOpRcyVg6rwLKPErmDWJiIVC5mM4=;
+        b=0pafP8yrJYX0zMhpjznqaN4aqBygvONdOl1FJwPAyRL/+BCYNDdpWm+JrtJL26uqS8
+         lFSv/JAqTSu+4OQ0fZw9IpvBAjdXGuwM/Ix6uyD7HjjsI8akUbZcRF+9TX0v60EYuOYb
+         MLArMi+vlgsOAiRe1508ufvHMKw5gLGPUm/4v0LBEftV6N/7ZHWZ/WmjGn2ryZwDEkLz
+         +lGAjekdcO7rLFvadl+kZPs1+ViKmRILlIMUE2sNORT8y9f70ZIWsUQx4QqpHAU2pJ0I
+         W/DR8SzjpRhKDUSb7l25xSRFvI5DOaGhsnf7cLgQnaqSZvcUi99BbDmSmZUiGYEMdd3S
+         o7Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765816124; x=1766420924;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TWw+tWmkHo6tPMqmZEk9P+niRGJoCGV4ZzodtDdGtk0=;
-        b=YWGPLqmBa5yfoNxdU4N5diTejnXsG98MbpcO41wzfxLBYsMI2O3CAlJrQzYTFOcbi1
-         m+W0k2DfrYBcVbRRjvGK42wOpsBc5RAxttlB4HggUgywYv56MiGYNBvqQ1t6X/vq8KEN
-         5FlYpNq82vT2RXppnWuCyGTxpaf6XKt5r7bAZbEzpZpB2kLt7Bkg6v/mxHZsVdaSdPgk
-         sIgSgU0jPHn8AtWP1PwIzzB61zQf9XIH+PrBrsCpCln4deB2LO6QaUKIxT090KV5OV4W
-         Ks7bG8VPrYU9Ft2ncXFyu/vqIAoZtxRb2/vspY9RHFRbTKpo+6YkaUbO0Q6BPT9l9GNT
-         a8VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIHjMFrFOwwCwyovJupEekWLvGMyueYvyXNIb9vvh0k/aswK8+bbIQ24/OWXAOSAZuL08yu48+NA==@kvack.org
-X-Gm-Message-State: AOJu0Yy/WM7XxfN3Y7/HP0NQohf9wINIBteMnkEwtCG+NkVzi44WQP+x
-	cSE7IVMbJt26Ub5imgD3xDhdYCBZUb8lwvWY+NPX7wJFUbXueWJqtuGNvlKgD+gKCao=
-X-Gm-Gg: AY/fxX5d8TZ+NrlD2l9V5CR+pHYQzNY3Z+nZjDGgD0eBMZ4VGStX1qgeArDYHOuo7Jd
-	E9L6h4hjukyZ0SkzkD4R1VcV8sdrn52oseu3J5B3fAcOiQiXQR19Z8syLh0+ovSknVMQUq6zFpL
-	tLR5QGWTU2Jdx5K62+sYMsVvFiOBdYByqR1I8XpvOGDsKVxytgEUnmoyRakg6WYDhVjBaemTzjC
-	6m/vhMDlAH8IAuq5V03B+6jD+WLPcw0l4TQ0uY3yRaIme9nXafzyQmpJ2c02rgppzgjW1ZFm9AT
-	6EAzJjuVE8j2sytd7Fbv6QyOUCydbtDqEj1uNtpkmlkZpPQj8fo/CI5Kjsu8hTTBLUHQ6Ovn25v
-	UpPS8IaTs36zFcnQQLZ6JOkSgqPkRj2Ew58ZUct4no0NMIm9Idq2dpneOsxbENF97fBloaH89h8
-	q57u382Qfy4+aYYo9DUmp+VzlBF2OevJcOwzf2ymc0jA==
-X-Google-Smtp-Source: AGHT+IEWUVPMrA6Fi5wvb0Db1pxM3XzOxI5IqMeRhxio+HMtumGqZc07ye0kb4axZ8m9cm5bX784HQ==
-X-Received: by 2002:a05:6000:240a:b0:430:f494:6a9c with SMTP id ffacd0b85a97d-430f4946d3amr6708612f8f.17.1765816124058;
-        Mon, 15 Dec 2025 08:28:44 -0800 (PST)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f42a3290sm14751671f8f.17.2025.12.15.08.28.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 08:28:43 -0800 (PST)
-Date: Mon, 15 Dec 2025 17:28:42 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, david@kernel.org, 
-	zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com
-Subject: Re: [PATCH -next v3 1/2] memcg: move mem_cgroup_usage memcontrol-v1.c
-Message-ID: <oshmc47mt6ivnxcozgztsltxa5enqztrsyrk4ph73yfbwigx77@k3t3vhni5gvq>
-References: <20251211013019.2080004-1-chenridong@huaweicloud.com>
- <20251211013019.2080004-2-chenridong@huaweicloud.com>
+        d=1e100.net; s=20230601; t=1765816425; x=1766421225;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aOeEbLkJ4NhNzPDHOpRcyVg6rwLKPErmDWJiIVC5mM4=;
+        b=cvDVXSJjEc3nbBuNik2h6XI3q9whxsUb72Qp88MPQw7hGEUMzNt2LLEiAm+Xo0y7I2
+         /0VQ0q4/FemwN6/WB0I67tZpChzDooDeCVtw2Vim3S7gKusisf+ROjtOB1rwS4+zCCsg
+         sDnUERvLaOo3Rxi+e86V7IFWYxWdBY0/561uwpf9Ns31Us4Bs2+kylqyHqVFxPS4Pceg
+         y9b5KMvdFtGOqEHYi1RzypNUjtmRyNJMiwj9Id+9hrr+ldJ9ohAFCtFcc8KBm0HVBIsV
+         Ay1PS51UBgi0n35O2RfmWBMgRaXUIcKoFHWHUcrbW9SsS/8EgdClBuUBAuMg+BzccPW5
+         FbaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwo+5l1ewC++EIoACIL9Gk6PFKI0Q69z87igkDLl+Da5v9VjmXo4LJdmMCzQxP/PfUXmMF+Flpvw==@kvack.org
+X-Gm-Message-State: AOJu0YwiUnMyrKVCKZYWijsZZpG6Tgg2fCmNaWfyvNgZWhCsOyBKfl5u
+	mUTAB8yYMDNRYi2kqcAyDChqoHNog+KEKoqEgw9zJIqhjZebLOPOlcppJAHQn0Xife0=
+X-Gm-Gg: AY/fxX5vQAgB1w+Gcfvc70a196MJi5chEaZ6qyrD6kcGqxpqq10GXJKA0btqhdBiiVV
+	3dOee2AUz1FLmpSp1DnyB72x2aajsCrspGN3KrpsuZEShaczbybxNg2EldckUN0PV8SN9NoEIy3
+	finlO4kMkFSocvPBOQ3n1X1bXFbxaVPV/v9fkZ/8jleMF3yXg3t6sUJmw+ZH//7BjQJ+57Na2Rp
+	XmJR+Dh2RIV/0ndAX88mcTRdrclYn0ZX8upn0srjtYLdGXSrjQ5GUWvv1jorpucp9gL1TXif0Jm
+	8tl7k8ETBEY7aXAZeZzbG958K0OmT7r381PAD0bh1pPb/5O7e4OtQUsUadzQNAJemsd5ShGMYhR
+	n938YyM8M20516Jq94z4zxH7k8TysD8nkMw0T2ndFwWafu0Vt/5QhTSoWPBC19uldESIKF9JnYR
+	V8dh7HbNI=
+X-Google-Smtp-Source: AGHT+IGCrHrQigzG5irmY6fvZHnILsW9Av+YdHaRrG3TJtP7ymKohcpyueiYU6zKEA/9ee1hWHdqcA==
+X-Received: by 2002:a05:6808:bc3:b0:450:730e:d109 with SMTP id 5614622812f47-455ac989e89mr4518931b6e.48.1765816425269;
+        Mon, 15 Dec 2025 08:33:45 -0800 (PST)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45598cf4858sm6448712b6e.11.2025.12.15.08.33.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 08:33:44 -0800 (PST)
+Message-ID: <2ed0737c-2b2c-4f99-858f-2a4bc4a477ae@kernel.dk>
+Date: Mon, 15 Dec 2025 09:33:43 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zggmhi5oxztkuphy"
-Content-Disposition: inline
-In-Reply-To: <20251211013019.2080004-2-chenridong@huaweicloud.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: o4hz6sjmzzbsanmwa46r71aohuy3zx5f
+User-Agent: Mozilla Thunderbird
+Subject: Re: retiring laptop_mode? was Re: [PATCH] mm: vmscan: always allow
+ writeback during memcg reclaim
+To: Christoph Hellwig <hch@infradead.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+References: <20251213083639.364539-1-kartikey406@gmail.com>
+ <20251215041200.GB905277@cmpxchg.org> <aT-xv1BNYabnZB_n@infradead.org>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <aT-xv1BNYabnZB_n@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9krf5ad4ny65gc4cwsbskanbr4z6z4eh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A12E5A0007
-X-HE-Tag: 1765816125-308569
-X-HE-Meta: U2FsdGVkX19WN/nXZ2vKmYCs2qg8LG5uVwcrQhlHgTIc2a57NMtVg753Ulpv57DBB8vUUh74Dx2qp5t5wZVeWtN3uRsAhT2BQDvxYcl6AKMp4gOEGhpHDwgq+PT++tzRWUugtvFAQRKdKIdiwHQ0/nVniUaArjdR/ZSonEmJx1/Oe+YbU9ng86EKwZW+vyDVjnDct+jjKpSPXxFfLuVhHa64K3cKMDMoEOYiHfpcJT2f5VEeOQmFCw/+tWSUoLi4LoYEJ8C6uZ7KgoU15ZkaFoUYmTTXBgc4Thhjtbved69Agl/VTC8X9aOVFY4Pzyn5K53p0/DiWMPDOMGrW4chxLVGF8TGAvbUcoc12Eosjz4QCn60SAJO3LOGjSqI1jm5mNlZgNfiwdQ1Msn78InM6fWwklIXktMqIOWkbX4vP8qkkMdwn6Kx1RvyvVSdwWl6q+kZ5YsO+DDFpJDnLwNromHUFJDWJenu4r29in5UntRr20UXOlOK2wr4hIvcDJUzZZYu2P9C4vYkYDpaRt4n3ib31E309DKqxfD+Uhanyf0sWzUGOZseOovca3xwIB1FtcFU71Yv/toIT+mfrs92zyhMeOZQSpsvrZ05DfSiYHHSseAUpHNqc8rqugKgqGeqE3EPxM6VNjnrIETFj+pndTN6tjpGmIJ3adivgRLmI1pS4wLP7k0AlUxEdmJxmP+dsUjVA+UyTNXTPjyrVEXCqYIk+FODvLBj1Tm/kvpkCi0tv1Sy85BZZ53VopgMs5nCJFIzgay/C2emi7nLiM3/JgWpqAg6rP3Zc/AkvxIYsiGt6Zxl2FJ5YD5q2DyOwj8M+oa/6YlDP0gDyhnRQycOzFg/yN6iek2GsWxbej7mgvvumQNtSoSAeT+j8p0lT/HJiP9bfmW8lalOmkByU2oE0y7L5PALzLGOlUEZw0tpUNNjNijX7EEBQEl81H6HxvKrfQ65UiTBb+eptoz/8IH
- /1s9I7QM
- iIpe6u7s+trKOd+zHgkstuIbCnwZawsviY2ge4Mmo3N5Romc17EJdaD0xxB66x6Nkj9ZQ+WoZSFalhRhIVmu4AQ3Dxgq+zAUX8FqQwb1jcxSZAtQRpQhf8WqMRaH6UsSfn4zn1AberTR//nzG6CddS6M1vMIL7nUASJ4kJgDA4mYhOuz0LXMZAkBWq6NDSYGh+oqIYzOHFgm9jYtzBN8kTfehdaPS4YMq5wG7mjEDaZZT8+EB9rgBOUxMzgfnJzw/CMgXsa+lalq+I1E3f6TbqPzdNv51+Q6viTW/l519atBPSF3pHi0I1E9TrEyUiEezjYa7pEs62PHbRXxnzn/f2cwr78LwwQWE3HLdfRBZp3GTP6eQ5PQm6ZkLs2nPeFNqMceiYxd+RQRN+2TeIwRsYTzDAiLMIjgpFLxH2EPBXhbQMREGWlWIgsaNlJdxjdKRj1jf1cr8TCNaSMHbLwSrJOETVct7c5XN8ru62ZFC0tj9C/43FwZ6xbv0jpfPB1xXhy49C2tsa1nens6n8AfqDnq7y5ju/ygZ4l3Ev/cCG1H52eN2fW4bmRcgFQwwDk0squdak1h2CF0fGdDTErAeA+3nLaj9h0X5TBbP+5kfaGbg2GjxV8AIKa73P7YTlXW237ljqmU2CNtVwCA=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7D397160023
+X-HE-Tag: 1765816426-291296
+X-HE-Meta: U2FsdGVkX1/Uugv6QlnBKMc9oWaYX/uPbUrvvtHn7lNupMlywiQkfDa8s7LYYYlUVQeCnyGYM8Ud96su/fgscyGllv9Bc6teMURUuM8A+cUfN4C8BiMy7w7L6spOMTs38zCsRQhbsCsOPNjtW8WRSdXur91SLkXpjoseRfRd8AX2qYcrTSsVzOLPXwdhrb9Nd0ZzAzB6ZuoceMFt6mDQ4LRVFlAx5BeTjkJe1JaoZ6xqhfoHhTVOkRf+OxNqQU+aSve+b9fwTuMHQpfSq4qmNr17ijCIyl5OgaV5Dv68TPxJAVkf5ueHuhSjlluu3OsQ2H4dfWh/e94dnVgpA0fkv/vgcyUJEmh7sKL9Ce2Yhts6sMoEFing7fCGExFb1TtC1Anf39bm20Zw3NnRc1a2CjNa8ewziDsY1XLJIWkNa/dTEMpumRHfQvOeBCfnkzOdTAoZ/fmMvdNY9zED+BbUTgI403jAltfHf2vXAn15pKUZfDtVkonPzBSVfBnicoL8jqADYzs8a/GZEhFik94ddAztJUaNJtpGsqiVlCozv68S0V2RwkgrC90HxUOwTxcRrkz/hwA2dCzrc+L/vKwucll1j+hvmbcK4PjmnJDGISMwzMWiJJrxfjg2xlpmKqHHZnx9t9cgyuHsziccs+PRb0UVZN91VqI3HVLHVIa5rKn50vRd/7kxSZoo5F5Y2zYJqT1gpG05jvrCJ7127eSWBY+A3dleXWmdtKaa+H353K3mijlRVKsrwe/joC8B4zpGcYxg2ZFGx/edIiYQmqwU4duMzZzNDIP9XKjvbsGfG5awqpnOtiivprZuzrgFZlwKt3SuQ8EMz4gVorNt23J/+Sxm7uohwBPr/8AH147V6UYrcF4e7pm39+Pdm2oAqaQeByJI+YQ0iGXKjbYBMhCW/5O5Y9SMINl/ZkHTCU86LdR627oeC6avJNvpLLCF3eLM2tWpRDpT6lEZUKXy6Wj
+ cpbg0ufn
+ zPNXF5lwx6lUSo3FKdleq8x7Q1Y/enNKXYra/F9Jq87cfpXTcLOINYQt6n9vaIg0Fv/C4etqYxGtrVIx9gz9WYDWAXZej2pBGtSopKgtHwHgk/UXuDNbCbjbm8SEKeR0EM6X3wncVA5KqoY3lGLGyfNni7mtFQULcIc+QdM1Yk//QfHfegVJinEZekwi927+622gBQ7dYgbRwHWhKLNzLsdRrLrCEPr94w/OIOq0W/PoM/iOZTr+aap/oMVOOHG05vvT0CdcnX/8tNBuv0I5z/9uZAXe+mwGF1+t0Amm2dPz7YOARrYaSbI9LUA3lIS+5QsIxdJw0hKitCStCTWtiR5kMUl4aEfwNdeIMvPht7UFp/tFFzMVhW5nuWjiyJf86Z7DRg90Gv2DKrnjfCTBrxcLqmk9X2KSS1goZs4X7EzFBMyhgmqGxON7eQ1wR6XazctZ4C97Wo/5WuFwF2c55CP6+fb06WaZqzbfpuiYcwEeFjmAeSP+WsTeR8PvvZ1kdRid4LklA61Z5O376DKWwHkOmDNe6JON5YR7imQYk0dDRLO86TeHPbEC42mWF7/sxKc1K
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000035, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,43 +126,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12/14/25 11:59 PM, Christoph Hellwig wrote:
+> On Sun, Dec 14, 2025 at 11:12:00PM -0500, Johannes Weiner wrote:
+>> That reasoning doesn't make sense to me. Reclaim is always in response
+>> to an allocation need. The laptop_mode idea applies to cgroup reclaim
+>> as much as any other reclaim.
+>>
+>> Now obviously all of this is pretty dated. Reclaim doesn't do
+>> filesystem writes anymore, and I'm not sure there are a whole lot of
+>> laptops with rotational drives left, either. Also I doubt anybody is
+>> still using zone_reclaim_mode (which is where the may_unmap is from).
+> 
+> Yeah.  I wonder if we should retire laptop_mode.  It was a cute hack
+> back then, but it has it's ugly fingers in way to many places and
+> should be mostly obsolete by how writeback works these days.
 
---zggmhi5oxztkuphy
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH -next v3 1/2] memcg: move mem_cgroup_usage memcontrol-v1.c
-MIME-Version: 1.0
+I'd be all for that.
 
-On Thu, Dec 11, 2025 at 01:30:18AM +0000, Chen Ridong <chenridong@huaweiclo=
-ud.com> wrote:
-> From: Chen Ridong <chenridong@huawei.com>
->=20
-> Currently, mem_cgroup_usage is only used for v1, just move it to
-> memcontrol-v1.c
->=20
-> Signed-off-by: Chen Ridong <chenridong@huawei.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/memcontrol-v1.c | 22 ++++++++++++++++++++++
->  mm/memcontrol-v1.h |  2 --
->  mm/memcontrol.c    | 22 ----------------------
->  3 files changed, 22 insertions(+), 24 deletions(-)
+-- 
+Jens Axboe
 
-Acked-by: Michal Koutn=FD <mkoutny@suse.com>
-
---zggmhi5oxztkuphy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaUA3NxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AjUkQEA8FJ0+x7VlY8tI4SBieqx
-WYg8Xzg+uuluC8BrRJr0YLoA/2y5h9r0vvPhhNNWV698p+QJS52s9tRUAMFU4Aiz
-G+YO
-=xXct
------END PGP SIGNATURE-----
-
---zggmhi5oxztkuphy--
 
