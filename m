@@ -4,173 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7273D41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75EFCD59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:31:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 567CF6B0006; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
+	id 9FC706B0006; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 518BE6B0007; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
+	id 9AD6F6B0007; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4080A6B0008; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
+	id 89C566B0008; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DEF36B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95A1A60EF7
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:15:30 +0000 (UTC)
-X-FDA: 84220542420.20.4F65411
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DD24080007
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:15:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 76E0B6B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C95A8B550
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:31:10 +0000 (UTC)
+X-FDA: 84220581900.14.BDEAE3A
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 55B03A000E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:31:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FcB8PaS3;
+	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765776668; a=rsa-sha256;
+	cv=none;
+	b=jbBIEXPcGwQVHbAolzEMmEvP90UNfTzLsLqlVCyCesSrpof74JOAen3o7tlzkHyDeh1Rk8
+	MJf/1c8VP/zk7K490/c6VBSdqKSNcuqg+jgKWWDl8Xk6bH8Bj/+tcTsanhkvzTxxmnG7W2
+	/mn8+tAOBjOazkIv07ZDp3f9C+FjbO4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FcB8PaS3;
+	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765775728;
+	s=arc-20220608; t=1765776668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+OXSwS36H1lXtGUMumg71LtJxJi9J020KcoGNO8+YTw=;
-	b=mnFo9oZ7Xy8GKXfqgSq8UFU1En4Z+u7aOthdSUZ6hh4az/pTPDiWtKbtd36yf6WaVmtj5e
-	gfbkBVqZ6zmllSeJ8atmGSfFFv50ij+shmX91zKzfaazPEBJZirwC7mnux4kEwwELEwY0j
-	18hPay1Zfa7cY1j7As76rDkEMuhWRiw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765775728; a=rsa-sha256;
-	cv=none;
-	b=KAYeypXPeErJd0NEdxcDgGcpEfnUK0an+ty3W8RnvACmPJrkZcF61Jf8zQYlPbXPvPKmYS
-	wpGG+hDGJat29v8b9i0lhNknjZRQWfeQglVzqmuwjZfXxIkmXaHy0tRmAjhKLvPBJXEbVD
-	3xTku6gbXSh0/O3ADPVZsRQj2v7WMdA=
-X-AuditID: a67dfc5b-c2dff70000001609-df-693f996ad6f5
-Date: Mon, 15 Dec 2025 14:15:17 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
-	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com, chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
-	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
-	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v18 41/42] SUNRPC: relocate struct rcu_head to the first
- field of struct rpc_xprt
-Message-ID: <20251215051517.GB49936@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-42-byungchul@sk.com>
- <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
+	b=MZh3WIpV1/jRwrYAPhQTkgk1IGrcpUuXlpvphuDKRgsnHRVgcgavv6ayk6+DSLIHZI7teJ
+	qtMUjYqzVS0OKhJNdhr9clSa1sYxNJ5gDqPZnQzLZcw8e7CGPxeqn6hFHBEI2T5A31XbXn
+	oeiOSOCW26+nqCiFOSSRhOhQA1DDIzs=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so3026211b3a.0
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 21:31:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765776667; x=1766381467; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
+        b=FcB8PaS3kbmZssjC6/jknHrUS3zL9GieGCcwYatrzavUq/MMMPC/k3nBtEmLwpPxkB
+         VMc8U1iAnRikBBvNwRMO3Hd6898vftO4yTvgttANYxqxl7q3HTUANif3d4uh7WvMKoug
+         FumCXNWQSIzb0iyeuNK3I+i9gn6jRTzvJtMjlqWuVmHK2s1R1QvofyvZcq6dRpgBCEFK
+         mde3laVtSaoZE45p9cU5POP52CU+E3Tpo2jZoFKDGSVBR5qCI4OSGVeou4mC5jYJl5zQ
+         9Mu2BecijVuw5mA5wGGcR5OMyOTkEylEyJqEWiA/NwU0bnyxtZLTRTFlFkdKYLKiEG/2
+         mlFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765776667; x=1766381467;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
+        b=hW7AMFLbQLIPQwrf7a8RO1Ohf6X/yZVUKf3EvMz+lCqCnBepXQJ9cw0hWxecBd6Myl
+         cbU2qKl314/regoUzRrKgt/MTF8vYMbe3zbp6tIS9tNs4vG+KPtcb821sxF2YlkY5tFC
+         ONrWK6jbjz6xTnK2FJkZjvI5UjAzme0DOzq1ob8A8yhlcfykCe61e5AteZ+wMlvc4WaS
+         soRB5YaBtiUCd3smHlAOQUscKJEYzDQBjR+oG8nBd7CXNq8zqekBlYurSGcf7bLJ9Lk1
+         cakSZjKtAKmiCMp2daMdvSyP0A/8OdDDC+L5LzUt+sQ06Ua0w79GuzffUojr3WGGwaOF
+         mXWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpGXEcjJPQ9nCefslYOBlDTzU+wbLM6Ej0cRK1AI6ZJZH2ZbEP3RVvYsiLgqXI1e0iWIEshb/ncw==@kvack.org
+X-Gm-Message-State: AOJu0YxjY+qRoz7Xu2mL03O0LOvG+SjXELut7ZSzRX+0YL3hcD6WyaYf
+	ZwQb9INaB/6NndLc9P58DyZ770kf9ARSYLZkAnO785gFoLbyzBxa6//m
+X-Gm-Gg: AY/fxX5XM761uXseLrr9PiWF10iDqo4oOZueAMb4RFLuj9xLdkweiFzqB1o8JTvkqkt
+	64w5gstHKi18kQggRDHNQC5l2RCKAgDAhXPEy6usyDFwl9UoLUjZ6dMp71rBS/ws/sekJAqMVKg
+	1AZouaKdDwR+tJi2Ysu9RqySA/ZlgDTmgcUI2sC6slNAom6Jg3vrsKyxQgrvoHZv5lQr4TShd6O
+	zSYLmF8lZO3Ws/btAEE8dgWQnL3n+1OPNLhyDyyxCVYnKsEzi3qLNcWdqsgndNfNtsODSVSYqdu
+	KQZpZCPRuOrCmGAPp3coNZiriZ+rdhmxMdfNrydZ1loMCLE66zxkvzAGX328/mKTw40jSD7j6wU
+	7Oqh4DfrAPbK/RWyTGKy3z/eDQZKh5vxpCPzGoU/Yi7q2lJUwYeFWEIEtYgp8AOTLvkigDULwwI
+	dHMY14LTsLWwdSwpVrRS+jUelgbw==
+X-Google-Smtp-Source: AGHT+IHNaawrkiaB8tEzN2LJvPo55x1qDp7wzj9Mb1MNnfFeFzZwkDr8l2UABw6Bq3fG7Z2E49LeWQ==
+X-Received: by 2002:a05:6a00:a381:b0:7e8:4433:8fa1 with SMTP id d2e1a72fcca58-7f6694aa660mr7586764b3a.41.1765776666944;
+        Sun, 14 Dec 2025 21:31:06 -0800 (PST)
+Received: from Barrys-MBP.hub ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c509cb51sm11409151b3a.54.2025.12.14.21.31.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 14 Dec 2025 21:31:06 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: dri-devel@lists.freedesktop.org,
+	jstultz@google.com,
+	linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tangquan Zheng <zhengtangquan@oppo.com>
+Subject: [PATCH] mm/vmalloc: map contiguous pages in batches for vmap() whenever possible
+Date: Mon, 15 Dec 2025 13:30:50 +0800
+Message-Id: <20251215053050.11599-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0xbZRj2O+f0nNOGxkPF7ZMZWerM5oxszpG8iQanxnj+qDNmMXPZtMrJ
-	aMYtZetW44WFS0sXVm1SAu2GxSIyWsY4DAQLG5d1gDrGFmQdFHSxGyVrWVIuTQcUW4iRf0+e
-	97n9eFlS0UGnsuq844ImT5WjpGWULJRU+/Kx6jfUu7v8m8FQ+i0szBsoONfsomHF9gsDBrFa
-	AiMXnQgiSzYSSjtXKVgxX2dgPjrBgOU0gspbZhLmLsVoeNgfRmC556dhxvMurE5OE3BnMYig
-	3h8jwN+jRzC68IiGIcsZGkK3zhFQ7GimofK8SIGv0kyAU3wPJk0WCoamxiQg3vUgmB+9R0D3
-	+EtQW1ZHQXWNj4Yp16oEbjtHKGie9hLw+/XBuMF6gYKJGyYGbv7aFN/7fYUEmmZ/jE9arCfh
-	dK+DAvODMANtV0sRhOsWKRio6CFAH3DTcMM2LIGyuhYCRu+6EVwx/E3ATw2h+ADXGA3T1vME
-	9C8ECfhtco6BVtFCQpsnwkCJLwPmnY002DxTzL59fKT0LMU3trYT/NJjM+L7g49IvqT1JN9p
-	nWT4kivjDG8XT/CtDTt5R9cMwYuN5TQvhs0MX7sUIHljaJTgfWNdND87PMzs3/qJ7PUsIUet
-	FTS7Mj+TZYeLfUzBD5tORd1pRcjEGZGUxdxe7K6JEUbEruHu2I4ETXEv4Dt/rtAJTHPbsdcb
-	JROSFG4bHi9SG5GMJTnLczgYeEwlNE9xR/GlTguZwHIOcHfgKpkQKTg7wrWVLmb9kIyHqv1r
-	BjIeulxzey2U5Lbgn2PsOp2Gi9tsa7SU4/HMGV2Cfpp7Hve0DxCJSMzNSnH94E1yff4zuLfB
-	S32Hkq0bGqwbGqz/N1g3NNgR1YgU6jxtrkqdszc9W5enPpX+RX6uiOL/XP/18qEOFB75qA9x
-	LFImyUcuZ6oVEpW2UJfbhzBLKlPkBm+ckmepdF8KmvxPNSdyhMI+tIWllJvlexZPZim4o6rj
-	wjFBKBA0/10JVppahOz+sSMDHyt7VRWedmXq/b8yJg40ZRz09hzujs599cEhRyDS0vfQ/8+1
-	tyVbteZXzzr/yB/MfTN4Qa93bJJ+uOyuaik3epMioWTfyuemgO/9Z++nPWn65kHxYdjV/MQ1
-	RSCzqiBQlv5OtM5Vow1WlR8UO3S7Xxx6bX/TW7LLewS9PUVJFWarXtlJagpV/wI2aPotywMA
-	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTH89zn9t5LtcsFcTzZjDOdi2buReNMjlG3GZPxxDizxA/LFhOp
-	2824AwppkVGNSqnName2rqZF2rG1KJVAHW/bFEldAxOdE0YZSMPLgKwyCEwMFrYWCrYsRr6c
-	/M///M8v58MRcMaX3AZB1hZLOq0mX80pWeXbr5i2H6/cIz/fFdgKFvOnMDwaUcAfxiAL81EL
-	C+ca/Bwk3N/zYGmuVMCvA+Us9FysRzA6b0Fwf9GNwdy6wkLC3slDNDbEg8OIYCXQicAZsmMI
-	91zF4L9kZOCfxmUOpjvmEDjGIxxUTBlZmPV9gcA14eZh6udsuDfapoCVkbsMDCzMIPBFlhmI
-	BE8iSDjz4EJ1S3Ld+TcHi103MVQ4ehB4x0cwzE2NIbjUeRtBoLacgz9tlzHciqyDvvlZDq47
-	TnFwL3SOgb8aOfCUBxQQ+n0aQZXbjmBiMMCA6esGDpxVzSy0jv3IQ2h6iYFhp52B+ub9MOqb
-	YOGGrZpJnptMNWWBu8LEJMskA47v2hiI+er4vTWI3jefZmldyxWGmnsTHPWf9yO6GLcjGq0x
-	YWq2JduOmVlMP2s5QWtuzHA0Pt/P0cCCh6W/VRP6zedxhp7t2k5bXSP8gdcPK189KuXLJZJu
-	5+4cZe6caZgvurC+NNa2qQydEa1IEIi4iwSWn7WiNIEVt5CB/gSX0pz4DAmHYzgVyRSfJoNl
-	shUpBSw6niQzk3E2lXlMPEYaWx04pVUikMDkVZwKZYgeRLxOP/9wkE6uV0ZWF3ASunS+dxWK
-	xY3k22Xhob2JmC67V+00kZKpU4aU/bi4mQSv/MLY0DrXGpBrDcj1P8i1BuRBbB3KlLUlBRo5
-	/6Ud+rxcg1Yu3XGksKAZJV/V9/HS2R9Q9FZ2OxIFpH5UFW7bLWcoNCV6Q0E7IgJWZ6os4aSl
-	OqoxfCjpCt/TfZAv6dvRRoFVZ6nePCjlZIjHNMVSniQVSbr/poyQtqEMXfvkq13vW2ZdQWuY
-	dMefe6Ij54j13TdO9598ai5EFofEvvTgcPYd7519fnrxTJWye/Px2sOG17r3+uvWNyTe2jlo
-	Gw9n5WiMRfv3NDnQOx/x3n1jL9tevG3sS1uY8Dy4+WDbCm1K9/Qe3PbIoWis9NqQ8W7Em1Vf
-	LGsLa/UlP52wqVl9ruaFrVin1/wLMb4wZaYDAAA=
-X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DD24080007
-X-Stat-Signature: uhisf53gmrwzmw3e5jnada4tzqetbibp
-X-HE-Tag: 1765775726-81038
-X-HE-Meta: U2FsdGVkX1/FdNuWwo8r1eu4M17IQohe5UPWimS+DgKkh9PRWtCd67RR4VtN4thLy2hELesVAkbwzbNI7gfkylq204m6M2kRVb2LbmFyXBs5X7pdhljzdEGX/1+Pf0WXuHN3udIFfGqjEPk1DIeap+xCT6j9hk7DDzA7gn14M2Da2ulWrHdhpyWHsLeA+rbNt5CxTC5vpYnyocmiopIa0EqP7Uu881daOHvJEw5cWtvYTgPGh1stVmpGXVPcjzNUGGpJJsY2ibdqcRFXk9X4L9xZ5ypRyLN6hxRxwoPwv8gQWmq6y4PjD9ZBuKH3812LuGNyPJfhXWrhln958wCaqNtxzEvhNj8ngtYtDBD90a+NFx68MmmCqGBltSwElOj3T6EwM+3Ujtxb7xs6kZICnCsTw/xg+Ux3B1lq6kt2R8rIVnXyttecWO17YGLxM7cXpz+MGpoLssN+z+rNy7HLokIyh87BKOzHAIJ9xxx5gT0NrjXCs4AAkKec5xhFMk3kuy2k4d1lzSj0zv4URVAG8DaskcYvIwEofUiKxUs0EvZd6AgITU6ZdEGKrNtRxd7293nFX2CysC1ie143J/niQk43E45R0s9lfKlucdzy4NIv1jRyXs8Cs4q5D1ROCpWprhqZhWCuyFREEJcNAesaiOn0xCuEQ9P18rWbb6LDVC5tjaFTu3MHAHN8QLU0CzO1kbmtroU+LGsDdve1qhG9/1bBaa4msEj3r9iPgff5xHCLZYBX06gULzxw0CEIDT36ppTFNzC+VUbmeHLKzCkxAtJwFtFUhqtyvsX1JOot2OvqXEzOBBemG4/Yub0Y+j1f2LBsz2Hy5Af8E6y6iyRg5DL8SOv9I4LO2mW/uvsHQKOjQ4sRgwpWbbqkM915c/96TzGAnC9pvj5U+olbEanVuDLDW1Dg6rL2DYNNWmwWzaeiWbacJ3Z9/I4AbJ7I4rybGjB7QGHX7Brlrv6a6GJ
- KuQbI/AC
- 3kpyrTuFMt4sSrTAPGLgmE9L90iU2SidXabMRpcRTlpD+Zk6BOkoSBaN5ZPZbNlKkOqRyFb+6E0xRsWQHmgWqebn0kBiEebQFY2v2MH/L9jPSCzDW5zhOxdAyAh9OGwb7kp/xdz/KeS3vNgmopMnwrO7Vjzd73oJ5bnHR/0X1Fp3ilUutOXirde5rRHHVj0OnvwiejYbP7Crvx50=
+X-Rspamd-Queue-Id: 55B03A000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: mnhzrsghbwth9txtefj7hxwn6twf7n6r
+X-HE-Tag: 1765776668-439028
+X-HE-Meta: U2FsdGVkX1/K81zJj91LbkwQ+QjJnxIMuGofHNyTFVplwoEPrUzSaxHos9ssFNmxmBp3+Hsjk7+56fJndoQsQoV+J8IEmjRkq7oD34ADJJeAkrK8+ttOQLfwZn9Kj+okCGibRz7tJLuYku9vmW7/Tny0XKtaHjDOMk3OxxtM2SNJoNDPMgrYb3aR8IgzdSAkuCiRyeF6EYi84xb/o1PxxvX5HfXhv5vyZZondLkGfsFHuBdK1MLaGrtuwWOGanfNOsYxyrIw+agZ/xh+HObYqQ/YnlMe3lW16Z025/u1CAVNX93Dpl2C+eWt+ZoWkXbb10SNONmluINTLfPRPPAbjyLJ4nPm1bD8LIOSqjd5pbDOFd5hJm52s7ngyUi2fTOpmZQ6pkqYrFA/eNAhbaZXyfuNEF5246Fpk3V/XNEFRTp58Ky6qLQ2Zjwdq0RwdS4ZaRSWYpnWoRHEiTcskByYPAogMpC3ETokcuvUsUBBWjoID/31ZPXcXUb8CjafSZPskBiyYof7WlTIjzNi6LnFT1jvTLTnC+ZED7gWrH7zgEZ32u7viJaxXxRmnjbGotudQnwAHDT9GWnnjo+kVr/PUIdH4D+oBPMbu7yh4yXQo/nfcVuNNt2V8b4k4WY0C6C4cSubY9HKYg3fie6bYnF3qjJargWn+9RnusKTj3GZGOPxhtBTT0Gh7EKB3FSBNXF7AdFdpfReGyaXEOPQKf5QKNOvNHDh6UAYLTmz6ZtctV9sSXVCLD0YVoGpRRlHzASkoD22Fg3Enr3qd2yKhWFKP79R3IHbeeYXvqLD1o5uIC70qd47ZHwYc1opzhfesKVQmzZcYvHfIyFU5eAYsRoCyvL4PA0zugjxqFSTN2/gSGSlMVMUw9vdocY2GgQOEAiLsXxHyAYDTC8F0YjhMPOHCQ4ZsUxaGjujgOpwOcf8dIMeSrFXZv+wdNpZAA5yqteMpr4bxNGKCMfY2RouIl4
+ p4b5KE6E
+ RaJFbu3ZL0CEQ0+0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,71 +127,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 05, 2025 at 04:27:52AM -0500, Jeff Layton wrote:
-> On Fri, 2025-12-05 at 16:18 +0900, Byungchul Park wrote:
-> > While compiling Linux kernel with DEPT on, the following error was
-> > observed:
-> >
-> >    ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
-> >    ‘BUILD_BUG_ON’
-> >    1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);        \
-> >         | ^~~~~~~~~~~~
-> >    ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
-> >    'kvfree_rcu_arg_2'
-> >    1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
-> >         |                             ^~~~~~~~~~~~~~~~
-> >    net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
-> >    1856 | kfree_rcu(xprt, rcu);
-> >         | ^~~~~~~~~
-> >     CC net/kcm/kcmproc.o
-> >    make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
-> >
-> > Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
-> > struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
-> > not exceed 4096 but does, due to the debug information added by DEPT.
-> >
-> > Relocate struct rcu_head to the first field of struct rpc_xprt from an
-> > arbitrary location to avoid the issue and meet the assumption.
-> >
-> > Reported-by: Yunseong Kim <ysk@kzalloc.com>
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  include/linux/sunrpc/xprt.h | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
-> > index f46d1fb8f71a..666e42a17a31 100644
-> > --- a/include/linux/sunrpc/xprt.h
-> > +++ b/include/linux/sunrpc/xprt.h
-> > @@ -211,6 +211,14 @@ enum xprt_transports {
-> >
-> >  struct rpc_sysfs_xprt;
-> >  struct rpc_xprt {
-> > +     /*
-> > +      * Place struct rcu_head within the first 4096 bytes of struct
-> > +      * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
-> > +      * kfree_rcu() can simply work assuming that.  See the comment
-> > +      * in kfree_rcu().
-> > +      */
-> > +     struct rcu_head         rcu;
-> > +
-> >       struct kref             kref;           /* Reference count */
-> >       const struct rpc_xprt_ops *ops;         /* transport methods */
-> >       unsigned int            id;             /* transport id */
-> > @@ -317,7 +325,6 @@ struct rpc_xprt {
-> >  #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
-> >       struct dentry           *debugfs;               /* debugfs directory */
-> >  #endif
-> > -     struct rcu_head         rcu;
-> >       const struct xprt_class *xprt_class;
-> >       struct rpc_sysfs_xprt   *xprt_sysfs;
-> >       bool                    main; /*mark if this is the 1st transport */
-> 
-> Seems fine to me.
-> 
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+From: Barry Song <v-songbaohua@oppo.com>
 
-Thank you, Jeff.
+In many cases, the pages passed to vmap() may include high-order
+pages allocated with __GFP_COMP flags. For example, the systemheap
+often allocates pages in descending order: order 8, then 4, then 0.
+Currently, vmap() iterates over every page individually—even pages
+inside a high-order block are handled one by one.
 
-	Byungchul
+This patch detects high-order pages and maps them as a single
+contiguous block whenever possible.
+
+An alternative would be to implement a new API, vmap_sg(), but that
+change seems to be large in scope.
+
+When vmapping a 128MB dma-buf using the systemheap, this patch
+makes system_heap_do_vmap() roughly 17× faster.
+
+W/ patch:
+[   10.404769] system_heap_do_vmap took 2494000 ns
+[   12.525921] system_heap_do_vmap took 2467008 ns
+[   14.517348] system_heap_do_vmap took 2471008 ns
+[   16.593406] system_heap_do_vmap took 2444000 ns
+[   19.501341] system_heap_do_vmap took 2489008 ns
+
+W/o patch:
+[    7.413756] system_heap_do_vmap took 42626000 ns
+[    9.425610] system_heap_do_vmap took 42500992 ns
+[   11.810898] system_heap_do_vmap took 42215008 ns
+[   14.336790] system_heap_do_vmap took 42134992 ns
+[   16.373890] system_heap_do_vmap took 42750000 ns
+
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: John Stultz <jstultz@google.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Tested-by: Tangquan Zheng <zhengtangquan@oppo.com>
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+---
+ * diff with rfc:
+ Many code refinements based on David's suggestions, thanks!
+ Refine comment and changelog according to Uladzislau, thanks!
+ rfc link:
+ https://lore.kernel.org/linux-mm/20251122090343.81243-1-21cnbao@gmail.com/
+
+ mm/vmalloc.c | 45 +++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 6 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 41dd01e8430c..8d577767a9e5 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -642,6 +642,29 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+ 	return err;
+ }
+ 
++static inline int get_vmap_batch_order(struct page **pages,
++		unsigned int stride, unsigned int max_steps, unsigned int idx)
++{
++	int nr_pages = 1;
++
++	/*
++	 * Currently, batching is only supported in vmap_pages_range
++	 * when page_shift == PAGE_SHIFT.
++	 */
++	if (stride != 1)
++		return 0;
++
++	nr_pages = compound_nr(pages[idx]);
++	if (nr_pages == 1)
++		return 0;
++	if (max_steps < nr_pages)
++		return 0;
++
++	if (num_pages_contiguous(&pages[idx], nr_pages) == nr_pages)
++		return compound_order(pages[idx]);
++	return 0;
++}
++
+ /*
+  * vmap_pages_range_noflush is similar to vmap_pages_range, but does not
+  * flush caches.
+@@ -655,23 +678,33 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+ 		pgprot_t prot, struct page **pages, unsigned int page_shift)
+ {
+ 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
++	unsigned int stride;
+ 
+ 	WARN_ON(page_shift < PAGE_SHIFT);
+ 
++	/*
++	 * For vmap(), users may allocate pages from high orders down to
++	 * order 0, while always using PAGE_SHIFT as the page_shift.
++	 * We first check whether the initial page is a compound page. If so,
++	 * there may be an opportunity to batch multiple pages together.
++	 */
+ 	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+-			page_shift == PAGE_SHIFT)
++			(page_shift == PAGE_SHIFT && !PageCompound(pages[0])))
+ 		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+ 
+-	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+-		int err;
++	stride = 1U << (page_shift - PAGE_SHIFT);
++	for (i = 0; i < nr; ) {
++		int err, order;
+ 
+-		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
++		order = get_vmap_batch_order(pages, stride, nr - i, i);
++		err = vmap_range_noflush(addr, addr + (1UL << (page_shift + order)),
+ 					page_to_phys(pages[i]), prot,
+-					page_shift);
++					page_shift + order);
+ 		if (err)
+ 			return err;
+ 
+-		addr += 1UL << page_shift;
++		addr += 1UL  << (page_shift + order);
++		i += 1U << (order + page_shift - PAGE_SHIFT);
+ 	}
+ 
+ 	return 0;
+-- 
+2.39.3 (Apple Git-146)
+
 
