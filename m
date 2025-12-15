@@ -4,140 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0EDD5B86B
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 19:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6527D5B868
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 20:08:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C285E6B0088; Mon, 15 Dec 2025 14:42:48 -0500 (EST)
+	id 21F266B0088; Mon, 15 Dec 2025 15:08:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7736B0089; Mon, 15 Dec 2025 14:42:48 -0500 (EST)
+	id 1CFBA6B0089; Mon, 15 Dec 2025 15:08:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAAAC6B008A; Mon, 15 Dec 2025 14:42:48 -0500 (EST)
+	id 04E496B008A; Mon, 15 Dec 2025 15:08:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FDB56B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 14:42:48 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33D9D13A29A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:42:48 +0000 (UTC)
-X-FDA: 84222728016.14.4110A66
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2D18940016
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:42:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZQR+XNZy;
-	spf=pass (imf12.hostedemail.com: domain of yuanchu@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=yuanchu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765827766; a=rsa-sha256;
-	cv=pass;
-	b=nMjZdNpZIn6h/HEhJxed3ZxmqVDmLH5LXfBJvqpw1QoECn7fYLWao56Yk4nYyFsCKZ65qE
-	h0tF130SfY92K855JnMOSieRHOI0Lc6BGPLuXlHs/cg8ERcCUbGjrOT7KbZpioE3iV4vrz
-	+Ibki7fz0V8BXnS1bldB7j34rKCwl6I=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZQR+XNZy;
-	spf=pass (imf12.hostedemail.com: domain of yuanchu@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=yuanchu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765827766;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1236B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 15:08:47 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 482EC437FB
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:08:47 +0000 (UTC)
+X-FDA: 84222793494.25.E77CD81
+Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EA4DE1A001A
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:08:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bG7Ic+bn;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.193 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765829325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oJK7DebW2Fy4H1zTUhEfN0T6cHVTAmggPb7ftVfboPY=;
-	b=2yX6vqN1QYrI3Mi5XzTwdikzi6MCxFlUqHa4VKpMF0PdDw2s92HSwwpk0ttziT+0+6QsKc
-	H2adNf22TfEfTdnJfrAzdhCFpRqyl2fUwyYiy8SPDdTuha5a8jxuxqMl1PTxY8o2BEp3pG
-	9PyiNLun1V97nyNAGw/O1TPM2KNidrk=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29e7ec26e3dso735ad.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:42:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765827765; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Q/g7vGN3NGVoB0b7KUfZBND3W65006mRdWhLs+dMF6nR+KVPTUQof5Qmi2awxngTFb
-         +vDenDepg6mo6RbXRHW982uCj1AKaxo7N4kgEO6IEbKML+rQp8F3e+qSl/+3prtn4t/n
-         nXNeMV8oY+k1H4gFdG7fDpOMbPA1X28NcuOp1qbQ4s6eKXZSg95PSH9MAkYCLwU5Hgds
-         PjqEgWPZ7UqQp8VPb/w1Jx6kiBHjlQnao7sz86MmoGJUkhNIsGAm0KHGcYaEG2DSNtpG
-         RUgyT3qvefac4RI7wMGSym51KCDIJ9Eyd1Ge4mlingkLdt4ercN5FV2SLWnshZb8pxcV
-         +C+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oJK7DebW2Fy4H1zTUhEfN0T6cHVTAmggPb7ftVfboPY=;
-        fh=xBBxv4mc5jdsdSAFGpjtL2l2lbSRDatBObqFauf6NEQ=;
-        b=ZOOAH9oCq3HLQD9Q7QsGzNtKtJpXP7ox/KfqGwdlM5DPrNzAXEDVsMmr9Ex0gwdtwg
-         SsyPP7DlcEMlkmXDfKqG/1ke3nuEsNwyory2V1OadTyLQsBBtHq8LKl6IOOsTnXwqSlA
-         hbVspzv+QHha5EpayJ5r7vvx9WUUJbD7mwNTDxS5Z8mb/DXu1CHivcLZO8BoucttuanQ
-         1CCb7z3KK+2D1i4hBquhKwle6D7XSHIYpKDzr9YyLqJIfGd6QhSVAemhWpt5Eh3ean1+
-         Pf0ctgkB6hFvoUuKxx6kfdpJoLMGjOdR9JvYHR4uEIcBgY/kU2TVXAlUq8zZVNfsqyJ9
-         sOpg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=j1Q5OX+W6Htag90JFfcl0l5Z4owAC0o2hCh4vdMYrpg=;
+	b=2zl9FezmD+BFSG9aKMfwh+82Tr+hu4ARRKEJAaW1L0Eu7n14bZTkmh6YKxjzABRVWD45uz
+	L/+9YJM9Mh7JJPhY5s8apOsZEOknEoeQjX9yjbTFoiaPiq47dLl5LW56MCYO9pX2/8c0b1
+	RsTLt1eO+DajhpZosaKCsGDsFYDpywA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bG7Ic+bn;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.193 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765829325; a=rsa-sha256;
+	cv=none;
+	b=IKfTZF1yKhE+w4pIwyxIl/kWZPfmX2oRqRJpEs2qcHHElOWmes+rBS9ra5GdwPPCgZGZDT
+	NCmRI9bpzPixpPfRmjfAh/tWhDURBYXALkcOYVOIQJF81uaZerNZy5cV11sY514dCPVn7u
+	FxnhWigERlBDm1Ws2YqSmS4JzSiLRJA=
+Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-8bb6a27d390so185435185a.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765827765; x=1766432565; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oJK7DebW2Fy4H1zTUhEfN0T6cHVTAmggPb7ftVfboPY=;
-        b=ZQR+XNZyOkUUuNB53NVthj02fznG0mV9YfKZDqsGlbZ1zSw4DaTDJdsurclTzLPrGf
-         mYX3btetqQEC/R82gVTeg0o9C6e2khFA5u04hd6xNOzTZHPy2lIDKMlbDukZo14EVPRS
-         +Yb3udUXIm0/thJ0tU171Z7w+yrWP7wkkVuVM+/6s7HDuYsCtUVYhZADUx9RzdjNACJd
-         2m5x6tq48BI8mt+YbMrXRTBKx6lpdPgy2CJrVOxGyO3pSHBIyeO3RAFHx0M5XFL5+eEg
-         FCg0aOLfN9frdxUyIjFRJghtZVY2AebyvoNlZDm/N6MDxIjhFjASxYFceGpsxQHJrqlC
-         Kanw==
+        d=cmpxchg.org; s=google; t=1765829324; x=1766434124; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j1Q5OX+W6Htag90JFfcl0l5Z4owAC0o2hCh4vdMYrpg=;
+        b=bG7Ic+bn4G/ucI28oBMITaIJzTlNqsLOWLP3H5vACFWvrjz5/poGNdGbf8FZMrpsiY
+         Ty+6wderARmbAxP9KwhJoMk5K5GKMn5Fxkg2w8h4rc9rcIDuHxl0VqtBJBuSvHNzc1zb
+         JOkkRg4Y9eWcp48ZeXETGH7l2KxqHqKFpReBrIw4kHxGfc1+2LlksKhKQPJCkjaVuZ0k
+         74qkP9TDAVWb96N0/Eko8yHXziIpdWZq46JRRp+C/LOmnzIIlvf6uhPYpZm0XBHGEgUR
+         RQbkqBLJQGGZgcO9n7TLkGyuJsXTI1VkH3MJnnpQJqrpiMOV7GfxlHfOu0egkOt24/Vv
+         XJvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765827765; x=1766432565;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oJK7DebW2Fy4H1zTUhEfN0T6cHVTAmggPb7ftVfboPY=;
-        b=EHgyLzhtOsCXgnZW7LjLfkYr/puILoUc7QKCs/vEaHZPPSdodStRpfZbEAvzyfcLsK
-         PKx1Hiwe/AY2ae29GW8XRVTDUkRM54/Ti6VC37SFroKmNBLbKoHsYLPqZ0MRe7em0FWi
-         ZWrP+utU9HzT37UeGhz1895xzH/Zt1Mvs7O6Z4ECF4W76q9JQKo5eQR4s5Znp1oMQ/HH
-         DZoRdr8dsK6nJEhp1XpTUjg7DrHE7klp0UqaCU4aT58dfJlkxxphEYf9ihMoFmva2rBs
-         h+vzd4/+89fEM+Bxr9M9225Ger70gW+Mn1hEA5JZ1koGZMPebiCI/WYpi7/DuOiws1/k
-         VYxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrg869LQ05yMi86kG1e1lZq+D0k4pE6/OQPl6eGpj8NRjyOf8K3QOtQRXv8BUXzAJhpXnd4e870w==@kvack.org
-X-Gm-Message-State: AOJu0YwbVh4NHBUTw7cfNPPIqdNG/+UZlZb3MZCpGNjoh6uJ59B2ZwJC
-	6AJ2rSXdLF1crC5rU574nJUPbXiMMVhdDKIBjcYcp9GacVchQkxnYc8ZwPWntvfuIt2NUKV4RCI
-	3Txq4xTh1Q2xgDdrRtiZFEg6f+PyvVozbfwz/+F7C
-X-Gm-Gg: AY/fxX7MRmix2RUy3VspF2nSf5r6IQnA2uuCjUrCr1oU7zASPHcxBR6EKtL/5mJKvxl
-	hRR9sYzNtFoKNOUNxjVSJdnSoZbrOk+mQrj5mbhDiYVq3LXbLSExoNgFodnmunh+SFBxl4GZM+J
-	i3n4m50gpcPbDcwJMFqd7ICvFw/muvcg0ZbZU1vCXxbDAY44swHiaijFUXq5TrClfjvhc5A2Obq
-	Pa4vrrCOKfnQoHpYRKLgQfp42eLZd1azPmR2R2/3JIdskAJc75ccgsjJXu/vWIx4YbQHeO279zM
-	bcC8ErdIWgapifsLgElFRNO45467oH0a/Rs=
-X-Google-Smtp-Source: AGHT+IG5BDHyj3f8nOxxUUb1eYwpJ7BC0QN/ix6RLqhgk9p3BA3zbnr7NgILF0MS6JoNpUcovSsuDOsA2VYHPWdhwrA=
-X-Received: by 2002:a05:7022:7f15:b0:11b:3bc:9ea0 with SMTP id
- a92af1059eb24-120544b2ebdmr49473c88.6.1765827764286; Mon, 15 Dec 2025
- 11:42:44 -0800 (PST)
-MIME-Version: 1.0
+        d=1e100.net; s=20230601; t=1765829324; x=1766434124;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j1Q5OX+W6Htag90JFfcl0l5Z4owAC0o2hCh4vdMYrpg=;
+        b=fiZ7ezbuGXoJD7FGTuvYQMSI7lyZkqv605P2qzJWJuxW+fGfDQ1+o1DeA7FAUIcqRe
+         /6cSqgEvi466q5FjiVpssmN/aRTefab1oPk5XU90VjdPJcZr9iXr/OBfzNgD3uW89zVS
+         qq7OYfORYYkLjw0U2u5niJ65bHzBsoaRuiFFakYdzDT/2md05rC+2BZacLhIAlsP7i/E
+         a8lHVikDfDx8SwMlmpKP7z1KJ50AEIMNbQCceBWlW3irIyiHGbVR8RswOdpBchzkfQvP
+         EzF7UCVt1AzW9NxPxTxBhJ+pe04uvTpeaFqoSXELtkDdvhCkkkwgHWIRoti5tn0Eenl5
+         088w==
+X-Forwarded-Encrypted: i=1; AJvYcCVZgOGs/OmABFX4nBwC73bM8AbdpnnCS8k0kPKws0VefCnYs1/O88DpaiArL10ECErMeL1LnZHXQw==@kvack.org
+X-Gm-Message-State: AOJu0YznO/Sjeuvk9Kt8sG0R4xpp1z2qW50LAmK0vdHRCGNPJyD7MEEQ
+	yHjiPIRwrawzwKPO6kq44qqO9b5GUziMjp7l10UMzhUmn4a8Lz3mr378dHQgEALCWpo=
+X-Gm-Gg: AY/fxX4AdRZugZe4B53nCh2xQHx+kb1n2yqBbazRvwqcRPmjAoWPrv514Kuvgmm+XyJ
+	uOHjXcZbfbC3MeTUKYHPGFnpo78nIvgxdhMQrDX2FtFWj60gQSQA00WPvTKPU+NG2qcuh7BJeh1
+	obDZKFttxQ+ordCRs9pwzd9dFL7i6pequB1qHLG4KfOR2OElx580XgUcoz4yvigpJxG6o5Yn8Fp
+	TW5DIH/BjeZSQOoSKhLQ5vNHwLg2wrcA3tT0m+4LqtAAOp8taLZdzTySmtF6GmTx7pfXSQkWxrC
+	NKO7zWfS++k4SnmIT0vIrGsC9BBVcPKvwJZOmja0YqCkY5ghAV3C3s8ab0EYciP/T+/fOgKg9hl
+	V0ml158qPR6zrgWB4qWJBGV9fE4X9e6yJ5/UgfBvCcBc46NCCtEkXBMkqHiYzD6Pp1yynkxikev
+	MOKXZV2w/rug==
+X-Google-Smtp-Source: AGHT+IHLS8AVVXbPJFox2LYFYqLRbEz4HKWX2B13O9xb22MvVjzInFwvUlaxZM8aq7qfyLrBdugGSg==
+X-Received: by 2002:a05:620a:6919:b0:8b2:e88e:a518 with SMTP id af79cd13be357-8bb3a384dafmr1792408285a.68.1765829323458;
+        Mon, 15 Dec 2025 12:08:43 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8be303e7e51sm25463885a.7.2025.12.15.12.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 12:08:42 -0800 (PST)
+Date: Mon, 15 Dec 2025 15:08:38 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: retiring laptop_mode? was Re: [PATCH] mm: vmscan: always allow
+ writeback during memcg reclaim
+Message-ID: <20251215200838.GC905277@cmpxchg.org>
 References: <20251213083639.364539-1-kartikey406@gmail.com>
- <20251215041200.GB905277@cmpxchg.org> <CADhLXY6tueNOZKqjWEKU697_pTGuLyiTdm48CHRH=W6udmQVZg@mail.gmail.com>
-In-Reply-To: <CADhLXY6tueNOZKqjWEKU697_pTGuLyiTdm48CHRH=W6udmQVZg@mail.gmail.com>
-From: Yuanchu Xie <yuanchu@google.com>
-Date: Mon, 15 Dec 2025 13:42:27 -0600
-X-Gm-Features: AQt7F2oJG_PXhnv2L1oncG6hSJByNGD4tm197lwEoGidCrs03HCRsY34HgGkKuA
-Message-ID: <CAJj2-QHV09Rh+s2AgDtC815YUJUnYgTs0EE9YbDvXdPM9DsKug@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: always allow writeback during memcg reclaim
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	weixugc@google.com, david@kernel.org, mhocko@kernel.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, yuzhao@google.com, heftig@archlinux.org, 
-	oleksandr@natalenko.name, bgeffon@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20251215041200.GB905277@cmpxchg.org>
+ <aT-xv1BNYabnZB_n@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aT-xv1BNYabnZB_n@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D18940016
-X-Rspamd-Server: rspam04
-X-Stat-Signature: fpr47cssfwsf5kratbcge7pbisgcg9dd
-X-HE-Tag: 1765827765-481368
-X-HE-Meta: U2FsdGVkX1+M0z2PkpS7KJLU7o5N7gyje2hbphQExgNsp5hVeisDYBSs88bndrZVY8u8fJvHm/pKQYCglDvi+IGfnSU83JHhv94buRvL6gX3Y0SK+sWjPxBOVjj1brQWO4u5HadEJ0ILrYrc272dKGDPFX+cH1I8FuUFcjw2Sf9By41k/Y+CZQOyzQptGYuQnHH9dSO5DT8td86CUSwEtySbMzsasnTSKazDaDImrbKQ7RLfbS4Qzx0XEw9IFpdXFoKEawt0dR08KV6QqKgjrP4IIDVZeXKL1FWhc//5SF4Ma4R/FHmvHoyoiKsq4CftnU/4vAOlkYPZWo600N42NCQ/GMsl3CknLZLJWUMkiYz2+5fwlvZ+qgghHSScQpkh2yW9tbRVOTzHXVAsWHH6DQAygzW1MzhOfJHJIXHKxjNmDlSGdds9C9oQd4gB9A/09O/EdM4Yni3JCZrmDDfimSmEMmsAQq48brSiB4SG3VvEs+ptH70D20Odu6FpD/HVEtwCWrvctQCh7CVLtFnmQsfRApsXkP3HU2bwMHy0g6GMKaWyX7w4yHCCW75/jHMGoYLnNoyeixBu5S+BX67qV3L6glsCfF5/E04uhxShH+N3JseQa+LlX9bTPQf0sNluTsv9E8HwqzW/6zXLBDkZ2idiIoY+2WAYjCe2RJXWJUshrTLgIuNv2YY10u56ZgqJkhUt+rbFirNxXtJkoeRLosCoEPlvJvIwo9hcpsr2LAmAheU5H07D2uN8IM7deGmNNwArRlOt7J00CQg2lnMVbM8RqzCFUql1ib4X777iBrt8WKaNNTH/B88VWDP/0sWmErUDpC9nbgmMPxkeNP/RA04MGHsaq7m8yRL+SEV6zRpb9glVErsvzPc7vLufLEczwl1wE1XyAZhc8o7uYiiJx4kgWcb22kozd+uk9z++yUoKjNiayfmK1jlAwbY7qca+WTxlD+hy8EDoNDGeXLh
- ZF3lrzmP
- pZtkJIrc5kw5FZYrBkUQmhzvrujf7p4Ge4yTYzMK+GWTREwKcWNfEjLdlEH92OQ1R4LkRjkYJb+phAPPFKYFXbf/ICxOKcTGrAMQoOWA5MLZDhdsZ9coZRo7Rk4JK7FbbrxeGy8BQSlD+NbOzPq1xdLOEPHAl8IvYEqmasTb6jDlkNc2caySP1h+NlF1efCFM3H6KvwbgGhzW0/6S9rP7fQjl/QW8C5hXxT+9FaEvUJH76vj02mpcarXkPyhvcf+IBOigNLgFpo/e7JAjpPvEV1jG//K4SN96LNqTxYtgUAyLl6fuejpz51A4o+Qd6uOmHOsotzubqGWJdLbYS5ED/6OY5EkQRHcgpv+ACBBf6/iK1/5xPzFyi89ycOdD3xaCC1yST5T+TmelCQaLZdF9tt2iage5HkhFtfE615qOcs30tt5bfHUXYJ/v3U+aw0Naksr64VCYSPvU4ji+6rMu4z9y8w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EA4DE1A001A
+X-Stat-Signature: us4pbwq3cuzkd6mfta5dehdqfqwriais
+X-HE-Tag: 1765829324-680457
+X-HE-Meta: U2FsdGVkX19upba22d1yc8tDhL9/PVw8ogjItfBQRh+SKLLVfoSBD/Qb4DyON4/MB17b9hPxhHInu8NUrb8pMfk2u7LKwetZEnEb8VvI2N5+Y9HL1L7jCdnAAVKtMrFRf2VvjfItdTtmH+NX4vBvcUSmrfNGatGttDftPw0NopRMXc6sMWqm7aTF5ac/4SMSgSRHUFQ5mMH8Z/MoKE+wm8vtm2V3ka52W0upW40J2EHzRTZxDq79JnUDrNhfz4GnJGBLgY51C41bbUKR1tufiYxMr7z5Vlq+nSIEQqWyElK9U5AqGodU+nIHnc1Cdh+3rGoIVWb1WXKLFFwGONPYGuqe/TCFiEt/oOgDANQLKgo6aWp1IfRhvP6nXJ4sC8JYLMN1QnawEzDiZJGEg6X3Rv0pe3CLvZ79i6l0NGYv+WIblfu8WtCQUisQUTEVsbEbPo0cZmxPV+g8ho6hV5zLJJObVulu3O3fsR/1FWUn0cxUyMBNOfETeMmPSK6XidyXK230cZPd/0PY1x7esBM83Rb+tZBKbhLjj9EWCeNabtoxLpm/dESm81Okg+NZHdy0o7fH7RkKkaJ20gtxDGOfJhPkvYKMnQE2qTpKyUNLqz+bqrIvmD87OiBclfQoRIfOyH7iOjG5hCy24yKM97Hu8EMsOp85y4ojF8qpyXWhM3oR1t5EV7b/gmwrQjc+c9yg3oD+DOJejBXffYQOG2YxqmXHxJysCuGobUzALh/Yirl8j/ybITYRLauevhLAHbQhhStKD8yFz6IiIUxQikO+c7+HSSrd3udF/Ko+UodTI9DFbONpywhPit3zresdy3SIUeRWTLEu4GdOyEwaW+Kh1ogtD58GiRSmK3u0UrsxId2rZLCnNutjbSvuQIkjZo8Tr2EXbL1phbuiVzu0f/qVvo4dtsF/mu+5KQbWnDw9sYzR0qgvB1u7f7NwTETyuDodUd8XXjSkU+SBeihUfxz
+ d9ob/UMC
+ LtpOuD0GG/MSXpeAlQ0OKKQwtOejSTl9kztZ1GR0bv1+K5yvMINkzlPJcBBIU7n3l8L/SjKd5MueAazYNUpM0R6ivyOQryG6ZlDwjTvPsJDbj41ge0+b0fxzqWdEClLkHij9xhFw/Npxq2ACC5qKnDdX7ntciWMRyYOc9FC2Iav+DRqmzwXeWQuS9bIGip+wBNwgwHX8hztkX3yXexE/iJn5hTFlY1Dfu1aFwVCb/CyUjvmrEzdIGIF2ty+/zDfShskQ88UjkThUqAVqvIPlOBFKB1c93HpoHqvVAaPiO8aa3tfOoE3R5O3dOEne/d2LvxHaJypZL0IFd6xI26MB7fwSF5U+wGBT46N1YMTYZEftbzTUdHBD31VWf+KON6R4d/rPx+9MRVw/jxQS9bxzX8cp5cfwhhow55SGRisivogw/BSrD2WTSmGF9MR77fsI6OwjjtklV/opPv7x5zGBkPQoBOTkDToLwJ6D6vUjLiqv/fSnlts7vLO5v6oJcCbo3kVjdQo3u7QBLiUXud5eHiUguggB1Ec9xXDnVMVX0VmB9OrYZYWv3heHmBEIJZ1owdrDGMqS4reypkZQbc/j1fbBObK6GEdlBGzWymY6bxKrQVjpeJjaPTE6SBoDztLG8jMVZEewp8OC/cN85uGUCqV1F0rkQlquCwC46Oih4z/CnUu85/OdOn4q3XtP/tc8a+maoy9ifvj0XPQJ+II+za7/K+bJkC63WzdV4s5vPY2iF/YrGEZFKpTfrdQryw8rzYXhBMnIUwUYj2/LUc7KEuDYB4rdRPlYcwcO6xWTJdTcYp9zQOAtNYR9oBrVXCO4nbUWR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,38 +123,1218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 14, 2025 at 10:52=E2=80=AFPM Deepanshu Kartikey
-<kartikey406@gmail.com> wrote:
->
-> On Mon, Dec 15, 2025 at 9:42=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg> wrote:
->
-> > > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> >
-> > That seems unrelated?
->
-> Sorry for the wrong fixes. Correct  Fixes: ee814fe23daf ("mm: vmscan:
-> clean up struct scan_control")
->
-> I'll wait for input from someone with MGLRU context on the broader discus=
-sion.
->
-This warning came from commit e9d4e1ee7880 ("mm: multi-gen LRU:
-clarify scan_control flags") [1].
+On Sun, Dec 14, 2025 at 10:59:11PM -0800, Christoph Hellwig wrote:
+> On Sun, Dec 14, 2025 at 11:12:00PM -0500, Johannes Weiner wrote:
+> > That reasoning doesn't make sense to me. Reclaim is always in response
+> > to an allocation need. The laptop_mode idea applies to cgroup reclaim
+> > as much as any other reclaim.
+> > 
+> > Now obviously all of this is pretty dated. Reclaim doesn't do
+> > filesystem writes anymore, and I'm not sure there are a whole lot of
+> > laptops with rotational drives left, either. Also I doubt anybody is
+> > still using zone_reclaim_mode (which is where the may_unmap is from).
+> 
+> Yeah.  I wonder if we should retire laptop_mode.  It was a cute hack
+> back then, but it has it's ugly fingers in way to many places and
+> should be mostly obsolete by how writeback works these days.
 
-The original rationale:
-> 4. sc->may_writepage and sc->may_unmap, which indicates opportunistic
->   reclaim, are rejected, since unmapped clean folios are already
->   prioritized. Scanning for more of them is likely futile and can
->   cause high reclaim latency when there is a large number of memcgs.
+Yes, that makes sense to me. How about the below?
 
-As far as I can tell this was a sanity check to ensure
-`lru_gen_shrink_lruvec` avoids extra work for minimal gain. Perhaps
-this shouldn't be a warning? Always setting may_writepage in this case
-would free more folios. I'm not against removing the warning either.
+It doesn't actually get rid of the reclaim toggles - I added comments
+for the other usecases. But it's a nice diffstat nonetheless.
 
-@Wei Xu @Axel Rasmussen  Any opinions?
+Debated whether to add some sort of deprecation sysctl handler, but at
+least systemd-sysctl just prints a warning and still applies other
+settings from the same config file.
 
-[1] https://lore.kernel.org/all/20221222041905.2431096-8-yuzhao@google.com/=
-T/#u
+---
+
+From 868f67e9d0d4465a6c22d8a147084944e7569c8d Mon Sep 17 00:00:00 2001
+From: Johannes Weiner <hannes@cmpxchg.org>
+Date: Mon, 15 Dec 2025 12:57:53 -0500
+Subject: [PATCH] mm/block/fs: remove laptop_mode
+
+Laptop mode was introduced to save battery, by delaying and
+consolidating writes and maximize the time rotating hard drives
+wouldn't have to spin. Needless to say, this is a scenario of the
+(in)glorious past.
+
+The footprint of the feature is small, but nevertheless it's a
+complicating factor in mm, block, filesystems. Developers don't think
+about it, and the decision-making in reclaim looks dubious. It likely
+hasn't been tested in years while the surrounding code has evolved.
+
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ .../admin-guide/laptops/laptop-mode.rst       | 770 ------------------
+ Documentation/admin-guide/sysctl/vm.rst       |   8 -
+ block/blk-mq.c                                |   3 -
+ fs/ext4/inode.c                               |   3 +-
+ fs/sync.c                                     |   2 -
+ fs/xfs/xfs_super.c                            |   9 -
+ include/linux/backing-dev-defs.h              |   3 -
+ include/linux/writeback.h                     |   4 -
+ include/trace/events/writeback.h              |   1 -
+ include/uapi/linux/sysctl.h                   |   2 +-
+ mm/backing-dev.c                              |   3 -
+ mm/page-writeback.c                           |  66 +-
+ mm/vmscan.c                                   |  30 +-
+ 13 files changed, 11 insertions(+), 893 deletions(-)
+ delete mode 100644 Documentation/admin-guide/laptops/laptop-mode.rst
+
+diff --git a/Documentation/admin-guide/laptops/laptop-mode.rst b/Documentation/admin-guide/laptops/laptop-mode.rst
+deleted file mode 100644
+index 66eb9cd918b5..000000000000
+--- a/Documentation/admin-guide/laptops/laptop-mode.rst
++++ /dev/null
+@@ -1,770 +0,0 @@
+-===============================================
+-How to conserve battery power using laptop-mode
+-===============================================
+-
+-Document Author: Bart Samwel (bart@samwel.tk)
+-
+-Date created: January 2, 2004
+-
+-Last modified: December 06, 2004
+-
+-Introduction
+-------------
+-
+-Laptop mode is used to minimize the time that the hard disk needs to be spun up,
+-to conserve battery power on laptops. It has been reported to cause significant
+-power savings.
+-
+-.. Contents
+-
+-   * Introduction
+-   * Installation
+-   * Caveats
+-   * The Details
+-   * Tips & Tricks
+-   * Control script
+-   * ACPI integration
+-   * Monitoring tool
+-
+-
+-Installation
+-------------
+-
+-To use laptop mode, you don't need to set any kernel configuration options
+-or anything. Simply install all the files included in this document, and
+-laptop mode will automatically be started when you're on battery. For
+-your convenience, a tarball containing an installer can be downloaded at:
+-
+-	http://www.samwel.tk/laptop_mode/laptop_mode/
+-
+-To configure laptop mode, you need to edit the configuration file, which is
+-located in /etc/default/laptop-mode on Debian-based systems, or in
+-/etc/sysconfig/laptop-mode on other systems.
+-
+-Unfortunately, automatic enabling of laptop mode does not work for
+-laptops that don't have ACPI. On those laptops, you need to start laptop
+-mode manually. To start laptop mode, run "laptop_mode start", and to
+-stop it, run "laptop_mode stop". (Note: The laptop mode tools package now
+-has experimental support for APM, you might want to try that first.)
+-
+-
+-Caveats
+--------
+-
+-* The downside of laptop mode is that you have a chance of losing up to 10
+-  minutes of work. If you cannot afford this, don't use it! The supplied ACPI
+-  scripts automatically turn off laptop mode when the battery almost runs out,
+-  so that you won't lose any data at the end of your battery life.
+-
+-* Most desktop hard drives have a very limited lifetime measured in spindown
+-  cycles, typically about 50.000 times (it's usually listed on the spec sheet).
+-  Check your drive's rating, and don't wear down your drive's lifetime if you
+-  don't need to.
+-
+-* If you mount some of your ext3 filesystems with the -n option, then
+-  the control script will not be able to remount them correctly. You must set
+-  DO_REMOUNTS=0 in the control script, otherwise it will remount them with the
+-  wrong options -- or it will fail because it cannot write to /etc/mtab.
+-
+-* If you have your filesystems listed as type "auto" in fstab, like I did, then
+-  the control script will not recognize them as filesystems that need remounting.
+-  You must list the filesystems with their true type instead.
+-
+-* It has been reported that some versions of the mutt mail client use file access
+-  times to determine whether a folder contains new mail. If you use mutt and
+-  experience this, you must disable the noatime remounting by setting the option
+-  DO_REMOUNT_NOATIME to 0 in the configuration file.
+-
+-
+-The Details
+------------
+-
+-Laptop mode is controlled by the knob /proc/sys/vm/laptop_mode. This knob is
+-present for all kernels that have the laptop mode patch, regardless of any
+-configuration options. When the knob is set, any physical disk I/O (that might
+-have caused the hard disk to spin up) causes Linux to flush all dirty blocks. The
+-result of this is that after a disk has spun down, it will not be spun up
+-anymore to write dirty blocks, because those blocks had already been written
+-immediately after the most recent read operation. The value of the laptop_mode
+-knob determines the time between the occurrence of disk I/O and when the flush
+-is triggered. A sensible value for the knob is 5 seconds. Setting the knob to
+-0 disables laptop mode.
+-
+-To increase the effectiveness of the laptop_mode strategy, the laptop_mode
+-control script increases dirty_expire_centisecs and dirty_writeback_centisecs in
+-/proc/sys/vm to about 10 minutes (by default), which means that pages that are
+-dirtied are not forced to be written to disk as often. The control script also
+-changes the dirty background ratio, so that background writeback of dirty pages
+-is not done anymore. Combined with a higher commit value (also 10 minutes) for
+-ext3 filesystem (also done automatically by the control script),
+-this results in concentration of disk activity in a small time interval which
+-occurs only once every 10 minutes, or whenever the disk is forced to spin up by
+-a cache miss. The disk can then be spun down in the periods of inactivity.
+-
+-
+-Configuration
+--------------
+-
+-The laptop mode configuration file is located in /etc/default/laptop-mode on
+-Debian-based systems, or in /etc/sysconfig/laptop-mode on other systems. It
+-contains the following options:
+-
+-MAX_AGE:
+-
+-Maximum time, in seconds, of hard drive spindown time that you are
+-comfortable with. Worst case, it's possible that you could lose this
+-amount of work if your battery fails while you're in laptop mode.
+-
+-MINIMUM_BATTERY_MINUTES:
+-
+-Automatically disable laptop mode if the remaining number of minutes of
+-battery power is less than this value. Default is 10 minutes.
+-
+-AC_HD/BATT_HD:
+-
+-The idle timeout that should be set on your hard drive when laptop mode
+-is active (BATT_HD) and when it is not active (AC_HD). The defaults are
+-20 seconds (value 4) for BATT_HD  and 2 hours (value 244) for AC_HD. The
+-possible values are those listed in the manual page for "hdparm" for the
+-"-S" option.
+-
+-HD:
+-
+-The devices for which the spindown timeout should be adjusted by laptop mode.
+-Default is /dev/hda. If you specify multiple devices, separate them by a space.
+-
+-READAHEAD:
+-
+-Disk readahead, in 512-byte sectors, while laptop mode is active. A large
+-readahead can prevent disk accesses for things like executable pages (which are
+-loaded on demand while the application executes) and sequentially accessed data
+-(MP3s).
+-
+-DO_REMOUNTS:
+-
+-The control script automatically remounts any mounted journaled filesystems
+-with appropriate commit interval options. When this option is set to 0, this
+-feature is disabled.
+-
+-DO_REMOUNT_NOATIME:
+-
+-When remounting, should the filesystems be remounted with the noatime option?
+-Normally, this is set to "1" (enabled), but there may be programs that require
+-access time recording.
+-
+-DIRTY_RATIO:
+-
+-The percentage of memory that is allowed to contain "dirty" or unsaved data
+-before a writeback is forced, while laptop mode is active. Corresponds to
+-the /proc/sys/vm/dirty_ratio sysctl.
+-
+-DIRTY_BACKGROUND_RATIO:
+-
+-The percentage of memory that is allowed to contain "dirty" or unsaved data
+-after a forced writeback is done due to an exceeding of DIRTY_RATIO. Set
+-this nice and low. This corresponds to the /proc/sys/vm/dirty_background_ratio
+-sysctl.
+-
+-Note that the behaviour of dirty_background_ratio is quite different
+-when laptop mode is active and when it isn't. When laptop mode is inactive,
+-dirty_background_ratio is the threshold percentage at which background writeouts
+-start taking place. When laptop mode is active, however, background writeouts
+-are disabled, and the dirty_background_ratio only determines how much writeback
+-is done when dirty_ratio is reached.
+-
+-DO_CPU:
+-
+-Enable CPU frequency scaling when in laptop mode. (Requires CPUFreq to be setup.
+-See Documentation/admin-guide/pm/cpufreq.rst for more info. Disabled by default.)
+-
+-CPU_MAXFREQ:
+-
+-When on battery, what is the maximum CPU speed that the system should use? Legal
+-values are "slowest" for the slowest speed that your CPU is able to operate at,
+-or a value listed in /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies.
+-
+-
+-Tips & Tricks
+--------------
+-
+-* Bartek Kania reports getting up to 50 minutes of extra battery life (on top
+-  of his regular 3 to 3.5 hours) using a spindown time of 5 seconds (BATT_HD=1).
+-
+-* You can spin down the disk while playing MP3, by setting disk readahead
+-  to 8MB (READAHEAD=16384). Effectively, the disk will read a complete MP3 at
+-  once, and will then spin down while the MP3 is playing. (Thanks to Bartek
+-  Kania.)
+-
+-* Drew Scott Daniels observed: "I don't know why, but when I decrease the number
+-  of colours that my display uses it consumes less battery power. I've seen
+-  this on powerbooks too. I hope that this is a piece of information that
+-  might be useful to the Laptop Mode patch or its users."
+-
+-* In syslog.conf, you can prefix entries with a dash `-` to omit syncing the
+-  file after every logging. When you're using laptop-mode and your disk doesn't
+-  spin down, this is a likely culprit.
+-
+-* Richard Atterer observed that laptop mode does not work well with noflushd
+-  (http://noflushd.sourceforge.net/), it seems that noflushd prevents laptop-mode
+-  from doing its thing.
+-
+-* If you're worried about your data, you might want to consider using a USB
+-  memory stick or something like that as a "working area". (Be aware though
+-  that flash memory can only handle a limited number of writes, and overuse
+-  may wear out your memory stick pretty quickly. Do _not_ use journalling
+-  filesystems on flash memory sticks.)
+-
+-
+-Configuration file for control and ACPI battery scripts
+--------------------------------------------------------
+-
+-This allows the tunables to be changed for the scripts via an external
+-configuration file
+-
+-It should be installed as /etc/default/laptop-mode on Debian, and as
+-/etc/sysconfig/laptop-mode on Red Hat, SUSE, Mandrake, and other work-alikes.
+-
+-Config file::
+-
+-  # Maximum time, in seconds, of hard drive spindown time that you are
+-  # comfortable with. Worst case, it's possible that you could lose this
+-  # amount of work if your battery fails you while in laptop mode.
+-  #MAX_AGE=600
+-
+-  # Automatically disable laptop mode when the number of minutes of battery
+-  # that you have left goes below this threshold.
+-  MINIMUM_BATTERY_MINUTES=10
+-
+-  # Read-ahead, in 512-byte sectors. You can spin down the disk while playing MP3/OGG
+-  # by setting the disk readahead to 8MB (READAHEAD=16384). Effectively, the disk
+-  # will read a complete MP3 at once, and will then spin down while the MP3/OGG is
+-  # playing.
+-  #READAHEAD=4096
+-
+-  # Shall we remount journaled fs. with appropriate commit interval? (1=yes)
+-  #DO_REMOUNTS=1
+-
+-  # And shall we add the "noatime" option to that as well? (1=yes)
+-  #DO_REMOUNT_NOATIME=1
+-
+-  # Dirty synchronous ratio.  At this percentage of dirty pages the process
+-  # which
+-  # calls write() does its own writeback
+-  #DIRTY_RATIO=40
+-
+-  #
+-  # Allowed dirty background ratio, in percent.  Once DIRTY_RATIO has been
+-  # exceeded, the kernel will wake flusher threads which will then reduce the
+-  # amount of dirty memory to dirty_background_ratio.  Set this nice and low,
+-  # so once some writeout has commenced, we do a lot of it.
+-  #
+-  #DIRTY_BACKGROUND_RATIO=5
+-
+-  # kernel default dirty buffer age
+-  #DEF_AGE=30
+-  #DEF_UPDATE=5
+-  #DEF_DIRTY_BACKGROUND_RATIO=10
+-  #DEF_DIRTY_RATIO=40
+-  #DEF_XFS_AGE_BUFFER=15
+-  #DEF_XFS_SYNC_INTERVAL=30
+-  #DEF_XFS_BUFD_INTERVAL=1
+-
+-  # This must be adjusted manually to the value of HZ in the running kernel
+-  # on 2.4, until the XFS people change their 2.4 external interfaces to work in
+-  # centisecs. This can be automated, but it's a work in progress that still
+-  # needs# some fixes. On 2.6 kernels, XFS uses USER_HZ instead of HZ for
+-  # external interfaces, and that is currently always set to 100. So you don't
+-  # need to change this on 2.6.
+-  #XFS_HZ=100
+-
+-  # Should the maximum CPU frequency be adjusted down while on battery?
+-  # Requires CPUFreq to be setup.
+-  # See Documentation/admin-guide/pm/cpufreq.rst for more info
+-  #DO_CPU=0
+-
+-  # When on battery what is the maximum CPU speed that the system should
+-  # use? Legal values are "slowest" for the slowest speed that your
+-  # CPU is able to operate at, or a value listed in:
+-  # /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+-  # Only applicable if DO_CPU=1.
+-  #CPU_MAXFREQ=slowest
+-
+-  # Idle timeout for your hard drive (man hdparm for valid values, -S option)
+-  # Default is 2 hours on AC (AC_HD=244) and 20 seconds for battery (BATT_HD=4).
+-  #AC_HD=244
+-  #BATT_HD=4
+-
+-  # The drives for which to adjust the idle timeout. Separate them by a space,
+-  # e.g. HD="/dev/hda /dev/hdb".
+-  #HD="/dev/hda"
+-
+-  # Set the spindown timeout on a hard drive?
+-  #DO_HD=1
+-
+-
+-Control script
+---------------
+-
+-Please note that this control script works for the Linux 2.4 and 2.6 series (thanks
+-to Kiko Piris).
+-
+-Control script::
+-
+-  #!/bin/bash
+-
+-  # start or stop laptop_mode, best run by a power management daemon when
+-  # ac gets connected/disconnected from a laptop
+-  #
+-  # install as /sbin/laptop_mode
+-  #
+-  # Contributors to this script:   Kiko Piris
+-  #				 Bart Samwel
+-  #				 Micha Feigin
+-  #				 Andrew Morton
+-  #				 Herve Eychenne
+-  #				 Dax Kelson
+-  #
+-  # Original Linux 2.4 version by: Jens Axboe
+-
+-  #############################################################################
+-
+-  # Source config
+-  if [ -f /etc/default/laptop-mode ] ; then
+-	# Debian
+-	. /etc/default/laptop-mode
+-  elif [ -f /etc/sysconfig/laptop-mode ] ; then
+-	# Others
+-          . /etc/sysconfig/laptop-mode
+-  fi
+-
+-  # Don't raise an error if the config file is incomplete
+-  # set defaults instead:
+-
+-  # Maximum time, in seconds, of hard drive spindown time that you are
+-  # comfortable with. Worst case, it's possible that you could lose this
+-  # amount of work if your battery fails you while in laptop mode.
+-  MAX_AGE=${MAX_AGE:-'600'}
+-
+-  # Read-ahead, in kilobytes
+-  READAHEAD=${READAHEAD:-'4096'}
+-
+-  # Shall we remount journaled fs. with appropriate commit interval? (1=yes)
+-  DO_REMOUNTS=${DO_REMOUNTS:-'1'}
+-
+-  # And shall we add the "noatime" option to that as well? (1=yes)
+-  DO_REMOUNT_NOATIME=${DO_REMOUNT_NOATIME:-'1'}
+-
+-  # Shall we adjust the idle timeout on a hard drive?
+-  DO_HD=${DO_HD:-'1'}
+-
+-  # Adjust idle timeout on which hard drive?
+-  HD="${HD:-'/dev/hda'}"
+-
+-  # spindown time for HD (hdparm -S values)
+-  AC_HD=${AC_HD:-'244'}
+-  BATT_HD=${BATT_HD:-'4'}
+-
+-  # Dirty synchronous ratio.  At this percentage of dirty pages the process which
+-  # calls write() does its own writeback
+-  DIRTY_RATIO=${DIRTY_RATIO:-'40'}
+-
+-  # cpu frequency scaling
+-  # See Documentation/admin-guide/pm/cpufreq.rst for more info
+-  DO_CPU=${CPU_MANAGE:-'0'}
+-  CPU_MAXFREQ=${CPU_MAXFREQ:-'slowest'}
+-
+-  #
+-  # Allowed dirty background ratio, in percent.  Once DIRTY_RATIO has been
+-  # exceeded, the kernel will wake flusher threads which will then reduce the
+-  # amount of dirty memory to dirty_background_ratio.  Set this nice and low,
+-  # so once some writeout has commenced, we do a lot of it.
+-  #
+-  DIRTY_BACKGROUND_RATIO=${DIRTY_BACKGROUND_RATIO:-'5'}
+-
+-  # kernel default dirty buffer age
+-  DEF_AGE=${DEF_AGE:-'30'}
+-  DEF_UPDATE=${DEF_UPDATE:-'5'}
+-  DEF_DIRTY_BACKGROUND_RATIO=${DEF_DIRTY_BACKGROUND_RATIO:-'10'}
+-  DEF_DIRTY_RATIO=${DEF_DIRTY_RATIO:-'40'}
+-  DEF_XFS_AGE_BUFFER=${DEF_XFS_AGE_BUFFER:-'15'}
+-  DEF_XFS_SYNC_INTERVAL=${DEF_XFS_SYNC_INTERVAL:-'30'}
+-  DEF_XFS_BUFD_INTERVAL=${DEF_XFS_BUFD_INTERVAL:-'1'}
+-
+-  # This must be adjusted manually to the value of HZ in the running kernel
+-  # on 2.4, until the XFS people change their 2.4 external interfaces to work in
+-  # centisecs. This can be automated, but it's a work in progress that still needs
+-  # some fixes. On 2.6 kernels, XFS uses USER_HZ instead of HZ for external
+-  # interfaces, and that is currently always set to 100. So you don't need to
+-  # change this on 2.6.
+-  XFS_HZ=${XFS_HZ:-'100'}
+-
+-  #############################################################################
+-
+-  KLEVEL="$(uname -r |
+-               {
+-	       IFS='.' read a b c
+-	       echo $a.$b
+-	     }
+-  )"
+-  case "$KLEVEL" in
+-	"2.4"|"2.6")
+-		;;
+-	*)
+-		echo "Unhandled kernel version: $KLEVEL ('uname -r' = '$(uname -r)')" >&2
+-		exit 1
+-		;;
+-  esac
+-
+-  if [ ! -e /proc/sys/vm/laptop_mode ] ; then
+-	echo "Kernel is not patched with laptop_mode patch." >&2
+-	exit 1
+-  fi
+-
+-  if [ ! -w /proc/sys/vm/laptop_mode ] ; then
+-	echo "You do not have enough privileges to enable laptop_mode." >&2
+-	exit 1
+-  fi
+-
+-  # Remove an option (the first parameter) of the form option=<number> from
+-  # a mount options string (the rest of the parameters).
+-  parse_mount_opts () {
+-	OPT="$1"
+-	shift
+-	echo ",$*," | sed		\
+-	 -e 's/,'"$OPT"'=[0-9]*,/,/g'	\
+-	 -e 's/,,*/,/g'			\
+-	 -e 's/^,//'			\
+-	 -e 's/,$//'
+-  }
+-
+-  # Remove an option (the first parameter) without any arguments from
+-  # a mount option string (the rest of the parameters).
+-  parse_nonumber_mount_opts () {
+-	OPT="$1"
+-	shift
+-	echo ",$*," | sed		\
+-	 -e 's/,'"$OPT"',/,/g'		\
+-	 -e 's/,,*/,/g'			\
+-	 -e 's/^,//'			\
+-	 -e 's/,$//'
+-  }
+-
+-  # Find out the state of a yes/no option (e.g. "atime"/"noatime") in
+-  # fstab for a given filesystem, and use this state to replace the
+-  # value of the option in another mount options string. The device
+-  # is the first argument, the option name the second, and the default
+-  # value the third. The remainder is the mount options string.
+-  #
+-  # Example:
+-  # parse_yesno_opts_wfstab /dev/hda1 atime atime defaults,noatime
+-  #
+-  # If fstab contains, say, "rw" for this filesystem, then the result
+-  # will be "defaults,atime".
+-  parse_yesno_opts_wfstab () {
+-	L_DEV="$1"
+-	OPT="$2"
+-	DEF_OPT="$3"
+-	shift 3
+-	L_OPTS="$*"
+-	PARSEDOPTS1="$(parse_nonumber_mount_opts $OPT $L_OPTS)"
+-	PARSEDOPTS1="$(parse_nonumber_mount_opts no$OPT $PARSEDOPTS1)"
+-	# Watch for a default atime in fstab
+-	FSTAB_OPTS="$(awk '$1 == "'$L_DEV'" { print $4 }' /etc/fstab)"
+-	if echo "$FSTAB_OPTS" | grep "$OPT" > /dev/null ; then
+-		# option specified in fstab: extract the value and use it
+-		if echo "$FSTAB_OPTS" | grep "no$OPT" > /dev/null ; then
+-			echo "$PARSEDOPTS1,no$OPT"
+-		else
+-			# no$OPT not found -- so we must have $OPT.
+-			echo "$PARSEDOPTS1,$OPT"
+-		fi
+-	else
+-		# option not specified in fstab -- choose the default.
+-		echo "$PARSEDOPTS1,$DEF_OPT"
+-	fi
+-  }
+-
+-  # Find out the state of a numbered option (e.g. "commit=NNN") in
+-  # fstab for a given filesystem, and use this state to replace the
+-  # value of the option in another mount options string. The device
+-  # is the first argument, and the option name the second. The
+-  # remainder is the mount options string in which the replacement
+-  # must be done.
+-  #
+-  # Example:
+-  # parse_mount_opts_wfstab /dev/hda1 commit defaults,commit=7
+-  #
+-  # If fstab contains, say, "commit=3,rw" for this filesystem, then the
+-  # result will be "rw,commit=3".
+-  parse_mount_opts_wfstab () {
+-	L_DEV="$1"
+-	OPT="$2"
+-	shift 2
+-	L_OPTS="$*"
+-	PARSEDOPTS1="$(parse_mount_opts $OPT $L_OPTS)"
+-	# Watch for a default commit in fstab
+-	FSTAB_OPTS="$(awk '$1 == "'$L_DEV'" { print $4 }' /etc/fstab)"
+-	if echo "$FSTAB_OPTS" | grep "$OPT=" > /dev/null ; then
+-		# option specified in fstab: extract the value, and use it
+-		echo -n "$PARSEDOPTS1,$OPT="
+-		echo ",$FSTAB_OPTS," | sed \
+-		 -e 's/.*,'"$OPT"'=//'	\
+-		 -e 's/,.*//'
+-	else
+-		# option not specified in fstab: set it to 0
+-		echo "$PARSEDOPTS1,$OPT=0"
+-	fi
+-  }
+-
+-  deduce_fstype () {
+-	MP="$1"
+-	# My root filesystem unfortunately has
+-	# type "unknown" in /etc/mtab. If we encounter
+-	# "unknown", we try to get the type from fstab.
+-	cat /etc/fstab |
+-	grep -v '^#' |
+-	while read FSTAB_DEV FSTAB_MP FSTAB_FST FSTAB_OPTS FSTAB_DUMP FSTAB_DUMP ; do
+-		if [ "$FSTAB_MP" = "$MP" ]; then
+-			echo $FSTAB_FST
+-			exit 0
+-		fi
+-	done
+-  }
+-
+-  if [ $DO_REMOUNT_NOATIME -eq 1 ] ; then
+-	NOATIME_OPT=",noatime"
+-  fi
+-
+-  case "$1" in
+-	start)
+-		AGE=$((100*$MAX_AGE))
+-		XFS_AGE=$(($XFS_HZ*$MAX_AGE))
+-		echo -n "Starting laptop_mode"
+-
+-		if [ -d /proc/sys/vm/pagebuf ] ; then
+-			# (For 2.4 and early 2.6.)
+-			# This only needs to be set, not reset -- it is only used when
+-			# laptop mode is enabled.
+-			echo $XFS_AGE > /proc/sys/vm/pagebuf/lm_flush_age
+-			echo $XFS_AGE > /proc/sys/fs/xfs/lm_sync_interval
+-		elif [ -f /proc/sys/fs/xfs/lm_age_buffer ] ; then
+-			# (A couple of early 2.6 laptop mode patches had these.)
+-			# The same goes for these.
+-			echo $XFS_AGE > /proc/sys/fs/xfs/lm_age_buffer
+-			echo $XFS_AGE > /proc/sys/fs/xfs/lm_sync_interval
+-		elif [ -f /proc/sys/fs/xfs/age_buffer ] ; then
+-			# (2.6.6)
+-			# But not for these -- they are also used in normal
+-			# operation.
+-			echo $XFS_AGE > /proc/sys/fs/xfs/age_buffer
+-			echo $XFS_AGE > /proc/sys/fs/xfs/sync_interval
+-		elif [ -f /proc/sys/fs/xfs/age_buffer_centisecs ] ; then
+-			# (2.6.7 upwards)
+-			# And not for these either. These are in centisecs,
+-			# not USER_HZ, so we have to use $AGE, not $XFS_AGE.
+-			echo $AGE > /proc/sys/fs/xfs/age_buffer_centisecs
+-			echo $AGE > /proc/sys/fs/xfs/xfssyncd_centisecs
+-			echo 3000 > /proc/sys/fs/xfs/xfsbufd_centisecs
+-		fi
+-
+-		case "$KLEVEL" in
+-			"2.4")
+-				echo 1					> /proc/sys/vm/laptop_mode
+-				echo "30 500 0 0 $AGE $AGE 60 20 0"	> /proc/sys/vm/bdflush
+-				;;
+-			"2.6")
+-				echo 5					> /proc/sys/vm/laptop_mode
+-				echo "$AGE"				> /proc/sys/vm/dirty_writeback_centisecs
+-				echo "$AGE"				> /proc/sys/vm/dirty_expire_centisecs
+-				echo "$DIRTY_RATIO"			> /proc/sys/vm/dirty_ratio
+-				echo "$DIRTY_BACKGROUND_RATIO"		> /proc/sys/vm/dirty_background_ratio
+-				;;
+-		esac
+-		if [ $DO_REMOUNTS -eq 1 ]; then
+-			cat /etc/mtab | while read DEV MP FST OPTS DUMP PASS ; do
+-				PARSEDOPTS="$(parse_mount_opts "$OPTS")"
+-				if [ "$FST" = 'unknown' ]; then
+-					FST=$(deduce_fstype $MP)
+-				fi
+-				case "$FST" in
+-					"ext3")
+-						PARSEDOPTS="$(parse_mount_opts commit "$OPTS")"
+-						mount $DEV -t $FST $MP -o remount,$PARSEDOPTS,commit=$MAX_AGE$NOATIME_OPT
+-						;;
+-					"xfs")
+-						mount $DEV -t $FST $MP -o remount,$OPTS$NOATIME_OPT
+-						;;
+-				esac
+-				if [ -b $DEV ] ; then
+-					blockdev --setra $(($READAHEAD * 2)) $DEV
+-				fi
+-			done
+-		fi
+-		if [ $DO_HD -eq 1 ] ; then
+-			for THISHD in $HD ; do
+-				/sbin/hdparm -S $BATT_HD $THISHD > /dev/null 2>&1
+-				/sbin/hdparm -B 1 $THISHD > /dev/null 2>&1
+-			done
+-		fi
+-		if [ $DO_CPU -eq 1 -a -e /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq ]; then
+-			if [ $CPU_MAXFREQ = 'slowest' ]; then
+-				CPU_MAXFREQ=`cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq`
+-			fi
+-			echo $CPU_MAXFREQ > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+-		fi
+-		echo "."
+-		;;
+-	stop)
+-		U_AGE=$((100*$DEF_UPDATE))
+-		B_AGE=$((100*$DEF_AGE))
+-		echo -n "Stopping laptop_mode"
+-		echo 0 > /proc/sys/vm/laptop_mode
+-		if [ -f /proc/sys/fs/xfs/age_buffer -a ! -f /proc/sys/fs/xfs/lm_age_buffer ] ; then
+-			# These need to be restored, if there are no lm_*.
+-			echo $(($XFS_HZ*$DEF_XFS_AGE_BUFFER))	 	> /proc/sys/fs/xfs/age_buffer
+-			echo $(($XFS_HZ*$DEF_XFS_SYNC_INTERVAL)) 	> /proc/sys/fs/xfs/sync_interval
+-		elif [ -f /proc/sys/fs/xfs/age_buffer_centisecs ] ; then
+-			# These need to be restored as well.
+-			echo $((100*$DEF_XFS_AGE_BUFFER))	> /proc/sys/fs/xfs/age_buffer_centisecs
+-			echo $((100*$DEF_XFS_SYNC_INTERVAL))	> /proc/sys/fs/xfs/xfssyncd_centisecs
+-			echo $((100*$DEF_XFS_BUFD_INTERVAL))	> /proc/sys/fs/xfs/xfsbufd_centisecs
+-		fi
+-		case "$KLEVEL" in
+-			"2.4")
+-				echo "30 500 0 0 $U_AGE $B_AGE 60 20 0"	> /proc/sys/vm/bdflush
+-				;;
+-			"2.6")
+-				echo "$U_AGE"				> /proc/sys/vm/dirty_writeback_centisecs
+-				echo "$B_AGE"				> /proc/sys/vm/dirty_expire_centisecs
+-				echo "$DEF_DIRTY_RATIO"			> /proc/sys/vm/dirty_ratio
+-				echo "$DEF_DIRTY_BACKGROUND_RATIO"	> /proc/sys/vm/dirty_background_ratio
+-				;;
+-		esac
+-		if [ $DO_REMOUNTS -eq 1 ] ; then
+-			cat /etc/mtab | while read DEV MP FST OPTS DUMP PASS ; do
+-				# Reset commit and atime options to defaults.
+-				if [ "$FST" = 'unknown' ]; then
+-					FST=$(deduce_fstype $MP)
+-				fi
+-				case "$FST" in
+-					"ext3")
+-						PARSEDOPTS="$(parse_mount_opts_wfstab $DEV commit $OPTS)"
+-						PARSEDOPTS="$(parse_yesno_opts_wfstab $DEV atime atime $PARSEDOPTS)"
+-						mount $DEV -t $FST $MP -o remount,$PARSEDOPTS
+-						;;
+-					"xfs")
+-						PARSEDOPTS="$(parse_yesno_opts_wfstab $DEV atime atime $OPTS)"
+-						mount $DEV -t $FST $MP -o remount,$PARSEDOPTS
+-						;;
+-				esac
+-				if [ -b $DEV ] ; then
+-					blockdev --setra 256 $DEV
+-				fi
+-			done
+-		fi
+-		if [ $DO_HD -eq 1 ] ; then
+-			for THISHD in $HD ; do
+-				/sbin/hdparm -S $AC_HD $THISHD > /dev/null 2>&1
+-				/sbin/hdparm -B 255 $THISHD > /dev/null 2>&1
+-			done
+-		fi
+-		if [ $DO_CPU -eq 1 -a -e /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq ]; then
+-			echo `cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq` > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+-		fi
+-		echo "."
+-		;;
+-	*)
+-		echo "Usage: $0 {start|stop}" 2>&1
+-		exit 1
+-		;;
+-
+-  esac
+-
+-  exit 0
+-
+-
+-ACPI integration
+-----------------
+-
+-Dax Kelson submitted this so that the ACPI acpid daemon will
+-kick off the laptop_mode script and run hdparm. The part that
+-automatically disables laptop mode when the battery is low was
+-written by Jan Topinski.
+-
+-/etc/acpi/events/ac_adapter::
+-
+-	event=ac_adapter
+-	action=/etc/acpi/actions/ac.sh %e
+-
+-/etc/acpi/events/battery::
+-
+-	event=battery.*
+-	action=/etc/acpi/actions/battery.sh %e
+-
+-/etc/acpi/actions/ac.sh::
+-
+-  #!/bin/bash
+-
+-  # ac on/offline event handler
+-
+-  status=`awk '/^state: / { print $2 }' /proc/acpi/ac_adapter/$2/state`
+-
+-  case $status in
+-          "on-line")
+-                  /sbin/laptop_mode stop
+-                  exit 0
+-          ;;
+-          "off-line")
+-                  /sbin/laptop_mode start
+-                  exit 0
+-          ;;
+-  esac
+-
+-
+-/etc/acpi/actions/battery.sh::
+-
+-  #! /bin/bash
+-
+-  # Automatically disable laptop mode when the battery almost runs out.
+-
+-  BATT_INFO=/proc/acpi/battery/$2/state
+-
+-  if [[ -f /proc/sys/vm/laptop_mode ]]
+-  then
+-     LM=`cat /proc/sys/vm/laptop_mode`
+-     if [[ $LM -gt 0 ]]
+-     then
+-       if [[ -f $BATT_INFO ]]
+-       then
+-          # Source the config file only now that we know we need
+-          if [ -f /etc/default/laptop-mode ] ; then
+-                  # Debian
+-                  . /etc/default/laptop-mode
+-          elif [ -f /etc/sysconfig/laptop-mode ] ; then
+-                  # Others
+-                  . /etc/sysconfig/laptop-mode
+-          fi
+-          MINIMUM_BATTERY_MINUTES=${MINIMUM_BATTERY_MINUTES:-'10'}
+-
+-          ACTION="`cat $BATT_INFO | grep charging | cut -c 26-`"
+-          if [[ ACTION -eq "discharging" ]]
+-          then
+-             PRESENT_RATE=`cat $BATT_INFO | grep "present rate:" | sed  "s/.* \([0-9][0-9]* \).*/\1/" `
+-             REMAINING=`cat $BATT_INFO | grep "remaining capacity:" | sed  "s/.* \([0-9][0-9]* \).*/\1/" `
+-          fi
+-          if (($REMAINING * 60 / $PRESENT_RATE < $MINIMUM_BATTERY_MINUTES))
+-          then
+-             /sbin/laptop_mode stop
+-          fi
+-       else
+-         logger -p daemon.warning "You are using laptop mode and your battery interface $BATT_INFO is missing. This may lead to loss of data when the battery runs out. Check kernel ACPI support and /proc/acpi/battery folder, and edit /etc/acpi/battery.sh to set BATT_INFO to the correct path."
+-       fi
+-     fi
+-  fi
+-
+-
+-Monitoring tool
+----------------
+-
+-Bartek Kania submitted this, it can be used to measure how much time your disk
+-spends spun up/down.  See tools/laptop/dslm/dslm.c
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 4d71211fdad8..af14345ba94b 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -41,7 +41,6 @@ files can be found in mm/swap.c.
+ - extfrag_threshold
+ - highmem_is_dirtyable
+ - hugetlb_shm_group
+-- laptop_mode
+ - legacy_va_layout
+ - lowmem_reserve_ratio
+ - max_map_count
+@@ -363,13 +362,6 @@ hugetlb_shm_group contains group id that is allowed to create SysV
+ shared memory segment using hugetlb page.
+ 
+ 
+-laptop_mode
+-===========
+-
+-laptop_mode is a knob that controls "laptop mode". All the things that are
+-controlled by this knob are discussed in Documentation/admin-guide/laptops/laptop-mode.rst.
+-
+-
+ legacy_va_layout
+ ================
+ 
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 1978eef95dca..6d739bd9459d 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -811,9 +811,6 @@ void blk_mq_free_request(struct request *rq)
+ 
+ 	blk_mq_finish_request(rq);
+ 
+-	if (unlikely(laptop_mode && !blk_rq_is_passthrough(rq)))
+-		laptop_io_completion(q->disk->bdi);
+-
+ 	rq_qos_done(q, rq);
+ 
+ 	WRITE_ONCE(rq->state, MQ_RQ_IDLE);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 0c466ccbed69..15eb463d5a9b 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3305,8 +3305,7 @@ int ext4_alloc_da_blocks(struct inode *inode)
+ 	/*
+ 	 * We do something simple for now.  The filemap_flush() will
+ 	 * also start triggering a write of the data blocks, which is
+-	 * not strictly speaking necessary (and for users of
+-	 * laptop_mode, not even desirable).  However, to do otherwise
++	 * not strictly speaking necessary.  However, to do otherwise
+ 	 * would require replicating code paths in:
+ 	 *
+ 	 * ext4_writepages() ->
+diff --git a/fs/sync.c b/fs/sync.c
+index 431fc5f5be06..6330150792f6 100644
+--- a/fs/sync.c
++++ b/fs/sync.c
+@@ -104,8 +104,6 @@ void ksys_sync(void)
+ 	iterate_supers(sync_fs_one_sb, &wait);
+ 	sync_bdevs(false);
+ 	sync_bdevs(true);
+-	if (unlikely(laptop_mode))
+-		laptop_sync_completion();
+ }
+ 
+ SYSCALL_DEFINE0(sync)
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index bc71aa9dcee8..a2014fb1bc66 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -845,15 +845,6 @@ xfs_fs_sync_fs(
+ 	if (error)
+ 		return error;
+ 
+-	if (laptop_mode) {
+-		/*
+-		 * The disk must be active because we're syncing.
+-		 * We schedule log work now (now that the disk is
+-		 * active) instead of later (when it might not be).
+-		 */
+-		flush_delayed_work(&mp->m_log->l_work);
+-	}
+-
+ 	/*
+ 	 * If we are called with page faults frozen out, it means we are about
+ 	 * to freeze the transaction subsystem. Take the opportunity to shut
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index 0217c1073735..c88fd4d37d1f 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -46,7 +46,6 @@ enum wb_reason {
+ 	WB_REASON_VMSCAN,
+ 	WB_REASON_SYNC,
+ 	WB_REASON_PERIODIC,
+-	WB_REASON_LAPTOP_TIMER,
+ 	WB_REASON_FS_FREE_SPACE,
+ 	/*
+ 	 * There is no bdi forker thread any more and works are done
+@@ -204,8 +203,6 @@ struct backing_dev_info {
+ 	char dev_name[64];
+ 	struct device *owner;
+ 
+-	struct timer_list laptop_mode_wb_timer;
+-
+ #ifdef CONFIG_DEBUG_FS
+ 	struct dentry *debug_dir;
+ #endif
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index f48e8ccffe81..e530112c4b3a 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -328,9 +328,6 @@ struct dirty_throttle_control {
+ 	bool			dirty_exceeded;
+ };
+ 
+-void laptop_io_completion(struct backing_dev_info *info);
+-void laptop_sync_completion(void);
+-void laptop_mode_timer_fn(struct timer_list *t);
+ bool node_dirty_ok(struct pglist_data *pgdat);
+ int wb_domain_init(struct wb_domain *dom, gfp_t gfp);
+ #ifdef CONFIG_CGROUP_WRITEBACK
+@@ -342,7 +339,6 @@ extern struct wb_domain global_wb_domain;
+ /* These are exported to sysctl. */
+ extern unsigned int dirty_writeback_interval;
+ extern unsigned int dirty_expire_interval;
+-extern int laptop_mode;
+ 
+ void global_dirty_limits(unsigned long *pbackground, unsigned long *pdirty);
+ unsigned long wb_calc_thresh(struct bdi_writeback *wb, unsigned long thresh);
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 311a341e6fe4..b6f94e97788a 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -42,7 +42,6 @@
+ 	EM( WB_REASON_VMSCAN,			"vmscan")		\
+ 	EM( WB_REASON_SYNC,			"sync")			\
+ 	EM( WB_REASON_PERIODIC,			"periodic")		\
+-	EM( WB_REASON_LAPTOP_TIMER,		"laptop_timer")		\
+ 	EM( WB_REASON_FS_FREE_SPACE,		"fs_free_space")	\
+ 	EM( WB_REASON_FORKER_THREAD,		"forker_thread")	\
+ 	EMe(WB_REASON_FOREIGN_FLUSH,		"foreign_flush")
+diff --git a/include/uapi/linux/sysctl.h b/include/uapi/linux/sysctl.h
+index 63d1464cb71c..6ea9ea8413fa 100644
+--- a/include/uapi/linux/sysctl.h
++++ b/include/uapi/linux/sysctl.h
+@@ -183,7 +183,7 @@ enum
+ 	VM_LOWMEM_RESERVE_RATIO=20,/* reservation ratio for lower memory zones */
+ 	VM_MIN_FREE_KBYTES=21,	/* Minimum free kilobytes to maintain */
+ 	VM_MAX_MAP_COUNT=22,	/* int: Maximum number of mmaps/address-space */
+-	VM_LAPTOP_MODE=23,	/* vm laptop mode */
++
+ 	VM_BLOCK_DUMP=24,	/* block dump mode */
+ 	VM_HUGETLB_GROUP=25,	/* permitted hugetlb group */
+ 	VM_VFS_CACHE_PRESSURE=26, /* dcache/icache reclaim pressure */
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index c5740c6d37a2..a0e26d1b717f 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -1034,7 +1034,6 @@ struct backing_dev_info *bdi_alloc(int node_id)
+ 	bdi->capabilities = BDI_CAP_WRITEBACK;
+ 	bdi->ra_pages = VM_READAHEAD_PAGES;
+ 	bdi->io_pages = VM_READAHEAD_PAGES;
+-	timer_setup(&bdi->laptop_mode_wb_timer, laptop_mode_timer_fn, 0);
+ 	return bdi;
+ }
+ EXPORT_SYMBOL(bdi_alloc);
+@@ -1156,8 +1155,6 @@ static void bdi_remove_from_list(struct backing_dev_info *bdi)
+ 
+ void bdi_unregister(struct backing_dev_info *bdi)
+ {
+-	timer_delete_sync(&bdi->laptop_mode_wb_timer);
+-
+ 	/* make sure nobody finds us on the bdi_list anymore */
+ 	bdi_remove_from_list(bdi);
+ 	wb_shutdown(&bdi->wb);
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index ccdeb0e84d39..0c0f048d12bb 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -109,14 +109,6 @@ EXPORT_SYMBOL_GPL(dirty_writeback_interval);
+  */
+ unsigned int dirty_expire_interval = 30 * 100; /* centiseconds */
+ 
+-/*
+- * Flag that puts the machine in "laptop mode". Doubles as a timeout in jiffies:
+- * a full sync is triggered after this time elapses without any disk activity.
+- */
+-int laptop_mode;
+-
+-EXPORT_SYMBOL(laptop_mode);
+-
+ /* End of sysctl-exported parameters */
+ 
+ struct wb_domain global_wb_domain;
+@@ -1843,17 +1835,7 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+ 			balance_domain_limits(mdtc, strictlimit);
+ 		}
+ 
+-		/*
+-		 * In laptop mode, we wait until hitting the higher threshold
+-		 * before starting background writeout, and then write out all
+-		 * the way down to the lower threshold.  So slow writers cause
+-		 * minimal disk activity.
+-		 *
+-		 * In normal mode, we start background writeout at the lower
+-		 * background_thresh, to keep the amount of dirty memory low.
+-		 */
+-		if (!laptop_mode && nr_dirty > gdtc->bg_thresh &&
+-		    !writeback_in_progress(wb))
++		if (nr_dirty > gdtc->bg_thresh && !writeback_in_progress(wb))
+ 			wb_start_background_writeback(wb);
+ 
+ 		/*
+@@ -1876,10 +1858,6 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+ 			break;
+ 		}
+ 
+-		/* Start writeback even when in laptop mode */
+-		if (unlikely(!writeback_in_progress(wb)))
+-			wb_start_background_writeback(wb);
+-
+ 		mem_cgroup_flush_foreign(wb);
+ 
+ 		/*
+@@ -2198,41 +2176,6 @@ static int dirty_writeback_centisecs_handler(const struct ctl_table *table, int
+ }
+ #endif
+ 
+-void laptop_mode_timer_fn(struct timer_list *t)
+-{
+-	struct backing_dev_info *backing_dev_info =
+-		timer_container_of(backing_dev_info, t, laptop_mode_wb_timer);
+-
+-	wakeup_flusher_threads_bdi(backing_dev_info, WB_REASON_LAPTOP_TIMER);
+-}
+-
+-/*
+- * We've spun up the disk and we're in laptop mode: schedule writeback
+- * of all dirty data a few seconds from now.  If the flush is already scheduled
+- * then push it back - the user is still using the disk.
+- */
+-void laptop_io_completion(struct backing_dev_info *info)
+-{
+-	mod_timer(&info->laptop_mode_wb_timer, jiffies + laptop_mode);
+-}
+-
+-/*
+- * We're in laptop mode and we've just synced. The sync's writes will have
+- * caused another writeback to be scheduled by laptop_io_completion.
+- * Nothing needs to be written back anymore, so we unschedule the writeback.
+- */
+-void laptop_sync_completion(void)
+-{
+-	struct backing_dev_info *bdi;
+-
+-	rcu_read_lock();
+-
+-	list_for_each_entry_rcu(bdi, &bdi_list, bdi_list)
+-		timer_delete(&bdi->laptop_mode_wb_timer);
+-
+-	rcu_read_unlock();
+-}
+-
+ /*
+  * If ratelimit_pages is too high then we can get into dirty-data overload
+  * if a large number of processes all perform writes at the same time.
+@@ -2327,13 +2270,6 @@ static const struct ctl_table vm_page_writeback_sysctls[] = {
+ 		.extra2		= SYSCTL_ONE,
+ 	},
+ #endif
+-	{
+-		.procname	= "laptop_mode",
+-		.data		= &laptop_mode,
+-		.maxlen		= sizeof(laptop_mode),
+-		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_jiffies,
+-	},
+ };
+ #endif
+ 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 670fe9fae5ba..a1ad50c0c9aa 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -104,13 +104,13 @@ struct scan_control {
+ 	unsigned int force_deactivate:1;
+ 	unsigned int skipped_deactivate:1;
+ 
+-	/* Writepage batching in laptop mode; RECLAIM_WRITE */
++	/* zone_reclaim_mode, boost reclaim */
+ 	unsigned int may_writepage:1;
+ 
+-	/* Can mapped folios be reclaimed? */
++	/* zone_reclaim_mode */
+ 	unsigned int may_unmap:1;
+ 
+-	/* Can folios be swapped as part of reclaim? */
++	/* zome_reclaim_mode, boost reclaim, cgroup restrictions */
+ 	unsigned int may_swap:1;
+ 
+ 	/* Not allow cache_trim_mode to be turned on as part of reclaim? */
+@@ -6366,13 +6366,6 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
+ 
+ 		if (sc->compaction_ready)
+ 			break;
+-
+-		/*
+-		 * If we're getting trouble reclaiming, start doing
+-		 * writepage even in laptop mode.
+-		 */
+-		if (sc->priority < DEF_PRIORITY - 2)
+-			sc->may_writepage = 1;
+ 	} while (--sc->priority >= 0);
+ 
+ 	last_pgdat = NULL;
+@@ -6581,7 +6574,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 		.order = order,
+ 		.nodemask = nodemask,
+ 		.priority = DEF_PRIORITY,
+-		.may_writepage = !laptop_mode,
++		.may_writepage = 1,
+ 		.may_unmap = 1,
+ 		.may_swap = 1,
+ 	};
+@@ -6625,7 +6618,7 @@ unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
+ 	struct scan_control sc = {
+ 		.nr_to_reclaim = SWAP_CLUSTER_MAX,
+ 		.target_mem_cgroup = memcg,
+-		.may_writepage = !laptop_mode,
++		.may_writepage = 1,
+ 		.may_unmap = 1,
+ 		.reclaim_idx = MAX_NR_ZONES - 1,
+ 		.may_swap = !noswap,
+@@ -6671,7 +6664,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 		.reclaim_idx = MAX_NR_ZONES - 1,
+ 		.target_mem_cgroup = memcg,
+ 		.priority = DEF_PRIORITY,
+-		.may_writepage = !laptop_mode,
++		.may_writepage = 1,
+ 		.may_unmap = 1,
+ 		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
+ 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
+@@ -7052,7 +7045,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		 * from reclaim context. If no pages are reclaimed, the
+ 		 * reclaim will be aborted.
+ 		 */
+-		sc.may_writepage = !laptop_mode && !nr_boost_reclaim;
++		sc.may_writepage = !nr_boost_reclaim;
+ 		sc.may_swap = !nr_boost_reclaim;
+ 
+ 		/*
+@@ -7062,13 +7055,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		 */
+ 		kswapd_age_node(pgdat, &sc);
+ 
+-		/*
+-		 * If we're getting trouble reclaiming, start doing writepage
+-		 * even in laptop mode.
+-		 */
+-		if (sc.priority < DEF_PRIORITY - 2)
+-			sc.may_writepage = 1;
+-
+ 		/* Call soft limit reclaim before calling shrink_node. */
+ 		sc.nr_scanned = 0;
+ 		nr_soft_scanned = 0;
+@@ -7789,7 +7775,7 @@ int user_proactive_reclaim(char *buf,
+ 				.reclaim_idx = gfp_zone(gfp_mask),
+ 				.proactive_swappiness = swappiness == -1 ? NULL : &swappiness,
+ 				.priority = DEF_PRIORITY,
+-				.may_writepage = !laptop_mode,
++				.may_writepage = 1,
+ 				.nr_to_reclaim = max(batch_size, SWAP_CLUSTER_MAX),
+ 				.may_unmap = 1,
+ 				.may_swap = 1,
+-- 
+2.52.0
+
 
