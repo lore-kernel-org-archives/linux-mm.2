@@ -4,121 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75EFCD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:31:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32510D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FC706B0006; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
+	id 6C9116B0006; Mon, 15 Dec 2025 00:47:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD6F6B0007; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
+	id 679F66B0007; Mon, 15 Dec 2025 00:47:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89C566B0008; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
+	id 58FAD6B0008; Mon, 15 Dec 2025 00:47:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76E0B6B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:31:10 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C95A8B550
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:31:10 +0000 (UTC)
-X-FDA: 84220581900.14.BDEAE3A
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 55B03A000E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:31:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FcB8PaS3;
-	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765776668; a=rsa-sha256;
-	cv=none;
-	b=jbBIEXPcGwQVHbAolzEMmEvP90UNfTzLsLqlVCyCesSrpof74JOAen3o7tlzkHyDeh1Rk8
-	MJf/1c8VP/zk7K490/c6VBSdqKSNcuqg+jgKWWDl8Xk6bH8Bj/+tcTsanhkvzTxxmnG7W2
-	/mn8+tAOBjOazkIv07ZDp3f9C+FjbO4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FcB8PaS3;
-	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 449B96B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:47:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D504CBE494
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:47:35 +0000 (UTC)
+X-FDA: 84220623270.07.768ABB6
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EEDBA40005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:47:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=SnAWY7gq;
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765776668;
+	s=arc-20220608; t=1765777654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
-	b=MZh3WIpV1/jRwrYAPhQTkgk1IGrcpUuXlpvphuDKRgsnHRVgcgavv6ayk6+DSLIHZI7teJ
-	qtMUjYqzVS0OKhJNdhr9clSa1sYxNJ5gDqPZnQzLZcw8e7CGPxeqn6hFHBEI2T5A31XbXn
-	oeiOSOCW26+nqCiFOSSRhOhQA1DDIzs=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so3026211b3a.0
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 21:31:08 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IonsJ3LbB8AUdyCVRgel7KA7biBiZzI5NrUoHUACON4=;
+	b=eroXSCFxJa/qijwa+trwNrScY0QsBp7BS8+gSG3ltPTjxrAPZ7C+Nu3Qgl2muX5KvviQPH
+	XVXpKMjT9yTUJKmycKLJ7/ViJsR/oCTekVzlHVRB+5TdV7960SFLBX6JukvG9PQXVBw2Vm
+	3AjGlpCabOJOnLNFNogIxfDbB+FV1vU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=SnAWY7gq;
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765777654; a=rsa-sha256;
+	cv=none;
+	b=Mct4q1JvKhCO0duniNmKXGy0xeJWsp+0ViBga1mRlgbqs3NAsqkKdPleZp68YkY3Ra1lgD
+	js2Ykan10DmCcqINqnyegGwXAnx+tKdZ4ckIBRwyZ/IPNQYnNbTlInXbvmQGJm1GsWNKCM
+	h0NgIACEpUCycLg/vdLVkC/tGli3+R0=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso16715945ad.1
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 21:47:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765776667; x=1766381467; darn=kvack.org;
+        d=chromium.org; s=google; t=1765777653; x=1766382453; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
-        b=FcB8PaS3kbmZssjC6/jknHrUS3zL9GieGCcwYatrzavUq/MMMPC/k3nBtEmLwpPxkB
-         VMc8U1iAnRikBBvNwRMO3Hd6898vftO4yTvgttANYxqxl7q3HTUANif3d4uh7WvMKoug
-         FumCXNWQSIzb0iyeuNK3I+i9gn6jRTzvJtMjlqWuVmHK2s1R1QvofyvZcq6dRpgBCEFK
-         mde3laVtSaoZE45p9cU5POP52CU+E3Tpo2jZoFKDGSVBR5qCI4OSGVeou4mC5jYJl5zQ
-         9Mu2BecijVuw5mA5wGGcR5OMyOTkEylEyJqEWiA/NwU0bnyxtZLTRTFlFkdKYLKiEG/2
-         mlFw==
+        bh=IonsJ3LbB8AUdyCVRgel7KA7biBiZzI5NrUoHUACON4=;
+        b=SnAWY7gqJy/SvCYCpw9XkPDDeCByXeFSNzWNouDk3XJd33pxGsxP5Q86EM9lkZftkt
+         3uiCt7hC0qygKUVsisZ6pfPK63hPNGji+scEntztH3MizwqIHMvLUvD5pfXjoe5XsuGj
+         KpT8qhY6KtnR4frQ/fhZHTGBHp5BN3qwQjtoE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765776667; x=1766381467;
+        d=1e100.net; s=20230601; t=1765777653; x=1766382453;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uz3AkyAC19O+S8FUO5AbqCgspWmgP9i0gngDDNAJrGk=;
-        b=hW7AMFLbQLIPQwrf7a8RO1Ohf6X/yZVUKf3EvMz+lCqCnBepXQJ9cw0hWxecBd6Myl
-         cbU2qKl314/regoUzRrKgt/MTF8vYMbe3zbp6tIS9tNs4vG+KPtcb821sxF2YlkY5tFC
-         ONrWK6jbjz6xTnK2FJkZjvI5UjAzme0DOzq1ob8A8yhlcfykCe61e5AteZ+wMlvc4WaS
-         soRB5YaBtiUCd3smHlAOQUscKJEYzDQBjR+oG8nBd7CXNq8zqekBlYurSGcf7bLJ9Lk1
-         cakSZjKtAKmiCMp2daMdvSyP0A/8OdDDC+L5LzUt+sQ06Ua0w79GuzffUojr3WGGwaOF
-         mXWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpGXEcjJPQ9nCefslYOBlDTzU+wbLM6Ej0cRK1AI6ZJZH2ZbEP3RVvYsiLgqXI1e0iWIEshb/ncw==@kvack.org
-X-Gm-Message-State: AOJu0YxjY+qRoz7Xu2mL03O0LOvG+SjXELut7ZSzRX+0YL3hcD6WyaYf
-	ZwQb9INaB/6NndLc9P58DyZ770kf9ARSYLZkAnO785gFoLbyzBxa6//m
-X-Gm-Gg: AY/fxX5XM761uXseLrr9PiWF10iDqo4oOZueAMb4RFLuj9xLdkweiFzqB1o8JTvkqkt
-	64w5gstHKi18kQggRDHNQC5l2RCKAgDAhXPEy6usyDFwl9UoLUjZ6dMp71rBS/ws/sekJAqMVKg
-	1AZouaKdDwR+tJi2Ysu9RqySA/ZlgDTmgcUI2sC6slNAom6Jg3vrsKyxQgrvoHZv5lQr4TShd6O
-	zSYLmF8lZO3Ws/btAEE8dgWQnL3n+1OPNLhyDyyxCVYnKsEzi3qLNcWdqsgndNfNtsODSVSYqdu
-	KQZpZCPRuOrCmGAPp3coNZiriZ+rdhmxMdfNrydZ1loMCLE66zxkvzAGX328/mKTw40jSD7j6wU
-	7Oqh4DfrAPbK/RWyTGKy3z/eDQZKh5vxpCPzGoU/Yi7q2lJUwYeFWEIEtYgp8AOTLvkigDULwwI
-	dHMY14LTsLWwdSwpVrRS+jUelgbw==
-X-Google-Smtp-Source: AGHT+IHNaawrkiaB8tEzN2LJvPo55x1qDp7wzj9Mb1MNnfFeFzZwkDr8l2UABw6Bq3fG7Z2E49LeWQ==
-X-Received: by 2002:a05:6a00:a381:b0:7e8:4433:8fa1 with SMTP id d2e1a72fcca58-7f6694aa660mr7586764b3a.41.1765776666944;
-        Sun, 14 Dec 2025 21:31:06 -0800 (PST)
-Received: from Barrys-MBP.hub ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c509cb51sm11409151b3a.54.2025.12.14.21.31.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 14 Dec 2025 21:31:06 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org,
-	jstultz@google.com,
-	linaro-mm-sig@lists.linaro.org,
+        bh=IonsJ3LbB8AUdyCVRgel7KA7biBiZzI5NrUoHUACON4=;
+        b=HXU0x4T1xs8e88UKMR2ERq32SRyt96QCKD7hmxLwkgy9MPyfknx45KQIUVUuMAHK1N
+         ljRyve0yRp1gtgS1kQWizVy1xjOhMaj7Yksme2l67jc3PpAWMAcmwwPh64/0b1vm5W7Z
+         RNIqihRZkjrlsUEK4prC1Z9B2YwyJWZJYWXw7nhBLN/1RiNFK3txiCfByqKLPAorIZJk
+         REfpEhB80dmLNauYMLY1eVI2Q+Rpwc6vnAsBuxSB9OznlsViokMsjDu2n6R7Awcp9h1X
+         iu0cz1hDQ52CaTWIBdaeXZhXSF/FqEmd1JB2v5uoJBNKtF8iFDD/5i0BoaO4n8pp54Di
+         Wr2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUuDxYgZxSDcdsqS55RR3crGf4hft7PhBu6lRZlQpgTQv4FLaTQFt+Z6AZ8zbS0nJ1EwWz1RCEDfg==@kvack.org
+X-Gm-Message-State: AOJu0Yy8+XOf+isEysUBtMSSNauAXISvwQMQnXZ8bm+vK801+i8Ju64M
+	kPO57U+4L9bvfXBN6WCP56Hv9SwnXZ5zMWW0GNDe33xlhHkMcuM4hIrogaotL+RKyg==
+X-Gm-Gg: AY/fxX4eny2un05fLMOL7tntKzkBBLJGdF/d3X6dlcXEb4+v/ah9KTRDGLzlAyqRabr
+	1hMMy3xP3hBMhZvfPzmHHh3x/UPJ0n7lESrTZc8yOBaRCFJD1iJN1Y/RXS12W4/pYGqwCSvq5YW
+	sZrhYZ1RYcCWC/HR4oPOjHxZ884QeS4yMyXrZsk9cgF+V2R+4DlCnjjPdwbbZ74kNjdb2NaAGc8
+	WuC5a6p6XPPszLHxTpN3G/9Y1sMR9sBON36D9l8/C9SuPEk4Tzwgs1+PxsuApwc9DsZxJhX9Wvr
+	eYyb1AciRpDjp/vPwGi79plVEUrC2SybS4fBXmLxXN7Sa2GSnUi9pOOymveWvWeQoek+Lg0FvVp
+	r7jVVyb7lFGRBAByXJ0bHvXOunsy362FBVR1vsrNb8R3zVqhkiwwiyIIcVOc8KI5n4LostCv2oq
+	UGckC1m6tPjyPn2qC70xLl0A6ZjvKHNd84hj1Ie3F7YjS9dIGp4cfRYmHZF98uNnNeE4f3I3BbK
+	g==
+X-Google-Smtp-Source: AGHT+IGWzKWE4FxeG3w6tIQsZVaipTdv+2vkpll/N34qp/C6l7qnJ36dIs1SGAcaq63EU+SH6DLpqw==
+X-Received: by 2002:a17:902:e94d:b0:295:6d30:e25f with SMTP id d9443c01a7336-29f243879d8mr94329765ad.53.1765777652755;
+        Sun, 14 Dec 2025 21:47:32 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:88fa:c762:fe19:6db7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0bb39db53sm36391945ad.11.2025.12.14.21.47.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Dec 2025 21:47:32 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	David Stevens <stevensd@google.com>,
 	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	Barry Song <v-songbaohua@oppo.com>,
-	David Hildenbrand <david@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tangquan Zheng <zhengtangquan@oppo.com>
-Subject: [PATCH] mm/vmalloc: map contiguous pages in batches for vmap() whenever possible
-Date: Mon, 15 Dec 2025 13:30:50 +0800
-Message-Id: <20251215053050.11599-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 1/3] zram: use u32 for entry ac_time tracking
+Date: Mon, 15 Dec 2025 14:47:11 +0900
+Message-ID: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 55B03A000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: mnhzrsghbwth9txtefj7hxwn6twf7n6r
-X-HE-Tag: 1765776668-439028
-X-HE-Meta: U2FsdGVkX1/K81zJj91LbkwQ+QjJnxIMuGofHNyTFVplwoEPrUzSaxHos9ssFNmxmBp3+Hsjk7+56fJndoQsQoV+J8IEmjRkq7oD34ADJJeAkrK8+ttOQLfwZn9Kj+okCGibRz7tJLuYku9vmW7/Tny0XKtaHjDOMk3OxxtM2SNJoNDPMgrYb3aR8IgzdSAkuCiRyeF6EYi84xb/o1PxxvX5HfXhv5vyZZondLkGfsFHuBdK1MLaGrtuwWOGanfNOsYxyrIw+agZ/xh+HObYqQ/YnlMe3lW16Z025/u1CAVNX93Dpl2C+eWt+ZoWkXbb10SNONmluINTLfPRPPAbjyLJ4nPm1bD8LIOSqjd5pbDOFd5hJm52s7ngyUi2fTOpmZQ6pkqYrFA/eNAhbaZXyfuNEF5246Fpk3V/XNEFRTp58Ky6qLQ2Zjwdq0RwdS4ZaRSWYpnWoRHEiTcskByYPAogMpC3ETokcuvUsUBBWjoID/31ZPXcXUb8CjafSZPskBiyYof7WlTIjzNi6LnFT1jvTLTnC+ZED7gWrH7zgEZ32u7viJaxXxRmnjbGotudQnwAHDT9GWnnjo+kVr/PUIdH4D+oBPMbu7yh4yXQo/nfcVuNNt2V8b4k4WY0C6C4cSubY9HKYg3fie6bYnF3qjJargWn+9RnusKTj3GZGOPxhtBTT0Gh7EKB3FSBNXF7AdFdpfReGyaXEOPQKf5QKNOvNHDh6UAYLTmz6ZtctV9sSXVCLD0YVoGpRRlHzASkoD22Fg3Enr3qd2yKhWFKP79R3IHbeeYXvqLD1o5uIC70qd47ZHwYc1opzhfesKVQmzZcYvHfIyFU5eAYsRoCyvL4PA0zugjxqFSTN2/gSGSlMVMUw9vdocY2GgQOEAiLsXxHyAYDTC8F0YjhMPOHCQ4ZsUxaGjujgOpwOcf8dIMeSrFXZv+wdNpZAA5yqteMpr4bxNGKCMfY2RouIl4
- p4b5KE6E
- RaJFbu3ZL0CEQ0+0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EEDBA40005
+X-Stat-Signature: aqofpbrf5x9u6rzg1soy6pid475d1ojp
+X-HE-Tag: 1765777653-217453
+X-HE-Meta: U2FsdGVkX193uB8xls1E7iX5JEryetLCwwvMfvAbceo4ZDdoL5LGAW27b6nnMDMxbmOaGYeFYAPIFBbQi0oiTAqkeBiIsacMiZI2PeGygwjbq8TnJ4VKdwya8vK7HLy8BV3EW36rLzWCYLimk1dq3aK4Hg9t7TD1HXrMa6scKQAhdAIBcSdml0O0B8ibosmugrO/UnprpwIkQc5Mts7VdTkhZ2VHNCdEEAAfc1sBVPQxEg+kW4tHtRHcFNWkempPl1rTmnd3M58Ih7mkpSdCQryMEpVVKiG5GOP8DDkecqtvfHPT70rwJzwpITmB12inTMR7Nxao4U3alKOYuFwOLOH4DPG4eIylwbZ5arsOuOq/1ad8Q8zDtURwtYxoS6DzMqoCMuFy4fYFk2TKed/dDJXYqwKRu4JxNJwjBgpWbUXHbfwJqPW8FceUXkN+QU2zBTOQ861jf1CDXD/TaA7D0L+5WhTMZAj9QunKiHYWloa98noV6bTIxM8z54m9EuhDVQPe6gPtDhZaJ0MiHLSTp/zRK9sinYAT7y0itUzs0lHOVWTnCw6AXUKRhsnqWUKqTBGbJfn6jRsynkw5SecgZfHeRtH1r0Wctd3MfATTFMkHi2pFSz+IgLdNFCbAjSEehuXPtbaOkO8eZ1fXRGgTcQ9N9IpXemgEfIqAbJO0auEWQWSgMqH2fulF1BtXDEjeJMym566Vvou7iPFNYjvu3JXJEZ0x9SeJo6pMWECIs/yxiYkN3drEOZEp8kJzQuH1E94I8edH5fP+vErqqDmNA8M2qoJmZh3qLCApvVOCZfz6nNaO5knzQ4Z2m7AyevtRjzR8OqWAH+/rwmvU9RRcUGimrPEEh902M8VJY+GZm55PeqjxE28R98XnrOfq2avve/95rJPemPSAmjYKq0pY03mb+MTFGAiM0bZi6VT0LA+HeurRwo6g+DwfMhj61gydfMRlNCJcM6dWpINuPni
+ 1q+pY+97
+ POmgJRPNY9nyC+QekKjEFJtzX7GP8DlkKMatkHbPDC+avnSutTDy2YMianOXITRiLhwqW3DFZWeKL7Mb6BUM6QBJmQZp6wNXbKkYaztGW7yRfXSfONyAs8gvYvjXDhuGm1jCPrjqSiT+QZn4w90gagA/SbgUDFl+9B/Z+O7CyPXiRHJW1iVIcwhislKAWkswystegi+IwJ0dUhQmhXOr9u39GeDKqouJ3vAFnm19NBM9+L1IB4rh9TDdy925aaMDDBKuvT+wV8CUY3MPwuNKAoUdd+33u567AeazaM6Qb+pC1tVMO1/ID4EDFu6xekPWx9Rm5eUrLDwHpYPBgbygXQk7g6+74q0OoiOEGcBPhiJw+/GeC8Q52tAJUxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,129 +119,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Barry Song <v-songbaohua@oppo.com>
+We can reduce sizeof(zram_table_entry) on 64-bit systems
+by converting flags and ac_time to u32.  Entry flags fit
+into u32, and for ac_time u32 gives us over a century of
+entry lifespan (approx 136 years) which is plenty (zram
+uses system boot time (seconds)).
 
-In many cases, the pages passed to vmap() may include high-order
-pages allocated with __GFP_COMP flags. For example, the systemheap
-often allocates pages in descending order: order 8, then 4, then 0.
-Currently, vmap() iterates over every page individually—even pages
-inside a high-order block are handled one by one.
+In struct zram_table_entry we use bytes aliasing, because
+bit-wait API (for slot lock) requires a whole unsigned
+long word.
 
-This patch detects high-order pages and maps them as a single
-contiguous block whenever possible.
-
-An alternative would be to implement a new API, vmap_sg(), but that
-change seems to be large in scope.
-
-When vmapping a 128MB dma-buf using the systemheap, this patch
-makes system_heap_do_vmap() roughly 17× faster.
-
-W/ patch:
-[   10.404769] system_heap_do_vmap took 2494000 ns
-[   12.525921] system_heap_do_vmap took 2467008 ns
-[   14.517348] system_heap_do_vmap took 2471008 ns
-[   16.593406] system_heap_do_vmap took 2444000 ns
-[   19.501341] system_heap_do_vmap took 2489008 ns
-
-W/o patch:
-[    7.413756] system_heap_do_vmap took 42626000 ns
-[    9.425610] system_heap_do_vmap took 42500992 ns
-[   11.810898] system_heap_do_vmap took 42215008 ns
-[   14.336790] system_heap_do_vmap took 42134992 ns
-[   16.373890] system_heap_do_vmap took 42750000 ns
-
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Tested-by: Tangquan Zheng <zhengtangquan@oppo.com>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Suggested-by: David Stevens <stevensd@google.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- * diff with rfc:
- Many code refinements based on David's suggestions, thanks!
- Refine comment and changelog according to Uladzislau, thanks!
- rfc link:
- https://lore.kernel.org/linux-mm/20251122090343.81243-1-21cnbao@gmail.com/
+ drivers/block/zram/zram_drv.c | 60 +++++++++++++++++------------------
+ drivers/block/zram/zram_drv.h |  9 ++++--
+ 2 files changed, 37 insertions(+), 32 deletions(-)
 
- mm/vmalloc.c | 45 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 39 insertions(+), 6 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 41dd01e8430c..8d577767a9e5 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -642,6 +642,29 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- 	return err;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 67a9e7c005c3..65f99ff3e2e5 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -81,7 +81,7 @@ static void zram_slot_lock_init(struct zram *zram, u32 index)
+  */
+ static __must_check bool zram_slot_trylock(struct zram *zram, u32 index)
+ {
+-	unsigned long *lock = &zram->table[index].flags;
++	unsigned long *lock = &zram->table[index].__lock;
+ 
+ 	if (!test_and_set_bit_lock(ZRAM_ENTRY_LOCK, lock)) {
+ 		mutex_acquire(slot_dep_map(zram, index), 0, 1, _RET_IP_);
+@@ -94,7 +94,7 @@ static __must_check bool zram_slot_trylock(struct zram *zram, u32 index)
+ 
+ static void zram_slot_lock(struct zram *zram, u32 index)
+ {
+-	unsigned long *lock = &zram->table[index].flags;
++	unsigned long *lock = &zram->table[index].__lock;
+ 
+ 	mutex_acquire(slot_dep_map(zram, index), 0, 0, _RET_IP_);
+ 	wait_on_bit_lock(lock, ZRAM_ENTRY_LOCK, TASK_UNINTERRUPTIBLE);
+@@ -103,7 +103,7 @@ static void zram_slot_lock(struct zram *zram, u32 index)
+ 
+ static void zram_slot_unlock(struct zram *zram, u32 index)
+ {
+-	unsigned long *lock = &zram->table[index].flags;
++	unsigned long *lock = &zram->table[index].__lock;
+ 
+ 	mutex_release(slot_dep_map(zram, index), _RET_IP_);
+ 	clear_and_wake_up_bit(ZRAM_ENTRY_LOCK, lock);
+@@ -130,34 +130,33 @@ static void zram_set_handle(struct zram *zram, u32 index, unsigned long handle)
  }
  
-+static inline int get_vmap_batch_order(struct page **pages,
-+		unsigned int stride, unsigned int max_steps, unsigned int idx)
-+{
-+	int nr_pages = 1;
-+
-+	/*
-+	 * Currently, batching is only supported in vmap_pages_range
-+	 * when page_shift == PAGE_SHIFT.
-+	 */
-+	if (stride != 1)
-+		return 0;
-+
-+	nr_pages = compound_nr(pages[idx]);
-+	if (nr_pages == 1)
-+		return 0;
-+	if (max_steps < nr_pages)
-+		return 0;
-+
-+	if (num_pages_contiguous(&pages[idx], nr_pages) == nr_pages)
-+		return compound_order(pages[idx]);
-+	return 0;
-+}
-+
- /*
-  * vmap_pages_range_noflush is similar to vmap_pages_range, but does not
-  * flush caches.
-@@ -655,23 +678,33 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
+ static bool zram_test_flag(struct zram *zram, u32 index,
+-			enum zram_pageflags flag)
++			   enum zram_pageflags flag)
  {
- 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-+	unsigned int stride;
+-	return zram->table[index].flags & BIT(flag);
++	return zram->table[index].attr.flags & BIT(flag);
+ }
  
- 	WARN_ON(page_shift < PAGE_SHIFT);
+ static void zram_set_flag(struct zram *zram, u32 index,
+-			enum zram_pageflags flag)
++			  enum zram_pageflags flag)
+ {
+-	zram->table[index].flags |= BIT(flag);
++	zram->table[index].attr.flags |= BIT(flag);
+ }
  
-+	/*
-+	 * For vmap(), users may allocate pages from high orders down to
-+	 * order 0, while always using PAGE_SHIFT as the page_shift.
-+	 * We first check whether the initial page is a compound page. If so,
-+	 * there may be an opportunity to batch multiple pages together.
-+	 */
- 	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
--			page_shift == PAGE_SHIFT)
-+			(page_shift == PAGE_SHIFT && !PageCompound(pages[0])))
- 		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+ static void zram_clear_flag(struct zram *zram, u32 index,
+-			enum zram_pageflags flag)
++			    enum zram_pageflags flag)
+ {
+-	zram->table[index].flags &= ~BIT(flag);
++	zram->table[index].attr.flags &= ~BIT(flag);
+ }
  
--	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
--		int err;
-+	stride = 1U << (page_shift - PAGE_SHIFT);
-+	for (i = 0; i < nr; ) {
-+		int err, order;
+ static size_t zram_get_obj_size(struct zram *zram, u32 index)
+ {
+-	return zram->table[index].flags & (BIT(ZRAM_FLAG_SHIFT) - 1);
++	return zram->table[index].attr.flags & (BIT(ZRAM_FLAG_SHIFT) - 1);
+ }
  
--		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-+		order = get_vmap_batch_order(pages, stride, nr - i, i);
-+		err = vmap_range_noflush(addr, addr + (1UL << (page_shift + order)),
- 					page_to_phys(pages[i]), prot,
--					page_shift);
-+					page_shift + order);
- 		if (err)
- 			return err;
+-static void zram_set_obj_size(struct zram *zram,
+-					u32 index, size_t size)
++static void zram_set_obj_size(struct zram *zram, u32 index, size_t size)
+ {
+-	unsigned long flags = zram->table[index].flags >> ZRAM_FLAG_SHIFT;
++	unsigned long flags = zram->table[index].attr.flags >> ZRAM_FLAG_SHIFT;
  
--		addr += 1UL << page_shift;
-+		addr += 1UL  << (page_shift + order);
-+		i += 1U << (order + page_shift - PAGE_SHIFT);
+-	zram->table[index].flags = (flags << ZRAM_FLAG_SHIFT) | size;
++	zram->table[index].attr.flags = (flags << ZRAM_FLAG_SHIFT) | size;
+ }
+ 
+ static inline bool zram_allocated(struct zram *zram, u32 index)
+@@ -208,14 +207,14 @@ static inline void zram_set_priority(struct zram *zram, u32 index, u32 prio)
+ 	 * Clear previous priority value first, in case if we recompress
+ 	 * further an already recompressed page
+ 	 */
+-	zram->table[index].flags &= ~(ZRAM_COMP_PRIORITY_MASK <<
+-				      ZRAM_COMP_PRIORITY_BIT1);
+-	zram->table[index].flags |= (prio << ZRAM_COMP_PRIORITY_BIT1);
++	zram->table[index].attr.flags &= ~(ZRAM_COMP_PRIORITY_MASK <<
++					   ZRAM_COMP_PRIORITY_BIT1);
++	zram->table[index].attr.flags |= (prio << ZRAM_COMP_PRIORITY_BIT1);
+ }
+ 
+ static inline u32 zram_get_priority(struct zram *zram, u32 index)
+ {
+-	u32 prio = zram->table[index].flags >> ZRAM_COMP_PRIORITY_BIT1;
++	u32 prio = zram->table[index].attr.flags >> ZRAM_COMP_PRIORITY_BIT1;
+ 
+ 	return prio & ZRAM_COMP_PRIORITY_MASK;
+ }
+@@ -225,7 +224,7 @@ static void zram_accessed(struct zram *zram, u32 index)
+ 	zram_clear_flag(zram, index, ZRAM_IDLE);
+ 	zram_clear_flag(zram, index, ZRAM_PP_SLOT);
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+-	zram->table[index].ac_time = ktime_get_boottime();
++	zram->table[index].attr.ac_time = (u32)ktime_get_boottime_seconds();
+ #endif
+ }
+ 
+@@ -447,7 +446,7 @@ static void mark_idle(struct zram *zram, ktime_t cutoff)
+ 
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+ 		is_idle = !cutoff ||
+-			ktime_after(cutoff, zram->table[index].ac_time);
++			ktime_after(cutoff, zram->table[index].attr.ac_time);
+ #endif
+ 		if (is_idle)
+ 			zram_set_flag(zram, index, ZRAM_IDLE);
+@@ -461,18 +460,19 @@ static ssize_t idle_store(struct device *dev, struct device_attribute *attr,
+ 			  const char *buf, size_t len)
+ {
+ 	struct zram *zram = dev_to_zram(dev);
+-	ktime_t cutoff_time = 0;
++	ktime_t cutoff = 0;
+ 
+ 	if (!sysfs_streq(buf, "all")) {
+ 		/*
+ 		 * If it did not parse as 'all' try to treat it as an integer
+ 		 * when we have memory tracking enabled.
+ 		 */
+-		u64 age_sec;
++		u32 age_sec;
+ 
+-		if (IS_ENABLED(CONFIG_ZRAM_TRACK_ENTRY_ACTIME) && !kstrtoull(buf, 0, &age_sec))
+-			cutoff_time = ktime_sub(ktime_get_boottime(),
+-					ns_to_ktime(age_sec * NSEC_PER_SEC));
++		if (IS_ENABLED(CONFIG_ZRAM_TRACK_ENTRY_ACTIME) &&
++		    !kstrtouint(buf, 0, &age_sec))
++			cutoff = ktime_sub((u32)ktime_get_boottime_seconds(),
++					   age_sec);
+ 		else
+ 			return -EINVAL;
  	}
+@@ -482,10 +482,10 @@ static ssize_t idle_store(struct device *dev, struct device_attribute *attr,
+ 		return -EINVAL;
  
- 	return 0;
+ 	/*
+-	 * A cutoff_time of 0 marks everything as idle, this is the
++	 * A cutoff of 0 marks everything as idle, this is the
+ 	 * "all" behavior.
+ 	 */
+-	mark_idle(zram, cutoff_time);
++	mark_idle(zram, cutoff);
+ 	return len;
+ }
+ 
+@@ -1588,7 +1588,7 @@ static ssize_t read_block_state(struct file *file, char __user *buf,
+ 		if (!zram_allocated(zram, index))
+ 			goto next;
+ 
+-		ts = ktime_to_timespec64(zram->table[index].ac_time);
++		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
+ 		copied = snprintf(kbuf + written, count,
+ 			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
+ 			index, (s64)ts.tv_sec,
+@@ -2013,7 +2013,7 @@ static void zram_slot_free(struct zram *zram, u32 index)
+ 	unsigned long handle;
+ 
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+-	zram->table[index].ac_time = 0;
++	zram->table[index].attr.ac_time = 0;
+ #endif
+ 
+ 	zram_clear_flag(zram, index, ZRAM_IDLE);
+@@ -3286,7 +3286,7 @@ static int __init zram_init(void)
+ 	struct zram_table_entry zram_te;
+ 	int ret;
+ 
+-	BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.flags) * 8);
++	BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.attr.flags) * 8);
+ 
+ 	ret = cpuhp_setup_state_multi(CPUHP_ZCOMP_PREPARE, "block/zram:prepare",
+ 				      zcomp_cpu_up_prepare, zcomp_cpu_dead);
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 72fdf66c78ab..48d6861c6647 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -65,10 +65,15 @@ enum zram_pageflags {
+  */
+ struct zram_table_entry {
+ 	unsigned long handle;
+-	unsigned long flags;
++	union {
++		unsigned long __lock;
++		struct attr {
++			u32 flags;
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+-	ktime_t ac_time;
++			u32 ac_time;
+ #endif
++		} attr;
++	};
+ 	struct lockdep_map dep_map;
+ };
+ 
 -- 
-2.39.3 (Apple Git-146)
+2.52.0.239.gd5f0c6e74e-goog
 
 
