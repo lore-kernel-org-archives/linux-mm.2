@@ -4,173 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FAC1D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 08:50:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67E7D59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 09:05:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C325B6B0006; Mon, 15 Dec 2025 03:50:38 -0500 (EST)
+	id F31DB6B0006; Mon, 15 Dec 2025 04:05:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE3266B0007; Mon, 15 Dec 2025 03:50:38 -0500 (EST)
+	id EE3736B0007; Mon, 15 Dec 2025 04:05:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD2096B0008; Mon, 15 Dec 2025 03:50:38 -0500 (EST)
+	id DD12D6B0008; Mon, 15 Dec 2025 04:05:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CCE46B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:50:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33D908B633
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:50:38 +0000 (UTC)
-X-FDA: 84221084556.16.8E8B69E
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012034.outbound.protection.outlook.com [52.101.53.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 562A9A0003
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:50:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=EoXkeA0k;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.34 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765788635;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB37B6B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:05:58 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78B71140E6D
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:05:58 +0000 (UTC)
+X-FDA: 84221123196.22.1DCAB5E
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9D2D3C0005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:05:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Wb/EMmp5";
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765789556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=95aXhXK168YJQ3T98bSDL2tnXRBYy0o0eONLNvVAD90=;
-	b=uHCTQBofzjSN/6nFMRmueXkelFj0owjGUiF18HuFQgrAoMPqJpdvM7nvItimTnA8WisPsj
-	CHRLeOnHJrd+zeP5lzU1iJFVMQ2zsCnFDLawoyL4UldZDD4kC1swDw8O+Zf//LvpLqTdCd
-	PJ0GsOXKuM3wekF3pKkC6/AAg8TP9/o=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=EoXkeA0k;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.34 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765788635; a=rsa-sha256;
-	cv=pass;
-	b=v94/RQkXCYz+K/0751xAMXySBPVOPzSlCSAvYLobpzuY5YxUmd6a/gr+KJD5qchOMYwsqu
-	mjFPF98k7bg+CgveTRREqLACJBYrqMQuTAVIsYWjHT837sJKIK4xQE6Dnj03ewmK40PCXP
-	+3gh2xyDT3qzFSdXiVSeFWo9hlOXos4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oSg8NaZTKwyF5QADiVLf4p6p4NwjBfgFRJHcB+Y7fPsThaqn0RPlUA0e880+dxc0BvDj+328qF/Fs0aHRadJi81rr/ric5NA2kgeLzd06VMh7IVOGyZ1bXD2QdjVYBDpLAYOzb9jus4TtMwW3schX0pEcVnmnA0B+ruQ0flay2J6G+M7att9FKSVNHloEsfSeuPRQ13OOc+DUH1NAxs8BG9keVFMRyRlgwEbPGLkctO8EmVmDRmQb22G7tXedTEW06L7Fyj+TcZyGRdFPYYtEmBrIKNA57R5gXfRj30WD0Xyum3proQNPyupbmIL+AsnREXXAcYJMTQ4P61haq/wGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=95aXhXK168YJQ3T98bSDL2tnXRBYy0o0eONLNvVAD90=;
- b=qx0wqE8d+WcSTQpxynl/3WW+VA+T5PnxCa0h/1EqwIKabZnQc53OTja+A61slOlLpGoYtjZOJ0AkqSbHJ8QapiJXCtUEb9KaYaX/BgV1GJ330/NHLcCiGYT4Jtvh68mF4dUneZ2B4SK9ArKD36MNWaxMqUxdPinhFN/zbXy6obpsIAIYyUDcsV/07ZgnvkZet/oKhIbC5zTBGSFZSPBaGWyRractNkoj0NVuEL3idu/HNdcC1QFq2ywz9sI7lrKj8uAs1JDj3s62qCd0xVli1UgRFx07+QnCrvThZeTDTN6kDRxoncBjwODLGVqpIv1JKnJqzlrAK4hIpGBOAX16gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=95aXhXK168YJQ3T98bSDL2tnXRBYy0o0eONLNvVAD90=;
- b=EoXkeA0kk1vr3A4e/fPhjEtqtmsHjmlbfokY6knN2rmJ+srb9D3M0Nv0sTq4ZHUzGhETJaJOdkkRwLUL6tAoGYWGFUQkFmxh1IL0Qw64DghzPv1pKyaynve5aBFzyhvAlm4yLFSju9ezI69fbR+mAs9zlswx6uQN/8EuOttmYWo=
-Received: from BYAPR05CA0088.namprd05.prod.outlook.com (2603:10b6:a03:e0::29)
- by DS0PR12MB999103.namprd12.prod.outlook.com (2603:10b6:8:2fe::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
- 2025 08:50:32 +0000
-Received: from SJ5PEPF000001D3.namprd05.prod.outlook.com
- (2603:10b6:a03:e0:cafe::4f) by BYAPR05CA0088.outlook.office365.com
- (2603:10b6:a03:e0::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Mon,
- 15 Dec 2025 08:50:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001D3.mail.protection.outlook.com (10.167.242.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.6 via Frontend Transport; Mon, 15 Dec 2025 08:50:32 +0000
-Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 15 Dec
- 2025 02:50:26 -0600
-From: Shivank Garg <shivankg@amd.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Steven Rostedt
-	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, Zach O'Keefe
-	<zokeefe@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <shivankg@amd.com>, Branden Moore
-	<Branden.Moore@amd.com>
-Subject: [PATCH V4 2/2] mm/khugepaged: retry with sync writeback for MADV_COLLAPSE
-Date: Mon, 15 Dec 2025 08:46:19 +0000
-Message-ID: <20251215084615.5283-7-shivankg@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251215084615.5283-3-shivankg@amd.com>
-References: <20251215084615.5283-3-shivankg@amd.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=aKdKKPDOWf7vzMrR3rtnaetbgHmOz7vuwp2dDNjboIM=;
+	b=LrJDOWP/1/S84C2iiddqPxXGOgSRVc45jFn5TNGv9epJ3gPUjFLqJjDN5dsjLgZmexvxzU
+	VCuFEGbZ3PxqgeIK0T/UxRgFFX5sTwILHJXCc0I1EmXU5c6LvtdD+nANynswJ9wGd/Xa1Z
+	TUO7Yv8OicbIsztAoWdE8PJo1Nnmo5U=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Wb/EMmp5";
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765789556; a=rsa-sha256;
+	cv=none;
+	b=q/cj55N/7UYcl6FSIsYZj/q2qhqRRBSKiKkBNCLHDXKR6Rbx1yaVBd7Vghvsaf69Z6E5fh
+	wBKTkIBsNRcH0Lct/Y6PSSPGYdl/VqVRodPLKq2zZ0C3u0M9NpavRnsMVVIToLGXwRFga2
+	G6ue32fr0muu55jOofgvydOEsMb/dY0=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7baf61be569so3826342b3a.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 01:05:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765789555; x=1766394355; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKdKKPDOWf7vzMrR3rtnaetbgHmOz7vuwp2dDNjboIM=;
+        b=Wb/EMmp5FFj96xLp6AdyrTiqHqjZlwkVOxQzLbP6T2LwDd26p3AhJ3LcDuQcGx5sjk
+         utXEtEs+M4fGbbuK/MS9mgbGKKyHClkX2YjWqOzvUuDjZGGTrQ/JsDvbiboqAMEUXquk
+         rD7q90Kmi2JbS1b4e7jRVTEKNsrTK4/eE8AtnNhiW+3cC6eLMni0pmTdZs5TCo+UHMpf
+         DW+tQKY0FhqZ6J/Nl6Tev2knCryxZU++DOEQ694e4HFdzCRT8ZK+IFAjvS28dsHqtFoB
+         g7pZargP99lUXVNCwWpSpXd0pEoWyy9njx7GJCWTqTYtq16kLL8qV53cDWhDxQ1XTVTU
+         pJOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765789555; x=1766394355;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aKdKKPDOWf7vzMrR3rtnaetbgHmOz7vuwp2dDNjboIM=;
+        b=GmSPsciNNpqPB7cv1lu7tWTmxO3y/Gcdv+0R/A4x+n9TJbz13E4hRhjdpbNWh1tBv2
+         jekmIZpaFkmoTxyhIqu45z7xDtd322ElZAA3lssFY5+TXvqysjce4tuBUA4J4ZovKSj9
+         O0cTigX+uKBjXRZcY0TaKXe82TfoQ1ir6vY6yqC6bjhjt2ejb7XKPkPFspxBajhCMjoD
+         yc3M8PpzGFWJ5lvNVUYydBdybgceAEZeoAdPhN7X0zN0/gKFRLsx5g2eDj07WiDuKLm7
+         6LM46bl9XKV4chaWGcB2j13ghhUlJHNmJpY1nVg2yBsLMnAOxfzMYaMTlObIBHm7xyLM
+         qhVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyGmfIW+BOHFazYuCYGatC8sLjPpxpJD/1rTrUT2gq7JPlgBx+W928Z6+SdtY6CdeSqvv6QYo8RQ==@kvack.org
+X-Gm-Message-State: AOJu0YxS64sVvb+IR6ckljNU7Og6MDxQf5s2VehUq41zKi9Um4rdCvUd
+	cCOnZ8AArusoDEtNb16xf+lSvnKUMmq+UjC/5X2dBE6rKq7/jECQLSXu
+X-Gm-Gg: AY/fxX7HieOnB+pMNJEEkPEUf0z+IZ/UGRN+kXhdbCsl3uy6jiYr99QD7qGsI1fr7YJ
+	F6QSyrA6D/YFcgLRHw0QtBZ+DxSunAjciC710uiYFQF1t9gWCE64Wb+pw1fWsmR9gwm0dTWP4Ka
+	leA+kuJJqAx0/0KlUiFKJJE5VhVR5yKNdbjqvuxNYZdPZkJtEoOkQ5B0rsAP0sQg/l7chqb2fid
+	Xtd/iQUi7HwCmL6flVuELRmtgYlowjPrUSlojUaGOt5Vd0gpfi8GYu/Lfa3/r2PoRt9O5MqyhPY
+	BcqPIfCDpatKRmrMGSOcU4Q8+LFnDthpP5EIY9ORV7qvqX1xxE6o259JwJO5+u7yW05DmAH+Pr1
+	0WdIFX8Uvz4QbI07oOS8O5jmziJum75/UiGk8Ze4ltZDm/y4rvxwcjDeB6KrBRfaLxa1SCTkcHl
+	fgHgVN+SwCQqpwHcguGdDIPtog4gv+GQ==
+X-Google-Smtp-Source: AGHT+IEgMNDMD5jTUj08cwufsuYstUF8DV2qQWsp5rLpW0mkw4JoP75AYmribzw7hS50zZNGkv4OaA==
+X-Received: by 2002:a05:6a00:f99:b0:77f:2dc4:4c16 with SMTP id d2e1a72fcca58-7f667b2b708mr8238562b3a.21.1765789555313;
+        Mon, 15 Dec 2025 01:05:55 -0800 (PST)
+Received: from localhost.localdomain ([114.231.217.195])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c5093a40sm11993160b3a.46.2025.12.15.01.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 01:05:54 -0800 (PST)
+From: Vernon Yang <vernon2gm@gmail.com>
+X-Google-Original-From: Vernon Yang <yanglincheng@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com,
+	npache@redhat.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH 0/4] Improve khugepaged scan logic
+Date: Mon, 15 Dec 2025 17:04:15 +0800
+Message-ID: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D3:EE_|DS0PR12MB999103:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b92a53c-75ee-448a-1db5-08de3bb70168
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|82310400026|376014|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IXEfMqsK9SY62b7mjGlrIpHLHuY0YlhMULvm1BHtpq8wgy2b8k+oL0ZXdv5P?=
- =?us-ascii?Q?c9lPe2o8S4GVhlfsyZnk+YVo3Uo9ILRONH6LoyiJXup8DFhPPQ+sDgpm3+yt?=
- =?us-ascii?Q?HjUzxsOcH7kNSKfwu0Y07l6BWAdptbr4/OqYiDn5kj8KgFZ+HDgLVDb3ymHa?=
- =?us-ascii?Q?v7/5ETpOad+bNi2n84afC2I6m4icSt+R5GvQA7jozEMkpMUtJgxSO0vHbp0Y?=
- =?us-ascii?Q?G0NSeVrhX+Fu3/ugB/tan8uBb6OCVb1Th5KH16EAZY2u8MKkSKOkUygzy9q4?=
- =?us-ascii?Q?R0ADEXKxRnftEIfqstmU2aJtKjWupEfJ+SGOYtUa2gMU0pDPtDMCwihyBFT2?=
- =?us-ascii?Q?qlMsaiivEhmCtpsPmJTVSR4/2OBtxG6a5DPKeqwmqDE7n5yTDVo3oFFumql1?=
- =?us-ascii?Q?pTLQxd/IZftGA9SaIcNVC5W9dW4+JNbkWE4BOQv7tjXJUS0t+B8r26YX5zrB?=
- =?us-ascii?Q?ONmdbBOYfkOwC9IUlwpvLhrdYnAR8l26xnMt+I3mJ0uqFY/+OvJzNTiQocPH?=
- =?us-ascii?Q?skrXBExVLMeFXJp9wUiUKXzAJ2R4GYm1po7mhUp3CQgSHU10LImioIxPHAOt?=
- =?us-ascii?Q?j8ksXpzbEuPzXhYXuknLUgJsYMskOz24etkAzEc+d9pEKGFo3OcW8P9pCqYT?=
- =?us-ascii?Q?fZAuVB0MnqrfVm03ZwVKvyxc24FOzl3DW4IPuhGYdlLIACm+EXhj9ba7OO9O?=
- =?us-ascii?Q?IrHnYqREi1DhuahJdIcFcKNESeRFp0OjTqCMRJ0IBIL+KRrDIK8vNqB7CG+p?=
- =?us-ascii?Q?2SbrehmhWMfWVjPNFJKD+Fo3giiHbblQjw8GnO8bBuStxymU8BlFbLoSs2Kr?=
- =?us-ascii?Q?NkJWhNYOE8yCnvq3jX509DWhr8TfjNkMO5sPb4i2H6LBtC2jW3a96ARzS0eW?=
- =?us-ascii?Q?4L9qaU3QTh4HLKhJqb9Wl4hPxWvf9UjxbeVywcAuESb9pzFfQMQG/3HzsThF?=
- =?us-ascii?Q?hm9NBW6ARLbVN5Ps/sZ5YsOjwyq+MQYyclXD5XWhygaanfk6Cokr7OisCCBL?=
- =?us-ascii?Q?M6V3DMVfoRwEHnExK2Htx/nogcX2OWbg3kQ3EosG3WcBWAtc4aaZegJtxNYj?=
- =?us-ascii?Q?KJ2PkCCFH+NjJ3U+ewu47U/ldtMmT9UegyXkyB686hBBWYU1fgDg9kQDnk44?=
- =?us-ascii?Q?sBJpN+5rUBEk5cVguvZcvVWL1/PHfzcQYQWUP7/MuRNdz3zgfcf75U7YQtEU?=
- =?us-ascii?Q?X9l4Kd0eM8KM8t3ZHTlJn6vOtBe/gp+zbBysG0SKswgYscCl0eEwOpVUIqWR?=
- =?us-ascii?Q?6sHN++GkelKrOnX922ASELJFpt2z8L5PuSqukjFnwPgz/XY7uFqbvr07gSFN?=
- =?us-ascii?Q?OUl8PBoeDmkCWEIB+AbG3ZcHatkt8CcZQL8Vn6yJrVPYCAIu6XF2DZyqycxF?=
- =?us-ascii?Q?asYxLoUyPc7HGRd6D/QdviF9LoFGdQjeZtDvZn6KTa7wbqRRlpqHw7emulWX?=
- =?us-ascii?Q?8PV+8R2NnRpdepf8MPOG7PWDXCWOf1EP2s2uP1gawkKTvLSRjzorCz79GWK4?=
- =?us-ascii?Q?4E+OWmelh4insfd92EaBAXr2l2Li5BDoJ0nYIlfmTuit8X1+zgsUMRX6RGv8?=
- =?us-ascii?Q?pa9YtYu+UD/tDT6ccp0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(82310400026)(376014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 08:50:32.0482
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b92a53c-75ee-448a-1db5-08de3bb70168
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999103
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 562A9A0003
-X-Stat-Signature: ahyoozi5b8q3wqxpmz65d3zbttpdt7ca
+X-Stat-Signature: qh43wmttnfqs3xezsp7zeo4ynxewypdw
 X-Rspam-User: 
-X-HE-Tag: 1765788635-109792
-X-HE-Meta: U2FsdGVkX19t7hSKFZWw9muVXImfUVcCNMI8P5CKz52XVKvxrLsoS8WX+1WDpl6RVVU1DDlnEXS4JOlz2xXEDMOJEvIqxYVH3E46gYfc2kYVj+WeMbKKIN6TfHF2G9MEw7rXp+aXfSfRZk6pUaY55i/vREv1gNUxsFFyV8DiO/8JlicllR4ywBd4us5WDAuKDfu1iyGHX3bhoaQFT4xAQLYqZINB1n5Uo1DqzjtJZvNPHsbpfyJqZr17JRH9M22KvPZv8nPjJAErs0mAv2LukL+aT4TyWhjvBOD3+O5cokxqiaKd7lGQ4vm4h9gzM4jzUYljesAavOuNoTeObYVx2/GawXsHlCKBgqFqfEvPOhgm0aYtpdCOkrsgGlsAwXAWEI/JlKHY+q/8tnePdZA84H6Jtd7qUSICT5RSka/n7JkxFXR41i+fMWz14LIABYwg0puPdFS1W3gjAh/BEMI60EvCPXYulMSW098Y4/G1jjCQiApwMgWL4Gna7ySiNRIJb1QcGRgkmkHOj1nO87/GznTLpk3RZowb4o0JD04/JUyubkDK+OpyU6NNKOva3efTuns1ZHWgcciwqriNQcJGuTOONTi9AJyVFjVkyk5mhjirt+gD1xJrFyy8tRlhp+N78Xm6bS6nbOKb8dk76sAf672hxlzR/q4OxByzFyRk+38IVKNgeW9fXbb2erxY7mN4ZJ+/qDJG/LhAkZU0031nS6kdwMzjTyaCJukni4GBna5elItnx/WZAz+QgT+WPLsyR99DHPEWeMekXVvj9s20FPAVGqTu2V01Q2YxlBD7p0QHQsEtDCrn77UZKop9VTO6FjlZLL0idOL/lTmqWOHKvk1x1HJU6vFLlu2X+4zEdP6MYJB5DLq1bmNUsrZKI01zgPslZNllbhp155DPWni9oGKfLQs/yu6E9vNs+YLDtyCtv1TFiKHsFgMGa4MoA3uaH0dBoRvvlyLvluGOVJR
- FH9suGVm
- nmu86JdniSldKLrxWRneDQXfOrONBPTXbv7AvXFghp0IDk56E8J5bRkDLKUVuFxQYgxdQKnvrkOacB59oO280tsflmeLa77sNN6r75Qsjok5+aO+IOxkb4mNPXUxFQoyahH/RTfsz8OUYFTi4PfVzun86KE0pjepkNy2fRf0c/3Mv3mKYYXO35Fv4RhC/gkab1Kq6SpjSSGukWio19Ia14N9zGfix2xdMCpekdF3MqG1abguke2dOCXIygZPbjiox+4l+0NwCDan2G4MNKab9BjF6n+Jd/wlSB/dMZ5VqplZQRzmeKWTEiY5oG4EBQjcc5ReOU9xtoFY8mX5A5/xjL06JE8Fvmr2lgJcNvqE3GCo+7zv3KiT98LDQ/NJFPJKyBpsgmIuqXe/G8IP0r4RapSpkwy8E7zerKcyEg4pvjse94qGk2pr2q83rOFWWyCaLYAgs/I+q6KId6F1KvGRAqlP7WFkkiIhK1MHkFhzqn5GJFGt3T/1PFOQAoAhUXeolXvvclfTZX8sNw4A1tdCtuKmOyxXCdnbad9d6ypx9OXFAgII=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9D2D3C0005
+X-HE-Tag: 1765789556-656767
+X-HE-Meta: U2FsdGVkX18yDuSWnfmbZ5ElxEpBD0IhilpTFX2l8I6K5X9HzLchF6DPkkVrhClaCz6kTzggbwUnBTAVVWGYJjqTXNGMP+gYPUhEUYRZTH33/UxeDcQfN6sEVJLxXRE0ieJf5/teShW+86oMn9L0ULsnYulYVBl75mJUXtMwG36DCw83wN+I78w6bIqHG9IcNLJXnGL6FNjL27mmNKj0yYLzxykvTm8A16iOrcegiz3ILqG4yhuAgrIeglaa0Vt+cniu6Iq7c6e3TmclYVlcubbpHD2TEyqkScTF/Em4F8mYDWg0NbR4YXHcKc61eai3u80aXgjgDJLF9ev263G6ShywE56aou/gG9dZVUBbJ8VDstVTBzaMSnb36tHfUbUPR+jI8j4kFwiV8obAVPhq58tq9LqoE8qFjq+9EFKNFc/WpA2XYBDZwDlYBE5TUfUGTqPgcAhzUuaCSaADhQ0sIxao516VEa2St9LpOv3YWVmYKU6JwGHdJIOqibb2uT31gWyV/6BkPuql3nFx5Zbuy3gplnfSzvva6cxUIY0MEd5I25kDiSx6PAeMlkn9lBLkPkpTQclrFOASj4Br29behSCLMRS2SWwFSHCtpYB6yqZYLcq381xfN/hjJZ/zdplhOiwKJCVNRegJJvI0BWFjj5Hg8SY83yzx4eWY9aJSYxd6SC85hJS+1J4qX4UVNMvSCUOwqZ8U8YxiuVoe7q8ejgjWMdBm3Xd4SinoaiqPYODFXGj1zyQZQVxVpEaD65+Qeh3JNBGtWboW4hgwXwowpm2B/0BuuTovyMFhVdookAKAt7cx1cQWre0jvyL3bDnNpxw6ttHv+l2xchw1RXMLg7PL1nEPc/hcCaFnwbgatJyFwl8ZHSREzIxKvcZ3WiVf6Ryal5G1HIuF5fh8VNGHZOFKOtIu5XgEtFITzUC8w38TR4VFGzHxi4ep8l/fn8KwIcMNltMPAFpwaxRhIYw
+ F7P4tNCE
+ 84p271XDW9qF7mcTOOPnHX/6tIEZB9ywxVQt/yGjkUht5W7McIj99ygTEXhBCQ6/X6t7nsilIDMcd3V6YomjLaXe9BEIlcpn7gUOHQrpaIUnFstPakoU0tcIxzXbJX57b50q8PnhsARC1o11R3rmKPFV2+WKJ+qBA3p9fK0EOJjLBJx/uqLyFKIOFdn3GznLlJlzFg0XMgGKUV9PJ0N3UPT5WegSxPbvi7eRIVI8q31T9c6Fia6ZbgPR4BEa6KGEFtjDdG71LJ0E26vuO9hWC3ZOBrtPv8hVXILIORXffmxw/LZKnk838ukXzJldhvlAviKaRj5VdKt5aLNsezMDQJhUbD28v41PhW+SqytlRj1fKtfyD5HESvLuxo9pstI3nSsCNiEGz0jbyXCE6KKAtg9HizjtMRLafj9Wonq5IIl9ZzIeotMvrCpiXCGjwCReHIL3LkXtGcfK+MKgbgKnJqQzPsRKn1wzLnwnI5yHA2ToFGKe0lFr+PWucu0oLZs7NjERr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,97 +124,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
-text sections), the pages may still be dirty from recent writes.
-collapse_file() will trigger async writeback and fail with
-SCAN_PAGE_DIRTY_OR_WRITEBACK (-EAGAIN).
+hi all,
 
-MADV_COLLAPSE is a synchronous operation where userspace expects
-immediate results. If the collapse fails due to dirty pages, perform
-synchronous writeback on the specific range and retry once.
+This series is improve the khugepaged scan logic, reduce CPU consumption,
+prioritize scanning task that access memory frequently.
 
-This avoids spurious failures for freshly written executables while
-avoiding unnecessary synchronous I/O for mappings that are already clean.
+The following data is traced by bpftrace[1] on a desktop system. After
+the system has been left idle for 10 minutes upon booting, a lot of
+SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+khugepaged.
 
-Reported-by: Branden Moore <Branden.Moore@amd.com>
-Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
-Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-Suggested-by: David Hildenbrand <david@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- mm/khugepaged.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+@scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+@scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+@scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+total progress size: 701 MB
+Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 219dfa2e523c..6c8c35d3e0c9 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -22,6 +22,7 @@
- #include <linux/dax.h>
- #include <linux/ksm.h>
- #include <linux/pgalloc.h>
-+#include <linux/backing-dev.h>
- 
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -2787,9 +2788,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	hend = end & HPAGE_PMD_MASK;
- 
- 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
-+		bool retried = false;
- 		int result = SCAN_FAIL;
- 
- 		if (!mmap_locked) {
-+retry:
- 			cond_resched();
- 			mmap_read_lock(mm);
- 			mmap_locked = true;
-@@ -2819,6 +2822,43 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		if (!mmap_locked)
- 			*lock_dropped = true;
- 
-+		/*
-+		 * If the file-backed VMA has dirty pages, the scan triggers
-+		 * async writeback and returns SCAN_PAGE_DIRTY_OR_WRITEBACK.
-+		 * Since MADV_COLLAPSE is sync, we force sync writeback and
-+		 * retry once.
-+		 */
-+		if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !retried) {
-+			/*
-+			 * File scan drops the lock. We must re-acquire it to
-+			 * safely inspect the VMA and hold the file reference.
-+			 */
-+			if (!mmap_locked) {
-+				cond_resched();
-+				mmap_read_lock(mm);
-+				mmap_locked = true;
-+				result = hugepage_vma_revalidate(mm, addr, false, &vma, cc);
-+				if (result != SCAN_SUCCEED)
-+					goto handle_result;
-+			}
-+
-+			if (!vma_is_anonymous(vma) && vma->vm_file &&
-+			    mapping_can_writeback(vma->vm_file->f_mapping)) {
-+				struct file *file = get_file(vma->vm_file);
-+				pgoff_t pgoff = linear_page_index(vma, addr);
-+				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
-+				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
-+
-+				mmap_read_unlock(mm);
-+				mmap_locked = false;
-+				*lock_dropped = true;
-+				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
-+				fput(file);
-+				retried = true;
-+				goto retry;
-+			}
-+		}
-+
- handle_result:
- 		switch (result) {
- 		case SCAN_SUCCEED:
--- 
-2.43.0
+The khugepaged has below phenomenon: the khugepaged list is scanned in a
+FIFO manner, as long as the task is not destroyed,
+1. the task no longer has memory that can be collapsed into hugepage,
+   continues scan it always.
+2. the task at the front of the khugepaged scan list is cold, they are
+   still scanned first.
+3. everyone scan at intervals of khugepaged_scan_sleep_millisecs
+   (default 10s). If we always scan the above two cases first, the valid
+   scan will have to wait for a long time.
+
+For the first case, when all memory has been collapsed, the mm is
+automatically removed from khugepaged's scan list. If the page fault or
+MADV_HUGEPAGE again, it is added back to khugepaged.
+
+For the second case, if the user has explicitly informed us via
+MADV_COLD/MADV_FREE that this memory is cold or will be freed, move mm
+to khugepaged scan list tail for scan later.
+
+The below is some performance test results.
+
+kernbench results (testing on x86_64 machine):
+
+                       6.18.0-baseline          6.18.0-test
+Amean     user-32    18652.80 (   0.00%)    18640.85 (   0.06%)
+Amean     syst-32     1165.09 (   0.00%)     1159.15 *   0.51%*
+Amean     elsp-32      667.71 (   0.00%)      667.02 *   0.10%*
+BAmean-95 user-32    18652.02 (   0.00%)    18638.11 (   0.07%)
+BAmean-95 syst-32     1165.04 (   0.00%)     1158.41 (   0.57%)
+BAmean-95 elsp-32      667.65 (   0.00%)      666.90 (   0.11%)
+BAmean-99 user-32    18652.02 (   0.00%)    18638.11 (   0.07%)
+BAmean-99 syst-32     1165.04 (   0.00%)     1158.41 (   0.57%)
+BAmean-99 elsp-32      667.65 (   0.00%)      666.90 (   0.11%)
+
+Create three task[2]: hot1 -> cold -> hot2. After all three task are
+created, each allocate memory 128MB. the hot1/hot2 task continuously
+access 128 MB memory, while the cold task only accesses its memory
+briefly andthen call madvise(MADV_COLD). Here are the performance test
+results:
+(Throughput bigger is better, other smaller is better)
+
+Testing on x86_64 machine:
+
+| task hot2           | without patch | with patch    |  delta  |
+|---------------------|---------------|---------------|---------|
+| total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
+| cycles per access   |  4.91         |  2.07         | -57.84% |
+| Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
+| dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
+
+Testing on qemu-system-x86_64 -enable-kvm:
+
+| task hot2           | without patch | with patch    |  delta  |
+|---------------------|---------------|---------------|---------|
+| total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+| cycles per access   |  7.23         |  2.12         | -70.68% |
+| Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
+| dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+
+This series is based on Linux v6.18.
+
+Thank you very much for your comments and discussions :)
+
+
+[1] https://github.com/vernon2gh/app_and_module/blob/main/khugepaged/khugepaged_mm.bt
+[2] https://github.com/vernon2gh/app_and_module/blob/main/khugepaged/app.c
+
+Vernon Yang (4):
+  mm: khugepaged: add trace_mm_khugepaged_scan event
+  mm: khugepaged: remove mm when all memory has been collapsed
+  mm: khugepaged: move mm to list tail when MADV_COLD/MADV_FREE
+  mm: khugepaged: set to next mm direct when mm has
+    MMF_DISABLE_THP_COMPLETELY
+
+ include/linux/khugepaged.h         |  1 +
+ include/trace/events/huge_memory.h | 24 ++++++++++++
+ mm/khugepaged.c                    | 60 ++++++++++++++++++++++++------
+ mm/madvise.c                       |  3 ++
+ 4 files changed, 76 insertions(+), 12 deletions(-)
+
+--
+2.51.0
 
 
