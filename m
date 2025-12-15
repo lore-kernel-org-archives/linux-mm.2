@@ -4,117 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9B5D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6579FD41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 07:49:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FEDB6B0008; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
+	id 70B9D6B0006; Mon, 15 Dec 2025 02:49:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF486B000A; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
+	id 6BC2E6B0007; Mon, 15 Dec 2025 02:49:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19DB36B000C; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
+	id 5AB636B0008; Mon, 15 Dec 2025 02:49:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 05CEA6B0008
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:38:44 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B382D13210
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:43 +0000 (UTC)
-X-FDA: 84220903326.27.4BB5571
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E11F61C000C
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:38:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Z3pEIyZS;
-	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 48D5D6B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:49:50 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CFDE85D80F
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:49:49 +0000 (UTC)
+X-FDA: 84220931298.19.790517F
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 013D01C0012
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:49:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qPF9HPBn;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765784987; a=rsa-sha256;
+	cv=none;
+	b=QuoSxIQfFTtIv4ebem+0lYZrOCW9Zcuotq71Cxw91nY/7QNhG6j+lPt+OUii/8gO8P3wW0
+	+vraTvw294SVkalsPJeF2oAFuFEvUX25EfZ+4GROcR1g3+anV6YsZlzS+fY1CO/OfS4PSK
+	Q0XeGwmzqKP7OVMENfBKxq2PEzR1wDE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qPF9HPBn;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765784321;
+	s=arc-20220608; t=1765784987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
-	b=aZw1u7CAiI8oc8DBpQrgIhhmDag+wSJqHoUJmAq3G30Py+H0Q7CfCeV2v/TYpxJHitL9Hy
-	uEOv8i2ZNs+S7W5l4ealyMqjFaOGh7d8QvyCxUvz/ed8hIyjGtP8G1wSjpEgcWqTFn3MO2
-	xcCIywI0fTwQ1ZlB66kT/h1TVhtP+RE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Z3pEIyZS;
-	spf=pass (imf18.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765784321; a=rsa-sha256;
-	cv=none;
-	b=kykRc1xy0TNjKaOmPAnc/uuLKRTS+zjKa39lWpM2x+MgaGJWm5TdPvwHGVxa2jAfXjZWxR
-	7XSxOZJuTSAhZ7clH85PiBdHUduaL4duGQuf0RUDn234Y0Gb0EvlcCcZ+yzJPrzy/EBOkn
-	wu3Lg0ckqYyaSQu1/gmp82ZoxoCV9Fg=
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6446c2bbfe3so2807519d50.1
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:38:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765784321; x=1766389121; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
-        b=Z3pEIyZSLrOfw5TwpI+wdfTviMVlTNGNcqaT+0JTBsiaKJwIeVGzwxHjq8mvd99UWK
-         8IsGn102+GJEFUNcAaMGOfkFFjdKTOOW9AGtL4OYLTT7uADK1yZGw622iMZkXfDwEEFC
-         Oql95sBzuOlTwffJ0qUGv4aePL9DfduzTR45gHrsMPLjk1yLBVbKag0V9ra2dfhmz9/c
-         aSZrLlSt9r9MEmQcwXirrMxXdnrmCstnL4huI3oRnXKWikB9QdBgUyZ7vJTjToSS0cMb
-         lhz/K61GlsLQ9B0DG5Lpyr5xemHd0aJ/FJWDLGQXRQVgdZs/p5C7j3XgrG4sF/AR4gJ1
-         nTGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765784321; x=1766389121;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iIeKRKKKCnzupDfCwJqFB1013cUpwf+GNDgK+GELOro=;
-        b=o1BuswixVYw1yw4D0BAxZjLutM263nhLA/qYZ9nEUbKXpImtxH4+YRKt3FSoS13PTE
-         lb2TQknrluofXaBE2RE+qzYnO67agP6oxpjbUJjasSpnZnsfGgwu/mFPeJojI5clciYb
-         v/rJbOKDi1uQsvILLOU9kPa95ChWo3PJdrslyBP9/h/GJtaKdqCPoKnHA7w9GvqNt9pD
-         7TJKaDlBga/QKipVAoOWVfYCD+eUhdbjzq4EJOfxwz8KMbYy0AzGT+LMsJwNHM36jFCr
-         M6XjWM+tkmPWoPAFh4ErQEvhUotFCerGlMuVCrc2VKGfAFUyilY/lD0w6XX7Lf+oyIRR
-         Z4dA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWjOyYrYxh41waOROO4o8plrqcv3JvEbfI8CfQFulOS9Q2+BIuS5dwEN+fzmMPO/SBSZ3GUs+s+Q==@kvack.org
-X-Gm-Message-State: AOJu0YyuqkaaDjM03YSlfLFVNME/bd4b2FmGDsqKz73Z+DfQkLrFkkvO
-	C48cc6S2b79Djx/8+MruOo3A9aLfdvl+f5uz9ATPH/kZwJ612EzT5H6joM51W3uUYg==
-X-Gm-Gg: AY/fxX5J99PzNrZWH1pdnl1+lIeH10En5XEtbYZOZJ+OPEvt2w1VTiq+sDnYhI2TVoN
-	+EeJPgu9Dau6d4tRvckKZVSi5JtXUKq2qh9VJ+5QNahZSBBBIQHwB+Q1pO8ouw+3rcIa2S/Zx+m
-	RjOTpShHzLeaX56FA5y9akTSJmiI9uhvV2j1lnaO9bcjKpGK/+1tvX2VYcd+kK0W6WwQbtq03an
-	Ymtq2E9jKzXsB4Tx5kArvSkY+ZDBU/yvKSL+myiiRvjPtQTK+JVflQ37DtGZ8e4YhX8z2llUFTf
-	l9l9jbK/yqW6WE/PaAvb9Duo7k+nItuJSu3sc1aK2qw3xkbwe09KjmPn+ZuaJ03kRZoPTqGumHM
-	sq7bQdMxJe0jf7uQRD0++QT14bLt1Xc56nUYMwW/xzOU6MxCq1FkRFMV3gHq1JwWb8M9KWiSF8H
-	8OPX/hPcb5Z1dZbr8SAMKS507bVNE8mAFqp0HGdHNIv7g7aTkG9G151wndhivbOMffxDMiDhA=
-X-Google-Smtp-Source: AGHT+IGWwU3CR/BLGGM37Mj6ED/FrmrwwoSCDyBwGpC4O4RY5GWa1NaXFkGRwTEcuL+iHjjMa3Jb3A==
-X-Received: by 2002:a05:690e:d8d:b0:641:f5bc:68d3 with SMTP id 956f58d0204a3-645556680dbmr6576002d50.80.1765784320678;
-        Sun, 14 Dec 2025 23:38:40 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477dc673asm6105794d50.25.2025.12.14.23.38.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 23:38:39 -0800 (PST)
-Date: Sun, 14 Dec 2025 23:38:28 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-cc: Hugh Dickins <hughd@google.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-    Linus Torvalds <torvalds@linux-foundation.org>, 
-    Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [RFC][PATCH 2/2] shmem: fix recovery on rename failures
-In-Reply-To: <20251214033049.GB460900@ZenIV>
-Message-ID: <8a925e3f-bd27-ac32-841a-a79690d971d7@google.com>
-References: <47e9d03c-7a50-2c7d-247d-36f95a5329ed@google.com> <20251212050225.GD1712166@ZenIV> <20251212053452.GE1712166@ZenIV> <8ab63110-38b2-2188-91c5-909addfc9b23@google.com> <20251212063026.GF1712166@ZenIV> <2a102c6d-82d9-2751-cd31-c836b5c739b7@google.com>
- <bed18e79-ab2b-2a8f-0c32-77e6d27e2a05@google.com> <20251213072241.GH1712166@ZenIV> <20251214032734.GL1712166@ZenIV> <20251214033049.GB460900@ZenIV>
+	bh=SDjBfb1MSSR8AbXvVjtMwPIfxrW2FO1Fv99ClsCT2+8=;
+	b=NYciG0y0A1fSBcgvDOu8AU3uDwOxMqZtgvgY7BdJaR3A2qhSrUvdY7dHSUcg0rA9SEusFQ
+	q/fTGtW9ORBIE2Mv9su/sojBYf7v7/1GmcroDVxYSvYvZ3Xjh4emwPbQdGNayLx631WIU1
+	ajauhrguDid6bnelv2q1dimz2q4j7Ns=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BEKF0w1022513;
+	Mon, 15 Dec 2025 07:49:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=SDjBfb1MSSR8AbXvVjtMwPIfxrW2FO
+	1Fv99ClsCT2+8=; b=qPF9HPBnUXHKWFIuefF2pqB0NLtXIwAvmKjg3D6H+UVq+g
+	iEZo9lPrejaBCuFrX32VIQ6fdcZF+ACZDVQ60QwrpwS59H5243QiXPKJqzI6Bqp7
+	ornC6UfhFTdFSU9M28fWkoea96XpCA0Z2dILtT2tf2/j4lPZmlUT6nRnsnMvmea3
+	OLN9Wo0MWE4hRiRFgYMc3SwndEXi7kbXClRNXUbsjolAAsz0XfUrlOO+XnoTIV7f
+	5AzvVPv0YfkrFS1yrpcu8hNx0ehBalYWoP6T5p/cSWuMXVkhhVsC5D2VpQqgGvK4
+	VLVPQBXVK1L/0wHiRXsizELjZ7vmvKbSujeQL4WA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjkr4qd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Dec 2025 07:49:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BF6FAvA005686;
+	Mon, 15 Dec 2025 07:49:44 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1tgnksyn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Dec 2025 07:49:44 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BF7ngWt60227874
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Dec 2025 07:49:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD11320043;
+	Mon, 15 Dec 2025 07:49:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 031C220040;
+	Mon, 15 Dec 2025 07:49:42 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.60.230])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Dec 2025 07:49:41 +0000 (GMT)
+Date: Mon, 15 Dec 2025 08:49:39 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Marc Hartmayer <mhartmay@linux.ibm.com>, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: change all pageblocks migrate type on
+ coalescing
+Message-ID: <ee518adf-3a07-4e08-9a6b-f5faba5ae073-agordeev@linux.ibm.com>
+References: <20251212151457.3898073Add-agordeev@linux.ibm.com>
+ <5e79bed1-598d-4e34-8f1e-87b6dba52bf8@suse.cz>
+ <20251214160606.GA905277@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: uozqhja9ga9mqpxtm1f9nfsm8iur1cwh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251214160606.GA905277@cmpxchg.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JIJub7J5DXMnihwn6S63GJ7sHIpsKJ_W
+X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=693fbd99 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=Hnd01_47jJv9e3yHuFcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: JIJub7J5DXMnihwn6S63GJ7sHIpsKJ_W
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfX8yTGGcv2gyA1
+ zURzqJtX+YO4yogXW3v0DPGIJ8PvzkKLqdsM/EznvBWs6Bh+3e0Xbw5WqbNuSbdST7+JmElWU/o
+ jZjlM+c1oJW/VgC/6M5qiYDvFrQZhsD1cZPqvq9/TmjuWfCEWDgJFYx8b9qTVep4zAdd6YA2GI9
+ KWq+QXtsHpbXIPeh7Cm6LVwkC4iizw4hCB3HvRcm6lczNxdJ4ce6m187JNGqPDNqcA01EvBnqve
+ Pz704PuNX21cagbNl3VMOqz6uYW1zez+xL5RhPXgc9ZgU7FlxS1bcKfADenx6tFktVbKtKXqxP+
+ qs8nxkyJdKE+hvKaFfvH3CxYLV5iPnKgBsqHXkafOUMR8qwuR/VM9AE4t7S6krZ63Rerr6cNnuv
+ j93EOjoOlm/nz8UCDJyX7o3YOJIyIw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-15_01,2025-12-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
+X-Rspamd-Queue-Id: 013D01C0012
+X-Rspamd-Server: rspam03
+X-Stat-Signature: emprr7xy1wzydxujh73xdrbi5dnm8qhs
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E11F61C000C
-X-HE-Tag: 1765784321-43782
-X-HE-Meta: U2FsdGVkX18T74uOM61cyGNkDeyPy9FyE/d80fI3MicBdNRAJfhGu8SKl0rVqdfYkn/dUIYOrmnzPwLzGxsbjwqrHayumSgTBmcfny/jNLLOdsfJjAxYfLkrDzTpyVd9DdE3PWc03HwcLzv0RLHBnF7WexbcSisezv1tYp3oYgKxrDhZPuiZU+0tqED1+AL62MwFcXkX1ufAxDPyuDjVg0qOtrSRtdT25nrfRjDhV//UynJuei3i5oG5ef83tlTCe4jI2LUZlhidoBjw2Nn7cVw1bv4xkq50X0LpGrfL7HrSa/xhQoxJLHvDWWXC8A2Amhn5LAhuI9Zr4B/DizLTKSbD7qnRzmHm9/Xx6NdN+5bFMLiquxwQp1TdwqKQ31dajizV9xZtO51Bk76UDgnu27qw3r8xHOPBR2P35nuoVyLZNh0Dqr0ueOv36gaR4BoTsxtCZIf3Dcnfb39Alq6rgGtrFIJx2ps3s73iUUyPvHCBnNNuV6Ine7pdfgffusf37P3f/r6L5VfNIGqOZSrwO+oggM5P8F0GFxMUU7S2P10Q9uxilhrt26XS91SbqZ4JrkwkPbBLy88VIgDCSV6l28SLAP7Kb8eIy6BJO1IxkscGd/x+UkEWDNrwhvOZtbngBmeDLfX1gY8TrtVwtf0qTOL7vWZBX02p+Cw+zJpTu6gd2mG/K8+tkYzVfIaZGuV+mD+2k65WVVQoVMAZj2qxbhskiMWYB/GtEeC8YR7e+1ZNHRm7YOYub4KSLNg6PuG4ZvvhrCqIXm9FV/7UE6jzeG4QYbaGGqs3YCG3ycA12ilvX2v90E1NfVlhOShEhOvl35eKU2JkVpM9Ca7B7rLbhf+qS4XRtnV150FCpKytaJXBXduvN+8JAXve3+PwkwPkLjPC2w7MvpD4Po6AVyMsqZjIBtE3fSBfpl1oWsE0zylDXBdM/nS4qV3V0yM8JsWJ3UcfJghoa7hxE0RrYRq
- aW9jNaZA
- AkAeeB7qj0zCWf+785SLHPmfXckDQwkxURX47P417hrvhfJNwSsAljAKp3Wt6EUTRtr0ZNulHJh3Wgmb7MHHVUX9/h1QbnOhMaprhxYSLLmJG3GvpHbH3fBS3Zh3qS+hD9hcC8FA+hx9GV7Ab9HkZ2UZOewBHWiccFYgAiXQ079o9a5CgPx9dKMMfcDvj76WdjOiuZd/Wj4XlC8evgGDn56Oaam9vZimgoKJO1kqVh1JlmZWitAc/HYsX0n/H+ba1abQAubGgzpI7n5oBYSDnmvrzMhujj7m9IhqOg8qYwMtvJzOOm6lwBQ9kMTGiSFhQ1X0YriSg+/0/3V4OS7X1Hsvs1I72rVXB8u/Ic0k4fZn6gbZ/KP7qzagcxdyD5GI9/GHibepet2x+iMUprzyPq0B0E8jdWIejFNqd
+X-HE-Tag: 1765784986-437746
+X-HE-Meta: U2FsdGVkX19h4S8iNLSvrDTlk/grxTTNnxiHAiXj2hqprqYPV/OotJ4vEgauP6IbZ8D0DHHIgWcuNqvB8umMlCgUNJI1qFtuAcWQ+ai9vXWnzDbhUuDJ0c63TxxPyVmdGkFv5YRRHdUbcCoTZtgpbKOqSwK5Lv4SYgjWt/WDCOnzOghiCn9tjaOy0im/sRMSeGb40K8RFBZdleNCgZ9NT1XZZT2B8ZLr3expb7OErW+wqa75hIyICV9YJNfbMECkSNiz7MH045DPEDE3VBIL4mcbDJQtHh6USb34rOAY2E1DLtoM07L7FMyQUsaue5Kn5OmIeHxuuTGnpzNQHta3D6tdVo0EX6L9buVd9x90qSfW64YDFK/kyyRlDT6dGwbfi1Ne3K8Mi5clHEkwM/z0WoSpXuHTTORNBBVQhED2OWQlFRNu5NuAEVqO5jRULclx2Zdoex7Nk0mvcKpCLdPl4Vz7g1/umKELsfG9TntbT8sOmkMCrvJw6yhKnopAEbl7w777KK33ryptJNBYN4FQ4wN8+n9uL1uOHPwpN9sMJQ4InQq80D2SZy9Zad4NXL9xPQGxmhmCroNN4gwTafwckvF9nH4w1PzBaY/2xe9JVY/KK1T18+kB+ZP1qQ2pcK8gLW/8sexYzhhhS+SSMjeZ7KVu011BX5ByjJj4jU/1G4XYOY5TwLhE54ZevRInutPciDW4RneBVWfFGpgMOfr5f1YQSr5E81CJLP4MP1QDJgPCFqH1otFczqQ5xmUeKBIYbNp/uP1JA1Z86TVSUUZ+L16rylvmHot7tz/mt/zlZjzKE6M5x0IfxhmOmKrBzR+tb2tMq4PAw2gxGggwd4h7Rxo+Zw5WK41zWMRxFB7NXu5BMDnqDrm/5ZL2yRz31XsP8WM6dgLpEH4UmAPNI80mc2gM5BzE/tHa9DRGAzdziZEtmBo9gYLKLU1Vl3MpehDsDkXfhL+mVo/AIWuRfp6
+ GHD6dAA0
+ zZM5dLgytN1H7+tm6JA8zUzBHKXZ8/7E77E0p73cCrP1hCv0zxD1wK6dyTnm3eXKMxScDwrdbe+RG/6lun4liSSOwLPwHgpVU59uF/ToaUjjM7NkRoTChg3j6nh2gkUqVWvpvV+HR8XsBsCy6x7wPrf/bq8qqclnUP/P73y12+TIYwM0aq9EcwewWxv/a+7R0tSNnD/IfA0BWppqox97dkQNs7CCxZ4xbIhNtrrImXGgLci4PZabHDcvsYDvCCMXrlYWmoG8GobZgQ4UTHlBFTFmIjuploLWv7rn0+Sjl4OMaf+WfQ2ePizGPz8fEDrnJo3y0sHgiMdOb+ANpea+yrixpfqXiM4pm13qXWompRdPMDL+PknHCbc31PiSjcKaShyJh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,184 +139,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 14 Dec 2025, Al Viro wrote:
+On Sun, Dec 14, 2025 at 11:06:06AM -0500, Johannes Weiner wrote:
 
-> maple_tree insertions can fail if we are seriously short on memory;
-> simple_offset_rename() does not recover well if it runs into that.
-> The same goes for simple_offset_rename_exchange().
-> 
-> Moreover, shmem_whiteout() expects that if it succeeds, the caller will
-> progress to d_move(), i.e. that shmem_rename2() won't fail past the
-> successful call of shmem_whiteout().
-> 
-> Not hard to fix, fortunately - mtree_store() can't fail if the index we
-> are trying to store into is already present in the tree as a singleton.
-> 
-> For simple_offset_rename_exchange() that's enough - we just need to be
-> careful about the order of operations.
-> 
-> For simple_offset_rename() solution is to preinsert the target into the
-> tree for new_dir; the rest can be done without any potentially failing
-> operations.
-> 
-> That preinsertion has to be done in shmem_rename2() rather than in
-> simple_offset_rename() itself - otherwise we'd need to deal with the
-> possibility of failure after successful shmem_whiteout().
-> 
-> Fixes: a2e459555c5f ("shmem: stable directory offsets")
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Hi Johannes,
 
-Well, what you say above, and what you've done below, make sense to me;
-and neither I nor xfstests noticed anything wrong (aside from one
-trivium - I'd prefer "bool had_offset = false" to "int ...";
-maybe placed one line up to look prettier).
-
-But please don't expect proper engagement from me on this one,
-it's above my head, and I'll trust you and Chuck on it.
-
-Thanks,
-Hugh
-
-> ---
->  fs/libfs.c         | 50 +++++++++++++++++++---------------------------
->  include/linux/fs.h |  2 +-
->  mm/shmem.c         | 18 ++++++++++++-----
->  3 files changed, 35 insertions(+), 35 deletions(-)
+> The warning makes the issue loud, but your patch is arguably fixing an
+> earlier commit that introduces type updates during merges.  How about:
 > 
-> diff --git a/fs/libfs.c b/fs/libfs.c
-> index 9264523be85c..591eb649ebba 100644
-> --- a/fs/libfs.c
-> +++ b/fs/libfs.c
-> @@ -346,22 +346,22 @@ void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry)
->   * User space expects the directory offset value of the replaced
->   * (new) directory entry to be unchanged after a rename.
->   *
-> - * Returns zero on success, a negative errno value on failure.
-> + * Caller must have grabbed a slot for new_dentry in the maple_tree
-> + * associated with new_dir, even if dentry is negative.
->   */
-> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-> -			 struct inode *new_dir, struct dentry *new_dentry)
-> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-> +			  struct inode *new_dir, struct dentry *new_dentry)
->  {
->  	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
->  	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
->  	long new_offset = dentry2offset(new_dentry);
->  
-> -	simple_offset_remove(old_ctx, old_dentry);
-> +	if (WARN_ON(!new_offset))
-> +		return;
->  
-> -	if (new_offset) {
-> -		offset_set(new_dentry, 0);
-> -		return simple_offset_replace(new_ctx, old_dentry, new_offset);
-> -	}
-> -	return simple_offset_add(new_ctx, old_dentry);
-> +	simple_offset_remove(old_ctx, old_dentry);
-> +	offset_set(new_dentry, 0);
-> +	WARN_ON(simple_offset_replace(new_ctx, old_dentry, new_offset));
->  }
->  
->  /**
-> @@ -388,31 +388,23 @@ int simple_offset_rename_exchange(struct inode *old_dir,
->  	long new_index = dentry2offset(new_dentry);
->  	int ret;
->  
-> -	simple_offset_remove(old_ctx, old_dentry);
-> -	simple_offset_remove(new_ctx, new_dentry);
-> +	if (WARN_ON(!old_index || !new_index))
-> +		return -EINVAL;
->  
-> -	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
-> -	if (ret)
-> -		goto out_restore;
-> +	ret = mtree_store(&new_ctx->mt, new_index, old_dentry, GFP_KERNEL);
-> +	if (WARN_ON(ret))
-> +		return ret;
->  
-> -	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
-> -	if (ret) {
-> -		simple_offset_remove(new_ctx, old_dentry);
-> -		goto out_restore;
-> +	ret = mtree_store(&old_ctx->mt, old_index, new_dentry, GFP_KERNEL);
-> +	if (WARN_ON(ret)) {
-> +		mtree_store(&new_ctx->mt, new_index, new_dentry, GFP_KERNEL);
-> +		return ret;
->  	}
->  
-> -	ret = simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
-> -	if (ret) {
-> -		simple_offset_remove(new_ctx, old_dentry);
-> -		simple_offset_remove(old_ctx, new_dentry);
-> -		goto out_restore;
-> -	}
-> +	offset_set(old_dentry, new_index);
-> +	offset_set(new_dentry, old_index);
-> +	simple_rename_exchange(old_dir, old_dentry, new_dir, new_dentry);
->  	return 0;
-> -
-> -out_restore:
-> -	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
-> -	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
-> -	return ret;
->  }
->  
->  /**
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 04ceeca12a0d..f5c9cf28c4dc 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3247,7 +3247,7 @@ struct offset_ctx {
->  void simple_offset_init(struct offset_ctx *octx);
->  int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
->  void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
-> -int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-> +void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
->  			 struct inode *new_dir, struct dentry *new_dentry);
->  int simple_offset_rename_exchange(struct inode *old_dir,
->  				  struct dentry *old_dentry,
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index d3edc809e2e7..4232f8a39a43 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -4039,6 +4039,7 @@ static int shmem_rename2(struct mnt_idmap *idmap,
->  	struct inode *inode = d_inode(old_dentry);
->  	int they_are_dirs = S_ISDIR(inode->i_mode);
->  	int error;
-> +	int had_offset = false;
->  
->  	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE | RENAME_WHITEOUT))
->  		return -EINVAL;
-> @@ -4050,16 +4051,23 @@ static int shmem_rename2(struct mnt_idmap *idmap,
->  	if (!simple_empty(new_dentry))
->  		return -ENOTEMPTY;
->  
-> +	error = simple_offset_add(shmem_get_offset_ctx(new_dir), new_dentry);
-> +	if (error == -EBUSY)
-> +		had_offset = true;
-> +	else if (unlikely(error))
-> +		return error;
-> +
->  	if (flags & RENAME_WHITEOUT) {
->  		error = shmem_whiteout(idmap, old_dir, old_dentry);
-> -		if (error)
-> +		if (error) {
-> +			if (!had_offset)
-> +				simple_offset_remove(shmem_get_offset_ctx(new_dir),
-> +						     new_dentry);
->  			return error;
-> +		}
->  	}
->  
-> -	error = simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
-> -	if (error)
-> -		return error;
-> -
-> +	simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
->  	if (d_really_is_positive(new_dentry)) {
->  		(void) shmem_unlink(new_dir, new_dentry);
->  		if (they_are_dirs) {
-> -- 
-> 2.47.3
+> Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
+> Cc: stable@kernel.org
+
+Yes, I was in doubt which commit to address - thanks for clearing it!
+I will remove the last statement from the commit message and post v2.
+
+Thanks!
 
