@@ -4,137 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE56D41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 08:10:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4639ED59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 08:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CBBA6B0006; Mon, 15 Dec 2025 03:10:14 -0500 (EST)
+	id 773326B0006; Mon, 15 Dec 2025 03:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67B9E6B0007; Mon, 15 Dec 2025 03:10:14 -0500 (EST)
+	id 6FBB96B0007; Mon, 15 Dec 2025 03:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56A8B6B0008; Mon, 15 Dec 2025 03:10:14 -0500 (EST)
+	id 5C3736B0008; Mon, 15 Dec 2025 03:29:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 42BEC6B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:10:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF8C3BDFF6
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:10:13 +0000 (UTC)
-X-FDA: 84220982706.12.D24AF0E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B08B212000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:10:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M3fZMWLd;
-	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 486496B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:29:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D77A213C29E
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:29:44 +0000 (UTC)
+X-FDA: 84221031888.18.F10C1CB
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 090D14000B
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 08:29:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cCoFazNb;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765786211;
+	s=arc-20220608; t=1765787383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9TN0+WLfq+iOFz2n55/gTGboSo278w86sYqh9vG51qQ=;
-	b=Xte5dYhZ013MoNXFNgpMw4Fmkcm9z2qTG6y1yOshdvbXVnHsvIzHsGrYUadKRde2qcj9Jj
-	qWUL8rGWcgAgnSHEn1fmpvWqOTx1emzpNvhZWih5Acm5acsIfPCFpn1ZJDyjKeuBhmHIwC
-	HjslZNc9i+Q171BKCP/3XOonxH1ijLw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8+Rae6Tnr4feXWnwHZ1+C9t7FYdcdoho4X2n1jA93Ws=;
+	b=EJdahYrYe15oFwbNKh1FUxDsrNfJJvd9pPJBGYLrX+OyIHdUQaFuJkdpoURwn+th7vrabV
+	ybOaIALeWNeO1ygWcR/t5lza3/S3Vzv/VsZRreBPDThHVNbYeDu0uujcwJyttTcFYJRSRS
+	Ub13vqXCLSD0NhdTMHx49MuJ6hhfHYw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M3fZMWLd;
-	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765786211; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cCoFazNb;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765787383; a=rsa-sha256;
 	cv=none;
-	b=tmrzOnngwESv+6Td3FC6hKXsVkt2pnPMRGMVWCGOht/ISwuJDiezNu81kgIWdDYkpTepRA
-	yuxUGJkhbGNhVwmNlYEhL5+JiGOWy16nKowtY497r+i1Dt5upJ3hmYj3155/iWYHzz1cRr
-	A1abv1WMUlmYcowhWDLlyI/XKFg95KM=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BEKl5pQ018905;
-	Mon, 15 Dec 2025 08:10:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:message-id:mime-version:subject:to; s=
-	pp1; bh=9TN0+WLfq+iOFz2n55/gTGboSo278w86sYqh9vG51qQ=; b=M3fZMWLd
-	R7UpK1F0UrZip9JftLjorD6dmtRIb832XjUV9dpr6tcyuqEsqT4sppaX3JvUSJiW
-	X5Ci1RlsGqm5RkMmW/a+yo0A06G30w45Fh6Z9RYguPQBEHAottO17PEE7DSkWdlh
-	6zHfWpwPsL5o96bH43fLjHP+XY5Ju9iV6yR+WWoZ1dG42JogaXpbMbKriDUgkALO
-	+da6I1BGERKxQ62alueD1hrHIO1SJI2VDpd74j9KvpJ35YNWrQ/U5Exz8Z9rpcl0
-	rIsgxYtRUAenlDE7QeVdTQzsKSsGcwQ+ZCEn4Ssj95dnNM/VCgRhsscWRoIM741o
-	7cM174NeXH+rbQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0wjpre6k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Dec 2025 08:10:07 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BF80uK3021788;
-	Mon, 15 Dec 2025 08:10:06 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0wjpre6f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Dec 2025 08:10:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BF4IDUF002755;
-	Mon, 15 Dec 2025 08:10:06 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfmw8e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Dec 2025 08:10:06 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BF8A4Qg9437574
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Dec 2025 08:10:04 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0438F2004F;
-	Mon, 15 Dec 2025 08:10:04 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C48212004B;
-	Mon, 15 Dec 2025 08:10:03 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 15 Dec 2025 08:10:03 +0000 (GMT)
-Date: Mon, 15 Dec 2025 09:10:02 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>,
-        Wei Yang <richard.weiyang@gmail.com>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@kernel.org
-Subject: [PATCH v2] mm/page_alloc: change all pageblocks migrate type on
- coalescing
-Message-ID: <20251215081002.3353900A9c-agordeev@linux.ibm.com>
+	b=I/UAZfel34ItZL7q9C5GA0AFBtfs6orVjy/pv/8V6LspVQx4cSpkQf9NjqiOo06VeGyKGU
+	I8ZwzXnDHwgoMuWQnVbBmRDOB+ev99oRstT1lrs38ECJowHvyKjhP/EKW+Mmc91FhiczDu
+	tKVawJvLwrZzp8d3c/3v5mNvGNAkFbI=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so4974472a12.0
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:29:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765787381; x=1766392181; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8+Rae6Tnr4feXWnwHZ1+C9t7FYdcdoho4X2n1jA93Ws=;
+        b=cCoFazNbJ96Dk2PEHGWJ1R3nr77X31NDmO1K4YKpa6Y5M5HidBaQmcHUR5vRuX4xa4
+         wz1gLkbxXVz+uhm7rObV/zsjIVaRt9Z9KNGkkjb1L3TSccAYH+3Bjhid6UsupSvVgSgx
+         uwsqbsM2GBnfMR4v6ow1vyohRUTJYa3ud2JQREuDRBPWqwyBOXcS38yN7tjjsbAtxsnC
+         Xwd9thqn+qXzQ2JbaWJqjIe8HeXLfwbwqxGA7jAgOJnCPZq8/D3SVN1MbO6qoTkDF8+p
+         JYjfT6xzUvC/k7+MmFXQ1SPil5JwIym+N0aG+Sb7pO/ibhsiSQ4Yfnk8PHIxZZutYgWE
+         /PNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765787381; x=1766392181;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8+Rae6Tnr4feXWnwHZ1+C9t7FYdcdoho4X2n1jA93Ws=;
+        b=d2w5vtID1GySgRuMDp5ZkNOpJp9G54hhyunQyRvv2VtkQ9KAYpJceFCpKwc4WPoI3n
+         pWGS9CkH2bzfbLc3UxmE3OQYZiBA7FEJBLCYJ+7lQ/AIGltUPa+kWmHR2TNb+PYRkI32
+         28XI5hKfrJSY0DWeAa+dpeZBZ572sDU4Okh+2N8IDbEX1nJj0End14cOsC6jlLPkzFOr
+         mzq39hBvBwVBZNAATEejKWNwPLLDKMblM/m1jlxvbsUL4pfgVyb9NOnWqBJQbmiXWlAA
+         N0BelP2MpdwUTQfGw/Yapq3A3fW0lf9+NAR8RjHKfTDp/WJF0GyjA12HmQY29lCb5v8L
+         I8nQ==
+X-Gm-Message-State: AOJu0YybEURJwlL25dQpAtpLEE3WGW3K60ztdE1p3BbT/lBYCz8Vt3kj
+	ak22ziWTb79OAI4xhFoUoJtJ8XT06h1NichM5v5f+fKd4uoJQGwm+qldkK7exjrKnMJFQ46Jf9z
+	muIdCWF28hSNBBatCIfDfF70VccCjBq8=
+X-Gm-Gg: AY/fxX5SzOXgp7hv2SOg5WuB9ebUALQLIqSi33iZJdIM+wPWpu7z9Rra+OHmnQmUH09
+	zURcwJG2QpuLUHIgnUH445RTb/+WnDayCx+ijkZwmFjHnOpsye7UT5H9CEGfyLlSljH35RQo4Bk
+	Ihq/rm7V+L5cN9p3Zq0sNxls5ccf0pD87XkON6ZTPwcrHHZGMY94ZRm1+vl3Baoe1+zpUR68Rw2
+	XQyvOA8sRaI3PgwZimfAsyu2hWAVrltoLbCh808tobNQ6W0B6hWZm5rI1Ig95/igILJP9WhTdSm
+	f1iohbslywI9X7qFaI2iZUUEN28=
+X-Google-Smtp-Source: AGHT+IGRqBc8I0NflOBy3oliVc/I9u/bSrqvpBXQ6UEvCCiezx0ILL3u1RZnZngtw+U69waTs51EIwa6S1lhHAPjrOk=
+X-Received: by 2002:a05:6402:4407:b0:645:d34b:8166 with SMTP id
+ 4fb4d7f45d1cf-6499b3009abmr9662602a12.26.1765787381139; Mon, 15 Dec 2025
+ 00:29:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwMSBTYWx0ZWRfXyqEMxmo4zfwJ
- D/AkJd2GqsRUGWSIBOwYzU1jHfllnWOMURy3m82sOP5uH2lDAfBcgV7FOeX3BzwnHDYEil7G2pD
- l/Kao9xLvpNoEJYvmJHf+70RGCTAopkJZ2MDk7ma8C6nlv1jNmQl+nRU+2q2wZnSF4sfLBqujVk
- WXw8vH8irCxgkqz0y9f2JLJXz6MqaQZ4IKyetT6K4YctPITFgDHoLw+zEaEbTqFYB9myeClC1dj
- NBT+K9sH1WsnXw9NcRf3boXzoOjX8aggxW8Ckmg709/nUOHWrtvZr0doVICDuojA9PTxMzqGDAV
- +/RKfQDZg7GCa5SmsoMkpXMfSimA/H49pEfxQodawGwDgomiELeY5SYIWUqgPfS98RI/GpjWNz6
- aW8lwEYCB3ezc5atJx/q4lB+HbmoGw==
-X-Proofpoint-GUID: utTcJlh2SA9fm9DNl7XaUa0LSOI0lmM1
-X-Proofpoint-ORIG-GUID: xvODBwdLgvL1sqz35cOHofl8jzJIiH9A
-X-Authority-Analysis: v=2.4 cv=Kq5AGGWN c=1 sm=1 tr=0 ts=693fc25f cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=ufHFDILaAAAA:8 a=pGLkceISAAAA:8
- a=AwSrL8ALKR89N_BTLjEA:9 a=CjuIK1q_8ugA:10 a=ZmIg1sZ3JBWsdXgziEIF:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-15_01,2025-12-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 impostorscore=0 clxscore=1011 spamscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130001
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B08B212000A
-X-Stat-Signature: 74stekce9ubo67assgrqo3uhtk4jitgw
+References: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com> <3edf7d6a-5e32-45f1-a6fc-ca5ca786551b@huaweicloud.com>
+In-Reply-To: <3edf7d6a-5e32-45f1-a6fc-ca5ca786551b@huaweicloud.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 15 Dec 2025 16:29:04 +0800
+X-Gm-Features: AQt7F2pC9l-pkB50oh7wNbFDZA--Sp8cR3PR99yyO6YmYauKOUVymRwEZdki-V0
+Message-ID: <CAMgjq7DVcpdBskYTRMz1U_k9qt4b0Vgrz3Qt5V7kzdj=GJ7CQg@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/memcontrol: make lru_zone_size atomic and simplify
+ sanity check
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: y1z95d8jmaojm4mpf857m1bjk9e3rn51
 X-Rspam-User: 
-X-HE-Tag: 1765786211-562359
-X-HE-Meta: U2FsdGVkX19ugQWcoD7HRyatEYpSyyKzB4BbSl2Iau8MDy4RhpFcNN63rsJbXUfBAxdtXmE9wKA6eUghwp8ZguKEBcYBz+qQXtdcVwg0kEooHpxwHLOqA2YN8nk2mWk+KZxQWKiaMNnZbd9FO37kOwl2ivWvaRyG1pZ8HCRAavAwkZ9tQG4s39PRkvu1srB5DQDSVbG1lqwpxXDQajSE6/8DVHH7wYlD75Jevoe3Kr3/LMShTdtTD2pU7hs10lWz+ZNSJJ7i8kkQg5w0BmgNMFbz4IyIQcEolOP+aIXAMJJMJ0d7ca08FyndtrYjbfm2MOdCvMPh/H6xiTbZsjHl2b8pmqK4kGP6Wv/vkIYfLVc820eiMcx61uyW0kFBQYVrp7pvx8Lr8wOXFoGud0c61keNcK4e/jqUB/uigbtv6sB++Ils6IjDk807pdsuMev495aBIDGIuCy9QI5sp717QPXQ7LyF5ztIs5YLsLVgng6auVk0kplSIH1iqmHXmjGLtgx95uKvyFiivrVQzGmBv+12AD9i3g5N0CU4YEXxrTwdRdnRtisEWvv5ERzY/qtldKlzF1m8yIlkzT+M9dB1vr5mrmZ5Y8xN94ChT9WAEuC75esQwaKVKLK6BgzB7zIupVuU8pQxZlcLA8oSjSsvRnnjxNkFqP18A728MCQeZeJ8/k4H6J37xZhWLkxscVxl6z8EAGlDyzjzejCMUB7gXkFzZw1mSyNa9f5FkhtMAiGxyJ/szrxzuucOfkrbUF1drP7lkSP4QXFglUCEZdZiDbquH3dhIVx8PWR5IPphkR+8gyuK/Xi+T3ODO9Lu37c33H/1zg6Nfjz96qvSFpHc4Pjd/2FcQm5Ing1Qi1T+rfSEUvdd4XPlVSGNs6tX9SMt6l1nHdVnQ2v1fryGJalkcOi69y9Op+HroOR1jFaSBOXTNyExNoGjjE1UtbqSiQ9MaeLp5dIdyRkda3UT2EN
- 1z4Ghx5X
- SPW3C
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 090D14000B
+X-HE-Tag: 1765787382-796725
+X-HE-Meta: U2FsdGVkX19YmJR2xLW1zQWsTD9Aj52ZDQgKvFAIqulvwfb16Dgp9RODuoHpxY6MGuU8CLGOv6172IRO6Ao+ldEoVHNTvav8sp8m9P7ypJeM7chMkSnSpo94BCRt4/o5AyyqQYCLjVt6f0RzejpApW0Dq8TeH78/ZTNerJWq8WwaokT1Pn20QAoK4ZbQ8NuCezuLQToL1HU0L85uh3hE5RaW7F2nyFJZaITi7xAuCOFQDZ4wtNmY+7bdnZ6welOK39B0MS/hy7uipahLJ/dOb4lDQUJJRQcQN4CEdYzxboukHBI0HA2pUPMd3hhThBKNOOEBXOBAQNVet/RzvHDSBeC3ZXjY7IferOnsz9M0O4iaKTNAgXTyjk2H19FkgFt3M5Ee2BDejXGlIS5KAP3iXiOyuzC7zFCJUPBOwHYLilKD0hzR79UVffGKosQ0whm8s+AsD58Nj/WOcHbm/r9roQykt9H9BdJpnRHVQw65Fl9jwRjLgvwwMjrn+sL3c8cnXgCips3lbH/28EnajSDWsXYKOrEtPCZcMuA4l5csWjdv6cb0s3EpjxLnfNPcXKw86/gTgiG+iaJwbPC/c2PMnY+lT87k1nMxXxSjJMXpagY9LD0NTr0THqhU6KsstEwU75RNrilPoRRIc7UwKjwwByfFje2Kcjl/tEsYsvUUOlQlX/scpWCntaI6kiXqhliVAxEVGPT4Mxw0KWgdJYIHUWZyF0KhIH3CVVYgReswxZi3zH1HwjJ9V6K4Ukbf2Gb/41euNT4nP72Iff/o311fWMtSEjg+7OlYAtkg5P0579Rtqgwi8S45TtNb2LYTrtZwrfDq/ikt1e5cY2GPMjAFJ6hlrGcEf4zjt8t5pgG3P9/Ch0/nnN3ROdsgV++cwuQBmmT2QOzFZ+W5vLfmYasuzQ/EGnqef7Pll0AYb5RiBq7oITKAcj0B5W52CrKK2xO6NSf09U2CmPUmcuJIiR5
+ gUI2LHev
+ b0GDBzK1JIZuc02s54GIviXPE1O09N4REPYinxH16Uv2KD027BRPh2xpuoKtRnesdf75LYmNpcZ8dyqvRG0OSADwTKKshHf+eSUy4AQzOjYx5hm/slZrDoRwD8Mo5c0Z49ksFyhXvZbTAhNB2R7w7Ir4WU6GAPg5r5naABajF+xVUcefEJK0yB3K6p0FTnfqgvnM5XlUDEc94BbsjUoEtwjJAQaDpRGZRynYZWUgwlWq8BnUVwvW0PPZJnxvO3JgDjvMONGnF55JIvI0O/Jstg60JWH+X1Ur6lEs4gkMiSNEiAcNKTQvIx6znSPBDIbr0qadBWBqNplodrse2qJ2AtdOSs2rMRi4jlkz7C0DCc0st1qpB2Vwv2tm9B67Le4dZCe8NyUneo3j1ASsxPrFbdpSXGpTsIThxA/hAXJgkFnUxA6fl2yb7f6+VkPosaUyaDSL2s3kqJslQVW5W9OXit5bm+pYUlKMx6WJ5w5suSkQJAJ7LsJ1aJVhsjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,186 +120,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a page is freed it coalesces with a buddy into a higher
-order page while possible. When the buddy page migrate type
-differs, it is expected to be updated to match the one of the
-page being freed.
+On Mon, Dec 15, 2025 at 3:38=E2=80=AFPM Chen Ridong <chenridong@huaweicloud=
+.com> wrote:
+>
+> On 2025/12/15 14:45, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+> > introduced a sanity check to catch memcg counter underflow, which is
+> > more like a workaround for another bug: lru_zone_size is unsigned, so
+> > underflow will wrap it around and return an enormously large number,
+> > then the memcg shrinker will loop almost forever as the calculated
+> > number of folios to shrink is huge. That commit also checks if a zero
+> > value matches the empty LRU list, so we have to hold the LRU lock, and
+> > do the counter adding differently depending on whether the nr_pages is
+> > negative.
+> >
+> > But later commit b4536f0c829c ("mm, memcg: fix the active list aging fo=
+r
+> > lowmem requests when memcg is enabled") already removed the LRU
+> > emptiness check, doing the adding differently is meaningless now. And i=
+f
+>
+> Agree.
+>
+> I did submit a patch to address that, but it was not accepted.
+>
+> For reference, here is the link to the discussion:
+> https://lore.kernel.org/lkml/CAOUHufbCCkOBGcSPZqNY+FXcrH8+U7_nRvftzOzKUBS=
+4hn+kuQ@mail.gmail.com/
+>
 
-However, only the first pageblock of the buddy page is updated,
-while the rest of the pageblocks are left unchanged.
+Thanks for letting me know, I wasn't aware that you noticed this too.
 
-That causes warnings in later expand() and other code paths
-(like below), since an inconsistency between migration type
-of the list containing the page and the page-owned pageblocks
-migration types is introduced.
+From my side I'm noticing that, lru_zone_size has only one reader:
+shrink_lruvec -> get_scan_count -> lruvec_lru_size, while the updater
+is every folio on LRU.
 
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
+The oldest commit introduced this was trying to catch an underflow,
+with extra sanity check to catch LRU emptiness mis-match. A later
+commit removed the LRU emptiness mis-match, and the only thing left
+here is the underflow check.
 
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
-Cc: stable@kernel.org
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/page_alloc.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+LRU counter leak (if there are) may happen anytime due to different
+reasons, and I think the time an updater sees an underflowed value is
+not unlikely to be the time the actual leak happens. (e.g. A folio was
+removed without updating the counter minutes ago while there are other
+folios still on the LRU, then an updater will trigger the WARN much
+later). So the major issue here is the underflow mitigation.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..f6586f165b89 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -914,6 +914,17 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
- 			NULL) != NULL;
- }
- 
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
-+{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
-+
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
-+	}
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1000,7 +1011,7 @@ static inline void __free_one_page(struct page *page,
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
- 		combined_pfn = buddy_pfn & pfn;
-@@ -2147,17 +2158,6 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
- 
- #endif /* CONFIG_MEMORY_ISOLATION */
- 
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- static inline bool boost_watermark(struct zone *zone)
- {
- 	unsigned long max_boost;
--- 
-2.51.0
+Turning it into an atomic long should help mitigate both underflow,
+and race (e.g. forgot to put the counter update inside LRU lock).
+Overflow is really unlikely to happen IMO, and if that's corruption,
+corruption could happen anywhere.
 
+The reason I sent this patch is trying to move
+mem_cgroup_update_lru_size out of lru lock scope in another series for
+some other feature, just to gather some comments for this particular
+sanity check, it seems a valid clean up and micro optimization on its
+own.
 
