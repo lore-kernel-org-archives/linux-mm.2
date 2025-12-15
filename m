@@ -4,143 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C54D41D74
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 12:25:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B57FD59D99
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 12:36:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD7376B0006; Mon, 15 Dec 2025 07:25:21 -0500 (EST)
+	id B46E16B000C; Mon, 15 Dec 2025 07:36:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87F56B0007; Mon, 15 Dec 2025 07:25:21 -0500 (EST)
+	id AF87F6B000D; Mon, 15 Dec 2025 07:36:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B28A56B0008; Mon, 15 Dec 2025 07:25:21 -0500 (EST)
+	id 9E5DD6B000E; Mon, 15 Dec 2025 07:36:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A0DFA6B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:25:21 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 648F91601A5
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:25:21 +0000 (UTC)
-X-FDA: 84221625642.18.B1A9E05
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5AE9618000E
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:25:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=MFNtC9o7;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf06.hostedemail.com: domain of phasta@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=phasta@mailbox.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765801519; a=rsa-sha256;
-	cv=none;
-	b=e7s1e6A2kcbO00YNtL2TgVBcAMpZ1xztM2ibKU24UNh5Ujye5aHeglS7ROJYJbOB0TLeOK
-	ikoBImaNnsWArZHgKVxGxNTLt59cLkPZTo3wAvLdsXGx3GJRwrZurL+m2iv6CIH0DEQkOZ
-	dfX88EdWDMIbgSk+0HoS7LsNvkljDDo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=MFNtC9o7;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf06.hostedemail.com: domain of phasta@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=phasta@mailbox.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8C2036B000C
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 07:36:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E9BBC01A0
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:36:02 +0000 (UTC)
+X-FDA: 84221652564.21.6727FFC
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5295DA0007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:36:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=flQWsKGa;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.215.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765801519;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765802160;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gJOFMp1/K+qQ0MSqjWn/CbbRaLJJuaP23xTo6CU3FMU=;
-	b=NRO/tnDLlQ0U8r0CbAXQH8jYH7ABUxvc6NHlvGYPG5Q+ckEJleQupGf9ttd1bsQF22WTDY
-	aTZumw7tlt7Wd7RsmmKWGq79qelGCw+IKL63UtKAatI+8YYACChGzV6vnhl6sRZbgq9FGA
-	u8EKCz4O4BxZWxZNeb9atAAT4aXll80=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4dVK5Q3lJFz9scD;
-	Mon, 15 Dec 2025 13:25:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1765801514; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gJOFMp1/K+qQ0MSqjWn/CbbRaLJJuaP23xTo6CU3FMU=;
-	b=MFNtC9o7GDr77G4gP5pdlWOgQeeiKPzkDClg8L2DPLsenZjXbBPFNYiW+f7Yt3dIHPmQyP
-	OJMvPnvOPIvbcMj8jkup2nPMtdqY9haLsfcz/IxOV2J03K4sDF356sDyQ23TsGQ07TViaD
-	FhWOVrJMTFcJ9CeKh2BEanhmBKLu/puWhJkeqyz5IF7MKc0wDX6+LpZo37kPzrx07UbVHu
-	/SrGIEw9Yb9k6R4DHidfnQwttDmp8t0gODXRNwKwn1DjYqW3hsQZd1gJ97ZgepaPr9lGGF
-	Kb4b3/HsX4GoqvHqXz/IOEsaMsqC0j4WmS+EX3sDV8DayQFJEqKPzO/PssjTDQ==
-Message-ID: <1f0fd860bf3466b9967d5a99ecd49eb93e0f7a19.camel@mailbox.org>
-Subject: Re: [PATCH 12/14] drm/scheduler: Describe @result in
- drm_sched_job_done()
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Bagas Sanjaya <bagasdotme@gmail.com>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux AMDGPU
- <amd-gfx@lists.freedesktop.org>,  Linux DRI Development
- <dri-devel@lists.freedesktop.org>, Linux Filesystems Development
- <linux-fsdevel@vger.kernel.org>,  Linux Media
- <linux-media@vger.kernel.org>, linaro-mm-sig@lists.linaro.org,
- kasan-dev@googlegroups.com,  Linux Virtualization
- <virtualization@lists.linux.dev>, Linux Memory Management List
- <linux-mm@kvack.org>, Linux Network Bridge <bridge@lists.linux.dev>, Linux
- Networking <netdev@vger.kernel.org>
-Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
- Rodrigo Siqueira <siqueira@igalia.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
- <tzimmermann@suse.de>, Matthew Brost <matthew.brost@intel.com>, Danilo
- Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Sumit Semwal <sumit.semwal@linaro.org>,  Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason
- Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?ISO-8859-1?Q?P=E9rez?= <eperezma@redhat.com>, Andrew Morton
- <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Nikolay
- Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin
- <Wayne.Lin@amd.com>, Alex Hung <alex.hung@amd.com>, Aurabindo Pillai
- <aurabindo.pillai@amd.com>, Dillon Varone <Dillon.Varone@amd.com>, George
- Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>, Cruise Hung
- <Cruise.Hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, Sunil
- Khatri <sunil.khatri@amd.com>, Dominik Kaszewski
- <dominik.kaszewski@amd.com>, David Hildenbrand <david@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Max Kellermann <max.kellermann@ionos.com>,
- "Nysal Jan K.A." <nysal@linux.ibm.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Alexey Skidanov <alexey.skidanov@intel.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Kent Overstreet
- <kent.overstreet@linux.dev>, Vitaly Wool <vitaly.wool@konsulko.se>, Harry
- Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, NeilBrown
- <neil@brown.name>, Amir Goldstein <amir73il@gmail.com>, Jeff Layton
- <jlayton@kernel.org>, Ivan Lipski <ivan.lipski@amd.com>, Tao Zhou
- <tao.zhou1@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>, Hawking Zhang
- <Hawking.Zhang@amd.com>, Lyude Paul <lyude@redhat.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Matthew Auld <matthew.auld@intel.com>, Roopa Prabhu
- <roopa@cumulusnetworks.com>, Mao Zhu <zhumao001@208suo.com>, Shaomin Deng
- <dengshaomin@cdjrlc.com>, Charles Han <hanchunchao@inspur.com>, Jilin Yuan
- <yuanjilin@cdjrlc.com>, Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
- George Anthony Vernon <contact@gvernon.com>
-Date: Mon, 15 Dec 2025 13:24:46 +0100
-In-Reply-To: <20251215113903.46555-13-bagasdotme@gmail.com>
-References: <20251215113903.46555-1-bagasdotme@gmail.com>
-	 <20251215113903.46555-13-bagasdotme@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=Xa/v4P9haTj4ZTqReHiXOr5VMbg0ab/1utW/mGaXKgw=;
+	b=lS3ZgGoo+snueu3OAZuPgmOGMSAVAcUsXYcJ42KW3JbHVZrhprckmuqupc3uQ6XjqA7raX
+	OctmIYAEBE19L7IYDw4lwXmA/FYOC6Uu8sD2y02e4UH3UolzccObHAikxKl6ZiaFqH5ySR
+	HXDdHJNofWCNL4KAQcXK0/kvxKZmP+w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765802160; a=rsa-sha256;
+	cv=none;
+	b=D7pqPviUI0T47uDEvICPHO1nGJs7rFjMnZ4P1piqUklDMJVkmApwIxVroq96YQpWtzMICM
+	3a8PxKipes2ZN4UwfUtPgyj0iDYpz0DNOCzcHFIH06cAihzCmeS8KQXM9eRqUgZaQLZhpI
+	HQMikpZ57LC+mTfcPHrzzIM1//h0uMo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=flQWsKGa;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.215.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso2331469a12.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:36:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1765802159; x=1766406959; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xa/v4P9haTj4ZTqReHiXOr5VMbg0ab/1utW/mGaXKgw=;
+        b=flQWsKGajHTcqNmZn/6t7Kn2REJ61M2t5/AMk/kI9UhT1n5mgCQLUdf0LrC3mzup/T
+         J9tX38+r4fLCmAkCyJ5RBca/XURHu50Rt9hl8M3GL0AO+7KK+Vut2MDWldDvXVUPJrAo
+         TW3d7EaOhgOD6xyhiiB6T8S4QGO/jfTWfRVcRddB+h2vJ5aFPd2RTV+JbsJCEY6Fu5ph
+         6GZJCnLogX0ZeHOgyHZvVy4hYX66cf9FpeK6Q2vpRERv+HWbu+7ZoBusFjsquNb6XAqL
+         Cw0b5zNxJIS6V/3OrUGhycDKGuqQyzFmAU07tqFa0I5dQNGITWPcy7Gf9Vb+thprIedJ
+         BJgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765802159; x=1766406959;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xa/v4P9haTj4ZTqReHiXOr5VMbg0ab/1utW/mGaXKgw=;
+        b=b1SE5LjLjB2txp9VRAFr7xBBX2p8hmj9XQxgg4cZ3q1oZxtKzugWczmSoEujvWyYYi
+         rv+x0bmSZy+UtVizFDylQQHwLI6kPw8FVhmu5zg9zUYIH6Se3oUxilPM4A/z8kFHN8b6
+         mSpJAs70Q/9CLn4ZJ6asi1tUkMdy/YWr/YWEFlesChHWxu7y8B1HGuqYYxaKqwRwfafE
+         SuKb7Ne+AwmMclEP01c9GDwj9hsN9XlWSfJ1AyqahlUMIHHf8UpFYC6qQaET+zPDCSel
+         1NwCCH2A4duWF7qnNeRI0IQ6b3Nnf0x9ZlQg9qHuIu82DojWXM7phJXbXEgYuovlydRW
+         KVZA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3UDV0+xBHt44mdgLgFZvgMxiN69VwL4Av3KdxRZA+UCF1rjE6Ad8xG6S0BxnersTaii5Xyx2yNg==@kvack.org
+X-Gm-Message-State: AOJu0Yzxq1TtqU0iSpO+vtLMLlndUb66sE8GWFZ0zG81X5g/rHCHNoM4
+	yUu0qdJV2fQl2hodKbeW6EAtR7itpvtgZLK8M6AbjNRgbfUQsH1CeNflsJyw83Ll5XE=
+X-Gm-Gg: AY/fxX4Kb1JuSI6b4429+2WtYzL8f8dUJmvhyfJxYyQbrEAuIINb21cQaX8IXZmiXYG
+	PzAvXpSURv4Oyx8KgcTOCklidW8cfdgDB6DXuMR0vXqbM14xVMi1m0ix2Zy6cnU1szw2++GlJxB
+	xzAZzCWX73k6LwVJso4QnJsh70Yfey0eaRyTP4ByVQ4YmmzMYtqXYLL+qZ3AJQ+syr2abs8XMMR
+	8XGXqY5VH+158xKrqLlv+0WgW8Eq5bRuVT6qxbrfxtfeOLUi3aQBng1NqOsLMDsDgmE/phs4gDn
+	vBCb1cvjemJ4M7Ep4vZ5vLl18daZeoz6opRdilhoWPqoCPKAvPfvq0w/nyukWpiZb6/KUgg9aoG
+	XWP5t99qXihz+O24PVhQid0Mku+s9JvpPP2AQijMiuSeVic/gaZDEXjnq6lxxX+s6wCkJykBFjf
+	91Lq8CreuRWpPbYjJicrorP5CoFLUH7w==
+X-Google-Smtp-Source: AGHT+IE4dk/6gfkLnl+zkK4uNzyQFfetkqU807+d/eK6tQfhKPc3OGO5uuhdQtoBZu6M8kDz5ovOog==
+X-Received: by 2002:a05:7300:8802:b0:2ab:ca55:89b7 with SMTP id 5a478bee46e88-2ac30158430mr7096429eec.42.1765802158988;
+        Mon, 15 Dec 2025 04:35:58 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F ([205.220.129.38])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac190d3d14sm27968547eec.2.2025.12.15.04.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 04:35:58 -0800 (PST)
+Date: Mon, 15 Dec 2025 05:35:21 -0700
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jayaraj Rajappan <jayarajpr@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Calls to do_swap_page() from handle_pte_fault() on a system
+ where swap is not configured
+Message-ID: <aUAAidA_0kye7r52@gourry-fedora-PF4VCD3F>
+References: <CAEJW1wECyPh-wbgnnoOGY460ido=U2A3rPhF1FQAv7txed1-Rw@mail.gmail.com>
+ <aS_ycQQh5n1cVIRk@gourry-fedora-PF4VCD3F>
+ <776ac4c8-6e55-468e-bb9d-eea49de0ed89@lucifer.local>
 MIME-Version: 1.0
-X-MBO-RS-META: q9aiurnjorghwoz79fww7b6wqkkf5zeq
-X-MBO-RS-ID: ca016de3dd37ac937be
-X-Rspamd-Queue-Id: 5AE9618000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ss9cqs6owf6bd3ijriprq4y49d4ugsrm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <776ac4c8-6e55-468e-bb9d-eea49de0ed89@lucifer.local>
+X-Stat-Signature: 3c73ctc73ufiqz564hfjniqur1w58exx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5295DA0007
 X-Rspam-User: 
-X-HE-Tag: 1765801519-452065
-X-HE-Meta: U2FsdGVkX18o9v1TKenRH06IqU1YdclFWgVnDIO4UUJaoVusFubaKcE8jgRxeVn/V7/ovmmZsbwjDRl8Fj7YzLFy8o7YOGGjbQ9+Sm/8pVchMZuBTJ6QYh4xpjc24WyQ33HCasQ0crSrEaN/S2VsO7H27JhUGT6o6+5NUXjFziOPHRfkFsv/fHMws3k5pGo96lp5OB6SHfrcYsEHT/49/1vztzpf2lfx0NujcXe2yLsor6ur53T7tV4UrUsRfbZrEYm8ewC+2dMq+l7chfVe5yBapzZq5m15WYiy8FXd0UgvgGCQ4wIlAlFLQFb7dj3Z4QTvjjUjJVoE2qZdQmqcXAnM46dEtikfyc2CznRqk2SmgIkfTifTav2bfRj9swLVhnLLRDmATN0lZwO4s6lJNp5aabYqDIpRfgURdX+DUSD6QgEbaM7icajAlItj2zImYQ+j1mX9mDEehR3OTbM5LHl6yLSFwfANknV4hr5xtCMRwYes7XNh0+OtjIJEF0uyyVqNMN0AdFcw7vF+beX5e/vJNEqwzIWSeOCB2B6oIi4mBsV12jgajx8+4SI0xeX/yaT12A3Z2oVsClfhUDrd4Fw0fIi4Gh1ecUu/+cIY5/1yvcP32ffUoD2xZIwP2uquQmBKKpA+vaOlhPKWufHNJXjx7bBjNP4insO4ZRPyecNwPaCPVtJIoCacdauRHQXWTV2fS4tJymbyk8CFn4BXe+fEgg6L/edUQBa1+7xdBHWY7KxApWKyxDM1uFAD2i22wPeqhyPUTBgZkPm0RgNRrxYw6uJOuL1NPgvgaoL42XNke41l1pxLhroojtnhy3aFKnAkl6MrEpZWJe41S1YYhPeBE/QfsVzFPUJ+xNhqPgt9raH3C1d1PowvvHiBtCMotaW6G2rGNk+g2+pDpcbD6GmNDmQdrUvK3N9Fpa/geGMJyvChw7iBpVMhkyUqCNscqFD2um8NnEGbypekpS+
- 7sh78Qkp
- pXfKLoX0rlMuylE+DSuT/BKZc9vJLjGCSJQOwSx3/don8SnWcQBauZvzxPBmFhPYX1mXdY2UMjVWN8Mh4bFhukIlsFJypbrwXGy4IQNJensvAIJNEhNabgez2x9+3zhVsWLzkmFJWJJL+o3nfghMpQcuDWlfOIgbyS7DDVaQ571M7lC2DpLJDVkbrKsnTmoXIpBRHyzKzX/9qOcCwAZNS/EuaY8u24mCQuhIoapKzCzkhQC3az2zgO6APV0ynHX4f0LXHbf6cUsOd8Ue4Rt22ImFlSIL3Oh2KKi9cbujzwTo4qz7cWh4QXm/Q4iHEGNZxi+MajhCg2RfV2EFZiEUc9M6x35PPMuiunvKgN2a8tBlNLRIF/dS3YbAxIxlPUS3gu+YDqWGcelroXqB5yY/Y9twtCKGTdLQX/0G9i80QEOdUxjjJ3z2rjbLSe1E6VsosRBqhIrqXDaZTvT30Fj6iHH4PB8yc9dI/SESAp8XzYkmMNELOZxImmmtWiw==
+X-HE-Tag: 1765802160-846815
+X-HE-Meta: U2FsdGVkX19N5wLZBn82IR/kVxd3UnTj1GLW71BUEaneZ5KJi6OehFBoczyM6uMG2HGE6xvNh4tZHLLpRucbXd11YrwQsomPHCBPbCtagvtlyCd8zvkj9Wjb/a/B9wZd5yK1jYVobmy2Dl3EyGop6f9Is7eJa/x12E9BtBNBBoAZBZ9V5fsBI5eVrwQGOER8sl5Ds+EXKSnzWDsaBvNVjWu3laTAkMdBg4prDBQJWYDn27Hr6JUt+1tKNNtW+YjMWiSg6ocwnt296pmfTShdQ66Ka0YGO3j3JUuV74Sb9y1AhXy3LrAgZSGaUgRr/zpbnDDZ6qRpKF9OuSyUj4Z4ZrNoxT/sBJX9AOozFcdiABqDQRilwiNySYEr28JOohQCU8Ef4Swx1tVR/gfPw0CMNYZlYr4N3bF9VKN4vNA2hVbthlNycvViE1bvTF1YU/axhxNp9Ea+41gJqa/f1H3vQ8jyGrjjQj0DV8+am5Lbf1Mvy8FdSRJfeVmeWkkSF9nZyPnDqPMg0GFhup7O2Y52MjwtQXtN476VpGoGSzph+z8kHVDt70WEXUVMLsKWZcU4A4Rw8AblMJy9TrQQf2jdtvByck3dasbPw0yUL4lakhOVe34Onh/SVjJ586Exn6SZInI97r5u0I0hf9qlALh/bPBWR0ZNKktNdObaMDcEPWBNzF3yzeyIUmECscbCsCvOtCzkq/MTF517vtXpJUXtHOHyWZbE7ctuU9vlNYgLszYpdQw4PyAMze4A0X4LcjE0S5AsMQtawqvQ7TCwXwahsVA/SkvIZtFCile6nKV+O5g/IJBJlXa1b/e9yxnvlS7Svi7CJ5H3Niinl1QKjwKMP6Yd4Nr/FdEUoVcBr67TmrYlUTo2F7ERG36ZfQuCB5w3AUHWk88+3dsSLlHdLe7TNL9VH+JmhyTjiar9RzODyLoJKlN8VnJyAaOo2cX/9R+ocbC2fM4anbn4mprgirz
+ mMjE+MEq
+ kVRlpl/vdDXWGMU/D4oyAiKDC09rcrZ6XBraEjZ7GnAF418H2OBVfvBcco2pHa9lfneMcfgLaiZEXTg7+kkCO4OtJsm4C6Fl5l9I8pYOgf7mO8oXRU959b03Kvjsmzxeh/KjeM1aJvT+rgmybWhegJZpkyVKVU8wB8aMe4O4lWrLbJwqrdgXkUTeiVvNPy5TvWkbRqgJrLqGKnJnL/1BRbClaaafYPmZLv+4g+lPr84/vhKPYTEfkhKP7O9L65p2tmTnMYx8iazcf+Hf+ZmFv7mSxoGOJKCDPCofL146qani9LRDvVswFz12Yw44uUNMsPUhM2MrXKAMxSsoU90mlcvri/DsiltehZG3OfIM0Fegw0CvO7TH7eM+CSjmxDQ7KjYowNCs8D/sdmTotDHC44+0/OQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,49 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-nit about commit title:
-We use "drm/sched:" as prefix nowadays
+On Mon, Dec 15, 2025 at 10:16:26AM +0000, Lorenzo Stoakes wrote:
+> >
+> > s/do_swap_page/do_softleaf_page
+> > s/DO_SWAP_PAGE/DO_SOFTLEAF_PAGE
+> >
+> > No clue what's up with the special sparc stuff.
+> 
+> :))
+> 
+> But in general LGTM, obviously assuming David's points are addressed.
+> 
+> Is this a patch you'd like to do? Or I can batch up with the next softleaf
+> series?
+> 
 
-On Mon, 2025-12-15 at 18:39 +0700, Bagas Sanjaya wrote:
-> Sphinx reports kernel-doc warning:
->=20
-> WARNING: ./drivers/gpu/drm/scheduler/sched_main.c:367 function parameter =
-'result' not described in 'drm_sched_job_done'
->=20
-> Describe @result parameter to fix it
->=20
+I can send you an updated patch this week, just on my way back from
+LPC now so need some R&R.  Feel free to snipe it ahead of that if you're
+that bored :]
 
-Thx for fixing this!
+Probably better to bring it in with your next softleaf series anyway
+since it's all related.
 
-> .
->=20
-> Fixes: 539f9ee4b52a8b ("drm/scheduler: properly forward fence errors")
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
-> =C2=A0drivers/gpu/drm/scheduler/sched_main.c | 1 +
-> =C2=A01 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
-eduler/sched_main.c
-> index 1d4f1b822e7b76..4f844087fd48eb 100644
-> --- a/drivers/gpu/drm/scheduler/sched_main.c
-> +++ b/drivers/gpu/drm/scheduler/sched_main.c
-> @@ -361,6 +361,7 @@ static void drm_sched_run_free_queue(struct drm_gpu_s=
-cheduler *sched)
-> =C2=A0/**
-> =C2=A0 * drm_sched_job_done - complete a job
-> =C2=A0 * @s_job: pointer to the job which is done
-> + * @result: job result
-
-"error code for the job's finished-fence" would be a bit better and
-more verbose.
-
-With that:
-
-Reviewed-by: Philipp Stanner <phasta@kernel.org>
-
-> =C2=A0 *
-> =C2=A0 * Finish the job's fence and resubmit the work items.
-> =C2=A0 */
-
+~Gregory
 
