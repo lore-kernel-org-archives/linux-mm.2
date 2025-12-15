@@ -4,121 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05324D5B16D
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 03:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69294D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 03:19:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4A36B0007; Sun, 14 Dec 2025 22:05:20 -0500 (EST)
+	id CA9CE6B0006; Sun, 14 Dec 2025 22:19:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 695AA6B0008; Sun, 14 Dec 2025 22:05:20 -0500 (EST)
+	id C5A7B6B0007; Sun, 14 Dec 2025 22:19:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 585306B000A; Sun, 14 Dec 2025 22:05:20 -0500 (EST)
+	id B48616B0008; Sun, 14 Dec 2025 22:19:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AE9E6B0007
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 22:05:20 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E888FBE304
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:05:19 +0000 (UTC)
-X-FDA: 84220214358.10.622E118
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 01489180017
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:05:17 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="L/okEJwK";
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A31766B0006
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 22:19:28 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 541741A0BE2
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:19:28 +0000 (UTC)
+X-FDA: 84220250016.03.53A9112
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7861B80008
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:19:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bzzl8hME;
+	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765767918;
+	s=arc-20220608; t=1765768766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LBRV01n6Z10+Z5Vfi/wD7Tb0wVdvo9mjj3mwV2A1JME=;
-	b=qExFLg08krxBpD2EqQH/zQUZUh6cuMrFmD1aRSKRLGL9HdAxZSN/Al5NJWkAnH33CtnKh6
-	st5pkggrqfMd2W1E7tJXhyc/rRyjqz5Q1EwiCu7SosP+obcxZ7HVyYgFUgfbuyZf9pH9DZ
-	JS0CZm5ZQyeaSM8oxgMm2S9GRsvXqec=
+	bh=/YXTTPHtIe0UtHqkZ3c7FV17qIWhwk7wq4qflyJ8jKo=;
+	b=hVaTeZb6ykUlzYdnsJtkH0f+uoE7VP6tA6jQY9Dm7BvOjjBIxlYhip3roEM/Iqh2BepqHc
+	aBNZLGHxjpJYl8HwcYieV7a0FyQroHPNYhei5yy6/z3OJqyZnIiTQUv0/YlThE214Df6so
+	a8I8l1h143p/1d5yUsljG1QajtdANqE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="L/okEJwK";
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bzzl8hME;
+	spf=pass (imf02.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765767918; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765768766; a=rsa-sha256;
 	cv=none;
-	b=ANi+6MQx7o95ZJM+cK5M1754NNMmB1CIrdKeriLsNKcDbSlIneDQ1u9u8icuzJWntzSmDw
-	UB2rSylrl9l+x8RX5j3tc4PDsWCxKRlUNGC4O3Ak82rg07FNGKXJKsaDBlTvDayOnzgA1f
-	OYdS8//4mYEevtiJmfE5mSv+NzHsw7s=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7bf0ad0cb87so3585827b3a.2
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 19:05:17 -0800 (PST)
+	b=qyZFCBPAzRG3H0Eamo9oOFZ2Qs0/hhod7gKqLmsFyVEX7s7sZKcDe4ST2cOWveO5OCzsDH
+	wXc2WhaMFuYNSv/jn98+aiTXw59XRNgso/NeDMt4W1xY/6iZj8JWaQbE4v3azLeSqoCA6m
+	3yvrwUPo7z3PRefNXYaVozAeII5ZQlM=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7ba55660769so2202534b3a.1
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 19:19:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765767917; x=1766372717; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765768765; x=1766373565; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LBRV01n6Z10+Z5Vfi/wD7Tb0wVdvo9mjj3mwV2A1JME=;
-        b=L/okEJwKKFcMnva4ZPxLVCNP6KLC6FGBvfPjtKhBV5zUc/5zqjQuIPVtxJWNOAsJLM
-         jCX0rvzd76E5g7HKllnwhWkK2nSItgN428ANUhD3/f4JVgMi+33yTaflZXewjW+42szB
-         lV0wxad2IeVTz9atZVyPwxNXds5PpZ3bgMghgKJnMRtO1Jb21YZaqatY5cl+P+VJ80zS
-         e7MbiDwCgOTaB8ikqQv9Z9UQ0VMXYZVp2tJ3j8aqIrofHLrFt7NRnwE6f2mBrsHgx5y0
-         Nsogi2Ny5XwoM548ARhcdpoHuRk+mHUvrJD3mSwG7DHO7i7Zpf1cGa75yJ3MACq6TefX
-         rygw==
+        bh=/YXTTPHtIe0UtHqkZ3c7FV17qIWhwk7wq4qflyJ8jKo=;
+        b=Bzzl8hMEdmciED/Fd4xkqwzlEVB5FD861uqQ4VZgfOSfquCqw6BPpHR4JIfR7Zz9wy
+         6uPzMBA0Dsp2L/cB3RJypzECI/KZdnAfDKMYGovqQZJyn242dDC+gHPEouFfHI1b+qjm
+         yeT8x8N8JwO5v7tfhOMkI+389M4XXI0+r6MKPmU9OdWukEsnlApCWM+2HH3lB3uitto/
+         t0/md7RBlrdNLH4iRBEezu4JowQC2BKSykCGK52/3kS8pdHpGayjWay0XD5VfZ1rF5nq
+         EBrGXskzf00XG9GH/FfeZ5+pK/AKzKDIa4oFEIKdihfqrkua3hBj8UgvVksnOS/T3nRL
+         xxKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765767917; x=1766372717;
+        d=1e100.net; s=20230601; t=1765768765; x=1766373565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LBRV01n6Z10+Z5Vfi/wD7Tb0wVdvo9mjj3mwV2A1JME=;
-        b=RoduJUsDmJZWTxDfvQIJyv9E7g6IsL9c1TizLK5Yif5Syb4+2xVFYj6u1f/Y04WxDt
-         nfZZtLymyXQRbVtVkazm0ryENbuH1lHL8+d1eY/OuhRxOxRgXP0JHENgt/Oyjmn9fYii
-         UgAJkdERpEJrnjYOsTHkL2pIbJ/IIeo7MoCBRSrrJPx3uV0MEyCBB00w12tV6+eMAkB0
-         ymiFUAlVXU1GWOOFo04mjUwTdUdXaF7n/F+4n5kIAMEmQ9HQg1RRx38Tv/wi/H1FvWxl
-         s2GHV8x4r4mBJnl893u+M2AgtNuEPAWg6Hk0t+MlBFzTS8z90xpH5UolqwDgxOiiFlQI
-         3OGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXe37W+auTIXvDbAQDBIN4KK51r6rdbTmshAb48i5HjBhChplQqpcH8unlHxVKLM6pIPsN5M3xusQ==@kvack.org
-X-Gm-Message-State: AOJu0YwSF5ll//f+o1XYpTOusVtthRCpCnpvE0Au0nDkgWbkNuX44fzL
-	pEoWj3QboSvlJK+eVO8Sr8JKWTHjPVbYg60+wGDz2w/HhULuy6lvmBs6
-X-Gm-Gg: AY/fxX6vAlyUiMnwaiCaidjVU3Cu4cJ/zm6KpDl5kX3pIWN8Z7PQyFn2kDW6uOFURpl
-	T4V/2hWoQiNHxbv3WeB0wKAI1Y3WTWiP1TpdilGQV94sN1BrO/8HKUiP0kyWhBIK+LY7EIzuaa0
-	gvkbwzjeAsgcBTsPLU9xU74sNCZfjq71oLUClsQQpwA+/2av602SzGmnBmPbyer5uyOQeHZz6Kg
-	vVDgme2TLucxlJsfVDbVM7srD4EEhc2pePovjvpNukIoGeac32wLf7ALDig3YNjHVnC9/CXnR/3
-	hF8MgxZ+vV+xQw/0gLqO0A2BCi2H0dJRSPGAc/HggM/oVqeCCPe/wd8VllDJHUPyyw7mcHJTtzT
-	lfwMpOrTH+C1Nx1DDl3S2B5b6+p8qsJZ5eOcSEWjf/tZKrXFpsCFIfggZJFlbIu3psWTuLeNv3g
-	mMG+8uKgqybjoExnnz3w==
-X-Google-Smtp-Source: AGHT+IEn+Y8AE3kEX5AkB/sFeGPR4t6lVQuTq+UDwlWj5SFZcATCZ4c86Jekd4k01WrcvjN481NL6w==
-X-Received: by 2002:a05:6a20:3d8b:b0:364:13c3:3dd0 with SMTP id adf61e73a8af0-369ae58ce09mr8734759637.36.1765767916868;
-        Sun, 14 Dec 2025 19:05:16 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2ad5663dsm11335787a12.17.2025.12.14.19.05.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 19:05:16 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	miklos@szeredi.hu,
+        bh=/YXTTPHtIe0UtHqkZ3c7FV17qIWhwk7wq4qflyJ8jKo=;
+        b=YNhEoBc8/TtqSofOcBqPNBZaJThWbCFPGeJtCxqOUriQtz1Ey887rNf4o5ZICKuZ8u
+         hdCfOZgbwSKGdukncSx8DQ+68YCc6UkQlYcslHYCRchj3VDtZmmX2GW/phqhVs/PmyL5
+         H6aOYnQn4y/hzu7VulmFk5j/wHbmB2wsq2MZsqZvI5rttppOmGQfxjpRDdd9vwIoDqff
+         0YXsIUSFN9+Yz1RvzE7fV6HyZsWil02C301p1LO6BUBuXR15CRHIzRFB+ZtCN0WVCMYf
+         f1/i0/yyLBvHFKy8Z2LWrzL6Zaz+e4Z7oip5oCNZ6ii8iN4mY24lEKSN5Mem+qBPESlc
+         Aehg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4G0vK0Ks5aP2QiIFQVgLL+BAhSS8o4u1EfZ0bZftoGIjmcjanz1V1+PEAxAri1kWV12vtJyKcSA==@kvack.org
+X-Gm-Message-State: AOJu0Yyg4oB1HY6sVHO9jSFx4crC9opI2ykmbsGH0Ksx95uvqFND8NY2
+	5QC2k6TCiWbmIdCL1J1OZboO4vKcJ/OkdD+c9vmJytQniNEHSIikq7zI
+X-Gm-Gg: AY/fxX7M/VK2zLjiIOGDnIhwzJWflX+LqEUPe7lpDPuNm2m6wZDUsaSD40HOvGISaIo
+	uNV6/i9S7+lfpzefMKqRvXrh6LBKaAMzHWLWfQN2w5z9lLsDwnEBYIBHhleoJvz2/98Dm+koJBy
+	DOVuqonANRtrugwXf1Ci+yqCIKgA+f9GXE4It3CxTF1BoBpQtczEESWme++At+Zi3+JrKpLhPX6
+	ZvBXytTWDgkA7/7efHrD0HxpiONq3qJg+JoxpPqM9va2PbVdFeDok8urB8fB+8fsf6z2CScOqah
+	ioTEW22nRDGBPwallhNfyU229MBy1rae8UlQxkn1ze4JP4ThEH5lHQIAGpb6iNqM7yrinyGX+Hk
+	g9Byg3q40RvxLw+1eqUJQd1MByZ4azBFxSVDVximGEUF1UATYF3I9sWYbKqbZiSvtI7Do8L5gtz
+	e0donGGjPoZtXGCEHHFe+BOvbmM8EnNZr/vQ==
+X-Google-Smtp-Source: AGHT+IF8svbEI44pN8qFlzx8WfCvjg1BG57kPDXl85wb4l71KAmRnLomkClsZ8cDHi+uuHFpLooA/g==
+X-Received: by 2002:a05:6a00:bc90:b0:7e8:4471:8c4 with SMTP id d2e1a72fcca58-7f6694aee9cmr8109762b3a.37.1765768765280;
+        Sun, 14 Dec 2025 19:19:25 -0800 (PST)
+Received: from localhost.localdomain ([223.70.159.239])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c2379972sm11090682b3a.9.2025.12.14.19.19.18
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 14 Dec 2025 19:19:24 -0800 (PST)
+From: wang lian <lianux.mm@gmail.com>
+To: richard.weiyang@gmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
 	linux-mm@kvack.org,
-	athul.krishna.kr@protonmail.com,
-	j.neuschaefer@gmx.net,
-	carnil@debian.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings in wait_sb_inodes()
-Date: Sun, 14 Dec 2025 19:00:43 -0800
-Message-ID: <20251215030043.1431306-2-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251215030043.1431306-1-joannelkoong@gmail.com>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	ziy@nvidia.com,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous folio remapping
+Date: Mon, 15 Dec 2025 11:19:09 +0800
+Message-ID: <20251215031909.39615-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251215004836.694-1-richard.weiyang@gmail.com>
+References: <20251215004836.694-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 3cpkhsgpch7tjjytnqc3cp9ear67gdss
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 01489180017
-X-Stat-Signature: b1winh8bbe4dqqamzkrqujx5g5ppr5hy
-X-HE-Tag: 1765767917-600572
-X-HE-Meta: U2FsdGVkX1+b+Ah87pAeJdYFtcU7PuLzV9W3JqtExo79WCJlnV0nsGuLWVVtg6kW0o9CDJUg38n58ylPP5DZRETMiuhZSNQiBY+ttptbZTUJ6IOrL3+XPcEUg+zewFEMvhHORW0UFHEA3MrCUvnMh9N+mHuzEKsG9iETQtZxvpdQSp34ymJWRlcjXLyNwElMXRRkgsMq2HKqyPFOc6b/USKgTjsw7qLCmB5mEk6S0saAUR4NKjjvHR1+6ntoyMsn419SnR7nq3BNEAQLV9ia0uRzPXItxL3hCySEpHw0QdnJDoRrOI7Kfve1XWlj4vfd1QumHnunlINo67mhoSbuWnIuKAiWfIPiI6L22x3NvH+A50aoDEVg1SpkAZzbCHCEXuvMEBKruyqnrdmiSUoQvg/Ya+nkKYbsmBsmJMxZ0LUukc9QxFgdkC/YcafBWgSDRCtkNeglxzl6/8uMeeyYCRGbBX5jeph7OuiHsJtLoCdSlg58uNcwViFSrGozUeSnQ8rz/v9OY1J7jxdkdeB9HSJdx1rkBW3yaEUEcx7GaYKzuaJhaV+XcRmYQSngymaZmOFi0QvCkxaH3T7FNgyR4OcXCI4G8Y/wyWyFhgSl+WRqCTnUoKX0vCH9VHuz4BThBi2tdBfu2lnA/XCHBcZSZBzp2O5+0n8lyg4t1DZi30SkUbeqLk6fp5kqPdaCbQ3sWF/Pt1npPyvlpQeiFGDHNJCY6M+RTv9mHd5Qu0shobfLORPZCYYwZsF5A0uWoNcboUHyCu0iKdkcb7xkvE+7tjDtmWZ8DhKX+PRKjgjNfUWls4Q6S9T8rYdu7GXSP/0ZcpHbGPxeEMunb3kOl5N5wfarniSc2emKYTFsEiG0INCyTbDbSQKHbjeeqKgVGBQbq2nD85xTozyb8pNqCNBl+fW4Ky/hmYGfQFBYdO4xHE7vdTID/Ff5KeLUrYM6Wnf+JykngQHgLPq7SAcd4Er
- FwCc/z5s
- ly+DwbJHSwoHAk8RI59f4i+JPWWEM1AR5a+0kPqNzlWQ2sMCpZl6Sg+CJ2+rpsq/vEmnz0bczRQbVfaWUUJzORbmdLYwZgckAbjklU7PaXr+Tq2lsk5/B5pp4d1BRnmNLwAyM+liOUE5czOz07D12NukXx1CVGnEjv9SP+SE1vePsIB0gIal93W87MKsaNQ0DGEEJSBVDIUKW4XT1G7n6povp2mZVwpySrUi/DYyxNGbLCu/YcQtigCLuSQT3xcArcu8mhohReTnGOlHT2IN15WazT9ecygK+RuAAjcr62BnS0zmGczRLElJiJKqd3xpWsTXMeIqUHW1x/OX6DDu/iS79aiauMUr+LQTOhut4rOInPevU4lqiHYYcJ8MlxnUu4ntF1j8wVhcR3AXeYZbwzveyJ8sXkQ6BAqIxw4Rj60LyjJ8zv8bPk4NO4pRQo58yXdWNF4TeRACnmMzx4fxYcZL22ErLezCjd5YfpZa5FyfCYF3AOgW8z+mzA5xUO30tvLzp1ulHr+4nkPPSrotSQLJOcsksR7xcpyuOeUDe11nKLyH6XGejk/4PAZdk93hNbz1uWCAwmsDp3a95h+QYVbV5X4c45P/ZObKZjrstJguW8w0efeIaufEh2YVIdysGswPK2wgnHsAYSQbYguXJvDQpvrMGpEPk0ZI3AjvByr3xu8D0YBnkAxJ4LA==
+X-Rspamd-Queue-Id: 7861B80008
+X-HE-Tag: 1765768766-820443
+X-HE-Meta: U2FsdGVkX19PBodxK1C8ldkhMtTSF8H96oXJn3pXKBdOwcCQx/D0Jwpm0pSQWPq3d2ZY78sH3Tm6PNd7Ug8woEiVnMrubVWUusFbyJYB4SWLTwSLAJtxlx+sgBy1/c96g7GaqJTMtl2x8YvYlZy2A6D8sEbV3daIwcqWbf01tPkHGVynGuyuNaqKZiQT9spXbhmLbnaPe1sbESP8dWtgVsxebNHb9eHc+RThfPjWbIQjl/BSdHzE+kqlipaWvktOQnNM+ChWkfZsnUEFZHL6NBeEIlRriPZ839pGik3VJ/AgweIdxvICLxiM3epjn0ba7ZytYRq0cUYiI+5S6asARuzDCq4UhgL7J+WFDduF3Y6h4v/6eTqCqUQj9lWw1jqWY5y3ZNmGGGCuKWR8aplO+b1PwMB4TOuu6KooowTLaZe6puDK19fZfy3fG3OvvJ1JcZSll3N5DaAyi/U3WTmOVCb02oeM/1jMs32GeCTEYqAmxkI2BL8hsSNQLgpflaGNkUXn+oGk8DLi6vPSV2H7VPclEN1SzUUYTgKzQGmq5/v/IZ0aO1lkdgEQ257Pj+VLFBEx4ovvswPjxpsmEcqya1ADOEk0861g9YMkyVva4L3fvYQLZ5Q85byzS/oiUO7gd+J96uxjDCQr4bC/+kC0gLndER3N6ZaBKLQHBwIEkCUcqbx/MDNdmyg5/RwAWaRj64BU7PVCwwuPp7xw58LjYezdihwDbjiqpSXxkrusUzT+91ofXPPrNrPhioP9rl5xwuVk8FsBxyahMbk6v0UCF42CVpiVVbOwd1r88j6DKLllxoarnPvfUVk9dPWeqVwLtysSt2eFakcwmhCLAsObYVVPSVaHXSAIhg6M+Oc8xmLaVdAvEOKvQJnIXnI4dsTEAMHjpK5hf0grHh+JHnOETv9zrTXeD4mWsr5SQRMWHYFk69vsurEtXYkxF4sxb1UMYgX3G8VHpduEjEB9cRa
+ 8B38rpMm
+ reSeSzQhabV3obeb0S0FZqneIo80rku9stI/07yhXFaNj17kcphNBcVnpWhUBieLgt07ge817gVDFjItl9fRJSQ9OBywD/keCNuxAv38Ibrjyi6Scey0CZR6boBlQzUPGypYd0ohUxMR1oP8QWd0ZQuI/tVl5XNu+MSkKfhgcXQxR2r3ISmuLMRqsw7poTNWwHlPEzfjUDZXtxfdbv0hya/7RJn+gZY7hXwlnUawWqhZTco3CQMMiHKkWoWt96deFnJ+5B6654W0dNn3OdmlFxyxnTxblZGJDKonZtWPZmma2ek27WmK4YoNhugwJFId6bKeQZHwXVYroDd1LaJDSZLdqrRcVKw+ZGnzEqEIqvHgMBtpMg8wV7p0ur4i+vkWUJWFyqXgcbxbHIXgrMKRjVtNzkWZ4GVZvoKwOlY8Eh5DTBbcwP29tTexx9ds0TE/JQT0dubdn8UrQykjAf7gdTwSHSU9DPC6Vyresl7JHpj0iAhF0ioVidiNmYUz50/ZpaNqnDJJEKcxqWx4/kjWyicu6tOWZmOdVPHy5FcdGPZhr5wQ0wLnD6JPPVrw/hyXeh6h7Tu7WCnq3csi0n8abMZQGXQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,86 +130,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Skip waiting on writeback for inodes that belong to mappings that do not
-have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-mapping flag).
+> After splitting a large folio, it is necessary to remap the resulting
+> anonymous folios.
+>
+> The current implementation determines the end of the remapping process
+> by counting the number of pages that have been processed.
+>
+> Since the final folio in the sequence, end_folio, is already known and
+> tracked, this commit refactors the remapping loop to leverage end_folio
+> as the termination marker.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+>
+> ---
+> v2: move folio assignment in loop
+> ---
+>  mm/huge_memory.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 40cf59301c21..fe812d9c7807 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>         return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
+>  }
+>
+> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
+> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
+>  {
 
-This restores fuse back to prior behavior where syncs are no-ops. This
-is needed because otherwise, if a system is running a faulty fuse
-server that does not reply to issued write requests, this will cause
-wait_sb_inodes() to wait forever.
+Reviewed v1. The end_folio logic in __folio_split is clear,
+but I agree with Barry that nr_pages is sufficiently intuitive. :-)
 
-Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- fs/fs-writeback.c       |  3 ++-
- fs/fuse/file.c          |  4 +++-
- include/linux/pagemap.h | 11 +++++++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 6800886c4d10..ab2e279ed3c2 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
- 		 * do not have the mapping lock. Skip it here, wb completion
- 		 * will remove it.
- 		 */
--		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-+		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-+		    mapping_no_data_integrity(mapping))
- 			continue;
- 
- 		spin_unlock_irq(&sb->s_inode_wblist_lock);
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 01bc894e9c2b..3b2a171e652f 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
- 
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
--	if (fc->writeback_cache)
-+	if (fc->writeback_cache) {
- 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-+		mapping_set_no_data_integrity(&inode->i_data);
-+	}
- 
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..ec442af3f886 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
-+static inline void mapping_set_no_data_integrity(struct address_space *mapping)
-+{
-+	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
-+static inline bool mapping_no_data_integrity(const struct address_space *mapping)
-+{
-+	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
--- 
-2.47.3
-
+--
+Best Regards,
+wang lian
 
