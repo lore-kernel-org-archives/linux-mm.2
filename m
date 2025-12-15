@@ -4,119 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECA0D5B85E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 17:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B680D5B862
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 18:17:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D4B56B0088; Mon, 15 Dec 2025 12:50:02 -0500 (EST)
+	id 7B0946B0088; Mon, 15 Dec 2025 13:17:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 695A86B0089; Mon, 15 Dec 2025 12:50:02 -0500 (EST)
+	id 789706B0089; Mon, 15 Dec 2025 13:17:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5833A6B008A; Mon, 15 Dec 2025 12:50:02 -0500 (EST)
+	id 688B26B008A; Mon, 15 Dec 2025 13:17:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3267D6B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 12:50:02 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99B40C01B7
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 17:50:01 +0000 (UTC)
-X-FDA: 84222443802.17.2DF9CBB
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 800D040009
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 17:49:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Lnhp07r0;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765820999; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC616B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 13:17:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04A57133751
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 18:17:23 +0000 (UTC)
+X-FDA: 84222512808.07.36E2D8E
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EB52A18000A
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 18:17:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ao3/DWdx";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765822642; a=rsa-sha256;
 	cv=none;
-	b=A1+Xb6qnYPJo0ylX6ssHKj+CEiC01Yrd6V9fHYh/hasUjF+29LPEzq/32WbP7KLO+7okML
-	qcBYXgOyzjcGsJwxEwr5NB8OdpcfKttZYn3b/lsiHVM7+JeJls/WD0CuziwSFbJD4GwhXm
-	DqTmOZ/SRiE5b2qaqzg4tET0PHFuVfc=
+	b=AsLI857Ni13zxTFM1VUVi+zziZfhOnVw7C/JKfgHNyokTHtFfJaLnjcuArXYe50eyw+d2J
+	ABXo4qpa0tAZuu455RDy/MOTfHuywxtetoUBCKf/ehzKKZzu+C7MNMV6YTOobNyr+kiCrG
+	Ay1QakFWp9qHCjtr9TNn7rKMw+I+ktM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Lnhp07r0;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ao3/DWdx";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765820999;
+	s=arc-20220608; t=1765822642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xUQK5ROZQGe5dE7A/2KMYZ29UfZNXQkHdANhLdHHkW8=;
-	b=fl3JenUJCjQGRkQsHgKlP2rp+C/b9CE87JW8T88ojtjZ2Yx16w1OV/IJUYNPjZ4AvbEZbG
-	GogGKxbY7MypHhX/6SMAA5jlsSmMkLYwoSgl7ciLqHb70am2FHTp7klI8tKIgZSDRTaGzk
-	KTpfN3gar9gQe9JEJliVOmp5rbxmD/c=
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so28855135e9.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 09:49:59 -0800 (PST)
+	bh=8SDuYcgYt8Iaz1SlD83l9AQG5ZEqQi3Tk0awwVnuArg=;
+	b=p+AHkUWY0Rnl8DvrWpEWC/oy8GkxmlBIXTjgfGFOlwhqWl59tVq9TvDbfqXmVcFvqdoEwQ
+	y8p9JdrUBzEwBhehauUJZAjbPDCV+1jIMEUDbzE/sXwpmeJO1h74Rl+ERkxvDmLnE7S51x
+	RBdb7vw37Sw3xrn7/13wgA+6PspEXfA=
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-37b983fbd45so30691631fa.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:17:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1765820998; x=1766425798; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765822640; x=1766427440; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xUQK5ROZQGe5dE7A/2KMYZ29UfZNXQkHdANhLdHHkW8=;
-        b=Lnhp07r0ZmjWiqOGGI3n89t6xZ7fU8q1aceiNVi3x7AL6qrWTa2/g+FAM5DLXObH3V
-         Ydc7rozwuNxr6bGiAYQV/7oX1mx0Z5wwGIxIsCLdXyS21pBSIjq/beJZBP1FA84FpX9C
-         A9V4lYOb6ZrBSf17WTaE5Ve5LrzZvGwVr997BFIej5Px0AVaaw21GpBVz5xbFjsDNSaF
-         CYwC/zzhAEUSA8eZs/+IjIBRER1F+6ATQ+t8lm766Yc85vE2VoLnC9MWyzLfA03RElRH
-         zhTrYysKkcS3wyESL/bVjfftz9NM9kLzXBNsqOZmIQngEj87uq2y5/LV1GTB2nN4hUdQ
-         9A5A==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8SDuYcgYt8Iaz1SlD83l9AQG5ZEqQi3Tk0awwVnuArg=;
+        b=Ao3/DWdxqX1oPx/IVflT4nUBRAfOpy6Rr6wEvlNEb7+bn1vI9xnzR/f2e8LIAHAWJH
+         pCQYF6fWufedT3rTtXo5sb5CAK+mkWBZAgaXh7BFOIyac9WQ81tlWeVuQsZQ883Ai0ie
+         dUnB/5o7Kl77zSJhO1fcHbouFwWqAGQYh7EGFyN31EocFwwwVkBlxrxQ+O0KYiMaCrmK
+         pqtkGQne2BQcXHwp5VeVgD6lrAdgb+WH7+YK5+fZSOhxIveH2XlsT68OiWnAcZpvS4aa
+         PfzeJ71MBvCGvOqnm+V/CD8wfgSmySmrDv7ds4r7eRI9aZvtZFpNSaM2a7LaRo4bxMHk
+         6yrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765820998; x=1766425798;
+        d=1e100.net; s=20230601; t=1765822640; x=1766427440;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xUQK5ROZQGe5dE7A/2KMYZ29UfZNXQkHdANhLdHHkW8=;
-        b=sBTda7a16Gy18QspjSHuC7vKj4d5McQ4jSpPU9VwwTH7LNK8GyI8OnzL/c3QW7xqe6
-         aASNYdFz9/ygHoaH+ZFYK9vRg6JZUMsm7a6j61Qu+e5GSwiHf3SDKg54x87zvPUEFtV8
-         n3Psr0f1ESubUGiV9OvrPqZX7dQjT8CMwFnS4NgpYH50wIo5PBPUgFIykc3erThjbRbT
-         asFNDMGgzt7b6M0r8RJtFTH0cCdQ5peiIMFR0hijpMaGiq/pF4pmaadOixyI6nMulbAg
-         XtX2mYSY5+ocnytSenqioGHMoZ6DH6ulGlqaOo2l+EsP5vF4L1O7WDjBnetkEDLkI8Hm
-         2ZZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmwa5VUSzd0aVMskGhInIQTDnB0Z9hXw4i1n3C3wu7UIC2fudrfJB/lClmKoZSbH/jmz23cbEPBg==@kvack.org
-X-Gm-Message-State: AOJu0Yzm3hCvBkam8c4/BtY69gHmtpO0fWoIkVRRsDYRTnZ0+eJrwGzj
-	28wof+fG84sxiXOFOj61l0lBlhMqdylC7NxGmCdOmR6ObKIh3gOsc0Y6//pbJdpsoJE=
-X-Gm-Gg: AY/fxX6WxYpr3s08jwn9W20XvN5+88RYX3eHGDLaFy3UfaD4YI9ATpNjzgZusOru6gW
-	ChdgQh5ILSbOqv0i/k35jANgjGKwtqkCG76kwFx5Hif7w4UG9uZefwtYh11dfuWzu7/bD0R+Ae4
-	hE6/O1eRuq+MuIyPrcb0H0vpg9j74tw8QqQ3W7Wh/FVk+aTFxikdLEkL8aB/IX3cOEzqDDEIGuo
-	a2BCrrevJTe8MmWUCQdrqYYozxMF6STxJq6XFmrzxTZkP+lC8/djoqgUP9AY6+QsqpPOdAW7w9m
-	cj1lylzzZls667CP30/ksARcEfMKhRNwqojTfCl7CIbu4hVo6fiSpQammJugB7ptLyNOHjh+nR4
-	k2gHHcL6jzlIbTarZ7BRjpjh3GEGnNuMtGhsflIusbAlmIGyfko2yFT0s3kilDWgSpoql/X7UBb
-	59NecEBAg/3otBuW2ba7+gA1cc52tA9/eqbLY=
-X-Google-Smtp-Source: AGHT+IFoGs2wdqL9XS4JsAKRnOl1rHpCgPt89A2Z4w82CAVCNT2UUiuHB/eJ2CZAcr2P2cCxIdwdjQ==
-X-Received: by 2002:a05:600c:470a:b0:479:3a86:dc1c with SMTP id 5b1f17b1804b1-47a8f916db9mr118138145e9.36.1765820997911;
-        Mon, 15 Dec 2025 09:49:57 -0800 (PST)
-Received: from localhost (109-81-92-149.rct.o2.cz. [109.81.92.149])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bd5f8ae74sm124075e9.0.2025.12.15.09.49.57
+        bh=8SDuYcgYt8Iaz1SlD83l9AQG5ZEqQi3Tk0awwVnuArg=;
+        b=lC7JKKodXA3VzngzOPzACv0AsfJtf7FtK5dg0ZWZWH8+Wcnv03+4Fhz49IL1qLl4hU
+         RLPVh1YA+hYgtd7rIjvRABl5ZgQV68wHqI/7U/zGL1QuYxKgIFc+jNF7olIRmkyJSC8F
+         ZS+YLWu3ArtrLLTAI3zKth19sNo4cfMyFK2DQYQjj1RCX944aYdK/Non5v+Gkh0hbZlx
+         XiWBMoe4v1BbGzc3LRj/5Gnr1WOyidrTCQmcWzoTITzKe4B1SCiMYkr4VQfbjdNxEKWN
+         c5pTMTr+7VABeejaiJTPuwnR3FEZN3CPsTlAgdcqqzg9eZooPCE5PRS3bUjPCmZ77mby
+         TlNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJZPMwIc7zXRpr1xSpoWqS01KbNSdGlbaFbLSbPnshDCwFCWZT8O0xE4sUcDT7kaytv/a+60TS6w==@kvack.org
+X-Gm-Message-State: AOJu0YwqG4hhn0Lroj74YjpYT43cN1O9IiN1fPKNyXPwgyHus/lxMwuX
+	UBY1y0I6cmdYphQh7cNT208NU+FDo+GaLcyidOWft/NcVPxqPJsbNEnm
+X-Gm-Gg: AY/fxX5GsllXD8Ui2uAW6W2tsESzEtuCMSUqPdVkD2uQOZTeWtZyHKd+Xkmf0DrCZs0
+	uDQW1Bz4nUd0Sft2MddVryYRMVYI5uzv+9HOZV5SExh5EaZKr8VLmMDApFgjhyZ8WC4Pm250OAk
+	bCBI3G4ACb5E5LevlV4QEozoPICPDt6iBs+LB486jA5mji4Xxd1r3j3iz5c/MMYq+bre4D4UOYd
+	4Hgr4tKoj6mJT97bD18jNOsirmeQI6013LkLJXrzyGdBeS2O8VKbZSscG7husE9q0zIH3y5zmX7
+	P7u9VQBj8hQLYcTdMb3E3HUyv14IHYltapUOhP2LS1Hq16CaOpDxTlxm3Fnewk6YiBt1InTzvVT
+	DjssBa1M+eh8GvAOjwxdmfqJwQifVWk9Zp0OAyLQpl9tR7Kk2Wm1w
+X-Google-Smtp-Source: AGHT+IHIpWAWwFf19dyptIqYZHoE61ofRWWM/liv2W0ayoYF4HcpI+iP57FxDb1keetfu/UwgCkMcw==
+X-Received: by 2002:a2e:bc81:0:b0:37f:8332:6ae0 with SMTP id 38308e7fff4ca-37fd08a23aemr43667381fa.33.1765822639677;
+        Mon, 15 Dec 2025 10:17:19 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37fded7629esm28801271fa.24.2025.12.15.10.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 09:49:57 -0800 (PST)
-Date: Mon, 15 Dec 2025 18:49:56 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	yuzhao@google.com, heftig@archlinux.org, oleksandr@natalenko.name,
-	bgeffon@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm: vmscan: always allow writeback during memcg reclaim
-Message-ID: <aUBKRDkIqlisJzF-@tiehlicka>
-References: <20251213083639.364539-1-kartikey406@gmail.com>
- <20251215041200.GB905277@cmpxchg.org>
+        Mon, 15 Dec 2025 10:17:19 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 15 Dec 2025 19:17:17 +0100
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/vmalloc: clarify why vmap_range_noflush() might
+ sleep
+Message-ID: <aUBQrR5QlzOBB36r@milan>
+References: <20251215-b4-vmalloc-might_alloc-v3-1-92dd8e406868@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251215041200.GB905277@cmpxchg.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 800D040009
-X-Stat-Signature: ry94zbiq4oc1sc8myjrgpyszwkp1qiyw
+In-Reply-To: <20251215-b4-vmalloc-might_alloc-v3-1-92dd8e406868@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1765820999-468124
-X-HE-Meta: U2FsdGVkX18aALcF5Lrt9I2OIOgXILH/djW+r4VCDUxC4hiDBJv8r0UPewMeIurVjH6WAcUUHzkD1Ev1Pz9FwusIfqUHEBPbgNgzZ3RJ3xdgmkK3guxtYpzDKjhJ4WQJ0Rd/juBhNpZn7Q/uTAEOwdMdjqTJuRC/o7GhlfTEWjg58/Ek8jYOroZ7Hx1X+OE9yqztK+N32A1aWWPRfyuItogsgjpQuvJ057Pb67rJNCc8warGomxoXyfjqeWXFLWd7O7Kmn6TERkaV2qrryphKDmfa8sRsVtRUdG5HtOgTIuGm6XnGnKioC1GdWlAsVW4Qs3nmE1DvxlPr6jhxNFBaw97CdsCws4IQJuf5Mj0YVxbpOxJwZoaECOg/Cw2wG6RCT8jHFLSxf5hiiWhTppdDQVxR+tb+9UBkJoq2Jeth4/DDiRgSlTk7Dr+HkFGK1M7Jm3lSKSTmI/2hAbZNTRWFWadBA1TiXPGhmpMgjWXctprm1KFq+f4E9NtaJ0kMackUOCsvgZi4HYV+ixYv0uK/n+NdA1GuY7pNRQeMME9ccNbUdlSiPhGZiuD1KVJq+ueCBjXNdPtiN6lQcmUzy1ktR6ohGNOtwr5oqbd6QnhKxsHOBCYRRM2pDfVKx4+ll54ulh/IQBooTStgNpCLGfXthjD5sxm05CMSNjuXDMb5rZWcbBQJKN8VTpTVRkDusK6ZTCrDsntlvLS7uh4WgM752p3nhgOj2yYBQg7kijUeTFwEKyqmyoPxbXdMVzk3uib/hZXSmUdmX9+kZUgjZ2pRUJ6GTfMeRwZI/QDeSgxGamxfye5QnzWu0ERHfcYws8F694plEo7RdboLR4NuTLbblLmX003aWxyqxmpDPnmaTgJoNkRhYN4S8nyv0nDwWOMxaVtgO3zTiUBKThFwOZVkrHkG22LiGhFrnsZZgMFX1Ban/xZyjAmDUjXB+9rGM0KfrKfAsuzYOhHgh7U47t
- wl+L/OWG
- bZ360+LP/6SF4y0+nelVRZNAsz5lDZMrIigIJIgc49MGnfa27+fyNl4xhcLotEEDzIesHT//v1dEbKTS/ge5PRrrhBApl8IwlLA66P9+kjfVpb0XY9eeITfTs4QlM8aV8thg0sV0CpMYXa+y8IynbWiGDvLG/B9B1HLsGyXVfec8w5ZM74G2pVthmG0AfreGElxd+ADi1KrfMibgo3XWkGgkSLhf5bitAG3YDuhDSF4YTOLCTeVbjxyBeRfEfH+Amah60P2YAin8ahNwP1OLUFgHR21iNl8jcOa3UEpbqvQVNMthWq9ma2dh1Md64GVPGGZ5xx3j/uU7O87CR8v8oL//SGzrInaEtcHPt07YnPOulGaNw1nmW+EqhOJS0E5A45NDSmWF5IP9DO4D1qaWbFrSwjuSwf+XdSbrTL6dlP+Kee2wxcU6ahtnJ1i2UWTEZ5ec74EF744+rBzWwOQ/Pb7EdD8U7Q/NRZ3a5zY1e6KvDREBZzCBPt9vnRE4OE6DattEqPXoUuDDbUvcamoqbwqH3RX9cdma5tdRW
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EB52A18000A
+X-Stat-Signature: iia741ukag3inmnr563hbr6qa9y9r1jk
+X-HE-Tag: 1765822641-815806
+X-HE-Meta: U2FsdGVkX19/22sDFVmMVQ/woHosrm9yjsWTCY0POiaD9GrRVPfql5wbpFGdsI/LXxMxj0to+31P5APFQVqmgt7083XpoYQzQGqApp+5j//kykNVXsNYvEvdyGrJyPs7vH96sioZ5hT72RZng6zLAi7WAFnto2xz6A/pRmODLLbhYix2BnAJovaS0nZtPjztTU6I5kY7YlJDRuy44w1plTdeb06QCn2tYk3ypGFWJVVe3/iXqxyxpTk+muQpGm6aPrH6MpMDiZb0u8JpwCZfmxhdLexPCdMukhwiGpHdHYmdPTnH1z8W7Jl4sRQrwoaANEiouMu2YEbAVShCzKLVFO2tBpklMrk/TPVxAg6tYQzVqSmOgzHQGOnvmIKpVxOhgs0vPjzMgL6Ey55IND3EwVYkl94hoYSHLJTa1PX9xFi4J12OKd0rZn0zy5clntqiwpnD9i+DQg1PFOcWJyr8EbAj8L90y3CE5xMsB+5izvp6WVavReS/5l7BBkNc9enKC1sePuVE2HqJA6mXncx1h9YUBiebH1FYKxR2fOT1vIv7wpNhhCibvz+L8aw270N5AIZdZw/8vlADRNpL3no1DRL63wsbfVpwxbG7EdX1u/W3a7BezwZUlHxJ2Vfn28zowNkTbXUkkFDiHQ+8fVNYIJoEo/vZ/Pf64m4PX+7eLvH7yG/mWzKYMXAMDL9tP9HU6yNfaPNTsi0PDqNMp37ji0ZjnstJUD5YNnuNsAR2/Y04eZje8njKw1gG4ZaZTh9lSIu5UAVtC+DgXgEpn7dN/KbPwft3YCK9kY0hBeXly/NSIN/9NUXKx/rr1TVeG9JWnzwydoch2VrgrqSIT3AsMqFKLdMl1ReHhUTbKq6tRouF4wMNSFj2kQOEwtIkPTmjtShvrBD5Ed9ua8q2rZFsicU8Ofhg8w3qnniv7ty0jA1mqMwgspo7ytS0fVVwOve8XD8R8WsV2X2AYYDaqY5
+ c63Zj7De
+ lCsE1u1DoK4VtbuBLwZ/euDs6bq5zf4QDJJvlIDRVGbhZX2UZR6tWOFU7otyKm1/G4cAATZZK6Q6dPgqGHBED1tLfQD/YXutTCjzfHN4+oNL7ax0Qy9ri0YEFtV+ygTPzhzo8eM9itT3OnhZjWmosAWLBRu4Z/H8hk0xD+LfuDp/UYb39DHg9r3qAtj0QCYgBcA8GDzyzfoHIfPuoin8cDv3lwXtg5jk2Ye3pTJr5Xkv08XtvhAheSAc2SiRmYIFhDmIXa5MFMsF6vUnyxBI7SNgkdPFmriQ+YK+7e37HlfZEYOEh6xM5YWXH1Siy01puaCsuuxlmGuXKuq+alb57GP+eHFqd+3SDtNUDJFBSrIS2RvJ5uWAMxep3wj5dctWq0tftoC914bibYZDqky7A/w+nmhLzzIUGFeOVveaKE3UpBafpJmJCL8M2hNCqIoquSTPi1fwYjcvW9oeDjS7n7olHvh+Tofd40j4ALAcBa86dOLEdlmkBvSJnd847FgPbAVMusATFCr9iJkP39YwAFSe95vc40gVhIk7c2CVNqEgOHp8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,48 +121,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 14-12-25 23:12:00, Johannes Weiner wrote:
-> On Sat, Dec 13, 2025 at 02:06:39PM +0530, Deepanshu Kartikey wrote:
-> > When laptop_mode is enabled, may_writepage is set to 0 in
-> > try_to_free_mem_cgroup_pages(). This triggers a warning in MGLRU's
-> > lru_gen_shrink_lruvec():
-> > 
-> >     VM_WARN_ON_ONCE(!sc->may_writepage || !sc->may_unmap);
-> > 
-> > The warning occurs because MGLRU expects full reclaim capabilities to
-> > function correctly. The call path is:
-> > 
-> >     mem_cgroup_resize_max()
-> >       try_to_free_mem_cgroup_pages()
-> >         do_try_to_free_pages()
-> >           shrink_node()
-> >             shrink_lruvec()
-> >               lru_gen_shrink_lruvec()  <-- WARNING
-> > 
-> > Unlike kswapd or direct reclaim where laptop_mode's disk-saving behavior
-> > is a reasonable optimization, memcg limit enforcement is a hard
-> > requirement - memory MUST be freed when a cgroup exceeds its limit.
+On Mon, Dec 15, 2025 at 10:40:25AM +0000, Brendan Jackman wrote:
+> The only reason vmap_range_noflush() can sleep is because of pagetable
+> allocations.
 > 
-> That reasoning doesn't make sense to me. Reclaim is always in response
-> to an allocation need. The laptop_mode idea applies to cgroup reclaim
-> as much as any other reclaim.
+> The actual allocation mechanism is arch-specific so might_alloc()
+> doesn't work here (what GFP flags would be used?). Hence, just add a
+> comment.
 > 
-> Now obviously all of this is pretty dated. Reclaim doesn't do
-> filesystem writes anymore, and I'm not sure there are a whole lot of
-> laptops with rotational drives left, either. Also I doubt anybody is
-> still using zone_reclaim_mode (which is where the may_unmap is from).
+> Also note that this might do a TLB shootdown. This is not actually
+> sleeping but it requires IRQs on for x86, and might_sleep() incidentally
+> serves to detect violations of that too.
 > 
-> But let's not introduce more inconsistencies, please. The only thing
-> weird here is the MGLRU warning. What is it trying to assert? Clearly
-> whatever assumption was made here has never been true.
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+> Applies to mm-new.
+> 
+> Changes in v3:
+> - Added note about TLB shootdowns and x86.
+> - Since the comment no longer fit on one line anyway, also be a bit more
+>   verbose in general.
+> - Link to v2: https://lore.kernel.org/r/20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com
+> 
+> Changes in v2:
+> - Switched from might_alloc() to keeping might_sleep() + comment
+> - Link to v1: https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
+> ---
+>  mm/vmalloc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 41dd01e8430c548167d6123f6ec66bf798f20eec..be4e5f2566a4490d45de29568df538b7c8515b01 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -305,6 +305,11 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>  	int err;
+>  	pgtbl_mod_mask mask = 0;
+>  
+> +	/*
+> +	 * Might allocate pagetables (for most archs a more precise annotation
+> +	 * would be might_alloc(GFP_PGTABLE_KERNEL)). Also might shootdown TLB
+> +	 * (requires IRQs enabled on x86).
+> +	 */
+>  	might_sleep();
+>  	BUG_ON(addr >= end);
+>  
+> 
+> ---
+> base-commit: d0a24447990a9d8212bfb3a692d59efa74ce9f86
+> change-id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
+> 
+> Best regards,
+> -- 
+> Brendan Jackman <jackmanb@google.com>
+> 
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-Completely agreed. This patch seems to just paper over a warning that
-seems dubious while doing something that doesn't make much sense in
-itself. Dropping laptop_mode from the memory reclaim seems like the
-right direction anyway. I seriously doubt that it makes any practical or
-measurable difference even on slow rotating storage laptops these days.
-
--- 
-Michal Hocko
-SUSE Labs
+--
+Uladzislau Rezki
 
