@@ -4,117 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07AEFD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 04:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D885CD41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 04:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15BE36B0006; Sun, 14 Dec 2025 23:12:09 -0500 (EST)
+	id 4E1CA6B0007; Sun, 14 Dec 2025 23:12:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E296B0007; Sun, 14 Dec 2025 23:12:09 -0500 (EST)
+	id 4BE1F6B0008; Sun, 14 Dec 2025 23:12:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3EB96B0008; Sun, 14 Dec 2025 23:12:08 -0500 (EST)
+	id 3CF456B000A; Sun, 14 Dec 2025 23:12:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DFFA66B0006
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:12:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 867905D5F8
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:12:08 +0000 (UTC)
-X-FDA: 84220382736.13.980B125
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6B78B18000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:12:06 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 2C6A86B0007
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:12:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2526BE3A4
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:12:54 +0000 (UTC)
+X-FDA: 84220384668.14.6ADF2DE
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 188E5180007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:12:52 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cF7YyQ9a;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765771926;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E7DQ2g2y7DFnp+FRCa/U8wGU2Z4RUvLIQJbTa2M375k=;
-	b=FbzWs5J9Auy+VFWHQoOWxv3Q+xNV+ud/f6zjM93WLS5Vv7C/xxsF4HMJs9irvALPZRaq4n
-	n0Kjpe6+PbDAm4kCjoDtu2oI3QkUoUYoxeCzIptj5/W8yPPRy9N9l7J0FLF2oAR7uI+nEd
-	BS12C56Qw1z7QKRU5wyC8R3zj/03zZM=
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m9e3V86Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765771973; a=rsa-sha256;
+	cv=none;
+	b=al/CnSe2Bf7G3AAsW3TR/mBtsN74mlVxwvmHQyHv4Tno4PZoZg8JJa0iKk4Zr56cNG0QtE
+	2W2a0nvWjbgstRrLMpgi2exKZDRF5C52kUrZ8Q3BF7lukDXAAHk3fl0e/NQFrIa15x+C0F
+	sBvC92PAqEAjBG+ScBzvgpxRirxiyhE=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cF7YyQ9a;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765771926; a=rsa-sha256;
-	cv=none;
-	b=b4WK6ED0AL4UTtuntUkngGetSyvkWCqqoWXdKMJmeJBY+DFu6awZUiocxpNlm+VyaNXKuU
-	OPweD/TQHrLcQIlzUK3DkmpyfUX1g/g6hutr4y8vYAWvwB2HweRH1o179nyFfogyfDfGWN
-	sBbFrHEQnw00/6c84/DEm383YvGfxPE=
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-88a347c424aso8080376d6.0
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 20:12:06 -0800 (PST)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m9e3V86Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765771973;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s7WdVlF1ZVFOwg9cCQ2+YP4yAALFQOj5B79ExwQ8GjA=;
+	b=K6X5prHfU/75FHfao3FEeDgDcXTkdFYYaE1zX61lulzsMGHz3CzKeUfjptA2HP+SDrtSYz
+	1JnAGduru0M1XfTrEF1SQmO2WaFhDGhHLDFvtevhM4wJ9J2aNfvVUYjj0vZtqLydXbZRPQ
+	WCMDUWXawjl9gDe8bHz/lwhlSrhBGBc=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b735b89501fso389923466b.0
+        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 20:12:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1765771925; x=1766376725; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E7DQ2g2y7DFnp+FRCa/U8wGU2Z4RUvLIQJbTa2M375k=;
-        b=cF7YyQ9aY5HmYrjPTOnLnB8KRNbMirFC+yHuKNi9k45T/qSbxHTGtrcc7ijAwW1jYC
-         +tmlyIW2bAOFrD2dPaheh9U8M8oF9tXQokU/IMvnnzvN3icf3KORENVeTYI6aOW6R/G6
-         xLqTqHJxIzaDY7ezd2g2tgYz7GOGYAMh+i/HTQ/y02BDrgyIJu8ClbYyRAiTxIzBK5Hq
-         PcfJkpFC/hxkXzhGrfh38rDAyq+BAnT5vwlWRDZXgZ+RxGNu5Ra3lcTYySXr2y8VvfRt
-         OYg0NV9yUMEPvlmLpyfe5OhjmNBrSsZlnxC+VYTzF3loFkKHKwiwjNZETn+0YHqPOvvn
-         ps9A==
+        d=gmail.com; s=20230601; t=1765771971; x=1766376771; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s7WdVlF1ZVFOwg9cCQ2+YP4yAALFQOj5B79ExwQ8GjA=;
+        b=m9e3V86ZOz6Cr95r5lU29NfkYtpm6nj9DRHVuqSxqB77YB/EdmLH1H/ZZXT1VmLShI
+         ltX2CiPgVUuFP1FyiozNO/v3fEBUgQDtjbWbtZt8WxAkFOwfAZoa/GA+gZpTHbM0uPTV
+         L0fqpIYoveuoWr+5/w5cWahBWvD1/ONga1uU5w0V51ElBgjmhVqSxZ0JUuQt7jO4xiwu
+         OxYF/bqRpGkFzjUUcgm9d9V6CB1mJi8KHZZ6KeA0KSMqUqvy4lJG2ou2aFOYuZF4gb3d
+         z7YhWpGsC067ycq6Q+11ALJTPMniMDSPyJ6oT30jR9iAn9ofNG/uJe0A0WQK98vWW+a3
+         GOmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765771925; x=1766376725;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E7DQ2g2y7DFnp+FRCa/U8wGU2Z4RUvLIQJbTa2M375k=;
-        b=XBFe7rfCw0MsDcHThiiy0nPSxqjtS69/UKjzH3YAKmRT3p3KiA4YfTkGq8sIdSEgV+
-         dVxpkcXvQhj62qYbAGtzrv0PcfxlpKZjU298LO8Z9TP/tZcM7/AW2QYTS5neDwV69uJN
-         4ocLqASNntRBY24VHKh+aFG9IA6cwplIq9d7/MUl1vAUK3FM19Nv2tD7AgzOh0mr1PHJ
-         9MHySTfkkYMMzX97dGUowtYP3GUg6hrKRxho/HvfYgMXMekVmQrjo9yWfdw8JXxEIKf2
-         1IkTwxNwy43R2ORgPLCuTaeG+eNYLoGZKcO9Lv6t4/2/lz4oz2Ov8JFMdO1UNuB3Klpn
-         TAFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwqxtpdItcPUBEhf33CSCETZRTAuxb3iq8qhNv/9sbkztS/a+omigdWshCIOrEyHOdDV+MqNcmSg==@kvack.org
-X-Gm-Message-State: AOJu0YwxGmFpG+AKpDUrhcz1RL+l/Vpr5yCD+6InJ4f1tfGeN237Qao/
-	O2bkYVb32+q6toEQu2Eq/rlhZBCFLo5kvwvy8gtixKZvXlY7C9Df7GsPYmnzD65edjc=
-X-Gm-Gg: AY/fxX7X3hrDvUpbpOkDypqbEBOXZuW8q5idIV8xCg3ncVx5l2meQPqvdkpiW1Yz1zF
-	BuLhGbX0ZV6xjwQ8p/okNbKakO+45vUx3tQkxi9iy5Vht9bSjYL2HHy9zJ3SdDi9ygDIigEWop2
-	Lo+qnwYhOFmwJBDyQ/2SvfIElGd4ZUvroyieJ89fRdjQTJpzhli6OjbndBbdA+qBGau3c+RvHDE
-	71JMLKhV8ozMCdL5T7/6RKqqxA/YJB31y33Cri4cBfyTvfCwi/8BQTOFlz/pnAJ5V8m9KPoTOYM
-	jnEEgqh/eUHfc6hxu3UkYRzii+iy5IK04VYHGcxAT+KnSgYivlYFLlmQ2evUrzSeqiOfXFXjJ3D
-	/3tET4orciz9bjGRIcHyO3ESisjCL0iVNQl+c9tEeDIHgkYkJett2xExqjpgAfM+AVR4YPYE6sG
-	EhHORfwEb2LA==
-X-Google-Smtp-Source: AGHT+IHAmblDsUWWc7Lw8wQra+wzGGGtOdNSDrHzkr0iTOYEzvxfomHclZngzZVyVY6PMcP6p7yzfQ==
-X-Received: by 2002:ad4:5761:0:b0:721:a9d7:297a with SMTP id 6a1803df08f44-8887dfe0aafmr179128436d6.7.1765771925333;
-        Sun, 14 Dec 2025 20:12:05 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-889a860c642sm42392606d6.55.2025.12.14.20.12.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 20:12:04 -0800 (PST)
-Date: Sun, 14 Dec 2025 23:12:00 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, david@kernel.org, mhocko@kernel.org,
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com, yuzhao@google.com, heftig@archlinux.org,
-	oleksandr@natalenko.name, bgeffon@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm: vmscan: always allow writeback during memcg reclaim
-Message-ID: <20251215041200.GB905277@cmpxchg.org>
-References: <20251213083639.364539-1-kartikey406@gmail.com>
+        d=1e100.net; s=20230601; t=1765771971; x=1766376771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s7WdVlF1ZVFOwg9cCQ2+YP4yAALFQOj5B79ExwQ8GjA=;
+        b=TR9SY1RQX1Mk4Gs6+dHXg4d4QL34ccomeiqScdgyZyCHU9RLh2xgKCLAw6TX4IU3rO
+         G8ZUIaFFOlbIDV/ezL6AFkSVdsV6b08F+4fcu70Ey5gosY/YzXmBtT+el3AKHlKL2VR0
+         PwIkTavv8Lv9X40vk/6jTZsGwWLVw7YfcC0oWLDLP3QuXhL2VJM3nydbm85G1rggLZ6I
+         kd1cXYf47uME2RG/cCiViyFithHWjEImjLiRvtmdaJyXaZnYxOnbk+icGPx4Wfp9KdNV
+         KMcz9ZZJAtehpQLBRhkjubhjd9WIcyFqLSk8dmvMPUdBVk+wEQSD33EK8YMoECAyN3Ci
+         9b7A==
+X-Gm-Message-State: AOJu0Yx6Ha1FSWBKt3H/XArL3+A727zYQjYVSGRHEbSbdrUaNzAkh7CA
+	d4syCkGjoXOg/InGpbzhXTqzE69+e5q3a9PIb5eE36f5Tqhv5X4oTJcxRze4V2CI1Md4HI/Mteo
+	YsvJJhZBBFba58z3mWHfWivgxZ593S7a7QLEnc2Xqkw==
+X-Gm-Gg: AY/fxX7QU0WXakOn+hPhwvw5/AZg92RXACIO1YfXxXW61v9KkcugY4UfEIa+bCsqGaH
+	M8nuL/6oCaTXNCTtMV/1MnTyKXIHoiGQqQCe/9b1ji+hiJZOFip2t5nR3z+FxW78CaWO7lsKjEt
+	Qyfg+hvjFC4w8ZaP1UwiXkwLdc4ct5ceDOS62biPmabqbGkCEA69RBG99e/phg0/PbtY+hvegr4
+	cfbldqQDaJaKUxnWgc65rYZXU7KlGsB/MZyWl4skJSUrI85pap5d2IyXniIHmnJ+/Plp6lDibBJ
+	jfa/elqGh3fFCXIjIpsR+lKyaDk=
+X-Google-Smtp-Source: AGHT+IG2CeiHq0HnMsR8Vfj+3Xdj4DT4nztKsKt+2soyCOdcnCiwaVEpuuofvJAACD2x3uUE7APgLoINQ6i45emUfDQ=
+X-Received: by 2002:a17:907:60cf:b0:b79:eaf6:8f5e with SMTP id
+ a640c23a62f3a-b7d236292b0mr1006900066b.14.1765771971262; Sun, 14 Dec 2025
+ 20:12:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251213083639.364539-1-kartikey406@gmail.com>
-X-Stat-Signature: dcs8u5mwhiqb5dknfmds4me7fdxkmsp5
+References: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
+ <20251205-swap-table-p2-v4-9-cb7e28a26a40@tencent.com> <aT+HLZJRgmvca7K2@MiWiFi-R3L-srv>
+In-Reply-To: <aT+HLZJRgmvca7K2@MiWiFi-R3L-srv>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 15 Dec 2025 12:12:14 +0800
+X-Gm-Features: AQt7F2qdSzeavrnOms-TDSitSuzsfFV7sgavHev6GiOykV1KOzRp56FOQ-Lfe2k
+Message-ID: <CAMgjq7BQ_5g25B==sG4nLJakvyT-bBbUtueZ9wtx5KUV-G1naA@mail.gmail.com>
+Subject: Re: [PATCH v4 09/19] mm, swap: swap entry of a bad slot should not be
+ considered as swapped out
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 188E5180007
+X-Stat-Signature: qa5zmwr4w86w45snu4541tu797iz59ti
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6B78B18000A
-X-HE-Tag: 1765771926-260684
-X-HE-Meta: U2FsdGVkX19E/Bxx5l1RbiwfDXMDYMfG5dFEaY3eqwSGiyrsTKkcm7vP403ZOHLpiYOjGMUF1xR7yIMvNFknxIan2SSZbmQcnwVWxgsuLSsbBg5fQd0JXW59fSVM4WNc1Kdh0FloeMd5GMPwSUGH2Zsjh6h7fvlu7rUlu0DkrKbFwoUWGNf7HJKrM8Ie5NPJA4ZqvrynTAx/SuHUZ8NO7UB739JFNDaNWOJBPuZVuRvytpl1rtopxDXOGgMn1oPH7ZDy/eUEPwO5jWeIcp9dhT/iPcSM3Escv7oiHxor2C4tjxPuKI5l+bZXlPQcsAgxBdVcEDw3nNZ0xSpRFv44oQ2ZJ88M8lFAKGY9mxxOEEfVZksTFUX0bU8vgZhAek6bjeYPIkY4B0Kl88Qb/VUYKqcvjI7PFavp8VqrAqyWk6Zn2bXXTLw8XfBUk6VsGVGmU8xm0P+gEnB5qs6MmayH0DZMp2yb4XegRW/BThV1hyaBmETqitd6Ve7/zKxprJv+wfan8ntPGUbFBow53NJbGNC4DcRq0gGBLWkNM3p9FCi0rcgfxPBOLKNqTkZSWmFoTn4KnJX8UJvThrgGV5aDt8fgZJh8yRGws5WxHEzjP8Z0ZLjabcS0yJCjHc6iI22nqDFuQ/LH+y3erCt8MO+sb2B1Kvf3tl+yQOuJUSaWsbNhNtBE+QI6m+QxhHNQ6Rg0LJthPvrL3ELYNbFH5X6ShF94j/t2Qsf1mk/HKnEx49jKEW6RGR1bhzyaCbvI0qdwvI3gTbuqjPDBC6aw/kbASjzdHADdwHQvES8lXdPPM6ruzcO8nU4IDJEPDovtYX+VaruFS24gufskZ/tfZhLxZwHB2+hQkBXf4cpKrv7ROK7+X9oCEahvHF6Bu08RmX1+Vkm/gen3zsL2zKo23fwJHe4aDSD36/aa6IWQ4ZGZh3p1eNiI9Obb04V6QSC6EVztGE/MkPXdkQscZahR5Pe
- PPl6wFg8
- qqSD9vf+CJDajbFk3GtcaEvKwKOmQ32Wj6hMncOy66cDbKyfgcmPmee6uY5DSs5I5Y8hDEImx3vmkh35IFDC+fNiKc2BUmJh7jomWNXP1XO3ImWcSIgpN//bn5ocTuia+nIrAo9n7Xf5VSvvrTKzkfsHma2ePhR6mL8UimgJGHxSARYDioEQo8oNlUVw1dXTCqsB9TYbaH50VhSf77KbskeO7IbmYTVB8DPP49wc2XAKlRL4trqs6UjomfafNCEcgoIjTTA4JRyMqZXoRABaDE1NCEYV56Sm1mVEUV674SbBfgIMT5PigQ5QULighjSYrbYSrLk8oQLvMqA1PIfwWQkvXQ7xgh1ERDBqEIjA/LtECla7EpBlTdV2dJu3/IABsnU1X/2qqPioYu7pMWV4dyBScM/dLJwfINjKjXq16kj+fmxlDeHx4yHzj/ggJqoxP/KhSxo3LU89MhTUJjPKQ6Lm8/w1WgLOzgjKK3IQ/U7Afz9nWMYl7UuyDHgttWKTiG7wD+6XBvO0OqlgQg4/c6sbwrSd+lIC6PWaFjFu1BwFAz1Ag8PJKF1eZPBhs0U1uRqucGKf8hUn4q59ME3gZTrdBFg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765771972-763797
+X-HE-Meta: U2FsdGVkX19TIZGQ5gqflvJcVUCa3quLWRfkYzL2X24lOhrX9X+RDDmy7elGHm5uKq/SbZGEVxDjhFGnt++CSDbVPy6uCVT/0viCgQy9I59oH6jHctXNrm7SWrIse8Zg3luqZpW2plvvXyny7FzbXO+Mlg3zdKKcDdQIz5KmKANUcRnRXdhGzyn3Tpbl2BcmcqRYAOI3H2OZzi7jT+VyNgYmFArLUfGCs2VWs+abqTZbLAF9k085ZeSiuOx7XV/MUg/waX4lizSVt+2agvNF+KLFR2rIlQOgAx603LHq3hJg7aHu9iOhBHCjfzxgD5sEqdmBIp8VIOkj8WwaccuJug7LhAnH3cP0YRsZyl0RCUYRvVRYqsG+H9q9zgf8BGp5si3yZ29uM1f6jVHViN/D583QxMnN005r3jJe5+VfrSI0uO2RMYMUZ+so/U5Ahn0l4wqPSPkkDp0UiwcPXmosD2I+ckG3c9O9v/ZBQNyS4J/kyUE9kXjV/kjWhnOZpq1HGLaEbXrDla5GJip2IRNDyfC/Ogi06vUlQ9/1J+1VXJ+3pMhC0JvQiB8YZUSoKjnUZoRIdL+leR9JNji0cpP1DxFtPesavnJ5jrcbDEyjyCgGJdpa7Fb0wi5WRYk71QHFxKvOgvVDToxvKz7k9C93PxROVmuEziyctHUBBnGYRjCuSdido3EDrS4KK98RVK+kvXu3fGjMRooZkI8qfHCaxqydAOHar5dizozWZuCvGv8P0taeh7fWEbus8TCXbxBQtB++1dLPHOIFQKS+dSJUBylXFQpXKzIPNJUb/xqYgE0VspOxbkcZ75E9VSY6bcuyEh3JI+SpJ05XWTEUSXVbI8xbt1OrO0DvikSeDOUDXmqcN50yc6nurBfz5P+NNfL2w4Dhoud5bVCoAPP5JkvGtrjyOOliI9vMt0L/c4jqaewLGydCOJk+JJtNe7mcBVQiqk01JEKYD/m7Egkqoq7
+ d8GHpl+j
+ nV4VeZqjZYLhlw8iLWtHXKunghBxHnD9I6ynPX/hzpvqNgLKmwiFlPW0qnnXk3OhSar8beRXsPa5ShDSKhkGaunLHXlDL3jjrfAR4l+gGAE3DHlXI9aXDeoswQWBmaGiIhEAtMQmcer484ysREBqDdXbRa8iyUyFup6ref1q23iUfKi75WfhMO/S1fjLKwiuOg8vRAocng2JNjVNyD68M3nQ545th8ioR1loBSeMqDN4vKGgsEMrstprjrlPaZNV0RBzb/gGkyLMn+FHODdtWFtNGVol+n6SBbsrVnVq/ZqN3CdOAsRuKHBYifdbLlE0d19PfkCqTdOH7VgKBe3NqlOVcDoVDYNofxnu+C9rYhWMdjV4qOe9Weh5jtGg7rGYcxq8ENbvNEGh4oquOo+nlLtRfwJboVzEg8985SGtyC7GOB5TTYGLE80xbJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,55 +124,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 13, 2025 at 02:06:39PM +0530, Deepanshu Kartikey wrote:
-> When laptop_mode is enabled, may_writepage is set to 0 in
-> try_to_free_mem_cgroup_pages(). This triggers a warning in MGLRU's
-> lru_gen_shrink_lruvec():
-> 
->     VM_WARN_ON_ONCE(!sc->may_writepage || !sc->may_unmap);
-> 
-> The warning occurs because MGLRU expects full reclaim capabilities to
-> function correctly. The call path is:
-> 
->     mem_cgroup_resize_max()
->       try_to_free_mem_cgroup_pages()
->         do_try_to_free_pages()
->           shrink_node()
->             shrink_lruvec()
->               lru_gen_shrink_lruvec()  <-- WARNING
-> 
-> Unlike kswapd or direct reclaim where laptop_mode's disk-saving behavior
-> is a reasonable optimization, memcg limit enforcement is a hard
-> requirement - memory MUST be freed when a cgroup exceeds its limit.
+On Mon, Dec 15, 2025 at 11:57=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+>
+> On 12/05/25 at 03:29am, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > When checking if a swap entry is swapped out, we simply check if the
+> > bitwise result of the count value is larger than 0. But SWAP_MAP_BAD
+> > will also be considered as a swao count value larger than 0.
+> >
+> > SWAP_MAP_BAD being considered as a count value larger than 0 is useful
+> > for the swap allocator: they will be seen as a used slot, so the
+> > allocator will skip them. But for the swapped out check, this
+> > isn't correct.
+> >
+> > There is currently no observable issue. The swapped out check is only
+> > useful for readahead and folio swapped-out status check. For readahead,
+> > the swap cache layer will abort upon checking and updating the swap map=
+.
+> > For the folio swapped out status check, the swap allocator will never
+> > allocate an entry of bad slots to folio, so that part is fine too. The
+> > worst that could happen now is redundant allocation/freeing of folios
+> > and waste CPU time.
+> >
+> > This also makes it easier to get rid of swap map checking and update
+> > during folio insertion in the swap cache layer.
+>
+> Will swap_entry_swapped() be called in other places in phase 3 of swap
+> table?
 
-That reasoning doesn't make sense to me. Reclaim is always in response
-to an allocation need. The laptop_mode idea applies to cgroup reclaim
-as much as any other reclaim.
+This function might get less called or even removed in the future.
+When the swap table is fully ready, checking the table directly is
+cheaper and simpler. I checked my local phase 3 code and there is only
+one caller left now.
 
-Now obviously all of this is pretty dated. Reclaim doesn't do
-filesystem writes anymore, and I'm not sure there are a whole lot of
-laptops with rotational drives left, either. Also I doubt anybody is
-still using zone_reclaim_mode (which is where the may_unmap is from).
+>
+> I checked the code of the current phase 2, in all three places you
+> convert it with swp_offset(entry), is it necessary? Why don't you keep
+> the swap_entry_swapped(si, entry)? Surely, this is trivial.
 
-But let's not introduce more inconsistencies, please. The only thing
-weird here is the MGLRU warning. What is it trying to assert? Clearly
-whatever assumption was made here has never been true.
+Right, might be a good idea to just keep it as it is to make the
+review easier. I thought the `entry` is a little bit redundant with
+the si parameter, the type info in it is not needed at all, so using
+offset instead may save a few CPU cycles while at it. Really trivial
+indeed, I can change it back if there is another update of the series.
 
-And what is the zone_reclaim_mode (may_unmap) assert doing in the
-cgroup limit reclaim path?
-
-It seems to me both the warning in cgroup reclaim, and the goto done
-in root reclaim, are kind of unnecessary and gratuitously breaking
-both laptop_mode and zone_reclaim_mode - obsolete as they may be. But
-why even add this code?
-
-Can somebody with MGLRU context please take a look whether we can
-remove these?
-
-> Set may_writepage unconditionally to 1 for memcg reclaim to ensure
-> MGLRU works correctly and memory limits are properly enforced.
-> 
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-
-That seems unrelated?
+Anyway, thanks for the review.
 
