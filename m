@@ -4,96 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36F88D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 03:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A36B3D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 03:57:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 903BA6B0006; Sun, 14 Dec 2025 22:42:30 -0500 (EST)
+	id CCD1E6B0006; Sun, 14 Dec 2025 22:57:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DC486B0007; Sun, 14 Dec 2025 22:42:30 -0500 (EST)
+	id CA48D6B0007; Sun, 14 Dec 2025 22:57:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CA666B0008; Sun, 14 Dec 2025 22:42:30 -0500 (EST)
+	id BE1A46B0008; Sun, 14 Dec 2025 22:57:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 66E1F6B0006
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 22:42:30 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD7508BBBD
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:42:29 +0000 (UTC)
-X-FDA: 84220308018.02.9800F05
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 93CB7180010
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:42:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QrXdkt8w;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AD69E6B0006
+	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 22:57:53 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 591C55D5E8
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:57:53 +0000 (UTC)
+X-FDA: 84220346826.17.D33CFEF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6876EC0002
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:57:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B46PDd2Y;
+	spf=pass (imf22.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765770148;
+	s=arc-20220608; t=1765771071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3QQAN60cdddSSldQIQPQz11+trQiMjxdlqc/hEj6Yfg=;
-	b=1eZ4iZ9miPKs4HmLLGnbXsAaUf1KjBm0bivFxc92aNmQfCCWHDYIOexrATHnE+qOtWaHQN
-	Rz4z4N9MvZklhpsIJgVKIJm6Me3CmvCpSSWgRhTzQIjKdQlwtYhSyEqE/oPx0ES2tCljgR
-	XoNuv6SnwU3Dtfos8+vCUdtLylDpEhk=
+	bh=vP69h/tudeYRvb+VTJJItOX2+7RkyUHJiC5JDYMONtA=;
+	b=khPwhajlxUB0EI/vCZMYvQP+DcbdUrXlARJ0n/eLOYS7FX1VYyMv8zNT9MovBZqEeQSTFf
+	DfcbOBmOQuk4R2ddSf5frVE5fqF5HBKaNZfwr26y11YxVGc9YAmoixrDrPIu9J5PghDhYh
+	yKmggk+QmtDNUIJi+VTrvdGZn1KUDUI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QrXdkt8w;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765770148; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B46PDd2Y;
+	spf=pass (imf22.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765771071; a=rsa-sha256;
 	cv=none;
-	b=meV4kF7kiyYzh4z6VJUuMqlP2/xWuSpGrCKNWZ+DF7OkO5LeGcQJhFiBzzgFAZNkym8xEl
-	3/X4gfAZYUqwULSIyGikJRKxphfUi2QRphG/u39UncJNjJRULgLm5RgDTzlAytW4pS4ElK
-	b0Vqnju/VKFQhUqD12T5DVOzb0fuPik=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3QQAN60cdddSSldQIQPQz11+trQiMjxdlqc/hEj6Yfg=;
-	b=QrXdkt8w6pPuZ4/WwMhbvSZeCFVKo9LVhCa2tyfo7V8P0FMcddJEzgoZTB9N+1AkB8MNlO7pK
-	X7r80BpTvMe+3Hik4kEoXY8nYlLLICTDVqOHap0jk3zRXS/ReMuZhgU6CLyo0f1r/wcR+3gT1IZ
-	Zmt2E3J7YkwMN+k18SZOi7o=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dV5Rm5hggz1prPH;
-	Mon, 15 Dec 2025 11:40:20 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 72E58180478;
-	Mon, 15 Dec 2025 11:42:21 +0800 (CST)
-Received: from [10.174.179.179] (10.174.179.179) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 15 Dec 2025 11:42:20 +0800
-Message-ID: <164b53af-f4b2-49bf-ac4c-c7b10c080159@huawei.com>
-Date: Mon, 15 Dec 2025 11:42:19 +0800
+	b=0FC51i+umc2PYFtCyTrZIX1h0horo9P+jE4In0irl0mn/EL5Pf5DzCuQEhUJtdx07PFxxk
+	dOwsZw4qPSTsUwkVN4wVShydqmCFJOXHgORCcnJEZ/HolVzljGZEQy2Iw5wBKuo6QmACy+
+	6Pu4oqVnfIxphQCIh7dAmwoRoxYgsgo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765771070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vP69h/tudeYRvb+VTJJItOX2+7RkyUHJiC5JDYMONtA=;
+	b=B46PDd2YyxM7LSdFZjjHDuynz44Sx/o5aE6w1urfK4fx/oBxGKsRFsKtH1PCl+eIh4NHey
+	BbDKBriXEJI5AnGyjt9Fyb0Ot+kUDkNVnCRGi3rrDqWNYOjptTse01KJZVbjK9fRrpsVKb
+	6sn3WgXTMl5sSsvX6f5/lqPvdKeEJJY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-_gwCH_5MOje5wl9DGQUINg-1; Sun,
+ 14 Dec 2025 22:57:44 -0500
+X-MC-Unique: _gwCH_5MOje5wl9DGQUINg-1
+X-Mimecast-MFC-AGG-ID: _gwCH_5MOje5wl9DGQUINg_1765771062
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2F6131800451;
+	Mon, 15 Dec 2025 03:57:41 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.95])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9E0B230001A2;
+	Mon, 15 Dec 2025 03:57:37 +0000 (UTC)
+Date: Mon, 15 Dec 2025 11:57:33 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v4 09/19] mm, swap: swap entry of a bad slot should not
+ be considered as swapped out
+Message-ID: <aT+HLZJRgmvca7K2@MiWiFi-R3L-srv>
+References: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
+ <20251205-swap-table-p2-v4-9-cb7e28a26a40@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] lib: xarray: free unused spare node in
- xas_create_range()
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, <willy@infradead.org>,
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<dev.jain@arm.com>, <david@kernel.org>, <shardulsb08@gmail.com>,
-	<janak@mpiricsoftware.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-References: <20251204142625.1763372-1-shardul.b@mpiricsoftware.com>
- <89b96a9f-1d03-440a-93cd-2b9876be3122@huawei.com>
-In-Reply-To: <89b96a9f-1d03-440a-93cd-2b9876be3122@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.179]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205-swap-table-p2-v4-9-cb7e28a26a40@tencent.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Server: rspam02
+X-Stat-Signature: fahkrhzddp5z5fk3jymb7zraap9b6sk4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 93CB7180010
-X-Stat-Signature: zyys5xc9qu3k6e99383m3tqzw9if3p74
-X-HE-Tag: 1765770146-526814
-X-HE-Meta: U2FsdGVkX19Fe848gkBWT2tpURiz2zxxsqgp4em6vxVzESFS69dzIaUF4JLaazHx2K7q8nACuBE7hsCY25+nRs8lKTW4flH4fWZUh4YbUajHjflIvDxChmRkVQysYt8IufpY1DXf/h9jzOi+VE/kyxIVI7HefW+ZwbpRG2Rh2Nl8wFM7luqL/ZdncYIkTxBSnlUBOPljLsDXqHzNf1Tu4nNI0/jrcntelh/4ePs42pHgqavBqmgYCNB7mLkqUF082/RdESWcp4wVaOeJzVwMob0KyWG5829AgI5xNwtCPs6Ij92B1mYTLwJ/4wKJ1yiatRsS/sRpZe+D6JHOeFopTemU5DXmDB/uU2df2xofkXmGstTDT5Uvg5anf5Q3SAMfDu6n7W69r3sjXuyYmRyUVROP6T8BDlF1hz5u3w412EJ4MGeTQMWembV7PbdggjFSM109FpKX49Yju2RZpYffau/DYAFFgOwr8TmJYMBKKHOiaNtaCY9a94s/E3bxSF1OTC0chhN29YurA2LGbKWBCsEIMyrBMyoIGRcgP70wn+OhljPJ1eAy0KQi3N052S1y++UH6MsOLQ1CqAyZCNf6d2+dpFjPa5cK+yyYG8dbR7xxSveCHQfCghHO3unaikmy/72Udwxu5o0Qk/2Q6px2Yv6IiGK04x63eA111Ec5SnxFdpkaz7z4VWt8uxrWzdjuvQhnN6iDeqnJod6HuRHAETqc8dRc85ycC1BP+XWYE1zGjyFhOrGSIhgUHnlUtP8+CI4sIo6qGe43XiZ9KTiIEFeo+R4Xp4tXV6M599JB66iB6EMIBEV8KxMrgcSkomKRLS4CH3va4TRInjbXwxYoh4vIh3PGdiMlH0U0KYNf5wKhwnP4EgPPCpBPcBE7D//gOu695BpgR0Q7q43ReFmqo6o55QqyKMr6QT3iN136fL9QY5iq1eXnS7goQiJCxG0+KCnHv+r8UXVYAst7Quu
- 84YSUIH8
- rRWUwfnBZ5S7Y7vwmWdXOA10IXKLL9svQq+0IdKBuSyU9aOl6YskvHr9uNjX7Ji2RkwaHRdEsS4XeG79zYmncZ7sHak87WrMBKN6u1YMbXK58FguVJANZ7u9FXDuNnmkzvp8Vd21DpI2wWMdqflAN3ZplyHFsYf6hJbf+ZLSYtjM9Ofh7FWtyf1QZ6tH3MZNc+BK0MLPynrjwNU5yn4qL6ZtrkBCG7v4GqOBKQJKVtRjFi0QTFqM0p2HMcr4EfUibwuwk+4p3fMG7HfL1AELPYuPkMokzlsIFjfCQCMwXxh2WaL684FUb/lLylXI+/fbteBWdVKWjucRZJYW4xWD3J4MuSBMzh+kN0ZOegVKytS+OyrNYykQ5qvYg7XBCAU+jnL4GaNlFhZ281ToQY8pUKSBPZQUk8CPjxuEtC48xnItgLxQurPEiL9JfLwrE7zABcUM5cPe8jV6yqtMcRvPhTltjZblv1NAEuDfLyanczjZoEMSlVt2qzbyD4r/lEnZ44180HTKdmgwZ8XE76pmZsvlCqA==
+X-Rspamd-Queue-Id: 6876EC0002
+X-HE-Tag: 1765771071-927437
+X-HE-Meta: U2FsdGVkX19NcM+ycgUocDFRb67517s2fuDElFuvBbPTooa7E+MuS29JLBG5TskbcMa5JJEVW/z7dmF6/QfJiqNzK2yhMIsBILzTEfJPzTon9utr+8OZdqvr+0vfDmAEQ5rZk9nIzXVHeCz4pc9+oEYXyWjweNltPBg/a4EY6lqaU/VsHTrl6qTJNvo2sRB2W6+LTqrL/VWF8Xa/H/PQSZOYf3VPdPMCuljF8RRG+qWsO1ccGaj4v85kCmD0Y+UqXjqO/iaTvEiqbp26eEjr+0nE/X01xjsYSBoEHVccTJViv4DKNKF8LNFPX/nU5YuvZuWOQFHCuaLZ0kQb9PXiDJJuJzCIp7EU3oszSBcN/n+1Vg85U3Eeb28K4RaN9kWbGn8O6kRP2XTMc49w98sfOPrwa48QooHmFTKfI1foLVsKmvqBC1IbYB11AkhMmBc0LmmhRMz8gNmZHT7jKTyaYEO4LFJfhbxRDJ5XgbjyycYpaOGQw7Uyhhh3y2fK8wr2qjXuLkryqVAWHjmZiQcw6Z87Fb/xh5Dp0g5WXPgFeKA/y39RUEL48fq9IzxCNrxCbIOFQ4b6QW/Vjnxka0Y+g7wI/sUNmHdo7v5Jz1BqQux0sfAGfUPimrDxBgWan554rWK2E73rEPae4YEiiBN/5j7VacTUSQ9astThYKr4XtDcbHLybduO2lSKuTP3mJ6Bv1B+5ZiTY3B+mrG2slBSMcfz3BCH8WWWT0uyBcgn0p79VAQL6ywRBihb9bbMgFZ/mmBDwl2CgXoOuyuiU3EPohVSuViCe2j7pLmV0UR8AXkf4/5Bt9i9xqO4IipyfD98CLuh7Afz2l7od30ZU8DpBoADiHv0Asx2M3MAIVjzBAgUsevAlO6ME3WHyd030gEVTgnSwMfYVkr44KD3esb/jbvPVwWKiLqKQ2LTrBuYa8Tg/k8LGeenganVqjct9yTDBhoy7mRKLZYvk7uxqTC
+ MyOgKYMw
+ iRvxZbc07nGrCArjgpn0yC1FPAo7x/nCK5bMdXz2VlF2Fj8msHxKlhM2siJADq0WgWIceQfjnW00nJUg1wUJezb3+Zqc5cq5StUdlnWBSQKJqto0ASUjGn8u12ovydgjNPf++CP7Cn1AijUBr6TBIWVt5/DFvI+E4+GWP+9jmOpgEa6C/uAKv6orx0C2NXiCodUm9xvR6LcWA+0ZFpK8YUxZFoejfNDZ+3Ophsry3k8MYML6xMSxcyx/3LbSWyqz5ADBq96MRWS7XBL3EE6G2pLumZ2v7p6R9PetquPo3WWQPBJZbyPNfe9r3ZALR84pTsD0BmoR+izdUd/gCdln/jVq7fSI5wxOQbuWZHqJpDjCyBL54ExxmWSTSVumEpUovcHmesFD5DonisgE0gd5hoi7IpgVjSQWmArRoznZGZcUU7ZtdD1zn+ueHkbKVXa/VPCnbiKCjN1pr5SM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,153 +115,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12/05/25 at 03:29am, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> When checking if a swap entry is swapped out, we simply check if the
+> bitwise result of the count value is larger than 0. But SWAP_MAP_BAD
+> will also be considered as a swao count value larger than 0.
+> 
+> SWAP_MAP_BAD being considered as a count value larger than 0 is useful
+> for the swap allocator: they will be seen as a used slot, so the
+> allocator will skip them. But for the swapped out check, this
+> isn't correct.
+> 
+> There is currently no observable issue. The swapped out check is only
+> useful for readahead and folio swapped-out status check. For readahead,
+> the swap cache layer will abort upon checking and updating the swap map.
+> For the folio swapped out status check, the swap allocator will never
+> allocate an entry of bad slots to folio, so that part is fine too. The
+> worst that could happen now is redundant allocation/freeing of folios
+> and waste CPU time.
+> 
+> This also makes it easier to get rid of swap map checking and update
+> during folio insertion in the swap cache layer.
 
-在 2025/12/15 10:19, Jinjiang Tu 写道:
->
->
-> 在 2025/12/4 22:26, Shardul Bankar 写道:
->> xas_create_range() is typically called in a retry loop that uses
->> xas_nomem() to handle -ENOMEM errors. xas_nomem() may allocate a spare
->> xa_node and store it in xas->xa_alloc for use in the retry.
->>
->> If the lock is dropped after xas_nomem(), another thread can expand the
->> xarray tree in the meantime. On the next retry, xas_create_range() can
->> then succeed without consuming the spare node stored in xas->xa_alloc.
->> If the function returns without freeing this spare node, it leaks.
->>
->> xas_create_range() calls xas_create() multiple times in a loop for
->> different index ranges. A spare node that isn't needed for one range
->> iteration might be needed for the next, so we cannot free it after each
->> xas_create() call. We can only safely free it after xas_create_range()
->> completes.
->>
->> Fix this by calling xas_destroy() at the end of xas_create_range() to
->> free any unused spare node. This makes the API safer by default and
->> prevents callers from needing to remember cleanup.
->>
->> This fixes a memory leak in mm/khugepaged.c and potentially other
->> callers that use xas_nomem() with xas_create_range().
-> I encountered another memory leak issue in xas_create_range().
->
-> collapse_file() calls xas_create_range() to pre-create all slots needed.
-> If collapse_file() finally fails, these pre-created slots are empty nodes.
-> When the file is deleted, shmem_evict_inode()->shmem_truncate_range()->shmem_undo_range()
-> calls xas_store(&xas, NULL) for each entries to delete nodes, but leaving those pre-created
-> empty nodes leaked.
->
-> I can reproduce it with following steps.
-> 1) create file /tmp/test_madvise_collapse and ftruncate to 4MB size, and then mmap the file
-> 2) memset for the first 2MB
-> 3) madvise(MADV_COLLAPSE) for the second 2MB.
-> 4) unlink the file
->
-> in 3), collapse_file() calls xas_create_range() to expand xarray depth, and fails to collapse
-> due to the whole 2M region is empty, leading to the new created empty nodes leaked.
->
-> To fix it, maybe we should add a new function xas_delete_range() to revert what xas_create_range()
-> does when xas_create_range() runs into rollback path?
+Will swap_entry_swapped() be called in other places in phase 3 of swap
+table?
 
-How about the following diff? I tried it, and the memory leak disappears. I'm new in xarray, so
-I don't if this fix works properly.
+I checked the code of the current phase 2, in all three places you
+convert it with swp_offset(entry), is it necessary? Why don't you keep
+the swap_entry_swapped(si, entry)? Surely, this is trivial.
 
-diff --git a/include/linux/xarray.h b/include/linux/xarray.h
-index be850174e802..972df5ceeb84 100644
---- a/include/linux/xarray.h
-+++ b/include/linux/xarray.h
-@@ -1555,6 +1555,7 @@ void xas_destroy(struct xa_state *);
-  void xas_pause(struct xa_state *);
-  
-  void xas_create_range(struct xa_state *);
-+void xas_destroy_range(struct xa_state *xas, unsigned long start, unsigned long end);
-  
-  #ifdef CONFIG_XARRAY_MULTI
-  int xa_get_order(struct xarray *, unsigned long index);
-diff --git a/lib/xarray.c b/lib/xarray.c
-index 9a8b4916540c..ab15dc939962 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -752,6 +752,21 @@ void xas_create_range(struct xa_state *xas)
-  }
-  EXPORT_SYMBOL_GPL(xas_create_range);
-  
-+void xas_destroy_range(struct xa_state *xas, unsigned long start, unsigned long end)
-+{
-+    unsigned long index;
-+    void *entry;
-+
-+    for (index = start; index < end; ++index) {
-+        xas_set(xas, index);
-+        entry = xas_load(xas);
-+        if (entry)
-+            continue;
-+        else if (xas->xa_node && !xas->xa_node->count)
-+            xas_delete_node(xas);
-+    }
-+}
-+
-  static void update_node(struct xa_state *xas, struct xa_node *node,
-          int count, int values)
-  {
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 97d1b2824386..dd9d3f202c4b 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2247,7 +2247,10 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
-      goto out;
-  
-  rollback:
--    /* Something went wrong: roll back page cache changes */
-+    /* Something went wrong: roll back empty xa_node created by
-+     * xas_create_range() and page cache changes
-+     */
-+    xas_destroy_range(&xas, start, end);
-+
-      if (nr_none) {
-          xas_lock_irq(&xas);
-          mapping->nrpages -= nr_none;
+mm/swap_state.c <<swap_cache_alloc_folio>>
+if (!swap_entry_swapped(si, swp_offset(entry)))
+mm/swapfile.c <<folio_swapped>>
+return swap_entry_swapped(si, swp_offset(entry));
+mm/swapfile.c <<swap_free_hibernation_slot>>
+             WARN_ON(swap_entry_swapped(si, offset));
 
->> Link:https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
->> Link:https://lore.kernel.org/all/20251201074540.3576327-1-shardul.b@mpiricsoftware.com/ ("v3")
->> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
->> Signed-off-by: Shardul Bankar<shardul.b@mpiricsoftware.com>
->> ---
->>   v4:
->>   - Drop redundant `if (xa_alloc)` around xas_destroy(), as xas_destroy()
->>     already checks xa_alloc internally.
->>   v3:
->>   - Move fix from collapse_file() to xas_create_range() as suggested by Matthew Wilcox
->>   - Fix in library function makes API safer by default, preventing callers from needing
->>     to remember cleanup
->>   - Use shared cleanup label that both restore: and success: paths jump to
->>   - Clean up unused spare node on both success and error exit paths
->>   v2:
->>   - Call xas_destroy() on both success and failure
->>   - Explained retry semantics and xa_alloc / concurrency risk
->>   - Dropped cleanup_empty_nodes from previous proposal
->>
->>   lib/xarray.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/xarray.c b/lib/xarray.c
->> index 9a8b4916540c..f49ccfa5f57d 100644
->> --- a/lib/xarray.c
->> +++ b/lib/xarray.c
->> @@ -744,11 +744,16 @@ void xas_create_range(struct xa_state *xas)
->>   	xas->xa_shift = shift;
->>   	xas->xa_sibs = sibs;
->>   	xas->xa_index = index;
->> -	return;
->> +	goto cleanup;
->> +
->>   success:
->>   	xas->xa_index = index;
->>   	if (xas->xa_node)
->>   		xas_set_offset(xas);
->> +
->> +cleanup:
->> +	/* Free any unused spare node from xas_nomem() */
->> +	xas_destroy(xas);
->>   }
->>   EXPORT_SYMBOL_GPL(xas_create_range);
->>   
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  include/linux/swap.h |  6 ++++--
+>  mm/swap_state.c      |  4 ++--
+>  mm/swapfile.c        | 22 +++++++++++-----------
+>  3 files changed, 17 insertions(+), 15 deletions(-)
+> 
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index bf72b548a96d..936fa8f9e5f3 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -466,7 +466,8 @@ int find_first_swap(dev_t *device);
+>  extern unsigned int count_swap_pages(int, int);
+>  extern sector_t swapdev_block(int, pgoff_t);
+>  extern int __swap_count(swp_entry_t entry);
+> -extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
+> +extern bool swap_entry_swapped(struct swap_info_struct *si,
+> +			       unsigned long offset);
+>  extern int swp_swapcount(swp_entry_t entry);
+>  struct backing_dev_info;
+>  extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
+> @@ -535,7 +536,8 @@ static inline int __swap_count(swp_entry_t entry)
+>  	return 0;
+>  }
+>  
+> -static inline bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
+> +static inline bool swap_entry_swapped(struct swap_info_struct *si,
+> +				      unsigned long offset)
+>  {
+>  	return false;
+>  }
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 8c429dc33ca9..0c5aad537716 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -527,8 +527,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
+>  	if (folio)
+>  		return folio;
+>  
+> -	/* Skip allocation for unused swap slot for readahead path. */
+> -	if (!swap_entry_swapped(si, entry))
+> +	/* Skip allocation for unused and bad swap slot for readahead. */
+> +	if (!swap_entry_swapped(si, swp_offset(entry)))
+>  		return NULL;
+>  
+>  	/* Allocate a new folio to be added into the swap cache. */
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index e23287c06f1c..5a766d4fcaa5 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1766,21 +1766,21 @@ int __swap_count(swp_entry_t entry)
+>  	return swap_count(si->swap_map[offset]);
+>  }
+>  
+> -/*
+> - * How many references to @entry are currently swapped out?
+> - * This does not give an exact answer when swap count is continued,
+> - * but does include the high COUNT_CONTINUED flag to allow for that.
+> +/**
+> + * swap_entry_swapped - Check if the swap entry at @offset is swapped.
+> + * @si: the swap device.
+> + * @offset: offset of the swap entry.
+>   */
+> -bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
+> +bool swap_entry_swapped(struct swap_info_struct *si, unsigned long offset)
+>  {
+> -	pgoff_t offset = swp_offset(entry);
+>  	struct swap_cluster_info *ci;
+>  	int count;
+>  
+>  	ci = swap_cluster_lock(si, offset);
+>  	count = swap_count(si->swap_map[offset]);
+>  	swap_cluster_unlock(ci);
+> -	return !!count;
+> +
+> +	return count && count != SWAP_MAP_BAD;
+>  }
+>  
+>  /*
+> @@ -1866,7 +1866,7 @@ static bool folio_swapped(struct folio *folio)
+>  		return false;
+>  
+>  	if (!IS_ENABLED(CONFIG_THP_SWAP) || likely(!folio_test_large(folio)))
+> -		return swap_entry_swapped(si, entry);
+> +		return swap_entry_swapped(si, swp_offset(entry));
+>  
+>  	return swap_page_trans_huge_swapped(si, entry, folio_order(folio));
+>  }
+> @@ -3677,10 +3677,10 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
+>  		count = si->swap_map[offset + i];
+>  
+>  		/*
+> -		 * swapin_readahead() doesn't check if a swap entry is valid, so the
+> -		 * swap entry could be SWAP_MAP_BAD. Check here with lock held.
+> +		 * Allocator never allocates bad slots, and readahead is guarded
+> +		 * by swap_entry_swapped.
+>  		 */
+> -		if (unlikely(swap_count(count) == SWAP_MAP_BAD)) {
+> +		if (WARN_ON(swap_count(count) == SWAP_MAP_BAD)) {
+>  			err = -ENOENT;
+>  			goto unlock_out;
+>  		}
+> 
+> -- 
+> 2.52.0
+> 
+
 
