@@ -4,116 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAE9FD59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 04:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7273D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 05:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8AFB6B0006; Sun, 14 Dec 2025 23:52:06 -0500 (EST)
+	id 567CF6B0006; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3C246B0007; Sun, 14 Dec 2025 23:52:06 -0500 (EST)
+	id 518BE6B0007; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 951C56B0008; Sun, 14 Dec 2025 23:52:06 -0500 (EST)
+	id 4080A6B0008; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 83FBC6B0006
-	for <linux-mm@kvack.org>; Sun, 14 Dec 2025 23:52:06 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28E261A0DA3
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:52:06 +0000 (UTC)
-X-FDA: 84220483452.16.2D90D69
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 71EC04000A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 04:52:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwUww0ly;
-	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765774324; a=rsa-sha256;
-	cv=none;
-	b=iOG+Xz8X2TRNlE36aygMUu+/nQXZD73ADq/uHcYoUSiSTa8DJ+NwrYVhBwbNoMgq5bo/7l
-	fR6KURLaVkPtl+zncv5MpPDweeLW1wcvDiamCGMuN56v18fPsy+7iqjkBQAhZgu0e+mMcK
-	vjo4AoxzKP4NhCEOz9RQiQwcs+qKbSA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwUww0ly;
-	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEF36B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 00:15:31 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95A1A60EF7
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:15:30 +0000 (UTC)
+X-FDA: 84220542420.20.4F65411
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DD24080007
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:15:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765774324;
+	s=arc-20220608; t=1765775728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JJZWEW3rjpyPm3kqWqcZVNIVlSkHtvxpYx0bAzrLBeY=;
-	b=ulOZnXEp4LvmeCCXwKAuXzOmhDp9a0b+tJKVEGSxt7PlAfeK4U07pSjgOskiH7cyK0gIRO
-	AWNpMveRbiVdlz3sPK0NgysYPMjLKdKF1KTvy1+tLBWJ3KS/f9YetrsEhaQY8tumsb9ulF
-	Iy92waiNFIYLFmRVV4i0bxRUPfzsEfA=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-786a822e73aso27479297b3.3
-        for <linux-mm@kvack.org>; Sun, 14 Dec 2025 20:52:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765774323; x=1766379123; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JJZWEW3rjpyPm3kqWqcZVNIVlSkHtvxpYx0bAzrLBeY=;
-        b=XwUww0lyxUWUnQWHnC26Xg4kTWAc8OpW3KE78AiCz4wmWwcKuzWylgMQIRuPO1o9+H
-         fVD1hepdYgaz0FMBIk74I38ZAK+Pi0m6gYMSMl+uHZn+LnELgVzzNgzhmhb7wqDpZEw5
-         eKL24FdRfHbe+z0DuhCOp+dCkmlyBaFqdnD3uaYWjwCQIarWkwOt4sIG1Ra2YdxTn+b9
-         VX7nDA7XeKTBaBC9FQGnHeIVi2HAR1F3zZVpxgq+g3FjQDRp2ye93xLTnisym3MnEabJ
-         qeVDbZPe7bYGNPzllRlx1UCe6NYQfkexbaS0v6raRT2C4BvykyioAKh5md2MQAsgh8OH
-         N7Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765774323; x=1766379123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JJZWEW3rjpyPm3kqWqcZVNIVlSkHtvxpYx0bAzrLBeY=;
-        b=Gn3klPl4Ur185LDh2pu7nEDifY1aMmi1fpqX9Qnu4eIBQfBQp8tq7Gy3ycW5iEZfsx
-         QvvKN2jrcHRkgcCVeiMOSuF/4xBYWG0q/6biLncFieYy+qGpwFdN79rtSXs6svYiKnI+
-         G8bu7z92cOOmDA+266/U9QwxbmdsZXrW5O2YaILEqvS8jEaNV7HfRQodycWN0Nu0lsBX
-         XqYrZry1ryiIJerUxZUJU/+HhasHGS79p7uQu1NhcWlHxWy/hDybufJPnFAZysmbZzLs
-         k0eUpZVOPO5gkXV5xi2t6iouoS3I3bTlbORVib/Gg75zrgjjMrj/trChPxuAT8yzRH6J
-         jAKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAfQati/iZG0l1Sn8dN9mV7QOPD2sFc+bjZalgQ4BsNZbaDobOnBoYQ0t0D98StcTjefRY6aswfQ==@kvack.org
-X-Gm-Message-State: AOJu0Yww2NZ5FZtxNoAMePCaLhEPaCmrlWVpVrfBx1d3xlpkKOc+FZwt
-	XSq7+RcwPHVM3kEY07eI0R+/svcNeuLVO1BHdfrdTIER8uWa5NxrKBeeqShfR2vA7mShxPPE7Of
-	YouwpezbXx0PFp+uYPIYsCyMBp/mJ+h4=
-X-Gm-Gg: AY/fxX7Bx1eyIkEORk/KvEcWuqtPAXT00/I2nqJmsV6LOW4E92vZ3tmkutD7hy6K+L6
-	0Bw87OW33Wt3PfjlTOJuIETmaOPyP5mqSW76rSkX9yR7/GxMHs3VzceMl/3O4pcFShqWH6lsKb/
-	3/CEtMLeXHPMo9ukr2hK/yQ0Tem3D+AhBopehEkC2Gzl+pJ8dVHDzpcv0fn7uvNZGg8a5TpRQe7
-	7Naz3rCN7zqIyrHfQpINi37LYR6HfH9HSzOb8Su3VwXmbCpIcBnbz82n4ee/UaLn3AsTVQ8W9Yk
-	Ouf+h9IGJnVJjeqlT19oehv8fIYw8viMzsyRTZFoB7cqvUBygMfuss6hTBAp
-X-Google-Smtp-Source: AGHT+IFa+Xq4xdXr+GjmqGO+iLSXAhcftpAh2di2divRGWmispuDV7Ia70Abn6DemtThOp2mj5eAj9FNMUZcDTCcWYk=
-X-Received: by 2002:a05:690c:dd6:b0:789:53ab:931f with SMTP id
- 00721157ae682-78e66d7d8fcmr87488747b3.16.1765774323330; Sun, 14 Dec 2025
- 20:52:03 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=+OXSwS36H1lXtGUMumg71LtJxJi9J020KcoGNO8+YTw=;
+	b=mnFo9oZ7Xy8GKXfqgSq8UFU1En4Z+u7aOthdSUZ6hh4az/pTPDiWtKbtd36yf6WaVmtj5e
+	gfbkBVqZ6zmllSeJ8atmGSfFFv50ij+shmX91zKzfaazPEBJZirwC7mnux4kEwwELEwY0j
+	18hPay1Zfa7cY1j7As76rDkEMuhWRiw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765775728; a=rsa-sha256;
+	cv=none;
+	b=KAYeypXPeErJd0NEdxcDgGcpEfnUK0an+ty3W8RnvACmPJrkZcF61Jf8zQYlPbXPvPKmYS
+	wpGG+hDGJat29v8b9i0lhNknjZRQWfeQglVzqmuwjZfXxIkmXaHy0tRmAjhKLvPBJXEbVD
+	3xTku6gbXSh0/O3ADPVZsRQj2v7WMdA=
+X-AuditID: a67dfc5b-c2dff70000001609-df-693f996ad6f5
+Date: Mon, 15 Dec 2025 14:15:17 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com, chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v18 41/42] SUNRPC: relocate struct rcu_head to the first
+ field of struct rpc_xprt
+Message-ID: <20251215051517.GB49936@system.software.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-42-byungchul@sk.com>
+ <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
 MIME-Version: 1.0
-References: <20251213083639.364539-1-kartikey406@gmail.com> <20251215041200.GB905277@cmpxchg.org>
-In-Reply-To: <20251215041200.GB905277@cmpxchg.org>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Mon, 15 Dec 2025 10:21:51 +0530
-X-Gm-Features: AQt7F2ri8EReXAsAIp3dK-aCmI33yx_-bXtMPpzgtmCMCcba10Rx_0iVj0DDMvs
-Message-ID: <CADhLXY6tueNOZKqjWEKU697_pTGuLyiTdm48CHRH=W6udmQVZg@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: always allow writeback during memcg reclaim
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, david@kernel.org, mhocko@kernel.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, yuzhao@google.com, heftig@archlinux.org, 
-	oleksandr@natalenko.name, bgeffon@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+90fcab4d88cffed6d0d8@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0xbZRj2O+f0nNOGxkPF7ZMZWerM5oxszpG8iQanxnj+qDNmMXPZtMrJ
+	aMYtZetW44WFS0sXVm1SAu2GxSIyWsY4DAQLG5d1gDrGFmQdFHSxGyVrWVIuTQcUW4iRf0+e
+	97n9eFlS0UGnsuq844ImT5WjpGWULJRU+/Kx6jfUu7v8m8FQ+i0szBsoONfsomHF9gsDBrFa
+	AiMXnQgiSzYSSjtXKVgxX2dgPjrBgOU0gspbZhLmLsVoeNgfRmC556dhxvMurE5OE3BnMYig
+	3h8jwN+jRzC68IiGIcsZGkK3zhFQ7GimofK8SIGv0kyAU3wPJk0WCoamxiQg3vUgmB+9R0D3
+	+EtQW1ZHQXWNj4Yp16oEbjtHKGie9hLw+/XBuMF6gYKJGyYGbv7aFN/7fYUEmmZ/jE9arCfh
+	dK+DAvODMANtV0sRhOsWKRio6CFAH3DTcMM2LIGyuhYCRu+6EVwx/E3ATw2h+ADXGA3T1vME
+	9C8ECfhtco6BVtFCQpsnwkCJLwPmnY002DxTzL59fKT0LMU3trYT/NJjM+L7g49IvqT1JN9p
+	nWT4kivjDG8XT/CtDTt5R9cMwYuN5TQvhs0MX7sUIHljaJTgfWNdND87PMzs3/qJ7PUsIUet
+	FTS7Mj+TZYeLfUzBD5tORd1pRcjEGZGUxdxe7K6JEUbEruHu2I4ETXEv4Dt/rtAJTHPbsdcb
+	JROSFG4bHi9SG5GMJTnLczgYeEwlNE9xR/GlTguZwHIOcHfgKpkQKTg7wrWVLmb9kIyHqv1r
+	BjIeulxzey2U5Lbgn2PsOp2Gi9tsa7SU4/HMGV2Cfpp7Hve0DxCJSMzNSnH94E1yff4zuLfB
+	S32Hkq0bGqwbGqz/N1g3NNgR1YgU6jxtrkqdszc9W5enPpX+RX6uiOL/XP/18qEOFB75qA9x
+	LFImyUcuZ6oVEpW2UJfbhzBLKlPkBm+ckmepdF8KmvxPNSdyhMI+tIWllJvlexZPZim4o6rj
+	wjFBKBA0/10JVppahOz+sSMDHyt7VRWedmXq/b8yJg40ZRz09hzujs599cEhRyDS0vfQ/8+1
+	tyVbteZXzzr/yB/MfTN4Qa93bJJ+uOyuaik3epMioWTfyuemgO/9Z++nPWn65kHxYdjV/MQ1
+	RSCzqiBQlv5OtM5Vow1WlR8UO3S7Xxx6bX/TW7LLewS9PUVJFWarXtlJagpV/wI2aPotywMA
+	AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTH89zn9t5LtcsFcTzZjDOdi2buReNMjlG3GZPxxDizxA/LFhOp
+	2824AwppkVGNSqnName2rqZF2rG1KJVAHW/bFEldAxOdE0YZSMPLgKwyCEwMFrYWCrYsRr6c
+	/M///M8v58MRcMaX3AZB1hZLOq0mX80pWeXbr5i2H6/cIz/fFdgKFvOnMDwaUcAfxiAL81EL
+	C+ca/Bwk3N/zYGmuVMCvA+Us9FysRzA6b0Fwf9GNwdy6wkLC3slDNDbEg8OIYCXQicAZsmMI
+	91zF4L9kZOCfxmUOpjvmEDjGIxxUTBlZmPV9gcA14eZh6udsuDfapoCVkbsMDCzMIPBFlhmI
+	BE8iSDjz4EJ1S3Ld+TcHi103MVQ4ehB4x0cwzE2NIbjUeRtBoLacgz9tlzHciqyDvvlZDq47
+	TnFwL3SOgb8aOfCUBxQQ+n0aQZXbjmBiMMCA6esGDpxVzSy0jv3IQ2h6iYFhp52B+ub9MOqb
+	YOGGrZpJnptMNWWBu8LEJMskA47v2hiI+er4vTWI3jefZmldyxWGmnsTHPWf9yO6GLcjGq0x
+	YWq2JduOmVlMP2s5QWtuzHA0Pt/P0cCCh6W/VRP6zedxhp7t2k5bXSP8gdcPK189KuXLJZJu
+	5+4cZe6caZgvurC+NNa2qQydEa1IEIi4iwSWn7WiNIEVt5CB/gSX0pz4DAmHYzgVyRSfJoNl
+	shUpBSw6niQzk3E2lXlMPEYaWx04pVUikMDkVZwKZYgeRLxOP/9wkE6uV0ZWF3ASunS+dxWK
+	xY3k22Xhob2JmC67V+00kZKpU4aU/bi4mQSv/MLY0DrXGpBrDcj1P8i1BuRBbB3KlLUlBRo5
+	/6Ud+rxcg1Yu3XGksKAZJV/V9/HS2R9Q9FZ2OxIFpH5UFW7bLWcoNCV6Q0E7IgJWZ6os4aSl
+	OqoxfCjpCt/TfZAv6dvRRoFVZ6nePCjlZIjHNMVSniQVSbr/poyQtqEMXfvkq13vW2ZdQWuY
+	dMefe6Ij54j13TdO9598ai5EFofEvvTgcPYd7519fnrxTJWye/Px2sOG17r3+uvWNyTe2jlo
+	Gw9n5WiMRfv3NDnQOx/x3n1jL9tevG3sS1uY8Dy4+WDbCm1K9/Qe3PbIoWis9NqQ8W7Em1Vf
+	LGsLa/UlP52wqVl9ruaFrVin1/wLMb4wZaYDAAA=
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 71EC04000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yjdq7rp3zxgfzgfakddr5nkca48y6dd9
-X-HE-Tag: 1765774324-538734
-X-HE-Meta: U2FsdGVkX18uLNTEFrJW6IPTG8rHa/Rg1GBAVvS6OTLMOeOKk9DlkTck4b6fp8nAy/GfgZ8kO4OowUYQEwW8yc62v04PdBA2rUB+rCFZ0ZcMoSrFePXSz2XMb4DWUNypS2AtbUbjno5ci/fq/gS1RdTLrT68BTxnTfr2E7eJQ2GsLMpG30WrsdPnsh2A56lzX5XhGLsRptiI1BtE0bi1pX8A7d3/vjrtHmdN22kOax2zcRhHlpauGwbYNAc/kY3mFxoRC0sab8XG60HJCiwVZMLZDSOM9tchGSKNGQ5OiA3kD7u3Nh4W1jSuzEQ8C4p9nI0FYyB0YQ7YlXbjeETgu+0VZ1iqG9TEK6HYEODfPkDBumbHG2LnlNgR85fYBWOrrkQr70Fzj5dC5JQYwLx3uBKB5wIt20eUpdLPPArDeglrs4g1TIJciNol4WsF3+zQfmfBC+Rm9Gp88wLbY0DktGYUozx5fvpe54syTnwdMWdQGh2ZdpToe8JRNkSdpj9g0nE/Gw6TZNBdLz6iZnR/FtBnUNL4V0Sfs3cwe6yfZjDEvR1Nax7HONVj0sZi5hx+8nCn2ctSx6kQbhZJv/OI7eTVzJL2n9vYC7afooxnsGdV4myEQZm+QO9R//Bkz3GDt/JJpW/i6gEKFCLo+OigAF1HKgAsUZtCO8P8iejTg/44LVq3CgHJ0NGUzQb8gqT0dyHLFXGZIx5Vh9SUjqyRKSMLQAcCJfeRoDC+HFid+vhp+uLZYMofFAlZ2OgAei4WcnxpTkg/Xhyrj2m9gymQ7ZllxaTVsN+YjQgp0fD8xozPsGT3/HigYYoBZPoYBfVQ+e3qEbP0AcoePvJaUkw0OsiU7kGRO1WEcAb9ZK1YIW/nHIGVKcaTQLosjKnHClOLR0m0uS81sASoUyKqgCtndKdWgC6H6qgKniq/VasPkTSnZn3AoWNk5yEyJjhrGQ0iSnXMa+4AorV6LtQx+OU
- ZrKMEGiQ
- DpV7NnhYt1OXd4o2MuQW1EPqpXDeugiOThwqb4m9eH8qVp0WZIat+uFA4LjxMzUti12KwX9Mdz8mcLw2GMrFiG9Hzc3zHw/IIMMwfU+lco2oTIolAjWSb4A4weA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DD24080007
+X-Stat-Signature: uhisf53gmrwzmw3e5jnada4tzqetbibp
+X-HE-Tag: 1765775726-81038
+X-HE-Meta: U2FsdGVkX1/FdNuWwo8r1eu4M17IQohe5UPWimS+DgKkh9PRWtCd67RR4VtN4thLy2hELesVAkbwzbNI7gfkylq204m6M2kRVb2LbmFyXBs5X7pdhljzdEGX/1+Pf0WXuHN3udIFfGqjEPk1DIeap+xCT6j9hk7DDzA7gn14M2Da2ulWrHdhpyWHsLeA+rbNt5CxTC5vpYnyocmiopIa0EqP7Uu881daOHvJEw5cWtvYTgPGh1stVmpGXVPcjzNUGGpJJsY2ibdqcRFXk9X4L9xZ5ypRyLN6hxRxwoPwv8gQWmq6y4PjD9ZBuKH3812LuGNyPJfhXWrhln958wCaqNtxzEvhNj8ngtYtDBD90a+NFx68MmmCqGBltSwElOj3T6EwM+3Ujtxb7xs6kZICnCsTw/xg+Ux3B1lq6kt2R8rIVnXyttecWO17YGLxM7cXpz+MGpoLssN+z+rNy7HLokIyh87BKOzHAIJ9xxx5gT0NrjXCs4AAkKec5xhFMk3kuy2k4d1lzSj0zv4URVAG8DaskcYvIwEofUiKxUs0EvZd6AgITU6ZdEGKrNtRxd7293nFX2CysC1ie143J/niQk43E45R0s9lfKlucdzy4NIv1jRyXs8Cs4q5D1ROCpWprhqZhWCuyFREEJcNAesaiOn0xCuEQ9P18rWbb6LDVC5tjaFTu3MHAHN8QLU0CzO1kbmtroU+LGsDdve1qhG9/1bBaa4msEj3r9iPgff5xHCLZYBX06gULzxw0CEIDT36ppTFNzC+VUbmeHLKzCkxAtJwFtFUhqtyvsX1JOot2OvqXEzOBBemG4/Yub0Y+j1f2LBsz2Hy5Af8E6y6iyRg5DL8SOv9I4LO2mW/uvsHQKOjQ4sRgwpWbbqkM915c/96TzGAnC9pvj5U+olbEanVuDLDW1Dg6rL2DYNNWmwWzaeiWbacJ3Z9/I4AbJ7I4rybGjB7QGHX7Brlrv6a6GJ
+ KuQbI/AC
+ 3kpyrTuFMt4sSrTAPGLgmE9L90iU2SidXabMRpcRTlpD+Zk6BOkoSBaN5ZPZbNlKkOqRyFb+6E0xRsWQHmgWqebn0kBiEebQFY2v2MH/L9jPSCzDW5zhOxdAyAh9OGwb7kp/xdz/KeS3vNgmopMnwrO7Vjzd73oJ5bnHR/0X1Fp3ilUutOXirde5rRHHVj0OnvwiejYbP7Crvx50=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,19 +179,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 9:42=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
+On Fri, Dec 05, 2025 at 04:27:52AM -0500, Jeff Layton wrote:
+> On Fri, 2025-12-05 at 16:18 +0900, Byungchul Park wrote:
+> > While compiling Linux kernel with DEPT on, the following error was
+> > observed:
+> >
+> >    ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
+> >    ‘BUILD_BUG_ON’
+> >    1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);        \
+> >         | ^~~~~~~~~~~~
+> >    ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
+> >    'kvfree_rcu_arg_2'
+> >    1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
+> >         |                             ^~~~~~~~~~~~~~~~
+> >    net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
+> >    1856 | kfree_rcu(xprt, rcu);
+> >         | ^~~~~~~~~
+> >     CC net/kcm/kcmproc.o
+> >    make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
+> >
+> > Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
+> > struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
+> > not exceed 4096 but does, due to the debug information added by DEPT.
+> >
+> > Relocate struct rcu_head to the first field of struct rpc_xprt from an
+> > arbitrary location to avoid the issue and meet the assumption.
+> >
+> > Reported-by: Yunseong Kim <ysk@kzalloc.com>
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> >  include/linux/sunrpc/xprt.h | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
+> > index f46d1fb8f71a..666e42a17a31 100644
+> > --- a/include/linux/sunrpc/xprt.h
+> > +++ b/include/linux/sunrpc/xprt.h
+> > @@ -211,6 +211,14 @@ enum xprt_transports {
+> >
+> >  struct rpc_sysfs_xprt;
+> >  struct rpc_xprt {
+> > +     /*
+> > +      * Place struct rcu_head within the first 4096 bytes of struct
+> > +      * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
+> > +      * kfree_rcu() can simply work assuming that.  See the comment
+> > +      * in kfree_rcu().
+> > +      */
+> > +     struct rcu_head         rcu;
+> > +
+> >       struct kref             kref;           /* Reference count */
+> >       const struct rpc_xprt_ops *ops;         /* transport methods */
+> >       unsigned int            id;             /* transport id */
+> > @@ -317,7 +325,6 @@ struct rpc_xprt {
+> >  #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+> >       struct dentry           *debugfs;               /* debugfs directory */
+> >  #endif
+> > -     struct rcu_head         rcu;
+> >       const struct xprt_class *xprt_class;
+> >       struct rpc_sysfs_xprt   *xprt_sysfs;
+> >       bool                    main; /*mark if this is the 1st transport */
+> 
+> Seems fine to me.
+> 
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
-> > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
->
-> That seems unrelated?
+Thank you, Jeff.
 
-Sorry for the wrong fixes. Correct  Fixes: ee814fe23daf ("mm: vmscan:
-clean up struct scan_control")
-
-I'll wait for input from someone with MGLRU context on the broader discussi=
-on.
-
-Thanks
-Deepanshu
+	Byungchul
 
