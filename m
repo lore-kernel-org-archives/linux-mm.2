@@ -4,138 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DF3D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 10:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63FA2D41D74
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 10:57:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1BB66B0006; Mon, 15 Dec 2025 05:51:49 -0500 (EST)
+	id B025B6B0006; Mon, 15 Dec 2025 05:57:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACFC06B0007; Mon, 15 Dec 2025 05:51:49 -0500 (EST)
+	id AB3E96B0007; Mon, 15 Dec 2025 05:57:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BBE76B0008; Mon, 15 Dec 2025 05:51:49 -0500 (EST)
+	id 9C9A96B0008; Mon, 15 Dec 2025 05:57:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 896726B0006
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:51:49 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9FFB160111
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:51:48 +0000 (UTC)
-X-FDA: 84221389896.03.BCE2BE5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AAC81140005
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:51:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N8GktVvJ;
-	dkim=pass header.d=redhat.com header.s=google header.b=c43ZmmiG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765795906; a=rsa-sha256;
-	cv=none;
-	b=5x0qrCAv3SOUTlU1cbQKAH/lmTeVy5bbwXEI7XCix1dBaxg1QgI40yArAzs4V4D7m9KaKl
-	D5Vv2Vc6jxqLV6H4pAotUPjThhe7v9aXtoDHtq1/LUFTlbRtamIC/m5HMY3vG2Hj+S65KA
-	fSmsBq05f7Uxhg1WHk1s3jXPib4jmJY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N8GktVvJ;
-	dkim=pass header.d=redhat.com header.s=google header.b=c43ZmmiG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B24B6B0006
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 05:57:38 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F932136F48
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:57:38 +0000 (UTC)
+X-FDA: 84221404596.19.0D8AA25
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DEF9720014
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 10:57:35 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765795906;
+	s=arc-20220608; t=1765796256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WkCUCfLiLGct9+NKSop/UGDcclTFONtKAWihXF5F0gs=;
-	b=VspDO0oqKbMKzbQXLOSy6Tnac9zB8AFwRtko5pKkGl3E6nbrF5AahVCBe64iUoS8+eQj5L
-	oihM29ghPBryOsY3yruGk75V0ZXyAPL2+IU6pHnYs43UbJiTUjyj0TA9y7Ryt3EOhEWawm
-	RF+IL/ImKiQUgVT5yMM97d+hl0fNFvs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765795906;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WkCUCfLiLGct9+NKSop/UGDcclTFONtKAWihXF5F0gs=;
-	b=N8GktVvJD0dyutpOHypH/NS0GP+u2GTnGqpRva7vThRdkMczNk6PbAXQ9z5S+ghrgG1Eb+
-	Yl5d21i3Q9sZPPmGtZj9ClrYLUw1Jm7BI7y2us+lV19G5YKVm9O8asGxOsngUkNCMZ5riC
-	w6V34aVCIUIlA2jqMwbKeIOQbGH+wU4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-bA2eyJncPzSJkC_eWyWCCg-1; Mon, 15 Dec 2025 05:51:43 -0500
-X-MC-Unique: bA2eyJncPzSJkC_eWyWCCg-1
-X-Mimecast-MFC-AGG-ID: bA2eyJncPzSJkC_eWyWCCg_1765795902
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477a11d9e67so17042065e9.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 02:51:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765795902; x=1766400702; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WkCUCfLiLGct9+NKSop/UGDcclTFONtKAWihXF5F0gs=;
-        b=c43ZmmiGtYcoNxwOW9jHgVgBe8tcfzlNYUwDZmV1w7Mnlsun6MW0DA6KlGiodKUEn4
-         Ayiw4tecpHbMiYIWuQ1y7j1WAbaagtYOXqsnD/cf3AfXeFpAieFx3uFc3DzvTpWla+EN
-         bWC8gRQHA4jPdL6qt2RFmgrGEI/B8FqzcfkhbislMyKLlPxcRRRMSRB6YP/lOEk6hXa1
-         nbsgERNt9lB4tEKh65C/+bFNPYYZ6GjoYzS0lGqts3vdtOPjt2sD3RIynH1zH7/6JUb9
-         YRrErgNN4b4LHvCI56oiscdMjgWcs/c78Y++LK2yDTk8peIxUHDJvaimjfGH3WaREOEo
-         19YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765795902; x=1766400702;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WkCUCfLiLGct9+NKSop/UGDcclTFONtKAWihXF5F0gs=;
-        b=fT/Zuc3C2LlG7b9WD0yBLkV0Wj6j9woGLrxf92lWGLMgIgcEFuKrxuL7f3nBRCXDA/
-         IBNiuQl9s7YyVEoGZjHZo9a4PeU+J1eg8XMFgf0pCqj05DaxshEi0j4jb7HnyuPHzsba
-         QFBsiNErwEUjQEoVfCnimPipjUsUNOmWpVuV2X92SZFk/5d84Y1eTzjAfQYUs6K2pH7d
-         U5WPHtw0UMXqvty3ssCV+/FdHwozW4BFAoPHBmByEkhfcNNCK3l99GQBKsjh0TKA9Dcm
-         LeWC+APvHRGGGezIW9rJFjQlaY/kwOAv/di1ZthKFvXkYL5lZ/abEYFcHCvSvpPlsa1q
-         xe3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXcvf1Kz4Ni2sKUz9J1YHmssecTkufEJYxbuqcpUqFnLKNDEkT1O9tEQt+OjJ5T+upGILGshTyYiA==@kvack.org
-X-Gm-Message-State: AOJu0Yzq7AjLWZ+X5jfafw8rR2lqX/N7cVSQGvgcciVqKLbX0l+57mj+
-	+n2I3joyxzbWvF8ZbTbFFJbff7gCffS2O96MwNJ7s/6w2ZxK/A6/Np76jR9YSZfg4de0Ju6i7G/
-	1Smct9Qpz5xaHYgd9W8mwKVS+WCu37bhzKSn7WdiwDgkrH3i3YVIi
-X-Gm-Gg: AY/fxX5blZ2N9hnhhiB6IqkI3chhHATTVIukYi2g5/HuP0BnJqIXpyAnUM719+DdD1A
-	DkSFboxR1Qg77hYV57UPmyO7TfZpyJxHTg1lqaByEO6KpdTWFoa+DH7uC59YT1wM5vrLIYs9vEj
-	rcQktECBhhHSkSXdq9FdbS+Cvat72dvyoe11oKpLdwYhKdirc9ov57lrfcIG+28d6FmskQc+Jah
-	CrOWYbe+AIERbvWa/q4cxu7hptlM3xzhnf8Tq+FQ2itep5J0HKVcoOip2dj3WKwCuesKTtAe+bg
-	yUKGrNgF0xCGNZ6DnjKaocCmBVVrPV6YP9grCmwWtF1uQsiOftE8kiGJeF61F5SneL2FVZ8Z8b8
-	ylSlP
-X-Received: by 2002:a05:600c:3151:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-47a8f8c0a52mr119367035e9.10.1765795901750;
-        Mon, 15 Dec 2025 02:51:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHsLOxvt6hxpjORw35OnVP+adHLtMmhH7jm5yhL+wJY2rwByI4ScjvlRVSyfAXmLS6E1u9MfQ==
-X-Received: by 2002:a05:600c:3151:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-47a8f8c0a52mr119366655e9.10.1765795901232;
-        Mon, 15 Dec 2025 02:51:41 -0800 (PST)
-Received: from localhost ([82.66.159.240])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f6f3e78sm69652615e9.3.2025.12.15.02.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 02:51:40 -0800 (PST)
-Date: Mon, 15 Dec 2025 11:51:38 +0100
-From: Maxime Ripard <mripard@redhat.com>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Eric Chanudet <echanude@redhat.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	Christian Koenig <christian.koenig@amd.com>, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>
-Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
- in memcg
-Message-ID: <20251215-sepia-husky-of-eternity-ecf0ce@penduick>
-References: <20251211193106.755485-2-echanude@redhat.com>
- <CABdmKX2MPhw121ZG8V+f-XoOReUsCdmcug-cWDg=3WZcJ=NHHA@mail.gmail.com>
+	bh=O6RPzWqzp7oee1+jRU091cOjstwwj6XRCSIyK33CPW0=;
+	b=p83BV+s5DH+mm6cbgjYft5dk7t5xFDfkiFUBfcyhOfvGbhLRScD1kgd15D7yL4VDANHrTb
+	LcvkUCbfYzxGYLpjjTTNHlL6K32vML4cmDdBQ54sEJNVQ85desXQhBbN55D3SY1ZJxAtIR
+	z7or7bI6L8/A+wRzy9O6M/bsY1SBx9o=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765796256; a=rsa-sha256;
+	cv=none;
+	b=HHCfBvMjCB1ECt/XL5HTjBzOqcoRx8DBox2Yt4gcHBogn6Eoth9Y6CHkkgQslDGfUxa+1y
+	1sxz7PO2Jp3hbE/uPyFXvWDhJPlQRPX4fKRQnwzkIX6o1ydZ5GThbISRi1IUXbcid3y6MH
+	5ZNVkAV1ZIV1JfqkPqBLauM0yVeGKQk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89F03497;
+	Mon, 15 Dec 2025 02:57:27 -0800 (PST)
+Received: from [10.1.30.155] (XHFQ2J9959.cambridge.arm.com [10.1.30.155])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC2553F73B;
+	Mon, 15 Dec 2025 02:57:32 -0800 (PST)
+Message-ID: <6c76b8e6-3e39-41a0-a4fe-9012c3eb8446@arm.com>
+Date: Mon, 15 Dec 2025 10:57:31 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="u7gkqqtkk3esv3ha"
-Content-Disposition: inline
-In-Reply-To: <CABdmKX2MPhw121ZG8V+f-XoOReUsCdmcug-cWDg=3WZcJ=NHHA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/madvise: Use set_pte() to write page tables
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Gavin Shan <gshan@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20251211081117.1126521-1-samuel.holland@sifive.com>
+ <20251211081117.1126521-3-samuel.holland@sifive.com>
+ <1b7e682e-86a4-4573-b423-65f9755f71ea@arm.com>
+ <5daa9569-a3a3-40ad-86d4-ad47080fa5aa@lucifer.local>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <5daa9569-a3a3-40ad-86d4-ad47080fa5aa@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DEF9720014
+X-Stat-Signature: u8wmzqisagusumyb13dn6y6y3rygm943
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AAC81140005
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 834peu3rfewkzg1jyic7izrtr86h94dw
-X-HE-Tag: 1765795906-365553
-X-HE-Meta: U2FsdGVkX18VyxCOPvx58x0MPf5jWVY3oXrp7T5pmY+WXKOk8aHXHCGRJiMfmf6MXFEzmN8zagZNsvArhcsMqGqi23zV78wCApRSQhm5F0UlUskQLfW8FcckaiisVJGB9Wmgm9CZKoHrkgzU1joHGTK3Hw0BJSF/hccWaXfmcQrYYEzFdhB359E6O+5IVVZ0rGsJJZ/SwTjRUV1SpSGzzVBcgkwfuN5YUEddTP7b9gkbPSDcW5vxww9byT0aRpMinWNjSyemoKxpyqk5/GlJ6658Zsdcov8YdvOSKASKAjvY7728Q4BHf1pIWU/r69jifgw6zRF455fpyTt+VqL4NAbF855rTOzBe8YtO8P6Se7xhJLETt0q4uyjrD2ohv51zgjWIO+6DPB9NFAfpr4FAaq6NOXnFfkQFmqylyKFr1nHm89NXz+PGSIw2RSGPu9iMl+ZynxI6L5Sv4HF9ft/gfqwDkooAmpeEAm+CFaftHhCCPZlyMiscNYY2CsBfmuq071enZcEMOrHeecXnwC4DxoVFpeZFgUYrwQ7d31AGh+5EQxBSYteUguVYW7KeNxBltSJZyCz86eePqtHyAueaaRJ358777Xt3aPtqZgE711j61yZhpNutAzGg7yIz208gOR1bEeJgfXslrf7Gv4lwFidKabj76tQmkTRb/JBYoXcQkplQaXy0acyybIcXyFXfZWl9+vl8QDmAY0nQmBmU7viWPX+QgfSPHbXKj9YT3cuBZ/0tfH0Nj4DPbQE4P6sT7+EE3E5x1z4cprbX4izfnUhOt3Abx1bcDPjuKN0zet9/lhXcGQBwqtp3b63kyGpetptmS/jiFgQafEvs6CwL02AEULghkw8GnVkgC2bPTqRe0Hz+4PIU49buI06EwTRfmECjFqGob5gM5FKKPMBfCaQCITZ/7Lh0pmOz0yEoAj4v3vS2T2fz4azFfWIgYgX5WjQ6XuyRRfcN/XT2lw
- Z1dLJyQ0
- TvbA93ZG08JUgTxw8KYP6gSZYvGabSjozGtvNHhgfVI7HP2h4W0j9vHGhx+TzKRTmedQlePqSq7l5qaGDHkrKdEJK9ahztBFmQds6U3tWp7dbx4tZUHQWE8NN8aZYRkDPfyKvSkJm0WvqzYAjYwaFNFermxEAK1txrjfpFiYYpuKEFeKhzSEpEWDNGHLfo2hnzUo5RJ0Vga0/cxb8L6kyqye9nsWRzOwEeQzZ/iXl5PIJrwsBjE5vH0CAlCedEX5yWmXEFEPpf9JZhiK6JIWLZwRFJ3EKFpm075jdo/WHP63fC3tD5ib6nKASzSaNIDMsefgmGP3MVA3d9bkmOc+SW8m9TXb7jwCeeM2kvn5FbQt9VxGFDgbRWHBMNDO7Qide4G5Q5y57Q4nuYaOtqKOIQaLBq2zU0q9qRr6AUYdoxvac+1wwhromd43/DwBDlweekmdGROuOOK7ryHs/DGed6SYJXOJO4oBLUj5JgmnVcdrOY9NJxi+/xbBEmTt5nvY58Ua2RrQwuOKl2wsW+Vt+ZmqjzkHWokFuwfrQTKZjm7Uc75T9sJECJBlVcWB3epDTrGCcrcQ8YHIF7YU=
+X-HE-Tag: 1765796255-112428
+X-HE-Meta: U2FsdGVkX1/xYiwA9/fllz0QcBVTHvs25z5OObY9wFkvcmYPP8CLcXB3TKMJ+utmjQkPLRxvIg1ldpbGjuEXjUAMD46uUEtu0B9dht2RwrQkeJtm0FxyXtEo4ZWfA5mQ3J9okCuBK7AF92vVVRJzJkcTd/d7gcCDzOhlQXtNmgiLFzXwLpLK5evkP8LIIpUWOy8YyQixJJPidC6xrRXivc+ORVyruy8AMvAA6DwNxa3gtCt2q26FVlD0IO+f42mbkn3dP65QAsrc2C3hkU+56BxYNOixDhVAkBbE/tOGQR6d/hXsOL4WXknVgRHU4QD93C5mb4Yt9ULLrD8ZnHmcnKhn3abZEMtT9qzfe3qxOrAPuh7SSw5atUm2LzCBfhmeeBOruVjWeKk3sgqAevP/z5yUEWB9cpSbeadotj9UR4/ltz8lxIj5bcgF+65t5W7mechAuytMJ6h66yIqc2YoiLk2sKn5iYQW5LzA6T/6OuLarEVZPVSaE0CrK8JdOUmMCIxxVrtzP7l6lM6AcQFGXLRpfq/1uiCwg2wv+MwJtYIbqOj/m7OSFUa9H0LT03cvm0L4WC46dpxYKGeMFGW31QhMjZbjJ+9dWaT9Pl6grDwqhiln409FOL1kEXma951YjMOXMyD6Fpi2Gge6rs3bTegrsEZ6EDQbzbnJenJrqD8piszAVp4fEYrAu7odKI5dcLWihZ0/BOz2Y2M6Q42tqTXQVMYz2f3ZjAq/ao9rYAHSTh3kPDUVbeYskbg+n9fRtWEb0XROhKnoDb0XbkvIOS3vziOR5o9O615PDhhEJmlmNTtSUrmPEi4RX1COE/3cmhRUPEyrjaxBuYulGexe74u3vxLyDqaK/I8SeZTrwMw3VDJMiF4Re+o7mGa/ptnyoKGpXdG4m0IoxyKcDdhXudnrAb5zimcy2RHEcNUP4LeO8BFNSlHJeHC1L6fPtEiJIdZCetHkECEq75q9RP0
+ l3OE+tFm
+ HTv0NDVZT9o48RIOvAyC2s71IulNpClgRMm4QzrjZsqYRCLqelyfwK07Mjlup65cxCXonuPkHj8WtMasGzXhSkAqymad9CopPWuW+7dBkxO+ofKYvEro8dkXwDAouFZzMO+7LIRRHy1mUR/k7aQ2DWCBWRukiPOAZJNvrvfleGXBkgoCcciN8UY6C3jgWaiRIQ4O+Yj0/drFZS2QW+4ZTPR3gn63T2e28VNt9H27QtAmmArPSggPukoEUvRQy2C2fuCTbcVxqsxYgHdeuaBNzu7mgixg44QLsd4HQBOzPBmvAcOLvQXp6cE3jvWJ5wBmzUgDHdvxDH7yZZmelSuUFlobq4ohDDyjP+s0FI1cvMZux+FDfKy3eMqeIKsPfmD+rpI7SJTh8G9YbOkU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,61 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 15/12/2025 10:37, Lorenzo Stoakes wrote:
+> On Thu, Dec 11, 2025 at 09:43:58AM +0000, Ryan Roberts wrote:
+>> On 11/12/2025 08:11, Samuel Holland wrote:
+>>> Generic code must always use the architecture-provided helper function
+>>> to write page tables.
+>>>
+>>> Fixes: 662df3e5c376 ("mm: madvise: implement lightweight guard page mechanism")
+>>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+>>> ---
+>>>
+>>>  mm/madvise.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/madvise.c b/mm/madvise.c
+>>> index b617b1be0f535..4da9c32f8738a 100644
+>>> --- a/mm/madvise.c
+>>> +++ b/mm/madvise.c
+>>> @@ -1114,7 +1114,7 @@ static int guard_install_set_pte(unsigned long addr, unsigned long next,
+>>>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+>>>
+>>>  	/* Simply install a PTE marker, this causes segfault on access. */
+>>> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+>>> +	set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
+>>
+>> No! As I explained in my response on the other thread (which you linked in the
+>> cover letter), it is correct as is and should not be changed to set_pte().
+> 
+> Yup agreed, esp. given this is my code :)
+> 
+> Also some arches don't define set_pte()... it seems set_xxx() functions not
+> really intended to be used outside of arch code - see
+> e.g. https://elixir.bootlin.com/linux/v6.18.1/A/ident/set_pte
+> 
+>>
+>> Copy/pasting my explanation:
+>>
+>> | I tried "fixing" this before. But it's correct as is. ptep is pointing to a
+>> | value on the stack. See [2].
+>> |
+>> | https://lore.kernel.org/linux-mm/2308a4d0-273e-4cf8-9c9f-3008c42b6d18@arm.com/
+>>
+>> If you go look at where this function is called from, you'll see that it's a
+>> pointer to a stack variable:
+>>
+>>
+>> ---8<---
+>> static int walk_pte_range_inner(pte_t *pte, unsigned long addr,
+>> 				unsigned long end, struct mm_walk *walk)
+>> {
+>> 	const struct mm_walk_ops *ops = walk->ops;
+>> 	int err = 0;
+>>
+>> 	for (;;) {
+>> 		if (ops->install_pte && pte_none(ptep_get(pte))) {
+>> 			pte_t new_pte;
+>>
+>> 			err = ops->install_pte(addr, addr + PAGE_SIZE, &new_pte,
+>> 					       walk);
+>> ---8<---
+>>
+>> I agree that it's extremely confusing. Perhaps, at a minimum, we should come up
+>> with some kind of naming convention for this and update this and the other
+>> couple of places that pass pointers to stack-based pXX_t around?
+>>
+>> e.g. instead of calling it "ptep", call it "ptevalp" or something like that?
+> 
+> Not sure that'd clarify, we already have a bit of an inconsistent mess with all
+> this :(
+> 
+> Given it's a stack variable I'm not sure using a helper is in any way helpful
+> other than I suppose to account for people grepping around for incorrect page
+> table manipulation code?
 
---u7gkqqtkk3esv3ha
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] dma-buf: system_heap: account for system heap allocation
- in memcg
-MIME-Version: 1.0
+I've proposed an approach to clean all of this up. I'd appreciate your opinion
+if you get a few mins:
 
-Hi TJ,
+https://lore.kernel.org/all/a063f6c5-2785-4a9f-8079-25edb3e54cef@arm.com/
 
-On Fri, Dec 12, 2025 at 08:25:19AM +0900, T.J. Mercier wrote:
-> On Fri, Dec 12, 2025 at 4:31=E2=80=AFAM Eric Chanudet <echanude@redhat.co=
-m> wrote:
-> >
-> > The system dma-buf heap lets userspace allocate buffers from the page
-> > allocator. However, these allocations are not accounted for in memcg,
-> > allowing processes to escape limits that may be configured.
-> >
-> > Pass the __GFP_ACCOUNT for our allocations to account them into memcg.
->=20
-> We had a discussion just last night in the MM track at LPC about how
-> shared memory accounted in memcg is pretty broken. Without a way to
-> identify (and possibly transfer) ownership of a shared buffer, this
-> makes the accounting of shared memory, and zombie memcg problems
-> worse. :\
-
-Are there notes or a report from that discussion anywhere?
-
-The way I see it, the dma-buf heaps *trivial* case is non-existent at
-the moment and that's definitely broken. Any application can bypass its
-cgroups limits trivially, and that's a pretty big hole in the system.
-
-The shared ownership is indeed broken, but it's not more or less broken
-than, say, memfd + udmabuf, and I'm sure plenty of others.
-
-So we really improve the common case, but only make the "advanced"
-slightly more broken than it already is.
-
-Would you disagree?
-
-Maxime
-
---u7gkqqtkk3esv3ha
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaT/oOgAKCRAnX84Zoj2+
-dkxfAX4ve8AMEp5rGVxqWdx7mP32EEUlTe7oGqgQsZGk3gdf9G5zzO3162M7qdiD
-3jlaGbUBfRHozRNiBmCNTKcExXO6w9Ygjiy0DBe+Vt/PkW0DZjejxbuLLNtgH70W
-djcO8jaBRA==
-=lq40
------END PGP SIGNATURE-----
-
---u7gkqqtkk3esv3ha--
+> 
+>>
+>> Thanks,
+>> Ryan
+>>
+>>
+>>>  	(*nr_pages)++;
+>>>
+>>>  	return 0;
+>>
+> 
+> Cheers, Lorenzo
 
 
