@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811F7D59D99
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6EC5D5B16E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 11:48:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00266B0024; Mon, 15 Dec 2025 06:48:47 -0500 (EST)
+	id 6E6076B002B; Mon, 15 Dec 2025 06:48:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD8326B0028; Mon, 15 Dec 2025 06:48:47 -0500 (EST)
+	id 621346B002A; Mon, 15 Dec 2025 06:48:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B511B6B0029; Mon, 15 Dec 2025 06:48:47 -0500 (EST)
+	id 50F736B002B; Mon, 15 Dec 2025 06:48:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 97C556B0024
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:48:47 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43EFE138C11
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E4FD6B0028
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 06:48:48 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02C271A0166
 	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:48:47 +0000 (UTC)
-X-FDA: 84221533494.24.FBAC99F
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 38F464000A
+X-FDA: 84221533536.08.1F4CBB6
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EF07A4000D
 	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 11:48:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fovlq+0X;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dEajFHf8;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799325; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765799326; a=rsa-sha256;
 	cv=none;
-	b=HIH/a7nfitgLUfbG/EORI2CqP7TN7B1ANh5hk0RKbKmYMtNiGTdsug4d15QeHvbxPV2fF9
-	v44W3H4GGBF3YEmZwkrFHw7pONPEnXrDtgVAWsCZEc5Vs0s/4lSffT6ObH1CxstI6T0BcA
-	BSyiq8RtC2yCG6IgcKPYJd72gl3oswo=
+	b=51u7/GuHhxpzvbecqlvrHGTnpdNI4ZMUzpVPNOLPEsNupokqXQWZGQ6+ELb4I0KA7kuAZA
+	sbp6vfy6sC27bus1YWqR8IsltuoSPSRXDNCbHyddPdURENxaYKQTjcovz/BUOzS5FEw+Bx
+	SOu7KQp54AuDf2gNpxAc6K21CZbhG1Y=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fovlq+0X;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dEajFHf8;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+	spf=pass (imf01.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765799325;
+	s=arc-20220608; t=1765799326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8E8ZSVvZ3A1H5XIeWol9WzN+P6GbKkkMDrw9AgBsXoI=;
-	b=CxFU8yrKJdLiSVrx7KxdlrnLBEq51eNxczAqjpI8epHwds2mtQo4DIrGO/6OU358XPq9Pq
-	cUbSGgRnapZ0vl+E5t9R88DZXjyNcwnUNQyZBFFAF54op7Y1TbuEFAu0rTdi+Z8J78HGxm
-	vhQvvQ7j9IAXRsbO9dEfxhHFI64laBk=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34c363eb612so1719787a91.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:48:44 -0800 (PST)
+	bh=HPi/WFWmImBnVQgsxNvJvJyvieXM1xBFzKoWis67Gg4=;
+	b=xGK5KJz6VTlCZsRkq7LRenMLKCCxIXaKrWvf68AR6+JvUegvOD8EEpG2XyfZa1ySSlcf7V
+	u3KaXpF0O0ohVuJtLk9l1+6zcFVA5gYrl6B6I8XVDb/TM8ntyJQGpoRPf1m7PC6so1PnmM
+	Daol3eIUIXw+SPQyteYhIDykss6dIiA=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34b75fba315so2739093a91.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 03:48:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765799324; x=1766404124; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765799325; x=1766404125; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8E8ZSVvZ3A1H5XIeWol9WzN+P6GbKkkMDrw9AgBsXoI=;
-        b=fovlq+0XEAL6qfRc3gRCpX0ALkoZto3pHWbE0UmGfUu+FUxbANasrfggQxb4u0punO
-         AI8PkO6IZEcv+stJl+EDNUCDfbrM69MmxKdtjvX/liAzI4pS45xxsPO/0VTdawIgr9fs
-         iKCJ5fCQOqix0IAgalX3Dkole0s3Ux7S0T4im1lTSjXKTIQKjoI/bZgw39Tvvn2Tsyt6
-         AFzNfAjD/U4KRAdHqnvCUPuboKiOg7y88JCcy3kcqp9OHrkgq1qSFWVfi/oPjsniDeam
-         PU31ID8usQhVAC6BT/R53SGxlb+9CaQRg9roubwJZCKZJv/9Lt3la3biCnwXQKQCgdx6
-         JMHg==
+        bh=HPi/WFWmImBnVQgsxNvJvJyvieXM1xBFzKoWis67Gg4=;
+        b=dEajFHf8VNHk8RNzNGQ6utUE1qKQCAaDK+33NyVqOgwDRRUfpzd4AFGxHwolIb8Seg
+         hZakddBGRUWqogSJnrcs8pFRKnKpjZoBZAGxq50zj/BO1N3MZpDFkBRIx0YlqtjnGSfk
+         fIVVULRym1tYx5cnbZEKdGeJ6dfSrNwrZTKxRB9G1Fpj5wbVMvmupvtG8P9Cvp4am3Mt
+         WMG4iCaTIEhkLY0TZOSn9jAErxDNdIsSU2qXS1zwpiXd278UfzOQXXcyd82B09CRGUMk
+         FqA84wjlTWZ8MvZkdT/Cvo8ZEeLkT03ccohpBwgHSvTI93wKMRqpDZtd7a+qLlWDx4t2
+         SecA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765799324; x=1766404124;
+        d=1e100.net; s=20230601; t=1765799325; x=1766404125;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8E8ZSVvZ3A1H5XIeWol9WzN+P6GbKkkMDrw9AgBsXoI=;
-        b=g7ViyM2JPtpWskSB8AsBPIDeDR3FyzNLjB/UsAAxq7XJ8c7CZT7WpEVII2UWT6gO+8
-         8qug2y9DjpydkxIOk4sf3Big//4S6/6nId2trN4X7ZWhfFE58Cft7LlQQyE0/YD/anMM
-         xfzWveP+JcmShQgYT+q7wJZ6yynR+WRU0QbpNXvA8E+ODAQKOpqgFUnxhfbK+D+onURO
-         NLPuQh7p6EWnxnoyJeWgDPhxk7su44SKMHMU0Hx6coNXLiegZ8oVQs3e6vRwh4+qxU9N
-         DUrDsvG+vhu5fH6z/YE4bJiie/njldZyACUJNMG3Q8VUtHHp4y3YmPNZgq+0UH314XD8
-         XPrw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+q10vUwI1gx3GQYpTsb+3EO+E24EOzOVKRDS7T7H0/rJm3JT7AbJgz+38LjyUjcEMXlEy4PT+rw==@kvack.org
-X-Gm-Message-State: AOJu0YyNtol0scfNnEY+7Z69LNHQws4O22dlv156qpsdVe9Gqt5N64aB
-	HfkIR6MX8zivCAIakSOWYRhSV7mpN6wKBzM5+Ij3Sb1AmzLdA13cxFRI
-X-Gm-Gg: AY/fxX4BUGDGrF4l+SuDVHseS3N0t8onIKC8pXuvHYuGLzbZy6vGLpbgEP2/cleBRW3
-	v84Ovi4KbFfTWuYa9UY2M50e0EyOYPHXr6BUXvSRufQpOo/ImUzNPnNj2Y54XOmrqAQfvHPBtJX
-	VarQBu+AaSgImL6Fa6S7gGRf4688FIxrkjgSSzq1Y7fNNbkDo58io5sey93IzRnxrcrR/vBtoZ6
-	SfeeM+Mm4t8ho824hBk+RlQEKrZE3pkiNMOFStpTR/h+jRlX830IHge3riz2B96Qs18e4ZlLqe6
-	18PULulgdFXP7358cZcStSHUemH/21jKcVuowWXmkG+1E0TP7d0ZalOurU+3N5w/QGFDFZhTuNF
-	jtHOWqOVBp13nPYmBGPoebfR9RbhJeobC/I0TkaYC7fS6ZqmdpXN66mkH+5xXJxDPjm/pXMacGU
-	lUxx7rCiGJS34fnuZd0cvCIQ==
-X-Google-Smtp-Source: AGHT+IFGPLXocnh0bsYmKlmGLz0U7nywcuz+b0WgS325GJYSuSdFNXAMsV5RYXPrF9APc0Uu9mi/Dg==
-X-Received: by 2002:a17:90b:2692:b0:340:54a1:d6fe with SMTP id 98e67ed59e1d1-34abd6e705bmr9983263a91.15.1765799324036;
+        bh=HPi/WFWmImBnVQgsxNvJvJyvieXM1xBFzKoWis67Gg4=;
+        b=M6CWUk15ccFeQPvxgWjmJOmJsw1uplVYdAlnFAKb60Kkggv8wqE119nLHECCrLrl9R
+         5IWz/fVzAUUwrzUczECXQueeD7TnenswthgQ7nYgC3GMq3wF6keLU8IH0Gf6AYegz0XW
+         zhECBx1nNxRbEdJivIC1Ll2DQjGCFo4CIF8HzTrQ/fmBv9GxRL487Txm/vM+vT5GN0GS
+         ThXSnzDOzLnxo+j5MiEux2HjZWX+MrO8rERT81CK3i+dyfkge05JUudtvnDxsvm/ZMN5
+         NyFsLtMFTMh1sSJv0ndRCVdflxmnhEAmW6eF7WxI7xlH+rrfB/6DBDmeZD6JevdXTZH+
+         txzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnVGaJfl6m+zR69X/dJjmr2jPgEll5X028sIQdOYtn3NtsFx8ebNXotcC3UCczJCXJgeQcU0OtzQ==@kvack.org
+X-Gm-Message-State: AOJu0YzppL+YUXHD79WgUkSDap1pVi0gu9+8lB48K0VX1dsD1TZG2sfn
+	JhW8nkf4LLNjCUrSAqvxGwmWgRIHXLpJS8bPmfoW9XLXP3H/UfQMTwGu
+X-Gm-Gg: AY/fxX45qJGMWyu8uE5QTvl7D3+Lv714Z82ludNYFSrli8q+9VkCSX2Txsyj+EGSp02
+	l7HEFCL4hub10V/TK6AZDqIXa96yctIMo1c52ZxS+S/EkNxrV3CZcko7scXs4XtsMTF/q1WEvG4
+	KW/oRTUQrr6LJOkf28V8OgNYNxrM7wBzSWDIV6NfK9xNAI9D0ygD4QBY2ptNln7Hm36XTLLiGkw
+	HLm8awH9mydWpua/YU8/nvRzxJVJ1m7Dnfl/Ie3ODmFEvALPS5OboiCfRVD14DEbfNPESceYCmS
+	/hAty0IdlQRiSOJottIErUhX8fwLGI4AR9kPjRou/xSbhRetTTbvNd73RqbsSRI5I+R0y2LH2ZN
+	2VEk7yJpJpxiQmvx6xWBLAKzmNbu15b8wtEB+rBJl9WegZ93Lxos4X7E+S+E2MYmo4jfKPopzXg
+	zmQj+G2j4YFX9E1FSb51J8fg==
+X-Google-Smtp-Source: AGHT+IHySr1buuGxwyvRmyNwB1yX2aGVZnCno4j9FG3NSChYg8gy/QOhSf79+qyZQv+BzWWdtgvcAQ==
+X-Received: by 2002:a17:90b:388a:b0:340:be40:fe0c with SMTP id 98e67ed59e1d1-34abe4a6b3amr9032481a91.36.1765799324639;
         Mon, 15 Dec 2025 03:48:44 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2c48bf7asm12763568a12.32.2025.12.15.03.48.41
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe3ba59bsm9003471a91.7.2025.12.15.03.48.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 15 Dec 2025 03:48:42 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id 711C5447330D; Mon, 15 Dec 2025 18:39:07 +0700 (WIB)
+	id 60C6F447330B; Mon, 15 Dec 2025 18:39:07 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -180,24 +180,24 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
 	George Anthony Vernon <contact@gvernon.com>
-Subject: [PATCH 14/14] net: bridge: Describe @tunnel_hash member in net_bridge_vlan_group struct
-Date: Mon, 15 Dec 2025 18:39:02 +0700
-Message-ID: <20251215113903.46555-15-bagasdotme@gmail.com>
+Subject: [PATCH 13/14] drm/gpusvm: Fix drm_gpusvm_pages_valid_unlocked() kernel-doc comment
+Date: Mon, 15 Dec 2025 18:39:01 +0700
+Message-ID: <20251215113903.46555-14-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=895; i=bagasdotme@gmail.com; h=from:subject; bh=Q9RPGjCwe41o18D04IVKznpQEFsNHpWb2BdI9cEOKh8=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n0POW63OZ/vV5HO1nI0n8+fcu08SpWN+KD02YL721 ObASlnjjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAExESpiR4Y+mRyzDrR2tsxn8 /5W9nMso8ZF7PQPXv0v9ETpvN1g+X8rw39Gt4w5/EGPqsSVHKrba3jn4a/bV+2uL/9ts2fkotu6 9MRMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1611; i=bagasdotme@gmail.com; h=from:subject; bh=j4BXJJMKUhATWUahdKX0lx9i399WYlQDn9Ep3/iweMY=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n0OumS5gNW5/3GqYe0vV4BnvxdVlFyqnrRPWP9PpP u3FMcecjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAEykPJ/hF9Pft9/+BqzKa/W8 rdg9vSMz5a6N4PnTByKYzgTJnWZ/P5Hhn+aKvLS4vrtB9w7NNb77cZZgzZ2+T776O+w93L/xls2 5xAgA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 38F464000A
-X-Stat-Signature: 498figsbz65igdtouwjr67mssb95m3sb
+X-Rspamd-Queue-Id: EF07A4000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: mya8kpjwa6kon4heiwcsx4yaq95k18aw
 X-Rspam-User: 
-X-HE-Tag: 1765799325-499376
-X-HE-Meta: U2FsdGVkX19eLEE5oc243cyckdtxH1pArdN/lqwJNtubHPfU/WSZAqaYQoWE3/OhorJPZ7fM6GoZOlaBle9iUwuliM9voqGprf8hrn22vpca5jGQMn/9chXbNwY2yIruHdwUuECBW6eH7rw7f7s98eEEAITfZIqOvRsMctAdToXMZfgHWjB2JjyvUbKC9WWJO6WqsRN9RUxAx5OjI4aSn77oDJweZ4Vbenw8uQQcE3G17a70MqHvrf5VvF9X2QGOXBxmwslTm+kXns7P9sSvdDY7LrVqfrLVrj8+dv5H/b2Brm7pHtee6sodrKzV2vY34qp3nIQ+XeyoT1rVXmUcnHUybEza96hr7oI7scSzL9WRQFul8G/RmY42kVOwikmESUms++r5JfmN1iQRiNt071U2fuug9B99WE2739UzmHjqdgYZCJSesxSkfzFxQF6Mfq+wlARV6clnZVW7+b6D/tb9y9QNQB/zpfmf+rlgzCe4N3XzMb8NSMKAlcTcUphP0LEv3BBokektqf4EaY/b9QCEPHVsNfCZvrXvqyIpG/wOsp2dgR3wkRxq7K3yN3AQV4cQ8+UOHvH6vhRxShlmCRCgRwcB5lJgCihQywIujco+3u1gXCFMHIH4FXXBzHl31Tp/9BxvFUpmVTnAuEa88KsMCzhCMh0YtIUe0LrhmYLT6/4S6A6feCZVlyiR3mxyiBffjei+Fpz7RK/YLkfxPeJPcQiov7Xav1QiHKRFVSWCgSTh7Hh74aUblEAfN7B3oc2IXff4IL5pa0KJHZ4i4t36yjqkd7CAP0cuydL7YppAEoqPJoGR3C2Zjpqw7ZWB/QVlywRM5gutIPtcmUf9+o47EwKKzHPMzDulgrCms8uFDMtzXPj1rTc6peQPwqy6AjPyivC+2UPSXcBqVOq2zVS7CRZetEvc5kZfyYvWO0fQDZ8Gtp8Rm58MVTtds/hjDY+vdvYghLep5zjn/za
- Myxd/Cfh
- tsQVRP/Y0MIHMQQ4lgwgQ3rYSN+y5NaG6fWLOomuaZKLmBsZEQzGgsZQ+nNbROpxQR2tpa9y/khrcYBKnNxCL0goLhP1rUcuDZ89ce2z7hZjbXrEKveqphzOwdlSp5QScKR+5WhtfuZmI1H4S+WHNv+qQei5oFKU0mvMBnch6LF7OJAniSoFUi2hDCUMQDRxQ/dNLFP49DcSRQc4otb6wF4W6R4Oh4UPqJ4bcC7ZO1YIpPWT73du+6nMppMtrB9QY1wnnFOmIiMVM8sBF7DSMU+c3MviQbRkM2d6mc9/UIOpWezUFWOamY1+wbUg435z50dPbZIvhOYp9uQx+zU98hC4sfcIVqjYcdVpQkfnq72Vt95RO2nhfVXwLWBW2hqSpvCvoaqbVzTDBmtpZkNSxfW5NSskOpDYrx2Q83XBv5HflF0TKbjOzUK44TloRzMT1U1YUQEIjPalaqII=
+X-HE-Tag: 1765799325-145585
+X-HE-Meta: U2FsdGVkX18PsWa+3kFOoD2YguFBqsulPOKmy4GVCHmQe4DEe55o8Wbe9ojGJweMOqC9OkiipQJvGHtmeWTt05b36PPRt9mnyNrjyuNKxoC4FEso91/U2MKGKQBLDrSHJ5ibU6/kBp7upXGZk0Y0FCYX2N1psuiejHqmhEjVgL0IABG/weoL5XN2uBf0BC4blSZigw1+PGvJZJssRYtI4i56fuwq9hDAbvLd+ChJFg9D1hEHL/n2+uKjIewQuSzVFt6aPM8NROdGGLJqlBOVCatx1+IhOyneHwNYf7CqHdDBdvAqnkDgq7u/HfInUsQxS83H6VmY8n1oqR3vl+U/s9KBah5HNixUgfw1F45ZyjoNMd4CKiJvkUx4hAmCfiCX4plFOsvx0UhF6YbQajjmCsz3Ut4IYg5XiNwoEdfmPxT4eAnGnFTtIOeTVOFdANSMOI+cJC4lZbh0ktgOh9D6/YMReI3U7v61TUrOmZeL3lG9+zs8DqvCbht6btkLxVtW+t8Cy5rljHxkf3nOwM4rpRdwtMzjwjSJ6IdGjucx/eTTPmT/Rf2mctrm9Jkz03l1jy14VNLozBuMf+a5RUPqeKJoNYP5Aj3APClE+Kt9rHX3EFVx5FxnPe5aXdpXaEPM1ocmLXhRYx9EoBuMMEf0UEtdW0OZHpE8/BuKVcwOlsBX1Ts3NMkjHjPLFc0uWeHALJtEiWvwpPlEUhTFwMuTQlw6X3KSowHzHEOo9tiSkHoYtWnWPBwaxuhDogf/Ng7bb6QRzxZZaOZBmtPVYIpxQtgnDwEsXnZTjqnJXS1FGoQ3qS6NlJAFfDHuqL0Zk3nhes1fe3frNa9ZcvqqcSJyGhTaD6c+pW0wK0K5gb0h9kNWL3URyoeuVH8GjBSeOJwcvTY+66kx0GHcAsh67OloBVFKv/PNp05rMpCbHmYNSnSyBMJOazvBdUMWgHiRU+Kf7K2W5GymLdrJiaYxFLT
+ CZ4WY9ju
+ 4bFKK3QXVsUonZuWuPsXnwpQGzNsNu3ozCMkj0X3Jdu1/qde9PVj9RicPqVWlj5OuPg7ti2u673o5FxymlxWJMlWPif9zi5qZdMSC5fk3fxHtDM0q88ieGPAIfD7BZRFUiMU50JbjdroGpFHUBk46IHxjjm6LO5aa3sQ/qHGbbMxa3ikBF3K4dVgBtUwWxnasDukW7yZMO0q57cmUO2L+t62rUO0HbUlzl9QvjQ+phxkRcC3HRmd2QJDbllYc+rs4t2By723azLHcrZcXDnM/uD8M5BV+tMeNtfuerqbhWCjlm6UAuiTy+XSAXFvv70GOb38qm9rFtlTOex4YK4mN+KDk8BQkqT3kD3R8Dj4ZzK4JE0dmZnAKPnW8OC6Zsnfsx75BxkrBZwjCogYOlEyXV7OU4AH73S3WqxwqP2rOosnTLr/ldP9ZDysym917TzzZ4BdEOqGmAsp9/Z0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,30 +206,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sphinx reports kernel-doc warning:
+Commit 6364afd532bcab ("drm/gpusvm: refactor core API to use pages struct")
+renames drm_gpusvm_range_pages_valid_unlocked() to
+drm_gpusvm_pages_valid_unlocked(), but its kernel-doc comment gets
+stale, hence kernel-doc complains:
 
-WARNING: ./net/bridge/br_private.h:267 struct member 'tunnel_hash' not described in 'net_bridge_vlan_group'
+WARNING: ./drivers/gpu/drm/drm_gpusvm.c:1229 function parameter 'svm_pages' not described in 'drm_gpusvm_pages_valid_unlocked'
+WARNING: ./drivers/gpu/drm/drm_gpusvm.c:1229 expecting prototype for drm_gpusvm_range_pages_valid_unlocked(). Prototype was for drm_gpusvm_pages_valid_unlocked() instead
 
-Fix it by describing @tunnel_hash member.
+Fix them up.
 
-Fixes: efa5356b0d9753 ("bridge: per vlan dst_metadata netlink support")
+Fixes: 6364afd532bcab ("drm/gpusvm: refactor core API to use pages struct")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- net/bridge/br_private.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_gpusvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 7280c4e9305f36..bf441ac1c4d38a 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -247,6 +247,7 @@ struct net_bridge_vlan {
-  * struct net_bridge_vlan_group
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index 73e550c8ff8c98..fcfbe8c062bf6d 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -1216,9 +1216,9 @@ bool drm_gpusvm_range_pages_valid(struct drm_gpusvm *gpusvm,
+ EXPORT_SYMBOL_GPL(drm_gpusvm_range_pages_valid);
+ 
+ /**
+- * drm_gpusvm_range_pages_valid_unlocked() - GPU SVM range pages valid unlocked
++ * drm_gpusvm_pages_valid_unlocked() - GPU SVM range pages valid unlocked
+  * @gpusvm: Pointer to the GPU SVM structure
+- * @range: Pointer to the GPU SVM range structure
++ * @svm_pages: Pointer to the GPU SVM pages
   *
-  * @vlan_hash: VLAN entry rhashtable
-+ * @tunnel_hash: tunnel rhashtable
-  * @vlan_list: sorted VLAN entry list
-  * @num_vlans: number of total VLAN entries
-  * @pvid: PVID VLAN id
+  * This function determines if a GPU SVM range pages are valid. Expected be
+  * called without holding gpusvm->notifier_lock.
 -- 
 An old man doll... just what I always wanted! - Clara
 
