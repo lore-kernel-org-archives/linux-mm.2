@@ -4,158 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20BB8D5E14C
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 13:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5D5ED5E14E
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 13:25:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76E4A6B0005; Tue, 16 Dec 2025 08:23:34 -0500 (EST)
+	id 187FC6B0089; Tue, 16 Dec 2025 08:25:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71C1C6B0089; Tue, 16 Dec 2025 08:23:34 -0500 (EST)
+	id 131C46B008A; Tue, 16 Dec 2025 08:25:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D3016B008A; Tue, 16 Dec 2025 08:23:34 -0500 (EST)
+	id 05E706B008C; Tue, 16 Dec 2025 08:25:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7CC6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:23:34 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2C4BC0683
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 13:23:33 +0000 (UTC)
-X-FDA: 84225401106.07.834E906
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BD1AC40006
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 13:23:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hLaoBTti;
-	spf=pass (imf01.hostedemail.com: domain of elver@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E37C36B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:25:13 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D1D68B2EF
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 13:25:13 +0000 (UTC)
+X-FDA: 84225405306.27.FC748C2
+Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 485B0C0011
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 13:25:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZmXqtNke;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=438402146=epetron@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=438402146=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765891410;
+	s=arc-20220608; t=1765891511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uDxfhRBysj2yPZBzYVVRhpxcjKV0qpQrPWWhDK3SHYM=;
-	b=zQKhUhPcTvfxqSlYFO+NEQsgYK44qHczVlC3rceMFOeMVI+xsybFE/4PJCBN5xJIm+q9b8
-	Sji6q3RC1M+mTbjkgWBfv0xJdNqhYGJN/B/DruwaL5Kpe3Xrspwuo4MPX2vU2zL3PxcaOz
-	BwAT8eeNdE/5PCeZyNPmlXuSUJPlpxA=
+	bh=8Owz+SqmUbMxEza/nbiqSp1ZviUjX8HAPBLSYA5hAFI=;
+	b=lFXN/mR/1xgChkwpHvJa4R//UOSbseAJt+ZEDdRAm7Nh82Cj4MlMNY95H2xBKP+eoNLOP6
+	UiJTIKAewZ7dbsU9MTD+TU6NTPpDAAZvogkMMdpiKkE1zIzKtJv30ze+6NEAwWJAkIKJgS
+	MBwCjxk0YcM3Em5AEnLBfGZicjPjq+k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hLaoBTti;
-	spf=pass (imf01.hostedemail.com: domain of elver@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765891410; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZmXqtNke;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=438402146=epetron@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=438402146=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765891511; a=rsa-sha256;
 	cv=none;
-	b=j2/g8D84rD6+StvZn8j+9DKRcVnaqt6M2NTHO7e/vFrPBkS6fSgy7juLcWGxxDvZUUIACt
-	wToFIH+3hlfucfFk7qH+987IHv3b4q8T1t5aLS6b2+ntyMb3AlzjGn+B5kkoQ+wcgwaZyN
-	6EtDDFUQnn9dE14kUxnzzvMYBu/fp7Y=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47775fb6c56so36502705e9.1
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 05:23:30 -0800 (PST)
+	b=gYz0UyPb/huvcwUwfP0AOIm3u8D+NL+G6mrqlL+FkGULcu/a1d8gU7pfrVP8eK6KPK7eeL
+	XmiDtl2WvdDVGNvL/5gVQZokYk+2duhUYdfn9gsWdnvZikjIe4Czm5hgtUPuRYhEYwSe1L
+	mGbWIUaxi6hHqpfyqgGdbY9KId4u5EQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765891409; x=1766496209; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uDxfhRBysj2yPZBzYVVRhpxcjKV0qpQrPWWhDK3SHYM=;
-        b=hLaoBTtiWFPWKy3VzBudG+fV3jjAmgE1WrTLG2LhMnhZA61oQHEUqi1nXZTnKNxKPY
-         37ragYbylY89OxL5zivzd8C6vFpe/LggFuK2DKEez8TIPDVKCvGhrPC7DRu85d7Pwxl5
-         RUCD1sPDASA1BS2ys+ojnUu2Ob6awLfZ6XefhREquCTrgVQFnmFJSNeRXPYxy2ZKWGDi
-         OqUl0IlYpntHnZ1y4+wCDYJdA94HUWmgQBHjq9g4HA+b6y71abrcOAYhN1bA3xsNjOSs
-         tvuo8KZ0C0L0Yz6tyqMqwuA8702F5OIgr2BqCodYhs1pMVPEicJvNcoRWpVSgnN/jJ4w
-         63aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765891409; x=1766496209;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uDxfhRBysj2yPZBzYVVRhpxcjKV0qpQrPWWhDK3SHYM=;
-        b=XybNBR7v066wHIpO8tVMB/1ulYXyuV2IweP8KAjMera+wnEB/K/E9hZMh2Rl/9WTvu
-         TdPq4K6thiGlSJu5XBeJQscxTFGWPDkNMWy3adEpHjSb6fHJHjUpnQojf91H1jgZeujM
-         4316Il0nNTXwbDoLbz5WXz7Ns6wxmr2bM8jHTg5M7Tl1WLKvhHizmrHbAxvuhzM41+aK
-         MPpHEtmVB3FINbCnv16OMYjfmMGzmG68Ha69qXE6TkD9/MZZMX8i0KddPCQtIRlAUl5T
-         3tHZ1Jd1x+ZlmL9rG6O7VcwtQgalefbjbGCrg9xY0aYfSwYS253KivglvC/UA+bmvE3x
-         81xA==
-X-Forwarded-Encrypted: i=1; AJvYcCWn/vDs/SBqBbAjyNmXo5pcjF9LkKcik62CxzBReQukiFYpv2e+VkphLvdMaiIWFg5MAB2pzn4dMw==@kvack.org
-X-Gm-Message-State: AOJu0Yy1JaVp7eEW9itu54mJHZqYXr05xe8hGCk71OabFevGnaaqTDfc
-	rUALi6KvHbfj+Pr7jMpOW1FP9fufDv8cI2GbX4U/OrXrt1GmNvmLFGcZHUrIU/IS4A==
-X-Gm-Gg: AY/fxX7PUAoJJcgHgao18alnCdmAkDPzmdXRvQ/7JZVLSR+w2cAeGQZycVGLSHuN1hC
-	nwgcs8BAUO571MnuTFf4TWxzPPyl6GLgY1Vgj8gWCVJ5g6zONLm9FGfFEhRpodH7aC1sMGG8Ooa
-	m1YpACZjH44Wd2nIvCmsmlg9rtay7UEHog4Tak7pj8sffHZFq+/piZkp888NVlGH9BGGw3g54JZ
-	Ly7DXy0f6fWSC0wIpK58zHrM3FG9r8+9sbSElY8ffO0L6WYZNfXNSZyyNugB9cTogAGcMLvVgMb
-	ef49Hg39ZOpR2W/HnZ70yNFQGJuqFaWrBClmhTHcdemUuZStgrJ3aWznTtIXv+fm74W99D8b1n/
-	nHkVFqXiiO4oey3munwyu0TaQlB8nx+1nmkIwQEkCkkxzJOE7HiOGjXnjmFJffjpNH0WwIq0HQx
-	USLD6vppnkSm032/iZ7QksIfXxAWAbepRLDLKlNFTD3WChSoAq
-X-Google-Smtp-Source: AGHT+IHeQgMekTiUSXYyDxvkGceEMaJToW+cfsdKtACjSuXcP89Hj1YmnWwqaTNfU+el5KGHlOYfZQ==
-X-Received: by 2002:a05:600c:4f90:b0:477:6d96:b3e5 with SMTP id 5b1f17b1804b1-47a8f8ab02bmr133331835e9.7.1765891408469;
-        Tue, 16 Dec 2025 05:23:28 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:ea4c:b2a8:24a4:9ce9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bd8f86b83sm10764215e9.2.2025.12.16.05.23.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 05:23:27 -0800 (PST)
-Date: Tue, 16 Dec 2025 14:23:19 +0100
-From: Marco Elver <elver@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
- analysis
-Message-ID: <aUFdRzx1dxRx1Uqa@elver.google.com>
-References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
- <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
- <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
- <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
- <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
- <aUAPbFJSv0alh_ix@elver.google.com>
- <20251216123211.GT3707837@noisy.programming.kicks-ass.net>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1765891511; x=1797427511;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8Owz+SqmUbMxEza/nbiqSp1ZviUjX8HAPBLSYA5hAFI=;
+  b=ZmXqtNkenElHjiZDdFAT1yRUM7Ts0nBCJJHtNVt1oaPlNnlPGYynh3UC
+   zeJKObu4B75jSMvyd7+s1ZOSJKguS5pBFzVus3BGmtkPnZCChJXMUbntH
+   ZHwA8hQydOqj8LFO2WokSCbR1zR5OngS7pku6P71HeeWlghrovBO+Tin2
+   //LOWQb9Gh2ewomk1hQ8Q7Bk8Pirdd54m1BIUlYcqo3fOKFELFtj/zB9Q
+   0gYSW2khaCAjOfX5E3WlBTWaYacfVIYGeKnKI8oewVQU0iWoecljrgL2i
+   4ggnWoCN2uNWO406w0LGh8nHmNK79BUPGygyzcy7bFisbJV07bg5BwJ7n
+   w==;
+X-CSE-ConnectionGUID: K5ndT0gFQmeqj3A9lSSyfQ==
+X-CSE-MsgGUID: 8SweK6QCRJ6oI+XRhjCbsA==
+X-IronPort-AV: E=Sophos;i="6.21,153,1763424000"; 
+   d="scan'208";a="9177461"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 13:25:07 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:17082]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.145:2525] with esmtp (Farcaster)
+ id 8dfd8098-be01-4286-baba-bb6b63f882de; Tue, 16 Dec 2025 13:25:07 +0000 (UTC)
+X-Farcaster-Flow-ID: 8dfd8098-be01-4286-baba-bb6b63f882de
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Tue, 16 Dec 2025 13:25:00 +0000
+Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
+ (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Tue, 16 Dec 2025
+ 13:24:58 +0000
+Date: Tue, 16 Dec 2025 13:24:55 +0000
+From: Evangelos Petrongonas <epetron@amazon.de>
+To: Pratyush Yadav <pratyush@kernel.org>
+CC: Arnd Bergmann <arnd@arndb.de>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>, Jason Miu <jasonmiu@google.com>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <kexec@lists.infradead.org>
+Subject: Re: [RFC PATCH] liveupdate: list all file handler versions in
+ vmlinux section
+Message-ID: <aUFdp_fsGCNrFf76@dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com>
+References: <20251211042624.175517-1-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20251216123211.GT3707837@noisy.programming.kicks-ass.net>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Stat-Signature: 9x4caiwyfjhe1a3u8nox73a3xcdobajx
+In-Reply-To: <20251211042624.175517-1-pratyush@kernel.org>
+X-Originating-IP: [10.253.109.105]
+X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Rspamd-Server: rspam02
+X-Stat-Signature: e3idce3z3f3g8b5hs8tz6n7jeyrwos5b
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BD1AC40006
-X-HE-Tag: 1765891410-755151
-X-HE-Meta: U2FsdGVkX199egvN2uz3k5VPT9skL/L/T7/rkTBh2+jRbwPgwo411+dOUCuQRgE5He78ljbCaIlleQCpzYs3GFo3VoFgt0s33TdI4SFe0FtO4XmqNt2F419+MFWE08Gs/ByAnxJ5aUpspy8f8Nagso9S6kYf/ab8SGyncM3tFDTOPgLBwA9SMTCBoZewD3YsVT5QY/8lY9ZSX9puYJdyLRmlGjGh59DZgqaOgW3hhkQI/ZmRciZ5A75XJgQugqoQ4R3HdzNxf8rObX91GS5aAwD7AMoKjXA7cwh3zOuqnchGBAmgH9ieavzROtrGZFKQUReXMFhIFOx1yt9KDC/RkIf0AAPKjSUxnBmi0KhLEBUoLD6EnKpTKtti5KKm6TWl5khgtEJuxqLuexIAE/Fbg5oJ/3F3LkZiz1Ci9XmC8mO6//X2Eio8EDP37xbrl74j0yYDPGE5uGx4TSgoh3PT+Jp8Bs4YPYGOtdAm8yEOMfCg5xYrLepNk18nuuMjIbuoE7any6D+6TuZVwve0OZb03BHGMtAPCimkJzH1MgfTx1c6bc+E/yLgRu0nNwtPVU8erWag28ofDV2eOFcC3B1FeEOqGdv1+yYcttvLLP0rQrXwXFYVjCABH63GdovaFvI10WUt4zK2un1ooHTk0I1X2BmXc+xzpWrDUCaol/nICwJX8SjoiJE+kN/euZV+IX1eyoLpAZx0lr3V0TkOBspCNknYu1HylkRXlNl13Cu6qtVJkyy4DkiOSnco+lXCxHfJyOdBrQQp56DuTY3OGt+d9/V9fiLn3goSKNOb76Vlxsyiw/RttglvKppWxkyeGOrYDCZZGos99DmMuhQ9BwX4nTYU08yCtKF97NPN/LHOnQiOXtlNGlfgu8ojCpRZPk5l96o4p2MKMeniNZm+RoNyiQJSbRF5J1Q9utr3HA+ry3VcRn5u98m5Tf3ib2cRrXrxfIzl6mlPtov5NQmk0w
- Ldt716GR
- ysY3sVseodZ21gXPGvMSJRQwntwtbmJdfNc8AqFxgTFx9RpYlj7tnZJaf5M/LLS5t18jY98sm0tfxucV6IYJnF2kDPpEkSnZeI2lN5M3qC21DSF7+sjks2/yDn7WnkcxPUnF02G4W99MefqrhUDM6t+CXu1RF577Wt+adsSZDBMt/W84mlEK6e4IKIESAR70DsCwreOiswldmm2Cgyo93RtWG5SvPMLYmXxe/HuK7HAYZS05kvGcthuEMabHBs2d6sUg3i/iH+qBO/8yiUHVqK29Wrc3yZPkKkXUp40DsXaO32376/IMPUl9KxPmZwCbhpLR/eTt+F11yhjYVLuwwy4tNfBcZV5RGqZ1M79htZJl+XAJrsh+IZvLywuewrSM1Rsx4NIGO+8uirQk4ROuUoV8dfkpBIa2hoo0t3ataqmPRwCtmrUsAg41lUzophRGshZ04ZDucSWGjrkvYAtI4jhshFduiBxU6guE9H/hfa07z/yADuU9RltmYVQ==
+X-Rspamd-Queue-Id: 485B0C0011
+X-HE-Tag: 1765891511-858210
+X-HE-Meta: U2FsdGVkX19dYqwfpFXcLSKRiC/cPaaS6aA1OYbLhotqWu6mMe4fx4rhUj2B36X3YMP82/ifpqdv0+6tAHQrd+qbkDO5397WbqE25bCmYm6rIPZu0i5gpeGRPUOCYGPJ+cLVI9+WjrIQ0gfEyJqiZrQNbUZ1+anDc01W4IjxHGtatF7m1GV0JpWrtbrl/SazLThdEgF8qSz2peplh3Y0c6brhB4hrxYn7EtXv3O/c6+h6VEDMZIxURC47X0X+o7RRmy/lBwep2ZT6OYYLm4VeSqb0KxZ3BFk6lXl2nZZVudnzLPgL/A3bRliC3ItuCRN1Dwn327UOc+Tg0xJxXsA4lTuElBX4QDmu3S+rE9qqbw5WBiYAw0GwOhHx62W7anNf+fzQUY5h07o+jtAMjYyjknX79nt4pM6DPJ34l9M44Sq0xNPqu32WKKwoG6NJPuuppYu0f+27H/TR7vJwcBoTDrY8gJ+0kUsInTQ7XIgS5kVn6MHuu3sWvIrFyzp8IS2YZL5XUQQkRKTOcVcVy0VP2f38FZQ4QAOk+VfTP8wawgtACwMsYi/4RUmq3Yl+fKJntf7SWjzFkC44at1obyp57GW8u09dj+SJ4datzK7Op2Af5/hR5/TEKgbDWLXEyaFlepIQXsojJbMC8kwSqTx0pu5bY80+5KTTahW13umKnhg/owB55BU6oC/ASUM5IQ94FOFlgvFOPoEntUiaJ0D0Msr4BHXimhgSWxl5yeCVvlpLtZVdgfQGFEW1twWoDvdCX24+dikIRsP0l1bXcoy1yxIDg1a4gofV7BWEZjmvO/v7ZoSZG22hXuWNJTPdQYTRciUMZXANHNbKTbPaSnWc1WNs65M7uVHS+ROPbT/3FbsKZC2Xt88yljSjQz/9VERMeSbYAxJL/IsAhv6rofS4OgAN9Z3e3A9S5f52u5T2sA7adZXijDhRDAdwy2r9mm73E3XG8nZYm/xfGZt3au
+ 30ODR8rl
+ qNgLlIyLLnNo61LcD9C1QAfR5r66rs2ywfuDFMD3GAgfR98HrTuEPprogIZQb9bAH5LpwN8CvVd/Vlh6fHDI4a6sNp/cq01qyxRtSNdK6nzOMi8+xKiVgCaYoFDY95e0YeyESWFQVfQ9xDxbhQ0/fQrHcs6RR4daIYUVISP9Fc/GyLX0gHKlgx2ij6xxV72ZH6EZ8XE+k1RQe0eWWVJhtF581oz7bKOQKoVeoQrNNg+6b81jfsnCe17TA3exDINa3ok4OODTCgf2QvXfkOhhUjZj5pPJn1OfIGzUV37IIe88sBXJMUku9CLXSvbWByyIgwwGPSSL1dw5ZeYnNZcBuHNoZV8o2HJlZ75fwgTy02EeJeGfoTCt9EUzZ/6uPsKL5eVhS6MsNFylG0PTAZiSmVVJWMN/mHSjUFdprlAP2DeaBm9XF6C052zg+3qa63a6pJ102nOZD5P13zpDYw7z48eMUAuxNZD658S60JJ+lOcrXQUX2r17gkhzxcm+HY1vfORcSkcArM3gHQteGjiGlebpGEA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,78 +117,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 01:32PM +0100, Peter Zijlstra wrote:
-> On Mon, Dec 15, 2025 at 02:38:52PM +0100, Marco Elver wrote:
+On Thu, Dec 11, 2025 at 01:26:22PM +0900 Pratyush Yadav wrote:
+> As live update evolves, there will be a need to update the serialization
+> formats for the different file types. This could be for adding new
+> features, for supporting a change in behaviour, or to fix bugs.
 > 
-> > Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
-> > abstraction. For that one I was able to make it work like I thought we
-> > could (below). Some awkwardness is required to make it work in
-> > for-loops, which only let you define variables with the same type.
+> If the current kernel does not understand the same set of versions as
+> the next kernel, live update will inevitably fail. The next kernel will
+> be unable to understand the handed over data and will be unable to
+> restore memory, devices, IOMMU page tables, etc.
 > 
-> > 
-> > diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-> > index b5563dc83aba..5162962b4b26 100644
-> > --- a/include/linux/seqlock.h
-> > +++ b/include/linux/seqlock.h
-> > @@ -1249,6 +1249,7 @@ struct ss_tmp {
-> >  };
-> >  
-> >  static __always_inline void __scoped_seqlock_cleanup(struct ss_tmp *sst)
-> > +	__no_context_analysis
-> >  {
-> >  	if (sst->lock)
-> >  		spin_unlock(sst->lock);
-> > @@ -1278,6 +1279,7 @@ extern void __scoped_seqlock_bug(void);
-> >  
-> >  static __always_inline void
-> >  __scoped_seqlock_next(struct ss_tmp *sst, seqlock_t *lock, enum ss_state target)
-> > +	__no_context_analysis
-> >  {
-> >  	switch (sst->state) {
-> >  	case ss_done:
-> > @@ -1320,9 +1322,18 @@ __scoped_seqlock_next(struct ss_tmp *sst, seqlock_t *lock, enum ss_state target)
-> >  	}
-> >  }
-> >  
-> > +/*
-> > + * Context analysis helper to release seqlock at the end of the for-scope; the
-> > + * alias analysis of the compiler will recognize that the pointer @s is is an
-> > + * alias to @_seqlock passed to read_seqbegin(_seqlock) below.
-> > + */
-> > +static __always_inline void __scoped_seqlock_cleanup_ctx(struct ss_tmp **s)
-> > +	__releases_shared(*((seqlock_t **)s)) __no_context_analysis {}
-> > +
-> >  #define __scoped_seqlock_read(_seqlock, _target, _s)			\
-> >  	for (struct ss_tmp _s __cleanup(__scoped_seqlock_cleanup) =	\
-> > -	     { .state = ss_lockless, .data = read_seqbegin(_seqlock) };	\
-> > +	     { .state = ss_lockless, .data = read_seqbegin(_seqlock) }, \
-> > +	     *__UNIQUE_ID(ctx) __cleanup(__scoped_seqlock_cleanup_ctx) = (struct ss_tmp *)_seqlock; \
-> >  	     _s.state != ss_done;					\
-> >  	     __scoped_seqlock_next(&_s, _seqlock, _target))
-> >  
+> List the set of versions the kernel understands in a section in vmlinux.
+> This can then be used by userspace tooling to make sure the set of file
+> descriptors it uses have the same version between both kernels. If there
+> is a mismatch, the tooling can catch this early and abort live update
+> before it is too late.
 > 
-> I am ever so confused.. where is the __acquire_shared(), in read_seqbegin() ?
+> The versions are listed in a section called ".liveupdate_versions". The
+> section has a header that contains a magic number and the version of the
+> data format. The list of version strings directly follow this header.
+> Only the version strings are listed, and it is up to userspace to map
+> them to file descriptor types.
+> 
+> The format of the section has the same ABI rules as the rest of LUO ABI.
+> 
+> Introduce a LIVEUPDATE_FILE_HANDLER macro that makes it easy to define a
+> file handler while also adding its version string to the right section.
+> 
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+> ---
+> 
+> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> index e04d56a5332e..a474c9529a5f 100644
+> --- a/include/asm-generic/vmlinux.lds.h
+> +++ b/include/asm-generic/vmlinux.lds.h
+> @@ -342,6 +342,17 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+>  #define THERMAL_TABLE(name)
+>  #endif
+>  
+> +#ifdef CONFIG_LIVEUPDATE
+> +#define LIVEUPDATE_VERSIONS						\
+> +	. = ALIGN(8);							\
+> +	.liveupdate_versions : AT(ADDR(.liveupdate_versions) - LOAD_OFFSET) {	\
+> +		KEEP(*(.liveupdate_sec_hdr))				\
+> +		KEEP(*(.liveupdate_versions))				\
+> +	}
+> +#else
+> +#define LIVEUPDATE_VERSIONS
+> +#endif
+> +
+>  #define KERNEL_DTB()							\
+>  	STRUCT_ALIGN();							\
+>  	__dtb_start = .;						\
+> @@ -544,6 +555,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+>  	RO_EXCEPTION_TABLE						\
+>  	NOTES								\
+>  	BTF								\
+> +	LIVEUPDATE_VERSIONS						\
+>  									\
+>  	. = ALIGN((align));						\
+>  	__end_rodata = .;
+> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> index 4a1cc6a5f3f8..57ef75695f62 100644
+> --- a/include/linux/kho/abi/luo.h
+> +++ b/include/linux/kho/abi/luo.h
+> @@ -244,4 +244,38 @@ struct luo_flb_ser {
+>  #define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
+>  #endif
+>  
+> +#define LIVEUPDATE_VER_HDR_MAGIC 0x4c565550 /* 'LVUP' */
+> +#define LIVEUPDATE_VER_HDR_VER   1
+> +
+> +/**
+> + * struct liveupdate_ver_hdr - Header of vmlinux section with version lists
+> + * @magic:     Magic number.
+> + * @version:   Version of the header format.
+> + *
+> + * This struct is the header for the vmlinux section ".liveupdate_versions". The
+> + * section contains the list of file handler versions that the kernel can
+> + * support.
+> + */
+> +struct liveupdate_ver_hdr {
+> +	u32 magic;
+> +	u32 version;
+> +};
 
-Ah this is just a diff on top of this v4 series. The read_seqbegin()
-already had it:
+I believe we are going to have two main classes of LUO objects that are
+going to participate in Liveupdates, when it comes to their criticality
 
-	static inline unsigned read_seqbegin(const seqlock_t *sl)
-		__acquires_shared(sl) __no_context_analysis
-	{
+- Core/Mandatory components. Theese components are necessary for the
+kexec to be succesfull. Think components like IOMMU page tables, as
+you have mentioned.
 
-> Also, why do we need this second variable with cleanup; can't the
-> existing __scoped_seqlock_cleanup() get the __releases_shared()
-> attribute?
+- Acceleration/Optional Components. As we strive to minimise the blackout
+time, we will trying to persist more and more state across kexec, that
+are currently being initialised from scratch during boot. Thing of
+certain optimisation like PCI onboarding (at least parts of it)
+and the PCI Config Space Cache. If theese components are incompatible
+between versions, we might still want to proceed, with the LU, at the
+cost of increased blackout time.
 
-The existing __scoped_seqlock_cleanup() receives &_s (struct ss_tmp *),
-and we can't refer to the _seqlock from __scoped_seqlock_cleanup(). Even
-if I create a member seqlock_t* ss_tmp::seqlock and initialize it with
-_seqlock, the compiler can't track that the member would be an alias of
-_seqlock. The function __scoped_seqlock_next() does receive _seqlock to
-effectively release it executes for every loop, so there'd be a "lock
-imbalance" in the compiler's eyes.
+I believe it will be quite usefull to be able to have the ability
+to differentiate between the two.
 
-So having the direct alias (even if we cast it to make it work in the
-single-statement multi-definition, the compiler doesn't care) is
-required for it to work.
+> +
+> +/**
+> + * struct liveupdate_ver_table - Table of file handler versions that the kernel
+> + * can support.
+> + *
+> + * @hdr:        Table header.
+> + * @versions:   List of versions the kernel supports. The strings ate
+> + *              NUL-terminated, but to keep the format simpler always take up
+> + *              LIVEUPDATE_HNDL_COMPAT_LENGTH bytes.
+> + *
+> + * The list of versions immediately follows the header. The number of versions
+> + * are determined by section length.
+> + */
+> +struct liveupdate_ver_table {
+> +	struct liveupdate_ver_hdr hdr;
+> +	char versions[][LIVEUPDATE_HNDL_COMPAT_LENGTH];
+> +};
+> +
+> -- 
+> 2.43.0
+>
+
+Kind Regards,
+Evangelos
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
