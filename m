@@ -4,134 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C09CD5C0D1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9EC1D5C0F2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:49:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E9AE6B0005; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
+	id F22816B008A; Tue, 16 Dec 2025 03:49:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 895A16B0098; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
+	id ECFDB6B008C; Tue, 16 Dec 2025 03:49:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 769A36B00AA; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
+	id DD0106B0092; Tue, 16 Dec 2025 03:49:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6153A6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D8B1135EAD
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:15:42 +0000 (UTC)
-X-FDA: 84224625324.13.A0639B8
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AD8031A0003
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:15:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HrHFjfx8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RKRw3307;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1iKonsRc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XuuYJdpK;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8DFE6B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:49:31 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4B567B9C33
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:49:31 +0000 (UTC)
+X-FDA: 84224710542.24.1FF9717
+Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 422BFA0006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:49:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=EZyfvSVs;
+	dmarc=pass (policy=quarantine) header.from=amazon.de;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=438402146=epetron@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=438402146=epetron@amazon.de"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765874969; a=rsa-sha256;
+	cv=none;
+	b=zvLKFwKkJx1yKx9CEtKmOtOkUByEeMT31Y9I8cAf1Wb/QJHji604+/BEtu5RUVpeWHYO3e
+	oHRp+0/VRGUL3qt+e4Z4jKu5obR7k+3ZazeQCgJ5IPZ3z/gi/sCAYhqpsF2kQAHiI3rj93
+	m4nzq3its6fxx65hpLN8PUS2kQUV9K4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=EZyfvSVs;
+	dmarc=pass (policy=quarantine) header.from=amazon.de;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=438402146=epetron@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=438402146=epetron@amazon.de"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765872940;
+	s=arc-20220608; t=1765874969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
-	b=4W83ec0/IHC51e3hSy7xa90D9o/M/NQ2SGcb6AM7PAgt29UhxMKzG9ISQ9gvsbxmWVyQoz
-	gAxT0Obt8gT3Q53m3x2uvtySUB80RnCDMWKVGniI1bEjvUhCHjb6hKy2iKg22GF5/sYjcj
-	NYwGmvMPlkX585OmiECPsaPqCq9f6Xo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HrHFjfx8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RKRw3307;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1iKonsRc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XuuYJdpK;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765872940; a=rsa-sha256;
-	cv=none;
-	b=wR3HgXvsKOzddICQn4BQKNI/WA4Nj16k+p0oFMC5hi0Z2+FacOFHBojVlXdyr5C/ElLgKt
-	KB6kNOcQC2LaORt+SpR1pBn858vljlH76oOIsPz12fEADHaZqEW9cWhD5bUJgxTPOejeqB
-	v/O2/HuL0qjVCOyQGOLQBeo6mUklEB8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5800A33691;
-	Tue, 16 Dec 2025 08:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765872937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
-	b=HrHFjfx8R1cIB/gvYTU71BiMzUSEivJxQphHzywX9PvYjtoUT/fYTd6xp4o8FVTuPX1fAM
-	r24fcXDqEPGqAxcSYzncotwxUJ0W9WxWm0QNGhosw+Y669zqrLKW035WRniW1OezGeqmpq
-	7snkfO8WjvVwXnNr0Aac8+NFG9uL8q0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765872937;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
-	b=RKRw3307JYGZ/apkRWJ1/6aTsLexDKWXeKGWtqOy72hpBGNxygy4g++7nViT+BGnFUG4UZ
-	UaC6Nm5ScNswIwBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765872936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
-	b=1iKonsRczx3XtDGyhOr9vyl8IgQmMqkt0To8Kwj6C9eNZFybb/Beqz/ohTGZZ7x8c5HnNi
-	A1DQfbAVXASkQXXygy9QxNuyS+XlkZ0bt1r4AZ40VFuQT04toZ71XpYODfnJRaBAAnTYIK
-	jDnsk/maBWoyQD/Jz4Y3LNOQ50ja+3o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765872936;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
-	b=XuuYJdpKR7p7r3c1LDxO0ui4AzXL6Hze4yx4Ijzja9G/Tnhma1yy34PwbWR6hJdk4Td/ww
-	Gg6aaHVwBrfn5vAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4BB093EA63;
-	Tue, 16 Dec 2025 08:15:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BaqCEigVQWl3dgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 16 Dec 2025 08:15:36 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E54E2A09E1; Tue, 16 Dec 2025 09:15:35 +0100 (CET)
-Date: Tue, 16 Dec 2025 09:15:35 +0100
-From: Jan Kara <jack@suse.cz>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	John Ogness <john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hams@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] sysctl: Remove unused ctl_table forward declarations
-Message-ID: <gkuyseuq2v4y2dl5niufwx2egwrk5a6nhrn7k5vspaorfz5jny@q5mz763kegl5>
-References: <20251215-jag-sysctl_fw_decl-v1-1-2a9af78448f8@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=t9GVMSE5QYBAq5Na9iKzheEhYI2L9XOqJpGx0SGLtLw=;
+	b=eLARyNeeh/6cFUPRZiOWx3MX50ibHT6tQf/EhNZ9MAA/BGdget3DDiVOfqS3ViLB2QEn6X
+	PXat+U6RNWyziP3CmJLNAwEiW0u1nt3a9yiPTTKGremd6iv0lWllrfOwW43eaBD81GqZB8
+	Jsw5FpMt4SKBO4xzpOqKzbQV3m3MdVU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1765874969; x=1797410969;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=t9GVMSE5QYBAq5Na9iKzheEhYI2L9XOqJpGx0SGLtLw=;
+  b=EZyfvSVsG3o6Gqdyp/u/PiiPbis3WnizIVyXqZGrNHR43m7QCyUVJyGm
+   iyjpbTjM/0x1sFCpvFmE7eFzLMOMj5fA8QDRCy1+TthbBIM+WdDQhc9LU
+   iDif372MsJSaepI4CjgDYjnXjNGvVSiUIT52PTrsddE75pVag0Zl2uhza
+   l39SSM2Ixzslc/TJbk+ehBLJNs9VPjQ7Ne/nY2+SyKYl5nZIODAxFiNen
+   rA+9Ro8mwwGnmuGCO54plrB50ACSgydnOmaIdkk/IJY3dx2o1XZvk3LJQ
+   TBoGnpoeEdb02tRt+to3XXEXVVUP2gYpXdHGiJ9lxCrGn7LproGj2jx7k
+   A==;
+X-CSE-ConnectionGUID: AB8P62TDTxCVBKRB7W9YBA==
+X-CSE-MsgGUID: giJnBZetQTewkmJV4jC3yw==
+X-IronPort-AV: E=Sophos;i="6.21,152,1763424000"; 
+   d="scan'208";a="9165717"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 08:49:25 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:20952]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.145:2525] with esmtp (Farcaster)
+ id e256b7ba-6e38-433a-93d4-84c8c1e4bf24; Tue, 16 Dec 2025 08:49:25 +0000 (UTC)
+X-Farcaster-Flow-ID: e256b7ba-6e38-433a-93d4-84c8c1e4bf24
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Tue, 16 Dec 2025 08:49:25 +0000
+Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
+ (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Tue, 16 Dec 2025
+ 08:49:23 +0000
+From: Evangelos Petrongonas <epetron@amazon.de>
+To: Mike Rapoport <rppt@kernel.org>
+CC: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Alexander
+ Graf" <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, Jason Miu
+	<jasonmiu@google.com>, <linux-kernel@vger.kernel.org>,
+	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
+	<nh-open-source@amazon.com>
+Subject: [PATCH] kho: add support for deferred struct page init
+Date: Tue, 16 Dec 2025 08:49:12 +0000
+Message-ID: <20251216084913.86342-1-epetron@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215-jag-sysctl_fw_decl-v1-1-2a9af78448f8@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: ubppzreqyf15bd3k53i6chq7g89mjfbo
+X-Originating-IP: [10.253.109.105]
+X-ClientProxiedBy: EX19D042UWB002.ant.amazon.com (10.13.139.175) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 422BFA0006
+X-Stat-Signature: jbe651pzk6y914x6gyc5oaoxscqjuz4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AD8031A0003
-X-HE-Tag: 1765872939-529077
-X-HE-Meta: U2FsdGVkX188W2psoXydPd2U94FV568uRMCUOtz2hyr2nCJHodbnVVvEqrIg3sDkdg0u6cBKKr2qws911hRZoKHyhIWA0bIoBRTMPhJjCj2h5jNj44u4WONTV/89Yyu90KFpBOUNkiXtgiM2/Lsa8UT2tZfjEHbpqE65YVeFFxsijtUfCqCzXsZPEjwdej6TlJ6DCIeyx011cRNSC6NqufwiBkUcw7td2gd3jeor9gBAWtJT68C6kWpH2CK09IhFGFHJsS1NwKc1TATmzlx3/BK4OioA/6QwyjZyIwoG/7YwIo8HXBy2c+w6mttouIZkNyVpLN7evuAKhq3Rhp2VKo4cEjy7mQD1q8BK6no5g94in+Oh7HpHDmV/Q9J1pqaHU4qxkoyRQaDsaNbC7/i4zCelW4RrXCcNS6rsEepqetOdwncVpH9PE+riZyydgmrcu8OAtYf8AzavhPB8cy5UjhHRbR+obQ3Q5/Zc4pKFk/bDjOIWG7NvhwyFw3Pru1lVO66zOKdDaaHImvSB70dA0dgHPLMLQnxt7ld8tlnAGSJ/uE1AZ58OD254AneEM+Zuuo4WhVh5i9kPMa4IXlLuxdnqtox4nK8De94KO7QMgNvPKqcKJBIBpD+zQt6z9qx6k9ngBa7jRV9U1snzoY8ER4f3zMw922j5Kl7uW4WfNo8c9j0PMXqmuBIhYlIsMMqR/GPAYmPGrxLyT7qDWykk/4t/wOrRjvLtjd7WRzs+C0mokUMAtSffn/D27pacfOACvaHtmCKU08jhcQLA8HBh43wK0ATUv9T7TGLiMcSYKIMZNz2+x/b6NNrKrDdw6OBHmJBWn9MLlRVU6tHXVlsy+XEZFgMckCdNGusFIfp8liJ6WIUP2UmLakZQk4Isq7QQmTfJV9/pjiuwahbxFhdRdorFHXVmIwZVxvWI8Ekegu8o13nYnvVssHqPM1HT4Am5g1DsiMpRKUboy+B/gHt
- iIzaQJSQ
- USHwe9SRFmQOHP2h1N68fyG5o58ODEw98HINhrSzvg2Sx7worzM0qf0DKqDLmaecqJG+A3n3I5xvzz8iK2PbZ8SDfw9ElIPdf5Zq71Tq+KQBH1DQAcO8nxZG+oicvrI6Ndc+FWBNLohvwppjojE885zojdFPkrYidh621Oe5RNsw211H6vFhbFxsipFM5doxp6YtvK48I1b3oepqzP78q3D6cjX4HpkbE9ZiMwVb4IrmNJzooeUW9NfkbB7Efe36Bf4VRa4BVMyrgwUE+zMJ8FkrjGmSJuwIict+T+cmoPlSFsmZLv0+PwQv5L2xfW5vwPnbgyafdvGASih1EAC+O5PLu2niwl4maI/sVTxVMWlHU9rm+jr4tb1qjzLaa28tCgWMsPoyLoiUyRbaxvOrM/gejFB8QT9wM9NvvOMKO9+iennxSMRGZDyGLwk9rPQ7k80G6
+X-HE-Tag: 1765874969-793451
+X-HE-Meta: U2FsdGVkX1+kmMtKFVv7JqPojc2VnBmG4GdgViQkqfhCq5cP4RGFt6gULhSaSy1AtUvgedkQvkWb7n4hOv88MfrdDOWUMoGk7tBpduAQhUHUef0Q6cbPdNxvp9TvCpo+z0VT9POgc5aQdUXt7yGh1YDkSQHhcJMax95+iDE33lkfdYzwrv5UHFHXdkGBSJoblWxugEU8rhNqsr7ga3S7UTRPIuSUHRiz3FEdYt5/tPi2GX9TaMvM9V3xnKXvJ5m3vH43K9t/BsxpaR36t+wbqISlVwBYzwQwSaE3w+z9mexcqrKJFnwyLDOZ6LW9M85l65B57fTenLJYOrWuIi6Vd6Jbwr1SpOMoQWg5b6AU4xbuDq+SzkwdBtlG6RiMhibY4XsEBQFPrKxpoSf/Efarj0ktXuNofz+0JI2kQJ2BmN0G5ax++tMdssVpHcJQiIy5RPlv1BdUNTLCCqTS8nLKTmvGWWkGbLl5K68O0BEdOqa0Mcx/WMrmBZqcwSX1H3yiIak1E6LnZsXqr25TMLVfa85BRxWIQzEpNFQqfqqETC1KVZTACMeR0GJvkF3/gTAPlvzUzWoyz2X1vyPcFg/U5h9bylLbP81OXBuJNztZRr+Y4gBPR9OZLgviHniXMM8FjNDIJpXX0lJNgQxi+EL0hfILAf0b5C00ZXebAlLT0t71qT6kPGiyk2VhnPXZKO6WINTHbpYANosKCZfVFyKEZiJ39k5rw6xgZJ0MV7xsn+TTY1AnCx02TSDLMuh3/S2H0yzNerfFEjMsMXztwoC9MWmM5G2qZtlOS8GBp8ISVray9MDzlkdQ91xJ2V4r+Jy5W69XqfOlqtWFNivaM54NEDjJS4t0EBxupNMPnbevnR1FdlaQI4P/rWCOp1HDilD4e6xkd/H0stnWVfpO6THCiX1E5MfyiYM1ttm6UY8t5AjmX87pjUipK/Vl92mz1M/3IWDTFFlpPpKH5LzS36N
+ vOx/Pv+u
+ aeFBKtCyxH6MoP1DStM1QZlw2xMuE6sJODr4FL6B7fkCBxL2GdnxQnY3kfEAuksl1zhHRXd/rSZm6YHWMq3ZtUEsUgVo4/2sBlx7KyzXfY+52InQ+lEYKMpOLWjmfO8vSVDilfQ2Vg34gM6wbcmvCqMCmiKPMxcTOGeWsI11kIb2ugLpCVpcRfq0Syl4b3otg20r8tVoR0aOkQKLUblN0ll049h0iyCaegh7Q2V4KFp2cq8Rq6+JiXILPpCzd5FlThKnV24VVcTTwrdMUjbZKiHXYMAXHJfp5NXwtzpyZO6ixxlYhNw7eSSCnau2rPjcmGP5Tvxr4228DRYZkNca/YwI2buWIy6WuTSo1TM0m1tnRngulW/d4KzdhhiNhbtsexwG46MqlHnG8LIQCmQxWuP5LqVKV6d0qxVlx6khNFCOQ1vPTUOkCUBYKM5P6Jv8UmKencB/0NBa6Thbe+bcgbUBTlwxX+qqnVwBLWquYc0O1atIMjZRDoY8zU5t+O2xRDPKn7NT1PIBFPUw0BzppE3uEN0/3d8dPvkNE0U0/cxMbeiFqv0nVNVaTk/k627x3/i9jiH5lIyZ+8fyMf/r0hdhFx/P3d9TmRMje
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,92 +114,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 15-12-25 16:25:19, Joel Granados wrote:
-> Remove superfluous forward declarations of ctl_table from header files
-> where they are no longer needed. These declarations were left behind
-> after sysctl code refactoring and cleanup.
-> 
-> Signed-off-by: Joel Granados <joel.granados@kernel.org>
+When `CONFIG_DEFERRED_STRUCT_PAGE_INIT` is enabled, struct page
+initialization is deferred to parallel kthreads that run later
+in the boot process.
 
-Looks good. Feel free to add:
+During KHO restoration, `deserialize_bitmap()` writes metadata for
+each preserved memory region. However, if the struct page has not been
+initialized, this write targets uninitialized memory, potentially
+leading to errors like:
+```
+BUG: unable to handle page fault for address: ...
+```
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Fix this by introducing `kho_get_preserved_page()`,  which ensures
+all struct pages in a preserved region are initialized by calling
+`init_deferred_page()` which is a no-op when deferred init is disabled
+or when the struct page is already initialized.
 
-								Honza
+Fixes: 8b66ed2c3f42 ("kho: mm: don't allow deferred struct page with KHO")
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+---
+### Notes
+@Jason, this patch should act as a temporary fix to make KHO play nice
+with deferred struct page init until you post your ideas about splitting
+"Physical Reservation" from "Metadata Restoration".
 
-> ---
-> Apologies for such a big To: list. My idea is for this to go into
-> mainline through sysctl; get back to me if you prefer otherwise. On the
-> off chance that this has a V2, let me know if you want to be removed
-> from the To and I'll make that happen
-> ---
->  include/linux/fs.h      | 1 -
->  include/linux/hugetlb.h | 2 --
->  include/linux/printk.h  | 1 -
->  include/net/ax25.h      | 2 --
->  4 files changed, 6 deletions(-)
-> 
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 04ceeca12a0d5caadb68643bf68b7a78e17c08d4..77f6302fdced1ef7e61ec1b35bed77c77b294124 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3487,7 +3487,6 @@ ssize_t simple_attr_write(struct file *file, const char __user *buf,
->  ssize_t simple_attr_write_signed(struct file *file, const char __user *buf,
->  				 size_t len, loff_t *ppos);
->  
-> -struct ctl_table;
->  int __init list_bdev_fs_names(char *buf, size_t size);
->  
->  #define __FMODE_EXEC		((__force int) FMODE_EXEC)
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 019a1c5281e4e6e04a9207dff7f7aa58c9669a80..18d1c4ecc4f948b179679b8fcc7870f3d466a4d9 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -16,8 +16,6 @@
->  #include <linux/userfaultfd_k.h>
->  #include <linux/nodemask.h>
->  
-> -struct ctl_table;
-> -struct user_struct;
->  struct mmu_gather;
->  struct node;
->  
-> diff --git a/include/linux/printk.h b/include/linux/printk.h
-> index 45c663124c9bd3b294031d839f1253f410313faa..63d516c873b4c412eead6ee4eb9f90a5c28f630c 100644
-> --- a/include/linux/printk.h
-> +++ b/include/linux/printk.h
-> @@ -78,7 +78,6 @@ extern void console_verbose(void);
->  /* strlen("ratelimit") + 1 */
->  #define DEVKMSG_STR_MAX_SIZE 10
->  extern char devkmsg_log_str[DEVKMSG_STR_MAX_SIZE];
-> -struct ctl_table;
->  
->  extern int suppress_printk;
->  
-> diff --git a/include/net/ax25.h b/include/net/ax25.h
-> index a7bba42dde153a2aeaf010a7ef8b48d39d15a835..beec9712e9c71d4be90acb6fc7113022527bc1ab 100644
-> --- a/include/net/ax25.h
-> +++ b/include/net/ax25.h
-> @@ -215,8 +215,6 @@ typedef struct {
->  	unsigned short		slave_timeout;		/* when? */
->  } ax25_dama_info;
->  
-> -struct ctl_table;
-> -
->  typedef struct ax25_dev {
->  	struct list_head	list;
->  
-> 
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251215-jag-sysctl_fw_decl-58c718715c8c
-> 
-> Best regards,
-> -- 
-> Joel Granados <joel.granados@kernel.org>
-> 
-> 
+### Testing
+In order to test the fix, I modified the KHO selftest, to allocate more
+memory and do so from higher memory to trigger the incompatibility. The
+branch with those changes can be found in:
+https://git.infradead.org/?p=users/vpetrog/linux.git;a=shortlog;h=refs/heads/kho-deferred-struct-page-init
+
+In future patches, we might want to enhance the selftest to cover
+this case as well. However, properly adopting the test for this
+is much more work than the actual fix, therefore it can be deferred to a
+follow-up series.
+
+In addition attempting to run the selftest for arm (without my changes)
+fails with:
+```
+ERROR:target/arm/internals.h:767:regime_is_user: code should not be reached
+Bail out! ERROR:target/arm/internals.h:767:regime_is_user: code should not be reached
+./tools/testing/selftests/kho/vmtest.sh: line 113: 61609 Aborted
+```
+I have not looked it up further, but can also do so as part of a
+selftest follow-up.
+
+ kernel/liveupdate/Kconfig          |  2 --
+ kernel/liveupdate/kexec_handover.c | 19 ++++++++++++++++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index d2aeaf13c3ac..9394a608f939 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -1,12 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+ menu "Live Update and Kexec HandOver"
+-	depends on !DEFERRED_STRUCT_PAGE_INIT
+ 
+ config KEXEC_HANDOVER
+ 	bool "kexec handover"
+ 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+-	depends on !DEFERRED_STRUCT_PAGE_INIT
+ 	select MEMBLOCK_KHO_SCRATCH
+ 	select KEXEC_FILE
+ 	select LIBFDT
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 9dc51fab604f..78cfe71e6107 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -439,6 +439,23 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+ 	return err;
+ }
+ 
++/*
++ * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, struct pages in higher memory
++ * regions may not be initialized yet at the time KHO deserializes preserved
++ * memory. This function ensures all struct pages in the region are initialized.
++ */
++static struct page *__init kho_get_preserved_page(phys_addr_t phys,
++						  unsigned int order)
++{
++	unsigned long pfn = PHYS_PFN(phys);
++	int nid = early_pfn_to_nid(pfn);
++
++	for (int i = 0; i < (1 << order); i++)
++		init_deferred_page(pfn + i, nid);
++
++	return pfn_to_page(pfn);
++}
++
+ static void __init deserialize_bitmap(unsigned int order,
+ 				      struct khoser_mem_bitmap_ptr *elm)
+ {
+@@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsigned int order,
+ 		int sz = 1 << (order + PAGE_SHIFT);
+ 		phys_addr_t phys =
+ 			elm->phys_start + (bit << (order + PAGE_SHIFT));
+-		struct page *page = phys_to_page(phys);
++		struct page *page = kho_get_preserved_page(phys, order);
+ 		union kho_page_info info;
+ 
+ 		memblock_reserve(phys, sz);
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.43.0
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
