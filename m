@@ -4,159 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1880BD609B7
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:58:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5136AD609B6
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 16:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 579246B008A; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
+	id ADC926B008A; Tue, 16 Dec 2025 11:01:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5519D6B008C; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
+	id AB4006B008C; Tue, 16 Dec 2025 11:01:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425716B0092; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
+	id 9B3496B0092; Tue, 16 Dec 2025 11:01:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2909E6B008A
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E183B160700
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:58:00 +0000 (UTC)
-X-FDA: 84225790320.11.B53E310
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C41061C0002
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:57:58 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MNNsrbg6;
-	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900679; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 89FA26B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:01:18 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59F1F136606
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:01:18 +0000 (UTC)
+X-FDA: 84225798636.20.C4483A0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B10D040030
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:01:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YcuocAFN;
+	spf=pass (imf17.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900876; a=rsa-sha256;
 	cv=none;
-	b=mVmtG95UKq9TPcpizsiIz1DSqeX2MYLffXOtmdQz1VdwnlnZwUtNsnxjzwFBvzbzsweZXq
-	7aqgiBnunDHGRRVwVsBBxQYOTQP91GOc/xpeI/rnjfSX2g24ALLm1Qz/8uoGvBp5pzsfwv
-	ee9CJzcgKkuLX3W6C2Vnb05456h/bIs=
+	b=DotFWZOQm9JOF/DpuE55Mz22hfIWd+QCzfY1oeCsjmTaUTlnuO7FL1OL/pXl17o5FHPJTn
+	NIprVAhkyvuj0oOv71994nsASMKDSpVWsIQL3WRFboHN1GxsjIlVcId2iZ7djVLvp4k5eP
+	Csmm6Dnv5mLgJ8gL2rVIBRboriyvHrs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MNNsrbg6;
-	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YcuocAFN;
+	spf=pass (imf17.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765900679;
+	s=arc-20220608; t=1765900876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
-	b=GsAieQqpgGiGSQh7c+ZyHgEuAtlkoHcGiXxNqN8naKU7tyt0armmZKFn4DLOPbzod5n8fP
-	FehNJRj3HhMBqP7qra3e2hkSBIgq7I488cmDVsqS/235ebAomajK16ZNS6uPoRcq5SxmFi
-	3CZzQvic5whSWvCg6YkOuHHdKJ/2IKY=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso21108495e9.2
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:57:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765900677; x=1766505477; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
-        b=MNNsrbg6VasV569+ZrDVkxuBKbPcV0CN5gZNOc1oZgpF5MCWR6uOzkSYNFPEBwRZB3
-         IxU11bON3dfhW0LBlDXIyfcF+P59ihkZ0h/mzesRMmDeMjc7foDYnCDzH8oRCk9ay41n
-         sWM0WM6y0abyCVR3yowwkYQRNPROgN2mpLDy2DELOdnqUCNCYYImmA7UNOGrAoEACS+r
-         4iTivcYQ/fYpGypSHhC2aTTDZMb8QQdwLaqucXOZv9IPQ4XmU61aPNakD86MPV2CovYY
-         puBtjYDdEP7qW85HoJItEqJG5gCg4m3FHpZkMIr8JLzw0nvFoxgi/7kFfrgsOCWCS21s
-         PCsw==
+	bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
+	b=q+dYSaeRGzJkKNsqPVf+RVY2PMPd19D8s+plB8AnuMig6YjXKWMUf4HozvSvsTRm0ZJEmA
+	rHGN5T/mxT3FfJGCOrtt4NaCD9rnoOdFk9sk4CCaCJjTSHu7AK49CS8FgYBPbXywa+h8VW
+	C3m/6Fd5W/Swy0vIJZ2TlX8HWJcrxZE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765900875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
+	b=YcuocAFNRksS1GmJ/GRSdaCKHvpV+PLGCORwsuWt/iSgnO+mlKW95XtO2G3xcmqLLJadHU
+	3bFSDW8ksumwTDFQw93+sDWkQGIotZYIXUVlBtli4nN/EiRdlp8OjtFEycjxrgdxgVq0hS
+	kRpYedCv8pyWqV813a4ulKyYmjtYReE=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-lOx6jFMrNOOQGQU0SFMlAQ-1; Tue, 16 Dec 2025 11:01:12 -0500
+X-MC-Unique: lOx6jFMrNOOQGQU0SFMlAQ-1
+X-Mimecast-MFC-AGG-ID: lOx6jFMrNOOQGQU0SFMlAQ_1765900871
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7b8a12f0cb4so5880922b3a.3
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:01:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765900677; x=1766505477;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
-        b=nBU/GzjL53tHXSlzWVcDXaTaTh8zgGA1bZAC7XryOg4qhns1PqX/Iiupm/9ql11N5G
-         7n2b79GtJENpFZ3tftJN3JiPqigMvdmtvnRCipTwRRRv1WxUf9Tww8PzFv0qmanNQmeI
-         ZPVcl2Ae0uPJLRK4q9sr8tMijdNVTjbRQMele0xTMZe6dyefJsrq8JpYHC0iew6fHktj
-         YdIw/ni5S+XZu/BI7ta9TrDp1yo2lIWIjMBpMqr2vZp+etqHzyj48e+IGLTJB8VdEdgk
-         EGXhU1sIkJ8kmvsd/fPTY/CTjMGsmuXIKK3LuQ3VL9Xmou4WtgEVlyT42YkQoVOhZVoS
-         sDsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGzfi89MWCJEdCxYXrUkrPrXyj+KN2ayib2XY5IUuREs1JbFyPxJ5x3AkWlre0B64/bjmBDm0tVg==@kvack.org
-X-Gm-Message-State: AOJu0Yxp3JGfDpD8eLvy2ve/Vhnal1OD82MU0weWz3EzedZFZJ65tEvB
-	CWU8n4zPagsZNDegT3tURIg2O9oY+cugeOKuMVKYj7LWG2g8C/8dPtqmUYAyBxo4NA==
-X-Gm-Gg: AY/fxX615GxgZ1K32/mqbYdSq1KP10yLlqLngiXhA8hjsobJDp9FCZh87GNy5YV9l3t
-	VItD/P7eejfC8yTMDp2rbSzYIiYiU9TI6+j376YxyLkFP0Rz0hW2IV8bvhWQ/OJW43VkSvMO4Jr
-	XT7q53HUM9U3/1MIxbxJCw4KLF3O759JHZxvIdxTvhXT5EPbm7F59DqeSUNhRnAIBOAvfeigpFZ
-	oEApypMm5uabXbz6UjJ9vRa24Kgu9KYnaXYFYX8FlHtvo5v2AdQplNeMKLDsvUUCKYgo5RHWRw7
-	WAKKl7ZLo5vexHmeeWSVYuKVXQVrnZ5EnL/rMRplZL7fscvuUI0jl35BsnE5jBF1f+KUDsRbQrE
-	U+ypgqyMYlsKo657TWZSvWM7432F1Q9t4t2j5KCQJPoOYpZ5M/UrKffQeVmnIk+CLQ3RhzzmQwC
-	WMPtjqe3NpJ6ON5X8R3AjXZZHM5PvWr9+6JuJR40LKrp5tMsBH
-X-Google-Smtp-Source: AGHT+IHDdQVZRbKnzvpABseF1CD6bLmsX8k69Taj+EhWj/QwI3tX5DeGEoYL60/CFL6IF5/VTsQYZw==
-X-Received: by 2002:a05:600c:1c1a:b0:475:de12:d3b5 with SMTP id 5b1f17b1804b1-47a8f91601bmr141242195e9.34.1765900676692;
-        Tue, 16 Dec 2025 07:57:56 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:ea4c:b2a8:24a4:9ce9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f7994b58sm18141460f8f.22.2025.12.16.07.57.54
+        d=1e100.net; s=20230601; t=1765900871; x=1766505671;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
+        b=RTcNkLVFTJVKNi6xCigEiCm0Zrshm/jgxvzWoNV8MQ0WgT3m1AkoEoROita/toFgIT
+         BCK6F74NXrPPp0ezfESW73iWArDgMcYRtQtVAve0abzsRdszenUnz/32mUMy3cNA/qQC
+         hJQOD/0hXEd6ISZcYR5cX+cQpqRnw9gVcjH3kun6J2xXHeJF17t2nVgTY/SEI0W/ks4j
+         +xkLaxjBM1kIHVdXn09AMqQLTFwHwb57Es6AGfMUTSe2fGHle35mGw15lC4Apk0URk8J
+         MVhI5lW7PCVbMf0lDTrOMqKURnZHcKHTIH3OxyunVCftvAJ97yVDwKXxinlb6fJmMmr/
+         srVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXT6FVyWdIdeGcxGLYVuSWerGgGiXwzCB561+FZuo7a9UmUQ4HEoeh4DOY+474aBw9TxdRFMKDAlQ==@kvack.org
+X-Gm-Message-State: AOJu0YxX+pimalQ4W6JirVgKFqX3Pb/bcUdaqGR/VJdr9bH27erJE7i3
+	vAdZMtYq3qonLhnSP6sJiEExbXVIvqKFEOMpYbuzX+PsFUucO832xXh78xio70RGIkfa/5J08Ic
+	AtOa1vnzowgsB2FIDjFr4pYkhWe6PM4koMx2pJ+wE9GjR5eQZfbnJ
+X-Gm-Gg: AY/fxX4g2dMF/mSwFvip8qkIvvIKqrz5JVxq6LMt1u2/4BWCSVgNYiflIs9hiy62Ejh
+	wI9c8OIrmW3By5yi94Ayzb3l9ITryfCGr9i28HemBBIP8WOg7AZIk4kNJ/HknQTzmdGi3GVqiz+
+	0ZxrmUd9HHMNinsWrd/4TFwnH+Jl4b73Y9hGvkj9Ebl2m5mVApSSktbPWmx4ImIQXOTInjgWAgm
+	wUNphB5xbH94Fjck5mdpckOEMccHuwWKUY6YC8Uc015Xk/MEgTKBRxJKaH2KNSFDb0MBNVSkrUq
+	pM6AGOa4RzncRrEAUAlNhg1uwZwEXAaQe+9+4UypYNKmBLCNy/Zu4WErpLiCofMunym5TfDov98
+	Eb6U=
+X-Received: by 2002:a05:6a00:2993:b0:781:4f0b:9c58 with SMTP id d2e1a72fcca58-7f667935e19mr15661156b3a.15.1765900870457;
+        Tue, 16 Dec 2025 08:01:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFETgvpZCauQRnRvkaRDXoTYEkmrTUKb8yH8PJYSGK8XQagrI3k5h20qj2x7yaO23LdoS5X+w==
+X-Received: by 2002:a05:6a00:2993:b0:781:4f0b:9c58 with SMTP id d2e1a72fcca58-7f667935e19mr15661042b3a.15.1765900869272;
+        Tue, 16 Dec 2025 08:01:09 -0800 (PST)
+Received: from x1.local ([142.188.210.156])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c53834a7sm15772514b3a.55.2025.12.16.08.01.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 07:57:55 -0800 (PST)
-Date: Tue, 16 Dec 2025 16:57:49 +0100
-From: Marco Elver <elver@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
- analysis
-Message-ID: <aUGBff8Oko5O8EsP@elver.google.com>
-References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
- <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
- <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
- <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
- <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
- <aUAPbFJSv0alh_ix@elver.google.com>
- <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
- <aUE77hgJa58waFOy@elver.google.com>
+        Tue, 16 Dec 2025 08:01:08 -0800 (PST)
+Date: Tue, 16 Dec 2025 11:01:00 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
+ !MAP_FIXED mappings
+Message-ID: <aUGCPN2ngvWMG2Ta@x1.local>
+References: <20251204151003.171039-1-peterx@redhat.com>
+ <20251204151003.171039-5-peterx@redhat.com>
+ <aTWqvfYHWWMgKHPQ@nvidia.com>
+ <aTnbf_dtwOo_gaVM@x1.local>
+ <20251216144224.GE6079@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20251216144224.GE6079@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: oE1q4t-gAXCc2nXQXpmLmytQkIX5spSPkzw_mhevsTg_1765900871
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aUE77hgJa58waFOy@elver.google.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C41061C0002
+X-Rspamd-Queue-Id: B10D040030
 X-Rspamd-Server: rspam04
-X-Stat-Signature: 6wh8rnbf7n1w8hhxajscm6cx8mjiepek
-X-HE-Tag: 1765900678-768982
-X-HE-Meta: U2FsdGVkX19Hea0uca9mMMr/Qq2dBGViG+JQzuB+kgtZgQLHG3h3HmVQT+gxc/31vOb6xMOH7Fcq55ozJK29IPSSyWBlUrg+01hYvt/u68N1FCnUV96M8YlCfiAU2wDtjZKm/fTUR0WJP1NkQBfPC96JWHxZn6vMb0e1AaQad/P59Fommj3K29MpUxilbOtRE2OuCSZre2vJ69QQ8+LkxsCt6L9oCKKddXHhv5gpvyeKt4rbjafD0sfn96TVVLE1694bxMRcROLV8YfHYve2rbR2gaT0Dvyj/kDQhIUMba52YLAlYCvKSBaCtzWPJGwhdAVXAvej0hcuRkDZmukTfqOzAY00Kn9kfIUr3/mMShWT4QTTeNl/uIGvHkbkXQdre6+IXMTq1bjV0ANhn4HzuDcMRbmiGjU1koxMuwJGDngLk2AihDBfjlhJoKrISIhJY3f18KZpJQf64oNiKcvsiYFTk+VAm5KZF15/zaSg25ntfWQMnyqROasvWEE+6D5vqUhq+QmktbdHphgqDVm6/sR7Z3/4+3ymTxTnPKXW71m0Lc/Unl5uEelDezeOWXf06FXugSI+lQRFcSNRuuX2bePYDGC/7g6P5Un9Lb/LTBbNjV11emR23ZawrwGiYNbN3yX5KUP8AKuWxAGiH076Oyffqh1wSRRlLxVSVU6oKPRe4FJej4Xe119oqujyo1PKlUiSAspYFhq1uaUapmVQ5dbwSAFXZe/j+eLM0ICi0p9RygeHV+RzAzyeZSNAJTiF0Dp+zUBNyrR/w6YMlddRDDbQaf32JmHmVXVIwvK+F4ab8M+lyNYgx/DeIyxJEoi9+2qtMEj5JJFNUczqtkDoKGGT1AXZKtLLYeXBjA3qssZjR8tF+Zfqss2iEb4CEQk2rLvx1Dw00JWBFpRM1GLRbcjQMDE9cUCRxaGKwVyvr9cIeagnF2JkmEBFRFhS5BEfpSFYsJZYjEtLyfVsDjy
- hLtqTYMs
- DMiNpgvuS62D24rXRoqnWB7tfDk7mppobH+NNr1Q9Ha2OEoaji+zEy1Cmn0LrJ9rMEjPRrkzarPYnX/osUmvtXT1nuq07Xc2MfLFPF4V1mMxZEpEB6p/5J68VUYtQwc/LpMbqmi+LJLy7jon/rO3HIDq9HKloFfsqR/r2yTcVfxqQtNQ6cyS/v6UmIvHQ7Y4g5wo5nlfL56kxxVZzZq//BImBiLBU9Wx0MDBpwebSYsrWnZjoBb/o+s7KwgfK68Lg6fb5lSgLco07JrjmsldqgGQb/gVAVuss8KwkGCT6N1EjXCPUfB3O3WdEI/dkUQQV6fpJYKVOkfVkhwx6MkXRLoc5jNeZLUzhBBK79QZaFBNzUAs7dRxltB6GfQmJ2CML1JYvzjlUIoYJIKweQeBDEiPW2jRaIh85aKel
+X-Stat-Signature: jjrzaaswtsktxd4r585a99s47gdtbetp
+X-HE-Tag: 1765900875-958726
+X-HE-Meta: U2FsdGVkX1+5RNnNeLMexD6cxhw6KCUeqYbF+3mSFxzdhKaZ/C4n0Stbgh4zgzqWqtARVii4e0oLwli8SDLdImZ8hgdcbWJC0OrzFE0eNrqA5be82aafQxcmhw+gysMVxGhDLyaks2q8/WtwrO/OAoq0O6tJx70fFfcXBBVOgH+sAZk6wLRErEbVU7of1+4H5PtfLN7rD4IfZRJ2ZcuO2uETdRfFZ0Sp3AN6ziVhkMIsRjnlaLVeiA+71UHaxjuqkWSQ8hVO2U6s/jmKjEaFSnscZWv/tPPrbCwe3ICOAEyGeY9qJYoL6jFTpocqn4Vmvz9NjrIpBKV+aPWsQnZ7gn4Ebi4AGR5FMJTOLxfj+sv+o98pedDvZ2tXQGSAOgvd2KfE5zomrcVufqP7hCIkjIUyRw0rDHRqE47KAnWfJ4/fj8awgTszbzjZ4KltbvsdZh6Sgv4wVJ/GIOXXPMYeRs23DsrgJtM0Vx8O1VmpeqoqXR86i4xLEjII/5sj1McTiSyYaqLail1Lpm1nrDu0of/heBHBYZvC6XQM3X2O8vpbzQONqxYp3T8WFvVrsknRM/ABHcJ30ALAa+YzZxUlq0DyIWQ753vNBnx0i8+KWr2bP+JoIBlH/eydDpOLI2U/WeQrWcEvJhiidIZ0M0YiJcv1WsEiJa5npQ2JjYZx41kN1Ql0YqxxgCY8eA38FmR1BzrHUd3vB5lPdkNwR3GZ/k0nEKgP9rz2LGdHEyfA7Ns9BETrZrpU7l74QTzsZhgKSH71tReYX3yGZZRiBiIWR5Le7d1sB5gJ8ZRxlPEgAL3MkX7EqvsFty7un01/6h28p2f4PSynxouS1eYnecqtxkP1rATD3Xtu+fHwPg50lMwWHa0KQCMrl0gn61wy/7Lik8w7lIjwwMWI/MqqYCGjbbhnA3gCAM6eLCL844tyCdY+K1W/35L7Cw0+W9J2Vb4Cf6dKVyR1aZH6PiEFAt1
+ PTQSop8g
+ mi4LqSUCreXM5BwQYhbKpb7JKIliwrw/LzwYloMAxnEj6BxApPkpuIA9VC5Vjag0P5W+T0VAfus0YqiuPVdqNHDh/GARJRkvAslzwgHQ16enA5NZo2fb0p1kyZdFwr2qi9sNB5BASNeiUMV1RMdjU2w7LQ155yARjbWFcxa3kDuqs7pJE7L0fiWdMT/aniun87WoLEozLrr5DKfwF4hFtV9JhI+m045abKyzKFw3igwnggY4sdgcxTn3ZqESnmw+DPRUBTyaa4YW0gzjco/4sg7KZHvjyIRF1BVTrUFUd1TIkCYy+45gFc7ZJhZAQzg9aWBOfZhHToCLGBA6x4nbl57w2qguHmexVcOhfCjvQwfQmfFDZAQCOrzh7Vw6GCT7AU/zgWwWM5a1zieh3X60WvKUxMqjwkzxgpGzYmI5mYhxOHI6nB7JRLWGWKoO0isGgk4u9XNaCE7emPQdbRR8J3M1NLIA8XjH477XIB9pNO8BfTntXUglrW/67LSXpeMBWPvPZOEAS4w5Tq8mK8Pj7LOpDHvlK5Dc2PYvdDjWbjfQYtWoTiWNFXVoVlacmecze2It7vD3zkB6p0H29gZX96Vb9nQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -165,456 +138,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 12:01PM +0100, Marco Elver wrote:
-> On Mon, Dec 15, 2025 at 04:53PM +0100, Marco Elver wrote:
-> [..]
-> > > > So I think as is, we can start. But I really do want the cleanup thing
-> > > > sorted, even if just with that __release_on_cleanup mashup or so.
-> > >
-> > > Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
-> > > abstraction. For that one I was able to make it work like I thought we
-> > > could (below). Some awkwardness is required to make it work in
-> > > for-loops, which only let you define variables with the same type.
-> > >
-> > > For <linux/cleanup.h> it needs some more thought due to extra levels of
-> > > indirection.
+On Tue, Dec 16, 2025 at 10:42:24AM -0400, Jason Gunthorpe wrote:
+> On Wed, Dec 10, 2025 at 03:43:43PM -0500, Peter Xu wrote:
+> > > This seems a bit weird, the vma length is already known, it is len,
+> > > why do we go to all this trouble to recalculate len in terms of phys?
+> > > 
+> > > If the length is wrong the mmap will fail, so there is no issue with
+> > > returning a larger order here.
+> > > 
+> > > I feel this should just return the order based on pci_resource_len()?
 > > 
-> > For cleanup.h, the problem is that to instantiate we use
-> > "guard(class)(args..)". If it had been designed as "guard(class,
-> > args...)", i.e. just use __VA_ARGS__ explicitly instead of the
-> > implicit 'args...', it might have been possible to add a second
-> > cleanup variable to do the same (with some additional magic to extract
-> > the first arg if one exists). Unfortunately, the use of the current
-> > guard()() idiom has become so pervasive that this is a bigger
-> > refactor. I'm going to leave cleanup.h as-is for now, if we think we
-> > want to give this a go in the current state.
+> > IIUC there's a trivial difference when partial of a huge bar is mapped.
+> > 
+> > Example: 1G bar, map range (pgoff=2M, size=1G-2M).
+> > 
+> > If we return bar size order, we'd say 1G, however then it means we'll do
+> > the alignment with 1G. __thp_get_unmapped_area() will think it's not
+> > proper, because:
+> > 
+> > 	loff_t off_end = off + len;
+> > 	loff_t off_align = round_up(off, size);
+> > 
+> > 	if (off_end <= off_align || (off_end - off_align) < size)
+> > 		return 0;
+> > 
+> > Here what we really want is to map (2M, 1G-2M) with 2M huge, not 1G, nor
+> > 4K.
 > 
-> Alright, this can work, but it's not that ergonomic as I'd hoped (see
-> below): we can redefine class_<name>_constructor to append another
-> cleanup variable. With enough documentation, this might be workable.
+> This was the point of my prior email, the alignment calculation can't
+> just be 'align to a size'. The core code needs to choose a VA such
+> that:
 
-Below is the preview of the complete changes to make the lock guards
-work properly.
+IMHO these are two different things we're discussing here.  I've replied in
+the other email about pgoff alignments, I think it's properly done, let's
+keep the discussion there.  I'll reply to the other issue raised.
 
-Thanks,
--- Marco
+> 
+>    VA % (1 << order) == pg_off % (1 << order)
+> 
+> So if VFIO returns 1G then the VA should be aligned to 2M within a 1G
+> region. This allows opportunities to increase the alignment as the
+> mapping continues, eg if the arch supports a 32M 16x2M contiguous page
+> then we'd get 32M mappings with your example.
+> 
+> The core code should adjust the target order from the driver by:
+>    lowest of order or size rounded down to a power of two
+>  then
+>    highest arch supported leaf size below the above
 
------- >8 ------
+Yes, maybe this would be better.
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 2f998bb42c4c..9fe3b0f816c6 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -516,9 +516,42 @@ static __always_inline class_##_name##_t class_##_name##_constructor(void) \
- static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
- static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
- 
-+/*
-+ * To support Context Analysis, we need to allow the compiler to see the
-+ * acquisition and release of the context lock. However, the "cleanup" helpers
-+ * wrap the lock in a struct passed through seperate helper functions, which
-+ * hides the lock alias from the compiler (no inter-procedural analysis).
-+ *
-+ * To make it work, we introduce an explicit alias to the context lock instance
-+ * that is "cleaned" up with a separate cleanup helper. This helper is a dummy
-+ * function that does nothing at runtime, but has the "_unlock" attribute to
-+ * tell the compiler what happens at the end of the scope.
-+ *
-+ * To generalize the pattern, the WITH_LOCK_GUARD_1_ATTRS() macro should be used
-+ * to redefine the constructor, which then also creates the alias variable with
-+ * the right "cleanup" attribute, *after* DECLARE_LOCK_GUARD_1_ATTRS() has been
-+ * used.
-+ *
-+ * Example usage:
-+ *
-+ *   DECLARE_LOCK_GUARD_1_ATTRS(mutex, __acquires(_T), __releases(*(struct mutex **)_T))
-+ *   #define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
-+ *
-+ * Note: To support the for-loop based scoped helpers, the auxiliary variable
-+ * must be a pointer to the "class" type because it is defined in the same
-+ * statement as the guard variable. However, we initialize it with the lock
-+ * pointer (despite the type mismatch, the compiler's alias analysis still works
-+ * as expected). The "_unlock" attribute receives a pointer to the auxiliary
-+ * variable (a double pointer to the class type), and must be cast and
-+ * dereferenced appropriately.
-+ */
- #define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
- static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
--static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-+static __always_inline void __class_##_name##_cleanup_ctx(class_##_name##_t **_T) \
-+	__no_context_analysis _unlock { }
-+#define WITH_LOCK_GUARD_1_ATTRS(_name, _T)				\
-+	class_##_name##_constructor(_T),				\
-+	*__UNIQUE_ID(unlock) __cleanup(__class_##_name##_cleanup_ctx) = (void *)(_T)
- 
- #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
- __DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
-diff --git a/include/linux/local_lock.h b/include/linux/local_lock.h
-index bedcbb33b928..99c06e499375 100644
---- a/include/linux/local_lock.h
-+++ b/include/linux/local_lock.h
-@@ -104,9 +104,13 @@ DEFINE_LOCK_GUARD_1(local_lock_nested_bh, local_lock_t __percpu,
- 		    local_lock_nested_bh(_T->lock),
- 		    local_unlock_nested_bh(_T->lock))
- 
--DECLARE_LOCK_GUARD_1_ATTRS(local_lock, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irq, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irqsave, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(local_lock, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
-+#define class_local_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irq, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
-+#define class_local_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_irq, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irqsave, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
-+#define class_local_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_irqsave, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
-+#define class_local_lock_nested_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, _T)
- 
- #endif
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index 8ed48d40007b..06c3f947ea49 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -255,9 +255,12 @@ DEFINE_LOCK_GUARD_1(mutex, struct mutex, mutex_lock(_T->lock), mutex_unlock(_T->
- DEFINE_LOCK_GUARD_1_COND(mutex, _try, mutex_trylock(_T->lock))
- DEFINE_LOCK_GUARD_1_COND(mutex, _intr, mutex_lock_interruptible(_T->lock), _RET == 0)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(mutex, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(mutex_try, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(mutex,	__acquires(_T), __releases(*(struct mutex **)_T))
-+DECLARE_LOCK_GUARD_1_ATTRS(mutex_try,	__acquires(_T), __releases(*(struct mutex **)_T))
-+DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr,	__acquires(_T), __releases(*(struct mutex **)_T))
-+#define class_mutex_constructor(_T)	WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
-+#define class_mutex_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_try, _T)
-+#define class_mutex_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_intr, _T)
- 
- extern unsigned long mutex_get_owner(struct mutex *lock);
- 
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index 0e75e26e8813..8da14a08a4e1 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -262,17 +262,23 @@ DEFINE_LOCK_GUARD_1(rwsem_read, struct rw_semaphore, down_read(_T->lock), up_rea
- DEFINE_LOCK_GUARD_1_COND(rwsem_read, _try, down_read_trylock(_T->lock))
- DEFINE_LOCK_GUARD_1_COND(rwsem_read, _intr, down_read_interruptible(_T->lock), _RET == 0)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_try, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_intr, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_try, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_try, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_intr, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_intr, _T)
- 
- DEFINE_LOCK_GUARD_1(rwsem_write, struct rw_semaphore, down_write(_T->lock), up_write(_T->lock))
- DEFINE_LOCK_GUARD_1_COND(rwsem_write, _try, down_write_trylock(_T->lock))
- DEFINE_LOCK_GUARD_1_COND(rwsem_write, _kill, down_write_killable(_T->lock), _RET == 0)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_try, __assumes_ctx_lock(_T), /* */)
--DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_kill, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_try, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_try, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_kill, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_kill_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_kill, _T)
- 
- /*
-  * downgrade write lock to read lock
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 397f4753d10a..41ed884cffc9 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -226,6 +226,7 @@ static inline void task_unlock(struct task_struct *p)
- }
- 
- DEFINE_LOCK_GUARD_1(task_lock, struct task_struct, task_lock(_T->lock), task_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(task_lock, __assumes_ctx_lock(_T->alloc_lock), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(task_lock, __acquires(&_T->alloc_lock), __releases(&(*(struct task_struct **)_T)->alloc_lock))
-+#define class_task_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(task_lock, _T)
- 
- #endif /* _LINUX_SCHED_TASK_H */
-diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
-index 3a45b08ced43..396b8c5d6c1b 100644
---- a/include/linux/spinlock.h
-+++ b/include/linux/spinlock.h
-@@ -537,109 +537,132 @@ void free_bucket_spinlocks(spinlock_t *locks);
- DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
- 		    raw_spin_lock(_T->lock),
- 		    raw_spin_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock, _try, raw_spin_trylock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_try, _T)
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
- 		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
- 		    raw_spin_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
- 		    raw_spin_lock_irq(_T->lock),
- 		    raw_spin_unlock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
- 		    raw_spin_lock_bh(_T->lock),
- 		    raw_spin_unlock_bh(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock_bh, _try, raw_spin_trylock_bh(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, _T)
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
- 		    raw_spin_lock_irqsave(_T->lock, _T->flags),
- 		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
- 		    unsigned long flags)
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
- 			 raw_spin_trylock_irqsave(_T->lock, _T->flags))
--DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
-+#define class_raw_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, _T)
- 
- DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
- 		    spin_lock(_T->lock),
- 		    spin_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock, _try, spin_trylock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
- 
- DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
- 		    spin_lock_irq(_T->lock),
- 		    spin_unlock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
- 			 spin_trylock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
- 
- DEFINE_LOCK_GUARD_1(spinlock_bh, spinlock_t,
- 		    spin_lock_bh(_T->lock),
- 		    spin_unlock_bh(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock_bh, _try,
- 			 spin_trylock_bh(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh_try, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh_try, _T)
- 
- DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
- 		    spin_lock_irqsave(_T->lock, _T->flags),
- 		    spin_unlock_irqrestore(_T->lock, _T->flags),
- 		    unsigned long flags)
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave, _T)
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock_irqsave, _try,
- 			 spin_trylock_irqsave(_T->lock, _T->flags))
--DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, __acquires(_T), __releases(*(spinlock_t **)_T))
-+#define class_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, _T)
- 
- DEFINE_LOCK_GUARD_1(read_lock, rwlock_t,
- 		    read_lock(_T->lock),
- 		    read_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(read_lock, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(read_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_read_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock, _T)
- 
- DEFINE_LOCK_GUARD_1(read_lock_irq, rwlock_t,
- 		    read_lock_irq(_T->lock),
- 		    read_unlock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irq, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_read_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irq, _T)
- 
- DEFINE_LOCK_GUARD_1(read_lock_irqsave, rwlock_t,
- 		    read_lock_irqsave(_T->lock, _T->flags),
- 		    read_unlock_irqrestore(_T->lock, _T->flags),
- 		    unsigned long flags)
--DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irqsave, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_read_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irqsave, _T)
- 
- DEFINE_LOCK_GUARD_1(write_lock, rwlock_t,
- 		    write_lock(_T->lock),
- 		    write_unlock(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(write_lock, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(write_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_write_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock, _T)
- 
- DEFINE_LOCK_GUARD_1(write_lock_irq, rwlock_t,
- 		    write_lock_irq(_T->lock),
- 		    write_unlock_irq(_T->lock))
--DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irq, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_write_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irq, _T)
- 
- DEFINE_LOCK_GUARD_1(write_lock_irqsave, rwlock_t,
- 		    write_lock_irqsave(_T->lock, _T->flags),
- 		    write_unlock_irqrestore(_T->lock, _T->flags),
- 		    unsigned long flags)
--DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irqsave, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
-+#define class_write_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irqsave, _T)
- 
- #undef __LINUX_INSIDE_SPINLOCK_H
- #endif /* __LINUX_SPINLOCK_H */
-diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-index 88f01d6fded8..bb44a0bd7696 100644
---- a/include/linux/srcu.h
-+++ b/include/linux/srcu.h
-@@ -621,16 +621,21 @@ DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
- 		    _T->idx = srcu_read_lock(_T->lock),
- 		    srcu_read_unlock(_T->lock, _T->idx),
- 		    int idx)
--DECLARE_LOCK_GUARD_1_ATTRS(srcu, __assumes_ctx_lock(_T), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(srcu, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
-+#define class_srcu_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu, _T)
- 
- DEFINE_LOCK_GUARD_1(srcu_fast, struct srcu_struct,
- 		    _T->scp = srcu_read_lock_fast(_T->lock),
- 		    srcu_read_unlock_fast(_T->lock, _T->scp),
- 		    struct srcu_ctr __percpu *scp)
-+DECLARE_LOCK_GUARD_1_ATTRS(srcu_fast, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
-+#define class_srcu_fast_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu_fast, _T)
- 
- DEFINE_LOCK_GUARD_1(srcu_fast_notrace, struct srcu_struct,
- 		    _T->scp = srcu_read_lock_fast_notrace(_T->lock),
- 		    srcu_read_unlock_fast_notrace(_T->lock, _T->scp),
- 		    struct srcu_ctr __percpu *scp)
-+DECLARE_LOCK_GUARD_1_ATTRS(srcu_fast_notrace, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
-+#define class_srcu_fast_notrace_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu_fast_notrace, _T)
- 
- #endif
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index fab6a19dda02..7c57a6d2f847 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1874,7 +1874,8 @@ DEFINE_LOCK_GUARD_1(task_rq_lock, struct task_struct,
- 		    _T->rq = task_rq_lock(_T->lock, &_T->rf),
- 		    task_rq_unlock(_T->rq, _T->lock, &_T->rf),
- 		    struct rq *rq; struct rq_flags rf)
--DECLARE_LOCK_GUARD_1_ATTRS(task_rq_lock, __assumes_ctx_lock(_T->pi_lock), /* */)
-+DECLARE_LOCK_GUARD_1_ATTRS(task_rq_lock, __acquires(_T->pi_lock), __releases((*(struct task_struct **)_T)->pi_lock))
-+#define class_task_rq_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(task_rq_lock, _T)
- 
- DEFINE_LOCK_GUARD_1(__task_rq_lock, struct task_struct,
- 		    _T->rq = __task_rq_lock(_T->lock, &_T->rf),
-@@ -1928,21 +1929,24 @@ DEFINE_LOCK_GUARD_1(rq_lock, struct rq,
- 		    rq_unlock(_T->lock, &_T->rf),
- 		    struct rq_flags rf)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(rq_lock, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
-+DECLARE_LOCK_GUARD_1_ATTRS(rq_lock, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
-+#define class_rq_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock, _T)
- 
- DEFINE_LOCK_GUARD_1(rq_lock_irq, struct rq,
- 		    rq_lock_irq(_T->lock, &_T->rf),
- 		    rq_unlock_irq(_T->lock, &_T->rf),
- 		    struct rq_flags rf)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irq, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
-+DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irq, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
-+#define class_rq_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock_irq, _T)
- 
- DEFINE_LOCK_GUARD_1(rq_lock_irqsave, struct rq,
- 		    rq_lock_irqsave(_T->lock, &_T->rf),
- 		    rq_unlock_irqrestore(_T->lock, &_T->rf),
- 		    struct rq_flags rf)
- 
--DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
-+DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
-+#define class_rq_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, _T)
- 
- #define this_rq_lock_irq(...) __acquire_ret(_this_rq_lock_irq(__VA_ARGS__), __rq_lockp(__ret))
- static inline struct rq *_this_rq_lock_irq(struct rq_flags *rf) __acquires_ret
-@@ -3075,10 +3079,17 @@ static inline class_##name##_t class_##name##_constructor(type *lock, type *lock
- 	__no_context_analysis								\
- { class_##name##_t _t = { .lock = lock, .lock2 = lock2 }, *_T = &_t;			\
-   _lock; return _t; }
--#define DECLARE_LOCK_GUARD_2_ATTRS(_name, _lock, _unlock)				\
-+#define DECLARE_LOCK_GUARD_2_ATTRS(_name, _lock, _unlock1, _unlock2)			\
- static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T1,	\
- 							    lock_##_name##_t *_T2) _lock; \
--static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock
-+static __always_inline void __class_##_name##_cleanup_ctx1(class_##_name##_t **_T1)	\
-+	__no_context_analysis _unlock1 { }						\
-+static __always_inline void __class_##_name##_cleanup_ctx2(class_##_name##_t **_T2)	\
-+	__no_context_analysis _unlock2 { }
-+#define WITH_LOCK_GUARD_2_ATTRS(_name, _T1, _T2)					\
-+	class_##_name##_constructor(_T),						\
-+	*__UNIQUE_ID(unlock1) __cleanup(__class_##_name##_cleanup_ctx1) = (void *)(_T1),\
-+	*__UNIQUE_ID(unlock2) __cleanup(__class_##_name##_cleanup_ctx2) = (void *)(_T2)
- 
- static inline bool rq_order_less(struct rq *rq1, struct rq *rq2)
- {
-@@ -3229,7 +3240,12 @@ DEFINE_LOCK_GUARD_2(double_raw_spinlock, raw_spinlock_t,
- 		    double_raw_lock(_T->lock, _T->lock2),
- 		    double_raw_unlock(_T->lock, _T->lock2))
- 
--DECLARE_LOCK_GUARD_2_ATTRS(double_raw_spinlock, __assumes_ctx_lock(_T1) __assumes_ctx_lock(_T2), /* */);
-+DECLARE_LOCK_GUARD_2_ATTRS(double_raw_spinlock,
-+			   __acquires(_T1, _T2),
-+			   __releases(*(raw_spinlock_t **)_T1),
-+			   __releases(*(raw_spinlock_t **)_T2));
-+#define class_double_raw_spinlock_constructor(_T1, _T2) \
-+	WITH_LOCK_GUARD_2_ATTRS(double_raw_spinlock, _T1, _T2)
- 
- /*
-  * double_rq_unlock - safely unlock two runqueues
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
-index 3f72b1ab2300..1c5a381461fc 100644
---- a/lib/test_context-analysis.c
-+++ b/lib/test_context-analysis.c
-@@ -459,8 +459,9 @@ static void __used test_srcu(struct test_srcu_data *d)
- 
- static void __used test_srcu_guard(struct test_srcu_data *d)
- {
--	guard(srcu)(&d->srcu);
--	(void)srcu_dereference(d->data, &d->srcu);
-+	{ guard(srcu)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
-+	{ guard(srcu_fast)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
-+	{ guard(srcu_fast_notrace)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
- }
- 
- struct test_local_lock_data {
+E.g. I would expect if a driver has 32M returned (order=13), then on x86_64
+it should be adjusted to 2M (order=9), but on a 4K pgsize arm64 it should
+be kept as 32M (order=13) as it matches contpmds.
+
+Do we have any function that we can fetch the best mapping lower than a
+specific order?
+
+> 
+> None of this logic should be in drivers.
+
+I still think it's the driver's decision to have its own macro controlling
+the huge pfnmap behavior.  I agree with you core mm can have it, I don't
+see it blocks the driver not returning huge order if huge pfnmap is turned
+off.  VFIO-PCI currently indeed only depends directly on global THP
+configs, but I don't see why it's strictly needed.  So I think it's fine if
+a driver (even if global THP enabled for pmd/pud) deselect huge pfnmap for
+other reasons, then here the order returned can still always be PSIZE for
+the driver.  It's really not a huge deal to me.
+
+> 
+> The way to think about this is that the driver is returning an order
+> which indicates the maximum case where:
+> 
+>    VA % (1 << order) == pg_off % (1 << order)
+> 
+> Could be true. Eg a PCI BAR returns an order that is the size of the
+> BAR because it is always true. Something that stores at most 1G pages
+> would return 1G pages, etc.
+> 
+> > Note that here checking CONFIG_ARCH_SUPPORTS_P*D_PFNMAP is a vfio behavior,
+> > pairing with the huge_fault() of vfio-pci driver.  It implies if vfio-pci's
+> > huge pfnmap is enabled or not.  If it's not enabled, we don't need to
+> > report larger orders here.
+> 
+> Honestly, I'd ignore this, and I'm not sure VFIO should be testing
+> those in the huge_fault either. Again the core code should deal with
+> it.
+> 
+> > Shall I keep it simple to leave it to drivers, until we have something more
+> > solid (I think we need HAVE_ARCH_HUGE_P*D_LEAVES here)?
+> 
+> Logic like this should not be in drivers.
+> 
+> > Even with that config ready, drivers should always still do proper check on
+> > its own (drivers need to support huge pfnmaps here first before reporting
+> > high orders).  
+> 
+> Drivers shouldn't implement this alignment function without also
+> implementing huge fault, it is pointless. Don't see a reason to add
+> extra complexity.
+
+It's not implementing the order hint without huge fault.  It's when both
+are turned off in a kernel config.. then the order hint (even from driver
+POV) shouldn't need to be reported.
+
+I don't know why you have so strong feeling on having a config check in
+vfio-pci drivers is bad.  I still think it's good to have it pairing with
+the same macro in huge_fault(), because it's essentially part of the whole
+pfnmap feature so it's fair they're guarded by the same kernel config, but
+I'm ok either way in case of current case of vfio-pci where it 100% depends
+on global THP setups.
+
+-- 
+Peter Xu
+
 
