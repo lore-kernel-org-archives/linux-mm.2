@@ -4,161 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39B3ED5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 04:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9346D5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 04:43:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1246B0005; Mon, 15 Dec 2025 23:18:20 -0500 (EST)
+	id 027D86B0005; Mon, 15 Dec 2025 23:43:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74AB16B0089; Mon, 15 Dec 2025 23:18:20 -0500 (EST)
+	id F189C6B0089; Mon, 15 Dec 2025 23:43:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64D706B008A; Mon, 15 Dec 2025 23:18:20 -0500 (EST)
+	id E15DF6B008A; Mon, 15 Dec 2025 23:43:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 53B686B0005
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:18:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1643258E7E
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:18:20 +0000 (UTC)
-X-FDA: 84224027160.22.502A91F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E1D74140007
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:18:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AZZrN+FP;
-	spf=pass (imf23.hostedemail.com: domain of jasowang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jasowang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765858698; a=rsa-sha256;
-	cv=none;
-	b=MK/poX3mxWUx/lR+YeH2Y7SseUR4R4mp/QWnhnnwus9uJFXW6cQm+OOO6Z3vbZAOgAPGGT
-	8oYMzAlgpb2RTtA+s700aAzMBrq7AHYN5pfr8VC5h1WUG4mJ9zIhKI6hzySYH1C23AxgC/
-	6AZMF6Xa793nCZdRPxUnUo+K4aQkbMY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AZZrN+FP;
-	spf=pass (imf23.hostedemail.com: domain of jasowang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jasowang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id CBC936B0005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:43:00 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C3BD1A04CD
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:43:00 +0000 (UTC)
+X-FDA: 84224089320.21.48AB0E9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 09C58C000A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:42:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IJ+Cc6Pb;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765858698;
+	s=arc-20220608; t=1765860178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DUjCNr/nxXg5R3wmw4ZM/MLoFfePhldzOpxojnv4JY=;
-	b=J4P95g3mPtFO3v2EF2opK08SLa3HGCThmJ+L7Ks1xoYzfmZMOSdhrH5jmzCyLk/fF71n4B
-	D3r4ZpA6sEiHFETO1TXb392O/9kJlQetM/TmZ2Xc2qp0hoTCvGS/xHMeppbcWxsLT8jdhO
-	aODP9jnBT6b6Nvy6PJtGZUMR01ipZmo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765858697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8DUjCNr/nxXg5R3wmw4ZM/MLoFfePhldzOpxojnv4JY=;
-	b=AZZrN+FPgR7YhKUpptcO6O3YIbLDuYAvXTCkCRC1VfgKzUGdpb10LItb7SKNOSTOgRnSDf
-	UGQ6ciNsUrI/y3jXuzU5n4mDZjCPtHma+dhM1+zP2QtcpaCoZzwaobdoX3wtW6mL4M7X8D
-	seUFSGB82pZ4fgxfiVve1tjz9aKF+yo=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-KdHdNqa2MreuYX7BUbIHaQ-1; Mon, 15 Dec 2025 23:18:14 -0500
-X-MC-Unique: KdHdNqa2MreuYX7BUbIHaQ-1
-X-Mimecast-MFC-AGG-ID: KdHdNqa2MreuYX7BUbIHaQ_1765858693
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34c314af2d4so2681516a91.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:18:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765858693; x=1766463493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8DUjCNr/nxXg5R3wmw4ZM/MLoFfePhldzOpxojnv4JY=;
-        b=dJCSu3zdW+ty3YC6zAG5WKm3DhBTqJIKekBFutAz2L8MIGjK4y9bM5KfC4gWvg5QLV
-         lK8r86TZxTWTAkDFVGM5pj9IeNZDqlWtf8J08WItMUzUgACel1wIJuaZxmL489yKFy+7
-         c8c30VTQ6Iid+dsKC4SUqNJ9tp2JAXxjsfStWLQLwubiA6c8GUHDw35aaZss7hJmm1B2
-         /Wsq1xChHoEuAxDUA8QIgNCsgE7ABLfwO0Wzc4lYqKlWbUw/I0ioNa9k2ZqlxappM/xg
-         l8Ay4aLihew/QnDu1Zl6W5uEAJy257s4E1aoo52om7YQ1OhDoQRQnenHe6qDAXFOIwRe
-         KUZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcy+BcH6YF9S+VDfd3jPUw8zHvObGZ1FAvHRst3cmo/ruAlonhGxsIhBQLEtPYwJ5FT+mjrV08Wg==@kvack.org
-X-Gm-Message-State: AOJu0YwYplBassawUf3Bmeh3bdgtpDKZN3MUKEXjj0aQs5AYPuQP0VLy
-	/7XrLNdv3M1y6Mbljw3qg6iOyskYaWDknm6B/7E39Z6sRtriLYxFlxnXSV7ITmpMO7KeeJyCaGo
-	93jlnHFR+GSmxmF2h8GqWLVvgKeRxlcucJi7d5LdPj3+FyWezAECd2RI6SymnXlUa/C+muPtHQM
-	yzVpSwuyWNHAwGxPkVoezIjdHp1VQ=
-X-Gm-Gg: AY/fxX4bKUWVxx1nuKM6VeZME8/Yrb70vVHEt0PoQi1nlggOAHT5WrfNz8Ur0fkpTpy
-	EZ1ngZ2M/9VpveZNHKJKZNJ97fJt3YtsZvo23xMks+h61GeXc3IDxlgHv9tL7UGOpoAXK4W4BsQ
-	0TMkKANH429xKlPbLi6zRzjBpnZNa1110vljlY/Z74/3z9YqrQW2vXzXdI1zSriha+Qg==
-X-Received: by 2002:a17:90b:2ccf:b0:340:f05a:3ec2 with SMTP id 98e67ed59e1d1-34abd81733amr14699608a91.17.1765858692988;
-        Mon, 15 Dec 2025 20:18:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHD77DQk18dayngXtbIw3fsOCk15EBfDyLwaFsEN4158FtjFJzrWxy8+rjy6tA50q0hvVxRQAeZswAuqcmTXkc=
-X-Received: by 2002:a17:90b:2ccf:b0:340:f05a:3ec2 with SMTP id
- 98e67ed59e1d1-34abd81733amr14699535a91.17.1765858692536; Mon, 15 Dec 2025
- 20:18:12 -0800 (PST)
+	bh=xnhYQwMhgvMG9Ui7ISNjpQjXKuV9J98ED8IL05rJsco=;
+	b=BoaENjMmXflM86pimlzY1EhpUdyPOKpm4sBBkISXPfMn7EsXLiTRRitd6//G8ZVVUpsexD
+	iI9gGKyfqDRayk8TsRkRxTpR+8XpE+HGovhXC1ARVy/bSr5EEraQuYLtQZ9UC9h3Mhoqga
+	LXE6sZyOa/EB+JsBYgLZlsTRntVpA54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765860178; a=rsa-sha256;
+	cv=none;
+	b=Nhgna4/NSl08MucCyaMG/0eBsYJRtAzZs/4gbOx20KU9VggnRzEl48hqIMMrKRpRNXgelb
+	XyTQDjW72FRt8bIuJ+0+Ahudts6bRI3w4pLv1gPnYdi5WNSK4apU+evdOv0J4GS++pJbQS
+	TwFKXfvvEoNEs2QtGkg87GMrewwogXQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IJ+Cc6Pb;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765860177; x=1797396177;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Fkq8HbuoAJDko5Bgr6cLebDBGD2rT8Jq8r/WQ28UcIQ=;
+  b=IJ+Cc6Pbkaqd+3axSaZ/JPGvctc/7Yz+Qhtd6ZiqV0YLt2aG8bgIIohl
+   qDTHqvl6lSNJaLwSFRb2/RZLD5L9HdFAOn2Ha67YhTF97wVFhzF9P/JUZ
+   E0pOYib7WfiRXBN4uH9V4Yx5AOiSOHXzhhTuq27z4/aQ6+d21frGyM7UJ
+   sfUiksRmiuVJnWEO1X8DgNbkc5A2NVhz2GdzihF/3KWTPb89UuSdF2WrB
+   JNgaFd9A/cW56o4LUlIRuxSZUkLQLh/MGOaYVo340aoYqiHJlTITtCWgP
+   6S5BpYtdE3GMd3LoPTHaRZH0yAininlOP0szZjsNsih+RH2hQAGC7oGDd
+   Q==;
+X-CSE-ConnectionGUID: MQWxxF16QYeJRRKK1bo7Yw==
+X-CSE-MsgGUID: KIRvWscxTO6MtJosqewjVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="67844117"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
+   d="scan'208";a="67844117"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 20:42:55 -0800
+X-CSE-ConnectionGUID: Lf88ju+rRASp+h3UWXr5vA==
+X-CSE-MsgGUID: de11S+tETEqRidJqhi4H6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
+   d="scan'208";a="228986796"
+Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Dec 2025 20:42:51 -0800
+Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVMtc-000000001A9-2XhZ;
+	Tue, 16 Dec 2025 04:42:48 +0000
+Date: Tue, 16 Dec 2025 12:42:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zhang Qilong <zhangqilong3@huawei.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com, corbet@lwn.net
+Cc: oe-kbuild-all@lists.linux.dev, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhang Qilong <zhangqilong3@huawei.com>
+Subject: Re: [PATCH next 1/2] mm/huge_memory: Implementation of THP COW for
+ executable file mmap
+Message-ID: <202512161243.Dm4FDP0T-lkp@intel.com>
+References: <20251215123407.380813-2-zhangqilong3@huawei.com>
 MIME-Version: 1.0
-References: <20251215113903.46555-1-bagasdotme@gmail.com> <20251215113903.46555-7-bagasdotme@gmail.com>
-In-Reply-To: <20251215113903.46555-7-bagasdotme@gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 16 Dec 2025 12:17:59 +0800
-X-Gm-Features: AQt7F2q1idGMqOnPlq5afbA61NEyezJumJNhfdWiFdPMuPeC3DZ1U_cOOaqg6iI
-Message-ID: <CACGkMEtJt7Df5kXWex8EoKdakdB8_xLjgCXQt5pUvk0dkGzVMA@mail.gmail.com>
-Subject: Re: [PATCH 06/14] virtio: Describe @map and @vmap members in
- virtio_device struct
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux AMDGPU <amd-gfx@lists.freedesktop.org>, 
-	Linux DRI Development <dri-devel@lists.freedesktop.org>, 
-	Linux Filesystems Development <linux-fsdevel@vger.kernel.org>, Linux Media <linux-media@vger.kernel.org>, 
-	linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com, 
-	Linux Virtualization <virtualization@lists.linux.dev>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Linux Network Bridge <bridge@lists.linux.dev>, 
-	Linux Networking <netdev@vger.kernel.org>, Harry Wentland <harry.wentland@amd.com>, 
-	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>, 
-	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Matthew Brost <matthew.brost@intel.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>, Alex Hung <alex.hung@amd.com>, 
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Dillon Varone <Dillon.Varone@amd.com>, 
-	George Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>, 
-	Cruise Hung <Cruise.Hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Sunil Khatri <sunil.khatri@amd.com>, Dominik Kaszewski <dominik.kaszewski@amd.com>, 
-	David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Max Kellermann <max.kellermann@ionos.com>, 
-	"Nysal Jan K.A." <nysal@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Alexey Skidanov <alexey.skidanov@intel.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Vitaly Wool <vitaly.wool@konsulko.se>, 
-	Harry Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, NeilBrown <neil@brown.name>, 
-	Amir Goldstein <amir73il@gmail.com>, Jeff Layton <jlayton@kernel.org>, 
-	Ivan Lipski <ivan.lipski@amd.com>, Tao Zhou <tao.zhou1@amd.com>, 
-	YiPeng Chai <YiPeng.Chai@amd.com>, Hawking Zhang <Hawking.Zhang@amd.com>, 
-	Lyude Paul <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Luben Tuikov <luben.tuikov@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Roopa Prabhu <roopa@cumulusnetworks.com>, Mao Zhu <zhumao001@208suo.com>, 
-	Shaomin Deng <dengshaomin@cdjrlc.com>, Charles Han <hanchunchao@inspur.com>, 
-	Jilin Yuan <yuanjilin@cdjrlc.com>, Swaraj Gaikwad <swarajgaikwad1925@gmail.com>, 
-	George Anthony Vernon <contact@gvernon.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GRDbx7z0s0iz2dN_myRHqnMGQCxKYbhFR3tB0mAkY78_1765858693
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215123407.380813-2-zhangqilong3@huawei.com>
+X-Stat-Signature: 6m8bhhseb1p1cgj6mfudqxrjtmxdp5fx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 09C58C000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1D74140007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7osuazumsx4qnbepwnoige9i9wc9auyz
-X-HE-Tag: 1765858697-245504
-X-HE-Meta: U2FsdGVkX19yA5ZF2QOe/ruMdc0pXjHU15LRmSE9JwQGHpwK8Jq1AyDS2E+Lw6vUjIavSnZw09So27/R4bJ6Cjg51PJHsOuaRnY9AMBz66uIXZPfL04iE4WGGSHQFozsCo9BVSb0BYzFcjCOSU2VUNOa1yXRKRvaatL/1NH1KfP8HfEC5x/d8mVkjHb2CcC5LPNiCgpfsfH53KovkH8dddCq/lz3mBEgZZEerOaaRDu0iAS4nOemRwoVncFvydiluhMD/IIR8ImLNwAyqp5TCrlvrCTHc94l6Zle6lx+z7i8zhX5F94WGWchhSUXWkK2nnfB2TJlhtCIfasVpbY/NFNIQc7a2wF8Y9nrJnYArrRa8+MqeKn8HhD/Oj7UTo96BzvNF4IUS3af9IxiZnRNFiXJ86PIM32BRKPA7CyAjSlToXmCJ3H5TV5ICKTYukEo+YXDD3iBGGdk41XRk2MK5nAcjiBAB/1NpNK0RdD8R/Zs+t9VPbaD8t6WoNnCVB4aGUzjMCDccQqvl7hZZY7Av/b3EARcJV1kOx9aFqy2B5Xr7ZGPiujdEbpc9g9BjaXEiuaX+2HCLCGX8GnlUrLvbOcQ4r6kwQYdKdtQaeNUv6W0h5eTp+44aulJ3OL3Zwcfvf3g0fM1s3GHKK2xHlW0k7ucqQ63f9rQZyp5mR9TgxbEEuFJVutSRsv7oQTUglW+7aMLu8EjSBkveGFbYft5PCoziIqLva1AYNTHUs1aToGsV1z3RR2MXBO/aPERsDuq0rVbrfm5HpEZrEts1A9wCMcL70cyRwW9MXbTdvrYdHTQdJ6KWjf4HshFPGJ21C0Fyt6MgZ/V5FSMESz5wVGcqkZvRsCSGWqgDhqmqDnkDiUY7d+II8dvRq+AsB8/ZCeC02p4xrhg2hnrwKKNPRJx7EZGBIijKmWIGDT9w/kn5wbMuE7UDkF5bLI55cFn1/RvU2Los4kW8QK+Pm5G1uY
- sTVsoWpB
- vtmbCtQ9EqaeYdJCr9cKsQwRYjTqzpTXysPG4jV8JFzZ0LmP3luf6/9lz+/bkeVvNkz2ROKmP0mw6ZiiBh6GrvpztWw==
+X-HE-Tag: 1765860176-416725
+X-HE-Meta: U2FsdGVkX189SFPc9sP7Rx4UgMy5Hd0H2voidmPyh6zPyWVDT2I1Acuf3+jnzzJ1n87FMUpuzl6xfT014Xb+uP98GCiaKxrvoCg9T7RXDsZaE4kqGWuB4P3wv8r8q3VWle0WD7g5LpmxHeisA2OEHKwvAl44kG4qU2BEatJkoAimUF4lYET4hIOlPNQM1R4fRMWQQzLJbxx0wWM+MUdQ/xVR9vfbnTJVaBScX2YOgN2U/6S3l7u3UsbjBkNp9KA17VMhL+n4ksUUJd51wvKVuq/ZuA9x35G4rJ3ynoSqDukclbWlnNNk/GLBUVtQ4r4tiPpJKjBpcYZnJ6EIk/eDzSHINA07DrVheo7OmdE6UbDFv2gSXSJmTg/zwGJY7IUShtxveNG6QeJo4buQ0eIr81HY3o7pe0V/RlajEnV0STB/QpUM2RtxtAjKNcH4N93MtVS28mcz8lb6j7x8H2n1BSQLaxPKMheoK0WRIdv2C4xvzShOOeruXvvXIAvHqpDO5JjHdwTmd7ZdLfQJyocFSr8ccYPUFwZrmJ9uDEejfqIgldMH6yNfNVcLDMA552MUIk6dFkn/qkJ89I3kEyHh+j4eeAYgDazsSae3ZyfKwBna8japMOCqpD57iBNHS7TL3KlSrHZuxEADQE7DPZ1XEuYtze5krO7rdsqwWU6iYbiRUftTBRLjP2/+UA7vD88O+XeiSjG5W/Fl2rnBUzjSDEQmNIWF0zTTguQRH9xAwqGH7CvUMtB3H1RxNya7sQWvnDf5vDacNY2kNxMIblvqVOqV+ytEYrCgKHuuu3yr9G+1gzhSGtzas5a7HURETwGxlKGcv4AO/a/HI/6aVp2zETc/bzyhU8mn8zNJfvB2+DKQKWOBevNyXtsHBkkWordOJShyDe+yNtzwYqM0Y7HqKYbzHfk6sySZtZ8d0CbpDDEafJpk6XRcwP1k5d3Z3dYRtdt7lXdMOCjCzYHvScz
+ VvOE0Akf
+ EEo+v/cn/aTNP6KyDZG4uHXsaShlJPFxTMHR1BNglL+7Gh27RCRZzQFQpFpeqLcZUK26jVGr4O17EgZdbZRb7LPYVzLJg1wZGswBjU8N3TKm1FtxS1S4pPtz6GUN9lqe1ZL3D6eTvELxaZ5sT6Fli40mrwjZbekDEZq/f9j+HHZAikPu2Ejc/q+ph85KxqtX2fV5mL7SW6FYET5Nj/cuapMHtIUJhFqNy7gPJAyEkrek1q7qeIHXreYZqxP+sPraTcs2AZHVscruidgV7nBhe7YhGhHe1v6XNgJD8t95R2EEzsnDctzju3aXEPNYTUgWuPmQ2su6HQ+hOlkchRywJCYaMkPN7bbO7utau8sdI03EMKGXcyUQFDJF1XqFCdd+Mw16wL5AwVmXb5qNdwGchl0b32Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,24 +116,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 7:39=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail.com=
-> wrote:
->
-> Sphinx reports kernel-doc warnings:
->
-> WARNING: ./include/linux/virtio.h:181 struct member 'map' not described i=
-n 'virtio_device'
-> WARNING: ./include/linux/virtio.h:181 struct member 'vmap' not described =
-in 'virtio_device'
->
-> Describe these members.
->
-> Fixes: bee8c7c24b7373 ("virtio: introduce map ops in virtio core")
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
+Hi Zhang,
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+kernel test robot noticed the following build errors:
 
-Thanks
+[auto build test ERROR on next-20251215]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Zhang-Qilong/mm-huge_memory-Implementation-of-THP-COW-for-executable-file-mmap/20251215-204035
+base:   next-20251215
+patch link:    https://lore.kernel.org/r/20251215123407.380813-2-zhangqilong3%40huawei.com
+patch subject: [PATCH next 1/2] mm/huge_memory: Implementation of THP COW for executable file mmap
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20251216/202512161243.Dm4FDP0T-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512161243.Dm4FDP0T-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512161243.Dm4FDP0T-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/memory.c: In function 'wp_huge_pmd':
+>> mm/memory.c:6134:21: error: implicit declaration of function 'vma_is_special_huge'; did you mean 'vma_is_special_mapping'? [-Werror=implicit-function-declaration]
+    6134 |                 if (vma_is_special_huge(vma) || vma_is_shmem(vma))
+         |                     ^~~~~~~~~~~~~~~~~~~
+         |                     vma_is_special_mapping
+   cc1: some warnings being treated as errors
+
+
+vim +6134 mm/memory.c
+
+  6104	
+  6105	/* `inline' is required to avoid gcc 4.1.2 build error */
+  6106	static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
+  6107	{
+  6108		struct vm_area_struct *vma = vmf->vma;
+  6109		const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
+  6110		vm_fault_t ret;
+  6111	
+  6112		if (vma_is_anonymous(vma)) {
+  6113			if (likely(!unshare) &&
+  6114			    userfaultfd_huge_pmd_wp(vma, vmf->orig_pmd)) {
+  6115				if (userfaultfd_wp_async(vmf->vma))
+  6116					goto split;
+  6117				return handle_userfault(vmf, VM_UFFD_WP);
+  6118			}
+  6119			return do_huge_pmd_wp_page(vmf);
+  6120		}
+  6121	
+  6122		if (vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) {
+  6123			if (vma->vm_ops->huge_fault) {
+  6124				ret = vma->vm_ops->huge_fault(vmf, PMD_ORDER);
+  6125				if (!(ret & VM_FAULT_FALLBACK))
+  6126					return ret;
+  6127			}
+  6128		}
+  6129	
+  6130	
+  6131		if (is_exec_mapping(vma->vm_flags) &&
+  6132		    is_cow_mapping(vma->vm_flags)) {
+  6133			/* Skip special and shmem */
+> 6134			if (vma_is_special_huge(vma) || vma_is_shmem(vma))
+  6135				goto split;
+  6136	
+  6137			ret = do_huge_pmd_exec_cow(vmf);
+  6138			if (!(ret & VM_FAULT_FALLBACK))
+  6139				return ret;
+  6140		}
+  6141	
+  6142	split:
+  6143		/* COW or write-notify handled on pte level: split pmd. */
+  6144		__split_huge_pmd(vma, vmf->pmd, vmf->address, false);
+  6145	
+  6146		return VM_FAULT_FALLBACK;
+  6147	}
+  6148	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
