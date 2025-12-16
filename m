@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E96D637A4
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 19:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03429D609DE
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 19:58:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F07A6B0088; Tue, 16 Dec 2025 14:44:37 -0500 (EST)
+	id 405C96B0088; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89D936B0089; Tue, 16 Dec 2025 14:44:37 -0500 (EST)
+	id 39C5C6B0089; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77F946B008A; Tue, 16 Dec 2025 14:44:37 -0500 (EST)
+	id 29E9A6B008A; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 646D36B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:44:37 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 264E18B01B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:44:37 +0000 (UTC)
-X-FDA: 84226361394.01.F04C0D1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BFE491A001E
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:44:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPNpLkhX;
-	spf=pass (imf19.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 18EC76B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A36D55A67B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:58:20 +0000 (UTC)
+X-FDA: 84226395960.24.D076077
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4785A120006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:58:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LfbZ/dD3";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765915098; a=rsa-sha256;
+	cv=none;
+	b=Rm47VQ5JUKBdOHhSCbGSMiRMhaXb1egOuA8a3us04DYKYpF09HgAq73EEAmGtcvRGiT6le
+	8V5qoqCZkW3sv2udbiSa8eELisTMgNbmYMvEKqKVqGydhLpwWjdSA6D0xXotHHVnClailC
+	LAzatj+8M5EQMnbr53qQqF5X+5Z/Rmw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LfbZ/dD3";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765914275;
+	s=arc-20220608; t=1765915098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OWZMfsrJ1GHpp0Gacc8vZFboQMCus5dZjsnuyY0r3Lc=;
-	b=t0KqKSJ6Kw9IwnnrvNNBmk0ZUNbEg8EhnfCzFumnWYLiHBqiUrabv+QEWKhSJ4pEo8eD6N
-	AOk56SCZHYy/tMB9q+mZbDm+ReVZ0zMP/GKD2yJAB4VcS5aijNQe9w68/+bOUvKWYKIyPp
-	yBXU+rTI9/5NE83NcaXdjQGmHhUibGg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPNpLkhX;
-	spf=pass (imf19.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765914275; a=rsa-sha256;
-	cv=none;
-	b=HnKfeREVsmbKLGZCxZ40TpHk/Fg5kDvyX6Fkal4JgPVV5HrfsDKk+XW1kfoPjyz5LdiDZ9
-	aLLVCAe0BEon7ZnC78I8KXwpbo9gWPqe39J2SlOuQhX4jSCyAMQ7D6ayBfqLMrMlzSV6jE
-	amcP/LXSMEpABqMw6YNJgqasno8OnLI=
+	bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
+	b=n4pcYBAgggfS8a3R1q7Bp31ywciWcbEjL9F8CXU8bf10ZOXi6PfARthaZ8L9bUawH2FQ7K
+	xsaBKYPSn9q8LO6SCvErvuYT1CB15p+BXaPx43CbN40gyofAJg0u9urcfiMQYhk5LwLqyJ
+	Fd7iRXUyCgwFLNolVgkp269AezfzRfU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765914274;
+	s=mimecast20190719; t=1765915097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OWZMfsrJ1GHpp0Gacc8vZFboQMCus5dZjsnuyY0r3Lc=;
-	b=JPNpLkhXtjUEtBKfaJLQeq1psG/lEuZvzcJ0uMnCUTlcmNE0gHQe8AbDpONWbiYESdSZub
-	F7zy4nLbmW4k9hHoddlymQa6OyXneQu6uz4ojKMcC3gP3xV84N3AdWNTJ1CMwMf/kmuJDF
-	wZbSiRB9XDhv3Op6apQSqWGGigubSA4=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
+	b=LfbZ/dD336KfjxZVrv6VkoZBrIeL1tnIqgl2HR96bxjQv3iXeO9uz0gPRDRe50gYeLrPs/
+	XTJhZ8QIOLXthTy4HEXasrXeqX56y9LJimz7UGs5yDIDz7iMHslvM/V3kdvAInzS14BLas
+	2f5z4zYOEymRwjQy5HFbJnMY8voQEAE=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-bDH3i2E8OB-TbU4Jpf9xtw-1; Tue, 16 Dec 2025 14:44:32 -0500
-X-MC-Unique: bDH3i2E8OB-TbU4Jpf9xtw-1
-X-Mimecast-MFC-AGG-ID: bDH3i2E8OB-TbU4Jpf9xtw_1765914272
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4f1d7ac8339so148756071cf.2
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:44:32 -0800 (PST)
+ us-mta-642-bB7k2heJM8i4ILWdQVxIpw-1; Tue, 16 Dec 2025 14:58:14 -0500
+X-MC-Unique: bB7k2heJM8i4ILWdQVxIpw-1
+X-Mimecast-MFC-AGG-ID: bB7k2heJM8i4ILWdQVxIpw_1765915093
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-29e6b269686so117027755ad.1
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:58:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765914272; x=1766519072;
+        d=1e100.net; s=20230601; t=1765915093; x=1766519893;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OWZMfsrJ1GHpp0Gacc8vZFboQMCus5dZjsnuyY0r3Lc=;
-        b=pVMN5B8Oy4a6pq93eAjW9oZBHK3d2umXP7j8avTyVCQ17TKmy6h3CG4xhq41JLHaJO
-         kwxwmIjbxyrMLomi9Z+3WD6hbccZq9UojLJ46gerWZjvfTweO4XJVDhIBzBoNUZs57s6
-         VyoCnbVRpn0qqOjUg2Mw5N1HeFvAfVWZmSJ0Vgi+6W/C5We0I5bVfWuqVoKrlAgb06CV
-         /qwRiiQEaraEzvrBwJGHPx0GNuaYTXFYQ7HnINmwzXsQ40F5IEut77UBwetDNnko3pt0
-         vio1lPofpd2t3sCcXq5VOleVqFI5xKRv6+2BdYf6ZVeEiB95gX+YXuoMKKHV2ElXAXSw
-         yKdw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ0ApD9kUHacoTnWOioONcRVYejB7pKtbvYfHcqUalIFTtqdFPIdqkJJw4IvreLfAXvrh/kOMCpg==@kvack.org
-X-Gm-Message-State: AOJu0YyG1mU81sT17CXmLYybFrT+iWeYsc264JwhGnjvgrhYb7r3qXfv
-	9amWT9rDPWcRQCW9wr15BiVqYk5g8jGE1LDFlilMwgrwpPN8HM62HXg1jskh59Ye/YsVe/hrCkp
-	6XH2ZOD/QfhUXAxGav1lLFFdGBK/zeQhElgU5dqfTqT1dwl3KfzFn
-X-Gm-Gg: AY/fxX7AmbAiAS9bpw486E/2Co68mNILPiHg73lga7NKo4BU5M+fyTrkptS68QNt5rb
-	V6sQY8rvhqNEQkQ/Af7ovf4tWuaYkqczcvFKu6s25kfd6fKwjD4AhgdQ7rV9qeirD3QY86Gg4St
-	VOvkTWDPAqwXyu+iYGOlyb2tXGcZP8+xL2eqx755Q2OHGvx0ZEoW0i+IiBrlcYsrrqSCRlMgVmS
-	q3fvTBgXUDDZ3Ba6O4t9FTppC6FmMePBXoIFpXY0S7HI/7hnFyvZkfqCR/BIPRAbJk3eQuZva1x
-	ZElR0NuuajdXiK2LqeMNUPYTMxtBVTDmdClJFqZ7kAbecL6/xSTg6OHedUrtx5LmPGKgtzO6PSi
-	+ldc=
-X-Received: by 2002:a05:622a:5911:b0:4ed:b4ae:f5bb with SMTP id d75a77b69052e-4f1d05fda57mr230282301cf.65.1765914272125;
-        Tue, 16 Dec 2025 11:44:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGrrpjRFCD1x1zKDvh6gBnxEwhK0Ukm+SrqYrMtn8W42xybAzgzISZS5MGyj4ryNBGs0WxcZA==
-X-Received: by 2002:a05:622a:5911:b0:4ed:b4ae:f5bb with SMTP id d75a77b69052e-4f1d05fda57mr230281951cf.65.1765914271709;
-        Tue, 16 Dec 2025 11:44:31 -0800 (PST)
+        bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
+        b=t+NcjjkzyXjbitk6SCtdwJYUuQM+3xqrRCvw+/zeXi1wCccBQvgiMgxsGFTUICP1bZ
+         KEvbpSNAoN0B/7HQhuIE4HtXaoGk6K72qcorUUwRYOZHgATWy6ipLShDCn/YDDS5QYzH
+         j/nhvqZs8bsI8YaRHn4NbZh+qI84yDG5SC9FnJEAM99S1jnP0ofE9++3v4QO+gDfrz0r
+         wQbnCt7bn4hUA8y19XDzcnjvTl9SYT8t12Vj0Qq1aUUHhPv9lDLoTYgF/PE0kM8jkWAf
+         7DRnYk2fhfyEw6RC4tvJCL4n5qh8u0JcAoiENBCkRVI3j0XtKC7jOvoZij7/0w9NETyz
+         TMIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWOcu/oIFtcx2C/Elwwm8Qr979j8nzR111bwGcZ45smitzwQ9JHBKWhzAmWzg3BhbDAvptrNVQ4yQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz3D7Q+LnMpkPYTHf6dAMgdsYz33UNjR2ugw4kzzsnWrtlM8mPL
+	KmVRUZPB8vhuIqgLLOBT/8s20TkeUqIvGl++KEs4juDnuvggCrJGvBR07UwBqOeYJ1xtL2fVv65
+	kI9DWiviMEXhqsdPy/gSpfh2qeCv/dvyu85r+2HZECQA99/oPUAnk
+X-Gm-Gg: AY/fxX5UW6D2HJeyffB7nyeghaj+pvbAtp1jA6EG4PgxWVdH6DTFVlKCT24fhD7JlgR
+	tuklqLHpQ8JjEcmquJTwPtYo2sVOwT+pxlSVIs8d8CxZngEihZcSrakNNSax4K5Q1L2OJIirU0n
+	ATmLXKpafvFr7DANCfPSBSuJ+kIGAsmE1D92D0nquWdS9OV/vrH8PgdR2egesylV6bEELQ+NCW/
+	L+n8Iy/pEe/sOlQRc/Q15R1EmhqE3i4VSbVHMwWPzseRInTgX0fDgntsAODCnfNQvUdDxFJM6Xr
+	t2mmFz+kacjY9qwsjCjVfv1lguG7L/eocr27SjX8gOnuRe3qtavIU6RHwPTEkNQbSyZZIKqBUlI
+	bz64=
+X-Received: by 2002:a17:903:3bad:b0:297:d45b:6d97 with SMTP id d9443c01a7336-29f23e3618emr164955795ad.14.1765915093038;
+        Tue, 16 Dec 2025 11:58:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHr2X5JE1VeyIh1e5EanKDeX9YYmMdGAHNX6spNNWVf22t0T9F/mXgE3FmtoXHqzC5TX7vXhg==
+X-Received: by 2002:a17:903:3bad:b0:297:d45b:6d97 with SMTP id d9443c01a7336-29f23e3618emr164955555ad.14.1765915092528;
+        Tue, 16 Dec 2025 11:58:12 -0800 (PST)
 Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f345902748sm23150411cf.0.2025.12.16.11.44.30
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a094398ed0sm110452725ad.27.2025.12.16.11.58.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 11:44:31 -0800 (PST)
-Date: Tue, 16 Dec 2025 14:44:29 -0500
+        Tue, 16 Dec 2025 11:58:11 -0800 (PST)
+Date: Tue, 16 Dec 2025 14:58:03 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -107,32 +107,31 @@ Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
 	Kevin Tian <kevin.tian@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
-Message-ID: <aUG2ne_zMyR0eCLX@x1.local>
+Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
+ !MAP_FIXED mappings
+Message-ID: <aUG5y60q03RedLwv@x1.local>
 References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-3-peterx@redhat.com>
- <aTWpjOhLOMOB2e74@nvidia.com>
- <aTnWphMGVwWl12FX@x1.local>
- <20251216144427.GF6079@nvidia.com>
- <aUF97-BQ8X45IDqE@x1.local>
- <20251216171944.GG6079@nvidia.com>
- <aUGYjfE7mlSUfL_3@x1.local>
- <20251216185850.GH6079@nvidia.com>
+ <20251204151003.171039-5-peterx@redhat.com>
+ <aTWqvfYHWWMgKHPQ@nvidia.com>
+ <aTnbf_dtwOo_gaVM@x1.local>
+ <20251216144224.GE6079@nvidia.com>
+ <aUGCPN2ngvWMG2Ta@x1.local>
+ <20251216190131.GI6079@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <20251216185850.GH6079@nvidia.com>
+In-Reply-To: <20251216190131.GI6079@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4M9NgZcmJI7ZPK4SVoGl8dhKG65D8njSM9qdvJMUtc0_1765914272
+X-Mimecast-MFC-PROC-ID: IOOuL7eb8apKct6GjK2XCWDmwvoVygrCY86PjX_7e70_1765915093
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Stat-Signature: h6zfm59ohrzzywcz5z6niyas4id1yx1i
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4785A120006
+X-Stat-Signature: 7q5gdugh6si89wgqe7m4xjrhbn7becmn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BFE491A001E
-X-HE-Tag: 1765914274-331847
-X-HE-Meta: U2FsdGVkX1+k/ag/sMwY1JiRL9xqN9YWS8vbGoeBqOJjgOVXySOVv40b00dKMS1s9/gMBUD60wCksfH1Vmcp7fN2T2zLsaEQB+AGCgb7zDDc1gRbwE57EzjBgQTBvp0HuzfXHyjq0rI1NkZCAXvQbvb53VHGLVeMgBTdwGuYSuoa10g15AXwG5A6KxCP1ahbVvkQFA7OO4BOAk+KxPy1VgyVKnwFoBkJK4yi4bfXRiZ679WtnV/faVIZb4DKwhXAWBHP04SMeU0K58ssIYDb01vlakV0TQerr7eXpDNbq2pKVEEUS6qr6F2BqZa7ZRHk22O15RH0VzKp9TjKLDeh/uBqMTYjZPHPSjEPpJMk6E94fTNhNLuF3gH7sVXpMK9f2xVurRUEc8Ny8WRFsm+woz9exJtPdCC0838FkArEKsZF7Kin3gOuPFHa/tCDS78x/O7naZggumO/BuDWS52sQVZnX3iMecjKXbvyR+DZ+pME8WKLgFbNKOjhlAc6Oh0pLcTdFg/2p4svCdggK8bGbqGAw9FY3AuOYqjq6jagcD9JgCqrBeQJuyeaPb3wQCLlb0fYP8wDWTrR2Z9ygme947y+D89/gb5hz6W81jDE97f5Cd9IhOL0wKCXKYHuAVbyDpBj9jTD5NvHjlrnYbyC4J654a9O+Z/54i17WbK0FM/zJE4wRL0cOmRhj3iJK3HgVElxtLA2wN7SaAHayJsnm5KYBECAcSOfy1WZ5A7x54l0fQzGHnZIsc+yjlxewSLs39yQcO+9PcaY112Z4TmMP/I41y4FcE41Dbm3WguxVAZlp1NZA4oyv4DGTYw2x21MrtxoeyKZ1W1ttclY71SD9GGZFveU+C5bkTSrcNzneRxCliBbuvrjAgYopMveo83gf+9tFfgW9aEK3JaDn1AYgAAKRylpjOzof5x21UlnFrzJRHfobCVRNy9lX5eL6fBifV0n4I3gez27/F2H2kN
- R0g5G8MU
- xxa6j5rBeDop5p30QW9BPOBTDhFi9jQXvcXnWFcriadRhwC/xQJ9muaVP8+yWThmiOPQAKRDOhRn7uk6x8eyBp6A5hpRescUw3OxBHZJIWbttPA1XWlfY1TMOT8B+5YhivITRAkdIVI2VuC2NMBDbOYAr9owRFaZpnLMT32L6+Rgm3R/dtpKFhQhDYJrU/GLThcIUfGh8UIGmf2dwQvylm34UcL33GWJgvidGla4O780On8PbGzwate2/LyjhAnoxEHjVPLRyryNPUyqfKbqBth0GEzGkMblZ6OkIuQM7uZaP55XXQ9hWJNspsx1/FZePTRXs+J5Z0bnx3h8AchpOZrPIjTq5YP4VfcS3B+TYHQzdvtS/oyR+k12lxi4zV9egCo28orma2p9qzprXnPE4W5VV2AEMQl9Zu4WkAk8frb/v+5u0Tv7qaRIK213I9ZvpjO5kZ1Mz29XABM4gSIJRWpjFNvy0YYVNzl1H0sJFEtdpDZv/HNPfKPTcwraceteB5Ul1egGJW4dlDtxAsKZva5rNDedQc4k60HG9FvMWlBbj4Kg=
+X-HE-Tag: 1765915098-937910
+X-HE-Meta: U2FsdGVkX1/RmR/fYz1vR3P8qhj26iMiFc/FL2IAwJlHiOkk7YwF4U1BrbIf2pRL1fDJ09p9wf8deAE5PeGDjj3qUEqtcW6rU/koavnQ1Tb6JXxzEJOZWCSHA6vCVKNBDUvEUh47el2YxvrTby1A9KvbtZ5XG4M2hkJFocGK/chOs6fpAZEqj03Ry+2PKwtijbl9T4LkhG7Mpfm2CIE8fXv1T9X6GQBEuljY/5kbQYBMHNul9ySEU7XDKCIUBarh1pg1H8Ct2BbJYEXlGsdiFBl23zNq/qX+69hIbFoe/3qmNj/AhVr83WmYG3pYIygnhtjXVGDy9sZHKrYmMh+3+77bq+6rDC21W9gCFjPibYs732R4izRf1zFe1MfD3OEREpuNDAX9LTs8rS4PX5yqDMR/xRGW8Rej3k7A405ojnaRuilTJK88pHdqzKKj2Qg6WJM1aMyvsFEsfgjLjcb7QlvSrydi8UH39gWGccoJsEnnqzKOnpamnl6kD4K7uyFFjNL5tpJypn4ExQ82kvsld4ZGgZmh+Mw7iyOPO55jClOm11SLIP6sSyOofQtD1IkeVkU/FjdjZO1Y3RlFpl4d6Ql3H0W2JKsWksjHjgXbkNylIOoO2DgR8nAJm62rJe/lX/RpSRDs006OJQl/DWzS+8qE4PfXHrDJGPhDcOpa2Ogr36bVG7T8++mXeOTsN2A68HkpmvWhI3Xvo5LTOblYu664XwLVG4RkVUni3Kr0+qHVCsGJq9sCnhwnijIkWH89KU4Kr1qp0LxEMqRThiI0UEpF0Fm75Ud1ppg3q3ebA6D4xHtKOX9xsv/F9J46k3AKM7ZTZZYOWeJ08iJjwT3cNJAnbLICCW3U175iGyBpkYai9MY3FSdwwWILjKbqLVxx/ZUEFjSx1QnIsYM1t52nfLgfIghvUGqi3r0blDB1WrbzoeUTuiW/P8zq7VFRrr74pBGTLBVz+EYgI7I5RQ/
+ iK7WCD2e
+ +DNWjAx+U7G18xADTao8z2JZOaungFe/z/8InvtRGgD02lFGwYMMt9SFnRjexqYQX2srUR94InxWxXAMCLaIUbjsnMY4jbeitVcEsXJHptW8ZUXNMHEgf1MX77dRH7Fx1l2rxm5U7rHYGk3SpBFeWNIZ/VMDA2RUwLxJblgEa0C8bMb3g1hoXAF1XFTbkfyGd70QeE9kNVeJ3usoQjS4f0du2r80m5ry+w6ARUiSwSeHdo0jMPr07IpHZNUDqXNR5ka9YwToXfY+YWb7GwOt/W58zQmiKsFrilJVAEbrX5L7eMTQWjfj3VRBEYrKHt9uwGf/8Oq8+Ib8KXSFesArCEJOmN529HlmVohIK3nnGkZQX4gHwIuPH3D8m/DagHEmkDsBn14IU6X3U35y7jINwiB28gqRLz81pniOCtQRCHswAbZ05HQ+7pgVrE6aoQa48/DnofKDFke9X4CICjErPe5uAkdoHwYq3v+0ZIDZ8N2IEJltmvpeWtrp7804zCBf524q+7d/LoV2anzuHwCtGXlmqR+RoQZKD9tdEvQAzMuVK27z32E/BjV8wuJrcmwP3zKp0IWCKX/PFIHJAWftTUb/kZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,69 +140,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 02:58:50PM -0400, Jason Gunthorpe wrote:
-> On Tue, Dec 16, 2025 at 12:36:13PM -0500, Peter Xu wrote:
-> > On Tue, Dec 16, 2025 at 01:19:44PM -0400, Jason Gunthorpe wrote:
-> > > On Tue, Dec 16, 2025 at 10:42:39AM -0500, Peter Xu wrote:
-> > > > Also see __thp_get_unmapped_area() processed such pgoff, it allocates VA
-> > > > with len_pad (not len), and pad the retval at last.
-> > > > 
-> > > > Please let me know if it didn't work like it, then it might be a bug.
-> > > 
-> > > It should all be documented then in the kdoc for the new ops, in this
-> > > kind of language that the resulting VA flows from pgoff
+On Tue, Dec 16, 2025 at 03:01:31PM -0400, Jason Gunthorpe wrote:
+> On Tue, Dec 16, 2025 at 11:01:00AM -0500, Peter Xu wrote:
+> > Do we have any function that we can fetch the best mapping lower than a
+> > specific order?
+> 
+> I'm not aware of anything
+
+Maybe I can introduce a per-arch helper for it, then.  I'll see if I can
+cover some tests from ARM side, or I'll enable x86_64 first so we can do it
+in two steps.
+
+> 
+> > > None of this logic should be in drivers.
 > > 
-> > IMHO that's one of the major benefits of this API, so that there's no need
-> > to mention impl details like this.
+> > I still think it's the driver's decision to have its own macro controlling
+> > the huge pfnmap behavior.  I agree with you core mm can have it, I don't
+> > see it blocks the driver not returning huge order if huge pfnmap is turned
+> > off.  VFIO-PCI currently indeed only depends directly on global THP
+> > configs, but I don't see why it's strictly needed.  So I think it's fine if
+> > a driver (even if global THP enabled for pmd/pud) deselect huge pfnmap for
+> > other reasons, then here the order returned can still always be PSIZE for
+> > the driver.  It's really not a huge deal to me.
 > 
-> It needs to be clearly explained exactly how pgoff and the returned
-> order are related because it impacts how the drivers need to manage
-> their pgoff space.
+> All these APIs should be around the idea that the driver just returns
+> what it has and the core mm places it into ptes. There is not a good
+> reason drivers should be overriding this logic or doing their own
+> thing.
 
-Here "pgoff" plays two roles:
-
-  (1) as a range, (pgoff, len) on top of the fd, decides which device blob
-      to be mapped.  This is relevant to the driver, for sure..
-
-  (2) as an offset, pgoff is relevant when we want to make sure mmap()
-      request's VA will be aligned in a way so that we can maximize huge
-      mappings.  This has, IMHO, nothing to do with the driver, and that's
-      what I want to make the new API transparent of.
-
-I agree drivers need to know pgoff for (1) in terms of get_mapping_order(),
-not (2).
+I'll make sure the driver will not need to consider size of mapping that
+arch would support.
 
 > 
-> > Here the point is, the driver should only care about the size of mapping,
-> > nothing else like how exactly the alignments will be calculated, and how
-> > that interacts with pgoff.  The kernel mm manages that. It's done exactly
-> > like what anon thp does already when len is pmd aligned.
+> > > Drivers shouldn't implement this alignment function without also
+> > > implementing huge fault, it is pointless. Don't see a reason to add
+> > > extra complexity.
+> > 
+> > It's not implementing the order hint without huge fault.  It's when both
+> > are turned off in a kernel config.. then the order hint (even from driver
+> > POV) shouldn't need to be reported.
 > 
-> The driver owns the pgoff number space, it has to care about how that
-> relates to the PTEs.
+> No, it should still all be the same the core code just won't call the
+> function.
 > 
-> > Or maybe I misunderstood what you're suggesting to document?  If so, please
-> > let me know; some example would be greatly helpful.
+> > I don't know why you have so strong feeling on having a config check in
+> > vfio-pci drivers is bad.
 > 
-> Just document the 'VA % order = pgoff % order' equation in the kdoc
-> for the new op.
+> It is leaking MM details into drivers that should not be in drivers.
 
-When it's "related to PTEs", it's talking about (2) above, so that's really
-what I want to avoid mentioning.
+To me it still makes perfect sense here to pair with huge_fault(), and it's
+driver knowledge alone.  It has nothing to do with leaking mm details.
 
-Docuemnt anything about VA is just confusing on its own especially when
-"int get_mapping_order(fd, pgoff, len)" doesn't even have anything in param
-or retval that is relevant to the virtual address space..
-
-If you think missing such info is harder for reviews, I can definitely add
-a rich comment when repost explaining how __thp_get_unmapped_area() works
-here.
-
-We can also pause this a bit and wait for Matthew's review on the API,
-where he showed concerns.  If there's major reason this API is rejected, we
-don't need to bother this part of detail either.
-
-Thanks,
+I think I get your point above, maybe when the core mm fallback paths not
+available yet we can mix things together. I'll see what I can do when
+repost.
 
 -- 
 Peter Xu
