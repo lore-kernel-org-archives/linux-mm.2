@@ -4,183 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F760D5E390
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 14:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F69DD5E38D
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 14:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5CD36B0089; Tue, 16 Dec 2025 09:42:38 -0500 (EST)
+	id 766706B008A; Tue, 16 Dec 2025 09:44:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A11A06B008A; Tue, 16 Dec 2025 09:42:38 -0500 (EST)
+	id 7239F6B008C; Tue, 16 Dec 2025 09:44:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 906636B008C; Tue, 16 Dec 2025 09:42:38 -0500 (EST)
+	id 639A66B0092; Tue, 16 Dec 2025 09:44:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C3AC6B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:42:38 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23C5460648
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:42:38 +0000 (UTC)
-X-FDA: 84225600396.08.866397B
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010058.outbound.protection.outlook.com [52.101.46.58])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2E5D540017
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:42:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j3g66CVT;
-	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765896155; a=rsa-sha256;
-	cv=pass;
-	b=iS0YwJ4Mh7SQ8ckSu0A4sFPt2Ng9BcbH8sbf2rSKmOQkZPT0hnZWuyhkQHdZBz3DbL3lzQ
-	Oebbzgj39cQixcUQ0TOAER0hZbQwX25AMct2+XfjJEVLqoAtTmAkZx43eQM4yjYO61XhIc
-	HkdZ8NQQJGFwBK1X4DF99FSX8UsNYeg=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j3g66CVT;
-	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C86D6B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:44:09 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED6385A06B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:44:08 +0000 (UTC)
+X-FDA: 84225604176.11.E53B8C6
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E7C6D4000A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:44:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YsABfLFy;
+	spf=pass (imf17.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765896155;
+	s=arc-20220608; t=1765896247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sm9SRye+v6Bd3G6/YTFYzP4mrWbsDAegSvv2kve8ICE=;
-	b=cGAWNvuQqoaJI/jMmTBWbfUno2aPrxiPqbTrjTdkm51mJHDsS8Gkyyi1ChEUfSfBz2POnB
-	j8SrK2Xi6bYgf/kmd/kTq6UVY95Hisf8/P+/8Rz20YML0J5KhPLqqhEKPbuRIMHWI+8CMR
-	wiOEPd8vJ2HvLFQp6xv4iirjJqRja5I=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYjKBpgnEpAHa+BJygX7GpC2+AOWsSBJ0jhcYm02YvyDHmWdjvPncGfooFoa4BIBsNAZgb+xn203xOwKSS5zoRSg9Po9GdFBwcMA1iORcjSkHl4OD5VpSsWs9Agg/nidMr8r48As2bMGz9qsttsMKLbFdVxSPcSS14CaHYc24AmHfjqmw58ka8b8bpundYw1HayeQGebXpDFeyjquDn65/hpRjQRnGHO2J8E/M4RAaCrhm8r0Cjt8PqSVzfY4Zqb42c3QdWgPJMtqHx9tRDLGJofq4EtvMRCykBiJbC20boh3vQcmWEbNCMOksf14RBhjOtL9vwj04bHFwatXeG6xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sm9SRye+v6Bd3G6/YTFYzP4mrWbsDAegSvv2kve8ICE=;
- b=aHJoEfkRY0q1R8y2LRRXxV/bJIgaRibRQuivP2W7fGpzkO3Fz5Zgv1JopOhTcPmEnINM1u6AfuSKac9wajxx0wwAxam+krZKlWsiDSpCTYtsewHQsn0+dCey3vL7yAqB2UywWhZQw/wN94v+QuBYjhV/YEH7HnrZDRAgTcteVJJ20gZ37RQlZb0kmV1uRyclOlxhDHOe0dIkbtopVnSBn8fyj7poMo2rrg72LAEexL78pbQrqxzWE7NEvd4KplrnwvM3jW5WYlrTWZhwNwn15625ceDxbEHOdSZ+TVCS7cnC8YDRn/vzKll8aK9L7Qn51uTwW6rP+KfgWgyEUO8PuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sm9SRye+v6Bd3G6/YTFYzP4mrWbsDAegSvv2kve8ICE=;
- b=j3g66CVTzbI1/PEMAi7Gci/WChn6fgmjvMhFuVm1dM9ayQUmXdEVngd/dpa7APFec6AQclb1/fV0w5u4B783H3EmxJEwXW8WbalGLk5NY5DE3MKPvHrRGLpo5Yh1pOpJbX7iDLkMC8vJziopGWXBQHzYwDR9lKSt4naL9dqUF5uwXYG4O82+6x/Hrni3eDcKaIPdMtL1xCMYblTCUdRREZg2NkY+dHE/JuACN6LEj7quFNQYcVmU8VJk/hVx9JCazPGNDO2FwvMt2A+u0xxsHpHMPtpT4vtqSNhF3MmiaqZV3VDI7VKPI48t6SKwqXb0pTpKiJdaW/wl8bP/bO1C/A==
-Received: from CY1PR12MB9601.namprd12.prod.outlook.com (2603:10b6:930:107::16)
- by IA0PR12MB8895.namprd12.prod.outlook.com (2603:10b6:208:491::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 14:42:30 +0000
-Received: from CY1PR12MB9601.namprd12.prod.outlook.com
- ([fe80::cd76:b497:475f:4de3]) by CY1PR12MB9601.namprd12.prod.outlook.com
- ([fe80::cd76:b497:475f:4de3%6]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 14:42:26 +0000
-Date: Tue, 16 Dec 2025 10:42:24 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
- !MAP_FIXED mappings
-Message-ID: <20251216144224.GE6079@nvidia.com>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-5-peterx@redhat.com>
- <aTWqvfYHWWMgKHPQ@nvidia.com>
- <aTnbf_dtwOo_gaVM@x1.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTnbf_dtwOo_gaVM@x1.local>
-X-ClientProxiedBy: BL1PR13CA0427.namprd13.prod.outlook.com
- (2603:10b6:208:2c3::12) To CY1PR12MB9601.namprd12.prod.outlook.com
- (2603:10b6:930:107::16)
+	bh=KAmi/53GD4BVHhy6hIhjJyr/xMy23CdsxEuUrYlt9C4=;
+	b=pTH5wa01wbyvUGlHznFxxxk2Wp7otcHcaqHuVWtqihlpahTW8z+bbi0XEG/Ir8fRcPSrKk
+	KasKt72hj5yTcmsg19CjgA3+aP29hYhlsCxwbupRuWiLpydzewulhKvRK4eTFZIIiQFqFF
+	HeXus4gcesgQ132m9j3q6L2Maj7QBsM=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YsABfLFy;
+	spf=pass (imf17.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765896247; a=rsa-sha256;
+	cv=pass;
+	b=aC03j10SeA3iuoH9HBUBuThRsDraoz/MoqFi5oQTVz5haAnv5dXwECcT7oBs6WSUh5tu2B
+	g3BCs15qPS7Hw48b7v0BmU/rnh6RkzCqtvP4js6jsuiZmZFHroq4QQv2ZMHPefFCVFyy0z
+	kvpxMVbL1NFB5fUwPErBQ4vapWM9xt8=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a1462573caso75905ad.0
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:44:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765896246; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dP3/BPBvY4TAnhXyeWAVWcWXgoyvQZdJO1SSJkoTELqHTvRGbagalikQE790W1iEaY
+         ++ooZYZm/aYQDspEIkYSVbY9efTmtoy94m0ud8HhnMsnDuAsXzvVidQ+mXY9RSjNoIJP
+         MNet3kFHJnKUvjyk1BHtEAcTFA1JytasxP4GaVbD0J3Zi16gpDXV4qqb407xGwAes7G/
+         0m6HMotWsEOMI8Uy8b3YvE1ZS6VYzSX1GV5yBhQ1tj0w9O6JE+8q0wf2kRABwk3q5VI2
+         om/cMuDP4BhIittKiEEUaFSfg3rv5sShRcBgQNQ9o8ZHFHjiso7uxxHNF+4YBR+bOwDf
+         cY2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KAmi/53GD4BVHhy6hIhjJyr/xMy23CdsxEuUrYlt9C4=;
+        fh=jQxxm1+jcIEPITHRc0b7+fuGO07dfvXcTaoq9HBF46o=;
+        b=KGpkcl3KGptcmvhm84NKsGILHkLMJNtxLXUfLEORuEsxB+lTjsaf72TTkVsfdXPsdD
+         t8CyVcXbn38PB5J18zbyrlWW/gpZ6lA3hTtB4oFUzQRsBGeOxmFaaTJKxhc3IkvvYIIz
+         cwZ04p6LDVZJrjcV7VhIItuL2ZrOv8HPAEvzuEliTXkH9O8ZihaKBzibMo1/KbeJ2Q4D
+         INlcW9xrf2MC4rIoFTJL0Su7JB/P7m5cEVQo+1ZIWVVAaLgcfZ1zmC5LZV4dxjeXGQGf
+         QQxgsrHPDMur9tD+ZeunZdkb0p8aJopOIBYfVQYTjO3eeOdsOQW/1WdIwtChoojGB36L
+         vo5g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765896246; x=1766501046; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KAmi/53GD4BVHhy6hIhjJyr/xMy23CdsxEuUrYlt9C4=;
+        b=YsABfLFyichiAvWiEkGGhIhaj/A39ijiG79M/PGSzJRrAV5KtqtvwA3ADi48eOMp1e
+         93QgBV7Lc1vQSWts4oOI3FCHLTaLimif8W35Ob/FUhAVjDIBhixzLyIXBtKzaDSqCqY2
+         aHmP2b+IVzKjQ7qeSICN91GPCUQsJXXbGn1O6UZ3W7DkYXvpSrjRtvlvbAvBfOM/o5nR
+         XsbgvTn7Rfnw7rjOshorogVIZtD5bmguuuL70p9DyBGaa+WsYtoTWU3js0L3wjunRqDd
+         tUIMqlc0h6u+XBiWCfpkJgIJqrArcp06vz7X1DeYXZXr6gjnO5DbHAAmUbANsn0PSsgR
+         aLrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765896246; x=1766501046;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KAmi/53GD4BVHhy6hIhjJyr/xMy23CdsxEuUrYlt9C4=;
+        b=AB7P/YpMDru2Vm5CUIHSCYz1cfTKk9i6ahaV10OUK59mR2ppYCckMRiwlbwkunzhEm
+         2bOgkfrojslPcsmzPlHM6brfouYesNjp/53Pa+QSUSr0KkO/sMtIno4ZBZ9EWSXdk8mJ
+         dHW30P1NStZ2ygr3zytnjrQB2b7kz4w+472ivjqQ4/NRLxdOfwbicfsPN5nduepCbwhj
+         pfzvPXHiyiwwfRwx8Z4lnwRr8m679BgOvhqEFJaEolGUiWzltrPagXlUerFAKinZyYtT
+         5qFJvGqsix2z2dG8xzqmE0JwmyyW4fxPb2lzd+NxoJGIVR+LfuXbZjCMIDl8XFA43n5r
+         SNGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFCbNT6CwAQYyQt4ZSnnr5O2IIqxhUglHbB8AwCbdlz/E/FbZAlqoKeawZlZ62NMFPJ466QH5znA==@kvack.org
+X-Gm-Message-State: AOJu0YzT7MkQJL3vz71SHfe/5U9f92SpN25zV3mNU2wGiPleTxSIE08N
+	dmwWWjziK5z6HPNV7XL2Yalh+D6nTKn5lB01px1uZoUuQhZu06e9jqufDOGVygHh9bh4kfQnXGr
+	FrPCO4lvdkGdT8VW0/TNkR5x/XHJA2g7wPf768y9R
+X-Gm-Gg: AY/fxX7RyQQ8YL23D0IVQiwto0E9XGFi3vXzCi38vz6GQ0aGnIH5VLUk9zVYkJ4C4tr
+	NDC8sf0/nA4amJxUZ4nSu4mcpBNtUPQMTEAmmr9qq91JyJwxxPkPnBwyoYiPAf8SvwxtnpHEfkG
+	46hPeDcMpmn0ZIV2veGB17VQP3kwBNQk+e08LkGOhYEM7rZ/yEuAxn81M9EcsD1hd178V5hKShT
+	iBFFlWmI8Ld/JcPy453RpzlZQbvCdHxMnSW43nPz9XveOzeHyWcpZrZieWpvciYb5tdFRmP6Av2
+	2/RcJ5NO/xvuMEgylijZoBiB8jUWUADomnpsnhqWoG4nXOQ6mk9bGNg=
+X-Google-Smtp-Source: AGHT+IEiK8lrjUxMAkdhPuZBDUC8WfG1CK6GP/FrJkLfqWEXiBqNJySSdrcdekRlORQEPtUvpXfHdKBF+4spMZWn6is=
+X-Received: by 2002:a17:903:4b2f:b0:297:f0aa:d466 with SMTP id
+ d9443c01a7336-2a13e0e3be4mr1282645ad.8.1765896245495; Tue, 16 Dec 2025
+ 06:44:05 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY1PR12MB9601:EE_|IA0PR12MB8895:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3e078e2-f62c-481e-9357-08de3cb15452
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PIC/dqyIzD0JntHINVBtNk2rSq5uOGlrcUF9TyeJAjkv+7ZoHmmEbfMn6ZcI?=
- =?us-ascii?Q?vH0M0AZ3InBApKEGeFrLlpPXuYKzAW/IIORMX0uvCaoeNxQpJzGeKz95UrNg?=
- =?us-ascii?Q?Tk37+LEWnuonzD+EIgXFaAT+xVtZqlUJt6FX3oerrMas8ZOsEIJZ3T/UBHSY?=
- =?us-ascii?Q?VdAnGX3OVelHObsRd1RpOU0LOR+HYbvcljX1AhSnp+nqW0dQnBdWXp8enjZq?=
- =?us-ascii?Q?bbQQkAZzLxrGsOiHQpNik3OcTVJIKGsX/3NtsO5kJqS6G2eg94Z5zI1GCA8R?=
- =?us-ascii?Q?vIYB5cg8g39J0+AW3qjxalcHj6z/uNIGVBJhuDu/shy7GEwWCgH/gcDXjGJq?=
- =?us-ascii?Q?bEBI/fh+vZHodVS6asaczYxp66I9XjbObDRNq4SaR6EALwt5nEzhw1wXB/m+?=
- =?us-ascii?Q?OoJ4SUH8Bq3az8q9PaRB2pDPzuQydyFdXcO2mbjubR5Rx8qqDJubqu1lRo18?=
- =?us-ascii?Q?oI3IpB3sW6GP7Joxb67BdhPyNs2v49M+qdOu0W6rHI/I+bLcMN2dwTBGE6PM?=
- =?us-ascii?Q?8/zKe9wt10NANx+BG3+mtw3cbUV0ukd5x14S4af/o8LuHpf5WyEVoRTg5qrB?=
- =?us-ascii?Q?p4cv6+K3vNtNnbQZFX2Zr3z+Qq5ev5+HgANELdpAVmMGY7bwUT+2UTxgoODq?=
- =?us-ascii?Q?rBYbVsDYZzYJL42cThNkFVLOOCRhgk98KLvplizRvRm0PdKNlh/jVVLNH5Lt?=
- =?us-ascii?Q?Kt4CfzQjhm5L8WRSgMmTr8Ac9jOllr6RteSxFATGCxUzdiFzCoulrKpES/zW?=
- =?us-ascii?Q?TL+fmz48uZRxIa9GpVew10pdoAllVaV+7jmv8pYR4req5s239eukNBZPjKFH?=
- =?us-ascii?Q?z8uu1fS1XHFuSkL1fXaFoBr/jP4oEUohGO4KHo6PVk4MtvcZ3kyKBIRFHto9?=
- =?us-ascii?Q?Ukj315bOnhd/57Ho108iflZofdl5JQy0xWSAnZkT2FLAMIUC23dH33q/PU2b?=
- =?us-ascii?Q?djRYDwu9TulY16g1Y3Hu0O0uH6fOZMXY5X/vsqwc/yclxTMAiG/dsS7OKCTu?=
- =?us-ascii?Q?V9NLD77c6IbAL8dayb9oj/WVkTWvCG9thXQ4GtG7GVz5Tk/vWvdkfG8Ltrn5?=
- =?us-ascii?Q?tiMgFXPP16dDsOWoscHRcipraR+OltuHKgfo78LuBrXsxEbFAlhJZjZJ2g9j?=
- =?us-ascii?Q?Da2CbcC2I/PQsJYicmnfEwh3OHWMX10soIScv4KsxK1JWIICYfh3/610oLKM?=
- =?us-ascii?Q?HX5OPv/FJ8DQ5KA6GITlHno3aXV0KTGF652PBanqApcFea+G9vPeWqOoLYT1?=
- =?us-ascii?Q?CVwDUDmcFLKvjBlauBi1ROEMObzdum8nSSJsGplN6zHWj0HvrbK0ERUcBOdj?=
- =?us-ascii?Q?BF8Qa4X2fgZd0FweMz/gAA0+3QcfRDlWlaOoLcK2iZAjrlOuSSq9QTR99S5Z?=
- =?us-ascii?Q?Thh4rdZJecfWH0xgm/7tPtDGHmVPtj8KziFY/OSVry1OI01suG8rt8+dYPjU?=
- =?us-ascii?Q?riMexDQ8+E6zZgJiHJhH3xsoweO+0dF+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9601.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Sd4qTPnlZuQ3RFzAxC2zpstLON1xE94An9mc0BoAgAVFIGNcs1lgKwUpsJEY?=
- =?us-ascii?Q?/St2TPCTqMj/fQtiMZL+BlfziyQSuOQpYRqpX7J6NRoGBtupFs67lDy2QLJ+?=
- =?us-ascii?Q?v3SxAMacj1eM5f31ZY0p1ZHZe9LpVRR0taEUysfuNDwIkqUh8WZqObUWxBBg?=
- =?us-ascii?Q?4s6QxOSKjUf9f1NfpwOpoZxKrAn671fraLHpwrOcZhgIhY4yLJGLzK73DQ8t?=
- =?us-ascii?Q?ZVnmwMQktDlK1G+WF8BMJ1dOqbjfJepoV7f1pVmeULQoItadenP6A+k1dpEd?=
- =?us-ascii?Q?9T/DvmBxRygoae2O3vghThZWLZqYtSMKwyv17zsgiRtRXSFRZIqOyar+OtTK?=
- =?us-ascii?Q?SChkP87Rk1PEtfeN0ORWwri6kGYPpL2UNNlBLw25P2lr7RLCmJBo/FtK/ioP?=
- =?us-ascii?Q?Vw6P8B7BTekoYGwTsPMsP2M00dh4q2+/PIUbKAEcUShx852mTrm65dgYG2Vv?=
- =?us-ascii?Q?Kbe1hD56XKoLvlqiuXvJ83TBSB28qxgru1hhV/2ub+ipgcv88yH8MNogHkdP?=
- =?us-ascii?Q?OUA+eHFAopGiMopHY72cdgjyCgUxQqaB1e5QYuvP6o8x4xX4WhrCpdy+EM+6?=
- =?us-ascii?Q?+Yc62RaQQvpKvAMkSANeRPp8DI7I6N0bcQ56a2vXoLgJsGuGl578TeZ0ac2Q?=
- =?us-ascii?Q?+TwO2LhSzMZuUIFNwgJ192jnNL4t+bB4qUognFwtqSfmCwInykJ+1xiqRN1W?=
- =?us-ascii?Q?po/lcb8XImvuxk17TNR8rThJC+VATmquWQHiv1Nf6smyTDeaurONkyGIInT6?=
- =?us-ascii?Q?7vv3DQRPy6LjZoVWGZ0O0MLJDUPvLOZ5uO5NuUZI7UGOqIUvAyO2rsKweVie?=
- =?us-ascii?Q?fUuTaHmRt5dFOrbB4HjujLCrfitd1MqZRFlYd7BGeKgj1NveVbltb0S54Zcs?=
- =?us-ascii?Q?9NmG5lyC9OJeZcXOVvD4eFZEmVo86CfvYuzLe4s0CyqWI4x0uOJRjrrgBEdU?=
- =?us-ascii?Q?GipeQ/307m/J5VL7di2Z//J+MOgJJKbFKTNyy/d8kfBiTFJ016r7xbfhQuMJ?=
- =?us-ascii?Q?fOC4AGjomUiNwtMQougxf92tdHbdRPafl3yNQOw/swrWTdugILNFHjzx3Ix/?=
- =?us-ascii?Q?aE4/2Ub8MPE1DsLhlfqtsZYpE7zwteKROTve2TLmVyLuhQAh8S0B3DQxHyg0?=
- =?us-ascii?Q?7UHdT8miBcpEa1kMRtdmcjdEwWOk0HswimmrR2aLB6pFrh/bqnrztxN30Zmj?=
- =?us-ascii?Q?wM+cW0weiMZDBsseoUSWipU/LY2GARVJyFf6glNozFkbZxmFQ6bnjT92hoL5?=
- =?us-ascii?Q?Ejtl9r5yNmykE+D00hlbruQSfuYNYiBcWEb3ZIYa3hKf6KWre5q6cAR91cQy?=
- =?us-ascii?Q?PnnskhEVX6HKoJjSESx7H8DOdZDuTRFrpwGuJLB6eIOhANVdcYugOM6LOimS?=
- =?us-ascii?Q?OVxt5KTTDGughpmPV6dpk8r8+53j5qcE9mrXitDQErPoLouTMZKNWo7Xlq3z?=
- =?us-ascii?Q?acjI7ty1Fa0Qvsqb3ZxYNM6uDqgb/CLP4oMZtGFwVXk+47IIMzW5/J40qcHi?=
- =?us-ascii?Q?jpzlvT9bydj6nqA62ErXvJElrCVe7r0P6YM1jm/w9Y6XDsX0tVxMA9FXplzZ?=
- =?us-ascii?Q?onY1XO+NZvIti0SXC2o=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3e078e2-f62c-481e-9357-08de3cb15452
-X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9601.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 14:42:25.6856
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3nIRhr/Z6lTpzRMd7pauZv4ZbsSE2zFK9NC8bGvAzGeEVA9FAQ+qlSU4mnV6RC5F
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8895
+References: <20251216062223.647520-1-senozhatsky@chromium.org>
+In-Reply-To: <20251216062223.647520-1-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Tue, 16 Dec 2025 09:43:29 -0500
+X-Gm-Features: AQt7F2q7zRmUgCShM6gfRxNMMZTahWG7X3HrXL8-Yqad8hiy4OHSH28MaqpZh5Q
+Message-ID: <CADyq12yidNfeoRtUONM9VkdXpzZVbKy2+VYSJJpGqZtd7BqD2Q@mail.gmail.com>
+Subject: Re: [PATCH] zram: drop pp_in_progress
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E5D540017
-X-Rspamd-Server: rspam04
-X-Stat-Signature: nszizckk1cdtbunwgyggiaqrkri5ug43
-X-HE-Tag: 1765896154-950053
-X-HE-Meta: U2FsdGVkX19BWBjaLHLlLQifalB0B2VG0jPe9C+2AMD0tr/+ADnhk5uDNy7YO9QAF13PJYI7FmyQTxbb43CbDHTKAPG4hQ7On2Y903as7CRnw4A5rh3TfooTyAHWa6dPcEee3KtUNPqfaL8d023Sj/hVUWz6IJzfAcM+xTkxdPM+cm8kIWOLEWjSBsGAJLh073+qTLO5uSyiM7IJ0KAJbnyVGSV067jmOlBx4zeLGMBL4n21gndp1nxQo5MaRLT7IyhrNLqspp3f5wa3typDLlYx8TQtAOl0yJml4ZKVfGzJzN263nIRivqQeveSTzQC4GX12ElPEjRPSp4EWDeBVRPIif10oEFRZHtfCWPrbxBHFyCngLUhGDOPOO+CIqsO5Z5HlPwy2CRke+xnPboldh7xFy/mNxZSmRLgY4PNEmxRXFjVGqbdGilulqFVr34OWKwCGYwoNy+gL8vdnEFCRhJkvu1OfjC3QLLXt2xnQzkVQbDQvIiB203/STkX05OsUL2F3aUcBI7aY+VL2nf9y20ZqJgNt2zYFNhIcBqlbEYjYMy0V1UphfNVfvBQmz1G51yytVskb3FcA4GCRJkPoFFLrf5k0tQ8c2T2Y9nz5nGudlSZunLGuBF/RkGIYw/+/2kynub3J+0C+s9NiCXd0Rz9FdmZcRsdoqtad9+IDtShuUegDj9Bm9/BOU6xfZi7kOeefs3mOrjS4GvoG5i/gVkISm671pCZ9Gb3DgSq7mzH1sKzSjtUYMY6i+vE1Dx2U3wFBkJuFPW89yQAIuASvGSrP97x3Tch2uNNC7bsXHxaifDmRMLVkisIayjVRUdY1PC1IPQCu4FEvIFDirU4BuWbPfyB4EoKTAUO1QPPDBSO21KzXTkeWsEPEmWuG8CQDVJsfSuSYeYzFxxSkOfcq74B+/PcQLezv7OtahkuYzUW0hy4SQHP6xvz5RHm4Btug9hdoi1FasD86kzerM7
- A/fSfhC3
- 8Gmdu6v/kNh4Ay+4GTUbIZOCRYqRokyLmITzc8Y0Il/UZXEha507lRHVmvASZjs7TKLdtInTl4nimWADZUJtCf8lf+OoO7rXe1MVOneYnVOIGHswo8ubz4tCt+lRWfoDzQ0PR0+phURl9f0W10+i14p1HAIikvRcmn/F10lFcXlwJrQ19MsOg++zrClGt3yDLLZNhohLDRuaAfcSNyX14AyYh7xjtUUMa4q1txVrrobDsljgj7sewSQivlh+KGzWnp12rPEunKpw+fOW8voOlrgn34IgV2oJU3wH0ePgZj16TwmeMcLEKOXiAcm36I2VugSHaxpmlqtISL0mR0TNZhGIMRcedLO2Sm05Bb1lZtM1X3bSk2N1/JyJeEwwWAW6wHhJk2Y4NupX50f2WofIXfKIz44Hur1B7iQUU7g/u0R2wuaxe7bXGEgO4O2yEYDbSUvcSDbTLXZsv/BEzQxDd5N9g/7auATi+bzK3PV3ucq4i/aWy+H51fBBXcSka/RoqmJVVbQpc9UzACQm1fNr1r6ghNTZe9/EHf1Un6JjgutyhwlZQuZ0iwgxufhzKWWMuCf2q
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E7C6D4000A
+X-Stat-Signature: na3gfc161x67sndwjtzb1wc6q5gtorrp
+X-HE-Tag: 1765896246-830437
+X-HE-Meta: U2FsdGVkX1+UzwFMBY0kS3HppIIefBG6I0pb9RYSVILE7cGTZ36lN0IODUf67FbxZ5S5wIMh0CFuXB95rXrXJG0E1nQACDsBsgSDD0uShhIHLHPAYEzDQ5DAOBeFLz8Pc7+Lqo3B/HtpEfyX7cF1gVtVM29M3yoAv8RmWZI+VynENp0ccMQseYrxo8G6Q4oUf0HCVro0/RMYpEecp/OX2nwBTX639ecQK1A35+R9B4ZVLH+s0TYnNp81DAwCchTn0wlDLKlVD3+sshUvX5t3+mJSn19SgaKQNV/Al9Eqg27A/vUN4c/vbohgMRzUcCLlFjxfSP0cWHaLtr+romoWIMpRJGTabdjU/i69fdlzI9OWlh6zbOnFN9zvAyeNf91EnRZ5Dk6+obAEraSpxCfSk0/3g/leOPjgpHWEea6O0FuNy7FvKe22NvpBTn5pe0WWjUkJFJNVPocOkYc0vYsoKc5nyH8Sxv6HTuXsvvEETdTf0eONGJr0S2Cgq2nphfUP1LCfVpRQM0bUYhK8SKEsAzieqt5v+09usjnpIsOHBL0s3Whny7cL7YC+cWL6oapjmgBMuPeiHmPlwE1ExoLJAfn9FxPvklx620ggblRVzGNEi8oOY2ZdjKu1/WNA/K/79pfAi3V999y5/0yLGP0Xv6waVR9Ip/vMtrXVxEggjyaJZWJB7yol4NuGsbPmDM0TjmIKiPMEldJvinx3CC4+SqlkV9WfF8qTyBADWBIeEQlfd+/G3Em7q9nMfwRlcCz4K0Li6AdtyePXiW+FgDLhSdPrg22IkU2KxKRgIzJysFxPxRPo/lAV3BtYuNjKee+F3Ln/5T7uXrBd5lKDvCkJdEfID07f+EgU/zvqi8PysXm1yNzIRnLHkJIb3sQCeTe0MWGh7eXx7cfv6fMszD3aT3cST/AqPew8SZCHzSA7rRmnmjhhOYXPuliu37Po1Lk2JiAgOQBUz28Epw7Qfzk
+ /WhoM1VP
+ B7gGdYdp1Xhzb2U86POnuBz3ddsonFNiny8uSLTkimOCwx11NQGnXuNJQ10z4gx6C2JMcybqD7g2qhQXNg+mzRx5Zsc2i8bC9tAMhAWtog0Ru5huUFToq315KEvCplNqe0WpqWhU2RQe50DQh3/YKXSEwv9ZWn3yv4BvNyCrgNro2wIB6mnH+idvlQQkmudUpc4YKjaV8j4OoVdimus5jsoir0ir051pepOrlYM2TeYEOeITuex6U8RT+dMUmt4B4YsD8Fw6eiKV2cFrst5KXv8uaTdmcd7JbhyF2ZL7BwRB2Z9JN4eCz1BKHrNxk6P+x99kZrZz8RpYt5RBl6ns+xI09PS0PAd+UvmiMn9SZmtIQ1S35i6vofEPplWJYczqPaLzE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,80 +141,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 10, 2025 at 03:43:43PM -0500, Peter Xu wrote:
-> > This seems a bit weird, the vma length is already known, it is len,
-> > why do we go to all this trouble to recalculate len in terms of phys?
-> > 
-> > If the length is wrong the mmap will fail, so there is no issue with
-> > returning a larger order here.
-> > 
-> > I feel this should just return the order based on pci_resource_len()?
-> 
-> IIUC there's a trivial difference when partial of a huge bar is mapped.
-> 
-> Example: 1G bar, map range (pgoff=2M, size=1G-2M).
-> 
-> If we return bar size order, we'd say 1G, however then it means we'll do
-> the alignment with 1G. __thp_get_unmapped_area() will think it's not
-> proper, because:
-> 
-> 	loff_t off_end = off + len;
-> 	loff_t off_align = round_up(off, size);
-> 
-> 	if (off_end <= off_align || (off_end - off_align) < size)
-> 		return 0;
-> 
-> Here what we really want is to map (2M, 1G-2M) with 2M huge, not 1G, nor
-> 4K.
+On Tue, Dec 16, 2025 at 1:22=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> pp_in_progress makes sure that only one post-processing
+> (writeback or recomrpession) is active at any given time.
+> Functionality wise it, basically, shadows zram init_lock,
+> when init_lock is acquired in writer mode.
+>
+> Switch recompress_store() and writeback_store() to take
+> zram init_lock in writer mode, like all store() sysfs
+> handlers should do, so that we can drop pp_in_progress.
+> Recompression and writeback can be somewhat slow, so
+> holding init_lock in writer mode can block zram attrs
+> reads, but in reality the only zram attrs reads that
+> take place are mm_stat reads, and usually it's the same
+> process that reads mm_stat and does recompression or
+> writeback.
+>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-This was the point of my prior email, the alignment calculation can't
-just be 'align to a size'. The core code needs to choose a VA such
-that:
+Reviewed-by: Brian Geffon <bgeffon@google.com>
 
-   VA % (1 << order) == pg_off % (1 << order)
-
-So if VFIO returns 1G then the VA should be aligned to 2M within a 1G
-region. This allows opportunities to increase the alignment as the
-mapping continues, eg if the arch supports a 32M 16x2M contiguous page
-then we'd get 32M mappings with your example.
-
-The core code should adjust the target order from the driver by:
-   lowest of order or size rounded down to a power of two
- then
-   highest arch supported leaf size below the above
-
-None of this logic should be in drivers.
-
-The way to think about this is that the driver is returning an order
-which indicates the maximum case where:
-
-   VA % (1 << order) == pg_off % (1 << order)
-
-Could be true. Eg a PCI BAR returns an order that is the size of the
-BAR because it is always true. Something that stores at most 1G pages
-would return 1G pages, etc.
-
-> Note that here checking CONFIG_ARCH_SUPPORTS_P*D_PFNMAP is a vfio behavior,
-> pairing with the huge_fault() of vfio-pci driver.  It implies if vfio-pci's
-> huge pfnmap is enabled or not.  If it's not enabled, we don't need to
-> report larger orders here.
-
-Honestly, I'd ignore this, and I'm not sure VFIO should be testing
-those in the huge_fault either. Again the core code should deal with
-it.
-
-> Shall I keep it simple to leave it to drivers, until we have something more
-> solid (I think we need HAVE_ARCH_HUGE_P*D_LEAVES here)?
-
-Logic like this should not be in drivers.
-
-> Even with that config ready, drivers should always still do proper check on
-> its own (drivers need to support huge pfnmaps here first before reporting
-> high orders).  
-
-Drivers shouldn't implement this alignment function without also
-implementing huge fault, it is pointless. Don't see a reason to add
-extra complexity.
-
-Jason
+> ---
+>  drivers/block/zram/zram_drv.c | 28 ++++++----------------------
+>  drivers/block/zram/zram_drv.h |  1 -
+>  2 files changed, 6 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 634848f45e9b..47826d8ed376 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1264,24 +1264,16 @@ static ssize_t writeback_store(struct device *dev=
+,
+>         ssize_t ret =3D len;
+>         int err, mode =3D 0;
+>
+> -       guard(rwsem_read)(&zram->init_lock);
+> +       guard(rwsem_write)(&zram->init_lock);
+>         if (!init_done(zram))
+>                 return -EINVAL;
+>
+> -       /* Do not permit concurrent post-processing actions. */
+> -       if (atomic_xchg(&zram->pp_in_progress, 1))
+> -               return -EAGAIN;
+> -
+> -       if (!zram->backing_dev) {
+> -               ret =3D -ENODEV;
+> -               goto out;
+> -       }
+> +       if (!zram->backing_dev)
+> +               return -ENODEV;
+>
+>         pp_ctl =3D init_pp_ctl();
+> -       if (!pp_ctl) {
+> -               ret =3D -ENOMEM;
+> -               goto out;
+> -       }
+> +       if (!pp_ctl)
+> +               return -ENOMEM;
+>
+>         wb_ctl =3D init_wb_ctl(zram);
+>         if (!wb_ctl) {
+> @@ -1358,7 +1350,6 @@ static ssize_t writeback_store(struct device *dev,
+>  out:
+>         release_pp_ctl(zram, pp_ctl);
+>         release_wb_ctl(wb_ctl);
+> -       atomic_set(&zram->pp_in_progress, 0);
+>
+>         return ret;
+>  }
+> @@ -2622,14 +2613,10 @@ static ssize_t recompress_store(struct device *de=
+v,
+>         if (threshold >=3D huge_class_size)
+>                 return -EINVAL;
+>
+> -       guard(rwsem_read)(&zram->init_lock);
+> +       guard(rwsem_write)(&zram->init_lock);
+>         if (!init_done(zram))
+>                 return -EINVAL;
+>
+> -       /* Do not permit concurrent post-processing actions. */
+> -       if (atomic_xchg(&zram->pp_in_progress, 1))
+> -               return -EAGAIN;
+> -
+>         if (algo) {
+>                 bool found =3D false;
+>
+> @@ -2700,7 +2687,6 @@ static ssize_t recompress_store(struct device *dev,
+>         if (page)
+>                 __free_page(page);
+>         release_pp_ctl(zram, ctl);
+> -       atomic_set(&zram->pp_in_progress, 0);
+>         return ret;
+>  }
+>  #endif
+> @@ -2891,7 +2877,6 @@ static void zram_reset_device(struct zram *zram)
+>         zram->disksize =3D 0;
+>         zram_destroy_comps(zram);
+>         memset(&zram->stats, 0, sizeof(zram->stats));
+> -       atomic_set(&zram->pp_in_progress, 0);
+>         reset_bdev(zram);
+>
+>         comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
+> @@ -3127,7 +3112,6 @@ static int zram_add(void)
+>         zram->disk->fops =3D &zram_devops;
+>         zram->disk->private_data =3D zram;
+>         snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+> -       atomic_set(&zram->pp_in_progress, 0);
+>         zram_comp_params_reset(zram);
+>         comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
+>
+> diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.=
+h
+> index 48d6861c6647..469a3dab44ad 100644
+> --- a/drivers/block/zram/zram_drv.h
+> +++ b/drivers/block/zram/zram_drv.h
+> @@ -143,6 +143,5 @@ struct zram {
+>  #ifdef CONFIG_ZRAM_MEMORY_TRACKING
+>         struct dentry *debugfs_dir;
+>  #endif
+> -       atomic_t pp_in_progress;
+>  };
+>  #endif
+> --
+> 2.52.0.239.gd5f0c6e74e-goog
+>
 
