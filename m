@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23CAD5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA7DD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4717B6B0089; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
+	id 91C576B0005; Tue, 16 Dec 2025 02:42:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41BA36B008A; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
+	id 8F9C76B0089; Tue, 16 Dec 2025 02:42:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33C3D6B008C; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
+	id 7F3836B008A; Tue, 16 Dec 2025 02:42:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 20D626B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB51EC0512
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:41:16 +0000 (UTC)
-X-FDA: 84224538552.01.1770B4A
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9C2531C000A
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:41:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=A2mK+WJB;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765870875; a=rsa-sha256;
-	cv=none;
-	b=C4SP1FyJEmbNJlRBr6n3picgFpTdxSkQ/tp8C2hHD3CBQfWrLvQoh1q5zjIWkQGDag460U
-	LBuZ8Cxh/7ybb0M9pm+g2y62YtyZiB2hc3Y9o7VFY2VNrkmPysYRFmQ1JsFDgfYirQ9age
-	3lY805uSnAdEdjQGhKreN0CKCnXPTxQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=A2mK+WJB;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 70DCA6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:42:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 139D21A0560
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:42:54 +0000 (UTC)
+X-FDA: 84224542668.21.E0D4A66
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B8721A000C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:42:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CU+jXv4v;
+	spf=pass (imf25.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765870875;
+	s=arc-20220608; t=1765870972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ef+/dRUWrEoAF52eKGXOIPSj0Dz2pVFYZysJHDl8loo=;
-	b=wOaZ/RpbASmaZ3+e/PcD0ImDdwMf+PVIjiF6+N59GrM0eqYSqWDCsuCgWwar23Ggk07Bm0
-	K4wg4L9rBiiAfAd98wDrTxMo6JDEUctpecccrpIBaE2eFR66hRT/6eJT+eHSmMjZfza3nG
-	etS7NT7bzutch9qKKy4FPmLPJkGnJ54=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ef+/dRUWrEoAF52eKGXOIPSj0Dz2pVFYZysJHDl8loo=; b=A2mK+WJB1oecfFaavv+XJXaRX0
-	AZPTOoctOvi4Gvp/7+MBhe0545EF01s9ezgAvVJrVMwMKr0r6J5CJT+KxXCjdaBygRs26XIY9DG+i
-	sZUqDwdFhh/XN0UkLIFWzBOzx6/IAul46/gKDVeCcUNqTwAUlDIGr/0j/Pnasj/6gCX98Fi4vtYSu
-	KLCIk7hoWkKkfeOvPzaPS5RVBORjxGxrbTygdh+4VGcttF6PocJPx2Hzw6jLQPOjDo68hAyzq7Z3l
-	WewsU6+iL0MP3mfZ3/Fs3c7YTip1pxfYjpOv/yBE+vKz8kiIjaNzbRFSaJnND2YZw/y82MLVrrwkm
-	inJHBApA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vVPgB-00000004s5V-0YDj;
-	Tue, 16 Dec 2025 07:41:07 +0000
-Date: Mon, 15 Dec 2025 23:41:07 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: retiring laptop_mode? was Re: [PATCH] mm: vmscan: always allow
- writeback during memcg reclaim
-Message-ID: <aUENEydFvVvxZK8r@infradead.org>
-References: <20251213083639.364539-1-kartikey406@gmail.com>
- <20251215041200.GB905277@cmpxchg.org>
- <aT-xv1BNYabnZB_n@infradead.org>
- <20251215200838.GC905277@cmpxchg.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/ZdW0RTzwMImTVMjvdyw8BTiP7546TOTsFudL2sFvQg=;
+	b=4voiuH8EZb2rTw3iLe2KUhjScJ3aIFV5853/a7ibh/aGXbBQynZICMqxwbeLftD5mi4uc2
+	0aBrVdGsA+TIZkzMr5FfgKuC7IHLE6vlGV2QVAenqwfbDCEeVMzDNepbdgvLfjYPs8RSvk
+	Aqb4jnmA7VM9HqPlhdQ7KW5nGgjbOxg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CU+jXv4v;
+	spf=pass (imf25.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765870972; a=rsa-sha256;
+	cv=none;
+	b=AzUZMI/wYg2s6fCthj03zUs+1Ac+gzpjRDq8IOd33BMCgVxlmtNEnie8kU+k3TYnvRaUw+
+	bsSuzkNzqeLqYE9HTusvTtO1Bqp88qOMM2sc+zDi4+q9DGwLjo4etMO+axpRU7MLLzdoaE
+	MjNe/kuQlxWbmZmI3PrKYgdv4RrSlU4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=/ZdW0RTzwMImTVMjvdyw8BTiP7546TOTsFudL2sFvQg=;
+	b=CU+jXv4vbzZQPYmJs+5boLCKM9sdZvLpdtGfynJp62/WcLvcCQyXL7uH7Nvb767Sm1S4INVgk
+	BhLXm6sCbyXBwGQr1TlsjXanBbIU1sAXLKEzXA1hM/GFFIT4WZ6YAkc+qLpY+4zVs+7+LBjFv21
+	ukavIPJxT9IZZbUD/LKOfX0=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dVpkh63MjzLlVV;
+	Tue, 16 Dec 2025 15:40:44 +0800 (CST)
+Received: from dggpemf500009.china.huawei.com (unknown [7.185.36.50])
+	by mail.maildlp.com (Postfix) with ESMTPS id 805301A016C;
+	Tue, 16 Dec 2025 15:42:44 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (7.185.36.8) by
+ dggpemf500009.china.huawei.com (7.185.36.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 16 Dec 2025 15:42:44 +0800
+Received: from dggpemf500012.china.huawei.com ([7.185.36.8]) by
+ dggpemf500012.china.huawei.com ([7.185.36.8]) with mapi id 15.02.1544.011;
+ Tue, 16 Dec 2025 15:42:44 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Matthew Wilcox
+	<willy@infradead.org>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "npache@redhat.com"
+	<npache@redhat.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"dev.jain@arm.com" <dev.jain@arm.com>, "baohua@kernel.org"
+	<baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
+	"Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>, Sunnanyong
+	<sunnanyong@huawei.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH next 0/2] THP COW support for private executable file mmap
+Thread-Topic: [PATCH next 0/2] THP COW support for private executable file
+ mmap
+Thread-Index: AdxuX44yGEAb2cBdSXaqz2NhdGENWw==
+Date: Tue, 16 Dec 2025 07:42:44 +0000
+Message-ID: <0ce50058e6254a29baee1271ae0ef31c@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.174.177.115]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215200838.GC905277@cmpxchg.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 9C2531C000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 83q88nbsc6ud6h6myyqt5gxdx4pp7sga
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7srbeyd11gktoe7fj8j5y1uwry9a4yor
 X-Rspam-User: 
-X-HE-Tag: 1765870874-866300
-X-HE-Meta: U2FsdGVkX1/xQPw2wdkjTDOM9/wHbU06qiOfZKic/Aj4quZlxkWWebWrnPdIsUMLQjEut4aOiDFjQogP5m91K7FYHY42cIeDFe8IC9aiWWw3NQ7bPkbzdLMXZol3UMbQJx7AYVWJnArGdwZOhh37sygEvoGOyhcprUOgRCSVKmROANx8BqQGNIuYoELA28CEix6NRaictJhwM/zGF3KI+Y5MbI3XlkM63/HuAClKWWT8zacXlTYTbh2CeOEipg00TJE0e7DJHccB7zuWkuH0TgTaBCPtYI3MkjWK7uCu+0eX52g67atMMcMmn6s0PuJoCJQiiielb60owulbQLIIRec9VRPZTPiKesB7znJVOVkcTfQQJ7etevwY8HgT7h46RTPGojfNf+QjDQy3j1q8ddCPd1l1fxj+AftjfykHgZze3RBWMKqjKIQQcSU9cpXBbZvJ5p/zMBFomo8suEw9bG1fvBGJ3NsUBEg6ZhoB/0jm0imwTHiWpgKXxSB9AQyhG9nPiEj2QZARaDVWo9kvwZ0fszpXjpL75GgouulWNlrwq/hP1Uul3TeFBc4ZvMnUtkyphETAtsJ7i+ykNAA/uciBBLsIhe1dBfYStC5EB0zlwp8zjvvlRdMurK2dclc8JtKhNzxNZ18nb+DcPH3rNRPY93Enw3y4GtfEBo2UomnazsqTvX6vJ+USZl397+IPR+6M46/llhV9SQGTjsR+igJiHKcE0bHrYRVXwAYzotzJAhcQ8XmHesEDumdgFucwZLHavlnibcTrhnoY/4eFOLXv+IDmHPz6DdOW4ocAfmmTnIg397j4jh0F1yl8yv+2UZJpBxbNq8FeHcO3owUYxghMOAna5/dWjg2JruMJIeGnjTidK2GkWm3wq2WDTgcy4D8CdND3YLiMQfRpjPDWsNZGkjl4l2xNplkb8TrkbwaBGuXOtDKoD+5TYfDOmvH8I17/iY60u7kHQhvjv7O
- U3ABa3Pz
- iQhCrvwTLjP3z0HHxyEdQ47ruJWvyzddLl4oLiB8UO9e27CFJDNmnkfn51cu4hi7TaW/H0xysds+clcTDY4Ff/C9qpNNbnGIrwe63vWc9AFSJtWF47WVG3dq5BYW1qrJFBS/N1MHs8pBoo8e0TWr9KzGt5WnL7pF+CAHHVzXkGFwSVkARKA7CW7fA6IGm/4jNf2pkBRI4bzNbzh9MaIegQ0Qu6xf7Djj+2byc78/GVvE822haZgH4Njo4maExDnUqZgRVI5S19UtydOVMkuXUjpxy8wNx/oR55MjlrXA6S7biJZtQ1vXSt4mZ1Y3wUgDPplKpsl8MzxaW3fRojOOUIwywXX7Hp6V5oojJbIBjl9qj2a0SJNp3T0vvqna2znqLDgw/4mnyhBZ5/8h8Y7KlByFIXv1j/1+cMGLDeBBGXYdls+yyWtedw4JyOqBNHaRk5VM9Jal/wHLLA6H9kBPvtuKiaQE7nHmpY5uFPQH854r3D6vhbOGbtLKkagZbYWk6r2IMe1s9K2WY1tKPmEmGgc0FXtxk8BT6K+XY1oVC2bu5DU/HOJJDa/3bQw+B8JbSilBvkb37vUTlHH4rdWkdBlI+tw==
+X-Rspamd-Queue-Id: B8721A000C
+X-HE-Tag: 1765870970-652199
+X-HE-Meta: U2FsdGVkX1/JW2Rgbg9e2edsA4DhPL4cDRdPOmgoM/q5ditJbtflDeR9ul0qwgy+TEKYV9wtibT6Z7MCGuspe5kIuSH19s5G25aqeDDLg5OVt7y5CMIYiPqNh6Y3/vPvg9b2r0TVcOu1kw21CCpKXtlR74QV2+rb/65iD2JlozdX9h/WrBZeXy1x55gQ/pnDgFKAgcVV6FUX484JUkYxBgPJPmpIXcWZi58MnaRPJWGSuzmERiQn+qJy9mPsHnbQbzuw2STu0hB13J1Mk27zMtKUYs81KTp2YbZyHupRad4ApKaeog2Z6R45CfhC6vokc7cX2BYOGufBv49FRLbq7zWsLpFmqi0xvTI7YRS88qB0MbjLFdhk7UPAhBtYGgG+/ObKi2bXPoqQHyPVr96hQL0U+E3foxt4DfRSLnfpHG1Z8OswlMsJl/Y9mErQbWPGMzrWD7qcH+7LLD8B2fZo02el1dbElBRrif86x7ODtlm1K6nIqR0Nrts3h2v60zP27Wmv6cazXgGLDEgsyhYHKlUiSNyX4IItsUusDRSlFGqqHigObt+K+ri8uo7b6+GaHvY+iNNaagxunp7ZXZ7PBzzftql9O9beWVwx4CUm7ElCC/KVYq2KrrspZlkmObExNkEY77J6ceIvIQcP1lj57qhH6QA6jedQiUjvSo12xcam43SDKpVpOXV8xu1bQMLXipDKGzP8DzPuyWUvCGr46kR04lpGeSlcUVaRCw/UMjjUbjIG2X5+dN8zmMwWPp16WyJpWG9Dj938K0URYqjW1HgnJq60zBHm29lN0+xLbdZ72B5WKUjqqLT33quSO4pFuo4XGNrFdaKGr8GOgoxOFUUmF40qRDD4QNIPelOqciFFcR+wZ9kcxDjwz3jVUIKfML+ZM/yRTZhJKQlPo0ohNeofD8zgC1cTFa/8aBu1he9b3PCXDyz2L0BQImQNaYyfzddqSeHpj/U+HkyZ5SV
+ BxatOAM+
+ L5NyMnlaaQac1vZSKy3YybeGCDzNQbn9tT6+Ojl5/FSjXVHjNMC2Yhc5Z5VVg2J33X2m9JMX9dUboo0TYwVZ3OWQ7aHok8RNzc0bzY3nk5fZcwrFPHGeuBzTdYY/lw2hEW/bPgaYYNeGbLf5aECCJ0+yoyoMTmv1K5lgFIGf/Dp860Wn5mkbhWQn5wAI2AantVB/X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,24 +115,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 03:08:38PM -0500, Johannes Weiner wrote:
-> Debated whether to add some sort of deprecation sysctl handler, but at
-> least systemd-sysctl just prints a warning and still applies other
-> settings from the same config file.
-
-In general dropping sysctl will break things.  So I think we'll need
-a stub, at which point it might as well warn for a while.
-
-> Laptop mode was introduced to save battery, by delaying and
-> consolidating writes and maximize the time rotating hard drives
-> wouldn't have to spin. Needless to say, this is a scenario of the
-> (in)glorious past.
-
-Maybe expand on this a bit by mentioning that reclaim now never does
-file system writeback, and fs writeback is already very lumpy by
-design.  And of cours that hard disk with their high spinup latency
-and extra power draw are a thing of the past in laptops or other mobile
-devices.
-
-Otherwise this looks good to me.
+PiBPbiAxMi8xNi8yNSAwMzoyNCwgemhhbmdxaWxvbmcgd3JvdGU6DQo+ID4gICA+IE9uIDEyLzE1
+LzI1IDE1OjAwLCBNYXR0aGV3IFdpbGNveCB3cm90ZToNCj4gPj4+IE9uIE1vbiwgRGVjIDE1LCAy
+MDI1IGF0IDA4OjM0OjA1UE0gKzA4MDAsIFpoYW5nIFFpbG9uZyB3cm90ZToNCj4gPj4+PiBUaGlz
+IHBhdGNoIHNlcmllcyBpbXBsZW1lbnRhdGUgVEhQIENPVyBmb3IgcHJpdmF0ZSBleGVjdXRhYmxl
+IGZpbGUNCj4gPj4+PiBtbWFwLiBJdCdzIG1ham9yIGRlc2lnbmVkIHRvIGluY3JlYXNlIHRoZSBp
+VExCIGNhY2hlIGhpdCByYXRlIGZvcg0KPiA+Pj4+IGhvdCBwYXRjaGluZyBhcHBsaWNhdGlvbiwg
+YW5kIHdlIGFkZCBhIG5ldyBzeXNmcyBrbm9iIHRvIGRpc2FibGUgb3INCj4gPj4+PiBlbmFibGUg
+aXQuDQo+ID4+Pg0KPiA+Pj4gWW91J3JlIGdvaW5nIHRvIGhhdmUgdG8gcHJvdmlkZSBkYXRhIHRv
+IGdldCB0aGlzIHBhdGNoIGluLiAgV2UndmUNCj4gPj4+IGRlbGliZXJhdGVseSBub3QgZG9uZSB0
+aGlzIGluIHRoZSBwYXN0IGR1ZSB0byBtZW1vcnkgY29uc3VtcHRpb24NCj4gPj4gb3ZlcmhlYWQu
+DQo+ID4+PiBTbyB5b3UgbmVlZCB0byBwcm92ZSB0aGF0J3Mgbm93IHRoZSB3cm9uZyBkZWNpc2lv
+biB0byBtYWtlLg0KPiA+Pj4NCj4gPj4+IE1pY3JvYmVuY2htYXJrcyB3b3VsZCBiZSBhIGJhcmUg
+bWluaW11bSwgYnV0IHdoYXQgYXJlIHJlYWxseQ0KPiBuZWVkZWQNCj4gPj4+IGFyZSBudW1iZXJz
+IGZyb20gYWN0dWFsIHdvcmtsb2Fkcy4NCj4gPj4NCj4gPj4gSW4gYWRkaXRpb24sIHRoZSBzeXNm
+cyB0b2dnbGUgaXMgcmF0aGVyIGhvcnJpYmxlLiBJdCdzIHJhdGhlciBjbGVhcg0KPiA+PiB0aGF0
+IHRoaXMgaXMgbm90IGEgc3lzdGVtLXdpZGUgc2V0dGluZyB0byBiZSBtYWRlLCBhcyB5b3UgbGlr
+ZWx5IG9ubHkNCj4gPj4gd2FudCB0aGF0IGJlaGF2aW9yIChpZiBhdCBhbGwgLi4uKSBmb3IgYSBo
+YW5kZnVsIG9mIHNwZWNpYWwgcHJvY2Vzc2VzIEkgYXNzdW1lPw0KPiA+DQo+ID4gWWVhciwgaXQn
+cyBub3QgYSBzeXN0ZW0td2lkZSBzZXR0aW5nLiBXZSBjb25zaWRlciBlbmFibGluZyB0aGlzIG9w
+dGlvbg0KPiA+IG9ubHkgd2hlbiBhcHBseWluZyBob3QgcGF0Y2hlcyB0byBzcGVjaWFsIHByb2Nl
+c3Nlcy4gSWYgdGhlIHN5c2ZzDQo+ID4gdG9nZ2xlIGlzIHVuYXZhaWxhYmxlLCB3ZSB3aWxsIGV2
+YWx1YXRlIHRoZSBvdmVyYWxsIG1lbW9yeSBpbXBhY3Qgb24NCj4gPiB0aGUgc3lzdGVtIGFmdGVy
+IHJlbW92aW5nIGl0LiBUaGFua3MgdmVyeSBtdWNoIGZvciB5b3VyIHN1Z2dlc3Rpb24uDQo+IA0K
+PiBJIGRvbid0IHRoaW5rIHdlIHdhbnQgdGhpcyBhcyBhbnkga2luZCBvZiBkZWZhdWx0IGJlaGF2
+aW9yLiBCdXQgdGhlIHN5c3RlbQ0KPiB0b2dnbGUgaXMgcmVhbGx5IGFsc28gbm90IHdoYXQgd2Ug
+d2FudC4gQ291bGQgd2UgdXNlIHNvbWUgcGVyLVZNQSBvciBwZXItDQo+IGZpbGUgaGludHMgdG8g
+YWZmZWN0IHRoZSBwb2xpY3k/DQoNCkl0J3MgcmVhbGx5IGEgZ29vZCBpZGVhLiBNYXliZSBjb3Vs
+ZCBzZXR0aW5nIGEgeHggZmxhZyB0byBWTUEsIGJ1dCBpdCBuZWVkIGhvbGQgd3JpdGUNCmxvY2sg
+YW5kIHRvdWNoIFZNQS4gbGV0IG1lIGhhdmUgYSB0aGluayBob3cgdG8gaW1wbGVtZW50IHBlci1W
+TUEgb3IgcGVyLWZpbGUgcG9saWN5DQpvciBvdGhlciBiZXR0ZXIgaGludHMuDQoNCkkgaGF2ZSBh
+IHRob3VnaHQgdGhhdCwgaG93IGFib3V0IGFkZGluZyBhIG5ldyBmbGFnKGluIHB0cmFjZSwgdXBy
+b2Jlcy4uLikgYW5kIHBhc3NpbmcNCnRvIGZhdWx0aW5fcGFnZSgpIHRvIG1hcmsgdGhlIGV4ZWMg
+UE1EIENPVyBwb2xpY3k/DQoNCj4gDQo+IE5vdGUgdGhhdCB5b3VyIHByb3Bvc2FsIHdpbGwgbGlr
+ZWx5IGludGVyYWN0IGluIGJhZCB3YXlzIHdpdGggdXByb2JlcywgYWZ0ZXINCj4gcmVtb3Zpbmcg
+dXByb2JlcyBhZ2Fpbi4NCg0KWWVhciwgZ29vZCBjYXRjaCBoZXJlLCBpdCdzIHJlYWxseSBuZWVk
+IGJlIHNlcmlvdXNseSBjb25zaWRlcmVkLiANCg0KPiANCj4gLS0NCj4gQ2hlZXJzDQo+IA0KPiBE
+YXZpZA0K
 
