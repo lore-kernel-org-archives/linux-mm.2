@@ -4,119 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F9ED637DC
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C33D637DC
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 22:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BB9E6B0089; Tue, 16 Dec 2025 16:57:07 -0500 (EST)
+	id 54C0A6B0088; Tue, 16 Dec 2025 17:09:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169A96B008A; Tue, 16 Dec 2025 16:57:07 -0500 (EST)
+	id 52D0A6B0089; Tue, 16 Dec 2025 17:09:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22006B008C; Tue, 16 Dec 2025 16:57:06 -0500 (EST)
+	id 42C5B6B008A; Tue, 16 Dec 2025 17:09:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E10ED6B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:57:06 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F15613BB10
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:06 +0000 (UTC)
-X-FDA: 84226695252.02.240D6EB
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ACE80180002
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zi9gtxwH;
-	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 307CA6B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 17:09:05 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0B0413BB7F
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:09:04 +0000 (UTC)
+X-FDA: 84226725408.15.DE7F793
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F29F4A0010
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:09:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqiadpWD;
+	spf=pass (imf25.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765922224;
+	s=arc-20220608; t=1765922943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1maYaTCzXyFDam1/GOsNUZkqL3tqTHSS7WQOdxTEj4Q=;
-	b=2IidULtsE8x2X0GZe/u1QPgykOxeyC7pBcQOvIJ5yl+OsH+54QryP8wGQvLn5o4dG3Hlbf
-	GRgt9evdMc8kqRL0vTjPdZ39vjfEaYklXPQq2DcFxT9kKZCxj5+sGSa6crkvwoa7TiNmMX
-	IwQLN7sdrEo5+owgxFn2YEq7XVoDw1E=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zi9gtxwH;
-	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765922224; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B0kVLZK7YMAGW4+NymplABFlILpQoztpjaegZ/yGPWg=;
+	b=ZNaAkfsDbxUiZZwCq9Kj9qleOxTuYcwOsWcAObD+QjUCtmbOWoDCC8LENn3DPQGGLQgWxT
+	Sqa3ZgzCnyYhiV9d8blhXdujdKeM7XEBxypG+7sPoscwDoq/SGCDMWBOZJni/gHCwfkDuo
+	fplzhqLUiLS6CZtKjIcHTzcvGeeYyZI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765922943; a=rsa-sha256;
 	cv=none;
-	b=AwFxQznLzqyOV3JcgDswHAgZgRIWezMriIQ3tuHlOLAw+1DrNYr7EU2kCiJDY7TJhI/OKF
-	1IYzrcvUWuZTpcQP8TjOLF9W+ShdqWc2pZxisQF9J6mzyx5VnWrbIXdJD1R1HyRfdewBNo
-	SnD6T5bfROQG+g3pTBqJ6tqB66kwSOE=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BGKRDHt1141350;
-	Tue, 16 Dec 2025 21:56:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=1maYaTCzXyFDam1/GOsNUZkqL3tqT
-	HSS7WQOdxTEj4Q=; b=Zi9gtxwH4LDls3AoMp5OULHuEzdpD3DHg8mGpnFEQscnQ
-	3Yx7krRxw7wQhpbSGrJZ5AahGPrm5Q3PpwrwLUwumnl71vq2gYImN1kCcZBBjneN
-	SRgY6SkqAuxIJFqIs4rcCs1RgX39CMYUNtns2sFpF1klnJT75Uz2vhydbi9Khrft
-	y0h1OBiU4ua/AJBBWOvcu6cxl3dhya0OKfWvOgLeideIkHvcpklIT6xY8Om4vf81
-	9nm3uGG+fMLefDR9zucawoBm00KDy+HYBjFclJ8AgkluYe9Ndo24N+WPdLxvML5Y
-	/gXIdud34Tc97/Bs/UwRmx+Acxb05bgJaZEYFI7qw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b0xx2csjv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Dec 2025 21:56:52 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGJjgI1029610;
-	Tue, 16 Dec 2025 21:56:51 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkb18wv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Dec 2025 21:56:51 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BGLuoSP021467;
-	Tue, 16 Dec 2025 21:56:50 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b0xkb18wc-1;
-	Tue, 16 Dec 2025 21:56:50 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-        linmiaohe@huawei.com, jiaqiyan@google.com, william.roche@oracle.com,
-        rientjes@google.com, akpm@linux-foundation.org,
-        lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
-Date: Tue, 16 Dec 2025 14:56:21 -0700
-Message-ID: <20251216215621.920093-1-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	b=oxxXeatI5+r1h0wzTmv3AlGyvUDCvmt3a/XzCbbKDpktFri/QCZ5PEC8j/hMMwEqtrYnDJ
+	Cc0njg3rTI1woBquHxM53vkXiG6s9r6sYdpoARI/XEDPAazD8iyoQVxxuBejuENGE/5lxf
+	5RK4ylIRuwP6xswt0ba+nruiha6F3Ck=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqiadpWD;
+	spf=pass (imf25.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B934240661;
+	Tue, 16 Dec 2025 22:09:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4509EC4CEF1;
+	Tue, 16 Dec 2025 22:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765922941;
+	bh=B0kVLZK7YMAGW4+NymplABFlILpQoztpjaegZ/yGPWg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oqiadpWDrn1VtQBdfyFy7VbAAFT/N+0QKxoy/la9xGx5fG3NMm5680qrqPz22qZtD
+	 730Nc00631mF5M860GXrud+DirVS8MK0VRJURSahC1gOVM6BuWECPyT/JBCL+vTTHR
+	 ANySaFterNV+lUXLbgI+r8YXLCTsj+4BuyJNK3LGYSvphQs/L5oShSzo5DruIKbDsw
+	 M2Ec01YwtnmYPJ7y2JWbxiXJ1J5ndwfCfLR9yd6hMhGqoKzsqZ/GRP5mtCOsLCzOlN
+	 J4KQTLdsHQL34okSpaVlrE+jMhJ41hJeBTw53maElT/xvlUJlwMFrwPOAejsH/MToP
+	 PLc1BPivYW6UA==
+Date: Tue, 16 Dec 2025 14:08:57 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux AMDGPU
+ <amd-gfx@lists.freedesktop.org>, Linux DRI Development
+ <dri-devel@lists.freedesktop.org>, Linux Filesystems Development
+ <linux-fsdevel@vger.kernel.org>, Linux Media <linux-media@vger.kernel.org>,
+ linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com, Linux
+ Virtualization <virtualization@lists.linux.dev>, Linux Memory Management
+ List <linux-mm@kvack.org>, Linux Network Bridge <bridge@lists.linux.dev>,
+ Linux Networking <netdev@vger.kernel.org>, Harry Wentland
+ <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira
+ <siqueira@igalia.com>, Alex Deucher <alexander.deucher@amd.com>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Matthew Brost
+ <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>, Philipp
+ Stanner <phasta@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Sumit
+ Semwal <sumit.semwal@linaro.org>, Alexander Potapenko <glider@google.com>,
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
+ <eperezma@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Taimur Hassan
+ <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>, Alex Hung
+ <alex.hung@amd.com>, Aurabindo Pillai <aurabindo.pillai@amd.com>, Dillon
+ Varone <Dillon.Varone@amd.com>, George Shen <george.shen@amd.com>, Aric Cyr
+ <aric.cyr@amd.com>, Cruise Hung <Cruise.Hung@amd.com>, Mario Limonciello
+ <mario.limonciello@amd.com>, Sunil Khatri <sunil.khatri@amd.com>, Dominik
+ Kaszewski <dominik.kaszewski@amd.com>, David Hildenbrand
+ <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Max Kellermann <max.kellermann@ionos.com>,
+ "Nysal Jan K.A." <nysal@linux.ibm.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Alexey Skidanov <alexey.skidanov@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Kent Overstreet
+ <kent.overstreet@linux.dev>, Vitaly Wool <vitaly.wool@konsulko.se>, Harry
+ Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, NeilBrown
+ <neil@brown.name>, Amir Goldstein <amir73il@gmail.com>, Jeff Layton
+ <jlayton@kernel.org>, Ivan Lipski <ivan.lipski@amd.com>, Tao Zhou
+ <tao.zhou1@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>, Hawking Zhang
+ <Hawking.Zhang@amd.com>, Lyude Paul <lyude@redhat.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>, Roopa Prabhu
+ <roopa@cumulusnetworks.com>, Mao Zhu <zhumao001@208suo.com>, Shaomin Deng
+ <dengshaomin@cdjrlc.com>, Charles Han <hanchunchao@inspur.com>, Jilin Yuan
+ <yuanjilin@cdjrlc.com>, Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
+ George Anthony Vernon <contact@gvernon.com>
+Subject: Re: [PATCH 00/14] Assorted kernel-doc fixes
+Message-ID: <20251216140857.77cf0fb3@kernel.org>
+In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
+References: <20251215113903.46555-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_02,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 adultscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512160186
-X-Authority-Analysis: v=2.4 cv=B8W0EetM c=1 sm=1 tr=0 ts=6941d5a4 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=Z4_W6085pIye7jCVOdoA:9
-X-Proofpoint-ORIG-GUID: NGtefr_kkv30ifT3GwXBgvOwh_KfBsfA
-X-Proofpoint-GUID: NGtefr_kkv30ifT3GwXBgvOwh_KfBsfA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDE4NiBTYWx0ZWRfX9n1/pFDsLJ9j
- prEil1jt21Qi2tIWRnXfL8UeKDkXCXfp2Jj/G12+xvvlMRubSaF7mwDOAu5ae6iIza28p5+DYOw
- YFm4FBW8zRYp5l5jP9jFmaK0wMRu4rcHbeA0L0a54RY9Pzn4auT4QvsygF2+91iKXbrIYVXvAmw
- foyjvw7qeSBd/as9HtLMyrJ1xmun8SO7EsVmcHRf8ZW2rvmuPKeRXIcLV+OSJ2OVx/w+T2Jjha9
- vBl9F7CzyhwshUN5Wc4epUNUaBHVh7yXUC3gf8217W0uJB8kon5VVqnhx6NNoGK8r/znncT9do8
- b16cvRQ9prbFBZZ/q252kt0oAMizJERfT5xT+7kWGMJZng/rRq2n0CG22kOptq8tDXsJmBm2ZFK
- oorFkUsHjwT+g0V6DywYWZJU7mbc/Q==
-X-Rspamd-Server: rspam02
-X-Stat-Signature: wkup9odhqsz84wdg13wz9xed8ad5n6k1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qrm9dds3gftyeuxes41aajofmnx5edq7
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F29F4A0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACE80180002
-X-HE-Tag: 1765922224-731931
-X-HE-Meta: U2FsdGVkX18SPO+xiKqJSxvLqQWYp8iHd5sfWHBQtt+HC4vrU7wXj8mavT30a5U6xB1XapyWVi1xsfiqEzXZZ6pzWxWRGdpZY1rGEd79b/uRIhiDl0sZ7l6AYDyawHZw4LJvsi2Vqvd3fLtLVCiE4wG3Z5x6xEBBLU7dVPlZ9zga2jegComICq2qjEg8DUxmZLZW0GE3iWZdkYNoxDfkevCw05PpQN0AhKEIAoBb4nU5yjWgmdCZriKQ/GwiLP3jvLSBgu34fb3S8ErE+lKlMZyWuEiy+vLXL27yoiZYlXiClGCfXlAAT2RQgPU+6ZFgscHmzG7koe9A2053PgLRyQz2CFSM+AZzw/tCfW/WqAx6l6VA0CB6aKT176F2FT1LsfAvM0GaFA94xOAFoT0uWpaF87dcHlb/2tdLZQ2+ew1P62zlh5nZSEQczEtglIUK23l+eZnb6zTSPRUSzM8hfO7vxDgVc7tXtNK6Y6EVbnQgMwBjslYG4w1FVnjqoHKUHp08uMmBG5KigV4tcy4lcl0b2Azc1y+u64v8VA+rFJ4PgV6KLvnMMAB2dPaHDoetoVv+lZDpae8UCA0A+eIsAxVrXIgDoq11EA1L2wDRI1XVbs6Ctx8our3aZhvAw/af7ccGq+CXxV76tZSyDPYmpXj4eXHk0+XIwnjaxXQnpzT3XNAPpQmvVdaVBRmkN43HyCOaIczOy4vGAHLp1lXBw32viY/Pq4pPlxhqqjb/Jjdq4Xf9yaQFdChY67WhL45HnYWzENDhKeKARjzyLLME0FQf1U33wNjduOGRb38OqYlunyDJSqTj43gA8OhnytbP8ByGhCJ2gip7qsE6rnngOJj3hhXJEfKWHiEg5mKzJy+C9oGfTVNOCGtn47uog0nnWzBQkfgUrChlnlghGulIyjgvybG9U+T2W2qiC3+kwaIA57EElyvlt3d8MnbjjNRCHdhdKq1cHYGa79ORqPP
- XjkZUWJU
- 84kI3ByNtYKDRHZmm5dUO83SAUZ3eERtEJznLxXXc4wRRKw6dT5fYORlwdEAgHPAeQRcJCBlf6HyxQByNT8G3X9fLpP7JgoSDGn7uxFLOhZ7H9bSNsM2FDTFNOhmKzAqqYxbmbZPOOrX2cUmf0TOfXztISPeu0NtlO2pf7R4gcRysrk5fOiPbBlh6nMmXZ/HurEqopI3Jf/PR/zNDFpFc34xwyRJ5SNSzww+C2LzydBsCQnVy4LE0FDpBiJQqj7Ha/evpX03A3Mcll3qNAqmYxFu6bZE+KrbDaqly/ZodbrqVfnC/ylgvklVPm4z1Cc0vaawSCkv/bIw0gPC+bqjoP/NVqw==
+X-HE-Tag: 1765922942-668072
+X-HE-Meta: U2FsdGVkX18CbcheZHG3BsgUXKhz7yI8L1B00DYKLIuTvz41HV9jfSa+hpVVS0NMhwlaBS9UdfcRB6VKXAXgFlamot0Kb2Gpn5zZDFkZOOz6jouaE0RgaUpbsmfToiEEq4/o0ZhMJhgzL3NOjh6Et8UFfwDPLq+0SmKbDSL8xYBjPSezk4wUEnKTdRGM4a2ifv4QXSnQbtm3UpMJOyQMoCwR6Akd+Vk431ktzIB9yWuweR2w1CSq1ZaaSSJqbg6qB9OmhqY936bnidK6cecOeemcq0YN36Rzxm4zONmJmDKWIq3nZg0BgsSPdoWtOLnSqrYo5ZnKOekna+szbmQdkdc3cmgNLEHwpOyPkhnJhXRGvf/GcpkK82BQrjn8TkXd3hrZ2S1bN+JooCfRbOxxJ868X903ZSPc1lK7UcSOelh+ZfhcUhd6enVSRIkX8lcJB9eL860OTqqis3OyNkrK7zz+azPMtazIeweMOVosivwxZDECoSrXxxrO/oDmyVdMuUZgP+hhL1GytzTPxjXOcMbHBbnEPyVcDEaK0ahlKOJFjf3ZcQRBhTxITDAMHa/vkrsv6iNioX3VY90bXPkAauTsYZ0pxQfVKz7SnQUQhoE5Q4wUMe0Xyd1L4iP+fBeO/fu3523jmuAF5tvLELa/1OR8GfrWKgdnIe+Y0+K8zHdGG7592F9Y/+FMB7oU8ys0wVvpedTJVklpCQQX6meawEANEBJg8JzUrszWutJEJW7PE3lUQ3wuDI/7ChCWVaB7TQFSFZHFuw43mfiiz33v5qghZTpEFwfxke8/a1pZI4ycr8idSwJwUq8e8gwaO603XpqDZHkwe3IgAQ4KE7eoXVNJVKXkZ2cumY6Gg8SBcnB9dURIq0cnEv1FormehLLrSYw14AYrkbWwTpugDKPshQgpVoB6h5O8KJY0L1zkqf5Ubj1AO06e0+vjRE6KXEujy6m3qybpIVcPeswWDEn
+ 0CbBekJh
+ dBl1F6/CQzbaR+0n0CoIqBJx9uIxt8X1qQNsoua0TkxQ+LgmCMRlh8Hfo32rDbmFijqXm8R+EIdsfG9TSllq8UvnY9gYEPN6Nf3iq2tZCV3rM6ISBglWrT+qO7Kpa0RZa7jMGP/ad2BT/84Z6enZNkGJ+0ZP8CYQTGOejAd4VzPupPBBlIuHPX1zV8IQDHFGf/GTQefYEhsuWPGSVPGtjXdSMeGxLZ9pcuYMbzRbWv05Q4F6mwMY/xM56hHP/ImBhAPVg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,164 +139,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a newly poisoned subpage ends up in an already poisoned hugetlb
-folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
-is not. Fix the inconsistency by designating action_result() to update
-them both.
+On Mon, 15 Dec 2025 18:38:48 +0700 Bagas Sanjaya wrote:
+> Here are assorted kernel-doc fixes for 6.19 cycle. As the name
+> implies, for the merging strategy, the patches can be taken by
+> respective maintainers to appropriate fixes branches (targetting
+> 6.19 of course) (e.g. for mm it will be mm-hotfixes).
 
-Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
----
- include/linux/hugetlb.h |  4 ++--
- include/linux/mm.h      |  4 ++--
- mm/hugetlb.c            |  4 ++--
- mm/memory-failure.c     | 22 +++++++++++++---------
- 4 files changed, 19 insertions(+), 15 deletions(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 8e63e46b8e1f..2e6690c9df96 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -157,7 +157,7 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
- bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
- int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
- int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--				bool *migratable_cleared);
-+				bool *migratable_cleared, bool *samepg);
- void folio_putback_hugetlb(struct folio *folio);
- void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
- void hugetlb_fix_reserve_counts(struct inode *inode);
-@@ -420,7 +420,7 @@ static inline int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb,
- }
- 
- static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared)
-+					bool *migratable_cleared, bool *samepg)
- {
- 	return 0;
- }
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7c79b3369b82..68b1812e9c0a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4036,7 +4036,7 @@ extern int soft_offline_page(unsigned long pfn, int flags);
- extern const struct attribute_group memory_failure_attr_group;
- extern void memory_failure_queue(unsigned long pfn, int flags);
- extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared);
-+					bool *migratable_cleared, bool *samepg);
- void num_poisoned_pages_inc(unsigned long pfn);
- void num_poisoned_pages_sub(unsigned long pfn, long i);
- #else
-@@ -4045,7 +4045,7 @@ static inline void memory_failure_queue(unsigned long pfn, int flags)
- }
- 
- static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared)
-+					bool *migratable_cleared, bool *samepg)
- {
- 	return 0;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 0455119716ec..f78562a578e5 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7818,12 +7818,12 @@ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison
- }
- 
- int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--				bool *migratable_cleared)
-+				bool *migratable_cleared, bool *samepg)
- {
- 	int ret;
- 
- 	spin_lock_irq(&hugetlb_lock);
--	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
-+	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared, samepg);
- 	spin_unlock_irq(&hugetlb_lock);
- 	return ret;
- }
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 3edebb0cda30..070f43bb110a 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1873,7 +1873,8 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
- 	return count;
- }
- 
--static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
-+static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page,
-+					bool *samepg)
- {
- 	struct llist_head *head;
- 	struct raw_hwp_page *raw_hwp;
-@@ -1889,17 +1890,16 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
- 		return -EHWPOISON;
- 	head = raw_hwp_list_head(folio);
- 	llist_for_each_entry(p, head->first, node) {
--		if (p->page == page)
-+		if (p->page == page) {
-+			*samepg = true;
- 			return -EHWPOISON;
-+		}
- 	}
- 
- 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
- 	if (raw_hwp) {
- 		raw_hwp->page = page;
- 		llist_add(&raw_hwp->node, head);
--		/* the first error event will be counted in action_result(). */
--		if (ret)
--			num_poisoned_pages_inc(page_to_pfn(page));
- 	} else {
- 		/*
- 		 * Failed to save raw error info.  We no longer trace all
-@@ -1956,7 +1956,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
-  *   -EHWPOISON    - the hugepage is already hwpoisoned
-  */
- int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--				 bool *migratable_cleared)
-+				 bool *migratable_cleared, bool *samepg)
- {
- 	struct page *page = pfn_to_page(pfn);
- 	struct folio *folio = page_folio(page);
-@@ -1981,7 +1981,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 			goto out;
- 	}
- 
--	if (folio_set_hugetlb_hwpoison(folio, page)) {
-+	if (folio_set_hugetlb_hwpoison(folio, page, samepg)) {
- 		ret = -EHWPOISON;
- 		goto out;
- 	}
-@@ -2014,11 +2014,12 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 	struct page *p = pfn_to_page(pfn);
- 	struct folio *folio;
- 	unsigned long page_flags;
-+	bool samepg = false;
- 	bool migratable_cleared = false;
- 
- 	*hugetlb = 1;
- retry:
--	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
-+	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared, &samepg);
- 	if (res == 2) { /* fallback to normal page handling */
- 		*hugetlb = 0;
- 		return 0;
-@@ -2027,7 +2028,10 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 			folio = page_folio(p);
- 			res = kill_accessing_process(current, folio_pfn(folio), flags);
- 		}
--		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-+		if (samepg)
-+			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-+		else
-+			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
- 		return res;
- 	} else if (res == -EBUSY) {
- 		if (!(flags & MF_NO_RETRY)) {
--- 
-2.43.5
-
+Please submit just the relevant changes directly to respective
+subsystems. Maintainers don't have time to sort patches for you.
+You should know better.
 
