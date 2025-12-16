@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0CED609B7
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1ADDD609B7
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A0A76B0088; Tue, 16 Dec 2025 10:55:02 -0500 (EST)
+	id 53EC76B008A; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 156996B008A; Tue, 16 Dec 2025 10:55:02 -0500 (EST)
+	id 4FF3C6B008C; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 063186B008C; Tue, 16 Dec 2025 10:55:01 -0500 (EST)
+	id 428EE6B0092; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E9A8A6B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:55:01 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC208C0744
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:55:01 +0000 (UTC)
-X-FDA: 84225782802.23.E992DE0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F3B96B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C3E6659C82
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:55:07 +0000 (UTC)
+X-FDA: 84225783054.24.4521490
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6A77F100019
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:54:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=stZyuU0g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0zVztx15;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=stZyuU0g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0zVztx15;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900499; a=rsa-sha256;
-	cv=none;
-	b=6w+pGhUNxM0wdsQgxFiUlNnj0+qRu86Kpgb2vEpLbgS6otPjVNxyUeLhlBDe3rY3I3rRU+
-	K14ppAKRPTXzzSYVXI5QJD0IzFRPIu4OVizP83Ot8PFruXaiCoUbchGYuHttjGTDHQfzLQ
-	8h7u2OwVCs5wHd+gclf5jccfsEWhz2I=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=stZyuU0g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0zVztx15;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=stZyuU0g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0zVztx15;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by imf27.hostedemail.com (Postfix) with ESMTP id 885F640006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:55:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765900499;
+	s=arc-20220608; t=1765900505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MR3ffO4xrLecxa1eKRT0t3GVFusO+oJc5aPAffkAlAA=;
-	b=Y1zSscgN2eDWY2N+W0JMdFD8g2iqZSkNCQKIJj6BxB+4jS/DnDZQ18fNGSEGee0QbZa/3G
-	OU8KV7edlXTOAA3LzJYrXXLNeJFlC7v3ff76WxRJJzEqHCNn3rt7jsRo1j2l7kBJA0IaBu
-	wiYzhZPBvhL+YGFK3ilqxoWb31/Z0pA=
+	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
+	b=vowHwW28VzSqhr/tgzFfItPflmvfVGk5epKaIX9HpQ+5+o+87vSIb1G7k72RiSiAXs0Dr2
+	jZe7VP4XNzTKpBVD+h8IJDnrBV47klpHHgmLLB7d01Kl/4dufmLPPjh+Kpzf8mi4ENkPo8
+	/FuMqIs8itE26povRzZqooGAAwe/8yw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900505; a=rsa-sha256;
+	cv=none;
+	b=Ey6YM7PqajIi4NqhLlspsElFhrtwbc0tXcaaSsoqH3rS7k3Jcbc3z6Tk9ImHv63pItRB1U
+	j8IXJh6wgdimh6YohLCrTxmlel9MFlkeZwWPApTb2dGyTrpoXMunlHWIo+25KhDDTNap++
+	U+Iql1TQ4z9KYUnn4yVjdjClMN0286M=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 43AB65BD55;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5631A5BD56;
 	Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR3ffO4xrLecxa1eKRT0t3GVFusO+oJc5aPAffkAlAA=;
-	b=stZyuU0gwxnGvgWXFpl7LuhBB1voWsNTTkvPT+WswZNSV2gPyG9jPGycXsTNNxQhMe3TAG
-	Y856XMs1aBUyfvSUtgShR2TbiUeSplax174+Dp1QHSvTqu8nHkq1wmfHpF0UcaLVRJQJ5b
-	ODVuvs/OO5uC1TYWZJXHi7jTZVrcCOc=
+	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
+	b=HO8IN6v5rfRA6QSMDEyHkcQxlS3tDP5er96y7JEIBhUE4Rz1R+3k0lv/zNsjmmmNwN/b5o
+	XSkTXNIzYdFD6loRHfGgS8lEVfQMb+vggtt0X2pFChXkf9K0Q6hP3HPjQjFyy8hNrgnlfR
+	0TduxsRKNNg97Df7cYprekep26HFUPg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1765900490;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR3ffO4xrLecxa1eKRT0t3GVFusO+oJc5aPAffkAlAA=;
-	b=0zVztx15yRHE1z9NiZqleDonMvOAGODkKq0/ZEaVDvVEukvTb7pmFKYVhXSUpT0ZOF+2sr
-	vP3Nw3WCMczRNWDQ==
+	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
+	b=J/rUXhTYPxBcI5iEQ5GzbSyIzzQJ/uM8fSkw+7qA006FQLSb5TE8yCJIIJWWs+YGYhQbVY
+	n9sB12+RNaQvhzBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR3ffO4xrLecxa1eKRT0t3GVFusO+oJc5aPAffkAlAA=;
-	b=stZyuU0gwxnGvgWXFpl7LuhBB1voWsNTTkvPT+WswZNSV2gPyG9jPGycXsTNNxQhMe3TAG
-	Y856XMs1aBUyfvSUtgShR2TbiUeSplax174+Dp1QHSvTqu8nHkq1wmfHpF0UcaLVRJQJ5b
-	ODVuvs/OO5uC1TYWZJXHi7jTZVrcCOc=
+	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
+	b=HO8IN6v5rfRA6QSMDEyHkcQxlS3tDP5er96y7JEIBhUE4Rz1R+3k0lv/zNsjmmmNwN/b5o
+	XSkTXNIzYdFD6loRHfGgS8lEVfQMb+vggtt0X2pFChXkf9K0Q6hP3HPjQjFyy8hNrgnlfR
+	0TduxsRKNNg97Df7cYprekep26HFUPg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1765900490;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR3ffO4xrLecxa1eKRT0t3GVFusO+oJc5aPAffkAlAA=;
-	b=0zVztx15yRHE1z9NiZqleDonMvOAGODkKq0/ZEaVDvVEukvTb7pmFKYVhXSUpT0ZOF+2sr
-	vP3Nw3WCMczRNWDQ==
+	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
+	b=J/rUXhTYPxBcI5iEQ5GzbSyIzzQJ/uM8fSkw+7qA006FQLSb5TE8yCJIIJWWs+YGYhQbVY
+	n9sB12+RNaQvhzBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 178D43EA65;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 396483EA66;
 	Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SIhwBcqAQWkSGgAAD6G6ig
+	id aFFrDcqAQWkSGgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Tue, 16 Dec 2025 15:54:50 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Tue, 16 Dec 2025 16:54:21 +0100
-Subject: [PATCH RFC 1/2] mm, page_alloc, thp: prevent reclaim for
- __GFP_THISNODE THP allocations
+Date: Tue, 16 Dec 2025 16:54:22 +0100
+Subject: [PATCH RFC 2/2] mm, page_alloc: fail costly __GFP_NORETRY
+ allocations faster
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251216-thp-thisnode-tweak-v1-1-0e499d13d2eb@suse.cz>
+Message-Id: <20251216-thp-thisnode-tweak-v1-2-0e499d13d2eb@suse.cz>
 References: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
 In-Reply-To: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -129,26 +129,26 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2872; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=++7eyxevsPzdZz3r4oaGv/mi9oN1jPDkXFLxAIjV77w=;
- b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBpQYDDO9621vlOjfKJDP3he3X3FDlxbK4Z7sw3V
- 9mXc8uFKu6JAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaUGAwxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJqilQgAoe5BI5j7ckydfXr0N41i7/T33THXbja
- C1dWnYjnr+HaIFjKCci+iDrHfvHV/rQyL5io3kJmedy+hwFI+4AnS3X4CzotgBbDvD9FkhCIm0r
- GHxfL+5Z4wfUeRSCK+SpGp+IeMqvCUP7Ldwsht2vZr23afldA80K2EAa4GxqCZE0X9wVXwDPT4q
- vCHwfE52c2fL+IVSTp1YaCbmTRgccI+GumBql2M5fXMQ4nv8b1EZ+ZIthCCNEeDtSLjGfrz3w9r
- /0UD80J08Jp/BHi/2/eZSU43Qj5UaUt4tLzgruPdc3AzBQwZ7mRfA0i3TWofqXAUfpQjjlsahcx
- F6VoARvY9rA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4826; i=vbabka@suse.cz;
+ h=from:subject:message-id; bh=Lkc/ZcxsK4gnLADhpDuMkrjWSePxTGl4SqTD12NEnag=;
+ b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBpQYDG06nlhB1wt73I8tK0coD6fyIQLtXh75T33
+ MZSZvDfa76JAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaUGAxhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJqhBwf+O0DgjKAQej4/tVa/QabMW061ukKC7g+
+ o+BqzwIIRiljekNTb5O188A5C824YXBgghPtbK6z3OLzSqJgSQGMmAsb8SRazBFj4KL95EikCrd
+ qdHpOH3lMWllR7TUhuAKgR5rfzTb6agP2XM7cZRK6JocrkriLhiVIUemvhz3gEAWPvDSf+MMa0b
+ +eZkRfof4vYftVcYzyPc7+cxh92nMpp/mgK7aLwyopimUP+RDMjdIcdR5D5G66hAPB2jMPcV3ag
+ Bfs8fzyS5C2wJBUIosO+mwIEe4tSqY0fNGeEzLFMkF9ZwpBg/KI0oR7VodBXtRV3k3uLqRXA1iG
+ mYUBQxFzrvQ==
 X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
  fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 885F640006
+X-Stat-Signature: 5xdsepyof3tzg6zhrzd6njru7ncwgow8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A77F100019
-X-Stat-Signature: unh8nb6udm675om87x5qwyo635ue9ih4
-X-HE-Tag: 1765900499-981568
-X-HE-Meta: U2FsdGVkX1+cIxgOMTflqeJfCqG7i0i6a+BKUniDV0Z1mgD36XlXLTRh8rbCFNa90cDZCNY3eRgYob7DHnGnzl0P4iX93OvyGtVtQ22x5rygM0WwWrlGcTptoXsJCBimUqhzIwLzIvPihzeT43/JLDNmuCaAzUtlVgFzNH/AfMtSjFLLNcmkm/U1VbmqNJkiNRze+OMQq3vM1Rjz70/qzQAKi/wLOJf84kEdFsHy3ltTRWL9UVuaox5pCaAxziHKRQFGLL0KL8fJeuWKXsvqezmABFU+fuydgnj+v0CeqUVth/fYiXIuHfD/c9QnNvmLnLTNdf/qr5Nxm0MC6GlOdkgclpwVUuaHcMBV6F+1MeN+93Mz/cwPk0MsATvaQkX6hAsGwuPydynR2+Hywv1jagjTBHb0uoIFqhJEPl6qmXXlZAGl7BI00MYX6mgD6PvfyvhUFOqE8r4lWB+Ehl79BDN8AYy8xxGMvUzmh5v5KWcCrGxa22Yzirm5gZ1WzVp3yJaS5w64UP6aSwwQdc+EIFRXSZ+WZxfl1MvKDSXrYeXDgN7jV9eG8iQ2D60d7CfHL2+yLMuIUMvITvrLCr1JyyYAmKoXwn/AXkecWlI1J2mz6jltsiM+WZnToY55DcTIrAZvyv+UNSVlQfisXTiPlTQjOB4uQEWGze12O9qnjZBbshK22hjdGV1ZKXajN0514gqPLzYBPzNlYBloO+3M0YiM3YYhZ+0DmFHfuN9N79obt09rgbND5effyC7H6crWVEsloWsTVV0QoV0xo1sSnGLkox++zcpgUbFaYk4X0IKC8fwN+ThgH50rJtqH4WJv/PvBSQolrSHX0Jg6eICGDjMQrH91Phhp1clJiTf70IXKOUFZsK45yyCXzKTAaq2ula26fJdB8Eyjh7EjUbVoZwx0iWFHfHbx6T7ftiFcNB7xQNKIKUrok9rFGxQKIWc2oYmMdVfjdiSYJiu1rms
- GvUQRJEJ
- LU3XGSRLxrWfJo1biZzyGTjwnf2WnFzfSrV+THFlqSfX2HH5X6KzF2NF746ysIRPtSFXdgjkw8w3ap4KLYwflRNw0U0xTXcYoiXgQNQg3PFBA2zts6xle5Wcw4eKamY3Kd9UogFtfkqIKHmX62sHBnI5T42gsY0WjBjlYghV7dIrGWI2tAoTT3ZIUZBJ6+v38Y1DkCjufIn6G1tyCq9IYp8xzueFmcrl+s9baJ9tfU5tvW8WrOiUmcfq3p+T8ucW8SegfO1G9b77Qt7wFlTmuVb/3eWvXhxSh+DT/e/5ukWeHhEwJwtmmMRY/xFDS9MvjDFPbP/h1Uxt2DWJ/juzHl4I1qPp79oI5G+vcKjKBm9wLQD5p8iGimzkX9A==
+X-HE-Tag: 1765900505-717091
+X-HE-Meta: U2FsdGVkX188R8MqwIBY4kCgom+vVLbOgievt1emGHz6P+u1Q9JgMlHFZk6+RAPFmF28SxBL38GDm7Q8gGK+eUht0J1A97FpjRgD9X17qnWM4S2QWNxXZsPonysdYqVhUnzuXk0PLZlJ1doykpAobJuneRSlxKmxMX0ZTwSwP6zQLuZat9RBSTY+RtgdsF71YSx9ibO7wthbyXJ4x3xlH9UUe7H0gs+MkxmraUkQz4mo4upqCJJ1jKJzyMbitHV7dHOsvT0Us51r8alzSpizi2XUTFC453A6zFF01vj/qhMQWv8kUmA1DzF6Y42gcJu0aHV8JjcZcYaX0vM57Lkdf77iPIfo7IeAHxF8y3yZRPuM+C3feLMniniIAOJ/OEbZyyQ5YcwXXDAVmK7ZUnmru969OskUbGTKcZ5vjhNztc6eOaiNtrJjBU4tkisNpYgBz1nAxhnbM8HSrdJfjYyP8fCF7AlL93EDDgjr+aA0I06kOSyRjVMmtSngIZN2yH/JpbCHKdRdMdvft3ls8wsOyNgkfbSj2yAvOuH3767kSA8nVdTNxee+eohwS8keh71DxIXy6rE7qInA8gC3cTbDcXWfd//XP5RA7IzKUW2+2lBMo/oe7SlYvfFXFGKewCIIEIoxyh3okqDaC8WiCrGssv0qJBq6GuBN3YQvdlGxLLISzy1QsEp0GSpH16v7VXU0YzEOoSrvisVO5/YvZCAluq/uKKIWHSy5UXDY3YsjTJuPu/twQWdOWRGbNuS4QWOTFte6D++gcOdY9MDO9id8+0QyNgV7w1mrsJmpWqMH/Q23ETKwenQ+REwSgiEfY9066PrP+1P7KubNmi04w07eZlJ0lVKwvbazgHwPMbJYk/xWU30R870M11Xi3dAAPmkSPT3kVQuDrTuCzvYHKvPG9O5kJvRpLehtYbPRhnb0QqgKB3J+6hsdGWxSlUAZeV61C6At8r+xBzRvTVrcrQ2
+ wjCXnEXW
+ PB1YJePUJLOYbFDsNc/pqXtAOBC3JXnb35MI37hNeSbWk8f0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,72 +157,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
-local-only and all-node allocations"), THP page fault allocations have
-settled on the following scheme (from the commit log):
+For allocations that are of costly order and __GFP_NORETRY (and can
+perform compaction) we attempt direct compaction first. If that fails,
+we continue with a single round of direct reclaim+compaction (as for
+other __GFP_NORETRY allocations, except the compaction is of lower
+priority), with two exceptions that fail immediately:
 
-1. local node only THP allocation with no reclaim, just compaction.
-2. for madvised VMA's or when synchronous compaction is enabled always - THP
-   allocation from any node with effort determined by global defrag setting
-   and VMA madvise
-3. fallback to base pages on any node
+- __GFP_THISNODE is specified, to prevent zone_reclaim_mode-like
+  behavior for e.g. THP page faults
 
-Recent customer reports however revealed we have a gap in step 1 above.
-What we have seen is excessive reclaim due to THP page faults on a NUMA
-node that's close to its high watermark, while other nodes have plenty
-of free memory.
+- compaction failed because it was deferred (i.e. has been failing
+  recently so further attempts are not done for a while) or skipped,
+  which means there are insufficient free base pages to defragment to
+  begin with
 
-The problem with step 1 is that it promises no reclaim after the
-compaction attempt, however reclaim is only avoided for certain
-compaction outcomes (deferred, or skipped due to insufficient free base
-pages), and not e.g. when compaction is actually performed but fails (we
-did see compact_fail vmstat counter increasing).
+Upon closer inspection, the second condition has a somewhat flawed
+reasoning. If there are not enough base pages and reclaim could create
+them, we instead fail. When there are enough base pages and compaction
+has already ran and failed, we proceed and hope that reclaim and the
+subsequent compaction attempt will succeed. But it's unclear why they
+should and whether it will be as inexpensive as intended.
 
-THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
-which is not the intention.
+It might make therefore more sense to just fail unconditionally after
+the initial compaction attempt, so do that instead. Costly allocations
+that do want the reclaim/compaction to happen at least once can omit
+__GFP_NORETRY, or even specify __GFP_RETRY_MAYFAIL for more than one
+attempt.
 
-Thus add a check for __GFP_THISNODE that corresponds to this exact
-situation and prevents continuing with reclaim/compaction once the
-initial compaction attempt isn't successful in allocating the page.
+There is a slight potential unfairness in that costly __GFP_NORETRY
+allocations that can't perform direct compaction (i.e. lack __GFP_IO)
+will still be allowed to direct reclaim, while those that can direct
+compact will now never attempt direct reclaim. However, in cases of
+memory pressure causing compaction to be skipped due to insufficient
+base pages, direct reclaim was already not done before, so there should
+be no functional regressions from this change.
 
-Note that commit cc638f329ef6 has not introduced this over-reclaim
-possibility; it appears to exist in some form since commit 2f0799a0ffc0
-("mm, thp: restore node-local hugepage allocations"). Followup commits
-b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction
-may not succeed") and cc638f329ef6 have moved in the right direction,
-but left the abovementioned gap.
-
-Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/page_alloc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/linux/gfp_types.h |  2 ++
+ mm/page_alloc.c           | 47 +++--------------------------------------------
+ 2 files changed, 5 insertions(+), 44 deletions(-)
 
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 3de43b12209e..051311fdbdb1 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -218,6 +218,8 @@ enum {
+  * caller must handle the failure which is quite likely to happen under
+  * heavy memory pressure. The flag is suitable when failure can easily be
+  * handled at small cost, such as reduced throughput.
++ * For costly orders, only memory compaction can be attempted with no reclaim
++ * under some conditions.
+  *
+  * %__GFP_RETRY_MAYFAIL: The VM implementation will retry memory reclaim
+  * procedures that have previously failed if there is some indication
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..e6fd1213328b 100644
+index e6fd1213328b..2671cbbd6375 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -4788,6 +4788,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 			    compact_result == COMPACT_DEFERRED)
- 				goto nopage;
+@@ -4763,52 +4763,11 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 			goto got_pg;
  
-+			/*
-+			 * THP page faults may attempt local node only first,
-+			 * but are then allowed to only compact, not reclaim,
-+			 * see alloc_pages_mpol()
-+			 *
-+			 * compaction can fail for other reasons than those
-+			 * checked above and we don't want such THP allocations
-+			 * to put reclaim pressure on a single node in a
-+			 * situation where other nodes might have plenty of
-+			 * available memory
-+			 */
-+			if (gfp_mask & __GFP_THISNODE)
-+				goto nopage;
-+
- 			/*
- 			 * Looks like reclaim/compaction is worth trying, but
- 			 * sync compaction could be very expensive, so keep
+ 		/*
+-		 * Checks for costly allocations with __GFP_NORETRY, which
+-		 * includes some THP page fault allocations
++		 * Compaction didn't succeed and we were told not to try hard,
++		 * so fail now.
+ 		 */
+ 		if (costly_order && (gfp_mask & __GFP_NORETRY)) {
+-			/*
+-			 * If allocating entire pageblock(s) and compaction
+-			 * failed because all zones are below low watermarks
+-			 * or is prohibited because it recently failed at this
+-			 * order, fail immediately unless the allocator has
+-			 * requested compaction and reclaim retry.
+-			 *
+-			 * Reclaim is
+-			 *  - potentially very expensive because zones are far
+-			 *    below their low watermarks or this is part of very
+-			 *    bursty high order allocations,
+-			 *  - not guaranteed to help because isolate_freepages()
+-			 *    may not iterate over freed pages as part of its
+-			 *    linear scan, and
+-			 *  - unlikely to make entire pageblocks free on its
+-			 *    own.
+-			 */
+-			if (compact_result == COMPACT_SKIPPED ||
+-			    compact_result == COMPACT_DEFERRED)
+-				goto nopage;
+-
+-			/*
+-			 * THP page faults may attempt local node only first,
+-			 * but are then allowed to only compact, not reclaim,
+-			 * see alloc_pages_mpol()
+-			 *
+-			 * compaction can fail for other reasons than those
+-			 * checked above and we don't want such THP allocations
+-			 * to put reclaim pressure on a single node in a
+-			 * situation where other nodes might have plenty of
+-			 * available memory
+-			 */
+-			if (gfp_mask & __GFP_THISNODE)
+-				goto nopage;
+-
+-			/*
+-			 * Looks like reclaim/compaction is worth trying, but
+-			 * sync compaction could be very expensive, so keep
+-			 * using async compaction.
+-			 */
+-			compact_priority = INIT_COMPACT_PRIORITY;
+-		}
++			goto nopage;
+ 	}
+ 
+ retry:
 
 -- 
 2.52.0
