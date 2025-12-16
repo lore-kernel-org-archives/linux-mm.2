@@ -4,88 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09768D5C0C5
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 02:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD9DD5C0C0
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 03:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 404E96B0005; Mon, 15 Dec 2025 21:48:41 -0500 (EST)
+	id B607D6B0005; Mon, 15 Dec 2025 22:03:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2B56B0089; Mon, 15 Dec 2025 21:48:41 -0500 (EST)
+	id B1E9D6B0089; Mon, 15 Dec 2025 22:03:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BEB66B008A; Mon, 15 Dec 2025 21:48:41 -0500 (EST)
+	id 9DF056B008A; Mon, 15 Dec 2025 22:03:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 169566B0005
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 21:48:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC2A2C044C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:48:40 +0000 (UTC)
-X-FDA: 84223801200.27.E3A7FF2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D756514000C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:48:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mHRSrcKI;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765853319; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 89E296B0005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:03:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22FAF16043C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:03:33 +0000 (UTC)
+X-FDA: 84223838706.02.3B154B3
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C3FF14000A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:03:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765854211; a=rsa-sha256;
 	cv=none;
-	b=yS7fyX8Pk3mi6BSStnHrKjrbcXTkPbaxFJnF0WPd1xc5zIo/m2pe1Zpev6C3xB15BY5HJF
-	xEdOvpsN0tAxav78I2A6UgLRsnyhMRfqIZelcXY9S8i9R3uCcS0WSx2BKeBrwUCvnnaTrx
-	CC6E8WHkcQg1s3bEo4uiKAY/lgjbrUc=
+	b=EYrW8eexFiCBRI1tRBL5TPIcccr3bv7VFS2r93vt5sSfzvyce2NnPJ49/BWsUkZ6nvvfk3
+	MYZqtoS0wc+uVLtIH6P0B77lqRgbubtlOxYw1zXSO27f2kpVpa0mkw1KlbyLJdXrzC2tNJ
+	P3TjUcXv/1LxQx1SEUTBAaLFjBpf+Hc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mHRSrcKI;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765853319;
+	s=arc-20220608; t=1765854211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Am8on7H1B6picEYGbrc5xSJQJqU1btgOGwYkP4/ViRI=;
-	b=zq5nA+hP6BRB5qWs9ORdFNv4G7v82KirmF1ZMZLXUV1YBeVoi0XSLBTcC5LoQvA2N9I08r
-	eZDVTcE4xEQZhoBLPk7yfPVUvApguqwhYzPE6roSWToh42AikpxuLpBAb0uKaLTjFYHssQ
-	7MyGCPaFActElQ+JgEEPY/4pFtzn0B4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0C1444401;
-	Tue, 16 Dec 2025 02:48:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76C9C4CEF5;
-	Tue, 16 Dec 2025 02:48:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765853317;
-	bh=dLovf03U9H7G4zdKCI1UyiSLuE0DPzX4oZlq39p+rBA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mHRSrcKIhOqDFqdMNr4yYNulw7jpi8NXMbPsioKnQyshqkwKnozF3/NzflbuOgh22
-	 Bvs/xcoUXC6sxswwOIVSZVNszqlioh3OB1oQe45ftXK+Jn4uldAU1Yct//TOCkRjam
-	 RD86kIn1sS3Co00Yg2ZVeEjP+2fbxMAbOFMX8o+E=
-Date: Mon, 15 Dec 2025 18:48:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- david@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, boris.ostrovsky@oracle.com,
- konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 0/8] mm: folio_zero_user: clear contiguous pages
-Message-Id: <20251215184836.8c003ad094e8bd6bdb96f478@linux-foundation.org>
-In-Reply-To: <20251215204922.475324-1-ankur.a.arora@oracle.com>
-References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0n+yNWCg3MVEOuI8Q2W4hDqwML4ROKKAU8NKKKpe86I=;
+	b=m4K/zPNJ6hCjl4F0lvwLalAC72z7Z35EgtdDOEuHYnP5CVX19aTr095Mv9DhCWTJD/ySXp
+	bLa23ONQU8e3BDPbgnLyvU5BW9H25i7ExsflK7r6R/hsCyul+F0z+NorQeNb0u7AZbZZ3d
+	SzCqHfAkTzUX0uMET/cjHMucyOzyhNA=
+X-AuditID: a67dfc5b-c45ff70000001609-3d-6940cbfe996a
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [PATCH v2 0/1] finalize removing the page pool members in struct page
+Date: Tue, 16 Dec 2025 12:03:13 +0900
+Message-Id: <20251216030314.29728-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTYRyHe885O+e4HB7WxZNFwUSCIrtg8BfCRIJeIksoogtdRp7ayhub
+	mobFzNnM0tQSTVcppnlLY9rcxlbmvaQ0LZmUt3UxKjW1LHNkLvHbAw+/59OPJaUjlBerjIgW
+	VBHyMBktpsQj7oUb/rYHKjfZuj1BX11JQ8XvOLg/aBLBdOUwAfpyI4If028ZmLW1IJhsaqXh
+	a+MEgqLCKRL0HVoKflb/IcFsGUbwJfcBDR9bHAxUGIJhoOQTBVZdHQmO6200pGlnSLBNjzJw
+	yVQ6F67RMNBpTBfBzT/FJNRpBhnotuhp6K+cFcGnhjQKnuWVUfA9u4mEgfRAaClYDlPt3xA0
+	VdcRMHXtNg1vblkIeGR7w8CNrgIa3msHEHQ1OijIdqbQkJ+YjmDm91xyNOOHCPKb+5lAX5xo
+	t9O48dsYiWvLegnck5tJYfvj5wQ25/UxuMAQg2tK1+FUexeJDeVXaGyYyGLwux4rjdtyZyhs
+	HvLHZtMkgdOSRumQZYfF20KFMGWsoNoYcEKsuHe5mYzKEMcVtb5AGpTLpCI3luf8eEerRrTA
+	SUYn5WKaW8vb7dOki5dywXyV8TVKRWKW5EYZ3vrkF+0SS7g9fEp5DuFiivPhM7VF/8cSbivf
+	raum56Nr+IqH9aRrzHOFLD+WnIPmxQr+aamdykCLC9CiciRVRsSGy5Vhfr6K+AhlnO/JyHAD
+	mjtByQXnEROa6NzXgDgWydwleHa7UiqSx6rjwxsQz5KypZIUe4BSKgmVx58XVJHHVTFhgroB
+	rWQpmadky9S5UCl3Wh4tnBWEKEG1YAnWzUuDspynNJ+PJ1z08aq9mjTuPYReVc32JfToD8mW
+	Z+3q/bDJuqzt1vpowwEPfYj/7qo72/fJi0I6ysx+v86s0mVH6oymRLegZNvDYwaPXRmraz7u
+	7/Bor7Bo9+4oDre2HdYpmk9oulnsfdS7/uXdL3/HSoZFyf79aOd4sfqF09tBHAySUWqFfPM6
+	UqWW/wN8heHSAAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRW0iTYRyHe7+zo8WXSX3ZRTCQTpQJFf9ISrqot+h0E4E3OfRDl5vKlrZ1
+	oJWiNnK5DmQ5wZppHlLZapviVDYzTcSYh9ZhakYlZTN0eVyZFt098PB7bn4cGd5DRXKKtLOi
+	Ok2ulDESSnJsT/bW311xiu19NhrMdTUMVM9ooWLYScNszRcCzFV2BMHZdywsuNoRTLa9YOCb
+	ZwKB5cEUCeaeHAp+1s2R0ND4BcHXoicMfGofYaHaehSGyj9T0JTnIGHkRgcDBTnzJLhmAyxc
+	dT5eDNv0LHhKOml4ZTfScHvuEQkO/TALvY1mBgZrFmj47C6goPN+JQU/7rSRMGSMg/bS1TDV
+	NYagrc5BwNT1Egb67zUS8MzVz8ItbykDH3OGEHg9IxTcCeUzUHzFiGB+ZjEZKAzSUPx8kI2L
+	xld8PgZ7xsZJ/LTyDYEHikwU9jW/JHDDfT+LS62Z2PZ4Mzb4vCS2Vl1jsHXiJovfDzQxuKNo
+	nsINH3bjBuckgQuyA8yJ1fGS2CRRqcgS1dF7EyQpZbnPyYxCidbyohvpURFrQGGcwO8Qsu0h
+	aokZfoPg882SSxzBHxVq7X3IgCQcyQdYoallmlkSq/hjQn7VXWKJKT5KMOVY/o6l/E6hN6+O
+	+RddL1TXt5KFiCtFy6pQhCItSyVXKHdu06Sm6NIU2m2J6SorWry5/FLI5ETB3oNuxHNItlyK
+	F/Ypwml5lkanciOBI2UR0nzfXkW4NEmuOy+q00+rM5Wixo3WcZRsjfTwKTEhnE+WnxVTRTFD
+	VP+3BBcWqUcQe9nyMFYf6dDHGafPnQRDrT/prX3U63LZOiuPl2U8SVYl+VX7Y9SOmC5t7MmQ
+	bmP3mUn/gVtbci2H5oLNgW7dwyNlTafiv3MX3/v9z1Yi24VNbr2pIi8st7znw4rlM2OOXd7E
+	X856nkDKtfQ4/Xo0qrWF121svTQ9mluSIqM0KfKYzaRaI/8DjxHjcOICAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: C3FF14000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: eqmjdwu3o1e4eanzrkpcoetmj8joas3p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D756514000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 48ooou9gatqb9yhaq3dje7iomas5bwdj
-X-HE-Tag: 1765853318-853074
-X-HE-Meta: U2FsdGVkX186qXDbRdR23O3jIGqeP0p+gX/ty8HOLTiRCkW9A8yZIDjdbyGzJxtX0KmR+zXomdXOAhXcMhXjc1bm0OHHGrPzlH7xjONzmSua2eHTr9ahAG131lU1MgQeXDn5iMsPwK3K7WSZxk7/XHIL/xXEzWq8VtJCGmcj+hR6fxXZMwlX7Y+yEMogZEDkAY0V3b6WjBI/KXutli1inALNmXWOTe+KMCutRyzXSx0zkO6P/WRzVq7n5XplD6Vs1ur4MOVhArRylIO3KQZQ7Hh5lQF7icz2uwjA74EGEgm+HN+ZaRRTrjrG2HWgF8ah7E7MvMrYRLFNrSDB5h6LbU3buxr01M2sKcY6bfNAshH0qQg9MYc+47554X+7/fMCNuQOMi6BVkUzvLyEW5Lx8j7Tw52sQHZXct7nxwHcqN8nyEBje84/qWC1K9Qbfyf8ibE2cqov/b/vU2RFNcfRzloEj13zyS8rv+8zekEt1YvWOnhfrsy9YCs718aT5MIsxSpO1ANZVuBUNc7pVBMpmh+GBj/ymPVWlj0+lUKb/ly2X1xg/QZlVLaAaHGeWuLDV9JvfoRYiYD6zelj068fAJqkbWyL/GWWzZ2n+CvxZrUARVhe6YFpWc7j6Hf5/+jyp+HFefOCU2nb3BomRhgeDEyn6iAoB0hdmcjLjwDu0yIcgnGE54lAAOnGuOYerUSP5EIJAjQFU60N1XOGEPZviqOtNo1zUDlnQ5o4lggmlxVLo9rmpWyToFdCNkBg0a4n6U2UF6UP+0eTS+lpYTdH2y+SgKHiNlBMRFLygaQUe9Zw59wP6pShn1wK90qYOa0vFqKMcle7Hi10fgNSEs5TQv4TU+JCcgmD3m8yIFDkTxttS4Nj18XPvnjnXD13xTniq52xeTxQ4ozbmUEg2EWYU5VukKIFlu5T9e/OqOsH8xXRGjJyP7GydNWPN9nRMOuU1IY/1RNeukGxFllxoA7
- ghN0lD8Z
- HySfEZ60W7UASzkOluBHov3woZsDs5of5KhWThHAO6JCPTKmDot2ZexGRexKkOqXEQ3djAPqrq1YiKM6xQ+F4bj3Yg3kc6gA3AsUrcI+MtYvfkhAJq7V+6qZDMLzsCB6FoN4TI8CuHAeGeza9wTPKoOZMSoxQNXwKPFk7ZRU/iBlecHcZiCtzhqZmVF6RCcMhLNYYdxGl2L37TnPDeJjAcA2bsImJ+VfOYbfZXUUORcSIUAumyoKz7DKfJWjft+dk54Z7psAHdB1UNF9Gr83GSR84BpC214MAd3v2LRjOMBWJBa8y1injEJg962GXHsf5e2vV
+X-HE-Tag: 1765854208-837302
+X-HE-Meta: U2FsdGVkX18RNByIYPw9GjI7efhj9gepPNCRYnFkUvj5xl8vmMJt9atrjKBoIMzsM6WWL6e4bmYeFElAs8ri8ACThYu62aCEGsFn+XaVTjo/D9jXvgfXcW+HTArxFAmkI/UT5iSsUORM/CXaE+aQhEP1Z1gz5E3CIzN7mHFciSlNJQDYMCqZ7v06hINdtcWH48Mwx1DyfBDHVfr77Zn6rQbWmKpfgFbQoZF3C3CWRbQ191mYhwV9Oxwm2nfiNvWPA/mav0us/THipTI7fjTIkHqrqDP2wXulbVzk9KWUT/uxbp3cddpls5PkZowrsoNucQTWBGaHzV6CS7fCUFivrotkoaF7X0RUtzvIBolnll3ec46YGXGSC8v7WwHdpp8wXvjyCJCrgSFS0mgAaYdl7HMitUPuqijbFELU6UpAmQjZHj0j1LvortLh5bssPmpY1HAzTMbAepXQcpeT1jeSRIKF97OsGwXfWFDLc7Cn4K1Jk6JbyQkZyeYSKEldhZ5FHOVVyvDWah+555477Tb8cTSA04up53xwh2VtJhHCrPSjJKshxTnGkqWIWOv9gruYhhL5snM+6WG0oC4ArsGMqNV7opByYWkB5eX6g3jQDDmJi6GkRUDC+G4M99PfZeWlB5TU9WQ2MJ3El7n9Ya6mzqXW7UNdRnZFZ6bPSEjC31j0cR07B805HtfRI/6OA8tLvA5B3hqntoKXHDP+LdKcnJd5ujTB4WzHFqb7yo+CD8XroZEAaURzky6Qqors77Dd8vnEDiDygKO8/sT7iUh1gI/p4eapXan6K6onn6dq76b5Ge53uaii8LMXpT4sjonafwhDwpxmantMNE7KPyhhFlMaHhvL9HB16YuA6jePgQMCWwUaShFsaGyUnCZb2vyuaHjRAPmlmIdzDdh3KyqPEIY9DaMKHVtefLmWMAW0V/6G810mcIAZXjNESAKMJ3O0q+wfuGFF7XfnZ2N0rw7
+ n4fAD+q3
+ SdJQsv7ntpL7ADBRO9QC5wCl3+5NmsLE8UAI9Tg9kSnTaTnPzf8jpudXcZmAsNySQ9ZDa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,19 +144,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Dec 2025 12:49:14 -0800 Ankur Arora <ankur.a.arora@oracle.com> wrote:
+Since this patch requires to use newly introduced APIs in net tree, I've
+been waiting for those to be ready in mm tree.  Now that mm tree has
+been rebased so as to include the APIs, this patch can be merged to mm
+tree.
 
-> This series adds clearing of contiguous page ranges for hugepages.
-> 
+This patch has been carried out in a separate thread so far for the
+reviews [1]:
 
-Review is a bit thin at this time but it's at v10 and seems a thing we
-want to push ahead with.
+ [1] https://lore.kernel.org/all/20251119012709.35895-1-byungchul@sk.com/
+---
+Changes from v1:
+	1. Drop the finalizing patch removing the pp fields of struct
+	   page since I found that there is still code accessing a pp
+	   field via struct page.  I will retry the finalizing patch
+	   after resolving the issue.
+---
+Byungchul Park (1):
+  mm: introduce a new page type for page pool in page type
 
-So I'll add this to mm.git's mm-new branch for testing.  I expect a few
-days after that I'll quietly move it into the mm-unstable branch where
-it will receive linux-next exposure.  Further progress into mm.git's
-non-rebasing for-next-merge-window mm-stable branch will depend upon
-test and review outcomes.
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+ include/linux/mm.h                            | 27 +++----------------
+ include/linux/page-flags.h                    |  6 +++++
+ include/net/netmem.h                          | 15 +++++++++--
+ mm/page_alloc.c                               | 11 +++++---
+ net/core/netmem_priv.h                        | 20 +++++---------
+ net/core/page_pool.c                          | 18 +++++++++++--
+ 7 files changed, 53 insertions(+), 46 deletions(-)
 
-Thanks.
+
+base-commit: d0a24447990a9d8212bfb3a692d59efa74ce9f86
+-- 
+2.17.1
+
 
