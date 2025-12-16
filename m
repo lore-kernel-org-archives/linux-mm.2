@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC98ED609A1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3F5DD609AB
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:21:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B1106B0089; Tue, 16 Dec 2025 10:20:24 -0500 (EST)
+	id 1A3806B0089; Tue, 16 Dec 2025 10:21:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 471506B008A; Tue, 16 Dec 2025 10:20:24 -0500 (EST)
+	id 163976B008A; Tue, 16 Dec 2025 10:21:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3879B6B008C; Tue, 16 Dec 2025 10:20:24 -0500 (EST)
+	id 025B46B008C; Tue, 16 Dec 2025 10:21:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2407E6B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:20:24 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1064C06E1
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:20:23 +0000 (UTC)
-X-FDA: 84225695526.14.2C2A3D2
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E720A1C0003
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:20:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H6qOfrSU;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E24486B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:21:33 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AFF41A05D2
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:21:33 +0000 (UTC)
+X-FDA: 84225698466.25.EACBCDB
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A6EE8140013
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:21:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jg4kU1RQ;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of alexdeucher@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=alexdeucher@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765898422; a=rsa-sha256;
+	spf=pass (imf23.hostedemail.com: domain of alexdeucher@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=alexdeucher@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765898491; a=rsa-sha256;
 	cv=none;
-	b=DSzc5dgtTyH/TvLc8vthmoigkalaTDaldaRdXb6UTUhZ3qUNp18IMv2inscMQMv+H2S77A
-	3bYI8MGieOkT98kong5AYo2PmPCVu73EKNc3JWGGIcpVgRqpzuYa5uT7yJMfnni6BHbUAn
-	tNMxt1pp0RwGxuOM/G294XcmcDViR3I=
+	b=4x//1d3KKVuau9yTSd1/l3yFy/XZ/EeEJ9yhpqxt/9h64GHjuyOpl/39HuWoyWaNGogG8m
+	nJ/Pp/0+PBiLZOJPKYWP2lZO0gnA0kAwm1Rue/XZJI6bJkt2zTiL3VNWEi+AlDo78KnhZY
+	8MghRFmovLvNbvc8qPDRZDPnW1SKCJc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H6qOfrSU;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jg4kU1RQ;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of alexdeucher@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=alexdeucher@gmail.com
+	spf=pass (imf23.hostedemail.com: domain of alexdeucher@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=alexdeucher@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765898422;
+	s=arc-20220608; t=1765898491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Um9j1NvhAvuOmXHqodLfor6UadH2pWBjGMeLJlrrYrA=;
-	b=j8b6ZQ1JwE13n5x+5fH0wO/JUySdgIvqE0eZmVpMPG31sPJtf7zUtk4mPCk5d8ycs4uK7m
-	hX0gEYt8zRRKEcHSusZ+qtb9hNk9iU9JyFyrRP69vcBe3yzPotmh3ERK4eZdZBu/Za+UI4
-	qhJpoQ/uXVvnD29NjikuhoDfYBne8tA=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a110548f10so4216265ad.1
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:20:21 -0800 (PST)
+	bh=G6A3FJy1wSkXfE42mqpxDchsxNCyuEhZg+omH3hGmm4=;
+	b=6Qc6OdeWL6tFul8ppNWLzUR62uSKYptIdFimrZz5YpTJTAgMjFnNm0bkfOYi92xFS1zLQI
+	EUDEPdw16G3ucbJSiqaJzfXYtRbi8ie01szJQo1YTn15LnVERKPR6uuip8ycVA/pLotMyD
+	bm36GtAHvxDYXj4tfaK+I3el0JaOvuo=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7ba92341f07so335919b3a.1
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:21:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765898421; x=1766503221; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765898490; x=1766503290; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Um9j1NvhAvuOmXHqodLfor6UadH2pWBjGMeLJlrrYrA=;
-        b=H6qOfrSUTlGgfAabwzWurHzWUaSKTN6oHys+JTFZFEAtkKnPuyijO/Tf3ObfMOM+pm
-         D5R3ymqbTF/PbEcScZcyqaOxeCfcpqUn+lL2j0EiAqLWDAChnpR1Bot4sggZH2U2y6rm
-         c13BmPahV0OVUGlqwMpRCN7wZQsGlLkSol2qPEsWKbs5tZ8yP4k8uahNDxyuEkB9WIxa
-         oGUIx8U4VsWvEhc54TKdGhlp4XGqtbt6rRx9nBMfW92qKKk5gFc6Zi1azyLNs6kqg2ZS
-         BWDZtB1rKZ+OKkyKZBVsrKI3Ef7ZpnbsOrYloXhB5xSxafA3sYISMKmOXop/8nMDO08U
-         8Ujg==
+        bh=G6A3FJy1wSkXfE42mqpxDchsxNCyuEhZg+omH3hGmm4=;
+        b=jg4kU1RQ63k24QlIWGgzrPoQlB+1SJbY/0pIBeAWe0mkLMbdROUJhs0Dn7GdOr/l/K
+         mvXeyv3di96qdyPd7U1kkFfgaq5OdKWM9oUjKTdDhZE+l/3bff16E75UR3N6yK/ICYSm
+         rSVTrad9PbjhAnTpgee51/l1mQNmaFizkCn30mhFgpFoMoDWX6ED9e608zaf+Dj4Tkbr
+         c418LbLfNpNrJTkiL5Bdy6GmRik4nJmQrrGvG9qSfX6pJ+93Wi8TAoqD7Xho6WzQtZ/A
+         Q3lp+3Wo4zoUObPEvbpmQngUbFv7PLfdCYhhQX1GJqVSThlQYyVxJg1K2ra8qzBirCws
+         wv4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765898421; x=1766503221;
+        d=1e100.net; s=20230601; t=1765898490; x=1766503290;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Um9j1NvhAvuOmXHqodLfor6UadH2pWBjGMeLJlrrYrA=;
-        b=py5dD0Pqh4gHjW8KvjgYoibasoIB59EAVyxCohsrRXRxE2yHFkan4wk+1t/J3DgOjP
-         dpnHl6jndboxSyN6v1IcbBnnTyASRYhf29COdJe1Et4Bhp5l+aIBRGPO38BZowEGXsJC
-         vxNYIriVUCoP/kSCpRVaoG2ldNziSyOnvMsjr0AQROxKyrlWLmtU9Ujf/lF2EZBkTvKs
-         PacLP6aW10rsRi5utveu5KfHi4RJc+aHPy+Y59kwSuq99h2j4aLr5xJiQERu6QJKk0mC
-         tKRk9MCSCDsH5iYdAhTGb/jqNC7i1qv5sJZCLB3Zi3cXHtMZYpRlRyH9Ul+of5jpqJpn
-         Ky8A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2hLcOzJJt/LzwKVJ2YtvrzEWvDkj+dA4US+VsK0CnvEaMc3IKI0G8L26F8kzy3EtIOsWs0kNVGw==@kvack.org
-X-Gm-Message-State: AOJu0Yydft2K7y5lJ3O5aMnzTzbw1GDGovDpeSskqzpZUvQHJz/PSI2i
-	Njswy2POg4iSPcXBGDqSLtf5pMWlKpSmjYfynBEeCebER3p0om3B2V6p6QGaxG4thN+bLPDfmXS
-	eMo9F90r1563ZeBEZORX2AU7yn9L0r3E=
-X-Gm-Gg: AY/fxX7lxiiXesDZcPPQ7pxrHbvoOl+7iCvlq2D9mEu9IyUYxt5xSRkslabulAPJ/+A
-	2lB+Td7udcZDuI2lW4JiINCVfklAIr9Rp8/hPyEvaADbE2lh74kgAfua0YD7RnqpftEbegh2nY2
-	FVemdKC92fw7h1WuuCqsFoLs9izFhhEisJ03MutC+wTiSqmxgbV+RmgTd9lrpZwH5W8W8EeuGeO
-	riBSRNS7LYGieoQ2a0pzooDRRJOK4EA8wvO0LNdmT6tUg5L3V4l2DIaAcMnqNWsE7IyKcz7ePFC
-	7mpc9kw=
-X-Google-Smtp-Source: AGHT+IGYJpLwVd3WmfTCVN6vD/x/9T3gUFCIaNjQX2AnDfzywCiHaDROcEgCyN90fYOeDZvtNwbDXrs4JcvDTNG1WwM=
-X-Received: by 2002:a05:7022:3a0d:b0:11e:3e9:3ea4 with SMTP id
- a92af1059eb24-11f34c52cc5mr5906109c88.6.1765898419103; Tue, 16 Dec 2025
- 07:20:19 -0800 (PST)
+        bh=G6A3FJy1wSkXfE42mqpxDchsxNCyuEhZg+omH3hGmm4=;
+        b=YD0pHZg8MBtzOiGWXqg7rCb/59PrJ3hMRF2cpCKd9X8RSjVvKr9Rv18fHWe0feH9t0
+         EUt/wpvaywkdhUxDuDQpT8sq/n0pULEwUSZHxpHmo4Lt5ACEOYitJ3b6VbIoH/aQiyhz
+         90lM+LPIOg1oWznOpEbkJbqKxeaBiQ69oyeV4Y44m/IYM++ATRRRpUNbMIJ49Tf7niq/
+         MlmU/Jc4Lkt0DjeiUhQ6qDvIPWTVOIoMJL3FsXyvR/XIDkLGdr1aN1IJwzrrKlUa/9iT
+         Ok/dsMtHS+UxbuF49fPOXyXQlQh4zC7Z04UYrsSZ/9vMwEz5qaFk8tsuVjKitsv7qbFa
+         Dwwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBxNKnZEGK1t4QNjztKavK6cvz2KYrB6V4RUHmndOrKfBVIF1Qi68p8vBePUKKQ4V4tmhRUlombA==@kvack.org
+X-Gm-Message-State: AOJu0YwXok9OduEaoxDMDt6j765U4SrPL4AwpksP5GTylUg0dpUwcCPL
+	Rel2Ks4ro0P5/QiHRlBaWYndlYy8NTT2ISXS6tHJ2yN8hdY3bw4qT/zh4twxVZ9gaSnxmM42+QW
+	g0LrvedmB06mWxpl9/nsTu7idlFKxWsU=
+X-Gm-Gg: AY/fxX4suDfvwCmWH4cUjmd1HyJz9DP/1hrdHdqGSppepUPVockR7OzpRcQ3sQPY0ag
+	GOuZczFZBd8OsjKm5n28fsBDzhuQeqUc39QqWuvrhHe8Bg8oZc2IIfhiE7ETMewAmQracT1z95y
+	pjLxV+dle4ahTAMkxPYIbNIkbtgNEvFbv0wiYi/TZbrbX+1OqbAvs4udx2ZcDGIbZ9Dlob7f9oR
+	GZXHIJTXUPQQzIMpoR0bhKZkDrDnwTyIOiILQUBnBhyU8kw3G34PumuRP1bJhHCCAEyYT8h
+X-Google-Smtp-Source: AGHT+IFq0qaYbGK7y/3ERMab5mfBMJZm2RVpJeQ2PDWWvVrS9uWYHKl8nJo9NGLv/zMgaMY45LKm9slZF+vnfJuCU/o=
+X-Received: by 2002:a05:7022:b98:b0:11e:3e9:3e89 with SMTP id
+ a92af1059eb24-11f34c5d690mr6648024c88.7.1765898489968; Tue, 16 Dec 2025
+ 07:21:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20251215113903.46555-1-bagasdotme@gmail.com> <20251215113903.46555-11-bagasdotme@gmail.com>
-In-Reply-To: <20251215113903.46555-11-bagasdotme@gmail.com>
+References: <20251215113903.46555-1-bagasdotme@gmail.com> <20251215113903.46555-10-bagasdotme@gmail.com>
+In-Reply-To: <20251215113903.46555-10-bagasdotme@gmail.com>
 From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 16 Dec 2025 10:20:06 -0500
-X-Gm-Features: AQt7F2ra4W4DJMCA0k4t80_q2saRqZRxc2HY97wTRTVoyOkAEkAv1EtqbtLiuMo
-Message-ID: <CADnq5_P04522xETHty9hn5JO=mNbKSg3Pa68=u8cZ+JgNLt1Jg@mail.gmail.com>
-Subject: Re: [PATCH 10/14] drm/amdgpu: Describe @AMD_IP_BLOCK_TYPE_RAS in
- amd_ip_block_type enum
+Date: Tue, 16 Dec 2025 10:21:18 -0500
+X-Gm-Features: AQt7F2rE8ID9d6NCh1LRY2rQdA6w_Kl1ZhHVictIiyXPuu3Pg_xadHkkj9RiiLU
+Message-ID: <CADnq5_NsELxchDeka2CX1283p9mn4+P9_V9Mi+SNiWwM_sQepw@mail.gmail.com>
+Subject: Re: [Linaro-mm-sig] [PATCH 09/14] drm/amd/display: Don't use
+ kernel-doc comment in dc_register_software_state struct
 To: Bagas Sanjaya <bagasdotme@gmail.com>
 Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>, 
@@ -108,11 +107,11 @@ Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Networking <netdev@vger.kernel.org>, Harry Wentland <harry.wentland@amd.com>, 
 	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>, 
 	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Matthew Brost <matthew.brost@intel.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Matthew Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Philipp Stanner <phasta@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
 	Sumit Semwal <sumit.semwal@linaro.org>, Alexander Potapenko <glider@google.com>, 
 	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
 	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
@@ -143,14 +142,14 @@ Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	George Anthony Vernon <contact@gvernon.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E720A1C0003
-X-Stat-Signature: xzwj7c3csnzmb56acqypyhb5hautt3m9
 X-Rspam-User: 
-X-HE-Tag: 1765898421-185601
-X-HE-Meta: U2FsdGVkX198MYS+j0MBJmPQ6jMJkK4mqM+wsiFW+sGlLFBEUqR8wtdlxGYkbCWLTY4ahXPxuj6msGYXlWpgJKvJck6epEOpNvExvPyCTN1sU/+snpnNoskc04jh92LRM3mrb5PYzaLkAy6MlO1udbpnHOhQlU5iYWrU6XU0tW1ttIKK4JUkEgnbB1a1bNYOREtPSMVOwCUGCH7VWB0aqSf6T6rJK9ha4KM2+Z/J3DQMjJRyAkeQTACYGF2+k+PkCONI3d8TyaZeAPzcWBNieij8Zj7X8/WV7QnnW/nXSclB0IFdzc4bWQGh/iTjNYDzmjGsgwNEyOvNO+K3MZ0k0im+5HEvBcG+frpVLnYTKlup3kf9J9UXwXBItiqlrL9o2GKghsUfxHzUvG5YZTNwWuE8Mq+ap+Hb2n3ihbfyVsItdIroNQhHKLXG6cnj2d58N4/9WAjkTGixphRMdjMV2dW2ljkfm43ouUuLBvu8/uudYKv/ASXqNJapp7oXQ6/mxJnSwvt/+Df5KMHiQXpZEKddr07kML0HhYvFiWSztUuXhOmWakJJc13huylZJBvJDmbPa6/BgvYk6J6vLHolkM1rLttGPPEPY1szO+kX0dr0Fp3ocGoGdeVCzpAQePdC7PGqVTuJ1zkAXjAC0w6hTN4PCnynYBwtom1CDqa3TCC2DH5nCXJ032W5SkmsIDUiM2TntNEoeBYMeDRSptFLMp7QoeDJs7/kmFGaKSGJyR8PnimG101k0YVB3174H1vm/iJ0pI4BtJsUZ40jyetFWYXib6R9P3AUOim+P0tWRSVsvdliJxiVroKQtAFcdtwkxXTJxmQ12EKvgqWta2VTE+lTZEfv9CGe4wM2vIOyjb/1ebSqg/9w6Vgif568+hRabdTSCycoZnCYaE697euc9RKTOjgHLjTUkndruRpUbKnLVoqa6JvsTd8S49FxLdWctq3ZZttuugVTsOG6HyU
- M2SOndCr
- HHtpAMbuXygWeuEhLts2r1Yti+A0PKGBBHATpYdNSvtCcTXVllFdZAXmMznsmOkI07I01
+X-Rspamd-Queue-Id: A6EE8140013
+X-Rspamd-Server: rspam10
+X-Stat-Signature: puc4o5gt6d1a75pi77e7rq7fmn4w3q43
+X-HE-Tag: 1765898491-685814
+X-HE-Meta: U2FsdGVkX19FGvYSl8vKT0GvR0rD5rPVgxVbeJsbGoXhLj+puyol1DKk7ii242ueCSi22KiA1vhNYABLnYovLJmj2blGp071r5jWATFnLFdn0JjcV5NSex9JfGHwhNvo37eL82bCxL0th4202HQVtef1SHJyeYGRWaNLcXN0FhCTNMDjDLajxcCCvRbGdT+kzO+IyDqWQcl3d+pJQa5YWyYsvAwkGZQ6bP3jaC8mAqfBbUsRuRGpVWb7yMEjKimRaIYW4pgy9haDD/GSZQc4RqTBBjUF++m6QUIlT2Q3KpnFwg6AOYM7cuu+b1fU/VSEnp4wyqXUApMEGgZ0s5/nzSGt6ufVM3HA8TkXd/N4/Cbl8cJzvf0l/Z0SD60VDkPKmVUM3L0yGdvi45k5otDAx/h5ka5WeoKXXSJsSdnKgkNMjQqR9OpM8mWenAxovrGHpsWidnq6iVLYdXMACSl5odCBxZy31f0+Dum8wF+aGSNF2D/gJ1wz41MZ1poSC8fjxG7NHeoATIk4tPkvH27Abbyo3bYh0vhp20zW0yAFyyVxb1SmHk0Sm/pgCDJgaAk33H1jFHdl8YKOqVvxIVNceA5hBYXPEbNgszX2p9RG53pX811qIBBxU8XVXkN83KPNwd9EMu2ZsVgsyjJqpEf8RrhtvvbBqFRVqrFNkx1qlIagn2CBOntKzSP+T1ZWaqBHbFSQiIe+elZLVh6K/Xj9A1qCQqVIcsruvG6NG0uVsSt2p7tfEQB1rB0WEQ8ofjIKGUsA5PsvWk9/Cggaj4p7DYryLOjOUcycAnnyWrxkcYOTaUOuqVVKUm0+rabggiVQMFLh5PburO5lYm5WZ6coUgdXYHjhNZcfV805zRPH4dWknDb7DTZGIlNKGKhf+VSN8Tb7f+CfbrwSusBEkVn1ic4+h4jsYHHpRpBXJvL9owwrhWBcP0UwqKRiGbb2JkUJ73Sr4iLPFGhgnvZK1Br
+ jT4BoMNx
+ gpTl1nf+JD//fIk2yAx+8dhA8+zduoiVKWoKlTyHoPWCf2Qr+PxWwJlOxgck9oW2j4A3hhHfmGdwJQxl3+xstnKtDeJZ3bawl6rdfh3hHNO6uqKyMKZg3QwEsh5x+ar+eunbqaXIG3RdYyXIaUJsFClgLB4ju41/LDjTAoPCq/y+J2MBafeh/xS22P2XJ9P5Srfd8FthKtgJjFDUj5Pqc3LBdBub1imFa7s7rwdLZYKDXBzm6PvTzBXIDduqImsVstYVaCj3aclEUJYibt0W5Kp7YiCOD8dXXbU9gslHlpfEBrmgGfn7DKYkZCy+tIa6QPZ4tl/khayusaSjKpGtlLzZl2sEE5DbgnaPdCrRe+KnYghm9ccNh1R4WcgIsZk/zcBrbmq4ICbNmrvvQe1ih+Rq+JBn0pAzIxyaGL/2BHnrPabsWfNkWtYvfWIs85fs5SjyupwiEvzz4AFnydpnJlHD8tZaUlh21ALyImIgQ0Z1wACo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,45 +158,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 6:48=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.com=
+Applied.  Thanks!
+
+On Mon, Dec 15, 2025 at 6:41=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.com=
 > wrote:
 >
 > Sphinx reports kernel-doc warning:
 >
-> WARNING: ./drivers/gpu/drm/amd/include/amd_shared.h:113 Enum value 'AMD_I=
-P_BLOCK_TYPE_RAS' not described in enum 'amd_ip_block_type'
+> WARNING: ./drivers/gpu/drm/amd/display/dc/dc.h:2796 This comment starts w=
+ith '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide=
+/kernel-doc.rst
+>  * Software state variables used to program register fields across the di=
+splay pipeline
 >
-> Describe the value to fix it.
+> Don't use kernel-doc comment syntax to fix it.
 >
-> Fixes: 7169e706c82d7b ("drm/amdgpu: Add ras module ip block to amdgpu dis=
-covery")
+> Fixes: b0ff344fe70cd2 ("drm/amd/display: Add interface to capture expecte=
+d HW state from SW state")
 > Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 > ---
->  drivers/gpu/drm/amd/include/amd_shared.h | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/gpu/drm/amd/display/dc/dc.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/a=
-md/include/amd_shared.h
-> index 17945094a13834..d8ed3799649172 100644
-> --- a/drivers/gpu/drm/amd/include/amd_shared.h
-> +++ b/drivers/gpu/drm/amd/include/amd_shared.h
-> @@ -89,6 +89,7 @@ enum amd_apu_flags {
->  * @AMD_IP_BLOCK_TYPE_VPE: Video Processing Engine
->  * @AMD_IP_BLOCK_TYPE_UMSCH_MM: User Mode Scheduler for Multimedia
->  * @AMD_IP_BLOCK_TYPE_ISP: Image Signal Processor
-> +* @AMD_IP_BLOCK_TYPE_RAS: RAS
-
-Reliability, Availability, Serviceability.  I've fixed this up locally
-and applied the patch.
-
-Thanks,
-
-Alex
-
->  * @AMD_IP_BLOCK_TYPE_NUM: Total number of IP block types
->  */
->  enum amd_ip_block_type {
+> diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/di=
+splay/dc/dc.h
+> index 29edfa51ea2cc0..0a9758a042586f 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dc.h
+> +++ b/drivers/gpu/drm/amd/display/dc/dc.h
+> @@ -2793,7 +2793,7 @@ void dc_get_underflow_debug_data_for_otg(struct dc =
+*dc, int primary_otg_inst, st
+>
+>  void dc_get_power_feature_status(struct dc *dc, int primary_otg_inst, st=
+ruct power_features *out_data);
+>
+> -/**
+> +/*
+>   * Software state variables used to program register fields across the d=
+isplay pipeline
+>   */
+>  struct dc_register_software_state {
 > --
 > An old man doll... just what I always wanted! - Clara
 >
+> _______________________________________________
+> Linaro-mm-sig mailing list -- linaro-mm-sig@lists.linaro.org
+> To unsubscribe send an email to linaro-mm-sig-leave@lists.linaro.org
 
