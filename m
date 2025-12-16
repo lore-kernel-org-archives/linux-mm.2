@@ -4,82 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BEC0D5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23CAD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 808C46B0005; Tue, 16 Dec 2025 02:40:29 -0500 (EST)
+	id 4717B6B0089; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B30E6B0089; Tue, 16 Dec 2025 02:40:29 -0500 (EST)
+	id 41BA36B008A; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D2A86B008A; Tue, 16 Dec 2025 02:40:29 -0500 (EST)
+	id 33C3D6B008C; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B1BC6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:40:29 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E61CB60339
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:40:28 +0000 (UTC)
-X-FDA: 84224536536.05.9154127
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6B4444000D
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:40:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pJG3cS1A;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20D626B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:41:17 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB51EC0512
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:41:16 +0000 (UTC)
+X-FDA: 84224538552.01.1770B4A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9C2531C000A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:41:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=A2mK+WJB;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf21.hostedemail.com: domain of BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765870875; a=rsa-sha256;
+	cv=none;
+	b=C4SP1FyJEmbNJlRBr6n3picgFpTdxSkQ/tp8C2hHD3CBQfWrLvQoh1q5zjIWkQGDag460U
+	LBuZ8Cxh/7ybb0M9pm+g2y62YtyZiB2hc3Y9o7VFY2VNrkmPysYRFmQ1JsFDgfYirQ9age
+	3lY805uSnAdEdjQGhKreN0CKCnXPTxQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=A2mK+WJB;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf21.hostedemail.com: domain of BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+43c1afaed0c1d876ce79+8150+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765870827;
+	s=arc-20220608; t=1765870875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6KLlnYSAyzL/zQdkoj2AjgFdZbBPkMmF8/aMrvQyJIo=;
-	b=KRb5g7Fhg/OnlPt2m+vj39anHyKW9EJ9Z5Jg4nMi+qqMQo5Dz+YzhqfoUrTCawQGRdzmWE
-	hnpU2CGwuUEy6wAFfUhnRgju3PN8zcXSgdAyMKwOSoLsc70JAb644+GKrgnJqL/GZ82rNG
-	nkhQx5yGEV2ah/BuA85gntzvW/2fZEg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765870827; a=rsa-sha256;
-	cv=none;
-	b=bloza5Mecf++5lTziS80lCaAd3iWdpsXSB2ohRYyZb3+qS7wEDsdj5v5VzZK++BtjC0wSR
-	sJ6Rk+T1Tdw5TJczJp/siVRpaZbQywoonT25keuSss7lZ2Zdg3eXlWfUtGAVo+R0d9GGZ+
-	qZmI6y94SWiS555UT1zUhYtJ/2QX82c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pJG3cS1A;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765870822; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6KLlnYSAyzL/zQdkoj2AjgFdZbBPkMmF8/aMrvQyJIo=;
-	b=pJG3cS1AuEHHs9t8k5JBdUzOEszApeQGQrOSe2CNI9CZCUXYOKZ6bv/FhIb7Zj0bfVVKuzS1i4ErZiG9AeJIld8BmpZZQ9ynGW0Kwzj1/6HGkXYTatNam/QdnKZRE0tlfltjpLf0Zryso2RHP+bbEUXJD8y8SvYIla5z2S58aAg=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuyJPSE_1765870820 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 16 Dec 2025 15:40:21 +0800
-Message-ID: <906400b9-4594-4176-9fda-7f04d55d8aa4@linux.alibaba.com>
-Date: Tue, 16 Dec 2025 15:40:20 +0800
+	bh=Ef+/dRUWrEoAF52eKGXOIPSj0Dz2pVFYZysJHDl8loo=;
+	b=wOaZ/RpbASmaZ3+e/PcD0ImDdwMf+PVIjiF6+N59GrM0eqYSqWDCsuCgWwar23Ggk07Bm0
+	K4wg4L9rBiiAfAd98wDrTxMo6JDEUctpecccrpIBaE2eFR66hRT/6eJT+eHSmMjZfza3nG
+	etS7NT7bzutch9qKKy4FPmLPJkGnJ54=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ef+/dRUWrEoAF52eKGXOIPSj0Dz2pVFYZysJHDl8loo=; b=A2mK+WJB1oecfFaavv+XJXaRX0
+	AZPTOoctOvi4Gvp/7+MBhe0545EF01s9ezgAvVJrVMwMKr0r6J5CJT+KxXCjdaBygRs26XIY9DG+i
+	sZUqDwdFhh/XN0UkLIFWzBOzx6/IAul46/gKDVeCcUNqTwAUlDIGr/0j/Pnasj/6gCX98Fi4vtYSu
+	KLCIk7hoWkKkfeOvPzaPS5RVBORjxGxrbTygdh+4VGcttF6PocJPx2Hzw6jLQPOjDo68hAyzq7Z3l
+	WewsU6+iL0MP3mfZ3/Fs3c7YTip1pxfYjpOv/yBE+vKz8kiIjaNzbRFSaJnND2YZw/y82MLVrrwkm
+	inJHBApA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vVPgB-00000004s5V-0YDj;
+	Tue, 16 Dec 2025 07:41:07 +0000
+Date: Mon, 15 Dec 2025 23:41:07 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: retiring laptop_mode? was Re: [PATCH] mm: vmscan: always allow
+ writeback during memcg reclaim
+Message-ID: <aUENEydFvVvxZK8r@infradead.org>
+References: <20251213083639.364539-1-kartikey406@gmail.com>
+ <20251215041200.GB905277@cmpxchg.org>
+ <aT-xv1BNYabnZB_n@infradead.org>
+ <20251215200838.GC905277@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/11] docs: tmpfs: remove implementation detail reference
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, david@kernel.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1765833318.git.luizcap@redhat.com>
- <6c611c5a46548039e714cda6014d47c9d93fcbb2.1765833318.git.luizcap@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <6c611c5a46548039e714cda6014d47c9d93fcbb2.1765833318.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h6o7ma3a4k6qr3z89fi5zf91r13qyufy
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B4444000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215200838.GC905277@cmpxchg.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 9C2531C000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 83q88nbsc6ud6h6myyqt5gxdx4pp7sga
 X-Rspam-User: 
-X-HE-Tag: 1765870825-790321
-X-HE-Meta: U2FsdGVkX1/7L0HtG03I60EcHtOQEIxuUSMtWA4yfgtmJgsMhlIOm8+oIvVaanKpEQvZd3m3FTOohA+/SnPtEjHuD+XdQMbTVLHlRK2QIOvuwH7K6SJ9GI5HOIEvLg0MIhzoZRZiSDVeXcguIXZi1mrQgSm0ayP55hZIlymKxfqmMpeEoKs9UwBSartv30YAj/gw7P5EktioB9Bzcl6ya8V5n/C/SHTx+Bl1mtN5N7iUJkTcY+3vPUzIQAH6cYMd72N6WYgHqF/POX+Yt06R0Q1GpS3hM9gztPOiSfJinJ27Zwb5/Y92zUlczHuTUuMR5EcHOh/vLwOTBK0fRRHfNuQVPwqC9hCVLZalNkWoN6AB8FGN4a0gM/hbuxBqRUMPHjm/iAx5CIie4l6DSaOXddct91AFv5MZFVw1LJWZzqmlrAnAlD/aeSlcpcmnq6J1qHJ4bUoyaZzVjilv4REcYH9T0Y38daWLmNTcUnzlQJIXUYq2soCjltN6Fk1ioEoV/1Bzv8HaXk/LxoaiawKeqMl7VGp/wAfQPmyvSC1zD1fj3V3AfKqUl081bg0Czfo9QIeIaCq9CPoneXkGEZg6tx2TIyWBjn3icKxNZkTCxkJuu6oxhz16Z9Q+vnxLjhc4hcLGnGcKgPxt8RKuvULuZNKI0c9+kvsbU4o+oZHY9TcdMvb2YoPcEQMq/kBZCgvy4DVtHQrdq2m6aboMcuxvf9RISdHjkrZFUntJapjH8bnsFzb/L2x/9l7YoT2JHy0baj81qSVGAwsERTWaKMPS3mOiPcqL0AeTfleOJNtjtJI7casNOW6ZhidBHmfDg7Tqe2McN0qldrDiE1JgTIes7NksNIlxyQK+rUWKqlt3z4axzu+Cqx42ZkpZJ5vfYRjvzIVvxhOjvG8dUuVX4CshDBMug3MCqFfLuhtzmgc95nXbrEY+orJzRycYPLKos+2NAAXF3nfEuMYviDbDUIg
- PJaUBsS8
- Z+NBnwFadaJabV8Jh6rmZyu1dysLdm86Kvc3r9gb6g5SJQhfYnF+D1Rf0Z40cEwdIirXewDLS/39bn4a8XHPbPzlvDNydv5TJV/sPrXZLxNphFbPuWvQADVQ01pHQ4ObcciIvOY8kXZxNOChCfG3tZranaYcdHXLnY09H/ggG8RJHpKqeMxhmOWpgVLWap46XOmU2BwAh5hfeaB6Su1r/ETNBqHQkbgN4Tc6329IgZ7xpzNv8xhOFIhH/NaIiYud5Z04ON4DNlyMh8FC5KXouhUa+pKqTnDCyHc3wGtXyvofyXlNi5vi5Jb9NGGSbkFprZnamKrFvppxQ5JP7khqzGtU+7tW+Idsq7QJg
+X-HE-Tag: 1765870874-866300
+X-HE-Meta: U2FsdGVkX1/xQPw2wdkjTDOM9/wHbU06qiOfZKic/Aj4quZlxkWWebWrnPdIsUMLQjEut4aOiDFjQogP5m91K7FYHY42cIeDFe8IC9aiWWw3NQ7bPkbzdLMXZol3UMbQJx7AYVWJnArGdwZOhh37sygEvoGOyhcprUOgRCSVKmROANx8BqQGNIuYoELA28CEix6NRaictJhwM/zGF3KI+Y5MbI3XlkM63/HuAClKWWT8zacXlTYTbh2CeOEipg00TJE0e7DJHccB7zuWkuH0TgTaBCPtYI3MkjWK7uCu+0eX52g67atMMcMmn6s0PuJoCJQiiielb60owulbQLIIRec9VRPZTPiKesB7znJVOVkcTfQQJ7etevwY8HgT7h46RTPGojfNf+QjDQy3j1q8ddCPd1l1fxj+AftjfykHgZze3RBWMKqjKIQQcSU9cpXBbZvJ5p/zMBFomo8suEw9bG1fvBGJ3NsUBEg6ZhoB/0jm0imwTHiWpgKXxSB9AQyhG9nPiEj2QZARaDVWo9kvwZ0fszpXjpL75GgouulWNlrwq/hP1Uul3TeFBc4ZvMnUtkyphETAtsJ7i+ykNAA/uciBBLsIhe1dBfYStC5EB0zlwp8zjvvlRdMurK2dclc8JtKhNzxNZ18nb+DcPH3rNRPY93Enw3y4GtfEBo2UomnazsqTvX6vJ+USZl397+IPR+6M46/llhV9SQGTjsR+igJiHKcE0bHrYRVXwAYzotzJAhcQ8XmHesEDumdgFucwZLHavlnibcTrhnoY/4eFOLXv+IDmHPz6DdOW4ocAfmmTnIg397j4jh0F1yl8yv+2UZJpBxbNq8FeHcO3owUYxghMOAna5/dWjg2JruMJIeGnjTidK2GkWm3wq2WDTgcy4D8CdND3YLiMQfRpjPDWsNZGkjl4l2xNplkb8TrkbwaBGuXOtDKoD+5TYfDOmvH8I17/iY60u7kHQhvjv7O
+ U3ABa3Pz
+ iQhCrvwTLjP3z0HHxyEdQ47ruJWvyzddLl4oLiB8UO9e27CFJDNmnkfn51cu4hi7TaW/H0xysds+clcTDY4Ff/C9qpNNbnGIrwe63vWc9AFSJtWF47WVG3dq5BYW1qrJFBS/N1MHs8pBoo8e0TWr9KzGt5WnL7pF+CAHHVzXkGFwSVkARKA7CW7fA6IGm/4jNf2pkBRI4bzNbzh9MaIegQ0Qu6xf7Djj+2byc78/GVvE822haZgH4Njo4maExDnUqZgRVI5S19UtydOVMkuXUjpxy8wNx/oR55MjlrXA6S7biJZtQ1vXSt4mZ1Y3wUgDPplKpsl8MzxaW3fRojOOUIwywXX7Hp6V5oojJbIBjl9qj2a0SJNp3T0vvqna2znqLDgw/4mnyhBZ5/8h8Y7KlByFIXv1j/1+cMGLDeBBGXYdls+yyWtedw4JyOqBNHaRk5VM9Jal/wHLLA6H9kBPvtuKiaQE7nHmpY5uFPQH854r3D6vhbOGbtLKkagZbYWk6r2IMe1s9K2WY1tKPmEmGgc0FXtxk8BT6K+XY1oVC2bu5DU/HOJJDa/3bQw+B8JbSilBvkb37vUTlHH4rdWkdBlI+tw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,17 +96,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Dec 15, 2025 at 03:08:38PM -0500, Johannes Weiner wrote:
+> Debated whether to add some sort of deprecation sysctl handler, but at
+> least systemd-sysctl just prints a warning and still applies other
+> settings from the same config file.
 
+In general dropping sysctl will break things.  So I think we'll need
+a stub, at which point it might as well warn for a while.
 
-On 2025/12/16 05:16, Luiz Capitulino wrote:
-> The tmpfs.rst doc references the has_transparent_hugepage() helper, which
-> is an implementation detail in the kernel and not relevant for users
-> wishing to properly configure THP support for tmpfs. Remove it.
-> 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
+> Laptop mode was introduced to save battery, by delaying and
+> consolidating writes and maximize the time rotating hard drives
+> wouldn't have to spin. Needless to say, this is a scenario of the
+> (in)glorious past.
 
-Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Maybe expand on this a bit by mentioning that reclaim now never does
+file system writeback, and fs writeback is already very lumpy by
+design.  And of cours that hard disk with their high spinup latency
+and extra power draw are a thing of the past in laptops or other mobile
+devices.
+
+Otherwise this looks good to me.
 
