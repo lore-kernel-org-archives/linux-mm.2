@@ -4,111 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9E19D637D6
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F9ED637DC
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E91986B0088; Tue, 16 Dec 2025 16:57:05 -0500 (EST)
+	id 1BB9E6B0089; Tue, 16 Dec 2025 16:57:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3E516B0089; Tue, 16 Dec 2025 16:57:05 -0500 (EST)
+	id 169A96B008A; Tue, 16 Dec 2025 16:57:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E2C6B008A; Tue, 16 Dec 2025 16:57:05 -0500 (EST)
+	id F22006B008C; Tue, 16 Dec 2025 16:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C1AC86B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:57:05 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7958F13BB1F
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:05 +0000 (UTC)
-X-FDA: 84226695210.05.5C23B64
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B845D40004
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=inria.fr header.s=dc header.b=Uc7tUYDM;
-	spf=pass (imf17.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.104 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr;
-	dmarc=pass (policy=none) header.from=inria.fr
+	by kanga.kvack.org (Postfix) with ESMTP id E10ED6B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:57:06 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F15613BB10
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:06 +0000 (UTC)
+X-FDA: 84226695252.02.240D6EB
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf24.hostedemail.com (Postfix) with ESMTP id ACE80180002
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:57:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zi9gtxwH;
+	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1765922224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4hFe0Tf5kPTvVQt6GjVYTuMYv34fhcLZszt7yKbypcE=;
-	b=QJuOktxd+afIjCZNrW25Q244ClwU1je8lcvcDFDQCYZqmoMLenpu8B7trRqwaYqRz9Y2+u
-	Apm4DTa5iGXzcRKC+5lnLhXC4TXQS9NGcPtf1A6gauQGdpt7eo4GyE7xC9Uzg+pZXNWfvw
-	ZFeho9+nSTaACEJGvszA+oB/X3b9lXI=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1maYaTCzXyFDam1/GOsNUZkqL3tqTHSS7WQOdxTEj4Q=;
+	b=2IidULtsE8x2X0GZe/u1QPgykOxeyC7pBcQOvIJ5yl+OsH+54QryP8wGQvLn5o4dG3Hlbf
+	GRgt9evdMc8kqRL0vTjPdZ39vjfEaYklXPQq2DcFxT9kKZCxj5+sGSa6crkvwoa7TiNmMX
+	IwQLN7sdrEo5+owgxFn2YEq7XVoDw1E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=inria.fr header.s=dc header.b=Uc7tUYDM;
-	spf=pass (imf17.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.104 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr;
-	dmarc=pass (policy=none) header.from=inria.fr
+	imf24.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zi9gtxwH;
+	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765922224; a=rsa-sha256;
 	cv=none;
-	b=2vIarp4i8JmK8ZPMoo6HnrTK4bgeSo9OfjWCCJjvvdFpmr5R1OQRsmc0YM3UaEfINpFnzV
-	CNb2kDG9dCPqEztrbWVk2meRvBkp8R1IQ78INbQPfdFRNJJsho63XVyPcx+c6pHXwBZRbS
-	WRzcXfXwqUxJo3G6f6LxWrtcmUY05ZE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=4hFe0Tf5kPTvVQt6GjVYTuMYv34fhcLZszt7yKbypcE=;
-  b=Uc7tUYDMmn6ly3+sR5yBeSg7aAMytJmqsgiFGO3Tp0/evDwuGJk2W+Qf
-   0PeO8Evqdk0M5lLuWXMHtNJ8r7MMTQ0VaqoavG010+t8XbP6iwZl2YDO1
-   /7WJGLPVSyKvQPZevItFh+22/fLQYb67q9vag2YrC5lbPitFIhkt/PQOX
-   I=;
-X-CSE-ConnectionGUID: XOW00uDeQLq1zCiinoX62Q==
-X-CSE-MsgGUID: f+q89m9cRzC9em7sw3lJKg==
-X-IronPort-AV: E=Sophos;i="6.21,154,1763420400"; 
-   d="scan'208";a="133900367"
-Received: from 231.85.89.92.rev.sfr.net (HELO hadrien) ([92.89.85.231])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 22:56:58 +0100
-Date: Tue, 16 Dec 2025 22:56:57 +0100 (CET)
-From: Julia Lawall <julia.lawall@inria.fr>
-To: Kees Cook <kees@kernel.org>
-cc: Vlastimil Babka <vbabka@suse.cz>, Julia Lawall <Julia.Lawall@inria.fr>, 
-    Nicolas Palix <nicolas.palix@imag.fr>, cocci@inria.fr, 
-    Linus Torvalds <torvalds@linux-foundation.org>, 
-    Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-    Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-    "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-    Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>, 
-    Joe Perches <joe@perches.com>, Christoph Lameter <cl@linux.com>, 
-    Marco Elver <elver@google.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
-    Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>, 
-    Joonsoo Kim <iamjoonsoo.kim@lge.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Harry Yoo <harry.yoo@oracle.com>, Bill Wendling <morbo@google.com>, 
-    Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org, 
-    Nathan Chancellor <nathan@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, 
-    Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-    Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>, 
-    Yafang Shao <laoar.shao@gmail.com>, 
-    Tony Ambardar <tony.ambardar@gmail.com>, 
-    Alexander Lobakin <aleksander.lobakin@intel.com>, 
-    Jan Hendrik Farr <kernel@jfarr.cc>, 
-    Alexander Potapenko <glider@google.com>, linux-kernel@vger.kernel.org, 
-    linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, 
-    llvm@lists.linux.dev
-Subject: Re: [cocci] [PATCH v6 5/5] coccinelle: Add kmalloc_objs conversion
- script
-In-Reply-To: <20251203233036.3212363-5-kees@kernel.org>
-Message-ID: <bfaeb31e-1b4-4e8-6059-907bb27124e0@inria.fr>
-References: <20251203233029.it.641-kees@kernel.org> <20251203233036.3212363-5-kees@kernel.org>
+	b=AwFxQznLzqyOV3JcgDswHAgZgRIWezMriIQ3tuHlOLAw+1DrNYr7EU2kCiJDY7TJhI/OKF
+	1IYzrcvUWuZTpcQP8TjOLF9W+ShdqWc2pZxisQF9J6mzyx5VnWrbIXdJD1R1HyRfdewBNo
+	SnD6T5bfROQG+g3pTBqJ6tqB66kwSOE=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BGKRDHt1141350;
+	Tue, 16 Dec 2025 21:56:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=1maYaTCzXyFDam1/GOsNUZkqL3tqT
+	HSS7WQOdxTEj4Q=; b=Zi9gtxwH4LDls3AoMp5OULHuEzdpD3DHg8mGpnFEQscnQ
+	3Yx7krRxw7wQhpbSGrJZ5AahGPrm5Q3PpwrwLUwumnl71vq2gYImN1kCcZBBjneN
+	SRgY6SkqAuxIJFqIs4rcCs1RgX39CMYUNtns2sFpF1klnJT75Uz2vhydbi9Khrft
+	y0h1OBiU4ua/AJBBWOvcu6cxl3dhya0OKfWvOgLeideIkHvcpklIT6xY8Om4vf81
+	9nm3uGG+fMLefDR9zucawoBm00KDy+HYBjFclJ8AgkluYe9Ndo24N+WPdLxvML5Y
+	/gXIdud34Tc97/Bs/UwRmx+Acxb05bgJaZEYFI7qw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b0xx2csjv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Dec 2025 21:56:52 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGJjgI1029610;
+	Tue, 16 Dec 2025 21:56:51 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkb18wv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Dec 2025 21:56:51 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BGLuoSP021467;
+	Tue, 16 Dec 2025 21:56:50 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b0xkb18wc-1;
+	Tue, 16 Dec 2025 21:56:50 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+        linmiaohe@huawei.com, jiaqiyan@google.com, william.roche@oracle.com,
+        rientjes@google.com, akpm@linux-foundation.org,
+        lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+Date: Tue, 16 Dec 2025 14:56:21 -0700
+Message-ID: <20251216215621.920093-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_02,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2512160186
+X-Authority-Analysis: v=2.4 cv=B8W0EetM c=1 sm=1 tr=0 ts=6941d5a4 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=Z4_W6085pIye7jCVOdoA:9
+X-Proofpoint-ORIG-GUID: NGtefr_kkv30ifT3GwXBgvOwh_KfBsfA
+X-Proofpoint-GUID: NGtefr_kkv30ifT3GwXBgvOwh_KfBsfA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDE4NiBTYWx0ZWRfX9n1/pFDsLJ9j
+ prEil1jt21Qi2tIWRnXfL8UeKDkXCXfp2Jj/G12+xvvlMRubSaF7mwDOAu5ae6iIza28p5+DYOw
+ YFm4FBW8zRYp5l5jP9jFmaK0wMRu4rcHbeA0L0a54RY9Pzn4auT4QvsygF2+91iKXbrIYVXvAmw
+ foyjvw7qeSBd/as9HtLMyrJ1xmun8SO7EsVmcHRf8ZW2rvmuPKeRXIcLV+OSJ2OVx/w+T2Jjha9
+ vBl9F7CzyhwshUN5Wc4epUNUaBHVh7yXUC3gf8217W0uJB8kon5VVqnhx6NNoGK8r/znncT9do8
+ b16cvRQ9prbFBZZ/q252kt0oAMizJERfT5xT+7kWGMJZng/rRq2n0CG22kOptq8tDXsJmBm2ZFK
+ oorFkUsHjwT+g0V6DywYWZJU7mbc/Q==
 X-Rspamd-Server: rspam02
-X-Stat-Signature: 91wa1bj5ojo3e36digdkf3mu8hwg96if
+X-Stat-Signature: wkup9odhqsz84wdg13wz9xed8ad5n6k1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B845D40004
-X-HE-Tag: 1765922223-638636
-X-HE-Meta: U2FsdGVkX1/K2SKZKF2a0IWB01eIQbn4raeVqRY+8+ziLViSb5G9yiqdVuXAJ0y8TbNZNM4/N51WFrhMtfBHF5ezyRioFc3DGLo8LCIYeFKr57y11o0qJoMJQRhos1I3IFDIpMxxY2IQwgneT+482iYId710ly0TfMmmMldqf2rSaI/IqKs5evkso5iXSoUi7Te1FneRkrMlLIdlHPveO908eIi5xvcDh4FqchmDgmYlLp6OAZBIKWwJLigUYBCExp9/e+owGbmO7jauwZLh/QeQtbT8f5xOb+2xrE7ZxeC8aVDY1PxNoJDvPEnaX6fR+8XdKQNBetQ5vs9weflN6Su/Nh44mgpZK4Vvf89T+qn9qVkU2rtzNHWcwZFk/vPW1i7ir2vWzjI+2WJ4Ek3DUHm26ovDqGzXVniWtkvgruCvv2Cs574DWIBF1noBIHt87+Xfd6Plv/PBfpv3MemlzyoX/Kv4BSRSeCQGqNYp5zEhV5szMbiAGHU77ROzSqO22Z40Y/att0Ru2hTdRM/7bQnpxopW9Rd+i4+6M281Zk2reKZIb0gJmebpOScOBEFGNe4Rag9qURhgM0ixeJeRFdvka+5U/cZwkNDHzedMTJge6b7oWW6hyMDoNuBbf5DuXZO7luuBsaP6yOTvTNAZWfGa/jri+8LFBSvoib3Ubwg6lBrcvnuPk9wZ2WFqukzYBsnLU1sd0mIrr+aC6sBsMedesaFPZrxHideLHMgt3HKzG8rGb3hCRJS1tMIVZelmDKAfSnNR6dMpcKy4YZf4FXmb1NMuyX0uMhT+4T4F7kNEI0viNTFfKIho8xOTg4pP4+QX0IgWOrAqiLOrim+cTROTulC44EMHoWip5NTw377sc2Ao6u+vGmkyEYRsC28Y6NqyuvVBDw6FYL4N6VTgcF/lzsXMO4i1SncEmDTvt/Cs70xboPm/8qmASIWH4D+6SkqBI7L8NTnIQUHCM9p
- A7wAofOl
- nfErIyYZ1tKbSHyU=
+X-Rspamd-Queue-Id: ACE80180002
+X-HE-Tag: 1765922224-731931
+X-HE-Meta: U2FsdGVkX18SPO+xiKqJSxvLqQWYp8iHd5sfWHBQtt+HC4vrU7wXj8mavT30a5U6xB1XapyWVi1xsfiqEzXZZ6pzWxWRGdpZY1rGEd79b/uRIhiDl0sZ7l6AYDyawHZw4LJvsi2Vqvd3fLtLVCiE4wG3Z5x6xEBBLU7dVPlZ9zga2jegComICq2qjEg8DUxmZLZW0GE3iWZdkYNoxDfkevCw05PpQN0AhKEIAoBb4nU5yjWgmdCZriKQ/GwiLP3jvLSBgu34fb3S8ErE+lKlMZyWuEiy+vLXL27yoiZYlXiClGCfXlAAT2RQgPU+6ZFgscHmzG7koe9A2053PgLRyQz2CFSM+AZzw/tCfW/WqAx6l6VA0CB6aKT176F2FT1LsfAvM0GaFA94xOAFoT0uWpaF87dcHlb/2tdLZQ2+ew1P62zlh5nZSEQczEtglIUK23l+eZnb6zTSPRUSzM8hfO7vxDgVc7tXtNK6Y6EVbnQgMwBjslYG4w1FVnjqoHKUHp08uMmBG5KigV4tcy4lcl0b2Azc1y+u64v8VA+rFJ4PgV6KLvnMMAB2dPaHDoetoVv+lZDpae8UCA0A+eIsAxVrXIgDoq11EA1L2wDRI1XVbs6Ctx8our3aZhvAw/af7ccGq+CXxV76tZSyDPYmpXj4eXHk0+XIwnjaxXQnpzT3XNAPpQmvVdaVBRmkN43HyCOaIczOy4vGAHLp1lXBw32viY/Pq4pPlxhqqjb/Jjdq4Xf9yaQFdChY67WhL45HnYWzENDhKeKARjzyLLME0FQf1U33wNjduOGRb38OqYlunyDJSqTj43gA8OhnytbP8ByGhCJ2gip7qsE6rnngOJj3hhXJEfKWHiEg5mKzJy+C9oGfTVNOCGtn47uog0nnWzBQkfgUrChlnlghGulIyjgvybG9U+T2W2qiC3+kwaIA57EElyvlt3d8MnbjjNRCHdhdKq1cHYGa79ORqPP
+ XjkZUWJU
+ 84kI3ByNtYKDRHZmm5dUO83SAUZ3eERtEJznLxXXc4wRRKw6dT5fYORlwdEAgHPAeQRcJCBlf6HyxQByNT8G3X9fLpP7JgoSDGn7uxFLOhZ7H9bSNsM2FDTFNOhmKzAqqYxbmbZPOOrX2cUmf0TOfXztISPeu0NtlO2pf7R4gcRysrk5fOiPbBlh6nMmXZ/HurEqopI3Jf/PR/zNDFpFc34xwyRJ5SNSzww+C2LzydBsCQnVy4LE0FDpBiJQqj7Ha/evpX03A3Mcll3qNAqmYxFu6bZE+KrbDaqly/ZodbrqVfnC/ylgvklVPm4z1Cc0vaawSCkv/bIw0gPC+bqjoP/NVqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,147 +125,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When a newly poisoned subpage ends up in an already poisoned hugetlb
+folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+is not. Fix the inconsistency by designating action_result() to update
+them both.
 
+Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+---
+ include/linux/hugetlb.h |  4 ++--
+ include/linux/mm.h      |  4 ++--
+ mm/hugetlb.c            |  4 ++--
+ mm/memory-failure.c     | 22 +++++++++++++---------
+ 4 files changed, 19 insertions(+), 15 deletions(-)
 
-On Wed, 3 Dec 2025, Kees Cook wrote:
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 8e63e46b8e1f..2e6690c9df96 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -157,7 +157,7 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+ bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
+ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
+ int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared);
++				bool *migratable_cleared, bool *samepg);
+ void folio_putback_hugetlb(struct folio *folio);
+ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
+ void hugetlb_fix_reserve_counts(struct inode *inode);
+@@ -420,7 +420,7 @@ static inline int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb,
+ }
+ 
+ static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
++					bool *migratable_cleared, bool *samepg)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7c79b3369b82..68b1812e9c0a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4036,7 +4036,7 @@ extern int soft_offline_page(unsigned long pfn, int flags);
+ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+ extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared);
++					bool *migratable_cleared, bool *samepg);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
+ #else
+@@ -4045,7 +4045,7 @@ static inline void memory_failure_queue(unsigned long pfn, int flags)
+ }
+ 
+ static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
++					bool *migratable_cleared, bool *samepg)
+ {
+ 	return 0;
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 0455119716ec..f78562a578e5 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7818,12 +7818,12 @@ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison
+ }
+ 
+ int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared)
++				bool *migratable_cleared, bool *samepg)
+ {
+ 	int ret;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+-	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
++	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared, samepg);
+ 	spin_unlock_irq(&hugetlb_lock);
+ 	return ret;
+ }
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3edebb0cda30..070f43bb110a 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1873,7 +1873,8 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+ 	return count;
+ }
+ 
+-static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
++static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page,
++					bool *samepg)
+ {
+ 	struct llist_head *head;
+ 	struct raw_hwp_page *raw_hwp;
+@@ -1889,17 +1890,16 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+ 		return -EHWPOISON;
+ 	head = raw_hwp_list_head(folio);
+ 	llist_for_each_entry(p, head->first, node) {
+-		if (p->page == page)
++		if (p->page == page) {
++			*samepg = true;
+ 			return -EHWPOISON;
++		}
+ 	}
+ 
+ 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+ 	if (raw_hwp) {
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+-		/* the first error event will be counted in action_result(). */
+-		if (ret)
+-			num_poisoned_pages_inc(page_to_pfn(page));
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+@@ -1956,7 +1956,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+  *   -EHWPOISON    - the hugepage is already hwpoisoned
+  */
+ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				 bool *migratable_cleared)
++				 bool *migratable_cleared, bool *samepg)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+ 	struct folio *folio = page_folio(page);
+@@ -1981,7 +1981,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 			goto out;
+ 	}
+ 
+-	if (folio_set_hugetlb_hwpoison(folio, page)) {
++	if (folio_set_hugetlb_hwpoison(folio, page, samepg)) {
+ 		ret = -EHWPOISON;
+ 		goto out;
+ 	}
+@@ -2014,11 +2014,12 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 	struct page *p = pfn_to_page(pfn);
+ 	struct folio *folio;
+ 	unsigned long page_flags;
++	bool samepg = false;
+ 	bool migratable_cleared = false;
+ 
+ 	*hugetlb = 1;
+ retry:
+-	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
++	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared, &samepg);
+ 	if (res == 2) { /* fallback to normal page handling */
+ 		*hugetlb = 0;
+ 		return 0;
+@@ -2027,7 +2028,10 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 			folio = page_folio(p);
+ 			res = kill_accessing_process(current, folio_pfn(folio), flags);
+ 		}
+-		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		if (samepg)
++			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		else
++			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
+ 		return res;
+ 	} else if (res == -EBUSY) {
+ 		if (!(flags & MF_NO_RETRY)) {
+-- 
+2.43.5
 
-> Finds and converts sized kmalloc-family of allocations into the
-> typed kmalloc_obj-family of allocations.
-
-The combination of the use of a regular expression to find the function
-names and the big disjunction makes this unnecessarily slow.  I will try
-to propose something shortly.
-
-julia
-
->
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
-> Cc: Julia Lawall <Julia.Lawall@inria.fr>
-> Cc: Nicolas Palix <nicolas.palix@imag.fr>
-> Cc: cocci@inria.fr
-> ---
->  scripts/coccinelle/api/kmalloc_objs.cocci | 109 ++++++++++++++++++++++
->  1 file changed, 109 insertions(+)
->  create mode 100644 scripts/coccinelle/api/kmalloc_objs.cocci
->
-> diff --git a/scripts/coccinelle/api/kmalloc_objs.cocci b/scripts/coccinelle/api/kmalloc_objs.cocci
-> new file mode 100644
-> index 000000000000..916cc3a661b9
-> --- /dev/null
-> +++ b/scripts/coccinelle/api/kmalloc_objs.cocci
-> @@ -0,0 +1,109 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/// Use kmalloc_obj family of macros for allocations
-> +///
-> +// Confidence: High
-> +// Options: --include-headers-for-types --all-includes --include-headers --keep-comments
-> +
-> +virtual patch
-> +
-> +@initialize:python@
-> +@@
-> +import sys
-> +
-> +def alloc_array(name):
-> +	func = "FAILED_RENAME"
-> +	if name == "kmalloc_array":
-> +		func = "kmalloc_objs"
-> +	elif name == "kvmalloc_array":
-> +		func = "kvmalloc_objs"
-> +	elif name == "kcalloc":
-> +		func = "kzalloc_objs"
-> +	elif name == "kvcalloc":
-> +		func = "kvzalloc_objs"
-> +	else:
-> +		print(f"Unknown transform for {name}", file=sys.stderr)
-> +	return func
-> +
-> +// This excludes anything that is assigning to or from integral types or
-> +// string literals. Everything else gets the sizeof() extracted for the
-> +// kmalloc_obj() type/var argument. sizeof(void *) is also excluded because
-> +// it will need case-by-case double-checking to make sure the right type is
-> +// being assigned.
-> +@direct depends on patch && !(file in "tools") && !(file in "samples")@
-> +typedef u8, u16, u32, u64;
-> +typedef __u8, __u16, __u32, __u64;
-> +typedef uint8_t, uint16_t, uint32_t, uint64_t;
-> +typedef __le16, __le32, __le64;
-> +typedef __be16, __be32, __be64;
-> +type INTEGRAL = {u8,__u8,uint8_t,char,unsigned char,
-> +		 u16,__u16,uint16_t,unsigned short,
-> +		 u32,__u32,uint32_t,unsigned int,
-> +		 u64,__u64,uint64_t,unsigned long,
-> +		 __le16,__le32,__le64,__be16,__be32,__be64};
-> +char [] STRING;
-> +INTEGRAL *BYTES;
-> +type TYPE;
-> +expression VAR;
-> +expression GFP;
-> +expression COUNT;
-> +expression FLEX;
-> +expression E;
-> +identifier ALLOC =~ "^kv?[mz]alloc$";
-> +fresh identifier ALLOC_OBJ = ALLOC ## "_obj";
-> +fresh identifier ALLOC_FLEX = ALLOC ## "_flex";
-> +identifier ALLOC_ARRAY = {kmalloc_array,kvmalloc_array,kcalloc,kvcalloc};
-> +fresh identifier ALLOC_OBJS = script:python(ALLOC_ARRAY) { alloc_array(ALLOC_ARRAY) };
-> +@@
-> +
-> +(
-> +-	VAR = ALLOC((sizeof(*VAR)), GFP)
-> ++	VAR = ALLOC_OBJ(*VAR, GFP)
-> +|
-> +	ALLOC((\(sizeof(STRING)\|sizeof(INTEGRAL)\|sizeof(INTEGRAL *)\)), GFP)
-> +|
-> +	BYTES = ALLOC((sizeof(E)), GFP)
-> +|
-> +	BYTES = ALLOC((sizeof(TYPE)), GFP)
-> +|
-> +	ALLOC((sizeof(void *)), GFP)
-> +|
-> +-	ALLOC((sizeof(E)), GFP)
-> ++	ALLOC_OBJ(E, GFP)
-> +|
-> +-	ALLOC((sizeof(TYPE)), GFP)
-> ++	ALLOC_OBJ(TYPE, GFP)
-> +|
-> +	ALLOC_ARRAY(COUNT, (\(sizeof(STRING)\|sizeof(INTEGRAL)\|sizeof(INTEGRAL *)\)), GFP)
-> +|
-> +	BYTES = ALLOC_ARRAY(COUNT, (sizeof(E)), GFP)
-> +|
-> +	BYTES = ALLOC_ARRAY(COUNT, (sizeof(TYPE)), GFP)
-> +|
-> +	ALLOC_ARRAY((\(sizeof(STRING)\|sizeof(INTEGRAL)\|sizeof(INTEGRAL *)\)), COUNT, GFP)
-> +|
-> +	BYTES = ALLOC_ARRAY((sizeof(E)), COUNT, GFP)
-> +|
-> +	BYTES = ALLOC_ARRAY((sizeof(TYPE)), COUNT, GFP)
-> +|
-> +	ALLOC_ARRAY(COUNT, (sizeof(void *)), GFP)
-> +|
-> +	ALLOC_ARRAY((sizeof(void *)), COUNT, GFP)
-> +|
-> +-	ALLOC_ARRAY(COUNT, (sizeof(E)), GFP)
-> ++	ALLOC_OBJS(E, COUNT, GFP)
-> +|
-> +-	ALLOC_ARRAY(COUNT, (sizeof(TYPE)), GFP)
-> ++	ALLOC_OBJS(TYPE, COUNT, GFP)
-> +|
-> +-	ALLOC_ARRAY((sizeof(E)), COUNT, GFP)
-> ++	ALLOC_OBJS(E, COUNT, GFP)
-> +|
-> +-	ALLOC_ARRAY((sizeof(TYPE)), COUNT, GFP)
-> ++	ALLOC_OBJS(TYPE, COUNT, GFP)
-> +|
-> +-	ALLOC(struct_size(VAR, FLEX, COUNT), GFP)
-> ++	ALLOC_FLEX(*VAR, FLEX, COUNT, GFP)
-> +|
-> +-	ALLOC(struct_size_t(TYPE, FLEX, COUNT), GFP)
-> ++	ALLOC_FLEX(TYPE, FLEX, COUNT, GFP)
-> +)
-> --
-> 2.34.1
->
->
 
