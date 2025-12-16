@@ -4,113 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA308D5E12A
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 11:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED36D5E125
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 11:01:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38EFB6B0005; Tue, 16 Dec 2025 06:00:26 -0500 (EST)
+	id 12A066B0089; Tue, 16 Dec 2025 06:01:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33C796B0089; Tue, 16 Dec 2025 06:00:26 -0500 (EST)
+	id 0F5006B008A; Tue, 16 Dec 2025 06:01:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23C6E6B008A; Tue, 16 Dec 2025 06:00:26 -0500 (EST)
+	id F01F16B008C; Tue, 16 Dec 2025 06:01:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 11A8D6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:00:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB866160572
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:00:25 +0000 (UTC)
-X-FDA: 84225040410.27.EF724F5
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A75504000D
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:00:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fo4rjX6Y;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765882823; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E04016B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:01:14 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EB481A05E0
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:01:14 +0000 (UTC)
+X-FDA: 84225042468.10.CB10A26
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 822F9A0010
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:01:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Yu5PJgNV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765882872; a=rsa-sha256;
 	cv=none;
-	b=vV3KyHBuzKMOSeOs1XNSw5/RBl5sBUwobaXqLfs0+irIK6eKq22Dk369q7XbHKdgv2jPgj
-	t1NcTBCbout0AT0vKJRoH92EilJwW07aBAHj2DRB3G6hPIComCPwn0HEJCaWaJnGoCqJuC
-	FZquMGGIib+yBOU35lFoiWttgflIqto=
+	b=RHWLFxArUHh/AZyLHHnMAwaxAsXOryOjXovgaiLqeG0AB+QzIFPPcI3osbow/TnikitRrR
+	hkv/bovcTJP2ZrcWtq4dq+3uA1FdeSQAg6j89cPELNq9DznobGug3U/s0fv+jxnVaTR+0y
+	IFPx6Bp0jIY7/p/pTMKZnpI/JWui4hQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fo4rjX6Y;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Yu5PJgNV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=elver@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765882823;
+	s=arc-20220608; t=1765882872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nwnbHUt8FwPMGR5zEBs02t3SwzZTk4LvLl9pDB4t8Yg=;
-	b=101rPyFGPkhWy4TXWsRh0b5JRhWAd4DrJso8LmM+f+xA4ECCZCgjEXPS489YQNBtEIpVjw
-	TdceyaSNWaO2noSCaljVcyOrzzIuJYVTbRzeJ44y0c+nTKj++s2qqEWcUPK5m/KS2E03H9
-	glq0fo62myBtF/U1uJaghKVMU2Hmj9I=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-641977dc00fso7130399a12.1
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:00:23 -0800 (PST)
+	bh=3fwbXvgWn6Nd0xRDLnbqnTLufRK/0AjdBlMA+CLIc/0=;
+	b=AvcjE5YXut/dogeN2KbDouksU3aJiBSmbzpzs+2gtV7Dv8l4LdCy9z4GElrYyIujhDixaX
+	T9lPpX8x0EKDmhDzvWtqt2WaBfDmv5qGlruLY1iCGQUjtzvRCFvwOIpfoV60AXk2bZs5zx
+	M8LvpW31UHyETf8Z6sWgkrKVmSUJ9aU=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-477b198f4bcso36161005e9.3
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1765882822; x=1766487622; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1765882871; x=1766487671; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nwnbHUt8FwPMGR5zEBs02t3SwzZTk4LvLl9pDB4t8Yg=;
-        b=fo4rjX6YErv4yMZCEe65ctKYeONZDtAcCHdnCnP4ehNfDPiYDQe2HBw+jjWiOkkT8W
-         Uap0ZHWMsJM4e/XfTeEktRL6TDdc69aG4keTdYDzzpXnikgA+2wlU6HhZyMZjlLh/eVk
-         yVkIO8Tri2cZ2AjzPGnwSWjzqCmWZ8UWiRizBLAKzUlPCRnwf0/WvN+rocqDEPSmq+is
-         X9EdKlZ+n+RtUVYg6aXo7+VykWYKYFNWNvtKTOVAGw3oHsVKijXZTl3fu9/8K7G46IbB
-         gYqZM3mM6fBnOqRV0jtdQMO7Adcz+1CdZ04poEyKsPMQryR+ziONfKiQU1b4ftJRvcaf
-         pLVA==
+        bh=3fwbXvgWn6Nd0xRDLnbqnTLufRK/0AjdBlMA+CLIc/0=;
+        b=Yu5PJgNVkI+MQuRmQhzfgTxgu+y3Ll0BmkRnZHHI4gEgOvC+YFSvP/f3uY7Z0jFlEC
+         Phy96u1/M6ZJhjDKE7bsV5KvaP43AcTNQK3KOWcwXSgGXjjhg79qyz0csPzxUqwSLRap
+         gjsoG79+jQGa15ouhpxgRSpF8vr2aq9GE4qH6VZYV5hDshPav99IBsILKoha5FYkzkC+
+         NWdP9S1yiPM/vXQwKTBgpzlz65FoCRlfGWROPmTAe3Z/+o5/WGXcVkD/sI99h+8/o/wM
+         M4gcmB2WtWlUPytaOJmy7K8LX7scUDXpFPa2wcFhX437lXmcQ1A5xKYTA1usDnuGm2r4
+         w8Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765882822; x=1766487622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1765882871; x=1766487671;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nwnbHUt8FwPMGR5zEBs02t3SwzZTk4LvLl9pDB4t8Yg=;
-        b=wEmCMIEwRe2kdac6qgSDdTvf2yravubNeSjYfck5BVRgpVmWpijIsM4M2NTnyuXuh7
-         PSyFAykh/yCiDfhkj+rrDeGcOskIBjguiQkUMKZCzZitAARQk6EpisMFcVpTSBbgFbZq
-         dyze6NIqzuEn/v3EydjTH8UE8xL+nofjb0w/YyT3xM6tZMKijf//hxA7WzAilRzmRV1b
-         Y+R+TcnjgEQ5jxUeP+++75sMnmqeD7w+6O5yzdyp7+xNwnsQB++iK022RX4XhWHiIbdi
-         Ev+xkkIHYxIzF0YC/Vs+x+jgAojSWyi9OOcLeQ3FqV7ABauA8mwWOABi/O1xhbwtHqkT
-         cz0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXppJPMRUBc1M1d0/0gp2hBoXB2o038cWUeHoIScWmIz2ZBEhHgHHBBaNsRbcMgk7NpNbqshrgmzQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy3nckyH1iL9qPA6XjWprcAz3qcQmkVnHrJgO09XkINV7v6lr07
-	6orjpD0HYOxgkWsLOkpjqrkI6F56iv+nMZChlHksCtIkVU8ZjJ1m1bXrOUF1mcbjOm+PDL9xejl
-	4sgKiNfdWa6Jf4467qextcrFR/y5EwgZkJYZSkz/imw==
-X-Gm-Gg: AY/fxX52PbKhK11t+jDwVF0z3+gUlAA0QlJjmWpTVsNCjVOEAUFFhFeoYSvmxcswWMF
-	3C1X6Cp4287ygJzHx6ghrQhVw/XuQkBajeOaQXAK9Z9jZyRwqs+4Jw/2DvgPFHOKXcCHuak9JP5
-	6Uk6Gx9VBVrSpLZAnqooZ2yaPdH24U2TO0MnElFTyYkLKUFzdWJ7PGtCL8JZIVsEE+ok+VX2v+t
-	Jqe/dcNigtDnH5PDsncudOQUGI9x5yP/UElP4aHaHDjZrZ0wsdWEJAZMuHBt2yonLr1vF6FryZc
-	Rim3IPk5wPhza/X7ZvAaUUjs
-X-Google-Smtp-Source: AGHT+IHe9jgtfFM7Qc6zeEO8dBHCnRGVv9zMmqW1J4ecojexXOkQ0I+gWFpbhh/0kCc8H5IhTix8cpujcdlgDux9le0=
-X-Received: by 2002:a05:6402:5108:b0:643:129f:9d74 with SMTP id
- 4fb4d7f45d1cf-6499b110064mr13972297a12.7.1765882821364; Tue, 16 Dec 2025
- 03:00:21 -0800 (PST)
+        bh=3fwbXvgWn6Nd0xRDLnbqnTLufRK/0AjdBlMA+CLIc/0=;
+        b=QeedMXklzk96w0FJFWmwqFI76bWsQCtCZXcCk8hNlcVg+WFB3lpigkX6wX2KMBUEEr
+         kfi3/KsLP7g6TQIOB7o0jn18sWlSiNOFwnQbOK1VM5dYuPqtRjAo0URQIJYnFf/2E05D
+         DvYllYrQcPSASLDNFx68Cv8Yp8/uJrma8tHXq8LlOCSv4jhYVb0jLQ/Ezq7ENWAOQ2os
+         Olp1yVZEqPjZAT5Bhigw/6sPweLjRSOkV3nZOOl1jrI5DlyOlESVOEtuv1Os3hjX1mym
+         c7I/sFkC8FY2IqrQk33eW5EaLatGLGXxJm26u9FXoUMVDJHopBA8Q+AQGTLwKCbm3Fqb
+         MuJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQRcL4L6roV8omNOwRPRoUchL1/87jHfIdAIsVlNINMzBRGmt/P1SAnEvLreSlT+N7HKvewBcYkg==@kvack.org
+X-Gm-Message-State: AOJu0Ywch103iNKgcQwPGcVTdD7jtCsKLisPaloRnQx9vf4MbxYWQeay
+	XOSu0wTf9aPDhYlGHSG2r21kaRWQo6hNJSwfhJ32D4vwqfiB29kUgB6lgkei8GjD3g==
+X-Gm-Gg: AY/fxX776pfkGVxG3KWaAw2yUdhKOzD7PpgGA5kM6lIovGPnvdu5X/5c486dZfz54Fb
+	0dUwFnemRPzm6rfHrCDRc79yLjYuxmMJhds81LFHV4IIR0qMxRlufOUZyPWlA+Z1hJiWVZAEjug
+	MoGJoptlrKWl8BLXCHDURAyPvRhmd4ue2MAnrbPyFSoIXwyqUwLyPJKc6hb+WyGgBiZelS60PBx
+	bwE6EP+TDujArZ0WDDwYTbF0MYDoksMcJdE6xgp/EXMATuwq3KX1KCCiBZUM75qaH9Ahh32pK5J
+	U67WSlEQz/gDB5RcIQafmOWzdVAPHbI/Qz7ODv7eyJn50gtkWzQJOnSJITHuMrChH13WGuY5nIn
+	nf5YfSdrZy4/ptXULRN8+OrCNlbm6v+JVyu1P1nZge456nERjhI2oi+P6U4Zdz1ZY+gJ/Hkz1aI
+	H1popoL8/krdg+eHdzU2Bik02zPvqHB6GBXNyQOEt9icz396Se63oZGdygjNM=
+X-Google-Smtp-Source: AGHT+IHPMwFoz32u9J3kCO+8mIIo+dWtYExr149Lgk7NY5BncmGMC4iCyfwqqX0j0PAhtkij+iZr9A==
+X-Received: by 2002:a05:600c:3ba7:b0:477:7af8:c88b with SMTP id 5b1f17b1804b1-47bd3d41de0mr37923685e9.11.1765882870450;
+        Tue, 16 Dec 2025 03:01:10 -0800 (PST)
+Received: from elver.google.com ([2a00:79e0:2834:9:ea4c:b2a8:24a4:9ce9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f5f6ede8sm17789236f8f.4.2025.12.16.03.01.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Dec 2025 03:01:09 -0800 (PST)
+Date: Tue, 16 Dec 2025 12:01:02 +0100
+From: Marco Elver <elver@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <aUE77hgJa58waFOy@elver.google.com>
+References: <20251120145835.3833031-2-elver@google.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+ <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
+ <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
+ <aUAPbFJSv0alh_ix@elver.google.com>
+ <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20251212071204.398788-1-pratyush@kernel.org>
-In-Reply-To: <20251212071204.398788-1-pratyush@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 16 Dec 2025 05:59:44 -0500
-X-Gm-Features: AQt7F2ov2UA3P0tt9OB3YzI2ABkvyFk5SEu8vsN3nea8eX6SWcu2ncLggHlZ12M
-Message-ID: <CA+CK2bCSknk-r+nhue70Fn5gb=u=Xdnvpb7ORksrmpVgCC6j_A@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add ABI headers to KHO and LIVE UPDATE
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 822F9A0010
+X-Stat-Signature: 76m6c5nmuz8gneesgj4btoxca1wh3q8s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A75504000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: fdzf3iers77eds1j8zpm6smm7hb3wz1z
-X-HE-Tag: 1765882823-819798
-X-HE-Meta: U2FsdGVkX19bAoyfCjfhYd33JCjiRxQbjqeqBCZz4UhlpvMd2LS3fisvvJSDj7HN2Ni1NWHVZ/nZBDVShrySXtzRxfvA3fgNdCKi/c6QlElF9H6NPB6JWNToQ7Ifr9254JpkD+Y1EKPy354lcs0To+tqJtNlhKFngP5Gt5Vm9GxSyZHq7GEK7NrEWHJG8DVCKfWL9tENtjURnH1tITo1l31fkM7pxM64CwhCSKbSOiarY9pJo2zAzeKgfFpOTrZIj+vk/eD2oPigPUAEj7XqiVX0cCoJKPNYcc5jM1YAPHKQefhbQqp6nLEX8EjrS2+br0f/ryo03bbxjjzY1JwknIW4qW7S80+h680DpxnP7GDw/ihCWwAa7yisNg9YTRLPAsiYvhfkrsOTfrte671U6NArpcVYKV3lVydMdhXhIzdT4nWF7wwlkY0Zhe5Ppox4m1d5kM0BmyFbNZiqUWM/VgG4zo7DVviwGNiiq7vLxocddTPiq1XJAAinAyN2DsmTn/gfK5kTJmU4UeVL1T//xEDs4sfnXHpaDfM1GjI9CLxB054e1gXorGqUgIEKkALyZES2yjTIjadS+mujxObeBulh0n487URTO7fC0PhJXzvyTyTdwuAqwfQAR+RgCUmI3DapzHghSm9VPeHxGrZSLKho5SbhtHhMXsjFseNliPPwZBPUy+Nt6SBZ9z1EN3xjj65TiTgBMLtCpV7ro4y8ajDhOAk3TAAeUdHZ01prGhs+6ZD0tP5wgDZesC5k80dw3AmEQzXWKcxS27S2+79bUophl3MHkQDa9kdAQ9us8UpQVcONwDXpT4EZfjWUE6UIm2McuASjRKdcOzaJq+WPgDK10TiLmUQ5cS+HknrQNAh35bJUhV/+7QdgQlIQN3afOvDQlHZuHVQnBVxwJWYShBvKuuaJmsWWzxcSlyB8hnjG08JcYN+9KOIpp+Mi3tR6nlU+UzeKxIJsNQsBB/9
- 1/czic7N
- CvIQeB7hJHSjMrhfj7uP78vM9lAK+9DqvYoQXDng3SwNON92txSLtn9NmMoUiZWRksvKRDtrlw66Uc08ji03O2jlhDgx1hsNU6xQVYTDKak9ztqauydArZFqI7nV1d+WL5x0cBarWZCSQ3HF+aYfFpx8ibfU2807nx7TQkrjVd7Kw8X5nYIHy/JYSWWx7sIlatmarOosNtZYjcl+Rplm0mgJMPAILtQaUyYimE0/3+fnzn757zUxzIaTtKIL34nIOgy9+DNsfCS/2TSu8aFXBImEGs3SiTxLJc2RQwUvVviJaWriNJeFJwHMhMy59PMuysbtBcaG4eoWEMu/CXCCXoauiKU0vthUrlq7R3u+A3saAt6PB2TX4L/ZwarR/9Ih+9jJ0
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.001042, version=1.2.4
+X-HE-Tag: 1765882872-360467
+X-HE-Meta: U2FsdGVkX19O5Yeq3QFouemfwtCXmsxIO2f3hABJ1SKpfcoDTXKxRP5T4HrP4/efipI5bw5QpxSU9YPxHrbVKOjli8R8UsljCXk6UDO8OQIov4heoYQQevDDO1+kFqhz2F2WpmkkyhSjQ/1vfVAKwcxtLqwXmo1BeWZdQ5/B4XR5235PldGdygpIcuiTJfC0tYqKZDXD0Wvwnbz/yagOMujqbU3smb8sNBG7tSPV+mgoe1cV0ID4RO9e8Un3CvIGn+Qmz/Jg7ouG0l8BR+cEvL7QUdEN9QqbK3TLn2GMe9mrGB0uWffVEgz9EiP+b9ebvrKHkZoSain6n2TlDODbR+yjVENzIl6BdZNxncwlKaUmMg6n4d48WLP7PUqwKqwI+jZD26YWqZO8MuZSK4iSsiLyr4d2QjeonhCumJz+8V+UeMY4g7QRlFxwQnoFV8m23/+Xq/co68Qy3a3qiFhzPTUzZXgfCaO9blSfPIqUm//aegTHHONPc6l029VK7SNTPx5MdVr3mcRxon+z3UHnaUsK/EYv2QDOTxcJsAj6iWyaaaTJL+8b39/6x7Dh9efE9/TcY4aBjtqtJFdTniBrjwPVXZPmSR+Cym5gN/rbsruLjra3gGJ/1bAPcNJhzIV6WlnIGgOuG4tY7KcoXikm5IwsGvjKwI63J3LoC45W78ScWVvEU2QT7qKZeP39Q2LzGCM13QXOChE0+1veDtLqRLTex01MwzxRZHJAKulAQu7m05iGoktOXltxNb2QuOBl+xDiKpCRwwgRiCKpmUH4vNOZfkpNd5+bOqTUtLu6OqQZzWLjy2IXBGNpPe9bWuszAyycDvQgneP39qMqvdGOKJr+7/AemSIhXEv9Bhnu2IvKqeBNKSBLHGJM5ol4EvPyxPKeeyzsnO8kHv0lnJz7HDGbs3RxfVhrNZ6ZSkdq9fTpe51x1m01mHsEGauAuc3broUZntt+DXCE0Qg8YV3
+ AjV1OZed
+ WjkxunCD4JEoND68UO9jDysuMjqvun4IIFD+IZgcAwghOKu5meqpGU5O1xDSGm/F6ZJLK1dxLrgLM+ThkfUxvWexdmDx+VwQS3+sJJZ8b9EKegPlfpKAdXMictPsROwGm84zUkaFj3aGWPZWFJ/v8/BwMHWKItGKS9hlZUxw71NW0R0aFb+hAIpWRoU4VJ0YFfhKGS39hDP8khicrtQe4mSqijX+0lPa+nprohnfvti+VC0OiZ+dfdeCAUjDL0uWRJkQwJD0/oT7UNqWW3NLD55034Oj9Tgy6XWV3yQUF5kXtZdq1UxuLuOmsQZZAHHxy9CpD8ROoV0Y4FS61I1JuAF4+/N3jeaivyDE5qmkCIEbivKgaem06nWvIT2C0TJOdef4xUIbcMSLTEj0CggS625xYXW2Pf33K6eBMDvJqMGjTk1zoPzFMM19pwPLrrsCO7IAD
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,21 +164,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 2:12=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> include/linux/kho is supposed to hold KHO headers. Add it to KHO's
-> MAINTAINERS entry so the right people can get patches to it.
->
-> include/linux/kho/abi contains the live update ABI headers for LUO core
-> and memfd. It will also hold ABI headers for other upcoming file types
-> as well. Add it to live update entry so live update maintainers can get
-> changes for it (currently they happen to be the same people).
->
-> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+On Mon, Dec 15, 2025 at 04:53PM +0100, Marco Elver wrote:
+[..]
+> > > So I think as is, we can start. But I really do want the cleanup thing
+> > > sorted, even if just with that __release_on_cleanup mashup or so.
+> >
+> > Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
+> > abstraction. For that one I was able to make it work like I thought we
+> > could (below). Some awkwardness is required to make it work in
+> > for-loops, which only let you define variables with the same type.
+> >
+> > For <linux/cleanup.h> it needs some more thought due to extra levels of
+> > indirection.
+> 
+> For cleanup.h, the problem is that to instantiate we use
+> "guard(class)(args..)". If it had been designed as "guard(class,
+> args...)", i.e. just use __VA_ARGS__ explicitly instead of the
+> implicit 'args...', it might have been possible to add a second
+> cleanup variable to do the same (with some additional magic to extract
+> the first arg if one exists). Unfortunately, the use of the current
+> guard()() idiom has become so pervasive that this is a bigger
+> refactor. I'm going to leave cleanup.h as-is for now, if we think we
+> want to give this a go in the current state.
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Alright, this can work, but it's not that ergonomic as I'd hoped (see
+below): we can redefine class_<name>_constructor to append another
+cleanup variable. With enough documentation, this might be workable.
 
-Thank you,
-Pasha
+WDYT?
+
+------ >8 ------
+
+
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 2f998bb42c4c..b47a1ba57e8e 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -518,7 +518,10 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
+ 
+ #define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
+ static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
+-static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
++static __always_inline void __class_##_name##_cleanup_ctx(class_##_name##_t **_T) \
++	__no_context_analysis _unlock {}
++#define WITH_LOCK_GUARD_1_ATTRS(_name, _T) class_##_name##_constructor(_T), \
++	*__UNIQUE_ID(cleanup_ctx) __cleanup(__class_##_name##_cleanup_ctx) = (void *)(_T)
+ 
+ #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
+ __DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 8ed48d40007b..06c3f947ea49 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -255,9 +255,12 @@ DEFINE_LOCK_GUARD_1(mutex, struct mutex, mutex_lock(_T->lock), mutex_unlock(_T->
+ DEFINE_LOCK_GUARD_1_COND(mutex, _try, mutex_trylock(_T->lock))
+ DEFINE_LOCK_GUARD_1_COND(mutex, _intr, mutex_lock_interruptible(_T->lock), _RET == 0)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex_try, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(mutex,	__acquires(_T), __releases(*(struct mutex **)_T))
++DECLARE_LOCK_GUARD_1_ATTRS(mutex_try,	__acquires(_T), __releases(*(struct mutex **)_T))
++DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr,	__acquires(_T), __releases(*(struct mutex **)_T))
++#define class_mutex_constructor(_T)	WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
++#define class_mutex_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_try, _T)
++#define class_mutex_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_intr, _T)
+ 
+ extern unsigned long mutex_get_owner(struct mutex *lock);
+ 
 
