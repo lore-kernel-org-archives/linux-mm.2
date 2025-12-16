@@ -4,115 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1ACED609B0
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3204D609B7
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 472C56B0005; Tue, 16 Dec 2025 10:52:39 -0500 (EST)
+	id 0288D6B0005; Tue, 16 Dec 2025 10:54:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4205E6B0088; Tue, 16 Dec 2025 10:52:39 -0500 (EST)
+	id 00A486B0088; Tue, 16 Dec 2025 10:54:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31EDB6B008A; Tue, 16 Dec 2025 10:52:39 -0500 (EST)
+	id E20286B008A; Tue, 16 Dec 2025 10:54:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BD9D6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:52:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 851B959AB8
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:52:38 +0000 (UTC)
-X-FDA: 84225776796.19.EB5AF30
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6BF2580007
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:52:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Ts43UMgE;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900356; a=rsa-sha256;
-	cv=none;
-	b=DGia1UUbsi6qucNnkjY9OUrJwlN9VWf0viFZH9XR3KS+adiQOTSBhmfixKrbJj6AOqrTRW
-	EP58R/Y5Hu0co/zKTeQMLOJeEFRNEs0Kzia983ETDH6NhWTKmdKF5lsmutKxaTXjo0/Niu
-	+h5sXI9bO9jI7hGROSAgbAtD019FGac=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Ts43UMgE;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id D24E76B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:54:54 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D4711A0755
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:54:54 +0000 (UTC)
+X-FDA: 84225782508.04.C189B3B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EE3EA20002
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:54:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XF7zk5xM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O0/FeIOs";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XF7zk5xM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O0/FeIOs";
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765900356;
+	s=arc-20220608; t=1765900492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QXxGblJuerDWpBcIOypq80sXY6o3+TxONi+Sc9tFnGs=;
-	b=xPecJk9UDVNNj5mLiUnPaCmc2EjmNp8qcmwgAZnYH/g/U7LWkGwKv8CRgUerMHp8yME3uS
-	itJoRWfAJIofgLi6NWTpeKCHQc5jzdzA8Eo90rVuRnBhPZrL2GBCGShwNnu/v8yGCTb3LG
-	wEWOq7nh+NxzmwfmYGqfqzYCw831rpI=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so821591566b.2
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:52:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1765900355; x=1766505155; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QXxGblJuerDWpBcIOypq80sXY6o3+TxONi+Sc9tFnGs=;
-        b=Ts43UMgEkqveVcNLz4bjistB2GezdaAl/spMicXas+owmaxhe1ChZm0tPxnQN0+ETn
-         JBd4Kp4y5Zn1rqcVd1QEPrg7dNmaWJZxKZ4JZM5ckYgCZF+bWVSh/NNemX+QC/eV4Kdk
-         WnCbSnneD0fXBFbeRs7DYzGi+DL2l0G1HAOQ5pwLjGTkuTB1ZDPPuAnmDVzIxOlTPNC8
-         PLnoU7DwSYyO88CIHvEnQSikQk8RpjzKzzKCOpuqiHa1DUYxdtJGAcmk5TpkLe9TTFP5
-         wIt2as0wu5LdgBg3mPsLARj49c0JavfwGSAKe5CA54JxFP5cEviuPsTyWt28ZCUzFuxv
-         CHjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765900355; x=1766505155;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QXxGblJuerDWpBcIOypq80sXY6o3+TxONi+Sc9tFnGs=;
-        b=ggjBa1TFoQMj5c5HbmGK4+0/UtZtoDPDBI2luKkGYoNvpCyc3mni2R/3oqM4tqF+dC
-         D6CfNnniriRT3VZPf6P/gwxy8SQIG6dYtINXaQAn/lfcmUiNLzg/kJzIb6N21VoGL5Rk
-         4PitjAK3yejh3sVphu1X5GZcdnbjc03aXzW1n5AAr2C1HkHpkX4ND49Trn+hVhN9ycJ2
-         r2gd0s3QBz8CQAqBUiXTnJv86WDY8Ob0ImYYre2Kq7P+WUkiEvRoAMWx4Hy5pKdjpzl5
-         Lsq1I7jz+5lN0c5QCLvNWVXSDZReif48zaLR4qXptY//cadJLfYTveZIkLHrw5yp74Pl
-         /h9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVxGgVth6hmDBsLLW8dvwrMk2kXQA5AV1eyHBCCvbGF0V+8UtLilDlsATKW3HqVCN0mYt8ZuTSnKA==@kvack.org
-X-Gm-Message-State: AOJu0YwX5A9YCfGrc+twNM9vJDTR/PZQ2owEPMer45Yz8sr6/XxQODiX
-	IRX0LC6LJqTeXR/d6UlNFcFFsjF3O9xWogK4YQ77bseCvpQSnoYxl272DkAU8J4WV4y089haQch
-	G3O840djKhVS7M9IVNdJUQgg94FT3pYCJPE76+pEzuQ==
-X-Gm-Gg: AY/fxX7Yt+bUhjH+4y72k46ZXC2apovR+U20/B29i5jqXUt+EDf6v3TWhvTrpismVpo
-	LiMHlvwpjrblGfUu3lvX1igAM8Lxc6vLknC5OsdVTLm0kgdjzeqJPww8MNhOF/IDW+N2MSiJF05
-	DuXs67DXO3PX6Hn1GHYMzuN0RIJQTRRm4BYCzVmGEm0Xg2OvMsV1qI91cQA4QdDnR54HP1l+RDc
-	AwDfczPiLEF4iohFfvSX/cIBbEF9fzKfts20292XxkUCKHJwGxMy4srGzyBgX2MYUT3KRE1F8gA
-	J/a00CuQ1ejTGuoufvJ6JLvP
-X-Google-Smtp-Source: AGHT+IF8hUf/njs47ssOWxWrTAtN9SW44kkMcdwp9wLrZso0GjDwC7fAR8uTmXjFxwWpMLXPrdui4riC4+4Ir5L8T5c=
-X-Received: by 2002:a17:907:3f21:b0:b76:f57a:b0a7 with SMTP id
- a640c23a62f3a-b7d238caf7dmr1725050066b.31.1765900354456; Tue, 16 Dec 2025
- 07:52:34 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=I5L7elWzllOSIgzBzBlYKvSFsKwnjUR3w+FLumxZHmI=;
+	b=7ztaKapt1Wnen/TL/TMgKoNXpvxxnDPBMB3R1QMIxnfb/TjnT1uETYJ5wUfRVNaEYPmhOH
+	DhASQp5mGzixUgKsgasWJRcGuyJ9flDVxdZxI+oNVzSVjw/vqlWcEmGXBDj1Tpe6d3KciH
+	ElAzE6432pR1/tBeR2g/LjeLGLpVCAc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900492; a=rsa-sha256;
+	cv=none;
+	b=md5/9PxyAWEXC73p6s8WNGDPRY4E+7WwHpDXCaUOzs27n5K1Jx3TcIu/6mFvlqx8tNJcOY
+	pGgAv6+unqJDehA3vEtm+s2eYqYv94r3WDgMC/RQjuB5kplZnxlepwtEQVonCvffp5/X8J
+	hJZ41NFVEPlalYriRx2zzEVDl9300vU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XF7zk5xM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O0/FeIOs";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XF7zk5xM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O0/FeIOs";
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1A8F45BD4A;
+	Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I5L7elWzllOSIgzBzBlYKvSFsKwnjUR3w+FLumxZHmI=;
+	b=XF7zk5xMqufcbdc6nj7cUuUjWWUmjKqDjyHVOBl2qciU/+jbXWZsZKuT3t6MWS21WAL9Yi
+	uMFLJKE+FHy6voEJEAVwOuh2wunn7GxFR/S9MTOb6v6zlchcrVnGXrPDLxHMQIkZ7/z3Ph
+	/ZUdhNO2q5r8geXSu7aAWw8B7UgwXhQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765900490;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I5L7elWzllOSIgzBzBlYKvSFsKwnjUR3w+FLumxZHmI=;
+	b=O0/FeIOsO3ZPJoMuuUQSF3VnjQZ0+sEJpQhgCqWzaJXBYG4xKhY/dCFcPUwDmYulAYqsEL
+	gk6Uwl4f3lBo1/Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I5L7elWzllOSIgzBzBlYKvSFsKwnjUR3w+FLumxZHmI=;
+	b=XF7zk5xMqufcbdc6nj7cUuUjWWUmjKqDjyHVOBl2qciU/+jbXWZsZKuT3t6MWS21WAL9Yi
+	uMFLJKE+FHy6voEJEAVwOuh2wunn7GxFR/S9MTOb6v6zlchcrVnGXrPDLxHMQIkZ7/z3Ph
+	/ZUdhNO2q5r8geXSu7aAWw8B7UgwXhQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765900490;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I5L7elWzllOSIgzBzBlYKvSFsKwnjUR3w+FLumxZHmI=;
+	b=O0/FeIOsO3ZPJoMuuUQSF3VnjQZ0+sEJpQhgCqWzaJXBYG4xKhY/dCFcPUwDmYulAYqsEL
+	gk6Uwl4f3lBo1/Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EFD4C3EA63;
+	Tue, 16 Dec 2025 15:54:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id u5knOsmAQWkSGgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 16 Dec 2025 15:54:49 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH RFC 0/2] tweaks for costly order __GFP_NORETRY reclaim
+Date: Tue, 16 Dec 2025 16:54:20 +0100
+Message-Id: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
 MIME-Version: 1.0
-References: <20251216084913.86342-1-epetron@amazon.de> <aUFJH9xzJXYOt_X8@kernel.org>
- <CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
- <aUF4fsWwD9BswkFh@kernel.org> <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
-In-Reply-To: <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 16 Dec 2025 10:51:57 -0500
-X-Gm-Features: AQt7F2oVU79Y7RmiV1TRfmRsHfWXG1IqX56Yslo2Aowm0vb9rvseAzO_YZsWkZw
-Message-ID: <CA+CK2bDLkf=5Mk0XH2XvUFS1px4cROBRjO+eKd4zvgzrS=Z-xA@mail.gmail.com>
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6BF2580007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: a8rjuwtito34qgc9amedhhziyoo6yfcm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKyAQWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI0Mz3ZKMAiDOLM7LT0nVLSlPTczWTbZMNkpMTjJONDMyVwJqLChKTcu
+ sABsarRTk5qwUW1sLAHFRPctpAAAA
+X-Change-ID: 20251216-thp-thisnode-tweak-c9c2acb3a627
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Mike Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1092; i=vbabka@suse.cz;
+ h=from:subject:message-id; bh=kL9+KpDIWvIBUolkDk+Pi8uorseX2uedd2CBZveMJx0=;
+ b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBpQYC/76PJHdArRDmHbWkIgUHaSpp3qlMNzWsBl
+ yHDGFWp1kCJAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaUGAvxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJqzywgAh7vmhJIt1xMY2RDH7CmN/dJgmDTqR8M
+ ufZTT1a3K9bhJprNJVF7v1nET+4OI7gxBN9iLz1AlEXA0aahbkTe1/8HqB9uiVwhGLJQJ5xLtyJ
+ 9vrkaUqd3C85fMeVVKZCVf8/QvU68b0p9if+Cz/AaOM6kCvqOQzMh7v8DkLaAdR+atRaZVp2+1Y
+ NfrwrculbI1ILmqA6LwNarXiEorxRrn3F0uiy8AAGKH+WJ6RnHXCPAAaa4O3Lkto41mF141V2qS
+ cFQKg1MJvLL8Ii75Yzf9Ti8c7bCg4Zn804K9r3gXZW6f5w9sxvM4FPxZpdFeZ38lOAwbUT4s3aZ
+ pOsMN+axjKA==
+X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
+ fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
+X-Stat-Signature: 7uta9netbewbb6hnts6d3g3i5kaejjc8
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EE3EA20002
 X-Rspam-User: 
-X-HE-Tag: 1765900356-605921
-X-HE-Meta: U2FsdGVkX18Ras2BLh6F2xjbiQ0Fnu5uiAAZa3NVCJZDuH9lo1cFHcL71z1HzGNp3eUplDlu9INgkzqBTDbx9xjtf7McqkvLoPJ3KtICq1r/79SWP674fiJ/8gxdExgl2MUxhjfEnQ1Xb/EijKqmG4MKpefgZfn/CT2HOlbKsP9cnON0tJCUjBjIo4Z99SJC/+D/jySSEtJkLWauKdItwZMp79beQCEa0hxGvxc7JLHFGbWQSJTOUYTNPTZNNttWTozzD9Sqeefb+jBCGtTMMLsk1qmt+suB+Cj9otaIwFkvhrkblglFRSyqidu1tTfIF2m/2sxxWhLNAhIhArAL0y9JbKoM/2ontH7tIErObH6j6XRfGn/L01B0bUf62rT8RIODwq2kIoEdP5aaoXJV+MjZ8OqU2arTRfTJTZOSjILMcird7Sz2DxmgJV67sv5PDTunxHO+aC/Jkm+70rmiY7+IcftwR5jZ01AJTLg2Pqi0/kREpJRylNbKDIG+M6l/YxEQem7pnFwnbGEVMzUc8OgzmVsF0bdWIQYMknXV7r71kutvRwGL6M4Hqt09phuEDBeE6XITdov+GlWtuNv9aLqtcgYTcwSwtdAo2FhUCdq9jt7LK0zktzJMqmertC2uC/Q+alwcRyL9ea8nExyLoiqGpzbeDUdNXMT1x1GWi2IBg1p3QpdmGdcc46q6vRbHXvXnTxl+zttxAh6lTWEAjpI+KcVU6+QYME/hZqPa4DQsRWnMAsOaTxNPifVhFsCvsdV/TWDpCg7vXBnp0Y2wSxBQbYcCTrgyTO+JQQtw56PcxCQKCuqtt62wNQ3NkHMTXdKaSKjvhGhyxtueuNKrFVHvEla4pDpqgBqgXiTzglkxDNyuulqDimm8viLovfytJ5L8fUaBD3yyo3akGme4J/DYdoZCP9hlqm5d6nhbn+F1DPJkTqC4PeWcg8J/V8qrSGWolyo+j5xzgdpaA1A
- wKRHu7NQ
- fp/madWPl5bWmo4iWxsw05YqWV4+siy+erx0Aye2J6CKaaoOAtY8Wk5MQ82fYHXzx17Q6Q23XeMhMxX9ErfjCMphxieEJC1Sp4Oe8h8AW/aOJvvBLQ4T6O2c8e2FFKH40GGyCG7T75ovcyDdHrbOsDZ9HTYEt4zoK3MMhf1ix+b5TKDOv1N6B+mR4v6l4AmY5rsoqd2KHbvf2xbu1sU0Vg8M6Irs/T+QYeNdhBtBmk3JgSNbBVZq0MSJCIMVY1BNkTFkA1eXGf6+6Uotl+LwdgBFItA==
+X-HE-Tag: 1765900491-575571
+X-HE-Meta: U2FsdGVkX18o7JTaRyIkUll8YZB67PpQ+gcl3TTHOVaMZi691TSpUe/CRaoI24YueUvx30HICseqtJwh8J+VJwR6T7PZ2WYXVW0KpueI/RS2q5Ek9MBS+j47ommZ7Hep5hhObpviSV5yyFAfvKe1Qj2FjXppQ5HIIwVrv0dnCo5i6ALNMxzXg+mAdCHm4iVgd1PYU+hIgJjH0vQxy4dpQrPfpCKNSfSEtxp8W1p1niSVaWfGppg9mH1Ez/4JyqlMb8qSdsWgPsj+OQNqggbaIjYS9J4wq8x1iZye+JJ2y+m6cSYBVhrQ0qlB5tXQyxT/ASKPj/Z2AIis97tFccVg0zNNMpIuCCT3u3p1yrNCWA/Dh/7dHGcXQqt+9+YFiVCCCcmElBaO+Ytx2Czi7NGIErcYNTKqQXYHXPK6VDCySGKz1uqnQNR8VtuuvQlCQPK5w7YuKiazmfHp25xc+CWGrzcQYrhoSVAk8Ws9HXiG+k4qMgJf5b8w6MHvG7HfPQarmkYW50oUnr1p9KNKB9wF0NBoQALxpo932ZWXH0AWXzGJ8XymCG1QA5lynW2H2GHjJ7QqPKZ7oPoj+x1T6EjByeD823qvV1nliJZIudkX0EkkpwmNWhFjNMsG7oMEovolFJ1vakgVa0YX/eadmWNtNH6HA/ikxV40o/OPLZFBS7OD9paGrMVetVHiYXDR/F+uLQnqA9e/UMoZHbTTLa3LVX4rK+dHS5sfrXv0gGOwgxap4mSauQqaCJdZXlsdEfvk3KvikCvC/0qieQTsVBGYaKyGw0BT2wEQEw5rUZWYMUza0oQ8RAIXIeSpKREPS1cGtIXjEuHvqayaeSrSJV/a8hRZuorG4mSaFUU513AQc42x6WYlZ/CQ1TyM9iJ2vlGtWUIqRjaNOPTzM/v9jV8xbfd+Kv8MmHmKdvDgXg4kbkTRpmho3oBZ5H/QYI5Osqx+5nJlWoOubpCY9bu4ni2
+ mLVk9LyY
+ ReXm7A472A3j29p+9sviEmTqDzBOE8Q6ZCQQAj5waQHuSBfWw/QITEH/EzqTkvi5IfaJmzbYE38EBM4lrwiTqYFsNOqoo4DKDHZ8yCLgrvhBKrZFoOjWC/IoAistrMjheEFbnkXMlmqS/MZPBQmsoXGr52FvtF9ZaBt4Wu9PFxqM/pakYH7opAiG3vPv4QwacJ/TapbtNGvd9OAmcXYLSz4pnEtLXv1FHoM26mRcX5YypTmEra8ov/CZ8I3SeAiFXQmxC+Hl36/Xt4lR/ELR56FT4EpfgZqq7qPtBIhxba/65yYFtB3pdAL8B69y0J35EuKhrFnbg60fyMdGAn+xuC2h96qmkTSPjpe1Cqa2cnQJo01q8WnE+hlifSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,82 +153,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 10:36=E2=80=AFAM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> On Tue, Dec 16, 2025 at 10:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org> =
-wrote:
-> >
-> > On Tue, Dec 16, 2025 at 10:05:27AM -0500, Pasha Tatashin wrote:
-> > > > > +static struct page *__init kho_get_preserved_page(phys_addr_t ph=
-ys,
-> > > > > +                                               unsigned int orde=
-r)
-> > > > > +{
-> > > > > +     unsigned long pfn =3D PHYS_PFN(phys);
-> > > > > +     int nid =3D early_pfn_to_nid(pfn);
-> > > > > +
-> > > > > +     for (int i =3D 0; i < (1 << order); i++)
-> > > > > +             init_deferred_page(pfn + i, nid);
-> > > >
-> > > > This will skip pages below node->first_deferred_pfn, we need to use
-> > > > __init_page_from_nid() here.
-> > >
-> > > Mike, but those struct pages should be initialized early anyway. If
-> > > they are not yet initialized we have a problem, as they are going to
-> > > be re-initialized later.
-> >
-> > Can say I understand your point. Which pages should be initialized earl=
-t?
->
-> All pages below node->first_deferred_pfn.
->
-> > And which pages will be reinitialized?
->
-> kho_memory_init() is called after free_area_init() (which calls
-> memmap_init_range to initialize low memory struct pages). So, if we
-> use __init_page_from_nid() as suggested, we would be blindly running
-> __init_single_page() again on those low-memory pages that
-> memmap_init_range() already set up. This would cause double
-> initialization and corruptions due to losing the order information.
->
-> > > > > +
-> > > > > +     return pfn_to_page(pfn);
-> > > > > +}
-> > > > > +
-> > > > >  static void __init deserialize_bitmap(unsigned int order,
-> > > > >                                     struct khoser_mem_bitmap_ptr =
-*elm)
-> > > > >  {
-> > > > > @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsigne=
-d int order,
-> > > > >               int sz =3D 1 << (order + PAGE_SHIFT);
-> > > > >               phys_addr_t phys =3D
-> > > > >                       elm->phys_start + (bit << (order + PAGE_SHI=
-FT));
-> > > > > -             struct page *page =3D phys_to_page(phys);
-> > > > > +             struct page *page =3D kho_get_preserved_page(phys, =
-order);
-> > > >
-> > > > I think it's better to initialize deferred struct pages later in
-> > > > kho_restore_page. deserialize_bitmap() runs before SMP and it alrea=
-dy does
-> > >
-> > > The KHO memory should still be accessible early in boot, right?
-> >
-> > The memory is accessible. And we anyway should not use struct page for
-> > preserved memory before kho_restore_{folio,pages}.
->
-> This makes sense, what happens if someone calls kho_restore_folio()
-> before deferred pages are initialized?
+This is motivated by an excessive reclaim issue we saw in a customer
+workload and was associated with THP page faults and an unexpected
+zone_reclaim_mode-like behavior that can happen for those.
 
-I looked at your repo. I think what you're proposing makes sense, and
-indeed it will provide a performance boost if some of the folios are
-restored in parallel. Just kho_init_deferred_pages() should be using
-init_deferred_page() to avoid re-initializing the lower memory pages.
-Also, I am still wondering how it will work with HVO, but I need to
-take a look at Pratyuh's series for that.
+The first patch is intended as a minimal targeted backportable fix for
+the observed issue. I hope I'll be able to confirm it has fixed the
+problem, but it might take some time.
 
-Thanks,
-Pasha
+The second patch is a more "let's take a step back and rethink what
+we're doing here" so it's separate, as it changes a bit the semantics
+of __GFP_NORETRY.
+
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+Vlastimil Babka (2):
+      mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
+      mm, page_alloc: fail costly __GFP_NORETRY allocations faster
+
+ include/linux/gfp_types.h |  2 ++
+ mm/page_alloc.c           | 33 +++------------------------------
+ 2 files changed, 5 insertions(+), 30 deletions(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251216-thp-thisnode-tweak-c9c2acb3a627
+
+Best regards,
+-- 
+Vlastimil Babka <vbabka@suse.cz>
+
 
