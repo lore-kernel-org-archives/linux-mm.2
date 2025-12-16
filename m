@@ -4,90 +4,267 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B9ED5E136
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 11:57:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B1F4D5E144
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 12:02:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15A2F6B0089; Tue, 16 Dec 2025 06:57:30 -0500 (EST)
+	id 6CC406B0005; Tue, 16 Dec 2025 07:02:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107F16B008C; Tue, 16 Dec 2025 06:57:30 -0500 (EST)
+	id 696756B008A; Tue, 16 Dec 2025 07:02:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F776B0092; Tue, 16 Dec 2025 06:57:29 -0500 (EST)
+	id 52D236B008C; Tue, 16 Dec 2025 07:02:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E1F3B6B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:57:29 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82B9EC05E7
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:57:29 +0000 (UTC)
-X-FDA: 84225184218.07.695B3E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3E1918000B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:57:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=levK1FBG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765886247; a=rsa-sha256;
-	cv=none;
-	b=3ATR5c9NsG1arNkk6UDDZIVI5MWZe+PW3OI7b9RTrO0MuVWz4BOL90EIHzo4bRWWN8F4y0
-	VrLxUCsWvabFMrhQq8+skDkS9r2SE7GoYCu2xayXYbRpXKw4erTP5On+glAfn43rwKmRF1
-	iV/rAfPXZDvt8KNTJuRDtZt3BgqMWFA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=levK1FBG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765886247;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD3C6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:02:26 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5D97135621
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:02:25 +0000 (UTC)
+X-FDA: 84225196650.08.4A99833
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010066.outbound.protection.outlook.com [52.101.84.66])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2A8AC20011
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:02:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Wo6wqwVz;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Wo6wqwVz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf13.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.84.66 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765886542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EO58j438GWnjkv3vbMcJ669DRDtPdBQzG5P7oj/6KS8=;
-	b=m2F0Me61mQH0HO6jvhDWfnJ5Yy3CWJN2X4u101EweG+yiBPp3oyND2aMvFJx9W1QsoRDP/
-	KS0I2JgRM2XHnEp76bOOgZfS3dbzm2PX+++aBMY0bz64k8RNRamVFWOZAFBrmUkhFYk0br
-	iaRJtVFfPo4VXBg8mRflvcwl+wdO24I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 202A0602C8;
-	Tue, 16 Dec 2025 11:57:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FCAC4CEF1;
-	Tue, 16 Dec 2025 11:57:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765886246;
-	bh=7ZFdnmw31SZNpKwCbTn3VwLXjfFQMOPztHlF9Mj4Qrc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=levK1FBGpysdmLQOMdTo0qNcTtB0s7RX0y4zTPIEcUboIVYrPZOuGFhUa6bo1W/fU
-	 Pkek4dlakV/QjzQcJYVYOoV/eRv457Rq1NkDVdejTSJwEFwt+UxkCc1PWpnmJO80LY
-	 OL/lhVJqjN+0W60eOuJJgkdiDtXm+r/RhggI5M/bwpZsNd03GHw3XpSEsQwOWig4A3
-	 gBVT33D3IxuFbVGr9FbnmTvRhBd1ELZKiTNHPGscDsPTuppGV24iZQyq64K8sk0rYj
-	 SIdtnuzpZ8U/M8KggrJqRCjAmPMIXZl7O824bvxFkO6Vj/GpuSPgGhJSrKDsxcmuzD
-	 JbumRAVzfWYHg==
-Date: Tue, 16 Dec 2025 13:57:19 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Evangelos Petrongonas <epetron@amazon.de>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	nh-open-source@amazon.com
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-Message-ID: <aUFJH9xzJXYOt_X8@kernel.org>
-References: <20251216084913.86342-1-epetron@amazon.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=z4Zjr57/Giv4IpOAvRI07Axe4r6own+hr0getgeEwPQ=;
+	b=K3z3dlprl4LL4EWVeIrcQ+Fzx6trXypkliIsyci5Z14vTX8p57VABH7PoiCDZdERaHGDtm
+	UZ/BhBF6DZJ40Hgxla318u+2bRP9UC6xArjS2TrO4U1bOvkYofUBvkPOE8j9gfN+q9Vz3L
+	857vhIHnLAKsfE7iFpXAqt08B+lYegM=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1765886542; a=rsa-sha256;
+	cv=pass;
+	b=n2hmp1/UAbSl15vDpf7bV4Y35FXqwd1qFovric+subVTws/CdUvu5B7fyhjwEFqRf4HXPz
+	3r+A/xhfEiZ6Q012+2N+f5vqpCaZzlI/Gwc0r/g5S3tSMkkJ4bLmaBefg0Jl81masB1FNr
+	huLRTSn+F3IryKASIVBqxLtIgeEEuJ0=
+ARC-Authentication-Results: i=3;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Wo6wqwVz;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Wo6wqwVz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf13.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.84.66 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=OcwJI8576lFS3XXqBMyDlkXIGSavdA5vb7Cu8uvwjZ9m0ecVgxCXlkJfyrvEKKZ+wVXlPSxiGavtLw7SbIFK6iEXFhT2qPlHaWc2ez6zxu1e+OZRDcOcphhsMG3OnM/+dokwzarQWZAxDXNCGhZyoPSEFar/FCVp1JMsfeb3pN8yJ126XPsKREt4fcVI+tN0D5K7Yqby+/11vF0QE8ijJ/QXvmgefpzNizy01KW3BmWfikGUkqAv/Q38glNg84k9SNUHSiucmN+Rwlj/TR8Z8gh2RTqL2OtyGFCMCry//k4uJyKvHWDmOHr3fewwuYnhhYCSYOdwUYW3g7yBTa+v4Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z4Zjr57/Giv4IpOAvRI07Axe4r6own+hr0getgeEwPQ=;
+ b=k/a5QJK2g41VHsL5JvURsATjHSWWdgqy3wJtLSV/AF0bSHdyhsjbIEMMgNuRs1WMiCIajAjJwbMUqXpOVc+p9o+kBPdPFM97O1CRAjXLhhSjMM6TlAPxT3+OwRLL7LQyRdN8NmeItIxNUNCb4FmATJi8HSLJL3pSYQNcuzAA5Z0IYxqUEWu2IiltZ3XePvl9vJNENZNBUKud0yCrvZXYPEkXcWBkzSmZ8YZasn1gmegI89nX8SWUCbut8gT4u0PG90bkoNjsA+XS0LRMqVc+Shs8Zjx44AD5R26f7n0Rvl3WofQ/q1N6ExmNjubwxNOjnTTy2oZ/LiNIAmF0EvRbqg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=google.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z4Zjr57/Giv4IpOAvRI07Axe4r6own+hr0getgeEwPQ=;
+ b=Wo6wqwVz0MUPr2XDYrofJ5aecnMNDVrUeSSAaGlnaQ5TuquqIdSZ6sI6mv3oOP+0UBCAQCXpwkz8v2TtRPtNnP854Ytbfm5RAT85gvw3ph+JC2mFH8M9u13okwGYNPHMlQy+n7QHLIW4Atqa4tDKTIOHLJwCry9JLu99kG6YdaU=
+Received: from DB8P191CA0015.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::25)
+ by AS8PR08MB8898.eurprd08.prod.outlook.com (2603:10a6:20b:5b7::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
+ 2025 12:02:15 +0000
+Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
+ (2603:10a6:10:130:cafe::bb) by DB8P191CA0015.outlook.office365.com
+ (2603:10a6:10:130::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Tue,
+ 16 Dec 2025 12:02:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6
+ via Frontend Transport; Tue, 16 Dec 2025 12:02:14 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yBrkr/ztPiYGa/e6U65o+oEeRND124OhPXXP9hoJfEYqf0zcRayjYezMB33hsvUYPBU9fkopgFA/y2braPE/fML9Jphg1X+7ovddqamr6/d7yMhQHFywTehEGH9Eb6lX50yVWlHJGrz//bYR53LTx5PLcmtph14w1Jnl1RMeu5Zn/x/MpvANcny/VeGb17x9/pC6AZlQqoliPcpxea+vINWcSLx7n6HZJgC65rJgmrb6Z5Umnqxu8bZ/nHHqJozRZXRfKtBh2D5gRTLcff4mMeWLydr14DfYNjlxlWrpx0HgVuFWlgkRGsbi3Qsw/jBbhMWDRrEoi6Olq1iOPie2iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z4Zjr57/Giv4IpOAvRI07Axe4r6own+hr0getgeEwPQ=;
+ b=fAbITRJi3gUzpI5YZvHol1lYjYe85/SuLlczlSHJiRrrpKU3ujfu+l0S+DStF4gONoWSV2upNoandudUWP5Ac5+bYaJ3nezJhiOX8/rphQVxx9DEbM70YJSHM0VfwnLE7mV6ryzJ9oIRDFGdEpRD+R2setTBS2nJAdW9SLL+dxmHne5AUhCURBKl2rYn45pEZCz/CBLU0nyPla+2nT10UvZrRLxk25PAWVyAf07HL1efQbGYbCgESDXhBGoUtq17/NnH0LF7PN43BkbbU9RafPk0a3T3ylCVx2GhwwRNRd0S0Z1y7/BoJyaYAxJkQ/R5/isdlVbV5W50qQUWWPMPQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z4Zjr57/Giv4IpOAvRI07Axe4r6own+hr0getgeEwPQ=;
+ b=Wo6wqwVz0MUPr2XDYrofJ5aecnMNDVrUeSSAaGlnaQ5TuquqIdSZ6sI6mv3oOP+0UBCAQCXpwkz8v2TtRPtNnP854Ytbfm5RAT85gvw3ph+JC2mFH8M9u13okwGYNPHMlQy+n7QHLIW4Atqa4tDKTIOHLJwCry9JLu99kG6YdaU=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by AS2PR08MB8951.eurprd08.prod.outlook.com
+ (2603:10a6:20b:5fa::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
+ 2025 12:01:09 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%3]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 12:01:09 +0000
+Date: Tue, 16 Dec 2025 12:01:05 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+	haoluo@google.com, jolsa@kernel.org, hannes@cmpxchg.org,
+	ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+	rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+	ryan.roberts@arm.com, kevin.brodsky@arm.com, dev.jain@arm.com,
+	yang@os.amperecomputing.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
+ stop_machine()
+Message-ID: <aUFKAdPY3zTlPmnr@e129823.arm.com>
+References: <20251212161832.2067134-3-yeoreum.yun@arm.com>
+ <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+ <aT5/y3cSGIzi2K+m@e129823.arm.com>
+ <DEYOI8H2OESD.1H56D3H8HKILB@google.com>
+ <aT/WOAr4osoJWaMS@e129823.arm.com>
+ <DEYP7JSVTB9D.3EFN2KEHH3O79@google.com>
+ <aT/drjN1BkvyAGoi@e129823.arm.com>
+ <DEZK5U2YP6I0.27VJHSVK14646@google.com>
+ <aUE8bwUVa6jSUft1@e129823.arm.com>
+ <DEZLRT59S25H.2YWTZ2G0TN3HV@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251216084913.86342-1-epetron@amazon.de>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E3E1918000B
-X-Stat-Signature: iu34kmtqaygg57h68gqu6n4qjhhf5y43
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DEZLRT59S25H.2YWTZ2G0TN3HV@google.com>
+X-ClientProxiedBy: LO4P123CA0336.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::17) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|AS2PR08MB8951:EE_|DB3PEPF0000885E:EE_|AS8PR08MB8898:EE_
+X-MS-Office365-Filtering-Correlation-Id: 925cc9e4-f389-405d-511e-08de3c9af410
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?utf-8?B?c2JrRCtKaUNMVHUzRXk2TjFMNnFVR1hVVzZVNDRnSjhxNDlweDd5ZDN2R0w5?=
+ =?utf-8?B?RUJwWTVCMWdkSzBQSXFiZ0ZIN1Rxd2NpdXZxWHB2L0s0dFBuVktaNWZwcDFE?=
+ =?utf-8?B?d242VE4rT2Q1dkwwWXl2czFCSGtRU3ZWMjZZeHJkdm9STXNCckVFVXpqTVhj?=
+ =?utf-8?B?eGw0aXZYMWJxdzRRdUh6aU9UYSsxd3p6UnIyOGwzbjZYN05HSjY3bm1wYkFj?=
+ =?utf-8?B?T2hpMStVWDB1Tkt2cmU1VDR1V1FVZStwcncxU3pBbnJRTTRnckhETWRneUNL?=
+ =?utf-8?B?MXU1Ky9XZG1IaldEV2R4SmVlKytFeHYrU1A4ZmdJdmxwRURYd0dZa1VVY1pN?=
+ =?utf-8?B?eWZzMVMzaXY3cG9xdWRaV2ZtOEc1eURoMVVYdG04cUJ4SlcyV1ZVKzEzWDdG?=
+ =?utf-8?B?b1ZRUGdIWVBualRFdENGa3hjSWhnODFxVlR0WktLRE5hcCtRajM5dndHN0px?=
+ =?utf-8?B?NVRrM1l2TVR4dG5WY0Z6VWc4WDBoRVhmQ2ZMb1FwS1JXam0vUWdzbjRJVEJE?=
+ =?utf-8?B?YmpqUWw1ckZ5RE50czRSRUpjd1JwZlpKTlJIMWZwSlE3MHM0WGNjaE9rdUJ2?=
+ =?utf-8?B?SkdMd2lGTmNPMUdKc2o1OXZKYkF1dVdBRHRuSDRkVXMyV0lsT2dJUFlGQmd1?=
+ =?utf-8?B?MHdnWWxsVjl4dkN4bzE4RVZmWDFjRmtpK1BqQ21qMm00YkFaSHQxSE8vR0lC?=
+ =?utf-8?B?eDJzdlVDdWhQOVFwbnY3a2J0NUJnVHVSV1ZWZ2Y5ZTRycVozUXZ2MFdtdGRq?=
+ =?utf-8?B?VGMxcEpsb3Z0aFBxVm9ldTdVUitkeGdjNmRIeVV4WlJzOHFnTlhyODB2NWVT?=
+ =?utf-8?B?RTduK09vYXg4S3Z0MTVlOTBBLzVkZGhCcEcyOStsL2FlNkEvM0kxTFZ4WlBr?=
+ =?utf-8?B?RXA3czRZM2cwL2VtNC82eGFISENZdlVpNXlpR2thU1Z6RUZzR0JHd1VDY2xj?=
+ =?utf-8?B?Z2xqR0hVbWxlMHZsNkI1R2RNRUFLaXg0dzV2NjdzK09GY1djZzNIeWh5bVFR?=
+ =?utf-8?B?U1pxQ1RUejVLTWJtMENmM1hQU1pCaFVvZU1kVnQrTmd1OG5wQlF4Rkcyczkr?=
+ =?utf-8?B?dytPNEZCWGFrRmpkN012SVRZMG5FNWtoRFlRSG5hcHdXUFEvSUZHa3VvdHpZ?=
+ =?utf-8?B?dHR5aWkwYzZGMUpYN3RIVDNxSjJqdlM1OEtqUnluTCtrWFkzOURSamU2K2JK?=
+ =?utf-8?B?ZTJwWlQ5VThoR2tlVEhmbVBjaFNGOUszYzd4UVJzZHVhdXlIa2RqZGl0bWtr?=
+ =?utf-8?B?amRBbTFTSktzNHJoeTdQWkxzS01KVGRXS0NPcGtEUWZ6VUh5c2NhZW1BUGhl?=
+ =?utf-8?B?SjZnOE9reFNFWk5qTVFCM2QwY01MemZwRHpFZERsL1lidUxZd3FjUlFpL0hY?=
+ =?utf-8?B?b0p2R2VvcmVzNW0vRnNBbmpwUU5hYyt3T2FFUjMrbDhFZTdGVzVaQnFmdXBv?=
+ =?utf-8?B?ekFPd3BnMkd5aCtzVlRmUkhmVVZKZFVuSW5Xb3ZPN2RRM1M1VVpqYVhSVjha?=
+ =?utf-8?B?NERrRDllcXk2aEdJLzJ2cTNGR0FiUEpYWVNtOUxtQzJOR1JQWHJtLzYzYk0x?=
+ =?utf-8?B?cHRrZXpjUmpOL2U4dGQ0NXF4Vm9nM3g2NElaY3UwdDB1OXpsY2V2SU9ETkty?=
+ =?utf-8?B?TDd4WDRDR1ZDQ05wYUp3RUV5WFNtWXg0NlUzVlJRcVpaOVVkQnVDK1psZnhD?=
+ =?utf-8?B?WTdhaCs3bklYN0htNjlRQ3QxRkM2Sm5ucE9NQ1laVTF2Zm13cU9RUFBmUTVr?=
+ =?utf-8?B?SHNhbjF6dnFHdGtSVW9PM2lYanRuUUpwTk55QmFMZ1RSZmJ5c2s3S2hMYlR6?=
+ =?utf-8?B?VVBDcU9qc2h1QmEyMGVHODM2L2I0azhYbjhWaTdscW1iTU1jRTQ3S1BESEVW?=
+ =?utf-8?B?bmVmSDRSdnBDK2FFQUZtait4K0o1MHRxZDlXRTlOUFFJZW1KQUlhU1JHSmts?=
+ =?utf-8?Q?MbN1q2tw4lCFnJDMSb1fCUt0xlJ4W7ff?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB8951
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB3PEPF0000885E.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	e05d8b4d-5418-4837-0d64-08de3c9accc5
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|1800799024|82310400026|376014|7416014|36860700013|35042699022;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dUJibTY1Q3g2eDc2azUzSGZDb2ZXK0dsa2FyWUZnNDMrUk53OUppV3kyT0ly?=
+ =?utf-8?B?Nm9UeWJDcVdxajdiTEUrVWkrZUJ2czQ0bzFTOVB2M2V1S3dvTjVRb0dnTExr?=
+ =?utf-8?B?eHEvMzBQaW1ER2hSdWI2cGhyMkpPTG9qaTB1WU9MWVliaDlwSk9zemFST1pY?=
+ =?utf-8?B?cGhOTHY5c2dRNGg1UjdOcHN0b2RIS3dqbmtEMXdUR0ZCMDBnZzVyek1oSWZZ?=
+ =?utf-8?B?Q2pLeVdqZmxHUk4xdHBCTFdEaHlOamxlRnpCU0dTK0lyRFlNMXA2WnRsbHVx?=
+ =?utf-8?B?K0VpbDM3UC9OUUhzN1crMWJwYlkyRkdJWndYS3crWDBxL0Fqa2xJOFJweStw?=
+ =?utf-8?B?TkNlOVYzWlR2emczbmZyZEFlcmp6SHRPRENpcmgxbGRXNGxLaTJkcXozcEJW?=
+ =?utf-8?B?eVVNYXRxMUw0eVFOTmNYanB3OGE4M0tROC81Q01PRzN4NkNRN0drd1ZDWm5F?=
+ =?utf-8?B?Q1hvVjRNeFdXNkFzNVRLSnBTTlJVaUZqaDFNQkwvUVd4bndTTkhGUkI1c0Vi?=
+ =?utf-8?B?d2xnQ3FGeWdpT3EvS256dGdPWG5HZGdEcW9VMkJRRUs3NmtUWVhGZm5sZzhp?=
+ =?utf-8?B?UTI5YzlnR1NTaUJqY05DSDdqSVY4amo5Yng2OE82eExRVnR1bllxb1lFWVYx?=
+ =?utf-8?B?enZFblhmcE42WkpmYnlSdzhIVSsrYUFhUCtsVGdRRTdMU1hzcXNXMk9SczQz?=
+ =?utf-8?B?azA2Ly9CbjUwSkpUWFhNTmN4Vkt4Y1Nyd1ZlSWFodEpPck4rVVhudDZaTEJ3?=
+ =?utf-8?B?VGpzd0s4YlNKamZ5b1NnVWFmeVhROGJEd3ZlS0ZkWWlKUUt1QUZJcGlrK3N1?=
+ =?utf-8?B?U2xNY0dkRDJLZUluMDd2QU5aOStpZUkyM0JhaU9hSlZROUh4VlB1Zk9qZkpY?=
+ =?utf-8?B?NDQxckxac2pLVUhRTXduRGc2cndWRytiakx0bEhRZFdOY0w5UTI3M1E3MUt6?=
+ =?utf-8?B?NExUb3pTQ1c5T25STksrYmVranN1bEFtcG1FSFBhL1Arckg4aWNZSGdDZEw2?=
+ =?utf-8?B?bldkK2F6RXd5TFBMeElWRmpPbktPU2dIbG8xU0RoTGE0VFE4RUZaTE80UHlX?=
+ =?utf-8?B?MW5Fc1pCaENEMHJHTDhhOXdVbVNPZkNxQ0t2YkMrMkdMTERvaXFCdjBmNDVS?=
+ =?utf-8?B?cVJDZnhPa2lTWDY4a1VrMjRENHBRVkVCYnVrWm1pS0l3RlAwM3BYRVZRTEhJ?=
+ =?utf-8?B?eVpvd1ZRMTJyaGFxeUJtbU01YjUrelAwT2U2N0NLWGJSeGEyY1gxbk01cDEz?=
+ =?utf-8?B?KzdUUU5GOVZ1LzZ2Q2xrWHFXSzhnRklFOUJQZUJoaDd5b0x6ZXZjQnBUL2dL?=
+ =?utf-8?B?OE9uSVRLWFVaRTNMZ2tDRVk2cnhMRExYT1NGbjNEMHNxeUdNa090M3NQNmNx?=
+ =?utf-8?B?RDI1YzRnTFdPTmZpSUh1R2xRQnkwaGZ6T3pQS2pPTmZBcHM2Y2xGUlhXUWdK?=
+ =?utf-8?B?YUMvckdjSFYxS244d1NMUUZYdnpHek1Tem9Uakd1QVg2R1FPV3F3Z0hVanI2?=
+ =?utf-8?B?M1JGdzlKSmxMRTJmNEtYT1QvNVVxQUNKbk1ENG11MENmTm5nV0U5ZC92WCtz?=
+ =?utf-8?B?bFd1MnR0ZGJjV2tVSFR5bWRnL05lbXBnUTU4SUhxaHR1dzNZbnZxUGxPc2hp?=
+ =?utf-8?B?YWVVYjdCQnhjN1lKM3lTdnVGZWIwVFhJVmUyOTQ2akQxRVVwdHJCc2lSUjJK?=
+ =?utf-8?B?TGF6dnZhSmRhUlpaL2RaRnRlbWJ1Wm5qdUJyMXdUYWlkUkRvR1BzUUx5bXNT?=
+ =?utf-8?B?ak1DRXpjQ1Y1WHNBYmFsL25wN0ludGFYWGFESk5xSWdIOUtFbHc5MHNQYWVW?=
+ =?utf-8?B?dUlPaHdPVlV5THdkU1pxOWkvY1Q4QUZXdXZ3blJacDhlV1VlejZHWFVwekJ4?=
+ =?utf-8?B?UktTbDB4U1ZIQnlzWFBuY3gzMWtxMGNIY3ZzRHFXdDcxQ3k1ems0UWxaK2lL?=
+ =?utf-8?B?TkUwQ2tydmdleTlvamkvMDYxWmFteEZDMXdiMjV4RGtXbEdrdHN3Z0p2TkxR?=
+ =?utf-8?B?eXZZRm1ta0gxM3RCTGxUeURhRjBaM0NTSURha3kvRHVPSmNGckxTalU3d3FB?=
+ =?utf-8?B?TXRCUjVpSVhrOURsMkwwd05WL1N3SHBNcTJXUmJxa2taN0w2UnBTSDk0V1o3?=
+ =?utf-8?Q?AfM4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(1800799024)(82310400026)(376014)(7416014)(36860700013)(35042699022);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 12:02:14.9735
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 925cc9e4-f389-405d-511e-08de3c9af410
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885E.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8898
+X-Stat-Signature: xwfamoiqtr9ndo8cb3xcwx7aq5d4yh64
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2A8AC20011
 X-Rspam-User: 
-X-HE-Tag: 1765886247-740184
-X-HE-Meta: U2FsdGVkX195Go/3VLL5MqcSYaFuUzszXxjEjYMUjwWhvydsVmBfTY7PS1CDaOr50EHE+ZK3IxfpUL2nyl4aLJ/OX3x+iLzLHwL7R4gTHRFSjKK4QJG5HLkYxPFAvylg12sZZ8ZXWqRtVeufokq9n8Na9qKzdpMZHD+Hs6xuCdnyCCwpYDZT6pC8dtE8Ej76kLm8lbmHgChj4mAvn4qQpqTipUvEBpcqfKHvkcjec5ZR64939MpjTNNha6n0zI2hxKqbb2VLKIGgdGK8a2hDlasaVOAlDhnllrbDIgyb0474gymngzzJkoPXeB6IkqsdgwbuypplwNl9qWd6yBpaYj39BaHBdD8InLsYd9wK9QdvHqd0B+0n9YFsXHREhwLyH6Twuq5bkrmogA1HCpQMHQWq7cEa7WdNoiNFqJ2QMH0N/kK+xUgUABoVt2wtcTuPs19uPriMKRSaDfut2z0jSeIoHdQCmk3yBZdhC0dXRb4REL4pEYosoZYoVS+CVIkm9y7t91imstEB+pokjVHQCLBcLHXxJHm72CtBNrE/8/kQryD9wLPquWw0ZSKzu/QRwPhjYoTLwlf9vIe/6Hj4lKbxmWX3cPR4EGoVls9B84xQTbxKwKBvWSXkAdMwlDkLavjeaKAa4D1c6VVULBRh4nwBpt5e55vx8OpEWyhFMoujZtpWygvubr0l20vzEFmC7vdR15aXgmFJ0HGJ+vBYxubCfiFwkKDK3nYa0DlhzQMH1z63ocKIuTKdLmngRBrHiH3s3UuKhlrp4j4fFYw8ZCS4r24o8LDiKszChXfv0JceS6Jn43EJAa7OYA2U5eZ04nvU99Yt+/9SEGBXfdLDGuhNnY3QAguc2BKk1JIzKzsESNsHPXzDwdHxRXuBcwHyhN/yq4pQbv4+7ezg9NZVPhwB3OENHOc4maFe4X1K76mjcESsy4Ec4ytMYOFr7osjeDmrzuu3aBNJh/4Zy+b
- 8hCBq/8S
- xNkGl7iFhIKt1VqeWHn7qyU0kiu0IYBxTjCXu7eGrjX5I8enZA6kcP+UyjEql82mj8ZhjwqDbzHsj3ZhV1fDPZiSvbCMtVvN/HcRsADHqFC5jMlgzCZVJh1NMaC+qLKIRkQJiw8dPUDcvaauUpqvy01lpY69HCwGpCrUWJvUg5sWRq7TiR4COan5F35XGc8Dbjww5TNSe2Pf4ltJP2Y6RuiH11ejU+pLICjh6M5MoLbatZm0V+re7mxDmTm6re4mdv1fm0gNEZBzkQVJdNudQIErLog==
+X-HE-Tag: 1765886541-57217
+X-HE-Meta: U2FsdGVkX1/8IKPaSo2/cP3TDaTYL/ohITyJRpSBdb/HoBzzZ13uNFthC/njqmptJb28AKtDBVt/EhQ467+XbLQqGV0vJqMjqzM+ga/HEcRbRkG+yiyVO3l6vpHQE0SAmZr+O3+zCqpBtToRqgdXfhRXPELCJiUgDspAXtEqFatRs4lcFpfi3Lkfkm7IBpt6A4TX85H+CZBQ8lNN3kFjiSbaGwL7xToy4pX1gTkoionomaXB3YG+9i33W30f/Y4V/BSCbMTaakwwt0wnbuQ9AExC7z/VGQRVVFF+YKaMeZ+jVOF36wLaijzaE+h+cLNsJwQHeQqHrk9Ub/Xi+qaMrX+vvGTFOZ9vJVF6hLDIn4JtnDiZAGcyqEzIcvQUuXxwugHhyfalvXy4I6LqrZo8k735QOOkP5mS1fImQey0r273RxCB+ahutA8MkYFNnns0MsZShR+V+lVwAn07yI7GO/ZAstrCqWIYzQsyMOb+S3fohECXTJhfdCkuyHgCMtboYNbreXFGzKnT/9TiIP0woAqtRLUCZTX4m9RdzTyrLl0oHhiAO00Lz51zFJFTpZD+oyGgpvm762iFNV97fZshVGLRtOy7o3qA56T45sHwvqwA+cAdZYPMFxLsiiB8bLwgl6xsb+91PmdEh8W5hExjB8oT25gHHV7NE//M3f70m9OFd+hFpKqXXDUoDpkxNna0r5ouzlLU0aRz0NQgpAfl+OdGtX53kQc3mSdcyXFedNjBV5omW3T9+fDcTaOKUwDWn2ADgN3otIiPDfQzxS0RuhGPmguv8swk/FTsXdkfp0z0UXx2UnVSZ6O47Bwog3fKcNB1XCkWwESvkqLAbdH7kpH1nrlJ6b2tOexkb557/GC4p/P4XOpI4DNe8wiluSZ3uxEnfQYKJLmO8BGq8S9nUOemagcUJUNjnXjPzQ3CsPn4GDhEKHg/9LT9XaZp/xLhtNzkdy6yy5qT5IOewYB
+ V20nGWxl
+ EHKaT29ykQMWlXVAvPg6WhVXRB63UuVDXjx9zPpfYSfQmfPdYvXEpOBiioij2gYdFzOz4W8HeCWS9/mpWNVhJNrvvXq2zRGobBQdzcnO0aIpW0K1eZ6UrDFQ7FjfJXe1qKja38Gf4aDzctori18sQgxGNaCm6QXXkO/mCpbiPLIepGRQgxqokpK4rVsMuh6crLjYQZOvJDxAZnfOXi6vrXNdN3lOyiGUxVbppBEHKiym+T6q1E9mnzfXQHxKIbffWX9m4bRbx1i0TbIr0nE92Bl7eGR5qY4FVZDvioFe5rCQetwyp3WIHLpZ5CrgLj7HD3iurvNBGd7tFtLfTjXPVXtcmeir+6GTOuNZ/jrVe9ET9f179oort9HNvCAUj+AzjBuTdPKMNg8MAuVWud0WLYrd+A4muGmSCl9U/IhCpNbgoFw2kUOrros96mBfg08q2IjJohJSbDxDH9EwTdPZxT+20pw0BzSDcRR0FiUyirYjWM5tbYkoSnmXuvPjXEPFH/wQF02lOLvKbfZYn0WgpR9VBaKKEeyCI+91bTHVJbMc2sfPYUmMYb+qxJzm81v09QCdBhEPJkzF76CuzpcSP4QUszQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,91 +273,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Evangelos,
+> On Tue Dec 16, 2025 at 11:03 AM UTC, Yeoreum Yun wrote:
+> > Hi Brendan,
+> >
+> >> On Mon Dec 15, 2025 at 10:06 AM UTC, Yeoreum Yun wrote:
+> >> [snip]
+> >> >> Overall I am feeling a bit uncomfortable about this use of _nolock, but
+> >> >> I am also feeling pretty ignorant about PREEMPT_RT and also about this
+> >> >> arm64 code, so I am hesitant to suggest alternatives, I hope someone
+> >> >> else can offer some input here...
+> >> >
+> >> > I understand. However, as I mentioned earlier,
+> >> > my main intention was to hear opinions specifically about memory contention.
+> >> >
+> >> > That said, if there is no memory contention,
+> >> > I don’t think using the _nolock API is necessarily a bad approach.
+> >>
+> >>
+> >> > In fact, I believe a bigger issue is that, under PREEMPT_RT,
+> >> > code that uses the regular memory allocation APIs may give users the false impression
+> >> > that those APIs are “safe to use,” even though they are not.
+> >>
+> >> Yeah, I share this concern. I would bet I have written code that's
+> >> broken under PREEMPT_RT (luckily only in Google's kernel fork). The
+> >> comment for GFP_ATOMIC says:
+> >>
+> >>  * %GFP_ATOMIC users can not sleep and need the allocation to succeed. A lower
+> >>  * watermark is applied to allow access to "atomic reserves".
+> >>  * The current implementation doesn't support NMI and few other strict
+> >>  * non-preemptive contexts (e.g. raw_spin_lock). The same applies to %GFP_NOWAIT.
+> >>
+> >> It kinda sounds like it's supposed to be OK to use GFP_ATOMIC in a
+> >> normal preempt_disable() context. So do you know exactly why it's
+> >> invalid to use it in this stop_machine() context here? Maybe we need to
+> >> update this comment.
+> >
+> > In non-PREEMPT_RT configurations, this is fine to use.
+> > However, in PREEMPT_RT, it should not be used because
+> > spin_lock becomes a sleepable lock backed by an rt-mutex.
+> >
+> > From Documentation/locking/locktypes.rst:
+> >
+> >   The fact that PREEMPT_RT changes the lock category of spinlock_t and
+> >   rwlock_t from spinning to sleeping.
+> >
+> > As you know, all locks related to memory allocation
+> > (e.g., zone_lock, PCP locks, etc.) use spin_lock,
+> > which becomes sleepable under PREEMPT_RT.
+> >
+> > The callback of stop_machine() is executed in a preemption-disabled context
+> > (see cpu_stopper_thread()). In this context, if it fails to acquire a spinlock
+> > during memory allocation,
+> > the task would be able to go to sleep while preemption is disabled,
+> > which is an obviously problematic situation.
+>
+> But this is what I mean, doesn't this sound like the GFP_ATOMIC comment
+> I quoted is wrong (or at least, it implies things which are wrong)? The
+> comment refers specifically to raw_spin_lock() and "strict
+> non-preemptive contexts". Which sounds like it is being written with
+> PREEMPT_RT in mind. But that doesn't really match what you've said.
 
-On Tue, Dec 16, 2025 at 08:49:12AM +0000, Evangelos Petrongonas wrote:
-> When `CONFIG_DEFERRED_STRUCT_PAGE_INIT` is enabled, struct page
+No. I think the comment of GFP_ATOMIC is right.
+It definitely said:
+  The current implementation *doesn't support* NMI and few other strict
+  *non-preemptive contexts (e.g. raw_spin_lock)*.
 
-No need for markup formatting in the changelog.
+The reason It couldn't be support GFP_ATOMIC in raw_spin_lock() context
+in PREEMPT_RT since critical section protected by raw_spin_lock()
+is non-preemptive (preemption disabled).
 
-> initialization is deferred to parallel kthreads that run later
-> in the boot process.
-> 
-> During KHO restoration, `deserialize_bitmap()` writes metadata for
-> each preserved memory region. However, if the struct page has not been
-> initialized, this write targets uninitialized memory, potentially
-> leading to errors like:
-> ```
-> BUG: unable to handle page fault for address: ...
-> ```
-> 
-> Fix this by introducing `kho_get_preserved_page()`,  which ensures
-> all struct pages in a preserved region are initialized by calling
-> `init_deferred_page()` which is a no-op when deferred init is disabled
-> or when the struct page is already initialized.
-> 
-> Fixes: 8b66ed2c3f42 ("kho: mm: don't allow deferred struct page with KHO")
-> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
-> ---
+This is the same reason "GFP_ATOMIC" cannot be used in the
+stop_machine().
 
-...
-
-> +static struct page *__init kho_get_preserved_page(phys_addr_t phys,
-> +						  unsigned int order)
-> +{
-> +	unsigned long pfn = PHYS_PFN(phys);
-> +	int nid = early_pfn_to_nid(pfn);
-> +
-> +	for (int i = 0; i < (1 << order); i++)
-> +		init_deferred_page(pfn + i, nid);
-
-This will skip pages below node->first_deferred_pfn, we need to use
-__init_page_from_nid() here.
-
-> +
-> +	return pfn_to_page(pfn);
-> +}
-> +
->  static void __init deserialize_bitmap(unsigned int order,
->  				      struct khoser_mem_bitmap_ptr *elm)
->  {
-> @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsigned int order,
->  		int sz = 1 << (order + PAGE_SHIFT);
->  		phys_addr_t phys =
->  			elm->phys_start + (bit << (order + PAGE_SHIFT));
-> -		struct page *page = phys_to_page(phys);
-> +		struct page *page = kho_get_preserved_page(phys, order);
-
-I think it's better to initialize deferred struct pages later in
-kho_restore_page. deserialize_bitmap() runs before SMP and it already does
-heavy lifting of memblock_reserve()s. Delaying struct page initialization
-until restore makes it at least run in parallel with other initialization
-tasks.
-
-I started to work on this just before plumbers and I have something
-untested here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kho/deferred-page/v0.1
-
->  		union kho_page_info info;
->  
->  		memblock_reserve(phys, sz);
-> -- 
-> 2.43.0
-> 
-> 
-> 
-> 
-> Amazon Web Services Development Center Germany GmbH
-> Tamara-Danz-Str. 13
-> 10243 Berlin
-> Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-> Sitz: Berlin
-> Ust-ID: DE 365 538 597
-> 
-
--- 
-Sincerely yours,
-Mike.
+--
+Sincerely,
+Yeoreum Yun
 
