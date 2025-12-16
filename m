@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2B23D637B5
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CADD637B3
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:29:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 438596B0099; Tue, 16 Dec 2025 16:27:01 -0500 (EST)
+	id 54F166B0088; Tue, 16 Dec 2025 16:29:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E35C6B009B; Tue, 16 Dec 2025 16:27:01 -0500 (EST)
+	id 4D2056B00A5; Tue, 16 Dec 2025 16:29:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B2B6B009E; Tue, 16 Dec 2025 16:27:01 -0500 (EST)
+	id 3D0AE6B00A6; Tue, 16 Dec 2025 16:29:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 13B7C6B0099
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:27:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC7BA5AF4C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:27:00 +0000 (UTC)
-X-FDA: 84226619400.09.E4FF447
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2408E6B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:29:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB65F13BB4C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:29:18 +0000 (UTC)
+X-FDA: 84226625196.03.C695620
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 13C8818000E
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:26:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=xFYk0zw0;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 24696100006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:29:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=aIOynUn0;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf06.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765920419; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765920557; a=rsa-sha256;
 	cv=none;
-	b=Ou7afCqYQcI+9ygnixjP70FWz0nL0AXZCgkq2pj2vAe3QbjWKCogseJKTZJER0fVQX/gWb
-	HvSJ/IPHZEvVMMyQOIIS2ByoE2PNPSSt8rabnahBv7sQM/JVTtRAORvkpJAGrpQPhRdY9A
-	iZNN292PwgFeuK+Ayzj9Bon1T439lFU=
+	b=4lRFLHmzfbSj9xilu9ew8qjNtEXNL4UtgnrYa5jME84czEBW6/nkhcqisS9lY5i9oJR3vH
+	XpLYM0xtEQjUtVydqpW6NC8vL49QzNg6mBTJVd0WooHb9t64mvB3sNP6NkLWwBaw//SWgX
+	66cMv8hS+tcS3c8YGC1nN5mzkWWShkc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=xFYk0zw0;
+	imf05.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=aIOynUn0;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf06.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765920419;
+	s=arc-20220608; t=1765920557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZJ8tAuCLXRb63lalw0MrBdPq41wQB+L/BAms3K0dhs=;
-	b=3HjyMR7xH9YEaJqkq5ymx3/x5avapSqncxjLaQph/Tk019Kbvs5ssOYZRODsvZBsbJD3AN
-	clGQxh1C4gUnilnTjoPLmrbCdPmD9ppJe/IKfuh1F/w1lJuQ28rfuLIjuEUuoUP1aZgDNr
-	35sq2cAUsWaZvTZDeQHuJWykPEy2QGw=
+	bh=wIICqKngmY3M/xEXouuddTda7wdwqxugttI9lzZICi0=;
+	b=x3ud/oSJv7BmXkYuXp7eKJ9f0Q8A0laninGcAxXgHOCbulYUJRhZ4SvvXZeBxwAh8w3wP5
+	DuIUHeQyUJgvdz4qOMzI+rlHew5GK4JqweIyhP+YDQVRRn7og9p8n/MlLf03g6k/lO8sdg
+	Yng4weVpXjN6zepnMGNtTFdw68/RdPI=
 Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BGLQC282563820
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BGLQC252563820
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 16 Dec 2025 13:26:30 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BGLQC282563820
+	Tue, 16 Dec 2025 13:26:24 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BGLQC252563820
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025112201; t=1765920391;
-	bh=XZJ8tAuCLXRb63lalw0MrBdPq41wQB+L/BAms3K0dhs=;
+	s=2025112201; t=1765920386;
+	bh=wIICqKngmY3M/xEXouuddTda7wdwqxugttI9lzZICi0=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=xFYk0zw0ABhDZ/+NSSSRU+kjcZ2gGSmq4968oRbotr8DasKHhUx1jM7MT2dk++2M2
-	 7TuCQ31r/TzRz+h4P1lARDpFsex13YxIg9gPMdvDX1VaxrMIYhFhHlKh1dLx5A0Z6m
-	 45lK0+yc2Q+VMkddmfwfx7I1v2s1CXTfCrhHLK/b1JAvJBl9pu2kt5sPC/ALkIjuwi
-	 oSwUlJun3dHTyK7ggnDEbCiJEGF5YKia7wuSKeLM+ZchRNfJl3+Nx36eonC18VDuAP
-	 hifWqzAc0efJp/pcsceHRx6RNSHB58X6DPaQdhuxP2YXjN7qcSAQy6XPd9HoX4pq93
-	 pqXZG5STlR9Ig==
+	b=aIOynUn0ccNgU54mQ1f8G0xOW19byGDvnoE8VjzcdE7kl9FCQz/tBCu3cWCbfrTMe
+	 qyBQa3vrQgXoiidKLH3XX1unfbs2xtMsGB1G/T6Xk4Z9WojYukxxwjfcBvwJ5pLHQx
+	 thyoK9KB1XTBMpwdM6E8WNwr46yfEbVIL4ktPJjW8WBqUiBOqGUNwyJ0VEmiq8Nnw3
+	 sm06wd+21ipQs/dBxtgzrHEKp6u57CuCrd2Lz3S4lH8C1mCbZalJCW8coxKQgDBj2t
+	 7pO/4YcWtPNutRaS/V++Ly8F9b0t7BtubaP3W//Ov2e7mM35sjn70xa4FxYx1pNLWI
+	 me4yo2uF9gM7g==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v4 09/10] x86/cpufeature: replace X86_FEATURE_SYSENTER32 with X86_FEATURE_SYSFAST32
-Date: Tue, 16 Dec 2025 13:26:03 -0800
-Message-ID: <20251216212606.1325678-10-hpa@zytor.com>
+Subject: [PATCH v4 06/10] x86/entry/vdso32: remove open-coded DWARF in sigreturn.S
+Date: Tue, 16 Dec 2025 13:26:00 -0800
+Message-ID: <20251216212606.1325678-7-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216212606.1325678-1-hpa@zytor.com>
 References: <20251216212606.1325678-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 24696100006
+X-Stat-Signature: 8rwrydkfgjmpkru99e33sb9mhc5cptbz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 13C8818000E
-X-Rspamd-Server: rspam10
-X-Stat-Signature: s69td1nfwwngeb67caqozzdu91djn7tx
-X-HE-Tag: 1765920418-167748
-X-HE-Meta: U2FsdGVkX18nkESgQcr3jDoI6K+nEqXBztpNvR0sAmVkQvYGYR4i9g5wPsVMPVFK3XnlsvuIqPADN84IEL0v0/1DxFi2oB7urLbr2Cp1SkFiwpl/GtGa22cwAlqpj9C2NlQicaz/7XflCz5cUk4/l9T4ETpFG+9a0JFEwI6Ajkv89PA3n7Q18m5p2vE5KUviyCtNArUOh/CDP1pKBf0sY9QPIhuue2ctXxGOOeK7lechgTIhi7KqcGA2NWj3dTw1TjAD+l34E0aD12PlpVNKnYrjUtvTqXNWCJloJo+6k0ZpOaksDA61cptyfMjxKzLtzRMNGvVg8df0rfQAANVZM4QzBzaSIps8qnbv2TzLp1zF8G36ENAPi8zR3dN2OXCCcPWCqf2LxIRXUOJRvFs6bRPHcAbInr6+skPIeLIGkMmcY7FMTy9g8Z08pYG2xhIUSqq8tunK56wqIijiU1f6Z5+BWCVucYQbDR7TZGSLxlbtknny+dVW3n6y0kD+HCOGplpYnE0b1ue8wF9GIV353tRH7Xshbi/UVMYI9ZIPuK/ZQpuNi0qzSlXrocqn8pg4YI3tpoDZk49xMlGywtcNnRGGAY4juXoSScHpPcd4vNhoHlfth7HxX8PV3gB8TeGHaTAck2yrOpNEcakWrq0bDYdq94uL4Xdt2DKrgtUeUxS+A04Bn03pbwktRbP/Awhgw8a/4vPCzD1GlzGcrElJfWB9+2n3JL0ZmTcAEqGpe3yZiROrOKHVKUK1U35pP0B1BeAVDNsFmApmeoJxTtD/pjSnrbAnsZR9fURIhPcCKhdH7qkJnMFFBGrDEagqOwJxFGEqkDbNK6hLgGXe22WF5qLIyYc1oTJgjDfSLaZ+lYQ7Chc8JGdKO3pZ02JxW2NVL8BF3Mg2y9mzEr0g4HvTNDWOy/ihTF9wBY/NR7R/zDjcsDDxHp7Mmz0w8L/jAEP0zkpum6SIfIkKjVTP576
- 8oBuIUD4
- qC/hifgOlbbYe1yDRQby0u+NRKtBcHE5UBuySvj/pItDYAasZYbFtuiHXU5UwuqfvRQMFgkJz0EBf2dTRp5PtRnIJTMtJzdaccQmivfwC+hYytKIkMxZzzZyq69IFMP11z6XisSrhMQcyj/EoNuJYd8AbuW3ZSunwNwdYZHwInxq9RRIvUL87A7kr50MEqL9IbdYKl/zymVgmV5N0mVw72CFgUub/Mi8sVppM/AIqe1TrOzTbYhllwv3RLNrCnIVwDmyoeKtKlLfD247LuhGD1Z0cng0+YNiK5k/voHoTMn14GrgzlBlNdbTjknHERoRH2aub/hKojnOt/o19Dbc6dDARKA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765920556-948686
+X-HE-Meta: U2FsdGVkX1+ySMPoy90Cs78mI+WnnPEvK3ufjOqHW1IqIVBLUON7jg5uTKz82T2SCCw8uLJcAEpD6enQFMs32zr6b8XM+g1u6NVc8359KYJ4XV+O6rGv6KGjjMqwZXsAA4e5ROACxVrAwTLSToasRdMjlvbhxqv3S4iXqJaghLNj8GLw+LSXE3B54nPSeeT4xaxh9XhzYIYrHX90KN1PmzL8xeG9gXcKX7SrMIqK62vjW4iQqjxI1F3qFofGRtwXIzI24q64HJuY3nEzn5/jTwvTrlVdd3HmND6RLjNzjLD2DOCcwBq/7jnvsBP6NdL7kWdIeWWcfUlGfdBnRja7xl3i3NJ1wwTcM7uvGt69s+CD50l0Nte/atlFzHQhZVW8XglJM+WB5TnxlBvTHU56IoI2kELldHM2eNLYJEf4ph5YYtqMdQ6+Nd3u8FunG2/vQe8onxePYf3YcMe9PyXsEqcag5bDDHyNpPu8sq5A7C7Sr+PHuBj3OnbRuxtADT4mPD1yHLqH8OpuLELhFQdvQh6fTGNsL/EhnQF5HPmca/ajcKA/vABuHDCmMib5ABCXInx3qQAOLqDtC40qVhGJDdeZhHWPDiEYIWosh/k3yAsGDeuFl2w5KmtqziegP0XjvC2HO6YUrFm/4qnGCdHoozc8pomUtKS1CyxGQY5G+BXNknRBjWO0mUl5LGF3C69c5/NNe1NsSMea0gn+P87vuWm+Fd9t6rtfpznmIrjbwfdWbYc2Dmd8jaouuqf3PLmy+a/V72W2VGeMVhHN6qbYolz8ax13UDGS9F3rRtEPVALCyZRI4W6/JhfkzYhp87OTsHUP9ipjLb7xaL/zZnCXlN603APV65HuBLmAsnE1INFJQOCC153G3I0b1cN9SR/p2gy88vZf+Huk2W+DIWLg5sHBZ9G2NxS5SK33IMVqMLPUmh4sAvqajCsp1aITA81h3ytytV3uKnDJhnW1JJD
+ 5VIefxR9
+ UPD6Ns487aMPFjfRg6SI7QZ50XyWXuSrf1q5J6fB9LtS9rkr4w1A8lFEVB00F7a30jwasimbB9YsMWyTLw0pX29rdnPyYYd9tO4eJfDt0cNbWsJfqzk1QXw+4kfen57Qwa3uT+I7ChxPPPcLbF7T6VSAimctI1D3UeFWws/UzF07mNoFiYnGfp4XVKput4e0xUwfSGniJ821+U0QrkFcBA4FDp8OrczHFvp64Ud37dino5QqFWoKQdIcha5mPUkhh/FUqqIo1TJLJmEDbjIXez4t6BHSodlF1c+NHr/hAK+xvCnI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,265 +105,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In most cases, the use of "fast 32-bit system call" depends either on
-X86_FEATURE_SEP or X86_FEATURE_SYSENTER32 || X86_FEATURE_SYSCALL32.
-However, nearly all the logic for both is identical.
+The vdso32 sigreturn.S contains open-coded DWARF bytecode, which
+includes a hack for gdb to not try to step back to a previous call
+instruction when backtracing from a signal handler.
 
-Define X86_FEATURE_SYSFAST32 which indicates that *either* SYSENTER32 or
-SYSCALL32 should be used, for either 32- or 64-bit kernels.  This
-defaults to SYSENTER; use SYSCALL if the SYSCALL32 bit is also set.
+Neither of those are necessary anymore: the backtracing issue is
+handled by ".cfi_entry simple" and ".cfi_signal_frame", both of which
+have been supported for a very long time now, which allows the
+remaining frame to be built using regular .cfi annotations.
 
-As this removes ALL existing uses of X86_FEATURE_SYSENTER32, which is
-a kernel-only synthetic feature bit, simply remove it and replace it
-with X86_FEATURE_SYSFAST32.
+Add a few more register offsets to the signal frame just for good
+measure.
 
-This leaves an unused alternative for a true 32-bit kernel, but that
-should really not matter in any way.
-
-The clearing of X86_FEATURE_SYSCALL32 can be removed once the patches
-for automatically clearing disabled features has been merged.
+Replace the nop on fallthrough of the system call (which should never,
+ever happen) with a ud2a trap.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/Kconfig.cpufeatures             |  8 +++++++
- arch/x86/entry/vdso/vdso32/system_call.S |  8 ++-----
- arch/x86/include/asm/cpufeatures.h       |  2 +-
- arch/x86/kernel/cpu/centaur.c            |  3 ---
- arch/x86/kernel/cpu/common.c             |  8 +++++++
- arch/x86/kernel/cpu/intel.c              |  4 +---
- arch/x86/kernel/cpu/zhaoxin.c            |  4 +---
- arch/x86/kernel/fred.c                   |  2 +-
- arch/x86/xen/setup.c                     | 28 +++++++++++++++---------
- arch/x86/xen/smp_pv.c                    |  5 ++---
- arch/x86/xen/xen-ops.h                   |  1 -
- 11 files changed, 42 insertions(+), 31 deletions(-)
+ arch/x86/entry/vdso/vdso32/sigreturn.S | 146 ++++++-------------------
+ arch/x86/include/asm/dwarf2.h          |   1 +
+ arch/x86/kernel/asm-offsets.c          |   6 +
+ 3 files changed, 39 insertions(+), 114 deletions(-)
 
-diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
-index 733d5aff2456..423ac795baa7 100644
---- a/arch/x86/Kconfig.cpufeatures
-+++ b/arch/x86/Kconfig.cpufeatures
-@@ -56,6 +56,10 @@ config X86_REQUIRED_FEATURE_MOVBE
- 	def_bool y
- 	depends on MATOM
+diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
+index 965900c6763b..25b0ac4b4bfe 100644
+--- a/arch/x86/entry/vdso/vdso32/sigreturn.S
++++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
+@@ -1,136 +1,54 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #include <linux/linkage.h>
+ #include <asm/unistd_32.h>
++#include <asm/dwarf2.h>
+ #include <asm/asm-offsets.h>
  
-+config X86_REQUIRED_FEATURE_SYSFAST32
-+	def_bool y
-+	depends on X86_64 && !X86_FRED
++.macro STARTPROC_SIGNAL_FRAME sc
++	CFI_STARTPROC	simple
++	CFI_SIGNAL_FRAME
++	/* -4 as pretcode has already been popped */
++	CFI_DEF_CFA	esp,	\sc - 4
++	CFI_OFFSET	eip,    IA32_SIGCONTEXT_ip
++	CFI_OFFSET	eax,    IA32_SIGCONTEXT_ax
++	CFI_OFFSET	ebx,    IA32_SIGCONTEXT_bx
++	CFI_OFFSET	ecx,    IA32_SIGCONTEXT_cx
++	CFI_OFFSET	edx,    IA32_SIGCONTEXT_dx
++	CFI_OFFSET	esp,    IA32_SIGCONTEXT_sp
++	CFI_OFFSET	ebp,    IA32_SIGCONTEXT_bp
++	CFI_OFFSET	esi,    IA32_SIGCONTEXT_si
++	CFI_OFFSET	edi,    IA32_SIGCONTEXT_di
++	CFI_OFFSET	es,     IA32_SIGCONTEXT_es
++	CFI_OFFSET	cs,     IA32_SIGCONTEXT_cs
++	CFI_OFFSET	ss,     IA32_SIGCONTEXT_ss
++	CFI_OFFSET	ds,     IA32_SIGCONTEXT_ds
++	CFI_OFFSET	eflags, IA32_SIGCONTEXT_flags
++.endm
 +
- config X86_REQUIRED_FEATURE_CPUID
- 	def_bool y
- 	depends on X86_64
-@@ -120,6 +124,10 @@ config X86_DISABLED_FEATURE_CENTAUR_MCR
- 	def_bool y
- 	depends on X86_64
+ 	.text
+ 	.globl __kernel_sigreturn
+ 	.type __kernel_sigreturn,@function
+-	nop /* this guy is needed for .LSTARTFDEDLSI1 below (watch for HACK) */
+ 	ALIGN
+ __kernel_sigreturn:
+-.LSTART_sigreturn:
+-	popl %eax		/* XXX does this mean it needs unwind info? */
++	STARTPROC_SIGNAL_FRAME IA32_SIGFRAME_sigcontext
++	popl %eax
++	CFI_ADJUST_CFA_OFFSET -4
+ 	movl $__NR_sigreturn, %eax
+ 	int $0x80
+-.LEND_sigreturn:
+ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
+-	nop
+-	.size __kernel_sigreturn,.-.LSTART_sigreturn
++	ud2a
++	CFI_ENDPROC
++	.size __kernel_sigreturn,.-__kernel_sigreturn
  
-+config X86_DISABLED_FEATURE_SYSCALL32
-+	def_bool y
-+	depends on !X86_64
-+
- config X86_DISABLED_FEATURE_PCID
- 	def_bool y
- 	depends on !X86_64
-diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
-index 2a15634bbe75..7b1c0f16e511 100644
---- a/arch/x86/entry/vdso/vdso32/system_call.S
-+++ b/arch/x86/entry/vdso/vdso32/system_call.S
-@@ -52,13 +52,9 @@ __kernel_vsyscall:
- 	#define SYSENTER_SEQUENCE	"movl %esp, %ebp; sysenter"
- 	#define SYSCALL_SEQUENCE	"movl %ecx, %ebp; syscall"
- 
--#ifdef BUILD_VDSO32_64
- 	/* If SYSENTER (Intel) or SYSCALL32 (AMD) is available, use it. */
--	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSENTER32, \
--	                  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
--#else
--	ALTERNATIVE "", SYSENTER_SEQUENCE, X86_FEATURE_SEP
--#endif
-+	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSFAST32, \
-+			  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
- 
- 	/* Enter using int $0x80 */
- 	int	$0x80
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index c3b53beb1300..63b0f9aa9b3e 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -84,7 +84,7 @@
- #define X86_FEATURE_PEBS		( 3*32+12) /* "pebs" Precise-Event Based Sampling */
- #define X86_FEATURE_BTS			( 3*32+13) /* "bts" Branch Trace Store */
- #define X86_FEATURE_SYSCALL32		( 3*32+14) /* syscall in IA32 userspace */
--#define X86_FEATURE_SYSENTER32		( 3*32+15) /* sysenter in IA32 userspace */
-+#define X86_FEATURE_SYSFAST32		( 3*32+15) /* sysenter/syscall in IA32 userspace */
- #define X86_FEATURE_REP_GOOD		( 3*32+16) /* "rep_good" REP microcode works well */
- #define X86_FEATURE_AMD_LBR_V2		( 3*32+17) /* "amd_lbr_v2" AMD Last Branch Record Extension Version 2 */
- #define X86_FEATURE_CLEAR_CPU_BUF	( 3*32+18) /* Clear CPU buffers using VERW */
-diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
-index a3b55db35c96..9833f837141c 100644
---- a/arch/x86/kernel/cpu/centaur.c
-+++ b/arch/x86/kernel/cpu/centaur.c
-@@ -102,9 +102,6 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
- 	    (c->x86 >= 7))
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 
--#ifdef CONFIG_X86_64
--	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
--#endif
- 	if (c->x86_power & (1 << 8)) {
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index e7ab22fce3b5..1c3261cae40c 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1068,6 +1068,9 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- 	init_scattered_cpuid_features(c);
- 	init_speculation_control(c);
- 
-+	if (IS_ENABLED(CONFIG_X86_64) || cpu_has(c, X86_FEATURE_SEP))
-+		set_cpu_cap(c, X86_FEATURE_SYSFAST32);
-+
- 	/*
- 	 * Clear/Set all flags overridden by options, after probe.
- 	 * This needs to happen each time we re-probe, which may happen
-@@ -1813,6 +1816,11 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 	 * that it can't be enabled in 32-bit mode.
- 	 */
- 	setup_clear_cpu_cap(X86_FEATURE_PCID);
-+
-+	/*
-+	 * Never use SYSCALL on a 32-bit kernel
-+	 */
-+	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
- #endif
- 
- 	/*
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 98ae4c37c93e..646ff33c4651 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -236,9 +236,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 		clear_cpu_cap(c, X86_FEATURE_PSE);
- 	}
- 
--#ifdef CONFIG_X86_64
--	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
--#else
-+#ifndef CONFIG_X86_64
- 	/* Netburst reports 64 bytes clflush size, but does IO in 128 bytes */
- 	if (c->x86 == 15 && c->x86_cache_alignment == 64)
- 		c->x86_cache_alignment = 128;
-diff --git a/arch/x86/kernel/cpu/zhaoxin.c b/arch/x86/kernel/cpu/zhaoxin.c
-index 89b1c8a70fe8..031379b7d4fa 100644
---- a/arch/x86/kernel/cpu/zhaoxin.c
-+++ b/arch/x86/kernel/cpu/zhaoxin.c
-@@ -59,9 +59,7 @@ static void early_init_zhaoxin(struct cpuinfo_x86 *c)
- {
- 	if (c->x86 >= 0x6)
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
--#ifdef CONFIG_X86_64
--	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
--#endif
-+
- 	if (c->x86_power & (1 << 8)) {
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 816187da3a47..e736b19e18de 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -68,7 +68,7 @@ void cpu_init_fred_exceptions(void)
- 	idt_invalidate();
- 
- 	/* Use int $0x80 for 32-bit system calls in FRED mode */
--	setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
-+	setup_clear_cpu_cap(X86_FEATURE_SYSFAST32);
- 	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
- }
- 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 3823e52aef52..ac8021c3a997 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -990,13 +990,6 @@ static int register_callback(unsigned type, const void *func)
- 	return HYPERVISOR_callback_op(CALLBACKOP_register, &callback);
- }
- 
--void xen_enable_sysenter(void)
--{
--	if (cpu_feature_enabled(X86_FEATURE_SYSENTER32) &&
--	    register_callback(CALLBACKTYPE_sysenter, xen_entry_SYSENTER_compat))
--		setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
--}
+ 	.globl __kernel_rt_sigreturn
+ 	.type __kernel_rt_sigreturn,@function
+ 	ALIGN
+ __kernel_rt_sigreturn:
+-.LSTART_rt_sigreturn:
++	STARTPROC_SIGNAL_FRAME IA32_RT_SIGFRAME_sigcontext
+ 	movl $__NR_rt_sigreturn, %eax
+ 	int $0x80
+-.LEND_rt_sigreturn:
+ SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
+-	nop
+-	.size __kernel_rt_sigreturn,.-.LSTART_rt_sigreturn
+-	.previous
 -
- void xen_enable_syscall(void)
- {
- 	int ret;
-@@ -1008,11 +1001,27 @@ void xen_enable_syscall(void)
- 		   mechanism for syscalls. */
- 	}
+-	.section .eh_frame,"a",@progbits
+-.LSTARTFRAMEDLSI1:
+-	.long .LENDCIEDLSI1-.LSTARTCIEDLSI1
+-.LSTARTCIEDLSI1:
+-	.long 0			/* CIE ID */
+-	.byte 1			/* Version number */
+-	.string "zRS"		/* NUL-terminated augmentation string */
+-	.uleb128 1		/* Code alignment factor */
+-	.sleb128 -4		/* Data alignment factor */
+-	.byte 8			/* Return address register column */
+-	.uleb128 1		/* Augmentation value length */
+-	.byte 0x1b		/* DW_EH_PE_pcrel|DW_EH_PE_sdata4. */
+-	.byte 0			/* DW_CFA_nop */
+-	.align 4
+-.LENDCIEDLSI1:
+-	.long .LENDFDEDLSI1-.LSTARTFDEDLSI1 /* Length FDE */
+-.LSTARTFDEDLSI1:
+-	.long .LSTARTFDEDLSI1-.LSTARTFRAMEDLSI1 /* CIE pointer */
+-	/* HACK: The dwarf2 unwind routines will subtract 1 from the
+-	   return address to get an address in the middle of the
+-	   presumed call instruction.  Since we didn't get here via
+-	   a call, we need to include the nop before the real start
+-	   to make up for it.  */
+-	.long .LSTART_sigreturn-1-.	/* PC-relative start address */
+-	.long .LEND_sigreturn-.LSTART_sigreturn+1
+-	.uleb128 0			/* Augmentation */
+-	/* What follows are the instructions for the table generation.
+-	   We record the locations of each register saved.  This is
+-	   complicated by the fact that the "CFA" is always assumed to
+-	   be the value of the stack pointer in the caller.  This means
+-	   that we must define the CFA of this body of code to be the
+-	   saved value of the stack pointer in the sigcontext.  Which
+-	   also means that there is no fixed relation to the other
+-	   saved registers, which means that we must use DW_CFA_expression
+-	   to compute their addresses.  It also means that when we
+-	   adjust the stack with the popl, we have to do it all over again.  */
+-
+-#define do_cfa_expr(offset)						\
+-	.byte 0x0f;			/* DW_CFA_def_cfa_expression */	\
+-	.uleb128 1f-0f;			/*   length */			\
+-0:	.byte 0x74;			/*     DW_OP_breg4 */		\
+-	.sleb128 offset;		/*      offset */		\
+-	.byte 0x06;			/*     DW_OP_deref */		\
+-1:
+-
+-#define do_expr(regno, offset)						\
+-	.byte 0x10;			/* DW_CFA_expression */		\
+-	.uleb128 regno;			/*   regno */			\
+-	.uleb128 1f-0f;			/*   length */			\
+-0:	.byte 0x74;			/*     DW_OP_breg4 */		\
+-	.sleb128 offset;		/*       offset */		\
+-1:
+-
+-	do_cfa_expr(IA32_SIGCONTEXT_sp+4)
+-	do_expr(0, IA32_SIGCONTEXT_ax+4)
+-	do_expr(1, IA32_SIGCONTEXT_cx+4)
+-	do_expr(2, IA32_SIGCONTEXT_dx+4)
+-	do_expr(3, IA32_SIGCONTEXT_bx+4)
+-	do_expr(5, IA32_SIGCONTEXT_bp+4)
+-	do_expr(6, IA32_SIGCONTEXT_si+4)
+-	do_expr(7, IA32_SIGCONTEXT_di+4)
+-	do_expr(8, IA32_SIGCONTEXT_ip+4)
+-
+-	.byte 0x42	/* DW_CFA_advance_loc 2 -- nop; popl eax. */
+-
+-	do_cfa_expr(IA32_SIGCONTEXT_sp)
+-	do_expr(0, IA32_SIGCONTEXT_ax)
+-	do_expr(1, IA32_SIGCONTEXT_cx)
+-	do_expr(2, IA32_SIGCONTEXT_dx)
+-	do_expr(3, IA32_SIGCONTEXT_bx)
+-	do_expr(5, IA32_SIGCONTEXT_bp)
+-	do_expr(6, IA32_SIGCONTEXT_si)
+-	do_expr(7, IA32_SIGCONTEXT_di)
+-	do_expr(8, IA32_SIGCONTEXT_ip)
+-
+-	.align 4
+-.LENDFDEDLSI1:
+-
+-	.long .LENDFDEDLSI2-.LSTARTFDEDLSI2 /* Length FDE */
+-.LSTARTFDEDLSI2:
+-	.long .LSTARTFDEDLSI2-.LSTARTFRAMEDLSI1 /* CIE pointer */
+-	/* HACK: See above wrt unwind library assumptions.  */
+-	.long .LSTART_rt_sigreturn-1-.	/* PC-relative start address */
+-	.long .LEND_rt_sigreturn-.LSTART_rt_sigreturn+1
+-	.uleb128 0			/* Augmentation */
+-	/* What follows are the instructions for the table generation.
+-	   We record the locations of each register saved.  This is
+-	   slightly less complicated than the above, since we don't
+-	   modify the stack pointer in the process.  */
+-
+-	do_cfa_expr(IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_sp)
+-	do_expr(0, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_ax)
+-	do_expr(1, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_cx)
+-	do_expr(2, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_dx)
+-	do_expr(3, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_bx)
+-	do_expr(5, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_bp)
+-	do_expr(6, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_si)
+-	do_expr(7, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_di)
+-	do_expr(8, IA32_RT_SIGFRAME_sigcontext-4 + IA32_SIGCONTEXT_ip)
+-
+-	.align 4
+-.LENDFDEDLSI2:
++	ud2a
++	CFI_ENDPROC
++	.size __kernel_rt_sigreturn,.-__kernel_rt_sigreturn
+ 	.previous
+diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
+index 302e11b15da8..09c9684d3ad6 100644
+--- a/arch/x86/include/asm/dwarf2.h
++++ b/arch/x86/include/asm/dwarf2.h
+@@ -20,6 +20,7 @@
+ #define CFI_RESTORE_STATE	.cfi_restore_state
+ #define CFI_UNDEFINED		.cfi_undefined
+ #define CFI_ESCAPE		.cfi_escape
++#define CFI_SIGNAL_FRAME	.cfi_signal_frame
  
--	if (cpu_feature_enabled(X86_FEATURE_SYSCALL32) &&
--	    register_callback(CALLBACKTYPE_syscall32, xen_entry_SYSCALL_compat))
-+	if (!cpu_feature_enabled(X86_FEATURE_SYSFAST32))
-+		return;
-+
-+	if (cpu_feature_enabled(X86_FEATURE_SYSCALL32)) {
-+		/* Use SYSCALL32 */
-+		ret = register_callback(CALLBACKTYPE_syscall32,
-+					xen_entry_SYSCALL_compat);
-+
-+	} else {
-+		/* Use SYSENTER32 */
-+		ret = register_callback(CALLBACKTYPE_sysenter,
-+					xen_entry_SYSENTER_compat);
-+	}
-+
-+	if (ret) {
- 		setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
-+		setup_clear_cpu_cap(X86_FEATURE_SYSFAST32);
-+	}
- }
+ #ifndef BUILD_VDSO
+ 	/*
+diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
+index 25fcde525c68..081816888f7a 100644
+--- a/arch/x86/kernel/asm-offsets.c
++++ b/arch/x86/kernel/asm-offsets.c
+@@ -63,8 +63,14 @@ static void __used common(void)
+ 	OFFSET(IA32_SIGCONTEXT_bp, sigcontext_32, bp);
+ 	OFFSET(IA32_SIGCONTEXT_sp, sigcontext_32, sp);
+ 	OFFSET(IA32_SIGCONTEXT_ip, sigcontext_32, ip);
++	OFFSET(IA32_SIGCONTEXT_es, sigcontext_32, es);
++	OFFSET(IA32_SIGCONTEXT_cs, sigcontext_32, cs);
++	OFFSET(IA32_SIGCONTEXT_ss, sigcontext_32, ss);
++	OFFSET(IA32_SIGCONTEXT_ds, sigcontext_32, ds);
++	OFFSET(IA32_SIGCONTEXT_flags, sigcontext_32, flags);
  
-+
- static void __init xen_pvmmu_arch_setup(void)
- {
- 	HYPERVISOR_vm_assist(VMASST_CMD_enable, VMASST_TYPE_writable_pagetables);
-@@ -1022,7 +1031,6 @@ static void __init xen_pvmmu_arch_setup(void)
- 	    register_callback(CALLBACKTYPE_failsafe, xen_failsafe_callback))
- 		BUG();
- 
--	xen_enable_sysenter();
- 	xen_enable_syscall();
- }
- 
-diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
-index 9bb8ff8bff30..c40f326f0c3a 100644
---- a/arch/x86/xen/smp_pv.c
-+++ b/arch/x86/xen/smp_pv.c
-@@ -65,10 +65,9 @@ static void cpu_bringup(void)
- 	touch_softlockup_watchdog();
- 
- 	/* PVH runs in ring 0 and allows us to do native syscalls. Yay! */
--	if (!xen_feature(XENFEAT_supervisor_mode_kernel)) {
--		xen_enable_sysenter();
-+	if (!xen_feature(XENFEAT_supervisor_mode_kernel))
- 		xen_enable_syscall();
--	}
-+
- 	cpu = smp_processor_id();
- 	identify_secondary_cpu(cpu);
- 	set_cpu_sibling_map(cpu);
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 090349baec09..f6c331b20fad 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -60,7 +60,6 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size);
- char * __init xen_memory_setup(void);
- void __init xen_arch_setup(void);
- void xen_banner(void);
--void xen_enable_sysenter(void);
- void xen_enable_syscall(void);
- void xen_vcpu_restore(void);
+ 	BLANK();
++	OFFSET(IA32_SIGFRAME_sigcontext,    sigframe_ia32,    sc);
+ 	OFFSET(IA32_RT_SIGFRAME_sigcontext, rt_sigframe_ia32, uc.uc_mcontext);
+ #endif
  
 -- 
 2.52.0
