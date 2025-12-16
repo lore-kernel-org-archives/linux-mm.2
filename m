@@ -4,134 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03429D609DE
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 19:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA6CBD637A4
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 20:09:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 405C96B0088; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
+	id 0B5A56B0088; Tue, 16 Dec 2025 15:09:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C5C6B0089; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
+	id 06DA06B0089; Tue, 16 Dec 2025 15:09:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29E9A6B008A; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
+	id ED8CC6B008A; Tue, 16 Dec 2025 15:09:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 18EC76B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:58:21 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A36D55A67B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:58:20 +0000 (UTC)
-X-FDA: 84226395960.24.D076077
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4785A120006
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:58:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LfbZ/dD3";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765915098; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC0086B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:09:44 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7B2951607CB
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:09:44 +0000 (UTC)
+X-FDA: 84226424688.02.26F3C90
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B0A4F100006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:09:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="S6w/oXXL";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=bijan311@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765915782; a=rsa-sha256;
 	cv=none;
-	b=Rm47VQ5JUKBdOHhSCbGSMiRMhaXb1egOuA8a3us04DYKYpF09HgAq73EEAmGtcvRGiT6le
-	8V5qoqCZkW3sv2udbiSa8eELisTMgNbmYMvEKqKVqGydhLpwWjdSA6D0xXotHHVnClailC
-	LAzatj+8M5EQMnbr53qQqF5X+5Z/Rmw=
+	b=DjNBTrvnudLnR/eDXyj4H2Xt042ozlinrNTVCPlNgy10Oa7ioAcFndgoK3iRhdSHyAtbPz
+	1KRepdFxhTAeZUCK/Q0+yGC0Kuf6pqoxBLjTzXggNkZ88FZ2ZpFpRG+PuyMCx7cUGKvmPd
+	qwXsnwR9DT7lgMG0fqWwSvcXewPSUCs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LfbZ/dD3";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="S6w/oXXL";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=bijan311@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765915098;
+	s=arc-20220608; t=1765915782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
-	b=n4pcYBAgggfS8a3R1q7Bp31ywciWcbEjL9F8CXU8bf10ZOXi6PfARthaZ8L9bUawH2FQ7K
-	xsaBKYPSn9q8LO6SCvErvuYT1CB15p+BXaPx43CbN40gyofAJg0u9urcfiMQYhk5LwLqyJ
-	Fd7iRXUyCgwFLNolVgkp269AezfzRfU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765915097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
-	b=LfbZ/dD336KfjxZVrv6VkoZBrIeL1tnIqgl2HR96bxjQv3iXeO9uz0gPRDRe50gYeLrPs/
-	XTJhZ8QIOLXthTy4HEXasrXeqX56y9LJimz7UGs5yDIDz7iMHslvM/V3kdvAInzS14BLas
-	2f5z4zYOEymRwjQy5HFbJnMY8voQEAE=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-bB7k2heJM8i4ILWdQVxIpw-1; Tue, 16 Dec 2025 14:58:14 -0500
-X-MC-Unique: bB7k2heJM8i4ILWdQVxIpw-1
-X-Mimecast-MFC-AGG-ID: bB7k2heJM8i4ILWdQVxIpw_1765915093
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-29e6b269686so117027755ad.1
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:58:14 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nMS6a3jAyVimHierhPrk+dmchPtXev21lxjws8o9I7U=;
+	b=gDr89fx+HFih2ZGz2OxFnwlS5eIqDxDVkOGCkdZoITT+rJrB/eKphqsIF9h3wa2hAFW+z7
+	W1efQ4qRK6dF0Gqsp6sZg/6RQxl08wgOypevakVa8DnjoBOUX9JQdqE3EJZT7ybz42fSH/
+	TR1B3OG7gicSzF/Zo+KIJEGq7ZlVyGk=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-787df0d729dso42220307b3.3
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:09:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765915781; x=1766520581; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nMS6a3jAyVimHierhPrk+dmchPtXev21lxjws8o9I7U=;
+        b=S6w/oXXLu4rc5KrGJmfgPMU+Ga6M0IDuKZIG7fFILNzxtAQlD+UkvFj/w9MTiNfjZF
+         PeKsVHCvT5D3ZKrgK913gCGPCWwu2jigTWfGuBaAdEAI2s3nFIrrjcSvG2uOzvmpd2dN
+         PXdcLSWH5fG4oy4quXbMApEKCJrHSycuFo10bUINHJRHNNmSLSRdPzptUr0gDL4eitYy
+         X8/2wYQl8I3G8xvuXjipIn9EmuXphVo7ED5rUYAsf84M/NEgIjnfhxvTH1vQ8lMOghAs
+         Tmx41A65W6BLVay6lj54Ci97/fR3dp76qfwH0bhJVtSPVkdchmB6oPAF8g7u2YZrr/Fg
+         9XDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765915093; x=1766519893;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WILoW472mfGqus7f3vqpilqOzoz0h+z/dztTyHfCBuA=;
-        b=t+NcjjkzyXjbitk6SCtdwJYUuQM+3xqrRCvw+/zeXi1wCccBQvgiMgxsGFTUICP1bZ
-         KEvbpSNAoN0B/7HQhuIE4HtXaoGk6K72qcorUUwRYOZHgATWy6ipLShDCn/YDDS5QYzH
-         j/nhvqZs8bsI8YaRHn4NbZh+qI84yDG5SC9FnJEAM99S1jnP0ofE9++3v4QO+gDfrz0r
-         wQbnCt7bn4hUA8y19XDzcnjvTl9SYT8t12Vj0Qq1aUUHhPv9lDLoTYgF/PE0kM8jkWAf
-         7DRnYk2fhfyEw6RC4tvJCL4n5qh8u0JcAoiENBCkRVI3j0XtKC7jOvoZij7/0w9NETyz
-         TMIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOcu/oIFtcx2C/Elwwm8Qr979j8nzR111bwGcZ45smitzwQ9JHBKWhzAmWzg3BhbDAvptrNVQ4yQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz3D7Q+LnMpkPYTHf6dAMgdsYz33UNjR2ugw4kzzsnWrtlM8mPL
-	KmVRUZPB8vhuIqgLLOBT/8s20TkeUqIvGl++KEs4juDnuvggCrJGvBR07UwBqOeYJ1xtL2fVv65
-	kI9DWiviMEXhqsdPy/gSpfh2qeCv/dvyu85r+2HZECQA99/oPUAnk
-X-Gm-Gg: AY/fxX5UW6D2HJeyffB7nyeghaj+pvbAtp1jA6EG4PgxWVdH6DTFVlKCT24fhD7JlgR
-	tuklqLHpQ8JjEcmquJTwPtYo2sVOwT+pxlSVIs8d8CxZngEihZcSrakNNSax4K5Q1L2OJIirU0n
-	ATmLXKpafvFr7DANCfPSBSuJ+kIGAsmE1D92D0nquWdS9OV/vrH8PgdR2egesylV6bEELQ+NCW/
-	L+n8Iy/pEe/sOlQRc/Q15R1EmhqE3i4VSbVHMwWPzseRInTgX0fDgntsAODCnfNQvUdDxFJM6Xr
-	t2mmFz+kacjY9qwsjCjVfv1lguG7L/eocr27SjX8gOnuRe3qtavIU6RHwPTEkNQbSyZZIKqBUlI
-	bz64=
-X-Received: by 2002:a17:903:3bad:b0:297:d45b:6d97 with SMTP id d9443c01a7336-29f23e3618emr164955795ad.14.1765915093038;
-        Tue, 16 Dec 2025 11:58:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHr2X5JE1VeyIh1e5EanKDeX9YYmMdGAHNX6spNNWVf22t0T9F/mXgE3FmtoXHqzC5TX7vXhg==
-X-Received: by 2002:a17:903:3bad:b0:297:d45b:6d97 with SMTP id d9443c01a7336-29f23e3618emr164955555ad.14.1765915092528;
-        Tue, 16 Dec 2025 11:58:12 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a094398ed0sm110452725ad.27.2025.12.16.11.58.05
+        d=1e100.net; s=20230601; t=1765915781; x=1766520581;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nMS6a3jAyVimHierhPrk+dmchPtXev21lxjws8o9I7U=;
+        b=MDzhfiYz1PnFWMOESIFuMEA/br6TJI5q+0AMCgNdv56MK4Gy4Dn8nd5EDbOMtkS0Xm
+         lm+h95c1dSuP41jDq5GCnaEHg83s2+g0/Z3WqfeuYGSwDbdXp7rWQRxLUuu+2kYQHPp/
+         EakpdHnXGaSnUpjIWlnAlgNzclEPdPH5k6ZG/M7nIcSuPoAua4hT7F5vaMuvXaPWsqhU
+         MXlNzLscN3GV98bTtrD75WbSNLSeQeoZLfWbvtTy3YyADSh7ZAt6Af75OYUGT/XyR0Na
+         36DDAUPE6Viucan4pbLI6l++OkwE9bNG1N2R4pBMD6hTRnqCSYDUcsvosMUs0502CpJR
+         B8Dw==
+X-Gm-Message-State: AOJu0Yx/JY0gCJsP4OkFPMxgl8kFFWXF+Wbjh4VeGb8G2VwYX3xkIlKy
+	U3ctq6Bd+Rfshp0rGHcYT988nqRKhfxMmxLKnx+T+4SGenXefh6QnwQeBX5GUQ==
+X-Gm-Gg: AY/fxX7CfJeGvQTVTcg2gAyGSjQfUDuoat+p+9GO2PNQO1FUMfzA+midRD++O2Fu9i9
+	azDXIQ4IjeHoTwEa7AK1DpcA0wyuHhwxS+TVhbeP8zQSO3eRffc/pPQY36fBWrNqYwc4GK3oolD
+	kRj9rHzzQXkVS8Tn5t99wg3WdB3t226kbd99j5J4MOhhTkqmyOnBKbSTcvPsxtZ3KIrwFoyJlmS
+	EpW7m1j1eNRbz1us5MSzamJgMFLijadqVXnqjoXS92QFR4k17gzrp3XgREA3VFVnW9JeC+0woV7
+	0U+VS4bQxUKLVgufkCAuvAqBnc1Lwg0O9E86rylH693F8b/aDva90rAZqeu2RS5X3WwrTCHO7d4
+	v6f6H6Qj3hpeDB/1CjFF6aOJqyt7DwBE7AjwLlpYB4hAooAFjuZfjyVSLaahkCq5DSDZLtVLF5e
+	knQclk8kG+u2EkFW3yLNjr3opbTgCUG5wvsVSRCRji23bj
+X-Google-Smtp-Source: AGHT+IE1rNltaFw15QKa77QeIDdymJ4q3ZBePGvgojJXsNzIzp4mSRCbWloz3h5stjEdm8mcjMlo5g==
+X-Received: by 2002:a05:690c:885:b0:786:8ce9:3b55 with SMTP id 00721157ae682-78e66ce7049mr114466567b3.5.1765915781146;
+        Tue, 16 Dec 2025 12:09:41 -0800 (PST)
+Received: from manaslu.cs.wisc.edu (manaslu.cs.wisc.edu. [128.105.15.4])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e748ef9e3sm42652317b3.17.2025.12.16.12.09.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 11:58:11 -0800 (PST)
-Date: Tue, 16 Dec 2025 14:58:03 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
- !MAP_FIXED mappings
-Message-ID: <aUG5y60q03RedLwv@x1.local>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-5-peterx@redhat.com>
- <aTWqvfYHWWMgKHPQ@nvidia.com>
- <aTnbf_dtwOo_gaVM@x1.local>
- <20251216144224.GE6079@nvidia.com>
- <aUGCPN2ngvWMG2Ta@x1.local>
- <20251216190131.GI6079@nvidia.com>
+        Tue, 16 Dec 2025 12:09:40 -0800 (PST)
+From: Bijan Tabatabai <bijan311@gmail.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shivankg@amd.com,
+	Bijan Tabatabai <bijan311@gmail.com>
+Subject: [PATCH] mm: Consider non-anon swap cache folios in folio_expected_ref_count()
+Date: Tue, 16 Dec 2025 14:07:27 -0600
+Message-Id: <20251216200727.2360228-1-bijan311@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <20251216190131.GI6079@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IOOuL7eb8apKct6GjK2XCWDmwvoVygrCY86PjX_7e70_1765915093
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4785A120006
-X-Stat-Signature: 7q5gdugh6si89wgqe7m4xjrhbn7becmn
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B0A4F100006
+X-Stat-Signature: hq6mkwnezy551x5t6rdxkuocgwfzdmfm
 X-Rspam-User: 
-X-HE-Tag: 1765915098-937910
-X-HE-Meta: U2FsdGVkX1/RmR/fYz1vR3P8qhj26iMiFc/FL2IAwJlHiOkk7YwF4U1BrbIf2pRL1fDJ09p9wf8deAE5PeGDjj3qUEqtcW6rU/koavnQ1Tb6JXxzEJOZWCSHA6vCVKNBDUvEUh47el2YxvrTby1A9KvbtZ5XG4M2hkJFocGK/chOs6fpAZEqj03Ry+2PKwtijbl9T4LkhG7Mpfm2CIE8fXv1T9X6GQBEuljY/5kbQYBMHNul9ySEU7XDKCIUBarh1pg1H8Ct2BbJYEXlGsdiFBl23zNq/qX+69hIbFoe/3qmNj/AhVr83WmYG3pYIygnhtjXVGDy9sZHKrYmMh+3+77bq+6rDC21W9gCFjPibYs732R4izRf1zFe1MfD3OEREpuNDAX9LTs8rS4PX5yqDMR/xRGW8Rej3k7A405ojnaRuilTJK88pHdqzKKj2Qg6WJM1aMyvsFEsfgjLjcb7QlvSrydi8UH39gWGccoJsEnnqzKOnpamnl6kD4K7uyFFjNL5tpJypn4ExQ82kvsld4ZGgZmh+Mw7iyOPO55jClOm11SLIP6sSyOofQtD1IkeVkU/FjdjZO1Y3RlFpl4d6Ql3H0W2JKsWksjHjgXbkNylIOoO2DgR8nAJm62rJe/lX/RpSRDs006OJQl/DWzS+8qE4PfXHrDJGPhDcOpa2Ogr36bVG7T8++mXeOTsN2A68HkpmvWhI3Xvo5LTOblYu664XwLVG4RkVUni3Kr0+qHVCsGJq9sCnhwnijIkWH89KU4Kr1qp0LxEMqRThiI0UEpF0Fm75Ud1ppg3q3ebA6D4xHtKOX9xsv/F9J46k3AKM7ZTZZYOWeJ08iJjwT3cNJAnbLICCW3U175iGyBpkYai9MY3FSdwwWILjKbqLVxx/ZUEFjSx1QnIsYM1t52nfLgfIghvUGqi3r0blDB1WrbzoeUTuiW/P8zq7VFRrr74pBGTLBVz+EYgI7I5RQ/
- iK7WCD2e
- +DNWjAx+U7G18xADTao8z2JZOaungFe/z/8InvtRGgD02lFGwYMMt9SFnRjexqYQX2srUR94InxWxXAMCLaIUbjsnMY4jbeitVcEsXJHptW8ZUXNMHEgf1MX77dRH7Fx1l2rxm5U7rHYGk3SpBFeWNIZ/VMDA2RUwLxJblgEa0C8bMb3g1hoXAF1XFTbkfyGd70QeE9kNVeJ3usoQjS4f0du2r80m5ry+w6ARUiSwSeHdo0jMPr07IpHZNUDqXNR5ka9YwToXfY+YWb7GwOt/W58zQmiKsFrilJVAEbrX5L7eMTQWjfj3VRBEYrKHt9uwGf/8Oq8+Ib8KXSFesArCEJOmN529HlmVohIK3nnGkZQX4gHwIuPH3D8m/DagHEmkDsBn14IU6X3U35y7jINwiB28gqRLz81pniOCtQRCHswAbZ05HQ+7pgVrE6aoQa48/DnofKDFke9X4CICjErPe5uAkdoHwYq3v+0ZIDZ8N2IEJltmvpeWtrp7804zCBf524q+7d/LoV2anzuHwCtGXlmqR+RoQZKD9tdEvQAzMuVK27z32E/BjV8wuJrcmwP3zKp0IWCKX/PFIHJAWftTUb/kZg==
+X-HE-Tag: 1765915782-788979
+X-HE-Meta: U2FsdGVkX19411QieauaDEYWDDZMjF+IQ3/IreOJlBv2PGe2DtFz6rdX+laPmJF2O4VZatuvu3sbc7b9p/LXLjLWvUiFDxOd1+eGJRzTvpkGuNPMTpOQMk0TEylun6vHP+/AKFhB2yBvHPs6igCUmEYD4s9Gk/jAyQbdSL87YQMtdgnc3J3pEnsPEzq9lCW//nUHw+0rngc3ahndIWWvUbMwVVQxW/RTKrMEAGQYHCXl7CQw6FtA2dkZjuOKA8LAIXQorITZgS1pF2E5VmYqmHVIRsicEC+NJiFxzQGw178qzfibxLLNajm/GQjpW7oIzMDGLGKoDmDYqHw+5095rJ5JEjfiLD9UVw10wfaDwWP+qVBarhN3zFNB3PTavvwmTvUugdFKtPoxvZm33tCiY7Ojfx/zXrgDvSTioFCVH61Za4l/LMhgYx8F0PGlg8pbS/cxDshNsmaQj1Cdw0x8mW6q/9HkRB3FGuqkqV7Ho8kNDzIB5bU+AnqZ5GcWBOaytnrAvV3HkiNUrhDU5rU0mtMu9BwnhMMcnou36DyJURSlBIRc/jS+L8Grn63DcC20LEmD6OfCFlttElRPiam+rWfoOLN+vzcruaxbdriRn+2iIiEDNvzYhmQUdpTS3+h9m2GZ+X5lrF9lvCNRVTSaeOONmVpmtZzpuhVSJ0qK4YSvZr8J4CgJKz9HtA2BkU0Rf2m1vu4cFwrD9fboLszMDkJLIG4UWdG0Ae4IwiTTJlVjmuOwLgbOfldg6ckyQ5Q0aaYG89iHi9EwcuEEGyyd/vrt4iHxLNW+xIa13hWgoswNimnlzD+h/TWpAfJUcqrRJFVNEYPh3xNxRaYpbzdEJz+kEnD5tCZyuEOyvfk/sjigwRzw15DzwQh2kx/dJX5hfg/nqaIkkC/1h6nOOM4VNaAjJQfJGEKP8DVLd26wrx7KV45aXGOsJOJ9WUwH7PTx9MKhQrDi4vLn4ta90HW
+ OjyUmxPA
+ CguAbwcGEFzn0VHupL4Q0QBStbqnV85+d+5AxwFZsHHHAAEINqflIZR08950hdE4cr2mL/PDrg+vIaHBdg+tx6IWRHYeaDv1uPva6HyL0kZtgTsF7S2gq/Sip9kyHh41e1DKhnLTxTNvAAwdo6MGypYmdXUmKOSmyzRbJ4fzZOYjfJ5q4qbPRNxzF0bx3SjrnVY+hIxB5FY6t9xZh+4y8cAbQ7tpbLbrpEjJ5XW52gNrdPLmyDFvDTQzB7TvLruyLjzj7/qaqrrDK0O2OX0DWvxaIoOei8n5niv+gTtDpzMLLyO0dbrpR527AH+MyLSL52Ghp3uuCQoWS4CFH7sR9IcoMN4WX2bGa8ANQaIaP/KB+rj6St6RbeYAfP8Pb7VxZJ14oH+a/H4r8KvP/DyKNk4sILHtzYgOMXgOQ6gicma9Stg1IA5/T7KFUHAiLv20grYJb7S520i3PmpdFj+RY9rkU+ywTYBwe1oqZTogi7eVmPoDk8N0gRaIeib5YI2GAKZHt4nTDgHtIc90=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,62 +124,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 03:01:31PM -0400, Jason Gunthorpe wrote:
-> On Tue, Dec 16, 2025 at 11:01:00AM -0500, Peter Xu wrote:
-> > Do we have any function that we can fetch the best mapping lower than a
-> > specific order?
-> 
-> I'm not aware of anything
+Currently, folio_expected_ref_count() only adds references for the swap
+cache if the folio is anonymous. However, according to the comment above
+the definition of PG_swapcache in enum pageflags, shmem folios can also
+have PG_swapcache set. This patch makes sure references for the swap
+cache are added if folio_test_swapcache(folio) is true.
 
-Maybe I can introduce a per-arch helper for it, then.  I'll see if I can
-cover some tests from ARM side, or I'll enable x86_64 first so we can do it
-in two steps.
+This issue was found when trying to hot-unplug memory in a QEMU/KVM
+virtual machine. When initiating hot-unplug when most of the guest
+memory is allocated, hot-unplug hangs partway through removal due to
+migration failures. The following message would be printed several
+times, and would be printed again about every five seconds:
 
-> 
-> > > None of this logic should be in drivers.
-> > 
-> > I still think it's the driver's decision to have its own macro controlling
-> > the huge pfnmap behavior.  I agree with you core mm can have it, I don't
-> > see it blocks the driver not returning huge order if huge pfnmap is turned
-> > off.  VFIO-PCI currently indeed only depends directly on global THP
-> > configs, but I don't see why it's strictly needed.  So I think it's fine if
-> > a driver (even if global THP enabled for pmd/pud) deselect huge pfnmap for
-> > other reasons, then here the order returned can still always be PSIZE for
-> > the driver.  It's really not a huge deal to me.
-> 
-> All these APIs should be around the idea that the driver just returns
-> what it has and the core mm places it into ptes. There is not a good
-> reason drivers should be overriding this logic or doing their own
-> thing.
+[   49.641309] migrating pfn b12f25 failed ret:7
+[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
+[   49.641311] aops:swap_aops
+[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
+[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
+[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
+[   49.641315] page dumped because: migration failure
 
-I'll make sure the driver will not need to consider size of mapping that
-arch would support.
+When debugging this, I found that these migration failures were due to
+__migrate_folio() returning -EAGAIN for a small set of folios because
+the expected reference count it calculates via folio_expected_ref_count()
+is one less than the actual reference count of the folios. Furthermore,
+all of the affected folios were not anonymous, but had the PG_swapcache
+flag set, inspiring this patch. After applying this patch, the memory
+hot-unplug behaves as expected.
 
-> 
-> > > Drivers shouldn't implement this alignment function without also
-> > > implementing huge fault, it is pointless. Don't see a reason to add
-> > > extra complexity.
-> > 
-> > It's not implementing the order hint without huge fault.  It's when both
-> > are turned off in a kernel config.. then the order hint (even from driver
-> > POV) shouldn't need to be reported.
-> 
-> No, it should still all be the same the core code just won't call the
-> function.
-> 
-> > I don't know why you have so strong feeling on having a config check in
-> > vfio-pci drivers is bad.
-> 
-> It is leaking MM details into drivers that should not be in drivers.
+I tested this on a machine running Ubuntu 24.04 with kernel version
+6.8.0-90-generic and 64GB of memory. The guest VM is managed by libvirt
+and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
+mm-unstable branch as a Dec 16, 2025 was also tested and behaves the
+same) and 48GB of memory. The libvirt XML definition for the VM can be
+found at [1]. CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in
+the guest kernel so the hot-pluggable memory is automatically onlined.
 
-To me it still makes perfect sense here to pair with huge_fault(), and it's
-driver knowledge alone.  It has nothing to do with leaking mm details.
+Below are the steps to reproduce this behavior:
 
-I think I get your point above, maybe when the core mm fallback paths not
-available yet we can mix things together. I'll see what I can do when
-repost.
+1) Define and start and virtual machine
+  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
+  host$ virsh -c qemu:///system start test_vm
 
+2) Setup swap in the guest
+  guest$ sudo fallocate -l 32G /swapfile
+  guest$ sudo chmod 0600 /swapfile
+  guest$ sudo mkswap /swapfile
+  guest$ sudo swapon /swapfile
+
+3) Use alloc_data [2] to allocate most of the remaining guest memory
+  guest$ ./alloc_data 45
+
+4) In a separate guest terminal, monitor the amount of used memory
+  guest$ watch -n1 free -h
+
+5) When alloc_data has finished allocating, initiate the memory
+hot-unplug using the provided xml file [3]
+  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
+
+After initiating the memory hot-unplug, you should see the amount of
+available memory in the guest decrease, and the amount of used swap data
+increase. If everything works as expected, when all of the memory is
+unplugged, there should be around 8.5-9GB of data in swap. If the
+unplugging is unsuccessful, the amount of used swap data will settle
+below that. If that happens, you should be able to see log messages in
+dmesg similar to the one posted above.
+
+[1] https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml
+[2] https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c
+[3] https://github.com/BijanT/linux_patch_files/blob/main/remove.xml
+
+Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
+Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
+---
+
+I am not very familiar with the memory hot-(un)plug or swapping code, so
+I am not 100% certain if this patch actually solves the root of the
+problem. I believe the issue is from shmem folios, in which case I believe
+this patch is correct. However, I couldn't think of an easy way to confirm
+that the affected folios were from shmem. I guess it could be possible that
+the root cause could be from some bug where some anonymous pages do not
+return true to folio_test_anon(). I don't think that's the case, but
+figured the MM maintainers would have a better idea of what's going on.
+
+---
+ include/linux/mm.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..6f959d8ca4b4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2459,10 +2459,10 @@ static inline int folio_expected_ref_count(const struct folio *folio)
+ 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
+ 		return 0;
+ 
+-	if (folio_test_anon(folio)) {
+-		/* One reference per page from the swapcache. */
+-		ref_count += folio_test_swapcache(folio) << order;
+-	} else {
++	/* One reference per page from the swapcache. */
++	ref_count += folio_test_swapcache(folio) << order;
++
++	if (!folio_test_anon(folio)) {
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+ 		/* One reference from PG_private. */
 -- 
-Peter Xu
+2.43.0
 
 
