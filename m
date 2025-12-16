@@ -4,103 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DF46D5B87A
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1952D5B87E
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 01:00:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B73D86B0088; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
+	id 3BBDE6B0088; Mon, 15 Dec 2025 20:00:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6FB6B0089; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
+	id 39D556B0089; Mon, 15 Dec 2025 20:00:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6306B008A; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
+	id 29BFF6B008A; Mon, 15 Dec 2025 20:00:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B8766B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F9B5601DE
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:46:11 +0000 (UTC)
-X-FDA: 84223492542.15.96862CE
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5B3491C000E
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:46:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1240E6B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:00:00 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7A6B140416
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:59:59 +0000 (UTC)
+X-FDA: 84223527318.10.2268D98
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C5ED020002
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:59:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=KZNxntaw;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765845969;
+	s=arc-20220608; t=1765846797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bFwf0Cz8Ds/9SlIOudAhlLkA1I+suJ0nQqlbDp0m040=;
-	b=ICDvQquo0QPbeq7fGLvwcXZdRFCSBmHfajPOd0hyZguimGDyrJWjkti4ys3aGf++TKxCtd
-	9NqBsCsZmLlcCdRlb9xI+oUeLXEY4ix0LQeqhjK1UUhKPiOlzA/0+N7DBS7V95yia+7Jjp
-	KmyX/+36cQxLmymF6/RB8koAARoidFw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8XwPO9yMCVhQskNTI1ysT1se2RsNXzL/QNGlyZ6nBCg=;
+	b=BVrM40XcNxvzY9GQO6LzRcJcrTnOvBRss96upXyMlKKPe44xg754NJsvDu5/oX54uEUfZR
+	JUbjttPVuSW8kUP4oY+4FgTicJj+TWj8USYpVHLq1MJcvuuQsRqFcB4ttAqShk3DhE/T+y
+	fRo40jyerz1Cx2sJcwKXsbLNRBXs57Q=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765845969; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=KZNxntaw;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765846797; a=rsa-sha256;
 	cv=none;
-	b=0zU7yRkXFODWtPKuD9nPM0lmo62zFcNME6toiYTdubyhoEt7AFuOe2kg3KkieB4f1aAUGG
-	ENrLMqMrgvqTqWI7HWcHjWaL1UBh0HUkMI8CwpheNpGKBoWWXgVhpKeRVOrLg9BMsltrPi
-	n8YSgjiwiz4ou+dwfE1gxdZUUlw6nw0=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVdWg1GNxzYQtkd
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:45:35 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 865B91A019B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:45:59 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP2 (Coremail) with SMTP id Syh0CgBHYH_Gq0BpmudUAQ--.49701S2;
-	Tue, 16 Dec 2025 08:45:59 +0800 (CST)
-Message-ID: <9c5a5020-107c-4521-9402-41e614bd2803@huaweicloud.com>
-Date: Tue, 16 Dec 2025 08:45:57 +0800
+	b=Uj8BXITJCdnsdTCR3jdCkDTKsQ9BbUAzPKwuF4u0kEYWCOxqZ7lP6syVh5OnkIndrDs+gW
+	KUI4WHeN7DTHY4GY6CRXBOZpYrMYetEbWa1pMQNehzX1rnCRyXJWaw9IRRUtmyRT+vjHNL
+	T8I3PAdp4S3Og/t4nPsF6QdWxr5N6kA=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b89c1ce9easo4643365b3a.2
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:59:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1765846796; x=1766451596; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XwPO9yMCVhQskNTI1ysT1se2RsNXzL/QNGlyZ6nBCg=;
+        b=KZNxntawW40dF36LNkChGNabsekO1xeoHpWvPZviBk/CevsD7l6PYysjJOkaU5a5Uq
+         rMxaox4Tzxwdapp2ptzmtTh8+Qi0HTmryxoLnp8LqcMkYHTAOlcCm4u1FvaNkjvcoaXI
+         4lVQvJ10mx00lJPWQpR+yI5HkXNjP1I+2SPAQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765846796; x=1766451596;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8XwPO9yMCVhQskNTI1ysT1se2RsNXzL/QNGlyZ6nBCg=;
+        b=EKjpR2AEatG9rjKHoj4mGUxowmFn4/QTATuaKqp+UYh35B5UvoQXitV0rZFo8QtldD
+         37oSh1FUde0vqZBqIFs3Au2x/mqsMH8knRJ6wFZ2i2OJOMXYWLjC319RpLEBmkQ3gy7N
+         L+QSDCMIPeTUk4HJAeIhvahvcOMvB/zxl01hIi4RdbwIFJ+LLDjUBVgIFfqWQtKqBxL5
+         ziEF5jV+JcpedI+6oiwV0xCpovUwb3pcefrhfiDERb+amj06Jse7ybplXuWf9m6HtOpZ
+         lz/Ar3x9zBlQjM8/50BJk+FwMjr2x3RlZR4fPzt8ay1BdY/XDcbpP9SzoMMTxXjb5CAt
+         qXdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOJDZ76Kp4hWA1xxoui6ARB8G3E0Jo77C6iUlCH5mLr/hpCIlROO60iJjzO9bMahc+XjAXtqxNzg==@kvack.org
+X-Gm-Message-State: AOJu0YzBqsyPrvHUR4kggvx6IRgAX1dRqtIHnDn8vECI70X0jKZL39sp
+	NNVQ818728vltT+OApMZ+fow6R4HH7vJerumg4r+a7TVbicE05pDXeDbp2FIqkrcow==
+X-Gm-Gg: AY/fxX4cPx+sOJrWLYBR1ydq9P0Ngs39epbdySUWxRzDoLKV1VZur1okElRZQyV2dVZ
+	wDgRcExt+rZMdCSGwlvcohIqwqTY92tCHt6L2CFK12Uh94/IixTycmaffVtD5ar7E1EYc3pmveM
+	gX+36Twje4CmT9kOlkdwEosyyptAX2hCpBhuPscGb8fTveA0zqUj9gqPKIPE/4F6ist69R34u2y
+	C61ik841d52WRskmzU35jz48cj3iGjYB16xn4ElcVgdE86j7YkNFuqEEq4Zlx/LVdYqnfnA7czd
+	3MMI7YuC/XnGD99o+4+PPjabiaj5ai54Wywot4ypB31DwMY1S0gM31w5xyBxudxkdGvJ2Yfpgz7
+	Z5O7SAr38QxN9Wh6SadGc1cByQspqEWGpQz3HCBDQuFr4XcRKvm8NnHozo+SxV1r8Lddyqhzl/7
+	iiSoxhAQQUXgQ2ka5S3sc8JI4/SaAVyazQKxV5ggu8n6QDrkhsnOM=
+X-Google-Smtp-Source: AGHT+IGEC3wHBt1cpaWxFq3rArlKaxZEuML78xaGrv1POPMuUxQiI92/Ql/BFfcCGA/NMFccVMpAMA==
+X-Received: by 2002:a05:6a21:9986:b0:35f:30ff:89db with SMTP id adf61e73a8af0-369adfb32camr12542999637.19.1765846796634;
+        Mon, 15 Dec 2025 16:59:56 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:88fa:c762:fe19:6db7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2c963b53sm13573171a12.36.2025.12.15.16.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 16:59:56 -0800 (PST)
+Date: Tue, 16 Dec 2025 09:59:51 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Brian Geffon <bgeffon@google.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	David Stevens <stevensd@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH 1/3] zram: use u32 for entry ac_time tracking
+Message-ID: <gqkugg2q3hafwikx2wvnsh6oa44ifbtuskmigsqbrkaztjwj4i@33n5p55zq3nz>
+References: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
+ <CADyq12zu_o1fEz2B0nrZUFhbnEgiLPVkJv4ku5mrXYNBBNQ-Dg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next 0/5] mm/mglru: remove memcg lru
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
- zhongjinji@honor.com
-References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
- <oa62a226nagmrqbc23kys3yw3ouxkn5spcizyqqevsuhkurbsv@tvvwqlgu5yum>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <oa62a226nagmrqbc23kys3yw3ouxkn5spcizyqqevsuhkurbsv@tvvwqlgu5yum>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHYH_Gq0BpmudUAQ--.49701S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UCFWfJFWkAryUGry7GFg_yoW8urWDpF
-	Wvka48Ka1fJry7Jrs2y3WUZayY9ayxAw4UAr43GryxA3s8ZryFgr4Iqa15uF4kCr48Wr1a
-	qr1q93ZxXFs8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 9m5gxkzm6cnpy88pempuyc7yfajr1t6a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADyq12zu_o1fEz2B0nrZUFhbnEgiLPVkJv4ku5mrXYNBBNQ-Dg@mail.gmail.com>
+X-Stat-Signature: 3c6dqzs6uu689954za5rso488oncn96p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B3491C000E
-X-HE-Tag: 1765845964-431165
-X-HE-Meta: U2FsdGVkX19dhiYYTD0duUy8OjjtXDL61UfeyZs//MzpMkgITPe8Z1LeZwWWTPpCOxIydEdiWycqzMAR9ARNU9thD5KD9fq8crJIAZy52jZVzbRA3MuPgFvMa973RR34gwJOoV3/qhE6jlbx1/xhIexXr//nx8p1bXxNpFg1bmp19PO0bCLlz4WkQB1MmoN4YNr64jiCl7W/iYh2e2jqS7n6I8lyQ41EJyo7Jjxc1S0qJyXzfW9h0fjocIs4Bca4FayuYxuqdjQUXCMIKw3ed+LLDjKGD7/lDtVaM4T+00dxBGhFZRucD3WHZ/sAHiH1CTgENkb3ezH7++S9gk08enCo2LwWYpCvkrMVQNm4qDc/1tFAA3nsL9BUcGJShqnU8szxxtos+qDrsV1JOkNVn3ClMv00hOTZW9GZYqazaexZwHBhOiZArWB9XUWtdH6WRQdPlKSDiQfPUAn95/esg1rTlVQdwTjjhaiLv94vo5TFUnVz0+Z1X4ShDHaw01X7/gr5DvabKRPmcLW5BMQfu4XnS7crANIkelTtmBwIi5AGIOaGaV6+4r/Ai20eUewHNIziKFg+Lp3LAKLGAhZX1aL353uxLxKq4yXQjRDYFiTD8sNLfI9YXpu439/ZBGDRujzsnIa1q8rVtTlwtkkNR/dIY6pa5IXQ5zZItbSIjHMtyUea7WakG51jtTR4j98jUhit3TZCuc/y+nxlMuTVA7bOdBai5tl8psDY3xRiFpZDKWHY0e31gG/28BMqMSW/k27/ZRPaZHsmpPW7qqMzoWOqUJRFyX7uY+V+xPbt/Sx4bBI0AAC2bzddBChUuM6f
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C5ED020002
+X-HE-Tag: 1765846797-808300
+X-HE-Meta: U2FsdGVkX1+WTvbdCDaXH4ufAlgPb4mKIZfs6AIHsQHtEe4TFl7fR4YrZ1I+qkMhg7plf0IIe7RDLk6ZxGdpRW4ukux/VQa7IoLGhI00hQnkPLlE/0ld7rPVuf0wJTRAtC0Iq9Dk3IfM888dbPUJlgQrmhIQf9UY62TeamgO6smiILvyvsL1RMP1RDzliUB5/bhh4zM3S1Ye52xgKtDweH1hc4H4tTr6AGLjw30wN7A8voqH3SfUyk4HPmshPDh2J0521nViWUoSaVJ/K3tHNnfv226TghxgysRcfRWNqZPD1fer4B1+Nyzy56GLir8ZdoghDtK3J6yUrB66ywT8ytDjK35ev0H0T/sVFNIZ5oQ9jFj/CvmLEQU9iEdRamlAK5Eyn3ssZjyoDwee+e0oLawki/92DMtbsP/CRxmaoBPPXlOlAvuVy4PWOge3LKTCJ2DsMX9tLaXDQGYSIenb4/wsYjXfUzoi/P+sKaGGJ2Yt4yMCcygNm4xuZg22CSV6HmfrM0617j/lyxHSK03jvfO/KzW0/p6xAR6BfBLvQ4ujrxLtYxW4qO803OMGxE38aQFAEzHS2IntE3SqyTufVzw/9FLg3ikmCUMyYq2qd1Mji4KmbgDTxT5aOpBB9hWVv4EclxRzjsPvX9n28elYqJoFCAmDHQkrTIUV8JfR3a54aN9fQzBX/SwektmRRyLnTUd5+ssPixRKZAzFOpIs+UVJ23RgRj8K2YvEzsHw/HDi/VRvmDpGu0kqG2wJdj/E+3SvyE42zoJ0H7g+eIYZpeDKi5SfkV4322PaioB+hM/XyG/bwF1DJwcD61mludADjS1UrOaa4TQ0GjYNjjYLyfB5vgk3z2HtemZR1b9xKp+nkRGQfeMWWITX9IOps1qxV6Ln/1yMjFOFd58JQjoR6f7lHZr+ORQETnp/zyKuEQg4TmsLXVYw/aHQNOzhkL/R5uS+FOA2Lt9LDVi+dHX
+ bpGG50bn
+ mqgFDL+NUGim9QBMkhw7jNRGIUoU1+hHj/xq+soWo1ZNy3C8tOlSNpLWSbwf+RGphaJrOmMTfbN655L1GwH7kD6B88otQ4/Gq355uYPDmIze3eegL5tudHFUKy1Si7WF6pO/S049zrUsxes+igJlWwMYUJoPqddBo6qOecYCLuc7lcG65Rrhow/IDeL1mkIra7tTN0pTYKziae6eNZ6TtYZgNaZhXPrB7IXI1jsGKWs8aId0TAKYKgBhNUn1lPcsQqAEVle2UM55cd1LzaN8BX6yLOnMKfNGZalne/hq/6Yq6qX3dnk6u+ZgInS1RjWlShUjPhH5/32tqsKHqdvvYKhZsfWjFTxZ85d5fObQzAUHoPHQGWnOdj5s4fxAfu3j/eYFKRd/fX5sjL97IZQaZkK5Ckg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,67 +118,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/16 0:18, Michal Koutný wrote:
-> Hi.
+On (25/12/15 17:31), Brian Geffon wrote:
+[..]
+> >  struct zram_table_entry {
+> >         unsigned long handle;
+> > -       unsigned long flags;
+> > +       union {
+> > +               unsigned long __lock;
+> > +               struct attr {
+> > +                       u32 flags;
+> >  #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+> > -       ktime_t ac_time;
+> > +                       u32 ac_time;
+> >  #endif
 > 
-> On Tue, Dec 09, 2025 at 01:25:52AM +0000, Chen Ridong <chenridong@huaweicloud.com> wrote:
->> From: Chen Ridong <chenridong@huawei.com>
->>
->> The memcg LRU was introduced to improve scalability in global reclaim,
->> but its implementation has grown complex and can cause performance
->> regressions when creating many memory cgroups [1].
->>
->> This series implements mem_cgroup_iter with a reclaim cookie in
->> shrink_many() for global reclaim, following the pattern already used in
->> shrink_node_memcgs(), an approach suggested by Johannes [1]. The new
->> design maintains good fairness across cgroups by preserving iteration
->> state between reclaim passes.
->>
->> Testing was performed using the original stress test from Yu Zhao [2] on a
->> 1 TB, 4-node NUMA system. The results show:
-> 
-> (I think the cover letter somehow lost the targets of [1],[2]. I assume
-> I could retrieve those from patch 1/5.)
-> 
+> Why not just always enable CONFIG_ZRAM_TRACK_ENTRY_ACTIME now that it
+> doesn't consume any additional space?
 
-Hi Michal,
+It's "free" only on x64.  On 32bit systems the removal of
+ZRAM_TRACK_ENTRY_ACTIME will unconditionally add 4 bytes
+per zram_table_entry.
 
-Thanks for the reminder—I appreciate you pointing that out.
+> Also, why can't we do this with a single unsigned long flags
+> as before and have a simple method that isolates and casts the
+> lower 32bits as a u32?
 
-Apologies for missing the links in the cover letter. You can find them in patch 1/5.
-
-> 
->>
->>     pgsteal:
->>                                         memcg LRU    memcg iter
->>     stddev(pgsteal) / mean(pgsteal)     106.03%       93.20%
->>     sum(pgsteal) / sum(requested)        98.10%       99.28%
->>     
->>     workingset_refault_anon:
->>                                         memcg LRU    memcg iter
->>     stddev(refault) / mean(refault)     193.97%      134.67%
->>     sum(refault)                       1,963,229    2,027,567
->>
->> The new implementation shows clear fairness improvements, reducing the
->> standard deviation relative to the mean by 12.8 percentage points for
->> pgsteal and bringing the pgsteal ratio closer to 100%. Refault counts
->> increased by 3.2% (from 1,963,229 to 2,027,567).
-> 
-> Just as a quick clarification -- this isn't supposed to affect regular
-> (CONFIG_LRU_GEN_ENABLED=n) reclaim, correct?
-> 
-> Thanks,
-> Michal
-
-That's correct. To be precise, it only affects root reclaim when lru_gen_enabled() returns true.
-
-Note that the generation LRU can still be enabled via /sys/kernel/mm/lru_gen/enabled even when
-CONFIG_LRU_GEN_ENABLED=n.
-
--- 
-Best regards,
-Ridong
-
+There are no upper and lower 32 bits in unsigned long on 32bit systems.
 
