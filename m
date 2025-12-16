@@ -4,83 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AEA0D5E133
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 12:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AAAED5E133
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 12:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2EBF6B0005; Tue, 16 Dec 2025 07:21:51 -0500 (EST)
+	id ED7CB6B0089; Tue, 16 Dec 2025 07:24:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE67F6B0089; Tue, 16 Dec 2025 07:21:51 -0500 (EST)
+	id E5B9E6B008A; Tue, 16 Dec 2025 07:24:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0F286B008A; Tue, 16 Dec 2025 07:21:51 -0500 (EST)
+	id D2FDB6B008C; Tue, 16 Dec 2025 07:24:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EA2B6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:21:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 409EC1A0292
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:21:51 +0000 (UTC)
-X-FDA: 84225245622.21.5A1F0C3
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 502B0180018
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:21:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U69mnwiJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765887708; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0026B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:24:18 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D20513B4D7
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:24:18 +0000 (UTC)
+X-FDA: 84225251796.13.8FDEEA5
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CE797A000C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:24:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=g637eP12;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765887856; a=rsa-sha256;
 	cv=none;
-	b=2U8+fwGR2De2SdhKr+ORrHVx9voUtejIgZoAF0M+7PXhYAsMQ61zR55W+Bu/50vTpCmqfk
-	iaL0OM+VkM6RAF2zq59EmSbPJIltkG5Fy6nIhdAKUJS0kGdeh58hnP9TZvMCy7kYWgkh2p
-	aV0zQl9KPTHFT4h+vT2+bLzst65698c=
+	b=SRpTooVOmRrcoqP/rx7I895aWlTyYLu6sxZVrUWisEbTtNqxAxGnlZIWfwUNVJAmEJpLyE
+	+sDNwH60ffhkzc6urRul9cDwRntO79IOQXq3Pf1HvRCHGVeSJm4tZGOULALsXaWjxGyBZR
+	U6TUwN1My2crekVEKg1+zo3ORlqqLwU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U69mnwiJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=g637eP12;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765887708;
+	s=arc-20220608; t=1765887856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pbF0u0Cag/xUt4G/7VIbR2C8b73uQF4HyJnwoavvYk0=;
-	b=i9aVJg5P6EZDrGdmI/hkYGeqrzLdq2zNTs652F4rmuFdadY+KA0IuGqvA09yN4hQJOy2b5
-	QwgOsMoLVceXP6bDfX1g4ppfJCYK7iPbyXv+owP/9ArEK5ZV6awa2DhpGaGqy45yu1PMKK
-	ypolr5a1IkRHrawSat0N79THCw7Nvjk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765887704; h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From;
-	bh=pbF0u0Cag/xUt4G/7VIbR2C8b73uQF4HyJnwoavvYk0=;
-	b=U69mnwiJi4hK5Wk6vV0U6QmShqrIJq1WNzMYP4sshoV9Z4FKNM3mx8tDfYYTGNFe1/NvN2327F3eoMMugKApP/kAIZOPfbNwdpKySa3z932N5cO4Rl4mevmCThfPEhXK3x03NMpHaenAsyofyq/x4jconEoWZJ1BW4Va+jY2V5E=
-Received: from 30.251.44.100(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0WuzbAXT_1765887702 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 16 Dec 2025 20:21:43 +0800
-Content-Type: multipart/alternative;
- boundary="------------lYJC5HRBWJqlBZ4uGxqIeQOs"
-Message-ID: <cbab4998-25ee-40b8-b789-8ecd92471fdf@linux.alibaba.com>
-Date: Tue, 16 Dec 2025 20:21:41 +0800
+	bh=lLRQaT+PfrlE09N+ydMoSz7Mn4llxrI8kjoKOroo6L4=;
+	b=k94ACWrkUYIGmT85Pe1Oi2ZhApgHA7X5sGhJ7W3kzcosD3B0jRDM4k09UYPYUkwR+BBl7o
+	3ruGzvyR10Fb5NoX+IlqE6nIAJrScsDOck4eQSBLuxyAKwd9uhIYdvyth5jGA6cFbSzJHH
+	pef8ypcGZ+liIcwdLc6oPGWElVYaG2E=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lLRQaT+PfrlE09N+ydMoSz7Mn4llxrI8kjoKOroo6L4=; b=g637eP12cSdDeAwjLUJVp9bFxA
+	NCfokUWkyh4uqLE48N1Kt6KCkC0EROAHECKL/1Pfv7IamNv287e7/ZRrq31y34dK3TYBeWd+ECvxs
+	L2SBBUq1PaIzX16nemfVr+aLsuXjWsLOgrSUi5KRBcSlf5V/ymVNJIDj3BrGeJPcaT2nC099cRgIH
+	jZMyRMXi3Rdob5lJ/38vx25CRMg8UqRuY8Ehd0Lf01AEduHpm4wgTpBdsE5z9c25E0Q1CoPEhtZ43
+	C3TmwnFQoLCm3OgM+z6Aor54f4zuN6+7brFHBUbgoXnQ1ypFdhfOMuTF5UMymOEpBLnFKLBNM9Sfb
+	JfHr4YQQ==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vVTES-00000004hkA-3IWl;
+	Tue, 16 Dec 2025 11:28:44 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 60ABA300220; Tue, 16 Dec 2025 13:23:59 +0100 (CET)
+Date: Tue, 16 Dec 2025 13:23:59 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marco Elver <elver@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <20251216122359.GS3707837@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+ <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
+ <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
+ <aUAPbFJSv0alh_ix@elver.google.com>
+ <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: add mTHP swpout fallback statistics in
- shmem_writeout()
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>
-References: <20251215024632.250149-1-tongweilin@linux.alibaba.com>
- <3c86d612-aab7-4e80-bc6a-3ccf2bab9c34@arm.com>
-Content-Language: en-US
-From: Weilin Tong <tongweilin@linux.alibaba.com>
-In-Reply-To: <3c86d612-aab7-4e80-bc6a-3ccf2bab9c34@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 502B0180018
+X-Rspamd-Queue-Id: CE797A000C
 X-Rspamd-Server: rspam10
-X-Stat-Signature: pqeipcdjc476pdwbkapr1wn6a5iai764
-X-HE-Tag: 1765887706-415640
-X-HE-Meta: U2FsdGVkX19b82GACKHKsIFtpPHkuSk7qCdm1EEEKmZ0DiwaOd7hXUDmzxMdpGyxpb3dMiqG6IFU8kALND/+Mde27I+oxCDT6lSIfXVC+Ms4ZZ5CIu2Cx+rR9xrXWOViHdnSNVWCCVrTcf4YJnIifjywX71RYGygEu8ePmd0LS53X9hRj6R2hAgRlDY2mDFYl5I1pn8aokQm3fRUVrlOjFeVPXCBo0CH87QA47390xpZUuuzLM7jWqaNPOwfHozfKaJAvGbb0fWnfVB/Sxj0yOiny9L6EVNvnuni5GwmRo5wiH+mZCxynEw1W43VVwFQIpJQDmkqWGsmaoGwHNfP8mrSXkCk89WLdG6qTZQH16rmK4D02JllzNGLqTB+l9XHFK3TBcGbWFXIkQVItbO3a0SFFgFGDxq3RhkLf6p907Zq57yCoR5d9y8pyoxeWm9JQBELtSCmPB5lC8qdccCZCl4+zVcIzXdwwsv7NdKTtqsxiX7t9HaAPT2MxHymoSq+AGcCmJyNbi44KInB7P1ewZbxrOAOE0rpl7xdCun14581JQ7qO47ntxRqNa1gEgKB+jlIPD7FC+doD0UCSfXxES+RJKQTO3YarEd7E8Zk7CLBdzK9BXVgzZum3E7+v94dnHom7I3iWWN/W3YRcsRzhb9U+YCDZpdx17F1fVVz6pvUOTD+KtvsejnhcoRo3PHpgOSe43/3Kd6whe1mOEVZ1gibAYY9wamR822tX9R/6LZeu5w3r9dep3wZkyfb6ND4nN+7UIjn1Kx9jUnAh6+BA5GnxhHOFfL1GQz9cJUQyBc8c4FlyHxR41BLG7p1MKhbp3XQ87YsM4hVJTZQxVDaYqsaj7zNZ7jE7o3Mtt5VyB1wtnmEV4540XpdVjWD1P2aqbCV2zF7UUYxuLnfVdQlrhi4RXBlMcNGpCt1YKT0rpaHkND6z+quZpLE4gf6ANSibhzxSvcb2DtyHvJhuDe
- 0FeMJGZI
- /JJtzaQN6pyM6wddfpG6JNgC5yLrJUPcNh9upH2yCz3a9YDPr0JuhjzG2sw==
+X-Stat-Signature: b3n1ry43k6orek4bczhp7rkmjnwfo314
+X-HE-Tag: 1765887855-691440
+X-HE-Meta: U2FsdGVkX198FZUbVE3VWy5iIgDB9C3PT/17/qjO3lZfrqz1jm6rpBgLSjU59rf57pyBxUzDW8r3osLycnTjtj3VG8Kjf49+hfNoevFjZjZOnPJIKoFloa5ilaonCXxU+2UrAVrIfx+bvexM+t2+XNO5LqEUiXUgCCTtm8ZS+4eSaA/2b2uNccRi53EnS3ttxsdbtchuST+LkxI8wrlFQR1enHX1xK6FhS9z9RuypA3vsIyY6Mc8Zq+HcqE+aNJlITr36Ur2m1eLdJGyHOIgBB6O0nZhTX3KYtbCdGrtCCvBYDX4Cfo7wJ+/D6oFQ0eXnxWCorm8WvscwUyAtSB/AWTmQGAO5An3CJ2lB9D/TKaYecNuteqJF+ayTimhX+CA6aKTkGVUyu3LWDjUv8ZT81wz3GKToYMyjhjRfJyKkiM77HKryhxe9ZQmF77GI/wsQwnymG1/9c2DKN0ySshHN31JbmCEMKq24ezrvtyKyGCp5HOct6zmjYD4g4fnDwDZpy/FvDljdWBftoIbovCkA3/C8hBAgOSbQPBl0oJsNVGoEyfdvrKRSLx6m5nym9fDpoX3YX9PfrRvYUXuA73DL82iN/uAA+NS/O+IXF/pRsXDp+/oXM27rX1gTEcM6sKNyUSgEj6zIOjAZTCe87WN0OXf4CZ44gVZvjQSRrnlEzArTjhoYFSwLWN7+9o6bHutReaCwSpFVLWilX2+uxaWtZqKdGI+WbcE8++eKRgFLNR5Jokl9q/JagIEQsnq2YG9iSF9k8NHnNCBymobvvrBBs3VA1YgA9sycVQQkHpxpwfYtrFNJUzDxT22/x0lMkGrGpzikxwy7EXqXMwsQKX9yKwWxaxi5d8QSryHE0ukbdau7mWiEjVPKUSuMBRqiUU7XQSGW4MUNIWH9wF0EFIFc0UByP4kMz+PJxkp7dl1OjDzUWS9QdoCq9FzcffW6qI0kVBj5EO/3W7YBgIhkTT
+ 5OtnBy19
+ HFGlZlGjiDCBnGtsJxNrnhmp9+3rDZJSKpo+Gd296u6j3QsXAs9xwY/6V+jPAtlxtyGjvJ/JXRx1Fx9QQeYNJN0NRHBUmJvE9+I+b8xL8l56SvE0NAY4VdGeEputQorAodigLmFAbIiWBh9OQepNMXJPiyS4acNOsWqTnj4BsvhROXHhgMsa9gYWEAj2sEOJY9e4UdMivxyr4GN2zg7exZGUz2ATIU2NmERT7pRtTekZjHCqdJiuizoOtlBBjM9jknxkSmA1K9RFIGLn1yAdjAtxeUpHfFFikoRXTi+kYy66J5rOx6u0ccdlQoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,162 +136,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------lYJC5HRBWJqlBZ4uGxqIeQOs
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Mon, Dec 15, 2025 at 04:53:18PM +0100, Marco Elver wrote:
+> One observation from the rebase: Generally synchronization primitives
+> do not change much and the annotations are relatively stable, but e.g.
+> RCU & sched (latter is optional and depends on the sched-enablement
+> patch) receive disproportionally more changes, and while new
+> annotations required for v6.19-rc1 were trivial, it does require
+> compiling with a Clang version that does produce the warnings to
+> notice.
 
+I have:
 
-在 2025/12/16 14:34, Anshuman Khandual 写道:
->
-> On 15/12/25 8:16 AM, Weilin Tong wrote:
->> Currently, when shmem mTHPs are split and swapped out via shmem_writeout(),
->> there are no unified statistics to trace these mTHP swpout fallback events.
->> This makes it difficult to analyze the prevalence of mTHP splitting and
->> fallback during swap operations, which is important for memory diagnostics.
->>
->> Here we add statistics counting for mTHP fallback to small pages
->> when splitting and swapping out in shmem_writeout().
->>
->> Signed-off-by: Weilin Tong<tongweilin@linux.alibaba.com>
->> Reviewed-by: Baolin Wang<baolin.wang@linux.alibaba.com>
->> ---
->>   mm/shmem.c | 12 ++++++++++++
->>   1 file changed, 12 insertions(+)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 3f194c9842a8..aa624c447358 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -1593,11 +1593,23 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->>   	}
->>   
->>   	if (split) {
->> +		int order;
->> +
-> Could this be moved up near the 'nr_pages' declaration instead ?
+Debian clang version 22.0.0 (++20251023025710+3f47a7be1ae6-1~exp5)
 
-Thanks for your reviewing.
+I've not tried if that is new enough.
 
-IIUC, this|order|variable is only used inside the|"if (split)"|code block, so it's best to define it here. This keeps its scope limited.
+> While Clang 22-dev is being tested on CI, I doubt maintainers already
+> use it, so it's possible we'll see some late warnings due to missing
+> annotations when things hit -next. This might be an acceptable churn
+> cost, if we think the outcome is worthwhile. Things should get better
+> when Clang 22 is released properly, but until then things might be a
+> little bumpy if there are large changes across the core
+> synchronization primitives.
 
->>   try_split:
->> +		order = folio_order(folio);
->>   		/* Ensure the subpages are still dirty */
->>   		folio_test_set_dirty(folio);
->>   		if (split_folio_to_list(folio, folio_list))
->>   			goto redirty;
->> +
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> +		if (order >= HPAGE_PMD_ORDER) {
->> +			count_memcg_folio_events(folio, THP_SWPOUT_FALLBACK, 1);
->> +			count_vm_event(THP_SWPOUT_FALLBACK);
->> +		}
->> +#endif
->> +		count_mthp_stat(order, MTHP_STAT_SWPOUT_FALLBACK);
->> +
->>   		folio_clear_dirty(folio);
->>   	}
->>   
-> Otherwise LGTM.
---------------lYJC5HRBWJqlBZ4uGxqIeQOs
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2025/12/16 14:34, Anshuman Khandual
-      写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:3c86d612-aab7-4e80-bc6a-3ccf2bab9c34@arm.com">
-      <pre wrap="" class="moz-quote-pre">
-
-On 15/12/25 8:16 AM, Weilin Tong wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">Currently, when shmem mTHPs are split and swapped out via shmem_writeout(),
-there are no unified statistics to trace these mTHP swpout fallback events.
-This makes it difficult to analyze the prevalence of mTHP splitting and
-fallback during swap operations, which is important for memory diagnostics.
-
-Here we add statistics counting for mTHP fallback to small pages
-when splitting and swapping out in shmem_writeout().
-
-Signed-off-by: Weilin Tong <a class="moz-txt-link-rfc2396E" href="mailto:tongweilin@linux.alibaba.com">&lt;tongweilin@linux.alibaba.com&gt;</a>
-Reviewed-by: Baolin Wang <a class="moz-txt-link-rfc2396E" href="mailto:baolin.wang@linux.alibaba.com">&lt;baolin.wang@linux.alibaba.com&gt;</a>
----
- mm/shmem.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3f194c9842a8..aa624c447358 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1593,11 +1593,23 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- 	}
- 
- 	if (split) {
-+		int order;
-+
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Could this be moved up near the 'nr_pages' declaration instead ?
-</pre>
-    </blockquote>
-    <pre><span
-style="font-family: &quot;PingFang SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Tahoma, &quot;Microsoft YaHei&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Thanks
-        for your reviewing. </span></pre>
-    <pre><span
-style="font-family: &quot;PingFang SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Tahoma, &quot;Microsoft YaHei&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">IIUC,
-        this<span> </span></span><code class="blog-code"
-style="box-sizing: border-box; font-family: monospace, monospace; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">order</code><span
-style="font-family: &quot;PingFang SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Tahoma, &quot;Microsoft YaHei&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span> </span>variable
-        is only used inside the<span> </span></span><code
-    class="blog-code"
-style="box-sizing: border-box; font-family: monospace, monospace; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">"if
-        (split)"</code><span
-style="font-family: &quot;PingFang SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Tahoma, &quot;Microsoft YaHei&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span> </span>code
-        block, so it's best to define it here. This keeps its scope
-        limited.</span></pre>
-    <blockquote type="cite"
-      cite="mid:3c86d612-aab7-4e80-bc6a-3ccf2bab9c34@arm.com">
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre"> try_split:
-+		order = folio_order(folio);
- 		/* Ensure the subpages are still dirty */
- 		folio_test_set_dirty(folio);
- 		if (split_folio_to_list(folio, folio_list))
- 			goto redirty;
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+		if (order &gt;= HPAGE_PMD_ORDER) {
-+			count_memcg_folio_events(folio, THP_SWPOUT_FALLBACK, 1);
-+			count_vm_event(THP_SWPOUT_FALLBACK);
-+		}
-+#endif
-+		count_mthp_stat(order, MTHP_STAT_SWPOUT_FALLBACK);
-+
- 		folio_clear_dirty(folio);
- 	}
- 
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Otherwise LGTM.
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------lYJC5HRBWJqlBZ4uGxqIeQOs--
+Yeah, we'll see how bad it gets, we can always disable it for
+COMPILE_TEST or so for a while.
 
