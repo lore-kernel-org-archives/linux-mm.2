@@ -4,111 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD88ED5B87C
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A1FD5B87C
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132EB6B0005; Tue, 16 Dec 2025 02:02:09 -0500 (EST)
+	id 412C36B0005; Tue, 16 Dec 2025 02:07:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E7D06B008A; Tue, 16 Dec 2025 02:02:09 -0500 (EST)
+	id 3C0086B0089; Tue, 16 Dec 2025 02:07:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 029ED6B0092; Tue, 16 Dec 2025 02:02:08 -0500 (EST)
+	id 2BF5F6B008A; Tue, 16 Dec 2025 02:07:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E70B56B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:02:08 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BFBC160508
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:02:08 +0000 (UTC)
-X-FDA: 84224439936.14.7134192
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8B851100005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:02:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=A5zmmUWH;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868526; a=rsa-sha256;
-	cv=none;
-	b=B1CDcdvFEBlhBnZVCsuoUzdBCf1Ly18tDUl9+KnI+l7DHxcdEESFLL9iOuD9VV7BWYbRrR
-	4qAzy48feFPz88O0nDabmu76PnuAKew+Cb7oEPGJSuvdwe0xPYnSadowZQXJjtKxHVZ047
-	EHOO2XxSKyItxaopypery1zMguKjim0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=A5zmmUWH;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1742D6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:07:49 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2FED60387
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:07:48 +0000 (UTC)
+X-FDA: 84224454216.19.A5708EF
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E54354000B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:07:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DtkALHix;
+	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765868526;
+	s=arc-20220608; t=1765868866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
-	b=DtvVjGTd14FZXjJOpX7XkOeOyg/dxdBgImiFf3bJXZaI3t98vv0XRgmYjm1NzmPq7dsGZg
-	MpaNaPa0kbo/rUZkmLupBi21tCUFWMJKctWPHpUWlEP1hf6zAiUtCfzPmaM649jTg21P4Y
-	SmDVAIxQZHGZgurRHVKmW0MmmucdO8o=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34c27d14559so2410194a91.2
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:02:06 -0800 (PST)
+	bh=HScJKo2ZJ/IGih9vrcGVoqKVZ2gLkTQ4915YFT77Pi0=;
+	b=0Cz/XgE640J/SzR6UBrh/Xt/vJY32dJcslathRBtrsdimO2aVlkx2JItl4NBQkR813Sgrs
+	SFALPwRDdTTox5stcwPNmsJqtmAxFG39OpFfzLmZk+OpAg0IXHUuNrZtKucRFo2PEpj+Oj
+	80z5OZlubSVKv/Hj9ApSkvClChj5WtU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868866; a=rsa-sha256;
+	cv=none;
+	b=T6SPIFTEjDxpwofEVJxQJxpCLB7BzlE3kOc92Y+A/9OUwuWuRLci/s9OfzAtOB/GgqjsZB
+	+iqzK9z1vXK9kxBVkdjPMxGvSoPHNV4mDn5jCNunjCpuUZHT523jHqZ9mvXVlQioTjFymv
+	bSNSotKyD2e7Pb6lUBgrn2bq9rjhr4Q=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DtkALHix;
+	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ee2014c228so31105411cf.2
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765868525; x=1766473325; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
-        b=A5zmmUWHRVztQ7XwsqubP4YGGnkB3OBdPzmWVKUvWdMI49sx25mWjvVNO0h7kDwQnP
-         mRP3qLr05xsioDaqriVpowDqTNmB5dF+1lTp8lFXPCFXapQ0yB87b7YLbt6gesjSR4bw
-         BLjudNSyehQxZT2s4E5ioRcAXokqM6WstzV0k=
+        d=gmail.com; s=20230601; t=1765868866; x=1766473666; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HScJKo2ZJ/IGih9vrcGVoqKVZ2gLkTQ4915YFT77Pi0=;
+        b=DtkALHixlA/qcSoDsDND7fhtdTUBbs8afsjRv7eYmSvQzt3Vb1aTRQhCGr32eyI16n
+         TyvrwWczE3usSYTY/ZKbhu2Lnp2Bw3fGKr88JO1PSGmbsd+pluhyQ1eZEeeO/ULjXxMT
+         OMuklK/12GUxKDUMltcb1mGxxB+ejXk/GoRUXdjXoUPLc/ELtw8F28sDM30vYd2JQP36
+         LvZdGJLYKPv74KfKE42FZ4jZn9hN3pQKGro81J2SueFSw/sGdkipwcmdKvzAhdnR70xi
+         /cmp7EpPH9mhdbDwt2xV/8qEWvt9ioRTPFKKcpMbxI3wllGj/oIKL9fC5r9swl2zuRSE
+         agGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765868525; x=1766473325;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
-        b=YrnakIK6UFovmYQphTQnvmag/vKy8TM+cNN4TOs7gc4hLrN3Za7aCJFKoH8RThRPr0
-         Fl08AXvaK0UmSRjCV36ztRbM3RaJJH6ZNRc5aNSTOtUV7hTac18E0+T+ipUssVhD+B5w
-         5/+slDp2m9uZlBiGUjD/XePwvuTR7WJGGBFljZ1b5iOiKgoHvZzhfcJMJGAGZwFPq7t6
-         zEVri1tvYsPttmfDcrgQB//BQfE3NfE8xUZTTPbENDAiBladCXQe/8l3/51Ki5X8fJwp
-         ym9RYGid7EIqRbWRmyd24rXy9wWVXMXBYqYU5CRtz8yVVORkuKzrLTiy2z8cyENHNbM2
-         XBWA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0SkxQlz8U0VJ1OgYphV4SME/GyvKjMlhVvfaKqMS4pomcycsp6xEAtkTL3OZxIB/L8QSamlFD5g==@kvack.org
-X-Gm-Message-State: AOJu0Yw6HEKV9ZCHdb+gIqynxRoUeGV5QdkxVuYWglkEUHs2CTsVeS0K
-	vqiO30GkJQmFILe73Xx3wPXix5YnKechkNbFx4sTqdEdQ7hd38OvOEtZBSmyL8ul1A==
-X-Gm-Gg: AY/fxX7mTliZlHJKKyxP9SGwf0j+LmGmcla2odBRRmq1kQkTpbdV4FgJQZBbrVRb10k
-	FM6gaJdxO4xaKUxd3GqBipcuTUFO0DIM80o1ef3jOZmEyM2Z/DA5isB4ns1wimz5ah6ZXfjDWwM
-	20kyJgYFnkaeOWVjHkwC+9/7L7ushS1zB6e9R7OELHpUWF8WOKXLAmjABA7NsdGjluk8bOdqJvT
-	kZwqtve2JGhA3nynjxHe6dwMmS2H+PBJ0DSn1/PZnoFTeD55eDQDTAPU/e5ht+KnRz2JKlmIpdA
-	DVBVUUI8j8du1zM5X/xIFWUrTvuqPgoNpLY8m6eajZh/Jq+Mo4ifV7vRc+29HN7CxXsS6JTmjEK
-	nfbGXRP0/f8CVI325BL91+ckA7IyjR3hcwzFmbq9qck/Vz57sKMlAwwKSMx2IGi5DITMFbVtyoE
-	0pTx6QIpmEylznvyx8ciuBJow6+N0V3xOP/Jzw0bDQTKAVh+9jd6DCgRovpl669Q==
-X-Google-Smtp-Source: AGHT+IEuT3/plOsYLD8BRfCul71EgZXqqD0VVIL0HHIfNo/gK2/0xTdny+oIdgWzIdgWBZHLY3E6gw==
-X-Received: by 2002:a17:90b:3912:b0:343:d70e:bef0 with SMTP id 98e67ed59e1d1-34abd8488c6mr12346405a91.21.1765868525248;
-        Mon, 15 Dec 2025 23:02:05 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:a48f:6b66:399d:86cc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34cd9a40c83sm177596a91.3.2025.12.15.23.02.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 23:02:04 -0800 (PST)
-Date: Tue, 16 Dec 2025 16:02:00 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-block@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] zram: drop pp_in_progress
-Message-ID: <e7ur36nfcppqqwqe4lgebb3prjk3lr7hlh5fks22ahsqz3bfyk@si6lxz5mqsqe>
-References: <20251216062223.647520-1-senozhatsky@chromium.org>
+        d=1e100.net; s=20230601; t=1765868866; x=1766473666;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HScJKo2ZJ/IGih9vrcGVoqKVZ2gLkTQ4915YFT77Pi0=;
+        b=UnlQSZCnF9Ar+0+StjDauBTfeYaT34lmUokxQirbs2iYvrvN3C4Xx5KCUx5QWR7xBK
+         pgLXipeRHwxRAxKSXqMbIp7kacoEbXIrD6aZ2mTAU1yGXhuUDLCXKVAwcddCErfriYOc
+         YI9uEnK86R3jI8YBGB5QD+yVP/kx9ANb9DUVj1cW+DoiVkEqbhGBYBjJnFuQB+x2h85Z
+         d4fVjwnrVjjhBNiVWWWv8oOvBV/7FPB5woZbM/dDsMyVWKIPIevCcmVftVaX3nellflE
+         I6uv4Leado6eCysFNO0uwvk1gFAocGNkEY2K2qjXswqLIolRF1kCnSlJN4omufzkM7pb
+         8d9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWYDPZKc824bSs8Qh+mX1l6c522WBQ+Jc75EKixLp0Jr+fD98kuySk3fH68rZ7dQ21g5Haf5pOHsw==@kvack.org
+X-Gm-Message-State: AOJu0YyZMLwBY3QLH8zKT1z33fwHjCANPz7GPHpis0qc1npyvMdB62t3
+	X2V++5W1pKluJjCNF4dK04U8sWMXyjXPUimqqp8WvRWlSd9DC2rLkCX33U7EL6gV8WniyRrdSQ+
+	0mg/nUBodeE9UfH5VphMjbh5aO0JnRzD7yVLA3xM=
+X-Gm-Gg: AY/fxX73eHfZKolaJtCyOTzg4oafT70x5EqV/oREHQFXnwcRc7PFdoi2xjW1Oyjf8to
+	5MA4KE6zI03MdhsLW+8ZH7kg0+NBUDDqaAMsRHRH6bN78l0a8uGvGwsMlcHifCeiT+322yA2039
+	xw3ufa12lRbvVEiquZylMEO5zbTlmTnRSOTSFXgES3qa3n8xCL0WngLLcTztB3LU4X6/QoGtnjk
+	9tImTCMr8JrZse3SLi+Wrcrs0FHkTMvDtp6j2a/OPTBqCkLXs/l8Ff7OF7qF8D2K4/mMEaKwKzi
+	TczExWWceOI=
+X-Google-Smtp-Source: AGHT+IHdFbcCr8rDYHyI9PjajR/t+4eN/PBNmV7BmRo8+mJOOy3yb1aGTT+f0yRNO2U2a9JTAylP005Pr7cTKtFcS5w=
+X-Received: by 2002:a05:622a:4889:b0:4f0:5dd:c963 with SMTP id
+ d75a77b69052e-4f1d04715femr185534361cf.7.1765868865896; Mon, 15 Dec 2025
+ 23:07:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216062223.647520-1-senozhatsky@chromium.org>
-X-Rspamd-Queue-Id: 8B851100005
-X-Stat-Signature: rbwdra1q4d6ngy9cb7x9fngpk7dt5n8g
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com> <2410c88d-380a-4aef-898e-857307a57959@bsbernd.com>
+In-Reply-To: <2410c88d-380a-4aef-898e-857307a57959@bsbernd.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 16 Dec 2025 15:07:34 +0800
+X-Gm-Features: AQt7F2qpFeQSv5QD2stCOPk1MGDu8zClAXpXqMgzVuI8pDG-5lp3de5bo6jqHcY
+Message-ID: <CAJnrk1Z9gddx9F1oSbq9bWfFefURCqoAg3SDmT2Wqrnb1bwrwA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Bernd Schubert <bernd@bsbernd.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
+	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
+	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: f49miseeioqiekj9bm4soepegnxkofst
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E54354000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765868526-117371
-X-HE-Meta: U2FsdGVkX1+PLjrWNwWEAdXPbgy5Upl47qQ0jY9hpHPmCLf10PyPBvVnS8sw7GxHkP22YN5wSoIPfBJBgqSg2d7R/YbpyZmo/PiHaC2MILwiTYYrkUX3OUwOf/3bbUyJ1fYtpekJ3w27dxF6SPO67jGRI7mKV5Nf61i7WUPodUjl7lI+82O1lC8zGHH3otKVgKw8PLUu0m6Itk+XlGGqz+2DLu3AJtbku9vhnFZpVxKLSoFMGXJde2LqD/1NHwnEu3BKOZC1YObzJW7MzgObDclBS4puQIQeE9FJcvvFwpnielZXab6Bg1XUjOY5Iqq9UYNJdke5TpzE+E1c8kRrZkCUTF5tvGpSZKhML+kCsLg3WQQw9XIk8uzvBMN15Vh0IWz8gtYrQI6X5ox7EsiLeSvCg82vkuQk4up7/PAJvqglftcX/+bRSF9+y54lEHAzsF/84lgpE8WqGrtxG5wYufTh3XUhmKHtPTCp32SkLM6l1dp1GFvPVW1IRNw3Wuk8QbuvpozMuHordyDMhhYNUIzkwaO/IU64u05SvhqtpKcdeRVtrwKljoakKjKeZJ5+o65RZ1BK3cUTjBaAsP+GuHPuTWXkxPGMKF8x+92cElsWJcYnRi6TendsBzlS651ysdRXgeLp4IdIBuVRRsDQuT9vb2kcuXgfAVXPZgeNgoTX8P0ns288RPcukCZM0FWvnhP1OHQPvELPT/Rwj5C/+szBCsvZMm684Ne6DFjxO9DRZRAvm1xKAHQ9oW/ULvA0f7YTD42xYugQnFhIzM91k/swlb+AIjPgrwtDKyY+NUI/MT2ch17QI6C4DI8DziN3x5x04kCCrC8BD5ok0PGg68hV9DnTAoM+hSVax8WFJLT4gxptucqRTN7Nk942W0gBmCDJUonhlTkbphHNBXoFxH5T4bVG99cdnSIA7CgBP6h3X6F4Yi2DheynczHM0gRklrn1VCBRjoHeC3WowJO
- PT1Sf3fJ
- tDxIS7PJu7doYckY7ywqsQppyRwS6VObJ7zcBuWDcBj+AbrdebYdsJDUlqRTYvqfvLPmHCf34gXgvgweZNq9gFdzgg58XyaYvzlEOz+1JpPFb2tb56RVXe7vywWmLOt95fvdekPqqYiR+fselB1iNps2lK8/n5Mc+C+pZuFu4IgelD1qbTjbDs4Ws7Nuju87uBTPDIA9DrrmDdYKyHlRCFBGJov/yT6pvPs7fCsMi3QSJXga0g/Nv8XmPboGXEs65VB2ExCPQgbjoZI4Cu/4ik7bUzqj9NwTiNrUfScQM+Dcqaxm+h37RUmr1fuwXc8w8c1Jyk1O8RLeFryvav9SFFzIL7Eb1MNqBS3QPT1VHwHV4foj2ohf2A/dXrQi+gr894CyPiTk5ZNjIUpFLPu1LxIo5bsY8huPHXAuiloruFrF/CxgJoEISoX35hZrwRQqf4TI7jBPi36sDab8=
+X-HE-Tag: 1765868866-325871
+X-HE-Meta: U2FsdGVkX1+CuehCO0Wpvy/JYBhZ/W/nJ2nMHuxqH6K+1wLClX9W224ExbBWw1qel4NR7X5A7vGMjzklHeyvvRPvzJ1x+W383MukuvqXnDHMZWVdEod0YHDN0rbcswVdDAn6Xiq5qbnkhCduUT6jdgTT6mOFm0lsYnBMMBOwTNo8gKTFwM1RkPqN+1zsko7pI4WkhJci99gi/2+WQqnpqh+tu3qK+79m3cr8DeWNlKCF3HTz++vaASq3WHnPybMHOJWBnyNV4nTyyiGLvktHlvkQQ9hi1MMMZGgxD0J+BOnzzAw6j9O2ed++2cr+dVXQPz0nXISsPz80QXoNubZ/95Fc1sqD1tRyjL1shGsu8ayKC7FYdZJHK4hKom57bXVCFwhSK/3WPXOOvii4A0eGz8o2yoLf0MkD6eJo7Awu03CTmkDTzRpPSyQFnRanWBKgL6MIhpj3DAJq4QqHb2/KX3Vmk7+RQRdsyXKnYYVsxR8PRX3/Fv4xal0Mj9qwoe6qZUrcLjgiMpLnMSia4q1Y114TUihVLOuHHW6qXH29hCsZzJ+ZsM3jS48s8MfbzED8STiaF68NHA0NJRX1R8X8mis3eZo+fp+yTAbILP3HWX2Go50crSB/8HByu/wgCXFxP+29d1wnQXXxdeNNwicnv/Z5n9+k095sOA6EzBAUwocwIu/Se3470TGgQC5JBqt9I/0Cd1gDVG7DwtXVZ8rP2v6CSWKKeYeV0fj/SYyM7qMpAmqzy2RPI/uDbkZAAxXzaXxdNX4hL5XaOao+o9nIFlkgGn68GVnLyhjvOe4WTnqNZM1BetTwWaTAyXQCA6jCYBdCjkaWS6cDOJAPZvGueGA9D5dTcBUw6abrds7r4uQZMoYEsI6mP+oDegF7yDTGoOzf4dEdI4dcbRMh2Adzx7um3kIViHBeuT+8VHpkr87SSldz9AwooLSR0j9tryxScQSWDJCU/r/55FI//M4
+ jANMyWt3
+ CGAlcF0wia64zYhmRSUwpPgI404wHEoitNPXvSCX6dNHyLwfVPDHEqM6x79y6fr84QwZ/zqfulyn94vCYsfL5xWqu2u9DnE0YhoOWNhRPBdCdJIFfWJSLRqvcjIvU97bcfAaVjtrKgh4LzF+ONTPGyDZIKetjxlhwnxbzq1xyjWNl2XAZVCBDEuCUz8dz/97rl+t6EIhq6u0UYzzPSUcWhj3cdARU3El9W19oASUat9vNRrgL5x5O+MHSGdD34rsqjPdHcvEPQj0mKiiNmEn0Og4fo5zpivfTLFQN0GsYZtYrX+Z0jVo4jxZfzwXg26FBLxwOcUN7BY3IkJHrjQg40c9dtVr105yE4fya1fLhNGNFhCsHnlLZEyd1lEizEpoNP3kPUZR+6sam2MYOnTNKkdtdjEX+5Xypgp3pYE8tt/tScA6SbE/vYE+TiLoCYAChiXGYYd6vReTTYmE622hX1MPLft0vQWeqZe8INqKEH5o6S1LqY821du9aNOvhl92VeO/EmZvEvrw+CwfRSeVuevGgXe3mdt2FZyJNYhPErOdD2fsL1kwrcQYkbk5KsfThf5fYlCWIV2bofncysPWqwD5Z0UX93qNNtlo/DgHQ6hN9IzZso623N/aMISeinO2V093BhWamsE3Jq6rcjVz/nUlhM4JqZDcLWFTfw2ZRsmW3K81DzXhfBBNVKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,24 +120,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/12/16 15:22), Sergey Senozhatsky wrote:
-> pp_in_progress makes sure that only one post-processing
-> (writeback or recomrpession) is active at any given time.
-> Functionality wise it, basically, shadows zram init_lock,
-> when init_lock is acquired in writer mode.
-> 
-> Switch recompress_store() and writeback_store() to take
-> zram init_lock in writer mode, like all store() sysfs
-> handlers should do, so that we can drop pp_in_progress.
-> Recompression and writeback can be somewhat slow, so
-> holding init_lock in writer mode can block zram attrs
-> reads, but in reality the only zram attrs reads that
-> take place are mm_stat reads, and usually it's the same
-> process that reads mm_stat and does recompression or
-> writeback.
-> 
-> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+On Tue, Dec 16, 2025 at 1:09=E2=80=AFAM Bernd Schubert <bernd@bsbernd.com> =
+wrote:
+>
+> On 12/15/25 04:00, Joanne Koong wrote:
+> > Skip waiting on writeback for inodes that belong to mappings that do no=
+t
+> > have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+> > mapping flag).
+> >
+> > This restores fuse back to prior behavior where syncs are no-ops. This
+> > is needed because otherwise, if a system is running a faulty fuse
+> > server that does not reply to issued write requests, this will cause
+> > wait_sb_inodes() to wait forever.
+> >
+> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
+l rb tree")
+> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> > Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > ---
+> >   fs/fs-writeback.c       |  3 ++-
+> >   fs/fuse/file.c          |  4 +++-
+> >   include/linux/pagemap.h | 11 +++++++++++
+> >   3 files changed, 16 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> > index 6800886c4d10..ab2e279ed3c2 100644
+> > --- a/fs/fs-writeback.c
+> > +++ b/fs/fs-writeback.c
+> > @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb=
+)
+> >                * do not have the mapping lock. Skip it here, wb complet=
+ion
+> >                * will remove it.
+> >                */
+> > -             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+> > +             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+> > +                 mapping_no_data_integrity(mapping))
+> >                       continue;
+> >
+> >               spin_unlock_irq(&sb->s_inode_wblist_lock);
+> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> > index 01bc894e9c2b..3b2a171e652f 100644
+> > --- a/fs/fuse/file.c
+> > +++ b/fs/fuse/file.c
+> > @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, u=
+nsigned int flags)
+> >
+> >       inode->i_fop =3D &fuse_file_operations;
+> >       inode->i_data.a_ops =3D &fuse_file_aops;
+> > -     if (fc->writeback_cache)
+> > +     if (fc->writeback_cache) {
+> >               mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
+ata);
+> > +             mapping_set_no_data_integrity(&inode->i_data);
+> > +     }
+>
+> For a future commit, maybe we could add a FUSE_INIT flag that allows priv=
+ileged
+> fuse server to not set this? Maybe even in combination with an enforced r=
+equest
+> timeout?
 
-Please disregard this one, there will be a follow-up patch.
+That sounds good, thanks for reviewing this, Bernd!
+
+>
+> >
+> >       INIT_LIST_HEAD(&fi->write_files);
+> >       INIT_LIST_HEAD(&fi->queued_writes);
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index 31a848485ad9..ec442af3f886 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -210,6 +210,7 @@ enum mapping_flags {
+> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
+> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
+shouldn't
+> >                                  account usage to user cgroups */
+> > +     AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
+> >       /* Bits 16-25 are used for FOLIO_ORDER */
+> >       AS_FOLIO_ORDER_BITS =3D 5,
+> >       AS_FOLIO_ORDER_MIN =3D 16,
+> > @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_=
+on_reclaim(const struct addres
+> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
+lags);
+> >   }
+> >
+> > +static inline void mapping_set_no_data_integrity(struct address_space =
+*mapping)
+> > +{
+> > +     set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> > +static inline bool mapping_no_data_integrity(const struct address_spac=
+e *mapping)
+> > +{
+> > +     return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> >   static inline gfp_t mapping_gfp_mask(const struct address_space *mapp=
+ing)
+> >   {
+> >       return mapping->gfp_mask;
+>
+>
+> Reviewed-by: Bernd Schubert <bschubert@ddn.com>
 
