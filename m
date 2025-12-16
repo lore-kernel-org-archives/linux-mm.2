@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6A3ED5E370
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 14:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B106D5E370
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 14:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C7066B008C; Tue, 16 Dec 2025 09:26:48 -0500 (EST)
+	id A99B46B0092; Tue, 16 Dec 2025 09:26:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 626C76B0092; Tue, 16 Dec 2025 09:26:48 -0500 (EST)
+	id 9DA016B0093; Tue, 16 Dec 2025 09:26:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5082B6B0093; Tue, 16 Dec 2025 09:26:48 -0500 (EST)
+	id 8B0076B0095; Tue, 16 Dec 2025 09:26:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AC106B008C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:26:48 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A55A605B8
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:26:48 +0000 (UTC)
-X-FDA: 84225560496.16.0ACB351
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7531F6B0092
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:26:50 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2779359EA7
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:26:50 +0000 (UTC)
+X-FDA: 84225560580.22.A4549AF
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 71C3AC0013
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:26:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 814D6180012
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 14:26:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765895208; a=rsa-sha256;
+	cv=none;
+	b=jwp6HbyeFWvxTk00MTRTBVdKQYEBmoyVPKu/opfPICq5cyiOpKwAAE6Y7ihbtfFsjQbu91
+	aVd9IEghykDry1CmY9beNeb6/89NHEX3IvAe8jj/OlGhCYnqywPG+drMAjkbCdp5SNMjG1
+	kP8NUqk5qSPDOVC7YSYfdO9vY5WvdrE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765895206;
+	s=arc-20220608; t=1765895208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T48lCLSnQzaGh1E4jq9y/CPrfsm7qWaby5sNrBpmmbQ=;
-	b=j19PjEOiCP/vybf3/QdLOGjZSgLOUyVFDg9Wz8r0jweIRJ679geoHOZCo5sH3U4VQ0FZtg
-	6v1aAMXKfoCJuBvESONJncJotEobGhfRtCPmP3ooraQclaOhzyfRD1cBKKsV/2GtucEdKx
-	CV0kQEURWj+wtSx/pIgtayi29b7f1ck=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765895206; a=rsa-sha256;
-	cv=none;
-	b=alQ1LVrwX7uppRPebnFEs9WNC7sZyJB8SeLc3MeOxINnuoFU+2Oe0YxMp/zCbeKBTGgN1j
-	O6RDgt7q5daG8nW6Qil2+8l5BySiaetVCw7kYU02K/PE29WlfcZH1eDkPRfrmaDVIuAYjH
-	Z8/unBXWMnhGZLEsdj8DgOGT9WurUeI=
+	bh=xxmU15c29PSUHfcyR/ihhAO96r/soQv8PLUHzY/qmEk=;
+	b=Th5xQ901VhFFJ8ydJa0sY6VGW4MBtf01/vZi1+nlCSqBSqEhOA7Wbob5FalN0KqiQNnSE6
+	knXF/x//5lvrNABfNXVBox1zI5FJ+jZ1WdQ1C+dwAqk0sl17g2IhG/0LNWOv1Hun5IWgSA
+	9LzPAn30FtsZzIi10yv9x5fHBTmPnyY=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A11FFEC;
-	Tue, 16 Dec 2025 06:26:38 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F1771655;
+	Tue, 16 Dec 2025 06:26:40 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D20423F694;
-	Tue, 16 Dec 2025 06:26:43 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9A833F694;
+	Tue, 16 Dec 2025 06:26:45 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
@@ -65,24 +65,21 @@ Cc: linux-kernel@vger.kernel.org,
 	Mark Brown <broonie@kernel.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Shuah Khan <shuah@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH 2/4] selftests/mm: pass down full CC and CFLAGS to check_config.sh
-Date: Tue, 16 Dec 2025 14:26:31 +0000
-Message-ID: <20251216142633.2401447-3-kevin.brodsky@arm.com>
+	Usama Anjum <Usama.Anjum@arm.com>
+Subject: [PATCH 3/4] selftests/mm: fix faulting-in code in pagemap_ioctl test
+Date: Tue, 16 Dec 2025 14:26:32 +0000
+Message-ID: <20251216142633.2401447-4-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251216142633.2401447-1-kevin.brodsky@arm.com>
 References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 71C3AC0013
-X-Stat-Signature: fr4buahbncbccjeqt9pepsr8qrjomh6d
-X-HE-Tag: 1765895206-655380
-X-HE-Meta: U2FsdGVkX19S9hbSP0R4mNY3ar95tscMSAJrI13EJUPkiW6KUK0unSX0S/zg+2A7Mog38hixQige0IaLnP4NMyY4ecy2cdV6SMa6/yZUcL+cCOyeVl//yq4Vp+dKLkEsnIuj4vKIx8SjDtiK0f0uCn5kkZr4L1PWGV9H/B0K24cTdaHUfNg36GLwhCLmtfpe+kV7bealm706OFuUxNyc+pqkbBnKbRcWvj1CIEkT3h7B+cVZ2bXm+rvB9o9BKivOgRQ4yQrtNfGM6qAP/u40cUINySXKV+zEMC9HXd1VT42v6W94SaSPbge/szl29XuauzTEurLyYYOO9kfeE+21w7HD6ori+m/1XBpo7pZMpRcWvDbWN82w5oX7S4LZ9WVV1z3evWz+V5H1cJSlvNPdFQqY27OSL11YT1V9aCXjulKwwEbIboW/uirgdOTyt9yjoxe92/mxcbkNp0undzzoNDMLN7t1VQuYIhISq2iKRjEPwX28tegtdWadMHtUxX0c2avFQxKW5Y6trXkkwPmaibq+PGrces3N4DT/sQ9WYesLIcX1Ea3mKG8WbN8lBuqTTa9JxhmhfDndxlJwH5BfrrQT1xUBT4qde2ufQJkZcGhwqcMx4TAEgWxM+PLM3uug/XSk0wbvmIC/9LROTAtadoExzjbFD3Y4Xw0yfx1or4qmphXaXAVQYPv8z2uVlKHjpOVygH+a46n6kwLfKAys8T9hcWke6Uk4dqqKKSe1HwSqm3GbuKZ2B7hyry7fgQT/sVnKMROT/wpgjeDEHpJqnxBbuYIcCp48mM3gVhI7FyWHHBImSpwss9RUAEMLrnOj13lSCSYqRBNDXhPWiNDKdLn8yOoPfR1hFwQ2NyCOjqJa0Ae6vs+wnZ0ufdnUMKyg2D0heqIGUmpXCcSPgXv0VdRcT8g+A+AKoGyGYfdolNZ3uApduhR6q7v4cuT2LnSwQR0Upcugp1fKwsAoxU0
- 5M0wi3gv
- buKRfNJj17aVj0+FWnHwUXKo2uVgbIBa/9BpBUAMez3rNKBaAqd03rqJwIDo5sEundzyMw7btKynw4wMpe6kFJrMZ1Kiu23M8CybeY9uciMaEuPyBnehX/E4y3GWtVEaU7nw9KtvgxVPqq/6Z/foIr7RbyjvuUTp44GqreVmcuwGiRoPZgSZ0WCaJA/rtC7Y/kGC/jF0UXHLKKaZDBJ9NOcl5oO6UM4xUBdo/
+X-Rspamd-Queue-Id: 814D6180012
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ornh5iijzzeeo5rzini4z14c8fmr9w5y
+X-HE-Tag: 1765895208-95677
+X-HE-Meta: U2FsdGVkX18FBx9Rv1YqweghIRKhEYzlO2BErmSDxKx1DVYgIbnekx/FN84/fBUvU5R9vCQ0cYcMyH9f0wOX3W/TzFuXOfXXGnvpLiZcQnZcpZLPJkwI7UCKHfAZethI6lXoFOvpkyp6l9fgyJ7PBJfBQAwyZKA34396e18ct1xBgDdTkf3og5RTiKgRQPC+90kLpO/6FjM02FE1izUO5qItTTDGum1TMFdH6n82pvmU0Ng4KgcfaotxXOmJdsO9xewaO31OM7k91MG7m5uq6ET2o5K6YRpsehavIdKghPmyaOv7Lz66SV+DgXYlGu9MTBMlcGPOOaujsQ55ltJNvFDqOPPmZ3OxeD6y/iTgVkU/IKxo7zktvawMaXPW8KZimSqAd7tV7pLBuBGP1ujSb85M34uM1pw6z2+vsgVtDN0TKNhi6nFFJ7jKQIwd8gZxIhU3L2K2eb83aENTJEz0sMN/gRuYxXn07WawcgZmbssQ0w1DPt+qrGkNI2ZuTVSC4/o87AysyEolEVUdYRHZ7+0YzQcEk4ZgxdOE9QFLKSrsk5xh8oGCha+nwnFomCUgYr5creGnDxwowzU5SjdEmgTALwzf1z1r914hzhzd+H7QSC9LY+YEq8oJFSM0x0w3AXKlQXaOmWJBgGTMln7wI5d2fya10gd+uqmtwYS4bmLfYQH6QIcm/DfNB+uEbdh8W0ogT9GM1yNdrtNtPjexGMyQhWVblVsZJLHn8XiPsC9U0+CkEG+K3THUq68T6DVOVF9xQ25s5a/MXyoAeIKcXAOxndPZYdS7I9JQXUSf6SNuJj2TYqLNrxb4ruOlvGPR0OXFYKhlPe1HaNVkJsFw5N9pTlQXeeu1nRu3303vQ0qZ3ZLko53Lg6igTKsx4yWCOCZalODKods=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,58 +88,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_config.sh checks that liburing is available by running the
-compiler provided as its first argument. This makes two assumptions:
+One of the pagemap_ioctl tests attempts to fault in pages by
+memcpy()'ing them to an unused buffer. This probably worked
+originally, but since commit 46036188ea1f ("selftests/mm: build with
+-O2") the compiler is free to optimise away that unused buffer and
+the memcpy() with it. As a result there might not be any resident
+page in the mapping and the test may fail.
 
-1. CC consists of only one word
-2. No extra flag is required
+We don't need to copy all that memory anyway. Just fault in every
+page by forcing the compiler to read the first byte.
 
-Unfortunately, there are many situations where these assumptions
-don't hold. For instance:
-
-- When using Clang, CC consists of multiple words
-- When cross-compiling, extra flags may be required to allow the
-  compiler to find headers
-
-Remove these assumptions by passing down CC and CFLAGS as-is from
-the Makefile, so that the same command line is used as when actually
-building the tests.
-
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Usama Anjum <Usama.Anjum@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/mm/Makefile        | 2 +-
- tools/testing/selftests/mm/check_config.sh | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/pagemap_ioctl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index aba51fcac752..b1c949cd7c3d 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -230,7 +230,7 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
- $(OUTPUT)/rmap: LDLIBS += -lnuma
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index 2cb5441f29c7..67a7a3705604 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -1056,7 +1056,6 @@ int sanity_tests(void)
+ 	struct page_region *vec;
+ 	char *mem, *fmem;
+ 	struct stat sbuf;
+-	char *tmp_buf;
  
- local_config.mk local_config.h: check_config.sh
--	/bin/sh ./check_config.sh $(CC)
-+	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
+ 	/* 1. wrong operation */
+ 	mem_size = 10 * page_size;
+@@ -1167,8 +1166,9 @@ int sanity_tests(void)
+ 	if (fmem == MAP_FAILED)
+ 		ksft_exit_fail_msg("error nomem %d %s\n", errno, strerror(errno));
  
- EXTRA_CLEAN += local_config.mk local_config.h
+-	tmp_buf = malloc(sbuf.st_size);
+-	memcpy(tmp_buf, fmem, sbuf.st_size);
++	/* Fault in every page by reading the first byte */
++	for (i = 0; i < sbuf.st_size; i += page_size)
++		(void)*(volatile char *)(fmem + i);
  
-diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
-index 3954f4746161..b84c82bbf875 100755
---- a/tools/testing/selftests/mm/check_config.sh
-+++ b/tools/testing/selftests/mm/check_config.sh
-@@ -16,8 +16,7 @@ echo "#include <sys/types.h>"        > $tmpfile_c
- echo "#include <liburing.h>"        >> $tmpfile_c
- echo "int func(void) { return 0; }" >> $tmpfile_c
- 
--CC=${1:?"Usage: $0 <compiler> # example compiler: gcc"}
--$CC -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
-+$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o
- 
- if [ -f $tmpfile_o ]; then
-     echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  > $OUTPUT_H_FILE
+ 	ret = pagemap_ioctl(fmem, sbuf.st_size, vec, vec_size, 0, 0,
+ 			    0, PAGEMAP_NON_WRITTEN_BITS, 0, PAGEMAP_NON_WRITTEN_BITS);
 -- 
 2.51.2
 
