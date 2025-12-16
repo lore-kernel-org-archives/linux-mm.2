@@ -4,124 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78A2D637A1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 20:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7284D637A7
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 20:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30DA36B0088; Tue, 16 Dec 2025 15:11:32 -0500 (EST)
+	id 177056B0088; Tue, 16 Dec 2025 15:12:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4F56B0089; Tue, 16 Dec 2025 15:11:32 -0500 (EST)
+	id 155096B0089; Tue, 16 Dec 2025 15:12:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE876B008A; Tue, 16 Dec 2025 15:11:32 -0500 (EST)
+	id 0576D6B008A; Tue, 16 Dec 2025 15:12:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DF286B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:11:32 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B06751A07FD
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:11:31 +0000 (UTC)
-X-FDA: 84226429182.19.4C172B1
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8B66C4000A
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:11:29 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OytLCjFb;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765915889; a=rsa-sha256;
-	cv=none;
-	b=ivo40cIJ8qrxaPDwhAFViuYMk3W75PxkP535pndOdNDm5l7bBqHLiUmVOEi8NN2k89a7cp
-	RxlN02ilkoWbG/pJJ+4yQ3KJa3/6nzDKPWdKO45PIpwteZ8qiIbBQsMs3Oxeuaa2U6FONP
-	pAqSm+kYqEbwNwhfWkvmBroNwqKLzJQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OytLCjFb;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E9B7F6B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:12:48 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F712C02E7
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:12:48 +0000 (UTC)
+X-FDA: 84226432416.30.47878C3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7DC7B16000D
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:12:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YTjpuX6n;
+	spf=pass (imf08.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765915889;
+	s=arc-20220608; t=1765915966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2TEZOHQjdAzpbHmekbmLcKEsQRt3befpNWglQK9S6E=;
-	b=Z03ARQO+it30bzYMM702HaSEgbdmdRwlEUzpQsFia0/crKbem7TBHfg6LqQ52Eo4qBDO1H
-	izSUtHiZMA7ub/Uincp0OMgJ/04LFuj3FxL8v14tIvnqFtU7uopHufDHcJ0Neh8JREcngc
-	8HT96alLHqX5O4bsPQhvM8tET9WgTWY=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8bb6a27d3edso354797085a.3
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:11:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1765915888; x=1766520688; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u2TEZOHQjdAzpbHmekbmLcKEsQRt3befpNWglQK9S6E=;
-        b=OytLCjFbL5MzLrc7qkdg1eTUiRQKxvJwJnR1Ilg4Xn3LD4SZcMZpvj5cdWS2tCCopF
-         Pnhk45e+LceKJDRX38Mrxw9KVilfHkMZWMsqM7goelSsvVAFTS7jMPEy0fs+Qcr3VRNm
-         YabuTObAhjUdGYfiGQOW8BH+z3uVFiFIK9mlqO481sIFD6NiVfp+gSE8ewYroaVV7X9N
-         5v9TAdXA5V64azMSdzk7RKmbdgO8uUxJN5ouuRtX7XoS4qLHh0Y4bwiH02e4LWls8UpO
-         sA5iHHXOxJmrj7ssr+edXDq4xzKKAaEWBJvfwZNWJK4waBrEcf6t6mxFE7ksEsjrKlkx
-         srdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765915888; x=1766520688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u2TEZOHQjdAzpbHmekbmLcKEsQRt3befpNWglQK9S6E=;
-        b=f/UqdYxKkbrGSOi+OadLwRnQtuPknptJTL2tS69+/jB7PJIrrG3J4cRlf8lHwm1vK/
-         GIG4C+ri9t3x3NF/ODof16hFf+FZE7kxWSugdXywcb4aAE6/Z5TszJpSsRmjcXxREyxt
-         GBnZkw3Gn1XCHTGOIbIwzlnMgCKmdeO0CWg/RJ/3Niqfrr+NkeQ5U+4l8us1+8+u/f+w
-         0qglwxDq0EY7sjLQvB+ZhCt40NYSmv3GSVOVIiIGz4LDeuDJibtQ3PglS0y5ri8EKH48
-         f3f8ivXBy3dcwiyRpqmIpeq/cicGUI9t+uVaxX4xVPp0UtSjzzIpp7IPh8uJwqXu0H+X
-         kWUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXN0GA0IFDBJqJR48aeD/ITVx3IgSGNcXxH1msQNK2GHvZoSpkB807rd19UJs4/xxYrI6oALIvYA==@kvack.org
-X-Gm-Message-State: AOJu0Yzk3XjJAECOo8+exR4BggiUpjrMeHklX9kJoeu2kgcsOqZX0M1c
-	3KAdFqcvo/mOr1xK6RICT1bwHP3plXB6M0XPkbnU9mOX4eQXkTbwEwjlIrVXvTECKjQ=
-X-Gm-Gg: AY/fxX4PuCBc2u/ELAf2+zoch+R2hK/hjj64sDR7k/70JalJmzCP9NoQ6785zONwSV8
-	bIsOL3PPIFOind25V4BH8CjYWtSU9VKNi2mtvki+30ql6LO/O6Lijhh1ANsp8OvLlcpOh5+H9ST
-	GoAMqk4Iwl3Ja/TPBOFuvJEDaDYYwTSMV+qNlT/oW+HWDvn3wWgMJQ3MOY1BpVVX1iKSKoVio+F
-	2gyZZUm+1QsLUDr9ZfhthC3Ysl0s1nvbQ389iSAah8d+io/1FpXCnW5ywLvnzd55nEeumBn9tnS
-	H0rgKsom4NIG0GwZn/LBHTfPF5h04tPPhvg/9bhTVEayLxgjpAEBHLJB1UH4rDuTKVkCIu4F13k
-	SYriRmlVgrdByGlmHhEbK74ST7Qb7VphSpbNdUOpewOOjBS1XRWSN8SlQyFb0g9lXEOB3umNwHk
-	PTe2Sc63kEIA==
-X-Google-Smtp-Source: AGHT+IHtx8JdCdZWFi/hKtoiZ9YSBqltx9FoeXoqraRfIaoEydTQM97rKBnnZognyMwARXSP5rZp4w==
-X-Received: by 2002:a05:620a:2953:b0:8b1:b2ed:2735 with SMTP id af79cd13be357-8bb3a27620bmr2299783185a.46.1765915888359;
-        Tue, 16 Dec 2025 12:11:28 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8be31b669d1sm249499685a.46.2025.12.16.12.11.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 12:11:27 -0800 (PST)
-Date: Tue, 16 Dec 2025 15:11:23 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	David Rientjes <rientjes@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 1/2] mm, page_alloc, thp: prevent reclaim for
- __GFP_THISNODE THP allocations
-Message-ID: <20251216201123.GI905277@cmpxchg.org>
-References: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
- <20251216-thp-thisnode-tweak-v1-1-0e499d13d2eb@suse.cz>
+	bh=Tll61WMHPvREOW4/BIXFdflMn43TT6wy4soTCDBhrOM=;
+	b=unazrDYNK7xu/MCAEYEaV+nv4tQt+MDRlEOXdoIpcTOqbT/BsNolokvN8NVSVJk/HzwtNQ
+	W9FFTEoSxZoIp8j8rizPuU/CyPWzuslB48v7FXf3pBXveDTONakb9YX76kfE9ALuyAppbl
+	JrRINuFQKpIDh8/qgggPsOcy+ODE1zA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YTjpuX6n;
+	spf=pass (imf08.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765915966; a=rsa-sha256;
+	cv=none;
+	b=SqUmITA6b7DmvwUUpHQFu3d75RHqZBI+0IWC0Kntraeb2Xx+VXe3/QuT4+xNL0cbi/Hfch
+	Ci3/wQJ5yfa0DS+hsjLkpnlcHNu6NFx8dc1V/Cu2gCqPiMF22ExC2erYEeHxnPj/JyFCXp
+	XgeAKmwdyq9m/DqvAcrFZ1AKwcFnw8o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765915967; x=1797451967;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iCjVYYUFM5BX9VEsC0diH84CR7Fq7Z2IR+YKYKMbFb0=;
+  b=YTjpuX6n8H/4fAqduBHrdpcdhMFEcGuMaExEcJwLNK6ux4EzFKfGuf1o
+   x7CwQLmHOQXeeYdhXrtrIc6BMtlqMDbGpPN+y9AAm426mnOs0w/qn2uME
+   pNtuxx40xX0Tv02orTf2vsTzJVeXqddQxVnb3ojvhMZ9WkMp3yv6AipKU
+   lnJXSUiYdkW4YofHj1Dn64ML7a0YNVWBis7YeKrg1aEQa7U634lZz8/g3
+   HenZE8et8oDCW1q/gGsq4g4a+GOjxdz99tFF14hxBBAGDRStdaqaV8LwT
+   h1vgw/E+5VagvvNU7ydnBo4w2ri2CIaIWaHzlluW5CDpkJplTPExL300Z
+   Q==;
+X-CSE-ConnectionGUID: C1AZZXCIRUqnTVh2UamizQ==
+X-CSE-MsgGUID: b5GeiwbHTAWKphU6C98Mpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="68000582"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="68000582"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 12:12:45 -0800
+X-CSE-ConnectionGUID: zcX2E0nfQiWvpx2Bn0gV1g==
+X-CSE-MsgGUID: eeXiC8OkTwuiZ/7bQKq4tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="202612430"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.244.214])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 12:12:43 -0800
+From: Francois Dugast <francois.dugast@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Balbir Singh <balbirs@nvidia.com>,
+	linux-mm@kvack.org,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH 1/4] mm/migrate: Add migrate_device_split_page
+Date: Tue, 16 Dec 2025 21:10:11 +0100
+Message-ID: <20251216201206.1660899-2-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251216201206.1660899-1-francois.dugast@intel.com>
+References: <20251216201206.1660899-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216-thp-thisnode-tweak-v1-1-0e499d13d2eb@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wz9cmuo7rtq8o6f1srkqyxkaytqra3z6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B66C4000A
-X-Rspamd-Server: rspam10
-X-Stat-Signature: ogdfknho5kkia6kbwzfwfrqxpzpd99fz
-X-HE-Tag: 1765915889-534455
-X-HE-Meta: U2FsdGVkX19QddopTjwMlHPEruma6M6zPBfztjaiQ1FER6Yv6jP8zdb6ttLVFEfSDsXAxJGdTnNZqHP+y/dkf2JSBiJ4oHj4ALa4khifDKT1ueeSfgytJesvMmRXEqYvnfYkxJNWyeFz9hJyZjz07TrwOFImTLyDRwr/KuTTVbqNkgnpngncJGyGvjrtvBTuGYE6uyZ15p5EkK3REd+X2O57BHW6Jtv4fzAdrNztuzdjQ/HJbuvX0xZRyzMEiF9i2CJttrLhVMienaebY//WlHn2Sv/ZbOMOOQtlBDx1vmqU+g604QnyVy7Mjv/sy6aRNtdCxoxIaRGekX6I8jvIz1QR5ObKk7EXmNdUexvfOEm5ks906rAe0KC2eCP7VJ1ESpP6xF/r4BlDUARwgPH8TOXd1xdLMrV9OQc+ySGNihkKmfeZ681iWYPk3yVysL+eiMm5vDJz8AkkyEy0gICRnoBncBIBLugvV7ZMNX4uTnZhMtZRFzcwsY6YIb2qjc2bsIpFpi33bapL75+64LyjAJvNCDnfe2Yviy8zCSPdLko1XnaeBPUOqQh8rgdvW4p3i30sPWWvfYc0+DLeZlC4uPMfOS0IFOHlWke/vM7UaOuHFmKgGySO31l+t7DF/bazBiopbI8nOgdheqK9cVkyz2wBUiNvs0LVlKlRzwo2/0+A+1OhWhcbbugq/nDJcshHcvjAF+mGZrRJa73SMZpBHGj8AEo8HIcR8c0rQ6vA/XUiw/t6srr6Bs4pbhmeEHHoysqe28QkD1bTBbJVYhMbqfUCidn97v1GVcbLspAfIrG673fBwWJL42ebkstIN6egtPSEEf+h/C0y3Qoi3hlmJlR6pnsvkhQHrfoA02J+venHvFTRA/YV0rka9v4REwCSOwS3EuND+PaysYnOHq3+ruOQ2+jEuyZwD2WkR9Oj0e/Peg7GOepqnnbxQH7gd9zVm/kz5jHw+lPNCNw8PSi
- J1SEJXf0
- bK34/jLL+zXdsbIT16amUWZOH8CaOAgwy5SLDB/xv5l7DA26IygK+OfWQJ8wH4n3yIvvxHSUz8de7ErNYpV1GA//o8ayASPRx9KbWSl888qDzVXmI2ZbaNsRfhwd5bU25PSAZCCO4WJmxrnCQp1XyuFzcCuxZk2FePi7/p5nOtmscCQ6vNEgvriLDrgINc0/V4yKtnpH3Y4gn7RZT7krTMeyG90Ksuy0J6elTJN8nECV60xf9Z8SKmYvaY6IJQ1Y61PEP8ZDp5y0mBBDP5awVk1Hix2ZiyM/GLE4a6U+nhzPsNOvhxpzu7vbIZX+SeRuoEjKRLXwwotXjcP2bLIzgfQAK+DOpeqTpv7aXuabSQp/OZSi6NDNCwFXM4JnRmGcWJ+YQvwlBLcA86vHTe4hBNFwFOpsffbbJn9pF0xOywYku+YeTnQRehrHVbg3COzJo8IdKStZLP0Eo6ao3e7Hzcfgi6zm7GM926JGSo9OBTR6c3VuooYIDIIQeW2QV2CBXe/TYhEY/OynsYx6U7N1q180PmfChiLZxsXrs5+bBY72Bbf8=
+X-Rspamd-Queue-Id: 7DC7B16000D
+X-HE-Tag: 1765915966-830823
+X-HE-Meta: U2FsdGVkX18A7cUvtNd+dGndkeVcjoqmJpccKU6eXLnfmmvnBBA8ANrIMdzyDf3jbbElkkzGkrU7F8DYHvfj9nR0M74KvNFURilzhmhwB8HgzHjTwuJlTLBvyviojKapaOqzDPAg9IpgYck7lg4yD+Ndo+ZXZVvezJY44roDu4InGVxrgq2uS0vyAEmDn6AGtT0UONEAwSvOLWLxUirZtfOVaBEbY0oj4ZznhKXqYSDE8injVlzP7Bxm2CdwFhuc97F8K1EXxrI580IvS6gne3CDTSv9RbW0o42LdpgcS/eKfE5Sy4pomoeXC3lZXl4mrJG7Fby/iOJInmb3Xy/4KS9MQaxdcjBVRy7cG7OnCj959ngBPZe0js/c6pUX3ihXCaxQAUiFhsnOBBUb+Xjkiau7GoxeW227JDkhS0wDMBbyxstajFHhk4EDglsAo+jyuz2hRgum56d2E9Nps2NChtr1J6A00B9YZVOkDaC5LVMeuM4rbpgjpQTuqvfgkpCp27HQ6akydoWOQGJpgA2hUriq6Q305M6EdOOGmw3EkTVoYxnXX994xcuAeU7r1rbdzMa5MjmvHI8h8RfsM05QtYBhv0AfQWolrzbQJCh/nYy3iID6jciTElkhpzktcwaAhZHpR+bjvSvusRbW7qT/Daxz8wMTbHmIlUnlLDovoIFk0TQMuGNbOTP5RCejQbmjjELfY/xqfvfUu1yxfITSnX11ZRnc9bQ/FEprsA8dCV1NL4OsdqQcnhy6IZUwcz0F3+73GS1MW3gagBCkzk7aRaHwFCVFi3AvVVP4j/ALz2+B4KNX+tBvwBKGYoUobOZx8MignAv9c4VriEkxObYUvPmHdccrBz45
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,44 +107,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 04:54:21PM +0100, Vlastimil Babka wrote:
-> Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
-> local-only and all-node allocations"), THP page fault allocations have
-> settled on the following scheme (from the commit log):
-> 
-> 1. local node only THP allocation with no reclaim, just compaction.
-> 2. for madvised VMA's or when synchronous compaction is enabled always - THP
->    allocation from any node with effort determined by global defrag setting
->    and VMA madvise
-> 3. fallback to base pages on any node
-> 
-> Recent customer reports however revealed we have a gap in step 1 above.
-> What we have seen is excessive reclaim due to THP page faults on a NUMA
-> node that's close to its high watermark, while other nodes have plenty
-> of free memory.
-> 
-> The problem with step 1 is that it promises no reclaim after the
-> compaction attempt, however reclaim is only avoided for certain
-> compaction outcomes (deferred, or skipped due to insufficient free base
-> pages), and not e.g. when compaction is actually performed but fails (we
-> did see compact_fail vmstat counter increasing).
-> 
-> THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
-> which is not the intention.
-> 
-> Thus add a check for __GFP_THISNODE that corresponds to this exact
-> situation and prevents continuing with reclaim/compaction once the
-> initial compaction attempt isn't successful in allocating the page.
-> 
-> Note that commit cc638f329ef6 has not introduced this over-reclaim
-> possibility; it appears to exist in some form since commit 2f0799a0ffc0
-> ("mm, thp: restore node-local hugepage allocations"). Followup commits
-> b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction
-> may not succeed") and cc638f329ef6 have moved in the right direction,
-> but left the abovementioned gap.
-> 
-> Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+From: Matthew Brost <matthew.brost@intel.com>
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Introduce migrate_device_split_page() to split a device page into
+lower-order pages. Used when a folio allocated as higher-order is freed
+and later reallocated at a smaller order by the driver memory manager.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ include/linux/huge_mm.h |  3 +++
+ include/linux/migrate.h |  1 +
+ mm/huge_memory.c        |  6 ++---
+ mm/migrate_device.c     | 49 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 56 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index a4d9f964dfde..6ad8f359bc0d 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -374,6 +374,9 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+ int folio_split_unmapped(struct folio *folio, unsigned int new_order);
+ unsigned int min_order_for_split(struct folio *folio);
+ int split_folio_to_list(struct folio *folio, struct list_head *list);
++int __split_unmapped_folio(struct folio *folio, int new_order,
++			   struct page *split_at, struct xa_state *xas,
++			   struct address_space *mapping, enum split_type split_type);
+ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+ 			   enum split_type split_type);
+ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..ec65e4fd5f88 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -192,6 +192,7 @@ void migrate_device_pages(unsigned long *src_pfns, unsigned long *dst_pfns,
+ 			unsigned long npages);
+ void migrate_device_finalize(unsigned long *src_pfns,
+ 			unsigned long *dst_pfns, unsigned long npages);
++int migrate_device_split_page(struct page *page);
+ 
+ #endif /* CONFIG_MIGRATION */
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..7ded35a3ecec 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3621,9 +3621,9 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+  * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
+  * split but not to @new_order, the caller needs to check)
+  */
+-static int __split_unmapped_folio(struct folio *folio, int new_order,
+-		struct page *split_at, struct xa_state *xas,
+-		struct address_space *mapping, enum split_type split_type)
++int __split_unmapped_folio(struct folio *folio, int new_order,
++			   struct page *split_at, struct xa_state *xas,
++			   struct address_space *mapping, enum split_type split_type)
+ {
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 23379663b1e1..eb0f0e938947 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -775,6 +775,49 @@ int migrate_vma_setup(struct migrate_vma *args)
+ EXPORT_SYMBOL(migrate_vma_setup);
+ 
+ #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
++/**
++ * migrate_device_split_page() - Split device page
++ * @page: Device page to split
++ *
++ * Splits a device page into smaller pages. Typically called when reallocating a
++ * folio to a smaller size. Inherently racy—only safe if the caller ensures
++ * mutual exclusion within the page's folio (i.e., no other threads are using
++ * pages within the folio). Expected to be called a free device page and
++ * restores all split out pages to a free state.
++ */
++int migrate_device_split_page(struct page *page)
++{
++	struct folio *folio = page_folio(page);
++	struct dev_pagemap *pgmap = folio->pgmap;
++	struct page *unlock_page = folio_page(folio, 0);
++	unsigned int order = folio_order(folio), i;
++	int ret = 0;
++
++	VM_BUG_ON_FOLIO(!order, folio);
++	VM_BUG_ON_FOLIO(!folio_is_device_private(folio), folio);
++	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
++
++	folio_lock(folio);
++
++	ret = __split_unmapped_folio(folio, 0, page, NULL, NULL, SPLIT_TYPE_UNIFORM);
++	if (ret) {
++	       /*
++		* We can't fail here unless the caller doesn't know what they
++		* are doing.
++		*/
++		VM_BUG_ON_FOLIO(ret, folio);
++
++		return ret;
++	}
++
++	for (i = 0; i < 0x1 << order; ++i, ++unlock_page) {
++		page_folio(unlock_page)->pgmap = pgmap;
++		folio_unlock(page_folio(unlock_page));
++	}
++
++	return 0;
++}
++
+ /**
+  * migrate_vma_insert_huge_pmd_page: Insert a huge folio into @migrate->vma->vm_mm
+  * at @addr. folio is already allocated as a part of the migration process with
+@@ -927,6 +970,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+ 	return ret;
+ }
+ #else /* !CONFIG_ARCH_ENABLE_THP_MIGRATION */
++int migrate_device_split_page(struct page *page)
++{
++	return 0;
++}
++
+ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 					 unsigned long addr,
+ 					 struct page *page,
+@@ -943,6 +991,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+ 	return 0;
+ }
+ #endif
++EXPORT_SYMBOL(migrate_device_split_page);
+ 
+ static unsigned long migrate_vma_nr_pages(unsigned long *src)
+ {
+-- 
+2.43.0
+
 
