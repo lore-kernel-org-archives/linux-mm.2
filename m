@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1158D637AE
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B64BD637B3
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 21:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0866B0093; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
+	id C58616B008C; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93DCB6B0092; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
+	id C2F376B008A; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 854826B0092; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
+	id A91AD6B0096; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 60F326B0089
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1F16B008C
 	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 16:26:57 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 267908B529
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1085C6045D
 	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:26:57 +0000 (UTC)
-X-FDA: 84226619274.22.02EE2C1
+X-FDA: 84226619274.29.4FA5AC9
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1F6B640006
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1EDCC180010
 	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:26:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=XzOLOxrp;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=GpfvH0IM;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765920415; a=rsa-sha256;
 	cv=none;
-	b=LkL154damqxs/iuvY2tQTXvvt+owlH4wwwmru/2qDnWa44/TKHlpp1KmiI4znMCCWd09Ay
-	UXMoJEgVciKtsOiK3q+VoxUGgddOugZc7iWM30HUM7t+U9oNeFZxncv3RQHedpdWPI0um4
-	TfzR2yAtXzFTzTDzL1gQo4OxshDvEQk=
+	b=gIRii9FJfDoewGAkL8PDxQIaqDfDFJX7o8w+IC7ZrRU6T2Fo3yO8VYAvgncRJE8ROqJT74
+	pPNzObAJopwE6JEQqIU6ib3Bk+n5Mv/0W3t/0blfjpjHTtYNiylTZC1lS4KO8mtAtV6Xju
+	+RBGayXDZLbCzSJv/X+Wjj1Wvt41S3A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=XzOLOxrp;
+	imf24.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=GpfvH0IM;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1765920415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
-	b=xS5I/rCV/lz9NgA3X1KjXNltoYNE3ITM1i59Ulf7dHvtGUbskKUgW19YrpR1O2HUjmDDFx
-	3kqwV4OmawOM5iinGFkALoohK+b0BQ6ca1uc5CrMDflYLbwYyT0xZqLCtj7niJeUT9Alc/
-	EODX3OdW8nG/2IH7c06BgOtWQWS2/ug=
+	bh=h6JrzHOOAMme4MQvq7kaYnijp0CWQPH74cgg8oIQDMc=;
+	b=d7cHxyc8Rk2Qkoi180tHZjlG+HcIRTgGu98BZDAGAZy6lQI15DX/M9FRUc8S7qHsjc9JkV
+	+dwxKqWm3unZNvEf43DSE4nhlNAa8XTy/7N2TpxQ8lZzzI3VyRzUrahB8Rlu9KElZdXAyn
+	T57FeGZ8BR59USaFkRF4MrZkSN2ShO8=
 Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BGLQC242563820
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BGLQC262563820
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 16 Dec 2025 13:26:22 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BGLQC242563820
+	Tue, 16 Dec 2025 13:26:26 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BGLQC262563820
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025112201; t=1765920384;
-	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
+	s=2025112201; t=1765920388;
+	bh=h6JrzHOOAMme4MQvq7kaYnijp0CWQPH74cgg8oIQDMc=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=XzOLOxrpdf40oquT64n+xO1zoW9HFk/YtJNWiV+60eMixlN2qmphpmp5QVfhL/nYA
-	 DqmL77T2IRZd2PDBgUmkUXw9Bouu+xqrhBJy7SDQKGPJwrME2yJ+EboA9ZGsytqqjG
-	 wq3/JCad6gGt8h1JzYcQxNBiUuovPKUctE/vZ0rDK6OfRDIIiv0imYf/5m7E1J5rWF
-	 COrHo3gQeDcHw4bMaF59odhQm604OYkNZ3JG5przpWGXs/FPgiwLzx3z69cB9VJTJT
-	 LI2TAR1Rq8FYdt9TZvnM6Id40wTN+l1TD+sifWO6JTqZfJBvaDmYGujXC0nFZVnZ82
-	 FGgsLycI8fMiA==
+	b=GpfvH0IMUuf7A/nYM5NS7m4EL2/7SY5jNrD8tA5DahEY5Hz4XpXAhQ+yqY2hISAAr
+	 E/ONMQNi4KZLmVv3vCkTrnF/cUgwYs3jZW9oAJnhc1uJvusB8sxg0LQSQTdNMnwOMC
+	 0D4RtESUpg9Nk9sKY7NEBMSXt55AldwD8XpqON4hOxyIBPZX1DM3vaFKivszgobsbr
+	 V9CaZZ9CKAaHtYC3FxpKG33U33gxYveC04TqFiRk8Wy4ncdaC59Gx8fYrEUBob6fyP
+	 N5wj2G/JXAfF9aWElwsPtHx9MFSrZ1pPfyyhCfvRGQ9KBjRfayjbx0aLcPkDzBiO7b
+	 JWM7IEqSuotbg==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v4 05/10] x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
-Date: Tue, 16 Dec 2025 13:25:59 -0800
-Message-ID: <20251216212606.1325678-6-hpa@zytor.com>
+Subject: [PATCH v4 07/10] x86/entry/vdso: include GNU_PROPERTY and GNU_STACK PHDRs
+Date: Tue, 16 Dec 2025 13:26:01 -0800
+Message-ID: <20251216212606.1325678-8-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216212606.1325678-1-hpa@zytor.com>
 References: <20251216212606.1325678-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1EDCC180010
+X-Stat-Signature: afioucxb74geghum75k8wqxy4ijdjaqg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F6B640006
-X-Rspamd-Server: rspam10
-X-Stat-Signature: yumbrpkt78bsdho8u6e864akcajizm7p
-X-HE-Tag: 1765920414-864428
-X-HE-Meta: U2FsdGVkX18QPTqAgX5Cu7EmeZbqRtG1qcKRcz6NnnUg6uzY3+w6Hf90Q5Cyk8Cj7Ex3ntoWLUUg+1TrFxKgphFC9up3dzbithey0Y7RjuhbSOZJwA2M2HJuKlOlNl8Je/9A/nm7Xg5TqRpI5AMeAtO36Va3ud+4V+uKvBij1zcAHwMjCbHozjkNv98TzaI8nrav7GHhIK2SGRTBqWDojij1HmDGpujdZJUheDgcCu9Ye/L4icF3Ozp48Wk16SNYH7tNdlBJCN7Qm9iQmdn4/E8lV5ueZnfS96+XWonrfyDbFbk7udI6S6Ds3QZ7DHK7JITguE9VQhMPrDwTB3OQ1RSuFy8rV+ZLI843caLD5fMqpnqqQw6E7NFb8ogP80gE1IbqHz+MsbqfD6YzsLLL+UE/mMnXI9fXsPUPFjhgHcQK30nIDnF8PiXgc6hpYXmSom+GPMWcNGlx77Jct9Hy/xMUCyjAeO/6Y1o+hiVpcjyvdpRC1RnPEkY8g61KXuV2pKrtY79G8G3UNWHq1IYXEbxmqOO4gZCyRxCtg7HJuEm+zQdmkm8J0bH/Oz5juspVK0Jym+ZOCNuiAhJMrJ54QvskAPtq2nUsl5l5mNTtEWqGnIzRNzSHJbZ+VvGMpzesbP401Mc3k/CM1KMCWQKM85F0yH0/t5z0qvyEEhCPErdWJXetzlj7xV3bcQQTex0GPThFMbzJKBL4UI9nKvVvn7TljsqqjqtTfyJ+5gOyBQuoJBjRkiK1h5eoQByIAgJvoh0+MYDeriRvX3wC4YPYUa6xE1gwhAW6oNLWIINpPpnFeLcoz2p9WOPSHZ0xT84/YynY2CAToMLzm4cIQh81ju4RV7kO9xcCnXW3ohdnVGv+Um1SIbqljwi4cEyfzs/0G9P9k0Z5S9hwOCQDRdS4dVxQpRI5poU3DsYjuO7iyodwiTiVobeFl1rSrUqZ+7f0/QGm4UkQGQgVPu+y1YU
- /dFe6yCU
- ANBxZoXW56iW2hKU+HypdYhJD24dYmXCNUPA5TuPkrPiEHrwL0fJSivRr8iadCzF5I3hFfQnoonUwB7jb9YpLupcfijaBCks4B03y5VwMtH6heXr6xG9dTVGHFOnCymgiodebBHkL1eQsV/YHuAms1UmzJarzdO04cjHDDN2qit/pvimnzDALa27asL5iUolsL2Dw3TyYb8vu4ELl7QLV4+idkQ3YstYFz7QokxBw1O8e8WA1awVFhpfVrdG98fFMRVOW+2zipbHVGF/ZtJY0zvgmIj5YOJsqZGDB0LmxPdcFhxYdBb9qpuC5w9XXsrkccNEtrFXL+os9aGNjiLbabrMsmw==
+X-HE-Tag: 1765920414-330456
+X-HE-Meta: U2FsdGVkX1+BJ4SXdtjub4wLnd5Yns/MUZGyQJF466QOMof+J1+sk2yRdxgvFJhv+QMWAfSx09mdURh6Z9MeUTdKHCjt6BgHu70BuXFsvUzE9KdDTdlQRTarj0nv9OritbRa5D7/0o2Llx0w2A8K/4vhhjrm4p0bPYtO6Wz/uHvqGIrpbMnCfBKCpFEdZ9KkP3PnwRhLpWCjdnAoxcePvEJJd0LvqUvbAmEpJY0XJ+27cP99a5E9YeJADQNhHjTm1WBKVgGSLUErOtqz7M9Uyfuh46VRo+hWJAjzph2iwR1dAwt6EuBlXJqgiqPI4MyWH+nRj4qMEzP6aC7AVnEYhVjYsBdvQ8NnfDuKjojWkJoAIn47nRncKADRrXTscSES5fNVaAod5hE42tW5rAr6SKPyt9XEuZipfuPgW8nFultd99m02JIpbObJYt8Nc7MRfv17FTnjkZm4s7YAzNVWKMbOJekKmoPTT3b+WYWSFpfXtwkDlOD4w4ckO2e0xU0PYCGP4YpF98xkBJCZJtuyqXHqGrTgyhQYoPmwVQn6ioXwo79t0E+ww3upN8K8idTSlNzJGUitzpcpcfxLC4zCGZAfnmYoGGieG7LA8D2zQyiv6w7UbDZADp+jdJ6cFElcHyZmy5robW6lxncchV52WVw90+QVH99NA/ddQXwFRtd9rI7kJd3A9f5CKcdCMgp4c2R3tqYBbq4JZWWqVYI4treuBhd/QZm+ChFi7QHtsA7UKS9Yx5112EJd6TAyEMZXZmeVolcztppRWneQItESsdeNnahUaickggnFmTrerGLh/NaFjuJ4LenZTPkN7QadzgWOKfmnrTpT7GOIKWdPTAL+YFTk1MtZInnpLJu/mRbC/3hu51AaqktnHwv2EgE3qN5xsC6Jr5KsEGahPOQfOABGEawLnRrTVJdUuk2GmIKjthc8HMQK5eLQDW49aEpF5zKI8gMisvjcS3swDmX
+ CoXF0+MI
+ EowsDC6HzvjMgcAOR/mAlKcrQRhf7KOLc8NHE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,50 +105,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
-ability of overriding it. The override capability, however, is not
-used anywhere, and the macro name is potentially confusing because it
-seems to imply that sysenter/syscall could be used here, which is NOT
-true: the sigreturn system calls MUST use int $0x80.
+Currently the vdso doesn't include .note.gnu.property or a GNU noexec
+stack annotation (the -z noexecstack in the linker script is
+ineffective because we specify PHDRs explicitly.)
+
+The motivation is that the dynamic linker currently do not check
+these.
+
+However, this is a weak excuse: the vdso*.so are also supposed to be
+usable at link libraries, and there is no reason why the dynamic
+linker might not want or need to check these in the future, so add
+them back in -- it is trivial enough.
+
+Use symbolic constants for the PHDR permission flags.
+
+[ v4: drop unrelated formatting changes ]
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/entry/vdso/common/vdso-layout.lds.S | 38 ++++++++++++--------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
-index 1bd068f72d4c..965900c6763b 100644
---- a/arch/x86/entry/vdso/vdso32/sigreturn.S
-+++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
-@@ -3,10 +3,6 @@
- #include <asm/unistd_32.h>
- #include <asm/asm-offsets.h>
+diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+index ec1ac191a057..a1e30be3e83d 100644
+--- a/arch/x86/entry/vdso/common/vdso-layout.lds.S
++++ b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+@@ -47,18 +47,18 @@ SECTIONS
+ 		*(.gnu.linkonce.b.*)
+ 	}						:text
  
--#ifndef SYSCALL_ENTER_KERNEL
--#define	SYSCALL_ENTER_KERNEL	int $0x80
--#endif
+-	/*
+-	 * Discard .note.gnu.property sections which are unused and have
+-	 * different alignment requirement from vDSO note sections.
+-	 */
+-	/DISCARD/ : {
++	.note.gnu.property : {
+ 		*(.note.gnu.property)
+-	}
+-	.note		: { *(.note.*) }		:text	:note
 -
- 	.text
- 	.globl __kernel_sigreturn
- 	.type __kernel_sigreturn,@function
-@@ -16,7 +12,7 @@ __kernel_sigreturn:
- .LSTART_sigreturn:
- 	popl %eax		/* XXX does this mean it needs unwind info? */
- 	movl $__NR_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_sigreturn:
- SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
-@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- __kernel_rt_sigreturn:
- .LSTART_rt_sigreturn:
- 	movl $__NR_rt_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_rt_sigreturn:
- SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
+-	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
+-	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
++	}					:text :note :gnu_property
++	.note		: {
++		*(.note*)
++	}					:text :note
+ 
++	.eh_frame_hdr	: { *(.eh_frame_hdr) }	:text :eh_frame_hdr
++	.eh_frame	: {
++		KEEP (*(.eh_frame))
++		*(.eh_frame.*)
++	}					:text
+ 
+ 	/*
+ 	 * Text is well-separated from actual data: there's plenty of
+@@ -87,15 +87,23 @@ SECTIONS
+  * Very old versions of ld do not recognize this name token; use the constant.
+  */
+ #define PT_GNU_EH_FRAME	0x6474e550
++#define PT_GNU_STACK	0x6474e551
++#define PT_GNU_PROPERTY	0x6474e553
+ 
+ /*
+  * We must supply the ELF program headers explicitly to get just one
+  * PT_LOAD segment, and set the flags explicitly to make segments read-only.
+- */
++*/
++#define PF_R	FLAGS(4)
++#define PF_RW	FLAGS(6)
++#define PF_RX	FLAGS(5)
++
+ PHDRS
+ {
+-	text		PT_LOAD		FLAGS(5) FILEHDR PHDRS; /* PF_R|PF_X */
+-	dynamic		PT_DYNAMIC	FLAGS(4);		/* PF_R */
+-	note		PT_NOTE		FLAGS(4);		/* PF_R */
+-	eh_frame_hdr	PT_GNU_EH_FRAME;
++	text		PT_LOAD		PF_RX FILEHDR PHDRS;
++	dynamic		PT_DYNAMIC	PF_R;
++	note		PT_NOTE		PF_R;
++	eh_frame_hdr	PT_GNU_EH_FRAME PF_R;
++	gnu_stack	PT_GNU_STACK	PF_RW;
++	gnu_property	PT_GNU_PROPERTY	PF_R;
+ }
 -- 
 2.52.0
 
