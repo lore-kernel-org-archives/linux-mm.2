@@ -4,88 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4894BD637B3
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 23:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB5E1D637B3
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 23:27:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4AA6B0088; Tue, 16 Dec 2025 18:24:08 -0500 (EST)
+	id 153C56B0088; Tue, 16 Dec 2025 18:27:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6921E6B0089; Tue, 16 Dec 2025 18:24:08 -0500 (EST)
+	id 101926B0089; Tue, 16 Dec 2025 18:27:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5736F6B008A; Tue, 16 Dec 2025 18:24:08 -0500 (EST)
+	id F172F6B008A; Tue, 16 Dec 2025 18:27:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 472296B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 18:24:08 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C32F960777
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 23:24:07 +0000 (UTC)
-X-FDA: 84226914534.21.B56DC54
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7FA2140006
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 23:24:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vdd4D/w2";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765927446; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DC1D36B0088
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 18:27:28 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F8811360E5
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 23:27:28 +0000 (UTC)
+X-FDA: 84226922976.10.732ACC4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 38301140006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 23:27:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WbpMveA0;
+	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765927646; a=rsa-sha256;
 	cv=none;
-	b=xKQ+TUDjFS4qWJ/8hb8H6WRsdc/KiQgXefOCuOBjODRUa27kEyPZ+UZ5VM2XSPI0dc+uQ8
-	5eC2TtgySbxcIhMAKjKImkLlgrdE2KwUwXw3wppWBnEhwwXg12jkbvHsBcReSGRv+7+m+Z
-	Dq+7gtRfVukRTBCA727nuzQuxTHLN/s=
+	b=xK/OkbHEQwTxBonG2mPMDreLddOR+65KHyLZ3dx09pPMOlac699GnNyDpg5sk8ZFjJmn4N
+	nEkFcHmhffnrynGjx1dlJ2CuWY7RCUAfRncPoY5a7YmHPU7KUnCMAjdedNQTenGDN1GcTw
+	GzUQgF1rg7g1DlZkjaM/rYKNlcDgA4c=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vdd4D/w2";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WbpMveA0;
+	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765927446;
+	s=arc-20220608; t=1765927646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G31AkpMZemEUvcQ+pR++1/nOv6ZIsNUGB/faxeF8AQE=;
-	b=cGQjK8QpAN1PElgv23SB+3rNcN3hBj/ZveH/pwTuSDs1FZW4Oie0HG8TOy140KnDlvscvB
-	6RxqXgCikcDv3zETkNEZL2zVF7qEMuDeIi6fQ/I71b/5/w6dxWtpxwcpDGu3W337vCCKA8
-	lcNmMQDYDTcZVSZ8f60HokeeVHu6ZWE=
-Date: Tue, 16 Dec 2025 15:23:53 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765927438;
+	bh=EKXCsKPTv+XkNeXWtY2Ss72qFYFJMdd6YX+r4JT7Hy0=;
+	b=kRLqumgtc4HmVJUa9xCwcsMhHVBdYBOa+Q81K2ngBfdmaRvLo5XByFxxjDxHtLYZ33bpSt
+	ju9f2xyHoed+VqABup3OiBF54btkasFRB9TlgoYYRmUWdqyI7dRE8Sic4xyXkbEeRTROGV
+	Eow9K7k1O9YuLTfLdZj7uBeqAdFMVfk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765927645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G31AkpMZemEUvcQ+pR++1/nOv6ZIsNUGB/faxeF8AQE=;
-	b=vdd4D/w2Y4vy2dn5sy4fDWEsqgbkF6bNKUoKAm3lH7x4SHyySSzN9PwQ5OKem0Y2duHIqf
-	1+eBiaqTGhuvPQkJTbXX5oSKxgDkcm4Vi1YbmOhB7XEWYUz0seeBukaNr2z7O92dmc4yHZ
-	w6DIyi1uvfAl5BIvZ92mjq3HvNUE3Dw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: retiring laptop_mode? was Re: [PATCH] mm: vmscan: always allow
- writeback during memcg reclaim
-Message-ID: <gweo3wdh3agfavhiky5cloweu4m2hvgzk2j2euckbka5x7n47e@ezjmx7eq7ks5>
-References: <20251213083639.364539-1-kartikey406@gmail.com>
- <20251215041200.GB905277@cmpxchg.org>
- <aT-xv1BNYabnZB_n@infradead.org>
- <20251215200838.GC905277@cmpxchg.org>
- <aUENEydFvVvxZK8r@infradead.org>
- <20251216185201.GH905277@cmpxchg.org>
+	bh=EKXCsKPTv+XkNeXWtY2Ss72qFYFJMdd6YX+r4JT7Hy0=;
+	b=WbpMveA0v7vkkZvqw42EPc1C4Cr/AdMq6PIhRYiQacn6S3sKZaayzoYiJNws8jR8xsfxaf
+	n4himtxnOR24r7AGFnrw6Tc/w7jG2/zE8W/eNapMsTjn2iZk2RP8DOCScWitV9OHWh+EZz
+	qUhJ83UiP6BDyg7jE5Qn4YjHUHcb0AQ=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-yjLa_HkaM2-3zaASvG-1oQ-1; Tue, 16 Dec 2025 18:27:24 -0500
+X-MC-Unique: yjLa_HkaM2-3zaASvG-1oQ-1
+X-Mimecast-MFC-AGG-ID: yjLa_HkaM2-3zaASvG-1oQ_1765927644
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-63e324b2fd0so8962495d50.2
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:27:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765927644; x=1766532444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EKXCsKPTv+XkNeXWtY2Ss72qFYFJMdd6YX+r4JT7Hy0=;
+        b=Y28OFgO9lUyDu8oUTJk52qrJ4Tg1eM/6hFx/4ypf1R+v6l6TyCXmtWKc1jMn3QaoN7
+         G9/89YI+k975BqrpcZDmqLs7CZiZUmZFCDXwj+sFN7qPVqY+4uEkyY7/MkvvcJsReori
+         JYQHPdM7TK4tXqqetrzO7gMnpiO9Az+DRtkP4gSkvJFTlcw4CvdRmlsHsH6laO4AuHVJ
+         CqlOOrlOkZ9b1tUDUxWlOZSF9y36WBfj4r0iuFnaUzROdgT7a/cCb9YQj7Aj5VSTXa2k
+         ojLfTukHn1YVu4aPBtZ5tVcvQNl2D/eNWZAqYN0RxmJHAv8UCNWUXIJBf5R+pb+/b/vm
+         PIyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWw/92UTtyMio4sWFPooam1e7FJV/3aF/gWlqJlqlmofpj9SK8A+K/NgoF7d247Ioe2LqOQsto2w==@kvack.org
+X-Gm-Message-State: AOJu0Yyo19BJC2XLPgz4GC2NHYB7t7cBhI04UrQqzkP9h2v9dfwCPOzw
+	IHN3iKkyXjfx2MIJ5JQWJ1U0tKcKu89kioyAhEOKCoBBaovVeeNICrqOF0Z1cEDN1AURe4sfwNx
+	TPDMr60KVeTckGjAudKrQp7Fb05vllIjiG67XQlWCTQTcJqju89cPZV8B2blDoHvYDOdAy8prBH
+	PQ2DcXHEiKosfG0XS7JcmAFzOqP0E=
+X-Gm-Gg: AY/fxX4uy5XfnkYmpUyqnPq2EHWsY8gcUvIj9XTj+WTusIYj0lOulcSKNKwjmOoxwfJ
+	TfsxSqarc/nyvAYD8PmgxXMRVR7+ZkwQm8BlYfy3oEek56OsAY+1CH8Dx5iqQf1eZvA4uB7MAyI
+	59yOnnhrqcUl0WBQyEB3gGWOg27bWRpcccgyB55mr6TIff4WCtmZ89O0w+cc+8hnAF//A=
+X-Received: by 2002:a05:690e:1505:b0:644:60d9:8679 with SMTP id 956f58d0204a3-645556807a8mr10997273d50.94.1765927643886;
+        Tue, 16 Dec 2025 15:27:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEGPptQk13QsvmOa5ZHpogOK1FLJvsnDQ3rrdzWxnJedT+7pDWOuGlSfHFv7sLII7QbkA9GW4MowA4H4/Vq3XI=
+X-Received: by 2002:a05:690e:1505:b0:644:60d9:8679 with SMTP id
+ 956f58d0204a3-645556807a8mr10997248d50.94.1765927643468; Tue, 16 Dec 2025
+ 15:27:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216185201.GH905277@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20251201174627.23295-1-npache@redhat.com> <20251201174627.23295-8-npache@redhat.com>
+ <95b1403f-3ddb-43ff-b481-2ecc6ab8352f@linux.alibaba.com>
+In-Reply-To: <95b1403f-3ddb-43ff-b481-2ecc6ab8352f@linux.alibaba.com>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 16 Dec 2025 16:26:57 -0700
+X-Gm-Features: AQt7F2p-rngtJz0og9IaebCiPEhh7WjpdRAgI0DfLNPmmyQ8daD3M_WcJSO7CnI
+Message-ID: <CAA1CXcCtp2OwTmm-1EYUpOhsey1sv7CRFu8454m16C=k9iaN6g@mail.gmail.com>
+Subject: Re: [PATCH v13 mm-new 07/16] khugepaged: introduce
+ collapse_max_ptes_none helper function
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
+	ziy@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
+	peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com, 
+	sunnanyong@huawei.com, vishal.moola@gmail.com, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
+	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
+	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
+	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Eu633Y0uaZhpjJ8Ctvg0xLokJOeugpsf52LJCxezK5Y_1765927644
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7FA2140006
-X-Stat-Signature: cxo8ukeyaf6kgrhcu1fxdcg99fshab8a
-X-HE-Tag: 1765927445-159055
-X-HE-Meta: U2FsdGVkX18vzFfd+5FNYw1j3VjQCibLEIctLFXrkMcI595Vzl0LnokabzGbNyXIKGqx49O49qR2knNNgbXT2hOXVE5Byj1ydEMQUjSc7X9pBohsX/DghO9cRFpNZLvXQoRCbdNm60nX1IGYb2mJ6xEAN+FXOywHpJXCf7qVAK1ENuRYUCEqGCNnVA57554UkjyKl1OTLiD6FSQpDasK959SvY2c2tC+9Jdto/B2/9h/JmSpWWHiPYm6F4CSMUbPCq4WkSHqsbxrHh78Djtc14DMSetLG3ogSRMu3V42lqFRb9bPhdQFMJa90d1NdzOgQxGBb/a857GoV6hJx2yBafjFVRsN1DdSTT8z9pPQzXn9kNlIrww/jzSEPya6piQ+6a39lnxpcyCa03FMD7ZdSC6SKPKP91UeE4EAP05er8cZzZvhjI2PDM4d8gO2F2B6cJIgv/gebHFoeL2MO2jDx6+pDbNXWoAe3IxVF1s6unRwGLnk9d+WzsUNDwFig8d8zViIBqObT1/VZze7ok1pM9lSaQNoT2MUyJUaNqYsN96RBrm08wBD24PR1cKIACu0GFpHNRlg6qML9SI+f4d8VUQ7j/fRrtycvMQ8GuTznMFk2nxE1Blh0CZHKVJZaSy1Jc+/cYAfgpP/xsQs53enN+QRBlf9J7KnaHRqpy7ksKfwh/UplEBEPLfF13fkgV+FruLyXMWqo+/vVIh5ex7oWYo/4etdB9+lJ6h4Ta7uT5h9ogRu+vKD9JN/x5pNug4VXlC0dA4x7ojxfDYd04ojHyO0E36ROZsOxpv2aAQgOMj74TkAXjivxe7XwGB14uRjno4CoUIlpbPA0tPkVY90b2bwJVdU6pT6FDhOfM90K5sFFdJRbgYs+vGODb5ELNtnA8zLPYfrBmUUqr25ldHv2M7YZqMgOrsIxOjpUp94y4B/h8vM5wEv90MCWPQ6hfj5XCSbNUFEWMejyXWOssU
- Sne8zNBL
- f7TGmxgXUzWZzE0B80mPjOdLJsHtO2orfuiIMGXrEWI9GQky7zAB3xwxlZ8CgmaJbnlVQqrKYvs0qT2+THy84H/zWWoLrumMiq+A8R87V0/6uORtJu3WUeVAAaCqFiXcydVV0fMgI/OcdGtzsSBQGIi0IadGpCTa8ydx0+j5HPg/LQIr29m8g64e6CtkGFfrBZ3EuyKOz0w+Dr/LRDhKFsvlrueqwXZHTMvmF9aW2xZKrK/5WVPSdXMptv/RSsXGJ3TcLpl0ZZwtWoKoOU117vm18+1cIhL7XWIry3an5rmgH+fPMdtzhIwSbHXdjTPGGrDmD01avfvG28trhG5KK9/t/wrZVD4isPE66B7y0UToEDVe0jxctvx7/WV9BULW8hhy1Z5zOaktRa9bKLKy/fNq1aUx1l2ihc+eS
+X-Rspamd-Queue-Id: 38301140006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: amryy9nt64iwp97n5oes7gng9m6toa84
+X-HE-Tag: 1765927646-886208
+X-HE-Meta: U2FsdGVkX1+4z64MbH5eATwJBK8LMYPQhBKwFNDfBx9rRSg9cvF+WXhXbXJh3cyhh2563UIMdXsespgXxJzDOgPXOpBlpOqEpqMR8OAy45QLLzwZl+skj7aLrfpQlAfNhd7fB3ATpdKM1XbCsYl+WceA4plJyXzh65RSnuYc5+utDAexjfQW+7YGDWDup3reRWQifVaQC5tTQ6CrU0NQmLwejFlkUxxVSmzPSRMX5MdRywLdVmJ09blrmECYQoDAj0u1ktN6UVM+Y1czuYh1p2LN4zkc78iUDoYJdkaK5DEWPosl2wmxntQoQ3KpWsiWe2hYfoSrAWlIDmH+MqvF1WLVur8nQTKtQFzKVgMbVaKxxMWJix8ngZkmVGHcABRQF53fVrx521U6tP+XKrKTIgEd7E5IraoSxoO7KRe6T9yRhaBFpKJHQZt7GLADSNykMEevP1nl0xv/OWTbhKeTlsiZI2F9Uy6s8IMbQTYBtI8wGN4+2RprBmAaUKj2+EtPsFeYLf8rLIhKl4jR9gCoVgOiHRFh8cnxyrr7ZyQYD9Y3PXSr2w5Jqw3oqdC3VyCYeZpP15ongAo7164NjlfO5C7ii8w5aOijdO4LDF2Qn5DCJIKB5NA9jWRwzdXjxNPvP8+v8mW/BxS+rHs33Bz296MBiV66iKptcGcu5maPXbXRBhf2a0dv5W3OwGarr8D+sFR5fkMfmRe971mixET8/maP+ZvMlTQh+7om9tLmj3A49fG3SKk9skvuqyeifrOJ81DbfJBIsXGpuetZzWwG0RgIzzbiwEZQvYMjpFWZljdeEpoop8lzNXM57w9RhCx6xdBc+n4f61Vrc542zb7n1z+Ou2SJOcaTZw0mVjSHyp1XERFW5OF4BvdJsu/rTL1lPcnKtVsbgIiKMovDxdl9aR3M6PgrhfKCnwtd9rEzoBWb4YukxeEmyibQMW4RAqvjcwl2OGE/F3jCqj8u0DA
+ zR7aHyl3
+ QkaTjVNg9vnDXvI5euEwvFk7CeniWqu5DxUHHsKU/+A1MEcPjXgLJYsU3WhY7A7CfTN+Xj1MbEiPDSns6i+8k9b24vTXVUyGoL9QlFjc5Yb9KY/2QuIplD7ObjQurimvyw5u/5tbRpzB8gf3HKlOme9Q0N5KTK9TUzUSPHAFhQxp12V6FhoquMNApXkfVWk8AGYccv+SRmq1tRP3O4UuPA+5PoD4sp3iBNgR+XvqytNM/P4ZTDodfOAHkGz6vWZValQf3dypwk5CIhWoCIYKfVDlhD5GyklWsQ/U1z8vZx50DYOqDZ0W/DtQ/y5LyRw9mRRd/4nHScfGLQUkDZ4lt11j0657fb/rHBby/AnUkb7qY7GZgSHcZocKn/28jQuIDu6VNeujn94rwVC0X/aSt/Pela5rZtg/YhM24qlMhxcrd1z6SkwTsiPC/Qd2UDaBYOQjwu5dhRtCNAeMZ9Khax4HS7DMVAhzYIB/rmuYNVH0MwzC/xQqrNFysGsKHSgLYpg/b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,56 +141,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 01:52:01PM -0500, Johannes Weiner wrote:
-[...]
-> 
-> From 087f10b8046864f71ebc3a3f3316b097932cbded Mon Sep 17 00:00:00 2001
-> From: Johannes Weiner <hannes@cmpxchg.org>
-> Date: Mon, 15 Dec 2025 12:57:53 -0500
-> Subject: [PATCH] mm/block/fs: remove laptop_mode
-> 
-> Laptop mode was introduced to save battery, by delaying and
-> consolidating writes and thereby maximize the time rotating hard
-> drives wouldn't have to spin.
-> 
-> Luckily, rotating hard drives, with their high spin-up times and power
-> draw, are a thing of the past for battery-powered devices. Reclaim has
-> also since changed to not write single filesystem pages anymore, and
-> regular filesystem writeback is lumpy by design.
-> 
-> The juice doesn't appear worth the squeeze anymore. The footprint of
-> the feature is small, but nevertheless it's a complicating factor in
-> mm, block, filesystems. Developers don't think about it, and it likely
-> hasn't been tested with new reclaim and writeback changes in years.
-> 
-> Let's sunset it. Keep the sysctl with a deprecation warning around for
-> a few more cycles, but remove all functionality behind it.
-> 
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> Message-ID: <aT-xv1BNYabnZB_n@infradead.org>
+On Tue, Dec 16, 2025 at 1:12=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+> Hi Nico,
 
-Is there a need for above message ID? Why not put the whole lore link?
+Hi Baolin! Thanks for testing :)
 
-> Acked-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Did you happen to test with the changes I asked Andrew to append to
+this commit?
 
-One nit below and other than that you can add:
+Either way, I think your fixup makes more sense than mine.
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cheers,
+-- Nico
 
-> --- a/include/uapi/linux/sysctl.h
-> +++ b/include/uapi/linux/sysctl.h
-> @@ -183,7 +183,7 @@ enum
->  	VM_LOWMEM_RESERVE_RATIO=20,/* reservation ratio for lower memory zones */
->  	VM_MIN_FREE_KBYTES=21,	/* Minimum free kilobytes to maintain */
->  	VM_MAX_MAP_COUNT=22,	/* int: Maximum number of mmaps/address-space */
-> -	VM_LAPTOP_MODE=23,	/* vm laptop mode */
-> +
 
-There are 8 earlier enums here with names like VM_UNUSED* along with
-the information on what were they. Should we have something similar for
-this one? Something like:
-
-	VM_UNUSED10=23, /* was vm laptop mode */
+>
+> On 2025/12/2 01:46, Nico Pache wrote:
+> > The current mechanism for determining mTHP collapse scales the
+> > khugepaged_max_ptes_none value based on the target order. This
+> > introduces an undesirable feedback loop, or "creep", when max_ptes_none
+> > is set to a value greater than HPAGE_PMD_NR / 2.
+> >
+> > With this configuration, a successful collapse to order N will populate
+> > enough pages to satisfy the collapse condition on order N+1 on the next
+> > scan. This leads to unnecessary work and memory churn.
+> >
+> > To fix this issue introduce a helper function that will limit mTHP
+> > collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
+> > This effectively supports two modes:
+> >
+> > - max_ptes_none=3D0: never introduce new none-pages for mTHP collapse.
+> > - max_ptes_none=3D511 (on 4k pagesz): Always collapse to the highest
+> >    available mTHP order.
+> >
+> > This removes the possiblilty of "creep", while not modifying any uAPI
+> > expectations. A warning will be emitted if any non-supported
+> > max_ptes_none value is configured with mTHP enabled.
+> >
+> > The limits can be ignored by passing full_scan=3Dtrue, this is useful f=
+or
+> > madvise_collapse (which ignores limits), or in the case of
+> > collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
+> > collapse is available.
+> >
+> > Signed-off-by: Nico Pache <npache@redhat.com>
+> > ---
+> >   mm/khugepaged.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 42 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 8dab49c53128..f425238d5d4f 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -463,6 +463,44 @@ void __khugepaged_enter(struct mm_struct *mm)
+> >               wake_up_interruptible(&khugepaged_wait);
+> >   }
+> >
+> > +/**
+> > + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for c=
+ollapse
+> > + * @order: The folio order being collapsed to
+> > + * @full_scan: Whether this is a full scan (ignore limits)
+> > + *
+> > + * For madvise-triggered collapses (full_scan=3Dtrue), all limits are =
+bypassed
+> > + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
+> > + *
+> > + * For PMD-sized collapses (order =3D=3D HPAGE_PMD_ORDER), use the con=
+figured
+> > + * khugepaged_max_ptes_none value.
+> > + *
+> > + * For mTHP collapses, we currently only support khugepaged_max_pte_no=
+ne values
+> > + * of 0 or (HPAGE_PMD_NR - 1). Any other value will emit a warning and=
+ no mTHP
+> > + * collapse will be attempted
+> > + *
+> > + * Return: Maximum number of empty PTEs allowed for the collapse opera=
+tion
+> > + */
+> > +static unsigned int collapse_max_ptes_none(unsigned int order, bool fu=
+ll_scan)
+> > +{
+> > +     /* ignore max_ptes_none limits */
+> > +     if (full_scan)
+> > +             return HPAGE_PMD_NR - 1;
+> > +
+> > +     if (!is_mthp_order(order))
+> > +             return khugepaged_max_ptes_none;
+> > +
+> > +     /* Zero/non-present collapse disabled. */
+> > +     if (!khugepaged_max_ptes_none)
+> > +             return 0;
+> > +
+> > +     if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+> > +             return (1 << order) - 1;
+> > +
+> > +     pr_warn_once("mTHP collapse only supports max_ptes_none values of=
+ 0 or %d\n",
+> > +                   HPAGE_PMD_NR - 1);
+> > +     return -EINVAL;
+> > +}
+> > +
+> >   void khugepaged_enter_vma(struct vm_area_struct *vma,
+> >                         vm_flags_t vm_flags)
+> >   {
+> > @@ -550,7 +588,10 @@ static int __collapse_huge_page_isolate(struct vm_=
+area_struct *vma,
+> >       pte_t *_pte;
+> >       int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
+enced =3D 0;
+> >       const unsigned long nr_pages =3D 1UL << order;
+> > -     int max_ptes_none =3D khugepaged_max_ptes_none >> (HPAGE_PMD_ORDE=
+R - order);
+> > +     int max_ptes_none =3D collapse_max_ptes_none(order, !cc->is_khuge=
+paged);
+> > +
+> > +     if (max_ptes_none =3D=3D -EINVAL)
+> > +             goto out;
+>
+> After testing your patchset, I hit the following crash. The reason is
+> that when 'max_ptes_none' is -EINVAL here, it shouldn't goto out to call
+> release_pte_pages(), because the '_pte' hasn't been initialized at this
+> point, and there's no need to release folios either.
+>
+> After applying the fix below, the crash issue is resolved. I'm not sure
+> whether Andrew will help fix this or if you will send a new version to
+> address this issue.
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 8cffaf59ced8..2e8171a6d7df 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -646,7 +646,7 @@ static int __collapse_huge_page_isolate(struct
+> vm_area_struct *vma,
+>          int max_ptes_none =3D collapse_max_ptes_none(order,
+> !cc->is_khugepaged);
+>
+>          if (max_ptes_none =3D=3D -EINVAL)
+> -               goto out;
+> +               return result;
+>
+>          for (_pte =3D pte; _pte < pte + nr_pages;
+>               _pte++, addr +=3D PAGE_SIZE) {
+>
+> "
+> [  565.319345] Unable to handle kernel paging request at virtual address
+> fffffffffffffffa
+> .......
+> [  565.319409] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000001f8549=
+a000
+> [  565.319416] [fffffffffffffffa] pgd=3D0000001f85f2a403,
+> p4d=3D0000001f85f2a403, pud=3D0000001f85f2b403, pmd=3D0000000000000000
+> [  565.319427] Internal error: Oops: 0000000096000006 [#1]  SMP
+> .......
+> [  565.326733] pc : release_pte_pages+0x68/0x178
+> [  565.326960] lr : __collapse_huge_page_isolate+0xc0/0x748
+> [  565.327232] sp : ffff800083593910
+> .......
+> [  565.331476] Call trace:
+> [  565.331664]  release_pte_pages+0x68/0x178 (P)
+> [  565.331940]  __collapse_huge_page_isolate+0xc0/0x748
+> [  565.332249]  collapse_huge_page+0x4cc/0xa70
+> [  565.332510]  mthp_collapse+0x254/0x2a8
+> [  565.332754]  collapse_scan_pmd+0x5a0/0x6d8
+> [  565.333010]  collapse_single_pmd+0x214/0x288
+> [  565.333275]  collapse_scan_mm_slot.constprop.0+0x2ac/0x460
+> [  565.333617]  khugepaged+0x204/0x2c8
+> [  565.333992]  kthread+0xf8/0x110
+> [  565.334368]  ret_from_fork+0x10/0x20
+> "
+>
+> >
+> >       for (_pte =3D pte; _pte < pte + nr_pages;
+> >            _pte++, addr +=3D PAGE_SIZE) {
+>
 
 
