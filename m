@@ -4,104 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A48D5E147
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 12:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB0C1D5E144
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 12:39:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05C6E6B0005; Tue, 16 Dec 2025 07:34:59 -0500 (EST)
+	id 0EFDF6B0005; Tue, 16 Dec 2025 07:39:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F22B66B0089; Tue, 16 Dec 2025 07:34:58 -0500 (EST)
+	id 09E066B0089; Tue, 16 Dec 2025 07:39:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E20996B008A; Tue, 16 Dec 2025 07:34:58 -0500 (EST)
+	id EDF146B008A; Tue, 16 Dec 2025 07:39:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE5B26B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:34:58 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 884C2C0638
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:34:58 +0000 (UTC)
-X-FDA: 84225278676.25.D720FF3
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5060340008
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:34:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB9166B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:39:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8152459A6E
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:39:27 +0000 (UTC)
+X-FDA: 84225289974.15.61E56AE
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 92EABA000F
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:39:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=e0JeGos7;
+	spf=pass (imf25.hostedemail.com: domain of 3-1JBaQgKCPYhYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3-1JBaQgKCPYhYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765888496;
+	s=arc-20220608; t=1765888765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kQR74/ksaXQZedcRd2myaaC49e2JtPPkTV8e7vIDcuY=;
-	b=BWv1VSQ3Au1+yDEygDjB5Dgxg13xfE+QXu4RHqwLM6yTvTdKX6+eZKW9/UKABjbAuyDA2W
-	orZCEFGSqS7azg/hPeMW4EDc44HA1tEA0AnD4IwbCqBlGH0kmmpMFae3qgibiP4pAihtq/
-	lBHUSvtqhlyNTf/mpy3YaiF7imH+Ao0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765888496; a=rsa-sha256;
-	cv=none;
-	b=YW2MOr3FJnTULm4Nf7UJOa9ENZnI1rWQsYaV9IBF22bG+9dwB8GkziG3I3wsf2t8MfiJIj
-	hXXL/Ik+eGd+Bto3G6mAZwLrFj/DfmAKcFQ22vrGPOnnGYw6bt0C8oYFyXnLNDi/6cjkKm
-	oOiMnp88cLTVg9g/nYofsqe1ReafN9I=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Zl5vYkOfCeh8vzJ1i3gRdGX7RBaO+Y5siaEC/TfzJu8=;
+	b=HDXl7ZUZJ5Dnwf0rXwKYVopVfey7Ndrv+zwIwdpYexRDKZPqZ1xGevEchq/HVyZv/Gwp7m
+	PZ/0/osa+YH+6LlA97DSCbamdVVZjE8bcihd3z9F+3yaEk4QG26MUQIg/dzNG3jphTEaoh
+	IXSW0pGqDKH9t0YK56KadHTfSbmI7Oc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVxFR1ppfzYQtkG
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:34:19 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 708084056D
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 20:34:44 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgCHNvfhUUFpcimUAQ--.7655S2;
-	Tue, 16 Dec 2025 20:34:42 +0800 (CST)
-Message-ID: <476fcde5-d54d-4b15-9870-844b3b8c700a@huaweicloud.com>
-Date: Tue, 16 Dec 2025 20:34:40 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next v3 2/2] memcg: remove mem_cgroup_size()
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- david@kernel.org, zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- lujialin4@huawei.com
-References: <20251211013019.2080004-1-chenridong@huaweicloud.com>
- <20251211013019.2080004-3-chenridong@huaweicloud.com>
- <o3hmzratjkcxms3ylnjiuashclllf7mvz6ttkfrz4lybdiwhhp@yeo5my374trx>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <o3hmzratjkcxms3ylnjiuashclllf7mvz6ttkfrz4lybdiwhhp@yeo5my374trx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCHNvfhUUFpcimUAQ--.7655S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kCFW8Wr18Kw13Wry8Krg_yoW8KryUpF
-	nFka47ta15Zryjyr4Iv34Yva48tw48t34UG347Gr18X3srWrn5tF9Fka40gFy8CF93AF17
-	ZF15uws7A3y2k3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jIksgUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: cx3qhb5w1nif5tzie9gfwq1cu1fe78bh
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5060340008
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=e0JeGos7;
+	spf=pass (imf25.hostedemail.com: domain of 3-1JBaQgKCPYhYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3-1JBaQgKCPYhYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765888765; a=rsa-sha256;
+	cv=none;
+	b=DSm8llYCW6jN5NNDS8Ep90rv156icwDic2H9qCdlk5ut0Q9YJuhYklFA0zvy/btRHvUmX1
+	1NOmnpdRKLWPmgL7f/0wmoVbN3UYe9RQJXidbChZu//F9Wrib/wS+qE5U5xfJwWpaJ4V2O
+	LqklYVz2hWRoHOmRVEmpZD3n73z0v54=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-640cdaf43aeso4088736a12.2
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:39:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765888764; x=1766493564; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zl5vYkOfCeh8vzJ1i3gRdGX7RBaO+Y5siaEC/TfzJu8=;
+        b=e0JeGos7iIc7+wWB0W6nwLUczh8MJScgXD/mk3df+wkfFgX8PvFtwI0R7ISZKGTGRX
+         tlvMgvmP4ButWKbMCOsnESMhxUiW8ZNlNamTIMt7pckn260aXV6hPMGgp3PI9LTny+DM
+         Av8r5hAg7Q4A2a3rBMf1SBL37I9xpQG662MFNR5vECObJz1YG/L6iv4iiykd4NVNjv8i
+         jMUluL4jWrDR1F73qNsMUUBQJibm90wkPdVGwNHw5Ghi8RD8utYWaNB2X9umBSSjchG3
+         miCxKY2eDmBJpRbOqQ8ptpJmUxWKKxqJG5BgM2YYQ0bY6+Zs5IByjU4xoSOCEazc9WZ5
+         Balw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765888764; x=1766493564;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Zl5vYkOfCeh8vzJ1i3gRdGX7RBaO+Y5siaEC/TfzJu8=;
+        b=qQktcoDNCsJ0lhOmadcajShjNGje5xjcQN+FpnjLELx5sWeooXTFASMqeILuuXE2aL
+         JYusGDNIOQjwaAq9LfpdNkiEC2W1pz3WMcVQyR4oFShUdSKRuT0tcIEgSX7VI4cz6mKG
+         ++OtmjUaQPYvO7JwMY0t0BsCwSe0VvAKZX8aVVmFvo6bOLyFp2cQ6AaVgyEu8UIf1MKS
+         vRZSet1gc5ENqAJ+LohmTF8NGgZ0yN517mxNPVaIQyZlCLhCI1B4Gu2x8fSD8JcCiNF9
+         EMLGtzxRAak5k4tDfflVyTmhlSmqwNUe47Fwd4yFOvJH8RYbfXf06eVosUYiqy0/YXmU
+         BtlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOrTF9xM6ObFpR+H9qgd7EuW6dJh2kLF3lbS8faG+g+SnbkWxD0/g1AmIh0bP3XsM6NJMIME8J1Q==@kvack.org
+X-Gm-Message-State: AOJu0YxFyjvsaURFvtn/VEMR+yq1m10jyUohVpgzho/tlL9FFtqSbQon
+	eLrcikIhJEqfbORjgmVVwQJs9qo2e6W32ctU5CuS5dMq7q+MlKajfds0qdPQKVfEfKwrfWzkWUC
+	2W7ISQW5EtUAivA==
+X-Google-Smtp-Source: AGHT+IHodb6E0igt70QWnGwF16M0BauoX0vq/LCQAwB66mdazNxScaNnSE8J8M2KteYx3re6oS8FbB6Lsn9MBw==
+X-Received: from edsk11.prod.google.com ([2002:aa7:d8cb:0:b0:643:12a9:41be])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:50c8:b0:64b:3a87:44ff with SMTP id 4fb4d7f45d1cf-64b3a874559mr607042a12.34.1765888763584;
+ Tue, 16 Dec 2025 04:39:23 -0800 (PST)
+Date: Tue, 16 Dec 2025 12:39:22 +0000
+In-Reply-To: <aUFKAdPY3zTlPmnr@e129823.arm.com>
+Mime-Version: 1.0
+References: <20251212161832.2067134-3-yeoreum.yun@arm.com> <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+ <aT5/y3cSGIzi2K+m@e129823.arm.com> <DEYOI8H2OESD.1H56D3H8HKILB@google.com>
+ <aT/WOAr4osoJWaMS@e129823.arm.com> <DEYP7JSVTB9D.3EFN2KEHH3O79@google.com>
+ <aT/drjN1BkvyAGoi@e129823.arm.com> <DEZK5U2YP6I0.27VJHSVK14646@google.com>
+ <aUE8bwUVa6jSUft1@e129823.arm.com> <DEZLRT59S25H.2YWTZ2G0TN3HV@google.com> <aUFKAdPY3zTlPmnr@e129823.arm.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DEZNBMBRM5M2.1974FFAQ13G5E@google.com>
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while stop_machine()
+From: Brendan Jackman <jackmanb@google.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Brendan Jackman <jackmanb@google.com>
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>, 
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ast@kernel.org>, 
+	<daniel@iogearbox.net>, <andrii@kernel.org>, <martin.lau@linux.dev>, 
+	<eddyz87@gmail.com>, <song@kernel.org>, <yonghong.song@linux.dev>, 
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
+	<haoluo@google.com>, <jolsa@kernel.org>, <hannes@cmpxchg.org>, 
+	<ziy@nvidia.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>, 
+	<rostedt@goodmis.org>, <catalin.marinas@arm.com>, <will@kernel.org>, 
+	<ryan.roberts@arm.com>, <kevin.brodsky@arm.com>, <dev.jain@arm.com>, 
+	<yang@os.amperecomputing.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, 
+	<linux-rt-devel@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Stat-Signature: aqiuxk335b7syesjxcgs9sxtciag55ux
 X-Rspam-User: 
-X-HE-Tag: 1765888490-963199
-X-HE-Meta: U2FsdGVkX1+WCP/IgurG0DN/DNzSgF0Qm/Rq+L1lksxOdPIaq3iiwKmwe0yixNbXtIEcZ2rPGiHgkHlsiqls/JLtPThnYOu/5d/Ho2EmegHYTGgKJm1a39OkdelZ2lg6GPtFnvy3XM5fOsWbf/DXHuFb7zX8odSE8MQbHofKDWtH3A9CUZ95vy7nQP3dUO5tWxOk32vL9PB6rCQ0apiUlr5279Su+lze1ZYNvgd60OVFqtiVeEbeAcDGXQtKGw/6SzJvrjXND56Dg08S2jEoGXBDB/vyeAr3qWQ0gjfuq5pMEUtZACWJDQlSd540LnR99+OEMI4aeoieDt758xIpa7KJITTntVa7G+kK/mo2DmBTBme+YSpIkwutjvtzwLP2qVguYKg64IOvZEBx/w84squ205ttDONGCvEfWEdhz2GoKORG1BfuIQXwxcZhKj8FP9Px6aDjXWb8BGuHlgOR23TV68POFUypRGab39ULKkofyS51y6yTiZzsp+2jdad2WQeKj4HTVFtPoBuY0G/DCCOBh5DW4rCW0iw5OCXPMMkdXm3zGBAoovBAQwYF7E5bfHJMOEwJ88U6EfKLPqLZ/1NoPuKzvT4hR5WegyVaZ436zoV5DJW5lk6JKXJkvgspjd423Uy30+teoDk6vW2JR7S8RzQB0jKm+MBPRSRmbMsb1zMxci+Cg4qS23w2KPUW6bSFZsxADjr9pmATHS0+NpRmTxt2b1L9n88NmOCj+vMYBOfzIzcARO8joXOu6BPTwyas19kHLzKjwqp/5Pf7pN2FLKYJY6Mb+96d9JHwUiqmVAwTLPX0lRhk7w0QJDoXcczbgiFfgStq+2VSo9TI0GoOe3iUzaKE6M/10AogodoT9Cdlcb5JpON4H69rUBBb092z0hB6hvAKqdngJQktyK4yUhd1CChXJSmv4T+toNhHLvW4ygiScGif0S18b5e5j9f+4CBMMnYME8sJJp+
- im3LT8xD
- mydezj0lGDk9HHwKr/HD/SzHvJptAE/kzeHmD54gTspK15jv2ChMWss43UO2G1fpqrsaDq47+UBe29NQVRoxUidNJeRTjgnXA5O13mpKwkvuyBfDiMl5r/vizYRDE1x2TXEu8iQKAXEewVfQU2QLcJ0CX3ptyG4qnikI3HkW7tvNKD878Tdjou/9fcbVACeIdaDLtMY0LWphZnUxh2tmSM3UhCr3khfrw+3SSWQxYTCbNyahvfVAewIIPnX1tY+BNNIgoS5qu9IhiI6AgHiP4hB1BLTVdKh+PQCJpdjVr2JhziOT9EB1ayMLAfAZ2dcQcLbyx
+X-Rspamd-Queue-Id: 92EABA000F
+X-HE-Tag: 1765888765-584671
+X-HE-Meta: U2FsdGVkX1/wYajuB97YKe4T2ca7z9Brpm8Un94hi58ooq7CndlE6HqihfM65yiJedtIITXmHLivXrk6CA8NVblPQISUaojVncXXTDuk9NLtOwt2UqeRQbkGWC1p7r+4427VrlCMxUSA2P5PXeh1iFCZ5OgHp9GfxUkO3SBhanfbCgAwONZhtRs03ZEDXfh59/MQr3X9EUoovLUh7BnurCEbVbdsi2capqsfN3PBqTrxijHfaHgbtlHnSp8QHAZvwMacKA/MIGxrhSta6ea/X6gQn1rFKp5gsilYnL0kqKRsgxFlMH+boq0MKGGmrxn2i1uMvBv6JBGtTaOJmrQ2JyrPB1DealkUPMhN659dlZjOdMyUOCSjgZEtgMH3byZmmo5HSNSDYSbNbhiwcJFAVKBlUxi/Bs3NACftal0fDOulKjh+dNKW1gMayMz+BKKVjGgLX7QglGcQ8TxVjhAx7TdnpRxPZ/Dqyk8awSW/a+YgPgiLOvu//YLO1zRYr0Bg8yqeSTD3U+RSYUaYuRqiBaG1s/ryjaPP7zhDyAV52HAnqGzUtPyZEkzvucU9QI4iaSVxOctzWEUc8Qw3PnT2KUWB+tkUHCKJ57ozkxwbRNuDaRPBNwI0tDsIQY4go7j5l/5E5enozWJThhsIktDE+2U6ypAQ4xHdH+gn5wgWROOwWRwi7M42NuVsRdF1vNh+nILF6BWLHaaOXBVzPsoHOkW3GYLBZKD+qa3nOMF9oZx256TMm9/ftkhY0Rv2/9lxzpvjoYPNVliYqjw13muIGNU1UGKmytpRx5hYjZuEy14DY9cw1RWL1WlBr42IUYseB2p2ea6fPLg3edneIFmwBja/zg5/njIrNHNUmCN7qfGrjseKbGiRQrwEXGuppZiRcUBOeGdAZuRBWbOzeWbLfn1YzOHoJg323aC/PEiEqAKoqVOks/M/W8zy9MhyIoZIIqLCHMtrtWNE8sCkxls
+ KPaCExsx
+ 3EsgHRiKb/gBzq7Xh7yCQbBrzCimB+jopWjdm+jJ4x27sCqfnEQin5oPIHS8qIKopUUXErAlZouQEIVDMjzkgHsCqMYhAs6tWImS5p965DK5SPWfzgYwqeDedaT3NPn+9ZamXO8Pm0JutyjfcoFfNZDFC5yGWZTqplLgBlAPAMPnwRBdMN0j3N/HI/yin/Ss3MBhXrcgsFkQiXbM5GiBpCOyw7eVk3C6BgRqRYHlIwISpXj4Q/Y3PyRvSkOORMvRy85fhThnWOP8xLCXE5MSoifjaurMLm6VF9rPuiakgWUYmZjXCjwTeEvQnAvLlRL2/EAyyOaR2sBRyv+rJJZKNPonSF1mojlV+ijmyLIqyuXO5UdkuyMZ+ssP8jZFcRlUqsSwntZL1TAHLGU1K2+qa2bRzyLl+LQ2p3aQbg6YbBxAIw6R2yrIdTsauGjLB3uROfkThzaBK24isVP+yyhh/r4V5VkwOB1Z32zBbPthaFEoLhfIkd/YszzVhFZabNJPQU22dQyHPr70jc72aNdOe0fdWKdGvZn1DjRcSXyy1x5wjwbtB/JmQigJQHmmoFFyzUE83xCMFi6KFXwuIkjFFDcYQeRXeYDjVIuzwrB+skQmjthVtk+D5DsgNp0YU0q3rQ24SjQ3jBxlL0Zl7uWOXVJhYHXMOyafwJi0WCUIndqJ7Op//hGG+ErHwxtxGmyQwisoBmGUFUKCNxqhJ47JT3zL+1txUxQ12lb+e6q/3Eo/6JJxvmH1YgM2Wph/pmEdsOS1F+voGEdQ6+etDb+2++PatWg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,75 +128,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/16 0:28, Michal Koutný wrote:
-> Hi Ridong.
-> 
-> On Thu, Dec 11, 2025 at 01:30:19AM +0000, Chen Ridong <chenridong@huaweicloud.com> wrote:
->> From: Chen Ridong <chenridong@huawei.com>
+On Tue Dec 16, 2025 at 12:01 PM UTC, Yeoreum Yun wrote:
+>> On Tue Dec 16, 2025 at 11:03 AM UTC, Yeoreum Yun wrote:
+>> > Hi Brendan,
+>> >
+>> >> On Mon Dec 15, 2025 at 10:06 AM UTC, Yeoreum Yun wrote:
+>> >> [snip]
+>> >> >> Overall I am feeling a bit uncomfortable about this use of _nolock=
+, but
+>> >> >> I am also feeling pretty ignorant about PREEMPT_RT and also about =
+this
+>> >> >> arm64 code, so I am hesitant to suggest alternatives, I hope someo=
+ne
+>> >> >> else can offer some input here...
+>> >> >
+>> >> > I understand. However, as I mentioned earlier,
+>> >> > my main intention was to hear opinions specifically about memory co=
+ntention.
+>> >> >
+>> >> > That said, if there is no memory contention,
+>> >> > I don=E2=80=99t think using the _nolock API is necessarily a bad ap=
+proach.
+>> >>
+>> >>
+>> >> > In fact, I believe a bigger issue is that, under PREEMPT_RT,
+>> >> > code that uses the regular memory allocation APIs may give users th=
+e false impression
+>> >> > that those APIs are =E2=80=9Csafe to use,=E2=80=9D even though they=
+ are not.
+>> >>
+>> >> Yeah, I share this concern. I would bet I have written code that's
+>> >> broken under PREEMPT_RT (luckily only in Google's kernel fork). The
+>> >> comment for GFP_ATOMIC says:
+>> >>
+>> >>  * %GFP_ATOMIC users can not sleep and need the allocation to succeed=
+. A lower
+>> >>  * watermark is applied to allow access to "atomic reserves".
+>> >>  * The current implementation doesn't support NMI and few other stric=
+t
+>> >>  * non-preemptive contexts (e.g. raw_spin_lock). The same applies to =
+%GFP_NOWAIT.
+>> >>
+>> >> It kinda sounds like it's supposed to be OK to use GFP_ATOMIC in a
+>> >> normal preempt_disable() context. So do you know exactly why it's
+>> >> invalid to use it in this stop_machine() context here? Maybe we need =
+to
+>> >> update this comment.
+>> >
+>> > In non-PREEMPT_RT configurations, this is fine to use.
+>> > However, in PREEMPT_RT, it should not be used because
+>> > spin_lock becomes a sleepable lock backed by an rt-mutex.
+>> >
+>> > From Documentation/locking/locktypes.rst:
+>> >
+>> >   The fact that PREEMPT_RT changes the lock category of spinlock_t and
+>> >   rwlock_t from spinning to sleeping.
+>> >
+>> > As you know, all locks related to memory allocation
+>> > (e.g., zone_lock, PCP locks, etc.) use spin_lock,
+>> > which becomes sleepable under PREEMPT_RT.
+>> >
+>> > The callback of stop_machine() is executed in a preemption-disabled co=
+ntext
+>> > (see cpu_stopper_thread()). In this context, if it fails to acquire a =
+spinlock
+>> > during memory allocation,
+>> > the task would be able to go to sleep while preemption is disabled,
+>> > which is an obviously problematic situation.
 >>
->> The mem_cgroup_size helper is used only in apply_proportional_protection
->> to read the current memory usage. Its semantics are unclear and
->> inconsistent with other sites, which directly call page_counter_read for
->> the same purpose.
->>
->> Remove this helper and get its usage via mem_cgroup_protection for
->> clarity. Additionally, rename the local variable 'cgroup_size' to 'usage'
->> to better reflect its meaning.
->>
->> No functional changes intended.
->>
->> Signed-off-by: Chen Ridong <chenridong@huawei.com>
-> 
-> Why does mem_cgroup_calculate_protection "calculate" usage for its
-> callers? Couldn't you just the change source in
-> apply_proportional_protection()?
-> 
-> Thanks,
-> Michal
-> 
+>> But this is what I mean, doesn't this sound like the GFP_ATOMIC comment
+>> I quoted is wrong (or at least, it implies things which are wrong)? The
+>> comment refers specifically to raw_spin_lock() and "strict
+>> non-preemptive contexts". Which sounds like it is being written with
+>> PREEMPT_RT in mind. But that doesn't really match what you've said.
+>
+> No. I think the comment of GFP_ATOMIC is right.
+> It definitely said:
+>   The current implementation *doesn't support* NMI and few other strict
+>   *non-preemptive contexts (e.g. raw_spin_lock)*.
 
-I apologize for missing this message earlier.
-
-In my v2 patch, I was reading the usage directly:
-
-+		unsigned long usage = page_counter_read(&memcg->memory);
-
-This works fine when CONFIG_MEMCG=y, but fails to compile when memory cgroups are disabled. To
-handle this, I initially added #ifdef CONFIG_MEMCG guards.
-
-Following Johannes's suggestion, I have now moved this logic into mem_cgroup_protection() to
-eliminate the #ifdef and keep the code cleaner.
-
-Discussion:
-https://lore.kernel.org/all/20251210163634.GB643576@cmpxchg.org/
-
->> @@ -2485,7 +2485,6 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		 * again by how much of the total memory used is under
->>  		 * hard protection.
->>  		 */
->> -		unsigned long cgroup_size = mem_cgroup_size(memcg);
-> +		unsigned long cgroup_size = page_counter_read(memcg);
-> 
->>  		unsigned long protection;
->>  
->>  		/* memory.low scaling, make sure we retry before OOM */
->> @@ -2497,9 +2496,9 @@ static unsigned long apply_proportional_protection(struct mem_cgroup *memcg,
->>  		}
->>  
->>  		/* Avoid TOCTOU with earlier protection check */
->> -		cgroup_size = max(cgroup_size, protection);
->> +		usage = max(usage, protection);
->>  
->> -		scan -= scan * protection / (cgroup_size + 1);
->> +		scan -= scan * protection / (usage + 1);
->>  
->>  		/*
->>  		 * Minimally target SWAP_CLUSTER_MAX pages to keep
-
--- 
-Best regards,
-Ridong
+But this phrasing sounds like there are other non-preemptive contexts
+that it _does_ support. I would definitely read this as implying that
+plain old preempt_disable() is OK. I don't understand what those "few
+other strict contexts" are, nor why the stop_machine() context is
+included in them.
 
 
