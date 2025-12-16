@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD4CED5B87C
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02DF1D5C0C0
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:02:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E27E6B00A1; Tue, 16 Dec 2025 03:01:56 -0500 (EST)
+	id 429156B00A3; Tue, 16 Dec 2025 03:01:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 997F46B00A3; Tue, 16 Dec 2025 03:01:56 -0500 (EST)
+	id 4113D6B00A5; Tue, 16 Dec 2025 03:01:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AFEA6B00A4; Tue, 16 Dec 2025 03:01:56 -0500 (EST)
+	id 26B5B6B00A6; Tue, 16 Dec 2025 03:01:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7608C6B00A1
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:01:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AE308952B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:01:56 +0000 (UTC)
-X-FDA: 84224590632.19.7EF78F4
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 04F946B00A3
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:01:58 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A7EE6B9DB0
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:01:57 +0000 (UTC)
+X-FDA: 84224590674.13.972FDD0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 96FDEA0009
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:01:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WpL35w/Q";
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765872114; a=rsa-sha256;
+	by imf24.hostedemail.com (Postfix) with ESMTP id E9684180019
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:01:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gfRsIXAj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765872116; a=rsa-sha256;
 	cv=none;
-	b=KYPjXBZ7MShYaqkEmLqi8Sl+0NDTp1oiZGl6rXw8hj8oZe1zAwaz0KjwwnPwnLQK02BO0w
-	p/CPDzd8fhII1GiOnYHaR3kXa9dh1AHKmiA+Y4c98h7Ijw9EQTYQIIhdwaGyJscrtQhY+i
-	aAU9N6Y4Gv0Igh2JqfgzOXasZWH0Vp8=
+	b=iu7q6eJZ0uNtsac5DI83QveYTXyLFvnR3iXrvHeW5TW64FFDHuI/lNACmh1s93sGfSlUFf
+	vyXT+jceQEmFSgmmjv+05e0sE9BuSegzZ8vTPak03/qK3aPjlG8Q1mhQJkvBJvnUytk+wB
+	twmHgdGCOolb1l20st7Y7IjjgrCbmUc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WpL35w/Q";
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gfRsIXAj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765872114;
+	s=arc-20220608; t=1765872116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M/pBh15MVvJ53SnhY35kazX8Y4DxLhwZP9KOa9nKXIo=;
-	b=W3KkuLfsUwO4bbuadj7/pMp8ujURZSyju4EgJvfiBry2VCWGtpExjRsOYY05RpRZ3pzaUB
-	Jg1mAeAJbTLIiR9ksTgH3GXaj0yasiIiN60Gn3J1fnpJ4f9ST0OVRfsg73cYolJGdpBQ4S
-	Om1J7tHslCj27T3zE4XAKPUsj9HBVwg=
+	bh=na8gXAEAxNsMKiq+dCLmUr1MCP0q/SyJVeDbs7bdHN4=;
+	b=5RDqwOSXHhcbvA3G0HUjUlOo5nZ61umV+mzIoGZdfY7akXSz7F9Vt0powLjZRPlaLzyvX2
+	jnkifgSPIzsPaq/i443E8mCyHDuoehdA9jG3yaOTv1cNdf4HlEy7N3saTMdvvQnuTRp3Ij
+	z1VUaPtbTSBtrVXiGBm7Sb+yS9xc/nw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BECCB43F80;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C93243E59;
+	Tue, 16 Dec 2025 08:01:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079CBC4CEF1;
 	Tue, 16 Dec 2025 08:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7ECCC19423;
-	Tue, 16 Dec 2025 08:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765872113;
-	bh=dyfJoVaMw2se3otvFoArpX9pnB7yY+god8b9Qd1MKC4=;
+	s=k20201202; t=1765872115;
+	bh=MUTEKMjwMQrPcHqNBgdPYYcf5dYcs6y7OQyOyiiLOLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpL35w/Q+dEm4/26EIsm2RWsTVlntA3hjNzSTCFpkAhWTkLvdizet+5IJnAPoEBg1
-	 wKx2iw0YDROKUTEfRk8YYMthRAMrADKxAgyG1d/0DgmApnbj7bf02yjQRkGf0FsGg6
-	 qO6hG4aZ0xyiLekKrM5TzL2tDywpgMo/V/QLvxzOqhM2Gf2E6xgTSmquMVUByCN6iZ
-	 suyhysPUCq8RaXKTICW4qAt8LKshVhDseeXzwFGbVdB8BJ3yGtq2J3deVZTKzllZ1C
-	 9Qf0HigxOK430zaYZuqV33SYk/L5P9xJgR5te+DBzhoZ70mvGOFwjQ9Su1Y0chNY7W
-	 vyWxdn7z5Y5eQ==
+	b=gfRsIXAjQLY8IWW5+ZPMlEDxMgvzZhQYGXNtIlKrS0zjcik3mY0694lsIOPczk77+
+	 rETP1V1kQdquYP+X7d2xVBiutGayjtXH5iaeYOL4LxLVOSHLLZEe4aQwyuHu0Vph5G
+	 +R9zp/vC9U5pxzjGZ/OwHEoNFKwNcf/WXqVT/OHCOp3iIwUzn3/9cq3WOHqCJgDbtz
+	 cSlrXe7BnthQsy1nE1l1H672yCkBggMoFbV1g94E741igyUoCmuSTiEgF39vLoenrA
+	 VH1EqG36TRdbB5f1ZMm+0aKllIPbS8EN/TlSGwo4UaVdpHoYCJQTVZ9Jx5O3ClMKYx
+	 S8s2G3UaNiaHQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 06/12] mm/damon: update damos kerneldoc for stat field
-Date: Tue, 16 Dec 2025 00:01:19 -0800
-Message-ID: <20251216080128.42991-7-sj@kernel.org>
+Subject: [PATCH 07/12] mm/damon/core: implement max_nr_snapshots
+Date: Tue, 16 Dec 2025 00:01:20 -0800
+Message-ID: <20251216080128.42991-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251216080128.42991-1-sj@kernel.org>
 References: <20251216080128.42991-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E9684180019
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ugrexcxekscb5iafxjer8hxekmm3myt8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96FDEA0009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: r4p1g1djro8am1yhonpwe1chf5sxzabg
-X-HE-Tag: 1765872114-903290
-X-HE-Meta: U2FsdGVkX184fGxypkFLsNfkz41E2HoEt08jCRmj0dsOK6RcbM45165Y4ElzfOkYDjrHrOQG5WHTgN45aZDIZTiArDUeMo9a2lFfga64X4S8d7geFMQCcrS+DfCVeEpc3EJMsX1gKy4L2lEILXK7Aq88SrDcOv4DqGVxoaRM9bQyZ764jTW9WDM8/H0+eIstuh3+VtQmcYbY8hjv5GfdV1c6N5GAMWHZkf+y3Tpdh1fc3jmi9DxLH9j/Vam9fEalQGw8LVharfS19RqDm9atAV8OaVIalUzKF/F6Krmad4h/re+px5Xkie00K5xYkOBsbn0pL0i5eIQBvKfKPsJIKLwB64G7Q6FwxfKOxBxC4LfDrAY40iFyE/xEiaLQtvUfuFshmcn9hu1NKUXiPR++K1aNlmLsKwzjvzONnovSfhi5Sgil5YuawBrO4h82dappShem8e5OhfXHkkEPX97xsRyR889VhHTHBVgar7YG6r3wuzXw94KjEuehpRhhgc9gZyaWaJ3SV0tubt5dAhXNfMJr9ESoC6mc1w4K9etmR7VFFeOifPIfouk30TId3lbaMYbz2n91oT8+n4qakdFs04f0XwsimBgfjygOEKjm1ceNFpIhOY9UDjTWIbgdnIwwJBfQeYV1m3q6Oz+GvzMqvQP+uEubm6xwhoQQA8C/Y3YkOS5AAg5me38FE5KYnOPXmdW7ln4ovlUBLK0S+mp6W2815bFnT+3+x9N5ntZXmO47rKir443J2qL7Gnd6uvCI3P3zJV+eDEa6cXAROeMv66kTyPeRbcBO5wlx3QQ4xAQ7NZMDkFYt4SSqED5xQFyWE7xmLOONz3jMrdfACyOBsfMDMQ9Fy8Uzrt+XxvG21iVadKfUF2ik4zC166jKW+KGar2HIoEZ2SpGomUEtcDnlGa61IIaPGvuSBc6uVEQviRYz8/l9jOkbFORMpnEkdjhSBd95bH0b9YiAcpHDT6
- AT40qXnk
- fh7z2SwqT5QMFE1ZjWBRfr+uJW1EvmLKwgbvT0bxoGT9M2JPzpnnoGz6lCrekh/rSEMNiDDV7bxMW21ghmxPeTP+EUGm9BwbgaZipNj9TL4lgK4ElB1qetXezVuM8omun6aa86vh0+3wH4Ndo0jmXQFGkCw3q657U/G1p+tbGWSsgdmBisUkXe0itwGqrx0x2nGXM9/Sgq8Xwv89kbHMXylTd3kUDpx4L7s8LI0fjkkoKPQk=
+X-HE-Tag: 1765872115-199732
+X-HE-Meta: U2FsdGVkX19TNPnyU8SyG5URJvlBZNpibm/FoG7u6Nh6dhLFPJ45vseQTxVRuJTm8BN3Iedg3r+CA6H19/0R3cdV1GEjJbbN2pT2bfqDgyLF6hUGkOpoFZl8ZyFK0omDBUOs1W0d7cf0Yo+lH88HgcYjk2oz5Oe3cyPg0E+H1qHUrO4FLSL25dCJ059nwuDfd9VDCmcEyDTqR/PmZeVuVcwN0BHxwKahv2n/0UbWDqVM7eNef3/kRXsDZjP1QPkG+F6SAUmRaCb1DfUI4Kww95IzcMPmqv2fkQDJwjNhxV1awjsufY/05ZYZicPkEV34LzIkkdiXKNUGaFuwb7r66wNoQhUHXdmOpWm2S8hAhyiMsBqGDsFVPg50OJ/69Ys6Hgok7UyW+14rS6u2Gwjqh/xI+HvPm1J1lc7aD+xQhC9GDVQn4Lt2o+18yRRWBDtoeBe6xEJKBl/eco+z1103V47CDORbZ9/VX/yGA5/MfQC2l5/Twri7Cp36ccQYMlWbgO5mqSuB8Ieb723vtoKgQycDPrbu+53L04rRova+QZZON26gUUDcTjFlRxDbZlr9znrCZN3SgQQgK7xIsI3mNrE4Yf72L342psU7x3iADXRVpRWd9IkWZMSnj8BQ3PIVucIEQjeuL8JA9BaL/3uoPdTiI+0M3lfK58tIufTvfkMYLWFNKuuQnuziwnBau1TyJsi93v6E8gf871vwKFCJwretKwQ+Wxy72cWX/jwLfEi/hHZHsEu/xGTHHRhm8CiyFTEvCiG8T4YnwpG0nB8oZk6oRW4pXfftl2ymEKjqw/8TFwV988aiUl+jmkajYdlPGOdJGCx+qkrett68aT5JFpi7kIEtldUHFTdYv71oVqJjMNlT94tXfEmiuUJNzDpQagVcFWEkYE41Gvx7TdvOOlb0fZttZBvkEqSSArcJbCnIvZgyFdBjOmnoyP+HQLytlhtIsh6soDqdXfKBlqb
+ y+rIhE5L
+ /Q+mXNvSsgjrMzSB0Zx/MhmHHirtBQ3lf85txZY90h6OdziWXb+xIn8SLzFrQaLJ75Im2aVgto1wQVI53mShTa7gTFlNA3x+q57vyzKlxojCR50dt3pbP1BW6tYCZA0ReFsUVXYgBDFfYIOMKQBhKsVfDN0cJ6E5ydUwADta7IqjsRro1yvVGS5xe1YZ04KC59oR9JxczZ2FA94NxzgBctfa5RGF4o0zw8KP3aIuNtb71o1wIxZpFLtcjy+9oU8r+7LuWJv11KQM0YHE8cLVpTgqBRA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,31 +93,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 0e92c2ee9f45 ("mm/damon/schemes: account scheme actions that
-successfully applied") has replaced ->stat_count and ->stat_sz of
-'struct damos' with ->stat.  The commit mistakenly did not update the
-related kernel doc comment, though.  Update the comment.
+There are DAMOS use cases that require user-space centric control of its
+activation and deactivation.  Having the control plane on the
+user-space, or using DAMOS as a way for monitoring results collection
+are such examples.
+
+DAMON parameters online commit, DAMOS quotas and watermarks can be
+useful for this purpose.  However, those features work only at the
+sub-DAMON-snapshot level.  In some use cases, the DAMON-snapshot level
+control is required.  For example, in DAMOS-based monitoring results
+collection use case, the user online-installs a DAMOS scheme with
+DAMOS_STAT action, wait it be applied to whole regions of a single
+DAMON-snapshot, retrieves the stats and tried regions information, and
+online-uninstall the scheme.  It is efficient to ensure the lifetime of
+the scheme as no more no less one snapshot consumption.
+
+To support such use cases, introduce a new DAMOS core API per-scheme
+parameter, namely max_nr_snapshots.  As the name implies, it is the
+upper limit of nr_snapshots, which is a DAMOS stat that represents the
+number of DAMON-snapshots that the scheme has fully applied.  If the
+limit is set with a non-zero value and nr_snapshots reaches or exceeds
+the limit, the scheme is deactivated.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/damon.h |  5 +++++
+ mm/damon/core.c       | 11 ++++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 1d8a1515e75a..43dfbfe2292f 100644
+index 43dfbfe2292f..a67292a2f09d 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -532,9 +532,7 @@ struct damos_migrate_dests {
-  * unsets @last_applied when each regions walking for applying the scheme is
+@@ -499,6 +499,7 @@ struct damos_migrate_dests {
+  * @ops_filters:	ops layer handling &struct damos_filter objects list.
+  * @last_applied:	Last @action applied ops-managing entity.
+  * @stat:		Statistics of this scheme.
++ * @max_nr_snapshots:	Upper limit of nr_snapshots stat.
+  * @list:		List head for siblings.
+  *
+  * For each @apply_interval_us, DAMON finds regions which fit in the
+@@ -533,6 +534,9 @@ struct damos_migrate_dests {
   * finished.
   *
-- * After applying the &action to each region, &stat_count and &stat_sz is
-- * updated to reflect the number of regions and total size of regions that the
-- * &action is applied.
-+ * After applying the &action to each region, &stat is updated.
+  * After applying the &action to each region, &stat is updated.
++ *
++ * If &max_nr_snapshots is set as non-zero and &stat.nr_snapshots be same to or
++ * greater than it, the scheme is deactivated.
   */
  struct damos {
  	struct damos_access_pattern pattern;
+@@ -567,6 +571,7 @@ struct damos {
+ 	struct list_head ops_filters;
+ 	void *last_applied;
+ 	struct damos_stat stat;
++	unsigned long max_nr_snapshots;
+ 	struct list_head list;
+ };
+ 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 6f3328b29a65..8908aec6670f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -401,6 +401,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 	INIT_LIST_HEAD(&scheme->core_filters);
+ 	INIT_LIST_HEAD(&scheme->ops_filters);
+ 	scheme->stat = (struct damos_stat){};
++	scheme->max_nr_snapshots = 0;
+ 	INIT_LIST_HEAD(&scheme->list);
+ 
+ 	scheme->quota = *(damos_quota_init(quota));
+@@ -1078,7 +1079,11 @@ static int damos_commit(struct damos *dst, struct damos *src)
+ 		return err;
+ 
+ 	err = damos_commit_filters(dst, src);
+-	return err;
++	if (err)
++		return err;
++
++	dst->max_nr_snapshots = src->max_nr_snapshots;
++	return 0;
+ }
+ 
+ static int damon_commit_schemes(struct damon_ctx *dst, struct damon_ctx *src)
+@@ -1955,6 +1960,10 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 		if (damos_skip_charged_region(t, &r, s, c->min_sz_region))
+ 			continue;
+ 
++		if (s->max_nr_snapshots &&
++				s->max_nr_snapshots <= s->stat.nr_snapshots)
++			continue;
++
+ 		if (damos_valid_target(c, t, r, s))
+ 			damos_apply_scheme(c, t, r, s);
+ 
 -- 
 2.47.3
 
