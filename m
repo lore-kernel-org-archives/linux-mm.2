@@ -4,102 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A757D5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E98CAD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0A96B0005; Tue, 16 Dec 2025 02:00:38 -0500 (EST)
+	id 5C3A56B0089; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 698426B0089; Tue, 16 Dec 2025 02:00:38 -0500 (EST)
+	id 5A1276B008A; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56D3A6B008A; Tue, 16 Dec 2025 02:00:38 -0500 (EST)
+	id 4B7326B008C; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 432876B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:00:38 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E42C916035D
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:37 +0000 (UTC)
-X-FDA: 84224436114.17.1C04685
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1B621C0003
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QJXU0ivI;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf22.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868436; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BE616B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 011CA60387
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:51 +0000 (UTC)
+X-FDA: 84224436744.05.4DFAC34
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 18C10180011
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+ZcAHvy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868450; a=rsa-sha256;
 	cv=none;
-	b=HkMR2ue6ZzQ6uZCbFaSBaiJjt5nnXgsnj7ZyF3iG2l0TRmmw/xuzIg8ovuZG08BVnmXZaq
-	EiYfDAf2uPB/yuQ8t6HDNKEUI/pxklTKPki55T0QuRMmyAE/Io6ziqMGDTDeNf8rZ/SPbz
-	U0RtSbpUldPrRb2ZOO3aJbQY2FKJ6sk=
+	b=N1LYa+w2oZIjJ1awHdzTWIE1oTDUIVl6iMD4esGEjHr2XCxIJDFBwpCN/8X3wdmiZRMSfR
+	QxFq1axTyP4VycZmEP3uEYXxUeVhCLaV81vvY37B4mRJzU1jShBl/wSJerBCAPB7F6tHqQ
+	A7SELNKQ5U7d5BXp8kLOIi1IKD5iipE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QJXU0ivI;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf22.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+ZcAHvy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765868436;
+	s=arc-20220608; t=1765868450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ACLxWNBKlHzVYrQhk+bIPDxbMvRXgt1a0foI415LnX4=;
-	b=sriBtYH7wa7gGUJoQ8RWZIR8Cfx3EEFZ7niNL7FfDRMvsjH0dCJ6U9lrXOpA//ASnj5BHn
-	VmDs+xM6Ey6RvshujqG+iv1FfwG/hVE5jCyhWVRGA8rjZD/a9QV7exPNCYHBrQ/oqNe2Ue
-	t/sOUCdAB0StSd9H3KnU92qAs1IdDwc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ACLxWNBKlHzVYrQhk+bIPDxbMvRXgt1a0foI415LnX4=; b=QJXU0ivIeBSXYI/xeJMRaNszO/
-	3N07ehRAX6bpi9ocM0/RhO18PXW7yDlTSBZeY2KO/EzP7HrqEFfNMN+caN/TAlT0zTxOmhXJGKJGC
-	DFqJzmsU8Fi8N4yFEX/r/AOacAnnKIKh4nmIVmJbpUJkywLMkOCRnSYNF7OrmWCi/OIG1ObxhqRwi
-	n/IRgskUcjEfHp41IVygkeiJXsTqr7vxTO5scFMdybpHp4b3hnPPzNhX/EIzhPDuEpKyEwDdJstjq
-	h1X39dJKIHUTC+IqdNwmUHfo8E+U/j51fff9B9mT9yc0neDnekDPXsKfz7aX7iZfNa/QNy1EmvPDI
-	Lck+C40A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vVP2w-00000004ojt-3TS1;
-	Tue, 16 Dec 2025 07:00:34 +0000
-Message-ID: <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
-Date: Mon, 15 Dec 2025 23:00:33 -0800
+	bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
+	b=YUW4a7iodlC6OLq08kUwowZfeeuo0+4bdSSsrzJackRUsh57Tbxlb97c7UTIlgvhsiAIWR
+	6S25Qekbf9xJ5LaBFnv5BeKSNj/XZQkYkjO+P6zDNlQuuvrhtonMhpM1SCO/B/gnBLbTPn
+	eovbnRlh5jNh74plx27E6WkbJkTcKQg=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a099233e8dso23280215ad.3
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:00:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765868449; x=1766473249; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
+        b=O+ZcAHvynQX3GYLMeqw8zD/SbIgEkwag2Fg5mfYMgrPFdznkuU3ZDZzGWTg6zkEebl
+         l4QU4388ohoXTtfvKtZzW61YE2NtWRbHD3M5OuVSP4xFBKWzuCrLKva+k28Zr8OnMO2z
+         DrEtBMLxijM/eW3eamQ6Dsla1f2XfnwDy1SPgrMNl3Am09J2Vr/ZISekfdOtNNwPNtkf
+         LxLHnya6JKAFePzIJWx4TrPsiDinff+e65QASFhAMW//J91PcMX+Z0EJz2GWff4lWLKs
+         8Z1UpmQmVzGgLsBZnEvltToWDSXW4BIoXQ4rX6rpe6tlZHfIfUSZGdjJC2NkVuOIqM9c
+         m2Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765868449; x=1766473249;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
+        b=b+ZUL4CBSEpjsvFkFUHCZ/54BXTVPH3FLoZGLlJ3Zjo+5esVUc7qbo1NGE5u8l6k/K
+         K0T6jrHU1LAN8hm/3HhiIOjbjcDQ31TmzfJIJy8/enJ5BcCIvWqI7sp1NSK346tSiUDm
+         9Uc5iQTsO8zHO4K8z+FkA0/hxTwiPTHfuwMliSHRzexB9kwnbZjRDnldh5kfeTc4mDsU
+         1otBikTCuaIFYPASNH+Mr7O7Ucs/LZhjPeJ35NXnEiEGO73BaSXgKeuztLn+PbvBQYEa
+         U5S1XYgMw9KDSlDkqwmDvMmL2xySOdYcxopd3j+hGAUj3aZad0cgxWdnBR0ie0veKJvr
+         YU5w==
+X-Forwarded-Encrypted: i=1; AJvYcCX+8SryBJWZX8oFBFBCI9KQP12dc6/wS9ljXNtgx1e2kYDB27uZ2Mu4cYO3STlMRqs/aDsHxBQxaA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1rbO5F9EQfLmpJ2sD/RFYWCVb71MX6rq7k9aOP8DIGIDoP1GS
+	6lHQnnTytD6tfdVKszYBCQxzynhB2U68SHOqB2hIXPO6kxtAWQceootbyTt/f8x4
+X-Gm-Gg: AY/fxX6Rip8tpA6oYqA/o3VxJYKrtswDddw9crAGXfe/A2df231QFAF3V3Cp+c/AXQ8
+	+VJzX6K41UVzcQvLOcre8/5Mj1HfLL8g+DkUSxasuAgUcaAlbDU6/9xGoXngLWMfEbjHNYpzVQm
+	RaEzMIpE2FbHoO++vJdvgECOos2Td6FWgJY+V8S8MJ4dDcPS0jrrhYC5QNfAwuI9fDx/HgVITPb
+	7hPHHbHCc7/mu5K+Ce/JQCEm3LuFzea1yv7zmlv9rJXWvRAomwp0yEpk29oreAPIy0y/8qqpP37
+	CCqTaYx7VBtnS4MqCnTu5I0/CoYXnA5j1gnszxT/BOsckoHWMuIE1Q6LAahFs14TpGdCIBXSlNy
+	pdk9qzmcV/i9Xrl09gUrZE7Hk0Qqt2g/pYIUMtuapuo/aCyImY+G74WyUld0QAmLFwHAKBtAOAH
+	u2cZf0LqcZR1r+e2s3+6Weau6H
+X-Google-Smtp-Source: AGHT+IGh6bmnUUir8G3p+H40K0uXG1XJ8Ee1y80UE7dusYw6M34uFWl8fwWh7yEEQaUxMtCplSPWHQ==
+X-Received: by 2002:a17:902:d58a:b0:2a0:c1f5:c695 with SMTP id d9443c01a7336-2a0c1f5cf3amr79926245ad.16.1765868448784;
+        Mon, 15 Dec 2025 23:00:48 -0800 (PST)
+Received: from localhost.localdomain ([114.231.217.195])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a146538c6dsm3036695ad.52.2025.12.15.23.00.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 23:00:48 -0800 (PST)
+Date: Tue, 16 Dec 2025 15:00:22 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, oe-kbuild-all@lists.linux.dev, ziy@nvidia.com, baohua@kernel.org, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
+ MADV_COLD/MADV_FREE
+Message-ID: <besdqn664ys7izgipfi5wloy4kmscosipizpbxt3hig6zvo2cz@yibkwnkitc7h>
+References: <20251215090419.174418-4-yanglincheng@kylinos.cn>
+ <202512160400.pTmarqg6-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] Introduce meminspect
-From: Randy Dunlap <rdunlap@infradead.org>
-To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, corbet@lwn.net, david@redhat.com,
- mhocko@suse.com, linux-debuggers@vger.kernel.org
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
- Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
- Shiraz Hashim <shashim@qti.qualcomm.com>,
- Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
- Will McVicker <willmcvicker@google.com>,
- "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
-References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
- <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
- <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
- <c3db6ccd-dfc7-4a6a-82b7-3d615f8cab4f@linaro.org>
- <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
-Content-Language: en-US
-In-Reply-To: <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202512160400.pTmarqg6-lkp@intel.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1B621C0003
+X-Rspamd-Queue-Id: 18C10180011
 X-Rspamd-Server: rspam10
-X-Stat-Signature: fnktu1xd3qbm4ihugqg4fc76ydc4sisd
-X-HE-Tag: 1765868435-704962
-X-HE-Meta: U2FsdGVkX19MK8J1hkG2ioET7nixxC+pF3EfyhnadHHOlXti+UtAUKcI1NjQ2iJXUUBszrvT4dcVoi2xqmi7WXCG0s6cUWf2pabevNiqCVoKx0VINdEw5JVfBk33dRF3/zSEYJc914skSG8vzCO9tIELarFv0E4S1Rw4TH/kCKLhS9RNQvXCxKbjhItj4WcOMcQT5qjEryfxrXKEt3Q4C8FmG+xKw3ozNkFGm8ruw2QWOCmvKAsD9siWyE1m8lGVl1iTMjJVj2ikl+38H2TmsvF+5pueaGxe+uOam0ysN0qiZiRly16LuNjG5AF6XCCZo+3WD1OD/j5Y0EYz7CmQok/ctSrR5I6VpqKp5eDHCmOJQ/9KdyQMYpVXoh9qg+CgLnp/sVo8gjmJN+0/xThXO0Nq7MPSo93BYii0DwSA5MJDDO6yUYNY2fOAge45+fWh3Q+o6UUIQtM13oKs/XP6Cz7MZHI6u2JvETq24IwGX1jJyquio0IJRA4aNT1ILIlqYD86RN+hVP2VgKfwMp56cR/bNzQi2N+AEi++RSC8LGw1wdKTKYmPapr7X8uzq944y5uCaWPyNHWz16U0LiTtiW2BLGhm5nEpPjwmYG9Hz8kTAQ2wD0ijuLvouxrIY25hVw1x1U50ZthC7hTpy+DRIZgM2fZaXzF12pp4A4LPG5G6nd73f+OGB115PU0PJHDfJSyM0lANmQUECoAMNzdM7obCeUAibAdc6pQTJTjvBE6+QMZmZgJt+U/HeN6oSbiz5ffdF5cfPIyNWf33SapZKn4h+em5tfoOTU2pCE+ennmlNLIkZ34mwPmaOO0ptP+uV/2L/yNy1quQI0DvXcGmbwfrDpsDJUC3Pm/ooONEmFgFdRkMomocpnCTtSdJJjzsaAWeyfo+mufTgZKYLN8u53oQYsjjQ79x5XNOYTgVtz06J03jeNK0CBIXemz/6+uAMrp5tK5/Vr41TD0XKZG
- Ez3ESwND
- wqgNgzcGvxknc1MpGfqGJQwbW71s//ywUZd1d/jS7zzxrPog6B5qvI9A1zO3RKzb/+lvOjAdMgmqEG129QdE73dy0AchHtu1I6mSxEqe0sJErbozumt1Znu9QUbM7Bv6gslBGlVn7ub3eRpuiEvD+Rq2X6CNEzP4MLg6BUiwv7JAKbSWOunWhG9L8sNi2z9+X43XymTItq/WJeCaJy6/xA28z03X05EhqiPDwiL5En42uOPR+0R/BNrexWWx3alHU4EM7HFO7nx8UYKWe4/qk9UcpKCjikPK1xw158b5NXJ/qMKbpayG5U1GbtS1/YcXUyPXQqc+ZVw3WCrP0Ai00q/v/y0VHcKZR2lfz/ZaHkl1dFUhLrznfSxYUuYK9aiW/XNhJqAeGiyu67Qut0mGwD88zgRVlCEtcvjbYvix39Nlg5UOvI4MeGIyN9XLzghuwYHrNi0ITiuu0tMALQKuO1PKB5D4RQPwkYR+bGk+gIHHhI2YJnarKqH2/q8Ft1pDy3HxF
+X-Stat-Signature: q5dqz9ht39g63chqf5icxaatuzszgtsg
+X-HE-Tag: 1765868449-182574
+X-HE-Meta: U2FsdGVkX1/h0KZI6Phl5u1OWlG8NqGto0AbC97dB2SxnV9cdKo2YjJUtyBCp/KxKAC4N+2D4CHcDWQaApIcDBziE6YqtnRzNGjJ3HHDYyfLUPdq6jNicUmw3kRJB88YJa12xLLvQHVwHsjTELhtwDz2GHBYoujlrvEF5e8ddkPQCiqR48crdv/jTU+9jbUhEupFUIwauqgM2KdAl8qKlgEde9GfHBtkPh34zzQOAz47WK1CPWQlxrCRugagLYxiVj6sfkvOA6r1+5pDpM9QwvQopjOUV045m+GN32cCTQmzQVbyexWEuNDqvPkV+M9ZWb/ZIQtUf+/diuyQWJ1k5zgGOJ9VbARHLzDolNxVxtp8jBF3eajhG4rboqgbCjtVh1H9b3eRYZUVs8f40/oUw2roGJpUJbuoVhLcV4LaeQ+ukjpZ9FLr24l1MUV7ZtM3fonGvpBvsSacxAlSPpdOWwi4TaUEVE7whb6FS8VEQDHAeEkbz3Zg0CqtO07CRfJW3SR7Mnq08EhJl0X/HzfEqBf9+n5RRNB2sZx3jS6JuD5/sPXTioWu4Q9mrd6Gc55XUkmUWYsKx62aOOv+dqRxsYvzzXVXwyzUJ88B/5hlqi3pmSYl2YCnOsulKGzr0T1oHcScmqYv/aPRJC+CFLqBQ6nAzBkqVJduc8srsuwTjjQ2bFxbb/eE9DpriWwo0VM9WTIES7yovRa/j32OdT1kMw+y1WbM3Vv6rqdbWHjhwybmdYjckg0QG5NwkRknekyvGsXUxW6hBIfHq5jkDvlgsnhNz7Msc/M4CGJjdj1ZK1XwS7+sRO8FUUcElRTD0zuzMKi0Tg+W859DwB5QKbylO3Ac0K8Yxree7xmaK8/fAiH17UWiN/eCuDyuXJ9cqLvd66/45ssIQm4WYAvoEXPrnpVYaCiJwqi0UaNwZSWxzGn9K80LLRjN+dGbsm53vBiZ2geFf2fYr/G38QKrXgN
+ auhOLDny
+ 5pVFLJKga4kQIrML/6Dh1hezrTzLsWV6s1xN4qVyMsno3Zj3km5IG3jeSyog9HYQS1KrmHXbMrDjMFh4YpIs+K2VcxkUKuVFOTjhYeZJeIZbA923LCP9/ff438p6RGgPwQWqFg/skQLTNESf3cl9D7bArSDd6NOmOeRhbditUS9xBAmaDAz0GGQqWUOhOxJIoFo3DTLmzpKZ51tUjWK0gvxiRuec/6Lkbodkz0sOkLPwheaIvMJRilA3aQmBfUaCluF/lx4UeRaKjpci9RYuo395Kg+QjrJPsH9qAwwov4V/ihg8J1cw4ByzmienWy8kWiaiBh11sJQDMA5HUBHZD1zNn7OHRRHd8V4ay4ArOIEp2Jdqs2Hi9wbfb3KEbdgcWvosgXljFD8w4Qz4gZ9wxeNtn1h0HDx/gUfhUfoH00vRxTkX29kusYyjwlGbCr/LVGdiqUiflhK4gdxcpkjhgGxxV0kDwLIPw2jZTscIc3VvYlP1RSrZSd4/G/H+N/rcRhM8Yk0+d87+OCZ/Xh7a3L9MrC9MO94Q1ONBs0lDhNNa/jPBGWcw9pNsf7BQvhOBgSdStOga2mK3k1llcXSXSv1pKnC72WAoNo8l0cpjzYshgfHQ0R4F8kABuUf/u6fbMA1dY8NCORNUOU447qLJPvkVmlaZP985ee4DD35/jPx13rS1LPw8z7P5I1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,150 +122,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 16, 2025 at 05:12:16AM +0800, kernel test robot wrote:
+> Hi Vernon,
+>
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on akpm-mm/mm-everything]
+> [also build test ERROR on linus/master v6.19-rc1 next-20251215]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Vernon-Yang/mm-khugepaged-add-trace_mm_khugepaged_scan-event/20251215-171046
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20251215090419.174418-4-yanglincheng%40kylinos.cn
+> patch subject: [PATCH 3/4] mm: khugepaged: move mm to list tail when MADV_COLD/MADV_FREE
+> config: arc-allnoconfig (https://download.01.org/0day-ci/archive/20251216/202512160400.pTmarqg6-lkp@intel.com/config)
+> compiler: arc-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160400.pTmarqg6-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202512160400.pTmarqg6-lkp@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+>    mm/madvise.c: In function 'madvise_cold':
+> >> mm/madvise.c:609:9: error: implicit declaration of function 'khugepaged_move_tail'; did you mean 'khugepaged_exit'? [-Wimplicit-function-declaration]
+>      609 |         khugepaged_move_tail(vma->vm_mm);
+>          |         ^~~~~~~~~~~~~~~~~~~~
+>          |         khugepaged_exit
 
+When CONFIG_TRANSPARENT_HUGEPAGE is disabled, trigger this build errors.
+I'll fix it in the next version, Thanks!
 
-On 12/15/25 10:54 PM, Randy Dunlap wrote:
-> 
-> 
-> On 12/12/25 11:22 PM, Eugen Hristev wrote:
->>
->>
->> On 12/13/25 08:57, Randy Dunlap wrote:
->>> Hi,
->>>
->>> On 12/12/25 10:48 PM, Eugen Hristev wrote:
->>>>
->>>>
->>>> On 11/19/25 17:44, Eugen Hristev wrote:
->>>>> meminspect is a mechanism which allows the kernel to mark specific memory
->>>>> areas for memory dumping or specific inspection, statistics, usage.
->>>>> Once regions are marked, meminspect keeps an internal list with the regions
->>>>> in a dedicated table.
->>>>
->>>> [...]
->>>>
->>>>
->>>>> I will present this version at Plumbers conference in Tokyo on December 13th:
->>>>> https://lpc.events/event/19/contributions/2080/
->>>>> I am eager to discuss it there face to face.
->>>>
->>>> Summary of the discussions at LPC talk on Dec 13th:
->>>>
->>>> One main idea on the static variables annotation was to do some linker
->>>> magic, to create a list of variables in the tree, that would be parsed
->>>> by some script, the addresses and sizes would be then stored into the
->>>> dedicated section at the script level, without having any C code change.
->>>> Pros: no C code change, Cons: it would be hidden/masked from the code,
->>>> easy to miss out, which might lead to people's variables being annotated
->>>> without them knowing
->>>>
->>>> Another idea was to have variables directly stored in a dedicated
->>>> section which would be added to the table.
->>>> e.g. static int __attribute(section (...)) nr_irqs;
->>>> Pros: no more meminspect section Cons: have to keep all interesting
->>>> variables in a separate section, which might not be okay for everyone.
->>>>
->>>> On dynamic memory, the memblock flag marking did not receive any obvious
->>>> NAKs.
->>>>
->>>> On dynamic memory that is bigger in size than one page, as the table
->>>> entries are registered by virtual address, this would be non-contiguous
->>>> in physical memory. How is this solved?
->>>> -> At the moment it's left for the consumer drivers to handle this
->>>> situation. If the region is a VA and the size > PAGE_SIZE, then the
->>>> driver needs to handle the way it handles it. Maybe the driver that
->>>> parses the entry needs to convert it into multiple contiguous entries,
->>>> or just have virtual address is enough. The inspection table does not
->>>> enforce or limit the entries to contiguous entries only.
->>>>
->>>> On the traverse/notifier system, the implementation did not receive any
->>>> obvious NAKs
->>>>
->>>> General comments:
->>>>
->>>> Trilok Soni from Qualcomm mentioned they will be using this into their
->>>> software deliveries in production.
->>>>
->>>> Someone suggested to have some mechanism to block specific data from
->>>> being added to the inspection table as being sensitive non-inspectable
->>>> data.
->>>> [Eugen]: Still have to figure out how that could be done. Stuff is not
->>>> being added to the table by default.
->>>>
->>>> Another comment was about what use case there is in mind, is this for
->>>> servers, or for confidential computing, because each different use case
->>>> might have different requirements, like ignoring some regions is an
->>>> option in one case, but bloating the table in another case might not be
->>>> fine.
->>>> [Eugen]: The meminspect scenario should cover all cases and not be too
->>>> specific. If it is generic enough and customizable enough to care for
->>>> everyone's needs then I consider it being a success. It should not
->>>> specialize in neither of these two different cases, but rather be
->>>> tailored by each use case to provide the mandatory requirements for that
->>>> case.
->>>>
->>>> Another comment mentioned that this usecase does not apply to many
->>>> people due to firmware or specific hardware needed.
->>>> [Eugen]: one interesting proposed usecase is to have a pstore
->>>> driver/implementation that would traverse the inspection table at panic
->>>> handler time, then gather data from there to store in the pstore
->>>> (ramoops, mtdoops or whatever backend) and have it available to the
->>>> userspace after reboot. This would be a nice use case that does not
->>>> require firmware nor specific hardware, just pstore backend support.
->>>>
->>>> Ending note was whether this implementation is going in a good direction
->>>> and what would be the way to having it moving upstream.
->>>>
->>>> Thanks everyone who attended and came up with ideas and comments.
->>>> There are a few comments which I may have missed, so please feel free to
->>>> reply to this email to start a discussion thread on the topic you are
->>>> interested in.
->>>>
->>>> Eugen
->>>>
->>>
->>> Maybe you or someone else has already mentioned this. If so, sorry I missed it.
->>>
->>> How does this compare or contrast to VMCOREINFO?
->>>
->>> thanks.
->>
->> This inspection table could be created in an VMCOREINFO way, the patch
->> series here[1] is something that would fit it best .
->>
->> The drawbacks are :
->> some static variables have to be registered to VMCOREINFO in their file
->> of residence. This means including vmcoreinfo header and adding
->> functions/code there, and everywhere that would be needed , or , the
->> variables have to be un-static'ed , which is a no-go.
->> This received more negative opinions on that particular patch series.
->> The annotation idea seemed cleaner and simpler, and more generic.
->>
->> We could add more and more entries to the vmcoreinfo table, but that
->> would mean expanding it a lot, which it would maybe defy its purpose,
->> and be getting too big, especially for the cases where custom drivers
->> would like to register data.
->>
->> How I see it, is that maybe the vmcoreinfo init function, could also
->> parse the inspection table and create more entries if that is needed.
->> So somehow memory inspection is a superset or generalization , while
->> VMCOREINFO is a more particular use case that would fit here.
->>
->> Do you think of some better way to integrate the meminspect table into
->> VMCOREINFO ?
-> 
-> No, I just wanted to make sure that you or someone had looked into that.
-> Thanks for your summary.
+>
+> vim +609 mm/madvise.c
+>
+>    595
+>    596	static long madvise_cold(struct madvise_behavior *madv_behavior)
+>    597	{
+>    598		struct vm_area_struct *vma = madv_behavior->vma;
+>    599		struct mmu_gather tlb;
+>    600
+>    601		if (!can_madv_lru_vma(vma))
+>    602			return -EINVAL;
+>    603
+>    604		lru_add_drain();
+>    605		tlb_gather_mmu(&tlb, madv_behavior->mm);
+>    606		madvise_cold_page_range(&tlb, madv_behavior);
+>    607		tlb_finish_mmu(&tlb);
+>    608
+>  > 609		khugepaged_move_tail(vma->vm_mm);
+>    610
+>    611		return 0;
+>    612	}
+>    613
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
-Although you copied Stephen Brennan on this, I think it would be a good idea
-to copy the linux-debuggers@vger.kernel.org mailing list also to see if
-there are any other comments about it. [now done]
-
->> [1]
->> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
-> 
-
--- 
-~Randy
-
+--
+Thanks,
+Vernon
 
