@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92062D5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1FB6D5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37126B0005; Tue, 16 Dec 2025 02:14:06 -0500 (EST)
+	id 059B06B0005; Tue, 16 Dec 2025 02:27:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE3AC6B0089; Tue, 16 Dec 2025 02:14:06 -0500 (EST)
+	id F1FAE6B0089; Tue, 16 Dec 2025 02:27:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF00F6B008A; Tue, 16 Dec 2025 02:14:06 -0500 (EST)
+	id DF58C6B008A; Tue, 16 Dec 2025 02:27:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA8D66B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:14:06 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4076B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:27:20 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67EE0140538
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:14:06 +0000 (UTC)
-X-FDA: 84224470092.11.44DAD30
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 97E382000B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:14:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=gucXpUVa;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765869244; a=rsa-sha256;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7627B135D63
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:27:20 +0000 (UTC)
+X-FDA: 84224503440.11.60B4842
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5FCEA100006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:27:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=TJmhQFHJ;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf14.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765870038; a=rsa-sha256;
 	cv=none;
-	b=lHcCYQRLrtAqzQvK6pBNcENB+8U2uQnOE6YaeF2FY3cS8t36MX7in9IJbXJbMXjs8hR8pl
-	cZOH4P7u+81+WExeOM0h4IH/0w+af5VzQOe6/OuBmsOOjRqgWdY6a9HVtUYx5L2XyX8EGk
-	aNnGGvvyToybXEOuOevrXgR713+55ks=
+	b=yFCtbWPM+AuksW9cDT8ab96mEAdzSSMm0V/xvk8S/zIqldgBsp8OgoCGhwVBwGgW9IEC4n
+	PaVPhpX6zxEf4kBmXVr1oSo+WZhmRThZSfArLfRqBcGoP16xZNFpOVgz5GlrJHmV2fMW4E
+	yPMufdClB9qA4zaU0aBmy8YAX8/ukd4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=gucXpUVa;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=TJmhQFHJ;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf14.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765869244;
+	s=arc-20220608; t=1765870038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oNatl6J6BcJk/S0sXAT6q/VLY30ES4IaJnzY7IJFPDI=;
-	b=7RqzXF5Zy4EppUV4uS+2h8hKFpTgCY4rdBLWICx0TYzwBA4zx2jic13Yf2hn5g9L3GWl9m
-	7k1LhAvgAG+9CInAT1wlfRFRHUNWe4gfpWpNpqbJwbMdxFp7stlJkrAQGbX80zUlLptxnn
-	4WCfk6S6RYbYLQZkcgHu4z4WuMcpx3E=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a09757004cso32246095ad.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:14:04 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PJCA2xXmtdABe9cuOOw6HKVAFYxYWKkv6zuIQkQSiJk=;
+	b=LQ18zAVAdBso1oLu+7NTBUklH19b3pvqXpqfUgjcFsFT+eooGUactA3zd0wPinzjh4Lle1
+	7L3T04uYLza9iSb9JDshXanqWpghGtYD5SjP+GldrDt+OuXS5BY2gPZ0oFPQdPTiVGi7GW
+	fbNmbA+ttZ9CK6TJCF5vvJkmbC3oQ1Q=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0a33d0585so23896465ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:27:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765869243; x=1766474043; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oNatl6J6BcJk/S0sXAT6q/VLY30ES4IaJnzY7IJFPDI=;
-        b=gucXpUVaFDE9oQiYiE4l+U3ueywlL8rDpZWYHPWlHyK/4OVi5DZPxQA3Gav0+s2TKq
-         nX6SgNEgnWpoY115T6AK9nteS98TjCIvPc0nzP8C3lj/y3gg3TPEIo23EOPU56q0ONXt
-         ZyJ5lEKUXl/SsUUzktsCGqUsWd6BOVRET+2wA=
+        d=linaro.org; s=google; t=1765870037; x=1766474837; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PJCA2xXmtdABe9cuOOw6HKVAFYxYWKkv6zuIQkQSiJk=;
+        b=TJmhQFHJ3z1m9SZCKoan+s5PKceGOfPJ0Pi1HwI4qj0yWn603SETr3BYCDMqkgGz8d
+         N9OkHRAUZkB7+hu+xxxd5Ysnvyp75hubpajnvIRy9EVSifYLSkq5HEiGe667P0t1UKF9
+         9WGEBlsMa4NPQqZHDGmi8LmOd6CDD3TbS7szVzmUmtAI3LID0xvqzSLz4YjHQFqFVqSi
+         18jdW8JDbqebWto974bdUWBXmb9t7nxLD0cDHdGlgyMR60p+6wzydYlErVSbxmHsnnhA
+         UT3h1Eil4Jqjde4CGsaU/TmBL7MFjASTErkTL/aeHKHmKcaOh+qSmfSryzeKk/GjE96V
+         8yNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765869243; x=1766474043;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oNatl6J6BcJk/S0sXAT6q/VLY30ES4IaJnzY7IJFPDI=;
-        b=tTeEGvimINgbE8sHXAnFyjDr8RvA3TAC173vszDCTDMkXltTDNrSvjA7KJ9YmXCq1j
-         vYkmi0CQv2wGSrxiaCnOa29mQzDe2zkvg49H6xzmpm3wAHYTcEBIkkd/9y0k8O/QWWeP
-         znwWQvY+o/f4UAR/UQtKGRrVkSp4MysURY/di258ATKjVyF8s1Xv9mNNciVl/0vFw3jo
-         1/GMcAHlnBIii2fLRxHU33NhQ6y494ZCMWLg+C+0F4cPqXn9AKOJcS5nBRP7G9YU0CfO
-         hXrZAtL5N1X3pWruRsUllnUz6ccrNjN3GYowjscoP3S7/w8xLweIdyZf5toBuj7je3o+
-         /Y7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXVo6bx0QEgcvcykI6OiwDn30Lez7Vb3VKnk35LBXiJl8vuzwxyJEk0FwpwQUqGmnqNrJbuhDeCVw==@kvack.org
-X-Gm-Message-State: AOJu0Ywc9OLBsH7VmGzIKJp3jBE96w0091jmelGtQCwf8VkNGtDAu+GZ
-	2z1dXWnKT/XwVbhL5iyg8yRTrqqYbaU1IDD5d7BxIKzXqUPX8W+sHKGy5ioWEWVDMw==
-X-Gm-Gg: AY/fxX6FDjLWN7btX3ZVmUo76vtSIqR96UIh3CobG7QqRekOHndcd/LRPHJNCl1Z4TK
-	tvOWGVBHqvx9wnZoPuJ+ZjfmL1uOu8nqNYAMsmUTMkgnUuTOSA1VloT+YpGcaTmLkmQ/vkVGRE+
-	l4eJy3bBVkIQv55SB5C/FnlcaUz7d/mhKOW/bCIZOdGgdKhPNdpE6Jr3A42oaJedXfQ6K+XFOkf
-	F1cjk8EEsz/gmbgE6s7pwejXPFTg1/a6zwuWEL98OjRZOcfdDog9aZWrkiEzzbhSYRAXi4S5qII
-	L4R76ZhO7qA08sGfaBJR/5f8LCCfoIRMPCq9f9B6v3f3fXBB7wXLa2SXxaZomhFOv5W2Au47IEH
-	oFtlYyQA9kA6Nbe8bcBTfFMQoL5awn2vqcpmPfgf1Ls/EKGleiJ4BaLovwWfm6Hy4t4DfOIpogt
-	0g/Rsql2D/id534Anm3q23jZAkuUrLbWrzh0WeXRn8Sw0w8wix2y9uPztXeSElTtmIAMXia/Hcv
-	w==
-X-Google-Smtp-Source: AGHT+IG0syAFJhjlxLN2Aw5XB+eZPhRIhKo3rCILYb8gAbNKQjHe4RCRPMTSFXN3FJZtNVG/AkOQdg==
-X-Received: by 2002:a17:902:cecb:b0:2a0:de4f:ca7 with SMTP id d9443c01a7336-2a0de4f122bmr54142285ad.1.1765869243447;
-        Mon, 15 Dec 2025 23:14:03 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:a48f:6b66:399d:86cc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f2563b116sm119253685ad.102.2025.12.15.23.14.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 23:14:02 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Brian Geffon <bgeffon@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCHv2] zram: drop pp_in_progress
-Date: Tue, 16 Dec 2025 16:13:42 +0900
-Message-ID: <20251216071342.687993-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
+        d=1e100.net; s=20230601; t=1765870037; x=1766474837;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PJCA2xXmtdABe9cuOOw6HKVAFYxYWKkv6zuIQkQSiJk=;
+        b=P/yfg17vY0wyHfA6k9EEb8Djo0kjuWGcgyjIyyXmjB+1PBuPmOV9gaACYO6yEk29h7
+         8lL1IOTQKy10vioJJCbB49cM0pzEXtLGbB1ehn4/huKNzGA27iCRyeBnjGpwhGARvTqf
+         48jJsFE899lqNbMTgzKHJZAsDmOeVqODbGKM2OUyB5Kj9UdqLOfTZBwoU+XkfMMz/x5c
+         rNWwpoXbIXl71bRzhHS3KZ/RBvpvpeM/o8TPoDPDLoo73fMGKYmW3gLF8KsYvGIAJJau
+         fPKpVbjP+jLrjS+mFM9wpAxER5nQAfSWciAhkWaGlvnN2Q4yvGXEBudK0EBpxi4sA44V
+         D4KA==
+X-Forwarded-Encrypted: i=1; AJvYcCXwAjkPR3QuRXiF02m0/ENnJmTeyw9INwykeW7F9yu42WRMIP6JHZyfLuprbxR/L1XQdijdkoTVhg==@kvack.org
+X-Gm-Message-State: AOJu0YwPVq/ekQKs5BNBLEwd3crtKL0+k711N/qrP9hVuYr6qg2k9wuv
+	Tteo3xifEPEeuGx8Coun0BFCURLwr6rkRr7EHF+x5ieAAURD/aor3df9cM7xU2zI+Ac=
+X-Gm-Gg: AY/fxX47vH2y6PA8UFHcBSy/Gpb486EQewDl5OEj4UZPRBSc7n3Z7fzvDWns3+yDbXu
+	tTKXo7bN05R9iiwwduAP2CKpCTmnazPqPXgfIq09wI8HXifZPXG9HwkgTSSuZxQSLb2KkKcflrd
+	ceeKE+fIWyIlt+krQ/dBwAK9UF+o/d7F/Y1SQ5zu8D3aXT5kSgEQv467rzNogJ0Mnhi+exVjYGx
+	xTOfY4SQi72nmo+DcMhFuSwAxo6Bonzvxjw1SelErqvWIy3GACQjc9b3fbnmOuNT3B3LEjXLnEh
+	8ntHqWv30+o+iXjJL+oaZXZ6AaFlHObPO/auFeGFPUjXT8UEq57RZrR9BnFBS9MvNKdQMZwMXOC
+	t9DP9wr0OSKeeTeKzezPUy3QixeIpiyW11g3N43SOhXNySMZDvNOyVQLtAdakwD4l/cjGP6FK2c
+	eVeAH4quknnRaH94ZXMr/bvUSRXZp/euzRTuc+DFBvOU45jRliNGXXAQ==
+X-Google-Smtp-Source: AGHT+IG0XHPlxrZ19+Thmc35PPwHSeilDW9jn34WiJoQPAtDXf3ILNz55k3pKMcPVzcVte7yg4mphg==
+X-Received: by 2002:a17:902:ea0b:b0:297:dabf:9900 with SMTP id d9443c01a7336-29f23bde313mr144794935ad.0.1765870036820;
+        Mon, 15 Dec 2025 23:27:16 -0800 (PST)
+Received: from [192.168.10.197] (14-201-17-74.static.tpgi.com.au. [14.201.17.74])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9b36a80sm155735495ad.19.2025.12.15.23.27.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 23:27:16 -0800 (PST)
+Message-ID: <93297eb0-1ad4-40ba-9438-ac02aa6b1d6b@linaro.org>
+Date: Tue, 16 Dec 2025 09:27:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97E382000B
-X-Stat-Signature: zbezuactiua9f1qq8arwc8bxgkwrxftb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/26] Introduce meminspect
+To: Randy Dunlap <rdunlap@infradead.org>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
+ andersson@kernel.org, pmladek@suse.com, corbet@lwn.net, david@redhat.com,
+ mhocko@suse.com, linux-debuggers@vger.kernel.org,
+ "kees@kernel.org" <kees@kernel.org>
+Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
+ Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
+ Shiraz Hashim <shashim@qti.qualcomm.com>,
+ Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
+ Will McVicker <willmcvicker@google.com>,
+ "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+ <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
+ <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
+ <c3db6ccd-dfc7-4a6a-82b7-3d615f8cab4f@linaro.org>
+ <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
+ <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
+From: Eugen Hristev <eugen.hristev@linaro.org>
+Content-Language: en-US
+In-Reply-To: <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765869244-278363
-X-HE-Meta: U2FsdGVkX18jPLcDO0TPSTKZCmISP0hXW7u7KtW0DLldYBTycyGSEF3tyaYChHH3UrXewrqxp24ugg5ZgYO+SeeHjbPqia+9LWT1lT9arNaolRRn4BW1/yuRBSDGRgcaCbl3cess7awg26Fy5P9+b6YrVRAjzXBSN78N56gYB0sTIhUXSmREYTU/5XuTaQtKb4zk/N5qYlZVpYIe3Xv13CnH6u4pD9SnVI/c2wiHLzJvz1PBwWzJQGs70JbJZSV4kn3VWlqLLikMmRSOsiUbFmrseYdHQ2OyTnEbt0Jd1sy1CNp/CKu20Sc3M5FWKqa5c1Q9QvEK4GEiBbWne7uJvH6FKU1E+5QfpYz017ZhjnN3ztNUDPyNMPB2NnfNdneq4fPlfHwTmnGf5oD46vlyLDjPOMd4Puf5/+dI2nGOdMCVs4YV55y3DXxa3gXw2D9gbsjAaGV2nIYP/Ebrev6t4BFRdp3eNhT00MiNakqgLEmQWQMnIs5cwQ88jO7rCCm/i4QSnYG+rDAabWHIhMGouxfmEs5N33AnjoSH0/C4dcy/smRUCkphCFGfglRcn4IHq0Z1M8bLUN7XSOMn430dtQL/38Y66aspBKLPof4gPxvuOtGi0YjATn/oiVuyClRdUSnwafQr097+0/5l2on0TaqXSt0PZ7gsCMmZn7Hn4UZeY3JBMVq1gLgiJyIAOCdBrS1ZXzqcCXWsHzHJgYfJpQKxjiKdMn/9ojKGplT+/qH/cV//lnP04RXGzplvtzWdxGuEw9Jc7eVT++K6M+fxz3nvUWKpsWe72ClQWWYiXPES5sPqVKwPou+hU3rktsMfzvI2AmNbPoMWQ+QZYmrRDV9z4fenxIMCKehdd8N0khkeJ7xsap5U2pMGdFzeun6Id1TwlJzd0ACGCBFkJ0j3OyKIuF3i4lIfJSSEKOoB5Ml8HMhMHwtyao3r/XE9wzBt8pIR0w83HR5pez5TaQA
- Mi9VkpwN
- 9yb5CCw8kpZAJ9pfE1IrE1ifO95Bs/m81cQ0ziEPI7T3JMtAG7/8SRgwXKbzWgqRqah9/4Hgn6rt/msiybSFeEiu7ZmxG5g26k3uDEJrS9TovTuky/x/NqtGrSrqtORa0z+wbB9lr9wAA3V7EH8888pajghi49PlAtQ7SnXI5UZTQ0Sv8iMBdQ4j6j8O2m+2uN0ibJX5SAeuYS2bD08RpXfJaf74BhhIQchCkLsC790ZJf34WGsFF1vWXtdLSuo/s1d/c8MftzTioXv1m+lKXBk2yHpANe/d36LB7DBBRrKxLBMtlEu9NPB8V7XmGWRJnZ3d7HTD0XGoUxD6BdXt9cQqV25upJ4wKxJc/CyPpoX3gjQLwWMizZbukQG/fsQt3ZCTWLnUlixXe8VKWd++mt9RDXXF79RFoWAwu
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5FCEA100006
+X-Stat-Signature: 7sb46sdgb7ongdgyk86pnpwkojj3oarn
+X-HE-Tag: 1765870038-305044
+X-HE-Meta: U2FsdGVkX185wVWUJ2WLe2QLVWgarSy/Cqjz2CcLcroTcsY619EZ4UaPWNSzuFPP2mp+Lw2Iu3EadA5FFaKvjy1AogVBgtt6IgvYMymSnv/+Qdghf57IjjqLzO1aLpo9hfHVG8v+rsfA9ySWdlY+pkPZCc/X4D/UnkSGaMsEAam1KWPIIQzVjuDZ8BL87vy5uNcMtBmTW4qs0jcx7VLXt7OyabjR304An6EqmWyLmOO7NUnmJqlr0tZql4Ys9VSk2UL+ycZ0erxt/fSvzWn6Osw7IDQ22x00t04VlcIRFbzFZyCNZtbxQAwT4Fw19jvYVTSCT6ceLW9m2jrPmTH2XF1Qn5ljSVaADo/h5VzG/Sf2UDbed1x57L9E3sVaXunXu18PQIBnKj69pWVIqnbt3yXhoAmOJqcGpgeuGq6g0H6VDOTtG22K0hTXGW46ZZ06W6kQSsSraqWdvWB1CcerROx8VOt1k4la/DYhZy0DAmnL7ooa+ZR+YFY+oJuLKx9R35Hb4g7HLOMVcWQ1LxOs82HN5dpTkY36Je0qveda0QsaE28EaATgiPMxZutTjd0Q4p03IX/YeSQd241KobzFNaCori751u7FE7p0SGp2f3rvGjtCRVXYeYCgCx32KxmxS8UXIM89uFiWBxC1V/kGxGiOVsZjeZkmajeb3fMxqhx+GqUF/TbWJbWZyqyn9S22sWm/P/ttPSiyBqpG6pWSxTmRmdHd0QG47aWMxVRJQ7U7NntUCCGSQue9fUjmqr25OLlwqzp9JMEf40BhSUaQV3ZQGgAufq8xg8ktA0Ly5ozT2p4VS4SZFZKGyHVgTJ8hjmQjJZCgg5Oa97mZaEEGWUdTEs5+rqaSqR2R+ZAkPxepoyyD1xkEMzm0tisNfqJZPlIjBn6HJEhvyJUzmpo8dMAq+5qcEI3ERxfArFxmlpKR5AWSRxK9QrhsdEavKNEHnf9Iw06MwypeU5fidqx
+ IHnidrPM
+ gyzdypzNsIhbOMfuTdekAdCAAtdOiiWlkfE2N3DbFArSpZSQyXWZBOFDna5r3eHm5bRHl0K+2wcfIVOb8x8GTgtaBFGLgORJUBFKCKc1i82hH0C8QfwvqRDFECef6ndmOvnsWCCS7XCES8HNaxgTk2SBD4xfXYInYyhOZVkPAl2FITuqsNnyRX+eO3Cxn/d5TK8rWBP3lWlUfUYXF3Me7AnJulEpOsTj3G6eptKM4DAYFsT+Kx6FceBfiYGSJY1cOy7JB+n6GmhUnNAh6uGHMpQ7fJSsh/ihWFM0jt/GxMcTZDu3uibr+AahcUzGaFyIpCme5vPvXur5duer7x4fHf6pjsuN2fBbybPX/uxBl8/3IaDPJgOBoIbFrKgDUgnhx+HKwX8HyMPJ7eP3xvnXpIsNiQa+l9LsHvtq8b3CPicfyKzxg78SZqEs1SlmQC4mMsPbCCrrLDIFCyAwiuOQD3Os3eO58QufPURr/CgzayCzPNqfQSOTaEZZfRpcmvELkHCdVwQ+KqY/DFJ9fwlUSfN22D1L4y7THWFi+dWyzj70VR9ATm1+vr8ocAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,143 +140,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pp_in_progress makes sure that only one post-processing
-(writeback or recomrpession) is active at any given time.
-Functionality wise it, basically, shadows zram init_lock,
-when init_lock is acquired in writer mode.
 
-Switch recompress_store() and writeback_store() to take
-zram init_lock in writer mode, like all store() sysfs
-handlers should do, so that we can drop pp_in_progress.
-Recompression and writeback can be somewhat slow, so
-holding init_lock in writer mode can block zram attrs
-reads, but in reality the only zram attrs reads that
-take place are mm_stat reads, and usually it's the same
-process that reads mm_stat and does recompression or
-writeback.
 
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
-v1->v2:
-- updated lockdep assertions
+On 12/16/25 09:00, Randy Dunlap wrote:
+> 
+> 
+> On 12/15/25 10:54 PM, Randy Dunlap wrote:
+>>
+>>
+>> On 12/12/25 11:22 PM, Eugen Hristev wrote:
+>>>
+>>>
+>>> On 12/13/25 08:57, Randy Dunlap wrote:
+>>>> Hi,
+>>>>
+>>>> On 12/12/25 10:48 PM, Eugen Hristev wrote:
+>>>>>
+>>>>>
+>>>>> On 11/19/25 17:44, Eugen Hristev wrote:
+>>>>>> meminspect is a mechanism which allows the kernel to mark specific memory
+>>>>>> areas for memory dumping or specific inspection, statistics, usage.
+>>>>>> Once regions are marked, meminspect keeps an internal list with the regions
+>>>>>> in a dedicated table.
+>>>>>
+>>>>> [...]
+>>>>>
+>>>>>
+>>>>>> I will present this version at Plumbers conference in Tokyo on December 13th:
+>>>>>> https://lpc.events/event/19/contributions/2080/
+>>>>>> I am eager to discuss it there face to face.
+>>>>>
+>>>>> Summary of the discussions at LPC talk on Dec 13th:
+>>>>>
+>>>>> One main idea on the static variables annotation was to do some linker
+>>>>> magic, to create a list of variables in the tree, that would be parsed
+>>>>> by some script, the addresses and sizes would be then stored into the
+>>>>> dedicated section at the script level, without having any C code change.
+>>>>> Pros: no C code change, Cons: it would be hidden/masked from the code,
+>>>>> easy to miss out, which might lead to people's variables being annotated
+>>>>> without them knowing
+>>>>>
+>>>>> Another idea was to have variables directly stored in a dedicated
+>>>>> section which would be added to the table.
+>>>>> e.g. static int __attribute(section (...)) nr_irqs;
+>>>>> Pros: no more meminspect section Cons: have to keep all interesting
+>>>>> variables in a separate section, which might not be okay for everyone.
+>>>>>
+>>>>> On dynamic memory, the memblock flag marking did not receive any obvious
+>>>>> NAKs.
+>>>>>
+>>>>> On dynamic memory that is bigger in size than one page, as the table
+>>>>> entries are registered by virtual address, this would be non-contiguous
+>>>>> in physical memory. How is this solved?
+>>>>> -> At the moment it's left for the consumer drivers to handle this
+>>>>> situation. If the region is a VA and the size > PAGE_SIZE, then the
+>>>>> driver needs to handle the way it handles it. Maybe the driver that
+>>>>> parses the entry needs to convert it into multiple contiguous entries,
+>>>>> or just have virtual address is enough. The inspection table does not
+>>>>> enforce or limit the entries to contiguous entries only.
+>>>>>
+>>>>> On the traverse/notifier system, the implementation did not receive any
+>>>>> obvious NAKs
+>>>>>
+>>>>> General comments:
+>>>>>
+>>>>> Trilok Soni from Qualcomm mentioned they will be using this into their
+>>>>> software deliveries in production.
+>>>>>
+>>>>> Someone suggested to have some mechanism to block specific data from
+>>>>> being added to the inspection table as being sensitive non-inspectable
+>>>>> data.
+>>>>> [Eugen]: Still have to figure out how that could be done. Stuff is not
+>>>>> being added to the table by default.
+>>>>>
+>>>>> Another comment was about what use case there is in mind, is this for
+>>>>> servers, or for confidential computing, because each different use case
+>>>>> might have different requirements, like ignoring some regions is an
+>>>>> option in one case, but bloating the table in another case might not be
+>>>>> fine.
+>>>>> [Eugen]: The meminspect scenario should cover all cases and not be too
+>>>>> specific. If it is generic enough and customizable enough to care for
+>>>>> everyone's needs then I consider it being a success. It should not
+>>>>> specialize in neither of these two different cases, but rather be
+>>>>> tailored by each use case to provide the mandatory requirements for that
+>>>>> case.
+>>>>>
+>>>>> Another comment mentioned that this usecase does not apply to many
+>>>>> people due to firmware or specific hardware needed.
+>>>>> [Eugen]: one interesting proposed usecase is to have a pstore
+>>>>> driver/implementation that would traverse the inspection table at panic
+>>>>> handler time, then gather data from there to store in the pstore
+>>>>> (ramoops, mtdoops or whatever backend) and have it available to the
+>>>>> userspace after reboot. This would be a nice use case that does not
+>>>>> require firmware nor specific hardware, just pstore backend support.
+>>>>>
+>>>>> Ending note was whether this implementation is going in a good direction
+>>>>> and what would be the way to having it moving upstream.
+>>>>>
+>>>>> Thanks everyone who attended and came up with ideas and comments.
+>>>>> There are a few comments which I may have missed, so please feel free to
+>>>>> reply to this email to start a discussion thread on the topic you are
+>>>>> interested in.
+>>>>>
+>>>>> Eugen
+>>>>>
+>>>>
+>>>> Maybe you or someone else has already mentioned this. If so, sorry I missed it.
+>>>>
+>>>> How does this compare or contrast to VMCOREINFO?
+>>>>
+>>>> thanks.
+>>>
+>>> This inspection table could be created in an VMCOREINFO way, the patch
+>>> series here[1] is something that would fit it best .
+>>>
+>>> The drawbacks are :
+>>> some static variables have to be registered to VMCOREINFO in their file
+>>> of residence. This means including vmcoreinfo header and adding
+>>> functions/code there, and everywhere that would be needed , or , the
+>>> variables have to be un-static'ed , which is a no-go.
+>>> This received more negative opinions on that particular patch series.
+>>> The annotation idea seemed cleaner and simpler, and more generic.
+>>>
+>>> We could add more and more entries to the vmcoreinfo table, but that
+>>> would mean expanding it a lot, which it would maybe defy its purpose,
+>>> and be getting too big, especially for the cases where custom drivers
+>>> would like to register data.
+>>>
+>>> How I see it, is that maybe the vmcoreinfo init function, could also
+>>> parse the inspection table and create more entries if that is needed.
+>>> So somehow memory inspection is a superset or generalization , while
+>>> VMCOREINFO is a more particular use case that would fit here.
+>>>
+>>> Do you think of some better way to integrate the meminspect table into
+>>> VMCOREINFO ?
+>>
+>> No, I just wanted to make sure that you or someone had looked into that.
+>> Thanks for your summary.
+> 
+> Although you copied Stephen Brennan on this, I think it would be a good idea
+> to copy the linux-debuggers@vger.kernel.org mailing list also to see if
+> there are any other comments about it. [now done]
 
- drivers/block/zram/zram_drv.c | 32 ++++++++------------------------
- drivers/block/zram/zram_drv.h |  1 -
- 2 files changed, 8 insertions(+), 25 deletions(-)
+Thanks . I copied Stephen because we had a discussion at LPC at his talk
+and he also attended my talk.
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 634848f45e9b..9f91eb91dc72 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -902,7 +902,7 @@ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
- 
- static void zram_account_writeback_rollback(struct zram *zram)
- {
--	lockdep_assert_held_read(&zram->init_lock);
-+	lockdep_assert_held_write(&zram->init_lock);
- 
- 	if (zram->wb_limit_enable)
- 		zram->bd_wb_limit +=  1UL << (PAGE_SHIFT - 12);
-@@ -910,7 +910,7 @@ static void zram_account_writeback_rollback(struct zram *zram)
- 
- static void zram_account_writeback_submit(struct zram *zram)
- {
--	lockdep_assert_held_read(&zram->init_lock);
-+	lockdep_assert_held_write(&zram->init_lock);
- 
- 	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
- 		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-@@ -1264,24 +1264,16 @@ static ssize_t writeback_store(struct device *dev,
- 	ssize_t ret = len;
- 	int err, mode = 0;
- 
--	guard(rwsem_read)(&zram->init_lock);
-+	guard(rwsem_write)(&zram->init_lock);
- 	if (!init_done(zram))
- 		return -EINVAL;
- 
--	/* Do not permit concurrent post-processing actions. */
--	if (atomic_xchg(&zram->pp_in_progress, 1))
--		return -EAGAIN;
--
--	if (!zram->backing_dev) {
--		ret = -ENODEV;
--		goto out;
--	}
-+	if (!zram->backing_dev)
-+		return -ENODEV;
- 
- 	pp_ctl = init_pp_ctl();
--	if (!pp_ctl) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!pp_ctl)
-+		return -ENOMEM;
- 
- 	wb_ctl = init_wb_ctl(zram);
- 	if (!wb_ctl) {
-@@ -1358,7 +1350,6 @@ static ssize_t writeback_store(struct device *dev,
- out:
- 	release_pp_ctl(zram, pp_ctl);
- 	release_wb_ctl(wb_ctl);
--	atomic_set(&zram->pp_in_progress, 0);
- 
- 	return ret;
- }
-@@ -2622,14 +2613,10 @@ static ssize_t recompress_store(struct device *dev,
- 	if (threshold >= huge_class_size)
- 		return -EINVAL;
- 
--	guard(rwsem_read)(&zram->init_lock);
-+	guard(rwsem_write)(&zram->init_lock);
- 	if (!init_done(zram))
- 		return -EINVAL;
- 
--	/* Do not permit concurrent post-processing actions. */
--	if (atomic_xchg(&zram->pp_in_progress, 1))
--		return -EAGAIN;
--
- 	if (algo) {
- 		bool found = false;
- 
-@@ -2700,7 +2687,6 @@ static ssize_t recompress_store(struct device *dev,
- 	if (page)
- 		__free_page(page);
- 	release_pp_ctl(zram, ctl);
--	atomic_set(&zram->pp_in_progress, 0);
- 	return ret;
- }
- #endif
-@@ -2891,7 +2877,6 @@ static void zram_reset_device(struct zram *zram)
- 	zram->disksize = 0;
- 	zram_destroy_comps(zram);
- 	memset(&zram->stats, 0, sizeof(zram->stats));
--	atomic_set(&zram->pp_in_progress, 0);
- 	reset_bdev(zram);
- 
- 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
-@@ -3127,7 +3112,6 @@ static int zram_add(void)
- 	zram->disk->fops = &zram_devops;
- 	zram->disk->private_data = zram;
- 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
--	atomic_set(&zram->pp_in_progress, 0);
- 	zram_comp_params_reset(zram);
- 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
- 
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 48d6861c6647..469a3dab44ad 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -143,6 +143,5 @@ struct zram {
- #ifdef CONFIG_ZRAM_MEMORY_TRACKING
- 	struct dentry *debugfs_dir;
- #endif
--	atomic_t pp_in_progress;
- };
- #endif
--- 
-2.52.0.239.gd5f0c6e74e-goog
+I also had a nice talk with Kees Cook and he was very interested in
+having pstore as a backend for meminspect. (copied now as well)
+
+> 
+>>> [1]
+>>> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
+>>
+> 
 
 
