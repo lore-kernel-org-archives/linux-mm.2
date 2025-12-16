@@ -4,137 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B02D5B87A
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DF46D5B87A
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:46:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605A16B0088; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
+	id B73D86B0088; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BC5F6B008A; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
+	id AF6FB6B0089; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DC566B0092; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
+	id 9F6306B008A; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 319F76B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCCF914040B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:20:15 +0000 (UTC)
-X-FDA: 84223427190.12.6647A0A
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D200E20003
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:20:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=is2QP7IU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vannapurve@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765844413; a=rsa-sha256;
-	cv=pass;
-	b=0sIx1fp4MGjutf4NoFTFEAN6qWtZpA260SelF0C98V4jwMpuBUrDSB3Ux/Ty9d0sRmO6WC
-	lzhppLM62bIvHlidmrq2GDVKdzClMn13YPjQEsKvkWPRBclfz172r1hPdMQbU0DtbfwvFG
-	DbGUkSNk4wzBAb3eFux5W1gwmdfLvUI=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=is2QP7IU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vannapurve@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765844413;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B8766B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:46:11 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F9B5601DE
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:46:11 +0000 (UTC)
+X-FDA: 84223492542.15.96862CE
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5B3491C000E
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:46:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765845969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
-	b=ifvL/i74Z100QTLwqwFCDnTRsEaRX4bjTfvWZ4DtDpCswDTwRHpTFYMRc1kFoNcc26mX6v
-	q4VfKtatblJhskQpy1pOmcUj29gzJ3W4jSh907cewjTQxjP3ZQ1syyJX2PX0bCiPYFRStB
-	4eZ8L3qI5ilS/ZnicTTJAS8rXmg7B54=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0d06cfa93so14105ad.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:20:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765844412; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZhAM3zGMOgi8RnpzHn66rde9PyAkCshae/FPjCJaXKU/bZj/Rq5/BCVgaOlxRUZrvy
-         qHF3vdJRmDyj+CSO+QtQrdvEx0bCgb5DaNX/eOu0IVfnQLFYSkfkXFCcsEOFTZjuln1B
-         MtZAqkhc/G72PH8kBlvJ/i/Jt82iKyZqTwEWebwhwYCPnpqetEK4HStwIlschi98urPr
-         OnRkA+kCmOShk5UaJQhkX3/hwZB6dKX6l40HWVfoh1hUcmfGxtEDPqQk2U2xhcfePlRp
-         vOMEcWnHRnnhzFyB7kpPUSwHwpHH3OAYSHscSTpS131eeF5jvVM/WkIgAMpS9yPqdB8b
-         2mig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
-        fh=zh4E5+rGmdxGG0AfBCohXgAOkKb5Niw84iKKr1HWBjo=;
-        b=GeQhHWzNWJk+grkKOOcQvtJt+bzEH+3xUxNjKHeHoTsDtgOkexKz8WRetGFWf8UI1m
-         EDO78V+2Ix8WCzAG7chIqgHwBKoNs9gD8wgsrBpqHeT1bIeBy68cLEjrme0UPen6OZaa
-         l677O0+sd7KiF8ZLssC0pr9LMnDFZh309glRIvD2moOmUkSd06kuGUxYhwPfA1OgDD7u
-         YIiQqdxmFH9ZryeLN0VPFdqszguiDmUz7VKOLHpdE0oFN3wWfV++LJrjMzUz4VIasChD
-         0hyIz/uI/whXvXpERDOOjreIGhqMfKyCtdOAXtMpyVwiZzSlLo/Jpm8QC6CHiLN/QEju
-         37UA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765844412; x=1766449212; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
-        b=is2QP7IU8E0N3xcB+Yyt9YxjQM+n2jrV5yYP4qMn9wG+bb6oKOcVJmCJvtzqKJ/X1v
-         f76pCKGY7dEeM+PInDGoZ6jyIkmL0/KezC1dxjmnHOhqiE2ZDC6DCk6bYJazNTyyVQRi
-         zq+s+HM1cf1asjYefPmUfAbvEHGpIbtURmLU6yak1NnJ8fl/vdjeMQo+P5rW/YUJrjhd
-         ozw6eX+7yhjNGJPYRgZnXit9bTsEt5Ww5rzUQ+c83XViZzLjyZOxomQ5Qyso0DHiWWJY
-         9FXRSeT0ltR4ngDbGQ9DVMVCN+9R528Iwx2HSKEqj5N6/kSQkjY7hyVT9RLEwV/GVp5L
-         ULvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765844412; x=1766449212;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
-        b=g9kKjNUcQtUNTpmrsGaphpmfkPJCr35MZz8mWnzMVYz63YROnuGs5KjkExK2sC+Jhf
-         NbmYoQipPbdp06qdBrRKS2HqnzU3Z8XB+FstzanuC6O4oSoDZ/JoIkX0p1yYZexIuiF1
-         5nlSxUvSwqQqiH4+AoNloo8DTsnS/m/fVMFrh/M3Dk0PkMtrQbU5piXMXuN3mVk+leWf
-         XHRKf3wkBKPDAUCOXgmySkhIKQ5+qPUI76iLreEDq7EvbaudcrbdCPbbKoniMzq64IS3
-         L2m36+gyi0Iv35u4gtkJFesGioWwexteiM4adUHG8K/wVkjEJh2WjVP3piahcV/XYNup
-         C0+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVTLHRv9WgEKUfGiQA2N1aupOhJOfPc+PVE+lpJKoWEdXXVwYB2tFlha608C+SsyiTa+4N5q/RTwg==@kvack.org
-X-Gm-Message-State: AOJu0YyQxk1RL+FxT4wjav4lDGPNkIjNuJp5r6F/zDjtrjXy4R0qHNMG
-	J8QWsXZ6UJbFXSgq4Q7uMRvq3elLgDEDdkUQ16Ds4yH0VO7RmAa2b1BjktdiynM3n1SEyRSE3QJ
-	uP5qou823QeapbGNJ/vp6sJUpxan662PwyRlOUlt8
-X-Gm-Gg: AY/fxX7mI4ojycEryJEl1ZRXAdBZptnR8nB4Z9oQ0GG5MtOhKQD8kGBbwMmAcNieLVg
-	h5VqIQJRN6qdorfJ/XJbVsDA3OxMlOw3gfRM22HvoVAA9S1BSPPug2dUnuIkUhHTu0h2E5YzkT4
-	K+RPBK6O2mYdgKfZPrywGVf41r/sUo/bW7/Ni0i/3TyoLzu5bxH53mFV0z5ZqzKpEJy/uHa04dT
-	rAY3A59I40lFfdMJlEGsohwFcqo8Jhg7tFhLJvQSFNLjhGWBF4Q4dqyYk6vo4BuIg/wjDjRpuaL
-	72G3FFaMRkW1+XEu3mYP/yvYFH97
-X-Google-Smtp-Source: AGHT+IExDYh7puOwTqAoucyAbhg/dhJj/UlPMmB4InOhmz+VivF2pgRZLSSnb0+pKynoL6YupSskmHHY1LN9azC6BtE=
-X-Received: by 2002:a05:7022:4406:b0:11b:3bc:9ea0 with SMTP id
- a92af1059eb24-1205727676cmr408c88.6.1765844411980; Mon, 15 Dec 2025 16:20:11
- -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=bFwf0Cz8Ds/9SlIOudAhlLkA1I+suJ0nQqlbDp0m040=;
+	b=ICDvQquo0QPbeq7fGLvwcXZdRFCSBmHfajPOd0hyZguimGDyrJWjkti4ys3aGf++TKxCtd
+	9NqBsCsZmLlcCdRlb9xI+oUeLXEY4ix0LQeqhjK1UUhKPiOlzA/0+N7DBS7V95yia+7Jjp
+	KmyX/+36cQxLmymF6/RB8koAARoidFw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765845969; a=rsa-sha256;
+	cv=none;
+	b=0zU7yRkXFODWtPKuD9nPM0lmo62zFcNME6toiYTdubyhoEt7AFuOe2kg3KkieB4f1aAUGG
+	ENrLMqMrgvqTqWI7HWcHjWaL1UBh0HUkMI8CwpheNpGKBoWWXgVhpKeRVOrLg9BMsltrPi
+	n8YSgjiwiz4ou+dwfE1gxdZUUlw6nw0=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVdWg1GNxzYQtkd
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:45:35 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 865B91A019B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:45:59 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP2 (Coremail) with SMTP id Syh0CgBHYH_Gq0BpmudUAQ--.49701S2;
+	Tue, 16 Dec 2025 08:45:59 +0800 (CST)
+Message-ID: <9c5a5020-107c-4521-9402-41e614bd2803@huaweicloud.com>
+Date: Tue, 16 Dec 2025 08:45:57 +0800
 MIME-Version: 1.0
-References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-5-michael.roth@amd.com>
-In-Reply-To: <20251215153411.3613928-5-michael.roth@amd.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 15 Dec 2025 16:19:58 -0800
-X-Gm-Features: AQt7F2pam8UulXqTs359SLpQ8QESA_W2EL2-JVHHwFHsPgJIIvSeUBgNcYPP6kk
-Message-ID: <CAGtprH-te9xrmVgUteAaW17BLuxfZWfu32G4Q+AdP4=DDrm27g@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] KVM: TDX: Document alignment requirements for KVM_TDX_INIT_MEM_REGION
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
-	seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
-	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
-	aik@amd.com, ira.weiny@intel.com, yan.y.zhao@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next 0/5] mm/mglru: remove memcg lru
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
+ zhongjinji@honor.com
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+ <oa62a226nagmrqbc23kys3yw3ouxkn5spcizyqqevsuhkurbsv@tvvwqlgu5yum>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <oa62a226nagmrqbc23kys3yw3ouxkn5spcizyqqevsuhkurbsv@tvvwqlgu5yum>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgBHYH_Gq0BpmudUAQ--.49701S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UCFWfJFWkAryUGry7GFg_yoW8urWDpF
+	Wvka48Ka1fJry7Jrs2y3WUZayY9ayxAw4UAr43GryxA3s8ZryFgr4Iqa15uF4kCr48Wr1a
+	qr1q93ZxXFs8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 9m5gxkzm6cnpy88pempuyc7yfajr1t6a
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D200E20003
-X-Stat-Signature: 8tk4srpmfqj3itn7u8gtwzom8jxkc6ah
-X-HE-Tag: 1765844413-691147
-X-HE-Meta: U2FsdGVkX18CUiiG4NlhCkQCj49MFgy08ZMJD9RUu5B3FycUzfO4MPxplv8vnOXXffTO7QyEo3hLsbMixOqUv7Nqqec0VlTvf10shjXL6tBdcNafnw8P8KOjwVnpDmRFVbu0y105izBnAX9hB4dWKqj0hOx0MsL1GZNLhDa4RDfgrshWfJEbm5g4XLm5TU8WYnd+RIWlKcitI49ggkc0Y+pDUXZReu783guV9gU1Nfx6ih2OhxEzG0rDsapYcamO/ZUcX894r2sJymZZ8YHTQi4NfHHmbZsEdE6f/ikQirWyLN313fq1IqESHkf9I/LtLKROUiWgEFDc/Ma1AsO9tKHqAs6HFsL94gkEKnDW/oS/MBgGNGmLamf/pkum7BaoNnz+ALhgNBbFQX3TqkxVHrJslJ1DMX3P2RF3TFIYAsofPcg1XtFXHpkLfnnNTbiZtZ2ir54abFwVG1SMFdOnQhD6z9BtLxUChXgB37NhhxEIxDUQPHuw+x/G/sZg9HveDc9eDWRCTiDg3ZxS/8dJ2AnmEudO1DFt7QS/rdb9wI92lKz09/WAXPjjaMlyMbdg/KJ80WxKqiJrPS1qaGdoqYf80Rvn3rZIMU4pD4X3CTxbouSRHYiCGh4jFM1/DNhJvq0YvZX4bBhDVXAtq7X//piXH8BLn+xnWrfVg6QJy55noyCqAQtTDTC7V/M/dID7O7MW8EdPtGHNhwYyNAQEZ7fFkXFCofRKA8j3ZwAUUBRCD+6oOSv7r9Bi16e772i7foS9yHwSylIat5OxpczamcIExSXUvyj62Ccz5n4HfLaDHOnvDYdxGDHO45eE7olG7EI9KeMuKywOKdywakGMb8iQvbeWO2ZgaqTeCsZbgxgACVE8REJRKPevdw6vvKoxwLzhQYbMPsYeeFODP+0Z8JdQbATByugl0gXN/PutoOOYziCXufUpgbOm/pPkkAqVU+W7GVk12gvJNe865cA
- /3cMmTBL
- 1gtE96be6H5wlO0ptQ9eU6PBBtBUT+gP+XaTgVH8oI3Q0E7pA7BArDypaLCmip/S00areKYtx4G3iDFe4vhU2AChe2Ca5EQFqNeQomd1QY9mRmk0ex2MR190ssjC3UXVFXpeFQ4yA2wyKEQuxoD4f6PdqD0Rg+hB6sLv1YJKWaw4MtLvnSLV2E/Hka3pXFj1BIA/RUUTOIwK/U1q8DF6eBUdjw5Kz7dIcSaUD/MKijesH9Ay//w3ujlV5jCsuAHxezBexh35KpM0cERyha4JrWY7BH+o6XGE3sf45elcqst5GxLP4PeXNvHY3nwAgDJNMPRZZSwXo+CnKYfo=
+X-Rspamd-Queue-Id: 5B3491C000E
+X-HE-Tag: 1765845964-431165
+X-HE-Meta: U2FsdGVkX19dhiYYTD0duUy8OjjtXDL61UfeyZs//MzpMkgITPe8Z1LeZwWWTPpCOxIydEdiWycqzMAR9ARNU9thD5KD9fq8crJIAZy52jZVzbRA3MuPgFvMa973RR34gwJOoV3/qhE6jlbx1/xhIexXr//nx8p1bXxNpFg1bmp19PO0bCLlz4WkQB1MmoN4YNr64jiCl7W/iYh2e2jqS7n6I8lyQ41EJyo7Jjxc1S0qJyXzfW9h0fjocIs4Bca4FayuYxuqdjQUXCMIKw3ed+LLDjKGD7/lDtVaM4T+00dxBGhFZRucD3WHZ/sAHiH1CTgENkb3ezH7++S9gk08enCo2LwWYpCvkrMVQNm4qDc/1tFAA3nsL9BUcGJShqnU8szxxtos+qDrsV1JOkNVn3ClMv00hOTZW9GZYqazaexZwHBhOiZArWB9XUWtdH6WRQdPlKSDiQfPUAn95/esg1rTlVQdwTjjhaiLv94vo5TFUnVz0+Z1X4ShDHaw01X7/gr5DvabKRPmcLW5BMQfu4XnS7crANIkelTtmBwIi5AGIOaGaV6+4r/Ai20eUewHNIziKFg+Lp3LAKLGAhZX1aL353uxLxKq4yXQjRDYFiTD8sNLfI9YXpu439/ZBGDRujzsnIa1q8rVtTlwtkkNR/dIY6pa5IXQ5zZItbSIjHMtyUea7WakG51jtTR4j98jUhit3TZCuc/y+nxlMuTVA7bOdBai5tl8psDY3xRiFpZDKWHY0e31gG/28BMqMSW/k27/ZRPaZHsmpPW7qqMzoWOqUJRFyX7uY+V+xPbt/Sx4bBI0AAC2bzddBChUuM6f
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,31 +109,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 7:36=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
- wrote:
->
-> Since it was never possible to use a non-PAGE_SIZE-aligned @source_addr,
-> go ahead and document this as a requirement. This is in preparation for
-> enforcing page-aligned @source_addr for all architectures in
-> guest_memfd.
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  Documentation/virt/kvm/x86/intel-tdx.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/vir=
-t/kvm/x86/intel-tdx.rst
-> index 5efac62c92c7..6a222e9d0954 100644
-> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
-> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-> @@ -156,7 +156,7 @@ KVM_TDX_INIT_MEM_REGION
->  :Returns: 0 on success, <0 on error
->
->  Initialize @nr_pages TDX guest private memory starting from @gpa with us=
-erspace
-> -provided data from @source_addr.
-> +provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
 
-Reviewed-By: Vishal Annapurve <vannapurve@google.com>
+
+On 2025/12/16 0:18, Michal Koutný wrote:
+> Hi.
+> 
+> On Tue, Dec 09, 2025 at 01:25:52AM +0000, Chen Ridong <chenridong@huaweicloud.com> wrote:
+>> From: Chen Ridong <chenridong@huawei.com>
+>>
+>> The memcg LRU was introduced to improve scalability in global reclaim,
+>> but its implementation has grown complex and can cause performance
+>> regressions when creating many memory cgroups [1].
+>>
+>> This series implements mem_cgroup_iter with a reclaim cookie in
+>> shrink_many() for global reclaim, following the pattern already used in
+>> shrink_node_memcgs(), an approach suggested by Johannes [1]. The new
+>> design maintains good fairness across cgroups by preserving iteration
+>> state between reclaim passes.
+>>
+>> Testing was performed using the original stress test from Yu Zhao [2] on a
+>> 1 TB, 4-node NUMA system. The results show:
+> 
+> (I think the cover letter somehow lost the targets of [1],[2]. I assume
+> I could retrieve those from patch 1/5.)
+> 
+
+Hi Michal,
+
+Thanks for the reminder—I appreciate you pointing that out.
+
+Apologies for missing the links in the cover letter. You can find them in patch 1/5.
+
+> 
+>>
+>>     pgsteal:
+>>                                         memcg LRU    memcg iter
+>>     stddev(pgsteal) / mean(pgsteal)     106.03%       93.20%
+>>     sum(pgsteal) / sum(requested)        98.10%       99.28%
+>>     
+>>     workingset_refault_anon:
+>>                                         memcg LRU    memcg iter
+>>     stddev(refault) / mean(refault)     193.97%      134.67%
+>>     sum(refault)                       1,963,229    2,027,567
+>>
+>> The new implementation shows clear fairness improvements, reducing the
+>> standard deviation relative to the mean by 12.8 percentage points for
+>> pgsteal and bringing the pgsteal ratio closer to 100%. Refault counts
+>> increased by 3.2% (from 1,963,229 to 2,027,567).
+> 
+> Just as a quick clarification -- this isn't supposed to affect regular
+> (CONFIG_LRU_GEN_ENABLED=n) reclaim, correct?
+> 
+> Thanks,
+> Michal
+
+That's correct. To be precise, it only affects root reclaim when lru_gen_enabled() returns true.
+
+Note that the generation LRU can still be enabled via /sys/kernel/mm/lru_gen/enabled even when
+CONFIG_LRU_GEN_ENABLED=n.
+
+-- 
+Best regards,
+Ridong
+
 
