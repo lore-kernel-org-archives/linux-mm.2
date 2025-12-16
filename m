@@ -4,122 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE68DD5B874
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A5DD5B874
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4C16B0088; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
+	id E7DC36B0088; Mon, 15 Dec 2025 19:13:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96B3A6B0089; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
+	id E51C36B0089; Mon, 15 Dec 2025 19:13:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86D5E6B008A; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
+	id D1D3F6B008A; Mon, 15 Dec 2025 19:13:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FC2B6B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 011AA1A0149
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:12:17 +0000 (UTC)
-X-FDA: 84223407156.08.6F00737
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 20F8018000F
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:12:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I00zHyzj;
+	by kanga.kvack.org (Postfix) with ESMTP id BCD436B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:13:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 865178A857
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:13:45 +0000 (UTC)
+X-FDA: 84223410810.10.0366D20
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 84230C000C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:13:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=uXTvOh5S;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vannapurve@google.com;
+	spf=pass (imf28.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vannapurve@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765843936; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765844023; a=rsa-sha256;
 	cv=pass;
-	b=ExXhG33pwMQUDNh78Q6OdjJ2yk/FpZcDt/BQJYPN+T21fr+Za63WC4L1PvhxULQdYr8j/s
-	UcaiG7wGCKKUJD6JBm3hn+GL5AtIwh0Hg3m4ugn4jjJxthcGOPzRYG1EW0J/J93DUQ+Mf7
-	G8Jm7AwCC4/JeV8dIJxspN90X1u+l4o=
+	b=0293yDLjQNHgQPGVrm+vSQ14CHppaGI2xJ5IfeyoNAs+oj+lAeTcGInReFxHcS3QFzbtbv
+	lEBghLpxD9/ioGrZtO6GZPviO2EVJM+lJMVdaTaEOXBSmdHee7VonxVPIN7k5LVHZHu48N
+	/gFW3XwHiJ74xXVtiY4yQyGYpriTqIM=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I00zHyzj;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=uXTvOh5S;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vannapurve@google.com;
+	spf=pass (imf28.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vannapurve@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765843936;
+	s=arc-20220608; t=1765844023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-	b=lxcvWxMVvzLF3WdRFIrWYjtoLIqp1kJpFwmFgYpurWyEnp47aa2pcz6ulmCK2o82zoU/uX
-	nzFNRTNA9v06XvFlrY7lWaRooWEhAIFXKzb1C4EaT/PVAa1G1hGVLrzCaAWFcndP285Dek
-	c9Gw5D40llpxoHgYY+fKj7/WC7zMqDE=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29e7ec26e3dso46355ad.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:12:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765843935; cv=none;
+	bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+	b=lmEXYevBWLHKFxdnZx8Jq57IruwnLR/XBzNIdyLvXDTd8riDWqKSC6m4Lw35RZWT4KLb5i
+	KL5OGiWWpw8n2IhPDZGUrRUykRf824azd5tLa+dOLj9It1qX0Wm16If/UnyWYzEweshm0u
+	zaCGiNRBz9cymXu8hHdbUWs3Q9R4d1I=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0d06cfa93so13315ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:13:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765844022; cv=none;
         d=google.com; s=arc-20240605;
-        b=T7i26uMM3s+F9i8n6v8Yc55pEOMpCjThG+Z2LAw2A2WOYrydbhp6mprKxfZwfKXsJh
-         x4j1JXidDCDHHqICcJcvq8PD7FIYqv61Av06Z3ZPuVXSwzwhJg0ea8Kqx0X4HSV2TExJ
-         SzmJLHk0FQkGh3yBeRriJtrE+fX98AMQe1GyZt1qBNqNwADRmTWCzgsuwgwkmv4xuetv
-         W8oy4QML4IZsX/4+CbnlvvYfiQQAFo0qhkGTlOpOPcA5/zlEvBOT0ZMmsoyQqNFrE/Bz
-         NEWwB8znj4y+9XG3uJE0f7Qm8UL0+OLGM0hsOk6jtSRalZ6CynPuKbFhv1LYJkLQEOyY
-         s+/A==
+        b=Jr06THjX/93uxgQle4TCRaD3g9fX5GE/h78PPavuLB3ycIsf6Wc3+d9WIeEx2pYSZO
+         3S96OExCD2HS8SzVIc7xLFgcBXkO3Tb4SD5K4dP4ORY9yfP5Cr6AqdfCvmq5cB5LI6JY
+         T/aX2iNvGggh/rQLlrWNn7BUKEpl7Ui/VzTqeLv8km785PNtPAS6f2TecxH6G2DY0A2S
+         HUOs+pUawXC31jYrIfpLFYI16dWRxm3Tdng0ZMvp7oyjz7/FkzPeFtfrWq9wR8O3xcC1
+         R0lR3hyoDNN0l/GbCK+y/kGujjjQaG079FiJK+/1Iqi0aEv9Z4fJL7R/d1hy0m9rCrds
+         gG6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        fh=wzHPo+V/Q3XuOB8neYQZIumTRDn7B+0niSDwvixU0Xg=;
-        b=cb5LFRVd0Yp1AFe8RwBAQuCGfxgcAXUgkQK2KVXvYlxYV9lxASxzNTtiUmp9M8j1DB
-         kUNqaDDsaloQULGW8UkaoQn7gFtJBVlqsJkdOH4xqJHjx4STOv9OMEOCFrnJoHbrmQka
-         isC/KD3ymLrCJgBFWBCfSxO6MABt2lVpD0KmPHGc6eOImpqQrfskY4hZuEfD3ee9bRQu
-         1Ck+vP8VCkYyjbLuYFK9OTh0Gfms8jhDAU3sHz46mS8LOASB8326ejHOLxzm1f5/pt6J
-         a83QrYjLEskFX+tOrpYd2mYn1v8JvtveTXH9OPhc+fOhCgB+GpNamZhsMrv+GmIGSFzf
-         jsTw==;
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        fh=ZH3+3Em+Gxm24TaXzIXOecKW6HCBQbnRtALwCgE6QLs=;
+        b=gOjv7ej2xVXrqDkFSTjJRidvi2CWq4F/HDJ6oWUONW+ZOS9EuWWlG50EjcrUHzWShR
+         ClraQKh5Z5usS6ZUZqyHow8lScvx8NYXsnDnknW1rGmljnI4dv5jSvseLlVFBfn4QLs1
+         8BzFMET1YTMEBVgBJAN1vBb+WWtaIkpLzrQuPIdpjNWhEu3/Mum6mGWuUpDerHVT44Nv
+         dc6g3BNOUkB5ZfU5YGQeIaqDb+JgRFDuGDYl1UNC7miksuc+PDOze7EAk9IeRCpzRGfl
+         o/37x0FSd2B/AzwGfqV6QsTAQ5ta170ZgVcOHYAdEwLgOG9t/DCt2SdjVyqZmP62jrH6
+         /t4w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765843935; x=1766448735; darn=kvack.org;
+        d=google.com; s=20230601; t=1765844022; x=1766448822; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        b=I00zHyzjdDE+f7E1sUc441DjSRHW23Ww3/NXpEyo8KRUWN/4dWTBNUT3TgAFO2chYz
-         ig8i4k78b0WOol5bPYzieQjqk3LBXLo/sI4J1Mjon6qqA0st/7PxC+TWSxgT3xDSMimo
-         lcMGv0hpqNSflSZ+/XCkZgAf2z9TLvH6WBoIzIqm6Yp26WtF+d4HHRFu/cr1Q6gWKc85
-         pROwCkbASOiUSA93KcIU/TFsJeHH1PDy17+Zp+xjXW/7bPOhos/xQDni4by4QtplZ6YZ
-         ujWRhAPwfFs2fEUMMgH2MIeTUf5+8hJQJaCPEi3TbvqA+Vk/kuFVsxo4vUJ2av1qyHMZ
-         CU4w==
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        b=uXTvOh5Sw5Wo6/j/3L8kLUMdItp1H+BoZuHtXkTQP6qVaXHPVM+Ckfu6waQqdJzXdb
+         NsEex3MddFXaJorfIwRvyMYzWG9Ht69V9w0gDE/MDiPRjSb6mdZWTauCX0zbk10bYhdy
+         Skos/kaN9w/BouSDvDzTwiTkX0FFfr14JcyciaXDpXeB07XtdPyHf9gSnXboidl+8t8c
+         HWpp6z+uXhib8MPNtO+fVDEqEF7ZKYbFvN5tY+VBqsMTU16yfb2bQfx+rX/GxWMptGn/
+         mbw8kBH/SJSqDtkkpSTQvf3UdpW4n3QnNRN2dyc29AL7bS1/cfiv55avShTSKG/9kcHW
+         QHRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765843935; x=1766448735;
+        d=1e100.net; s=20230601; t=1765844022; x=1766448822;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        b=FDk8BHiLXYE6JJZkCvahzy1HoeuvEoMN+MgmcGgpZd254PuE/SGx3HGKljjnlUL1nU
-         TbopyCpX80SrHdVtBnvs1ZFoht3lsBRfZGfNFqEgKTbmpEfCkEK3wybo97udtB1qcYoH
-         zeTOaRjw63iahMDCzWO8q1cMijfiw84yEhH+E995f80WpTVfy9jrd+CMIcMeiKfaNKJu
-         73/JvYQmdqbqPxTa5KbgqYntZxdj6SDL4K20dvwhxEDeT+G6i4tDDWREbZphoX6cSNCP
-         LU1+Ec7n7GXA7EmtlG8Ew1S2gJRUOb6wxkEXrZ5vw5h5X9ZaRpnxPoqDhzIPfz1mjT98
-         Pp2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWvJlM97YT3/3uiErxEqrYKBGoWZ3OYZu7faMRL3FrX6HxEsT7UOASS4xOGrItkBaQd1NAVvy+VSw==@kvack.org
-X-Gm-Message-State: AOJu0YxPXWXFTssB+Rh8Bzw/TCasQYdsp4VNUPowFxVFqi7BdWlE1Irg
-	FxAKTygHq5pDDSFr4pKCCXwBDQH6cIkynk7ZFD7+Kjt8Dw2eBkat4+v1G64HqBPmM1QBkM7e4LI
-	efIxa0sVraPFBMCgRNaQ8wUmHHHhd27bWx8zmvCmT
-X-Gm-Gg: AY/fxX5jBJFTWbxVPVELvrdhBTg9orGkp7RuljvWqcZrdYE5CHBIIvI0EhahNmhPhe3
-	+OZJn1I/SrjmvXHWJjBYoOesK65iotE42/epPC9Yatb9S0d31xpwTF28wFZGFvMriwpH667j+5V
-	GIITFOz7hxhE5PynVA45hWBhwC5zI/qyt6DVxH8y19KLbSga8ElHwUFyuHCeurVeCTo4LJzGpna
-	4tFqXhNPeTwrd5/IK7fkuuKqwiowpjmpNbG9gi4VJ3qKRrS4aaveGLJsk5ALTRJ/WBMdz87wKsq
-	sL0dRX1lPZAfFSCkVb0jrRsgZAPj
-X-Google-Smtp-Source: AGHT+IFYx2fqkqoq7nwgp8s1TBunZASqxOa+paDvYopFfRkFHpqotvWma1Omazh+JGGMYTXawA8rx1OS57mP9gGziPM=
-X-Received: by 2002:a05:7022:68a1:b0:120:5719:6249 with SMTP id
- a92af1059eb24-1205719637fmr3220c88.16.1765843934179; Mon, 15 Dec 2025
- 16:12:14 -0800 (PST)
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        b=w2eLfrtsMptE5R3p8KYLF3XcY6C0/Im6VgiaFvsW6vojKCAVLHmPR1E8mJUXS219tS
+         qSYN0UH9o5XfOp/pPzoPPOYPJFbVRfMaHfhYg8sH/czxTJcIRAahyNoMPDRK2OM3HODo
+         W6vC9H/iXZwCgX8Lqw4tc6piFouUrH03s8tGEo29CkXPOGzVn1caRdZV/KteeycmSUy/
+         KGxtr5zmvbXRh4VQQVTWBDTLBRgSg0ULdy1lAFv66vanFiwcqpQt9Ucxwty+D9d5KvX9
+         Mz2CMrEd02Uf4bGkzqw7n+LylB2ZGMoxdlqZ0WLzTGmzDckA3AK3aSFUxE7M0sOCPpHK
+         kpLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWngGlKVsvkNf/kTVEYwfWMI6CPQcTKCNvTT7DnKDOheh5HhmFLFcbyCjt56JWbmLmrKxGJ114M0Q==@kvack.org
+X-Gm-Message-State: AOJu0Ywf3zrgQ3GvTiGThhT1JfrzURU2mXOjuFrtWX9q6NlEhNB7QQip
+	D7HT1Le5fnK6Yq1BK9gj1X9t9Qlr9diNKHqmM72/XBcGHIzX06k04Ttul5HWyNfCWU1qSGcxHXG
+	7drQK5g2K8aIhtwp9ArQu2akdF4P27Dj3HCN9tMr961wmlZxGQGFX+WLK
+X-Gm-Gg: AY/fxX6hP02FtUPX3YQLD1Gsa/7tcsAI5SzUSc/9aY6qL6XbmSGFHhSoDWhbZ2b/zcB
+	66YVrsy+cJ+7K4peO3Aqo7f3G/XtH6Ww1s8eo9kljOYz+QnHQ8rzWLCG20GbRWt/oIYg176HkTG
+	rhywPPr3WDJJp3k/J3hVge8g9bnOrddO0TVWvhqi5cGiRD7e8UDCRqtnkRhbepqgxzMVoH+PrNk
+	1EGHTWhJ9RM74U9SsMdmHijsFqt/E51ySHbTVLDplUItzrNu3dNhBs3rK9pppuXiPejpjRoNj1f
+	96lzsxgoaAcZuuzRoNLfPSVwFQgh
+X-Google-Smtp-Source: AGHT+IFoirOvNMJpKn6tP51PRi96WA/WP8WHHlPJAFYlT/+WZt2BNZRZRHngFXZC5p9GdQCCqI5te5+CZ9A/FzrtBPg=
+X-Received: by 2002:a05:7022:ef14:b0:119:e56b:c1e3 with SMTP id
+ a92af1059eb24-12057217cb7mr94c88.14.1765844021847; Mon, 15 Dec 2025 16:13:41
+ -0800 (PST)
 MIME-Version: 1.0
-References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-2-michael.roth@amd.com>
-In-Reply-To: <20251215153411.3613928-2-michael.roth@amd.com>
+References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-3-michael.roth@amd.com>
+In-Reply-To: <20251215153411.3613928-3-michael.roth@amd.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 15 Dec 2025 16:12:00 -0800
-X-Gm-Features: AQt7F2ra9396Gr4eNuUU-K7XtTwtvJ-rm6VSQCRwWNTFPqW7whDLIsPPpRjnSlU
-Message-ID: <CAGtprH95s5wL1=rSSpG7Cmj5HhJOftwJY7CP27WE-qmq7hr+XA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Remove partial hugepage handling
- from kvm_gmem_populate()
+Date: Mon, 15 Dec 2025 16:13:29 -0800
+X-Gm-Features: AQt7F2r7bucqAHi7gjHHb4xeDTJY1rA6zwbPyLTqR3xjOn4AhUq7dG2mlIrjznA
+Message-ID: <CAGtprH_4K9TAH1DoeAW-UHTpMY2sNr8UUehoCPX_SKSQBNoERQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] KVM: guest_memfd: Remove preparation tracking
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
@@ -129,13 +128,13 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 20F8018000F
-X-Stat-Signature: nbtc8m9a865em6jpzd1nixsxbbnw1rhe
+X-Rspamd-Queue-Id: 84230C000C
+X-Stat-Signature: djjgg5dcgzq4g5m4djz8hkfyantq8szw
 X-Rspam-User: 
-X-HE-Tag: 1765843935-45377
-X-HE-Meta: U2FsdGVkX18C1QBMCUtUN8RH7ZT/9SznOf1xeVkTdQw5RNujWTp/66F1ZVt8vpYvXwYPEcnDRXElm9MY1qMFw2oo2Yg+nD2WsJJLf70BeqwaoUSJfMQks+XHD99VYMM+yhWTmehDR1Kg42VIoU3I9htY4F5NT67jdYTRpXH/4Y6J0j1w/xmdcd5cmQxdzRhws4LJG4rxbl0zdfah4domCVbfXkoAiO9wfKU69SgVgjXwoqVzMDGfwsBegyU9e6zm1nhgJqIwt0cRKeGAYNmYRCKAQhrttWfMC2aEOpb4VvmSWvTFv94as1npDMrd6POv8Feh2fqrRBLEGmNvYzopu//WwJYoBko6wufQOoIWDxBTuY3eSfybU3fvfdmke0OSnB3BBmL2uZon4pU0I2Emr8ZPh9Zrw6xhVrKVgDEfCPKncrgwlvv5pgULDyIeEELDV+YsrzWtOs4vOPVGSDe+lW+Rf52XK3sbii98KMZGOmN9Zp8wYvGjmTtCGp4XKvO3teMBQ+NfVhD0RBKb5+utYt2vcVw2iglLFK3TN7xlE45FnFa1MH2CJnjDDUjIJVkl/Tpe2N7yTnXikqPSQrkDpdmlNg4jJS8XT4kWSBBOqm1i9liVxCRRi+r6H0t0WDJwvFFMRpQ6cdsyQaPNzF0an1E+ARLXpO8ZN/Z6LAUNbC+P7D6Y1ZFRFhLDpDI+DaRA3m8SvHZ8SSuBL/EkjbbSzN4vLH+SA3+p3KDi4bb75kRESKMXeRCqB4jJm8IQoxxKaEF5Fr6H1H3qZLvZQkmrRt/9N8DzP0oNIvGqFv84qTVBBCPT2w8CWFiHwFvpXv9TY5ztvZ65RICHAPdQdZUd50G/AF4pr+qBnV/yUB+gYMC1N2ECHMxkpzxkbq2hYs79zYQ2iGkCRkGajfYa9EqyZaILX7wqnJgLW76K6zfPR+1L7CLeDCwhMuIHjsGANuHTPQSPZ/eVC7zCUSNHHAU
- 27iAlbnw
- R2mk3oXTKWCbiSlUoFJCEpi9lYEHHJUgBguBv
+X-HE-Tag: 1765844023-397082
+X-HE-Meta: U2FsdGVkX1+M40Ow3ekCerBJY13Mw3zqzqpEn0mtEL1ggaOY/9Syo4EhcuyrikIZos08umVJum/S6L9kjJeeVuzd7+VkacsHYwD7HztTno/ewjYqSvhfcBySh2uAOAmZT2NsAjYE77LihGB9wf+ZoeZ2OYlFo8nhIdCUA3TT4zb22ANsh/DK9lW+GLZn9VBIThuXKKRVuaBp8LDEIyLgGLMBAuX88xsr3G+/8CKLrTcc76C7zKD0CLDrm4ORVEuZcQ7c58p0jQKxKDjtBvW/8GbKyjyffDTI/FXHhmLL0YbHUdvvA3BKZ6RADjoHrWg4eaqll1oExYiDIg6TvcEV63QVXgFfHDqoGf//1l1670ySoXOLn67tei8xbR94uPQ6wWxo2fr1q4WW9K6aPWr++JpRusjaCuK3u3QzMBpeuJHFDC++1//Bsqn9H2rqYY5PGQsb+8xB0MN8yvnVwD1ua068xUfuFBssaqtsFjlYZX6IHIdx/QlvMLzSJyUIBgrmim0pdBpfHY93eKEQFKDDUANLWmhgDF2s1q1pnAaePzNvXbz6mYw3PbHQHonTvk8sC/wgyoDu89ZxGR4dRRJSQLw+9h2Po32nPF2SGPUS6+trn9d1yVEh/qrBgnbwoXnFAuQS+g+owbcKznqes7i/h6ZF0yNF8303KuNeLZgzcRFzIBO0P1A2p87q3W4O5/jWF/UPC1AwnWnBCWqhhS7T8MHQdVyJPoUumTaYnOimyXo7c80qIN/3zSlTSad3ODhcWtUr2Oifcr9MC6u2Bgf1ZXfxPwRJVOaZ9MPMUqiG9jNVfrjBs38zyNeVO++DgDwINa3lUeGQsf6uPb2LnsMC7Ei2MSjoZ/IVy42wsGjXZZvZpeon6wXXtoK7ITh4GPgmPoBYmvScHO/IeX/OEZnRDIFeRH6BxyJIUkAM3Xf5ITeDahLfO1fi3SgIu1diUNCeYZ100NspvKg7XUciAGY
+ 27a09zpr
+ vA6wUB1dj7lrxTUD6mrwVbxvqdPmQoWmAn/vRDrCTwggmCdQcoWMhtwFfA5mB59Xj0SUCUE5Ij8Dh4nHwz9DuWxsZuT0LxbWIt8WH1THF8blYeXTy1gNvphRx+1bN5og3Fv5QFYbpvbp3324akYh4xzNL6QP8hNtoyasjAYYulxZtkSEE2DloXKwcQse4gJxQW3+fK0b4+ytJKd//z9yBHeTqkyyIsTdHFtjU1ff/cGVcEJANZxs5CcP76iEdTSD9Pm76+hyiufwtVpA+9b85fxW5GPaxqrwcmLUKnGaWJZmqDrC/AI/RTdn/zMwfSiYtgLMolqQshzAV9Vc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,57 +146,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Mon, Dec 15, 2025 at 7:35=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
  wrote:
 >
-> kvm_gmem_populate(), and the associated post-populate callbacks, have
-> some limited support for dealing with guests backed by hugepages by
-> passing the order information along to each post-populate callback and
-> iterating through the pages passed to kvm_gmem_populate() in
-> hugepage-chunks.
+> guest_memfd currently uses the folio uptodate flag to track:
 >
-> However, guest_memfd doesn't yet support hugepages, and in most cases
-> additional changes in the kvm_gmem_populate() path would also be needed
-> to actually allow for this functionality.
+>   1) whether or not a page has been cleared before initial usage
+>   2) whether or not the architecture hooks have been issued to put the
+>      page in a private state as defined by the architecture
 >
-> This makes the existing code unecessarily complex, and makes changes
-> difficult to work through upstream due to theoretical impacts on
-> hugepage support that can't be considered properly without an actual
-> hugepage implementation to reference. So for now, remove what's there
-> so changes for things like in-place conversion can be
-> implemented/reviewed more efficiently.
+> In practice, 2) is only actually being tracked for SEV-SNP VMs, and
+> there do not seem to be any plans/reasons that would suggest this will
+> change in the future, so this additional tracking/complexity is not
+> really providing any general benefit to guest_memfd users. Future plans
+> around in-place conversion and hugepage support, where the per-folio
+> uptodate flag is planned to be used purely to track the initial clearing
+> of folios, whereas conversion operations could trigger multiple
+> transitions between 'prepared' and 'unprepared' and thus need separate
+> tracking, will make the burden of tracking this information within
+> guest_memfd even more complex, since preparation generally happens
+> during fault time, on the "read-side" of any global locks that might
+> protect state tracked by guest_memfd, and so may require more complex
+> locking schemes to allow for concurrent handling of page faults for
+> multiple vCPUs where the "preparedness" state tracked by guest_memfd
+> might need to be updated as part of handling the fault.
 >
-> Suggested-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Instead of keeping this current/future complexity within guest_memfd for
+> what is essentially just SEV-SNP, just drop the tracking for 2) and have
+> the arch-specific preparation hooks get triggered unconditionally on
+> every fault so the arch-specific hooks can check the preparation state
+> directly and decide whether or not a folio still needs additional
+> preparation. In the case of SEV-SNP, the preparation state is already
+> checked again via the preparation hooks to avoid double-preparation, so
+> nothing extra needs to be done to update the handling of things there.
+>
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 
+Reviewed-By: Vishal Annapurve <vannapurve@google.com>
 Tested-By: Vishal Annapurve <vannapurve@google.com>
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index fdaea3422c30..9dafa44838fe 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -151,6 +151,15 @@ static struct folio *kvm_gmem_get_folio(struct inode=
- *inode, pgoff_t index)
->                                          mapping_gfp_mask(inode->i_mappin=
-g), policy);
->         mpol_cond_put(policy);
->
-> +       /*
-> +        * External interfaces like kvm_gmem_get_pfn() support dealing
-> +        * with hugepages to a degree, but internally, guest_memfd curren=
-tly
-> +        * assumes that all folios are order-0 and handling would need
-> +        * to be updated for anything otherwise (e.g. page-clearing
-> +        * operations).
-> +        */
-> +       WARN_ON_ONCE(folio_order(folio));
-
-I am not sure if this WARN_ON adds any value. i.e. The current code
-can't hit it. This note concerns future efforts to add hugepage
-support and could be omitted altogether from the current
-implementation.
-
-> +
->         return folio;
->  }
->
 
