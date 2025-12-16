@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EAA1D5B87C
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F64D5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4F3C6B0089; Tue, 16 Dec 2025 01:30:33 -0500 (EST)
+	id 56CFA6B008C; Tue, 16 Dec 2025 01:32:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28E46B008A; Tue, 16 Dec 2025 01:30:33 -0500 (EST)
+	id 52C656B0093; Tue, 16 Dec 2025 01:32:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C50266B008C; Tue, 16 Dec 2025 01:30:33 -0500 (EST)
+	id 441C06B0095; Tue, 16 Dec 2025 01:32:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B05646B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:30:33 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 487D78ABEB
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:30:33 +0000 (UTC)
-X-FDA: 84224360346.21.471711D
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5276980011
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:30:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mXGzP5jW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866631; a=rsa-sha256;
-	cv=none;
-	b=EZPHArmZnScgmUyYVMBdT8C2wXpBbMDmSHPgF1fv2GjGr/GXhXJQY2W159bSAT6kpqx5de
-	nnHMHdVno2R3s+bILDdzgJmttMIy/ya63cHCMvFbj9D7bS9zpvDeqzDqqSTRGCDa9oiz/L
-	rFf68AvsAQnIK3ESy/xP400Vcp8jPp0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mXGzP5jW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 347D96B008C
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:32:23 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9DB5590C0
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:32:22 +0000 (UTC)
+X-FDA: 84224364924.13.D66559D
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E2F7F40006
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:32:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XqWfDUFi;
+	spf=pass (imf01.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765866631;
+	s=arc-20220608; t=1765866741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y6hz9jdXtFMh2qAHrt6NkjlTikBzsrAftSe+xfn1Yjs=;
-	b=TtE7faYuEIMXXuKLj0Sze6rB4Fcscq97MA5/5EMNb9SeO6w4cUchxKDpISHCtgjID7Tg0a
-	geQ/A0lhutEc2V4kCZQDozeeeMxIt0HMNuG+dBJhEq1/lI2obMWUxajW/kmbWT1Q9tDQVE
-	PSnaVGlgOC03fotSl8cyCj0Km0wKKIQ=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a07fac8aa1so31119725ad.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:30:31 -0800 (PST)
+	bh=AGRzWPEKfvmJEejOwoCNNsiv9yu7sGL4JB/S9GrfrcE=;
+	b=FDn67YslsvIzdVfQwB4qiNmsfEKM9TsvqUr6leGJL0pan0YTjmvAGe99F4V1MHPi762yL/
+	nBkKTaJ6Y6XYkUXABvE4hEC6UMsWyr2a+NVcRjF5Lx8P9iAEKJAK+kRShlnS3UThyZx9Cg
+	02ikJXgZ0hgZTWQp7nLZ5v3rbZ9vmmQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866741; a=rsa-sha256;
+	cv=none;
+	b=KsuqtlQLViGvacm417lOjTkVLTSEY/iAeWXedCO/oZ+E3Y5Qfw9JZEu9BrYELYO/xbge0o
+	+Y9u0mMhsBodhQxnLQ6cDtH8Xk3E2/+O/bNreu7043ybdLLxxH0VnECRHPMESiUkR9rQk+
+	5gEU+XjOdQWiCcWQH/g9BPq7y0qhE2Y=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XqWfDUFi;
+	spf=pass (imf01.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34c2f335681so2363697a91.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765866630; x=1766471430; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765866740; x=1766471540; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y6hz9jdXtFMh2qAHrt6NkjlTikBzsrAftSe+xfn1Yjs=;
-        b=mXGzP5jWX11oO4zJaTkGlvH5nxAt6aEAvcLH1+Z/NI6xsBECiev23SjJ5ZvdDbeXW6
-         fcO7LIyRhBjFhRXuLw33sViqd2ZYZcyYOh76ldo0/7FYY4qaJoIrRKqyeJo3+/atlZbT
-         Ef/6GpG64SAyhyVa+hCXLWOWqUxIeqV/yrAl+PNpcg/nsQNeNxyTWiMn3pHlGpdVxhYM
-         DS0FYqnT5++NRbjxu7quxVcmQxFMnbvyeJT+wqh+9Zz7vL1IqTd0Nt1HPzLivIUv9icL
-         2Zp1tYRn4325esbBhw0hc8ozzkjyNSC7JSDxX5GW63rNomPZS+hxRhTvEpz23qWtvPU4
-         cgPQ==
+        bh=AGRzWPEKfvmJEejOwoCNNsiv9yu7sGL4JB/S9GrfrcE=;
+        b=XqWfDUFia/zb3hnMq6AfMqaSrrqQAeMxC2bjEYvx3W+vTgUw6AIdDEmFFpxJH6aJwm
+         dEDX8mz4JJm0AETjCj7gjOiwBDIALXGEdymruy9H3k1xPXlBZ3xEU1qdUiTmKB7qMhvl
+         yX05UAkE8bm7Svww70eWrPn7g4Tl5RDwv5U/mRFJZuqwi1s3SyJf2CG1KOaA3pCB1R7E
+         tKrHU1LTVwtplDihEIFXoRXJ6hlT31t2T4tK9l/QPWV3sQBTEp0hqp3hevopT2ezb/2W
+         3lMJRno+C1aiegRrGPAJfjoT99qpHSQe/pKZ0/sU1aYVCInB2dzyf987WTp0cZlYL7kI
+         gR6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765866630; x=1766471430;
+        d=1e100.net; s=20230601; t=1765866740; x=1766471540;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y6hz9jdXtFMh2qAHrt6NkjlTikBzsrAftSe+xfn1Yjs=;
-        b=qNM9nxO9Ep93C164z/Gg7pgLO6oVJ3oc8Hzdsj6FXHpyzb0vLFaLo1vt2Vt35+mCPP
-         71iviFF25g0o+/F6kEhPerklQEIA/YrXHIzdre/aaOUx3poqceunHqqiQUueOA14LJHe
-         Y71TOrsQuwKHAwHUkdHdLuf57szJNX0Rv6BbO7ZvtsaQQflU/zyrw6WrtAHAw+a1S4/0
-         pmtshuAKBX0jTmkezJlGZI/ZkWBWavpwgyMZgQzlRV/OIr104jPJI0MsTANDY1alo4KF
-         riJzFKxkQWy2qIDs3T3P1ODMUzjmFdt5tefkdtCXSBtGA15hvCxpX9TbOeYdYrg33mGx
-         6XwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXER9sNPh0xvwQZ2hptvQR7S8nCVJOB091iM6ibr0sCjckOEuQwisuLnwsrkEtxSJlOJCYMIScFJA==@kvack.org
-X-Gm-Message-State: AOJu0Yylz7zjQYpzi6rw1iup1L4Pc2p7smBUEmVajMKHAXcin1ShdN/a
-	byLlgoIFrBTrdSpuhZn9PgZujM5MjP1geJEQ6KSZvOHD8JP8B9hdu95+iTc2rdpB
-X-Gm-Gg: AY/fxX6nH0VqRAC3yDQWILodK8kM+Sg+RID6BWCInPcl7ryleDe+bDw1PpXvVjwlASq
-	I1CthaF5fwN31axDgh46hmBBZ1ccQjtEFI1ONSyU0xgeXpLOc2yPmrHC322qmVk9r3+ffJxQ82/
-	RcjOnH6Hux9aJ6xL5xDT1D/yAmhrtR7wbOZIwjZEAa2g4HEVDgfmMAV7mp5lRPfIcJ0b2NUWVDk
-	A24zFrXnpr6DcbRFgRu3eeb1QpvZW5kVSzdiEpRFscikP4sT1NhdT52UO2iSDvz1Ke97Y+Ljrpn
-	+6xydFbaRXrnKp/XTdHC+j+oBevaIGNSQF7FXMa2Hu1AYD5VZhSoBqz2egrZnS2jZfNTtMvmoX8
-	pwCCe8GrV+9xKkMnRKXPk4wnySGnDJfCIOxFKmPmO7EzNb0RxbhGNSjMFiahC7ybBrdPlfTJJUa
-	N4ClJYnNaBb+zk1TLVtDASOFTB
-X-Google-Smtp-Source: AGHT+IEolo+n77ASckTX3/EY5JIe/RABcbNjmNYeXvNzTrdbM79wggS/bRbZ+AJ+1vYZfzhSRF9log==
-X-Received: by 2002:a17:903:f90:b0:295:b46f:a6c2 with SMTP id d9443c01a7336-29f23c7ba77mr135454575ad.37.1765866629767;
-        Mon, 15 Dec 2025 22:30:29 -0800 (PST)
+        bh=AGRzWPEKfvmJEejOwoCNNsiv9yu7sGL4JB/S9GrfrcE=;
+        b=QoltxVXx6oYwz2jjBfjMA5I+qcahn8ckae9LGcfRMB6tsAT/XciiH3nr0C8VOtQjEZ
+         RzzK/Z5fe5d667LrXO16FYefvpG46tTBZoKw5otTv4ON9fsDyMOMec9ZbPA1eP9SO16y
+         spZlB+r4d+lBCGFpgSLYE5/KPeg7idxp6j2zysCGGSi65SyKc8ZjTTi9yLnpanEZL7mn
+         XBw/ZRURirmoPiFzaldnaF/jC9ZYAz/HGZToc9G1ix/FYGMt2JA2SADccRQmLA7m4PKg
+         FQXUys+baI618p8cKO/hGUkKC2JKKKYHnVp61uwsbSVCKVjT0DR4RkbXw8dXN5jq9kjh
+         IapA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpjVMQRfnVVCjNxJdegqt+WPqYUmpmhF8R/Xhy//hcjAzAqz9WKvxNoYQJot5KPrlMTKB240NkmQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywt/KYzeAKxtg+jRvxemJzERWV82UZ6R0+cbO+vfNJ7qpHp5ZhI
+	XDH0EfRu4brOIAB38oqUnIC5E/YDe9xT3ISWitMfebzyIttLLjbZkVdV
+X-Gm-Gg: AY/fxX4GgiNuDvUvYEz4w4qbUgVs8eWY9jAQznvKuZLMWDq22whWmxLDUkx0JJuMuWg
+	3+eojtzxjzSd4HBMDwtzNzTC2B8rdvWcwaEd+F+z+PzBsSL8dbgFhmsd1oSIeJOIqN8xCfT55sy
+	MZLCrq5YlKYqW6jlWSUedzlaIboI4CvKqn/iXbfi/ZSavOfuf84iQbgALsZOef2Cb5XsUeihPRD
+	Bml6psJ5sqYmgpSk68T64AS5poCmPGQuxbAwy2sGzqE8fhb0JCs6+mJpxt4hZOGpIXoSjyoVFKq
+	BP0oSvxhukf+YVX0A1eQzx1LM+2fnZxgnNPHJg0ykG0kk8jmfvfWbP+KswAtZFcpbKPdHPRT7pN
+	lcGUh/YHE8fepFbapaU5hSLK8r1zmX5PBb+7UN7s4y5VEegQlhGwTdK1qgfzJZdRECcDUD3++3v
+	jZoKb6q4WqtGyGFsZwNnlRoK1Q
+X-Google-Smtp-Source: AGHT+IH0RJh5kqJSJv790DptQ94gJw8dQltu7R6cFNQxP50wNZy+EDL8VlxiC3V8XcLubLzCcwnbYA==
+X-Received: by 2002:a17:90b:3ec7:b0:34c:97ea:e4d with SMTP id 98e67ed59e1d1-34c97ea1008mr5248729a91.28.1765866739668;
+        Mon, 15 Dec 2025 22:32:19 -0800 (PST)
 Received: from localhost.localdomain ([114.231.217.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d38b98sm154247525ad.34.2025.12.15.22.30.24
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe3a27b5sm10739839a91.1.2025.12.15.22.32.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 22:30:29 -0800 (PST)
-Date: Tue, 16 Dec 2025 14:30:20 +0800
+        Mon, 15 Dec 2025 22:32:19 -0800 (PST)
+Date: Tue, 16 Dec 2025 14:32:12 +0800
 From: Vernon Yang <vernon2gm@gmail.com>
 To: kernel test robot <lkp@intel.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+	lorenzo.stoakes@oracle.com, oe-kbuild-all@lists.linux.dev, ziy@nvidia.com, baohua@kernel.org, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
 Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
  collapsed
-Message-ID: <x2675vjrcxax375coeazrvfegtxasr74saf44mrb4npf5cgdr2@cg7gajuen7ni>
+Message-ID: <k4eiyf5cxqpv24n6l4v44zskxpgkmxpdmx7aunqna6c43iwvvo@hwxvwyvj73rb>
 References: <20251215090419.174418-3-yanglincheng@kylinos.cn>
- <202512160533.KuHwyJTP-lkp@intel.com>
+ <202512160619.3Ut4sxaJ-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202512160533.KuHwyJTP-lkp@intel.com>
-X-Rspamd-Queue-Id: 5276980011
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9jqijysr3cz1rafu3dhp8m3fxx8opsy8
+In-Reply-To: <202512160619.3Ut4sxaJ-lkp@intel.com>
+X-Stat-Signature: eii7ddpiqhn4i1zadc6jifgk1e9nhajj
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E2F7F40006
 X-Rspam-User: 
-X-HE-Tag: 1765866631-67642
-X-HE-Meta: U2FsdGVkX1+UTYzwTosqBDuQq2KDcjvHWgk16wxe3yn8kc6nkhSZgB8nL5ImoOCiJpe1NyE7CdXm18W48TNRfi6mmjhUoKgNdXtgzgp6LjZVxNXKx9jcZIZcbTz9ctC7wlSSP1HBLLEieWvZSow8OwSasUdZ8wK/1NH9zYYqot9X2GroZ5Eai19JAy0zyz6lvOzmI8kPlpdGpovOu4XDfoL8xbYXq63Pnb9TPbuhOTqZfWQ5v0jUkGzstp8ZsweZIMX25WXDd2lbv7TpX3lHQhui6m7aQAu3k+1jVDK6PMeZhMUrnVVagUq9oEB78BUUzi9znyApeZwXaORhUTvYClHSloLgveyL+x+V4/n/SfwnvDSO1Ey+qJ3LIBgWHIHOsAzzUF3NnPuFsAlWl2QOl1VxGif/zeQFkdrrjmkZZY+fEZeW3p3Hdk1fjbwbysJ2R6KNXYK430zVtuNAB91J1obiBSKpMGNVcrsj1jcfTA0HnVFp8O0RDfn5clk3yywTSSZl+OUZ9kOu4a/vIyo97UB+R9WWXEnf2FyM5jJTrDaLH61CosUqGLT6Xll7kXe464/uGtNK651SSsRkmY3Wjya3Gyblk28HkpU9cuJOlOzR0/Bk97X8+88Rs/0eM16H1u59rVgj+pgbCuKbx5cPMUKZhuS/EcSfTSN//27f0nis5jhMbQ4C259+CH7WEuH/CbwvIHUwtPP6oIS/MbZ9+aFcwsByFryQJsKtPgg39GyTywyCdL2YaSNIlnt2ztL3QKwRMFkfdxEwwV3HXK9uCmVF7rIyrDlCOJzOd7+PXMfCAgEU1dk7Ys7+mAYtBVAZn2255vQRE6PiS4DU1dP2habzhyKe61cvpj7r6xGqtPfoOcJQsJ6eYo++acx46PhwOunN1Ejtq/g7DguTKqnVxvJIsSAI/dKmAOpc3V6KoQWmmCJ/TVAidIOzaie16eKGMMqrCWkt3wtuWrDFxFr
- nOn0f/Tc
- VcTm+Mu0cDYMRdkSpyO52YMt4N/gsbMnDOhidfplRUamHCg9H80JWvfmWBcPCrszEU9d7tIKPjdWbne5d/JUUg9xBBWHD9JZNOeL6JsGXvuNBMIAJnPKPMlDIPBhPPaDaHOoUNyfjlBGwdMfaSdCHRixHL4bMqYV97SlFKoGqn0e3E+vVL8uQ1ktWciR5JpvzBedIo+1tlSHBhcjalsCW87ScMkqJ5tETtsTfjBCvjl8lnZ7u+Ln9AxGECsU5T+8HcX8uWpk4TUKw4mxfeHt9+eBHBAAcKDRnVrKnOmMnOoU1kvrzZNgjlwepXNT10XO/RZqVmTWgAEn7vhxEDLwu4iX3mcgCoYoihx4olzBQzSYlN6hFtGNbmkfKmzEBLDe2x8RW5z0fbNc2Yn/Df9xUYV7LqS4ck1pJdU0MGKJprpPakYriczRI/4WY50Z8biUtmDJKHZ+H/765SoV93aqeU0hzNn1izSETNxSwyhlL0MB4G9ZgQzDMaUf/8W/9UieWYL+h6JltkPaLvnzaQn+n4Icd7AuMFBmPeC+c8Eh7Kw/ifBuCF/VS2oUWfEufLaBBo0AF5XQbmrgILNA1b5CYqL5R6ltpEAxVavRd4DKMwtJUFfvmcgxsXhGBcY5I4vYMHATA/UnjOQWZJ4s8duVm1GM3+YcwdNO37BYs
+X-HE-Tag: 1765866740-919582
+X-HE-Meta: U2FsdGVkX18rwVSdhNyd0EXajac3bLx7m+JWO6w9ubcE+DFWPGD39kIE04IF8Um/ZIy3E9BDrsRbMeYcNUlWGyfzJRioB6YnPLd3d7TB2cUqSNOErCPoOX4qrVqzFnvkDFy61Qpp6YNKxutIlZbjL2oMqYjsZKvMLK8fT5FbBXupYw6T4d3VWfi/JfXslX784skVrUfdLfT4TbiqbtCAHjEM8Y2ANU0fXp/OgoYYLX/WKREUPdZJv+5k/DGhWxyRd6O+T7fvhU+ENTObD7WBY6ArAa7CjVjCF1Ww0auCH1RcjsAUgYB9lNqzP4nzZtA7GxWai0Yjk/mm27AiJvNmVAjn7uuGrUh4Nq60xtyhZgneD9uPcogIE8vPfVLFdPCnT92VrmPfhHAqpQLuyPhsL73MORt5IL7l562fdkUMhU1qwIpI2CaASRcOPSAk5jpQFRcfKgB6WkvBPbOPjL4pCMRzqBPAT07L8zm4KbuQYWW/eZ9kIVHZ6i+wFo0f3pykutlkjRPq2VE2HHLqIiM6QPAOu+zPQ74Z0wo0wrraPXDci/iI8yOfT1rZbut8hNdvbrjBe0Bp5FvrlHtKXxk7vJ+pHAtSgI5j47BFuVMdSgNXw2HC2F01UWTQG7vTA9DEsajE4FKUjlg8/P71rC6tzasau+ggmwnuP0/b55i/1O1itKvuPVzOf1HH+WWvLaWcynswr4UDP0HLcrzxFzVjuy+rEi2fpqGoav94PM00173xUJdD1VY7ZX95VL+yNvR+0mT1/HFELBrNbOnu28zrY+iTKC/qFVMUBZnImg7o6qkD5fxW8Z8OU05qWDazva6Aj02NsmL8fXKiTNDZcPZEKeXTxgkEeHxn2sazZDq6l2YEbuGJ/0S9LweLJDwVis7zvKRPwIExOoPC59h1BeKUJpxcY6JWuBbZ8PIVUo4rxQr81FAke2YOcXx0+Xbg+gHiFAdlq1dnp94Vicj43tg
+ Dk+p+0Ju
+ izLNPCkypuORKptWY/FxxsPc7A6hDG+ajahLTlMCVkhYifizLV3AZTCoPLo5ep3z5LDajxVtmMljTmahJd8izQIMUcnV7IZIyGQdqPiZ6wSFRIJcKkPQ275x9+ODuGgYv0qO6sySh5IPuuWGM76iFdSkFOmD/WjZhtO4f6y2+mCZCsFpeSruwLvf75RUJo2JaqOAQAbVW0kL/zr0agdl4oLjLlGCOjeXP79rA2Jc5F9/6l8G0jgqTAAnOxmttUm0IUNbEzHI7D7fDxKamZXfJQNtKyy9peBXxs4jA2HynT3uVlEJB2KI5c30yVR8fTZ4OLTs7IuP9EwXIJIU1EkEbeX1sQL05zHdWWc5Oc5sx6hK/xorwtjrNEPa2HjaOUd56nFPYIaxxKAI4etBJH+Dk+oAzWcu22XiSOe/muRQfbG3LsW4pAVVrET4fnGb3MGa83p1XkjIx62EhDjjzI9I6kwVCtsRD7j4dY/rLKFmYOBTl4P44l3M3VotLcl2/SGIyQylso06/TaoTc0PPS9AT0dAPkibm0sRWQ7z62fNKr1OqFcGdN2j9NhAa1X872Fz9P+KLh4AabDVAlteTGqr2gCjjbm6fNnWjKA3b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,7 +122,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 05:45:31AM +0800, kernel test robot wrote:
+On Tue, Dec 16, 2025 at 07:01:18AM +0800, kernel test robot wrote:
 > Hi Vernon,
 >
 > kernel test robot noticed the following build errors:
@@ -137,34 +137,28 @@ On Tue, Dec 16, 2025 at 05:45:31AM +0800, kernel test robot wrote:
 > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 > patch link:    https://lore.kernel.org/r/20251215090419.174418-3-yanglincheng%40kylinos.cn
 > patch subject: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been collapsed
-> config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160533.KuHwyJTP-lkp@intel.com/reproduce)
+> config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20251216/202512160619.3Ut4sxaJ-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160619.3Ut4sxaJ-lkp@intel.com/reproduce)
 >
 > If you fix the issue in a separate patch/commit (i.e. not just a new version of
 > the same patch/commit), kindly add following tags
 > | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512160533.KuHwyJTP-lkp@intel.com/
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202512160619.3Ut4sxaJ-lkp@intel.com/
 >
 > All errors (new ones prefixed by >>):
 >
-> >> mm/khugepaged.c:2490:9: error: use of undeclared identifier 'SCAN_PMD_NULL'; did you mean 'SCAN_VMA_NULL'?
+>    mm/khugepaged.c: In function 'khugepaged_scan_mm_slot':
+> >> mm/khugepaged.c:2490:30: error: 'SCAN_PMD_NULL' undeclared (first use in this function); did you mean 'SCAN_VMA_NULL'?
 >     2490 |                         case SCAN_PMD_NULL:
 >          |                              ^~~~~~~~~~~~~
 >          |                              SCAN_VMA_NULL
->    mm/khugepaged.c:50:2: note: 'SCAN_VMA_NULL' declared here
->       50 |         SCAN_VMA_NULL,
->          |         ^
-> >> mm/khugepaged.c:2491:9: error: use of undeclared identifier 'SCAN_PMD_NONE'
+>    mm/khugepaged.c:2490:30: note: each undeclared identifier is reported only once for each function it appears in
+> >> mm/khugepaged.c:2491:30: error: 'SCAN_PMD_NONE' undeclared (first use in this function)
 >     2491 |                         case SCAN_PMD_NONE:
->          |                              ^
->    2 errors generated.
+>          |                              ^~~~~~~~~~~~~
 
-This series is based on Linux v6.18, due to the v6.19-rc1 add "mm/khugepaged:
-unify SCAN_PMD_NONE and SCAN_PMD_NULL into SCAN_NO_PTE_TABLE"[1], trigger this
-build errors. I'll fix it in the next version, Thanks!
-
-[1] https://lkml.kernel.org/r/20251114030028.7035-4-richard.weiyang@gmail.com
+same above, Thanks.
 
 >
 > vim +2490 mm/khugepaged.c
