@@ -4,151 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1ADDD609B7
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1880BD609B7
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:58:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53EC76B008A; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
+	id 579246B008A; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FF3C6B008C; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
+	id 5519D6B008C; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 428EE6B0092; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
+	id 425716B0092; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F3B96B008A
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:55:08 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C3E6659C82
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:55:07 +0000 (UTC)
-X-FDA: 84225783054.24.4521490
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 885F640006
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:55:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 2909E6B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:58:01 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E183B160700
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:58:00 +0000 (UTC)
+X-FDA: 84225790320.11.B53E310
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C41061C0002
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:57:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MNNsrbg6;
+	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900679; a=rsa-sha256;
+	cv=none;
+	b=mVmtG95UKq9TPcpizsiIz1DSqeX2MYLffXOtmdQz1VdwnlnZwUtNsnxjzwFBvzbzsweZXq
+	7aqgiBnunDHGRRVwVsBBxQYOTQP91GOc/xpeI/rnjfSX2g24ALLm1Qz/8uoGvBp5pzsfwv
+	ee9CJzcgKkuLX3W6C2Vnb05456h/bIs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MNNsrbg6;
+	spf=pass (imf20.hostedemail.com: domain of elver@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765900505;
+	s=arc-20220608; t=1765900679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
-	b=vowHwW28VzSqhr/tgzFfItPflmvfVGk5epKaIX9HpQ+5+o+87vSIb1G7k72RiSiAXs0Dr2
-	jZe7VP4XNzTKpBVD+h8IJDnrBV47klpHHgmLLB7d01Kl/4dufmLPPjh+Kpzf8mi4ENkPo8
-	/FuMqIs8itE26povRzZqooGAAwe/8yw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HO8IN6v5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J/rUXhTY";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765900505; a=rsa-sha256;
-	cv=none;
-	b=Ey6YM7PqajIi4NqhLlspsElFhrtwbc0tXcaaSsoqH3rS7k3Jcbc3z6Tk9ImHv63pItRB1U
-	j8IXJh6wgdimh6YohLCrTxmlel9MFlkeZwWPApTb2dGyTrpoXMunlHWIo+25KhDDTNap++
-	U+Iql1TQ4z9KYUnn4yVjdjClMN0286M=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5631A5BD56;
-	Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
-	b=HO8IN6v5rfRA6QSMDEyHkcQxlS3tDP5er96y7JEIBhUE4Rz1R+3k0lv/zNsjmmmNwN/b5o
-	XSkTXNIzYdFD6loRHfGgS8lEVfQMb+vggtt0X2pFChXkf9K0Q6hP3HPjQjFyy8hNrgnlfR
-	0TduxsRKNNg97Df7cYprekep26HFUPg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765900490;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
-	b=J/rUXhTYPxBcI5iEQ5GzbSyIzzQJ/uM8fSkw+7qA006FQLSb5TE8yCJIIJWWs+YGYhQbVY
-	n9sB12+RNaQvhzBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765900490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
-	b=HO8IN6v5rfRA6QSMDEyHkcQxlS3tDP5er96y7JEIBhUE4Rz1R+3k0lv/zNsjmmmNwN/b5o
-	XSkTXNIzYdFD6loRHfGgS8lEVfQMb+vggtt0X2pFChXkf9K0Q6hP3HPjQjFyy8hNrgnlfR
-	0TduxsRKNNg97Df7cYprekep26HFUPg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765900490;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MMTjfxlAnDMc1QSvwGfhAnbDz3V/hZGaPx315KuNIfg=;
-	b=J/rUXhTYPxBcI5iEQ5GzbSyIzzQJ/uM8fSkw+7qA006FQLSb5TE8yCJIIJWWs+YGYhQbVY
-	n9sB12+RNaQvhzBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 396483EA66;
-	Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aFFrDcqAQWkSGgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 16 Dec 2025 15:54:50 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Tue, 16 Dec 2025 16:54:22 +0100
-Subject: [PATCH RFC 2/2] mm, page_alloc: fail costly __GFP_NORETRY
- allocations faster
+	bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
+	b=GsAieQqpgGiGSQh7c+ZyHgEuAtlkoHcGiXxNqN8naKU7tyt0armmZKFn4DLOPbzod5n8fP
+	FehNJRj3HhMBqP7qra3e2hkSBIgq7I488cmDVsqS/235ebAomajK16ZNS6uPoRcq5SxmFi
+	3CZzQvic5whSWvCg6YkOuHHdKJ/2IKY=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso21108495e9.2
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:57:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765900677; x=1766505477; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
+        b=MNNsrbg6VasV569+ZrDVkxuBKbPcV0CN5gZNOc1oZgpF5MCWR6uOzkSYNFPEBwRZB3
+         IxU11bON3dfhW0LBlDXIyfcF+P59ihkZ0h/mzesRMmDeMjc7foDYnCDzH8oRCk9ay41n
+         sWM0WM6y0abyCVR3yowwkYQRNPROgN2mpLDy2DELOdnqUCNCYYImmA7UNOGrAoEACS+r
+         4iTivcYQ/fYpGypSHhC2aTTDZMb8QQdwLaqucXOZv9IPQ4XmU61aPNakD86MPV2CovYY
+         puBtjYDdEP7qW85HoJItEqJG5gCg4m3FHpZkMIr8JLzw0nvFoxgi/7kFfrgsOCWCS21s
+         PCsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765900677; x=1766505477;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4T6EEvpkYB8O/dSoH4wvSyTHiJOCpYvJH+j1ElyVX1A=;
+        b=nBU/GzjL53tHXSlzWVcDXaTaTh8zgGA1bZAC7XryOg4qhns1PqX/Iiupm/9ql11N5G
+         7n2b79GtJENpFZ3tftJN3JiPqigMvdmtvnRCipTwRRRv1WxUf9Tww8PzFv0qmanNQmeI
+         ZPVcl2Ae0uPJLRK4q9sr8tMijdNVTjbRQMele0xTMZe6dyefJsrq8JpYHC0iew6fHktj
+         YdIw/ni5S+XZu/BI7ta9TrDp1yo2lIWIjMBpMqr2vZp+etqHzyj48e+IGLTJB8VdEdgk
+         EGXhU1sIkJ8kmvsd/fPTY/CTjMGsmuXIKK3LuQ3VL9Xmou4WtgEVlyT42YkQoVOhZVoS
+         sDsA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGzfi89MWCJEdCxYXrUkrPrXyj+KN2ayib2XY5IUuREs1JbFyPxJ5x3AkWlre0B64/bjmBDm0tVg==@kvack.org
+X-Gm-Message-State: AOJu0Yxp3JGfDpD8eLvy2ve/Vhnal1OD82MU0weWz3EzedZFZJ65tEvB
+	CWU8n4zPagsZNDegT3tURIg2O9oY+cugeOKuMVKYj7LWG2g8C/8dPtqmUYAyBxo4NA==
+X-Gm-Gg: AY/fxX615GxgZ1K32/mqbYdSq1KP10yLlqLngiXhA8hjsobJDp9FCZh87GNy5YV9l3t
+	VItD/P7eejfC8yTMDp2rbSzYIiYiU9TI6+j376YxyLkFP0Rz0hW2IV8bvhWQ/OJW43VkSvMO4Jr
+	XT7q53HUM9U3/1MIxbxJCw4KLF3O759JHZxvIdxTvhXT5EPbm7F59DqeSUNhRnAIBOAvfeigpFZ
+	oEApypMm5uabXbz6UjJ9vRa24Kgu9KYnaXYFYX8FlHtvo5v2AdQplNeMKLDsvUUCKYgo5RHWRw7
+	WAKKl7ZLo5vexHmeeWSVYuKVXQVrnZ5EnL/rMRplZL7fscvuUI0jl35BsnE5jBF1f+KUDsRbQrE
+	U+ypgqyMYlsKo657TWZSvWM7432F1Q9t4t2j5KCQJPoOYpZ5M/UrKffQeVmnIk+CLQ3RhzzmQwC
+	WMPtjqe3NpJ6ON5X8R3AjXZZHM5PvWr9+6JuJR40LKrp5tMsBH
+X-Google-Smtp-Source: AGHT+IHDdQVZRbKnzvpABseF1CD6bLmsX8k69Taj+EhWj/QwI3tX5DeGEoYL60/CFL6IF5/VTsQYZw==
+X-Received: by 2002:a05:600c:1c1a:b0:475:de12:d3b5 with SMTP id 5b1f17b1804b1-47a8f91601bmr141242195e9.34.1765900676692;
+        Tue, 16 Dec 2025 07:57:56 -0800 (PST)
+Received: from elver.google.com ([2a00:79e0:2834:9:ea4c:b2a8:24a4:9ce9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f7994b58sm18141460f8f.22.2025.12.16.07.57.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Dec 2025 07:57:55 -0800 (PST)
+Date: Tue, 16 Dec 2025 16:57:49 +0100
+From: Marco Elver <elver@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <aUGBff8Oko5O8EsP@elver.google.com>
+References: <20251120145835.3833031-2-elver@google.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+ <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
+ <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
+ <aUAPbFJSv0alh_ix@elver.google.com>
+ <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
+ <aUE77hgJa58waFOy@elver.google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251216-thp-thisnode-tweak-v1-2-0e499d13d2eb@suse.cz>
-References: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
-In-Reply-To: <20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Mike Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4826; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=Lkc/ZcxsK4gnLADhpDuMkrjWSePxTGl4SqTD12NEnag=;
- b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBpQYDG06nlhB1wt73I8tK0coD6fyIQLtXh75T33
- MZSZvDfa76JAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaUGAxhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJqhBwf+O0DgjKAQej4/tVa/QabMW061ukKC7g+
- o+BqzwIIRiljekNTb5O188A5C824YXBgghPtbK6z3OLzSqJgSQGMmAsb8SRazBFj4KL95EikCrd
- qdHpOH3lMWllR7TUhuAKgR5rfzTb6agP2XM7cZRK6JocrkriLhiVIUemvhz3gEAWPvDSf+MMa0b
- +eZkRfof4vYftVcYzyPc7+cxh92nMpp/mgK7aLwyopimUP+RDMjdIcdR5D5G66hAPB2jMPcV3ag
- Bfs8fzyS5C2wJBUIosO+mwIEe4tSqY0fNGeEzLFMkF9ZwpBg/KI0oR7VodBXtRV3k3uLqRXA1iG
- mYUBQxFzrvQ==
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 885F640006
-X-Stat-Signature: 5xdsepyof3tzg6zhrzd6njru7ncwgow8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUE77hgJa58waFOy@elver.google.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Rspam-User: 
-X-HE-Tag: 1765900505-717091
-X-HE-Meta: U2FsdGVkX188R8MqwIBY4kCgom+vVLbOgievt1emGHz6P+u1Q9JgMlHFZk6+RAPFmF28SxBL38GDm7Q8gGK+eUht0J1A97FpjRgD9X17qnWM4S2QWNxXZsPonysdYqVhUnzuXk0PLZlJ1doykpAobJuneRSlxKmxMX0ZTwSwP6zQLuZat9RBSTY+RtgdsF71YSx9ibO7wthbyXJ4x3xlH9UUe7H0gs+MkxmraUkQz4mo4upqCJJ1jKJzyMbitHV7dHOsvT0Us51r8alzSpizi2XUTFC453A6zFF01vj/qhMQWv8kUmA1DzF6Y42gcJu0aHV8JjcZcYaX0vM57Lkdf77iPIfo7IeAHxF8y3yZRPuM+C3feLMniniIAOJ/OEbZyyQ5YcwXXDAVmK7ZUnmru969OskUbGTKcZ5vjhNztc6eOaiNtrJjBU4tkisNpYgBz1nAxhnbM8HSrdJfjYyP8fCF7AlL93EDDgjr+aA0I06kOSyRjVMmtSngIZN2yH/JpbCHKdRdMdvft3ls8wsOyNgkfbSj2yAvOuH3767kSA8nVdTNxee+eohwS8keh71DxIXy6rE7qInA8gC3cTbDcXWfd//XP5RA7IzKUW2+2lBMo/oe7SlYvfFXFGKewCIIEIoxyh3okqDaC8WiCrGssv0qJBq6GuBN3YQvdlGxLLISzy1QsEp0GSpH16v7VXU0YzEOoSrvisVO5/YvZCAluq/uKKIWHSy5UXDY3YsjTJuPu/twQWdOWRGbNuS4QWOTFte6D++gcOdY9MDO9id8+0QyNgV7w1mrsJmpWqMH/Q23ETKwenQ+REwSgiEfY9066PrP+1P7KubNmi04w07eZlJ0lVKwvbazgHwPMbJYk/xWU30R870M11Xi3dAAPmkSPT3kVQuDrTuCzvYHKvPG9O5kJvRpLehtYbPRhnb0QqgKB3J+6hsdGWxSlUAZeV61C6At8r+xBzRvTVrcrQ2
- wjCXnEXW
- PB1YJePUJLOYbFDsNc/pqXtAOBC3JXnb35MI37hNeSbWk8f0=
+X-Rspamd-Queue-Id: C41061C0002
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 6wh8rnbf7n1w8hhxajscm6cx8mjiepek
+X-HE-Tag: 1765900678-768982
+X-HE-Meta: U2FsdGVkX19Hea0uca9mMMr/Qq2dBGViG+JQzuB+kgtZgQLHG3h3HmVQT+gxc/31vOb6xMOH7Fcq55ozJK29IPSSyWBlUrg+01hYvt/u68N1FCnUV96M8YlCfiAU2wDtjZKm/fTUR0WJP1NkQBfPC96JWHxZn6vMb0e1AaQad/P59Fommj3K29MpUxilbOtRE2OuCSZre2vJ69QQ8+LkxsCt6L9oCKKddXHhv5gpvyeKt4rbjafD0sfn96TVVLE1694bxMRcROLV8YfHYve2rbR2gaT0Dvyj/kDQhIUMba52YLAlYCvKSBaCtzWPJGwhdAVXAvej0hcuRkDZmukTfqOzAY00Kn9kfIUr3/mMShWT4QTTeNl/uIGvHkbkXQdre6+IXMTq1bjV0ANhn4HzuDcMRbmiGjU1koxMuwJGDngLk2AihDBfjlhJoKrISIhJY3f18KZpJQf64oNiKcvsiYFTk+VAm5KZF15/zaSg25ntfWQMnyqROasvWEE+6D5vqUhq+QmktbdHphgqDVm6/sR7Z3/4+3ymTxTnPKXW71m0Lc/Unl5uEelDezeOWXf06FXugSI+lQRFcSNRuuX2bePYDGC/7g6P5Un9Lb/LTBbNjV11emR23ZawrwGiYNbN3yX5KUP8AKuWxAGiH076Oyffqh1wSRRlLxVSVU6oKPRe4FJej4Xe119oqujyo1PKlUiSAspYFhq1uaUapmVQ5dbwSAFXZe/j+eLM0ICi0p9RygeHV+RzAzyeZSNAJTiF0Dp+zUBNyrR/w6YMlddRDDbQaf32JmHmVXVIwvK+F4ab8M+lyNYgx/DeIyxJEoi9+2qtMEj5JJFNUczqtkDoKGGT1AXZKtLLYeXBjA3qssZjR8tF+Zfqss2iEb4CEQk2rLvx1Dw00JWBFpRM1GLRbcjQMDE9cUCRxaGKwVyvr9cIeagnF2JkmEBFRFhS5BEfpSFYsJZYjEtLyfVsDjy
+ hLtqTYMs
+ DMiNpgvuS62D24rXRoqnWB7tfDk7mppobH+NNr1Q9Ha2OEoaji+zEy1Cmn0LrJ9rMEjPRrkzarPYnX/osUmvtXT1nuq07Xc2MfLFPF4V1mMxZEpEB6p/5J68VUYtQwc/LpMbqmi+LJLy7jon/rO3HIDq9HKloFfsqR/r2yTcVfxqQtNQ6cyS/v6UmIvHQ7Y4g5wo5nlfL56kxxVZzZq//BImBiLBU9Wx0MDBpwebSYsrWnZjoBb/o+s7KwgfK68Lg6fb5lSgLco07JrjmsldqgGQb/gVAVuss8KwkGCT6N1EjXCPUfB3O3WdEI/dkUQQV6fpJYKVOkfVkhwx6MkXRLoc5jNeZLUzhBBK79QZaFBNzUAs7dRxltB6GfQmJ2CML1JYvzjlUIoYJIKweQeBDEiPW2jRaIh85aKel
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,122 +165,456 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For allocations that are of costly order and __GFP_NORETRY (and can
-perform compaction) we attempt direct compaction first. If that fails,
-we continue with a single round of direct reclaim+compaction (as for
-other __GFP_NORETRY allocations, except the compaction is of lower
-priority), with two exceptions that fail immediately:
+On Tue, Dec 16, 2025 at 12:01PM +0100, Marco Elver wrote:
+> On Mon, Dec 15, 2025 at 04:53PM +0100, Marco Elver wrote:
+> [..]
+> > > > So I think as is, we can start. But I really do want the cleanup thing
+> > > > sorted, even if just with that __release_on_cleanup mashup or so.
+> > >
+> > > Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
+> > > abstraction. For that one I was able to make it work like I thought we
+> > > could (below). Some awkwardness is required to make it work in
+> > > for-loops, which only let you define variables with the same type.
+> > >
+> > > For <linux/cleanup.h> it needs some more thought due to extra levels of
+> > > indirection.
+> > 
+> > For cleanup.h, the problem is that to instantiate we use
+> > "guard(class)(args..)". If it had been designed as "guard(class,
+> > args...)", i.e. just use __VA_ARGS__ explicitly instead of the
+> > implicit 'args...', it might have been possible to add a second
+> > cleanup variable to do the same (with some additional magic to extract
+> > the first arg if one exists). Unfortunately, the use of the current
+> > guard()() idiom has become so pervasive that this is a bigger
+> > refactor. I'm going to leave cleanup.h as-is for now, if we think we
+> > want to give this a go in the current state.
+> 
+> Alright, this can work, but it's not that ergonomic as I'd hoped (see
+> below): we can redefine class_<name>_constructor to append another
+> cleanup variable. With enough documentation, this might be workable.
 
-- __GFP_THISNODE is specified, to prevent zone_reclaim_mode-like
-  behavior for e.g. THP page faults
+Below is the preview of the complete changes to make the lock guards
+work properly.
 
-- compaction failed because it was deferred (i.e. has been failing
-  recently so further attempts are not done for a while) or skipped,
-  which means there are insufficient free base pages to defragment to
-  begin with
+Thanks,
+-- Marco
 
-Upon closer inspection, the second condition has a somewhat flawed
-reasoning. If there are not enough base pages and reclaim could create
-them, we instead fail. When there are enough base pages and compaction
-has already ran and failed, we proceed and hope that reclaim and the
-subsequent compaction attempt will succeed. But it's unclear why they
-should and whether it will be as inexpensive as intended.
+------ >8 ------
 
-It might make therefore more sense to just fail unconditionally after
-the initial compaction attempt, so do that instead. Costly allocations
-that do want the reclaim/compaction to happen at least once can omit
-__GFP_NORETRY, or even specify __GFP_RETRY_MAYFAIL for more than one
-attempt.
-
-There is a slight potential unfairness in that costly __GFP_NORETRY
-allocations that can't perform direct compaction (i.e. lack __GFP_IO)
-will still be allowed to direct reclaim, while those that can direct
-compact will now never attempt direct reclaim. However, in cases of
-memory pressure causing compaction to be skipped due to insufficient
-base pages, direct reclaim was already not done before, so there should
-be no functional regressions from this change.
-
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- include/linux/gfp_types.h |  2 ++
- mm/page_alloc.c           | 47 +++--------------------------------------------
- 2 files changed, 5 insertions(+), 44 deletions(-)
-
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 3de43b12209e..051311fdbdb1 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -218,6 +218,8 @@ enum {
-  * caller must handle the failure which is quite likely to happen under
-  * heavy memory pressure. The flag is suitable when failure can easily be
-  * handled at small cost, such as reduced throughput.
-+ * For costly orders, only memory compaction can be attempted with no reclaim
-+ * under some conditions.
-  *
-  * %__GFP_RETRY_MAYFAIL: The VM implementation will retry memory reclaim
-  * procedures that have previously failed if there is some indication
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e6fd1213328b..2671cbbd6375 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4763,52 +4763,11 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 			goto got_pg;
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 2f998bb42c4c..9fe3b0f816c6 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -516,9 +516,42 @@ static __always_inline class_##_name##_t class_##_name##_constructor(void) \
+ static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
+ static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
  
- 		/*
--		 * Checks for costly allocations with __GFP_NORETRY, which
--		 * includes some THP page fault allocations
-+		 * Compaction didn't succeed and we were told not to try hard,
-+		 * so fail now.
- 		 */
- 		if (costly_order && (gfp_mask & __GFP_NORETRY)) {
--			/*
--			 * If allocating entire pageblock(s) and compaction
--			 * failed because all zones are below low watermarks
--			 * or is prohibited because it recently failed at this
--			 * order, fail immediately unless the allocator has
--			 * requested compaction and reclaim retry.
--			 *
--			 * Reclaim is
--			 *  - potentially very expensive because zones are far
--			 *    below their low watermarks or this is part of very
--			 *    bursty high order allocations,
--			 *  - not guaranteed to help because isolate_freepages()
--			 *    may not iterate over freed pages as part of its
--			 *    linear scan, and
--			 *  - unlikely to make entire pageblocks free on its
--			 *    own.
--			 */
--			if (compact_result == COMPACT_SKIPPED ||
--			    compact_result == COMPACT_DEFERRED)
--				goto nopage;
--
--			/*
--			 * THP page faults may attempt local node only first,
--			 * but are then allowed to only compact, not reclaim,
--			 * see alloc_pages_mpol()
--			 *
--			 * compaction can fail for other reasons than those
--			 * checked above and we don't want such THP allocations
--			 * to put reclaim pressure on a single node in a
--			 * situation where other nodes might have plenty of
--			 * available memory
--			 */
--			if (gfp_mask & __GFP_THISNODE)
--				goto nopage;
--
--			/*
--			 * Looks like reclaim/compaction is worth trying, but
--			 * sync compaction could be very expensive, so keep
--			 * using async compaction.
--			 */
--			compact_priority = INIT_COMPACT_PRIORITY;
--		}
-+			goto nopage;
- 	}
++/*
++ * To support Context Analysis, we need to allow the compiler to see the
++ * acquisition and release of the context lock. However, the "cleanup" helpers
++ * wrap the lock in a struct passed through seperate helper functions, which
++ * hides the lock alias from the compiler (no inter-procedural analysis).
++ *
++ * To make it work, we introduce an explicit alias to the context lock instance
++ * that is "cleaned" up with a separate cleanup helper. This helper is a dummy
++ * function that does nothing at runtime, but has the "_unlock" attribute to
++ * tell the compiler what happens at the end of the scope.
++ *
++ * To generalize the pattern, the WITH_LOCK_GUARD_1_ATTRS() macro should be used
++ * to redefine the constructor, which then also creates the alias variable with
++ * the right "cleanup" attribute, *after* DECLARE_LOCK_GUARD_1_ATTRS() has been
++ * used.
++ *
++ * Example usage:
++ *
++ *   DECLARE_LOCK_GUARD_1_ATTRS(mutex, __acquires(_T), __releases(*(struct mutex **)_T))
++ *   #define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
++ *
++ * Note: To support the for-loop based scoped helpers, the auxiliary variable
++ * must be a pointer to the "class" type because it is defined in the same
++ * statement as the guard variable. However, we initialize it with the lock
++ * pointer (despite the type mismatch, the compiler's alias analysis still works
++ * as expected). The "_unlock" attribute receives a pointer to the auxiliary
++ * variable (a double pointer to the class type), and must be cast and
++ * dereferenced appropriately.
++ */
+ #define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
+ static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
+-static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
++static __always_inline void __class_##_name##_cleanup_ctx(class_##_name##_t **_T) \
++	__no_context_analysis _unlock { }
++#define WITH_LOCK_GUARD_1_ATTRS(_name, _T)				\
++	class_##_name##_constructor(_T),				\
++	*__UNIQUE_ID(unlock) __cleanup(__class_##_name##_cleanup_ctx) = (void *)(_T)
  
- retry:
-
--- 
-2.52.0
-
+ #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
+ __DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+diff --git a/include/linux/local_lock.h b/include/linux/local_lock.h
+index bedcbb33b928..99c06e499375 100644
+--- a/include/linux/local_lock.h
++++ b/include/linux/local_lock.h
+@@ -104,9 +104,13 @@ DEFINE_LOCK_GUARD_1(local_lock_nested_bh, local_lock_t __percpu,
+ 		    local_lock_nested_bh(_T->lock),
+ 		    local_unlock_nested_bh(_T->lock))
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(local_lock, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irq, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irqsave, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
++#define class_local_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irq, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
++#define class_local_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_irq, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irqsave, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
++#define class_local_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_irqsave, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, __acquires(_T), __releases(*(local_lock_t __percpu **)_T))
++#define class_local_lock_nested_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, _T)
+ 
+ #endif
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 8ed48d40007b..06c3f947ea49 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -255,9 +255,12 @@ DEFINE_LOCK_GUARD_1(mutex, struct mutex, mutex_lock(_T->lock), mutex_unlock(_T->
+ DEFINE_LOCK_GUARD_1_COND(mutex, _try, mutex_trylock(_T->lock))
+ DEFINE_LOCK_GUARD_1_COND(mutex, _intr, mutex_lock_interruptible(_T->lock), _RET == 0)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex_try, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(mutex,	__acquires(_T), __releases(*(struct mutex **)_T))
++DECLARE_LOCK_GUARD_1_ATTRS(mutex_try,	__acquires(_T), __releases(*(struct mutex **)_T))
++DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr,	__acquires(_T), __releases(*(struct mutex **)_T))
++#define class_mutex_constructor(_T)	WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
++#define class_mutex_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_try, _T)
++#define class_mutex_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_intr, _T)
+ 
+ extern unsigned long mutex_get_owner(struct mutex *lock);
+ 
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index 0e75e26e8813..8da14a08a4e1 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -262,17 +262,23 @@ DEFINE_LOCK_GUARD_1(rwsem_read, struct rw_semaphore, down_read(_T->lock), up_rea
+ DEFINE_LOCK_GUARD_1_COND(rwsem_read, _try, down_read_trylock(_T->lock))
+ DEFINE_LOCK_GUARD_1_COND(rwsem_read, _intr, down_read_interruptible(_T->lock), _RET == 0)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_try, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_intr, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
++#define class_rwsem_read_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_try, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
++#define class_rwsem_read_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_try, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_intr, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
++#define class_rwsem_read_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_intr, _T)
+ 
+ DEFINE_LOCK_GUARD_1(rwsem_write, struct rw_semaphore, down_write(_T->lock), up_write(_T->lock))
+ DEFINE_LOCK_GUARD_1_COND(rwsem_write, _try, down_write_trylock(_T->lock))
+ DEFINE_LOCK_GUARD_1_COND(rwsem_write, _kill, down_write_killable(_T->lock), _RET == 0)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_try, __assumes_ctx_lock(_T), /* */)
+-DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_kill, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
++#define class_rwsem_write_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_try, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
++#define class_rwsem_write_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_try, _T)
++DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_kill, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
++#define class_rwsem_write_kill_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_kill, _T)
+ 
+ /*
+  * downgrade write lock to read lock
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 397f4753d10a..41ed884cffc9 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -226,6 +226,7 @@ static inline void task_unlock(struct task_struct *p)
+ }
+ 
+ DEFINE_LOCK_GUARD_1(task_lock, struct task_struct, task_lock(_T->lock), task_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(task_lock, __assumes_ctx_lock(_T->alloc_lock), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(task_lock, __acquires(&_T->alloc_lock), __releases(&(*(struct task_struct **)_T)->alloc_lock))
++#define class_task_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(task_lock, _T)
+ 
+ #endif /* _LINUX_SCHED_TASK_H */
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 3a45b08ced43..396b8c5d6c1b 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -537,109 +537,132 @@ void free_bucket_spinlocks(spinlock_t *locks);
+ DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
+ 		    raw_spin_lock(_T->lock),
+ 		    raw_spin_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock, _try, raw_spin_trylock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
+ 		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
+ 		    raw_spin_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+ 		    raw_spin_lock_irq(_T->lock),
+ 		    raw_spin_unlock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
+ 		    raw_spin_lock_bh(_T->lock),
+ 		    raw_spin_unlock_bh(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_bh, _try, raw_spin_trylock_bh(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
+ 		    raw_spin_lock_irqsave(_T->lock, _T->flags),
+ 		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
+ 			 raw_spin_trylock_irqsave(_T->lock, _T->flags))
+-DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
+ 		    spin_lock(_T->lock),
+ 		    spin_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock, _try, spin_trylock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
+ 		    spin_lock_irq(_T->lock),
+ 		    spin_unlock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
+ 			 spin_trylock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_bh, spinlock_t,
+ 		    spin_lock_bh(_T->lock),
+ 		    spin_unlock_bh(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_bh, _try,
+ 			 spin_trylock_bh(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
+ 		    spin_lock_irqsave(_T->lock, _T->flags),
+ 		    spin_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irqsave, _try,
+ 			 spin_trylock_irqsave(_T->lock, _T->flags))
+-DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock, rwlock_t,
+ 		    read_lock(_T->lock),
+ 		    read_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(read_lock, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock_irq, rwlock_t,
+ 		    read_lock_irq(_T->lock),
+ 		    read_unlock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irq, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock_irqsave, rwlock_t,
+ 		    read_lock_irqsave(_T->lock, _T->flags),
+ 		    read_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
+-DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irqsave, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock, rwlock_t,
+ 		    write_lock(_T->lock),
+ 		    write_unlock(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(write_lock, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock_irq, rwlock_t,
+ 		    write_lock_irq(_T->lock),
+ 		    write_unlock_irq(_T->lock))
+-DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irq, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock_irqsave, rwlock_t,
+ 		    write_lock_irqsave(_T->lock, _T->flags),
+ 		    write_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
+-DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irqsave, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irqsave, _T)
+ 
+ #undef __LINUX_INSIDE_SPINLOCK_H
+ #endif /* __LINUX_SPINLOCK_H */
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 88f01d6fded8..bb44a0bd7696 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -621,16 +621,21 @@ DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
+ 		    _T->idx = srcu_read_lock(_T->lock),
+ 		    srcu_read_unlock(_T->lock, _T->idx),
+ 		    int idx)
+-DECLARE_LOCK_GUARD_1_ATTRS(srcu, __assumes_ctx_lock(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(srcu, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
++#define class_srcu_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu, _T)
+ 
+ DEFINE_LOCK_GUARD_1(srcu_fast, struct srcu_struct,
+ 		    _T->scp = srcu_read_lock_fast(_T->lock),
+ 		    srcu_read_unlock_fast(_T->lock, _T->scp),
+ 		    struct srcu_ctr __percpu *scp)
++DECLARE_LOCK_GUARD_1_ATTRS(srcu_fast, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
++#define class_srcu_fast_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu_fast, _T)
+ 
+ DEFINE_LOCK_GUARD_1(srcu_fast_notrace, struct srcu_struct,
+ 		    _T->scp = srcu_read_lock_fast_notrace(_T->lock),
+ 		    srcu_read_unlock_fast_notrace(_T->lock, _T->scp),
+ 		    struct srcu_ctr __percpu *scp)
++DECLARE_LOCK_GUARD_1_ATTRS(srcu_fast_notrace, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
++#define class_srcu_fast_notrace_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu_fast_notrace, _T)
+ 
+ #endif
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index fab6a19dda02..7c57a6d2f847 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1874,7 +1874,8 @@ DEFINE_LOCK_GUARD_1(task_rq_lock, struct task_struct,
+ 		    _T->rq = task_rq_lock(_T->lock, &_T->rf),
+ 		    task_rq_unlock(_T->rq, _T->lock, &_T->rf),
+ 		    struct rq *rq; struct rq_flags rf)
+-DECLARE_LOCK_GUARD_1_ATTRS(task_rq_lock, __assumes_ctx_lock(_T->pi_lock), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(task_rq_lock, __acquires(_T->pi_lock), __releases((*(struct task_struct **)_T)->pi_lock))
++#define class_task_rq_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(task_rq_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(__task_rq_lock, struct task_struct,
+ 		    _T->rq = __task_rq_lock(_T->lock, &_T->rf),
+@@ -1928,21 +1929,24 @@ DEFINE_LOCK_GUARD_1(rq_lock, struct rq,
+ 		    rq_unlock(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(rq_lock, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
++#define class_rq_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(rq_lock_irq, struct rq,
+ 		    rq_lock_irq(_T->lock, &_T->rf),
+ 		    rq_unlock_irq(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irq, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irq, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
++#define class_rq_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1(rq_lock_irqsave, struct rq,
+ 		    rq_lock_irqsave(_T->lock, &_T->rf),
+ 		    rq_unlock_irqrestore(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
+-DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, __assumes_ctx_lock(__rq_lockp(_T)), /* */);
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, __acquires(__rq_lockp(_T)), __releases(__rq_lockp(*(struct rq **)_T)));
++#define class_rq_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, _T)
+ 
+ #define this_rq_lock_irq(...) __acquire_ret(_this_rq_lock_irq(__VA_ARGS__), __rq_lockp(__ret))
+ static inline struct rq *_this_rq_lock_irq(struct rq_flags *rf) __acquires_ret
+@@ -3075,10 +3079,17 @@ static inline class_##name##_t class_##name##_constructor(type *lock, type *lock
+ 	__no_context_analysis								\
+ { class_##name##_t _t = { .lock = lock, .lock2 = lock2 }, *_T = &_t;			\
+   _lock; return _t; }
+-#define DECLARE_LOCK_GUARD_2_ATTRS(_name, _lock, _unlock)				\
++#define DECLARE_LOCK_GUARD_2_ATTRS(_name, _lock, _unlock1, _unlock2)			\
+ static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T1,	\
+ 							    lock_##_name##_t *_T2) _lock; \
+-static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock
++static __always_inline void __class_##_name##_cleanup_ctx1(class_##_name##_t **_T1)	\
++	__no_context_analysis _unlock1 { }						\
++static __always_inline void __class_##_name##_cleanup_ctx2(class_##_name##_t **_T2)	\
++	__no_context_analysis _unlock2 { }
++#define WITH_LOCK_GUARD_2_ATTRS(_name, _T1, _T2)					\
++	class_##_name##_constructor(_T),						\
++	*__UNIQUE_ID(unlock1) __cleanup(__class_##_name##_cleanup_ctx1) = (void *)(_T1),\
++	*__UNIQUE_ID(unlock2) __cleanup(__class_##_name##_cleanup_ctx2) = (void *)(_T2)
+ 
+ static inline bool rq_order_less(struct rq *rq1, struct rq *rq2)
+ {
+@@ -3229,7 +3240,12 @@ DEFINE_LOCK_GUARD_2(double_raw_spinlock, raw_spinlock_t,
+ 		    double_raw_lock(_T->lock, _T->lock2),
+ 		    double_raw_unlock(_T->lock, _T->lock2))
+ 
+-DECLARE_LOCK_GUARD_2_ATTRS(double_raw_spinlock, __assumes_ctx_lock(_T1) __assumes_ctx_lock(_T2), /* */);
++DECLARE_LOCK_GUARD_2_ATTRS(double_raw_spinlock,
++			   __acquires(_T1, _T2),
++			   __releases(*(raw_spinlock_t **)_T1),
++			   __releases(*(raw_spinlock_t **)_T2));
++#define class_double_raw_spinlock_constructor(_T1, _T2) \
++	WITH_LOCK_GUARD_2_ATTRS(double_raw_spinlock, _T1, _T2)
+ 
+ /*
+  * double_rq_unlock - safely unlock two runqueues
+diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
+index 3f72b1ab2300..1c5a381461fc 100644
+--- a/lib/test_context-analysis.c
++++ b/lib/test_context-analysis.c
+@@ -459,8 +459,9 @@ static void __used test_srcu(struct test_srcu_data *d)
+ 
+ static void __used test_srcu_guard(struct test_srcu_data *d)
+ {
+-	guard(srcu)(&d->srcu);
+-	(void)srcu_dereference(d->data, &d->srcu);
++	{ guard(srcu)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
++	{ guard(srcu_fast)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
++	{ guard(srcu_fast_notrace)(&d->srcu); (void)srcu_dereference(d->data, &d->srcu); }
+ }
+ 
+ struct test_local_lock_data {
 
