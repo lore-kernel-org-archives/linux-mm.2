@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B96D2D609A2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F5F2D609A2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 15:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BAE06B0089; Tue, 16 Dec 2025 10:12:57 -0500 (EST)
+	id 0C1396B008A; Tue, 16 Dec 2025 10:13:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29AFB6B008A; Tue, 16 Dec 2025 10:12:57 -0500 (EST)
+	id 082136B008C; Tue, 16 Dec 2025 10:13:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 191AA6B008C; Tue, 16 Dec 2025 10:12:57 -0500 (EST)
+	id EFE416B0092; Tue, 16 Dec 2025 10:12:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5A86B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:12:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0DFDAC05AC
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:12:55 +0000 (UTC)
-X-FDA: 84225676710.30.2EE1F14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 33BF340017
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:12:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WtoEDxoF;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id DD8C56B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 10:12:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B3DF11A0423
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:12:59 +0000 (UTC)
+X-FDA: 84225676878.09.4AA7959
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 93AE840002
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 15:12:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=HCETSXKg;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pmladek@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765897977; a=rsa-sha256;
+	cv=none;
+	b=DzY4rSb9cOCFTX+2U9alStbgd6FRlgDbM2HJmhczAGrmCxCvhBwNC9OdFi2qDJKfiyTaEs
+	/uetkuGJlIimjSXIcSetKEgSnR1orZm7hldR0UjIqGPsqTOKqHPgEe9jJZrwCcXOgXUQiM
+	5wg9KuixKg2g0YulqsIVea6eW+wOli0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=HCETSXKg;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pmladek@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765897973;
+	s=arc-20220608; t=1765897977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0VPxdNyuLpxWokzSwS3f4tGWI152Lb8CgjDYmWiWDg=;
-	b=a9LtYMTYcVggy3DIG+GVkloq8zmxDUrdes1omstpLXUMOdiKr2k4L8h/GchXSdkKfGeKzq
-	hZltsUFfvtyRrw2dGRBYj3TUlW5Qq4Z8tcDMwKjQk8RBmGeUSm8m6IbpthSOU+uFiUrWs+
-	w/SFmQIVxxtiU660Wj0tCqyyPv8qa2A=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WtoEDxoF;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765897973; a=rsa-sha256;
-	cv=none;
-	b=jBCbeLzrLQ/zw6LprqTwCRzf4lb1URg877XPJxhANvtz61NjH6xzmHg8Qq+4ZF3dvszJSp
-	yXtC8CMC9Oj4pYDJpT9eMTATNc9hPkrFexG1+lzDqv/L4odAigIYPIuLEjaFAbMgOSEGvL
-	Z3LtUQiPo3bmvmJskrtIl2JWPnH7z1o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E347243859;
-	Tue, 16 Dec 2025 15:12:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB20C4CEF1;
-	Tue, 16 Dec 2025 15:12:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765897971;
-	bh=s3mWl19IsBaYscnhUDI/X0Sg6nqiJrXm+KLBkFlAHc0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WtoEDxoFxKkX6YD2btUH4i1VWm6UhQJlEN4mW18ItLNDGupYZX389yjw2v5Emgi0c
-	 fJBFQCUpLRXT1tdrt0HgN/fMMB98nltOA4QKQEo2QgZxINHj4cTzjYMWxP3W37cmqo
-	 GTIBOMhxxbGO/8Mw7bV1lyqFGRHJl44htjCtNv/g=
-Date: Tue, 16 Dec 2025 07:12:50 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- david@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, boris.ostrovsky@oracle.com,
- konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 7/8] mm, folio_zero_user: support clearing page
- ranges
-Message-Id: <20251216071250.e49ecf7490acf7f377dbfdc0@linux-foundation.org>
-In-Reply-To: <874ipqexai.fsf@oracle.com>
-References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
-	<20251215204922.475324-8-ankur.a.arora@oracle.com>
-	<20251215184413.19589400a74c2aadb42a2eca@linux-foundation.org>
-	<874ipqexai.fsf@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 33BF340017
-X-Stat-Signature: mxmmdrck83iyauz5e9mqgdqb5fnrr9w1
+	bh=2RaB9SM+pvwUf1QmqN2DN92hZRXQJ2LlXiPVs66C+PM=;
+	b=Tdqtmr6rT/vwM82xXoCMQQdDXjs1jiffxVumBYIakogpMprikMeaXQCTEPbcVOsHWLNN0b
+	h04RWWGj0lyytgEeOWiInUP2E8PM9EKbB6AZDwCYWJB/Kta8Yzj0AR15+NkGKdH+PKPmTy
+	dhMsfPxppKQZ3nvRVRbgQvku9NDbKHM=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47798ded6fcso30584545e9.1
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:12:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1765897976; x=1766502776; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2RaB9SM+pvwUf1QmqN2DN92hZRXQJ2LlXiPVs66C+PM=;
+        b=HCETSXKgy4S5Mzb0grt722ShTmhLTm6zG+MLj0Igz9PF4C0reT3XN7hlzkj/BuA5l/
+         6wBC80bix+Jp839urqQtzpEJWwPSIfaLHUIEXrIfKK+WSFoumKudqTAU7/vzlAas5Bhk
+         bFxm6+zI9eq0Q7Y87xvrVxA/uG6hJ02YG5cQ4q4H8SoW3iEWNHQTpo/b/ZHlYslcjQqe
+         Y1BhkfGZXv1Akki3RAKX8pqVEJNz2z51xrIS7JP08DoW5W/7mUaDdpncoyh+PiXPkmFQ
+         5Jub8L1hOOQhiWBORXeXK/gy/n+LU+eGR3FS9rYXnudPpkjJDNEGKVKErv/KEYqNhG4o
+         ikvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765897976; x=1766502776;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2RaB9SM+pvwUf1QmqN2DN92hZRXQJ2LlXiPVs66C+PM=;
+        b=Z2ihMonRxo0oSF02ORi4gkNYTC7bJS4Xcl6gYncqRdim2YLsDXBC1JoAc/aaAQH383
+         /7MjRT4AQ5B6GdAj74+9IZeC1FaSzA7Y1Tk3OZs6pWpDZrE4Ia1i2JUiieDVk20G775h
+         js13U5t/U8LZUCEohDlcMMcMjNBPKQH9rq2kwEYprxAEDvNJu1cBZyXsMRkFAkyU9G/D
+         aJwyQQDWeGwHB6BLDM/Z4RF5XQv+Nd0i1K1SogYwymro/Dnt8YdAOnKv5qeuxNfxiBdT
+         5zNv4ZMr7p3xeDhIv4lLn+WZ2bqGQv9m2WZG01TJqEL4M06+gT/yo9qZpIYQR9q86au5
+         ynJg==
+X-Forwarded-Encrypted: i=1; AJvYcCV44GPNSh9SccZZs1b/RLZbfQBpcuwEwzq14YD2KCXaiY6v+i1w2RpsVAqGg+842Ypwt5dvVoUNHA==@kvack.org
+X-Gm-Message-State: AOJu0YwLegPbdMY7xWHjA2842lVWyfRo/QC7LvZGqfr1qcYzRNWvZe0i
+	WkaJZ1aZm7XiHaM22PqaISDk6MgSHv1OrnzUOCTv3MHlgt2J2EHodxQ0h6zwZx39UO0=
+X-Gm-Gg: AY/fxX5PScaLyaXHpKxudenCTaPtCbmmUqLoCvEDbkmD3UIbvnBNHHyA+0upMFOuGED
+	XZ0uY7nQjDM0y4yba5au4nEm4gFEVS7AgS+mI1zKWXAdpHF2Os0+UguXpkeRSChSzfQgTG2uqfi
+	Jtk7GdVNhERD3z1kfjgsPUv9GaS4NsYtdnSlPEp6KbiypNtSk2+3C2CNyrqye+peVppU3NcsFHQ
+	JFzM3Uei8sbN6rbTcNZ2QeIu6pTiDQIM3ChqzgIkPDq2W6MwMz5omYoztYO4OuNPJ8l5I/S6Odr
+	syA2+9a0UI6a0nD/eGmbJHzyQ/gcl/BYJKzDRCiKgNfrhPxhRyEhapLt7t8WN21Zqiu/eqlWT4q
+	qQDwrit2U7zg8tOZW/y49l42TQPB7ZR9/IozLWmQnnrxENfBiMk7vgN50Jk7ASYxNuRQdfKKxEo
+	/VA+qlQDqnN8r4ww==
+X-Google-Smtp-Source: AGHT+IFg1h+oSthyGc4tPORkNrPPpnVeUr6FNMPfEJgnXBupogksrkrfKGsIU7DtuK9+emJLDR1CpQ==
+X-Received: by 2002:a05:600c:608d:b0:46e:49fb:4776 with SMTP id 5b1f17b1804b1-47a8f8c18d1mr142495795e9.11.1765897975942;
+        Tue, 16 Dec 2025 07:12:55 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bd90b81e6sm12034075e9.3.2025.12.16.07.12.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Dec 2025 07:12:55 -0800 (PST)
+Date: Tue, 16 Dec 2025 16:12:52 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Eugen Hristev <eugen.hristev@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
+	rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
+	mhocko@suse.com, tudor.ambarus@linaro.org,
+	mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org, jonechou@google.com,
+	rostedt@goodmis.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org
+Subject: Re: [PATCH 21/26] printk: Register information into meminspect
+Message-ID: <aUF29MLUj3YRh4v_@pathway.suse.cz>
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+ <20251119154427.1033475-22-eugen.hristev@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119154427.1033475-22-eugen.hristev@linaro.org>
 X-Rspam-User: 
-X-HE-Tag: 1765897972-535677
-X-HE-Meta: U2FsdGVkX1/MWkRrhzdddsJ6xF5HzljEzOoxTyVtm+CNiYVc7DxTIvE0vgBAUetnXiF0MKyZt0hkMLRZCbeN0+gFOKpF7yCUglDBgijWGJFCOn65q/5YDHq4uUs+6BqClE/xrlv/LXoKlX/fb7s4gn4Yc1UfhqLeHrdDBMmJVu4KDpdbY0uJ0WrcgQ86YmlAxr5Zs7sM1k3O0LZmyD9j1kcORbKuBaEgiJ/WqTp+NDmiyT43TxihgwjsEK4knSQutZBPgbU8PJLxUW/38z3+4Pn8VqetMrQ3b7EPbSgk1QXnk7vAtm0yzHOKp7CWL6joBxQJFZgXfk78/n9t+ujTG3Ph5met/45AttsOzewATiAOJgJqllOn08+uLLvQp9IE6S1OlafKX8R4+Nb4+bgPHjgpyEcZk9HjhyC2nAYGB7sCR9OvKWO2ExFkrikxxosBMi8S7asG01wNArtpJHaKFfFWOqvFMyTUl0459eiVyjtr4C8Z/uaqIsyD/G6n0x1EOi4DgWzMgVpu+sfHQJ6ooVHDMjiswxaSkRA3aPFISF27W6CosIOKeVMH9ZeG1Q/6zNZukEQ6fZjO0L2bS3+mlj1Dqe4J/D55Fn1LirR80WS5nZdJwUoj0gtqk3IzreZfe/tu2l028QtyGV5oUPyrbb2+NBUM/+38+kUz1xImYZ1h24WwoUV9z6GFbux4YaUlfJsdJj4WcHhU/0ddX4KXcnzMHB6lLMyyt+R9rfOVa5BfBG+o9bPac6vC+RrefWICoeFSVOnBCMLDPcAKND8AWIl40DhQj4sssVsPMM2yLWY/Sr+VtbXTstqpG0VYOTeewPflf2T712Q7k/j10mEh2v5mVDa4/9e1VvH5DVUY5xaXOPHsCMeC/1hqFvg5Otswgf6WhHuKNIOOaihIS3GNH17b1RnuuS9w/MUMpmvB25wk+J392tGvMAggDAfbrrBsZtmFQqCSgFbDdKV26uG
- c88U7rg/
- sgKqoGsfzZoRZwl68YMzDXhariAnfvXyS6GN7o1pzsu325c+UfPtgtlx84V6x/q7hDjd2ZSiviFnnwtC6fPuXud01GwEamtLSOKYhSK18ESnxR/wOVVz4bmzYh+HreKmHNJxEDbsQsyIY4/5R8Jn/znXQLwZhGYdGd30f8YZIlL/KUdPlTmx39JITuLjqhSdFoSFrJTsxOnUerKWJCOS2DyQT26yHWwHl/ODKamaToD4K5hn+QUIrGOjxjnTjullZYzLHVWPkdqsGig46I4WXJUdzWM9w157ucoGQBu2oDY1lW3XYR2E9+Fj46YHv+iMficA9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 93AE840002
+X-Stat-Signature: r8ctq65a8bdrmje7fqzxhbifn88seh48
+X-HE-Tag: 1765897977-221369
+X-HE-Meta: U2FsdGVkX1+lwooiaLOc0LhxByJXuOZEPmba1xG9aqTb71EQXl5gfroYPupIfVAUUM+BmLhO0+HdcXtsog5r7T43LRkUtqgYziZjHP0MaiPpogMukDtzQysKH/y8veIGTZUydJPkArj9mJgJU0b7w8pSSvAw5UvP30fMNe93f3eCIqo1VnZcL139GiQL3/4iZXgpKEeZDZDRuMgfKj0ceqktPOR9Uta3R4bby82NJCwY/o0kyGW6BgH8FMkFd+ZyIAsIhsaHyr95RmcIp1MyEO9CupFyhNXnl2Aebz9jzthwrUJvTYkNicwG0If2aK1cfvgu6ODhlrwe4lqBkBVhdfr2muuL/Xk9zZusISMplU8PkM1Tt1n8hi72NNM4LShMpcyJOyVtRCKObihyJx+EstmQPWB4eSnsCOuHnbNMEo8nz0v9pnZOWwcK910OCmr+sjn128Z/I/CqxIKbBC+SP4VIG5aFxFp3AibNg0JWP2ZhtEdpfff3oKwBKWK8iitNPahqI5HpcADNfj11plknRrBJb4JuiGwa+PEIhEL6qEvYeosRcSTZWAbW/1W8LpoQ9r9Zjsy6OKdmLFJUZgv1A8n3Qy/Qnk0I+aOhTqPfcZ9LD/soGLJ9RjqRqba9lQOiclf0I1mChbWIkMDjkIj74t1bAbsejb6yfLlUFqVMn7uAyNpgDEa2LJIXld1v/KW8DmQyJUwxIqGuwUsNciOwA1COcHqwtItes9xaVontHI8jAIoEb2LaMZ0V6qkgQmhuMNX+CQo4sCOt5K7/fqwG4NshA2YYQSdfaeEXUDNvV2bFMKP7jSetwaDj90YNtYI0qCPi6LnxO7nwUGUJHo5xMPKBNWRoYDsPebS2svhKOIZrh31reNkUWwdllThSlmCz4zBol8JpvmtSCq2GAJu7I9pcTyeohLPSmsCXDmoPFVnovSSuvYkLEgyJBPmt87kckUVvn8BVn0PCAM3A16S
+ aDZmexOI
+ wX9NYnLvoiXbELxtksoyj6ZmlGHZGb507zqq9nw5kRncnalliNetUpMEaPY/76rBMOJvO6EOQLPk6iodPSYkfWE7rZjYVeGdTAO9IVQUdyqS0vt0BiJVcE30Qlow+2VVPE4eaKik9WH9MXUlS8tZjTQQkdU1HYyJdJLCG1+ZGjJdIbhiV8UVkVmu+UlAy6qDdUfvFTqjMLAmiSnT+kFoAu7JwY3NqOolgHffEgxUVqhJdnXXYlU/MnTzgzlGSdy+DknbBmGmNtBI7gPzTduEnTc3hsNFWOMaMbMvaL+z62N0z66zBxYP9WVT2HLUJItSpTJ7CfcSiIVYpWB2qZHhDKgA/xSxCt/j0jjHIxkEkhFzhT3uefFx93KMcmH4yZvJViuKwKolLK8J2Zcs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,47 +126,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Dec 2025 22:49:25 -0800 Ankur Arora <ankur.a.arora@oracle.com> wrote:
-
-> >>  [#] Notice that we perform much better with preempt=full|lazy. As
-> >>   mentioned above, preemptible models not needing explicit invocations
-> >>   of cond_resched() allow clearing of the full extent (1GB) as a
-> >>   single unit.
-> >>   In comparison the maximum extent used for preempt=none|voluntary is
-> >>   PROCESS_PAGES_NON_PREEMPT_BATCH (8MB).
-> >>
-> >>   The larger extent allows the processor to elide cacheline
-> >>   allocation (on Milan the threshold is LLC-size=32MB.)
-> >
-> > It is this?
+On Wed 2025-11-19 17:44:22, Eugen Hristev wrote:
+> Annotate vital static information into meminspect:
+>  - prb_descs
+>  - prb_infos
+>  - prb
+>  - prb_data
+>  - printk_rb_static
+>  - printk_rb_dynamic
 > 
-> Yeah I think so. For size >= 32MB, the microcoder can really just elide
-> cacheline allocation, and with the foreknowledge of the extent can perhaps
-> optimize on cache coherence traffic (this last one is my speculation).
+> Information on these variables is stored into inspection table.
 > 
-> On cacheline allocation elision, compare the L1-dcache-load in the two versions
-> below:
+> Register dynamic information into meminspect:
+>  - new_descs
+>  - new_infos
+>  - new_log_buf
+> This information is being allocated as a memblock, so call
+> memblock_mark_inspect to mark the block accordingly.
 > 
-> pg-sz=1GB:
->   -  9,250,034,512      cycles                           #    2.418 GHz                         ( +-  0.43% )  (46.16%)
->   -    544,878,976      instructions                     #    0.06  insn per cycle
->   -  2,331,332,516      L1-dcache-loads                  #  609.471 M/sec                       ( +-  0.03% )  (46.16%)
->   -  1,075,122,960      L1-dcache-load-misses            #   46.12% of all L1-dcache accesses   ( +-  0.01% )  (46.15%)
-> 
->   +  3,688,681,006      cycles                           #    2.420 GHz                         ( +-  3.48% )  (46.01%)
->   +     10,979,121      instructions                     #    0.00  insn per cycle
->   +     31,829,258      L1-dcache-loads                  #   20.881 M/sec                       ( +-  4.92% )  (46.34%)
->   +     13,677,295      L1-dcache-load-misses            #   42.97% of all L1-dcache accesses   ( +-  6.15% )  (46.32%)
-> 
+> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 
-That says L1 d-cache loads went from 600 million/sec down to 20
-million/sec when using 32MB chunks?
+I haven't tested this. But it looks reasonable from my POV.
+I assume that the output from the "log" command was from your
+synthetic test so that "crash" was even able to print the messages.
 
-Do you know what happens to preemption latency if you increase that
-chunk size from 8MB to 32MB?  At 42GB/sec, 32MB will take less than a
-millisecond, yes?  I'm not aware of us really having any latency
-targets in these preemption modes, but 1 millisecond sounds pretty
-good.
+Feel free to use:
 
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
+Best Regards,
+Petr
+
+PS: I haven't attended Plumbers conference this year so
+    I do not know what is the current state of this project.
+    
 
