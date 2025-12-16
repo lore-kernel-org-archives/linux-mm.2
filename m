@@ -4,185 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E11F4D5B87B
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:19:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B02D5B87A
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 515DF6B008A; Mon, 15 Dec 2025 19:19:26 -0500 (EST)
+	id 605A16B0088; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CC976B008C; Mon, 15 Dec 2025 19:19:26 -0500 (EST)
+	id 5BC5F6B008A; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C1AA6B0092; Mon, 15 Dec 2025 19:19:26 -0500 (EST)
+	id 4DC566B0092; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28EDB6B008A
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:19:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5B0F1603E2
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:19:25 +0000 (UTC)
-X-FDA: 84223425090.11.22F71A5
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D3313C000B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:19:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S1az3cSU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765844363; a=rsa-sha256;
-	cv=none;
-	b=AvhjHmWOjB5+Wq57UVbJhaXM7p1Qrj+rVbfsR+mDGEOl3bQmGayuGfwOBhtcX5hNlPnZda
-	RG0Ppz4L5dSJWEmbYPZkS7Zp3UnqWdPvnPK8RLf2E006stuI+zEowtxgziHz5+YDfOR1Zy
-	+5AztkcZU1eD8MDvdJFym8aY3Xh2jus=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S1az3cSU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765844363;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 319F76B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:20:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCCF914040B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:20:15 +0000 (UTC)
+X-FDA: 84223427190.12.6647A0A
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D200E20003
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:20:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=is2QP7IU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vannapurve@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765844413; a=rsa-sha256;
+	cv=pass;
+	b=0sIx1fp4MGjutf4NoFTFEAN6qWtZpA260SelF0C98V4jwMpuBUrDSB3Ux/Ty9d0sRmO6WC
+	lzhppLM62bIvHlidmrq2GDVKdzClMn13YPjQEsKvkWPRBclfz172r1hPdMQbU0DtbfwvFG
+	DbGUkSNk4wzBAb3eFux5W1gwmdfLvUI=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=is2QP7IU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vannapurve@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765844413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sk1yhdZDsbmHyAUXRbfG+BCb5AaoOf6d28kSsthudBo=;
-	b=6LM3uQ8i8yjqidIsR/PO/fzavRbEDcVRhbjNUI+aR1ksCdRZkJ6WtxRP3Qi3XoAyW8jQzh
-	VUmHFryMbOIuh8OXpzV9j/8DiuxfVmas5kSv2UycwASivhsDPFXLwWB+wvZ/IQHMFAz0Kv
-	3ECEDMben1wFfi3neCqwXoUYfKnFDTc=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso3820402a12.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:19:23 -0800 (PST)
+	bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+	b=ifvL/i74Z100QTLwqwFCDnTRsEaRX4bjTfvWZ4DtDpCswDTwRHpTFYMRc1kFoNcc26mX6v
+	q4VfKtatblJhskQpy1pOmcUj29gzJ3W4jSh907cewjTQxjP3ZQ1syyJX2PX0bCiPYFRStB
+	4eZ8L3qI5ilS/ZnicTTJAS8rXmg7B54=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0d06cfa93so14105ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:20:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765844412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZhAM3zGMOgi8RnpzHn66rde9PyAkCshae/FPjCJaXKU/bZj/Rq5/BCVgaOlxRUZrvy
+         qHF3vdJRmDyj+CSO+QtQrdvEx0bCgb5DaNX/eOu0IVfnQLFYSkfkXFCcsEOFTZjuln1B
+         MtZAqkhc/G72PH8kBlvJ/i/Jt82iKyZqTwEWebwhwYCPnpqetEK4HStwIlschi98urPr
+         OnRkA+kCmOShk5UaJQhkX3/hwZB6dKX6l40HWVfoh1hUcmfGxtEDPqQk2U2xhcfePlRp
+         vOMEcWnHRnnhzFyB7kpPUSwHwpHH3OAYSHscSTpS131eeF5jvVM/WkIgAMpS9yPqdB8b
+         2mig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        fh=zh4E5+rGmdxGG0AfBCohXgAOkKb5Niw84iKKr1HWBjo=;
+        b=GeQhHWzNWJk+grkKOOcQvtJt+bzEH+3xUxNjKHeHoTsDtgOkexKz8WRetGFWf8UI1m
+         EDO78V+2Ix8WCzAG7chIqgHwBKoNs9gD8wgsrBpqHeT1bIeBy68cLEjrme0UPen6OZaa
+         l677O0+sd7KiF8ZLssC0pr9LMnDFZh309glRIvD2moOmUkSd06kuGUxYhwPfA1OgDD7u
+         YIiQqdxmFH9ZryeLN0VPFdqszguiDmUz7VKOLHpdE0oFN3wWfV++LJrjMzUz4VIasChD
+         0hyIz/uI/whXvXpERDOOjreIGhqMfKyCtdOAXtMpyVwiZzSlLo/Jpm8QC6CHiLN/QEju
+         37UA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765844363; x=1766449163; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sk1yhdZDsbmHyAUXRbfG+BCb5AaoOf6d28kSsthudBo=;
-        b=S1az3cSUMICZ3hSetlxesZZlcxP6L3Ig/7k9KKuBEIOEOHFEKC1/Tjxl4JwC1mBmqG
-         T1n0ql7LDeQ3FANCl3jMbav1bWqLksGI7z3CHfZlRWpqVqAr2ucpZqysooe4fvmSP3O0
-         lPtk0ZXefMzn8LQV/op6IQs7aQB3cbSvt97vFOnUagzWkpez6MbLEyQbs88UG/9KV339
-         kTg+LP+1nBr+fr4UIKz5Wj5Y8cr6oAxpoprdgeJ0ijHj9GKFX2v5yqyxlGNw4FGRikUV
-         8wYF80qjbWFd8dKIylNsyk2SbjYRgBOEzz9a9H3WgT+qr/vPA18nvzcpVpvsEfMwxT7O
-         NIQA==
+        d=google.com; s=20230601; t=1765844412; x=1766449212; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        b=is2QP7IU8E0N3xcB+Yyt9YxjQM+n2jrV5yYP4qMn9wG+bb6oKOcVJmCJvtzqKJ/X1v
+         f76pCKGY7dEeM+PInDGoZ6jyIkmL0/KezC1dxjmnHOhqiE2ZDC6DCk6bYJazNTyyVQRi
+         zq+s+HM1cf1asjYefPmUfAbvEHGpIbtURmLU6yak1NnJ8fl/vdjeMQo+P5rW/YUJrjhd
+         ozw6eX+7yhjNGJPYRgZnXit9bTsEt5Ww5rzUQ+c83XViZzLjyZOxomQ5Qyso0DHiWWJY
+         9FXRSeT0ltR4ngDbGQ9DVMVCN+9R528Iwx2HSKEqj5N6/kSQkjY7hyVT9RLEwV/GVp5L
+         ULvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765844363; x=1766449163;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sk1yhdZDsbmHyAUXRbfG+BCb5AaoOf6d28kSsthudBo=;
-        b=H7r49VI07kFj2290lPLGzhCDeROlvq6u3qyhrKje6RDAthLufD2Uz+roNhrX5IQDV3
-         8t9tHDWYccBmO/KW4dYkFRyVCep1/tT0euQA6aEDPs+cyXaSLQU3mY6EMREUABnJ8H/D
-         vO4XoG2YTPDCORtHr9a0QFVJ14Bv5F2lST405mUEzAFoRmxt7qq6q2enWRc3hKL2oPV4
-         zdapvLRBnyM6wQlk4asOY7pMctq2TJD6NoYL5ZUW1OBYzOUS/qoD3U/00O1nJrWOm6+z
-         G2TPsuUYxDvyPY9rg9uzncifnleweE57QCsUKt7xWMUaAlHZaiyQ7Hypi66M2Nb0tzjo
-         8g+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZLetKJC5pk587Gab53sqF440OrvlSg+tyiEYMJ8aO/cJRNvnyt684CeyarhxNBitMJxeuOsflMw==@kvack.org
-X-Gm-Message-State: AOJu0Yz7ZxgiMa9qes7ESva4xvhn3ogMu48l5CjNPmIXSjZk4hi4V4vA
-	fGfJzxX15SFMEBN27SPiFyfDcKR20VOe9ZaBDTI8Jqtz7CbqpBXj26Bk
-X-Gm-Gg: AY/fxX4niK/vw8f8ksThH5i+TQUbDevMkFdWzItv8o/IHATs221P7w53w/5oACAyU12
-	GHDaGLfRhU3/1qMFVPKOfU+prVssAxu9wSodKaU3A47ZdK2qEPGULzRZsEFuez9qaLJ5PS2ilOA
-	o4TG5I4fTNg7322YDCSVZ67mEFo42UUktEkab/z3q769eAny2A1z/ZBKXZdIm5ttnTbOJB6T5u5
-	L4jyl+Tj3GsIjdrsBo7rmSDQ1L3rli25FXsC7mMeOJhkT1IVuZANZ+rOuLcW1I1L7T86c8e6tEA
-	vwwEE3nQovX4NL+ORnltZMMbjibTSR4IUItWVza1163Zsobir466LZm5Waru4ep7cHEDqkwiMAD
-	hH4qTgk0bF08b773eaGb+uBnNiGVM98mz4boLV/7dQU9yowFG1lb4wwMwJS+hub7sNEGqDOK897
-	IWQACXlJTNPD11kfLfx5qoJV24SUuRCykaVXqaz6UhOO4=
-X-Google-Smtp-Source: AGHT+IHmrytMydYNAgs0qRZg7qEjrXkSVHGK3fUWY6ADeu6KzKqLiLcf4Z3v4UGHQ57LoQ8XnYjK1w==
-X-Received: by 2002:a05:7301:f84:b0:2a4:3593:6466 with SMTP id 5a478bee46e88-2ac300f729dmr7381219eec.22.1765844362545;
-        Mon, 15 Dec 2025 16:19:22 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e30491dsm51066947c88.16.2025.12.15.16.19.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 16:19:21 -0800 (PST)
-Date: Mon, 15 Dec 2025 16:19:16 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Filesystems Development <linux-fsdevel@vger.kernel.org>,
-	Linux Media <linux-media@vger.kernel.org>,
-	linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com,
-	Linux Virtualization <virtualization@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Network Bridge <bridge@lists.linux.dev>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	George Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>,
-	Cruise Hung <Cruise.Hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Dominik Kaszewski <dominik.kaszewski@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Alexey Skidanov <alexey.skidanov@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Harry Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>,
-	NeilBrown <neil@brown.name>, Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>, Ivan Lipski <ivan.lipski@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Roopa Prabhu <roopa@cumulusnetworks.com>,
-	Mao Zhu <zhumao001@208suo.com>,
-	Shaomin Deng <dengshaomin@cdjrlc.com>,
-	Charles Han <hanchunchao@inspur.com>,
-	Jilin Yuan <yuanjilin@cdjrlc.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	George Anthony Vernon <contact@gvernon.com>
-Subject: Re: [PATCH 04/14] mm: vmalloc: Fix up vrealloc_node_align()
- kernel-doc macro name
-Message-ID: <aUClhBdwQb83vN0o@fedora>
-References: <20251215113903.46555-1-bagasdotme@gmail.com>
- <20251215113903.46555-5-bagasdotme@gmail.com>
+        d=1e100.net; s=20230601; t=1765844412; x=1766449212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        b=g9kKjNUcQtUNTpmrsGaphpmfkPJCr35MZz8mWnzMVYz63YROnuGs5KjkExK2sC+Jhf
+         NbmYoQipPbdp06qdBrRKS2HqnzU3Z8XB+FstzanuC6O4oSoDZ/JoIkX0p1yYZexIuiF1
+         5nlSxUvSwqQqiH4+AoNloo8DTsnS/m/fVMFrh/M3Dk0PkMtrQbU5piXMXuN3mVk+leWf
+         XHRKf3wkBKPDAUCOXgmySkhIKQ5+qPUI76iLreEDq7EvbaudcrbdCPbbKoniMzq64IS3
+         L2m36+gyi0Iv35u4gtkJFesGioWwexteiM4adUHG8K/wVkjEJh2WjVP3piahcV/XYNup
+         C0+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVTLHRv9WgEKUfGiQA2N1aupOhJOfPc+PVE+lpJKoWEdXXVwYB2tFlha608C+SsyiTa+4N5q/RTwg==@kvack.org
+X-Gm-Message-State: AOJu0YyQxk1RL+FxT4wjav4lDGPNkIjNuJp5r6F/zDjtrjXy4R0qHNMG
+	J8QWsXZ6UJbFXSgq4Q7uMRvq3elLgDEDdkUQ16Ds4yH0VO7RmAa2b1BjktdiynM3n1SEyRSE3QJ
+	uP5qou823QeapbGNJ/vp6sJUpxan662PwyRlOUlt8
+X-Gm-Gg: AY/fxX7mI4ojycEryJEl1ZRXAdBZptnR8nB4Z9oQ0GG5MtOhKQD8kGBbwMmAcNieLVg
+	h5VqIQJRN6qdorfJ/XJbVsDA3OxMlOw3gfRM22HvoVAA9S1BSPPug2dUnuIkUhHTu0h2E5YzkT4
+	K+RPBK6O2mYdgKfZPrywGVf41r/sUo/bW7/Ni0i/3TyoLzu5bxH53mFV0z5ZqzKpEJy/uHa04dT
+	rAY3A59I40lFfdMJlEGsohwFcqo8Jhg7tFhLJvQSFNLjhGWBF4Q4dqyYk6vo4BuIg/wjDjRpuaL
+	72G3FFaMRkW1+XEu3mYP/yvYFH97
+X-Google-Smtp-Source: AGHT+IExDYh7puOwTqAoucyAbhg/dhJj/UlPMmB4InOhmz+VivF2pgRZLSSnb0+pKynoL6YupSskmHHY1LN9azC6BtE=
+X-Received: by 2002:a05:7022:4406:b0:11b:3bc:9ea0 with SMTP id
+ a92af1059eb24-1205727676cmr408c88.6.1765844411980; Mon, 15 Dec 2025 16:20:11
+ -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215113903.46555-5-bagasdotme@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D3313C000B
-X-Stat-Signature: n4qouxjfd86f445a6wo3aipc81b56tr4
+References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-5-michael.roth@amd.com>
+In-Reply-To: <20251215153411.3613928-5-michael.roth@amd.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Mon, 15 Dec 2025 16:19:58 -0800
+X-Gm-Features: AQt7F2pam8UulXqTs359SLpQ8QESA_W2EL2-JVHHwFHsPgJIIvSeUBgNcYPP6kk
+Message-ID: <CAGtprH-te9xrmVgUteAaW17BLuxfZWfu32G4Q+AdP4=DDrm27g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] KVM: TDX: Document alignment requirements for KVM_TDX_INIT_MEM_REGION
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
+	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
+	aik@amd.com, ira.weiny@intel.com, yan.y.zhao@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1765844363-521728
-X-HE-Meta: U2FsdGVkX1+4csIKmyLRBrL2WMfi1hS5eFA3HV74E3YSaVz3q5aSTkzTLhwh7jo6feFx9VwfVSDBz/4hko2p+eJ32R7LuDnq1VhLyCCcUbu1wo6CP8ynq0bNJ1SGqVjCWSTr1ALKksjXyAEsz2LgPAi05TdO0A31BCzuokKtmHjHOd4LG6LbgBg+NnG5zCVs4JCjSTLE8EbALlIWM4VZxwwByM7axiTiRqqACBSJZysG3aheNsmGzVFEIZX6wngC0M1hv4DZ14zbHkxHiuNBlJOwKMGnWOSJCUuPLBwqV0AnqwNnbhFJ1dbTpyu/sw2ckZdXQwqgOt3rp0zKDDu7XCoeVuYoq8b1Yxb+BORKu06ZqTU6xCV2TBuKU0VWvTV01t+Fw7R4VcE+Y8um5TTsAODsS3Tk2+umMLq36PkXosevltoW5d0Eh0nrT2pzFjZj5ZX7xf9YYmwoZkIB3xEKw+1KQ4G6Iv4PcTChaSkduVl4XEjy4Hs4yqK3u5POcMSw2uSefFqvbFIOLmo7mQMNQNK6aqe+8vcONNt1cKnWwktisbjZrHiZ5zubRhJlKOXT6YRqkd8G9RZbFxl6+R2BWbi8DOKaWQROUExqmLPWKN7KTwrVtHuwtNV4E+AFexzmUwp9WnuwSAp5Y9klWDAajOjVOqt6REZdBjlNkQo07pDcFiWBXMJXFR1uJHNKVt+CdPPR6wjX07fM6mec46nyI5pwxW/ZCHMjeBYjK402gQWEObROHi+eVtYuvnDEkaAoVHpWVhOJQEFabznqGUMPANbH+hp6xY/MWP14xdkbkfGOwXYugRttreeNk3+QkLJZbUEZ5o2VfZgtpLGfAS0v+QrKLpjZFU5AleEUpHBTvihsVoqWMSYHzIn1s0sh2UKbzp/w6aTuq08rvo9tG94lQl7jGIrYYvPml8rZU5+nxgmaJ0zRufhuzussCL3TJNfmKD1YFONtZJgB6/YffSS
- YKDhSc1+
- OY5UOLeLspxhT5Mpnlv2LIW55JOkft+7ulfusRYY25DOtxn8cGMB1bxfwx2P/PF6U9V4O/bwHN8G7CbcJEO+ffpU5UYrw1IdbUCewHhNVH2gef6SUHz7bfXidW1ZxZEnBt2nmtzhGWU6c5xQbxiIDdZmgDZi8nlcyjeRkgDz6PQ6JzhHcdXflAcx/5HrxHT9ia4u9bt7AMPOgSbci51LNTrx9KU5FqI0t1T/k6+hJrLzkezcHZWhndOM7cHarl3TFSLeVNOdubfU1gMWC4QEflXioTkIR/uGOp5tv1B+7o842Jk1x6SkqEnsWj1wcyZllRziwTSWLrZwwKRPip1kHCWnxGgKQx8sOJysjRoDOkHREmU2cKEXbkwfJ5Uv5MAnzPcbTDKzwFAMJiEABCmlUCqngHYDNvnHOrrgqc0VgmtSuMYZowoz5u5a/rJ1n2TjZLHRQ/xzMAAWn9358xsEVgJdHdj4jFspR0n3Zdh7FVhdFYDvNF554rlNbhGMg+ccTGXai8aMvruckEdQudUghF1hx+A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D200E20003
+X-Stat-Signature: 8tk4srpmfqj3itn7u8gtwzom8jxkc6ah
+X-HE-Tag: 1765844413-691147
+X-HE-Meta: U2FsdGVkX18CUiiG4NlhCkQCj49MFgy08ZMJD9RUu5B3FycUzfO4MPxplv8vnOXXffTO7QyEo3hLsbMixOqUv7Nqqec0VlTvf10shjXL6tBdcNafnw8P8KOjwVnpDmRFVbu0y105izBnAX9hB4dWKqj0hOx0MsL1GZNLhDa4RDfgrshWfJEbm5g4XLm5TU8WYnd+RIWlKcitI49ggkc0Y+pDUXZReu783guV9gU1Nfx6ih2OhxEzG0rDsapYcamO/ZUcX894r2sJymZZ8YHTQi4NfHHmbZsEdE6f/ikQirWyLN313fq1IqESHkf9I/LtLKROUiWgEFDc/Ma1AsO9tKHqAs6HFsL94gkEKnDW/oS/MBgGNGmLamf/pkum7BaoNnz+ALhgNBbFQX3TqkxVHrJslJ1DMX3P2RF3TFIYAsofPcg1XtFXHpkLfnnNTbiZtZ2ir54abFwVG1SMFdOnQhD6z9BtLxUChXgB37NhhxEIxDUQPHuw+x/G/sZg9HveDc9eDWRCTiDg3ZxS/8dJ2AnmEudO1DFt7QS/rdb9wI92lKz09/WAXPjjaMlyMbdg/KJ80WxKqiJrPS1qaGdoqYf80Rvn3rZIMU4pD4X3CTxbouSRHYiCGh4jFM1/DNhJvq0YvZX4bBhDVXAtq7X//piXH8BLn+xnWrfVg6QJy55noyCqAQtTDTC7V/M/dID7O7MW8EdPtGHNhwYyNAQEZ7fFkXFCofRKA8j3ZwAUUBRCD+6oOSv7r9Bi16e772i7foS9yHwSylIat5OxpczamcIExSXUvyj62Ccz5n4HfLaDHOnvDYdxGDHO45eE7olG7EI9KeMuKywOKdywakGMb8iQvbeWO2ZgaqTeCsZbgxgACVE8REJRKPevdw6vvKoxwLzhQYbMPsYeeFODP+0Z8JdQbATByugl0gXN/PutoOOYziCXufUpgbOm/pPkkAqVU+W7GVk12gvJNe865cA
+ /3cMmTBL
+ 1gtE96be6H5wlO0ptQ9eU6PBBtBUT+gP+XaTgVH8oI3Q0E7pA7BArDypaLCmip/S00areKYtx4G3iDFe4vhU2AChe2Ca5EQFqNeQomd1QY9mRmk0ex2MR190ssjC3UXVFXpeFQ4yA2wyKEQuxoD4f6PdqD0Rg+hB6sLv1YJKWaw4MtLvnSLV2E/Hka3pXFj1BIA/RUUTOIwK/U1q8DF6eBUdjw5Kz7dIcSaUD/MKijesH9Ay//w3ujlV5jCsuAHxezBexh35KpM0cERyha4JrWY7BH+o6XGE3sf45elcqst5GxLP4PeXNvHY3nwAgDJNMPRZZSwXo+CnKYfo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,17 +143,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 06:38:52PM +0700, Bagas Sanjaya wrote:
-> Sphinx reports kernel-doc warning:
-> 
-> WARNING: ./mm/vmalloc.c:4284 expecting prototype for vrealloc_node_align_noprof(). Prototype was for vrealloc_node_align() instead
-> 
-> Fix the macro name in vrealloc_node_align_noprof() kernel-doc comment.
-> 
-> Fixes: 4c5d3365882dbb ("mm/vmalloc: allow to set node and align in vrealloc")
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+On Mon, Dec 15, 2025 at 7:36=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
+ wrote:
+>
+> Since it was never possible to use a non-PAGE_SIZE-aligned @source_addr,
+> go ahead and document this as a requirement. This is in preparation for
+> enforcing page-aligned @source_addr for all architectures in
+> guest_memfd.
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
+>  Documentation/virt/kvm/x86/intel-tdx.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/vir=
+t/kvm/x86/intel-tdx.rst
+> index 5efac62c92c7..6a222e9d0954 100644
+> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
+> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+> @@ -156,7 +156,7 @@ KVM_TDX_INIT_MEM_REGION
+>  :Returns: 0 on success, <0 on error
+>
+>  Initialize @nr_pages TDX guest private memory starting from @gpa with us=
+erspace
+> -provided data from @source_addr.
+> +provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
 
-LGTM.
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Reviewed-By: Vishal Annapurve <vannapurve@google.com>
 
