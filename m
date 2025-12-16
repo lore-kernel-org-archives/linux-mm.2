@@ -4,170 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 432ABD5E130
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 11:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F24D5E12E
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 11:26:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD836B0092; Tue, 16 Dec 2025 06:14:05 -0500 (EST)
+	id 16CE06B0005; Tue, 16 Dec 2025 06:26:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A775B6B0093; Tue, 16 Dec 2025 06:14:05 -0500 (EST)
+	id 11B2E6B0089; Tue, 16 Dec 2025 06:26:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 950B56B0095; Tue, 16 Dec 2025 06:14:05 -0500 (EST)
+	id F3E4B6B008A; Tue, 16 Dec 2025 06:26:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 83A606B0092
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:14:05 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D0D71A05EB
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:14:05 +0000 (UTC)
-X-FDA: 84225074850.12.E4FD0F0
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012002.outbound.protection.outlook.com [52.101.53.2])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6A62D1C000C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:14:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=DpLWYHXW;
-	spf=pass (imf18.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.2 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765883642;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E2F576B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:26:33 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7899C1339D8
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:26:33 +0000 (UTC)
+X-FDA: 84225106266.27.9DB92CC
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 957F540004
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 11:26:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mmljdSgZ;
+	spf=pass (imf07.hostedemail.com: domain of 35UFBaQgKCL4negoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=35UFBaQgKCL4negoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765884391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dHan+tf4DxlEM0zQA9TfunRb8Efi/ACTCURVXGAzNA=;
-	b=Gk/fIB9VIkF1Cjn/EgkO/LziD/rvoCt/CFE8eocffiIdYb6HYYWjHR/wl6u3Cp2E/C9ide
-	AR9LGX9oUK+MMbZ77Ptc0ClVbqKdY9/5MpPLPLWuBokdZLSEetpwgfPwbrF2My+rq36m2B
-	weT4FzYS47+erbXHHs6wxY04B/rMEFk=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=DpLWYHXW;
-	spf=pass (imf18.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.2 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765883642; a=rsa-sha256;
-	cv=pass;
-	b=Yx1gHLHBkKZUgZGbCH52c4FxJ6Br5Dm1sefG8XsLSaOIzGJhDg9A9TiVHC0SY1iGne2LDC
-	PS0wsIFxLBTs2r5aTWZny2ns5zDcKeOOXhwoh4CHBeFxhHvXJiCvFdNRbLH0Qvw3DJNAKr
-	gxapWdOISipFZgLBpdZJrr7m9IRQx+w=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ub7zHSewrP3SjIKPIlWY8dIt9sjCDEz+Juq7WvYl/8I/EeMJ9TR/IWKEXyESR5I7zYvS5dPipzeZAVesyFsqUrksDUQ1Lrk+zUv69wjCTP4QfmI8c2aMBKLPcpbqCubfWAntRLYjrc18ME/N6FFzZ0X86Nm9SltSkcOjjK0G50Ayvt5i2UA5n7O6hswQL6Wg79aWTG28b+CosFOSduLIuzCwtxay2EFIc7v0oWpaIDgBRNoAXeFmKIPcwfbrKJjyxp3B510z37zK0cBcESXJ+b/Fml2sFsd6YM6ZUgunUJT/t1VDro5ssp+qEMYGaMm6z6W/h5LYJ2s574tmbUmdtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dHan+tf4DxlEM0zQA9TfunRb8Efi/ACTCURVXGAzNA=;
- b=cVRO82+c2E7ByINMRjYsxVn7lo3i4AxdrIGp5S9sdeXiPu6/0nLsSsLknSgF3lTTOa2vHaQJddOUKdL8lYuVstSUCx5POHMDi1Wq3TeUAqtNtX50mvoWnW2pLjzA7WwT1qc5NSat0prfgLaiafmMxVBfwiqXQsiGm31nliEi1/yQQpD/8jDJSZkoCCcr+JLyZqiM+VAon3Qq+iEJZnqtAr4j9nRc4CyfXvVGKglSXbkSjsCLp/TXuc51juQCE1Xnpgv922mBkbTdfaSBqP/oAn1c38PceOhr5jmfHBtXRGtd/FujFeGp9IV9Ffkk02IWM2mIwaDksc7meX0/avq1Cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dHan+tf4DxlEM0zQA9TfunRb8Efi/ACTCURVXGAzNA=;
- b=DpLWYHXWylOEei4nDfR9/QK+E+Sj4wHTxtXpra1n8XZNWEF6X5GC9d+8QEhkk3P7dFSXcQ/XTycxIZFXdQvjj6WrVRA+KyfB5tOn9Yvq8o4+k1ynXro3vorBDevEdht8mNwkX/gjQN2joC2d56zao9WY/INdWjtK2EiyVgYCXtI=
-Received: from MW3PR05CA0022.namprd05.prod.outlook.com (2603:10b6:303:2b::27)
- by IA4PR12MB9761.namprd12.prod.outlook.com (2603:10b6:208:550::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 11:13:59 +0000
-Received: from SJ1PEPF00002317.namprd03.prod.outlook.com
- (2603:10b6:303:2b:cafe::47) by MW3PR05CA0022.outlook.office365.com
- (2603:10b6:303:2b::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Tue,
- 16 Dec 2025 11:13:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002317.mail.protection.outlook.com (10.167.242.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.6 via Frontend Transport; Tue, 16 Dec 2025 11:13:58 +0000
-Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 16 Dec
- 2025 05:13:54 -0600
-From: Shivank Garg <shivankg@amd.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<shivankg@amd.com>
-Subject: [PATCH 3/3] mm/khugepaged: make khugepaged_collapse_control static
-Date: Tue, 16 Dec 2025 11:11:42 +0000
-Message-ID: <20251216111139.95438-8-shivankg@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251216111139.95438-2-shivankg@amd.com>
-References: <20251216111139.95438-2-shivankg@amd.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002317:EE_|IA4PR12MB9761:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a63c901-f0b9-4a91-455b-08de3c9435da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|82310400026|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sLPll4SIUGsatpwDwNk2YtpAfj7q2ndn8+dm8VjjrYTMY5WMcvly4xx1qM/t?=
- =?us-ascii?Q?HCL8BXL8BEDToZa9joIr/2UJ2psI7qLFxHEz1vD3vH4/5QeyEVEo4uknoTiy?=
- =?us-ascii?Q?Zc7f6v7tkgfff4iiTXyPrEUqLezoi4jQnpt6M0+e7ovEadD9gDdFlXzZVF4r?=
- =?us-ascii?Q?dm3LdGhcTdT8fPIOvw2gwvUWlJoZoPU6shinvgXulgdGkz/TqZVwprRpWVMD?=
- =?us-ascii?Q?AgBbnzbuJuLQHOo6+Z+N7VRgjwsSF1iEbvqGzlI1Zyy8TSU4rhYn4XlrRI6D?=
- =?us-ascii?Q?Dk7AkikNBJ701kv3E1BGnM1UGDiCWgoE0r5BRARJHqJpbsPR/Hlbp5c7OxhF?=
- =?us-ascii?Q?Grbw9BmqwpZCaGR6elhPi4EVLAS8Si1oYrYo9gqsnFu9vOZQc94qZS50J+j2?=
- =?us-ascii?Q?k6TdqZie3Hh9or8lQg0VCX2YuR8kFZzlbO79gSeM/HdjMIchWKeYNTyF7uzP?=
- =?us-ascii?Q?16QfzRQsVwkZr3qk8EAiOGQGdCsIEJLFBIYDx0m8zoDCJTJx05XIBv7Sc5X/?=
- =?us-ascii?Q?tG7oKu1fDqtRXmlEKr2gEGkBDG1gcTU60YO9G/i205t3ItMz2ihtWKXDh+hY?=
- =?us-ascii?Q?ADHxc1+kryYZCVP21+MGDU223JhM0E/0P97gUty+3bDx8ezQsaf9DBqeSziu?=
- =?us-ascii?Q?FoehTv0UPko+Ic9uhnDvt+3MIs6w5+qks5FceeiHBK2qQRip1sBfFHYuiJmh?=
- =?us-ascii?Q?7Iq/W1bvT83dDCI8VlM2b2DD2dywuYh59EuQrKEi956sVRj5prT8CjoIwUXb?=
- =?us-ascii?Q?AAyN6zC1O3lVpw2eSD+bOyCJnjCarvIFJ9Bq9Z10WDOgcW7w8bt2YOAOztnA?=
- =?us-ascii?Q?UHRrcWkQDVV/VDDGX4ab4XoR5IrHqRsC/pDjsYp14uBo+/yNnK/TeqpRS4b9?=
- =?us-ascii?Q?AwsTJHa/eQZB/Alhz+4Vcql6oMvdy1hN0inTZ1sAw6l4/bSRjdNSRJeYaTWK?=
- =?us-ascii?Q?xucKUp6aYzq2dW7OcDBjhmLqgfkVN/h34bTTTUJTvrBTJ80iLNK9EjSzxZIM?=
- =?us-ascii?Q?CPiUoDXW0TEUkstkzqWE7phx0BBSwAUaPLYcuzicVSiltnTZypP8yimXq0Xl?=
- =?us-ascii?Q?wrqjX7sV+r6DT9pcEyQM3Mdmx46ZABbEjhborbo03Yl1xCcuybn78TS3Kp1r?=
- =?us-ascii?Q?0vCR+9X8VmsvvMKMyeEtUJHis6f7T53vg62PIO8kMfW4UPLrJlTNgacuDy0x?=
- =?us-ascii?Q?wydKvkVcXaWOzSpd6T/lHzWifq43iUTlMM7lqHzDMWCyVcTM1zPLP/YbZW0i?=
- =?us-ascii?Q?nzeR+SisMzLN/00Wt+QvSCpRGj26lNyoRDUAo4Eil+6y9PUwkjOdDiEMepbW?=
- =?us-ascii?Q?ENJxrEhdkLtNn2k6zWZATxP3lZm/icWk82dCatO2CMOmOQkYKVCiPUgkK1k6?=
- =?us-ascii?Q?JAaAcJtwWbiNp0/xjseL4XcGC6LsWAaoOoW1aSa4EmrVN1X5tKhWkNHN3Q4k?=
- =?us-ascii?Q?X2VpyiogYE4uinZNSRUTbf267DoFTjmhqxh3nD9HrYV8Url9nqSLBuPrnGfM?=
- =?us-ascii?Q?bCFLWfeBSpxEcFK9/ejd8LD8H+ezvAoe41Ha4Ie18vcf1qfjs0AQJ66loqqi?=
- =?us-ascii?Q?lTQBKeSEUDUpukCrKIw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 11:13:58.8176
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a63c901-f0b9-4a91-455b-08de3c9435da
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002317.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9761
+	bh=krMeQQo0RYkVVveyUInYgEYC1GtxSzSLPYvL0R6jcGk=;
+	b=5fk0A6BbcYaJt3nXUj8g40zUwD2bKG4EhtAY1i5HbsVj3etCmYMPt/PKUV5+5pzP5ucQJA
+	v7rafZJKoByT8ppN4fyKl/4kJh/XoW0ANph/KBv/mdPWgXPgGAg0ecb/nCQ9ZBdUNRplkX
+	Mn1kAzuX9tVnPwMV6wZK1x2H7OV+Jiw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mmljdSgZ;
+	spf=pass (imf07.hostedemail.com: domain of 35UFBaQgKCL4negoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=35UFBaQgKCL4negoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765884391; a=rsa-sha256;
+	cv=none;
+	b=dSR6vDUAZj5jYTeaJjv7tn1Y3bto4C5Hz8aYeg6EuuAJoUlIPeZL4FFTan8WBLw2OKAEoS
+	9ry5HmVcx1KxKarixn+1WWYTdvF55mQgAgG7XWucYek/mDQD9Q25as2NgVP66sgDbLBnEz
+	giJpyTzf4MJsgEAQ0Ia5lzIy78KMk3Y=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430ffa9fccaso1708964f8f.1
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:26:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765884390; x=1766489190; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=krMeQQo0RYkVVveyUInYgEYC1GtxSzSLPYvL0R6jcGk=;
+        b=mmljdSgZPhNwT6iHHZ+aUGfln0osBLt6TzCPUXnCnrTIB1bBSAKsjHSFcDOY0cQ6iJ
+         htlgkEFyE7AGf9H6/tQXjqsfKDF54sxM5VZIyRoh4H1OgeSBFGv6F6B58f0d70MPka6p
+         7lBo34vJufYsAmwf2EtXFs/W8jdUiWiejSSwAlNUkJMkR962IRJemxKAC+/pRP1a7aLC
+         juKSmfx42EzrZSxf2F5xDP37Bgcat4Cwg8xkqGN8fFi7OjwRi6mA7bzPNK0AXNXGFdWU
+         VKSjsWmSZhrhDsToFCX/XHRdnMzHZi93eOk8tJ1Bo1CFP7OLjVG5Q3tEPtwqoVfFChDe
+         U/JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765884390; x=1766489190;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=krMeQQo0RYkVVveyUInYgEYC1GtxSzSLPYvL0R6jcGk=;
+        b=nOypd2omJqYUQcEy6m0tGXABbzMe48xmSXzrfYw5Elbcbx2seq8Irp7DTYuqMeSmZQ
+         OyJ2zjnLmKIchdW1VEU1qpp7ue9W6xBg++J/H7Q0lV0BCqTojMIxN9VC7m4ULa+cICsy
+         ml3OqgPpcKzXnTTZ+tkRUSPgS3g3mc58DAx93xmM0UyVZVFV9duIaN2ZxiN6aOiQ0dF+
+         1FPNcqpttaiF8sOQnsses6SJh87KnPX/9dXjcImY70MsVxZytQZnmLsjCeXGm9mUdUQJ
+         sxz5LKctCdRvJImpLSbEsTAZRj/ET1C9roXETrA399Hj+zEvFqDk9Tz5I/TtOAadtBoM
+         3Hcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWExbsLmf+49WO+oKduvudJpmPrerRyo/67B60IZZIJzwgbGmeTMKm9keNcvu3q3KQXzsvj/WYgaA==@kvack.org
+X-Gm-Message-State: AOJu0Yx+nhpk9PKn87BZ7S/uxwWZbHMm0JdStQRMEeAShZpQ6e/UTa5D
+	HjNPQA3vUa5rNAZG1qmEbSukjed00x4kV1r2fpQw4PUfyspBenagZrBS4GhdVg6Svkjh3NuEBXh
+	ptmnV3umhNBJWdw==
+X-Google-Smtp-Source: AGHT+IHRBFMdNHijFHNhfpSjk2TQJ9kZwXaGz3RsF4bB/Qt7P2NzdaKmXMouO4czF1ta3V3ssZTXVLAPCUMyQQ==
+X-Received: from wrrr18.prod.google.com ([2002:adf:a152:0:b0:427:87c:f46])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:310e:b0:430:fcda:4529 with SMTP id ffacd0b85a97d-430fcda47a1mr7553444f8f.61.1765884389671;
+ Tue, 16 Dec 2025 03:26:29 -0800 (PST)
+Date: Tue, 16 Dec 2025 11:26:29 +0000
+In-Reply-To: <aUE8bwUVa6jSUft1@e129823.arm.com>
+Mime-Version: 1.0
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com> <20251212161832.2067134-3-yeoreum.yun@arm.com>
+ <CA+i-1C2e7QNTy5u=HF7tLsLXLq4xYbMTCbNjWGAxHz4uwgR05g@mail.gmail.com>
+ <aT5/y3cSGIzi2K+m@e129823.arm.com> <DEYOI8H2OESD.1H56D3H8HKILB@google.com>
+ <aT/WOAr4osoJWaMS@e129823.arm.com> <DEYP7JSVTB9D.3EFN2KEHH3O79@google.com>
+ <aT/drjN1BkvyAGoi@e129823.arm.com> <DEZK5U2YP6I0.27VJHSVK14646@google.com> <aUE8bwUVa6jSUft1@e129823.arm.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DEZLRT59S25H.2YWTZ2G0TN3HV@google.com>
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while stop_machine()
+From: Brendan Jackman <jackmanb@google.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Brendan Jackman <jackmanb@google.com>
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>, 
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ast@kernel.org>, 
+	<daniel@iogearbox.net>, <andrii@kernel.org>, <martin.lau@linux.dev>, 
+	<eddyz87@gmail.com>, <song@kernel.org>, <yonghong.song@linux.dev>, 
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
+	<haoluo@google.com>, <jolsa@kernel.org>, <hannes@cmpxchg.org>, 
+	<ziy@nvidia.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>, 
+	<rostedt@goodmis.org>, <catalin.marinas@arm.com>, <will@kernel.org>, 
+	<ryan.roberts@arm.com>, <kevin.brodsky@arm.com>, <dev.jain@arm.com>, 
+	<yang@os.amperecomputing.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, 
+	<linux-rt-devel@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Stat-Signature: j6y4u6axaj5kud8cp6t53w7s7f6xbn7k
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6A62D1C000C
-X-Stat-Signature: tcmbxq34sxkfjxyncwb73gfh9pm67ypr
-X-HE-Tag: 1765883642-356072
-X-HE-Meta: U2FsdGVkX19FGcCK30rC8cbL7FvwqmUjd40ZTafgrGSkr+o+6tSLOuyFe4teaR2fYbNfVcr0bJ1fpq79NLfmG/R8iJ1y2eDMHnPSkkuJfe6/ImFY9/v+ilHz+7Bt3LfLrJBgXJt41p/aHfx7EjmnVMCfh+lurNbqPqf6EvMmTvDbN6uaJvrZt5nd2KTOELcKPu2Q+RkleV+oOFweIWpFHUxgL2co9WzH8YyV2a3j3FWwRdgBtzWLlHurPKjG1JomsqMD9Y8PcvUWYLXYRNSJ/wVsSaxED0CnxI0+2ZYq7NOUu4zshe+zV60Et6516A1/G9fsPxquG1//artyuEI7dyPlNHQx95d+zz5vuGD4q5yOYfeX/Px63+YA8IpNvXzbQEhiwH3Fn8n+l/Y0srFnL6PLkPJO0IVz8jTeceNP6F7usqMDxx8H65CFzkZGR7N0qmhsTfMKzHg7/Ou+t1HJA7KUNjwo3+51iHIM9oCW4KNK5Yd2wUmDsutyN6g+44PYvpm3V7VXfJex0BF1gpDRMLtxDPAWDdVc5MsSd5G+WSj38fxnR0gcWJYosh1T664zTy/4Xjaswn47doYK0lBq/APP9yRs9u9tferu73YyKEQqjkLHNIRPtTdppxl/lNUAdKHlhEzXdZfL92zsq6dHYJXDJu5LXvO5T6A2UDNzjokgA64hzgYS9y/D1KjNzPj5Sg06+pYXuVRbaq1IVaxlo1tjWnISa6rrh0jycMmN360pbLv5QURmvgybC+p4TpRQjIQPX/aRH8UJ+QAML1uRomrtfiuK4P4CvGfoAWajTGO7iIpCcqXyILwDr0xs4NuWJ4UnJJxgnv92fhoZWAqeG0uwBZULkbKA39wNbiSeSF7WF+NPuxHPSZglBfnRDVh0hsn5FXn0k6Bd5GL3ifjkC1P5TjQ5dAixlXKD56CYiqVXgQjykzkCSPZTgQ7904Vn4yQ0+SaUDKGJUKaygdA
- 6FUyAkT9
- MaJ93RlBcmSPmuXVZT8avjBfRS07GS3vc7AOqfi/1FhXrkKoyrsjUcumbcOd1YnPxxUHWqE+BaZWHGed9BmvIB9TIALs6JC+Xo6+9MsSX6CA7Bomfl5iIW0ANunDxLHnuL/ZEp/ztqu4taSMY3BVdE21jAMpVQFkdZ79chZrU11kpP9S2MBHTwHQ3Dgo9SL2g1zhrbKNGPh0Kld1r8vzPfcO/dTU5mcOWA2No6TYpHnZ0hQhPYlWqsE0sjUFKAyDwK9iaARlQ2pPiOjqPT6xCRvl3rjC2Y1f7xIYg7WYWo38qmaGc5n70rjM/lTuO0BxH09wx4E7d+JrPFIl8N2hChJN83ppSSf5jj1C3pkRkoMMT2UTyg8lekfPtTxOGiBJoScl3wmIp1Z9ON1t/dhIVGvKEfhsXrPrlw44PIGMG7j2NgC/zNdsGfsmLZVtS8qnFvKVDhHUgfdvh8kVmvm1oAgcGzg==
+X-Rspamd-Queue-Id: 957F540004
+X-HE-Tag: 1765884391-684814
+X-HE-Meta: U2FsdGVkX1834jNEGQP4RqSsadkMGNZYHfpE5X7bLJWim0qHx6jJZHfGV9e/bfhfwWm0LkuocS3CihgNn/Jkcp8ePbEmhcD0R8YjF8L6mxdLn/PPpm/fdUA/njXBP+GXLE62zp8R6CBcuELfvBcpr3ivcz/aE2r0wr58JSay2HMkl61S8igsZ3mqs2XwihPx0Skhrb9+59TP8WXGLrXI4BGbUr+lA+qzc7TgRtfm2d6qF4qeDh/lt1FBtGhfw4Qwf9Ovoz82bFBCrdlImRSGH1GfVVSq66QPIqwA1wGSGNmSf3DDdm2MHdkBJYFOLAMLv8+oHCfBoJRA+ESeObtEuATDTbAiQbstjnDMRYOWccfIvQ0HyvgKoYpAxzNQDvGW+u+yi/LBweulxsPiTZqEH3bQTkmTr6pNpEWuUkEv0yezXMnqgtR5subTzVUp1q4bKcjl58iULS2+ePxZ1BjAGhkF6cw05PizatScrUNnsmpXqBJowCBsvx7fg8ceQmuzG6YAt/UPvwE5eGJc09mRAoJVn7PbfBNOpC6ECxnd2DQvgq2Z9rParJw7WelcVYlX8PUUbK5ZlVDeV3CtOiZ2K6lOXxbgi4cjtSZOj9A37hQpmBa781+Evi/nsmTQyWrXQhaYwjdyes0z/fvwJh0HbYOP22TWzLKvqBsYSsrveltzbz4+5PQ8FW+opUlNZt+2HL1l7KyMB+vsYNItJq0oci6hmkozodRe3KMsVwD1ijbdO4Mr1yJOm41DsxElfUBDfZNVBN6SboZcf/m6bbQI74GNOERKTrmXpxZE2Tu+b+iylt8wj6B8trun/WTTHVmDkBNlUVbwsmqL5hZcLnhz85IvGkm5kW8RoPVrPM1uSyMuBrJSJr9NfDPSbXZ7l6UQ8qDR4E16170hC6Bx6zbqaTHdianeweKqMwto8unrbV/AlqJpaZ51KFPdpMsY2Uk+0W04u+sWYCvoDFt7Lpp
+ cjxWAyzH
+ mOQ/w1v+dXs7WkWArUuJL1fEcTmdF/vKRqCPzRQAnHO690XEZlayd7ohykfbNk2GRFqtp+FX1hMlZA64FtB9sU77uG7vlL9WBxfRBiX/5HNlr7qsxOGrVTaA78CDkRmS1hTq7gPiJWqu1znElXTOoKih+EnM5+qLNhC2MwlCsAs05qkdvNopk3EOga1CvgqIg7+C8C2USn/hldvSpnPgkKotJ3KiZNPc3iciZpg2GnCp3grR3k7KvEBrKk1/Up1AcrF4MaaAPRQen3VnrCE5tG9gTNPx3FnSenKsWyOeX2/8YO8AA6TcJhCBiwyrja1BXtBlk8kHYvi+DMsCzvh3xOs6rzoiEvCvzyMrdp2YLP7Th0R/geArDrglG0gF6i637O042oErc8YrphdNkkARh7tQ22my2i3NV9ZNW4+sZaQaH81JHVEDLd+xqk57kHEmCUvwZzdtgxGb3Ak52GDZYupIF8+9mL+9i26gWHx2NtFtZvpkSvmXS9q+Mqnpbm56vrFvrDxJ/juUYh0mI7BIzwsoYaJ6eWiUiWcLT29kxe3orNA1Xen7hFTh+ZGuWM0lySS78xpFxgxCm2YmbbM25uH9lKdH77NnI8fYgH2Yo8ntx0T5q6vuWFk9MZZZ35kSYCmw3YLWvBU24ohigcNyYqFlpn/hjhaCLRr2mCid4MArv0ncQd5D3XSlBeA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,28 +128,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The global variable 'khugepaged_collapse_control' is not used outside of
-mm/khugepaged.c. Make it static to limit its scope.
+On Tue Dec 16, 2025 at 11:03 AM UTC, Yeoreum Yun wrote:
+> Hi Brendan,
+>
+>> On Mon Dec 15, 2025 at 10:06 AM UTC, Yeoreum Yun wrote:
+>> [snip]
+>> >> Overall I am feeling a bit uncomfortable about this use of _nolock, b=
+ut
+>> >> I am also feeling pretty ignorant about PREEMPT_RT and also about thi=
+s
+>> >> arm64 code, so I am hesitant to suggest alternatives, I hope someone
+>> >> else can offer some input here...
+>> >
+>> > I understand. However, as I mentioned earlier,
+>> > my main intention was to hear opinions specifically about memory conte=
+ntion.
+>> >
+>> > That said, if there is no memory contention,
+>> > I don=E2=80=99t think using the _nolock API is necessarily a bad appro=
+ach.
+>>
+>>
+>> > In fact, I believe a bigger issue is that, under PREEMPT_RT,
+>> > code that uses the regular memory allocation APIs may give users the f=
+alse impression
+>> > that those APIs are =E2=80=9Csafe to use,=E2=80=9D even though they ar=
+e not.
+>>
+>> Yeah, I share this concern. I would bet I have written code that's
+>> broken under PREEMPT_RT (luckily only in Google's kernel fork). The
+>> comment for GFP_ATOMIC says:
+>>
+>>  * %GFP_ATOMIC users can not sleep and need the allocation to succeed. A=
+ lower
+>>  * watermark is applied to allow access to "atomic reserves".
+>>  * The current implementation doesn't support NMI and few other strict
+>>  * non-preemptive contexts (e.g. raw_spin_lock). The same applies to %GF=
+P_NOWAIT.
+>>
+>> It kinda sounds like it's supposed to be OK to use GFP_ATOMIC in a
+>> normal preempt_disable() context. So do you know exactly why it's
+>> invalid to use it in this stop_machine() context here? Maybe we need to
+>> update this comment.
+>
+> In non-PREEMPT_RT configurations, this is fine to use.
+> However, in PREEMPT_RT, it should not be used because
+> spin_lock becomes a sleepable lock backed by an rt-mutex.
+>
+> From Documentation/locking/locktypes.rst:
+>
+>   The fact that PREEMPT_RT changes the lock category of spinlock_t and
+>   rwlock_t from spinning to sleeping.
+>
+> As you know, all locks related to memory allocation
+> (e.g., zone_lock, PCP locks, etc.) use spin_lock,
+> which becomes sleepable under PREEMPT_RT.
+>
+> The callback of stop_machine() is executed in a preemption-disabled conte=
+xt
+> (see cpu_stopper_thread()). In this context, if it fails to acquire a spi=
+nlock
+> during memory allocation,
+> the task would be able to go to sleep while preemption is disabled,
+> which is an obviously problematic situation.
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 65b1b778378a..d130357a2d88 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -829,7 +829,7 @@ static void khugepaged_alloc_sleep(void)
- 	remove_wait_queue(&khugepaged_wait, &wait);
- }
- 
--struct collapse_control khugepaged_collapse_control = {
-+static struct collapse_control khugepaged_collapse_control = {
- 	.is_khugepaged = true,
- };
- 
--- 
-2.43.0
-
+But this is what I mean, doesn't this sound like the GFP_ATOMIC comment
+I quoted is wrong (or at least, it implies things which are wrong)? The
+comment refers specifically to raw_spin_lock() and "strict
+non-preemptive contexts". Which sounds like it is being written with
+PREEMPT_RT in mind. But that doesn't really match what you've said.
 
