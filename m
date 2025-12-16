@@ -4,97 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0980D5C0D0
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:12:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C09CD5C0D1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 08:15:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64C466B0005; Tue, 16 Dec 2025 03:12:29 -0500 (EST)
+	id 8E9AE6B0005; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603336B0089; Tue, 16 Dec 2025 03:12:29 -0500 (EST)
+	id 895A16B0098; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54CF16B008C; Tue, 16 Dec 2025 03:12:29 -0500 (EST)
+	id 769A36B00AA; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C1D06B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:12:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D61F9591F8
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:12:28 +0000 (UTC)
-X-FDA: 84224617176.01.C910305
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1C7D3100005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:12:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=opaF+Bh3;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765872747; a=rsa-sha256;
-	cv=none;
-	b=hCJaW3Ua9b6UrLJAwqwtFNR6wCVVLs1YPUCdlniBd924LRixd/3XCmp4g3lAv2x16T0Ssk
-	0uEBeqjiOafd7otfmux+z+lILq1h0io/4luDYvMT86WSc6r/X7HPqsnMtp78xwWyuuFHNW
-	G4Xhmal8FqMDDNUdUgxNuym1127MzaA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=opaF+Bh3;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6153A6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:15:42 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D8B1135EAD
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:15:42 +0000 (UTC)
+X-FDA: 84224625324.13.A0639B8
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AD8031A0003
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 08:15:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HrHFjfx8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RKRw3307;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1iKonsRc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XuuYJdpK;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765872747;
+	s=arc-20220608; t=1765872940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHy+HtrbS2UBAVjktv1rULuod/Fzmc5GYewrN5/jhk4=;
-	b=XyB46Z89gUMQqOhG6tHA9MQ2q749i1REJ2uthLZosNorYWstvWJYpoWvL+NE9NuV9tQFx0
-	100UsGMnyxV3cQic/OZa/MpjF+/lzIKU+D8JO/OU1/fAtyaOq2eImie0c36mZo7gzXrpM4
-	/0SlptBfMzW8p8boRUUmbkWovLMMnlo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765872743; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cHy+HtrbS2UBAVjktv1rULuod/Fzmc5GYewrN5/jhk4=;
-	b=opaF+Bh3zpK+OJLnzCtdIDAhozKUfW487D9RyC4vYByy27N4Qoak+gWhVAh9xUiiaZw4bKRsE3eTi4Im3juKB1BAaKBmcUhUwqqdzbwmqHY1IuKrV6OpMG2Y/qGhsLj9hBxh22eR/4zpGIaviU9xxnV2lxujmPOLAr0Lulmq1sE=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuyV7lv_1765872740 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 16 Dec 2025 16:12:21 +0800
-Message-ID: <95b1403f-3ddb-43ff-b481-2ecc6ab8352f@linux.alibaba.com>
-Date: Tue, 16 Dec 2025 16:12:20 +0800
+	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
+	b=4W83ec0/IHC51e3hSy7xa90D9o/M/NQ2SGcb6AM7PAgt29UhxMKzG9ISQ9gvsbxmWVyQoz
+	gAxT0Obt8gT3Q53m3x2uvtySUB80RnCDMWKVGniI1bEjvUhCHjb6hKy2iKg22GF5/sYjcj
+	NYwGmvMPlkX585OmiECPsaPqCq9f6Xo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HrHFjfx8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RKRw3307;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1iKonsRc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XuuYJdpK;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765872940; a=rsa-sha256;
+	cv=none;
+	b=wR3HgXvsKOzddICQn4BQKNI/WA4Nj16k+p0oFMC5hi0Z2+FacOFHBojVlXdyr5C/ElLgKt
+	KB6kNOcQC2LaORt+SpR1pBn858vljlH76oOIsPz12fEADHaZqEW9cWhD5bUJgxTPOejeqB
+	v/O2/HuL0qjVCOyQGOLQBeo6mUklEB8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5800A33691;
+	Tue, 16 Dec 2025 08:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765872937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
+	b=HrHFjfx8R1cIB/gvYTU71BiMzUSEivJxQphHzywX9PvYjtoUT/fYTd6xp4o8FVTuPX1fAM
+	r24fcXDqEPGqAxcSYzncotwxUJ0W9WxWm0QNGhosw+Y669zqrLKW035WRniW1OezGeqmpq
+	7snkfO8WjvVwXnNr0Aac8+NFG9uL8q0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765872937;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
+	b=RKRw3307JYGZ/apkRWJ1/6aTsLexDKWXeKGWtqOy72hpBGNxygy4g++7nViT+BGnFUG4UZ
+	UaC6Nm5ScNswIwBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765872936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
+	b=1iKonsRczx3XtDGyhOr9vyl8IgQmMqkt0To8Kwj6C9eNZFybb/Beqz/ohTGZZ7x8c5HnNi
+	A1DQfbAVXASkQXXygy9QxNuyS+XlkZ0bt1r4AZ40VFuQT04toZ71XpYODfnJRaBAAnTYIK
+	jDnsk/maBWoyQD/Jz4Y3LNOQ50ja+3o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765872936;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OQwyudFiYLw9a9VovEqJ9I783SOffROchg5HSdsCFE0=;
+	b=XuuYJdpKR7p7r3c1LDxO0ui4AzXL6Hze4yx4Ijzja9G/Tnhma1yy34PwbWR6hJdk4Td/ww
+	Gg6aaHVwBrfn5vAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4BB093EA63;
+	Tue, 16 Dec 2025 08:15:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BaqCEigVQWl3dgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 16 Dec 2025 08:15:36 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E54E2A09E1; Tue, 16 Dec 2025 09:15:35 +0100 (CET)
+Date: Tue, 16 Dec 2025 09:15:35 +0100
+From: Jan Kara <jack@suse.cz>
+To: Joel Granados <joel.granados@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	John Ogness <john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-hams@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] sysctl: Remove unused ctl_table forward declarations
+Message-ID: <gkuyseuq2v4y2dl5niufwx2egwrk5a6nhrn7k5vspaorfz5jny@q5mz763kegl5>
+References: <20251215-jag-sysctl_fw_decl-v1-1-2a9af78448f8@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 mm-new 07/16] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-Cc: david@redhat.com, ziy@nvidia.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
- corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
- raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
- tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
- cl@gentwo.org, jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20251201174627.23295-1-npache@redhat.com>
- <20251201174627.23295-8-npache@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251201174627.23295-8-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215-jag-sysctl_fw_decl-v1-1-2a9af78448f8@kernel.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: ubppzreqyf15bd3k53i6chq7g89mjfbo
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1C7D3100005
-X-Stat-Signature: s6zgcd9mwah9t8u79wew3s3admdf5qq4
-X-HE-Tag: 1765872745-687355
-X-HE-Meta: U2FsdGVkX19BHLBcnnrTZS2O1o3NKEFFH0gEyABJO6j+s1JyveMIoEud5wqhuAlu6eL2rpQQt+evfTePC5fZHa+rpEzjaUhu1kHRySJUDtrjl2s+eP6LSrTN/yoekg8pucWlRawc+wK6Wzprq2ZBqa/rKVFuTC0q8/JXQRjePy+o/TfHVIVv0xGvWuSnZL0Fqmbh51tBt7pMgDEX7b1aSaH0FxOTE4MsSgM5k8OcT35ERW8+dnFAOr36W6I+qd/AGdUobDgtaqsQvmhRF02P1xrvCIdqBJU5RrLqnjvbV/Z5iFITqJJmFAq/xwY59WAADABJ3f2JbVkj210PmwmiwzyydAZvt6nUyfQX/wo8pYNKqRR4Bh6orM2+4kgNj624ccUCpJrRIf8JX0Tg/CUaKk1+AWn84orUBgbWnh0PHAKkH6odE6NCZpZoN6oJBCX94VJzVtapcCHEqfUO+5PmnmMqi870BzqnyD5vISzY87o7LdB+Zosk577cLffATodoj2MqkK6+7xpkPXDeMb+jYqVVwdce9xvw8tVNADYQGuI5UIRRfcDMLM00HqfGbMgupcswOyVlbDX2YYPeQRS5hZ9uOJdbTupUDNx8wdl7KtlBCQ9rjdfGcLcCx+bZI9le4pJJAbQoMKYYUZ7it4ljB9C32TPN3kJDg54zp/iu4SXb2nvo00oujJPmYK2v/hJB7BBydCVxxzeP73yBd9Z7gJLgqcEQdM5P1AeBWTpNqB5jxM6XVjcgi3oRmFlYRBF+YZyN4ye0Lx0YJHNpVtwvZkY2yM/KcMesO0mSGha0zn8gpfvR1qGtAU+L44rpNP44N9JR/0y3TyjEbPv+2nsp+yuv1ybKxYw93beFUibbS+2G4qhQFdXFdMipECenK89aU7gfeYfxltlcuYcYvtzO89dqcuRgbHh62ce2/26869ghpFYNR5VqxzUX7u3AdP+gcIxNxYGtRfz+wTFe7Bd
- 4NVFvwfa
- HiDxzXA5171fhpAsB2FfUnvaZmj50FPKuBP6iKX5giXPeKmCOZuSKgjorrMmVBIFyDpFxViCGH+7/obOwaA/2BXYAqgCHclsSS78lpJIBINfGEbqTKXPX3M7DW9su6iDMZ4daxHgh56dSbXIED7sDCnRJOT1AwhhlHUuFRjsM9h+LbPzek7nYrvHeHoDuArgd0tppspZQzfhpp7TWHcad24Bpohg+mQbWlMgmYeNomo3gLCO/Lkt3hFgvjgPNxGtMF2gRE6WEFU2huyi1x/NFfBlxuirXKwT5Tbbaf02Tx2W97aJunhejN9pVTmj2bjEv6p5jjJNNQPoF/fzPVecIDzpC3PiA08RNKUTduBSZO1YroOG8WRx6gWC6t9qxIuMyaYfZdJc9nknCVNXezq+D+zjPkIgSatDZ80fHQ7GQYIFmq32MU5Gb2iuFtEFYfeGXg9NmTIbC+m73Pd4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD8031A0003
+X-HE-Tag: 1765872939-529077
+X-HE-Meta: U2FsdGVkX188W2psoXydPd2U94FV568uRMCUOtz2hyr2nCJHodbnVVvEqrIg3sDkdg0u6cBKKr2qws911hRZoKHyhIWA0bIoBRTMPhJjCj2h5jNj44u4WONTV/89Yyu90KFpBOUNkiXtgiM2/Lsa8UT2tZfjEHbpqE65YVeFFxsijtUfCqCzXsZPEjwdej6TlJ6DCIeyx011cRNSC6NqufwiBkUcw7td2gd3jeor9gBAWtJT68C6kWpH2CK09IhFGFHJsS1NwKc1TATmzlx3/BK4OioA/6QwyjZyIwoG/7YwIo8HXBy2c+w6mttouIZkNyVpLN7evuAKhq3Rhp2VKo4cEjy7mQD1q8BK6no5g94in+Oh7HpHDmV/Q9J1pqaHU4qxkoyRQaDsaNbC7/i4zCelW4RrXCcNS6rsEepqetOdwncVpH9PE+riZyydgmrcu8OAtYf8AzavhPB8cy5UjhHRbR+obQ3Q5/Zc4pKFk/bDjOIWG7NvhwyFw3Pru1lVO66zOKdDaaHImvSB70dA0dgHPLMLQnxt7ld8tlnAGSJ/uE1AZ58OD254AneEM+Zuuo4WhVh5i9kPMa4IXlLuxdnqtox4nK8De94KO7QMgNvPKqcKJBIBpD+zQt6z9qx6k9ngBa7jRV9U1snzoY8ER4f3zMw922j5Kl7uW4WfNo8c9j0PMXqmuBIhYlIsMMqR/GPAYmPGrxLyT7qDWykk/4t/wOrRjvLtjd7WRzs+C0mokUMAtSffn/D27pacfOACvaHtmCKU08jhcQLA8HBh43wK0ATUv9T7TGLiMcSYKIMZNz2+x/b6NNrKrDdw6OBHmJBWn9MLlRVU6tHXVlsy+XEZFgMckCdNGusFIfp8liJ6WIUP2UmLakZQk4Isq7QQmTfJV9/pjiuwahbxFhdRdorFHXVmIwZVxvWI8Ekegu8o13nYnvVssHqPM1HT4Am5g1DsiMpRKUboy+B/gHt
+ iIzaQJSQ
+ USHwe9SRFmQOHP2h1N68fyG5o58ODEw98HINhrSzvg2Sx7worzM0qf0DKqDLmaecqJG+A3n3I5xvzz8iK2PbZ8SDfw9ElIPdf5Zq71Tq+KQBH1DQAcO8nxZG+oicvrI6Ndc+FWBNLohvwppjojE885zojdFPkrYidh621Oe5RNsw211H6vFhbFxsipFM5doxp6YtvK48I1b3oepqzP78q3D6cjX4HpkbE9ZiMwVb4IrmNJzooeUW9NfkbB7Efe36Bf4VRa4BVMyrgwUE+zMJ8FkrjGmSJuwIict+T+cmoPlSFsmZLv0+PwQv5L2xfW5vwPnbgyafdvGASih1EAC+O5PLu2niwl4maI/sVTxVMWlHU9rm+jr4tb1qjzLaa28tCgWMsPoyLoiUyRbaxvOrM/gejFB8QT9wM9NvvOMKO9+iennxSMRGZDyGLwk9rPQ7k80G6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,152 +140,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nico,
+On Mon 15-12-25 16:25:19, Joel Granados wrote:
+> Remove superfluous forward declarations of ctl_table from header files
+> where they are no longer needed. These declarations were left behind
+> after sysctl code refactoring and cleanup.
+> 
+> Signed-off-by: Joel Granados <joel.granados@kernel.org>
 
-On 2025/12/2 01:46, Nico Pache wrote:
-> The current mechanism for determining mTHP collapse scales the
-> khugepaged_max_ptes_none value based on the target order. This
-> introduces an undesirable feedback loop, or "creep", when max_ptes_none
-> is set to a value greater than HPAGE_PMD_NR / 2.
-> 
-> With this configuration, a successful collapse to order N will populate
-> enough pages to satisfy the collapse condition on order N+1 on the next
-> scan. This leads to unnecessary work and memory churn.
-> 
-> To fix this issue introduce a helper function that will limit mTHP
-> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
-> This effectively supports two modes:
-> 
-> - max_ptes_none=0: never introduce new none-pages for mTHP collapse.
-> - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
->    available mTHP order.
-> 
-> This removes the possiblilty of "creep", while not modifying any uAPI
-> expectations. A warning will be emitted if any non-supported
-> max_ptes_none value is configured with mTHP enabled.
-> 
-> The limits can be ignored by passing full_scan=true, this is useful for
-> madvise_collapse (which ignores limits), or in the case of
-> collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
-> collapse is available.
-> 
-> Signed-off-by: Nico Pache <npache@redhat.com>
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->   mm/khugepaged.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 42 insertions(+), 1 deletion(-)
+> Apologies for such a big To: list. My idea is for this to go into
+> mainline through sysctl; get back to me if you prefer otherwise. On the
+> off chance that this has a V2, let me know if you want to be removed
+> from the To and I'll make that happen
+> ---
+>  include/linux/fs.h      | 1 -
+>  include/linux/hugetlb.h | 2 --
+>  include/linux/printk.h  | 1 -
+>  include/net/ax25.h      | 2 --
+>  4 files changed, 6 deletions(-)
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 8dab49c53128..f425238d5d4f 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -463,6 +463,44 @@ void __khugepaged_enter(struct mm_struct *mm)
->   		wake_up_interruptible(&khugepaged_wait);
->   }
->   
-> +/**
-> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
-> + * @order: The folio order being collapsed to
-> + * @full_scan: Whether this is a full scan (ignore limits)
-> + *
-> + * For madvise-triggered collapses (full_scan=true), all limits are bypassed
-> + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
-> + *
-> + * For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the configured
-> + * khugepaged_max_ptes_none value.
-> + *
-> + * For mTHP collapses, we currently only support khugepaged_max_pte_none values
-> + * of 0 or (HPAGE_PMD_NR - 1). Any other value will emit a warning and no mTHP
-> + * collapse will be attempted
-> + *
-> + * Return: Maximum number of empty PTEs allowed for the collapse operation
-> + */
-> +static unsigned int collapse_max_ptes_none(unsigned int order, bool full_scan)
-> +{
-> +	/* ignore max_ptes_none limits */
-> +	if (full_scan)
-> +		return HPAGE_PMD_NR - 1;
-> +
-> +	if (!is_mthp_order(order))
-> +		return khugepaged_max_ptes_none;
-> +
-> +	/* Zero/non-present collapse disabled. */
-> +	if (!khugepaged_max_ptes_none)
-> +		return 0;
-> +
-> +	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-> +		return (1 << order) - 1;
-> +
-> +	pr_warn_once("mTHP collapse only supports max_ptes_none values of 0 or %d\n",
-> +		      HPAGE_PMD_NR - 1);
-> +	return -EINVAL;
-> +}
-> +
->   void khugepaged_enter_vma(struct vm_area_struct *vma,
->   			  vm_flags_t vm_flags)
->   {
-> @@ -550,7 +588,10 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->   	pte_t *_pte;
->   	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
->   	const unsigned long nr_pages = 1UL << order;
-> -	int max_ptes_none = khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - order);
-> +	int max_ptes_none = collapse_max_ptes_none(order, !cc->is_khugepaged);
-> +
-> +	if (max_ptes_none == -EINVAL)
-> +		goto out;
-
-After testing your patchset, I hit the following crash. The reason is 
-that when 'max_ptes_none' is -EINVAL here, it shouldn't goto out to call 
-release_pte_pages(), because the '_pte' hasn't been initialized at this 
-point, and there's no need to release folios either.
-
-After applying the fix below, the crash issue is resolved. I'm not sure 
-whether Andrew will help fix this or if you will send a new version to 
-address this issue.
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 8cffaf59ced8..2e8171a6d7df 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -646,7 +646,7 @@ static int __collapse_huge_page_isolate(struct 
-vm_area_struct *vma,
-         int max_ptes_none = collapse_max_ptes_none(order, 
-!cc->is_khugepaged);
-
-         if (max_ptes_none == -EINVAL)
--               goto out;
-+               return result;
-
-         for (_pte = pte; _pte < pte + nr_pages;
-              _pte++, addr += PAGE_SIZE) {
-
-"
-[  565.319345] Unable to handle kernel paging request at virtual address 
-fffffffffffffffa
-.......
-[  565.319409] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000001f8549a000
-[  565.319416] [fffffffffffffffa] pgd=0000001f85f2a403, 
-p4d=0000001f85f2a403, pud=0000001f85f2b403, pmd=0000000000000000
-[  565.319427] Internal error: Oops: 0000000096000006 [#1]  SMP
-.......
-[  565.326733] pc : release_pte_pages+0x68/0x178
-[  565.326960] lr : __collapse_huge_page_isolate+0xc0/0x748
-[  565.327232] sp : ffff800083593910
-.......
-[  565.331476] Call trace:
-[  565.331664]  release_pte_pages+0x68/0x178 (P)
-[  565.331940]  __collapse_huge_page_isolate+0xc0/0x748
-[  565.332249]  collapse_huge_page+0x4cc/0xa70
-[  565.332510]  mthp_collapse+0x254/0x2a8
-[  565.332754]  collapse_scan_pmd+0x5a0/0x6d8
-[  565.333010]  collapse_single_pmd+0x214/0x288
-[  565.333275]  collapse_scan_mm_slot.constprop.0+0x2ac/0x460
-[  565.333617]  khugepaged+0x204/0x2c8
-[  565.333992]  kthread+0xf8/0x110
-[  565.334368]  ret_from_fork+0x10/0x20
-"
-
->   
->   	for (_pte = pte; _pte < pte + nr_pages;
->   	     _pte++, addr += PAGE_SIZE) {
-
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 04ceeca12a0d5caadb68643bf68b7a78e17c08d4..77f6302fdced1ef7e61ec1b35bed77c77b294124 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -3487,7 +3487,6 @@ ssize_t simple_attr_write(struct file *file, const char __user *buf,
+>  ssize_t simple_attr_write_signed(struct file *file, const char __user *buf,
+>  				 size_t len, loff_t *ppos);
+>  
+> -struct ctl_table;
+>  int __init list_bdev_fs_names(char *buf, size_t size);
+>  
+>  #define __FMODE_EXEC		((__force int) FMODE_EXEC)
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 019a1c5281e4e6e04a9207dff7f7aa58c9669a80..18d1c4ecc4f948b179679b8fcc7870f3d466a4d9 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -16,8 +16,6 @@
+>  #include <linux/userfaultfd_k.h>
+>  #include <linux/nodemask.h>
+>  
+> -struct ctl_table;
+> -struct user_struct;
+>  struct mmu_gather;
+>  struct node;
+>  
+> diff --git a/include/linux/printk.h b/include/linux/printk.h
+> index 45c663124c9bd3b294031d839f1253f410313faa..63d516c873b4c412eead6ee4eb9f90a5c28f630c 100644
+> --- a/include/linux/printk.h
+> +++ b/include/linux/printk.h
+> @@ -78,7 +78,6 @@ extern void console_verbose(void);
+>  /* strlen("ratelimit") + 1 */
+>  #define DEVKMSG_STR_MAX_SIZE 10
+>  extern char devkmsg_log_str[DEVKMSG_STR_MAX_SIZE];
+> -struct ctl_table;
+>  
+>  extern int suppress_printk;
+>  
+> diff --git a/include/net/ax25.h b/include/net/ax25.h
+> index a7bba42dde153a2aeaf010a7ef8b48d39d15a835..beec9712e9c71d4be90acb6fc7113022527bc1ab 100644
+> --- a/include/net/ax25.h
+> +++ b/include/net/ax25.h
+> @@ -215,8 +215,6 @@ typedef struct {
+>  	unsigned short		slave_timeout;		/* when? */
+>  } ax25_dama_info;
+>  
+> -struct ctl_table;
+> -
+>  typedef struct ax25_dev {
+>  	struct list_head	list;
+>  
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251215-jag-sysctl_fw_decl-58c718715c8c
+> 
+> Best regards,
+> -- 
+> Joel Granados <joel.granados@kernel.org>
+> 
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
