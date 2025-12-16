@@ -4,94 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32BE6D5C0C0
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 03:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89C6BD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 04:16:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9404C6B0005; Mon, 15 Dec 2025 22:53:24 -0500 (EST)
+	id D70536B0005; Mon, 15 Dec 2025 23:16:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C4696B0089; Mon, 15 Dec 2025 22:53:24 -0500 (EST)
+	id D1D4B6B0089; Mon, 15 Dec 2025 23:16:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C34B6B008A; Mon, 15 Dec 2025 22:53:24 -0500 (EST)
+	id C46CE6B008A; Mon, 15 Dec 2025 23:16:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 670556B0005
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:53:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06FB5C046D
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:53:24 +0000 (UTC)
-X-FDA: 84223964328.12.11C3220
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6A67980009
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 03:53:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JB+5ejqX;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765857202; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B16CB6B0005
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:16:45 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 668BA135D23
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:16:45 +0000 (UTC)
+X-FDA: 84224023170.26.54B0902
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5E1A120015
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 04:16:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765858603; a=rsa-sha256;
 	cv=none;
-	b=RINN6uTP+ernIz7reVgVHTHZ3foYbMxSLQGPMaozdCwcQOTi9+JkrXAz0xLdRRDcdSIcKJ
-	sCs7Uoeeu1+G1wftmj6PZUpNYNJU2EdnHvs1JDlViJgwLk3wS7RN+rQS7tvNlqHuMX6hs1
-	JRoDLWyOava1reSvtucOi1o4d0NzfdI=
+	b=LewprIFDS0Rd+owi8fw5Ps42a8La5RXXoAV2yDPh5IRU0qaMIfOi2FT3FTdESwa4bIyIsJ
+	oxFgPhjAgoNtiB/eSHGpjF6UmnFmBskT8y12SYTj3IvV9kGg04hykrVobqI+qb2FrM0Al4
+	TQ8UoBJcX4/q7XOydXX/DSWr+IL+cB4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JB+5ejqX;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765857202;
+	s=arc-20220608; t=1765858603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=64NwuPvbdpCK0JttfTKet//HJpHaJvO+yNGslTME2Zk=;
-	b=xaIVS6Pl7fEJgDHTcqk8icLspIsELyZEqZKbJmAabT7QPSh/uWSzby2coctu+uDWyrqh85
-	4MHvHNK4k30qWsa+VkcAA52qvyIxhJzinli2dR3Ge1Itp7xDsrqM47jmQX2DYov9kF/5EX
-	XzD/hpLJiFAUfNbUft384nwbCbJOgRs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=64NwuPvbdpCK0JttfTKet//HJpHaJvO+yNGslTME2Zk=; b=JB+5ejqXSSsBBruNtD6JEmqINs
-	urZTRcjrObJDhcfY2uYv9C3omLGiQsTACPBJ/NWJ5aTok9fOy9vboRY5mkQJjrIhBmywBKRID+OdA
-	a/+8M2WyYWsIa+5yY9MMo9RKm/4SQtTUHLUwVn8WLd7b9by4d7+669qPl8LyRAyRvHDyiENT61L6S
-	BMt1HV0+Y5crydJdX2vXu/IRLCC5W05ChrMgWQfFhBPOSzl65pJlh8dPRL/vBVT4tRJUr0LoM6rGb
-	G9oRBwO5yZHIwC9Zryswo+NRT7MUSX7QB5j/xTs0RwteHxrJKNnAXQ0nhm+Eq46X1dXh/VzUybdFw
-	dNsfrskg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vVM7h-00000002mHM-3hBf;
-	Tue, 16 Dec 2025 03:53:17 +0000
-Date: Tue, 16 Dec 2025 03:53:17 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Luis Chamberlain <mcgrof@kernel.org>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+4d3cc33ef7a77041efa6@syzkaller.appspotmail.com,
-	syzbot+fdba5cca73fee92c69d6@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/readahead: read min folio constraints under
- invalidate lock
-Message-ID: <aUDXrYgwZAMYkXVu@casper.infradead.org>
-References: <20251215141936.1045907-1-wangjinchao600@gmail.com>
- <aUAZn1ituYtbCEdd@casper.infradead.org>
- <aUC32PJZWFayGO-X@ndev>
- <aUDG_vVdM03PyVYs@casper.infradead.org>
- <aUDOCPDa-FURkeob@ndev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LRoQepTTveRGU2lDfrtpY1CS+ndT+8mYNlsc4xdCDWc=;
+	b=VJvNX9NqokYAoKXvoik6GgykMIGN54nJnzc+nozIcvqAwokCPuONWVALRSgd1Bqm5s/vKa
+	N9CqHHfuXLLAFeLCQTnCbUa0CVOo76o9hDnTbwniQZti2uKV0FxP7RygAq9pDmvXeZ9WWk
+	scYv1ff23fm/WEW8zHcYZzLMJHrksuw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF353FEC;
+	Mon, 15 Dec 2025 20:16:34 -0800 (PST)
+Received: from [10.163.80.100] (unknown [10.163.80.100])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 739BC3F762;
+	Mon, 15 Dec 2025 20:16:40 -0800 (PST)
+Message-ID: <66068425-c9b2-475e-81ad-98f410d33b45@arm.com>
+Date: Tue, 16 Dec 2025 09:46:37 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUDOCPDa-FURkeob@ndev>
-X-Rspamd-Queue-Id: 6A67980009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: w45m3bs6m7ca3yh41crjotshbaw44ok3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/vmalloc: clarify why vmap_range_noflush() might
+ sleep
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251215-b4-vmalloc-might_alloc-v3-1-92dd8e406868@google.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20251215-b4-vmalloc-might_alloc-v3-1-92dd8e406868@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5E1A120015
+X-Stat-Signature: w4bahjxg8ewr1bz5nqwqxyp9wnkhmr4g
 X-Rspam-User: 
-X-HE-Tag: 1765857201-724845
-X-HE-Meta: U2FsdGVkX1+RtztwN/QhLhXddYVS3hOqmugBtiA9paio2fDF4lYghHPmKKOjWH/oaCyO14F0ivKTWXZU55juiZJvkvR+XEdIe8RsIiPWH6Sm8KBSyvZCB0m3VItDppnAG1ASfH/MspK2FtYeEmsEHdSMmE8rNsCW4nWCF2tYk03GvRn39KmjuNZxg6+Xrbtu94ROkjPlpsjo0USBhRgfE67K6CGkioYpQswIPQstty9ndjofdNwUFBv2OQMBtKMOUGkFak5RW7fuSZuKdbInQG083NTUj4OBq3G7fdb93U1hEQfGHw9F+nPypOxx7OzGgbXYf2pZ3+MPeIfhvqRIhP3ks0ynISB8EQY+VB/RMvPe5V/Enz7h+FedFx5VzeOVoWB2CbFT5WrbVhAqsDHlhuOlPtVwfe/6AfMEJog4RCUDeP4EINTs9YJi8EQFjBzMBbba/iqIwehYCvYP8bfFOAZOmTZ4sAbyucXM8ZX94zdujWs7oNE9x2dDRAYxIfLPoI1Q+E/sNOyR+X0zOfo+GhaVXE9BwGwL3TD5eXk4HddBUqf2rNKUHhmUEfpjO9PUP81s/3MgXMrxN4o41kBkDf8y12r82JUcrzm5pgcGfLSHVGbZj+IcGzsi1xkDYx2ydQJoxSPiMd+Vjvtg0q6FbMVO45uX+LDEmZznyaOaFXIA2lkCFQLegyBglbR8J7zVQ5jg6bRcCkwWiCeZHzgJEHmY/os76JeajjXdnvQbz3WqLfhT4KNvEZBCsHDJ7Bkoyy7FPptEN1JR9YQCzw56IsW+uI/XQNdnRxCS/L7Xm/JqyukfTXMvwYjWQhLw6Owd6pqYTk5Yj6aenN66F70x8gXXlbuszoEaHTo7kmalF+HrVebQGbDS/me8V/7KZ6jPq6FZRlHiaC9pY5QEgWtXr8IYqpLaorUHlDUC/tPHXE/6oYKmbp53evW5kDv4vu3V8yWpoee3oFFhH8j5EwP
- C+YsZTro
- ogLp0sHOcLpko4e15tyz4oXLWY17SieNrGYzS9vQwHsCrWuaqyfaXDQRjcw7ngmg7pXmwu73UyzRcZ4SL0qfFzDDfdP8lgD8ju0BiGFl4SY/M//srK3PdWxRANmtvC5he0FY2aesq/V2JmtrGW5cQGmq4d5GvRxvu5S/13L80N7hpPm/cR8LrcLCSGnIoeNzJ94miEhEsGigtrD57xTpaPirhSd+VocpET5W2t5USmOCiFfXLHSfoA9ywgjE76lWko1CmIhbSY0TdWZDtBsBI6/FKhi52jSuTBNJVKHI54Ut0BZIMIprYvrAcYKvprRtELEexPabGFZfvBz8JT96oShTz+6vQosK1iHMn0J8A3Jfo+jQlv/Alc+2hJw==
+X-HE-Tag: 1765858603-21877
+X-HE-Meta: U2FsdGVkX18tIKU7Mey1bJx8Y794EMLS7XvwE8w7MgKEA5swxZQoRPvBpKoX2O7wgT0c0OpL/z575YCj4XmRPxhW09fL62jTbsHmMdWMS/rXn0Z9aWUxIpQfqsgTZTYEk48KRA4YNEWCsWzZH06IryGL7lYor50YYV+NUwZoxkCWTNgnctXJYzyLZgJ84VQ7e30mYA5QgYNUYCA+amPUpLNPKKw+cxjyJNmRvXSST5Djk8w5UyblvD4mVFHHj2p1pkfMNubvlA2ieFEWJ125G4WBKo8Ooi4133uqn77WPvwkhL7P4yS6VIi8yQ6uKCcfRadmvSUSgW5+Zf3DmsGFp+D6glOrBCgDvZh8rr5gfd1MSDsPcWLqSbKEpRNAMj2DYbniZ+uv3GQ79LSM/zfvP6sr9X5bejIXVQgySszG0y+9WOztMHGYSdkYju4C28GMCPPrqpjqV+rDOB4i3U4bhbADSB2cLG3kaeRLz6oii2qwT84LHawiFCr0I0HAY82ghBHHr76qPF358rCR9Jwbyy8lCjMUZUWHt9Dujk4b65viOS1d3ajkNsAHVJAKTfwdxrfNbeC0BLt8+m2uzNEGUj33Lyiz6utsc9CALQYSxl5uoKFRAJ+KyBgI++3CIMm7xrbd27fbMLaB0v9LGzNEtjH49/H7vgLW/L/SIK50l06PAcb/LyBsvKPIgMmtR5AX5Tn2qcv9wocDM3OjioiprU6q+0Wvci4DWZl6HcC27QA/Qg4XXgYgqAt/j4L6jfqLDogXOOXqhGZ0xg/bQlm3sHLZp+lQKgBkrLVJ6TnznNYCmJiAmggyOcV36csPNWK22FimTxtCGWrCX+5oRqY7hsKMJjTAa+9yhR1hf1f49Gzb2tL8i4H13yftbueyj+GZWxFZyE66HuwtchvnHewwG0kBKBTTSmp9+vGSJ4aHGSvYcw1/42Uyr8xtdt1gITI5278kTSEYshYEwZIPphg
+ 6VDcBQCk
+ FchnY0XGf2jvscp6pGU21X/o0p0qL7OWJi5et7KprmZrwm/1JrQkipsMMAe9VhMjHH7q8kI3e6JnMMkUfWMnY6pddzJCQSOrCBuzJaCR99o3arjvENzWvOQPDAcs6D8NdB3aM0vWzheznQN4hJcbBDE0DJVsZj87PBWJr2/aQokdFBfhRWwA0ajm405bTFEDaO2IdarT4yaluImuINXb10pWTikITM2Ouc7ZPl9A7UohGXsx6lv+10LK3EJYh8RbotsWUlDwvtI5YHBl8P3jPtqvOT3KBAtrZPPjR0IsNS5r+1Y0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,33 +87,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 11:12:21AM +0800, Jinchao Wang wrote:
-> On Tue, Dec 16, 2025 at 02:42:06AM +0000, Matthew Wilcox wrote:
-> > On Tue, Dec 16, 2025 at 09:37:51AM +0800, Jinchao Wang wrote:
-> > > On Mon, Dec 15, 2025 at 02:22:23PM +0000, Matthew Wilcox wrote:
-> > > > On Mon, Dec 15, 2025 at 10:19:00PM +0800, Jinchao Wang wrote:
-> > > > > page_cache_ra_order() and page_cache_ra_unbounded() read mapping minimum folio
-> > > > > constraints before taking the invalidate lock, allowing concurrent changes to
-> > > > > violate page cache invariants.
-> > > > > 
-> > > > > Move the lookups under filemap_invalidate_lock_shared() to ensure readahead
-> > > > > allocations respect the mapping constraints.
-> > > > 
-> > > > Why are the mapping folio size constraints being changed?  They're
-> > > > supposed to be set at inode instantiation and then never changed.
-> > > 
-> > > They can change after instantiation for block devices. In the syzbot repro:
-> > >   blkdev_ioctl() -> blkdev_bszset() -> set_blocksize() ->
-> > >   mapping_set_folio_min_order()
-> > 
-> > Oh, this is just syzbot doing stupid things.  We should probably make
-> > blkdev_bszset() fail if somebody else has an fd open.
-> 
-> Thanks, that makes sense.
-> Tightening blkdev_bszset() would avoid the race entirely.
-> This change is meant as a defensive fix to prevent BUGs.
 
-Yes, but the point is that there's a lot of code which relies on
-the AS_FOLIO bits not changing in the middle.  Syzbot found one of them,
-but there are others.
+
+On 15/12/25 4:10 PM, Brendan Jackman wrote:
+> The only reason vmap_range_noflush() can sleep is because of pagetable
+> allocations.
+> 
+> The actual allocation mechanism is arch-specific so might_alloc()
+> doesn't work here (what GFP flags would be used?). Hence, just add a
+> comment.
+> 
+> Also note that this might do a TLB shootdown. This is not actually
+> sleeping but it requires IRQs on for x86, and might_sleep() incidentally
+> serves to detect violations of that too.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+> ---
+> Applies to mm-new.
+> 
+> Changes in v3:
+> - Added note about TLB shootdowns and x86.
+> - Since the comment no longer fit on one line anyway, also be a bit more
+>   verbose in general.
+> - Link to v2: https://lore.kernel.org/r/20251209-b4-vmalloc-might_alloc-v2-1-2462ba26ead1@google.com
+> 
+> Changes in v2:
+> - Switched from might_alloc() to keeping might_sleep() + comment
+> - Link to v1: https://lore.kernel.org/r/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
+> ---
+>  mm/vmalloc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 41dd01e8430c548167d6123f6ec66bf798f20eec..be4e5f2566a4490d45de29568df538b7c8515b01 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -305,6 +305,11 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>  	int err;
+>  	pgtbl_mod_mask mask = 0;
+>  
+> +	/*
+> +	 * Might allocate pagetables (for most archs a more precise annotation
+> +	 * would be might_alloc(GFP_PGTABLE_KERNEL)). Also might shootdown TLB
+> +	 * (requires IRQs enabled on x86).
+> +	 */
+>  	might_sleep();
+>  	BUG_ON(addr >= end);
+>  
+> 
+> ---
+> base-commit: d0a24447990a9d8212bfb3a692d59efa74ce9f86
+> change-id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
+> 
+> Best regards,
+
 
