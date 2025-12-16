@@ -4,88 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F97D5B87A
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Dec 2025 23:16:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE68DD5B874
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 00:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9B6A6B0088; Mon, 15 Dec 2025 18:16:46 -0500 (EST)
+	id 9D4C16B0088; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C48A56B0089; Mon, 15 Dec 2025 18:16:46 -0500 (EST)
+	id 96B3A6B0089; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B72026B008A; Mon, 15 Dec 2025 18:16:46 -0500 (EST)
+	id 86D5E6B008A; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A34646B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 18:16:46 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 56AA91602D8
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:16:46 +0000 (UTC)
-X-FDA: 84223267212.27.2B16D36
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A5AE7100003
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:16:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oyzyNvcb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765840604; a=rsa-sha256;
-	cv=none;
-	b=EgOGDqxpPX4skKQFJdTRIZ39pyO2u/KO4dUFapLrJBBpnwkttgno3CVGh0LQmLTlhpKxYr
-	iU+Hzmc0D8YBps5G1bEYpyhuLBmAyo+ghPgxGQlcFEBfSluC8Krz5WdA61Ldni3F6rrErK
-	UQqZmBDmUfbwa4xwcuIHBGiq2gY04UU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oyzyNvcb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765840604;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FC2B6B0088
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 19:12:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 011AA1A0149
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:12:17 +0000 (UTC)
+X-FDA: 84223407156.08.6F00737
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 20F8018000F
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 00:12:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I00zHyzj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vannapurve@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765843936; a=rsa-sha256;
+	cv=pass;
+	b=ExXhG33pwMQUDNh78Q6OdjJ2yk/FpZcDt/BQJYPN+T21fr+Za63WC4L1PvhxULQdYr8j/s
+	UcaiG7wGCKKUJD6JBm3hn+GL5AtIwh0Hg3m4ugn4jjJxthcGOPzRYG1EW0J/J93DUQ+Mf7
+	G8Jm7AwCC4/JeV8dIJxspN90X1u+l4o=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I00zHyzj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vannapurve@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765843936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bw2Wr2n/OPKCaGd8Z7/UJ4IfK+ln2wk2oJAiMQEvf0Q=;
-	b=CHJwAOSCTUH9FkjBgmWVS7PiMni2aTsHjX7HliJsmueumTIC11YLFSXtia3JlTZNDY270r
-	h+u3V7KaPdXpU3s3NYypIQsm4hTJLMaFoCjE35AEO5Wd7F+cMzh/Sr1UBbr1l5OlZL4MyS
-	eR5cQL+cQ/ScptTAqJnlzY6751bT90k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62476403DA;
-	Mon, 15 Dec 2025 23:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4769FC4CEF5;
-	Mon, 15 Dec 2025 23:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765840603;
-	bh=PZ35LkCzpVRKzVKeLttzifl9x7vaCDcVkiyt89U3mCo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyzyNvcbBEa5qXzKfUVDKZKRmJwP+PH9EmJ1xonOu2pAgkDZHuZgDDGlGNsDf6mB2
-	 0KWP0pQ7YU3IabC6xCSZqMM/lIU9joxRb7xTDF2haoMSffKXb5ysad01DpPriwXAsg
-	 TE3jsIh6FNit1U22giRHgmkuGVsEViExdy/r3Qj0MdU8I+wVWpN/cLhJ314K9kJO3V
-	 HnC93YrQxcydJXiPuQ6aiGppYg0lsjcHEJ4+88ktZ3EfPZ2b3B9oSm//De/68YatqY
-	 pgkmz5E4BhglxdaY6gVfn1AITsjdwM0vpU59LA2LjNn5F+b+1XMYIl4h3H7r36yW4m
-	 xmcV9B75a/V1A==
-From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
-Date: Mon, 15 Dec 2025 15:16:38 -0800
-Message-ID: <20251215231639.56448-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251215142057.588500-1-lienze@kylinos.cn>
-References: 
+	bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
+	b=lxcvWxMVvzLF3WdRFIrWYjtoLIqp1kJpFwmFgYpurWyEnp47aa2pcz6ulmCK2o82zoU/uX
+	nzFNRTNA9v06XvFlrY7lWaRooWEhAIFXKzb1C4EaT/PVAa1G1hGVLrzCaAWFcndP285Dek
+	c9Gw5D40llpxoHgYY+fKj7/WC7zMqDE=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29e7ec26e3dso46355ad.0
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 16:12:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765843935; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T7i26uMM3s+F9i8n6v8Yc55pEOMpCjThG+Z2LAw2A2WOYrydbhp6mprKxfZwfKXsJh
+         x4j1JXidDCDHHqICcJcvq8PD7FIYqv61Av06Z3ZPuVXSwzwhJg0ea8Kqx0X4HSV2TExJ
+         SzmJLHk0FQkGh3yBeRriJtrE+fX98AMQe1GyZt1qBNqNwADRmTWCzgsuwgwkmv4xuetv
+         W8oy4QML4IZsX/4+CbnlvvYfiQQAFo0qhkGTlOpOPcA5/zlEvBOT0ZMmsoyQqNFrE/Bz
+         NEWwB8znj4y+9XG3uJE0f7Qm8UL0+OLGM0hsOk6jtSRalZ6CynPuKbFhv1LYJkLQEOyY
+         s+/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
+        fh=wzHPo+V/Q3XuOB8neYQZIumTRDn7B+0niSDwvixU0Xg=;
+        b=cb5LFRVd0Yp1AFe8RwBAQuCGfxgcAXUgkQK2KVXvYlxYV9lxASxzNTtiUmp9M8j1DB
+         kUNqaDDsaloQULGW8UkaoQn7gFtJBVlqsJkdOH4xqJHjx4STOv9OMEOCFrnJoHbrmQka
+         isC/KD3ymLrCJgBFWBCfSxO6MABt2lVpD0KmPHGc6eOImpqQrfskY4hZuEfD3ee9bRQu
+         1Ck+vP8VCkYyjbLuYFK9OTh0Gfms8jhDAU3sHz46mS8LOASB8326ejHOLxzm1f5/pt6J
+         a83QrYjLEskFX+tOrpYd2mYn1v8JvtveTXH9OPhc+fOhCgB+GpNamZhsMrv+GmIGSFzf
+         jsTw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765843935; x=1766448735; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
+        b=I00zHyzjdDE+f7E1sUc441DjSRHW23Ww3/NXpEyo8KRUWN/4dWTBNUT3TgAFO2chYz
+         ig8i4k78b0WOol5bPYzieQjqk3LBXLo/sI4J1Mjon6qqA0st/7PxC+TWSxgT3xDSMimo
+         lcMGv0hpqNSflSZ+/XCkZgAf2z9TLvH6WBoIzIqm6Yp26WtF+d4HHRFu/cr1Q6gWKc85
+         pROwCkbASOiUSA93KcIU/TFsJeHH1PDy17+Zp+xjXW/7bPOhos/xQDni4by4QtplZ6YZ
+         ujWRhAPwfFs2fEUMMgH2MIeTUf5+8hJQJaCPEi3TbvqA+Vk/kuFVsxo4vUJ2av1qyHMZ
+         CU4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765843935; x=1766448735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
+        b=FDk8BHiLXYE6JJZkCvahzy1HoeuvEoMN+MgmcGgpZd254PuE/SGx3HGKljjnlUL1nU
+         TbopyCpX80SrHdVtBnvs1ZFoht3lsBRfZGfNFqEgKTbmpEfCkEK3wybo97udtB1qcYoH
+         zeTOaRjw63iahMDCzWO8q1cMijfiw84yEhH+E995f80WpTVfy9jrd+CMIcMeiKfaNKJu
+         73/JvYQmdqbqPxTa5KbgqYntZxdj6SDL4K20dvwhxEDeT+G6i4tDDWREbZphoX6cSNCP
+         LU1+Ec7n7GXA7EmtlG8Ew1S2gJRUOb6wxkEXrZ5vw5h5X9ZaRpnxPoqDhzIPfz1mjT98
+         Pp2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWvJlM97YT3/3uiErxEqrYKBGoWZ3OYZu7faMRL3FrX6HxEsT7UOASS4xOGrItkBaQd1NAVvy+VSw==@kvack.org
+X-Gm-Message-State: AOJu0YxPXWXFTssB+Rh8Bzw/TCasQYdsp4VNUPowFxVFqi7BdWlE1Irg
+	FxAKTygHq5pDDSFr4pKCCXwBDQH6cIkynk7ZFD7+Kjt8Dw2eBkat4+v1G64HqBPmM1QBkM7e4LI
+	efIxa0sVraPFBMCgRNaQ8wUmHHHhd27bWx8zmvCmT
+X-Gm-Gg: AY/fxX5jBJFTWbxVPVELvrdhBTg9orGkp7RuljvWqcZrdYE5CHBIIvI0EhahNmhPhe3
+	+OZJn1I/SrjmvXHWJjBYoOesK65iotE42/epPC9Yatb9S0d31xpwTF28wFZGFvMriwpH667j+5V
+	GIITFOz7hxhE5PynVA45hWBhwC5zI/qyt6DVxH8y19KLbSga8ElHwUFyuHCeurVeCTo4LJzGpna
+	4tFqXhNPeTwrd5/IK7fkuuKqwiowpjmpNbG9gi4VJ3qKRrS4aaveGLJsk5ALTRJ/WBMdz87wKsq
+	sL0dRX1lPZAfFSCkVb0jrRsgZAPj
+X-Google-Smtp-Source: AGHT+IFYx2fqkqoq7nwgp8s1TBunZASqxOa+paDvYopFfRkFHpqotvWma1Omazh+JGGMYTXawA8rx1OS57mP9gGziPM=
+X-Received: by 2002:a05:7022:68a1:b0:120:5719:6249 with SMTP id
+ a92af1059eb24-1205719637fmr3220c88.16.1765843934179; Mon, 15 Dec 2025
+ 16:12:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5AE7100003
-X-Stat-Signature: 8r43wib36tiqoqfhoxnya7rmw4t144dk
+References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-2-michael.roth@amd.com>
+In-Reply-To: <20251215153411.3613928-2-michael.roth@amd.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Mon, 15 Dec 2025 16:12:00 -0800
+X-Gm-Features: AQt7F2ra9396Gr4eNuUU-K7XtTwtvJ-rm6VSQCRwWNTFPqW7whDLIsPPpRjnSlU
+Message-ID: <CAGtprH95s5wL1=rSSpG7Cmj5HhJOftwJY7CP27WE-qmq7hr+XA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Remove partial hugepage handling
+ from kvm_gmem_populate()
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
+	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
+	aik@amd.com, ira.weiny@intel.com, yan.y.zhao@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 20F8018000F
+X-Stat-Signature: nbtc8m9a865em6jpzd1nixsxbbnw1rhe
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765840604-183457
-X-HE-Meta: U2FsdGVkX1+bgjuc6AaL+NUps/c1YfqDXdckZNMdzbM24yumVJDJoEW+BFPluHr1Sz74bscGsn4z7ty6PQ4zCF5uoys90MOaKwNI8lzIyrK0er2TwHXjEt2gae54gQcoozgwwYRqO0ALBIgDFR0nB5f3Zuij3dVYqhD51IjRHRKSRrgtpHXm6VYCd31bRAuK1K+8K6p68OsLO2+sqLhq8hjdXbiorBlImDvoVVKSwssZIyJoVaN97lszDaFmEYAooWAbJHBKI+IYqR88IaqkCglsrc+1/3fVLc3JUtRwXQgvw79sxZqWqRsGvpGH6MtLBh1GadiepjuklqnRvfhjkS7dYMzvMBHzK3dpOIq2snTj0deKjep1cjMmCtw1DNKhyDmfTrtq+88U8IJ7PeN/QRv+ORCuWeVZm7e34pMujSLGL25WQJVWNeukY5m7NcHL1FHLlaplRobBRYY3xSH+uMwmNaUQ7idCDPw+j0mnPm5y5KKAjxQZwMSqA8LWwW6+x/3rLePDe5MwDFC9l0GtP/ov48agmGJiuakzjA5gzdBXbSnaSbxfvZ/YV/mz2wC92ei/vBohk+/JMZgyUOeQrnWWjGPUjqSNRHDRHYs/0Cbfte8YZdN0Fiy0ddLSAPBvqG9el/kGNlqAqWR7UbSEcW5qIHk+VZlBM8yy8ZoSrI+oBW52p3ozYDCtaVsZdvJ0uYtCSb0UcegfH3Ly/NRpWit7j5IxZ3gFdh+C44rW6SN4Wm9bp6Ww+TM8hSfeeh2zW1lwakmpNvmTlDICQqmMG4X4NaOU+TlvGzR59IrO7W2y3T+fUVnYCFRy26eYfg5iUdH2EjdMNKpgTehoVaDJjWk1xpxB8jc8uNTHLwDlMe0hHz5ebG+kWrST4OqGbtCmIlIPXsjxBUx3HEKxUA+Rd3QjFAPvsn1TSVYChaEEHx3Z6XAM2zA66gl/K0LzHTAk+msHTR2Or3jmJYKq7PW
- 4DO97Mhs
- /SiJUCFshtrREFfASXrbCvBHwgZiuMqwfbUTmVa4PHwdG/OoA3LmdIETHKz0x6aSaOB/8P/JkWpFJdIuXEZfaha1h1L/PUgIxgU1/2HyjLVrPsJTgde91LczGPX/lh8YhatPV6C7WaV9OIa6v7cYwkAM9zoHy6Umyy67XVUEaLziYFz/FmAggCMmVO8YBVenraVThIL4FkH32A/I=
+X-HE-Tag: 1765843935-45377
+X-HE-Meta: U2FsdGVkX18C1QBMCUtUN8RH7ZT/9SznOf1xeVkTdQw5RNujWTp/66F1ZVt8vpYvXwYPEcnDRXElm9MY1qMFw2oo2Yg+nD2WsJJLf70BeqwaoUSJfMQks+XHD99VYMM+yhWTmehDR1Kg42VIoU3I9htY4F5NT67jdYTRpXH/4Y6J0j1w/xmdcd5cmQxdzRhws4LJG4rxbl0zdfah4domCVbfXkoAiO9wfKU69SgVgjXwoqVzMDGfwsBegyU9e6zm1nhgJqIwt0cRKeGAYNmYRCKAQhrttWfMC2aEOpb4VvmSWvTFv94as1npDMrd6POv8Feh2fqrRBLEGmNvYzopu//WwJYoBko6wufQOoIWDxBTuY3eSfybU3fvfdmke0OSnB3BBmL2uZon4pU0I2Emr8ZPh9Zrw6xhVrKVgDEfCPKncrgwlvv5pgULDyIeEELDV+YsrzWtOs4vOPVGSDe+lW+Rf52XK3sbii98KMZGOmN9Zp8wYvGjmTtCGp4XKvO3teMBQ+NfVhD0RBKb5+utYt2vcVw2iglLFK3TN7xlE45FnFa1MH2CJnjDDUjIJVkl/Tpe2N7yTnXikqPSQrkDpdmlNg4jJS8XT4kWSBBOqm1i9liVxCRRi+r6H0t0WDJwvFFMRpQ6cdsyQaPNzF0an1E+ARLXpO8ZN/Z6LAUNbC+P7D6Y1ZFRFhLDpDI+DaRA3m8SvHZ8SSuBL/EkjbbSzN4vLH+SA3+p3KDi4bb75kRESKMXeRCqB4jJm8IQoxxKaEF5Fr6H1H3qZLvZQkmrRt/9N8DzP0oNIvGqFv84qTVBBCPT2w8CWFiHwFvpXv9TY5ztvZ65RICHAPdQdZUd50G/AF4pr+qBnV/yUB+gYMC1N2ECHMxkpzxkbq2hYs79zYQ2iGkCRkGajfYa9EqyZaILX7wqnJgLW76K6zfPR+1L7CLeDCwhMuIHjsGANuHTPQSPZ/eVC7zCUSNHHAU
+ 27iAlbnw
+ R2mk3oXTKWCbiSlUoFJCEpi9lYEHHJUgBguBv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,45 +144,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Enze,
+On Mon, Dec 15, 2025 at 7:35=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
+ wrote:
+>
+> kvm_gmem_populate(), and the associated post-populate callbacks, have
+> some limited support for dealing with guests backed by hugepages by
+> passing the order information along to each post-populate callback and
+> iterating through the pages passed to kvm_gmem_populate() in
+> hugepage-chunks.
+>
+> However, guest_memfd doesn't yet support hugepages, and in most cases
+> additional changes in the kvm_gmem_populate() path would also be needed
+> to actually allow for this functionality.
+>
+> This makes the existing code unecessarily complex, and makes changes
+> difficult to work through upstream due to theoretical impacts on
+> hugepage support that can't be considered properly without an actual
+> hugepage implementation to reference. So for now, remove what's there
+> so changes for things like in-place conversion can be
+> implemented/reviewed more efficiently.
+>
+> Suggested-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+Tested-By: Vishal Annapurve <vannapurve@google.com>
 
-> This patchset makes DAMON's advanced memory management accessible to a
-> broader range of users through two complementary enhancements.  First,
-> it exports the necessary DAMON core symbols to enable building loadable
-> kernel modules.  Building on this foundation, it then introduces the
-> 'prdm' module, which extends the concept from the DAMON sample code
-> (prcl.c) into a production-ready, user-friendly tool.
-> 
-> The key strength of this module is its out-of-the-box simplicity: by
-> simply specifying the PIDs of target processes and enabling the module,
-> users can concurrently monitor memory access patterns across multiple
-> processes and trigger proactive reclamation automatically.  This
-> significantly lowers the barrier to using DAMON, allowing system
-> administrators and regular users without deep kernel expertise to easily
-> apply sophisticated memory optimization.
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index fdaea3422c30..9dafa44838fe 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -151,6 +151,15 @@ static struct folio *kvm_gmem_get_folio(struct inode=
+ *inode, pgoff_t index)
+>                                          mapping_gfp_mask(inode->i_mappin=
+g), policy);
+>         mpol_cond_put(policy);
+>
+> +       /*
+> +        * External interfaces like kvm_gmem_get_pfn() support dealing
+> +        * with hugepages to a degree, but internally, guest_memfd curren=
+tly
+> +        * assumes that all folios are order-0 and handling would need
+> +        * to be updated for anything otherwise (e.g. page-clearing
+> +        * operations).
+> +        */
+> +       WARN_ON_ONCE(folio_order(folio));
 
-I agree your points about the problems and the direction for improving the
-situation.  However, we have a module for such use case, namely DAMON_RECLAIM.
-It was designed for a reason that very same to what you described above.  One
-key difference between DAMON_RECLAIM and prdm is, to my understanding,
-DAMON_RECLAIM works for the physical address space, while prdm works for
-virtual address spaces.  Is the virtual address spaces proactive reclamation is
-what you really need?  If so, could you please further describe your expected
-or planned usage of it?
+I am not sure if this WARN_ON adds any value. i.e. The current code
+can't hit it. This note concerns future efforts to add hugepage
+support and could be omitted altogether from the current
+implementation.
 
-If the virtual address spaces proactive reclamation is really what you need, I
-think extending DAMON_RECLAIM for the purpose might be doable and even simpler
-than introducing a new module.  How about doing so?
-
-And, even more importantly, why it should be a loadable module rather than a
-static module?  Do you have a specific use case that requires it to be a
-loadable module?
-
-
-Thanks,
-SJ
-
-[...]
+> +
+>         return folio;
+>  }
+>
 
