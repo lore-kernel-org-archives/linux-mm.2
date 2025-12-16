@@ -4,133 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7CFD609C2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 17:36:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07AF3D609D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 17:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D02576B0005; Tue, 16 Dec 2025 12:36:22 -0500 (EST)
+	id 270866B008A; Tue, 16 Dec 2025 12:39:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86496B0088; Tue, 16 Dec 2025 12:36:22 -0500 (EST)
+	id 246E46B008C; Tue, 16 Dec 2025 12:39:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5A2A6B008A; Tue, 16 Dec 2025 12:36:22 -0500 (EST)
+	id 17DB86B0092; Tue, 16 Dec 2025 12:39:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EFDD6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:36:22 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E8E5BB016
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 17:36:22 +0000 (UTC)
-X-FDA: 84226038204.20.E388EBB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C308D140012
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 17:36:19 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iAUPFKFD;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765906580; a=rsa-sha256;
-	cv=none;
-	b=3LymO+YQOMl5Rp9GwwhNYC7EIBI/YObfLjFpKxK/5Lu+HAMnh7nut/uXt+f3iIv6sgYlT1
-	MLmoALzeVbOLQp3Z/ogP/ToPNGclhZI6lxzNJ0R2dIi5+8+dw07Gm8eq4ROVQNRFydbAQn
-	twrfI4MBj4xwbqSqEXsijEouIXjpf0o=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iAUPFKFD;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 058E26B008A
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 12:39:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 906AC130EF
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 17:39:30 +0000 (UTC)
+X-FDA: 84226046100.03.0171EA0
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B5CD620003
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 17:39:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DgJWFLA7;
+	spf=pass (imf03.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765906580;
+	s=arc-20220608; t=1765906768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hsPacWIswoNkPxm/WEWv6XOaNR0HsYkw9lp2v40LAGM=;
-	b=sfpllPI2uumHX7fpx3CQRU7GMB6FRExjDxWtTpFq6jBdy4JygYigX9PnqM/InSt3PSbSUN
-	Kt3qPGZKnIxekJCknbHwLM7qSuhz5jgFaw50EqTYh4zlFbyU1JquZ2Bi2C865ZBX77FTGK
-	Y15ShzOjGLxwslxCTFnji9u2sKE1CZg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765906579;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hsPacWIswoNkPxm/WEWv6XOaNR0HsYkw9lp2v40LAGM=;
-	b=iAUPFKFDtu9ThrqDwtpyplxcRpe2VvrprN0VrzELom6O9YJBV6ifUB6ENZMQ98Utz9a0+g
-	IxbZHidoA9GHcYN7OgtaA+9CYJ11kUezjZdzxZ3Y2yon30iLK7BHw2V0S4LcEPQ1Yq5IyI
-	SF6iXaxajV87EmdMm9O7CAtjIMF3Wu0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-qd_hTRemN0Kg6k0wZPKrUg-1; Tue, 16 Dec 2025 12:36:15 -0500
-X-MC-Unique: qd_hTRemN0Kg6k0wZPKrUg-1
-X-Mimecast-MFC-AGG-ID: qd_hTRemN0Kg6k0wZPKrUg_1765906575
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b24383b680so1749627585a.0
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:36:15 -0800 (PST)
+	bh=wDRVcNBtR+iW6Yf99Q/xL+9AQK2g/UaoVu1pJaWUN/8=;
+	b=2SAL9Nk4GTztrLnsHUYPHr+2UyVqXDooNQBFw5oFAdgxV3HW20NEmDb3JdUGz5U0me1fMM
+	ocUjdiANa0D1UTq41UBPfj6rt5v78sJlJZp2YRcBzJTOfLbTuZO3Ti9TSX8n7tIk02WId9
+	IXg+LwZip2L52lU7z8XOM7/R/Ng7NBs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DgJWFLA7;
+	spf=pass (imf03.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765906768; a=rsa-sha256;
+	cv=none;
+	b=j0Ez7Hf1qeuje/OZOB4rCqIYNkAtB/pjdoAPzpL4aVeqrTX5YHt0V1rl1hsLxpWllbGSUS
+	qdGDBo8nO5SjPbvAnbYVn6LlZU1i1i+gc86EDZjF+d/uflsvAhgmRxBXxqHij5aoh/Q6A5
+	xGvedbHNt2IZLgAEr8Pl4WKQIWfJJSs=
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78e602d09b6so39808997b3.3
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:39:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765906768; x=1766511568; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wDRVcNBtR+iW6Yf99Q/xL+9AQK2g/UaoVu1pJaWUN/8=;
+        b=DgJWFLA7EOlL7RFf1stn+Ay/XSZNwY6O9QS0JFp108O1ow2JkrBQTl/73WH5FAIJmS
+         a+2Q4ndDrYp+k4i6TcQiucEAd8I9zHykbeku1BaWxVxIHhODEMEN799FE0LYT459ujnV
+         D+tep5ID3xZKY7lEF9LqLS7ZCxx8AAetPidxRG4OTgfI1wY+GN/VSJqbIxQ3ZHvpsYuG
+         SrMhff60PnrTQ6rijXUHcuSkj83qct0iv3gxiInPwZyrCj0K8p4O2EmOKC9dccLWRc/C
+         6CgltK4iBQx1dD+mxsTEPtUL7RZKdcbVkL8M3jc+SWnat0963HtKkJ6NTm0aNyGEhptm
+         1sZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765906575; x=1766511375;
+        d=1e100.net; s=20230601; t=1765906768; x=1766511568;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hsPacWIswoNkPxm/WEWv6XOaNR0HsYkw9lp2v40LAGM=;
-        b=cCXFVyqGWxPq4+RQneZrGm9KQ7LvCe2jqnEjNDcJZftRxYRWRgRllBvdUx2OITS28G
-         SqW/k1lIkoBu+1NN/LWYEHsKdgqW0rzeySPRqNk2u+v+SqAiGcOoW6TAwxLqulgOv7+n
-         35E0mldDsLEPCdm4xYlhR8QsWTOLJTBsA7BCadm9msvdfP/ZfyvhiMoAQY6kbB3xzlMo
-         BncijFc50uPi70HTcpJzUqaGJ3jNwOZSEUvu75pbk73o+mA8ALj7/w1fI4k1sQebV+96
-         MBpamMBvZ/Q7IkNKXiqkq1lf0SV8fP4ZsWNCp9LQuL9k8Ot+CeT0R4CMqTHPG/TRP89L
-         0NPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUe/J2k+lTkVD6VGMcGdSV2vxN0hlvzU9/KbsVPrlSkrco3Rbl9NV9rtLif3QIEXlJbwbs94Vexpw==@kvack.org
-X-Gm-Message-State: AOJu0Yz4k/7/rxboPOoGvoNbWijEMsqN+i2nKzP44N+N8biC3ERB77Ku
-	vLFI5PnwoasihBhCRMUDh/L9ByxNpyUKP1078FyHupFBx2z7iJNaPpHzgJd5+MWTz6K88d9SN0u
-	bePdK///XydEFdTTJ2tQIMpcuLQe2fP/85IjLkwZmq8gS8LP2Ijo5
-X-Gm-Gg: AY/fxX5d8uHAB3QYqknhJwgmSy0A7G++xRyXrrSRQUBFXLDv+PEhOzXnuMYoVigGcfU
-	jtW98InCJUU0eF0eEJ8Pc96HhCaz3cPX2INbM5jKfzagCCnKANfIkEBhryItQK8QE4eJqiiIGjq
-	7t/OSVbn1PGHkhSN7Mhc2MohZYqG3fRtwTcXn6neuVuOPfX+rcMtPrVZpflrqQPZWIPYHbvB6Hr
-	roRqhYA1rzQKnW6favzjpH8jTzttPRRoviMJVKYlBT6o+eIPblPOxfzAjpcHgaslT0pleTDltZX
-	LfEvG2g6+2h9UENtri+zOn4Hd3jAoKx2WB6eDghUZUE7+aJepVTJuxlsOoyvvCE0PjT2F9WmDX8
-	VyZ8=
-X-Received: by 2002:a05:620a:448b:b0:8b2:f31f:ae20 with SMTP id af79cd13be357-8bb39adbbcemr2032247585a.24.1765906575314;
-        Tue, 16 Dec 2025 09:36:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGrrAnQyi8tUGXbUTgBDtrC2LqsXXW6sIsNBRadKPa5Jo0RMegb7ho96xN3vIijiKehMDr3nA==
-X-Received: by 2002:a05:620a:448b:b0:8b2:f31f:ae20 with SMTP id af79cd13be357-8bb39adbbcemr2032243185a.24.1765906574822;
-        Tue, 16 Dec 2025 09:36:14 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8be30d8693fsm225390785a.18.2025.12.16.09.36.13
+        bh=wDRVcNBtR+iW6Yf99Q/xL+9AQK2g/UaoVu1pJaWUN/8=;
+        b=SgjqxUpQENnIBfPwKwFQ+/gReesnnLMYZ/jeKVyGX1s7FUls0q03Uu0+jy7FYxhPqd
+         FTIExuKzc4fl/IvfacWBtEfadWpX/CJBLoOs2riS59LtpGZNypU5NGJF+eL20y7tvJl4
+         Zlu6RjixqvVCU8fdHEL47B6S2BHvve15oAGuujr6Y2zJNB2XUgiuqG4bGpvAAiet/VJt
+         fcTGfElttgv66erH6ksKq+N2dxxaBTRc5Te3lWkkHt+HnxKwbeOYGdG+bGiuAf7pZiBS
+         s3wJX7MLshE65I30S2xxdNkKgKgNOocY5nfhr5WR8bAK/XUBg0seOip1/UYsTQn1PThZ
+         0slQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqbrOS+0d5DEXST4sxhQppccaoNAFn1g9cmAeFh3svJLBezYXEKAE/Ts+MP1rGedduo15SEKCM4Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz2ZWEn/lzGY5ZiPbtfScl9yQxtQfvvT6yS5wZG2UWUYK7u0nzD
+	aU+yrRSrk8E/3gODJK/JRiaF0USGDmiJPynXHPocgTPqqmjow8/kH0Gw
+X-Gm-Gg: AY/fxX5rYtupQxcQ3vNUFZz+Bf4ENXLQ+cdmMD1VInvWMJIx/W19Bq6PBlBVrsSCPwJ
+	Qa5KGlDgeWUzLg87YyaIIbkBJv7LmM9LWZN+ykpRLQ4hAcIqXWf6I8X/ZU9yIzPfCkxEf3u83fG
+	0BBWWWEx9TGO3WqpeympmmN1xl6ZItdwEWm7OUhPysHLqMf/r/dNdcXLt4BWib56eUHUOjZr2yk
+	/5dv5wS8OrrB9r92NFV0aIPzh2xZ1uUS9DcW3YVgTWeVskEa93yX4tTjpemc2lyEqdYTECBPP4U
+	SfYOk+LV5xTlGj6WtDBI13WcNlCCAv4bh6HQ/XakCnacc6+s+SOtsfI9OGm8TPGVBgMRQEBlh6+
+	cvaD0WT3vHJllGfy1z80/uxavHWlP8tZogfJ1pZcKVAkXMAGJMj4J1fw6idw5tf3t+OtPB/fP+/
+	8dSJGyUVo5mDURVwEJLg==
+X-Google-Smtp-Source: AGHT+IE3NinGFdKlAN7UhDAbPKCkBHxHtNBkcwDeZ6wptkYuBgdRACzHAMbsJH1rL1T21esZqKIaWg==
+X-Received: by 2002:a05:690e:1248:b0:641:f5bc:68e1 with SMTP id 956f58d0204a3-645556680bamr11330010d50.78.1765906767566;
+        Tue, 16 Dec 2025 09:39:27 -0800 (PST)
+Received: from localhost ([2601:346:0:79bd:7f3c:658f:3c84:2aa3])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e74a57202sm41212187b3.57.2025.12.16.09.39.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 09:36:14 -0800 (PST)
-Date: Tue, 16 Dec 2025 12:36:13 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
-Message-ID: <aUGYjfE7mlSUfL_3@x1.local>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-3-peterx@redhat.com>
- <aTWpjOhLOMOB2e74@nvidia.com>
- <aTnWphMGVwWl12FX@x1.local>
- <20251216144427.GF6079@nvidia.com>
- <aUF97-BQ8X45IDqE@x1.local>
- <20251216171944.GG6079@nvidia.com>
+        Tue, 16 Dec 2025 09:39:27 -0800 (PST)
+Date: Tue, 16 Dec 2025 12:39:26 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+Cc: aou@eecs.berkeley.edu, alex@ghiti.fr, andii@kernel.org,
+	andybnac@gmail.com, apatel@ventanamicro.com, ast@kernel.org,
+	ben.dooks@codethink.co.uk, bjorn@kernel.org, bpf@vger.kernel.org,
+	charlie@rivosinc.com, cl@gentwo.org, conor.dooley@microchip.com,
+	cyrilbur@tenstorrent.com, daniel@iogearbox.net, debug@rivosinc.com,
+	dennis@kernel.org, eddyz87@gmail.com, haoluo@google.com,
+	john.fastabend@gmail.com, jolsa@kernel.org, kpsingh@kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux@rasmusvillemoes.dk,
+	martin.lau@linux.dev, palmer@dabbelt.com, pjw@kernel.org,
+	puranjay@kernel.org, pulehui@huawei.com, ruanjinjie@huawei.com,
+	rkrcmar@ventanamicro.com, samuel.holland@sifive.com,
+	sdf@fomichev.me, song@kernel.org, tglx@linutronix.de, tj@kernel.org,
+	thuth@redhat.com, yonghong.song@linux.dev, zong.li@sifive.com
+Subject: Re: [PATCH v3 1/3] riscv: remove irqflags.h inclusion in asm/bitops.h
+Message-ID: <aUGZTkLGYuew7-s1@yury>
+References: <20251216014721.42262-1-cuiyunhui@bytedance.com>
+ <20251216014721.42262-2-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-In-Reply-To: <20251216171944.GG6079@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wAGwvIw-2RxKiuRM4oB4Pc4GT0Vmu5jw_lZ1po3PDrw_1765906575
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251216014721.42262-2-cuiyunhui@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C308D140012
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 1wy84pgpcxrd7p6p54rfr6xo9jig31zb
-X-HE-Tag: 1765906579-800747
-X-HE-Meta: U2FsdGVkX19juYhrl52t41Lo7huha5ZajqFYP0+Bkk3nKWq1i2mz/KWtKTUZYXdJInAHdzK+ue8juJsNMZaeC4M/j+yO2nk1dkqvZfskfja5x3+KDIJbkyUxiGWHYv/fXGJWGVw0BGESO9dRJkStnD8S9aMQkxfoY0SOAIaTQpB+72FXDXZ9jbrNkKI0WP5QWw5CdXu8YZ37spY4ZqAWHLNUzzRD5Fqfhayhx6giOuNsZ0hRP2glU/3k0CIAXV36W0pkYEN/tAttCyIheCjNpVjSZaZ+TMDhnOsoHZAXUqy506eCq89wjy4aafIo6/I1yy3MStJO3ptC/5Ci2HmZUNCWyFjkwL0rjy2CeVXJ/MNmpTyv4ZLuAjmAa8GXXjWyo54jGsJCev18JbbWSb8zUbzDN6iEdzxpmsNyt2a2xKQRONVE3qty1gCN/o/wMpyxIZIneSQPNGy/brWdemosqALTYNq5xFt3RQKZ7tfqPKUurUy3NEfgMZXdC/tezUmpvTo49gIyLcFu1Ovc5MeQHUxC6NPYp5E9ABN56f7m6K/HX28TjDgTHPZeshQgQJ4jniy+lPb7xW/cXQ1wWttRPKmKv0siQC9tLk8vNCujx3v9DKSqRjwpSTNLC4HHP9OdKtxdFftOdoXEp32cViRnfFtYlrsO77P3S6MC72tU0WxfOHf8KM9wYqrXtiYMHDfaS5d/IAA2+3AZ3ZhyPiA09B1C8xDy1NbEDA+b/uW9m6zwsN8jicZORhfnzz+oVzssfaNWIvPZXIFx4hJGbjQ2D9m4jofOkC06grPIniwk9XOyE4yqRpVbOaXFHyPxektQL7uVjt9P8YU5mvVjBz0DN3AtRnM8+iMy0aJ4NQXk/eR8cvuz9AZunwyJnLDZJffsj8KfPVACpGtxLeeepeQHZMuFWcwYjYlKUOKyoorjSQjt6BZtqQ3MDx2IBw3LLmIcG7Wb7ULa6oxr6Bhx/xA
- y8Df46my
- CGvFPtpzyru2b15nWSBxMYSDrpS9GHbNlRM+bqtWoeR3JsbIaBzTozx1xKJMTtnzLkf+cNiEqY3RFlNsoSXIXAjE25iO0dd67bCCp9AkVOvZxsZ02ecaAPhmTxCNkn3OS88gt0YcxJpDvmL/cDv6Yl2Xb5vxjBpJu6Mg5NO8O7S2OUuybxT2RCSi3Erfj/eLsDAa8fzzyTcUdMWwsfXolVbLiCg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B5CD620003
+X-Stat-Signature: ik64aayam685bey8h5n8y9x6yn5rw4um
+X-HE-Tag: 1765906768-802828
+X-HE-Meta: U2FsdGVkX19gnt9ZtXWSl2Rch3zdoKP10vaVmOagFTUEwNTnvak8pUkxzNjOyD91hCzfhClJBFhBIFdgO+MAUWBuhVrUR1ItddK5S79CsbRaTa12IG9Tuy3A4BOL5KpLgTxKDsrqNnO+jvbqg+2/KuYittj8mBYcPofXEmi1MCSSomCxbiWutOu+R4mihXUl+qSyAwYhgDo421Dp46jVFBkGnHZ+iL6JdIBjAMHBlk9zJldPl/d8mU5wd7IDuTAmeCImhZeHhwneKgPVIc2sy9fuAhjbRAPOFF93rnb+SaoGPfn2vBF3RJXhaxviG3HNmOQA6MYKE9DOTRIK/pPmKdc82StufCAhEqK/x3MyFdL5/U23N1ERI9y2GlKuw87eQymyynalXLnkOaoCWKfTflpTwWfyFP1rbctImoXwMziE8H4s2v5eUxOLZQwoDBQW2M+Kq79L/rLPbURulPxIqBYHhAPBBv8Pr46YBqMfMLsXA65waVLtbZXNpr7O94l+CRy5V1gLVcKM8cgHG0MPxSSdbc1c4nOa8l9eDJZf2Ft9os8fwu+BufdnD/3HAMI2PW4EZs4CFGoEFBnmqWgPdLrh55+XBAZeUwjiGIsDzKwg214cd8x8EGmf32RQH/SdZ8jNPzDkvtUl7eLPLOlzcbu7+CAKUXf4M+XOqZ7rGYVn+iwj+HkOL2DRI2Oh4wLNoSz/AmpDjQYjdnDTcbZZEKk6Tg4u1GWgbmAEaULD/gXyxIXvh/IdQSKz/mDI9vntF347pgHum6//UsIYYRKD/92YA5pkYAr4gLx2Bv4GQFbTkrdHEi5eHSS0hIwSk5g9VNVCkfJi7yyQ0ZLyZblKn82re9C3K5PBzhU1H4S1zaQu3tY5MysHkOXZvzc1NzVzIpIepVh+SLbqh9Ali/xtOWB4MQqoLhg8q00N6SJzebp3yt6KM8IjCDRXk+7MomQcDudmrcojcpOeHgfE1Hk
+ YpYCK2lS
+ MAbJEsgUGocPPQaxh8+UiNb/grePG1kVVjr2OdQLZ4jgO7gCVHR2M2GmOqDBxVyxQHsgci1zk0C60ooQFqUunQ5sLl17+Po13fV+Rmi5xby+6L1guz2Z9/26nnL8FJ7V1HSF+Z3XHU2aWfvkFYiPdTC1j8FbT7WJ9qjCirMFI0kh89D+gGO7SnKLPyDKAjDheeAYyIXoqJxhl5DIZfdIOTb+Pbdg3mbKGpN0gbblsbMbwYa+EslRe6btfLjXKQcjLOYEyAQSSkdMNVivHx79m8LX4R/53V92NhY1GjgEKRihKh8g/b0/QZPA7wd/LV1k+3ePuCI9rHEX+FLO7el6Z85+Bk9xlTepp2WY4f0lhOx4D9aov5S2r50MeKXspfnM0OW+QOx0feFadCNTbEtFlN0P58MfIvyvf/me4eciRJHPhR1L8g26fOvNEYSac+E5pogaCji+4iwb23se2e6Zfar6niZ6nd6n2nreSpBreL/9oAcUeScVYkCb+7oD3VJ+5TzXP6C0/8DKQlF0wOTqThXO/Hk/GOS9eXNMyOnC74GQTdopzcMPhp6Q+wz0layHzxNgmV6xc+gAJ4YT6SPD0GLVV5J8mpoubcD5VXPstnBVqyGHlrXkq8cqzOt3rxUzMVGP/MsdFymR7591QfV4OcRIr4Qa+IPqVWHNs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,33 +131,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 01:19:44PM -0400, Jason Gunthorpe wrote:
-> On Tue, Dec 16, 2025 at 10:42:39AM -0500, Peter Xu wrote:
-> > Also see __thp_get_unmapped_area() processed such pgoff, it allocates VA
-> > with len_pad (not len), and pad the retval at last.
-> > 
-> > Please let me know if it didn't work like it, then it might be a bug.
+On Tue, Dec 16, 2025 at 09:47:19AM +0800, Yunhui Cui wrote:
+> The arch/riscv/include/asm/bitops.h does not functionally require
+> including /linux/irqflags.h. Additionally, adding
+> arch/riscv/include/asm/percpu.h causes a circular inclusion:
+> kernel/bounds.c
+> ->include/linux/log2.h
+> ->include/linux/bitops.h
+> ->arch/riscv/include/asm/bitops.h
+> ->include/linux/irqflags.h
+> ->include/linux/find.h
+> ->return val ? __ffs(val) : size;
+> ->arch/riscv/include/asm/bitops.h
 > 
-> It should all be documented then in the kdoc for the new ops, in this
-> kind of language that the resulting VA flows from pgoff
+> The compilation log is as follows:
+> CC      kernel/bounds.s
+> In file included from ./include/linux/bitmap.h:11,
+>                from ./include/linux/cpumask.h:12,
+>                from ./arch/riscv/include/asm/processor.h:55,
+>                from ./arch/riscv/include/asm/thread_info.h:42,
+>                from ./include/linux/thread_info.h:60,
+>                from ./include/asm-generic/preempt.h:5,
+>                from ./arch/riscv/include/generated/asm/preempt.h:1,
+>                from ./include/linux/preempt.h:79,
+>                from ./arch/riscv/include/asm/percpu.h:8,
+>                from ./include/linux/irqflags.h:19,
+>                from ./arch/riscv/include/asm/bitops.h:14,
+>                from ./include/linux/bitops.h:68,
+>                from ./include/linux/log2.h:12,
+>                from kernel/bounds.c:13:
+> ./include/linux/find.h: In function 'find_next_bit':
+> ./include/linux/find.h:66:30: error: implicit declaration of function '__ffs' [-Wimplicit-function-declaration]
+>    66 |                 return val ? __ffs(val) : size;
+>       |                              ^~~~~
+> 
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 
-IMHO that's one of the major benefits of this API, so that there's no need
-to mention impl details like this.
+Acked-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 
-I thought that's also what you wanted as well.. as you're further
-suggesting to offload order adjustments to core mm, which I tend to agree.
-
-Here the point is, the driver should only care about the size of mapping,
-nothing else like how exactly the alignments will be calculated, and how
-that interacts with pgoff.  The kernel mm manages that. It's done exactly
-like what anon thp does already when len is pmd aligned.
-
-Or maybe I misunderstood what you're suggesting to document?  If so, please
-let me know; some example would be greatly helpful.
-
-Thanks,
-
--- 
-Peter Xu
-
+> ---
+>  arch/riscv/include/asm/bitops.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/riscv/include/asm/bitops.h b/arch/riscv/include/asm/bitops.h
+> index 238092125c118..3c1a15be54d80 100644
+> --- a/arch/riscv/include/asm/bitops.h
+> +++ b/arch/riscv/include/asm/bitops.h
+> @@ -11,7 +11,6 @@
+>  #endif /* _LINUX_BITOPS_H */
+>  
+>  #include <linux/compiler.h>
+> -#include <linux/irqflags.h>
+>  #include <asm/barrier.h>
+>  #include <asm/bitsperlong.h>
+>  
+> -- 
+> 2.39.5
 
