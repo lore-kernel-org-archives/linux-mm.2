@@ -4,90 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 274EBD5B87C
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3FDD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:22:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691166B0005; Tue, 16 Dec 2025 01:22:20 -0500 (EST)
+	id 0365A6B0005; Tue, 16 Dec 2025 01:22:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63F1A6B0089; Tue, 16 Dec 2025 01:22:20 -0500 (EST)
+	id 0182F6B0089; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 569496B008A; Tue, 16 Dec 2025 01:22:20 -0500 (EST)
+	id E7A466B008A; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 447466B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:22:20 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D441B8ACA0
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:19 +0000 (UTC)
-X-FDA: 84224339598.17.53343FB
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61BD9A0017
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=detDNI5L;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866137; a=rsa-sha256;
-	cv=none;
-	b=VPwcfnidl9xa5E3uO+C/3FSx3JIcsLUZbux7reyY3bBSeSSFnMxzhqKgxa3+/3U3+zrjlX
-	6Eqq1Zt2Tf5EvLuCO4MUI+E56GcpDJx4dBqqbRMdMqwfiItZ4DsiSXV4+o8elTk9rXtb24
-	0P/Li/hUTZ9fnZzBRG/ucY+7Av1QLeo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=detDNI5L;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D3C976B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 766611A0518
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:40 +0000 (UTC)
+X-FDA: 84224340480.13.5ECE68C
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8D58D10000B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=GhaIk9ep;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765866137;
+	s=arc-20220608; t=1765866158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UDB4pFFOjEqefI5bQmHueWu/FzeTwPye7J8dm3yHS5M=;
-	b=TXfVWBDzwAlTbmkEABJ7zhlUB3UV4+witX1F3mKfO8F6VebIsgWhXwGqEVgkMV2vPb0OeV
-	BlJWyYnXbj566Ac8wp9OHcAiqQaqqsmq/bXWXt7COaT5/1xvBZgWW8n4csFkzTarqukgXs
-	yQKEMHEVNZz05PDSEsOxju3RbCH+zeQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765866133; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=UDB4pFFOjEqefI5bQmHueWu/FzeTwPye7J8dm3yHS5M=;
-	b=detDNI5LmlcWHMNgKnzoxCjD7vdWlvEuo9F87H+bTMV4IXIwptHvTrCa2E97ztjNMGEvts9CF196o3j94jfsJ86mA0NjsIgYh5W/bfhKCGGx6kZeOZbX/gdC3UB/3XFaSKMfq8oqV5bAlHCBfGPwIQC3FR4FguoqaSjxiJ2QOaU=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WuxwDsf_1765866131 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 16 Dec 2025 14:22:11 +0800
-Message-ID: <9e038290-70ff-458d-b46d-bc512c3442be@linux.alibaba.com>
-Date: Tue, 16 Dec 2025 14:22:11 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
+	b=Qw6pOGFj90L85VGEwOsEr//W261IGWpDv+JPmzhWGSPQzsogTDFMFU7mAdSP1o4RSCdPRT
+	q1rWius3zPdqBe2hzhI02hJnRCF84RaeiEISaYsn7cWGihNl3S2/R1nZIpI3i56HCNutC8
+	EfBoAv5AQkSj7bstFbmorDlaU1ld320=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866158; a=rsa-sha256;
+	cv=none;
+	b=ojvT3guWGcmCr8TdqeFjT3IMpRF+08SejkzVB0qfBmZwXm1+GtOywmJ1vVrFnpIWjB9uL4
+	6WzdMVolcxJUfDz51GfhqkcXVK/tbc6rqUyYn/Jgp4Wq2zBej1KWGi3qvRek9i7xfUurtF
+	DXuv6hX171f80sHACrWANQow6pWqH18=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=GhaIk9ep;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-34c708702dfso2129249a91.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:22:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1765866157; x=1766470957; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
+        b=GhaIk9epubIPVyYP8uMSU+DCFxsXkBIKIJVt+9NZdlWIqkjeHCydzaWXQoMN0II9y/
+         BWHNM+IBDd8K2Yqvqc6bo1rO9GlOIPGzTHix8tAovG0CA5sMitKSHS57Nqkt5b+HPJuo
+         h3FLhUzOg1aB/fffXlPaZzNjIoi1l7roOPCPM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765866157; x=1766470957;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
+        b=YGzkTANup5XS1BLE6uVHRI9zjgAC7PVrMZO+it3Xw5HK8BDJKS1YH1I93ppQKn2+H7
+         eD72uP8AI4gEeOKNzsmVFxYnZ13sco2Y6DqvlZkpXR6dAyP33cJkhQoiWdh4oTjIb6Ci
+         TmdejQN7Qlf4aQY/P7F+sBHdzUlqKTdfP96J7cNRr1annKq2n089wLDM03I9hKQmXFjb
+         1UdzxUZ7hj3lsUE7dVu90RMcA7uMFVqSrlfLdHpcu44pMy4vqV4JYN2SEpY7ZqODjgee
+         eWq8ud2rZIJ5MziKeOnqjfDemNDFS0ZRs09JkIPAnP3gGZ+AOxOjvQY40ENYAk19ajtz
+         5gLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWdGuJ4iggyYv0MGp6TTfz4nmsi8zc/jraeOuhmEZMgMeOiEPp67dgOkvczl4Oh6DpB+p4NxYWbJw==@kvack.org
+X-Gm-Message-State: AOJu0Yyp10dLk+czhg7AEr8lU+wcaeu/xsFdl5o/mafsmsKUAoRoaPuS
+	OnUgNpcsEtKd60OwepOxJ3YKqT+IgSskovDZ3Ed2kuebxstG7kcGPqiwmFRxenXAXA==
+X-Gm-Gg: AY/fxX6zM+zeXvA9Zx8OGKRE0+bfoqYbhu3IP/wSZ/aeMDCs1udkxE1xJZxD1cvjqyp
+	u74DwlzyURWQlewtI0mjGAq21p5fxhEc1Q4EfHJQDJTEelkqsJFAWSfXCOrO+nrfRKjxuBYQA0D
+	L3WwM0etSb38rVEUeIwpfIX1KzyxWrAsFs49uMwWIbMAsodeXPc5uIDBkxMMMDWaMYT3VeBwgOA
+	hRsuKzoyQ9ZXPQdFMH+IOS7jM9p4WHBXwmSva9IxUzkHyLjqaAOUnHbbGjUxplIaqrv8s8nmMWg
+	6yuOEnKtUeMUECO8i3aC3mBZirkCtcTmE47e/ID0Am/hFaiyDBCm4wHvDgz71P5/DznfI0W1Z6y
+	p9/kROOVapNNFFOvBfTzQ7HNj4h+fX4lOzo7+3WoC+QV8AEjgXxviMQ+AsmnJqsUJD1X+4AQn6f
+	65DNXbB4Zq//DzwkGP8jcIa6iORWdUC8twEx2pint6ytjPRf2gTycFuKSqCUE9N5vMmRG9GLgCm
+	g==
+X-Google-Smtp-Source: AGHT+IGJrR7OtPtBhGm+9cDWg3KKBC6FnmouGC8vC5VDtsqiXV8EEGO4Aj1PKtsQ0CNxkvAqtSYZ9g==
+X-Received: by 2002:a17:90b:180c:b0:340:ec6f:5ac5 with SMTP id 98e67ed59e1d1-34abd6c0312mr9010865a91.2.1765866157264;
+        Mon, 15 Dec 2025 22:22:37 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:a48f:6b66:399d:86cc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe3dea94sm11038126a91.11.2025.12.15.22.22.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 22:22:36 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH] zram: drop pp_in_progress
+Date: Tue, 16 Dec 2025 15:22:23 +0900
+Message-ID: <20251216062223.647520-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: rmap: support batched unmapping for file large
- folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <af330c9ea188bd0f28189b1e6e5803f6de9d2abe.1765439381.git.baolin.wang@linux.alibaba.com>
- <70d1dedc-b4fc-4eb6-baf6-9e54b6a62249@lucifer.local>
- <eb871ca2-47c8-4b10-a61d-321716f6c147@linux.alibaba.com>
- <CAGsJ_4xp40A3u=N5_mw00Eo6bPmFvctD3j=1Qmy3vOo2EmX3hA@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4xp40A3u=N5_mw00Eo6bPmFvctD3j=1Qmy3vOo2EmX3hA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: uc9id4uxopnh993oue5k9496nyepefnr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8D58D10000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61BD9A0017
-X-Rspamd-Server: rspam04
-X-Stat-Signature: cs8es4f5mai3c3cq7mfffg3ratost7jp
-X-HE-Tag: 1765866135-245257
-X-HE-Meta: U2FsdGVkX18yC/4qgfzeJM+GQEC79K3wDxlHm2s1l6J6kZ5d7l60pnmm37aIavUrJNBtspEgegSrUha9tEhGKEsDdY9m3MQyJ+PVqVuRqEJIrJQ8VKxv4HZz2EQo5rkj2gqhnav4IITmU7gloNRZmWSEsgf12BWsQFc2d3VJE1LoJNUphhbLAuUFaenqTTxn0qfqXpUHVLDPElKAkYSK0RBP1TF2HHhUpp4GLm3v/Goas6xIOYmENbeEpW/kmWGg7UOBgWZx//82ld9v7RQ3MG36VNOlk0uShUIAoKEq72X3s/5gAUGnfiyxxL40etXOoO9aFrIrnkKwHMw5MzgfOvY2BFpD6axV3zOUuiqIO6OlPE7s6Kt/C75CItNAzYeRogYLLEZ1mQ9wuA6qSODVw9x1iqecR69a4AbZLz8N3eM2aM44MAXRmkbADso/Y2rdF9wcvSXdlA0WTNcR0iPuMz4SL+wkq/k/akLKtmsJnu861mVgN37NPNP9lRc3obkCNhxm1noOmrbzyk30Qzqh1fmSuxcmGnIsM5HZf4037pXA9sLCOi912MTmHl5WeIRCIDJRBzARewQelxZL8yPWHukym4SZSZ5HrClUe8xdcnfEE2MIpKPriqY0prZjOz2Ibm3nxJa/7QxHymAuCgQ+bTRzzBfaHrrh/bYpS0YO7azC0P1aSvQR43SSB4ffmVLRL+A4KAnD5LTd6LrRvcwA9qelXF0ZMG9WSnMI5JS7W0kKfm/Ez2EpNu+HqpXXa2qBwF7VVVK4QmSu8ggGyxjS7gHW4njEf6P5036EH/AD24tK/gbQFgKf0V/Bpvd29/RYaPcgRI3JzhZ+5Z5egH26/vgFMhAcJNMV1fcZa9Aagub+zaOYTWy3JivX6y75a0duWPWm+xr6v1VeoGqrp/yhZ1yVmQOX9tIu86NZWEh6QNI6bX97b6FvG/npuhXlildsqUbiVMwiV6aQmFsKMKw
- u51+44uG
- g33TBuqx+/jeQminbUqT5bnQRpFn3w9FB92CLSVYVk2HNRW7uKl25Ntj+m3ER9/kg7xnQtEd05Wzg9FLt3UUO1OfMgR16N9QJhwmaVSfuMrljGnlU+6AtktYIBUQqrsvrNWjql2s8jXtB0jCq9rAaDb4QKoSxbpjopPD8za2VQ6J6h2vSVq5+XQ8r3vJ2gtga7tWB7DTyRjC8v8toquLinWGSL1Lwxtocglk7cgxia26L3YUCmPY3vDQTD8w6IyL/dj9mYeJz5tbDfE0yX0ZXubrrfQbdwfS4dOJGUReDKqKhe90=
+X-HE-Tag: 1765866158-870583
+X-HE-Meta: U2FsdGVkX18Bgh9PMc5wz3q+9JfHikAHAGDr72u7ou57IMa6r+fxC7vQ//m8tY+RSR4b/3e2PBjA8AlPr3Nmbd0tvAMbF7+7n8oEs6NOy6Vo6O3nPZ+jobm3NWaXm/M38pfc5ONkXOx3gUNENfhy2YmE0MV0w0NrwSsBXCUOC0uko9FAi578AXuqjDcxWDTugATtbCu+cg5V9mNQpBy6sgIkTyRlkh7q+lyJDkbOvx51KG66ZPeY2Iiljkx/MDDqB5YZFQ2gDXCQdIttCoekYjEFy//s1ffUqQB4M6MLLiFd3CtNMTm19q1LciIh6a3Xhwu/EZLGGQOhGS+8Ro2YV5cSXDngo7SuJCUGbgMAkIZ0nXEzi/g6PstJ4d6tlT3BQ4pn2bFK6si4OloCoDiXqJD4zOR72wvdL4GQDkWC3KVM52pP+IofBZX3F5UlRM2YOsVvvOCSBkpUgHNkCQ7NWp9re5qPotHqFbWPrzEQ1b3TAVi7qxSVwobtCVpc+LozaB9ek3pnO3FrSFyu2dwbybcfB6WjpWbgCRPKs4eXyr8ViWdrFnyQfTbiPjUf96/kzjmW689kDfqgxFVMle/sbIXQUOr+w71OS0JEde2mf8Fze17C/mvUHFKGB8R1Cv/S+nJIJHX10ChlMaA7C3mEa9u3gXFrfrx372u3w5hnMXv4N703IFTESwh9E59LVB30/1BYoUl/Dh45ZoPQov8cfjKOjzeIviuBoVW8kRuxoecUl9C5etWJR1nzRCcUYWlmzsBP/XbCckrQSgvf3b1Q7XUz3rhRCz+3e9q8symwuR8ePgdz9df3pfIvtUmGUyAIG2G4CyjGrlzry39jdvIiewGN8z0QJnvpqJSTdEiFeZcuZGZFqL7M/IEFkJu8lOd9CNmH8IKnucO7SDVxe3uCrcqC6WyfVYAGGg3SEAIWVPEOuAAwuAVAlACwR6749brK2Vcxo0sU9HWTpYdn4CA
+ 2T7CqoCS
+ 2i5inJzvYqC1vu53Br9akyV+IqtMxD7wgitNh6o8i2WiPBQQVT/tmYkW1mxxsTe6DEuRph69thXpjS9LakybAIYMnysNVgXZnlAciVwB2bi6FkKfowM8+7lObqjNfcAxRp3Ao5xxu2ti21WxbAPq0K6/u8L8t6m8d6/LRgOL+S+0QDPlK/oSKogRlRB1PSgJSFnx+pQbaX1u7ZDsyl0cVFazLAiHEKMJOppDrvcuYAx19q/nMDzD86GUmb0WwOZDPGohrKqt3sj1EhVT9RniAjXTaza4SCbFlxUTwUQcqF2gYTwTmm/zOOz/TYtSDp8ugFdQa952gpKUMkTqPPvdGe3vxgSObrwNjfxHNtofur8s+0UU+Sd+nwOBaC40cvb4WUBTWx8QH8k13kPDTSiVHe+w38A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,44 +119,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+pp_in_progress makes sure that only one post-processing
+(writeback or recomrpession) is active at any given time.
+Functionality wise it, basically, shadows zram init_lock,
+when init_lock is acquired in writer mode.
 
+Switch recompress_store() and writeback_store() to take
+zram init_lock in writer mode, like all store() sysfs
+handlers should do, so that we can drop pp_in_progress.
+Recompression and writeback can be somewhat slow, so
+holding init_lock in writer mode can block zram attrs
+reads, but in reality the only zram attrs reads that
+take place are mm_stat reads, and usually it's the same
+process that reads mm_stat and does recompression or
+writeback.
 
-On 2025/12/16 14:13, Barry Song wrote:
->>>>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index ec232165c47d..4c9d5777c8da 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -1855,9 +1855,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>>>       end_addr = pmd_addr_end(addr, vma->vm_end);
->>>>       max_nr = (end_addr - addr) >> PAGE_SHIFT;
->>>>
->>>> -    /* We only support lazyfree batching for now ... */
->>>> -    if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
->>>> +    /* We only support lazyfree or file folios batching for now ... */
->>>> +    if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->>>
->>> Why is it now ok to support file-backed batched unmapping when it wasn't in
->>> Barry's series (see [0])? You don't seem to be justifying this?
->>
->> Barry's series[0] is merely aimed at optimizing lazyfree anonymous large
->> folios and does not continue to optimize anonymous large folios or
->> file-backed large folios at that point.
-> 
-> Yep. At that time, I didn’t have an Android machine with a filesystem
-> that supported large folios, so I focused on lazyfree. But I
-> agree that lazyfree anon folios and file folios are quite
-> similar.
-> 
->>
->> Subsequently, Barry sent out a new patch (see [1]) to optimize anonymous
->> large folios. As for file-backed large folios, the batched unmapping
->> support is relatively simple, since we only need to clear the PTE
->> entries for file-backed large folios.
-> 
-> Yep. It is actually quite straightforward to go from lazyfree
-> anon folios to file folios. Swap-backed anon folios are much
-> more tricky, though.
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 28 ++++++----------------------
+ drivers/block/zram/zram_drv.h |  1 -
+ 2 files changed, 6 insertions(+), 23 deletions(-)
 
-Agree. Thanks Barry for reviewing and confirming.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 634848f45e9b..47826d8ed376 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1264,24 +1264,16 @@ static ssize_t writeback_store(struct device *dev,
+ 	ssize_t ret = len;
+ 	int err, mode = 0;
+ 
+-	guard(rwsem_read)(&zram->init_lock);
++	guard(rwsem_write)(&zram->init_lock);
+ 	if (!init_done(zram))
+ 		return -EINVAL;
+ 
+-	/* Do not permit concurrent post-processing actions. */
+-	if (atomic_xchg(&zram->pp_in_progress, 1))
+-		return -EAGAIN;
+-
+-	if (!zram->backing_dev) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
++	if (!zram->backing_dev)
++		return -ENODEV;
+ 
+ 	pp_ctl = init_pp_ctl();
+-	if (!pp_ctl) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!pp_ctl)
++		return -ENOMEM;
+ 
+ 	wb_ctl = init_wb_ctl(zram);
+ 	if (!wb_ctl) {
+@@ -1358,7 +1350,6 @@ static ssize_t writeback_store(struct device *dev,
+ out:
+ 	release_pp_ctl(zram, pp_ctl);
+ 	release_wb_ctl(wb_ctl);
+-	atomic_set(&zram->pp_in_progress, 0);
+ 
+ 	return ret;
+ }
+@@ -2622,14 +2613,10 @@ static ssize_t recompress_store(struct device *dev,
+ 	if (threshold >= huge_class_size)
+ 		return -EINVAL;
+ 
+-	guard(rwsem_read)(&zram->init_lock);
++	guard(rwsem_write)(&zram->init_lock);
+ 	if (!init_done(zram))
+ 		return -EINVAL;
+ 
+-	/* Do not permit concurrent post-processing actions. */
+-	if (atomic_xchg(&zram->pp_in_progress, 1))
+-		return -EAGAIN;
+-
+ 	if (algo) {
+ 		bool found = false;
+ 
+@@ -2700,7 +2687,6 @@ static ssize_t recompress_store(struct device *dev,
+ 	if (page)
+ 		__free_page(page);
+ 	release_pp_ctl(zram, ctl);
+-	atomic_set(&zram->pp_in_progress, 0);
+ 	return ret;
+ }
+ #endif
+@@ -2891,7 +2877,6 @@ static void zram_reset_device(struct zram *zram)
+ 	zram->disksize = 0;
+ 	zram_destroy_comps(zram);
+ 	memset(&zram->stats, 0, sizeof(zram->stats));
+-	atomic_set(&zram->pp_in_progress, 0);
+ 	reset_bdev(zram);
+ 
+ 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
+@@ -3127,7 +3112,6 @@ static int zram_add(void)
+ 	zram->disk->fops = &zram_devops;
+ 	zram->disk->private_data = zram;
+ 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+-	atomic_set(&zram->pp_in_progress, 0);
+ 	zram_comp_params_reset(zram);
+ 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
+ 
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 48d6861c6647..469a3dab44ad 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -143,6 +143,5 @@ struct zram {
+ #ifdef CONFIG_ZRAM_MEMORY_TRACKING
+ 	struct dentry *debugfs_dir;
+ #endif
+-	atomic_t pp_in_progress;
+ };
+ #endif
+-- 
+2.52.0.239.gd5f0c6e74e-goog
+
 
