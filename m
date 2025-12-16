@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3FDD5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AABEFD5B161
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 06:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0365A6B0005; Tue, 16 Dec 2025 01:22:41 -0500 (EST)
+	id D9A936B0005; Tue, 16 Dec 2025 01:27:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0182F6B0089; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
+	id D6D396B0089; Tue, 16 Dec 2025 01:27:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7A466B008A; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
+	id C91F96B008A; Tue, 16 Dec 2025 01:27:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3C976B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:22:40 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 766611A0518
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:40 +0000 (UTC)
-X-FDA: 84224340480.13.5ECE68C
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8D58D10000B
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:22:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GhaIk9ep;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id B079D6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:27:16 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D080B891E
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:27:16 +0000 (UTC)
+X-FDA: 84224352072.24.4A01284
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9DC091C000F
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 06:27:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H+70Q+04;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866434; a=rsa-sha256;
+	cv=none;
+	b=jY2mInIkX65T6WtzZJyb9fuKBkKUBo3dJJF2xTWvvQ3fBpEm2f6WUFqZN/VZIFrPrU/IN/
+	E3jcH0239cIlnaa+yXrVYZ2STF39sJU0TpZs+Lwn/H9/xWLwFrew3caCS7EIh70ErBmZ/P
+	PguFoa63gRMpNIYN0C6PZy9AFk4FT74=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H+70Q+04;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765866158;
+	s=arc-20220608; t=1765866434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
-	b=Qw6pOGFj90L85VGEwOsEr//W261IGWpDv+JPmzhWGSPQzsogTDFMFU7mAdSP1o4RSCdPRT
-	q1rWius3zPdqBe2hzhI02hJnRCF84RaeiEISaYsn7cWGihNl3S2/R1nZIpI3i56HCNutC8
-	EfBoAv5AQkSj7bstFbmorDlaU1ld320=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765866158; a=rsa-sha256;
-	cv=none;
-	b=ojvT3guWGcmCr8TdqeFjT3IMpRF+08SejkzVB0qfBmZwXm1+GtOywmJ1vVrFnpIWjB9uL4
-	6WzdMVolcxJUfDz51GfhqkcXVK/tbc6rqUyYn/Jgp4Wq2zBej1KWGi3qvRek9i7xfUurtF
-	DXuv6hX171f80sHACrWANQow6pWqH18=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GhaIk9ep;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-34c708702dfso2129249a91.1
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:22:38 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eVGFbSBWqk+8thdIINLXihH2Q5jNi9zkhBBBIrJaIjw=;
+	b=MbSkG/zpJUOGJbID8QJSSaeo0IhuiHhqe0NtZtBwXKNPMVHX+meJRKQOkWmJ0dK7LVGo1X
+	BzYvlEB7VyI1f3en6TdcwneTJXrRcAVnxo7LOb4sBBY9AP1GfXhq1D+OYjpI3Q4u7CMe35
+	aEmB5bzKMvgHar07hj1x5dd9MiK6O0Y=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7f1243792f2so2779852b3a.1
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 22:27:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765866157; x=1766470957; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
-        b=GhaIk9epubIPVyYP8uMSU+DCFxsXkBIKIJVt+9NZdlWIqkjeHCydzaWXQoMN0II9y/
-         BWHNM+IBDd8K2Yqvqc6bo1rO9GlOIPGzTHix8tAovG0CA5sMitKSHS57Nqkt5b+HPJuo
-         h3FLhUzOg1aB/fffXlPaZzNjIoi1l7roOPCPM=
+        d=gmail.com; s=20230601; t=1765866433; x=1766471233; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eVGFbSBWqk+8thdIINLXihH2Q5jNi9zkhBBBIrJaIjw=;
+        b=H+70Q+04ydZmVn/MmLZW7q1edf2vbHs2uVI6zwFJ96Ba2akNNEib8ofxpKeZxzmkd3
+         771W6d5uAk03F7O/J0L6dhZolC2gJ4swo26u7LPwC0TD4ahwwj+6OllfpC+J4i1/GYvL
+         ew7LQepxHiw1iEI7RNpneAiRPOHq5LtTlKDs3NxV+G4j7fHX7BcSHnxxRp7mM4hOPMLs
+         dIKjO8AgDn7si+0k2wjtjeuV47bMeVEzeBMId0FBXnybRMceJAxvqzkP6ob/dl3raL3g
+         Dlhc42mKt2Q9YdEhla8nUfmqv5iyVVE4HY06M2Aeu3BObMLzfol3WpPfvpZKy7LXwRXU
+         GPkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765866157; x=1766470957;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zu/aPcKxXc3G/+SG7emrL7RZpvxEzm7psqqNr+dNYaY=;
-        b=YGzkTANup5XS1BLE6uVHRI9zjgAC7PVrMZO+it3Xw5HK8BDJKS1YH1I93ppQKn2+H7
-         eD72uP8AI4gEeOKNzsmVFxYnZ13sco2Y6DqvlZkpXR6dAyP33cJkhQoiWdh4oTjIb6Ci
-         TmdejQN7Qlf4aQY/P7F+sBHdzUlqKTdfP96J7cNRr1annKq2n089wLDM03I9hKQmXFjb
-         1UdzxUZ7hj3lsUE7dVu90RMcA7uMFVqSrlfLdHpcu44pMy4vqV4JYN2SEpY7ZqODjgee
-         eWq8ud2rZIJ5MziKeOnqjfDemNDFS0ZRs09JkIPAnP3gGZ+AOxOjvQY40ENYAk19ajtz
-         5gLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdGuJ4iggyYv0MGp6TTfz4nmsi8zc/jraeOuhmEZMgMeOiEPp67dgOkvczl4Oh6DpB+p4NxYWbJw==@kvack.org
-X-Gm-Message-State: AOJu0Yyp10dLk+czhg7AEr8lU+wcaeu/xsFdl5o/mafsmsKUAoRoaPuS
-	OnUgNpcsEtKd60OwepOxJ3YKqT+IgSskovDZ3Ed2kuebxstG7kcGPqiwmFRxenXAXA==
-X-Gm-Gg: AY/fxX6zM+zeXvA9Zx8OGKRE0+bfoqYbhu3IP/wSZ/aeMDCs1udkxE1xJZxD1cvjqyp
-	u74DwlzyURWQlewtI0mjGAq21p5fxhEc1Q4EfHJQDJTEelkqsJFAWSfXCOrO+nrfRKjxuBYQA0D
-	L3WwM0etSb38rVEUeIwpfIX1KzyxWrAsFs49uMwWIbMAsodeXPc5uIDBkxMMMDWaMYT3VeBwgOA
-	hRsuKzoyQ9ZXPQdFMH+IOS7jM9p4WHBXwmSva9IxUzkHyLjqaAOUnHbbGjUxplIaqrv8s8nmMWg
-	6yuOEnKtUeMUECO8i3aC3mBZirkCtcTmE47e/ID0Am/hFaiyDBCm4wHvDgz71P5/DznfI0W1Z6y
-	p9/kROOVapNNFFOvBfTzQ7HNj4h+fX4lOzo7+3WoC+QV8AEjgXxviMQ+AsmnJqsUJD1X+4AQn6f
-	65DNXbB4Zq//DzwkGP8jcIa6iORWdUC8twEx2pint6ytjPRf2gTycFuKSqCUE9N5vMmRG9GLgCm
-	g==
-X-Google-Smtp-Source: AGHT+IGJrR7OtPtBhGm+9cDWg3KKBC6FnmouGC8vC5VDtsqiXV8EEGO4Aj1PKtsQ0CNxkvAqtSYZ9g==
-X-Received: by 2002:a17:90b:180c:b0:340:ec6f:5ac5 with SMTP id 98e67ed59e1d1-34abd6c0312mr9010865a91.2.1765866157264;
-        Mon, 15 Dec 2025 22:22:37 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:a48f:6b66:399d:86cc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe3dea94sm11038126a91.11.2025.12.15.22.22.35
+        d=1e100.net; s=20230601; t=1765866433; x=1766471233;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eVGFbSBWqk+8thdIINLXihH2Q5jNi9zkhBBBIrJaIjw=;
+        b=vy/f07m6eE098GwkNZV8X8dWAsZwhjZPKzdzXOByWPlcbliOdpm+cRE21l5o1CBE8U
+         A5YWXenaj9DbtXKKUdtKIVvywf+zTk5NdCB3dtntbuh2z9MYs6JpNAdM1ACYM/NsxDIg
+         WKv3PWyrfpIJakNlB9Ww/I28CxizEIFU4IgWiLlblAGs0Ya0xX24uzxm8W7oYQOkltk8
+         CQb3nLrjyyTfZAvzfQVJ6WpM6ubDtiQPBhubfUwNx4VewuANC9vNGDeviKksCple9NwM
+         eqQnf2hJSErEn4+lAE551B1HmKlXmlt/hcZ53MuTv09UD+iXzP9bpNczBLxmCBVybFZb
+         AKvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWmrHGQo/MFh4LjTO/UCxci+nNbcmfg6cexkZMdxaBpDt7PXYW74mZpgvIdhV1O1JwX1He25NKIJA==@kvack.org
+X-Gm-Message-State: AOJu0YyQ7EWW1vOOulExo5dEt7IXmcGE+x32atZDxmug+1J8DGol3MM1
+	GVhKko2z7QvM+6KCvTF6NuyajF0/sBYO7rhAjY6VHVeJX8BVTG/lTPYp
+X-Gm-Gg: AY/fxX7VNlKuKj/ANjSysHx0DHSwNcQaPI+SEFIpgLbJvqGrA7NbizQZvUsqHofcxA/
+	cXV/d3rRIMkUbf8OREmtYDED3yeGqOrrrveVee0sUPEnbXO6bDm2GD7jnukOyKO6CLY/xtZeB6v
+	GjR56kuJcN2p3UoleKaIXEVKiTsEF8kv9zO0odTeW0sCCEJd6exIyOeBnuSVqxA/jH/m/uQwu6P
+	fRW4zoFrlvO52iIVS68syNaH3Vvt7cJG3PhKsHUdPmiIl/W4Kw4LX9EjFMCTdIGR2q4mToWRwk/
+	exIclbjiCbg+4BoVHug62CIJ30wLlfFaWJFutHE7DUNifrDDxXtDC79xwtUn2BPnFByv9lxrip9
+	7XN+GEswHJd+IMsgAOAVmyf+Hunel1kCKGk08EbfveBOxW11Y+i9Igw//D1zAsya5fkVzM9/LNn
+	UF4AhyfaBreiTuiiqwzsESTwQQ
+X-Google-Smtp-Source: AGHT+IF6epENwBHk8KtQ8XxgX9Sp9gxmmjCUbBiVOhaXIN6EqUIJOTiu95N3+4+6qIa8lj+KVx1GNg==
+X-Received: by 2002:a05:6a00:4307:b0:781:261b:7524 with SMTP id d2e1a72fcca58-7f667543006mr10600428b3a.14.1765866432601;
+        Mon, 15 Dec 2025 22:27:12 -0800 (PST)
+Received: from localhost.localdomain ([114.231.217.195])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c4aa718asm14428905b3a.35.2025.12.15.22.27.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 22:22:36 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Brian Geffon <bgeffon@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] zram: drop pp_in_progress
-Date: Tue, 16 Dec 2025 15:22:23 +0900
-Message-ID: <20251216062223.647520-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
+        Mon, 15 Dec 2025 22:27:12 -0800 (PST)
+Date: Tue, 16 Dec 2025 14:27:05 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: ziy@nvidia.com, baohua@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com, david@kernel.org
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+Message-ID: <uqlhxbrsl36quvxaflrueadujb3cwdfexw4yffvk6la3ry4szj@h62lqtp36g5c>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
+ <d03d6ea7-68fe-4eb5-aa28-1020f3382f4d@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uc9id4uxopnh993oue5k9496nyepefnr
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8D58D10000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d03d6ea7-68fe-4eb5-aa28-1020f3382f4d@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9DC091C000F
+X-Stat-Signature: b3msx4uc1w83t85ommady17btkaeu1e6
 X-Rspam-User: 
-X-HE-Tag: 1765866158-870583
-X-HE-Meta: U2FsdGVkX18Bgh9PMc5wz3q+9JfHikAHAGDr72u7ou57IMa6r+fxC7vQ//m8tY+RSR4b/3e2PBjA8AlPr3Nmbd0tvAMbF7+7n8oEs6NOy6Vo6O3nPZ+jobm3NWaXm/M38pfc5ONkXOx3gUNENfhy2YmE0MV0w0NrwSsBXCUOC0uko9FAi578AXuqjDcxWDTugATtbCu+cg5V9mNQpBy6sgIkTyRlkh7q+lyJDkbOvx51KG66ZPeY2Iiljkx/MDDqB5YZFQ2gDXCQdIttCoekYjEFy//s1ffUqQB4M6MLLiFd3CtNMTm19q1LciIh6a3Xhwu/EZLGGQOhGS+8Ro2YV5cSXDngo7SuJCUGbgMAkIZ0nXEzi/g6PstJ4d6tlT3BQ4pn2bFK6si4OloCoDiXqJD4zOR72wvdL4GQDkWC3KVM52pP+IofBZX3F5UlRM2YOsVvvOCSBkpUgHNkCQ7NWp9re5qPotHqFbWPrzEQ1b3TAVi7qxSVwobtCVpc+LozaB9ek3pnO3FrSFyu2dwbybcfB6WjpWbgCRPKs4eXyr8ViWdrFnyQfTbiPjUf96/kzjmW689kDfqgxFVMle/sbIXQUOr+w71OS0JEde2mf8Fze17C/mvUHFKGB8R1Cv/S+nJIJHX10ChlMaA7C3mEa9u3gXFrfrx372u3w5hnMXv4N703IFTESwh9E59LVB30/1BYoUl/Dh45ZoPQov8cfjKOjzeIviuBoVW8kRuxoecUl9C5etWJR1nzRCcUYWlmzsBP/XbCckrQSgvf3b1Q7XUz3rhRCz+3e9q8symwuR8ePgdz9df3pfIvtUmGUyAIG2G4CyjGrlzry39jdvIiewGN8z0QJnvpqJSTdEiFeZcuZGZFqL7M/IEFkJu8lOd9CNmH8IKnucO7SDVxe3uCrcqC6WyfVYAGGg3SEAIWVPEOuAAwuAVAlACwR6749brK2Vcxo0sU9HWTpYdn4CA
- 2T7CqoCS
- 2i5inJzvYqC1vu53Br9akyV+IqtMxD7wgitNh6o8i2WiPBQQVT/tmYkW1mxxsTe6DEuRph69thXpjS9LakybAIYMnysNVgXZnlAciVwB2bi6FkKfowM8+7lObqjNfcAxRp3Ao5xxu2ti21WxbAPq0K6/u8L8t6m8d6/LRgOL+S+0QDPlK/oSKogRlRB1PSgJSFnx+pQbaX1u7ZDsyl0cVFazLAiHEKMJOppDrvcuYAx19q/nMDzD86GUmb0WwOZDPGohrKqt3sj1EhVT9RniAjXTaza4SCbFlxUTwUQcqF2gYTwTmm/zOOz/TYtSDp8ugFdQa952gpKUMkTqPPvdGe3vxgSObrwNjfxHNtofur8s+0UU+Sd+nwOBaC40cvb4WUBTWx8QH8k13kPDTSiVHe+w38A==
+X-HE-Tag: 1765866434-373444
+X-HE-Meta: U2FsdGVkX19oRDEfh5uvt80d/Iv+ledXIpk3fNHQ5rnSCsriNJDMHGqTQbvLvUpfBZ9tqV8PzUwRVs+ic/ks3BGuwtCeOXQj8TdeULzGaoa+7Wz0iWE4W3PheGmQktmG6wiYrqTbasH8UfI+BX/kq8RT8T43eRmsoogMibFYef2qcoa8BPRHmeFtu3Rez54cuxoj+XkyZ+y8h20JW5kDGKYbmZ9tedIt8z6pWXKyxk6isksbuyw+OsFsDwBkVDOsAe2kC2saiFTdA4C065YSGO2EJf3RfURzzDOrRPS1TvDe8uw0XStu5/8XJwYQZaenIPy2WR8E4opLPZjZ1kQMm/h/cYHdlfIZYdXUg4vOM30DJvAdpT4YcLdGTZxJ/Slo8XtZD2XjEZbMAWXcUf3BA6gJGCY9cMDJvaRRY3GhU+BbXhWK6pyE37N4Cz5JzVHXqadCuJCtApwtMTGTSHCHURVQQ3K41trAWCENzB/mvXIgUaiWfHGYoWzN9QieubGkAbhsG0Y50aKp1wWse+rjwIPUwfs1M+kY0LnSfy4EyDbNvR+Z2je4n2Yv/Bdh4AVK8qQdXBugio2OfEZCjMIgLMQFeZYflODYXQ+Gc1YTIgGiWc5dMe5X4ZExtH0qd7mV9qtf5XYDj/rCbjk8tzS/sHnFO13TKBCOBGaTTggytKJlTOW8MegPsM2cIVjEoyWaxI6N3QsGssHQR4JCU6cq8s6QYbTrjlPaM6ghH9fOxxA43YtZy3/hS2U3z/tt82lbNrXhd22jWqDjVosnRizoQ5oVWqgT2X2rAzrwmJz5rav3qUBlLeV/MQOaVDAjTWuE2B8zxCcOA6tNC5Tnai/Ak1rVOjdx95Z7McoanvqDNBJwtxMQHbT6PUVHCUPIKMQMjEcBxs3A1Ar5cJE9tqDxXE9bura5PHFFQo35RjvyyXELG2BJlyLAaKhsh/ZKoWV4VqbLzlZlC6p3ipiUsVl
+ DUNqwh2K
+ c5Q82/GR1krzKNJRkpeV1qu3z3TGu2eXsvBAKPwJkl1D0o2cBIAqpVcYqNXInmvW4FJdLZl2M6+h4EVKwly29xVIaALHGGv/nPimLH/cY3/3UuowyBR8oTb10DHsfC5lEpK0p0Rfsybv3VJlHWniCYKRhz6z/yZBoQLNTRYIvf03An/81StT9zWYsdE2OXvszxXv8N+jCmDwQQCnoh1yr6N0TJW88AJbdn2ZcfbWQQdbhowt1kO/ClkPWq86rgpdZkWbDdtJ0HT/Y6hAGOBTSh57GW3NeQF8y+3vZXGwRY0WG4+61PnDyk+YJDbIYBpG6uQjaeJrN1vACM76E9yj+NPWWyhiahxkbRm5FevTbFkz2Tb+NdkcVm9Kx48cJ8d4uHRzqnngHzqgJBIBSXHg21aGeL9jNiFt90UuxTZG0M8NGymmdhjHLaSbJ+s23qh4M/OEVIOIwLvok1bvwyGMS01lvcCgqmJZA9G2FnlF3SVpXeKSYxIPEb825k9XhPkc8/xnfZJhS+EfDfVUTOMBpWfsI/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,122 +122,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pp_in_progress makes sure that only one post-processing
-(writeback or recomrpession) is active at any given time.
-Functionality wise it, basically, shadows zram init_lock,
-when init_lock is acquired in writer mode.
+On Mon, Dec 15, 2025 at 07:52:41PM +0800, Lance Yang wrote:
+> Hi Vernon,
+>
+> Thanks for the patches!
+>
+> On 2025/12/15 17:04, Vernon Yang wrote:
+> > The following data is traced by bpftrace on a desktop system. After
+> > the system has been left idle for 10 minutes upon booting, a lot of
+> > SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+> > khugepaged.
+> >
+> > @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> > @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+> > @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+> > total progress size: 701 MB
+> > Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
+> >
+> > The khugepaged_scan list save all task that support collapse into hugepage,
+> > as long as the take is not destroyed, khugepaged will not remove it from
+>
+> Nit: s/take/task/
 
-Switch recompress_store() and writeback_store() to take
-zram init_lock in writer mode, like all store() sysfs
-handlers should do, so that we can drop pp_in_progress.
-Recompression and writeback can be somewhat slow, so
-holding init_lock in writer mode can block zram attrs
-reads, but in reality the only zram attrs reads that
-take place are mm_stat reads, and usually it's the same
-process that reads mm_stat and does recompression or
-writeback.
+Thanks, I'll fix it in the next version.
 
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 28 ++++++----------------------
- drivers/block/zram/zram_drv.h |  1 -
- 2 files changed, 6 insertions(+), 23 deletions(-)
+> > the khugepaged_scan list. This exist a phenomenon where task has already
+> > collapsed all memory regions into hugepage, but khugepaged continues to
+> > scan it, which wastes CPU time and invalid, and due to
+> > khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> > scanning a large number of invalid task, so scanning really valid task
+> > is later.
+> >
+> > After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+> > SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+> > list. If the page fault or MADV_HUGEPAGE again, it is added back to
+> > khugepaged.
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > ---
+> >   mm/khugepaged.c | 35 +++++++++++++++++++++++++----------
+> >   1 file changed, 25 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 0598a19a98cc..1ec1af5be3c8 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -115,6 +115,7 @@ struct khugepaged_scan {
+> >   	struct list_head mm_head;
+> >   	struct mm_slot *mm_slot;
+> >   	unsigned long address;
+> > +	bool maybe_collapse;
+>
+> At a quick glance, the name of "maybe_collapse" is a bit ambiguous ...
+>
+> Perhaps "scan_needed" or "collapse_possible" would be clearer to
+> indicate that the mm should be kept in the scan list?
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 634848f45e9b..47826d8ed376 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1264,24 +1264,16 @@ static ssize_t writeback_store(struct device *dev,
- 	ssize_t ret = len;
- 	int err, mode = 0;
- 
--	guard(rwsem_read)(&zram->init_lock);
-+	guard(rwsem_write)(&zram->init_lock);
- 	if (!init_done(zram))
- 		return -EINVAL;
- 
--	/* Do not permit concurrent post-processing actions. */
--	if (atomic_xchg(&zram->pp_in_progress, 1))
--		return -EAGAIN;
--
--	if (!zram->backing_dev) {
--		ret = -ENODEV;
--		goto out;
--	}
-+	if (!zram->backing_dev)
-+		return -ENODEV;
- 
- 	pp_ctl = init_pp_ctl();
--	if (!pp_ctl) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!pp_ctl)
-+		return -ENOMEM;
- 
- 	wb_ctl = init_wb_ctl(zram);
- 	if (!wb_ctl) {
-@@ -1358,7 +1350,6 @@ static ssize_t writeback_store(struct device *dev,
- out:
- 	release_pp_ctl(zram, pp_ctl);
- 	release_wb_ctl(wb_ctl);
--	atomic_set(&zram->pp_in_progress, 0);
- 
- 	return ret;
- }
-@@ -2622,14 +2613,10 @@ static ssize_t recompress_store(struct device *dev,
- 	if (threshold >= huge_class_size)
- 		return -EINVAL;
- 
--	guard(rwsem_read)(&zram->init_lock);
-+	guard(rwsem_write)(&zram->init_lock);
- 	if (!init_done(zram))
- 		return -EINVAL;
- 
--	/* Do not permit concurrent post-processing actions. */
--	if (atomic_xchg(&zram->pp_in_progress, 1))
--		return -EAGAIN;
--
- 	if (algo) {
- 		bool found = false;
- 
-@@ -2700,7 +2687,6 @@ static ssize_t recompress_store(struct device *dev,
- 	if (page)
- 		__free_page(page);
- 	release_pp_ctl(zram, ctl);
--	atomic_set(&zram->pp_in_progress, 0);
- 	return ret;
- }
- #endif
-@@ -2891,7 +2877,6 @@ static void zram_reset_device(struct zram *zram)
- 	zram->disksize = 0;
- 	zram_destroy_comps(zram);
- 	memset(&zram->stats, 0, sizeof(zram->stats));
--	atomic_set(&zram->pp_in_progress, 0);
- 	reset_bdev(zram);
- 
- 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
-@@ -3127,7 +3112,6 @@ static int zram_add(void)
- 	zram->disk->fops = &zram_devops;
- 	zram->disk->private_data = zram;
- 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
--	atomic_set(&zram->pp_in_progress, 0);
- 	zram_comp_params_reset(zram);
- 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
- 
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 48d6861c6647..469a3dab44ad 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -143,6 +143,5 @@ struct zram {
- #ifdef CONFIG_ZRAM_MEMORY_TRACKING
- 	struct dentry *debugfs_dir;
- #endif
--	atomic_t pp_in_progress;
- };
- #endif
--- 
-2.52.0.239.gd5f0c6e74e-goog
+The "collapse_possible" sounds good to me, Thanks! I will do it in the
+next version.
 
+--
+Thanks,
+Vernon
 
