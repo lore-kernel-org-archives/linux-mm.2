@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E98CAD5B161
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD88ED5B87C
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 07:02:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C3A56B0089; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
+	id 132EB6B0005; Tue, 16 Dec 2025 02:02:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A1276B008A; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
+	id 0E7D06B008A; Tue, 16 Dec 2025 02:02:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B7326B008C; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
+	id 029ED6B0092; Tue, 16 Dec 2025 02:02:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BE616B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:00:52 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 011CA60387
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:51 +0000 (UTC)
-X-FDA: 84224436744.05.4DFAC34
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 18C10180011
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:00:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+ZcAHvy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868450; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E70B56B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 02:02:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BFBC160508
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:02:08 +0000 (UTC)
+X-FDA: 84224439936.14.7134192
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8B851100005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 07:02:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=A5zmmUWH;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765868526; a=rsa-sha256;
 	cv=none;
-	b=N1LYa+w2oZIjJ1awHdzTWIE1oTDUIVl6iMD4esGEjHr2XCxIJDFBwpCN/8X3wdmiZRMSfR
-	QxFq1axTyP4VycZmEP3uEYXxUeVhCLaV81vvY37B4mRJzU1jShBl/wSJerBCAPB7F6tHqQ
-	A7SELNKQ5U7d5BXp8kLOIi1IKD5iipE=
+	b=B1CDcdvFEBlhBnZVCsuoUzdBCf1Ly18tDUl9+KnI+l7DHxcdEESFLL9iOuD9VV7BWYbRrR
+	4qAzy48feFPz88O0nDabmu76PnuAKew+Cb7oEPGJSuvdwe0xPYnSadowZQXJjtKxHVZ047
+	EHOO2XxSKyItxaopypery1zMguKjim0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+ZcAHvy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=A5zmmUWH;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765868450;
+	s=arc-20220608; t=1765868526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
-	b=YUW4a7iodlC6OLq08kUwowZfeeuo0+4bdSSsrzJackRUsh57Tbxlb97c7UTIlgvhsiAIWR
-	6S25Qekbf9xJ5LaBFnv5BeKSNj/XZQkYkjO+P6zDNlQuuvrhtonMhpM1SCO/B/gnBLbTPn
-	eovbnRlh5jNh74plx27E6WkbJkTcKQg=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a099233e8dso23280215ad.3
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:00:49 -0800 (PST)
+	bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
+	b=DtvVjGTd14FZXjJOpX7XkOeOyg/dxdBgImiFf3bJXZaI3t98vv0XRgmYjm1NzmPq7dsGZg
+	MpaNaPa0kbo/rUZkmLupBi21tCUFWMJKctWPHpUWlEP1hf6zAiUtCfzPmaM649jTg21P4Y
+	SmDVAIxQZHGZgurRHVKmW0MmmucdO8o=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34c27d14559so2410194a91.2
+        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 23:02:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765868449; x=1766473249; darn=kvack.org;
+        d=chromium.org; s=google; t=1765868525; x=1766473325; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
-        b=O+ZcAHvynQX3GYLMeqw8zD/SbIgEkwag2Fg5mfYMgrPFdznkuU3ZDZzGWTg6zkEebl
-         l4QU4388ohoXTtfvKtZzW61YE2NtWRbHD3M5OuVSP4xFBKWzuCrLKva+k28Zr8OnMO2z
-         DrEtBMLxijM/eW3eamQ6Dsla1f2XfnwDy1SPgrMNl3Am09J2Vr/ZISekfdOtNNwPNtkf
-         LxLHnya6JKAFePzIJWx4TrPsiDinff+e65QASFhAMW//J91PcMX+Z0EJz2GWff4lWLKs
-         8Z1UpmQmVzGgLsBZnEvltToWDSXW4BIoXQ4rX6rpe6tlZHfIfUSZGdjJC2NkVuOIqM9c
-         m2Iw==
+        bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
+        b=A5zmmUWHRVztQ7XwsqubP4YGGnkB3OBdPzmWVKUvWdMI49sx25mWjvVNO0h7kDwQnP
+         mRP3qLr05xsioDaqriVpowDqTNmB5dF+1lTp8lFXPCFXapQ0yB87b7YLbt6gesjSR4bw
+         BLjudNSyehQxZT2s4E5ioRcAXokqM6WstzV0k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765868449; x=1766473249;
+        d=1e100.net; s=20230601; t=1765868525; x=1766473325;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QFAmpRfxxeFHVpZ67Bvb+vEc5qUXOEU1rpTMEK2KAsI=;
-        b=b+ZUL4CBSEpjsvFkFUHCZ/54BXTVPH3FLoZGLlJ3Zjo+5esVUc7qbo1NGE5u8l6k/K
-         K0T6jrHU1LAN8hm/3HhiIOjbjcDQ31TmzfJIJy8/enJ5BcCIvWqI7sp1NSK346tSiUDm
-         9Uc5iQTsO8zHO4K8z+FkA0/hxTwiPTHfuwMliSHRzexB9kwnbZjRDnldh5kfeTc4mDsU
-         1otBikTCuaIFYPASNH+Mr7O7Ucs/LZhjPeJ35NXnEiEGO73BaSXgKeuztLn+PbvBQYEa
-         U5S1XYgMw9KDSlDkqwmDvMmL2xySOdYcxopd3j+hGAUj3aZad0cgxWdnBR0ie0veKJvr
-         YU5w==
-X-Forwarded-Encrypted: i=1; AJvYcCX+8SryBJWZX8oFBFBCI9KQP12dc6/wS9ljXNtgx1e2kYDB27uZ2Mu4cYO3STlMRqs/aDsHxBQxaA==@kvack.org
-X-Gm-Message-State: AOJu0Yw1rbO5F9EQfLmpJ2sD/RFYWCVb71MX6rq7k9aOP8DIGIDoP1GS
-	6lHQnnTytD6tfdVKszYBCQxzynhB2U68SHOqB2hIXPO6kxtAWQceootbyTt/f8x4
-X-Gm-Gg: AY/fxX6Rip8tpA6oYqA/o3VxJYKrtswDddw9crAGXfe/A2df231QFAF3V3Cp+c/AXQ8
-	+VJzX6K41UVzcQvLOcre8/5Mj1HfLL8g+DkUSxasuAgUcaAlbDU6/9xGoXngLWMfEbjHNYpzVQm
-	RaEzMIpE2FbHoO++vJdvgECOos2Td6FWgJY+V8S8MJ4dDcPS0jrrhYC5QNfAwuI9fDx/HgVITPb
-	7hPHHbHCc7/mu5K+Ce/JQCEm3LuFzea1yv7zmlv9rJXWvRAomwp0yEpk29oreAPIy0y/8qqpP37
-	CCqTaYx7VBtnS4MqCnTu5I0/CoYXnA5j1gnszxT/BOsckoHWMuIE1Q6LAahFs14TpGdCIBXSlNy
-	pdk9qzmcV/i9Xrl09gUrZE7Hk0Qqt2g/pYIUMtuapuo/aCyImY+G74WyUld0QAmLFwHAKBtAOAH
-	u2cZf0LqcZR1r+e2s3+6Weau6H
-X-Google-Smtp-Source: AGHT+IGh6bmnUUir8G3p+H40K0uXG1XJ8Ee1y80UE7dusYw6M34uFWl8fwWh7yEEQaUxMtCplSPWHQ==
-X-Received: by 2002:a17:902:d58a:b0:2a0:c1f5:c695 with SMTP id d9443c01a7336-2a0c1f5cf3amr79926245ad.16.1765868448784;
-        Mon, 15 Dec 2025 23:00:48 -0800 (PST)
-Received: from localhost.localdomain ([114.231.217.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a146538c6dsm3036695ad.52.2025.12.15.23.00.45
+        bh=tNPH/jZ/SOwdUZzWI+K9uxXgO1pBllDjcg4a+m2CAM4=;
+        b=YrnakIK6UFovmYQphTQnvmag/vKy8TM+cNN4TOs7gc4hLrN3Za7aCJFKoH8RThRPr0
+         Fl08AXvaK0UmSRjCV36ztRbM3RaJJH6ZNRc5aNSTOtUV7hTac18E0+T+ipUssVhD+B5w
+         5/+slDp2m9uZlBiGUjD/XePwvuTR7WJGGBFljZ1b5iOiKgoHvZzhfcJMJGAGZwFPq7t6
+         zEVri1tvYsPttmfDcrgQB//BQfE3NfE8xUZTTPbENDAiBladCXQe/8l3/51Ki5X8fJwp
+         ym9RYGid7EIqRbWRmyd24rXy9wWVXMXBYqYU5CRtz8yVVORkuKzrLTiy2z8cyENHNbM2
+         XBWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0SkxQlz8U0VJ1OgYphV4SME/GyvKjMlhVvfaKqMS4pomcycsp6xEAtkTL3OZxIB/L8QSamlFD5g==@kvack.org
+X-Gm-Message-State: AOJu0Yw6HEKV9ZCHdb+gIqynxRoUeGV5QdkxVuYWglkEUHs2CTsVeS0K
+	vqiO30GkJQmFILe73Xx3wPXix5YnKechkNbFx4sTqdEdQ7hd38OvOEtZBSmyL8ul1A==
+X-Gm-Gg: AY/fxX7mTliZlHJKKyxP9SGwf0j+LmGmcla2odBRRmq1kQkTpbdV4FgJQZBbrVRb10k
+	FM6gaJdxO4xaKUxd3GqBipcuTUFO0DIM80o1ef3jOZmEyM2Z/DA5isB4ns1wimz5ah6ZXfjDWwM
+	20kyJgYFnkaeOWVjHkwC+9/7L7ushS1zB6e9R7OELHpUWF8WOKXLAmjABA7NsdGjluk8bOdqJvT
+	kZwqtve2JGhA3nynjxHe6dwMmS2H+PBJ0DSn1/PZnoFTeD55eDQDTAPU/e5ht+KnRz2JKlmIpdA
+	DVBVUUI8j8du1zM5X/xIFWUrTvuqPgoNpLY8m6eajZh/Jq+Mo4ifV7vRc+29HN7CxXsS6JTmjEK
+	nfbGXRP0/f8CVI325BL91+ckA7IyjR3hcwzFmbq9qck/Vz57sKMlAwwKSMx2IGi5DITMFbVtyoE
+	0pTx6QIpmEylznvyx8ciuBJow6+N0V3xOP/Jzw0bDQTKAVh+9jd6DCgRovpl669Q==
+X-Google-Smtp-Source: AGHT+IEuT3/plOsYLD8BRfCul71EgZXqqD0VVIL0HHIfNo/gK2/0xTdny+oIdgWzIdgWBZHLY3E6gw==
+X-Received: by 2002:a17:90b:3912:b0:343:d70e:bef0 with SMTP id 98e67ed59e1d1-34abd8488c6mr12346405a91.21.1765868525248;
+        Mon, 15 Dec 2025 23:02:05 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:a48f:6b66:399d:86cc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34cd9a40c83sm177596a91.3.2025.12.15.23.02.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 23:00:48 -0800 (PST)
-Date: Tue, 16 Dec 2025 15:00:22 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, oe-kbuild-all@lists.linux.dev, ziy@nvidia.com, baohua@kernel.org, 
-	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
- MADV_COLD/MADV_FREE
-Message-ID: <besdqn664ys7izgipfi5wloy4kmscosipizpbxt3hig6zvo2cz@yibkwnkitc7h>
-References: <20251215090419.174418-4-yanglincheng@kylinos.cn>
- <202512160400.pTmarqg6-lkp@intel.com>
+        Mon, 15 Dec 2025 23:02:04 -0800 (PST)
+Date: Tue, 16 Dec 2025 16:02:00 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-block@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] zram: drop pp_in_progress
+Message-ID: <e7ur36nfcppqqwqe4lgebb3prjk3lr7hlh5fks22ahsqz3bfyk@si6lxz5mqsqe>
+References: <20251216062223.647520-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202512160400.pTmarqg6-lkp@intel.com>
+In-Reply-To: <20251216062223.647520-1-senozhatsky@chromium.org>
+X-Rspamd-Queue-Id: 8B851100005
+X-Stat-Signature: rbwdra1q4d6ngy9cb7x9fngpk7dt5n8g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 18C10180011
-X-Rspamd-Server: rspam10
-X-Stat-Signature: q5dqz9ht39g63chqf5icxaatuzszgtsg
-X-HE-Tag: 1765868449-182574
-X-HE-Meta: U2FsdGVkX1/h0KZI6Phl5u1OWlG8NqGto0AbC97dB2SxnV9cdKo2YjJUtyBCp/KxKAC4N+2D4CHcDWQaApIcDBziE6YqtnRzNGjJ3HHDYyfLUPdq6jNicUmw3kRJB88YJa12xLLvQHVwHsjTELhtwDz2GHBYoujlrvEF5e8ddkPQCiqR48crdv/jTU+9jbUhEupFUIwauqgM2KdAl8qKlgEde9GfHBtkPh34zzQOAz47WK1CPWQlxrCRugagLYxiVj6sfkvOA6r1+5pDpM9QwvQopjOUV045m+GN32cCTQmzQVbyexWEuNDqvPkV+M9ZWb/ZIQtUf+/diuyQWJ1k5zgGOJ9VbARHLzDolNxVxtp8jBF3eajhG4rboqgbCjtVh1H9b3eRYZUVs8f40/oUw2roGJpUJbuoVhLcV4LaeQ+ukjpZ9FLr24l1MUV7ZtM3fonGvpBvsSacxAlSPpdOWwi4TaUEVE7whb6FS8VEQDHAeEkbz3Zg0CqtO07CRfJW3SR7Mnq08EhJl0X/HzfEqBf9+n5RRNB2sZx3jS6JuD5/sPXTioWu4Q9mrd6Gc55XUkmUWYsKx62aOOv+dqRxsYvzzXVXwyzUJ88B/5hlqi3pmSYl2YCnOsulKGzr0T1oHcScmqYv/aPRJC+CFLqBQ6nAzBkqVJduc8srsuwTjjQ2bFxbb/eE9DpriWwo0VM9WTIES7yovRa/j32OdT1kMw+y1WbM3Vv6rqdbWHjhwybmdYjckg0QG5NwkRknekyvGsXUxW6hBIfHq5jkDvlgsnhNz7Msc/M4CGJjdj1ZK1XwS7+sRO8FUUcElRTD0zuzMKi0Tg+W859DwB5QKbylO3Ac0K8Yxree7xmaK8/fAiH17UWiN/eCuDyuXJ9cqLvd66/45ssIQm4WYAvoEXPrnpVYaCiJwqi0UaNwZSWxzGn9K80LLRjN+dGbsm53vBiZ2geFf2fYr/G38QKrXgN
- auhOLDny
- 5pVFLJKga4kQIrML/6Dh1hezrTzLsWV6s1xN4qVyMsno3Zj3km5IG3jeSyog9HYQS1KrmHXbMrDjMFh4YpIs+K2VcxkUKuVFOTjhYeZJeIZbA923LCP9/ff438p6RGgPwQWqFg/skQLTNESf3cl9D7bArSDd6NOmOeRhbditUS9xBAmaDAz0GGQqWUOhOxJIoFo3DTLmzpKZ51tUjWK0gvxiRuec/6Lkbodkz0sOkLPwheaIvMJRilA3aQmBfUaCluF/lx4UeRaKjpci9RYuo395Kg+QjrJPsH9qAwwov4V/ihg8J1cw4ByzmienWy8kWiaiBh11sJQDMA5HUBHZD1zNn7OHRRHd8V4ay4ArOIEp2Jdqs2Hi9wbfb3KEbdgcWvosgXljFD8w4Qz4gZ9wxeNtn1h0HDx/gUfhUfoH00vRxTkX29kusYyjwlGbCr/LVGdiqUiflhK4gdxcpkjhgGxxV0kDwLIPw2jZTscIc3VvYlP1RSrZSd4/G/H+N/rcRhM8Yk0+d87+OCZ/Xh7a3L9MrC9MO94Q1ONBs0lDhNNa/jPBGWcw9pNsf7BQvhOBgSdStOga2mK3k1llcXSXSv1pKnC72WAoNo8l0cpjzYshgfHQ0R4F8kABuUf/u6fbMA1dY8NCORNUOU447qLJPvkVmlaZP985ee4DD35/jPx13rS1LPw8z7P5I1A==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765868526-117371
+X-HE-Meta: U2FsdGVkX1+PLjrWNwWEAdXPbgy5Upl47qQ0jY9hpHPmCLf10PyPBvVnS8sw7GxHkP22YN5wSoIPfBJBgqSg2d7R/YbpyZmo/PiHaC2MILwiTYYrkUX3OUwOf/3bbUyJ1fYtpekJ3w27dxF6SPO67jGRI7mKV5Nf61i7WUPodUjl7lI+82O1lC8zGHH3otKVgKw8PLUu0m6Itk+XlGGqz+2DLu3AJtbku9vhnFZpVxKLSoFMGXJde2LqD/1NHwnEu3BKOZC1YObzJW7MzgObDclBS4puQIQeE9FJcvvFwpnielZXab6Bg1XUjOY5Iqq9UYNJdke5TpzE+E1c8kRrZkCUTF5tvGpSZKhML+kCsLg3WQQw9XIk8uzvBMN15Vh0IWz8gtYrQI6X5ox7EsiLeSvCg82vkuQk4up7/PAJvqglftcX/+bRSF9+y54lEHAzsF/84lgpE8WqGrtxG5wYufTh3XUhmKHtPTCp32SkLM6l1dp1GFvPVW1IRNw3Wuk8QbuvpozMuHordyDMhhYNUIzkwaO/IU64u05SvhqtpKcdeRVtrwKljoakKjKeZJ5+o65RZ1BK3cUTjBaAsP+GuHPuTWXkxPGMKF8x+92cElsWJcYnRi6TendsBzlS651ysdRXgeLp4IdIBuVRRsDQuT9vb2kcuXgfAVXPZgeNgoTX8P0ns288RPcukCZM0FWvnhP1OHQPvELPT/Rwj5C/+szBCsvZMm684Ne6DFjxO9DRZRAvm1xKAHQ9oW/ULvA0f7YTD42xYugQnFhIzM91k/swlb+AIjPgrwtDKyY+NUI/MT2ch17QI6C4DI8DziN3x5x04kCCrC8BD5ok0PGg68hV9DnTAoM+hSVax8WFJLT4gxptucqRTN7Nk942W0gBmCDJUonhlTkbphHNBXoFxH5T4bVG99cdnSIA7CgBP6h3X6F4Yi2DheynczHM0gRklrn1VCBRjoHeC3WowJO
+ PT1Sf3fJ
+ tDxIS7PJu7doYckY7ywqsQppyRwS6VObJ7zcBuWDcBj+AbrdebYdsJDUlqRTYvqfvLPmHCf34gXgvgweZNq9gFdzgg58XyaYvzlEOz+1JpPFb2tb56RVXe7vywWmLOt95fvdekPqqYiR+fselB1iNps2lK8/n5Mc+C+pZuFu4IgelD1qbTjbDs4Ws7Nuju87uBTPDIA9DrrmDdYKyHlRCFBGJov/yT6pvPs7fCsMi3QSJXga0g/Nv8XmPboGXEs65VB2ExCPQgbjoZI4Cu/4ik7bUzqj9NwTiNrUfScQM+Dcqaxm+h37RUmr1fuwXc8w8c1Jyk1O8RLeFryvav9SFFzIL7Eb1MNqBS3QPT1VHwHV4foj2ohf2A/dXrQi+gr894CyPiTk5ZNjIUpFLPu1LxIo5bsY8huPHXAuiloruFrF/CxgJoEISoX35hZrwRQqf4TI7jBPi36sDab8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,69 +117,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 05:12:16AM +0800, kernel test robot wrote:
-> Hi Vernon,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on akpm-mm/mm-everything]
-> [also build test ERROR on linus/master v6.19-rc1 next-20251215]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Vernon-Yang/mm-khugepaged-add-trace_mm_khugepaged_scan-event/20251215-171046
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> patch link:    https://lore.kernel.org/r/20251215090419.174418-4-yanglincheng%40kylinos.cn
-> patch subject: [PATCH 3/4] mm: khugepaged: move mm to list tail when MADV_COLD/MADV_FREE
-> config: arc-allnoconfig (https://download.01.org/0day-ci/archive/20251216/202512160400.pTmarqg6-lkp@intel.com/config)
-> compiler: arc-linux-gcc (GCC) 15.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251216/202512160400.pTmarqg6-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512160400.pTmarqg6-lkp@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->    mm/madvise.c: In function 'madvise_cold':
-> >> mm/madvise.c:609:9: error: implicit declaration of function 'khugepaged_move_tail'; did you mean 'khugepaged_exit'? [-Wimplicit-function-declaration]
->      609 |         khugepaged_move_tail(vma->vm_mm);
->          |         ^~~~~~~~~~~~~~~~~~~~
->          |         khugepaged_exit
+On (25/12/16 15:22), Sergey Senozhatsky wrote:
+> pp_in_progress makes sure that only one post-processing
+> (writeback or recomrpession) is active at any given time.
+> Functionality wise it, basically, shadows zram init_lock,
+> when init_lock is acquired in writer mode.
+> 
+> Switch recompress_store() and writeback_store() to take
+> zram init_lock in writer mode, like all store() sysfs
+> handlers should do, so that we can drop pp_in_progress.
+> Recompression and writeback can be somewhat slow, so
+> holding init_lock in writer mode can block zram attrs
+> reads, but in reality the only zram attrs reads that
+> take place are mm_stat reads, and usually it's the same
+> process that reads mm_stat and does recompression or
+> writeback.
+> 
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-When CONFIG_TRANSPARENT_HUGEPAGE is disabled, trigger this build errors.
-I'll fix it in the next version, Thanks!
-
->
-> vim +609 mm/madvise.c
->
->    595
->    596	static long madvise_cold(struct madvise_behavior *madv_behavior)
->    597	{
->    598		struct vm_area_struct *vma = madv_behavior->vma;
->    599		struct mmu_gather tlb;
->    600
->    601		if (!can_madv_lru_vma(vma))
->    602			return -EINVAL;
->    603
->    604		lru_add_drain();
->    605		tlb_gather_mmu(&tlb, madv_behavior->mm);
->    606		madvise_cold_page_range(&tlb, madv_behavior);
->    607		tlb_finish_mmu(&tlb);
->    608
->  > 609		khugepaged_move_tail(vma->vm_mm);
->    610
->    611		return 0;
->    612	}
->    613
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
-
---
-Thanks,
-Vernon
+Please disregard this one, there will be a follow-up patch.
 
