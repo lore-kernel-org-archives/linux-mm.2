@@ -4,120 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1975FD5B87D
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 01:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14B7CD5B87D
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Dec 2025 01:38:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CE856B0088; Mon, 15 Dec 2025 20:37:58 -0500 (EST)
+	id 64C6D6B0089; Mon, 15 Dec 2025 20:38:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775B06B0089; Mon, 15 Dec 2025 20:37:58 -0500 (EST)
+	id 624116B008A; Mon, 15 Dec 2025 20:38:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674156B008A; Mon, 15 Dec 2025 20:37:58 -0500 (EST)
+	id 5231B6B008C; Mon, 15 Dec 2025 20:38:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 54F876B0088
-	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:37:58 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCBAD12E6F
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:37:57 +0000 (UTC)
-X-FDA: 84223622994.05.0C57402
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 01BE940002
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:37:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AaKYqsGg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765849076; a=rsa-sha256;
-	cv=none;
-	b=SSsMffgiUQkGjqo6QTwI75betmKsHUdd7keHXsTCSHRwAVe3IgipVewn8rEImrn5onIerY
-	dmsssMY382kJ7V/dZzP0b1gdjsO/V1V4y4Ii4RMbA4zcHJfbq2ArCMYAXY1v7O+IR0esxj
-	pIxBLlFf8P7X+mYetqEieDO8VQMs/sg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AaKYqsGg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EAC76B0089
+	for <linux-mm@kvack.org>; Mon, 15 Dec 2025 20:38:24 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD98A16041B
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:38:23 +0000 (UTC)
+X-FDA: 84223624086.27.0074291
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D0D6E10000E
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 01:38:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765849076;
+	s=arc-20220608; t=1765849102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0FDBivIYW8TFHL3VKiPkgeHToq4CwEnpvCaDs7HwAE=;
-	b=Nhpf9DCVHLFxmN+1fy9LTZYj1sM0Ddahz+4+mP5rr0FUWZR2FA7Rb2gBjoeS7CwiKf6pi5
-	ZLuptv1SHFDk0SUW1zNTfI0aR6zzk4xcK7/2HtD52PBFuhDfYEGirnnnTWQVUqSQ5OIWsp
-	GPBlw9ys7fXaaAUA1dX77vLWm4zDsNc=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7bb3092e4d7so4364884b3a.0
-        for <linux-mm@kvack.org>; Mon, 15 Dec 2025 17:37:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765849075; x=1766453875; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f0FDBivIYW8TFHL3VKiPkgeHToq4CwEnpvCaDs7HwAE=;
-        b=AaKYqsGgVDt9xtwD3Y3mjfE7o18ZQ0Ul7KNVy/NLm7xwMSVj+lp8BcPJSwmj5iYFRv
-         qvZebuUU9TryckZR7YuGCtgDbZPxX7+pmwjbFo2ECxAs4u7BiTURR3W9IqDEQyUMSafg
-         eGOQgzY2NsDskn/xwWiRiBYeZEW2KqCH8OoYYmnziI7MHDh5fhOSsG73+d6NcbJqpxBf
-         aJilAph7aoxRX8Bj5lfpW1BVbbGbWOqy+HHo5gTMKqlFvZUlU5Qw5M9TEut4HIyVSKQL
-         QaIi+Q8CRbdeBy6vomBH+YVh8VC4FBHZmBkHsTb4jk8JJ256ywAIt9j62iPVnUY1dhou
-         CQMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765849075; x=1766453875;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f0FDBivIYW8TFHL3VKiPkgeHToq4CwEnpvCaDs7HwAE=;
-        b=exXg5HryZ1zZkr5a3y+ST337KDgQuVHKkyU8SIpfVPbmT9sQx3JPLXV/sgm5MDoDS1
-         fF1MiuJ/GeArzp08fy2vWivmmxty8Dh9TPCHSgNX5xpCdlF7dDnr9Uqi1bV1J1rPTCZL
-         J94OMwDHfr2u4+lPqEAcPubBLz4tvC3MxWRUMWENCBm94NSRa9xlgmltdZYUxT+6OuvQ
-         Z9qnK9Lg1BJwM+NTzm0/T1KjXGzRQKlGOisrt+MkP4z8UhN7tiZ9EsZVPHGFMV74tFTB
-         Hl+RD4cz13tEcXJXaMN/PKlBou6BLbAFCPkahGCfWpcRb5VgA0DGCzq8BrMg8yfKVOl3
-         voxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgZobjrHkIVhDYtuAyOYfvlpyYY8oJ0tEpLcBdnP3NLkI/2CTYQBoyJghmKOIevetrr7/YORojAA==@kvack.org
-X-Gm-Message-State: AOJu0YyIYn791u6Q/xBoitpDEQsfdVWeljOesfOdidNjQ4QhnnOMO51D
-	3aJhvAa+ORWRzj+3RgCpS8aALBuNJzAmmsMF3xfzWdINLoU5dr7uhkFq
-X-Gm-Gg: AY/fxX69XNLdBTX7LRoxjgjhshS2wO1Pyp1cKlKDzkbPQ5BjI7nrYs6F3aqE4fV6uWr
-	oWwyB0hTa0fyMiBqNSSWWASQLq0k6snudWVFuIaoh4WR4ORh9/vxGnBVE5nGMJF8zc/SGZ4dKiy
-	qk5E4R+1aIq0HsTVQwscQeamQZcc7WEw9AB4tAKoVBXwRIgc3SSSrWj8MLaocnKfUzwAAt0CGj1
-	LFryyRf2mY9+fPxMMSZse8LppldxpC5Mpf9TZjXJoaZbkn+wsc0CmKrvoVCLd70nnZNGbFSUB3P
-	IcrJMVaMQKi3XjwHAQKpgABP7Jo3BCztyv5tNcMXI2LMWnOtCh7wNcw8kkNmGzvs0MZG+FIpXOK
-	3hk54HZ0bK4gBefoe+Pi+gtZxc6P8tNF28elLN0LdQs8IrpfhSgFA+v1EEuaOn4zHNPVBxKBMWv
-	WH1rY=
-X-Google-Smtp-Source: AGHT+IGt3M1e5nD6KT/Tr73XIoi0zHyij2fPN6XhQLefORTEEkXDCvzAbax3QerzbjuxYRohNPHGbw==
-X-Received: by 2002:a05:6a20:394b:b0:366:14ac:e200 with SMTP id adf61e73a8af0-369b708cd8dmr12251610637.62.1765849074655;
-        Mon, 15 Dec 2025 17:37:54 -0800 (PST)
-Received: from localhost ([2a12:a304:100::105b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c26515d4bsm13325458a12.9.2025.12.15.17.37.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 17:37:54 -0800 (PST)
-Date: Tue, 16 Dec 2025 09:37:51 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Luis Chamberlain <mcgrof@kernel.org>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+4d3cc33ef7a77041efa6@syzkaller.appspotmail.com,
-	syzbot+fdba5cca73fee92c69d6@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/readahead: read min folio constraints under
- invalidate lock
-Message-ID: <aUC32PJZWFayGO-X@ndev>
-References: <20251215141936.1045907-1-wangjinchao600@gmail.com>
- <aUAZn1ituYtbCEdd@casper.infradead.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=csQREpxfvMH+2uA7mCrLyxROrvg4H9ZQyQlNEvHHJcg=;
+	b=CLtUnKGdtdesKMjorLlKkcDoLGELaTUKxaEpTKo+cRA6408qcoNq+e2b2uV4PffC9wUps6
+	X13IXXS4kYzWL6TL8nxBMZsQ1FMhFXZLu+Qt/dWHzIzVda5meRZbXKwevlm2fcWPhvo4MV
+	IxM+hkmJMDpr91lsauSrm2K5ra/n2aM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765849102; a=rsa-sha256;
+	cv=none;
+	b=iiIwacExhCQCWQ/NwOGp6scy6yfAe6Ydl7UTSIhjfboUNAffWmNUdnPMldeYigaKtgLN4n
+	682Yp/ztJHlAma/KCiJ8lGlvKO9SAnSdmbWiHjT/XGF02///B3+lYvm+JAKqt/NDkSYTYq
+	oFiQYJvS5HS7lmZguIvox8XGIDG/I70=
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dVfgt4ZL5zYQtk9
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:37:46 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 0F5821A06DE
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 09:38:11 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgCnB_j_t0BpppBdAQ--.40469S2;
+	Tue, 16 Dec 2025 09:38:08 +0800 (CST)
+Message-ID: <fa7b6432-a35b-4768-91dd-926b45bb6980@huaweicloud.com>
+Date: Tue, 16 Dec 2025 09:38:07 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUAZn1ituYtbCEdd@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] mm/memcontrol: make lru_zone_size atomic and simplify
+ sanity check
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251215-mz-lru-size-cleanup-v1-1-95deb4d5e90f@tencent.com>
+ <3edf7d6a-5e32-45f1-a6fc-ca5ca786551b@huaweicloud.com>
+ <CAMgjq7DVcpdBskYTRMz1U_k9qt4b0Vgrz3Qt5V7kzdj=GJ7CQg@mail.gmail.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <CAMgjq7DVcpdBskYTRMz1U_k9qt4b0Vgrz3Qt5V7kzdj=GJ7CQg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgCnB_j_t0BpppBdAQ--.40469S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw1rCr45tw4kGw1DGF1kuFg_yoW5Cr48pF
+	WUta48tF4kArn8A3sFyw12qayYk3s7GFs8ZrnxKw4UuF909F1Sqryakr45uFWvkwn3Gryj
+	vF4j9asrC3W8ZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: yuhum8dfdtg5eaa685fjzfdq6c51teqs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01BE940002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 8gb5ket31g3q3w6i6iomygu71335zsx9
-X-HE-Tag: 1765849075-624809
-X-HE-Meta: U2FsdGVkX1+bijQZdn703XB8HmSIZJC4ikiSZR9LPqFS3J2HqYP/24It/tE7nuK34vk1p6Zq55BuyA50QQxKBJfZHMRkitlnuhKXL7kjRFpDzfSF7gO7sDpNI5x0jzs46LSDiyrEkoHXFUDpl89NfAwecRvaYZnyCFKdU+/lQ2WnFoPLA2+/48WmaC9Npt7LCSJgOdkASk7gCcUz/0icvZBQ4k1Qib1nJH9NonEevXBi55VPfd0Bbvi8JkgfPpyIonuR0BlCVaeW1eHW6Ad+WfYEpBz8mw7Jbdj/Gie+ZYLXW0G33izOHnMyh5o9NgO9P+iKAYuP5AEQkL1/xX7xePz45D9TxzTLR0g/bKGBazsJcR3Q/+OJroYWMHDc0qLG/OvQywL8+fSEYMYKGmV0+hN7IUH0KnVVhRK0Sr4qbMoA63vGlUZ1ORGYqjQQiKTWP1vJ4CAZgmYAhG0JbwfeKJ/ES42+TJaRGDZyv2QyuwzY6JiryQZC+sWO7vQk0XYz7K7DdEr/3zlU8ddeiQoqLVDtBi8zGoYjevjLzy/+zgbBYyj8wyjRUagzPurpAgYdP+q6qDVUvgQuRPjRdFBIwOaUGUKB4DtkGdEwOXIHwLLAh3UyyLtGdqq6NC+jJdsXNjq/5Hi0eBMcbZBxQGw74GcPGYd7qbYRPiKbZvWjx7Q2YKEPLLKIQAsTNQ3ilZXy1N9LtmUL8FkURBLzWxzwA/kc6sB3EEvK9Z4UWiqPCfa70IgFI+TR7uAMvFvye/x3Or57ToVBefwd6jX8HtEeZH0o9gocabUiH2V0JNPf58rkmxp9YLGTrGWbCEVTsYnvct/94lODTD1iV9MTGR+zV3l5IEGmCerUDvAnRKvDqpgQPv1Wo+oppDdpcilZhToYnC6CDCoHUBtQf+W+W6reBdiirjLfM68KJKnuksP4MBJaSmK6ra76U4pa5p4tQF4/oz4/pCkz5wXDj1bc83t
- Rt4U5mLU
- BEEtJS4tiiakDmUAZof8SLvi+0exnzKJs3Xq81srbrS0PonnuDqUWfV8NzwF++/oJi9vhLNlZ/F2j0xm500RO0VJhPj5Qge+pO/oNBBd0o9meLogtuE7GUzQJv8X9aWKe7QTEDlRdCx+kUlzQgCJ2472+DPTDcVYeeP6hIH5xkSUUacoyD2iex5RYHABntTNvoY0oel4s0/w+K5vMCUdTNuk3kugIg7M/ybVBIj0BKHLNvDio1k6fe3MlWWVFVEftE3F5C6vsmvawzl2Dnoavz0SKlBUF0uwJWpxV2MoUI+LydrVmryr7FNCuDfAMYGANjjVP3CbMJb/lNnGEnk5niwdJIj+KkCO3zRCmBNtB+bOaAbCf1K1y6awumsT/tv/QW2iPPKTvjf2rGY0s8/gyT7M5Li/2OLPKeY1aDG57G/DKgeAABm931tZodMmVwvXTrSVufKGzzARyO6vLsTbnVSFqCR+1P1baJqGzit/xwtIs59MZHcMMt19rRJrJoEqN2vbiOPZXP/GpsgB06DMMjtmBAimlgP0JRv1ktvf5HhhfHS1fadIvngIpicWBzfdoKZIMCsyb6cZanTN9crgNApeYwE6gltCw40u+SsRTFvgVKfBOQknQlLYtB9BCeJN7jWvl8pbEqRZaqH7KbFp7iVJsqu2XviVICpRQ
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D0D6E10000E
+X-HE-Tag: 1765849097-253710
+X-HE-Meta: U2FsdGVkX1/3ydFk8xTdJ+qhTviJLeyot+yO2ulaN7wglS/ttGcRmewfmkL+plSO0s1kbhkYn4UlVChU7EEYbltNHBZKx4X7QN2YnFNbDcW0wF2OJUSwm116fGHtT98jULz/UIaNC3meXIqDDbspEh8mAuopEGtnoVkDbFH+SehkjyIJNmnGxZFq0lYNJ9nDA4Q8/tdeBXpqF0iD30aIw50PZ6COe3+dcU9d1ic3yT4QAUtVpL0Z1t8n3Qvfi1nVsht3w2KuHDqL0itvQP0BUc4ewprZ5KejX0Sz66iaalbvVwiP0JBcIv9BHIINfGI9AVeRokns2KZdKbrL+SonSj2Nzr0mK0CRHJb67Vc5dq5q1uFGpbpopOppTVFtFdhB1B0k1STKaiHj/wk5cutISUzRqSjlUjKxJtPbAhwkKYBLdPnKGOhwE1sui5pvTXbV/9aveFKDOvwOCZjZWzAGrrA1RKXq2POD94F/GTt2/xws/Fh9hBncAw5eDPVSru5N+XLOZfpPvZ6VguQvEwP8ul7u+IExITGrD/Er0NGK2nVHKoo15z/u1ZIG6eH/Tmc9cZjzSvZk+cudGT79+eNphIPIJ9aSKRdcecoSY4hYAMKgAj5422aA2fggQqE4/b0Tuy9PLt5s11PGBEnHmLcxnlyNCmxdes3X1oZnvWjvvMXlh6RzA9O7h6wvwk8oFauwrI/1mDClQ/KHqQZTbe09j30hDIaJfB8OcwYZOIZKnNtDyJEPpLpRLDeIiS7jaH99Xif4Nff19BC6114mGQzLP4z2dFxoRM20QIsI8hZdV5iDW7pXLDKuPfvaltuMFV73f16Ma/lZYVJm0ylDERJXoiDd/M40KiEB9L26pJJskwMiQAk3rZYc9XH0p7oS5COqaM2uqlU9SiXgYMtMnk51v3qfPjAn1nEGAsrtp5sKjdLsfcKGQu9NFsaMstj/sdpFED1MNdqbOTRbmljSfcW
+ JvhDiIuH
+ WDHB+h9yuSt1CrCaXJCp9UrFDXnl0dQLoQQnPVIhf5umYsiQ549qIWeYolpmym6j9DXgmw45S+I4UEHT6bGfxWWNX+7yPZXfZMcrq1cqduo1m6Nsa20PkRJL7qCA0SMZoYpU19rYzgaTDz9FPZQ78pBeFCkKKFw1qKQ9wHkggfUlovCI9G5+KQztC+q39WknyNrdU1H4jzExD9Fh7/E8PrO2zpjjA+Gu0+kwkxVot9CYhRr7bWhqHcO5HgbbZa5mw4kJj4VdphSWbznCTXNc7EctT/8dYiJSYEfZJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,19 +111,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 15, 2025 at 02:22:23PM +0000, Matthew Wilcox wrote:
-> On Mon, Dec 15, 2025 at 10:19:00PM +0800, Jinchao Wang wrote:
-> > page_cache_ra_order() and page_cache_ra_unbounded() read mapping minimum folio
-> > constraints before taking the invalidate lock, allowing concurrent changes to
-> > violate page cache invariants.
-> > 
-> > Move the lookups under filemap_invalidate_lock_shared() to ensure readahead
-> > allocations respect the mapping constraints.
-> 
-> Why are the mapping folio size constraints being changed?  They're
-> supposed to be set at inode instantiation and then never changed.
 
-They can change after instantiation for block devices. In the syzbot repro:
-  blkdev_ioctl() -> blkdev_bszset() -> set_blocksize() ->
-  mapping_set_folio_min_order()
+
+On 2025/12/15 16:29, Kairui Song wrote:
+> On Mon, Dec 15, 2025 at 3:38 PM Chen Ridong <chenridong@huaweicloud.com> wrote:
+>>
+>> On 2025/12/15 14:45, Kairui Song wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+>>> introduced a sanity check to catch memcg counter underflow, which is
+>>> more like a workaround for another bug: lru_zone_size is unsigned, so
+>>> underflow will wrap it around and return an enormously large number,
+>>> then the memcg shrinker will loop almost forever as the calculated
+>>> number of folios to shrink is huge. That commit also checks if a zero
+>>> value matches the empty LRU list, so we have to hold the LRU lock, and
+>>> do the counter adding differently depending on whether the nr_pages is
+>>> negative.
+>>>
+>>> But later commit b4536f0c829c ("mm, memcg: fix the active list aging for
+>>> lowmem requests when memcg is enabled") already removed the LRU
+>>> emptiness check, doing the adding differently is meaningless now. And if
+>>
+>> Agree.
+>>
+>> I did submit a patch to address that, but it was not accepted.
+>>
+>> For reference, here is the link to the discussion:
+>> https://lore.kernel.org/lkml/CAOUHufbCCkOBGcSPZqNY+FXcrH8+U7_nRvftzOzKUBS4hn+kuQ@mail.gmail.com/
+>>
+> 
+> Thanks for letting me know, I wasn't aware that you noticed this too.
+> 
+>>From my side I'm noticing that, lru_zone_size has only one reader:
+> shrink_lruvec -> get_scan_count -> lruvec_lru_size, while the updater
+> is every folio on LRU.
+> 
+> The oldest commit introduced this was trying to catch an underflow,
+> with extra sanity check to catch LRU emptiness mis-match. A later
+> commit removed the LRU emptiness mis-match, and the only thing left
+> here is the underflow check.
+> 
+> LRU counter leak (if there are) may happen anytime due to different
+> reasons, and I think the time an updater sees an underflowed value is
+> not unlikely to be the time the actual leak happens. (e.g. A folio was
+
+This is exactly our concern. If we don’t read the LRU size, we won’t get a warning even if it has
+overflowed. I’d like to hear the experts’ opinions on this.
+
+> removed without updating the counter minutes ago while there are other
+> folios still on the LRU, then an updater will trigger the WARN much
+> later). So the major issue here is the underflow mitigation.
+> 
+> Turning it into an atomic long should help mitigate both underflow,
+> and race (e.g. forgot to put the counter update inside LRU lock).
+> Overflow is really unlikely to happen IMO, and if that's corruption,
+> corruption could happen anywhere.
+> 
+> The reason I sent this patch is trying to move
+> mem_cgroup_update_lru_size out of lru lock scope in another series for
+> some other feature, just to gather some comments for this particular
+> sanity check, it seems a valid clean up and micro optimization on its
+> own.
+
+I agree — it is confusing. If several of us have been confused by this, maybe it’s time we consider
+making some changes.
+
+-- 
+Best regards,
+Ridong
+
 
