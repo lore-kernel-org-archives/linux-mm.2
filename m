@@ -4,175 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6759DD6554F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 11:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05818D6552C
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 11:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A11636B0005; Wed, 17 Dec 2025 06:12:54 -0500 (EST)
+	id 645F76B0005; Wed, 17 Dec 2025 06:16:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BFA46B0089; Wed, 17 Dec 2025 06:12:54 -0500 (EST)
+	id 61DAF6B0089; Wed, 17 Dec 2025 06:16:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893CC6B008A; Wed, 17 Dec 2025 06:12:54 -0500 (EST)
+	id 4F2766B008A; Wed, 17 Dec 2025 06:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7699E6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:12:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20075C09AF
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:12:54 +0000 (UTC)
-X-FDA: 84228700668.06.E106F1D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 96218A000F
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:12:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="x/fOlfKn";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cjcIet5p;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0lJioIsX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=57YlfKzL;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0006B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:16:16 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CD925BC53
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:16:16 +0000 (UTC)
+X-FDA: 84228709152.27.29307EC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E5C1B100008
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:16:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XPIhsdKp;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765970174; a=rsa-sha256;
+	cv=none;
+	b=ZWTycZo9cBGDeVFqFMoHsPQTv2iFm/tbXp2H6GzTkwcD5tGoC1GdfZxuUo1+LKMesbYtFz
+	6ZnALED1wOMGIPttk8XEsCjs+JjHvhm9PDML7LroR5WBp2lr9aOnMD+oHDA+W7vWuEJUNu
+	k90fExMSbmRmhr8owPLczr8X5NgTBks=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XPIhsdKp;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765969972;
+	s=arc-20220608; t=1765970174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uNLPo0Suitq1KGHF8phiMQLQOqtB/rYxJchQQ9gBr6k=;
-	b=4mW5r0eZ4ElAHvwG+DeUp9zm53a6KrcSUdDuWAnKMqcPBHdhv3DLIl8cnuoh1w9BFgWgdf
-	nO1SueSzr0MfFrf+XMC8wG50S+BNz29rzbye//qAZhcwkPzBWVv+aWe0zhIJWT2v3pT7nv
-	gVYvxbqFdhxDBQRrmOIKlddDCnBcs1g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="x/fOlfKn";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cjcIet5p;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0lJioIsX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=57YlfKzL;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765969972; a=rsa-sha256;
-	cv=none;
-	b=cc175YA6A5oSA5cHYf56sCKZRihaxcAWNek8+P/zQ6Xv3mkQijib6Ui24iHdMlwJ+60ESF
-	zJkExHy+v5nEmaPPeNRHqB981elCdC80mzzJqx2shYUFttOdcKAyAIovD88fKhdhNo5YWG
-	eHRWzBQywJFWuLp2JwwyKa1mOWJSrkc=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=fziopwXFv8kkjMBB9/Q3xq/TrYYxeYKMSvdF100voDc=;
+	b=sYr7pxl1cBlH6MFlKa8/F7Aj7aDckAxAEcDkqjKlhC0w5OZzuEHM4lVcM04mJ8ga0B4dd+
+	WFnBABX9zQAkk5uQDAf4X9XXiEaZ9PY8yh+FrkrMz+uLFNlRpqcsODOShj9mwZ7aPO172W
+	0jDBQiIH4o73J/+UBbfjy7ig/bPrFbQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765970173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fziopwXFv8kkjMBB9/Q3xq/TrYYxeYKMSvdF100voDc=;
+	b=XPIhsdKpr5VU1IDzhzDHwX9dpOmQKprF9XNzCQ30iQ8qnA25ftax2t8q8QRzKqhSRNiwyH
+	r2+AmGvYR4Gq5xGtnGqgl2GiUf0TwTfZoRJLtr3G82hVZwpyRivhaFYjS4bW0OdaO/2sWq
+	UjyW4ATMdd4wCwrgjGB9+wN+ev4wuUg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-0RmcSPelOCKUZAeOLm2ZmQ-1; Wed,
+ 17 Dec 2025 06:16:08 -0500
+X-MC-Unique: 0RmcSPelOCKUZAeOLm2ZmQ-1
+X-Mimecast-MFC-AGG-ID: 0RmcSPelOCKUZAeOLm2ZmQ_1765970166
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D59D2336A2;
-	Wed, 17 Dec 2025 11:12:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765969970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uNLPo0Suitq1KGHF8phiMQLQOqtB/rYxJchQQ9gBr6k=;
-	b=x/fOlfKnxpxa5mK46r+OIgIJ26MUK6UAwjDCEnfXmAiSr4PipmAwNH2VFtT+XOXPHW8cOC
-	X5SK223QF9fbbkfbphztIIoso25HIRo8t227TYy2pOV92N1zG1MOngllm07WGE6nZQ93Tv
-	T7MEc5G0oXqD2nzkAeTCayXJm5ULkIU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765969970;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uNLPo0Suitq1KGHF8phiMQLQOqtB/rYxJchQQ9gBr6k=;
-	b=cjcIet5pCprl0byxQOJIKXTgmP+WJKRlDh6h+5RL8CQOKLvtdDIxGzTCS0n8FrU9HktQD3
-	YEjnlBir4B+C3CCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765969968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uNLPo0Suitq1KGHF8phiMQLQOqtB/rYxJchQQ9gBr6k=;
-	b=0lJioIsXRtZuod/OWQo63LUD97wW4vaZbvYVCrLKUkP3v2T+xlOc8HX6LSiIqChU4zeql7
-	wds5jCR1zvjLVyb4OfJB5/gKtr5nNBpqsgCeUdWhEENKv+kLsZoZqJBQ7E9XIUhx4YYomi
-	Ku7eTMq5eBmE3C823pQo8NayCIPhQos=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765969968;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uNLPo0Suitq1KGHF8phiMQLQOqtB/rYxJchQQ9gBr6k=;
-	b=57YlfKzLWBOUqeY+BjdrtrjMyiJ8gUigfamd5y1DIe/yzjfs3i9zKjKrHU9y+MCiEc13sn
-	tCrzw4sjoXK/LMBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB06E3EA65;
-	Wed, 17 Dec 2025 11:12:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SQVrKTCQQmmxUgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 11:12:48 +0000
-Message-ID: <1cf7675a-2de3-425f-9938-af97f7c6436d@suse.cz>
-Date: Wed, 17 Dec 2025 12:12:48 +0100
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 987AD18005AE;
+	Wed, 17 Dec 2025 11:16:05 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.95])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6FDA91955F24;
+	Wed, 17 Dec 2025 11:16:03 +0000 (UTC)
+Date: Wed, 17 Dec 2025 19:15:57 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 10/19] mm, swap: consolidate cluster reclaim and
+ usability check
+Message-ID: <aUKQ7dke3uf9ud6W@MiWiFi-R3L-srv>
+References: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
+ <20251205-swap-table-p2-v4-10-cb7e28a26a40@tencent.com>
+ <aT+KvZplFPimgStY@MiWiFi-R3L-srv>
+ <CAMgjq7AKe09wKEeD9uf5_EuLBLMRoV=Rt+Vp0PU9-b5Jmp+1TQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to
- zone_set_pageset_high_and_batch
-Content-Language: en-US
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Palmer <daniel@0x0f.com>, Guenter Roeck <linux@roeck-us.net>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Matthew Wilcox <willy@infradead.org>
-References: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hpa6uouuu6jtatnhhq8pjxx1kjs46ow7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7AKe09wKEeD9uf5_EuLBLMRoV=Rt+Vp0PU9-b5Jmp+1TQ@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E5C1B100008
+X-Stat-Signature: ukkm4fkryeiy5ocriok4jxnunmf3qa9w
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 96218A000F
-X-HE-Tag: 1765969971-82707
-X-HE-Meta: U2FsdGVkX18PEe0+otwkrnx7pe0J7XYOFDPXPVFo49RDcItCFGW7bzAOQNC0i20QIMbVxUzKZrrJxrLOrl2vFbbv3rZ7fxAU2u26n3vS/vzOlEAaFiIiGKHMshBbYP4oNaY/U7czhBLKbwuu0nl2hyP0AbGolRFK7FsYsD84BUMIYFMT/HTgKTwvYJWgRqeZTvfldI5qryft9XoNXcESWPzoicx9Yw/m5jGUt2rqQdRi4433uOy09oE58bBZ2RR8qyqgnBFivz3wQrb/8aV8LP5RRw+ySdn2jOrJzMybLgKPhjYM+LjUlRdmaki7oYnPQoKF+39XCkqtc1o+bUYl1/42ZMb58vSV5X5JOawvU+ZC99P2fAdwX4di6JB+4Y9v9NiZ9f5GGh1YTWB0yxlI6Bf3N9grve/ug3TfYV+bS96VaPwXDrz4lZgV7mLkliFfChXcC314IiHzxtAT4Ry1WS0Qz1X/VL1yeBHhmVuVmC9M5gWQOy/XwtZ2iwzMmqUyxkyTZo5iKzNJrjXNf3z3XN4hbG1DzzjOSLsjiHWTJBHueidiV2wwR2YocI6Z3gO57wavnBxeVRRuzhJ9VOsRgSS3LYktRQYBCH6ns7csRDpXaW0TCh2yMbzU5sCmY5l56owe6Do0/T+DlY7kF/oTTJeZ/TM1w91c7rYC8/9BNvCrYcpyfSoZb3qDOD6ZMk5j0mIkKSgDoyw1HrTULfsKc5eG9wwQclfLHM6xPsCjDFuCFHAjBh87kLsvuGtzXdWg1uneckUooSTmq7xoZgq6/ZOVzP7Zz60iwlbTlmgoF3tMDjKyvVdMY2UP4MO0g9hgwri8iqehnWUiOATKvbxaR7j+Lkn+LOK25Z/QUAUeCyr6EnLTfK8rbPZ88nl1+8qnmjInvQmdWusF2tevrTctkljc+zMhqozR+cAkXH2maR697TsiO/aP69tiWANyGW4tb65ytQp460VEfxTkSfU
- rYhuMsNo
- JIWQgT1/NBLBdFsqTxDDU5Lw3yf3plsicH9NrkAAXs2J8fBraFTLTKIYI3dxfWmqPt+X1MxDM+FTw2bbL2U2n7zXY9kx5I6MpNhKQ6uXcqeUapRSq7Q3/yd4BEj8LbwJyyDQt1/SGHAN3BX0taGpWGwJYRqouva5CZ9xjyeUFnUxI5hsZLjDm74YiGJNpf4WE/UWAf90RFWb62/QMWldaKtWkTjSTmD6HGUxSCtH1meZZWWNIiSV+bTBjWR5OZv4ut8a43sYRiyU0fXYxFA1sOWVrFGhCX1U8FtLSlupLD+l9w0y0HEURQsP3IxaWMeAoNqEH/zFSbgbIuOxwMu5JaZvt8GBagTQwcWuy7H8lN41q8s6yo9IkGUO5ZwVIPvXzkdwvWUZnoHhL3vzd6UmNDgYbnKBqBBlb21f6OkZELrwjCxhGBVV8RW+UMYLDKZb/qLKONzt8o4vQ5Oa/ry3R8Q/p1qqcQ8yhDQ9Ujv6TNnFun07zUU+zlVqx+V+21f0zXr5a
+X-HE-Tag: 1765970173-119267
+X-HE-Meta: U2FsdGVkX198LTFYXj3XSHRSMfdZEquh76PdT7OmxBvYvHwWi8SEgMPqR8B2CNk5lQrhuhryYWsYUJnKO5F+Nfo/QQwGnqLCK4Gu2m0CJ6NLcwpEwOwfckNQmYHqaj6OsXmFyXTa+PJxCtHRePPGnCpeHObi6gX3QxQ4DvGMQEXOaKb1gZnfPaDVYFw2NMxqMw+ZT6A9gGWvs2vyY3TjaLA6uMSsTavWDGqOKWrgWisL44klbDekz2bwhm/gXc8ghgxS3k+66WsB9mxHk45dxdKFh73bDLOaUGjxFqeYkn86pO5Y+dHJeb/efneoSdhOJkOGI1vln9HS+0L84ciH56RQywJNBDQxF0n6AaLDRKY6CB+7pMuKXQaQSsi6eSN7M2LkOp4495FwiaNUK8YM3Rlud55qUEVAqByAV8Lv6OP9j2q2vrmroyT4/QG0WHaEAYnkI3/HUbEybLaOqkun4QCoYbLNsfhcAidfUNm55tKPLYq4qHukY1TzpbXvDbvzyEndfpD+HOTW8Tj+bPovbHDQplGtLJuUL/6s+07EwjQIH6o4rlGctDL2UPh5f/1v3RL9g6ryufljoaYmnN8yPP/g0YTgsRApL4kZv+84eWbQNotb8TtENksphc3ayTc1MB8IoVrU/TlaoCvnnpgYme1vXdsG3bkoPDxQwikyuA2aW/a48g1OTLK0huYt5M0NNGlKSWyI3CVHFO1i3c3J6hIGHbLzpMx4Keg1bW/KWMDwNwJpTC7MkxZSsGtS5jJgJzcZb+yG7zrk4yarUw1yIxQOXD9KsH6NKuPCi8hMAT3w8xlsmQ6f+s8DyDqM/1bA902qvndBc3b0FhV6PXYyKTo5HNBXF8kCkekEXArcl76qc/juC5F7DsIMhcFwZ3rbiM7rqBMRn2t5wm+1RouekneJ2DBl5XGg8K8/DIXQKUrko6Jesjdf5YhUFkVCFC0cuOVJxxQG9HHlexzSbc4
+ XVDbwYad
+ CuXvLd4BuuJfEpdTX6bGicrF9lbGwcylVLHElLDnM5xXSD9LS2rAQGtnvl7G2BnEQeRaK4I37sbqaJZ8c2ujXwfFvuHe5Cf+Y8tRgaDnJ6qlLo9i1WKa0SOgB6DKxYzNn/B8/X7vdc7XaP6I/KUyqkiANYXhy6TaI9GhcLY8Kggz99x5i25vGRIz7ZUopez3Mc0P0ejnqpSpo3YDpG+Yq2HrUOK+xR22KfyVf6ClQYOhx6yqSc25JjeQ3uVbn9Hr5uPt+Pyu+sCvsOmkzqCVHiUmXh4J87mOQ/+PvOc7BF6qmDJmQHzSkg3pn0HWm2Ym3TfOA6DC6W6zbHURaFqI4RREg30vOYM3SW/3rcVxCI0YRT0JBk37qXVAwatF3Df+5xxRVN34MsodW/dqnNHrL4YyoLq39A/JFiVbD/tALJMOd31A5SaDpYl1ywvYNhVVlS47bFE+U0bgorbyj5CcLxar2ndJH5pUj42Aq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,50 +120,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/17/25 07:05, Joshua Hahn wrote:
-> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> moved the error handling (0-handling) of zone_batchsize from its
-> callers to inside the function. However, the commit left out the error
-> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+On 12/15/25 at 12:38pm, Kairui Song wrote:
+> On Mon, Dec 15, 2025 at 12:13 PM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > On 12/05/25 at 03:29am, Kairui Song wrote:
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Swap cluster cache reclaim requires releasing the lock, so the cluster
+> > > may become unusable after the reclaim. To prepare for checking swap
+> > > cache using the swap table directly, consolidate the swap cluster
+> > > reclaim and the check logic.
+> > >
+> > > We will want to avoid touching the cluster's data completely with the
+> >      ~~~~~~~~
+> >     'want to' means 'will'?
 > 
-> Since in the NOMMU case the reported-to-user batchsize should still be 0,
+> Sorry about my english, I mean in the following commit, we need to
+> avoid accessing the cluster's table (ci->table)  when the cluster is
+> empty, so the reclaim helper need to check cluster status before
+> accessing it.
 
-Should it? The value is effectively set to 1 despite what zone_batchsize()
-returns, because of that adjustment this patch reinstates. Also does anyone
-care, really?
+Got it, I could be wrong. Please ignore this nit pick unless any english
+native speaker raise concern on this.
 
-> we would only like the error handling to exist in the callsites that
-> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
 > 
-> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
-> on NOMMU systems.
-
-I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
-
-> Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> Reported-by: Daniel Palmer <daniel@thingy.jp>
-> Closes: https://lore.kernel.org/linux-mm/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Closes: https://lore.kernel.org/all/42143500-c380-41fe-815c-696c17241506@roeck-us.net/
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > > swap table, to avoid RCU overhead here. And by moving the cluster usable
+> > > check into the reclaim helper, it will also help avoid a redundant scan of
+> > > the slots if the cluster is no longer usable, and we will want to avoid
+> >                                                        ~~~~~~~~~~~~
+> >                                                         this place too.
+> > > touching the cluster.
+> > >
+> > > Also, adjust it very slightly while at it: always scan the whole region
+> > > during reclaim, don't skip slots covered by a reclaimed folio. Because
+> > > the reclaim is lockless, it's possible that new cache lands at any time.
+> > > And for allocation, we want all caches to be reclaimed to avoid
+> > > fragmentation. Besides, if the scan offset is not aligned with the size
+> > > of the reclaimed folio, we might skip some existing cache and fail the
+> > > reclaim unexpectedly.
+> > >
+> > > There should be no observable behavior change. It might slightly improve
+> > > the fragmentation issue or performance.
+> > >
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> > >  mm/swapfile.c | 45 +++++++++++++++++++++++++++++----------------
+> > >  1 file changed, 29 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > index 5a766d4fcaa5..2703dfafc632 100644
+> > > --- a/mm/swapfile.c
+> > > +++ b/mm/swapfile.c
+> > > @@ -777,33 +777,51 @@ static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
+> > >       return 0;
+> > >  }
+> > >
+> > > +/*
+> > > + * Reclaim drops the ci lock, so the cluster may become unusable (freed or
+> > > + * stolen by a lower order). @usable will be set to false if that happens.
+> > > + */
+> > >  static bool cluster_reclaim_range(struct swap_info_struct *si,
+> > >                                 struct swap_cluster_info *ci,
+> > > -                               unsigned long start, unsigned long end)
+> > > +                               unsigned long start, unsigned int order,
+> > > +                               bool *usable)
+> > >  {
+> > > +     unsigned int nr_pages = 1 << order;
+> > > +     unsigned long offset = start, end = start + nr_pages;
+> > >       unsigned char *map = si->swap_map;
+> > > -     unsigned long offset = start;
+> > >       int nr_reclaim;
+> > >
+> > >       spin_unlock(&ci->lock);
+> > >       do {
+> > >               switch (READ_ONCE(map[offset])) {
+> > >               case 0:
+> > > -                     offset++;
+> > >                       break;
+> > >               case SWAP_HAS_CACHE:
+> > >                       nr_reclaim = __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+> > > -                     if (nr_reclaim > 0)
+> > > -                             offset += nr_reclaim;
+> > > -                     else
+> > > +                     if (nr_reclaim < 0)
+> > >                               goto out;
+> > >                       break;
+> > >               default:
+> > >                       goto out;
+> > >               }
+> > > -     } while (offset < end);
+> > > +     } while (++offset < end);
+> >                  ~~~~~ '++offset' is conflicting with nr_reclaim
+> >                  returned from __try_to_reclaim_swap(). can you explain?
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 822e05f1a964..10c1297fd3ea 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6045,7 +6045,7 @@ static void zone_set_pageset_high_and_batch(struct zone *zone, int cpu_online)
->  {
->  	int new_high_min, new_high_max, new_batch;
->  
-> -	new_batch = zone_batchsize(zone);
-> +	new_batch = max(1, zone_batchsize(zone));
->  	if (percpu_pagelist_high_fraction) {
->  		new_high_min = zone_highsize(zone, new_batch, cpu_online,
->  					     percpu_pagelist_high_fraction);
+> What do you mean conflicting? If (nr_reclaim < 0), reclaim failed,
+> this loop ends. If (nr_reclaim == 0), the slot is likely concurrently
+> freed so the loop should just continue to iterate & reclaim to ensure
+> all slots are freed. If nr_reclaim > 0, the reclaim just freed a folio
+> of nr_reclaim pages. We can round up by nr_reclaim to skip the slots
+> that were occupied by the folio, but note here we are not locking the
+> ci so there could be new folios landing in that range. Just keep
+> iterating the reclaim seems still a good option and that makes the
+> code simpler, and in practice maybe faster as there are less branches
+> and calculations involved.
+
+I see now. The 'conflicting' may be not precise. I didn't understand
+this because __try_to_reclaim_swap() is called in several places, and 
+all of them have the same situation about lock releasing and retaking
+on ci->lock around __try_to_reclaim_swap(). As you said, we may need
+refactor __try_to_reclaim_swap() and make change in all those places.
+
 > 
-> base-commit: 40fbbd64bba6c6e7a72885d2f59b6a3be9991eeb
+> I mentioned `always scan the whole region during reclaim, don't skip
+> slots covered by a reclaimed folio` in the commit message, I can add a
+> few more comments too.
+> 
+> > >  out:
+> > >       spin_lock(&ci->lock);
+> > > +
+> > > +     /*
+> > > +      * We just dropped ci->lock so cluster could be used by another
+> > > +      * order or got freed, check if it's still usable or empty.
+> > > +      */
+> > > +     if (!cluster_is_usable(ci, order)) {
+> > > +             *usable = false;
+> > > +             return false;
+> > > +     }
+> > > +     *usable = true;
+> > > +
+> > > +     /* Fast path, no need to scan if the whole cluster is empty */
+> > > +     if (cluster_is_empty(ci))
+> > > +             return true;
+> > > +
+> > >       /*
+> > >        * Recheck the range no matter reclaim succeeded or not, the slot
+> > >        * could have been be freed while we are not holding the lock.
+> > > @@ -900,9 +918,10 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+> > >       unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+> > >       unsigned long end = min(start + SWAPFILE_CLUSTER, si->max);
+> > >       unsigned int nr_pages = 1 << order;
+> > > -     bool need_reclaim, ret;
+> > > +     bool need_reclaim, ret, usable;
+> > >
+> > >       lockdep_assert_held(&ci->lock);
+> > > +     VM_WARN_ON(!cluster_is_usable(ci, order));
+> > >
+> > >       if (end < nr_pages || ci->count + nr_pages > SWAPFILE_CLUSTER)
+> > >               goto out;
+> > > @@ -912,14 +931,8 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+> > >               if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
+> > >                       continue;
+> > >               if (need_reclaim) {
+> > > -                     ret = cluster_reclaim_range(si, ci, offset, offset + nr_pages);
+> > > -                     /*
+> > > -                      * Reclaim drops ci->lock and cluster could be used
+> > > -                      * by another order. Not checking flag as off-list
+> > > -                      * cluster has no flag set, and change of list
+> > > -                      * won't cause fragmentation.
+> > > -                      */
+> > > -                     if (!cluster_is_usable(ci, order))
+> > > +                     ret = cluster_reclaim_range(si, ci, offset, order, &usable);
+> > > +                     if (!usable)
+> > >                               goto out;
+> > >                       if (cluster_is_empty(ci))
+> > >                               offset = start;
+> > >
+> > > --
+> > > 2.52.0
+> > >
+> >
+> 
 
 
