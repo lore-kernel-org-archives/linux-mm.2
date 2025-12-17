@@ -4,123 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80307D68BC2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 22:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31A07D65C63
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 22:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2E276B0005; Wed, 17 Dec 2025 17:36:34 -0500 (EST)
+	id 7A8906B0005; Wed, 17 Dec 2025 17:47:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDBE36B0089; Wed, 17 Dec 2025 17:36:34 -0500 (EST)
+	id 78A2E6B0089; Wed, 17 Dec 2025 17:47:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7FB6B008A; Wed, 17 Dec 2025 17:36:34 -0500 (EST)
+	id 6B4686B008A; Wed, 17 Dec 2025 17:47:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B96BD6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:36:34 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 58C786B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:47:20 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 592CF1A0509
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:36:34 +0000 (UTC)
-X-FDA: 84230423508.20.2891F21
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 784EF1C0006
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:36:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cMedgjzG;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766010992; a=rsa-sha256;
-	cv=none;
-	b=vphw+wa9GyTtj6voYEwTXxvofw1e0fasT8YSmrjlBQtgVhmp/88tLPoH+oNF/6x4c5Trwz
-	RMpnl6Eaa7ikNNUtIWPDFLXBAv3rAiTDQ1I/HZFhBnuGkIl6e5hng83hnXxToAehC8VeCv
-	DRbmDCKBOK0691RMmo1rbhaRgf8uN20=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cMedgjzG;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07EBA16045C
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:47:20 +0000 (UTC)
+X-FDA: 84230450640.20.2033489
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4B92F180015
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:47:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766010992;
+	s=arc-20220608; t=1766011638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kR/+xgf6Jhz+E5StwKcRK1JFVZohgr4tToC9Isegfuo=;
-	b=XzQPD58J3G+9JJs1tD9XYU6lqf2+AYs816SNmYfSCMhOKqWxkDgjpsC5dJxRY/tvt5zseN
-	NsDsfO73cX+4nViegW18TuhoTbqbRwmIYTGgkvsMtJrOzTFstQO2onlk4LEn38dY87/7VK
-	gr07fzGJofYxAIjb9MLDVTXmwT1WV5k=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4f1899960f0so64613841cf.1
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 14:36:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1766010991; x=1766615791; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kR/+xgf6Jhz+E5StwKcRK1JFVZohgr4tToC9Isegfuo=;
-        b=cMedgjzGJC2wFr3/GtYCxKpWqcJESVafF/9JSW4MhOF1+PX+CGyWypLgrFpVvhA6Hm
-         3SRNhU7iJKuJZtNr9IzvwFpKLO1z0Egga2SBtBOtKxj4FSR7OBiiQrYTfpLVOsiBUwuO
-         HeUBKBwYDuZonscaShurz/eB3ILFKsLNFYIzFRDY4R5fmrxjrZsnQBeJv4VyWCgaNzY0
-         fjkWBba9bWC7c1DrhOs81xNhbXo8b1WE7Xkhkm/Nv+SWi7fXY66DKmc91nobrwAopwFI
-         Rkw3KgTfldEVI6WYYNbWttZGdpXn09pj+EL+x+Keag4HB+eqJEo/okBiJBdmx8EYEMHg
-         iS2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766010991; x=1766615791;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kR/+xgf6Jhz+E5StwKcRK1JFVZohgr4tToC9Isegfuo=;
-        b=IcmSqoh7rpWBSQuydh02GYCPUCeq4chcA3oB4t4vzLwBl8TCzvGv5xJFSqL1L7g2uw
-         Hh8sh8HooQvTzaaDtOP7MFbN9mh7oW/DHcTY987UG8UjR2wYbLGQSDBrD+fFKaa+M4o2
-         9mbh++IReCtQZrU+a/Lib1Q7CwLha/vzgsIR2FWUFK+tCPqnwb96CyoLC3pXBEzR49Qi
-         SXcp3Zgy6b7JGN6r2DqjC33b+uGmKFzMkjtPNLiQWcXgig0Rw9k5cuYICNC8Bbi9Wv3U
-         kNdBQfYH+h1CFt3HCjrrGT2rR4r0pViCZRr4i95QQY28A/OBnapWckLpHbLdq/N3WJCB
-         p3kg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjLaAY+/6coJQMKftAZYebq2xRSFefYVHGEZR3/725ixV8pWuKV/o/bjIwy90C6e3xcwQlJ8KcEw==@kvack.org
-X-Gm-Message-State: AOJu0YwHTdJhbaVIEsp9lRI6eWXMKczaBM8GQKOVBer7D/9ka7EK2FYl
-	9/ITiQ1RT1LR661eHL849PKAoZ5HkOkX7gy8l7CtLhxf/tAmfT8NnUV2luQr40h7Eu4=
-X-Gm-Gg: AY/fxX43Dj2He6uGPhCAaDvNGTuIDD6whu5WZjoIwNPFlPh20d51GP6PZRgud3byZB4
-	KDURFzP/X99tcIZ8GTeBPqjB2FjoTrgb62QTGUlyd7ypEb3KDU0BlnRbzkeyixsXnEWGe895ADF
-	GBHJdYrMIuDYEehT5lHnzAVGuh/NVt+1ZUOvR84VIkslRcA3EvysUqVQASCr+GLZ2qq2XqnvL3o
-	71agqIV5JK0G5u3eCOZfoh53IGuv6Zzva/yotghBNnXhZSl3/u54WaPYK8g21f2sK6C1nR11YQt
-	hBhj0nQiPPAEBitGLZyGjHYqZsNfw4sbzsOO8ZTTv5POj9p5P7orlhf/UyyaRXQ5ZDOvUQvWsky
-	FBiis/PY2Sp3TYOqqppRtJPN2+zSl6BjA0Ucx8efBMgnPrSdL6QMa9Nl9N3ofZJNQF1dIapvebd
-	XCSjqVIe+BAg==
-X-Google-Smtp-Source: AGHT+IFEnoIqNTzn/beBrrTTMm5NCOBdf6XqjRvcyNax+rsawQ6zsZEDQLLD5Cw+412x47E2IhWIYQ==
-X-Received: by 2002:a05:622a:4d89:b0:4ec:ee2e:1c20 with SMTP id d75a77b69052e-4f1d05a9294mr251307421cf.47.1766010991640;
-        Wed, 17 Dec 2025 14:36:31 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c5dc728afsm4765666d6.12.2025.12.17.14.36.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 14:36:30 -0800 (PST)
-Date: Wed, 17 Dec 2025 17:36:30 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 22/28] mm: workingset: prevent lruvec release in
- workingset_activation()
-Message-ID: <aUMwbhEN8WLvSNXb@cmpxchg.org>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <195a8cb47b90e48cd1ec6cb93bc33a8e794847f6.1765956026.git.zhengqi.arch@bytedance.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pJ20VAm0ZocttgsIVJSJRMWB7qVCgPAPdEPz1ZCLiMA=;
+	b=uG82Bcq+DzM3m/xOdE82ouPfx4X5g3jAHVx/4ByTfnGFSHTKalCw1ZdMW2DW6jOz8l26TO
+	8E0j+LivDXT6zSUFzJ+IEf/0riguXoByUfE7AT4N3MV/60sbZy3TYwqNuzksqYrn9puhKk
+	a9OggrknvRDycoOVw8UrqifBS/U8dvU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766011638; a=rsa-sha256;
+	cv=none;
+	b=MYUkybQo/b6cnJPklD/KhOT1qb6KG3oNwCd0pmpZH3AD7RZi4BLIeuxfK+/BxY6Fgmm0A3
+	r2pxANTFSE0YdRHZN219EtjtJMY1QvcrMKBmAV5AmMKCO8G/NLd0OyQamEtDJOtPB4KSa5
+	GVMzl6BDdef5s4ZGxOHD8h1yRTWlyN4=
+Received: from omf01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E185CC0B70;
+	Wed, 17 Dec 2025 22:47:16 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf01.hostedemail.com (Postfix) with ESMTPA id DF9666000F;
+	Wed, 17 Dec 2025 22:47:14 +0000 (UTC)
+Date: Wed, 17 Dec 2025 17:48:51 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm/damon/core: add trace point for damos stat per
+ apply interval
+Message-ID: <20251217174851.28e7c4e5@gandalf.local.home>
+In-Reply-To: <20251216080128.42991-13-sj@kernel.org>
+References: <20251216080128.42991-1-sj@kernel.org>
+	<20251216080128.42991-13-sj@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <195a8cb47b90e48cd1ec6cb93bc33a8e794847f6.1765956026.git.zhengqi.arch@bytedance.com>
-X-Rspamd-Queue-Id: 784EF1C0006
-X-Stat-Signature: 8zh4chogjkscioymgafbo8w7p7iqcqpi
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+bc+vDXAMiNWjhwd8WTXdVmvD70vBch1k=
+X-HE-Meta: U2FsdGVkX18mvS6jbpgv0E5a2gSLRq6NLU55D3C9EWyncyzvoX0mKuL02jKKo58zakJhkQ7o+AgV+P5jmb12/3c/lY5m6m6FGYrY7atlrnNtuwsAcQ7S0+o0dQ1OZxpyJ9k6vfRrgo4LQt6/BrfpvgRSiuBlJD+NdEgJ2vIEJrfzJok/dmnmxPR9jd2xuL/yM2kQmlaEzfRr/X5L0k4X4YYDeYV6CGFV4YXKHaiG9w+yEfcACHcD6/A96nfysseo8oQwFEmE3EkYLl5PhxIOALv3zw+osDvuBsPzil6CNXu2gxTuzMU4qSIrVBABNFzFUElPx4vM21qw5OigF3Jtd5SWOA9znJQ3gBlVxrnHcv+revjO1HKrG6B8ax0JQwjFCapC7uqtCyALpyv/K88TKQ==
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766010992-741381
-X-HE-Meta: U2FsdGVkX1+lZ+Kpa0wF4S9Cs24gCnPbufhMCc1wnaTg1KvR8yuMMay18nJppDO1nW2xlsu+ckbdraLPonTeKJMPRIygi92hlbN2KNYl0r0sXu+O2ThpbRkSHBv4pzex64LGCsUeiQX3tLWX1BdXMZ78b2J/AyjePABjwAHpn0+xFkBKrMlBGIvAJDtOx526U5wcLt4bjS6T6nOEEdfBeVrAV+/tQZ6DVkzAA3vQXvtvCBH0sRqtTLqtMeolHJgbvzVwbka08qN5T6gLeWseX1fiR7qq+nMZI4VQtPNW5SuEDpdruqmBPpDbfL3LpcJAV+unnjZCwW80I/Ksgsgk/Ca7pTHf6JgsJ6XSA7lfAAL/eQiEw+tQNInCPbE2h4xOvwMfwZSehiUH6KGJd/6OHdvW/PrB/ZRqDxSDsx/bFSI7iGzgU17KwBl0IJegidVZ+ka5kxilYriGyA0m3LlLyfak7TQqysf+KZWL7Ak+h1SviTM6f1R0VfH8hh13Mm7L3CvXobSu0ILlwPtLrgJ/q22cPbUx1jJ1TW3PUIhgjsvs9ccpKSSYV84hxin5amyM2wpc981WLPXu9mvxCxps7w74VZH6QtgFQIm20ObVhYXb/bxPTWRiZYZqsan0w/uywdjwMwAALTvcGO4MrUB7cMRMuwc4VMFp08UaiZzrKZvcrRyJO9oVaWKP/gzblKul6ufvf9DoJHMcwC3cQxUr0r1ruf6TrCPswr1xpJjsz0RHHU/JrmsgTP6PDBqiwx2C5J2IdrHZVzBzuIwH0mllT6AVp3NW7vloQACze8NUmWO4FR91QlMZbSMeuND3CY3PfLZjj6p3ceciPALmzsl+8ECsLw/tVtG451cBbxXTRThw9JcgIm+LDtnkYHW4Wu2ATqS20AZYHDyE7LY2PhJVRpHH9KINIz7uaMDidH9XBV3/4Yx94p6480d128LrkEdQXx7PLQVuBxiloL4ZxUT
- rlY3iKxE
- INqEf69TJ0ifFq4mCVArTeVtRB9/dNSel3WgqZrdDkXAWxcGlSagOFwsWQ03iD1LFWkYdAUW5pBElGbDyrOSs7f5DAfQfKlS7IRU917p9DxeTbhY5ZNzG5F3j2h1vWS4EGxvMSpKYzuk2EpCTqHkWtSRgEkP3p0yPeCDrrS2ld/3g6OLgPanGCQZUvyiUV/nPsduO/GBHOdQ4MGTCamXxzb4rog1Jm3O6v35Im8KZMlP1q6Ha1byqN8zjuHoNAy/UeLZHsomlBrPoOhcAyxp/zKqS+aK1DwX4tH0Kipsz9cdRZidMOs7DYuM86W7HqYT4S98LjS+plox9UDhTSUrdYjTgtMtv8fWUFAkqYYVioNAVTdpbKDNxSFQKCGXcAxadrizXKHwiCebHvrHjoY/jnXnfa1Gt5fyNkeBHS27lSdyt4hA4IuFxe/NzcMgV8UFtCnzKJbQjapKtLackuPVcnOSkhzKmNkytq+KzbWhEMvNw55i0sTFGvSLR8hVr4/jjZnn+gs06IkUufM2agGFnC2JLuA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4B92F180015
+X-Stat-Signature: 31nyrdsgbyo3jc4qijpnjctk1ajppz5e
+X-HE-Tag-Orig: 1766011634-141987
+X-HE-Tag: 1766011638-247946
+X-HE-Meta: U2FsdGVkX1+qzV4dQBuxHePoa1nucwfosDn1nwgWPRNpa2DnKkGQ34Yy4LxsfgTTlMUxRdUxU22oUBCCsaNDeGLcSTHLYRg2nTMGtu63UOn2/3RQI5GaKoO/7XeLHJOyWepkCiy5iV0UBoYBDzyVR18b67Fm9/5lsxIFzLpKk46eDT5h/+LAy6jfMDD9KuVXXdUQulkkUTNw5kLG3UAlvbn5bpaf1GWGIdj7gLKRyWGP+OFmQX7f103gBIJMU3umELBjg3r090WfFqyex08XfQGWAi2DdUO55dIr1+7kue4+xD/0p1YNCBb0W3xoJ3f/9ICxA2nBKPICMM/vjGMMsOkw+bEXJwDAtz5F+nliU+X4iHaDo1kKAz6fXDNPfZtKuFFArILghenFEWaNmLXyNr6FOSg3fDZpetlRNt5ZPZgmUCAOq5q6nD76s6aPsvkuWbKlRnsw1S+xOsuB9t4asFRyIdrgu9W0KU9DW6ckkFLgdjde8Z5ApznOQPB4CMvSmhAwpONbW9pkf0K253tQb2z2S2iH5IZN3K7HYQKKDXW97sE1DZ+jQpPJrBTErfmlGLrxfOul1+SyQECGNDaTeM9vUVLqXojJfcGzYwrvOfHpeyFPqKBGSIfVGbhUP9JDZFXK3uOI7ni/aBsMFqC4/3owQYF5sJjbC2HfA+kMXW3hkO6yzQ+qZD8r/Zx0Q8ABqF9B888I4PSdCgRcu4iujQwjHXO6xFjyMv+1TXdOYLk6OAdChtO6eGTDbXy8wV6e6EYCy3o/xfVI5j8fYPS3KG296PjjgulW+DrKnw9yrIsKfxDIPa/EXZisYBgubTgm/Rb8MIigjxpoJ4izbKfQPbnMFnOSayP3R2KO5tmxa1elFo6YfAab5XnkFShJO4XRdrP0n85FkmrX081hzWnj5CfGAeZnPkRDzMyreYjbL7rYbJGWCY8pDMoqB19QshsKHGr9tuz3yrNE2rgiIMx
+ 0moMOPJN
+ NXc3rwaHDig/GSuhVlNZ07kpCKpOtfWSHkUck
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,23 +87,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:46PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. So an lruvec returned by folio_lruvec() could be
-> released without the rcu read lock or a reference to its memory
-> cgroup.
-> 
-> In the current patch, the rcu read lock is employed to safeguard
-> against the release of the lruvec in workingset_activation().
-> 
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+On Tue, 16 Dec 2025 00:01:25 -0800
+SeongJae Park <sj@kernel.org> wrote:
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> +	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu "
+> +			"nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu "
+> +			"qt_exceeds=%lu nr_snapshots=%lu",
+
+Nit, but it's been stated that strings should not be broken up because of
+the column limit.
+
+> +			__entry->context_idx, __entry->scheme_idx,
+> +			__entry->nr_tried, __entry->sz_tried,
+> +			__entry->nr_applied, __entry->sz_applied,
+> +			__entry->sz_ops_filter_passed, __entry->qt_exceeds,
+> +			__entry->nr_snapshots)
+> +);
+> +
+>  TRACE_EVENT(damos_esz,
+>  
+>  	TP_PROTO(unsigned int context_idx, unsigned int scheme_idx,
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 8908aec6670f..68dd2f7acba2 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2256,6 +2256,22 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+>  	quota->min_score = score;
+>  }
+>  
+> +static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
+> +{
+> +	unsigned int cidx = 0, sidx = 0;
+> +	struct damos *siter;
+> +
+> +	if (!trace_damos_stat_after_apply_interval_enabled())
+> +		return;
+
+Other than that, from a tracing POV:
+
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+-- Steve
+
+> +
+> +	damon_for_each_scheme(siter, c) {
+> +		if (siter == s)
+> +			break;
+> +		sidx++;
+> +	}
+> +	trace_damos_stat_after_apply_interval(cidx, sidx, &s->stat);
+> +}
+> +
+>  static void kdamond_apply_schemes(struct damon_ctx *c)
+>  {
+>  	struct damon_target *t;
+> @@ -2297,6 +2313,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+>  			(s->apply_interval_us ? s->apply_interval_us :
+>  			 c->attrs.aggr_interval) / sample_interval;
+>  		s->last_applied = NULL;
+> +		damos_trace_stat(c, s);
+>  	}
+>  	mutex_unlock(&c->walk_control_lock);
+>  }
 
