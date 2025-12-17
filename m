@@ -4,91 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFB3D65C78
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 16:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA678D65C77
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 16:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 920916B0005; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
+	id C1C3D6B0005; Wed, 17 Dec 2025 11:10:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EE0F6B0089; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
+	id BFD2C6B0089; Wed, 17 Dec 2025 11:10:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CC786B008A; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
+	id B26586B008A; Wed, 17 Dec 2025 11:10:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68BC16B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F01888857B
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:06:08 +0000 (UTC)
-X-FDA: 84229439616.23.A9F9EE8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A00616B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:10:55 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54CD8BCEC6
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:10:55 +0000 (UTC)
+X-FDA: 84229451670.03.D4F7AB7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 001654000A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:06:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 96DB140004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:10:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765987853; a=rsa-sha256;
+	cv=none;
+	b=FkC46aAck88AiBHjQISD7L+QgmGm09MdPEwdcN7iSWprlLIvUEtXC9M/qOUw9S7f51Dna6
+	tKqmlfq6i/OGQIJJtFVZj69tdKwWfufXcD623u8Xh8OdhESHsRzqzZqbCquzHu67PvrRIE
+	G/OfSo3PCcYfvAB6e64bD1pXeTqZGAA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765987567;
+	s=arc-20220608; t=1765987853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fqo5QJCwzTNuy4u6sN23wzH3r4EDeHpvGL7eaNy61wQ=;
-	b=FkhsnqiDno1Qr/yxw4zf3pyL0WnGxkesF5FnQMAmQqPRBN5lnEkqZ9IPnJ8hPJ527Qkkho
-	ZhkAj4GB3BWAauUHq/7cOfryfhtC+f32ZyQ7YO9RGoNYi5vz7IfRdua5YoKZ++uc5HCL9J
-	600Ay1zfJM9mXr4Z6hJaQJoYVx33P68=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765987567; a=rsa-sha256;
-	cv=none;
-	b=oh2j18C230zr0COV6lt8gtElT2D3RXgW4kjhtYCiaUEsg5LRD2JB9j4uHUqaOuwjynmnfv
-	W1VxyZ8cSjy9duGiremSkP0UMMeqdyYYBZ2NuMaMsIJB6gFdxYawgm+ELtm+vik6KDw7Mg
-	bop/OJ7AbJLiNJnhC51XaS/CTWaXQ7Y=
+	bh=FNCYahkh/fcmBqFzNzZ6qSdYyO44Ef+U9jbV1jmR+8Y=;
+	b=M8OqPFeaXh3aqUQb2ClVqrw4/U3z7gydTnr6o4CtypYb4VhK9eXeGl6cOi5S+a2Q87mSH2
+	vpR98JqB08z4XQIMmJwP0qZeYcU4YxU0xNUpXhjOjhC1kfafLEY3NBS2R0mfEgk3ipCL7/
+	rLkN6HxiV5+pqzbL3qesxKMWwtXBiCc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 847D0FEC;
-	Wed, 17 Dec 2025 08:05:58 -0800 (PST)
-Received: from [10.57.91.77] (unknown [10.57.91.77])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39F4A3F5CA;
-	Wed, 17 Dec 2025 08:06:02 -0800 (PST)
-Message-ID: <fac9dd13-0c1b-40de-a5ac-d2c4c2012385@arm.com>
-Date: Wed, 17 Dec 2025 16:06:00 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 70ACCFEC;
+	Wed, 17 Dec 2025 08:10:45 -0800 (PST)
+Received: from [10.57.47.3] (unknown [10.57.47.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E837B3F5CA;
+	Wed, 17 Dec 2025 08:10:44 -0800 (PST)
+Message-ID: <799bdcb5-cb18-4b7a-b33f-bea1553f3650@arm.com>
+Date: Wed, 17 Dec 2025 17:10:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] arm64: mm: support batch clearing of the young
- flag for large folios
+Subject: Re: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
+ <20251215150323.2218608-15-kevin.brodsky@arm.com>
+ <20251216201403.4647a4f9861d3122ee9e90d7@linux-foundation.org>
+ <f9550d22-8810-4145-aaa8-48961f6ea35e@arm.com>
+ <ca0da7fd-245c-4d52-8f4d-f8fce4717494@arm.com>
+ <87a4zhkt6h.ritesh.list@gmail.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com,
- jannh@google.com, willy@infradead.org, baohua@kernel.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <e10f876ce130134fa089befe83f30561b48b9889.1765439380.git.baolin.wang@linux.alibaba.com>
- <5039c6a2-09b6-4c9b-accb-26583ba120db@lucifer.local>
- <1a0001cd-c38d-403b-b3ef-d19e85acd772@linux.alibaba.com>
- <671ac450-4a59-4e26-b098-7cf65add1e75@lucifer.local>
- <37915af9-d307-4955-969e-c16ea26f7f4a@linux.alibaba.com>
- <16d6642b-6f22-4d7b-94d6-92692b63cbd9@lucifer.local>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <16d6642b-6f22-4d7b-94d6-92692b63cbd9@lucifer.local>
+In-Reply-To: <87a4zhkt6h.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 001654000A
-X-Stat-Signature: a9c3zuwpjxhqdcosihyaiawfewdopewc
+X-Rspamd-Queue-Id: 96DB140004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 4gcdnuqwfq56t4zyjfp3oxo8ehpqtix1
 X-Rspam-User: 
-X-HE-Tag: 1765987566-533295
-X-HE-Meta: U2FsdGVkX19olCxfcYaaRvdvAwCS9MA0W5KGwPVjInKS1VKLMYVrjSWQiS/FxaUyft4CSCFw/ABc/M+lP5goTZuZNjx7YM9zOHVFFbVmRfqCRolN/vq4gjlgafhxYmaeHmuQxG17aWw8COYtCwGfPsoHSKsiiMI6O9VaGW8VdnJTHbVSy3iuKccbak0s9q0yx9G6pR4vBoMpELDjr2iG99Kw4vtKrSKR8I7QKYZV/zvJPr3DhGYTINqD1To9UoP0UwzKVr7TBeUmWT31Yg3ANOarBY3erDYO9R0hBRvvkCWiNebzMAhaG0A+vS1ZOWyUS9CGc44+pe39xGYBmx7SdN+WKHmWgKFn3s5XKeOpJG2UpQrfzY4fiIASQ4LcaK8Z1vfiw17L2iiwQ7mXWCnXIIuyB6fcZLn/cMrR/NQUlOPG8y0Ybk57MF8ktIuTHt4FvZgyLVaamEhKzmRco2eoKA05l9pA9ghDatl72T6WV4r5q0vNygZqdId4OUOKSd9q+j11fhXzbTylNAjY4p7s7e+ZlihkfKZOrC6N3SoTnnWI3F3CkfUV9pCBI0JXUcfRaXpz/lCypRipzBcS38cMeoMr1rpISbjpuexWQSngS5r4t4dMt5ME6zDAG2CvYxlt3RoYeq0hwnYGJdhcMoMUme2ZqlYacz9G78Aj8vXG7h6y0qTQyxe4KkWgyX8ecgJ2bWBsCb0Z+IGNXh34QZqIqcNxxnj0Aj7WOZiQG2hTTfwftVI4qQwA5JtbgvSiGf/YkW7HOmONeVByB2imRqSKqtGtqkki4npT36AGn0EsX+BmfgP/XiZeYIRFdjUnQYGIbZXZ/JjPEexXpHUc9y7AmPq1IyGQTkuZ5B0TuCzA+ng9U1db2RYQrmxCGJ0M3N4Im1ADaU8b4JYLYF8dsherfHVRXB/OoyJ2FttYKBb50UBJ275vJ9O9vQaphMsN20WT2yeQP1Ty0kLqGmVoYiE
- teCiFc04
- 36XSoIFQHCKXU9bL0CeMnjrDmG3ywUHnAhJXcd48594/iD58L1KD/HE8AsT82uciZVCP0mGOCZ+6kxXHdmR8/M8FuO6gH4hx27v9VATyXmaXhT/+wW+zcBc3xWYORXI3cE39MLmZmV4O+PBPJwZL16bu5SxY025UMp4GLcN/LSrAgnRM=
+X-HE-Tag: 1765987853-405374
+X-HE-Meta: U2FsdGVkX1/w+0YiTMoc9NeehLZ/v9j2wiWymC7xndp7FQuSvY67TX47hGWp/hnTl1ek8Rf3FK1FymbG8MjLtfBN1pvyyULQ9VjhkH+wkVY2wHllewh6pFXNQsCSfFztDwIl3uyReo24uiFp8HXfSSUkvBLRfGWGO7thIzw3bCRnx4OEMLq/nqT61CGV/rPD0clv73NpcaTJATbel32AIkbihKsXzqF696k41sHRbskx322m5Ftti2Sn7aN0i8VCzg9JF/drBRGyiW2m2DH6BRn3uKuF63+D7HXlwyFNczrXA1e+rYPWsF83/luZhd1uzRQCzgzCZcELdMtZLrPCWepwDyGtcxsftmq60vxchnybudbNizM2oqRTYQQWfIqOvefjHcpCcUZj94W+LntrqTxRm0YOvjxgQeY3ulF63yQDuIJQNJmYCwqYd0NdkUMI2bNpW1FCrQIJYiPki/9CFIfKv4VxIg5Rb7G8o4EFygaq9elHAnr81HHPgJ1BzSFGTl8jOLVgo1mQNBO/bz7ISdqcqStUQ8tawMm0RfxsB03x5jMTw2i7cIMy6UgBqHyMWal0FKicuBWRWs3DFwlTElWy5v6MI4WBpMhJ2uJBIJjheb7JfcIDD7gUiJie20UQov5OHTgwmAJAyjMNDHgQXL88fB20/EWAByPs1C7zdzGwbOMOsd1beEBbv49BSI+eLjdOfGoDsltEqjmoQwrva5sOsAQ9gfBKfmMYwutVFGJRmCtT5AXwuYpkHI22Yi70yXcmVDZs1YCI2FfHgiGoBuAQgCYGVCQqTUpVt3OSQy+Z+iY95h/KyIUgaGUVKH40kyFTRAxWEpIBqLAMPejo0vGde0lXrYX/TzTXfh10fW4RZlMZpH4EaMcQlePtHP4U0Klma+agtoeE/POjRF0Wj7sp+ndjz4IMW8V8WBPrHGWPpaBSVLOmEqHb+fY+MOomUN5tOjU9JSB7j4vQd9b
+ iQC3Q3wq
+ 8C3ogpe4OaM9W5MhzrLBDF1xjLXbMTjWk9y1Gwqi/V1PVQqgLWebfXZorWiGGVUb0swv7dCl4t2p4Tuo/tzjURZasjVDaCNuuYzxH08terGfIGbquOtWzbrU665edarb/mB9NKE9TkLYOf7PO36/KXsZtxeL/v/3kPQd2jschOLTjQ87unDTGg9OkTPCFT0gcLrjf193pzMe0Ksi2HjV9SRKzHzNow21X5iq5Bc2Oy5Ex0Nasi6aetyaCeMTBykX2+BbbncS7bFMSljBFXpRpD5SER0GPDkcI92kH3FofZ2MfpjHptSXR/uw/026yTAtF0IkEvH5ZDbF3SjZZTq1jZMAHPoBO2nbqpNyNJ75AioFnphM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,418 +114,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/12/2025 14:50, Lorenzo Stoakes wrote:
-> On Wed, Dec 17, 2025 at 11:53:31AM +0800, Baolin Wang wrote:
->>
->>
->> On 2025/12/16 19:11, Lorenzo Stoakes wrote:
->>> On Tue, Dec 16, 2025 at 11:32:58AM +0800, Baolin Wang wrote:
+On 17/12/2025 16:46, Ritesh Harjani (IBM) wrote:
+> Ryan Roberts <ryan.roberts@arm.com> writes:
+>
+>> On 17/12/2025 09:26, Kevin Brodsky wrote:
+>>> On 17/12/2025 05:14, Andrew Morton wrote:
+>>>> On Mon, 15 Dec 2025 15:03:23 +0000 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
 >>>>
+>>>>> Add basic KUnit tests for the generic aspects of the lazy MMU mode:
+>>>>> ensure that it appears active when it should, depending on how
+>>>>> enable/disable and pause/resume pairs are nested.
+>>>> I needed this for powerpc allmodconfig;
 >>>>
->>>> On 2025/12/15 19:36, Lorenzo Stoakes wrote:
->>>>> On Thu, Dec 11, 2025 at 04:16:54PM +0800, Baolin Wang wrote:
->>>>>> Currently, contpte_ptep_test_and_clear_young() and contpte_ptep_clear_flush_young()
->>>>>> only clear the young flag and flush TLBs for PTEs within the contiguous range.
->>>>>> To support batch PTE operations for other sized large folios in the following
->>>>>> patches, adding a new parameter to specify the number of PTEs.
->>>>>>
->>>>>> While we are at it, rename the functions to maintain consistency with other
->>>>>> contpte_*() functions.
->>>>>>
->>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>>>> ---
->>>>>>    arch/arm64/include/asm/pgtable.h | 12 ++++-----
->>>>>>    arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
->>>>>>    2 files changed, 37 insertions(+), 19 deletions(-)
->>>>>>
->>>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>>>>> index 0944e296dd4a..e03034683156 100644
->>>>>> --- a/arch/arm64/include/asm/pgtable.h
->>>>>> +++ b/arch/arm64/include/asm/pgtable.h
->>>>>> @@ -1679,10 +1679,10 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
->>>>>>    extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>>>>>    				unsigned long addr, pte_t *ptep,
->>>>>>    				unsigned int nr, int full);
->>>>>> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>>>> -				unsigned long addr, pte_t *ptep);
->>>>>> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
->>>>>> -				unsigned long addr, pte_t *ptep);
->>>>>> +extern int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>>>>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
->>>>>> +extern int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->>>>>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
->>>>>
->>>>> In core mm at least, as a convention, we strip 'extern' from header declarations
->>>>> as we go as they're not necessary.
->>>>
->>>> Sure. I can remove the 'extern'.
->>>
->>> Thanks.
->>>
->>>>
->>>>> I wonder about this naming convention also. The contpte_xxx_() prefix
->>>>> obviously implies we are operating upon PTEs in the contiguous range, now
->>>>> we are doing something... different and 'nr' is a bit vague.
->>>>>
->>>>> Is it the nr of contiguous ranges? Well in reality it's nr_pages right? But
->>>>
->>>> Yes, 'nr' here means nr_pages, which follows the convention of the
->>>> parameters in contpte_xxx_() functions.
->>>
->>> Except you're violating the convention already by doing non-contpte stuff in
->>> contpte functions?
+>>>> --- a/arch/powerpc/mm/book3s64/hash_tlb.c~mm-add-basic-tests-for-lazy_mmu-fix
+>>>> +++ a/arch/powerpc/mm/book3s64/hash_tlb.c
+>>>> @@ -30,6 +30,7 @@
+>>>>  #include <trace/events/thp.h>
+>>>>  
+>>>>  DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+>>>> +EXPORT_SYMBOL_GPL(ppc64_tlb_batch);
+>>>>  
+>>>>  /*
+>>>>   * A linux PTE was changed and the corresponding hash table entry
+>>>> @@ -154,6 +155,7 @@ void __flush_tlb_pending(struct ppc64_tl
+>>>>  		flush_hash_range(i, local);
+>>>>  	batch->index = 0;
+>>>>  }
+>>>> +EXPORT_SYMBOL_GPL(__flush_tlb_pending);
+>>>>  
+>>>>  void hash__tlb_flush(struct mmu_gather *tlb)
+>>>>  {
+>>>> _
+>>> Oh indeed I hadn't considered that arch_{enter,leave}_lazy_mmu_mode()
+>>> refer to those symbols on powerpc... Maybe a bit overkill to export
+>>> those just for a test module, but I'm not sure there's a good
+>>> alternative. Forcing LAZY_MMU_MODE_KUNIT_TEST=y is ugly as it would also
+>>> force KUNIT=y. Alternatively we could depend on !PPC, not pretty either.
+>> Does EXPORT_SYMBOL_IF_KUNIT() help?
 >>
->> Nope. Sorry for my poor English, which might have caused some confusion. I
->> followed the contpte's convention, and let me try to explain it again below.
->>
->>> The confusion is between nr of contpte ranges and nr of pages, so I think we
->>> should be explicit.
->>>
->>>>
->>>>> now we're not saying they're necessarily contiguous in the sense of contpte...
->>>>>
->>>>> I wonder whether we'd be better off introducing a new function that
->>>>> explicitly has 'batch' or 'batched' in the name, and have the usual
->>>>> contpte_***() stuff and callers that need batching using a new underlying helper?
->>>>
->>>> OK. I get your point. However, this is outside the scope of my patchset.
->>>
->>> Well, no, this is review feedback that needs to be addressed, I really don't
->>> like this patch as-is.
->>>
->>> So for this to be upstreamable you really need to separate this out.
->>>
->>>>
->>>> Perhaps we can clean up all the contpte_xxx_() functions if everyone agrees
->>>> that this is confusing.
->>>
->>> I mean, unless Ryan explicitly makes a case for this being fine, I'm inclined to
->>> reject the patch unless we do this.
->>>
->>> The contpte logic is already very confusing, and this is only adding to it.
->>>
->>>>
->>>>> Obviously I defer to Ryan on all this, just my thoughts...
->>>>>
->>>>>>    extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->>>>>>    				pte_t *ptep, unsigned int nr);
->>>>>>    extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->>>>>> @@ -1854,7 +1854,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>>>>    	if (likely(!pte_valid_cont(orig_pte)))
->>>>>>    		return __ptep_test_and_clear_young(vma, addr, ptep);
->>>>>>
->>>>>> -	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
->>>>>> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
->>>>>>    }
->>>>>>
->>>>>>    #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
->>>>>> @@ -1866,7 +1866,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->>>>>>    	if (likely(!pte_valid_cont(orig_pte)))
->>>>>>    		return __ptep_clear_flush_young(vma, addr, ptep);
->>>>>>
->>>>>> -	return contpte_ptep_clear_flush_young(vma, addr, ptep);
->>>>>> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
->>>>>>    }
->>>>>>
->>>>>>    #define wrprotect_ptes wrprotect_ptes
->>>>>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->>>>>> index c0557945939c..19b122441be3 100644
->>>>>> --- a/arch/arm64/mm/contpte.c
->>>>>> +++ b/arch/arm64/mm/contpte.c
->>>>>> @@ -488,8 +488,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>>>>>    }
->>>>>>    EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
->>>>>>
->>>>>> -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>>>> -					unsigned long addr, pte_t *ptep)
->>>>>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>>>>> +					unsigned long addr, pte_t *ptep,
->>>>>> +					unsigned int nr)
->>>>>>    {
->>>>>>    	/*
->>>>>>    	 * ptep_clear_flush_young() technically requires us to clear the access
->>>>>> @@ -500,39 +501,56 @@ int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>>>>    	 * having to unfold.
->>>>>>    	 */
->>>>>
->>>>> Hmm shouldn't you need to update this comment now 'nr' is a thing? E.g.:
->>>>>
->>>>> "And since we only create a contig range when the range is covered by a single
->>>>> folio, we can get away with clearing young for the whole contig range here, so
->>>>> we avoid having to unfold."
->>>>
->>>> I think the original comments are still clear:
->>>> "
->>>> /*
->>>>   * ptep_clear_flush_young() technically requires us to clear the access
->>>>   * flag for a _single_ pte. However, the core-mm code actually tracks
->>>>   * access/dirty per folio, not per page. And since we only create a
->>>>   * contig range when the range is covered by a single folio, we can get
->>>>   * away with clearing young for the whole contig range here, so we avoid
->>>>   * having to unfold.
->>>>   */
->>>> "
->>>
->>> Except nr means you can span more than a single contig pte range? So this
->>> comment is no longer applicable as-is?
->>
->> The nr means consecutive (present) PTEs that map consecutive pages of the
->> same large folio in a single VMA and a single page table.
->>
->> I think this is a prerequisite. If you think it's necessary to explain it, I
->> can add it to the comments.
->>
->>> You've changed the function, the comment needs to change too.
->>>
->>>>
->>>>> However now you're allowing for large folios that are not contpte?
->>>>>
->>>>> Overall feeling pretty iffy about implementing this this way.
->>>>
->>>> Please see the above comments, which explain why we should do that.
->>>
->>> You haven't explained anything? Maybe I missed it?
->>>
->>> Can you explain clearly what nr might actually be in relation to contpte's? I'm
->>> confused even as to the utility here.
->>>
->>> Is it batched ranges of contptes? But then why are you trying to see if end is a
->>> contpte + expand the range if so?
->>
->> See below.
->>
->>>>>> +	unsigned long start = addr;
->>>>>> +	unsigned long end = start + nr * PAGE_SIZE;
->>>>>
->>>>> So now [addr, addr + nr * PAGE_SIZE) must for sure be within a single PTE
->>>>> table?
->>>>
->>>> Caller has made sure that (see folio_referenced_one()).
->>>
->>> You should comment this somehow, I hate this nested assumptions stuff 'function
->>> X which calls function Y which calls function Z makes sure that parameter A
->>> fulfils requirements B but we don't mention it anywhere'.
->>
->> Sure.
->>
->>>>>>    	int young = 0;
->>>>>>    	int i;
->>>>>>
->>>>>> -	ptep = contpte_align_down(ptep);
->>>>>> -	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
->>>>>> +	if (pte_cont(__ptep_get(ptep + nr - 1)))
->>>>>> +		end = ALIGN(end, CONT_PTE_SIZE);
->>>>>
->>>>> OK so I guess for PTE_CONT to be set, it must be aligned to CONT_PTE_SIZE,
->>>>> with other PTE entries present there not having PTE_CONT set (Ryan - do
->>>>> correct me if I'm wrong!)
->>>>>
->>>>> I guess then no worry about running off the end of the PTE table here.
->>>>>
->>>>> I wonder about using pte_cont_addr_end() here, but I guess you are not
->>>>> intending to limit to a range here but rather capture the entire contpte
->>>>> range of the end.
->>>>
->>>> Right.
->>>>
->>>>> I don't love that now a function prefixed with contpte_... can have a
->>>>> condition where part of the input range is _not_ a contpte entry, or is
->>>>> specified partially...
->>>>
->>>> Like I said above, this is outside the scope of my patchset. If Ryan also
->>>> thinks we need to do some cleanups for all the contpte_xxx() functions in
->>>> the contpte.c file, we can send a follow-up patchset to rename all the
->>>> contpte_xxx() functions to make it clear.
->>>
->>> It's really not outside of the scope of the patch set, this is review feedback
->>> you have to address :) trying not to be a grumpy kernel dev here :>)
->>>
->>> In general in the kernel we don't accept confusing patches then defer making
->>> them not-confusing until later.
->>>
->>> We review until the series is at the correct standard to be accepted before we
->>> merge.
->>>
->>> As always I'm happy to be convinced that I'm mistaken or something's not
->>> necesary, however!
->>
->> Yes, let me try to explain it again. See below.
->>
->>>>>> -	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
->>>>>> -		young |= __ptep_test_and_clear_young(vma, addr, ptep);
->>>>>> +	if (pte_cont(__ptep_get(ptep))) {
->>>>>> +		start = ALIGN_DOWN(start, CONT_PTE_SIZE);
->>>>>> +		ptep = contpte_align_down(ptep);
->>>>>> +	}
->>>>>> +
->>>>>> +	nr = (end - start) / PAGE_SIZE;
->>>>>
->>>>> Hm don't love this reuse of input param.
->>>>
->>>> OK. Will use another local variable instead.
->>>
->>> Thanks.
->>>
->>>>
->>>>>
->>>>>> +	for (i = 0; i < nr; i++, ptep++, start += PAGE_SIZE)
->>>>>> +		young |= __ptep_test_and_clear_young(vma, start, ptep);
->>>>>
->>>>> Again, overall find it a bit iffy that we are essentially overloading the
->>>>> code with non-contpte behaviour.
->>>>
->>>> Let me clarify further: this is the handling logic of the contpte_xxx()
->>>> functions in the contpte.c file. For example, the function
->>>> contpte_set_ptes() has a parameter 'nr', which may be greater than
->>>> CONT_PTES, meaning that it can handle multiple CONT_PTES range sizes of a
->>>> large folio.
->>>>
->>>> It might be a bit confusing, and I understand this is why you want to change
->>>> the 'contpte_' prefix to the 'batch_' prefix. Of course, we can hope Ryan
->>>> can provide some input on this.
->>>>
->>>> Thanks for reviewing.
->>>
->>> OK so we have some reeeeal confusion here. And this speaks to the patch needing
->>> work.
->>>
->>> This seems to answer what I asked above - basically - are we doing _batches_ of
->>> _contpte_ entries, or are we just accepting arbitrary large folios here and
->>> batching up operations on them, including non-contpte entries.
->>>
->>> Presumably from the above you're saying - this is dealing with batches of
->>> contpte entries.
->>>
->>> In which case this has to be made _super_ clear. Not just adding an arbitrary
->>> 'nr' parameter and letting people guess.
->>>
->>> The contpte code is _already_ confusing and somewhat surprising if you're not
->>> aware of it, we need to be going in the other direction.
->>
->> Sure. Sorry for causing confusion. I try to explain it again to make it
->> clear.
->>
->> First, it is necessary to explain how the contpte implementation in Arm64 is
->> exposed, using set_ptes() as an example.
->>
->> Arm64 defines an arch-specific implementation of set_ptes():
->> "
->> static __always_inline void set_ptes(struct mm_struct *mm, unsigned long
->> addr,
->> 				pte_t *ptep, pte_t pte, unsigned int nr)
->> {
->> 	pte = pte_mknoncont(pte);
->>
->> 	if (likely(nr == 1)) {
->> 		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
->> 		__set_ptes(mm, addr, ptep, pte, 1);
->> 		contpte_try_fold(mm, addr, ptep, pte);
->> 	} else {
->> 		contpte_set_ptes(mm, addr, ptep, pte, nr);
->> 	}
->> }
->> "
->>
->> Here, 'nr' refers to consecutive (present) PTEs that map consecutive pages
->> of the same large folio within a single VMA and a single page table. Based
->> on 'nr', it determines whether the PTE_CONT attribute should be set or not.
->>
->> Second, the underlying implementation of contpte_set_ptes() also calculates
->> 'end' based on 'nr' and checks whether the PTE_CONT attribute should be set.
->> For example:
->>
->> For a large folio with order = 3 (nr = 8), the PTE_CONT attribute will not
->> be set since the 'next' is not aligned with CONT_PTE_MASK.
->>
->> For a large folio with order = 4 (nr = 16), it aligns perfectly, allowing
->> the PTE_CONT attribute to be set for the entire PTE entries of the large
->> folio.
->>
->> For a large folio with order = 5 (nr = 32), this involves two ranges of
->> CONT_PTE_SIZE (16 PTEs in each range), requiring the PTE_CONT attribute to
->> be set separately for each range.
->>
->> "
->> void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
->> 					pte_t *ptep, pte_t pte, unsigned int nr)
->> {
->> 	.......
->>
->> 	end = addr + (nr << PAGE_SHIFT);
->> 	pfn = pte_pfn(pte);
->> 	prot = pte_pgprot(pte);
->>
->> 	do {
->> 		next = pte_cont_addr_end(addr, end);
->> 		nr = (next - addr) >> PAGE_SHIFT;
->> 		pte = pfn_pte(pfn, prot);
->>
->> 		if (((addr | next | (pfn << PAGE_SHIFT)) & ~CONT_PTE_MASK) == 0)
->> 			pte = pte_mkcont(pte);
->> 		else
->> 			pte = pte_mknoncont(pte);
->>
->> 		__set_ptes(mm, addr, ptep, pte, nr);
->>
->> 		addr = next;
->> 		ptep += nr;
->> 		pfn += nr;
->>
->> 	} while (addr != end);
->> }
->> "
->>
->> Third, regarding the implementation of my patch, I have followed the contpte
->> logic here by adding the 'nr' parameter to
->> contpte_ptep_test_and_clear_young() for batch processing consecutive
->> (present) PTEs. Moreover, the semantics of 'nr' remain consistent with the
->> original contpte functions, and I have not broken the existing contpte
->> implementation logic.
-> 
-> OK that helps a lot thanks.
-> 
-> So the nr will be number of PTEs that are consecutive, belong to the same folio,
-> and have the same PTE bit set excluding accessed, writable, dirty, soft-dirty.
+> yes, that make sense. Thanks for the suggestion!
+> I guess we will need a diff like this in that case -
+>
+>
+> diff --git a/arch/powerpc/mm/book3s64/hash_tlb.c b/arch/powerpc/mm/book3s64/hash_tlb.c
+> index fbdeb8981ae7..ec2941cec815 100644
+> --- a/arch/powerpc/mm/book3s64/hash_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/hash_tlb.c
+> @@ -25,11 +25,12 @@
+>  #include <asm/tlb.h>
+>  #include <asm/bug.h>
+>  #include <asm/pte-walk.h>
+> -
+> +#include <kunit/visibility.h>
+>  
+>  #include <trace/events/thp.h>
+>  
+>  DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+> +EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch);
+>  
+>  /*
+>   * A linux PTE was changed and the corresponding hash table entry
+> @@ -154,6 +155,7 @@ void __flush_tlb_pending(struct ppc64_tlb_batch *batch)
+>                 flush_hash_range(i, local);
+>         batch->index = 0;
+>  }
+> +EXPORT_SYMBOL_IF_KUNIT(__flush_tlb_pending);
+>  
+>  void hash__tlb_flush(struct mmu_gather *tlb)
+>  {
+> diff --git a/mm/tests/lazy_mmu_mode_kunit.c b/mm/tests/lazy_mmu_mode_kunit.c
+> index 2720eb995714..340d7cda9096 100644
+> --- a/mm/tests/lazy_mmu_mode_kunit.c
+> +++ b/mm/tests/lazy_mmu_mode_kunit.c
+> @@ -69,3 +69,4 @@ kunit_test_suite(lazy_mmu_mode_test_suite);
+>  
+>  MODULE_DESCRIPTION("Tests for the lazy MMU mode");
+>  MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
 
-I'm not sure test_and_clear_young_ptes() would technically require all of these
-constraints. I think it would be sufficient to just ensure that all the PTEs in
-the batch are pte_present(). And I assume the return value is intended to
-indicate if *any* of the PTEs in the batch were previously young?
+Indeed, that's pretty much what I was about to send :)
 
-The usual order for adding new batched PTE helpers is to define the generic
-function along with it's spec in a comment block and provide a default
-implementation that is implemented as a loop around the existing non-batched
-version of the interface. Then you can convert the core-mm to use that API. And
-finally you can opt arm64 into overriding the API with a more efficient
-implementation.
-
-If you were to do it in that order, it tells a better story and is easier to
-follow, I think.
-
-> 
-> But since we are retrieving accessed bit state (young), isn't it a problem we're
-> ignoring this bit when considering what goes into the batch?
-> 
-> I mean now it's going to return true even if some do not have the accessed flag
-> set?
-
-test_and_clear_young_ptes() is exploiting the fact that the kernel tracks young
-(and dirty) per *folio*. So having a young and dirty bit per PTE is providing
-more information than the kernel needs if a large folio is mapped across
-multiple PTEs. Which is why returning the logical OR of the access bits is ok here.
-
-> 
-> I am more convinced things are correct in style at least then this way as, as
-> you say, this is the approach taken in set_ptes().
-
-I'm personally ok with the style and I believe the implementation is correct.
-But it would help to reformulate the series in the order I suggest above since
-then we can review against the spec of what the core-mm helper is supposed to do.
-
-Thanks,
-Ryan
-
-> 
-> Thanks, Lorenzo
-
+- Kevin
 
