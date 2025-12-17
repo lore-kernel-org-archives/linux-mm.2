@@ -4,135 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE50CD65C43
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 13:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0610CD65559
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 13:19:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEEF6B0089; Wed, 17 Dec 2025 08:15:48 -0500 (EST)
+	id 6B3C06B0005; Wed, 17 Dec 2025 08:19:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C6E66B008A; Wed, 17 Dec 2025 08:15:48 -0500 (EST)
+	id 637456B0089; Wed, 17 Dec 2025 08:19:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8CC6B008C; Wed, 17 Dec 2025 08:15:48 -0500 (EST)
+	id 519766B008A; Wed, 17 Dec 2025 08:19:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 084EB6B0089
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 08:15:48 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A6BA1A0AC2
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:15:47 +0000 (UTC)
-X-FDA: 84229010334.04.743B485
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 16BC84000D
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:15:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GD9SeG1r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+kQSWOa6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GD9SeG1r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+kQSWOa6;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CEF86B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 08:19:53 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D7441140AA0
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:19:52 +0000 (UTC)
+X-FDA: 84229020624.30.2CC81A6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8AD208000A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:19:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="d/r/mqlD";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qVuvwgEa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmUVfCuq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=l55emC2w;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765977590; a=rsa-sha256;
+	cv=none;
+	b=qki1ylkOxe+ISjutht5bXbPIlDZlCcqb00qBuny09+giJ27NBVrjA7iVVrbDHrCjZiCzf+
+	z77SGj7pCsOeATjqDjADoof+KPwaMdzS/mYA3NjGuW10zegz2R0JuiwT1A0Gb/r/psj0Sc
+	eU9Qyhql/y5Cnj9EU5cE3NVAaLe94BI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="d/r/mqlD";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qVuvwgEa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmUVfCuq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=l55emC2w;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765977345;
+	s=arc-20220608; t=1765977590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DLu9GhT5PvVPx29sDrvUSaHgK97g2v19OQHYiqFZ81U=;
-	b=UUDZ3pLYqp6JsUNsKZj5UVz+WaxK4MFbrNT2oTEdsistJ6NbWNo0QAqNYJvKQy4s9VeGN0
-	zV4cP6Vl9ajZv8KE+JcoNetGzryVWyzJ8YqRPxT4L3GtncgcznBdExvZgtCENtYiWHjWM6
-	GQNRwjTqdKTv5OYyAKf1Jedx9l+Rels=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GD9SeG1r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+kQSWOa6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GD9SeG1r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+kQSWOa6;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765977345; a=rsa-sha256;
-	cv=none;
-	b=N1H+eZtCp80Dlq1ycLHWF73Z3nm4mPc3EXG1apM6+NAUAwzODaYA4i3zs4B8L6OCHCJOdC
-	9zt5r6ZtUxdZg0xGIOlqWYHLZ/wmvAipeWb+bCo3PUV+G/7FFLJj3GMM7JgKMR5OMyld8H
-	R+DQy/BPMkEdjFTIM2f/xurmju9hVLU=
+	bh=wztWl+3aVrB9ZaSvZauY3Y92cOMYfXSxVG3uQ3w3yp8=;
+	b=HccNYFYzfcs0SfDRvg3CbJ08aRZp6+y2TPgbVCcTGxq3aLbnpXsgbPY+LpukffsSz3LK6N
+	u3U0LgYIvfAoWLlt1A1NmSj2NlyhTGD4GMzc5rvXcuoKbDAcqYzwaoDAdQlNX2QKRfqAg6
+	mw2DLYoKmk2pas1It7OBgBEQ0rq+Vns=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 71918336D4;
-	Wed, 17 Dec 2025 13:15:43 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C57205BCF8;
+	Wed, 17 Dec 2025 13:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765977343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1765977589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DLu9GhT5PvVPx29sDrvUSaHgK97g2v19OQHYiqFZ81U=;
-	b=GD9SeG1r6d1p/w0FZ7ZXI1TakOvU+F8ag417Nq3QS9RGm8plLS734WMJbVVkVO16VxGdcz
-	G1NGdh0Tb/B3mMdYuR/wGVi6mjbUXK4kiV/+ho1aSGcGUFjfucP7HFwjVPJAsYAN5sUWYD
-	zpmQQKKyCg8W7cA8L+BRtYs4yD3Xaw0=
+	bh=wztWl+3aVrB9ZaSvZauY3Y92cOMYfXSxVG3uQ3w3yp8=;
+	b=d/r/mqlDcaigIbZYWJ/m59+Fi19MaCpW9kiSdUQv/4rr8dyc7s3exykUTYE1FFNXiKyP9l
+	XUksB9+eBx7LKN8m6EJ6i4tptG4Jao24nO2JbIR4EN4kcwBFa3Ng3QJW5cORssiOxlEybu
+	+wyVh5AzmcJdZAD7Q1HVPQTbSSfZrMU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765977343;
+	s=susede2_ed25519; t=1765977589;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DLu9GhT5PvVPx29sDrvUSaHgK97g2v19OQHYiqFZ81U=;
-	b=+kQSWOa6FDCSrmWnyNe4rb/LXXcsZlMu8TxhWE4eSaSjPL+k0lmP28zfCt3JaSEXZ6iifY
-	sg9Xt0QmNGhptYDg==
+	bh=wztWl+3aVrB9ZaSvZauY3Y92cOMYfXSxVG3uQ3w3yp8=;
+	b=qVuvwgEaSTyWM8rwiKIMVl0i3HyOWwWZEapvNFK19Le38rn5xuO87en665Bsn99efSJy0G
+	JAvh0//AAvY939CA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765977343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1765977587; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DLu9GhT5PvVPx29sDrvUSaHgK97g2v19OQHYiqFZ81U=;
-	b=GD9SeG1r6d1p/w0FZ7ZXI1TakOvU+F8ag417Nq3QS9RGm8plLS734WMJbVVkVO16VxGdcz
-	G1NGdh0Tb/B3mMdYuR/wGVi6mjbUXK4kiV/+ho1aSGcGUFjfucP7HFwjVPJAsYAN5sUWYD
-	zpmQQKKyCg8W7cA8L+BRtYs4yD3Xaw0=
+	bh=wztWl+3aVrB9ZaSvZauY3Y92cOMYfXSxVG3uQ3w3yp8=;
+	b=MmUVfCuqjeCDx3YbvqaNx0PCpFy4awPNLsRn5bkV51Yzjh9jt7/yUEt2BOZZP5Pst58+kG
+	mpnAxlik+7TeRBi+VSCtyDhsJqTFGauEp+QJRusEzNLD8f/uKvk57wONGz7vC2czkOd8yF
+	S9welZCF4QfG95rAGMoUUtYu6eUGGh8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765977343;
+	s=susede2_ed25519; t=1765977587;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DLu9GhT5PvVPx29sDrvUSaHgK97g2v19OQHYiqFZ81U=;
-	b=+kQSWOa6FDCSrmWnyNe4rb/LXXcsZlMu8TxhWE4eSaSjPL+k0lmP28zfCt3JaSEXZ6iifY
-	sg9Xt0QmNGhptYDg==
+	bh=wztWl+3aVrB9ZaSvZauY3Y92cOMYfXSxVG3uQ3w3yp8=;
+	b=l55emC2wodh8Y5v0NiRnqfhHfZceI8HYXOZY/mhTbQKS9e8Ud9CnsI46RjzI2nfBmnAi6R
+	69HXePqmsAuaEPDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B5F43EA63;
-	Wed, 17 Dec 2025 13:15:43 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B9F83EA63;
+	Wed, 17 Dec 2025 13:19:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XpkMBf+sQmkURwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 13:15:43 +0000
-Message-ID: <d912480a-5229-4efe-9336-b31acded30f5@suse.cz>
-Date: Wed, 17 Dec 2025 14:15:42 +0100
+	id LO4MJPOtQmmLSgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 13:19:47 +0000
+Message-ID: <17c45b15-326d-4b4a-b3f3-745002b81d5f@suse.cz>
+Date: Wed, 17 Dec 2025 14:19:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
+Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to
+ zone_set_pageset_high_and_batch
 Content-Language: en-US
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, catalin.marinas@arm.com,
- will@kernel.org, kevin.brodsky@arm.com, dev.jain@arm.com,
- yang@os.amperecomputing.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
- <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
- <aUGOPd7gNRf1xHEc@e129823.arm.com>
- <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
- <aUKKZR0u22KOPfd7@e129823.arm.com>
- <d96ac977-222e-4e8d-9487-da1306198419@arm.com>
- <aUKnfU/3FREY13g1@e129823.arm.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Daniel Palmer
+ <daniel@0x0f.com>, Guenter Roeck <linux@roeck-us.net>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Matthew Wilcox <willy@infradead.org>
+References: <20251217130322.3350377-1-joshua.hahnjy@gmail.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -173,18 +162,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aUKnfU/3FREY13g1@e129823.arm.com>
+In-Reply-To: <20251217130322.3350377-1-joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 16BC84000D
-X-Stat-Signature: 3j8s1nhrjww8nhxwtc85ms11besuqqk9
 X-Rspam-User: 
-X-HE-Tag: 1765977344-671902
-X-HE-Meta: U2FsdGVkX18AMAXjOMbja/ef4RFMuZgvy1deR4ejDaYL47NUWBXEwuUOY34Kk9lbKNhkSjyvDPjmBE+XOmp32CFO+JauMZk1HYLjkzq9Pb+TdsMT9nl/OedsfOK6exAbcbVRrJ6ZrU1DmHAUP0iNBDO2VpECDwD/NWuM4vjZ40MPCiXFO+tYQ4oNtcO3aABmiG/ConmvBsPeaPXah0BcuRyEIttOJrVu5j3auDZFeo4thKJuiIeqQ03Ss4pNwvIOc9SPm+CqPbB6/B/oNU8LUb6sbFUYB1Y0IMrhMM2JcIKebgql8yYSNOZJnA0FuWWQi+yGPD+ZJGtEGmEeY1ENEc2HdYGiKBv7LDFwlaz7GdjfQZ3VHx/z/MY6LkQFcQIu+IbiR5hFjQMIQvu28qD4FV9f9/zjWcliecSfFy/0nUrvwGsLpob4lU4f8lUIup0fu44EmU/q/ztNOc8uJnfgDaodbgEsqvgP25N1ymCT8c4wFSWVPeKxhL0n3Q0K8I6pkXL3IyUcE3ondFfuEk4SN6MdFXz/WqpCxVzQ6GYdDHYo6Tee+Ngo4r6kONEq9sLA6e+vtVOl9Kwqv0XoMImwho+hPD1PCVlU0u1dV5AxiqTz/bIVRcYHWJh0RSFVKJ2tvFhSEBz0f6Ps3EB6ViupKa0BVDRGcskqHm9dY2gdoFlxPjsOfK/hMUoR/qMWAU876qJfmdjVZY4ev9Fu5N6+mnSJDtRLbT8h4XHCQ8vscCtLXkZQLKzIN1WWmJikkP840Njp1AzjnZQPVuN27IX6cRVodeug72zXzUnJHwSqShAlK+D2g+miScw5vOzLlJa3s8YE9kYhTF/lZGUvwM+MZC5ITaiTpluVPGqTWEkw99G0EWtcugaDcr+qVOqBA79D6QgA7lD4KfG7d9Rbi9fkLo2ZHx2jv2t+/SkOuoyvbFam3gTv2JDbhzvZsEhsmr4HfZrC8oqcyHfsueqs2hD
- uJXEF89i
- 6U442zQP9iSJrDc0/xaVx7jY9FAHef6uYXsgRdIoy33K2dT8XJ865PW1awPXPF6Vo2gN+vd+x7tBSES4g3uv5nr0XoZ8dErYHSok8rGG9ZMqWJa2T+Ji7BMOhGqeeNInpEruzr7ItYS9KFgo0vc5YPRyHhQP0VNxgceTJScWbVJ9AU3l9mjizxeFAcAuhF5B2UQWsESFlnuPP3g31Y0quXuqDSuavgAjHn7X5csWmtlZ4t/zXlWwWxc1ba4rga6hHUkNwUdZTYc/O7LNhtNplGPNq6Sms4m1Je4PxgfAZ0xhBoSMn9FNtcZWCfT8lRE1pgxo7BdHF/kfwTDnvSsVAtyijFnd6vxwH1sXCgv8SyyiLPS9PMmNuRLgA+HG9wDqcOu8XtLcZg8D/Q3Eo3sqjPXIAksoIlgALwaGzgIcwPp+Of5l5wQEjHil8NWHAKDeHDLG+AkVc1gFt0dJJJ8mw6768VWgks9PhUBv3GJekLh8RHW5TucqctOU1BxPQN8BqXOhs
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8AD208000A
+X-Stat-Signature: 1wg6hy3j68w7qng63mk4fq3hiyb64j4b
+X-HE-Tag: 1765977590-841985
+X-HE-Meta: U2FsdGVkX19YOA6CtdpjqMFG+oBnBxy4XHC62dyFQdBPqBu3hElvA8k0P3MeT51HeT9VNcfLiUjr5a4gWN98DYez6UIwpGiedPVMb/4oPkFZ7kWAVAc3hOUMzyD1dk1ATXJ/mN7l8wecWom+Ajtkm8KN8p/iN5CvmScvxsriAP3UpzouU2wMxFBL7X4bmxgMFGpD3/j/ytIKM+XqO9GU05q/2XLt/4eCITQQzpKfswjpJzHSZIRHIYdfRvVCchX71QXN9QSpZ8+9o+8J2E61LxPwRfPonhrokXV0kvzjctOfhLgi6rbqBKy+g0STq7wAgJ1g5V80LtKnB+4Yox5VRibvFRP2JAqkOYy8vsDfME5vHBXReX4SSX++eVPC6GNb8CRWzGmVnN82+PFOYXRmvQTleyX/10gBUSqrFqQEhAnChYPg3s61qy/w3Px9bTMmhvz4OzDOGH54sNgsMFca+YPrOjS4rWxVFxmCtPGceJZkV7oQ2dvMdvjUbHMA3A4Sj7V/udeb0HLWKU0z+SWM1Jdk0JHrHAF2RghZcyLFil/LVyXHuguxmyAn2AeOD+/jY61MuGtJQi0CmUmjfzQ7A6s+4NBH2tzHiW6BgdFobfdf7hkCnslAgEsJaXc16VdLxcPdellpJ+xQs8EthGz7otMBXrfHtrHmDIyC64iJzae+xHxl0h3RXv4Y1hKkCw7Kcpmw8gBTbbIanIXay4heHMf/QVZ3VN6JlrfsmruZayLgVIOqM8ZaClojTWM4vtybdicTdWwOdNBzTpdXZTv4qikGlR/Za+OHcrRAkqM1g2bNFx/Q2vEsihhs90u6mnezdki3o6/gr/zKmlqX8QbZudG5SAvZoWmwd/CdF4QhpVj/Hx84VnjwPwUEuJ4hn6HNUEGt79Akpwz+tm30vdMmM31sEiqgwm6I4FiK7h87YPKMH7tHEkXrHjeX0E2RVujcPF0m+dDScKLqvz1L92s
+ HBqDkQT8
+ hhDKTmagcbuu3H30Fz0bhjJAq0zhtls2Gzmx0/mP4g0h1K/aG+mk/cLrtMEk4v8bGV+eZAReEK/vU231wHTIFKe2/nInn6nFMT8pvvJDEH0vi0WkJFt396qzMU1qS8fOmlZ/rwJalZnIZi8cFyqt20tz3+6Po9M6OF2rYh1NtpAHeL4BfK3kaZW9C8XgKL7K2tabH+ddf2Y2AKkJ6wmNa0jY9Gjdj1iSmdI/8pRsJA+OlB2ZB90HOuU6uV87srR8MuUWibqTLrHTe5jgQyiLc4Zk9dsCpPPkhNNRJ1DoAY8IZ0+rvpkrWv9T0sli4Shgm4i9OMau/WJPZz/QUvLumv72Ye4ViUcSHDKnl1V0ARYLXWL5ZSyQW0Int/ULkg88vBkqS6l1thdCsy2W669hNfSN61CXFqN3IZy4bEUFSbbeXNfIFpvn3V6T4WcAWY0+coshBMwp5kyk1yxM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,210 +182,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/17/25 13:52, Yeoreum Yun wrote:
->> On 17/12/2025 10:48, Yeoreum Yun wrote:
->> > Hi Ryan,
->> >
->> >> On 16/12/2025 16:52, Yeoreum Yun wrote:
->> >>> Hi Ryan,
->> >>>
->> >>>> On 12/12/2025 16:18, Yeoreum Yun wrote:
->> >>>>> Some architectures invoke pagetable_alloc() or __get_free_pages()
->> >>>>> with preemption disabled.
->> >>>>> For example, in arm64, linear_map_split_to_ptes() calls pagetable_alloc()
->> >>>>> while spliting block entry to ptes and __kpti_install_ng_mappings()
->> >>>>> calls __get_free_pages() to create kpti pagetable.
->> >>>>>
->> >>>>> Under PREEMPT_RT, calling pagetable_alloc() with
->> >>>>> preemption disabled is not allowed, because it may acquire
->> >>>>> a spin lock that becomes sleepable on RT, potentially
->> >>>>> causing a sleep during page allocation.
->> >>>>>
->> >>>>> Since above two functions is called as callback of stop_machine()
->> >>>>> where its callback is called in preemption disabled,
->> >>>>> They could make a potential problem. (sleeping in preemption disabled).
->> >>>>>
->> >>>>> To address this, introduce pagetable_alloc_nolock() API.
->> >>>>
->> >>>> I don't really understand what the problem is that you're trying to fix. As I
->> >>>> see it, there are 2 call sites in arm64 arch code that are calling into the page
->> >>>> allocator from stop_machine() - one via via pagetable_alloc() and another via
->> >>>> __get_free_pages(). But both of those calls are passing in GFP_ATOMIC. It was my
->> >>>> understanding that the page allocator would ensure it never sleeps when
->> >>>> GFP_ATOMIC is passed in, (even for PREEMPT_RT)?
->> >>>
->> >>> Although GFP_ATOMIC is specify, it only affects of "water mark" of the
->> >>> page with __GFP_HIGH. and to get a page, it must grab the lock --
->> >>> zone->lock or pcp_lock in the rmqueue().
->> >>>
->> >>> This zone->lock and pcp_lock is spin_lock and it's a sleepable in
->> >>> PREEMPT_RT that's why the memory allocation/free using general API
->> >>> except nolock() version couldn't be called since
->> >>> if "contention" happens they'll sleep while waiting to get the lock.
->> >>>
->> >>> The reason why "nolock()" can use, it always uses "trylock" with
->> >>> ALLOC_TRYLOCK flags. otherwise GFP_ATOMIC also can be sleepable in
->> >>> PREEMPT_RT.
->> >>>
->> >>>>
->> >>>> What is the actual symptom you are seeing?
->> >>>
->> >>> Since the place where called while smp_cpus_done() and there seems no
->> >>> contention, there seems no problem. However as I mention in another
->> >>> thread
->> >>> (https://lore.kernel.org/all/aT%2FdrjN1BkvyAGoi@e129823.arm.com/),
->> >>> This gives a the false impression --
->> >>> GFP_ATOMIC are “safe to use in preemption disabled”
->> >>> even though they are not in PREEMPT_RT case, I've changed it.
->> >>>
->> >>>>
->> >>>> If the page allocator is somehow ignoring the GFP_ATOMIC request for PREEMPT_RT,
->> >>>> then isn't that a bug in the page allocator? I'm not sure why you would change
->> >>>> the callsites? Can't you just change the page allocator based on GFP_ATOMIC?
->> >>>
->> >>> It doesn't ignore the GFP_ATOMIC feature:
->> >>>   - __GFP_HIGH: use water mark till min reserved
->> >>>   - __GFP_KSWAPD_RECLAIM: wake up kswapd if reclaim required.
->> >>>
->> >>> But, it's a restriction -- "page allocation / free" API cannot be called
->> >>> in preempt-disabled context at PREEMPT_RT.
->> >>>
->> >>> That's why I think it's wrong usage not a page allocator bug.
->> >>
->> >> I've taken a look at this and I agree with your analysis. Thanks for explaining.
->> >>
->> >> Looking at other stop_machine() callbacks, there are some that call printk() and
->> >> I would assume that spinlocks could be taken there which may present the same
->> >> kind of issue or PREEMPT_RT? (I'm guessing). I don't see any others that attempt
->> >> to allocate memory though.
->> >
->> > IIRC, there was a problem related for printk while try to grab
->> > pl011_console related lock (spin_lock) while holding
->> > console_lock(raw_spin_lock) in v6.10.0-rc7 at rpi5:
->> >
->> >     [  230.381263] CPU: 2 PID: 5574 Comm: syz.4.1695 Not tainted 6.10.0-rc7-01903-g52828ea60dfd #3
->> >     [  230.381479] Hardware name: linux,dummy-virt (DT)
->> >     [  230.381565] Call trace:
->> >     [  230.381607]  dump_backtrace+0x318/0x348
->> >     [  230.381727]  show_stack+0x4c/0x80
->> >     [  230.381875]  dump_stack_lvl+0x214/0x328
->> >     [  230.382159]  dump_stack+0x3c/0x58
->> >     [  230.382456]  __lock_acquire+0x4398/0x4720
->> >     [  230.382683]  lock_acquire+0x648/0xb70
->> >     [  230.382928]  _raw_spin_lock_irqsave+0x138/0x240
->> >     [  230.383121]  pl011_console_write+0x240/0x8a0
->> >     [  230.383356]  console_flush_all+0x708/0x1368
->> >     [  230.383571]  console_unlock+0x180/0x440
->> >     [  230.383742]  vprintk_emit+0x1f8/0x9d0
->> >     [  230.383832]  vprintk_default+0x64/0x90
->> >     [  230.383914]  vprintk+0x2d0/0x400
->> >     [  230.383971]  _printk+0xdc/0x128
->> >     [  230.384229]  hrtimer_interrupt+0x8f0/0x920
->> >     [  230.384414]  arch_timer_handler_virt+0xc0/0x100
->> >     [  230.384812]  handle_percpu_devid_irq+0x20c/0x4e0
->> >     [  230.385053]  generic_handle_domain_irq+0xc0/0x120
->> >     [  230.385367]  gic_handle_irq+0x88/0x360
->> >     [  230.385559]  call_on_irq_stack+0x24/0x70
->> >     [  230.385801]  do_interrupt_handler+0xf8/0x200
->> >     [  230.386092]  el1_interrupt+0x68/0xc0
->> >     [  230.386434]  el1h_64_irq_handler+0x18/0x28
->> >     [  230.386716]  el1h_64_irq+0x64/0x68
->> >     [  230.386853]  __sanitizer_cov_trace_const_cmp2+0x30/0x68
->> >     [  230.387026]  alloc_pages_mpol_noprof+0x170/0x698
->> >     [  230.387309]  vma_alloc_folio_noprof+0x128/0x2a8
->> >     [  230.387610]  vma_alloc_zeroed_movable_folio+0xa0/0xe0
->> >     [  230.387822]  folio_prealloc+0x5c/0x280
->> >     [  230.388008]  do_wp_page+0xc30/0x3bc0
->> >     [  230.388206]  __handle_mm_fault+0xdb8/0x2ba0
->> >     [  230.388448]  handle_mm_fault+0x194/0x8a8
->> >     [  230.388676]  do_page_fault+0x6bc/0x1030
->> >     [  230.388924]  do_mem_abort+0x8c/0x240
->> >     [  230.389056]  el0_da+0xf0/0x3f8
->> >     [  230.389178]  el0t_64_sync_handler+0xb4/0x130
->> >     [  230.389452]  el0t_64_sync+0x190/0x198
->> >
->> > But this problem is gone when I try with some of patches in rt-tree
->> > related for printk which are merged in current tree
->> > (https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/log/?h=linux-6.10.y-rt-rebase).
->> >
->> > So I think printk() wouldn't be a problem.
->> >
->> >>
->> >> Anyway, to fix the 2 arm64 callsites, I see 2 possible approaches:
->> >>
->> >> - Call the nolock variant (as you are doing). But that would just convert a
->> >> deadlock to a panic; if the lock is held when stop_machine() runs, without your
->> >> change, we now have a deadlock due to waiting on the lock inside stop_machine().
->> >> With your change, we notice the lock is already taken and panic. I guess it is
->> >> marginally better, but not by much. Certainly I would just _always_ call the
->> >> nolock variant regardless of PREEMPT_RT if we take this route; For !PREEMPT_RT,
->> >> the lock is guarranteed to be free so nolock will always succeed.
->> >>
->> >> - Preallocate the memory before entering stop_machine(). I think this would be
->> >> much more robust. For kpti_install_ng_mappings() I think you could hoist the
->> >> allocation/free out of stop_machine() and pass the pointer in pretty easily. For
->> >> linear_map_split_to_ptes() its a bit more complex; Perhaps, we need to walk the
->> >> pgtable to figure out how much to preallocate, allocate it, then set it up as a
->> >> special allocator, wrapped by an allocation function and modify the callchain to
->> >> take a callback function instead of gfp flags.
->> >>
->> >> What do you think?
->> >
->> > Definitely, second suggestoin is much better.
->> > My question is whether *memory contention* really happen in the point
->> > both functions are called.
->>
->> My guess would be that it's unlikely, but not impossible. The secondary CPUs are
->> up, and presumably running their idle thread. I think various power management
->> things can be plugged into the idle thread; if so, then I guess it's possible
->> that the CPU could be running some hook as part of a power state transition, and
->> that could be dynamically allocating memory? That's all just a guess though; I
->> don't know the details of that part of the system.
->>
->> >
->> > Above two functions are called as last step of "smp_init()" -- smp_cpus_done().
->> > If we can be sure, I think we don't need to go to complex way and
->> > I believe the reason why we couldn't find out this problem,
->> > even using GFP_ATOMIC in PREEMPT_RT since there was *no contection*
->> > in this time of both functions are called.
->> > > That's why I first try with the "simple way".
->> >
->> > What do you think?
->>
->> As far as linear_map_split_to_ptes() is concerned, it was implemented under the
->> impression that doing allocation with GFP_ATOMIC was safe, even in
->> stop_machine(). Given that's an incorrect assumption, I think we should fix it
->> to pre-allocate outside of stop_machine() regardless of the likelihood of
->> actually hitting the race.
->>
+On 12/17/25 14:02, Joshua Hahn wrote:
+> On Wed, 17 Dec 2025 12:23:58 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
 > 
-> Yeap. It’s better to be certain than uncertain. Thanks for checking.
-> I'll repsin with the preallocate way.
+>> On 12/17/25 12:12, Vlastimil Babka wrote:
+>> > On 12/17/25 07:05, Joshua Hahn wrote:
+>> >> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+>> >> moved the error handling (0-handling) of zone_batchsize from its
+>> >> callers to inside the function. However, the commit left out the error
+>> >> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+>> >> 
+>> >> Since in the NOMMU case the reported-to-user batchsize should still be 0,
+>> > 
+>> > Should it? The value is effectively set to 1 despite what zone_batchsize()
+>> > returns, because of that adjustment this patch reinstates. Also does anyone
+>> > care, really?
+>> > 
+>> >> we would only like the error handling to exist in the callsites that
+>> >> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
+>> >> 
+>> >> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
+>> >> on NOMMU systems.
+>> > 
+>> > I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
+>> 
+>> Ah looks like you considered it too, initially:
+>> https://lore.kernel.org/all/20251211225947.822866-1-joshua.hahnjy@gmail.com/
+>> 
+>> It makes more sense to me than doing effectively two fixups in the MMU case.
+> 
+> Hi Vlastimil,
+> 
+> Thank you for your review as always.
+> 
+> Yes, I had also considered returning 1 for the !MMU case, since I think it
+> would make it a lot simpler as well (It would also make my original patch
+> function as intended).
+> 
+> However, I was unsure if changing this user-facing behavior for one line of
+> simplification would be worth it. I am not a NOMMU user, so I have very
+> little experience here, but I imagine that there is someone out there who
+> looks at zone_batchsize() returning 0 for NOMMU and interpreting it as
+> "there is no batching" as opposed to "there is batching, and it processes
+> 1 page at a time" (which, actually isn't even true anyways because of the
+> bitshift). Maybe an option is to just make batchsize not visible
+> in the NOMMU case in addition to always returning 1 to avoid confusion.
+> 
+> Anyways, back to your original question of "does anyone care". . .
+> 
+> I am not sure : -)
 
-Note this is explained in Documentation/core-api/real-time/differences.rst:
+It's a pr_debug(), it's not even being printed by default, nothing can
+possibly break by changing 0 to 1 there. So I really wouldn't overthink this...
 
-Memory allocation
------------------
+> For me, both solutions work, and in fact I prefer the original solution of
+> always reurning 1 for !NOMMU. Maybe some NOMMU users like Daniel and Guenter
+> can comment on whether this change really matters?
 
-The memory allocation APIs, such as kmalloc() and alloc_pages(), require a
-gfp_t flag to indicate the allocation context. On non-PREEMPT_RT kernels, it is
-necessary to use GFP_ATOMIC when allocating memory from interrupt context or
-from sections where preemption is disabled. This is because the allocator must
-not sleep in these contexts waiting for memory to become available.
+I would be surprised if they were aware of that pr_debug() in the first place :)
 
-However, this approach does not work on PREEMPT_RT kernels. The memory
-allocator in PREEMPT_RT uses sleeping locks internally, which cannot be
-acquired when preemption is disabled. Fortunately, this is generally not a
-problem, because PREEMPT_RT moves most contexts that would traditionally run
-with preemption or interrupts disabled into threaded context, where sleeping is
-allowed.
-
-What remains problematic is code that explicitly disables preemption or
-interrupts. In such cases, memory allocation must be performed outside the
-critical section.
-
-This restriction also applies to memory deallocation routines such as kfree()
-and free_pages(), which may also involve internal locking and must not be
-called from non-preemptible contexts.
+> Thank you again for your review and follow-up. I hope you have a great day!
+> Joshua
 
 
