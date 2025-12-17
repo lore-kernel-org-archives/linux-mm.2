@@ -4,124 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF3BD66BBB
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 23:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C88D65C63
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 23:52:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF8A16B0005; Wed, 17 Dec 2025 18:18:48 -0500 (EST)
+	id 16ED16B0005; Wed, 17 Dec 2025 18:52:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA6686B0089; Wed, 17 Dec 2025 18:18:48 -0500 (EST)
+	id 11D256B0089; Wed, 17 Dec 2025 18:52:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4E66B008A; Wed, 17 Dec 2025 18:18:48 -0500 (EST)
+	id 028F86B008A; Wed, 17 Dec 2025 18:52:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CCFF6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:18:48 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 558CB1A015D
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:18:48 +0000 (UTC)
-X-FDA: 84230529936.13.39BE34D
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 52FC71C000E
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:18:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hSNvQzfL;
-	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E58526B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:52:34 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94BB61A0007
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:52:34 +0000 (UTC)
+X-FDA: 84230615028.17.C0C0440
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 117301C000B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:52:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uxY0KrN/";
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766013526;
+	s=arc-20220608; t=1766015553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZvc3rVI0di0d/Re6Le5Bvc+vMvJtdhpmIxMnxjb6tA=;
-	b=4HjM4z+m8UkXWa4DiO5b6x+t4VsEKcZ9FqZJWUp078xrVoq76gniKARce3yU1bm1o/Rla5
-	CmZTVDjEUTgHU77E6+TZABYdzXGpP8HtpaBPd+ApkWO79+Acym2e0llBdQsp2x8CI3VEju
-	2mPmFxsEG/Lx2ZDD86nwbGIgeSaxyh0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hSNvQzfL;
-	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766013526; a=rsa-sha256;
+	bh=+PXhlrp1Z2DWxLTE26R4zqyb32svJBYAwHOtF3/GY2c=;
+	b=jl43JbGlfOM0aiQxsvW+J3032hMpS4FRWr+eN89gMKF+qW0SDa3Sfj5fJlkJLj4G9mdLmx
+	yd/RMKtJcDybSmT3sDRoNQROKxl05D7g3hoRpHRubYKCoyoJlqyGPUlbtWbm/L8FhfILhp
+	gWKLQQcmTIxYZEoFZe3KZAS/zngS2zM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766015553; a=rsa-sha256;
 	cv=none;
-	b=Nk/w+AnqE3sCDepGd1oi/CPUYe5eYo3ai3GwwapUBBVXNrYRxkwtHFH25IHYHqJgVQ7iWJ
-	2LBklx+S9eXJjvdCkXIzMurD5XZImlLjnbGSwTZrR/pyb0l44dNsCLFqvBcR6UWkeDaF3J
-	OmJgBkk2DDS2Su+R8HeByjpcBNC0E6A=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-594270ec7f9so12138e87.3
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:18:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766013524; x=1766618324; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AZvc3rVI0di0d/Re6Le5Bvc+vMvJtdhpmIxMnxjb6tA=;
-        b=hSNvQzfLCzf2FcNvQ9otGgmqOFgdHjLA7yVPUx2dIZ82qZPMB/3nxUk7ydNr0l6ZBg
-         WRZ5ymr5Cp0RD/7lsZEXpz0FHh3hi0/0GxaCuVAijCm3fCm7vS6EmLmKYdabhoy8oziZ
-         fo4Vc7ZTAX/eVQEFf/pCjGL+xKBW61toImle/b0GTACf+3/DubDfjuHwIb+IAM1V1gFc
-         fsmh8/wW+Lh6E/SW5JOPpnzKa3E6Z+1wEOfVp+gfh45WoHjsZfW6okiiATFPr+uEB9vK
-         IiLlqD8pFDTISb5rS2o6f4C7rIAMCHWuxNwQL+3FIkDFQ7SoJ19jWcHitBwX1Ypi/7yi
-         vUjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766013524; x=1766618324;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AZvc3rVI0di0d/Re6Le5Bvc+vMvJtdhpmIxMnxjb6tA=;
-        b=csGWvrRA3jI8xGZm7aKIkKid78tBENqy+sHIzZaTkjpMyLGQi/GSZS6mBUkv/nqAVQ
-         gpRGwJ8RT0E41n65a4PzKc+SPSloIZ6zKFtdNx0BIzB40w0o1Uu/4YWgJMGAGY6MnCYZ
-         WOUQHKwq7TqLbGgQvCvhruGtJxcEjnFU2LeuJVv+0Vuylp4qJqZftm5GYFo+V4Tk4boy
-         5uR0+x+loTLXAZXrr0THiUlcbKyHe2KRrRD/fpGMudJp64wyTeVeF6P19+p4AWhxqb2d
-         oUHYQCwk2wFNTcumIM7QEmdEajE2xHAhsPhyXfrZkW098ZjQ+dkQCtRWzUtxOI39CmMz
-         D67Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWMmHa6dIh96TDd7jOAYi7ukOymn8zu425CvSwc6EqdbpSEw0cJukjCgL79vz5WXRbaqFQ+nfhaQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz+TZfLJs6DYUqesNk00hkEXIrkOORrWTTgHRoYGKSwOUhJNJMI
-	lLLEhdYJ5JZtnatUKnZTKEALAI1rlrWXy0T4yWHaOHNfkcKqR7t9I3+u
-X-Gm-Gg: AY/fxX4RtYcy4yfEUxMt51B7ZBN7ONYyhvsC9LOH3jjV+BjOD/hn/FJ2WnmHzMOvz44
-	jL67JDGWCtyIhS4XCYEnxq0NjLswfETsGdpexm294L4yCwb5Mkig+SD5Pu3xvXgkp4KQUORX5cP
-	hUMDgHIFEK1gNtLUFRe7LL+/oJfm/tPHz+xAZo2JEQ2RpK45d2na/eY76S822nLyVG0EwHalVA0
-	rJXJKIeQbpIiuk8jyjIT57e7BTvwlbAyWad8nGI2iSBY8VR+ud43w7eTrvm8VCAGBjIabScs9hL
-	KYgtysxJwwt8eUiwtRXYj0xobjlEfM0TNHn8KtI7UBAArwTA1q/CU3uljeUFbsSe7BZCDVTkEuz
-	Wk63cssXKxPu4pd8ZIzLq2HXWa/RKjuJEFpnRG9IyLyBggW8/vl3cMEAqSXDuUMYFUTIXOl5u6K
-	VYzb1LWsX4
-X-Google-Smtp-Source: AGHT+IFoFgIAi9PMNEfIKCxeozWxswujwd1S6MJvMAmdk00BzJYAqN7Mqo6fE4Jz6OZ88KHyEwKy2w==
-X-Received: by 2002:a05:6512:3ba2:b0:598:edd4:d68 with SMTP id 2adb3069b0e04-598faa5a3bamr5789014e87.28.1766013524025;
-        Wed, 17 Dec 2025 15:18:44 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 38308e7fff4ca-381134b5011sm2807821fa.3.2025.12.17.15.18.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 15:18:42 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: mpatocka@redhat.com
-Cc: Dell.Client.Kernel@dell.com,
-	dm-devel@lists.linux.dev,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
+	b=0PU8cwk/5rHfQFHz5QqAehsQlglietZdRzNMKXebCcqWy77tUNQHm6AiORvtNR8fsL54Pw
+	HbzUBEsG56HtAAv0j9bYygvM/hhxNKS56yq40cqZ10zwYqbmBDsDtfnqgbSkQF+vh/82he
+	RmQsLUG36QM09Nl//L7GmoItUEiWKjA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uxY0KrN/";
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A3EC4017C;
+	Wed, 17 Dec 2025 23:52:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C026AC4CEF5;
+	Wed, 17 Dec 2025 23:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766015551;
+	bh=XT8meyHBHOL7oQLxt33J3A3bJJUsQVWtW+JbMwaJIwA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uxY0KrN/CWK4Xcio6Nf/3PIx+7iKCUBoGYm2WQFrc5T8ayzRzPy9ieGpFWs6TV6/y
+	 5jGiCgMTU+5AvcyqMob7f4T325xnTmsVzEkdecj5/Byb83zq9bCioTSEK3Va+NFNef
+	 6hlTmRW0H3CXr477ASBYpyg3Z4uHozV5Px783jsPhDg2rEAmwPh38OB1FkqaNNb+u+
+	 DZJFq+lAKnoIYfoWPscPJpd4gQggUYJ4N8KdOW61A6U4d8ojPD9qmp+TC3YrGz/Zyp
+	 hlysZWshFhFScj+7G/AlqGgPW8w8z9jsqYj5QweevH4c3F8zeiTFllGJ0Hi9Op4qFL
+	 Bj2cDzR7RJK1g==
+From: SeongJae Park <sj@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	pavel@ucw.cz,
-	rafael@kernel.org,
-	gmazyland@gmail.com
-Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
-Date: Thu, 18 Dec 2025 02:18:37 +0300
-Message-ID: <20251217231837.157443-1-safinaskar@gmail.com>
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm/damon/core: add trace point for damos stat per apply interval
+Date: Wed, 17 Dec 2025 15:52:18 -0800
+Message-ID: <20251217235219.2750-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
-References: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
+In-Reply-To: <20251217174851.28e7c4e5@gandalf.local.home>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wsizhq8b431efx86pc3nq1ifr9qq6d7t
+X-Stat-Signature: dou9nsetpjwrbdkwq8gu8gsk7tigao18
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 117301C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 52FC71C000E
-X-HE-Tag: 1766013526-215170
-X-HE-Meta: U2FsdGVkX1/PhlFvnSjrPtWa9cMmxF/rO+B0UWr9I8Z6AlYlsmMVWiOfJeOICRDSu5Bc0HBt0cT97FZ71qq/9G5r3JlDdTfApqMjoJneUdO5jUgdIsksjMhPXx7y2ADtEo5OqQFgDufQa+S9Xnk4B6Q2SDmrwSAW+ldsxtfKf1oJHMKCHHPTQZCkmNq42EYmMPsAqfnOMnsIvfCqkpei230LC6w/q2mGP6NiifvcAuIRqgB5R9KUjWp51oP60pI13fm7+zyN5+2ARNRBkgMahU7XSR8UI6gjyqWobX4iHUPa1+DYf130ekHNuu3L3PkAmHYPLCxa0I8LwQJLi296Ycokr3UeTcqplVNlwGrGVrZy1NIgrIomiDWI7nIbUnPzi2t2eKIK/rNc2MoaXpnHCLktREsH9puAqLOhrHl4gHF956Mm4fkSsMR/eodheUBODQ7zK/r861rg4LsrARSvzcu12dyEI2URq+xe0xaTeS9+Dcqwwy6rhctUQBvGuJ7fm73MYcPbKRBfinn8gUwZSoDkLOwy0lD25360XEfRMpTQUhrnq53ebL2sXPEhKRwCXYPTl1+Dqgen9Nk8+SZmsjQNfllnDVAjt8WjDL9d0+fmcQhI7s4eU/8I3a5ljv9DplTYipUdGCBpRdzxGYMGbl90u4UzPXeYJAPqV/tIcUl+PxmWJeIt7w9cIg0ovkeiH2xQ1d76a2rtKCyTGuxugphcNW7OfaBJICxBt2JgcaLgQ21Bb0NBmQIis3/qIQLH2Ugn4pJoEhwtgRFcFkuIlUzMa5MjjGAtvcv/vMpCx/jdPfQ1jAUl5EJWxVLGQ+D7Oqg9h4AentelNbsLGR1eCwo+X4lVp99/P7EL4i86dH5CaznOKnCLMfN0dRRh+zkRiFqSV31HBxoZGJfUK8YfUKWqPaloIb8dmduoCXMHaRfHP87FsYJLkABX9xWSioSKvQySG7pSZYjy1eVDdWm
- DE496BJi
- x897DLc7oYgxF4eOwYkdXEReTkCwH0OjrZcxXoLT2l3Rkkmt5RbGUkvl+oAOOdNis/E0vqO2SS8KcXVaVHntI34genIof4/PWheXWFwvMJEClUeHqhXDGLWrsBL2K9/7hGG7XxPG86gUqrH6h8lIG5Q1bPtIC5C5Yu4R+ldfYpFhskHJtfdMUfVwffVUG8p1liLenP46Pn7r+H/1/pyGyc7nJLQXddCf+J/s66hLPptgTBwMs8Mj8APnYsFQP/FPYsmZt5VUFj8qD7Mkdt6KiR7aBoPMkD9YYcfTTM87EBXPa0LeOuND1JTXt5AVPwZ2VdfdAa7swWvOEp+/UqhzyykjQr9CsyGnRaEYxz07mFOAMT5DEBivq91O00yaXWnL1LerPrXoEA+FWQakMxp9Iyh0OGRsgm0IobsMNTcRgI0JNpkNZ4o+sfQLUi/qJvzTntwiXlpBNuz3KAWfoKCCvotOQraVe88xpPVEjFoQRvLvtlSSxuVw6BIpinhtvPkjXqszf58fQYYomNMaED64AyraY01xklH2I3cRA
+X-HE-Tag: 1766015552-595019
+X-HE-Meta: U2FsdGVkX19Gp9Wfp65PGDQcCoTzMSit9t7sTE5ulwYBSJxuDS2Ee/y4YsolQTFgi/u3trgaFZ1m3IgDE6H54SIhhcTkYSpr7+uxY5tPMoacINu5MQDO8S9gCbM9uTTy69SrIHoZG3kUiBZivOpIvl9os9GvlgdqbMPu0Hrz1RQOqPZC8jyZFi4MiRtrLL7pQ3VMEZu0E3k1C44fED0PYKpAAkq1G/eIHc/Cz5f93VSww9pQCrL7hVU4l13JLpUSRzywSWOgf9QTlvbSJ+0U4RBVU5+cDXD5BWq5dS+dPKSVdphcoOsY/sDqbPjjbRz+aqCYMS55JxlLXCrOftNvYeBXsWIKAIl6nwVJsA7HaDwkEgN+TQHJxHTfvWxHj+yW5RuImoK14ARMZm8aWPdlVCQCQmTNnbXy13eBD+B2pUicn/Vq22L247CrFc2ktAtlTBP5K88HLWIqz4wJCCUTFWvdJUqviaQtWQCqK/OaGiP10jzjSYaK/hF8nT8SjRTqsPjeN7mOVQuayznNGIuCJf4Z4F7jCxAu4haUtZfwQa7wkp/hGExI9z9TQaJ97uEm38kSZlzJpIj/Uedqu5kTLQb9hEFPy/WKmG1vD3TXVBN7YvEmxh0bvh2hJEj9eLy9f7WvIDcFtUaIm01hSv+3PShDARti4X92ki5ywAn3YSZjmEBLdSGJA7p6lBFBBJBtOle9XWOYm+uS35tk1Vjx0xB7FPbxaWPvwYdqyaZ0LVQgHjlaBpZuA6+UwuT57hxmy55AVHcQx5uBp6hbVqbKirjqqFRC6OYMlPT2vWaxqgmtoy4jNi61Q00kjHsgTG1jPqfLeCGerCqr8nbXZrmNjY052yhD2igE/igoTuwyoVqwzaJinWwNLsNno9aOls62Aje2LicfCSWn8pmbSaeM2NnWeoJbmbUSo9r84v53BP4If2cikB/lDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,39 +95,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mikulas Patocka <mpatocka@redhat.com>:
-> Askar Safin requires swap and hibernation on the dm-integrity device mapper
-> target because he needs to protect his data.
+On Wed, 17 Dec 2025 17:48:51 -0500 Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Hi, Mikulas, Milan and others.
+> On Tue, 16 Dec 2025 00:01:25 -0800
+> SeongJae Park <sj@kernel.org> wrote:
+> 
+> > +	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu "
+> > +			"nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu "
+> > +			"qt_exceeds=%lu nr_snapshots=%lu",
+> 
+> Nit, but it's been stated that strings should not be broken up because of
+> the column limit.
 
-I'm running swap on dm-integrity for 40 days.
+I also found checkpatch.pl shows warning for that.  I was ignoring that since I
+was thinking that's just a recommendation.  But as I got more than one warning,
+now I'd like to fix this.
 
-It runs mostly without problems.
+Andrew, could you please add below attaching fixup patch?
 
-But yesterday my screen freezed for 4 minutes. And then continued to work
-normally.
+> 
+> > +			__entry->context_idx, __entry->scheme_idx,
+> > +			__entry->nr_tried, __entry->sz_tried,
+> > +			__entry->nr_applied, __entry->sz_applied,
+> > +			__entry->sz_ops_filter_passed, __entry->qt_exceeds,
+> > +			__entry->nr_snapshots)
+> > +);
+> > +
+> >  TRACE_EVENT(damos_esz,
+> >  
+> >  	TP_PROTO(unsigned int context_idx, unsigned int scheme_idx,
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 8908aec6670f..68dd2f7acba2 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2256,6 +2256,22 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+> >  	quota->min_score = score;
+> >  }
+> >  
+> > +static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
+> > +{
+> > +	unsigned int cidx = 0, sidx = 0;
+> > +	struct damos *siter;
+> > +
+> > +	if (!trace_damos_stat_after_apply_interval_enabled())
+> > +		return;
+> 
+> Other than that, from a tracing POV:
+> 
+> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-So, may I ask again a question: is swap on dm-integrity supposed to work
-at all? (I. e. swap partition on top of dm-integrity partition on top of
-actual disk partition.) (I'm talking about swap here, not about hibernation.)
+Thank you! :)
 
-Mikulas Patocka said here https://lore.kernel.org/all/3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com/ :
 
-> Encrypted swap file is not supposed to work. It uses the loop device that 
-> routes the requests to a filesystem and the filesystem needs to allocate 
-> memory to process requests.
+Thanks,
+SJ
 
-> So, this is what happened to you - the machine runs out of memory, it 
-> needs to swap out some pages, dm-crypt encrypts the pages and generates 
-> write bios, the write bios are directed to the loop device, the loop 
-> device directs them to the filesystem, the filesystem attempts to allocate 
-> more memory => deadlock.
+[...]
 
-Does the same apply to dm-integrity?
+=== >8 ===
+From 67a7762ee1ade258c53913ea4ecf9bafd4746ea9 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Wed, 17 Dec 2025 15:42:06 -0800
+Subject: [PATCH] mm/damon: do not break the string for damos_stat tracepoint
 
-I. e. is it possible that write to dm-integrity will lead to allocation?
+The format string for damos_stat tracepoint is broken up to multiple
+lines.  Strings shouldn't be broken up due to the column limit, though.
+Update the string to be put on a single line.
 
+Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/trace/events/damon.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
+index 24fc402ab3c8..bf25ee07cb48 100644
+--- a/include/trace/events/damon.h
++++ b/include/trace/events/damon.h
+@@ -40,9 +40,7 @@ TRACE_EVENT(damos_stat_after_apply_interval,
+ 		__entry->nr_snapshots = stat->nr_snapshots;
+ 	),
+ 
+-	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu "
+-			"nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu "
+-			"qt_exceeds=%lu nr_snapshots=%lu",
++	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu qt_exceeds=%lu nr_snapshots=%lu",
+ 			__entry->context_idx, __entry->scheme_idx,
+ 			__entry->nr_tried, __entry->sz_tried,
+ 			__entry->nr_applied, __entry->sz_applied,
 -- 
-Askar Safin
+2.47.3
+
 
