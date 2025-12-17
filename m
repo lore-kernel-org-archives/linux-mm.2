@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3100FD6552C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A337D6552A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:47:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88A586B008C; Wed, 17 Dec 2025 04:47:11 -0500 (EST)
+	id CB2846B0092; Wed, 17 Dec 2025 04:47:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834D86B0092; Wed, 17 Dec 2025 04:47:11 -0500 (EST)
+	id C5CAD6B0093; Wed, 17 Dec 2025 04:47:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 712846B0093; Wed, 17 Dec 2025 04:47:11 -0500 (EST)
+	id BA6DE6B0095; Wed, 17 Dec 2025 04:47:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B6216B008C
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:47:11 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19F45BBB32
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:47:11 +0000 (UTC)
-X-FDA: 84228484662.25.C340926
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 74D74C0013
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:47:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=brOaZf2K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765964829; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9C26B0092
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:47:17 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1CCE6609B2
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:47:17 +0000 (UTC)
+X-FDA: 84228484914.21.F390F9C
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 53A2B100006
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:47:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XNsRb5JY;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765964835; a=rsa-sha256;
 	cv=none;
-	b=WXylHfaLVdSeK7HMKTJT5emwqfSgEKxzA3S+ukwdkzolMX5HXqwxNYvuT+q2TZWVfeWsqe
-	uv9Or2GL9loVLKAEIFv7efDsP3SjbvL+ka+O06rRL/FGSDI4uUdJBLEHyuOziHG13eXslY
-	lpTfPa/oVBoPQvjSobhJwKsa42IVoWE=
+	b=tT2QKOQypzt/FAVLmfwggvZxWGBCiWcvVSJdisV2RWEiFggWGq53AAQ2qSfzzc3aQgV557
+	rqRXx7LY1bQSbKDBDic46Lc4sTwxG5uSoXRl1LWMvkF5tnYPbNexseIYBboPGDzt9/nXty
+	/DAimSt5iszE5wMDyq8MnsgiNO7jgiY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=brOaZf2K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XNsRb5JY;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765964829;
+	s=arc-20220608; t=1765964835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WjvVUE6PLFuQKn8iudCm/UQAhzXxbds5MAnD30p0biw=;
-	b=pUcNWwarR1yTaIZ1wpMZqEDWq1Xwp0KvRlRo6isQpaXWw5xOfonsqqFSYJr7XJ76FlabcQ
-	6iG+Ty3oMlPu1tnWiVFQemYr0iGXeBSJ8CIrV4ZtGrUqH/42jxB++8HJ5dV9dXVAfNB6Mm
-	baTpOKrzZgA9hjUB4D639WeSi5ydwag=
+	bh=fkW1q5oTlkchrLBj7uhW1/fyT/NJTp0qrNRVsGoiJYg=;
+	b=DnPaRtUzUVE7JyZtBli0F32CpN3d65XQVpWCOZVrO89KfY0XdOTpyZtRlrTYdBn3VaOgW0
+	9AJ9fTDubGQwiYMXG1rY2tYafqNn2UB91PAuNs3X8u2X7z/lckSCZiEMiBGO0qMmtrhRYt
+	l8PlTtoiy2wMh8cU25Y/PpNEextfQjw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765964827;
+	t=1765964833;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WjvVUE6PLFuQKn8iudCm/UQAhzXxbds5MAnD30p0biw=;
-	b=brOaZf2K2ad6KJwOD2w1YutexFLGuWsWBcWsSFSW9Rhbh0uxRAqynp0B/EeXVhrva+cXWe
-	gZB0oCXryrPE12cWqlsQwhYB5Dx/EC0LkrSQOTkvtYLvI3X0HBt+KxidI0BnlqQYnQoYUU
-	wdwCgfkrV6k+l3/j3AAJV14uDlUcyGw=
+	bh=fkW1q5oTlkchrLBj7uhW1/fyT/NJTp0qrNRVsGoiJYg=;
+	b=XNsRb5JY0NarSUDlxllpefgnMRlLZpW8qzQc9ZHNREId6Fq61bYkF9z2/CqnDHghDcClS6
+	JSWQbuaoMZEDzyNrP0E+UpEKY+0lMWWkYwX8tos3g2d3TeSlYHmAkMIa+8GNC7vJ+Ulmkt
+	1rnXZCKBiJgsfxRzh6s1Opl85Us62zE=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: will@kernel.org,
 	aneesh.kumar@kernel.org,
@@ -78,22 +78,23 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>
-Subject: [PATCH v3 3/7] LoongArch: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Wed, 17 Dec 2025 17:45:44 +0800
-Message-ID: <dae0a0b490e912273a62a49be9d92f470fbcaf04.1765963770.git.zhengqi.arch@bytedance.com>
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH v3 4/7] mips: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Wed, 17 Dec 2025 17:45:45 +0800
+Message-ID: <1c14fe4de18e7bc71b98eb58dbd4edb13d3391cd.1765963770.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 74D74C0013
-X-Stat-Signature: q4jxz9wz3ntzf367re385xdu3wnj8b7r
 X-Rspam-User: 
-X-HE-Tag: 1765964829-847237
-X-HE-Meta: U2FsdGVkX1/6H4Bdgm3Zcwz6JGSLvDwd5KiZifzGpjs+Wwol4dmHzHnGeyyEF4PAjgUdgpngboqTRGsD1L/X0iEzY5o2D1CvM0XosJ29sCdJzSTrLE9lkFEwXv9N6nglj43EF+JnNTsRlyhehsXKEw8rRezC10mPX0Hasu1mLEDVgnvGXm6wKNudJRWqExJ+Nf0VQHDpFQMzSv7GoHe9JFnJ4CcgIaZsAqOS9+x/pmuMPBdd6hpkhJP6o2/loIoDe/2NN7Kwrxz20PIPdWZIyAMOIvV6tTEo+XEHlzxq250YyphOuDzTv/wfFn4MIs60sCFLvigBLwDuvBrVMdgH/LRGWcE2CM2HO4FAlfxq25Uak1mB12hisobkuo2zM6P4JOTFyzywVohsXzLxWqGsVFf2LEektD2lilZlQqxrhHf8q+zI9/XeJz+p9qA5TxeK1dGddbW7pbaK9BpuYkTWaddVdWVBHmjzRuIAQrESrq/iOA6BShbfOGZMWyfSgYmkvR/TTrw/DLOjVBq3WYP4TJKmwRvijmOYsaChEfSOAS+KDZfR9M/ZH6VgKuxKm9/KMgGVV9pK/8Y1zI01Rr3/4X0WCMB9Mns10X5BoyTtySWdjQ47Ll7G2WKJ4NcM7fynRTUQoCxohZnyfCRo5VeQqEoLCys+bjeOeuwBvIk+EZhbkuTNdVGrebsMyWPsLYCZ1gvdBJSUPqlHW1GAoc88r/UZGr1khVCC4jFXGH0EFxbGUlxatWa8TmPorx5a9Ia6drcjYcDg+thq3WiQ9Z6tsEEJHqIj9fSDkbwpkv+6/Dwhs+2fXnrGZYZQWXKDNME+UUxlKZPLNOKax1ta3KKwpMi2UsQaxMJQ9tFX8VCTnSO0mDrta92Gkb2gDc2UJt2UfjGmZClQPTKaJ77XnWK7L3X64S0PtYPZd88BLRw/jJA3/QdyMBucXm5X/iqY4VhP
+X-Rspamd-Queue-Id: 53A2B100006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ys6zfbkujuyqfiye5e8k9ha4yw9xonyh
+X-HE-Tag: 1765964835-617167
+X-HE-Meta: U2FsdGVkX19qb9LUWzRG5eYi1soEI1lu98+EUW9fx65OAWampB0bfZjgN16m4z+CJdr+CplnQoE6fcBumarnSSEMEcTE/snHDHVABmWvzS+URvAIhVWorvJ0IECobqhrIi3c8VQsw3WWMZyum1pAluvGWBE8dgXUU5CSl53mvSWo/l2LK8T/V6la8pJEiLcrEbPhzsajwUQGIwEx2ZtQ/W4mCfoxV9YugpnMgR7ldHeBK+xSSTS45JhbiEe2XqpyzDjO+APib/whtD7UGb2hkdng4e2SwTGoyHfpIpdD2z0ZRE51emJhaCVhDSgk09jjWWXMYmT/y/ktjZxkHZ9rgrLSHsC0QzykfKXRsr0f4DDLEUabjBs4Yu6dn8pDFzOwbFp6JEOLAL26oPHYR/jkJ3mqPPY4W1BtrkM/RQYlwfLpBttWA7ReqiTpq7O8Y9GCoODpvOtW81bUDUdcrlFjtj2rrDeuHDCX93lSfAdhly70OcrpJA4vQ769fHDRabGZlJ0JWZYY4/VfnPkJse3kyJcIYAiaUh2yhRpIFUEUrv8lY1OnAs/Wfov9Hbx1eDCDDAeBjV2ThElB9/5G5Epqb5GimelBClVIToJkydstqrhDTRwRAAIYTDJGsoJ8g7aqUknn5udDRGF2YZZ76dXQmMHqwWcg32tSiwlWdOMz3eZT4Z8Pm6GT2Iok68AXELyhIWGQVWjpEQ6GwXZFpN0i1v2apWa2460cb07FSawT26VDA7RgT2/cnd0TiahimeqfF22aOvV33B/ToiDHg92ifEGqpUH8xwKRQxl68giPO5mcvXB62qMM5S0S7J9lg0580jtXK5S+A+A27KkDX+qncxIqRaNeoR9MUOMSSDdzBYyF36Jfv/nA8r+952Z+X1u6icCODwk8GvlZNH1F8z9NCGfiSn2/TeNU/mXHS+zT+2fg+EZHrW/gBT3z4XvrtdFjX+2EcO4aXA25gXtaUs6
+ 33okB032
+ 8jOAUrwYRLn63GEjJf/0pjlmcw0Uocfn8xfsqx/617+3UpPACkHvcuyA6xF0r2HJCZofO2vD5BKoHPlzW6rVxx2mXW7rHm0SwinZisMw0Xpkim3wteLNTRIWR+pxBPWv6T97MsXJqoq0De01VohhPF8Ixjvt8cLAOhMHTWw3VTbqvNZOr4V6UYcjHylpkzyj9Lp4fA0jfZwr33JVasqf4nQnn+OxBfMA1kHnna3NmXhQrTaqBTUZ/88XkzS58PdPUyoRrrO6/Oh0NJ4Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,32 +111,31 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- arch/loongarch/Kconfig               | 1 +
- arch/loongarch/include/asm/pgalloc.h | 7 +++----
+ arch/mips/Kconfig               | 1 +
+ arch/mips/include/asm/pgalloc.h | 7 +++----
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 730f342145197..43d5b863e1fb2 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -187,6 +187,7 @@ config LOONGARCH
- 	select IRQ_LOONGARCH_CPU
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b88b97139fa8e..c0c94e26ce396 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -99,6 +99,7 @@ config MIPS
+ 	select IRQ_FORCED_THREADING
+ 	select ISA if EISA
  	select LOCK_MM_AND_FIND_VMA
- 	select MMU_GATHER_MERGE_VMAS if MMU
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select MODULES_USE_ELF_RELA if MODULES
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
- 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
-diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
-index 08dcc698ec184..248f62d0b590e 100644
---- a/arch/loongarch/include/asm/pgalloc.h
-+++ b/arch/loongarch/include/asm/pgalloc.h
-@@ -55,8 +55,7 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
- 	return pte;
- }
+ 	select MODULES_USE_ELF_REL if MODULES
+ 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
+ 	select PERF_USE_VMALLOC
+diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
+index 7a04381efa0b5..895bf79e76762 100644
+--- a/arch/mips/include/asm/pgalloc.h
++++ b/arch/mips/include/asm/pgalloc.h
+@@ -48,8 +48,7 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+ extern void pgd_init(void *addr);
+ extern pgd_t *pgd_alloc(struct mm_struct *mm);
  
 -#define __pte_free_tlb(tlb, pte, address)	\
 -	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
@@ -143,7 +143,7 @@ index 08dcc698ec184..248f62d0b590e 100644
  
  #ifndef __PAGETABLE_PMD_FOLDED
  
-@@ -79,7 +78,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+@@ -72,7 +71,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
  	return pmd;
  }
  
@@ -152,8 +152,8 @@ index 08dcc698ec184..248f62d0b590e 100644
  
  #endif
  
-@@ -99,7 +98,7 @@ static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
- 	return pud;
+@@ -97,7 +96,7 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
+ 	set_p4d(p4d, __p4d((unsigned long)pud));
  }
  
 -#define __pud_free_tlb(tlb, x, addr)	pud_free((tlb)->mm, x)
