@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA99D64086
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEDDFD64086
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8E06B008A; Wed, 17 Dec 2025 02:29:46 -0500 (EST)
+	id 4439B6B0095; Wed, 17 Dec 2025 02:29:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2666B0095; Wed, 17 Dec 2025 02:29:46 -0500 (EST)
+	id 40DFB6B0096; Wed, 17 Dec 2025 02:29:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC2946B0096; Wed, 17 Dec 2025 02:29:46 -0500 (EST)
+	id 3039F6B0098; Wed, 17 Dec 2025 02:29:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA3E06B008A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:29:46 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8903A160917
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:29:46 +0000 (UTC)
-X-FDA: 84228138372.07.6C57BAF
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 92310A000F
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:29:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G49xQSCD;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0BE6B0095
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:29:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A135314092B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:29:58 +0000 (UTC)
+X-FDA: 84228138876.30.03C2CA6
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DCFF640002
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:29:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wphsswng;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956584; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956597; a=rsa-sha256;
 	cv=none;
-	b=L5xRlzyFjhRAxhlSVXU087VQrq1L0cSG2j4XrBYJR0HvGSjxI6ShIffRPM19aCPjhQ+4u1
-	NWHySS20t/RdwdqmUc63PFnOHUzER1RpUsIplMkgXZYXLoXEulJkov1pnwm71IHJoZ4Ryy
-	yPeX35aF/Jd++9T5aDzPs9tVdxWhxtU=
+	b=4qVnj53rv3Ta6jTS0kxYb8eOJeNXaPtwsALS/Glw7BnxsZSDSK34JiH1S3fAoPsdvnctHr
+	bKLD1qbERcgczK7u1gtbVrRnttCf66nF6ATliKOW1uTcnMP0BxPJU7dHG9YqhOpwrTIkgm
+	TOItiENE6+34rEP2GjiNLrSPr5Gpsww=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G49xQSCD;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wphsswng;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765956584;
+	s=arc-20220608; t=1765956597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q0OheEBAXk7XPYwqSkJ0Le26eixYKExsbR31tbstIws=;
-	b=mAMC/YnUmTITuddrm/317LIp7NpIfVtvQxmDzEd2p+apMqGrBnyeexu+W7VkafXD7/iony
-	Iqu59b5/ddufmaOkkrLLRTrpCDkTxDAMCz+gzMOGbE8+Aus1KCibQd2jrcKpek/yvXd1nZ
-	XDwHTFeseTmz38cd+XJd0AZEcBklEBM=
+	bh=w4dfEcEvEfUWW7owlGocpCYghDEZ1Bptpjv9xHEdbhs=;
+	b=B9C4cXwJ8bAciQmXZKv5yljYW/MJ5xKb4wGRHTH+kaTIFbCyoLef/rVf8zjiiCdHm/fPyU
+	Q59JoGZDiqY5/4uuCiKt5/Rv3QH7hLgr1HLafrMsQuhA3CkiHWJWnAnJABcNxfmMCE8QMA
+	oDDCc1VBn/CD6flA089qTe4ULPDnmYM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765956577;
+	t=1765956592;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q0OheEBAXk7XPYwqSkJ0Le26eixYKExsbR31tbstIws=;
-	b=G49xQSCDDpZAppo/wZsDsqQWibcEkNZSb7m2ERxT7qti7MrBuU10SmnxCYBc+WUIHf4TCS
-	iMR8QuBNfphzQC4ptasTWFpd/SM2MIr5k84EuasV7jJsBHSTrlV0TZPz/uS0quxKVuaEio
-	Rs436+PJI9YW/vq4R6xRXGnOPF2R2A4=
+	bh=w4dfEcEvEfUWW7owlGocpCYghDEZ1Bptpjv9xHEdbhs=;
+	b=Wphsswng/as3O4tABZ8G7iOBDRI+iGwrqKHsK8293bBW8/bK/AKP7cwvDUzYdHMl5pOdpp
+	qE8F7Udp6woqzO9/M9NUloZqhwqogpco7PSNhaKAvVMLBGZlpiXaOyZ0reMDEzkdWujQb1
+	kMIJLp2Ly4sVJ2ibeyQqjUuKFVtZZWQ=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -86,22 +86,22 @@ Cc: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 05/28] mm: vmscan: refactor move_folios_to_lru()
-Date: Wed, 17 Dec 2025 15:27:29 +0800
-Message-ID: <0140f3b290fd259d58e11f86f1f04f732e8096f1.1765956025.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 06/28] mm: memcontrol: allocate object cgroup for non-kmem case
+Date: Wed, 17 Dec 2025 15:27:30 +0800
+Message-ID: <897be76398cb2027d08d1bcda05260ede54dc134.1765956025.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 92310A000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: asdg4ti4xhhy6njohtc483tmgipmq9n3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DCFF640002
+X-Stat-Signature: somoeheewgowchxb7o8a7nkj513iqe5x
 X-Rspam-User: 
-X-HE-Tag: 1765956584-743404
-X-HE-Meta: U2FsdGVkX18U/kzcL5FPx/FH+vqqs4SeS7kW485aE6iBmG30Q+LyBf3avSek/O+JJxx8NshnRO/i0uWybTYzMwCC9KqqkyzwByV8cEiM19Ty1wvLpm/bBXSzlnmp9KS9B9zzSc/LVtttb679P6YMmXtHD2rPuwGjcjOlVZHumSg4ghbqfyxn3UsZxoO3LpVuPWC2WmB6JYMfMXjg7gt/fttbFDmhIgfIhDFLHC6yNKG8p4MFnBGBylykiSTmltDDBBzX1Wk8i0J45YPYXO45JECx2YqoHg4yq/ewllX4ZVqQGsFiX3KlYI/oaHOvMTa5qv2AogGBfJ2sVby4e+2xqabfzvU/zPf1mDENm46U9bH7nTczXxC5DPS7s/DExGf4HMA7101yNL3Bh0iXgv/awREeeX4yhebAIa7hUFI+R3rea3T4PO0qa1EVBfXadDOytlMDpaVBVk0Ms7+I8FxJ2ddeJI/GA6uCrM+Cg/r43HDgtVPPDAalT74PjRwAbn6kJ+JLGz7sURDU2Wcmv7GeYrrqCG8XQGcDuc9FyEVUhYGkRy4aF9XCLxJMSpk4hQlu0S3xiLjmFZ97pb0d0z6sFLzuuY5qmnRUKlfYwuRvqvG6A36I3uyBd36ZED53cCL8d7vs0eGMer8PvpFevdxxhSOFveZkZTagbWm3/GtrTnxoFvgZKFqaIMrBUjoOzCjr0ANj6Sn0X2zFwpFYLfg+aG23EPO3Z1mykUMtSFcLeIWqxVkpKoFQVVkMA7cVno/ShwTVkmk/iUYD26EDdCXtk+t0p6f5gMytNN24ybJhcgAZ/6Sq+VZSQs1x59ZaXnhpoMw5FMscuhu4LTBeMIGegA04HCf0Ds7yoig1xDjFMj0dOXDaNQ2KfagOqUJhKOSokOp/3tCURFt5cchNOl0fAfetZkVTgnmj6PStpLivTHmvcK5SUA9vMtKLUr7oEonocGNSSaRzWXy3cVADzB4
- b1gIdB9x
- mYnh64mbEehev9Ah1xaFFwHDYuTmYMYBPcLQO8zu+Ac3tTH+wcwlpAC/B4McnSyIHZDpfmhJoPydnZwARy0LLFK6Be5nkwMQU40bR1o0NTGFekjzdF/NgHD63aKt/hiutDjxB88D/m4USwI8FsWCaInaQ2EI15Yrj3eyq26boVFe2noagqzKLUzn8vHutYNguR4MXFpgJbgE9QmihV93XWVgU6HRYSAOHDxaY/WqrUYFPSeLrJ6/yRKqNrOhrR2knOaKsTqbR4b9BANKLehggBHlbyPj0zFGE3uGB
+X-HE-Tag: 1765956596-309310
+X-HE-Meta: U2FsdGVkX18Al/iXAoIWmrGV6wDelZ9inSyiRd+IoiCiGo6RkaADzckZ1OK9dHC1g2VHhwjdqbp4KBYol0Q95KYTxHvKHRcrqcp4N74R+31CqGmkYpsmKStkW9BV2sjBReM0uglDxQHDP98jOlEy2BtUNinVtvB6znIb8KI5AkR6t78yw55j/n79jb3hhkEfF8vx31hNb/nE3v4rzOOQbWcdY0Nqrpk4dz6Qhs12ix0LZbRgFIXPpo04o93kF1QCeT4LS+RIlw3kE9KY8KNJFEec2HNgMKp2St56neVuVCD+Soa2zm2RZi0SXe1m0XRHJmfjsuzLQoWTA/elQ9DcfkuZvwjJSodoIISLdE57hwT3+Lrtsoc93cFwt5P9jcuzSZrXdcCfwzCujTmiPJ+Z30u0UEti/u9sUdUhq6yFBtXQrGRS186BmeQ4gFIXTaYrQxRuYCH4NbFPdJ/Iz/A9G8z9MEDCSStamYM3LEiFmXAmr48zsWPSJ4RErYRd9jALy19ZTcRFF9GiiPr2SbFISacJ6WPSmY4zjwW27NITrzeMK0kpw4rOzm4dJETr3KfKZp5NxP6JOaeb0iYuhosKbi7i8H3OSVVaRapt+X7tOHGUm7j2yfya3SMQmhQzxgWeya+nYaFvhQr/MXQMwoYdOsdUzXwu84ZLQaGr/iAi/DoxyOD86BR8d5n7CwQK6AwHPbcG+DznXbP9kI7OiDucMFW0vVe2pL3aB4eOg6yF6zu1X7qDbhDx1UW6Jj1DfRSixKpYJOm1sPUl987eowRAoQRIAwXhOH+8sr/9urDTDd7TVWdZWm7H4PLLZLtU4P2EYfJIh/Spskm5uUzDnKUDksixHj7PGIGWn7EyXRIhubtwPy4qUkudnFI4O+Ijkg9BZlkkkH0KTMSJp+yYKTwKynetnVaT2AGL58EBhloYwav+LnLazGxWJ+JNn7U1CFgWAJP8OZm4oCLI8aEpSi4
+ 2yAAg88v
+ e4O9UqsySexluNJtXTrs3AWLwSFs9Ah8uQOKOSesQzOtiREnmC34OO17+ZsVgFsgcozq/J4pHoOH/gFct38eAGdbyhGY04hTtIbi4cJ7WH3jcGPpaAL9l1f23qVKKtA3RqqbbXYpEu2aV5o3zTSiUNJyWdrk2MMBbv45our/zbDb6o7IFOHK6FGor8f4slicjy49mmk5BsKu/YZM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,161 +112,149 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Muchun Song <songmuchun@bytedance.com>
 
-In a subsequent patch, we'll reparent the LRU folios. The folios that are
-moved to the appropriate LRU list can undergo reparenting during the
-move_folios_to_lru() process. Hence, it's incorrect for the caller to hold
-a lruvec lock. Instead, we should utilize the more general interface of
-folio_lruvec_relock_irq() to obtain the correct lruvec lock.
+Pagecache pages are charged at allocation time and hold a reference
+to the original memory cgroup until reclaimed. Depending on memory
+pressure, page sharing patterns between different cgroups and cgroup
+creation/destruction rates, many dying memory cgroups can be pinned
+by pagecache pages, reducing page reclaim efficiency and wasting
+memory. Converting LRU folios and most other raw memory cgroup pins
+to the object cgroup direction can fix this long-living problem.
 
-This patch involves only code refactoring and doesn't introduce any
-functional changes.
+As a result, the objcg infrastructure is no longer solely applicable
+to the kmem case. In this patch, we extend the scope of the objcg
+infrastructure beyond the kmem case, enabling LRU folios to reuse
+it for folio charging purposes.
+
+It should be noted that LRU folios are not accounted for at the root
+level, yet the folio->memcg_data points to the root_mem_cgroup. Hence,
+the folio->memcg_data of LRU folios always points to a valid pointer.
+However, the root_mem_cgroup does not possess an object cgroup.
+Therefore, we also allocate an object cgroup for the root_mem_cgroup.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- mm/vmscan.c | 46 +++++++++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ mm/memcontrol.c | 51 +++++++++++++++++++++++--------------------------
+ 1 file changed, 24 insertions(+), 27 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 49e5661746213..354b19f7365d4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1883,24 +1883,27 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
- /*
-  * move_folios_to_lru() moves folios from private @list to appropriate LRU list.
-  *
-- * Returns the number of pages moved to the given lruvec.
-+ * Returns the number of pages moved to the appropriate lruvec.
-+ *
-+ * Note: The caller must not hold any lruvec lock.
-  */
--static unsigned int move_folios_to_lru(struct lruvec *lruvec,
--		struct list_head *list)
-+static unsigned int move_folios_to_lru(struct list_head *list)
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index ae234518d023c..544b3200db12d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -204,10 +204,10 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
+ 	return objcg;
+ }
+ 
+-static void memcg_reparent_objcgs(struct mem_cgroup *memcg,
+-				  struct mem_cgroup *parent)
++static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
  {
- 	int nr_pages, nr_moved = 0;
-+	struct lruvec *lruvec = NULL;
- 	struct folio_batch free_folios;
+ 	struct obj_cgroup *objcg, *iter;
++	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
  
- 	folio_batch_init(&free_folios);
- 	while (!list_empty(list)) {
- 		struct folio *folio = lru_to_folio(list);
+ 	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
  
-+		lruvec = folio_lruvec_relock_irq(folio, lruvec);
- 		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 		list_del(&folio->lru);
- 		if (unlikely(!folio_evictable(folio))) {
--			spin_unlock_irq(&lruvec->lru_lock);
-+			lruvec_unlock_irq(lruvec);
- 			folio_putback_lru(folio);
--			spin_lock_irq(&lruvec->lru_lock);
-+			lruvec = NULL;
- 			continue;
- 		}
+@@ -3294,30 +3294,17 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
+ 	return val;
+ }
  
-@@ -1922,19 +1925,15 @@ static unsigned int move_folios_to_lru(struct lruvec *lruvec,
+-static int memcg_online_kmem(struct mem_cgroup *memcg)
++static void memcg_online_kmem(struct mem_cgroup *memcg)
+ {
+-	struct obj_cgroup *objcg;
+-
+ 	if (mem_cgroup_kmem_disabled())
+-		return 0;
++		return;
  
- 			folio_unqueue_deferred_split(folio);
- 			if (folio_batch_add(&free_folios, folio) == 0) {
--				spin_unlock_irq(&lruvec->lru_lock);
-+				lruvec_unlock_irq(lruvec);
- 				mem_cgroup_uncharge_folios(&free_folios);
- 				free_unref_folios(&free_folios);
--				spin_lock_irq(&lruvec->lru_lock);
-+				lruvec = NULL;
- 			}
+ 	if (unlikely(mem_cgroup_is_root(memcg)))
+-		return 0;
+-
+-	objcg = obj_cgroup_alloc();
+-	if (!objcg)
+-		return -ENOMEM;
+-
+-	objcg->memcg = memcg;
+-	rcu_assign_pointer(memcg->objcg, objcg);
+-	obj_cgroup_get(objcg);
+-	memcg->orig_objcg = objcg;
++		return;
  
- 			continue;
- 		}
+ 	static_branch_enable(&memcg_kmem_online_key);
  
--		/*
--		 * All pages were isolated from the same lruvec (and isolation
--		 * inhibits memcg migration).
--		 */
- 		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
- 		lruvec_add_folio(lruvec, folio);
- 		nr_pages = folio_nr_pages(folio);
-@@ -1943,11 +1942,12 @@ static unsigned int move_folios_to_lru(struct lruvec *lruvec,
- 			workingset_age_nonresident(lruvec, nr_pages);
- 	}
+ 	memcg->kmemcg_id = memcg->id.id;
+-
+-	return 0;
+ }
  
-+	if (lruvec)
-+		lruvec_unlock_irq(lruvec);
-+
- 	if (free_folios.nr) {
--		spin_unlock_irq(&lruvec->lru_lock);
- 		mem_cgroup_uncharge_folios(&free_folios);
- 		free_unref_folios(&free_folios);
--		spin_lock_irq(&lruvec->lru_lock);
- 	}
+ static void memcg_offline_kmem(struct mem_cgroup *memcg)
+@@ -3332,12 +3319,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
  
- 	return nr_moved;
-@@ -2016,8 +2016,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
- 					 lruvec_memcg(lruvec));
+ 	parent = parent_mem_cgroup(memcg);
+ 	memcg_reparent_list_lrus(memcg, parent);
+-
+-	/*
+-	 * Objcg's reparenting must be after list_lru's, make sure list_lru
+-	 * helpers won't use parent's list_lru until child is drained.
+-	 */
+-	memcg_reparent_objcgs(memcg, parent);
+ }
  
--	spin_lock_irq(&lruvec->lru_lock);
--	move_folios_to_lru(lruvec, &folio_list);
-+	move_folios_to_lru(&folio_list);
+ #ifdef CONFIG_CGROUP_WRITEBACK
+@@ -3854,9 +3835,9 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
++	struct obj_cgroup *objcg;
  
- 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
- 					stat.nr_demoted);
-@@ -2028,6 +2027,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
- 	count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
+-	if (memcg_online_kmem(memcg))
+-		goto remove_id;
++	memcg_online_kmem(memcg);
  
-+	spin_lock_irq(&lruvec->lru_lock);
- 	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
- 					nr_scanned - nr_reclaimed);
- 
-@@ -2166,16 +2166,14 @@ static void shrink_active_list(unsigned long nr_to_scan,
  	/*
- 	 * Move folios back to the lru list.
- 	 */
--	spin_lock_irq(&lruvec->lru_lock);
--
--	nr_activate = move_folios_to_lru(lruvec, &l_active);
--	nr_deactivate = move_folios_to_lru(lruvec, &l_inactive);
-+	nr_activate = move_folios_to_lru(&l_active);
-+	nr_deactivate = move_folios_to_lru(&l_inactive);
+ 	 * A memcg must be visible for expand_shrinker_info()
+@@ -3866,6 +3847,15 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
  
- 	count_vm_events(PGDEACTIVATE, nr_deactivate);
- 	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
--
- 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
++	objcg = obj_cgroup_alloc();
++	if (!objcg)
++		goto free_shrinker;
++
++	objcg->memcg = memcg;
++	rcu_assign_pointer(memcg->objcg, objcg);
++	obj_cgroup_get(objcg);
++	memcg->orig_objcg = objcg;
++
+ 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
+ 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
+ 				   FLUSH_TIME);
+@@ -3888,9 +3878,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	xa_store(&mem_cgroup_ids, memcg->id.id, memcg, GFP_KERNEL);
  
-+	spin_lock_irq(&lruvec->lru_lock);
- 	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
- 	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
- 			nr_deactivate, nr_rotated, sc->priority, file);
-@@ -4736,14 +4734,14 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_active));
- 	}
+ 	return 0;
++free_shrinker:
++	free_shrinker_info(memcg);
+ offline_kmem:
+ 	memcg_offline_kmem(memcg);
+-remove_id:
+ 	mem_cgroup_id_remove(memcg);
+ 	return -ENOMEM;
+ }
+@@ -3908,6 +3899,12 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
  
--	spin_lock_irq(&lruvec->lru_lock);
--
--	move_folios_to_lru(lruvec, &list);
-+	move_folios_to_lru(&list);
- 
- 	walk = current->reclaim_state->mm_walk;
- 	if (walk && walk->batched) {
- 		walk->lruvec = lruvec;
-+		spin_lock(&lruvec->lru_lock);
- 		reset_batch_size(walk);
-+		spin_unlock(&lruvec->lru_lock);
- 	}
- 
- 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
-@@ -4755,8 +4753,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	count_memcg_events(memcg, item, reclaimed);
- 	count_vm_events(PGSTEAL_ANON + type, reclaimed);
- 
--	spin_unlock_irq(&lruvec->lru_lock);
--
- 	list_splice_init(&clean, &list);
- 
- 	if (!list_empty(&list)) {
+ 	memcg_offline_kmem(memcg);
+ 	reparent_deferred_split_queue(memcg);
++	/*
++	 * The reparenting of objcg must be after the reparenting of the
++	 * list_lru and deferred_split_queue above, which ensures that they will
++	 * not mistakenly get the parent list_lru and deferred_split_queue.
++	 */
++	memcg_reparent_objcgs(memcg);
+ 	reparent_shrinker_deferred(memcg);
+ 	wb_memcg_offline(memcg);
+ 	lru_gen_offline_memcg(memcg);
 -- 
 2.20.1
 
