@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE81D65559
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 13:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9976AD65559
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 13:10:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0A9B6B0005; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
+	id F246C6B0005; Wed, 17 Dec 2025 08:10:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8836B0089; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
+	id EFC0E6B0089; Wed, 17 Dec 2025 08:10:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9A8D6B008A; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
+	id DFB1C6B008A; Wed, 17 Dec 2025 08:10:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A756B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id CCEAE6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 08:10:52 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 555401A0A6F
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:03:28 +0000 (UTC)
-X-FDA: 84228979296.06.555EA9B
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 44C15A000E
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:03:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZ4RkxB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765976606; a=rsa-sha256;
-	cv=none;
-	b=XSpww4Uz3hrSh/0nY532gs8/wytu240BXcuf6hP7hTzSxs4wTuTY6hj7CGdhxoWjqPCwcT
-	9RqL7ypEyVwdwxV7l2QgzBsMo0FFpSyipxya4CyZSWrCrxdwzj1UwGokMZEv5MRi4Lymzt
-	Qe2YbbfX69l5ic0RuZQ8iQC1CceMLPE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZ4RkxB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 725D75C08B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:10:52 +0000 (UTC)
+X-FDA: 84228997944.06.1BE51FB
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 63DD3A0009
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:10:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Yiyc8N9Z;
+	spf=pass (imf25.hostedemail.com: domain of 32KtCaQkKCIsp0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32KtCaQkKCIsp0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765976606;
+	s=arc-20220608; t=1765977050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
-	b=IEEto3haADR1dtspqDyG/+R1rYzNO8vdPvBuMnrX+DiRP63qfjErmrhyj2TX/qpoqyXWlW
-	YTtwKQ5FynEQ2xvucSUN6QxdF7bcdKM5UDhy/OSh1j8+B0BLDgs3Y+uOTjS/Yjycl8f1BR
-	N4TROC6cxgLdQeEJ9IS6tPul3Q9r2Z0=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-787da30c53dso58096237b3.0
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:03:26 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=55z/kcnyK4/jomiZdp6n9WsDi2cwF/5hOkFlLeTTiF0=;
+	b=wTrXUOPFg6crioQ3Zrd8hqOwJf6SgsEeifmDrcKqm8XEX8OjaYSA70FWGsZkeSV5OPl1nO
+	6gMjSORwyFYuK6QsXmIDp9WPE1//QmyEK57iholfQJLaAZeAVQ8xAe8pdZNRr9oWtmxLdD
+	oMFRD8tguQ7/NmVeRsH97Q8JMYj+Qc8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Yiyc8N9Z;
+	spf=pass (imf25.hostedemail.com: domain of 32KtCaQkKCIsp0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32KtCaQkKCIsp0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765977050; a=rsa-sha256;
+	cv=none;
+	b=1dhuIKqT4e64LjgpBD6XWB2roa0UChRJ6cvet6Z+SH/x9npHq67edzo7orD+ka0qZ8lHFp
+	2m7lS7F/n19OB2apC+sXMjFIgENyYvcm+88fEh6+T7IM7Giv6G4yAfK58G0QqKhOuNfNh2
+	PU5+4CfUH56f8R7mpf5qMN5kYaZjSuo=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430f825d4d2so2298951f8f.2
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:10:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765976605; x=1766581405; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
-        b=AgZ4RkxBxWOAkUh9DQ1azLc0jQrZCkLiZwyj+FzQ5oy7/yeYdxoYMivfGFrRHM7IkO
-         7O7xV9iyZVl52STR+r0hvFyQNicKz923FA3op471aCwyVmzyioSX0sQWRpaz7/TNGTwS
-         WZQhXub1fQV8sOeocwIPcmLBv5UpCcj6NiswsSvCYNYo71aCGtb4S67KYPThpzeng/Z6
-         3oIQt7EPMnwVNa8qxp5YKVu3MzpwSlVUOWFTxPvpFP7HNE6LmN142Mngdhe/73NcAy3a
-         OZJw3fjfQq/qhgSLHn2EiMWa8nmu1nGrWi7Ik9Kq0D5sJkEN8l5pqryDkGw6c+MzpmH9
-         UFPg==
+        d=google.com; s=20230601; t=1765977049; x=1766581849; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=55z/kcnyK4/jomiZdp6n9WsDi2cwF/5hOkFlLeTTiF0=;
+        b=Yiyc8N9ZP4B5VX5A3rRthIe1BlNNGm4giOc4rd2D4O9N+SVSe1KTpS44fRsBLIH+W3
+         xu2hhD1BtDB2XqVwV5OgdW6zcdZELc3B8dpNcYJOjNGbToGElHv1uph8eHgtTi3lMJpY
+         HY/QuJpGVFSxMkDvhEKknDbr3ytEibbXVP0nh3UzKsy0v9/v7m93dZVr+MEmi5G2SR14
+         sDT6MzocUDu3t42AMR8UmjFcG3ar3lrnqXwvyGCY8zyR0M4QlBoRN+/8QA1m2SDvenAj
+         O+KopRL3sX0L8nIY7aJSZ0A8j3gKDrMr8rXB0HdbwZ+uH7BzBxD9VvTyCryXwr8OqDdL
+         tPsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765976605; x=1766581405;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
-        b=SL22jPSRRvBdcf3CWiyhMKi1/yuEIASHrrXwj7S9jxGWWUCchM/LCsY6+5L0b7YW4e
-         H3VpL8+46zxpeIkOWgVhRs3DL/0a+06SumacKKRphFPE6U9InmaN62Febsi9TIuArSJk
-         td9YNMJOGcm+t2K8BwbW8KdXsiM3Fiu53RnVekwUeYev6cEwAEMYp7+veVTx7sGbOTn9
-         U2XKpUnX9Z0r+DVTwaMYO8SHCEJmdlB7L7KVrffZEjeTfjkmuSIYr6a2kY2Gk4X95yvu
-         pD5Qmxy+ZTxN+Ose8geo3GA+OQp6DnG35sF4h93WDMaM++pmI0X+ME+FMygD2MHzuvow
-         suog==
-X-Forwarded-Encrypted: i=1; AJvYcCWjvOR1CB7GMG8eMj2T0mGTo4idGHN+LnMsytFCwNlkZIxSei5zTTMPX5KNRFiXl+wt6PGdTm8WXw==@kvack.org
-X-Gm-Message-State: AOJu0YyOgecCe7IMO0xhWEJlz1DDW/NHPXq0kz3eAjzt1xUQgIdh+Rrj
-	R3o0NinUlKt8Xy8t2kayV6NgC9AfDgfNM76SzR2wGWYIV/ae9dYNHPwi
-X-Gm-Gg: AY/fxX5FQiL6Pp6k+hYVoOWUgWJxMrdxggQGSuWzDYqp+gZZtguw+EqUbCiTsBkJhNe
-	vxajd19MiHhBF+4CjvpOPhK/hIZD8FzCLKOMhngixeSmrM9VSOJXVaqFT+AOE2QV9XFYh+Dmlmc
-	RWK67NdnYuxykVKs2tTUvAyMzrbfxDuZBjNdoxKyPpJoambp+tssJRY2e21SWnBehHlxuEf20p1
-	wqJ9q8LN1P6ZbFIFi3T2CCf/q+pud0u0I8Qah5ZZAMhWKCE81SsVdu16Yj9v+jLEy+fgnt1L4bT
-	aURCUn9yi0zY1D4rYds3vIQBNDg2nfdHqs0vCXOx42i580E6MzkRyHWcMXf5IvT+d4o7pt2f2Sv
-	mzIGziCwBksZ7IMdE4FDKalAC+JXUcrQhivRVZ7SuJR1LX0wq2PjZE0Xd2Ap5EoCjswrbTorNTl
-	56rNI2F5DL7PCmJYxGcr6wJA==
-X-Google-Smtp-Source: AGHT+IFFpd8MqeMm8cAUKBinfGXtHNbZPWn3XFitHYBMLyDx8pC7+Lc8XbhhZbINQA9DF5spw70kFw==
-X-Received: by 2002:a05:690c:f82:b0:78c:2c2a:fc3e with SMTP id 00721157ae682-78e66d1ed33mr149339407b3.21.1765976604948;
-        Wed, 17 Dec 2025 05:03:24 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:51::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e748d26b8sm49501337b3.11.2025.12.17.05.03.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 05:03:24 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Daniel Palmer <daniel@0x0f.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to zone_set_pageset_high_and_batch
-Date: Wed, 17 Dec 2025 05:02:52 -0800
-Message-ID: <20251217130322.3350377-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <1c94600d-47eb-40b6-8c7e-fb2cc39e1e4b@suse.cz>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1765977049; x=1766581849;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=55z/kcnyK4/jomiZdp6n9WsDi2cwF/5hOkFlLeTTiF0=;
+        b=MR0nLoQTKdnYt6EVLkHJ0kjhEIKBtfGETyHkCKQil2yzgYxMND6To+Sis08xxP9UGj
+         FKEY3J+TdeuJfIHPu40Km7OgqzuJqVtrY0Z+sPuHDWsIBVecvbH9C3j22UPQMWVTKj7w
+         y4Ide5IVeNK+qe65Eq2oMqoSTd+zJwogIVPya8JXaH2fKXtdvdgQECJDMMwiVc6mdQUM
+         PHRSJUUUT4NpDOJI2AdVPOMjQ49rV5yAvaUirt7HubQB7jMqWgnokxvg7NZ7rU94m6wF
+         B2gHohT78jJIpasXtA7mYnef314MR5gAcKkSUODwpJJoNj7BzVRaf1o7O8XDRr0b3UrE
+         A3GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSoeDx+tT2pmcOyDyTRZ4OL+jtj1ak1krO1SPq0ynjoW4hYXrhDzhfZQiGya+Xjp5/PR28L4KbKw==@kvack.org
+X-Gm-Message-State: AOJu0Yw6ck1lJhr7gxZp9q/tcb0XHFjLXUSoscLvDH2Twwd9LQn5LR0W
+	qF8dVkFXSCavNZqpMrVWOB50Jm5ilhPY0MhcahLfHU04KGbgJCsjC93TR3Ol0eeJ5BKmo0wIvzS
+	u+IYqpX6XAgA07LNwQg==
+X-Google-Smtp-Source: AGHT+IGvw4zgme++j/6mCd0eYW7FhdEhTwz2nifrF5I4TlPoKnDQGwHnPqTVXe9HihQmPwoNHm1qcgNVLSM6sxA=
+X-Received: from wrbbs15.prod.google.com ([2002:a05:6000:70f:b0:430:f5d7:eb5c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:186b:b0:430:f5ab:dc8e with SMTP id ffacd0b85a97d-430f5abdec7mr14495399f8f.13.1765977048487;
+ Wed, 17 Dec 2025 05:10:48 -0800 (PST)
+Date: Wed, 17 Dec 2025 13:10:37 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAMyrQmkC/x3MQQqAIBBA0avIrBtISaKuEi1KxxqolJEiiO6et
+ HyL/x/IJEwZevWA0MWZ41GgKwVunY6FkH0xmNpYbXSL+5Q2Qi8xobgTfaDWhNmGpiMoURIKfP/ DYXzfDzkU/lVgAAAA
+X-Change-Id: 20251217-maple-drop-rcu-dfe72fb5f49e
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3923; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=k7ah473lbDl4JL4MlfAcQeYPB9OEQ+mxsApvnfPnjng=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpQqvOGiHo1F5JsZO6XBpXWRgaranpPKixIVKf4
+ j/gRr7XyWyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaUKrzgAKCRAEWL7uWMY5
+ RmrUD/0cJnplKl7x0+RCQdZX0u9m7BctBfwLBjcxJu+Ihrw+JDvFUIkVbFO4JlieGSegRZuf+5B
+ 6Rzl2TIGB63yx0bfOcdKed6ABKXdxxu4fD3fwwtPRX4PUMRKp7nmCYQXhjhGn57iHHoQ6GDCRIs
+ pKlbvYWHagfWjkH0diRrw0wrili7zVWhw3DJAqK9vNwEtH+OhZJVrHTiOYfuVgYPGIVnxuALJb4
+ 2skHPG1u4KFFZYWBoRu4YJAybh9IWyqsanln3+P1YwM3HV5143x3IoMoHllIwSYQEPtJFk3bMtN
+ JpvqE2adnQ1ASHzYlLfNmliv5bYIECFYcbM+r3OK8jPW1t6nacsCZjppSs5z6lNdIxlDgXFQsQs
+ OOFnyaQifVxCKaInpWwMAdqHYwQJazIccYuFTM8fKJ4oL1SwKUuBGhB6eP3Ug6+WniFIZ8SQbE9
+ 0oECnzvBy3JG6P51A7npsmdOGxH+f1te5Y2aQNiAvWi1+0+PzleYU+Fcq+qjNTPQLK6o86vdRhK
+ VNlD+7s8OBupGifiiUGEJuaj7Gv16qdYugvaWEDOm8xExxWVNLPCPqpqnAWtu+grhHbv3Sy76qy
+ Iq+jL9GoWzwe0HnzXluEaf6bgHbFH67uUhGo7s7iszrg3CCObO1vjJnOKmQ69F5oeHksziTqWlv wu4NDmOHMnkjlDw==
+X-Mailer: b4 0.14.2
+Message-ID: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com>
+Subject: [PATCH] rust: maple_tree: rcu_read_lock() in destructor to silence lockdep
+From: Alice Ryhl <aliceryhl@google.com>
+To: Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 44C15A000E
-X-Stat-Signature: byaf5rquj8nn46swsbgx1annex6jtcqx
-X-HE-Tag: 1765976606-62420
-X-HE-Meta: U2FsdGVkX1/xzzWmRjHB3LTr/vHf0yLCbbVjKLyoRz7vzFkb79x5ALBn6Ra7eXrA4UwHsYmLIfVtaiQzugNkXlY4N3oKUMOX/aBof1QxxSBlmRAaIsQ2y0HduGs/IhvgMK7yobf6bz6pgDaTBK6+YR1WWpl1fhXAfBvibqX34qI8UlHsP8v9/V5EVfGWUVd7i2uUqBR2eIE8JJrDd9CUddMINZgfEhN5L+WmXRue5gc+QoZVwMdHj9HUsjXMqouupn4bes5uQM53+GSPXIFPC/ScvWn7C6kYkAs5qFjuBnRNFUyuWRqJCJQSG7scVuDyUYQewF8J2YahhV0QPB02u55S57CP846wHSTWPhDSX+w+mBWsoC0eo6/cyVUjoZXZuaTQQnKySL0VIEdKOc0jkTbf2K0X2eOasQKZCHLTgChsDhf3BP6J5Qf1rxa+1Z4iKvB3626ZNXXJkUXYb0VuyoDsLikall1vx7zCm7KAYw1O/538Q8j5vpV1VcUM48gtskO1eI+pmO9CV34PMeNrFT317Dt7xLeFwGqP9kD78k49R/15ynB9t/t7QmYrIYtwz1jgobrkU2wV/NNXEYYeKDDM+d3XsX3+EmIy8334gT28/zomh0bQ8Q1OshQxXmGlubi3P8UGyqsiZ3dhGNenH4qIAGu9sBD3/6zW5PmU2gP/wpKq1dgKvM2uvkoRGDh3V+UrFgoC6JmFwc8AtTGP+vT4JeCtIdvVmeVysDY7b33DdR3Q4AhG5UJtkEHIXARNyc+4Ks5p5tMVpk6RJnGOq+Pt5X1SQVogqXkgbWfVDPU2wwlaS0aHZus9YxxJmIvTx+Ogiesqw6OFD/uxV144eCOGe6pZLqfIfQIyUodwVMlQ9+ZkYT3VysTn3wUHmnUu+v0LevWk0LXFr0nK/h/YTMeUsHG8GfOifoLB+zzVyBSnIKyUR8qeKVkJEBevZ53HleO5aBduvQI9XRYDgHy
- y9OtQJJ9
- sg/DfE/nASnFijKmkAZxOdmN5Mlqzm8BVdGC88lmxVh4oIyXw1JaStpX1oWry4oaM5gmLAZiKv9RjrOYJ4nfeMKjPr1uU6FVg0LJAFvY5Rk8C9u8NA58GOSUyoHBi+T4maw2NzNkmNPWwRh+ffOMFk0rVxAERLzJ1g4iela3diBlX9hoXP7soujwxAAJsz/5CMpYK3VaT5FJhu46BIpSqHlJdALy3RUteo0WFnsKNP+ZfmshXHiM07rxuionzbRkYz/jJHSHXRhxYDkQnE+Rn+ZEWAUxDY6dXVEC1FKrDQdc0RVKqobclqXXQIAJuy5sfZmFMb3jhnuDbidBxknI0reu6RlC5gBkzOn9m7nI7CfsboGpMPk37mgS+riwlYcrCh9zBPxQ+pYebMQAqYJ24bTfyi4btPHzaeJVBH++Nwkcmk2nC+7s8xp4arObZFU23+KyHle5UM00BE0Eb77IlA90mtgYTz0GvKqtabkPrJp84xU1To2Oq4MYMLedS3Nuai8297g5iEd0H4reB5ztww+D3ucKCwc3MhDfetAxmv+yHXNYvwf06yHzaQdB3qSvnEgMS
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 63DD3A0009
+X-Stat-Signature: odeo3y5kdm18wu5t3rqcx14m4hkgfhi6
+X-HE-Tag: 1765977050-118172
+X-HE-Meta: U2FsdGVkX1+/kZiLzel63zvOhuBr+0vE5r5VoZC+dwe11JbkOFzBhcjaLGCpJXyexlfakHwSLq1ypxyk2shklrDJz31DwpuzPmmfB5t7Gig8t7ZOxU48OsjpUAoT5C7BPxpLUsxYcSOfs//8dgEZ5jf9COASSTGpKgUgzL1TYJ5o6Z28gtfsxz5S9Epiuob+V/VzAAYUvyf3jbY1hpKhiTdGIF60+7eMRA6dcdw+Nc96GJ04cenREwjyuGUwWMXsBfygmAOi5gVteKUP+jLA5gxBMoWu0pDjv7ofb4hT9CKsBBNON03qt9Z0MyuJzqmUpOj/5tBnJpCGcohS4lGZcGPtszPdT0thd/Ye5nA+hARoeFRdU+lWwj5sis4Lq5+Y8jkRpn0icGurc3z8WcZLBtS4cykhGT3fcZ8d3RpfiPLYMaliLrLtFS5Rrdc1iDVnaa426vwimCvlplkEy3a1QsMHWw6n2Uge69xgscfL/J+rmmJNYmSpNyO3xtjd+lrYLNCANHPiAcVTlYRkOs+mhHkj5nwypFc+SfXJ9ETeOuC80jneFebUDhSF/n6+0mMUQME6B2vdiJ8Ce/UeKWNVlE64OKeFyUKRPMpFhz9troi95KHGyTn4p6dhzbLLX0PJ2+ATQr0BqZNd0aMgFvrSmu5fxruvrKxV/hFH//4NWhSUj7Bt65IkZnpxN7B9DVAuf7lcc7QkSx88LhfT7nQZfEuNMtC6FqhVuiT6fYJJaln//w8XqUV0Pclk/PXegbBhY/Qa1wIlQlIXfcjkgCXotpP7ZJFtkizRIWqQE3hI3cjTtVYdpCMlFOFwgOWozoAblDlLvygMvFKRuPL0wF3zE3mW5fYcoURIQegiYYpGbUyYaiXAST8ItQHC3/7UvtgfF2XppI/yPLb0H2t1zL1w2aKEbaCPKipwAiPY1eFphLyhL7KuFo6aplwi1JXg+HT8XmFGU2uEG8RMncGdNIg
+ cx7ytxHS
+ dLFkLe5LBjaYgyZhLmWHx+uHMnQKbhHDb5H3zlIWKBto1FulWpvKGBTchViJAEv6ZtGiSPRjHSUFeJ3OwU1wXkN/tYdcROCKvRWW3XvWFlUv/nwmMLU6wqne6ivAVYlRvzt53EhUCF6/xLzV1kIbJNEB5HEpdjurieZTRinpMRPL4rhdgSHFUUrEH2+31ard9orzAAu3szHIy9R8G5gM2oHzSTgunJhwopt8CNa9RH1F2dLDYyk2uhp5ARsV5/O7Jk7OL8ZgvnyqaTIYo4yOfowBExJ/tCWBCUsnhvuYF3+Iq25lRpM2OHBDRHNeHphVkg7P+n2sI4G9Ud/FYf5tzC6gtMayljh/EcQqTWHQ4IHcuMwDm4VINz51olOCHc0xLyI+pUTpm8IJi/6KbP0fAXi0FMtTltzMF1ZEOWpl6x/EHxHxJW21rz1Q61OOyLZ5KN0pLhjRQz9Ua2hJXo1N/BEoGcG7WVbRdI6H0EF1Q4rQuUfZhZaIRDUSLV3nk7G+9czkjNITxcfMk6bWC1cPABuHRR0eTqSaSJJWoY54qrDJi5+JCje4545L/V+G+jDYBON4nRD6aAoN56gH5vxS2DBRSQdrFwB5d2g92OWnYmJyK+L3AUxvVYgUwUs1w2SFi45Yl6CZpyYLx0EmFTLxKaEbUwaQvv77yoDXQVguEMsP0d8duqONzoJM0GbgJjf1GZO2iXKaR18AJ/X/1EMGTSDJlWTz6ABkHift4Ng9QnWZSwZGlY9DuiBHTYi4SlD5es7TFXgrsVElNLo5jFyuNMBk0HZ6aRqvU8pDMaJ1krApBmDaqH6oL3p4Iy1c3aoMir1Wm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,59 +128,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Dec 2025 12:23:58 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+When running the Rust maple tree kunit tests with lockdep, you may
+trigger a warning that looks like this:
 
-> On 12/17/25 12:12, Vlastimil Babka wrote:
-> > On 12/17/25 07:05, Joshua Hahn wrote:
-> >> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> >> moved the error handling (0-handling) of zone_batchsize from its
-> >> callers to inside the function. However, the commit left out the error
-> >> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
-> >> 
-> >> Since in the NOMMU case the reported-to-user batchsize should still be 0,
-> > 
-> > Should it? The value is effectively set to 1 despite what zone_batchsize()
-> > returns, because of that adjustment this patch reinstates. Also does anyone
-> > care, really?
-> > 
-> >> we would only like the error handling to exist in the callsites that
-> >> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
-> >> 
-> >> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
-> >> on NOMMU systems.
-> > 
-> > I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
-> 
-> Ah looks like you considered it too, initially:
-> https://lore.kernel.org/all/20251211225947.822866-1-joshua.hahnjy@gmail.com/
-> 
-> It makes more sense to me than doing effectively two fixups in the MMU case.
+	lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
 
-Hi Vlastimil,
+	other info that might help us debug this:
 
-Thank you for your review as always.
+	rcu_scheduler_active = 2, debug_locks = 1
+	no locks held by kunit_try_catch/344.
 
-Yes, I had also considered returning 1 for the !MMU case, since I think it
-would make it a lot simpler as well (It would also make my original patch
-function as intended).
+	stack backtrace:
+	CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                 N  6.19.0-rc1+ #2 NONE
+	Tainted: [N]=TEST
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+	Call Trace:
+	 <TASK>
+	 dump_stack_lvl+0x71/0x90
+	 lockdep_rcu_suspicious+0x150/0x190
+	 mas_start+0x104/0x150
+	 mas_find+0x179/0x240
+	 _RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10maple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEECsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
+	 rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
+	 ? lock_release+0xeb/0x2a0
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_try_run_case+0x74/0x160
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_generic_run_threadfn_adapter+0x12/0x30
+	 kthread+0x21c/0x230
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork+0x16c/0x270
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork_asm+0x11/0x20
+	 </TASK>
 
-However, I was unsure if changing this user-facing behavior for one line of
-simplification would be worth it. I am not a NOMMU user, so I have very
-little experience here, but I imagine that there is someone out there who
-looks at zone_batchsize() returning 0 for NOMMU and interpreting it as
-"there is no batching" as opposed to "there is batching, and it processes
-1 page at a time" (which, actually isn't even true anyways because of the
-bitshift). Maybe an option is to just make batchsize not visible
-in the NOMMU case in addition to always returning 1 to avoid confusion.
+This is because the destructor of maple tree calls mas_find() without
+taking rcu_read_lock() or the spinlock. Doing that is actually ok in
+this case since the destructor has exclusive access to the entire maple
+tree, but it triggers a lockdep warning. To fix that, take the rcu read
+lock.
 
-Anyways, back to your original question of "does anyone care". . .
+In the future, it's possible that memory reclaim could gain a feature
+where it reallocates entries in maple trees even if no user-code is
+touching it. If that feature is added, then this use of rcu read lock
+would become load-bearing, so I did not make it conditional on lockdep.
 
-I am not sure : -)
+We have to repeatedly take and release rcu because the destructor of T
+might perform operations that sleep.
 
-For me, both solutions work, and in fact I prefer the original solution of
-always reurning 1 for !NOMMU. Maybe some NOMMU users like Daniel and Guenter
-can comment on whether this change really matters?
+Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/564215108
+Fixes: da939ef4c494 ("rust: maple_tree: add MapleTree")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Intended for the same tree as any other maple tree patch. (I believe
+that's Andrew Morton's tree.)
+---
+ rust/kernel/maple_tree.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Thank you again for your review and follow-up. I hope you have a great day!
-Joshua
+diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+index e72eec56bf5772ada09239f47748cd649212d8b0..265d6396a78a17886c8b5a3ebe7ba39ccc354add 100644
+--- a/rust/kernel/maple_tree.rs
++++ b/rust/kernel/maple_tree.rs
+@@ -265,7 +265,16 @@ unsafe fn free_all_entries(self: Pin<&mut Self>) {
+         loop {
+             // This uses the raw accessor because we're destroying pointers without removing them
+             // from the maple tree, which is only valid because this is the destructor.
+-            let ptr = ma_state.mas_find_raw(usize::MAX);
++            //
++            // Take the rcu lock because mas_find_raw() requires that you hold either the spinlock
++            // or the rcu read lock. This is only really required if memory reclaim might
++            // reallocate entries in the tree, as we otherwise have exclusive access. That feature
++            // doesn't exist yet, so for now, taking the rcu lock only serves the purpose of
++            // silencing lockdep.
++            let ptr = {
++                let _rcu = kernel::sync::rcu::Guard::new();
++                ma_state.mas_find_raw(usize::MAX)
++            };
+             if ptr.is_null() {
+                 break;
+             }
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251217-maple-drop-rcu-dfe72fb5f49e
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
 
