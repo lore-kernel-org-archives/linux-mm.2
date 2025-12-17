@@ -4,122 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28BC4D65C5B
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 14:59:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA78BD65C58
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 15:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881246B0088; Wed, 17 Dec 2025 09:59:42 -0500 (EST)
+	id 10A3C6B0088; Wed, 17 Dec 2025 10:06:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82F336B0089; Wed, 17 Dec 2025 09:59:42 -0500 (EST)
+	id 0B7D36B0089; Wed, 17 Dec 2025 10:06:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72DCB6B008A; Wed, 17 Dec 2025 09:59:42 -0500 (EST)
+	id ECEA96B008A; Wed, 17 Dec 2025 10:06:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 61BA46B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:59:42 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA3CC60681
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 14:59:41 +0000 (UTC)
-X-FDA: 84229272162.10.7A5951A
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 22647C0010
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 14:59:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mSbsToTq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765983580; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id D98426B0088
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:06:32 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80F1A60C5A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:06:32 +0000 (UTC)
+X-FDA: 84229289424.05.67DB3AD
+Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9BEC1C0013
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:06:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of 39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765983990; a=rsa-sha256;
 	cv=none;
-	b=ZmujOzg6NqjcyRFH24HFhhae9kjMaI0sL1Vev7sgAJ8VTwCV6yIjHMn3sIZ+nnMBV8k+/s
-	LXgPVb9j4tU5gBZPNyqyWv7A+of7qBdKcS75Q5q6fnfr+ZybFm8/M+fwCvyms/NW55rvl1
-	Hhz9YjjWMqdv+rgMCLm7haG/wagYoTg=
+	b=Gz056kgzhd4BgjuwARQ24y9MlGZdznssmm8/AJbl1pqc165gwJU/oL6NZpnwzAUsNjn1f5
+	HjHcsnX6TUQ/CDeYDuDOeCmwO/M8deAS2WQ9IGyzyDDClz29jc6tFPNEDrKOE4XS0gcNfW
+	TCdldXwxukrlCM57YuopDKIAd9a3pjc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mSbsToTq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of 39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765983580;
+	s=arc-20220608; t=1765983990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=om7fWDlG7JRBAVM8v+UjRYiuB71tqRQ7mO9GKgWPBsw=;
-	b=cVD7G3iK2NtYvfcOGMXkn0WioN7Lorhl3G7lD6h2Ln30VqyfEcoX1Fhc3bP6ZCFPzVOGNk
-	BRDXfiU3UlfcAqs97WjUjDVVyhU7YpjJA/U4L1SWMul6eVoTSuOWCTngsECLmtP9ImTG1+
-	WpP99hxcoZtUHtoGdHbZRDDg38a9sYk=
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64467071f9fso4687967d50.0
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:59:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765983579; x=1766588379; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=om7fWDlG7JRBAVM8v+UjRYiuB71tqRQ7mO9GKgWPBsw=;
-        b=mSbsToTqxrw2ESWAHBG44leAvymFAM2/S2ZhNzfQcZpnUA9tMiOANT+w9fGWHHL3FN
-         82Z/H/yJQZoOazYYVFKBumCaGS0VguYaBZ/uqsr+UJWIdsrVhhCftMTAx/FG9PJJzsNA
-         Sa6GXyKMR/lhzYfrv0q5kJBYz9YPfDOioWga4q3a3CK4CU/3cL23dnXkBtouA4s5XwLy
-         cxnrelTYmjN+ZRCfYLyAu0/j9WLRHQ1JlX6PgjMXYHcA1PayYHJ2WThE8vbyRQwt1cji
-         2Z1G2D6miQ2uU8Y4oA1KAss5KaGPJbQCIFCgQiB7dE2WzTWQiMztFGDohrvIQP51+mNv
-         Megw==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=+LXp+/OiwgJFK4+HBN1KxSKPTjJfUuQ79kirzdSqjQA=;
+	b=H4lHcWbHw5HS57MJAlxYRXTdKqeQf6y85MkRlHB7xEwNfM2o/VOr2klvn9/GuyWtuUj8fX
+	8dGAaGJFyzvtz2BsPXOPLHmn5cPgn5B8N20+UOQ5O6O1UB11ldg0v4eYhPFLsh8WkvzV3l
+	jIk0XiFB8l4jtFv4UJydB6pNfM3VhLE=
+Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7c76977192eso14454460a34.3
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:06:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765983579; x=1766588379;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=om7fWDlG7JRBAVM8v+UjRYiuB71tqRQ7mO9GKgWPBsw=;
-        b=K74zIpFdmpbdpcowOvBbEj9aWvrFJ8IihFxwr1APk/2YbYmq1AP1xE1T39hWl5UKCR
-         sfUbaS8bRR2NETYRC4ta3r3XuTMoqag0768DVZXHBeE6+4wwh4rBzynWKGEJc97qtFx6
-         AFcE+RxWVK+eCB+5guVc1mozueFjt+Vi/FnGRAkAXNRa43EiPaXD2SyRBZsRkopO6PMe
-         Gx+6LmIB/cLLrNXP3z2OyiFCGan0umGTnq8I97ozX7fpwcwWJYOisRLDwFFRI73GIPUB
-         SbQPI1WFWuopX+mpqi9KyXt7AgVABmmj+XBBPr9HznbJpGJmX5nH0jlY3IR5V4ntVDlW
-         Y9Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCX6NMQYdLFH6eNchtZDJtU6YToQjMWR6xWNn4Q9tBVCxib8LiOvNodqp/cuvhmMiA2VIac/4k5TFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzqkFy5eUmGpu+sSvoCyemQd3PvIx7VXp0w0lU3jaH3tlIGK9c0
-	gHhKW4KTlrg1Hs9lMwz8N54Ud6vcwt/RBFl4yaVvNyHCg6IkTb+1zwFn
-X-Gm-Gg: AY/fxX7zor0jVzMNftvUY+DnI06OOYSIwaokNzwRfxTfyWxXkBB6L6f+yanW/FBdaRW
-	+Z5QBqZoFp3hHliMKN198KEKB8y6QjaMUM5iKHuWLqsQYuWhl0j1Q4zIdXtKmObnftaXm3jdoZn
-	/H/o5wjDKE1gSjXQQwOnK1Q7ppM3MFeIFOzmreGcZUCO7tJGPSBVB9k3DqhCDKhp6fsMDinsUIn
-	nSmrahBfE9ZQJDvl4u+Ge7m7qGA789T9vRF0837xg7UmE4KQN779BdQa34GQAFNEYJ9MTgeHajJ
-	Qui7Ig/m41wOMt49BI7KtrZkBSyu9QggVcTX2qEk99vW47rVPaga/cz35bCqKTkwjls4OgrS2SY
-	jj0Pbi0uukQ72vALusOyc3qCC4Zjgh65SY18BvwgZoZKso4xv6/20nBBesaA1JJeaBwYap+0xik
-	CLD0nDw+wJ/AQDbJ71L+A3nw==
-X-Google-Smtp-Source: AGHT+IFlW+GTBKHXgTr0MLAOSDznbq0ZzlTE4iKHk+uu4fdhX3OuHaBTkZENLnMVgzyJRtEPxq44XA==
-X-Received: by 2002:a53:dd09:0:b0:63f:a79a:7690 with SMTP id 956f58d0204a3-645555eb8demr10489093d50.39.1765983579022;
-        Wed, 17 Dec 2025 06:59:39 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477db6476sm9075272d50.20.2025.12.17.06.59.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 06:59:38 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Daniel Palmer <daniel@0x0f.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to zone_set_pageset_high_and_batch
-Date: Wed, 17 Dec 2025 06:59:26 -0800
-Message-ID: <20251217145936.4094990-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <17c45b15-326d-4b4a-b3f3-745002b81d5f@suse.cz>
-References: 
+        d=1e100.net; s=20230601; t=1765983989; x=1766588789;
+        h=content-transfer-encoding:to:from:subject:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+LXp+/OiwgJFK4+HBN1KxSKPTjJfUuQ79kirzdSqjQA=;
+        b=KJamHvLQCWCvxJkL3Y/k9VLnPKos5v9CPvkzg9iMPpbDP9mIL1TricNC4qbFF9BZGP
+         aFfagWaKdxlvbkHGgVD/HidAohHfeOBYE+dvQebda9Lu2tAZtcIeDfs9wF5AiDVF4ZQ9
+         dy9Wynsh851vQqI9QzsgOhFRE6ojGJuO2rjEKQIkYc5EQoP/5iAHRN2juS1oN/jKrqOG
+         JiYDPAX1jY97xG4hnxcza/D+4ljVIR9BUDvgvDxrcI3TkvaJRyZzuC5smH5QmYZOny5b
+         WDb+mvVBzUe7DdeKFZZm7N+FQ/POR9AqHSNwi+GO+odPHQjK9ei7iPefJS1w6zT7dVzo
+         ezsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNykTFOQ0xxpQ5/hC1oFQSgYzT7rq3tD38Ex7/oAHS2ayXZLK7UEIQuEWjA1m2gS0aditXDz0Kgg==@kvack.org
+X-Gm-Message-State: AOJu0YwcN0aZkiAVBMAGbrWSqQnPg9LeSij2Gz3IIoErAnvCfJk+0f5R
+	IIKahHHAtn3xiFS3fB7m2aNqh5gvbwKJ4oTpHZ/iwBXXPRYr2d0LtXqVZUw/VehvzGe8pisEFj2
+	+RNt6W9BQ6MdkJqf/3QKRGvsz27cOmKdxoT0pV6txdHRBJ3/w+GeN9hmA208=
+X-Google-Smtp-Source: AGHT+IEepE1vOkZRfZw65Yq1mLKX8fjSXWFd+RCC7vexsDa9QIOBmOOjGkoOx7rg/oWkXOnGdoUhwKHlpGYWuc7/8UmLqU7NJZSW
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22647C0010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8kubdnda6xdkppfnkfmametuxqrojpfa
+X-Received: by 2002:a05:6820:4df7:b0:659:9a49:8f11 with SMTP id
+ 006d021491bc7-65b45151581mr7967725eaf.34.1765983989465; Wed, 17 Dec 2025
+ 07:06:29 -0800 (PST)
+Date: Wed, 17 Dec 2025 07:06:29 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6942c6f5.a70a0220.207337.0063.GAE@google.com>
+Subject: [syzbot] [xfs] general protection fault in workingset_refault (3)
+From: syzbot <syzbot+ccf9f05f06b4b951f3cd@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, cem@kernel.org, 
+	david@kernel.org, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	mhocko@kernel.org, shakeel.butt@linux.dev, syzkaller-bugs@googlegroups.com, 
+	weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9BEC1C0013
+X-Stat-Signature: sem3qfr4zu6qeb4rxuc4sae9d6ue589n
 X-Rspam-User: 
-X-HE-Tag: 1765983579-779832
-X-HE-Meta: U2FsdGVkX18jUbH3xbqoSv9ttgbyzdFUngpAFipkqXfY0Q+96R26t2YdAZc4DszwHH3NtI3D0JzAKnTc3XtDw0fVOSXUE7iB6zvNsi6I8+fLtkFYsR3rNEO0sOnk9y7wOGWfIErryQnosj/PGO5SGW0IsSzFNA181vk3KgaRpN6CuiXXlTY/0yoAoc07gcYOU8CQxoKBPnRrj1L+VDk2I3DQ/8asqB737aXzhV2N2Cvx+VSbPErKx6OqZVfpJN5S4ME+JrwPjDZ7NWlWa3vL38iOpY8Wnx8/e3e0I4Lhdy8CPzlEVVqBXxikQWyc9DedH3k0G9//AfnE5fiI/f0sKA0VFa8DnvZB6xjH6FKBUyQ4QabDLm1acbKVDltjfoBRfun8RLauSDvOsgYWQlzZ3m5vPspxbksbX/oD+THWtAptNxJwKfcn6KJWj5/2/11L/iavsJwYjVZT3lYdh/i/n60QjaDq/VDg03ClhWY4giR1/oRN/tJ3QEX2XZd0EZsmmawBL12V0+LiGWbIpZto1licjDSbtBQQuS7YAb/jfS5oNpRfVLaoKq8ltb/60updlEqevHLoUsaHLUQKyzOmuhgjB2VgP6Y0lE9Gv2F9G0VHDHTgEtZ4UV9VWNAIAdqATs5goKOnXeBuAUJALd/PzYzDwpVKUgDOz39VxeiC6a9CvDeIjMJiiBBfLVBk9LJ0WPsSwKNUl+Nzmz5ZxIy2+ccQmo7rOyFnSUXhZqasrvwOCfVbbpWj9jsBMse9vTv7jaGv4Nn1eIN0GYTAuuinB+oYIJPowg5EViZqqKFemevKUa355r5iifuNwzVnA6RXjxDvMrASUtlSgseWl4v5ejrGIplhFqGSPCM+ikA/NMQLCw0Fsjm/V8+Kl+dO0tx5O4GCbMz8A8mRsoXi7fyxGIS880otlkDbRrXrqOp4FavI8ePK61n8kKOEqvS9SYhnu6qoiMN0OPYN8hIwgA+
- bpM5ZxRG
- jjBH61Py0luDj2y4JY5ePrkWQQsSQ/c4VfMTgl5ePHL2dT3i5wd4vqDUbyUE1SPAZDX+4y+XwYxa8f0FG8GyawQexEy6s77bqD6xQr/e1SBjeaM6H3tbb98UMDI+fTD0PqGvEpJUKq1Ndv7lljWM0ghNfuD1WWqUNRJNeuBv1E/8IV99K2hEd9L5PjaXMp/Ywsfo3yY6qlcZaIx2WQwhNjX9j5wcaU6hb3kzoDbwW9VH5KTgX+CJAC0NdGbQEPrsLFmnND9Hl8Isj/As8OgtakIt2/Rr6/4toqYx8EV/NksjGZLfEhfZfiCQ3bsnIWufxAZAsgEu0k1/dEo1PEDIO8TWMyiOofyWKaHbKlEHHxUBqRmAmr5thmcByFI8GnrSkEwpgX3gy9WAlu45GR8ZrmG0ZscfnXKb9q9VP3U5FUfpG3OT6COXEhDihBj8cD0TaxhfH/tWz0dTWlWtOjGkjH2C3Dh0Da5iGUPhwSefm7PcE/ug+wDN3j/5+7J5ihgdVquB5sojJxVXOtfVaZ/4clGdz5PfZ8UDEDVSQcILwnQ9qqcxy3uhFxqDcZLQjODHVJ4YK
+X-HE-Tag: 1765983990-745917
+X-HE-Meta: U2FsdGVkX1/t4JrAUh2DebnJgC/3UN/c2PY1PwDsOsIcVi0uout3CdVo0XWGW6y3XUGs/eINrG+biaz0ti5KojCfNpEYF58WlyQjC7Tw2GtidOElcNYL1P6YodOWEa9kh/IjSUWhYVPaNO8aOApbeiUggRWsOYEiraCgibGsqV1/sEjAEF5UvN3Sa7B5mf6DPoM8ivo/tltHNm16bHFMWdK8HWezdBYnbYRz5Tb+v/cJdilAjC7thOECn6t0dm0l+th+Vwy+9O4ushuvEe287kIC57AmZSiKJMulBPibCou1X+lROOt//R3js9BWfF5k05emLTMPlytcVFU+1qCtulWhscbjAMHEa8wgD7Vlq60xS80yqZwBGO8TbO3cHwCOYiXK7oofKbTZm3EODip0y73wuCmb3niArdie9kj/EzyEtPzHNL4AxZgsx7L1qJ3SqS/bqq9NBwoCfJlF1kZptjMp+OFeMiqMfz+9cbff5pr7m4+MtzINmbjShqsTwfMTcGI3bQqxpEkgXDVQsdzjJj7t3BJwNErr0KqLH31Miw7iGgPnsXBmPJITZoKVnYyToEp5h2X6ZC0BD1fYxRyUQDOaxE5z+n2od93+HFTIEz+m6EgK5U62QMKbZXH/3pn3n4apAxsMiPYdL39uzuVRTCziTHkRqrBTMnRzQ2PGI9SsWiV+AGjHV4hb/Udxin5JJbuG+y9niAmzzAsJHuUuzGYAe0FcntG060REJR2kLS0a60F7o9Ttl3teyTS9ZCowHiNWkj7VYpLW7uuqoI9QJbLBTzmrbtREhCXGlHpBk0sylIyLQEavGrJvqZOaI3kQapQyehpWURWutQ91W4D7eby/SUy29id+wMpGAB2EoGW3oS2ob9Le+K5/ynATBa4Lfxp5TliyytHy8mgXZ3ZEJbo2wIKBL35lzGJwlfLHE4EOz4/jVuNLmnWol/NXPALWZPCbyq1cfMOd7JBMxlz
+ +iiX9TNE
+ MoPRN67r/CHQGGOZpUe/etg2N9qHFv7LrvFj9u2fhWUB5Vh7aDFgkS+t1x/Hiz0e8alYR62stjjEZqGLhgrDakyz71UBbZ6+RS7/PkIwsUrSjICAZ49c8CuCshXPejAaB518YrpL3i1J871z01HOnK2jtfgZSiAIGhYuXByGzIfz7/FHEFio3gnxz1OTg9vN1ACdtAziTGepCmJkkgbIoO0zM3g6aJMAPOTYcH0Db6iORZEOyq9NEB3RLsgvVPj1+/5VB1rgn7H7KMhkCknb6PSx0+2S79JJ8RnHEME32H/SnP5QwHe7wXvF7Pe2HgGm+eAZuPa0hTcAUfeaqIduE8YKIfGrC5ezjuj7j12IIU9GoQTWrLIZcTQsX/JY229SazAEKi43yVcPropxKG3dax/le4WgFg5EYChbJry5RafC29TXiG5OWHPPna6gmdSsKQhytwPfrziIQ113oWOdFEHl4V5T1rFZIv8Lhmma1ucmU5EIOG43UhDYmf3G2CdqlNWuI/48+7Pm2si4Ga77XyzItx9S6mpIwp0tD85Nd9sHoqlvTbMfjLk0QdmerD48SNPQIafCszQWnYLi8jGBcj/D66t/YpoNSPgDEoHTY0nh2bjk5WjipJlMyWjv/nanSh5yvfcaym9FV3FWgwI7Uun6QnveLnA2rI2D4KUw1XnqeAyzRiA9KTO5BxoJGiF8fMTZmeNQIAN6UhKIcs2t6vwgD/C38YmjuU0gZMGK4oFkMkC6r0S8Uh7uVBtbw2Twos/gSOyXiUALpQ5tkwv9UJYTmzUGahPMwByKOUUCgZ8yvv9+ooH0r05z9FC+ae1eA4tz38iaBg1Phk0MTlkpmDPIWEVrSbIV/UHrHv6oe0WGliOdynzwC1QBXeV9jbbkqX4566dkkadgAa80JDTl3twzUrUL3ss+io82XgEBOOP/TfQTGaH++fGfqVa0mXZx0xXO5ksHsAzobSqr/1N3BcJIn4YbY
+ vmk2ks8m
+ McxFbFVqwu65pq5vP55kCa7g8zhTbPJtcBCz/Gu73PQYugcQHJeavKCNw6IO9s9WE3p/uq6VtjdW9xdMeWc3kpVgKx7MuSpQJzp+/YY2G8fMAsPBQ5bJ82VfwLYm/CimFx1kFJweS1D9flKF/Fft+eONPlfTjOwtTscNyqMSoA33GvBYgVkj/jNByZumcSvmL65czqJsSlFAuOn7NugWrdbU28vJKuM47/xup032Nd8jx1k5Pvp90Sq9ggpealCwLkZfGZ9p6VoRheIwoG/zV/PVLXZwz3vR7H7iSbby62K8nisrmSQ6QPIsniNyFp/93c9A7IpvBcFQUMTN+FvQXwmyxOsmPh8XbAk+NJwzubIDnr0AYJM4vOuY6RkECMD2dGDGUngZZHFImFBHGtC+9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,71 +102,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Dec 2025 14:19:47 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+Hello,
 
-> On 12/17/25 14:02, Joshua Hahn wrote:
-> > On Wed, 17 Dec 2025 12:23:58 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
-> > 
-> >> On 12/17/25 12:12, Vlastimil Babka wrote:
-> >> > On 12/17/25 07:05, Joshua Hahn wrote:
-> >> >> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> >> >> moved the error handling (0-handling) of zone_batchsize from its
-> >> >> callers to inside the function. However, the commit left out the error
-> >> >> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
-> >> >> 
-> >> >> Since in the NOMMU case the reported-to-user batchsize should still be 0,
-> >> > 
-> >> > Should it? The value is effectively set to 1 despite what zone_batchsize()
-> >> > returns, because of that adjustment this patch reinstates. Also does anyone
-> >> > care, really?
-> >> > 
-> >> >> we would only like the error handling to exist in the callsites that
-> >> >> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
-> >> >> 
-> >> >> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
-> >> >> on NOMMU systems.
-> >> > 
-> >> > I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
-> >> 
-> >> Ah looks like you considered it too, initially:
-> >> https://lore.kernel.org/all/20251211225947.822866-1-joshua.hahnjy@gmail.com/
-> >> 
-> >> It makes more sense to me than doing effectively two fixups in the MMU case.
-> > 
-> > Hi Vlastimil,
-> > 
-> > Thank you for your review as always.
-> > 
-> > Yes, I had also considered returning 1 for the !MMU case, since I think it
-> > would make it a lot simpler as well (It would also make my original patch
-> > function as intended).
-> > 
-> > However, I was unsure if changing this user-facing behavior for one line of
-> > simplification would be worth it. I am not a NOMMU user, so I have very
-> > little experience here, but I imagine that there is someone out there who
-> > looks at zone_batchsize() returning 0 for NOMMU and interpreting it as
-> > "there is no batching" as opposed to "there is batching, and it processes
-> > 1 page at a time" (which, actually isn't even true anyways because of the
-> > bitshift). Maybe an option is to just make batchsize not visible
-> > in the NOMMU case in addition to always returning 1 to avoid confusion.
-> > 
-> > Anyways, back to your original question of "does anyone care". . .
-> > 
-> > I am not sure : -)
-> 
-> It's a pr_debug(), it's not even being printed by default, nothing can
-> possibly break by changing 0 to 1 there. So I really wouldn't overthink this...
-> 
-> > For me, both solutions work, and in fact I prefer the original solution of
-> > always reurning 1 for !NOMMU. Maybe some NOMMU users like Daniel and Guenter
-> > can comment on whether this change really matters?
-> 
-> I would be surprised if they were aware of that pr_debug() in the first place :)
+syzbot found the following issue on:
 
-You are right : -) I do think I was overthinking it.
-Happy to send a v2 that just returns 1 for NOMMU. I'll wait for a day or so
-to see if anyone has any strong objections to this.
+HEAD commit:    ea1013c15392 Merge tag 'bpf-fixes' of git://git.kernel.org.=
+.
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D16a839b4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D513255d80ab78f2=
+b
+dashboard link: https://syzkaller.appspot.com/bug?extid=3Dccf9f05f06b4b951f=
+3cd
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-=
+1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-Thank you again! Have a great day!
-Joshua
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d90=
+0f083ada3/non_bootable_disk-ea1013c1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ea4d0b50128d/vmlinux-=
+ea1013c1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f2e7f1524121/bzI=
+mage-ea1013c1.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit=
+:
+Reported-by: syzbot+ccf9f05f06b4b951f3cd@syzkaller.appspotmail.com
+
+Zero length message leads to an empty skb
+loop0: detected capacity change from 0 to 32768
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+WARNING: The mand mount option has been deprecated and
+         and is ignored by this kernel. Remove the mand
+         option from the mount to silence this warning.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+xfs: Unknown parameter '=EF=BF=BD=04'
+Oops: general protection fault, probably for non-canonical address 0xdffffc=
+00000009c0: 0000 [#1] SMP KASAN NOPTI
+KASAN: probably user-memory-access in range [0x0000000000004e00-0x000000000=
+0004e07]
+CPU: 0 UID: 0 PID: 5343 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full=
+)=20
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16=
+.3-2~bpo12+1 04/01/2014
+RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
+RIP: 0010:lru_gen_test_recent mm/workingset.c:275 [inline]
+RIP: 0010:lru_gen_refault mm/workingset.c:296 [inline]
+RIP: 0010:workingset_refault+0x3f8/0x1170 mm/workingset.c:546
+Code: 74 0c 48 c7 c7 e0 6a a2 8f e8 04 05 1d 00 4c 8b 35 3d c7 95 0d 49 81 =
+c6 78 0c 00 00 4d 8d bd 00 4e 00 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 8=
+4 c0 0f 85 ce 05 00 00 49 63 07 4d 8d 34 c6 4c 89
+RSP: 0018:ffffc9000a7b7880 EFLAGS: 00010206
+RAX: 00000000000009c0 RBX: 0000000000000383 RCX: 0000000000100000
+RDX: ffffc900208d2000 RSI: 0000000000000472 RDI: 0000000000000473
+RBP: ffffc9000a7b7998 R08: ffff88801f7524c0 R09: 0000000000000002
+R10: 0000000000000406 R11: 0000000000000002 R12: dffffc0000000000
+R13: 0000000000000000 R14: ffff88801baf8c78 R15: 0000000000004e00
+FS:  00007fbc75e8f6c0(0000) GS:ffff88808d22a000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000040 CR3: 000000001234e000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ filemap_add_folio+0x33f/0x540 mm/filemap.c:981
+ do_read_cache_folio+0x32e/0x590 mm/filemap.c:4063
+ freader_get_folio+0x3c7/0x830 lib/buildid.c:58
+ freader_fetch+0xa3/0x750 lib/buildid.c:101
+ __build_id_parse+0x133/0x7d0 lib/buildid.c:289
+ do_procmap_query fs/proc/task_mmu.c:733 [inline]
+ procfs_procmap_ioctl+0x76f/0xce0 fs/proc/task_mmu.c:813
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbc74f8f7c9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 =
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
+f 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fbc75e8f038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fbc751e5fa0 RCX: 00007fbc74f8f7c9
+RDX: 0000200000000180 RSI: 00000000c0686611 RDI: 000000000000000d
+RBP: 00007fbc75013f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fbc751e6038 R14: 00007fbc751e5fa0 R15: 00007fff29f355e8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
+RIP: 0010:lru_gen_test_recent mm/workingset.c:275 [inline]
+RIP: 0010:lru_gen_refault mm/workingset.c:296 [inline]
+RIP: 0010:workingset_refault+0x3f8/0x1170 mm/workingset.c:546
+Code: 74 0c 48 c7 c7 e0 6a a2 8f e8 04 05 1d 00 4c 8b 35 3d c7 95 0d 49 81 =
+c6 78 0c 00 00 4d 8d bd 00 4e 00 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 8=
+4 c0 0f 85 ce 05 00 00 49 63 07 4d 8d 34 c6 4c 89
+RSP: 0018:ffffc9000a7b7880 EFLAGS: 00010206
+RAX: 00000000000009c0 RBX: 0000000000000383 RCX: 0000000000100000
+RDX: ffffc900208d2000 RSI: 0000000000000472 RDI: 0000000000000473
+RBP: ffffc9000a7b7998 R08: ffff88801f7524c0 R09: 0000000000000002
+R10: 0000000000000406 R11: 0000000000000002 R12: dffffc0000000000
+R13: 0000000000000000 R14: ffff88801baf8c78 R15: 0000000000004e00
+FS:  00007fbc75e8f6c0(0000) GS:ffff88808d22a000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9f4cc08120 CR3: 000000001234e000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess):
+   0:	74 0c                	je     0xe
+   2:	48 c7 c7 e0 6a a2 8f 	mov    $0xffffffff8fa26ae0,%rdi
+   9:	e8 04 05 1d 00       	call   0x1d0512
+   e:	4c 8b 35 3d c7 95 0d 	mov    0xd95c73d(%rip),%r14        # 0xd95c752
+  15:	49 81 c6 78 0c 00 00 	add    $0xc78,%r14
+  1c:	4d 8d bd 00 4e 00 00 	lea    0x4e00(%r13),%r15
+  23:	4c 89 f8             	mov    %r15,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 0f b6 04 20       	movzbl (%rax,%r12,1),%eax <-- trapping instruct=
+ion
+  2f:	84 c0                	test   %al,%al
+  31:	0f 85 ce 05 00 00    	jne    0x605
+  37:	49 63 07             	movslq (%r15),%rax
+  3a:	4d 8d 34 c6          	lea    (%r14,%rax,8),%r14
+  3e:	4c                   	rex.WR
+  3f:	89                   	.byte 0x89
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
