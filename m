@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15245D65521
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D998D65529
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677E16B0005; Wed, 17 Dec 2025 04:34:27 -0500 (EST)
+	id C60D36B0005; Wed, 17 Dec 2025 04:46:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FB6D6B0089; Wed, 17 Dec 2025 04:34:27 -0500 (EST)
+	id C42376B0089; Wed, 17 Dec 2025 04:46:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9B86B008A; Wed, 17 Dec 2025 04:34:27 -0500 (EST)
+	id B410F6B008A; Wed, 17 Dec 2025 04:46:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 38DFD6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:34:27 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D815EBBEAF
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:34:26 +0000 (UTC)
-X-FDA: 84228452532.30.E13B810
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D1A121A0018
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:34:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A1C626B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:46:57 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5502ABBAE2
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:46:57 +0000 (UTC)
+X-FDA: 84228484074.25.AA67108
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 907ED40004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:46:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MRO4qPIx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765964816; a=rsa-sha256;
+	cv=none;
+	b=VLMQ5R2t4RzInuqqoUUbWADnwHaPZx1oqaCZAiSvv3ZPqhTr1ZkY1sZ4yrdJgHye23aJU8
+	A+znbU03vyXNLMAhQtaN1Lu6PPLxmz9eXuqX1/kq0nzMpnBYRLApI41JdZpZWSwOQvIypW
+	avDUBjvqGTWQFcCNkI6bT7QVuvxr8Rs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MRO4qPIx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765964065;
+	s=arc-20220608; t=1765964815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lpa2rhDPjPOei7xhJfHDGmklb1GOZ+SO0ChmZ0J+oe4=;
-	b=oUVuvd6EzlgevZrwv/XYk/rIOm7kC+Vnn6YPwHBviRNu24g17hh1Fh1dA80L8uxB77bTmx
-	d1e32IcQelgs82REfVgyhcreAz7DOF3SGXuvrvZB2UIzw/o4hw45hrdooOdtLZ+Atv2Msr
-	HZ5I4Bk6JIofNC+zRDxpE7gZmxvI28M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765964065; a=rsa-sha256;
-	cv=none;
-	b=NQMK3JsA8ZUce+jHhGJyYm+9taSZYPHpN9dPkw3eA3JWU/i+gK6xgdbXRdn0rtmGRgFDSM
-	VfSDZTjd+w6D1qXb7/stUh4j1QcGfCczwpG11RtEvern4SVV8y6ReDwyLXDU5lNojS1jrq
-	cgcNVG23rRGAGfWgoTKt/B6+wsyfxQQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9305914BF;
-	Wed, 17 Dec 2025 01:34:16 -0800 (PST)
-Received: from [10.57.91.77] (unknown [10.57.91.77])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 894773F73B;
-	Wed, 17 Dec 2025 01:34:17 -0800 (PST)
-Message-ID: <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
-Date: Wed, 17 Dec 2025 09:34:15 +0000
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oN9R7byRGmHEs6T0OtpuwOuRpbJv46Zq9CpZBf5+XJg=;
+	b=sfaFsrYvhHexG0rrFMHhs3JtFtu6iYDB5MRHLbNxTR/G8NT5qN/M/Xk25m2I4HXv5Oh5RE
+	AftvfDCu+J6Gn6dWZcx1LnQiX0RSEp1fWD15oFB+pq/hpYaZcE9TckpM+f/xvzjy9CRz8O
+	TCNHwhJT/pnbhJFL/9IDsWlAB/O1oIw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765964813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oN9R7byRGmHEs6T0OtpuwOuRpbJv46Zq9CpZBf5+XJg=;
+	b=MRO4qPIxxsVdDqwXzC7u9PLqRjNXx7wnrDSDf1lYyiYd50PIXjJACLh+SJDhboDde2AFBp
+	xudEn7lhZost3Ms/RAgSJ4rwmF9QHLUnd5iBfmp1YPdZeHPAwkC3Dg4lXkpK8Qt3kXk60G
+	KOm9TW1XYyMer/EiQIPn82zf46FXx9c=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	dev.jain@arm.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ioworker0@gmail.com,
+	linmag7@gmail.com
+Cc: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 0/7] enable PT_RECLAIM on all 64-bit architectures
+Date: Wed, 17 Dec 2025 17:45:41 +0800
+Message-ID: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
-Content-Language: en-GB
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, catalin.marinas@arm.com,
- will@kernel.org, kevin.brodsky@arm.com, dev.jain@arm.com,
- yang@os.amperecomputing.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
- <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
- <aUGOPd7gNRf1xHEc@e129823.arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aUGOPd7gNRf1xHEc@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: g3wkhp1z3cyuf319buqbaqr16wst3fo6
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 907ED40004
+X-Stat-Signature: pxqmwnm1tzfsu4xep3th6txxdpuzkhyh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D1A121A0018
-X-HE-Tag: 1765964064-476546
-X-HE-Meta: U2FsdGVkX1/dDu5LDKI9xzaaHqUSMaOyCyu0HRT3qeVQ7/G2AzcxGlbtRrgeSULwcwv3pyaeMac24OSgUf15RW27cHYIXO9AwBsw4BQoQBlLSNuyx+iUMDExCZAHsc9FRsUtm427kHB7QKnkSL4zTrYwVamWt19EXVlrIq53odbAceKRYTUZ3xHzv3uZBzL3Mi2lJDJfYIRnLeR5dMTyAz8ZwbDn2LnX26QRzMBi5q38ro7uaTGEwGCZQWhQCyHj3EE7DR89c1ZQHXaqbB7bF0jIuqXyqgysCoLZWIgAVBkbT9IsckoMlaSi222mGf3Iv2nBVA/VnIQqAzOYR6giSgJDGw+jbujLkHFJLSRWMPnwGZ/wlcgpms1fNt1ceEdLQBWBKTxmRIVLDJptuTIY7eUenZh72+riAfZhEpTLsaQV6BPd0WWD3b2k/s495svIRSoRXBQN2hD+13ieHhNiNzsPHqweUxQaXCE8757nNcAkUdXTFt/lpGxTXnO777qliAE4XTp9ZCzfEQ75LoiJnf1t0yuvLznM0nIlDgZa6w/x75rEveG32+Cjmud02pA/Ic6rQR9xZLLpND8Hw3R9Vf8D/Du3widEpppW4KwVDbq9XiciHGH7l0HHY7rymN7dqRY+iB5dj2Y3CvrCKCDwhf7DYavyNuIIZqxPGbZXhmlLyIzK00fleUUDjAZic4kRcwidwalBQYevLfGtJ/3m6czQyIq/SWUJ46BeZV/p96QPbmtAcbF0JUhOBui6xpz35iBjnvRCGrtSdM5wfFCyhljhYXq7Cc8TJ8Ajhvc2SeucUwla26tOHYSo5hDGBtPBFaaF9sEZKrzFIasf/SbQF8Dtjy5FVsNHhIhoVEugwZysKI2I8FDjLpMQZkLfJcIewoWpwYaQQogfS8C1xQF9ksIfS3RV1Sz+tnyO/qevkXrWeLDtiuSwIMFy0jHu1IXVT+CocP6g0rg/2hCvbRH
- 8a+iKK0R
- yf3swzBDDOzhTABY/rSgRimE9XptbaNL4sQ50V+Hgi9BVgqTS54Kno8BEikLMihhs6OdCrRSn8ZG+LSnAXs3v/ToR7NH/SQ0ViY/JDqK0HSQN2l657+/wZhF1Gn9XWu6vPl2hK4/At+UrshARp4NNq35SBA8ELQrfiYlk694acgb0KhR9+4yVo1EscyIQo/nTPzzGSUHbtlqLh9F7GxrK8tD7MvmK+rzdSn2+qyeRGOun+olCi9pau5TTOulF707NPyd9Vt0eUig4GsJtDBxLJTgKjxEuXSvMFVfi/JW/ER+oLfuk80FeX7V4ceDfKYl2aq19hm4V8sMb+i9YxKlFdX8HYSk428ZnNL/NQolwJkP9zu4vz1fCGX3INQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765964815-149236
+X-HE-Meta: U2FsdGVkX18OxwRmL15QscZfi3u3BZg3QkO3ybd+9UMqyO3D2/LXglZBO4GudHdbeCRjSj3Bysj4sbwSg33ouOsgFLnYRZUPvVqNi7eDN5gww4JVBWQWVamoNgWToW5MO2aZrvwIK1JuvOtGabnDB+XGmqJ4EIS4wLjGMJvdH+oBGaSfS+57WDFz5uft54WNtVzCp+KvxoaUjDIeBEWPgBvnpSOLPv3B90tgCIbb0gK3dqI9v0JdOeO9DeEs+CVUSgaQZD/K0gwjtGbuxCX+TGuUF6A2XK8T0WVGnZSnP0hPRV50wiOj0Rz2iPlv0Qoi8me1mxkETLv8qd4rPVRo8UDn2HVU+LcpN1x5jbfWpUYVc51URcxxrkn5U8hC2ho39VhomRMeOPxMND9MWZ1B4PSSRuQjEWJf+AkbrebYhBznIuojuOJNA3Bhb10vUaQ7SIhJNJRVb8CYiB0PQ1vvC4OyxtzpMFRT3fUz8l6mklHXYxJwOO43o4V8QnFRC5PnGBkwMYO7qmtwd5o4zsx9Kiz+cFJbm83tXAMtmR9jnZB1ulGgM1xGkQ5lBqU2cjO8euVF8tpGK7TWX0+pY1ozSeXlCJWHi1yT9TbScv6Wvtu3o8YEmgZKKIMFTpN3TK4iPuWIf4aEU09Tq8YASzhrvFKrU3rJWqm4dkmal6H6xsrHr2mqV+wA3YSdPRwhGH5AbLN3qrYxBaulH+8JcxAugpTb94EUHNs9bJzAiXaiKIgHESGsa1iyf8YikrS3GZq8Kxv97fUbNhechosfd4Bpung/mzv/l8rSJRDi4k0h8MHNdbiXxrRgER55ixHs7X1TS9d1AnwTQAsRQPVHLuC4iC8G6CDPDZaOjs+w2CDdy/TjBIEwXktFCClv/QXcvYHrRDwM1XVvWpuMNchiskqB+xNJXjl57RIuLCTHKe2cNODdAjZoia6FfN2c0IdvtXl3M/Qpf77/uSHxXe/9syl
+ LGVkA73/
+ rns8OMGd16TC+Vdy+q4/CW1dudtA7qxJ/eHYCJ/jXPHzmsnhwKjUKjtyb0A5GkflFWIh3x8MfgvTkIjTUKeg5/rpz1lQxDYQm19VsskH/evzisqBdky0waJ4VMxq1rIRLHidwXGcUBP68BScn6mblJ6SHyRpVjlBe8CmlzDelwC9q51qwTaKBrMTA347PUuiqkyv/SfEsXHt2xQkRiV2oJw6iuvfO3GZUQOjdTE6oNJZaGJQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,107 +99,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16/12/2025 16:52, Yeoreum Yun wrote:
-> Hi Ryan,
-> 
->> On 12/12/2025 16:18, Yeoreum Yun wrote:
->>> Some architectures invoke pagetable_alloc() or __get_free_pages()
->>> with preemption disabled.
->>> For example, in arm64, linear_map_split_to_ptes() calls pagetable_alloc()
->>> while spliting block entry to ptes and __kpti_install_ng_mappings()
->>> calls __get_free_pages() to create kpti pagetable.
->>>
->>> Under PREEMPT_RT, calling pagetable_alloc() with
->>> preemption disabled is not allowed, because it may acquire
->>> a spin lock that becomes sleepable on RT, potentially
->>> causing a sleep during page allocation.
->>>
->>> Since above two functions is called as callback of stop_machine()
->>> where its callback is called in preemption disabled,
->>> They could make a potential problem. (sleeping in preemption disabled).
->>>
->>> To address this, introduce pagetable_alloc_nolock() API.
->>
->> I don't really understand what the problem is that you're trying to fix. As I
->> see it, there are 2 call sites in arm64 arch code that are calling into the page
->> allocator from stop_machine() - one via via pagetable_alloc() and another via
->> __get_free_pages(). But both of those calls are passing in GFP_ATOMIC. It was my
->> understanding that the page allocator would ensure it never sleeps when
->> GFP_ATOMIC is passed in, (even for PREEMPT_RT)?
-> 
-> Although GFP_ATOMIC is specify, it only affects of "water mark" of the
-> page with __GFP_HIGH. and to get a page, it must grab the lock --
-> zone->lock or pcp_lock in the rmqueue().
-> 
-> This zone->lock and pcp_lock is spin_lock and it's a sleepable in
-> PREEMPT_RT that's why the memory allocation/free using general API
-> except nolock() version couldn't be called since
-> if "contention" happens they'll sleep while waiting to get the lock.
-> 
-> The reason why "nolock()" can use, it always uses "trylock" with
-> ALLOC_TRYLOCK flags. otherwise GFP_ATOMIC also can be sleepable in
-> PREEMPT_RT.
-> 
->>
->> What is the actual symptom you are seeing?
-> 
-> Since the place where called while smp_cpus_done() and there seems no
-> contention, there seems no problem. However as I mention in another
-> thread
-> (https://lore.kernel.org/all/aT%2FdrjN1BkvyAGoi@e129823.arm.com/),
-> This gives a the false impression --
-> GFP_ATOMIC are “safe to use in preemption disabled”
-> even though they are not in PREEMPT_RT case, I've changed it.
-> 
->>
->> If the page allocator is somehow ignoring the GFP_ATOMIC request for PREEMPT_RT,
->> then isn't that a bug in the page allocator? I'm not sure why you would change
->> the callsites? Can't you just change the page allocator based on GFP_ATOMIC?
-> 
-> It doesn't ignore the GFP_ATOMIC feature:
->   - __GFP_HIGH: use water mark till min reserved
->   - __GFP_KSWAPD_RECLAIM: wake up kswapd if reclaim required.
-> 
-> But, it's a restriction -- "page allocation / free" API cannot be called
-> in preempt-disabled context at PREEMPT_RT.
-> 
-> That's why I think it's wrong usage not a page allocator bug.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-I've taken a look at this and I agree with your analysis. Thanks for explaining.
+Changes in v3:
+ - modify the commit message in [PATCH v3 1/7] (suggested by David Hildenbrand)
+ - make PT_RECLAIM depends on MMU_GATHER_RCU_TABLE_FREE instead of 64BIT
+ - collect Acked-by
+ - rebase onto the next-20251217
 
-Looking at other stop_machine() callbacks, there are some that call printk() and
-I would assume that spinlocks could be taken there which may present the same
-kind of issue or PREEMPT_RT? (I'm guessing). I don't see any others that attempt
-to allocate memory though.
+Changelog in v2:
+ - fix compilation errors (reported by Magnus Lindholm and kernel test robot)
+ - adjust some code style (suggested by Huacai Chen)
+ - make PT_RECLAIM user-unselectable (suggested by David Hildenbrand)
+ - rebase onto the next-20251119
 
-Anyway, to fix the 2 arm64 callsites, I see 2 possible approaches:
+Hi all,
 
-- Call the nolock variant (as you are doing). But that would just convert a
-deadlock to a panic; if the lock is held when stop_machine() runs, without your
-change, we now have a deadlock due to waiting on the lock inside stop_machine().
-With your change, we notice the lock is already taken and panic. I guess it is
-marginally better, but not by much. Certainly I would just _always_ call the
-nolock variant regardless of PREEMPT_RT if we take this route; For !PREEMPT_RT,
-the lock is guarranteed to be free so nolock will always succeed.
+This series aims to enable PT_RECLAIM on all 64-bit architectures.
 
-- Preallocate the memory before entering stop_machine(). I think this would be
-much more robust. For kpti_install_ng_mappings() I think you could hoist the
-allocation/free out of stop_machine() and pass the pointer in pretty easily. For
-linear_map_split_to_ptes() its a bit more complex; Perhaps, we need to walk the
-pgtable to figure out how much to preallocate, allocate it, then set it up as a
-special allocator, wrapped by an allocation function and modify the callchain to
-take a callback function instead of gfp flags.
+On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of empty PTE
+page table pages (such as 100GB+). To resolve this problem, we need to enable
+PT_RECLAIM, which depends on MMU_GATHER_RCU_TABLE_FREE.
 
-What do you think?
+Therefore, this series first enables MMU_GATHER_RCU_TABLE_FREE on all 64-bit
+architectures, and finally makes PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE.
+This way, PT_RECLAIM can be enabled by default on all 64-bit architectures.
+
+Of course, this will also be enabled on some 32-bit architectures that already
+support MMU_GATHER_RCU_TABLE_FREE. That's fine, PT_RECLAIM works well on all
+32-bit architectures as well. Although the benefit isn't significant, there's
+still memory that can be reclaimed. Perhaps PT_RECLAIM can be enabled on all
+32-bit architectures in the future.
+
+Comments and suggestions are welcome!
 
 Thanks,
-Ryan
+Qi
 
-> 
-> [...]
-> 
-> --
-> Sincerely,
-> Yeoreum Yun
+Qi Zheng (7):
+  mm: change mm/pt_reclaim.c to use asm/tlb.h instead of
+    asm-generic/tlb.h
+  alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  LoongArch: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  mips: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  um: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  mm: make PT_RECLAIM depends on MMU_GATHER_RCU_TABLE_FREE
+
+ arch/alpha/Kconfig                   | 1 +
+ arch/alpha/include/asm/tlb.h         | 6 +++---
+ arch/loongarch/Kconfig               | 1 +
+ arch/loongarch/include/asm/pgalloc.h | 7 +++----
+ arch/mips/Kconfig                    | 1 +
+ arch/mips/include/asm/pgalloc.h      | 7 +++----
+ arch/parisc/Kconfig                  | 1 +
+ arch/parisc/include/asm/tlb.h        | 4 ++--
+ arch/um/Kconfig                      | 1 +
+ arch/x86/Kconfig                     | 1 -
+ mm/Kconfig                           | 9 ++-------
+ mm/pt_reclaim.c                      | 2 +-
+ 12 files changed, 19 insertions(+), 22 deletions(-)
+
+-- 
+2.20.1
 
 
