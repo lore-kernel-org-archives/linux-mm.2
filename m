@@ -4,94 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B909D66B85
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 18:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9B5D66B85
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 19:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5026B00A2; Wed, 17 Dec 2025 13:54:31 -0500 (EST)
+	id AA58B6B00A4; Wed, 17 Dec 2025 14:20:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651F16B00A3; Wed, 17 Dec 2025 13:54:31 -0500 (EST)
+	id A52B36B00A5; Wed, 17 Dec 2025 14:20:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 532B26B00A4; Wed, 17 Dec 2025 13:54:31 -0500 (EST)
+	id 927286B00A6; Wed, 17 Dec 2025 14:20:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 400FC6B00A2
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:54:31 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C657A140BF9
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:54:30 +0000 (UTC)
-X-FDA: 84229863900.24.246013D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 23E16140010
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:54:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyfLcPLr;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765997669; a=rsa-sha256;
-	cv=none;
-	b=X3kFQqvlbSrSEaS/J6t16CAjZJQOM78LRlLw9Mf3pnfxJII4/R5F/HaSrk5q3LMx19BpDe
-	N0qd7fuIeFpMYVCKZsaKZwl75rJ74SANXlJLZDNArWypN7Cyp/dTAj9vvzV1RjwFG22k+i
-	sIdRXVOyRfrpqtv3EoWSS/s5BWUNlw8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyfLcPLr;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765997669;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81DA36B00A4
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 14:20:48 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A51813C117
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 19:20:48 +0000 (UTC)
+X-FDA: 84229930176.21.BEFE333
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011019.outbound.protection.outlook.com [52.101.52.19])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3839B80014
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 19:20:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PFD6+0za;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765999245; a=rsa-sha256;
+	cv=pass;
+	b=7MJrvgDK5AujZ/gOohNl8Ow8zb3K7m4t290epfX3l7bmEOJg9cg+GzLXne5/oOr9/+2Yzu
+	ksuPB01cjlAFRSowD7GS62bHpDd9rBTwSoDBHnD6JTnQaFp27IL74cDeWF/RnQWljXk3As
+	WE1ZNGusWZJvqDWs/fL1KDpAIdSRHDk=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PFD6+0za;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765999245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VBKxbMfrcJiIOYO5T43kE8XdmeNy9V6+ZHUpxc+6P8M=;
-	b=OCRbkdduFL05EJ6dQoNWiEEabcsZAX6vdvE8+WnxGzlpyVW77A4kzvhYG88tvL8Kh/tNAJ
-	Tibagxw9caqM3KbCfGDLaLKQfUydb5zsI2OLiILAHHlnwt9YwWTnoRayr1E12xSp5fy8Mw
-	Xwy3JL/TZQTl72CerqmYjGNhELLx19E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64FC06000A;
-	Wed, 17 Dec 2025 18:54:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800F9C4CEF5;
-	Wed, 17 Dec 2025 18:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765997668;
-	bh=UFy5VoMJgJWDegfLPFYjegCo6V9/j0kd50sEbbKUC1Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AyfLcPLrRvfchnBfMKPYwdOOu1UiM4BKHqjiErohamcPpOdn65yzlIGyPrwF0e7px
-	 83dSOl3MRI8wwykW/cJ0Vv/TA2kldAaYueeVhCq4+NpEAbNja3fMIJyUYR0ilM0GWk
-	 Pjxb8MsZdOLyEIaxn02C80FNsR72mymDBLdruRJs=
-Date: Wed, 17 Dec 2025 10:54:26 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- david@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, boris.ostrovsky@oracle.com,
- konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 7/8] mm, folio_zero_user: support clearing page
- ranges
-Message-Id: <20251217105426.5f03b5e8abd2e50faee9f49f@linux-foundation.org>
-In-Reply-To: <87fr994hot.fsf@oracle.com>
-References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
-	<20251215204922.475324-8-ankur.a.arora@oracle.com>
-	<20251215184413.19589400a74c2aadb42a2eca@linux-foundation.org>
-	<874ipqexai.fsf@oracle.com>
-	<20251216071250.e49ecf7490acf7f377dbfdc0@linux-foundation.org>
-	<87fr994hot.fsf@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 23E16140010
-X-Stat-Signature: sj96jpar6uxrijq76umzo4epihh3kcaa
+	bh=s0qoXdhvXypQWxc/LRlE62BMbkG8c6DeWL4LoLV6/Q4=;
+	b=dhEil8EfR6tEp9w845ZCbO/DUz8jIJ2NjThs38gormU20HudU+vSf1S/qrhoerOD2uKGRV
+	LL6UaY3BzStk69sk7sedlEmbt0B57ERTuLtiA5wzmA7GMxfTFZ7a2jdyFA4IQ13JiASfQ8
+	GODNOjjAfi2xBqoVCnsxtNugLM4SM+k=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eKSkO5UYuNWVABawUx0CJTO21/dx6MsgRuaGbCuVqZNbFcynwehB/mXvFStHCRrXR2p5HofV5rExZHL+/c2rWAiIN2FFVBVQFOXOffLg7ruS5P3ESgYmeNgvSCLVZ0shVSWqxZ62NhV9ab8XsJ8eiFY/ArMTTY5RvSrUfVywB1C8u9v20G4NBL1ZSH43aOe5omxJDPgupOXAW4x6A4TSwLOudrvEJGeL8xwRRzs+2AioYhlBBprY/2bxuk1yy/SZbRb+cz6mZjPbkNTwrMK3zue6EmIFY9bP+olu7k8QVcPdKa342E5aNbUmLXt5WbMmWpPJXUnK3rgK6bJL+4NjlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s0qoXdhvXypQWxc/LRlE62BMbkG8c6DeWL4LoLV6/Q4=;
+ b=kAbdOLGnA76IG/h2Efzac5pvuQCIJTlRe+d5ThzPUjfG4bk7x0XX3By/cL7CCmwRk5CmJgS/UajVWuX0RM7Hx3w8+RCs45XG/qdGitDcA+k5a2Gy9fxHugqJFyJ9bDaM5jEkkgm4SuB/NC7P0ZJOm9lRXprTY3rQwIgNB4KI+sSXN5Z5xlKWc3iQvYcoc3xtrQ/3v+xMs0czEwfCiUMXAb1HR/i0qY+OffoO6v6XJaCYLZpGz172/ryXiM1h/f2RNn5iblByAi8NfuDSZKBfvyVAMca77+wY7QTx7XrrMBxFqOCzdIaP2hAYxd8VbQ/oyncLPNGtCOAE6oe/t06UjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s0qoXdhvXypQWxc/LRlE62BMbkG8c6DeWL4LoLV6/Q4=;
+ b=PFD6+0zaH/Ys3CIGjxdpPvkYwsn1HxmL57NqxYGi0ouH6hDCAj9PYJk+kXtB7ZAthU+H27/u8bNhTyGmjrEZH9ghYSdiFTmD+7rrdB4D35FB8xMeDL+k1lr/IG8sKQPD3JkLo4sT5J+9d2gh60985GWMnjlUOsUeB0FGLQnpfIpDBN20ba9lPA5SxlfBuYqZfvFPP1VKiSkKTVdMNYRaurWTURUNYH6OlgAUb7vdMe6mKtEGd5C+QFRISMvOmcjoaOMvjs67clzTvhjEXmreKjsdn1nem3ro6D0jC5vx5SZjg+ePP9FDS2EfKpsoPW2SJYSBioksnUPHASqVC0I++g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB7875.namprd12.prod.outlook.com (2603:10b6:8:14d::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9412.13; Wed, 17 Dec 2025 19:20:38 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
+ 19:20:38 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+ sidhartha.kumar@oracle.com, jane.chu@oracle.com,
+ Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>,
+ David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH v4 4/6] mm: page_alloc: add
+ alloc_contig_frozen_{range,pages}()
+Date: Wed, 17 Dec 2025 14:20:36 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <AAFDAF36-E02D-41E0-B40A-AA5BBC084F9A@nvidia.com>
+In-Reply-To: <d7275c36-f5bb-4baf-8a94-b8522d4aef21@huawei.com>
+References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
+ <20251216114844.2126250-5-wangkefeng.wang@huawei.com>
+ <D90F7769-F3A8-4234-A9CE-F97BC48CCACE@nvidia.com>
+ <d7275c36-f5bb-4baf-8a94-b8522d4aef21@huawei.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0177.namprd13.prod.outlook.com
+ (2603:10b6:208:2bd::32) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7875:EE_
+X-MS-Office365-Filtering-Correlation-Id: a80f2c4b-3353-48bd-3d61-08de3da15c3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?sTTQAwdxBjgdiuRw7esiXn52pdzW1iVRAR7mvxUgJSfZtLT4AS8P46bvQUXR?=
+ =?us-ascii?Q?mVgGOSJJ2+rScpNq5z7438epVcTEpC8IDxE4VzCMyIW8H1ZU1gVjdVKq1uvo?=
+ =?us-ascii?Q?sJVqMYD+1PMNnU30YsWzJ1gFoQK4sKITBjz3HiCvYWPZ4B68N47zfHh28Ox1?=
+ =?us-ascii?Q?0BiPtMBPMGuXEExlpzegf3OiQ4hifTudTQtbDDwhEsvTkPlydW42wWYNf55S?=
+ =?us-ascii?Q?LBIy9hDkQ5SUIyaBS9xDK3wOXBIPPGitqapHLMU4x/BjzfoCt70bN1K0saPJ?=
+ =?us-ascii?Q?TVHOXDnxIEiVLbx7dRRl2EbUW7uBQLtIRQSYRWGlf3b+Js1hzSmWwyALDNJr?=
+ =?us-ascii?Q?7P2MEmftUOIH9kL3onNHB3R1BUPyKPNohwkwFNRV08paidK5xbo5x58aE0C+?=
+ =?us-ascii?Q?dWVcYH8xOWj4VUk4yVV7nKxXU5NIrKAx4+0QdURS4fgybIrHfq1lOyrX6Dpg?=
+ =?us-ascii?Q?6V/3T19oEe0jhLWVzvtUMIdBJk+KJoDxR7LVeajTTVxQg41gz2+R+ahSxqg+?=
+ =?us-ascii?Q?aFUDVAi5CgAKh3TdmBzhx74bQC4mn8xAHf1AP7Y9SXwZr3d0DMqsndEDpDJW?=
+ =?us-ascii?Q?8+NOuRcpluI62ct8xm2obfjkFOpsqpzyIQ5qX7Rw3GfBl7Tk5HOUSavKb2CV?=
+ =?us-ascii?Q?/U3GwJ6R8U2zBVB6ne+QcjgKTOWdMhzUZ0PncMsql06BrKX1/wi1H8G9XqQd?=
+ =?us-ascii?Q?JOajnN4qhWdsX6bJ6qxE34Q47iwYHkDlWmmPTF2WSenl2vOI6KRJbjIS21zy?=
+ =?us-ascii?Q?E8h/ObNIHMKrNgUoJ34NwvqheUny/YF2IeIej+ho8odSpcOlMYmvrxem43qH?=
+ =?us-ascii?Q?wo074drfqTuKQf6FLY1VOgijSReG6c3f/wqFA/IfMRMZtCU31h9zx+IBKp9Q?=
+ =?us-ascii?Q?B4x8ky3LhyAhWbQw0gYuhFPCTrW4ovbQxYUyu/T92EMYQFsagGms26YTckUR?=
+ =?us-ascii?Q?nc4zgR0zaZJ2jLPKivtD4nRvLSHJJZJhTIfDqZi8mU/ynnqZvD4971CHoKbP?=
+ =?us-ascii?Q?/kuTjv/fzObD6/Vd844N1JM+4e4FdFfQgEmroTcb3d4HrqWBvrepq8XIn1fT?=
+ =?us-ascii?Q?AE4KWJFCKkTOHXu8Hljp9+276y4yPs9Ny1iqjKsBd40HDYRf6ygX478cNbOX?=
+ =?us-ascii?Q?fVrfwbe3+DUHJ2KhFN4x4D0Sf90vL228PY3auNe8d2juyCBIeTDuqfY2Zb7i?=
+ =?us-ascii?Q?HVlW55lQlQV41J1IJi7Qq++jKQcsV8hlzXE11IFe7EJyDCms9tArOg7+StXF?=
+ =?us-ascii?Q?rMIuBW3/34Pa6QE9Q3MuVPIG2nBQQ3Bk4an36mLfN788OAVWk80tSVB83muo?=
+ =?us-ascii?Q?eYmXZvvcYmiz7YXv7LpMSOgpU8UQ/SGxGxe0pVZ0zSPlrzRlgXbf4L9lferD?=
+ =?us-ascii?Q?++ey00T6ueutOMfKFS7rERdRuWoSRcVZ7QdGwd+zQIpQCmvroqTOAQpaMJ+d?=
+ =?us-ascii?Q?0Aq7aXEHDlPhRXzLeSpSBoJD+GmBFqJ+?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RnRYlUqE2BqOi6WBqPQJpOTsNTtpAnSlL8+pSsWdTDXozR5vfOwKUMHNgrw8?=
+ =?us-ascii?Q?oGV+2YsFRBv1sRYTrKkgAX/ZmgL1ypudcbMp54XJ3Ag6Ef0qdSXygaBtItq+?=
+ =?us-ascii?Q?Y+lk6kpP0Oo6THC7GlWQz/6ZD1FgnF9+skDghx7UYiA0UdvzPzdeVpk/L1tH?=
+ =?us-ascii?Q?aOQeBSeM5KuMxonhmQDYp6HRssAMtlL8suzZf6CmTBh98SuOwYR4jFD7cBEC?=
+ =?us-ascii?Q?9wWWRyXONFY3tNYlWCopUmlywI1JtOhXrvhYukxguWVbor5oXKM9mp2+P44e?=
+ =?us-ascii?Q?WJmrSefNMG1XX6HKK819ZZECtppaqsHiMmeuJzVHZYDxmZpLF3+rmdmAEXWQ?=
+ =?us-ascii?Q?D3mhfm41YGZ2KtcBQ/IbZeiaAb0cEWcJSkVjNMof5r/vNTlpB2Fzq2WxkIeS?=
+ =?us-ascii?Q?vRAFSrxdIdFSqjM9Ru/bGjkH8jpeT1ehk2nI1U9brYRxMQprMtaK6MZlXx6X?=
+ =?us-ascii?Q?EyIdVV4XDMeJl7iQ99pa2cE9UoNsTVJvT5r4OE0X4mV2QXf2YVO+xdY7r+GW?=
+ =?us-ascii?Q?MHop48g3GD47DT6EvYJ2x5pvYf7pu+yV6PX+JQxsazpO2pArJXl4C3yH/JLL?=
+ =?us-ascii?Q?81y+nMW5/856JDYMUa1HnPpJPL1p//BuoJIlQoUjD04uEFvMz69SJqYqPEod?=
+ =?us-ascii?Q?RPpdyWLp7cjiT0cMsarFsv/kXk7IM8SmHeZOt8RlWFJ3/QxjMFbpWOyNqxzf?=
+ =?us-ascii?Q?lJQkI7gpdl22RpVPeV6JjtP+29KR+nNtjSg+PeeGQgR3OcQL2eqQgegfVrYu?=
+ =?us-ascii?Q?Bv3SjUid+KBvoB+t2bM1jRCV3kHABNRhto2LoqVgRZ6LDnG4QK+2wfMoDHud?=
+ =?us-ascii?Q?HOjXi1yoQfUFAReaT1ibtcmuBMRcw9xph4Iobs5SGCC4QE4RdRFjmloQLFt+?=
+ =?us-ascii?Q?qFJjuHICjnNk8eK+e/8Ss9lMLqR4whXo6tpyYoJWjLnhUbpzbS/MFT9tF2a5?=
+ =?us-ascii?Q?I7E1iSsyW/necvyX8s2ag32logZTOdDKSG270HB+ZbSVsFNsg4VE5i6RRf2z?=
+ =?us-ascii?Q?ARPOq5S1HLj7h3Ur08xgLPthM/NZCf1KFA/JTi8lwvT9fkdQC/uT5BTApWk1?=
+ =?us-ascii?Q?UNCheGTZmjx+51PBqMBqOr2SZn0Lu0U5trwIZI4yBbxpdWp6Sg1wMlAdd4Ts?=
+ =?us-ascii?Q?DJY9bySNQ+DCRkxp7Qz9eIGN5agFmzRmTiXhu0aJkIrGH/dC/OHz3G5IvlkF?=
+ =?us-ascii?Q?USz/YiAxUgkwJVgaQt5hkR4He4JE213v8LU2i4LaIu/ShR0Z1nI3mTecLOf2?=
+ =?us-ascii?Q?neWU6OF5/qim/5fe23v+aJIXoSPMVXANir+yjBZxDNJDqzKLs8TJgDbgHTm2?=
+ =?us-ascii?Q?kaHT6qbsTMHG3zXJ2YD2wh++nhcRD8NGylV788/jJbf+IcPAWyM0fepTPa3h?=
+ =?us-ascii?Q?VPXJ5bYLTqRxc34omkjjL8CgPAT8dTBY/DjYoI8h8HJP9+BItfbPubGVcJz+?=
+ =?us-ascii?Q?h5QyZ604PUYjhEKyQUjhiwabkJ5wA7kSwFHGep8N0AHxk2p+4rMcmyJXSW93?=
+ =?us-ascii?Q?Mr7XrdFMp0lTfSIMoyJosQNFT0w/FWMSrLLqm62P1rezrZIMG5smAOZBXHAH?=
+ =?us-ascii?Q?gPClsyp3xglQF4ue3G5FIurgyQ3VgrWevzjj6rgi?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a80f2c4b-3353-48bd-3d61-08de3da15c3e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 19:20:38.0926
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BRhDJO9VQqIWbUvJ+7VCLqMZNVHNoqcSdUdbz7sz9n6kT8TApmOWfUO55pKyv6eP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7875
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3839B80014
+X-Stat-Signature: r4zwnhs69ys14zgr6opo1h1bns4sq9y9
 X-Rspam-User: 
-X-HE-Tag: 1765997669-680183
-X-HE-Meta: U2FsdGVkX194zUsrpTk2Du/mcVJatqfv3l8Qf3NERVYcyVCbT6VnVVCBCnG5LsEWITaVH0bXE4VtNdo4/MF6GODthWJA4vPuVTIS/ZL5dI69gjdOaPomdL8KsDk+CSP5GT0wL9I5xB+9+qeWZokmxSoXAdbh5fYG4EQuv4O1WL1+Mg8GK1MQAuy0FpFj5MFO929YIX2SPzLmi5vIsjRKFnhepDdqEoGaK1qZGcukqVgcd6gKNh8AI2qRzmEZVDRKkZrVWSgUYS7WO7XIcqWmheCRJIAF9LukDFiDroKqaj4RUuAdqk/DuUWc+zDuFEwOOskbiF7+VkAHYF50OSaGyZk5flweikbr4MFeJWsiAWv+y5zCq3rU1LKLZa0Z3KnSrFKXPQP34sqPbP3WZ4pnV1oBz9fCqha01t1dgiGQJP4orxbnaG7s271volqyyj1ix7po6iIGSsFSw1FKI9GBanOi1HDd3tLqeXNMcpswEpJJKD4CkmVAzbzf9PUfMMl7jSpwC3+w6d+MK5wV0GBOVNYQ1TCeIUdpVZn+WcRlImFxTnh7fZRWtXWaI8I2gB70XNcqNbftfhY54PV3kourwx4vbZ/V6gXjpgDPQPz2zguGhVx5VeT0uQFOJSmqobNtkE/w2+jSSSwoVn+xkmHoyV7fPuQckx9vRuiS3e6/bfn6S9k7/41qtc1r6ffBIcsNx92BguNYrFGCVShwjg8iV2OtIO3eD2Bes9oOR8QxcXxl6fq5F3F6JvDlr1FHeLoAMoXqS00HXtdKdX+bBzXww+ywnOypxZPofn5i7NJb8a5q5R/Gyx8txOUJmYpB18neUgMg78iCCYjJzjXjNOokFP/6FGJdgHWzrCLwxAedL4CSVvZkv3WND+G8SNoDDx2D3N88uHZcWR2mVtc/56y1fIs0kbMEA/xqe8X3C73XhyfQ0yiOA4Oo55HS88y3kk1/ZvQymZNeKhSTZRDKu0U
- cYiakJqq
- qHoGTE32h9f3BZYCE8rFzemo5Af3TrNW+Vhqm6CfoQsicxtLmCLcp0Sbm6uw1WACKBWx6mwcgYlZqsMJOv7P9rEukI56c3rIq4iJpVsxR2clg1Kw8ydQYiobApXzFtapebeJaJQk6ocC5z7ubRvlTZPXaqn2k7/8CI8DpBskMcqM892Q0+JX8u8GnnbBZa8C0jzyAnvsUF/Kr9uxY5UPGLhT8lfaqvRHqVxlrYozzVKmed7uB053F4mPrddt08IcUz9Eha6esj5Vypxy8wsKXBEhgX++OtgQ6Cwu46GC9QmgbRJ7TQd1dZKkbSLpDNjPoqB1K
+X-HE-Tag: 1765999245-183866
+X-HE-Meta: U2FsdGVkX18kkFR4KzN45f4jRzRCWGV1RqMTi+UeQ9ZwggMK8DmH1SbtswgXMBnoUTY56SrcxlSvaL28x7vgmsrCZ75UYYckdz3JWayBoisNlXcCO6lEwSsmsMEf+q78QBjYkz04io3hW83DwgRi3uJeEK3QZq0liS8a00OE+p4znB1fbdlVDmUZ6xmK9sHOxeL6OArZ4Djbh2NrhBKdYE4ehs3Hk42YyDRYa5c5JhYv6CR8EM980lAmHYdhcoM5vJHN+xUl58RpdSZfcj+oHqpeWShEapYVAg3VZ5bXi3kDPDimvcP7uSrnqp5x6JHFUSPnx4V3Af4ygCg2F2QfisYxrevzE7XuyBzwMI0viMR8nE0Fprf/fbZj1okcmyDJtvm+XeMhKo0nXWJgfRMS1dNCukllrPBulTOGVOLKr1vIrrsAWVGZ4+zg7TZ3IWRlncJjZgkU2JYs3QWTkeAsXwsnay9tWCBMLt249zb1f5SMmAhP+q40J/hpncnu+10mhvpaKZZqNKPCCzOO4GQ7jVYbwHIuDXC7U8dNW4OgroSCkGsu6B/PvlzLXeohBHsW/fFun6ubA9o0vE3eNX7tioIenqJCPArFGG6MbxypliSOklFu0K/0XAuF1qIAsH0D2g+tCnxoHvOGQiEXQw5EMDQwsiLCpuU1Cfnkp/5LESq24ZgjIuKlTtjmGnIeahZg7t6hNEuicWH1I1YJM/G23kXYnMQ54a7rb319sXFqNp/P2ELcog43BzVUa2l7MIAzFv6w1RnAaMQtpZBr0svVGtfOsqpwbqc3cOPIhwtv274QAGdhpxCXp3a/+wB64+tnI6hZPh3ubs/OwPWUZ6nExOiA+om2VPpgW6sTs/D9js0JLFQ2NFUDWz8Ma+G+F5g9fF64kBXMMKUkihU3245hFvWO/J/aQKyVHvTcXVQZrW8GMq1tDXQHTPojoJ7q1IuHmAWlSd2326OjzHn4XuH
+ EzrWojIH
+ RjFw/YTZ8/hZCthKwv/nw1ND2HVIHSd1FdbitNMMmb6y6iK/y83qUG5qlgSiRAXcG89KlBZCNRuSyMvWleQA/C7p/DCwZfL/Hnh1Gr4AfJh9M1NyV+eB6BFHzQTmm0ZeXqFMyfv6vr4wLjFV0qbF5jga0BWh2CVEn5AQUi0tWw7nnBz3XxftnwpHOn0nOCh9x82FMrn/DUGiJyDNzufvIng2lUaAjspKKkxjQ6PBXvb0zdNK5sOdvTHGBKM7YFH93mUePHoJEBPgHBAlbPj7CmKEE8Zu2aubJS5gOQqohm/ENcguAGsXVlkc576/iMavY7OZW/S3F8AHAtPqFHD7opZQql131g7lziB2JNZQ8ZaMVwYUXgASwRzjYtPKvT4CbyWHhCjxFvrSwDV9qnBMammPczNKrn4B1SnJdLXs74mgdFa+pprchAcdQTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,32 +190,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Dec 2025 00:48:50 -0800 Ankur Arora <ankur.a.arora@oracle.com> wrote:
+On 17 Dec 2025, at 2:17, Kefeng Wang wrote:
 
-> > At 42GB/sec, 32MB will take less than a
-> > millisecond, yes?  I'm not aware of us really having any latency
-> > targets in these preemption modes, but 1 millisecond sounds pretty
-> > good.
-> 
-> Agreed. The only complaint threshold I see is 100ms (default value of
-> sysctl_resched_latency_warn_ms) which is pretty far from ~1ms.
-> 
-> And having a threshold of 32MB might benefit other applications since
-> we won't be discarding their cachelines in favour of filling up the
-> cache with zeroes.
-> 
-> I think the only problem cases might be slow uarchs and workloads where
-> the memory bus is saturated which might dilate the preemption latency.
-> 
-> And, even if the operation takes say ~20ms, that should still leave us
-> with a reasonably large margin.
-> (And, any latency senstive users are probably not running with
-> preempt=none/voluntary.)
+> On 2025/12/17 1:20, Zi Yan wrote:
+>> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
+>>
+>>> In order to allocate given range of pages or allocate compound
+>>> pages without incrementing their refcount, adding two new helper
+>>> alloc_contig_frozen_{range,pages}() which may be beneficial
+>>> to some users (eg hugetlb).
+>>>
+>>> The new alloc_contig_{range,pages} only take !__GFP_COMP gfp now,
+>>> and the free_contig_range() is refactored to only free non-compound
+>>> pages, the only caller to free compound pages in cma_free_folio() is
+>>> changed accordingly, and the free_contig_frozen_range() is provided
+>>> to match the alloc_contig_frozen_range(), which is used to free
+>>> frozen pages.
+>>>
+>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>> ---
+>>>   include/linux/gfp.h |  52 +++++--------
+>>>   mm/cma.c            |  15 ++--
+>>>   mm/hugetlb.c        |   9 ++-
+>>>   mm/internal.h       |  13 ++++
+>>>   mm/page_alloc.c     | 183 ++++++++++++++++++++++++++++++++---------=
+---
+>>>   5 files changed, 184 insertions(+), 88 deletions(-)
+>>>
+>>
+>> <snip>
+>>
+>>> diff --git a/mm/internal.h b/mm/internal.h
+>>> index e430da900430..75f624236ff8 100644
+>>> --- a/mm/internal.h
+>>> +++ b/mm/internal.h
+>>> @@ -513,6 +513,19 @@ static inline void set_page_refcounted(struct pa=
+ge *page)
+>>>   	set_page_count(page, 1);
+>>>   }
+>>>
+>>> +static inline void set_pages_refcounted(struct page *page, unsigned =
+long nr_pages)
+>>> +{
+>>> +	unsigned long pfn =3D page_to_pfn(page);
+>>> +
+>>> +	if (PageHead(page)) {
+>>> +		set_page_refcounted(page);
+>>> +		return;
+>>> +	}
+>>
+>> This looks fragile, since if a tail page is passed, the refcount will =
+be wrong.
+>> But I see you remove this part in the next patch. It might be OK as a =
+temporary
+>> step.
+>
+> Yes, this temporary.
+>
+>>
+>>> +
+>>> +	for (; nr_pages--; pfn++)
+>>> +		set_page_refcounted(pfn_to_page(pfn));
+>>> +}
+>>> +
+>>>   /*
+>>>    * Return true if a folio needs ->release_folio() calling upon it.
+>>>    */
+>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>> index aa30d4436296..a7fc83bf806f 100644
+>>> --- a/mm/page_alloc.c
+>>> +++ b/mm/page_alloc.c
+>>
+>> <snip>
+>>
+>>>
+>>> +static void __free_contig_frozen_range(unsigned long pfn, unsigned l=
+ong nr_pages)
+>>> +{
+>>> +	for (; nr_pages--; pfn++)
+>>> +		free_frozen_pages(pfn_to_page(pfn), 0);
+>>> +}
+>>> +
+>>
+>> Is it possible to use pageblock_order to speed this up?
+>
+> It should be no different since the page order always zero, maybe I
+> didn't get your point.
 
-So I think you're saying that yes, we should increase the chunk size?
+Something like but take care of the cases when pfn and nr_pages are
+not aligned to pageblock_nr_pages:
 
-If so, what's the timing on that?  It would be nice to do it in the
-current -rc cycle for testing reasons and so the changelogs can be
-updated to reflect the altered performance numbers.
+for (; nr_pages -=3D pageblock_nr_pages; pfn +=3D pageblock_nr_pages)
+	free_frozen_pages(pfn_to_page(pfn), pageblock_order);
 
+It makes fewer calls.
+
+
+>> And can it be moved before free_contig_frozen_range() for a easy read?=
+
+>>
+>
+> It is used by alloc_contig_frozen_range too, put it here could avoid an=
+ additional declaration.
+>
+
+Got it.
+
+>
+>> <snip>
+>>
+>>> +
+>>> +/**
+>>> + * free_contig_frozen_range() -- free the contiguous range of frozen=
+ pages
+>>> + * @pfn:	start PFN to free
+>>> + * @nr_pages:	Number of contiguous frozen pages to free
+>>> + *
+>>> + * This can be used to free the allocated compound/non-compound froz=
+en pages.
+>>> + */
+>>> +void free_contig_frozen_range(unsigned long pfn, unsigned long nr_pa=
+ges)
+>>> +{
+>>> +	struct page *first_page =3D pfn_to_page(pfn);
+>>> +	const unsigned int order =3D ilog2(nr_pages);
+>>
+>> Maybe WARN_ON_ONCE(first_page !=3D compound_head(first_page) and retur=
+n
+>> immediately here to catch a tail page.
+>
+> Sure, will add this new check here.
+>
+>>
+>>> +
+>>> +	if (PageHead(first_page)) {
+>>> +		WARN_ON_ONCE(order !=3D compound_order(first_page));
+>>> +		free_frozen_pages(first_page, order);
+>>>   		return;
+>>>   	}
+>>>
+>>> -	for (; nr_pages--; pfn++) {
+>>> -		struct page *page =3D pfn_to_page(pfn);
+>>> +	__free_contig_frozen_range(pfn, nr_pages);
+>>> +}
+>>> +EXPORT_SYMBOL(free_contig_frozen_range);
+>>> +
+> Thanks.
+>>
+>> Best Regards,
+>> Yan, Zi
+>>
+
+
+Best Regards,
+Yan, Zi
 
