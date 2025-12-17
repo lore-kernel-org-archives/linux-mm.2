@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AEC0D6552C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 10:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7AEFD6552F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 10:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82FE26B0089; Wed, 17 Dec 2025 05:08:52 -0500 (EST)
+	id 57D136B0005; Wed, 17 Dec 2025 05:19:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E6C36B008A; Wed, 17 Dec 2025 05:08:52 -0500 (EST)
+	id 527E06B0089; Wed, 17 Dec 2025 05:19:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7101A6B0092; Wed, 17 Dec 2025 05:08:52 -0500 (EST)
+	id 3F2A86B008A; Wed, 17 Dec 2025 05:19:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9156B0089
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:08:52 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE6B66048F
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:08:51 +0000 (UTC)
-X-FDA: 84228539262.15.344B2C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5E744180008
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:08:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bxaavKtF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765966130; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D3226B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:19:50 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2C85140995
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:19:49 +0000 (UTC)
+X-FDA: 84228566898.26.3E8D1B7
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EB5B540010
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:19:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bNW+UFO1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of glider@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765966788; a=rsa-sha256;
 	cv=none;
-	b=R1eeq5CwZNTZsHBjQjJeGbKMs9nPy2D3dqspxwumfZn522WvULaY38GN3E8H7CiNIYWPPU
-	BvjDHDELWUT/zLyitSa8LMX2KPEiaMuHzhxpgsso+IRem60b4tT/UYgUgoiQg2dAM360Sv
-	HdlFC6urX57+RWhUW5ZkABl1zrZh8BE=
+	b=hqA5KT0T5vrkeDqYNTqfDzd/eyV7B5KQ1BQfmMAZF+hoxDluJ119zEOfW/xvs5la5x60NU
+	pfO4TfLEzi3DfD9nlLWsNnnYX+jJFD20ud3zr++nRO65PEw/fUeyw3c83vtiF2/+zQx4zQ
+	z6zbhS9tsZAZPy45UDKFKk7BfF3f8sY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bxaavKtF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bNW+UFO1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of glider@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=glider@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765966130;
+	s=arc-20220608; t=1765966788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qMLprEfUUGCVk4XSwnWAvcLkbEiN7vzHKrHVkwiStdk=;
-	b=Dh6hEgS6SBEUdXNNnnfuQcZYuV6j4PJvyNdWSWuAqcveYVcphsEIDI1swStrf0axhR89LY
-	M/SfjlJn47WrPkW/HYsMRxUq4HmF0Q8aYaCsfrkLWm9BXX9xAkMZEQRGCe0mRGubjZitug
-	nOGy/wkoBqkqFDw0fCX24O0zQuydARs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2CAAF436E9;
-	Wed, 17 Dec 2025 10:08:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD105C116B1;
-	Wed, 17 Dec 2025 10:08:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765966129;
-	bh=X8MKDeUVfw3OZB5ABjVJIvLfdbW93JOXK+rfZHGoMJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bxaavKtFFcBhvYnzUKNDaDYeYryHGC/WzcqZ79C4+IcZBzCcExa5KinVQzCFGxbxM
-	 gU8EJc6W3luQ6eYl1+TIft06Qr2FLagp96N8FIDE8lHKoMKkfe8KwqcBnAmanA9Dsg
-	 ZlYqcL0SGWifCHB9376NHx3x4FVpvpYqURlZbE/9vZSRFkGTV11Y56axnHy4gSIwpv
-	 nUnHMfI3hLuFHFqfkkrX7jxWZwxWydSyDdIM1EPp4Xmhm0Kf0oOuhA/lVog/dAz8rl
-	 8CnXIdHSbZK8WaJjEJUymbn/Vsm6h9Wt+sOW6waaxLQ2qEomXqkr46ilgMZef3ZgQi
-	 zxjmBKcerudxQ==
-Date: Wed, 17 Dec 2025 10:08:42 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
-	Usama Anjum <Usama.Anjum@arm.com>
-Subject: Re: [PATCH 4/4] selftests/mm: fix exit code in pagemap_ioctl
-Message-ID: <67e61dd6-2a44-42f5-980e-e9196d672540@sirena.org.uk>
-References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
- <20251216142633.2401447-5-kevin.brodsky@arm.com>
+	bh=23gqEg6vrrMOt95UIpPZRnWZYiatBfrUBDzMVbZzD8w=;
+	b=zEI666FbJEZRD27hquwKFDrsaVgrQGE2QVjntd7ix5AvCPI1lB09kDCzpAqtsFcjH7E8nK
+	OT8Cxr2fZVvn6WtQ5QmcUpjJjIbGJxcl/F3nwNyMxWaukStglI/9Fu7T2NXjJM49m3ZOuq
+	7rH6v8KI/DLpH1PCE2f2Dos5DYL9nmM=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so53575381cf.1
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:19:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765966787; x=1766571587; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=23gqEg6vrrMOt95UIpPZRnWZYiatBfrUBDzMVbZzD8w=;
+        b=bNW+UFO1XROix/hvc4t3Sl+8r9d3BvKd1azNv3zdBRhpaghnp9oeds/1Bg7qmK3uIC
+         AyKXzYuyLmmSTrgMcBOsnKnLgniyY5KBFE3pDqPQxc1QLLQtbV6rv4J3/n8/U00lPgkl
+         LABrbW9t9w//KVbNES6qZBiZkVTRmcFJqT0EA1yi9u4dCjMfH5Qq2Ld29WFUBbw6pblW
+         KqnKM/LRzWXydCditgEsglq4eWe2gg/w5JQnYH6nck1zmz4PEPc5hIW8y/5quDju0Wag
+         ThpJjlt1c51Psy1NxitQSZHOZgaYEJeU3ZftNITZuiDCXP+HjswvYoB4rsV5tzB8m7w8
+         MVng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765966787; x=1766571587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=23gqEg6vrrMOt95UIpPZRnWZYiatBfrUBDzMVbZzD8w=;
+        b=mZgRCG/IiD3wKg6CqxAKNkO/celaSlkp1rj68DGImEYNaWNvG2ECyYKrpcb8s/gTNp
+         8bJRGFRF+rsXNsXTQSUEn4js5ainnG0LIKqahCDE+60Udj1B4iE4XVYKS8xZ64liAfZX
+         aeKJ3hPV7JuiT5fgvBEvl9x/9aSZFyGB6WEHXJYQy35pAkoSmqXOJS+bY0J8/ivQY8Bu
+         Rtr6Pv7+oNiqyldcKXnZ40aC4737Kim9USHNbCBNFOMmbrxWqGswpXvZlf0HBbrpa100
+         PJDUJ/D1ADvoZ6eXAhSS4VW9K/LBFChEvzyI6QnjLZZyksCMGC3s0ZNWYfuagjhQmfgF
+         XlRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWyG7h2Bh1PlxynBDcq/efLIwOqRz4duY6HebzSgEnEnLMx3pI0RJgQ+EjOI/rPoOFyM5NevPCZmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxSK2DVAVkdAykWZ5tMTzwjShdOB/uV/Z+ANrtfuHL2yF92ARk1
+	H9UTXp3noZbN0iJqnbJPDleTD4OAoEsW55BWOTCeOWd25jE1jZKwdtERTBGVIFyLgRhsmeHuUXX
+	NdXLztR2PaDN2tqPHXOXvXDbg6t6xlZwPqSPp0TXe
+X-Gm-Gg: AY/fxX5Yj3cDHdt5+V/uJ0AzHf8vqL9CsQHWT8Y1haNYtJGzgbe7n+cYKWivttCLpDn
+	nDtOa8hMd9TkoGsOYyBskW4GI87R+VqzxIQg4IU82qkiHa4TVhhaz2sOAp5UsYrbjtCdf6tCdcU
+	JpeUNKBSFY816gkZ/jqlmY6qwZfRsJHIbG7RlvMnvXpjRxZEMQY8Ud+hSf3aEyw+ASW4ysnbghD
+	+yo+e/fFQRgX+Xq/c4rHxa8Cr3LH66Vu2I+5RfQBIM2bcHFTcrbav8RBr4VHaqLFoNyMPAjs7iO
+	UPj6L2uhTQc7R6q5rw+3NSBX
+X-Google-Smtp-Source: AGHT+IGPDd7JF5alyNhEgjcrVW09ThoKJGuLHl1FsoSDP2QjJlJMFmAXfyQUqSR9tS29F3NlT0wkkL8H1bva58+snIg=
+X-Received: by 2002:a05:622a:5c94:b0:4ed:a6b0:5c26 with SMTP id
+ d75a77b69052e-4f1d05e102emr259116031cf.58.1765966786794; Wed, 17 Dec 2025
+ 02:19:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t/5ZkYiwUFTRW9SY"
-Content-Disposition: inline
-In-Reply-To: <20251216142633.2401447-5-kevin.brodsky@arm.com>
-X-Cookie: To err is human, to moo bovine.
+References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
+ <cbc99cb2-4415-4757-8808-67bf7926fed4@linuxfoundation.org> <CABVgOSkbV0idRzeMmsUEtDo=U5Tzqc116mt_=jqW-xsToec_wQ@mail.gmail.com>
+In-Reply-To: <CABVgOSkbV0idRzeMmsUEtDo=U5Tzqc116mt_=jqW-xsToec_wQ@mail.gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Wed, 17 Dec 2025 11:19:10 +0100
+X-Gm-Features: AQt7F2rCVoKiHzMLr5gq2Ln7RdeonRMo17AX2R1_t7knfurC9ARwqPf8_xuG9S0
+Message-ID: <CAG_fn=WvdKZgmkqa09kwLLH3P_j6GFYzopeD-PZ-Qt0-1KUaGw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/10] KFuzzTest: a new kernel fuzzing framework
+To: David Gow <davidgow@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Ethan Graham <ethan.w.s.graham@gmail.com>, 
+	andreyknvl@gmail.com, andy@kernel.org, andy.shevchenko@gmail.com, 
+	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
+	dhowells@redhat.com, dvyukov@google.com, elver@google.com, 
+	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz, 
+	jannh@google.com, johannes@sipsolutions.net, kasan-dev@googlegroups.com, 
+	kees@kernel.org, kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de, 
+	rmoar@google.com, shuah@kernel.org, sj@kernel.org, tarasmadan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5E744180008
-X-Stat-Signature: 9jbfmxdabsy9ouar33nd8gjt3bn4wnw9
-X-HE-Tag: 1765966130-685143
-X-HE-Meta: U2FsdGVkX1/8KyXASNwfiOtRJEPWLUdyRMBW1J5T/o03ymbDdWnn9+vJui76MMOE7yrCuxquTVSgMiGQSoXh51WuzBGFuAxD6NFei071jVZTpabfmpsypSDwCuEfnIoEetFtieZIHvcXxwn3qcKFCypK1A5ixqT5xYBq02WpdA0OVWv5qfe4YU6L5rIyq6VhUsm/itUUTtndmcSHECzuVxsIIXtPWc45s9GscnQdO9C39yJz3ejXbcaYw6fG60hT/JDCnwicSKpO0iZ+K4oJCXB0G3/KnsYUKZqJHbx4RAG5pKbz8zNgZOSx8mGiP9SjvMginpkucSBdcRrgmE0olPH/RQxPIJDoD0tP95XBHmSk1ed869FJMKPC+59wtiINQ/9YifpGgZuowGOZ2KsFfo0hF758Og+c0F1ZD01DlTSv1Pyplly2fwURro8dOkAO4ob/ZtB4OIZtClwpznGZRhlCYf32Hahrjqi5snG76azXOobTs5aPdO2OrbLfiWs4s0M1N0syQImOA4LLmVN9PTiAgOIIeQJMlNhAjbGddIWFE1ZsPduj63g6FIVzhFEbgX6QkTZbXE8O4P1VHPIpBZJoEAAAUSyW41hyX0MM5eqeGT4NEMjTjXI1n8nT7+u95vOP/ccTi/DGP+LPcdQb42mllw8d47mHH67kOhKBeX+xVpT+p5ard6nyV7nnzQ/5BDb/Gcl/4Eu6SDICEsB6/Amqf3ltbwhGgbQ4AnvDeVP1lYAKiylYWTq6rFZZfqWvDj2+X0cf3K4IGP56uW5cfxdYWU7pUJifPNbf0LdIwdsdC2gl3aE7nU4p5s2mJMPddTLmydJiv7Pmvo6Lu6gCX1cj8B47YAwWusLapu3Dgsi36F/blE9EHDXs10BOdomwV6Iy0NBfYPjjUZU+8cw3Vk29lf+7pEVLRACgcVz8AI9+ky8bmJwPXpdzflN59dyZRuN5aZVe6NS+acAS/mQ
- br4YrOrR
- VzYEonp8G85J2njU0M8vvPuRK7g==
+X-Rspamd-Queue-Id: EB5B540010
+X-Stat-Signature: kisc1nibp7kuo1w7qhsen5emzex4ttqy
+X-HE-Tag: 1765966787-493179
+X-HE-Meta: U2FsdGVkX1/GNE+a8EkLH4XOsUZ3TTNeVae1SbSieRTsw4LR4+3Uu3zYDUNRPTNiCkx7OL3xCAupCAIFhXBmxHhi5+/RDwfJXYHQfFmeQSVOVEj7/djp1ftnMGMOFqwk4czqs8DpVqIeQ1T0mZvfQz0R7OM3C8RISSrsQbkCy1J9MbS9L9/+g/bUNuksYtMOelQgY6bHSZzUMBcWum24yq4gmjTs+RxpjGk3nhvp3YzH3m99iYzXTSYYoi+2pv4OPIUOuwresWxFSW3fyFK89ClebeUAiGhF42MTNsHhcG86AJjhPttN1sqLLHl7ztfM6ntLb9942KXuXQpaDwa/Mgb5YV1F4mpiroOqWKemNqV4ZZvqmYCIG9pV/yNAJN9T4Tjzz+5sZGY4GTjoP1biCmPitF1/VcwMFeE1zp0ryH5aSqVTNeF2LDPUJmFfLiVIuZ/fm9JPv14S8sM4skivdCca0ei4uY916cmt+pDfSYyGe2ZiA9ry+Lzh9SWw3a4BIWcnHhHtxme+Td8AJmw+QABvLp5BDw2pygtmSLRgjv00HOKX0C0jXvrlWnfttQVRMa4uOSMHxCZeWMzOzgTUnBFAtbbo//5Q5yrgzasZW+z8e6QUqA32CrGa6rPUHrpd0r6ag0ZrwkdlyBuGELsyuUoGaRdxofZeYiBfjl8i+G06ifdwMKGmFc/EZXUViwvitM7GdsESdecDHhvprtw/fOJdnE4C7Pijd3IYjCIbCZLOV+dPWDhBb4WsLYW0xHrtaCOol1+VeyF3EsJf3w0XotOVqzsfszv9ycGpf+apOoONOGFoJvv0BepHZmmJG4ZIKUyu6T2s/3RM2Juu2B3evfhjI9g2DwAmGrb6DZeWp0mbXzGm0W5/az5zam6TI9pEmb5LWNFj8El42Xw1G3sKZ6f4boO6BzPNG3+HaS+7R2D5Ype+OccJ0HCuhI+TOYULBoGzwNXyDihy//2/Vtx
+ Be3TmwHp
+ ck6X85dtuRdCKtSODae7DXLzdPOI1w20CFm1ssnnzvdSi2E60gqQ7fgE2m58KbJDHMpslSdvJttrqZuyG1DeHlQf1weANQddSz1BSlcBDlmMQsZwM9bf0++KnoBv11SU93/OWyBDMKy28Evb9bDdv19SxTfTudRsXYT/7EWjOBWgeKXbSG7y9lMizCZevzfZamY2mOt8ujfwLcYGDrMrkQoHDXnFCuCchBppNBYzBcK2Z04VhQGtVpXPStx1dGTe78VQ7U+OgYbai/8WEaIN4oDfo7XkbCAdkbS5Y4oJl0akXTBCZFmiqaDWnlL2rqVj/xJVa7zAw3rUEPFUju8Itl912460yIOdwfC93
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,42 +125,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Dec 17, 2025 at 10:54=E2=80=AFAM David Gow <davidgow@google.com> wr=
+ote:
+>
+> On Sat, 13 Dec 2025 at 08:07, Shuah Khan <skhan@linuxfoundation.org> wrot=
+e:
+> >
+> > On 12/4/25 07:12, Ethan Graham wrote:
+> > > This patch series introduces KFuzzTest, a lightweight framework for
+> > > creating in-kernel fuzz targets for internal kernel functions.
+> > >
+> > > The primary motivation for KFuzzTest is to simplify the fuzzing of
+> > > low-level, relatively stateless functions (e.g., data parsers, format
+> > > converters) that are difficult to exercise effectively from the sysca=
+ll
+> > > boundary. It is intended for in-situ fuzzing of kernel code without
+> > > requiring that it be built as a separate userspace library or that it=
+s
+> > > dependencies be stubbed out. Using a simple macro-based API, develope=
+rs
+> > > can add a new fuzz target with minimal boilerplate code.
+> > >
+> > > The core design consists of three main parts:
+> > > 1. The `FUZZ_TEST(name, struct_type)` and `FUZZ_TEST_SIMPLE(name)`
+> > >     macros that allow developers to easily define a fuzz test.
+> > > 2. A binary input format that allows a userspace fuzzer to serialize
+> > >     complex, pointer-rich C structures into a single buffer.
+> > > 3. Metadata for test targets, constraints, and annotations, which is
+> > >     emitted into dedicated ELF sections to allow for discovery and
+> > >     inspection by userspace tools. These are found in
+> > >     ".kfuzztest_{targets, constraints, annotations}".
+> > >
+> > > As of September 2025, syzkaller supports KFuzzTest targets out of the
+> > > box, and without requiring any hand-written descriptions - the fuzz
+> > > target and its constraints + annotations are the sole source of truth=
+.
+> > >
+> > > To validate the framework's end-to-end effectiveness, we performed an
+> > > experiment by manually introducing an off-by-one buffer over-read int=
+o
+> > > pkcs7_parse_message, like so:
+> > >
+> > > - ret =3D asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen);
+> > > + ret =3D asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen + 1);
+> > >
+> > > A syzkaller instance fuzzing the new test_pkcs7_parse_message target
+> > > introduced in patch 7 successfully triggered the bug inside of
+> > > asn1_ber_decoder in under 30 seconds from a cold start. Similar
+> > > experiments on the other new fuzz targets (patches 8-9) also
+> > > successfully identified injected bugs, proving that KFuzzTest is
+> > > effective when paired with a coverage-guided fuzzing engine.
+> > >
+> >
+> > As discussed at LPC, the tight tie between one single external user-spa=
+ce
+> > tool isn't something I am in favor of. The reason being, if the userspa=
+ce
+> > app disappears all this kernel code stays with no way to trigger.
+> >
+> > Ethan and I discussed at LPC and I asked Ethan to come up with a generi=
+c way
+> > to trigger the fuzz code that doesn't solely depend on a single users-s=
+pace
+> > application.
+> >
+>
+> FWIW, the included kfuzztest-bridge utility works fine as a separate,
+> in-tree way of triggering the fuzz code. It's definitely not totally
+> standalone, but can be useful with some ad-hoc descriptions and piping
+> through /dev/urandom or similar. (Personally, I think it'd be a really
+> nice way of distributing reproducers.)
+>
+> The only thing really missing would be having the kfuzztest-bridge
+> interface descriptions available (or, ideally, autogenerated somehow).
+> Maybe a simple wrapper to run it in a loop as a super-basic
+> (non-guided) fuzzer, if you wanted to be fancy.
+>
+> -- David
 
---t/5ZkYiwUFTRW9SY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Dec 16, 2025 at 02:26:33PM +0000, Kevin Brodsky wrote:
-> pagemap_ioctl always reports success, whether the tests succeeded or
-> not. Call ksft_finished() to report the right status.
-
-> While at it also fix the exit code in unexpected situations:
-
-This is a general sign that you should have muliple patches...
-
-> - Report FAIL if we failed to open /proc/self/pagemap (returning
->   -EINVAL from main() is meaningless)
-
-If you do a new version it's probably worth noting that this is a
-non-optional feature introduced a long time ago so the open should never
-fail.
-
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
---t/5ZkYiwUFTRW9SY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlCgSkACgkQJNaLcl1U
-h9BIZAf8CjLi+jiPeYVUBYqds8b9OmmeB8XkCEyL0M5hPBsqY2/kDzeZimziH9XO
-Qw/OC4nY9wuPBpB3oIXS9DepB+1FKfu52OCaMJvlTyyLoJ+cmCghU+SGM2/c8xAi
-ATmIz1z4W1zOeh9BAordLtgA29AmuWbGZw7zUKVtTzKWxkh2ppHinT9KlnKuiQjO
-PhwOMWhv0hQYjn8qE/xfZIyOljbebU8uPJ1/ic01NYZpfV02153XV5QlTiCTIBE+
-4mBn13VFWVqA92WHd0OczoiRsLy/tgB/L8sGBmDV+0m5BvFU3mg6GfAsMUvQDcu4
-S2+duB9Czrzwn4vcHQPd+xrCaaMFSw==
-=g9QH
------END PGP SIGNATURE-----
-
---t/5ZkYiwUFTRW9SY--
+An alternative Ethan and I discussed was implementing only
+FUZZ_TEST_SIMPLE for the initial commit.
+It wouldn't even need the bridge tool, because the inputs are
+unstructured, and triggering them would involve running `head -c N
+/dev/urandom > /sys/kernel/debug/kfuzztest/TEST_NAME/input_simple`
+This won't let us pass complex data structures from the userspace, but
+we can revisit that when there's an actual demand for it.
 
