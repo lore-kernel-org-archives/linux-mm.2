@@ -4,118 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CB7D64077
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 06:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 727F2D64077
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 06:05:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A0CD6B0005; Wed, 17 Dec 2025 01:05:09 -0500 (EST)
+	id D7D106B0089; Wed, 17 Dec 2025 01:05:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34E616B0089; Wed, 17 Dec 2025 01:05:09 -0500 (EST)
+	id D26DD6B008A; Wed, 17 Dec 2025 01:05:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24D6C6B008A; Wed, 17 Dec 2025 01:05:09 -0500 (EST)
+	id C29726B008C; Wed, 17 Dec 2025 01:05:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FEE16B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 01:05:09 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFBC313BCEB
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:05:08 +0000 (UTC)
-X-FDA: 84227925096.05.5CC1796
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E8CB34000A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:05:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dOGwr88z;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B390F6B0089
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 01:05:20 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C05EC08EE
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:05:20 +0000 (UTC)
+X-FDA: 84227925600.08.8ED4290
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5252D40013
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:05:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ALUBOEId;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765951507;
+	s=arc-20220608; t=1765951518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Pyag2RFbDMZaEW1ZUfh2mD7Rosxr3z/BITgh98T+I7s=;
-	b=NgdwyaM6gFiW34Jvti7hzDSSJdiuFOqlmrZ/jCqY3Zt116Uc1goS8O4THMUcFK84rtHqOy
-	bZB/lA+q0R+tbYlqh6wm+JyvkRa6o7dREwAIxdPxB4h8JbgRkaht8cu2MGPpUliYlRjGG1
-	QVLSTa46xSt4eJBZKrHNMh5TL8Z8Bbo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dOGwr88z;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765951507; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tzkiM50k6ZG3sgfx0RYbWFnfc88JekT6DSlmQNXvWhM=;
+	b=AkWuv55+jPB2C3E3J6195BY3C04uo/hFrqgoj5C0YWm8GSZIT8dQM/+qt5RMeNMKE9+u02
+	tyoj7/7R9wj1/Yt+Y7xlCEAPWcu5grHBVzaH8p9qOBjimb7KzwkmaRhLJRSv3TUcRzKVDf
+	9y9nG/ias0HDcZ/SxhGxHYTYzuPcRa0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765951518; a=rsa-sha256;
 	cv=none;
-	b=oHlHDO4/jymq5h+It4qejuDuVCzvSu8uck6T+UViYQkPtWXGTuIuNUfphp3EPP81puC5uW
-	AAYn+U/hI7d0qmes8IN0G7S8KDGeDRO911Q3fZpZKHW3SGw+swqH1NPkBhiDEQ24arEGdk
-	r13GBM/zPjNmbcCC2pnO4OPJVhufGI0=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-78c5adeb964so52943307b3.1
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:05:06 -0800 (PST)
+	b=cSaWsbKDuj0+IoOJ5P6v6nJFNzHuZXc6wPIMnAJpaOQQdaMZyfff19c3tbMemKrSkpGOFU
+	d/O4/bMw7SxgtKCz4AZufr3v4g1ImnrP3gvXi2thME0XaAV7JaoQXlrlTfkcvHbgW96e3r
+	byKmkqUlARPAxjHLRsKfpmGn6LLobr8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ALUBOEId;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-647a3bca834so8036437a12.2
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:05:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765951506; x=1766556306; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pyag2RFbDMZaEW1ZUfh2mD7Rosxr3z/BITgh98T+I7s=;
-        b=dOGwr88z1Bd32zT73c5SZIUmozu08uN3SGji9vNtSc3TsCX95ojrL47ZGV0EHDqs8z
-         ZIkls72b8ekTxyFGrFprXRk+7/bB4dp4bBq6y8VlMlDU6EmbneGcNY+6PjJ3obuNH/YN
-         p+fIJmJFcQmqNuwn6pDybE04Z9uMA4oEoJt025qF9CMLflgTbH70ej1m+5VLYnM777jU
-         P5gGP5MmyyA6/yHyXOeiHMJ8H1OtbJK5LK08VhtaxjcTS6B2WOfMd6J5NkFtWBTOIQsi
-         PoehWIc61uuh654UeOHpTK+r+WDWcE5QchKv7GefI6HsNxBP6qCFxD7j3VwNkGbvO2Zr
-         xz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765951506; x=1766556306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1765951517; x=1766556317; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pyag2RFbDMZaEW1ZUfh2mD7Rosxr3z/BITgh98T+I7s=;
-        b=JtZACvKZgTCeGqtun4zP9BjBI6zC2uhm6mrWPKhfxN0rfC0wesMUKqH5eAwcHDzksR
-         ThzqRa6ox45C7i2+fpIjKPdH6WB3yutzW6WP1po+j+tQ9TAlmUMEHIJB8KxmcldDn356
-         WFeV1XZOzQbMsM2t06X0BKrWvuDIJ90TT2Va8vm0m3DOwJ4f3S3AhMaJ08rHmVw0j52/
-         zFRxqN7Ukzc9w6Fgc/RqIQWS7jpE509nzLIW/QyWFtQDIFlsuGCtWlRAHJgM8X81T3uV
-         zGWTI4IgA2XBLqiqU96LqAUXNwLFivT7uypim2+7zJbOwbFKpIaEpiRq1CX44NHbICwH
-         Djww==
-X-Forwarded-Encrypted: i=1; AJvYcCUnUkGwk7e6GFyd3ozAUYiMoNyy48223Dd+9pvJ+H+CBg2z/8uCMMEsDFH27lLLj9wBGEz/XcvMJg==@kvack.org
-X-Gm-Message-State: AOJu0Yy9SlkVI84Wf4ZOkWQRB98yqrrqOc1F/cYCmWd9dqYfc2HTOOLO
-	GJysbDcHWdHvbiULuH5GuOLk5WhwOweH5Fcynxv3vp0j2eA9goGL7W6Y
-X-Gm-Gg: AY/fxX7ctmu07lkges8pC4H5gOofWt/TL/pRWjx96a1i2C78QYq/Ci3NH1o5xDCzF2r
-	9MroMN7fX2ybhxUKO6z0bQtjcy3rzISvRZaCAqmmDQzb3RMV09dfnMqEdiMT4RELJqTdJW5lI3U
-	n/fGsyAoJKAzb7V3PdXPJXLhnJaZQbgdGudJdiTvSUSq9aCIRXHghDuwJcHD6wQsKbTJ2Njt0oz
-	3DFLXVD0Z1oW2kX4dztyAWiZ/O+QFKu6n+TEqCkabZCYoBAr5plsZ9ng8BPFmhgWs2yVxc1uH2y
-	Ta8w9AK/lEuu35+9eUQSmbbPMxR9Bc98a4nLco1wV6BvD2UJFnMuqTDms3pLbd2wh5W8Rt5vMlU
-	/Ub+y4CigoeJQAclFwNSD44bjaGNKn3Wr/ezXjc5w8j4zR8HAQ5KqfqI3X/ZDSd0TOcvdeLAOf+
-	4xSZI5v79IYnHuZKwlpg1Cwg==
-X-Google-Smtp-Source: AGHT+IELDZriJQKqPex0nsZHy75JNITcXwoBTqk7IfmCVrXhJRy9Z0N5R1WndPoDPwVcQlcm/Ub7lQ==
-X-Received: by 2002:a05:690e:1307:b0:640:d009:e998 with SMTP id 956f58d0204a3-645555cdd3cmr12576419d50.12.1765951505907;
-        Tue, 16 Dec 2025 22:05:05 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477db6476sm8629460d50.20.2025.12.16.22.05.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 22:05:05 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Palmer <daniel@0x0f.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/page_alloc: restore 0-handling to zone_set_pageset_high_and_batch
-Date: Tue, 16 Dec 2025 22:05:03 -0800
-Message-ID: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=tzkiM50k6ZG3sgfx0RYbWFnfc88JekT6DSlmQNXvWhM=;
+        b=ALUBOEIdZxOkkarfqpwu8Pk3pIBvYPD6nvg5I3x/9aKvlvMXxHIyOGKurR/NQJ3E4f
+         duOmlZDdNrUwiF5B1+mn7ZkY8U0knqElJlHQxJgCWIdV7r1rwNCkzKFaR2IO9uOw61ra
+         Wyn7EbsOriT7Q3s7wab0i+zG9bWKrev9DyoQv/5rS9W+LXw1GOL2jTm8CeTjgL+HGnji
+         VRufKCwPSngzqSSc8XZfvhTGn5V6HR9nYGj0U5AorgbLU2sTzqUv2iI9IxwsbYk7xDiH
+         roh3sB+eyQugW8IO8fWenbS2ZPq9kX6uLpt8rW1HKqnu+j9iSswpDWs+MaYrn2atVPxP
+         01dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765951517; x=1766556317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tzkiM50k6ZG3sgfx0RYbWFnfc88JekT6DSlmQNXvWhM=;
+        b=bK6w9DsTtanz/aD/zSeGDlZdCTo5tANfWpWiZCEMmF0fFVFnVrCJd1IGgH+5dCdjGE
+         pJ0Ke7n7pZHloGpmIFOQs+ff3UuD6sMCqjZtd0IkZWmSFk5DbfoqcJhv5vc/duxJiOVU
+         v0rqfurpXGGSVehMTnndkOA6+/EzMH3HJW34qf8njwUL/L+7SZSbF0YqcmcjU0cApcyP
+         LOwIFvc5sD85rfKkOBwCdXdFpR4UXpQ618jXn5XntuKGwtpNMlyDQO/vngFXDgciikWd
+         1qP1W14SY0/JnZX3K+fEEEwuPiSAnJddyL5ZpxenNiTzvR3wLh03qvwOvZ66TGXCiHkA
+         03Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOybNEIYxOdsRzj3pbCcuQ172HgWR7gKjSe9GAhWamu+icqn15lvt63qxzEOnu23bYq6dG95YTzw==@kvack.org
+X-Gm-Message-State: AOJu0YwwWkbrMoK1za+xOadcf7Rd0fOJOyPTgciOIsuca+WsTFOCsr9c
+	5EZRffLQ+xp08Fy26+vdtlGYv4AHNLFhF2K2blzFsCKu5wP7vWhL3JoN6LPsB32f8RdtN+B9EQ2
+	Q3LPyDmgriUnrDBGjKZ3qrfQY88SaF8E=
+X-Gm-Gg: AY/fxX6a396k0YA2rGR6fvg1Rx8W4AkcpUDnp2YpFrUN1y8iPv7UuUjQncrM9+wocCt
+	pCd0U9BkEZkwpt9mI2c4zkZ6V6Xec8mH7/7tbUtcQmwYAaOJgoDrcu13AZi6g7xIe0woSwKGmY3
+	8Urg1YVhAc7VFQPt+rV2OgQwZKBqDQm+wU//K5sVX6SA29PU377G0noRmRELGcoRaJFX+jeMBD3
+	j1y810o/FjyPEjCXBAAAn5z+n30A4gBa1fcmJDGcaQzhrQt8KsNxHDmEeC0lXj5G100ZG9zFdmr
+	gxDlMbRv4v5XFaiBkFuE/FZIRew=
+X-Google-Smtp-Source: AGHT+IGHT9jCKXeBNS5EMB6lGm5IgemUGXvguhOQ+9dd3Xx5808DPEiM6GtOUMiv99PRSR6+0hWZ/EweVhzpHMtch1M=
+X-Received: by 2002:a05:6402:42c8:b0:647:a127:7c1e with SMTP id
+ 4fb4d7f45d1cf-6499b1fa9demr16612807a12.20.1765951516383; Tue, 16 Dec 2025
+ 22:05:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E8CB34000A
-X-Stat-Signature: nbkq3wsijczokwf3uymyr3qhzaq3t67x
+References: <20251216200727.2360228-1-bijan311@gmail.com> <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
+ <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
+In-Reply-To: <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 17 Dec 2025 14:04:39 +0800
+X-Gm-Features: AQt7F2rt9hYgbWGNlc1IQV9TncnI_OOEsGhWX4JltYOTG7dWvmbkitMkRSii6D0
+Message-ID: <CAMgjq7C+SsrtLjL-c7yiHh6sLi5Nxi4Rhuar2OoyU8WA4YrANA@mail.gmail.com>
+Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in folio_expected_ref_count()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Bijan Tabatabai <bijan311@gmail.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shivankg@amd.com, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	Chris Li <chrisl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m6owddjstahmjqfn6s51pfipft76i111
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5252D40013
 X-Rspam-User: 
-X-HE-Tag: 1765951506-557841
-X-HE-Meta: U2FsdGVkX1+0pWrmUC4X9LBDIm8Fsi3Yncx4Bm01Ot/bd3XaJ3A95yoVp/FoYRDC3eoc3uu4FF89LA0TOrR7DwD4e72DTl98PH3ICE1MlffPpJMmT31S15P2VoVNdbCqcYqWIyMomQjM3/go9NiXD+NuwkADvUJjjTVyGx7JzbUa/QchMkwBBm/As2fEg3Xmx8iYebN7CZ30KoCmz68ppVt7BILT5NhMKncxY0OxUf55TQ2A1FCuMTTOtCr9rdRma4d6x5TVu1Ethv6jPZAEg+uV6gWppUhM9GEiIb5BDoRl90hu9n5OGaXxjy+n/fkFllh56Du4mwGyYvA2NTKV2/zgN6oi/srPAZ6wG3bX99VLkGRU9o/QTRG4KSSTmGKV+v1EBLBU0zbDxvf4Cf2kUFHQEMaAiGX9uO6N6XR1BDRsgo2j9J5m6DE4nkQpQ1OpAyN1bS/BskVJY98MtKWfQkB42uUBqkPb1EhE2p3Jj5HcY9hQf4ILjsDgRcrSTZEY0cNPF/xJ4UdLtXM9z+SvGtQA8JTYeHT5pdPhZGBys6te1taX78uXimxM12Ea0mq03hNq7Y9ujKSQir2GjrIxB3ex8kXXs/OOTDc1iGKxSorHm01kw2yefDfC57QAS8rkFN2+nVuHJxw6SEJkepicXsxBas2phHwJDKrVx4H3v6fAgQcDEGP6vHaTiPp6XOpSI1uMrFiT8S6dRotDVnOIq1cBPHZjE3gmZTeEQjBNXxXGQ/40QTVsaXICwbMOYqR23/9FSxDrL6x7IHDXbcQ3hCA2Vz8ETplCMohsXZTA7v6h41Lo0R/RfyPP61tYUTob5OkfvkH/kzt1EI5C62EyzaAhQI0D1dskZT9Ozn9KVMkH/zUH4BMYER/FTdZw6mbHmJaEAdW7La7RgzidtTRQn0bkW7Bzh6d+SMe9lXWh8xHt+KLEdGMosiW7pE61QWuBDxtjEeoNraLxsbGTnBs
- fFBNCSzJ
- FSAhWs3dL5P4s/b4dDWyTWuHTLUwmje7O0FRVpV5+YLkjlj6TMOU/LkwOThC49jcCj3Nc8GDIHcHn5KCZb5voF6ZyBeWH8NAK2FZhBMnN1iSNCXMtSWqNuKQbBfYS+cKvN86xPFM+/mH8ndj8wq/jWfYHRk7pFZhnrrVF1wAuXKIlQXxOlbZoR/6zWnlvsCZp9SdJ/R4/NMjS1guB9etKHKQUdkToUeVogmkqtXU2cx7BS2xNjiI/Mwt9PyD3yj5YWEvcaevju9DTKYjk527DT9mF7CqKDnVm5mofgsyOC/D7E1vw2yrSRRWrLRtb9DlJhBHHv4XGCjZwFPVojRUVJ7vfb8UkC6mIobg/KB8B4ct/oZ+ttWWyT3Tja6Fk1+WAEbWtJ1kqgp3BpFt7RMTkObTrtavEMg6xEb8SGGo1tdlP2VBk88XdRz786eBqWp0qO1lIs40ltgj7Kr9fINVIU+tcA74OEbz797cm86hXylW8bgAGpJROGPTHgbq2vFXxnYDvYsg/V1LYRKLzRXtJKW+3A1OU3rKbbbJidgGvYsdCS8YGAH3EhUOY2qzpCLSOYfCosf9Ew+ri8EYxh/IyAdliBQ==
+X-HE-Tag: 1765951518-226548
+X-HE-Meta: U2FsdGVkX1+cdbcb7IxH6mbQwuvY3jHZQ8Daj3JlnIVP7FW3w2zhvk3VCTHz+VUarQIKz0eLgTOHIjoQ9AtKydF7zS20afUbMQLpd2r2vdFk074x92KNEA5BwlybTbG7GMERO4bCwPL5bsGlRo/Ce9Hym2NQBiv8iiAIXuuqW0eZbIDMrVbgxHY6G0uqUSxW96nRjZ1kGb+CsEtpMeSItBR9JhrZ9zA5d1hA+gjTLddMtqNz9OegQRxrM5GDYBT1tJzGSLp5M04LH6WjLrjLVmtadES0Mfd2+5SsDyd/bOTp2NJalMGx6IThYBldFzrKxBPIF+hJ8/R6uX98IERy3FOyGfyoQJQo7ttdleeYh4UpdlhG7EnJtZH43pmzSPTl0WyeO0W+Ef9FM+brfFBkX2fYLtX6EUzgF+AzyzOo30Ije96sP8TJ3tVJfi//1rVvDmA9Y5A8GqhHQJqX+Wr7bpB8XiHlkpKpmIsLT6YXY/FOWCH2Xu3tnko9guXq8FHRj3UUj5n3F7VjjukP+IN/VfnyaDB4hJE1vWe4O+v3d3nyU0TZbZV+cxdBerm2Ly5CPIz4nJB5Druf8Ne+vDITcbiQ2TN39sQTFQdVsGIDfRj/MA9Cm3ML8G811zgfJhwt3nlRFIvXC144cRZeO0wpjPVEQDFxdVnHi0vlwIRfE3vJMjbo2Mv/5p1H/yOVkNc09gyYv4ojA7DysNJob8zzIYdaev0axYElLfLZZXrUMlCKBwSyPuADhWrWtOSY67+L+iLuf2rSc0HZkCeCLDCeSzfyn4rF7iMQ/6ByQvT5i0sFigP7tdUYHXYu8d8v5xV8H2SA2tMxYH92XrKTFb+hNzRg4VtSSIeR1j2C35zJJ7i1dBMFegsZenqoyqJnCKE0SY8oXjI91In2B09vMg84r5/cvTB/FHiKFlZxRjGeVWKPrgTYnbY6hbljG/ost1WNlTwfXGMSoTI0tbmOti1
+ l89bg7Qr
+ hWVS54BA5HIiVkS+TqKidmgZvj7LNMxO/0hcNxoopSqWrWgHdfPGfRaw6VJa87A6InptqiRWM9C5Ap6jAJ3yU4r9VOVm6Yws+5dJt0N7bOqs85sN2oKy245yz/57Bk80Mb6c+C9CcrDUWPj44uJVmicYnpiwr8Y4QqX900RRGSHwSwPb036xuCC/1kkpcToxpR89+BfSCGQGd+nigAIs8SavzKSR5VQ5RnYVE7V0V3aeZg6avXa0qt6UVDCn/G4zS29RQ7yrK70+j+hOzvJ+Y3zkHLXtXZ9SCEx4s5OLV/fROEGcOSAgX86m6+aUt/eGxCcKIZ/CFldpZW3ApktoQar48jQ+Bj6YvFDzrqG2DJoAiYjRfdqXRWYopG+Znx5OeGRvin2/yE79Agij8OuPg7dNEbVCt+KOBUhbJpl1RFY82aEdEEPNotLgreIDAkPQ7e+uhiuQoeWk1GVMw6jwPTV2pfQ3iMUjs+Hm7aNh3ZZhAeAyJdsEVKB4Xph2dqnpQ91QtfD13GojwEIyvTl8/eOacHTMA4BbOLgaqnqIxvaR92Io=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,43 +122,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-moved the error handling (0-handling) of zone_batchsize from its
-callers to inside the function. However, the commit left out the error
-handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+On Wed, Dec 17, 2025 at 8:34=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 16 Dec 2025, at 19:07, David Hildenbrand (Red Hat) wrote:
+>
+> > On 12/16/25 21:07, Bijan Tabatabai wrote:
+> >> Currently, folio_expected_ref_count() only adds references for the swa=
+p
+> >> cache if the folio is anonymous. However, according to the comment abo=
+ve
+> >> the definition of PG_swapcache in enum pageflags, shmem folios can als=
+o
+> >> have PG_swapcache set. This patch makes sure references for the swap
+> >> cache are added if folio_test_swapcache(folio) is true.
+> >>
+> >> This issue was found when trying to hot-unplug memory in a QEMU/KVM
+> >> virtual machine. When initiating hot-unplug when most of the guest
+> >> memory is allocated, hot-unplug hangs partway through removal due to
+> >> migration failures. The following message would be printed several
+> >> times, and would be printed again about every five seconds:
+> >>
+> >> [   49.641309] migrating pfn b12f25 failed ret:7
+> >> [   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 in=
+dex:0x7f404d925 pfn:0xb12f25
+> >> [   49.641311] aops:swap_aops
+> >> [   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|r=
+eclaim|swapbacked|node=3D0|zone=3D3)
+> >> [   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8=
+ 0000000000000000
+> >> [   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff=
+ 0000000000000000
+> >> [   49.641315] page dumped because: migration failure
+> >>
+> >> When debugging this, I found that these migration failures were due to
+> >> __migrate_folio() returning -EAGAIN for a small set of folios because
+> >> the expected reference count it calculates via folio_expected_ref_coun=
+t()
+> >> is one less than the actual reference count of the folios. Furthermore=
+,
+> >> all of the affected folios were not anonymous, but had the PG_swapcach=
+e
+> >> flag set, inspiring this patch. After applying this patch, the memory
+> >> hot-unplug behaves as expected.
+> >>
+> >> I tested this on a machine running Ubuntu 24.04 with kernel version
+> >> 6.8.0-90-generic and 64GB of memory. The guest VM is managed by libvir=
+t
+> >> and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
+> >> mm-unstable branch as a Dec 16, 2025 was also tested and behaves the
+> >> same) and 48GB of memory. The libvirt XML definition for the VM can be
+> >> found at [1]. CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in
+> >> the guest kernel so the hot-pluggable memory is automatically onlined.
+> >>
+> >> Below are the steps to reproduce this behavior:
+> >>
+> >> 1) Define and start and virtual machine
+> >>    host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml fr=
+om [1]
+> >>    host$ virsh -c qemu:///system start test_vm
+> >>
+> >> 2) Setup swap in the guest
+> >>    guest$ sudo fallocate -l 32G /swapfile
+> >>    guest$ sudo chmod 0600 /swapfile
+> >>    guest$ sudo mkswap /swapfile
+> >>    guest$ sudo swapon /swapfile
+> >>
+> >> 3) Use alloc_data [2] to allocate most of the remaining guest memory
+> >>    guest$ ./alloc_data 45
+> >>
+> >> 4) In a separate guest terminal, monitor the amount of used memory
+> >>    guest$ watch -n1 free -h
+> >>
+> >> 5) When alloc_data has finished allocating, initiate the memory
+> >> hot-unplug using the provided xml file [3]
+> >>    host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --=
+live
+> >>
+> >> After initiating the memory hot-unplug, you should see the amount of
+> >> available memory in the guest decrease, and the amount of used swap da=
+ta
+> >> increase. If everything works as expected, when all of the memory is
+> >> unplugged, there should be around 8.5-9GB of data in swap. If the
+> >> unplugging is unsuccessful, the amount of used swap data will settle
+> >> below that. If that happens, you should be able to see log messages in
+> >> dmesg similar to the one posted above.
+> >>
+> >> [1] https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml
+> >> [2] https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c
+> >> [3] https://github.com/BijanT/linux_patch_files/blob/main/remove.xml
+> >>
+> >> Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference=
+ count calculation")
+> >> Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
+> >> ---
+> >>
+> >> I am not very familiar with the memory hot-(un)plug or swapping code, =
+so
+> >> I am not 100% certain if this patch actually solves the root of the
+> >> problem. I believe the issue is from shmem folios, in which case I bel=
+ieve
+> >> this patch is correct. However, I couldn't think of an easy way to con=
+firm
+> >> that the affected folios were from shmem. I guess it could be possible=
+ that
+> >> the root cause could be from some bug where some anonymous pages do no=
+t
+> >> return true to folio_test_anon(). I don't think that's the case, but
+> >> figured the MM maintainers would have a better idea of what's going on=
+.
+>
+> I am not sure about if shmem in swapcache causes the issue, since
+> the above setup does not involve shmem. +Baolin and Hugh for some insight=
+.
+>
+> But David also mentioned that in __read_swap_cache_async() there is a cha=
+nce
+> that anon folio in swapcache can have anon flag not set yet. +Chris and K=
+airui
+> for more analysis.
 
-Since in the NOMMU case the reported-to-user batchsize should still be 0,
-we would only like the error handling to exist in the callsites that
-set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
+Yeah, that's possible, a typical case is swap readahead will alloc and
+add folios into swap cache, but won't add it to anon/shmem mapping.
+Anon/shmem will use the folio in swapcache upon page fault, and make
+it anon/shmem folio by then.
 
-Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
-on NOMMU systems.
-
-Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-Reported-by: Daniel Palmer <daniel@thingy.jp>
-Closes: https://lore.kernel.org/linux-mm/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/42143500-c380-41fe-815c-696c17241506@roeck-us.net/
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..10c1297fd3ea 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6045,7 +6045,7 @@ static void zone_set_pageset_high_and_batch(struct zone *zone, int cpu_online)
- {
- 	int new_high_min, new_high_max, new_batch;
- 
--	new_batch = zone_batchsize(zone);
-+	new_batch = max(1, zone_batchsize(zone));
- 	if (percpu_pagelist_high_fraction) {
- 		new_high_min = zone_highsize(zone, new_batch, cpu_online,
- 					     percpu_pagelist_high_fraction);
-
-base-commit: 40fbbd64bba6c6e7a72885d2f59b6a3be9991eeb
--- 
-2.47.3
+This change looks good to me too, thanks for Ccing me.
 
