@@ -4,125 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 503F4D66B85
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 21:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92C6D66BB2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 21:22:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E3366B0089; Wed, 17 Dec 2025 16:13:51 -0500 (EST)
+	id 425F76B0005; Wed, 17 Dec 2025 16:22:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53C336B008A; Wed, 17 Dec 2025 16:13:51 -0500 (EST)
+	id 3A9196B0089; Wed, 17 Dec 2025 16:22:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D32E6B008C; Wed, 17 Dec 2025 16:13:51 -0500 (EST)
+	id 28AA06B008A; Wed, 17 Dec 2025 16:22:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 287246B0089
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:13:51 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEF801372A9
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:13:50 +0000 (UTC)
-X-FDA: 84230215020.20.81C1609
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04139C0019
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:13:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HmL0ottM;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of grovesaustin@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=grovesaustin@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766006029; a=rsa-sha256;
-	cv=none;
-	b=xiyvHnR/K/3Dx58DtX9/GApkNIg0BlyxhqpQp97ouaov7rGawkCWStzCpamBy9lVOOtgTz
-	/sCledbSf6/jeOYcjG+ISPc1WRQW1Ry9oDyDMhs6HaOro5n/4LLsOy0KNVrM9NrNoPZICb
-	aE2wPx9BoDseRuR2ZB6VOE9nOGQJbYs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HmL0ottM;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of grovesaustin@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=grovesaustin@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 14C946B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:22:14 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC4041A0C35
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:22:13 +0000 (UTC)
+X-FDA: 84230236146.25.0BFBE23
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 970D6100002
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:22:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=VJIExVUA;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766006029;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1766006531;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WykdBCYT8yJh4sQTY3N188JsaYBSsyfv2BDjqpmbRM8=;
-	b=11S64vDUAtUj0y/wooFw/Xt57rTd6jYcfpFq9ZZOfsJUmhINxLTYK3YcuJ33gTuujBXJOZ
-	XiPs5JApbxVgdcqUTmCnOMaK0QmxDdDr6zh9g5NrcmW8wY324DEFRRPuTaALaInN3ixyDi
-	wrzWPYrpm2wtm69MtwZjOZUsx3Im4yo=
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c75dd36b1bso4986326a34.2
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:13:48 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bOOgnzCzdNQgnsHYyEnitX5C1ZN2cK+8ABaNl5MoIv8=;
+	b=yiwjyRZoNpYtWwMNIfYlip/RpqUvMJKU1uRYdZOkCo55NtjZ8XvmSajEMrqO5Rl9CPOQZg
+	K+6oMK+9SPv8DHRps8CJZYwY4jBP+tBXC/hl4M+7klFaM9APNW8aQZ4JH427jocIgGPnBP
+	TgAkTInermU6d4XFZn3o8lKzLizdXdg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766006531; a=rsa-sha256;
+	cv=none;
+	b=52VLF43v+I19tNZLsku0ullNOtvs45r2auVknVpsUS3Lx0umSkWTuZB6WfYyAVUcOgBnlI
+	3KgoRJJnSJICrsQKTHXqVr4JeFKDktwcV7XHaU4akLKZdclydnOBXe5NCq/x8q+n4FAbR/
+	bPkpJtthnGPWkRCVKF9ocPyu64I5uLI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=VJIExVUA;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88a347c424aso47788496d6.0
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:22:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766006028; x=1766610828; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WykdBCYT8yJh4sQTY3N188JsaYBSsyfv2BDjqpmbRM8=;
-        b=HmL0ottM4b1JpbQxzeuOUy9am2fQTLGS39n7IAo5l3VHnpTV5wk+mNVWbXfhnYKUXt
-         rngACwhFXn8x8l2sp4nc26CIa4BGlHUk/D7G6W5fn6zq5vjAbZUZhf/TlZH3FKFcheJk
-         LuPhJmrmrBxCAUXSVZZwk95fi6feBmRiEB63Z2w8Y9EA+eJe1mBORSdBVpWjkG1dzw4d
-         asef4/lcWm0q83H2EeaPSIdceBCfcO3BYwg4TsGL4F0wvNWgq/MdxUpDyzJVHfKDLbgw
-         TxIv1588MoA+zQgLe3XgBpmT4JJ9eLuKsBW4s4jNNedFuxVvUViNEpldEqENZiJqTf++
-         dwLQ==
+        d=cmpxchg.org; s=google; t=1766006530; x=1766611330; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bOOgnzCzdNQgnsHYyEnitX5C1ZN2cK+8ABaNl5MoIv8=;
+        b=VJIExVUAeGiDNeTx+lhJsVU1Pyq+Mf+vA96y1K2rfKpri5X/QMnSSQCxZmbjmulGyR
+         1KxdzTDstfxw+wrWwUypGFlFX7Uv6gQaLOKspiNs/fquhQ87lb0+oEj0qWswHcWsavP7
+         IKZgNkxDjv/zIU+sxhVD6KKsEq18WO8qvdCl2Z86mnGiIY3ywm3MCy8BMOj2tEZhPfrq
+         QAbpm4o8/ahYCp6cysi364UnGyAS6puy888XAQ8L5g7S50zq0VnyMn9vN7su6pppc0vo
+         gzs6Oo8mgPopcoxoj7F6hdo4pSPyrTJZWJYhNTjpcvsFw5R8o8TTFhycC0ULct0vxhqa
+         h5Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766006028; x=1766610828;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WykdBCYT8yJh4sQTY3N188JsaYBSsyfv2BDjqpmbRM8=;
-        b=SUjwIiWLLkniuebaeYisYxXcqJbBf7gQwFUGAImrVyENjf6YFq8Mp00cGpJEsjlKgi
-         CUqPogWGIqV97gMUE6AFvQiZENsZNGU4J2X0fksJt9xTIyfoHoO+QvbmhE6VTErWS29B
-         pedsyoUQdKjWYFE3lfLDECdBzCI8VK4sdsQYWMqQoDEVZzp1IZWDfySDkj97NgUW4zy/
-         B0BZZB1niJEue/uF7ks+2zhTXiFTB5cUmRKpOjtEq9Ghmm+DyNCe388a0P8RNG/fd6IB
-         Cgijkhb/Dv9M3ANL3IFpWBmkDzLQFGZetKgUJARmGYAwKYgJWlZTskLMH75YGY4+FNQw
-         jHDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWI9MlrnfvVxdYfNcgl+PiQpovgFXvbfGiK/qEVcJahlHgvNrX+mVa7jTmosYIqs/wlf10pAZv2ng==@kvack.org
-X-Gm-Message-State: AOJu0YxiCMZuNiRkDvYleKxxBZe7Q0dRVGBL0UECEXe4l4Yj1Kb+WiDh
-	D4gTGG2Z1+E+m6B07ZfNKsj4fNV+swycnSFUWwMAuxA6jM9gZPs1ycoy
-X-Gm-Gg: AY/fxX6v7W/vxe//VFoBpIGipmy61OhogqXqF5M5ZQYDHlEfSFTXfg6Qj2+N1rX/QHN
-	AMq6F0cKYQzAeeIfw53iat15AqTNoHPUJcRK8lCHXd2J5A1N2swVO0IAkuq0L+o8Sk5C7oB7GLS
-	cXvVjJHl8NawWI3mVpR+VLPEINEZXA5flPdcg+pyEVLhACCR9xtEMTF7ACZa/O0N30OMkcURZf4
-	XVuns3cQ9ItF8NrIRkVP/XfWKV5d7QSCuvjTohApIBSxVYN9rzyxZJB1VunMrHs3DxmZISnQBmB
-	Tke5toQMsup9BSV0ImXGPFMAex6xB8+DBYBEtO9eCNVWJIbNMqSFadiQzbVOyHgfM7AfiR7209J
-	318Ges9jN/zqCkN+jQdsaDpOe/o3Zixike2gNUq12p93U3jzE7w2Pss0IPRNpbjfGX3LrObSJ1J
-	xb6O+aVN2Yxah5GKM4TNHlZJ/og3BYsq2UwwZFEAB93so=
-X-Google-Smtp-Source: AGHT+IEJ79LfZmTkRRoNE6whe1Hjdhe/lgdvw3Z/AFdcRJKL1VDs0J2lLY280PufpqnuhZpriR704A==
-X-Received: by 2002:a05:6830:254a:b0:7c6:9d7b:b033 with SMTP id 46e09a7af769-7cae8355339mr10935440a34.22.1766006027800;
-        Wed, 17 Dec 2025 13:13:47 -0800 (PST)
-Received: from localhost.localdomain ([2603:8080:1500:3d89:a468:73ca:1f36:d52])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3fa179f3a71sm354640fac.0.2025.12.17.13.13.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 17 Dec 2025 13:13:47 -0800 (PST)
-From: John Groves <John@Groves.net>
-X-Google-Original-From: John Groves <john@groves.net>
-To: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: John Groves <John@Groves.net>,
-	John Groves <jgroves@micron.com>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Gregory Price <gourry@gourry.net>,
-	Balbir Singh <bsingharora@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Aravind Ramesh <arramesh@micron.com>,
-	Ajay Joshi <ajayjoshi@micron.com>,
-	John Groves <john@groves.net>
-Subject: [PATCH] mm/memremap: fix spurious large folio warning for FS-DAX
-Date: Wed, 17 Dec 2025 15:13:10 -0600
-Message-ID: <20251217211310.98772-1-john@groves.net>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1766006530; x=1766611330;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bOOgnzCzdNQgnsHYyEnitX5C1ZN2cK+8ABaNl5MoIv8=;
+        b=wOOCsTT8jJNYTEnRkhCr42AxvTgwCku3d1BS/60t4Me5drtPvrgjh8GXKMqCgrT1wU
+         97ZN0FKlePAaXpgGT52INcVZUTY4gDSnrMWvK0CwMfeKqyauRDcc/DQMQOjZYZ0t9yVZ
+         1eiZARcnb5zvrfel1ylEsljlF9qtCDZqmliQVqfRnFL7sXL0ASmYSM/c1/JusLxuN2+r
+         gxR1F5K/OFe5b0SgnuMJOnHRzNK11aMsx892LlEKwg5o1XaDHM9TF16HmXJg/scJnwsn
+         yOde9JudQbL4RvVcCwMEfGBSqTBcZP442p9RM5w4tm+4/Xp/JrNyDWAG0TOwWw2AJn2Q
+         plNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTUvW+sZumoO7INF2RcoJ2dsfRsjz8/SlCJUYLsbS10EN+/rYBh1ixgbntHezNuv2jePkuCdybDQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8/+YP6J3pRHHQ5x7T2OITFL7qPEM3WLLMcctMMYVO8CxsbAJr
+	SvrgB2DU7TocOdcYg++tPdyfaFoYIxDPo2KSyzZ6ZQZ6rA5PNEBruMFJNL5Gx+JmQw4=
+X-Gm-Gg: AY/fxX6aexSqFTF4fjYxVDwjj+SpJ1M4DUFJPY+yQas/QrUJ8mQV6vjUUC5A5z7an3Z
+	b4bibzz5zQH6t5p7k5JsfeDNIJGGiIGlm2z4doqKVxqI5SeILwujLbZchM4oTAjWQbC2tijUbUq
+	9X0fLY2KJs+GJAQAmdKGymzRd/XJF4A96pGaAxtOPYMrwRIedc7xClF9HlvfLlleZApz9cj6ifV
+	BuzI3w3VduOUt3J9mc45n3sGwUwHBMSfvf1LPTPD/ckjAJawhFQOVQF+9juI4PAtZwGfUKSqXfE
+	xZ33/JDoSffCZH9NG8KMU4R1K1RjsU+S4VkwKMutai4PHKC+KOJUW/IUdthjM+8MEOk0l/KXhuY
+	mhdfunbU31j7+BJ6Hkwl5FUMdIDX74qYUguhVh74imUGRDsQ+B63cIeGpL2G8SeJskIhEwiAPrz
+	OSsVGIb1WE0g==
+X-Google-Smtp-Source: AGHT+IFzXUkRHitQ6VNCbbPfCAE8rsPjnOnwE2wUVrJxtg3mT4weGRzR1Jq+HE4b4SUpjoKCvX7jUg==
+X-Received: by 2002:ad4:5ba8:0:b0:888:4930:82aa with SMTP id 6a1803df08f44-8887e181613mr336351406d6.70.1766006530486;
+        Wed, 17 Dec 2025 13:22:10 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c5dc70a93sm3699666d6.4.2025.12.17.13.22.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 13:22:09 -0800 (PST)
+Date: Wed, 17 Dec 2025 16:22:08 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chenridong@huaweicloud.com, mkoutny@suse.com,
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 06/28] mm: memcontrol: allocate object cgroup for
+ non-kmem case
+Message-ID: <aUMfALjD7Q1A3NU8@cmpxchg.org>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <897be76398cb2027d08d1bcda05260ede54dc134.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 04139C0019
-X-Stat-Signature: 758an6y7c9163qe43da3p83934b649yj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <897be76398cb2027d08d1bcda05260ede54dc134.1765956025.git.zhengqi.arch@bytedance.com>
+X-Stat-Signature: f6zu8rdwdohg893if618wafqk4hnc788
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 970D6100002
 X-Rspam-User: 
-X-HE-Tag: 1766006028-707122
-X-HE-Meta: U2FsdGVkX1+qEf3yEvxRKaaG7+CZJvrBgsur789zQ0FfQn4b596U539HUxXy9ko0NUskB/cpzw4gLzPcksfnpCRlz+iMOjAsrp0sJmpexSpSjRR1sMWrVNwagIWo7uHCLLtwkpRaJtyPaTBgKKgbFPTXI1y+tcqpfDieVUrti4XGe3iihemjXLi11XiffkyLLdRaWj0HNY5F9Cc8451UYu2kLAej9xn09ZEb/KFKQ3bBrBrG0ZKkK2hUtoFxMA00a5HrMcTrw1ux7LtoNHWgLNrreiUxIbea59SQaVo/br7jM58xJZJYMIoRtEuOVCB1H7oiTbBVvGuPdvpGCY0aa0JW7gE2AKYFRvcO22j8UE0F1/PU0IuRuxLfGid63KRC9ejIkL/yMSA1/0ArmXuqfdS1ZM2GchXuvcTm5jJh3QCK20NDn7eOZTJRyVTNf0zJ9i/UhrjMGxJJwFkAdHur+NkHw1mCCu23fWTvgZ2OCF038FiPFdELDQ49hbh0w7nUUHCsXtgpfd7AFMp73tC1xtm0S1XZRhrFEzTud2vTHicTfDmDszRlRGOd1tE4W0OHxSJ9/ydPxl7JX4gGT9TEw4ONgWZy/uQUVhjLjv9Oc1pZA86LRdariPSCHWPx+gk6OrySpH45JInY6jMLa2qnyP4FxAbiWXm9eoMfc/R2/a/Ko2ctbpLcMRlpF4EMe5sNAjHXjEK65+DtXGbyP5FIszRsqbx8XC16HDpNLSsCxO4si5J6wwgqlPRdaFNr6eaW8GVxHeNpyZVaIoLbYEC5JSC1LJaZ0YpzsIFldNUk2UKahif2rwf32ij+IafU5oH3ip5pygrn/OlFABNyg0LINEsK0cS/8epskv+y0+eIKVkDQCnA4q0VJLI5bVAtugaHzGYGsLyri6lfe3tpp2dmF96UdeOfgVPVqM+2CcjzbMjzbw196MtPZ8WNpObgE1WUrKWdF+MJpkhBAbOnL0F
- SyoN9skV
- IoBT+VpydopFNvqVbfexC08TowSqqgWg4FqJCoHkYy1Fk43xhqRITfbRRV7s/q0ttj2c+z2/HrUIrUYDIDNDuuMrZd7zULgq2/KlD1eq66jdWlkoKm5g7FbkQWVvl7aApCRW0ujkt0jGdt8sKDOz4NNOaaNem4ERo6aImExEpIVcmF/8vNuKWEGXhwWx4R3Bc162cyBqvxS5FHJgeABcw7IVAZFwEf6es/OVYxAoxDTYemyzJjgyiBRpX0Wz8BZCZpwBmQ7pNJg663xR/14Am65CcKw0bk9WFun/i7aZPrA1OKnf44CX0xhBmVGBkoxPIdQItUsKFbjfHW1WJ4H4kJPqZ1zDIGY15TyHpyD4QW2Pkin2VzcIbxUATkHu2hhx9YjoZJ0G3Dqdh+kU/3DEO+0Ft8zsIvAFbFVZt8RaFc+i8ADyMKX+Nx3NyRrfJ2gVWHBUGW0fhwcyxFLwVy4Q/jJ71NBAwrbRcAqQZlYaMp2uAilY1DPathlRExh4YclOuT55+BAlxPOs6xjAclAkJwf9viuNcEDzrvbY4yjxEzEW4yOI=
+X-HE-Tag: 1766006531-968880
+X-HE-Meta: U2FsdGVkX188aWgAv2kR7FY/HI7uVWoGtGhZi+GUYC5T3dgq0Ss67QBF78/4/JJx/3csvrFGz9ACa8PJ0pB/REHJv3znp4PmzVY7UloUuT9YHOjZZ8WJvajPVDHsoBFamRMEDtZtxLsUUrkVBzSmL27BEg243zicwhtJYPrj2obYUiXRPGrn/kXaLElbgfeQgeaUht/bg+t1Y/LOL+xXHIX1QAf/qgojbhOvSJg1X4t/zj5c8ikzOm32rR61Aduewwj8jCFXZDX/RzvvB+xgTsfJh1A3LGzNt1zbX9nYWztkiUbhT2jP6amSzvd3Xj5x9o3mmAdgKpc88PlzPmND9XF+JMrqkZBBxW++oXalZEvzaKlULAdDqCvJWAnDoGypNWq3r7wKRuCKUkZPBbf23olMn6qwUqEjWrTlqZSDiBDFRKZa3GwLaVeU90oGBxe4X/QvkTZfkY/FvOey6kzb+dhm8VM2u+lm057ZOQ1LP4BpF2XZqt3f8J2UhejQ3/AYKjZojkeKhigH9bXAL47L6axArn2moX9aOq9maHbRcKvvWn4ESTUL9MI0e0xZTLt54nLjuS6uacBb5MrCyOUOgNnL6aC07F2jhcqdlLfKaQafcptFfiDxDlJYFYpYF74yJhj2Oj49oyUESLRaHxYRJuDpHlnx9B9LoIv/qLWKlpyiLg3yfLwBsegLO1fGL7dDHXELQWWpvRGdIXTBIxG72+CmugGovcsPkl0AxfjEr+AnYSiEBsHyjhvC4lj1u4sUF1Sxmys39vsFXDrFqmxGip3rMZiueBQ6tWiqRncI7MEM22NRlEqphRIT1q3ojpqIOVpuOI8TqnyDeJKeJwdy6zIHsGeVOH8O0aCp6iOr/2q5jYxDNFA4DPjQHNwWr1XzXv9mf0SoUi7ViuL+Odr7dq1BvkNnpbzH5z+VRui3I5Z39/k5JcPwZPyez8CZD5XGf2u7wL1ExZ5epeHOCYI
+ CLIiIqOx
+ lK2EtYX+WKxXFInXeoUgp9xaUxjjKwRScVfLZVeLJ0rDvCwueND6CVdcjtSzoXcoFQP+vLteteOizaQimVGGKED0Y5nQoa+IrJQfrCQv+OC7kBciE/8+duoEp+15puVI/gzBbRoojLvMeWRwgsiWnA91j8EKvc2Xl0caafC7jreWu+IDX8Rg4T81NNx4MI/z+vKwklAdCaGLbyYZ1zAfBwh1r1zBghomuQGhMVFPLV12Sag42QxNLqzLPmggLao1rw+5QqjO5ZfqO011j+fX0gcKO61SL+8Qa+kTYz1zitJ/iBfOs0NN0c72X/Ye6ujStqMGcT0JDpQdTY2+DPwQvSkivZvPQ5H9kFNqxdE3GrABEA/vyy8OsbZtnRhxA5wChYeGR0nl7GbzW9WqMGbv9Efnpz5DFT22q2gPAC66y2jh3G+bEmpLnWJdR+L5/hNa2Ak1fWwsohanA2lN81iWyRCMLzX/1qnUB+mQo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,108 +129,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: John Groves <John@Groves.net>
+On Wed, Dec 17, 2025 at 03:27:30PM +0800, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
+> 
+> Pagecache pages are charged at allocation time and hold a reference
+> to the original memory cgroup until reclaimed. Depending on memory
+> pressure, page sharing patterns between different cgroups and cgroup
+> creation/destruction rates, many dying memory cgroups can be pinned
+> by pagecache pages, reducing page reclaim efficiency and wasting
+> memory. Converting LRU folios and most other raw memory cgroup pins
+> to the object cgroup direction can fix this long-living problem.
 
-This patch addresses a warning that I discovered while working on famfs,
-which is an fs-dax file system that virtually always does PMD faults
-(next famfs patch series coming after the holidays).
+Not a big deal, but since the coverletter will be preserved in git, I
+don't think you need to repeat the full thesis.
 
-However, XFS also does PMD faults in fs-dax mode, and it also triggers
-the warning. It takes some effort to get XFS to do a PMD fault, but
-instructions to reproduce it are below.
+> As a result, the objcg infrastructure is no longer solely applicable
+> to the kmem case. In this patch, we extend the scope of the objcg
+> infrastructure beyond the kmem case, enabling LRU folios to reuse
+> it for folio charging purposes.
 
-The VM_WARN_ON_ONCE(folio_test_large(folio)) check in
-free_zone_device_folio() incorrectly triggers for MEMORY_DEVICE_FS_DAX
-when PMD (2MB) mappings are used.
+"To allow LRU page reparenting, the objcg infrastructure [...]"
 
-FS-DAX legitimately creates large file-backed folios when handling PMD
-faults. This is a core feature of FS-DAX that provides significant
-performance benefits by mapping 2MB regions directly to persistent
-memory. When these mappings are unmapped, the large folios are freed
-through free_zone_device_folio(), which triggers the spurious warning.
+> It should be noted that LRU folios are not accounted for at the root
+> level, yet the folio->memcg_data points to the root_mem_cgroup. Hence,
+> the folio->memcg_data of LRU folios always points to a valid pointer.
+> However, the root_mem_cgroup does not possess an object cgroup.
+> Therefore, we also allocate an object cgroup for the root_mem_cgroup.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-The warning was introduced by commit that added support for large zone
-device private folios. However, that commit did not account for FS-DAX
-file-backed folios, which have always supported large (PMD-sized)
-mappings.
+Looks good to me.
 
-The check distinguishes between anonymous folios (which clear
-AnonExclusive flags for each sub-page) and file-backed folios. For
-file-backed folios, it assumes large folios are unexpected - but this
-assumption is incorrect for FS-DAX.
-
-The fix is to exempt MEMORY_DEVICE_FS_DAX from the large folio warning,
-allowing FS-DAX to continue using PMD mappings without triggering false
-warnings.
-
-Signed-off-by: John Groves <john@groves.net>
----
-=== How to reproduce ===
-
-A reproducer is available at:
-
-    git clone https://github.com/jagalactic/dax-pmd-test.git
-    cd xfs-dax-test
-    make
-    sudo make test
-
-This will set up XFS on pmem with 2MB stripe alignment and run a test
-that triggers the warning.
-
-Alternatively, follow the manual steps below.
-
-Prerequisites:
-  - Linux kernel with FS-DAX support and CONFIG_DEBUG_VM=y
-  - A pmem device (real or emulated)
-  - An fsdax namespace configured via ndctl as /dev/pmem0
-
-Manual steps:
-
-1. Create an fsdax namespace (if not already present):
-   # ndctl create-namespace -m fsdax -e namespace0.0
-
-2. Create XFS with 2MB stripe alignment:
-   # mkfs.xfs -f -d su=2m,sw=1 /dev/pmem0
-   # mount -o dax /dev/pmem0 /mnt/pmem
-
-3. Compile and run the reproducer:
-   # gcc -Wall -O2 -o dax_pmd_test dax_pmd_test.c
-   # ./dax_pmd_test /mnt/pmem/testfile
-
-4. Check dmesg for the warning:
-   WARNING: mm/memremap.c:431 at free_zone_device_folio+0x.../0x...
-
-Note: The 2MB stripe alignment (-d su=2m,sw=1) is critical. XFS normally
-allocates blocks at arbitrary offsets, causing PMD faults to fall back
-to PTE faults. The stripe alignment forces 2MB-aligned allocations,
-allowing PMD faults to succeed and exposing this bug.
-
-=== Proposed fix ===
-
-mm/memremap.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 4c2e0d68eb27..af37c3b4e39b 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -428,7 +428,12 @@ void free_zone_device_folio(struct folio *folio)
- 		for (i = 0; i < nr; i++)
- 			__ClearPageAnonExclusive(folio_page(folio, i));
- 	} else {
--		VM_WARN_ON_ONCE(folio_test_large(folio));
-+		/*
-+		 * FS_DAX legitimately uses large file-mapped folios for
-+		 * PMD mappings, so only warn for other device types.
-+		 */
-+		VM_WARN_ON_ONCE(pgmap->type != MEMORY_DEVICE_FS_DAX &&
-+				folio_test_large(folio));
- 	}
- 
- 	/*
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
--- 
-2.49.0
-
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
