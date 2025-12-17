@@ -4,123 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66B1FD68BC1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 22:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EADDD66BBB
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 22:19:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 967476B0005; Wed, 17 Dec 2025 17:18:45 -0500 (EST)
+	id 5EA896B0005; Wed, 17 Dec 2025 17:19:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 914356B0089; Wed, 17 Dec 2025 17:18:45 -0500 (EST)
+	id 598306B0089; Wed, 17 Dec 2025 17:19:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 817636B008A; Wed, 17 Dec 2025 17:18:45 -0500 (EST)
+	id 4C1EE6B008A; Wed, 17 Dec 2025 17:19:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70DD86B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:18:45 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03DBAC0C2F
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:18:44 +0000 (UTC)
-X-FDA: 84230378610.05.AEBC6AB
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 083C240008
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:18:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="XqA9S3X/";
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C466B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:19:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C83A487072
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:19:56 +0000 (UTC)
+X-FDA: 84230381592.30.3A3CA27
+Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 30E4CA0008
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:19:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766009995; a=rsa-sha256;
+	cv=none;
+	b=uXc2By5DfIzVWtljH3z18Tj4PoCFns+VMgbNOyvNR/UxIVYFnuMjAKbgxRTu6pXW6GJUSR
+	sheJMVMciCMFe4YUVPXkrQzD1BRhxqfM36BfHO1X4KHGGck6wdYbnzhL2QvkFTIbaeP8UY
+	3l6SRairXVizI8uxW3iIl4Qr70Vfb2M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766009923;
+	s=arc-20220608; t=1766009995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bXcbwNkeZlIMBZPQNBardsHsUWb/8fu2HEpQ4xgxp4E=;
-	b=38DVhbZDlHFU8aDwOahL7SV0K3gsEEF6VhuIvminr4vdp3zKgP1DUubPbJXzWueIP9LRSk
-	QpYQ5S+KAra6ORAkVfR9PwtdCxh8UQitvrtvpSTA5QRyFJBYxypZ00JgOoMNHzxZogcv6d
-	0TpEEOLGwChwOdDQdA++DWQwUWRuYsM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766009923; a=rsa-sha256;
-	cv=none;
-	b=X6Hant9TwMf+gYUQMeS0xLOol0PaUROSaPY7hopjv68beZvHfJZOaiuFkI9A+Vh/OUGD9v
-	cUDiwexiLe3JKjHC+ljRNNQnOIU2rtCkQEa8uZAO77nqPtBZfxVMDdbRQw9wwfTRKM1gSV
-	OQSXT/GTBm8CJtysfQVENDU7uGu4BQo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="XqA9S3X/";
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-88a32bf0248so110936d6.0
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 14:18:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1766009922; x=1766614722; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bXcbwNkeZlIMBZPQNBardsHsUWb/8fu2HEpQ4xgxp4E=;
-        b=XqA9S3X/BbmFyoK6NY0gVQt0/cSnkIxLo9MhHHQco0gePaxFf6VV+OrD0RkqIV3Sd6
-         mZEBXUL0ewwiAnAHmHRS8fX/2kHz3T+OVWskPaPR+chuh32OVTI05wFe5u3XkVek04Ku
-         6nzrsr/hnj1xeloKLd6KH0fy/YeuiH0A0gMz71UE7W2VOum0QTUXcRGpJHvKT7/nTOA3
-         /Zzutx8pc3y4ficH12I6flXB4YhhOFJcC/KALZErSQlBzrbinZEWRUuznVri904RGcMp
-         vUXSqt3TaLJS3ZN+g/vN+JqAKIJiNNrfggzO1AJaEOOhkXoblM0m8O2oMGCQyy8sJOpu
-         EjFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766009922; x=1766614722;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bXcbwNkeZlIMBZPQNBardsHsUWb/8fu2HEpQ4xgxp4E=;
-        b=Mr9A4Cy15v58Q8A62MyK7ITmKspMox+G6BnzXpyBzLTJ6o/Wn0MBZV41JZmQ3ATV1D
-         8+SwsIDJiBxxJi+Lx5bvUiL87haulNVPE9pvnJQHLyYu/vM/9MSLW+TZ4h5kfJG+6uVg
-         dcoFXUfqOVZnBkrDWikzwiOxiBFz6S5chkQ6uBYF6sm+pA6iPFnFqPQxy5LCBEINwZYE
-         pS8eD6bESPJ/Rle4/VeqR24dLQA/jA1UblpQ14n64t9t74FdJZfAy9UyxwBA+NvwH730
-         +g8IFK0wcGM87oaaE3BhuDIjt0eHoXf9Q3x1VLXjreRe4zm9QcuDVUvrT7fkmS+YYlKF
-         0Y7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXHzmQloBOKzpqQ3Qd5nIUhNV6KXQaVduul27ENay7HujQ7knyQf2OdXYGHpR00J8q/7BGOv0Gl/Q==@kvack.org
-X-Gm-Message-State: AOJu0YxTy2VZCzQpVb1pIx5839Nn9QBkMI1esgWscIjW1B8mK5PLUZAW
-	BtjHiEthkT7zwMn7OWo2uKoipsZ9IYkgZPCJXz0mUaOnMbGCn2fitFOm8i3xiouNGbc=
-X-Gm-Gg: AY/fxX5zi3gvAH2LJ58aPyNYcVRZo+W6SEPj+AtCBEYVYkZHDDLLH7+M0ttugdS9U5B
-	6m0khhAHrVxHkdzXRKOoWbKrqs9soaaxbUYXejZ12z1R4Kf/A4tt9ZbmWdiPMrA6gXTS2yf4TKY
-	o1xxRsJezNVW+nY7IUn5LAZPZi/odtwkkNlPJp0jdcCtv5/9oHOgCiEQRMJpJ1Xcjxahxq6bSUE
-	wQ2S2Zo09M6GVhi2tG6Jtu/7V932un+DxGDZLYXdCS2QezsqdyEN2nIy5JDz/Vw9GFzkCgVcc5t
-	Kq/Kth13qH0oLxFcREo4eNMao6oVkj1xtuIxA12fuvv1Jt1ukbP3q7572rxPR7AkgkRIlTBo9Y6
-	ApJYUH2vuF+Q2bkH1zUR8SjzpdBDvQbvCPCluiIfUenuQ6HZf6hLdi88I3Jef4AGkya12GqtcEI
-	8nWFWpuUc/BQ==
-X-Google-Smtp-Source: AGHT+IG1f7aReTFQRW4F2M0CyUDBY2Hjp5SXYzk7s/J18pLYnuhEkDgo3DdJ4s8MQTcbTc1pUU5ITw==
-X-Received: by 2002:a0c:edc3:0:b0:884:6f86:e096 with SMTP id 6a1803df08f44-8887e7a0854mr204953976d6.34.1766009921932;
-        Wed, 17 Dec 2025 14:18:41 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c6089aecesm4698286d6.32.2025.12.17.14.18.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 14:18:41 -0800 (PST)
-Date: Wed, 17 Dec 2025 17:18:40 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 14/28] mm: mglru: prevent memory cgroup release in
- mglru
-Message-ID: <aUMsQPjBtYtVWjwf@cmpxchg.org>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <ab60b720d6aef1069038bc4c52d371fb57eaa6e8.1765956025.git.zhengqi.arch@bytedance.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2u/1GBGUYAC2e5UCfXzrlVHMa8nPLkAD4bPW22fKlL0=;
+	b=8otAU5BI2O8flaEUDY5GKrBPzr+4pRlYIxUqLUzE9J+8tyObp/gaFv3PtUms/rLdz92Y7j
+	L/ZdNgJWnAjt61UFm5hBMDigJtW782PxECtFw9bRyaZ5Hwq5MJfdZBNfof2EP2RQaBR/Fq
+	Nzi9QdE0fTMne53POY6jVuFL2CXjYeo=
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69709160A3D;
+	Wed, 17 Dec 2025 22:19:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id ACAB82E;
+	Wed, 17 Dec 2025 22:19:52 +0000 (UTC)
+Date: Wed, 17 Dec 2025 17:21:29 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Thomas Ballasi <tballasi@linux.microsoft.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm: vmscan: add cgroup IDs to vmscan tracepoints
+Message-ID: <20251217172129.724c41a7@gandalf.local.home>
+In-Reply-To: <20251216140252.11864-2-tballasi@linux.microsoft.com>
+References: <20251208181413.4722-1-tballasi@linux.microsoft.com>
+	<20251216140252.11864-1-tballasi@linux.microsoft.com>
+	<20251216140252.11864-2-tballasi@linux.microsoft.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab60b720d6aef1069038bc4c52d371fb57eaa6e8.1765956025.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: s9iqy63x5kzhiyqxyht4385km6foj8zm
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 083C240008
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+i23Pi9VijgAv0wiuOMPrlDUDyfeGFM5M=
+X-HE-Meta: U2FsdGVkX19aTPnMOX0Iq3Wqm7D4si7ujpb5G+dn07pB95DyASlVuNnm0Ynhp4ZTCIrz5M2ZgZmkTHqRiqUsup5SG738YSc2yD1VBskZTt7t0kEEg+OMy6+c174/d4+WluPA+gTLRYxPojsl3c2q6YH02CpX80kS3RMEbMg927mL74lMLBqsA5B65RjXNwDLQgDtsWCHAY3TAewslMxM179vso0b6mNQpIBT8ABZTKTWVxNzh8Sx0UGIR0+fqYgwHPz2Ne/eCbRibcuU2guTeZCmOMbu1feiVIWIW5Hg2q+IKrHEBhetGBoCQ21rGiDQ8a2SC0e3IsqOZ5fJUQ2hdlUhlZ5hQmjE
 X-Rspam-User: 
-X-HE-Tag: 1766009922-950668
-X-HE-Meta: U2FsdGVkX18Ii/C/prMCJrvEqNOjgtN0nsP9jSH86rlY8JIunXzFCQjYaZqo2njpA1/HfcEJWBmOfvr1IO530ZaA2OCNuWK4+BA4T0AHNJl5gYWFLIz1viBL5TopwS6q2T95cPc91afAQHFEe23El722SLww+9Es3+SvK64Tdh7+i1PbZbw+V+7+BLR/G8CYzZ64hhY2XP7yRS3jbUQUwhEtafR5Yc2kl15t7edM9N/jNfbIW8NtX60FnBLJTN07krrCo7IO6lcla1XJzxcYEdiO0CC0NGx4xbP6f01Dp8M2smzzkuo8i1/kIGvHnzkn99dLgYFadwL+5vU2XdgxppArUUKDUfHVaTcQhCRaStT5ga80Emy8dHKNr/zpdL9mDKRVrIeTo6qr9SvJRLZUs99IOO2gOOJFlD1N+1VKiXKP6arGdzzMz2CeNcbBFZATMwpf5T/jy7LOPd/v9pOglZf2qV+nM8lY7unfLVTKY/Cdcphn67eqmDkrNr+RXb/Bo8B7H0PtlH8G9U3bx7eO/dA4iO+JzeCtyO8l+CD6vFdeH+tRM//crLgbR4q9aku0htQZTWHnS5h0uaxnenKEtrvyTNfvTT2urvMHu9u+WE3XT3tU1IAeN52mSLYfTc9YrpAkXa10FizT+CUcUYMtBFxXnHbygFht8k9uNcV+pVx493uLB1/omi6qP748EvdPHMvR2f9D4qduURyyiVITsV18VvjjB8VGGArKm5z++6IaNaeqgvzIP6zt2/HW0o6nM3XdeytUcAN1XbP+simqeuQB0xPbtwxOblnGnGczGS48DOesIj+oz8dZVY4GUtOyCxr/PzDILKI60/6uG7XxUkX/M3KOgZLYeg8jScU6LQCp0PUggACXI7Bw+llzc/RoTrshNEuD1IkRMW/Aro4xymR8e0cEVS00/dTfmHOT/lJ2FovvZQUnqmrlEhJFbKFZlGN7tKUXCasTkWAKe1h
- nK7SO3i/
- 6aAM4vvT77fwdIPZWMvlpeRY1h1EUem2Kw/cFhW3oeV7ZXLgGIWhQ5NZHRYYD484KkoOxwbybt5PpYv6dsgOgQgLKvAxOl2B/WcbGaq6ZFXCKW8tdmaymA08QZ2VP4KPCslFyNOoyWqb6P5w/f1WW1fiFkm8Ta/pu8Z5LhHgMoRueGn8CMUEmrgQq0Jh4bu69evbMJ0GlVt73M8MLCtaegwwtRxLtG02kGyb0lO+IzO0S9pAzXPU17liYvWTC5tzTY15UwRfMHx/Jz2zEF36z22pbMIHmnqXlbz9KHlXwJZwkrwKcb0f+Zq66KnHkN4eygKd5sUz0KEFLw5AjngD8AGTTM3z2BeWVR+/Unj0lyXJ2ISCzTT/5a6Mnx1CJVhe39SZ3Ruv2FJDj+61BL7xxGWyDpA==
+X-HE-Tag-Orig: 1766009992-305526
+X-Rspamd-Queue-Id: 30E4CA0008
+X-Rspamd-Server: rspam10
+X-Stat-Signature: f5b7zdn6p8foedi1anmbumzzdw8ppz13
+X-HE-Tag: 1766009995-270008
+X-HE-Meta: U2FsdGVkX1/XdT0khF0rtEgEZsYSSc/6XjRvsMoHZ2rm6b+tlOlKdgZMEv5rf/vudmiOiRDz2gJNDaRd5caBhDIg8X4GRJ6dIhP9l+lNU4bKixGNnfWps9JnG8q2TQOW67K9VJgRG7bTkyzLA4ztyhJ//ZZF3o83V/lSCXx6ltKavdx1s+xQe5i9kjpIKsd3/ObFnJp2aGRhxfTBxT6NYwqf0KlgWyVQWyosAMJJmY87hP4r6tMUEx0U5yyIwLxXSatLn/MeE7KTOWJcOoZGTp+Jg1NxqEjClBaX6wEXTIRKDdRTCm8sz4qTqn3TzmcnKJYj5bcVJOvXX47KuVmHr45bKvhPO3Z/kekbBWNpuT/yWrMdRsKpBOVitoMBdHA9JIUrPMPXC3RpvWJY6K+VX2vpG5T8P0gcuC+mlWdCNhoJ+bTV6FRnlr0/+1a/tKs6WcVWNUnRWGLk1fNeB8nq6A33gX6+fQgKbHGKzz3oPbLt83fG317IW6f1omLDKsA0eMsXAGOdtqlr+qHp3dpIXNQAQLnqZQkw648N1EhLjJQOSraO+MUNlyQPwuIEfIeU9w0m9WsdXsYYY9hFSll79aG6Sz0ffIzqraV5xbKyis2kmBHOwAN/kujEsq8XRlMb24JpTZz6O1DyL4ugoSryvGU0Nfk/JwR2Az2Mg3fntCw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,29 +84,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:38PM +0800, Qi Zheng wrote:
-> @@ -4242,6 +4244,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
->  		}
->  	}
->  
-> +	rcu_read_lock();
-> +	memcg = folio_memcg(folio);
-> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> +	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
-> +	gen = lru_gen_from_seq(max_seq);
-> +	mm_state = get_mm_state(lruvec);
-> +
->  	arch_enter_lazy_mmu_mode();
->  
->  	pte -= (addr - start) / PAGE_SIZE;
-> @@ -4282,6 +4291,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
->  	if (mm_state && suitable_to_scan(i, young))
->  		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
->  
-> +	rcu_read_unlock();
-> +
->  	return true;
+On Tue, 16 Dec 2025 06:02:51 -0800
+Thomas Ballasi <tballasi@linux.microsoft.com> wrote:
 
-This seems a bit long to be holding the rcu lock. Maybe do a get and a
-put instead?
+> ---
+>  include/trace/events/vmscan.h | 65 +++++++++++++++++++++--------------
+>  mm/vmscan.c                   | 17 ++++-----
+>  2 files changed, 48 insertions(+), 34 deletions(-)
+> 
+> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+> index d2123dd960d59..afc9f80d03f34 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/include/trace/events/vmscan.h
+> @@ -114,85 +114,92 @@ TRACE_EVENT(mm_vmscan_wakeup_kswapd,
+>  
+>  DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
+>  
+> -	TP_PROTO(int order, gfp_t gfp_flags),
+> +	TP_PROTO(int order, gfp_t gfp_flags, unsigned short memcg_id),
+>  
+> -	TP_ARGS(order, gfp_flags),
+> +	TP_ARGS(order, gfp_flags, memcg_id),
+>  
+>  	TP_STRUCT__entry(
+>  		__field(	int,	order		)
+>  		__field(	unsigned long,	gfp_flags	)
+> +		__field(	unsigned short,	memcg_id	)
+>  	),
+
+Hmm, the above adds some holes. Note, events are at a minimum, 4 bytes
+aligend. On 64bit, they can be 8 byte aligned. Still, above is the same as:
+
+	struct {
+		int		order;
+		unsigned long	gfp_flags;
+		unsigned short	memcg_id;
+	};
+
+See the issue? Perhaps it may be better to add the memcg_id in between the
+order and gfp_flags?
+
+-- Steve
 
