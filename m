@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0DABD64087
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D665DD64087
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:34:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111E86B00C3; Wed, 17 Dec 2025 02:34:38 -0500 (EST)
+	id 4944C6B00C5; Wed, 17 Dec 2025 02:34:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C5946B00C5; Wed, 17 Dec 2025 02:34:38 -0500 (EST)
+	id 448316B00C7; Wed, 17 Dec 2025 02:34:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01C036B00C6; Wed, 17 Dec 2025 02:34:37 -0500 (EST)
+	id 39ED16B00C8; Wed, 17 Dec 2025 02:34:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BCF6B00C3
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:34:37 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEB75140938
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:34:37 +0000 (UTC)
-X-FDA: 84228150594.13.3933488
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 192A5C001A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:34:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LJRAz0hY;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9196B00C5
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:34:47 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF0CB60901
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:34:46 +0000 (UTC)
+X-FDA: 84228150972.12.66A04BB
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 418EBC0002
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:34:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FrCcOy5z;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765956875;
+	s=arc-20220608; t=1765956885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IxmNRXRD08owrS4/nto2beYoZnFQZHXI0PSuu79HkI8=;
-	b=niEjJy7W1Tpv0rm89CCKUbWy5jxFMmpf3Ngi1W3BL6pphAZl5PJ2MOYs2nd5W32CAz9Rqo
-	/vSzxtbjfh8we1Vaw6H0rJmZRowOvJlX1grm0GxRLqv1WVWhNCqF0bJNqhIYYjC68HL7ZU
-	FqxihkWjLTGG0qsOPrD8dksswlI7PA8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qToP01h6jjC7s+UEzKCCG2SIQKxDhYzXBfQMHZwu8oY=;
+	b=d8i8XOknQbj0TD22QqQrQnI5Hajj9Dw3Xp7REgmEYalRwoiYyQW5sPlUcE04VbMUjIHv46
+	N3nXPn2XYqUltud/ZeD/PaZ6cKAb7fwU0DsZHN3xh26P44P0yli2G3SPrvzeDv78oyvytQ
+	M0KYtGlmpRWO00U6NXjDWDImeCZ4Y2o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LJRAz0hY;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956875; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FrCcOy5z;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956885; a=rsa-sha256;
 	cv=none;
-	b=lkYsqd/H8fXLGGCBmKxVnC+0Q2KaYZmMnQjX06wWx6GHtucEiFJIFQOxw1cn1MQhOLHQrL
-	73eocFzUrMKw85e2hNcMw+WtNVJJ6H4v5zkJaPnTTtYqICfU8z9g94wjDqLEQDbzpvT2P+
-	kXTGMYQScVnhkhTNReYbMEjGCd9VToE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765956875; x=1797492875;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=2z0McsjTOB+P3exuNFKH0/lauyHMHNPjxuqumEYpnPs=;
-  b=LJRAz0hY8HcwtnEI+KrgshtEAdx7eBNfLVD54qmCS6HkyQuKNVo4eNC/
-   HWyvZqLb4j6cKIL2izNL78RVfgjjfKnYm95jFOzg4dbXshS64CkMw+Lql
-   dq1q1F8bhvC4ygqafFG1LLCiSFv87GA+Aba8Ju59RjDuvYME5BZGGbu5m
-   bWfMDFg2cvaEV/TNesutth1xQXY4atjclxAYRfAfCVVlhYhnGZ9kvZOXf
-   Lkk4S5OPac8p+k4YHxbeTOriDZ73bOjvs1IqUUFg+tqSll58tQvRNMj9Y
-   v6KoYTp3tyAfRpbAlADO0sGICJ1dodGEo69zJ1GRhIHgttJ0tzVzpLxWt
-   Q==;
-X-CSE-ConnectionGUID: IncdVemERv28NwJh4nmAlA==
-X-CSE-MsgGUID: 4652x97dTZq9YnC94gSPvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="70466162"
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="70466162"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 23:34:20 -0800
-X-CSE-ConnectionGUID: CKayANs2Rw6D0QUgkGHKFw==
-X-CSE-MsgGUID: xijq41dUSPiwjI6RGGZ3Jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="202733148"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 16 Dec 2025 23:34:18 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVm35-000000000AH-2k25;
-	Wed, 17 Dec 2025 07:34:15 +0000
-Date: Wed, 17 Dec 2025 15:34:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sameeksha Sankpal <sameekshasankpal@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-nonmm-unstable 60/60] ld.lld: error: undefined symbol:
- envp_init
-Message-ID: <202512171554.G484xf2C-lkp@intel.com>
+	b=MCH8fADUVP7MUQypb2lVOxCGwFupfq3Z7m/4DfcUxV1wJmvUxul36wbEq9OBcrpRe6TS0c
+	eIOHllMSK7KaCUyJAqCNK1pcR/R6qTVz1cFQsNsyQoMfYZEMUUC6U3iHJPN8vIq+1MR67r
+	s78EowO350IgUbyiehYlirWEiwcq/RM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765956878;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qToP01h6jjC7s+UEzKCCG2SIQKxDhYzXBfQMHZwu8oY=;
+	b=FrCcOy5zejKPmIe6RZhxcc37rX0Thqf+a7WCqahbplcOnDgkMNMZvKvGVtfQsbsk7ikWoa
+	wG02IG7PU6FRiYDU1ldrOYpSY/YflikOoZMb575URPc1K4yiDO1KifgR1iOm6uyd9ovkHd
+	GyaYb4aNIiF22aPDMQKVbN8C1QfQPdM=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 28/28] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+Date: Wed, 17 Dec 2025 15:27:52 +0800
+Message-ID: <a3ee89c663fd0f5b0f0c5579a1a2a39a0563727d.1765956026.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 192A5C001A
-X-Stat-Signature: zni9kasojrh8bouo6fnyc3upyttfh3n5
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 1iy5jny73qcgr54k98tqo4xt6fixhhnu
 X-Rspam-User: 
-X-HE-Tag: 1765956874-196062
-X-HE-Meta: U2FsdGVkX1+mrP90CmDHtqDftRy2GtQDKJCLQ9/MZvx5nad7ABpBpDRRhbvgBBd5P8QdiOpaApN5FZTGwBUhJK+gHONZofwzg+BTQTFbEXPlcNi1AjD6OcZOgTRn0QrKXdJ6Ep/I3HK3FzLPDKXPdrhMSZDIH3PLsKQwdP9faKy9kWsbFTDKvbHDHdh68X4jcdRIxSgRNtp3CRycfx12zqeetHPl0G7jarNQ2qpm+XajAzzSWM2h+P28MlxaE0XMwMCsg2Va1T2jhtUFa0Bo7LUxEmp7zV4b7YSohTns5fykQmaGKK1jsJuoOg8C/sbdePmAJtPeLMOX3xeKab1RdfUmKaEsRyEraeZcCaXzFlzG4nRG2yd7XuMLtGC/UrEiDFT142wVTu/k0WKdmGN6FuDodsBUC0y3TDxnh3MB7ayNrxsOYB6bCjjIpS0Sak6XKthahTIzBFE3dfsNUJxIXTksTjKXYb7TJ5DIAJ/y+SkHqigTAbN7u3PdLrDt6JKqC2J65O/tOkNIugYWf5UXm+fky0PR78W/5itU83/FWtJn3VeAzD2zswfr9rj1WkIE/u9FNDmWb5Nmm4bYAAVMNVKY+DOMCG6nq9eing7msS30mSkrPt6mEgAHTU8cZaik1GOBsBtHI/BbvQXryimTSv4dXw1NjXW9fWNVpglvyoQXtHmP//or/KCj/FKzx1gl3ih83EGcbB420xAwhDEIGdanaAnYEK8eUuaNo3S+C/JC/N//+5T36BR35zSlCXEwQ5/Pjx5ZJfUr+TUQ6sJDZP1YQ5AjPJHLOWgwI/xCFOYxY9Nz41Q6x228hlCNA6tOG67xaPMk9+TnV6rJhhJH/snHSYY/9AzoU8wX+k8rSXuNc1gUVta0+WTnxSzHnOABh6u1HIdqTHySQ0mBP9WAG9l/H89rzOw2k/gzJ962dNGDCCEcAzYV6IpANGS9W9gqXXN50Za98PHhZB7/Gs8
- /Uj0yqZP
- Bb9T5XT8UaxPjcYInmgQQuw0xOKLL4dY5xNngGpLNAlwRFTKUGyu7mwZJ+GQVPWf2C0n/KboCg5GGgakBmizWHoAQOG4xJCyAn1emchnDmiDIetbd0OgeTkMBbgkNgrNFE5f7tOpyBDto0d+ECZHuXrBq1waWWuS3zUeHl34y/30cZa5DvKqYH8KKsLAjX7gVfvuHrTPkcQ6MkSswzPxxm++3vXESl9i1uihqjZNixfCDBjqSpYy0IQ5cSw+yCQx/AWvpB71NsSLqKq3EnKHdGa+/1JCY3/Bv2Ji0XoAPufm0wGKCmyWAJLGJOjJ4cuigy0ZnBAGGQrwjoLC2xnuZeXxa4SzVgN0QHnbpbyvx6N7umG7GTPDeaFbC3/hkIclYBZT4ZQj+uBueruH/+a9B4iFp/A==
+X-Rspamd-Queue-Id: 418EBC0002
+X-HE-Tag: 1765956885-870401
+X-HE-Meta: U2FsdGVkX18CUJ7KijV09kawVO0kRob9WzaRYrscgPkdCX35vTetD5DHYt622jI2C8tPLHEF1hxHE12Fue1Otwsb/ssxuMMM85c4uyo1NT3VM+rs+aPGwXjbXbIIcflqvYkMiCIbG0ytofkKyfn1ybPNNrWfuQk5mK37n+FQSmeTokRqscBs0aDC3CpiP9k+anSds26EFZH4swubg+a9FPBjrebcxWpPhHT/TutMI7oho+57R+v16Iknrge56sZJXBGOJfe1AFm8eIloO/d1XiA+FOeOS/+T9uWh1YS6bmOFsKUBjSgRTUdD3wzivpR1UExhj5VKL/6uSRP/EUuDdGdsApVNAmOhL7U53pe7EEK73iexX/UfHKim2Nim5FeWxbl9q9ZCG3afnN0VzaC77WKBRRKy8wgsWquYg6nyLKM0+EIiyFs6c5AoepEkQAjGODmowQUBQg9yogeRzSRmBNxDc3xASgaxzwFMz71+7+UVUhQjw7fxGiFsdehrjQP8jNjqTLDojvYVHOtdffhJ/HJECaIBf59Zy/SpEGFkMEQg7QTcPk6qdAj0Wqf8VK5rrRJy4ookuQH3MrVvjbvjT5A8SwB0E3kRuEEWF1kPzg+adAZncZO2ZaaVC8sVG5PAj12NxIcQ4raLmhm3IjjIm4Hwi87fGfSb1T8R6LG+yH7RoUjk37YB83dYWxRk/xCTA7hJwRDW8+LU6TKsCMU2URGEe6655iLkXIt1eGnCLBDafmF+aw5Bs556SZE9IqqaAM+aKqYtyWlyj1pmftR3XMYR2hSU96bhf0+mTfUIA7eO7uhU2AIdpwdlum0Ai12LwQqMYrP/w2jzobK56qtvCN7oo1gbDC+8Mr/rULIq9HOrYhfiTJZKaG9C65985bDm2aATLMFI9Q6iqd5wr6s0mn1ipEiaMJjkli7rM7the3zev9L5SY/Y1IWF42fom3IUOX81mP095os77I1lzVU
+ oGHOPjO9
+ 5+72nP2mmxlx/ne3cli3/7tkLMJwZCFSKJ0lpunEPxwFZACHdJeAk+ucrVT/kZjBRIVVs2C+N8QGUkwYPIWFPciOzzuKdvtJS4FjC1ksSWNwbbDjXBBZWGxOg0kW60w0a2zXJYz67AcQQLHtOarIByVUlLpcdpStMyZSNjExzZe1alfLStw3JUNtlbMXM0AIyHidAVPzUrPdrF2TW09xfvgL58O6Ps241XfjddANUwdRfsRXQZ3gCxC2BxFQJ3ROzHrwQ32KUPLFD7rOitR8XYWBw9GFyeHtRaT8SnrSZNUPfrh0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,27 +110,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-head:   88800d4048f5ffd0dfd05dd82b89affe6b74e55b
-commit: 88800d4048f5ffd0dfd05dd82b89affe6b74e55b [60/60] init: mark envp_init as static
-config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20251217/202512171554.G484xf2C-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251217/202512171554.G484xf2C-lkp@intel.com/reproduce)
+From: Muchun Song <songmuchun@bytedance.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512171554.G484xf2C-lkp@intel.com/
+We must ensure the folio is deleted from or added to the correct lruvec
+list. So, add VM_WARN_ON_ONCE_FOLIO() to catch invalid users. The
+VM_BUG_ON_PAGE() in move_pages_to_lru() can be removed as
+add_page_to_lru_list() will perform the necessary check.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ include/linux/mm_inline.h | 6 ++++++
+ mm/vmscan.c               | 1 -
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
->> ld.lld: error: undefined symbol: envp_init
-   >>> referenced by do_mounts_initrd.c
-   >>>               init/do_mounts_initrd.o:(handle_initrd) in archive vmlinux.a
-   >>> referenced by do_mounts_initrd.c
-   >>>               init/do_mounts_initrd.o:(handle_initrd) in archive vmlinux.a
-
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index fa2d6ba811b53..ad50688d89dba 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -342,6 +342,8 @@ void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	enum lru_list lru = folio_lru_list(folio);
+ 
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
++
+ 	if (lru_gen_add_folio(lruvec, folio, false))
+ 		return;
+ 
+@@ -356,6 +358,8 @@ void lruvec_add_folio_tail(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	enum lru_list lru = folio_lru_list(folio);
+ 
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
++
+ 	if (lru_gen_add_folio(lruvec, folio, true))
+ 		return;
+ 
+@@ -370,6 +374,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	enum lru_list lru = folio_lru_list(folio);
+ 
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
++
+ 	if (lru_gen_del_folio(lruvec, folio, false))
+ 		return;
+ 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 64a85eea26dc6..2dc3ae432a017 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1934,7 +1934,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
+ 			continue;
+ 		}
+ 
+-		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
+ 		lruvec_add_folio(lruvec, folio);
+ 		nr_pages = folio_nr_pages(folio);
+ 		nr_moved += nr_pages;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.20.1
+
 
