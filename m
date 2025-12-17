@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A415D6406C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 02:46:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45380D6406C
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 02:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584E26B0005; Tue, 16 Dec 2025 21:46:11 -0500 (EST)
+	id AEA5D6B0089; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5321C6B0089; Tue, 16 Dec 2025 21:46:11 -0500 (EST)
+	id A94816B008A; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413B56B008A; Tue, 16 Dec 2025 21:46:11 -0500 (EST)
+	id 9C16B6B008C; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E9676B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:46:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBAE51608AD
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:10 +0000 (UTC)
-X-FDA: 84227423700.14.94A0E94
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A33821C0014
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ajSsSTbh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765939568; a=rsa-sha256;
-	cv=none;
-	b=6zKWZJ0E4lWDx5SLNqEeT3a+NX7is/gX+hkbHs9KXkI+X+oCgI8qP2yiRJjZGDkoVspUiq
-	LsSCUbfjvsGegRXb8Gv5dokWmzHGw9VqGQcNlkClIajBQnx5hTn6L1YFIrYXwjj24CXH0V
-	slvObZTscPNpFYBFgJgy+oCLk2wKNEc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ajSsSTbh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA846B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3381A160864
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:48 +0000 (UTC)
+X-FDA: 84227425296.12.110BC8F
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 748DE40004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WLXG9Mp2;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765939568;
+	s=arc-20220608; t=1765939606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HWJAKfJrIAis/gjVkofg4/MPwyYID/O/3zMZZvl7ZHo=;
-	b=POGyvgrsy4VMwHQPLne6mBVU4x+ZG8DAANwm0NsZZhZSCtjDnyGgwW5NtTK2/Htg5TLKUh
-	g3ZEclEoyGES1Qb6IZpa+viZEBgIyGXTr5kdvQrcm9PmZu/w/OZ/jujheFfLUQ3ERSP6AX
-	o9OLgzbQFKXmgpnCVXkLFCMqVIZey6Q=
+	bh=dOCeQ2/1UDHoRUqDaLGh7h4kZSar+aVQ1WmFANL0cuk=;
+	b=iHJHrs8fO5nJzp7U8O/0WCPCQm3itIccTCrW8++Cr5Ip9PDfXIUSvlrrfRfbMkS8jpQoaq
+	flLv/7Gqn2Q40AKN6Wh5HakJ4y+Hf3iqAASyrH0AGlVLl1RfNf0IuS5D4Jc3Wisb6xgXzh
+	8AzgoIEF1L1soQZ8xvTTndMQhEiRudI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765939606; a=rsa-sha256;
+	cv=none;
+	b=jqCIbh7WnfV6UtfuhyUwxsF9Gulj2P8fqwcd+gUd1Xniik8jRCKkwmemzpiTf5ebdVVX8l
+	rJ0sQcGoPdhoypkhRwYPO3XRTRy8ot/AxRyRDljIn7nFCspkldjMVxd2QnVxsqhgk52HiM
+	FjBu8Ru0HwetkWNfSffxfNGHUy1s0EE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WLXG9Mp2;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765939560;
+	t=1765939599;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HWJAKfJrIAis/gjVkofg4/MPwyYID/O/3zMZZvl7ZHo=;
-	b=ajSsSTbhCR2zDsAqsjt+GAUnrQNOvxPUwN7oMt8rJ97L3GwuqOedO0vByYgvGhAAsXRDgl
-	dyPh/fI6oQ7wEIu8iRbQHxc6p5qsPIBk1SE34ngCBVCsUykh1WKe54RJKcfx6SLKpo7K5l
-	Tc2bmerGPJ+jkmZk5RAdjNsARbXv9Go=
+	bh=dOCeQ2/1UDHoRUqDaLGh7h4kZSar+aVQ1WmFANL0cuk=;
+	b=WLXG9Mp2YgedbWVMHE24r4hv3aK6pqQoQxnz5iZlbyq40/oHuhMvei8u2KrBbCshdpo0J1
+	mOrS0vLso3Q309KKR0cr1jmqEAFYtQE4OsEJJcoq37ooNxJLvgLsGz127VX4OanFfSO/+q
+	/CEiB/qFV4SLCV5UJDwVsEQZvhrVyj0=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH v4 2/6] mm: page_alloc: add __split_page()
+Subject: Re: [PATCH v4 3/6] mm: cma: add __cma_release()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251216114844.2126250-3-wangkefeng.wang@huawei.com>
-Date: Wed, 17 Dec 2025 10:45:23 +0800
+In-Reply-To: <20251216114844.2126250-4-wangkefeng.wang@huawei.com>
+Date: Wed, 17 Dec 2025 10:46:05 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@redhat.com>,
  Oscar Salvador <osalvador@suse.de>,
@@ -80,19 +80,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Matthew Wilcox <willy@infradead.org>,
  David Hildenbrand <david@kernel.org>
 Content-Transfer-Encoding: 7bit
-Message-Id: <B4BF7B99-1A51-4A54-80E0-28692344FA87@linux.dev>
+Message-Id: <499AC3D4-4C80-40BE-A303-6FC78CFCA624@linux.dev>
 References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-3-wangkefeng.wang@huawei.com>
+ <20251216114844.2126250-4-wangkefeng.wang@huawei.com>
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A33821C0014
-X-Stat-Signature: 13qiyjf6q16kakw8r5mr8esae46k6p9i
+X-Stat-Signature: jbbn5uibdq86agn91c3qd617f3ncnm9j
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 748DE40004
 X-Rspam-User: 
-X-HE-Tag: 1765939568-347877
-X-HE-Meta: U2FsdGVkX19ieHMJUBVYvp8WYj0N8vD7MsbxulWTURCmzhegwWELzuXmIrOdI9OzVUFsHSgcNBdVGuhYfKQq+Ot7vMarOOe1vO4XqcIG3e63Z084I9STVaf0kDdai9iLihhfglYjHoEDizkeAB3ZWI+elZHSVFcqZ4tCFmHXKXegAm+oIpn/9ZSRGbdS07pWULuORPVzfj76qdEe4kKgncwYoEejmcNKlvkQkh1cm/Q6M5jDwqOPE6IY4Nsvge0SAD1fifa9JONvWIypHE9WxAebSrXHQ5fE7jTsqlw1KSMeqwY8frpDeg3B7lbG92AT6MGoXFvcW6WxkMHJn99RnWNnD9LfW7AzA/iRL2VUzNf5l3gjLl6984jQcwNjxB3EF5OF8UpqJIC8QcCYMO/fgrDCwjkkZP7p62gJ1mtpbnSHsF/srjhpF0JYHZ/aotZlcUDy/F0IPDscZjYtXdJTu8QSeRc/DeBxkxPgCaukC+KDnWm8CUrJngEwGiC7WK9ZrHKKYFc98eg9vuda5emY0YQBRU1AM0+Jl8YXwoOg9r/RGRY1kWhxfA2fcW/ZuVk+lyr0zDsoQTSFojH9pPhmHdiaP+j2kDuPtXekAM4BbkAC6TwPdPI7CyKbRMH7cpM68+ZksMUK6GUi8bzptwZi6Wshzukit1Nb2dBy2UMV9kkToP8nh/K4l1YYUgGd4CM2z8pMaKGYVEFgMWoedw1vNl8zaeAEDaErQnb5i4Slm3co6WjEPBKHr8KogDlXL2e+Tr+GJUv4D7JqC6GHtEu4wmiRjBkRCCdnrfZPrU1+ULONk9pjSHtLcLf08wBF2AGQb74HWYq+s2rIF1BmiocYajQqOys8OxGaMyb4+jEQNnhoMecxGbomXHT3kE3ts1mi82P9Ln7QkR9PM4d3ImTKQvkz01hVXpusQEdxvCTeQFLf/XIOcoHS3nKSDNo4IermOebXQQk/YIHRcits395
- iU7umwAH
- 9cbcBWWWS8oz5aaH3/FTvryAq0TolR2MCp55t5p30bn4O9IBqPq+ay5FT4sVIUyVV/P5AEXRyV0Kk8PZgXQAG6oI6vV52hGOncCIkEnfqZAmS3M9SRaddmMVoYILRnwwrwRP9FpQTEhLPqZ4K8ug4XmlDYv28D0KmYr3ggA5hXy8XPgsKQkvne9xWy2WDR/7WP819XpVVywoaIS1gAxtyOAnVCBgrtDiD5+iWsCiFttnz1qsU/0joCBkqqE7sx4a2IiwRseVjTo2dVqZu6lvWh+24tUQbT31Hxjq9oyu+Gn4hhs/2447w3HkNFUVsCGIcNaPTaPocpl2jSMY=
+X-HE-Tag: 1765939606-56176
+X-HE-Meta: U2FsdGVkX1/vBCtpO+nyd1qj8SesYOFJtcJvsa2x65R+dY/d72fs2lnaLdwGLTqLOyUA7Fb8Ug76lHqdPYdy0I2BbRHv9aa/BSFVSsv4XXkMHU7QO1mf08FTeB1Br8xWft0OSC9jgD0aEM1J9vi7EZ97bMY5EnILhBM+sF7y3fPGPOecSFiC2senKeJx3KlJ0aIOx0PdBvB8kQk7GI8mCPlYpCPdwWR9LRJhHAxtyBHbv2x1GP/FnTo9kzsg/cy6yyl0Y3WXHWEP9HGcjdwKrPYifKwuJ6ebqaQeVfgtscKFTZCLdZ9y/lA2avYUro4Hqj1c/1xTYGGKFbQYn38W+nyzJEe+E1v1p4bfoB8cIpF8HUrw1m6vE8JwqtmiwXKYu4B3uFsYdiI81ZTYsMB4k+bI+KjRge5gA5HvMndl/XUAWnzkUjvj/FsnqRur8OrbrArWGqibS5fZTdM8l+zu7LZYLAtqW0FhMiEmDQHUvxKVyb4QFvAeFItcXpwTQZwe88V3CWvfDWWlS+jy9rkQ8a7P9W9KdYZWhOo74r36dP8h4fJmlTgXRIJviKdPffh32pWIneTjfmmHbGo7cI5DETuGQWTd6HV2ehwMVUReVz+d3+Jd3W8qfulKQMVECyrwGz8j/K23Et3moAuFXa4UgbJ/E2PMWJPPT7vA6gz68rqhoOO16dXGBJ5NUJOJVY5VyuKfpQ+7XSiKfEtnVYOyKTkgv8btKWKTjQcgoSGaPuB8BjurH+i+ZOMXceGR+3U16vbJ0JEpu6FYM6Lx08ku8dqSvu4mtbiuwkPydwKDpA0mOwJZFpBH8WN5esEz+8my0a2Ktp/lrjP9rJzku6Wta82jTUzF95t/uy7xdHkitFDKj5ogpUfNlpQl/Qql8tYyP1BJ0psGerEDTyBw7G70fLzO08cb4m1SIWhyoYSGpOdFLXCr1bNOBa0aMIR/Qa89XwA3HjxTBEiCoHPRPkm
+ Z8vGO37b
+ o2zjtAx2ET47lc4verTAdGepaM7V/n6oE5nW3mR1cYHm9hHUDFiA6imgGWZPCXZGdmtasM4gprJ3NQdhbn8y94t+JSFJidZR201VlFWHFUgZjuRF/j3oCbIFyq2JdIDp4I717o+d+DEC0OQTsJMvIA90qBIIP2hXiOiI0IHbzgf59AyTVOw5iSal2utJaQsCA2jWbzarsd8W23sZG+E8zs9VZSynMMrmm+zD5jZJSKlCC/h/56QODeKkg5aiJuInVN7+eDZGM0OYo9E0WZ/EhFesjh61G6AvdCHMc222rhOc6fhagdatfe2IBbh0d8QFxT87d1bUcke2Afzlbs+pNTph0Dv8X/8emx7/FTxLZRIJWJpLK7zj1TZ/1Wyfw3/43r8dX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,15 +105,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > On Dec 16, 2025, at 19:48, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
 > 
-> Factor out the splitting of non-compound page from make_alloc_exact()
-> and split_page() into a new helper function __split_page().
+> Kill cma_pages_valid() which only used in cma_release(), also
+> cleanup code duplication between cma pages valid checking and
+> cma memrange finding, add __cma_release() helper to prepare for
+> the upcoming frozen page release.
 > 
-> While at it, convert the VM_BUG_ON_PAGE() into a VM_WARN_ON_PAGE().
-> 
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
 > Acked-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
 Thanks.
 
