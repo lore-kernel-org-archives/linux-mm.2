@@ -4,88 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06D1D6406F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 03:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D1DD6406F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 03:10:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA0EB6B0005; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
+	id 54A346B0089; Tue, 16 Dec 2025 22:10:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E71BA6B0089; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
+	id 4EDE16B008A; Tue, 16 Dec 2025 22:10:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7E6E6B008A; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
+	id 4383C6B008C; Tue, 16 Dec 2025 22:10:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2ECA6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46353136BF4
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:09:32 +0000 (UTC)
-X-FDA: 84227482584.26.FB5A0CC
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 03BEA180007
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:09:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dyEaTMhh;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3194E6B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:10:23 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5CD38B607
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:10:22 +0000 (UTC)
+X-FDA: 84227484684.27.0B5D4B0
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9A86C1A000D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:10:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=KCvIGR+6;
+	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765940970;
+	s=arc-20220608; t=1765941021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oBMrZjjwlUZToKdAahyq4R4SSDCHf1gMyTud4G2X2/Y=;
-	b=N1CaLFpYskkTX9JYHj2iuTg38KxiFLkNtJQdWynVV0VTzuXi4ZrFRJrAoXtq3Wk8d64eX1
-	4ltJqDERzJ6XwDP12WqX8ncMGRsmNQXw3SQG8PuACW7qkn0jut3ctUsHbHpcj6hEwo336b
-	iMMOWfvQWqTUbtXiQtLOZ8rqaRD3bqc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765940970; a=rsa-sha256;
+	bh=Hbw9zR0xEpNm9A0Pc6HSS0+c52olIIH10RNS2pDgzjs=;
+	b=RFivj8jxTEmEqD5uZ6sCru0Snn0W2KsuK/rIHu13qEuuVNf1SNnyUFgcp12RT83PWPYLPG
+	+CZc0km11/THzIWqczpQP5uigxy0k8Mnghu/ySYPmIfyiXBWF1DN3gZTuBwakMmMwlYTS2
+	TjAy/kROUfSHymQXp9VcCn7easliplw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765941021; a=rsa-sha256;
 	cv=none;
-	b=HezmgZmKmVIYQpiNdeWFcG5lG+3e/OhbMta2W+yIeGndDbIN1UJZe8UXZHtORBrXDAByfA
-	crAiDtJ9RhRLFxsn3f/tAwoQL5mgGJfMo6NN/wd+I1mBcumgPR3vmmHIjBKIrfkZDojCwI
-	dSlKbOw/xtRyDmRf6/QGi158gtRPidA=
+	b=QWLiOQfOaUj+Xl9iUEqJkESCDChcyaqUqIZJVGzdfUgjxKbpYUa5TorW+Kia6yToKB0yb1
+	kNrk1HaDAeKMaTKttwyIc9/megG/uygGTwxKAuip4Ng8/lQ+3Wv8whv827OFB2GgY2sTf4
+	S+WFjxrK4sGIvEjNF1wytnAOLzZxyjY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dyEaTMhh;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765940966; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=oBMrZjjwlUZToKdAahyq4R4SSDCHf1gMyTud4G2X2/Y=;
-	b=dyEaTMhhrloZ9Q7XipnZUMqDpN0uLCAeSkfr0zkV+MJe9rCYbaMKdJFa5dIUoGF3+tbDxIBlbUIZh7FKvm74s8t4bT3QXD4VxDHgeiMfvValsQjDBjz+Ye29QIhDWKNnf4h8KXEt40+xYk3W5W7uSh1OnJKr9EbCyH4A4bUbhYU=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv1ZBna_1765940964 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Dec 2025 11:09:25 +0800
-Message-ID: <1c6cfc9b-046e-4dec-a859-032e89e707d4@linux.alibaba.com>
-Date: Wed, 17 Dec 2025 11:09:24 +0800
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=KCvIGR+6;
+	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Hbw9zR0xEpNm9A0Pc6HSS0+c52olIIH10RNS2pDgzjs=;
+	b=KCvIGR+6Fj9i8JqE2aOH3ZT7Ll4mDUiB1+4jFjDbno13RnDEFL0vddTBuxsYXAK8IqvPJfOC5
+	eIDGY7bSeSCftA4ReTD2b3uoaCuk7lku20l2CYrd4VQn/ys574cTYHcBCtcueyQfs8WamJAE9sR
+	iTfELMeilc1vFhS+AdFbEJk=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dWJcT2PcBz1cyPb;
+	Wed, 17 Dec 2025 11:07:05 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 55EFF1401E9;
+	Wed, 17 Dec 2025 11:10:07 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Dec 2025 11:10:07 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Dec 2025 11:10:06 +0800
+Subject: Re: [PATCH v2 1/3] mm: fixup pfnmap memory failure handling to use
+ pgoff
+To: <ankita@nvidia.com>
+CC: <cjia@nvidia.com>, <zhiw@nvidia.com>, <kjaju@nvidia.com>,
+	<yishaih@nvidia.com>, <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <vsethi@nvidia.com>,
+	<jgg@nvidia.com>, <mochs@nvidia.com>, <jgg@ziepe.ca>,
+	<skolothumtho@nvidia.com>, <alex@shazbot.org>, <akpm@linux-foundation.org>,
+	<nao.horiguchi@gmail.com>
+References: <20251213044708.3610-1-ankita@nvidia.com>
+ <20251213044708.3610-2-ankita@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <f871d90d-11e0-1719-c946-1c0bf341042a@huawei.com>
+Date: Wed, 17 Dec 2025 11:10:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in
- folio_expected_ref_count()
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Zi Yan
- <ziy@nvidia.com>, Bijan Tabatabai <bijan311@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shivankg@amd.com, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-References: <20251216200727.2360228-1-bijan311@gmail.com>
- <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
- <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
- <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6p939nct5mofsm7dcxxz8byirfobo4br
+In-Reply-To: <20251213044708.3610-2-ankita@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Stat-Signature: kk4s8jzd3tbc6roi8b6r5w7fwmn37ajw
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 03BEA180007
+X-Rspamd-Queue-Id: 9A86C1A000D
 X-Rspam-User: 
-X-HE-Tag: 1765940968-950623
-X-HE-Meta: U2FsdGVkX184mVuUx+9Z+Vuj7pBHjwI+62FXM6OzMsEPSJsVBoOgLTOqco0N1zxBsudLQ+daDmgWTKa9O7rxsd5qlxVROSFb34Dsuume9pl17AESxYIcUD+nS3vMfOWSNcOiExd5W/V+DsjNYskLJrF/IUwYfaLSIyCMjd/nVLdMiHT6afxpvtOaLexbJLTeTwkoatdWKMkIOvEqFPTDiw96Gf/bEaanpyGqo0EoGPUZkm7msWWCev241x12oXqwubZfBj8VO+ddm6ercxwARaO9WvozirMSQCxIGlgA8fqXSyRIHtURWqm+VOxdFyTWf7htcvkahvjMBnFPcSk4WXH9hmN1DCn/2tof+efXqPxPWUA1qMEg9asciQX3sw40RCBd8qvBVGw5HhFYV59/2byPOALTMxjvp+2rcie9WxFDENzNc4l7rvQm2pyTlPFcfiVH1YTYThCUM+ZHm/+Nn4FjBirLbVn/31hiAA4HRcHAYVEfvqBnYQ/CCvvDDL4Q+1XGTNwmpQDPGfcs7bbWLlBysXZdL0QvAGWku+onF/+2Hm56JqW0IcAPPthqJVXJIpzSatiAPE6GXJ65Yr+5aOUZAdpExgmoQ7SArP+AnIuEDt8STI2TNEWeD1uOyTlhkxtTFel7VPIiQs4ZoptDK675PNGqI80aDo4wy+M68z0rz8Va1HXJGX2Ti5T7I1l7cLW3m6T7ampKqhJC2zfRVShStxS4etqSfP8rCDMPps3Gd7LypavyZSd7n3iZcBBgXcQLR2zC2jQmnhoxcCPYtEmV/9sQpL5I9L3cwLCdHohcF0ERkmkhqi3EgqA2E2myF0lstCojoSBLuRG/oKtD7Z5VbyxNFAWyupqn4ck549lShYjLhtKQA/xmQxF7SGHz6/aVActJHbl4ZtPKJ6VxzkvAG0Mwoa7SB1nsHAiXbJiDulclOkiUZpinYEz92w3TquACi3T2Pu3NDWBx4LH
- 8G2FfrBQ
- VgDVvMs5oeNLl4vvMElJCyGj1f7X06L24oEtVHDMUKAknYBcb8vGz25DEq84KbKMwqAjXtUGbshrEVhGA2/fYqIwOEx9HgvnqmmYR4PDXm1SDXzrn/Z8CGcPiLh12LQan8h1J6o3ADSX8ZGNO/cHrKpt/6i2lhe8ZEZCvWSfiwkqyeAjF1Nlqbb/J9vV6Um2/vctZfa0ZeqZBkn7NFIf2RDrTMEge9ChzLK6o3s3h2YseeEeTWzz8/Z3ovjkl75jvHlvx1v+MeH6t25OTei00/pKuC2x+2ZgAJxKM5YFm4fqpeO6kY+6FFjvenAqHsmzLMKuXfgLJSmJfn/6DaG3+d5N814oqc43w8U4Z++wAd0Ooo7HGEQCOzsYc+A==
+X-HE-Tag: 1765941019-258811
+X-HE-Meta: U2FsdGVkX19y0YL8vqu+ZJHc/U9POKAkl1KUlP6cUXW7AONsc1g9Wfz2wWXlSQoRm3Nh690PrA8MakJDddZg898qA34ySper8tVeEsa4TfJKevUVI5Vwcv42p2CnI+hZINQ/INB3RMxO3+NlKw95A8jePdXhL4qW+HldyEXGGBTXg3KE5E2LJppdvslVPke1ZVAy3+tffgRLsjThJDWxU5Hc5WJQ4dDlX9I3P47t2XO41K0xE7cm4EwOhd+b9JcQWkZnHHujcfc4fkyzmY8NM7gb8IQFe470RySn/dCHYiW9AqydHvBkEC/wpP3Oa2Z9eiTcx4e7oFXPVYgzlaoIcBPrb/TrV5HQjwKHhvGo2+8+H5A8+TxGkJqeIYU6Y1nNplQxAiKlLWmY9TDX7bC0JaoJpbOlFYCZGrnH8y5Z7jYKFckeNULbe7xC7YEHQyXHdB5wZWzVdTYO9azWDrJp4rSge5gfhFdpBGbodfQt+ZcbfTU4/m2E86eXHDQr6grChgfs+U5F8x2fOGZ4LOYEjHjt+iCypgt8Fp0Wmo7IQv78WKbAgTC5CyqHylAXTpENl5wG2L9LBclQ4zIaWMABvr0A4cwpMk3gMpo4CvTsCDm5rgWkNCsE10sgnKmYjeOO4kg7HDFrO0mgsg4yhthfKhXSyvN/bmxpRT5ybMS+rRPdaCmA5lHCTYaQmZ0FmRPFU1WJ4BWZKk0vJhUTG0zO4m5yj6Xdu6vXSPk39oWYsU+MPfYiIzjALBQXUXDeOLllaRrr30GHLFhttHU+oEv6S7tiNgLEzslAA6uiXkrdaB4fm1ivwbv1N5u3nWWqzook2amuGt1cQ9E9KRJT0zCWNN3KIUiY3hjQHEc4J9mYCy472WvcVPqjPwVF7bE/6GkCQeSTJagBAQgbObU9xaMUX5z5/NfSv7qiQvu6dZF1cFZKZeaJA1R0XJ0BJ+GXdnNdkVa8auqmM4PwmbDAte/
+ Koephz4T
+ RL/m/m1CKL14OrmUAI2XKyi7al3/3sW6WCkKUzjk64lJQYWdTvG3QMfOoiO2WQVl7SxKSq+EN+a9uOeRuFfhxc/XoMdkH8+NcPY4HaKauYeKhLwAxJqwDNmcybWM7jL3fh5eMtLymTga4fJVMfnX+Dz4tmDQP5FwL/kkEMXkCSOj7SivwJdthAN0vbiritvnodd/VbhLVScDSo1jBG+gn9TQOB2Y3JViPuDwrfhQkA+HXt3uMRf1AzU/KpjQFdbItpMHFAQOUgh6pY6okf+VCIwifihIpV+AINUa47FUR0zVWowQ3q4KKAyMHsEpvJVrWGUFOSZ0i8Z0WpsGhycKUXvzDehtamTgdT0zCz8rPZr3O//o8n17ZQyjdBotXZpYxymEhX4wq4Xoylny7kab5MlxtT/l1b+XP7Zlz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,62 +110,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2025/12/13 12:47, ankita@nvidia.com wrote:
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> The memory failure handling implementation for the PFNMAP memory with no
+> struct pages is faulty. The VA of the mapping is determined based on the
+> the PFN. It should instead be based on the file mapping offset.
+> 
+> At the occurrence of poison, the memory_failure_pfn is triggered on the
+> poisoned PFN. Introduce a callback function that allows mm to translate
+> the PFN to the corresponding file page offset. The kernel module using
+> the registration API must implement the callback function and provide the
+> translation. The translated value is then used to determine the VA
+> information and sending the SIGBUS to the usermode process mapped to
+> the poisoned PFN.
+> 
+> The callback is also useful for the driver to be notified of the poisoned
+> PFN, which may then track it.
+> 
+> Fixes: 2ec41967189c ("mm: handle poisoning of pfn without struct pages")
+> 
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 
+Thanks for your patch.
 
-On 2025/12/17 09:04, David Hildenbrand (Red Hat) wrote:
->>>>
->>>> I am not very familiar with the memory hot-(un)plug or swapping 
->>>> code, so
->>>> I am not 100% certain if this patch actually solves the root of the
->>>> problem. I believe the issue is from shmem folios, in which case I 
->>>> believe
->>>> this patch is correct. However, I couldn't think of an easy way to 
->>>> confirm
->>>> that the affected folios were from shmem. I guess it could be 
->>>> possible that
->>>> the root cause could be from some bug where some anonymous pages do not
->>>> return true to folio_test_anon(). I don't think that's the case, but
->>>> figured the MM maintainers would have a better idea of what's going on.
->>
->> I am not sure about if shmem in swapcache causes the issue, since
->> the above setup does not involve shmem. +Baolin and Hugh for some 
->> insight.
+> ---
+>  include/linux/memory-failure.h |  2 ++
+>  mm/memory-failure.c            | 29 ++++++++++++++++++-----------
+>  2 files changed, 20 insertions(+), 11 deletions(-)
 > 
-> We might just push out another unrelated shmem page to swap as we create 
-> memory pressure in the system I think.
-> 
->>
->> But David also mentioned that in __read_swap_cache_async() there is a 
->> chance
->> that anon folio in swapcache can have anon flag not set yet. +Chris 
->> and Kairui
->> for more analysis.
-> 
-> Right, when we swapin an anon folio and did not map it into the page 
-> table yet. Likely we can trigger something similar when we proactively 
-> read a shmem page from swap into the swapcache.
-> 
-> So it's unclear "where" a swapcache page belongs to until we move it to 
-> its owner (anon / shmem), which is also why I cannot judge easily from
-> 
-> [   49.641309] migrating pfn b12f25 failed ret:7
-> [   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 
-> index:0x7f404d925 pfn:0xb12f25
-> [   49.641311] aops:swap_aops
-> [   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1| 
-> reclaim|swapbacked|node=0|zone=3)
-> [   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 
-> 0000000000000000
-> [   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 
-> 0000000000000000
-> [   49.641315] page dumped because: migration failure
-> 
-> What exactly that was.
-> 
-> It was certainly an order-0 folio.
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
+> index bc326503d2d2..7b5e11cf905f 100644
+> --- a/include/linux/memory-failure.h
+> +++ b/include/linux/memory-failure.h
+> @@ -9,6 +9,8 @@ struct pfn_address_space;
+>  struct pfn_address_space {
+>  	struct interval_tree_node node;
+>  	struct address_space *mapping;
+> +	int (*pfn_to_vma_pgoff)(struct vm_area_struct *vma,
+> +				unsigned long pfn, pgoff_t *pgoff);
+>  };
+>  
+>  int register_pfn_address_space(struct pfn_address_space *pfn_space);
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index fbc5a01260c8..c80c2907da33 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2161,6 +2161,9 @@ int register_pfn_address_space(struct pfn_address_space *pfn_space)
+>  {
+>  	guard(mutex)(&pfn_space_lock);
+>  
+> +	if (!pfn_space->pfn_to_vma_pgoff)
+> +		return -EINVAL;
+> +
+>  	if (interval_tree_iter_first(&pfn_space_itree,
+>  				     pfn_space->node.start,
+>  				     pfn_space->node.last))
+> @@ -2183,10 +2186,10 @@ void unregister_pfn_address_space(struct pfn_address_space *pfn_space)
+>  }
+>  EXPORT_SYMBOL_GPL(unregister_pfn_address_space);
+>  
+> -static void add_to_kill_pfn(struct task_struct *tsk,
+> -			    struct vm_area_struct *vma,
+> -			    struct list_head *to_kill,
+> -			    unsigned long pfn)
+> +static void add_to_kill_pgoff(struct task_struct *tsk,
+> +			      struct vm_area_struct *vma,
+> +			      struct list_head *to_kill,
+> +			      pgoff_t pgoff)
+>  {
+>  	struct to_kill *tk;
+>  
+> @@ -2197,12 +2200,12 @@ static void add_to_kill_pfn(struct task_struct *tsk,
+>  	}
+>  
+>  	/* Check for pgoff not backed by struct page */
+> -	tk->addr = vma_address(vma, pfn, 1);
+> +	tk->addr = vma_address(vma, pgoff, 1);
+>  	tk->size_shift = PAGE_SHIFT;
+>  
+>  	if (tk->addr == -EFAULT)
+>  		pr_info("Unable to find address %lx in %s\n",
+> -			pfn, tsk->comm);
+> +			pgoff, tsk->comm);
+>  
+>  	get_task_struct(tsk);
+>  	tk->tsk = tsk;
+> @@ -2212,11 +2215,12 @@ static void add_to_kill_pfn(struct task_struct *tsk,
+>  /*
+>   * Collect processes when the error hit a PFN not backed by struct page.
+>   */
+> -static void collect_procs_pfn(struct address_space *mapping,
+> +static void collect_procs_pfn(struct pfn_address_space *pfn_space,
+>  			      unsigned long pfn, struct list_head *to_kill)
+>  {
+>  	struct vm_area_struct *vma;
+>  	struct task_struct *tsk;
+> +	struct address_space *mapping = pfn_space->mapping;
+>  
+>  	i_mmap_lock_read(mapping);
+>  	rcu_read_lock();
+> @@ -2226,9 +2230,12 @@ static void collect_procs_pfn(struct address_space *mapping,
+>  		t = task_early_kill(tsk, true);
+>  		if (!t)
+>  			continue;
+> -		vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn) {
+> -			if (vma->vm_mm == t->mm)
+> -				add_to_kill_pfn(t, vma, to_kill, pfn);
+> +		vma_interval_tree_foreach(vma, &mapping->i_mmap, 0, ULONG_MAX) {
+> +			pgoff_t pgoff;
 
-Thanks David for the explanation. It completely makes sense to me. So 
-feel free to add:
+IIUC, all vma will be traversed to find the final pgoff. This might not be a good idea
+because rcu lock is held and this traversal might take a really long time. Or am I miss
+something?
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Thanks.
+.
 
