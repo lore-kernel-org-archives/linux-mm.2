@@ -4,112 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 201BDD6554F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 11:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90AF4D6552C
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:02:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69B396B0089; Wed, 17 Dec 2025 06:53:26 -0500 (EST)
+	id E974C6B0005; Wed, 17 Dec 2025 07:02:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672756B008A; Wed, 17 Dec 2025 06:53:26 -0500 (EST)
+	id E657C6B0089; Wed, 17 Dec 2025 07:02:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59C826B008C; Wed, 17 Dec 2025 06:53:26 -0500 (EST)
+	id D711D6B008A; Wed, 17 Dec 2025 07:02:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B7B26B0089
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:53:26 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA5C4C0A5E
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:53:25 +0000 (UTC)
-X-FDA: 84228802770.24.6C87717
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E884340006
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:53:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoNyCQ7M;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C40936B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:02:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5494A140A5E
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:02:36 +0000 (UTC)
+X-FDA: 84228825912.14.DFF696C
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 548A91C0013
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:02:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XKnAwzNO;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765972404;
+	s=arc-20220608; t=1765972954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7t6JuJAKEyX17GFUwC5uMv+PO6YCakZOGeDd49LaW4U=;
-	b=EpI3EPOoZ80QKt1kXPG1RacLr2ac2tACw3/v+NYnnpDXPcYBb+21Pw8P8sbwaP4xLAoxjc
-	n/d2U0iwGD4ArWZgTRqUs4jtJxolmjm+hQh4ltLsxgtdlsRjgzdyJTM7fiTHQCcHJXzgCP
-	7O6FBWtxVOKfwkIgg9GRrBlYEwyfd7c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765972404; a=rsa-sha256;
-	cv=none;
-	b=I4hh+OkeT4VL8Ps8X+9HR9lCGUr0mieXGUjFUM73m97h0hANvbpxMKgEtThFDZuTcAZr3v
-	bl2Usu5zPnmdTaxfL5pL+LtnnojGtPeK3xNd6hprxugsMn9EJBRR553Xd8dd5dapIJGq+K
-	cIHScqeoH0ZaUX2quBWCXSpi011xunE=
+	bh=OJt3OeOAET42H1SZeq/73bRk3HyaCcKWTnzPipXTmdU=;
+	b=qdLAEIa+O9h4wjG4Io9aX3FMTi2LF9Eih7cNLheZfiFYcZVqQGhoI44s6a+nLyLYCSe4vX
+	G1OHlZCujOIfbaEQO5Xc9kprlv8Fj6Ih3G+xGVQ6KptkfHXAQ+fcSMauqnKpXrPN+nOHsq
+	fHBN+x+UptLW3w4c4WfQpfAgt2PKoVI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoNyCQ7M;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XKnAwzNO;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47118259fd8so57003815e9.3
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:53:23 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765972954; a=rsa-sha256;
+	cv=none;
+	b=u27ovuwSEX91ocb8IhINvWHa/fllni6g33BkbNTpu85euWRyAzC0EL+7AEoLYAKKEx+/N4
+	/kRdXy9YgAvoggrGXhrDELs6dYYJ8bbM+g+cu9WAqvOv0ulVz3CtpWN7yL5JTu8Zh8EaFY
+	YBi98YbGxfsZ7uFlY7IJK73nfW1tihU=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-596ba05aaecso6441257e87.0
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765972402; x=1766577202; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7t6JuJAKEyX17GFUwC5uMv+PO6YCakZOGeDd49LaW4U=;
-        b=OoNyCQ7Mmf/QqDgxu2d4GYi3D5QZr5/U+Karib33p8s8EEI/BDDQFjNa8GrgSXoS3b
-         vv8tKGowpMOEqZFxYoiC6sUj1vok8y53qpvT5Ijphv+UzE3kC5L+I27Hn2pmjPJ06At+
-         umYvEIZ1VBjR4tKUkJClbZkz3QgOtU2NaDzVdshTxXi3heTWa9IP8T8WLJRbhE7lJG8G
-         BQScJyazcPGlrShFw3fOwFjcRgFyxNCWto3GmrVfgDzk3pXwp5rphcwCvbJGG76g0Glt
-         PwpklAdJqzMyqYaCdT5MOR997rzUK7hs8x3rmV0IHGas6UpnJ9rwrMKg+WVF+WO892ix
-         baJw==
+        d=gmail.com; s=20230601; t=1765972952; x=1766577752; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OJt3OeOAET42H1SZeq/73bRk3HyaCcKWTnzPipXTmdU=;
+        b=XKnAwzNOO+LyOmZjLONdUcy5CLaOFIS/OH3gRRDUeyeUnP8fi6x5fOloc4v7AoCz7P
+         Y7Z6S1uywclaXaMkArCrE3wAkP1SVIsl52x8kLM2I4LN5YinxwkESlH3QIiqf+nhudHH
+         qs7j8CyMY34Yz6yHS9KjKi3hUik014a0yf8+6aL6vfaJARN4vhHDigCh1eJmtRJkA4Zz
+         bL5TASI0dKJo3O/dC9Lh5hOsfTBeJUGxTTk6A17f4mcKIz2fwbXDp5Snpi5DrkCjEYhz
+         FRYZsBtLeOJXoOYyXtN7Ltz1tlkA3uc154kMohffAeUA30ek9M32RhFFHm6suld1vInM
+         O2jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765972402; x=1766577202;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7t6JuJAKEyX17GFUwC5uMv+PO6YCakZOGeDd49LaW4U=;
-        b=Ap2mQZ0qEsqJudHwbieLQMPubUatHpTkRWBgP57bimUd3G7HD1JjdRtnIM2rj73lkB
-         HX2UD3szL34JbwPPX/pQRWQfiui9e5k2fd82lUjTH532GODbqQzSDm5acEVrVT6+1oub
-         9IwsgZNChdO0aRyRd75o4Cr3sczpUGamBZC/Uf6nJRX0h0ZuLs1KuEI3a0cqS6TBWNnM
-         cWG3ihTmnY460VgQsOKMOQ17JGLXaq1qmzkuFvLFLSXPjFK79+IAOUHRyu6Umf2oe1ud
-         Y8h5SJrG0QcstbTgB2ECQn0yhVZsM+Fm0hc+eph+ICGsWBwvoMEZV8moECMLw7rdiTuA
-         Q08A==
-X-Forwarded-Encrypted: i=1; AJvYcCUUsxmvU02ZAWn/C6xsq0HY/C6nBXJhCv4kjVfZt55lzhRtOY2uXrcCZBVZf5RWkbH9gzl4fGmo4g==@kvack.org
-X-Gm-Message-State: AOJu0Yzpmk8J8a/9aZY7+F8psuck5oWQ4PL4ATJa77qdpZmjY98xDBhT
-	1uROueIMMM8Q9crhEf1A9sFq0EoNWHBBkQhnhCIpsHisYlfNfOB+04djkMFXWVcwWGTL0vXYYzf
-	oiBcHoDb6dtb5Y3KxvUjILSzGVL1PCWs=
-X-Gm-Gg: AY/fxX4CPEia3JRO1lB2/5Yzc/ZXvkMYGYDmOU+jHPhrzl9cf6TsyJNTYmQxf5WXsy0
-	HGr4EzanrNVEBrTSmqoKEfjG9OFbDXMWI9S201lpNQKwm2P4kK4om6t8M1qL/03j/puk3y5MhEm
-	y6hUteMF+e9HC1llnWKa+axqgPx9IeLjhv8hoEbXBAYQjZFe4wQcmfOcrqkX7ib1fA6UAiji3pD
-	io+QbxdhcQTPvhmUJj1q5SgGVzaGmal5w1+sIGqlGSEjqGBotNZlKTTaeTQrBnFiVf+eg8=
-X-Google-Smtp-Source: AGHT+IFPEtX519ZTLQSXJiTgFXEb0OJw4iIIi/Tj16kJdH+kb4aEhtNuuhetN3F+Dy91Ljc+GFQ7VJKn7dMcol42Hwo=
-X-Received: by 2002:a05:6000:2001:b0:430:f742:fbb4 with SMTP id
- ffacd0b85a97d-430f742fd2bmr12632027f8f.43.1765972402240; Wed, 17 Dec 2025
- 03:53:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20251216211921.1401147-1-urezki@gmail.com> <20251216211921.1401147-2-urezki@gmail.com>
- <aUIpciUKUeclNk2s@MiWiFi-R3L-srv> <aUKXs_3bxLyMvTgu@milan> <1329f4ad-5fe1-41e8-97f4-0b58caf86fce@arm.com>
-In-Reply-To: <1329f4ad-5fe1-41e8-97f4-0b58caf86fce@arm.com>
+        d=1e100.net; s=20230601; t=1765972952; x=1766577752;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OJt3OeOAET42H1SZeq/73bRk3HyaCcKWTnzPipXTmdU=;
+        b=QRUluVvc8QFnpd8e7cfulGt2CP/L9OPPL16MPkw/oMqVd2kxcKJG+HnH2EGP4CYpaR
+         OGK5IRzHQHZXQH3awwKApUDJ5P0mcqTuYN2joqZd/jIFKcRQUV1ney1jIdW7UEQc06iV
+         B5s1dXr8xbE4tifujn+5miM2n+4JT8RUAo8hzZqNZfjcLpd+ZZY00ZqvH4PSAU/tfI1o
+         LbA6mzwkpm60cyFZc7voBVRJyMKu8E0pkR/8pA+OLfmP9QiNgDOsvd94WQUiRbSWGb7/
+         nbRkNCaErBbUNR3guH9uNkcqVuv2boQe5hnDtYdStGnOAZyfWP+ZHRMXWog4I4LhBZvW
+         SRXg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4VAOBF4xvOEMEMmId6mKXnNJOZg5A6moY38zrSeKDw6E6vpM3NhcdHdmxoooGjIRzTlaEaLAIKQ==@kvack.org
+X-Gm-Message-State: AOJu0YzrSmygouUPQL5ZaNCDSc1A0fZIm05mLNglifP8Dn2Ucza6s+DO
+	YkMi7VQrJszjadtnWrxdWrRhwNHS/hnPp1k1IuzzzDWi8gcvY8qs8hvlZJ18ffUv
+X-Gm-Gg: AY/fxX5Vlq7SYavuiemEEqlxutmpyQHQbgfk7XbihdClCLMYTDbdeRxcOH9wgdctbew
+	w+NNgVGclTvWvRW6Lpaiux+ancATp7uGOgZzKM/q0fGqLH9EMEohK/mckk+ARrgK3y74kMsvW+h
+	KxsHlogkAdTQS6f7CzGd0HByHK8GDhzpU3VurXkcdRPOWsJBS3SjQXnvC6ECEdjoO/x+ENSK6QK
+	lDHvT6x3g0g23Thr3txuuy9S8lXBkGpcTOVhvoGu4NOAl02Ur+LKkMAinwXjfIyRU3q2Vr7+UiA
+	n/LHsBSQO+nh46VDrI10Nn0nE5/AE6rkKwtYMSlsu+i/WP9/Et7h8/d5zpGqq8OS9WjcpGnPDMJ
+	N/ApdyAlwPSEb6imDI4Af7FATB1Hf7z4GpYOJjy855226fIaNDqzzNZZ/Ijw1U9s=
+X-Google-Smtp-Source: AGHT+IEvC8B8oWcr0SIWQAYhh3wI3svFk5jPcenoh+vUpS22lTjVeH41fkW0PDI4QJj3OoDOzFAiww==
+X-Received: by 2002:a05:6512:3f2a:b0:595:8311:dc80 with SMTP id 2adb3069b0e04-598faa27bd9mr5964892e87.20.1765972952322;
+        Wed, 17 Dec 2025 04:02:32 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5990da5dcdcsm2312647e87.73.2025.12.17.04.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 04:02:31 -0800 (PST)
 From: Uladzislau Rezki <urezki@gmail.com>
-Date: Wed, 17 Dec 2025 12:53:08 +0100
-X-Gm-Features: AQt7F2pLy-LddkBes3ku9vN3z09sqcprn4YfAkMkZTU9C4j3jK80A8lbrh6UWjs
-Message-ID: <CA+KHdyWezxoLH_HbJNYfXhSG0axdRpH5Ax9of8=g9zJwk0Z2TQ@mail.gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 17 Dec 2025 13:02:29 +0100
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vishal Moola <vishal.moola@gmail.com>, Dev Jain <dev.jain@arm.com>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
-To: Dev Jain <dev.jain@arm.com>
-Cc: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Vishal Moola <vishal.moola@gmail.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: b3amu7hz75ugw8zs1qkh5bmf8ibuzpgh
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E884340006
+Message-ID: <aUKb1bL7CUcCWi8V@milan>
+References: <20251216211921.1401147-1-urezki@gmail.com>
+ <20251216211921.1401147-2-urezki@gmail.com>
+ <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 548A91C0013
+X-Stat-Signature: 94jjkz5oif83ikgnwdtdzqfypak85bc9
 X-Rspam-User: 
-X-HE-Tag: 1765972403-906086
-X-HE-Meta: U2FsdGVkX191kcahVfhGmaM9nwv5guMawKMMUNwVSBorsfQ/Bto7RRdeuJxuLSdXJXA4kWmuEQILjSQu27ngPwMqKKGUXQYoLi8m/SurxqFbpF49yBjDKg1+RM28NhIIH9usUEjepV5/rKF8YLVqwTMjpa0O/vkNm4P6QCiR/0yEJrRJ1TIDco6fbnh8XBHiIK/WmypVHH9Pit19tCq4a7L6S+GjnU0gG9jdu/aAIhkqaPd80mOUCC/WKFAEV8U7iqbH1WJzx5nEHEwrVo5BFKHIHUdaX/d5eYrC3A/Ht/eIAnJHVzbjCdPV5OWzBIQ4o2XocXCPb4bDeiSL1BjoZb6SZcRPrNMjbz4LdoysU63eptGRGzz4WM1GbW8lsU7k7iRIRrf97k9TdBxDuUmVighp0e/zAa6LzUpazkbB2me9mnWuHF5NECMujnXJhmPiVw86RfGo5rHS116/cCc03Pkq/lYeghESyE5PqV1vLlq1ASclhCWBWkmHiLp9cIh+3MWegN+LJY829v+roHEU6Uqa6SnOQ7RcA65vYdP9JCDrztgcxLk9i2AjJglwFJi9tkA7BrjKArsvrsoSNy3DegaPnnRvChJVAGYAT9sFsbgTlX6sZhWh4LHcF0T3S1F4MEoqn5umJxgltO6U7k1zS9aqnUdDLsRpC6Dy9X8U4vgYR+qIkNYuAz82owOn5qkeZZKzVJBqBWF0VoEO30xsIVisM6XkZbT+z3411xVxG62Nbm14SWhC601TsOpU5AvI13z3ojYDI00rBZdCRc0y+2R8nguBO+tuXOwy0uDk26NrYWNkx5knLRlSJlpgaS9GyXXjRY+VsM91jTs8okpgyVgfz0WC9ArlBDfQCyBmeCPAvyP8DGDAsTabT669+PGcMjdfu/J1QQc0sIcOfO2N66NwMOUpEtKeT8omcwFeGghA+o3Q89M8nkf6uo7Qdje4bjwM2ZRwp4Ckf7dvn9m
- J3sEYD+O
- xyUvsURjvB7eoG8PDOG4w4Lr/qnMOs03JPyBfC6LMz6e79mjmtv5Sq4yBeQuqltzk4vLpOsHZly5fjeGnhSAMd1j3ONN+x5bMizqyKE0T3+WECyU8q++8yEg9cbfj6hQrt2P53w1R+ZkWePMQkUQpP4NJajTeDnyh/uB95uAO4sMOby1h+JNA7AUZ/mByuYEe5KG9xLvqgoJrgA+PosItZvs4hvANKnioKOy6A++YcyH5dvkZQSV6VrCJSvtkllUBKzOAxYgbHBIcYZy5IewMdphEM0Xcfx1eZkhZGgd2dOIn0/+vbYNAlIougcmoF7nGHkDwjkRQlD6++dvBMr0qv/I7wzsxePOKNdsfYU2rAwC7BQM2dwSlk+rWEE78p2ltSiqaQR9KUia/hSaoNFauce5YmaIr9mg0H2oNwCQX5JHhOow5L7dg9DO27yDvPbwJdz2Jygh+mH5WMOA3F6roml6BuMARF1vpeBb2EdnHP9Gw7zeMx2f3hiWR+V5vI5zYbM7tWD4WBJrZKLNs2K2ZdiqSSg==
+X-HE-Tag: 1765972954-773640
+X-HE-Meta: U2FsdGVkX1+e209PJLLuMxsEIbZb/cqk8NbkxPsP1r7bBdAyy2emoTRDz5WFrF4i40LN5gmjx6QHK7CfZf4WYleBbex2AohUrLSHiCqyt/QNaNk89I52iCAerBC3UWax76UtwpcmRkSS8+d7833URaLrjumRYeEdInRKThZHPzdpkvLOw2ph4Ot9IvJXTk1qRDcVaO0CeXTe2pFMRBFpAPw/VmuYmp+4R3dit86fxYzd5AVhZNZc/Ud4Vrk9zCjlu/h2uV+M2RAYKN/Ze7h+T3s779j2nc2+Qul/Znyxm1Ldy6dJ8jbe509GSR5XDaTglNDp3bN+Irn9LBZRYd3ACF6jNCNXV9C2VL9W8kzckuID8Mw225QWOyOvU2ZT4oRNaGn7Uh+PwUbeFWK5wUKLyhH8e+0DYgJL+GYfhRkisPSh1N5pVLPVpP7eCnhmJqD2j7OAWRjf6t17hne3yk0N5D9J+1KhG57nGt09ELYOqGbtdm5ieQv9mOo7vpKuUMqCvjEio+0K2smGFq1xnvsbv8uswAxdNJtmWma539F187X9IOt1BQCEFjP48eBZylb+eMaBxYzVtnJ9B+cmm5B9JtQLcipT+rlBztxtNxGWpEx2ZuudGfGZ3T6H+hLOYUuQfbjqL3fvu4gzXlKSRoZeOpinZlbMFa6zzey1hs+XMZV0ReugCh+dLf8jPUgNBSb4h2ACJ726OsvudnmSb/20XaKzpzDX9gf2HvAYYxkjDCWDEo/DcPKS1yFMHrj3KlMBbudmzz+ib0YhIa3E0NuI9I3Y6Q3bO8Vn95PzVA+wYjm5Tz7FINvWO8TtIFEWYv+oCcZuOUQw9Vszi8Ga556JwQKBnnlZdj0MaJ24StHaS7qGhyCeTp3bIrp6RoCKOQ5/ysjPHIcyucM6bn7TrN44nRK92OBtm9h8njxYKMhPhXiK/avtgEVVjBXxQ9JNFp0Fk6uZ+cukXam4Msam+Ul
+ LMEn0FyC
+ 67ucxoKooP7C0pEJG1qb3Wl1DG3IQi6sWmnwUePqQuYvu+qD0auGtz6b3nqq7GR9XkxU32gLIMRh0JOWUJXYeNxSxZf0drMS/kuCCBGSmDrSTDQTCHVEdP4WOb4SD0lgBYkRKay7IhTvCgrvnw2PCubpd3XNhyC5uA/0lr1FrM5Ffkvv4qfwjDoJiKdvYZchoRP2DSypM6hrOI2j2RmCbpW7zKoxV3qEL4W29kux0nMiARjJKijWgzhiwVbv5LiWTY8UZC82/qiDUgVF4VGqk93K5hMFgKYJXRscuGto6B+l7i9mZ2fAvqb99wWMABHBMDNkw2wFnASey1LzlCIYVmU0qor6GiOqOEwDvX4U1AEnzbXvTu/GdVo9PgFikkhjR4sDeEOcyQ52F5ITUkbYqMOKYtSZdAGTvuUG9ojgP7keoISZsgItGIobypFWpnlM30P77fvuk1jEUZQCNfgLNki68yAbkscPYP8YEiRknlt9lVTghdaBRce3gM2ypqbiRltaOkh/F1KX5wCi05EBsliCP/c8/XPkJIhxYLU5QGbY/avBHUJ6+6cfPCU6BEdihQ6Sm+5Yv2Skf+f1si0erR79xnMkfBXWtZaX13WP2KEDyLxY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,79 +122,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Jain!
+> On 16/12/2025 21:19, Uladzislau Rezki (Sony) wrote:
+> > Introduce a module parameter to enable or disable the large-order
+> > allocation path in vmalloc. High-order allocations are disabled by
+> > default so far, but users may explicitly enable them at runtime if
+> > desired.
+> > 
+> > High-order pages allocated for vmalloc are immediately split into
+> > order-0 pages and later freed as order-0, which means they do not
+> > feed the per-CPU page caches. As a result, high-order attempts tend
+> > to bypass the PCP fastpath and fall back to the buddy allocator that
+> > can affect performance.
+> > 
+> > However, when the PCP caches are empty, high-order allocations may
+> > show better performance characteristics especially for larger
+> > allocation requests.
+> 
+> I wonder if a better solution would be "allocate order-0 if available in pcp,
+> else try large order, else fallback to order-0" Could that provide the best of
+> all worlds without needing a configuration knob?
+> 
+I am not sure, to me it looks like a bit odd. Ideally it would be
+good just free it as high-order page and not order-0 peaces.
 
->> (btw, I had resent my RFC, in case you missed!)
-I have not :) I saw that. Give me some time.
+> > 
+> > Since the best strategy is workload-dependent, this patch adds a
+> > parameter letting users to choose whether vmalloc should try
+> > high-order allocations or stay strictly on the order-0 fastpath.
+> > 
+> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> > ---
+> >  mm/vmalloc.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index d3a4725e15ca..f66543896b16 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -43,6 +43,7 @@
+> >  #include <asm/tlbflush.h>
+> >  #include <asm/shmparam.h>
+> >  #include <linux/page_owner.h>
+> > +#include <linux/moduleparam.h>
+> >  
+> >  #define CREATE_TRACE_POINTS
+> >  #include <trace/events/vmalloc.h>
+> > @@ -3671,6 +3672,9 @@ vm_area_alloc_pages_large_order(gfp_t gfp, int nid, unsigned int order,
+> >  	return nr_allocated;
+> >  }
+> >  
+> > +static int attempt_larger_order_alloc;
+> > +module_param(attempt_larger_order_alloc, int, 0644);
+> 
+> Would this be better as a bool? Docs say that you can then specify 0/1, y/n or
+> Y/N as the value; that's probably more intuitive?
+> 
+> nit: I'd favour a shorter name. Perhaps large_order_alloc?
+> 
+Thanks! We can switch to bool and use shorter name for sure.
 
 --
-Uladzislau Rezki
-
-On Wed, Dec 17, 2025 at 12:49=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
-> On 17/12/25 5:14 pm, Uladzislau Rezki wrote:
-> > On Wed, Dec 17, 2025 at 11:54:26AM +0800, Baoquan He wrote:
-> >> Hi Uladzislau,
-> >>
-> >> On 12/16/25 at 10:19pm, Uladzislau Rezki (Sony) wrote:
-> >>> Introduce a module parameter to enable or disable the large-order
-> >>> allocation path in vmalloc. High-order allocations are disabled by
-> >>> default so far, but users may explicitly enable them at runtime if
-> >>> desired.
-> >>>
-> >>> High-order pages allocated for vmalloc are immediately split into
-> >>> order-0 pages and later freed as order-0, which means they do not
-> >>> feed the per-CPU page caches. As a result, high-order attempts tend
-> >> I don't get why order-0 do not feed the PCP caches.
-> >>
-> > "they" -> high-order pages. I should improve it.
-> >
-> >>> to bypass the PCP fastpath and fall back to the buddy allocator that
-> >>> can affect performance.
-> >>>
-> >>> However, when the PCP caches are empty, high-order allocations may
-> >>> show better performance characteristics especially for larger
-> >>> allocation requests.
-> >> And when PCP is empty, high-order alloc show better performance. Could
-> >> you please help elaborate a little more about them? Thanks.
-> >>
-> > This is what i/we measured. See below example:
-> >
-> > # default order-3
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3718592 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3740495 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3737213 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3740765 usec
-> >
-> > # patch order-3
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3350391 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3374568 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3286374 usec
-> > Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 l=
-oops: 1000000 avg: 3261335 usec
-> >
-> > why higher-order wins, i think it is less cyclesto get one big chunk fr=
-om the
-> > buddy instead of looping and pick one by one.
->
-> I have the same observation that getting a higher-order chunk is faster t=
-han bulk allocating basepages.
-> (btw, I had resent my RFC, in case you missed!)
->
-> >
-> > --
-> > Uladzislau Rezki
-
-
-
---=20
 Uladzislau Rezki
 
