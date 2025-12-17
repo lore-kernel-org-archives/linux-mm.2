@@ -4,174 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933B1D64095
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA1ED6409F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 09:26:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E19FA6B0005; Wed, 17 Dec 2025 04:08:48 -0500 (EST)
+	id 76DB46B0005; Wed, 17 Dec 2025 04:26:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC7636B0089; Wed, 17 Dec 2025 04:08:48 -0500 (EST)
+	id 6F17A6B0089; Wed, 17 Dec 2025 04:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C836B008A; Wed, 17 Dec 2025 04:08:48 -0500 (EST)
+	id 5EFE26B008A; Wed, 17 Dec 2025 04:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B80B06B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:08:48 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57A8D136D16
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:08:48 +0000 (UTC)
-X-FDA: 84228387936.02.66E2A7D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E877080007
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:08:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vNtMBhb8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RLEi5ltn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ouloy7it;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yruZhnva;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765962526; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BED46B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:26:25 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C98FF13BD83
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:26:24 +0000 (UTC)
+X-FDA: 84228432288.22.3D90202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0C51B180004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:26:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765963583; a=rsa-sha256;
 	cv=none;
-	b=fsP6WioQJXHXG2LjdKrPuukTAs8J1g/ufNryPxHuBPDCGZRZqbEOTV4sPyA3h7oP4bQT38
-	ae9TMEF1h68uOHCP7Hg/kdtZXJw4Y/PcWBVaoJmWIQTlbdCTMNt4d8YNbc36RUGj4It/Ij
-	k3dbLKDqao7Ieq6JeCNKO0FESallrUc=
+	b=hZUwCqax25Q4AClF4KqgcpxbuczQKyUU2bgmS9kZcgZDHN29JIlAyQ3JsGG51ruS1yFrDk
+	iSIJGS1U0xx2ly9K/BRH4m89Qado+hc7g9iSydPobmPFuBQeD7E/URvjWeSUnfMaF0hkdt
+	1wVnFmiMxepoK3NOcKJLXPqDJgefdWQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vNtMBhb8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RLEi5ltn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ouloy7it;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yruZhnva;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765962526;
+	s=arc-20220608; t=1765963583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xUSD3NVSUMMY86ve39obxcZQZV68mWQy0htU5+nkkA=;
-	b=Nr5B74IlgXZQ+Cwez33z+aY4avqef8oC7gxuQTcFaKV+0z0tLkWcwgtUUFPaxkxUTREME7
-	DlOuG9bDEb2hG1SoIa+k1zuv0MQOLc5stL/MRI0XyBk0zO5vXEDtJVswizK1RvQbWluz9A
-	QvdSkdcxayulmC8sN2ipfveHpZP54pA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0E10E336C7;
-	Wed, 17 Dec 2025 09:08:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765962524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7xUSD3NVSUMMY86ve39obxcZQZV68mWQy0htU5+nkkA=;
-	b=vNtMBhb8JakSzLAl4z2d65neHE1Q6fzdAEZCLFZqAuNIj4PlOdo48+KmW8zgV88aEglP9z
-	rasI4L78ImWUk07uRx1+gN8+vuQ78n4ZYdDhkpi2nv3ZfBmg+HluIfphmD3YTRYVdKu4oK
-	rh6a2R9ld2c7vsnFJcNbKjPvboyLK+A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765962524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7xUSD3NVSUMMY86ve39obxcZQZV68mWQy0htU5+nkkA=;
-	b=RLEi5ltnjPu3N/A6Jm8i9JNLcBBkZoY3C7oA/k/wCxvd90boWk6hc2zLyLwroQCc2RkGO9
-	4mqqQKMSJgG9/fBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765962523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7xUSD3NVSUMMY86ve39obxcZQZV68mWQy0htU5+nkkA=;
-	b=ouloy7itfLqbeTSPCDeY/VXjBvp3x+rjq8HaAzQsxpMyNI+qsuyPWYF0c5j19xOe5WyA7d
-	iRZz8woLt1hEm2Rt0Tm67+pZh4I3msEtWf550MC96LQFd9NCIPUCZPN2w1em1FPlRXR1Rw
-	WMbLX4j6R8MRZsTTnU4928BiwH5LiU4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765962523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7xUSD3NVSUMMY86ve39obxcZQZV68mWQy0htU5+nkkA=;
-	b=yruZhnvayZ9WYcztQ9wyXlW5aPlm/W5nOQ77mZ1IAnTAy39hLqiDCwpX6PyU8JQtu0jhRm
-	1AsoRIs8rwrDMWAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C3663EA65;
-	Wed, 17 Dec 2025 09:08:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id J4qtJRpzQmmtUgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 09:08:42 +0000
-Message-ID: <a3676b26-feca-474a-b09e-33986f53c998@suse.cz>
-Date: Wed, 17 Dec 2025 10:08:42 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZwihpIkffId1o87zl/G9jlo/Pzu9AzPacFtF7GHeHUE=;
+	b=2mOfmE5HEsHysaIhXJ55pkeNNk7gwn0DmnxbnuXkTznSDGn4jECwSgyG4IsCbokkPj0RMa
+	SEGPRead8OQTiPH5WiudhDsdVcTZH6eNqDc6v3JZ53jqyeCZ+zEsllFfill04egNcVkBAy
+	cqRVizwc5+NwLGUyvZYVs7kV5JSEc2Q=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B975914BF;
+	Wed, 17 Dec 2025 01:26:14 -0800 (PST)
+Received: from [10.57.47.3] (unknown [10.57.47.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA6A93F762;
+	Wed, 17 Dec 2025 01:26:14 -0800 (PST)
+Message-ID: <f9550d22-8810-4145-aaa8-48961f6ea35e@arm.com>
+Date: Wed, 17 Dec 2025 10:26:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memcg: fix unit conversion for K() macro in OOM log
-Content-Language: en-US
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Meta kernel team
- <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>
-References: <20251216212054.484079-1-shakeel.butt@linux.dev>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251216212054.484079-1-shakeel.butt@linux.dev>
+Subject: Re: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
+ <20251215150323.2218608-15-kevin.brodsky@arm.com>
+ <20251216201403.4647a4f9861d3122ee9e90d7@linux-foundation.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20251216201403.4647a4f9861d3122ee9e90d7@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E877080007
+X-Rspamd-Queue-Id: 0C51B180004
 X-Rspamd-Server: rspam10
-X-Stat-Signature: sp9bnhkk8fgyu6u9ic64xzhf8jm9ocqt
-X-HE-Tag: 1765962525-537508
-X-HE-Meta: U2FsdGVkX18mzCIwBMznhHcUswaiTyZBr1P7P5nrpJ0dNaKmb5XkSXAK7gb+mXmAmSb4PUU+5Rryq5ARV86SmsV0JfbSTcI7rpOvmuL/MJVrfX42AyUFGdUHjdMsFrEAgeOLeMLexEixorKovtajFr/PcVZJF18gXPtkLIWsuikgPJLA4mpkfcFPGVtedMTnX5o02TarHpwzPun0bNyMJyLvpem8TvL8KZ9s1fZOzW9SGQf9N4Xj6F+SAnWRZK7ORjVSF7t6m+G6KyT+sm/LZwMCKgr/MCumlKvPfU+i/IgUZnxlSRjawmx732LiQAo49l+ANdGcpdXF9legpbehA09lbceNcBptOjORyxROfU94IPQe5FwwuTBUtBYjfEWgoFijXWFTDmvG9BVegdZmyr740L4/n2ow4ZB/hejuA1wdmUW/HRSkwCRywqgWhaDryAwM+Nd7KDc1VmFj8s3XkT0vGpleC2to+t5jrEEh0teguiUHee8sILKir+dSTZfCMVhMUctGY55QI5Ia0qm+tQwtIR/LGPAsUel/hhOh62b09KxHzvSM1Eo3yzy8VU1jEf0c1qgJnnHrHAu4V3IWXRwEGyrq0Jgn1sbAch9nAneLDOD7yA4lv0p81b45UU0cLFfAIQlW/QKg4qaH4NiGHEHYgvwISmsf/I6Mb16VZJS8VvAhL9VUEJfr8rJ5nxp52WjHilfTVYufVWvde3Q/D+E93jqwePCVEJ++GhYWkLaoRdbpaDiawU4Uw6xJNnUoz6cMP/nTZcs6Tj70qMnvQWQiYANA/IHfFllmTSB5jDYJKlR0X5NDgPcyeRyp5lTNecyweg8sz3lF+gCPpQUFM52AURu/gVFIwVbWDBgO6pwGh6BmQSkOoFYGMJl7KhEqNnxPk+rVModbjUgNBVtUoMkB3jZcKAO+6OHTqV30/0X/62rzL+bWra//xSQR4HoayDOAJ8VgBWP0BQ7fclg
- nB8Zm9JZ
- 679IgEye3ABCiJh60Ekxd0qOMz6BOQThmjgCiYuRg27CzRTiUbrC+oveVhGI+CJKymH1YfxebYZhNgDpgLswSbrntqsETS4hIBefgiE5LFBfIL961itzig2ytifEb01TDDuZNspr0gDcUmMG8HUXjifpJSAvoLdsPsyFnP4FICii/R9ohYEmlUI99FyBKo7ZdiOhvGTOsYz8PFzaHLWU4PGgU0FWA5WupJa7mP5620aJPmjvHAPgvUPwFKb/XysFEmoW5sgKoaobhqccY/fqehwQpxPAua7EYFdioYqHCYJUIbPSuXZlPFpu3bg==
+X-Stat-Signature: csmrkihu7ptk1fy96h5t9qzfgr6tif6u
+X-HE-Tag: 1765963582-834299
+X-HE-Meta: U2FsdGVkX19wUvSZ7NBLl8XjF44m/f5b7vacAlZoeMhfN6X/viS5kqINk3tlejU/0r1QHMjq6vvvH/G2ehmG+I0oH1d9AtAnVlDCeW8qfWwARrTJ2J5eo6HXn+XRI2NmUeShb4Xt5rwoysciTrfp5Tg42TUFnf0ix0gtDfTjYkGaS2tHfTnTMIW501Mu/vX9VKASg77dTynFYliNTGifxE781MyEhXw021cBqs/WaKZBthXsKIa9VYR12nmQlMvKeI+aDOh+ecb69ip9p8/czEb9RSY1o+IdD7wgwlVTvamdFSYn5a1miPolaFNFyZH6pjD1E1RNqGvP4/Qt4DbOJcXmVSU+EbgZ49EOG1/Xw0V6YEJcHjlJ4xNmzeHPfK84EgfaYf0gBu3m0O+BQgjhzXVodo5q8H3boAC+8IiwpPIqLe37xSg/vSLaga11zICihAZg1MM0jfOXf8Jn9xEMprItjNH651G+nB8pVgwVoFXkf+K9B5D8QCkDV9YlZgFmtH2KPkyRnQc2czjCMIF+Xn4SgzaysXd2g74Zdov507//fyYevEgc708bEblY0vHM70ZmcUPQVRY/XzeFt/tLRu9GaOVPHodPd43DHaOG8PBGxtyB64cgxqmVUiqzzoHkQydhQDD2HZd+DfGFUyjx6dpnxLufli4iHjf86YOtLLjBxFQksO/C8xwcgvBMBC9ith8eKOWKqTyMKRBZQLOtDxSGBogtkE1yNfPVxqjjKCPz0jZyDwHV+m+ChiwJ5AS9VrsBJm9Hjh+GQO6iihm5u/EdqinOzjX36csCE5kN8QQH3cC0cqDVp44dXwEQhBGsYTHSNqL4OFKeDW81N4IH4QCzOKLjKi/OeCJiA5oVvtjptLIwRMQVAufapRmm6NsEPbN6laFBGRV6GDfUipBL30RNWADisJ41OLDHT8g1339ppeCdH8xgvUd166P0n1rb+nKA+zq9EBJTGiuAFH3
+ s4CJDbqB
+ NFzAT+vJ9gXTOt8G2e00wAf4xMsPhuLaUe/JapOxCR8x2/pOCWIkl9K9+RcL7QmnUIPrke5AKvQnFWDW9K6jrKgWbReSM5KWZyj4KTk+vfVOjWaFOSXlKlWoej7KrCXDZkE9c2YTyeCP1qIjB4eR6/257DlPDg/qhGYAeU+e4GGRQlwH80sq8sjkmATSovH7JixOaaEItMWoBeIE0PPQT7aqnQx7MIuIsZprUhIuh4zgTNPTfxmDV8HqwO1KM9U845YL9TcYD/N1YGDIWIhFV/WT1y2rZdVSTWJDSakCtYgxvQJbdtyfD7fu19Nqm+42Q/fX0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,39 +111,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/16/25 22:20, Shakeel Butt wrote:
-> The commit bc8e51c05ad5 ("mm: memcg: dump memcg protection info on oom
-> or alloc failures") added functionality to dump memcg protections on OOM
-> or allocation failures. It uses K() macro to dump the information and
-> passes bytes to the macro. However the macro take number of pages
-> instead of bytes. It is defined as:
-> 
->  #define K(x) ((x) << (PAGE_SHIFT-10))
-> 
-> Let's fix this.
-> 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reported-by: Chris Mason <clm@fb.com>
-> Fixes: bc8e51c05ad5 ("mm: memcg: dump memcg protection info on oom or alloc failures")
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/memcontrol.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index e2e49f4ec9e0..6f000f0e76d2 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -5638,6 +5638,6 @@ void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
->  		memcg = root_mem_cgroup;
+On 17/12/2025 05:14, Andrew Morton wrote:
+> On Mon, 15 Dec 2025 15:03:23 +0000 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
+>
+>> Add basic KUnit tests for the generic aspects of the lazy MMU mode:
+>> ensure that it appears active when it should, depending on how
+>> enable/disable and pause/resume pairs are nested.
+> I needed this for powerpc allmodconfig;
+>
+> --- a/arch/powerpc/mm/book3s64/hash_tlb.c~mm-add-basic-tests-for-lazy_mmu-fix
+> +++ a/arch/powerpc/mm/book3s64/hash_tlb.c
+> @@ -30,6 +30,7 @@
+>  #include <trace/events/thp.h>
 >  
->  	pr_warn("Memory cgroup min protection %lukB -- low protection %lukB",
-> -		K(atomic_long_read(&memcg->memory.children_min_usage)*PAGE_SIZE),
-> -		K(atomic_long_read(&memcg->memory.children_low_usage)*PAGE_SIZE));
-> +		K(atomic_long_read(&memcg->memory.children_min_usage)),
-> +		K(atomic_long_read(&memcg->memory.children_low_usage)));
+>  DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+> +EXPORT_SYMBOL_GPL(ppc64_tlb_batch);
+>  
+>  /*
+>   * A linux PTE was changed and the corresponding hash table entry
+> @@ -154,6 +155,7 @@ void __flush_tlb_pending(struct ppc64_tl
+>  		flush_hash_range(i, local);
+>  	batch->index = 0;
 >  }
+> +EXPORT_SYMBOL_GPL(__flush_tlb_pending);
+>  
+>  void hash__tlb_flush(struct mmu_gather *tlb)
+>  {
+> _
 
+Oh indeed I hadn't considered that arch_{enter,leave}_lazy_mmu_mode()
+refer to those symbols on powerpc... Maybe a bit overkill to export
+those just for a test module, but I'm not sure there's a good
+alternative. Forcing LAZY_MMU_MODE_KUNIT_TEST=y is ugly as it would also
+force KUNIT=y. Alternatively we could depend on !PPC, not pretty either.
+
+- Kevin
 
