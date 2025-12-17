@@ -4,111 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2C9ED66B81
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 18:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E564DD66B82
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 18:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 214046B0095; Wed, 17 Dec 2025 13:12:23 -0500 (EST)
+	id 2FF9C6B0098; Wed, 17 Dec 2025 13:19:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C1786B0096; Wed, 17 Dec 2025 13:12:23 -0500 (EST)
+	id 2AD7E6B0099; Wed, 17 Dec 2025 13:19:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6686B0098; Wed, 17 Dec 2025 13:12:23 -0500 (EST)
+	id 182506B009B; Wed, 17 Dec 2025 13:19:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ECC106B0095
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:12:22 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99874C0D36
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:12:22 +0000 (UTC)
-X-FDA: 84229757724.05.CFAD3E2
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AA80B40004
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:12:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/YhjUHe";
-	spf=pass (imf04.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 07DDE6B0098
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:19:38 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFB24140857
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:19:37 +0000 (UTC)
+X-FDA: 84229775994.08.DF26E30
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A969D14000D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:19:35 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F8EVWL+k;
+	spf=pass (imf26.hostedemail.com: domain of groeck7@gmail.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765995140;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765995575;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FvOb3G0IavXhMQrYejIyEPtpWHhDtuZvMgThphxwJZI=;
-	b=ehYm9J5y0b3YWyGS5Z1f9qu4gL7lmbhqAEDKKiZ55sS6slGThYsqQD1O3OTkOmKDauxSWq
-	5KUeZEeCUwjpAcmhM+m7t8UgRrohgg8EHY7TwhsIg+nPBc9qp80GbsamoBMEiG05klXUuO
-	FqF41wkFqox3ll1quXvDG9aH/LHEMeM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aBmZ7kW2H0lhdwfnREYdQswN1wdrxsMyFH0NyQJeWtc=;
+	b=UPd3RyJYMHuXNmr6VwOPRrMfabjVvEXR4mS4as21RT0FbL3Piz10zbr+N+kVuF1M7yVJlD
+	ERrkVmKJccCbcQv5ZRKzmI6uLo608AQlVjHIP3XB1/vsgpKEN9Os5mst4Y3/FRduAmk48P
+	m6NuiePFKqppPgAgQX/QEk5IkhpSX0Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/YhjUHe";
-	spf=pass (imf04.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765995140; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F8EVWL+k;
+	spf=pass (imf26.hostedemail.com: domain of groeck7@gmail.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765995575; a=rsa-sha256;
 	cv=none;
-	b=xKiaoM475r18LEkXU9wJmjTwyAdjSVzLYrCGC9fsjdFDEWuhuUhB/0sRsVj6K84cgfy6LL
-	laINtcNwDBwtUy5cQHvmPDEs9jV1R5s8+tT+piYylZidqnrvoKFqKw+py57h/dH5K+eJD7
-	Suw3DXS01p2K8bfym7KQdtV0OCn9nuY=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4775ae5684fso27118285e9.1
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:12:20 -0800 (PST)
+	b=bhIDJbhpneO7ag2kFIzyAo5RfygegNvfB/Wuunhw0vViw9d7SU7DDyeJ/KdTiEHPiur32I
+	NEXCMqLm6v90ZTu5vsy4112gZ8SYCdMYKwEMbD2A+OSbQaub98RDp7pajE46jsRSmE5PJt
+	t9wqUlawJxCLQgVMGs/PMdqNx40Qy6A=
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-55b09d690dcso2325997e0c.1
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:19:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765995139; x=1766599939; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FvOb3G0IavXhMQrYejIyEPtpWHhDtuZvMgThphxwJZI=;
-        b=Z/YhjUHeRYn7pH7zTW9eWKEnjarGDLFkIBRE67qup4lrNE8FWHa3ICSapULiWCLnpV
-         NYc0cAqr11nHimvq07a+Buj8CNsOyWQuEoG86SN9n22kiKAt0jlvLFN5gYBw1ycQ2qsN
-         nuoYM4slEsh9LROhDtK1TWqY3BK2ophl3DtTb1EXw5FVNS4rgpZVQQqU1pqATnV36ZMo
-         6GIR6RnUHxFKYWpWSAlybVd7gDDxmSgnXoLzredlqR67R8+tCnde/B/SSuy7YmjtECZt
-         v7cCjvBtIsm01BQOMEN8D1xz3DKTq3QoE7hSEZMzC+oA9V4xkmVJ3cZ7HRiTkeRLg7ol
-         u/cg==
+        d=gmail.com; s=20230601; t=1765995575; x=1766600375; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aBmZ7kW2H0lhdwfnREYdQswN1wdrxsMyFH0NyQJeWtc=;
+        b=F8EVWL+kPW77sdsm8FO5kFlvS+UT7mLFi3T2hzHoK/1w/krwy+2x7B+hhqz4P/130P
+         XFCtaPReKwXrvwGzVm1qpYJ0/IKF5iF7JKr6GuO9S8gWUDk2mDuBkC3OwFQZFgxZi9Ep
+         YpwsOJD21C5qBE/3gTDXxoQ7NvI/zJJCeFxZVa5ewMN91Pp9OrsVI4qMIfNmtEc7mRiN
+         OvIGRPC9tvJ2mxaKMPuETRLgj4OGnNikz8077WuT/x8e4YTOd+7z6oeC04OsPtYqWnsM
+         NQ81Fp2x3uV6Yx3DuGOEp0HA5UqZrQiW3Arg2UlFfDgE4SQot5dgI2ozjmdSO4WM4xLd
+         5jNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765995139; x=1766599939;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FvOb3G0IavXhMQrYejIyEPtpWHhDtuZvMgThphxwJZI=;
-        b=nksT97IqspYkMcyA6dQ0x7fhw7Nb7rDas6YTIrXdpO/NFNEE/faZAru+MAKHfVOptM
-         qJPaMBmJ6nkIrenNarqvL+JkFl0FjvNf4CnZt5ib+6LK6h+IlSspzUkcmXgKsgos8x/U
-         I92c75yF8+/vksvxqX1UfkkzgWZO+Sl9e8VGTKnMCXYvEdZVyFssh5xhoOpdp5RXer9h
-         mvhowFclWuRjkfK62ztiQOw1KzuoXvLOS/jFlPX9tICwim46URh0ibWU8G4BJ35vCaHQ
-         eMTKytzdFXm936BBcW2ghcsIqIfArxxJ2j6r7ZpO/rlJ3MSIGEt3LAw2pFm5mDlv8wNh
-         MFBQ==
-X-Gm-Message-State: AOJu0YyeCT66KM5v9OGnY0j57e81U/SnR6GWfNXopjK0D6rZlY1sodVV
-	iXN1FAoFTbA/WpkMKs9JXJHEUQU8LcRes7gC7suY52/uWpvLqtueVgo2
-X-Gm-Gg: AY/fxX6PT/C6B+AQnaxeKiaqW3kYdw3531hqtdoWHD11uPn8RH+X4QbWWqDj1Vo8S8H
-	AkXCpVXEJk3xOvT/ocSFKd2Mrztopaxl1b2BCqGjd8MXSEfFHtEMFCChM95s5YVSsxL+PwgcDSk
-	qbKCFIEwfhu3PJQy3Ui8wrIwXeGTPeGJAkBPoOR4XdVHEiDcU/ZTOR2P/Dms27jibUKq74dx+iJ
-	LEiJhQObFQAZD+54tNraZhVTbnZ7KzOVKvOLJHYeuIWDB2rA9YDUXzgBOA/aT/WqfXqBUG+Pn+J
-	adQFQa+NBG2SXWvCjN5h6aCZZqiMYI2fuuNh3MJnnAdYAagJ+Xs2WuPh+hiQhOGkv2/3dLueVhy
-	45XUlUNPVpxALjr4FcU4q8Hjwpa4aPWxDBfcdGOFTXp7wxjxU6MR2GbOo7zdhrOy+a6Fngp33vt
-	GSFXEFF3rqr2hM6rdTZvY/tKjcZErxTvgXZQGFMQRGd1WhDIDTFF9D6WupJ11ABH4BN5hgzSluJ
-	az4saxTTyeES3s46w==
-X-Google-Smtp-Source: AGHT+IFrcnRLclB24WO5IWIbHNWptFccCH0kwz5N2SpmkPmKMF++VzNF1omLEkWV4OJ2X91cRMJpSQ==
-X-Received: by 2002:a05:600c:4f86:b0:46e:4586:57e4 with SMTP id 5b1f17b1804b1-47a8f9057fdmr193235835e9.24.1765995138750;
-        Wed, 17 Dec 2025 10:12:18 -0800 (PST)
-Received: from desktop-mu90jgd.home (2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr. [2a01:cb00:676:9b00:1185:461c:960a:9b50])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43244934c29sm340909f8f.2.2025.12.17.10.12.18
+        d=1e100.net; s=20230601; t=1765995575; x=1766600375;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aBmZ7kW2H0lhdwfnREYdQswN1wdrxsMyFH0NyQJeWtc=;
+        b=NPTUTvyztDARTBs0hXGLWt8fFfFJZM7MWJKsXAr5RSuk08kNEqAWJUOmqiOCFZXMpG
+         cOKuVu5gT8GqjL3rFqOpNLolyOcENEZyTpjSmAgVfUXc8o9HpoQ7CdsDRWjg0Q2pfkDj
+         EGMID9M6uXOvz6GpwJJNMzYirD6itMKexYwygtxymrQK4ZMmR20edF5VxTGkPd4LK/Fk
+         A/n+iZT58kNydO3AYWDffCuuPhF1kifbhbZKKOopWT4R4OAvUfSo9H/0HMngapw5GQSj
+         IBY+t1zcdH60ykTxAbgdrFMCLcTA9rNsb+eVCE0FhGFsxvMSyBoUfUZTc3cx2+k9lSrZ
+         8mCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUajgSwWYnQFQqbIdTGffCWOUzWIM4t9apvkynuskQfMwYtlPjreBi6FV1qzDGFCqwqxKSwgHJ38w==@kvack.org
+X-Gm-Message-State: AOJu0Ywnc87NMCDNZXUi2ajuJ0nqoaCQORNdu0+UHEHjVFDZNVX/CFCS
+	lG1+Xn8Vtd2w1V4L4ImcVACwjwUKL5bndoxIkgYIgzTC5jCPatq9At2Zc0E67A==
+X-Gm-Gg: AY/fxX5vOgOyDHhOaVHFa8LUdv4GYL2Ne4rSPTPsF9koNMjI7OtTdFhghhDlmSm3PTk
+	UbuRxqs3fex2/p3gTBiqrjbB9MwR/QYzWEybLwwpx97S49X49c2UF+pRNhBaRVv6a4/OzTuTAOX
+	nvW0MpAfBKg3rYXTxCsP+joqL5fnmPXaKjk3jGAn2ljWeAgaRRMfJ8xChLBPJFXIJm9fMWfpPAh
+	SZp03M3zJM+mO4e2iflgZsk+tNfFXsvSgDHgJ47V5AFxYEqcUiH4eGIKpBiJqZ/l+DneSP/Azir
+	bDz9T4fxVWsBSx2TRiOX/gkXX3E0SU7W3DDH5tDkAk+I5SSpjba5Kgs+W3H1FbWWuJvbstrRwjn
+	QhbGZ6J2xP9BjV9+VLs7okgh7UJMhxS0vNyNdVRqGmKR4ogP298fAifyw6HzBViKJC1WkbdwUWa
+	ozCpYjl0kQcQKD3RH/KGPp3/lz
+X-Google-Smtp-Source: AGHT+IFqmleOdEgL72/9jY1EOHmPumC/1MQqky+E6Nwsf8iy9iWznwntY6ixXDysEPK3wEDlyrqiiw==
+X-Received: by 2002:a05:7022:6991:b0:11e:3e9:3e9e with SMTP id a92af1059eb24-11f34c35ce1mr16363752c88.49.1765990033618;
+        Wed, 17 Dec 2025 08:47:13 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f446460c8sm26892234c88.10.2025.12.17.08.47.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 10:12:18 -0800 (PST)
-From: klourencodev@gmail.com
-To: damon@lists.linux.dev
-Cc: linux-mm@kvack.org,
-	kevin <kevin@desktop-mu90jgd.home>,
-	Kevin Lourenco <klourencodev@gmail.com>
-Subject: [PATCH] mm/damon: fix typos in comments
-Date: Wed, 17 Dec 2025 19:12:16 +0100
-Message-ID: <20251217181216.47576-1-klourencodev@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        Wed, 17 Dec 2025 08:47:12 -0800 (PST)
+Date: Wed, 17 Dec 2025 08:47:12 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to
+ zone_set_pageset_high_and_batch
+Message-ID: <db40ce77-4762-4d99-b03a-439c977ba1b8@roeck-us.net>
+References: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AA80B40004
-X-Stat-Signature: 8i9jb8k9rdy5417ze34mc63quh7q636z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1765995140-6148
-X-HE-Meta: U2FsdGVkX18sqcSyh3pRJ2CpYuGfDBjTMSIzpVvNbW7abflqiJPnrGas4T1TUZlvjVZWNP7YtilhUDBvabFxtaLg9NmPYBLMWZNbRgAnYlh5p1vDNLlsmQ4cHJ2cPoLuMrv1qotezukl+ecAwVQEvZ5f5YPndjZSQDg4QpBghViwKFwHjd4e0OGOf8xsCm8INs/AuaxT1+pEZR9oKk8ZNrmgBTgemFBH8jMydI+HUCvqZokjv1FaDmXsljVK3cWmhdEUJeS1qZZRPLphJvR0KtgIYjWZ8utzn0vodS27VrAxW2IcLdUPxtAN88YejqCaztC7o3CFB1Y3iQk6lcmngMkzhXlGvToazscXQj3+XT77N3cmItTQ+e2d8UYqoNICuMB6Q2YT1LxpYCJMou8me+5JaedS7AFg7jyYF/adj6rmwsBpqSQ4EJaj3nZpu80USe2NydXtsn83qJ4dL5SrA2TyJbT6BKIT3xObkneBCkSmkGHvhZHTRTV3q0lg2tlKGlBnbYrnkgxDopNPLKnFDoOdfAz62tQ8x6jM5Eu0DKllgg/KFKO3OQkV+8QpZdpi6EBgJZPfFqN33++92b9Ukzd5IzUG29iz2ggBiJvhXqQq21Or1UDG3ez5aWGkUmBmuaBeMqEhzQwlrc1WU/VsR8eYNkYKtsnaCaSwsScSNoTYyAMkyEVJ+Kk2tcuhhqC3y0MBaniwarRJ8Rde2xHQfDgIXw5PyNrR6aa7lYBu5xvlSJAT4mVzx5jmF0z2ASdJTUbZeCTMnNhf//QOq1ml1RzOVs5cYo8FI8GuuyHkdf2GLh6JRFKnnYmJk23kEPcrSSye0LLm9lKl2bfTcP2y6WP1Zl130almSfpk5gXe2phfA9FtaY7/Kuj0YZBf93nHTSTZZM/BVK7U9gFN8VdMkrBQ3sinq8ptIz6X53hoMM9v5ed25rilmmVE8KiwkHiJmWBZ/eFcgewB6NeMD1O
- 9KEArkuy
- KDhcKoYnOUE405Vxy+T4yslqlKhAYxmEbtzAplmmcdcnlkQ0QDKBuCbf+hiRAGS0dxn5peeuVe88uzl3nlFvZRVfP9tyeqFNqrbUclL+j2trh8Qrf3D+socfwRW3FwWPJq6T4QUjUUPuG3v4s3Z2Cg21RHk7FzzwxRmJ6mNN5ojw7l1lQrfD7+R0bWqPsqWZSG3nFzhV7imf61VgzDBpITD9qjv+SgFGlin1iqWJ30PIoKe0fif9qiBi+atmrXBNabe21MD4gNX+XoQBjrvtoQUK/s2Wje4F2OV+5x7zY3+lknEJEuwS5GkK+F3FTeOXCbThtWdo/rbRvNqE8f747hqnnbQwJcydINsgKcT1OF+b+EIO/J85Ob8OGpGGPTUOri+FzuLAuZIAGuJwQEp/h/lCcId+Q3YXANGkdJva6Z16ybgJYz2/K46D4aHLzaEzObQ5jdVTgyi5sd/I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A969D14000D
+X-Stat-Signature: 5topzihp9tbinxaxbtn4iuz9cugs8baq
+X-HE-Tag: 1765995575-6317
+X-HE-Meta: U2FsdGVkX1/w9QEBE/UiY2YWuW819wLDnfJ3ujPQSJlEQL1JMcleZ0jSCKgbJndssqN6t43FWGie6bdWIelOBKoVWY9gC5uRww19kPp6XmeXhu1HiWQhACCsd3uhOvESdxXc1Q4GZK8f5PPicxlUiOQ9S1eVL6sAVXH2FXytRlt+5+l5JbhJKM/7nB0EKE4BJS6/doIn1OsNOQ2QcFlr8Wy8R2DLR+ChEFAtI1WYyHIBpKzUDEwzq4rBKYwyntK9tZDboJ14whmtXlse8drLohG7KAS4tI2MOSwb1Jfkb16QPTgbyh0gPERxeEws+MJHXDBNcnHj4Ox8gP7/bjORWMXYiwLH3CAKYsw9xQi+ubnM7mZWiLHarLwKsEeAROkIaB5iTMtAzrY6v64YhFNmohFpSFgOo3Z6jIi4DeJDCz/ANUi/771VD9ET/VnLvvG+01F//br9/AdlwvsMM21vNTzEE7E4u/SYa3xGBkFAlDU1aNrNDsSpJHpZZwYkqFCZxkessDbYN5aMiRusUAPV+tPbjdisMGDi/cf9lDNUvQ00St+MZmHYFmwHU9El9W29uZKWJetGQtmM3F+nmnXtzGrY0coPxichKWbCdLASQ/ZzUIjtR9kDJp/NU03KmJvu9B2NKb1gGM9S0u6X3Il4LDwiHd1AJPNd70Y1gG3e7G1AlSS6vPRzEJO4UIxhU+QGN2Sdm5V8u/o/0IARm6rmk383bTvhOXRt02SU9C1Tvznc405guyqDBUubAZX6yMXy8cZmfy/vb2sqSef2l1YUUEoD3/5A3Js913W9zVR6TEMZg5ZksoMS+bgPZdZGobYpqDq+/63LWGMxS9Ahs5hk4Xhej6RFfFe8M9G+ELeVEmmckVjwI15n3B+Y49Q7Qqeq+Of/dDJyDsXtYhTEwIyh5KWNBgNQL0S3gnx0EiM81NX75bajdWRZ94Muj0zGFNs68k7LicyPlKUECqRbOIK
+ LcG2q6Ky
+ wLGllAsoZQ383bxE7er5vUzb1XbF+3y0lyaGiPLFL//KvC0+NkYF5ifGpo7oyYzuJH/JgR2OIoXbq4fllpFRos99Yfz5XnrNp2cyfJgTNUdblaAu0xQ+aPMLxNMlh/4UHmzQoqblio65FBZ1SLEakt26qUm0zUmaKN27V51AXORDZ21SLjbO/rAkRlYPyHKZUTGJgCfGhaOgW9Ohi8vR7fjYwYiaPh8q2Z8H1gdPufkBXK7EiHKWWcFpE2G+3YfJBUTBamZ/BM3PAZUcCPsiBYB2tqVYXJQ+zKz76QaTOxQkhf88TcbXU/QNiSuRX/Xt7JRIJsoZQ4v5sMLMB1xxUHhFvhfnBm3l+bZy8SGaipu9zPwTqKmrWM5wtZBBDk+UfMFmwNKD9hz9G7xSVEGgLRxceONIgYeMZa3IA6hUi3NtXD21uRf4H0eVdsG7369BUqHsUwfYtCvvDoFdaoghvkxySZFiuvLgZE4EjD9x/GuY6BVjp07H4tBy+yql4VL08HC1pH//hGT0nH+2DZoOHa2oOrDPDbEKM+Z2ccz7bGwsDKShu5hN8lYRswxQGME763ugYLRDCNu+TarODTv8CNBiVlorraaA0l5qilkZ27MpPzVD56RbDYUCmEEIKta9X77bmJp/bAF4qVwZNWIUUrD8YCfxZVSDlBpb7xizxFDBtQOaijkPPKqeeHPJ7PSuLMqsl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,103 +126,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: kevin <kevin@desktop-mu90jgd.home>
+On Tue, Dec 16, 2025 at 10:05:03PM -0800, Joshua Hahn wrote:
+> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+> moved the error handling (0-handling) of zone_batchsize from its
+> callers to inside the function. However, the commit left out the error
+> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+> 
+> Since in the NOMMU case the reported-to-user batchsize should still be 0,
+> we would only like the error handling to exist in the callsites that
+> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
+> 
+> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
+> on NOMMU systems.
+> 
+> Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+> Reported-by: Daniel Palmer <daniel@thingy.jp>
+> Closes: https://lore.kernel.org/linux-mm/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/all/42143500-c380-41fe-815c-696c17241506@roeck-us.net/
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-Correct minor spelling mistakes in several files under mm/damon.
-No functional changes.
+For m68k:mcf5208evb boot tests with qemu:
 
-Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
----
- mm/damon/core.c             | 6 +++---
- mm/damon/lru_sort.c         | 2 +-
- mm/damon/reclaim.c          | 2 +-
- mm/damon/stat.c             | 2 +-
- mm/damon/tests/core-kunit.h | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 68dd2f7acba2..da4820110e48 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -284,7 +284,7 @@ struct damos_filter *damos_new_filter(enum damos_filter_type type,
- }
- 
- /**
-- * damos_filter_for_ops() - Return if the filter is ops-hndled one.
-+ * damos_filter_for_ops() - Return if the filter is ops-handled one.
-  * @type:	type of the filter.
-  *
-  * Return: true if the filter of @type needs to be handled by ops layer, false
-@@ -1586,7 +1586,7 @@ static unsigned long damon_get_intervals_adaptation_bp(struct damon_ctx *c)
- 	adaptation_bp = damon_feed_loop_next_input(100000000, score_bp) /
- 		10000;
- 	/*
--	 * adaptaion_bp ranges from 1 to 20,000.  Avoid too rapid reduction of
-+	 * adaptation_bp ranges from 1 to 20,000.  Avoid too rapid reduction of
- 	 * the intervals by rescaling [1,10,000] to [5000, 10,000].
- 	 */
- 	if (adaptation_bp <= 10000)
-@@ -2756,7 +2756,7 @@ static int kdamond_fn(void *data)
- 				 *
- 				 * Reset ->next_aggregation_sis to avoid that.
- 				 * It will anyway correctly updated after this
--				 * if caluse.
-+				 * if clause.
- 				 */
- 				ctx->next_aggregation_sis =
- 					next_aggregation_sis;
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 49b4bc294f4e..9388b091deb7 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -34,7 +34,7 @@ static bool enabled __read_mostly;
-  *
-  * Input parameters that updated while DAMON_LRU_SORT is running are not
-  * applied by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT
-- * reads values of parametrs except ``enabled`` again.  Once the re-reading is
-+ * reads values of parameters except ``enabled`` again.  Once the re-reading is
-  * done, this parameter is set as ``N``.  If invalid parameters are found while
-  * the re-reading, DAMON_LRU_SORT will be disabled.
-  */
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 36a582e09eae..8463a5a5032f 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -34,7 +34,7 @@ static bool enabled __read_mostly;
-  *
-  * Input parameters that updated while DAMON_RECLAIM is running are not applied
-  * by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
-- * of parametrs except ``enabled`` again.  Once the re-reading is done, this
-+ * of parameters except ``enabled`` again.  Once the re-reading is done, this
-  * parameter is set as ``N``.  If invalid parameters are found while the
-  * re-reading, DAMON_RECLAIM will be disabled.
-  */
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index ef0a1195a584..5e18b164f6d8 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * Shows data access monitoring resutls in simple metrics.
-+ * Shows data access monitoring results in simple metrics.
-  */
- 
- #define pr_fmt(fmt) "damon-stat: " fmt
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 8cb369b63e08..f59ae7ee19a0 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1159,7 +1159,7 @@ static void damon_test_set_filters_default_reject(struct kunit *test)
- 	damos_set_filters_default_reject(&scheme);
- 	/*
- 	 * A core-handled allow-filter is installed.
--	 * Rejct by default on core layer filtering stage due to the last
-+	 * Reject by default on core layer filtering stage due to the last
- 	 * core-layer-filter's behavior.
- 	 * Allow by default on ops layer filtering stage due to the absence of
- 	 * ops layer filters.
--- 
-2.47.3
-
+Guenter
 
