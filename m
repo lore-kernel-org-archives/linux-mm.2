@@ -4,119 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9941CD66B9A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 20:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19726D66BA2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 20:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE70A6B00B6; Wed, 17 Dec 2025 15:08:47 -0500 (EST)
+	id 08B866B00B8; Wed, 17 Dec 2025 15:23:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBE4B6B00B7; Wed, 17 Dec 2025 15:08:47 -0500 (EST)
+	id 039D96B00B9; Wed, 17 Dec 2025 15:23:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93CD6B00B8; Wed, 17 Dec 2025 15:08:47 -0500 (EST)
+	id E5D9B6B00BA; Wed, 17 Dec 2025 15:23:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B4D6E6B00B6
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:08:47 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76870BCEE4
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:08:47 +0000 (UTC)
-X-FDA: 84230051094.24.21C68F7
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 80E70C0007
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:08:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hPLNZySj;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D33086B00B8
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:23:51 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6DAC0137255
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:23:51 +0000 (UTC)
+X-FDA: 84230089062.07.F615222
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B296540004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:23:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CIkmIv0R;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3VBFDaQkKCNMzA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3VBFDaQkKCNMzA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766003029; a=rsa-sha256;
+	cv=none;
+	b=kb76De4iC6XhsNaXhAO+A/VB3V+azIwAHAROkvdz7NtyFpCDuFMKT62Er8g/6pGBwaLHiI
+	lZ9WVFdIIF7YQhkAB0iUEftteQjJUKBwKg3fRPIz4ZVY0n3lIvVtTUIopTM1Db36LAOM4u
+	kfNU3u85JVytpP50tPT8W0Lkzc0UQ1E=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CIkmIv0R;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3VBFDaQkKCNMzA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3VBFDaQkKCNMzA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766002125;
+	s=arc-20220608; t=1766003029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vXsG6CY3cPzNwF3OKQzDxWxdwzw8a6zmL7Xx5t/qY3c=;
-	b=Xy4vfmlgBAwyDM0jU55ulkg6MF5kCu802hiGtgu3tsk5AioqAFZQvJ37JAy+cvmPVE8dYg
-	mW7gDEyt7Q9mIs3Zimj+G+zMxUzyTRNh+mI5Kas9vgy9azJy3YaKjmvA/ma+MTGCYEQHse
-	Af5NRBmye1E03LjN2NDJqEtBR1nmZ1c=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hPLNZySj;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766002125; a=rsa-sha256;
-	cv=none;
-	b=1ZDXt7q43Zd14RsHpDVmwMCa//Rw++OZjks3eNWA+Uy9pLwhJVu+4ruZwZzFlmLE0tkUcU
-	BrMWukvGCo96daovdD2mf5NBxXjyrWSg1O5YT8OgwzL4F5fevnMuCD0vTqIkPD6rqit2yS
-	mJLkDR3lrvV/PB94nAv1arwKRDO/i/c=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5959d9a8eceso7544275e87.3
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:08:45 -0800 (PST)
+	bh=BDhEke3Pf/QosbPquaV4OeIZU/HBm2+1j+nd/s0NsM0=;
+	b=wF7p8R7le8Kqd5P5+HvYLKD4eTI07/bbJMkQj1PMkbq+xbivTzQd+ccMQzLfiZoQ5erj+q
+	t+bTTGDG+h6euv1q0Sx4kUigrRUcbb5bUOvdPCtbB3XMiU3xjkmvFsDzZH0MMdOPfyx5tx
+	mwwzoZO27MsVp1DZw8aprVAJszRBXT8=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430ffc4dc83so2311519f8f.3
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:23:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766002124; x=1766606924; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vXsG6CY3cPzNwF3OKQzDxWxdwzw8a6zmL7Xx5t/qY3c=;
-        b=hPLNZySjEAJs5PI2NaeIkAd8Ki0hG7LiUQF0AIzVs9KtLt6+cNPZFWIWdiNm8uUaqX
-         gAtNaaq7uI8cbW02Haerzr4JfaG8SrO5OlHoFKH5kU4lTChyuzBClvySVANSLwrICjcM
-         zd2YWaHknGwdMMecgOrO3JhGOElNtWIzNUx4AApInOjXmOd6J/s3aEJHxLnDqlFvZxqj
-         6WpCrzw9GfVqnLG1PIEazIiWlvL+KPXy7NENNzk8FkwfCAca0zSxebs1LNa44cCBTb8W
-         Df6as5fpG8EvKvS8P0or4NQq08hbKjlCyrVQrnlON6hEOcQSHpKeaMbfcuZkaC53BVyb
-         tfEw==
+        d=google.com; s=20230601; t=1766003028; x=1766607828; darn=kvack.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BDhEke3Pf/QosbPquaV4OeIZU/HBm2+1j+nd/s0NsM0=;
+        b=CIkmIv0RBf+OKEz1s7Niaux+7GkfU1CU7bFJsBmAAJmKPya/X2DuzrDUVGKnXubGgg
+         Yq0zg/LTfga8/uTLORUMgnkGvZLy16BP5hPblTU8Ao0HLQ+yvIy/U9CBANgyRutagZrc
+         av2H2qSDqsoSOPMBjag34LzIT8AaBO5/DK+5Rxn+mGdsV0vJc4BlRAmdVRn+prPcDxqm
+         I8W/j4petcVrIGsPHNDhzOYqm9tjgCbdAbfe8Y7RArlK7/kTem1LCi1Fea0h+blnPAfo
+         sW98tDVYKDCXSQJfen9FB+ntopuuNAFxYx3WrCFsn9OHzgnLUCpjRfOJQRttQvKmjJgT
+         /TaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766002124; x=1766606924;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vXsG6CY3cPzNwF3OKQzDxWxdwzw8a6zmL7Xx5t/qY3c=;
-        b=YSgh3WC+VYZR5QojCkyWYdpFBIpWcLhZTKN+AtBXrTGPqbPZfdLN3MwH8Rd492Hmm5
-         lZOWYV4LBgCZLPu4VSTBYbS/YAklO42sYDKEFIFJsZjXojDzx0Y6UULr4ITTyOIgSiUI
-         WnjRqH9OQesB972QE3R6mP5bW49R6raxE+3XW2A8BDENjY/obloLwK3Ps9Ilv9s6i1+G
-         k87fPvIxS5M6nNuo9zGLvep0eY5BQAwQuRR4GhW8XxGTd9Y1kuslXqiVhbYmhMw7P+Sb
-         g5FjsX+UZ3r1lt+Hd2GlsmN7NO502P4BuTLmk2j9WsH2jrbk1MC4vmjh7gjFSTHdUsnt
-         Xr8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVsPMD1TF6DisAgHgNZBLjSnMUDzGmJyUdsCsoqGlfUdMVu3PRRcPdTN1urcbq7ICYigHboxSDpug==@kvack.org
-X-Gm-Message-State: AOJu0Yxi/4RRLlnxmCqu3OhIjuVhHXZq5d3hGtGXOroD74GSAPUdTRuA
-	XvroAfREDM8ZXDYiQWKpZ4K8QOzDhILYmYHZ9z/rt/3FEXyDhiYmu2DU
-X-Gm-Gg: AY/fxX4xwBuC361GRIGiNh6cRn7rMrlar8f36TVmbdQG0aaiGVPw020JFU8Klad9IrZ
-	/2zOpef9moj0uNApMbtN3YiaugRuzqgZ6dDQHnOaHbJ4GCfjOh0u14rnNbfQR58UKxp0bUVrU2w
-	MfrYL8cz61N2GZM7YYG6gXiHs8+FCJmMD3Xd+pl7Q/jVv4NQEMvbQOjC1NFUegaG73zktAMfXfn
-	1jxZlhgEYxzD4fJZK8fs75kfRT5HEy1T8IHHSg88cG1djagKkVtnFlncAAhmnZihetpF97rPARw
-	oau4Q+zUeG6dW0ZI8s9Dn7IVUP1OVeMiQ8L+aK9mwNbp2XNNzneOP3CVAc+93D5Majr/hnOykj1
-	ppOy+fjdHMD5Jqk41bIZH7CSz79bkGACXX4XXKH8uSccNvmBPG7Q=
-X-Google-Smtp-Source: AGHT+IEhT9fYz1VZZG4mXbiTxze7+4QQHlm4Yi9NtlMhOikps8yRdD6fDTdul7eC6UeoL5HfsS5wfQ==
-X-Received: by 2002:a05:6512:110e:b0:571:8fad:ecee with SMTP id 2adb3069b0e04-598faa4e13emr6899803e87.21.1766002123408;
-        Wed, 17 Dec 2025 12:08:43 -0800 (PST)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a13405d1esm73340e87.60.2025.12.17.12.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 12:08:42 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 17 Dec 2025 21:08:41 +0100
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vishal Moola <vishal.moola@gmail.com>, Dev Jain <dev.jain@arm.com>,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
-Message-ID: <aUMNyfeoEh_tJHpT@pc636>
-References: <20251216211921.1401147-1-urezki@gmail.com>
- <20251216211921.1401147-2-urezki@gmail.com>
- <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com>
- <aUKb1bL7CUcCWi8V@milan>
- <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
- <4a66f13d-318b-4cdb-b168-0c993ff8a309@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4a66f13d-318b-4cdb-b168-0c993ff8a309@arm.com>
-X-Stat-Signature: dh4d4mz7i657r78qyzad9rcso6m3pji7
+        d=1e100.net; s=20230601; t=1766003028; x=1766607828;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BDhEke3Pf/QosbPquaV4OeIZU/HBm2+1j+nd/s0NsM0=;
+        b=WRHDbe0ma7ySLO5R0/Kj95K/bobI2oxMeCYT+Ng+1eZ7YNEcqm9SyG5VwiiTw/KnLL
+         POyohinf5jvKy24aFsaUX1CAvosNI7TDt+KdJPGZ95ensT2IKblyeCkU0KL8G4vxyQ6J
+         0Z7p5Z+SCBE8ip8KR9dIzTndRf3yNmn7yMF1B6ovT+1qkNoI7lNPptFN9xKAUpbrL1GP
+         68rBXfQ50mhd4uN7+sepDBmK/MQfVGkFYn2/37ac/ke/LOpTIiTOHIZDW8ZKbeAc1Cva
+         LCVnwkQCT81EWw5jCE2D4KZQQtgaxm1A8ylSeN1wTZwalUwFphUJdQQJem/lqLyVG0rk
+         2KWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWo5hsn/yOd8fUDExydLeWROtzDY+dtskyIkfr9tWhhCkVv+eG/Nfsw+sYdc/ADhg2z5TEvg9SU4A==@kvack.org
+X-Gm-Message-State: AOJu0YzbpzXt3stOq7pjs3lFy3mCWPoga9ddgd3ZTOAq06E/6vCJyfwm
+	TYxgAI0VDGhysJcKZicAEgudruBJERO3iO6ofEsIij0vhEO8Sm3O0yZZyW2qzpToAFC96A2ZgeT
+	vrPvFosG2aYglaHoZeQ==
+X-Google-Smtp-Source: AGHT+IGe1YKA5nJYn157r/8t+8P2Lqp3XAQpgh8jYBuoKq5Q9ybBqIVF49axwtfUPOWQ8rlRijN6+2u3mSKJ2LU=
+X-Received: from wrbgv21.prod.google.com ([2002:a05:6000:4615:b0:430:f87c:654f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:438a:b0:430:fa52:9eaf with SMTP id ffacd0b85a97d-430fa52a19emr14329354f8f.60.1766003028201;
+ Wed, 17 Dec 2025 12:23:48 -0800 (PST)
+Date: Wed, 17 Dec 2025 20:23:47 +0000
+In-Reply-To: <rfpdf2suobpchpuw5gqzgivwvon2kd2cub5eltvbburnsus2iy@j26cinzdxxnl>
+Mime-Version: 1.0
+References: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com> <rfpdf2suobpchpuw5gqzgivwvon2kd2cub5eltvbburnsus2iy@j26cinzdxxnl>
+Message-ID: <aUMRU0yKwQVDuUnZ@google.com>
+Subject: Re: [PATCH] rust: maple_tree: rcu_read_lock() in destructor to
+ silence lockdep
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: B296540004
+X-Stat-Signature: c8wirzjbddw5h7etyk9pzmq6a3nqxpwb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 80E70C0007
-X-HE-Tag: 1766002125-310607
-X-HE-Meta: U2FsdGVkX18SkoybhmzaA/53s9tClYgY0Lx1voDK0Zw9w+dC+7QQ1ZXKdQgv5KHA8cLrcTR+nPmxMdQHb95eYvz9w4a2zioWdXFwfts5LDTZiQRfGBJwfgAmn62pdvnS1IXONkiPRHD0c4eapGMLov2hGD4Gps8j5e0M25NWNk14gTTWkbbzjXMpdRhF85oDGJbHvQYSydPJm2HuoImS4laFCKAupsMJEmdsyLAMlT3MKrEBfqRyouYw2u5RnEr5MOALt3itz6wyUxxRain7k+KQfa1sdfrSRkUT/ZeXkUxqzHJrFksrmUKEhwxTYNKCNSIJc6CaEEzwc96xo11haG6EHV7PfJwbVrAsj/BIXLP6PQjwUpzGMNlnflb3TptlyrVA5Rql5B39q7TqcD+lgVwfLa4nU5fUy99l4/4GNd3Q9ei8QMcrCSG5y8npou9wAcMS8/DkjW0HIW+5R5/RHM2NDJ70Qpzd6Q+sQqfvLBmKYLS+JhejUeD5+sujaYVaIC+kLZeYJn3JVjEHHL3S8BiAFmA4L1GyOOlKTc1OqSGaGgJoeq7FZGNI6f7LX6dSQkwqFr/fbLvwMw74kRZGDq8pmL8NHT7AtT7JA7YhehYLoe1j3tBnBbUfxeL49MkVACY2WSyb6TPCDG88+ppRnkzN2/lqw9rHWeAwcRPiS+HJJFaASfDnaRYy4S/KYBRTUvLfjoxr8REDUB0AzhRZWeqdgi62t3uDpPrJNgUGOLlJbVYYF7JeAOJrPkhoNnetLP+geef5tTSWovA4bVS6WU4mMYQIoQyDN3AN2yKt5PZLxE4Kp2ipzYMIPbuKoARNOdKxN42tt62iGP6W2jTZm6e6bK7Vo2a/yahPUcwA75qbuadY3KaHOr+jG5I5j7b/l/MLJHMUSbK7koPMSHTpT8xanKVEuZL8zxAHZgABYVBLCNSOfaY6BejKCF7GNc2NEKn1ejz+Af1E1I+Rv5R
- GkX1A2Va
- xgwrK01cXZherMPot9lltsnxmiUpa8dMiWhBvqI7JIjrwT8k4B9NqhgXvFVNUeZ2MFZgjH5sYV4lQM9SNmzxPEY5WkUS41qblsQ7I41r+iF3n4M1JfHrimjHhIBuzGetrbK0HV2y9mgyNAPabGNX1GvJ8sXATpXa47pJcLxF6VStFiOv4nn1JrnolnU+UzGdkx8OQvRstZNET5ulfjD5ojZFlBsRfkwsQrCH6nhlB2XwDSqBGWsHlyuZZ5I5aBCrusjQTmXeLCFlZ+jKYVUIYUCBf/SvicavcDsQyMD+SmgAn7NBz74iehc3yFu3S8XgyJr3PJn78XpYAoHOxWUhPs52r5kPsuGmVeDFZpn4qy2A32cH1hGbQGcomSGkLA602dC6kAChTV6eyD5qJCaiazvMcyVsPpSYPjfcQ9FEpwo6ogJlChrfy702+HL2yRdzcrv3wVEDSR9ZOLaWo0EoOsMKwCsnwPYL8nM6k/C00VauPbCjcNo0aES4TCPWq9SSfhlRrCskNfoN8QOm14skw9h5hV8c0uwGq9saLy3beKuA0rQJXzmU6BZnPXOMWmZhMoq7ru2WBCpGWcl4x9UlZA4q/+g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766003029-347512
+X-HE-Meta: U2FsdGVkX18MvWLeeJHcZnHXjJwFLrW1Ap+auWXVaWENO3Iwy0b7di3kLI2vzPilY1ICjiyKJrbPZTGn+gGrYEKkHVWY+dI7mxPtJkH96Pe1iR3DAFHhwWFCdk4VEgJEjIALWaygIfyPD5h7grIMtkDqP+vGkdyjNHvrhF29h+QYynCZp9DXxoxGjUJi6ChElErkQIcEhNi50Wjakd/foZfbpiTmSipyQuoxxnTZ5ahrxISbwalAP3oGevndIDAlxB4bH4zB7SrkCe+Rcq54bv9N69BRU6eJyJCM3DgwmG/ZkwKMskaBXK504/1d0jkXifLOj7v254d3avnGLaTVKshVh2b77q2U+wxCeSpVO/dsormAgZPz8Y5INrqWB0m00Hjf4xMzO8JMSztcvFXl3qBWLRiwpEemPRpTJ7sM9eF77dUE+f1NWoks9FZJ+rid1H+2zjKLmZgN4I6doneQGcMBSe4lJ/EdoUrvE04YzePzO83HLFOBWzyRza7/9aK+xjdDvj75fewg4y99Uc1ZtF1C1HvQAkPj8lp+dM/W7fQQC2LZMMygYUQs3kP0a5OjDaWZc1JwT21s3HImvgL9ENzgnhisAwJFugZXMKIsv86j46qYVFthzxOh4Y/mYbWM/xal+YnWsd/JU1GvyfA4jEGIAhDRJUZ2cM485mZkUJBuu4sIWeBiv5xl24+lfNY8WYzkaoj2MWs1PJHWl+Nq723iXRD+5p3f1UBzw/AfVRuG8sRx8hEM7MmS9SM81mmRhydKv6yvp4V4GE8qgp5w1r64yxW+9ASqLmfEpYbaU78Cf0m0tnhFIznfy32ldP1UkcwcYohXMFnRDOC3dDY2TTs9fhgLHCF5qTbAEZKHZ5OJeSaQzLyHM+vdAVN4+vLYNZ7jgu6agyQfE1KFt2GR/Qv3bZ2QO6dk1rekVe3q5aqqmKZyHzGyREmMoYiSlldhwhTN6zrt40Ae471iEyY
+ oqpIKLcB
+ r8DS05kqekk1SUdU0wnzwHYkfl/87Y2LM3+jpS/CLP1ftcV0rtwyHiqaBCICaBRxOmOxM3wNSDeBUhVYD2BkzqZCX8q/epa/Ub2mDdRYj6mSKEDWgCGgUUvQuIjc5hHDuVhNqVPSDDd16H0CoL8VduZw3C+oRWHQ576Qe/eS6p9YqMgpwPxNtPBybmaa3OvO+fZ5Q2cCaCAlJKsWyOtAK799lpeN77ULg+/P5J56HWB+8U97TGYW1xB1K6SPB8R1bM2zCN44CuCvVp00Ll5xeM4r1yGCYywzqkA2K20Brsp4vPavFK9xodvb6KZF67VDjlkLZ8QDjh7US6LKdreVpPhaI7esQ652nlLJf4Se396Ipa5NAbN1hObDvaCtPokTTtlrq0WQWIQ9HWQfJxxTeT51o3we90cEMXR81g7M3uV/RJZ+Eq3lNsnNugmhC85QKbYXx7jG+/zZu7MKR+S3aSuwlAnoffhpTmPvPWJpIpviUskUoKhc3ZUlxpwUAHPeq7T6/tRPSOzsRHfMKA28pjt+5uVgghwzjBlysZgE3gQjnpwKMpshB1QBW9MrSxiorFMwv5/K5mJorJIddAnq0oo/xqjvb+98bJiGlgUg8Hx5V946w8n6705o3lqq/CB6yntTVFreXwBqrYHARJPbvitjAOtsaAfMc7mTwjnb0ZB1vFjs16DPVnTcf7NpWN4BLMzJxGMpkAr/ZhbxWWk5a/tqGICw9YbhFVtjVVcr7VfY5acn2xcfqnMylCVxuB5jv2fjEvr1X1lzLAAZh/qaCJXNe+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,13 +114,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Dec 17, 2025 at 02:49:18PM -0500, Liam R. Howlett wrote:
+> * Alice Ryhl <aliceryhl@google.com> [251217 08:10]:
+> > When running the Rust maple tree kunit tests with lockdep, you may
+> > trigger a warning that looks like this:
+> > 
+> > 	lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
+> > 
+> > 	other info that might help us debug this:
+> > 
+> > 	rcu_scheduler_active = 2, debug_locks = 1
+> > 	no locks held by kunit_try_catch/344.
+> > 
+> > 	stack backtrace:
+> > 	CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                 N  6.19.0-rc1+ #2 NONE
+> > 	Tainted: [N]=TEST
+> > 	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+> > 	Call Trace:
+> > 	 <TASK>
+> > 	 dump_stack_lvl+0x71/0x90
+> > 	 lockdep_rcu_suspicious+0x150/0x190
+> > 	 mas_start+0x104/0x150
+> > 	 mas_find+0x179/0x240
+> > 	 _RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10maple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEECsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
+> > 	 rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
+> > 	 ? lock_release+0xeb/0x2a0
+> > 	 ? kunit_try_catch_run+0x210/0x210
+> > 	 kunit_try_run_case+0x74/0x160
+> > 	 ? kunit_try_catch_run+0x210/0x210
+> > 	 kunit_generic_run_threadfn_adapter+0x12/0x30
+> > 	 kthread+0x21c/0x230
+> > 	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+> > 	 ret_from_fork+0x16c/0x270
+> > 	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+> > 	 ret_from_fork_asm+0x11/0x20
+> > 	 </TASK>
+> > 
+> > This is because the destructor of maple tree calls mas_find() without
 > 
-> What do you think?
-> 
-I think with such big improvement we do not need a configuration knob.
-Your change will fully complete Vishal's work, i.e an idea to allocate
-using high-order pages.
+> The wording of "destructor of maple tree" makes it sound like the tree
+> itself is being destroyed, but this is to do with the stored entries
+> being destroyed, correct?
 
---
-Uladzislau Rezki
+Yes, it's the destructor of the Rust MapleTree<T>, which performs a
+mas_find() loop to drop each Rust value before it calls mtree_destroy().
+
+> > taking rcu_read_lock() or the spinlock. Doing that is actually ok in
+> > this case since the destructor has exclusive access to the entire maple
+> > tree, but it triggers a lockdep warning. To fix that, take the rcu read
+> > lock.
+> > 
+> > In the future, it's possible that memory reclaim could gain a feature
+> > where it reallocates entries in maple trees even if no user-code is
+> > touching it. If that feature is added, then this use of rcu read lock
+> > would become load-bearing, so I did not make it conditional on lockdep.
+> > 
+> > We have to repeatedly take and release rcu because the destructor of T
+> > might perform operations that sleep.
+> 
+> The c side avoids handling the life cycle of the entries because we
+> really don't know what is required.  Maybe it would be better to let the
+> person storing the data handle the freeing of the entries (and thus the
+> locking)?
+
+The general expectation is that dropping a container also drops anything
+contained within it. It would be very surprising for a data structure to
+violate that in Rust.
+
+The end-user is always welcome to use a type with no destructor if they
+don't want the mas_find() loop.
+
+Alice
 
