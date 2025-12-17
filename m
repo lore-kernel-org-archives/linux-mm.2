@@ -4,176 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D11D65C43
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE81D65559
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 13:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D6206B008A; Wed, 17 Dec 2025 07:55:51 -0500 (EST)
+	id E0A9B6B0005; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4116B008C; Wed, 17 Dec 2025 07:55:51 -0500 (EST)
+	id DB8836B0089; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ACFA6B0092; Wed, 17 Dec 2025 07:55:51 -0500 (EST)
+	id C9A8D6B008A; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 183196B008A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:55:51 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 977F1140AA5
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:55:50 +0000 (UTC)
-X-FDA: 84228960060.23.7736374
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 268F840009
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:55:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uxwtsLIO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IiEo+OmL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uxwtsLIO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IiEo+OmL;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B5A756B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 08:03:28 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 555401A0A6F
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:03:28 +0000 (UTC)
+X-FDA: 84228979296.06.555EA9B
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 44C15A000E
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 13:03:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZ4RkxB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765976606; a=rsa-sha256;
+	cv=none;
+	b=XSpww4Uz3hrSh/0nY532gs8/wytu240BXcuf6hP7hTzSxs4wTuTY6hj7CGdhxoWjqPCwcT
+	9RqL7ypEyVwdwxV7l2QgzBsMo0FFpSyipxya4CyZSWrCrxdwzj1UwGokMZEv5MRi4Lymzt
+	Qe2YbbfX69l5ic0RuZQ8iQC1CceMLPE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZ4RkxB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765976148;
+	s=arc-20220608; t=1765976606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4arLgLyyhNXwodcIP94lI9F5JTrR8TRXcuQJUxnRcKQ=;
-	b=1URffsRUgBflFvBDkhiOVyCpT0/6/N0asAKqViTlIPL3mGLyXjjX6khn12pxjq9R/2Vhnz
-	175leZVb8eQf16T9COMqdrKnj9857+ZHKIqJJlarSHmIX/JV3PyNjjAA35OFO+rID3hlAU
-	RhoNyjLo3i2pFTqOBesq70SWEozr7d8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uxwtsLIO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IiEo+OmL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uxwtsLIO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IiEo+OmL;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765976148; a=rsa-sha256;
-	cv=none;
-	b=xRljekD6pmXiqnWMc9I/6aOkpm0L1qMslsiKNUR12AP9llBkbhnmDwzcGs2S1t+naWjlIA
-	d+e46aWEKY8ebfe0xBMHK0woM/rw5i7vUt9uLbLmyRO7MfgzbulTpEBxwLgU5V7nNwFmj9
-	13T+yTQEEBJg96jUhrhi+jpd1DTysrA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E18C5BCF8;
-	Wed, 17 Dec 2025 12:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765976146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4arLgLyyhNXwodcIP94lI9F5JTrR8TRXcuQJUxnRcKQ=;
-	b=uxwtsLIOfz7+HXrJxVeuuOq01z9d9e/dsNknxRx7k1n+jQ3Jg+IWlO8jH2CzOdsR2ozGmY
-	g+FLLB6dboWj3JWpHl0dT0tfw1OY27VJStXMOWgAidgGm4bNmU0Pw7u3o51aofYi4+SVQR
-	Wjb73IgW1BGUA5TPK/f77HZER1s+1ag=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765976146;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4arLgLyyhNXwodcIP94lI9F5JTrR8TRXcuQJUxnRcKQ=;
-	b=IiEo+OmLWr7PYKnjVaYOSZ2QhiJ3u7FuFf/6svO1osZ/uxMPcdBn+pNgjBahWiiYhDGnM/
-	ZWob8gsw+zqG00Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765976146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4arLgLyyhNXwodcIP94lI9F5JTrR8TRXcuQJUxnRcKQ=;
-	b=uxwtsLIOfz7+HXrJxVeuuOq01z9d9e/dsNknxRx7k1n+jQ3Jg+IWlO8jH2CzOdsR2ozGmY
-	g+FLLB6dboWj3JWpHl0dT0tfw1OY27VJStXMOWgAidgGm4bNmU0Pw7u3o51aofYi4+SVQR
-	Wjb73IgW1BGUA5TPK/f77HZER1s+1ag=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765976146;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4arLgLyyhNXwodcIP94lI9F5JTrR8TRXcuQJUxnRcKQ=;
-	b=IiEo+OmLWr7PYKnjVaYOSZ2QhiJ3u7FuFf/6svO1osZ/uxMPcdBn+pNgjBahWiiYhDGnM/
-	ZWob8gsw+zqG00Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D7D73EA63;
-	Wed, 17 Dec 2025 12:55:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qROsDlKoQmklMwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 12:55:46 +0000
-Message-ID: <01d780a3-16ef-4f87-b57d-00d50afa4bed@suse.cz>
-Date: Wed, 17 Dec 2025 13:55:45 +0100
+	bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
+	b=IEEto3haADR1dtspqDyG/+R1rYzNO8vdPvBuMnrX+DiRP63qfjErmrhyj2TX/qpoqyXWlW
+	YTtwKQ5FynEQ2xvucSUN6QxdF7bcdKM5UDhy/OSh1j8+B0BLDgs3Y+uOTjS/Yjycl8f1BR
+	N4TROC6cxgLdQeEJ9IS6tPul3Q9r2Z0=
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-787da30c53dso58096237b3.0
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:03:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765976605; x=1766581405; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
+        b=AgZ4RkxBxWOAkUh9DQ1azLc0jQrZCkLiZwyj+FzQ5oy7/yeYdxoYMivfGFrRHM7IkO
+         7O7xV9iyZVl52STR+r0hvFyQNicKz923FA3op471aCwyVmzyioSX0sQWRpaz7/TNGTwS
+         WZQhXub1fQV8sOeocwIPcmLBv5UpCcj6NiswsSvCYNYo71aCGtb4S67KYPThpzeng/Z6
+         3oIQt7EPMnwVNa8qxp5YKVu3MzpwSlVUOWFTxPvpFP7HNE6LmN142Mngdhe/73NcAy3a
+         OZJw3fjfQq/qhgSLHn2EiMWa8nmu1nGrWi7Ik9Kq0D5sJkEN8l5pqryDkGw6c+MzpmH9
+         UFPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765976605; x=1766581405;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3OrcXKWdvuAE6N1CLZCeBV2HX5BbxYzxVYTn7sFPcwg=;
+        b=SL22jPSRRvBdcf3CWiyhMKi1/yuEIASHrrXwj7S9jxGWWUCchM/LCsY6+5L0b7YW4e
+         H3VpL8+46zxpeIkOWgVhRs3DL/0a+06SumacKKRphFPE6U9InmaN62Febsi9TIuArSJk
+         td9YNMJOGcm+t2K8BwbW8KdXsiM3Fiu53RnVekwUeYev6cEwAEMYp7+veVTx7sGbOTn9
+         U2XKpUnX9Z0r+DVTwaMYO8SHCEJmdlB7L7KVrffZEjeTfjkmuSIYr6a2kY2Gk4X95yvu
+         pD5Qmxy+ZTxN+Ose8geo3GA+OQp6DnG35sF4h93WDMaM++pmI0X+ME+FMygD2MHzuvow
+         suog==
+X-Forwarded-Encrypted: i=1; AJvYcCWjvOR1CB7GMG8eMj2T0mGTo4idGHN+LnMsytFCwNlkZIxSei5zTTMPX5KNRFiXl+wt6PGdTm8WXw==@kvack.org
+X-Gm-Message-State: AOJu0YyOgecCe7IMO0xhWEJlz1DDW/NHPXq0kz3eAjzt1xUQgIdh+Rrj
+	R3o0NinUlKt8Xy8t2kayV6NgC9AfDgfNM76SzR2wGWYIV/ae9dYNHPwi
+X-Gm-Gg: AY/fxX5FQiL6Pp6k+hYVoOWUgWJxMrdxggQGSuWzDYqp+gZZtguw+EqUbCiTsBkJhNe
+	vxajd19MiHhBF+4CjvpOPhK/hIZD8FzCLKOMhngixeSmrM9VSOJXVaqFT+AOE2QV9XFYh+Dmlmc
+	RWK67NdnYuxykVKs2tTUvAyMzrbfxDuZBjNdoxKyPpJoambp+tssJRY2e21SWnBehHlxuEf20p1
+	wqJ9q8LN1P6ZbFIFi3T2CCf/q+pud0u0I8Qah5ZZAMhWKCE81SsVdu16Yj9v+jLEy+fgnt1L4bT
+	aURCUn9yi0zY1D4rYds3vIQBNDg2nfdHqs0vCXOx42i580E6MzkRyHWcMXf5IvT+d4o7pt2f2Sv
+	mzIGziCwBksZ7IMdE4FDKalAC+JXUcrQhivRVZ7SuJR1LX0wq2PjZE0Xd2Ap5EoCjswrbTorNTl
+	56rNI2F5DL7PCmJYxGcr6wJA==
+X-Google-Smtp-Source: AGHT+IFFpd8MqeMm8cAUKBinfGXtHNbZPWn3XFitHYBMLyDx8pC7+Lc8XbhhZbINQA9DF5spw70kFw==
+X-Received: by 2002:a05:690c:f82:b0:78c:2c2a:fc3e with SMTP id 00721157ae682-78e66d1ed33mr149339407b3.21.1765976604948;
+        Wed, 17 Dec 2025 05:03:24 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:51::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e748d26b8sm49501337b3.11.2025.12.17.05.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 05:03:24 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to zone_set_pageset_high_and_batch
+Date: Wed, 17 Dec 2025 05:02:52 -0800
+Message-ID: <20251217130322.3350377-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <1c94600d-47eb-40b6-8c7e-fb2cc39e1e4b@suse.cz>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmscan: don't demote if there is not enough free
- memory in the lower memory tier
-Content-Language: en-US
-To: Akinobu Mita <akinobu.mita@gmail.com>
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
- david@kernel.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
- shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com
-References: <20251208094028.214949-1-akinobu.mita@gmail.com>
- <20251208094028.214949-3-akinobu.mita@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251208094028.214949-3-akinobu.mita@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5c3pnh7g4zx5fo618xyca6tkzbuugtb6
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 268F840009
-X-HE-Tag: 1765976147-987495
-X-HE-Meta: U2FsdGVkX1/K7gUvMNjQh+Z+virdrH9oYjperIkav4PPrNktXUssPo7Yzf5JvMvU12i0FN4RdpwoEV407cV0O0J0Xxb1AIUJ/aqCGy+HwPo0d8iAUiNwJhM7Dr2k32iu2mbL9w53VSv+yJZ2pdDsPkCyGUQ0UI76bCEFOPpkmAcCiNVmac2CcMo+R6R12594fSoYDw0RpuQ31Qv2FfLIsSIDu/Q6oXqtON7binyflHqp5HZUMiyRnkgFSva+UAHcjRvAmNa4oU65Btf0DLrZ9aypTsSwDicBUbvWRFtL7StD5Y7ZlBJyP72RN17php8FFyKFLrFqsOAxf6X0CNNuOMRY8ARFPQLhklSEwNdubaJpn8lrvGXhY+U+Tru1AopthLNDLO2WKX49RkUdxl8OsOAcee6sbCpgQrkmoN1PHIxPohxMyMq5x2yK7sq5J64Zj5Bk5OfwNLwyLmu0PrclgZ0K5HE9f9lA8zYRUvHASp3jErJag0FdiAuflZYydsgtKjBQsXgV0uZFMVVUV36vqh8fEVs70P0U+sp3ko9EqLWUgeRbUmEAy4CvH+t0IZxN2WhsEvjRwTr1ZBjEs5c4/VjP6X59/HlWeBgO+lhyGPWVRl9nT5+2T22ylsCI4EiFTaHcBChg5Cv6JdGNeAhESS7wVXe/D/yJ+BMNCH/ooAISl0in/77lsSDkdO1Svt+UlBjsKJwuTAcvT7Gw8x93vorykBZeGz+iiDMc4PCiVq4nGEABzBDkhd+bxNzIw+1wzpXboxe0FtpWyIOfn2vcGORtXYCTGFgHdcVPQK4t5XreklD2uCqn9/6lPpBIHvkHWGdftrNcpJ1cZB9EJBwBrlTspUXmfOW9VBCSikSorreVGr5jEgBO1gYul+zcq5lDNq6HWrhKMSbdML930dP49XWdfttGoapDJr4bS4kzolPKOfJZyBp/vW5axC43QFzMY3q2wBVlwS97o9FqWSR
- fuNEKx+o
- AmQhHMkcTZiQEQEtCGAoba4kA9GPYdJMFsdAbeN6hbeonRbo3CW6SSUoNco8izRrdpYePckNlMQ5sW+5nbE9rPsl0xf34lewCYpOsF15J4ZK4lESKgrcxSRMhkLSvoXQ9d9t0FvwGeL7tGefpgcYQ9jKaYKkf5Ev4wx04b0FM0KrgyFAb9sZnQRwRK61HersKLUeihLAkT7XThWwmTXZuVL48NS1T7ANhidFIaG2Ga2o0JiwbkCY+cajvDRmBdoh4kldq8/r9E2UvlF+bZ4hSK4Qqzt7xItIvpqjPbfOTjKwevvVzFeonMGNyTM20ORB9VVZoHJmaZDlthxboiquPwguE4YTVH0WBmyevRzb84FkKExARXh17ailwmrkbp0/oLyDP59Z7QVFRi6hMV2XNtH7tvYT9VNCsoD0A
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 44C15A000E
+X-Stat-Signature: byaf5rquj8nn46swsbgx1annex6jtcqx
+X-HE-Tag: 1765976606-62420
+X-HE-Meta: U2FsdGVkX1/xzzWmRjHB3LTr/vHf0yLCbbVjKLyoRz7vzFkb79x5ALBn6Ra7eXrA4UwHsYmLIfVtaiQzugNkXlY4N3oKUMOX/aBof1QxxSBlmRAaIsQ2y0HduGs/IhvgMK7yobf6bz6pgDaTBK6+YR1WWpl1fhXAfBvibqX34qI8UlHsP8v9/V5EVfGWUVd7i2uUqBR2eIE8JJrDd9CUddMINZgfEhN5L+WmXRue5gc+QoZVwMdHj9HUsjXMqouupn4bes5uQM53+GSPXIFPC/ScvWn7C6kYkAs5qFjuBnRNFUyuWRqJCJQSG7scVuDyUYQewF8J2YahhV0QPB02u55S57CP846wHSTWPhDSX+w+mBWsoC0eo6/cyVUjoZXZuaTQQnKySL0VIEdKOc0jkTbf2K0X2eOasQKZCHLTgChsDhf3BP6J5Qf1rxa+1Z4iKvB3626ZNXXJkUXYb0VuyoDsLikall1vx7zCm7KAYw1O/538Q8j5vpV1VcUM48gtskO1eI+pmO9CV34PMeNrFT317Dt7xLeFwGqP9kD78k49R/15ynB9t/t7QmYrIYtwz1jgobrkU2wV/NNXEYYeKDDM+d3XsX3+EmIy8334gT28/zomh0bQ8Q1OshQxXmGlubi3P8UGyqsiZ3dhGNenH4qIAGu9sBD3/6zW5PmU2gP/wpKq1dgKvM2uvkoRGDh3V+UrFgoC6JmFwc8AtTGP+vT4JeCtIdvVmeVysDY7b33DdR3Q4AhG5UJtkEHIXARNyc+4Ks5p5tMVpk6RJnGOq+Pt5X1SQVogqXkgbWfVDPU2wwlaS0aHZus9YxxJmIvTx+Ogiesqw6OFD/uxV144eCOGe6pZLqfIfQIyUodwVMlQ9+ZkYT3VysTn3wUHmnUu+v0LevWk0LXFr0nK/h/YTMeUsHG8GfOifoLB+zzVyBSnIKyUR8qeKVkJEBevZ53HleO5aBduvQI9XRYDgHy
+ y9OtQJJ9
+ sg/DfE/nASnFijKmkAZxOdmN5Mlqzm8BVdGC88lmxVh4oIyXw1JaStpX1oWry4oaM5gmLAZiKv9RjrOYJ4nfeMKjPr1uU6FVg0LJAFvY5Rk8C9u8NA58GOSUyoHBi+T4maw2NzNkmNPWwRh+ffOMFk0rVxAERLzJ1g4iela3diBlX9hoXP7soujwxAAJsz/5CMpYK3VaT5FJhu46BIpSqHlJdALy3RUteo0WFnsKNP+ZfmshXHiM07rxuionzbRkYz/jJHSHXRhxYDkQnE+Rn+ZEWAUxDY6dXVEC1FKrDQdc0RVKqobclqXXQIAJuy5sfZmFMb3jhnuDbidBxknI0reu6RlC5gBkzOn9m7nI7CfsboGpMPk37mgS+riwlYcrCh9zBPxQ+pYebMQAqYJ24bTfyi4btPHzaeJVBH++Nwkcmk2nC+7s8xp4arObZFU23+KyHle5UM00BE0Eb77IlA90mtgYTz0GvKqtabkPrJp84xU1To2Oq4MYMLedS3Nuai8297g5iEd0H4reB5ztww+D3ucKCwc3MhDfetAxmv+yHXNYvwf06yHzaQdB3qSvnEgMS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,78 +128,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/8/25 10:40, Akinobu Mita wrote:
-> On systems with multiple memory-tiers consisting of DRAM and CXL memory,
-> the OOM killer is not invoked properly.
-> 
-> Here's the command to reproduce:
-> 
-> $ sudo swapoff -a
-> $ stress-ng --oomable -v --memrate 20 --memrate-bytes 10G \
->     --memrate-rd-mbs 1 --memrate-wr-mbs 1
-> 
-> The memory usage is the number of workers specified with the --memrate
-> option multiplied by the buffer size specified with the --memrate-bytes
-> option, so please adjust it so that it exceeds the total size of the
-> installed DRAM and CXL memory.
-> 
-> If swap is disabled, you can usually expect the OOM killer to terminate
-> the stress-ng process when memory usage approaches the installed memory
-> size.
-> 
-> However, if multiple memory-tiers exist (multiple
-> /sys/devices/virtual/memory_tiering/memory_tier<N> directories exist),
-> and /sys/kernel/mm/numa/demotion_enabled is true and
-> /sys/kernel/mm/lru_gen/min_ttl_ms is 0, the OOM killer will not be invoked
+On Wed, 17 Dec 2025 12:23:58 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-Does this mean only mglru has the problem, or !mglru too?
-Also is min_ttl_ms = 0 a sensible setting? What happens without it?
-If !mglru doesn't have this problem, how does the fix affect it?
+> On 12/17/25 12:12, Vlastimil Babka wrote:
+> > On 12/17/25 07:05, Joshua Hahn wrote:
+> >> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+> >> moved the error handling (0-handling) of zone_batchsize from its
+> >> callers to inside the function. However, the commit left out the error
+> >> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+> >> 
+> >> Since in the NOMMU case the reported-to-user batchsize should still be 0,
+> > 
+> > Should it? The value is effectively set to 1 despite what zone_batchsize()
+> > returns, because of that adjustment this patch reinstates. Also does anyone
+> > care, really?
+> > 
+> >> we would only like the error handling to exist in the callsites that
+> >> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
+> >> 
+> >> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
+> >> on NOMMU systems.
+> > 
+> > I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
+> 
+> Ah looks like you considered it too, initially:
+> https://lore.kernel.org/all/20251211225947.822866-1-joshua.hahnjy@gmail.com/
+> 
+> It makes more sense to me than doing effectively two fixups in the MMU case.
 
-> and the system will become inoperable.
-> 
-> This issue can be reproduced using NUMA emulation even on systems with
-> only DRAM.  You can create two-fake memory-tiers by booting a single-node
-> system with "numa=fake=2 numa_emulation.adistance=576,704" kernel
-> parameters.
-> 
-> The reason for this issue is that if the target node for allocation has
-> an underlying memory tier, it is always assumed that it can be reclaimed
-> via demotion.
-> 
-> So this change avoids this issue by not attempting to demote if the
-> demoting node has less free memory than the minimum watermark.
-> 
-> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-> ---
->  mm/vmscan.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index fddd168a9737..f4748f258294 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -356,7 +356,20 @@ static bool can_demote(int nid, struct scan_control *sc,
->  		return false;
->  
->  	/* If demotion node isn't in the cgroup's mems_allowed, fall back */
-> -	return mem_cgroup_node_allowed(memcg, demotion_nid);
-> +	if (mem_cgroup_node_allowed(memcg, demotion_nid)) {
-> +		int z;
-> +		struct zone *zone;
-> +		struct pglist_data *pgdat = NODE_DATA(demotion_nid);
-> +		unsigned int highest_zoneidx = sc ? sc->reclaim_idx : MAX_NR_ZONES - 1;
-> +		int order = sc ? sc->order : 0;
-> +
-> +		for_each_managed_zone_pgdat(zone, pgdat, z, highest_zoneidx) {
-> +			if (zone_watermark_ok(zone, order, min_wmark_pages(zone),
-> +						highest_zoneidx, 0))
-> +				return true;
-> +		}
-> +	}
-> +	return false;
->  }
->  
->  static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+Hi Vlastimil,
 
+Thank you for your review as always.
+
+Yes, I had also considered returning 1 for the !MMU case, since I think it
+would make it a lot simpler as well (It would also make my original patch
+function as intended).
+
+However, I was unsure if changing this user-facing behavior for one line of
+simplification would be worth it. I am not a NOMMU user, so I have very
+little experience here, but I imagine that there is someone out there who
+looks at zone_batchsize() returning 0 for NOMMU and interpreting it as
+"there is no batching" as opposed to "there is batching, and it processes
+1 page at a time" (which, actually isn't even true anyways because of the
+bitshift). Maybe an option is to just make batchsize not visible
+in the NOMMU case in addition to always returning 1 to avoid confusion.
+
+Anyways, back to your original question of "does anyone care". . .
+
+I am not sure : -)
+
+For me, both solutions work, and in fact I prefer the original solution of
+always reurning 1 for !NOMMU. Maybe some NOMMU users like Daniel and Guenter
+can comment on whether this change really matters?
+
+Thank you again for your review and follow-up. I hope you have a great day!
+Joshua
 
