@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECC1D64073
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 05:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5271CD64074
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 05:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6712C6B0005; Wed, 17 Dec 2025 00:17:00 -0500 (EST)
+	id AC2F16B0005; Wed, 17 Dec 2025 00:18:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61ED46B0089; Wed, 17 Dec 2025 00:17:00 -0500 (EST)
+	id A6CB76B0089; Wed, 17 Dec 2025 00:18:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D6D6B008A; Wed, 17 Dec 2025 00:17:00 -0500 (EST)
+	id 96F7F6B008A; Wed, 17 Dec 2025 00:18:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F5866B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:17:00 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B149C05C4
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:16:59 +0000 (UTC)
-X-FDA: 84227803758.12.0A00C92
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A06774000A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:16:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="c/8d9oGU";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765948617; a=rsa-sha256;
-	cv=none;
-	b=JJGPNvkQbqUkkm+cofszmBIsQoo//MGY9IvXpG+G2HgGG7HGysSwNXFOB+CNGxdZyLp+kS
-	HdlIQBErewW/r3H4zOZLe6EM/dGZPOyZyYiWn9SLudPwJQnExBvoF6MmRpWZyDSIuKpT4A
-	UnPSNfKpD5vWweMm8+klWKtVINYhO+A=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="c/8d9oGU";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 857416B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:18:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28BEF8B612
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:18:08 +0000 (UTC)
+X-FDA: 84227806656.20.61867AC
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4B1EC2000D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:18:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FSg7n69I;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765948617;
+	s=arc-20220608; t=1765948686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e3U4fucPIwa5C3A7mTN8iePIKa9pv0/tHUusJYkp2+Y=;
-	b=DRlv5oiACmcSXlycH7OCJAfziAgbocoK15JjjDnvM5Xnv2KIerLJ1wuSYoEEIiHQGVy2ih
-	cCDqOe7DAmjINWYM1rEf9uUBS7KcezR4qNcTQ3QEvDoRfm4y9u/+sAY1rPPfpgE7U4saEZ
-	Zps3/5fbT/sLkpX8oUlfVYYJ3COpo4g=
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6446bae1e17so4758332d50.0
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:16:57 -0800 (PST)
+	bh=2anOrP0xVCL+Jbr+Dqygt+dHRR+qw2sgfwGJ1BYaHxw=;
+	b=4pR9UdSrptOM1KvZEoRil4Q/zwW0ag8ZwiqMLpcpBCaRHbDPOru80ypHM1/wVYcLSGcusX
+	y1aWXjzmzOJcGAlRWdkHdIRRvw5BoffaXwz7dzms2wWvFqeZJCZOsXKHrW2QZ++R2WJSeA
+	/X08qTfCjDMYG/1QUT1EJCQjIFTeO74=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FSg7n69I;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765948686; a=rsa-sha256;
+	cv=none;
+	b=ShuTQpY4Wm0tMQw0Qs0PVSn5gqOSFi2DuxNVBR5h7Jwhf4B9sHhqPQQNtLFecoG/BSdz7E
+	/Pak1nuHF1O3wtCmHNGJ9DC7tdg5i5Hgnen2hX4r3JZ3uNWj4S2IEtKsVBBriAVta4maol
+	ONDaGnDPraPjFNqXd5tD1QUcv+OJQhQ=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-78c5b5c1eccso3037607b3.1
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:18:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765948616; x=1766553416; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1765948685; x=1766553485; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e3U4fucPIwa5C3A7mTN8iePIKa9pv0/tHUusJYkp2+Y=;
-        b=c/8d9oGUhJoSAwgfdq8Vwh2u8SyufT5iaJVt4p+VCbfZ9xR1+sB3ZDGriPJh2Xb0/J
-         5SA8SC6AfwnPNIr29GnEcJIOTif5iPI1u6DTifHIWdHLuYKruxMkd3szZHJOdhY5WbRL
-         9Z3jNdVx3mJtO8cX/2srUmIw+vK460ampwgB/xEc8wgbPT8JDFj0N2zITBqLAD7K8LQd
-         KvcVIqpYcqt5sAAU32icUgvGjHa6r77ClHRk1Jyo+EKH0HhvfLMYqb6Efh6v7pMtKq3s
-         VP/JsVkbInv4s6w8xtewkCH2VQl1UIBcQlnbFlfs+28P6o62u99bGoDQvIC2aggpMo/c
-         HuEA==
+        bh=2anOrP0xVCL+Jbr+Dqygt+dHRR+qw2sgfwGJ1BYaHxw=;
+        b=FSg7n69IdzJ0k8UaoifCLSI6cGN9V8ByPNmqoXlPc/fhkcIngeqtabp70sMBBrk63f
+         JmR/wnBG983UDGmu1FXNoWI/628gNrVCrBEbufMwhrCi9ni8gr4Xm0LrGx6OcKUOMpPT
+         9jh+wvJKF4LpIHmxFUHrpXpmDfH0OZSGeG/7Zju2Zp0XgQVnjDZB4sGkR2fzvGoMXKr1
+         9jKORpZ+hJ3XkzBcQ9dpqdIYQOOPZsXzwvI28Q0WHDVvM046mqjo5yatKV1PGFbFcFJr
+         pSiUovq07zSumOb4M+zK5sybZc2R6WsIvGbUwfQnG5biAuOUPZWan4yCNL7QrOsqmDoR
+         f6jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765948616; x=1766553416;
+        d=1e100.net; s=20230601; t=1765948685; x=1766553485;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=e3U4fucPIwa5C3A7mTN8iePIKa9pv0/tHUusJYkp2+Y=;
-        b=NCNxlDUSoF1ocs0bDjIAjffIggjGeA7dCQ18MHQGb2256jcVH6YGq3aBUxMYDlSrQ0
-         DfRYYdZmwylB5hbw+CxkKdfQZKoLoRZiWMDmcvP7/UZ+diRm+TjIxWg29ZzO3/5v69Xi
-         9IEn7Retac2CLxvpD5LOrddCITxqm5deQCfiDSu7ze3rofLyIDZ1D3ucFKDpASpC9BSq
-         vi/lI1Nf52pNq49v7TnnVXkM3JqB7Q/PY8DxbaWFfoEZrRwttaXpn5HimIZrZTHEhZpT
-         PuCVn71v1ijfy872boTH543UfIBG1NJLzCbQUEsMb8vEreqhjthopOooU/D6ZyLy/NdB
-         R+sA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4A/948rO9eZxEK0RMlEPEX3CloB+lzlYsUQDhHO9LckEsWn8dV7KOGpl3Q7ssRWlhRls08o8w5w==@kvack.org
-X-Gm-Message-State: AOJu0YxQwsVxfSzdGWFzqCktZ8ZVH1TxBguuN+4m7XTk4jPowh6WRQru
-	ogGO60X9MagSLD+To+LhqatX2B8jEFpKt/fG0CClrWilD/cxpXVOLfF9
-X-Gm-Gg: AY/fxX5U+D14UgL4iz5lKN4JbsVNS7ACoDr6P+SYD8IvnJCvOqdN+mEfGJsXOD+WyMe
-	BC3xOKHMQCmlcnPP6IpZA769LNsl3zJO+LtkxzbhoMPl30LRW6CYuKwXUnHXlr1ou1TzSuqGLa+
-	ctkMsHPY4p3hkKLn59rz8tW7RP7GUIsnuTmLOWSuVAIGQ1zAAAzx00MZ/9/PhCkB8fklGPSfKdh
-	YB6jGxZ4tT/MgQXWRthZUmdQEOS5/dBIolDbc9wl7oH4xc4wMe2CBsDNryUKOtfnpupCdYdIp9U
-	Xx0CJLW6mTRqrSR1tnQC0Yy3k/NfsiwQly5H0N4RETnVlRP3LjbKYOMkCqjJWE2SHWYDBjOB87g
-	FYaVwTZOiEVGqum+rPQXIxQBv07eSEGDRtMGfrXxml4gn1D4EgimSjxZii0tnVpwPwkunKoIsJP
-	oe38Sjyio83dSujEuAIGEkJA==
-X-Google-Smtp-Source: AGHT+IHl6JmRY4pmU+6aPgmZru5eursIsfwMpCPv4j6lmgmMPRhAD6OhtZZX534fHOXjHyU3LGVXxw==
-X-Received: by 2002:a05:690e:16a0:b0:644:7b59:4216 with SMTP id 956f58d0204a3-645555cda86mr12968997d50.3.1765948616522;
-        Tue, 16 Dec 2025 21:16:56 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:52::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477dab686sm8555903d50.16.2025.12.16.21.16.55
+        bh=2anOrP0xVCL+Jbr+Dqygt+dHRR+qw2sgfwGJ1BYaHxw=;
+        b=Gugh4ETZbIpDUUCq3vHh3lj7hwoDKAhwz9f6ggb7Lak7H7J0NZp6TIdCjIrgn0L09S
+         mOONB5YteQCe7E/oA7xWGXCDI2L4kbi0o2L/EWQCG19Q6f6W8vpuhxxtleaS9fq1QYNy
+         HUNs60oZ0ELYPHthfDv1yecgG8Eg9oT1Ey+PJzKR9RT9QGVzJ8DrPvVC4gjA6rfLKQHm
+         h33p1Vj/YY8Gk7L3RjygrS8dBBMSlKjQdwLl9kg4agzYC83OLpZwkUMZN6I8JDKcm4iL
+         Foh3f7fDjCYB88U4iCjoMQPkL+ad+oZOAiNe8x92O83Wq7k/BsuPGMqmIGi5uzNB7cN/
+         OfMg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1u1tqCStEM/6bUeAGptfOTdDj62UWNe2DYz1WdEi6qmuPbcmM9lhtM+FPoXuYw6UYt21ZcwNXWA==@kvack.org
+X-Gm-Message-State: AOJu0YzVtglsjaGzqdrpPvQ0PW40cYolfOo2uyhHQNi2pcCyUv1qQTdr
+	MtYjtf61fIX2JEIR1pQqJYa/SaoN3TOrjIEkyJ9SYar9+gn9Z3SKDSqW
+X-Gm-Gg: AY/fxX7x9Kl/RtSOS+KU/HkCVifCID29TwDpdiiXifyrBIZL6GQ47pVAvKJtuOaSoTe
+	GnMuJxYXKsMb2ror+VxsYFF/ArKGbPFh19qnabkHVUC1GsAwzvPYAifdeIDW1M5l66nFGwNa0n1
+	TbMRwEqYlzkFDdySGLJSVvgTNJTjQpW3xdfMAzVcJ24T3KQy2rtXxGSBxVyCrW2/d8HjZwpwLv0
+	HBvgVV74gVNlaUCnOR48QTqGRae57XUaUD4wN1zPG0sePwx/0xg3tuLQo1jo8sVtC4b4iAub9OM
+	0728Wt3SXPnk+aHkevQldY9M2pZKSWI7anXCi2VR3Tmyp8gtmRWiXKMTRrtdhVlhS6Nn/9CrtHp
+	mF7gbZ9gmVqhDPYLnGodjRnhMuv2lsGf2nPzJl7U95gI5GkuVKt3PWpl8L4GAb0EztQiES0Jgb+
+	lkWwHFcTSvnUS2mBb9T0RU
+X-Google-Smtp-Source: AGHT+IFTh5UrsnE3aPhMBKEHXPd4JmUA3m4FDvKhZSc0MEfZN0xTDRHHnB/MD9iVwyuFUiBF7ZAz7Q==
+X-Received: by 2002:a05:690c:61c3:b0:78c:2ad9:b541 with SMTP id 00721157ae682-78e671a1ad6mr140386417b3.31.1765948685220;
+        Tue, 16 Dec 2025 21:18:05 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:8::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78e749e5ae2sm46668267b3.27.2025.12.16.21.18.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 21:16:56 -0800 (PST)
+        Tue, 16 Dec 2025 21:18:04 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Hansen <dave.hansen@intel.com>,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Daniel Palmer <daniel@0x0f.com>,
+	Matthew Wilcox <willy@infradead.org>,
 	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@suse.com>,
@@ -103,25 +103,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-m68k@lists.linux-m68k.org
-Subject: Re: [PATCH v2 2/2] mm/page_alloc: Prevent reporting pcp->batch = 0 [mcf5208evb boot failure]
-Date: Tue, 16 Dec 2025 21:16:54 -0800
-Message-ID: <20251217051654.80355-1-joshua.hahnjy@gmail.com>
+	kernel-team@meta.com
+Subject: Re: [PATCH v4] mm/page_alloc: prevent reporting pcp->batch = 0
+Date: Tue, 16 Dec 2025 21:18:02 -0800
+Message-ID: <20251217051802.86144-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <42143500-c380-41fe-815c-696c17241506@roeck-us.net>
+In-Reply-To: <20251216102205.1d008d1432446956b079bfff@linux-foundation.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A06774000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3c6p34d4akc87zhcbwz6bwkg7exbkwk9
 X-Rspam-User: 
-X-HE-Tag: 1765948617-566291
-X-HE-Meta: U2FsdGVkX19u3wyjDNZAlt9D54Tf/iZ2iVaHSY82GbzWQOaBqtLNGoQFz2yKgeif0AEoIXek4e/lnOAIKJblI77LA0rAdQuUIsz3YS3u2cN8tjoii1aWnovTGPnccjzLRUXDaISEgXIw2Upl4UYdA0HO6HqiwYbaSBglq4I+F6/CHG/gNUv0il1EDpRXiSPJbLfaMaoo/jXVJFXAOGlrsGvNfP6Nmhq5lYSzDirwdB9OJ92Wfjxptf1+5KivPJE8Ybi+8AgwXrkFioINc1kIvTdmIc0mo84H5+/KD33WwRKG1g8nSkm296UwDAMNv7ueJN1/mtwVdFGqoroQKiXTB3YB3M7qhDVZDIex+Acyg/+myjMFF3uDMIbSbIQqRYhF3B7lfyrZdN5sE5EDc+8V7Tdw3D+qtKqNwZzQIM+0Y70vaDcT/74bV1E0+lhmgC7DrqCFk9G7WgtMr/Z1fyboRb6x0YORUFnAc72cABSxVsjV4j++mdlroN6ul1kTXnQ0UnVOjz0c8r+hcLMncUipGFxr6jw0y1JBTnwqhCNly7seQrZpqPloB1w4uQsOlCKZt//9ei3IKxm7JjV09XBOMvJrlgLk4+OUwX4aO5tGHveTK9dJeD1TUpXEwXE8SKG2SOTJZ/eK6q1AmrZfW7AOtlDz0wpjYGxB7hKY2esM+4Xhb9ppTdjfVeFt7XQ85EQ6egRAJHylUzAIsNWF9rGEfTwkYDVxwX+vuIOx9kw4afBpeawQ1lcSZMDDZApCIrvmvPXxLRtlxzj1vjc3pMpt3Kr5E3T947cfpYmGQLMzu+ZSnP75Heu4JZL1OeRj+CP3cv4zpOFrBFWptX0B46KWV7lbQB7KSSc7bTNL2ao31JhqAfx2jAOEOkOyKi/M39URkg7MM7nqNP0hzZBPhyDg7fZV0OyaoewsP2hLYh6hCg5JT6sMBfYV/kcY+xXAV1EOeAbcYBjB5cnYzkVoIaQ
- Vb31iw6k
- 1uFTiTWIRH/dEN+OkQALquWAcMLuLne/Faz5b9R3rTToTbY+LjdcVD1mCrhJfs2hIme4+Ny4L5qj7hioQIo8fXJMcQ1ZRMQdRaMve50oDvkwv1suZ13bT95uSRlBFq5+b+0iGhe6c3+Mwvs1Jqojlm0p4uydWiHbUopI6HaE8DN4vlP3jhyJek8OvAhEcJgxvbsIDmrZnWvaT900AlObMtKOnAhan3LqxyuR/IPdZ4+wpdEfb13NPMWQ7yoNUv8b0Lhg9BGwZcfhCt32LmShkIBwAzwfesEAb5Jx53DRk9hsEMGayK7In4xFpITLmVywHWbXz2vjFSvTovxA9DDKtfBqNzixI9y6zZU6Jr/YQF3wzrNT37xo+ksNTh0qyaNZ2YHX1zFouquYPAhkRYmqQYmCU5aNEsXNyZEOSU4CqlZ1ZASDfaWmuKUJcLWjuum90VtUza35EGBtC4sZJQg4Z448YCHQLSnHHlagJIjGnFAjZCVIjIf2cvdZ0IVY5+kCDscylo2Ddr/abMbR3+g3nOpBGUgH6+X/m5JExNzsfttgS0SFnfLy2/kFnICT9tHMzesiJhe62FT0FzRm0O2so2TkBnkjHeuK1qQBj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4B1EC2000D
+X-Stat-Signature: diqn8zt5h8fnkixk4446jagziyjasmoe
+X-HE-Tag: 1765948686-650857
+X-HE-Meta: U2FsdGVkX1/3OePxYD2jrwkGdrnbD8mQ0lCRZrrHJ0imczLHyw4prp9ubrD7u9zWGRoe0sCuT8ITvLSnOgO64qDyuMNXTQtWMF08kl21mB6GsL/gFNIwqSJ446S7hB69R+cYoIcI0FM+g12w8FplI8CD7lxRUDi+Z6etaDmWmMIXQJv9kevGtapowbrGJVTF0/BoYqMnlTq2SJ/BkZ2tffac4J/bIeB11NmU38iNoO0SKKi2ExF9+T8MqR5PnI1XcAdYDd8P7AkTzxbPpqZUvHeCv0hVPbAluKYgY1sJp+9C346+jB90OOomBC+1f34xicQe4llFYmphEpMmQPbURV9E7ZZXW3u4toxtVlJjR9bdKjNRuptsJ7Xgaz2GPZOdHseZrAFdoQHmI7ZceAOi2ZnUMBWQGbkx43p9iv6j8exIKf9Nxt2cyuXLHgPeJXyosLRfTzOVAngGkQf4yLYWQKR/nJrKINQ3KVOHspYuD+9KVT9um2Iuu+XEnL1419HraYgsNkWlycxqCU38ZG4XsKuKuL/scl+bKEgxgUGjLloqVG71ETMCxuD6RbTERbqtI8Hevl+h7XiRX6qOod1fJe7BBbmoQD/IYW30tJaMns3m+kuThr1AEOQ5aLYQtBBEaXmxdlIEBMWMQ/6Tvo60S79bXKzBYoe3Z0FKb8R5MSC23MoKbHeRcne52mhn+vq8DPB3jZ4psGTdDDY5KAWrXJ25pJvNx2ud1zJvcJwtTZnwfGkHCcD6b/cWz8igL6qVzTZTeCC9j/ag9o0eM/wSewtaok+ewR1Mkn1kNKe0N9shQLu/kuE5oNocefVqEElP6NMOfzN/9VsYcm1j8yxRZrrOxZeOZY0Alkj6iOq1p0wWzx2w187REbcC/jNu/YiykCeHDySGIKWSIcWzLYHPOJ2mM3XwENNgQduj9//B49uv4a+NE7ogxu+ZjBNQ8Ziq0Wg42qFwoBVKWVqf3hE
+ 5WxzXgEP
+ VrKLRT4pzw6Pz+Dw1zrs0EUxchVd4jHlARLPqbPS2XC77w/bu4acNlAPSGTc6/QvpOE3518oFZBDcCh2w6RszNhQGMtVgTdKSTIcBuM/DhRzCdsmyJwyYmblDrowxZcwul4fVQr/wJSOjH0HRugtFTuDikhFLq04hyjxPYZlFiJA+mSNIalcD90oimPLWnY+xftNhwoA/M9fRctt4B937ZH1swQu7KFcK9B3NgfZL05KGGKSrhYvGdWF1g2PMxPguEJXOYllmSbFL6hh3dNOjh5AFmAKG8hYFas1vFBK3mxtwDwEfaDpOnlnnR9aA5lZf1HGYDd24whQF7QPOQdaSw57hf0GQhZmFdyrXdZnLLkv8LMaXruVXlY1eyR2vkUxY7IGrrrzdtkWRQzPxtINKcmnul89F5VTWX/nq+q3XsVfb3mStpdAfrNZrRpsph95Bto0RpR5w4x32nin85/svsV7UvErZN+1LUgaLoEsK/vmUjqvcA8U9sluLNJJ0BThbzpulN+cOwguDuZJuIhTgfj10lQ0d4K6U9nRi3HltjeCTEGlamLCAL352r6Ub5w6ZBYrLn8Nmw1+qyw4lX0JUUcrCxprazMjoed7Ea0/liUVcOzo5COsYpBq5xJEjfj4Q048Icl/HYzov+zZtt+qKvDbLEgEx+J70lUBZaUha9LXm8FnL1UbWaR5fig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,24 +128,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Dec 2025 13:47:03 -0800 Guenter Roeck <linux@roeck-us.net> wrote:
+On Tue, 16 Dec 2025 10:22:05 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> Hi,
+> On Tue, 16 Dec 2025 06:48:11 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 > 
-> On Thu, Oct 09, 2025 at 12:29:31PM -0700, Joshua Hahn wrote:
 > > zone_batchsize returns the appropriate value that should be used for
 > > pcp->batch. If it finds a zone with less than 4096 pages or PAGE_SIZE >
 > > 1M, however, it leads to some incorrect math.
 > > 
-> > In the above case, we will get an intermediary value of 1, which is then
+> > In the case above, we will get an intermediary value of 1, which is then
 > > rounded down to the nearest power of two, and 1 is subtracted from it.
 > > Since 1 is already a power of two, we will get batch = 1-1 = 0:
 > > 
-> > 	batch = rounddown_pow_of_two(batch + batch/2) - 1;
+> >         batch = rounddown_pow_of_two(batch + batch/2) - 1;
 > > 
-> > A pcp->batch value of 0 is nonsensical. If this were actually set, then
-> > functions like drain_zone_pages would become no-ops, since they could
-> > only free 0 pages at a time.
+> > A pcp->batch value of 0 is nonsensical, for MMU systems. If this were
+> > actually set, then functions like drain_zone_pages would become no-ops,
+> > since they would free 0 pages at a time.
 > > 
 > > Of the two callers of zone_batchsize, the one that is actually used to
 > > set pcp->batch works around this by setting pcp->batch to the maximum
@@ -160,41 +157,62 @@ On Tue, 16 Dec 2025 13:47:03 -0800 Guenter Roeck <linux@roeck-us.net> wrote:
 > > Before: [    0.001216]   DMA zone: 3998 pages, LIFO batch:0
 > > After:  [    0.001210]   DMA zone: 3998 pages, LIFO batch:1
 > > 
-> > Instead of dealing with the error handling and the mismatch between the
-> > reported and actual zone batchsize, just return 1 if the zone_batchsize
-> > is 1 page or less before the rounding.
+> > With all of this said, NOMMU differs in two ways. Semantically, it
+> > should report that pcp->batch is 0. At the same time, it can never
+> > really have a pcp->batch size of 0 since it will reach a deadlock in
+> > pcp freeing functions. For this reason, zone_batchsize should still
+> > report 0 for NOMMU, but zone_set_pageset_high_and_batch should still
+> > interpret it as 1, meaning we cannot get rid of max(1, zone_batchsize())
+> > in zone_set_pageset_high_and_batch.
 > > 
+> > Suggested-by: Daniel Palmer <daniel@0x0f.com>
 > > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> > Reviewers' note:
+> > 
+> > This patch was originally a part of the 6.19-rc1 pr, but Daniel Palmer
+> > kindly reported that this patch causes an issue on NOMMU systems [1].
+> > Thank you, Daniel! I wasn't sure how to credit here since it was a
+> > report on an unmerged commit so I went with suggested-by. If this is
+> > problematic please let me know and I will change the tag.
+> > 
+> > [1] https://lore.kernel.org/all/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
+> > 
+> > Reviewer's note (to Andrew):
+> > 
+> > This replaces commit 2/2 of the series titled "mm/page_alloc: pcp->batch
+> > cleanups" [2].
 > 
-> With this patch in the tree, the qemu 'mcf5208evb' machine fails to boot
-> with memory errors such as
+> That series is in mainline.  2783088ef24e ("mm/page_alloc: prevent
+> reporting pcp->batch = 0").
+
+Hello Andrew,
+
+Sorry again, this mix-up was also avoidable. I'll be more careful in the future.
+ 
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -5888,8 +5888,8 @@ static int zone_batchsize(struct zone *zone)
+> >  	 * and zone lock contention.
+> >  	 */
+> >  	batch = min(zone_managed_pages(zone) >> 12, SZ_256K / PAGE_SIZE);
+> > -	if (batch < 1)
+> > -		batch = 1;
+> > +	if (batch <= 1)
+> > +		return 1;
+> >  
+> >  	/*
+> >  	 * Clamp the batch to a 2^n - 1 value. Having a power
+> > 
 > 
-> S01syslogd: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL), nodemask=(null)
-> CPU: 0 UID: 0 PID: 34 Comm: S01syslogd Not tainted 6.19.0-rc1 #1 NONE
-> Stack from 407d7ce0:
->         407d7ce0 403df960 403df960 00000000 00000001 00000007 40027c60 403df960
->         400c06be 00000cc0 00000001 407d7d7e 400bf614 407d7d34 403df3ba 407d7d14
->         407d7db8 400c0e5c 00000cc0 00000000 403df3ba 00000007 00000007 00000cc0
->         000d8000 00000018 0000006c 00000001 00000000 40fe6640 00000000 40fe81e4
->         403ffa40 4085eff4 00000000 00000400 00000000 001008c0 00000000 40854041
->         f4fe0000 00004041 f4fe0000 00000000 00010000 403ffa40 4085ed00 4085e800
-> Call Trace: [<40027c60>] dump_stack+0xc/0x10
->  [<400c06be>] warn_alloc+0xdc/0x1bc
->  [<400bf614>] get_page_from_freelist+0x0/0xfa6
->  [<400c0e5c>] __alloc_frozen_pages_noprof+0x6be/0x8be
->  [<400c1358>] get_free_pages_noprof+0x16/0x3e
+> So this doesn't work.  Please send along a fix for current -linus and include
 > 
-> Reverting this patch fixes the problem.
+> Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+> 
+> and Reported-by:Daniel and the appropriate Closes:
+> 
+> Thanks.
 
-Hi Guenter,
-
-Thank you for the report. Daniel Palmer has identified an issue on NOMMU
-systems, and I think this is caused by the same issue. It seems like
-mcf5208evb is also NOMMU (arch/m68k/Kconfig.cpu shows config M520x depends on
-!MMU), so I imagine this is the same issue that was reported.
-
-Andrew let me know that the commit has already been committed to mainline
-so I'll be sending up a fix shortly. Sorry about the problem, and thank you
-again for reporting it. I hope you have a great day!
+Will do, thank you for your patience. I hope you have a great day!
 Joshua
 
