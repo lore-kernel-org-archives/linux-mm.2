@@ -4,126 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AC1D6554F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F3CCD6554F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 301246B0005; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
+	id 771AA6B0089; Wed, 17 Dec 2025 07:09:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AE726B0089; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
+	id 74FFA6B008A; Wed, 17 Dec 2025 07:09:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 190B66B008A; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
+	id 670346B008C; Wed, 17 Dec 2025 07:09:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 07AFA6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEEC81A0A3B
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:13 +0000 (UTC)
-X-FDA: 84228842586.20.AE171B4
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0A8C2180007
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9WYzkFJ;
-	spf=pass (imf06.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 553A66B0089
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:09:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 024CC605D7
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:17 +0000 (UTC)
+X-FDA: 84228842796.08.7771047
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 98F8112000A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZHGkerYQ;
+	spf=pass (imf29.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765973352;
+	s=arc-20220608; t=1765973356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
-	b=UZk1xtPYBo47EWalN7knnMuALTY3Ryng20xvwaZMiC2Xr2+bWASxM01mKoqW7D3FgUdisu
-	6h6zOJqBBpjEblHUyiz0jKNBDdJrFDsVd5jd3iRJBHJReOIoleYXTr6UpfIdK7aGrEFK9o
-	2NlMvMonC3GIPRKa8S9kDF5WFcwxdsA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LM540hUb28P/6ED7eYJxPCmTteIjDKTHmfy1Ey7dXUI=;
+	b=YB1uBaPwdBTte1S0tgsXvukMSezxICcxN9eG/euu7JspEIrNR4RSXWxwPt+QcEPV884Yvv
+	ZxYPqri1PdnxmL64cpl8f4cC9GHTur7hCO4lGxRoyPqyK7CnvRxDFNO2LHbKZuHC0T4qW6
+	P3Oeyam8dT0xUTHX7inzbumK33MPWj8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9WYzkFJ;
-	spf=pass (imf06.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765973352; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZHGkerYQ;
+	spf=pass (imf29.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765973356; a=rsa-sha256;
 	cv=none;
-	b=AR8ThlHlObvjFJu6k4EToxY2nW16h0GX965sHrcroMvL0b7SVYNIbCeSenYDXaVnfRAf+J
-	7hUABz0kvS6l8s9cUD9iIydK2yJSulW0z0jZd6m4m2KlRRf3Zz3KGJlaviYLFmZtkuaRcQ
-	SXRudp4W4IpahXXjYPFHYYPbiYquUoc=
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bcfd82f55ebso215214a12.1
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:09:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765973351; x=1766578151; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
-        b=H9WYzkFJw7RIsjJyOrI5o+9Kchn87zngWNZa1qbU7AAVh/IM3ck6bZ5rRYD72iUO2i
-         WZF+Ecmt9OV6nEGYD5rJSWe5CN6HubpONUXGaXNwQWbGhBbj1T80We+ZevEOCV31pY+C
-         DSdyRHGGzJAVKT8kEIZNUEVsqupkZvuR33js8oOGVX52yHXYcjTDgtk3NtO2B+0+EWTF
-         EBCysz6OKYO2EkK7+vrbXW8KbD0MvCzvFFfN/ol/bCv0sVR7xH1EcsaV1oC35vhrFdWl
-         Gh8YhsMgfb2ZFRKpKdnPE5K0KNSVxqrNdpfniI8Fe8az2/k76MWvfFxF/cUuPmjdoQiF
-         fIlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765973351; x=1766578151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
-        b=klJWjVLjSisyvrkCpDmLfaBDN9l/2tQys2UQht/4wrtBigqzMecaRxsshCYRt3L6Jn
-         bHkdYcMDVL3pVIWrfPEXrKHQLP3OBcKI0fy8gRdlmwX0gxs6WJahxvQDaqwG+k/Auwe+
-         3Zy+yH+owK1GJs/yo8JypWl+FQKZmOeONMCLT79Bgs0TnhuEwiRE7r81aeZQRisMM8RJ
-         ViYiWGNC4ULhGsQfNIv7haMHK9xWnvdqk/jZx5r0ltJPTZiy4/FPcjqdoAcnmt8N2y6e
-         pnMmNySF1XAnfIIFDT/4r9AlawKurqvU7WaKXV3ko2bW1SO5RlQSg+sPxwBU9s8JiCgu
-         QAXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVU2tGmVvJ0ETHVfgM+KvHT19aE+AzGMAMvmImgKUauGAT5lR2w0EMUO5Fco4mhR4tWY+LL0WznDg==@kvack.org
-X-Gm-Message-State: AOJu0YwbOm/rdBq/AKZRGROqa5BH6MIeYXm9PI8zOhOQ5jVzTOcz/5ES
-	mjKx1yPSdC/H26qYsUbQmsrM3W7YSI2lNaJ3eS3jHmiFB9lVL7z10kBg
-X-Gm-Gg: AY/fxX5xDpMEAqUYAw08MezWWUJLGZfe6NxBpgtpq8uwkEgLiMkqcYTnrwOWIip69v/
-	RJkaDL9k4Y+ziwFMu5O8RC5tK70oQqvqTys6FW+KhPNIQ9Iw0QZsR8sQh4SSeE+0Ka5aTczRXgw
-	lqAGIG27YCJKYgUO/uiH6wGIFSE0aq3Jbtlu5zIqAYZkbg58Z79bgMlMaKLbJpv7oLlmNZwiTg/
-	/ljgo9cx8T61fwnfTZaiz2dvO7is6u/m3+BXmdoi8X+r9IsxBlgJEt2BoWgIM3qS9EHwZyG2Lij
-	o94vCWZxhFiaLdhu/zdBtFWd/dYIHrTeKN9TcNuVlEDzrTmwcboE6qfvhgTOl7KcfQ42E49H398
-	kP1oediVGxNIoe8Ej2C09oXTVSCBfa27eHfwH2PM8QcbRtlDn/fVsWkltrh7Xmljyn5yjQVdBIw
-	7Go1kFc/4wVCz2gHR5kGrRQlWUxL7bqKCUirxcuSKYVHA=
-X-Google-Smtp-Source: AGHT+IH03HXWxu7yczO0LADVUezeFbBUy3RsqSFlgZLDhzDggYMtvvDz8ILuMy4Gs6BIFYfX1kB8kQ==
-X-Received: by 2002:a17:90b:48c5:b0:32e:8ff9:d124 with SMTP id 98e67ed59e1d1-34abdf40c33mr17148583a91.15.1765973350612;
-        Wed, 17 Dec 2025 04:09:10 -0800 (PST)
-Received: from localhost.localdomain ([116.128.244.171])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34cd9aaaf2csm1683105a91.5.2025.12.17.04.09.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 17 Dec 2025 04:09:10 -0800 (PST)
-From: chengkaitao <pilgrimtao@gmail.com>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: kevin.brodsky@arm.com,
-	dave.hansen@linux.intel.com,
-	ziy@nvidia.com,
-	chengkaitao@kylinos.cn,
-	willy@infradead.org,
-	zhengqi.arch@bytedance.com,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
-Date: Wed, 17 Dec 2025 20:08:58 +0800
-Message-ID: <20251217120858.18713-1-pilgrimtao@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	b=kc7H7nJOXC/GPNm/kcvBECzJ8b8BdYHdn7i80/W/O9IR5lhGZIUsl2U7pkHxX6reqzEu12
+	ld+cAoa9T9SEpjbLw4Eo7oR59fjNgwe5RCE5p6Qxtt0ePhdmms5jt22jVepHuV6iiyhGor
+	XvRnQrpfu9VylOggCr/lOCy6On/PDEU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C55FE60556;
+	Wed, 17 Dec 2025 12:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ACAC4CEF5;
+	Wed, 17 Dec 2025 12:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765973355;
+	bh=XqkQNpF8ME1hBE+b0FBunoFr4flf8biZ9M+St65icok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZHGkerYQQpCZRqgTasBEJuRZlEi95UWbFNGNAP+ikltfrpTgTNoae+CCb+NS842NR
+	 Nh0XnKWmz9EMIsQdCoPdJfG5Q5T/kK0s6XEyDh/flPZQfOisnWZnn6SFQA72hCdDJS
+	 /xdVx0eZvGqOR8nlI2xDCykgnwq6PRZGnu4c6S3YI6KPBT/SHA8TuIT3HhZAf7mZIg
+	 JdMPAgJa4vnqu+ZRPB1UVvhgTg+i1GU+HC+N9pP+wFUI0X2Q/TFThkv2yg2IOr6xXU
+	 JqdpWlyzwFkJmz90DGyFFdMJNQ24qZa4tO0NC/ijz2DZKdrSNjIonLNOGPRNXGSBFX
+	 PDyWtiBxgi4Hw==
+Date: Wed, 17 Dec 2025 13:09:08 +0100
+From: Joel Granados <joel.granados@kernel.org>
+To: Petr Mladek <pmladek@suse.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, John Ogness <john.ogness@linutronix.de>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-hams@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] sysctl: Remove unused ctl_table forward declarations
+Message-ID: <44x5syvqsqy4bfjdc5r5hfwhppz74vxa3p74diwmnlls26yox2@xccmzuov2afw>
+References: <20251215-jag-sysctl_fw_decl-v1-1-2a9af78448f8@kernel.org>
+ <aUFUIfVvRcYN3_ID@pathway.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8wcbw89jg4t66orpjs7c9szrrbkams98
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hawgbyhlcibefy4q"
+Content-Disposition: inline
+In-Reply-To: <aUFUIfVvRcYN3_ID@pathway.suse.cz>
+X-Stat-Signature: 8g86yy5e7xz9p9geo4urygf4agbif4tu
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0A8C2180007
-X-HE-Tag: 1765973351-79999
-X-HE-Meta: U2FsdGVkX1/FaanPzjsdxKGGyKiW48UAESbndUMD7aGjdzeYALDOWBL5PJv1gdSdYdLb8uM7qYhs8EDPwKscc+JbxwZS+xihmeEmu3JzoX0jVneC3ocoyU3zoSF8jWmFIgS/QnsTZrvvR/XteSnDWmRrGd9gcWnqMqGAMMKK40b8S6y/tLHLdV1HsbHQ7wrxJ91gTzYJfFp8QhfnA5o/y2B1kh24bbFTUeqUgrv0zO6yranqwDA7A2pXpr+S9/MJpAlBP90JptvWJQTzIWxfCBJUK9HsnJpd9BEFk6nk+Dz23vPJfiOEuvKReDxrlvJbW//GSWlqQs4z8UapoRdRYfkGJIIJKo7Km0AsXAEE33OotgCizzaTF7cpb78Bb6WKiQ19+/DYUbAbze/nj7SSCZjP78UKpccei96YsC8L0SKeUCYntQUemBfVG9PMrgQFwzFxQxqiQ0Uz5bnFRh3bq9fdXh+g7vySVFQ8KCEf4unPZNwC5usTZDMamvTQ2aL6NFHzDhQw4R0hiPkDqtkGV8XrCN0mlUd07bmcG2Wq0anPepiqv09rS9Ge56SsUulWh1LrrRSEf5u6ysgPyb6sEhd5k7A1inWxuA+4Gq2Llgi26JOahUYdVwcHAD97Z7XDuZlmyox1roz8H0xm2YvGscoc1r60WfKH1aPFftOuAVfOvOFQ6Tu05sfHqQ716SZq6La2tFSWzQgANufeW5H/DjA6aEvHqmhlvsn1YvVfvFtkDpovAtw9p1v5WryVFgsqWnnBbsear/FZpjIUIE9I8b4pr2vrLxn01TeaXV2HzDQIDj4ZvUDInx9cZzgEsSyBFEpxtKwdZDXMo42kBY7d0303RaBTYyeblWD8qC9gyQ1pg+crtvwMa88bhCTg1WHO2MB8FHpVbC6KDI1zD/7Lj3pl9NiA24pQt8j+YTQ+lh8ddI+GSDEemzxvftAHzAaSQO3fdZl+jhqrydvi//e
- jMiKoXv4
- iU9rmPfboA29Epp5rxmUPi3ZzZ7AUd3d5UoPTriJkRWohnYQ5B9qDPOrQInwlT1VAEleeVJ+78iS1Aoc9Q9w7DXOq35Qn6WUOpnp3ZBGYS0N4UR99xQczvEFzHfJsZPV68lBEVKwQjB7K6ldPBjGwC1wBgVF8fSjosS8Y8TBXCFe/OuOFFuX3/iCt8cDh4pEl5OCy+xCeYHU6a1xrJv3y3uPDCS1Q/eeOl43b3vaByvH9X4vpbgEk/xN6ZnjaMP8+7F3OM/IsvIFsJ80cSgStbcu9X6z7lO/Y1ozmXMRhhEu7f7tNH2WiknGuh5EsxJ9kH8Y7N00uo2UPhDIQnuHkH0jwHABWRYLSxhqsy1HK0ot97HgdlF7VIVyE9M3DWZtEiCqr46iZ5LTEgLTlUdUL3iem82e1xj5l0c0jRNGGEStZHO413faDbBkZWqaF7oqmx5r/+41yeuT744njXtZMHzUZ2A==
+X-Rspamd-Queue-Id: 98F8112000A
+X-HE-Tag: 1765973356-294031
+X-HE-Meta: U2FsdGVkX19mu/KUS5pexHBO0cqtDj2Uza2/pcS0z7eIDshiSAGe61LqBOLWLSVUhzQ8Eq7hFD1YlZfIUKpqEpeX9RVRSmnGo+EiCz+qIG9QkFYnq4/ntl/IG/cGgOJK9fpdzPq2RiD/KBWjFklHQofmOg8sy6VRxrOMdhVlu/npvO13jnZ0ghbAxdnbSUqPInU3Devxq5k3YD0jOdXPstrSR10fPMvs8sDWn1vELuir2hzIkbsocJ7rcM0c++F9u4JWK1BnqUt8SrvQlCPyuPMaboYX2h+etBCSW3m5/7KU59q3eWA5oXQuMaW9v7gCV01fr66P2C7j4KajYV237ci+eSPwgSXzPLL9K43MFEon8LBEx69qmxEjpDWoJwDb1WrBvXyaYNm1T7vwf5/1TH1VGZNhLBHpYx7B9DcUbKVU/ysKQQ/XKpr9NC0k5iJ7t+9oSZo96xBmjghh6XlxSy/xOlvXiTE8uVrZ8deejpbC3uDjps/v6oMVc+S59nHrNNO+sNUy2nrGNKWKb5g9lY53GVzw35IDpDrxcI5jNPKmjeXJsJgV80GE4KI8+knG5yDsMiEdV0M3feLkxJcF5eiXnxaDWneUplRuWefQnKulgvhuIr4fWQQl+FnA0r02XX8noaUHjfQPyRLH3GKuqaI0oL05DIcpFDErI21VKEBB9WiMCtoYHxTBep8YvYsu4hGcgBNNtXNoAdcGIoJNpwbgL/9/tjMIbvYt4PoclrOgLPKHzPKq08XPXEb2i344zIF/Zfnpy++gEjV3m0S2T2nYnzrU9lLQ0HOoMrUSS6Z4WiZSQ3qRMK9MkOcMOXOBsP/sl0u5boAxFrU5J99gZ4JrQQ5dV38eZIb9YKk8QuaX4CYqsl3TYnqHY4bHnC+L5IcRWVMsVAxfvKRxmYbaigQnwSIonpaWHkTh5+JdJlwIrKbYv1629q/31fD/GZbxnwLA8Lfj/IE3cAbzIUW
+ NZsuIPfs
+ 5Jd/B4yJTChshrH+p+GJiWqXNR2c4D8k+vgdXkIm2mPURKcasksEBwFDpQ0o+Zyu/iSLBsgN47u++A2tRpYVs51ItnlFdyUxsT4jB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,152 +100,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chengkaitao <chengkaitao@kylinos.cn>
 
-1. Added the vmemmap_false_pmd function to accommodate architectures
-that do not support basepages.
-2. In the SPARC architecture, reimplemented vmemmap_populate using
-vmemmap_populate_hugepages.
+--hawgbyhlcibefy4q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
----
- arch/sparc/mm/init_64.c | 56 ++++++++++++++++-------------------------
- include/linux/mm.h      |  1 +
- mm/sparse-vmemmap.c     |  7 +++++-
- 3 files changed, 28 insertions(+), 36 deletions(-)
+On Tue, Dec 16, 2025 at 01:44:17PM +0100, Petr Mladek wrote:
+> On Mon 2025-12-15 16:25:19, Joel Granados wrote:
+> > Remove superfluous forward declarations of ctl_table from header files
+> > where they are no longer needed. These declarations were left behind
+> > after sysctl code refactoring and cleanup.
+> >=20
+> > Signed-off-by: Joel Granados <joel.granados@kernel.org>
+>=20
+> For the printk part:
+>=20
+> Reviewed-by: Petr Mladek <pmladek@suse.com>
+>=20
+> That said, I have found one more declaration in kernel/printk/internal.h.
+> It is there because of devkmsg_sysctl_set_loglvl() declaration.
+> But I think that a better solution would be:
+>=20
+> diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+> index dff97321741a..27169fd33231 100644
+> --- a/kernel/printk/internal.h
+> +++ b/kernel/printk/internal.h
+> @@ -4,9 +4,9 @@
+>   */
+>  #include <linux/console.h>
+>  #include <linux/types.h>
+> +#include <linux/sysctl.h>
+> =20
+>  #if defined(CONFIG_PRINTK) && defined(CONFIG_SYSCTL)
+> -struct ctl_table;
+>  void __init printk_sysctl_init(void);
+>  int devkmsg_sysctl_set_loglvl(const struct ctl_table *table, int write,
+>  			      void *buffer, size_t *lenp, loff_t *ppos);
+> diff --git a/kernel/printk/sysctl.c b/kernel/printk/sysctl.c
+> index bb8fecb3fb05..512f0c692d6a 100644
+> --- a/kernel/printk/sysctl.c
+> +++ b/kernel/printk/sysctl.c
+> @@ -3,7 +3,6 @@
+>   * sysctl.c: General linux system control interface
+>   */
+> =20
+> -#include <linux/sysctl.h>
+>  #include <linux/printk.h>
+>  #include <linux/capability.h>
+>  #include <linux/ratelimit.h>
+>=20
+> Feel free to add this into v2. Or we could do this in a separate patch.
+>=20
+> Best Regards,
+> Petr
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index df9f7c444c39..a80cdfa6ba98 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -5,7 +5,7 @@
-  *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)
-  *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)
-  */
-- 
-+
- #include <linux/extable.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
-@@ -2397,11 +2397,11 @@ void __init paging_init(void)
- 	 * work.
- 	 */
- 	init_mm.pgd += ((shift) / (sizeof(pgd_t)));
--	
-+
- 	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
- 
- 	inherit_prom_mappings();
--	
-+
- 	/* Ok, we can use our TLB miss and window trap handlers safely.  */
- 	setup_tba();
- 
-@@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
- EXPORT_SYMBOL(_PAGE_CACHE);
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
--int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
--			       int node, struct vmem_altmap *altmap)
-+void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-+			       unsigned long addr, unsigned long next)
- {
- 	unsigned long pte_base;
- 
-@@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
- 
- 	pte_base |= _PAGE_PMD_HUGE;
- 
--	vstart = vstart & PMD_MASK;
--	vend = ALIGN(vend, PMD_SIZE);
--	for (; vstart < vend; vstart += PMD_SIZE) {
--		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
--		unsigned long pte;
--		p4d_t *p4d;
--		pud_t *pud;
--		pmd_t *pmd;
--
--		if (!pgd)
--			return -ENOMEM;
--
--		p4d = vmemmap_p4d_populate(pgd, vstart, node);
--		if (!p4d)
--			return -ENOMEM;
--
--		pud = vmemmap_pud_populate(p4d, vstart, node);
--		if (!pud)
--			return -ENOMEM;
--
--		pmd = pmd_offset(pud, vstart);
--		pte = pmd_val(*pmd);
--		if (!(pte & _PAGE_VALID)) {
--			void *block = vmemmap_alloc_block(PMD_SIZE, node);
-+	pmd_val(*pmd) = pte_base | __pa(p);
-+}
- 
--			if (!block)
--				return -ENOMEM;
-+bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-+{
-+	return true;
-+}
- 
--			pmd_val(*pmd) = pte_base | __pa(block);
--		}
--	}
-+int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
-+				unsigned long addr, unsigned long next)
-+{
-+	vmemmap_verify((pte_t *)pmdp, node, addr, next);
-+	return 1;
-+}
- 
--	return 0;
-+int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-+			       int node, struct vmem_altmap *altmap)
-+{
-+	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
- }
- #endif /* CONFIG_SPARSEMEM_VMEMMAP */
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 15076261d0c2..5e005b0f947d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long size, int node,
- void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
- void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
- 		     unsigned long addr, unsigned long next);
-+bool vmemmap_false_pmd(pmd_t *pmd, int node);
- int vmemmap_check_pmd(pmd_t *pmd, int node,
- 		      unsigned long addr, unsigned long next);
- int vmemmap_populate_basepages(unsigned long start, unsigned long end,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 37522d6cb398..bd54b8c6f56e 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
- {
- }
- 
-+bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-+{
-+	return 0;
-+}
-+
- int __weak __meminit vmemmap_check_pmd(pmd_t *pmd, int node,
- 				       unsigned long addr, unsigned long next)
- {
-@@ -446,7 +451,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
- 			if (p) {
- 				vmemmap_set_pmd(pmd, p, node, addr, next);
- 				continue;
--			} else if (altmap) {
-+			} else if (altmap || vmemmap_false_pmd(pmd, node)) {
- 				/*
- 				 * No fallback: In any case we care about, the
- 				 * altmap should be reasonably sized and aligned
--- 
-2.50.1 (Apple Git-155)
+Very nice, thx.=20
 
+I believe it fits inside the current commit (no need to make two).
+I'll add this and send a V2. You can then add co-developed-by &
+Signed-off-by if you want.
+
+Best
+
+--=20
+
+Joel Granados
+
+--hawgbyhlcibefy4q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmlCnWQACgkQupfNUreW
+QU8WIAwAlXDIVtCbnzQInz9B4QixLTMB7RpOH2nNcUQUwOUdE/qfX2Kbwu/dXjAy
+CGdwiVkAQIKkjCQTarmTjAdefqugLsww8q1am99VByg9gmupsvM/F2u8y0rFXzoQ
+pgWaLO4o5L+U6yyp+vXV2g0GKtNZc719cyIncUOPF3Cjr9p1M2Iob3psSrkzTsGa
+1W4g9MUTpRCnPCgsnQKirmCZSvjfHghg2xJPgV/nPrR7WLtT7AgV/VNjJig3mP1t
+VDvkXoA0nIPfdiT9wBWDRO4UaacUIJyAglb0rXSIDarH3un2KgkoPdH3gJk0akmO
+k8iquu/T9Z4ncxoyLkwuq4W1xvueV436iYn493pLhdr1qqZPsdZq6Tr42rgn/441
+ccJJtwwvS2pdFlAttoOv70l1ZZAtG158VHtAOSXedkDiqWxSWnj6tuJIf9VmAndn
+4Ngz8GGzJ4nj9m0LJl51YoD/1G6i2j+UQK0YV5vjhX3f4eQfiJ8nstHdNvRUWZko
+AJWhoOxU
+=u1jZ
+-----END PGP SIGNATURE-----
+
+--hawgbyhlcibefy4q--
 
