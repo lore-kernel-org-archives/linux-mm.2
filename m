@@ -4,92 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08062D6552C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:05:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AC1D6554F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 12:09:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55E2F6B0005; Wed, 17 Dec 2025 07:05:02 -0500 (EST)
+	id 301246B0005; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50C2B6B0089; Wed, 17 Dec 2025 07:05:02 -0500 (EST)
+	id 2AE726B0089; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40AAE6B008A; Wed, 17 Dec 2025 07:05:02 -0500 (EST)
+	id 190B66B008A; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D6A76B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:05:02 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D5BD05BDAB
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:05:01 +0000 (UTC)
-X-FDA: 84228832002.19.BB0F196
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CB043180002
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:04:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 07AFA6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:09:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEEC81A0A3B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:13 +0000 (UTC)
+X-FDA: 84228842586.20.AE171B4
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0A8C2180007
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:09:11 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9WYzkFJ;
+	spf=pass (imf06.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765973100;
+	s=arc-20220608; t=1765973352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yEDFiTNKR9k5aG+LxJiEBHZkFlNPQs/POmgowgXY+48=;
-	b=plMB0+qZqpSr4buJxjUuth4a0huDdqTnjFUIlyKNOLy9pLCmUMsIpSOWm7U6dr2D/I5VJ7
-	20pwFUbdW14hSJild0ydtbtpO9pFJOtNpCREUft/J/I+4R0AOEHZ6jJpxNrDz7JT49twsV
-	MDPAS1S8GzYzlKcLDEnMnn8rUX61jEY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765973100; a=rsa-sha256;
-	cv=none;
-	b=x1WEtXfW2WINtJKXvvmmjd0lhr3ipteCEf1m4eXDq0PMJSVgL4uBjR43SMGhFQZyEJYa31
-	IfvuE9lQNGCk4MQQgWPyBqq/6x56ijDnVAeOJnbTsJAiH/zhisuExVu34w1N7QN43/6mDR
-	vjKeQyZqCF6Olpmsv7q06moOEf3OCvE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
+	b=UZk1xtPYBo47EWalN7knnMuALTY3Ryng20xvwaZMiC2Xr2+bWASxM01mKoqW7D3FgUdisu
+	6h6zOJqBBpjEblHUyiz0jKNBDdJrFDsVd5jd3iRJBHJReOIoleYXTr6UpfIdK7aGrEFK9o
+	2NlMvMonC3GIPRKa8S9kDF5WFcwxdsA=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9267414BF;
-	Wed, 17 Dec 2025 04:04:51 -0800 (PST)
-Received: from [10.57.91.77] (unknown [10.57.91.77])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DC733F73F;
-	Wed, 17 Dec 2025 04:04:50 -0800 (PST)
-Message-ID: <d96ac977-222e-4e8d-9487-da1306198419@arm.com>
-Date: Wed, 17 Dec 2025 12:04:48 +0000
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9WYzkFJ;
+	spf=pass (imf06.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765973352; a=rsa-sha256;
+	cv=none;
+	b=AR8ThlHlObvjFJu6k4EToxY2nW16h0GX965sHrcroMvL0b7SVYNIbCeSenYDXaVnfRAf+J
+	7hUABz0kvS6l8s9cUD9iIydK2yJSulW0z0jZd6m4m2KlRRf3Zz3KGJlaviYLFmZtkuaRcQ
+	SXRudp4W4IpahXXjYPFHYYPbiYquUoc=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bcfd82f55ebso215214a12.1
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 04:09:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765973351; x=1766578151; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
+        b=H9WYzkFJw7RIsjJyOrI5o+9Kchn87zngWNZa1qbU7AAVh/IM3ck6bZ5rRYD72iUO2i
+         WZF+Ecmt9OV6nEGYD5rJSWe5CN6HubpONUXGaXNwQWbGhBbj1T80We+ZevEOCV31pY+C
+         DSdyRHGGzJAVKT8kEIZNUEVsqupkZvuR33js8oOGVX52yHXYcjTDgtk3NtO2B+0+EWTF
+         EBCysz6OKYO2EkK7+vrbXW8KbD0MvCzvFFfN/ol/bCv0sVR7xH1EcsaV1oC35vhrFdWl
+         Gh8YhsMgfb2ZFRKpKdnPE5K0KNSVxqrNdpfniI8Fe8az2/k76MWvfFxF/cUuPmjdoQiF
+         fIlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765973351; x=1766578151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MO3Q5T5gWjRjMPEnUZXPC/z7hpENtdSyL6rsjX0H9U=;
+        b=klJWjVLjSisyvrkCpDmLfaBDN9l/2tQys2UQht/4wrtBigqzMecaRxsshCYRt3L6Jn
+         bHkdYcMDVL3pVIWrfPEXrKHQLP3OBcKI0fy8gRdlmwX0gxs6WJahxvQDaqwG+k/Auwe+
+         3Zy+yH+owK1GJs/yo8JypWl+FQKZmOeONMCLT79Bgs0TnhuEwiRE7r81aeZQRisMM8RJ
+         ViYiWGNC4ULhGsQfNIv7haMHK9xWnvdqk/jZx5r0ltJPTZiy4/FPcjqdoAcnmt8N2y6e
+         pnMmNySF1XAnfIIFDT/4r9AlawKurqvU7WaKXV3ko2bW1SO5RlQSg+sPxwBU9s8JiCgu
+         QAXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVU2tGmVvJ0ETHVfgM+KvHT19aE+AzGMAMvmImgKUauGAT5lR2w0EMUO5Fco4mhR4tWY+LL0WznDg==@kvack.org
+X-Gm-Message-State: AOJu0YwbOm/rdBq/AKZRGROqa5BH6MIeYXm9PI8zOhOQ5jVzTOcz/5ES
+	mjKx1yPSdC/H26qYsUbQmsrM3W7YSI2lNaJ3eS3jHmiFB9lVL7z10kBg
+X-Gm-Gg: AY/fxX5xDpMEAqUYAw08MezWWUJLGZfe6NxBpgtpq8uwkEgLiMkqcYTnrwOWIip69v/
+	RJkaDL9k4Y+ziwFMu5O8RC5tK70oQqvqTys6FW+KhPNIQ9Iw0QZsR8sQh4SSeE+0Ka5aTczRXgw
+	lqAGIG27YCJKYgUO/uiH6wGIFSE0aq3Jbtlu5zIqAYZkbg58Z79bgMlMaKLbJpv7oLlmNZwiTg/
+	/ljgo9cx8T61fwnfTZaiz2dvO7is6u/m3+BXmdoi8X+r9IsxBlgJEt2BoWgIM3qS9EHwZyG2Lij
+	o94vCWZxhFiaLdhu/zdBtFWd/dYIHrTeKN9TcNuVlEDzrTmwcboE6qfvhgTOl7KcfQ42E49H398
+	kP1oediVGxNIoe8Ej2C09oXTVSCBfa27eHfwH2PM8QcbRtlDn/fVsWkltrh7Xmljyn5yjQVdBIw
+	7Go1kFc/4wVCz2gHR5kGrRQlWUxL7bqKCUirxcuSKYVHA=
+X-Google-Smtp-Source: AGHT+IH03HXWxu7yczO0LADVUezeFbBUy3RsqSFlgZLDhzDggYMtvvDz8ILuMy4Gs6BIFYfX1kB8kQ==
+X-Received: by 2002:a17:90b:48c5:b0:32e:8ff9:d124 with SMTP id 98e67ed59e1d1-34abdf40c33mr17148583a91.15.1765973350612;
+        Wed, 17 Dec 2025 04:09:10 -0800 (PST)
+Received: from localhost.localdomain ([116.128.244.171])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34cd9aaaf2csm1683105a91.5.2025.12.17.04.09.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 17 Dec 2025 04:09:10 -0800 (PST)
+From: chengkaitao <pilgrimtao@gmail.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: kevin.brodsky@arm.com,
+	dave.hansen@linux.intel.com,
+	ziy@nvidia.com,
+	chengkaitao@kylinos.cn,
+	willy@infradead.org,
+	zhengqi.arch@bytedance.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+Date: Wed, 17 Dec 2025 20:08:58 +0800
+Message-ID: <20251217120858.18713-1-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
-Content-Language: en-GB
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, catalin.marinas@arm.com,
- will@kernel.org, kevin.brodsky@arm.com, dev.jain@arm.com,
- yang@os.amperecomputing.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
- <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
- <aUGOPd7gNRf1xHEc@e129823.arm.com>
- <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
- <aUKKZR0u22KOPfd7@e129823.arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aUKKZR0u22KOPfd7@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sfqedhm1xx3agqcojju7gpfgribbb45n
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CB043180002
+X-Stat-Signature: 8wcbw89jg4t66orpjs7c9szrrbkams98
 X-Rspam-User: 
-X-HE-Tag: 1765973099-941728
-X-HE-Meta: U2FsdGVkX1+0RIdAY8kzR2aHs0eMMxhDRWX+vVLCLdw7ff0hJ0CJlllAc3LojVK0hwyxtRbreiLAPfs9V56GYFPtE81JZJtS89QaTnWVnflS2CkjEGIdlbZ9Otdh8wPcA+sFjW7lUsHeVRGEC6je7fZQ3BN4Feu6+dXXcsl8XaoTDr8FWRyPF/QePeOQkWMTyhwUp+1sqGME4n9UT6qrPHyrcw0NZcs1jzfibXUQFXgLyFMEDa3g+3pJHWQBAA9xCqhfuP+fS7YUEf05oh3bWouV/fuSpPb6AEC1P1k3JKmofGOO7CAdHLCPbzSlcOgYjOo4yn5zhPtfR9XjcHOxuMDRTs+nIanj5QFaJjhnx/61F521SFHSeZXbREiEE3Nt4mCH2iVImre7ldpn5tAIgh2kdmoeKAFnYiEwr/y/+WFtb25dbx11G3QQtzrJ5QSD6VG+AElgpetZoghQk/oUr47Y4LOUaPWZ0/vYW3M9ayhfS+CUIBnkUaiX3y4MoRtD2K1SHuxnSMcEOpzI553VdMEaq1u/+Ak+eA2CLYcr+iueedehyhFHjpi3GTDs+kRKpClQ7lhbGL3CYPRdHpR6zV4KZvIUf0ucMHlHNftslgGH367Rf9wLATVv7nFoUnBaiByemlqDR1MMOwQo0CiaiVzEwvyvcuYvjF4k+OetydNoSWKzV6dlNUF5Suea7r86expsvgMnS1A43vv/Kp5G7ZmOh7sRofCXSF+y2ETm6bIv3Hj3y2YSSzd6A3p0BPLJSkPkAKbxWJbVgiYc8HMALqYUts3BzuVDyVUPShVAfPeaNGimOVHR11+9B95nJ2589FVN+8A2uSROikMoeBhabYbeThbbNqmC2Y//KmAL/efy12ahsozUJxD85e6rr5QikAecrzRNv8qXdWIV8BjFFrHH6vlGxrGtBUjVHZpOdwGTP6nraZi7bgewss9DP2P/GKtr94DY/HX8ayHhXfy
- SnA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0A8C2180007
+X-HE-Tag: 1765973351-79999
+X-HE-Meta: U2FsdGVkX1/FaanPzjsdxKGGyKiW48UAESbndUMD7aGjdzeYALDOWBL5PJv1gdSdYdLb8uM7qYhs8EDPwKscc+JbxwZS+xihmeEmu3JzoX0jVneC3ocoyU3zoSF8jWmFIgS/QnsTZrvvR/XteSnDWmRrGd9gcWnqMqGAMMKK40b8S6y/tLHLdV1HsbHQ7wrxJ91gTzYJfFp8QhfnA5o/y2B1kh24bbFTUeqUgrv0zO6yranqwDA7A2pXpr+S9/MJpAlBP90JptvWJQTzIWxfCBJUK9HsnJpd9BEFk6nk+Dz23vPJfiOEuvKReDxrlvJbW//GSWlqQs4z8UapoRdRYfkGJIIJKo7Km0AsXAEE33OotgCizzaTF7cpb78Bb6WKiQ19+/DYUbAbze/nj7SSCZjP78UKpccei96YsC8L0SKeUCYntQUemBfVG9PMrgQFwzFxQxqiQ0Uz5bnFRh3bq9fdXh+g7vySVFQ8KCEf4unPZNwC5usTZDMamvTQ2aL6NFHzDhQw4R0hiPkDqtkGV8XrCN0mlUd07bmcG2Wq0anPepiqv09rS9Ge56SsUulWh1LrrRSEf5u6ysgPyb6sEhd5k7A1inWxuA+4Gq2Llgi26JOahUYdVwcHAD97Z7XDuZlmyox1roz8H0xm2YvGscoc1r60WfKH1aPFftOuAVfOvOFQ6Tu05sfHqQ716SZq6La2tFSWzQgANufeW5H/DjA6aEvHqmhlvsn1YvVfvFtkDpovAtw9p1v5WryVFgsqWnnBbsear/FZpjIUIE9I8b4pr2vrLxn01TeaXV2HzDQIDj4ZvUDInx9cZzgEsSyBFEpxtKwdZDXMo42kBY7d0303RaBTYyeblWD8qC9gyQ1pg+crtvwMa88bhCTg1WHO2MB8FHpVbC6KDI1zD/7Lj3pl9NiA24pQt8j+YTQ+lh8ddI+GSDEemzxvftAHzAaSQO3fdZl+jhqrydvi//e
+ jMiKoXv4
+ iU9rmPfboA29Epp5rxmUPi3ZzZ7AUd3d5UoPTriJkRWohnYQ5B9qDPOrQInwlT1VAEleeVJ+78iS1Aoc9Q9w7DXOq35Qn6WUOpnp3ZBGYS0N4UR99xQczvEFzHfJsZPV68lBEVKwQjB7K6ldPBjGwC1wBgVF8fSjosS8Y8TBXCFe/OuOFFuX3/iCt8cDh4pEl5OCy+xCeYHU6a1xrJv3y3uPDCS1Q/eeOl43b3vaByvH9X4vpbgEk/xN6ZnjaMP8+7F3OM/IsvIFsJ80cSgStbcu9X6z7lO/Y1ozmXMRhhEu7f7tNH2WiknGuh5EsxJ9kH8Y7N00uo2UPhDIQnuHkH0jwHABWRYLSxhqsy1HK0ot97HgdlF7VIVyE9M3DWZtEiCqr46iZ5LTEgLTlUdUL3iem82e1xj5l0c0jRNGGEStZHO413faDbBkZWqaF7oqmx5r/+41yeuT744njXtZMHzUZ2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,187 +132,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/12/2025 10:48, Yeoreum Yun wrote:
-> Hi Ryan,
-> 
->> On 16/12/2025 16:52, Yeoreum Yun wrote:
->>> Hi Ryan,
->>>
->>>> On 12/12/2025 16:18, Yeoreum Yun wrote:
->>>>> Some architectures invoke pagetable_alloc() or __get_free_pages()
->>>>> with preemption disabled.
->>>>> For example, in arm64, linear_map_split_to_ptes() calls pagetable_alloc()
->>>>> while spliting block entry to ptes and __kpti_install_ng_mappings()
->>>>> calls __get_free_pages() to create kpti pagetable.
->>>>>
->>>>> Under PREEMPT_RT, calling pagetable_alloc() with
->>>>> preemption disabled is not allowed, because it may acquire
->>>>> a spin lock that becomes sleepable on RT, potentially
->>>>> causing a sleep during page allocation.
->>>>>
->>>>> Since above two functions is called as callback of stop_machine()
->>>>> where its callback is called in preemption disabled,
->>>>> They could make a potential problem. (sleeping in preemption disabled).
->>>>>
->>>>> To address this, introduce pagetable_alloc_nolock() API.
->>>>
->>>> I don't really understand what the problem is that you're trying to fix. As I
->>>> see it, there are 2 call sites in arm64 arch code that are calling into the page
->>>> allocator from stop_machine() - one via via pagetable_alloc() and another via
->>>> __get_free_pages(). But both of those calls are passing in GFP_ATOMIC. It was my
->>>> understanding that the page allocator would ensure it never sleeps when
->>>> GFP_ATOMIC is passed in, (even for PREEMPT_RT)?
->>>
->>> Although GFP_ATOMIC is specify, it only affects of "water mark" of the
->>> page with __GFP_HIGH. and to get a page, it must grab the lock --
->>> zone->lock or pcp_lock in the rmqueue().
->>>
->>> This zone->lock and pcp_lock is spin_lock and it's a sleepable in
->>> PREEMPT_RT that's why the memory allocation/free using general API
->>> except nolock() version couldn't be called since
->>> if "contention" happens they'll sleep while waiting to get the lock.
->>>
->>> The reason why "nolock()" can use, it always uses "trylock" with
->>> ALLOC_TRYLOCK flags. otherwise GFP_ATOMIC also can be sleepable in
->>> PREEMPT_RT.
->>>
->>>>
->>>> What is the actual symptom you are seeing?
->>>
->>> Since the place where called while smp_cpus_done() and there seems no
->>> contention, there seems no problem. However as I mention in another
->>> thread
->>> (https://lore.kernel.org/all/aT%2FdrjN1BkvyAGoi@e129823.arm.com/),
->>> This gives a the false impression --
->>> GFP_ATOMIC are “safe to use in preemption disabled”
->>> even though they are not in PREEMPT_RT case, I've changed it.
->>>
->>>>
->>>> If the page allocator is somehow ignoring the GFP_ATOMIC request for PREEMPT_RT,
->>>> then isn't that a bug in the page allocator? I'm not sure why you would change
->>>> the callsites? Can't you just change the page allocator based on GFP_ATOMIC?
->>>
->>> It doesn't ignore the GFP_ATOMIC feature:
->>>   - __GFP_HIGH: use water mark till min reserved
->>>   - __GFP_KSWAPD_RECLAIM: wake up kswapd if reclaim required.
->>>
->>> But, it's a restriction -- "page allocation / free" API cannot be called
->>> in preempt-disabled context at PREEMPT_RT.
->>>
->>> That's why I think it's wrong usage not a page allocator bug.
->>
->> I've taken a look at this and I agree with your analysis. Thanks for explaining.
->>
->> Looking at other stop_machine() callbacks, there are some that call printk() and
->> I would assume that spinlocks could be taken there which may present the same
->> kind of issue or PREEMPT_RT? (I'm guessing). I don't see any others that attempt
->> to allocate memory though.
-> 
-> IIRC, there was a problem related for printk while try to grab
-> pl011_console related lock (spin_lock) while holding
-> console_lock(raw_spin_lock) in v6.10.0-rc7 at rpi5:
-> 
->     [  230.381263] CPU: 2 PID: 5574 Comm: syz.4.1695 Not tainted 6.10.0-rc7-01903-g52828ea60dfd #3
->     [  230.381479] Hardware name: linux,dummy-virt (DT)
->     [  230.381565] Call trace:
->     [  230.381607]  dump_backtrace+0x318/0x348
->     [  230.381727]  show_stack+0x4c/0x80
->     [  230.381875]  dump_stack_lvl+0x214/0x328
->     [  230.382159]  dump_stack+0x3c/0x58
->     [  230.382456]  __lock_acquire+0x4398/0x4720
->     [  230.382683]  lock_acquire+0x648/0xb70
->     [  230.382928]  _raw_spin_lock_irqsave+0x138/0x240
->     [  230.383121]  pl011_console_write+0x240/0x8a0
->     [  230.383356]  console_flush_all+0x708/0x1368
->     [  230.383571]  console_unlock+0x180/0x440
->     [  230.383742]  vprintk_emit+0x1f8/0x9d0
->     [  230.383832]  vprintk_default+0x64/0x90
->     [  230.383914]  vprintk+0x2d0/0x400
->     [  230.383971]  _printk+0xdc/0x128
->     [  230.384229]  hrtimer_interrupt+0x8f0/0x920
->     [  230.384414]  arch_timer_handler_virt+0xc0/0x100
->     [  230.384812]  handle_percpu_devid_irq+0x20c/0x4e0
->     [  230.385053]  generic_handle_domain_irq+0xc0/0x120
->     [  230.385367]  gic_handle_irq+0x88/0x360
->     [  230.385559]  call_on_irq_stack+0x24/0x70
->     [  230.385801]  do_interrupt_handler+0xf8/0x200
->     [  230.386092]  el1_interrupt+0x68/0xc0
->     [  230.386434]  el1h_64_irq_handler+0x18/0x28
->     [  230.386716]  el1h_64_irq+0x64/0x68
->     [  230.386853]  __sanitizer_cov_trace_const_cmp2+0x30/0x68
->     [  230.387026]  alloc_pages_mpol_noprof+0x170/0x698
->     [  230.387309]  vma_alloc_folio_noprof+0x128/0x2a8
->     [  230.387610]  vma_alloc_zeroed_movable_folio+0xa0/0xe0
->     [  230.387822]  folio_prealloc+0x5c/0x280
->     [  230.388008]  do_wp_page+0xc30/0x3bc0
->     [  230.388206]  __handle_mm_fault+0xdb8/0x2ba0
->     [  230.388448]  handle_mm_fault+0x194/0x8a8
->     [  230.388676]  do_page_fault+0x6bc/0x1030
->     [  230.388924]  do_mem_abort+0x8c/0x240
->     [  230.389056]  el0_da+0xf0/0x3f8
->     [  230.389178]  el0t_64_sync_handler+0xb4/0x130
->     [  230.389452]  el0t_64_sync+0x190/0x198
-> 
-> But this problem is gone when I try with some of patches in rt-tree
-> related for printk which are merged in current tree
-> (https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/log/?h=linux-6.10.y-rt-rebase).
-> 
-> So I think printk() wouldn't be a problem.
-> 
->>
->> Anyway, to fix the 2 arm64 callsites, I see 2 possible approaches:
->>
->> - Call the nolock variant (as you are doing). But that would just convert a
->> deadlock to a panic; if the lock is held when stop_machine() runs, without your
->> change, we now have a deadlock due to waiting on the lock inside stop_machine().
->> With your change, we notice the lock is already taken and panic. I guess it is
->> marginally better, but not by much. Certainly I would just _always_ call the
->> nolock variant regardless of PREEMPT_RT if we take this route; For !PREEMPT_RT,
->> the lock is guarranteed to be free so nolock will always succeed.
->>
->> - Preallocate the memory before entering stop_machine(). I think this would be
->> much more robust. For kpti_install_ng_mappings() I think you could hoist the
->> allocation/free out of stop_machine() and pass the pointer in pretty easily. For
->> linear_map_split_to_ptes() its a bit more complex; Perhaps, we need to walk the
->> pgtable to figure out how much to preallocate, allocate it, then set it up as a
->> special allocator, wrapped by an allocation function and modify the callchain to
->> take a callback function instead of gfp flags.
->>
->> What do you think?
-> 
-> Definitely, second suggestoin is much better.
-> My question is whether *memory contention* really happen in the point
-> both functions are called.
+From: Chengkaitao <chengkaitao@kylinos.cn>
 
-My guess would be that it's unlikely, but not impossible. The secondary CPUs are
-up, and presumably running their idle thread. I think various power management
-things can be plugged into the idle thread; if so, then I guess it's possible
-that the CPU could be running some hook as part of a power state transition, and
-that could be dynamically allocating memory? That's all just a guess though; I
-don't know the details of that part of the system.
+1. Added the vmemmap_false_pmd function to accommodate architectures
+that do not support basepages.
+2. In the SPARC architecture, reimplemented vmemmap_populate using
+vmemmap_populate_hugepages.
 
-> 
-> Above two functions are called as last step of "smp_init()" -- smp_cpus_done().
-> If we can be sure, I think we don't need to go to complex way and
-> I believe the reason why we couldn't find out this problem,
-> even using GFP_ATOMIC in PREEMPT_RT since there was *no contection*
-> in this time of both functions are called.
-> > That's why I first try with the "simple way".
-> 
-> What do you think?
+Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+---
+ arch/sparc/mm/init_64.c | 56 ++++++++++++++++-------------------------
+ include/linux/mm.h      |  1 +
+ mm/sparse-vmemmap.c     |  7 +++++-
+ 3 files changed, 28 insertions(+), 36 deletions(-)
 
-As far as linear_map_split_to_ptes() is concerned, it was implemented under the
-impression that doing allocation with GFP_ATOMIC was safe, even in
-stop_machine(). Given that's an incorrect assumption, I think we should fix it
-to pre-allocate outside of stop_machine() regardless of the likelihood of
-actually hitting the race.
-
-Thanks,
-Ryan
-
-> 
-> --
-> Sincerely,
-> Yeoreum Yun
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index df9f7c444c39..a80cdfa6ba98 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -5,7 +5,7 @@
+  *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)
+  *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)
+  */
+- 
++
+ #include <linux/extable.h>
+ #include <linux/kernel.h>
+ #include <linux/sched.h>
+@@ -2397,11 +2397,11 @@ void __init paging_init(void)
+ 	 * work.
+ 	 */
+ 	init_mm.pgd += ((shift) / (sizeof(pgd_t)));
+-	
++
+ 	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
+ 
+ 	inherit_prom_mappings();
+-	
++
+ 	/* Ok, we can use our TLB miss and window trap handlers safely.  */
+ 	setup_tba();
+ 
+@@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+ EXPORT_SYMBOL(_PAGE_CACHE);
+ 
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+-int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+-			       int node, struct vmem_altmap *altmap)
++void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
++			       unsigned long addr, unsigned long next)
+ {
+ 	unsigned long pte_base;
+ 
+@@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+ 
+ 	pte_base |= _PAGE_PMD_HUGE;
+ 
+-	vstart = vstart & PMD_MASK;
+-	vend = ALIGN(vend, PMD_SIZE);
+-	for (; vstart < vend; vstart += PMD_SIZE) {
+-		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+-		unsigned long pte;
+-		p4d_t *p4d;
+-		pud_t *pud;
+-		pmd_t *pmd;
+-
+-		if (!pgd)
+-			return -ENOMEM;
+-
+-		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+-		if (!p4d)
+-			return -ENOMEM;
+-
+-		pud = vmemmap_pud_populate(p4d, vstart, node);
+-		if (!pud)
+-			return -ENOMEM;
+-
+-		pmd = pmd_offset(pud, vstart);
+-		pte = pmd_val(*pmd);
+-		if (!(pte & _PAGE_VALID)) {
+-			void *block = vmemmap_alloc_block(PMD_SIZE, node);
++	pmd_val(*pmd) = pte_base | __pa(p);
++}
+ 
+-			if (!block)
+-				return -ENOMEM;
++bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
++{
++	return true;
++}
+ 
+-			pmd_val(*pmd) = pte_base | __pa(block);
+-		}
+-	}
++int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
++				unsigned long addr, unsigned long next)
++{
++	vmemmap_verify((pte_t *)pmdp, node, addr, next);
++	return 1;
++}
+ 
+-	return 0;
++int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
++			       int node, struct vmem_altmap *altmap)
++{
++	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
+ }
+ #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..5e005b0f947d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long size, int node,
+ void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
+ void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+ 		     unsigned long addr, unsigned long next);
++bool vmemmap_false_pmd(pmd_t *pmd, int node);
+ int vmemmap_check_pmd(pmd_t *pmd, int node,
+ 		      unsigned long addr, unsigned long next);
+ int vmemmap_populate_basepages(unsigned long start, unsigned long end,
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 37522d6cb398..bd54b8c6f56e 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+ {
+ }
+ 
++bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
++{
++	return 0;
++}
++
+ int __weak __meminit vmemmap_check_pmd(pmd_t *pmd, int node,
+ 				       unsigned long addr, unsigned long next)
+ {
+@@ -446,7 +451,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+ 			if (p) {
+ 				vmemmap_set_pmd(pmd, p, node, addr, next);
+ 				continue;
+-			} else if (altmap) {
++			} else if (altmap || vmemmap_false_pmd(pmd, node)) {
+ 				/*
+ 				 * No fallback: In any case we care about, the
+ 				 * altmap should be reasonably sized and aligned
+-- 
+2.50.1 (Apple Git-155)
 
 
