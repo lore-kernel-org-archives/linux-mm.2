@@ -4,177 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F85D6554E
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 11:24:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD6ED6554E
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 11:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 086E76B0005; Wed, 17 Dec 2025 06:24:05 -0500 (EST)
+	id E63436B0005; Wed, 17 Dec 2025 06:37:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 044F36B0089; Wed, 17 Dec 2025 06:24:04 -0500 (EST)
+	id E11236B0089; Wed, 17 Dec 2025 06:37:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E687B6B008A; Wed, 17 Dec 2025 06:24:04 -0500 (EST)
+	id CF2976B008A; Wed, 17 Dec 2025 06:37:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D687D6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:24:04 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F62E1409E6
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:24:04 +0000 (UTC)
-X-FDA: 84228728808.03.C3B08F2
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 03B7C40002
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:24:01 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id BAF756B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:37:37 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D2E3C0A08
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:37:37 +0000 (UTC)
+X-FDA: 84228762954.30.878B220
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1D25F4000D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:37:34 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hxY7Mgeu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kZSwQUNy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gf0BO2yM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UhhSC2Xw;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765970642; a=rsa-sha256;
-	cv=none;
-	b=T9TOLRpexXVCPDiijttZkMV13ET1QY8WWIMmpnin4asECv7Vry33OR3oFfXlQ6DOR1PWle
-	IYOaIXG5LXZPDuE5qXwwuZaLsfTy9Is1YN+QJ1wcAhPAEj45kmBl4gqvk116uUxFd3drg2
-	enwbjZAwQDmijHV8akfTaySmbedVoVU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hxY7Mgeu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kZSwQUNy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gf0BO2yM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UhhSC2Xw;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="B7m/Ty4B";
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765970642;
+	s=arc-20220608; t=1765971455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=24Kv08jWVabx3GJ5mmA9ddJNB5snzTPzjQMrwzzz9o4=;
-	b=WFKM1m4lmtQ2JfxcO7VowIjB0mOCIoEFcHSDOGhIByGnp/MpGZH1+2JrIsEZFhqpWp2ZT3
-	wYgRp0gNh4+/GP2ZHH4itWlOSFv8SMRFxYSzLivPMwq6Id8cpy8iSieLoAiQhILrSICmmq
-	0tAbaMnMG1zVVf2Vbd5WxN2RrN4Y9hw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 225AB5BCEC;
-	Wed, 17 Dec 2025 11:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765970640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=24Kv08jWVabx3GJ5mmA9ddJNB5snzTPzjQMrwzzz9o4=;
-	b=hxY7MgeuHd1R6M2mbte9oVIQilJGN5xgPoO5Wu8sC4h5ZLUB3tSOsi4Mx6+sHW/SMX3Ko4
-	eM5/5FI00T0GDANFrllbo+cheKhEeuwos7Z1+at0AL27/PBUzFN/C3x6iOi8BiOCuLRN7F
-	/rTOo+dOzSf12HRntNdfCjywWU38FN8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765970640;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=24Kv08jWVabx3GJ5mmA9ddJNB5snzTPzjQMrwzzz9o4=;
-	b=kZSwQUNy8mdJpbLEqME4yQ/2PShsC7HN4fGVP7WEtYEwjBrlqb2Y/2cIfWMjK1Lax0OkGk
-	LcqIUtt6G5gFL5CA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765970639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=24Kv08jWVabx3GJ5mmA9ddJNB5snzTPzjQMrwzzz9o4=;
-	b=gf0BO2yM7mWDLCOR1Mvhv7tWeLZp/ive/UNu6zbUCGqkhjeKMaEA1pG8j5vQSPpziDmFDn
-	X40ARrr7zBoj1qCibW/JLaIvZb3bJunP7Vqop/XU7ODE4Nfnda+rXdeI1wzTNoH0ukWsn8
-	02KrPQ2POSJ2/hdzswDnwb88F2DxCYM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765970639;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=24Kv08jWVabx3GJ5mmA9ddJNB5snzTPzjQMrwzzz9o4=;
-	b=UhhSC2XwZw3uGRuJjOrw1Xdz529Ixq3/jxQGJ10eAknqzcowfqiq4ugyEhD5oedvV26tIl
-	Nt94lc+Q5OHnluDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 008AD3EA63;
-	Wed, 17 Dec 2025 11:23:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MoFiO86SQmmQXAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 11:23:58 +0000
-Message-ID: <1c94600d-47eb-40b6-8c7e-fb2cc39e1e4b@suse.cz>
-Date: Wed, 17 Dec 2025 12:23:58 +0100
+	bh=l9b4+cYr7cvDt9qvLnOnt2z2/Es7YZ5eQ7Z+DKxREQg=;
+	b=mojlhD5HrHx3ydQgsUHmm9R92v08xh2VxrO4yEJXsl2pRpAl+Rl+J+dv6QE2tGj18w5EM+
+	tVoYjiIJn6K6Tx/a7EaZnLMMulKseKXCklyWEqRMC2kh27LhX5uCsjtS3c4JrnOsp2DLjH
+	vtDvtI5nujqbqNvMGk6xJULBWOFF8wg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765971455; a=rsa-sha256;
+	cv=none;
+	b=5B+PRx4Cgl2jWp1gb2Q8Nfuv15UuCNxwhhYyXwneuDujZA8sl3QTXHGmODlXmZ1Vuvp9ak
+	gTNzAa5mInzh6Wc+DgoZfOTIIIBnOYQT/UMi1emydv9w25FsGiRYRrbTen0KLnDIVNx6iE
+	G44Oo5OxexYxW+OtA1m8ECYneBnXGO8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="B7m/Ty4B";
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-598f81d090cso6192340e87.2
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:37:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765971453; x=1766576253; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l9b4+cYr7cvDt9qvLnOnt2z2/Es7YZ5eQ7Z+DKxREQg=;
+        b=B7m/Ty4BUkqEFSykCc0nvvgFKI+8/4OP3keEUcASzRdMP/lrSaKIaeeahvDV+gDD8U
+         pbPVGzxCQnIqnCodWvPYO5bwG/ugpGFvQTAW4Ry/9yq395RI6J1IxaqbT0AvLwe4jhjA
+         BQXo4O3HCY+Il/M93MZNVztlhw+54YtR+J9/41F19Daie1l9mm5daV3ZvqsOBbZi9jkK
+         O+EULNPWFtTT5sAgVFu0sWXD0DebECdzElRMPLYptWDRUKrfpZFe/73vJ4DiWZr3CDRs
+         q1ABeiDFJuR/JnZohzuNc5XlCqKBZVu64JCHcDe0um9t8/IlrCaoCIqeKV+JHcl5nBNX
+         6hYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765971453; x=1766576253;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l9b4+cYr7cvDt9qvLnOnt2z2/Es7YZ5eQ7Z+DKxREQg=;
+        b=G2qqIABGEP6Big68XWyTMLI0yYG+sV19zNTeW7gVewHZXVAlmmDFVjlASf2hqK2k6d
+         b41NEsnblWor6M8VqfN2a/XlQi3IWUEoxQ1MgGlqJtPmxdAT6AenpyieU51BoT95gWRZ
+         qXnPxed/g5fjIgx7e1Fx7iyql+hmLnS+ZTFrSauPcMZAPFjWCwyb7scB1Ku6W/8DAOQ+
+         UUi5KNluSKH3VGu1eqlvK2r87d0wldlnjQaa8dR3zUWm78D6vW+VtFipmsjg/XZOKQd2
+         2TzdF482383SsaE+Xp48XBsdMrfiyZFSfkbLQPaeaiw4S2DlK6CnYJ9bTMEA6xJOdub1
+         sCqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEr+eZP56cS83ZD1JA9oNPYudua6jNPDyf7APrKBVeiMBcmKVbiPmEUzYSdBuY6gGrNBSE5M0Ecw==@kvack.org
+X-Gm-Message-State: AOJu0Yx3YzQWz3yyVr4S1eeKiUa8Atvkinupbg5A3EnfjYrMnI98+gea
+	d5ifjz2qJZYByDXEqLez8iCDzlAlwRDQy0voQtZcYKymqIQb9KMz3vVR
+X-Gm-Gg: AY/fxX75gDZG41V1REZ1ysIXKwgGcT0YPUqARcT4BVUDShtF+g2wUKcKIlBUdL8Ng5x
+	v1Hh9eCx6UvX6M9K9ndVZ0UL5Or2kPdegzI3HxpiIvU+qMT5zKA7jN41TZopBI8FUgl+kV0Hngu
+	SsYIbyC4WZCXbcK2XB0p1iWXk4f4sWb6yh6KJtcOHjGvb/RdKfeSrqWJjJX8NlXK76RSj6PXv/h
+	Iu0uPDB6BqZvD2HBq6k+2SvXzqpqYAMYRX5/cxn8OnyG0elgoW0CDynjJiIV3VTJVDQGVMuAakS
+	UZMxBqL5PzSF4EPDorZHl5pSl8+i/Xl8PK1NjS2OS1TlANgtlTsXpDUDiFc/YcarZ44RNCNaELl
+	I10aFvUGcmBrWsOJZSLFeOCbnAp00nIA708ZlDd2FNYqJO1Hv69+U
+X-Google-Smtp-Source: AGHT+IFSyQSCjIRU289aflvDrJSZAESLecMFR2iJC+cYh1d6uTRKO2Bvs7pNYMXjYGDNUoF0LbSmHA==
+X-Received: by 2002:a05:6512:3f26:b0:594:2db8:312b with SMTP id 2adb3069b0e04-598faa14773mr5892405e87.7.1765971452188;
+        Wed, 17 Dec 2025 03:37:32 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5990da5dac1sm2340455e87.67.2025.12.17.03.37.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 03:37:31 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 17 Dec 2025 12:37:29 +0100
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
+Message-ID: <aUKV-RZE8QjHQ0PW@milan>
+References: <20251216211921.1401147-1-urezki@gmail.com>
+ <20251216211921.1401147-2-urezki@gmail.com>
+ <20251216153604.0c00504223d3fad070f2e803@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: restore 0-handling to
- zone_set_pageset_high_and_batch
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Palmer <daniel@0x0f.com>, Guenter Roeck <linux@roeck-us.net>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Matthew Wilcox <willy@infradead.org>
-References: <20251217060505.681923-1-joshua.hahnjy@gmail.com>
- <1cf7675a-2de3-425f-9938-af97f7c6436d@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <1cf7675a-2de3-425f-9938-af97f7c6436d@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 03B7C40002
-X-Stat-Signature: fmmo7b1s8zifquzogmg6mrwb5rnkysfk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216153604.0c00504223d3fad070f2e803@linux-foundation.org>
+X-Stat-Signature: s49s8ryywon44j1t1tu74iwwbros7xsy
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1D25F4000D
 X-Rspam-User: 
-X-HE-Tag: 1765970641-546163
-X-HE-Meta: U2FsdGVkX19nkHXaZ7TQ7P5vczUuI9uDOPPOHsqAIw/ONNDtzrKPesvVoxvUuhh1gGf8mn5Jd/f8fP1o6P72KUHIwXwvogm+csKZI82XNISmNG9Kix41ysFoFecP1yr0Vg0en4g2rapak9J556urkl9VHKlttoEhyPXCqlrHJ36Gx3eewD0n86Wv3n9IF0ina3r0h7ZZ453eEcAD1wp5TVZayr5sGEDah2dH6MArM8THKDqP5xEtELV7GiyE1grcvCtGR6uJ00dZFWhTZ0gBHPJixeBA8YU32dQ59jXRRIuCZ2FcrQWbXhsLfR/8J26yjXbVQHk96NulTDd1tL4yn0xewTnFSlvFF9pkPASy/2KytzNqhRZg837TzdJCZbw5uwb4vLcWSYs307rfDlvyGoO+/+mkFJdL2Wve5T91/gyILf2nyddRCxJZgRC/2kcnQTCmv/vZzS3akxUJHo5w5U7pZISAlPmMBXEpwKv5k5Prfafho9o2A6m7PE+Tit7K20oYId+xkV1QajOG8Hr7UHd4tlEMAadB8LIeqURQNuNe16iukij71/og5yBIRsAYTZizz8UKiq8PtgmWwz36oH5KRiNY58pv/OoD81j5iPipPxE8Z2gDHnxWz5dyAHPiy/PVgeBFv1udLcCn8/8gCqdiLih3pjYk3F25T3CA/RqDuTSwkyZi9qr9B+wkC1vRsabRzHnoZjlOUHxGR63/hgt+v6PjPRWA6r8uW368kdQ+tkk2xjSS3i3lH035LKfS7awFvuvuy0DoV1RBNO38krZ+Zjlgu2Q+l1C1RgOBrg4mNWf34Qqd2Guc9+7SlF9vK4Ifj1irqtICdsNFscCgPuujVCrqFai+bJAcjmIWyhSiD6VmlYH8LhPoyTyiPjQub+wtliKs+qIoNF3xOlRBzdL+iug3VZtoxvLr3/KFoqo/TxV0qtAf8JK9ZL1qp2CcAtpOy9jbIIOTY1jpPOD
- awBow1g/
- 6meMz363T2m5+bzZGT7erMakLT9xntBGFeUY7L//5wRr/y6XO4W9+KNysE+nrYVkPKiQwz4gabkaCNdWPWzHLN9H+2RkC7WOcNJIuSSULitKVDw8+exFJCXg277ueMQA+fsjngF0troGMLLuKJUWvrsa/us5hFjol1C53ApoDoi76xoz1Lcx5HzibLlJOHgJAOimdg2j+UKCRyQMzE5YANwWTfNoAHJDWQf+NgG48zmkVxRWqHEaKRl99QIh7+PP2KLcbmgdMl26MPlpMBZvTrxNXz2tgNDdPwqkX8IW7m25ifQYBHJQenGpr3LtmHk2ayJQ7L79EeoGmcWEp/QV5g/1PFNsZb+FOJ+4ojarb+vazbWDIegnhc9f0ycVYmBCe83XPynZeYtumoKJxZndhpQsccvElSDGPtirzX58FDTVteEBjk+emVdl/zu6MYuhCQyjMzcSpsCjkjXQdiShmP0ryAloOtcIb6pr7SowN13RH56N6/MPH7c8xn8Db0E4CRBTF
+X-HE-Tag: 1765971454-26645
+X-HE-Meta: U2FsdGVkX1+dF96C7ARQoBPW6CKOVs9f5b9PGM05Afxce+vMJYif6LwVxvJe2jtRvSoBmd475Q873OSwCiTzl0KQ4uS6t9JSMcaaYYtPYxTqWb5f6VFWiJwweaAjTiV1I7EIf5iKqPZLnInE0IVSA9Ndk9srsjJPZ7AVMRjwJuLKTJ4mJSJKY6MsrR2q4uklM5pao5svFqq5v+UcfgBXRVvRqGo31Ge+/PErGCY/3s0WZel3VvJ286IKKhY1tJ8Xun5Ypzn5FJhjW1bqoFZUvEtOy+mc5nlUYryry42BvTP2i7ZBkfTyUGZIU5DLGP8/sz60lS7EPOzF5blAk7NQltCDf/2x2efAx5gBNIbbVwAgRM2gzMbgCv/fbEWPSGWUH0fpoEt+Jhw/Yp4osMVKKQjOal9hUhWuFSJVpJv+DT8jclheSfAF5WMbyaPtPrnrZO2AAUeByZvLNX4P9Hec8Bns9WOK4Rof3W/unYUIu8ZqgRDIvNfY6PT9fkEwvro/KXEf8/chGApD0ByguRitcl+/1lSSssG92hK5YsHS0DUSqitXkbWIq1OPPGTnra3hcCxb/KhAPE5ad/J0mYiz1JjNhmiL3jtSnbL/1KsiDHxiY26RMi4Po5twwYMN+K8+/VPsZzEfnEp6M3Lom6Y6iebuPs6kFkzYY75e+b6qDpgp7XrMG/cn13bKdgz9krBrqoV4l214ZU2hAauDUYnjKXiHuSRQ9ylGKsmaLm2ETV5dIf+d98LI5sxwW4Np5rL+MW1sgNRJWDPJny2v2D1B883W6mco0bjhE3BWuMzAj4ybTXhtnIjecDB7edZccA3oDhUpOkywRQiBwhGeoIUsM+JycfgHmbmHzmzT9uvnRFHDYWQVxqLoGkVnMe460yUt4yOqNkipzkpucBVwvg+Xb05iySESXmBeaFgNnDTpwjaelR0vlD6P9XeMHdfovSkJWj2PFaja5dJ6h40D661
+ WgwnX34b
+ 9YliFYkCWsn6ZUvusf9WVC1oj8QfJqyLbs2lhK9FpkFQG40f14QYQgc35GxcQBH2XX2Bp0uhw9JsePP4upj1pbXw2MqvHqbI8w+L8px1ybhoFDXh3YYp8pTMFIGvDxdhABmZljKdiVzvVxcTg+7BPfMhNjWcMgs5YG4vZeSKVBwFRugC+6hlwnnG2qcQggIahWHoa3jzVAjF0tKolQBtVZKthaDoHbrTWSINzPqOnTG3gFdNKSsvOwsdwugiHRJHvOpX1xtY1GPyYbloLtfR6iAmiYJQfwOYpBnTmd3PtvobMGsH26J15uwUjxYbbw1R55xXPyUd41naakb4QFAEsLsiy575zv4OJ8BwOvhiGJBO9V9wivIVUHgCd+KNTplAX+brVtRRZGDuG50miKd6KL5f6g5kmhj8+RHYYfwJ5QnMoicDSZzJIsQ0wFT2LheWMumSIClCJlI25qLNM1Orc/ioYNK4Kpx4s4JC07IOLJuGOHIbpJTqUBpSSOZkXYGLzIuR45OoNf7mNeqi3iInNnkK93QPkPhXmOKVAc/S5COh72CWn0wND7PonOUhzVUGS/g3oeY8gBvxjz1Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,57 +122,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/17/25 12:12, Vlastimil Babka wrote:
-> On 12/17/25 07:05, Joshua Hahn wrote:
->> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
->> moved the error handling (0-handling) of zone_batchsize from its
->> callers to inside the function. However, the commit left out the error
->> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
->> 
->> Since in the NOMMU case the reported-to-user batchsize should still be 0,
+On Tue, Dec 16, 2025 at 03:36:04PM -0800, Andrew Morton wrote:
+> On Tue, 16 Dec 2025 22:19:21 +0100 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 > 
-> Should it? The value is effectively set to 1 despite what zone_batchsize()
-> returns, because of that adjustment this patch reinstates. Also does anyone
-> care, really?
+> > Introduce a module parameter to enable or disable the large-order
+> > allocation path in vmalloc. High-order allocations are disabled by
+> > default so far, but users may explicitly enable them at runtime if
+> > desired.
+> > 
+> > High-order pages allocated for vmalloc are immediately split into
+> > order-0 pages and later freed as order-0, which means they do not
+> > feed the per-CPU page caches. As a result, high-order attempts tend
+> > to bypass the PCP fastpath and fall back to the buddy allocator that
+> > can affect performance.
+> > 
+> > However, when the PCP caches are empty, high-order allocations may
+> > show better performance characteristics especially for larger
+> > allocation requests.
+> > 
+> > Since the best strategy is workload-dependent, this patch adds a
+> > parameter letting users to choose whether vmalloc should try
+> > high-order allocations or stay strictly on the order-0 fastpath.
+> > 
+> > ...
+> >
+> > +module_param(attempt_larger_order_alloc, int, 0644);
 > 
->> we would only like the error handling to exist in the callsites that
->> set the internal value for the zone (i.e. zone_set_pageset_high_and_batch).
->> 
->> Restore max(1, zone_batchsize(zone)) to the callsite to prevent errors
->> on NOMMU systems.
-> 
-> I would rather make zone_batchsize() for !CONFIG_MMU return 1 instead of 0.
+> We should have user docs, please.  Probably in kernel-parameters.txt.
+>
+Thanks. I will add it.
 
-Ah looks like you considered it too, initially:
-https://lore.kernel.org/all/20251211225947.822866-1-joshua.hahnjy@gmail.com/
-
-It makes more sense to me than doing effectively two fixups in the MMU case.
-
->> Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
->> Reported-by: Daniel Palmer <daniel@thingy.jp>
->> Closes: https://lore.kernel.org/linux-mm/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
->> Reported-by: Guenter Roeck <linux@roeck-us.net>
->> Closes: https://lore.kernel.org/all/42143500-c380-41fe-815c-696c17241506@roeck-us.net/
->> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->> ---
->>  mm/page_alloc.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 822e05f1a964..10c1297fd3ea 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6045,7 +6045,7 @@ static void zone_set_pageset_high_and_batch(struct zone *zone, int cpu_online)
->>  {
->>  	int new_high_min, new_high_max, new_batch;
->>  
->> -	new_batch = zone_batchsize(zone);
->> +	new_batch = max(1, zone_batchsize(zone));
->>  	if (percpu_pagelist_high_fraction) {
->>  		new_high_min = zone_highsize(zone, new_batch, cpu_online,
->>  					     percpu_pagelist_high_fraction);
->> 
->> base-commit: 40fbbd64bba6c6e7a72885d2f59b6a3be9991eeb
-> 
-
+--
+Uladzislau Rezki
 
