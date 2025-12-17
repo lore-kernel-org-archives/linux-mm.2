@@ -4,83 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C0CD64062
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 06:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8A77D64079
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:00:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77E76B0005; Wed, 17 Dec 2025 01:49:30 -0500 (EST)
+	id 511296B0005; Wed, 17 Dec 2025 02:00:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB1A6B0089; Wed, 17 Dec 2025 01:49:30 -0500 (EST)
+	id 4BF136B0089; Wed, 17 Dec 2025 02:00:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE126B008A; Wed, 17 Dec 2025 01:49:30 -0500 (EST)
+	id 3A07E6B008A; Wed, 17 Dec 2025 02:00:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BC6DB6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 01:49:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5484E13BBA1
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:49:30 +0000 (UTC)
-X-FDA: 84228036900.10.C4533B8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9EB2AC0003
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 06:49:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765954168; a=rsa-sha256;
-	cv=none;
-	b=vfEJgIqphThkRmzqfkKrEXtX4N/Q5a23igRpXDaw68A3C7P/ti/wzM9+xH20HRUFF4FIGJ
-	mlajHTOb5/Y6Krj7JhUj60UAQpivYAjBMpnfVduRFDN9OsfWzAELkhriwx2jVjZbZqErTM
-	cqt/cuUYPZJ+F/jEXBgMPG31qzZBwjs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A9C06B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:00:21 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9BB88B62D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:00:20 +0000 (UTC)
+X-FDA: 84228064200.19.A7045C6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8A534C0007
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:00:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UKfS7UF3;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765954168;
+	s=arc-20220608; t=1765954818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xeIWHjmEuQl+Vej6A1X7eAx1UNbQZGR+W5HLSQlo+TU=;
-	b=TtEjtvFrtT36J+fOCZficQ6LS976SvwDQjQJX6DiYPqW68Eyv2XEd/L+GUb0NN/n7AgAjm
-	KPoE/cdcx+/1F50SoZynxmIniHgbO3/6/63rqMyYc87MsC0RzHAfhZHE5jKWX8ewIDBAAH
-	TmKypEWLc2zSS3vy+18IkimTQAK+6Fc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86561FEC;
-	Tue, 16 Dec 2025 22:49:20 -0800 (PST)
-Received: from [10.164.18.63] (MacBook-Pro.blr.arm.com [10.164.18.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 894563F762;
-	Tue, 16 Dec 2025 22:49:22 -0800 (PST)
-Message-ID: <52ed7e12-b32e-4a73-ba55-eed993b930b9@arm.com>
-Date: Wed, 17 Dec 2025 12:19:19 +0530
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Mn20+r2GcTv/N27AgRFdKA/i5Cse4iEZukLPIlDEUAs=;
+	b=VfQUIQGjxFcs6aZXxufhf71VN0eRmLlB4VZ74lEgpvGOEUpyLUx6WhRRWqSaF8kcUO6+nY
+	5/P5A6FZWY2bGfQLFdgrQPdLNeFh7hIhDA0TiXbeyMIiW2xnksYzXN8QL2v7DT8ioNwPYv
+	MGjrNwolrxqEpvqelGO82fjF36eIq00=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UKfS7UF3;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765954818; a=rsa-sha256;
+	cv=none;
+	b=wDi8Lp04FSBT11cLWZ1+cCtzQCQJW6BUQGfSs/gLbr4eBv+zXjR/rjOT3wAyJHqdXfbIw/
+	awxUfEVTdE7W5WqYmsX5BaxtAmKGOqKurtYkgyqHdz+f1jGZywx2kr47VOLgKT+24lPZpV
+	aPZPuCdueQa2u8KY4tbO+Qymo/UL6EY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765954818; x=1797490818;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ixiCHs68OVhN8Mw3P9mN6bITLbPSuK8Cd4sCrT7YrMs=;
+  b=UKfS7UF3zc/kpDjvmPtHn/dxd10EXec8L9oHZe3JZRVZ5dXqYgBr9w6D
+   vHvu5FmesuUumPXXQ+6qa+di5lCRV/qP9Eh5sBl8aPeXj6gsoFhQ31W5y
+   DDVbHRy+pgOSXN5SOxw3N/3DRIh+Zawwf5G8kdEdc+G3A/ILgHtYLdWtv
+   /qeMn8sgNq/b/s/mRyfTf6+DQBR0R3zMttZqZInvrVMhJCgNuD6JcWHw/
+   xg/H+WHWH7IrwJlUgnBqmr8/1q1l8ihAmNUeNEmGNBnxlE5fewa3qWma5
+   pNskyanwKa/qQdYqEypihLyUlAmvpJtE2Ixfhyyymqk8QKX2ZYAj2igiV
+   w==;
+X-CSE-ConnectionGUID: d4RN+WsXTMeyQAya0pgwMQ==
+X-CSE-MsgGUID: ihIBWPzIRHmXLEctZ3f8Jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="71742609"
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="71742609"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 23:00:16 -0800
+X-CSE-ConnectionGUID: QdMjsLMGTHqCS4eznrVHIQ==
+X-CSE-MsgGUID: Y8DU0QR6SASMO+qdL8/Dqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="197978073"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 16 Dec 2025 23:00:15 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVlW8-0000000007Z-1j2f;
+	Wed, 17 Dec 2025 07:00:12 +0000
+Date: Wed, 17 Dec 2025 14:59:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sameeksha Sankpal <sameekshasankpal@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-nonmm-unstable 60/60] undefined reference to `envp_init'
+Message-ID: <202512171450.PtEMRk88-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm: rmap: support batched checks of the references
- for large folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org
-Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
- willy@infradead.org, baohua@kernel.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <545dba5e899634bc6c8ca782417d16fef3bd049f.1765439381.git.baolin.wang@linux.alibaba.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <545dba5e899634bc6c8ca782417d16fef3bd049f.1765439381.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9EB2AC0003
-X-Stat-Signature: 3jjcgj5qnxaezdtsgx6z5o9eugsgh3n7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: x7e65xe9pwk5jh5d1rtbf1mk3yha4sut
 X-Rspam-User: 
-X-HE-Tag: 1765954168-885647
-X-HE-Meta: U2FsdGVkX1+dSxD7xUaB5OyP/727FyI/6CBMDY9f56PfJcVRIYPcF+K2ZH1KtSiLMEiAuVIXRsGYBVbUNTdJf6pNkRq5kuU1kHg547euwMCzPhznCc12xlTH39Bueo5WBbkjntXWq2Tf9YKd0X2p5MNy0uQQ5gIf8nGvz9/jBGi4tslLzeRaM7Msqcdf1kcJ5m0ZbwVm0X7ngmEZQPPQVLTujmm8qEEu2GOBXeok78GjIagjGut6zf8W7Xyfe7aOQtI6E3gL485a8eYb/sJZLrO+oKmvN7/zml6xlTwCm3U+HcvYo5m7ObjhR9/RYRCpN4s4+ed8nxPawQXpsplweCeQVJG23zyBmbFXZzpMgpgyt9a+xyGc7uQ2bUMw8kxbNihlaXWCFuI96yPlzWTGGwwq5qXRBMQncOo+qbULL6CtDcFOTCOHLSZKSANnkf9cZrAWuleUVfKrAfrq0eUWjopMUMtU4Fd8v8vYmxj0CTFj39qLAHXYJeA3r3gP3d+OeFXvHXKiSzPyGt3DhuSAU3pBq0GH8TwLAaVrRXip6WXIr09PV5MpdErCKVdhZKVn3TlYh2K9hyJCAB1/WBRa3aW7NMJ3bk32zH48VtZIIDrLZm5zJmHRg5MOOSp9M/QNNYWq+YOkbVYdNCsYcOA1Ec9wpdXIitPjxEwLDe7D4X+Qu+x/u/ONMwcwt0Tad0TLYjbtWOSQVAxZsK2hCLMcP2bK2A/NMtnHwc4YoHR+asctZYjujEZB5isYo7ZNeu260OBnsMcRkLZljKoYsUG3iJcHJiOIPNJ3R63cBwQzlzwyeoHQJ8jEiY8RUpovmZuZI9k8vEZtlAAa//0IYoL3jzHoSjKAxid72KG5VSpOskGhznzZNAeMpgC6WMIttYo4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8A534C0007
+X-HE-Tag: 1765954817-380642
+X-HE-Meta: U2FsdGVkX1/02u7ZNL2FC5bUsHXp4z2YAs88Xh+yuLfiXorWGTWzVs6E/dAKBIWvSNCDrS6USOvN+oMqsLkMUPyrCK0v8rpCgB1r6WpP1YXe2P4vZ2UYRShd5mXlFGlyxLrd7KShcKcpcJdt95XeQj80K4gcDszhg4XAr4nsX86ywEAqKx0cwyGJMIePM/Mb6ulTEsCy7CRgepL6sd3BvXMXqmBfwpMvrcCNvfBRrykOzwI3qg7hFpEpmAuUymBIEbFUV/SIkmC+y8B7LyVBGthQkbmO+wSeI9BOm26FBknH7RZLd6Yr/I2vEkVriGivmQyJmJbWQB03gFSIvaDimSKw4HFpptFfdLWDocmWDgwCg4SWhXbfAhnX2DpOXgCP2LQ+815tX6lmtyCMiIsRRn8zQbXRfL6IE9kjOwiLzz6FoRr7jpE83rnVmatYZ5b72nzLXFUkPepbvnGLHKxUlTDk0jh7ktPu4lkf8TRb1E7E27B/TQuQRnE6oLoMrLQR1VVmwvAbVyZly6xXo+hAi8gdyDzjDOKCBOiZV2jVzYZ3v0D2yhL20htCnouHoigWuPvaocWaaks+cTdi1rzlBkaoEwoW+9eO8BTHe1/3e7YrEQU9ESLbCtAXhwvhYKBMzRu52Ugeg3/uPqxypkG/k+tvLV6B06g0VHwebq8bgeMJgbLdRRCrsR/3GgWBbpwESrEHavqkgj6r2xaMTPxNa5Ifu2RNcYgjP/a1Bh7O92+9V8+R70bW6Aq909HyVJLwNMsEIwmkAnNZ4Medc2WRGjMmSPGgHcTDPBFGWHHPd/73oI4ZMvv/IEx+uaorI7AtJCqM/M+v5zrSSTBGazJVj4N+iKP2FpY33ejRysIzlzQiSLpc4e8cMzOI1ijV93ojVsJAnFDgz2UK9ohpOfp7IQn/I7TExOn0LRUsqR8crrz3alut7jj7dt0up6DPat849q0i6wx0v+92TQf70oD
+ +i5LXeu4
+ LZjipr1pvaZk/DOR79GGOGA/DuYlqYQtJsU3U6iS9ZXL1/i/62lwIak6wf1cKT4KIRLLP5JGdvV7zy+CU2ISW5n+7GimsnK+vSiJ9hGkhODswOQrM4RtfimV48qZo9R6qrozHxlXWeMTbmik4pa/yntdsLjAS9uFHaq7tX9rnGrYBqPhf5qxzQ422bhYA6AVboMseXQJzISy4SjpavDmIg/IK5Vt7wvPK1iQj2kHhT5U3hTRrtMjv9LGKBbAbRFwlRHViwmYVscKWu8S6pcyxRvTQQpJArQiXrJF7v0Jjk6DT/YrFfTsAQ9TV3B6c5zoEHgaCQ3SBl2L2nOVtiVX4X+1XP/vQCOum0TIa+nu2JYeroibyHAurFQyQ/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,189 +104,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   036a67646ce675ebc350c4f60b67578cf9b246dc
+commit: 88800d4048f5ffd0dfd05dd82b89affe6b74e55b [60/60] init: mark envp_init as static
+config: parisc64-defconfig (https://download.01.org/0day-ci/archive/20251217/202512171450.PtEMRk88-lkp@intel.com/config)
+compiler: hppa64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251217/202512171450.PtEMRk88-lkp@intel.com/reproduce)
 
-On 11/12/25 1:46 pm, Baolin Wang wrote:
-> Currently, folio_referenced_one() always checks the young flag for each PTE
-> sequentially, which is inefficient for large folios. This inefficiency is
-> especially noticeable when reclaiming clean file-backed large folios, where
-> folio_referenced() is observed as a significant performance hotspot.
->
-> Moreover, on Arm architecture, which supports contiguous PTEs, there is already
-> an optimization to clear the young flags for PTEs within a contiguous range.
-> However, this is not sufficient. We can extend this to perform batched operations
-> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
->
-> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
-> of the young flags and flushing TLB entries, thereby improving performance
-> during large folio reclamation.
->
-> Performance testing:
-> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
-> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
-> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
-> from approximately 35% to around 5%.
->
-> W/o patchset:
-> real	0m1.518s
-> user	0m0.000s
-> sys	0m1.518s
->
-> W/ patchset:
-> real	0m1.018s
-> user	0m0.000s
-> sys	0m1.018s
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  arch/arm64/include/asm/pgtable.h | 11 +++++++++++
->  include/linux/mmu_notifier.h     |  9 +++++----
->  include/linux/pgtable.h          | 19 +++++++++++++++++++
->  mm/rmap.c                        | 22 ++++++++++++++++++++--
->  4 files changed, 55 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index e03034683156..a865bd8c46a3 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1869,6 +1869,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->  	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
->  }
->  
-> +#define clear_flush_young_ptes clear_flush_young_ptes
-> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> +					unsigned long addr, pte_t *ptep,
-> +					unsigned int nr)
-> +{
-> +	if (likely(nr == 1))
-> +		return __ptep_clear_flush_young(vma, addr, ptep);
-> +
-> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
-> +}
-> +
->  #define wrprotect_ptes wrprotect_ptes
->  static __always_inline void wrprotect_ptes(struct mm_struct *mm,
->  				unsigned long addr, pte_t *ptep, unsigned int nr)
-> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-> index d1094c2d5fb6..be594b274729 100644
-> --- a/include/linux/mmu_notifier.h
-> +++ b/include/linux/mmu_notifier.h
-> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
->  	range->owner = owner;
->  }
->  
-> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-> +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
->  ({									\
->  	int __young;							\
->  	struct vm_area_struct *___vma = __vma;				\
->  	unsigned long ___address = __address;				\
-> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-> +	unsigned int ___nr = __nr;					\
-> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
->  	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->  						  ___address,		\
->  						  ___address +		\
-> -							PAGE_SIZE);	\
-> +						nr * PAGE_SIZE);	\
->  	__young;							\
->  })
->  
-> @@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
->  
->  #define mmu_notifier_range_update_to_read_only(r) false
->  
-> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
-> +#define ptep_clear_flush_young_notify clear_flush_young_ptes
->  #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
->  #define ptep_clear_young_notify ptep_test_and_clear_young
->  #define pmdp_clear_young_notify pmdp_test_and_clear_young
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index b13b6f42be3c..c7d0fd228cb7 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -947,6 +947,25 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->  }
->  #endif
->  
-> +#ifndef clear_flush_young_ptes
-> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> +					 unsigned long addr, pte_t *ptep,
-> +					 unsigned int nr)
-> +{
-> +	int young = 0;
-> +
-> +	for (;;) {
-> +		young |= ptep_clear_flush_young(vma, addr, ptep);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +	}
-> +
-> +	return young;
-> +}
-> +#endif
-> +
->  /*
->   * On some architectures hardware does not set page access bit when accessing
->   * memory page, it is responsibility of software setting this bit. It brings
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index d6799afe1114..ec232165c47d 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -827,9 +827,11 @@ static bool folio_referenced_one(struct folio *folio,
->  	struct folio_referenced_arg *pra = arg;
->  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->  	int ptes = 0, referenced = 0;
-> +	unsigned int nr;
->  
->  	while (page_vma_mapped_walk(&pvmw)) {
->  		address = pvmw.address;
-> +		nr = 1;
->  
->  		if (vma->vm_flags & VM_LOCKED) {
->  			ptes++;
-> @@ -874,9 +876,21 @@ static bool folio_referenced_one(struct folio *folio,
->  			if (lru_gen_look_around(&pvmw))
->  				referenced++;
->  		} else if (pvmw.pte) {
-> +			if (folio_test_large(folio)) {
-> +				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512171450.PtEMRk88-lkp@intel.com/
 
-I may be hallucinating here but I am just trying to recall things - is this a bug in
-folio_pte_batch_flags()? A folio may not be naturally aligned in virtual space and hence
-we may cross the PTE table while batching across it, which can be fixed by taking into
-account pmd_addr_end() while computing max_nr.
+All errors (new ones prefixed by >>):
 
-> +				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-> +				pte_t pteval = ptep_get(pvmw.pte);
-> +
-> +				nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
-> +			}
-> +
-> +			ptes += nr;
->  			if (ptep_clear_flush_young_notify(vma, address,
-> -						pvmw.pte))
-> +						pvmw.pte, nr))
->  				referenced++;
-> +			/* Skip the batched PTEs */
-> +			pvmw.pte += nr - 1;
-> +			pvmw.address += (nr - 1) * PAGE_SIZE;
->  		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->  			if (pmdp_clear_flush_young_notify(vma, address,
->  						pvmw.pmd))
-> @@ -886,7 +900,11 @@ static bool folio_referenced_one(struct folio *folio,
->  			WARN_ON_ONCE(1);
->  		}
->  
-> -		pra->mapcount--;
-> +		pra->mapcount -= nr;
-> +		if (ptes == pvmw.nr_pages) {
-> +			page_vma_mapped_walk_done(&pvmw);
-> +			break;
-> +		}
->  	}
->  
->  	if (referenced)
+   hppa-linux-ld: init/do_mounts_initrd.o: in function `handle_initrd':
+>> (.init.text+0x254): undefined reference to `envp_init'
+>> hppa-linux-ld: (.init.text+0x258): undefined reference to `envp_init'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
