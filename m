@@ -4,96 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA78BD65C58
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 15:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525CDD65C5F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 15:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10A3C6B0088; Wed, 17 Dec 2025 10:06:33 -0500 (EST)
+	id B58E66B008A; Wed, 17 Dec 2025 10:10:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B7D36B0089; Wed, 17 Dec 2025 10:06:33 -0500 (EST)
+	id B06796B008C; Wed, 17 Dec 2025 10:10:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECEA96B008A; Wed, 17 Dec 2025 10:06:32 -0500 (EST)
+	id 986816B0092; Wed, 17 Dec 2025 10:10:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D98426B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:06:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80F1A60C5A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:06:32 +0000 (UTC)
-X-FDA: 84229289424.05.67DB3AD
-Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9BEC1C0013
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:06:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of 39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765983990; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 820F56B008A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:10:59 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FF3113C048
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:10:59 +0000 (UTC)
+X-FDA: 84229300638.10.3344F8F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 69795C0017
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:10:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W+2ObCHU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F28UgOjb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i+vuTk41;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=giRQf6IC;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765984257; a=rsa-sha256;
 	cv=none;
-	b=Gz056kgzhd4BgjuwARQ24y9MlGZdznssmm8/AJbl1pqc165gwJU/oL6NZpnwzAUsNjn1f5
-	HjHcsnX6TUQ/CDeYDuDOeCmwO/M8deAS2WQ9IGyzyDDClz29jc6tFPNEDrKOE4XS0gcNfW
-	TCdldXwxukrlCM57YuopDKIAd9a3pjc=
+	b=0kxxRhXCe34rILV72VnzTPf+BcwZDM36HcpDIe2Oeee3/Tf8z3dgZ4ekhbBXFuoY8k4yFm
+	1NFkpAC9TXhdrVTCqlgdgwJp53LnLlhWw0fC9wMGZGmItOJrqeqXFjR/iNLGnBa7HjzVi5
+	Viw+a26Sthwha9zVhnCw0dXtqziJA4g=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of 39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=39cZCaQkbAN4SYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W+2ObCHU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F28UgOjb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i+vuTk41;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=giRQf6IC;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765983990;
+	s=arc-20220608; t=1765984257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=+LXp+/OiwgJFK4+HBN1KxSKPTjJfUuQ79kirzdSqjQA=;
-	b=H4lHcWbHw5HS57MJAlxYRXTdKqeQf6y85MkRlHB7xEwNfM2o/VOr2klvn9/GuyWtuUj8fX
-	8dGAaGJFyzvtz2BsPXOPLHmn5cPgn5B8N20+UOQ5O6O1UB11ldg0v4eYhPFLsh8WkvzV3l
-	jIk0XiFB8l4jtFv4UJydB6pNfM3VhLE=
-Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7c76977192eso14454460a34.3
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:06:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765983989; x=1766588789;
-        h=content-transfer-encoding:to:from:subject:message-id:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+LXp+/OiwgJFK4+HBN1KxSKPTjJfUuQ79kirzdSqjQA=;
-        b=KJamHvLQCWCvxJkL3Y/k9VLnPKos5v9CPvkzg9iMPpbDP9mIL1TricNC4qbFF9BZGP
-         aFfagWaKdxlvbkHGgVD/HidAohHfeOBYE+dvQebda9Lu2tAZtcIeDfs9wF5AiDVF4ZQ9
-         dy9Wynsh851vQqI9QzsgOhFRE6ojGJuO2rjEKQIkYc5EQoP/5iAHRN2juS1oN/jKrqOG
-         JiYDPAX1jY97xG4hnxcza/D+4ljVIR9BUDvgvDxrcI3TkvaJRyZzuC5smH5QmYZOny5b
-         WDb+mvVBzUe7DdeKFZZm7N+FQ/POR9AqHSNwi+GO+odPHQjK9ei7iPefJS1w6zT7dVzo
-         ezsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNykTFOQ0xxpQ5/hC1oFQSgYzT7rq3tD38Ex7/oAHS2ayXZLK7UEIQuEWjA1m2gS0aditXDz0Kgg==@kvack.org
-X-Gm-Message-State: AOJu0YwcN0aZkiAVBMAGbrWSqQnPg9LeSij2Gz3IIoErAnvCfJk+0f5R
-	IIKahHHAtn3xiFS3fB7m2aNqh5gvbwKJ4oTpHZ/iwBXXPRYr2d0LtXqVZUw/VehvzGe8pisEFj2
-	+RNt6W9BQ6MdkJqf/3QKRGvsz27cOmKdxoT0pV6txdHRBJ3/w+GeN9hmA208=
-X-Google-Smtp-Source: AGHT+IEepE1vOkZRfZw65Yq1mLKX8fjSXWFd+RCC7vexsDa9QIOBmOOjGkoOx7rg/oWkXOnGdoUhwKHlpGYWuc7/8UmLqU7NJZSW
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UZEiS3dW0yLBlNkCFnZqkFE2PhalZ4TjeG5Dke4M5o8=;
+	b=qPjuZPf+anCqmMxMm2u/JrRBnpdh852GK/lXFHbVtv28NfYEbYHMnln2UMkHca72RYkthm
+	etxbF5sIf79X2WAaRJ9AkaHcvyhDWtL258uEHQAGRtygBDBAzZZ+VuCfotfzaOnUd3YEfs
+	p2BCB2onhEqRF5DPBPW8zwHjVvkOIPY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CF46133686;
+	Wed, 17 Dec 2025 15:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765984255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UZEiS3dW0yLBlNkCFnZqkFE2PhalZ4TjeG5Dke4M5o8=;
+	b=W+2ObCHUzE/Sc92pYIjWVxezrnSwWjbIGtVMw2Kv16EogFPOF2ncg9c+vujNh1KZC2c9xG
+	z8SEcHy1vpxNjNYNhG37Vkzx4c/AC5REAuh6JfUWB969vZBr447yYoWV137hPyjbGqekur
+	newyIEuIMqOqFHeGXdw6kXbwzIfDkiI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765984255;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UZEiS3dW0yLBlNkCFnZqkFE2PhalZ4TjeG5Dke4M5o8=;
+	b=F28UgOjbkAccjrllVZw/PtOu4EAKt3OLVaAm88nDzl6sZz3f+G07ONBbT0r1oAN6qIQPoq
+	R6zLCRzBYqycqIBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765984254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UZEiS3dW0yLBlNkCFnZqkFE2PhalZ4TjeG5Dke4M5o8=;
+	b=i+vuTk41c+0Wd3c2olnAWjDQFhMkDRdbW6A14N9OJJ8prDcuK1Wyp9OWYGudJLFyGsHy+R
+	nI8mttueByUKWMgRZbINwDfYx8Wo3AegmWWRN1yOTeNzC8482ojevgJLZLadNS/s2eI+Y/
+	ONkHHq4Us6EvjdXl2Ys1lkFgpQvpa+s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765984254;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UZEiS3dW0yLBlNkCFnZqkFE2PhalZ4TjeG5Dke4M5o8=;
+	b=giRQf6ICEmrQjhCwjb4CRrPytpVhd+dzKJtBQ8V0noi/d5JCKrpH/TbPjrJJaIeoIN29yO
+	hCfspDB66oQuCTBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82DCE3EA63;
+	Wed, 17 Dec 2025 15:10:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id OmigH/7HQmm5MwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 17 Dec 2025 15:10:54 +0000
+Message-ID: <d5354d96-6f28-41d7-9f66-64c254d9477b@suse.cz>
+Date: Wed, 17 Dec 2025 16:10:54 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4df7:b0:659:9a49:8f11 with SMTP id
- 006d021491bc7-65b45151581mr7967725eaf.34.1765983989465; Wed, 17 Dec 2025
- 07:06:29 -0800 (PST)
-Date: Wed, 17 Dec 2025 07:06:29 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6942c6f5.a70a0220.207337.0063.GAE@google.com>
-Subject: [syzbot] [xfs] general protection fault in workingset_refault (3)
-From: syzbot <syzbot+ccf9f05f06b4b951f3cd@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, axelrasmussen@google.com, cem@kernel.org, 
-	david@kernel.org, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-xfs@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	mhocko@kernel.org, shakeel.butt@linux.dev, syzkaller-bugs@googlegroups.com, 
-	weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, hannes@cmpxchg.org,
+ ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+ kevin.brodsky@arm.com, dev.jain@arm.com, yang@os.amperecomputing.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
+ <aUGOPd7gNRf1xHEc@e129823.arm.com>
+ <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
+ <aUKKZR0u22KOPfd7@e129823.arm.com>
+ <d96ac977-222e-4e8d-9487-da1306198419@arm.com>
+ <aUKnfU/3FREY13g1@e129823.arm.com>
+ <d912480a-5229-4efe-9336-b31acded30f5@suse.cz>
+ <DF0J58HOVLL4.2E16Q87D2UXRW@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <DF0J58HOVLL4.2E16Q87D2UXRW@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9BEC1C0013
-X-Stat-Signature: sem3qfr4zu6qeb4rxuc4sae9d6ue589n
+X-Rspamd-Queue-Id: 69795C0017
+X-Stat-Signature: oxqxz8yiq7h5dmmz9a9dy1xu3prywbtr
 X-Rspam-User: 
-X-HE-Tag: 1765983990-745917
-X-HE-Meta: U2FsdGVkX1/t4JrAUh2DebnJgC/3UN/c2PY1PwDsOsIcVi0uout3CdVo0XWGW6y3XUGs/eINrG+biaz0ti5KojCfNpEYF58WlyQjC7Tw2GtidOElcNYL1P6YodOWEa9kh/IjSUWhYVPaNO8aOApbeiUggRWsOYEiraCgibGsqV1/sEjAEF5UvN3Sa7B5mf6DPoM8ivo/tltHNm16bHFMWdK8HWezdBYnbYRz5Tb+v/cJdilAjC7thOECn6t0dm0l+th+Vwy+9O4ushuvEe287kIC57AmZSiKJMulBPibCou1X+lROOt//R3js9BWfF5k05emLTMPlytcVFU+1qCtulWhscbjAMHEa8wgD7Vlq60xS80yqZwBGO8TbO3cHwCOYiXK7oofKbTZm3EODip0y73wuCmb3niArdie9kj/EzyEtPzHNL4AxZgsx7L1qJ3SqS/bqq9NBwoCfJlF1kZptjMp+OFeMiqMfz+9cbff5pr7m4+MtzINmbjShqsTwfMTcGI3bQqxpEkgXDVQsdzjJj7t3BJwNErr0KqLH31Miw7iGgPnsXBmPJITZoKVnYyToEp5h2X6ZC0BD1fYxRyUQDOaxE5z+n2od93+HFTIEz+m6EgK5U62QMKbZXH/3pn3n4apAxsMiPYdL39uzuVRTCziTHkRqrBTMnRzQ2PGI9SsWiV+AGjHV4hb/Udxin5JJbuG+y9niAmzzAsJHuUuzGYAe0FcntG060REJR2kLS0a60F7o9Ttl3teyTS9ZCowHiNWkj7VYpLW7uuqoI9QJbLBTzmrbtREhCXGlHpBk0sylIyLQEavGrJvqZOaI3kQapQyehpWURWutQ91W4D7eby/SUy29id+wMpGAB2EoGW3oS2ob9Le+K5/ynATBa4Lfxp5TliyytHy8mgXZ3ZEJbo2wIKBL35lzGJwlfLHE4EOz4/jVuNLmnWol/NXPALWZPCbyq1cfMOd7JBMxlz
- +iiX9TNE
- MoPRN67r/CHQGGOZpUe/etg2N9qHFv7LrvFj9u2fhWUB5Vh7aDFgkS+t1x/Hiz0e8alYR62stjjEZqGLhgrDakyz71UBbZ6+RS7/PkIwsUrSjICAZ49c8CuCshXPejAaB518YrpL3i1J871z01HOnK2jtfgZSiAIGhYuXByGzIfz7/FHEFio3gnxz1OTg9vN1ACdtAziTGepCmJkkgbIoO0zM3g6aJMAPOTYcH0Db6iORZEOyq9NEB3RLsgvVPj1+/5VB1rgn7H7KMhkCknb6PSx0+2S79JJ8RnHEME32H/SnP5QwHe7wXvF7Pe2HgGm+eAZuPa0hTcAUfeaqIduE8YKIfGrC5ezjuj7j12IIU9GoQTWrLIZcTQsX/JY229SazAEKi43yVcPropxKG3dax/le4WgFg5EYChbJry5RafC29TXiG5OWHPPna6gmdSsKQhytwPfrziIQ113oWOdFEHl4V5T1rFZIv8Lhmma1ucmU5EIOG43UhDYmf3G2CdqlNWuI/48+7Pm2si4Ga77XyzItx9S6mpIwp0tD85Nd9sHoqlvTbMfjLk0QdmerD48SNPQIafCszQWnYLi8jGBcj/D66t/YpoNSPgDEoHTY0nh2bjk5WjipJlMyWjv/nanSh5yvfcaym9FV3FWgwI7Uun6QnveLnA2rI2D4KUw1XnqeAyzRiA9KTO5BxoJGiF8fMTZmeNQIAN6UhKIcs2t6vwgD/C38YmjuU0gZMGK4oFkMkC6r0S8Uh7uVBtbw2Twos/gSOyXiUALpQ5tkwv9UJYTmzUGahPMwByKOUUCgZ8yvv9+ooH0r05z9FC+ae1eA4tz38iaBg1Phk0MTlkpmDPIWEVrSbIV/UHrHv6oe0WGliOdynzwC1QBXeV9jbbkqX4566dkkadgAa80JDTl3twzUrUL3ss+io82XgEBOOP/TfQTGaH++fGfqVa0mXZx0xXO5ksHsAzobSqr/1N3BcJIn4YbY
- vmk2ks8m
- McxFbFVqwu65pq5vP55kCa7g8zhTbPJtcBCz/Gu73PQYugcQHJeavKCNw6IO9s9WE3p/uq6VtjdW9xdMeWc3kpVgKx7MuSpQJzp+/YY2G8fMAsPBQ5bJ82VfwLYm/CimFx1kFJweS1D9flKF/Fft+eONPlfTjOwtTscNyqMSoA33GvBYgVkj/jNByZumcSvmL65czqJsSlFAuOn7NugWrdbU28vJKuM47/xup032Nd8jx1k5Pvp90Sq9ggpealCwLkZfGZ9p6VoRheIwoG/zV/PVLXZwz3vR7H7iSbby62K8nisrmSQ6QPIsniNyFp/93c9A7IpvBcFQUMTN+FvQXwmyxOsmPh8XbAk+NJwzubIDnr0AYJM4vOuY6RkECMD2dGDGUngZZHFImFBHGtC+9g==
+X-HE-Tag: 1765984256-748772
+X-HE-Meta: U2FsdGVkX1+8fG49s8/Cr8/7T4j5HbohU3OTcnB6bTtBUzXiSeZeCHkdheFyWo6I4eSoIh3XPCsCmf+XSZXlsPPdP3oOF+wog8pjb8Ou5hTTzUZnRYRYDf/NP68e8JL92S7OekjPeW4nRpAdk7g+huWAqOwhTbSE7+Ard2auaCLsxHEoTNJgMTpYLpya+YXnoTtsFKBiTUZW9yn8mpswwSmAJ0A0fFldz4ZaCVneVlRjm+Q7trbLnJO/dOkZtn3ecVkpm9v25Q8+DjTdcWx12/+fjXpJUtxcKwTFNHcn9jPdxwKbaJMXjXfD3TwHjvEkLpbTjAdwZl+KkQ97YrZKRuyXJsqz9iAHHVljLZvpAxVdm8V3F5IZDZ5opBRNWn9DPVCvpQ4R6p7wkKHaWJfxLuAVA7qX3WDcPBQZMJmu97urBJvzySZDh3E0qudZgOkEj75OiRYS/a8IOYO/c0QpGJPIBuKdF8R31vZA/dlh/JOW0AYCyGvNxqPjP1TWHTekUm2m4CELfWD4cgSc/vtauUdD80fe3hXZ9p5L5JePBpNVSwpu3x9qN9JkwueViQiZFSqe8ZubRN0etjG08JU8o56k4QkqOxIHMrlJ8yjQ9q704iQZMjLLx3opxQ0UgdZm9QvydINpZYW0cZpKtN9oWKqjnmoZM5e4VAajRN1bnP1LhjW+CjUoJB4xuDJikc18vCu87na+ymRhgcb0R95EXltMkPNEODmSn09ibezXGBXGBMebuJV6BuSaDeMryo7AHFPPC4UYnWYbJ6rNkUc5Vaw1lgq6a0MUROeJ7YmxnIGwoFJWTuX0cq0jvpilAcATlXnPdXDOWKimev/zxFmxoUEjaFaJDesnPg2FcNydKi3cWPpio3g/aqsRlE8GPwAdauPy2jE9DBx/BvI+Ud/XYN2saYQCx4IUFNmoZWOleHyaVB3F56d8Jxe1mD2R4diKUCoCtlUHwUuzp57nM7P
+ wB4I2Jn1
+ SxkimLVPjih0v5hq8Sl4YHia+mHwQa+AQTpcUQlNX2B2ayGAOOvm0PIOVrQcUndSxWmwqLAGihCx0ER41OwOH/wJDMl/9v8y3ezR+g1fum7JOt64OP6vrMjdGsPJS0jLHMAfAiiFPk6V1IRIubv4r9GrqAbtC8bfoJXy311H67tMeZIS8CzxQHUPk4An3yUNdc5gLBCEZzn3bURLaMPOEKc/QAIRiUPIP0w4Hk17gqujqAXCW6NUTkPlV/Gx4ZSbI6/ii5ZhZFuMiEDuOHEZN1d8Xa5REGqMo+Qsj9qOYpaduhzsg3fZCpIBRvLo2Nq4ZfqHk0Au1QEtWDZlQM0AFObT3Him4/qY4wP32YF4/tSPTSbNmlIQ0Qs7zBsOO8TYouTcVvttfBOsqC3cC38qeRYjbasv2SVKeJHIwBGweuyIgad5LU8NdhtbJwxIH5MLgV0IMIM5z+6gbqkOEp+3jkk4MIUSScKZp84FUyHGi/NIxaknvb6py9sy+jtmoRYyOA9Uycd9/cGn9WwJhdGs1ET2qSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,155 +194,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 12/17/25 14:35, Brendan Jackman wrote:
+> On Wed Dec 17, 2025 at 1:15 PM UTC, Vlastimil Babka wrote:
+>> On 12/17/25 13:52, Yeoreum Yun wrote:
+>>>> On 17/12/2025 10:48, Yeoreum Yun wrote:
+>>>> > Hi Ryan,
+>>>> >
+>>>> >> On 16/12/2025 16:52, Yeoreum Yun wrote:
+>>>> >>> Hi Ryan,
+>>>> >>>
+>>>> >>>> On 12/12/2025 16:18, Yeoreum Yun wrote:
+>>>> >>>>> Some architectures invoke pagetable_alloc() or __get_free_pages()
+>>>> >>>>> with preemption disabled.
+>>>> >>>>> For example, in arm64, linear_map_split_to_ptes() calls pagetable_alloc()
+>>>> >>>>> while spliting block entry to ptes and __kpti_install_ng_mappings()
+>>>> >>>>> calls __get_free_pages() to create kpti pagetable.
+>>>> >>>>>
+>>>> >>>>> Under PREEMPT_RT, calling pagetable_alloc() with
+>>>> >>>>> preemption disabled is not allowed, because it may acquire
+>>>> >>>>> a spin lock that becomes sleepable on RT, potentially
+>>>> >>>>> causing a sleep during page allocation.
+>>>> >>>>>
+>>>> >>>>> Since above two functions is called as callback of stop_machine()
+>>>> >>>>> where its callback is called in preemption disabled,
+>>>> >>>>> They could make a potential problem. (sleeping in preemption disabled).
+>>>> >>>>>
+>>>> >>>>> To address this, introduce pagetable_alloc_nolock() API.
+>>>> >>>>
+>>>> >>>> I don't really understand what the problem is that you're trying to fix. As I
+>>>> >>>> see it, there are 2 call sites in arm64 arch code that are calling into the page
+>>>> >>>> allocator from stop_machine() - one via via pagetable_alloc() and another via
+>>>> >>>> __get_free_pages(). But both of those calls are passing in GFP_ATOMIC. It was my
+>>>> >>>> understanding that the page allocator would ensure it never sleeps when
+>>>> >>>> GFP_ATOMIC is passed in, (even for PREEMPT_RT)?
+>>>> >>>
+>>>> >>> Although GFP_ATOMIC is specify, it only affects of "water mark" of the
+>>>> >>> page with __GFP_HIGH. and to get a page, it must grab the lock --
+>>>> >>> zone->lock or pcp_lock in the rmqueue().
+>>>> >>>
+>>>> >>> This zone->lock and pcp_lock is spin_lock and it's a sleepable in
+>>>> >>> PREEMPT_RT that's why the memory allocation/free using general API
+>>>> >>> except nolock() version couldn't be called since
+>>>> >>> if "contention" happens they'll sleep while waiting to get the lock.
+>>>> >>>
+>>>> >>> The reason why "nolock()" can use, it always uses "trylock" with
+>>>> >>> ALLOC_TRYLOCK flags. otherwise GFP_ATOMIC also can be sleepable in
+>>>> >>> PREEMPT_RT.
+>>>> >>>
+>>>> >>>>
+>>>> >>>> What is the actual symptom you are seeing?
+>>>> >>>
+>>>> >>> Since the place where called while smp_cpus_done() and there seems no
+>>>> >>> contention, there seems no problem. However as I mention in another
+>>>> >>> thread
+>>>> >>> (https://lore.kernel.org/all/aT%2FdrjN1BkvyAGoi@e129823.arm.com/),
+>>>> >>> This gives a the false impression --
+>>>> >>> GFP_ATOMIC are “safe to use in preemption disabled”
+>>>> >>> even though they are not in PREEMPT_RT case, I've changed it.
+>>>> >>>
+>>>> >>>>
+>>>> >>>> If the page allocator is somehow ignoring the GFP_ATOMIC request for PREEMPT_RT,
+>>>> >>>> then isn't that a bug in the page allocator? I'm not sure why you would change
+>>>> >>>> the callsites? Can't you just change the page allocator based on GFP_ATOMIC?
+>>>> >>>
+>>>> >>> It doesn't ignore the GFP_ATOMIC feature:
+>>>> >>>   - __GFP_HIGH: use water mark till min reserved
+>>>> >>>   - __GFP_KSWAPD_RECLAIM: wake up kswapd if reclaim required.
+>>>> >>>
+>>>> >>> But, it's a restriction -- "page allocation / free" API cannot be called
+>>>> >>> in preempt-disabled context at PREEMPT_RT.
+>>>> >>>
+>>>> >>> That's why I think it's wrong usage not a page allocator bug.
+>>>> >>
+>>>> >> I've taken a look at this and I agree with your analysis. Thanks for explaining.
+>>>> >>
+>>>> >> Looking at other stop_machine() callbacks, there are some that call printk() and
+>>>> >> I would assume that spinlocks could be taken there which may present the same
+>>>> >> kind of issue or PREEMPT_RT? (I'm guessing). I don't see any others that attempt
+>>>> >> to allocate memory though.
+>>>> >
+>>>> > IIRC, there was a problem related for printk while try to grab
+>>>> > pl011_console related lock (spin_lock) while holding
+>>>> > console_lock(raw_spin_lock) in v6.10.0-rc7 at rpi5:
+>>>> >
+>>>> >     [  230.381263] CPU: 2 PID: 5574 Comm: syz.4.1695 Not tainted 6.10.0-rc7-01903-g52828ea60dfd #3
+>>>> >     [  230.381479] Hardware name: linux,dummy-virt (DT)
+>>>> >     [  230.381565] Call trace:
+>>>> >     [  230.381607]  dump_backtrace+0x318/0x348
+>>>> >     [  230.381727]  show_stack+0x4c/0x80
+>>>> >     [  230.381875]  dump_stack_lvl+0x214/0x328
+>>>> >     [  230.382159]  dump_stack+0x3c/0x58
+>>>> >     [  230.382456]  __lock_acquire+0x4398/0x4720
+>>>> >     [  230.382683]  lock_acquire+0x648/0xb70
+>>>> >     [  230.382928]  _raw_spin_lock_irqsave+0x138/0x240
+>>>> >     [  230.383121]  pl011_console_write+0x240/0x8a0
+>>>> >     [  230.383356]  console_flush_all+0x708/0x1368
+>>>> >     [  230.383571]  console_unlock+0x180/0x440
+>>>> >     [  230.383742]  vprintk_emit+0x1f8/0x9d0
+>>>> >     [  230.383832]  vprintk_default+0x64/0x90
+>>>> >     [  230.383914]  vprintk+0x2d0/0x400
+>>>> >     [  230.383971]  _printk+0xdc/0x128
+>>>> >     [  230.384229]  hrtimer_interrupt+0x8f0/0x920
+>>>> >     [  230.384414]  arch_timer_handler_virt+0xc0/0x100
+>>>> >     [  230.384812]  handle_percpu_devid_irq+0x20c/0x4e0
+>>>> >     [  230.385053]  generic_handle_domain_irq+0xc0/0x120
+>>>> >     [  230.385367]  gic_handle_irq+0x88/0x360
+>>>> >     [  230.385559]  call_on_irq_stack+0x24/0x70
+>>>> >     [  230.385801]  do_interrupt_handler+0xf8/0x200
+>>>> >     [  230.386092]  el1_interrupt+0x68/0xc0
+>>>> >     [  230.386434]  el1h_64_irq_handler+0x18/0x28
+>>>> >     [  230.386716]  el1h_64_irq+0x64/0x68
+>>>> >     [  230.386853]  __sanitizer_cov_trace_const_cmp2+0x30/0x68
+>>>> >     [  230.387026]  alloc_pages_mpol_noprof+0x170/0x698
+>>>> >     [  230.387309]  vma_alloc_folio_noprof+0x128/0x2a8
+>>>> >     [  230.387610]  vma_alloc_zeroed_movable_folio+0xa0/0xe0
+>>>> >     [  230.387822]  folio_prealloc+0x5c/0x280
+>>>> >     [  230.388008]  do_wp_page+0xc30/0x3bc0
+>>>> >     [  230.388206]  __handle_mm_fault+0xdb8/0x2ba0
+>>>> >     [  230.388448]  handle_mm_fault+0x194/0x8a8
+>>>> >     [  230.388676]  do_page_fault+0x6bc/0x1030
+>>>> >     [  230.388924]  do_mem_abort+0x8c/0x240
+>>>> >     [  230.389056]  el0_da+0xf0/0x3f8
+>>>> >     [  230.389178]  el0t_64_sync_handler+0xb4/0x130
+>>>> >     [  230.389452]  el0t_64_sync+0x190/0x198
+>>>> >
+>>>> > But this problem is gone when I try with some of patches in rt-tree
+>>>> > related for printk which are merged in current tree
+>>>> > (https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/log/?h=linux-6.10.y-rt-rebase).
+>>>> >
+>>>> > So I think printk() wouldn't be a problem.
+>>>> >
+>>>> >>
+>>>> >> Anyway, to fix the 2 arm64 callsites, I see 2 possible approaches:
+>>>> >>
+>>>> >> - Call the nolock variant (as you are doing). But that would just convert a
+>>>> >> deadlock to a panic; if the lock is held when stop_machine() runs, without your
+>>>> >> change, we now have a deadlock due to waiting on the lock inside stop_machine().
+>>>> >> With your change, we notice the lock is already taken and panic. I guess it is
+>>>> >> marginally better, but not by much. Certainly I would just _always_ call the
+>>>> >> nolock variant regardless of PREEMPT_RT if we take this route; For !PREEMPT_RT,
+>>>> >> the lock is guarranteed to be free so nolock will always succeed.
+>>>> >>
+>>>> >> - Preallocate the memory before entering stop_machine(). I think this would be
+>>>> >> much more robust. For kpti_install_ng_mappings() I think you could hoist the
+>>>> >> allocation/free out of stop_machine() and pass the pointer in pretty easily. For
+>>>> >> linear_map_split_to_ptes() its a bit more complex; Perhaps, we need to walk the
+>>>> >> pgtable to figure out how much to preallocate, allocate it, then set it up as a
+>>>> >> special allocator, wrapped by an allocation function and modify the callchain to
+>>>> >> take a callback function instead of gfp flags.
+>>>> >>
+>>>> >> What do you think?
+>>>> >
+>>>> > Definitely, second suggestoin is much better.
+>>>> > My question is whether *memory contention* really happen in the point
+>>>> > both functions are called.
+>>>>
+>>>> My guess would be that it's unlikely, but not impossible. The secondary CPUs are
+>>>> up, and presumably running their idle thread. I think various power management
+>>>> things can be plugged into the idle thread; if so, then I guess it's possible
+>>>> that the CPU could be running some hook as part of a power state transition, and
+>>>> that could be dynamically allocating memory? That's all just a guess though; I
+>>>> don't know the details of that part of the system.
+>>>>
+>>>> >
+>>>> > Above two functions are called as last step of "smp_init()" -- smp_cpus_done().
+>>>> > If we can be sure, I think we don't need to go to complex way and
+>>>> > I believe the reason why we couldn't find out this problem,
+>>>> > even using GFP_ATOMIC in PREEMPT_RT since there was *no contection*
+>>>> > in this time of both functions are called.
+>>>> > > That's why I first try with the "simple way".
+>>>> >
+>>>> > What do you think?
+>>>>
+>>>> As far as linear_map_split_to_ptes() is concerned, it was implemented under the
+>>>> impression that doing allocation with GFP_ATOMIC was safe, even in
+>>>> stop_machine(). Given that's an incorrect assumption, I think we should fix it
+>>>> to pre-allocate outside of stop_machine() regardless of the likelihood of
+>>>> actually hitting the race.
+>>>>
+>>> 
+>>> Yeap. It’s better to be certain than uncertain. Thanks for checking.
+>>> I'll repsin with the preallocate way.
+>>
+>> Note this is explained in Documentation/core-api/real-time/differences.rst:
+>>
+>> Memory allocation
+>> -----------------
+>>
+>> The memory allocation APIs, such as kmalloc() and alloc_pages(), require a
+>> gfp_t flag to indicate the allocation context. On non-PREEMPT_RT kernels, it is
+>> necessary to use GFP_ATOMIC when allocating memory from interrupt context or
+>> from sections where preemption is disabled. This is because the allocator must
+>> not sleep in these contexts waiting for memory to become available.
+>>
+>> However, this approach does not work on PREEMPT_RT kernels. The memory
+>> allocator in PREEMPT_RT uses sleeping locks internally, which cannot be
+>> acquired when preemption is disabled. Fortunately, this is generally not a
+>> problem, because PREEMPT_RT moves most contexts that would traditionally run
+>> with preemption or interrupts disabled into threaded context, where sleeping is
+>> allowed.
+>>
+>> What remains problematic is code that explicitly disables preemption or
+>> interrupts. In such cases, memory allocation must be performed outside the
+>> critical section.
+>>
+>> This restriction also applies to memory deallocation routines such as kfree()
+>> and free_pages(), which may also involve internal locking and must not be
+>> called from non-preemptible contexts.
+> 
+> Oh, thanks for pointing to that, I had never read that before (oops).
+> 
+> Shall we point to this from the doc-comment? Something like the below.
+> 
+> BTW, Yeorum, assuming you care about PREEMPT_RT, maybe you can get
+> Sparse to find some other bugs of this nature? Or if not, plain old
+> Coccinelle would probably find a few.
+> 
+> ---
+> 
+> From 4c6b4d4cb08aee9559d02a348b9ecf799142c96f Mon Sep 17 00:00:00 2001
+> From: Brendan Jackman <jackmanb@google.com>
+> Date: Wed, 17 Dec 2025 13:26:28 +0000
+> Subject: [PATCH] mm: clarify GFP_ATOMIC/GFP_NOWAIT doc-comment
+> 
+> The current description of contexts where it's invalid to make
+> GFP_ATOMIC and GFP_NOWAIT calls is rather vague.
+> 
+> Replace this with a direct description of the actual contexts of concern
+> and refer to the RT docs where this is explained more discursively.
+> 
+> While rejigging this prose, also move the documentation of GFP_NOWAIT to
+> the GFP_NOWAIT section.
 
-syzbot found the following issue on:
+There doesn't seem to be any move?
 
-HEAD commit:    ea1013c15392 Merge tag 'bpf-fixes' of git://git.kernel.org.=
-.
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=3D16a839b4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D513255d80ab78f2=
-b
-dashboard link: https://syzkaller.appspot.com/bug?extid=3Dccf9f05f06b4b951f=
-3cd
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-=
-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> 
+> Link: https://lore.kernel.org/all/d912480a-5229-4efe-9336-b31acded30f5@suse.cz/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Nit below:
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d90=
-0f083ada3/non_bootable_disk-ea1013c1.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ea4d0b50128d/vmlinux-=
-ea1013c1.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f2e7f1524121/bzI=
-mage-ea1013c1.xz
+> ---
+>  include/linux/gfp_types.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 3de43b12209ee..07a378542caf2 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -309,8 +309,10 @@ enum {
+>   *
+>   * %GFP_ATOMIC users can not sleep and need the allocation to succeed. A lower
+>   * watermark is applied to allow access to "atomic reserves".
+> - * The current implementation doesn't support NMI and few other strict
+> - * non-preemptive contexts (e.g. raw_spin_lock). The same applies to %GFP_NOWAIT.
+> + * The current implementation doesn't support NMI, nor contexts that disable
+> + * preemption under PREEMPT_RT. This includes raw_spin_lock() and plain
+> + * preempt_disable() - see Documentation/core-api/real-time/differences.rst for
+> + * more info.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit=
-:
-Reported-by: syzbot+ccf9f05f06b4b951f3cd@syzkaller.appspotmail.com
+Can we reference the "Memory allocation" section directly?
 
-Zero length message leads to an empty skb
-loop0: detected capacity change from 0 to 32768
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-WARNING: The mand mount option has been deprecated and
-         and is ignored by this kernel. Remove the mand
-         option from the mount to silence this warning.
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-xfs: Unknown parameter '=EF=BF=BD=04'
-Oops: general protection fault, probably for non-canonical address 0xdffffc=
-00000009c0: 0000 [#1] SMP KASAN NOPTI
-KASAN: probably user-memory-access in range [0x0000000000004e00-0x000000000=
-0004e07]
-CPU: 0 UID: 0 PID: 5343 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full=
-)=20
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16=
-.3-2~bpo12+1 04/01/2014
-RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
-RIP: 0010:lru_gen_test_recent mm/workingset.c:275 [inline]
-RIP: 0010:lru_gen_refault mm/workingset.c:296 [inline]
-RIP: 0010:workingset_refault+0x3f8/0x1170 mm/workingset.c:546
-Code: 74 0c 48 c7 c7 e0 6a a2 8f e8 04 05 1d 00 4c 8b 35 3d c7 95 0d 49 81 =
-c6 78 0c 00 00 4d 8d bd 00 4e 00 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 8=
-4 c0 0f 85 ce 05 00 00 49 63 07 4d 8d 34 c6 4c 89
-RSP: 0018:ffffc9000a7b7880 EFLAGS: 00010206
-RAX: 00000000000009c0 RBX: 0000000000000383 RCX: 0000000000100000
-RDX: ffffc900208d2000 RSI: 0000000000000472 RDI: 0000000000000473
-RBP: ffffc9000a7b7998 R08: ffff88801f7524c0 R09: 0000000000000002
-R10: 0000000000000406 R11: 0000000000000002 R12: dffffc0000000000
-R13: 0000000000000000 R14: ffff88801baf8c78 R15: 0000000000004e00
-FS:  00007fbc75e8f6c0(0000) GS:ffff88808d22a000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000040 CR3: 000000001234e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- filemap_add_folio+0x33f/0x540 mm/filemap.c:981
- do_read_cache_folio+0x32e/0x590 mm/filemap.c:4063
- freader_get_folio+0x3c7/0x830 lib/buildid.c:58
- freader_fetch+0xa3/0x750 lib/buildid.c:101
- __build_id_parse+0x133/0x7d0 lib/buildid.c:289
- do_procmap_query fs/proc/task_mmu.c:733 [inline]
- procfs_procmap_ioctl+0x76f/0xce0 fs/proc/task_mmu.c:813
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbc74f8f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 =
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
-f 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbc75e8f038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fbc751e5fa0 RCX: 00007fbc74f8f7c9
-RDX: 0000200000000180 RSI: 00000000c0686611 RDI: 000000000000000d
-RBP: 00007fbc75013f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbc751e6038 R14: 00007fbc751e5fa0 R15: 00007fff29f355e8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
-RIP: 0010:lru_gen_test_recent mm/workingset.c:275 [inline]
-RIP: 0010:lru_gen_refault mm/workingset.c:296 [inline]
-RIP: 0010:workingset_refault+0x3f8/0x1170 mm/workingset.c:546
-Code: 74 0c 48 c7 c7 e0 6a a2 8f e8 04 05 1d 00 4c 8b 35 3d c7 95 0d 49 81 =
-c6 78 0c 00 00 4d 8d bd 00 4e 00 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 8=
-4 c0 0f 85 ce 05 00 00 49 63 07 4d 8d 34 c6 4c 89
-RSP: 0018:ffffc9000a7b7880 EFLAGS: 00010206
-RAX: 00000000000009c0 RBX: 0000000000000383 RCX: 0000000000100000
-RDX: ffffc900208d2000 RSI: 0000000000000472 RDI: 0000000000000473
-RBP: ffffc9000a7b7998 R08: ffff88801f7524c0 R09: 0000000000000002
-R10: 0000000000000406 R11: 0000000000000002 R12: dffffc0000000000
-R13: 0000000000000000 R14: ffff88801baf8c78 R15: 0000000000004e00
-FS:  00007fbc75e8f6c0(0000) GS:ffff88808d22a000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9f4cc08120 CR3: 000000001234e000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess):
-   0:	74 0c                	je     0xe
-   2:	48 c7 c7 e0 6a a2 8f 	mov    $0xffffffff8fa26ae0,%rdi
-   9:	e8 04 05 1d 00       	call   0x1d0512
-   e:	4c 8b 35 3d c7 95 0d 	mov    0xd95c73d(%rip),%r14        # 0xd95c752
-  15:	49 81 c6 78 0c 00 00 	add    $0xc78,%r14
-  1c:	4d 8d bd 00 4e 00 00 	lea    0x4e00(%r13),%r15
-  23:	4c 89 f8             	mov    %r15,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 0f b6 04 20       	movzbl (%rax,%r12,1),%eax <-- trapping instruct=
-ion
-  2f:	84 c0                	test   %al,%al
-  31:	0f 85 ce 05 00 00    	jne    0x605
-  37:	49 63 07             	movslq (%r15),%rax
-  3a:	4d 8d 34 c6          	lea    (%r14,%rax,8),%r14
-  3e:	4c                   	rex.WR
-  3f:	89                   	.byte 0x89
+>   *
+>   * %GFP_KERNEL is typical for kernel-internal allocations. The caller requires
+>   * %ZONE_NORMAL or a lower zone for direct access but can direct reclaim.
+> @@ -321,6 +323,7 @@ enum {
+>   * %GFP_NOWAIT is for kernel allocations that should not stall for direct
+>   * reclaim, start physical IO or use any filesystem callback.  It is very
+>   * likely to fail to allocate memory, even for very small allocations.
+> + * The same restrictions on calling contexts apply as for %GFP_ATOMIC.
+>   *
+>   * %GFP_NOIO will use direct reclaim to discard clean pages or slab pages
+>   * that do not require the starting of any physical IO.
+> --
+> 2.50.1
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
