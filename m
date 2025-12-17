@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57171D6406F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 03:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC3ED637B2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 03:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFBB86B0005; Tue, 16 Dec 2025 22:11:43 -0500 (EST)
+	id 64C546B0005; Tue, 16 Dec 2025 22:18:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9906B0089; Tue, 16 Dec 2025 22:11:43 -0500 (EST)
+	id 619B26B0089; Tue, 16 Dec 2025 22:18:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE386B008A; Tue, 16 Dec 2025 22:11:43 -0500 (EST)
+	id 5265D6B008A; Tue, 16 Dec 2025 22:18:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3856B0005
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:11:43 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 43CCABB8BB
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:11:43 +0000 (UTC)
-X-FDA: 84227488086.14.113DC86
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BC205C0008
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:11:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ImpItil6;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765941101; a=rsa-sha256;
-	cv=none;
-	b=UiQxA1fp3r+onxhG7p48JlsBZHG6vRbpWCmxrzRNyNneK5IIIoENuQPltTtHQzCab4tnth
-	h6Jwo6Psejv7CYKsuHVcpdAM1EGU3HcugOoxlyTuy35htpwvZDP5cXmLwifS/vuJhUcO81
-	xtCwQAVWQY31we/dHKbQ88UJw5PcFcg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ImpItil6;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E3D26B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:18:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E52331608B6
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:18:34 +0000 (UTC)
+X-FDA: 84227505348.23.2C4833D
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6CC7D20004
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:18:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=oR+cDav9;
+	spf=pass (imf13.hostedemail.com: domain of linyunsheng@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linyunsheng@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765941101;
+	s=arc-20220608; t=1765941513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nu6UK8a/ziMCsyb+RknHP8PTrL524RR3T22QKWM72Zk=;
-	b=11ShCaQDPWenO9JtYx+7fusZeEnsZqElVZ5HzBtyBZubM9Ykxxt9sgY9FwwulJlyd+2pX7
-	3An7A7GqHiIpVhDLDhe6ahvmTOJIHtma2GbBVzYsb6X9Eiwq1L7sXg+U0AORH3/HVj8ZLT
-	KZsA3zMRfsf344dG9tIxkZGSJFT2aec=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765941097; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Nu6UK8a/ziMCsyb+RknHP8PTrL524RR3T22QKWM72Zk=;
-	b=ImpItil6G3hWJVCbd3i8tE1QJSz9GrF9Y0HICLelQ0bavFlm3EZl/LdcX3TUkENnWNoVEGT2FRXTM++6h8EmgguY4ZkO2psOTzRrB05JsoAqtLPeIjZZ30gno6h4oi/lwj9zoLHWXcALcXFELBz/lwxcRLoBXQ8ChcxBZfDrsos=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv1ZCXw_1765941096 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Dec 2025 11:11:37 +0800
-Message-ID: <8bfcae1c-74a0-43e8-807b-fff22a770241@linux.alibaba.com>
-Date: Wed, 17 Dec 2025 11:11:35 +0800
+	bh=ZUOzTgYQB8Tecz2GimhrlhEA5uFteptR3rbBR5YGgXs=;
+	b=PxGui5xhvxKt0O+k6svhXVbeoIbb9934J+UgAfTrc2PJRut73Pzq13CLhKeVQkyI021QF8
+	0YtVwmJ0Dt8MzEE7XY3u5IIXkhc3KPcFrQ6qoRqI6SgF37qE9txpYow/2lgcypgCKL3Htn
+	zoIR+mHxoGeNThvI6R9vFqn/3jMebek=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=oR+cDav9;
+	spf=pass (imf13.hostedemail.com: domain of linyunsheng@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linyunsheng@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765941513; a=rsa-sha256;
+	cv=none;
+	b=M+SeSsmvHxt5wMXDZH18jGZAkUo8jeEyXIlZXQChkEffiaWSSfHqkkYOGTTD90Xy7OxvQ4
+	BdygCj0MgCr7POu45oECAEwlXZ1fE5VK3K+e057v5VMLztVNbh/ynFVd3k16smF+Y0oYJS
+	sUslQetwEOSi1L8m0RA9LUqQ1AySryo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ZUOzTgYQB8Tecz2GimhrlhEA5uFteptR3rbBR5YGgXs=;
+	b=oR+cDav99PZGFTqVPoFeaCYAS52GFj3uo08gPMDEQTkxU7OmAyb5HCgdGxyQ6SazlXYGjaiHi
+	LwI5EP0RJW+uOZ8YknIdKr/AGBHoTK0noPRP6gNgaLKWzgVFwrcomi5c11DXIKf8Nej70xLdorp
+	9SsiSrcz9g5m+iAuRptAUuY=
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dWJqF3MXVz1prLY;
+	Wed, 17 Dec 2025 11:16:25 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5707C140158;
+	Wed, 17 Dec 2025 11:18:27 +0800 (CST)
+Received: from [10.67.112.40] (10.67.112.40) by dggpemf200006.china.huawei.com
+ (7.185.36.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 17 Dec
+ 2025 11:18:26 +0800
+Message-ID: <b62c18a2-7036-4cca-a3e6-8a873a2ca832@huawei.com>
+Date: Wed, 17 Dec 2025 11:18:20 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: rmap: support batched unmapping for file large
- folios
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <af330c9ea188bd0f28189b1e6e5803f6de9d2abe.1765439381.git.baolin.wang@linux.alibaba.com>
- <70d1dedc-b4fc-4eb6-baf6-9e54b6a62249@lucifer.local>
- <eb871ca2-47c8-4b10-a61d-321716f6c147@linux.alibaba.com>
- <CAGsJ_4xp40A3u=N5_mw00Eo6bPmFvctD3j=1Qmy3vOo2EmX3hA@mail.gmail.com>
- <9e038290-70ff-458d-b46d-bc512c3442be@linux.alibaba.com>
- <e718cfdd-a39f-48f6-98c8-f17683f29bcf@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <e718cfdd-a39f-48f6-98c8-f17683f29bcf@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BC205C0008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7hnrec3uqixs7hyxrhz47mbxff7bkzwb
+Subject: Re: [PATCH 1/4] selftests/mm: remove flaky header check
+To: Kevin Brodsky <kevin.brodsky@arm.com>, <linux-mm@kvack.org>,
+	<linux-kselftest@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, Mark Brown <broonie@kernel.org>, Ryan Roberts
+	<ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
+ <20251216142633.2401447-2-kevin.brodsky@arm.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <20251216142633.2401447-2-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.112.40]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 X-Rspam-User: 
-X-HE-Tag: 1765941100-705793
-X-HE-Meta: U2FsdGVkX1+5FP5/vF5gYZ+/SrDasS9cWQWSKwNy6/Nw9Bz25tdR34sLORBpqIgZmdY0pGMY8YA/p/LtRc9hTxIWBTuP9gV1wFLBPnVt6BW8AlmgfIpvn+t/RYnIhnnp2CTZMM6VvQ67NwPkwuoiuRyE0iEcP2A/2plwADHsrjFzWkmOavomaffx6eZpaqGs5b3EXDOzlhXHGWS4c1T+3c7ZN8brvVq+fkQ5XVU3Dsd5gEkxzCkMsTHkNrbNLfCW6coTqYMh67zKZn7iSIdVk9vIG3kf4apDDU2GkfszyKAyh2ACWdrDynA9TH7/g9uVegDay2FJqw+D58JTUwry8rK9YywWCjjl699sOUzp9t/r8rfE9tLwzXvg08NEB8+nRfooJNB744aO0QHPkNWONz43nCieKcQ13fdMR4UJ3dcbUYHSlhpUkObNXMJnqP3n+9KBjul1G49YUhs0h6VjeXcjWwXLTOrQbaK6DvWw01Nadl3urMhnzrIhUDC3uYNHtJnMiu4oqppUOWNlKidmvuvtmJeovtQppTfDMjQoTeh4x/kz/X/BFLlAidXyNhf0VzHU9ZadKjROfv5/g7oFyUk5bbwpNbZuYg9tiZM5Oy39fmMbYa1RuZjStwAlhw/LlK1vkLG6JVSn7bxFVcYl8FJs2db6ZRzULoaROLRRiOT4M+HuoC8klE9CYcie4kBVfgp4tvwSc3KoBNOPJMN+VBI3ExlivbF05t/Ptk5NyvO1zOrPg4tgXzR2LeLOJX6CPQBjcZssIb8235dg1qX24J3iWnml4DGStbWFmrejvkxEPk4QfTfZ9tWQij1hfLWQrNep7iMoEwvFv3A9SOsIYJ6iF33qvpHyOZ+7AOHKnX9anIY+9SU+ea9B3FpnnF3z/rn/ujC8/A7dMd8r+p+uEoZ3y4QMGVz8wAfrRmT0/valmZO4tmO33dztHV43VgPcmvimfzfv1jYq5lRSrbL
- nSIlInih
- QJGBmuizOlyUQzMCzyY2Yqw+W4b5imc3qBroJqM4YrBWXP3+iK+JOKyHACMGq0kkcXBCgtG4zfBOgwcfVHD9gL3jWKJ4uWm3l1mQHuykmtfIR96gpkC8jDJvMuwJ03d/chSln7d7ed5/7BS5T1ddXulzrSkT8sreLpCfl3bsczGx5N12AypQ6/iCbPBtGN2rH6VdxOBBDq9o5+fiQk0waMHHqxvS+QFaLZqPEgKasGk8Wbck2fgnEJP+kg022Vz7K+F2V+bb73P5xWhaLbWjDzKGZ/WXpWARD1AcrN/pSskO6yI8gzFgaR6f8FW95ovzRopSeHDGqXtndouJirsUmRPH+hg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6CC7D20004
+X-Stat-Signature: 41yh8dp1ghkthzc63gdqyckg6aa4oabb
+X-HE-Tag: 1765941512-531986
+X-HE-Meta: U2FsdGVkX1+WuT5Adc0ePHPB37wr0Bra74EqTtqNXVB8B319ACfEooxRZfGU8WsAiyFn73PdqaW31lTFVBLxhNzEu0bUNEPXkseeV54ja8V2GSXz3/oKP+T8ADczz404vcHJYmSaR5ew7sK5ZMB0nCISDQFAJhvzWeEMw95KDL4338c0wvbNa0gYgvn5RbfUq7WMI29rqc5VDCG2b9wa5DWNorAKWw2U/e+0b2NbtNk2pQuUf/ffUhZDa/+jpior28YJGeCqtqWNIM/7GvC0KtqNwIl5hhMqHXXoGn/aJN2/HaCtFxCJQe/Lh/92stY/QCDEVP7Y/RG4CDoCL31AAZd4eSUwt9wpzodKVQO2Hn/WR94Mjv8nADgMK3BcA/93avoEzy/HDg5Pt41C3WHs3dkhlX9BK8uBDlEzDWWq4iZlZwJpUKwg+oLfpPikLPkVtZ37PFA+2iq1mwBRbYVWkz4mXA63vv5PLE7yjDMAXJoNGVPPeSSVQFksymPMdh6gUHuQmTfaB64yIVyNj8exPNS7c93dNXPtFieM03Wqdv9SfZQJKXiJvXwHSVOHstke66yGAiy6froERVixX6KA9TZ+TeobD9h8TDhfujxTzJLHTJ1iZRy4Y0sMety5XVdB9o8tbnpw5KetP5VKDQrHQbH4e8klSYr+xuCjA9D9VjGu3ilSiu57nNODKh/I1QzX+5CCVjBWwt/2UcQ+NSoxWyuGYA+YjahGgjgIMTcjtFFaDCh3D0pyXslRk93ZpT9N99HlLQFpS8Jdx/qAN76nao9HR69hy85NsVbXHD94LThywYATBnfvJzHt+ZaFdtSIDv2MMZMYbn43FQ8gsCVXv60UUJiVw7QyI2gKEQtRPgbPQVG9VaoKGth5qw2mb0RlHlRWPI0k+Dus99sO8lDTqJvHMUukbRiAZcqq0f6ay2YkKmUk5akObRBDJutWpIew5SD1EbLzZhIlRJzcjRg
+ f0cAPzFk
+ mB9MR4YIi5yREqU69UkVT4mnfQWge9NWWGDHzM6t+JJ6FrmQ67iL1v3miDV0IZ0krh/1IWAvEzNi2Ort1q3EbduPoYIGSC0Qc4F7bjRb7Xs8fOL1hexLFj1Dm+Au8ILm3ptN4LbQJadBTpswT5K4tqPHMgpDD3YMCGFe6xOfBSjNJdeObVvbJzrJY3QIOheWzMALLBykIVxkSBzTSEq15s6tJ9K8M9+J6J9ANQWYRFnI+38vsbCCg2yVkntaX1gZnUM/MlADKrSGWbaCisQ+E/xFH4pXF0UJc3XZCect/oCv24/YzPcLwVNKceU5NxNkgMXJAvCl96ENOkQiq0yslserHxFwweXLJSn4Em0iNswR42Vksd62NI2S+PKMLghg2Ki55edQ4Ro/0uih5TXBudVhMEUFREu2nvkAnSdpwpbFOWSY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,53 +104,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/16 18:54, Lorenzo Stoakes wrote:
-> On Tue, Dec 16, 2025 at 02:22:11PM +0800, Baolin Wang wrote:
->>
->>
->> On 2025/12/16 14:13, Barry Song wrote:
->>>>>>
->>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>>>> index ec232165c47d..4c9d5777c8da 100644
->>>>>> --- a/mm/rmap.c
->>>>>> +++ b/mm/rmap.c
->>>>>> @@ -1855,9 +1855,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>>>>>        end_addr = pmd_addr_end(addr, vma->vm_end);
->>>>>>        max_nr = (end_addr - addr) >> PAGE_SHIFT;
->>>>>>
->>>>>> -    /* We only support lazyfree batching for now ... */
->>>>>> -    if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
->>>>>> +    /* We only support lazyfree or file folios batching for now ... */
->>>>>> +    if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->>>>>
->>>>> Why is it now ok to support file-backed batched unmapping when it wasn't in
->>>>> Barry's series (see [0])? You don't seem to be justifying this?
->>>>
->>>> Barry's series[0] is merely aimed at optimizing lazyfree anonymous large
->>>> folios and does not continue to optimize anonymous large folios or
->>>> file-backed large folios at that point.
->>>
->>> Yep. At that time, I didn’t have an Android machine with a filesystem
->>> that supported large folios, so I focused on lazyfree. But I
->>> agree that lazyfree anon folios and file folios are quite
->>> similar.
->>>
->>>>
->>>> Subsequently, Barry sent out a new patch (see [1]) to optimize anonymous
->>>> large folios. As for file-backed large folios, the batched unmapping
->>>> support is relatively simple, since we only need to clear the PTE
->>>> entries for file-backed large folios.
->>>
->>> Yep. It is actually quite straightforward to go from lazyfree
->>> anon folios to file folios. Swap-backed anon folios are much
->>> more tricky, though.
->>
->> Agree. Thanks Barry for reviewing and confirming.
+On 2025/12/16 22:26, Kevin Brodsky wrote:
+> Commit 96ed62ea0298 ("mm: page_frag: fix a compile error when kernel
+> is not compiled") introduced a check to avoid attempting to build
+> the page_frag module if <linux/page_frag_cache.h> is missing.
 > 
-> OK that makes me less concerned, but you do need to put some more justification
-> in the commit message.
+> Unfortunately this check only works if KDIR points to
+> /lib/modules/... or an in-tree kernel build. It always fails if KDIR
+> points to an out-of-tree build (i.e. when the kernel was built with
+> O=$KDIR make) because only generated headers are present under
+> $KDIR/include/ in that case.
+> 
+> <linux/page_frag_cache.h> was added more than a year ago (v6.13) so
+> we can probably live without that check.
 
-Sure. Will do.
+As some commercial OS still uses v6.6, I am wondering if we need that
+check for a little longer, is it possible to do something like below to
+avoid the flaky check?
+
+@@ -46,7 +46,8 @@ CFLAGS += -U_FORTIFY_SOURCE
+
+ KDIR ?= /lib/modules/$(shell uname -r)/build
+ ifneq (,$(wildcard $(KDIR)/Module.symvers))
+-ifneq (,$(wildcard $(KDIR)/include/linux/page_frag_cache.h))
++KSRC := $(shell readlink -f $(KDIR)/source 2>/dev/null || echo $(KDIR))
++ifneq (,$(wildcard $(KSRC)/include/linux/page_frag_cache.h))
+ TEST_GEN_MODS_DIR := page_frag
+ else
+ PAGE_FRAG_WARNING = "missing page_frag_cache.h, please use a newer kernel"
+
+> 
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Yunsheng Lin <linyunsheng@huawei.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  tools/testing/selftests/mm/Makefile | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index eaf9312097f7..aba51fcac752 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -46,12 +46,8 @@ CFLAGS += -U_FORTIFY_SOURCE
+>  
+>  KDIR ?= /lib/modules/$(shell uname -r)/build
+>  ifneq (,$(wildcard $(KDIR)/Module.symvers))
+> -ifneq (,$(wildcard $(KDIR)/include/linux/page_frag_cache.h))
+>  TEST_GEN_MODS_DIR := page_frag
+>  else
+> -PAGE_FRAG_WARNING = "missing page_frag_cache.h, please use a newer kernel"
+> -endif
+> -else
+>  PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
+>  endif
+>  
 
