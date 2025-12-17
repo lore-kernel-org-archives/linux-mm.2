@@ -4,125 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C443FD6406C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 02:48:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06D1D6406F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 03:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16FBB6B008C; Tue, 16 Dec 2025 21:48:53 -0500 (EST)
+	id EA0EB6B0005; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131446B0092; Tue, 16 Dec 2025 21:48:53 -0500 (EST)
+	id E71BA6B0089; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0413C6B0093; Tue, 16 Dec 2025 21:48:52 -0500 (EST)
+	id D7E6E6B008A; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E77376B008C
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:48:52 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9411BC0485
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:48:52 +0000 (UTC)
-X-FDA: 84227430504.05.5D3FE8A
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 800CB40002
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:48:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nT6Mmaww;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765939730; a=rsa-sha256;
-	cv=none;
-	b=46N73tGPTx7sFgFOPIjI0gtE3ZyfpJnhrSkvlEBdvzITmmP60/26k5wj5cFkiW2AkvXOul
-	eN2UiEk15dnU3XjwEX3KZHb0PI5V/nM7h8Sa1GY6TrL7SCg+U1Adg3pzkSFXtvbE6E39Wg
-	up9BiLV73t09Vk+aYwMeIAkIF8peXLM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nT6Mmaww;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C2ECA6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 22:09:32 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46353136BF4
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:09:32 +0000 (UTC)
+X-FDA: 84227482584.26.FB5A0CC
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 03BEA180007
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 03:09:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dyEaTMhh;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765939730;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765940970;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ggnpTKjc7CoueWSBfB7b7LA8VoJO3XLRhf05Pp+Akus=;
-	b=3vQGIVK2J8FRNpEJStxC2KcHUmqCoPehWGprsfmxVHMAZIBd1kCqRd7EUhp77GUYJMkDlC
-	RppMwEEGMDGs0tMjX9k9m6LiCkRyJgvyKNJsuvMXE2UJF1OWBNkIQDye0A/vmiIgP5Pn5L
-	tDTcPYCfsxuuQ75JFXZ65CqpTUxKKXQ=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b79ea617f55so461035066b.3
-        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 18:48:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765939729; x=1766544529; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ggnpTKjc7CoueWSBfB7b7LA8VoJO3XLRhf05Pp+Akus=;
-        b=nT6Mmaww/Mo21V7NntEagS60vIBPANRsDFSvGEYCG7X/4bs6i4V46eilqYai1XiJKG
-         kKbm4juiRm4bWWU5quQKhkmO68THFSuUZ/AZpHpYMDN/82LSOMgB+v2Z4z7quUul7JCH
-         5GCwtBiwvaB9DmHztDoT8S86VmUDDGvCNn5sd9UqPUnvicFJ1MhxuXCXYssTf/V1a4bg
-         WX+wam+jxYiW/RxZ+ohWkIRemKhSbukiagJRDBiZ13eS5tZ+9FM8PX2F/UumavVuTixo
-         AfSmqGsueprplkfYMAybphi6X7D5JeXKzBZXs1BDxSDuCgYbV6eKiKbPIempRG0yRVAF
-         s3pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765939729; x=1766544529;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ggnpTKjc7CoueWSBfB7b7LA8VoJO3XLRhf05Pp+Akus=;
-        b=Z74Yk3iFX66Xa2XXorTugrl3+/3uKARp57LItoRZB5/ZTHZJAJdd3g4na6ticaY0xh
-         EwKLFLWMHT5PxvReZubVFG7gQOm4wFY40rDHWvzOEdiUFNUOeyIKP0kik03mSWI7cd10
-         Wc0qR+582VdZh6pkGHh8GulkCiMwF6NfMz90Ng8QZYx5OLEWeoRkkomaaIGu7UyvYQCh
-         jUM1NDZSZCoQj2YjaRfH2y4H7PiDfao5M0t8epuTBTFikh6cuqQwd3kS6f80+1f68Y/g
-         xvEft+V3M8J5utEsBZd6tHe4eJ1xuNhVSjrEP1x0zZ19MTn4OcW+wB665fD1ZKCsWD17
-         TNlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUK/ifkjgMYo+bIPOs8MCf0yvoqCd3YDSbMnEXCNGA0vlD/MvFCtiqdo77TVbzBu5GOa/7plLZCIA==@kvack.org
-X-Gm-Message-State: AOJu0Yxy+PpzDC56OBVi0wLp043Aj7441khcULF3EyIpSYMM1nkAVjEn
-	mNWdu8lo+eTMPczIitelPknqEdGRTvGBv3YE5BwQ+3/8Q4OCUU7QfrUj
-X-Gm-Gg: AY/fxX4qFxNGq7a9tgh/fSJMW9aeEmrMFTZTXBfDKJxS0th8qI+/vHULnF+INefofcu
-	sXCUrs4PPE6E7HiwRfyDZ5NXgjtDVpsbanjCyClVZESIoZSL+/odMmP0sO3XNwh8NIYPm13mp9w
-	253Ueu9RDQK69GADe+X9N43JQmvm2U3pUFfO9Fec11qT0A10cfGOsqGVzmSPEUWHDtetXho6dFH
-	1cp2Y6x3W5CJvZTHE9zqaleHfqA5MoeqlpbObKdXUGEdFbNvwWXc/u5AeYUq2DilJixrSx9sK7G
-	k+G2qHOE6g1K20oVevGk05ufwz5kKsZzsKrLEYugyq6ryD4kuCGbjdEC7ZX0mXn8AYFhtZjOcmN
-	75kD5qiIueTyhS4O0QTOpZxUpFdtMNQqKLb7zPECYydaYAywoWULhcCb7IWFkJRJJwYmG6bQjsE
-	qYZ3oR0BTtlA==
-X-Google-Smtp-Source: AGHT+IEGzrL4ei4CYURCoMiWH15xVOBFZFp8TlRYA+TPMXKI5GJcECNuu0kOntwSve234QDDTf/kzQ==
-X-Received: by 2002:a17:907:e895:b0:b72:5fac:d05a with SMTP id a640c23a62f3a-b7d23a96f0amr1628477866b.37.1765939728848;
-        Tue, 16 Dec 2025 18:48:48 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa57190dsm1884704666b.49.2025.12.16.18.48.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 16 Dec 2025 18:48:48 -0800 (PST)
-Date: Wed, 17 Dec 2025 02:48:48 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm/khugepaged: make khugepaged_collapse_control
- static
-Message-ID: <20251217024848.uolcvqwywhpwdibp@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251216111139.95438-2-shivankg@amd.com>
- <20251216111139.95438-8-shivankg@amd.com>
+	bh=oBMrZjjwlUZToKdAahyq4R4SSDCHf1gMyTud4G2X2/Y=;
+	b=N1CaLFpYskkTX9JYHj2iuTg38KxiFLkNtJQdWynVV0VTzuXi4ZrFRJrAoXtq3Wk8d64eX1
+	4ltJqDERzJ6XwDP12WqX8ncMGRsmNQXw3SQG8PuACW7qkn0jut3ctUsHbHpcj6hEwo336b
+	iMMOWfvQWqTUbtXiQtLOZ8rqaRD3bqc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765940970; a=rsa-sha256;
+	cv=none;
+	b=HezmgZmKmVIYQpiNdeWFcG5lG+3e/OhbMta2W+yIeGndDbIN1UJZe8UXZHtORBrXDAByfA
+	crAiDtJ9RhRLFxsn3f/tAwoQL5mgGJfMo6NN/wd+I1mBcumgPR3vmmHIjBKIrfkZDojCwI
+	dSlKbOw/xtRyDmRf6/QGi158gtRPidA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dyEaTMhh;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1765940966; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=oBMrZjjwlUZToKdAahyq4R4SSDCHf1gMyTud4G2X2/Y=;
+	b=dyEaTMhhrloZ9Q7XipnZUMqDpN0uLCAeSkfr0zkV+MJe9rCYbaMKdJFa5dIUoGF3+tbDxIBlbUIZh7FKvm74s8t4bT3QXD4VxDHgeiMfvValsQjDBjz+Ye29QIhDWKNnf4h8KXEt40+xYk3W5W7uSh1OnJKr9EbCyH4A4bUbhYU=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv1ZBna_1765940964 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 17 Dec 2025 11:09:25 +0800
+Message-ID: <1c6cfc9b-046e-4dec-a859-032e89e707d4@linux.alibaba.com>
+Date: Wed, 17 Dec 2025 11:09:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216111139.95438-8-shivankg@amd.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in
+ folio_expected_ref_count()
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Zi Yan
+ <ziy@nvidia.com>, Bijan Tabatabai <bijan311@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shivankg@amd.com, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
+References: <20251216200727.2360228-1-bijan311@gmail.com>
+ <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
+ <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
+ <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6p939nct5mofsm7dcxxz8byirfobo4br
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 03BEA180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 800CB40002
-X-Stat-Signature: 4q7znpd4obp4drjqd8pi31t63985cnon
-X-HE-Tag: 1765939730-578206
-X-HE-Meta: U2FsdGVkX19xQ0j6A3Wxqi5LIvV7HbA7QgpOOnbDxwfUvsXE1hRdeQ8z2wJvdnILd0iKPmWhEUc03X+Fbul336ijEcAFKkNsJmVNXqjsw0rtW+F2sppMK34Z/uyldw6qq9HbOeaCKtMuDGt55qpzRWQprtHpjKc3p/pjKOSKfJyhzVGY976hglcH1wmQXisa5+Su4YePPxwZuvMz7tgrpTn/a8Dd4rcqrz/wTIQ1Njh1pGRmhzEfPNXj50hDH1JQKujG6ccdt3jVNsgHRcwrPnF+gCaf1KDPJY5ekpe/EZefA4rIsuGQxKL2qPBj1sV7mA81fIjAWR4Vku6Z7j2LydTX8v4/2YQaPflO9ElsOvahUQQI+ASzAlthYLylxqk5SlMKWCmEO2ld2IGx4vDHOu5oKU0h/dt9Q3HK5pdFR6iqI7ce6cGKFBBlWnAqzFI6MLN5yeeiA+Kj0ToXEp2tkcpPN/AQGXWbm0RMrm/qcVbLPUALa/a6QNIqOrNRQKKM7npaM9k7ESLCwmCQFWMyFC1NxJ+J8PuuETrOJxDE+Yq7wkaNjwv1X7EKut1EwnvYRSQjJX+GR1BtxJz6kVXx/aUnawva85UJmMW+4nNp1BVEJgorw9Dx68CjTme1Q942wtVhBvuWMP7QJEGQS3sVOtFbn7LN4uOYLc4uA75q/XMTA+DnwT98El7fQrE87SHrutnZViAD5xYl7ovHAScadyJD/YfGGLqCCElC5KTepGS7NqItSkr3/FI98VYb9SlQ4e/YNgZvinJsauZBrNOXBPDBGYbVIojXOGytCFsbcLtGPo50HkThiqFQHQibo7Bns+9SpzvK8m0aYCdK/rEQC8CagNTRzfJRdtJnTWjlVx4mXV0Gq3UVW9zg0/W6EZCYZeRCINFVKj3TEvQWjhn6r+KHo0O1VbOoPYfH6vpF0KoYtAH9a17IHhkuapr/w+yYCw7nQ4OmxmvRx4O5GtX
- 8Zvt2WgE
- 2I7F7ZeAeHb1m2tbT7mCRG52vA1LM3YGKO6qNy3skMkXfEctHeUeI5afJhubnKOdAuKFLWOt9HNQycpR5YyWTdmCSswfoC5S2g1KvRx0tOyGsRlP89RaGIjDGNRQrxSJRqh/Axoq2d378U5vLwcfJfy2aLSBC5t7ak/c7LW5V3XkW9zvc2Kgiq4bMiYcdWXHOcRNR818SRZYoTBGj7VS6RNqcjgCtMfSfREuhljs1OQEEKBNxrHUsSQkEkDmtvMSsJNFXVCXoMD215ypPQj+PDfw1EdTsxTJvJf3tcsOWzL6rKKKrl3fltLJqhF4V97Nqdl5OpvGR/3dOuoC2nosLZYNsce3+tzeV91+gkeezUHuK0Q1A8pO660nBnSIlUNO4VS5ZC7en4yCDUqcLlAamjvhfa6cdsUHZeVYaK1kpggYRoGQWBHiCUMRIe6OMOC+iG5M8zNGsLH7TYnV4bwt3nQICUSnNyq7UPiaUwuaMdGo6G1Sqg2157mDmjSTNXBJq4vs1aVB3pthZXoYinQP1qkmJgvKty2czZ99PWWGPl4v3SXfZaV2H2cwKE30phRBEDte2dM/rQYtrfUXqlsM3pTZmbKEw7nsvJ4fSM+eNf+7Xbi4zv5REdtHEWGrRV4kewS+L/NQ8xSYOE6poZ/owhXKW7z8HTq1SdRrpIF5yao/d/kwcv20/sHDloTq9HZEyie+oXPoQM5ieSoolqu2yKZUbFjrtZ9b6l4Sg
+X-HE-Tag: 1765940968-950623
+X-HE-Meta: U2FsdGVkX184mVuUx+9Z+Vuj7pBHjwI+62FXM6OzMsEPSJsVBoOgLTOqco0N1zxBsudLQ+daDmgWTKa9O7rxsd5qlxVROSFb34Dsuume9pl17AESxYIcUD+nS3vMfOWSNcOiExd5W/V+DsjNYskLJrF/IUwYfaLSIyCMjd/nVLdMiHT6afxpvtOaLexbJLTeTwkoatdWKMkIOvEqFPTDiw96Gf/bEaanpyGqo0EoGPUZkm7msWWCev241x12oXqwubZfBj8VO+ddm6ercxwARaO9WvozirMSQCxIGlgA8fqXSyRIHtURWqm+VOxdFyTWf7htcvkahvjMBnFPcSk4WXH9hmN1DCn/2tof+efXqPxPWUA1qMEg9asciQX3sw40RCBd8qvBVGw5HhFYV59/2byPOALTMxjvp+2rcie9WxFDENzNc4l7rvQm2pyTlPFcfiVH1YTYThCUM+ZHm/+Nn4FjBirLbVn/31hiAA4HRcHAYVEfvqBnYQ/CCvvDDL4Q+1XGTNwmpQDPGfcs7bbWLlBysXZdL0QvAGWku+onF/+2Hm56JqW0IcAPPthqJVXJIpzSatiAPE6GXJ65Yr+5aOUZAdpExgmoQ7SArP+AnIuEDt8STI2TNEWeD1uOyTlhkxtTFel7VPIiQs4ZoptDK675PNGqI80aDo4wy+M68z0rz8Va1HXJGX2Ti5T7I1l7cLW3m6T7ampKqhJC2zfRVShStxS4etqSfP8rCDMPps3Gd7LypavyZSd7n3iZcBBgXcQLR2zC2jQmnhoxcCPYtEmV/9sQpL5I9L3cwLCdHohcF0ERkmkhqi3EgqA2E2myF0lstCojoSBLuRG/oKtD7Z5VbyxNFAWyupqn4ck549lShYjLhtKQA/xmQxF7SGHz6/aVActJHbl4ZtPKJ6VxzkvAG0Mwoa7SB1nsHAiXbJiDulclOkiUZpinYEz92w3TquACi3T2Pu3NDWBx4LH
+ 8G2FfrBQ
+ VgDVvMs5oeNLl4vvMElJCyGj1f7X06L24oEtVHDMUKAknYBcb8vGz25DEq84KbKMwqAjXtUGbshrEVhGA2/fYqIwOEx9HgvnqmmYR4PDXm1SDXzrn/Z8CGcPiLh12LQan8h1J6o3ADSX8ZGNO/cHrKpt/6i2lhe8ZEZCvWSfiwkqyeAjF1Nlqbb/J9vV6Um2/vctZfa0ZeqZBkn7NFIf2RDrTMEge9ChzLK6o3s3h2YseeEeTWzz8/Z3ovjkl75jvHlvx1v+MeH6t25OTei00/pKuC2x+2ZgAJxKM5YFm4fqpeO6kY+6FFjvenAqHsmzLMKuXfgLJSmJfn/6DaG3+d5N814oqc43w8U4Z++wAd0Ooo7HGEQCOzsYc+A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,36 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 11:11:42AM +0000, Shivank Garg wrote:
->The global variable 'khugepaged_collapse_control' is not used outside of
->mm/khugepaged.c. Make it static to limit its scope.
->
->Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
->---
-> mm/khugepaged.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 65b1b778378a..d130357a2d88 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -829,7 +829,7 @@ static void khugepaged_alloc_sleep(void)
-> 	remove_wait_queue(&khugepaged_wait, &wait);
-> }
+On 2025/12/17 09:04, David Hildenbrand (Red Hat) wrote:
+>>>>
+>>>> I am not very familiar with the memory hot-(un)plug or swapping 
+>>>> code, so
+>>>> I am not 100% certain if this patch actually solves the root of the
+>>>> problem. I believe the issue is from shmem folios, in which case I 
+>>>> believe
+>>>> this patch is correct. However, I couldn't think of an easy way to 
+>>>> confirm
+>>>> that the affected folios were from shmem. I guess it could be 
+>>>> possible that
+>>>> the root cause could be from some bug where some anonymous pages do not
+>>>> return true to folio_test_anon(). I don't think that's the case, but
+>>>> figured the MM maintainers would have a better idea of what's going on.
+>>
+>> I am not sure about if shmem in swapcache causes the issue, since
+>> the above setup does not involve shmem. +Baolin and Hugh for some 
+>> insight.
 > 
->-struct collapse_control khugepaged_collapse_control = {
->+static struct collapse_control khugepaged_collapse_control = {
-> 	.is_khugepaged = true,
-> };
+> We might just push out another unrelated shmem page to swap as we create 
+> memory pressure in the system I think.
 > 
->-- 
->2.43.0
->
+>>
+>> But David also mentioned that in __read_swap_cache_async() there is a 
+>> chance
+>> that anon folio in swapcache can have anon flag not set yet. +Chris 
+>> and Kairui
+>> for more analysis.
+> 
+> Right, when we swapin an anon folio and did not map it into the page 
+> table yet. Likely we can trigger something similar when we proactively 
+> read a shmem page from swap into the swapcache.
+> 
+> So it's unclear "where" a swapcache page belongs to until we move it to 
+> its owner (anon / shmem), which is also why I cannot judge easily from
+> 
+> [   49.641309] migrating pfn b12f25 failed ret:7
+> [   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 
+> index:0x7f404d925 pfn:0xb12f25
+> [   49.641311] aops:swap_aops
+> [   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1| 
+> reclaim|swapbacked|node=0|zone=3)
+> [   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 
+> 0000000000000000
+> [   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 
+> 0000000000000000
+> [   49.641315] page dumped because: migration failure
+> 
+> What exactly that was.
+> 
+> It was certainly an order-0 folio.
 
--- 
-Wei Yang
-Help you, Help me
+Thanks David for the explanation. It completely makes sense to me. So 
+feel free to add:
+
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
