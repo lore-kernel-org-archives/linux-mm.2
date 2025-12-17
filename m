@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C64D64082
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFF6D64086
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:09:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED616B008A; Wed, 17 Dec 2025 02:01:45 -0500 (EST)
+	id 8F4DF6B0005; Wed, 17 Dec 2025 02:09:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CDDD6B008C; Wed, 17 Dec 2025 02:01:45 -0500 (EST)
+	id 8A34A6B0089; Wed, 17 Dec 2025 02:09:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ED886B0092; Wed, 17 Dec 2025 02:01:45 -0500 (EST)
+	id 7A1CB6B008A; Wed, 17 Dec 2025 02:09:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AEAA6B008A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:01:45 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E55AC8B67E
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:01:44 +0000 (UTC)
-X-FDA: 84228067728.19.5B48175
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AA3B3A0011
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:01:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VkISLN4f;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765954903; a=rsa-sha256;
-	cv=none;
-	b=oqr0CD7/PxI+EiDxRTXY0ITx3/RhKGWSTN4dicBWHTCYXxX9rK3Mz7PrrtDjfpU5HeOYQj
-	db2PzVrAOoSbAzJLQ3Wb4ZoAa/+5dYh7NwhHssKYo6+zEMKQZuJIZNZ8ON8JzNwGY7+pyI
-	uGyeqaVTGZEVsBmnDGqx+B7V3npfPUM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VkISLN4f;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 683AB6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:09:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1AE7312F62
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:09:56 +0000 (UTC)
+X-FDA: 84228088392.14.D8F4F4F
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DDFEC40013
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:09:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gAFOHui7;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765954903;
+	s=arc-20220608; t=1765955394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3tV/MJk6Zfx2O/Rhft4sIpW80RJW2v174K97Jttoa3Q=;
-	b=khsZqSR3i+2pAqNH/54qH9jDO2feUQdhoNRXyo2NwBUANmPPcVGg+zdEjrF+DHY5su+5I3
-	6WsqxuBmsrns16OQjdu952TAKJ76dZT9WY6tKtOlcJyFkTLZ1weRFETn3CNKZClfyzUj7M
-	rO/s+wrASf2Z4WrAH95BDNF9OLPuHkw=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3tV/MJk6Zfx2O/Rhft4sIpW80RJW2v174K97Jttoa3Q=;
-	b=VkISLN4fnJ2/4fsJ4fXfjr3SgmzQdM+AxW8gnGlSusZd7Za04Az4Fn5h98G1D1epV/NbXEZhn
-	jPLhtoBJAAE3FwThHI0POsRRlbpxD2jyZA6Q54q719jdjOO+ue0iVJTxVj0C4rG2OS1XWRGLXFn
-	/fKFYzaPjzGnhsBquhsDmjQ=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dWPlZ6LskzLlVy;
-	Wed, 17 Dec 2025 14:58:34 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id CEAF1180043;
-	Wed, 17 Dec 2025 15:01:36 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 17 Dec 2025 15:01:35 +0800
-Message-ID: <2b19e44a-2562-4ea5-b52c-a216f565d734@huawei.com>
-Date: Wed, 17 Dec 2025 15:01:33 +0800
+	bh=BPdhN2PgYo+tFQS6gBLjYcRITKQ82W662MYUF3IclR8=;
+	b=UoKdDDkEP/qwhUHlWVon5le+fosl5R6R/eRXWkfSRKoBcLIqHOHwNHaSntUJxaL3z3mDbs
+	Ndw70zYTYHuFywhzph3S6nY6slI1OdO+OU2StmVoSEjtnE5PF7vyuJSghQ4+imZz02Xpe2
+	iWm2ULvGH+8leKpMXhCmpAS3La4viGo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gAFOHui7;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765955394; a=rsa-sha256;
+	cv=none;
+	b=LJnjQigbrSELRWS1L3g54AMLWR21gAt4v0xPYWnL4ozHwTw/8c5/qyuoDr47V2kEAtulx3
+	3cWG0TCnxoI8YTGtU0MtTdWnUK8XmQZiM7wqytfFJ4TWj4s0lyBDyY0N9vNT1qnP7ooA8c
+	oSV4h0Lg1x5kSnMQhr8mufM5RZdssac=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1765955389; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=BPdhN2PgYo+tFQS6gBLjYcRITKQ82W662MYUF3IclR8=;
+	b=gAFOHui7OtcrIxy+0Dgs5IynSQpQ9ImYB9pnJNlsb43qkgA2s+09idgoFWANKvSxA5eGdGgB+fm9Sqkk2OvIwr4oXRpA8ToIlcqdTeeWuIbVeZnFFCZWLUxTvSBV/w8QAI1ItoOryv/hF2RNAcOHg8ERK4KvjXVp9ldJ+g4rYc4=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv2U.eU_1765955387 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 17 Dec 2025 15:09:48 +0800
+Message-ID: <753ee7bd-8c9a-4242-a216-98defcd8280f@linux.alibaba.com>
+Date: Wed, 17 Dec 2025 15:09:47 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] mm: page_alloc: add __split_page()
-To: Zi Yan <ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>,
-	<jane.chu@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
-	<willy@infradead.org>, David Hildenbrand <david@kernel.org>
-References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-3-wangkefeng.wang@huawei.com>
- <130003EA-0DFF-4C32-ADF3-DDB800494264@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <130003EA-0DFF-4C32-ADF3-DDB800494264@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v2 2/3] mm: rmap: support batched checks of the references
+ for large folios
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, baohua@kernel.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+ <545dba5e899634bc6c8ca782417d16fef3bd049f.1765439381.git.baolin.wang@linux.alibaba.com>
+ <52ed7e12-b32e-4a73-ba55-eed993b930b9@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <52ed7e12-b32e-4a73-ba55-eed993b930b9@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: AA3B3A0011
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jnqsxyq8uey6gmbhzd9fahjrunrjfiag
+X-Rspamd-Server: rspam02
+X-Stat-Signature: bnpi9m5ozyy5hnrm9xsceipb9111wfwo
 X-Rspam-User: 
-X-HE-Tag: 1765954901-478409
-X-HE-Meta: U2FsdGVkX19i+KFqfKm07370xAjKri+cYg67yAznLayjPv5mM2CRWfxJd7sBxfqWQL3PKym8y74pmTRsqCNHVUtO7UKUcTAzu4krbELTeH76clRvng7TufevXMa9jl7KPNox1PuprsCXdcAgTjqLiSBr1a7QI4QiVuSM+b9dB68fZfSKYP5z3wn1d4eLBZSknoCVwtvN+sd/Fw0znfZfeze4CTOKBYClzRngi8m4l7BCbhd/LAJ2jDKroEQjGDMWDMsO3daBLpMQddY1qwmvcRAipH0CUnVYvA3S7su4imKnJqYQtbkGGCr6drDFtyxGBwUGe3lOtW/3yF/xeVt2yqeR6LCOZEH52iyz6UbEy4rCDXN2QjK/Ss6ecFfmiwYL87oBnqIrseUM3ox0cHLjS3WL+RmVC4vdlYRM8cLavehg2tE7YYfZGW7l9NRJLGv/8styx99j2A6OfOMYYYBQRyHzaysOzhX5gyYzkbJqJTxA9BWKF6RJmA5UQ7B3uy6P0vUd0c8GCB24/EIzX6kXiD8QeVddvec8w81xvODV8yJ1BRBkZw3LpyTO5bsay/pp8mqocjFMYA0dcBdVbeEJkZG79OEKWTC4LI2fICwjGPjqwhmTfvfMHXtgIelcAWiLaNsWBtstEMXCs5efl039lMNlMQ5nGIVb2sqN4bEDsaBBC1uZWXp9OFSn2r3B2Ft+N8TNMRdNt2Ce1R2L6ESiyowXSgNsGHwbVK+yAEILal5wxhhg9JplIknGRPjym14ctHgTIKw6+emqLDojlT1kIaILpsfKL0320wIsOfOPvMGCC68NO2h0YYtCuS8xu1nZ5pOxdi32VUXiCwWiEqGD/DScRarDWhwzP+XaZh8dHKrreAj4P9PTUrYMQt6BmF8EJSy+gPZVPGbSnxii6DyFPMMGl5R5URNoKF6OMORpDJjknPR0kiAbseitV28wKJkPJlCd6dBlcxw18QO+4ad
- Gx2Uy1Xk
- y52e4whu2d3G0CE2EYmhgyhx0zcJEEhu86YU3R8qZdQctTj4brlSLmzN6IMD5H9WkEtfavt0tUCpe+5X1vRS4knz1vpzTxyyjIIiWprGGWXJQu2SnXr8rF7WIsiqkZJgBZ7Vc1n4R5Bd5gZ7j51sxQH4u7m+UbJ6kzTq9d38yw+zAaCXglAbLkE+aN3UWteI7mekaxmte+bNPw6oRYWZYF5OJLpb0ohVlzMOFX7D2iYzJLa6SyS1VEhYqhmQ79qPuOUWkvw3lJkxhdH6vcZTN9fkA3Df6rJpNiXpxIyrH8apptiKX10zQoxB0fo9PnlbSMia+LitRbqiaQldxf62SV+cHczPfwfYhklgbJ84cP4wASFVX5gDcaIL8wqdqVHN+9suzFwHStwC8xlMqutzTPcu792/aa9bm6WAFD8x8d6DqFAsExgcsyIwFbA==
+X-Rspamd-Queue-Id: DDFEC40013
+X-HE-Tag: 1765955392-843423
+X-HE-Meta: U2FsdGVkX1/MGtO6WGUkEHdxtrehEBmCoBbWlza/3/HRStNZsTQ0/NPlgrJkbpwEqpRUqGkeBWHzR73lGHxVNxBTmyS+vYDAl9BnYiWTs8wGZ1iUv0A2KBCb3gkDR42KqMh35eTlrMeu4L5o1OLwdhbEgZzK00I1bSmcVQ+RZxWwu2C68yHTrMbrbL5fb9i5N6e3VWHkwFjHuWYBNLuaf0UwHlyuwp2cVbyUx8x6WesPQQDjlVSoG2sTVLRLR9JIeaH1CZW4FmJAYRbtFb2gVnSVS9TrxFC3PidTUpr8k+sm2SQUypzN0GNQSch33KmXRIY7QN24yt07zdLGmORRGhOKz1IUwRy6FrRUfM3VvqCS7+G2PQ96m6wKjlqmbTuT2Gk2qlDpnSQoLY/yIZrwmcQjKI/Pk7wQwx2F0ll3rMo0RYg8QMXlpTutNy44fhIUCCVXqNSkEVghzBC1abuISNWEiUsgDJzgQlU0BeH3YWmyWn3T9ZlS7xHVd853Wt7+NngUwxBi6kBoUeLB11p3RwWSFVhK/OeKHNEbKC19I1wfZtyZH51nYX4lo/SUHCrRITptIIvnkpZJdgR1ozOu5tyBh3yh0pQ/spKXGfPAw/Ug2B3X3W1qQ6hvoGzf2jsMQKxvzn7cJJ11vuyx/jkZaGJ6jJfhLZ2NfaXBCXwYpgT2iEknQlL5M0EYaAaC0ReTHOJeT+u+Tu8sDJ9hx25EmJznV1yhUoUY7Kdfd6JJhGaE1x6SaoWdrEu3UViVorPoaGCo1tlk91JXvpFPa8awFKcjjza0tXJfq/8yvZsmmOBZXeZRlthoOAh5yvWFx24eleKj7xIqGzuCeeQqttFqT31i4SBWa9xfqcRaWe32dTUgS4KDOZbTeu7BA4YVH0sxAzG+ABGIj9UvKTzDjcDrQlZ254BOTIzchTUYABjg1LIhTLxU/Nx8y9udhsJAnHKWY1LHIDBq2MGZva+ftJP
+ tITT+C7v
+ 129HPxiJWNXwLrOGdhKWg0r+Vc+ifkwodI36DdFq+RmbuVmjoWS1aVcV2FOPyHkawMtJa0gINlFoHpOULQjEV57NGCzWK2zSUZCG9V0w7FCWTk4+v0HXc9qM5Br2OHsU6RLhceOLLhXMaplNuiiy1IG0vij06SsHTA+BqQgjsHSFk0xAAX6dE9yg8BCSGA8Mqehjw0U0EjjiXos0NCEAl3A/B0AZCf83X/WvfCJ4Pi4Uv360TIz5opqBt4we5geKvBQ0AmJMuayIJAFA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,87 +95,172 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/12/17 0:21, Zi Yan wrote:
-> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
+On 2025/12/17 14:49, Dev Jain wrote:
 > 
->> Factor out the splitting of non-compound page from make_alloc_exact()
->> and split_page() into a new helper function __split_page().
+> On 11/12/25 1:46 pm, Baolin Wang wrote:
+>> Currently, folio_referenced_one() always checks the young flag for each PTE
+>> sequentially, which is inefficient for large folios. This inefficiency is
+>> especially noticeable when reclaiming clean file-backed large folios, where
+>> folio_referenced() is observed as a significant performance hotspot.
 >>
->> While at it, convert the VM_BUG_ON_PAGE() into a VM_WARN_ON_PAGE().
+>> Moreover, on Arm architecture, which supports contiguous PTEs, there is already
+>> an optimization to clear the young flags for PTEs within a contiguous range.
+>> However, this is not sufficient. We can extend this to perform batched operations
+>> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
 >>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
+>> of the young flags and flushing TLB entries, thereby improving performance
+>> during large folio reclamation.
+>>
+>> Performance testing:
+>> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
+>> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
+>> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
+>> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
+>> from approximately 35% to around 5%.
+>>
+>> W/o patchset:
+>> real	0m1.518s
+>> user	0m0.000s
+>> sys	0m1.518s
+>>
+>> W/ patchset:
+>> real	0m1.018s
+>> user	0m0.000s
+>> sys	0m1.018s
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 >> ---
->>   include/linux/mmdebug.h | 10 ++++++++++
->>   mm/page_alloc.c         | 19 ++++++++++++-------
->>   2 files changed, 22 insertions(+), 7 deletions(-)
+>>   arch/arm64/include/asm/pgtable.h | 11 +++++++++++
+>>   include/linux/mmu_notifier.h     |  9 +++++----
+>>   include/linux/pgtable.h          | 19 +++++++++++++++++++
+>>   mm/rmap.c                        | 22 ++++++++++++++++++++--
+>>   4 files changed, 55 insertions(+), 6 deletions(-)
 >>
->> diff --git a/include/linux/mmdebug.h b/include/linux/mmdebug.h
->> index 14a45979cccc..ab60ffba08f5 100644
->> --- a/include/linux/mmdebug.h
->> +++ b/include/linux/mmdebug.h
->> @@ -47,6 +47,15 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
->>   			BUG();						\
->>   		}							\
->>   	} while (0)
->> +#define VM_WARN_ON_PAGE(cond, page)		({			\
->> +	int __ret_warn = !!(cond);					\
->> +									\
->> +	if (unlikely(__ret_warn)) {					\
->> +		dump_page(page, "VM_WARN_ON_PAGE(" __stringify(cond)")");\
->> +		WARN_ON(1);						\
->> +	}								\
->> +	unlikely(__ret_warn);						\
->> +})
->>   #define VM_WARN_ON_ONCE_PAGE(cond, page)	({			\
->>   	static bool __section(".data..once") __warned;			\
->>   	int __ret_warn_once = !!(cond);					\
->> @@ -122,6 +131,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
->>   #define VM_BUG_ON_MM(cond, mm) VM_BUG_ON(cond)
->>   #define VM_WARN_ON(cond) BUILD_BUG_ON_INVALID(cond)
->>   #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
->> +#define VM_WARN_ON_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
->>   #define VM_WARN_ON_ONCE_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
->>   #define VM_WARN_ON_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
->>   #define VM_WARN_ON_ONCE_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index da32397b4313..aa30d4436296 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -3077,6 +3077,15 @@ void free_unref_folios(struct folio_batch *folios)
->>   	folio_batch_reinit(folios);
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index e03034683156..a865bd8c46a3 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -1869,6 +1869,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>   	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
 >>   }
->>
->> +static void __split_page(struct page *page, unsigned int order)
+>>   
+>> +#define clear_flush_young_ptes clear_flush_young_ptes
+>> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>> +					unsigned long addr, pte_t *ptep,
+>> +					unsigned int nr)
 >> +{
->> +	VM_WARN_ON_PAGE(PageCompound(page), page);
+>> +	if (likely(nr == 1))
+>> +		return __ptep_clear_flush_young(vma, addr, ptep);
 >> +
->> +	split_page_owner(page, order, 0);
->> +	pgalloc_tag_split(page_folio(page), order, 0);
->> +	split_page_memcg(page, order);
+>> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
 >> +}
 >> +
+>>   #define wrprotect_ptes wrprotect_ptes
+>>   static __always_inline void wrprotect_ptes(struct mm_struct *mm,
+>>   				unsigned long addr, pte_t *ptep, unsigned int nr)
+>> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+>> index d1094c2d5fb6..be594b274729 100644
+>> --- a/include/linux/mmu_notifier.h
+>> +++ b/include/linux/mmu_notifier.h
+>> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
+>>   	range->owner = owner;
+>>   }
+>>   
+>> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
+>> +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
+>>   ({									\
+>>   	int __young;							\
+>>   	struct vm_area_struct *___vma = __vma;				\
+>>   	unsigned long ___address = __address;				\
+>> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
+>> +	unsigned int ___nr = __nr;					\
+>> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
+>>   	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+>>   						  ___address,		\
+>>   						  ___address +		\
+>> -							PAGE_SIZE);	\
+>> +						nr * PAGE_SIZE);	\
+>>   	__young;							\
+>>   })
+>>   
+>> @@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
+>>   
+>>   #define mmu_notifier_range_update_to_read_only(r) false
+>>   
+>> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
+>> +#define ptep_clear_flush_young_notify clear_flush_young_ptes
+>>   #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+>>   #define ptep_clear_young_notify ptep_test_and_clear_young
+>>   #define pmdp_clear_young_notify pmdp_test_and_clear_young
+>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>> index b13b6f42be3c..c7d0fd228cb7 100644
+>> --- a/include/linux/pgtable.h
+>> +++ b/include/linux/pgtable.h
+>> @@ -947,6 +947,25 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+>>   }
+>>   #endif
+>>   
+>> +#ifndef clear_flush_young_ptes
+>> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>> +					 unsigned long addr, pte_t *ptep,
+>> +					 unsigned int nr)
+>> +{
+>> +	int young = 0;
+>> +
+>> +	for (;;) {
+>> +		young |= ptep_clear_flush_young(vma, addr, ptep);
+>> +		if (--nr == 0)
+>> +			break;
+>> +		ptep++;
+>> +		addr += PAGE_SIZE;
+>> +	}
+>> +
+>> +	return young;
+>> +}
+>> +#endif
+>> +
 >>   /*
->>    * split_page takes a non-compound higher-order page, and splits it into
->>    * n (1<<order) sub-pages: page[0..n]
->> @@ -3089,14 +3098,12 @@ void split_page(struct page *page, unsigned int order)
->>   {
->>   	int i;
->>
->> -	VM_BUG_ON_PAGE(PageCompound(page), page);
->>   	VM_BUG_ON_PAGE(!page_count(page), page);
+>>    * On some architectures hardware does not set page access bit when accessing
+>>    * memory page, it is responsibility of software setting this bit. It brings
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index d6799afe1114..ec232165c47d 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -827,9 +827,11 @@ static bool folio_referenced_one(struct folio *folio,
+>>   	struct folio_referenced_arg *pra = arg;
+>>   	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+>>   	int ptes = 0, referenced = 0;
+>> +	unsigned int nr;
+>>   
+>>   	while (page_vma_mapped_walk(&pvmw)) {
+>>   		address = pvmw.address;
+>> +		nr = 1;
+>>   
+>>   		if (vma->vm_flags & VM_LOCKED) {
+>>   			ptes++;
+>> @@ -874,9 +876,21 @@ static bool folio_referenced_one(struct folio *folio,
+>>   			if (lru_gen_look_around(&pvmw))
+>>   				referenced++;
+>>   		} else if (pvmw.pte) {
+>> +			if (folio_test_large(folio)) {
+>> +				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
 > 
-> Could this be converted to VM_WARN_ON_PAGE() as well?
+> I may be hallucinating here but I am just trying to recall things - is this a bug in
+> folio_pte_batch_flags()? A folio may not be naturally aligned in virtual space and hence
+> we may cross the PTE table while batching across it, which can be fixed by taking into
+> account pmd_addr_end() while computing max_nr.
 
-Yep, will change it too.
+IMHO, the comments for the folio_pte_batch_flags() function have already 
+made clear requirements for the caller to avoid such situations:
 
-Thanks.
+"
+* @ptep must map any page of the folio. max_nr must be at least one and
+* must be limited by the caller so scanning cannot exceed a single VMA and
+* a single page table.
+"
 
-> 
-> Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
-> 
-> Best Regards,
-> Yan, Zi
-> 
-
+Additionally, Lance recently fixed a similar issue, see commit 
+ddd05742b45b ("mm/rmap: fix potential out-of-bounds page table access 
+during batched unmap").
 
