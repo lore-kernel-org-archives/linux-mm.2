@@ -4,83 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC993D65C7B
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 17:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF0ED65C7C
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 17:02:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8ECC6B0005; Wed, 17 Dec 2025 12:01:25 -0500 (EST)
+	id 78A3B6B0089; Wed, 17 Dec 2025 12:01:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11D36B0089; Wed, 17 Dec 2025 12:01:25 -0500 (EST)
+	id 75EA56B008A; Wed, 17 Dec 2025 12:01:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08456B008A; Wed, 17 Dec 2025 12:01:25 -0500 (EST)
+	id 636966B008C; Wed, 17 Dec 2025 12:01:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6D56B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:01:25 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 427C48B4EC
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:01:25 +0000 (UTC)
-X-FDA: 84229578930.08.A09B75C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4D36940026
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:01:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 52F3A6B0089
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 12:01:59 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A026C0D53
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:01:59 +0000 (UTC)
+X-FDA: 84229580358.24.B167E84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4A41640010
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 17:01:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ICaVjhJC;
+	spf=pass (imf07.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765990883;
+	s=arc-20220608; t=1765990916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C0NC0fbl8xjoMve3P0ozuqRy+osvd9wlilouQC/PDFs=;
-	b=r3Sghsv4iKEcLLnKuUKwO74Gny4e+JQ+I0kqvfrpJv1NeGsi6QGTOmmwN0I5xhmfe8ExUD
-	bWzeFgY/6kpPrFl9/jkjb+sxxuEBDddxRlLZRF+RQy7z5Wqut9VnpAaq7NBd81JP4ynG5l
-	vQq86VFXrVcmGqlrDvynl6iycaBbvh8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dD5nFNFh+CHq/nzULmKKE12yIQGGBSkgJsl56ofghHQ=;
+	b=he3LudnDETlwrAXgsd/vGgrHu4t47fl1PFyBK3zJ1+4mPgEMyxXwiRk1bMUb9GCTe5tOT0
+	JUEhHGFv4hgr2MzDjBkq7wXVHoHuoVR0+7FAeLz2uBtlLyfUIDA+SS2Zu/KgNHvYB/fu2+
+	kg4ZS/XjJ45KT6p/hv48hr9sJyFpZ7g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765990883; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ICaVjhJC;
+	spf=pass (imf07.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765990916; a=rsa-sha256;
 	cv=none;
-	b=uw9dNXvyrsSwPuIusmJcQQ0DAO+d5rqixA9ocIJIVWugWZs8b2bmYnEAiF6kgOBF0OBs3N
-	4GkvS6MhKBTT5Q/HKry9xFTFKcgkB3byQn4m3YPO2uTKfcwwvp8hpy/a/9M2C1K+gAEiP/
-	KvsRXXLVE4UVgz328PgMSUeJXB7IPdM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51F19FEC;
-	Wed, 17 Dec 2025 09:01:15 -0800 (PST)
-Received: from [10.57.91.77] (unknown [10.57.91.77])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BE793F73F;
-	Wed, 17 Dec 2025 09:01:21 -0800 (PST)
-Message-ID: <4a66f13d-318b-4cdb-b168-0c993ff8a309@arm.com>
-Date: Wed, 17 Dec 2025 17:01:19 +0000
+	b=SxHLIc2jJIi+17UNTLC7pCIFoqL6/VLqYAupF7FJ5etN6JvP5Z0ICSsy9xf3ZXTrGfX4D+
+	bDgOPGQiyep+HsKCNSa+89B0K2edBaavqk3EMIDxoUTnA9lVv4IY6OomE3aRHL0oswE2H+
+	KvxPKACbzdjZar4cd5T59uQ1kA8HSzM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765990915;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dD5nFNFh+CHq/nzULmKKE12yIQGGBSkgJsl56ofghHQ=;
+	b=ICaVjhJCBc7Z6vRvnFc+v2GlU3Ny51ubvHlo89CWEzPstJ7ovQPCcXMvBZfznJSWiAWbiD
+	4FB8hGJ4usljOH7gRW5wOST1ghuuyuk1N9RrBX5swPAQBtZKK3/Z80UYDgqn7sTu+3xVE2
+	UpAvH9YnPHeKtMQ5HfMHDEC9bD2ipyE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-302-_58FoEruPE-9RdPkVAlAfw-1; Wed, 17 Dec 2025 12:01:53 -0500
+X-MC-Unique: _58FoEruPE-9RdPkVAlAfw-1
+X-Mimecast-MFC-AGG-ID: _58FoEruPE-9RdPkVAlAfw_1765990912
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-430fcf10287so3222499f8f.0
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 09:01:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765990911; x=1766595711;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dD5nFNFh+CHq/nzULmKKE12yIQGGBSkgJsl56ofghHQ=;
+        b=rMC8vpwV+Fnfv7ICsoO+AdB4UoJo+gHSG8lu5JxFrbdsjXC2HvE3vMnHdr6Z87eOoe
+         D3hUOBdY2SeFjNZx4ZZvOHpbXgox1bkXuEEnfLwt9WAmhm89nAL9fymPkun6ZI/KUANY
+         2A01pGvG934rYABXWqi95X5eAsHhVTtMFafZGIuJKW9J0mARiK6jNC3FdvShf9tYeZbn
+         FbJLtl6t7p0FUshhd+1iXeLeg7UA3QDsrZIagJZj3J8NpE2/3uHh+4xxaNCvCCkE4GhG
+         vnQ42ucVZz8cBDxetVDzXuHZYGaUu09+0rd3uFqY77aML6S9t/uJSrv6snUma5GRwt2l
+         Q8WQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYlEAbkaHFwBB9rEO6ou8a9rQpB6JkXASkHXyVMDE1i7zB4dKn3uYpCpF8GJZbwDByLMY08EBtwg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5MCT4zvBNXsO0itGEsTbH6LpJ7Ob3jpMRdjT4RzdK1D2HAwtB
+	VfpvbAp4ABnhXZrEZNRWWdDw9TVuvTOMFXORCi2qyiwbSOBJhymFK2nr0nig7OxXVGD1TKA91hd
+	VkbfZxjUCELT+LHpUwwICMaeJE/f8uZJxcjnMi66MZJYeb/EYoCP2
+X-Gm-Gg: AY/fxX465ghoHr01tt3W1VG5Q15SsYxpX6uxloDeCiaeyRUpJw+oNsQYF5f+XhtwqY7
+	Wb/r+70+Lv5ChI4hBzaeDQfV5ZJ6RXPrM4clXsHL4FxtiThlKL9snLu32r3GM72UtuIFWUlz6j/
+	Y4tvkagmzq6xOc2x1xkkvk2pGS+Ys5fGAu49p2L2+OVROUENA5B/ePhu5MgArjmY1XVJwb730Xh
+	psuJ7+VMuW3fJ4ptxZcelb7yhMpHFyMwy5U7NAQTcUNlDJm3WfecPc1g+xfUpxIwqYlA1QsG0H6
+	XU2PRo4ueApdHVxmKJn7YBVAbnkgA+SCv9M7xU65ZWlCRIWx979VL+Xs2IFb3b/eoVsiyY1DNxo
+	pcNww0/GNRoPeGza0B+t4LqNX/scAogSiJBpu0o5b5GUDHGLq
+X-Received: by 2002:a5d:64e6:0:b0:430:f5c3:39fe with SMTP id ffacd0b85a97d-430f5c33c72mr16059999f8f.4.1765990911460;
+        Wed, 17 Dec 2025 09:01:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7naa2xfBN81UFldN7VJ60YMv46kr3qq+t2tP1xJU0lrdjUCzUiNloJ8sGrQh5v79JlM1s8w==
+X-Received: by 2002:a5d:64e6:0:b0:430:f5c3:39fe with SMTP id ffacd0b85a97d-430f5c33c72mr16059928f8f.4.1765990910912;
+        Wed, 17 Dec 2025 09:01:50 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c? ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43244949ba6sm34714f8f.19.2025.12.17.09.01.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Dec 2025 09:01:50 -0800 (PST)
+Message-ID: <9d06837d-7aed-43ef-87c2-1ce4f921dff2@redhat.com>
+Date: Wed, 17 Dec 2025 18:01:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
-Content-Language: en-GB
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Vishal Moola <vishal.moola@gmail.com>, Dev Jain <dev.jain@arm.com>,
- Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-References: <20251216211921.1401147-1-urezki@gmail.com>
- <20251216211921.1401147-2-urezki@gmail.com>
- <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com> <aUKb1bL7CUcCWi8V@milan>
- <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
-In-Reply-To: <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+To: Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
+ <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
+ <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
+ Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, Vivek Kasireddy <vivek.kasireddy@intel.com>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+ <aQpRz74RurfhZK15@Asurada-Nvidia>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
+ 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
+ yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
+ 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
+ ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
+ RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
+ gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
+ 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
+ Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
+ 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
+ S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
+ lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
+ EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
+ xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
+ hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
+ VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
+ k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
+ RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
+ 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
+ V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
+ pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
+ KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
+ bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
+ TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
+ CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
+ YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
+ LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
+ JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
+ jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
+ IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
+ 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
+ yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
+ hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
+ s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
+ LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
+ wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
+ XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
+ HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
+ izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <aQpRz74RurfhZK15@Asurada-Nvidia>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wdj8vCXlLLwTmvlTAPIXOkiKnS41K2_qvhB1KDEdrpA_1765990912
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: botibsyqxyx6dtdbh9rghgcsp9hci3ji
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4D36940026
-X-Stat-Signature: eqa8f3nwdoubs46ax59xaqu7x54ux1qr
-X-HE-Tag: 1765990883-297549
-X-HE-Meta: U2FsdGVkX18MaIE53iRTj/aubsG2VGma9TaP07H4ly1FaWSnQGGpCzSqK5TlUHpIdFi9bZ2YDfIGIuWXSfe3M2tQTq9dMHgNs0c7MhRbre7GrLHiyT45pT5te0H0JRiivGGeH5PFqeS3hOzNiGD40jtCY65GFIccmMJb7kWZyFgBb68101FchZI3XrQeKKG6HBd8+z88H8uIQerYGMlIChmREzrLktTgzpIzU8H0E9eII/oLOEs0FEGphSdCgAwt9aD5LG2E4fpvfdNn9oot6NPvn321tjfUywhmO0+SviFHvUmcEGTHmRAnI4+Tgd5hfkMDjs2zMu0tE4vHDQ16SI8VdNXDu8BD8NG2xMOsySzZ8SSA+HwbzzEun5dNsLNlpc4Ln5gTdVEseRhyhQDGpTvhVFytdiRtU1SQUWZspt0zNdX2rPd3wrJVGRcec3pYTmolpdGhaD2j5M1v0+3FxO08txFj4cvLY7nH7yc4k6UyxtMi1O0iSd8H978aC6Tvf8Cqjf1584VKP0o38UM8f02rFhFm/+I/kRU6XB9c5lnlILhN3q2Z8OG/3Sq4Zdte6axwyC+fqpoOnKvZBTx4ZAe3CFTAGwGe4CBSEz3ZnZN+EQjLJb4H0LXNNc3S4N0jwoxCsrrRM65gSs0ttsl2ipzA703VUv4n/S7yuvfaQHWVWsft8V95wJmpKtRpsCggCKcSpVx4Z7jL6GpfjZd/VDrNMucfqyrpQU4ZJIRf/NXH7X1Ji17Qj9lDDBXu3R8VG8MpDTP8SfTnTScHetMwPG4fsJIrWIMKRWuwglfadaQa0wFEGr+Avt3EycV8kzVdvB8pHEKW8tBuM52ajkrc8HJWtCzg9Vno0hfGjzhZQoF0JyGrfJb9qxAMsODiyu8g2BXnQxso1V+db8a4efECwICbNTtypO99BdEXAaP7xrXUVQCR2uGDtqB7GoxcBP+JN8IzIo3ZoCEWdFcMqF6
- tr+d/ltH
- SBtzAINSN+/qPvl+B7F0PlwEkPFqGea2m0C3xfIunWmFJzMR3BkwahsLDlhk4VptFU+bHonvgT1eYQQvQLGBhJGAB0lOVNjtpGPKr4Hwd+fxx2Js3nMQLSXeh/UFzcDpYCQXe+xhII42s0BTV17u02SW4hQtOSYbOSrnZkAmSdmizx8KEt4RPfQ5q+15PaJ2vxdg1EP5yaILYNj8LOypq/KmuW23jjM0M/6gzNkwt/I8XDDuPn9kxB9/h+OcSIaqeTTqljDXXzonnG9JoshovHykdrt1KGq59a8QmWiR78YeCohnxH2Xicr49foyiHxRvhbbkM9rlDyrWoQuCmViIO4A25w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4A41640010
+X-HE-Tag: 1765990916-706637
+X-HE-Meta: U2FsdGVkX19rC7sCPdqXGVBneSrmrEnAdPcKZHXU4EaNP29DD1kWWmUXFav9IJcNo9xKw+aDFtPHGZrO8YRbzAJ+k9Yqmn6RtPVLUsbbB/JuPJgBi9vUJWfDbTDS+JmMyh9AIMdZqLyeuCNpxcXC3K9VSxN2D/igRY8slgXzXyFESXMeHqr3SrVUhUsCSGT+KxUXEdyiDA2QTI7DipoXF2B53TRrAgElDIcEX/ZELsEcVlRMleFHPLYLcVohnDsXWYqHruD29/0aqcwRXkBEjFOU827tfKkHxAr+PKyLdOHlaHO6h9AfHlFdh7ds+pGDGA785ftwmFu8B8HSpdH5jgX11B/Es2t9L02Z+c3RYVaR4oILYWENtJFdAejD+lUInAODgu1Rpp6+Sog27glYqdCuBw3YnrsGqjrJhskk5GsCqoeCe4X3hvMKNvnY0plYZQFq8FQIjPudWhP1GnqwWtOBP93eXu5yg+gL2arOQVuVGq2Rxej9zdx+xCd8eQcRVHMdvv0q9u/yDNFz1w/K2bNl5Q7XQ6qPvTdQFX4uZvxW7VTJQtcmh0kjGSks7pg2edKbaMo36ntQSReGcVS3rlS9OVb7idNSIqHETqIwudYMvVI/yNu+br/gPWH2ZqIb02fKfyxPIQ7/bH3duBFdYAcqRFRzmnI/BlgBOjrW5Zcu7E4Glm6GWhC52msEbczPpJMrMmYwlqcgGb1JG5hH6jvYI2LSXzDeFvyBeQWQoxnNJeOUoBXm/brkOltnT8wvs60q2qfi1RidQ78QKCO5H2MyBEp9g1+3UybShCAsuUvowLB7iyOBUmTQPrPqwxUHdqyiOKx2HrDJW/xVmWeauwSr1jPPxdKL6iT2yQmNcVBYNdJhmR6Rx4cC6EfEhzKGL60koM0Bg93Gw0sEWLRgmMDUOGelj9T1Z/pRoc0wraU290NftTi/ilATuwCh3uAzN1aKICablLprndXN3p+
+ p0Sv6nCT
+ 1VDvMTx06+5uBjqGd+Szxi0K9QRkdQBSNBqOdgq/az/CE0s9SoP3spC96nxMRf9q4qDd+4y98LrEKWW0nZyaG83cLX63uCUW1xOxI34lRQFWkdFBE5T66Goj/2uYNBk1ZRbD1a4SmJXo7804zVI3y6njCpxvxHiajuhA7AtwDaZKFezVc1ob28H65o0oiLocYvtij2XphtxQN/2M9d1qnwrsiUfQG3ztEyypCgy+WvM0uScw1C30Vci7geF7y5C0BjF2MqS2oKAs2B/iWDCGTjOyGO9SUhKuGDCwCXgdCSLJ0lB+3K8Y5MbrNxrD1k3V9NPmM8+eKx8foGcPHYynZcADVJaeBDrOmEA9DsNm8h2PwXr5PY+oUXvOxLMNqi0S9ROUkG12HN/iNn36w+vw+u4o1En1YlDPTHraITSQiw7B+4OCikN9EmrrIihysZN+NspjewQ5kkWIV/3M1bipMPLd4q4Cx+qxbTu+doZ01ZBJJCaQ1UNz4r8xNBg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,250 +193,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/12/2025 15:20, Ryan Roberts wrote:
-> On 17/12/2025 12:02, Uladzislau Rezki wrote:
->>> On 16/12/2025 21:19, Uladzislau Rezki (Sony) wrote:
->>>> Introduce a module parameter to enable or disable the large-order
->>>> allocation path in vmalloc. High-order allocations are disabled by
->>>> default so far, but users may explicitly enable them at runtime if
->>>> desired.
->>>>
->>>> High-order pages allocated for vmalloc are immediately split into
->>>> order-0 pages and later freed as order-0, which means they do not
->>>> feed the per-CPU page caches. As a result, high-order attempts tend
->>>> to bypass the PCP fastpath and fall back to the buddy allocator that
->>>> can affect performance.
->>>>
->>>> However, when the PCP caches are empty, high-order allocations may
->>>> show better performance characteristics especially for larger
->>>> allocation requests.
->>>
->>> I wonder if a better solution would be "allocate order-0 if available in pcp,
->>> else try large order, else fallback to order-0" Could that provide the best of
->>> all worlds without needing a configuration knob?
->>>
->> I am not sure, to me it looks like a bit odd. 
-> 
-> Perhaps it would feel better if it was generalized to "first try allocation from
-> PCP list, highest to lowest order, then try allocation from the buddy, highest
-> to lowest order"?
-> 
->> Ideally it would be
->> good just free it as high-order page and not order-0 peaces.
-> 
-> Yeah perhaps that's better. How about something like this (very lightly tested
-> and no performance results yet):
-> 
-> (And I should admit I'm not 100% sure it is safe to call free_frozen_pages()
-> with a contiguous run of order-0 pages, but I'm not seeing any warnings or
-> memory leaks when running mm selftests...)
-> 
-> ---8<---
-> commit caa3e5eb5bfade81a32fa62d1a8924df1eb0f619
-> Author: Ryan Roberts <ryan.roberts@arm.com>
-> Date:   Wed Dec 17 15:11:08 2025 +0000
-> 
->     WIP
-> 
->     Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index b155929af5b1..d25f5b867e6b 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -383,6 +383,8 @@ extern void __free_pages(struct page *page, unsigned int order);
->  extern void free_pages_nolock(struct page *page, unsigned int order);
->  extern void free_pages(unsigned long addr, unsigned int order);
-> 
-> +void free_pages_bulk(struct page *page, int nr_pages);
-> +
->  #define __free_page(page) __free_pages((page), 0)
->  #define free_page(addr) free_pages((addr), 0)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 822e05f1a964..5f11224cf353 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5304,6 +5304,48 @@ static void ___free_pages(struct page *page, unsigned int
-> order,
->  	}
->  }
-> 
-> +static void free_frozen_pages_bulk(struct page *page, int nr_pages)
-> +{
-> +	while (nr_pages) {
-> +		unsigned int fit_order, align_order, order;
-> +		unsigned long pfn;
-> +
-> +		pfn = page_to_pfn(page);
-> +		fit_order = ilog2(nr_pages);
-> +		align_order = pfn ? __ffs(pfn) : fit_order;
-> +		order = min3(fit_order, align_order, MAX_PAGE_ORDER);
-> +
-> +		free_frozen_pages(page, order);
-> +
-> +		page += 1U << order;
-> +		nr_pages -= 1U << order;
-> +	}
-> +}
-> +
-> +void free_pages_bulk(struct page *page, int nr_pages)
-> +{
-> +	struct page *start = NULL;
-> +	bool can_free;
-> +	int i;
-> +
-> +	for (i = 0; i < nr_pages; i++, page++) {
-> +		VM_BUG_ON_PAGE(PageHead(page), page);
-> +		VM_BUG_ON_PAGE(PageTail(page), page);
-> +
-> +		can_free = put_page_testzero(page);
-> +
-> +		if (!can_free && start) {
-> +			free_frozen_pages_bulk(start, page - start);
-> +			start = NULL;
-> +		} else if (can_free && !start) {
-> +			start = page;
-> +		}
-> +	}
-> +
-> +	if (start)
-> +		free_frozen_pages_bulk(start, page - start);
-> +}
-> +
->  /**
->   * __free_pages - Free pages allocated with alloc_pages().
->   * @page: The page pointer returned from alloc_pages().
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index ecbac900c35f..8f782bac1ece 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3429,7 +3429,8 @@ void vfree_atomic(const void *addr)
->  void vfree(const void *addr)
->  {
->  	struct vm_struct *vm;
-> -	int i;
-> +	struct page *start;
-> +	int i, nr;
-> 
->  	if (unlikely(in_interrupt())) {
->  		vfree_atomic(addr);
-> @@ -3455,17 +3456,26 @@ void vfree(const void *addr)
->  	/* All pages of vm should be charged to same memcg, so use first one. */
->  	if (vm->nr_pages && !(vm->flags & VM_MAP_PUT_PAGES))
->  		mod_memcg_page_state(vm->pages[0], MEMCG_VMALLOC, -vm->nr_pages);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> +
-> +	start = vm->pages[0];
-> +	BUG_ON(!start);
-> +	nr = 1;
-> +	for (i = 1; i < vm->nr_pages; i++) {
->  		struct page *page = vm->pages[i];
-> 
->  		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		__free_page(page);
-> -		cond_resched();
-> +
-> +		if (start + nr != page) {
-> +			free_pages_bulk(start, nr);
-> +			start = page;
-> +			nr = 1;
-> +			cond_resched();
-> +		} else {
-> +			nr++;
-> +		}
->  	}
-> +	free_pages_bulk(start, nr);
-> +
->  	if (!(vm->flags & VM_MAP_PUT_PAGES))
->  		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
->  	kvfree(vm->pages);
-> ---8<---
+Hello Nicolin,
 
-I tested this on a performance monitoring system and see a huge improvement for 
-the test_vmalloc tests.
+On 11/4/25 20:19, Nicolin Chen wrote:
+> On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
+>> Changelog:
+>> v6:
+>>   * Fixed wrong error check from pcim_p2pdma_init().
+>>   * Documented pcim_p2pdma_provider() function.
+>>   * Improved commit messages.
+>>   * Added VFIO DMA-BUF selftest.
+>>   * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
+>>   * Fixed error unwind when dma_buf_fd() fails.
+>>   * Document latest changes to p2pmem.
+>>   * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
+>>   * Moved DMA mapping logic to DMA-BUF.
+>>   * Removed types patch to avoid dependencies between subsystems.
+>>   * Moved vfio_pci_dma_buf_move() in err_undo block.
+>>   * Added nvgrace patch.
+> 
+> I have verified this v6 using Jason's iommufd dmabuf branch:
+> https://github.com/jgunthorpe/linux/commits/iommufd_dmabuf/
+> 
+> by drafting a QEMU patch on top of Shameer's vSMMU v5 series:
+> https://github.com/nicolinc/qemu/commits/wip/iommufd_dmabuf/
+> 
+> with that, I see GPU BAR memory be correctly fetched in the QEMU:
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 0", offset: 0x0, size: 0x1000000
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 2", offset: 0x0, size: 0x44f00000
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 4", offset: 0x0, size: 0x17a0000000
+> 
+> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 
-Both columns are compared to v6.18. 6-19-0-rc1 has Vishal's change to allocate 
-large orders, which I previously reported the regressions for. vfree-high-order 
-adds the above patch to free contiguous order-0 pages in bulk.
-
-(R)/(I) means statistically significant regression/improvement. Results are 
-normalized so that less than zero is regression and greater than zero is 
-improvement.
-
-+-----------------+----------------------------------------------------------+--------------+------------------+
-| Benchmark       | Result Class                                             |   6-19-0-rc1 | vfree-high-order |
-+=================+==========================================================+==============+==================+
-| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |  (R) -40.69% |        (I) 3.98% |
-|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |        0.10% |           -1.47% |
-|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |  (R) -22.74% |       (I) 11.57% |
-|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |  (R) -23.63% |       (I) 47.42% |
-|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |       -1.58% |      (I) 106.01% |
-|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |  (R) -24.39% |       (I) 99.12% |
-|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |    (I) 2.34% |      (I) 196.87% |
-|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |  (R) -23.29% |      (I) 125.42% |
-|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |    (I) 3.74% |      (I) 238.59% |
-|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |  (R) -23.80% |      (I) 132.38% |
-|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |   (R) -2.84% |      (I) 514.75% |
-|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |        2.74% |            0.33% |
-|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |        0.58% |            1.36% |
-|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |       -0.66% |            1.48% |
-|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |  (R) -25.24% |       (I) 77.95% |
-|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |       -0.58% |            0.60% |
-|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |  (R) -45.75% |        (I) 8.51% |
-|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |  (R) -28.16% |       (I) 65.34% |
-|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |       -0.54% |           -0.33% |
-+-----------------+----------------------------------------------------------+--------------+------------------+
-
-What do you think?
+Do you plan to provide P2P support with IOMMUFD for QEMU ?
 
 Thanks,
-Ryan
 
-> 
->>
->>>>
->>>> Since the best strategy is workload-dependent, this patch adds a
->>>> parameter letting users to choose whether vmalloc should try
->>>> high-order allocations or stay strictly on the order-0 fastpath.
->>>>
->>>> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
->>>> ---
->>>>  mm/vmalloc.c | 9 +++++++--
->>>>  1 file changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>>> index d3a4725e15ca..f66543896b16 100644
->>>> --- a/mm/vmalloc.c
->>>> +++ b/mm/vmalloc.c
->>>> @@ -43,6 +43,7 @@
->>>>  #include <asm/tlbflush.h>
->>>>  #include <asm/shmparam.h>
->>>>  #include <linux/page_owner.h>
->>>> +#include <linux/moduleparam.h>
->>>>  
->>>>  #define CREATE_TRACE_POINTS
->>>>  #include <trace/events/vmalloc.h>
->>>> @@ -3671,6 +3672,9 @@ vm_area_alloc_pages_large_order(gfp_t gfp, int nid, unsigned int order,
->>>>  	return nr_allocated;
->>>>  }
->>>>  
->>>> +static int attempt_larger_order_alloc;
->>>> +module_param(attempt_larger_order_alloc, int, 0644);
->>>
->>> Would this be better as a bool? Docs say that you can then specify 0/1, y/n or
->>> Y/N as the value; that's probably more intuitive?
->>>
->>> nit: I'd favour a shorter name. Perhaps large_order_alloc?
->>>
->> Thanks! We can switch to bool and use shorter name for sure.
->>
->> --
->> Uladzislau Rezki
-> 
+C.
 
 
