@@ -4,95 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45380D6406C
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 02:46:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C90D609D5
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 02:48:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEA5D6B0089; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
+	id ABA6C6B0005; Tue, 16 Dec 2025 21:48:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A94816B008A; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
+	id A64D76B008C; Tue, 16 Dec 2025 21:48:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C16B6B008C; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
+	id 991906B0092; Tue, 16 Dec 2025 21:48:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DA846B0089
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:46:48 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3381A160864
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:48 +0000 (UTC)
-X-FDA: 84227425296.12.110BC8F
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 748DE40004
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:46:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLXG9Mp2;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8653E6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 21:48:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 367CB136BEB
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:48:23 +0000 (UTC)
+X-FDA: 84227429286.23.66C2E23
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2BF2314000D
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:48:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ik0y2/EE";
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765939606;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1765939701;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dOCeQ2/1UDHoRUqDaLGh7h4kZSar+aVQ1WmFANL0cuk=;
-	b=iHJHrs8fO5nJzp7U8O/0WCPCQm3itIccTCrW8++Cr5Ip9PDfXIUSvlrrfRfbMkS8jpQoaq
-	flLv/7Gqn2Q40AKN6Wh5HakJ4y+Hf3iqAASyrH0AGlVLl1RfNf0IuS5D4Jc3Wisb6xgXzh
-	8AzgoIEF1L1soQZ8xvTTndMQhEiRudI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765939606; a=rsa-sha256;
-	cv=none;
-	b=jqCIbh7WnfV6UtfuhyUwxsF9Gulj2P8fqwcd+gUd1Xniik8jRCKkwmemzpiTf5ebdVVX8l
-	rJ0sQcGoPdhoypkhRwYPO3XRTRy8ot/AxRyRDljIn7nFCspkldjMVxd2QnVxsqhgk52HiM
-	FjBu8Ru0HwetkWNfSffxfNGHUy1s0EE=
+	bh=QTMYwp/g74fxgb/i/Lv8htybblW+OirvMdDQqwF3ziU=;
+	b=WM1pRmAFo5i5Nwx33hxcJ+9jotrNUgXX5dNboL5TqxgiohKMPPfLzVuugEiQLcdwHRlSRn
+	5yVuCO2r65tBASgLrBs+P8uB8IwJ44ofG1o/oam4QECvF7bgJgEsLr3x30d0Lv+YmBz4s0
+	sVVs4G2B46TrZP+pWaGf/eGuDInl/9A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLXG9Mp2;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765939599;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dOCeQ2/1UDHoRUqDaLGh7h4kZSar+aVQ1WmFANL0cuk=;
-	b=WLXG9Mp2YgedbWVMHE24r4hv3aK6pqQoQxnz5iZlbyq40/oHuhMvei8u2KrBbCshdpo0J1
-	mOrS0vLso3Q309KKR0cr1jmqEAFYtQE4OsEJJcoq37ooNxJLvgLsGz127VX4OanFfSO/+q
-	/CEiB/qFV4SLCV5UJDwVsEQZvhrVyj0=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH v4 3/6] mm: cma: add __cma_release()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251216114844.2126250-4-wangkefeng.wang@huawei.com>
-Date: Wed, 17 Dec 2025 10:46:05 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ik0y2/EE";
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765939701; a=rsa-sha256;
+	cv=none;
+	b=AKIll+yGsDueK6yPCWrCucOTH6gVsxK4FI2lphBIRikxMQ7dMiEies2dmilA+kmXAWgePm
+	dhiGhCtkzaIp4ys1D+csbVFkZbIEGr+YUiQaBfjJatwvCpcO06w/vMlyRrMtpBRoiaJF2S
+	1QIwMecV++fl0Cz45XnGIeHCS50hIdE=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b735e278fa1so967284966b.0
+        for <linux-mm@kvack.org>; Tue, 16 Dec 2025 18:48:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765939699; x=1766544499; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QTMYwp/g74fxgb/i/Lv8htybblW+OirvMdDQqwF3ziU=;
+        b=ik0y2/EExxqCK9/Sx8wzlwK7Q7etLcJO0SeP09WEFpomMzLPiDyoTiNFA1N6ktL/8O
+         1Oh8s62UCj2jrfyuhPuLzrTp8ZjhlJYJP7kbUiEbwS7z5iodC6qWRiD2rfn/WJ77TlOk
+         Lm2NYVecoN3BoAGvqBWepSouD+G/EmxI77orE6jgW36sye+rtdxMQofVu6G6MyLaXFz6
+         TsTjtBscTGCeUp3eIbX8FN6ymb/N8Cdbgy1mtzF63RfWZVAT3KtSfbFwvybVFGBawqZe
+         HpP2H158j0HEEzqfsY8HLiC7eYSd5gD86mhNAWjRdJ2ZLXVQwCx0v3H0ohh+6EDYJ7s5
+         zVrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765939699; x=1766544499;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QTMYwp/g74fxgb/i/Lv8htybblW+OirvMdDQqwF3ziU=;
+        b=g5Ed3zqVm2JkdCHKU6BsaIx7+OdIhXVr/H0tAlOSAGSebJ778/2S8C1tMXSZqpNe3S
+         C+7uB5Ctd85acoJHlUCBFyKgGM9g6Sush5L5W4mKgEiZepAQWwwiceZtXy9M+VPNPZQw
+         VY078Y+g9waRDJ7SdLIjyDCYAsftsS1kZ6+g0P6QmlE7nXfjK6Ra5grH/hx1i9WRrtvs
+         6YJ50x1pD1Bc5xAlakzChHQd6gxvdyREKCe55wZXagQIjuUIzidvYsSFE3TMzmajfScG
+         nK0LiuB3tW9RpASKHGxqAA/codbaWEO1I+rHsYof3JeIHPgBBmdHfXbh/If0w4C+LMpR
+         XX8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW007eN5K1so2aX8nJIO3PWChOhc50/aXXzAEh1tbmb2e33z7ZbpNH+FrPVKRw7g1w83ABLICIFww==@kvack.org
+X-Gm-Message-State: AOJu0YxGi7qtq34oOHYxFlMNUCkXAd5AuGrt5BblLczthwLVLrjJVdi9
+	OWnjTIu91uyrUvIXtw3NZ3QVTOVeMZyAfqWsoaN2j6Vz5iqYck5k66Ag
+X-Gm-Gg: AY/fxX7cdb94SmVqpC1idYOMNGfMwiJIOGdFtrZPfYkxkO38Q4n+bE1bAWHQ++JmoNz
+	6aqEBPfHCLaJ5eRkWJjekKUx22vCyHnzunRIf3J4b4JyhEF88k0OOR3yLCBzzeWYhcTEhs+/OZ6
+	FgGin0/uWB29TpQO5QNYkTc9I9HjK7R22ohSOvECF10mxjpuCZ+l8MLgGVQ/AGnSJ09ZDWiIdrF
+	OGtc2j4uzRttO7/jwBxlS9cXIosEXLMgzdVyNxM7Mrj3gKj/yP40kPImEFcfGlIVUeREG9eYTHb
+	f5lVxHdHHQa/DX5KJZoYWSfLw8NGAjUcSK8C88L3IqxiD1towaRjdG9zkkJj2RIbPFaC+JTAsdl
+	qSppSXTJUBRrUU2bD53UpecwmFNfiQFHUP4azHKrpcYqi1sJZmvyMxEbxfbppBnvUYm1MUH+Bss
+	hMCrxxJexZKA==
+X-Google-Smtp-Source: AGHT+IFhKEFOVaiZGW0iX8z6HR1iAF8pgy5NX5EasuQ15D3ejV9v3HpNxYAjBAX045Mp0eeJPN6AQA==
+X-Received: by 2002:a17:906:7951:b0:b7d:11ae:4006 with SMTP id a640c23a62f3a-b7d23a68805mr1809328966b.52.1765939699191;
+        Tue, 16 Dec 2025 18:48:19 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa2ebafcsm1837731166b.28.2025.12.16.18.48.18
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 16 Dec 2025 18:48:18 -0800 (PST)
+Date: Wed, 17 Dec 2025 02:48:18 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Shivank Garg <shivankg@amd.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Oscar Salvador <osalvador@suse.de>,
- linux-mm@kvack.org,
- sidhartha.kumar@oracle.com,
- jane.chu@oracle.com,
- Zi Yan <ziy@nvidia.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Matthew Wilcox <willy@infradead.org>,
- David Hildenbrand <david@kernel.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <499AC3D4-4C80-40BE-A303-6FC78CFCA624@linux.dev>
-References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-4-wangkefeng.wang@huawei.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: jbbn5uibdq86agn91c3qd617f3ncnm9j
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 748DE40004
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm/khugepaged: remove unnecessary goto 'skip' label
+Message-ID: <20251217024818.ngoime34bxeatqij@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251216111139.95438-2-shivankg@amd.com>
+ <20251216111139.95438-4-shivankg@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216111139.95438-4-shivankg@amd.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2BF2314000D
+X-Stat-Signature: dns6keodwnip9cxj3ndrb96pf8uoidfg
 X-Rspam-User: 
-X-HE-Tag: 1765939606-56176
-X-HE-Meta: U2FsdGVkX1/vBCtpO+nyd1qj8SesYOFJtcJvsa2x65R+dY/d72fs2lnaLdwGLTqLOyUA7Fb8Ug76lHqdPYdy0I2BbRHv9aa/BSFVSsv4XXkMHU7QO1mf08FTeB1Br8xWft0OSC9jgD0aEM1J9vi7EZ97bMY5EnILhBM+sF7y3fPGPOecSFiC2senKeJx3KlJ0aIOx0PdBvB8kQk7GI8mCPlYpCPdwWR9LRJhHAxtyBHbv2x1GP/FnTo9kzsg/cy6yyl0Y3WXHWEP9HGcjdwKrPYifKwuJ6ebqaQeVfgtscKFTZCLdZ9y/lA2avYUro4Hqj1c/1xTYGGKFbQYn38W+nyzJEe+E1v1p4bfoB8cIpF8HUrw1m6vE8JwqtmiwXKYu4B3uFsYdiI81ZTYsMB4k+bI+KjRge5gA5HvMndl/XUAWnzkUjvj/FsnqRur8OrbrArWGqibS5fZTdM8l+zu7LZYLAtqW0FhMiEmDQHUvxKVyb4QFvAeFItcXpwTQZwe88V3CWvfDWWlS+jy9rkQ8a7P9W9KdYZWhOo74r36dP8h4fJmlTgXRIJviKdPffh32pWIneTjfmmHbGo7cI5DETuGQWTd6HV2ehwMVUReVz+d3+Jd3W8qfulKQMVECyrwGz8j/K23Et3moAuFXa4UgbJ/E2PMWJPPT7vA6gz68rqhoOO16dXGBJ5NUJOJVY5VyuKfpQ+7XSiKfEtnVYOyKTkgv8btKWKTjQcgoSGaPuB8BjurH+i+ZOMXceGR+3U16vbJ0JEpu6FYM6Lx08ku8dqSvu4mtbiuwkPydwKDpA0mOwJZFpBH8WN5esEz+8my0a2Ktp/lrjP9rJzku6Wta82jTUzF95t/uy7xdHkitFDKj5ogpUfNlpQl/Qql8tYyP1BJ0psGerEDTyBw7G70fLzO08cb4m1SIWhyoYSGpOdFLXCr1bNOBa0aMIR/Qa89XwA3HjxTBEiCoHPRPkm
- Z8vGO37b
- o2zjtAx2ET47lc4verTAdGepaM7V/n6oE5nW3mR1cYHm9hHUDFiA6imgGWZPCXZGdmtasM4gprJ3NQdhbn8y94t+JSFJidZR201VlFWHFUgZjuRF/j3oCbIFyq2JdIDp4I717o+d+DEC0OQTsJMvIA90qBIIP2hXiOiI0IHbzgf59AyTVOw5iSal2utJaQsCA2jWbzarsd8W23sZG+E8zs9VZSynMMrmm+zD5jZJSKlCC/h/56QODeKkg5aiJuInVN7+eDZGM0OYo9E0WZ/EhFesjh61G6AvdCHMc222rhOc6fhagdatfe2IBbh0d8QFxT87d1bUcke2Afzlbs+pNTph0Dv8X/8emx7/FTxLZRIJWJpLK7zj1TZ/1Wyfw3/43r8dX
+X-HE-Tag: 1765939700-269183
+X-HE-Meta: U2FsdGVkX18sJ78L9AcnRKXIVaKzXQ2x7afuHdM17L1OjnHajRt9zpYdH1nErK833ObPiYPRsbKgVKyEk7j4PHHzC+1sHgpe862ZKDGBsybOYXxeBF6sFCxzPWGHR/1L4RkatRriBTqlkc/vuS2e8PiP2yppsgH/X8yVHlsOKhQ/59DPhoJftOH7m+umpHJTjHPQd/Rq8xIyKtK/sHZF0npeZJZN/IiLk9fJCMHWndYGB5AWfmxnXLOjk8KpyPDHBX+tI3buJQkthyZOb5aOCZelxIbJNdUDrLzjjS5a22H1E1V3ZchSOH3IpZyA0FqmlC4hcn5o+9sazHc+bJ/73FRBsvJaU58uKVCVH/eC4mj6J3t7nQ675f/DF+bi8O3sI/IUoxEjyzUa4o0Qgjap7xIUE5R8Bv1lRSflkyz17Lg7m929hgY0X3S/5fGmSTnC2iTk+zubZ16aSnqNeWlv+egbnQ4Dqn8ZGNUh1ddEU8yobRvNRDXzrvJCQCcCuIsF3Js2hpXva4WI/nsJ8bLDq5ffDwW1IT7tbY1YmTUwB2PEdEHu0aDJ8IlNX/+h2ITiZiHYtgQUgOKOSnhoCHwwoHGjXwMCodjuKi46hDpRkfggkWpSlaMa5pSQBJdMyeS6NKf24xgPptXuvAeSkvfsSrj2oSsjjQxDBNu/RTJklV2S9VDZQbnD7hECPZH4bjYKJgBSKl4KLXpHl+DT3PCVNtxT1pQhdje96+TlQ5YHkuQ5axvgtOQ1lsuqj5Na9FLazpcs4+vIEpELg35WimbRl0nCSel4ffi3VCKsBh5bCjo2mgNTh5iM7X/JgUPy2R93UPiO7Vj2NmjmA2XEO+E+gvNO8pdIw6VZhAxFlG0BcZ3mY1SQbBdEKZFDoho0bmm21KWZ6EGGrvalAU1Qfh3bJzntPk0cZgjeHiNEK+3Z68ncdY+EM5cWJou/6nr1g1X2h0xgViRdB1aOf/pl5Vf
+ wXgj+DLB
+ AzslSMwbXcHBwU8bnI11jRTotFRLuJkq3jH/oa5a6CbHza7TiBX4/2N2E25/ERC6VhyYkv3lurDE7fR89LZ+qARPVA8XE0O3UPEimwTlUQpU7NNGGC/dr6sR5S2PhDpiy5y9gxIgSD8hvDFw9ynTWIi2++dxsLdHLLu7CjpfE2zkEgn2B+KR3od0zsBwS0DmhnOe98okQGpG0EGgQUj/Vk51Tsnb6AOw3nTwBgXdXhm18Mhbk9nASVQfRAYUYh7Xmky7EvyuCRkYkESMjrNBhiZIUyg8JOOv6iMUBMVUGBBTJ4WTB1/I3iUPPU02E/IS953mdjPD0pxrUhKrTgTgGqEmcY96pb2LhpkO0vCjSlBA4AYz/avhU1kgByPVAJ4rZyzBxjBG3jFAyrrm9hseBa9NIUowYMlArhiQDBOTTBGNh+Xczq7u7zdjBzm6YTiwLCSdaxdFxwgZoTAVpp3yYtGxhCBKQxHIgI3p8GP37VRhX5bUMJGLTEbWFFvqrb2ob4QHwyf5N6ivZkna4W7VKkfyd690rWvKLmN9t+bD2bZVfg5hqHXWDJsQceVUpZz3RGuXWyPuSh9zK0H1QtLhEmpO7YRJGy0s+KGxgZ+cMhSGxcYY739bM49OhE4gEafIjMkNiuMni0XSNQ0VqJsRn0TT7eKj+wy790hYWc+wYjOJXchO0l/77LNYVVz0Nl0wI7SrX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,21 +130,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 16, 2025 at 11:11:38AM +0000, Shivank Garg wrote:
+>Replace 'goto skip' with actual logic for better code readability.
+>
+>No functional change.
+>
+>Signed-off-by: Shivank Garg <shivankg@amd.com>
+>---
+> mm/khugepaged.c | 7 ++++---
+> 1 file changed, 4 insertions(+), 3 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 6c8c35d3e0c9..107146f012b1 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -2442,14 +2442,15 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> 			break;
+> 		}
+> 		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
+>-skip:
+> 			progress++;
+> 			continue;
+> 		}
+> 		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
+> 		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
+>-		if (khugepaged_scan.address > hend)
+>-			goto skip;
+>+		if (khugepaged_scan.address > hend) {
+>+			progress++;
+>+			continue;
+>+		}
 
+Hi, Shivank
 
-> On Dec 16, 2025, at 19:48, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
-> 
-> Kill cma_pages_valid() which only used in cma_release(), also
-> cleanup code duplication between cma pages valid checking and
-> cma memrange finding, add __cma_release() helper to prepare for
-> the upcoming frozen page release.
-> 
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+The change here looks good, while I come up with an question.
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+The @progress here seems record two things:
 
-Thanks.
+  * number of pages scaned
+  * number of vma skipped
 
+While in very rare case, we may miss to count the second case.
+
+For example, we have following vmas in a process:
+
+     vma1             vma2
+    +----------------+------------+
+    |2M              |1M          |
+    +----------------+------------+
+
+Let's assume vma1 is exactly HPAGE_PMD_SIZE and also HPAGE_PMD_SIZE aligned.
+But vma2 is only half of HPAGE_PMD_SIZE.
+
+When scan finish vma1 and start on vma2, we would have hstart = hend =
+address. So we continue here but would not do real scan, since address == hend.
+
+I am thinking whether this could handle it:
+
+		if (khugepaged_scan.address > hend || hend <= hstart) {
+			progress++;
+			continue;
+		}
+
+Do you thinks I am correct on this?
+
+> 		if (khugepaged_scan.address < hstart)
+> 			khugepaged_scan.address = hstart;
+> 		VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
+>-- 
+>2.43.0
+>
+
+-- 
+Wei Yang
+Help you, Help me
 
