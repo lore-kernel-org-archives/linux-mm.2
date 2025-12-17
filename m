@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A0EFD65C73
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 16:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFB3D65C78
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 16:06:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0812D6B0005; Wed, 17 Dec 2025 11:00:01 -0500 (EST)
+	id 920916B0005; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02E9E6B0089; Wed, 17 Dec 2025 11:00:00 -0500 (EST)
+	id 8EE0F6B0089; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7CEC6B008A; Wed, 17 Dec 2025 11:00:00 -0500 (EST)
+	id 7CC786B008A; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D69BD6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:00:00 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8292D160B6E
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:00:00 +0000 (UTC)
-X-FDA: 84229424160.21.DBA853D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EC07F1A001A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 15:59:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ckb3iZsO;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 68BC16B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 11:06:09 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F01888857B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:06:08 +0000 (UTC)
+X-FDA: 84229439616.23.A9F9EE8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 001654000A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 16:06:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765987198;
+	s=arc-20220608; t=1765987567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=xUyvqhU8aUIhMwYNJ4FtO3mb21aP+vz4SLoq2uYdhlA=;
-	b=aMfQ6Gc3qcKE3DJBJKGyyACKRwsGBGzGtYtT7v9yJRU2OKBo6p1T7viaTFNMYb9IoyJ08p
-	tFahdNqLa/wHPtXFNBAnr38MhDTQ2tMb/zqQdK9TlLreChIPvdRcEyUtFXol2sl2mkxYMl
-	7DbYwsPgroscIKXs5q3VdeYBJpMyyQQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fqo5QJCwzTNuy4u6sN23wzH3r4EDeHpvGL7eaNy61wQ=;
+	b=FkhsnqiDno1Qr/yxw4zf3pyL0WnGxkesF5FnQMAmQqPRBN5lnEkqZ9IPnJ8hPJ527Qkkho
+	ZhkAj4GB3BWAauUHq/7cOfryfhtC+f32ZyQ7YO9RGoNYi5vz7IfRdua5YoKZ++uc5HCL9J
+	600Ay1zfJM9mXr4Z6hJaQJoYVx33P68=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ckb3iZsO;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765987198; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765987567; a=rsa-sha256;
 	cv=none;
-	b=m5XvI5LdB9Np1SFnwgD+hZ5iwLsJ1F4wWhNu994g+oPVpO6/PhryUDJ5rZCtS1ns4cmjgy
-	/J5jceyjWzrhFMRWCAnRA3y1XJvsR3RNdDI7qTEDg5ZlWJEA6G7RDMShRZ0+Dc56sRkNJn
-	SeHQAicMk6FqEvgUQWdEnPmJkf6n6LE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765987198; x=1797523198;
-  h=date:from:to:cc:subject:message-id;
-  bh=Cz72uo24UkUuRyQ5Yja7LSB+KC+05ljBon4saiI+Fpc=;
-  b=Ckb3iZsOLdFkf6jmdoEzTKKb7qJMZitxaP08oBwClXvY+TZV4Npt+iK7
-   Gaf4rT58GkVB1szTk11ijyN+VVFqnVBtfaH85qT+rCPlTEwQWjk7vQBsd
-   YBzLdVNrf8/5BFKN2YCxbd6NLStV3j684K+bPEmcapXkOvN8SOF/QwaJf
-   SHf/R9XceY87hdi8aeI1XQKZ3P0VdUoBWeJGX3ZCq6y28yLucqFkLrYgg
-   Y8tSH1Cz5aEFoUfByOFalFGUjyvSiL29zRpyZNTyEt4KM44ceS2qlgTmz
-   guDCcD0oNorhlItpqt5y4K2rMJbxWHqCHy3FkkcC0fK/RgUbWsTDlJDkb
-   w==;
-X-CSE-ConnectionGUID: n8LqEn65Qgyugacyl7wLDg==
-X-CSE-MsgGUID: vbWYC66oTw6OLZ6R4tX9dQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67893633"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="67893633"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 07:59:56 -0800
-X-CSE-ConnectionGUID: VcRd/1sdRuKBFssKkzX/KA==
-X-CSE-MsgGUID: OUNvzGZ4T/qycMEw5TofaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="198407461"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 17 Dec 2025 07:59:54 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVtwO-000000000s1-0Wx8;
-	Wed, 17 Dec 2025 15:59:52 +0000
-Date: Wed, 17 Dec 2025 23:59:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH UNVERIFIED WARNING
- 12b95d29eb979e5c4f4f31bb05817bc935c52050
-Message-ID: <202512172355.qiP8Qj6W-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 96o4br3hbid7rq4iz9ejjzzcogro64e9
+	b=oh2j18C230zr0COV6lt8gtElT2D3RXgW4kjhtYCiaUEsg5LRD2JB9j4uHUqaOuwjynmnfv
+	W1VxyZ8cSjy9duGiremSkP0UMMeqdyYYBZ2NuMaMsIJB6gFdxYawgm+ELtm+vik6KDw7Mg
+	bop/OJ7AbJLiNJnhC51XaS/CTWaXQ7Y=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 847D0FEC;
+	Wed, 17 Dec 2025 08:05:58 -0800 (PST)
+Received: from [10.57.91.77] (unknown [10.57.91.77])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39F4A3F5CA;
+	Wed, 17 Dec 2025 08:06:02 -0800 (PST)
+Message-ID: <fac9dd13-0c1b-40de-a5ac-d2c4c2012385@arm.com>
+Date: Wed, 17 Dec 2025 16:06:00 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] arm64: mm: support batch clearing of the young
+ flag for large folios
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
+ will@kernel.org, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com,
+ jannh@google.com, willy@infradead.org, baohua@kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+ <e10f876ce130134fa089befe83f30561b48b9889.1765439380.git.baolin.wang@linux.alibaba.com>
+ <5039c6a2-09b6-4c9b-accb-26583ba120db@lucifer.local>
+ <1a0001cd-c38d-403b-b3ef-d19e85acd772@linux.alibaba.com>
+ <671ac450-4a59-4e26-b098-7cf65add1e75@lucifer.local>
+ <37915af9-d307-4955-969e-c16ea26f7f4a@linux.alibaba.com>
+ <16d6642b-6f22-4d7b-94d6-92692b63cbd9@lucifer.local>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <16d6642b-6f22-4d7b-94d6-92692b63cbd9@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 001654000A
+X-Stat-Signature: a9c3zuwpjxhqdcosihyaiawfewdopewc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EC07F1A001A
-X-HE-Tag: 1765987197-235433
-X-HE-Meta: U2FsdGVkX19Wnt0zX6Mt21uUh5NU5la6vhYcWWPuzDZi6FFz6ouIZmklcZvdpnn75QLdnHgvWxtL0Vse8BbuIoUvlDRdrm31sDw0596tblrRzynOHy8i1c1KvPNp+Ym22vKlDa+y0rPP+WZ1loY9M9kw5Pm1lcSTogqthPeKxqOmFidJ6huAMnzpruKXyEzEP0VbfnUtw+HjraOH3ghE39pdbjDzufiqRWcIYDjZPe0Irc7Vn/4h1UoXSH7CPxDQPU8SVABdCHDkudMasicRfIwKF5DqhTjHZH7gnGntWfJoSVDOAyyzQRHLK3i3Z66dd51LwOMNrGBjli8UO6NYzZsegr/WMadoo54j0oJHJnYFoGAnjtOb7AmjRjQ1ghbOPQ37o0aua24rPWACRdk7h3tM24R+4oLlvTAPv4Mp380nk8c+OosWy1eEzZGiUs0CHv4VVitYB4JwSg6AaTBBAMxB13yeQ6nAddCUt4flogWvvFGxPWk94ukVdvx41wRbcnszhJM+EJ0LFjrYvVWC3D5NdDsoF1rI34m7CuM4pR/HpVJR5PcSQ3+WBTKcEc+FI0L7R4uaEOU3UpOx/u4mkfa5/3vdOn38+U65RrIyjRuJcpj4TVIe8TZ7/rLCKkOvgFiEkyAOJ8n83lWAn+U3SUXnbKba00z0SDXzW2gEOOXL8/mzb8xaNsKYQc/B7EFsGDYVbU9QZ6dqHtX9CAv49OFwlzpP8n5IE3cd7RdTvJ9RwC9BRnXm7v4pcwG6qlG8FCMJcuB3W5SAYFhaVEM+x9MEAF/Gk8BwyeMnvN6MMBwal8Y6aT/o2ntCxItVRUhCAKMzMOBF6EdZGSReOUHCtjQ36SKVeYSm0hwLqkYO/DNuC7bdWPTAEdtyWJ4knmw8Z79vY27Ebv8VobWyRZxKkGtHGR/yvC9GagRQTYwDSq93CuA220QsG57K3FWYH5J1dNDYxHbuZRXB4obb6C1
- TKM26ZjO
- ON0ydiPo53bdL8GHhXMI67PtN+5DxicRwNZmUhzO9B9rtSOfGKqNBcEOsJfeb+smHxQ1v9Rs6hmzIE7PWRdKEGt6tIvZ6APZPOgrR+GVLra9rbt8e37IFjG1BextP+0DiHFVs2yGmDo/jmAE0FUhzvf4MPYiptlxm1Xce
+X-HE-Tag: 1765987566-533295
+X-HE-Meta: U2FsdGVkX19olCxfcYaaRvdvAwCS9MA0W5KGwPVjInKS1VKLMYVrjSWQiS/FxaUyft4CSCFw/ABc/M+lP5goTZuZNjx7YM9zOHVFFbVmRfqCRolN/vq4gjlgafhxYmaeHmuQxG17aWw8COYtCwGfPsoHSKsiiMI6O9VaGW8VdnJTHbVSy3iuKccbak0s9q0yx9G6pR4vBoMpELDjr2iG99Kw4vtKrSKR8I7QKYZV/zvJPr3DhGYTINqD1To9UoP0UwzKVr7TBeUmWT31Yg3ANOarBY3erDYO9R0hBRvvkCWiNebzMAhaG0A+vS1ZOWyUS9CGc44+pe39xGYBmx7SdN+WKHmWgKFn3s5XKeOpJG2UpQrfzY4fiIASQ4LcaK8Z1vfiw17L2iiwQ7mXWCnXIIuyB6fcZLn/cMrR/NQUlOPG8y0Ybk57MF8ktIuTHt4FvZgyLVaamEhKzmRco2eoKA05l9pA9ghDatl72T6WV4r5q0vNygZqdId4OUOKSd9q+j11fhXzbTylNAjY4p7s7e+ZlihkfKZOrC6N3SoTnnWI3F3CkfUV9pCBI0JXUcfRaXpz/lCypRipzBcS38cMeoMr1rpISbjpuexWQSngS5r4t4dMt5ME6zDAG2CvYxlt3RoYeq0hwnYGJdhcMoMUme2ZqlYacz9G78Aj8vXG7h6y0qTQyxe4KkWgyX8ecgJ2bWBsCb0Z+IGNXh34QZqIqcNxxnj0Aj7WOZiQG2hTTfwftVI4qQwA5JtbgvSiGf/YkW7HOmONeVByB2imRqSKqtGtqkki4npT36AGn0EsX+BmfgP/XiZeYIRFdjUnQYGIbZXZ/JjPEexXpHUc9y7AmPq1IyGQTkuZ5B0TuCzA+ng9U1db2RYQrmxCGJ0M3N4Im1ADaU8b4JYLYF8dsherfHVRXB/OoyJ2FttYKBb50UBJ275vJ9O9vQaphMsN20WT2yeQP1Ty0kLqGmVoYiE
+ teCiFc04
+ 36XSoIFQHCKXU9bL0CeMnjrDmG3ywUHnAhJXcd48594/iD58L1KD/HE8AsT82uciZVCP0mGOCZ+6kxXHdmR8/M8FuO6gH4hx27v9VATyXmaXhT/+wW+zcBc3xWYORXI3cE39MLmZmV4O+PBPJwZL16bu5SxY025UMp4GLcN/LSrAgnRM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,207 +97,418 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 12b95d29eb979e5c4f4f31bb05817bc935c52050  Add linux-next specific files for 20251217
+On 17/12/2025 14:50, Lorenzo Stoakes wrote:
+> On Wed, Dec 17, 2025 at 11:53:31AM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 2025/12/16 19:11, Lorenzo Stoakes wrote:
+>>> On Tue, Dec 16, 2025 at 11:32:58AM +0800, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 2025/12/15 19:36, Lorenzo Stoakes wrote:
+>>>>> On Thu, Dec 11, 2025 at 04:16:54PM +0800, Baolin Wang wrote:
+>>>>>> Currently, contpte_ptep_test_and_clear_young() and contpte_ptep_clear_flush_young()
+>>>>>> only clear the young flag and flush TLBs for PTEs within the contiguous range.
+>>>>>> To support batch PTE operations for other sized large folios in the following
+>>>>>> patches, adding a new parameter to specify the number of PTEs.
+>>>>>>
+>>>>>> While we are at it, rename the functions to maintain consistency with other
+>>>>>> contpte_*() functions.
+>>>>>>
+>>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>> ---
+>>>>>>    arch/arm64/include/asm/pgtable.h | 12 ++++-----
+>>>>>>    arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
+>>>>>>    2 files changed, 37 insertions(+), 19 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>>>>> index 0944e296dd4a..e03034683156 100644
+>>>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>>>> @@ -1679,10 +1679,10 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+>>>>>>    extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>>>>>    				unsigned long addr, pte_t *ptep,
+>>>>>>    				unsigned int nr, int full);
+>>>>>> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>>>> -				unsigned long addr, pte_t *ptep);
+>>>>>> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>>>> -				unsigned long addr, pte_t *ptep);
+>>>>>> +extern int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>>>>>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
+>>>>>> +extern int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>>>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
+>>>>>
+>>>>> In core mm at least, as a convention, we strip 'extern' from header declarations
+>>>>> as we go as they're not necessary.
+>>>>
+>>>> Sure. I can remove the 'extern'.
+>>>
+>>> Thanks.
+>>>
+>>>>
+>>>>> I wonder about this naming convention also. The contpte_xxx_() prefix
+>>>>> obviously implies we are operating upon PTEs in the contiguous range, now
+>>>>> we are doing something... different and 'nr' is a bit vague.
+>>>>>
+>>>>> Is it the nr of contiguous ranges? Well in reality it's nr_pages right? But
+>>>>
+>>>> Yes, 'nr' here means nr_pages, which follows the convention of the
+>>>> parameters in contpte_xxx_() functions.
+>>>
+>>> Except you're violating the convention already by doing non-contpte stuff in
+>>> contpte functions?
+>>
+>> Nope. Sorry for my poor English, which might have caused some confusion. I
+>> followed the contpte's convention, and let me try to explain it again below.
+>>
+>>> The confusion is between nr of contpte ranges and nr of pages, so I think we
+>>> should be explicit.
+>>>
+>>>>
+>>>>> now we're not saying they're necessarily contiguous in the sense of contpte...
+>>>>>
+>>>>> I wonder whether we'd be better off introducing a new function that
+>>>>> explicitly has 'batch' or 'batched' in the name, and have the usual
+>>>>> contpte_***() stuff and callers that need batching using a new underlying helper?
+>>>>
+>>>> OK. I get your point. However, this is outside the scope of my patchset.
+>>>
+>>> Well, no, this is review feedback that needs to be addressed, I really don't
+>>> like this patch as-is.
+>>>
+>>> So for this to be upstreamable you really need to separate this out.
+>>>
+>>>>
+>>>> Perhaps we can clean up all the contpte_xxx_() functions if everyone agrees
+>>>> that this is confusing.
+>>>
+>>> I mean, unless Ryan explicitly makes a case for this being fine, I'm inclined to
+>>> reject the patch unless we do this.
+>>>
+>>> The contpte logic is already very confusing, and this is only adding to it.
+>>>
+>>>>
+>>>>> Obviously I defer to Ryan on all this, just my thoughts...
+>>>>>
+>>>>>>    extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+>>>>>>    				pte_t *ptep, unsigned int nr);
+>>>>>>    extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>>>>>> @@ -1854,7 +1854,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>>>>    	if (likely(!pte_valid_cont(orig_pte)))
+>>>>>>    		return __ptep_test_and_clear_young(vma, addr, ptep);
+>>>>>>
+>>>>>> -	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
+>>>>>> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
+>>>>>>    }
+>>>>>>
+>>>>>>    #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>>>>>> @@ -1866,7 +1866,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>>>>    	if (likely(!pte_valid_cont(orig_pte)))
+>>>>>>    		return __ptep_clear_flush_young(vma, addr, ptep);
+>>>>>>
+>>>>>> -	return contpte_ptep_clear_flush_young(vma, addr, ptep);
+>>>>>> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
+>>>>>>    }
+>>>>>>
+>>>>>>    #define wrprotect_ptes wrprotect_ptes
+>>>>>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+>>>>>> index c0557945939c..19b122441be3 100644
+>>>>>> --- a/arch/arm64/mm/contpte.c
+>>>>>> +++ b/arch/arm64/mm/contpte.c
+>>>>>> @@ -488,8 +488,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>>>>>    }
+>>>>>>    EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+>>>>>>
+>>>>>> -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>>>> -					unsigned long addr, pte_t *ptep)
+>>>>>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>>>>>> +					unsigned long addr, pte_t *ptep,
+>>>>>> +					unsigned int nr)
+>>>>>>    {
+>>>>>>    	/*
+>>>>>>    	 * ptep_clear_flush_young() technically requires us to clear the access
+>>>>>> @@ -500,39 +501,56 @@ int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>>>>    	 * having to unfold.
+>>>>>>    	 */
+>>>>>
+>>>>> Hmm shouldn't you need to update this comment now 'nr' is a thing? E.g.:
+>>>>>
+>>>>> "And since we only create a contig range when the range is covered by a single
+>>>>> folio, we can get away with clearing young for the whole contig range here, so
+>>>>> we avoid having to unfold."
+>>>>
+>>>> I think the original comments are still clear:
+>>>> "
+>>>> /*
+>>>>   * ptep_clear_flush_young() technically requires us to clear the access
+>>>>   * flag for a _single_ pte. However, the core-mm code actually tracks
+>>>>   * access/dirty per folio, not per page. And since we only create a
+>>>>   * contig range when the range is covered by a single folio, we can get
+>>>>   * away with clearing young for the whole contig range here, so we avoid
+>>>>   * having to unfold.
+>>>>   */
+>>>> "
+>>>
+>>> Except nr means you can span more than a single contig pte range? So this
+>>> comment is no longer applicable as-is?
+>>
+>> The nr means consecutive (present) PTEs that map consecutive pages of the
+>> same large folio in a single VMA and a single page table.
+>>
+>> I think this is a prerequisite. If you think it's necessary to explain it, I
+>> can add it to the comments.
+>>
+>>> You've changed the function, the comment needs to change too.
+>>>
+>>>>
+>>>>> However now you're allowing for large folios that are not contpte?
+>>>>>
+>>>>> Overall feeling pretty iffy about implementing this this way.
+>>>>
+>>>> Please see the above comments, which explain why we should do that.
+>>>
+>>> You haven't explained anything? Maybe I missed it?
+>>>
+>>> Can you explain clearly what nr might actually be in relation to contpte's? I'm
+>>> confused even as to the utility here.
+>>>
+>>> Is it batched ranges of contptes? But then why are you trying to see if end is a
+>>> contpte + expand the range if so?
+>>
+>> See below.
+>>
+>>>>>> +	unsigned long start = addr;
+>>>>>> +	unsigned long end = start + nr * PAGE_SIZE;
+>>>>>
+>>>>> So now [addr, addr + nr * PAGE_SIZE) must for sure be within a single PTE
+>>>>> table?
+>>>>
+>>>> Caller has made sure that (see folio_referenced_one()).
+>>>
+>>> You should comment this somehow, I hate this nested assumptions stuff 'function
+>>> X which calls function Y which calls function Z makes sure that parameter A
+>>> fulfils requirements B but we don't mention it anywhere'.
+>>
+>> Sure.
+>>
+>>>>>>    	int young = 0;
+>>>>>>    	int i;
+>>>>>>
+>>>>>> -	ptep = contpte_align_down(ptep);
+>>>>>> -	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>>>>>> +	if (pte_cont(__ptep_get(ptep + nr - 1)))
+>>>>>> +		end = ALIGN(end, CONT_PTE_SIZE);
+>>>>>
+>>>>> OK so I guess for PTE_CONT to be set, it must be aligned to CONT_PTE_SIZE,
+>>>>> with other PTE entries present there not having PTE_CONT set (Ryan - do
+>>>>> correct me if I'm wrong!)
+>>>>>
+>>>>> I guess then no worry about running off the end of the PTE table here.
+>>>>>
+>>>>> I wonder about using pte_cont_addr_end() here, but I guess you are not
+>>>>> intending to limit to a range here but rather capture the entire contpte
+>>>>> range of the end.
+>>>>
+>>>> Right.
+>>>>
+>>>>> I don't love that now a function prefixed with contpte_... can have a
+>>>>> condition where part of the input range is _not_ a contpte entry, or is
+>>>>> specified partially...
+>>>>
+>>>> Like I said above, this is outside the scope of my patchset. If Ryan also
+>>>> thinks we need to do some cleanups for all the contpte_xxx() functions in
+>>>> the contpte.c file, we can send a follow-up patchset to rename all the
+>>>> contpte_xxx() functions to make it clear.
+>>>
+>>> It's really not outside of the scope of the patch set, this is review feedback
+>>> you have to address :) trying not to be a grumpy kernel dev here :>)
+>>>
+>>> In general in the kernel we don't accept confusing patches then defer making
+>>> them not-confusing until later.
+>>>
+>>> We review until the series is at the correct standard to be accepted before we
+>>> merge.
+>>>
+>>> As always I'm happy to be convinced that I'm mistaken or something's not
+>>> necesary, however!
+>>
+>> Yes, let me try to explain it again. See below.
+>>
+>>>>>> -	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+>>>>>> -		young |= __ptep_test_and_clear_young(vma, addr, ptep);
+>>>>>> +	if (pte_cont(__ptep_get(ptep))) {
+>>>>>> +		start = ALIGN_DOWN(start, CONT_PTE_SIZE);
+>>>>>> +		ptep = contpte_align_down(ptep);
+>>>>>> +	}
+>>>>>> +
+>>>>>> +	nr = (end - start) / PAGE_SIZE;
+>>>>>
+>>>>> Hm don't love this reuse of input param.
+>>>>
+>>>> OK. Will use another local variable instead.
+>>>
+>>> Thanks.
+>>>
+>>>>
+>>>>>
+>>>>>> +	for (i = 0; i < nr; i++, ptep++, start += PAGE_SIZE)
+>>>>>> +		young |= __ptep_test_and_clear_young(vma, start, ptep);
+>>>>>
+>>>>> Again, overall find it a bit iffy that we are essentially overloading the
+>>>>> code with non-contpte behaviour.
+>>>>
+>>>> Let me clarify further: this is the handling logic of the contpte_xxx()
+>>>> functions in the contpte.c file. For example, the function
+>>>> contpte_set_ptes() has a parameter 'nr', which may be greater than
+>>>> CONT_PTES, meaning that it can handle multiple CONT_PTES range sizes of a
+>>>> large folio.
+>>>>
+>>>> It might be a bit confusing, and I understand this is why you want to change
+>>>> the 'contpte_' prefix to the 'batch_' prefix. Of course, we can hope Ryan
+>>>> can provide some input on this.
+>>>>
+>>>> Thanks for reviewing.
+>>>
+>>> OK so we have some reeeeal confusion here. And this speaks to the patch needing
+>>> work.
+>>>
+>>> This seems to answer what I asked above - basically - are we doing _batches_ of
+>>> _contpte_ entries, or are we just accepting arbitrary large folios here and
+>>> batching up operations on them, including non-contpte entries.
+>>>
+>>> Presumably from the above you're saying - this is dealing with batches of
+>>> contpte entries.
+>>>
+>>> In which case this has to be made _super_ clear. Not just adding an arbitrary
+>>> 'nr' parameter and letting people guess.
+>>>
+>>> The contpte code is _already_ confusing and somewhat surprising if you're not
+>>> aware of it, we need to be going in the other direction.
+>>
+>> Sure. Sorry for causing confusion. I try to explain it again to make it
+>> clear.
+>>
+>> First, it is necessary to explain how the contpte implementation in Arm64 is
+>> exposed, using set_ptes() as an example.
+>>
+>> Arm64 defines an arch-specific implementation of set_ptes():
+>> "
+>> static __always_inline void set_ptes(struct mm_struct *mm, unsigned long
+>> addr,
+>> 				pte_t *ptep, pte_t pte, unsigned int nr)
+>> {
+>> 	pte = pte_mknoncont(pte);
+>>
+>> 	if (likely(nr == 1)) {
+>> 		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+>> 		__set_ptes(mm, addr, ptep, pte, 1);
+>> 		contpte_try_fold(mm, addr, ptep, pte);
+>> 	} else {
+>> 		contpte_set_ptes(mm, addr, ptep, pte, nr);
+>> 	}
+>> }
+>> "
+>>
+>> Here, 'nr' refers to consecutive (present) PTEs that map consecutive pages
+>> of the same large folio within a single VMA and a single page table. Based
+>> on 'nr', it determines whether the PTE_CONT attribute should be set or not.
+>>
+>> Second, the underlying implementation of contpte_set_ptes() also calculates
+>> 'end' based on 'nr' and checks whether the PTE_CONT attribute should be set.
+>> For example:
+>>
+>> For a large folio with order = 3 (nr = 8), the PTE_CONT attribute will not
+>> be set since the 'next' is not aligned with CONT_PTE_MASK.
+>>
+>> For a large folio with order = 4 (nr = 16), it aligns perfectly, allowing
+>> the PTE_CONT attribute to be set for the entire PTE entries of the large
+>> folio.
+>>
+>> For a large folio with order = 5 (nr = 32), this involves two ranges of
+>> CONT_PTE_SIZE (16 PTEs in each range), requiring the PTE_CONT attribute to
+>> be set separately for each range.
+>>
+>> "
+>> void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+>> 					pte_t *ptep, pte_t pte, unsigned int nr)
+>> {
+>> 	.......
+>>
+>> 	end = addr + (nr << PAGE_SHIFT);
+>> 	pfn = pte_pfn(pte);
+>> 	prot = pte_pgprot(pte);
+>>
+>> 	do {
+>> 		next = pte_cont_addr_end(addr, end);
+>> 		nr = (next - addr) >> PAGE_SHIFT;
+>> 		pte = pfn_pte(pfn, prot);
+>>
+>> 		if (((addr | next | (pfn << PAGE_SHIFT)) & ~CONT_PTE_MASK) == 0)
+>> 			pte = pte_mkcont(pte);
+>> 		else
+>> 			pte = pte_mknoncont(pte);
+>>
+>> 		__set_ptes(mm, addr, ptep, pte, nr);
+>>
+>> 		addr = next;
+>> 		ptep += nr;
+>> 		pfn += nr;
+>>
+>> 	} while (addr != end);
+>> }
+>> "
+>>
+>> Third, regarding the implementation of my patch, I have followed the contpte
+>> logic here by adding the 'nr' parameter to
+>> contpte_ptep_test_and_clear_young() for batch processing consecutive
+>> (present) PTEs. Moreover, the semantics of 'nr' remain consistent with the
+>> original contpte functions, and I have not broken the existing contpte
+>> implementation logic.
+> 
+> OK that helps a lot thanks.
+> 
+> So the nr will be number of PTEs that are consecutive, belong to the same folio,
+> and have the same PTE bit set excluding accessed, writable, dirty, soft-dirty.
 
-Unverified Warning (likely false positive, kindly check if interested):
+I'm not sure test_and_clear_young_ptes() would technically require all of these
+constraints. I think it would be sufficient to just ensure that all the PTEs in
+the batch are pte_present(). And I assume the return value is intended to
+indicate if *any* of the PTEs in the batch were previously young?
 
-    drivers/gpu/drm/sitronix/st7571.c:916:1: sparse: sparse: bad integer constant expression
-    drivers/gpu/drm/xe/xe_device.c:843 detect_preproduction_hw() error: uninitialized symbol 'gt'.
-    drivers/mmc/host/dw_mmc.c:597 dw_mci_prepare_desc() error: uninitialized symbol 'desc'.
+The usual order for adding new batched PTE helpers is to define the generic
+function along with it's spec in a comment block and provide a default
+implementation that is implemented as a loop around the existing non-batched
+version of the interface. Then you can convert the core-mm to use that API. And
+finally you can opt arm64 into overriding the API with a more efficient
+implementation.
 
-Warning ids grouped by kconfigs:
+If you were to do it in that order, it tells a better story and is easier to
+follow, I think.
 
-recent_errors
-|-- i386-randconfig-r073-20251216
-|   `-- drivers-gpu-drm-xe-xe_device.c-detect_preproduction_hw()-error:uninitialized-symbol-gt-.
-|-- microblaze-randconfig-r073-20251217
-|   `-- drivers-mmc-host-dw_mmc.c-dw_mci_prepare_desc()-error:uninitialized-symbol-desc-.
-`-- riscv-randconfig-r111-20251216
-    `-- drivers-gpu-drm-sitronix-st7571.c:sparse:sparse:bad-integer-constant-expression
+> 
+> But since we are retrieving accessed bit state (young), isn't it a problem we're
+> ignoring this bit when considering what goes into the batch?
+> 
+> I mean now it's going to return true even if some do not have the accessed flag
+> set?
 
-elapsed time: 729m
+test_and_clear_young_ptes() is exploiting the fact that the kernel tracks young
+(and dirty) per *folio*. So having a young and dirty bit per PTE is providing
+more information than the kernel needs if a large folio is mapped across
+multiple PTEs. Which is why returning the logical OR of the access bits is ok here.
 
-configs tested: 174
-configs skipped: 1
+> 
+> I am more convinced things are correct in style at least then this way as, as
+> you say, this is the approach taken in set_ptes().
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20251217    gcc-8.5.0
-arc                   randconfig-002-20251217    gcc-10.5.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                                 defconfig    clang-22
-arm                   randconfig-001-20251217    clang-18
-arm                   randconfig-002-20251217    clang-22
-arm                   randconfig-003-20251217    clang-22
-arm                   randconfig-004-20251217    clang-22
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20251217    gcc-8.5.0
-arm64                 randconfig-002-20251217    clang-22
-arm64                 randconfig-003-20251217    clang-22
-arm64                 randconfig-004-20251217    clang-20
-csky                             allmodconfig    gcc-15.1.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20251217    gcc-15.1.0
-csky                  randconfig-002-20251217    gcc-9.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20251217    clang-22
-hexagon               randconfig-002-20251217    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20251217    clang-20
-i386        buildonly-randconfig-002-20251217    gcc-14
-i386        buildonly-randconfig-003-20251217    gcc-13
-i386        buildonly-randconfig-004-20251217    clang-20
-i386        buildonly-randconfig-005-20251217    gcc-14
-i386        buildonly-randconfig-006-20251217    gcc-14
-i386                                defconfig    clang-20
-i386                  randconfig-001-20251217    clang-20
-i386                  randconfig-002-20251217    clang-20
-i386                  randconfig-003-20251217    clang-20
-i386                  randconfig-004-20251217    gcc-14
-i386                  randconfig-005-20251217    gcc-13
-i386                  randconfig-006-20251217    clang-20
-i386                  randconfig-007-20251217    clang-20
-i386                  randconfig-011-20251217    gcc-14
-i386                  randconfig-012-20251217    clang-20
-i386                  randconfig-013-20251217    clang-20
-i386                  randconfig-014-20251217    clang-20
-i386                  randconfig-015-20251217    gcc-14
-i386                  randconfig-016-20251217    gcc-14
-i386                  randconfig-017-20251217    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251217    clang-22
-loongarch             randconfig-002-20251217    clang-22
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                           virt_defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                             allmodconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                             allyesconfig    gcc-15.1.0
-nios2                         3c120_defconfig    gcc-11.5.0
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251217    gcc-11.5.0
-nios2                 randconfig-002-20251217    gcc-8.5.0
-openrisc                         allmodconfig    gcc-15.1.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251217    gcc-15.1.0
-parisc                randconfig-002-20251217    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                      chrp32_defconfig    clang-19
-powerpc                       ebony_defconfig    clang-22
-powerpc               randconfig-001-20251217    gcc-8.5.0
-powerpc               randconfig-002-20251217    clang-22
-powerpc64             randconfig-001-20251217    gcc-14.3.0
-powerpc64             randconfig-002-20251217    clang-18
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                    nommu_k210_defconfig    clang-22
-riscv                 randconfig-001-20251217    gcc-14.3.0
-riscv                 randconfig-002-20251217    clang-18
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251217    gcc-10.5.0
-s390                  randconfig-002-20251217    gcc-8.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20251217    gcc-15.1.0
-sh                    randconfig-002-20251217    gcc-12.5.0
-sh                   secureedge5410_defconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251217    gcc-15.1.0
-sparc                 randconfig-002-20251217    gcc-15.1.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251217    clang-20
-sparc64               randconfig-002-20251217    gcc-12.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251217    clang-22
-um                    randconfig-002-20251217    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20251217    clang-20
-x86_64      buildonly-randconfig-002-20251217    clang-20
-x86_64      buildonly-randconfig-003-20251217    gcc-13
-x86_64      buildonly-randconfig-004-20251217    gcc-14
-x86_64      buildonly-randconfig-005-20251217    gcc-14
-x86_64      buildonly-randconfig-006-20251217    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20251217    clang-20
-x86_64                randconfig-002-20251217    gcc-14
-x86_64                randconfig-003-20251217    clang-20
-x86_64                randconfig-004-20251217    clang-20
-x86_64                randconfig-005-20251217    clang-20
-x86_64                randconfig-006-20251217    gcc-14
-x86_64                randconfig-011-20251217    clang-20
-x86_64                randconfig-012-20251217    gcc-14
-x86_64                randconfig-013-20251217    clang-20
-x86_64                randconfig-014-20251217    gcc-14
-x86_64                randconfig-015-20251217    gcc-14
-x86_64                randconfig-016-20251217    gcc-14
-x86_64                randconfig-071-20251217    clang-20
-x86_64                randconfig-072-20251217    gcc-13
-x86_64                randconfig-073-20251217    gcc-14
-x86_64                randconfig-074-20251217    clang-20
-x86_64                randconfig-075-20251217    clang-20
-x86_64                randconfig-076-20251217    gcc-14
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                           allyesconfig    gcc-15.1.0
-xtensa                randconfig-001-20251217    gcc-8.5.0
-xtensa                randconfig-002-20251217    gcc-15.1.0
-xtensa                    smp_lx200_defconfig    gcc-15.1.0
+I'm personally ok with the style and I believe the implementation is correct.
+But it would help to reformulate the series in the order I suggest above since
+then we can review against the spec of what the core-mm helper is supposed to do.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Ryan
+
+> 
+> Thanks, Lorenzo
+
 
