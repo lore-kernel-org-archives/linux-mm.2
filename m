@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D792D64085
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06B8D64087
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C07B06B00B7; Wed, 17 Dec 2025 02:33:35 -0500 (EST)
+	id 2A8E96B00B9; Wed, 17 Dec 2025 02:33:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB5006B00B9; Wed, 17 Dec 2025 02:33:35 -0500 (EST)
+	id 27DB76B00BB; Wed, 17 Dec 2025 02:33:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABDD76B00BA; Wed, 17 Dec 2025 02:33:35 -0500 (EST)
+	id 1B0966B00BC; Wed, 17 Dec 2025 02:33:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9444C6B00B7
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:33:35 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54740160946
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:35 +0000 (UTC)
-X-FDA: 84228147990.02.4DD2127
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5A4C58000C
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3696B00B9
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:33:44 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C998613698A
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:43 +0000 (UTC)
+X-FDA: 84228148326.22.31FBEE8
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C8E0D8000B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:41 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kJbEioJK;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tidJtTr2;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956813; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956822; a=rsa-sha256;
 	cv=none;
-	b=ujkr3yWZ2WPVVg9ImEV1V9ksyVwrHRtdULUm9Whfx3T9LCIXUXwufLneC1y6uk/2ZCBO+E
-	nA8C7TKNOZmAhLcCNGp1hajhiaEJJzAVojDeo6gXGpGePuk0kCQlXTQUAx02XtLsRRFa1D
-	0C+3XJgws5ZcA6iJcBQkMeRj1pT9sE0=
+	b=8EU97OFZXwuvAk0LYETdDfMwgWFuZ3KRsHkf6CwKKzAH6Xzc1I09SR1DXk69CJIdX93Gi9
+	ZCPgj2f0ZJDYC7x5Cjy1TygD6/o4yhsrdum0e4u7UuNLa3RIWQg3qN26FfhB2dY8dKlo+n
+	lAWgdbDLFDkqYlMebWPJKPqaBwdZImk=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kJbEioJK;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tidJtTr2;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765956813;
+	s=arc-20220608; t=1765956822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ybjrAMMTox2gm0Mz0WWSv3dKHkz7INlbXp2y/b55EKc=;
-	b=73kLS1zABRwwhGu867NJgUyVTSapdDGYo4ASCgHJiOiPTsBkf9tCi5qpXAfgnTdJLxsSGe
-	+3JYYefauKEGJaTedjnSTd4JSfFoOx6qIa21T6RM35dT9LFsgmpROhWo+6IvP/f/8MOIC+
-	rAmyWgurgXmf+QGh5lDLjY6QzoYDRgM=
-Date: Tue, 16 Dec 2025 23:33:20 -0800
+	bh=R8YR9gN+9LKeUz1NQLMLCUGYh2Hy/QLvO4JfzYTy1RU=;
+	b=1dy3L5/XVnDN7A/teGBC4slZ2960Irk1lgCfJALLThLuPj9WsmfqAxrmptq5R7/EvrI6I0
+	D8ZBCnxPzD7IXGGkHh0i145H2n3VDpZ5TNRrqk0J+VdumTTTUOkmWB0EzNuSzoon/UqZ/s
+	7nJ2AZvpIOPOdKZEi9qx43qLoIUwC9o=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765956807;
+	t=1765956815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ybjrAMMTox2gm0Mz0WWSv3dKHkz7INlbXp2y/b55EKc=;
-	b=kJbEioJKtAXA6CzgPcHjUNrICvNmMFfoWW6bm+eUPd7eipsqQETPUXNiBWOtJXBYXk89K4
-	xJVLMQqDLSBleuaZ/DvrY3vP2VkoFdLWgpPTWvBV6Y2JPvrQ8zD9d136V4lt3P/HugG3Fn
-	bJBXRfI6+tn9iwsOM0GpjCrI00w7ioM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@infradead.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, 
-	akpm@linux-foundation.org, eddyz87@gmail.com, andrii@kernel.org, ast@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
-	khalid@kernel.org, syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, 
-	bpf <bpf@vger.kernel.org>
-Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
- do_read_cache_folio()
-Message-ID: <2mfkm3sotjz5tfw6wvtfrwnerae5pqspelyxw6xg6e5glsyaq6@jl73gcvmtve5>
-References: <20251114193729.251892-1-ssranevjti@gmail.com>
- <aReUv1kVACh3UKv-@casper.infradead.org>
- <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
- <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
- <20251117164155.GB196362@frogsfrogsfrogs>
- <aRtjfN7sC6_Bv4bx@casper.infradead.org>
- <CAEf4BzZu+u-F9SjhcY5GN5vumOi6X=3AwUom+KJXeCpvC+-ppQ@mail.gmail.com>
- <aRxunCkc4VomEUdo@infradead.org>
- <aRySpQbNuw3Y5DN-@casper.infradead.org>
- <CAEf4BzY1fu+7pqotaW6DxH_vvwCY8rTuX=+0RO96-baKJDeB_Q@mail.gmail.com>
+	bh=R8YR9gN+9LKeUz1NQLMLCUGYh2Hy/QLvO4JfzYTy1RU=;
+	b=tidJtTr2EuymlnKpDmZPd1dmfRgbULwp4WtdUDc16XnyIjODf6yUCldeSWrpQWBTBYp4BY
+	UWVJwLpBTE+3v8zXTelxiSGHmsRYdpSlwHHU4p65p7Y3feB/FoZev4ao7VwqCdGH+bHpcJ
+	zZOnHwD3qZ4ZgJ2CBPl+BiBu4QdxlHM=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 23/28] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+Date: Wed, 17 Dec 2025 15:27:47 +0800
+Message-ID: <6d643ea41dd89134eb3c7af96f5bfb3531da7aa7.1765956026.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4BzY1fu+7pqotaW6DxH_vvwCY8rTuX=+0RO96-baKJDeB_Q@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5A4C58000C
-X-Stat-Signature: dxrgerd373dd17s9jqzzrz96s8qdzqg7
+X-Rspamd-Queue-Id: C8E0D8000B
+X-Stat-Signature: x6dr4oj59ocqqpxkdid5ix7n7udam7pq
 X-Rspam-User: 
-X-HE-Tag: 1765956813-920368
-X-HE-Meta: U2FsdGVkX18KfOCugDs6pJBpwd9SKUusI8K0It64yGuCb1JoFOp1dTv8VyorYzmROzsErX9a+5Cyzo6jLpFoWmyYOKDI9ubg4psc0GcDuDNw1pUB0sRbn604CQAVS5bKGqbISAm/voYngl8kSQH0lhxtgnGMo3qE3YIxAs9Js6qyaiXlRtfVegI/KK7CLdl5Qf5T3cFQEZYlJTgZVMKV0zQX8tGDRRRZB7sroExePv1ktcYaea3ex052Z5U20mRXb5MyOxNLA8pMmkbRK4WUE69aiUJFb0TKKsWDeTMjGTQ2uAaJ+4171LUbcvGIhwf4XfKCVNHLC9Ap0f5ngrPmzV9ba54ub6rDp8BM9VbsqE9vuKhEL6uYhqVNUZcgggxeN57ntOdQo4rVPiwzYfbUd/9QvSxqGOet5BcJzJ+sc5t78VTD9ibhzzbINm1CU7Nvwqx9uMf8KpBzcvI0z5Q8qIAk1RYVo8D5bqqgcSdSxT0yPj+EOmmUYT0r9cpP0/hxhe8DdfnpBcabhqtlwqCekDtlAZr+pLCqzZTg9uXX7fNrAJbboAbYfxY0rpzhlJMe+b/o0uynWIdabGn+5OGKCYBBm9/SD8KzqUnTtxBwhSZ95D7VNHjsTe4F3K/Qjd64YSFrvhdGJ8Zb0TtbyWuRHFLvgrhMytf5T/lxSzaEnCg2xp/RY9iNsyXiw3AHKbM+OzWg3CHHKe3rftGvlfKUpiO/z5HMWcdq1rjPYNdxc4Rs7Vv0TrTddOg7Nm+dngXOnP1fJ9Tb+if5D6MtEHNW6jNcpx35ffXDNk3Rs6xX/KMzII7KAxu67IG6vRd/Jx3FryK0t/2mNGt+lXUWIiHFD5s3lUrYDjmcdhaLVEfI+kWEiWtbo7BGJpcHuT25ZOUhap0/vO0qnFI0zAW67/1GlQ3/UpcfTupclJUsy8JrC1jnG8+urZWLxG7d3xARV6QQrw/Q7OXNtOWetVMn2t/
- MgV69Kvk
- NPfJvcdwGTewIceHyaDqMiqBJR6Yp22O2jEM6Lip0cJ6RgfZGJiVZig4phZAgqpj+dUcgCM06KpGClaCYyTzeNCEoPhAmy2Uc2klp5d+7Yn0n2mEFxbL3P8qe02/kEqESNAcT+PBY9oC5aFNA0pkEPsUvTY6YF8yei/nsMYj6YTEKnNy8BK4Mgn7knR1GqKyQYAMY0klemYSX6i4wZoWdyAA2LlIRvhoydN4Jy7yUaieL2FOtB7YeevhRTV/KRJ2UaV1rYD/aLwH31vXr2cr9FjxP/nqhvzFWOxKmMWDVcMtnxGfhx2HUia976hMKM2mlbKQWAczv/nIElsJ0SsjQmcqkgFZvAd5nm9J0onL2edUuJfyV5bOwy+24IRDHXCiPs5/LgqYIJs0orPo9s6UcDS6mSFMcnV3pc34QJMldAn51UizrBb8RpoEwpjpS/njuYJUbVQZYWXA+Mx9Qflmplfmy4aWwIAHlANoD
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765956821-634213
+X-HE-Meta: U2FsdGVkX190cWm581M46hC3X59mPPrw8ju8eoofUIzJoCs8ruwIW34QlUbQ0DIeQ20tukmPMiemwoKYjh3rZRgCCmygaDGQeJOZRP90lyolvGbfGTDJpVR5Sg/Ct9RGLq53tim3oRXl5oFgF1x3KhNNJx0qqwjHEmDKePkZ9IbJ5ODofKLoI1LsHvG0L25J1FvtDwINqMkF1/ZO3nBkIL0F1DpIwgYW6sxHHnnNvEA0HkSs4owKAZ5sxmj3CxSqIJoDL+91EYY8tOkLotUO5NCuGHe/05EfqpkHAgOCBXMMa9lS9lJUIeaC5alavWjbIXIJ9q9/Nav/vGEB9PqFv0qlb5yZ94Uhc3aj8uQLqH+2McvNHOm3CIuHpn5zCwIJp5YiRnRbqXoq2ocwNAE/tI2Rb9WKes51UjXbqdGb11MivxAGkQ5AwGkg55Ayal1vHY7sqXdHuyOVv2/n1PpHav5pVTdDxUA8sk9EUEej1gtgB7wDM2RV3CtcaUNHbnHGIyqH1AJ4P+lmRg9UWwCOQpZGIKrJyWjyTGUs0T8lVUG4BQB4mi2PTmkSrdSF6uAYZPLvyxoxlEx+5Vm0t8ZQVF4+aVXTr1DJghinjzpb/JQ6lymVqAz0fHskpzLFae9RwAxtrCXZFml8GKoqkJYMAJWtogutHV9ovvef6AiU5CsqZ/F9NY9M6V7tPteUbkLEZsTRiD6863Hv6vcVEaP0Zab6O/ejhr2s36cy3g9Slzwu8f81ilbzI8QG0PXUOumB3pGruDGRqa3vwh9bqK/9rrVjvgyYu1A9tEIrVWSMK6GIifSRJLcQ3eL8USPmZmGjLf/4p3tx3e3xEplUDyahwpI3O011BjO8mLn1lqLo86kMqqw8HBAmXcAniS6VtoHVatuqBRvE1UFfQnWqw8p1ncGcA2Hz5omkNaUxRo3Fl0wsRWmkKzUqkccYptUZlmd+8NpC1M2p+9ArxMwGNWt
+ /6zhYjqD
+ MSb/KZ8wPNaVgVb6FXqroDraekzWcfdl749x7v8x5/k5aKV/nok5+803siE9NQj9NX+bSsAIZShTQwv0mvjW31IzWi3UIz9nYY+W1rPmn/Swj0Kw4eQti4n25rCwxBPkf1EljH0zHEMlsvhVAGFPNZKKN04V2iRbnERfz42k4tJBqQbs3ogH5L/0Vd166WoIXoyRNFtE5QZUfuR8JrV/21dBHnw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,288 +110,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 11:27:47AM -0800, Andrii Nakryiko wrote:
-> On Tue, Nov 18, 2025 at 7:37 AM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Tue, Nov 18, 2025 at 05:03:24AM -0800, Christoph Hellwig wrote:
-> > > On Mon, Nov 17, 2025 at 10:45:31AM -0800, Andrii Nakryiko wrote:
-> > > > As I replied on another email, ideally we'd have some low-level file
-> > > > reading interface where we wouldn't have to know about secretmem, or
-> > > > XFS+DAX, or whatever other unusual combination of conditions where
-> > > > exposed internal APIs like filemap_get_folio() + read_cache_folio()
-> > > > can crash.
-> > >
-> > > The problem is that you did something totally insane and it kinda works
-> > > most of the time.
-> >
-> > ... on 64-bit systems.  The HIGHMEM handling is screwed up too.
-> >
-> > > But bpf or any other file system consumer has
-> > > absolutely not business poking into the page cache to start with.
-> >
-> > Agreed.
-> 
-> Then please help make it better, give us interfaces you think are
-> appropriate. People do use this functionality in production, it's
-> important and we are not going to drop it. In non-sleepable mode it's
-> best-effort, if the requested part of the file is paged in, we'll
-> successfully read data (such as ELF's build ID), and if not, we'll
-> report that to the BPF program as -EFAULT. In sleepable mode, we'll
-> wait for that part of the file to be paged in before proceeding.
-> PROCMAP_QUERY ioctl() is always in sleepable mode, so it will wait for
-> file data to be read.
-> 
-> If you don't like the implementation, please help improve it, don't
-> just request dropping it "because BPF folks" or anything like that.
-> 
+From: Muchun Song <songmuchun@bytedance.com>
 
-So, I took a stab at this, particularly based on Willy's suggestions on
-IOCB_NOWAIT. This is untested and I am just sharing to show how it looks
-like and if there are any concerns. In addition I think I will look into
-fstest part as well.
+The following diagram illustrates how to ensure the safety of the folio
+lruvec lock when LRU folios undergo reparenting.
 
-BTW by simple code inspection I already see that IOCB_NOWAIT is not well
-respected. For example filemap_read() is doing cond_resched() without
-any checks. The readahead i.e. page_cache_sync_ra() can potential take
-sleeping locks. Btrfs is taking locks in btrfs_file_read_iter. So, it
-seems like this would need extensive testing hopefully for all major
-FSes.
+In the folio_lruvec_lock(folio) function:
+```
+    rcu_read_lock();
+retry:
+    lruvec = folio_lruvec(folio);
+    /* There is a possibility of folio reparenting at this point. */
+    spin_lock(&lruvec->lru_lock);
+    if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
+        /*
+         * The wrong lruvec lock was acquired, and a retry is required.
+         * This is because the folio resides on the parent memcg lruvec
+         * list.
+         */
+        spin_unlock(&lruvec->lru_lock);
+        goto retry;
+    }
 
-Here the draft patch:
+    /* Reaching here indicates that folio_memcg() is stable. */
+```
 
+In the memcg_reparent_objcgs(memcg) function:
+```
+    spin_lock(&lruvec->lru_lock);
+    spin_lock(&lruvec_parent->lru_lock);
+    /* Transfer folios from the lruvec list to the parent's. */
+    spin_unlock(&lruvec_parent->lru_lock);
+    spin_unlock(&lruvec->lru_lock);
+```
 
-From 9652cc97a817fe35e53a7e98a5fbb49c7788c744 Mon Sep 17 00:00:00 2001
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Date: Tue, 16 Dec 2025 16:53:57 -0800
-Subject: [PATCH] lib/buildid: convert freader to use __kernel_read()
+After acquiring the lruvec lock, it is necessary to verify whether
+the folio has been reparented. If reparenting has occurred, the new
+lruvec lock must be reacquired. During the LRU folio reparenting
+process, the lruvec lock will also be acquired (this will be
+implemented in a subsequent patch). Therefore, folio_memcg() remains
+unchanged while the lruvec lock is held.
 
-Convert the freader file reading implementation from direct page cache
-access via filemap_get_folio()/read_cache_folio() to using kernel_read
-interfaces.
+Given that lruvec_memcg(lruvec) is always equal to folio_memcg(folio)
+after the lruvec lock is acquired, the lruvec_memcg_debug() check is
+redundant. Hence, it is removed.
 
-Add a new __kernel_read_nowait() function that uses IOCB_NOWAIT flag
-for non-blocking I/O. This is used when may_fault is false to avoid
-blocking on I/O - if data is not immediately available, it returns
--EAGAIN.
+This patch serves as a preparation for the reparenting of LRU folios.
 
-For the may_fault case, use the standard __kernel_read() which can
-block waiting for I/O.
-
-This simplifies the code by removing the need to manage folios,
-kmap/kunmap operations, and page cache locking. It also makes the
-code work with filesystems that don't use the page cache directly.
-
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- fs/read_write.c         | 18 ++++++++-
- include/linux/buildid.h |  3 --
- include/linux/fs.h      |  1 +
- lib/buildid.c           | 85 +++++++++--------------------------------
- 4 files changed, 37 insertions(+), 70 deletions(-)
+ include/linux/memcontrol.h | 26 ++++++++-----------
+ mm/compaction.c            | 29 ++++++++++++++++-----
+ mm/memcontrol.c            | 53 +++++++++++++++++++-------------------
+ 3 files changed, 61 insertions(+), 47 deletions(-)
 
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 833bae068770..7a042cfeefec 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -503,7 +503,8 @@ static int warn_unsupported(struct file *file, const char *op)
- 	return -EINVAL;
- }
- 
--ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
-+static ssize_t __kernel_read_internal(struct file *file, void *buf,
-+			size_t count, loff_t *pos, int flags)
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 69c4bcfb3c3cd..85265b28c5d18 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -740,7 +740,11 @@ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
+  * folio_lruvec - return lruvec for isolating/putting an LRU folio
+  * @folio: Pointer to the folio.
+  *
+- * This function relies on folio->mem_cgroup being stable.
++ * The user should hold an rcu read lock to protect lruvec associated with
++ * the folio from being released. But it does not prevent binding stability
++ * between the folio and the returned lruvec from being changed to its parent
++ * or ancestor (e.g. like folio_lruvec_lock() does that holds LRU lock to
++ * prevent the change).
+  */
+ static inline struct lruvec *folio_lruvec(struct folio *folio)
  {
- 	struct kvec iov = {
- 		.iov_base	= buf,
-@@ -526,6 +527,7 @@ ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+@@ -763,15 +767,6 @@ struct lruvec *folio_lruvec_lock_irq(struct folio *folio);
+ struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
+ 						unsigned long *flags);
  
- 	init_sync_kiocb(&kiocb, file);
- 	kiocb.ki_pos = pos ? *pos : 0;
-+	kiocb.ki_flags |= flags;
- 	iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
- 	ret = file->f_op->read_iter(&kiocb, &iter);
- 	if (ret > 0) {
-@@ -538,6 +540,20 @@ ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
- 	return ret;
- }
- 
-+ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
-+{
-+	return __kernel_read_internal(file, buf, count, pos, 0);
-+}
-+
-+/*
-+ * Non-blocking variant of __kernel_read() using IOCB_NOWAIT.
-+ * Returns -EAGAIN if the read would block waiting for I/O.
-+ */
-+ssize_t __kernel_read_nowait(struct file *file, void *buf, size_t count, loff_t *pos)
-+{
-+	return __kernel_read_internal(file, buf, count, pos, IOCB_NOWAIT);
-+}
-+
- ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
- {
- 	ssize_t ret;
-diff --git a/include/linux/buildid.h b/include/linux/buildid.h
-index 831c1b4b626c..f1fa220353a2 100644
---- a/include/linux/buildid.h
-+++ b/include/linux/buildid.h
-@@ -25,9 +25,6 @@ struct freader {
- 	union {
- 		struct {
- 			struct file *file;
--			struct folio *folio;
--			void *addr;
--			loff_t folio_off;
- 			bool may_fault;
- 		};
- 		struct {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index f5c9cf28c4dc..498c804fc0b9 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2832,6 +2832,7 @@ extern int do_pipe_flags(int *, int);
- 
- extern ssize_t kernel_read(struct file *, void *, size_t, loff_t *);
- ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos);
-+ssize_t __kernel_read_nowait(struct file *file, void *buf, size_t count, loff_t *pos);
- extern ssize_t kernel_write(struct file *, const void *, size_t, loff_t *);
- extern ssize_t __kernel_write(struct file *, const void *, size_t, loff_t *);
- extern struct file * open_exec(const char *);
-diff --git a/lib/buildid.c b/lib/buildid.c
-index aaf61dfc0919..c9d4491557fe 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/fs.h>
- #include <linux/secretmem.h>
- 
- #define BUILD_ID 3
-@@ -28,55 +29,35 @@ void freader_init_from_mem(struct freader *r, const char *data, u64 data_sz)
- 	r->data_sz = data_sz;
- }
- 
--static void freader_put_folio(struct freader *r)
+-#ifdef CONFIG_DEBUG_VM
+-void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio);
+-#else
+-static inline
+-void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
 -{
--	if (!r->folio)
--		return;
--	kunmap_local(r->addr);
--	folio_put(r->folio);
--	r->folio = NULL;
+-}
+-#endif
+-
+ static inline
+ struct mem_cgroup *mem_cgroup_from_css(struct cgroup_subsys_state *css){
+ 	return css ? container_of(css, struct mem_cgroup, css) : NULL;
+@@ -1194,11 +1189,6 @@ static inline struct lruvec *folio_lruvec(struct folio *folio)
+ 	return &pgdat->__lruvec;
+ }
+ 
+-static inline
+-void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
+-{
 -}
 -
--static int freader_get_folio(struct freader *r, loff_t file_off)
-+/*
-+ * Read data from file at specified offset into the freader buffer.
-+ * Uses non-blocking I/O when may_fault is false.
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+static int freader_read(struct freader *r, loff_t file_off, size_t sz)
+ static inline struct mem_cgroup *parent_mem_cgroup(struct mem_cgroup *memcg)
  {
--	/* check if we can just reuse current folio */
--	if (r->folio && file_off >= r->folio_off &&
--	    file_off < r->folio_off + folio_size(r->folio))
--		return 0;
--
--	freader_put_folio(r);
-+	ssize_t ret;
-+	loff_t pos = file_off;
+ 	return NULL;
+@@ -1257,6 +1247,7 @@ static inline struct lruvec *folio_lruvec_lock(struct folio *folio)
+ {
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
  
- 	/* reject secretmem folios created with memfd_secret() */
- 	if (secretmem_mapping(r->file->f_mapping))
- 		return -EFAULT;
++	rcu_read_lock();
+ 	spin_lock(&pgdat->__lruvec.lru_lock);
+ 	return &pgdat->__lruvec;
+ }
+@@ -1265,6 +1256,7 @@ static inline struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
+ {
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
  
--	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
--
--	/* if sleeping is allowed, wait for the page, if necessary */
--	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
--		filemap_invalidate_lock_shared(r->file->f_mapping);
--		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
--					    NULL, r->file);
--		filemap_invalidate_unlock_shared(r->file->f_mapping);
--	}
-+	if (r->may_fault)
-+		ret = __kernel_read(r->file, r->buf, sz, &pos);
-+	else
-+		ret = __kernel_read_nowait(r->file, r->buf, sz, &pos);
++	rcu_read_lock();
+ 	spin_lock_irq(&pgdat->__lruvec.lru_lock);
+ 	return &pgdat->__lruvec;
+ }
+@@ -1274,6 +1266,7 @@ static inline struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
+ {
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
  
--	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
--		if (!IS_ERR(r->folio))
--			folio_put(r->folio);
--		r->folio = NULL;
-+	if (ret < 0)
-+		return ret;
-+	if (ret != sz)
- 		return -EFAULT;
--	}
--
--	r->folio_off = folio_pos(r->folio);
--	r->addr = kmap_local_folio(r->folio, 0);
- 
- 	return 0;
++	rcu_read_lock();
+ 	spin_lock_irqsave(&pgdat->__lruvec.lru_lock, *flagsp);
+ 	return &pgdat->__lruvec;
+ }
+@@ -1487,17 +1480,20 @@ static inline struct lruvec *parent_lruvec(struct lruvec *lruvec)
+ static inline void lruvec_unlock(struct lruvec *lruvec)
+ {
+ 	spin_unlock(&lruvec->lru_lock);
++	rcu_read_unlock();
  }
  
- const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
+ static inline void lruvec_unlock_irq(struct lruvec *lruvec)
  {
--	size_t folio_sz;
--
- 	/* provided internal temporary buffer should be sized correctly */
- 	if (WARN_ON(r->buf && sz > r->buf_sz)) {
- 		r->err = -E2BIG;
-@@ -97,46 +78,18 @@ const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
- 		return r->data + file_off;
- 	}
- 
--	/* fetch or reuse folio for given file offset */
--	r->err = freader_get_folio(r, file_off);
-+	/* read data from file into buffer */
-+	r->err = freader_read(r, file_off, sz);
- 	if (r->err)
- 		return NULL;
- 
--	/* if requested data is crossing folio boundaries, we have to copy
--	 * everything into our local buffer to keep a simple linear memory
--	 * access interface
--	 */
--	folio_sz = folio_size(r->folio);
--	if (file_off + sz > r->folio_off + folio_sz) {
--		u64 part_sz = r->folio_off + folio_sz - file_off, off;
--
--		memcpy(r->buf, r->addr + file_off - r->folio_off, part_sz);
--		off = part_sz;
--
--		while (off < sz) {
--			/* fetch next folio */
--			r->err = freader_get_folio(r, r->folio_off + folio_sz);
--			if (r->err)
--				return NULL;
--			folio_sz = folio_size(r->folio);
--			part_sz = min_t(u64, sz - off, folio_sz);
--			memcpy(r->buf + off, r->addr, part_sz);
--			off += part_sz;
--		}
--
--		return r->buf;
--	}
--
--	/* if data fits in a single folio, just return direct pointer */
--	return r->addr + (file_off - r->folio_off);
-+	return r->buf;
+ 	spin_unlock_irq(&lruvec->lru_lock);
++	rcu_read_unlock();
  }
  
- void freader_cleanup(struct freader *r)
+ static inline void lruvec_unlock_irqrestore(struct lruvec *lruvec,
+ 		unsigned long flags)
  {
- 	if (!r->buf)
- 		return; /* non-file-backed mode */
--
--	freader_put_folio(r);
+ 	spin_unlock_irqrestore(&lruvec->lru_lock, flags);
++	rcu_read_unlock();
  }
  
+ /* Test requires a stable folio->memcg binding, see folio_memcg() */
+diff --git a/mm/compaction.c b/mm/compaction.c
+index c3e338aaa0ffb..3648ce22c8072 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -518,6 +518,24 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
+ 	return true;
+ }
+ 
++static struct lruvec *
++compact_folio_lruvec_lock_irqsave(struct folio *folio, unsigned long *flags,
++				  struct compact_control *cc)
++{
++	struct lruvec *lruvec;
++
++	rcu_read_lock();
++retry:
++	lruvec = folio_lruvec(folio);
++	compact_lock_irqsave(&lruvec->lru_lock, flags, cc);
++	if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
++		spin_unlock_irqrestore(&lruvec->lru_lock, *flags);
++		goto retry;
++	}
++
++	return lruvec;
++}
++
  /*
+  * Compaction requires the taking of some coarse locks that are potentially
+  * very heavily contended. The lock should be periodically unlocked to avoid
+@@ -839,7 +857,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ {
+ 	pg_data_t *pgdat = cc->zone->zone_pgdat;
+ 	unsigned long nr_scanned = 0, nr_isolated = 0;
+-	struct lruvec *lruvec;
++	struct lruvec *lruvec = NULL;
+ 	unsigned long flags = 0;
+ 	struct lruvec *locked = NULL;
+ 	struct folio *folio = NULL;
+@@ -1153,18 +1171,17 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (!folio_test_clear_lru(folio))
+ 			goto isolate_fail_put;
+ 
+-		lruvec = folio_lruvec(folio);
++		if (locked)
++			lruvec = folio_lruvec(folio);
+ 
+ 		/* If we already hold the lock, we can skip some rechecking */
+-		if (lruvec != locked) {
++		if (lruvec != locked || !locked) {
+ 			if (locked)
+ 				lruvec_unlock_irqrestore(locked, flags);
+ 
+-			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
++			lruvec = compact_folio_lruvec_lock_irqsave(folio, &flags, cc);
+ 			locked = lruvec;
+ 
+-			lruvec_memcg_debug(lruvec, folio);
+-
+ 			/*
+ 			 * Try get exclusive access under lock. If marked for
+ 			 * skip, the scan is aborted unless the current context
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index f2c891c1f49d5..930dacd6ce31a 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1184,23 +1184,6 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ 	}
+ }
+ 
+-#ifdef CONFIG_DEBUG_VM
+-void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
+-{
+-	struct mem_cgroup *memcg;
+-
+-	if (mem_cgroup_disabled())
+-		return;
+-
+-	memcg = folio_memcg(folio);
+-
+-	if (!memcg)
+-		VM_BUG_ON_FOLIO(!mem_cgroup_is_root(lruvec_memcg(lruvec)), folio);
+-	else
+-		VM_BUG_ON_FOLIO(lruvec_memcg(lruvec) != memcg, folio);
+-}
+-#endif
+-
+ /**
+  * folio_lruvec_lock - Lock the lruvec for a folio.
+  * @folio: Pointer to the folio.
+@@ -1210,14 +1193,20 @@ void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
+  * - folio_test_lru false
+  * - folio frozen (refcount of 0)
+  *
+- * Return: The lruvec this folio is on with its lock held.
++ * Return: The lruvec this folio is on with its lock held and rcu read lock held.
+  */
+ struct lruvec *folio_lruvec_lock(struct folio *folio)
+ {
+-	struct lruvec *lruvec = folio_lruvec(folio);
++	struct lruvec *lruvec;
+ 
++	rcu_read_lock();
++retry:
++	lruvec = folio_lruvec(folio);
+ 	spin_lock(&lruvec->lru_lock);
+-	lruvec_memcg_debug(lruvec, folio);
++	if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
++		spin_unlock(&lruvec->lru_lock);
++		goto retry;
++	}
+ 
+ 	return lruvec;
+ }
+@@ -1232,14 +1221,20 @@ struct lruvec *folio_lruvec_lock(struct folio *folio)
+  * - folio frozen (refcount of 0)
+  *
+  * Return: The lruvec this folio is on with its lock held and interrupts
+- * disabled.
++ * disabled and rcu read lock held.
+  */
+ struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
+ {
+-	struct lruvec *lruvec = folio_lruvec(folio);
++	struct lruvec *lruvec;
+ 
++	rcu_read_lock();
++retry:
++	lruvec = folio_lruvec(folio);
+ 	spin_lock_irq(&lruvec->lru_lock);
+-	lruvec_memcg_debug(lruvec, folio);
++	if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
++		spin_unlock_irq(&lruvec->lru_lock);
++		goto retry;
++	}
+ 
+ 	return lruvec;
+ }
+@@ -1255,15 +1250,21 @@ struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
+  * - folio frozen (refcount of 0)
+  *
+  * Return: The lruvec this folio is on with its lock held and interrupts
+- * disabled.
++ * disabled and rcu read lock held.
+  */
+ struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
+ 		unsigned long *flags)
+ {
+-	struct lruvec *lruvec = folio_lruvec(folio);
++	struct lruvec *lruvec;
+ 
++	rcu_read_lock();
++retry:
++	lruvec = folio_lruvec(folio);
+ 	spin_lock_irqsave(&lruvec->lru_lock, *flags);
+-	lruvec_memcg_debug(lruvec, folio);
++	if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
++		spin_unlock_irqrestore(&lruvec->lru_lock, *flags);
++		goto retry;
++	}
+ 
+ 	return lruvec;
+ }
 -- 
-2.47.3
+2.20.1
 
 
