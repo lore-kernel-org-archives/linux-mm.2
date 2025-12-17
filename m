@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD8DD637DF
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 00:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52579D64061
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 00:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E3CF6B0088; Tue, 16 Dec 2025 19:09:43 -0500 (EST)
+	id B53B56B0089; Tue, 16 Dec 2025 19:10:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 591446B0089; Tue, 16 Dec 2025 19:09:43 -0500 (EST)
+	id B27A46B008A; Tue, 16 Dec 2025 19:10:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 448736B008A; Tue, 16 Dec 2025 19:09:43 -0500 (EST)
+	id A29DC6B008C; Tue, 16 Dec 2025 19:10:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A856B0088
-	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:09:43 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2EE71607DE
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:09:42 +0000 (UTC)
-X-FDA: 84227029404.28.D68D7CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 943096B0089
+	for <linux-mm@kvack.org>; Tue, 16 Dec 2025 19:10:16 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4572414086B
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:10:16 +0000 (UTC)
+X-FDA: 84227030832.09.C45C3C3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 57298100012
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:09:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNI6UMU2;
+	by imf07.hostedemail.com (Postfix) with ESMTP id A34AE40008
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 00:10:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZirnAmXZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765930181; a=rsa-sha256;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765930214; a=rsa-sha256;
 	cv=none;
-	b=DlR/9CDX7cxCD5sBXbDzuqLccgvfgicGWJEo/kRbx6HrT1Ri12LlXB9j8D/Mi/LqfnvVk2
-	BMYeK/VGi+t8oZ51l0kSpX0qPBAhGmMYyrQiwKmn87N48znZFsJ6A6okvhKyGNPNzrK4py
-	FxegCTASVcvfwhPaQ552Eo1xdgltkd8=
+	b=LClmITvM7b8XSS+VHdoLs/EK0yuHUOPEjdWznDAR+eAC1gsO36enpLEePKdRYLaE6HnAg2
+	5QiqK6seBTuPzBS0R9TrC+dkbcIHS21x8UszEOJSrnPfIRDbd0aq/t1nSq5t3hDVDQePUI
+	eEESFkmC7FwpaQxZDbTUcpcnElHXCrk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNI6UMU2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZirnAmXZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765930181;
+	s=arc-20220608; t=1765930214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2D6wcNN0uaso0Xagu6VBp+odIMbaMvcazTe0F3KqMQg=;
-	b=MxAu1N49tGaWyaboUFqtY5rcTgvSZbVLrCXKScxhSsKTKc5nrpkD5sL+Q0W9a8S85qU1B7
-	jbiiD5b96QS4QVgUKcp+VgYKSntEf8ql4IoZoCIdrYRU0sPqwdhpGmT+L/FJYhwqPuOIHs
-	tNLI3nNuB65b61gwrU+NJRAPxsjBC38=
+	bh=ps/+fIU65nqR7scg+9ZWzy1STeyunc9uYsM1QEMPaUI=;
+	b=m+yZ05UIKXgmQuem7ujMe6to10Nd6JF8o0A04TEXjVAYT9YLByKQJ+LCvst7A8/7D1pgHa
+	KjWK8nm2KU9gL0+HE1KgR+TbqCgVUm5ftQ6wGjS4NYmJQLhpjSb13rYnWsguHW4tUVkjJW
+	gyXDJLZ0jS9nLiXlA/b149OVFnyNf50=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA02C60151;
-	Wed, 17 Dec 2025 00:09:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCD5C4CEF1;
-	Wed, 17 Dec 2025 00:09:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A7AC60137;
+	Wed, 17 Dec 2025 00:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25A3C4CEF1;
+	Wed, 17 Dec 2025 00:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765930180;
-	bh=aZR9wSyi+zJsIHvJriUMfLQABKctzyX5fXgs8GO8n4U=;
+	s=k20201202; t=1765930213;
+	bh=IYStEoceGdUEi75BLoyEocdK6CZd2MmP8jcIyjKww1A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aNI6UMU2+C9auZatxSgLKTA4RJ8Tc8yGSyXopvdXSVgldtvnHa6Ken0sARx4y/+7E
-	 vTZ50xFdj1tMQ//XOkLKgN4vvA0M8q5a90sGtX+/o49rR0WOpEAoagq+nWaDWWFzC2
-	 A+ckdLIbUqlzEVk/gc+gkcqWB01O7qoty08Du5crzhaVhPQGYiiWrUEyDGfCxakcBV
-	 7/Vhq9JR056MU/kxoCZ6IQJrLttskLj7lv7AonqdrTHCXfFEdheN1OlszL9XqoU/8Y
-	 GI4TxOTez3ZYyi/BtyoTEdpc9tG9UwXITx9UVU576wwFjXer281n4kx9KhSKtCsvy+
-	 odgHmbJMW4r/A==
-Message-ID: <e76e25ef-f112-4689-9753-34709613b9c2@kernel.org>
-Date: Wed, 17 Dec 2025 01:09:18 +0100
+	b=ZirnAmXZntKqQ0k4HUVwGi1YqYVeSoRhusTvAg73iV3t9VVhPLhTsXP1tLDbaSb3X
+	 apvbKAHL3nFZTB2DUvWUBOX+UygqSJYs36Bd1f/rfWT+X9JMBmkS+Z4Wsm60tfypPv
+	 GS7Tpivbn3/VRYA1dgSeETWVHA1rgJBpOT1XBDXFvwhAlgRHtrUpCfUpnd2vhbxQ9J
+	 GuBCrHKguP92bD8aEvceF0rTOXp/QF/r7HHua7AwcZZXwfttaEectmb6IpwvlGO7ty
+	 at+2FhZS6ng5dxpbwMuR7D3MansmP2/DRx7Hi/COKlO2DR5FQE+MxflxWjz660r+Gi
+	 JlpZXjBBbQaqw==
+Message-ID: <56acbfc1-51d7-4245-91ea-45bd9e4b2e29@kernel.org>
+Date: Wed, 17 Dec 2025 01:09:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/14] mm: Describe @flags parameter in
- memalloc_flags_save()
+Subject: Re: [PATCH 05/14] mm, kfence: Describe @slab parameter in
+ __kfence_obj_info()
 To: Bagas Sanjaya <bagasdotme@gmail.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -129,20 +129,20 @@ Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
  Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
  George Anthony Vernon <contact@gvernon.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
- <20251215113903.46555-3-bagasdotme@gmail.com>
+ <20251215113903.46555-6-bagasdotme@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251215113903.46555-3-bagasdotme@gmail.com>
+In-Reply-To: <20251215113903.46555-6-bagasdotme@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 57298100012
-X-Stat-Signature: xbb79f9stjib7ykacs9imiiugcnnfpjb
+X-Rspamd-Queue-Id: A34AE40008
+X-Stat-Signature: 9ant18s3ifh6g5pwrtf3krpzi7tzqmik
 X-Rspam-User: 
-X-HE-Tag: 1765930181-984896
-X-HE-Meta: U2FsdGVkX1+qr3Ezpgosnh7/LoCBlKPKjw4At5c45K0uYVoJTTQmczvIB/irawBfyw5k/tfB47yG2gUuh4h16e2SQcCTXRkGp42+sdWojAK9QlmBgS9mt3JVU6sY2hytPM/3BT8y0QpUMVwc1xfbXmgYd+YGHY4H1wFiA91VvIiAnVVQJx23cxDqxakIdomdESo9gNV1WHr2FUYBuKyT5TuBePodOdjYblpoM5joBSVtyyo1SZLwIqqczdkcgPpT5bCmXx3afl8hhPMG+kOtRaYagod3+AybZ+XvG+Z4UQlVX73f/jCjsV94h8wX/+BBpm5Cg+vhQyqrOYR/VOjDXRkPGelSgGKbzAeXU8YDnHYzWlAg5Q6aZoAIXrVyqy7ttklk5ARJJW2ezOiChqC9JcpbDfMEznx8qr5taTVwjQY1eY9t0ysxgyD1xOLGzt3+5vx/vP1iW80/sOClIlKuhOQRLqF8IrA0xC5x4n0cJupP6WZreUNUEzfeqogaJRNdzLc2xJ5Aa3Kju2dnAZKg0OAmYieDMmbXsxHRl+a2Qc5TcLGZAhh2pcRD00n4SsDxhudgWAaA2eWQlJdERq4yEjZcv4hBOJln8jFnKQO2kWN+6JO4C4VmGVTeEe0/cX6SEchGJrbEL+F5W+hNFf9kGsTlve4QO1waMppDqMVKASLCtqM4jQtLdyF+gx8sCC8h4cblT2g/6QrQRuksEtYnX7XGzUvrOUl8mIB6MM5CygebbDjV6lRub3I6Od+0g6GAjWn5DYWQVZOcB5XKcqssGuM3h0oJhUe41Au6lX6kea6Y2/Gboqw3N8mltkYIqCF3DAPjvnDQKUQc4G/PAEa1Zv675zcXpMrl+9BLf6vvXOZD9OuPV6672/T2zfIeXlB9LFkwUQHqJUQtk+7nmeismQL8RLA3Tt8c+08x32NhnCKADf6ov9kjX4bocW6KgSEpJmhBtY0htkXH2JokkuE
- sWE00OJ3
- 1P5+Ha1E78uJuPQ5aBcttkzIkQIRHZ9WSRFvLe2EjA0Dsaapm8W3FUR41+vATyHok5W6V0YShMTeVAxX4DPtwIVO55hTsf1+sPiDRPlOnYiBuWvgNMIkJlUNswH05PrXEwtt41324/t4rKBbh+xNLl+rCdzTCKBa66u/6q1w5gtvK5l2fNyry43/83RXedxecbKvZd/GHNqUm2WiXo7OktxXp5OHUA9GW2CCb67WUxdZa7GGWxCikhspryFFB93/W4giFakncoxUJVqGS0rJZfw1wzAcH+K3dwpHOG3P/0xIM63bJVH8O79PLlQ==
+X-HE-Tag: 1765930214-90801
+X-HE-Meta: U2FsdGVkX1+UK2i8tJ0RxUOM62CpF/6At+nxpq8xhoiXJ7pnfiFcHICRt4jmut3xA5LeBeVO9rS+uvuyIzRhZuls8aUaQ3nb2PyqIe03r2kkTdX2V6FYWiXVZsjmW/Ec81aGAA8IQF1V+zRdj8+eKO26Oc+2G6WGzHA6+vFPIhLxEOtYZsEIp5Rrp82tJNjdyKdKWXmaOfkNHO3VIqM7PCh9AUcQYQgtqoPKQT/sMtY6cbp9kDLitTPXYLeOCVLRnUgI6DJ44sZxE/i1TYBf4AtTaR+P/vcmirOGiab2Cv1FWHumPKMKUqst+G5DhH4ouJoZv7cMYVaaHrFYL9WHzbmj3I8aqh8cKnIoD8H7HQ4awOg2aR6KEUSEajQcSHdvRWo93ECbet4Hn0EXvh8NB7aTw7CyrEgO/t4MRcI7JdwNoKYOTSV4D4M8rVRGHr8VtAQthhItmVB/j0NRy++lQ69hoxTVt7QyNw+YJ9vJ182fi+zWbuqeq61VcAzXJBpZK3F1pWeKTXM4aJ7fU6kVKy9/Q0o1bAye9XfMu9l+im3HsskET+YGG/gHjoqOxRdWd589e1SdHEh8E+sUfecJOQz9+8mtzUlfAV+4rDHav08XirH4bq4jWCCXyFBueIXarEV8WfwlFMhJv07u5IEzQuMPK01s6QwrAMV/rktpx8/4AJKMemgHRbA5XZc3dm9njwsSPSqU+6KWdJRrCX1ZXlT/RigjIHkihRDhATE1tI5AvxpkeegOH/rJ19JyPLJmJbGR1cPUshG5vn65904bXAi848zz4jan85DL2PPuGV00SkBaQ3kQf/nbz98BTHkpUAHkbF0CZ8QsbUnmoxfyR2mqYm1M0P7bwjVbfh6pyASADa5o7RTwB6QZW8ToTtMOmLVwSYCU4JlqKqm/Bx40c1A6thwSTdZb1DBrc3pvSGgc/ZaHZ2fUsyM14NeSIDGDTRYV+fFubBHnLuqkZhs
+ nDM3Eb/5
+ ENDqzG4x8piqDF0TKgNTvdWi+IWOgT1YHQdTABUlAGYw2jZj9K45EmU5UioG18Q11eOZ+q1nsf3AwPeHKu8V1XvqAdH6n6iRzYxRkTJz7moOBzXSBxmuMUjT2AYHWodcT2WKUMv1hb5ktNAafwch3yIJBvspSY6W3oM5/X5g0zccoM01vfwo6R0ow4z0T7Ox9I+bXL81LC3JamAAaLZyQsJtAuYAl/2BwIW3/XtmKZe0G+huGrFS/S4YMH45YGigqGWNRQ8cce+80BeYgVIX2dzMj5695ecLyk3zVQ6egjYYfE1ZHDxm0QrhVaekNwW0i5xVvtuRv1eHHX85iEUn2eZMYDRnstjJkJZ47XncBsPurST2o4SOedkHv6yVLfPtSoloG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,28 +154,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 12/15/25 12:38, Bagas Sanjaya wrote:
 > Sphinx reports kernel-doc warning:
 > 
-> WARNING: ./include/linux/sched/mm.h:332 function parameter 'flags' not described in 'memalloc_flags_save'
+> WARNING: ./include/linux/kfence.h:220 function parameter 'slab' not described in '__kfence_obj_info'
 > 
-> Describe @flags to fix it.
+> Fix it by describing @slab parameter.
 > 
-> Fixes: 3f6d5e6a468d02 ("mm: introduce memalloc_flags_{save,restore}")
+> Fixes: 2dfe63e61cc31e ("mm, kfence: support kmem_dump_obj() for KFENCE objects")
 > Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 > ---
->   include/linux/sched/mm.h | 1 +
+>   include/linux/kfence.h | 1 +
 >   1 file changed, 1 insertion(+)
 > 
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index 0e1d73955fa511..95d0040df58413 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -325,6 +325,7 @@ static inline void might_alloc(gfp_t gfp_mask)
->   
->   /**
->    * memalloc_flags_save - Add a PF_* flag to current->flags, save old value
-> + * @flags: Flags to add.
+> diff --git a/include/linux/kfence.h b/include/linux/kfence.h
+> index 0ad1ddbb8b996a..e5822f6e7f2794 100644
+> --- a/include/linux/kfence.h
+> +++ b/include/linux/kfence.h
+> @@ -211,6 +211,7 @@ struct kmem_obj_info;
+>    * __kfence_obj_info() - fill kmem_obj_info struct
+>    * @kpp: kmem_obj_info to be filled
+>    * @object: the object
+> + * @slab: the slab
 >    *
->    * This allows PF_* flags to be conveniently added, irrespective of current
->    * value, and then the old version restored with memalloc_flags_restore().
+>    * Return:
+>    * * false - not a KFENCE object
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
