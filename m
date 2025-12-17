@@ -4,99 +4,261 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103A4D65530
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 10:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FAAD6552C
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 10:49:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A34B6B0005; Wed, 17 Dec 2025 05:31:44 -0500 (EST)
+	id 486BB6B0005; Wed, 17 Dec 2025 05:49:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151DD6B0089; Wed, 17 Dec 2025 05:31:44 -0500 (EST)
+	id 434BC6B0089; Wed, 17 Dec 2025 05:49:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04FD56B008A; Wed, 17 Dec 2025 05:31:43 -0500 (EST)
+	id 28A046B008A; Wed, 17 Dec 2025 05:49:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E49A06B0005
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:31:43 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81E87136DCD
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:31:43 +0000 (UTC)
-X-FDA: 84228596886.21.CA5BCE2
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C10A340004
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:31:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=nNVdNyWF;
-	spf=pass (imf27.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=pass (policy=none) header.from=sipsolutions.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765967501;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 106C76B0005
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 05:49:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E21EBB32E
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:49:34 +0000 (UTC)
+X-FDA: 84228641868.19.5B741F0
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013056.outbound.protection.outlook.com [52.101.83.56])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2962FC0009
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 10:49:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rzwkCgaJ;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rzwkCgaJ;
+	spf=pass (imf22.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.83.56 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765968570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b1d43wiHNx7VZeptPxlkNjgMo8OMak4wV1yoG3x6lk8=;
-	b=pZIxwUR3yk1lqi3678kEMgJR6Ygg8htyjLb9j+YoSS9YvavmBXhdac6ZAotMEeqkA3yiM8
-	wgVPynjWytM00uKJLtkKTBsVu7QSEyv66fCRH0BKhIOlS7WTG6GaTEPW/2aPaJffXysE7e
-	URDxnzhs4Q8eeb88aPlraujnIEzxCZU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=nNVdNyWF;
-	spf=pass (imf27.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=pass (policy=none) header.from=sipsolutions.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765967501; a=rsa-sha256;
-	cv=none;
-	b=G2PMcO8fEK9jw5BIwqO8jQT8VZUJ85ocERbcGph+uvwJqQJUp7u8zosRcLQdaLLbUKxJc2
-	v1i/UTKnPB2DFApLd1OlO6tRZuS8EKCqbuo238BNwE2mj6BNWEvN0eKgCnjBqOSPIytsiP
-	u3QrkjAiNW5sbPwJUYTXO88eVLqtpuk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=b1d43wiHNx7VZeptPxlkNjgMo8OMak4wV1yoG3x6lk8=;
-	t=1765967501; x=1767177101; b=nNVdNyWFr9ZeJ5vi9MVKeznVBz0ORb/fgQdk9pmqu3RXxou
-	LEb2AAckGHt9eUZ2V6aNl2zM4pF7T+kWbLV2mLvp3gVCGFzfEmCHaFTYs7qtGoK0v5kQX78b6PYjp
-	osZaRbdD3+L1Iov48Mmwh1y+cb7LIYaIhd2fjX9AiY1/OolBvp/b91tNStase3oXLQt+zTQ1+a3Gk
-	O+C02dLUTH30bTF0jI2HyE0sXA40JkRN4K1iApZF97bcVZOpjywK9kt9ItyLbu+8a97HKy/ywQQCp
-	nSSQafdCNZuvZp+6XdBeybUU2+yAcTwt7j3vMgBa7OTNNy1h0ZZqDCLjyuVJzp/w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vVooa-0000000BlwN-2EFt;
-	Wed, 17 Dec 2025 11:31:29 +0100
-Message-ID: <9adc2c51cb0b176006c362c26f2b1804a37b48d6.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 00/10] KFuzzTest: a new kernel fuzzing framework
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexander Potapenko <glider@google.com>, David Gow <davidgow@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Ethan Graham	
- <ethan.w.s.graham@gmail.com>, andreyknvl@gmail.com, andy@kernel.org, 
-	andy.shevchenko@gmail.com, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, dhowells@redhat.com, dvyukov@google.com,
- elver@google.com, 	herbert@gondor.apana.org.au, ignat@cloudflare.com,
- jack@suse.cz, jannh@google.com, 	kasan-dev@googlegroups.com,
- kees@kernel.org, kunit-dev@googlegroups.com, 	linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 	lukas@wunner.de,
- rmoar@google.com, shuah@kernel.org, sj@kernel.org, 	tarasmadan@google.com
-Date: Wed, 17 Dec 2025 11:31:26 +0100
-In-Reply-To: <CAG_fn=WvdKZgmkqa09kwLLH3P_j6GFYzopeD-PZ-Qt0-1KUaGw@mail.gmail.com> (sfid-20251217_111949_169881_DE704F52)
-References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
-	 <cbc99cb2-4415-4757-8808-67bf7926fed4@linuxfoundation.org>
-	 <CABVgOSkbV0idRzeMmsUEtDo=U5Tzqc116mt_=jqW-xsToec_wQ@mail.gmail.com>
-	 <CAG_fn=WvdKZgmkqa09kwLLH3P_j6GFYzopeD-PZ-Qt0-1KUaGw@mail.gmail.com>
-	 (sfid-20251217_111949_169881_DE704F52)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=MiAVq3i0CN3U4Qjh1S+72e0nCi4KjBzi22trSQgZ/gw=;
+	b=vxkq+6PWhxitZmGh8s+gXAwuzUBXZm9BRCNgd3vLWZ6xjKA0a1PYxDDR67TphrAUYc70zE
+	Pf0PmcV2/CXI9srL2b8amMzybryu2uea6ScTTMivxtyhWqMHttol3Lcja4ExBOcG1d/Fi/
+	KI1t90GfqdPwGbqyvHO4x/CgAqX8hG4=
+ARC-Authentication-Results: i=3;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rzwkCgaJ;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rzwkCgaJ;
+	spf=pass (imf22.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.83.56 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1765968570; a=rsa-sha256;
+	cv=pass;
+	b=rB50eTOpgjbJgbtqW1yTKQJSDaeSkJJMK0EY5UCD9b6w97vlZpLlDF+7uCLJ7U10NCFkv2
+	XyXC6i3kAfTeoZRRlbNykgD/NqaYSF8CNvDVukzt3I+wDOysqnQQB92p2yJaBIqi7/Q52R
+	uFgAuPeTN4/3XBSAQnyPIkG05QZEB4I=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=Aql/5yXnDGLjuM3TOReo3zYhphdSNn+QstaV/NuQA6W9NJZXpAJC8vhGhYgK/kn4phmfeJ2VESLh4stFJWol44wo8lcEeCn0gVSwWN1V05LmqWMI+kYjVgcE+6BZcZrcK1yofN977tQ7sI9oCSmCEo89JabXPvIftL4Q3ZLyI9cTvHlEY1IZqDQ6nnXYkLqk6rr6QFZAfB67D2lw1tctgQ0hWe7vJ8c40uZMKr/t4bZ5JX7l89G+DFuoAHLGkNzosEl21T5fBvGDvBvRuLAQ4tj4CRuGl/9rEN3Ng2X4Bue20Y/gkBkPoA5+mkbD4Dfc0dSDqVbGZPV3hkrojpa7iw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MiAVq3i0CN3U4Qjh1S+72e0nCi4KjBzi22trSQgZ/gw=;
+ b=FojEOmzwrmD0nnmbeTeSp8HJU1CEnqjOkYU18kkmib1riqJZytZoF5Q4+Cgx9keGHlJcqx3bdgBBDaoOayR8fs4Mkh20PkgdITTzF8azewstUmq39X8gepxVV5RIpYzko5omDy6WqrJr5/W7EyjXecbbbEKMQ2GXabfXFzK69fA0V0QsXasxYLbvsqNEfXe8sXettUXayN45Ubxly9l3Cwf1WOMBM+QqixMLqcBHB79TS9N8h2to9MVaun5z1S4TWMOat0+U/V30evjHQFiDxTttkb7oLxG5Mdev7/yBJtksP4WBTofkDGkZGbReA/T7OieYkwH+2X1GFGICuWIiZA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MiAVq3i0CN3U4Qjh1S+72e0nCi4KjBzi22trSQgZ/gw=;
+ b=rzwkCgaJq+h/BHZ6TFUlDNadsS0CHkxbTivKyfO4spJDxVLP8xXUjnG/BhKg/WpV4TfSAShfTDEus7bqKBXY/nbLvp1EmsLCB/Of7Padc5uisb5U59ko6eLzFNBq/mpv9W/Fy4VBl331dQffRaMlTDet4f+vFlr4xd6pPhAfnSA=
+Received: from DUZPR01CA0278.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b9::23) by DU0PR08MB7464.eurprd08.prod.outlook.com
+ (2603:10a6:10:357::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Wed, 17 Dec
+ 2025 10:49:19 +0000
+Received: from DB1PEPF0003922F.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b9:cafe::b9) by DUZPR01CA0278.outlook.office365.com
+ (2603:10a6:10:4b9::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Wed,
+ 17 Dec 2025 10:49:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF0003922F.mail.protection.outlook.com (10.167.8.102) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.4
+ via Frontend Transport; Wed, 17 Dec 2025 10:49:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KUjOAbZ01F+9Pl1IKRcaH2neHV8+pEtaMN7BW7eDIPqsRjj2n+yuu2uC6Yg127o1XrLLI9dsz4+ysCtFnJto7rH1LDGJR2/NyxX1rA1TJMV0nx4SdaWbicQgOkfYkVQ5sNU0E5zPRpF+/t8K2YlD/3T5ycTUw7r5PaTiRB2eNtH9IzsbHuQopQlCn/tSKgaZWYKk9Y9zSP93uQ9fn+DL4uTSefJ808Fx9uRAM86O7gP/sgYVCt17VfHZifum6lvpp94FAvHOhBw9uE41hdZ+zKMqKh/lrwIRy0A+D/S2oq7NuxyQFHWx6tn/zBheSEkdvrfE8JlVCgmn5wELZ1nUaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MiAVq3i0CN3U4Qjh1S+72e0nCi4KjBzi22trSQgZ/gw=;
+ b=tIRec/GVUqVlVp6PLJb0bt625erzYFA80Axkl0YGgm3Sf8FeJUQkvquSewIaI36ezAfmFVlA3f6SQ6tsC0GsYShEVutjRxiowDPR4wCfzqZBoIbA4SiNFObbLdgbNtdlchXABYBiz28jaO84jK9dsNes4s4DpxZQFgV+Py80P1/g03/GC1GX+qmo7SzCf/gXk/yysN4B4mDxs43qiNgVf0LKD8HQeyFSCl7IZxCnyO5uEH9DJxihGJLN0X/NB/L/R/kr/+wd1d4iZNO2Xp2MkIIpH0faYJjpV8A5P/FE0ja1gfZ2mZBq/lK5tdBzyzZ8HQy02UJQzjFbeeSt84Ncjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MiAVq3i0CN3U4Qjh1S+72e0nCi4KjBzi22trSQgZ/gw=;
+ b=rzwkCgaJq+h/BHZ6TFUlDNadsS0CHkxbTivKyfO4spJDxVLP8xXUjnG/BhKg/WpV4TfSAShfTDEus7bqKBXY/nbLvp1EmsLCB/Of7Padc5uisb5U59ko6eLzFNBq/mpv9W/Fy4VBl331dQffRaMlTDet4f+vFlr4xd6pPhAfnSA=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by GV1PR08MB10749.eurprd08.prod.outlook.com
+ (2603:10a6:150:16b::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
+ 2025 10:48:10 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%3]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
+ 10:48:09 +0000
+Date: Wed, 17 Dec 2025 10:48:05 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+	haoluo@google.com, jolsa@kernel.org, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, rostedt@goodmis.org, catalin.marinas@arm.com,
+	will@kernel.org, kevin.brodsky@arm.com, dev.jain@arm.com,
+	yang@os.amperecomputing.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
+Message-ID: <aUKKZR0u22KOPfd7@e129823.arm.com>
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
+ <aUGOPd7gNRf1xHEc@e129823.arm.com>
+ <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
+X-ClientProxiedBy: LO2P265CA0099.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:c::15) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|GV1PR08MB10749:EE_|DB1PEPF0003922F:EE_|DU0PR08MB7464:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ebaa8b8-0c86-43dd-758e-08de3d59edf6
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?utf-8?B?TWh0a3QwNFNnNU1vci83K25QZzhERDNXWnYxS2RRV1VLQVFRSXh5UmxCT2FT?=
+ =?utf-8?B?Y3VaWHVuSHZQbnZ3UWlHYy9URWZkcFpYYjdyU2oveW1QWDJGdGFTa0x3d0pI?=
+ =?utf-8?B?eDJGM1pMMWs2aUZHd2t3WXdjcmhMY0RqM2lBcmRIbXQ5VGpXdkMzT1Ivc3Vj?=
+ =?utf-8?B?OFAraXVDWVZrR0xCVGF5WnZVdVlCbG5zUHZQZ1YzcndESlJqc3k2K3hJbXR1?=
+ =?utf-8?B?RDEybEpYTDhSMVlHZnR3cFVuM05LUFNJUnhCRUllb052aytwcHlMQUN5WDho?=
+ =?utf-8?B?ZnVJWlZZOHJZak13bjE2Yko5RmR2dzlWUURCWldlS3IvckFNUlIvd2JENUE5?=
+ =?utf-8?B?RzFRRC9aZExmV2VXNkM2a2gzWlBLWm4wajN0NW16SFFhWGx5VUgzcENkM2JQ?=
+ =?utf-8?B?YTYzMTIzS2JDRWhUMTloMmJaOUtQRmVJY2RUQU9LV2dtZHI5VjU4N2NuOEFi?=
+ =?utf-8?B?czMwSjRXTFRyOS8zaE9MNWxSUmpRMXd1aWZIdFcvV0VEbEZnd2NsVUgyR3Bp?=
+ =?utf-8?B?Rk1mOGZiQmFpeFc3Y3I1R0VVRVFuc2NBL01hTEZScEdvY2xrVGF6MTBCaW4z?=
+ =?utf-8?B?RW5mUVFscXRuTnY2eWYwanlnVmI1V2E5SDVyVThzNjh3NUVES1lrSlVWQnJR?=
+ =?utf-8?B?dzQ5Ykg5OERkSklhZVFhVTk1SWRCNUxMRkUvVVA3Q3ozM3NObmswUWo3OTBt?=
+ =?utf-8?B?Sk96QzUwTmVwV2d2TmJod1Q4aERML0lzR2UyZGVVcWRlL0U5Q01CbnJ0KzRt?=
+ =?utf-8?B?SDZMWTVmVC9SSVZ0Y0RCUm1Cb05NVmo1TTVTRUFJb0NRYkVvRDNHTXZBZVF1?=
+ =?utf-8?B?T0E5dExmc0hYamxTYzg2RW5vVEY5QlpoT2wvRTdZRWYzU0F4REtnWG94ZXB6?=
+ =?utf-8?B?Y3ZSZndWUEFzSHBRUlJESUJ6OVBzOFZONFV4TVJqbDVFeVBCZkpvSExzNlRE?=
+ =?utf-8?B?aDF3NkVBYjgwL0xjbEd5V2V6KzV1Z1VmZ0ordmIyOGNxcUR3bnpBcXlBNFFJ?=
+ =?utf-8?B?blJXbW5TUjdxQ1Z6UkZlbHJZeGZDUnU5WlRILzZlZmxXNE4zZmorSjBHWjFq?=
+ =?utf-8?B?a0wwdFdpQTBoV0N5cldHNU9GcW9xWGpmNzQ5bGhkdm9UOW92UHdBMWRucGJU?=
+ =?utf-8?B?WjJSck5sY1hPMmx2clpkSXBaUldRN2lPMmQwaEhyYkNtWUwvMTNreXdBMkJR?=
+ =?utf-8?B?NFk1ZE5BNndGMDhiL2t1R0pPZjhMT2xIOVNkazJTZks5dCtkb1I4ZFoxUjBT?=
+ =?utf-8?B?UExoMCtkc205S1phT3FQU20yamxpNldtOGxxYXFzd3pTSkg3K3JCSzdNVzZu?=
+ =?utf-8?B?aldEWGxpbXA2ZEF3Q0c3ZFZkazdKek1RWGhSb202dlNidnk1dzR4ZGhVdUxW?=
+ =?utf-8?B?NjM4ckNlTlFqNTBkRis3VHZrVENudW1BTDRwZldJQkU2TmFmb080eFFxdm1Y?=
+ =?utf-8?B?RjNySThlOHV6Z0FUVDlBeGVMVDlVTnppRS82K0tpaGgxcFk0aEZEb0JodmF5?=
+ =?utf-8?B?RW42eFozcis1WnUvbUI3MXQvUCtVTlF1Smp2MnNhQXJueWJzT2VuMUh5Qytu?=
+ =?utf-8?B?Wi8vK3cxVzJuQldKeHpYU2ZxRUxSMk42M2lNbkJIOEk2NVRia1djcUxHWkJI?=
+ =?utf-8?B?RW1QYWttTkRCb3R5MXBWOSsvbUZrUjM5VW5DdEpXTHhoZkR5NDdxYkhGQ0gx?=
+ =?utf-8?B?TUhMS0ZKZW1RWXNZekEvT3l6a0FFK0JKc0NmS2xQTXZpK0hWbXpNVWlMK1A4?=
+ =?utf-8?B?dmxFaDVHaVdwbmFHVEcyR2x2cUxERTlPdjFqVmF2RG9lMEZNSDh4U1c1bzhF?=
+ =?utf-8?B?WVY3NGEyYzFJYmdmOS9VM0R3TVVET2tzcHJHWGluVUxuenhidlZWRUJwdVM2?=
+ =?utf-8?B?bUVvdTY3aXpxL25qcVJ6bjhQTEh0SGhzeUN1YU9TWjFzdUxQYUk4V2FIWnVC?=
+ =?utf-8?B?MGVLaHBpMXJQL1E2S1l6dEZWaXM0VnAyajBPQmFadTRFc2FHWXNCNUEyVHB3?=
+ =?utf-8?B?OVZxQm4ra3BBPT0=?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10749
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF0003922F.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	b7c8f0c3-cbb1-492f-43fb-08de3d59c475
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35042699022|36860700013|14060799003|7416014|82310400026|376014|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S3RqdTFPU1ZpbGF6N3VzT3dBSUdSM0lJMFkvaVd2RFdZNEJMSkxHblJGOVVi?=
+ =?utf-8?B?TU0zc0ZjaDhqeU8vL3hoL2RtaWNaamhOZjBwa2JhMWlHODZaQUFtalhZT0xN?=
+ =?utf-8?B?c3VLUW1MOFRmRDgxYWwzYTlGK0phcVIxWE1oeEZna29BZkhEOGR6TEtnd3o1?=
+ =?utf-8?B?UEtRM0w1YkorQ0JYN1RlRkJzRUVZc2FvQmpmeWpURmpiUHlUcFlKY045c2Qw?=
+ =?utf-8?B?YUpJTHFzd3FCVFBsNXEydEk1dklrcEs1VGRXQ1Z5ZEE2UXNoU1pucmtaR1Yx?=
+ =?utf-8?B?bEhUcmVGWk1ubnpmbnc5ZHU0bG96SnFsM2hjYVBuNS9XZEpmYlI2YjkzZWQ2?=
+ =?utf-8?B?ZTdCQW5veWJBaXozVVFNTXVVaHltaXZ4Yzg5TWRobUNBMXhhWmZ0REl1VUh6?=
+ =?utf-8?B?Y0JUazJMUkQ5Wld3cFVQK3FhczEvMkFMak9nc1MwcHFyNm02RHpjNTNKem84?=
+ =?utf-8?B?WUMzYXlZOURlQlNzS1owUDl5bnFhN1hlL0dCSVhHV1diYjRiRTh4blB6MTNo?=
+ =?utf-8?B?dGMwRWI0Q3JjSUVDWVd4VFN0RFMxdUdwMUtWcm1RODF6YUdNWGJkVitSVjlT?=
+ =?utf-8?B?VnJkcUZPSlY5dUlrR0JKN1l5TjJZc2RJRlk3bG9PK2RpYjdzTDZrQURqZGwy?=
+ =?utf-8?B?b1pER2JxUVg4cTJYWVNpemdPbGZNdXliRXdQVFRGVElKV2tzMFFhbWlDeTJi?=
+ =?utf-8?B?NmhKcUV1aXlmUzM3S2xFMW04Wi9qZVhKOFFkaGdsS3NvMDR6U21KUEVoNGx6?=
+ =?utf-8?B?aEJBWXkwUTZpQ2pGcFErWkpIUDFFQkloV1FieU9BZTNLVWEwTkNDL0FFSURY?=
+ =?utf-8?B?QVUwZTZFemhyekMvZWJJQTdjd1N0UWpFVTBpQzJsWHYwOTVyMnFDWVRuSFFs?=
+ =?utf-8?B?dWh1ay9OODErQTh6a1ZpSmtCR21mUlV4UTNOSkZuR1BGL3grdy81aVpoWDJi?=
+ =?utf-8?B?am1DNm40L2h6WDJQSUg2TVBnTE9MaGhtUmtYa3NqMEJ0QW5kWjkwVUltS1BC?=
+ =?utf-8?B?Mng3UWhuZmRZSi9CTnhub05XWnlmYy9BN1ViTktrS21FY3ZaaVV2NlN6VmFa?=
+ =?utf-8?B?bnJiUFBld28xcENGWXdYRFMwdHM0cnIyM2R4eG4wYjVZVXEvMThRQmtFQjJo?=
+ =?utf-8?B?WjdodG9VN2VXOWVqNElub0NjeWVQZkEzOGZSRlE4NWp2bStlUVhuRENEa01O?=
+ =?utf-8?B?cThGU2Vjd3FFcWtzRW45OFBNRE5UU0pMdnl4ZVBSRHBEbTZmOFRUSFE0NGJv?=
+ =?utf-8?B?NnhidXplemt3cTl6TTU3TEdKbXhtVmNOMDJSbU4vNkNBaVRTS3JiS0FsVWlF?=
+ =?utf-8?B?RUNrS0RlSzBqcVRoU3F1dWt2SmNmQ2FET2RGL2dPOU5PVnhkS3ZMVEhBTmVG?=
+ =?utf-8?B?aEY2SWwwWGJCR3QwQlNvU1NqQzh3SktPMWU4T0ZMdUVJVGJBdXMyV09wN0VU?=
+ =?utf-8?B?LzhUQ2dzc0lyK3VrdXVMSE5CemRUVGhtenYxZHN3WjVPKzJ1aFBZR2NKRit2?=
+ =?utf-8?B?eE1XV3FjWWdVdjhZS0hDUjBvUDIzU3BJVk13U0FITnJ2aHRtRTZMeXp3YjBI?=
+ =?utf-8?B?bTZKUitORzBuUmZ5MWFvSDJPK2hnbjdrYTBuTU1xdHNQblJyeWtROWpRSnZK?=
+ =?utf-8?B?U05EdFVlcENWdVVQWTg5bFdXUnNlMWhzamVkNWhwNlpKN1VYVFRyZ0U4KzFs?=
+ =?utf-8?B?dFlVeDBFSW9tQTV1enlXVEIzeUJOTisxTC9EaFh3ZVU2c255SmZ5ckJ0cGQ0?=
+ =?utf-8?B?VDdsODd2WEtzTGE2UGZNV2wwSkdpcFJaT0ZOdlNaVjc0QlNWc2VvTHNVRzQz?=
+ =?utf-8?B?K0tsa3ZQb1JzV2lqZVdKYkwrK2NKUWNvTGN5Q0l0YUxCTnppTzZWN3VHdCtM?=
+ =?utf-8?B?WEgxTkQzWFNYa0hrMXY4WHNwRGE5d0c3dGJ5KzdXQmNoM3JqRTJRYkNvZlp6?=
+ =?utf-8?B?NjlFWlo5RXE4SUJIVzFmcnQwSGZCdmJrNy9FeGtvVUFPYWRYT3IzWTNFWlhI?=
+ =?utf-8?B?Y2NSMGZUV3NiQlJzOHpRTFl0K0QvTWN3ZTZ2cEFBYWVWR0NOTHgzNVQ5Y3VC?=
+ =?utf-8?B?ZXlNeVgrSThsZVE5eXV3ZlZqU3J1RTdsSEVGSy9jdk13RGFqUHpQNVV1aVl0?=
+ =?utf-8?Q?uDLthRw+UeoSzxSb1nkx+A5Nc?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700013)(14060799003)(7416014)(82310400026)(376014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 10:49:18.6208
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ebaa8b8-0c86-43dd-758e-08de3d59edf6
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF0003922F.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB7464
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ehqewrudohew335xq7aarbdoiqboewif
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C10A340004
-X-Stat-Signature: 8ws91jcwinhy1a33an75rfkc9ut1uucy
-X-HE-Tag: 1765967501-171238
-X-HE-Meta: U2FsdGVkX1/9EVIF+u933vPehwDlDb7m89suNuBQdXR3uptw8HaZxTiUoi7/Pz0SuJ50MLDR8gKQvEdPa/pm3xu39fBjycIEqaYCQNtZhy8U303SxvnTgXsghIpFYNLBohduX2heFO4zy9TZIrryuuG9FlzW6BZk/Z6KmWL+cVk1iWdHPzGJ6VWjdp0BNM2CEbUpL5IreOYU6B32dSesym5nw905F3Ke78uCHsENswwnrv92G2SPwwomChrqruXitS5vrSOlQFIUkhcWPQsvb3YMFlTmXni0m2IcWZK+0wpzLKNDwRoypFUek8nYhUWhQLwzhoo0weyaKZSKpcqyjZw0QPh+bkRR0GI5se1bH4y4hvOlBG7g/wR4AFTvfuyJSZrR+1dsPkPoj6pU+KCZ8D6GkcdAE/zsn2IkzVPIqDS0DBpkOClS6+Hx+W5d7Ig5K5jKRuHpk6Hyw3gOdwTdrUKt46pRJJYbnuuLWYkex0HtQb2jIu6yxQJCpAf6+6iH9hBzGxH/6rNW/MCjMAjivQJq+cyrsaXQSnytmug2fjZjr9/C34aAst8qdrW7uWLYOJPymI8iRX1ppoRJ+gv69fCofAraXI00KN1ofKXsT0x7T/6ivjq2hIZFdZbAapDCp/sbpsBChZxGS+WmlOAw7hXf5nOrP2aGMELG40lS90ZMKr4KuhnKU9uMJ/GlY2v5zGvZdS6AMXjxdqfWiuNfwSNeiPgTV7ZWZZNwCQmFBL8TsSFulUHhMGfjFe+6iXH7q3ysYIMwa+AsZCo6amYdlcKf7/iT63K80sfK+yijKgOslqCWBu/H82yiaQ2ZSJpSEA/1iIoEDKPE1Vli3R+jeKYOt3NzvIQT1V6grEvIJ7yg1XiUb2wObQHtidhGgel7Sr2fE1j0U8HodUx2KvW0WF68J2X9kiNl++nLqW4vPsQSII9E0Shkaodqf8nOPFIBLXthryo4gAHGd8JXTYZ
- o7TezINK
- 4GVR1wZ1UV4BsMZUd0CHyHuLafy/szNtKs36DUfBepVFSut5aRqJFLkfJK/gbiVtNrNBBGIrpZDVYXFICNylLvFyO1lIHl4pLgD+XWV7hAzHrGOvkdcxbSPcEbs/4TJO0OwoT0wrqeJ2JIMaicYiK/AVqlscgLQlfdC8zOKrBJM3U2oHvtTSPoVMMYooQi+kh6meC6eiI/AXRqKNW9VYHbiBe8sSYT6TNyr4hUoS8OziTa5eGdklE41T5/kE7vX3dZgwdn5zD28MZM89b6FqlDpCgpqMKHjonvGf/E1M8jrPjDQpnAyirme30H5wx56AA6K3M
+X-Rspamd-Queue-Id: 2962FC0009
+X-HE-Tag: 1765968569-495819
+X-HE-Meta: U2FsdGVkX18OL8+Dwb4mIKNq4Lev0X0nz0iRlgUFnIe0klRsZv93TpNpDGkXNHxa/8m8aDxHE87coHcw6jkidMh6PK8wFLQB167ixaK9l7RcrkB4ihV9jm7U2KmiWduoloU6XQVkD6kofRs9Dq41sr1bmlCo/7P9mC222+2ugh8K9CFk69NVB1m2Zut07BTCBaysIM2evUBx12S8KnlBpKpVzgD++VqJKYQZALsJ4Js3zyHBIFoJ39IpO95ZesD3Zo/p0SPi5KCIFJOXw5EYDGv0JR/oiEstOOE76wPhXK9K+nxWP15ItCeXY1G+KDbFmFsJWjnnrokUSTALjYkW4MJR05d0iCz/+DovfbT449VK49SfZM6T95OI4q0U/SS7dA284+htEW06d9c8BxPCNOyFhEJSH2uymcidjMqMISWr8+/gACHZOsgTLudYbhN9VDNHbi45RoxUNNJksClot3BENLfQtFtNEKDzJ3+u0WCVd1s94UD/z2WBEsCqwGRtBhFgsAjZ89qYtH2oQJAMdyJdOPrU/FtQ25ohDlYLro5dEnrKSvPHSP9adui8guFBN9cse7Dro9+AlwoMrliUKIdCVbHUOMWr49B2g5HBHHnTiHNNjtFN9uZiPrkU8/9CcsgbBJPo7y/88wxRgzx5nVgmN//mQ3N2KA6cbofw0UHWWRCt3+kDSDApAkS5AHUyBBFOlu2cyomUO2inXlnqE02HOLa1MjILy5h2IfT+STfNv4ITy41eNf/Panv7VwiuYhpxnkdqmwQ+vn7MrRq/TjXW0p8mK61DaVu/ZrxYXmhBsuik7elDJdKVnClnVGxi44utlGgE0qvfjgzdQkRBMmOjxR1mpSZ1iWg9s473oLn7fEohhLUT3uR4MrEtwZv9kdUAVe1+KGvitBLIFvmqcEU/76ctrgolUHdds3c9ZJZFat2n2MY4vmkHJN3N5x9xXpwvMjSwhc6Izl7b8E0
+ GNpyNDOh
+ rlY5Yvkewv+hn5CXjv46MSxe9qzqEosvPKFbV1Vq8OVh/bvtvUa4sWs43k+XglIqt1gQGUwyHbVUqL9IxeQYnq4r+HDGXcBSkQ7Wr4qT2XYTfPuMVn/pntDvtAS2dVAARgZ8C5R+xoi4XoNM3V9nbLydVYNHnixNZK1d9yHfq36tSjWs7wkKssOUk61OtRmqANEHRTLi3P642L1OW3HhNb211zcONSt00mSSPLZxi62yUSBNnwzGmFfP1zL5H0wcRqMmS0t94gnaE6YTZQFwoROZ8EZcLU4k2ch4+fv54Xt3OZRFVq3ltVPQEEHHGxELyj9TX3xqBwc+4EqXBlXi055ucjI2iDDA9xynivzJEGjVzRgNDZcO0R34RV0huK4GeCRiPj2Nzue+ACGqXqhzwJZKu/yveZsv+D66o8L/B75TtV70oe37DE4fkYeimP9x9OJUMfwP0j1LKaTv3JrcRdiJOkkOX+lUcmgxwUhp08rhK+rmzcM07SCrMxpCMDQwI6vgLAiuz+zr14Br6n6qWNsv1FyAcpLMNV9wNZ8RmcYSBsexhKeunUzJNCIWNBRlrRDoLv3LZVtKm7ZU2V7ffTBBB6r/sQ0XRZG78JUlFMJ8K2ZFU3b51W6wWvrFzMbfZjEXXfjAW7C3xNnSpuulfhcl/pRoCcJnUQZzJBwHcIT3BeCM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,64 +267,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2025-12-17 at 11:19 +0100, Alexander Potapenko wrote:
-> > >=20
-> > > As discussed at LPC, the tight tie between one single external user-s=
-pace
-> > > tool isn't something I am in favor of. The reason being, if the users=
-pace
-> > > app disappears all this kernel code stays with no way to trigger.
-> > >=20
-> > > Ethan and I discussed at LPC and I asked Ethan to come up with a gene=
-ric way
-> > > to trigger the fuzz code that doesn't solely depend on a single users=
--space
-> > > application.
-> > >=20
-> >=20
-> > FWIW, the included kfuzztest-bridge utility works fine as a separate,
-> > in-tree way of triggering the fuzz code. It's definitely not totally
-> > standalone, but can be useful with some ad-hoc descriptions and piping
-> > through /dev/urandom or similar. (Personally, I think it'd be a really
-> > nice way of distributing reproducers.)
-> >=20
-> > The only thing really missing would be having the kfuzztest-bridge
-> > interface descriptions available (or, ideally, autogenerated somehow).
-> > Maybe a simple wrapper to run it in a loop as a super-basic
-> > (non-guided) fuzzer, if you wanted to be fancy.
-> >=20
-> > -- David
->=20
-> An alternative Ethan and I discussed was implementing only
-> FUZZ_TEST_SIMPLE for the initial commit.
-> It wouldn't even need the bridge tool, because the inputs are
-> unstructured, and triggering them would involve running `head -c N
-> /dev/urandom > /sys/kernel/debug/kfuzztest/TEST_NAME/input_simple`
-> This won't let us pass complex data structures from the userspace, but
-> we can revisit that when there's an actual demand for it.
+Hi Ryan,
 
-I feel like we had all this discussion before and I failed to be taken
-seriously ;-)
+> On 16/12/2025 16:52, Yeoreum Yun wrote:
+> > Hi Ryan,
+> >
+> >> On 12/12/2025 16:18, Yeoreum Yun wrote:
+> >>> Some architectures invoke pagetable_alloc() or __get_free_pages()
+> >>> with preemption disabled.
+> >>> For example, in arm64, linear_map_split_to_ptes() calls pagetable_alloc()
+> >>> while spliting block entry to ptes and __kpti_install_ng_mappings()
+> >>> calls __get_free_pages() to create kpti pagetable.
+> >>>
+> >>> Under PREEMPT_RT, calling pagetable_alloc() with
+> >>> preemption disabled is not allowed, because it may acquire
+> >>> a spin lock that becomes sleepable on RT, potentially
+> >>> causing a sleep during page allocation.
+> >>>
+> >>> Since above two functions is called as callback of stop_machine()
+> >>> where its callback is called in preemption disabled,
+> >>> They could make a potential problem. (sleeping in preemption disabled).
+> >>>
+> >>> To address this, introduce pagetable_alloc_nolock() API.
+> >>
+> >> I don't really understand what the problem is that you're trying to fix. As I
+> >> see it, there are 2 call sites in arm64 arch code that are calling into the page
+> >> allocator from stop_machine() - one via via pagetable_alloc() and another via
+> >> __get_free_pages(). But both of those calls are passing in GFP_ATOMIC. It was my
+> >> understanding that the page allocator would ensure it never sleeps when
+> >> GFP_ATOMIC is passed in, (even for PREEMPT_RT)?
+> >
+> > Although GFP_ATOMIC is specify, it only affects of "water mark" of the
+> > page with __GFP_HIGH. and to get a page, it must grab the lock --
+> > zone->lock or pcp_lock in the rmqueue().
+> >
+> > This zone->lock and pcp_lock is spin_lock and it's a sleepable in
+> > PREEMPT_RT that's why the memory allocation/free using general API
+> > except nolock() version couldn't be called since
+> > if "contention" happens they'll sleep while waiting to get the lock.
+> >
+> > The reason why "nolock()" can use, it always uses "trylock" with
+> > ALLOC_TRYLOCK flags. otherwise GFP_ATOMIC also can be sleepable in
+> > PREEMPT_RT.
+> >
+> >>
+> >> What is the actual symptom you are seeing?
+> >
+> > Since the place where called while smp_cpus_done() and there seems no
+> > contention, there seems no problem. However as I mention in another
+> > thread
+> > (https://lore.kernel.org/all/aT%2FdrjN1BkvyAGoi@e129823.arm.com/),
+> > This gives a the false impression --
+> > GFP_ATOMIC are “safe to use in preemption disabled”
+> > even though they are not in PREEMPT_RT case, I've changed it.
+> >
+> >>
+> >> If the page allocator is somehow ignoring the GFP_ATOMIC request for PREEMPT_RT,
+> >> then isn't that a bug in the page allocator? I'm not sure why you would change
+> >> the callsites? Can't you just change the page allocator based on GFP_ATOMIC?
+> >
+> > It doesn't ignore the GFP_ATOMIC feature:
+> >   - __GFP_HIGH: use water mark till min reserved
+> >   - __GFP_KSWAPD_RECLAIM: wake up kswapd if reclaim required.
+> >
+> > But, it's a restriction -- "page allocation / free" API cannot be called
+> > in preempt-disabled context at PREEMPT_RT.
+> >
+> > That's why I think it's wrong usage not a page allocator bug.
+>
+> I've taken a look at this and I agree with your analysis. Thanks for explaining.
+>
+> Looking at other stop_machine() callbacks, there are some that call printk() and
+> I would assume that spinlocks could be taken there which may present the same
+> kind of issue or PREEMPT_RT? (I'm guessing). I don't see any others that attempt
+> to allocate memory though.
 
-For the record: I'm all for simplifying this. I had [1] looked into
-integrating this framework with say afl++ or honggfuzz (the latter is
-simpler due to the way coverage feedback is done) *inside* ARCH=3Dum, but
-this whole structured approach and lack of discoverability at runtime
-(need to parse the debug data out of the kernel binary) basically throws
-a wrench into it for (currently) nothing.
+IIRC, there was a problem related for printk while try to grab
+pl011_console related lock (spin_lock) while holding
+console_lock(raw_spin_lock) in v6.10.0-rc7 at rpi5:
 
-[1] other projects have taken precedence for now, unfortunately
+    [  230.381263] CPU: 2 PID: 5574 Comm: syz.4.1695 Not tainted 6.10.0-rc7-01903-g52828ea60dfd #3
+    [  230.381479] Hardware name: linux,dummy-virt (DT)
+    [  230.381565] Call trace:
+    [  230.381607]  dump_backtrace+0x318/0x348
+    [  230.381727]  show_stack+0x4c/0x80
+    [  230.381875]  dump_stack_lvl+0x214/0x328
+    [  230.382159]  dump_stack+0x3c/0x58
+    [  230.382456]  __lock_acquire+0x4398/0x4720
+    [  230.382683]  lock_acquire+0x648/0xb70
+    [  230.382928]  _raw_spin_lock_irqsave+0x138/0x240
+    [  230.383121]  pl011_console_write+0x240/0x8a0
+    [  230.383356]  console_flush_all+0x708/0x1368
+    [  230.383571]  console_unlock+0x180/0x440
+    [  230.383742]  vprintk_emit+0x1f8/0x9d0
+    [  230.383832]  vprintk_default+0x64/0x90
+    [  230.383914]  vprintk+0x2d0/0x400
+    [  230.383971]  _printk+0xdc/0x128
+    [  230.384229]  hrtimer_interrupt+0x8f0/0x920
+    [  230.384414]  arch_timer_handler_virt+0xc0/0x100
+    [  230.384812]  handle_percpu_devid_irq+0x20c/0x4e0
+    [  230.385053]  generic_handle_domain_irq+0xc0/0x120
+    [  230.385367]  gic_handle_irq+0x88/0x360
+    [  230.385559]  call_on_irq_stack+0x24/0x70
+    [  230.385801]  do_interrupt_handler+0xf8/0x200
+    [  230.386092]  el1_interrupt+0x68/0xc0
+    [  230.386434]  el1h_64_irq_handler+0x18/0x28
+    [  230.386716]  el1h_64_irq+0x64/0x68
+    [  230.386853]  __sanitizer_cov_trace_const_cmp2+0x30/0x68
+    [  230.387026]  alloc_pages_mpol_noprof+0x170/0x698
+    [  230.387309]  vma_alloc_folio_noprof+0x128/0x2a8
+    [  230.387610]  vma_alloc_zeroed_movable_folio+0xa0/0xe0
+    [  230.387822]  folio_prealloc+0x5c/0x280
+    [  230.388008]  do_wp_page+0xc30/0x3bc0
+    [  230.388206]  __handle_mm_fault+0xdb8/0x2ba0
+    [  230.388448]  handle_mm_fault+0x194/0x8a8
+    [  230.388676]  do_page_fault+0x6bc/0x1030
+    [  230.388924]  do_mem_abort+0x8c/0x240
+    [  230.389056]  el0_da+0xf0/0x3f8
+    [  230.389178]  el0t_64_sync_handler+0xb4/0x130
+    [  230.389452]  el0t_64_sync+0x190/0x198
 
-And I do think it creates an effective dependency on syzkaller, running
-via the bridge tool isn't something you can even do in such a context
-since it's "userspace in the kernel" vs. "fuzzer integrated with the
-(UML) kernel", you'd have to put the bridge tool into the kernel binary
-somehow or so.
+But this problem is gone when I try with some of patches in rt-tree
+related for printk which are merged in current tree
+(https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/log/?h=linux-6.10.y-rt-rebase).
 
-So to me, the bridge tool might be great for manual work (initial
-development and reproducers) on a test, but I don't really see how it'd
-be suitable for fuzzing runs. I expect it'd also be quite a speedbump,
-and makes integrating coverage feedback harder too.
+So I think printk() wouldn't be a problem.
 
-johannes
+>
+> Anyway, to fix the 2 arm64 callsites, I see 2 possible approaches:
+>
+> - Call the nolock variant (as you are doing). But that would just convert a
+> deadlock to a panic; if the lock is held when stop_machine() runs, without your
+> change, we now have a deadlock due to waiting on the lock inside stop_machine().
+> With your change, we notice the lock is already taken and panic. I guess it is
+> marginally better, but not by much. Certainly I would just _always_ call the
+> nolock variant regardless of PREEMPT_RT if we take this route; For !PREEMPT_RT,
+> the lock is guarranteed to be free so nolock will always succeed.
+>
+> - Preallocate the memory before entering stop_machine(). I think this would be
+> much more robust. For kpti_install_ng_mappings() I think you could hoist the
+> allocation/free out of stop_machine() and pass the pointer in pretty easily. For
+> linear_map_split_to_ptes() its a bit more complex; Perhaps, we need to walk the
+> pgtable to figure out how much to preallocate, allocate it, then set it up as a
+> special allocator, wrapped by an allocation function and modify the callchain to
+> take a callback function instead of gfp flags.
+>
+> What do you think?
+
+Definitely, second suggestoin is much better.
+My question is whether *memory contention* really happen in the point
+both functions are called.
+
+Above two functions are called as last step of "smp_init()" -- smp_cpus_done().
+If we can be sure, I think we don't need to go to complex way and
+I believe the reason why we couldn't find out this problem,
+even using GFP_ATOMIC in PREEMPT_RT since there was *no contection*
+in this time of both functions are called.
+
+That's why I first try with the "simple way".
+
+What do you think?
+
+--
+Sincerely,
+Yeoreum Yun
 
