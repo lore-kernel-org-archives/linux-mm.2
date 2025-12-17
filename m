@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FEDD64085
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A435DD64085
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Dec 2025 07:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB93A6B009B; Wed, 17 Dec 2025 02:33:18 -0500 (EST)
+	id 15F7B6B00B6; Wed, 17 Dec 2025 02:33:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E62D56B00A0; Wed, 17 Dec 2025 02:33:18 -0500 (EST)
+	id 137AD6B00B7; Wed, 17 Dec 2025 02:33:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D96FB6B00B1; Wed, 17 Dec 2025 02:33:18 -0500 (EST)
+	id 035E36B00B9; Wed, 17 Dec 2025 02:33:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C60C16B009B
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:33:18 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 852A95B862
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:18 +0000 (UTC)
-X-FDA: 84228147276.16.05B3614
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C507B20012
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tfCThczT;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E11B96B00B6
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 02:33:29 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7DB47C08F6
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:29 +0000 (UTC)
+X-FDA: 84228147738.22.A88F099
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D1E9D80008
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 07:33:27 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Dusw2/39";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956808; a=rsa-sha256;
+	cv=none;
+	b=HYggwB/N0yb0127gC4c+I07l7MwvqF/ghmLK3Mhnk0/ggpZC+tM8TBBEUlpZPgmknixw4b
+	yIOxvwk+aKhTHJzw/hFxhrV2kdYeBsgLtq8UFflY2QLFpmZIwpK3chAYkU52adVw2B22PZ
+	W5j18J474/6ZXpyXjtabYuS/O9nfi3U=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Dusw2/39";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765956797;
+	s=arc-20220608; t=1765956808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TEKzYkGMehRKc5BRVPJO6+VCdZxZFdG/Vbt/yGKMiiM=;
-	b=27xiZXM4Rf42Z1qZmNKXTTZQnsCmplTSL8F/11a+edG63IXTDahI2kYK32xCur0B11C814
-	2lKpvqi+EsvJDyQ4d1GZFUzlrh2e9t5aFs+91fdOcOsnhgy5h7ZV3wVLUxzgqNfi+M+i6m
-	ZYTAHXMsaLam26MwLIaoCOqgasMA98E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tfCThczT;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765956797; a=rsa-sha256;
-	cv=none;
-	b=slexV+V10YI6vkFKyo+7Kzj3596ia4YAkdZo1yWb+Pcb1x4E7HFkEnnUh4gS7H/TgjSGR2
-	kDHBTHF4UN8r3Z5IDRVyoU1Xhv2+x+vVgQx34zvo9QUvQU3YTlrHOBQQiR2BOh4U1ezZq7
-	ISjwQyHKSFDB9YrLq7w1OFENh2BSLd8=
+	bh=MLWSJF0nLNh7N5C/0x5tciJKSygGd9RMW0b7OeDmmlY=;
+	b=rzF134792Wo9TB3aaZRX54CE/oepdHQ/LM+v3goj5ibRxmB45xrZoD+Y4/ZbxCwObFJWrQ
+	NlLTgjc7JHDwx5DuBHBRD+xov0k1VMEEUy5G+r0ON5X+GjGaGAOmfwejlcfScjX8mjsnjR
+	7WzggktBiW2hUXgIT1DakpUoVAtkeVU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765956790;
+	t=1765956801;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TEKzYkGMehRKc5BRVPJO6+VCdZxZFdG/Vbt/yGKMiiM=;
-	b=tfCThczTZ5dXkREXxScD5XtwTpBC3Z49+zvUce5Q/nbsjgKPLwV4v8wGIQWkwug47qe12I
-	N6JYxxROFlYv9wp09tles8iGrq3+oTnJifX3x5SldxBXk8H1lwOEOLDqkg8XlgU+LhZJAA
-	4q/eNpVSgu5kYQ9ENtmtE7Ar3sRAt84=
+	bh=MLWSJF0nLNh7N5C/0x5tciJKSygGd9RMW0b7OeDmmlY=;
+	b=Dusw2/39bPZpCKgWRmixvObH3oye1W0d2l/EI+/2d4touyB7sDcx41H6ThV+apVJtk/Yzi
+	Mh3NZrd4Dfg10moPMGz7Vru+UO3Po4bUjn2yLFwclZU0w1iEms+dNnGleWkuQpAKJ4cqlr
+	7M4Gnng6vNejpEIsBHdQU/5f4k5uVa0=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -86,22 +86,22 @@ Cc: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 21/28] mm: swap: prevent lruvec release in lru_gen_clear_refs()
-Date: Wed, 17 Dec 2025 15:27:45 +0800
-Message-ID: <42682f81686e31019504a6e025fa08d2c9dea718.1765956026.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 22/28] mm: workingset: prevent lruvec release in workingset_activation()
+Date: Wed, 17 Dec 2025 15:27:46 +0800
+Message-ID: <195a8cb47b90e48cd1ec6cb93bc33a8e794847f6.1765956026.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: tdk6q6no1n9ud781ct1p3zsj8oyyjshd
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D1E9D80008
+X-Stat-Signature: 9e5wwrz1o84dmb6h8prucxpajjc8wr7k
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C507B20012
-X-HE-Tag: 1765956796-316232
-X-HE-Meta: U2FsdGVkX182NOS1Lr9nnZlt7ie0VkcMa7OT0QLeDYWsil+V2AlXIZ1+wqvuyIxl6GtkdoyUGjwHKvvR6FKOpXOD6W1Au39SnciIc6hMAB6qGSLudAEdrzBbAh5oza0T0zPCbbgOwEY7cbCS2fx6kFRhY5nh75FzTfwz6moixQm7Sv8HSWkVYXkue2UkqIc/ejDtJDTQwwljCRLyF8Vp7BCIDH8VngmwIFFeOWog5fmNT+96ya2jNnLyJMdjeTRHLy2cGLqmrQtqH7jj/N3Zghc4lbybaohlK3+J50w/tMYqOZ7VaFZuSZmQNNtPZiBvxWTjSeyb7tVBj9CFtUWYAgF8U3OurngIsxknvZpRxU21ZKUxoaoT2mhHCSt+K4vqJBUmEyiEgCpRJV//u45VinwoeVxNY1uaOkbsU5syn011gITliJmwy1LK849qtOOVU/8JakXEa4EWwNrKGna2gdN3GOarV6DMBKPWz4H6YIRQSSGq2jutjLU4CcvbNXDgrMw8+6A7BvIDPI1Xf0rjWHipDcUJqEnDrnRQxhcnHKVKzp63OMPmpNjxE56SkHI8+p68W2H9eHONMEHp9h3MlZpexp4NdGaAnbsbjYioSmqhnCfh+JGEVI/DQuNjUhp8dXXqnNKvVlvbWXQwLiMZrSUooMKd1b1CccMEWAtSQ+RXAuwpVcv/85HJcrceWHuaK03uvlCCqKGIZACrzimL+O6w8On8bqXi5f3uMpNM1IHjefy/vPrJqKdLly/tUcXENemEDOlKj4CK4adpRSZTZe3/8S+v9Wk/XK8tYZqQBedRMGHPi0y6E4jNu0OA29IALBbQqEcRjqOny0BvuwvOF9G8/XjlbrHpyOknWg+Kf0yj3nq8FoaI+ExKHumvrg0Cp9CFzuDNEI2ghp3TzVpivU6LKDiG+dySvkfGuB+CwZpGP9sbtPfPu+Iu5SAz8PU/ZZ9dPUxhF7Qe+Vjpb/r
- MXpTeft7
- NFxTJSdqZsFaeH7WD5yXKYA7rowyhk/eZl5I7Sw/I1hf+ILYnsLTslFzbGp5ZhxWTkVdprTtyNThxKdu46NBnH5SUOlx8Fk0dXISzyorOQFam623jrBD+6JkRyMR72V1u9gA6jrBZB2F9KUOzqNLYVZ/2tZQohwlDVSfUU9XlOk6DF8pbDgyxpgUFcIvYhGjCrHfuUfL/PCQB84fkDs738Eg3x1Vya9sX3lwOB/rnBsO2GYa4W9ZK1i6TA9KX5ft1//NH
+X-HE-Tag: 1765956807-371779
+X-HE-Meta: U2FsdGVkX19d9CEeKwPi97l4AtB+ehya9km0OwDSk+xlsq9bo94SQDU+n2FzXT8L/QTRwSALF2DZXeI62T4n4uTM8oIAcnGGcKw60RC3pZ34sW+q3wsikK2V5KD3s00RMIFoKREQU0Vv0XK559Hq0fP8Vul3m0Hu8KjKg3BUyTKZgljnJXnv0EhBPKh+hy2AOhlMYp2vuW0p/A6qrHZwpXU49f+IfkkiKa9DmyXZ7iQgLUSBVAtkUqo43TBjfm74um6gaiI/Dyf0T8JOqKvPnShsdMHoSBebaTzG5GUATeytRrlwIkOBr1sBkAOk5Rw7AQW9CDwohnulZaI/LH7i13vbdztUGYU3Y8FtNT3nItwRQHasPyHAi1CA7kNNdMFl2YebPdha4bCZe2w4xf4Gs6vcVPMak0MROaHzSiGCIsr1li8AKnGV3ojU47v61n3ioG43YHMT3nZqJ7w9WgjsFNCqwUoruyXDh4NW9MCOGfNKGpa5xwTR3C/U9S/wXz/vmkWBzc+Aaf6sBxfFQhCgGcM/PxI4L72hgdM/ydZpz4i4MVcNXFr9imfSeZueoe/cMssIHidm5oqSb/QXp4S2sv/cUUeKxjENptQDMe7rV5+KvRdEqs29LKATPRV4jx1aWV8hHbuCvep32hht9r9n52glZYZgsKMaib6Eb0RML18ZTkglPTh7lIUFPmtmvV+tyk004K19E8EPq/OfTLei2fq+OtdAJ4lc4hTgO0jrF9BduzxoPOEh2FSr579jPtWA9q2ZOuYAwN1VLw8oFonSy5aLGG6vOnCqU/rVg7gkTzPYu5blgQv0xeOvmFDBjiLNtPlZ7Sk+je23DAtrR485e4j6fssCv1fYCdEcWW8lM/+7lhATJhClY2LBme8RbRvL0A/wxq/mQRn4RDN1c18uzDVkqF9KUY6AIS7KzLP+Lw2eZwDbHoheAroBvwJtkXydBGiKDj1IXuRkYw2SPgV
+ /1YTdb/d
+ QPy45+LqFjNLxQgKtbsMkyM6SH9nfW26G2fuD/oyXSSFwJqz8uVMh59mRiOx9ahCIKMPrFjsDub/trXrJHg8FmA/NT8X1NCRhzHB6dC+Myr3dWMMnNxMkBcW/5/Rq0nokLki+raMKmvA09djmpXz+7A1Ol6t46UGULkSN+9KZZhHx9bXY99uqJhBvG0zahYUeXCW2PyaDT4IhvefJamddFkJYdwVgQwhJDP4hfpa4BG03U4eaSwxxwpskAaWFpRO1nib4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,7 +118,7 @@ released without the rcu read lock or a reference to its memory
 cgroup.
 
 In the current patch, the rcu read lock is employed to safeguard
-against the release of the lruvec in lru_gen_clear_refs().
+against the release of the lruvec in workingset_activation().
 
 This serves as a preparatory measure for the reparenting of the
 LRU pages.
@@ -127,37 +127,26 @@ Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- mm/swap.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/workingset.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/swap.c b/mm/swap.c
-index ec0c654e128dc..0606795f3ccf3 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -412,18 +412,20 @@ static void lru_gen_inc_refs(struct folio *folio)
- 
- static bool lru_gen_clear_refs(struct folio *folio)
- {
--	struct lru_gen_folio *lrugen;
- 	int gen = folio_lru_gen(folio);
- 	int type = folio_is_file_lru(folio);
-+	unsigned long seq;
- 
- 	if (gen < 0)
- 		return true;
- 
- 	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS | BIT(PG_workingset), 0);
- 
--	lrugen = &folio_lruvec(folio)->lrugen;
-+	rcu_read_lock();
-+	seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
-+	rcu_read_unlock();
- 	/* whether can do without shuffling under the LRU lock */
--	return gen == lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
-+	return gen == lru_gen_from_seq(seq);
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 427ca1a5625e8..d6484f7a3ad28 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -595,8 +595,11 @@ void workingset_activation(struct folio *folio)
+ 	 * Filter non-memcg pages here, e.g. unmap can call
+ 	 * mark_page_accessed() on VDSO pages.
+ 	 */
+-	if (mem_cgroup_disabled() || folio_memcg_charged(folio))
++	if (mem_cgroup_disabled() || folio_memcg_charged(folio)) {
++		rcu_read_lock();
+ 		workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
++		rcu_read_unlock();
++	}
  }
  
- #else /* !CONFIG_LRU_GEN */
+ /*
 -- 
 2.20.1
 
