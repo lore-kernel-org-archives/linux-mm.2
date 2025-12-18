@@ -4,103 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628B7D711C7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 21:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BEB4D711C7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 22:16:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 919C66B0088; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
+	id 6D37B6B0088; Thu, 18 Dec 2025 17:16:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F12D6B0089; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
+	id 6572A6B0089; Thu, 18 Dec 2025 17:16:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7226B008A; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
+	id 50DC96B008A; Thu, 18 Dec 2025 17:16:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 672136B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D8B0C038D
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:49:37 +0000 (UTC)
-X-FDA: 84233933994.19.4C95623
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3536A16000E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:49:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dnfHpco4;
-	spf=pass (imf08.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D94B6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:16:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7383A1A035A
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:16:45 +0000 (UTC)
+X-FDA: 84234002370.22.2FA86C3
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2A59A1C0014
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:16:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Iw4FFmq8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766096203; a=rsa-sha256;
+	cv=none;
+	b=HDuqai0RjH3CuIed4uvKm2whcc20gRMa3AkGsrtqwpaTF/WI+KzLFE1nNhhc2rOv9Yqlv1
+	vKvNI+NBRRFYCOPBLP0bGKHkAQcNkyORrNNYGxQNdPTC3OGt+9ipV8LwXWqUAcRI198gnY
+	kggNFPe8v7MkIPuhix35G1W3FpHDbc8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Iw4FFmq8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766094574;
+	s=arc-20220608; t=1766096203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FSUSXWk89hI9/EDnvyCElvY9u46O/v34cM58Hh3o7v8=;
-	b=esQKPxL/pDkFR2U7mP9mLaUV38U205n4XbxoX9/PS7JQY5OwccOHLh+Vp5RoEQvRkfDOEk
-	pq14Jnoxv/thL9cf/HwxuxU41q5J3nbhjCCmSA4xLZoH3rqOhP5flPrwXM7z79yBQGnYgg
-	YFGo2yEhklfr0pgzVmxEVs8pmRSxBdg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dnfHpco4;
-	spf=pass (imf08.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766094574; a=rsa-sha256;
-	cv=none;
-	b=VAF/2BEByhDTy6/UdS8mG5PpeBxm3Q1/uGwO1EsI+DrmHaMCAMXUdlbsvPdcbiOzZT/K8F
-	vnZ/ly1MrNlu+d7+blgoDfnZnaZme55JUvZuCFew0CZSaOv0Em72S6JwHNsEHajufRUpP4
-	K0wAwrWtR6B5hKGKf52+9preSepfU0I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766094574; x=1797630574;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M06MCaIb8PWS7kX0AksYLwEq4wJXXsnFR5/EpfqCjgQ=;
-  b=dnfHpco4OWL+dxwD9dGQx8aooSml3UzjW0T+Y942K/lbUzW+G4NKRsLj
-   +WfnNzhwqdc+edJZ36XqA2Jwr4lqwa4tAEPITtgP9ZrtrZTEqzN8P4cuv
-   OOcIreJXNpirWFdxoP/pE06E49McSA+GWucIS9OY1Q8xSmVY8GhH3epwx
-   +j5Z/i5NBMa+vpBk8KdXZFgpuWQpgF4TrSE8lDjHsVddpebq/reN+9KcV
-   B1V8pRROAZVDqi/oAviRherGdHtBYyAQv7n5IzgC9uMCmSV+y2epl1+oL
-   pplUX0L6VQ9+phmCViTqE1xmodboK+hXkuJmo+gfJOcMcJg4vLJ1tAMaI
-   A==;
-X-CSE-ConnectionGUID: iFetKHCwROKP/Qdq8dEBbQ==
-X-CSE-MsgGUID: Mspt89mNTJ6ED/gwgKTGXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="71918900"
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="71918900"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 13:49:33 -0800
-X-CSE-ConnectionGUID: 2Rmht5HYTJ6BZFsCRCf/fA==
-X-CSE-MsgGUID: vLF7f0OOR4uyXFAXQ/ODSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="197953858"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 13:49:33 -0800
-Date: Thu, 18 Dec 2025 13:56:13 -0800
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, bhe@redhat.com, rppt@kernel.org,
-	jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com,
-	dave@vasilevsky.ca, ebiggers@google.com, graf@amazon.com,
-	kees@kernel.org, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	ricardo.neri@intel.com
-Subject: Re: [PATCH v2 11/13] kho: Allow kexec load before KHO finalization
-Message-ID: <20251218215613.GA17304@ranerica-svr.sc.intel.com>
-References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
- <20251114190002.3311679-12-pasha.tatashin@soleen.com>
+	bh=3sXHinIvqqn4NKYj3YLqEcLxxqdNblij/w/+MvNbYRQ=;
+	b=Uzynq/6BBPN0tmRRzzx69bYrY9tPh5NiqKLmUEZwnvIu/aS7bE0L8j8Nktmns0HPnap7kt
+	eAlCVMv+8uXPMkG7OJTXzVRfGnuE1RGOmZhvrc5LceRyeQUblOTg74nCiKDAF3a05VfepR
+	MZBb8Jso0Vn37lFci5hIcdySqyZDgsw=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88888d80590so14731886d6.3
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 14:16:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766096202; x=1766701002; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3sXHinIvqqn4NKYj3YLqEcLxxqdNblij/w/+MvNbYRQ=;
+        b=Iw4FFmq8NVYlTuHTP9LMC0MlzBVZdKu4LsD4k+TK8sUjh6OMgjmYZPB2IEbQKsoARv
+         wcCh2UPgUpRkmV4sPKEF8ZVc3urufnGx3d8wG2j5SkLNrcUYJ9vGZiQZAiYW1taC9OSn
+         qMms0mxzknrXmBsmm4ngfaNN/3tlQwV+NK+z/qYIF530L337Il1qXOEY7cwj0mbUOL/q
+         UDoglLaa5yr2evPrYWITqNYtyVkERmyQj8wg8I+Rz9/Hwu2/sY2EzcB+YpPz54Bznh9H
+         0Vdy5UZ2OKv8E9r3etSzGBWw4gUjdPf2kg9Zb4t5sxu/iysSdMHhLvgI3KCz5jwD+Dgz
+         LNCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766096202; x=1766701002;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3sXHinIvqqn4NKYj3YLqEcLxxqdNblij/w/+MvNbYRQ=;
+        b=e8zNvcZpuv7+X/4d/QsluAMh9EnxfAq/AcMNunw7fxrHjvFUKNx9XwZl5VsMMLFEki
+         HxOS7mIGDUXDcAdju6Z3FDAboSEI+tvMml28FBkc4EfQ/7d2SoFgZ1RS5iv2GWQac3wR
+         OtkvNzdFmxTTxYj+GAzsfcrPWrphP077jG//50Q7uvQPFYc++Yrl5Pe1JQH+3hKjEIkz
+         LJszT4S122WJyRy42w8/p6+EK7l5twg1T0ISa5Z3D2uBUMmKw2HF0PNi36Vd70ufWNKj
+         YCXekzRBeQRTWzRaK6K/Mvt+f0barHb6PqNrRz/aJrRhhaiI6S8k5Jm+pu8lzeMHVb8B
+         qlNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVthHKzpeNMcanQBZS0auMZhdwybtXELeUIeowBr8pOIvGsG5m2XxksmE9YY8jZBAm38APWiSWh5g==@kvack.org
+X-Gm-Message-State: AOJu0YwnfNcfvLqWDtcIagwYoge+1KH+vu6TlZ3Yp+5stMdnp/WL7nbR
+	R7p8kMbJ75ezdfPJjmdOvQEo0GE3Sp2gTctwO8C9fXikBCssGpyd6hT0
+X-Gm-Gg: AY/fxX6A2jOh7KaotYwNv8H7fq7byOgNeiphDQ432BoeMh9CkLW/O9eMqtDpcl8tB42
+	1KWcDutAY9WIRrHB1BZsCvq3/wEZfPc8GE9CtA7wUR0v5gWdi68DcI1L+LR2rjsvLGfADp+dI9t
+	WFEjxkta0AjjVIScH3DtZjSTUQSwDa9ZOH4a3x/cGJqa9fvQPLhu7yljlKiOKMqzlYRLbq9BAz+
+	rOj7dhDz1Ujvvi90p7Bs62yxaoRfoXs/03g5CWXPbwQSQ3GLodsOhNZ+ZvDtknJ8ZpDQnoqoa/L
+	REdZTgEfOv8I8tGH5zbou3y89hu7bEu9TSpwONPxbAFQt+ZCo0wZaCXnyEQPSQh0MiJ9NryCsNO
+	aBr5ea/KglqRkjQ9XhlaWrGryiDQAREEG9jPMpL0+IIGx7wCtYALw6VRhZHcxA8MGNtjKNwXPDr
+	E6nsVKL5ZdP+RuMFuagQYDcf+Ul5BemCIR3D0/RBnu9WDNtj6hQLRiug7luzqJMHo/WKrm8QNZK
+	Yh+C8GNvPuudPk=
+X-Google-Smtp-Source: AGHT+IH9dlus8CLBnccpPwM7k0azGKuifjOTEiDe/F0ZElbIptxHmkvJntfFb5aH3wD+BBl6lym7+A==
+X-Received: by 2002:ad4:55e6:0:b0:888:58e9:fda1 with SMTP id 6a1803df08f44-88d851fd95cmr13819516d6.14.1766096202075;
+        Thu, 18 Dec 2025 14:16:42 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d997aeef5sm5249626d6.27.2025.12.18.14.16.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 14:16:41 -0800 (PST)
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AA726F4006D;
+	Thu, 18 Dec 2025 17:16:40 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 18 Dec 2025 17:16:40 -0500
+X-ME-Sender: <xms:SH1EaZcr4nosz5Z_u80KXr3YTuBVa1KzutlGezTRHSDZs3vGJkkjOA>
+    <xme:SH1EaUVPH7FAjWPnxjlkT6SOQdM1MN3G4pmjPM7rEFGVXaj797cdyQ5pHlryNlzxO
+    VVPAdSNKmeWi9A_l2pblsDmpQTl9iH-oyauJMf2dWNjj8KWqT1ByQ>
+X-ME-Received: <xmr:SH1EaS-mmRPmfNgvg_LETVK0X3GxPc8Ju8gr-cxm8qbpQU35_qsy-_unMKTt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegieeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopeeffedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepmhgrthhhihgvuhdruggvshhnohihvghrshesvghffhhitghiohhsrdgtohhmpd
+    hrtghpthhtohepjhhovghlsehjohgvlhhfvghrnhgrnhguvghsrdhorhhgpdhrtghpthht
+    ohepphgruhhlmhgtkheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhpihhgghhi
+    nhesghhmrghilhdrtghomhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurd
+    gruhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopegsihhgvggrshihsehlihhnuhhtrhhonhhigidruggvpdhrtghpth
+    htohepfihilhhlsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:SH1EaT995_TeAJ4-63c4V7xKFasqvDak3J-igt9puhk5brWv5ylc_A>
+    <xmx:SH1EadWoyqZsWXiMN5K-uDQ0qYQ1TUjy-3UEAJTDVukr5CuxkvA59g>
+    <xmx:SH1EaYbSjUFJ67X-225Ef0HegXoCvjFb2nSB95hz5Zynp6lYavMa3A>
+    <xmx:SH1EaXrTNm6EN-1Jchzt4W1vY9_BIcCtY-RjJ8xXdv0SKAXGMxtvYw>
+    <xmx:SH1Eaf5et_nD7VWPecEOioNTVhm-onsV73utDC78UeHLz4tMAvn8XfBk>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 Dec 2025 17:16:39 -0500 (EST)
+Date: Fri, 19 Dec 2025 07:16:37 +0900
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,	linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Will Deacon <will@kernel.org>,	Peter Zijlstra <peterz@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,	John Stultz <jstultz@google.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Vlastimil Babka <vbabka@suse.cz>,
+ maged.michael@gmail.com,	Mateusz Guzik <mjguzik@gmail.com>,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,	rcu@vger.kernel.org,
+ linux-mm@kvack.org, lkmm@lists.linux.dev
+Subject: Re: [RFC PATCH v4 4/4] hazptr: Migrate per-CPU slots to backup slot
+ on context switch
+Message-ID: <aUR9RfVChdcDncwX@tardis-2.local>
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+ <20251218014531.3793471-5-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251114190002.3311679-12-pasha.tatashin@soleen.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Stat-Signature: jf979szdimh7nzgcob7noqncjaag19fx
+In-Reply-To: <20251218014531.3793471-5-mathieu.desnoyers@efficios.com>
+X-Rspamd-Queue-Id: 2A59A1C0014
+X-Rspamd-Server: rspam03
+X-Stat-Signature: e56gcawtoibr7h5xo5wjtdmkxybyg9xf
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3536A16000E
-X-HE-Tag: 1766094573-398830
-X-HE-Meta: U2FsdGVkX1/jULgY0muT3MnEKcIzNevspjbvOXLfX1XZlsg+ab2DdMlbYb4qYGlbWtqW0sROUAd8By6/ABmHvV6XJ95x2n2fYfi89WWawnCRvrStM9SM70aRhyl7MdtkOMS6SGqJAhfBEWnDu8x81tDb0cQQCnh0D5YsD3KyKJ6pglrk7KOxBUe3p75LJdOrdDOboeo9E+irhMsnO/5eTviLjtQI1BQVANeNUyf6jn86zlr+ksYpBg15AUlszjgsjzsNwXU9z3h0pZVzgCALtXTR9G5CuCb7chFqijq0Gmp7w9bZy/+tQFltq15K6ab43Vht+0+KH34oiU60brZLBWTH+D6RPdt+HqIPKJ0sTgM5vAXYt7Gg/FM06Yo9E5/urd8Jk12umh4q0gkBZEWDxIiBUHZIc5/00kUc9RP00HDHRnej5i9FAZhjylZbKtRN5sclEaGJu2gTnLrNIbU6sSjiAg1lCG9pU2L7seKEd7WF7sMMceMB4YKvO8WScZSMmiVjpJfHnekH0Bsa+6QJIX+3t8qlw3KhFrGVBzbA4p/9Sm0miqZ03LJSCikEobc1UmlnOwy2JdiwyAYDjuIBGWPRfVl1qBGwte9uzP/z5Yv9bP1mKQHEAQwYCqdYLRarS7cFbL0QmbVE9p3wqdaYeY1y9FqN30yNOmV378i+a7oO8kYRiXBAy00TCEdtAMSv43JmTk1jTJKL3JHLb0aiDRk2QG9mrdQBVz24RaaVlVzaVDHGSIbgLldDsKqFtVHeLrmYNWd0DD3BvGqVp6DTCeS+5BG284mmKfxSfdAoy7HZcFjHQyvSxDsbY6dflcv+yfrH6O+PkD2eeoseRr81TYjGXNHMZ1Crp/KRbjTR0ghtw2k5UGJx+G2B19KMvQgtpPoLEFouh937I4BevoFVVGxL7hT3SZRwlp9Y4QJjbu1B8cM/myJFTSW5WTVxqpEAluxGj9dh48ntbyv9FtD
- w3+zjC0B
- Ii9+Ka3M3uv7rxbgYNNpcXKwNUL+kWFLIwkQ7kNWdEtR2KnARCd9Uju7MN6M3Sn9EdChckyEi7+eIFM+YCkrQ1x/YCXgpLGnc/8fjbjZ8D1InQxoeEckcvhFZoWnnTnLrji0SDxoqyrL1csFS72U/97oZWR/J/rFa9v+1XkIVjh9lFK7JxgDR/qAejspylkozryq7kgO0GlfSQghdh6kdg91Gfay1GYyVnKobeCXCiC8Fxma3fykhM98o612xBnoSfdhz
+X-HE-Tag: 1766096203-211231
+X-HE-Meta: U2FsdGVkX19Jewmkl2kt1k2v1uDbgH02isgwtJ47+Ov3toW4fcg75Y+vmGKXdluRw1CgHLswDigeMQRExiw8As1N/8oaDXmjmWJuHA6oN6AiR5a/xdlEsyWtFUhkHPVGEBW0wPFrVFLfFyQTlyNbbpvZFdHVgYiGdTjkAGfjgyWyQK/9yrvNJuBqACf7RZWMzSK+ThBLw+rxlX9Jupi9mclK/Gx5M9/Htk6fM5w6xz8sVrs7KWlM4rQZEKhqCr0scFjOJjMuwu8dOXxehP6GT0nJkIVhl4sbvvwilEf0WnbvRvp1kjWp++17uNq3AwbMcpPJqNwx2QR3JxeMatiKMRxJq3RHBls49svyjYbS4VZ2bjZr3XJagOIJGA8lN9dr+sZ2nIz3BvD6gzzxHNbzmPDq4gz6LUelZsQCG1tDfSqnMlmZn8/7u86dZgn1BJ+4q/epfCMsj88mBoX0ySHUWi3N+mf3NyHZHTsBCtwWvsR7j7QCKLk0tWdXyET3qu4zeNtjOAST2rc6VX6n2jhQIGygt/3iP2zH8h4KJ4xRYlLM7LGh6lnhYsplkR7xmf4Sm5Cyia+BzFiAltej/W7oFlSE9f38DGrOdl4sstNugyctEBKkGssF7YsovhICyI3htHLNc0n6twXswE9Se51q8WmSuylPI/XIuGcYPZjPXty5nQDlLwObhpLzwCPn9IKyeZdq4/qzS/ON3L7UuMPo4Qa+KkyOHpS9jZpd9aNJrzBoijuINwfPGV6+aPubPfa1iyrJtgnO7dO1SP+r4/5OSghjElAB5WdY+sY4TOGeXqZOfM9+9CF556uUGGB4eR+uhwTTpHWSksnjI5nrOkMrX/ONsktuiJwqMjw0stLBCO1TOFbzNGu4BFRgwZQYIh2t22Y3AyGfmNgRGcSFw5fvGkwsL8oKVLY1GruZyOphjVc4qN9vSEc6e8dpLRcXq6lTTidawATZidC0zj9nvqM
+ R1f3Jo6q
+ FmXcfZJN5YjF+NJ6w6vwXdVY/v+b8QnpXttuA2dnOxVLzYtkMFMsnXqHEep721Zfh+UBSfggtptwxE89oVh7rBQ4zVZwKCAnEknBkPJSo6Ir2w/8vwq/FoZ24q+P0pjajkVT6wQlDqIb8sKow8TXzLnEvjqzqw1aREzbz5dEhK3/IH4KoZEvv5l9+CoWAYcsmKgTWN33BP49q+1IURkNc8EO4zbCy6u5X0of6wph1vXwo+dHukd8wb57dsVledfd0JgQtpam3/VbuU6M4qp6ajUT2qHBWtdt5PsqynLVCQppLE81qstGFVo1VVyyNSW215hU7ll+nfMtwLKQyzCAaLtk+W4ibhHz9fhYKGAo0u1BrFebKFTf2DHnAnnbPkMjjSQDeXTL+zns9kaZh3QgXTNXSk7F2ocwpwkSjBT2AxOAiHo+Ol1leIJ7YScIvrdWkErNp7/+pn3KXssSvG4+DjCHr2haKYiCDpknnTEHURshWEl2AzWygkNAdS1jkpR446Ps4vugLC8ASF2QErta/8+N/Mp5LRrq/E+KeC6ZmgwnPv25WLzvquYQfHROdYzq4zZ/95cJ6lDMKlzC4cQOJxWhtZfzIImdBM3r6jrFeNpPb2IkGBpp2Vcb1T59b/SlC+Q3i48caJKTokQXHbF87Q5AEiEMbMUGlXOKnzVm2teuzB4rGfN5eWx3PNQVH4KLUtc+acBwJwDy76ieRDpfKP+eu+Ev+jfvHwI4XAZDwjIVbgKWD/dUkfGUHsuS/wyXlsJHCQZL0TSu3IIog7iCrwkqkxSxczAhkFqlo/w/s2Gc+UHDrOaPdKDdGzDRr/mkUgTb8RRkbRqDNHeXe7LiHwTth9/oVkmMD++UFgj3uE3dDCw9lB21QzTwrz+GLfs6tJyM1XMIXdfBt2yddYUbTKX6yhTVLzOY6GgNl6CeZ1pERSmJdp6M+c13NQOIdjeV+fvk8f4E1Gc8nFUyTNLsVkMLw1kW1
+ cVJWQSPj
+ tN8tpFxCAyIxPmPH0ug8oKnnFZSMrUixtOmkq3zKOM7iXlQNT7M1qyjDYeCci8a2rtpB5Ux58CMG1rjv+kRexLSipyR1NgkBVz+TSBEVzNk7b4GMYo+/Xfb4rHFOADCnZCgF6+vRpY4HjLKA7Yh1MQGECcaAJYe99reHwQ2SGqnfZCE9++jyz6sKDKTESuZh9VNbfJltDM3hZ9N5m1hsTU/wOfwyc7TK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,173 +179,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 02:00:00PM -0500, Pasha Tatashin wrote:
-> Currently, kho_fill_kimage() checks kho_out.finalized and returns
-> early if KHO is not yet finalized. This enforces a strict ordering where
-> userspace must finalize KHO *before* loading the kexec image.
+On Wed, Dec 17, 2025 at 08:45:31PM -0500, Mathieu Desnoyers wrote:
+> Integrate with the scheduler to migrate per-CPU slots to the backup slot
+> on context switch. This ensures that the per-CPU slots won't be used by
+> blocked or preempted tasks holding on hazard pointers for a long time.
 > 
-> This is restrictive, as standard workflows often involve loading the
-> target kernel early in the lifecycle and finalizing the state (FDT)
-> only immediately before the reboot.
-> 
-> Since the KHO FDT resides at a physical address allocated during boot
-> (kho_init), its location is stable. We can attach this stable address
-> to the kimage regardless of whether the content has been finalized yet.
-> 
-> Relax the check to only require kho_enable, allowing kexec_file_load
-> to proceed at any time.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: John Stultz <jstultz@google.com>
+> Cc: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Frederic Weisbecker <frederic@kernel.org>
+> Cc: Joel Fernandes <joel@joelfernandes.org>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Cc: Uladzislau Rezki <urezki@gmail.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+> Cc: Zqiang <qiang.zhang1211@gmail.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: maged.michael@gmail.com
+> Cc: Mateusz Guzik <mjguzik@gmail.com>
+> Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
+> Cc: rcu@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: lkmm@lists.linux.dev
 > ---
->  kernel/liveupdate/kexec_handover.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/linux/hazptr.h | 63 ++++++++++++++++++++++++++++++++++++++++--
+>  include/linux/sched.h  |  4 +++
+>  init/init_task.c       |  3 ++
+>  kernel/Kconfig.preempt | 10 +++++++
+>  kernel/fork.c          |  3 ++
+>  kernel/sched/core.c    |  2 ++
+>  6 files changed, 83 insertions(+), 2 deletions(-)
 > 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 461d96084c12..4596e67de832 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1550,7 +1550,7 @@ int kho_fill_kimage(struct kimage *image)
->  	int err = 0;
->  	struct kexec_buf scratch;
+> diff --git a/include/linux/hazptr.h b/include/linux/hazptr.h
+> index 70c066ddb0f5..10ac53a42a7a 100644
+> --- a/include/linux/hazptr.h
+> +++ b/include/linux/hazptr.h
+> @@ -24,6 +24,7 @@
+>  #include <linux/percpu.h>
+>  #include <linux/types.h>
+>  #include <linux/cleanup.h>
+> +#include <linux/sched.h>
 >  
-> -	if (!kho_out.finalized)
-> +	if (!kho_enable)
->  		return 0;
+>  /* 8 slots (each sizeof(void *)) fit in a single cache line. */
+>  #define NR_HAZPTR_PERCPU_SLOTS	8
+> @@ -46,6 +47,9 @@ struct hazptr_ctx {
+>  	struct hazptr_slot *slot;
+>  	/* Backup slot in case all per-CPU slots are used. */
+>  	struct hazptr_backup_slot backup_slot;
+> +#ifdef CONFIG_PREEMPT_HAZPTR
 
-Hi Pasha,
+I would suggest we make CONFIG_PREEMPT_HAZPTR always enabled hence no
+need for a config, do we have the measurement of the additional cost?
 
-Using v6.19-rc1 (which has this changeset) and with:
-
-CONFIG_KEXEC_HANDOVER=y
-CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-CONFIG_LIVEUPDATE=n (i.e., nobody calling kho_finalize())
-no reserve_mem= entries in the kernel command line
-
-I omit doing
-
-echo 1 > /sys/kernel/debug/kho/out/finalize
-
-before doing
-
-kexec -l <kernel> --initrd=<initrd> --commandline="$(cat /proc/cmdline)"
-kexec -e
-
-After the kexec reboot, I see endless warnings about list corruption [1]
-and from _text_poke() [2] (see below).
-
-The post-kexec kernel finds KHO data but it obviously is empty because
-nobody was using it.
-
-I was expecting that KHO would handle this use case gracefully. What if a
-distro does not finalize KHO before kexec and are no in-kernel users?
-
-Am I missing anything?
-
-Thanks and BR,
-Ricardo
-
-[1]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/lib/list_debug.c?h=v6.19-rc1#n56
-[2]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kernel/alternative.c?h=v6.19-rc1#n2506
-
-[   10.730845] ------------[ cut here ]------------
-[   10.734848] list_del corruption, ffffd143c1330008->next is LIST_POISON1 (dead000000000100)
-[   10.742846] WARNING: lib/list_debug.c:56 at __list_del_entry_valid_or_report+0x91/0x110, CPU#12: swapper/0/1
-[   10.750845] Modules linked in:
-[   10.754845] CPU: 12 UID: 0 PID: 1 Comm: swapper/0 Tainted: G S  B   W           6.19.0-rc1-ranerica-vanilla #1440 PREEMPT(voluntary)
-[   10.766845] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [W]=WARN
-[   10.786846] RIP: 0010:__list_del_entry_valid_or_report+0x97/0x110
-[   10.790845] Code: eb e2 48 8d 3d 9a 0a 5a 01 48 89 de 67 48 0f b9 3a 31 c0 eb cf 4c 89 e7 e8 b6 d9 b8 ff 48 8d 3d 8f 0a 5a 01 4c 89 e2 48 89 de <67> 48 0f b9 3a 31 c0 eb b1 4c 89 ef e8 98 d9 b8 ff 48 8d 3d 81 0a
-[   10.810845] RSP: 0000:ffff960b000b3c20 EFLAGS: 00010046
-[   10.814845] RAX: 0000000000000011 RBX: ffffd143c1330008 RCX: 0000000000000000
-[   10.822845] RDX: dead000000000100 RSI: ffffd143c1330008 RDI: ffffffffa11c0cb0
-[   10.830845] RBP: ffff960b000b3c38 R08: 0000000000000000 R09: 0000000000000003
-[   10.838845] R10: ffff960b000b3a80 R11: ffffffffa0f470e8 R12: dead000000000100
-[   10.842862] R13: dead000000000122 R14: ffffd143c1338000 R15: 0000000000000004
-[   10.850845] FS:  0000000000000000(0000) GS:ffff8af4bc88d000(0000) knlGS:0000000000000000
-[   10.858861] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   10.866845] CR2: 0000000000000000 CR3: 0000000428c3a001 CR4: 0000000000370ef0
-[   10.870845] Call Trace:
-[   10.874845]  <TASK>
-[   10.878845]  __free_one_page+0x2b5/0x840
-[   10.882845]  free_pcppages_bulk+0x1cd/0x2f0
-[   10.886845]  free_frozen_page_commit.isra.0+0x219/0x460
-[   10.890845]  __free_frozen_pages+0x37b/0x700
-[   10.894845]  ___free_pages+0xa0/0xb0
-[   10.898845]  __free_pages+0x10/0x20
-[   10.902845]  init_cma_reserved_pageblock+0x4f/0x90
-[   10.906845]  kho_init+0x1ef/0x250
-[   10.910845]  ? __pfx_kho_init+0x10/0x10
-[   10.914845]  do_one_initcall+0x6a/0x3c0
-[   10.918845]  kernel_init_freeable+0x1c8/0x3b0
-[   10.922845]  ? __pfx_kernel_init+0x10/0x10
-[   10.926845]  kernel_init+0x1a/0x1c0
-[   10.930857]  ret_from_fork+0x256/0x2e0
-[   10.934845]  ? __pfx_kernel_init+0x10/0x10
-[   10.938845]  ret_from_fork_asm+0x1a/0x30
-[   10.942844]  </TASK>
-[   10.942846] irq event stamp: 926677
-[   10.946845] hardirqs last  enabled at (926677): [<ffffffffa04064d2>] dump_stack_lvl+0xb2/0xe0
-[   10.954845] hardirqs last disabled at (926676): [<ffffffffa0406475>] dump_stack_lvl+0x55/0xe0
-[   10.962845] softirqs last  enabled at (926576): [<ffffffff9f4b6383>] __irq_exit_rcu+0xc3/0x120
-[   10.970850] softirqs last disabled at (926571): [<ffffffff9f4b6383>] __irq_exit_rcu+0xc3/0x120
-[   10.982845] ---[ end trace 0000000000000000 ]---
-[   10.986845]  non-paged memory
-[   10.986845] ------------[ cut here ]------------
-
-[   49.243722] ------------[ cut here ]------------
-[   49.243723] WARNING: arch/x86/kernel/alternative.c:2506 at __text_poke+0x42b/0x470, CPU#20: kworker/20:0/104
-[   49.243725] Modules linked in:
-[   49.243726] CPU: 20 UID: 0 PID: 104 Comm: kworker/20:0 Tainted: G S  B   W           6.19.0-rc1-ranerica-vanilla #1440 PREEMPT(voluntary)
-[   49.243728] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [W]=WARN
-[   49.243730] Workqueue: events intel_pstste_sched_itmt_work_fn
-[   49.243732] RIP: 0010:__text_poke+0x42b/0x470
-[   49.243733] Code: 21 d0 49 09 c0 e9 06 ff ff ff 4c 8b 45 98 4c 2b 05 9a db 7f 01 49 c1 e0 06 49 21 d0 e9 ef fe ff ff 0f 0b 0f 0b e9 58 fd ff ff <0f> 0b e9 6c fc ff ff e8 89 9a ff 00 e9 07 fe ff ff 0f 0b e9 b2 fe
-[   49.243734] RSP: 0000:ffffae7dc054bbe8 EFLAGS: 00010246
-[   49.243736] RAX: fffffa9c10d9d000 RBX: ffffffff8ed40a4d RCX: fffffa9c00000000
-[   49.243736] RDX: 4000000000000000 RSI: ffffffff8ed40a4d RDI: ffffffff8ed40a4d
-[   49.243737] RBP: ffffae7dc054bc58 R08: 0000000000000000 R09: 0000000000000001
-[   49.243738] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
-[   49.243739] R13: ffffffff8ec43830 R14: 0000000000000a4d R15: 0000000000000a4e
-[   49.243740] FS:  0000000000000000(0000) GS:ffff9dc10ca8d000(0000) knlGS:0000000000000000
-[   49.243741] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   49.243742] CR2: 0000000000000000 CR3: 000000043803a001 CR4: 0000000000370ef0
-[   49.243743] Call Trace:
-[   49.243743]  <TASK>
-[   49.243745]  ? partition_sched_domains+0x15d/0x520
-[   49.243748]  smp_text_poke_batch_finish+0xd5/0x3f0
-[   49.243751]  arch_jump_label_transform_apply+0x1c/0x30
-[   49.243753]  __jump_label_update+0xcf/0x110
-[   49.243757]  jump_label_update+0x134/0x200
-[   49.243760]  __static_key_slow_dec_cpuslocked.part.0+0x5b/0x70
-[   49.243763]  static_key_slow_dec_cpuslocked+0x45/0x80
-[   49.243765]  partition_sched_domains+0x3b7/0x520
-[   49.243768]  ? partition_sched_domains+0x7c/0x520
-[   49.243771]  sched_set_itmt_support+0xe2/0x110
-[   49.243773]  intel_pstste_sched_itmt_work_fn+0xe/0x20
-[   49.243775]  process_one_work+0x238/0x6f0
-[   49.243780]  worker_thread+0x1e8/0x3c0
-[   49.243783]  ? __pfx_worker_thread+0x10/0x10
-[   49.243786]  kthread+0x12e/0x260
-[   49.243788]  ? __pfx_kthread+0x10/0x10
-[   49.243791]  ret_from_fork+0x256/0x2e0
-[   49.243793]  ? __pfx_kthread+0x10/0x10
-[   49.243795]  ret_from_fork_asm+0x1a/0x30
-[   49.243801]  </TASK>
-[   49.243802] irq event stamp: 80
-[   49.243802] hardirqs last  enabled at (79): [<ffffffff8fc513f7>] _raw_spin_unlock_irq+0x27/0x60
-[   49.243805] hardirqs last disabled at (80): [<ffffffff8fc45581>] __schedule+0xb31/0x1210
-[   49.243808] softirqs last  enabled at (0): [<ffffffff8eca82fd>] copy_process+0xadd/0x21d0
-[   49.243810] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[   49.243811] ---[ end trace 0000000000000000 ]---
-[   49.244076] ------------[ cut here ]------------
-
-
-
+> +	struct list_head preempt_node;
+> +#endif
+>  };
 >  
->  	image->kho.fdt = virt_to_phys(kho_out.fdt);
-> -- 
-> 2.52.0.rc1.455.g30608eb744-goog
-> 
+>  struct hazptr_percpu_slots {
+> @@ -98,6 +102,50 @@ bool hazptr_slot_is_backup(struct hazptr_ctx *ctx, struct hazptr_slot *slot)
+>  	return slot == &ctx->backup_slot.slot;
+>  }
+>  
+> +#ifdef CONFIG_PREEMPT_HAZPTR
+> +static inline
+> +void hazptr_chain_task_ctx(struct hazptr_ctx *ctx)
+> +{
+> +	list_add(&ctx->preempt_node, &current->hazptr_ctx_list);
+> +}
+> +
+> +static inline
+> +void hazptr_unchain_task_ctx(struct hazptr_ctx *ctx)
+> +{
+> +	list_del(&ctx->preempt_node);
+> +}
+> +
+
+I think you need to add interrupt disabling for chain/unchain because of
+the potential readers in interrupt and then you can avoid the preempt
+disabling in hazptr_release() I think. Let's aim for supporting readers
+in interrupt handler, because at least lockdep needs that.
+
+Regards,
+Boqun
+
+> +static inline
+> +void hazptr_note_context_switch(void)
+> +{
+> +	struct hazptr_ctx *ctx;
+> +
+> +	list_for_each_entry(ctx, &current->hazptr_ctx_list, preempt_node) {
+> +		struct hazptr_slot *slot;
+> +
+> +		if (hazptr_slot_is_backup(ctx, ctx->slot))
+> +			continue;
+> +		slot = hazptr_chain_backup_slot(ctx);
+> +		/*
+> +		 * Move hazard pointer from per-CPU slot to backup slot.
+> +		 * This requires hazard pointer synchronize to iterate
+> +		 * on per-CPU slots with load-acquire before iterating
+> +		 * on the overflow list.
+> +		 */
+> +		WRITE_ONCE(slot->addr, ctx->slot->addr);
+> +		/*
+> +		 * store-release orders store to backup slot addr before
+> +		 * store to per-CPU slot addr.
+> +		 */
+> +		smp_store_release(&ctx->slot->addr, NULL);
+> +	}
+> +}
+> +#else
+> +static inline void hazptr_chain_task_ctx(struct hazptr_ctx *ctx) { }
+> +static inline void hazptr_unchain_task_ctx(struct hazptr_ctx *ctx) { }
+> +static inline void hazptr_note_context_switch(void) { }
+> +#endif
+> +
+>  /*
+>   * hazptr_acquire: Load pointer at address and protect with hazard pointer.
+>   *
+> @@ -114,6 +162,7 @@ void *hazptr_acquire(struct hazptr_ctx *ctx, void * const * addr_p)
+>  	struct hazptr_slot *slot = NULL;
+>  	void *addr, *addr2;
+>  
+> +	ctx->slot = NULL;
+>  	/*
+>  	 * Load @addr_p to know which address should be protected.
+>  	 */
+> @@ -121,7 +170,9 @@ void *hazptr_acquire(struct hazptr_ctx *ctx, void * const * addr_p)
+>  	for (;;) {
+>  		if (!addr)
+>  			return NULL;
+> +
+>  		guard(preempt)();
+> +		hazptr_chain_task_ctx(ctx);
+>  		if (likely(!hazptr_slot_is_backup(ctx, slot))) {
+>  			slot = hazptr_get_free_percpu_slot();
+>  			/*
+> @@ -140,8 +191,11 @@ void *hazptr_acquire(struct hazptr_ctx *ctx, void * const * addr_p)
+>  		 * Re-load @addr_p after storing it to the hazard pointer slot.
+>  		 */
+>  		addr2 = READ_ONCE(*addr_p);	/* Load A */
+> -		if (likely(ptr_eq(addr2, addr)))
+> +		if (likely(ptr_eq(addr2, addr))) {
+> +			ctx->slot = slot;
+> +			/* Success. Break loop, enable preemption and return. */
+>  			break;
+> +		}
+>  		/*
+>  		 * If @addr_p content has changed since the first load,
+>  		 * release the hazard pointer and try again.
+> @@ -150,11 +204,14 @@ void *hazptr_acquire(struct hazptr_ctx *ctx, void * const * addr_p)
+>  		if (!addr2) {
+>  			if (hazptr_slot_is_backup(ctx, slot))
+>  				hazptr_unchain_backup_slot(ctx);
+> +			hazptr_unchain_task_ctx(ctx);
+> +			/* Loaded NULL. Enable preemption and return NULL. */
+>  			return NULL;
+>  		}
+>  		addr = addr2;
+> +		hazptr_unchain_task_ctx(ctx);
+> +		/* Enable preemption and retry. */
+>  	}
+> -	ctx->slot = slot;
+>  	/*
+>  	 * Use addr2 loaded from the second READ_ONCE() to preserve
+>  	 * address dependency ordering.
+> @@ -170,11 +227,13 @@ void hazptr_release(struct hazptr_ctx *ctx, void *addr)
+>  
+>  	if (!addr)
+>  		return;
+> +	guard(preempt)();
+>  	slot = ctx->slot;
+>  	WARN_ON_ONCE(slot->addr != addr);
+>  	smp_store_release(&slot->addr, NULL);
+>  	if (unlikely(hazptr_slot_is_backup(ctx, slot)))
+>  		hazptr_unchain_backup_slot(ctx);
+> +	hazptr_unchain_task_ctx(ctx);
+>  }
+[...]
 
