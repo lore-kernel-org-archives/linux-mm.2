@@ -4,94 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0099DD68BE2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FD35D68BE3
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6164F6B0088; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
+	id 3D9F66B0089; Thu, 18 Dec 2025 01:55:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C4A46B0089; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
+	id 387516B008A; Thu, 18 Dec 2025 01:55:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D09B6B008A; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
+	id 268F36B008C; Thu, 18 Dec 2025 01:55:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A7896B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E00F061015
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:50:36 +0000 (UTC)
-X-FDA: 84231668472.01.AAE257E
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2F8ED40004
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:50:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qqYeirWs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766040635; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 121526B0089
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:55:58 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99737140D33
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:55:57 +0000 (UTC)
+X-FDA: 84231681954.13.E2D543E
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C1E8B4000C
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:55:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kl+IXhGS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766040955; a=rsa-sha256;
 	cv=none;
-	b=PyRDa9lzqBIlRAu7mqP6rkWuw9aUfmBX1AI2rcExAaqlGZxNkigo0aZzR/dDln/sza8aS8
-	ImBkt4eI214kdnApx20fkFw1F4GMH/nS9wsEUrbkL6Itg0Gl2yxUN36jxguYNtT5wzl8VW
-	YiUPvYZRq+ye1GWoaX+yuEdO6ZijXoo=
+	b=a1aTxQ6xjjp/fYnZb0FNEKebAD+U3xjMg+S6/q1MLDmkUOAmCXmoZ1u3xgAXmsjRJeS1AR
+	SoORnAW6QU3R/w6jtaVy4aTxOrTslzzVvL6kSPFYpAsxfEuyrzgxR1dBzziNSzL+zwjaKD
+	32FlP92D1pnShFE0DXZJaMDUraTDhX8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qqYeirWs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kl+IXhGS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766040635;
+	s=arc-20220608; t=1766040955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dW1sFUrpgDlh6EpvXxN9ly9S/e1gx9r8RyoILFDsHvs=;
-	b=JSZ3lf/3NomPN/0RmKF2APwTHmDZxknRpLrxj2QPE+jNNNZrEiDz6ur+0dmfPKT8yMIKO4
-	a5JK25uGIqLpQ9NRW+w783yztH7q80vuNKq61hY5JfVUYH5z+7Ma/GjFelR5qyg+Vdo8Da
-	la1HZLClc3SfTxLbHnXLl77UP29fkcY=
-Message-ID: <4513ee04-03ff-4de0-bbf4-b5b35dfd41ad@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766040631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dW1sFUrpgDlh6EpvXxN9ly9S/e1gx9r8RyoILFDsHvs=;
-	b=qqYeirWsSALh+5MJ3vqdKKt01VPxpqJMm9SbwN9uQ2gnloClPekoB/b0dUyK0Q/KKCItnz
-	lQxU2gJPqVR6ATWE/UNNaLHwgFbkLxIPksppMfCKHALKrQuapRMg2sVGEJQXMUT+PkABkK
-	4+ude2eYI1txPiaCzHrkn0AnpdXTx7A=
-Date: Thu, 18 Dec 2025 14:50:19 +0800
+	bh=yC7n9Z0OzYbxwInXF7xKv9suG/5p2FgSxK43erIupu4=;
+	b=ed+VXhK+th3mybVWSGBo4Pmqw6YPwxDdaJT3m/QlwkbfzP8/yfntujCAfcCbG3LJ5OGfYK
+	60KLasCk4b+CfX9iYQy85ZGvdZNXPGrm6jxdVotBP1acC0ZxY01xZvHgaVOvHWe3sbHq05
+	aLsizFESLfr7WSuywA4S/OYo0Vu97xU=
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-55999cc2a87so59978e0c.0
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:55:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766040955; x=1766645755; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yC7n9Z0OzYbxwInXF7xKv9suG/5p2FgSxK43erIupu4=;
+        b=kl+IXhGS4x+dpEYw9k+HJA1QMMDA3+BBTFWM+kAgLFrXJbnukhVpKgUx38M2v0yzd3
+         IqAB9SBnvwkHdnkrz5w+8G+sbwgsc+BGvSjp2afSK79WuIPHoHtp/rh150gdqSJxJphQ
+         /3VcWYjQbO6AlIiO+6jl4jTLz+eOrKV2zsaZ4ZHhoYMNEkNpvA0kXl08lU7qVhG+RT7U
+         cMJDru0A7BNUI+5D54qtyEu4ta2UnmfsUo/OkYfyFCAXD290QzsHIhcAMpP4FlLArBZU
+         l6cPWGORGeldYrCWgNVGdUWsBMaFOziH6ktjvRUmB2o5Pegh21EyoCiinjF9alu/VuEL
+         jSrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766040955; x=1766645755;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yC7n9Z0OzYbxwInXF7xKv9suG/5p2FgSxK43erIupu4=;
+        b=fKFcJkhL/o8OK2pCMUKdIKLa/KfiaH2hY8rxcoyIybCKWrEs2d3qv7piqw1Zk/AKpj
+         z+ut570oLJbeuchPSmYEq2Zon2uLGa2kboHyqfl3P2hNI0p1VCTGWJn1r5+uoqz2RBnX
+         2IjmWo3JiL0igMPp7o37N+amw1nMiTU9JG2IIqadgvj1/E8XRLFMVx+0p5KYifdA9Esa
+         IwXwg6CVF6vfUTXDVQ0aviJQ5AedYB9Iq0ej3MKEKEvnG8yQzmQE9dc/REFwckA2lVMr
+         giYLtHjO4FA32xhszoUZYLlXXHbiQy2MyNLDKL0l6kUZwT6l7DYf5yt28ungWKdHC3Q9
+         OYag==
+X-Forwarded-Encrypted: i=1; AJvYcCVsu0tC6DoQ+PjO7mgCG7mq4Ft7nUOpqKVOXNJ7kl8NX1t7PLl2v34r/sNs2gRit1Z08gTPOWp85A==@kvack.org
+X-Gm-Message-State: AOJu0Yx+99Mt5ZsoP4ieM70f5aeHJgNCidYle7zZ+k5u8mq+MWOUFbcP
+	YEv7vVDSCoz+BVBKl2EPkijK/Y1UmK/V06d+AD9MPirW/pdgxXXzEPLuHhST1IINR4NfKFDFyAW
+	EkQf7cACm0mxuS7f8AIXyHe+pdhJgubc=
+X-Gm-Gg: AY/fxX6EvFd8wdKm6qBisEGEHsbJUHLDz5czNSFP/GUxPtfXRI+gUslja3YRTpSu5H7
+	sWbBPS3QvF/+VCSXBSkZsrkC1oVc+eChSJUYE38YaLfRWO6JH+2OKfW1IRHCTscCWVCMb9rsokv
+	W2loJt6sh0x+gZ4K1csjvLSHAxKtfKSMA86Z///WnLREo0bK1KJ2YfTLLgELPeS+RHDdXAi6mhj
+	wnuX38Wx5z36BCf8ryNtw/VC41mFFg2F0HP5AkTht8T35hVKa4kvCX5uXJlFc7HZhLoqhg+tgpN
+	ArFRew==
+X-Google-Smtp-Source: AGHT+IHGfC1PW6ElJj42hBmYMvkBJBTPLHZU0nYuWISQSY5DPEpuUErQKpdAAKn/kt4MjBsfyYd7os0EWdEa3LQr6sE=
+X-Received: by 2002:a05:6122:2205:b0:55b:305b:4e3f with SMTP id
+ 71dfb90a1353d-55fed6818c4mr7173545e0c.21.1766040954677; Wed, 17 Dec 2025
+ 22:55:54 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 14/28] mm: mglru: prevent memory cgroup release in
- mglru
+References: <20251215145419.3097-1-kdipendra88@gmail.com> <20251215204624.GE905277@cmpxchg.org>
+In-Reply-To: <20251215204624.GE905277@cmpxchg.org>
+From: Dipendra Khadka <kdipendra88@gmail.com>
+Date: Thu, 18 Dec 2025 12:40:45 +0545
+X-Gm-Features: AQt7F2o679XFZgDON1prz6S8WwlSLI1JYKT-mJ-iMhmtOGoRxRlJzEJuPCEHhro
+Message-ID: <CAEKBCKMgQe-UopiWmxuQRoS8q511P+EY+X3Xj5FFJ1p1L6D4tw@mail.gmail.com>
+Subject: Re: [PATCH] mm/memcg: reorder retry checks for clarity in try_charge_memcg
 To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <ab60b720d6aef1069038bc4c52d371fb57eaa6e8.1765956025.git.zhengqi.arch@bytedance.com>
- <aUMsQPjBtYtVWjwf@cmpxchg.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aUMsQPjBtYtVWjwf@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2F8ED40004
-X-Stat-Signature: bk5obq9f7riqxd97i48kzz5rirf1fotd
+Cc: akpm@linux-foundation.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000c32e250646347369"
+X-Rspamd-Queue-Id: C1E8B4000C
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 3rz7kracz81pfesuonbm6cap4xjith87
 X-Rspam-User: 
-X-HE-Tag: 1766040634-826586
-X-HE-Meta: U2FsdGVkX1/FsUfiBSVl7sNmsFS9eRtAghalrXIgsVNqKnzwDFQkJ+MDiM9vJ6eGf0A/HoAnA9+y3BWA9vD+6LEIGUNR2U+OUT99pjErHgRofJ7EB478sfthy3hLIlVRN26MS4ODsXIC8dl2TLz48qsrZppx/U1tCwYnhCRe8NheOumbwiUn4A4kFY0EebFob3T95DHYdhfDc4hmb4j3wyQKoArEnqfe25it0n62gBZpwAN7jG9uZeTSBNJSDaZiZTpPV5hC0W/neJ+pugVmv6AWFLIi8+ESB0CmPuJrhNVxoWsdi2uyAac8bi3SUWzscxeGtVpmEct6UUyJeDdtvz4PaBaltRHrSZ6XeYk7Az98YqF+2gDA9SzCAYA1MzmTL7k4dU7ii64Sd7TPw5+bbd+SXVJSCInu35nNp8BoDhl5lmMCil72B5/uiQuFw10Cvy4UfNBdODaFR13M5TKsbMT0rtwy/WI4qov+QujW9aidN3Yb7zhcTIIZi567XvEcJG4h5mO5RLWLsLtzos+a+IH1FKczgZEJdNf5Vq2aJoSboQ+PvxEs11k+Se/SxTsA/hoL0JWby01/VDpggceYAHLE0jGbGRvjtJ5eZuyWCAQvk8dgO5tQ5w3LsTQu8dDYuH3mcGlq+/6KbIMm2AByrwVgE4PaHs+S29qIuNrSaypuFNLgyIGADqBR47C0EGjtGh6udxODqTOVNM+1CRF38sgLlad9PiK5pnAJRbtogSmUB4rpbh4SWrYUQrmX49nFou2d0Zv/Y32umPm1bvJCVI4vDN99t8QVeSTGpcxlzfIKcNQWLfUKxtFd2xEDl1xe43OMAhDsGyK9/1RnTdaVKaUFC+E6xga4N9YpC6pT71PdW7yNFIYr/Spw35uKfflPT7lbEDKA4mEoCdBPLAaRG8FQwwiMj9RmxFcKr1fWe2FRJ52iVsg0zxZhUuW9FABHWUmYmIEgtcGcx1mk4IQ
- ZrhLz9iE
- 61MjMc5g6is5anUxy/p8VQ69VdUw2lMu/vmIRbyfeUw2UaDacKX08629O3itVpnSXDt4nvmr4rueb/NLlz34DEHeRWoMVY7VxYphuOdTZxzboui9bYiuZozoEpAtLRsTHbJGJxRUTkGdOpeTt8WtQhTWbcOQA0UBzOVJv/f7SVfBfWZ9mc50y+pn1yvPCZdOoKBYuS0/paXLi1157pK2SIeDq0A==
+X-HE-Tag: 1766040955-471387
+X-HE-Meta: U2FsdGVkX1+T64gRMWw5YwxNPV5rDHvA2xDGxhEvRUI04RJNsffh8d0nH7l+b7MSMbtgIxqGHbVVh82OLMZEMF+wzRIiLkkRDHF+8cP5MCQTqZzB678TOjvnvuWrBtuWk0xIUGdkZrW4iBaQ5YpNA4iZVnGeYoL45VpcbBigv/8rFQ/jdSs/aS8ePOx3Et9Oe+w2gjy5O0P1SuKMZLcQAk824cIJbPh5cXSwBnRW3QRQdOUBdJmZ5rkHQSgGUCk79QSavNTvB3ScIoDD/jsEd8En1rrgrFjMpDMrO8xdVbr/RDlmgjg9vyL13qFahY1nGFO7oq6rPVh1Yc5nPrcXJqBMWW+pp24pMXfeNwQ+pIXqMSijXvuoPUZtKfpDPZ5kS0GVlfNzYGY5cLF9Ym/bir4lyZsCpOz1ka/jTrfKCH9ct6hzl1qwrES7F9Auxhuz0XshQXU1+whtX1Q9x9SLh7D+gt87AbACTRRH1sB8xPKrKkgWJMoeJBYGZ0dqO8ZW7MjNjhZjIGGLM1MaAuaS3yUOQDYUoTiOQGSFkzYfhMxX9BWIewHFCjXiqv5sd/4kX+EQj6knbtO2C9clumCGLARbcHD4l59V3C7M0rnjmHKADcN3d5KAoNxCvok9XMKqoZIFd8U2QMcuR5KXYhdOhvJPCmahZ3B7G4VdqGbzC5MHq2VCScm6Uhq5UAbbKeBNULTLO/N9PIpMWGnSXbNCLToGumIU8em4f8gCGjo5TC/Ybwfe4AR+QneHpFHyzZGhzSGg07jNGWxEomPtjDlz7q0wRb4o/vVbMDqUi7h+32S6eQRj8vjO2qEi6oK0UwpIMuNhXWwqoQpqjRa46N09e/ncejGSo7gs/8bZkBjVtDuYQ5OwApmvX9b/+WLxYvfOjlAM4qvCbuOCiGr9crXTZUpCNTncbqSCip0GtHShtfLynYX+o0z8j+qaqwA9cpNOogfyUkZveKUzdWKjPTS
+ ALcY0cxc
+ COIDMHJZhblI9TVchIhfzXBv+4C8qBHjsU4NAefYoSUSI85sSK17wco1LzF9RE6j7JTPJY4wYJQpZZbzIysU7BWtjlme/+yTDpTxGIoWCl1jJqO94bsURla6P8oIH3TgHj1haWdLLsR67iLLJRJjVC01HIwGxYQa8ha7Kmc5iu9x7SFBQd4Yph0kHMIznKds0hIq+6MPSV+scZ14b8VkCLvS0Agfgr8FLo0ur1vcC2SwbAY4LHCOPbD2OWQRYgVva/ijXgS1/cUdV0g1/Yiigzqd8yqwfYeok2teTXWTsFmwtNkGgnxdOBgx1qxf/Cl3U56PiqzzPYldutTdYwiCHX0PN46aQW2q1gd0+5/hGOpNyMozY6S8cB4WbHO+2TpJyBKny+r1m8ZITRwaWJiLYoqiSww7g8ES/T1rtZupeJkPIIWwuQOiSFNNwzQgtRrWd1as+VbdD7fBKTNUGl1ePAeFadulZk1nUOJR9sDOeN6iyuGKUk4HltdB7FvRUiWoRV2Fq3OYQ9KG3tXXjY1aPyChPne0e+h/YTyEoLz5eEJrYGNFi4JSbsy1UMd+7VAcaRBAQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,43 +115,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--000000000000c32e250646347369
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Johannes,
 
 
-On 12/18/25 6:18 AM, Johannes Weiner wrote:
-> On Wed, Dec 17, 2025 at 03:27:38PM +0800, Qi Zheng wrote:
->> @@ -4242,6 +4244,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
->>   		}
->>   	}
->>   
->> +	rcu_read_lock();
->> +	memcg = folio_memcg(folio);
->> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
->> +	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
->> +	gen = lru_gen_from_seq(max_seq);
->> +	mm_state = get_mm_state(lruvec);
->> +
->>   	arch_enter_lazy_mmu_mode();
->>   
->>   	pte -= (addr - start) / PAGE_SIZE;
->> @@ -4282,6 +4291,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
->>   	if (mm_state && suitable_to_scan(i, young))
->>   		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
->>   
->> +	rcu_read_unlock();
->> +
->>   	return true;
-> 
-> This seems a bit long to be holding the rcu lock. 
+On Tue, 16 Dec 2025 at 02:31, Johannes Weiner <hannes@cmpxchg.org> wrote:
 
-Indeed.
-
-> Maybe do a get and a
-> put instead?
-
-OK, will use get_mem_cgroup_from_folio(folio) to do this.
-
-This way, #8 doesn't need to be folded into #27.
+> On Mon, Dec 15, 2025 at 02:54:19PM +0000, Dipendra Khadka wrote:
+> > In try_charge_memcg(), reorder the retry logic checks to follow the
+> > early-exit pattern by testing for dying task before decrementing the
+> > retry counter:
+> >
+> > Before:
+> >     if (nr_retries--)
+> >         goto retry;
+> >
+> >     if (passed_oom && task_is_dying())
+> >         goto nomem;
+> >
+> > After:
+> >     if (passed_oom && task_is_dying())
+> >         goto nomem;
+> >
+> >     if (nr_retries--)
+> >         goto retry;
+> >
+> > This makes the control flow more obvious: check exit conditions first,
+> > then decide whether to retry. When current task is dying (e.g., has
+> > received SIGKILL or is exiting), we should exit immediately rather than
+> > consuming a retry count first.
+> >
+> > No functional change for the common case where task is not dying.
+>
+> It's definitely a functional change, not just code clarification.
 
 
 
+The oom kill resets nr_retries. This means that currently, even an OOM
+> victim is going to retry a full set of reclaims, even if they are
+> hopeless. After your patch, it'll retry for other reasons but can bail
+> much earlier as well. Check the other conditions.
+
+
+> The dying task / OOM victim allocation path is tricky and it tends to
+> fail us in the rarest and most difficult to debug scenarios. There
+> should be a good reason to change it.
+>
+
+Thank you for the feedback. Let me clarify the scenario this patch addresse=
+s
+:
+
+The task_is_dying() check in try_charge_memcg() identifies when the
+ CURRENT task (the caller) is the OOM victim - not when some other process
+was killed.
+
+Two scenarios:
+
+1. Normal allocator triggers OOM:
+  - Process A allocates =E2=86=92 triggers OOM
+  - Process B is killed (victim)
+  - Process A continues with reset retries - task_is_dying() =3D false for =
+A
+  =E2=86=92 Unchanged by my patch
+
+ 2. Victim tries to allocate:
+ - Process B (victim, TIF_MEMDIE set) tries to allocate
+  - task_is_dying() =3D true
+  - Current code: wastes retries on hopeless reclaims
+  - My patch: exits immediately
+  =E2=86=92 Optimization for this case
+
+ The victim has three safety mechanisms that make the retries unnecessary:
+1. oom_reaper proactively frees its memory
+2. __alloc_pages_slowpath() grants reserves via oom_reserves_allowed()
+3. Critical allocations with __GFP_NOFAIL still reach force: label
+
+The retry loop for a dying victim is futile because:
+- Reclaim won't help (victim is being killed to free memory!)
+- Victim will exit regardless
+- Just wastes CPU cycles
+
+ Best Regards,
+ Dipendra
+
+--000000000000c32e250646347369
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Johannes,</div><table cellpadding=3D"0" class=3D"g=
+mail-cf gmail-ix" style=3D"font-family:&quot;Google Sans&quot;,Roboto,Robot=
+oDraft,Helvetica,Arial,sans-serif;font-size:14px;border-collapse:collapse;t=
+able-layout:fixed;width:811.656px"><tbody></tbody></table><table cellpaddin=
+g=3D"0" class=3D"gmail-cf gmail-gJ" style=3D"border-collapse:collapse;margi=
+n-top:0px;width:auto;font-family:&quot;Google Sans&quot;,Roboto,RobotoDraft=
+,Helvetica,Arial,sans-serif;font-size:14px;display:block"></table><br><br><=
+div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"g=
+mail_attr">On Tue, 16 Dec 2025 at 02:31, Johannes Weiner &lt;<a href=3D"mai=
+lto:hannes@cmpxchg.org">hannes@cmpxchg.org</a>&gt; wrote:<br></div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
+ solid rgb(204,204,204);padding-left:1ex">On Mon, Dec 15, 2025 at 02:54:19P=
+M +0000, Dipendra Khadka wrote:<br>
+&gt; In try_charge_memcg(), reorder the retry logic checks to follow the<br=
+>
+&gt; early-exit pattern by testing for dying task before decrementing the<b=
+r>
+&gt; retry counter:<br>
+&gt; <br>
+&gt; Before:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (nr_retries--)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto retry;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (passed_oom &amp;&amp; task_is_dying())<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto nomem;<br>
+&gt; <br>
+&gt; After:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (passed_oom &amp;&amp; task_is_dying())<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto nomem;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (nr_retries--)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto retry;<br>
+&gt; <br>
+&gt; This makes the control flow more obvious: check exit conditions first,=
+<br>
+&gt; then decide whether to retry. When current task is dying (e.g., has<br=
+>
+&gt; received SIGKILL or is exiting), we should exit immediately rather tha=
+n<br>
+&gt; consuming a retry count first.<br>
+&gt; <br>
+&gt; No functional change for the common case where task is not dying.<br>
+<br>
+It&#39;s definitely a functional change, not just code clarification.</bloc=
+kquote><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left:1px solid rgb(204,204,204);padding-left:1ex">=C2=A0</blockquote=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left:1px solid rgb(204,204,204);padding-left:1ex">
+The oom kill resets nr_retries. This means that currently, even an OOM<br>
+victim is going to retry a full set of reclaims, even if they are<br>
+hopeless. After your patch, it&#39;ll retry for other reasons but can bail<=
+br>
+much earlier as well. Check the other conditions.</blockquote><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">
+<br>
+The dying task / OOM victim allocation path is tricky and it tends to<br>
+fail us in the rarest and most difficult to debug scenarios. There<br>
+should be a good reason to change it.<br></blockquote><div><br></div><div>T=
+hank you <span class=3D"gmail-token" style=3D"color:rgb(198,120,221)">for</=
+span> the feedback<span class=3D"gmail-token" style=3D"color:rgb(171,178,19=
+1)">.</span> Let me clarify the scenario this patch=20
+addresses<span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">:</spa=
+n>=C2=A0</div><div><br></div><div>The <span class=3D"gmail-token" style=3D"=
+color:rgb(97,175,239)">task_is_dying</span><span class=3D"gmail-token" styl=
+e=3D"color:rgb(171,178,191)">(</span><span class=3D"gmail-token" style=3D"c=
+olor:rgb(171,178,191)">)</span> check in <span class=3D"gmail-token" style=
+=3D"color:rgb(97,175,239)">try_charge_memcg</span><span class=3D"gmail-toke=
+n" style=3D"color:rgb(171,178,191)">(</span><span class=3D"gmail-token" sty=
+le=3D"color:rgb(171,178,191)">)</span> identifies when the=C2=A0</div><div>=
+=C2=A0CURRENT <span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">t=
+ask</span> <span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">(</=
+span>the caller<span class=3D"gmail-token" style=3D"color:rgb(171,178,191)"=
+>)</span> is the OOM victim <span class=3D"gmail-token" style=3D"color:rgb(=
+97,175,239)">-</span> not when some other=20
+process was killed<span class=3D"gmail-token" style=3D"color:rgb(171,178,19=
+1)">.</span>=C2=A0</div><div><br></div><div>Two scenarios<span class=3D"gma=
+il-token" style=3D"color:rgb(97,175,239)">:</span>=C2=A0</div><div><br></di=
+v><div><span class=3D"gmail-token" style=3D"color:rgb(209,154,102)">1.</spa=
+n> Normal allocator triggers OOM<span class=3D"gmail-token" style=3D"color:=
+rgb(97,175,239)">:</span>=C2=A0</div><div>=C2=A0   <span class=3D"gmail-tok=
+en" style=3D"color:rgb(97,175,239)">-</span> Process A allocates =E2=86=92 =
+triggers OOM=C2=A0</div><div>=C2=A0 - Process B is <span class=3D"gmail-tok=
+en" style=3D"color:rgb(97,175,239)">killed</span> <span class=3D"gmail-toke=
+n" style=3D"color:rgb(171,178,191)">(</span>victim<span class=3D"gmail-toke=
+n" style=3D"color:rgb(171,178,191)">)</span>=C2=A0</div><div>=C2=A0=C2=A0<s=
+pan class=3D"gmail-token" style=3D"color:rgb(97,175,239)">-</span> Process =
+A continues with reset retries
+   <span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">-</span> <sp=
+an class=3D"gmail-token" style=3D"color:rgb(97,175,239)">task_is_dying</spa=
+n><span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">(</span><spa=
+n class=3D"gmail-token" style=3D"color:rgb(171,178,191)">)</span> <span cla=
+ss=3D"gmail-token" style=3D"color:rgb(97,175,239)">=3D</span> false <span c=
+lass=3D"gmail-token" style=3D"color:rgb(198,120,221)">for</span> A=C2=A0</d=
+iv><div>=C2=A0 =E2=86=92 Unchanged by my patch=C2=A0</div><div><br></div><d=
+iv>=C2=A0<span class=3D"gmail-token" style=3D"color:rgb(209,154,102)">2.</s=
+pan> Victim tries to allocate<span class=3D"gmail-token" style=3D"color:rgb=
+(97,175,239)">:</span></div><div>
+   <span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">=C2=A0-</spa=
+n> Process <span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">B</s=
+pan> <span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">(</span>v=
+ictim<span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">,</span> =
+TIF_MEMDIE set<span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">=
+)</span> tries to allocate=C2=A0</div><div>=C2=A0   <span class=3D"gmail-to=
+ken" style=3D"color:rgb(97,175,239)">-</span> <span class=3D"gmail-token" s=
+tyle=3D"color:rgb(97,175,239)">task_is_dying</span><span class=3D"gmail-tok=
+en" style=3D"color:rgb(171,178,191)">(</span><span class=3D"gmail-token" st=
+yle=3D"color:rgb(171,178,191)">)</span> <span class=3D"gmail-token" style=
+=3D"color:rgb(97,175,239)">=3D</span> true=C2=A0</div><div>=C2=A0   <span c=
+lass=3D"gmail-token" style=3D"color:rgb(97,175,239)">-</span> Current code<=
+span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">:</span> wastes =
+retries on hopeless reclaims=C2=A0</div><div>=C2=A0   <span class=3D"gmail-=
+token" style=3D"color:rgb(97,175,239)">-</span> My patch<span class=3D"gmai=
+l-token" style=3D"color:rgb(97,175,239)">:</span> exits immediately=C2=A0</=
+div><div>=C2=A0 =E2=86=92 Optimization <span class=3D"gmail-token" style=3D=
+"color:rgb(198,120,221)">for</span> this <span class=3D"gmail-token" style=
+=3D"color:rgb(198,120,221)">case</span>=C2=A0</div><div><br></div><div>=C2=
+=A0The victim has three safety mechanisms that make the retries=20
+unnecessary<span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">:</s=
+pan>=C2=A0</div><div><span class=3D"gmail-token" style=3D"color:rgb(209,154=
+,102)">1.</span> oom_reaper proactively frees its memory=C2=A0</div><div><s=
+pan class=3D"gmail-token" style=3D"color:rgb(209,154,102)">2.</span> <span =
+class=3D"gmail-token" style=3D"color:rgb(97,175,239)">__alloc_pages_slowpat=
+h</span><span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">(</spa=
+n><span class=3D"gmail-token" style=3D"color:rgb(171,178,191)">)</span> gra=
+nts reserves via <span class=3D"gmail-token" style=3D"color:rgb(97,175,239)=
+">oom_reserves_allowed</span><span class=3D"gmail-token" style=3D"color:rgb=
+(171,178,191)">(</span><span class=3D"gmail-token" style=3D"color:rgb(171,1=
+78,191)">)</span>=C2=A0</div><div><span class=3D"gmail-token" style=3D"colo=
+r:rgb(209,154,102)">3.</span> Critical allocations with __GFP_NOFAIL still =
+reach force<span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">:</s=
+pan> label=C2=A0</div><div><br></div><div>The retry loop <span class=3D"gma=
+il-token" style=3D"color:rgb(198,120,221)">for</span> a dying victim is fut=
+ile because<span class=3D"gmail-token" style=3D"color:rgb(97,175,239)">:</s=
+pan>=C2=A0</div><div><span class=3D"gmail-token" style=3D"color:rgb(97,175,=
+239)">-</span> Reclaim won&#39;t <span class=3D"gmail-token" style=3D"color=
+:rgb(97,175,239)">help</span> <span class=3D"gmail-token" style=3D"color:rg=
+b(171,178,191)">(</span>victim is being killed to free memory<span class=3D=
+"gmail-token" style=3D"color:rgb(97,175,239)">!</span><span class=3D"gmail-=
+token" style=3D"color:rgb(171,178,191)">)</span>=C2=A0</div><div><span clas=
+s=3D"gmail-token" style=3D"color:rgb(97,175,239)">-</span> Victim will exit=
+ regardless=C2=A0</div><div><span class=3D"gmail-token" style=3D"color:rgb(=
+97,175,239)">-</span> Just wastes CPU cycles=C2=A0</div><div><br></div><div=
+>=C2=A0Best Regards<span class=3D"gmail-token" style=3D"color:rgb(171,178,1=
+91)">,</span></div><div>=C2=A0Dipendra</div></div></div>
+
+--000000000000c32e250646347369--
 
