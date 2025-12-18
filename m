@@ -4,89 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38BEAD68BCA
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 00:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C27D2D68BC9
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 01:45:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ED7B6B0088; Wed, 17 Dec 2025 19:59:02 -0500 (EST)
+	id DB2F26B008A; Wed, 17 Dec 2025 20:45:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A51F6B0089; Wed, 17 Dec 2025 19:59:02 -0500 (EST)
+	id D58166B0089; Wed, 17 Dec 2025 20:45:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8596B008A; Wed, 17 Dec 2025 19:59:02 -0500 (EST)
+	id B84D76B0092; Wed, 17 Dec 2025 20:45:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2DA6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 19:59:02 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF6751609AA
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 00:59:01 +0000 (UTC)
-X-FDA: 84230782482.02.A52D15F
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0BFFFA0008
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 00:58:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/yKrYt5";
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 998966B0089
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:45:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F157613C195
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:45:37 +0000 (UTC)
+X-FDA: 84230899914.28.06302C4
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5813C180012
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:45:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=E7da4dWj;
+	spf=pass (imf24.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766019540;
+	s=arc-20220608; t=1766022336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=FLWdrmcOXEsn7JZI2AfrrHLsKmuHiuoeH/04si3RGkU=;
-	b=JY/tvo2xVENy6P+iEIJ6oYPuwuQmvF8IECb9QuFTdXkUM2kpC/diwuUcNFJ49rVQv7s0aF
-	0s/yQ99sq92RA96YhgzfH01IdpEhvw45WaB9cufJV625azqoqKgog7HbDWErGmRhaD1tu6
-	G7UbIUPfkGGsSRg2rhMCpSfgGN/n9wk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766019540; a=rsa-sha256;
+	bh=R75Ozd7LaHo642pj4EdBSiV+wVzhB/Yr8urL4+DdIig=;
+	b=cMV9420w7BdhSbGFeEqjQnDsa6wFgFPatKBdZLhd8qJ/9q/JTZMiq3b/6Pqrc73kRZ/Bo+
+	SfI9AtEenNcyXgSZB2an273Vt3WoV/710OXygSM7r+UFYAwATx5IcQpOV9pE7YeHTB+Wmy
+	+2e/O78TikSU6PHUjcBx8R43frBfIlw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766022336; a=rsa-sha256;
 	cv=none;
-	b=qK/SBQ9U5wewiYibCoCU09GpInWv19uQU5T7Gag+cUFWjdEnuLFetDCocOikbjod2ikNvD
-	XAb8PNeoXNQWWnDCCNBePK2wZJ2U8/kmKGGv9bnJFUpjVUD1pVaZN2C5nTdwGSyEtpGGjv
-	wo6VuUiPCa8tsO62vvp7zNi3J/TLaqQ=
+	b=cQX3DAzdv7bZbYQPEApw5M6Sq4ofN0Z525HQr6TEHi78rGWThkOoebPMU8u5wICdabf+d9
+	T42eLdQpdtplFK0k9/Mnj52NHshzUu1QptPDEhqgPmPJk7c1yhpul/zpTvoDhnx8M7c4TT
+	4nadACbJwsT6Bb3aH0F586AO2sXw97Q=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/yKrYt5";
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766019537;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FLWdrmcOXEsn7JZI2AfrrHLsKmuHiuoeH/04si3RGkU=;
-	b=m/yKrYt5HoWNtJeA+j0Hu6aLAMgMu5AjYG/IguQGaktUvPC9JVFLH5YTW/m41v4Hw1xukx
-	+aY+Y1OcgfnlcYm7X4kxfHQ8JEeRiheY9gAK4XdGIq8wJsz/y+03u4JQdkVV61P4CctyzD
-	thnzVrGb6eGQf7nMKPFxWbONYzedpgY=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>
-Cc: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Meta kernel team <kernel-team@meta.com>,
-	bpf@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
+	imf24.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=E7da4dWj;
+	spf=pass (imf24.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1766022335;
+	bh=R75Ozd7LaHo642pj4EdBSiV+wVzhB/Yr8urL4+DdIig=;
+	h=From:To:Cc:Subject:Date:From;
+	b=E7da4dWjePDgirJQpNDti55t4Lvfx7Jf81vQ36+CkIqgj9MB63WkMUWZyFQ4l1Z+R
+	 fAahGYiBnYSMLbCrrkBDJ6ZjD7ZmXcT4ysvYn/d8WL5Cp84REXy/j6nLFDqEE1hYfZ
+	 7HiwNvgnYjRhN05J51pvo6tSE603MTAPaFVZn8ANCAHtT3lsS1YvEiHihrhFMmnqcQ
+	 8x4/LqCVunc/980kQhAzne7oIli2Lh8Rz/joV08o9AtRTTAi470vfVVLK4AgYrLA2Y
+	 qQKX2wXJsJvbB4Cer/pu1bI7rx+VXl6NmGvluTrGJGf2eHLq4J4nLIfI0ZQZwT0kZL
+	 ks/6qo8Hku2gA==
+Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:a253:d09e:90e7:323f])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dWtlz1TCCzbmj;
+	Wed, 17 Dec 2025 20:45:35 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Boqun Feng <boqun.feng@gmail.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	John Stultz <jstultz@google.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	maged.michael@gmail.com,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+	rcu@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Subject: [PATCH] lib/buildid: use __kernel_read() for sleepable context
-Date: Wed, 17 Dec 2025 16:58:18 -0800
-Message-ID: <20251218005818.614819-1-shakeel.butt@linux.dev>
+	lkmm@lists.linux.dev
+Subject: [RFC PATCH v4 0/4] Hazard Pointers
+Date: Wed, 17 Dec 2025 20:45:27 -0500
+Message-Id: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 374f5i4oyn4hbotpg4xqq8xm7mac1rd7
+X-Stat-Signature: kr371uub3oyxr4eiib6zabbe3sepc4oy
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0BFFFA0008
+X-Rspamd-Queue-Id: 5813C180012
 X-Rspam-User: 
-X-HE-Tag: 1766019539-852294
-X-HE-Meta: U2FsdGVkX18Q6hpNVEKhyimn9P5juKRcO/8DJnxbfSaLqQsiuNJvtqIIlHprx0TR7YxN7PmCQ+/cVsJRPtOHGH2Ak92Fg+3+iHZ8U32ln3/UPHpt+oYOWJYTz9k19hMUvREygOUwMXLdPKEgxnPw2LkVDFd9Z39vZ4OsaFlA/ciPXRp+Doxu0bgb7JobIgyvrUIznSvbrLG1/RN8p7+xVTp9f/LMAzwhX6e98mSF6xqQzzUvY/c8kdnvTGeUqKDWj8OYK7W9XBldCa4iKcauOGL7Ks2Wae9BR1OK9s84bxhx8Iu/he3x8OkNhiBlx5l1xUX31pU9LzCGEhQEq/PSU7QmghedxMFpLhO+i1GtEBwZBrodUhLFE/69f4/hmMjOI6fwRJ2FkOWmb4gwwK+RkzbnAu3G9g13x6bi70qzrPN0/q0zQAhx47vsdIb3vdpaLPbV4s0v41gGmriMNxcR3ydJ64nJ5SSxko8unyapPxv7F59RFUHOK9T7BGrLvGWen4fLiRxcdJbSb3mHwJ6BuXeAt4PdcNaqqsCvKHnBjbW81Z5OYw+TEbR1f/nFivNlcxxqta9V69DgKjY2Dq5MpfG8OjyQqrJgT+9hJ/crWPcn5GL/Nm6zeGbgHbTlTGh3hc/jFI/H5uDhGHdI4jeE81ADGwOiVJXoB9YtEHraursZsHx6fY3HMNIPN6WNBLPwFKTG7Ws7CYIamf90tx7nES+XWFiMEFvh2HxKYi+QkEc17Z+Dc13oXurlcxa27nf1Qbz+ZLzLEuYjWL0gKQv6aoTU4NlccVIrVHHHXfBjchhcddQN0wA5RvJ5fKbb9qPhaWG/S5VLa2T7l3+xZDZ+AIAQUd6MJ9fJi50XN09diRX08IEUDY1/3aBVVdF9bfryS3eU94By7WOGsz+ffr00IaYtnpJqn+sbArzivDXKuYbkSRt36CoPwfMdW0Bmr9f3bZT8XzWSrtl4HuqksoL
- TN7HwrjY
- Txo9TNMBRkhqioGtAiCrMy5R4a35EbwB6DwXPRWOTIYO+vgYkC1/sudECa/z+Bt853x0rKVcWRAEOccVcHBR5gFOlKWvXbpdDzASnJprq/Os31uI4FFqJw8fYCUv2EhthUZts43vJwbjQvfWYi1B9xsyYnWl6dn32zt0rwa141aPz2tb/aLEIi/eM1ViiaW3LwNNkVbeGXfCMa26iXu7MkQai6VxSBIuHfnCuJs3qXihSdOB94Hl5T2hKThInYYAMTY/Lgc1fQoz3qCZE8kihsN2VVMjuiZ2AEQxna90jaw50k5rxExdGTsdXNbbQLgICagE/Zglz798LZaFTqQF39IcuYGYAFndFMfKOZhdX62w3mPf2RKPkYsvwNqmh+TFdnlVt0zovifz7bQuZf+R4FhMcaPQxkxJMobj3fa39PW+qwbHBf9JhLOHqnYi377PZBCYInezR3fZt9oZRbhEdNAeNag==
+X-HE-Tag: 1766022336-420957
+X-HE-Meta: U2FsdGVkX18Cj5PsC+/ogvfz5GOfMVLPFVMgkX3XMsq3Wj0mBTYJZ1iKILJH/KjY61VAsz7AvUguaqNOMycDDN9zsnb5sIw46egQwyc+3CbuQg1fEWfS09O93530qI0VgKqondLOh24dtkwLAhqz9BV4/DKmsH6p2xiZcbSrMeJhPhujg/2Oxg/Z6/waMIFyKfX3aH26U/xY5pPfJknapPqd1jx9ERpLsLRQUG6tUeJKqmRdORGCC0Qw5YzVKSJji2SeROrAyjFjetIcvWSQGN7eh1TJC9xjbZok4h/EDbo6/RIBqlZbsXZO0Q+TVT4ujsVKUKiySM1Bey83fKQYRZrjpksCRzkaSDvE/y80FHHXRrvdAvNTzMhB6I0d0siO0xIs49mJ5me2DduXvYaQW1v3Dv8lofwT6aS4um/bUnrpuno3IzZnUZ2Ah4zNVKrrHonPfD4yuv6PxwcEst6YTgoutiUxbF5tdVghEsjiM180GDx6oCZt7xin5O0FPNeJ70SfDkkOAHDKgN5ism8CcCTE4uJ3vRGFT/XRbBh1pBNEUcVOWrmU0muxQ8BARbbsshFCd9ofNpiF9qdZMXsS5RN+XrhWKXcrX2bqLexC/3TJy/bp+z76k3KklP6yCooGJeRlp1BYTDN5/2STmwSKGeeJqNi4EAnT/pTpea2WDHMiSNNaSYhNNamwS90DeMoGuVuPZVmzGrQX5uR7sky7Ib1ebwBKdmTk+jXctGINchkyvH18fkfj9R0N+Alpo1tToqB5Im7cMfW90Buqv/9qH4q5JghbI1HAfd5BkVF1nbRpwEhLcDb+x/7YtHaOo+SE9v3MNG3dNged3FwErsCZR7U5ZK73EsfDQkyU+KUdjEnOVqsHH/K4/DkmiXktNSq9cn7wftiv6EDv7uUZ5ob8gDFH3guWfZrrHLcO36vfXenxqS4liz5KVw7LbsQuj3yDJp1RF3hgJFrd+RlHTEt
+ UiuM3XF9
+ qxQIJE7S7qrtPUCmeOY4GXBWYdGVVIXwK2zTvXs7+6XqvyMGsz1ASZTk8Z0yMSYfb96xuEDz/QMHM1YFD/Dnz16sejIRyTMcaOyQRS1+givTf7x7ZGluZYYZyWYPNOlWt5v8RzFLsBJGGfW6dyMkHshkL8/QYnOFMpaMIKdUaeiUxJyrwQe04X1/4dBZW6d2Exs6zzb3C8bZwFQ6p4CmYQ0f6PLmptlYehKk3s2N10oM8ckrawDE5svj5b+2Vvqi4Z+IXOa317Hh0xI8jJYQVnJqJVjZ0txR4OwUp3IXDIefUIKSxdF/a5349uVyO3VW9bSg4donR1JtGdsdlmfZ6m70220mYhhgs1ZBkL4ssi4APcMZfu5d1pGB7paRIGQjDkcfAU3Ro7um3SgHPCzXwBwkCQ+pP8r7JEksjVqMYVLmjDoH3FcRN1kIEjCETumtZOhiTmdbUBL52Dpl1cFR/nYSfw4t2+35BWgkuOQds3SDA51O9czpD9p0kyefzwW7oF/3Q/5tJ15Bwiz/cOfmJfmgvdLixIHtAuGcWo8tmwF6gXMxsNYofiyo3ebjvdTqBG4XCs9k/nYKfNqQ1q6Kn9i8eoblAZNdyijWAFJuAOJKZ5iAtZMwE+F8xeePt5XcZzTv3rWM9drAPIg/X6F7/AeJ6zDVaByEYFTwEwn159U94JHDT55QWdb5t/T2oYf2Ht481owF2j1MYWn/lClbRonRP7ONn6TfoNWwb6xOdXS+H8RXvb/1Vnn0u2I/qjBS7Au+Rw3CsN6rMOoZo4YJbRDVDUp5DBmSVG1wuy2sJM4V78sEj5+RuH8LYPBGQAVxkp7TQmmsIknB+6/MNNReUIS87T8bp2naYzz6juPak8x2i15F4sHlGNIEMtm77mnZia3YlKWWp6ykzbHOPvKUz9pjo5fKdhDOasMxi62o6SDlTugYKiqIq1I8LFyLW2suTtC/+acwoLyIjDYQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,114 +117,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For the sleepable context, convert freader to use __kernel_read()
-instead of direct page cache access via read_cache_folio(). This
-simplifies the faultable code path by using the standard kernel file
-reading interface which handles all the complexity of reading file data.
+Hi,
 
-At the moment we are not changing the code for non-sleepable context
-which uses filemap_get_folio() and only succeeds if the target folios
-are already in memory and up-to-date. The reason is to keep the patch
-simple and easier to backport to stable kernels.
+Here is a revisited version of my Hazard Pointers series. Boqun, Joel,
+if you guys have time to try it out with your use-cases it would be
+great!
 
-Syzbot repro does not crash the kernel anymore and the selftests run
-successfully.
+This new version does the following:
 
-In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
-non-sleepable contexts. In addition, I would like to replace the
-secretmem check with a more generic approach and will add fstest for the
-buildid code.
+- It has 8 preallocated hazard pointer slots per CPU (one cache line),
+- The hazard pointer user allocates a hazard pointer context variable
+  (typically on the stack), which contains the pointer to the slot *and*
+  a backup slot,
+- When all the per-CPU slots are in use, fallback to the backup slot.
+  Chain the backup slot into per-CPU lists, each protected by a raw
+  spinlock.
+- The hazard pointer synchronize does a piecewise iteration on the
+  per-CPU overflow slots lists, releasing the raw spinlock between
+  each list item. It uses a 64-bit generation counter to check for
+  concurrent list changes, and restart the traversal on generation
+  counter mismatch.
+- There is a new CONFIG_PREEMPT_HAZPTR config option. When enabled,
+  the hazard pointer acquire/release adds and then removes the hazard
+  pointer context from a per-task linked list. On context switch, the
+  scheduler migrates the per-CPU slots used by the task to the backup
+  per-context slots, thus making sure the per-CPU slots are not used
+  by preempted and blocked tasks.
 
-Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
-Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- lib/buildid.c | 47 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 35 insertions(+), 12 deletions(-)
+It is based on v6.18.1.
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index aaf61dfc0919..e7e258532720 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/fs.h>
- #include <linux/secretmem.h>
- 
- #define BUILD_ID 3
-@@ -37,6 +38,29 @@ static void freader_put_folio(struct freader *r)
- 	r->folio = NULL;
- }
- 
-+/*
-+ * Data is read directly into r->buf. Returns pointer to the buffer
-+ * on success, NULL on failure with r->err set.
-+ */
-+static const void *freader_fetch_sync(struct freader *r, loff_t file_off, size_t sz)
-+{
-+	ssize_t ret;
-+	loff_t pos = file_off;
-+	char *buf = r->buf;
-+
-+	do {
-+		ret = __kernel_read(r->file, r->buf, sz, &pos);
-+		if (ret <= 0) {
-+			r->err = ret ?: -EIO;
-+			return NULL;
-+		}
-+		buf += ret;
-+		sz -= ret;
-+	} while (sz > 0);
-+
-+	return r->buf;
-+}
-+
- static int freader_get_folio(struct freader *r, loff_t file_off)
- {
- 	/* check if we can just reuse current folio */
-@@ -46,20 +70,9 @@ static int freader_get_folio(struct freader *r, loff_t file_off)
- 
- 	freader_put_folio(r);
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping))
--		return -EFAULT;
--
-+	/* only use page cache lookup - fail if not already cached */
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
- 
--	/* if sleeping is allowed, wait for the page, if necessary */
--	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
--		filemap_invalidate_lock_shared(r->file->f_mapping);
--		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
--					    NULL, r->file);
--		filemap_invalidate_unlock_shared(r->file->f_mapping);
--	}
--
- 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
- 		if (!IS_ERR(r->folio))
- 			folio_put(r->folio);
-@@ -97,6 +110,16 @@ const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
- 		return r->data + file_off;
- 	}
- 
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (secretmem_mapping(r->file->f_mapping)) {
-+		r->err = -EFAULT;
-+		return NULL;
-+	}
-+
-+	/* use __kernel_read() for sleepable context */
-+	if (r->may_fault)
-+		return freader_fetch_sync(r, file_off, sz);
-+
- 	/* fetch or reuse folio for given file offset */
- 	r->err = freader_get_folio(r, file_off);
- 	if (r->err)
+Review is very welcome,
+
+Thanks,
+
+Mathieu
+
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: John Stultz <jstultz@google.com>
+Cc: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: maged.michael@gmail.com
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
+Cc: rcu@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: lkmm@lists.linux.dev
+
+Mathieu Desnoyers (4):
+  compiler.h: Introduce ptr_eq() to preserve address dependency
+  Documentation: RCU: Refer to ptr_eq()
+  hazptr: Implement Hazard Pointers
+  hazptr: Migrate per-CPU slots to backup slot on context switch
+
+ Documentation/RCU/rcu_dereference.rst |  38 +++-
+ include/linux/compiler.h              |  63 +++++++
+ include/linux/hazptr.h                | 241 ++++++++++++++++++++++++++
+ include/linux/sched.h                 |   4 +
+ init/init_task.c                      |   3 +
+ init/main.c                           |   2 +
+ kernel/Kconfig.preempt                |  10 ++
+ kernel/Makefile                       |   2 +-
+ kernel/fork.c                         |   3 +
+ kernel/hazptr.c                       | 150 ++++++++++++++++
+ kernel/sched/core.c                   |   2 +
+ 11 files changed, 512 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/hazptr.h
+ create mode 100644 kernel/hazptr.c
+
 -- 
-2.47.3
-
+2.39.5
 
