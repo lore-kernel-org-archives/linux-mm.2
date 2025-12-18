@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF65AD68BE3
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E407D68BCB
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45ADF6B008A; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
+	id A6FE16B008C; Thu, 18 Dec 2025 02:15:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE336B008C; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
+	id A02486B0092; Thu, 18 Dec 2025 02:15:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E0866B0092; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
+	id 959786B0093; Thu, 18 Dec 2025 02:15:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C1F66B008A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D0229140CB8
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:14 +0000 (UTC)
-X-FDA: 84231730548.14.3FE1A3E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1CDCA80006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDdm6kiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766042113; a=rsa-sha256;
-	cv=none;
-	b=wO6s7QJqb+EaVxSIcVA3nTJ4TST/YbaSrMmiH/RlJrzjC46Ij7fIQmZ70bVjxr1EIi5zg/
-	HgI44apGsUvsSlZpHH8pP90Tvvd21xx/ZXzU2CQ0/jM7pzrCp5Kgb/Lm9xfHoZ5h80u+QY
-	C8GaD4ui1PDuwvxopEa5iMJEu5/0UUE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDdm6kiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 863346B008C
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:15:24 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5AEB9137575
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:24 +0000 (UTC)
+X-FDA: 84231730968.22.4EA69F7
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2D0E81C000E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j8wliFt/";
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766042113;
+	s=arc-20220608; t=1766042122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wI5zk1ieSLi83vyHBIeG7fn4tK1biWM9ivGz3DLAadA=;
-	b=1r9af5plehC3rQZpemyf4yeBZ525LGOCn+lYUTM+McDzO6xOrSXTeJbQEp/yG715b1gqrb
-	iYrkLIF78nCCzjObmXY77QnuFuPQZXNyMduWdfGo0x7oDn9WXOuYUuToAoSWTOCZ65zbn7
-	mopIJwi7UFX382WR9WHA5RIlwkqzPt0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED3B643A23;
-	Thu, 18 Dec 2025 07:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67ADC4CEFB;
-	Thu, 18 Dec 2025 07:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766042111;
-	bh=xsSR5/gROtCj621epPFc8z9dY6QJQQ7gGEk35KMHxK0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YDdm6kiFrsHFIigCgTMUyicseMcXv/IwcfId/8Rfq9RBAKmGHk/dxaVfSmWuLOgx8
-	 LqVEMmq+y42Fnad8K0nLh7urq/CzvVo+Ha7Jj4DcwPHGvcc4QilPG3MiwPu4N/fua6
-	 td/XPdO5yVny/RhgUqN1GFnUN5Oe/3HTmoBZib3pCqI+oY2rwCXCyhwBPEWky6vSDj
-	 uCTxKrHQMVgT1awg/XR5WSy1Sta9e2f3yJiXFb9E/H+G76ard2Xd0HEtNiNRWeoeaC
-	 k1cVyHklkL5q3iRH5jMeXEEMDnCz2Xo2rGxcTJbwhjxvvgQlNxBNcDubXQHLndxrX9
-	 HLbKAjrWdqEFQ==
-Message-ID: <e9033bc2-9a85-45de-a005-b9d12eb81f66@kernel.org>
-Date: Thu, 18 Dec 2025 08:15:07 +0100
+	bh=uauTuHRqpfPJlC4EeGuuyBYgKP0qHs1Wgk0vfO6QTvs=;
+	b=TK2qoqOqPay8h6cPvInbxSQKup0ANMZzxbqqqkg0v2dXMc4/hO6z5jkF1tLyIcG5cbachV
+	qX5cXkdhQsroDMYgpf3hG3rOSmiNUqwVLOXFk7lJNnU8E1xBghejUwwUz0v0hCU3HkBaY+
+	HPKV09zG0ZevdBtsmPT9piOCsYOesGM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j8wliFt/";
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766042122; a=rsa-sha256;
+	cv=none;
+	b=uPHWmBfmSexVK9miwPdIF6aTKoL47PDIs5RBk7YWtIhXGGacSldqZfp0JkKmDIHuvgZewU
+	rRZPXR5pH+wd4gOp6irN6dLSW+qdPP+RCBWmbldhCJVM32P4m+wu9AOQdLNyCmOttD45sX
+	KgeXSTS4FBUf6SA7higqMhf2a+H2mng=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766042118; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=uauTuHRqpfPJlC4EeGuuyBYgKP0qHs1Wgk0vfO6QTvs=;
+	b=j8wliFt/RDLD/6uZ0ks42IvRzsIBbj7t0wGRM7ogC3qpzrZ74zNFj1YqP9y0lwYBzuOfSCun2nbCNWQlQQqwUBEid7PucY5LmdMfMyrVG0kWRh6chfKW9lde4uStbbLxxRMfBTOjgm2y593alrWudh0TTwaMi1XWmVw1XvsH3gA=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv7ehcK_1766042116 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Dec 2025 15:15:17 +0800
+Message-ID: <96c0adcc-abfd-4a44-be93-1c6bd7942d6d@linux.alibaba.com>
+Date: Thu, 18 Dec 2025 15:15:16 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 4/8] highmem: do range clearing in
- clear_user_highpages()
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
- <20251215204922.475324-5-ankur.a.arora@oracle.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251215204922.475324-5-ankur.a.arora@oracle.com>
+Subject: Re: [PATCH v2 1/3] arm64: mm: support batch clearing of the young
+ flag for large folios
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+ <e10f876ce130134fa089befe83f30561b48b9889.1765439380.git.baolin.wang@linux.alibaba.com>
+ <1beaa7de-4b31-4f19-abee-83872f868e28@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <1beaa7de-4b31-4f19-abee-83872f868e28@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1CDCA80006
-X-Stat-Signature: k7fca3h5o9jptzwha3rqdksjzs99mssr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766042112-802883
-X-HE-Meta: U2FsdGVkX1+DivO+j4xP7NTjCiXagvl2VHQguuq2jn9RP3HLbbsnfppTafs7AEnQnjpNE8cpCTPEu0J8kJUD7H4FZUE743Z7XhIsXvOhgPq0LxRV/RhfTOCxoRXc5BvaJONViVKzJRTvTYjGxLVRTOg02e9JyKBHmCK7Y4RiK1i+wfP6VoUXnDf6XoS3p6WovoQFDBDcwKKS9XxBtOaAowOreli2boR4lOlfbhFlkQjDa/hd825tm/zDNsCpfkeyTH+lCkhyt3puFsOLgDCesCU/+M6JPBQlDlglejU6OAZ3pi+E/xRt8WODPYBxP1E3XH0R35vqMZnvSmnYSP+ImzC/TeF2xX4OFeoIrzXf9XmMvAkMpH3g9qxyFi2XW9iHGo+pU+nLnHlW5IobY4brsgrR7/9dfOR5MyCIm3mDuOCtDUuEi3fxfzcaucEPhY1vWI8ZvIalVOclq1szaDUiobZN8ZO33D8c61u5xHCRA/GEcDSX+8bhFHo2iyHBLgvx+FkGqJPpl60Hw6LSINatGB4K7YKMof6vfpuc/FlQQ8dLw0oy+ldbtLurFBJZkg/COdud9F2HHUvR8TrwxaMgZ0GJL8v7QaY/YdExiHoFUo7kdkGkgaLTa0xwYUHQOtiJ6FVgn5TUcQ4dU1B7s6eHVtxMj+DQCyFt+BlqMpZzdFn5ttYDuMgRL0OdqdomxN55AQ2sovy1cgiKZqASw0FyumVV7QFGI4niiAHGi3HtMe3gZknBWHc05Qi4PfFdrZC14Y8sFg6Ms/reYjew9Y4Qwc/cHNm7n2FebwQwdqIpGHSu7viIC1eYj0TwxGYGv/DGGcizWG7JJL8p3/sLUIGbf2MHl76kRy9qV1Egnzn230/ruepuQ84QLAoqbVQ3rhUvbhAv17wwKkRNLwYIPCfCRdlkvbYb0qkirPtBDUAmlfdkb9QRTXOU7XhM4IdlcJNheHyPNrWO7pvLvyO2JNP
- 0+R0rtLQ
- eEMgajjhRcUuz0NSpOAIy58MnzJ6+ZoI5/FwvCE7XTHrdwO4i/4ur+YB9DBYEfuncqMsYSscztQRrIawgIaxlland/oUUSbE/n4QiPWBtmHh0dJIBEt9pjo9oy751Ye2sk7wEgCzIhf8/4cWmm9aSVVn/MLxhCCuOL62ZQb5M76lchD2do+3oHbdD7gEeT5JirFEmuEoujIY16LMqmnWF7qbZTRINcL7Bewap7BGx3Sg+Gzc3hlY9pD1xmA8Xrdci8scE5zlCQWJFjx+8J/xUWC46VaabzAmjjXaAkmVfYTpS0nvO6cUNFZn/72Ua/wLU0mB4O+n5T4NFObw=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2D0E81C000E
+X-Stat-Signature: 717rfg7drrcxsabrca8n9nh7z9c9oxfh
+X-HE-Tag: 1766042120-987956
+X-HE-Meta: U2FsdGVkX1/wUx5dKId+/LnQFeBuFdc8ry/Dh84Ttew9e9YzwovDvpZFz9b7SIcgD+4jWBRlhpDcAglxYmIDYpY7Qqut9exA7EEaP5Pw8kXsy8agev5qF+lgs+cYfFPwxhW6ETQD9dkRjkypFIoCT0Ryc0Kj2y7yDzA90jPh3sfNWaO/4Ak4TlzrYpdMmiQC84FhYmDqr0cH/enL/JafySbL8sJI6qsxVOIEt/2/HpJaRirjO3NoErEDv85JE8waTw+Ry9LqTCHyTvG3SpeTDaFZsK04RdHVdbVmYoVNFjP/6alk8+rVryT1mEBvlqwK7qEf6LW84vAyCL8kaDtflK175tc8iGSgjuODhWbXnGqd9PBpjqsoVyLzVqQZZ075n4FlVjkb9T6A+i95t0DqEE7P2mKy1dBlNN1PK6SRUqUHBYrR4CwxOnOcJuOw3OOuBwt2eSUfkQZZJeQYhjDF09nZxMFs19X+LQxthcZxqjjTRuZA84n/pzUs7hHc99zN/gQFWOYMynBFGHanW+WrkjQ7QnzVgu16j1nfMJtdgZn+MAotMhuzWFwr71Bv8drQeiJWnC6/RP+vHcHq4uwcN46hsIyuH+EI0lfWlNVCRMQIBkCkTbK9v6KDhfkzTwOwcljADQTlFzyJvHye95IyKyH3fQRYKy+guTtjoxTzcfI6dCTrAgjNwyfZYZmeDAti2pumWy9gTC0iRmyqLB9rGzZrLuZfMREIobTWOdxxe1g008muBOaa94JFRV78kFFJc6vO+JDixcZrHXUKefHV+W9uCk0gHQb+dCAe9jKqinAhk1DMmgJSK4h3HhOMWW8y1IGCIoB3VJiE/jqh0N6jDQgu+//Votyk22TQ0td+soo4HJthLBbR1W2Kt3q4gi49n5saimUu8pnApOeA3nhibZpUBsdPvjyB6hM360yIQK/h+8+CRua450fuHxsIoSydqsdpCWQiEmkHtRxPw8I
+ r0TgcbW7
+ 14UlXFn+PE06WGG7dRGjzXxfbRuveu8+/pcVASWoPCvkeAuq7R+Y8hu+hmDFWnKtgJI3RNbzV3zv7OQX6zvJba+pGlGkLt3XDwt1/0ByovA4N4oebfe36Md6Kf/sEbab07jrfaNbhZwc1JpY0Dx1JJEtmc5PspZ5vjp6G1rPutV6QRZNQeSD+eQdczhfd8GVSEmEx2A2ycfl3fem5mWUw2M4uwJAGDoISZDPbAyzyArJ3A1EsDUMMAm2R0vhY5OVdZcyITnvSszdC3DzVcd2XU8yUt1/w3MHvE+Uawwkj5rMELZk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,27 +93,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/15/25 21:49, Ankur Arora wrote:
-> Use the range clearing primitive clear_user_pages() when clearing
-> contiguous pages in clear_user_highpages().
-> 
-> We can safely do that when we have !CONFIG_HIGHMEM and when the
-> architecture does not have clear_user_highpage.
-> 
-> The first is necessary because not doing intermediate maps for
-> pages lets contiguous page ranges stay contiguous. The second,
-> because if the architecture has clear_user_highpage(), it likely
-> needs flushing magic when clearing the page, magic that we aren't
-> privy to.
-> 
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-> ---
 
-Can't you squash #4 into #2 if you move #3 in front of them? Or is there 
-a dependency with #2 that I am missing?
 
--- 
-Cheers
+On 2025/12/17 23:43, Ryan Roberts wrote:
+> Sorry I'm a bit late to the party...
 
-David
+Never mind. It's not late and comments are always welcome :)
+
+> On 11/12/2025 08:16, Baolin Wang wrote:
+>> Currently, contpte_ptep_test_and_clear_young() and contpte_ptep_clear_flush_young()
+>> only clear the young flag and flush TLBs for PTEs within the contiguous range.
+>> To support batch PTE operations for other sized large folios in the following
+>> patches, adding a new parameter to specify the number of PTEs.
+>>
+>> While we are at it, rename the functions to maintain consistency with other
+>> contpte_*() functions.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   arch/arm64/include/asm/pgtable.h | 12 ++++-----
+>>   arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
+>>   2 files changed, 37 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index 0944e296dd4a..e03034683156 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -1679,10 +1679,10 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+>>   extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>   				unsigned long addr, pte_t *ptep,
+>>   				unsigned int nr, int full);
+>> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>> -				unsigned long addr, pte_t *ptep);
+>> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+>> -				unsigned long addr, pte_t *ptep);
+>> +extern int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
+>> +extern int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>> +				unsigned long addr, pte_t *ptep, unsigned int nr);
+> 
+> The "contpte_" functions are intended to be private to the arm64 arch and should
+> be exposed via the generic APIs. But I don't see any generic batched API for
+> this, so you're only actually able to pass CONT_PTES as nr. Perhaps you're
+> planning to define "test_and_clear_young_ptes()" and "clear_flush_young_ptes()"
+> in later patches?
+
+Right. This is a preparation patch, and will be used in patch 2.
+
+>>   extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+>>   				pte_t *ptep, unsigned int nr);
+>>   extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>> @@ -1854,7 +1854,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>   	if (likely(!pte_valid_cont(orig_pte)))
+>>   		return __ptep_test_and_clear_young(vma, addr, ptep);
+>>   
+>> -	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
+>> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
+>>   }
+>>   
+>>   #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>> @@ -1866,7 +1866,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>   	if (likely(!pte_valid_cont(orig_pte)))
+>>   		return __ptep_clear_flush_young(vma, addr, ptep);
+>>   
+>> -	return contpte_ptep_clear_flush_young(vma, addr, ptep);
+>> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
+>>   }
+>>   
+>>   #define wrprotect_ptes wrprotect_ptes
+>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+>> index c0557945939c..19b122441be3 100644
+>> --- a/arch/arm64/mm/contpte.c
+>> +++ b/arch/arm64/mm/contpte.c
+>> @@ -488,8 +488,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>   }
+>>   EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+>>   
+>> -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>> -					unsigned long addr, pte_t *ptep)
+>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>> +					unsigned long addr, pte_t *ptep,
+>> +					unsigned int nr)
+>>   {
+>>   	/*
+>>   	 * ptep_clear_flush_young() technically requires us to clear the access
+>> @@ -500,39 +501,56 @@ int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>   	 * having to unfold.
+>>   	 */
+>>   
+>> +	unsigned long start = addr;
+> 
+> Personally I wouldn't bother defining start - just reuse addr. You're
+> incrementing start in the below loop, so it's more appropriate to call it addr
+> anyway.
+
+OK.
+
+>> +	unsigned long end = start + nr * PAGE_SIZE;
+>>   	int young = 0;
+>>   	int i;
+>>   
+>> -	ptep = contpte_align_down(ptep);
+>> -	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>> +	if (pte_cont(__ptep_get(ptep + nr - 1)))
+>> +		end = ALIGN(end, CONT_PTE_SIZE);
+>>   
+>> -	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+>> -		young |= __ptep_test_and_clear_young(vma, addr, ptep);
+>> +	if (pte_cont(__ptep_get(ptep))) {
+>> +		start = ALIGN_DOWN(start, CONT_PTE_SIZE);
+>> +		ptep = contpte_align_down(ptep);
+>> +	}
+>> +
+>> +	nr = (end - start) / PAGE_SIZE;
+>> +	for (i = 0; i < nr; i++, ptep++, start += PAGE_SIZE)
+> 
+> Given you're now defining end, perhaps we don't need nr?
+> 
+> 	for (; addr != end; ptep++, addr += PAGE_SIZE)
+> 		young |= __ptep_test_and_clear_young(vma, addr, ptep);
+
+Yes, good point.
+
+>> +		young |= __ptep_test_and_clear_young(vma, start, ptep);
+>>   
+>>   	return young;
+>>   }
+>> -EXPORT_SYMBOL_GPL(contpte_ptep_test_and_clear_young);
+>> +EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
+>>   
+>> -int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+>> -					unsigned long addr, pte_t *ptep)
+>> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>> +				unsigned long addr, pte_t *ptep,
+>> +				unsigned int nr)
+>>   {
+>>   	int young;
+>>   
+>> -	young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
+>> +	young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
+>>   
+>>   	if (young) {
+>> +		unsigned long start = addr;
+>> +		unsigned long end = start + nr * PAGE_SIZE;
+>> +
+>> +		if (pte_cont(__ptep_get(ptep + nr - 1)))
+>> +			end = ALIGN(end, CONT_PTE_SIZE);
+>> +
+>> +		if (pte_cont(__ptep_get(ptep)))
+>> +			start = ALIGN_DOWN(start, CONT_PTE_SIZE);
+>> +
+> 
+> We now have this pattern of expanding contpte blocks up and down in 3 places.
+> Perhaps create a helper?
+
+Sounds reasonable. How about the following helper?
+
+static pte_t *contpte_align_addr_ptep(unsigned long *start, unsigned 
+long *end,
+                                         pte_t *ptep, unsigned int nr)
+{
+         unsigned long end_addr = *start + nr * PAGE_SIZE;
+
+         if (pte_cont(__ptep_get(ptep + nr - 1)))
+                 *end = ALIGN(end_addr, CONT_PTE_SIZE);
+
+         if (pte_cont(__ptep_get(ptep))) {
+                 *start = ALIGN_DOWN(*start, CONT_PTE_SIZE);
+                 ptep = contpte_align_down(ptep);
+         }
+
+         return ptep;
+}
 
