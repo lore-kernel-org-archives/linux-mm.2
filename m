@@ -4,95 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 963EDD6ACEE
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ACCED6ACF1
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04E066B0088; Thu, 18 Dec 2025 07:11:51 -0500 (EST)
+	id B0A966B0088; Thu, 18 Dec 2025 07:17:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F13D66B0089; Thu, 18 Dec 2025 07:11:50 -0500 (EST)
+	id A8DA66B0089; Thu, 18 Dec 2025 07:17:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E203E6B008A; Thu, 18 Dec 2025 07:11:50 -0500 (EST)
+	id 96F496B008A; Thu, 18 Dec 2025 07:17:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB22E6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:11:50 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D8AB13C386
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:11:50 +0000 (UTC)
-X-FDA: 84232477980.07.52B1C0F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D05C016000E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:11:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tifMOqAT;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766059908; a=rsa-sha256;
-	cv=none;
-	b=qkwpukHvmXJQK26luBJf1X5o2ENOMRO5Age7Nq7BEgc5Bu68f8PNB3ydGg48ZdOQ1yaRCj
-	TXOhb4DgU4CZRhsaYuucevLETlASl4b/+lHt7YKpwMKXyxK6zMTmbzH7qPM+wknRbmL0/V
-	Ui0ZfpXdtJfitdP9r5PBlHZ51hU1koc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tifMOqAT;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 827866B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:17:30 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F0A6E60FB4
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:17:29 +0000 (UTC)
+X-FDA: 84232492218.05.33FC76C
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DE614180017
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:17:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Ilox7QdL;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766059908;
+	s=arc-20220608; t=1766060248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cGIy/p7imDzRWdBxrLQLMVz+M7J3Un9N0ejJqyETGXI=;
-	b=gnoBnJhVQTXLA1rmZmrrXuSZXaYcVAPp7bkmEHpTGDq8SDbQniF88aRwDz8UrgJuOXrmI9
-	9Y1ZP58lrZvZFaZL53qsYD6Sm+abvAwkPBTCJtBZ5fhSVPTFGWIU3NWGywV2AVOaslrohp
-	TtDKshBCPUe6pE59W8724Ufl0zabt+s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CBF460123;
-	Thu, 18 Dec 2025 12:11:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515F6C4CEFB;
-	Thu, 18 Dec 2025 12:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766059908;
-	bh=ipI3gqtuXeH8Ewu4AyGr2xi/tSRvuGR+xxhOF1hRRs4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tifMOqAT2f2HQ4jFq5UqKvTU0mF0DIM0ZYg4EcGmCcHD3ApJwCUlaEkx6WrErE83W
-	 zfVw+lvsLSuw3BAAGLDj/rfEui+S/6bV25HghWqJhKBGp4e+fYUCabjUaNgq25cdrD
-	 fZiEnD2vP+zR4cz6ocWYmBpyirf1rop1A/XYuEpMGleN/Q5WWurzifZBJmaMOrXpih
-	 Y5WOnDjFSyI488CRoaOk3uHWiKTuCN0UxLHysQSEoypsYPCJPwmYgE4blkiDEBHUgH
-	 5Sd1mLAEAEZXZVQrVYb8pkkWpGDP9UkfhtdfShTLC1WXDD/0oDNb1BM3X/fU2Pl5rT
-	 P+LSgV6IuayVQ==
-Date: Thu, 18 Dec 2025 14:11:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tao pilgrim <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
+	bh=82ryBTb0OYajbtmHnpP2vY6hULmAqRanYTWCsyHvjaM=;
+	b=ur/3V8IPBblsakJ2HCxaJ0l2xwjUBPPVX+Orf+xa8IaamhVKBcQ7ee3wsmyl6tY6NAVSUc
+	Ph9VAbya0nf8liH2wYZJA250TySLlKaEKB740H59bPETwC32q2Mc9HPkKDVtmYrg8x7nim
+	UCVDVkpsNgsqbgZUqNSad5GMWTf7kq8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Ilox7QdL;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766060248; a=rsa-sha256;
+	cv=none;
+	b=fViISpSgSXor301zrs25XTsOzo5SaOwQ4DYvn8VCSY9OH6xU51vkw61xhh/czGSjqAssxr
+	ML0Gw0DDUlpy4eXZ1JcCGmGJllLqBTOZ7hneesi3KnXEHxIsCRfO9act9q7hxzGVojXJCX
+	8DM4PENVzUss4BgFZrOsEBPBxM+JeZo=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-477aa218f20so3698715e9.0
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:17:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1766060246; x=1766665046; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=82ryBTb0OYajbtmHnpP2vY6hULmAqRanYTWCsyHvjaM=;
+        b=Ilox7QdLLgNECTVJ2z7YC0XjyWEnlVsszd9wpjXe3m8NM6YVtDjKxT9rj52jzOU6bB
+         FZ7Rw/mDbhLERMEXc+Q01I5d6c26HQhFqVw/AvC/MmblzFFDe32qpAp1U7upncD2+ihI
+         DksEeLOpsdpDIlHjBCuIdd9EU3iBLiFcdZH/T2MsoQePf7dAN7z8PFgLsfljkU5UBYde
+         aeAicm48+/ZEYw8ZPFffads0XLZ2OjT9ca1KlDe5YLFncAxk9VBnvCedJlP2qw7lQkhN
+         UJak84yuUUbMWdMHYIbqKqI1QPGzR13p7JClevGUZfCumzhIC9fc5UIX5+R6PjUgR46K
+         lFiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766060246; x=1766665046;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=82ryBTb0OYajbtmHnpP2vY6hULmAqRanYTWCsyHvjaM=;
+        b=vdZfFzUjO7KIJVzRazNY0T2AKjzc2R4dxdC1mffSBy9ZLZhySqh6FPcScMp9nnjgc4
+         EVEw9AVyrsa1ET7KXj6E6FOqc8uoy1e1LxKT2mR7zQWjUjXngEWxQAbhpF6YvqQJxi9F
+         i4rz3HHgs7Kanf3+d0yefr9KFklZbnvjA8RpL/JvU7NwdshT7pZAHRU6i3jwFx3v0gm+
+         t+aWM5s4T1khOq7YdoILPMVYHdyDHDhqVyxJIhpTUURFxIdIeIBJ7Og64bwAJ8Wqz2lt
+         RlWtXjQQJrUE+10Z5hb0hLIEgotez/PqMKvoj9fpXDMZrpVVvFbKhXWjzFmd/fYQU1nT
+         sb0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXmocw/U+2TB61ffPPhq3fBiCiuV9bR58rtH6fVvT35Oq2mC1/DNG+HBQLdpc0ByqkpI5XHY+rsEw==@kvack.org
+X-Gm-Message-State: AOJu0YyE8pwQPSXeMgIkAXxOA4HYfS1fIUXhgD8rvJ2Cr3swR9nnBIe0
+	LDHW+SPuufv3/LO9PzEJB8kdpudpHgpqfs0f+PIZbUirPt104TcSHHZ1s8PVsuG6/cc=
+X-Gm-Gg: AY/fxX63Khqk5/zGyAX01X+8XOpRtzPumoIffo1sV1v0On1kYNDg9wFjlx+pEiWNIhi
+	IDnOnYXOu6KBpgHCz3P8yEECzhWcIUrrCbq9a/pMZYx9+H6CKmFdR6oE3VeVjaYu+qphtj7+Q1m
+	m0+H2Lpu+7GuTiRyZoCnH7B3me0gz0aDzxs9zC4lQNgH7NdwxY8od4GxuLIVA+NI7y++2YsD+yz
+	PQoy+dkek8FjeGRR+RgckZAZHu4D5jiPAsD7O6kRirQHwq4dz8vRDmMbm+iRlavppg2gjZC94jG
+	C3ijlY9itsOS2AAw0dP6R7qrTeWyuMv0qo9UQ6Nf3CIc/X4l6p5oKImSsdzLnqtxTXYISP1HfVH
+	PTvWJSV0ISSGbz4CwTwQk5Fgo+JYjCZWvem6gC2Ybh6b1yFWgfZKDrwaJRFcABFts4szilvPOlb
+	Ug9p2bL9bZf/7uzgEcdC6dVh9zrTJXmzXMo1k=
+X-Google-Smtp-Source: AGHT+IGTUeEzz8tNPQ2pmX/MnRbtFTT5HvfYasuVnspclS+oD1dD2L49trQ2Os59ODIZ3jVEB6x5aw==
+X-Received: by 2002:a05:600d:6405:20b0:47a:935f:618e with SMTP id 5b1f17b1804b1-47a935f64d7mr172794535e9.15.1766060246405;
+        Thu, 18 Dec 2025 04:17:26 -0800 (PST)
+Received: from localhost (109-81-80-251.rct.o2.cz. [109.81.80.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432449ae0ffsm4488541f8f.39.2025.12.18.04.17.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 04:17:26 -0800 (PST)
+Date: Thu, 18 Dec 2025 13:17:25 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, akpm@linux-foundation.org,
 	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-Message-ID: <aUPvecgVj8XXBcw5@kernel.org>
-References: <20251217120858.18713-1-pilgrimtao@gmail.com>
- <aUPiFbuaglcjqiB1@kernel.org>
- <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com>
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
+	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
+	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
+	jolsa@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+	rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+	kevin.brodsky@arm.com, dev.jain@arm.com,
+	yang@os.amperecomputing.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
+ stop_machine()
+Message-ID: <aUPw1YFNLf7ONqe9@tiehlicka>
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <20251212161832.2067134-3-yeoreum.yun@arm.com>
+ <aUPJuZINNuNxddRX@tiehlicka>
+ <aUPLCPAyxkPeBaoD@e129823.arm.com>
+ <0d08b4bf-35c5-4c63-964b-ef886b8262d9@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com>
+In-Reply-To: <0d08b4bf-35c5-4c63-964b-ef886b8262d9@arm.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D05C016000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: wa9gwm5ycyeku599ka8e8i5dz9a9rym9
-X-HE-Tag: 1766059908-840496
-X-HE-Meta: U2FsdGVkX19Xw7YkDrhN6t9Ao3+L+S6QHl4Hbrq2oh9A9l3u0qsTGOiGnqSNjKC9NXqba2+qNQrK2mjU9I/g+Zx69gRjC4O3SaQ3aBIdftt36r5rvtRjcLelTxX1zUoth3xVS9jeeWp0Epz2SjGlGX/8MZsuuYIN1SRARlbBhwYXE1xPnGmn9mgXDiRRL7cVIEVYHnSF2+ocT8XpbaQFs1EvYDj/cojWQSUv+PP7EKAWeHBiX2WQvInUyaF9rqHTstbXbu/+5D+1Gfy7kKOx+KD6EIxPnQQ6LEBzf3vnZ5rWL050JQHHc+DFaRpp5TvCsqhE6mF6cK9OjE8p8LXtxuA/H0nrhzcRUTCkL5R11K5O7hddIrg5Zx7pC0Ipr9lU9a9U3NOc2ff/wmSa9xaVy/chd4rgmXPad7MJ0sXveRx+uP9l0H1RQbNkjevGCINfLy4nNypfVEZmn3+cm1H1sFl5bPMufH911NpeEb1jq44NTBlUoeYZxOxZf3lGnlaOZ8i3loMr6BDQ0MBg/PULfvAjLMKpMMMjwJqHbDD7TUgM4fcraLBbNUFL06LOAgKhS1GtTU4EgWz3o9agEQaIQ1In9Wqc7I6/IS5Y7w9DsQ9xLniyUEmFw52ioY2+LpWrELPjk7K7p1gE6zDPpkz4W/VpT1kFXtljnzHquIS4PMvI/kUqZRupafnbFzB9TlfgBni7ivzq9eF3KC2OgWbrd05CO+l8PetR95yf7aBDpv/r0N2uvr4XX8psn/3c6kOpgrdJfioOwpiUkZLVRJmpFR8OQyKsyX3fFHnbcq//0OzXdXEvoRrxSL/iOGiHcFcZHmoy8/yilD2Yl6cXySyfpxjXeFAS1SwMfDithsIYgmyCoEmiUxlDYmg2Pao3jJvi7IS2OIEPUYXOvsyWYXq/yCyXpQWcmhUQD7Fs1SIariP88DbxXKpElKXAPWMhGNrbAFvs4PGZKqBiOVjTXQx
- vv1rHGvj
- +b4U5Ji3n61VMfi4nFeaQygCT2c2lm476sVkjkaMMl9RbYwfinr8lE8uicU4qtuJ3wMxexu+bpt2xih7rH45qcHngi3P/GXo5ArIvQ82kU7GiWeTqO4kZSFH7+DTDk0aHsBq5w4Z/QmnSM3fpMmunlyYN7YWZYYGyK3C2s3Sz5j+95FVb1NEgOdgyMl1D2r/B9nJ1j6b9h3PceNYtyqrkIwJT9/qMs7ohpQPrp0b6msFsJJn5Fe2P72ia0Mf/jv9iXOFFu168CmD+l3UhDg2oyDcng9kfwXQ45JsP0VbNa0Bdqop/CakSNEO4vx88HyWYKtt58lQI3A96V4N5OW7oNDXSbsiGkdWUn58U
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DE614180017
+X-Stat-Signature: qityqutfsqsxcryae3zcadj73gzyichf
+X-HE-Tag: 1766060247-320525
+X-HE-Meta: U2FsdGVkX19wimAr3gZJUEnCeIIQn6ArkGucgYGE4fqEwv2myfgx5dmunPrtS9mHuuq+B9DvM0TLX+ndXR1khro24Y/h5vEqQq9puYFPSIFHzORGlkgm6T1YPCCpA4CMcj9qKNkx+t2jhN+HYXVTAF5wqnGLkLrbSLBlOUQUcS0VLiNHSgz7tpN66L7HRNKhEbKoKq7ZQGaCndhGdoKFsGGlp0LqzZvCL7O1vr51ojg9VziYsGD+DIiqeIW9SaSU/VmnFVwBa4d2ejnRz8lw4+Hd4xskwMBVOOU/68rO8L8q/8JwPEANWjCcIW7utkKngHi59hJ8tOUtGgCSlD3xCPaFbi9sOwVd5hqb6QyPG+zOznKV5fs9/YroE5wsWuAxNOPV+nO8NSaxVh4G7uuIG7SqjM739GjpVyusrb60DmsuyR3AyoLX7Xr6QdI118TlxSw3Nz+175k0IXNbVcRrGbtDRxd+CetpfO7NOXhTrAc5PszrDY6VxGp0x5nK8uGFTsY6Fj1dB+GG0qcMM3oM52EMx7wSuGyBjc0OsvU/JJ3712itOpzavQ+xzj/XL/ncu/btZ8Bnq8lXl6eyurLADj7s9VexdVtNS5dqFQVzwiWvg4OjfLwKS74DGBjbcnMlVKOo8DB9SBDbu9jaDS2DNN9QAT5cScamt+dOlF1SLUjHaRo7iSe2zFEYNL59TwHOjsIyfPYMkOeAa/HRUUowTajlJMaST/OMbDcn0HejppHOndJIBN48TZHW8eAP7tDnGTtEwcuTSv66ywNVFCBrs8I1FhrogGch1ejFj/g4MxQgHQiELgXIktiZqWvzba4VDQYmUilPUsgJdvtYp6UbZjREXPiVdplyS36g/3cJvSbY2gE1nSmAuWyi49mA0TwCtpvujfYfJLexPz0+0W6sPqWBKpSEYR2I8oZiQcTbegGzt1kJIE+jufyF9Cm2m5Yj9SjhCHIZwayXsMzBjlw
+ bh9aYjer
+ wqmDfQQ+9XL9BiuiuO001RnYAxc2ypBBWYcYktsOllnywXGGyafetpAHLxAYtWEYhf1OfQ7Pq4ZYn54M7gcS4nCL38DSjzMTxEoZpzBxJrjy85VxoyrdD1LMiVWyuyE9oqe7exHWS1Eig9eHsMfjAWWP9G1afcNpIZrjfbKh4k7qOPyfBtxGa0lZlJp6/jVRFnB1glNgYHxu8GbSqh7M8YUD5W65RAYuYzPINfhM89CHzE3NLM0hDOicBpZz7iCHC0gpDtsIBNGUGnzypnem8AtkopKrFrZ0WYC6u7MAp6uXBAelr1brgrvnkDmWNJ+5dzjsHs4gVE06/cKP/Kd7XR2Ny2cRl9CCAxBFZHiHOeEVVmqqTgGQ09R9p5exEvFoASEO8ASjREg25pZPsno8o/btifPQ1kqH1uxZmIu/sa8RuumqCc4a6Hl2uaCsJ+VfByx5zVQwy++37G+wJIGU+6VFZNsT3OsyhH2dA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,35 +136,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 07:45:52PM +0800, Tao pilgrim wrote:
-> On Thu, Dec 18, 2025 at 7:14 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Wed, Dec 17, 2025 at 08:08:58PM +0800, chengkaitao wrote:
-> > > From: Chengkaitao <chengkaitao@kylinos.cn>
-> > >
-> > > 1. Added the vmemmap_false_pmd function to accommodate architectures
-> > > that do not support basepages.
-> > > 2. In the SPARC architecture, reimplemented vmemmap_populate using
-> > > vmemmap_populate_hugepages.
-> >
-> > What problem this patch is trying to solve?
+On Thu 18-12-25 12:02:14, Ryan Roberts wrote:
+> On 18/12/2025 09:36, Yeoreum Yun wrote:
+> > Hi,
+> >> On Fri 12-12-25 16:18:32, Yeoreum Yun wrote:
+> >>> linear_map_split_to_ptes() and __kpti_install_ng_mappings()
+> >>> are called as callback of stop_machine().
+> >>> That means these functions context are preemption disabled.
+> >>>
+> >>> Unfortunately, under PREEMPT_RT, the pagetable_alloc() or
+> >>> __get_free_pages() couldn't be called in this context
+> >>> since spin lock that becomes sleepable on RT,
+> >>> potentially causing a sleep during page allocation.
+> >>>
+> >>> To address this, pagetable_alloc_nolock().
+> >>
+> >> As you cannot tolerate allocation failure and this is pretty much
+> >> permanent allocation (AFAIU) why don't you use a static allocation?
+> > 
+> > Because of when bbl2_noabort is supported, that pages doesn't need to.
+> > If static alloc, that would be a waste in the system where bbl2_noabort
+> > is supported.
+> > 
+> > When I tested, these extra pages are more than 40 in my FVP.
+> > So, it would be better dynamic allocation and I think since it's quite a
+> > early time, it's probably not failed that's why former code runs as it
+> > is.
 > 
-> Following the pattern established by other architectures, vmemmap_populate
-> is reimplemented using vmemmap_populate_hugepages in the SPARC architecture,
-> which fulfills the intended purpose of vmemmap_populate_hugepages.
+> The required allocation size is also a function of the size of the installed RAM
+> so a static worst case allocation would consume all the RAM on small systems.
 
-But what's wrong with the current sparc::vmemmap_populate()?
- 
-> The functional logic remains unchanged.
-> 
-> > > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> > > ---
-> 
-> -- 
-> Yours,
-> Kaitao Cheng
-
+Understood. But is it possible to pre-allocate early on so that the
+allocation itself doesn't have to happen from a constrained context.
 -- 
-Sincerely yours,
-Mike.
+Michal Hocko
+SUSE Labs
 
