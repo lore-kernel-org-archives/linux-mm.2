@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BB3D6ACF5
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 13:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE077D6ACF5
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 13:18:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B1C66B0088; Thu, 18 Dec 2025 08:17:57 -0500 (EST)
+	id 425216B0088; Thu, 18 Dec 2025 08:18:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 685606B0089; Thu, 18 Dec 2025 08:17:57 -0500 (EST)
+	id 3F9916B0089; Thu, 18 Dec 2025 08:18:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C97D6B008A; Thu, 18 Dec 2025 08:17:57 -0500 (EST)
+	id 312866B008A; Thu, 18 Dec 2025 08:18:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 459A96B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:17:57 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C21113862C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:17:57 +0000 (UTC)
-X-FDA: 84232644594.13.530DCC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3DB114000B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:17:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X6CJ2Dol;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766063875; a=rsa-sha256;
-	cv=none;
-	b=KJcxitui9fEMTmyQE+E31MJd2d2jQ/hCI6/z4TgCRfCUuqRfAMf2lhrAbLzOpJmO6i8J05
-	TGiD6xAk97iuT7zlPYmIXK1pN1QWhftmL5uMTezBig7Qg1BiwkWiC+LEuF3Uu+x7ZyLYCA
-	Xnszq65mB7eqPUDDfBKMM0h2FTeiDi0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X6CJ2Dol;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 242076B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:18:44 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4FCD138B08
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:18:43 +0000 (UTC)
+X-FDA: 84232646526.20.EACCC48
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1433C1A0003
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:18:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766063875;
+	s=arc-20220608; t=1766063922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E67fGDCBzx9uy4pFH+4mRNamoM7TPirZS4XHX7edAzI=;
-	b=44Sh+LNknVlFonqtBrTQRFgvL18Zvr9QMBIaI5Atp4od9cKoCuThvIhHBb7LJEA1HzmY0V
-	mVWwKvZ0uPkvdIDuya941vyhwO89i2KWF18OXYQEiCryxh6BtDMCsw283L4Q8/X2ueyMdE
-	DVW16qxPKdY44jp71O1pYQe7IRiqvxE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D2154423B;
-	Thu, 18 Dec 2025 13:17:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9350FC116C6;
-	Thu, 18 Dec 2025 13:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766063874;
-	bh=4VWyNDc7jkUhFCG28e/nJjTfP2bqEFkzHBtDEtmEzi0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X6CJ2DolkyOCrETzfXDQBKmayYQWHkhuiWBCF1i53hHX/QHK7i/JFcq/sBxsfwiil
-	 j0qOV3XgnIFtCKdY0watZKSlPdwl+wS/ScPfDje5dGkQ80b+x+YKEn700nz1pvdecO
-	 Nb8V/wacRMDjfV5TL54Jmy7VSmNs6GPIW0uYq4p/KoSFkPNKgebVDr2kO/3PZPZBmN
-	 H7ELFEWy1a8oMZQGE+5aGIkZhZp/0lZyWod1+yXYdVFr6uApMblgMLs79SWmbLdaf+
-	 cO0As7Kg40ramCm5m6iRVSCyAlVyLztL2Wj+FnwSdOy2/hS2F31d5p1FnjZl4TLrn6
-	 4WfhCno5t/qzQ==
-Date: Thu, 18 Dec 2025 15:17:44 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tao pilgrim <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-Message-ID: <aUP--JzrvOm1-Q2P@kernel.org>
-References: <20251217120858.18713-1-pilgrimtao@gmail.com>
- <aUPiFbuaglcjqiB1@kernel.org>
- <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com>
- <aUPvecgVj8XXBcw5@kernel.org>
- <CAAWJmAa44SF=dj+FTiXn0aZwLLGbSTAieb8Cy73RE0sGAkAYLQ@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=OnSYbaFp2CAHTZ+yw/lF5QDuvZiXHxAuex7bg8JKT8Y=;
+	b=JJ6Qd9XRBjhp0xufXDhata++HE2NoBg6cHlrFOqbqPfzjl6g2x9i9PVeL4+pr/OBIxm8jN
+	XdGvTnhzCj5u6qxYUNhsj9wYQT0evSDWN4LFeaCwmdRoiBW9oj7VpdxJyDJEtl/bnbGZYI
+	iwO7dqra4RneOvw73u1yDdZNysD82cQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766063922; a=rsa-sha256;
+	cv=none;
+	b=111hyTlURdOKx3PtVwD4IbLsBFCx9mTlHAT2ucMCG7yMMfS+VO/z8omZiKNTUNqR338IhV
+	BYsBiGdER/JqcFvUW/cCTcK0Wn4C8+JT7VNmK1n2xDyiEJPWOmLMyeYRj28PlnYrOW+JOA
+	0fXr70LGDPHeLVsP6ge6qYiLmfPxqO4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC3F0FEC;
+	Thu, 18 Dec 2025 05:18:33 -0800 (PST)
+Received: from [10.57.45.71] (unknown [10.57.45.71])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2C763F73F;
+	Thu, 18 Dec 2025 05:18:38 -0800 (PST)
+Message-ID: <0575bcf6-c1a3-4ebf-a199-3113758fbdc5@arm.com>
+Date: Thu, 18 Dec 2025 14:18:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] selftests/mm: fix faulting-in code in pagemap_ioctl
+ test
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
+ <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Usama Anjum <Usama.Anjum@arm.com>
+References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
+ <20251216142633.2401447-4-kevin.brodsky@arm.com>
+ <37210500-6f6e-46ac-ac2f-ac996308590d@arm.com>
+ <6aa47cdb-d2e7-4977-929b-7019b6f991c1@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <6aa47cdb-d2e7-4977-929b-7019b6f991c1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAWJmAa44SF=dj+FTiXn0aZwLLGbSTAieb8Cy73RE0sGAkAYLQ@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3DB114000B
-X-Stat-Signature: zfh57h37aibtwatzapks44a9qwmr4oqc
+X-Stat-Signature: 5nsrfwrk5zsjgwkffu9s1tdyxpdfrfee
 X-Rspam-User: 
-X-HE-Tag: 1766063875-211293
-X-HE-Meta: U2FsdGVkX1/sQCh1BmLS5a3X6X3/VO9vQPnXnAyr8aVIPiJSOe7/J+NVDUkCKIHmYJYoIzoqEq5W0qaCIjjBEiXY24Pr0pEM4LT3nxs5QE80VQnq/Il7eTvZAVjVIi24D0axurnrT8v1YkxG1YGyaDUukIWPMBQ8EIZF77uVtfI9q49G9qB5ZSFC6sRdQNuDEK4ecaSBTFSiMShCfGfKbs9FasV9HERlCPyu5YIlNK3j85qi86i3mQR+1b3rSdnvnsjYNEHcPBiJVFJgLThl7AuD/Jr/UaZoFZz0tdRtYPnyQn8u3SJgqLntNBeyIdkSFRuWCl4kh4+3nxv30m1Bq1T7mYVcl2uqaTZ47BoSHCAoQavDKuMYLqEGU8n/Bq3Gx+v/2Iim6Jc3DlbvgsXHbm08y3iHnz8Hvg+Gqx7IZlwZL8m1mZy5lSt30cH4w98C2CbyBqwbG0EtmYZJnLHRN0tIbgi3oJvjz0lT4q/5SO+vwFQ5Kcmk2fP6yXlfF/ligebpFRfydm6WSn8nI1f9D4kkC73epQiSg6XJ1meWqRvfZpwBAzS9YJA6Y7w1n/J1TkqCSW9b88huo09zf/AhtA0SnT6oYsG4ZGPwTToASZvwEju6LwqvseoBIMSy//D9cpmGSHGtOdEm37X8y5Yo1H7BdBbg0sUWTxxBPqQxwMo8I7qyrwjLE3qXJQJRsUdBHLWLSNKY98DclsjLXowfQqbTNvEronS6GC1lhcuwAV0CqrFbtlCLOzSCW9L2ZRQ7nLOV9yUFABSQX/6lJ3Eel+SEzkkWHANeNa/onJ+utrhRNcdF8NaeD+hxeOEbVjYumi+f3SiE4PSTPpkEVPw+vQ2dauX4besdKPZ6traRvQ3X1Zyj1xk+Kf2eyJRSFHJqqzaPQbAqHF7uiTDMGF/7lnpaiIzH4FRfSEN5A+YLASpbYFD4QIT+ShWWR+wTnuf+ZN6Xy8SsdQGIR3AoIVp
- WHFznbbk
- 9gd95bqOOkE8FYXbxXWV25hB04v2iAbZsAlrkp3/0uGL4Eqc+8kuQN6MFVS6HZfD/Viqq3dlxCqLvQwLwcdDttc8CzhyMX0MsNJ4Cwu7DIO29pkGVlo8Bl41g09DHBzGF/vHLwz/wh0stzNI4lZba0XJQjVXORh6JLPVHmgNxrS4ElYwq9S1o9UdXFDr9IOXVko4jgBS+Jt5XOqf9zzBnRfh03EMYRbRYelt8hSgCnjm7t7AXwbziqbSN4uOsyck5/y4WzQ6S31yoA7NhjK/Y64wQe+Q6UMJge78OEAfyY3SJ3WG22+Y0M7cwowmx27Lac59Twki4qAWTeGf9V6wQEvu4Y5MDEOg+/Xo9+qVk5XI7IWL5FT2B2XTIn47dSUAQS2mAGOs0lFPjG0o=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1433C1A0003
+X-HE-Tag: 1766063921-913667
+X-HE-Meta: U2FsdGVkX1/+PIP6zgv4H47VrUmx/7mE3GuYfOFf7LLYQl5fNw7IcNkdSLXQs/oBRiiKOCo42tcJpfxnmy9IIPoJPcYOVjrMoUoXDq7K8s1u44rVDg5L9C/+gBF+gbF1aqwYvsNN4GMrh5Ko0AVVLF05mlKg8ckWyoAv5ymPtLvGyiTE6ipyjR3yCUH1xldWmvQEJ3EjaA61kntB+2P/Fks0yG927lrYhSyXyUGTKXzpuBnPvBx+fp+/n76EUbWo3YA2l/HLgIN5HXvU5bubrRwPzg4EVreT+CI2mHBms2TOOigI2JR2NrJscsztzD7j4hyEa6Ua7Z0MsdMVtVvUuyIuo5fdDQ+8A12qqg1Tpy4Sj3lbSSDrStkoDoHLbyjJwvI9n5x+RPl/mmkNwmr8Ex2tHV83s4vMgbPKAx+kj+4NncbxPGZk+Bx4KMzeVSZrqKk+6IikoTxLx2B0jB/s2gWoH2JmIYomLdaMKa3LbIdZRqsqetu2AI1jB6ZNd46z1R6waxo2HFUAU/8Z38oeJYoa6FqIk1IfIN2Ie58OdId4HmiLAAb0BH3aCgqD/jFTWHoWVBw/EtgOCwV6D9GT0HXGcN1IvJquB9bf6+D2+akWBUgXbYOg76bXnfVC4oSZoTC8wJi2+WuTW4hPfdJaTUorZVtVrEyTzIVWtNJzR00gCBdb6xXP40l7b5H+DYxhVjvsiL8e3m8bFM1JKNAjoZU8A0VQXwXYz5b5gpW+dPCiSm/JDzLautcCHvTtaNsILgLiPEOUy91jiZDRpZQCCdYljlt7ZHFOOZF6YleUlEXeZIq3VpHXf8kKwu7xfW3LkOM8aT9sHybsJypFtJurcxQi/NOEhLAif5wDdB40meYcDiYieV72UmDMUwGy0RBH0o1l5bftbN/pGB03dXnfxg+jkHS5BaeqT+D+anXsNHlm25XUVbKvsKWwDiNSWum2LxHMN+KOnpZQiPsf8Sj
+ lDTs4hVo
+ kRa071Z5nODmrh6ulClCQ1Thdl5J3JDwo3Dl9Bae7d4XvDQTLHd09VF+XK12E8HfQ238lMS10ywdvL/mQ/MY8af12Ahcqupbm38U8U1qxkx6RB74bnzgINP8tvyICMpWOdNzKs2o3q9crYjDHMWgYQaNisAdkTduH7G6f1o9P/8+hPvwX2h0Mke0dB3u4g0IbUIIPXw8adOXYVT76I0GZdLLzE87CKHyELIXskvTa8paIAdbniE4U3xv/b51PxZnER2zfFBV+7NF7PdKICcgtszsFXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,59 +93,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 08:29:27PM +0800, Tao pilgrim wrote:
-> On Thu, Dec 18, 2025 at 8:11 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Thu, Dec 18, 2025 at 07:45:52PM +0800, Tao pilgrim wrote:
-> > > On Thu, Dec 18, 2025 at 7:14 PM Mike Rapoport <rppt@kernel.org> wrote:
-> > > >
-> > > > On Wed, Dec 17, 2025 at 08:08:58PM +0800, chengkaitao wrote:
-> > > > > From: Chengkaitao <chengkaitao@kylinos.cn>
-> > > > >
-> > > > > 1. Added the vmemmap_false_pmd function to accommodate architectures
-> > > > > that do not support basepages.
-> > > > > 2. In the SPARC architecture, reimplemented vmemmap_populate using
-> > > > > vmemmap_populate_hugepages.
-> > > >
-> > > > What problem this patch is trying to solve?
-> > >
-> > > Following the pattern established by other architectures, vmemmap_populate
-> > > is reimplemented using vmemmap_populate_hugepages in the SPARC architecture,
-> > > which fulfills the intended purpose of vmemmap_populate_hugepages.
-> >
-> > But what's wrong with the current sparc::vmemmap_populate()?
-> 
-> The current implementation of sparc::vmemmap_populate() is correct
-> and functional.
-> 
-> However, I believe that generalizing vmemmap_populate_hugepages()
-> still results in certain architectures requiring special-case handling
-> branches, which is contrary to our goal of a unified implementation.
-> 
-> Another benefit is that it allows us to eliminate the external
-> declarations of vmemmap_p?d_populate functions and convert
-> them to static functions.
+On 18/12/2025 09:05, David Hildenbrand (Red Hat) wrote:
+> On 12/16/25 15:56, Ryan Roberts wrote:
+>> On 16/12/2025 14:26, Kevin Brodsky wrote:
+>>> One of the pagemap_ioctl tests attempts to fault in pages by
+>>> memcpy()'ing them to an unused buffer. This probably worked
+>>> originally, but since commit 46036188ea1f ("selftests/mm: build with
+>>> -O2") the compiler is free to optimise away that unused buffer and
+>>> the memcpy() with it. As a result there might not be any resident
+>>> page in the mapping and the test may fail.
+>>>
+>>> We don't need to copy all that memory anyway. Just fault in every
+>>> page by forcing the compiler to read the first byte.
+>>>
+>>> Cc: Usama Anjum <Usama.Anjum@arm.com>
+>>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>>> ---
+>>>   tools/testing/selftests/mm/pagemap_ioctl.c | 6 +++---
+>>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c
+>>> b/tools/testing/selftests/mm/pagemap_ioctl.c
+>>> index 2cb5441f29c7..67a7a3705604 100644
+>>> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+>>> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+>>> @@ -1056,7 +1056,6 @@ int sanity_tests(void)
+>>>       struct page_region *vec;
+>>>       char *mem, *fmem;
+>>>       struct stat sbuf;
+>>> -    char *tmp_buf;
+>>>         /* 1. wrong operation */
+>>>       mem_size = 10 * page_size;
+>>> @@ -1167,8 +1166,9 @@ int sanity_tests(void)
+>>>       if (fmem == MAP_FAILED)
+>>>           ksft_exit_fail_msg("error nomem %d %s\n", errno,
+>>> strerror(errno));
+>>>   -    tmp_buf = malloc(sbuf.st_size);
+>>> -    memcpy(tmp_buf, fmem, sbuf.st_size);
+>>> +    /* Fault in every page by reading the first byte */
+>>> +    for (i = 0; i < sbuf.st_size; i += page_size)
+>>> +        (void)*(volatile char *)(fmem + i);
+>>
+>> We have FORCE_READ() in vm_util.h for this. Perhaps that would be
+>> better?
+>
+> Agreed, and if we have multiple patterns where we want to force_read a
+> bigger area, maybe we should provide a helper for that?
 
-If the goals are to provide a unified implementation and eliminate the
-external declarations of vmemmap_p?d_populate() functions, I'd suggest to
-send all this a single series rather than a single patch that updates sparc
-implementation.
+I've found just a couple of cases where FORCE_READ() is used for a
+larger area (in hugetlb-madvise.c and split_huge_page_test.c). The step
+size isn't the same in any of these cases though. We could have
+something like fault_area(addr, size, step) but maybe the loops are
+clear enough already?
 
-Regarding the ability of sparc to fallback to vmemmap_populate_basepages(),
-it does not seem to me that this is an architectural limitation. sparc uses
-base pages in the kernel page tables, so it should be able to use them in
-vmemmap as well.
- 
-> > > The functional logic remains unchanged.
-> > >
-> > > > > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> > > > > ---
-> 
-> -- 
-> Yours,
-> Kaitao Cheng
-
--- 
-Sincerely yours,
-Mike.
+- Kevin
 
