@@ -4,118 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A41DD711C7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 21:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628B7D711C7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 21:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFFBD6B0088; Thu, 18 Dec 2025 16:32:48 -0500 (EST)
+	id 919C66B0088; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BADA96B0089; Thu, 18 Dec 2025 16:32:48 -0500 (EST)
+	id 8F12D6B0089; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F316B008A; Thu, 18 Dec 2025 16:32:48 -0500 (EST)
+	id 7C7226B008A; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9973E6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 16:32:48 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 531891A0376
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:32:48 +0000 (UTC)
-X-FDA: 84233891616.29.DD12870
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 70C394000C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:32:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lCyQI6jT;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766093566; a=rsa-sha256;
-	cv=none;
-	b=Gxx+RG89UNR57vdYSvuyK+IWL8+mrVc2vp/eqUYO3vjoh88lUYfGbygm8FtQ0PvBtvMgAe
-	cd9em6qBNfeexON08jDOJDKBpPUJrGB6OQ26P5l15LXYK2m+kPdRH5OYtb2FG7gO687khk
-	CLgw4VQtE6Pzd9fHkACWhusd0PKy9fs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lCyQI6jT;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 672136B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 16:49:37 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D8B0C038D
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:49:37 +0000 (UTC)
+X-FDA: 84233933994.19.4C95623
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3536A16000E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:49:33 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dnfHpco4;
+	spf=pass (imf08.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766093566;
+	s=arc-20220608; t=1766094574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZsqS8JZLvUNfWXbK6I+0m1K85/BN0I9qut0vlrzqpz0=;
-	b=fkARzem2SNB6OzzuWz0sB9pLXw//2YvDd/CmFC29yixNhK2xNirhU+dRtDUc2p810ZXF/0
-	8a7wduHOns+c9VmCNUxErwmORtDVa7KFC+4AffiGfm+pRiJax72ioQdVBfwe5enWdpUmzg
-	AdzjiYowkZCHEJiE0hoeEDuT+l+/zks=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ee19b1fe5dso10867311cf.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:32:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766093565; x=1766698365; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsqS8JZLvUNfWXbK6I+0m1K85/BN0I9qut0vlrzqpz0=;
-        b=lCyQI6jTfLcD8070ystmHoQkLwKWu8X/GfFPPfFPwJdOgUH0suqpYYROQ+owqyORe5
-         i7xJj6w/Bkw9K41LIRKe/R97iBVGQfXeu2B5KMnRzxcFHh1PZ2nF/6l0GSkIqJssy3aF
-         VphOLvw2xB085l2M3ViuwcCZc74ULdcvmGwPqhQK2cHWVkz2mIiuo6ltxj2RCCLnHpyV
-         Nwel4z+qTc4gvTsWJBLTlYnkdqlOyQr3DX869tL4kNCkySsnaSJ2wgVfVbSE37OD9LPj
-         T5BWotym6kKUnetUyAhLTbEirm++KuKxkcu8+vT2Q3LZX+il9WSF5AZZ93fgru0wfNCd
-         v1Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766093565; x=1766698365;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZsqS8JZLvUNfWXbK6I+0m1K85/BN0I9qut0vlrzqpz0=;
-        b=WSl9Gety4hi7hSYZWVpX3EoPgAkiyWupcsBgWAwURmx2QFy07adCjarl95Zq9BRwRp
-         jgHy0zHNpQ4O9EwrmUxs4zTrVfcwd+g7iniD8gI8l/ORjDv2+gMUhKMgsa+MHFqCh9zl
-         lQqWtB4RqoEKjjCp1/ad/8q9SNgO7uZMnZbmjbPvI7doEGnYoezV3JDPn5zseoMFjkMP
-         qGkvbkgg2sBCLOgmaIO7xOGU9uOdOboYLncydtlvnCKMcX9RI96s/wYZhgGGSsx7893K
-         Y2oST7l9tTLUuifDEc9u6/ZbyQdWt4ahG56m4KEzbrI4Fcr9Puj7XoU5CVibijkDCB+c
-         vi5Q==
-X-Gm-Message-State: AOJu0YxWMhnsK0/mGGZjE4soPGXFN9IN3jsU/ZimTQiS49rA0jHygbsU
-	LEhaF9JARQ4seniqrohZ44HabW8TzpNiSGkJRGzIezGNVwTocX9gFh5RCdt8PSlVgMc=
-X-Gm-Gg: AY/fxX4PMLLQLMa9/SYFDqUIn8PO2ipVPfqx86rrri8WOqIdjUukMgBSav+GWwSikN2
-	pOd4yRMokidZc78D6VfBk7CFRaJhOJWRoWQN6cdwUD3T8YY0sIu62CyH2Ei0QrcPpsuw6QVC4up
-	X0gPD21/EucL1k3CSkK2/Nf8dlTal5f2jk2gsenkJZx2pFcJlQ6IjBFv1u8nj1YHBGk28y3GTMY
-	2IJX8iGOQaSLbE97MgFwTsqCxOlIpgelSSxj4oJXHimlhUFbkEjLaHYG0ujRKsPAyLAPWiKqTa1
-	hNu1/nkQqNiAB5I/zvF4KqY6VlemKs126H0vH1xFMTzGhmLiq5VDQ135CDnLitJ7CSFeasnqt0o
-	X1prTzJ5io9cRuFlwh1BsMN0Sil/h7cSbY5QjiSGUTdi/Q9cnYfsBYNhTh35GXQFoET5WMRRI8u
-	+VVV+mUv9uKi2I7w7GhXwbENwqsLwxZaKgvrOJVDc00LFAIidVAl+oZPLtmbbpogxmMAl5cA==
-X-Google-Smtp-Source: AGHT+IHQzlqcCj9rb7vPUeyaWJGb8K4sNNB0JRSVczQHlPtEzp0q6mfpj4aeVQ4wRucPM8HXHJiWKw==
-X-Received: by 2002:a05:622a:130e:b0:4ee:49b8:fb81 with SMTP id d75a77b69052e-4f4abdbd1efmr10764031cf.61.1766093565470;
-        Thu, 18 Dec 2025 13:32:45 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac531fa8sm2536081cf.4.2025.12.18.13.32.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 13:32:45 -0800 (PST)
-Date: Thu, 18 Dec 2025 16:32:07 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	richard.weiyang@gmail.com, osalvador@suse.de, rientjes@google.com,
-	david@redhat.com, joshua.hahnjy@gmail.com, fvdl@google.com
-Subject: Re: [PATCH v5] page_alloc: allow migration of smaller hugepages
- during contig_alloc
-Message-ID: <aURy1x9D8fv_8CoW@gourry-fedora-PF4VCD3F>
-References: <20251218190832.1319797-1-gourry@gourry.net>
- <0E77F151-99B0-4F67-814A-4D79439C9A88@nvidia.com>
- <aURnLqMziaOilLCu@gourry-fedora-PF4VCD3F>
- <01A47A14-3B5F-408B-AC37-64E36AFCF14C@nvidia.com>
+	bh=FSUSXWk89hI9/EDnvyCElvY9u46O/v34cM58Hh3o7v8=;
+	b=esQKPxL/pDkFR2U7mP9mLaUV38U205n4XbxoX9/PS7JQY5OwccOHLh+Vp5RoEQvRkfDOEk
+	pq14Jnoxv/thL9cf/HwxuxU41q5J3nbhjCCmSA4xLZoH3rqOhP5flPrwXM7z79yBQGnYgg
+	YFGo2yEhklfr0pgzVmxEVs8pmRSxBdg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dnfHpco4;
+	spf=pass (imf08.hostedemail.com: domain of ricardo.neri-calderon@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=ricardo.neri-calderon@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766094574; a=rsa-sha256;
+	cv=none;
+	b=VAF/2BEByhDTy6/UdS8mG5PpeBxm3Q1/uGwO1EsI+DrmHaMCAMXUdlbsvPdcbiOzZT/K8F
+	vnZ/ly1MrNlu+d7+blgoDfnZnaZme55JUvZuCFew0CZSaOv0Em72S6JwHNsEHajufRUpP4
+	K0wAwrWtR6B5hKGKf52+9preSepfU0I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766094574; x=1797630574;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M06MCaIb8PWS7kX0AksYLwEq4wJXXsnFR5/EpfqCjgQ=;
+  b=dnfHpco4OWL+dxwD9dGQx8aooSml3UzjW0T+Y942K/lbUzW+G4NKRsLj
+   +WfnNzhwqdc+edJZ36XqA2Jwr4lqwa4tAEPITtgP9ZrtrZTEqzN8P4cuv
+   OOcIreJXNpirWFdxoP/pE06E49McSA+GWucIS9OY1Q8xSmVY8GhH3epwx
+   +j5Z/i5NBMa+vpBk8KdXZFgpuWQpgF4TrSE8lDjHsVddpebq/reN+9KcV
+   B1V8pRROAZVDqi/oAviRherGdHtBYyAQv7n5IzgC9uMCmSV+y2epl1+oL
+   pplUX0L6VQ9+phmCViTqE1xmodboK+hXkuJmo+gfJOcMcJg4vLJ1tAMaI
+   A==;
+X-CSE-ConnectionGUID: iFetKHCwROKP/Qdq8dEBbQ==
+X-CSE-MsgGUID: Mspt89mNTJ6ED/gwgKTGXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="71918900"
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="71918900"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 13:49:33 -0800
+X-CSE-ConnectionGUID: 2Rmht5HYTJ6BZFsCRCf/fA==
+X-CSE-MsgGUID: vLF7f0OOR4uyXFAXQ/ODSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="197953858"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 13:49:33 -0800
+Date: Thu, 18 Dec 2025 13:56:13 -0800
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, bhe@redhat.com, rppt@kernel.org,
+	jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com,
+	dave@vasilevsky.ca, ebiggers@google.com, graf@amazon.com,
+	kees@kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	ricardo.neri@intel.com
+Subject: Re: [PATCH v2 11/13] kho: Allow kexec load before KHO finalization
+Message-ID: <20251218215613.GA17304@ranerica-svr.sc.intel.com>
+References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
+ <20251114190002.3311679-12-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <01A47A14-3B5F-408B-AC37-64E36AFCF14C@nvidia.com>
-X-Rspamd-Queue-Id: 70C394000C
-X-Stat-Signature: z5majxkazanch99u96zfrk9gs5oe1bau
+In-Reply-To: <20251114190002.3311679-12-pasha.tatashin@soleen.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Stat-Signature: jf979szdimh7nzgcob7noqncjaag19fx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766093566-353500
-X-HE-Meta: U2FsdGVkX18kvD7e6XS4oPlIfsYaVIq4CEirQmgmQh8sXAeMpMgANtWXDOAH83bQEBYdgHaee6Hj/3Y1Wc9dcbbqg1LAvL/fb9vIkouK/QcWZZIsC7syeXkQK3A28tqyUqmD1qYfAvfNJKZVZRKStfIUNt/Y7A3Y0GYoP9enjv9uo6Fc/FhVr4aBruBa2WL/ZBPgz5IvJzm5ilsAFu+TyrCYZl9dQlrR8AnlQc/5K6PHnScK5mb0wBaRyYeIjlHgetOdqDpSUiY6XVkoevaFqz4RJkSLXtvjnkIIjqrOhuq1UScZL4QjBclIeuoz2rmEQkr1Nka+g11UIrKbrVWO6E9A4WykeoxvEM27iyd6yMy58CBaAtd00LDGqHQdWjerUfw9Vj4v3ngNSlEW3JZNKiaeeASBu9MQ0D4DN7Rx8UhTEkuV9W3GkEXGqVlxmcYIDd8u4XbjhULTSOpLAu9RhhmbPOkTx6RiU39Wy2NRxfe7fUOykWO4epO1YdjC1vOnHC/9KiLUwcezFJzq1r7qqVn4WjIoUShkHtir7jH0a6/yJHft80vY4v7moHb/pScy/VTtvWGig8l+gxaZY+xnQUdVpK4ZZlZD27/SEBXN34NuR3DDsycin60p85uFGl886rbkf4jgzT1LCdp4GALpR/E4SqPIa9uLTVVOCZDEDczY8/6DD/VO88P+pAl91clYwbBVOLiF1varu1L5Y6fL0hbi0ge8uneQHDVpxUO+jx29t/OVdH2m7bP01dAldUfJhTxMfN8ur3H6nwijD7/kFCiVTA/Yg3oi6uMLRMCnLzpt1v0YmnzhWB7MU/S4GLUAIXnD1AcPoR+Rcb3utMFXypPycn5j7db2LijtY4Thx5v8kbsQag/ljT65RxA7COIB43mceEw1Bprz9aM0t/5X8Y3ELVZpVqAbCosKSqZLeKtEmA8/VZIePsy4/kwlwJy6KNSlhvKlhr0cIJ+g2nW
- y7jPqk2w
- YeXIweuc86am2jYnMKZ9G1NC6WmzANhFnAcgScIeF6mJ7XKqqq2ZcWRsw+kHihkFsnJkATp2ZMvUnRMZ4vwc94wL3KVDiPWsRtYGEnv30XSWETeSgSATXu8Xzsa8xdpgWPEihfHrjvPwShh8XzzV+cgQTlEOWCqWQAWOhpTjDWe/6w1L1MeHjT1bOuIUkm9UlZc5RYbB2ZI/QU1OCpB+7/qQs15XL6oeA0eeh8bIAmHbz3M1KgVdaB62p5+nFVrDR99PpQ4AU3+V7bid5M6vu6wpmyoTkB1Mcf9MahedDVYvOKDamtikHkZ4BD/HkPIO2460T4xUs2DbxHW3xO0KRdJb2d8x2htQY+5Usio4E+f1triQ8xBYY3GWfR472XQT3chT6NRixyvepvLjh1dxj2iCcMM9M65R0UNL6oWSxWIts9bJQNnij9+ArGeUhnrrPsa2wP8wNE2p3+AkPd/p/HJwK8eyWCCKkxIBu2DrrhfcLg9wzHmnAy29pPA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3536A16000E
+X-HE-Tag: 1766094573-398830
+X-HE-Meta: U2FsdGVkX1/jULgY0muT3MnEKcIzNevspjbvOXLfX1XZlsg+ab2DdMlbYb4qYGlbWtqW0sROUAd8By6/ABmHvV6XJ95x2n2fYfi89WWawnCRvrStM9SM70aRhyl7MdtkOMS6SGqJAhfBEWnDu8x81tDb0cQQCnh0D5YsD3KyKJ6pglrk7KOxBUe3p75LJdOrdDOboeo9E+irhMsnO/5eTviLjtQI1BQVANeNUyf6jn86zlr+ksYpBg15AUlszjgsjzsNwXU9z3h0pZVzgCALtXTR9G5CuCb7chFqijq0Gmp7w9bZy/+tQFltq15K6ab43Vht+0+KH34oiU60brZLBWTH+D6RPdt+HqIPKJ0sTgM5vAXYt7Gg/FM06Yo9E5/urd8Jk12umh4q0gkBZEWDxIiBUHZIc5/00kUc9RP00HDHRnej5i9FAZhjylZbKtRN5sclEaGJu2gTnLrNIbU6sSjiAg1lCG9pU2L7seKEd7WF7sMMceMB4YKvO8WScZSMmiVjpJfHnekH0Bsa+6QJIX+3t8qlw3KhFrGVBzbA4p/9Sm0miqZ03LJSCikEobc1UmlnOwy2JdiwyAYDjuIBGWPRfVl1qBGwte9uzP/z5Yv9bP1mKQHEAQwYCqdYLRarS7cFbL0QmbVE9p3wqdaYeY1y9FqN30yNOmV378i+a7oO8kYRiXBAy00TCEdtAMSv43JmTk1jTJKL3JHLb0aiDRk2QG9mrdQBVz24RaaVlVzaVDHGSIbgLldDsKqFtVHeLrmYNWd0DD3BvGqVp6DTCeS+5BG284mmKfxSfdAoy7HZcFjHQyvSxDsbY6dflcv+yfrH6O+PkD2eeoseRr81TYjGXNHMZ1Crp/KRbjTR0ghtw2k5UGJx+G2B19KMvQgtpPoLEFouh937I4BevoFVVGxL7hT3SZRwlp9Y4QJjbu1B8cM/myJFTSW5WTVxqpEAluxGj9dh48ntbyv9FtD
+ w3+zjC0B
+ Ii9+Ka3M3uv7rxbgYNNpcXKwNUL+kWFLIwkQ7kNWdEtR2KnARCd9Uju7MN6M3Sn9EdChckyEi7+eIFM+YCkrQ1x/YCXgpLGnc/8fjbjZ8D1InQxoeEckcvhFZoWnnTnLrji0SDxoqyrL1csFS72U/97oZWR/J/rFa9v+1XkIVjh9lFK7JxgDR/qAejspylkozryq7kgO0GlfSQghdh6kdg91Gfay1GYyVnKobeCXCiC8Fxma3fykhM98o612xBnoSfdhz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,23 +109,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 04:17:14PM -0500, Zi Yan wrote:
-> On 18 Dec 2025, at 15:42, Gregory Price wrote:
+On Fri, Nov 14, 2025 at 02:00:00PM -0500, Pasha Tatashin wrote:
+> Currently, kho_fill_kimage() checks kho_out.finalized and returns
+> early if KHO is not yet finalized. This enforces a strict ordering where
+> userspace must finalize KHO *before* loading the kexec image.
 > 
-> OK, you assume hugetlb is harder to migrate compared to other movable pages.
-> Considering the limited number of hugetlb pages, it is quite possible.
-> Anyway, I will wait for your v6. Thank you for the explanation and the
-> prototype below.
+> This is restrictive, as standard workflows often involve loading the
+> target kernel early in the lifecycle and finalizing the state (FDT)
+> only immediately before the reboot.
 > 
+> Since the KHO FDT resides at a physical address allocated during boot
+> (kho_init), its location is stable. We can attach this stable address
+> to the kimage regardless of whether the content has been finalized yet.
+> 
+> Relax the check to only require kho_enable, allowing kexec_file_load
+> to proceed at any time.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 461d96084c12..4596e67de832 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1550,7 +1550,7 @@ int kho_fill_kimage(struct kimage *image)
+>  	int err = 0;
+>  	struct kexec_buf scratch;
+>  
+> -	if (!kho_out.finalized)
+> +	if (!kho_enable)
+>  		return 0;
 
-They are harder - a migration starts with an allocation. Contiguous
-allocations may then cause more migrations. We can end back up in similar
-style search/migrate code.
+Hi Pasha,
 
-Basically this can go some amount of recursive (though not much in practice).
+Using v6.19-rc1 (which has this changeset) and with:
 
-We at least guarantee termination because we guarantee we won't attempt to
-move pages of the same size or larger than the current allocation.
+CONFIG_KEXEC_HANDOVER=y
+CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
+CONFIG_LIVEUPDATE=n (i.e., nobody calling kho_finalize())
+no reserve_mem= entries in the kernel command line
 
-~Gregory
+I omit doing
+
+echo 1 > /sys/kernel/debug/kho/out/finalize
+
+before doing
+
+kexec -l <kernel> --initrd=<initrd> --commandline="$(cat /proc/cmdline)"
+kexec -e
+
+After the kexec reboot, I see endless warnings about list corruption [1]
+and from _text_poke() [2] (see below).
+
+The post-kexec kernel finds KHO data but it obviously is empty because
+nobody was using it.
+
+I was expecting that KHO would handle this use case gracefully. What if a
+distro does not finalize KHO before kexec and are no in-kernel users?
+
+Am I missing anything?
+
+Thanks and BR,
+Ricardo
+
+[1]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/lib/list_debug.c?h=v6.19-rc1#n56
+[2]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kernel/alternative.c?h=v6.19-rc1#n2506
+
+[   10.730845] ------------[ cut here ]------------
+[   10.734848] list_del corruption, ffffd143c1330008->next is LIST_POISON1 (dead000000000100)
+[   10.742846] WARNING: lib/list_debug.c:56 at __list_del_entry_valid_or_report+0x91/0x110, CPU#12: swapper/0/1
+[   10.750845] Modules linked in:
+[   10.754845] CPU: 12 UID: 0 PID: 1 Comm: swapper/0 Tainted: G S  B   W           6.19.0-rc1-ranerica-vanilla #1440 PREEMPT(voluntary)
+[   10.766845] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [W]=WARN
+[   10.786846] RIP: 0010:__list_del_entry_valid_or_report+0x97/0x110
+[   10.790845] Code: eb e2 48 8d 3d 9a 0a 5a 01 48 89 de 67 48 0f b9 3a 31 c0 eb cf 4c 89 e7 e8 b6 d9 b8 ff 48 8d 3d 8f 0a 5a 01 4c 89 e2 48 89 de <67> 48 0f b9 3a 31 c0 eb b1 4c 89 ef e8 98 d9 b8 ff 48 8d 3d 81 0a
+[   10.810845] RSP: 0000:ffff960b000b3c20 EFLAGS: 00010046
+[   10.814845] RAX: 0000000000000011 RBX: ffffd143c1330008 RCX: 0000000000000000
+[   10.822845] RDX: dead000000000100 RSI: ffffd143c1330008 RDI: ffffffffa11c0cb0
+[   10.830845] RBP: ffff960b000b3c38 R08: 0000000000000000 R09: 0000000000000003
+[   10.838845] R10: ffff960b000b3a80 R11: ffffffffa0f470e8 R12: dead000000000100
+[   10.842862] R13: dead000000000122 R14: ffffd143c1338000 R15: 0000000000000004
+[   10.850845] FS:  0000000000000000(0000) GS:ffff8af4bc88d000(0000) knlGS:0000000000000000
+[   10.858861] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   10.866845] CR2: 0000000000000000 CR3: 0000000428c3a001 CR4: 0000000000370ef0
+[   10.870845] Call Trace:
+[   10.874845]  <TASK>
+[   10.878845]  __free_one_page+0x2b5/0x840
+[   10.882845]  free_pcppages_bulk+0x1cd/0x2f0
+[   10.886845]  free_frozen_page_commit.isra.0+0x219/0x460
+[   10.890845]  __free_frozen_pages+0x37b/0x700
+[   10.894845]  ___free_pages+0xa0/0xb0
+[   10.898845]  __free_pages+0x10/0x20
+[   10.902845]  init_cma_reserved_pageblock+0x4f/0x90
+[   10.906845]  kho_init+0x1ef/0x250
+[   10.910845]  ? __pfx_kho_init+0x10/0x10
+[   10.914845]  do_one_initcall+0x6a/0x3c0
+[   10.918845]  kernel_init_freeable+0x1c8/0x3b0
+[   10.922845]  ? __pfx_kernel_init+0x10/0x10
+[   10.926845]  kernel_init+0x1a/0x1c0
+[   10.930857]  ret_from_fork+0x256/0x2e0
+[   10.934845]  ? __pfx_kernel_init+0x10/0x10
+[   10.938845]  ret_from_fork_asm+0x1a/0x30
+[   10.942844]  </TASK>
+[   10.942846] irq event stamp: 926677
+[   10.946845] hardirqs last  enabled at (926677): [<ffffffffa04064d2>] dump_stack_lvl+0xb2/0xe0
+[   10.954845] hardirqs last disabled at (926676): [<ffffffffa0406475>] dump_stack_lvl+0x55/0xe0
+[   10.962845] softirqs last  enabled at (926576): [<ffffffff9f4b6383>] __irq_exit_rcu+0xc3/0x120
+[   10.970850] softirqs last disabled at (926571): [<ffffffff9f4b6383>] __irq_exit_rcu+0xc3/0x120
+[   10.982845] ---[ end trace 0000000000000000 ]---
+[   10.986845]  non-paged memory
+[   10.986845] ------------[ cut here ]------------
+
+[   49.243722] ------------[ cut here ]------------
+[   49.243723] WARNING: arch/x86/kernel/alternative.c:2506 at __text_poke+0x42b/0x470, CPU#20: kworker/20:0/104
+[   49.243725] Modules linked in:
+[   49.243726] CPU: 20 UID: 0 PID: 104 Comm: kworker/20:0 Tainted: G S  B   W           6.19.0-rc1-ranerica-vanilla #1440 PREEMPT(voluntary)
+[   49.243728] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [W]=WARN
+[   49.243730] Workqueue: events intel_pstste_sched_itmt_work_fn
+[   49.243732] RIP: 0010:__text_poke+0x42b/0x470
+[   49.243733] Code: 21 d0 49 09 c0 e9 06 ff ff ff 4c 8b 45 98 4c 2b 05 9a db 7f 01 49 c1 e0 06 49 21 d0 e9 ef fe ff ff 0f 0b 0f 0b e9 58 fd ff ff <0f> 0b e9 6c fc ff ff e8 89 9a ff 00 e9 07 fe ff ff 0f 0b e9 b2 fe
+[   49.243734] RSP: 0000:ffffae7dc054bbe8 EFLAGS: 00010246
+[   49.243736] RAX: fffffa9c10d9d000 RBX: ffffffff8ed40a4d RCX: fffffa9c00000000
+[   49.243736] RDX: 4000000000000000 RSI: ffffffff8ed40a4d RDI: ffffffff8ed40a4d
+[   49.243737] RBP: ffffae7dc054bc58 R08: 0000000000000000 R09: 0000000000000001
+[   49.243738] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+[   49.243739] R13: ffffffff8ec43830 R14: 0000000000000a4d R15: 0000000000000a4e
+[   49.243740] FS:  0000000000000000(0000) GS:ffff9dc10ca8d000(0000) knlGS:0000000000000000
+[   49.243741] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   49.243742] CR2: 0000000000000000 CR3: 000000043803a001 CR4: 0000000000370ef0
+[   49.243743] Call Trace:
+[   49.243743]  <TASK>
+[   49.243745]  ? partition_sched_domains+0x15d/0x520
+[   49.243748]  smp_text_poke_batch_finish+0xd5/0x3f0
+[   49.243751]  arch_jump_label_transform_apply+0x1c/0x30
+[   49.243753]  __jump_label_update+0xcf/0x110
+[   49.243757]  jump_label_update+0x134/0x200
+[   49.243760]  __static_key_slow_dec_cpuslocked.part.0+0x5b/0x70
+[   49.243763]  static_key_slow_dec_cpuslocked+0x45/0x80
+[   49.243765]  partition_sched_domains+0x3b7/0x520
+[   49.243768]  ? partition_sched_domains+0x7c/0x520
+[   49.243771]  sched_set_itmt_support+0xe2/0x110
+[   49.243773]  intel_pstste_sched_itmt_work_fn+0xe/0x20
+[   49.243775]  process_one_work+0x238/0x6f0
+[   49.243780]  worker_thread+0x1e8/0x3c0
+[   49.243783]  ? __pfx_worker_thread+0x10/0x10
+[   49.243786]  kthread+0x12e/0x260
+[   49.243788]  ? __pfx_kthread+0x10/0x10
+[   49.243791]  ret_from_fork+0x256/0x2e0
+[   49.243793]  ? __pfx_kthread+0x10/0x10
+[   49.243795]  ret_from_fork_asm+0x1a/0x30
+[   49.243801]  </TASK>
+[   49.243802] irq event stamp: 80
+[   49.243802] hardirqs last  enabled at (79): [<ffffffff8fc513f7>] _raw_spin_unlock_irq+0x27/0x60
+[   49.243805] hardirqs last disabled at (80): [<ffffffff8fc45581>] __schedule+0xb31/0x1210
+[   49.243808] softirqs last  enabled at (0): [<ffffffff8eca82fd>] copy_process+0xadd/0x21d0
+[   49.243810] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[   49.243811] ---[ end trace 0000000000000000 ]---
+[   49.244076] ------------[ cut here ]------------
+
+
+
+>  
+>  	image->kho.fdt = virt_to_phys(kho_out.fdt);
+> -- 
+> 2.52.0.rc1.455.g30608eb744-goog
+> 
 
