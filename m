@@ -4,126 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B213D6D237
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A433D6E2AD
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:53:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 833206B009B; Thu, 18 Dec 2025 10:41:27 -0500 (EST)
+	id F02AD6B0095; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81EBF6B009D; Thu, 18 Dec 2025 10:41:27 -0500 (EST)
+	id EA9CD6B0098; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7347F6B009F; Thu, 18 Dec 2025 10:41:27 -0500 (EST)
+	id D81B16B009B; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D95F6B009B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:41:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36D59160265
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:41:27 +0000 (UTC)
-X-FDA: 84233006214.15.DB171BF
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 316A52001E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:41:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IbzQqjBQ;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766072485;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C3E9E6B0095
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2323816014A
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:53:01 +0000 (UTC)
+X-FDA: 84233035362.07.AD372BE
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013071.outbound.protection.outlook.com [40.93.196.71])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F674A0016
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:52:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GpRvCtYT;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766073178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GQYFHEK9Tm8YWqymq5JN++Nt0lXCgB+FVI1O7lCYYs8=;
-	b=gmspwEATge2iPugElJJ7WqQ0YZ48KSJmHtsh4pG1SzdAd46Lc/s6xQpTBgc7bStWDGHKWl
-	r0aqynb2HGwqMCjmg2RseExoiTr7Yo6Bb880BSBT6Gifx9FHWPedmKbX2e0/BY/bqh+hy7
-	Ae3tLOFXZOKetMNISy2ihM/ife4Sl7k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IbzQqjBQ;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766072485; a=rsa-sha256;
-	cv=none;
-	b=XOFlL/svesKK4xJAooFHor4JY+q0JudFRMAMd9HA0NeAQ9Hh41AXTZzhI2H8FklDhVT8YE
-	s/fHvp/2VH3xGeQVfauEOpUo6MGNziWDPNks6fc8NJ8vm0k11CEjEskAdFsouj30lY6JS8
-	33QcqlzHnbfL1Y1PhnD4ZbrpZt9Nk3M=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88a2b99d8c5so5394166d6.1
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:41:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766072484; x=1766677284; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GQYFHEK9Tm8YWqymq5JN++Nt0lXCgB+FVI1O7lCYYs8=;
-        b=IbzQqjBQK285kf8A3Lig1S2ZO9vW3VPLWY5sW4ve2xrns0dwxQaoIxBgTgNZ7tYu08
-         04Oo2SrNp+2rfs86QfpVILvJgVwBV82cqLxXCbZ/mk+wXR+js+bq9t7w3vzQ0JU5eLC1
-         kPnFhKSeEQpSVzhz8k6H4+Z5AELbD+Y0k9nXancTp/8qFUUdzBN+K6KqFLh40pSH3lIs
-         c6ohuD6qjTl7BsB3p8b+V8JvUinxRFMiO7p5Kcc0/6AyuPGnctiK4EdZAtVn7rE57Hri
-         K1/b68LfFQse/VFlOvYpTr5Pz7BRdwFwFKHUFu8VNwQknoBBPj/D7jXmHvPbX8VpPfb/
-         sRaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766072484; x=1766677284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GQYFHEK9Tm8YWqymq5JN++Nt0lXCgB+FVI1O7lCYYs8=;
-        b=rRbnbK/icf10eBZ0UQORKa7uEGU8Bil7VvtmG3VfiOah776+cqdDmqFK19nA5opgy3
-         2gF9h6cGZCgm8JlEgQ31K3RDEXSC8ezHSmeoj+yBdLoGNgjML86/DhGRNaNC57cklivH
-         uyzAknAputvqsU1nCqPmWPZUNr++PuXFwvoNTs8EFzJl/vSToPdhVs74L0TYeWRHVTw6
-         a/66qOnn39tU3EOj/Md7fr8uAwByu1lCS265TcOO7hcbupEUEJlRuGfAfsANn0zUnBeM
-         U0/BvhUBcruRId8BwvdShKOzTjTzC0hHCZxbLwx8vQeygkWZp3/63nxQbioxdJnggdeW
-         v5BA==
-X-Forwarded-Encrypted: i=1; AJvYcCXThgA1OEmXOUJl6nil51GQdzaURRuTNnw5/EL4v7zaTwjOWasn6wNX4ags7Ytfm/jUEH4f51hXxg==@kvack.org
-X-Gm-Message-State: AOJu0YwxkjrGg9JS9NqazZb5qvEsxH3bOfQ6CJ30mbqLjm3fuYuzvXVM
-	WIBg+bz+N8PhHBAez6otRgKYg2H1LKYLDIZfAe2m720yHO7gxOfC7Bovg4iM5JgC7HU=
-X-Gm-Gg: AY/fxX5Nu7v2xAoXwup2Jj/l9l0Ogl0Fo0Fa5t30Z5YBnBAcXQkAA0G/aMQwD3RMkuj
-	JFkyWSZLNqjHCElsAFoM5nFB9fvbk67nR31dumsvagxB59sxIZEJp9cQlEp6vDNNIEqcMhX6M9S
-	YfZwBbGQ20MI9bNoXRyHOVjRPcouIicF3NX/tPu5+8GoZZkDzeceWnYAw7yJBq93qFzKqFcGfYr
-	5pcrAz7VlnyjXoAeaY1eYQqcJPTFAmsL5RwGHUtg95ED6yeZtUcJrwwDF+H/iuP4MGSTLEBmheP
-	M+WApmArCZh32uwRUQPnHWPcJduRyT4LKKcUYMWmYNhSNd+6/q1uNrw+iyh9xow8WssfrSgYAY+
-	ZuUA3w/qnJIR/roXUJWjyzhVfre0X6ERDGrhGhuqjcWLNbharahhGbqOFvSJKU2OFZN0IOckHOw
-	PD8JpluAcNRmvnZUQjsz44A67c2xcOx9lSQiKUHq/HEQVvgRDEcO63eQUyKVDDwq20kRn10g==
-X-Google-Smtp-Source: AGHT+IEhf6FIJBZ7lZJmuG8C+UcVaOo2SfADiXXl3E8f8W7HlPmfbAUOtA3YMxUDzV/Kzt4JsHqtvA==
-X-Received: by 2002:a05:6214:c2e:b0:888:8047:e514 with SMTP id 6a1803df08f44-88d81278a7bmr1222226d6.5.1766072484119;
-        Thu, 18 Dec 2025 07:41:24 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c6089a329sm20455596d6.33.2025.12.18.07.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 07:41:23 -0800 (PST)
-Date: Thu, 18 Dec 2025 10:40:46 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
-	kas@kernel.org, dave.hansen@linux.intel.com,
-	rick.p.edgecombe@intel.com, muchun.song@linux.dev,
-	osalvador@suse.de, x86@kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
-	David Rientjes <rientjes@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH v4] page_alloc: allow migration of smaller hugepages
- during contig_alloc
-Message-ID: <aUQgfgWPq4ppMw9r@gourry-fedora-PF4VCD3F>
-References: <20251203063004.185182-1-gourry@gourry.net>
- <20251203173209.GA478168@cmpxchg.org>
- <aTB5CJ0oFfPjavGx@gourry-fedora-PF4VCD3F>
- <CAPTztWar1KqLyUOknkf0XVnO9JOBbMxov6pHZjEm4Ou0wtSJTA@mail.gmail.com>
- <b5a925c5-523e-41e1-a3ce-0bb51ce0e995@kernel.org>
+	bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
+	b=w/Zmnh2nblr3DREzH0Q1oOmWNEiITSNsdgfoui4YXIXFVkqxiRLIpOyhVL1Ul37OsTxcR9
+	62CG6Yj6pZT/ZA8WHLTfxXKK/JVAJ2adtAhr3jWSyJkvLb9xSpr+g/aQmt+CkPkI/8nW8r
+	Lg2ZCU2l+for+lJmq1Eh0h0MqYGUy/0=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GpRvCtYT;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766073178; a=rsa-sha256;
+	cv=pass;
+	b=NIH6lUmEo4TfWpf5EgRhfbYs9otXRowKv4q2LeoN5TzC34a4BZt/DU8Hh8CVNdlNdg74ks
+	zMhPEpfjtG8amishJ1wIw1sEiAaTjJ+X7yFpNxrCv9F4ugzfC8CpSrkSP7EvojIFuEzVTX
+	56j3pXli8mUfreS5Af4KlfKvqDmpEF0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yex//+DZGcDIAMgrfg1rY55oIc9tbaAK2fM9WaEAo3EzyFjobialZXs6qWvjyqP8it9UVROucA06KsqTKShvvmDHBd+VnglzLUwlcP/9JTRdwnBCcQy5TbDaCKMBr/0qcoBB/UQOgeY9IiPmAs8AN0e/NA9mkjeEJcwTa0ckiLb/Rnw7t00UZyzGT/o+leanXzuedaQApdk6++3KLletCbeEBfplIXPS9lRBQyqB+q8vEDgt0cPZQegGUua0EZHcV3MXL81WJodpoKgtFHmiBXbYCCII1A+17Lm3MbjeA/uCI5CMJu6EYHAmvrMxwVuCOesHOKjRNYyi19QnU9y0xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
+ b=e/2HoN5gjl4ouZ3SZGKMpIgBZ8WreWUgVs06orTNVeHYtrzZ5GU0o84Jg3qG52QoUCuBLOrD4HKcrTVmDpIoijlARPWx7KmHgNeyYe0O0i686XdvA/kGiLDsSjbfoL29OgHaMrkRdejdNXnsOvgKlPVk0Hn5+NZQ1GK5NxhIixrW9Bwhqchn9Fig9pCWu+I4Xeqazk1Ok12sZd7Q4RVEYx7nuMHgVxNvACTu5htIoZI86C2XbiV5PnH8pea6X0jujEHSclOtP+2cj3JNWIcqxaaW9ll3dg90Snx1z/lWmOqpUcN1kbgDvC17hnVHQNYJ/jncx65PIvhqCGZtwop9+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
+ b=GpRvCtYTjr+Xbp55Pq2n3uaLpD/NvAsN65kJK6KWRI8zOexG0kOWdPEkIK4JrldNCv3YksR3RD9d175jsVtOIzjgxHVx54WC5TzeAA+a6PVCnVIDXJVn1qitawUX2R7lKCcfyzLqTzDWFM8T+JX/+onVkekFoSGJj60NkqkuvuMXe+lonWW8860FS2EoQpbckN7agbR0/cFZ8vAfWbUn+wRzVFcHsvF5Uxd/jgZpQNCDVL1UhLnP5+Bc5XQOP0Byvt+qdCUDUT5/sDHnrSGFc6zbUM0efkWw8SlQZ1JaQ1POG/0UPPYNQsQiaJa/plhlI8oR17En8wqgfFOm2lTIZw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ BL1PR12MB5825.namprd12.prod.outlook.com (2603:10b6:208:394::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
+ 2025 15:52:53 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
+ 15:52:53 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+ sidhartha.kumar@oracle.com, jane.chu@oracle.com,
+ Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>,
+ David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH v4 5/6] mm: cma: add cma_alloc_frozen{_compound}()
+Date: Thu, 18 Dec 2025 10:52:50 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <0168824D-37E8-4E22-AAF5-43DDB38F0FED@nvidia.com>
+In-Reply-To: <6e7df7a8-aaf4-4960-82be-dea118c5955c@huawei.com>
+References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
+ <20251216114844.2126250-6-wangkefeng.wang@huawei.com>
+ <4B10600F-A837-4FCA-808D-6F8637B073F7@nvidia.com>
+ <0eb081b8-3982-48aa-a9ba-9cdde702b4df@huawei.com>
+ <A276ED1B-89C8-45A0-8DA9-9D5CA1D8E2FF@nvidia.com>
+ <6e7df7a8-aaf4-4960-82be-dea118c5955c@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0329.namprd13.prod.outlook.com
+ (2603:10b6:208:2c1::34) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5a925c5-523e-41e1-a3ce-0bb51ce0e995@kernel.org>
-X-Stat-Signature: gpfy5hbui7j7mefmiku39x1omugb8dcn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|BL1PR12MB5825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 174ef180-5645-4480-f2a7-08de3e4d80f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cHNjNmE5TDN3RVZXdUY0TDUwNnk1STRYbTdmWWRManZHbW5PMStqS2N5OW5r?=
+ =?utf-8?B?TDFPSUh6ZjhsZm1LbnlYSHpEWW05NG01dnBqYXBpU3lGZzFLREZoZGNUanBz?=
+ =?utf-8?B?ejkzVzRxZk1ZT1JsZFk4TGpZSFZTWEhlbzBRZUkzL0VrV2xpQzNENmFXd2w5?=
+ =?utf-8?B?cXM1YUdnc3hzYUprZkZmMUI4bnpDZkRONm9OK1BJR1JnbVB0bnhSZTc5ZW1s?=
+ =?utf-8?B?NDdjWHZHZFpNWG1XSjM0WFg2MUtEdGcyV2gwYzdQNmRVTXFLb3FUdy9JUTZm?=
+ =?utf-8?B?UmJJbWlpSVpPb1dZbDNUZGFzMkVYakpDVWpaZWQyVTIxQlR1STkrQ1ZQNUVp?=
+ =?utf-8?B?WVlrNU5YYWdvSDg3aGs1b1BBanBGVG5pL0xraGRNYXkybGM0ODNCQVRZUFV6?=
+ =?utf-8?B?RDZpMWxXRUtXMzRpQXZQTEpsQ3ZzZUJqUWt0cXh0SDFtOFZZbVh5S21CQlEr?=
+ =?utf-8?B?Z1dJZWlUZ0FtbklaR3p3WnBrVzUrSHBCcWZnUXVhaDZkaFVOcmpyUEJJWEtz?=
+ =?utf-8?B?TEM4b2hCdTFMclZmV2drL2tVbitrbVFpbFo3UTYvYVE2WmF3SmljMWJ6aEF1?=
+ =?utf-8?B?eXJtTEJtbWVvanNaZ21ucGUzOEQ4QlFKYmVkc2RKNXZ1bzU2RytmQmxVaVRa?=
+ =?utf-8?B?RFZvdlhGVWYzK09Id1VVVGZjSVV4eGZIOUNrWVI1Um1XVWtsb0E0b1FhaUc4?=
+ =?utf-8?B?MkFIUUJFcmhMSDdjdFNMWXJpdEtYbTN5ZjN4dEQwUjkvTWlwVllSQ0xMbTFv?=
+ =?utf-8?B?S2RwOGIwUmErb0pZRFM4RFR2QkpZbEQyMnBhM212YUkxQk1BaTFQZnJ6OVpM?=
+ =?utf-8?B?S3JRSGhWamY1T1RkSHNtSzZRcWRrUVRHRzZKTzY5RnN0Qk1RNjRTUWxXZE9j?=
+ =?utf-8?B?OUN0N1JlTGlNdDdaN3lON2J3a25acENYMGZiTkxXVjFwcVUxRWtyejNveVg2?=
+ =?utf-8?B?ckdnbjh4RDlOaGJtdXk4YitIalFlRjV3RGJRc09YUlpVclBvcjdscGUvN1c1?=
+ =?utf-8?B?SUovb3FsU3JFOFJmbzRuMzRxN3FhUS92WFVaVlcvQXR0QXRMOGNMZTRNMWFy?=
+ =?utf-8?B?bUllY2NFV3dOZWhjRUY0WExLQis3WGozRkYvM0dCc05VWVplNEluVlpIUFBr?=
+ =?utf-8?B?eWpkODhKbHdxeUx0MWNHOVhYUmxSMDVlYUJTd2hwcGRhRm13ckhXTXhIRFA1?=
+ =?utf-8?B?cGxCZUxwQnB0OUR0d1ByL3Nkb0FDOW96ckFsdlNxY0ZCTTVDUi9Mc1NUY3NN?=
+ =?utf-8?B?ZjZsaW9tMlJlZXMzYUZUZmlCa1FCSmhRWXVMb05hV2E1TnJSdFZ5MHFoTjNz?=
+ =?utf-8?B?TlJ3Q0ZBM1NZOHEvcUpFRzU1RDEzdExhM2hOK3IwR2sxNWxFaG9LMDI0MkNm?=
+ =?utf-8?B?NVVHdE56eTczSzhQbjR0TGFGeWJudUI3QXc1STBVQ21HbUtEZ0t1ZG9LOHdy?=
+ =?utf-8?B?RitvUk1YUm5qYStsSUh4ckswbytscEIxcjNFMitlSUw1L2d6bDdocHAxU3o3?=
+ =?utf-8?B?THhyOE9MUXVlWGltTmh3b2svNldwSlN3L2pjNFd4WmVERkJidDJDRmhaZmUz?=
+ =?utf-8?B?V0hBSUZBTERLTU1saXBwNHFQeWRiaVh2M0Z5WVNpQ05vcU5nMnJKdUM2NnBx?=
+ =?utf-8?B?Q0V5S1NpM3BrSHZNamdUVXFxZURpbVRvTzExbHRRdWJkSFhVWllIZUMyNTVp?=
+ =?utf-8?B?YUVDdkVKcU0weitGTEs4ajVzbFB1K3JHdEhrL2hUTndseUp3WG9QU2VyNXVI?=
+ =?utf-8?B?d3dQNi9vbWh4S3JIVGZ6L1pmVzBkSFZ0cndxSFRueStCek1xRjNzdEp3dXpx?=
+ =?utf-8?B?OU1WbE1pYU1QbWpBNnNSbTBteVY0SVBQalhPUG5YRkd5TFE5c3lFb3FxcnBF?=
+ =?utf-8?B?elAxUHRLUkJrWnVQaWJwWjFyZW81SSsrdGdjOFVuUW0wSWg5WWM2NzR1dzRU?=
+ =?utf-8?Q?9z09GS0wzNWcPH2cSooTKUOmnmUrEBg9?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZzkxZU9SWGVIUkZsWEo1ZkhNclpnWWIyUHF5c3V6TFUwdTBVVCtLMllSMjRO?=
+ =?utf-8?B?ck9WK1BNUzRXNkphZkgzZHNNeFdXMXZ5Z2pVSUpWT25UTHNWMzliVk0zRkVW?=
+ =?utf-8?B?SUdFRWpTQ3VDQ3dtWEJkWk1MVm5lMTFUdGVka0NpRHhEWWpDNk0zWkRUSy9s?=
+ =?utf-8?B?YS9xanJUTGdDMm9RTmxpaW1WRGdBcFZDbW1HeTdZV2tUaVduQ0VPZ1JDWTRh?=
+ =?utf-8?B?S1lySEkxVWFsSFBwcWlFdkZxc3FNQ3BDd2pxT0dtT0hvQkcra01FbmpWWE53?=
+ =?utf-8?B?L3E4bjFTUm00UkoxdjhtT01KZHNwVTJCZHExSURzWDA3bVdST0dOS1Y3WDdk?=
+ =?utf-8?B?VWtmSU90amlxN0NoUGh3b254K2VrUEovODNycTB1dWNZeHQ4Rkh4RzFKU0JK?=
+ =?utf-8?B?Z3JaUy9oMjhXR3FmNEJib1FJZmw1cWZoOTVQUTdkMTJoRzFTUHcrMlV5djBN?=
+ =?utf-8?B?bWZtMlZKcnY2SnRqcFJNUHZuNjVpY29rT1dqU21xYUM2WU9YQUJ4eEZFTVB5?=
+ =?utf-8?B?Y0hhVzByeEV3NllhZFlFUWhPMFBPbFBBZ0w5aitHK2xFSk8waFByZTlwRnVs?=
+ =?utf-8?B?MVZvZEZGN1A1disyL1UyTlYxWCtGWHFWR2tzeXZnY2taS1R6TGN4MDZQN3k2?=
+ =?utf-8?B?dWdTa2oxOGRBbkxOcExVcnQyVStvaGZEN0lNSC9ER0tWZE5rdDYzSFN1WVNq?=
+ =?utf-8?B?b0tYNjMralJxNWE1R2hPbXhZNDQ1VjR0WkdneE5NdFNzdkNUMkRwVGNuNkZv?=
+ =?utf-8?B?L3NLVGVjS01QRURpdXZCQWdzekxzQzc4bWRlM2NOejJ2QlZmREthNExnMVhv?=
+ =?utf-8?B?NE1CM2pHOU1GMXFOdkJJWFpINTRFa1FBNk84MmZBZjNmZk5FeW1qblhzdmRh?=
+ =?utf-8?B?RFlqK2FrbVpVM01ldnVLSzk2ZDBpZWNjNDdXV09iVWpMTkVsalhUR25mYy9h?=
+ =?utf-8?B?TUZ1NzNhNVNVQ2NVdkpNUHJOQjN0ejVrZUtBTUpDUnVWMmpadGNWVUR2NHJ5?=
+ =?utf-8?B?clBZWW9KNUdXcEo3ZWt3ZE40QWIyaWVoRy85Mjc1VFQvc2ZzR0pKbGZkS3Vn?=
+ =?utf-8?B?UzNyUnRWRmNsbUdxaGxQZmdkYjVwbmkrQVhkRFJoSW1Dem83dnpoc2d0VTdl?=
+ =?utf-8?B?VnBnRFJoRlZ5aW1tN2xuTWRWNHJJTkEwbW5EOUtvVUh0cnFmemljU2FQRTNN?=
+ =?utf-8?B?d3ZzNThoYk1RUm12ZGx3bFYvbFUzMzdsWlhtVmp1a3hhSWRKcFB2V3NCeUNW?=
+ =?utf-8?B?NGpVS0tFUi9vVjM2NWxLNVcwbWg0cHR4MEJ4REFjMHRxU3NiSXR0QTNIWnJ4?=
+ =?utf-8?B?U3hCRXMyTWNQa3BrenlBR3V0a0ZEVC9QdG9ha2Ruek9SUEsrK3NncTh0cERj?=
+ =?utf-8?B?NkdxSjYyT1NCNTN4Q0FiZ3p5alkrZjVSU2syWVVRdmpVYi9yNENjb0pTd2xr?=
+ =?utf-8?B?QmIzWUJmV2k5VFYxMGE0czdmRng4dkEwV2lKdVdMemJlQVE0TnlXdjQzRE04?=
+ =?utf-8?B?elllWlNWU0NXK1NoNmtLYUJZbE1DWVNUOTRZWHZxb1VFSGlHQ1djOFJsZmdC?=
+ =?utf-8?B?OXcweE9xL0hBRHhrM1dTY2xxTWkzQUxxWW15cGc3ZmNiNkFvdGtTdDlrS2J3?=
+ =?utf-8?B?RE9QbEpZNkZOOTM2T3pQcVpWWWxLMktkekJLRW9SVU42SHoybVhNU1ZVK0J1?=
+ =?utf-8?B?eU5sOE5PS0ZQZnh2SExMQXRpSm5zV0Vtd1NxWjlZY01Sd2p5ZUg0RCtacmZN?=
+ =?utf-8?B?cHk5K3pESG8yYzhyWmF3d0c5ckZKMUlBV1pxeWFCS3hFN01QeWZoVW1WdXo4?=
+ =?utf-8?B?V1FFLzN4cWZJMVBIV1FTSW9Gb0dWUFJEYVNnWGR1TU5pa1NGNmJmVmsvZlhB?=
+ =?utf-8?B?SCtqNlZ0ckk5ZnFjWHA2TGFDZ0t3SHNZNUJwQXNPenlBU3VPQ1AxTGdPWDdD?=
+ =?utf-8?B?bnBEL0xqQUVxQzZWQ3JVTGl6NDV2SmdOZFFPRGhpNE5vdlJoc3ZuZWJVOERE?=
+ =?utf-8?B?Wi9ZSUQwcWJIOXdGa1NEYTkrTVRxNlkwWlZ6OXR4RXNVQ3JFd0VnZmlqRkVy?=
+ =?utf-8?B?bWpTUkNBWEV0cmNEZ0tObWcxZE9sQ2pBYTd0Z2RNbTFvM2haMlFLaFJyWUJo?=
+ =?utf-8?Q?a9OgxAb5CqOmFs+GnwpSwgdac?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 174ef180-5645-4480-f2a7-08de3e4d80f9
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 15:52:53.1687
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NBiqyvH+0AEKxGVFKEWBsuFKjzOJ3Pk59Qy08e9vizoOcMDhz6KCjq4d1bIVy08j
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5825
+X-Rspamd-Server: rspam02
+X-Stat-Signature: mkijgtkbpg3yrsx7yatjbj6d6f4cjoib
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 316A52001E
-X-HE-Tag: 1766072485-591925
-X-HE-Meta: U2FsdGVkX1/jtu12hMGcFGHfKZEuXlC/cuFfPKO0mCpwu+n/VDEdJ3wxtmKBtJevoIqwbXdLvGl8kLVPkUpK48Do7crwGoPWPQd67lZDW+WWiNCEexdb8LrKoqYXXKaMEfpqkmgN3fO+T0R32f8eRxSd5M06IeiJojCCbRrCM6kWGGl7qqbtvJ0Iwx2kLtSEAmMyEQ4eqgJ6MkFYNEGQaw1rdLaOmXnhpU/LdDUNmYqYK0nDnPSQdfcd3JBTTLZc6d1zs+LvLLtUpfQ7BTe2yxzvcb6oq1Zd/Cy73QSNr6DYBS4wUtm3n0Oi5R60aSjVi9jdnD+E4S3s7CXHzBGiH4HgJAt75rUfTikYKW5ZddmdW4JRPtUr54aITxIA6tswz461pFlG5RaDYGInvcKVux1d/ShSoPSJwznbhI5RXdM0OMOO4yoRV8qmOK6IA5mFEQ7mAdSvOgC+5tMuQ5/sCNgH54vQz0vj/CMQi6nGCi44QTYJhK4+6Gwqsn8pp+YOD8Tpsmx7sPvOU/VhNoV1YZDnMK5bHiZygBcfS2ETegC3FAlQ0q15ELNVML6RvoQacl/bVq05fIrdz70XiNbQzv3Ct371L+Cqq4q/Rww7VEIcwW/JnUUF95ruQ/A8bUeGINNW625cqmcu6i+a0h2uDns283DPNNh7hWFgTTVJrA3SXNCJ92Qo+bneK4Q15/1oUsuPydsCsV3UcMnaAB4jidZw67J+AiZTxPqeIwEhVbMabrlZUq3M2fk7jUBT28q78C0kn5M3vNTfYo2vITdRHBtVtiaZQ09y6dn5o8ZQAdb26FUGc+hrR4272/VdFvfLz4YmG+EMOKlzitP7kljYcUj6xDUIp2MhKcEzkZbJhbNFnDmMLwGIoO1Bsbo1CgtRHayRmdb++Yj8rUjFth2bMSnZnWoZWrp4K8C8qFuS5oUjleku94bKONBoqGRb3dJ2tu+F7pR6jKCEPgY9tVN
- yi4toDo/
- c2Rzah97Um9gbUgRwt0+PAY3EscThLtgbN4Ouv/LNtCRWZpu+IpAJtDdV1EqGdlGqfTbkD53ny+OvHPikaNWsAKXdMhVD/YR3C8w+zkdY+yXuPgkaXfRjI7FHlp1UfXCGXWn2tA3EV2mM+ROkyybHxxLI900xeJOi0bnF9Je9fRnd0gu/e4KaNK96iSrdkR0h1ZO24Eaq9GbIaQdRCqgWmqfrlbdSR8Jf83eNbcCNn9bv4rM6o6TvR5kiog9wEk7srFCAIjGN3Kyo8L9MTRzsCmi38VBD8h96Vwp7MnDooSQCN6ZjYTPm+eBpKX0xnqViNlHMtQh0CO7mkKihrgq4XBO488Lh4n1Zix1oDyB9Om8aFWCg2Prr+70s5OnYmlLW54iLaNA/BVqsaEB6YofzI+nO+RRVZ2UmE5E4h1UXbes43MqnAHLAFNxrDwRjuWo/8hxgLp8o2aVzhhlwkl1c2qBCj3mmsMVG2Wg2+iMFl00wzpfyJGvWcEfBmumNX7SVgf8q
+X-Rspamd-Queue-Id: 3F674A0016
+X-HE-Tag: 1766073178-14729
+X-HE-Meta: U2FsdGVkX19AGkEXuLLQ77ZSC0Z/a2fFSKhr342c2xU41RfAKjepBs8OjqQpr+B+AHcpOcoT9u4+SuChI8sdH61rAxxoJQym9yolpFelzDb7/B4DvQlAn9+5pkjALPbxDCukmEZyBJ6VnSW4V1fNXPg2SU6421QhzIV0+tLTh8Rs/xp2FKKl1MfmkIGEiTGImePsI4pxK74og9YYeSUtpjJczGmMyAXhh3c+fiHFIwiDcFQZ++L57ww8IBGPP+rd2hM+ifUelV255LsYjGD3BSSxWuTyfqtOCt00g5rckdc91EqmjDOBokf3cksvECG+VF6AaUOqNF58lxenifCGl2ycPRYtRJup2tfRBW16idK5GOw+S2K7Yv2iWDPtXfbcSKwZHEZygm28M+x0qeP+ZS4383Fo8FdlglLUM5SoQxbOkX0SbL/lmCbqyIkFo6m93f6kD7w7JhvvSDJz94wl8Ix/Uky0JwxALflQExloY6xkB3MjbiTwNC3DJn2ToYVlLEwz0t0+V1A2qwMotzknpcRfieagj4oLQYuVVuW5Tn6GIpH6Xw4paHFk66Tvp5q4U+LBNPho0vMEDD197DLMrPVOHf0L21HmJXOeDqfpw62w6tZjbqq3aWz5XRBn+EPctFO4CaqH2/cNTguEM+NzlGo9n+05N6hc7A+RROKx3M+AEQFLiTY4a4tKMa58+dDK4QwoM6SWG93E6wbBylcWzpWVNIILoDqogcd8raMuNUCIbOeNS5vOIrBiJbgSYbehsv+Wlnx+ZXFCq6crqqEw1nHNT96koxjCrubD5cQnGB+3OuMg//ZB682dqtFp8u8WghGWVeWdFAnktNWuwd5paJeOBpuDF6oShIgJkUNXxBoJtOlzvKzUoNBckzyp40e422JOjVgZeur+OKbWivB+MWerLgxzy75ZOZHQakQ0CZt75D3BdrdWgoCqb+GBS/YsCaIcZvpEG8QYBB3MJ1S
+ ElsiWBDg
+ m5h7GNIC3Lx0yc7/nhhAnsPn7XN/JdhUInGwdgGsKa6lEYZsITqNhSQWM1KGFyztMpT2sFeEobW8/CsXaUZjMaW1mm9+2lCFzLMAMzuNvTw4UcU2wUKC2zNLim2M8/qtGxh8C4tG/6vIF6jmnVVrtWy9jKVi7h8K/075AK7VGgeKid4Ni+KSqAnNUPbiWSwHp6wTxAw8qGmF6fNTrleIvp4zqAFtYpV+q/q1iDXz6y6BqfDqnalylBIfC6DVptrDXXw139kPSisHWbHEJvAImSSuVwNCogVXilBgPVEW91eLsjKGQT27jreE6QqysBneq6AHj1BqNDvBAVCu9W+BiKUdt4QupMF9r7M+pzOEUAqhuid04BPBmkYujW490jcSMAlO3d4RtjksBgOfXcpJyk2d7sfZO70IY7KXyDQGRQwo9oJE1QspnUljnBQWLb48ziLHySdg6ZUQkx0yd66QiVGl4v3wwWCwx+M9E
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,73 +209,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 08:43:29PM +0100, David Hildenbrand (Red Hat) wrote:
-> > Yeah, the function itself makes sense: "check if this is actually a
-> > contiguous range available within this zone, so no holes and/or
-> > reserved pages".
-> > 
-> > The PageHuge() check seems a bit out of place there, if you just
-> > removed it altogether you'd get the same results, right? The isolation
-> > code will deal with it. But sure, it does potentially avoid doing some
-> > unnecessary work.
+On 18 Dec 2025, at 7:54, Kefeng Wang wrote:
 
-In separate discussion with Johannes, he also noted that this allocation
-code is the right place to do this check - as you might want to move a
-1GB page if you're trying to reserve a specific region of memory.
+> On 2025/12/18 3:38, Zi Yan wrote:
+>> On 17 Dec 2025, at 3:02, Kefeng Wang wrote:
+>>
+>>> On 2025/12/17 2:40, Zi Yan wrote:
+>>>> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
+>>>>
+>>>>> Introduce cma_alloc_frozen{_compound}() helper to alloc pages without
+>>>>> incrementing their refcount, then convert hugetlb cma to use the
+>>>>> cma_alloc_frozen_compound() and cma_release_frozen() and remove the
+>>>>> unused cma_{alloc,free}_folio(), also move the cma_validate_zones()
+>>>>> into mm/internal.h since no outside user.
+>>>>>
+>>>>> The set_pages_refcounted() is only called to set non-compound pages
+>>>>> after above changes, so remove the processing about PageHead.
+>>>>>
+>>>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>>> ---
+>>>>>    include/linux/cma.h | 26 ++++++------------------
+>>>>>    mm/cma.c            | 48 +++++++++++++++++++++++++----------------=
+----
+>>>>>    mm/hugetlb_cma.c    | 24 +++++++++++++----------
+>>>>>    mm/internal.h       | 10 +++++-----
+>>>>>    4 files changed, 52 insertions(+), 56 deletions(-)
+>>>>>
+>>>
+>>> ...
+>>>
+>>>>>    static bool __cma_release(struct cma *cma, const struct page *page=
+s,
+>>>>> -			  unsigned long count, bool compound)
+>>>>> +			  unsigned long count, bool frozen)
+>>>>>    {
+>>>>>    	unsigned long pfn, end;
+>>>>>    	int r;
+>>>>> @@ -974,8 +982,8 @@ static bool __cma_release(struct cma *cma, const =
+struct page *pages,
+>>>>>    		return false;
+>>>>>    	}
+>>>>>
+>>>>> -	if (compound)
+>>>>> -		__free_pages((struct page *)pages, compound_order(pages));
+>>>>> +	if (frozen)
+>>>>> +		free_contig_frozen_range(pfn, count);
+>>>>>    	else
+>>>>>    		free_contig_range(pfn, count);
+>>>>
+>>>> Can we get rid of free_contig_range() branch by making cma_release() p=
+ut
+>>>> each page=E2=80=99s refcount? Then, __cma_relase() becomes cma_release=
+_frozen()
+>>>> and the release pattern matches allocation pattern:
+>>>> 1. cma_alloc() calls cma_alloc_frozen() and manipulates page refcount.
+>>>> 2. cma_release() manipulates page refcount and calls cma_release_froze=
+n().
+>>>>
+>>>
+>>> Have considered similar things before, but we need manipulates page
+>>> refcount only find the correct cma memrange from cma/pages, it seems
+>>> that no big improvement, any more comments?
+>>>
+>>> 1) for cma_release:
+>>>     a. cma find memrange
+>>>     b. manipulates page refcount when cmr found
+>>>     c. free page and release cma resource
+>>> 2) for cma_release_frozen
+>>>     a. cma find memrange
+>>>     b. free page and release cma resource whne cmr found
+>>
+>> Right, I think it makes code simpler.
+>>
+>> Basically add a helper function:
+>> struct cma_memrange* find_cma_memrange(struct cma *cma,
+>> 		const struct page *pages, unsigned long count);
+>>
+>> Then
+>>
+>> __cma_release_frozen()
+>> {
+>> 	free_contig_frozen_range(pfn, count);
+>> 	cma_clear_bitmap(cma, cmr, pfn, count);
+>> 	cma_sysfs_account_release_pages(cma, count);
+>> 	trace_cma_release(cma->name, pfn, pages, count);
+>> }
+>>
+>>
+>> cma_release()
+>> {
+>> 	cmr =3D find_cma_memrange();
+>>
+>> 	if (!cmr)
+>> 		return false;
+>> =09
+>> 	for (; count--; pages++)
+>> 		VM_WARN_ON(!put_page_testzero(pages);
+>>
+>> 	__cma_release_frozen();
+>> }
+>>
+>> cma_release_frozen()
+>> {
+>> 	cmr =3D find_cma_memrange();
+>>
+>> 	if (!cmr)
+>> 		return false;
+>>
+>> 	__cma_release_frozen();
+>>
+>> }
+>>
+>> Let me know your thoughts.
+>
+> Yes, this is exactly what I described above that needs to be done, but I
+> think it will add more codes :)
+>
+> Our goal is that convert all cma_{alloc,release} caller to
+> cma_frozen_{alloc,release}, and complete remove free_contig_range in cma,=
+ Maybe no changes? But if you prefer above way, I can also update
+> it.
 
-So this much I'm confident in now.  But going back to Mel's comment:
+If the goal is to replace all cma_{alloc,release}() calls with the frozen v=
+ersion,
+there is no need to make the change as I suggested. Are you planning to sen=
+d
+another patchset to do the replacement after this one?
 
-> 
-> commit 4d73ba5fa710fe7d432e0b271e6fecd252aef66e
-> Author: Mel Gorman <mgorman@techsingularity.net>
-> Date:   Fri Apr 14 15:14:29 2023 +0100
-> 
->     mm: page_alloc: skip regions with hugetlbfs pages when allocating 1G pages
->     A bug was reported by Yuanxi Liu where allocating 1G pages at runtime is
->     taking an excessive amount of time for large amounts of memory.  Further
->     testing allocating huge pages that the cost is linear i.e.  if allocating
->     1G pages in batches of 10 then the time to allocate nr_hugepages from
->     10->20->30->etc increases linearly even though 10 pages are allocated at
->     each step.  Profiles indicated that much of the time is spent checking the
->     validity within already existing huge pages and then attempting a
->     migration that fails after isolating the range, draining pages and a whole
->     lot of other useless work.
->     Commit eb14d4eefdc4 ("mm,page_alloc: drop unnecessary checks from
->     pfn_range_valid_contig") removed two checks, one which ignored huge pages
->     for contiguous allocations as huge pages can sometimes migrate.  While
->     there may be value on migrating a 2M page to satisfy a 1G allocation, it's
->     potentially expensive if the 1G allocation fails and it's pointless to try
->     moving a 1G page for a new 1G allocation or scan the tail pages for valid
->     PFNs.
->     Reintroduce the PageHuge check and assume any contiguous region with
->     hugetlbfs pages is unsuitable for a new 1G allocation.
-> 
-
-Mel is pointing out that allowing 2MB region scans can cause 1GB page
-allocation to take a very long time - specifically if no 2MB pages are
-available as migration targets.
-
-Joshua's test demonstrates at least that if the pages are reserved, the
-migration code will move those reservations around accordingly. Now that
-I look at it, it's unclear whether he tested if this still works when
-those pages are actually reserved AND allocated.
-
-I would presume we would end up in the position Mel describes (where
-migrations fail and allocation takes a long time).  That does seem
-problematic unless we can reserve a new 2MB page outside the current
-region and destroy the old one.
-
-This at least would not cause a recursive call into this code as only
-the gigantic page reservation interface hits this code.
-
-
-So I'm at a bit of an impasse. I understand the performance issue here,
-but being able to reliably allocate gigantic pages when a ton of 2MB
-pages are already being used is also really nice.
-
-Maybe we could do a first-pass / second-pass attempt where we filter on
-PageHuge() on the first go, and then filter on (PageHuge() < alloc_size)
-on the second go?
-
-~Gregory
+Best Regards,
+Yan, Zi
 
