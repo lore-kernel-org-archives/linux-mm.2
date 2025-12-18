@@ -4,120 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129FDD68BE1
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:42:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0099DD68BE2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:50:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627726B0088; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
+	id 6164F6B0088; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F8406B008A; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
+	id 5C4A46B0089; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 525546B0092; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
+	id 4D09B6B008A; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F7266B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D784D13C26A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:42:10 +0000 (UTC)
-X-FDA: 84231647220.29.C79B3B4
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E28C440002
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:42:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ej8IKp0d;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766040129; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A7896B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:50:37 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E00F061015
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:50:36 +0000 (UTC)
+X-FDA: 84231668472.01.AAE257E
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2F8ED40004
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:50:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qqYeirWs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766040635; a=rsa-sha256;
 	cv=none;
-	b=3GgtUps8jkkZaqEDMvY0VjU27a+VZ7NAVa64PvxbhTpB5Oodfq797EPAs9r+G/HC44SO7p
-	HSOFA1xM+lJ7uj1r4x+Sr8pI6teTOsJnYDCN0Iq1bgMLOGOJc8+5s6o2d8AoTeIRordgwG
-	xblgSSIy0AqIchgA03swd3ffC0zLw+4=
+	b=PyRDa9lzqBIlRAu7mqP6rkWuw9aUfmBX1AI2rcExAaqlGZxNkigo0aZzR/dDln/sza8aS8
+	ImBkt4eI214kdnApx20fkFw1F4GMH/nS9wsEUrbkL6Itg0Gl2yxUN36jxguYNtT5wzl8VW
+	YiUPvYZRq+ye1GWoaX+yuEdO6ZijXoo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ej8IKp0d;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qqYeirWs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766040128;
+	s=arc-20220608; t=1766040635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
-	b=hAVuzvDnNvPc3rga5IAOGhLedNPPsdzRekvawYEmm8QVXMyAhcyrQOmFlRg3KDuKPtHkAf
-	V2GPNpEJtuBomtQ5nVVLpwOySIt2BLUMUpwn6Y2iDt3fh1qHBpM0erW3SwQskSBhXTQAE6
-	+1vcFxq3vTiFWFGqNC1BmoAKVMdQ9OM=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29f1bc40b35so5871635ad.2
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:42:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766040128; x=1766644928; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
-        b=Ej8IKp0dPESFbXM4IZ5+z+PjcZt6gMhexIekqxkxk4CdmxAKASp9JRjd8sT7stavIH
-         EKldLmnQ2RUr5IVgw8xkCs6eTTnm7Gx3QkcOXCds7ZjKCDfU+pZK14XqnrgTLczF/3IS
-         +miCkBtCHDxdve579Eb5Ta/8DYm0X8mqVEaPcS9m/MnyiZw8cFRm8ua+/dEBMuV42UvQ
-         2RZQ8MKlgAPSngfQAXQhgRiRA6BfQSdE8IBpg3WATCPFgFy9vRwNtQh+5355KTTLegjk
-         O/77BVVBlSXfP8qCUwTXR9G+ivPUgauo4pCJsOzRzpeJETapxXjtGA1Nd6Cs1QFOD/wC
-         ArcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766040128; x=1766644928;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
-        b=JTZP62F1foljNYjHru30FGR1Pz5WVPUyUI3PtNiruEuS9EM/o0VSCIpmFFCImJ5vwB
-         3P6gxqZ7bg6WRzBH2cuet2ZGNSwu3Btd6NvODJ0wzpoEbB9xGHupQd22Y988j+qVocU4
-         2F944PG+Zt4zxu/l7IA3YzqjcGFFix4CFhBQ2Hz7U1XUitLT7FSPIGm2OTKwJfLPFx5F
-         uakx/BQpAOdyDKcPF7WF/TSn+Y35f7er27UPLfxTKcgtE+R9RZfcosMytpgL5f9yZ8pU
-         px1vMoFV1G/qo8PyMKQDCRl8+Qjpccc7NfMtewwo1C+maQwspci0B7RW31lyorfmz6/d
-         vOVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCyJn5lDB3JfyeCi2yMJCYW8DIcWQXJt9u+WJAMo+NRi2M1An+AgF9d+C3YTCUm0j0xPmQ3MFJ4g==@kvack.org
-X-Gm-Message-State: AOJu0YyVJrcyTcZNwgm9RW4+Tp8nqTAVtnHMYwfBGcR/JiazrsRIKysF
-	5R7HdFCBc2dL/cTX+IxfUNxqIODJrK1AESEkFoVF8EmKx+/Vxdm/jJJ7
-X-Gm-Gg: AY/fxX4qnweP7Qleqky/UMi6WXokHYo2Dgs0VHrh7oZQTWSjWc6a2+q805FSvmQQ4RB
-	rqf/Z2Hj6gQc3JlhpCyRv1H9vHL8jvroyb918xFIembabuv7s1pvhEB/mTZyg0obr0/xi7ZJVjB
-	fdgb5AEMEcduyas6hhpveyBW8K/T8KOxaf+XmzT62TnxZI1R5eVkIIgXTVx0TTS3Hqe76SpsXSs
-	YmsjcPqiTTaLbyxTw7ISuqP4ua8C9nzPzhINxWKxJmfaGK/JVnmdR7EM6VRFOTr1DllnqHz9zgX
-	V+5cIBPYU6ZTV3hV6l3NE+/Bzc3JJMxf9zzs4DZQFEA9dw3gSkUkExK6/yP+p0IW35Z3Yp5DrYC
-	q9E2JrnjbsHWUuNk9BfbEmayV3azdHaqtcOWhiubP7KaLpSZu67gTTcVPbJlVoH5t7qpRxsXq0G
-	pV5FxFHWO9sou7YJzbyy8=
-X-Google-Smtp-Source: AGHT+IFERotbTi1a6NxtaY6J2+0n85N9rFTKph8nNdTT7abq8KlJPV8QdumgT/4wKWSussCpD/Mq7A==
-X-Received: by 2002:a17:902:db10:b0:299:e031:16d with SMTP id d9443c01a7336-29f23c736d0mr219074165ad.33.1766040127646;
-        Wed, 17 Dec 2025 22:42:07 -0800 (PST)
-Received: from LilGuy ([2409:40c2:1022:14d2:aaa5:8d6d:efa8:e19c])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a2d1926cb0sm13498585ad.69.2025.12.17.22.42.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 22:42:07 -0800 (PST)
-From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: swarajgaikwad1925@gmail.com
-Cc: akpm@linux-foundation.org,
-	david.hunter.linux@gmail.com,
-	david@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	osalvador@suse.de,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize online check
-Date: Thu, 18 Dec 2025 12:11:53 +0530
-Message-ID: <20251218064159.7230-1-swarajgaikwad1925@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251207231056.71294-1-swarajgaikwad1925@gmail.com>
-References: <20251207231056.71294-1-swarajgaikwad1925@gmail.com>
+	bh=dW1sFUrpgDlh6EpvXxN9ly9S/e1gx9r8RyoILFDsHvs=;
+	b=JSZ3lf/3NomPN/0RmKF2APwTHmDZxknRpLrxj2QPE+jNNNZrEiDz6ur+0dmfPKT8yMIKO4
+	a5JK25uGIqLpQ9NRW+w783yztH7q80vuNKq61hY5JfVUYH5z+7Ma/GjFelR5qyg+Vdo8Da
+	la1HZLClc3SfTxLbHnXLl77UP29fkcY=
+Message-ID: <4513ee04-03ff-4de0-bbf4-b5b35dfd41ad@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766040631;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dW1sFUrpgDlh6EpvXxN9ly9S/e1gx9r8RyoILFDsHvs=;
+	b=qqYeirWsSALh+5MJ3vqdKKt01VPxpqJMm9SbwN9uQ2gnloClPekoB/b0dUyK0Q/KKCItnz
+	lQxU2gJPqVR6ATWE/UNNaLHwgFbkLxIPksppMfCKHALKrQuapRMg2sVGEJQXMUT+PkABkK
+	4+ude2eYI1txPiaCzHrkn0AnpdXTx7A=
+Date: Thu, 18 Dec 2025 14:50:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E28C440002
-X-Stat-Signature: 1zde3fb1td35in6kt1k6r5bajb87pfw7
+Subject: Re: [PATCH v2 14/28] mm: mglru: prevent memory cgroup release in
+ mglru
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <ab60b720d6aef1069038bc4c52d371fb57eaa6e8.1765956025.git.zhengqi.arch@bytedance.com>
+ <aUMsQPjBtYtVWjwf@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aUMsQPjBtYtVWjwf@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2F8ED40004
+X-Stat-Signature: bk5obq9f7riqxd97i48kzz5rirf1fotd
 X-Rspam-User: 
-X-HE-Tag: 1766040128-87044
-X-HE-Meta: U2FsdGVkX19F7F8hwvTndxd+3j1st/1I9hfwwsh5rnDIMlBsTJcEKcitnbau6e6hyf/9+MdaGbcdAXdIBLa7sX8iUk3JsxqD9crZXYWxBUBKr8EzSz23oJbMP/B3LBeRI4apgCO/SDV3Z86CgDGGJq8ONkdFZ7vgQzjDNWiNWqq18CmnuXqFFGPNHFY9W84aV816MpW9j2YxCzFJzm4i0rjEWRgl6w6HB8g9doCtpNPZXFocqILdxwXcEhKRiNtjNNhirxAD4etSyjnjVcw7RgU8aY2ibCfIHQZxaT2Bi9K7ZzlQTrDQBNavp7dhSsuAZT/Zjg0/9cyGCGh2+yVaRZ9NJHWZ24xaT/CBjRcsCKKI3QcHHNZgYUc+BkUFuIlSI7h/+n2S5yzSm2ijyTJFkqbHOoLfykTfZZu9zlgKpWHodRZqHSujV87Ug1zudUuKJf5GKTmpoN0BMHLz+c3Cqlnu6piiZMMQj09gw1YuzVnKaXjrv46Qz6mPBkFCgm2F25yleXxyQatOSWh1gqt6vyPBtE3KgfbV6VG4kQzqTdZvt8864gCofxBJFdchzNzsgFdXrHFERAuRDPO3fmHImr2x+q74f8HSHybyock5y7U4UZAEzJkq5azae50Zwdd94jt51cfgHj6YpiHdCtQ5oFltrkkOVCXCwI//oQBr4siV2DcTjuN1sO+SmzhfxNk6lZPmzqnQzc+nmPPV2khRcIvLtxlZLf6UZMoZh7LJ5g/kn2/X/dUDmNPa/2fMJu87Q1XnVoCTH/sOtIDwl5bz7mu7SDP/4g/kvCuquz1UfC1SKeZKkQ745fUpvihWBglUOG23JaRUJXiBh7rNt7PRMZQNIgV2UpYXyLHn40udLrDuBNulBFA89mZP6N0syrXVCjANDuoIXAsArTjfOWEK19tbWCPTS15jAYz+xTLwVwmHDLZz3ytgcdDUyGYk10eKGVPE+j0tcnZzUv+H7Zl
- 6M1UUUji
- cxfo6mVQHqQz3K0icXi+BXfl/mibyoEU5hAwmqw0fTSI/7TLdM0DfTL7KRXDqamMWJXG+dDoXFMQppwzVUTM/SDHjzd6M3DilCAm4E3gvfflZ0L+MHv+jF+cgX3K85RI3UDlRpkR3CMBWT0PhGKjIdNe+53uvP9W6DvlW3GrLd2olTE5RmJdW/LA0pW0rYdDvK7WDdBenX6/al3keZdJmjJ7NF1r5wGzN6ysw7hFOkPQNg7Tb9h9kpKkXH5iFjBzTqkSf4AC8I7ATI1GnAT7bsH9iIATP5oXePa4LACJk8SDA32Qou27doaypqH3zfwd0QqKAtT8gI9qWMLcRGm379GRVy59LgtUxTqnGWvJViImDnMqtTKplAeQocbnMjvJrdEQC1nxA/cRkR0k6/D0eaDwzD92yO07n4atX7Mj6DJTj/Ht0B0K5owECUXC5s73jMlK8xLCfCZq//qeSWGxuQQsAC6OuNfISh3llaV4PvztEUH9AfTUpCJd03oDkOm34GsAkXPwVmk2mrXMbmKu6Gumhm5qd+0kc/wQWynu4aBy3TmQ=
+X-HE-Tag: 1766040634-826586
+X-HE-Meta: U2FsdGVkX1/FsUfiBSVl7sNmsFS9eRtAghalrXIgsVNqKnzwDFQkJ+MDiM9vJ6eGf0A/HoAnA9+y3BWA9vD+6LEIGUNR2U+OUT99pjErHgRofJ7EB478sfthy3hLIlVRN26MS4ODsXIC8dl2TLz48qsrZppx/U1tCwYnhCRe8NheOumbwiUn4A4kFY0EebFob3T95DHYdhfDc4hmb4j3wyQKoArEnqfe25it0n62gBZpwAN7jG9uZeTSBNJSDaZiZTpPV5hC0W/neJ+pugVmv6AWFLIi8+ESB0CmPuJrhNVxoWsdi2uyAac8bi3SUWzscxeGtVpmEct6UUyJeDdtvz4PaBaltRHrSZ6XeYk7Az98YqF+2gDA9SzCAYA1MzmTL7k4dU7ii64Sd7TPw5+bbd+SXVJSCInu35nNp8BoDhl5lmMCil72B5/uiQuFw10Cvy4UfNBdODaFR13M5TKsbMT0rtwy/WI4qov+QujW9aidN3Yb7zhcTIIZi567XvEcJG4h5mO5RLWLsLtzos+a+IH1FKczgZEJdNf5Vq2aJoSboQ+PvxEs11k+Se/SxTsA/hoL0JWby01/VDpggceYAHLE0jGbGRvjtJ5eZuyWCAQvk8dgO5tQ5w3LsTQu8dDYuH3mcGlq+/6KbIMm2AByrwVgE4PaHs+S29qIuNrSaypuFNLgyIGADqBR47C0EGjtGh6udxODqTOVNM+1CRF38sgLlad9PiK5pnAJRbtogSmUB4rpbh4SWrYUQrmX49nFou2d0Zv/Y32umPm1bvJCVI4vDN99t8QVeSTGpcxlzfIKcNQWLfUKxtFd2xEDl1xe43OMAhDsGyK9/1RnTdaVKaUFC+E6xga4N9YpC6pT71PdW7yNFIYr/Spw35uKfflPT7lbEDKA4mEoCdBPLAaRG8FQwwiMj9RmxFcKr1fWe2FRJ52iVsg0zxZhUuW9FABHWUmYmIEgtcGcx1mk4IQ
+ ZrhLz9iE
+ 61MjMc5g6is5anUxy/p8VQ69VdUw2lMu/vmIRbyfeUw2UaDacKX08629O3itVpnSXDt4nvmr4rueb/NLlz34DEHeRWoMVY7VxYphuOdTZxzboui9bYiuZozoEpAtLRsTHbJGJxRUTkGdOpeTt8WtQhTWbcOQA0UBzOVJv/f7SVfBfWZ9mc50y+pn1yvPCZdOoKBYuS0/paXLi1157pK2SIeDq0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,16 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
 
-I’m just checking in on this patch to see if you’ve had a chance to review
-the benchmark results I shared last week. To recap, the caching reduced the
-execution time for the NUMA_NO_NODE case from ~2402 ns to ~453 ns in my test
-environment.
 
-Please let me know if the performance gain justifies the change in your view,or
-if you would prefer I send a v2 that simply updates the TODO comment as you suggested.
+On 12/18/25 6:18 AM, Johannes Weiner wrote:
+> On Wed, Dec 17, 2025 at 03:27:38PM +0800, Qi Zheng wrote:
+>> @@ -4242,6 +4244,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>   		}
+>>   	}
+>>   
+>> +	rcu_read_lock();
+>> +	memcg = folio_memcg(folio);
+>> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+>> +	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
+>> +	gen = lru_gen_from_seq(max_seq);
+>> +	mm_state = get_mm_state(lruvec);
+>> +
+>>   	arch_enter_lazy_mmu_mode();
+>>   
+>>   	pte -= (addr - start) / PAGE_SIZE;
+>> @@ -4282,6 +4291,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>   	if (mm_state && suitable_to_scan(i, young))
+>>   		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
+>>   
+>> +	rcu_read_unlock();
+>> +
+>>   	return true;
+> 
+> This seems a bit long to be holding the rcu lock. 
 
-Thanks,
-Swaraj
+Indeed.
+
+> Maybe do a get and a
+> put instead?
+
+OK, will use get_mem_cgroup_from_folio(folio) to do this.
+
+This way, #8 doesn't need to be folded into #27.
+
+
+
 
