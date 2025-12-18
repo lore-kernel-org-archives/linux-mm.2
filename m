@@ -4,121 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2A3D6D220
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 13:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51248D6ACF5
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 13:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D430B6B0088; Thu, 18 Dec 2025 08:45:52 -0500 (EST)
+	id 94EAA6B0088; Thu, 18 Dec 2025 08:46:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC6C56B0089; Thu, 18 Dec 2025 08:45:52 -0500 (EST)
+	id 8CE666B0089; Thu, 18 Dec 2025 08:46:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA85E6B008A; Thu, 18 Dec 2025 08:45:52 -0500 (EST)
+	id 7D08B6B008A; Thu, 18 Dec 2025 08:46:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AA09D6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:45:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D368134AE5
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:45:52 +0000 (UTC)
-X-FDA: 84232714944.06.34E773A
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 461881A000C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:45:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Qt19l1mi;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766065550; a=rsa-sha256;
-	cv=none;
-	b=eSaclhWWQxYKx8CTvhfZGKOw9+XThR3HEPz5O6dEH7ORzXw4Jnscww8KLhPx33wLrxd8ky
-	EYZ0roO4ZaHxdEb6EBQGNBsCUWIKAxvU/b6CKL2wz5Vm7QlX7SR4Y/3WEyRg6LIGDgQyOA
-	O7UV6U2zXLnS+BIbIhM5d6YdxYbkMAA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Qt19l1mi;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6C4196B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:46:57 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37F4BB6690
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:46:57 +0000 (UTC)
+X-FDA: 84232717674.23.D982902
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 00D13C0017
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 13:46:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766065550;
+	s=arc-20220608; t=1766065615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pvIGD3XhABoeshtW2+k0QV9MFWwD4zZ6lmu7IG4CN2c=;
-	b=TcNUXka0A6BNbnacldhkD7LQywaOx5urSMqnbCwafn2Zw/0qXLMdtZIltNzo/1oMUY5M1z
-	aUEvv4EeckkQjoCjDx8D0h+0MHaKTaCaAUJ3DTaX5xnqsHKXKhmb/zpG00t7d0ETaJqEJa
-	iSQo6BhHggQOqAMtljWjzYOjkKrLOaU=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b23b6d9f11so65645385a.3
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 05:45:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1766065549; x=1766670349; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pvIGD3XhABoeshtW2+k0QV9MFWwD4zZ6lmu7IG4CN2c=;
-        b=Qt19l1mijht6cqJg9GbJf2zNKgVpdQVTyDDdiYL3axohyIntkgbR0LPxy50nFeAOCw
-         MHjbqQE1AALHZy/Io786Ahg/v9K0QQG0FOkK9+p9cY0oCSLi2V7yQKrong7ycEnDh6bq
-         SnOWw5sSJFlgkTG3bln1oMIx0a3eHscnVvjAD917vApqwkUDw6M7moX5x6MFtVzWN4dO
-         R41aTUb4JohHDJl8bhujrxqsGW9wR1p2nXQb/dqXJaFms7QugJ8Wq0zMdt3zZXvQKWDk
-         NgGZcLQAzBwiT3zVBYj96fabGTkZkZVIgZuuWYrdN7TARGfwDBUMZ4Kt+9rHvtbUKT+O
-         kEpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766065549; x=1766670349;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pvIGD3XhABoeshtW2+k0QV9MFWwD4zZ6lmu7IG4CN2c=;
-        b=VEIRzcluprQHgoUE6VvrBPqu9gNnGWl2GtAPZ1kgwWt9563ukgjL2PHgXqGuGUmbG5
-         5cOgn4SQTPgkIsKYSVDg0j1H3rRR1htiSW+95JBJ4pRuKVbR12ffURxnFWKUjaF9swP6
-         NbK/1/YKP03cGBGizDacmFnXlPN1hReNBH+6RoRNh6h9i8WrAYw4OI5rGG6RE9x4nIlv
-         hSHY2CMG7/BaSjpHvA1vmRLN4aGItHDASICP1FrW+KrxqO/FcmOt3Z4IIJrt8+xrAyPf
-         ArYzgqLQIc9jgdSxmFAizvciRzWVdL26IzRfOeww11hn1NqkS2CSxf2HALi1bruqBbE1
-         PAbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVW7p9QgrUeyqYPJyQaV1XZjVYlw9Y1EpID9+K5wOPtLoUgnDoDu6m2MCtEjlc1SDE/4yIbo837Eg==@kvack.org
-X-Gm-Message-State: AOJu0YxhUBcUoGoQWQJ8cUyBJ9INs1lOT3KJKjfRSu/vzzdO9Gbn6ZZj
-	TetAWLjO1TJyzp8XDcUfjCH7If1ueCbs0yWhWICyBaXxA6vVGBx132U5P+fFhOg4Vxk=
-X-Gm-Gg: AY/fxX4SVxsySbA0/8OGQsfIotOCGQlcp0N4Spcpie0Akqylzd6MPDf5oudjAhX4Z4C
-	IK9PmrJvEiLY304GtkGblfCROWYjNgxuBHNucuWBaDhfgbfD5yng38xBAKXwR/KeovHkazqFAGW
-	BTncjdqkd3eAUX4wnJ3tOToZ4n7AikVahRgeYDyqQS+kZLGGiJfTlMl2r+vr3Frct24so60l7nZ
-	T4nGMZUj9hKXTY+T+tcG8F+4H9A9cj1yxvLLSbF/nq7oER/as4bwzG+Wiy/4PXiOuXM5e27LD4a
-	zvLx5k078hGs49TQOxkoVuJoUMypVkBAGdYTePVlEapeaMNYvCl1jhXQq4OZZcEMSkU5JtUso8V
-	PKEVo9byKPcgIUq1grs70n4rPkkpUKixpOwksa7OLMYg2uebYMQj+BPBx6POMhv/95smewLAdoP
-	8FBBgrzxTJig==
-X-Google-Smtp-Source: AGHT+IHAR30jxVI+lBEnXpDkahfpDPcr5qT9JVMfZp+S17qgX37B1fvWEalT5dou0/zVepFQknr8zw==
-X-Received: by 2002:a05:622a:1e94:b0:4f3:4415:e8f4 with SMTP id d75a77b69052e-4f34415eae2mr141964871cf.38.1766065549231;
-        Thu, 18 Dec 2025 05:45:49 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f35fd60192sm15091761cf.19.2025.12.18.05.45.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 05:45:48 -0800 (PST)
-Date: Thu, 18 Dec 2025 08:45:44 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 26/28] mm: memcontrol: refactor memcg_reparent_objcgs()
-Message-ID: <aUQFiFIsvSez8AAP@cmpxchg.org>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <8e4dff3139390fc0f18546a770d2b35c9c148b8b.1765956026.git.zhengqi.arch@bytedance.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0Z9hQcHON2dWbNUaNHA6dsiPLww4R+qQhdReV3tm1U=;
+	b=C+Kg/13RnJrOL6zDQdNmbA4Maa2ipn7urqwtuIevbM7cGmZFYZSKM1QmDBXv3E4urfDyDO
+	dZoIV7o8WjxLZwQoiportCIJ1mdBmQlqZ/pAzYB6GueTxMihaeiBD9PmpZ7Km0Uo2mrPr3
+	avkDIhi81kRkFEBeOyKcaI92zPQhhOo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766065615; a=rsa-sha256;
+	cv=none;
+	b=OWKiycULbEoqe6Z4YoX1pFwGysLFI57+Dr/JAKYHSbOcH26Bp6VRhze7N5jmpWJ+Q4NMf5
+	jbqlTEqpn5VTsocPCTGvppUy+LjC1vHSb5QjbK2Ijaq2vUiUleYvwbn58yc81WJfzLysnR
+	mklPP8jghSD5TEiwojJEZeBU0SOOau4=
+X-UUID: fb8253fcdc1711f0a38c85956e01ac42-20251218
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:91b3d06a-4a3d-4be2-b535-ab4fbedbdf2f,IP:10,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:5
+X-CID-INFO: VERSION:1.3.6,REQID:91b3d06a-4a3d-4be2-b535-ab4fbedbdf2f,IP:10,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:5
+X-CID-META: VersionHash:a9d874c,CLOUDID:688db8609c1d648c2f6fd5a0c4ae6102,BulkI
+	D:251216071650TNWFWTE8,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:
+	nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
+	,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: fb8253fcdc1711f0a38c85956e01ac42-20251218
+X-User: lienze@kylinos.cn
+Received: from [192.168.3.106] [(61.48.214.33)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 143233166; Thu, 18 Dec 2025 21:46:41 +0800
+Message-ID: <2c8dd0de-e650-4a74-b1f7-61ed81c03d26@kylinos.cn>
+Date: Thu, 18 Dec 2025 21:46:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e4dff3139390fc0f18546a770d2b35c9c148b8b.1765956026.git.zhengqi.arch@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ enze.li@gmx.com
+References: <20251215231639.56448-1-sj@kernel.org>
+Content-Language: en-US
+From: Enze Li <lienze@kylinos.cn>
+In-Reply-To: <20251215231639.56448-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 00D13C0017
+X-Stat-Signature: 4njkictar9qtakq7uxa9ihozu3e8j4zq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 461881A000C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qnum13uf6p9xhf6qf3fby7rbzthd3xke
-X-HE-Tag: 1766065550-483653
-X-HE-Meta: U2FsdGVkX183gTYQ/dSIchNZRatMo24zfHZ9IibbT0MX2yvVBcmbGZvhnEdCHOi3LbiFCaYBraUeSrOq9LuZXhokVnPcvi6jLIOA/hLXMzZZN46+DJGPPgvMUSKCR1Ztkm7fbmwMhL+tKXu3ab37NFYGF1ItJPlboYbFA2+Z4jH0EZyIJTE7483JW6PwgslmDMkIMJLGBcbUFiWLFLHVgulh5XnZ+0j8H9tyWpnmjQ6N1ZET2JHfnAfZj4rCkZLrvZSKoyrN7WySX83dUOWm69mv6PxHVD+sc1sJ43i391buRkDYa7ROmbh69/seS44f9r/jw1ZdBGhq8rTi25LZRziBMmCzWM9d5MtD19et41XM8Iss95F7LpsE1PMoZ+J6Opcln4SLPpFGgYAdBqxcfNrOer+oHFGBY0eDaQrCUNOyTUv6EWZTqSn3iciHS5v4yufWJfxN5NE7V0tqi48s3p9G0ASBOd3vONNWTbO1iIeWT6L9OcT6Wlo5S96xC/LkyhFq16gh8KUn0W1b25YegyxmlNkGqpc0H/hWyJw2Qaz7yJLKrfk0p4bxzuxOgTcZlDySV+mL5fx3maCMzNVuv5v9zqzb52ML7FAvQVygmhxMTfiPVsaz7y0nT81GEhd9U/b+bKs0jJ6Z3cujWou18sDc2/qEhkb35O/4e6WCxuO1jMDbhpmthYJd5F+AXjAwqFPvD1jbZ83QnOqGVzGhxmmA0+mjcgeFI/H2nfgAcBuWLEz7R6TfwzKQoR0eaMXMNtcQ+kU6Aa0GUvdWDKA0pYT+mUU9MVWcTB1MIjVRNuXH7MAvG6pp/TTB4zO/BhRjoxtRNOlTOyqozDDUPfS0rX9hbdXfNsnHMOFXiswHtHZCPKGzIJZNS/jyXfM9fu7ixSsnsY/c0DkM8Rws1y8a8iKfvvIaFnC1jdwPnLt23lv0HZ6d/AgpRcS4euSQqqbR2BeJiR25lomYTnAFM3w
- E7lO9Pug
- 4g9nZwTkIWvrbu38C62KNgrPKkazTVAF/CcJ5At+F/hooCoTvx0/w0jXOAOtNNFBIoyolWaUvzOpnViHmStsIzFSBCxRMGRr6gVGyaBzck307q5oBSz6oBplB43bWN6yiWVDPcs+5EpeEXdFuskZ8btpX7Y+2uH0OA1MlTfG+tJalGmTLABJzNpAuANnljfg0OQYPzs6l7QwvUJLTHrOrjSQw5AFLqGIugf41HX7xRyIm4x5exezSLJPGHYk1eAWA/13lUeg08Vu0gbFPc4HKsDO6WmNvo0m0WBi2AUYp6WM2OI2zL6IGpaR+T+q6Q+0srlFIFXX8du8iKXAWi8qnInlJkR2jLJy1F6uzpAa8o7VtlYXVHRx19s9s/ESk1npz2xVrd3QTcX7nfO/Ny8lCBLtir9s3nPcjDjTcAg6T6JrHJB/6X+45OBzxBLA2Wp3ENWda7jfR5gq0ldCCOyftu+RBLNu0WYVqEr1B
+X-HE-Tag: 1766065612-554243
+X-HE-Meta: U2FsdGVkX192KX93F6ztjKOwxVYHWYiHCuUuEzNlAnDi5W0h+ulA50BPmI/1881cdu+YnETskNM13sXq+ps5Ty2i2q1BByrlr1+RCBv8OYAKY6jJPuBYG82MAtVOhp0BIECZ5yqaQF/hqx4E7hEY7wYvluKQAnlLOJwbtN0dyosJ8Zr3b6vVAZ2KIl2HA0hy6WLTUbggZcTmtynKXdrE0icftnaawTy2ZgDCY6WfPeygGsYm6L4luSafuEyZksOX/yv96xkBCVCbBajgl6SDClZYnhLIFRHZ4owROXbMmL/l2f8PtitsBrCCHaRA5v54bJMU3dCFln8Bfn+hyph/S05WBO2YtPELKjUzOp/aWDs3DZ4jOgvgvRiOYrCsmWoKaCtcqUivGjp7rj2XX60HGlVGbZDCv4z//j4MzpeV6xBziTQU59ZXN6hW+FLROWMPro4pQ7jS7ZgbZQLnFy8wJ8pU2H9sjfKR8jU4JzlsIPkMom8O74HGFrT7FApObocGteh/HwF3kF8QNEEZ5V7RoVA+CCMhs0tpNCUWZ/74gcktunc9iE0Ubv8zypDOhOeR/Wh3olwnl8NZmAPwTI4R7XkC0b7+eMTuO0qwTAzQ67ffYUKZ/y49OSGvL1JTi9YUtI6jDLrLZaDXf3IwXa10y1mObogGlH7FP021X8H1w38Tkq0iZerHfKG33cS3QIq7orQpuhaN8aopCZvAcKx7vsUEplraPZwMpabfrLJiy0MimeZ5GqP1ADSQYQB+sX9Pt7m3tfOVBS4KctjIih2y6OW79dGnr3DqVQVMjTusSQBadX9gFhOGwx3HVVvBVBBLEBRT7bYpWcp8pnPTY6lL8cDgiQKoAdJLAz/wtBa6jGFIK3Btmb97BW2QMPL3O6ul2X+JdzsjS3YIaMuJf+Y12AGx8LKYY0c7o28+Y3EMpWHfyh4O1LXYoS4y2iUZ5oMHuyQUHK6ke5CWwHj4pxv
+ VjIBQFe5
+ HFoW8psQrECze0lL2j0ZwsNgjVtnth1/JRYJ6y/wo+DTv5nPZmcgOvL6Mq1e+kpTX6cd1Rc25dR1oxgw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,28 +100,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:50PM +0800, Qi Zheng wrote:
-> +static void memcg_reparent_objcgs(struct mem_cgroup *src)
-> +{
-> +	struct obj_cgroup *objcg = rcu_dereference_protected(src->objcg, true);
-> +	struct mem_cgroup *dst = parent_mem_cgroup(src);
-> +
-> +	reparent_locks(src, dst);
-> +
-> +	__memcg_reparent_objcgs(src, dst);
+On 2025/12/16 07:16, SeongJae Park wrote:
+> Hello Enze,
+> 
+> On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> 
+>> This patchset makes DAMON's advanced memory management accessible to a
+>> broader range of users through two complementary enhancements.  First,
+>> it exports the necessary DAMON core symbols to enable building loadable
+>> kernel modules.  Building on this foundation, it then introduces the
+>> 'prdm' module, which extends the concept from the DAMON sample code
+>> (prcl.c) into a production-ready, user-friendly tool.
+>>
+>> The key strength of this module is its out-of-the-box simplicity: by
+>> simply specifying the PIDs of target processes and enabling the module,
+>> users can concurrently monitor memory access patterns across multiple
+>> processes and trigger proactive reclamation automatically.  This
+>> significantly lowers the barrier to using DAMON, allowing system
+>> administrators and regular users without deep kernel expertise to easily
+>> apply sophisticated memory optimization.
+> 
+> I agree your points about the problems and the direction for improving the
+> situation.
 
-Please have __memcg_reparent_objcgs() return the dead objcg for the
-percpu_ref_kill(), instead of doing the deref twice.
+Thank you, SJ!  Glad we are on the same page. :)
 
-And please use @child, @parent (or @memcg, @parent) throughout instead
-of @src and @dst.
+> However, we have a module for such use case, namely DAMON_RECLAIM.
+> It was designed for a reason that very same to what you described above.  One
+> key difference between DAMON_RECLAIM and prdm is, to my understanding,
+> DAMON_RECLAIM works for the physical address space, while prdm works for
+> virtual address spaces.
 
-> +
-> +	reparent_unlocks(src, dst);
->  
->  	percpu_ref_kill(&objcg->refcnt);
+Yes, I have studied the implementation and architecture of this module
+quite thoroughly.  However, there are certain limitations when
+considering it for production use.  To my knowledge, few would perform
+indiscriminate page reclamation across the entire system.  In most
+practical scenarios, people prefer to protect critical processes from
+being swapped out, while applying page migration and reclamation only to
+less critical or performance-insensitive processes.
 
-With that,
+As we all know, frequent page migration inevitably introduces some
+latency to process response times.  Therefore, the ability to target
+large, inactive memory consumers for reclamation addresses a strong,
+genuine demand from real production environments.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Is the virtual address spaces proactive reclamation is
+> what you really need?  If so, could you please further describe your expected
+> or planned usage of it?
+
+Consider the following scenario: a host machine runs three virtual
+machines -- Machine A, Machine B, and Machine C.  It is known that
+Machine A handles massive traffic, while Machines B and C have
+relatively light workloads.  When memory pressure arises, besides
+releasing caches, the system can utilize prdm to perform precise page
+migration targeting Machines B and C, ensuring memory usage remains
+within a safe margin.
+
+The data below, collected from a test environment, demonstrates the
+effectiveness of prdm.  After enabling prdm to monitor the two
+lower-activity VMs (2316, 2284), I observed that the DAMON-based prdm
+successfully migrated 5.5 GB of pages to the swap partition.
+
+ PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+2253 qemu  20   0 11.251g 3.822g  32.7m S 4.989 12.28   0:48.75
+qemu-system-x86
+2316 qemu  20   0 12.191g 1.524g  34.3m S 5.322 4.893   0:49.05
+qemu-system-x86
+2284 qemu  20   0 12.092g 1.184g  32.5m S 5.987 3.803   0:48.10
+qemu-system-x86
+
+root@localhost /s/m/p/parameters# free -h
+       total        used        free      shared  buff/cache   available
+Mem:    31Gi        12Gi        15Gi       5.5Mi       3.2Gi        18Gi
+Swap:   31Gi       5.5Gi        25Gi
+
+> 
+> If the virtual address spaces proactive reclamation is really what you need, I
+> think extending DAMON_RECLAIM for the purpose might be doable and even simpler
+> than introducing a new module.  How about doing so?
+
+Before developing prdm, I had considered implementing the same
+functionality based on DAMON_RECLAIM.  However, I gradually realized
+this would make DAMON_RECLAIM overly complex and less
+user-friendly—especially given its existing module-specific exported
+interfaces, which could confuse users.  This approach would create
+significant barriers to promoting wider DAMON adoption.  Consequently,
+building upon the prcl sample became the preferred choice.
+
+> 
+> And, even more importantly, why it should be a loadable module rather than a
+> static module?  Do you have a specific use case that requires it to be a
+> loadable module?
+
+Yes, loadability is crucial for operational flexibility in practical
+production environments.  Beyond some obvious advantages, I would like
+to highlight a key scenario: system administrators can load the prdm
+module upon detecting memory pressure and unload it immediately after
+reclamation is complete, thereby eliminating any overhead during normal
+operation.  Furthermore, it supports zero-downtime updates, meaning that
+improvements targeting prdm can be deployed via a simple module reload,
+avoiding costly system reboots.
+
+Finally, I would like to add that designing prdm with an extremely
+simple workflow -- load the module, set the target PIDs, and enable the
+switch -- will contribute to the promotion of DAMON, allowing a broader
+user base to benefit from the DAMON system.
+
+Best Regards,
+Enze
+
+<...>
+
 
