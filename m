@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3AA9D6D22E
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACAED6D230
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:10:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E010A6B009B; Thu, 18 Dec 2025 10:10:13 -0500 (EST)
+	id B14B46B0088; Thu, 18 Dec 2025 10:10:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA1E16B009D; Thu, 18 Dec 2025 10:10:13 -0500 (EST)
+	id A2B8F6B009D; Thu, 18 Dec 2025 10:10:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C01056B009E; Thu, 18 Dec 2025 10:10:13 -0500 (EST)
+	id 885626B009F; Thu, 18 Dec 2025 10:10:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A79AE6B009B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:10:13 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80A3DB7316
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:10:13 +0000 (UTC)
-X-FDA: 84232927506.03.E472F26
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A3B36B009D
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:10:15 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C193C0260
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:10:15 +0000 (UTC)
+X-FDA: 84232927590.05.EC03D08
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 45B661C0014
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:10:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P2O8+TcT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766070611; a=rsa-sha256;
-	cv=none;
-	b=wOZag2Sh5msyf0tj41en908zSH21QzhL+qGVG68tediBBuvfu+vyT4TUCqK2JVa8jMXxdc
-	zWf/5o45sgltYzB/+TzsfqhrpQX3uSHjwVe8yrPcGKBSVqMuFnoQHQXtYJwDoadxTEEXTQ
-	02+UPIcyXAbtYZugyEjrti5NnYZWYfw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P2O8+TcT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 25F7A120006
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:10:12 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hlYsuWjQ;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766070611;
+	s=arc-20220608; t=1766070613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JtuBSu8Ztu2bErtbBQhKrNrgnYYYHgKgE0XGWeGKZ5Q=;
-	b=symE4sdU+Ovd34LUfLoTa2aZKHgD/yDr7SJ3QDMwAqn2oNscIxXuybh8La0iGIvTgDupKQ
-	JM9zlghcZWta0i/kSqhLvjzKir6q2gZNU0F6rCgJi/V76iyxuD0dGMK4nnEo8HdO7ueAbA
-	lfkpXfcnuKy0mXRlLktsCAxtThuG+Do=
+	bh=qOVs+a8TvhIvMl/nx3Q/sngc4L38xV9GqENXesoC8Oc=;
+	b=Ep5eBhd6CpyBbRgB/t9CFdgIZSDteOoUwZgULABEaM9bVo88HKl4aDETwG4dtX58HOjE4v
+	oJaXA/U5DBxm9K9Y1MhKFqbszMxfhamGz/ca/YS1+5kWpjS6d8lcVl1A9t1q8O+eSA+tUf
+	alQH+Icg2EsPH3U0NnUCcEYlGvEAI2g=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hlYsuWjQ;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766070613; a=rsa-sha256;
+	cv=none;
+	b=LHswmNVuivw7ZG4c92095SX1Ud3HRXp3tEAuYD292rhavUicTfsPJHUEHjYAIcYdT0/iuJ
+	qOgs4213xw74D5P4fOwTsoGPtTv3YZx9JffSOgdL0aKRNnf2FYIlWOkElBDQ5YgpjR9GmD
+	Ss0Hk3cQmi3/dxc9bfzvChmhlPpF11w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74CE341962;
-	Thu, 18 Dec 2025 15:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB77AC116D0;
-	Thu, 18 Dec 2025 15:10:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D08E42A76;
+	Thu, 18 Dec 2025 15:10:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC17C116D0;
+	Thu, 18 Dec 2025 15:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766070610;
-	bh=Y7sCa5kzbSaXK1aXojRzFnSoIYlAHDHsLF1LEBfWR5w=;
+	s=k20201202; t=1766070612;
+	bh=TSdSWKSGTjJX3BfXX5DtxkhH6XDBorGJgKQrJKFha5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2O8+TcTjqvbgm2TkqTmdyQo8GQn6PVcio+sXSeDTu5eqazyatMIpJSkd5gfQqZ8H
-	 hUwwPgQlCp3OCt7Kk0X+H9Yj81sUKKopTY0FK13Vwq9oJNLfN2vqHa6SlXj+6qqdkf
-	 hzqrBIpYDqGEx6eJ+7d1GAcgtGGzyGsMRwXVivXtg5FSXKpns57gWRuQVVY+LW6rpM
-	 4jkF9Vm6LYFH7eTmPVh9VNIGzhmSFQnvRwtI+ktK1JreaeKMwRh+nPHJ6AC1yK3KZB
-	 vCGPpg/hIrMUU6phOivPsmVmHfKrnBYioBn3ocl/ENZFUVGuW6n0BYGLW1F2CjSfQq
-	 Q6eoeoPxqFhjA==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 26F9DF40078;
-	Thu, 18 Dec 2025 10:10:09 -0500 (EST)
+	b=hlYsuWjQ9gTp3i1zu8X8wXjPIeenFpI8MmVitaxT8tncRMWY0JxjKQtde/cXeKPP8
+	 nsmNor6lnPCpf5nNSWSnWqKPR5aRpa2jj4wQ5pPi5N8c0ZNnEi+OPYmaSluK8SU65m
+	 XHR4VtSf9AbRaSyJ5873nP3e39L/4dmAqvxkPC5CoZUMOdWzxVIXb/JU4FPOKjKvod
+	 W0mZoHjeBT0GQTxeEDSEhaolnKuhOWYiWm+QTuZRBRcxjPSpwNgNVJWY6jYPYHhQhy
+	 bReIzs1pDxHIS6bWGnlK+kVVtDg+uwLo7KQNIbLa6iwHIBTsmWLkQx+uXv2IJQydrX
+	 0zPcRIMI5nIcA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C8B1BF40078;
+	Thu, 18 Dec 2025 10:10:10 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Thu, 18 Dec 2025 10:10:09 -0500
-X-ME-Sender: <xms:URlEaeGgpV6D2iJnLNK7CpfN0XdRo69y6DMZTy9ETWbU9G_sp12QGg>
-    <xme:URlEaendMa1VYBsgy5zkFwekkxtR76gh_2GQx4FIVSELCmMqJKqdYGL1jBMsfYWut
-    KvWWWFs2n0ssQt6ESz1EHbT9S8kQ7wdTw9VwphIjSWw6Gl6w3aP6g>
-X-ME-Received: <xmr:URlEaa_GxUZWlrmjyy_8-ILb973BByJVLJ2I4TYxcVCWBbUoQoh1ZihFEELfIg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheejhecutefuodetggdotefrod
+  by phl-compute-06.internal (MEProxy); Thu, 18 Dec 2025 10:10:10 -0500
+X-ME-Sender: <xms:UhlEaZ46_JOQvKPkgwLjVLfXtCmcXpsJijAq73vxKzKEvAr16qJ6-Q>
+    <xme:UhlEaWIhbdE-Sv_G9z5sHrogrS08pDvowbWG93ZmbMCWFGhs0vegMf3FeYBQZ4SsF
+    SYLx_PyaNpPTm2-YO1csoaMmTcVPIYpynxrV3iSG7EATW_eZmK5srI>
+X-ME-Received: <xmr:UhlEaTQ3LBThRE931pKvvklTD7yMSfn4PEaGPGbaHToqZ4msGZX8D0hRmXiz6g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheejgecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefmihhrhihlucfu
     hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
     hnpefhudefjeehhfektdeuvdefveejffdvhfevtddugfduffejfeeikeelhedvtedvveen
-    ucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    ucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
     hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
     vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
     grmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheejhecutefuodetgg
     phhtthhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhsrghlvhgrug
     horhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhr
     tghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:URlEafmp3DpJ39qVGUXD3eZEYhgR6WDnfof5qNm1LHV16RgMQvi7ag>
-    <xmx:URlEaYldgiNwACMBfy5XHqlbYT5Gu0rLqDMbxt761U72mCSrK-exgQ>
-    <xmx:URlEaTs42iIF_xuecYkgYdqxLQ31xlbd5HsrupeYz3VVeXjruw6sMQ>
-    <xmx:URlEaSLa5u7HORTspWTmMttNYkjqPTQ0TLOHJePOHVp-risIlExkvA>
-    <xmx:URlEaYhWEAc72QlfY8w5O6zkgS5opnGfzgs0yX10SawpZQzVOiz-8tVw>
+X-ME-Proxy: <xmx:UhlEaZoQLskv2F2iYu7gNRpF0qlfwgjMHqhTWyQzKOTxpakceu8kWw>
+    <xmx:UhlEaRa2yxjhu46bRMhaHamREtO9MvWlyVHqPFGYl1F45JWMH-TISg>
+    <xmx:UhlEaUSan2DcdtiG3cvHOca-6hx7TGdGb90Ly7SxCf6wbLm2Wpq1-Q>
+    <xmx:UhlEafetUcAMDd25PPIzzGCKBsl19nW89xETapPKth1xHnxxLm3Lkw>
+    <xmx:UhlEaTnmOSqhYhzPeIDhYkIcQJK7AXTAJYtrS9WPBlJqeGsiO1pevK6k>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Dec 2025 10:10:08 -0500 (EST)
+ 18 Dec 2025 10:10:10 -0500 (EST)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -118,22 +118,22 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv2 08/14] mm/hugetlb: Refactor code around vmemmap_walk
-Date: Thu, 18 Dec 2025 15:09:39 +0000
-Message-ID: <20251218150949.721480-9-kas@kernel.org>
+Subject: [PATCHv2 09/14] mm/hugetlb: Remove fake head pages
+Date: Thu, 18 Dec 2025 15:09:40 +0000
+Message-ID: <20251218150949.721480-10-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251218150949.721480-1-kas@kernel.org>
 References: <20251218150949.721480-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 45B661C0014
-X-Stat-Signature: idqx9e8tbftodfbtzwiss37zcsyo3jdp
 X-Rspam-User: 
-X-HE-Tag: 1766070611-827240
-X-HE-Meta: U2FsdGVkX18OGxX+rpK9YtMgwPmFP3+a1uLr9/sHzKqgznAjTNQ/kHB66W68Tdgp2ge5kxeD/T9hheCozZ+vN9xTvxj1G9tE66lOA1XS2/mAc5dJlNQR+TlhTKvsMyw066aG97BprCUeaYBVz6oTFUULQquCnMQ0MzeJZeDfTKC7DG95GkN03lMK4YgjGqVUV6oJXzGUx7ESKi9CfGARATNPu75tml1bLW9/Bl1jVLwQm2nV6r6EfhTIsCknsZ6ckw84F1F1N2PqLeNENNfJSHCaxZ7aqVyWszhwSysTJcG0Olf4ZuI+yOsaSuZ8vV+ggUE/WH4evdHqSSrR7aos1xaQr2Bwo9hpYso+dSg3llsj0uVPbZsylT/6AkwSBkfQPflEkoh7gRD+ZbFp2ACBPLlEc3NXDXS+euQR8L37YygHolH9yb/d79UZPbJrWIpFYyHTSVWHY+xMDqhL4JwoCdg3DxTwidJMcPYpSqbLsHEF91/a8RPkM/QuogPf5UIyzItYqP5HpnJXcTvyWTE4biLRp+WnWXB0idd/0MiDDRLhp7Bvc6BbMLLtgAX40MpcdqQV9Tf8Thm9s+ldvphd3SFZCH2STBatryuM7cn4GHe0XgdbDoEYrJYcz6d0h7OwBp01GB5j+VaKmlMQxx++XozLBdm/qY+8t9oxndFubdFnGqUMnPin+SFUWNb7X9w6J3VJyWljIFjE3ueM8fMZhYGbouwZowDN/NdU91GVED28BBoytFQOy24tmdZ56z+QUcQVg/d52Q6AUGzdU0Ry2jRKyPf6Lu1EgrP8rnTuZQQswm8QaTi0GdNGUzMVMqPXk7ToTMqRRzwW2W149fgXNijkL0VM/6SisJGUib5Lwc4k89ggtfiHn3Mn+Cp51hrz1kg3RxrJZMhVEK9q/EMetD8tg2QwFOsi5jA5V0uiwubeHYwKU8xUmVSLlzTaWd/ouBdZjVfKPu24ErKJFpW
- LDoM4YFf
- mLHv2DtXdooRg5tsMYB2vsewqf+s/uWhSnQ6eOZ7Vs3ldJ6VzzipcJCNQh8xcHUKhRXaoDwIZHmM9Pfa/93XXcJ2y7Ad/4kUi3W102W8aQa4M9VDkBlVnDE7o2t2w+gc4atkKzFT4zhBxPovifJfu2lqTgXyxWv40wgfDNc1Y6SHZSfDTPQJKOIWfK+/udZF/jzPsCvFtqRQEcXJW2qbPNM39Oys4LdFHIxtv9bXf22mcO6+gJPJThnH/x52ZlB3oSQSohb7E4Z9JKB5b/QREopQ+HVxRSKzeXv5qY4Yq6Pzg87JfU7qFrrk07+xwj0t1eIQBsDfg29CpeutRpjLTOgzYcA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 25F7A120006
+X-Stat-Signature: yjfzt5uhw5uiiewkpeecqaeir8zxdd8d
+X-HE-Tag: 1766070612-409546
+X-HE-Meta: U2FsdGVkX19F7dUdf2+n6r/tMsIV+iR1hxUAnQAnweoyjGPOLhA1o2NeCPEzs8bs4F/04bFhSTvp783CjkMp8by+19mdp38c7mpNkBpwOmjRm7hdu9+aGHBxyXSHFewLBQnLavhyAVHMjPf+t7CaFdQFTVz1pHcY/fFineVywj5X7XiNQ6CaJ/Ybutp5eGceBW844WlMvRWz8zgHivrRpX9PvWjj05EH77vBBmCq8ONAbZfVHCMjxnwo4sEqnIWCKCH0OwZsUyS/nJ7MAvNO8nCMrqq4THLzuY8Ma+gEDcCs2xmShJdbetxu/07f6W4g4Rpjy8ZA/tcNMKBf6POIS4XLArE2EXK5DpJj2kzIRsOmbO1AL20FQBEiZFhmRmrBf2uKF2duQF+whovNUdwR702Xwgi/YziT2mqrX4fDG172OPetwa7ERXUlgywUJ62uI99xVGS/3nP6uMYgP7NP40sNBprMd0IZJ2Zf8Zg8NgGgksVKeg2auKQVjHOSpL3IryRCrmneO3sGc/6DPJCmI5RxCxn2/wEFxNYvaRzBw3zTT/3EvEcoe+hFfKPbHUyARsHldCn2SIMCixA9vxJyvZqZ4nJ53sxwijIWp8JSu5YPNU/QEu48SW3zCiGOAv1L0DninJYjxZK/RqP4rgUNWtM0azykoc1JhvhCLt8mSeWa3LTbPgYX/99NBPKu6KMfLGQj4hfCC0VTuGZOC1Ux8bUtESWx5DqaVjIWYe5eyKvzlGk8xJxC5+wjo/hCb+4hl08k3R7OcI1KKkmv0BxUNxXZwbYmh9KBEsC1fJNIMJeBBl/BUCatteY8zvBMHZz9SCYyc+NMEHrwtJCULue8QsRzijNpo9akJshm4/y9qZr5StoTGDd0sfqDd57G7vl8nQqgJpk4g17Q5zHxu2XLwF85BuPOAcFKt31LeO/N1LrRuXOiFXSLhmbzjKsnU/xUoAOEzGWnAPh4E/ZXmze
+ GPOiZE3k
+ Lg0A5JsM2x0eAH9ewF0OUI21se+i8+m1MW3+fuMKTdtfPom964WOlSibAtYW8IwYsvB/QJI597YCNCpKbCn8CpOasL4jbOw5xqjPJvnuLEUCyaTEE6SFIFBJDGNxh5X2uu8JIACOn7PQkNA4mVDkiFfg4B7KkJGpnwrDtnD+RAt7M0XWN2Szqv8uJEASKQFzjWteDsQ72mRnAfEeoqmPS/3h8eWoqY1T55wjbHQ54yg+bwdUUTBL6ZZRsjRmJf5pHo4Yy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,415 +142,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To prepare for removing fake head pages, the vmemmap_walk code is being reworked.
+HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+vmemmap pages for huge pages and remapping the freed range to a single
+page containing the struct page metadata.
 
-The reuse_page and reuse_addr variables are being eliminated. There will
-no longer be an expectation regarding the reuse address in relation to
-the operated range. Instead, the caller will provide head and tail
-vmemmap pages, along with the vmemmap_start address where the head page
-is located.
+With the new mask-based compound_info encoding (for power-of-2 struct
+page sizes), all tail pages of the same order are now identical
+regardless of which compound page they belong to. This means the tail
+pages can be truly shared without fake heads.
 
-Currently, vmemmap_head and vmemmap_tail are set to the same page, but
-this will change in the future.
+Allocate a single page of initialized tail struct pages per NUMA node
+per order in the vmemmap_tails[] array in pglist_data. All huge pages
+of that order on the node share this tail page, mapped read-only into
+their vmemmap. The head page remains unique per huge page.
 
-The only functional change is that __hugetlb_vmemmap_optimize_folio()
-will abandon optimization if memory allocation fails.
+This eliminates fake heads while maintaining the same memory savings,
+and simplifies compound_head() by removing fake head detection.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- mm/hugetlb_vmemmap.c | 198 ++++++++++++++++++-------------------------
- 1 file changed, 83 insertions(+), 115 deletions(-)
+ include/linux/mmzone.h | 16 ++++++++++++++-
+ mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
+ mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 93 insertions(+), 11 deletions(-)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7e4f69b9d760..f33117618f50 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -81,7 +81,11 @@
+  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+  */
+-#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
++#ifdef CONFIG_64BIT
++#define MAX_FOLIO_ORDER		(34 - PAGE_SHIFT)
++#else
++#define MAX_FOLIO_ORDER		(30 - PAGE_SHIFT)
++#endif
+ #else
+ /*
+  * Without hugetlb, gigantic folios that are bigger than a single PUD are
+@@ -1407,6 +1411,13 @@ struct memory_failure_stats {
+ };
+ #endif
+ 
++/*
++ * vmemmap optimization (like HVO) is only possible for page orders that fill
++ * two or more pages with struct pages.
++ */
++#define VMEMMAP_TAIL_MIN_ORDER (ilog2(2 * PAGE_SIZE / sizeof(struct page)))
++#define NR_VMEMMAP_TAILS (MAX_FOLIO_ORDER - VMEMMAP_TAIL_MIN_ORDER + 1)
++
+ /*
+  * On NUMA machines, each NUMA node would have a pg_data_t to describe
+  * it's memory layout. On UMA machines there is a single pglist_data which
+@@ -1555,6 +1566,9 @@ typedef struct pglist_data {
+ #ifdef CONFIG_MEMORY_FAILURE
+ 	struct memory_failure_stats mf_stats;
+ #endif
++#ifdef CONFIG_SPARSEMEM_VMEMMAP
++	unsigned long vmemmap_tails[NR_VMEMMAP_TAILS];
++#endif
+ } pg_data_t;
+ 
+ #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
 diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index ba0fb1b6a5a8..d18e7475cf95 100644
+index d18e7475cf95..63d79ac80594 100644
 --- a/mm/hugetlb_vmemmap.c
 +++ b/mm/hugetlb_vmemmap.c
-@@ -24,8 +24,9 @@
-  *
-  * @remap_pte:		called for each lowest-level entry (PTE).
-  * @nr_walked:		the number of walked pte.
-- * @reuse_page:		the page which is reused for the tail vmemmap pages.
-- * @reuse_addr:		the virtual address of the @reuse_page page.
-+ * @vmemmap_start:	the start of vmemmap range, where head page is located
-+ * @vmemmap_head:	the page to be installed as first in the vmemmap range
-+ * @vmemmap_tail:	the page to be installed as non-first in the vmemmap range
-  * @vmemmap_pages:	the list head of the vmemmap pages that can be freed
-  *			or is mapped from.
-  * @flags:		used to modify behavior in vmemmap page table walking
-@@ -34,11 +35,14 @@
- struct vmemmap_remap_walk {
- 	void			(*remap_pte)(pte_t *pte, unsigned long addr,
- 					     struct vmemmap_remap_walk *walk);
+@@ -18,6 +18,7 @@
+ #include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
+ #include "hugetlb_vmemmap.h"
++#include "internal.h"
+ 
+ /**
+  * struct vmemmap_remap_walk - walk vmemmap page table
+@@ -517,6 +518,41 @@ static bool vmemmap_should_optimize_folio(const struct hstate *h, struct folio *
+ 	return true;
+ }
+ 
++static struct page *vmemmap_get_tail(unsigned int order, int node)
++{
++	unsigned long pfn;
++	unsigned int idx;
++	struct page *tail, *p;
 +
- 	unsigned long		nr_walked;
--	struct page		*reuse_page;
--	unsigned long		reuse_addr;
-+	unsigned long		vmemmap_start;
-+	struct page		*vmemmap_head;
-+	struct page		*vmemmap_tail;
- 	struct list_head	*vmemmap_pages;
- 
++	idx = order - VMEMMAP_TAIL_MIN_ORDER;
++	pfn =  NODE_DATA(node)->vmemmap_tails[idx];
++	if (pfn)
++		return pfn_to_page(pfn);
 +
- /* Skip the TLB flush when we split the PMD */
- #define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
- /* Skip the TLB flush when we remap the PTE */
-@@ -140,14 +144,7 @@ static int vmemmap_pte_entry(pte_t *pte, unsigned long addr,
- {
- 	struct vmemmap_remap_walk *vmemmap_walk = walk->private;
- 
--	/*
--	 * The reuse_page is found 'first' in page table walking before
--	 * starting remapping.
--	 */
--	if (!vmemmap_walk->reuse_page)
--		vmemmap_walk->reuse_page = pte_page(ptep_get(pte));
--	else
--		vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
-+	vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
- 	vmemmap_walk->nr_walked++;
- 
- 	return 0;
-@@ -207,18 +204,12 @@ static void free_vmemmap_page_list(struct list_head *list)
- static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
- 			      struct vmemmap_remap_walk *walk)
- {
--	/*
--	 * Remap the tail pages as read-only to catch illegal write operation
--	 * to the tail pages.
--	 */
--	pgprot_t pgprot = PAGE_KERNEL_RO;
- 	struct page *page = pte_page(ptep_get(pte));
- 	pte_t entry;
- 
- 	/* Remapping the head page requires r/w */
--	if (unlikely(addr == walk->reuse_addr)) {
--		pgprot = PAGE_KERNEL;
--		list_del(&walk->reuse_page->lru);
-+	if (unlikely(addr == walk->vmemmap_start)) {
-+		list_del(&walk->vmemmap_head->lru);
- 
- 		/*
- 		 * Makes sure that preceding stores to the page contents from
-@@ -226,9 +217,16 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
- 		 * write.
- 		 */
- 		smp_wmb();
++	tail = alloc_pages_node(node, GFP_KERNEL, 0);
++	if (!tail)
++		return NULL;
 +
-+		entry = mk_pte(walk->vmemmap_head, PAGE_KERNEL);
++	p = page_to_virt(tail);
++	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
++		prep_compound_tail(p + i, NULL, order);
++
++	spin_lock(&hugetlb_lock);
++	if (!NODE_DATA(node)->vmemmap_tails[idx]) {
++		pfn = PHYS_PFN(virt_to_phys(p));
++		NODE_DATA(node)->vmemmap_tails[idx] = pfn;
++		tail = NULL;
 +	} else {
-+		/*
-+		 * Remap the tail pages as read-only to catch illegal write
-+		 * operation to the tail pages.
-+		 */
-+		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
- 	}
- 
--	entry = mk_pte(walk->reuse_page, pgprot);
- 	list_add(&page->lru, walk->vmemmap_pages);
- 	set_pte_at(&init_mm, addr, pte, entry);
- }
-@@ -255,16 +253,13 @@ static inline void reset_struct_pages(struct page *start)
- static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
- 				struct vmemmap_remap_walk *walk)
- {
--	pgprot_t pgprot = PAGE_KERNEL;
- 	struct page *page;
- 	void *to;
- 
--	BUG_ON(pte_page(ptep_get(pte)) != walk->reuse_page);
--
- 	page = list_first_entry(walk->vmemmap_pages, struct page, lru);
- 	list_del(&page->lru);
- 	to = page_to_virt(page);
--	copy_page(to, (void *)walk->reuse_addr);
-+	copy_page(to, (void *)walk->vmemmap_start);
- 	reset_struct_pages(to);
- 
- 	/*
-@@ -272,7 +267,7 @@ static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
- 	 * before the set_pte_at() write.
- 	 */
- 	smp_wmb();
--	set_pte_at(&init_mm, addr, pte, mk_pte(page, pgprot));
-+	set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
- }
- 
- /**
-@@ -282,33 +277,29 @@ static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
-  *             to remap.
-  * @end:       end address of the vmemmap virtual address range that we want to
-  *             remap.
-- * @reuse:     reuse address.
-- *
-  * Return: %0 on success, negative error code otherwise.
-  */
--static int vmemmap_remap_split(unsigned long start, unsigned long end,
--			       unsigned long reuse)
-+static int vmemmap_remap_split(unsigned long start, unsigned long end)
- {
- 	struct vmemmap_remap_walk walk = {
- 		.remap_pte	= NULL,
-+		.vmemmap_start	= start,
- 		.flags		= VMEMMAP_SPLIT_NO_TLB_FLUSH,
- 	};
- 
--	/* See the comment in the vmemmap_remap_free(). */
--	BUG_ON(start - reuse != PAGE_SIZE);
--
--	return vmemmap_remap_range(reuse, end, &walk);
-+	return vmemmap_remap_range(start, end, &walk);
- }
- 
- /**
-  * vmemmap_remap_free - remap the vmemmap virtual address range [@start, @end)
-- *			to the page which @reuse is mapped to, then free vmemmap
-- *			which the range are mapped to.
-+ *			to use @vmemmap_head/tail, then free vmemmap which
-+ *			the range are mapped to.
-  * @start:	start address of the vmemmap virtual address range that we want
-  *		to remap.
-  * @end:	end address of the vmemmap virtual address range that we want to
-  *		remap.
-- * @reuse:	reuse address.
-+ * @vmemmap_head: the page to be installed as first in the vmemmap range
-+ * @vmemmap_tail: the page to be installed as non-first in the vmemmap range
-  * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is callers
-  *		responsibility to free pages.
-  * @flags:	modifications to vmemmap_remap_walk flags
-@@ -316,69 +307,40 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end,
-  * Return: %0 on success, negative error code otherwise.
-  */
- static int vmemmap_remap_free(unsigned long start, unsigned long end,
--			      unsigned long reuse,
-+			      struct page *vmemmap_head,
-+			      struct page *vmemmap_tail,
- 			      struct list_head *vmemmap_pages,
- 			      unsigned long flags)
- {
- 	int ret;
- 	struct vmemmap_remap_walk walk = {
- 		.remap_pte	= vmemmap_remap_pte,
--		.reuse_addr	= reuse,
-+		.vmemmap_start	= start,
-+		.vmemmap_head	= vmemmap_head,
-+		.vmemmap_tail	= vmemmap_tail,
- 		.vmemmap_pages	= vmemmap_pages,
- 		.flags		= flags,
- 	};
--	int nid = page_to_nid((struct page *)reuse);
--	gfp_t gfp_mask = GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
++		pfn = NODE_DATA(node)->vmemmap_tails[idx];
++	}
++	spin_unlock(&hugetlb_lock);
 +
-+	ret = vmemmap_remap_range(start, end, &walk);
-+	if (!ret || !walk.nr_walked)
-+		return ret;
++	if (tail)
++		__free_page(tail);
 +
-+	end = start + walk.nr_walked * PAGE_SIZE;
- 
- 	/*
--	 * Allocate a new head vmemmap page to avoid breaking a contiguous
--	 * block of struct page memory when freeing it back to page allocator
--	 * in free_vmemmap_page_list(). This will allow the likely contiguous
--	 * struct page backing memory to be kept contiguous and allowing for
--	 * more allocations of hugepages. Fallback to the currently
--	 * mapped head page in case should it fail to allocate.
-+	 * vmemmap_pages contains pages from the previous vmemmap_remap_range()
-+	 * call which failed.  These are pages which were removed from
-+	 * the vmemmap. They will be restored in the following call.
- 	 */
--	walk.reuse_page = alloc_pages_node(nid, gfp_mask, 0);
--	if (walk.reuse_page) {
--		copy_page(page_to_virt(walk.reuse_page),
--			  (void *)walk.reuse_addr);
--		list_add(&walk.reuse_page->lru, vmemmap_pages);
--		memmap_pages_add(1);
--	}
-+	walk = (struct vmemmap_remap_walk) {
-+		.remap_pte	= vmemmap_restore_pte,
-+		.vmemmap_start	= start,
-+		.vmemmap_pages	= vmemmap_pages,
-+		.flags		= 0,
-+	};
- 
--	/*
--	 * In order to make remapping routine most efficient for the huge pages,
--	 * the routine of vmemmap page table walking has the following rules
--	 * (see more details from the vmemmap_pte_range()):
--	 *
--	 * - The range [@start, @end) and the range [@reuse, @reuse + PAGE_SIZE)
--	 *   should be continuous.
--	 * - The @reuse address is part of the range [@reuse, @end) that we are
--	 *   walking which is passed to vmemmap_remap_range().
--	 * - The @reuse address is the first in the complete range.
--	 *
--	 * So we need to make sure that @start and @reuse meet the above rules.
--	 */
--	BUG_ON(start - reuse != PAGE_SIZE);
--
--	ret = vmemmap_remap_range(reuse, end, &walk);
--	if (ret && walk.nr_walked) {
--		end = reuse + walk.nr_walked * PAGE_SIZE;
--		/*
--		 * vmemmap_pages contains pages from the previous
--		 * vmemmap_remap_range call which failed.  These
--		 * are pages which were removed from the vmemmap.
--		 * They will be restored in the following call.
--		 */
--		walk = (struct vmemmap_remap_walk) {
--			.remap_pte	= vmemmap_restore_pte,
--			.reuse_addr	= reuse,
--			.vmemmap_pages	= vmemmap_pages,
--			.flags		= 0,
--		};
--
--		vmemmap_remap_range(reuse, end, &walk);
--	}
-+	vmemmap_remap_range(start + PAGE_SIZE, end, &walk);
- 
- 	return ret;
- }
-@@ -415,29 +377,27 @@ static int alloc_vmemmap_page_list(unsigned long start, unsigned long end,
-  *		to remap.
-  * @end:	end address of the vmemmap virtual address range that we want to
-  *		remap.
-- * @reuse:	reuse address.
-  * @flags:	modifications to vmemmap_remap_walk flags
-  *
-  * Return: %0 on success, negative error code otherwise.
-  */
- static int vmemmap_remap_alloc(unsigned long start, unsigned long end,
--			       unsigned long reuse, unsigned long flags)
-+			       unsigned long flags)
- {
- 	LIST_HEAD(vmemmap_pages);
- 	struct vmemmap_remap_walk walk = {
- 		.remap_pte	= vmemmap_restore_pte,
--		.reuse_addr	= reuse,
-+		.vmemmap_start	= start,
- 		.vmemmap_pages	= &vmemmap_pages,
- 		.flags		= flags,
- 	};
- 
--	/* See the comment in the vmemmap_remap_free(). */
--	BUG_ON(start - reuse != PAGE_SIZE);
-+	start += HUGETLB_VMEMMAP_RESERVE_SIZE;
- 
- 	if (alloc_vmemmap_page_list(start, end, &vmemmap_pages))
- 		return -ENOMEM;
- 
--	return vmemmap_remap_range(reuse, end, &walk);
-+	return vmemmap_remap_range(start, end, &walk);
- }
- 
- DEFINE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
-@@ -454,8 +414,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
- 					   struct folio *folio, unsigned long flags)
- {
- 	int ret;
--	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
--	unsigned long vmemmap_reuse;
-+	unsigned long vmemmap_start, vmemmap_end;
- 
- 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
- 	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
-@@ -466,18 +425,16 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
- 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
- 		synchronize_rcu();
- 
-+	vmemmap_start	= (unsigned long)folio;
- 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
--	vmemmap_reuse	= vmemmap_start;
--	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
- 
- 	/*
- 	 * The pages which the vmemmap virtual address range [@vmemmap_start,
--	 * @vmemmap_end) are mapped to are freed to the buddy allocator, and
--	 * the range is mapped to the page which @vmemmap_reuse is mapped to.
-+	 * @vmemmap_end) are mapped to are freed to the buddy allocator.
- 	 * When a HugeTLB page is freed to the buddy allocator, previously
- 	 * discarded vmemmap pages must be allocated and remapping.
- 	 */
--	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, vmemmap_reuse, flags);
-+	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, flags);
- 	if (!ret) {
- 		folio_clear_hugetlb_vmemmap_optimized(folio);
- 		static_branch_dec(&hugetlb_optimize_vmemmap_key);
-@@ -565,9 +522,9 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
++	return pfn_to_page(pfn);
++}
++
+ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 					    struct folio *folio,
  					    struct list_head *vmemmap_pages,
- 					    unsigned long flags)
- {
--	int ret = 0;
--	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
--	unsigned long vmemmap_reuse;
-+	unsigned long vmemmap_start, vmemmap_end;
-+	struct page *vmemmap_head, *vmemmap_tail;
-+	int nid, ret = 0;
+@@ -532,6 +568,12 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	if (!vmemmap_should_optimize_folio(h, folio))
+ 		return ret;
  
- 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
- 	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
-@@ -592,18 +549,31 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
++	nid = folio_nid(folio);
++
++	vmemmap_tail = vmemmap_get_tail(h->order, nid);
++	if (!vmemmap_tail)
++		return -ENOMEM;
++
+ 	static_branch_inc(&hugetlb_optimize_vmemmap_key);
+ 
+ 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
+@@ -549,7 +591,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
  	 */
  	folio_set_hugetlb_vmemmap_optimized(folio);
  
-+	nid = folio_nid(folio);
-+	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
-+
-+	if (!vmemmap_head) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	copy_page(page_to_virt(vmemmap_head), folio);
-+	list_add(&vmemmap_head->lru, vmemmap_pages);
-+	memmap_pages_add(1);
-+
-+	vmemmap_tail	= vmemmap_head;
-+	vmemmap_start	= (unsigned long)folio;
+-	nid = folio_nid(folio);
+ 	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
+ 
+ 	if (!vmemmap_head) {
+@@ -561,7 +602,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	list_add(&vmemmap_head->lru, vmemmap_pages);
+ 	memmap_pages_add(1);
+ 
+-	vmemmap_tail	= vmemmap_head;
+ 	vmemmap_start	= (unsigned long)folio;
  	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
--	vmemmap_reuse	= vmemmap_start;
--	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
  
- 	/*
--	 * Remap the vmemmap virtual address range [@vmemmap_start, @vmemmap_end)
--	 * to the page which @vmemmap_reuse is mapped to.  Add pages previously
--	 * mapping the range to vmemmap_pages list so that they can be freed by
--	 * the caller.
-+	 * Remap the vmemmap virtual address range [@vmemmap_start, @vmemmap_end).
-+	 * Add pages previously mapping the range to vmemmap_pages list so that
-+	 * they can be freed by the caller.
- 	 */
--	ret = vmemmap_remap_free(vmemmap_start, vmemmap_end, vmemmap_reuse,
-+	ret = vmemmap_remap_free(vmemmap_start, vmemmap_end,
-+				 vmemmap_head, vmemmap_tail,
- 				 vmemmap_pages, flags);
-+out:
- 	if (ret) {
- 		static_branch_dec(&hugetlb_optimize_vmemmap_key);
- 		folio_clear_hugetlb_vmemmap_optimized(folio);
-@@ -632,21 +602,19 @@ void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio)
- 
- static int hugetlb_vmemmap_split_folio(const struct hstate *h, struct folio *folio)
- {
--	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
--	unsigned long vmemmap_reuse;
-+	unsigned long vmemmap_start, vmemmap_end;
- 
- 	if (!vmemmap_should_optimize_folio(h, folio))
- 		return 0;
- 
-+	vmemmap_start	= (unsigned long)folio;
- 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
--	vmemmap_reuse	= vmemmap_start;
--	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
- 
- 	/*
- 	 * Split PMDs on the vmemmap virtual address range [@vmemmap_start,
- 	 * @vmemmap_end]
- 	 */
--	return vmemmap_remap_split(vmemmap_start, vmemmap_end, vmemmap_reuse);
-+	return vmemmap_remap_split(vmemmap_start, vmemmap_end);
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index dbd8daccade2..94b4e90fa00f 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -378,16 +378,45 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
+ 	}
  }
  
- static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
+-/*
+- * Populate vmemmap pages HVO-style. The first page contains the head
+- * page and needed tail pages, the other ones are mirrors of the first
+- * page.
+- */
++static __meminit unsigned long vmemmap_get_tail(unsigned int order, int node)
++{
++	unsigned long pfn;
++	unsigned int idx;
++	struct page *p;
++
++	BUG_ON(order < VMEMMAP_TAIL_MIN_ORDER);
++	BUG_ON(order > MAX_FOLIO_ORDER);
++
++	idx = order - VMEMMAP_TAIL_MIN_ORDER;
++	pfn =  NODE_DATA(node)->vmemmap_tails[idx];
++	if (pfn)
++		return pfn;
++
++	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
++	if (!p)
++		return 0;
++
++	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
++		prep_compound_tail(p + i, NULL, order);
++
++	pfn = PHYS_PFN(virt_to_phys(p));
++	NODE_DATA(node)->vmemmap_tails[idx] = pfn;
++
++	return pfn;
++}
++
+ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+ 				       int node, unsigned long headsize)
+ {
++	unsigned long maddr, len, tail_pfn;
++	unsigned int order;
+ 	pte_t *pte;
+-	unsigned long maddr;
++
++	len = end - addr;
++	order = ilog2(len * sizeof(struct page) / PAGE_SIZE);
++	tail_pfn = vmemmap_get_tail(order, node);
++	if (!tail_pfn)
++		return -ENOMEM;
+ 
+ 	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
+ 		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
+@@ -398,8 +427,7 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+ 	/*
+ 	 * Reuse the last page struct page mapped above for the rest.
+ 	 */
+-	return vmemmap_populate_range(maddr, end, node, NULL,
+-					pte_pfn(ptep_get(pte)), 0);
++	return vmemmap_populate_range(maddr, end, node, NULL, tail_pfn, 0);
+ }
+ 
+ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
 -- 
 2.51.2
 
