@@ -4,211 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A5ACD68BD8
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 04:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D397AD68BD8
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 04:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8337F6B0088; Wed, 17 Dec 2025 23:38:14 -0500 (EST)
+	id 081C46B0088; Wed, 17 Dec 2025 23:41:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D7006B0089; Wed, 17 Dec 2025 23:38:14 -0500 (EST)
+	id 02F886B0089; Wed, 17 Dec 2025 23:41:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68AB66B008A; Wed, 17 Dec 2025 23:38:14 -0500 (EST)
+	id E52F26B008A; Wed, 17 Dec 2025 23:41:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 525F66B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:38:14 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E26B01A0CCE
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:38:13 +0000 (UTC)
-X-FDA: 84231334866.08.1F971A1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5D2BB120003
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:38:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PeoFeBWL;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766032690; a=rsa-sha256;
-	cv=fail;
-	b=AefWotsVPjdOGyIRYqVAEeD+FWk810/M9NFlwmuQ1Z5GF8SnIIpty306IJI5eu14IX4ooP
-	5Wk9EZ409dLmKydkNYLRX5j1az4Mn88p+IoWfuq7O96rT1jrK59rWhY1F0PZK2d3YVWgm/
-	lYBzMdewYeT+V2Z0vmeNGk3C9gCOanQ=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PeoFeBWL;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766032690;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D27286B0088
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:41:27 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 729625B987
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:41:27 +0000 (UTC)
+X-FDA: 84231343014.12.DD27734
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 921711C000B
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:41:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNMixVlT;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766032885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A6bBVwr0tO+ks/PVOt76nCUny2pgQq3R+UsehNEwmPM=;
-	b=YjEGy15NmxF1a9tFUctzp2xZQgllH3q+DofLnM2ctFss6UzZR7lU+OM2j8x+GhAukyGoaV
-	DZznAZA0/j+8G4y62O0OX+9fS4+jHpoay5k3fLN89iAI3dugQC/CsXP0zjXsFU1todRVmx
-	oJKqehDY5FVrsNzBr0xu8T+Fta4QYDo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766032689; x=1797568689;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=jvnets43fjedcRlZzoHI9nXEqVDq2Au7RVRrL0G55TE=;
-  b=PeoFeBWLoFtU/Rpvp7UGPbk659MZv6wKqwtcekNLDiSKU7XzYq4gB8LM
-   8xbdL4/0yjjz/YlA4620GAscxSX0LSTSsPNvvNzAc+peSP2hHs6b99iRy
-   xuWLi9x1hb04juD+UCCWzzHyOF6QPKr4FWvB1WTatDS1NQCZ9evkIVuTp
-   uTGFcVqcYb07emerZrUo1fSsiTJbugOE8MOC9DkG/QcdNcHUjV+9DS5h8
-   Ew2gyMLDxJfTRkzZ3Wa9Mql2ijXPfcdTIPnKxFNdOeHLMvU0Wd9qG83PV
-   8SllgCfP7yhIkjTR33yAg3v7sEUCrSUoCJN1T3+wvsLksDi1HLvVfvd4Q
-   g==;
-X-CSE-ConnectionGUID: zGUJXCFLT3StUaFXWSR+tA==
-X-CSE-MsgGUID: xyqX8fJmRfOTO9+Fw3pJKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="78693738"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="78693738"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 20:38:07 -0800
-X-CSE-ConnectionGUID: yDFZj5IZS92oXEYrZGIVLA==
-X-CSE-MsgGUID: ZmO783PdRlq0xXLhApQLhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="198251938"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 20:38:05 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 17 Dec 2025 20:38:04 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 17 Dec 2025 20:38:04 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.50) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 17 Dec 2025 20:38:04 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f4/ZmIVOLwGYWEQT+CI7B55zSvn49OLTzF9AjNrR5yCe0Ifz+Ipu8tOXlwVtz4QwiNT2l7D3IlvUhY4tOy+1DJetjUx/GyHARJzBBp8Q75d+2K7jOPiaVXTIBsXG3yTg7xQZU0K4dCKCPmGYA2YhZi2DzekXMoUlw/Ij6WrfkjAP8OD/J9WGEVC5J4+MG4WObbGrTVpyuKVBoprj9zYe9yBJWEUTrwp2PwkbCG3lBlB0S9lcl3ejzg+vzMMg94ggRKmk2h9XhnWR/ENg+NeAhH+QOOjDLurNChwuy/s4tRikfapGZ2tDmpX5wEy8WTf+TKdNPapn0OqrNNvdKkvvRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A6bBVwr0tO+ks/PVOt76nCUny2pgQq3R+UsehNEwmPM=;
- b=T1QN0IBS6PcBHJdqlP42vbh7mP92DXuVVP/8erYs2g/XWllIiKfC5N1EjW/Dh3bLh7TUMIY1tNNb31nISiJA+y8SHuPfDyNbXG4iqk6Nd3vTpA/wlc+hUtwi3oZTID4VKqR0aqzNfLjqJfWz0gGYabAmQ0LAVe+HNUNib3RB/Y7nF8kggnVTxFS9qgZgU85iAMpv0O2rcp2XmPw/Odq23HOJYTRj95XgnfwfVgN/YcmG30bqoVJoOkgwatTqKLe4GoY33FCgNFaY5HRvhxz1rOlrNGlOxQd2qZpIjQEtVQ9wETb+/NaEubY66rodYDgUtra2EKtq5wxJMVe2LkHWlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by SJ0PR11MB8272.namprd11.prod.outlook.com (2603:10b6:a03:47d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Thu, 18 Dec
- 2025 04:37:56 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 04:37:56 +0000
-Date: Thu, 18 Dec 2025 12:37:46 +0800
-From: Oliver Sang <oliver.sang@intel.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
-	Baoquan He <bhe@redhat.com>, Alexander Potapenko <glider@google.com>, "Andrey
- Ryabinin" <ryabinin.a.a@gmail.com>, Marco Elver <elver@google.com>, "Michal
- Hocko" <mhocko@kernel.org>, <linux-mm@kvack.org>, <oliver.sang@intel.com>
-Subject: Re: [linus:master] [mm/vmalloc]  9c47753167:
- stress-ng.bigheap.realloc_calls_per_sec 21.3% regression
-Message-ID: <aUOFGneXSVE+DItX@xsang-OptiPlex-9020>
-References: <202512121138.986f6a6b-lkp@intel.com>
- <aT_8woTbtklin3Bh@milan>
- <aUI/MZ8sGDt8toOC@xsang-OptiPlex-9020>
- <aUKONAP3CZn1kZw6@milan>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aUKONAP3CZn1kZw6@milan>
-X-ClientProxiedBy: SG3P274CA0004.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::16)
- To LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+	bh=JuzEIWvl3W7GlEA1OYeC3H4ZtKMzn/SCv7fuo7FX468=;
+	b=Sn2DJ9xYI7n03uNWDBS6xOxOQUM6TNFTHUvhkRPB/Mcm49HibtT0PAzyLSvcphF+tOFBVw
+	AKGEWzeRx8XPvDzctadhW2PhJSqlqE74PmxCbI10SBL7+Mwa7wcY2l8Ie9W3ogqLyd9qa5
+	2StJ3nW6RU++cB+a3PRGtVD3I1I9kEk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNMixVlT;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766032885; a=rsa-sha256;
+	cv=none;
+	b=DKUcifgtJXhgvcgjzjwJy3GMGYVZpcbrPIDpycM++1f7jIJXsagjubn1lZcvY0tBTK6xA9
+	JyULYIVWh9DkIKdTC9QD0VBJ/c1W81IL/JVUokSwsqVuj6TDqdS86aXJsJJSSkScF1TgEi
+	iP3GjMJ6fXM4vpEdLUfKnUeflaFxdU8=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0c20ee83dso2743235ad.2
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:41:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766032884; x=1766637684; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JuzEIWvl3W7GlEA1OYeC3H4ZtKMzn/SCv7fuo7FX468=;
+        b=UNMixVlTOvTyvGskpgmn/mNeG6Ad+bDryVUlgeFKgdtLiYVObuFD58Yu8vPIsZsXDS
+         p97s769unSAGQ57RXG8cFuaA+IOpNpVJcokdCkm3G74QRFiGb2MZbVKRNv8TjBoz0oK2
+         yKXJ46vS6nvl7NRhIYWbG+QZZl6S/igzEUyqWYOF+GO9eIEqR/aoH/uxCEiPgkY4MCok
+         UULjHGoP8qz1rdrNk6bpl0HO+B8bBmzQIZvo4Cr9mUkpqarYY/sojott32Bopv6Y1FUK
+         OC2fUp3qUFMUIXx34YlJJh2mHiS/hIXg2TPNjpxqVdbFkEsC6oYWUsD4+6pBNz1pc9Hg
+         wsDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766032884; x=1766637684;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JuzEIWvl3W7GlEA1OYeC3H4ZtKMzn/SCv7fuo7FX468=;
+        b=jHeI0gX1lyXluYApKD5s8ZooVOE5yvGL7O2L0Sc+Jp1qEMPTp66YmZjypd/q0MCBoM
+         Mlaa3R6abjj1Y8ow9KXhqYXL1uVGnnl5JlFHvBsrABtB3Zs89W46X667+CctuBER9K93
+         Dq72MJTjVTYJwZcBXmBj/BwmCfJLvZUHVA/tQBpQZmHn/nGluTNjCXPCVsqrpqS65hJH
+         NX9PXZHr/K+hN/TETsYZDtXe1SWnwZ7xkK8I1oW9UMp1jpL2dqFlZpVsvlSQa//sjxAh
+         iSRlUUk+nQzM79pPO9pwOVENNXGc9LZrfWQoMeaHIRoUwTJyt4gIb6qDRZs4nAXJsXq1
+         unbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8u4G8fld/MdfI+eiKYLaU6HjM7tyqHsntt/+8E0In/21OKNlf8mbSYooTSwihnwPQ/D2XyoSh/A==@kvack.org
+X-Gm-Message-State: AOJu0YwXuexhE5hbRwfu2tKpujTvnhWnm98LFCB1fu11sBJUkiyMmbLk
+	HxGt6qSy4i831Vo93RrUIOxw1f3hYoxPW7lv4f1bWqQIL4RNtbyvARVA
+X-Gm-Gg: AY/fxX48NZrNtY7IAEOaou5IvuTa2VUIeb5bWmjSxxNQ+Pi2EATWeKyVhscDXl2yTpo
+	c7h/pSrVs2i4ddpsyJ/XHvm+h7A5IQCdzQltNUiE8nDwJ00TNOAgogE0rZRXvRO8yBYwo66kNSA
+	iG3dgh0PQLVQ5PG/qmOlKePXAOz9vOY0g47KqeuTj7GEcc3tsmLuJrESwTawelMcpoP1jwltC7o
+	GWxyuLMM+Nc8JHpUsKPnbCCS3aB+GriNumwiJp+hy0I7gz2+1yH6QAGJxUFcY7KY0mCgC1267n8
+	o7lYoU2CEmRxvicCFkaHTCs+dvET5foO2i/Fzx+atYLnx/D3HbNtXoXGKrTPTCOOCnOXW4pjzWI
+	+o/lRV8iAfgZVSdbwm8JNhgZzL5lh9A/jVaIQCwmNfpGEl90V91bhuGi/C7R9BnGYcg4ycATSto
+	4pxbdjQKyxYXv6oeR8nV5Z+Eyn
+X-Google-Smtp-Source: AGHT+IEDhyyOq5CLCSkoDRkONzcxl/kuIzlwrV8ZzwOlhICK6M9JvZE/38R31kmGuBkhw+NMMIEFHg==
+X-Received: by 2002:a17:903:22c2:b0:2a0:980a:4f0b with SMTP id d9443c01a7336-2a0980a509dmr181194865ad.40.1766032884244;
+        Wed, 17 Dec 2025 20:41:24 -0800 (PST)
+Received: from localhost.localdomain ([114.231.217.195])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d1927169sm9325885ad.85.2025.12.17.20.41.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 20:41:23 -0800 (PST)
+Date: Thu, 18 Dec 2025 12:41:17 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+Message-ID: <kquic3rm55tf3yafdpy3cpmlcmlevfq7c7dk5gzfr6jqxc2qzg@k7potqbeys5q>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
+ <20251217033155.yhjerlthr36utnbr@master>
+ <77paexkefc7qkfjgv6reuf7jxlysgkinuswsck5tthqkpcjkpr@aelvplwvafnt>
+ <20251218034801.jyuu437dbtvcnpzw@master>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SJ0PR11MB8272:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f093f95-e18f-4970-20b1-08de3def3708
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?UT93M4L+FnR2ORjvI3twLv9GEtkgrpnvrV1XadUUKzZU/XTLxHjciT1tW07H?=
- =?us-ascii?Q?DpT+/hhtAZNaGKtAM9H86RulTDm2UH4Yr8oea4kYseCEw8Rk8SQuogGL8/rB?=
- =?us-ascii?Q?Daxl9qqNPlBl2L6gvLrpSRTFZMncotZsYWakaeJPRM1JBLpuI1XNwiB7MgJn?=
- =?us-ascii?Q?pMqIlTOIDAu6YHpdPj99RpCycttuU7g6C/gh6WbegjIEB1vxsl6FQ4wkmIat?=
- =?us-ascii?Q?nwuLBx1VqGaw0HIpEkjp5Obkcgnl8Wz16hNTvPVGyWYYrPYS+azgqt0e2RlK?=
- =?us-ascii?Q?/L3sHhVejrBe/ptmd4vhTHcQvjn1M1xWtzOpzM7zWOYoXHeWoEG9OtdRrCJr?=
- =?us-ascii?Q?91lUik6DDI6hdYTftXfRFA26fZPU6Dxh+pwOhtBP0alLDoM9N28qtNZqudbZ?=
- =?us-ascii?Q?FdCxsql/cS4Xg/+31QdchwoRbs8XYzmzspP4np5Wm+zuyyql23eJNIMghvhN?=
- =?us-ascii?Q?glp2goy78nU5E12EyjSgHVbV4GP1b9JKiJjaH/Ph9DMv2rMC9pRoDVF2jOfJ?=
- =?us-ascii?Q?3oVQ77igb/whBAsFPU00kWQPKdtxp56dMF/bpsoTJTui5VfnA4VCe0zsqioM?=
- =?us-ascii?Q?dKJ6h9UV0fjyxDsp6tDrd/HTtr8+/UFyanHwNJHfPO4K55hQmszoYHdkh50W?=
- =?us-ascii?Q?aWfkAF2yNUHY5hb4tRkE9BtapzhI3IwkP7msbY36Fqi+BTWpPPhM4b7KnRmN?=
- =?us-ascii?Q?P4UdG5YFI+a4wesvbeYEd9VqXFOB/ZCmBnNRe89L2ELU9oDVK1DaKUjC0G4l?=
- =?us-ascii?Q?OPJ+raWKQwZwtSCJRv5q92VnGkrtgMVVzlmYPJKrcagiexlNEXTklmHZq3+E?=
- =?us-ascii?Q?emfbgz15VtOJ5KFzLj8u4rhTkWWQJgSPQTm5pLkgIsvCbiEIEmJ7wIbo0igg?=
- =?us-ascii?Q?ioSN2Z2gyICMRXVIGB31rOYqYMSGFeppaIyNpT3N4S7UQI3vsbVxWIVWr+Lf?=
- =?us-ascii?Q?3LVYRcRqEC3iQSeVwkBWNyZ2TB+GRLI4tr7/wfqOlZQs2uYAiMD81sjhTz/N?=
- =?us-ascii?Q?KT3UJKW5dSIS5yDGVU/1PFZQID5XSf56x0a0O2KEZc7VuxW0TX/osAY8SWQn?=
- =?us-ascii?Q?8XpitNC9LD7wwNVMoG8A9+LklnxBA9QfuS1n1XHI9pY9A0o2yL3tkSOU4TU8?=
- =?us-ascii?Q?BPomfZVXh1TNY4PWi18Jp9O9gIsahNDNkChps7fnfbZIQ4xLlR0vhQFTC2cl?=
- =?us-ascii?Q?So7qdcDlssoQNTcVB842dtpgWJ8+lKJV6cR8uoSQnVXeh0hXi0xtE6D20zbi?=
- =?us-ascii?Q?MxukKWutXd9xWY9F9k0cO8xJ+Zng4QMR8Y+1K2tBAlMvK0Hzugwku/MbbZbB?=
- =?us-ascii?Q?+G6l+E0iI3X1l0KRnWkY/PrAc8aQxSt/JRHxDGwQT8hYhsIETJTH1vnHOkYv?=
- =?us-ascii?Q?E5Y5We4lT3uHTOcNchDuojjUN4vnpdPo8QIdQFASq3jshzOVZx7jPbVHe8Sy?=
- =?us-ascii?Q?t9KjwbaHEjhCNPTkLg+AdvqdUErSSxA4oU9OjFr1sCIER5iVdgwJVQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3+GKzGzX2JxMiIS7hE+fZWa05ZX0PjOUt9JcRmgSslwE5rpDC3pR3Sp/Vj8i?=
- =?us-ascii?Q?P7gTqqsbvVYokz0U9fhNF6ZUaPM0WL6q2EKCjn0uBy/iDVFGMVQCGkI3dBSE?=
- =?us-ascii?Q?hu8VBC7cidSx/KY3NS1UohAizDkparfyqFqy4e2zZnedF0yAN2G4UpBzsyO2?=
- =?us-ascii?Q?MXbQ6XAEWVzkzM3SnEhIRddqkzIZcg/TdVF3zQT/C+n1jnDnHVy9UuwDEra8?=
- =?us-ascii?Q?rCWBgsOY5SMbqYGM9Mi4bYSJ+b6ImaR3BK2AWWDoScHk8A745kfNkNmVqgAo?=
- =?us-ascii?Q?rkTliG/M0d0jxXJfMp/OHFEXE927Uqnv2GXLZZHfhE7+OkksE+F0D6ksrYp8?=
- =?us-ascii?Q?5hvdTDMbAgWJODMipugy38rBOSwkIXuRF7wDJ6ZCnpCOeiK+nyJdqmsX3Dej?=
- =?us-ascii?Q?N+g7ZJZXUit+C2KC4d7Sdg+RrhIrcIh0dEOoWEunmC4v3GIt9FOJyAk32Yz+?=
- =?us-ascii?Q?za6Po8IFDFY+/5IoJws0mHfCWBc2N4aPGH4hFJeigdiqWEIj4t4ICs7jZTre?=
- =?us-ascii?Q?WhCMYrPi44xCsmkE5r3qbdEfXUtI+9wDpQZJkekVHlUdOKB+O5Ka6fN+uEnR?=
- =?us-ascii?Q?q0eQ69a7V2j1pDYKhuyxQHFxNFkdgXMY2q23XvCqWPuVnT7n77dqOi6njSZL?=
- =?us-ascii?Q?Xa/ojpCvN91cwh6z7zSMo5pMVBKle9XdlOPeBSmAHkit9+AqDMxu1ZMEVtPU?=
- =?us-ascii?Q?s3PYmdh3vQshqJNnLsyDyujRazFuZRLm8vU5o3dAqIfHTnithKSMqw2ltFKK?=
- =?us-ascii?Q?snYhgATkNd3b4Mp8VWXfux/SLMbOrZVHEXZtMUr58GmNN3WnyfKgitltnkaE?=
- =?us-ascii?Q?KhZ7r/vBBp2lwA5ky/6gzzKppUR03r3Q4+0nyB6wNTtqffij+c29hmUF+xVe?=
- =?us-ascii?Q?AzTLHCykHxQlfH5ub9XtvmVL/s/ycEnofhTSu4rHCsiafjPW46hrf0GOA1L5?=
- =?us-ascii?Q?q1xH9B91yNZpUN6UvHYJQRTPlht5QTZ1vwNWxNiOw4a5cvh1qwbPrptkJbGO?=
- =?us-ascii?Q?e1qfCRvgyHod7PquQr4IFQ/+x2wEEpZoIk7UEYCLlhEZ0/+z7thaqmrW6Mev?=
- =?us-ascii?Q?9t0cyfD/dlGdL5B8FztOnYXVW8gc56A0A1GfTyjsWwhBOvvqrmls+xYLCtnz?=
- =?us-ascii?Q?VOlzD/zveHtd7xqYoluqxfzDKXZNah1GOrtD2LZO5Np5GV7xLkHONS8vvyo7?=
- =?us-ascii?Q?ByTmBbv3ikwgnrC7Ck7mzPxJZj7RR6yV1aQfp3T7YdMi1M+dFVQRxXzzcP1N?=
- =?us-ascii?Q?tNwRdSEplhOi/Xg89AH8BhMlDaYUOLlKdx/Hir98r++d/cuqim2QU/5rhUEH?=
- =?us-ascii?Q?P1HFdtA3IKOVRATFZK268C9foERp2LcX24pLz7NFOOqoBqtVE5wztUNXp9ya?=
- =?us-ascii?Q?7Wvm46IKjxXVx1jstokgUxuFShl24ZpbwOATPT1RVvA28qLiLx9je/HaWT4a?=
- =?us-ascii?Q?0ZmKfFeTPG91NG6YnhD+DZ05Wy5eNU8DcmR85g710iqPZVGGrTVJcj/PJP0Q?=
- =?us-ascii?Q?wxEPEhfabG4rWv6qppeWCuIe27MqGaOvL7vblxjsxuo6j3eqYVb8X59ohORb?=
- =?us-ascii?Q?9FGSSm07lRsHtOif5lXuND6sxMNNc9SxPWzjt8BksTachYMNi1/R2RUP3Q7i?=
- =?us-ascii?Q?kA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f093f95-e18f-4970-20b1-08de3def3708
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 04:37:56.4360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UI/Wb7BDUC0PfEz40ihvzXSD5hToMThuI/h5Ox/d+dEBg6V+bPLBlQIdHmX6Pp1lVg/GCc+vT+lQfFpANdv/SQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8272
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5D2BB120003
-X-Stat-Signature: tusqkgj5q74z6xeurbc7wr36shjmawy9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218034801.jyuu437dbtvcnpzw@master>
+X-Stat-Signature: x9da79wqxwk7zyneygsdcd18eiahfs4h
 X-Rspam-User: 
-X-HE-Tag: 1766032689-602781
-X-HE-Meta: U2FsdGVkX19sTSZxnDTJqzuaOfYYrUlsxkgmeolFyyklpb4DEuSPS9lz7DUzPX2C7uKrb0gaZYPIsz7xQOOCHeZ7pTTVcsCPHw6e5whJO0/v7RSXUCgF0LLeQZgJr9dC8FnQiWCyEE/O9vYyFjCnYd6Lw4FvpibZGijMeMAA3pr8ka5K4wY/vN7Lr01EA2CkcJxO9Oci5iCvlv30EPObm0Ls5G++b52cqLBVkXfa/M/PoqktXRxclZu4XrsR13sLm5ZGjvG6bEc9U3U9ktvOJAu1XgLtSaHtzYwXSLOs3DfafpKPYsJWoLX7oQxmEWI54/HB+KIFhAB5SiQVyQe2VBMgC9mcKBJcVPBfpiBTmorkobusLi8usBRhpehvPGAz3f3L36R5gvSHheCkn8VC3wvtXLonrqzwjpzsYEqFebSHTBGjVM6K5KE8gI8xgEiUNvVyKMTMY18nyWCuJ86NIOf5SWD/YGmjQRIzsrsSLzl3kEreL+izWu/zNnTUMgtdzu+5sBmlmUN99egqIH/tBNGjn7JjAtefzhSIQufGc1JZcvhmIwWRiVpBCZYF4HUCpeWbDWU8gnG9A12Rv0ANNJRXPsXbIHM/QbUjB+7pw2QgJz8UdaVmYHNd9aTDrcTqaKhQv8eftz+LNK+2fZeEm2+iiYIjEAwlnQ7gKUlrRLBsNa8UB4lj4OO0pabRTfx+nl/RPep+3pvtSKpSH5Q/xiTHjgffWNKqPfndk+wDToesHXgd8jeQiTeaS9nw9fUG25c/yYYT8G+Nw6MdEc7+eUDlDC3Ex8hJn4hGhUAf6GDcBFNixIkrOb71C5TqRZWEFcz97nKW3IFUQa7LniyIAbyehUn3Pxjf2uHPscUG5FF7luL+OCFsKk3eXizWlDMheTJ76NVUMYlGII1/J77mvvSzXPzLj1Lxhi/IdsXe+XtdReBqWt83qFehDB/9A9iN/MbvQkuoB+1rANF3f71
- 9l9cPJT0
- W0RVsd3zVhYu+BpPaRAZN8WRA6F+I9VGyvrQgLxdTUoBW7TIn3+ayy36k2/ZodET9+ezx7DhaZ0noVan0OFnqIQH6AyfG/27zRK6kzn6R71xw1SkQfQFX4X+vbSVho1IQ1Akwlh98GTdv5NCYpHBkk4A4LxcQKVzGb/0dpbWXCc2c1Gi6/MhbFoIjmXkeJ3CXt+1GGwXRVJzUCyGW5LIzRO6WU6h6OvpVOdDnhzzqbWNkwf1mrPrUZ8UAosT47LbfYJPDd04RXc7NDO2hj/D91Bm6z4NBdn4aMfPyN56hJPlgvvEFf4EDU1l5EeGovHl3EooRJFbOHySJA6VAKDdCt276snqHg3448xMuRHe1W2D6fzq6Xqry1Lw0soKNGlTjoRlx1FtG4kVRUtL/Q35mh6OxkUDHH9YZERcuEwtdnSG7uosiOJRAasPDr4T+kfr2fxc6vY3JRP0N+hPcCfhtULcRb/WzOUQhRyUeAlqLKVFszmdPXGI9d02U/ozpv7yUdbN7KFeNpJ9vbZXKEYNU8K91i0bx+rQT4o5sKcvtqiTQzr0aKWAYcs7hgiSYZj7eM/VJBDipsI/68ijC8h2+EWXp1IAb7Ct917pNQBmIt6vXLi4c2q6HzWOyoyCvb5NKnP/8mZvSL0pgclKMbbo4DQhiLpV4Dl7qwWnH60ti60NqOkY=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 921711C000B
+X-HE-Tag: 1766032885-23607
+X-HE-Meta: U2FsdGVkX1/jgOkwXqZ7aenSTAjg/2BvtMFxcR7MPePki8SqK5mhmbtt/qBA0sbuufHYwPKYBKiHq0BzCX8mAPnEuYO5LalJGcJABjWWswnOn8YhKLGkTgf7V0a9XtyVHx3UWX2Shr1RVnKB8zrbb7M4rGWCmkLShL0gaFQ3ZbcMdoSSE7WdLInqkchSpQJpI5uWSnaGPAYkzZR8+xJb8ayJkwz/q9qszxRyxwtFI5xHrnV8rxPDFX1sFni0vRcD+JoSaSXdwkYVxoXpvuOusGjE+MEXo4AGOsWr75oVp0IHskAJyJHge9+wSe5hcT176wBMBZQ0l/Oj4KS8JW9S+Ft/GiAMj8irKAnubsAhQ5o4R9kPKDnU2cd7N0o20kJXod2+p+AvzEY7IHhj42OVYQq6O+mUNVNcmplgXq6rLHimEp0y+EOzFnr+TGHM822K28/DpIH5XN9S5JNLgy96ddZVwwRU4iGEka4L8VtCHZUmLcb9qOf6qvlUG2G8Kuy54CVDLKwoWsgrgDY44k3Sk34NBd/nKG7OAa9jFK7f17JOGPgIdPzY/CQn2fJlNrgz9Is9PcurxLkiieZeKMjQ7XPXkrzbhlW0Y/w2H34Lq+T3W1XcBGBPYk2J3Gjdl47V80hHxmbECvaq4PWI683TGwtVuxVdQUHckCzDwaWcPU0hWulhK0+yYwDpLCFuTRWeyAuuN/AYeOX9Vlvka7Nv7wFD7dAPQgkBKuPUXaKEu+Biu9479qTXSysQgtmDiug3j31hmJPDGVaEJgAAL1is9CBxis0ECV8yCMjPmpTGpwbAjXeg/jgBTpwBMlRaArMJFHXFc7gyB6l4n1fKVW38LWjl5RfDXEBQsdm9xLbsRjT1PHU1MbziGXRvGY8gGdcbS27vCbNLDsTRr1yVzP2BbfEKZnMtgjXoEUQtdSik65l/qmX94hR9IrnPN/XZbiUfxQBHxMQn5XtY2aXjYi+
+ u7n2rcCk
+ SgeWaC/sYUCDv1LBLYKo+0npFogwU7oJqgjat7pudigC2NVAKUvI/veQ13Hif4X1glJfFGPlg0P0kJEICzM7OTXDYn7nxPhjLmdcbBcp0KMJx1WYnVfePKl2z7YkBdLnUBHv5Pgy4iHpFujCYs7SqyCNHxFG8gSB6zoXfi5EVfJXt9+qqzXUvl+zvxoo3DceahHy4qOh/MvaY+41MTOh4631U8Olh++qFDE6gA4W4hj3R+bVdHmzg1ZdTx/ZT6NAnTNPECcUC4FsBlvbkeAAUjwsQlTxfSLZ/s7U+FcZ0tKn/ZCVO+jHP/t14wz3pjOS7Jr6k6upATkxoIFujXgqb4YICDNkD4ySLwILCIUgeza2+qLjYklv9gvyuPy+TsfqCE4Tm1B/Q486pGRpUExGZBhOolB3TU8Vs0pKunvyccX9o4zeFbf0shFQ7IrTRsmLgO1sX7yLmR0xjSw/YYcygNmW9pnxGvfbbLKlfIPjgglo5b2LfF2+cRv4wgF6oCvX4T4rNu+U14LOLOvcLTnGnUa6HQWTxqysklDvTSPmNT3/zYGVqGZHza1Ffv1YwRBXN6sicCWDSeLWVaopamJo/TcmnwpRuNLKyrJnc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -217,103 +125,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hi, Uladzislau Rezki,
+On Thu, Dec 18, 2025 at 03:48:01AM +0000, Wei Yang wrote:
+> On Thu, Dec 18, 2025 at 11:27:24AM +0800, Vernon Yang wrote:
+> >On Wed, Dec 17, 2025 at 03:31:55AM +0000, Wei Yang wrote:
+> >> On Mon, Dec 15, 2025 at 05:04:17PM +0800, Vernon Yang wrote:
+> >> >The following data is traced by bpftrace on a desktop system. After
+> >> >the system has been left idle for 10 minutes upon booting, a lot of
+> >> >SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+> >> >khugepaged.
+> >> >
+> >> >@scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> >> >@scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+> >> >@scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+> >> >total progress size: 701 MB
+> >> >Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
+> >> >
+> >> >The khugepaged_scan list save all task that support collapse into hugepage,
+> >> >as long as the take is not destroyed, khugepaged will not remove it from
+> >> >the khugepaged_scan list. This exist a phenomenon where task has already
+> >> >collapsed all memory regions into hugepage, but khugepaged continues to
+> >> >scan it, which wastes CPU time and invalid, and due to
+> >> >khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> >> >scanning a large number of invalid task, so scanning really valid task
+> >> >is later.
+> >> >
+> >> >After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+> >> >SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+> >> >list. If the page fault or MADV_HUGEPAGE again, it is added back to
+> >> >khugepaged.
+> >>
+> >> Two thing s come up my mind:
+> >>
+> >>   * what happens if we split the huge page under memory pressure?
+> >
+> >static unsigned int shrink_folio_list(struct list_head *folio_list,
+> >		struct pglist_data *pgdat, struct scan_control *sc,
+> >		struct reclaim_stat *stat, bool ignore_references,
+> >		struct mem_cgroup *memcg)
+> >{
+> >	...
+> >
+> >	folio = lru_to_folio(folio_list);
+> >
+> >	...
+> >
+> >	references = folio_check_references(folio, sc);
+> >	switch (references) {
+> >	case FOLIOREF_ACTIVATE:
+> >		goto activate_locked;
+> >	case FOLIOREF_KEEP:
+> >		stat->nr_ref_keep += nr_pages;
+> >		goto keep_locked;
+> >	case FOLIOREF_RECLAIM:
+> >	case FOLIOREF_RECLAIM_CLEAN:
+> >		; /* try to reclaim the folio below */
+> >	}
+> >
+> >	...
+> >
+> >	split_folio_to_list(folio, folio_list);
+> >}
+> >
+> >During memory reclaim above, only inactive folios are split. This also
+> >implies that the folio is cold, meaning it hasn't been used recently, so
+> >we do not expect to put the mm back onto the khugepaged scan list to
+> >continue scan/collapse. khugeapged needs to scan hot folios as much as
+> >possible priorityly and collapse hot folios to avoid wasting CPU.
+> >
+>
+> So we will never pout this process back onto the scan list, right?
 
-On Wed, Dec 17, 2025 at 12:04:20PM +0100, Uladzislau Rezki wrote:
-> Hello, Oliver.
-> 
-> > > > 
-> > > > Hello,
-> > > > 
-> > > > kernel test robot noticed a 21.3% regression of stress-ng.bigheap.realloc_calls_per_sec on:
-> > > > 
-> > > > 
-> > > > commit: 9c47753167a6a585d0305663c6912f042e131c2d ("mm/vmalloc: defer freeing partly initialized vm_struct")
-> > > > https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> > > > 
-> > > > [still regression on linus/master      c9b47175e9131118e6f221cc8fb81397d62e7c91]
-> > > > [still regression on linux-next/master 008d3547aae5bc86fac3eda317489169c3fda112]
-> > > > 
-> > > > testcase: stress-ng
-> > > > config: x86_64-rhel-9.4
-> > > > compiler: gcc-14
-> > > > test machine: 256 threads 2 sockets Intel(R) Xeon(R) 6767P  CPU @ 2.4GHz (Granite Rapids) with 256G memory
-> > > > parameters:
-> > > > 
-> > > > 	nr_threads: 100%
-> > > > 	testtime: 60s
-> > > > 	test: bigheap
-> > > > 	cpufreq_governor: performance
-> > > > 
-> > > > 
-> > > > 
-> > > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > > > the same patch/commit), kindly add following tags
-> > > > | Reported-by: kernel test robot <oliver.sang@intel.com>
-> > > > | Closes: https://lore.kernel.org/oe-lkp/202512121138.986f6a6b-lkp@intel.com
-> > > > 
-> > > > 
-> > 
-> > [...]
-> > 
-> > > > 
-> > > Could you please test below patch and confirm if it solves regression:
-> > 
-> > we directly apply the patch upon 9c47753167, so our test branch looks like below
-> > 
-> > * f7991e8a0136cb <---- below patch from you
-> > * 9c47753167a6a5 mm/vmalloc: defer freeing partly initialized vm_struct
-> > * 86e968d8ca6dc8 mm/vmalloc: support non-blocking GFP flags in alloc_vmap_area()
-> > 
-> > but found it has little performance impacts
-> > 
-> > =========================================================================================
-> > compiler/cpufreq_governor/kconfig/nr_threads/rootfs/tbox_group/test/testcase/testtime:
-> >   gcc-14/performance/x86_64-rhel-9.4/100%/debian-13-x86_64-20250902.cgz/lkp-gnr-2sp3/bigheap/stress-ng/60s
-> > 
-> > 86e968d8ca6dc823 9c47753167a6a585d0305663c69 f7991e8a0136cb0fdf35f11e28a
-> > ---------------- --------------------------- ---------------------------
-> >          %stddev     %change         %stddev     %change         %stddev
-> >              \          |                \          |                \
-> >   48320196           -10.9%   43072080           -10.8%   43116499        stress-ng.bigheap.ops
-> >     785159            -9.8%     708390            -9.7%     708644        stress-ng.bigheap.ops_per_sec
-> >     879805           -21.3%     692805           -20.7%     697312        stress-ng.bigheap.realloc_calls_per_sec
-> > 
-> Thank you for testing. I had same expectations. No difference.
-> Honestly i can not figure out how: 
-> 
-> * 9c47753167a6a5 mm/vmalloc: defer freeing partly initialized vm_struct
-> * 86e968d8ca6dc8 mm/vmalloc: support non-blocking GFP flags in alloc_vmap_area()
-> 
-> can effect performance. I am not doing anything related to performance.
-> I would like to ask you if you could test one more thing. I see that
-> 
-> [still regression on linus/master      c9b47175e9131118e6f221cc8fb81397d62e7c91]
-> 
-> contains also below patch:
-> 
-> <snip>
-> commit a0615780439938e8e61343f1f92a4c54a71dc6a5
->     mm/vmalloc: request large order pages from buddy allocator
-> <snip>
-> 
-> where we try to use larger order for vmalloc. Could you please revert
-> it and rerun same tests?
-> 
-> Thank you in advance!
+No, if the page fault or MADV_HUGEPAGE again, this task is added back to
+khugepaged scan list. Just doesn't actively put this task back to the
+khugepaged scan list after splitting.
 
-we've seen comments from Mateusz Guzik in
-https://lore.kernel.org/all/e4b6sjeh22uqhxhxudsbanlnyo2potwowuy7mkrp6tvxnftjn4@mcjyes2s3eu6/
-that this could be related with cacheline bouncing.
-
-not sure if you still want us to do the test you mentioned?
-
-if so, sorry that I cannot make a clean covert of a061578043993 on
-c9b47175e9131. could you prepare a patch for us? thanks
-
-
-
-> 
+>
+> >>   * would this interfere with mTHP collapse?
+> >
+> >It has no impact on mTHP collapse, only when all memory is either
+> >SCAN_PMD_MAPPED or SCAN_PMD_NONE, the mm will be removed automatically.
+> >other cases will not be removed.
+> >
+> >Let me know if I missed something please, thanks!
+> >
+> >>
+> >> >
+> >> >Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> >> >---
+> >> > mm/khugepaged.c | 35 +++++++++++++++++++++++++----------
+> >> > 1 file changed, 25 insertions(+), 10 deletions(-)
+> >> >
+> >> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >> >index 0598a19a98cc..1ec1af5be3c8 100644
+> >> >--- a/mm/khugepaged.c
+> >> >+++ b/mm/khugepaged.c
+> >> >@@ -115,6 +115,7 @@ struct khugepaged_scan {
+> >> > 	struct list_head mm_head;
+> >> > 	struct mm_slot *mm_slot;
+> >> > 	unsigned long address;
+> >> >+	bool maybe_collapse;
+> >> > };
+> >> >
+> >> > static struct khugepaged_scan khugepaged_scan = {
+> >> >@@ -1420,22 +1421,19 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >> > 	return result;
+> >> > }
+> >> >
+> >> >-static void collect_mm_slot(struct mm_slot *slot)
+> >> >+static void collect_mm_slot(struct mm_slot *slot, bool maybe_collapse)
+> >> > {
+> >> > 	struct mm_struct *mm = slot->mm;
+> >> >
+> >> > 	lockdep_assert_held(&khugepaged_mm_lock);
+> >> >
+> >> >-	if (hpage_collapse_test_exit(mm)) {
+> >> >+	if (hpage_collapse_test_exit(mm) || !maybe_collapse) {
+> >> > 		/* free mm_slot */
+> >> > 		hash_del(&slot->hash);
+> >> > 		list_del(&slot->mm_node);
+> >> >
+> >> >-		/*
+> >> >-		 * Not strictly needed because the mm exited already.
+> >> >-		 *
+> >> >-		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+> >> >-		 */
+> >> >+		if (!maybe_collapse)
+> >> >+			mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+> >> >
+> >> > 		/* khugepaged_mm_lock actually not necessary for the below */
+> >> > 		mm_slot_free(mm_slot_cache, slot);
+> >> >@@ -2397,6 +2395,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> >> > 				     struct mm_slot, mm_node);
+> >> > 		khugepaged_scan.address = 0;
+> >> > 		khugepaged_scan.mm_slot = slot;
+> >> >+		khugepaged_scan.maybe_collapse = false;
+> >> > 	}
+> >> > 	spin_unlock(&khugepaged_mm_lock);
+> >> >
+> >> >@@ -2470,8 +2469,18 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> >> > 					khugepaged_scan.address, &mmap_locked, cc);
+> >> > 			}
+> >> >
+> >> >-			if (*result == SCAN_SUCCEED)
+> >> >+			switch (*result) {
+> >> >+			case SCAN_PMD_NULL:
+> >> >+			case SCAN_PMD_NONE:
+> >> >+			case SCAN_PMD_MAPPED:
+> >> >+			case SCAN_PTE_MAPPED_HUGEPAGE:
+> >> >+				break;
+> >> >+			case SCAN_SUCCEED:
+> >> > 				++khugepaged_pages_collapsed;
+> >> >+				fallthrough;
+> >>
+> >> If collapse successfully, we don't need to set maybe_collapse to true?
+> >
+> >Above "fallthrough" explicitly tells the compiler that when the collapse is
+> >successful, run below "khugepaged_scan.maybe_collapse = true" :)
+> >
+>
+> Got it, thanks.
+>
+> >> >+			default:
+> >> >+				khugepaged_scan.maybe_collapse = true;
+> >> >+			}
+> >> >
+> >> > 			/* move to next address */
+> >> > 			khugepaged_scan.address += HPAGE_PMD_SIZE;
+> >> >@@ -2500,6 +2509,11 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> >> > 	 * if we scanned all vmas of this mm.
+> >> > 	 */
+> >> > 	if (hpage_collapse_test_exit(mm) || !vma) {
+> >> >+		bool maybe_collapse = khugepaged_scan.maybe_collapse;
+> >> >+
+> >> >+		if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
+> >> >+			maybe_collapse = true;
+> >> >+
+> >> > 		/*
+> >> > 		 * Make sure that if mm_users is reaching zero while
+> >> > 		 * khugepaged runs here, khugepaged_exit will find
+> >> >@@ -2508,12 +2522,13 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> >> > 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+> >> > 			khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
+> >> > 			khugepaged_scan.address = 0;
+> >> >+			khugepaged_scan.maybe_collapse = false;
+> >> > 		} else {
+> >> > 			khugepaged_scan.mm_slot = NULL;
+> >> > 			khugepaged_full_scans++;
+> >> > 		}
+> >> >
+> >> >-		collect_mm_slot(slot);
+> >> >+		collect_mm_slot(slot, maybe_collapse);
+> >> > 	}
+> >> >
+> >> > 	trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot == NULL);
+> >> >@@ -2616,7 +2631,7 @@ static int khugepaged(void *none)
+> >> > 	slot = khugepaged_scan.mm_slot;
+> >> > 	khugepaged_scan.mm_slot = NULL;
+> >> > 	if (slot)
+> >> >-		collect_mm_slot(slot);
+> >> >+		collect_mm_slot(slot, true);
+> >> > 	spin_unlock(&khugepaged_mm_lock);
+> >> > 	return 0;
+> >> > }
+> >> >--
+> >> >2.51.0
+> >> >
+> >>
+> >> --
+> >> Wei Yang
+> >> Help you, Help me
+> >
+> >--
+> >Thanks,
+> >Vernon
+>
 > --
-> Uladzislau Rezki
+> Wei Yang
+> Help you, Help me
+
+--
+Thanks,
+Vernon
 
