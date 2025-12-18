@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54930D6ACDA
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F5BD6ACDC
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B75756B0088; Thu, 18 Dec 2025 04:55:47 -0500 (EST)
+	id 17D956B0088; Thu, 18 Dec 2025 04:58:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B23686B0089; Thu, 18 Dec 2025 04:55:47 -0500 (EST)
+	id 12B6F6B0089; Thu, 18 Dec 2025 04:58:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A21CB6B008A; Thu, 18 Dec 2025 04:55:47 -0500 (EST)
+	id 029E36B008A; Thu, 18 Dec 2025 04:58:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 909FB6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:55:47 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33EECC110D
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:55:47 +0000 (UTC)
-X-FDA: 84232135134.03.C9AAAB6
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6D2391A0017
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:55:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vf+N+HZy;
-	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E11BB6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:58:43 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C597BE042
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:58:43 +0000 (UTC)
+X-FDA: 84232142526.11.F0DF736
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C8536C0003
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:58:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKg1sWXG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766051921; a=rsa-sha256;
+	cv=none;
+	b=mUDsq7lD7Iwecw3QPmoJa9/uF29OogOwdm9FqMfXYwqOOxdT+YSMuESFGj4IPq9OaKu7kV
+	LPm1xNvQrf+WgvROAj/gpHRNP8vRqcXnHgAiQBsTvf6En4zihy1c9uWj7YyOUO1TVqGk/W
+	Ovretdplp3+Dj31eAwvShYk5WJv5TkU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKg1sWXG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766051745;
+	s=arc-20220608; t=1766051921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+zvG+8e11n24pJutZahktO9rCuNJt6S0wGRGf9V6C8=;
-	b=ciOmwv1USpq5bU2RSCZmFVAzp/calADs36gq30egPSxojJERjAo3B+zAqTiDykPvWrxxwx
-	wLKEJvoj6nVe/Fpyu385iFGdr1GK/tnfiFF0D268y/vZrIelNOelJXc34xMYkJGzSskyoc
-	uiQ72iRVhPUXdzgHu7/l/Pl5RO/dEf8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vf+N+HZy;
-	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766051745; a=rsa-sha256;
-	cv=none;
-	b=XTFDL0aDNVuhPmiN3pQtfkXXgBZOqlS8vmSKB2C44pvaPW4OJk/C7k/XRuq90tZnitWcvO
-	eDsiopSQubDITDMak4MtGZAxkYIOCBQEz3duW4JDO20ZGUU0vM5/DRf/Z31DniG0nbtSnb
-	Ctc2oYaWc1sSMsUcnsGYAvssg44D60Y=
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251218095541euoutp015d663ba0aca41d598f77b39779bcdcd5~CRrO_MVoH1247012470euoutp01E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:55:41 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251218095541euoutp015d663ba0aca41d598f77b39779bcdcd5~CRrO_MVoH1247012470euoutp01E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1766051741;
-	bh=d+zvG+8e11n24pJutZahktO9rCuNJt6S0wGRGf9V6C8=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=vf+N+HZyDAEGEWfu9J9gaf5Bj8YdEQ0Eo1YJM42hBxIqalmnJHaFk4r1miBih2b6+
-	 oDDzqFXu90kFDpGbSMxXRpc3yf7AffyTPEtVfr4nWdX/3QKLoVd3nB+ElIsJzFI2Qi
-	 pnFdGYVUHE4/VxIMhM3iPyAEwMMs/7bUgrHkze/k=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251218095541eucas1p158c5660f096a107393085fe89f5bdd6d~CRrOeW8ch1259512595eucas1p16;
-	Thu, 18 Dec 2025 09:55:41 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251218095539eusmtip2689dadc5b8a592c5508b1a1b9a94aaf1~CRrMzcUAy0481204812eusmtip2N;
-	Thu, 18 Dec 2025 09:55:39 +0000 (GMT)
-Message-ID: <99dc91c9-59fd-47c5-b1d9-157bda86ad59@samsung.com>
-Date: Thu, 18 Dec 2025 10:55:38 +0100
+	bh=HJqr5UQpT+/Rn1WsDWLivxrIk71Gu1jMuCYfXi9rDLI=;
+	b=T0skTc9dWV+YxoPozE6pySaKWa3rK4dhCkp7uFuRMDLofMadYa4GK5Mo/XoYGsWGkCi/Yl
+	cowOAljbRRWPZNpDRLA/T/NQuhoqsbiNkN2BnC90SjsRhfu8wb6O1ZbcIvsvYcnL//AYCj
+	vIYzJ4pAAGDm1h6ZrlKaLFCpg556jMw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FE4860010;
+	Thu, 18 Dec 2025 09:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F74CC4CEFB;
+	Thu, 18 Dec 2025 09:58:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766051920;
+	bh=OuIUjwTgczqolcJsMdctj2jhlUiyGXVpFo8wseT8OZc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MKg1sWXG6lymtLHcZEwMaPS2j7tKBYpLHl0oVGxndnymilFB+8Q0JvzVRnY7L/p4Q
+	 qEaq5FLH+eSQSNdhlhhN9L+GdNZhCMg4EHR0Bx4jNEmtVQU8+6qVSus+Gw0E5JC22B
+	 LY/f6+590Vy7obu3xEQwHiA0raJA78mbQ5j/BUuTH7TLNZ54QP3ejxCtZOA30RYkP+
+	 U6AbsHgzMkynTq6A/yK34R7DE75Syge/kFVGlgaCYs3e/E7pJqXuDwBb7TpCb8AUQ4
+	 9a5ESPvLHENJR7M62gCzDUFUZYcaucVaTCOqIlVIvA1glNLK91DukxEwJKb0Fuuvi7
+	 JTq6kB3jNfgjw==
+Message-ID: <37c5dbc1-bd66-4124-987f-8983a06d576e@kernel.org>
+Date: Thu, 18 Dec 2025 10:58:36 +0100
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] of: reserved_mem: Allow reserved_mem framework detect
- "cma=" kernel param
-To: Rob Herring <robh@kernel.org>, Oreoluwa Babatunde
-	<oreoluwa.babatunde@oss.qualcomm.com>
-Cc: ye.li@oss.nxp.com, kernel@oss.qualcomm.com, saravanak@google.com,
-	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, robin.murphy@arm.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
-	quic_c_gdjako@quicinc.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous
+ folio remapping
+To: Barry Song <21cnbao@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
+ linux-mm@kvack.org
+References: <20251215004836.694-1-richard.weiyang@gmail.com>
+ <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
+ <20251215084353.nmznnnmcpcqo4ldy@master>
+ <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <X-TH#1.CAL_JsqL6VVQ7K_ZAbHJ8Gb7ei_jusLx6wRn=AdOVgV50dX0ejQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251218095541eucas1p158c5660f096a107393085fe89f5bdd6d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
-X-EPHeader: CA
-X-CMS-RootMailID: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
-References: <CGME20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395@eucas1p1.samsung.com>
-	<20251210002027.1171519-1-oreoluwa.babatunde@oss.qualcomm.com>
-	<X-TH#1.CAL_JsqL6VVQ7K_ZAbHJ8Gb7ei_jusLx6wRn=AdOVgV50dX0ejQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6D2391A0017
-X-Stat-Signature: mz1ab4cne7b58wmj67u4wwwkmsanjhi7
-X-HE-Tag: 1766051744-852064
-X-HE-Meta: U2FsdGVkX1/y4LefixQ2iKBUuxLXTSN3X7TsGy6x2snkyckkQSpJhTQvvlljFkcO+qPoAYL6edcKHDRDAAu2yAIZWxBx7iTlOWg3+Te4+0P2woDWpooUV/FKrr6OabsMjA9ChCVD85KKXyK+8aVUmzkQH5fWwRrHK2JoyiNc9hM6Qm+lvTYbVasPEPnTtOyyZ+JXWvjehirp0IsQ+cjzhIaJdweG4PsxXInx6cGq0BxSwA2mrA+TcJZkwm7r5DCmWtqvm50TQ7Os9gTqQONlKrOTwC4hpnMLasUOpZxtki0QqoEqVBPfQuAnCzKs/7axFUeIQKFt9/Ek18XndPmj7B9Iit7Rig39KQbQ65SZPUE+m1Ypacucg7n+0c/Ui8wvm+ODOuuaoxo1WPJqD1Q9kl5qJkfiGEH06CFvoW2jDnm6MNvcs/tKrHifhII6HCkp1VNjN6mL0B0MgWbOyN2fd7pg7p7pwgzT7xFwibuBaKSFRqSKMEt5pbS6XNueOUkBmlHCkKpb9Y2+GbqgKvx8zLCyb25QdSSidFuAwYAh7m/FrtAefXRE99f47K1pifsYPq/1ey2W4tI1XYOBNzT15K6j9sAzSY7wyn88uDEn00l+ytndRtabnO381Aijq0jxSm4SsrT9Z077wUyjnKrj+/MR39xy7Kdqhm20Zaa4NYQGcQlpMzE75cbRnvj1+7Nj9KoDZ0osMlo9sDJc0y5SYNYaK2n6D2BrM8mgOKMD+vJm2GUC2wgXirb2IhLckbHFeFRAsnHvxgL2Af2LLXrSzRr2cDLvU+ZdBB4xyigb/Xe9Fzrrx9bzbKrcG/CTg5HlS/Ynpjpw6I9/7RQUJLQDugHxX/IhRLxnC9dclh3CLaqQHVxS8Zrm5XuNVWMelolaNDmwIo4AiuRXG3QklL+NosTzXeczkpyDO6+n9Lefft4I6MfDB9cdlAs5f0rMkYdgYyhzHJ7tIBBdqoTxJaN
- nbYeS9I/
- X5+rOW1RmhCudjxZuZsQrqnzdzhW5ev2B680JgR4T0Wn7ZtPbsd5rZKb/yZrWJEm4vPh2THmM5b+/0jcUGpQqFMoAMh5bj9BsVq5//z70u8yMxNGbYLAZB4izmQHhSxN2zUT2NSrsNBhFiZnNfh1FBAYU+u42cf77mZ6dV2CWzB4wPuaWb3EXU7/pDg==
+X-Rspamd-Queue-Id: C8536C0003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: tmmkfdj6h11o4pugi3y36sqdksqr97uz
+X-HE-Tag: 1766051921-766398
+X-HE-Meta: U2FsdGVkX1/ulPk0k6jAl/kGxiT3x/SGssB7Ro3593nMcohJCjOaCxZu9YYgyzp5EQqzvsjd+wr6ZMtps4bLf2Tz2v4I8DAUX27qJMJAhd1/kBnobE7IyMeDCNFJyJOrO2BeKrT3aBLUmjOhJsstMqIfojhlWDtic9rzr6E6Pe4GsEgrLG5NsAChQaa0o99oYCEX9BgOaKEXBotgWO7lYzMhB0rupYJ0+GYz5tOLIrhnhmwj19ymL8gilQDkWvukHjUnHnDeZ/2ekGmjFLyFHJIQb56oMGWvDJFSAIzzDTw2sLQQYjj471nrfZ8D+ADXpDnQYlhS/8dgS99OUo1FaJG5SzdYtCBIcV9Yi9FFpeK2TNUGRGZRX3X+Qqq81o9cFOEgxVFHBh+E25PYztjcmzYBj7CRO3d/LVNOYTjqWUoNPkarVHB/Vs+WP24kba7KT93Y7yyGq1bcZyB1AE2P2tstHL0ifb8milL9/gjj/XVU8IolYPRY+FSlBQUON/ZL2rbbycns09337qbvPS76f2GoTGXOghXmLfBImxTu6KT4TuB8hRGuQ9HPPFujMXkmJsSV+p+EflADI83h9uiMntcIYhIfNJ7xtWmTgZYFcidUBfpkLHWLuuO2sLopXb1LToqqIje5FsGg8WkSs0B1VHlsZ8tPScQ6vwBOCLu9bgsB54WMlqK32F9+xmaEDr3iARTgtu5NUfPhFrxZoqqeOhCsFP3jE9VlhqBM7fFr4beplE05rLggPD/mN71FS9QJv4lz511qjepU+/2jMOjmKcxIOjZNJ/YlErmfVd+OcEAyUYMmV7pr07ESWNWCK9HORxD6lsPZn7eE/E+lYv4JFgiMYxb5SEWbA4HfjjzVWt7n+w9WMZBDvs7XEv6gzR5BFMxM6rp2MrAG3EqDP8urMlcPjtuoyLRbaNWeQeY7A+O0nDjgAk4tEcrEWuSdsShgLF/tV+1u++iYxvKYZr+
+ DpFBn6YC
+ n+LIBPD9qFRr/8hHD7z6kOp/wiANf58AxHtHq0mpll1g6NhnPmZKwqe3q2NqXA54o6uxjJEO+3QSavR4S532hZcgOajZOnIYWsdcH2h2PAw8Dtsy+1G/JX8SYqX5Rjcb+MB6AenbbAOoj8R1LGPYqpAkKVukalxWZyZ0lr8AMNqinUO8XMFUVS6KPSrfoiT0kG4rayrohuf50bbjj5s3Cj2hCtmzD44ksUT6hag/QvEfBANlUZqmaB2S9Z/b3w5bxHmqaL0dSf1wKyewDvs+TRDFR5qr2YyUAwEi9AwGrpnX82haS2QHNdv6Yd5JJX2S1+IPfdCIKSr7ThCdXg8YboUiEtXSr8PrXkM3gkMtNFnNZcrcelskya6FHGmo9Dhf2pGXvmRH4DwkDPeVIPIbLLIUuVrAeOfeK3j7XuxuJh1WaKcjNB4K+V2xLSs/XMDcTZbbG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,41 +100,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10.12.2025 15:07, Rob Herring wrote:
-> On Tue, Dec 9, 2025 at 6:20 PM Oreoluwa Babatunde
-> <oreoluwa.babatunde@oss.qualcomm.com> wrote:
->> When initializing the default cma region, the "cma=" kernel parameter
->> takes priority over a DT defined linux,cma-default region. Hence, give
->> the reserved_mem framework the ability to detect this so that the DT
->> defined cma region can skip initialization accordingly.
-> Please explain here why this is a new problem. Presumably the
-> RESERVEDMEM_OF_DECLARE hook after commit xxxx gets called before the
-> early_param hook. And why is it now earlier?
->
-> I don't really like the state/ordering having to be worried about in 2 places.
+On 12/15/25 10:15, Barry Song wrote:
+> On Mon, Dec 15, 2025 at 4:43 PM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>
+>> On Mon, Dec 15, 2025 at 10:31:15AM +0800, Barry Song wrote:
+>>> On Mon, Dec 15, 2025 at 8:49 AM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>>>
+>>>> After splitting a large folio, it is necessary to remap the resulting
+>>>> anonymous folios.
+>>>>
+>>>> The current implementation determines the end of the remapping process
+>>>> by counting the number of pages that have been processed.
+>>>>
+>>>> Since the final folio in the sequence, end_folio, is already known and
+>>>> tracked, this commit refactors the remapping loop to leverage end_folio
+>>>> as the termination marker.
+>>>>
+>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>
+>>>> ---
+>>>> v2: move folio assignment in loop
+>>>> ---
+>>>>   mm/huge_memory.c | 13 ++++---------
+>>>>   1 file changed, 4 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 40cf59301c21..fe812d9c7807 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>>>>          return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
+>>>>   }
+>>>>
+>>>> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
+>>>> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
+>>>>   {
+>>>
+>>> Do we actually see an improvement in readability or performance?
+>>> The existing code feels a bit more readable to me; nr is clearly
+>>> the number of pages :-)
+>>>
+>>
+>> Hi, Barry,
+>>
+>> Thanks for your review.
+>>
+>> Currently end_folio has been used in __folio_split() and
+>> __folio_freeze_and_split_unmapped() as a termination marker. So continue to
+>> use end_folio here as a termination marker looks consistent and improves
+>> readability to me.
+> 
+> In both cases the variables are temporary, and they look fine within their
+> own self-documented contexts.
+> 
+> Now that we’re crossing two functions in the context of remap_page(), this
+> doesn’t seem to be the case, though.
+> 
+>>
+>> But yeah, this is my personal preference. If it is not the case, I am fine to
+>> keep as it is now. :-)
+> 
+> I personally find the existing code clearer, but I’m also okay if
+> others like your new approach more.
 
-I also don't like this spaghetti, but it originates from 
-commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved 
-memory regions are processed") and the first fixup for it: 2c223f7239f3 
-("of: reserved_mem: Restructure call site for 
-dma_contiguous_early_fixup()").
+Me too. Well, the existing code could be cleaned up
+* nr -> nr_pages
+* remove i and subtract from nr_pages instead
 
-It looks that it is really hard to make reserved memory 
-initialization fully dynamic assuming that the cma related fixups have 
-to be known before populating kernel memory pages tables. I also advised 
-in 
-https://lore.kernel.org/all/be70bdc4-bddd-4afe-8574-7e0889fd381c@samsung.com/ 
-to simply increase the size of the static table to make it large enough for the sane use cases, but 
-it turned out that this approach was already discussed and rejected:
-https://lore.kernel.org/all/1650488954-26662-1-git-send-email-quic_pdaly@quicinc.com/
+probably more ... :)
 
-Maybe it would make sense to revert the mentioned changes and get back 
-to such simple approach - to make the size of the static table 
-configurable in the Kconfig?
-
-Best regards
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Cheers
 
+David
 
