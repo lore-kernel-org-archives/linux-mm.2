@@ -4,129 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2B95D6D232
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17768D6ACDD
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 16:12:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F200D6B00A3; Thu, 18 Dec 2025 10:58:05 -0500 (EST)
+	id 3CE3B6B0095; Thu, 18 Dec 2025 11:12:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E75B06B00A5; Thu, 18 Dec 2025 10:58:05 -0500 (EST)
+	id 351B76B0098; Thu, 18 Dec 2025 11:12:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6DCD6B00A6; Thu, 18 Dec 2025 10:58:05 -0500 (EST)
+	id 22A746B0099; Thu, 18 Dec 2025 11:12:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B4ABC6B00A3
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:58:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DF9B12DB6
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:58:05 +0000 (UTC)
-X-FDA: 84233048130.10.565064A
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 97DB216000E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:58:03 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fOjOC0po;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F38C6B0095
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:12:37 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D2EBC0224
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 16:12:36 +0000 (UTC)
+X-FDA: 84233084712.25.4842A61
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 401DE40011
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 16:12:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=im+RbLzu;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766073483;
+	s=arc-20220608; t=1766074354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y2GvxvWgw+C5A6znHXWAufIHkp3YvrzYE+ZzMWkjVVs=;
-	b=jbzXrQWPcG9bxQK8kkOeNw1qoJSjT1cWXlh80VsutHngIfc56XGqVcmhjOIhox7faQY92M
-	mDs+eIeTOBJUqJpNtcqpNkCTJeBnOE5SJy4XuTeSAGqM8bW7xgjArjVnPVDWIxQHOQxQB6
-	yZqStsZmtrlXW6/e5ZrZOT5KL/RTguI=
+	bh=MWV/1Pvi/LREO51Q4j2bYTzBTPFXYl3JU+RoWaS0a6Q=;
+	b=Ft94b/nnVd8E7vnanDOEAh9s8sP2yfOK55Jk9VNdAvsGbgVxYXLmsZq3VarwagB2+oE6fW
+	YlvrM40EmpE9Q9EVGt7hcisuiSXEg9IY8AoSTYQi5OsJdVQKGUz/lWt0xQD8ikSUlCif2m
+	TaX4H+02ZxCBg5LefRcvCWj6W6XdBvE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fOjOC0po;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766073483; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=im+RbLzu;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766074354; a=rsa-sha256;
 	cv=none;
-	b=n1oTE8DSL6ADdSdoXqVJGBtAnJ8rJYymhA36oXBubB67J1DIppqfkbZMBUQC0kVjmUI3YP
-	sqChYqqAHCbryMCeygutnC8N7pct/Ny1086OHoQWU0rRN0fyc7Zj0iGjnEtgVhcy64pjLi
-	c4/qPtd9l5GSHoCuqXrJfEGAsNNvoZI=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64475c16a11so905351d50.1
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:58:03 -0800 (PST)
+	b=W7q+ythQVIX6EWmKv8LJLcfYFLjYKwWqudDpuX952EzOxKJMBbn3yxaUhzMi/NfxwQhSLV
+	rIPVFfddX9K4dAkezYHo4pvcg9lWypZV2xDExWEZP8JPA/rlocSDDtvLqvKIMIPTRrGaxA
+	lPBSv/VuEUkHB6XzScq5ceK+3JCUL7I=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-431048c4068so507865f8f.1
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:12:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766073482; x=1766678282; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766074353; x=1766679153; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y2GvxvWgw+C5A6znHXWAufIHkp3YvrzYE+ZzMWkjVVs=;
-        b=fOjOC0poCErZ1HXezy2XE5kqllypqU39HY76xJ+SEjr5y7CbNjul1UqRz5voYZCwe4
-         SMZ0oEqdgGmwEMUhliLv/toB4v/zxa1nbBuZ6oNvsZHFm65XjFYb01OZvb7o+RJxAvdU
-         Jw6Jody1uIcKRiYvbz/NePyNdwaDIOmX6BSszuf0DjZgaFeH2dvutb7SexfLSwb27KD4
-         +IK0Nfqa+K8yOGaP814dwVlTMvYfMsMEOSbNTZ6gNrtAykAHla4rBJIXQfZFNKKzcZX6
-         hhgI0+hDXpSkE0jEUascIAqEOcpGS79Ut+f8uWEsOZ09y/kBQ3eY+gzhs2ZBQUOuHCrC
-         nwvg==
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MWV/1Pvi/LREO51Q4j2bYTzBTPFXYl3JU+RoWaS0a6Q=;
+        b=im+RbLzuln94KzGxZMu/7PlYsYzzs7RK4fSBObRODYHH42p4BfB5I1PFPVn9Hp5hu+
+         ZE/w5kPAyk8cCrfTGbwNrCvykxOVnNob+FccvSuVZAl9rXMzj80H7iKL1n5SmMLQFazz
+         BfBhdWTHfEBpf9TlZq3rCaW9wyX6g5w8xrM43/q96OyQ7tijRYwQdA8hLv7jH+poBml5
+         jrKTMKO1lZk2QFp7bhLbXsQbsTeE9fa+Dvz4moDJBXiHL6HARhI4EPW/ElF32zPBxmGP
+         cmSgUxECLCRQnCW/80RNMQgTp7t5QmbyWUo5aOMHrAb0NZQdsJPw4gE6tOpaWhN8Lhnn
+         pB+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766073482; x=1766678282;
+        d=1e100.net; s=20230601; t=1766074353; x=1766679153;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Y2GvxvWgw+C5A6znHXWAufIHkp3YvrzYE+ZzMWkjVVs=;
-        b=P7zql/fD4v3RMs2PiBQwCJP4WD25dFyswYE5KReKaYseDq1b2Mstx/QBi918fcfi/e
-         xem6X2Trf6COEdgtFqZqURhGZlo8cbarz2vwdsxFmSRxTSEt/WENFC7hgqurLOhGQzRu
-         BSVez8xnnF/rYeH1aK6h1WUsgjiVa1lM1XGIKVLouOy+SFaI7MKfUBYSxFPHs7zegM/H
-         1Yxma5S6J67mTnrFjEKuUFOWd1CBFKg1wxfBj/8P8MfUYeIarbikO4fVVPlumn9PLlfs
-         +/J5dr+4y0g9QMRJy/JAhqViF6Gr+eIOIA5aOGrQFOH+ATobc7vqLQKfpdrSxq9tIROl
-         bZQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCiS4JlXoKg0A0u9neOX29AkF21z680MVlqmnQQ06EaHN+Nw/gRt8nV2V471A63eSO/c10jnDV5g==@kvack.org
-X-Gm-Message-State: AOJu0Yxm8bxziymg11ptAgyGVkFETF9g5Yi9WxUm2IfLutO1ZSvAOmee
-	7sWKztQHyLp8EAjph6/GYr7zAszNFqPNbDmDNNHhQ16QZqVp4WK4RV5xLhDJnf30dLE=
-X-Gm-Gg: AY/fxX7hLJgTU9jUIFqb7KB8omrBWo6hlTqtkBbZG7OIxr39IL01uvAExpwPavKoVP3
-	8pdacFMJ2JJsE8CMgEsEnqW/Uc8sBdGEFGcikoZuT94AtTS65DJ+jiULrTf38R7YWYDjnYR858/
-	wPTbPqSQU6B8uhVGVP23h9FvGwxMew1GNwBB0s+AIiWzKHm98q4FA6lnvYu6hTHS5uDQQ8S28u5
-	WXTCPA6pJwcTDNlAfGQpXSucLHGDYTOD8gOtJMgLCfMXtBnLJAGGUoEztnXpnJE+Z2c1Dx64aWX
-	KNK3q2T19FbCCesoJffhZqqvsdBrTc8JZFmjmPDWPD0uKXRhWxT4XQYjhUpl2O5hks1jyO2don9
-	opXrRss8U9TYPCGxpIL+yp9UUlqXDsvxdLbqkYiej1VO2xmaumaUR0MA15FIQKJSZrzWfE3BHOc
-	/RRJcktIpvnPqwK4+voIauXezT0aA2rXzMlrR9YcLZqFj3/Zj4vOpQWxngm3qodSB4768jR/wNK
-	JBtVSQ3cuPNymnc9mjl2Gaaq4aX1Lk+UV0VXg==
-X-Google-Smtp-Source: AGHT+IFmbIoqILeKHhuczXPRMgfqJxIXux1ceJzUQG9pkHU0LZvckHem2z07ZnG7v2PKrT/gLLGB4Q==
-X-Received: by 2002:a53:c082:0:b0:63f:c487:17ab with SMTP id 956f58d0204a3-64555651309mr19343654d50.47.1766073482595;
-        Thu, 18 Dec 2025 07:58:02 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fa6f52bb2sm9348467b3.16.2025.12.18.07.58.01
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MWV/1Pvi/LREO51Q4j2bYTzBTPFXYl3JU+RoWaS0a6Q=;
+        b=TFzXoCZyQwEMXb2FWXfxO9im+VwKwdTxCDfzydped/W7i3IRpTa07bB76dIoVxsizW
+         EnsuNlaqomFmhWuiGfi6EbjcfKLSZ2HIg9MbvQMs/fJtwR/4321+BimVDMYVvtkkHW3X
+         BQfjBJfM0LEu1Rr9MOJRdvq3MXumtVqDwchJpWuVB5V6TCXcLIftYMvY1dxRiISYbrfT
+         pybs35zXikbgoGN1ATpaiw3x0TXX6VwW+QXBVRJnlICbAeE6Zr8X8IIdcXlT/8rVLZuV
+         fhItBebi+5SiG3OOupAiOQbJv20AtdVgvWXAiW2vQ4qS33Ib6YTJytn8P9L1sOoqcFrK
+         UGhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwgDXsjSDi2TYWSsBVpP7oAOLe0tdhq7q6EBTQ6S1NvNLpQABts8+huUCbxULvY+15PP4nYxSeng==@kvack.org
+X-Gm-Message-State: AOJu0YwRy6g68bqNrugqbwPq62SYi5aHozc3XtaEzXAJ4xuYla1k9RvP
+	3wmkM0rtkHra8ZFzLKwN+lhoaHwQmg7SNn+8FBS5RDPTYxjpKjSxec6Y
+X-Gm-Gg: AY/fxX4NVtzNzKwUvPRLYocRdf7r+GYCE5tGj0ePVbPCBUdBY7woDpkrBX+beMm+QtN
+	rLB/MTyQuv6Uin8aotCjWHoXoxEDUZdp1XrLHUOSU7mVW9zehw7WgQi6UIdfBa/Vtx4akiJ5d0U
+	qgJygiMxxI+QiBQrtSdv6p1mdSbOxPL5MvM1Zb9DAAlQIu91tri89NJ2JzYd5cMWAhD0FcFYW7A
+	hfHotp0nv7wFTBU0/D031vpxyg3gCx4ZSce5DsNIkwCy+FaET14usg9jUMb0rSck8vTs0+HE/59
+	ufYRCAm+tdd0fsgqhBeb4tU24cxkJ/uawsiqAt357WstYODr739tFWVq+13F2lTTf83G9AzAMwT
+	oq7tKDcCkhXnrcrGIxJ0RRT8M3k76CL1ILXDbRMQJNcnjU3+0kLGp4lwRB8oJQ/qnxp8erHQGCu
+	Cmj7Ow8sM4dlqa/STpi1zsnjgRXkSIXv47aNJ7Tcsy5r+aiiUFpwQy
+X-Google-Smtp-Source: AGHT+IF9IwYAhi8+6w3+wxW3M7gEiPdh7t/1OgDyx7SiDKnto2Pyh4pbz29WYRXhF76RKtErZ/OMCg==
+X-Received: by 2002:a05:6000:18a8:b0:431:de5:93c7 with SMTP id ffacd0b85a97d-4324479535emr4292777f8f.2.1766074352470;
+        Thu, 18 Dec 2025 08:12:32 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432449986f1sm5781954f8f.29.2025.12.18.08.12.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 07:58:02 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: pratyush@kernel.org,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	dmatlack@google.com,
-	skhawaja@google.com,
-	rientjes@google.com,
-	corbet@lwn.net,
-	akpm@linux-foundation.org,
-	kees@kernel.org,
-	davidgow@google.com,
-	pmladek@suse.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	nicolas.frattaroli@collabora.com,
-	linux-doc@vger.kernel.org,
-	tamird@gmail.com,
-	raemoar63@gmail.com,
-	graf@amazon.com
-Subject: [PATCH v9 5/5] tests/liveupdate: Add in-kernel liveupdate test
-Date: Thu, 18 Dec 2025 10:57:52 -0500
-Message-ID: <20251218155752.3045808-6-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.52.0.313.g674ac2bdf7-goog
-In-Reply-To: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
-References: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
+        Thu, 18 Dec 2025 08:12:32 -0800 (PST)
+Date: Thu, 18 Dec 2025 16:12:29 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Joel Fernandes <joel@joelfernandes.org>, "Paul E.
+ McKenney" <paulmck@kernel.org>, linux-kernel@vger.kernel.org, Nicholas
+ Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Will Deacon <will@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Alan Stern <stern@rowland.harvard.edu>, John Stultz
+ <jstultz@google.com>, Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, Linus
+ Torvalds <torvalds@linux-foundation.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Frederic Weisbecker <frederic@kernel.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar
+ <mingo@redhat.com>, Waiman Long <longman@redhat.com>, Mark Rutland
+ <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil
+ Babka <vbabka@suse.cz>, maged.michael@gmail.com, Mateusz Guzik
+ <mjguzik@gmail.com>, Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+ rcu@vger.kernel.org, linux-mm@kvack.org, lkmm@lists.linux.dev, Nikita Popov
+ <github@npopov.com>, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH v4 1/4] compiler.h: Introduce ptr_eq() to preserve
+ address dependency
+Message-ID: <20251218161229.767dafbf@pumpkin>
+In-Reply-To: <20251218142736.464b7a4a.gary@garyguo.net>
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+	<20251218014531.3793471-2-mathieu.desnoyers@efficios.com>
+	<20251218090313.33923750@pumpkin>
+	<20251218142736.464b7a4a.gary@garyguo.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1bk3a5uqikggw31rgne4twj5j5c3twj9
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xejwssxx7kej39tfjn5yu6knutck54wo
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 97DB216000E
-X-HE-Tag: 1766073483-981749
-X-HE-Meta: U2FsdGVkX1/XA7JIpOk0X3s3k38oZ6RN98Zn4h2VRiwGjtwzQyKdtZLlRAJpoVcBGm8bvSCl7nfOCotJ2Dondb/oeNy0RxNlh1gCL+Yoi1bvaz3HIopqSMMoH8M0LDds11OjLFahe/GN6ywhLlvv2Ghcs5GGMzh9Io/UWIiddzIRPW0o6vw1fklXBou41v//Zsoiat3k3xJd/54FsftUFjTTKhD+rj3+lxzOpEJpbU0NWmbFE2bkj4KRdWAEaZmX31BBudTimuucVFvg4ZYsL9yjxyV74FJcWEvsyI7MxxLC5EpZQFCIMvH9qpxKYBQVJj1ikj/ETLVmbz52UcO4dSxR6y2BOpAZj+FiWSYqOGkwELLa+92QkVHs/1HqjiVH0gQuKJBTEGhtqUqREOV3aDYtlOuicz1OmZEog5Cn3mu8KHwxrVOyExeyDR4cGIKxlBBH7SHYTImXzmj9nOOlnAWTiuxeZmKEQOAyXxzEdI/7J3KDgmAxU5VceyrEp5rgYGDEBc2P2iztKWVNuLDh466bcbxlXV6shXr8U/zC4JOHSlJwwlA95MNPuRlzpyg2Ic42WUYtd5rpFjfgX92TaNQLfOgm+e/5Nz5ahB9SFc4ZkyzzM0mkgm+m8/x5y19PSi7ycCPwBWaEuUv97ggC9RYL3I3zxwaCHYy8vOdn7SWHsYtanqfh63iIrVB0jVsX5VazfR+zVJhr6XoXn6r54tsQ/+6ugAhkj+3FGdgH+LU4IvvXwIXTV+aNP8Cm0FfNc76vugFyfLSbd4zubvDUdxF6KnCFPI47+uyVhZI4A1lOIfThQI9Srtnt5EcMLxnG86DkLrqQZupXie3r4jyoTbQJQBAlCD1Pgwdt+IZDPvPifSth6fDvIjXIAOx/rDiE4NmbrTBX/Wv5Vxo3xFqugm8Uu93kMO9Nfyi715gdotqqZrEgV9VS82pQmkkdNbjgNngkv+hdIXDMkGEsXeG
- J+MCWTkr
- 8vhEv8AW4IKhLRyBU4/a2mPV/DHBdU2m8RIJMzU8X2TYVfKLb9Jt+jFXes32WK1fJ4rgBOlhjwaxAH70Nh06KCoEmiD301YWj/+aTJcDY25Yv0DBIsYYZCNG4T0Wj4T8p4Dirdp597Z95VbgT7x/IrqrAalycm1+899sF8w3ZDghOh68j2Qs22C48j7O5n1M6y8tngG8+yaTMBm9Sl+YggZRvWM3qO3Bj7/H6r/u5D+B31ILXWoDLKM++x/TLucndXmnKhqU9wUAFpmQUhXpcRn2BpMKDG+Gk/dgI1KwncHvxge8Pgj23gF426sIOOUHVTE5ZJFZFfYf5aCo=
+X-Rspamd-Queue-Id: 401DE40011
+X-HE-Tag: 1766074354-884873
+X-HE-Meta: U2FsdGVkX19LvkvFd4QA81s9KPMRRizJGrXXv7BVMdQJncptQNTRBVlzQwNE1IVOv60rWzibt6AOEZhoXb10Gsx2llc4PrKQ7yAnkf4EmY9r3dxgid/H2KakkpUgEwbUYR6lDdhFAbDBoLlt6M2KaeYzY2DhyQKArtW+HDqCF0e3C4PhRp5O4UbyjQzI10LR7E4aC6TOwGeS5zyi+SGR6iGmR2dxLy+wlYrj/mL435SvMoLms+qRL5x60KtQ5dDnptlhVx7hKt+cwRIm0VRSX4jhb/xWjkvMHjfgjvgst0JV+KcT52ey8XOmjSQyYiNmfghwkfCKwILPwpbaruY8kgJrB9avBI2R/lsVzYXSIeAlym7mOsikD4PfDZZgHn7BiKX9hUeEZ4T/KuV7s9OQuawvUQV8gDUdyTDBT62ktJYqidAtu01z1K/AXKAx69rxUXnWtSr2GMkuf6QkUItNxln48NIYr0E8De3akH8P+9HtRidKQdqjjqHO9krnZbjIGQMlJe2RwVfQJdybGJfBB8MVqpZLC1hyQK6V76JpVtCDszdNheEdoT9Hgv8vM9r78tToVVmJqQW9UPU6Ahce8y0b2E00JkpZY9m9zj/7ndCQp0P6CENcxfxby6Z6l7BSAEYEWJlCZdPaSVAlA9Eii5Wde4JzlI+XvsVFBqkEejdxjAk8+YQXrwshjnrNkMV7bUAwdnHs2fI37XrMyCyqgp6lIgDa99AnOY2o2m5tZ018lSiHlhcCyyIEl9lwpQAENIIMWACT2tjUKjqqDVLY5Y9U+ohDVhy6ZZaTyMvtRlCexnUkjuEzLhc7CTiIOUmm1gEkLaFdMay72Iw6tGYtVDasbifWauk4JLnQJoQ1PUscG7WztUtznMNCWPkwns7muVTkMDp7i6YwrwWsBEWPwugFbehTCcYf6UkYlsrDePPWKJjti5ZpMJsOLRQwO/oYKuumckpC5Su0NM1Gaux
+ lNwQcwxc
+ 2MKvb0qW23L2NWMOU7wpF2l2JTwLBK0pKXuRyvx40AdFzrp7w/AmYO8d8Kds8+ySU1CkMzAjyZSz92Ya9n2emb2GUx7oBJmsqVpcnoOM5p4xnyjjddyOYUms5S2z1mEP5UmgWUZzrdddncuGbS8dCF6nVj1IsNTpcW5j8ZKtTk9FqFoPN7SaUJa8PQxB+XNP601pvt+bnSeZHuFo2MQp/9+kFre/GvEEOu9RTz19pVRdYp2N5yWeTCowWrsk0gUn/t/jj6wwRhN9e/LYCITV3AZvuCOMphrOEYNin2ZdKhus4p7tRZy4DKYxVVRM2DQZ0xx1c8gdBIqwEg2krUUUrmNNXh8FA5bRF9WJBZEZMHXj3cQWpGSjk8EpAlSduAQ70x5TGqujCasLi1eTW5O80GUcMJMwsGENsfV96IFnxV7T2bLIT0XTiR1cvkOtw7imrmOgP0Dy8DHfzNAyDGNq1+IHvt1E7vYGc3rmRs086MAnBrTriRoBlw8qbf+X2f6ekSny/S77Z0qA13D7tRieudSthNKqNbiVczlMR+XjesdtxGblQymguBrV6HgtQAgeEBXYvLD1QMp49rocoJiAnunR7DS4Hb7VYaJTjQokubWnNJnL3NNZQAqDfgFIIwM73G1ehyboblHQJkb9wKxBFyWnfuTKbgHOtvTO+13/VYUP66UeDzc9bGP45/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,313 +142,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce an in-kernel test module to validate the core logic of the
-Live Update Orchestrator's File-Lifecycle-Bound feature. This
-provides a low-level, controlled environment to test FLB registration
-and callback invocation without requiring userspace interaction or
-actual kexec reboots.
+On Thu, 18 Dec 2025 14:27:36 +0000
+Gary Guo <gary@garyguo.net> wrote:
 
-The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
+> On Thu, 18 Dec 2025 09:03:13 +0000
+> David Laight <david.laight.linux@gmail.com> wrote:
+> 
+> > On Wed, 17 Dec 2025 20:45:28 -0500
+> > Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+> >   
+> > > diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+> > > index 5b45ea7dff3e..c5ca3b54c112 100644
+> > > --- a/include/linux/compiler.h
+> > > +++ b/include/linux/compiler.h
+> > > @@ -163,6 +163,69 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+> > >  	__asm__ ("" : "=r" (var) : "0" (var))
+> > >  #endif
+> > >  
+> > > +/*
+> > > + * Compare two addresses while preserving the address dependencies for
+> > > + * later use of the address. It should be used when comparing an address
+> > > + * returned by rcu_dereference().
+> > > + *
+> > > + * This is needed to prevent the compiler CSE and SSA GVN optimizations
+> > > + * from using @a (or @b) in places where the source refers to @b (or @a)
+> > > + * based on the fact that after the comparison, the two are known to be
+> > > + * equal, which does not preserve address dependencies and allows the
+> > > + * following misordering speculations:
+> > > + *
+> > > + * - If @b is a constant, the compiler can issue the loads which depend
+> > > + *   on @a before loading @a.
+> > > + * - If @b is a register populated by a prior load, weakly-ordered
+> > > + *   CPUs can speculate loads which depend on @a before loading @a.
+> > > + *
+> > > + * The same logic applies with @a and @b swapped.
+> > > + *
+> > > + * Return value: true if pointers are equal, false otherwise.
+> > > + *
+> > > + * The compiler barrier() is ineffective at fixing this issue. It does
+> > > + * not prevent the compiler CSE from losing the address dependency:
+> > > + *
+> > > + * int fct_2_volatile_barriers(void)
+> > > + * {
+> > > + *     int *a, *b;
+> > > + *
+> > > + *     do {
+> > > + *         a = READ_ONCE(p);
+> > > + *         asm volatile ("" : : : "memory");
+> > > + *         b = READ_ONCE(p);
+> > > + *     } while (a != b);
+> > > + *     asm volatile ("" : : : "memory");  <-- barrier()
+> > > + *     return *b;
+> > > + * }
+> > > + *
+> > > + * With gcc 14.2 (arm64):
+> > > + *
+> > > + * fct_2_volatile_barriers:
+> > > + *         adrp    x0, .LANCHOR0
+> > > + *         add     x0, x0, :lo12:.LANCHOR0
+> > > + * .L2:
+> > > + *         ldr     x1, [x0]  <-- x1 populated by first load.
+> > > + *         ldr     x2, [x0]
+> > > + *         cmp     x1, x2
+> > > + *         bne     .L2
+> > > + *         ldr     w0, [x1]  <-- x1 is used for access which should depend on b.
+> > > + *         ret
+> > > + *
+> > > + * On weakly-ordered architectures, this lets CPU speculation use the
+> > > + * result from the first load to speculate "ldr w0, [x1]" before
+> > > + * "ldr x2, [x0]".
+> > > + * Based on the RCU documentation, the control dependency does not
+> > > + * prevent the CPU from speculating loads.    
+> > 
+> > I'm not sure that example (of something that doesn't work) is really necessary.
+> > The simple example of, given:
+> > 	return a == b ? *a : 0;
+> > the generated code might speculatively dereference 'b' (not a) before returning
+> > zero when the pointers are different.  
+> 
+> I'm not sure I understand what you're saying.
+> 
+> `b` cannot be speculatively dereferenced by the compiler in code-path
+> where pointers are different, as the compiler cannot ascertain that it is
+> valid.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- MAINTAINERS                      |   1 +
- include/linux/kho/abi/luo.h      |   5 +
- kernel/liveupdate/luo_file.c     |   8 +-
- kernel/liveupdate/luo_internal.h |   8 ++
- lib/Kconfig.debug                |  23 +++++
- lib/tests/Makefile               |   1 +
- lib/tests/liveupdate.c           | 158 +++++++++++++++++++++++++++++++
- 7 files changed, 203 insertions(+), 1 deletion(-)
- create mode 100644 lib/tests/liveupdate.c
+The 'validity' doesn't matter for speculative execution.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9d..dac0f87eba5b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14641,6 +14641,7 @@ F:	include/linux/liveupdate.h
- F:	include/linux/liveupdate/
- F:	include/uapi/linux/liveupdate.h
- F:	kernel/liveupdate/
-+F:	lib/tests/liveupdate.c
- F:	mm/memfd_luo.c
- F:	tools/testing/selftests/liveupdate/
- 
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index 2734d1020dda..4a1cc6a5f3f8 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -239,4 +239,9 @@ struct luo_flb_ser {
- 	u64 count;
- } __packed;
- 
-+/* Kernel Live Update Test ABI */
-+#ifdef CONFIG_LIVEUPDATE_TEST
-+#define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
-+#endif
-+
- #endif /* _LINUX_KHO_ABI_LUO_H */
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index cade273c50c9..35d2a8b1a0df 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -864,6 +864,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- 	list_add_tail(&ACCESS_PRIVATE(fh, list), &luo_file_handler_list);
- 	luo_session_resume();
- 
-+	liveupdate_test_register(fh);
-+
- 	return 0;
- 
- err_resume:
-@@ -895,8 +897,10 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- 	if (!liveupdate_enabled())
- 		return -EOPNOTSUPP;
- 
-+	liveupdate_test_unregister(fh);
-+
- 	if (!luo_session_quiesce())
--		return -EBUSY;
-+		goto err_register;
- 
- 	if (!list_empty(&ACCESS_PRIVATE(fh, flb_list)))
- 		goto err_resume;
-@@ -909,5 +913,7 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- 
- err_resume:
- 	luo_session_resume();
-+err_register:
-+	liveupdate_test_register(fh);
- 	return err;
- }
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 99db13d99530..8083d8739b09 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -107,4 +107,12 @@ int __init luo_flb_setup_outgoing(void *fdt);
- int __init luo_flb_setup_incoming(void *fdt);
- void luo_flb_serialize(void);
- 
-+#ifdef CONFIG_LIVEUPDATE_TEST
-+void liveupdate_test_register(struct liveupdate_file_handler *fh);
-+void liveupdate_test_unregister(struct liveupdate_file_handler *fh);
-+#else
-+static inline void liveupdate_test_register(struct liveupdate_file_handler *fh) { }
-+static inline void liveupdate_test_unregister(struct liveupdate_file_handler *fh) { }
-+#endif
-+
- #endif /* _LINUX_LUO_INTERNAL_H */
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 0760b24f7cd6..7c94961bf49d 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2819,6 +2819,29 @@ config LINEAR_RANGES_TEST
- 
- 	  If unsure, say N.
- 
-+config LIVEUPDATE_TEST
-+	bool "Live Update Kernel Test"
-+	default n
-+	depends on LIVEUPDATE
-+	help
-+	  Enable a built-in kernel test module for the Live Update
-+	  Orchestrator.
-+
-+	  This module validates the File-Lifecycle-Bound subsystem by
-+	  registering a set of mock FLB objects with any real file handlers
-+	  that support live update (such as the memfd handler).
-+
-+	  When live update operations are performed, this test module will
-+	  output messages to the kernel log (dmesg), confirming that its
-+	  registration and various callback functions (preserve, retrieve,
-+	  finish, etc.) are being invoked correctly.
-+
-+	  This is a debugging and regression testing tool for developers
-+	  working on the Live Update subsystem. It should not be enabled in
-+	  production kernels.
-+
-+	  If unsure, say N
-+
- config CMDLINE_KUNIT_TEST
- 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/lib/tests/Makefile b/lib/tests/Makefile
-index 62a7f115f622..439a99c8d32c 100644
---- a/lib/tests/Makefile
-+++ b/lib/tests/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_LIST_PRIVATE_KUNIT_TEST) += list-private-test.o
- obj-$(CONFIG_KFIFO_KUNIT_TEST) += kfifo_kunit.o
- obj-$(CONFIG_TEST_LIST_SORT) += test_list_sort.o
- obj-$(CONFIG_LINEAR_RANGES_TEST) += test_linear_ranges.o
-+obj-$(CONFIG_LIVEUPDATE_TEST) += liveupdate.o
- 
- CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
-new file mode 100644
-index 000000000000..496d6ef91a30
---- /dev/null
-+++ b/lib/tests/liveupdate.c
-@@ -0,0 +1,158 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME " test: " fmt
-+
-+#include <linux/cleanup.h>
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/liveupdate.h>
-+#include <linux/module.h>
-+#include "../../kernel/liveupdate/luo_internal.h"
-+
-+static const struct liveupdate_flb_ops test_flb_ops;
-+#define DEFINE_TEST_FLB(i) {						\
-+	.ops = &test_flb_ops,						\
-+	.compatible = LIVEUPDATE_TEST_FLB_COMPATIBLE(i),		\
-+}
-+
-+/* Number of Test FLBs to register with every file handler */
-+#define TEST_NFLBS 3
-+static struct liveupdate_flb test_flbs[TEST_NFLBS] = {
-+	DEFINE_TEST_FLB(0),
-+	DEFINE_TEST_FLB(1),
-+	DEFINE_TEST_FLB(2),
-+};
-+
-+#define TEST_FLB_MAGIC_BASE 0xFEEDF00DCAFEBEE0ULL
-+
-+static int test_flb_preserve(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+
-+	pr_info("%s: preserve was triggered\n", argp->flb->compatible);
-+	argp->data = TEST_FLB_MAGIC_BASE + index;
-+
-+	return 0;
-+}
-+
-+static void test_flb_unpreserve(struct liveupdate_flb_op_args *argp)
-+{
-+	pr_info("%s: unpreserve was triggered\n", argp->flb->compatible);
-+}
-+
-+static int test_flb_retrieve(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+	u64 expected_data = TEST_FLB_MAGIC_BASE + index;
-+
-+	if (argp->data == expected_data) {
-+		pr_info("%s: found flb data from the previous boot\n",
-+			argp->flb->compatible);
-+		argp->obj = (void *)argp->data;
-+	} else {
-+		pr_err("%s: ERROR - incorrect data handle: %llx, expected %llx\n",
-+		       argp->flb->compatible, argp->data, expected_data);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void test_flb_finish(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+	void *expected_obj = (void *)(TEST_FLB_MAGIC_BASE + index);
-+
-+	if (argp->obj == expected_obj) {
-+		pr_info("%s: finish was triggered\n", argp->flb->compatible);
-+	} else {
-+		pr_err("%s: ERROR - finish called with invalid object\n",
-+		       argp->flb->compatible);
-+	}
-+}
-+
-+static const struct liveupdate_flb_ops test_flb_ops = {
-+	.preserve	= test_flb_preserve,
-+	.unpreserve	= test_flb_unpreserve,
-+	.retrieve	= test_flb_retrieve,
-+	.finish		= test_flb_finish,
-+	.owner		= THIS_MODULE,
-+};
-+
-+static void liveupdate_test_init(void)
-+{
-+	static DEFINE_MUTEX(init_lock);
-+	static bool initialized;
-+	int i;
-+
-+	guard(mutex)(&init_lock);
-+
-+	if (initialized)
-+		return;
-+
-+	for (i = 0; i < TEST_NFLBS; i++) {
-+		struct liveupdate_flb *flb = &test_flbs[i];
-+		void *obj;
-+		int err;
-+
-+		err = liveupdate_flb_get_incoming(flb, &obj);
-+		if (err && err != -ENODATA && err != -ENOENT) {
-+			pr_err("liveupdate_flb_get_incoming for %s failed: %pe\n",
-+			       flb->compatible, ERR_PTR(err));
-+		}
-+	}
-+	initialized = true;
-+}
-+
-+void liveupdate_test_register(struct liveupdate_file_handler *fh)
-+{
-+	int err, i;
-+
-+	liveupdate_test_init();
-+
-+	for (i = 0; i < TEST_NFLBS; i++) {
-+		struct liveupdate_flb *flb = &test_flbs[i];
-+
-+		err = liveupdate_register_flb(fh, flb);
-+		if (err) {
-+			pr_err("Failed to register %s %pe\n",
-+			       flb->compatible, ERR_PTR(err));
-+		}
-+	}
-+
-+	err = liveupdate_register_flb(fh, &test_flbs[0]);
-+	if (!err || err != -EEXIST) {
-+		pr_err("Failed: %s should be already registered, but got err: %pe\n",
-+		       test_flbs[0].compatible, ERR_PTR(err));
-+	}
-+
-+	pr_info("Registered %d FLBs with file handler: [%s]\n",
-+		TEST_NFLBS, fh->compatible);
-+}
-+
-+void liveupdate_test_unregister(struct liveupdate_file_handler *fh)
-+{
-+	int err, i;
-+
-+	for (i = 0; i < TEST_NFLBS; i++) {
-+		struct liveupdate_flb *flb = &test_flbs[i];
-+
-+		err = liveupdate_unregister_flb(fh, flb);
-+		if (err) {
-+			pr_err("Failed to unregister %s %pe\n",
-+			       flb->compatible, ERR_PTR(err));
-+		}
-+	}
-+
-+	pr_info("Unregistered %d FLBs from file handler: [%s]\n",
-+		TEST_NFLBS, fh->compatible);
-+}
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Pasha Tatashin <pasha.tatashin@soleen.com>");
-+MODULE_DESCRIPTION("In-kernel test for LUO mechanism");
--- 
-2.52.0.313.g674ac2bdf7-goog
+> The speculative execution on the processor side *does not* matter here as
+> it needs to honour address dependency (unless you're Alpha, which is why we
+> add a `mb()` in each `READ_ONCE`).
+
+There isn't an 'address dependency', that is the problem.
+The issue is that 'a == b ? *a : 0' and 'a == b ? *b : 0' always evaluate
+to the same value and the compiler will (effectively) substitute one for the
+other.
+But sometimes you really do care which pointer is speculatively dereferenced
+when the they are different.
+Memory barriers can only enforce the order of the reads of 'a', 'b' and '*a',
+they won't change whether the generated code contains '*a' or '*b'.
+
+	David
+
+
+> 
+> Best,
+> Gary
+> 
+> 
+> 
 
 
