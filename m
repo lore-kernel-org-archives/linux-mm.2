@@ -4,129 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20AD1D6E2CA
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64027D6E2BF
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:49:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8747E6B008C; Thu, 18 Dec 2025 12:48:20 -0500 (EST)
+	id C7E236B0096; Thu, 18 Dec 2025 12:49:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83ED66B0092; Thu, 18 Dec 2025 12:48:20 -0500 (EST)
+	id C48F56B0098; Thu, 18 Dec 2025 12:49:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72A766B0093; Thu, 18 Dec 2025 12:48:20 -0500 (EST)
+	id B4AB56B0099; Thu, 18 Dec 2025 12:49:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EE796B008C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:48:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BE4D12F53
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:48:20 +0000 (UTC)
-X-FDA: 84233325960.14.5844ADA
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0B8BEC0012
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:48:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ip+KLEdU;
-	spf=pass (imf10.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A25DE6B0096
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:49:01 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B3A9C01D5
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:49:01 +0000 (UTC)
+X-FDA: 84233327682.22.05525DA
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6BC971C0020
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:48:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNDmyTxA;
+	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766080098;
+	s=arc-20220608; t=1766080139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o5DOlf1Cpz2TADNVefb8b2aJKEHSeiEbRpZG5EwaNhQ=;
-	b=58Wqd966M4BkndBctfsyJYFQhaWmMTY8BiDpYX6L2jwjwVREifutOL/oOAY1QnzGMzB+Z7
-	m7jjSIH+aIOsHxNoQQ9LML5S26jccsDpgMznQZamC6Ig7WubH7GCIz3ZKgEsH+DkstMDCf
-	Uo44OsklsyaMInR9qIVcRKBpnCcnxTE=
+	bh=CAT4NIB50wSSQJ2eRS7sx9I/iK0vGJNZ4n3UlMbS9UY=;
+	b=MxzsYC9sDn+ti+D3Qo6TG8qIZ7oO6x/7VEm8cERf/N/sF/1+cp+h1tdnBo+msWSOq9jELz
+	1NADw3K3rkocwpCaDExKbDWJERK0AwNO9PiUZFDE/TFwJqHQJN4b7aeoxRXJJG4wI5F5HE
+	kzhmTZnt20OBvP224empX4S7FAhLj5Y=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ip+KLEdU;
-	spf=pass (imf10.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNDmyTxA;
+	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766080098; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766080139; a=rsa-sha256;
 	cv=none;
-	b=zOTLaNNaEStQ6lIttn6+aPo87efxJtN14ApZEA+763rUvI/ddOQcoICbfnXmM1leEO+iVT
-	4Hfo7ljQlmfs6xBeE+3dc54RQXeanpBTivo5shOkAwlsp+T6KlpPAyIxWtGWr0eC2/aA8W
-	teP/r5tqIahZUy4V5vTgvlcH6IhTBsg=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so617765b3a.2
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:48:17 -0800 (PST)
+	b=0EAklBkq4ccknK1uRl3b0Lw0Ve0qxuA5hBSdYpRR3lOigk51JZltcPVP0Oc8OeByptYErL
+	d+JtRCtROv3UqQ6UerO8dtWJGnFS8vuf52Oo+lQMRrpeXL4Jpp230TW++/z8DtSU4rAOjY
+	WimYZzbNxZWtgqnfnwU8zuCpahki/VE=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-64b7b737eddso701043a12.1
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:48:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766080097; x=1766684897; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766080138; x=1766684938; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o5DOlf1Cpz2TADNVefb8b2aJKEHSeiEbRpZG5EwaNhQ=;
-        b=Ip+KLEdUgcQ0FkoXOlJAJ6kjBUuBRFZ+9LbWfs5QD4WLJ80qD9wySTaTEzwkXHF/k9
-         E/adCKOwcguWdOFXPlDRYsU9oLzPqrguPDJiqu/bLRaixGav0/Yy85T9jcPfA+wsS2Wy
-         zqSPffTaOMZBfi6e9JPJMf94nRDq7b1uGDPXo/MuukNbUiR6rmAmQwzJobiqWPBmNcTW
-         bX68LAQis0k86+2uL5Np2rTnoBdGGJBQr/p59zizCiDtRkVgAkV81rBrRJOiKK93V+i1
-         iYg9kgyCQIeizfBusPXjNHozvdoU0JhQK2cWHPNriNpSJmNj/2VIlVhNshEPUTR59e7I
-         EAig==
+        bh=CAT4NIB50wSSQJ2eRS7sx9I/iK0vGJNZ4n3UlMbS9UY=;
+        b=dNDmyTxAuT/UGyDXQ2c3SeL6bQ4pKISZ/v/2MxasCPmuvEqP0ThOTyvR+HnpEVnVhW
+         3uWCp1Dn3EazaUSqTkcy8cGAH24rlWk5Zjr0AhZquzoKtgYeiBc9IM1UlKZZ6mRW5m08
+         SJIT/n8qdwLcw5riiwIeWLuHjgMMWXgCT5Y2AcW5UzBJ//mUJORcFOAy5uZNWyAkeHbY
+         SVNGePJvGiegNurw/MWV9aOCXaWyGoLxSAkuvKeQTG3Tds5JaOAyeA0aB/KipyQLszV6
+         AuI7TtxqbM6/U8OBr4ZAC5cEBB7xMBj/A9UR+otXLIU0ODn8OVHxVN3tvXknyRmQcOyf
+         s3BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766080097; x=1766684897;
+        d=1e100.net; s=20230601; t=1766080138; x=1766684938;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=o5DOlf1Cpz2TADNVefb8b2aJKEHSeiEbRpZG5EwaNhQ=;
-        b=hGivNBzVNBVMhzOPCoBJSTvFedCzCKcoxrcVLwIGpFRngqrYBgTl7KTlzrcTMKICfB
-         b2g/xZUCHuqfIAA9Bl3dpab9BVTP4uxkeWEQsmMjQr8HfHFWarPr7unsWQcRvZ8rXZJc
-         vh0XDaQqExqcXJbsJZ+AuSctHfnT1zAyPYWees0FIm+TkxgSkt/EJOacBuNwaiywlTgb
-         XglsayTR2ogLhGnXjEYsacP6T1BwioT91T68+mKKtcrD8ckZ0i+7qPXm8JZLlFF2seFJ
-         bbLjGSLj8Slb21MezAJvnuXIjyk972Ix4mKokPUX3i4AKbuVttkRLPRGP4uxnFKEEk1r
-         uaoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrBu/mRQeuJKkP5FfdaMhYHxpitgURPpQjnbFSKhPObnI1sqFlmHjxUnrHM/4PqXyx55tfxII/aQ==@kvack.org
-X-Gm-Message-State: AOJu0YxYhOu2dU2tMeICAr3SiQfMjKtxmDc8G1d3CEgvOSopsYPHGAXh
-	/3dv25C9Mhk9TSLXEHDQ4IxgEWgqZowYG5Ggsl5gUs9fQjxoCtk7+3Tc
-X-Gm-Gg: AY/fxX6AFyrnsiFt60yoCxJ7TH95qn2s2s+c/PaafHMOwfw5p1yV27rienImp7IGPnG
-	5SR2oyBzgjhmy0lWKVflTrv3dhrZWG9GJXYUjWo2NN2sk7VF8oAdrnHvjQBqOUo1ZnyLHDsx16Y
-	jW8mbfftkubYiOyppjTYDsq5TBTxtYx/F2B7XQXdz2XSy66+lzsQ/7RJtueRol1cN21LI7wOlf/
-	dAsKe757WwJhRTs5tL0PZQX9V281EtNd3MGyNUsx0zaHOu3CU/rrs7FrlviaGa/lWMtiEG0Oza3
-	UT5rLtdawxkk2B2BM8LHJgHpS35/T685W1rlGg7bQjI7V0xll072f3Mpd6sSLakJ0w04UTYWuHh
-	lzb/kT8pxarLf+h28yrQy/ZSU9+TzuzjEq80dH2AnNSnoJoGLeVlN/b/N8dGe6rUO0mSm3GvGXW
-	t3CWNaeujRwsTIT8pdHI78qwbS7Ox3I/71ZaYWnIIdK50=
-X-Google-Smtp-Source: AGHT+IFxudTDy6PHM/19N5nVub112fNrYCxZ70+830+nWbKCk8yxVcY0v9o4EOCLfhGvU4EKSePVLw==
-X-Received: by 2002:a05:6a20:7d9b:b0:355:1add:c291 with SMTP id adf61e73a8af0-376a75f5bb2mr315421637.10.1766080096505;
-        Thu, 18 Dec 2025 09:48:16 -0800 (PST)
-Received: from localhost.localdomain ([113.218.252.152])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1d2fffa3e7sm2847400a12.24.2025.12.18.09.48.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 18 Dec 2025 09:48:16 -0800 (PST)
-From: chengkaitao <pilgrimtao@gmail.com>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: kevin.brodsky@arm.com,
-	dave.hansen@linux.intel.com,
-	ziy@nvidia.com,
-	chengkaitao@kylinos.cn,
-	willy@infradead.org,
-	zhengqi.arch@bytedance.com,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] sparc: Remove unnecessary whitespace
-Date: Fri, 19 Dec 2025 01:47:49 +0800
-Message-ID: <20251218174749.45965-4-pilgrimtao@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251218174749.45965-1-pilgrimtao@gmail.com>
-References: <20251218174749.45965-1-pilgrimtao@gmail.com>
+        bh=CAT4NIB50wSSQJ2eRS7sx9I/iK0vGJNZ4n3UlMbS9UY=;
+        b=g5kgR8axCDRBDtGN/Tm68YmPW/hPiXQpqmkCu1NlhJeWpSJz28lMclxEy4mbKlU65I
+         74DsIj9zfhDbNNbOqRISjCirGOgp1w3ich7Mf5F8sIHz6SFIEckzzrYQ1HhB+nncVAJE
+         IDTZd8gIf8SSmmgZgPv+PjNcmpKllrRb2yBn0mcS9oGe9VGp0zLD8I18jB6GPAGqw3I0
+         X88liQmKTdix1DNUuPPL/b626ZvW5AiEK2ifXhdVIXbcxyqnXBZQGUG1rCXSPmN5qiEN
+         M+dVRGR3oDNr3CEugyYmqXSCD5x0pDQO7kjsPSOn6HBJKl1Mg2gXPgxDHbYuJXWOiZUM
+         Ohvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGO6Ey9z5UmvJKmHjz1JNur0bat3WobzwHC68yXqN3MX6VplUaM4dHk3T7rw1ngN0U/OVF66zm2A==@kvack.org
+X-Gm-Message-State: AOJu0Yz4pXOa8eFQjl4tO90rejJe5w2NC15bTUbfkqYoKKgI5JYNFCEK
+	I8DyO3mZ+y9eLnZfCdC+WWW0KQW3eyFzhxvK0TV+5LEWViaJTBTtNVxU
+X-Gm-Gg: AY/fxX7mGREkr2KQLps8V/i9U6Rov6F0GchyHa0kuJ4xxqsB5YM97LsSNcJ1vYYGUaH
+	xSa2Nul8EoQnmtegQCADZdyhvqlHpu7OhPN0LAbz8rKIW0m0XYpCQ4ad3ESV/36RfWgzrMq1AM6
+	7H1Kvk1PJsda7yzNiQ4w5cjNr1u9oKa6WkLNEcSgra0kISdVKz5+xNoEEC1vImQWv5J51ykTu2t
+	s2Wla7x+gvXyQFHec+M6vjLh8iRD4eVDFl0VDd6GRgTeFiRSLpWvUj60gjsORq24RrGfcj6Ako/
+	VWVkJz5+/PvGwWhqRqRM3THRfvYH408jlxDu9QHZWbewakByCQ1C2PcW7lkuzTa8hpZqRw0yd0x
+	mMAMKK1RhPzFHaZrZeBIayH8ui9DJdv6GAf7/o1HI4N3b6xBhkB8kfjRXEf8M7K4QRceE3QhsDs
+	UQzSLFbzeWZlkwF99FatMAAzRnT8T8karxgl0O3WNHqLLtqKHShWTuzPM7jSSLj7E=
+X-Google-Smtp-Source: AGHT+IEX3LAgYnT5Lo93smJLzWDPMc1uQ4Aj1gMjYO0ty7+7jdOdeZ5GXQKimSTh9jzRGuiit8vdow==
+X-Received: by 2002:a05:600d:1b:b0:477:a219:cdb7 with SMTP id 5b1f17b1804b1-47a8fa81e14mr202186375e9.0.1766073295465;
+        Thu, 18 Dec 2025 07:54:55 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be27b749esm48092275e9.14.2025.12.18.07.54.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 07:54:55 -0800 (PST)
+Date: Thu, 18 Dec 2025 15:54:52 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes
+ <joel@joelfernandes.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Will Deacon <will@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Alan Stern <stern@rowland.harvard.edu>, John Stultz
+ <jstultz@google.com>, Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, Linus
+ Torvalds <torvalds@linux-foundation.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Frederic Weisbecker <frederic@kernel.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar
+ <mingo@redhat.com>, Waiman Long <longman@redhat.com>, Mark Rutland
+ <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil
+ Babka <vbabka@suse.cz>, maged.michael@gmail.com, Mateusz Guzik
+ <mjguzik@gmail.com>, Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+ rcu@vger.kernel.org, linux-mm@kvack.org, lkmm@lists.linux.dev, Gary Guo
+ <gary@garyguo.net>, Nikita Popov <github@npopov.com>, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH v4 1/4] compiler.h: Introduce ptr_eq() to preserve
+ address dependency
+Message-ID: <20251218155452.6ae47481@pumpkin>
+In-Reply-To: <cb55e583-395f-4b83-925f-c341c95903c1@efficios.com>
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+	<20251218014531.3793471-2-mathieu.desnoyers@efficios.com>
+	<20251218090313.33923750@pumpkin>
+	<cb55e583-395f-4b83-925f-c341c95903c1@efficios.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qi81zeipdqq9mi94jy3781wjrfui1ee8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0B8BEC0012
-X-Stat-Signature: 1gyyg5b4ohuqpnkzjw4pejyur7n99p3o
-X-HE-Tag: 1766080097-313670
-X-HE-Meta: U2FsdGVkX1/WDPv1OLKpNF330x9mu52fZm9TWfqwIS9Cix85NTx14UZjhARNze4lRRZzuNbxHsJX8l1i0JuW4j7okDrdSjozk48zgK2+OKU+j5EUOHiOOiZ2lUhLEIT68rwloaHhvVauI8oDzQxrbFMpHd8dHi7uMBcf/DSO5tsNzZQtIQ7oaHayFjZ6XAHMPjad8zfUPpK9U0x5nGVvcaXH7HinTBNYqKRBOIb4Cz9g8hYGKtMzg12DMe2c/nsHFNgGVM9N3lIpMEGGC8ytIwEVnVm/HQvZxXdiWFBGfMv908kTZVhPU82DX0uYUPAJP6zodG8vVCkYUy6T4YJNqZrEuokcws32g9BRWV3j9N0AdS1R0AtMFDdSshk5gmZhFA8XwjQLxO6eGt21/NUTyBU9NM17/3Pf938/yZ4y5FzYIMUOCOlm3lG6u0yzimK1Y4pMKrPnOLAIVwk0QnOjKXqEFmWllLl4AJ+37BUoe8+6aAeS2gKcEqCl4H0GJ8EUaXDpP79/ooAvVR2VfXzG0XxKJRItuiPQFadIfahUUr/lKs9mbDgMHRO2xKnnv5iPAt81Ro6Orcbq9ybfm34NgmcF7/jTnyfBb/h7OpR62Z36GX4AcL+UK0akCWIGhsLV3X385x9wMOjrYUKtwj8mthBOAccn+qM0/I/Ss01NaxKLyjRM5rnLxaZwOjX4nuUWF6/gKx9Wcq9hp4S/P8ab3BXJenhpM5jqr5xUj13snUce7d4TCxljtodU7whiPoAAza39JlsPOkGHoUR7vC73mL/AUWawhTpJnBoYP4FiiSkOTtbJciFEkcqxZrEeR/6S9nZQN/vfYsnJPy7oDRWSlQdieZMH8ABqEchNM8Q6PA6RohZUERfcEHxs3hdbLjrjxoeHNMTMd020ErHLNvllRRaRuGJuJiObsVfOtedAn5zBJRUWgLrpDylUR1ZXGhGVfWRnsZDcQ90q1isHhro
- EN5IjUDq
- zNc9VVgC8KY7L8+w04wQYoXIWA3y+TSBsJiBah3pzHqAivuxTT27uP95cPueHqPARVlRBcGNzuYBWYr9oiAUsNKyShUkmX9W+dB/yWUHPUVMsRe1yXL7uf4hH9nu+MX7GpO0t2/+p1lJhod6P1ZXFh7umtqNWgSdVlQHQ+VZ8PkScHqqHL7JWXFKNzxsWnVYHK0Ox/omno0xUcFwvzGd6yB2SAu3dX9J5v37nhRA4djv6IhJA+A7TJbI6MzyTCBktxVK4rHEv6hzjZisl0tt0G5xQgmlh14dLmxh1IWcpTZd2WyPYx4wrKW7bFRPU/p4r7udJUBHVnYkuIsIn/+p2e3WjHvcMUCcCePo2N6SCX4zl3Zw8bS1kt8/7ddWbFIF6FUU7XNYTxENkpcc=
+X-Rspamd-Queue-Id: 6BC971C0020
+X-HE-Tag: 1766080139-697337
+X-HE-Meta: U2FsdGVkX19xoHTQlYaoX8bioRp4FVdkxSLI1XY7GF4M74xIjQ3GfrHxVE13nkqq2XN0eARASryfcm5jkC0M0FSJ5367VhsWltut3Y7AyCbzhJtPV4v40utqQpWTlenZ93PGWIo8AFNERFojhzru/zpyhgSfFFln9zjfahNb5Xb1FVnKUKKcC5kPhhbYNjf+M5XEVisH0decNpWrRpPlgGPi7MGIjhImozJlrO1xOBflPSajDAFKVTWwILyXMhDVLIwBkyfmnWuZ3yFd6QG5Hw7wBi19BSVMXyTdOZuyghd2rDpxuD5An3duwBcAv+kGlD0fjCk9NxC0ssBYvDlzUqd0uRaPfhykkcUXvEedOfiUfL7YAd6aSyuOjIP+sSA/Q0LugJOSPqkysWzpOHlcdyqzA5n8xIGQ9JIXqYayAoxXr+F4+RsXMG52FrlpBrmW77By50cPoZWBMei8A+FO7cHOGY3DoJPdTQ6vojLh6J0exqEC6PYWPxFcfPbZYuABgLchAW9WRJ/PqL7S1OG1O0W/O504EgvbBDXaWsDNdpxs7qurZwG8OMNLZ9f/AymJ91yAlAgNIyC/gFTE50unYqK+9MjQh9NewQtoWgZnmlhjWqAnQaP/00RmvXy0U+FF1/vndL9MgJHxyM3waMjxeLJ71QmsJ73QzTiG7rzw15BxCTjCuZFmgVYpwrObN7koxrZSVVFfKtoyUAjcopYXUIm3IacyktM6R3gCo5iN0PO2427k/FI4UnXfMuLKRKifp2qFPy9EHQWabCY+suprJJY0bZ+dHjVjT/bX4x0s2UnEEYhX59YI6xNesNyr5Xk2TOdHyuNaQ9AUhIuD/vE8xVqM4/31+hVWH3yiuSeVatuAxikuE8Itt4e2FMFo4WAILaaNVwT+Nb/pL8s65EZOqUedPvKdKS/tehwCNWh1znrM3aNzCrHvYDHBmL4fh88vCu8TBwsprQlp1XwLu8j
+ 1AKpAG2Q
+ Z67KW5Z/dJZ9IxvS02LcdjUPWZNTPepD2kfpY8WWIubR350z0BAZLD/len21bPF8MrxF7Ee8fcU0FBOxkL18ZyR///gj3BS/eyJA/F55twbMHcG3j48Z81f2YC8cLDZtH0osOtD9DA/lJQbL34SFg6xRjLtbIuWiKOM+x7gNk6QW83RYnIAZLqB9eH3+AX2juiU69MWLtbcMmSG9ywa8NxGrF6PgufAAv3sbawDjrO0yxHZgyGrRdUQ/KFq4BCg2DIt29WPob6kvQTlOAzlIpkC1ZVySUbo4Z7Sv8dvultpXvX1oH2+tTN/k1fFNeLT+AGorUIRGRppGJ394Mdc0RPEanmOK2pUk5yTCfJYFYMCtzig3qyIUEYegH2RxP3zx0M/zO7DuOHh7z5DYvSbAbHq4OwKybG/7/h79Azbet9hmAQ4P/MOxgcx8MLoM1tnLQ0nDZRftPAUbnIg3GTpQ3abWODXAYOMeRypjx5gG2j6oIfMBT8KszA6/OiuOEhS5Jc5+UctKws7Q8oMkab8ZoMOd3SZyyHrgyBbEmQhvj/B00UY7beQrzYoXcqaa842lmSCzEgwEbLlhUmikCL1U93JM1t663cs+NUKe4j0pnf2HIlsgBb0Kj93DXGWgJf6VjWBuEXkDUHJOKnX1/HjMJz+V9NQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,193 +142,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chengkaitao <chengkaitao@kylinos.cn>
+On Thu, 18 Dec 2025 08:51:02 -0500
+Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
 
-This is purely a code formatting change with no functional impact.
+> On 2025-12-18 04:03, David Laight wrote:
+> [...]
+> >> + *
+> >> + * The compiler barrier() is ineffective at fixing this issue. It does
+> >> + * not prevent the compiler CSE from losing the address dependency:
+> >> + *
+> >> + * int fct_2_volatile_barriers(void)
+> >> + * {
+> >> + *     int *a, *b;
+> >> + *
+> >> + *     do {
+> >> + *         a = READ_ONCE(p);
+> >> + *         asm volatile ("" : : : "memory");
+> >> + *         b = READ_ONCE(p);
+> >> + *     } while (a != b);
+> >> + *     asm volatile ("" : : : "memory");  <-- barrier()
+> >> + *     return *b;
+> >> + * }
+> >> + *
+> >> + * With gcc 14.2 (arm64):
+> >> + *
+> >> + * fct_2_volatile_barriers:
+> >> + *         adrp    x0, .LANCHOR0
+> >> + *         add     x0, x0, :lo12:.LANCHOR0
+> >> + * .L2:
+> >> + *         ldr     x1, [x0]  <-- x1 populated by first load.
+> >> + *         ldr     x2, [x0]
+> >> + *         cmp     x1, x2
+> >> + *         bne     .L2
+> >> + *         ldr     w0, [x1]  <-- x1 is used for access which should depend on b.
+> >> + *         ret
+> >> + *
+> >> + * On weakly-ordered architectures, this lets CPU speculation use the
+> >> + * result from the first load to speculate "ldr w0, [x1]" before
+> >> + * "ldr x2, [x0]".
+> >> + * Based on the RCU documentation, the control dependency does not
+> >> + * prevent the CPU from speculating loads.  
+> > 
+> > I'm not sure that example (of something that doesn't work) is really necessary.
+> > The simple example of, given:
+> > 	return a == b ? *a : 0;
+> > the generated code might speculatively dereference 'b' (not a) before returning
+> > zero when the pointers are different.  
+> 
+> In the past discussion that led to this new API, AFAIU, Linus made it
+> clear that this counter example needs to be in a comment:
 
-Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
----
- arch/sparc/mm/fault_64.c   |  4 ++--
- arch/sparc/mm/hypersparc.S |  4 ++--
- arch/sparc/mm/init_64.c    |  6 +++---
- arch/sparc/mm/io-unit.c    | 12 ++++++------
- arch/sparc/mm/iommu.c      |  2 +-
- arch/sparc/mm/swift.S      |  2 +-
- arch/sparc/mm/ultra.S      |  4 ++--
- 7 files changed, 17 insertions(+), 17 deletions(-)
+I might remember that...
 
-diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
-index e326caf708c6..963b2c4c87e2 100644
---- a/arch/sparc/mm/fault_64.c
-+++ b/arch/sparc/mm/fault_64.c
-@@ -201,7 +201,7 @@ static void __kprobes do_kernel_fault(struct pt_regs *regs, int si_code,
- 				      unsigned long address)
- {
- 	unsigned char asi = ASI_P;
-- 
-+
- 	if ((!insn) && (regs->tstate & TSTATE_PRIV))
- 		goto cannot_handle;
- 
-@@ -229,7 +229,7 @@ static void __kprobes do_kernel_fault(struct pt_regs *regs, int si_code,
- 			return;
- 		}
- 	}
--		
-+
- 	/* Is this in ex_table? */
- 	if (regs->tstate & TSTATE_PRIV) {
- 		const struct exception_table_entry *entry;
-diff --git a/arch/sparc/mm/hypersparc.S b/arch/sparc/mm/hypersparc.S
-index 6c2521e85a42..bac194982498 100644
---- a/arch/sparc/mm/hypersparc.S
-+++ b/arch/sparc/mm/hypersparc.S
-@@ -30,7 +30,7 @@ hypersparc_flush_cache_all:
- 	ld	[%g4 + %lo(vac_cache_size)], %g5
- 	sethi	%hi(vac_line_size), %g1
- 	ld	[%g1 + %lo(vac_line_size)], %g2
--1:	
-+1:
- 	subcc	%g5, %g2, %g5			! hyper_flush_unconditional_combined
- 	bne	1b
- 	 sta	%g0, [%g5] ASI_M_FLUSH_CTX
-@@ -325,7 +325,7 @@ hypersparc_flush_tlb_page_out:
- 	 sta	%g5, [%g1] ASI_M_MMUREGS
- 
- 	__INIT
--	
-+
- 	/* High speed page clear/copy. */
- hypersparc_bzero_1page:
- /* NOTE: This routine has to be shorter than 40insns --jj */
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index f477ab1b4f08..1c36448b95eb 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -5,7 +5,7 @@
-  *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)
-  *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)
-  */
-- 
-+
- #include <linux/extable.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
-@@ -2397,11 +2397,11 @@ void __init paging_init(void)
- 	 * work.
- 	 */
- 	init_mm.pgd += ((shift) / (sizeof(pgd_t)));
--	
-+
- 	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
- 
- 	inherit_prom_mappings();
--	
-+
- 	/* Ok, we can use our TLB miss and window trap handlers safely.  */
- 	setup_tba();
- 
-diff --git a/arch/sparc/mm/io-unit.c b/arch/sparc/mm/io-unit.c
-index d409cb450de4..15f83e6d21e2 100644
---- a/arch/sparc/mm/io-unit.c
-+++ b/arch/sparc/mm/io-unit.c
-@@ -4,7 +4,7 @@
-  *
-  * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)
-  */
-- 
-+
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/slab.h>
-@@ -62,7 +62,7 @@ static void __init iounit_iommu_init(struct platform_device *op)
- 		prom_printf("SUN4D: Cannot map External Page Table.");
- 		prom_halt();
- 	}
--	
-+
- 	op->dev.archdata.iommu = iounit;
- 	iounit->page_table = xpt;
- 	spin_lock_init(&iounit->lock);
-@@ -109,9 +109,9 @@ static dma_addr_t iounit_get_area(struct iounit_struct *iounit,
- 	case 2: i = 0x0132; break;
- 	default: i = 0x0213; break;
- 	}
--	
-+
- 	IOD(("%s(%pa,%d[%d])=", __func__, &phys, size, npages));
--	
-+
- next:	j = (i & 15);
- 	rotor = iounit->rotor[j - 1];
- 	limit = iounit->limit[j];
-@@ -150,7 +150,7 @@ static dma_addr_t iounit_map_phys(struct device *dev, phys_addr_t phys,
- 	struct iounit_struct *iounit = dev->archdata.iommu;
- 	unsigned long flags;
- 	dma_addr_t ret;
--	
-+
- 	/* XXX So what is maxphys for us and how do drivers know it? */
- 	if (!len || len > 256 * 1024)
- 		return DMA_MAPPING_ERROR;
-@@ -185,7 +185,7 @@ static void iounit_unmap_phys(struct device *dev, dma_addr_t vaddr, size_t len,
- {
- 	struct iounit_struct *iounit = dev->archdata.iommu;
- 	unsigned long flags;
--	
-+
- 	spin_lock_irqsave(&iounit->lock, flags);
- 	len = ((vaddr & ~PAGE_MASK) + len + (PAGE_SIZE-1)) >> PAGE_SHIFT;
- 	vaddr = (vaddr - IOUNIT_DMA_BASE) >> PAGE_SHIFT;
-diff --git a/arch/sparc/mm/iommu.c b/arch/sparc/mm/iommu.c
-index f48adf62724a..f43163a9a812 100644
---- a/arch/sparc/mm/iommu.c
-+++ b/arch/sparc/mm/iommu.c
-@@ -89,7 +89,7 @@ static void __init sbus_iommu_init(struct platform_device *op)
- 	iommu->end = 0xffffffff;
- 
- 	/* Allocate IOMMU page table */
--	/* Stupid alignment constraints give me a headache. 
-+	/* Stupid alignment constraints give me a headache.
- 	   We need 256K or 512K or 1M or 2M area aligned to
-            its size and current gfp will fortunately give
-            it to us. */
-diff --git a/arch/sparc/mm/swift.S b/arch/sparc/mm/swift.S
-index f414bfd8d899..cfcc48b6c5c7 100644
---- a/arch/sparc/mm/swift.S
-+++ b/arch/sparc/mm/swift.S
-@@ -243,7 +243,7 @@ swift_flush_tlb_page:
- 	 nop
- #if 1
- 	mov	0x400, %o1
--	sta	%g0, [%o1] ASI_M_FLUSH_PROBE	
-+	sta	%g0, [%o1] ASI_M_FLUSH_PROBE
- #else
- 	lda	[%g1] ASI_M_MMUREGS, %g5
- 	sta	%o3, [%g1] ASI_M_MMUREGS
-diff --git a/arch/sparc/mm/ultra.S b/arch/sparc/mm/ultra.S
-index 70e658d107e0..66cbfbb1d3cd 100644
---- a/arch/sparc/mm/ultra.S
-+++ b/arch/sparc/mm/ultra.S
-@@ -284,7 +284,7 @@ __cheetah_flush_tlb_page:	/* 22 insns */
- 	be,pn		%icc, 1f
- 	 andn		%o1, 1, %o3
- 	stxa		%g0, [%o3] ASI_IMMU_DEMAP
--1:	stxa		%g0, [%o3] ASI_DMMU_DEMAP	
-+1:	stxa		%g0, [%o3] ASI_DMMU_DEMAP
- 	membar		#Sync
- 	stxa		%g2, [%o4] ASI_DMMU
- 	sethi		%hi(KERNBASE), %o4
-@@ -312,7 +312,7 @@ __cheetah_flush_tlb_pending:	/* 27 insns */
- 	be,pn		%icc, 2f
- 	 andn		%o3, 1, %o3
- 	stxa		%g0, [%o3] ASI_IMMU_DEMAP
--2:	stxa		%g0, [%o3] ASI_DMMU_DEMAP	
-+2:	stxa		%g0, [%o3] ASI_DMMU_DEMAP
- 	membar		#Sync
- 	brnz,pt		%o1, 1b
- 	 nop
--- 
-2.50.1 (Apple Git-155)
+But if you read the proposed comment it starts looking like an example.
+It is also very long for the file it is in - even if clearly marked as why
+the same effect can't be achieved with barrier().
+Maybe the long gory comment belongs in the rst file?
+
+I do wonder if some places need this:
+#define OPTIMISER_HIDE_VAL(x) ({ auto _x = x; OPTIMISER_HIDE_VAR(_x); _x; })
+
+Then you could do:
+#define ptr_eq(x, y) (OPTIMISER_HIDE_VAL(x) == OPTIMISER_HIDE_VAL(y))
+which includes the check that the pointers are the same type.
+
+But it would be more generally useful for hiding constants from the optimiser.
+
+	David
+
+> 
+> https://lore.kernel.org/lkml/CAHk-=wgBgh5U+dyNaN=+XCdcm2OmgSRbcH4Vbtk8i5ZDGwStSA@mail.gmail.com/
+> 
+> This counter-example is what convinced him that this addresses a real
+> issue.
+> 
+> Thanks,
+> 
+> Mathieu
+> 
+> 
 
 
