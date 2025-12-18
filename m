@@ -4,175 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F91D6ACE8
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12F6D6ACE6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:30:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F010F6B0089; Thu, 18 Dec 2025 06:23:46 -0500 (EST)
+	id 1E39C6B0088; Thu, 18 Dec 2025 06:30:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEBA16B008A; Thu, 18 Dec 2025 06:23:46 -0500 (EST)
+	id 1912C6B0089; Thu, 18 Dec 2025 06:30:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DACBD6B008C; Thu, 18 Dec 2025 06:23:46 -0500 (EST)
+	id 090876B008A; Thu, 18 Dec 2025 06:30:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA99D6B0089
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:23:46 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7799B61107
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:23:46 +0000 (UTC)
-X-FDA: 84232356852.14.92C69FC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D9860C0008
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:23:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=C5NWFJMC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mPssw+wb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=C5NWFJMC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mPssw+wb;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E9EEB6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:30:01 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 977ED160DEF
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:30:01 +0000 (UTC)
+X-FDA: 84232372602.07.E92DB1D
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A238D120012
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:29:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TiI0kICG;
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766057024;
+	s=arc-20220608; t=1766057399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YkIK+I4PFuj77KSv9EJaFoX/yib3F48+Q2EoloLTPSk=;
-	b=DKMQjH3StiSIWDrbHiUd3B6kCtvsJpbcFwa7Drxx7lbHiM6o9yhJ+Cph/HH9ZRrNB9CSnC
-	3UTyJ5zTE6EuciucfIq/UTOMz4btRQ+WWUD/W27CD+I8C9GWqgatcGEyOoxGZBXnCDx3TA
-	MFVutwnI6zRKYTMelz+o+tA2WYBEqs0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766057024; a=rsa-sha256;
-	cv=none;
-	b=13k3u+s4zGdxrhdPGulqjK6WVn523R4OFR+0FFeIL6S/gMMuw9I+cbeXHtHYQdssOaWso9
-	o3GmXiOaPnuAvTSfS9OuPG0QlqF7UpuRsv0xwPd4Mw0wtYlgMznzBQ3pKgzfu1VZxbjiNi
-	HjLplZnxiog9EdkHyiROhkJpM0RI0EI=
+	bh=9UwTmTndjxNkRU+xQueVbhSu5CbtS/JqDANe5YwnyGY=;
+	b=t3gdGtQ7DWcinE04ZoyBlMHciljzVq1CykAkuFJzkqgV9Ps8YB8sBlirlqJxtY+QBvwPkl
+	uPSSxRBVVyjQh74h4zrfyBlGDe+sdROHr1Jo39fNZ67h9A3QBFwG9W0ZGvMwQtcUmfPgvz
+	Bog1ffUmf52aYpu3mE/ncadhCUM08bA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=C5NWFJMC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mPssw+wb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=C5NWFJMC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mPssw+wb;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 46B085BE40;
-	Thu, 18 Dec 2025 11:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766057022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YkIK+I4PFuj77KSv9EJaFoX/yib3F48+Q2EoloLTPSk=;
-	b=C5NWFJMCNVlymy57XJC2XqlCJPE0uuXRDl9PlVAkHEekrqy6bnoomHmAN4sdO7w9xCzMSj
-	yrc2L4R/koGf2YiYkvkHqTy7nw5Z+iPRL818F9C0DlOlLUMP/+ogazsdyyRcr6LzXUSdvN
-	c7eC4D9QyvJw72HE/4TS+LG/XrtDFvg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766057022;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YkIK+I4PFuj77KSv9EJaFoX/yib3F48+Q2EoloLTPSk=;
-	b=mPssw+wbMaXNRuVAdqBMGvphXtFfDkh4JCgbSX2V4lLEQ/Dz/DmVP4jlOQUTdyi69FQQhc
-	mcHDgwbnzdaG1GBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766057022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YkIK+I4PFuj77KSv9EJaFoX/yib3F48+Q2EoloLTPSk=;
-	b=C5NWFJMCNVlymy57XJC2XqlCJPE0uuXRDl9PlVAkHEekrqy6bnoomHmAN4sdO7w9xCzMSj
-	yrc2L4R/koGf2YiYkvkHqTy7nw5Z+iPRL818F9C0DlOlLUMP/+ogazsdyyRcr6LzXUSdvN
-	c7eC4D9QyvJw72HE/4TS+LG/XrtDFvg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766057022;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YkIK+I4PFuj77KSv9EJaFoX/yib3F48+Q2EoloLTPSk=;
-	b=mPssw+wbMaXNRuVAdqBMGvphXtFfDkh4JCgbSX2V4lLEQ/Dz/DmVP4jlOQUTdyi69FQQhc
-	mcHDgwbnzdaG1GBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F34B53EA63;
-	Thu, 18 Dec 2025 11:23:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GeYNOz3kQ2k+ZQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 18 Dec 2025 11:23:41 +0000
-Message-ID: <aeff83f2-a97b-41ac-8d19-8536f88b154b@suse.cz>
-Date: Thu, 18 Dec 2025 12:23:41 +0100
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TiI0kICG;
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766057399; a=rsa-sha256;
+	cv=none;
+	b=6pm2G1ln/SwmooKYkacV4/DyArk6mXhyP6A0lRTFMxQBCrE0D5/i8ZfDul4M+nkLgAq/mB
+	DoBF3du9X1dk5Fhp2dH6hiew7dXsXTVBTHS6vacUg+VasRb0epcAoWBVoDF/G7tbDxKRDb
+	B25gvI1whMgsEwpRzQcru6mjG5cup8g=
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59445ee9738so363364e87.3
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:29:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766057398; x=1766662198; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9UwTmTndjxNkRU+xQueVbhSu5CbtS/JqDANe5YwnyGY=;
+        b=TiI0kICGbIlR4mLJpe8ERu6uwLA1qgVEunaC23CMwGx5Rjv/Uf4A2hk9qcFNTxZZsj
+         1PX9MKQdnkhJ7IObcDCxGtXstIeS3LyNhz0B31wemTkFwYaBl/txufgLi60MEosw7Pmm
+         1Fjjygu3tsX6sjbh/t/eo3rgIdKTXmM3jVYIocUvSyqEjaueNZouFKk+a+Sp/y1Uxaa2
+         OTZXXg72k0vmeXO1nuk75KoHkVitR5CXUMA/Z79vmw8hQaeHysWvteXH1/+QTHZtQNTm
+         vgHHlT+RNaarT1BgtrwLBPexnXOFsSfHE/GV/zCJjlqXV0J+7BgZgrOA1f/QQVo7B2SE
+         CDQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766057398; x=1766662198;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9UwTmTndjxNkRU+xQueVbhSu5CbtS/JqDANe5YwnyGY=;
+        b=vaMM53s+FONf0fYmjhPgEftkZKEpIsKL8s/v9cKbZYezl6EVmaNetbf+YYg+d755b1
+         OOIiJOgVF7WmNXodcQDf3y+5ZU3GcgluP/tqPq2Ela/HvWa/keflVQwuvDRxqD72gjib
+         KaYcYi8aSEkFaBnecOM3q8haZR8dXlJAvzjHhS6ylVyBuA4dO56LxpMWMLksPFhM4OJA
+         ZnsHzUWXm6GdNU3M4WWZ5NtYTFXP5IY2ZRU4b81o45VQU/6OfmLx/Y0jrHXe41ekQ2lK
+         jwERje69/2NsEqjaLJ1Ug5GJYomlb+11K3e29gjvz8NVeMxNKZE2DlRAZrq97GiHSs8W
+         yDWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgrd+wT+FvISMRaVZEzK/T+jZ42PEDD+F2d0z1qQ0YtgT+kC8sKJ62rrLkSATMOOZVEsiTGhy1FA==@kvack.org
+X-Gm-Message-State: AOJu0YyDgLkLF9Rw8AZ/UgEcVTHx9seXBR71zZchopbYJynTqU5OR2ra
+	OxvZHZkMomnWH3lv5qsHGyBBLIvLsc6JTi/r2g4oMS6hnRQgGcERt53NscRU6M9F
+X-Gm-Gg: AY/fxX5MCxRvO3GwG50iMN7GczzFHe3z8NZv5dJ6++V6N+NpJFqVaRGn0ug1lf87iBK
+	Pc3XN+01X4jhEba2vr/MEGmR4XyrVlrvWaWNVOv2wlBWr7rMvSVNFVZw5DEz4tQnXvNZDeCfRP5
+	VSEy6A0e51fxncRgBYbfTW6AJx6SgucZ5mAxaDjn8Va/4XnSSJcPxcdusxZxKjUDV4fAnLSj+mW
+	v5mHhruYr5isATgzR9DApbebwrIbkbO90ghUW8BYwLP9EfYFBKIJuMpmrnm///wuVDjQn8x2u0w
+	0HJ0L8zshbz+4I60SLoNhF3iVMTYAv1YFi3BgU72H50XfK5LJuorcjxCE6BWCavILCWGuqyQrbR
+	kAjMPx/AZTboyTQbxgE9gjr/RW93txLLkZT30a91cW2XgdtJxzbcN
+X-Google-Smtp-Source: AGHT+IGAcvXAxC1K1JbJVoEe3yEvZVZGQ4eGCpaeh9EQIqjv95XqmV+JDnbpGIIgvUkK6AnnC9Uxsg==
+X-Received: by 2002:a05:6512:1191:b0:59a:10df:3599 with SMTP id 2adb3069b0e04-59a10df3775mr1346403e87.6.1766057397481;
+        Thu, 18 Dec 2025 03:29:57 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a13405dd7sm1039432e87.66.2025.12.18.03.29.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 03:29:56 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 18 Dec 2025 12:29:55 +0100
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vishal Moola <vishal.moola@gmail.com>, Dev Jain <dev.jain@arm.com>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
+Message-ID: <aUPlsxpYJz6u75Kv@milan>
+References: <20251216211921.1401147-1-urezki@gmail.com>
+ <20251216211921.1401147-2-urezki@gmail.com>
+ <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com>
+ <aUKb1bL7CUcCWi8V@milan>
+ <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
+ <4a66f13d-318b-4cdb-b168-0c993ff8a309@arm.com>
+ <aUMNyfeoEh_tJHpT@pc636>
+ <026b42f6-2f83-448a-9b45-cc8740dd8d50@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: Report 1 as zone_batchsize for
- !CONFIG_MMU
-Content-Language: en-US
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Palmer <daniel@0x0f.com>, Guenter Roeck <linux@roeck-us.net>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kernel-team@meta.com
-References: <20251218083200.2435789-1-joshua.hahnjy@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251218083200.2435789-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tjiw8preqoos3npso84tsbwa6seoeapu
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9860C0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <026b42f6-2f83-448a-9b45-cc8740dd8d50@arm.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: uckwpyeb1mjx4qc89sw8k7kj4fa7p6qu
 X-Rspam-User: 
-X-HE-Tag: 1766057023-418152
-X-HE-Meta: U2FsdGVkX18fvIsNgN0M5mL9rqDibHfNMRy+NhWHeZHkP6B303ZDmixtw6JW0AWPKUHqCrdAKlkxHpumjsLaTWV6nctOA6PFj8g+lVdzXd8gETTpEY0TkZklwVSBS/zjMZ3S1xUu2XLj/PrQqFFPIfzviZbrzU19+JOD/BrR3Yo/KHskIbIaemoUuw+q5AmvDjLbzzXl8TX8m9kO/S4R6LVJnrEXc1TSUHI6Pe6AP3ajC1iTrG+Iyd8eutKq9+2MD7cg1EF7tkWURdy35e+YKwSt+5wk4N48Xj5kzTIi3VLXz6mLaQ5ItJuFSnUtSaUGUmm8Nxegy2GKM+2XFI1RyjSHb3i40r3cWSaRuuLZ4Bu7iiy+FP+fkb/dcV7Z5KYdyMwXyrPtFSWyiaw3wRxJZ53wOxeMNNHc7/Px8uKrcUhcis1lG0S4IdyT86X7PmEdZn6xi79X9vNW3kixkGja0PcZFEuw3uUU8PIeKxfYUucJzqX4gyNnFRXtte33oHCjdio2VxdOqXaOxAQHOT+vpuxa8TUfxIPoGQWayiBRUKHhJbOZYh+XKznLxIW/Ruxag43gRFs/F78S9c3MzF5lA3//NtDvBxh7YYRyzj9mAhEM/JRphqBX3TGxaGCfLl/J8/6kMwF2t/IJ5AZa9+VW9iCacYor/lQ786mQT2h8ttGtaXR8QrOtlT+CRmcVbotEe1BruRxAgp82wTdZvOELK7miH/nAUBtgvjVIWvtM/wUbBAhBqf+TOHbCFh++U52aVsfOrWwSN19Grel/RVX4DOqlKPT939FKJ7xaaydhbrz9up0qNkHAHCJ1BA0nT9+ikM470mB9vMf+FH7vruz5vj1IHhgxPCd/dcjwk66ukOLvfspLf0BackO8drpluKz9xrA/LfWJvrYAdtSRMdGm2eMhjioC7Ygm9H6wdEcr6AN8Chmogh3Q4+C27UIfF+RZzZK9RMYw111W+Lxb0Ep
- v4xChGQP
- qQ/muBcauwLbQUgaSV/SKIZsq+6akkg4OanW2QxQrBxoao7skYovcp/Z0j3WO4/s8vOLnMCdU61w3A6h4YZhsISvYk9hDS6Xloi+vtUguJpvhsMxerokUGAiHEonlxcyAfojFpO3FWA80FYP7ysHFrPynz7X4w2CPE5RZpwfgRbIsCaUXQRyb22bL6SGiBhPtKspMVB0u/ZkSk5dl4rfHCSpCAI8hYKMGIipzqwXjU2dm8HUshtscVPWmPSwtaNEthB2pIFuoaNG10+j5AjX4ceDPIwy3ptvLnkF1UMHqBP1jVzqTPqBu5PyviHYHrW8m1jmzRbmZQkkNK5yOemeoFVI1RpwrFGKQYWmri6cm+PtVulEMbFCM5WPKRWJKpHiduUrPkEtl2MFr68FcHm7aBILomvjyd73T7cokopuTqr95CD0/IklDcrAK+fIyIJjlo6SojdY2VwB8tio5c/+XB8KPjLb3IziajfDOEOyUUCPrFWEKHcKu6zs4fateqUpupp99cejb+Fy+9/8z7nFGrHoswhqO2aUs/gT2HWzk7QE1T3c=
+X-Rspamd-Queue-Id: A238D120012
+X-HE-Tag: 1766057399-135358
+X-HE-Meta: U2FsdGVkX1/UXPk68vJdoy5ZICcy3IGxfyL1QXJolgWXaeEiQyy9eDb1nOd68WFtxPDmaKziP4pVSN5H9L1+mjAYypkEL0Yjt2GWBNWtLTfK/Po4tYOt0U4OUP/nAb3tReMtJwsfo6iHgxN+zoR9cuPcnnY60qIDMRVnuln04PiuHrqzkJc/MCnHymkRtPwijkUGCzM5cj0mhshNT8AN9YkpzhT6IDyHYyG89syWULNJmg7uMd6HDLSV+pS3ja+pOrtjLpUWpQmxSx/0bESy2r+6oCZzxrh/n7K04KK7HTUB8FayNVusoH+3ew2zG8EjxIg0UAc0i24OAJAXgp7hD1mFsBKqX9mk9jcJ9+rd5wkYXLT2i8QZzQPqd6Iq9/e3akSr8NYaemQIV1mGvGYd++wQx/BHXjB4g8LnZIcjrw82GQGDYSc1yvn2KzCbs+D6huRvqqiu8OzXCroTX4BU+ISHLP3hrA/XcH9SEO3WnXdPvOeInEVgC2gxVUgB6OMt2VxLc++C8vNXFqGzR4Ky9ghX8diSVgpKmf1oC7safb7fbZMgWf4KCy40B3xAR1mwos5b5NoF61NJHgBNFZgRzYJ1F2Ovp0k/z4GxYIvZRKH+AKeCMVNuSG0y3ncMu/vq4NjiwXMDSd2LaK93iYbHI21pqKKHy2tmcddXFEg4DEn+0N9mV358FIvwZMIgYCZlRH1PID59TrGMLddk3QLjLawQ10JvU1ITtPt7cClaI7MFmmjFz9n60bIASyGwJPgrKCOAK0um8ZbuzErsRPmsr3rNBQNhHintQcc5IBDlzKuJe2HsZ2acEXBO98J0Ta+8O8pF5HtEPUDfitiDIh6v4+Au6Ps5uQJ26Hg50P6s9gOKJLiP8wL3kB7vbqEnJX2ufZQHeaVfzjcmE5xVEraMfY4+KY4LdbaZslEdVE5fZAlguxoOhJil9Wd9GTzegy2/1/mpv4mDcKtaXG9Ck3w
+ H/KQ1umi
+ pPzS3KveSV9TwtKrDMvARuAGOVdc4Xh7XdSVxCDfk89l/akNn/7uh1YovdGFswdyLEKHPiZaoQGtT9H1MWDBzvAqVd31K8v17M8YPJyn1GIKkmBmOlFA6QLc8q3tEyg+rr2giO42MGUqqfNfnUUDKMLfplXypUvqKobWA3u2vCZOwKtr8w6eKNTc/PXeHB8FGZu859UhNF9ajC7hk+EEnMuBz2TCZA5zq90x+55Sz0EzOGpoLtH4bFZKJonY5UmZeq6FjlrxnfuABNTXFW9NseVChNS9Qbfboe64Lnk4TvBz5vGMB3blKN5eAkj9TWThWjQFjAV+8GL2kRfV40btXWu+79ggS/j9ZTrILLw5mZzdAnab+v6q4cqf2+wzTQwXEaOeEOa7UfpmdObPoPXOWXi6HBzw5uL7vm4GSzICLBdB1on8uUr5ncLVzQIU08qRcMB+n5cdtKbkcaAHYnP8CcBwzDGee8EZyvAD7AAZsHxBNay0QhIb94c4lkgKDR0sZW5yiAbuuu4CClKqsO9zwzOkrB1f+gzAKFONkg6rOny8DgK7f/xO8Av/Pc3/XRCkHOS5VRZeXQOFINDZ7ArfqGOzOxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,50 +127,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/18/25 09:31, Joshua Hahn wrote:
-> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> moved the error handling (0-handling) of zone_batchsize from its
-> callers to inside the function. However, the commit left out the error
-> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+> On 17/12/2025 20:08, Uladzislau Rezki wrote:
+> >>
+> >> What do you think?
+> >>
+> > I think with such big improvement we do not need a configuration knob.
+> > Your change will fully complete Vishal's work, i.e an idea to allocate
+> > using high-order pages.
 > 
-> For NOMMU systems, return 1 instead of 0 for zone_batchsize, which restores
-> the previous deadlock-free behavior.
+> Yes agreed. How do you want to proceed? I'll tidy up my patch and post it
+> properly if you like? (likely won't be until Tuesday though). Or if you prefer
+> to work on it, that's fine by me too.
 > 
-> There is no functional difference expected with this patch before commit
-> 2783088ef24e, other than the pr_debug in zone_pcp_init now printing out
-> 1 instead of 0 for zones in NOMMU systems. Not only is this a pr_debug,
-> the difference is purely semantic anyways.
-> 
-> Fixes: 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
-> Reported-by: Daniel Palmer <daniel@thingy.jp>
-> Closes: https://lore.kernel.org/linux-mm/CAFr9PX=_HaM3_xPtTiBn5Gw5-0xcRpawpJ02NStfdr0khF2k7g@mail.gmail.com/
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Closes: https://lore.kernel.org/all/42143500-c380-41fe-815c-696c17241506@roeck-us.net/
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+I think it is worth you proceed with the change. Also i forgot to
+mention that allocation path is improved also. If you have a look at the
+perf figures you will see that a pressure on the buddy really has been
+reduced. I think it is because the state of the buddy is much more healthy
+now.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
-> v1 --> v2:
-> - Instead of restoring  max(1, zone_batchsize(zone)), just return 1 for NOMMU
->   systems since this is simpler and only affects a single pr_debug.
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Personally I think we should aim to get the fix into 6.19 to avoid the
+> performance regression (even if we think the allocation pattern of those
+> benchmarks is not the common case).
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 822e05f1a964..977cbf20777d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5924,7 +5924,7 @@ static int zone_batchsize(struct zone *zone)
->  	 * recycled, this leads to the once large chunks of space being
->  	 * fragmented and becoming unavailable for high-order allocations.
->  	 */
-> -	return 0;
-> +	return 1;
->  #endif
->  }
->  
-> 
-> base-commit: 40fbbd64bba6c6e7a72885d2f59b6a3be9991eeb
+Personally, i do not mind, let's see how it goes and what Andrew says.
+ 
+Thank you and i am looking forward the patches!
 
+--
+Uladzislau Rezki
 
