@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D4AD6ACF0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1837D6ACED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:51:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14B976B0092; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
+	id 650566B0088; Thu, 18 Dec 2025 06:51:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1237C6B0093; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
+	id 628076B0089; Thu, 18 Dec 2025 06:51:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 059956B0095; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
+	id 55E3F6B0092; Thu, 18 Dec 2025 06:51:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E76896B0092
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:49:27 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B433C140E70
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:49:27 +0000 (UTC)
-X-FDA: 84232421574.07.140ECEF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 41DB06B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:51:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A65A4BE2AE
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:51:46 +0000 (UTC)
+X-FDA: 84232427412.29.6BA3AB3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8459140006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:49:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YyhtvcbE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766058566; a=rsa-sha256;
-	cv=none;
-	b=7nO+O8SVzDxxBGeHWaqegeGiahYrdDZYo6HssasduZaPsYAK24ePfz0Juqf8Zrn5u/2sSr
-	ZS01KrbjFoADhzCQq09dVmDoqImqoQ3DA7wWM6Gsu/hKrOjKqoWZFJkOMNTYh49621TbGu
-	urUbJci/01vN/y44DYf2US9FUZ89g/o=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YyhtvcbE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id B5574C0007
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:51:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bF7EOa85;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766058566;
+	s=arc-20220608; t=1766058704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CBNFdj8jNj4e73AwqH2b8RTYHD+SEa8VUUUZ4Jyp12I=;
-	b=2rliDddwdceoG5f9C7WIIOwPvLtvL302rtpLOzppwpRJwSuXpPSJLcFcvFoX3S5NOFHbPd
-	y0+zpMVqZ7MX8XZ8Edv8L/p4j/XtsBk5cvDwB6OLQfPFKhyVZ33zTibtB3g2Qe53eZmbu6
-	WYAPn/JF3ugLodx/uL4XfqyfJW0C45A=
+	bh=R66Pyrl7UWSGGVtbWDdERYpX9vfDXqKAkjOQ6BUipx0=;
+	b=fBIdXnar6wqC1iIzLJhRQYJ1JH4J3krPyPGetdcRszhj2XkYTiKKOS+cPGqrikjsAECmYP
+	dcnrYpVFQaVq8h+feigF9gThIom3ZQpU9/OklOEaUxTL3UfjCp7oQR2MxHuNUEWvrDX47q
+	/PPvXIlivtUMTLEyepq8swSyv72mpI4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bF7EOa85;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766058704; a=rsa-sha256;
+	cv=none;
+	b=11n5RpEDHL+LKFRfH1jIZLY+nGVWn3zrI2K9lu81wKlnzN4yRkljNhKp1uaYqWkQ8BePLD
+	UJHAF/Bl8R6ArvvpquD94cDFVzfIzvZ9FVKiyumfuPpT1QsX0ViQH9bUjDuGl9/ts7Sx4G
+	PFFFku1pOqQqjgjPQhLQppsV/odNQxM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D44AD43C9C;
-	Thu, 18 Dec 2025 11:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7B4C4CEFB;
-	Thu, 18 Dec 2025 11:49:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BEA234032F;
+	Thu, 18 Dec 2025 11:51:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6819C4CEFB;
+	Thu, 18 Dec 2025 11:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766058564;
-	bh=gM97SVLiy9VJPrcCvd10t4/kGkIwU1lgSn+lqj1MNrk=;
+	s=k20201202; t=1766058703;
+	bh=9hGn2FeJPN4hnz5ZpNDfyZdQc2Q/0q3NgIHMdRCBgpA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YyhtvcbEpQ3dx0joR9Z84m74P1AJNxNm5ONNsJnIGdfoA6X59qp1wgOjkZldkGYOd
-	 Lm1vova5Z6bcgbsyD7lrCsMUtdNhRo3bteUBlzqJFibthUXHJkLqVFX539iuUSMeKO
-	 RQwiay1O5vobunnyWgmgLfU6EfhYYuOOjIChI956no22qzMHFrQ8vEYArCuGDo+5Cu
-	 UFrAum8TaRD88pwmrnCeMWrmHCMW01FApulnS4qCPs1NbV5JZiJWtPLFdj3xYfMwQ8
-	 8L87Lt0ucjEgfrMO5TUwhl87d1CKQhcHwOeoyOCKu0yFwTP53yrJcsDxiuNgZV09YI
-	 EumNBapvE5wgw==
-Message-ID: <d2aa6eb6-cf67-4b89-a9d4-306c720fad55@kernel.org>
-Date: Thu, 18 Dec 2025 12:49:19 +0100
+	b=bF7EOa85IixPjgRaZ2KOj1lp6hbMTILcry6l6a/ENPkhpNsWTIwQPPLCNr9q7cWWE
+	 mWo3UU3mrvuytkMEHVa+Y7aFx4HenCeQR/V6ze+QnrydfuZJlsTfEzWLydbsbQ9y4l
+	 9mX/ib/EdLG5YdXKlgQXZIaweitfFvrg/CnV7IHUd8EnLADIM5FIXoO8TerDTaTd9Q
+	 uAl83Pru6+Csuea9rmZRBLxqInKMyCfyPngAnojRT8LYO26s05aZVlADUrFmniVocG
+	 jQoEClg+pJz+PlZ12G5/e1tFXcrJ0/8+Op5T6XTTnyVVCyQ75NLlhQSI4i5DfcYrIf
+	 nuhtzr1CLQkTQ==
+Message-ID: <32e4658f-d23b-4bae-9053-acdd5277bb17@kernel.org>
+Date: Thu, 18 Dec 2025 12:51:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-To: Tao pilgrim <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com,
- dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn,
- willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251217120858.18713-1-pilgrimtao@gmail.com>
- <d373f7b0-f822-4c31-990c-41a6cdc76db3@kernel.org>
- <CAAWJmAYJdEJyybVgD7erzZgvwufZ8gSmP_FCohmZLYozbhbb3g@mail.gmail.com>
+Subject: Re: [bug report] memory leak of xa_node in collapse_file() when
+ rollbacks
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+References: <86834731-02ba-43ea-9def-8b8ca156ec4a@huawei.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <CAAWJmAYJdEJyybVgD7erzZgvwufZ8gSmP_FCohmZLYozbhbb3g@mail.gmail.com>
+In-Reply-To: <86834731-02ba-43ea-9def-8b8ca156ec4a@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E8459140006
-X-Stat-Signature: 5551ai81kknixfsqy7rwzyodaodkswxn
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dchs6j7gzyopx8xw9dru81tc7d38rdtq
 X-Rspam-User: 
-X-HE-Tag: 1766058565-828729
-X-HE-Meta: U2FsdGVkX18Qi+403hmRO6JSgdKupd8tbCwZYIjd/PMjf8lLxgM90GjL9Y1LH2LNI08k4YJWnbi7IJEXeFMHm1AmlfV5N2u+2b+oe2NUCzL7G/3sCb3uO3Of7KRAV2665FaBM0Q/tQCNP3TSPhokhf4M6/KnshABT4f40hvCYxvPnISZk9GM4+y3Yr22ZKD14GGDHk0c3Vt/IgM66kRi49rpDLFhuMai8SyUeu5RSaBVeBo2rLv2aLiiOt+qT5YlAqqDEmTjOTN8LIroRl6I6krCB8fQcvCtju0gnnTEKo3m26zMpCbkytngZR16MkyZ/AwZbWo61eG+7m+ZZ8pmKHB/QWBKV3xr3urZQhjiCTfFWUZYTFhNVhoNvqg2zmSkL1Uf9+SodW7KnfOCL1dErQLNrTyFEzrgUUnrbIDvWRNvvPwV+6E6jM/bxOuG1W9vE09y14wOPWKY1Ys+WJRy+8g99p/VPfSVz9971S+3l4Dic3K5TXUp+D6zbBCwsbfCo0uDsrJrjqwvq5N188/kthWnO1agrwEV8GwK/BJqGItFzUbmqyfMBdkm6JHF/gFbh88QFbkhq73HsE3/cEYWPhyiwBUEgb5IJxTvVJfYULjp2HGZ6XFn6Rftx75z8EV+70cd97BHH1sGUbN0NeJu0Sj7qzJ7THyBrdKm56cvZzCiQfCtSwcgg8OaphNLquRmvup2ARlbW4yQ7e7krntDY4XmVisU5IboYhktvXv7WACOdzG1GTlxDoEGEzZDBHY6v5mHrzq3xrjEC1iqpWfjJOIUCxrFwihBWHv9vxHC9UkLXRWrN6h/3UixmdNqxw2DqbpAMpbsOrFPGdtqAGVZFOOiqLiIL4n/TYnQuhdVLMJKksLQ8wxhWNHQkSlpRV23OEaqwo7GwDJoF5ao+d/7E+XqEeZ4x/pnvx6f9QHAaLZtYBKvWTxgsZdNVGAzE4tHMNgrvrGH3hrZFaiJZZz
- IkBkvYSZ
- XZBNUWuTwRblqscfE7OS1NYFspesdgd1vYtp1xu00ckHsjnf0Dx376bTrrLHkNegKnpghbPCeioB5silZXjTDkSaKUSpirkfvz18i37C+ArQUIHzcQtz/YZkbtVOCfUKZHcavp/vKCMI3cTw7qFhlcD34nR9w3bJSkfVqlv4G28HMxbemZnYNUepoXHL6s4buIKM9IgqoMNTRjA7EQz7QYkalRWXOMyA7nsl8o6E8zJg+YPvz5TpUeT78cVj/IUEHKT4QMckaBkHUtG9+mA/ogKuYAlPQqaD7FnSlMwgGqibkAgdbZ1uRIJfKpzJReoaFQMBo
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B5574C0007
+X-HE-Tag: 1766058704-531990
+X-HE-Meta: U2FsdGVkX19Dt4ujIubD/CmnvwgAGl/AWBORETZxj1MC3TK85L7Q4Bq52KuJZ96CWYtU0LWQQaGhHAUSVzaoQ520UmaCWTyhPUWQlkTbRhpUWWKDmsUMkLCKnCYRNwgg8mIV7qOVwM/D2u3bg1NxnntG4Zu1SBRaGW0roGXeVjnPyN0XjNwx+5hXgg7TxdxjEOQ4ef5hsHx8X7yTkryhkM7d/uwYBoN+CCgfgXxAM7FQ0SQi8QAjWs96/gtDUQZ+h8yPMu+4q4gYCP+c8MLFK0G0+RtzhoqGTMIdgCQgpSrkTkGRUum+xz21uRPRA2QOyYD4M0EiDsnEvkZpC6wMuZ4G8qly3G/KdsCwkAQePZEq45oPyWVsMJr3cF1sdqmfPuLtdLB/V/VOG4L4mexpgl33ogZcazJ+9psduWhmJ5jzlYY0YR8C+b32yrodus6qIUvYnkCUsFlTDG41wXlIHPpj9EZhCUvEeln9h1/eK0cceRxz4cXnkaeWDKTZH0yiemdlnR9MTyczwvD/aUXo8Cue3/08clIUo5T681hwrCuRkKxyl+s48jEMPNToWeejjgp1jLhJqi/8EQ7kD9cE6tmAOD1DPTOuNwz3w5E7wm677hwigLzXZl/sqlICdl1doUzrXkumS71jVOf4fOlkNQoQq4uC8B2UNTKx67EmmH9kCMQ6gEyPjSwifl4mUc6ztyVyAqCRUvjAZyHrWD3dLeLm+y3+A4aYwNF/wjNK2b743L1jYk9oZimDUT5veIW0SnwUXK3Mhdqo34Aq6ZVzz0l7S1wOYbU1+K3yBaLzyXx3BIIDiAH6W/O07DcuNinmT3nKJGLoLpzZ8p0vpJcVLzIHcoo1tOdHOswP4z1LBtPLG4hQJEnUq2SiDXjqydXqXv7yD3gGeu+ouXHm/QPgpw/HsOv1IbfvfZ6J9xmf9tYOvHt91tw28tYMGxBpHbeolwi60wOBkkk5KqZbwFd
+ lefg68AF
+ /ZDehcW3mbugU7e/BC3I3dUbM51OHVbDs0NhxYVEwAUKG4aXTRpGIcDUNfyqZ6QwmUrEG/Ky2WlGMkOWfaq+MdFDrE3ghiW8M+bsfM3bppHlQboLHa0OKTEh44xsz8AHQOa+y2NfUtByC6cPOupEXHK24MNIoiYdUip+vzZzRBLI+ui4NDaOejQ+UkFe7F9U4HBDzA8q4V3kiVks6nvWJwjWa56qzI9l/17pNJCF47FJjXh6fjpoDK1gnRWzb2WYAoezeUSBFrITUZyksm37Jhp1YFsFZM+82OiW9QEuNt6As07ulK+RWFiqP38U3Kny4exQOf/MA8ATmbVl/wc7PnZ1yzYF65Yi+u+wvPAiDi9jF3EnRRvp/IIiDL2dRThvqYjxcKanUCp4bIQU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,154 +100,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/18/25 12:02, Tao pilgrim wrote:
-> On Thu, Dec 18, 2025 at 4:44 PM David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
->>
->> On 12/17/25 13:08, chengkaitao wrote:
->>> From: Chengkaitao <chengkaitao@kylinos.cn>
-
-^ this is the author
-
-And you reply from a completely different address with a completely 
-different name.
-
-To whom am I talking here? The patch author?
-
-
-[...]
-
->>>
->>
->> Bunch of unrelated changes that should not go in here.
+On 12/18/25 12:45, Jinjiang Tu wrote:
+> I encountered a memory leak issue caused by xas_create_range().
 > 
-> This indeed contains some unrelated code changes and removal of
-> extra whitespace. These could be split into a separate patch,
-> but the new patch might be somewhat redundant, lol. If you'd
-> like me to proceed this way, please reply confirming.
-
-We usually don't do random other stuff as part of one patch. It's a 
-different story if you touch the surrounding code, but that doesn't look 
-like that here?
-
+> collapse_file() calls xas_create_range() to pre-create all slots needed.
+> If collapse_file() finally fails, these pre-created slots are empty nodes
+> and aren't destroyed.
 > 
->>> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
->>>    EXPORT_SYMBOL(_PAGE_CACHE);
->>>
->>>    #ifdef CONFIG_SPARSEMEM_VMEMMAP
->>> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>> -                            int node, struct vmem_altmap *altmap)
->>> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->>> +                            unsigned long addr, unsigned long next)
->>>    {
->>>        unsigned long pte_base;
->>>
->>> @@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>>
->>>        pte_base |= _PAGE_PMD_HUGE;
->>>
->>> -     vstart = vstart & PMD_MASK;
->>> -     vend = ALIGN(vend, PMD_SIZE);
->>> -     for (; vstart < vend; vstart += PMD_SIZE) {
->>> -             pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
->>> -             unsigned long pte;
->>> -             p4d_t *p4d;
->>> -             pud_t *pud;
->>> -             pmd_t *pmd;
->>> -
->>> -             if (!pgd)
->>> -                     return -ENOMEM;
->>> -
->>> -             p4d = vmemmap_p4d_populate(pgd, vstart, node);
->>> -             if (!p4d)
->>> -                     return -ENOMEM;
->>> -
->>> -             pud = vmemmap_pud_populate(p4d, vstart, node);
->>> -             if (!pud)
->>> -                     return -ENOMEM;
->>> -
->>> -             pmd = pmd_offset(pud, vstart);
->>> -             pte = pmd_val(*pmd);
->>> -             if (!(pte & _PAGE_VALID)) {
->>> -                     void *block = vmemmap_alloc_block(PMD_SIZE, node);
->>> +     pmd_val(*pmd) = pte_base | __pa(p);
->>> +}
->>>
->>> -                     if (!block)
->>> -                             return -ENOMEM;
->>> +bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
->>> +{
->>> +     return true;
->>> +}
->>>
->>> -                     pmd_val(*pmd) = pte_base | __pa(block);
->>> -             }
->>> -     }
->>> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
->>> +                             unsigned long addr, unsigned long next)
->>> +{
->>> +     vmemmap_verify((pte_t *)pmdp, node, addr, next);
->>> +     return 1;
->>> +}
->>>
->>> -     return 0;
->>> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>> +                            int node, struct vmem_altmap *altmap)
->>> +{
->>> +     return vmemmap_populate_hugepages(vstart, vend, node, altmap);
->>>    }
->>>    #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->>>
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 15076261d0c2..5e005b0f947d 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long size, int node,
->>>    void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
->>>    void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->>>                     unsigned long addr, unsigned long next);
->>> +bool vmemmap_false_pmd(pmd_t *pmd, int node);
->>>    int vmemmap_check_pmd(pmd_t *pmd, int node,
->>>                      unsigned long addr, unsigned long next);
->>>    int vmemmap_populate_basepages(unsigned long start, unsigned long end,
->>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->>> index 37522d6cb398..bd54b8c6f56e 100644
->>> --- a/mm/sparse-vmemmap.c
->>> +++ b/mm/sparse-vmemmap.c
->>> @@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->>>    {
->>>    }
->>>
->>> +bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
->>> +{
->>> +     return 0;
->>> +}
->>> +
->>
->> Reading that function I have absolutely no clue what this is supposed to
->> do. :)
->>
->> Also, why are you passing pmd+node when sparc ignores them completely
->> and statically returns "true" ?
+> I can reproduce it with following steps.
+> 1) create file /tmp/test_madvise_collapse and ftruncate to 4MB size, and then mmap the file
+> 2) memset for the first 2MB
+> 3) madvise(MADV_COLLAPSE) for the second 2MB
+> 4) unlink the file
 > 
-> The pmd+node is indeed unnecessary. My original intention was
-> to provide convenience for future architecture extensions, but
-> upon reflection, this appears to be a case of over-engineering.
-
-Jup.
-
+> in 3), collapse_file() calls xas_create_range() to expand xarray depth, and fails to collapse
+> due to the whole 2M region is empty, the code is as following:
 > 
->> If you can tell me what the semantics of that function should be, maybe
->> we can come up with a more descriptive name.
+> collapse_file()
+> 	for (index = start; index < end;) {
+> 		xas_set(&xas, index);
+> 		folio = xas_load(&xas);
 > 
-> In the SPARC architecture, the original vmemmap_populate
-> function does not retry with vmemmap_populate_basepages
-> after vmemmap_alloc_block fails. I suspect SPARC doesn't
-> support basepages, which is why we need to modify
-> vmemmap_populate_hugepages to provide an interface that
-> skips basepages handling.
+> 		VM_BUG_ON(index != xas.xa_index);
+> 		if (is_shmem) {
+> 			if (!folio) {
+> 				/*
+> 				 * Stop if extent has been truncated or
+> 				 * hole-punched, and is now completely
+> 				 * empty.
+> 				 */
+> 				if (index == start) {
+> 					if (!xas_next_entry(&xas, end - 1)) {
+> 						result = SCAN_TRUNCATED;
+> 						goto xa_locked;
+> 					}
+> 				}
+> 				...
+> 			}
+> 
+> 
+> collapse_file() rollback path doesn't destroy the pre-created empty nodes.
+> 
+> When the file is deleted, shmem_evict_inode()->shmem_truncate_range() traverses
+> all entries and calls xas_store(xas, NULL) to delete, if the leaf xa_node that
+> stores deleted entry becomes emtry, xas_store() will automatically delete the empty
+> node and delete it's  parent is empty too, until parent node isn't empty. shmem_evict_inode()
+> won't traverse the empty nodes created by xas_create_range() due to these nodes doesn't store
+> any entries. As a result, these empty nodes are leaked.
+> 
+> At first, I tried to destory the empty nodes when collapse_file() goes to rollback path. However,
+> collapse_file() only holds xarray lock and may release the lock, so we couldn't prevent concurrent
+> call of collapse_file(), so the deleted empty nodes may be needed by other collapse_file() calls.
+> 
+> IIUC, xas_create_range() is used to guarantee the xas_store(&xas, new_folio); succeeds. Could we
+> remove xas_create_range() call and just rollback when we fail to xas_store?
 
-So, something like vmemmap_pte_fallback_allowed() ?
+Hi,
+
+thanks for the report.
+
+Is that what [1] is fixing?
+
+[1] 
+https://lore.kernel.org/linux-mm/20251204142625.1763372-1-shardul.b@mpiricsoftware.com/
 
 -- 
 Cheers
