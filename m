@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD7FED68BEB
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 08:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC46D68BED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 08:09:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067E96B008C; Thu, 18 Dec 2025 03:07:24 -0500 (EST)
+	id A33546B008C; Thu, 18 Dec 2025 03:09:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0159B6B0092; Thu, 18 Dec 2025 03:07:23 -0500 (EST)
+	id A07026B0092; Thu, 18 Dec 2025 03:09:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84296B0093; Thu, 18 Dec 2025 03:07:23 -0500 (EST)
+	id 95E8F6B0093; Thu, 18 Dec 2025 03:09:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D9C6E6B008C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:07:23 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 28E66160DFF
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:07:22 +0000 (UTC)
-X-FDA: 84231861924.04.50B7969
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8D16B120006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:07:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoK3iru5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766045240; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 860EA6B008C
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:09:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4CF48BE140
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:09:01 +0000 (UTC)
+X-FDA: 84231866082.20.90BC4E6
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4EFEC4000D
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:08:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JiH8P5e5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766045339; a=rsa-sha256;
 	cv=none;
-	b=NbHnFgByZo3Sq3Qf0SPLYCvu9mkulIq1y9WnvdQDAKMthueCkf7zIiYqTWb6MqexAtTnh9
-	s8MLTqyTBOg/ftfViUU3rBpG0+cPDp8Tjq8cPCk5ly80wPetXh6Q8D2Qwrtw+w7KXZ2qc2
-	hPb60tK9DqYhd+LWkTEasUGAdTYV95k=
+	b=2Ff0r5lBsUkywdlkJzvQh3VUdlxEkCh0Hz+0ESFyjwWuvXc6LyddUBXx4qJ3SEJ2nyt/cC
+	Eg4FMXQ3pOVziV/L75dP3jzxZimYSD/TkBv5chIIFBkn/3KrEN4kqLrLeXr7L5EucvVDzl
+	ebAZhhatNHOjcRnPrEjd5/8GF0Vn5Sw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoK3iru5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JiH8P5e5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766045240;
+	s=arc-20220608; t=1766045339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qk2v1JGoxORmqNs8YsD9kp6BKjUA4gUU6aTxfIWpYZo=;
-	b=iCetZ7V90vdjEkLZyuwH+BBo3KR3viM5HZciDQdJrYwBvccA6no+1xx4HhHbepylJK0cSU
-	RIl5JKsChuGVnaU2R9HbRNhHAXaJzTYumEMKLVXl7lZ8zXyla1Ai46PH40fWursux7qldy
-	y4R2HavnEKeJ9qJmqVXrvuoa1A+GQ6w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3DD164334D;
-	Thu, 18 Dec 2025 08:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC6BC4CEFB;
-	Thu, 18 Dec 2025 08:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766045239;
-	bh=7dWSzjDl2OvquTZJCFjqZOIC5C2h/Vvu8Kmi5EBUTyE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AoK3iru57iwXJUgXmzUrESwqpHMKFDM63dAp+QrzgS3KYicSmPljHFlfikA+sY5nZ
-	 5ambzJOY0arKaW1/GXZiqr6AxFSBrYt4QkbZ1ZW622jFgzzWD/0OR8AtyFPJN3Hs6f
-	 yq9JACWR866aJJKGmoS3/cYhQmKrjssqZBeMLwmvjHoz0g7+auocmIGbYv6kzukjsc
-	 mzHClOoehR9zgBen2HPbx2uoV+I6ctpKTc+RNJC9Np7H5l6KnoOWp4HokkQNUlaai7
-	 NU8l7kEViAS1LpkuYVd2gpmnQCRzvmTSZjpvqU9/OWcB2NH3zN6HQGobrxd/o1CQ6A
-	 ycoRTqOsttC2A==
-Message-ID: <7d59597c-5a32-4c97-93ef-feb8dc15b674@kernel.org>
-Date: Thu, 18 Dec 2025 09:07:14 +0100
+	bh=zx7UqAOuwin0dqb+uy4QaGD9HzyrCUqCBoMKpn3Ho6w=;
+	b=KPkGg2/+DVOUmWg8RQk9GzRAGBu27HkAf9Hxbsy1Qs1vriR8biAbEDOiUX5bePBSt9aQRp
+	4QOgXARKgT8UQIu2L7YMO0KBz8sscA+nNw5Rp307q99jdc3Af69OMTdWH/BDUlHqaq7WvN
+	UQI9FfW3kKpE2ps4jQzHxYSoIBVh41Y=
+Date: Thu, 18 Dec 2025 00:08:24 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766045337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zx7UqAOuwin0dqb+uy4QaGD9HzyrCUqCBoMKpn3Ho6w=;
+	b=JiH8P5e584SNbUt7OVXwb/8flTqfcGsam0ywhkxnuG8Skmw1Ha937jhOGrr7hS/+/h4ula
+	fCxVEaMVnD/4MeQCtT/TFmx852t/ilSQFihzt/Z91TbiR8ba4C75cxf4FX+l1lgaXVwECl
+	PvbesD5wl2qYAbJ2Xx7rBwZg0snDaPU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Dipendra Khadka <kdipendra88@gmail.com>
+Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev
+Subject: Re: [PATCH] mm/memcg: reorder retry checks for clarity in
+ try_charge_memcg
+Message-ID: <gktuqmvopl7pgbcaw3rwiq77vb2zguae3jfdxmwfgtetf3twu4@gcb5bubhxq64>
+References: <hibelxfvkdvm6b2a6vmgdmwcne6e2z2hrshshacepgedduyejn@7kfdegbmwyvs>
+ <20251218073613.5145-1-kdipendra88@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] selftests/mm: fix exit code in pagemap_ioctl
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Usama Anjum <Usama.Anjum@arm.com>
-References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
- <20251216142633.2401447-5-kevin.brodsky@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251216142633.2401447-5-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251218073613.5145-1-kdipendra88@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4EFEC4000D
+X-Stat-Signature: 3rb7sw35r3cxytkjbztwtuprzro67r7u
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8D16B120006
-X-Stat-Signature: w9whtmz5wrkjrqadi3exzp6hrjm9nsrn
-X-HE-Tag: 1766045240-863092
-X-HE-Meta: U2FsdGVkX18nM2Y4+1z3K9Mqa4RSMo9tDBNgJ0VGX04GL+fSViEmEndFtC9Ce1YiKg7+aiYIbUg4zslg8+4lyFcKMrvN/Mk1tKc/kv4TVV/1WQCHa8fg7SWqIj92MIN6Bvc+RKNLZZMlO6nt97DtH2hMkUUDhjVpSEJj0CE4dn7CDuuUxwZrcRQ/SFLjhMgiqb/F6qx1pN/eaQhbye91GjRziW1iB0jF7lR164RqMPNRfeTIn8Ga6CAkkc0sZP1oFz9jgR+RKMy8G2WriATTPW/t15ffC3QLpdKPuQZ4QixdcicoK43fc5Rq5oYtZTDUT++1RvZRRdoDYsVB8VofMftOWPueEjHKF7lVeRgV1t+JDByqKQc6mPLIALOumGXH/48FhTfQfgIr/XrtUQRGU0Y94VWONXbBmblCqHAWQBQXMGk4G9afKltxtIZgzgV3RxB6gXPCtqbb09xwgwg6KbO0h4n7dlt5p4Yx81l1rw+p8H5bLMT1ZmJOVx2zw/9DEvgTa6yKt1AiZDNiB+73BpYm/ldcAKuQNTnd/VnX/4a1fLbMzHPddlZwsoFIp9ErNPJKZbOOPnB/GE0/r86HMwmg37GkGDM6cDcbBC/hsfNdX186F1RFnEEV3q7iXTTf3xy6/1li23VwuVhuWpUZEISOFnz2FkN9uzYF/8ouCl9N4KjGvziMdjTBygkXD3Q6cW/QzSAP6hx7KXK6Ij4SxXfwEhiuYabPe/gBWHAHM+JfSbZi+OUtWnF2WqJO5jf2j9jImPiNFtlXKisaSeYVJF35ayPZKpXn6L0zUvS4R7/4DLCkS4bsjwK/nl1tfZ5LF2bGC1jyEOGXeO991H6CNjrUAPap5rhK3fc8Ln3lDTzLmdnvZyFEQZ22R3YULwIOpWy8N3q3iluHJ6kBn3d+wjSoPFyiMeAERZ55rtwE6AEm2S02ViI5GYveqYTZEAY3bSLkIQGpO9xiBRWi6rk
- RPVB35/2
- fkB688RtcVfjkvuU=
+X-HE-Tag: 1766045339-321200
+X-HE-Meta: U2FsdGVkX1921M6h3aAkQndCK1J+ADLNNt4QgJP07H2nWmtr0hMotUU6XqkB5cTxtIisl0ExrNnw4xlFExVE+DqIWNkTi1vZDrx+AOC0Ec5ShrC856alas0ETdKGV9Z62Lem1QwBF+Fqqqq4E9k19DYd+d/A5jqS58ohy88aQe9quWpF9GKTbW4tl0jBNIAlISISPUefh+HFvYcyeLgu8tcRiVWcZLsC6k79xiZoeAyCcblylTMJW7ApJRc0JynSIKkn8NZT2cQaq8+ac7gPHTZicbgRk/fmaGqgP61xqeTttN8yGIv5o5xq3YlhK/NyQCUIaiDbIa7f4tHCISPcfDlNv1VAmQUh+36p97hq/JbH0gMVBY2ANHU2EwWRIuEjAkBEPC63H7Huh0aWCFak34Vdzoqf6lieLf8K5LG0ZaNnmJruahe0bakURFAj/yYMeucMvCuT2wXlhxb/E2PY/zzfre9+mTOCr+JJjI7SMIIZifcRxBSYyzTL268bBlIOpqU1vqrJctIUL2sNzhhXxXZqW8++0bmE8Tbtx5JVpfTC3UCzFkXtka0JPB+MtMk3gwTnvQ9XmQIEcT1ATAZpOwIjEG1Qw1sWrk7he5FHn2E9qli50qj5OuK1ra5cJAUnL+Ccdavx0L3FIwz6hmX6VwZhiyCOua1slMGt7SLq+ulrIHeSWTYNLSPGX2ZOLcgPtRrOpDxyPVcGJ+QXGs+vtP3OffxPbaev2Q6KLSMyNOcIo7Gcs6X1AZeIMQaYqaH0Jv7Mjb15//HhDKuIrkGd15hdEhXU8fXQ1wY+GXvUPo+qR0Nm0OG6mxcBpLBdK51i2POIccoQETOIVOgqjC4wP5KTsG4yu5Yjxnatq5yNQHIYluuB3o0z9EU3jKHHWfWqNUEC3wy/MeLGp6nY4+6W5OEU2swnI6HM2TcP0eyYuaNYypI2MYjzytTcXu57TwH88vixWl+9xMtdKfHGbJl
+ EQad923H
+ sbNyLLwF0etctKcc2zFFOowXsOmdndudQylUOKESM/kIp9csZQ2VrpQCp4H1WvI5EmbtCA/+o3v393VZokIV++r3WEpGaiWBm6A5SHAhOuHke1Kl+FdNXOXf1ceyp5fX8BVVeWY6wXzyuTIklWBdHouXDR7FzCeQNgT9UB1UcKdYdOfgAzh3UaTVCiq52zBTQmzyXhwNMQeHzGnDZoOu+VSwb2kGzHLdtg7xoGeq3k7ZuScf1kkVVeLFsJ5GdR9MYEKmFHne+F3U62LN+mUSwjZ01vA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,28 +93,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/16/25 15:26, Kevin Brodsky wrote:
-> pagemap_ioctl always reports success, whether the tests succeeded or
-> not. Call ksft_finished() to report the right status.
-> 
-> While at it also fix the exit code in unexpected situations:
-> 
-> - Report SKIP if userfaultfd isn't available (in line with other
->    tests)
-> 
-> - Report FAIL if we failed to open /proc/self/pagemap (returning
->    -EINVAL from main() is meaningless)
-> 
-> Cc: Usama Anjum <Usama.Anjum@arm.com>
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
+This feels like AI generated responses and giving me the impression that
+you are not really understanding what you have written here.
 
-Fine for me to fix return handling for the overall test in a single patch
+On Thu, Dec 18, 2025 at 07:36:13AM +0000, Dipendra Khadka wrote:
+> > Why hopeless?
+> 
+> Because in this specific path the allocating task is already the OOM
+> victim (TIF_MEMDIE set). Any reclaim attempt performed by that task is
+> unlikely to make progress for its own allocation, since the kernel has
+> already decided that freeing this task’s memory is the resolution
+> mechanism. Reclaim may free some pages globally, but the victim itself
+> will still be exiting shortly, making retries for its own allocation
+> non-actionable.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Beside its own allocation, these retries also keep the usage of the
+container below its limit. Under extreme condition we allow allocations
+above the limit. Here we are failing the charge request. Will we start
+seeing more ENOMEM in the exit path? Do you have a call stack where such
+retries are happening?
 
--- 
-Cheers
+> 
+> > Why optimize for this case?
+> 
+> I agree this is a narrow case, but it is also a delicate one.
 
-David
+How is it a delicate one and what exactly delicate mean here?
+
+> The
+> motivation is not performance in the general sense, but avoiding extra
+> complexity and repeated reclaim attempts in a code path that is already
+> operating under exceptional conditions. The early exit reduces retry
+> churn for a task that is guaranteed to terminate, without affecting
+> non-victim allocators.
+> 
+> > Since oom_reaper will reap the memory of the killed process, do we
+> > really care about if killed process is delayed a bit due to reclaim?
+> 
+> Not strongly from a functional standpoint. The concern is more about
+> control flow clarity and avoiding unnecessary reclaim loops while the
+> task is already in a terminal state. I agree that this is not a
+> correctness issue by itself, but rather an attempt to avoid redundant
+> work in an already resolved situation.
+
+How is it a resolved situation? The dying process is in reclaim due to
+limit.
+
+> 
+> > How is this relevant here?
+> 
+> This was meant to explain why exiting early does not introduce new
+> failure modes for the victim task.
+
+More chances of ENOMEMs?
+
+> Even if the victim still performs
+> allocations briefly, the slowpath mechanisms 
+
+What slowpath mechanisms?
+
+> already allow limited
+> forward progress. I agree this does not directly justify the reordering
+> by itself.
+> 
+> > Same, how is this relevant to victim safety?
+> 
+> Same answer here — these mechanisms ensure that the victim does not
+> regress functionally if retries are skipped,
+
+How GFP_NOFAIL doing force charge is relevant to the case you are trying
+to optimize?
+
 
