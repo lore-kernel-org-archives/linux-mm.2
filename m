@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B398D6E2C7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:10:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A51D6E2C7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:10:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A13426B0096; Thu, 18 Dec 2025 12:10:40 -0500 (EST)
+	id 6BE4A6B0098; Thu, 18 Dec 2025 12:10:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B0676B0098; Thu, 18 Dec 2025 12:10:40 -0500 (EST)
+	id 630B56B0099; Thu, 18 Dec 2025 12:10:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B2A56B0099; Thu, 18 Dec 2025 12:10:40 -0500 (EST)
+	id 54AE56B009B; Thu, 18 Dec 2025 12:10:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB756B0096
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:10:40 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3514412915
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:10:40 +0000 (UTC)
-X-FDA: 84233231040.25.F4294C0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 446B36B0098
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:10:47 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2B9D8887B
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:10:46 +0000 (UTC)
+X-FDA: 84233231292.24.B31D131
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AC050140006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:10:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SmVyDKct;
-	spf=pass (imf26.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by imf03.hostedemail.com (Postfix) with ESMTP id 672D720003
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:10:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GuIiUAaC;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf03.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766077844; a=rsa-sha256;
+	cv=none;
+	b=gVAtQE//pClTcuu7fBcCQbw2lH0HhJ+SKi2wwOnE7QUGiQGDdYJIpph22GTNszkUB9UoCu
+	V0k89uouIlwc4i1Ny5se4QAii9h35tn9OEUiKlfNOZkogUATIfSWcuZZQndKhBmI005KEH
+	q5No3Z6A/eQmL47h0w94Cva6uvMkdAk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GuIiUAaC;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf03.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766077837;
+	s=arc-20220608; t=1766077844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B1PKqaT+cUcVjK0lAQ+5OB41b69bTOfXbbALY1SIepc=;
-	b=6aMKcsCTpRgF8X13bvaoCoBu1oBuigQ0NPQT7O/TJIwmB2ni/J5RB9DtiEzCOfMH1Gtpz8
-	rlwMRoC/VynCv6C9SamyP3A6NXKPEfSSiY4tuubJlkjjnGjT7T3yN1nlhZmCFZA4sbZc/g
-	6/V/NDM3h6wJzO2y/M0GBX2Y4fotG5U=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SmVyDKct;
-	spf=pass (imf26.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766077837; a=rsa-sha256;
-	cv=none;
-	b=cpXc6D4XS9kykctNABW+at+xAIdOG4wqAPA44dM5bywgkOlsWHCYJHLwlfxPVJXk4FDyrB
-	Pu/klXQOhMbXJh8zrA9b5gNbqugZ7NkkwWcC2wwJz6t4bpO4ssda+aT8a/1pR+uQRZwEra
-	VJRq9RKGOFNrUIJ1F62O3+Njmv8EAXI=
+	bh=zZ67xPxaTbTtsO9cvIF/qxKW++iMaXTkBtrOc/gvbuY=;
+	b=ix4wFT1GS/FUj0X6w2aenhVLAzkwY+CfALc6ot99mwakx66LaL/78+2AAoRBw46/7LwYrJ
+	WLyDFc2ZmYOknfJn7l/NBw6Z176XkijrnIxMdJwqw+OcKrkciKPW0CVzEqpVH7tGdskG1q
+	FhinWWao4OMeTyICImn+W5U1dqAPsRc=
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BI9c2Dx004224;
-	Thu, 18 Dec 2025 17:10:32 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BI8GDZw004426;
+	Thu, 18 Dec 2025 17:10:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=B1PKqa
-	T+cUcVjK0lAQ+5OB41b69bTOfXbbALY1SIepc=; b=SmVyDKct2SkjwUxKC3vegx
-	7OoSFNkinArjrklGT5EKWKJcgsYWF2VWNCuqFO/MFrg4mcOQuIMuDiZD9m6o7kBu
-	TRcB9/bBAeAftfLQwM296xoY/EhYC9sNkyZdXroFNhtOWJBz2cEqttUNAp57s+b6
-	g/BEhO1anbnRqKvshvEISBoyWdsc2zPm945NbjF044UOj+XGUDtPFVilr/VyJhwX
-	oNAPFE6AQpCcEkij35bwZJY1NxnJ8jXqLNm/saaiSG+KLBXE15V4ivMdQHhvWa/s
-	jQq7tUl9sTlu4OG1pPXtm9oh2TS2M5f1IlGz266DZEizA2seYejVKs/t9HlsS6+g
+	:message-id:mime-version:references:subject:to; s=pp1; bh=zZ67xP
+	xaTbTtsO9cvIF/qxKW++iMaXTkBtrOc/gvbuY=; b=GuIiUAaCapbAfv+X66e8yR
+	oXk20sWt48fjxOw851qbQm0bM0cBJv42ko7vIcm4W6dNGSfDOwtgPJug6UjurOqn
+	jQo1gzg8Zs/NpsEbDEoSGLb5C03X2ij0oKYENnaI6qc9925R0nr9EebotrvJoXYn
+	e87SF+KGVN12zgX+qB8Jkrbm0pquAFRUd0tYFHxW1ojv3Eu6WEUo5qkTIJ0xq4b9
+	SusDVwxCqigv7Fvy+sYaov4s7qJqa7c/kd7791UTd2IR9rMSVghVGTQRSBQyUOhd
+	yquWMaKJSwSjnHA9q/Z438oJfgdzrAk8kJ1VA1qBJAC55/OqBGcuNdiJ3wgo2tCQ
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0ytvkv8k-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0ytvkv98-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 17:10:31 +0000 (GMT)
+	Thu, 18 Dec 2025 17:10:39 +0000 (GMT)
 Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BIH3b8c021227;
-	Thu, 18 Dec 2025 17:10:31 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0ytvkv8h-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BIH72MH027214;
+	Thu, 18 Dec 2025 17:10:38 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0ytvkv93-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 17:10:31 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIG9PCg026777;
-	Thu, 18 Dec 2025 17:10:30 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1jfssueq-1
+	Thu, 18 Dec 2025 17:10:38 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIEBi43002856;
+	Thu, 18 Dec 2025 17:10:37 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfnhhtf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 17:10:30 +0000
+	Thu, 18 Dec 2025 17:10:37 +0000
 Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BIHAS3u60096796
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BIHAZ5l29819634
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Dec 2025 17:10:28 GMT
+	Thu, 18 Dec 2025 17:10:36 GMT
 Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BF2458056;
-	Thu, 18 Dec 2025 17:10:28 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id DB7825803F;
+	Thu, 18 Dec 2025 17:10:35 +0000 (GMT)
 Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CCEA5803F;
-	Thu, 18 Dec 2025 17:10:21 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1CD2E58056;
+	Thu, 18 Dec 2025 17:10:29 +0000 (GMT)
 Received: from jarvis.ozlabs.ibm.com (unknown [9.36.16.51])
 	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 18 Dec 2025 17:10:21 +0000 (GMT)
+	Thu, 18 Dec 2025 17:10:28 +0000 (GMT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 19 Dec 2025 04:09:37 +1100
-Subject: [PATCH v18 05/12] mm/page_table_check: Provide addr parameter to
- page_table_check_ptes_set()
+Date: Fri, 19 Dec 2025 04:09:38 +1100
+Subject: [PATCH v18 06/12] mm/page_table_check: Reinstate address parameter
+ in [__]page_table_check_pud_clear()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251219-pgtable_check_v18rebase-v18-5-755bc151a50b@linux.ibm.com>
+Message-Id: <20251219-pgtable_check_v18rebase-v18-6-755bc151a50b@linux.ibm.com>
 References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
 In-Reply-To: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
 To: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
@@ -118,20 +118,20 @@ Cc: Alexandre Ghiti <alex@ghiti.fr>, x86@kernel.org,
         linux-riscv@lists.infradead.org
 X-Mailer: b4 0.14.2
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfXwrqmM5jH5TlY
- twqwUCruTuAPrBBYXUfYXY+TJLNkr1T0Lap0/Z6RTiMu71v1UB9qBzDuQFFTT4vrbGNWmQSxbFM
- xL8T+S2dkrcRNaymfSZUrU4IUj+CQe6WuxPTreqtvgUX64LZ+vxFOeokVUddWvoEi7m9WRh+jy7
- YbZ3tTDztp0IaC/GMdnDZyDgMBPYcKhpMJ8IblSqrBq5PK6FTU86ba4Yq2iMy789C94F2nlxUUU
- 3aKYkzPQvhQ5MGk0ZQ2axQHJc+zFic6WTOZVJKka7L8a/E7numETIj3WOAfJ3VlU94rtKWgGqcL
- TGt/Md+bU3UQCfYp2XBu/5jfQS+gqffWaKhY/tv6g1DeDT/orzZdK6+lNg3sf6pt3maQ9wEh6mV
- nYzxlXoRJ4oxKfgGgnCM9Koso1flXw==
-X-Proofpoint-ORIG-GUID: tNcJ3CkRq9YNU_5vXjojIhgjdsSmJri_
-X-Authority-Analysis: v=2.4 cv=QtRTHFyd c=1 sm=1 tr=0 ts=69443587 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfX2GdI2OfOk0nr
+ +YY0AKjbMkEYpENB1vBNlm2TewxLvp9S9NrlIkzUUfqEnD+aIYoseigjCqhWmZFcwTxrl8+VxnS
+ Fs7PGC2HvcwtUOK/n2+MJRqbPjBSb/MPazPXnl44xNqdTm/7dYwwpwxoJzJtnB7T+vohxDQQK4s
+ 8PwB4aMC25jW+a+yQqTwNOChNhqDfo38LSuHOKOwSA0myy9gnx8RQl6Bw5AfOs2TGXV717EQPA5
+ JxTcv+MBkHqh//c1/XrhVCxf3FswW3tgmHqC/pH8FyPZl5c8q6W/L8QZbJLkuQdJYXXmuECUA/h
+ YMD4DimLWiaPsrdALyuyEDDxyfXVcJ6DmktrgVVB5mr4YWxZ1qftUfdMsYQ8VqipZtc3bzv3arf
+ nv/BC33OQxx90d4rkgV8kP6UQEuhIQ==
+X-Proofpoint-ORIG-GUID: zb8xkrJS4407DEIx0iB13m777aIHsqjH
+X-Authority-Analysis: v=2.4 cv=QtRTHFyd c=1 sm=1 tr=0 ts=6944358f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=7ipKWUHlAAAA:8 a=h0uksLzaAAAA:8 a=HLGKFg-hzGnhYpGVURIA:9
- a=QEXdDO2ut3YA:10 a=gpc5p9EgBqZVLdJeV_V1:22 a=MSi_79tMYmZZG2gvAgS0:22
-X-Proofpoint-GUID: 1NC-0ugCpLo-736stlHdKZQlU2SwS_3X
+ a=VnNF1IyMAAAA:8 a=7ipKWUHlAAAA:8 a=VwQbUJbxAAAA:8 a=wZhGIaPSpsofiGV4ShsA:9
+ a=QEXdDO2ut3YA:10 a=gpc5p9EgBqZVLdJeV_V1:22
+X-Proofpoint-GUID: ZcbySWh4w5lgKpugxWSci09tNfPsio4T
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-18_02,2025-12-17_02,2025-10-01_01
@@ -140,14 +140,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 clxscore=1011
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
-X-Stat-Signature: i673mrbtu7hhuqh556us1do4kyepkioi
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AC050140006
-X-HE-Tag: 1766077837-671186
-X-HE-Meta: U2FsdGVkX19qbRRQOijvXbFlhK5C1Ev3XBrsqOlLQGkE8YVv7H9WwBWwUT//n/7v79fWeNOQi2FhLkpjYxn9mBzLxvVlP6yG/KnpTmeL3xuPE+bClGP+cPuTkzJJHy/s+/1af2N7ecx8NnlEWvCkTia4uac4zbmmI1a3Tyg3YMpwaJJmJhbZHO8ockcENhVMD7M48STW2A05UdyQr7ftXAde0Tc3K4HNUh6FqgKKlYvvLzNM7Aijcr9wWTjm48dCdRp06QPgOB4KvbTqK+OacKSq4BBryHTWswXEdv4fZgm/CJnpl2A/JnPSkm5ulnoapNsznLuVsNSNmkdbAuGkznb85epK8sgt/3+JwzYAtguIerBiRVSPHE7Em3y0KV2hnghPNoLcsBwrjn4TbGl/3nBw379jaRtXy6dWvOI5SADjOxMLRYQBvTnfq/+ny/IIVB8t9weGjqWgHMpuhM8sJcGi7uR6ews41RUBoCz8K4DudeXRMyWQ7kEQiqTANIX0GX41/hjBw5Vk2dyry3fHuXzMwC6YwNGBYqSqVdjRTIFGDwbriCQNAsOOiS8yVJZWQd4zMtu1sa287XqL1sC3zKpVXPuSLP6g7ILgtXB6NCERgY/Htb/cBHcl3eJeUbhRiH8bnKl43YK68rLaFtl0LYtdSJh59MLCBYccK8h9jSNZPdNO/PLW8iPfG1CR01QqY5K1xuucslMYdUnOrbKOiw1dEg0ChDqDmcsmRJdLP0LLvw7rK6f0L37KNOl90ZK43HhL0uNlqjv7g84w9CHirnoX0+g5QaGG54HIg5zOrvAfM9Df/A8iCQKbBPVPpFQBG1KezMw5zGBePg78avUjcyobTZYk4cBDsuiOBYEXdmo4Auj+2QSFoFx5z+kzDHmED9DpEd2JUyZFH1upHszhv+1HphmSrZV/26WqQl/M2ig6xEjt/7jsl60TA273qLg8iHCL9ftWjUSj8ZG5Of7
- gjHwFlJf
- IIdDzOiAjIElasditO8ulUsjbmMjR1Hj/EvJi/f6JWF38ZlV+yaud3oSY5szapobcKjxrIEtToh3CFH0NMYOrK8NimxgQ87AW0znDlpCTCIhuIRjbnEWpZz2v8MfXCF31/ViRarLiojCt15fMD5HZUTYqjuu+C9XK7bR0BEZJoi15UNF8HLbh528gBXO5qMpri4BGR5FQpXth2zV+Brm+uUXhteF+C2MYblPPDeL9AZKEig7FgBVCj4bJ+tmU7wT/JUvs44jCIbI41U8ntzmtYkg70loH11bXDMzaxzbvxiZkgDZanYK7XZv2llnwCB6d5ryhP9CuzouW9ohETtbt2qSd6FoEZF9Q96Qv7cgzLqLiN2TJTR2AwJgyfArnEGtk6OSvXdHurbea0145eknQpuvCUcljuz8cBQMrfyWcXK3o83q8BRNzTSE0NuJw4CsRBlfG2Dj0V8xP9fFAOm964f9UTQTsgTwhremltDlhapHriY3+zgbJCm3hh09r15puviC+zI9uIwZm9+ZR1x2vyDK2u1DhodsNbwzee0NUOsI7f80=
+X-Rspamd-Queue-Id: 672D720003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: uhgnatw76ou7pq1rckdnbysc8x7bkg5c
+X-HE-Tag: 1766077844-250939
+X-HE-Meta: U2FsdGVkX19VGFq3oBNvmy/JyImPGe2kzj7vhIJkDGmur66jP0aj3hEynuktIFcYQh2dvjUEUIY1jPM0zvSVlYrovesbHSjfxtGpbLeRy0Bvo+uMCR5y7H9LQOCtY/n5ObhvC/phDddfGQlZbbpoLYjhTuQXxpF76tuB+29yubJC7AawBDvHGEEDtNrDJftGB1HsP8GGIBrZZfzRzKlJ0FrJryXQESp17hWNO6ks7cw8HZaSdgRMmeO3N5OHTLNbxKvlI7tUXgLSLN1X0Bh4ZNUxSb/Xwmk/Tiz/W6eT+tcoNoyh3Y0IOZVp4bhvQ2ctLFP5yfa0SnPrmjT7PbEmKqd+pptIh/tSfTWPpUR4xptrynd5gFpu3KI2vo7t7aTq0Z27s/9UrFXAJLzqJ5j6I3DB2zqfX07ldDOtnOtfhkajSSUKN2KRzCZq+g+UoE8tqmSprn44ezqy3rbAJHhiQJlrJwvki/TDFDXam6Dle1CJgsibRnkmrwERuG+F6YIlDX5XYieh4+FTAoLglJKAF+FlDiXpMdsV5U0/tciTuUzCsw8pHkYN4S3Mo1XWMoPgqpwkhhhapa6WkPz/LZqgQMQsYfBl+uu2JOScZYtnZW566bDNBwDlMwg6fLa9RGO7QKzMAxjQWUJejEoCe+4gjiTYgRoUl9VicFUd1kVWHfTUavndCo1cYrtVh13wqwRi3UFB10pHqo020EzzWYIUwzU8WtWWjnK1T5sfu8ZYGLotX46JY57+1X069B8Gy2PUQ5FicfvLqPCZbDVftkGhrrRhoc5Vc0G+JyYw2dw6kGmKPGQNYpyJVkQIByBBO8idIPrM5nkPvpChE9ApbR2QCv9thTuRENz4+sg5ZuhwXYVnW1L4SFbiYSsb3jL8q7iyD4a4h6A89DmIGhvwIrTliscG3/OtM73qyj8O5kLqHGcx7IOGymVMrIRrS56dtMXLXoRSzVwBgx2mw08Qy8/
+ 7XG+n2FY
+ ZDtZm8ZpNre716IgaYwfcPCI3V1hjS2I5/svFi6R58Ophp1EhfCnOY0wAXzmdNeA8W3UQtO2sLR8nUIy1AA+cVw2HzMFYZi5LgrLqb6nG57o8wM0+Hv6eXqpG8FljAPsPkGwJoj/IAQr+oe6oHIZ3stfJNPqin+2/phe0RciO2YbVjQNpaNKNK3eu+CJhUXFyo0wz4cM8rgqBBoDISe8rtm/X0C9yMQhI/v70r2r4plelVw3uHyHXbGW2QqXZWIeQecnbNxHtt13hohKaHe0m3fE+T8qm2gkL/OpncCxTnUzjNAt+xzBk9dgEYOS/sLsZOmWyUqYiPNuxEWwRtgV5Lz0wxupuFpzQ6SjW1F1b5MyY86q+ZTrFlErMH1au4oxj7jmRHial2Hct0b/ZrRVs4JcBbE4rH501OV5g/tm65HrTxTaOTAva9t2kGc+sHLwGftGsFZSInNVQBhU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,122 +158,145 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rohan McLure <rmclure@linux.ibm.com>
 
-To provide support for powerpc platforms, provide an addr parameter to
-the __page_table_check_ptes_set() and page_table_check_ptes_set() routines.
-This parameter is needed on some powerpc platforms which do not encode whether
-a mapping is for user or kernel in the pte. On such platforms, this can be
-inferred from the addr parameter.
+This reverts commit 931c38e16499 ("mm/page_table_check: remove unused
+parameter in [__]page_table_check_pud_clear").
 
-[ajd@linux.ibm.com: rebase on arm64 + riscv changes, update commit message]
+Reinstate previously unused parameters for the purpose of supporting
+powerpc platforms, as many do not encode user/kernel ownership of the
+page in the pte, but instead in the address of the access.
+
+[ajd@linux.ibm.com: rebase on arm64 changes]
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Acked-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
+Acked-by: Ingo Molnar <mingo@kernel.org>  # x86
 Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
-v15: rebase, amend commit message
+v15: rebase
+v17: rebase, fix conflict with riscv patch
 ---
  arch/arm64/include/asm/pgtable.h |  2 +-
  arch/riscv/include/asm/pgtable.h |  2 +-
- include/linux/page_table_check.h | 12 +++++++-----
+ arch/x86/include/asm/pgtable.h   |  2 +-
+ include/linux/page_table_check.h | 11 +++++++----
  include/linux/pgtable.h          |  2 +-
- mm/page_table_check.c            |  4 ++--
- 5 files changed, 12 insertions(+), 10 deletions(-)
+ mm/page_table_check.c            |  5 +++--
+ 6 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 4b580d6246f5a1c8f859bf79665419bbcd8c7cd3..d1dd0266bb0c946442df88594cc39e958185af0a 100644
+index d1dd0266bb0c946442df88594cc39e958185af0a..595405e6bfc736f2824a9c2e8784351f15ad0571 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -681,7 +681,7 @@ static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long addr,
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
--		page_table_check_ptes_set(mm, ptep, pte, nr);
-+		page_table_check_ptes_set(mm, addr, ptep, pte, nr);
+@@ -1349,7 +1349,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
  		break;
- 	case PMD_SIZE:
- 		page_table_check_pmds_set(mm, addr, (pmd_t *)ptep,
+ #ifndef __PAGETABLE_PMD_FOLDED
+ 	case PUD_SIZE:
+-		page_table_check_pud_clear(mm, pte_pud(pte));
++		page_table_check_pud_clear(mm, address, pte_pud(pte));
+ 		break;
+ #endif
+ 	default:
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 3fea1d07f7470a04fdc9a6f581d21667e35e0e2a..89abba40e3e426c00e6964bdf135042777319588 100644
+index 89abba40e3e426c00e6964bdf135042777319588..841494ef46ee6ae1410f420dc7d0a99c4e1958cf 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -631,7 +631,7 @@ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pteval, unsigned int nr)
- {
--	page_table_check_ptes_set(mm, ptep, pteval, nr);
-+	page_table_check_ptes_set(mm, addr, ptep, pteval, nr);
+@@ -1093,7 +1093,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+ 	pud_clear(pudp);
+ #endif
  
- 	for (;;) {
- 		__set_pte_at(mm, ptep, pteval);
+-	page_table_check_pud_clear(mm, pud);
++	page_table_check_pud_clear(mm, address, pud);
+ 
+ 	return pud;
+ }
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 7fd876f8d828ea70def7adc51cc17e70d3046e35..3eb36a36058face6aba92efe3eed7214752e751f 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1330,7 +1330,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+ {
+ 	pud_t pud = native_pudp_get_and_clear(pudp);
+ 
+-	page_table_check_pud_clear(mm, pud);
++	page_table_check_pud_clear(mm, addr, pud);
+ 
+ 	return pud;
+ }
 diff --git a/include/linux/page_table_check.h b/include/linux/page_table_check.h
-index cf7c28d8d468c026cb5278435a64fbcf0fe9260e..66e10923841691a59620da8d17f7bb7b09e6a6d3 100644
+index 66e10923841691a59620da8d17f7bb7b09e6a6d3..808cc3a48c28fcf988ba2c50031fa4f317496582 100644
 --- a/include/linux/page_table_check.h
 +++ b/include/linux/page_table_check.h
-@@ -17,8 +17,8 @@ void __page_table_check_zero(struct page *page, unsigned int order);
+@@ -16,7 +16,8 @@ extern struct page_ext_operations page_table_check_ops;
+ void __page_table_check_zero(struct page *page, unsigned int order);
  void __page_table_check_pte_clear(struct mm_struct *mm, pte_t pte);
  void __page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd);
- void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud);
--void __page_table_check_ptes_set(struct mm_struct *mm, pte_t *ptep, pte_t pte,
--		unsigned int nr);
-+void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned int nr);
+-void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud);
++void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
++				  pud_t pud);
+ void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
+ 		pte_t *ptep, pte_t pte, unsigned int nr);
  void __page_table_check_pmds_set(struct mm_struct *mm, unsigned long addr,
- 		pmd_t *pmdp, pmd_t pmd, unsigned int nr);
- void __page_table_check_puds_set(struct mm_struct *mm, unsigned long addr,
-@@ -68,12 +68,13 @@ static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+@@ -59,12 +60,13 @@ static inline void page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
+ 	__page_table_check_pmd_clear(mm, pmd);
  }
  
- static inline void page_table_check_ptes_set(struct mm_struct *mm,
--		pte_t *ptep, pte_t pte, unsigned int nr)
-+					     unsigned long addr, pte_t *ptep,
-+					     pte_t pte, unsigned int nr)
+-static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
++static inline void page_table_check_pud_clear(struct mm_struct *mm,
++					      unsigned long addr, pud_t pud)
  {
  	if (static_branch_likely(&page_table_check_disabled))
  		return;
  
--	__page_table_check_ptes_set(mm, ptep, pte, nr);
-+	__page_table_check_ptes_set(mm, addr, ptep, pte, nr);
- }
- 
- static inline void page_table_check_pmds_set(struct mm_struct *mm,
-@@ -127,7 +128,8 @@ static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+-	__page_table_check_pud_clear(mm, pud);
++	__page_table_check_pud_clear(mm, addr, pud);
  }
  
  static inline void page_table_check_ptes_set(struct mm_struct *mm,
--		pte_t *ptep, pte_t pte, unsigned int nr)
-+					     unsigned long addr, pte_t *ptep,
-+					     pte_t pte, unsigned int nr)
+@@ -123,7 +125,8 @@ static inline void page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
+ {
+ }
+ 
+-static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
++static inline void page_table_check_pud_clear(struct mm_struct *mm,
++					      unsigned long addr, pud_t pud)
  {
  }
  
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 2f0dd3a4ace1acd665f229d4ea2a67187fd4d2b9..496873f44f67b73fc32940c956fd5265b748faad 100644
+index 496873f44f67b73fc32940c956fd5265b748faad..ed3c28ebeb35b766418abdefa5cc6604c0533479 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -429,7 +429,7 @@ static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
--	page_table_check_ptes_set(mm, ptep, pte, nr);
-+	page_table_check_ptes_set(mm, addr, ptep, pte, nr);
+@@ -801,7 +801,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+ 	pud_t pud = *pudp;
  
- 	for (;;) {
- 		set_pte(ptep, pte);
+ 	pud_clear(pudp);
+-	page_table_check_pud_clear(mm, pud);
++	page_table_check_pud_clear(mm, address, pud);
+ 
+ 	return pud;
+ }
 diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 86dc4e4d1dad12fe5d9d86905234b009257586d5..2871d9c453682ba922b2fcf532cb6a7d867ad952 100644
+index 2871d9c453682ba922b2fcf532cb6a7d867ad952..2295bc9368ab9cc827ee671ff9abf18a6b738172 100644
 --- a/mm/page_table_check.c
 +++ b/mm/page_table_check.c
-@@ -196,8 +196,8 @@ static void page_table_check_pte_flags(pte_t pte)
- 	}
+@@ -167,7 +167,8 @@ void __page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
  }
+ EXPORT_SYMBOL(__page_table_check_pmd_clear);
  
--void __page_table_check_ptes_set(struct mm_struct *mm, pte_t *ptep, pte_t pte,
--		unsigned int nr)
-+void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
-+				 pte_t *ptep, pte_t pte, unsigned int nr)
+-void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
++void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
++				  pud_t pud)
  {
- 	unsigned int i;
+ 	if (&init_mm == mm)
+ 		return;
+@@ -253,7 +254,7 @@ void __page_table_check_puds_set(struct mm_struct *mm, unsigned long addr,
+ 		return;
  
+ 	for (i = 0; i < nr; i++)
+-		__page_table_check_pud_clear(mm, *(pudp + i));
++		__page_table_check_pud_clear(mm, addr + PUD_SIZE * i, *(pudp + i));
+ 	if (pud_user_accessible_page(pud))
+ 		page_table_check_set(pud_pfn(pud), stride * nr, pud_write(pud));
+ }
 
 -- 
 2.52.0
