@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8151BD68BC9
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 01:59:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C081D68BC9
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 01:59:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78EE46B0088; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
+	id 8B6436B0089; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 758BB6B0089; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
+	id 8572D6B008C; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5713E6B0089; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
+	id 6ED096B0092; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8026B0088
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B9726B008A
 	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 20:59:09 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6B25C0B85
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB0EB1409AD
 	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:59:08 +0000 (UTC)
-X-FDA: 84230933976.25.F6D0779
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 72A374000F
+X-FDA: 84230933976.22.01C4872
+Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
+	by imf04.hostedemail.com (Postfix) with ESMTP id ADF1940004
 	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:59:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf07.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
+	spf=pass (imf04.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766023147; a=rsa-sha256;
 	cv=none;
-	b=eFCj1KFwL9BqojT2FhcJEHBYRFQFh5zdBbbHWc19CTONca9LasM3aqe4s9mZzDojFp3KYk
-	YuwCtNJ8eiAyS/Cz+DPzSynVZoUdr+myYC6uKXpXdlMYDFWiWDCk2uPHV7sEAtn24n1rrK
-	uSm+Y687gZ3fofgnj6vkl4xb7CGdw+A=
+	b=AlJF5OzRvAQZm7x93jxZO4BlCD4zSxkrVBql0c4WHY/J4VR68XESeep7lilMlO6UaT8bNv
+	YLzE8942ib+pYYbZnfdekLw1iYvlM5AWW87xBSvu81QaAbzr9tlQnBGdP4vCcmvqzXWyJp
+	7AAWjugrtrqtrIlAMTbSMQPiFlBIAhI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf07.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
+	spf=pass (imf04.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766023147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -45,15 +45,15 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iNL6Xv1UwSXA/ER2aXrzKwOgt7RZH5mqkcbw1XQgSPA=;
-	b=hcijwWCCjnsH5wh2UGsGqT+o8I3099RPZR5FOY+5ZJnGInc9zRh53CNQpkuOQdZC1Kr54/
-	jufclD4j/QbowBclBU1lWo3NPwMAGAOY8wDO3znnSfwI0ZoZ2K4rz2efG1Up16bM9/d166
-	8QHLWsiWKWBxfgNjRW3K7KtcnQDpxsc=
-Received: from w001.hihonor.com (unknown [10.68.25.235])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dWv0T3PyTzYnWDt;
-	Thu, 18 Dec 2025 09:56:25 +0800 (CST)
-Received: from w025.hihonor.com (10.68.28.69) by w001.hihonor.com
- (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+	bh=1SXi61QKvEmzRMEh+1xzYP0Tb6bWdmBrzPKuMyImTpg=;
+	b=5QRxPxYekHPc0ZZpeiHAvvBUBrvYehpiBMTl0Zfmc8SM4oMF2jQt71+jEhuW/NHjIdqwii
+	pIYnrgNkrxHT6f86DtimBmkDseHFulycMhM8hfmRrmgOSvIl+2HgciDm6lJT7JDbmfAoCZ
+	rGmCWY9tAZkJkHab/MY8L0FV+PEybao=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4dWv0X2l0vzYqZWX;
+	Thu, 18 Dec 2025 09:56:28 +0800 (CST)
+Received: from w025.hihonor.com (10.68.28.69) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 18 Dec
  2025 09:59:02 +0800
 Received: from localhost.localdomain (10.144.17.252) by w025.hihonor.com
@@ -67,9 +67,9 @@ To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
 	<kernel@xen0n.name>, <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
 	<loongarch@lists.linux.dev>
 CC: <linux-kernel@vger.kernel.org>, yuan linyu <yuanlinyu@honor.com>
-Subject: [PATCH 2/3] kfence: allow create debugfs dir/file unconditionally
-Date: Thu, 18 Dec 2025 09:58:48 +0800
-Message-ID: <20251218015849.1414609-3-yuanlinyu@honor.com>
+Subject: [PATCH 1/3] LoongArch: kfence: avoid use CONFIG_KFENCE_NUM_OBJECTS
+Date: Thu, 18 Dec 2025 09:58:47 +0800
+Message-ID: <20251218015849.1414609-2-yuanlinyu@honor.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251218015849.1414609-1-yuanlinyu@honor.com>
 References: <20251218015849.1414609-1-yuanlinyu@honor.com>
@@ -79,14 +79,12 @@ Content-Type: text/plain
 X-Originating-IP: [10.144.17.252]
 X-ClientProxiedBy: w012.hihonor.com (10.68.27.189) To w025.hihonor.com
  (10.68.28.69)
-X-Rspamd-Queue-Id: 72A374000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3acs4b46wkquk9pejyg99wii6wq5mpcr
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ADF1940004
+X-Stat-Signature: cqtxsdneomy4q3zpy4tjtweyatfjt3xh
 X-Rspam-User: 
-X-HE-Tag: 1766023146-882466
-X-HE-Meta: U2FsdGVkX19vTOcJ7pb9CDkaVVKmrp7z1o4xAdGepb5WMqfd2W6Repu7MRCjfkg0dRfrUzAkxDuSQU4sVmM+OINxbkr9GVcfA6LHCyOXhxPH5H+idepyTMojipeGcLkcbKzf26lKNg3IX4eckTGHKn3mHGfkELEypQcV1OHnkEKXrNuYZ0HtW9s5SkPLDbMWI2i0AjDDitCcSQm5P+KeJC7oc8vwxT1niTW4sHw9mWz5B1p9+MCutp4LMCdRQu8XwnS4qfssq+Dmg7oCwVaYspiDviwxPkrG7b9bVZ5KF21d24ApJhHA4DxG7pnpDUQavqCM0cQY3Ck+xy2ZJPIq9EbuHiJ7soP4fZqQZoHmodajrR0fXcplwDhKyrpNfD+725OpYjS59hRm4FTlM22Z9dnpMRDGLYUdahC6GnrV3EltK7KegQkOMzgi0OzD0LXj8dFheyFZ/eHS1KFlnO5MRGyeLc9kkUIjg98T0I/EBkCpk4PthIiDKMUmmRMXWpOzEWnDOeQaTvd00NSmYhrHMczKXbaWPOagfNOHTMRIPdj8WF0lrF2vC9evc47CdOiGtm4mYI7f5AO/J5OR34VXDmFruVvEoLAeYLePn3RBd00FM+GeNt8nMaAXV5Pe35i/afTUy4u1ArxVUX4VXjV8IB4mLIoV6MFIHe2njJIscsAu7ReF/tM4po4O88+npXjuTp73T0HCFP1LN97vJKAmPPm8nYqzN53+AUkqrJv5iqOR20OdzdmBB/dlEdWoNOr3ec8rr0U4oB8NqsfdbeqSJt5b8hb1Q5EkRlsX+X2Sagwu1rVW6KwHArIQr/oNJCXM2NwjFHvjjjuZSgAZmmVuldICBa8O19m+Z3aA4M8ijRLxOgMPDFZ/d60blILn2a6fu0oDaQWc9IQ+Mez8yztj3F/mWToZoEnoUA94lKUSFYUZnKhwvBFDEPDMQVyAJpwWNG7cn5lV7YtHkcAdc6I
- 6rVzKgQw
- 6H85bnKpUj5aS5imN7S2f354y9A2/Lq0P+ocA1GvUxCPOp5pozjIwdGZkdNfPuptIXfFSBPx/AXr8uwx1xBfBCCRHRnhwrY2H870d56Sw5OIjYp9rFGaSxRx6dqJ+mPEeVJnGQUSwWmqhlmFPjB3gv1hOdrFakrmuyipCcXeReX6+ojNS8FlutYJRjdkBhNzn8IjSY/lfpqRLOxo1CPTCQM/wkA==
+X-HE-Tag: 1766023146-169915
+X-HE-Meta: U2FsdGVkX1+SpDtRadkgVapjeIyv9rVNONRBibTxR/831dhMmzTVsjPGsjL8NvhulMyk46KisECuL6z3cnsXQr1G5YwC//4bn4QmCgeCQ6Ikvu0ZAYSaw72M1joIZgHzpzyGULLl+oBepSFHHV67RyNY+vGBE5KnawSI3PgK1w4VMq1NZWSWv22QX/nKn/pmFE5j8KH8Xk8Luv7EUooE6pIm+VLT9Pfccf7lfFLSePET2gn8wcD6JXxXZnPCHiD8eP6zizAl152YBA7wQk0WjEqu/BH0CgIZSXbevMUvLRMScV6bwVNRbL3zfsWONa1McvogcSvDn4jPxH1G1xjVHYe1Y4Dd6xHMFpf7M59Vg5xPH9F6EtIRIUbDt+48DpDOjcghKVaof/UxrKUr8slgbw7hWVXFboUhyzP7Ez355vmWYAE0COeqIh6zhixdeW/HQtRg3oKC+1f2u/lnTGFzu5uMRbiagVmZHEDjmgTaNV9hE6J9mieM1LY9ZA+SxiZEi6dVJJoKd/Q06hTmG647P5y2Z4jWalG/KMVltk/AKEWFPiGfFeX/yRssSHgzyxAOytMjCCTVoptVq2vdWy0V3oc9nyttVlbQ5nP9d+fOKLATHtVp2WeAG7sVrQGWKF14NkO1n4+Ih1UJFfjuSIuVONUQNsyPGqc+W3P/HIkLBVWfJG/W7grIFC1MJ/X0I9QO0nq49W3ezNOXtJfPKtLG/Jynxh6FiiTldmZuRvr16gsMuaZSTGktGWrjHr0JgLJxnyu4H2ZW4e0vBcrkqak+BnHRG2T1YRXU6p8g8M7xRcFCB+PaRGJQzjBECBQAnvCohkWE29lLm29xKamXZaXQZUSHsCX+sQ17ISXaZQYnf1Ml5QufdMC8Zogv+lnuWdC4QYQUYL7T0BPf85cHKzo1EZnbCBa+ytWkLmnY4wydpG4628XeiG2CUPXUGdf7hLfLoLTxEHUK4Fo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,33 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When add boot parameter kfence.sample_interval=0, it will not create
-debugfs dir/file, but when user change this parameter after boot,
-it can enable kfence, there is no debugfs info to check the kfence
-state.
-
-Remove kfence_enabled check in kfence_debugfs_init() to create debugfs
-unconditionally.
+use common kfence macro KFENCE_POOL_SIZE for KFENCE_AREA_SIZE definition
 
 Signed-off-by: yuan linyu <yuanlinyu@honor.com>
 ---
- mm/kfence/core.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/loongarch/include/asm/pgtable.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 577a1699c553..24c6f1fa5b19 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -782,9 +782,6 @@ static int kfence_debugfs_init(void)
- {
- 	struct dentry *kfence_dir;
+diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+index f41a648a3d9e..e9966c9f844f 100644
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -10,6 +10,7 @@
+ #define _ASM_PGTABLE_H
  
--	if (!READ_ONCE(kfence_enabled))
--		return 0;
--
- 	kfence_dir = debugfs_create_dir("kfence", NULL);
- 	debugfs_create_file("stats", 0444, kfence_dir, NULL, &stats_fops);
- 	debugfs_create_file("objects", 0400, kfence_dir, NULL, &objects_fops);
+ #include <linux/compiler.h>
++#include <linux/kfence.h>
+ #include <asm/addrspace.h>
+ #include <asm/asm.h>
+ #include <asm/page.h>
+@@ -96,7 +97,7 @@ extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+ #define MODULES_END	(MODULES_VADDR + SZ_256M)
+ 
+ #ifdef CONFIG_KFENCE
+-#define KFENCE_AREA_SIZE	(((CONFIG_KFENCE_NUM_OBJECTS + 1) * 2 + 2) * PAGE_SIZE)
++#define KFENCE_AREA_SIZE	(KFENCE_POOL_SIZE + (2 * PAGE_SIZE))
+ #else
+ #define KFENCE_AREA_SIZE	0
+ #endif
 -- 
 2.25.1
 
