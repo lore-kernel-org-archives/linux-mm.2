@@ -4,126 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49835D6ACD7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E75D6ACD7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1AC66B0088; Thu, 18 Dec 2025 04:30:39 -0500 (EST)
+	id AF5C06B0089; Thu, 18 Dec 2025 04:31:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC5346B0089; Thu, 18 Dec 2025 04:30:39 -0500 (EST)
+	id AD7486B008A; Thu, 18 Dec 2025 04:31:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C7D16B008A; Thu, 18 Dec 2025 04:30:39 -0500 (EST)
+	id 9F6DB6B008C; Thu, 18 Dec 2025 04:31:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C0756B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:30:39 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E7FB5D31C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:30:39 +0000 (UTC)
-X-FDA: 84232071798.10.5C47EBD
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 25B3C1C000F
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:30:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NpuoX2PZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766050237; a=rsa-sha256;
-	cv=none;
-	b=BKO2g+KBfbDDsKtYR16YH6UqV5YTCC+3M0QtZiw/YbNuxJfE2evsqbQ88E4CWPw4il+GSY
-	uTl/hGcd/lEM+g1G9d2nlLDKqO9kBMqVMzkNyA4d4S+nScUzQojetA/DZkDger0X47r4if
-	YE6WGcNxkMfy6+8r45XDiKHNHppqCrg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NpuoX2PZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 931C06B0089
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:31:21 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2D179BE167
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:31:21 +0000 (UTC)
+X-FDA: 84232073562.09.7942D67
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5A38D12000A
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:31:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="w+/deaOu";
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766050237;
+	s=arc-20220608; t=1766050279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=auj72bQKfXEBr2u68dWzZijoBsCuhcqMu/4EXNR4iyc=;
-	b=jxindrgKYd9pIDxuSssWY3gEkIAa0mUi4eAprS5uDlF2bro0aWQyLUPxIcQhQ073G++Mls
-	myXnfnqee/VcGZypAlaoHVoZUwZFv4pKI6tUIG9yeld1OC7n+mTx6hGzrSdodkzTuzeUiw
-	89eERUbvmf03Dlf80MlblIHhGwMGO8w=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-430f9ffd4e8so736128f8f.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:30:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766050235; x=1766655035; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=auj72bQKfXEBr2u68dWzZijoBsCuhcqMu/4EXNR4iyc=;
-        b=NpuoX2PZzAY1sicfIaovp4FglXfVhWodHxH2oCU9bE6fRkMheGupJHGdibaYKkccSj
-         E2sRFmxfY4xJyyMRwUTTWxay9tRkga7xiaN2aR5sWk0BRUnbInhRhSWAOHc7KXRA8fCZ
-         aPB4xUb7n3r2PL4HUXfSs5u9YOrJcm3JBeOgQQQHVaFkrU36KhR64U3po1GeghfTiCTa
-         rJkMJVtTNRB8oAUq5CmNEb9RB5YURiPDZsNsf+Gq3t8u2ZqThf7bSn6g/KNRSBc3l0iE
-         Iasv2B0fhB4izPJ2NLSrki+9M3Uu7OhDaR5/DarQk6gKodaSQh+qFkWVdH2jMAnsHPlQ
-         toKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766050235; x=1766655035;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=auj72bQKfXEBr2u68dWzZijoBsCuhcqMu/4EXNR4iyc=;
-        b=Xs9rI7j6hMXenHg01/QTqdye7MmqFdYCQ/g6cBkqnC6ctPC+qtkdrIL1WuhFk54QSn
-         EWrpVfUObFMT1xFNwoaZjjW/nMuqvWFpT+aFhsSeKm0OmBScHAd6H7rFVp5Z3PQTzeDy
-         fx45k2IuNnEwbj74T5fI9r4lWJJMBmLfbq8TAlLKpq1qdDU4KrThpMLwz66E9bfc0Kuc
-         zMUABz/BiSo2k04hodnHmNkBfzL7JIbZgVVvJs1DbvYiqJ5Wsg7uWBnFOkEh2vagrTAr
-         rhY/XzjpzYn3+rm7v5bQYUljew/mSob8EVWSNOOp2Y3w9MLGSl98A++IiUkxL7nfj7dx
-         UBJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHZEFZbl99aEQG49FsUILlGyQuPM7gBZbaIxZBKr7/J0dUgRnml9AMR8P/ajl2ipu66XW/2ePAOQ==@kvack.org
-X-Gm-Message-State: AOJu0YyMYFhRJt8Hd7L5x6Pqh1Ob34ni/z1ZCLELq1GSFyx+0bxFRQPB
-	4DmcNUayxlQRBgGPUDTMA+4jxDqtTp6tOliheAY/kHWM6hZH6wcRVKlgxt5ldoGiATo=
-X-Gm-Gg: AY/fxX6bnLewtnACo4IjPIkKu+nRHmRBTedLw4ujEG2/iUT9KsyvEO4XWr1dHLumYRY
-	ZRN7xlisjLnShKXCFxXmAxXQADDTIE6SEEc3On0L0WRWKKgXnJgjIOpZM9lN0d/7w1SwCBJJcYe
-	Cn0Qxf2oLo0yUy2aw+8pzzlRUvzobRqnJ2Zf+kTKuu4Opjm5vQ7/0IWp4TUEBV1gaDE/TXPCVLb
-	HuOQpNl/RtTUh/qcbZO1buDHaJvX0JGRJX76YLVg8trmsWoc3w5XdqbDqZvjXApiIg+KQg7hGGi
-	aCYMKpjnvo/SDRBOh//aW21wqhEPIS8d2mwGB2RHwvLnWo+72hivGc3JKyYto8qmL51DWJIwP8x
-	5VynbrQmWMKvvZzsuSwhUpEAgRJqftJ+4MZuPmqXj0IDSPOxboAxvDsyIUuo+LWRSdTHgExxFX/
-	wwNDmxOBkr9kuXjIY8GSnCxdz/
-X-Google-Smtp-Source: AGHT+IHyh7gnIimLVB/hVii5bUcInWlX+sJTJLBC1+RURn9zto3ffEvz7ijXdEVgop3qQY9DVJKifQ==
-X-Received: by 2002:a05:6000:2407:b0:430:a803:e49f with SMTP id ffacd0b85a97d-432448b7f43mr2778068f8f.15.1766050235424;
-        Thu, 18 Dec 2025 01:30:35 -0800 (PST)
-Received: from localhost (109-81-80-251.rct.o2.cz. [109.81.80.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324493fe32sm4092572f8f.14.2025.12.18.01.30.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 01:30:34 -0800 (PST)
-Date: Thu, 18 Dec 2025 10:30:33 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
-	rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
-	ryan.roberts@arm.com, kevin.brodsky@arm.com, dev.jain@arm.com,
-	yang@os.amperecomputing.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
- stop_machine()
-Message-ID: <aUPJuZINNuNxddRX@tiehlicka>
-References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
- <20251212161832.2067134-3-yeoreum.yun@arm.com>
+	bh=9mEjU8wX83Cg3o+9Hcgc6XPzGswLeHLk0tmhTdtZzxA=;
+	b=AGHwWBhM4mh0lQV0fnIldG+OFt8LeZUo9Zf9C8j2Hz/OcMXNgKaK46m80s2DpNv5+znhS8
+	wYZcwCN8biNCHSA3KjCGVOI0wv5C5dbanFyZ/C1pMf4KDeSx+xFWlNr0rgkiFNj4VgMJC1
+	FCt5Y7Cs3RMM61rcr6p4Gn3FoApGQF0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="w+/deaOu";
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766050279; a=rsa-sha256;
+	cv=none;
+	b=CPFURc2Uyr9utX+4i0QFV3YhnLrcXyIqbKhQPo5lFvApenBEmR/muZIFNsvZ3R0OkFE+TU
+	CUxGok6mt9PQLy+wSb2mhE7mRxXRDhfK3CgYuHBGKSyeu7k4dle5Wrg9li0s1JFIOx5AbX
+	c5K/1CyRgPu1dDcKdADDqiRkbhXwwR8=
+Message-ID: <8d9592ea-988c-4c97-b059-a58afb05b3f3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766050276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9mEjU8wX83Cg3o+9Hcgc6XPzGswLeHLk0tmhTdtZzxA=;
+	b=w+/deaOukBWJ4ZgZ3I1WlhHxaGiV/8cdmYNowXHEEUM+0aRZQcIlLFeoPi5rQoMl+cjSJo
+	m9T+bhiZ1Q8ktwvjUNQ3J9w0OH/psy86bJ93ChPyG30NihzHHvBY9JO3496dt85GKI/p1v
+	m+C9Zwyx5GyP3/toJ6v/5zimaZ/y0j0=
+Date: Thu, 18 Dec 2025 17:31:07 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251212161832.2067134-3-yeoreum.yun@arm.com>
+Subject: Re: [PATCH v2 04/28] mm: vmscan: prepare for the refactoring the
+ move_folios_to_lru()
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+ apais@linux.microsoft.com, lance.yang@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <4a7ca63e3d872b7e4d117cf4e2696486772facb6.1765956025.git.zhengqi.arch@bytedance.com>
+ <87e59cd3-a554-4911-aaca-21be2080e2c6@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <87e59cd3-a554-4911-aaca-21be2080e2c6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 25B3C1C000F
-X-Stat-Signature: u4ccsjpdjp5uo3gnh1tbo4nhky7y18hu
-X-HE-Tag: 1766050236-566686
-X-HE-Meta: U2FsdGVkX18tgDJGADwxKH0MjPLuxa8MgjMTxYsC9Fa+anKkQtaIN1wcIQzSktcpjb63UJR8cUYp7d7htvhin590O8nOGYpCGiDOXKF3FJ8g27V4uzC+ELEocrksaZQhCPo2MYh+DaBut/B6Xj/5Xir+N1je3ZPydxWHPbqTIxWN33n0SwUizADY1SSdJa6YT9Skue966oTt0fV5SKv3WyvabPPVd06uI9P29CLofRv1xKnOwRltNGSl5KzA4PDZWXkhi/WmqvoHuD80uMU4Hxp5eUmtn+gNENKr6O3iAQv71VQ4J9aBrnqL9ObI2i/tMLbrudZ6+8gnYojgFAHZaJ7BqqPkx3iC773mZDWn+bdCYilK9mwNPxxcijk+kgWJiomcEhxDqEnNEhti087z/LGx3Nc79s1jSk/HRHlclWqGcI7C5dL111ztTz/XIRva6DBD4QSt9OUxzl1zo+jMiDNdC73CUMLjzqxPpJp4dQJz5GP7BmJ9w9ZNAoaMrTAkmLdzbq3hqZlR1cMyyA1I+iXRJDgi5MBhoh74zlKZCy8vs9z/pnUaQW2vc73RBxoLp2m1CvwJ4PVDOGr83eJxWbKC+AziCpbMmmuMJMfXtz9n2qw7T1N2rYrXRK8dbnqCR63pLECjPvR3T/mMR6ndJalINQef9v4wtpurz2dfFjfqrX+xc42a/c9Ezd2fzqFaY0XE8i7Hm4kpcHbqCs/sc6LvE65PO8Y3MvOEp37kvH+JfWogiNro5FVgV0921UQ7FrhP/EdEW92fGm7yt2AWpzrM9qVef62GNaFzZ4lyTd7Uc9H2UnANMT/wcO2+JHRg/BIJ1GFzDlPm7YFLUMGUgXUsuGF3fu0fcpVGIolFrsk+ps3SUy26LXCuijOWdXE9pwG+SqlvK9Uf7HNf2I0VozR5iYUvvC/7qI6rP88XMH1Mij8UGORxmIFke5BDX4CW83/znsV2yE96PJl0rfB
- VjZ8j1OZ
- Ez/V95OVgptXUT16jG/fNfmdx3lLLrFoFtLfOyBaaoozi7ajQOy2VinePiZM7SEkjHYQ7QeV9EWwjR/+wGQoDNhuzCiJkBBjY8IgRjegXstJnBBbwa/jtbEhY1zV3o5pKfrbYYoWxT+Qh7xTZ13OjWjSfQuQafHauwgu/dPND1018QisKDk8i+kjTqUB0WptSd0xC1sjgFYL5vq5wySemfAC28VISdR86yN1YSyIOSZCmFAcFFx7OaPKlTNGFK1Qn8t84UD/Rf261N1E0emrSqIQC5dB9OnM6KJPid3QEYEo37RAs31IwbPUfM3H6/FwxxCdgIQTrcZapxJJJOw3/gpWUWLDVCCGtW6FGj6JpewX7xCTGS0vrDJf+f2cfjyi5n1XYLT5X36RdtxAFUVB/g+y6lTAkjwe74PJr9vE4HGdQcJzeZ6C60dTvuGlcEc2y6ZVZ3y/1qjbhb4dfS9cTtOLGCUSPdf3brNtj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5A38D12000A
+X-Stat-Signature: 5c5rx574mf93i8egospndh5jo8hr3nag
+X-HE-Tag: 1766050279-786503
+X-HE-Meta: U2FsdGVkX1+461YyDS0f0664uKoz/8/9/MmNv03oJblIK2hEQDF8+OBRs5phqiFL616UjrhK8TCONLgv5IZN0p2AHGijVeMRYdQRDoOPHXQkLX1kf5vlVzNRJYd+DxlHc19gqEs5t9KErWOl4FOL6A37U7M3sT2fcWrljbvdzqzeT+7rVAZRa4ISGJkuhCTGxqmvG/NlsRfX4MfMG1YmLU8hcZKfl0nwoirKFM5gEXLDakWaOOw4tlM6zYcV3P4/HaQwd6NSpOwfkz1WehOKGTkqye/x7X0KdIllfuqSu1BGrmYKD90sAspUIUw8ouWpgPqVVyuqjVpeS1U8K/HxMORe5pSYaGBj67nWwVkSE8QaUE1n9aO/WzRD96gSRG+ynSjgXn1si53JUgMfVmD5KS0Oq22ecpvT4k7Pcp6zbDry8cz8+YqhIpErUpldmbJ0IF1K2OoGCoXq6l7OyXQ0FxdulySUUtrfQXOJoAvibGb7mmOpElvatimAs4r6GYC5k/KZ1DbiT0iZ1ibsCspCOz5OmiENOKQO5HC0650atIj8zqKXdFhRyvVbCgpsaC/0cS/qo+317iPKi6L5hPVZME/BvtU+ehhLV5UN3vmrwtKArtHto+ZLXpeDeszlFlC+h3zCdJAZurRIDRTUlro0lZO3psc3J6WWCusEJXPzAIlzbdQTm7x0uKmAPfaEIKlDJoVobSWFXi//NRJd9PhWyP2ZvbVxmSHAVb3s9zIDc6P9PEGgPXqCV4VuN9d54Nl4fdxFl4iUKtU/G1M7RB/jtb7hNNj1mXMi+XoRuR2kFH2FwebnTD7A8UEYMAxn+Eh3ztGaZxyqulTqoklaG3i+A+iIkq+dRwrrbJUpRb4hEdcem8eJJ8rld4F1M5zIO+e5fe2t0rIAUAWykHQqdGu+HwOBISLVtIxj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,22 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 12-12-25 16:18:32, Yeoreum Yun wrote:
-> linear_map_split_to_ptes() and __kpti_install_ng_mappings()
-> are called as callback of stop_machine().
-> That means these functions context are preemption disabled.
-> 
-> Unfortunately, under PREEMPT_RT, the pagetable_alloc() or
-> __get_free_pages() couldn't be called in this context
-> since spin lock that becomes sleepable on RT,
-> potentially causing a sleep during page allocation.
-> 
-> To address this, pagetable_alloc_nolock().
 
-As you cannot tolerate allocation failure and this is pretty much
-permanent allocation (AFAIU) why don't you use a static allocation?
 
--- 
-Michal Hocko
-SUSE Labs
+On 12/18/25 5:04 PM, David Hildenbrand (Red Hat) wrote:
+> On 12/17/25 08:27, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> After refactoring the move_folios_to_lru(), its caller no longer needs to
+>> hold the lruvec lock, the disabling IRQ is only for __count_vm_events()
+>> and __mod_node_page_state().
+>>
+>> On the PREEMPT_RT kernel, the local_irq_disable() cannot be used. To
+>> avoid using local_irq_disable() and reduce the critical section of
+>> disabling IRQ, make all callers of move_folios_to_lru() use IRQ-safed
+>> count_vm_events() and mod_node_page_state().
+> 
+> The patch description is a bit confusing for me.
+> 
+> I assume you mean something like
+> 
+> "Once we refactor move_folios_to_lru(), its callers will no longer have 
+> to hold the lruvec lock; disabling IRQs is then only required for 
+> __count_vm_events() and __mod_node_page_state().
+> 
+> To prepare for that, let's $YOURDETAILSHERE"
+
+It is indeed clearer, will do in the next version.
+
+> 
+
 
