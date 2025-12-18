@@ -4,89 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C53FCD68BE2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129FDD68BE1
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:42:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4B086B0089; Thu, 18 Dec 2025 01:39:27 -0500 (EST)
+	id 627726B0088; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B00C26B0093; Thu, 18 Dec 2025 01:39:27 -0500 (EST)
+	id 5F8406B008A; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AD4C6B008A; Thu, 18 Dec 2025 01:39:27 -0500 (EST)
+	id 525546B0092; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 68B856B008A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:39:27 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F9901374FF
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:39:27 +0000 (UTC)
-X-FDA: 84231640374.07.573171B
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CBC77C0003
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:39:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf22.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766039965; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7266B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:42:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D784D13C26A
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:42:10 +0000 (UTC)
+X-FDA: 84231647220.29.C79B3B4
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E28C440002
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:42:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ej8IKp0d;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766040129; a=rsa-sha256;
 	cv=none;
-	b=P2kiNvzfPr9x7kCRQ6JgYmKVKmkvZinkoWdmLtbk+hQsq7P0JojFAoDlxNUip4U9EayPNf
-	sLnq+B1GGh+dfK/34oWkpSaai1Udk6V2Oh8wqmFQyztj0MJMlOUnhxs+47/79JN1evgz98
-	3CJ/brBb77lpoD8Ya7ewINmeZ/U7R6s=
+	b=3GgtUps8jkkZaqEDMvY0VjU27a+VZ7NAVa64PvxbhTpB5Oodfq797EPAs9r+G/HC44SO7p
+	HSOFA1xM+lJ7uj1r4x+Sr8pI6teTOsJnYDCN0Iq1bgMLOGOJc8+5s6o2d8AoTeIRordgwG
+	xblgSSIy0AqIchgA03swd3ffC0zLw+4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf22.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ej8IKp0d;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766039965;
+	s=arc-20220608; t=1766040128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8G2GzlDrWZYa/IhAr+v5xcy2G4534Lh7iaRUF7M5DRc=;
-	b=E9VzTB/UJwck4zq/lkPZXYAtYWk6V8p9nE1Q88Gi61N1maw9jMYu0xAWkaW9q7/vYzlc7e
-	fhcIdGBzxrJnAqwt2M1OEF+GqLt8xNJD8tlKL8BDokGsszMegfm4EeNV1/F1PmK7ymq0Ef
-	CWBtwDK03/tdbrlG/WX5bkiZsrmLFvs=
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dX1Ct237wzYl7hG;
-	Thu, 18 Dec 2025 14:36:42 +0800 (CST)
-Received: from w025.hihonor.com (10.68.28.69) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 18 Dec
- 2025 14:39:19 +0800
-Received: from localhost.localdomain (10.144.17.252) by w025.hihonor.com
- (10.68.28.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 18 Dec
- 2025 14:39:18 +0800
-From: yuan linyu <yuanlinyu@honor.com>
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
-	<kernel@xen0n.name>, <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
-	<loongarch@lists.linux.dev>
-CC: <linux-kernel@vger.kernel.org>, yuan linyu <yuanlinyu@honor.com>
-Subject: [PATCH v2 2/2] kfence: allow change number of object by early parameter
-Date: Thu, 18 Dec 2025 14:39:16 +0800
-Message-ID: <20251218063916.1433615-3-yuanlinyu@honor.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251218063916.1433615-1-yuanlinyu@honor.com>
-References: <20251218063916.1433615-1-yuanlinyu@honor.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
+	b=hAVuzvDnNvPc3rga5IAOGhLedNPPsdzRekvawYEmm8QVXMyAhcyrQOmFlRg3KDuKPtHkAf
+	V2GPNpEJtuBomtQ5nVVLpwOySIt2BLUMUpwn6Y2iDt3fh1qHBpM0erW3SwQskSBhXTQAE6
+	+1vcFxq3vTiFWFGqNC1BmoAKVMdQ9OM=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29f1bc40b35so5871635ad.2
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 22:42:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766040128; x=1766644928; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
+        b=Ej8IKp0dPESFbXM4IZ5+z+PjcZt6gMhexIekqxkxk4CdmxAKASp9JRjd8sT7stavIH
+         EKldLmnQ2RUr5IVgw8xkCs6eTTnm7Gx3QkcOXCds7ZjKCDfU+pZK14XqnrgTLczF/3IS
+         +miCkBtCHDxdve579Eb5Ta/8DYm0X8mqVEaPcS9m/MnyiZw8cFRm8ua+/dEBMuV42UvQ
+         2RZQ8MKlgAPSngfQAXQhgRiRA6BfQSdE8IBpg3WATCPFgFy9vRwNtQh+5355KTTLegjk
+         O/77BVVBlSXfP8qCUwTXR9G+ivPUgauo4pCJsOzRzpeJETapxXjtGA1Nd6Cs1QFOD/wC
+         ArcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766040128; x=1766644928;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tm9NwXvmf/gDMlFs3lDsjBV3kpc7O9Iel8KuGxP9cWc=;
+        b=JTZP62F1foljNYjHru30FGR1Pz5WVPUyUI3PtNiruEuS9EM/o0VSCIpmFFCImJ5vwB
+         3P6gxqZ7bg6WRzBH2cuet2ZGNSwu3Btd6NvODJ0wzpoEbB9xGHupQd22Y988j+qVocU4
+         2F944PG+Zt4zxu/l7IA3YzqjcGFFix4CFhBQ2Hz7U1XUitLT7FSPIGm2OTKwJfLPFx5F
+         uakx/BQpAOdyDKcPF7WF/TSn+Y35f7er27UPLfxTKcgtE+R9RZfcosMytpgL5f9yZ8pU
+         px1vMoFV1G/qo8PyMKQDCRl8+Qjpccc7NfMtewwo1C+maQwspci0B7RW31lyorfmz6/d
+         vOVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCyJn5lDB3JfyeCi2yMJCYW8DIcWQXJt9u+WJAMo+NRi2M1An+AgF9d+C3YTCUm0j0xPmQ3MFJ4g==@kvack.org
+X-Gm-Message-State: AOJu0YyVJrcyTcZNwgm9RW4+Tp8nqTAVtnHMYwfBGcR/JiazrsRIKysF
+	5R7HdFCBc2dL/cTX+IxfUNxqIODJrK1AESEkFoVF8EmKx+/Vxdm/jJJ7
+X-Gm-Gg: AY/fxX4qnweP7Qleqky/UMi6WXokHYo2Dgs0VHrh7oZQTWSjWc6a2+q805FSvmQQ4RB
+	rqf/Z2Hj6gQc3JlhpCyRv1H9vHL8jvroyb918xFIembabuv7s1pvhEB/mTZyg0obr0/xi7ZJVjB
+	fdgb5AEMEcduyas6hhpveyBW8K/T8KOxaf+XmzT62TnxZI1R5eVkIIgXTVx0TTS3Hqe76SpsXSs
+	YmsjcPqiTTaLbyxTw7ISuqP4ua8C9nzPzhINxWKxJmfaGK/JVnmdR7EM6VRFOTr1DllnqHz9zgX
+	V+5cIBPYU6ZTV3hV6l3NE+/Bzc3JJMxf9zzs4DZQFEA9dw3gSkUkExK6/yP+p0IW35Z3Yp5DrYC
+	q9E2JrnjbsHWUuNk9BfbEmayV3azdHaqtcOWhiubP7KaLpSZu67gTTcVPbJlVoH5t7qpRxsXq0G
+	pV5FxFHWO9sou7YJzbyy8=
+X-Google-Smtp-Source: AGHT+IFERotbTi1a6NxtaY6J2+0n85N9rFTKph8nNdTT7abq8KlJPV8QdumgT/4wKWSussCpD/Mq7A==
+X-Received: by 2002:a17:902:db10:b0:299:e031:16d with SMTP id d9443c01a7336-29f23c736d0mr219074165ad.33.1766040127646;
+        Wed, 17 Dec 2025 22:42:07 -0800 (PST)
+Received: from LilGuy ([2409:40c2:1022:14d2:aaa5:8d6d:efa8:e19c])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a2d1926cb0sm13498585ad.69.2025.12.17.22.42.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 22:42:07 -0800 (PST)
+From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+To: swarajgaikwad1925@gmail.com
+Cc: akpm@linux-foundation.org,
+	david.hunter.linux@gmail.com,
+	david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	osalvador@suse.de,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize online check
+Date: Thu, 18 Dec 2025 12:11:53 +0530
+Message-ID: <20251218064159.7230-1-swarajgaikwad1925@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251207231056.71294-1-swarajgaikwad1925@gmail.com>
+References: <20251207231056.71294-1-swarajgaikwad1925@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.144.17.252]
-X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To w025.hihonor.com
- (10.68.28.69)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E28C440002
+X-Stat-Signature: 1zde3fb1td35in6kt1k6r5bajb87pfw7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CBC77C0003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 6judpnwfsq8gg8njf1my99idr4afisye
-X-HE-Tag: 1766039964-618552
-X-HE-Meta: U2FsdGVkX1/scha7PTO5Mgg66vEhSUWpt/N3pDo7I8NDky7HoqoRMTpLld6vgJphAL/wI0usa8ZiTHQinX1F510ef7JdKeidDc3HAVr0cfs8QbatN06E6LWorri8lmN8BcZWFU5i78tVtF+FsNApiU1Ue/ecyViK6hKErZ3NW9EJn9sNC9kgMD+hDGK9bA2ELM1JHgmmAAkdefcrhqX/tiXxsrpYwK7C8MXaXBDSOj2juMcgkG3bTEJ/KJHA9AVyIRU2P8bKSbXLdCsx+aMOoNikXMaDDfFce1bNA1+2jvfzWtVv/WTMf98lRNEA7N0nRvf0wRyG+BGxIGVU6IJ+JfR4MesHbVHxWwAYF1koK+SWc54r//m+ra57SMGGyiDJvexbZTrlP35/BwQTgh9qudUt4UtcdOi1DW2Z+itqKvNCP/NwyZmfbHd7s/uBMLglacuFiuIG4BJeceRfSav0UpcEyN9DATgfcruThUzUSLt9K/4s0dJSE5mHbQb71BbXtm0zT5mpDnnhr+R17uaSKq2pWRX5dBdd8NZ37rcHYRnmqPDKTuoX4f3K0HGFJNOF4qDCdQ+WuFrT+hm/a6lMGzYJmd02xtru6nzl/EbreOAOLQSRWDKrQvWDQNKb/Qj3iZOYFoQaLkDFBEY0FWZKeyX/Bpjrb1Qo55cs0Na5guHfVNFSz4HcW1pRQ2EdNoViZIk8S8QgJgMQZjxSzhzxobS7ODTZrvLGQRbf8y0eQqonE11Un2boLaz1gsMhPWrOFNnvB+jAjlkoFxNIA/doAt+vz5PZ1xhgwuui8pmaz5YJbpkuY3DWSPT5Zaw0srkydphmPnF2NRqDm3qC28JwSS9015HEnwO80ECdOPpHNLp6+K/A+T0WaBPya8imabIEPXkM0Ah5ba0VvwR9MUUVmouFktPdS0hLDwlvJf/MwX/ZJsmkqYccPlod9EcpetEmOp/uCT7juCNTp5abmZZ
- Dti5eFed
- EdCvyVVpAo0uxLd5oZlfJZ5Gbj0sHYE/L8nG9zY/jf06XPb6aXRa2GYE6EG9fYjyTJFlSxTr1YlSX/HZSeK2eJ6m9i8UPKYIYejShh/LyVrn2qRdvgKrrMgwlBRsI2prrp/k2zmzGFHhjl+m78z/S3921K4EL56eQmSaGGUR7m0PUbO/xyNJrBmLaBSXzTksNsKde//pRv5O/HyDnqPfRGMF4Ww==
+X-HE-Tag: 1766040128-87044
+X-HE-Meta: U2FsdGVkX19F7F8hwvTndxd+3j1st/1I9hfwwsh5rnDIMlBsTJcEKcitnbau6e6hyf/9+MdaGbcdAXdIBLa7sX8iUk3JsxqD9crZXYWxBUBKr8EzSz23oJbMP/B3LBeRI4apgCO/SDV3Z86CgDGGJq8ONkdFZ7vgQzjDNWiNWqq18CmnuXqFFGPNHFY9W84aV816MpW9j2YxCzFJzm4i0rjEWRgl6w6HB8g9doCtpNPZXFocqILdxwXcEhKRiNtjNNhirxAD4etSyjnjVcw7RgU8aY2ibCfIHQZxaT2Bi9K7ZzlQTrDQBNavp7dhSsuAZT/Zjg0/9cyGCGh2+yVaRZ9NJHWZ24xaT/CBjRcsCKKI3QcHHNZgYUc+BkUFuIlSI7h/+n2S5yzSm2ijyTJFkqbHOoLfykTfZZu9zlgKpWHodRZqHSujV87Ug1zudUuKJf5GKTmpoN0BMHLz+c3Cqlnu6piiZMMQj09gw1YuzVnKaXjrv46Qz6mPBkFCgm2F25yleXxyQatOSWh1gqt6vyPBtE3KgfbV6VG4kQzqTdZvt8864gCofxBJFdchzNzsgFdXrHFERAuRDPO3fmHImr2x+q74f8HSHybyock5y7U4UZAEzJkq5azae50Zwdd94jt51cfgHj6YpiHdCtQ5oFltrkkOVCXCwI//oQBr4siV2DcTjuN1sO+SmzhfxNk6lZPmzqnQzc+nmPPV2khRcIvLtxlZLf6UZMoZh7LJ5g/kn2/X/dUDmNPa/2fMJu87Q1XnVoCTH/sOtIDwl5bz7mu7SDP/4g/kvCuquz1UfC1SKeZKkQ745fUpvihWBglUOG23JaRUJXiBh7rNt7PRMZQNIgV2UpYXyLHn40udLrDuBNulBFA89mZP6N0syrXVCjANDuoIXAsArTjfOWEK19tbWCPTS15jAYz+xTLwVwmHDLZz3ytgcdDUyGYk10eKGVPE+j0tcnZzUv+H7Zl
+ 6M1UUUji
+ cxfo6mVQHqQz3K0icXi+BXfl/mibyoEU5hAwmqw0fTSI/7TLdM0DfTL7KRXDqamMWJXG+dDoXFMQppwzVUTM/SDHjzd6M3DilCAm4E3gvfflZ0L+MHv+jF+cgX3K85RI3UDlRpkR3CMBWT0PhGKjIdNe+53uvP9W6DvlW3GrLd2olTE5RmJdW/LA0pW0rYdDvK7WDdBenX6/al3keZdJmjJ7NF1r5wGzN6ysw7hFOkPQNg7Tb9h9kpKkXH5iFjBzTqkSf4AC8I7ATI1GnAT7bsH9iIATP5oXePa4LACJk8SDA32Qou27doaypqH3zfwd0QqKAtT8gI9qWMLcRGm379GRVy59LgtUxTqnGWvJViImDnMqtTKplAeQocbnMjvJrdEQC1nxA/cRkR0k6/D0eaDwzD92yO07n4atX7Mj6DJTj/Ht0B0K5owECUXC5s73jMlK8xLCfCZq//qeSWGxuQQsAC6OuNfISh3llaV4PvztEUH9AfTUpCJd03oDkOm34GsAkXPwVmk2mrXMbmKu6Gumhm5qd+0kc/wQWynu4aBy3TmQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,369 +126,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-when want to change the kfence pool size, currently it is not easy and
-need to compile kernel.
+Hi David,
 
-Add an early boot parameter kfence.num_objects to allow change kfence
-objects number and allow increate total pool to provide high failure
-rate.
+I’m just checking in on this patch to see if you’ve had a chance to review
+the benchmark results I shared last week. To recap, the caching reduced the
+execution time for the NUMA_NO_NODE case from ~2402 ns to ~453 ns in my test
+environment.
 
-Signed-off-by: yuan linyu <yuanlinyu@honor.com>
----
- include/linux/kfence.h  |   5 +-
- mm/kfence/core.c        | 122 +++++++++++++++++++++++++++++-----------
- mm/kfence/kfence.h      |   4 +-
- mm/kfence/kfence_test.c |   2 +-
- 4 files changed, 96 insertions(+), 37 deletions(-)
+Please let me know if the performance gain justifies the change in your view,or
+if you would prefer I send a v2 that simply updates the TODO comment as you suggested.
 
-diff --git a/include/linux/kfence.h b/include/linux/kfence.h
-index 0ad1ddbb8b99..920bcd5649fa 100644
---- a/include/linux/kfence.h
-+++ b/include/linux/kfence.h
-@@ -24,7 +24,10 @@ extern unsigned long kfence_sample_interval;
-  * address to metadata indices; effectively, the very first page serves as an
-  * extended guard page, but otherwise has no special purpose.
-  */
--#define KFENCE_POOL_SIZE ((CONFIG_KFENCE_NUM_OBJECTS + 1) * 2 * PAGE_SIZE)
-+extern unsigned int __kfence_pool_size;
-+#define KFENCE_POOL_SIZE (__kfence_pool_size)
-+extern unsigned int __kfence_num_objects;
-+#define KFENCE_NUM_OBJECTS (__kfence_num_objects)
- extern char *__kfence_pool;
- 
- DECLARE_STATIC_KEY_FALSE(kfence_allocation_key);
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 577a1699c553..5d5cea59c7b6 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -132,6 +132,31 @@ struct kfence_metadata *kfence_metadata __read_mostly;
-  */
- static struct kfence_metadata *kfence_metadata_init __read_mostly;
- 
-+/* allow change number of objects from cmdline */
-+#define KFENCE_MIN_NUM_OBJECTS 1
-+#define KFENCE_MAX_NUM_OBJECTS 65535
-+unsigned int __kfence_num_objects __read_mostly = CONFIG_KFENCE_NUM_OBJECTS;
-+EXPORT_SYMBOL(__kfence_num_objects); /* Export for test modules. */
-+static unsigned int __kfence_pool_pages __read_mostly = (CONFIG_KFENCE_NUM_OBJECTS + 1) * 2;
-+unsigned int __kfence_pool_size __read_mostly = (CONFIG_KFENCE_NUM_OBJECTS + 1) * 2 * PAGE_SIZE;
-+EXPORT_SYMBOL(__kfence_pool_size); /* Export for lkdtm module. */
-+
-+static int __init early_parse_kfence_num_objects(char *buf)
-+{
-+	unsigned int num;
-+	int ret = kstrtouint(buf, 10, &num);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	__kfence_num_objects = clamp(num, KFENCE_MIN_NUM_OBJECTS, KFENCE_MAX_NUM_OBJECTS);
-+	__kfence_pool_pages = (__kfence_num_objects + 1) * 2;
-+	__kfence_pool_size = __kfence_pool_pages * PAGE_SIZE;
-+
-+	return 0;
-+}
-+early_param("kfence.num_objects", early_parse_kfence_num_objects);
-+
- /* Freelist with available objects. */
- static struct list_head kfence_freelist = LIST_HEAD_INIT(kfence_freelist);
- static DEFINE_RAW_SPINLOCK(kfence_freelist_lock); /* Lock protecting freelist. */
-@@ -155,12 +180,13 @@ atomic_t kfence_allocation_gate = ATOMIC_INIT(1);
-  *
-  *	P(alloc_traces) = (1 - e^(-HNUM * (alloc_traces / SIZE)) ^ HNUM
-  */
-+static unsigned int kfence_alloc_covered_order __read_mostly;
-+static unsigned int kfence_alloc_covered_mask __read_mostly;
-+static atomic_t *alloc_covered __read_mostly;
- #define ALLOC_COVERED_HNUM	2
--#define ALLOC_COVERED_ORDER	(const_ilog2(CONFIG_KFENCE_NUM_OBJECTS) + 2)
--#define ALLOC_COVERED_SIZE	(1 << ALLOC_COVERED_ORDER)
--#define ALLOC_COVERED_HNEXT(h)	hash_32(h, ALLOC_COVERED_ORDER)
--#define ALLOC_COVERED_MASK	(ALLOC_COVERED_SIZE - 1)
--static atomic_t alloc_covered[ALLOC_COVERED_SIZE];
-+#define ALLOC_COVERED_HNEXT(h)	hash_32(h, kfence_alloc_covered_order)
-+#define ALLOC_COVERED_MASK		(kfence_alloc_covered_mask)
-+#define KFENCE_COVERED_SIZE		(sizeof(atomic_t) * (1 << kfence_alloc_covered_order))
- 
- /* Stack depth used to determine uniqueness of an allocation. */
- #define UNIQUE_ALLOC_STACK_DEPTH ((size_t)8)
-@@ -200,7 +226,7 @@ static_assert(ARRAY_SIZE(counter_names) == KFENCE_COUNTER_COUNT);
- 
- static inline bool should_skip_covered(void)
- {
--	unsigned long thresh = (CONFIG_KFENCE_NUM_OBJECTS * kfence_skip_covered_thresh) / 100;
-+	unsigned long thresh = (__kfence_num_objects * kfence_skip_covered_thresh) / 100;
- 
- 	return atomic_long_read(&counters[KFENCE_COUNTER_ALLOCATED]) > thresh;
- }
-@@ -262,7 +288,7 @@ static inline unsigned long metadata_to_pageaddr(const struct kfence_metadata *m
- 
- 	/* Only call with a pointer into kfence_metadata. */
- 	if (KFENCE_WARN_ON(meta < kfence_metadata ||
--			   meta >= kfence_metadata + CONFIG_KFENCE_NUM_OBJECTS))
-+			   meta >= kfence_metadata + __kfence_num_objects))
- 		return 0;
- 
- 	/*
-@@ -612,7 +638,7 @@ static unsigned long kfence_init_pool(void)
- 	 * fast-path in SLUB, and therefore need to ensure kfree() correctly
- 	 * enters __slab_free() slow-path.
- 	 */
--	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
-+	for (i = 0; i < __kfence_pool_pages; i++) {
- 		struct page *page;
- 
- 		if (!i || (i % 2))
-@@ -640,7 +666,7 @@ static unsigned long kfence_init_pool(void)
- 		addr += PAGE_SIZE;
- 	}
- 
--	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+	for (i = 0; i < __kfence_num_objects; i++) {
- 		struct kfence_metadata *meta = &kfence_metadata_init[i];
- 
- 		/* Initialize metadata. */
-@@ -666,7 +692,7 @@ static unsigned long kfence_init_pool(void)
- 	return 0;
- 
- reset_slab:
--	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
-+	for (i = 0; i < __kfence_pool_pages; i++) {
- 		struct page *page;
- 
- 		if (!i || (i % 2))
-@@ -710,7 +736,7 @@ static bool __init kfence_init_pool_early(void)
- 	 * fails for the first page, and therefore expect addr==__kfence_pool in
- 	 * most failure cases.
- 	 */
--	memblock_free_late(__pa(addr), KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
-+	memblock_free_late(__pa(addr), __kfence_pool_size - (addr - (unsigned long)__kfence_pool));
- 	__kfence_pool = NULL;
- 
- 	memblock_free_late(__pa(kfence_metadata_init), KFENCE_METADATA_SIZE);
-@@ -740,7 +766,7 @@ DEFINE_SHOW_ATTRIBUTE(stats);
-  */
- static void *start_object(struct seq_file *seq, loff_t *pos)
- {
--	if (*pos < CONFIG_KFENCE_NUM_OBJECTS)
-+	if (*pos < __kfence_num_objects)
- 		return (void *)((long)*pos + 1);
- 	return NULL;
- }
-@@ -752,7 +778,7 @@ static void stop_object(struct seq_file *seq, void *v)
- static void *next_object(struct seq_file *seq, void *v, loff_t *pos)
- {
- 	++*pos;
--	if (*pos < CONFIG_KFENCE_NUM_OBJECTS)
-+	if (*pos < __kfence_num_objects)
- 		return (void *)((long)*pos + 1);
- 	return NULL;
- }
-@@ -799,7 +825,7 @@ static void kfence_check_all_canary(void)
- {
- 	int i;
- 
--	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+	for (i = 0; i < __kfence_num_objects; i++) {
- 		struct kfence_metadata *meta = &kfence_metadata[i];
- 
- 		if (kfence_obj_allocated(meta))
-@@ -894,7 +920,7 @@ void __init kfence_alloc_pool_and_metadata(void)
- 	 * re-allocate the memory pool.
- 	 */
- 	if (!__kfence_pool)
--		__kfence_pool = memblock_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+		__kfence_pool = memblock_alloc(__kfence_pool_size, PAGE_SIZE);
- 
- 	if (!__kfence_pool) {
- 		pr_err("failed to allocate pool\n");
-@@ -903,11 +929,23 @@ void __init kfence_alloc_pool_and_metadata(void)
- 
- 	/* The memory allocated by memblock has been zeroed out. */
- 	kfence_metadata_init = memblock_alloc(KFENCE_METADATA_SIZE, PAGE_SIZE);
--	if (!kfence_metadata_init) {
--		pr_err("failed to allocate metadata\n");
--		memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
--		__kfence_pool = NULL;
--	}
-+	if (!kfence_metadata_init)
-+		goto fail_pool;
-+
-+	kfence_alloc_covered_order = ilog2(__kfence_num_objects) + 2;
-+	kfence_alloc_covered_mask = (1 << kfence_alloc_covered_order) - 1;
-+	alloc_covered = memblock_alloc(KFENCE_COVERED_SIZE, PAGE_SIZE);
-+	if (alloc_covered)
-+		return;
-+
-+	pr_err("failed to allocate covered\n");
-+	memblock_free(kfence_metadata_init, KFENCE_METADATA_SIZE);
-+	kfence_metadata_init = NULL;
-+
-+fail_pool:
-+	pr_err("failed to allocate metadata\n");
-+	memblock_free(__kfence_pool, __kfence_pool_size);
-+	__kfence_pool = NULL;
- }
- 
- static void kfence_init_enable(void)
-@@ -930,9 +968,9 @@ static void kfence_init_enable(void)
- 	WRITE_ONCE(kfence_enabled, true);
- 	queue_delayed_work(system_unbound_wq, &kfence_timer, 0);
- 
--	pr_info("initialized - using %lu bytes for %d objects at 0x%p-0x%p\n", KFENCE_POOL_SIZE,
--		CONFIG_KFENCE_NUM_OBJECTS, (void *)__kfence_pool,
--		(void *)(__kfence_pool + KFENCE_POOL_SIZE));
-+	pr_info("initialized - using %u bytes for %d objects at 0x%p-0x%p\n", __kfence_pool_size,
-+		__kfence_num_objects, (void *)__kfence_pool,
-+		(void *)(__kfence_pool + __kfence_pool_size));
- }
- 
- void __init kfence_init(void)
-@@ -953,41 +991,53 @@ void __init kfence_init(void)
- 
- static int kfence_init_late(void)
- {
--	const unsigned long nr_pages_pool = KFENCE_POOL_SIZE / PAGE_SIZE;
--	const unsigned long nr_pages_meta = KFENCE_METADATA_SIZE / PAGE_SIZE;
-+	unsigned long nr_pages_meta = KFENCE_METADATA_SIZE / PAGE_SIZE;
- 	unsigned long addr = (unsigned long)__kfence_pool;
--	unsigned long free_size = KFENCE_POOL_SIZE;
-+	unsigned long free_size = __kfence_pool_size;
-+	unsigned long nr_pages_covered, covered_size;
- 	int err = -ENOMEM;
- 
-+	kfence_alloc_covered_order = ilog2(__kfence_num_objects) + 2;
-+	kfence_alloc_covered_mask = (1 << kfence_alloc_covered_order) - 1;
-+	covered_size =  PAGE_ALIGN(KFENCE_COVERED_SIZE);
-+	nr_pages_covered = (covered_size / PAGE_SIZE);
- #ifdef CONFIG_CONTIG_ALLOC
- 	struct page *pages;
- 
--	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL, first_online_node,
-+	pages = alloc_contig_pages(__kfence_pool_pages, GFP_KERNEL, first_online_node,
- 				   NULL);
- 	if (!pages)
- 		return -ENOMEM;
- 
- 	__kfence_pool = page_to_virt(pages);
-+	pages = alloc_contig_pages(nr_pages_covered, GFP_KERNEL, first_online_node,
-+				   NULL);
-+	if (!pages)
-+		goto free_pool;
-+	alloc_covered = page_to_virt(pages);
- 	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL, first_online_node,
- 				   NULL);
- 	if (pages)
- 		kfence_metadata_init = page_to_virt(pages);
- #else
--	if (nr_pages_pool > MAX_ORDER_NR_PAGES ||
-+	if (__kfence_pool_pages > MAX_ORDER_NR_PAGES ||
- 	    nr_pages_meta > MAX_ORDER_NR_PAGES) {
- 		pr_warn("KFENCE_NUM_OBJECTS too large for buddy allocator\n");
- 		return -EINVAL;
- 	}
- 
--	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
-+	__kfence_pool = alloc_pages_exact(__kfence_pool_size, GFP_KERNEL);
- 	if (!__kfence_pool)
- 		return -ENOMEM;
- 
-+	alloc_covered = alloc_pages_exact(covered_size, GFP_KERNEL);
-+	if (!alloc_covered)
-+		goto free_pool;
- 	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE, GFP_KERNEL);
- #endif
- 
- 	if (!kfence_metadata_init)
--		goto free_pool;
-+		goto free_cover;
- 
- 	memzero_explicit(kfence_metadata_init, KFENCE_METADATA_SIZE);
- 	addr = kfence_init_pool();
-@@ -998,22 +1048,28 @@ static int kfence_init_late(void)
- 	}
- 
- 	pr_err("%s failed\n", __func__);
--	free_size = KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool);
-+	free_size = __kfence_pool_size - (addr - (unsigned long)__kfence_pool);
- 	err = -EBUSY;
- 
- #ifdef CONFIG_CONTIG_ALLOC
- 	free_contig_range(page_to_pfn(virt_to_page((void *)kfence_metadata_init)),
- 			  nr_pages_meta);
-+free_cover:
-+	free_contig_range(page_to_pfn(virt_to_page((void *)alloc_covered)),
-+			  nr_pages_covered);
- free_pool:
- 	free_contig_range(page_to_pfn(virt_to_page((void *)addr)),
- 			  free_size / PAGE_SIZE);
- #else
- 	free_pages_exact((void *)kfence_metadata_init, KFENCE_METADATA_SIZE);
-+free_cover:
-+	free_pages_exact((void *)alloc_covered, covered_size);
- free_pool:
- 	free_pages_exact((void *)addr, free_size);
- #endif
- 
- 	kfence_metadata_init = NULL;
-+	alloc_covered = NULL;
- 	__kfence_pool = NULL;
- 	return err;
- }
-@@ -1039,7 +1095,7 @@ void kfence_shutdown_cache(struct kmem_cache *s)
- 	if (!smp_load_acquire(&kfence_metadata))
- 		return;
- 
--	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+	for (i = 0; i < __kfence_num_objects; i++) {
- 		bool in_use;
- 
- 		meta = &kfence_metadata[i];
-@@ -1077,7 +1133,7 @@ void kfence_shutdown_cache(struct kmem_cache *s)
- 		}
- 	}
- 
--	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+	for (i = 0; i < __kfence_num_objects; i++) {
- 		meta = &kfence_metadata[i];
- 
- 		/* See above. */
-diff --git a/mm/kfence/kfence.h b/mm/kfence/kfence.h
-index dfba5ea06b01..dc3abb27c632 100644
---- a/mm/kfence/kfence.h
-+++ b/mm/kfence/kfence.h
-@@ -104,7 +104,7 @@ struct kfence_metadata {
- };
- 
- #define KFENCE_METADATA_SIZE PAGE_ALIGN(sizeof(struct kfence_metadata) * \
--					CONFIG_KFENCE_NUM_OBJECTS)
-+					__kfence_num_objects)
- 
- extern struct kfence_metadata *kfence_metadata;
- 
-@@ -123,7 +123,7 @@ static inline struct kfence_metadata *addr_to_metadata(unsigned long addr)
- 	 * error.
- 	 */
- 	index = (addr - (unsigned long)__kfence_pool) / (PAGE_SIZE * 2) - 1;
--	if (index < 0 || index >= CONFIG_KFENCE_NUM_OBJECTS)
-+	if (index < 0 || index >= __kfence_num_objects)
- 		return NULL;
- 
- 	return &kfence_metadata[index];
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 00034e37bc9f..00a51aa4bad9 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -641,7 +641,7 @@ static void test_gfpzero(struct kunit *test)
- 			break;
- 		test_free(buf2);
- 
--		if (kthread_should_stop() || (i == CONFIG_KFENCE_NUM_OBJECTS)) {
-+		if (kthread_should_stop() || (i == __kfence_num_objects)) {
- 			kunit_warn(test, "giving up ... cannot get same object back\n");
- 			return;
- 		}
--- 
-2.25.1
-
+Thanks,
+Swaraj
 
