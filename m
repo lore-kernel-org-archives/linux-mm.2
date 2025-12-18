@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB1FD68BE3
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF65AD68BE3
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:15:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D6086B0088; Thu, 18 Dec 2025 02:12:06 -0500 (EST)
+	id 45ADF6B008A; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55A106B0089; Thu, 18 Dec 2025 02:12:06 -0500 (EST)
+	id 3DE336B008C; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4665C6B008A; Thu, 18 Dec 2025 02:12:06 -0500 (EST)
+	id 2E0866B0092; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 311B06B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:12:06 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7B975D396
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:12:05 +0000 (UTC)
-X-FDA: 84231722610.25.6351EBF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0675D4000C
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:12:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=palhzTLb;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1C1F66B008A
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:15:15 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D0229140CB8
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:14 +0000 (UTC)
+X-FDA: 84231730548.14.3FE1A3E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1CDCA80006
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:15:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDdm6kiF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766042113; a=rsa-sha256;
+	cv=none;
+	b=wO6s7QJqb+EaVxSIcVA3nTJ4TST/YbaSrMmiH/RlJrzjC46Ij7fIQmZ70bVjxr1EIi5zg/
+	HgI44apGsUvsSlZpHH8pP90Tvvd21xx/ZXzU2CQ0/jM7pzrCp5Kgb/Lm9xfHoZ5h80u+QY
+	C8GaD4ui1PDuwvxopEa5iMJEu5/0UUE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDdm6kiF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766041924;
+	s=arc-20220608; t=1766042113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3D+di1Je3qZR4iyk0R8DRY9gL0g1/35US7wKZl3x6Yw=;
-	b=b1Q6vVTdkEyxHdOz3mqEw6mjtvt1/tgVYDSSJTm9XNJoweObUB72BQTy7/XI1dietkTp2C
-	SJsT81opUV5HoiAYS+YVkXOoiYkuZhJrYxpFKBuZLNI0FNEodDAJUjLgRWvrXMhQz1TE74
-	6TdRe3e7kpLcUibCMzBHDaKrIgEWNfM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=palhzTLb;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766041924; a=rsa-sha256;
-	cv=none;
-	b=dA/PRld93Gn3wwu0YV9wA5wyJvWi+u/lsAu5Qoq9qoOlvmYrJYlqJy/EWNJXmCzZ7oorNh
-	PLGXW+GbpQ6Utyqq2c/Tmo57MbIlpwv1Ct2lHCUFPQV+2c0cf1MMy9inflKiSvv4y0hC9W
-	bZNqopcU7q47OV4Fz3TTlYnR0pcn8ss=
+	bh=wI5zk1ieSLi83vyHBIeG7fn4tK1biWM9ivGz3DLAadA=;
+	b=1r9af5plehC3rQZpemyf4yeBZ525LGOCn+lYUTM+McDzO6xOrSXTeJbQEp/yG715b1gqrb
+	iYrkLIF78nCCzjObmXY77QnuFuPQZXNyMduWdfGo0x7oDn9WXOuYUuToAoSWTOCZ65zbn7
+	mopIJwi7UFX382WR9WHA5RIlwkqzPt0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 65806600AC;
-	Thu, 18 Dec 2025 07:12:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FF7C4CEFB;
-	Thu, 18 Dec 2025 07:11:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ED3B643A23;
+	Thu, 18 Dec 2025 07:15:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67ADC4CEFB;
+	Thu, 18 Dec 2025 07:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766041923;
-	bh=eaV6vluudAHtjLWNiyDXoFoLoPIaqPnfRwyUT1oVBzM=;
+	s=k20201202; t=1766042111;
+	bh=xsSR5/gROtCj621epPFc8z9dY6QJQQ7gGEk35KMHxK0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=palhzTLbgkFchjBj9NEm1y2UtB0vAj0Hdms0FFq3DYfMHhUwPvJpGc49F3seDo5jI
-	 HGEerhaXjRKQXirYAfDJZB1jX3ePhSrvz6du2TXwQ1Ex49uJlLxDA3aEga9EywZQJh
-	 nqk9lfrAqq5Qs4ysO+fJo8SeQYcRKogEPym/5daOvz9djuY+sFP0a/eO+ZteA0f3F9
-	 onsr+AVGePwjszqbf4KBqff+FPTFH+g6gFWUmmXRbkqjDUJKFcfWHt+bLiQ8z5cuWt
-	 /iCg+cVTScTsTPOTLvYh3fySS4ukio5UHuU+yyPPEaXG9G4jcjKUdiNeC09xRMw34I
-	 eP2sdxGzRVI4Q==
-Message-ID: <6559e53d-e940-4989-8bd2-de9a6cf9f62e@kernel.org>
-Date: Thu, 18 Dec 2025 08:11:57 +0100
+	b=YDdm6kiFrsHFIigCgTMUyicseMcXv/IwcfId/8Rfq9RBAKmGHk/dxaVfSmWuLOgx8
+	 LqVEMmq+y42Fnad8K0nLh7urq/CzvVo+Ha7Jj4DcwPHGvcc4QilPG3MiwPu4N/fua6
+	 td/XPdO5yVny/RhgUqN1GFnUN5Oe/3HTmoBZib3pCqI+oY2rwCXCyhwBPEWky6vSDj
+	 uCTxKrHQMVgT1awg/XR5WSy1Sta9e2f3yJiXFb9E/H+G76ard2Xd0HEtNiNRWeoeaC
+	 k1cVyHklkL5q3iRH5jMeXEEMDnCz2Xo2rGxcTJbwhjxvvgQlNxBNcDubXQHLndxrX9
+	 HLbKAjrWdqEFQ==
+Message-ID: <e9033bc2-9a85-45de-a005-b9d12eb81f66@kernel.org>
+Date: Thu, 18 Dec 2025 08:15:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 1/8] treewide: provide a generic clear_user_page()
- variant
+Subject: Re: [PATCH v10 4/8] highmem: do range clearing in
+ clear_user_highpages()
 To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, x86@kernel.org
 Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
@@ -78,20 +78,20 @@ Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
  raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
  boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
 References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
- <20251215204922.475324-2-ankur.a.arora@oracle.com>
+ <20251215204922.475324-5-ankur.a.arora@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251215204922.475324-2-ankur.a.arora@oracle.com>
+In-Reply-To: <20251215204922.475324-5-ankur.a.arora@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1CDCA80006
+X-Stat-Signature: k7fca3h5o9jptzwha3rqdksjzs99mssr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0675D4000C
-X-Stat-Signature: x1pnmqsassaz8k6ojaosq9fpiwfnux57
-X-HE-Tag: 1766041923-831140
-X-HE-Meta: U2FsdGVkX19UxpVWIQs7VHEBSQs6cnm1L1X7P+/32HyTiJt+lzuPHe47d5VLkUX3JwFvaI/r/J8XPkIRgCP4mfTbI6v5mgv2Ju299mMqs352nXYrogmkouNiMDGS1iWjkpf3UYKrhSPoFzaO3jpYNBoKkjRgjmsOydizysgwrj7oNWPr5GKWJi4au/TwamgYCbyxTkz/f+sMnD/6xJzObbwtEnajfLv90zPawxkn1PpR36QDUI78cTcN3v4A79CHGrpGesJvGstJcJu45PqRfx4Y7hpR/D7iivSqsmKoFSe14ydo0fEra15g9aqkCdggiVVq5v6WHHrtzBqqe7meEjfRtFqiogygGG3FqX3pUH/4aRQoex5IhC7Iv7Q7xvFPoPoUWOWMYkHsYgSzSq6WuZcZyOtslCIO9ueYjNpa0sBA8ZAJ2iZxO1XWrxwCjMR4bfkdMT3uD+z2pfIWY3G8jXkmajXFIzitJPVQe4aD4ex7ASd8ufxf/i9os2VYO0oFUbNEvm3XeBPuXcoxDP49+/VQq4hXfpQ0G0EpmNA7rO5bQmVsamttMeQ81i1ZDlMgKY1gt/iG7dTJPj8adm+yPbFpUolgTve3MpgSaYxrepNUthHHxtda+G7KB88y2siRpj6n47GOQzIaAIgYv4uS/9WvLzQ4g45xUXjgAVErDayrRZ4cYIo/eH1B3zbEE1g2lINiKeKAQ3j54ZQGxUucjuj7Ef4d6UTnQsGrxRwzhRICvhabNuh0ZX1p+TX+XNogX2CK5jJ85he/yrDVw/+zQmjYYR87vYwOJe6RP9qdSJnVdiD3QgBlEcV8eZmr1ABIrDrwlOQP7TSrWb/lzu+YU3RDabWgcmW8doyrC3CaLNwFIGv0DX3HzM97B7EI9jusBUqNc5LZ6YjCN+WRGfMdfRBA5g0n23EBKDH3j6vSaAqhg3y/1bbGVNgyVnHLQzg88mzMx98OAWjT50Gg1EC
- pzuJwfdA
- xE8O/PuEveLv3FXzZgcnuOUL60zqNWAVSpI7ZJpX9uIA4yP+DN04damZzgdmRiwBmyKheqtxf+5pd39Md+/0e+njZjcWfgsG9XzoEJqhclndh2P2bbjftZnbAMx1Hl17rnykY413Ht6rMvYD9M9ELAmfdoIXvmXRZa/x0MiDF0JzUzqb++USneU7WBAOymocLisHKlnP6jRMXTYEY8/4lHCzgTi9aGHqDM+N6/yHPO+1oh3mWJpmMhcEVHg4gkFJPTOndeAhj8kvQ9s3s5fQULX0gmgDrdeF9MFMK1oOuCPrxLH/3t4kKHvG8CarXPUGCz5QtuDn2xiPGApjVzt/W/xcWRqCU2OqLuO/8
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766042112-802883
+X-HE-Meta: U2FsdGVkX1+DivO+j4xP7NTjCiXagvl2VHQguuq2jn9RP3HLbbsnfppTafs7AEnQnjpNE8cpCTPEu0J8kJUD7H4FZUE743Z7XhIsXvOhgPq0LxRV/RhfTOCxoRXc5BvaJONViVKzJRTvTYjGxLVRTOg02e9JyKBHmCK7Y4RiK1i+wfP6VoUXnDf6XoS3p6WovoQFDBDcwKKS9XxBtOaAowOreli2boR4lOlfbhFlkQjDa/hd825tm/zDNsCpfkeyTH+lCkhyt3puFsOLgDCesCU/+M6JPBQlDlglejU6OAZ3pi+E/xRt8WODPYBxP1E3XH0R35vqMZnvSmnYSP+ImzC/TeF2xX4OFeoIrzXf9XmMvAkMpH3g9qxyFi2XW9iHGo+pU+nLnHlW5IobY4brsgrR7/9dfOR5MyCIm3mDuOCtDUuEi3fxfzcaucEPhY1vWI8ZvIalVOclq1szaDUiobZN8ZO33D8c61u5xHCRA/GEcDSX+8bhFHo2iyHBLgvx+FkGqJPpl60Hw6LSINatGB4K7YKMof6vfpuc/FlQQ8dLw0oy+ldbtLurFBJZkg/COdud9F2HHUvR8TrwxaMgZ0GJL8v7QaY/YdExiHoFUo7kdkGkgaLTa0xwYUHQOtiJ6FVgn5TUcQ4dU1B7s6eHVtxMj+DQCyFt+BlqMpZzdFn5ttYDuMgRL0OdqdomxN55AQ2sovy1cgiKZqASw0FyumVV7QFGI4niiAHGi3HtMe3gZknBWHc05Qi4PfFdrZC14Y8sFg6Ms/reYjew9Y4Qwc/cHNm7n2FebwQwdqIpGHSu7viIC1eYj0TwxGYGv/DGGcizWG7JJL8p3/sLUIGbf2MHl76kRy9qV1Egnzn230/ruepuQ84QLAoqbVQ3rhUvbhAv17wwKkRNLwYIPCfCRdlkvbYb0qkirPtBDUAmlfdkb9QRTXOU7XhM4IdlcJNheHyPNrWO7pvLvyO2JNP
+ 0+R0rtLQ
+ eEMgajjhRcUuz0NSpOAIy58MnzJ6+ZoI5/FwvCE7XTHrdwO4i/4ur+YB9DBYEfuncqMsYSscztQRrIawgIaxlland/oUUSbE/n4QiPWBtmHh0dJIBEt9pjo9oy751Ye2sk7wEgCzIhf8/4cWmm9aSVVn/MLxhCCuOL62ZQb5M76lchD2do+3oHbdD7gEeT5JirFEmuEoujIY16LMqmnWF7qbZTRINcL7Bewap7BGx3Sg+Gzc3hlY9pD1xmA8Xrdci8scE5zlCQWJFjx+8J/xUWC46VaabzAmjjXaAkmVfYTpS0nvO6cUNFZn/72Ua/wLU0mB4O+n5T4NFObw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,39 +101,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/15/25 21:49, Ankur Arora wrote:
-> From: David Hildenbrand <david@redhat.com>
+> Use the range clearing primitive clear_user_pages() when clearing
+> contiguous pages in clear_user_highpages().
 > 
-> Let's drop all variants that effectively map to clear_page() and
-> provide it in a generic variant instead.
+> We can safely do that when we have !CONFIG_HIGHMEM and when the
+> architecture does not have clear_user_highpage.
 > 
-> We'll use the macro clear_user_page to indicate whether an architecture
-> provides it's own variant. Maybe at some point these should be CONFIG_
-> options.
-
-Can we drop the second sentence?
-
+> The first is necessary because not doing intermediate maps for
+> pages lets contiguous page ranges stay contiguous. The second,
+> because if the architecture has clear_user_highpage(), it likely
+> needs flushing magic when clearing the page, magic that we aren't
+> privy to.
 > 
-> Also, clear_user_page() is only called from the generic variant of
-> clear_user_highpage(), so define it only if the architecture does
-> not provide a clear_user_highpage(). And, for simplicity define it
-> in linux/highmem.h.
-> 
-> Note that for parisc, clear_page() and clear_user_page() map to
-> clear_page_asm(), so we can just get rid of the custom clear_user_page()
-> implementation. There is a clear_user_page_asm() function on parisc,
-> that seems to be unused. Not sure what's up with that.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-
-You should likely now add
-
-Co-developed-by: Ankur Arora <ankur.a.arora@oracle.com>
-
-above your SB :)
-
 > Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> ---
 
-Skimmed over it and nothing jumped at me.
+Can't you squash #4 into #2 if you move #3 in front of them? Or is there 
+a dependency with #2 that I am missing?
 
 -- 
 Cheers
