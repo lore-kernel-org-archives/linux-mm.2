@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C17FD6ACC7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB45D6ACD5
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:09:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB02D6B0089; Thu, 18 Dec 2025 04:04:13 -0500 (EST)
+	id 3A7756B0088; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A91086B008A; Thu, 18 Dec 2025 04:04:13 -0500 (EST)
+	id 354EB6B0089; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D5446B0092; Thu, 18 Dec 2025 04:04:13 -0500 (EST)
+	id 236EC6B008A; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 90E286B0089
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:04:13 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C3745D529
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:04:13 +0000 (UTC)
-X-FDA: 84232005186.06.15DE37B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9EB36A000F
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:04:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gh1ZAxfw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766048651; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 107496B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B909E1A0DD5
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:09:30 +0000 (UTC)
+X-FDA: 84232018500.14.B88CDB3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F116E18000F
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:09:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUwTZfEp;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766048969; a=rsa-sha256;
 	cv=none;
-	b=AGf/FZXEm0DmE7f48bu1621AmKIv4Wsdo/n2zZtW07Lhl/0zDfA60+VZsxDUaBboY8Ms8G
-	eahBErSD44w3lw0GwoC2LC6G3/D9niZB/1+8e99uCeN7++jXaW9MLuK2Jagskj3o1etfJo
-	u0yZZK8mJQz2fT5uNicoWgMRvOTOs9E=
+	b=BuuTZC1gTUGZaAK9wJx4yW/zFg9YQqfgLlB6cy3UiDfebZwfC3ybIzFVMqjwYnyXtXQt85
+	AQpJrOQ9suqQFnsy26RqLzrdjY8MZQjd14cCCTbiY3nxlOt2gZOUVSBGpSzPK5idEBEwnB
+	czBkHLiMmW/v0CYrjjaM3PDtL5pWNgM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gh1ZAxfw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUwTZfEp;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766048651;
+	s=arc-20220608; t=1766048969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RtLyY4WKMN0apBgF5g/lMOY4d/JrKWkdoi1WOKd+3LI=;
-	b=IriUB+21vPQi5JuQ+GY4t2Hgga2QFn0RdMJjCJNjUXHwg53s9whaoZ+vvl/dIPnA24P1II
-	ehX6lpkfrIzatc9I//+tpgYDddGUsMGgzRJiym6j/dfYxpzuckHxJuw3P8ysXTsDYvDYWZ
-	L0PiCaEAnfZpWYIPcxTmAtNK0x3g8QI=
+	bh=EUdZKPRQK50nnb0G4YRlqMcv/TyxJJ8z+MMHnn0aXRQ=;
+	b=AWf63hMPdghnx9mqThh/WIzpcgP2Zg76Qo/ESRY+v9h1cVlDs0M1Au3WLatQbkrsyFUH53
+	cVpdIPQgWu8jAGcOggSkMu32figlJfY4jkgEFtULAy6U3jugQY/BfbE4yosoJujIb1GvbM
+	MyXD66p2EsbWviAQbIPL9PTk0Jjpx4g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91C4B43AC2;
-	Thu, 18 Dec 2025 09:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB66C4CEFB;
-	Thu, 18 Dec 2025 09:04:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3235C600AC;
+	Thu, 18 Dec 2025 09:09:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47EAC4CEFB;
+	Thu, 18 Dec 2025 09:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766048650;
-	bh=K7sTzImfm/ZlD+BwDyLC75278tg9lbuRtHhwrRkkXVM=;
+	s=k20201202; t=1766048967;
+	bh=cy6MizIU13WGE5axn5arnaf5rhN5ZiFE8ex8K1Wi8R8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gh1ZAxfwbsO5kkKLAFARVWdAfKe/XY/yd5XTJu/i3WKX+vCgqYh99HDC0JLqwiryE
-	 3SqpGL8wPV595zKDmSfDUKlAylJ1gYl3qIo9Q2cHiAYU/YaAlgERnnzV8r1ZYIJTHT
-	 qkdTB8fmsnFJ5pSfb8qIHJcCiLsASoEsc9ko5Ep6HFZScBEa+X4g0huhx4bHsLCdiE
-	 t/zpwKTewKWtI+ND88OhKI3ZqeW0IRc1ZGesJBB1lXj+TeDIBV6htkCmmBGa6hbNGY
-	 yyIuJm24mTGl+PmGqAAhfYuiuw4cyxzl2IVTuf9ZmoTQOppob5abO3OKFcTB95aRIZ
-	 pj7jntYOGr3TA==
-Message-ID: <87e59cd3-a554-4911-aaca-21be2080e2c6@kernel.org>
-Date: Thu, 18 Dec 2025 10:04:03 +0100
+	b=RUwTZfEpT3RS/Yc0n40yQFEks21Ug9cS7pT/oBG2l3gPWBMXll3cWqRb4bsmIKBuI
+	 TpyrA/6eRsJ5rekjU/PiGTvoEVYK4YuHbKnRFRRnbnyjdujNPKIvXM/LmOx1n6mNZQ
+	 /hEJ23EBt4Cyp56TWXusIE5oCTHDotgtvp3AzFvUy1o/WeGSV1A2KLkcQcAf5zSy3U
+	 /27qcDJL9F3uBSn8UF5qruCwE23yBabi3UNyLnCm0VA9opcyOagXKTnLwAVQaBYlzA
+	 enYz1yaUrs3Z1OymV7JL07tkK9a513V2JsIKvO6pYu8xwV6X+8S0x1dlW5sEPpWMCD
+	 StnHpnGbDB9SA==
+Message-ID: <3a6ab69e-a2cc-4c61-9de1-9b0958c72dda@kernel.org>
+Date: Thu, 18 Dec 2025 10:09:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/28] mm: vmscan: prepare for the refactoring the
- move_folios_to_lru()
+Subject: Re: [PATCH v2 13/28] mm: migrate: prevent memory cgroup release in
+ folio_migrate_mapping()
 To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
  mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
  muchun.song@linux.dev, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
@@ -79,22 +79,23 @@ To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
  hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
  lance.yang@linux.dev
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <4a7ca63e3d872b7e4d117cf4e2696486772facb6.1765956025.git.zhengqi.arch@bytedance.com>
+ <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <4a7ca63e3d872b7e4d117cf4e2696486772facb6.1765956025.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9EB36A000F
-X-Stat-Signature: idissxanczo43r8t7e75jyxkjo46gg7w
-X-HE-Tag: 1766048651-561470
-X-HE-Meta: U2FsdGVkX18C5YiSUaI1n36k36th/A7EBZM0GOSz9oi3RqjRvgApjZtKcOr6gyHa6a/H/5q/8aTJvu0x2mDz1J8Dh/AcfdH92QSLJTUgMrZ3VCV6J+A/1rjuCFXmt++3y96eVfdbUrTHUTwUnAYh84opm9QnL8O0dJYkge/Q/K5Aho7K9XFzMxPToxRGMLxcAhcdMNJDhTRCOTezRFO2t0pUOeIivnkl6T4g0aNSBkD/7AFctyerLGSRlYTdk+ymV4ARy55Bl9M/3lB4n8YUB5KxkzaixUW0qqnf/o1Wx5JgzQrXp18H73A6jHElzoJ8747olH82XRwh0CqnLi6Ig1k9jrg5ntLbqDp5s1Q6XxysXvJ0VYjhKwYNgDr5z71jnBhhdtow3WoFmNYImW+YAAcdIb7jg1EL/zgsKn/4KBP5i71Bmkx8JdRMRKFUWu0F6X/KJSbax958i454BeH8Z1wS4yLZGOvnDNBhR8eF2GPCZAqhF0gunbhJph1U1gNSxpTH5p+4cxit0W2ACf5S4sLRJgWzJYlg1ff+CbYcAoVLMtsmvRBkWTR+uQUehHD0aPZG2gWPKhhmCNqEQpHhmTH/g3cD6mWpM/9MlPw7sT/ZgJ78wbqS2FFFY7y3YMKveJ1ITb6msCBL5PJj0Uyj7wtMv+9v8jePFwUUz7pU9Agwsgjd3yNrAC7y1Cwqip53JA5aXhyNWyHUrGu6e0yJnY86kT8rJs90NbHeKDZaDnxNzhrKpCgdSaNq8dsNlnPxiDjEUcvu2lyC+lPPvpXH10Z0SKkLi1Jbd4HyR9ilMWbXixHpOG3MDCmh0/bqDfe4br4T5WXssJ5H66XUaqUJnNLv2vdBMM2vMz5XchC5p34qYVEH9KIZ1cgMdsX49A8GPzJ9GnzScbav4xCWRk9dPmt/xysSlWviMTN0pw4zHR66g/8Vcnwwas3ndKRCtBVQx8vyT7D3IAfyYyFmUSw
- l+MDvR/u
- 2nwnapNhwWCQR6dQ=
+X-Rspamd-Queue-Id: F116E18000F
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 7dhi7nyqs5jaz49qfo1k7wkpkkhqnzqn
+X-HE-Tag: 1766048968-906684
+X-HE-Meta: U2FsdGVkX18lyjH8tHLwgR+IaL+ay9LoozU8zwBw+ZHxjToLgSDdD3L6P1S2Mu6jms0dI4LI61jBWTMK7EmIfMVn2jOjqTO3TrJ0frg16dffvJ7Y4jPBRjZ6/o9J1oEC9f7jfQHINgDV9p7Iq60YBQr9ru29Ekbmbqmy1pEuh+HGZ5HGSbJ+sGh4sLvgUWAdblN7Tv+/NAlZnT3Cov7QrJMPLiA9bt7UGLnshkN5I63nwT0AhNSkr4gZin7y8pgy6zVkUiT+4n9Ya5LiHTH6ZN8gpcXNWr1ALyssRmlh8SRWSZb6xB5NfkQAasc97HY/f5PCO8pyuVm9s7tNqHORgebRPmGZ+zOL6mhRr8giXlLNDY2WfD/1cEDNntpDVousGNrDpQw3Ceq3yKgqafuhxcPN/6ORgWqU0s10pWyU+2EdAMeCZiA2e24+sOFSPYN48NaGGJjPvsnFuCB5zujVF6Q8rCOoWcOT2aJzoEfwJTm/fMM+fleccHqis9Aid6kqIvrEglB7zqVQVYpTd/HX+cxZbotkjUUIFl/GL4dprr+mrH619erihNkvuPIvHvMAz1S2JMo3ft6r41Rs40y+fcoP70JPuUF6/f7DU156YazFb4pK7b3Y6fbTTfrDDQWL/9ziPLTOLZgFqQo6vMqzz3RGkW+QoGnZS5CyPKAzHr3Idg4O+FxZB3bGPIGKx8HjyMR2lzK9HTLcuYTZ5AeFcHjE/qgppLGCz49NS3UEeH1dclCBVotXRNN2x8PiwqmlVUqK9mBBFoIlK9vARl3Um0j21s7spbZ97Ztw1EjCgZvFGStnw3xIrj8zaI0yOciynG2zm44JwnNLcGZ6GV9cCqP4WY0nanNnXsTo1WmXELtsiZHGkFKeaIpiwLqfL8xnem+u+ZaVI6QqR1S6e0yolByIP8HWDXwJcrxc5Gk/3bD3r7j4g27S0uJPkFnYLRNSG5ImnCFAICdFm5kENZJ
+ dMLB5Fp7
+ 5jty7712eifBpz05BeU3MUz68U3hsoH56Tyjy3oo/4o2AOnH6/9P4Q/0rMDTtqMfOWVM4q59BTb8s9r6lJJT44FmuZ9z1zrCY413hYdoHmdemZwRXzr7okL80lGZKj8z9sYm52XBY+YyHKH/GKT3pYczMuLaBycbyEcf9hQd4GXIhzr/8lkQQQ/A8fn8/bZ0zW1NUZSu0+9libJ3kst4ytQ13ZVXtjJ/U1K9+80OC1j1S6rGwIU+q8nylYHpbBkGUvvSTViOZ2D8oPmIBPghX12UiNPhSFQ1Yst/FYS0IqSELe4OM1SGhzceu/64IVYrwtLH2q64M4vI0O0Bj9TwHg4/v208D/4fMHpbs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,28 +105,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/17/25 08:27, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> From: Muchun Song <songmuchun@bytedance.com>
 > 
-> After refactoring the move_folios_to_lru(), its caller no longer needs to
-> hold the lruvec lock, the disabling IRQ is only for __count_vm_events()
-> and __mod_node_page_state().
+> In the near future, a folio will no longer pin its corresponding
+> memory cgroup. To ensure safety, it will only be appropriate to
+> hold the rcu read lock or acquire a reference to the memory cgroup
+> returned by folio_memcg(), thereby preventing it from being released.
 > 
-> On the PREEMPT_RT kernel, the local_irq_disable() cannot be used. To
-> avoid using local_irq_disable() and reduce the critical section of
-> disabling IRQ, make all callers of move_folios_to_lru() use IRQ-safed
-> count_vm_events() and mod_node_page_state().
+> In the current patch, the rcu read lock is employed to safeguard
+> against the release of the memory cgroup in folio_migrate_mapping().
 
-The patch description is a bit confusing for me.
+We usually avoid talking about "patches".
 
-I assume you mean something like
+In __folio_migrate_mapping(), the rcu read lock ...
 
-"Once we refactor move_folios_to_lru(), its callers will no longer have 
-to hold the lruvec lock; disabling IRQs is then only required for 
-__count_vm_events() and __mod_node_page_state().
+> 
+> This serves as a preparatory measure for the reparenting of the
+> LRU pages.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>   mm/migrate.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 5169f9717f606..8bcd588c083ca 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -671,6 +671,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>   		struct lruvec *old_lruvec, *new_lruvec;
+>   		struct mem_cgroup *memcg;
+>   
+> +		rcu_read_lock();
+>   		memcg = folio_memcg(folio);
 
-To prepare for that, let's $YOURDETAILSHERE"
+In general, LGTM
 
--- 
+I wonder, though, whether we should embed that in the ABI.
+
+Like "lock RCU and get the memcg" in one operation, to the "return memcg 
+and unock rcu" in another operation.
+
+Something like "start / end" semantics.
+
+--
 Cheers
 
 David
