@@ -4,112 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA64CD6ACED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D4AD6ACF0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 11:49:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CAB76B0092; Thu, 18 Dec 2025 06:46:12 -0500 (EST)
+	id 14B976B0092; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3ABD66B0093; Thu, 18 Dec 2025 06:46:12 -0500 (EST)
+	id 1237C6B0093; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E2C16B0095; Thu, 18 Dec 2025 06:46:12 -0500 (EST)
+	id 059956B0095; Thu, 18 Dec 2025 06:49:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9C86B0092
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:46:12 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFBBDBE3BD
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:46:11 +0000 (UTC)
-X-FDA: 84232413342.06.8E1A113
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 242F0C000A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:46:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JXjhQ9d9;
-	spf=pass (imf28.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E76896B0092
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:49:27 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B433C140E70
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:49:27 +0000 (UTC)
+X-FDA: 84232421574.07.140ECEF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E8459140006
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 11:49:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YyhtvcbE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766058566; a=rsa-sha256;
+	cv=none;
+	b=7nO+O8SVzDxxBGeHWaqegeGiahYrdDZYo6HssasduZaPsYAK24ePfz0Juqf8Zrn5u/2sSr
+	ZS01KrbjFoADhzCQq09dVmDoqImqoQ3DA7wWM6Gsu/hKrOjKqoWZFJkOMNTYh49621TbGu
+	urUbJci/01vN/y44DYf2US9FUZ89g/o=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YyhtvcbE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766058370;
+	s=arc-20220608; t=1766058566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fBGcG1BLiQ2zaZ95rCMCUY85ldMmsMYuYWfOeiat7uc=;
-	b=1iGJSiMj/6J3vV6KUcclcCxOIdKY+pc0FpXiezaJbxPEfLjw1o6H2bAwHIUD7LWDioZlCd
-	ybMiERtBhVYO36o/ePj73BRYzdL6RWtK6Uc48Rq/i8L1lJGyf782NX2g5k6Yhg+a2qCSTL
-	6ctTRZZjjFgm4VkQms6EN1L5LH2kBXg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JXjhQ9d9;
-	spf=pass (imf28.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766058370; a=rsa-sha256;
-	cv=none;
-	b=cK13wnCMQjTWoySIY7RiF8Km5S46pWTYMknGUI08KrhR2G2/paGyYZ7DTLDP1/K7NGQ9ea
-	6hXgv4hOsVD0aQ0SRDrCmfvw6C+VQ7rcSXiQtq/mgVXONSQUpkbRIaotzaNwrGJhYbUMqJ
-	EsyzEFOiYhliFWHKOROnoIyt+BpPv0g=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47796a837c7so3971365e9.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:46:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766058368; x=1766663168; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fBGcG1BLiQ2zaZ95rCMCUY85ldMmsMYuYWfOeiat7uc=;
-        b=JXjhQ9d9dHBmiGHDABUkAgGMMhlk7HDwpUtnFezb2dlYe6yxlVim3C78uDnpD2yHkf
-         hUObRhiO2/zH9MtAYkSZkDcL9ZjRQOXLUsKlI1u2YIhZMiQSt2WsMoD450aPBB0kZAmT
-         i5IskbL/KPnBzHu6YPmwnuOV+vp+8FCFlJDbCxmEnZpoVDkTruaLKQShsk/NRQXltOB3
-         EOrug27H0I0Dyk1RqSV5yIFaor8FB+7EjDbGsPR9qBzZAD0ZJFjaEsMh6Fa4xe5CjZrT
-         2Z/vmlqn4qBPxK2YcELiBaT2+LxXXybfd5WKg5cb6i8rpIKAX5lnc+KtUxQndIpy0m/Q
-         3Hzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766058368; x=1766663168;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fBGcG1BLiQ2zaZ95rCMCUY85ldMmsMYuYWfOeiat7uc=;
-        b=bMChZYKO0u+IKzK3HbA+pSOCV5+8ZzJcPwSWPsQ3sdf0gbakSkWZNsiqyf7fEhrJTN
-         s6Wl9QX6AI1tnoYePDcEDLtP7iYSKkZ3Q6W0LLK8s/KGZX3q8itp3rQN9qRaq2pACW7q
-         ggr2NDiX4OVR8KMkigYTuf5nURZIU2D6EHwu9aceP4Fm1iu2WDArWaG6rk4RVOKAIF9v
-         bzAvb4QIQKDdlw0IVogQszMBbT0JGlX9dE1Qf0+kQ40u4wqL/bE91JRhI13PB83nuz+H
-         RyUWps1PV9VcnABg65EeJSBop7aaaIZG8tQNjlanZPi+QA4HR5pSLLUd1P444dKnyC9/
-         aDxw==
-X-Gm-Message-State: AOJu0Yw8UykMcF737th15zj0Y2Zo/3ir6x3uOqQ/tB3XTIvyG07VlZ7x
-	5rudiaVu44KaVdO9eUhiVQAdum2eodLk4NW4nUvGD7D9J0HBCXc20eGoV9WGJw==
-X-Gm-Gg: AY/fxX40ZewvilunY+QmcnBsrlqMZaGpc913MkMNrNE6iM/fJkGMVzM1YhEzGw3bb6i
-	EXtt+z7QbQ0ApJkbepL3042n7r3sFWO1RnrjQ8DIdZYNJt/9p0PRsIwKyTcuWZ/Efo4a6kGPTNC
-	2/Qb/mBOumPeK12GyScQPR4KMtAhiwQcRK6X6mRqQ4czkJvR6N1hhcFeORlQ1II4rUaSTvbtYqg
-	ecugTioz9Tx+Kd6yYZLpopImV5+myzTBDOZb9xFuWdi21eFXgfZNRRZ2Q5XQuxn2kgGGLyHUSTQ
-	3K4vgGVG2fWLx/yTZz39SobmuHvhCmeIfkUxE3uZYgYfpV6lCKQb1fvCbOCigMwv8lw+IQ74O3O
-	61dDyrsAjzSjFsOY3PSn8GqR/iK6E46dB+/sALmrBDJKbvANuMx4VwAzieNzC3nc/DUeEKP/6C0
-	RI2UeZjhnMYZZT1Csb2rXYuMUIxEUvj0yU2cmFaTTdcCB87veVbTDpOtmh3m+8qQ/CsxZkACU6B
-	k27GPkIS5c0zAx/+g==
-X-Google-Smtp-Source: AGHT+IGLlzBk6jf8IaSULTjKtfmj9TBUm+vT3WknWApoxz1X5mlU0bNnkkQQ52jqlvV5jxq3NdiwVw==
-X-Received: by 2002:a05:600c:6208:b0:47b:df60:8a14 with SMTP id 5b1f17b1804b1-47be1e27cd2mr36597995e9.9.1766058368242;
-        Thu, 18 Dec 2025 03:46:08 -0800 (PST)
-Received: from desktop-mu90jgd.home (2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr. [2a01:cb00:676:9b00:1185:461c:960a:9b50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be3aa7cd0sm13235495e9.8.2025.12.18.03.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 03:46:07 -0800 (PST)
-From: klourencodev@gmail.com
-To: linux-mm@kvack.org
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	Kevin Lourenco <klourencodev@gmail.com>,
-	Kevin Lourenco <k.lourenco@criteo.com>
-Subject: [PATCH] mm/hugetlb: fix typos in comments
-Date: Thu, 18 Dec 2025 12:46:05 +0100
-Message-ID: <20251218114605.12502-1-klourencodev@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CBNFdj8jNj4e73AwqH2b8RTYHD+SEa8VUUUZ4Jyp12I=;
+	b=2rliDddwdceoG5f9C7WIIOwPvLtvL302rtpLOzppwpRJwSuXpPSJLcFcvFoX3S5NOFHbPd
+	y0+zpMVqZ7MX8XZ8Edv8L/p4j/XtsBk5cvDwB6OLQfPFKhyVZ33zTibtB3g2Qe53eZmbu6
+	WYAPn/JF3ugLodx/uL4XfqyfJW0C45A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D44AD43C9C;
+	Thu, 18 Dec 2025 11:49:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7B4C4CEFB;
+	Thu, 18 Dec 2025 11:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766058564;
+	bh=gM97SVLiy9VJPrcCvd10t4/kGkIwU1lgSn+lqj1MNrk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YyhtvcbEpQ3dx0joR9Z84m74P1AJNxNm5ONNsJnIGdfoA6X59qp1wgOjkZldkGYOd
+	 Lm1vova5Z6bcgbsyD7lrCsMUtdNhRo3bteUBlzqJFibthUXHJkLqVFX539iuUSMeKO
+	 RQwiay1O5vobunnyWgmgLfU6EfhYYuOOjIChI956no22qzMHFrQ8vEYArCuGDo+5Cu
+	 UFrAum8TaRD88pwmrnCeMWrmHCMW01FApulnS4qCPs1NbV5JZiJWtPLFdj3xYfMwQ8
+	 8L87Lt0ucjEgfrMO5TUwhl87d1CKQhcHwOeoyOCKu0yFwTP53yrJcsDxiuNgZV09YI
+	 EumNBapvE5wgw==
+Message-ID: <d2aa6eb6-cf67-4b89-a9d4-306c720fad55@kernel.org>
+Date: Thu, 18 Dec 2025 12:49:19 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
+ vmemmap_populate
+To: Tao pilgrim <pilgrimtao@gmail.com>
+Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com,
+ dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn,
+ willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251217120858.18713-1-pilgrimtao@gmail.com>
+ <d373f7b0-f822-4c31-990c-41a6cdc76db3@kernel.org>
+ <CAAWJmAYJdEJyybVgD7erzZgvwufZ8gSmP_FCohmZLYozbhbb3g@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CAAWJmAYJdEJyybVgD7erzZgvwufZ8gSmP_FCohmZLYozbhbb3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hbggzjxirso9bhdzxppcxx5rttkbqjrg
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E8459140006
+X-Stat-Signature: 5551ai81kknixfsqy7rwzyodaodkswxn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 242F0C000A
-X-HE-Tag: 1766058369-844800
-X-HE-Meta: U2FsdGVkX1+Po+j4rtZklUtYKmqNgjRj5zwQk5/soEe3mmb5Jmfj3++OX63OCmyU8d093bw+v1Zn8eGkolEMebX1wTB8HDJmD/Aajne/JX3u12pSsc8OdExIH+EalCZlNaE8mD9Vf8jsBpTMkpeVtxVD6geUS/uBXKQ9RCBl4lI/p8CdQmG75wqVYJjUI6HXx4qKde6jkoYpUTdVk9FPLM7SkA7jw9nsmvL3Y4+TiWUCPvltgTF9Dv8tqSfbiY9PIB5Lm9Qjf/yNURL0mmWTEs8LvIZahDVJAXA39TuvBr55kEC0DLqrniY5eu5mfbpG5AxfdAukUjjmEtX8U1oWzip8z/oUfxnyGnf/KbyRgfl+6/i9h6ySgekpM5YyGgFWL8fX/YkatVS3IEEhShCsCoYRCtvOgkcaNmuKQQovPiIVY0+/LexWKA/hjIxnVOHMV0EOU8nslum7nNnXcmz96K7tq327D5SPBb07ighWSQim+RTsIaFZyayy1LKNZjM4dmSJGzC4XZjhUKfeQbu8sVPk7ad/jPAkLX9VurBLi5C8F9DmJ4PsM2PERLIwkwfoeZpptsnLvnukdiePf6CQS/UM0cwjAYO6cza5YIioZmfLWL8HxKwlDjvQI6zg6ECczOoqyYNW3gp2h8OLgHuTmEnQTGIEAyna+qhGr2bABRt7nit28Iooj8o9tw6ctv1/JbWjzNgoLbWRfNXjGFBVvWCn778d9Gsi+I1vXtiXt+ZPBg9Br2fAJzIglWcYlEFQM1a3nRVycvGNaD4e/Y1V5JGcoOGfz2Hzf+uxa+YvnFL6q4shLkWvrSU6b9BjrGEZbAWpZqGs7qIozGPxfuqc6MWNK8rple7LhpZjI46qMuUy6azP0wszk9bXUo0ljip1tr8gCve0jZ4i/OTHJFQlwwMSDZjV+qVHn7HB2c7rdcUQlkVvWPtU9blzecbumQCRsFbV4mXLwdGaOv6qGNh
- JU9Mgnx6
- kiBFlvXWs+U4xnOe/cZ6lSE99mM8h9sVi/4rih+HnEBrZfOjAmFm1ag9WGRAgRly/gdjpnRDW53Jv2orWfm3dd6EcufwZorTwWjcohHD70Oqj/DevdXLt23urNQ+b/UG+86nddKinZhUsvAO29QZVQGTPzfoxl+OUXXfYduhc7D2kyNHCuwjT81CznPBNis4u/AtHATPSQAPWVan19Vp2kMqtBWE3kG1w1sEEks8yEr9c/9mhKznIczRTHMbWCO0n6Tvm6yNOmXs/0kIXtMolVtBjclvbiegyzLtXx8ngWr3M/740JogODydbDZh5SgkNtWx0jQbZiBmagrxElD235AdMJcj6h/rQl+GZSPIvfV9jv3Q6pg1NqcQR3koe7zD5UtXocmtNQKOEiGrUFWl0hVPGQg==
+X-HE-Tag: 1766058565-828729
+X-HE-Meta: U2FsdGVkX18Qi+403hmRO6JSgdKupd8tbCwZYIjd/PMjf8lLxgM90GjL9Y1LH2LNI08k4YJWnbi7IJEXeFMHm1AmlfV5N2u+2b+oe2NUCzL7G/3sCb3uO3Of7KRAV2665FaBM0Q/tQCNP3TSPhokhf4M6/KnshABT4f40hvCYxvPnISZk9GM4+y3Yr22ZKD14GGDHk0c3Vt/IgM66kRi49rpDLFhuMai8SyUeu5RSaBVeBo2rLv2aLiiOt+qT5YlAqqDEmTjOTN8LIroRl6I6krCB8fQcvCtju0gnnTEKo3m26zMpCbkytngZR16MkyZ/AwZbWo61eG+7m+ZZ8pmKHB/QWBKV3xr3urZQhjiCTfFWUZYTFhNVhoNvqg2zmSkL1Uf9+SodW7KnfOCL1dErQLNrTyFEzrgUUnrbIDvWRNvvPwV+6E6jM/bxOuG1W9vE09y14wOPWKY1Ys+WJRy+8g99p/VPfSVz9971S+3l4Dic3K5TXUp+D6zbBCwsbfCo0uDsrJrjqwvq5N188/kthWnO1agrwEV8GwK/BJqGItFzUbmqyfMBdkm6JHF/gFbh88QFbkhq73HsE3/cEYWPhyiwBUEgb5IJxTvVJfYULjp2HGZ6XFn6Rftx75z8EV+70cd97BHH1sGUbN0NeJu0Sj7qzJ7THyBrdKm56cvZzCiQfCtSwcgg8OaphNLquRmvup2ARlbW4yQ7e7krntDY4XmVisU5IboYhktvXv7WACOdzG1GTlxDoEGEzZDBHY6v5mHrzq3xrjEC1iqpWfjJOIUCxrFwihBWHv9vxHC9UkLXRWrN6h/3UixmdNqxw2DqbpAMpbsOrFPGdtqAGVZFOOiqLiIL4n/TYnQuhdVLMJKksLQ8wxhWNHQkSlpRV23OEaqwo7GwDJoF5ao+d/7E+XqEeZ4x/pnvx6f9QHAaLZtYBKvWTxgsZdNVGAzE4tHMNgrvrGH3hrZFaiJZZz
+ IkBkvYSZ
+ XZBNUWuTwRblqscfE7OS1NYFspesdgd1vYtp1xu00ckHsjnf0Dx376bTrrLHkNegKnpghbPCeioB5silZXjTDkSaKUSpirkfvz18i37C+ArQUIHzcQtz/YZkbtVOCfUKZHcavp/vKCMI3cTw7qFhlcD34nR9w3bJSkfVqlv4G28HMxbemZnYNUepoXHL6s4buIKM9IgqoMNTRjA7EQz7QYkalRWXOMyA7nsl8o6E8zJg+YPvz5TpUeT78cVj/IUEHKT4QMckaBkHUtG9+mA/ogKuYAlPQqaD7FnSlMwgGqibkAgdbZ1uRIJfKpzJReoaFQMBo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,67 +101,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kevin Lourenco <klourencodev@gmail.com>
+On 12/18/25 12:02, Tao pilgrim wrote:
+> On Thu, Dec 18, 2025 at 4:44 PM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+>>
+>> On 12/17/25 13:08, chengkaitao wrote:
+>>> From: Chengkaitao <chengkaitao@kylinos.cn>
 
-Correct minor spelling mistakes in several files under hugetlb files.
-No functional changes.
+^ this is the author
 
-Signed-off-by: Kevin Lourenco <k.lourenco@criteo.com>
----
- mm/hugetlb.c         | 2 +-
- mm/hugetlb_sysfs.c   | 2 +-
- mm/hugetlb_vmemmap.c | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+And you reply from a completely different address with a completely 
+different name.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..07b182550892 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1342,7 +1342,7 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
- 	struct zoneref *z;
- 	int node = NUMA_NO_NODE;
- 
--	/* 'nid' should not be NUMA_NO_NODE. Try to catch any misuse of it and rectifiy. */
-+	/* 'nid' should not be NUMA_NO_NODE. Try to catch any misuse of it and rectify. */
- 	if (nid == NUMA_NO_NODE)
- 		nid = numa_node_id();
- 
-diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
-index 79ece91406bf..4fd1c7566450 100644
---- a/mm/hugetlb_sysfs.c
-+++ b/mm/hugetlb_sysfs.c
-@@ -208,7 +208,7 @@ static ssize_t demote_store(struct kobject *kobj,
- 		long rc;
- 
- 		/*
--		 * Check for available pages to demote each time thorough the
-+		 * Check for available pages to demote each time through the
- 		 * loop as demote_pool_huge_page will drop hugetlb_lock.
- 		 */
- 		if (nid != NUMA_NO_NODE)
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 9d01f883fd71..3c8389e8c5ff 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -746,7 +746,7 @@ void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h, struct list_head
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
- 
--/* Return true of a bootmem allocated HugeTLB page should be pre-HVO-ed */
-+/* Return true if a bootmem allocated HugeTLB page should be pre-HVO-ed */
- static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
- {
- 	unsigned long section_size, psize, pmd_vmemmap_size;
-@@ -795,7 +795,7 @@ void __init hugetlb_vmemmap_init_early(int nid)
- 	void *map;
- 
- 	/*
--	 * Noting to do if bootmem pages were not allocated
-+	 * Nothing to do if bootmem pages were not allocated
- 	 * early in boot, or if HVO wasn't enabled in the
- 	 * first place.
- 	 */
+To whom am I talking here? The patch author?
+
+
+[...]
+
+>>>
+>>
+>> Bunch of unrelated changes that should not go in here.
+> 
+> This indeed contains some unrelated code changes and removal of
+> extra whitespace. These could be split into a separate patch,
+> but the new patch might be somewhat redundant, lol. If you'd
+> like me to proceed this way, please reply confirming.
+
+We usually don't do random other stuff as part of one patch. It's a 
+different story if you touch the surrounding code, but that doesn't look 
+like that here?
+
+> 
+>>> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+>>>    EXPORT_SYMBOL(_PAGE_CACHE);
+>>>
+>>>    #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>>> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+>>> -                            int node, struct vmem_altmap *altmap)
+>>> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+>>> +                            unsigned long addr, unsigned long next)
+>>>    {
+>>>        unsigned long pte_base;
+>>>
+>>> @@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+>>>
+>>>        pte_base |= _PAGE_PMD_HUGE;
+>>>
+>>> -     vstart = vstart & PMD_MASK;
+>>> -     vend = ALIGN(vend, PMD_SIZE);
+>>> -     for (; vstart < vend; vstart += PMD_SIZE) {
+>>> -             pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+>>> -             unsigned long pte;
+>>> -             p4d_t *p4d;
+>>> -             pud_t *pud;
+>>> -             pmd_t *pmd;
+>>> -
+>>> -             if (!pgd)
+>>> -                     return -ENOMEM;
+>>> -
+>>> -             p4d = vmemmap_p4d_populate(pgd, vstart, node);
+>>> -             if (!p4d)
+>>> -                     return -ENOMEM;
+>>> -
+>>> -             pud = vmemmap_pud_populate(p4d, vstart, node);
+>>> -             if (!pud)
+>>> -                     return -ENOMEM;
+>>> -
+>>> -             pmd = pmd_offset(pud, vstart);
+>>> -             pte = pmd_val(*pmd);
+>>> -             if (!(pte & _PAGE_VALID)) {
+>>> -                     void *block = vmemmap_alloc_block(PMD_SIZE, node);
+>>> +     pmd_val(*pmd) = pte_base | __pa(p);
+>>> +}
+>>>
+>>> -                     if (!block)
+>>> -                             return -ENOMEM;
+>>> +bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
+>>> +{
+>>> +     return true;
+>>> +}
+>>>
+>>> -                     pmd_val(*pmd) = pte_base | __pa(block);
+>>> -             }
+>>> -     }
+>>> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+>>> +                             unsigned long addr, unsigned long next)
+>>> +{
+>>> +     vmemmap_verify((pte_t *)pmdp, node, addr, next);
+>>> +     return 1;
+>>> +}
+>>>
+>>> -     return 0;
+>>> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+>>> +                            int node, struct vmem_altmap *altmap)
+>>> +{
+>>> +     return vmemmap_populate_hugepages(vstart, vend, node, altmap);
+>>>    }
+>>>    #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 15076261d0c2..5e005b0f947d 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long size, int node,
+>>>    void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
+>>>    void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+>>>                     unsigned long addr, unsigned long next);
+>>> +bool vmemmap_false_pmd(pmd_t *pmd, int node);
+>>>    int vmemmap_check_pmd(pmd_t *pmd, int node,
+>>>                      unsigned long addr, unsigned long next);
+>>>    int vmemmap_populate_basepages(unsigned long start, unsigned long end,
+>>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>>> index 37522d6cb398..bd54b8c6f56e 100644
+>>> --- a/mm/sparse-vmemmap.c
+>>> +++ b/mm/sparse-vmemmap.c
+>>> @@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+>>>    {
+>>>    }
+>>>
+>>> +bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
+>>> +{
+>>> +     return 0;
+>>> +}
+>>> +
+>>
+>> Reading that function I have absolutely no clue what this is supposed to
+>> do. :)
+>>
+>> Also, why are you passing pmd+node when sparc ignores them completely
+>> and statically returns "true" ?
+> 
+> The pmd+node is indeed unnecessary. My original intention was
+> to provide convenience for future architecture extensions, but
+> upon reflection, this appears to be a case of over-engineering.
+
+Jup.
+
+> 
+>> If you can tell me what the semantics of that function should be, maybe
+>> we can come up with a more descriptive name.
+> 
+> In the SPARC architecture, the original vmemmap_populate
+> function does not retry with vmemmap_populate_basepages
+> after vmemmap_alloc_block fails. I suspect SPARC doesn't
+> support basepages, which is why we need to modify
+> vmemmap_populate_hugepages to provide an interface that
+> skips basepages handling.
+
+So, something like vmemmap_pte_fallback_allowed() ?
+
 -- 
-2.47.3
+Cheers
 
+David
 
