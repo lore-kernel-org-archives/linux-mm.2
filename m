@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E5B3D68BE1
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BF9D68BE2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 06:39:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 458DC6B0089; Thu, 18 Dec 2025 01:32:11 -0500 (EST)
+	id D5B2A6B0088; Thu, 18 Dec 2025 01:39:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406636B008A; Thu, 18 Dec 2025 01:32:11 -0500 (EST)
+	id D08DE6B0089; Thu, 18 Dec 2025 01:39:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 312B36B008C; Thu, 18 Dec 2025 01:32:11 -0500 (EST)
+	id C148D6B008A; Thu, 18 Dec 2025 01:39:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DBB6B0089
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:32:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADB81BDF30
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:32:10 +0000 (UTC)
-X-FDA: 84231622020.27.8CE3D54
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CD4BD10000E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:32:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KFBee5nT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766039529; a=rsa-sha256;
-	cv=none;
-	b=Qw1OCMlXfl8HEboZPBNFS2RL+3sPfW22qgp/mKkJr7VJRRTIouTMQ9LFb1NxERfhr2ja5c
-	Hkcnvk1ihYi9QVAyXEAFG2PJhfLwWQb3A6sssgyCPeK017CtKVwe7nAJ66mSoFKQ9W8TaM
-	Z0LwbaFN4bLbf/xHLZ1uui6tyM99VMI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KFBee5nT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B08166B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 01:39:26 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 55CB41371FA
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:39:26 +0000 (UTC)
+X-FDA: 84231640332.26.2380A9C
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1FFEDA000F
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 06:39:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=DtwNyro9;
+	spf=pass (imf25.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766039529;
+	s=arc-20220608; t=1766039964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GuMAIMAxghdct3aJXfk8ti9XZUSoxcVspsnX7srcGqs=;
-	b=LTM/HHUyMMgPITQCPq4zoXQutTbfQxcKIEFEXUn6ihLzsKbMJZeP7ix05QOOvX5iw0MkTs
-	22WPqjiZKVdGD9dCH4QpEz2TCHuHhVQJYPS2E0WcNzb1D8EmqddMIAoMKBCM2f9FctPEyN
-	LPOPI+H+yyXdyqKV82AoIp3idoBwFTE=
-Message-ID: <f59a7a6d-2685-4c90-a02b-33dce49898cf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766039526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GuMAIMAxghdct3aJXfk8ti9XZUSoxcVspsnX7srcGqs=;
-	b=KFBee5nTIhzoI9YEZNoVUIkAkpAX+95cyo5ZbyznMbVg80cFiduvqe3iOLSyfH1F7yrANX
-	BC9xI2JhDTlys1R/SarHKY2E12ETA0eO9YYcKBcmlJ6QozfDzcVEvwLaxCSkXX31/2xxTL
-	gfQN/eSKa8XVV4ZxKZwfH7DlY53ijd8=
-Date: Thu, 18 Dec 2025 14:31:51 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=RURcNCeCYd6BsieRLTf6v+zeOuKA6NvzwDD7Kc6byDw=;
+	b=cXzJo9CoC4ct3tJ4Oxruwk4iI+iQM6DRNY+5z2fmJqyoPTzXzMcQjfVwR6zm3ffYfPIEBI
+	0te2jSgZBIDX2zdKHK3O/w76AQiVpB1MXwcJHO9/tUXcMyzeLojMV7NcrPit5YkTIGsQIf
+	hJGtUAJPA/wY1+2XlH7DQOLthQtqJTA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=DtwNyro9;
+	spf=pass (imf25.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766039964; a=rsa-sha256;
+	cv=none;
+	b=zwpDomsq6kvn1U+/BSX+E2H/IxiigZ31EqMqefMNn6bv8jX4OswBX8USUKkwNWS1DXPFrK
+	86jNnN3DOmmyuovRuDbR6VwCa+qmpAjXFx7s0T1fT55ekIWdQad1wE93AogTNhjJ0HO4Hl
+	aPkil3O2ZCk3WS707Ofu5MQ8xXgRQwo=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=RURcNCeCYd6BsieRLTf6v+zeOuKA6NvzwDD7Kc6byDw=;
+	b=DtwNyro9PTaw4nhSkXQejzfAqp+HqjhtOrAViG4+R1UC0mO7kCHVdmzlGFgfRsv1YizLXWDhJ
+	RXX1Ovsk3xLzSF4lELvWYjXXp6+ME2dT6jKWhIGmFW6H1DUN6pV5WGcU/yNNPvk+Cz3xlBn8Umi
+	U4O2riFcdS4gUjUk1ewXwCE=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4dX1Db2T2YzYlQ6R;
+	Thu, 18 Dec 2025 14:37:19 +0800 (CST)
+Received: from w025.hihonor.com (10.68.28.69) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 18 Dec
+ 2025 14:39:18 +0800
+Received: from localhost.localdomain (10.144.17.252) by w025.hihonor.com
+ (10.68.28.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 18 Dec
+ 2025 14:39:18 +0800
+From: yuan linyu <yuanlinyu@honor.com>
+To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+	<kernel@xen0n.name>, <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
+	<loongarch@lists.linux.dev>
+CC: <linux-kernel@vger.kernel.org>, yuan linyu <yuanlinyu@honor.com>
+Subject: [PATCH v2 0/2] kfence: allow change objects number
+Date: Thu, 18 Dec 2025 14:39:14 +0800
+Message-ID: <20251218063916.1433615-1-yuanlinyu@honor.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 08/28] mm: memcontrol: prevent memory cgroup release in
- get_mem_cgroup_from_folio()
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <29e5c116de15e55be082a544e3f24d8ddb6b3476.1765956025.git.zhengqi.arch@bytedance.com>
- <aUMkYlK1KhtD5ky6@cmpxchg.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aUMkYlK1KhtD5ky6@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CD4BD10000E
-X-Stat-Signature: 5ptycgepewescqck6r3roqc438yskdj3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.144.17.252]
+X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To w025.hihonor.com
+ (10.68.28.69)
+X-Rspamd-Server: rspam02
+X-Stat-Signature: s1mgggqem1ywtaprgdndhdcfx5j8k4wj
 X-Rspam-User: 
-X-HE-Tag: 1766039528-928004
-X-HE-Meta: U2FsdGVkX18NXyG3BzcnbkOyMUkWuUyCREnd2HFpuOReKWNqg0srFdBphS3/ui5oTy9ELlaaiEXkkMEaFi8lN1Mk8/gTvQiJS/j852BqDqY6KACkCWcfyAAyNcEiwuwg93aY8ZITlacaeLAuaVVlZsZKgTLm7RanbDtrXJazm/2saiI8PxauEzva0cWT1XkBmiV6QiX5RKSsHKIrbG46DUnGAP9Yz24+tPDLup3AWxXuWBSCvIca2Auq5jan4aX0fcke24zpxvkFBU1s3eqssdoameBCCFgQm/EitPO5k3mUBqg8NZkvVnVuheMjMNAt8HJQy/9LnWba3h73iWVZ8MLlvI5q/Hc5XfaSEaxd3LCTeL7E48GeRRhdm2ns0kC5nxdUlcaZMX7TXDX92GdEYdvew8lhbxI//qRbPRHsCkx3dott/DOszOe6n2bSB/vZlBEan6+K2Mo0ZBXIIg3RAyVqGqXikF9a79u6msMO86x8dmZ6UO4kiUyj36jSwhpuOFPeBnJe66cZsq8HtBtYJfoT71Fz61xHfrZrTRV4GP+pbGPZAMqCg9ALlmqAu80Aly8i4HGb6PbqVDTrKB2fKec74wyugbWsRpP7DCDMtwOklS2J+/FDYM/CfsPbuhXs/OCc/uAly/WwtY+Oj9RsuqXw/ay/2TjKPu3Wh1mywpzZXCYqfe9IjwxCV0clgqsoCFAIPgQetXchERKt6T1tTPtNRsLsAy5CSKDyyAteCSsutRJU7pW9nxlr3hjEh1jB5xGBwp1sM1imc2d7CKEibc+rEWYKIUz2rNEZ0dzeXcwZ6vY0RqGr1qIqNl9cSycvb2Kj32yTZrVkDml9FhU/Vu18x49syWvUHBdyqCdj9tQbNbVXnnT/IVdr3o3fVz1TOirF/qFWns04bWYwm2IJIi8uT9kXXTHv7anzLOS/XBmuwXE7kVLc3TyR70U0IyHlKZsCSNi+kesEIInXwy4
- +kMfYTIy
- fiSNZP3uPT159ukHrccryfCQXOXHI7RbFZcwOrTYapOavrnyv5+i97EePbqTdKOBscxlxjH6Fmz4OqBoNJ7NhtRtM0CeTf6iqXP/vktRKkyuLnriTL0PRU/bW/U0MoGjzJvSRpEBqH0ivgQvsHDOImxiWsLiTkZU9r55W4o3ikLrEQ4cLMp5Qkclkbc7iCKhU1QbZQjxmzyNq4lrzAHTz6mFHNuBZoO16s0zxqTpJBy4R432vjMEWMzU8I3h2yrfbwM2/NCo9MtJI7Hy3ihYSKxxwPaR+0FjJgGHKmWbtDvhiE5w=
+X-Rspamd-Queue-Id: 1FFEDA000F
+X-HE-Tag: 1766039963-341276
+X-HE-Meta: U2FsdGVkX18NJK1S8KgGf7Uy7MN0j4SSxypnx1Iv2AdaY3a3q6CaAsX5q7ruxjxYfTfURga4oPpSdUwuConFJmPVXZMH1ys2yNHyIeQCgqJ90ZxkPaaaLLol9irr5sL8vhZitqBEcOTFdtZjxAioliggcfl83/G+XIACYTZbDNpHPvlS5eLwd4kGL9ogvd/31q6cX0NHOvDMaWDJ7kPTIWPIGu2erEMbb+0Zd7oOy+ULon0rnT2v609Da0J6Ma+BOBwkkGkNOY7H09wyvmkc9NH9QDQ1dmXEOQCdcMIXFi7ldCEw3rZuunhh/3A0iIY7cxDjAtqX7E4gRGlaKCDJl9NGBckziKJNFusqwUXkQN2ZhHEdBCdqgq0vIlMtVqj6SG9DgepYygFymccwf9Xt29Rl9bZFk1VdCryuZNc7fNGGxjFUEW5jsGI6wbcXfs16Bst3i+k+96Q0nDFPTiPMbYjI2D6FJYzJpkhz/UOeBnwiBPuvsL9ej798Xy1eM4LAeIP19nE5Lsk+pYLImLxmPgeTzVA1QFcdRoj4tWT/XWoSZ3Id65qbf8GQPPMD/y4osrYPHyPcCq8uRY88o7ilCQ44jvtYdm7SNTDGf+hzzswT9Pgr7fDrRsyKF6iPYloH7HoymRi1dwzN5eO/xvFuM2zPh6DUOqB5wZXT5/ylRNQqBNeGHBe7mtoqDOhPUUfH1ZRmijCx2yZcYOFRsUSnqi9CU1aGwjLjRilwuZy3uhq1iutt1AUOrX/zDx6hRTN+Ic46N+nP/behsET92ESAPAI+s7wEt033ScssWb7OACfwnGXkJEYF9DI34Or/wpvEudnR4e5qQDe2NHu49r9/mjSEeeIi1VAsqFP15AyY9QE1G84tQk/p1GfzmH0V8lAPuMX8a8Wo1snA801KOTosPly0C2vrpf+0vItSfR/56lHTCMosjwAc06GxLM7sjVX9tngifC24fZPMPP7Qa8m
+ 5FZH4KP2
+ HXe8PhSQvfz9hRhQGahPacmRME2tzIt0QcJlZeBlEHDFsKVmZ3jnhc77bCON5FXvxHPlyB3K89eYrHhHbZXabYyXnLnhPwT6QwZdpq1cT9I6K4JiHU1loVBmhT5VtIwRXwIkZemQdlCQSv/ed9MgrcTlGxi++ryIGhIAazr3bdWcoRDZntUgmOU5ScI5sPRVUoDMbX/8zCz9BVL+A+Aa2F4ai5ytAc5PWdVZsTFmhxxUsia9T6Nv54WgxX5HJwiCtfgRswzdm9YFJRjLy6CKb7Ex15ZW9UYpSxA1n8+BUtTKalpD99+3h7bAFFrH1Dy3DbNAg979+kIUJ1SHqTVDGRukgftkuvisphokzBcDTwlYRtPp/XFafLAk600XEVTkjWE+gQXi2ZWiIGYA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,78 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+patch01 use common KFENCE_POOL_SIZE for LoongArch
+patch02 allow change objects number
 
+v1: https://lore.kernel.org/lkml/20251218015849.1414609-1-yuanlinyu@honor.com/
+v2: remove patch02 in v1
 
-On 12/18/25 5:45 AM, Johannes Weiner wrote:
-> On Wed, Dec 17, 2025 at 03:27:32PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> In the near future, a folio will no longer pin its corresponding
->> memory cgroup. To ensure safety, it will only be appropriate to
->> hold the rcu read lock or acquire a reference to the memory cgroup
->> returned by folio_memcg(), thereby preventing it from being released.
->>
->> In the current patch, the rcu read lock is employed to safeguard
->> against the release of the memory cgroup in get_mem_cgroup_from_folio().
->>
->> This serves as a preparatory measure for the reparenting of the
->> LRU pages.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->> ---
->>   mm/memcontrol.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 21b5aad34cae7..431b3154c70c5 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -973,14 +973,19 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
->>    */
->>   struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
->>   {
->> -	struct mem_cgroup *memcg = folio_memcg(folio);
->> +	struct mem_cgroup *memcg;
->>   
->>   	if (mem_cgroup_disabled())
->>   		return NULL;
->>   
->> +	if (!folio_memcg_charged(folio))
->> +		return root_mem_cgroup;
->> +
->>   	rcu_read_lock();
->> -	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
->> -		memcg = root_mem_cgroup;
->> +retry:
->> +	memcg = folio_memcg(folio);
->> +	if (unlikely(!css_tryget(&memcg->css)))
->> +		goto retry;
-> 
-> So starting in patch 27, the tryget can fail if the memcg is offlined,
-> and the folio's objcg is reparented concurrently. We'll retry until we
-> find a memcg that isn't dead yet. There's always root_mem_cgroup.
-> 
-> It makes sense, but a loop like this begs the question of how it is
-> bounded. I pieced it together looking ahead. Since this is a small
-> diff, it would be nicer to fold it into 27. I didn't see anything in
-> between depending on it, but correct me if I'm wrong.
+yuan linyu (2):
+  LoongArch: kfence: avoid use CONFIG_KFENCE_NUM_OBJECTS
+  kfence: allow change number of object by early parameter
 
-Right, will fold it into #27 in the next version.
+ arch/loongarch/include/asm/pgtable.h |   3 +-
+ include/linux/kfence.h               |   5 +-
+ mm/kfence/core.c                     | 122 +++++++++++++++++++--------
+ mm/kfence/kfence.h                   |   4 +-
+ mm/kfence/kfence_test.c              |   2 +-
+ 5 files changed, 98 insertions(+), 38 deletions(-)
 
-> 
-> Minor style preference:
-> 
-> 	/* Comment explaining the above */
-> 	do {
-> 		memcg = folio_memcg(folio);
-> 	} while (!css_tryget(&memcg->css));
-
-OK, will do.
-
-Thanks,
-Qi
-
+-- 
+2.25.1
 
 
