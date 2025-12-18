@@ -4,102 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01F50D6ACF0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C08CFD6ACF3
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B53B6B0088; Thu, 18 Dec 2025 07:01:00 -0500 (EST)
+	id 371AC6B0088; Thu, 18 Dec 2025 07:02:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 638826B0089; Thu, 18 Dec 2025 07:01:00 -0500 (EST)
+	id 33F2E6B0089; Thu, 18 Dec 2025 07:02:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 544E76B008A; Thu, 18 Dec 2025 07:01:00 -0500 (EST)
+	id 2732F6B008A; Thu, 18 Dec 2025 07:02:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 453D36B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:01:00 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 674CB13C39B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:00:59 +0000 (UTC)
-X-FDA: 84232450638.16.20CC953
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8F7810001E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:00:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=tlnmpLI4;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766059257; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 173076B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:02:24 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9527136E7E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:02:23 +0000 (UTC)
+X-FDA: 84232454166.17.9779143
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1A48CA0023
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:02:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766059342; a=rsa-sha256;
 	cv=none;
-	b=QLJKWCYIDfC+kd3nLT+OmWQ6ic/hG7uR2UcfosJmvUcLRnEzFCeMkzexLB6M3RyfNj13fB
-	l4jGgPZPfqyGgVgx/7Z1olTMX4wThNT3Zl3abHibtJ8IWkH3sIleaJHuDKBGFlpdUqufqK
-	6L+PvNdYC4+5UOmk1raOojuqMJOzXJY=
+	b=iuJ9PVEmX2EsNgx3BotFLq/AGMsjhgDJgHRVh7ynQaOW0JtkltA+ZzALGXmTjyyGtvfrcP
+	0N5sJDrG95kJPYXMqOLZSjPw2QMkAgUK6QHNrtxjxAwvc492bGLv/BUdQX/xpkAFUlA6Se
+	Jvomo2sjzFZOMuC+LVTUrt4OZNgZJlI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=tlnmpLI4;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766059257;
+	s=arc-20220608; t=1766059342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cIFPOhz7VsfpNMMAsm7Rks9dHbbKx6tYuI8Klyc/lJY=;
-	b=FHkesawzY/WeBz8+TUwfk62OrLQsuoV9uMH9f4W+DIJ593DGOC+frGKKYiNdt8mBCDx8HG
-	VWxVr56oTcOCkUC/GHwb7PvXK5O6ajd4o7JOeC6QdDB6giAqe8DTHxyQVg0Dw3Iyl5voRl
-	aWmeT5msgquH0Bp6SWbTOleOyG1p1cw=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=cIFPOhz7VsfpNMMAsm7Rks9dHbbKx6tYuI8Klyc/lJY=;
-	b=tlnmpLI4wVtXl8lrVzu+XqH2t7H253r1YIuCGr+SuLZJ77ojHk2mOm+OcBuwCAm3vzVTJDGxN
-	nWNbQTmBYf2VCWDD+NKCeuaR7NADoP0ey7PY5rpA3TvuDXHOowkKpNtsy82BHZrUQDbhFwpQjqy
-	xUgn8wnddJL9v/ERSAfE+VA=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dX8LK4njjz1cyPb;
-	Thu, 18 Dec 2025 19:57:45 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 820271402C3;
-	Thu, 18 Dec 2025 20:00:48 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Dec 2025 20:00:47 +0800
-Message-ID: <1d2aa607-7dbd-4116-8b45-8b2d9cabed7c@huawei.com>
-Date: Thu, 18 Dec 2025 20:00:46 +0800
+	 in-reply-to:in-reply-to:references:references;
+	bh=lw1F1nlXJHe3DyHwSaxKqYXlRuu7iBVwkmxpbMVNBYU=;
+	b=T4vXbEtmd5C5R6n1+yWT3SfNYyvYejiOyKG7NL0fh4qx0SPrMNMhij2Ui2ClXdr2YcfU0k
+	OKLdJDKlHASDXIZ99yorv2Zfs6jw2E8c9CpTsMcEIDpAzdqb81mhU1SMVTzGIG0pYyoc2F
+	7QJn4awVjSMFLwuUCJp4Ds+MV6zY1fk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E31C6FEC;
+	Thu, 18 Dec 2025 04:02:13 -0800 (PST)
+Received: from [10.1.39.180] (unknown [10.1.39.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 029FB3F762;
+	Thu, 18 Dec 2025 04:02:15 -0800 (PST)
+Message-ID: <0d08b4bf-35c5-4c63-964b-ef886b8262d9@arm.com>
+Date: Thu, 18 Dec 2025 12:02:14 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] mm: page_alloc: add
- alloc_contig_frozen_{range,pages}()
-To: Zi Yan <ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>,
-	<jane.chu@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
-	<willy@infradead.org>, David Hildenbrand <david@kernel.org>
-References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-5-wangkefeng.wang@huawei.com>
- <D90F7769-F3A8-4234-A9CE-F97BC48CCACE@nvidia.com>
- <d7275c36-f5bb-4baf-8a94-b8522d4aef21@huawei.com>
- <AAFDAF36-E02D-41E0-B40A-AA5BBC084F9A@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <AAFDAF36-E02D-41E0-B40A-AA5BBC084F9A@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH 2/2] arm64: mmu: use pagetable_alloc_nolock() while
+ stop_machine()
+Content-Language: en-GB
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, rostedt@goodmis.org, catalin.marinas@arm.com,
+ will@kernel.org, kevin.brodsky@arm.com, dev.jain@arm.com,
+ yang@os.amperecomputing.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <20251212161832.2067134-3-yeoreum.yun@arm.com> <aUPJuZINNuNxddRX@tiehlicka>
+ <aUPLCPAyxkPeBaoD@e129823.arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <aUPLCPAyxkPeBaoD@e129823.arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1A48CA0023
+X-Stat-Signature: sfkaszm4e1szrrb1ery48n5t8qb968pm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8F7810001E
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 51dtnh6c8ecwgoxeqkdphutijwkuz6u9
-X-HE-Tag: 1766059255-478526
-X-HE-Meta: U2FsdGVkX18wNR/0gVt3rK4/LgXRoW9+AQWIG2FekHNRckbzop03XaerzOYsZmfMXMSeTF0HGYYkpFh5X0idhjDIs0RM7+a9yS3ykSW/0PSy7qbvsXW18hxWoA5OW6nAD6lMmBzfgVwaUewL207FQwyhFTUO89jDQFhqmn816L0BmCcUyYvn4yblQP2cUJB8zvgVlMZw7lo0uqsHskZ4MkZiAFiiEiWMXer6DldwTb1IZqaSQh/0G89CdIjycQyhnWtfTdNfE/VcqXmZL8j9asFN7tbkKSi2M9m7DoQ/Ht//2XrPTuCHWVnO1gneQ64f/6+8IQZzKZJyUf2jTyYOQDhwbu0TXqV9CjP8eA6KM5ZstRPO6vDv16rgPddM91ftw5/exH/TB3rn6fI4L+9fS38lDMDP1B9RLfGahXZSmkD3MyvdMSHSkvaffHsu+3zmdzSQhWHIjbKGIhrcEtbaom53Qh2SgLIWAWoLtwRo6nqkICpSJbl1gargD2OBQaZnWkgsx7cozn9imrDo5gUiJUzOY6cwHGS4fnUhEKS4GtE5S3ZWz839spKlQELUAUYH5dlBLFS+GW/QRWCGOVEv6cZj9kWjGZYw4mjDx9uX8EBdbQksnzirJV+jVaVQdmySviJka7gjDNqNO4lBg6Px+F3oWafN+1EXtMqAZCo2kP+RkN6rMBX3/vTOYYbctqJxufq4cIqCnXfmXw5USJdSwU48fmuGoWYjj0fX2MBr4HeqzmkVRBr4ltSWYM7axJqV7/M4NsiAzTA1f00yJreAHm1DeD99tb4PgY1dNP3n4bFnoqr1laBI0eWyvXTewSgaZRZaFP7TmnTEpf9AyNdQkpuNGQZbeLmYuled48Ncl+PF8O847CKTci65ZgWnhboIpno/wxSIAGq96DxW0u6YyWExFlS3DqjzjqqJKWwhzmDHf9ZFb1hPE6RDN4yb7l6gEqYH+pJ9KunE0YTc4aM
- ufSTl5HR
- lgv5cMWhdwgdc9tUtuBcs9IH5zTG2vmAqNN9gZioB162xNmo2zl4rOj+W2S3FQhuD3gfrHRvmns7KfrckbfBDe4+uqTeeAxktsMb70k7HgLe4wk0H7t851sZHTFn4ee6XZiFnMcftZq6sW3DMENP+MRyYTjxBBTn3TyRhugoWkI/3isof59PNgVUDLfqoSH9hz67lgHPysPHcZxAsAJYzwFaZwxrx1On5MiF0VhJQ6BmYWvdb50WbpehdpPUPVZSFBXbSuXntDwetiIn7IT/Rk6AVuNo9ncjz7dVjGGk0OguC6Wkkx8cILsGKaBt8Ddy7kLhkCA5NOuM7nRqUiPcsOSW0+4j874Mp2VBpN3zeWixkuyQ=
+X-HE-Tag: 1766059341-225262
+X-HE-Meta: U2FsdGVkX1/6uQw0CaPCT5Zsp60VYADs7zxy67d92J7oX7IQxBQOiS1jnewqQSkOnFT1GgUPEl6IDZKfceyvGIDCJYtkhfYBoqH3kHQq3F9uBXviElxKtw6zJKU1tK+Hd0DJBVJ1FsKNvqIZp7wcER1G9lr4I1uw9WET7hRTipMwWcZGS1VXs63XQ8NTcYlileuyRMsmeJpnDfvk/DFvysHg4kI8qc2w7ptn5TEH8fwA4tn4XyKrLJRrqlGU+vZ1qXp+vWnnjx4cQrFneyt+XHThXKf999QXsFZ1woh3egDFXrSFfcakhON+OqAm3pijDKukdn5zektPlnS5B7Uu2FPZpXVkhw5j/9VQUghtcgr0MLAKkdsnf3Js79IPRNpR3SoLsKR4W/PWX159mgXjeoI7UAvG+w1PdT8uLurGlB/B+05YGyXiKTGM0cnNhejLBBS3sAPjp4BTLcV3VQJmbdIUcKnF0KNRud1sOty31JdXB9WMdAQTvCpAPv80XMrnUWUZato3zMrwtzxFTYnlK8sGh7o2kNlpl8WZO6k3czv67KLl3UbQQw+5X/c0GqGi16bxSlWdgzEbJuMUkBPic7Hc/wPXFuIrTUAq5rSy1m6JwgPsSRzLXILVLlCZhtnYSJzksa3DrkN7kaP+YS9TcFIzFF44yykrCRo+0NBBjZc6pQo/YQsqDeKuKgj0Rk01hiQl/xF8EVbLxxzgjBR+xpDa772sLAcDP0TNDw9bQ+bN7x6py00vrPjLWZoOH9e7JnRkrLcfIcACc+hcAUFF7khyfjCld4OykHwOMbDQzHNp0SR/Ys/ALMyVaICv81tQcW5zFgxi6fQYZ0bQ6SD30xCANBjpjvmIYPSS/JKbR1psEkCCjUeOtmYviwIFAJEOtMhHX1RkLM3TSaTHeHnj3byLWUpGdgjEZor19mP6opafNIGpsirHkGW51Na8DP5x5f4N70GekkUAA/f3jF2
+ /J7O1YDC
+ sr5PNEQe8ryCXLkbnJPd1a1CnfoMkyaIxcqOLjqaINtplaL+aNoHds5JI6bLFZvOMpmVqqXRNyfVYcCnK7lLLwHPkaOxu0q8ZX5cXf4Ym75NuGaJzUg4UZV2frzfbsX1r19H/LEIs3JdrSGzthqpzoPk7wpsPkYlBEAQnZKvqmMeCRNm74gKYwsB7SuGdXl9qyTPuSlFXQd/qYWXP4Dil3gNfA60iXPncI12usxxljQY4cVPnHH3c4+kYbk9GUoWxuIgpw2OLtSf26KA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,41 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/18 3:20, Zi Yan wrote:
-> On 17 Dec 2025, at 2:17, Kefeng Wang wrote:
-> 
->> On 2025/12/17 1:20, Zi Yan wrote:
->>> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
-...
->>>>
->>>> +static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages)
->>>> +{
->>>> +	for (; nr_pages--; pfn++)
->>>> +		free_frozen_pages(pfn_to_page(pfn), 0);
->>>> +}
->>>> +
+On 18/12/2025 09:36, Yeoreum Yun wrote:
+> Hi,
+>> On Fri 12-12-25 16:18:32, Yeoreum Yun wrote:
+>>> linear_map_split_to_ptes() and __kpti_install_ng_mappings()
+>>> are called as callback of stop_machine().
+>>> That means these functions context are preemption disabled.
 >>>
->>> Is it possible to use pageblock_order to speed this up?
+>>> Unfortunately, under PREEMPT_RT, the pagetable_alloc() or
+>>> __get_free_pages() couldn't be called in this context
+>>> since spin lock that becomes sleepable on RT,
+>>> potentially causing a sleep during page allocation.
+>>>
+>>> To address this, pagetable_alloc_nolock().
 >>
->> It should be no different since the page order always zero, maybe I
->> didn't get your point.
+>> As you cannot tolerate allocation failure and this is pretty much
+>> permanent allocation (AFAIU) why don't you use a static allocation?
 > 
-> Something like but take care of the cases when pfn and nr_pages are
-> not aligned to pageblock_nr_pages:
+> Because of when bbl2_noabort is supported, that pages doesn't need to.
+> If static alloc, that would be a waste in the system where bbl2_noabort
+> is supported.
 > 
-> for (; nr_pages -= pageblock_nr_pages; pfn += pageblock_nr_pages)
-> 	free_frozen_pages(pfn_to_page(pfn), pageblock_order);
+> When I tested, these extra pages are more than 40 in my FVP.
+> So, it would be better dynamic allocation and I think since it's quite a
+> early time, it's probably not failed that's why former code runs as it
+> is.
+
+The required allocation size is also a function of the size of the installed RAM
+so a static worst case allocation would consume all the RAM on small systems.
+
 > 
-> It makes fewer calls.
+> --
+> Sincerely,
+> Yeoreum Yun
 
-One of the drawbacks I though is that the pages can't be released to PCP
-when the pageblock_order != PMD_ORDER, or released to different PCP
-list (order-0 vs order-PMD_ORDER).
-
-We maybe optimize it later if it's critical, but I don't want to do it 
-in this patchset.
-
-Thanks.
 
