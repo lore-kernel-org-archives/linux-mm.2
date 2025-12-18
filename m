@@ -4,126 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABFFED6D234
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EFE9D6D237
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6BD06B00A4; Thu, 18 Dec 2025 10:28:42 -0500 (EST)
+	id 931C86B009E; Thu, 18 Dec 2025 10:39:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E19966B00A5; Thu, 18 Dec 2025 10:28:42 -0500 (EST)
+	id 8DF236B009F; Thu, 18 Dec 2025 10:39:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D186C6B00A6; Thu, 18 Dec 2025 10:28:42 -0500 (EST)
+	id 7B45E6B00A0; Thu, 18 Dec 2025 10:39:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9846B00A4
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:28:42 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43DF512E5F
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:28:42 +0000 (UTC)
-X-FDA: 84232974084.28.328D7EE
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 32D4A20003
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:28:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eY03gj8t;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 687186B009E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:39:10 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BBF631A0266
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:39:09 +0000 (UTC)
+X-FDA: 84233000418.22.0807631
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 88968180013
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:39:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SbO4U1RA;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of groeck7@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=groeck7@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766072347; a=rsa-sha256;
+	cv=none;
+	b=X6ZOoRdX7nnD0T+mtZ6Rz7ICpNH8TgldPuWb8bpEHX46h/KCfFULip8281Q4bUkSRAQ9LC
+	nviwvQtyg0DTlRfGlYn3M0i5l+dxHZdybUK65mKfAtqUTPdwbvKOerEOcjgrKnt/m40MSs
+	rTmcZfYCqGFcspYFIo4zE8+9IcymvCA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SbO4U1RA;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of groeck7@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=groeck7@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766071720;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1766072347;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yn8BgWn6I/LIk4XGC0f4AkO9wXJnkOd0NBG9ThvD7us=;
-	b=mU7w7i72IQU8UuZtLWLeRDjwy5llbrnA1AR7uQSVwhjsLP/H1vOS6CN3hRJLXIpXVd8KB/
-	ZNfBnLzWeKpTJIBpALJU2EjHFQuZoaudX9cxBR1TpfC3qNfkOD6PQXvnv+3dMJ6YwZcJyo
-	19sp0bly3RLg1xcvy1OzHH0G+rtut4o=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eY03gj8t;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766071720; a=rsa-sha256;
-	cv=none;
-	b=pIgxe99L1YRzChEYrdhjS0f915mdQC7veQBZnF6TMfPXbFGjoEFfpW/yivaWQEaryURSWk
-	uhz4N1axyOwmx/T96DVZimOCBX9aSIqvVR8/8Y5XlZCWpO5AmUw6KFBfagZpPzQnXcn4vN
-	yiX03QPbcLC7TulTNC7lyu2EPQm5yZM=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b8018eba13cso113663166b.1
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:28:39 -0800 (PST)
+	bh=O3+iFcm1O5KtApMe2VjVRzuyLblT2dx6soo5ROTKP70=;
+	b=JmZ7eEWh2bpDnqt/tnpDa5uFyVExUI3Vr6dNocNh01bKxQPrqTpN88e1vG6Cd/JzO1T3Ru
+	b/4hS3Nq6PTg0wuvBLTb324YEiBY/Nv0dKVhDVu+CEa3sCW9oi56iRrPRC0QxGaFB/3dIE
+	LYXlzy3g5fYN4KODXNNvU6xEaKWZ/v8=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a09757004cso8946875ad.3
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:39:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766071718; x=1766676518; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yn8BgWn6I/LIk4XGC0f4AkO9wXJnkOd0NBG9ThvD7us=;
-        b=eY03gj8tSdBZJS7BDvJWOY3k9pEcBQARLqx+S0IDClYOGPA+oqDlhVy1/ThoQ/7Zxr
-         rU1wrHQN/GF3jVavHDi4RNdQwW2JyHsQdK5yj0MpAf2XaDd0oTpBax/7rG/n/xKFVqxA
-         FGTsERjSBzFxmhlilA+E8wByq9QPB47Bsvo+dhzkonvSWzzIBBTVfBpDeWEJBQHohB+3
-         CxxLZLa9W4cIWeJWZkUmJzxEBF2M07PY/ix4lsZk7W2tDl1TWJpRyABzGZ45ctYfXFv7
-         ElgCHz3hKgO3moYnUtVdO+IZG9/1r8yQ2v9VaPHCtchdEOjAKJy9z32aCHiECw2mSe3v
-         AAgQ==
+        d=gmail.com; s=20230601; t=1766072346; x=1766677146; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=O3+iFcm1O5KtApMe2VjVRzuyLblT2dx6soo5ROTKP70=;
+        b=SbO4U1RAgp7W6f6QtdsplqjFOkOWxYiPMtqzLdvi5cysQJQNL4cJ+Jo6C9XIMQNK3L
+         KSC7XIK0cRGDUbQPKlddIRhSRsNXcBdJJy/TgInJUGxd1oFu11QXdu+kHtE1kt3T2R6r
+         kwB9w2SIHZRiuFNIFsEB3XAW6urlsfZCG29X8oMLzD0DltvI5MfEG/nEl0H5HX99/9vq
+         sH5DB16Z+XNol7vvsgt0blbMWTD3WGP8Pp4NEK44ckKi8JQvZ5ysWHBjCWZgafOOfLRy
+         I+2L0iJ3oOLxGs4QIxv1/0GepIZNeEgywbLNAz3sJX4XWQ8/EPnSoiQb//vLwyznFTDb
+         wrWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766071718; x=1766676518;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1766072346; x=1766677146;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yn8BgWn6I/LIk4XGC0f4AkO9wXJnkOd0NBG9ThvD7us=;
-        b=wDAloBBwZYSQ6zip/0Z8MH0FlRP1W87ylJhxnMvFVNDlrwX8yOu0P/VYenMMZa/4AO
-         zCefkljzTrjAKSdAJ84DarGpa7fOd0GCRwNDDqCO95+WXbmh99R78KLw3izxjUcBWMUb
-         r3ODnVpy/VCKvEAPs86E+faTAhxVk9C0+aoZNNpxoWaHzDEaL0TwGTaA0YJgqlMImbh2
-         9l60DoY6xCOuDY7XH5cTqSnrEWK7x4SrziAfsekcOPYLXsPK1IXMs9N1troMwtsEssh8
-         cYsVo5XAnzoos8vBx0NISSXN/9yyWe+UW09hUFQKzV8Jwuv6/P1dKczAjWIVwYX9kAJI
-         xUEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXNh2u5/1QGUdqOSGLjzxdFKBWEFbECSnQDZ6E59BgkfiGaavJuJQlfLMQnLRQQftsrMgIROJYXrg==@kvack.org
-X-Gm-Message-State: AOJu0YzymKoLzETujUq/VvPCuihNQk7D+NtDbHggzDOBTxzfbyHFK8D2
-	qLscRWuJptLht2nKxOmy1fkOck9Uj29ri25L8m+JLqusrYFtEn5iFq8c
-X-Gm-Gg: AY/fxX5Rg5q0rrFaLyvSrqzi2pmJc8RVL/a6bxM6p1f3DGbNPfLpNlXj4Qu5I8EsuGP
-	gH3Q+Sibw4eNO5Er5lrMk/e0RV0eXBCrmp4zBXPDL/subAKbWaGJub1Flr7NsmRFWLImVs8PCme
-	M8ZqbQ4lQvgZD4s02pT/EkpNIRaH+YgdoUclPDEUETCCGpk3OJOZVJPwzstyj2i3qDnOrt48A1w
-	76u1QlqTR50JcER1stDpS0byyIdcs8m8Mttu3GTtmIDFI1cvcXg2b2Y8hL8LksqxC7sekTDdZyx
-	uQvGNaAORXFqAbC3IWzL0Fd1BbEWqNxAjLhCyfTAEb5LRhGx9f4loBVkmH2Td86mx41T6NdXGXm
-	cN1KQFTiunwtcjz1PpKffA9HzCUtaBW9jglCaydl6LUHgMQ/GHrgtjq3kFwr10l+w5m6FtrNa/R
-	Z+zPdLXHBwvA==
-X-Google-Smtp-Source: AGHT+IFB+jBENudrEg8djabfVcvhY88+PerQmmOFV0npol/NL74g9Ze9/JGTj8KVHVzSGaSpyvOlew==
-X-Received: by 2002:a17:907:15d1:b0:b80:1362:c445 with SMTP id a640c23a62f3a-b801362cc01mr358488366b.61.1766071718261;
-        Thu, 18 Dec 2025 07:28:38 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b80230d306fsm261778266b.19.2025.12.18.07.28.37
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 18 Dec 2025 07:28:37 -0800 (PST)
-Date: Thu, 18 Dec 2025 15:28:37 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Barry Song <21cnbao@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous
- folio remapping
-Message-ID: <20251218152837.kbgmrjb5i6be7xow@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251215004836.694-1-richard.weiyang@gmail.com>
- <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
- <20251215084353.nmznnnmcpcqo4ldy@master>
- <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
- <37c5dbc1-bd66-4124-987f-8983a06d576e@kernel.org>
+        bh=O3+iFcm1O5KtApMe2VjVRzuyLblT2dx6soo5ROTKP70=;
+        b=lVLCZzAUOh2BuBZTIhmcy3BR7lOt0MP8x2x+vkdsADhKtX7SdVpAlUlwslrvfHaXLP
+         hyInVWQDr8ViU8pZ3j4z+fAKHRE+f61Y2cf2GPq9v3T87+QMz+yGSdQlshk8Rer/fTQk
+         T8ni//1goKuXiYYzMtNLKgNXrlWqRppH0/9LQ2zfqLWMvISxKIP0q3pf7e8zOthrA34+
+         nbsy5+7BJCpqbiR4b3MCIYY+jM+Eo11mT3utWh+Rw+ffV9eDuCdQvTBvurBoifApVTMQ
+         MY+AaiOw1JhGN9q2SA0s/GULoDoG0ZunDaanie/zarwn+6eOIHSh6+3CtBXvwnEHaFL3
+         cIgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyoAO0/pwwbhkMZPky8VTd9AsER9/RG8qy+UtAERhbeV2nWBjlqfC7KrNDGTXu50aCbGrPKyYSTQ==@kvack.org
+X-Gm-Message-State: AOJu0YwWhd8CrhtZjK5CByVJMedKJEpeHTWKA56V0l8cuoYTil/1xBGi
+	L2cnhI+YyNLK7pnIRvoBDb88EaxjgAJVBdDGssAjjLR3DdSwa9teJgEm
+X-Gm-Gg: AY/fxX62ojnTLHrso1tbuIH5/Ihne1KSAFyyjge57FGpD4QGPdWwvXVJRsLocGF6olH
+	EzGcegUMsJmdvafVx7/Z+hWH8GeqgyFKsKLJITxvW8FWV7bVCuR3VAlPn+OSFo/kddxAQC3weMp
+	CQMwtJPJB7mV06/pP3ZYSvHWbV0iyxkfmnBJCrvVKpMYfR7zAvdfeCmtEpPOwWkKEML3Pl6zhJ0
+	h+E6yIhl/uRI/1Uhv6/caTbUJBZJltaUZRQ3DobCXvnRHbmkObrFTHqtk3kpsAnyJyahXaICPrm
+	f12vSa9LGzWtnN/n+qLR31WRGo8HiG9T/gTnIOv3LLAKIbUDU3bpu46zdTTSD5nZldENXCtTiWz
+	WdrJ3Gq4o/2A5tue63ApHFCtaI+g/MEuwS2n0gMcJ5raZbh3+LE8flwMiy3IBT/G9suIZQ8Xv08
+	NvJ6HXWDXTWVHxMVFTqIqbRDvdjdbm2usuAS/b/er2BLzL4oHjgJnjdYPTuvBw
+X-Google-Smtp-Source: AGHT+IGmxtmhpTIw96vEcqdJYRmgmL+V4YpucvYno3XXiqSb5eQwr35wT1A6FVud8nIqqh+FgSelIA==
+X-Received: by 2002:a17:902:cf03:b0:2a0:bb05:df4f with SMTP id d9443c01a7336-2a0bb05e314mr155335085ad.44.1766072346150;
+        Thu, 18 Dec 2025 07:39:06 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d1612735sm29562065ad.58.2025.12.18.07.39.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Dec 2025 07:39:05 -0800 (PST)
+Message-ID: <51271dc7-080e-4af6-ba00-9d5b2cd0871f@roeck-us.net>
+Date: Thu, 18 Dec 2025 07:39:03 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <37c5dbc1-bd66-4124-987f-8983a06d576e@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/page_alloc: Report 1 as zone_batchsize for
+ !CONFIG_MMU
+To: Daniel Palmer <daniel@0x0f.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
+References: <20251218083200.2435789-1-joshua.hahnjy@gmail.com>
+ <CAFr9PXnK+WCOGYs_e5HiCiwxN1SdjGhmR3DOi8w0BYRqooQONA@mail.gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <CAFr9PXnK+WCOGYs_e5HiCiwxN1SdjGhmR3DOi8w0BYRqooQONA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 88968180013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 3h7d3xesmgwdy7dattcxe7qdbzp4hhud
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 32D4A20003
-X-Stat-Signature: c9ptz6bdg349urryqqkk8t94nctcj81n
-X-HE-Tag: 1766071719-328139
-X-HE-Meta: U2FsdGVkX18nZnFA0VAPUnlZ+HajWTB0Zk99vjF7awkeuYK3VPx2Q4blyh4pDYsnftVaiaeOCRkBPChHr6Wl8nra0Jh/HEdA/S46AhZT0p4RGcfsWAZPJt85JZkWGlU74RSx+vBGarunPNx1P7eHWfGkfK3DhbDfrOBVB/WQB8+OQq5JeXJPGnMV9bsMedbhpmCZ38RS+dnXyRx7xBGxqtOQsOfu//KGvy72VXCEPKd77wJdOV4D25O9Gxo+3xJSP2+lgWNiwRMg5cQNWHiaOZLDf3zhxOd0ZVSzDM6/oCy//DwAZd791xMXY9NwCWZ29IceBfsyu/0KUXsN81VnIaau5OrXnMQGUL2Bc9/Y6/Sf4oWC2r0By5dkUqYp48DtXtMNhpeLiH3nmrRoayUOnj3z0M3KcTvtqJIegKQW4FRhmXjVtD/FQWcWGDd6vuzV1lYvT3vCUuTF6AYOXXvZ+GN0d1LawWf/5e2lCtLIXs+Tn1Q1VR97jvhOgF7dX7lJEisRB7LDIGZEihIYft8P6vjkPAI45jJyF4Y3zm4DGMyJsepPKWD6/RwcUcyo6jnxEYOSlApS3YiSo4zaovqpLLu2nDeoqfycXnj5p6K2afYGz6aYIKRB9LL9Mo5omS8/JkhYdUNUAvsgjQ1A+8/mTRfQeJG90ha3JNpXNLIiG8HHYHCFoyQXh7wXDL1yQ1kMY6lH96lLstf3n0O+1e15NCC/P6K3RAgjPHnt/Mw1UiG7extaTAeP41csiocvLDmth9+Tm/xMtuQhNljoiRXbWP2Ib9EsIOETWyhgjqm57Xp2XOtjxZBGq/Lso2q2P2sDq9UGxsMWQtpUUvfNZbwxvl/ZFknDfZBHbcXPG+Rv9oaVfkc+5geV87mFttGeTYsifSmUCS3+t5Rta5MCj5GluhfL54T/xpbwuF12mMm9hktYbupooCZaJfpnTJbk43BVKMKBWXxEkR3kcrZ9RvX
- iQSDBCIc
- Ues/Wdh6e3D+XxK27Xs/Zrrsi5QcAGcb3KFtH67Zd4KodfB2xBbQqpGPDAr0jBznvUjximd4tFNZ1w5s1bEcUQZvbfU97XyyPya3JqMISIgkc4GJ1XKjjhVblG9sSGAvgS1xJyFiNkWMHgheejjV/NTkMmxwuhaqjd4me0mVeZzORPtV9jpxEEQeiUdEpuwsL65ObmIBC+6H6ZrQZjeTd0fb0nJ32LBQwIRKmgAey8ZdAU0cSuc+N7/awEI5CyaK6Hgjre+NmtC60y9+hpXJX3sPJ2HFJKuT/MGIlTR8IWcAMIkjHDEmPGro61O+a9Jdtwa5ogEkv/PWRVkD66dcGrYlqY8wgyrKDSDlsiNsrGwDfSp0ZVlrb/PcBd7/JI7oerMUPhrJnyvTE6iikQ79ajKEXDkibjE1MH3zd/0wX5Fyy7MXIFaaIFXmrVrWlFD0Ni6JYJY/tRJ9rMphyK/0VuRp0Ib2mup8LCKXRy9hLwXYpKc0KvY70ueqIi7Kz8XvBpGtq0H6Svqer80Rlo6Q6oVffu/RsImM0PhDKfgY+KM8pzYgNDT2CA8T+3L+O+eqzK+uoCJNCS/Lw0o6m7RUIR9LbxRQZtcRdLAJz7A+aCmvmtwN71j2Q5TF2/BvVgvsqjPboXIEyzJqrBWTDciBA4094p6VEzfVDSVdD9KrpPJtyvnJ0fEMxsqUdTB+Bfa+JI8xNibAi3iq6dJ2TzogE2WyuhlNo8+47Vgh9wyMplPAJlX8nde2fs89Dk4AplK+Ub11PYW3TkmIEQ02CsSWbtRl3sbMEeBIsCbDxexHQAWCxXDDqJYFdke7sUD1h9llMe8TE
+X-HE-Tag: 1766072347-470177
+X-HE-Meta: U2FsdGVkX182iAJ6DfMtMbTitDBCG17d/F6pjDMTvA3b2YqLI/SBCem61cyGIvFpcQj44+tCBxVcX0WHcQ5rO1PQjLRFSCAo/wd2vX1bVpnbwwUd7X0RctHhC1hO6CwVkVM3KKwEwveaMiBaJsFjGqgOtga/79G4zn48R0OK6jJaBBwdC4H+Bqt1MjolpW/MvBFpLc8qrz6BXt8hmvxh4Wp27YczbkinmmsVQbiUKkbl05+CENUNbdjf0VLWU/FzBRU0phpSFiUs4DuCZweshyvX6T67pOWT+FOPjE20REh9v90gsNVJKVE3/GtiNq7RYUHzZAZTpquBZm9Q9ysnWjQW8Q9B8gCRLzA+9Juk9mu3JlHs2M4ZQlMMGv7MpgKkVrgyltDCEeil73bKox/t9J0Udhsx2yp8jNP7kbGZ1CfZxcu4Hzc65IvPTnVradMhLtsi7UTSACRaIGLzG8sxzWPMHKK4dNBrmICs2BqXw82kM8RELHOQE1D5JdLdqjkdMcJ1xDhE1sjAGe5o6xiiFIB3xTkMpmraTQPAjabp7Jpwjwzz6h1lJrm3Op0Nu9nEfQvVUPHNsnx172CBT44AAbj5SREo9EPjTn5Rx5xlP9J8tOyWIT1MKrmUftM7X7MON7LWqarZwuT8qqAMNyL4k+vrSkaPXCBRNN1sDnuVrQm32kI544vO0nFO3ffzxgorm0Cm2y3k0ImzT25ACldx3Mq1AHUgAT4qBvWO83dHl08xRhv6dE8XuBQ/6d3WpHeFyyXgs9BpEqaGxDptY5qnPeQ23hW6LvqdfzHfPsK49VYv8RSW1TubDvP/zcHIdMNLG117fd7qMPmUsqcpd4FrTChsHWH58fsgtq0mgW+Z9PBvmbjHRm6XJTBEAzmDE7U84Q5yMbyO5B2SUZ6FrXRotc7918abUAfbtcLZctEvQA4pPJmKRfVkd7ixi1zB3VVYwMhbp1+WzrktSdfrvTy
+ ukGs1At8
+ oLMRdZsmWax2va//UBt+QIWT6nzNl2pxIbRNee8EwmIEpiN/y0xeSRFmvp/VJ54r7tqHaamWR/VJnhd75pfEe3WicuAaH/yrC6RWgZrVARiKcbbCuuSIF4bUYiWSljHtxwC246CVZACWzWJte92YMlw5efYuAqjTpqaTrxa7Jii56u78aB4HmRHXpvxEqXQYmANCowWFdIZZznhABuj/aa94A//8jAO/+yBfqdULVJrsdgWP+K1NLC8WbxHxXaoNwO1aTDSllZ9G4iH1C0zw6ROsQxjefRz9FnNqOGV8IoWjdppKycJ4Vq3GLju51OoeIN5Es6UxKdvng9gobkBmVJIXFtaUwxstLyyc8rn92Mi2wnG3YB4HoStOOYVraa+mirqYIb/k/BrARDjsrXPKZkHiRFlbPkFzNNrUV+VQ6FBfcPFi2M5RUNYPh9JqdM6v9btIqWVS68wxgHO5Sy74zqMSlq9ZNCkGs1HYZZPTgch6JlwCbs899LXzWydItc3jJ5+iLjYPCCj/IweolvP2PHgx34cvzu+uyAaYiY5xg1lGVwYkwaLNPfUnzy1uN2QUZ2g6D/axvqSupCFZIb8ruPWmZ7bDUdHxQuH0t3KXMFDf6FjyOQBSQdy6ESd6fyoLDMdV3tZfCPonaKYTAZ6x94Tg7OnYnJdd9NbI1v+eeitO2/wiefrJVZeby/tw8AMjBNDY1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,119 +171,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 10:58:36AM +0100, David Hildenbrand (Red Hat) wrote:
->On 12/15/25 10:15, Barry Song wrote:
->> On Mon, Dec 15, 2025 at 4:43 PM Wei Yang <richard.weiyang@gmail.com> wrote:
->> > 
->> > On Mon, Dec 15, 2025 at 10:31:15AM +0800, Barry Song wrote:
->> > > On Mon, Dec 15, 2025 at 8:49 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->> > > > 
->> > > > After splitting a large folio, it is necessary to remap the resulting
->> > > > anonymous folios.
->> > > > 
->> > > > The current implementation determines the end of the remapping process
->> > > > by counting the number of pages that have been processed.
->> > > > 
->> > > > Since the final folio in the sequence, end_folio, is already known and
->> > > > tracked, this commit refactors the remapping loop to leverage end_folio
->> > > > as the termination marker.
->> > > > 
->> > > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> > > > Cc: Zi Yan <ziy@nvidia.com>
->> > > > 
->> > > > ---
->> > > > v2: move folio assignment in loop
->> > > > ---
->> > > >   mm/huge_memory.c | 13 ++++---------
->> > > >   1 file changed, 4 insertions(+), 9 deletions(-)
->> > > > 
->> > > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> > > > index 40cf59301c21..fe812d9c7807 100644
->> > > > --- a/mm/huge_memory.c
->> > > > +++ b/mm/huge_memory.c
->> > > > @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->> > > >          return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
->> > > >   }
->> > > > 
->> > > > -static void remap_page(struct folio *folio, unsigned long nr, int flags)
->> > > > +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
->> > > >   {
->> > > 
->> > > Do we actually see an improvement in readability or performance?
->> > > The existing code feels a bit more readable to me; nr is clearly
->> > > the number of pages :-)
->> > > 
->> > 
->> > Hi, Barry,
->> > 
->> > Thanks for your review.
->> > 
->> > Currently end_folio has been used in __folio_split() and
->> > __folio_freeze_and_split_unmapped() as a termination marker. So continue to
->> > use end_folio here as a termination marker looks consistent and improves
->> > readability to me.
->> 
->> In both cases the variables are temporary, and they look fine within their
->> own self-documented contexts.
->> 
->> Now that we’re crossing two functions in the context of remap_page(), this
->> doesn’t seem to be the case, though.
->> 
->> > 
->> > But yeah, this is my personal preference. If it is not the case, I am fine to
->> > keep as it is now. :-)
->> 
->> I personally find the existing code clearer, but I’m also okay if
->> others like your new approach more.
->
->Me too. Well, the existing code could be cleaned up
->* nr -> nr_pages
->* remove i and subtract from nr_pages instead
->
+On 12/18/25 04:30, Daniel Palmer wrote:
+> Hi Joshua,
+> 
+> On Thu, 18 Dec 2025 at 17:32, Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+>>
+>> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+>> moved the error handling (0-handling) of zone_batchsize from its
+>> callers to inside the function. However, the commit left out the error
+>> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
+>>
+>> For NOMMU systems, return 1 instead of 0 for zone_batchsize, which restores
+>> the previous deadlock-free behavior.
+> 
+> Tested this on my 68000 setup, filled the memory to cause an OOM and I
+> got OOM instead of deadlock as expected.
+> 
+> Tested-by: Daniel Palmer <daniel@thingy.jp>
+> 
+> FWIW There was a BoF about NOMMU at LPC last week and I did mention to
+> the people presenting that seem to be using NOMMU in real world
+> applications that NOMMU was broken in mainline. I hoped they would
+> have chimed in on this..
+> 
 
-Sorry for my poor taste :-)
+Unrelated to this problem, but I gave up testing NOMMU for arm and xtensa
+because it was too difficult to maintain the toolchains for it.
 
-Is this what you expect?
+Guenter
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1db9cfb09533..b8ee33318a60 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3423,17 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
- 	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
- }
- 
--static void remap_page(struct folio *folio, unsigned long nr, int flags)
-+static void remap_page(struct folio *folio, unsigned long nr_pages, int flags)
- {
--	int i = 0;
--
- 	/* If unmap_folio() uses try_to_migrate() on file, remove this check */
- 	if (!folio_test_anon(folio))
- 		return;
- 	for (;;) {
- 		remove_migration_ptes(folio, folio, RMP_LOCKED | flags);
--		i += folio_nr_pages(folio);
--		if (i >= nr)
-+		nr_pages -= folio_nr_pages(folio);
-+		if (!nr_pages)
- 			break;
- 		folio = folio_next(folio);
- 	}
-
->probably more ... :)
->
-
-Don't catch this. Sounds you have more idea on further cleanup?
-
-Glad to hear your insight.
-
->-- 
->Cheers
->
->David
-
--- 
-Wei Yang
-Help you, Help me
 
