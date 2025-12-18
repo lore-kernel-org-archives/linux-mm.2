@@ -4,115 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2545D6E2BD
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75757D6E2BF
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 17:48:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 311426B0088; Thu, 18 Dec 2025 12:37:47 -0500 (EST)
+	id 7E1856B0088; Thu, 18 Dec 2025 12:48:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C8326B0089; Thu, 18 Dec 2025 12:37:47 -0500 (EST)
+	id 7C2C36B0089; Thu, 18 Dec 2025 12:48:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BE026B008A; Thu, 18 Dec 2025 12:37:47 -0500 (EST)
+	id 6EC066B008A; Thu, 18 Dec 2025 12:48:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AF066B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:37:47 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C44DEC01A6
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:37:46 +0000 (UTC)
-X-FDA: 84233299332.17.D343595
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C51F140005
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:37:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ayVlna7g;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C55E6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:48:02 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0669D135AA8
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:48:02 +0000 (UTC)
+X-FDA: 84233325204.15.40204E7
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 71CC11C0020
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:48:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aQEc95lb;
+	spf=pass (imf20.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766079464;
+	s=arc-20220608; t=1766080080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t5QdlsjnvqcZtuvASOH3lpLVJ9DAQKa6CAUEA2Iqcz8=;
-	b=uUAfgXHHskifSJn9Dv0iWKcmmQGmE+o7ayUG6Vn6MUlyLEhbTLACIbJHm2M8zBe1dxeljX
-	JQpqLfAZ+y6vIf2vNz4V9vaUrk0yJRWdXqkkBb7KOnC+PpbePB1daUQijap571rgRpeeXM
-	APa2JkDGqarGo9nSH00Vsk3eWksuW5c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Yvi6EEyWQGpmoQ+sKyKT1UGoOl5UFeYLCESoPn30Km8=;
+	b=M/X0Fodvo9ko+R3fKfxXRsNIIKEiX5gbWQBz9PTVe5hdn0iGnnBy9i2L4pTzcFyaeqWsDG
+	n9D1O85V1y4Ak3qe8VxVOHp2oqfQBKm2bP7BZbm5M0SFb6FXuqw0VN8dijQBQ5Vl1z30K6
+	gMVS1DQ9uGBxOqaIOHVZM7L8YiS5WTo=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ayVlna7g;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aQEc95lb;
+	spf=pass (imf20.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766079464; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766080080; a=rsa-sha256;
 	cv=none;
-	b=fUkV3OzZd0LUQc/iEqX6yVWHUQJYMLxyQEQcbvKWII7YPdOREazaZ4nxBKCGjeV/222+mN
-	bJmak0Ih9mkjhAsU8MDU0nrY/bR6e1Y4MZ58v1ots4Tc03omQb4/QzsAnTiWtCBZo6dS8Q
-	xQRTpNTO4XRUZLiKEdP/s4cq6+Eyan8=
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37a2dcc52aeso8571341fa.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:37:44 -0800 (PST)
+	b=tueeqVCKs2Jk2zqN/NfrJqBxpiGYr9vCi0ofW2dTxrwwpMTIULXNpJrxzPcMfUGjXK1P00
+	2mwnJ3oQovLb0C+VgjcJVFCrmxZTlHjeQupMOof1rMD8EZZFSsZNPL+wv+cLwsKk8EYq4a
+	AEJ/K/aBsIRHvhkKqqjyhSFcJtuRVwY=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7b8eff36e3bso1476156b3a.2
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:48:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766079463; x=1766684263; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t5QdlsjnvqcZtuvASOH3lpLVJ9DAQKa6CAUEA2Iqcz8=;
-        b=ayVlna7gOyBg1geHWSwa5Inuhu4avU5Ox86IRPkEpGNoavYXi1aFOsFlgUBfUzzUun
-         5qQPs3F/Fm/SUceeTGxhVJch53M/P9SbfbHwSgHsbB7b5SmJY718Hme0UbZFYW8PNjoK
-         5Mj+nkQeVO7aOvXo7/m/CDxSWi+C8nI/TkKD0zgeRxH4FOaH1pLs3YbAw295QBGN0dwl
-         vHx3X9d9yNG4dewwsWeJNYDUcqaHgYON+s2qv7oOc0Qq5/XDK7Eb3iUKrwytdwExmITZ
-         qYOY5uP6AHutqoPHBfodK7u7P1DrSdnVaVO9C8KsdZ39EgWMQBNSOXgC1gGoSlAHpUWu
-         dntA==
+        d=gmail.com; s=20230601; t=1766080079; x=1766684879; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yvi6EEyWQGpmoQ+sKyKT1UGoOl5UFeYLCESoPn30Km8=;
+        b=aQEc95lbaHBasJ1J8ZWjjtuZ18To3g7/evBjXP3UegVlZEJ4xyJVNNzm6rwlxZ1i+P
+         JobJ6F6l08Bwen/k06Ey/QmW1alTek4lfx7LIHT6jVHF/pzj7cTM2/yA7s4OhGyX6rlZ
+         VxsMVadJEtIzBU30CPOBq+WaGSv5KYvUxZQhZCn4YtJfqepc7NFbCBsaZlVLVDXsTqoC
+         9GO5ph3jBRht8OWAUuc97/5swrmK1OJZOZEqhR4z/o+SrkKCt7CxY4DpbszV8hGONiSV
+         E1ZhncDZPZpdbZwlKGVOk8Y8Wr6dSjF8Hvu0jEvuX3kOPo0SCk6bbHkAJYOmngXhGw4W
+         ypjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766079463; x=1766684263;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t5QdlsjnvqcZtuvASOH3lpLVJ9DAQKa6CAUEA2Iqcz8=;
-        b=Sf13AlC8vqudcJwNAooldTttGktlELn+iqpKPiA1VYibyyw9Y/xv9Goo6buN+baKz4
-         16QmJsjZvcCgSg5fhuH18PIJw6DolZMuT0BG+8WLHlUebf+omhSr/My0QC77oklzJFgk
-         g+FR7u/J3QujWhsCNRo3f+ApghNCffush9DFSncS2zSL9258fXDWw9h41MQ4Pfbgf5CL
-         bNl5jYc1GaKyMrCQhBfRw507MYqvuNNx2vQ29YaL7x32+hf9cydcRk8nSR/JuSkvRyEp
-         975tjtnsLmXKYZnaJabRpsAK0g6lLJalWtpZpQOIZDNp7GbfdJmO6n6L3+o3Nw5oeBfk
-         Je2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVsVjfGLrvtADxDJwIBCEVgE2SGk0atOV5XJZh37z2pLc4XHhXuge/JrxbVk3K2LNxH3A9iYwwhUA==@kvack.org
-X-Gm-Message-State: AOJu0YzZNvaJOLL4GUMsWJI11Ugt/vCB8lG9Ep+mfebDPfgm43D2vT2q
-	z5gyMJxj4+K6BxscnZVG9xj+0YbnXispMeAdCcIX9NYnfoRN86CL4s9+gmsrFzI9vhjAjdT3wwc
-	LNYI7H5feYuYsx/kBG9G0JHnIXXpgBfc=
-X-Gm-Gg: AY/fxX7H9N0GeJyHY8GG+rLRC38RuxOLuesM0b6xctJq/xlFqAWOWXnXBDR0VuvSTmz
-	/GQlpIPbh2isuGBpaHxdC4G8fqiC8e85AbJHvbBs+KsCFOyAYWg6q5N4g3n4+Plk8PMMQ28e2kR
-	lfMp53+V4XaAOL1MN9UP+7DIzonYyFIVhwQ++s1K+qiC4zD9KptLLrz0nvZr4ITaA7i8HHjm8w8
-	1ieSz+Z1bAA5ISxeYDJE7abV8Y7XnFm/XSVbZGcEUxJURa/JDwb8bd2PQJOUn2PD+sktq9vPBZd
-	ht0=
-X-Google-Smtp-Source: AGHT+IEpztJ8/Oc+Es3sQgy2cxIcccuVwHnjY+irVmpUhBY6FE1JhNS+XHvQhg0+lSlGd1EkNb1fvtRSAvrglkfaPnQ=
-X-Received: by 2002:a2e:bea2:0:b0:37f:c5ca:ac02 with SMTP id
- 38308e7fff4ca-381216351fcmr293951fa.20.1766079462542; Thu, 18 Dec 2025
- 09:37:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766080079; x=1766684879;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yvi6EEyWQGpmoQ+sKyKT1UGoOl5UFeYLCESoPn30Km8=;
+        b=V2EqTx147j+nZTjIZU1ksJ40ymBTI9qRoFoxO+fx3WjzMAcnQWP1tLDBqK6+kONmtx
+         onbkXVzCZy/aD16G8naukwQBJYjTEUOevbZfPBLoqm0xHKo6196hUbuylDCGARtxrAS3
+         FFjhSOUn++XbEWdpYXY5bu52iW7pKmUYJpB9LEcUeU6JUD53WV7yJ7uvs4/D04tTreGa
+         9MJ5Jfysqhwk1qrfMwSlb5PE2HulHl4Y3PsOjRMpqu8gHKCKlayNF1781uAzQqonJ5Uz
+         0p9z6EaTQXRl4XH9SGLsQSCaQJ00jyw7OQ7OJ35pNtQ+XdYjDPyQIlkErD1j2CJ06YL1
+         duow==
+X-Forwarded-Encrypted: i=1; AJvYcCU6MsW8FlL5LZAvpFlhigjAIfnKfNZV1iBaT/gl5UMdb1kXnC0kggGSPl3w+4F2YT0dlbOwObIEyQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywl/+IiieEVDrUbBrqSitbRygpNqN5nYO+A/Ca7593Ira99/uhC
+	PsyInmsIWgLxDdh2/jHayR3tYAAaUud2iBaDww0g8CBtJWto0W9dn3Jc
+X-Gm-Gg: AY/fxX6goy+zOvO8sELZclXRVuyUTmmefYomFBD1MZkXWNx5FhsoFjRcGB9p2GE9S5U
+	IgXWNwKHPa4RCSLdS4IotL13DE0x2KEMpYkjQbMNGFsqBaWBBiqrhLHHZwg5gO2qkhI1Op/8gEo
+	AHxOP6qfg04BQEsLJpAjREKbySaBCI66TvQ0LbU4MbcE5vkPOl8339m5B0/zh9xf9tz5WPMzDQI
+	D1xDSo+JUWaTgO7GN1mF9uddTaL9+czeu62TK6STOqziYuUeC2telngLpGL9cuBf0FYJNf60uxH
+	WQUZLXF7H7ERlw6S0gvYBHiGUtbLdqYiURI30ArcYfmwIwGfL6wWk/4YjIOuSOPPAgnD33ZZDoN
+	3lrlQKftTAOpa009sRFSWrAFS0PRaQjY0T8Tqpl2h9IKDjhpjC9HzwFIYL5i+4M0eOkFaFGG/Pl
+	Twz1zDoD6SbWMqupsSxJN8sIgj02wYyy4wqEVU82GHo9k=
+X-Google-Smtp-Source: AGHT+IFWmt4iH/1kf4fkAJoa+/tbrjhvDMeZi8TMTmoV9V69RJumexby9oqnT8yZuZgLFEmR98CpTQ==
+X-Received: by 2002:a05:6a20:72a4:b0:35d:cad7:cd63 with SMTP id adf61e73a8af0-376a8eb1773mr271781637.30.1766080079248;
+        Thu, 18 Dec 2025 09:47:59 -0800 (PST)
+Received: from localhost.localdomain ([113.218.252.152])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1d2fffa3e7sm2847400a12.24.2025.12.18.09.47.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 18 Dec 2025 09:47:58 -0800 (PST)
+From: chengkaitao <pilgrimtao@gmail.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: kevin.brodsky@arm.com,
+	dave.hansen@linux.intel.com,
+	ziy@nvidia.com,
+	chengkaitao@kylinos.cn,
+	willy@infradead.org,
+	zhengqi.arch@bytedance.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	chengkaitao <pilgrimtao@gmail.com>
+Subject: [PATCH v3 0/3] Generalize vmemmap_populate_hugepages to sparc
+Date: Fri, 19 Dec 2025 01:47:46 +0800
+Message-ID: <20251218174749.45965-1-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <202512121138.986f6a6b-lkp@intel.com> <aT_8woTbtklin3Bh@milan>
- <aUI/MZ8sGDt8toOC@xsang-OptiPlex-9020> <aUKONAP3CZn1kZw6@milan> <aUOFGneXSVE+DItX@xsang-OptiPlex-9020>
-In-Reply-To: <aUOFGneXSVE+DItX@xsang-OptiPlex-9020>
-From: Uladzislau Rezki <urezki@gmail.com>
-Date: Thu, 18 Dec 2025 18:37:30 +0100
-X-Gm-Features: AQt7F2qrnk7u0JIBsBRE6RAjnmRa-PLVv94DblNCWhOYRGSZu08KzeG00DwOzEI
-Message-ID: <CA+KHdyUgK6hSbrKMpH1YqtadzBDFR=SnBUY-hCHnzkLqmcPf6A@mail.gmail.com>
-Subject: Re: [linus:master] [mm/vmalloc] 9c47753167: stress-ng.bigheap.realloc_calls_per_sec
- 21.3% regression
-To: Oliver Sang <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>, 
-	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: m7r4jxkuue8fbtxadjxr6akidrbe6x89
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C51F140005
-X-Stat-Signature: o9xkwoqhcfa64cizf4bmw3thf7tg5dmc
-X-HE-Tag: 1766079464-888122
-X-HE-Meta: U2FsdGVkX19Tum7SI9r+D2bafOP7dbE+qtWzSbwv7AHAqXNzwhfPNSIpfDb/6GZ0Bm5Z54UH/Gn9jZEyCjRJmJkEkhCzCuxG+At+5QNAzTyf2MxD63zTOgEtNVHnurp6rPXaaxpImTbxC61cH1DYHsYFtOi8CubiMzg4dyXkI5PaLlDsREbZRXuJ6qaiE55wKCbIFV4sqUQ+scr3XiFNowPahDA614CDI3Q+5ZBSKwVavnOZR8XjDNwtv2ZP4dYArb4DQpIB0MmFLECGUCnAZCatQpoUY3CBAQu0FoNRXqqBHxiIvBwx52AURWTRG3vPajWvsOsG2mD07s0mYVkx5TyVRnG5vhmeGm/QFVlbDqYENb9z9gWkXkdeeYKMp1cISch2RLaV4E7t8+XCRi1IcYuSuaANuhyVJyOMnT2VgC/M0m8eicOslvOb/4zG7/q83gEvKC2avxbEaW128HzIasUwcGhC47Kk2M3ZD2ELqDd4JZWzU2e5OONfq3XeYMFPc4kTEuu9ikidozxPwf2/1T2UrPRE9/r+cL9CQ9iLw6S13skZhk5PzmuBLsWlNbiXs6r7hlbKZQeXrC1NUtarMQMA0SUvitMLrbqtmfPKk95iEUi8pAKzyj6I2XjmLY+WZkQ9Uxn42T4dBVinz0U0MquDKZxRvKJVzDGsmr6PQNuC6Cc/TygH63MU0ypE/tqd0D/kUU+FVLQa+fMDiE2o/9mGhYoPyNDJ35y9H2+fyzX6ZATL6FM12oUaOIUlF9oOzjoFZcw9pwszDNG1CRQ9KdQqUOG+b2uz6DnYB/fqKeVQuuITX6M6qQoG8f4BaVh90pyFm5mQqK2n9mWhXdUg85/C2M6SfGkcQj+0Iisf+auBPVGUQQOBLskRuElTUYq1VXxsJ8jIjNe9Gi6VLkEI/c4zceP9W6L9K5vhKUop1GzO6dpJdDQqStHDDxNhNQ6/lJ4+tpy9T6yGlqNR4fo
- 76aZo4b6
- h1QohrN5L3nVlDIjNljfD1jYOzCoLhuJ/PztFcrSFa8lSXsh83B2fkqhZzoXHVmATV6gS7y1Xf7MB7KrPtK+9vBPjBZjcjnBCvKqG/rzDg1+bAFlurY5EuvnN9uKtTOHcH5xdz2wJ4reTmSDivKpRwhg3taxjpKInKis2MBDMQDVh3YSqUJ6qrnIfe5MGfTDL8DOGZGJE4Sun6CCrNBX+MecOGblXnGEK7peWeKXdAkz7at8qnnnwNl5tEvFwUrF7g5roITTVB8v+rc4ZJLzm7YvOK2c0JvMKQzzMSFaZQvf67E/dnchLo24oCWG/xDrzHttPQTijCISpE5BG5hqvaQXHhx7fy6ubPfXg42a/0AHQQcPNb9VaKc93N8D/EKfZ7lGeFYXkEQFHbz6BKSy1D2zYqiJiUtuiuQHBcGVm108l2rKGFPhZTPo375CJvCe0/v2cxtuPSHw/af+YUhS4vDrK8cfmGRsAPrXxiIO9eQkDrHg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 71CC11C0020
+X-HE-Tag: 1766080080-539992
+X-HE-Meta: U2FsdGVkX1+/Vqizpfv6Pe2ez+qET5RLHXs3opmbdpskm0YQhCKh1YXv55wXxb3EbneVqSYQVUSgjDCXh9uqyAoaFTFhu2SIqZ+ODWQMZe823AiT61cA4MQhCAnKKbE5OZ3lCBTlBJYdIJ3pisk2waj8onyDzZU8mURTHNuay9QNfNoWT0jhbV31zmfIBKzZaQa+02eMSsVoKhcp5tETHZV+XskL5TTpc32WRn2u6K71nTaRt0OMDZ0QqmdS0N+3NBa3C7JsKzLL2HjRbWsYf6hwhvHUHUzu6FlTbfU53SQeAOYs62byfs+qVgTGIgN0OoiNQbtVSumCRJXAfiAvVEY4z2omr56Ohl7kl7613hMqV0xqFKVhKFXliFHPK3MGMOFe0QdilZPDdvd2JPo2PWKVHzXDn138U5p3Mk7aJzCamKmXNQpJqbomneHc5NClVBeRVvbqMkKwM38ZD8azHdtDOJ6bWQUurflqbzDvGMITSTQDCT7oe7HSWGT2BMZo5vjyev+T7q0T9oAEGkz6ZzEoh+Jvrs3LLbAwjYzy59jfBGDLZWzWcqlEftKx/j80UYD3wk46+20GbHdpXRiJq2cbm1cLNSUvyhEpnn7aGyrikN1nXze8Pg6tJvT2OjYltPfoEPxAb9o37FL7ol+ViO+lE9tIEYa6EpRVFPd7zhMmdqqrzVllbUifSG5iwuuxsiBCewwW2LBte9GrP69AfFpA8APwXcYcqliI3qoxY9pC5WiPkojEylCZB2X7NmlHsAGhKapRmkss90ffQLjnQ/2IiNephuCOZGWq3xglQCAfGf7iZn1ebDVUTZoL5EcTcK/sEmuwr8ZPaUhVq6pNmLYSASztRNpcIEFSVPFuKJab6Pr2FsWEIE0jYAW193dSOmTn+rnezB99EZ7Ki/Jr1PELKjADmjzKItKIBLqMKYEoDD8Rgz/qu0ivsPgWVJHvddsImGV8bjKQVeKzUcU
+ fnxy6/up
+ 0jCCwYfONh6n92ESbLbSrhuZyCipOEN9RWOc/aba/vn6Rka2B6U2R3B4OguykAlv2VuM5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,147 +133,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Oliver.
+Sparc implement vmemmap_populate using vmemmap_populate_hugepages
+to streamline the code. Another benefit is that it allows us to
+eliminate the external declarations of vmemmap_p?d_populate
+functions and convert them to static functions.
 
-No, thank you!
+Since vmemmap_populate_hugepages may fallback to vmemmap_populate-
+_basepages, which differs from sparc's original implementation.
+During the v1 discussion with Mike Rapoport, sparc uses base pages
+in the kernel page tables, so it should be able to use them in
+vmemmap as well. Consequently, no additional special handling is
+required.
 
-As i mentioned i do not see how pointed patches can affect performance.
+Remove unnecessary whitespace from sparc.
 
---
-Uladzislsua Rezki
+Changes in v3:
+- Allow sparc to fallback to vmemmap_populate_basepages
+- Convert vmemmap_p?d_populate() to static functions
+- Split the v1 patch
 
-On Thu, Dec 18, 2025 at 5:38=E2=80=AFAM Oliver Sang <oliver.sang@intel.com>=
- wrote:
->
-> hi, Uladzislau Rezki,
->
-> On Wed, Dec 17, 2025 at 12:04:20PM +0100, Uladzislau Rezki wrote:
-> > Hello, Oliver.
-> >
-> > > > >
-> > > > > Hello,
-> > > > >
-> > > > > kernel test robot noticed a 21.3% regression of stress-ng.bigheap=
-.realloc_calls_per_sec on:
-> > > > >
-> > > > >
-> > > > > commit: 9c47753167a6a585d0305663c6912f042e131c2d ("mm/vmalloc: de=
-fer freeing partly initialized vm_struct")
-> > > > > https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git m=
-aster
-> > > > >
-> > > > > [still regression on linus/master      c9b47175e9131118e6f221cc8f=
-b81397d62e7c91]
-> > > > > [still regression on linux-next/master 008d3547aae5bc86fac3eda317=
-489169c3fda112]
-> > > > >
-> > > > > testcase: stress-ng
-> > > > > config: x86_64-rhel-9.4
-> > > > > compiler: gcc-14
-> > > > > test machine: 256 threads 2 sockets Intel(R) Xeon(R) 6767P  CPU @=
- 2.4GHz (Granite Rapids) with 256G memory
-> > > > > parameters:
-> > > > >
-> > > > >         nr_threads: 100%
-> > > > >         testtime: 60s
-> > > > >         test: bigheap
-> > > > >         cpufreq_governor: performance
-> > > > >
-> > > > >
-> > > > >
-> > > > > If you fix the issue in a separate patch/commit (i.e. not just a =
-new version of
-> > > > > the same patch/commit), kindly add following tags
-> > > > > | Reported-by: kernel test robot <oliver.sang@intel.com>
-> > > > > | Closes: https://lore.kernel.org/oe-lkp/202512121138.986f6a6b-lk=
-p@intel.com
-> > > > >
-> > > > >
-> > >
-> > > [...]
-> > >
-> > > > >
-> > > > Could you please test below patch and confirm if it solves regressi=
-on:
-> > >
-> > > we directly apply the patch upon 9c47753167, so our test branch looks=
- like below
-> > >
-> > > * f7991e8a0136cb <---- below patch from you
-> > > * 9c47753167a6a5 mm/vmalloc: defer freeing partly initialized vm_stru=
-ct
-> > > * 86e968d8ca6dc8 mm/vmalloc: support non-blocking GFP flags in alloc_=
-vmap_area()
-> > >
-> > > but found it has little performance impacts
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > compiler/cpufreq_governor/kconfig/nr_threads/rootfs/tbox_group/test/t=
-estcase/testtime:
-> > >   gcc-14/performance/x86_64-rhel-9.4/100%/debian-13-x86_64-20250902.c=
-gz/lkp-gnr-2sp3/bigheap/stress-ng/60s
-> > >
-> > > 86e968d8ca6dc823 9c47753167a6a585d0305663c69 f7991e8a0136cb0fdf35f11e=
-28a
-> > > ---------------- --------------------------- ------------------------=
----
-> > >          %stddev     %change         %stddev     %change         %std=
-dev
-> > >              \          |                \          |                =
-\
-> > >   48320196           -10.9%   43072080           -10.8%   43116499   =
-     stress-ng.bigheap.ops
-> > >     785159            -9.8%     708390            -9.7%     708644   =
-     stress-ng.bigheap.ops_per_sec
-> > >     879805           -21.3%     692805           -20.7%     697312   =
-     stress-ng.bigheap.realloc_calls_per_sec
-> > >
-> > Thank you for testing. I had same expectations. No difference.
-> > Honestly i can not figure out how:
-> >
-> > * 9c47753167a6a5 mm/vmalloc: defer freeing partly initialized vm_struct
-> > * 86e968d8ca6dc8 mm/vmalloc: support non-blocking GFP flags in alloc_vm=
-ap_area()
-> >
-> > can effect performance. I am not doing anything related to performance.
-> > I would like to ask you if you could test one more thing. I see that
-> >
-> > [still regression on linus/master      c9b47175e9131118e6f221cc8fb81397=
-d62e7c91]
-> >
-> > contains also below patch:
-> >
-> > <snip>
-> > commit a0615780439938e8e61343f1f92a4c54a71dc6a5
-> >     mm/vmalloc: request large order pages from buddy allocator
-> > <snip>
-> >
-> > where we try to use larger order for vmalloc. Could you please revert
-> > it and rerun same tests?
-> >
-> > Thank you in advance!
->
-> we've seen comments from Mateusz Guzik in
-> https://lore.kernel.org/all/e4b6sjeh22uqhxhxudsbanlnyo2potwowuy7mkrp6tvxn=
-ftjn4@mcjyes2s3eu6/
-> that this could be related with cacheline bouncing.
->
-> not sure if you still want us to do the test you mentioned?
->
-> if so, sorry that I cannot make a clean covert of a061578043993 on
-> c9b47175e9131. could you prepare a patch for us? thanks
->
->
->
-> >
-> > --
-> > Uladzislau Rezki
+Changes in v2:
+- Revert the whitespace deletions
+- Change vmemmap_false_pmd to vmemmap_pte_fallback_allowed
 
+Link to V1:
+https://lore.kernel.org/all/20251217120858.18713-1-pilgrimtao@gmail.com/
 
+Chengkaitao (3):
+  sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+  mm: Convert vmemmap_p?d_populate() to static functions
+  sparc: Remove unnecessary whitespace
 
---=20
-Uladzislau Rezki
+ arch/sparc/mm/fault_64.c   |  4 +--
+ arch/sparc/mm/hypersparc.S |  4 +--
+ arch/sparc/mm/init_64.c    | 53 ++++++++++++--------------------------
+ arch/sparc/mm/io-unit.c    | 12 ++++-----
+ arch/sparc/mm/iommu.c      |  2 +-
+ arch/sparc/mm/swift.S      |  2 +-
+ arch/sparc/mm/ultra.S      |  4 +--
+ include/linux/mm.h         |  7 -----
+ mm/sparse-vmemmap.c        | 10 +++----
+ 9 files changed, 36 insertions(+), 62 deletions(-)
+
+-- 
+2.50.1 (Apple Git-155)
+
 
