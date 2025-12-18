@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB45D6ACD5
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47673D6ACCE
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A7756B0088; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
+	id AC11E6B0088; Thu, 18 Dec 2025 04:11:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 354EB6B0089; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
+	id A95306B0089; Thu, 18 Dec 2025 04:11:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 236EC6B008A; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
+	id 9C1E36B008A; Thu, 18 Dec 2025 04:11:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 107496B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:09:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B909E1A0DD5
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:09:30 +0000 (UTC)
-X-FDA: 84232018500.14.B88CDB3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F116E18000F
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:09:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUwTZfEp;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766048969; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF6B6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:11:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F050140E1E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:11:09 +0000 (UTC)
+X-FDA: 84232022658.04.8F13FC4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7ED84100006
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:11:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OmNczh+k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766049067; a=rsa-sha256;
 	cv=none;
-	b=BuuTZC1gTUGZaAK9wJx4yW/zFg9YQqfgLlB6cy3UiDfebZwfC3ybIzFVMqjwYnyXtXQt85
-	AQpJrOQ9suqQFnsy26RqLzrdjY8MZQjd14cCCTbiY3nxlOt2gZOUVSBGpSzPK5idEBEwnB
-	czBkHLiMmW/v0CYrjjaM3PDtL5pWNgM=
+	b=43jgzA9ZUyaADCM0zVcZYcQojngD15uU8FG3IbowJrgCZw4+FTHFDJ4NYDEqgsPEEF9VNc
+	grphHuPTqfZIxm//Fk76ySO9FXywfCHyHT7mEXrhwpjOUhoXUroSJdDmJxCbeMmqbjrPue
+	q3C9n3EqKXUfPy9/rQ8nDmIqPRs4zU8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUwTZfEp;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OmNczh+k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766048969;
+	s=arc-20220608; t=1766049067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUdZKPRQK50nnb0G4YRlqMcv/TyxJJ8z+MMHnn0aXRQ=;
-	b=AWf63hMPdghnx9mqThh/WIzpcgP2Zg76Qo/ESRY+v9h1cVlDs0M1Au3WLatQbkrsyFUH53
-	cVpdIPQgWu8jAGcOggSkMu32figlJfY4jkgEFtULAy6U3jugQY/BfbE4yosoJujIb1GvbM
-	MyXD66p2EsbWviAQbIPL9PTk0Jjpx4g=
+	bh=48i2oJ1ZUdK0wTvO01NlnWTH9BWMf0RcHPVgaGdi0PM=;
+	b=NGqZuyVzlYwDWbSmvwUnceW7rrHsyYrF5v5S1NUOPK9j0gaVqpW36GDBrk6eSIVICggVGA
+	oQCnOFdcpSgEp1KBkOfydnpCQH5xwf46FgFMZaR4cAmBeoKGT+Vm4f5OliVZp8+hpps47p
+	GYafZ7hGTgqqZEG15hSxj83ZinsKISk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3235C600AC;
-	Thu, 18 Dec 2025 09:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47EAC4CEFB;
-	Thu, 18 Dec 2025 09:09:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 595324381E;
+	Thu, 18 Dec 2025 09:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB33CC4CEFB;
+	Thu, 18 Dec 2025 09:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766048967;
-	bh=cy6MizIU13WGE5axn5arnaf5rhN5ZiFE8ex8K1Wi8R8=;
+	s=k20201202; t=1766049066;
+	bh=m6maDrxugfkeNLKycZHBYmyqUqhUOYOT2Iqymt3Cj9U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RUwTZfEpT3RS/Yc0n40yQFEks21Ug9cS7pT/oBG2l3gPWBMXll3cWqRb4bsmIKBuI
-	 TpyrA/6eRsJ5rekjU/PiGTvoEVYK4YuHbKnRFRRnbnyjdujNPKIvXM/LmOx1n6mNZQ
-	 /hEJ23EBt4Cyp56TWXusIE5oCTHDotgtvp3AzFvUy1o/WeGSV1A2KLkcQcAf5zSy3U
-	 /27qcDJL9F3uBSn8UF5qruCwE23yBabi3UNyLnCm0VA9opcyOagXKTnLwAVQaBYlzA
-	 enYz1yaUrs3Z1OymV7JL07tkK9a513V2JsIKvO6pYu8xwV6X+8S0x1dlW5sEPpWMCD
-	 StnHpnGbDB9SA==
-Message-ID: <3a6ab69e-a2cc-4c61-9de1-9b0958c72dda@kernel.org>
-Date: Thu, 18 Dec 2025 10:09:21 +0100
+	b=OmNczh+k7Da92qoJ93NeWV1genL1oEJUEO12ITMlEoc1P+3ATqHCpBDJh2vKz4MYz
+	 JcrDdPzFzXoY5Hz3kj7oWEHWUO7d0VeOP8e/QcS58ouVcLE+0Xi1e2hK1ZqZMnsplR
+	 GwY0F/lrXnCBOuc5KdGOwPHXT+Yn8AAmbBWiZUd0OA7Y46stI+X4ZBaNKNTi31AFbB
+	 CtUc0ae39TdcjcQVz9aZnRy1nl/fOFnPOvfI0RFfaah2LgxnK5rR4zMDTa9tHhFAek
+	 IrxkC33jw4gIJnQ2uLNOSgrc3PUEjl+ut8o2x3KqAla6AlXhT6xVacsxzWj73LYMMf
+	 nzyJEqvkh6BYg==
+Message-ID: <2e153b06-e541-41de-9b5d-7869dc2aba72@kernel.org>
+Date: Thu, 18 Dec 2025 10:10:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/28] mm: migrate: prevent memory cgroup release in
- folio_migrate_mapping()
+Subject: Re: [PATCH v2 17/28] mm: thp: prevent memory cgroup release in
+ folio_split_queue_lock{_irqsave}()
 To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
  mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
  muchun.song@linux.dev, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
@@ -79,23 +79,22 @@ To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
  hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
  lance.yang@linux.dev
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
+ <4cb81ea06298a3b41873b7086bfc68f64b2ba8be.1765956025.git.zhengqi.arch@bytedance.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <4cb81ea06298a3b41873b7086bfc68f64b2ba8be.1765956025.git.zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7ED84100006
+X-Stat-Signature: wu1a3q4nz4er1c665c8heskntdbo4uwr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F116E18000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7dhi7nyqs5jaz49qfo1k7wkpkkhqnzqn
-X-HE-Tag: 1766048968-906684
-X-HE-Meta: U2FsdGVkX18lyjH8tHLwgR+IaL+ay9LoozU8zwBw+ZHxjToLgSDdD3L6P1S2Mu6jms0dI4LI61jBWTMK7EmIfMVn2jOjqTO3TrJ0frg16dffvJ7Y4jPBRjZ6/o9J1oEC9f7jfQHINgDV9p7Iq60YBQr9ru29Ekbmbqmy1pEuh+HGZ5HGSbJ+sGh4sLvgUWAdblN7Tv+/NAlZnT3Cov7QrJMPLiA9bt7UGLnshkN5I63nwT0AhNSkr4gZin7y8pgy6zVkUiT+4n9Ya5LiHTH6ZN8gpcXNWr1ALyssRmlh8SRWSZb6xB5NfkQAasc97HY/f5PCO8pyuVm9s7tNqHORgebRPmGZ+zOL6mhRr8giXlLNDY2WfD/1cEDNntpDVousGNrDpQw3Ceq3yKgqafuhxcPN/6ORgWqU0s10pWyU+2EdAMeCZiA2e24+sOFSPYN48NaGGJjPvsnFuCB5zujVF6Q8rCOoWcOT2aJzoEfwJTm/fMM+fleccHqis9Aid6kqIvrEglB7zqVQVYpTd/HX+cxZbotkjUUIFl/GL4dprr+mrH619erihNkvuPIvHvMAz1S2JMo3ft6r41Rs40y+fcoP70JPuUF6/f7DU156YazFb4pK7b3Y6fbTTfrDDQWL/9ziPLTOLZgFqQo6vMqzz3RGkW+QoGnZS5CyPKAzHr3Idg4O+FxZB3bGPIGKx8HjyMR2lzK9HTLcuYTZ5AeFcHjE/qgppLGCz49NS3UEeH1dclCBVotXRNN2x8PiwqmlVUqK9mBBFoIlK9vARl3Um0j21s7spbZ97Ztw1EjCgZvFGStnw3xIrj8zaI0yOciynG2zm44JwnNLcGZ6GV9cCqP4WY0nanNnXsTo1WmXELtsiZHGkFKeaIpiwLqfL8xnem+u+ZaVI6QqR1S6e0yolByIP8HWDXwJcrxc5Gk/3bD3r7j4g27S0uJPkFnYLRNSG5ImnCFAICdFm5kENZJ
- dMLB5Fp7
- 5jty7712eifBpz05BeU3MUz68U3hsoH56Tyjy3oo/4o2AOnH6/9P4Q/0rMDTtqMfOWVM4q59BTb8s9r6lJJT44FmuZ9z1zrCY413hYdoHmdemZwRXzr7okL80lGZKj8z9sYm52XBY+YyHKH/GKT3pYczMuLaBycbyEcf9hQd4GXIhzr/8lkQQQ/A8fn8/bZ0zW1NUZSu0+9libJ3kst4ytQ13ZVXtjJ/U1K9+80OC1j1S6rGwIU+q8nylYHpbBkGUvvSTViOZ2D8oPmIBPghX12UiNPhSFQ1Yst/FYS0IqSELe4OM1SGhzceu/64IVYrwtLH2q64M4vI0O0Bj9TwHg4/v208D/4fMHpbs
+X-HE-Tag: 1766049067-80435
+X-HE-Meta: U2FsdGVkX18ffPKLQsBH+DYJ8KzQdPLGWABVL3O9ocqS5NpHpX4xL92Zh1BBkLU0O2KOeID1LYT+xTu41Js+Uxg+DMFHSst0hqRsKQhz8QHTF5F7eqvx9fDveDOorMq9z4oFpHFZ5bKUByKlSsb5WhpWvKFYHvfOGWeh2VrYbmR5BqdU9JnZ7Ha5zdNmslbrdG+ERRUwuPxfo1cTtThM4Kaq9A1PthK22yEbl03soHu6h5xTwDjtDoPmJ+xa/B15HsfJHSG89jqAYmFoKJcxBQXE9fi40SUX4cIzHGhxI7HEUc6T3jrpqXG6MB9WgvEp0L723FztDNgbiqsY7IQmGom1x1mIDJfQozbXU/I1e4fXUwuRNNHPZGu/5X/Si324joXoB5dy/jWKnns4d7eOnR847qp06VEQ6fXfGt1aRFtZZlqj3d66uY3mFHt8DgPpgZceT4GJAuKF5Y39VLBtxA3P6D7nUjIcsMidvfCXgvmRkbRV1JjMt64TEw2PRj2tSw9ZVCcows1yROBo+G9c6GWiryX3+/8ND2iy77cnc84fzRb8CES5RuU2Koegk6xl6YpFsEgJVZWl4f3KqPBxmklUGl4DF98ThS1yQsIXoI092M6oeOdUZdvRLsgDDCGLuAT2btkOwQ9DM/2/H9DdqQfhRTiOtzdGb6Yl/ByCIFH18y7hm3Sy7zvuy/ETUgVRjeS934UNeQi77QVacci5tY40wDV6wjCYhxCmCKeZJycomEbPxeKGf9YiqCz+uIkYFPgPsBhZW+1+/B+RPRS0YQlRn/OEuiA7W4yISAqlx9mje4Fx1xudgg1IAdQT9HAQvpuFZ71jWyzlOJtbKbr833xPDspzfwMbHUJgR9I/TthqYqZ/wim6k9xU8ZTcW4Rqwf/KjamVR/LVpY+gz/REU6RRROGMT8VGy71JviTj9Hp+PQxcyFCiQ9APRleMv8e6LFjsoNkQOgzWYzj0rZU
+ l52ePWqS
+ X8iD4oSGIefcClnbqAMUYy7aylk/mcKc51PPv0ksA8+d55u1a7+//m7DvALSzsfX6NPvuQkQ+ihEsj53r0CArkU3Izh20IR4mjiqenK9p+ORetMqetn8iTUTw8TtTiQlAk9HueHSIymsrv3EYszV3N7BxtOoAhZhzbXBfRo0nhan8q0R/URO3zP+KwqDThNtkYuP00HQltpAlM2xwedQ1Z8MrvWcBKRNcYNrE55VSVpbacviGsjT/nrZhP2RKxg3lNj/I4ryxCvLhBrxuTw1559KGj4hpzcRXsm7mgdTGU+YCVeZTGiYMHEBwjaQZ8PkOqCePLe2XqUVnzlWffdTNk1ncxbAU9fvdWpgJO/HZ9f/pCajAPTsMnB1f1UGat9GK7fURTOf9T0dC8VciTtj3wDtDsQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,52 +104,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/17/25 08:27, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. To ensure safety, it will only be appropriate to
-> hold the rcu read lock or acquire a reference to the memory cgroup
-> returned by folio_memcg(), thereby preventing it from being released.
+> In the near future, a folio will no longer pin its corresponding memory
+> cgroup. To ensure safety, it will only be appropriate to hold the rcu read
+> lock or acquire a reference to the memory cgroup returned by
+> folio_memcg(), thereby preventing it from being released.
 > 
-> In the current patch, the rcu read lock is employed to safeguard
-> against the release of the memory cgroup in folio_migrate_mapping().
-
-We usually avoid talking about "patches".
-
-In __folio_migrate_mapping(), the rcu read lock ...
-
+> In the current patch, the rcu read lock is employed to safeguard against
+> the release of the memory cgroup in folio_split_queue_lock{_irqsave}().
 > 
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 > ---
->   mm/migrate.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 5169f9717f606..8bcd588c083ca 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -671,6 +671,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
->   		struct lruvec *old_lruvec, *new_lruvec;
->   		struct mem_cgroup *memcg;
->   
-> +		rcu_read_lock();
->   		memcg = folio_memcg(folio);
 
-In general, LGTM
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-I wonder, though, whether we should embed that in the ABI.
-
-Like "lock RCU and get the memcg" in one operation, to the "return memcg 
-and unock rcu" in another operation.
-
-Something like "start / end" semantics.
-
---
+-- 
 Cheers
 
 David
