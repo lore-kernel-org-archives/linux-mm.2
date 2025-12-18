@@ -4,100 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C7BAD68BC9
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 02:11:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F856D65C7F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 02:16:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89086B008A; Wed, 17 Dec 2025 21:11:29 -0500 (EST)
+	id 51A3E6B0088; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6A146B008C; Wed, 17 Dec 2025 21:11:29 -0500 (EST)
+	id 4C7386B008A; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 968FB6B0092; Wed, 17 Dec 2025 21:11:29 -0500 (EST)
+	id 39BBF6B008C; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F056B008A
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:11:29 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DE171A0C17
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:11:29 +0000 (UTC)
-X-FDA: 84230965098.14.5B38774
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A6E57A0003
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:11:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ftBfjtyq;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 278156B0088
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA0FC140C8E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:16:24 +0000 (UTC)
+X-FDA: 84230977488.27.B95ED1D
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C4742180006
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:16:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QAxt629K;
+	spf=pass (imf16.hostedemail.com: domain of brgerst@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766024182; a=rsa-sha256;
+	cv=none;
+	b=0rqrEfQqcU0p6nTilC4QrDmR+z4oqyl1MbHEteSbk92+y5OyNxxhF9WbhIXvM6YBPSCMbq
+	Ots1SBfHEXADV4Xr/16lyf7jMED9QiGUHkmmvB/gVLwmQM6qVRsen55bXJaeTjz3xXiUDc
+	6hYPV5Z9/e+f8zUFrAarsn0OzRFG174=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QAxt629K;
+	spf=pass (imf16.hostedemail.com: domain of brgerst@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766023887;
+	s=arc-20220608; t=1766024182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=G1629zDR3pL0VdIDtmJWTYzcOaygZtQ8B3KfenA70wM=;
-	b=GGkYMgZW5O8yqLRGE8nopchHS7vSPYJNpgqDD3LEnIoyn+9F0qI8FWvW0xC4dAd8jdzuBO
-	aPCHCyjLkrFE234RAzV3/YIToVdPSdq/J7rG2BDNo3FmUWFPmtPBjKw8dNGVpz3PJIHdl3
-	UtByri2m0HV2WsAQpemPoni0Besvzd8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ftBfjtyq;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766023887; a=rsa-sha256;
-	cv=none;
-	b=oMrTHuaeaHMCN6vo+/no0ca8JWAgPlHHnFar1vTNU267HFhicX7Oz3gOZ0BDwUFKlTFrzo
-	rYNND1mijXAjTz17GzoKLXLRGFeaVrj9Q+paV1NLtAUYQJw06+HO2dOikKqzv3aTWHJfTb
-	TOq0soNpklGThiqGdkFU6v4G2vkaneE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766023887; x=1797559887;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=JrVOdy5AoRDos3Sg0JrGaeOqAb+yjem1AbYTgJ/v1P0=;
-  b=ftBfjtyqAGDZjDgKvHSxzygr4SX5fcJbT0EGCLcxEoUYl4SqZihPPayU
-   BAe8HdBtKoq+xg8rqNb1SiUWWsgLgxO2h0jLizdjO3xQcGQGxmyhVuF1P
-   g0EClAm/g/ZvDT6e6sRKF5EzRjGXoGOjXdJlesg/G0JI1x20UUPOAUZKo
-   pUuIcOy13IoMqHISeN1oYHeJVuZkiwYbIAqMAAlp7mSL00UvGrRoXn8mg
-   PPqu8mXcepOQlyww8tsckh51MgCykgjpCVU7FnK3PlwzYxE7t0MYmjwjf
-   Vr256hLRu19xRx6rIv4R6IqqLOk3yz9X+WDORCnGvu9qk9h0wnp5Hbri+
-   A==;
-X-CSE-ConnectionGUID: AcB5DnU1ShO2mE50qjJR+w==
-X-CSE-MsgGUID: MKsMRc/TQ4Sgyb4opTGs/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67852532"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="67852532"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 18:11:25 -0800
-X-CSE-ConnectionGUID: RfowAt2zQXmDBmYlKbOd0A==
-X-CSE-MsgGUID: OmCJ8ZWaQZe38zHt63ff5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="198354800"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Dec 2025 18:11:24 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vW3U9-000000001Rh-3b0U;
-	Thu, 18 Dec 2025 02:11:21 +0000
-Date: Thu, 18 Dec 2025 10:10:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [akpm-mm:mm-new 46/101] ERROR: modpost: "arch_enter_lazy_mmu_mode"
- [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
-Message-ID: <202512181054.fFRvEL0A-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
+	b=KzD/2JQhXpSPD1utYqryEYE8UDLKJFIm864Tvz/WMsUAWFP9dqIf3UXqX1dPcKLwTC88PN
+	XJiCMASonZ8AuyL3eS8GBTyls5gWBqQOH2fZNmJAMynFozRddcoimkpNDjwsLReA5ASS5E
+	pjjh1V6Mg1/QqrEfAa0ERbWfTidFjiM=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37bb8bef4cdso834031fa.3
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766024181; x=1766628981; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
+        b=QAxt629Kc/T9zQ9D2ZmGkbSsWcYyTsh7Y2lv4UWd/k/uRbvwVxKSjNNPU1n+bGnTKv
+         T/zizwP1AW3kqoVpwIvdRUGFS2+m0r2dDRBpLGBpF/j8y9n0foXrYVZWLg2UTRmXqMH1
+         VBnJZUvf7D2qf0haBY6vWqQuXXDWN2eV+9evCDT2JCO6XQd2uTbTB1CZdojG51Akx21r
+         Lk2q9ZMy7OKu936e87rQ8p3N2M2BqVR0PuoGECLjOFiJZzQ98WXz0+2wXP6WFaJBT6dX
+         5gA0bO1rJalIEK6ElB0Js7iguBJxeHRs2h9ChDd8n5ACrpq3WfJojA+5Xc8plZL6CLQD
+         tZkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766024181; x=1766628981;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
+        b=bdouYeUMxhMUXJnlnHoQDD4x8Sx3tneGEvPSt4BHWw8VFt0pNg6Sp9hGNAHGToKYyl
+         wNQP3L51ZcQ8hGXPaV8wZH7HhfihTuGAFpnwNhRWqwokFb73AHvt5faTpeb8czgVSGS7
+         BD0/hP9qG0mxAuaCApJRac0kOi5Rw1pUOGq7xyNCfd70udxhr3lNObDednN18eXK5soT
+         AiqROJ58L+FWF5ZWrBl0bFcoFcoD9yh0YkqHm8IUVrY9iz0LR8WFGjeSrw8lQe/Te/zb
+         j6yMBoIZ+AOOb7ibNy1M47oIfU35E7I0xpBWtUXlbKqF2KDopOB2QAfsQic+1oTqt/Jm
+         8BPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhz7bjyGngo50dDs1vsN41pDN3ipb2gr14zqIu7OAaj6H0DlTJCk3DIq1pEkpTTasjlZ3pZL+gdQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy0toB/fI8wzxxBvvl/h9bwxFh9Ihx0oKUsUdCUwK9+Mu4T+WD8
+	B+YtinrGfnVu4j2PuKkAZRvTW/8YyxxYAvlFJNLKcFvsQLcGaoiAMP03DaISqyL+NS5zH4psLBM
+	HXcScJUj2Kdv96YMKg7NdPsS5vYp5zA==
+X-Gm-Gg: AY/fxX4VQPftOCV4DUz8Bjd9pU5qZhliov9pjsU6oXJeDexZkZVBCWWn4XWvcz0qY83
+	JKKyc0XGr+lnPngW1QcKhJ2jIfYQj6UAgMMT+raeQ97yPRiGSNNBY3Hsgu/ttSLc1aW6AJ/ET/h
+	XjYWFnla5LGivulEco5n1NTFO8yVgHOoFlWgvIdGsaEfdGNJ0CILUWpeFCNCzX61rsI8UhDE+ce
+	jDXoG3yN3/uyB+JFsidwlojgZO8rrwM0lOGyp+qQxQVjIujKmmIYqV3h8Sa066SbRnePeJO4LAa
+	VxMwE7WMbg2DdYIvtLWA
+X-Google-Smtp-Source: AGHT+IH+OADZ6GESLoGiMPu8hoFMOP7s7nP4zFXC7YbnBNR5dFco3tMJoPvVr4wWL3ocwWAFY/G13MIXPc5nmNaijSc=
+X-Received: by 2002:a2e:a801:0:b0:37b:95ee:f605 with SMTP id
+ 38308e7fff4ca-37fd077cfd2mr59325781fa.10.1766024180565; Wed, 17 Dec 2025
+ 18:16:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A6E57A0003
-X-Stat-Signature: 6e5ghfsgz9ioo9yqba73aa79an9hhrjy
+References: <20251216212606.1325678-1-hpa@zytor.com> <20251216212606.1325678-8-hpa@zytor.com>
+In-Reply-To: <20251216212606.1325678-8-hpa@zytor.com>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Wed, 17 Dec 2025 21:16:08 -0500
+X-Gm-Features: AQt7F2p9l8UeuqBazA8cYojN0tIogcUvjCrbiceup-Wji5NWm9gKMgC-Lp1qUmc
+Message-ID: <CAMzpN2g9QNnYhxkGvkO2YcOJTmJGf75qFhKiEQQY18ZaEPQNdw@mail.gmail.com>
+Subject: Re: [PATCH v4 07/10] x86/entry/vdso: include GNU_PROPERTY and
+ GNU_STACK PHDRs
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	James Morse <james.morse@arm.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, Nam Cao <namcao@linutronix.de>, 
+	Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-sgx@vger.kernel.org, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1766023886-77040
-X-HE-Meta: U2FsdGVkX1/7Kg6w06A8v4xYaZbju8ga5CT7WvzV+ULVMJEkpHWFShIIF6TL1sOuo/cYQjxGMR2lK9pUjxt+9t04ZEet3/7NEPtkAGrKErCFBpgYukgxiyO9DPGBlZHIQXLah/zmGeQkolSyXr/lkqPNLW/LWPYkfeeMesoiHWx6BJa/g/bj8y1wtCehOsZNgdje2C1IawajJG2RS1jj3NQSao/TPqWTt+IVZFePQLrcTNtWdXrSBeRYRuj8M7xCr9szp9bMfHSOOJ23ZhXIMzfeKjO2fSOH6u6VLxLtvOVNYgfqZ6FO5nP6U1ZXmaK5YaRJaPFOw2qIuE7/JgX3UaleIL5L6EiMwGirB+1qj5rQAqjyqQiJ3k15nRDlyOqJ7Gr6LwBRwQ9pVCxz5HBbMD/PEIinrkG3tOZG1xkcnld6R01b2CcqardmvHw7/wuYW8d40rvrnCE6kroAeRL5EwMzSEl6q98kYcNtWUXCrP8MPp8d8duN6WdJMc4iKPtN7/lN+EXOn7lxzOwQJc2CrdVm2g+JDPcI5Su0wryq5VikK5g60hKjsq8eAcu811k7T74XGca8Bd4bSYQQL4oDYjZZOqlkjwqS+Umpoi+DANv038PCND8Eq++G+bgrxnYiOqYJFkYT/DFU0ugNogmCec9ALPB05GXsx9gSokPp0D3fhwMoFxPVghzgtUjuKnIwnj/YKPUEtiAPxD596dKj4wqmF+FZj2Hcyh2it/jBAiY24pb2gh8J1ClIVCf4L9Zf1Z1ikXYfcTN7PHQ1iPfBPa607gba50Nkgbk1eNqkfe9e6q52pcNUsiUl3Z2KVG3ULc0/y2X/sR5CWkGy8cEaqqxf3Pt1heVQBTvU0rzjIdaU5CrooxnQ4yEB4Mf/gDlJvXplrGF2qsJgw8Fa61rHsbXu7AE7zBgU47SyrRSWWumQ7jIJYGzhzOA4EwIaNAFt+bzhuS8/HH9GKI1kl9V
- C63vUTCE
- fJ/KDteKJ6VtbR/Qt6iUFYsgNLw9Zn7AwmrkrDfkkWaALuugS6Ds4fzDrE73PlUpecnyvryhaoWucRs4Fky8N0ZZFUk0qcJSE+Q+g439rq5oIaWfin0BDgjIZlvEgDE7FdQnWHakycnKXkhEuaDfT8Afind3/db3eMu7oqoWCzRS6laTxraSHSPK1EjRw3zqI/4fL91NbkHiH8E4UHZ3U1SmRL203MSF5qpTYRBYbps0zE3xhzsNq0yy+Z/OpkehhNVMpYB72uLX/HwvensU6aXIsmudOKX5ITYNyIGsBHLakFNEFBfmTSRdejdmpa8gSltdF+ul2qy3YEEiY0KUKFhNBkHcVu+CRJoKZrg4P27QBA0lS7TpW0sAddAbRHN/UTXfMBX0PFIytG8WlZY8unlHAvaCKHxvYg3+T
+X-Rspamd-Queue-Id: C4742180006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zmbf8bxr58h1zbpra7wby7kc434u5rjg
+X-HE-Tag: 1766024182-119248
+X-HE-Meta: U2FsdGVkX18x8XTXn5pmwFF/bz5x3hjESpRZZ02tRFIClhTlDfmev+/Ep5SB4SMRrWpFqR06gLBYxbhNESFiNLkLkDvbF0tk91Ijz4bdnDfzpMZEb/d6PqytJHP7NFZEPd4dE4QpvAMLtnna7jmRMnuo+vR+wCsERtmxGx7z1Qr6XYYR9JCVEO07qmb7wo9fCG5vgsXZal1JazEDRBahJb2dqeIINd5U6yxMcyoX+/WqFxXiLt5V9cukSJP5JxGYA8xwxulDAnVEnUcD2/28YSdVdC2QDBXtLqQnSgwXLtnpI3WLVwxK3eK7dv116dOIX5svfNhOXlzTrJ4TwR3dbDjkFJyJAr2oIxreiynGlhgHTKMHIB4AcsMZAs4j542xPNHxXkFlclin7plZ1fndFXn/J1gZAGkqsit7vztwOIp5Rv3FfPtO2Sd593uqFW+orV9AS3437DUOirC64yowxbSXd3KfDqof9Z1F7SmvIoKNBnYMk8z2EsAvN9NuAJALAc0ZO2te8rOPEwQDaP1A54sj8vU/lDZPOqyyzo2VoIDPyuLsQUQUsGM3+VLsGltAxz+P1VXmu8V/tzBe7GnIZccsUDkvtcZ6Av7yE8+3siu3pWZMCaC9jMXip0qEMpOVT1iVA0ZtfuPm5A3E5EmbfIewYUgaBg428HYMqgXa7qRBPYh4Sx/B063Cxb2bBcI5qSVHjN2NlkAEzUGWFsESpZIf5T+t1sQuVp2Bjsp5gRnnUi1P/YyfaTvMGw/sYFu6mdBb4gIn0PnclBmZAV+VtHR0n8ItTXKrXwvs7Tea2eAKf7JLT7XRtc8WYQEiCxaGSSo09XFwXesGX+qVB2nzEKCZcxkmGMYt6EAgTwibme+5NIKGbtsDOGsDI2OSdq/p6FwDgiXhfwYlDjEsjPiIn2WH2g1dM/RfgcV+ib5N0jvRtYlEQgc11oaCZYH79XVH3jiCKGbaARmdvZfMrzC
+ J94sTG6X
+ gTuGxax5ZHmIn45P+FDFwq3P7d/iYjWYQWW5oiXDs8wPAivb0SrRvLFGZWxMVFkJnha0GOpkGyVaDpNdBxe3dKVY5RsW7vhwWRDGgUJZsyYxauzr2caHlmYbkPiKFH97d/c+0uko/NBWngzDiVFfbyc+1vyqvr8z91zpEQ2jCYRRlk4B5buzA8oylkTAReICt6vXjWW/0E0HyhQKyx6wHRF6O+ZPsBTmMNgsWIow15+xyBQfkyAaD0qRfYVpiO9Ys1BtavITTwDKzqPu0bhEuCB+Wn4dzVXzsxmo6fTNrlm5WqKZRKf+VhiSEgr2+GVPAloORWXmEYvyi34MVV65Lfg5TdzPU9/CX+e2oL7TJkUeviVbZBO3Qt4vsxCT4IeyCkY6GzQ3ORGERt/wr0oeMPc7RCEZigkHFKiH/gYHOkx3VzHua3Wn377hRdA2R9VusXjLQ9hQIrK9srbXNvWPerlbgcg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,25 +127,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   c224625ec6f8a0476ffffc09807f4d717ba9cc93
-commit: ea8fcd8d760d02566427104cf48979a8544eead5 [46/101] mm: add basic tests for lazy_mmu
-config: sparc64-randconfig-001-20251218 (https://download.01.org/0day-ci/archive/20251218/202512181054.fFRvEL0A-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251218/202512181054.fFRvEL0A-lkp@intel.com/reproduce)
+On Tue, Dec 16, 2025 at 4:26=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> Currently the vdso doesn't include .note.gnu.property or a GNU noexec
+> stack annotation (the -z noexecstack in the linker script is
+> ineffective because we specify PHDRs explicitly.)
+>
+> The motivation is that the dynamic linker currently do not check
+> these.
+>
+> However, this is a weak excuse: the vdso*.so are also supposed to be
+> usable at link libraries, and there is no reason why the dynamic
+> linker might not want or need to check these in the future, so add
+> them back in -- it is trivial enough.
+>
+> Use symbolic constants for the PHDR permission flags.
+>
+> [ v4: drop unrelated formatting changes ]
+>
+> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> ---
+>  arch/x86/entry/vdso/common/vdso-layout.lds.S | 38 ++++++++++++--------
+>  1 file changed, 23 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entr=
+y/vdso/common/vdso-layout.lds.S
+> index ec1ac191a057..a1e30be3e83d 100644
+> --- a/arch/x86/entry/vdso/common/vdso-layout.lds.S
+> +++ b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+> @@ -47,18 +47,18 @@ SECTIONS
+>                 *(.gnu.linkonce.b.*)
+>         }                                               :text
+>
+> -       /*
+> -        * Discard .note.gnu.property sections which are unused and have
+> -        * different alignment requirement from vDSO note sections.
+> -        */
+> -       /DISCARD/ : {
+> +       .note.gnu.property : {
+>                 *(.note.gnu.property)
+> -       }
+> -       .note           : { *(.note.*) }                :text   :note
+> -
+> -       .eh_frame_hdr   : { *(.eh_frame_hdr) }          :text   :eh_frame=
+_hdr
+> -       .eh_frame       : { KEEP (*(.eh_frame)) }       :text
+> +       }                                       :text :note :gnu_property
+> +       .note           : {
+> +               *(.note*)
+> +       }                                       :text :note
+>
+> +       .eh_frame_hdr   : { *(.eh_frame_hdr) }  :text :eh_frame_hdr
+> +       .eh_frame       : {
+> +               KEEP (*(.eh_frame))
+> +               *(.eh_frame.*)
+> +       }                                       :text
+>
+>         /*
+>          * Text is well-separated from actual data: there's plenty of
+> @@ -87,15 +87,23 @@ SECTIONS
+>   * Very old versions of ld do not recognize this name token; use the con=
+stant.
+>   */
+>  #define PT_GNU_EH_FRAME        0x6474e550
+> +#define PT_GNU_STACK   0x6474e551
+> +#define PT_GNU_PROPERTY        0x6474e553
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512181054.fFRvEL0A-lkp@intel.com/
+Do we even still support the old linkers that need these constants?
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
 
->> ERROR: modpost: "arch_enter_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
->> ERROR: modpost: "arch_leave_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
->> ERROR: modpost: "arch_flush_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Brian Gerst
 
