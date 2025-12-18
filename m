@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E63E1D6ACD7
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4555D6ACD7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 09:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58CB86B0088; Thu, 18 Dec 2025 04:24:13 -0500 (EST)
+	id 3737A6B0088; Thu, 18 Dec 2025 04:29:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53AB96B0089; Thu, 18 Dec 2025 04:24:13 -0500 (EST)
+	id 2F6C46B0089; Thu, 18 Dec 2025 04:29:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41C0A6B008A; Thu, 18 Dec 2025 04:24:13 -0500 (EST)
+	id 202636B008A; Thu, 18 Dec 2025 04:29:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FAAB6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:24:13 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA50613C2EE
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:24:12 +0000 (UTC)
-X-FDA: 84232055544.28.92C1193
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 10FA76B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:29:25 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C37361A0DC5
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:29:24 +0000 (UTC)
+X-FDA: 84232068648.20.72D2C49
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0D9B31A0015
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:24:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4qQOG8M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766049851; a=rsa-sha256;
-	cv=none;
-	b=MzcRTC1ZdSLabS1xEhqADKxU0ArV4TSVGK6PNcy1jXVx1Fl7QcJ7SDtMt00dggdjlil4zo
-	ggZQZW7yns1y7fowIXnd/CXeyTYWjYKoqQaEOorz+ONjHKfRQyTXnh8EfnPmH1KqlXdb6P
-	JawoOgaVUCt5DI6JOkuFVH6GpOR7PJA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4qQOG8M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3B44240004
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 09:29:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NzYkT75b;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766049851;
+	s=arc-20220608; t=1766050163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMrnHe2ZjIivtsm4JKnTaWTf/aI7xj5pyhDxrmzWzg8=;
-	b=0nobHvDXyjS1S3e3ZRWf2d/s7V/KDhSf4Hm6yjpLYiI9Kjq0DIteY4gbgJj8g8w8chzxwu
-	ONBN5zNCQ+ywELhdKsiGbHm/Yurqe3J5asj+xgn3/3HAFkgtHRSGgO0tvgVg9EQ9563/Ki
-	cvdjqO7dd+F2FbovFYYmnjrNpOSFFI8=
+	bh=P2K3+afPCUktaUGfoI5j58XpJEomrprdk2zpsO1N5R8=;
+	b=QBNi3VLp64VhQPjURSaLdnH+pxHx/Zi1LL0SoBusHrhKoSHVNkwX7MUC6KkedUUC/UwfkX
+	yvxLLF0Y3ZsqEtD5+RxnwEFxQMCbOwYXcd2iii2ybO7Yjx4ZI1AXIvLBzLZHLS7gy1KjS3
+	RKf048ynVVCnW3E5/oHpgONOEUbXE4I=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NzYkT75b;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766050163; a=rsa-sha256;
+	cv=none;
+	b=HZCH+3ghKdoyYw0rSBGq2QYT9nD0IbeVt/qR81HQZPd8kBUDYtdQ5yaEqqeIHWonQ/T1pL
+	rQPV6bOwUgHfLD/hicjoKXL37cow7iQKiaaU2mOjVbkLLf3ShplAmCm5f/W8NPfyUJCkeY
+	jAU5325vBfWWQn8ycFwYD8pyByjj6H0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1C8142DA2;
-	Thu, 18 Dec 2025 09:24:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC05C4CEFB;
-	Thu, 18 Dec 2025 09:24:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F9AE44252;
+	Thu, 18 Dec 2025 09:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AECC4CEFB;
+	Thu, 18 Dec 2025 09:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766049849;
-	bh=xG6w3fio6dKWuk97Zku7z65Al4P60C9/eHgl56AJCqM=;
+	s=k20201202; t=1766050162;
+	bh=PwfhwNBp4OTVlzrnBYQt+m4yQcf5Ez56MmgeevhN+yQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U4qQOG8M/4YSGXJXhPf/Ht6cdkKIq/PjQRlLodfjxj11Rk0saqUhH/k2iQTzcRFJM
-	 QkFtJr7rR20/MYu/HfyDWKO1tsycGHTcXT3l3Ox3hzUKkQJYhYhu1TOebee1twQQDx
-	 6kS80h28IogzsQrlgGx0JHvItuBokvNTLoOOqTc7jfmlljUrLjfc8C07+xArsHgVBn
-	 y5qmgIOcJfZhICYY2HkqSAxxN/9BULpaIiScXDqsueOLmOiZuG7Xv7P7ih26LdQw7E
-	 hH0GR+YeB4L3yzprgxZG6WTtuqd59XkrfhJfNdNY/zGagswXZvZ54+Lcmrjj0qJ2rb
-	 CGFzquffZA6Xw==
-Message-ID: <83f303d6-ab03-4e28-95ab-04c5e879a916@kernel.org>
-Date: Thu, 18 Dec 2025 10:24:05 +0100
+	b=NzYkT75bJMXUIzr1h1EQdvkNi+7yiwjbuzRLg7JIonZ4kq7iN2GkaOPOarRVTV8Vz
+	 A6wqun+XI0Xa+GJdF0SIvRxl3zNPUgbu0AWh96UN/6X7ti/AKtRSIrmQUPk0UBbM43
+	 aZhkFIuXQMNjORk/9Ag+soufMSU+0P6Odgap6egDcTtws/1vaNsEmPG+o8Ow+O9ODc
+	 D5KZVSmef0biiV5olr6UzsY5dfTz+r52zBFSUcK9mm5R9ZiLvcUWJKHLlC7mFmQNM+
+	 dOg6mxI2rZkIsSn+ez3I+7D+ZRmTup+c+kQGQBvM6Lb1yFJKVFg3BWBdAPe3TkcU0F
+	 Aq7AnUrU4W0Tg==
+Message-ID: <26e65878-f214-4890-8bcb-24a45122bfd6@kernel.org>
+Date: Thu, 18 Dec 2025 10:29:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: khugepaged: add trace_mm_khugepaged_scan event
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
 To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com
 Cc: ziy@nvidia.com, npache@redhat.com, baohua@kernel.org,
  lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Vernon Yang <yanglincheng@kylinos.cn>
 References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
- <20251215090419.174418-2-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251215090419.174418-2-yanglincheng@kylinos.cn>
+In-Reply-To: <20251215090419.174418-3-yanglincheng@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0D9B31A0015
-X-Stat-Signature: 7skfgm857nqbfac9jjsgt6t8otfd998w
+X-Stat-Signature: 31yf3d375bjf68zf3hho1q1tx7oy7ytf
 X-Rspam-User: 
-X-HE-Tag: 1766049850-213416
-X-HE-Meta: U2FsdGVkX1/f5u+BgfnslVxW15FJdriW//rALh/jBCarctAVIdvL/2oienuWpsFN55TtqlQt/omkxz3uQToBU37Z3bKQem/ggv/MFNOIXAu4iM2w/HWgPNdxnJYm5BFrVew1/1OlJgo+CoKmad+X1bxhJ2Sw+qOIa0DHDfSH+aSWl4VOLMCB+mu1qUOKSLCU3uRRtpPac9X7SVKjH+xBOHbTM2o8TrDqj7154Qat0NPvRMPRPupI+zKiYo7r4nYV+ke7BnNPp/gysKcLr+CbO/tMHYlK0gAi/OrOiWHPji8Xj6xM8O2iptKRXO9pFQX7S56YZFa65Si3+cpM+mdoiYlGiMoVZf3r2STXmIi2MEHrEwSVeWa8fOpDCAk2uyPnTShvLla6gflxhLCdfn7QBysQNsDHufVCc38vxbGhIOsw4hulLB67uujt5Q/3UYJKE/WLEi02Oixv6ElvY9svLoQFaEUZ2HbDigNRl57ebQxphO2Do05MkaOPUA9baVGI/kLb1daA45+8NByr/TmZp+Tu3vbGZjfNw3LsZ7UxIhQJcG6Fstb3YGE93gF3+9TvsDxD2YwcYqxzKnR9R3ZkQ92fbGv0eu8m5VguFQgpwB2mO9rdNVAQWF4bV8tLNtfShgfcKpvO0jReiBhGl9cZJfZ7y/SlQIlWdiP6xAnLdfp93As2QowLKe2VTzBtQZBnkNYesLDPBiHskAJ5PpbCQMe6y9u0AD7xffsFoK1rMD3SLyrbce7StfeUxXZ9su0nfh+hjh/MHG3tfTVZ1+EesuDLB3le0zWjtLPlgyVQXdQQFEOZPkPnJ7VqMQnNoOC2YeLy3EAuwH/JVEzSmAQWiuhSb74hoPW3KFjkbRR69yXcuSURzVKUFE2yn+We6Us9lSo2l4inNFcqzU7HgRCBA1fZuUztm54NTU352vNxWuqaLHJDs5KbRUl7YPsYMibxneYIoIVJxX+e7HJa7ys
- wga9dBjF
- uM19QOReJhBk6K+5BFaxNyCyjNPO9mVBcjEdjxu9RWtGrzjhH1cOmM52O4BFTfh6WuVIGUIIxdmnA4oIT8IJWQ3Use388Jqro7Ms4jEM4MYRDDDFDQYmbuG5DLuNWi1KkIxX/VcnCYo3ewP5TSa5na0FHIdRU3EgBpa4U1R6dUkgEw7zoLdesv/0bQan2FPVB/JxtFVNEprtVvK710zOxqkWHp7d3e5DYVwm9UfyTksYb+OUytnSG0uCy9X+X2Ys9rLDytD3XI0MOwZI7FpAE+5frZZaQVHQvFm3J
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3B44240004
+X-HE-Tag: 1766050162-201889
+X-HE-Meta: U2FsdGVkX1+IjJ8uzNgM1ieib2h6WBw9w4aUugdHxu+5ltR7aWsTgsb5VKwBsodZSF6Ut5wcx27Za/dsSPVkLTKer4/AqruevAGDITJQm2xW4hUXc2aUZfUnOeHV04JRimsHnwj26s3Za6mUHdLifeP+fG7MF0o2bGSeJMvnA55iaPpm2w/Hh921uDqCPm1FEqcijEJ9FH6Rf2mRvWSMYx7/6X+/2gYqvjGG89GiJ9E1x+0ye99rX1NgDTDMqPnyhVmbWDwQDRWpPk00LVKNZRK6T8CEc6Cs3L+uaz7mN2Sh+QifEChwlPkZSfcHA+Ixh7T+LQIkon4yTLcmrWnXgMRKKt5D9y2FWFFrGjkDVZvuMQ98ll9Ko+cc/kuRkF4mSH0C+ELLfY80o/v5jnJFukD5YLH7S+qeFzLAZoCpO6JDJVH7IRwBRpbiU+2c0XghvIWaY3+FYcmjJ0yrCqFPLzHrP0NLo+2JS7fQQxHFtke0Jp5j7/mAA6FwJXxUZpMHc3ip7azO0D4W+8nImfCN8apUDO/zv5sB0uAb51bp2/LtBwn83ekBGqnE0FGzN+0sKGToJ93K9r0B8mv2AZEVjvpKPDTkLFC4uNNZH1hNXO+nzLwli5PLgX44Ic5qD2Ve6In1eH7gIvfX/mZagrk2flc+pCY0XtDEupuEePRlNlHgGplemDUddcqLY+QyVknJvHMg9I9mX1tPeeBEM+ocz/hlhlQx9Ao7Ap6vRZKUlzmK8XtvQ+JEZVz9cl+HCMO3GY7opd/A3czNAcnCBdheLYgh82buvxPC0p2FJ3NHwx2ckrhRX8pOnL+nq9qRJS0ydIQzKD1YsyoayprVyrtnHsHYh+WLjkkgpZJXL5rhmYzl4xCIKbu5tHpbwAcu6drlrzdEp3W8wPHgBPKAwAvOzYkz43U3ADFkGAHVH7c6bZ0QMrJpYmY6xQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,67 +97,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/15/25 10:04, Vernon Yang wrote:
-> Add mm_khugepaged_scan event to track the total time for full scan
-> and the total number of pages scanned of khugepaged.
+> The following data is traced by bpftrace on a desktop system. After
+> the system has been left idle for 10 minutes upon booting, a lot of
+> SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+> khugepaged.
 > 
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> ---
->   include/trace/events/huge_memory.h | 24 ++++++++++++++++++++++++
->   mm/khugepaged.c                    |  2 ++
->   2 files changed, 26 insertions(+)
+> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+> @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+> total progress size: 701 MB
+> Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
 > 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index dd94d14a2427..b2824c2f8238 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -237,5 +237,29 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
->   		__print_symbolic(__entry->result, SCAN_STATUS))
->   );
->   
-> +TRACE_EVENT(mm_khugepaged_scan,
-> +
-> +	TP_PROTO(struct mm_struct *mm, int progress, bool full),
-> +
-> +	TP_ARGS(mm, progress, full),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(struct mm_struct *, mm)
-> +		__field(int, progress)
-> +		__field(bool, full)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->mm = mm;
-> +		__entry->progress = progress;
-> +		__entry->full = full;
-> +	),
-> +
-> +	TP_printk("mm=%p, progress=%d, full=%d",
-> +		__entry->mm,
-> +		__entry->progress,
-> +		__entry->full)
-> +);
-> +
->   #endif /* __HUGE_MEMORY_H */
->   #include <trace/define_trace.h>
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index abe54f0043c7..0598a19a98cc 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2516,6 +2516,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   		collect_mm_slot(slot);
->   	}
->   
-> +	trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot == NULL);
-> +
->   	return progress;
->   }
->   
+> The khugepaged_scan list save all task that support collapse into hugepage,
+> as long as the take is not destroyed, khugepaged will not remove it from
+> the khugepaged_scan list. This exist a phenomenon where task has already
+> collapsed all memory regions into hugepage, but khugepaged continues to
+> scan it, which wastes CPU time and invalid, and due to
+> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> scanning a large number of invalid task, so scanning really valid task
+> is later.
+> 
+> After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+> SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+> list. If the page fault or MADV_HUGEPAGE again, it is added back to
+> khugepaged.
 
-Nothing jumped at me, except that "full" could be called 
-"full_scan_finished" or smth like that.
+I don't like that, as it assumes that memory within such a process would 
+be rather static, which is easily not the case (e.g., allocators just 
+doing MADV_DONTNEED to free memory).
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+If most stuff is collapsed to PMDs already, can't we just skip over 
+these regions a bit faster?
 
 -- 
 Cheers
