@@ -4,121 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F856D65C7F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 02:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A3ED65C7F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 02:18:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51A3E6B0088; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
+	id 667006B0088; Wed, 17 Dec 2025 21:18:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C7386B008A; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
+	id 63AE36B0089; Wed, 17 Dec 2025 21:18:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39BBF6B008C; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
+	id 567296B008A; Wed, 17 Dec 2025 21:18:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 278156B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:16:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA0FC140C8E
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:16:24 +0000 (UTC)
-X-FDA: 84230977488.27.B95ED1D
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C4742180006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:16:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QAxt629K;
-	spf=pass (imf16.hostedemail.com: domain of brgerst@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766024182; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4184D6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 21:18:15 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D43DB1409AD
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:18:14 +0000 (UTC)
+X-FDA: 84230982108.19.E14B4DD
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DF521C0002
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:18:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=z8xS0Ku0;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf22.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766024293; a=rsa-sha256;
 	cv=none;
-	b=0rqrEfQqcU0p6nTilC4QrDmR+z4oqyl1MbHEteSbk92+y5OyNxxhF9WbhIXvM6YBPSCMbq
-	Ots1SBfHEXADV4Xr/16lyf7jMED9QiGUHkmmvB/gVLwmQM6qVRsen55bXJaeTjz3xXiUDc
-	6hYPV5Z9/e+f8zUFrAarsn0OzRFG174=
+	b=q8xVWJVWaLpqgCAER84TZzA1+sCo+gd2Uh7icCXPdYNpjjk6wi8CmT/ZZDiBEELp84i/kx
+	wHZcry+ATO4gUuUrcY4HZiHOLlxsgD/R54qLvJm6LrVUh940GtjatCauLKCa9i0aKSjVbl
+	T8AUDuTyxwNRgFpQdCPU18eptsBj7RA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QAxt629K;
-	spf=pass (imf16.hostedemail.com: domain of brgerst@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=z8xS0Ku0;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf22.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766024182;
+	s=arc-20220608; t=1766024293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
-	b=KzD/2JQhXpSPD1utYqryEYE8UDLKJFIm864Tvz/WMsUAWFP9dqIf3UXqX1dPcKLwTC88PN
-	XJiCMASonZ8AuyL3eS8GBTyls5gWBqQOH2fZNmJAMynFozRddcoimkpNDjwsLReA5ASS5E
-	pjjh1V6Mg1/QqrEfAa0ERbWfTidFjiM=
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37bb8bef4cdso834031fa.3
-        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 18:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766024181; x=1766628981; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
-        b=QAxt629Kc/T9zQ9D2ZmGkbSsWcYyTsh7Y2lv4UWd/k/uRbvwVxKSjNNPU1n+bGnTKv
-         T/zizwP1AW3kqoVpwIvdRUGFS2+m0r2dDRBpLGBpF/j8y9n0foXrYVZWLg2UTRmXqMH1
-         VBnJZUvf7D2qf0haBY6vWqQuXXDWN2eV+9evCDT2JCO6XQd2uTbTB1CZdojG51Akx21r
-         Lk2q9ZMy7OKu936e87rQ8p3N2M2BqVR0PuoGECLjOFiJZzQ98WXz0+2wXP6WFaJBT6dX
-         5gA0bO1rJalIEK6ElB0Js7iguBJxeHRs2h9ChDd8n5ACrpq3WfJojA+5Xc8plZL6CLQD
-         tZkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766024181; x=1766628981;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9AN9sEG2AE52fSnYh2OeNG8uWEMWv3JCgynDFEzzgMU=;
-        b=bdouYeUMxhMUXJnlnHoQDD4x8Sx3tneGEvPSt4BHWw8VFt0pNg6Sp9hGNAHGToKYyl
-         wNQP3L51ZcQ8hGXPaV8wZH7HhfihTuGAFpnwNhRWqwokFb73AHvt5faTpeb8czgVSGS7
-         BD0/hP9qG0mxAuaCApJRac0kOi5Rw1pUOGq7xyNCfd70udxhr3lNObDednN18eXK5soT
-         AiqROJ58L+FWF5ZWrBl0bFcoFcoD9yh0YkqHm8IUVrY9iz0LR8WFGjeSrw8lQe/Te/zb
-         j6yMBoIZ+AOOb7ibNy1M47oIfU35E7I0xpBWtUXlbKqF2KDopOB2QAfsQic+1oTqt/Jm
-         8BPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhz7bjyGngo50dDs1vsN41pDN3ipb2gr14zqIu7OAaj6H0DlTJCk3DIq1pEkpTTasjlZ3pZL+gdQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy0toB/fI8wzxxBvvl/h9bwxFh9Ihx0oKUsUdCUwK9+Mu4T+WD8
-	B+YtinrGfnVu4j2PuKkAZRvTW/8YyxxYAvlFJNLKcFvsQLcGaoiAMP03DaISqyL+NS5zH4psLBM
-	HXcScJUj2Kdv96YMKg7NdPsS5vYp5zA==
-X-Gm-Gg: AY/fxX4VQPftOCV4DUz8Bjd9pU5qZhliov9pjsU6oXJeDexZkZVBCWWn4XWvcz0qY83
-	JKKyc0XGr+lnPngW1QcKhJ2jIfYQj6UAgMMT+raeQ97yPRiGSNNBY3Hsgu/ttSLc1aW6AJ/ET/h
-	XjYWFnla5LGivulEco5n1NTFO8yVgHOoFlWgvIdGsaEfdGNJ0CILUWpeFCNCzX61rsI8UhDE+ce
-	jDXoG3yN3/uyB+JFsidwlojgZO8rrwM0lOGyp+qQxQVjIujKmmIYqV3h8Sa066SbRnePeJO4LAa
-	VxMwE7WMbg2DdYIvtLWA
-X-Google-Smtp-Source: AGHT+IH+OADZ6GESLoGiMPu8hoFMOP7s7nP4zFXC7YbnBNR5dFco3tMJoPvVr4wWL3ocwWAFY/G13MIXPc5nmNaijSc=
-X-Received: by 2002:a2e:a801:0:b0:37b:95ee:f605 with SMTP id
- 38308e7fff4ca-37fd077cfd2mr59325781fa.10.1766024180565; Wed, 17 Dec 2025
- 18:16:20 -0800 (PST)
+	bh=mU9pFxcO0/m/HH3q3YJxOTDrfSR1HD2/oA7Tnb2zAg0=;
+	b=3jwveOxsG9DbF0tj08xzI9j6vvW7u3/YVCzanPEzMOwYYvjp3Ri7B+JMkqZliQSz6DzZ5v
+	pJ1K3BQpHfo58V1JXFASgbzQluOYHW4GM+JDJmzqBvuh8eyL4bzWX97XtDN+e2Fj+lXJ6p
+	tnfC8sYgGrJgE9ryGhXte6/97cuI29E=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=mU9pFxcO0/m/HH3q3YJxOTDrfSR1HD2/oA7Tnb2zAg0=;
+	b=z8xS0Ku07NSfMV0+Eyjw0tVZd+2KlX5/xZ9iNMjLJk7g7Ezu8uLL02LLnDzGNeOgBxj7LLSFL
+	pyoGHKtcJlGOTfIO1UHDoVdjdSIj4M7daExWaLqQIJP/W/0uNfuyblKB5WilT14RNWJiKCJnB6D
+	VJhJ83pyUdWc45DEopxByOQ=
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dWvQ81r27zcb2h;
+	Thu, 18 Dec 2025 10:15:12 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id F115814022E;
+	Thu, 18 Dec 2025 10:18:06 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Dec 2025 10:18:06 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Dec 2025 10:18:05 +0800
+Subject: Re: [PATCH v2 1/3] mm: fixup pfnmap memory failure handling to use
+ pgoff
+To: Ankit Agrawal <ankita@nvidia.com>
+CC: Neo Jia <cjia@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Krishnakant Jaju
+	<kjaju@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, "kevin.tian@intel.com"
+	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Vikram Sethi <vsethi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum <skolothumtho@nvidia.com>,
+	"alex@shazbot.org" <alex@shazbot.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "nao.horiguchi@gmail.com"
+	<nao.horiguchi@gmail.com>
+References: <20251213044708.3610-1-ankita@nvidia.com>
+ <20251213044708.3610-2-ankita@nvidia.com>
+ <f871d90d-11e0-1719-c946-1c0bf341042a@huawei.com>
+ <SA1PR12MB7199065CD785B5FD0BFE6FB9B0ABA@SA1PR12MB7199.namprd12.prod.outlook.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <f83bf67a-166e-f224-8b5c-821d8314ca0c@huawei.com>
+Date: Thu, 18 Dec 2025 10:18:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-References: <20251216212606.1325678-1-hpa@zytor.com> <20251216212606.1325678-8-hpa@zytor.com>
-In-Reply-To: <20251216212606.1325678-8-hpa@zytor.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Wed, 17 Dec 2025 21:16:08 -0500
-X-Gm-Features: AQt7F2p9l8UeuqBazA8cYojN0tIogcUvjCrbiceup-Wji5NWm9gKMgC-Lp1qUmc
-Message-ID: <CAMzpN2g9QNnYhxkGvkO2YcOJTmJGf75qFhKiEQQY18ZaEPQNdw@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] x86/entry/vdso: include GNU_PROPERTY and
- GNU_STACK PHDRs
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Theodore Ts'o" <tytso@mit.edu>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	James Morse <james.morse@arm.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, Nam Cao <namcao@linutronix.de>, 
-	Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-sgx@vger.kernel.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <SA1PR12MB7199065CD785B5FD0BFE6FB9B0ABA@SA1PR12MB7199.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DF521C0002
+X-Stat-Signature: aifym8kjh7bqcoeh59io86dw56kozsrz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4742180006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: zmbf8bxr58h1zbpra7wby7kc434u5rjg
-X-HE-Tag: 1766024182-119248
-X-HE-Meta: U2FsdGVkX18x8XTXn5pmwFF/bz5x3hjESpRZZ02tRFIClhTlDfmev+/Ep5SB4SMRrWpFqR06gLBYxbhNESFiNLkLkDvbF0tk91Ijz4bdnDfzpMZEb/d6PqytJHP7NFZEPd4dE4QpvAMLtnna7jmRMnuo+vR+wCsERtmxGx7z1Qr6XYYR9JCVEO07qmb7wo9fCG5vgsXZal1JazEDRBahJb2dqeIINd5U6yxMcyoX+/WqFxXiLt5V9cukSJP5JxGYA8xwxulDAnVEnUcD2/28YSdVdC2QDBXtLqQnSgwXLtnpI3WLVwxK3eK7dv116dOIX5svfNhOXlzTrJ4TwR3dbDjkFJyJAr2oIxreiynGlhgHTKMHIB4AcsMZAs4j542xPNHxXkFlclin7plZ1fndFXn/J1gZAGkqsit7vztwOIp5Rv3FfPtO2Sd593uqFW+orV9AS3437DUOirC64yowxbSXd3KfDqof9Z1F7SmvIoKNBnYMk8z2EsAvN9NuAJALAc0ZO2te8rOPEwQDaP1A54sj8vU/lDZPOqyyzo2VoIDPyuLsQUQUsGM3+VLsGltAxz+P1VXmu8V/tzBe7GnIZccsUDkvtcZ6Av7yE8+3siu3pWZMCaC9jMXip0qEMpOVT1iVA0ZtfuPm5A3E5EmbfIewYUgaBg428HYMqgXa7qRBPYh4Sx/B063Cxb2bBcI5qSVHjN2NlkAEzUGWFsESpZIf5T+t1sQuVp2Bjsp5gRnnUi1P/YyfaTvMGw/sYFu6mdBb4gIn0PnclBmZAV+VtHR0n8ItTXKrXwvs7Tea2eAKf7JLT7XRtc8WYQEiCxaGSSo09XFwXesGX+qVB2nzEKCZcxkmGMYt6EAgTwibme+5NIKGbtsDOGsDI2OSdq/p6FwDgiXhfwYlDjEsjPiIn2WH2g1dM/RfgcV+ib5N0jvRtYlEQgc11oaCZYH79XVH3jiCKGbaARmdvZfMrzC
- J94sTG6X
- gTuGxax5ZHmIn45P+FDFwq3P7d/iYjWYQWW5oiXDs8wPAivb0SrRvLFGZWxMVFkJnha0GOpkGyVaDpNdBxe3dKVY5RsW7vhwWRDGgUJZsyYxauzr2caHlmYbkPiKFH97d/c+0uko/NBWngzDiVFfbyc+1vyqvr8z91zpEQ2jCYRRlk4B5buzA8oylkTAReICt6vXjWW/0E0HyhQKyx6wHRF6O+ZPsBTmMNgsWIow15+xyBQfkyAaD0qRfYVpiO9Ys1BtavITTwDKzqPu0bhEuCB+Wn4dzVXzsxmo6fTNrlm5WqKZRKf+VhiSEgr2+GVPAloORWXmEYvyi34MVV65Lfg5TdzPU9/CX+e2oL7TJkUeviVbZBO3Qt4vsxCT4IeyCkY6GzQ3ORGERt/wr0oeMPc7RCEZigkHFKiH/gYHOkx3VzHua3Wn377hRdA2R9VusXjLQ9hQIrK9srbXNvWPerlbgcg==
+X-HE-Tag: 1766024291-348880
+X-HE-Meta: U2FsdGVkX1+cLL0+2ooQ5GWn8Rn8/DetUXI4GLM1GQVUpwizsTZtLwNQAymKC/UHJT9gPu/FUORftG+y3Kv/b5JqGjjeyVCpYlanPGv9anYK4S1ffKWfGwqFwkC43muaoDOqVsfzzDAxG5tsoyMHPCjhQlzMTiCsudU+ufzm6xeE49xl657ySh1oZSdZj8qij0Hlzqgso5ZUBAniBLBQfPQHU4IMDD4c/OK76JePoBrFeI73op0umtCa1uYHIi0yH+bk1VXGZ8Ye2qmS0KaEt9+BMI/zXkTA4jUE1e9wbEahexO7KaX+Og1xABTWwwVUFnontb6dC7WECIqj9JapJJPHGyZLAlgUGvaY9Yk6c4kfqUMEy/SQB9GiduuPq656z/oPxSI2fLpzWCSuvF3oeJmB2oiDbKn8m8oXcgYIF9eOmttSGcK0vK0K9jtC0fyqB4d2b5gG+ocSg3noc24eH9/efiFNCqtH6e/fMOsYVKYBGzFIdvyXJS7l+uQHgDelY/mHHlpNEQViJxKvdBMAbmknuWEg31Cb2m66XfIguXZiRTe84CIOu2BllI9OzDLC5Be5Ow9uZzqwqj1roTymo2A7b+JgJHcVdMmaz3X5nLtTLagqOwHuK0tQFz6pWsKZSNk8hBuX9DKT8ce80Ss5h2iVTXCPGUTDFT8DvSM7N8LIP4f7QPGhTpOCWWQxUrS+AF6Ddwwnb4DBcz4dOPndbWFh2CqN7qIGzOxz6rimTzns+yFdcJ1Aew5ggumhD4fLQu3toQjAUbsLq9LDEnN+sCPqNnQU9/+ngbeooDBelI5zVRqtEVnBwywdj8aIuuUI4XPmggfwqdXM2aYzde3coaLhWkMRX5okQToVT02e0IGf/zmxoL2gZ6dYHglALB/jBOajc1x2xFllmSaiWXNVLkhUMVDtQHtxYHhRt8mhH5lDtlY+yDfw8BWJiJZFPtZH7DWO5JCt3S1ulyz6IXl
+ cJDc70pq
+ L3zfMeSe6bj8KkVzulpp7ldH7AAEBXCImoQlO7SELMtzM0DyoHNqTfagERSzNwIPs1EqB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,75 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 16, 2025 at 4:26=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
-e:
->
-> Currently the vdso doesn't include .note.gnu.property or a GNU noexec
-> stack annotation (the -z noexecstack in the linker script is
-> ineffective because we specify PHDRs explicitly.)
->
-> The motivation is that the dynamic linker currently do not check
-> these.
->
-> However, this is a weak excuse: the vdso*.so are also supposed to be
-> usable at link libraries, and there is no reason why the dynamic
-> linker might not want or need to check these in the future, so add
-> them back in -- it is trivial enough.
->
-> Use symbolic constants for the PHDR permission flags.
->
-> [ v4: drop unrelated formatting changes ]
->
-> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> ---
->  arch/x86/entry/vdso/common/vdso-layout.lds.S | 38 ++++++++++++--------
->  1 file changed, 23 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entr=
-y/vdso/common/vdso-layout.lds.S
-> index ec1ac191a057..a1e30be3e83d 100644
-> --- a/arch/x86/entry/vdso/common/vdso-layout.lds.S
-> +++ b/arch/x86/entry/vdso/common/vdso-layout.lds.S
-> @@ -47,18 +47,18 @@ SECTIONS
->                 *(.gnu.linkonce.b.*)
->         }                                               :text
->
-> -       /*
-> -        * Discard .note.gnu.property sections which are unused and have
-> -        * different alignment requirement from vDSO note sections.
-> -        */
-> -       /DISCARD/ : {
-> +       .note.gnu.property : {
->                 *(.note.gnu.property)
-> -       }
-> -       .note           : { *(.note.*) }                :text   :note
-> -
-> -       .eh_frame_hdr   : { *(.eh_frame_hdr) }          :text   :eh_frame=
-_hdr
-> -       .eh_frame       : { KEEP (*(.eh_frame)) }       :text
-> +       }                                       :text :note :gnu_property
-> +       .note           : {
-> +               *(.note*)
-> +       }                                       :text :note
->
-> +       .eh_frame_hdr   : { *(.eh_frame_hdr) }  :text :eh_frame_hdr
-> +       .eh_frame       : {
-> +               KEEP (*(.eh_frame))
-> +               *(.eh_frame.*)
-> +       }                                       :text
->
->         /*
->          * Text is well-separated from actual data: there's plenty of
-> @@ -87,15 +87,23 @@ SECTIONS
->   * Very old versions of ld do not recognize this name token; use the con=
-stant.
->   */
->  #define PT_GNU_EH_FRAME        0x6474e550
-> +#define PT_GNU_STACK   0x6474e551
-> +#define PT_GNU_PROPERTY        0x6474e553
+On 2025/12/18 2:10, Ankit Agrawal wrote:
+>>>        i_mmap_lock_read(mapping);
+>>>        rcu_read_lock();
+>>> @@ -2226,9 +2230,12 @@ static void collect_procs_pfn(struct address_space *mapping,
+>>>                t = task_early_kill(tsk, true);
+>>>                if (!t)
+>>>                        continue;
+>>> -             vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn) {
+>>> -                     if (vma->vm_mm == t->mm)
+>>> -                             add_to_kill_pfn(t, vma, to_kill, pfn);
+>>> +             vma_interval_tree_foreach(vma, &mapping->i_mmap, 0, ULONG_MAX) {
+>>> +                     pgoff_t pgoff;
+>>
+>> IIUC, all vma will be traversed to find the final pgoff. This might not be a good idea
+>> because rcu lock is held and this traversal might take a really long time. Or am I miss
+>> something?
+> 
+> Hi Miaohe, the VMAs on the registered address space will be checked. For the nvgrace-gpu
+> user of this API in 3/3, there are only 3 VMAs on the registered address space (that are
+> associated with the vfio file).
 
-Do we even still support the old linkers that need these constants?
-
-
-Brian Gerst
+Oh, I see. Thanks for your explanation. :)
 
