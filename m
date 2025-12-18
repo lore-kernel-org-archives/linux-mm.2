@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A03FD68BEE
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 08:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F1FCD68BF4
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 08:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A80F76B0088; Thu, 18 Dec 2025 03:44:20 -0500 (EST)
+	id 13E646B0088; Thu, 18 Dec 2025 03:54:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2ED56B0089; Thu, 18 Dec 2025 03:44:20 -0500 (EST)
+	id 0BFF36B0089; Thu, 18 Dec 2025 03:54:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93B356B008A; Thu, 18 Dec 2025 03:44:20 -0500 (EST)
+	id F0DED6B008A; Thu, 18 Dec 2025 03:54:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E2AC6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:44:20 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24CB613C2CF
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:44:20 +0000 (UTC)
-X-FDA: 84231955080.15.76A2AD7
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DFE216B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 03:54:42 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F9FF5D4E0
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:54:42 +0000 (UTC)
+X-FDA: 84231981204.02.8040937
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 84747C0004
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:44:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ukyez4lu;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id DF1454000B
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 08:54:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XrTsMpU7;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766048080; a=rsa-sha256;
+	cv=none;
+	b=h2YHXiSYwTBFGCgVZIhIDJVVx8/ZO9ciDt/TBrFcnaj0fGU6KmygZVoePMNZz7mQMiiDkC
+	tH2s5pE6y3ZSNOuM9/jS21I4eqvZn+fpIllszeXvZCXmdtbRQg5/+ZoE/U4XZJ0qhr4+gd
+	rMEM1sWRrCOcp/9/ZicRWGrO6+GYxQw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XrTsMpU7;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766047458;
+	s=arc-20220608; t=1766048080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9ilmbycFZ17klnTpkRcI12XjTZeqEwRnaOxOXHC9GI=;
-	b=4JI3dTs41I2lier7a1Bft8EXIB1pbLdluQXJqevUetlJNVtCHzt282JS/W/7Xr+6nWF+Wx
-	0mJnFVmVOnZKzD7H+NLomwZzf2kbaKluf+9gbrefv51vdPEfAvk1rxZq6Ilw9nUd6Caq5D
-	GHeGckLNloAN6JV1dmj4ZT0wYf4ildg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ukyez4lu;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766047458; a=rsa-sha256;
-	cv=none;
-	b=cRMu9EHC/eusqmqSojnE9/QMWd2fwDIe2dxJbc59GHPoq2vRmfnTSUt8/N2bCgQ/dmmgxf
-	Iad+68812YgmytGMl2hVgVzniPY9t2xRs7x71xhadz9iAMC84CJh03526bCldNPNDHIHeO
-	tyCM51uVRXc7qTaEXZIPaD1H3jmlchE=
+	bh=r5+IG+UAl75cZNp2GjRVKWNSzto/iGu0BRRiC3FvDDU=;
+	b=go5NrF0a6oo09QPi0+6bCsQnInmcUNqSxUC5ieVGPSuypk8L8/w1np4f1LnHTOsRvnh3Nt
+	QADdRx3wRuhNmcgayF1nKi87kpxySuc8lnJ7Gcjozv/Su8QAcAA/30cWKIEtADzBFmmpfZ
+	X62WvIpeWEjk+dEclTzDx40bOJPVIQY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CAC7C60121;
-	Thu, 18 Dec 2025 08:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F222C4CEFB;
-	Thu, 18 Dec 2025 08:44:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E93B600B0;
+	Thu, 18 Dec 2025 08:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A109C4CEFB;
+	Thu, 18 Dec 2025 08:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766047457;
-	bh=bALsCqvSTHwwYz8QmGh55URvGVsNoAOBLrpOS8lJtd4=;
+	s=k20201202; t=1766048079;
+	bh=+qNn/OJjWWHP/A0urQ0xX32Xkqv6pMC2TNNdJPZPvyY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ukyez4lu8CFjM7JHpAeVJUdVpCmSNa2wj7Xmg4xLozKRmW+/KY0M+f0iioxKKlRTL
-	 MOUts3mwjSzKX67ovaxIYmBNpvgrrAzZ9u6ATvCzXCBkLXJbIsMCNErjsHjF8TxrXa
-	 wKWVwOruiNMyYjvM1EA+WfC7ufzB4g/NF7tjwsmrZnbvvJVNIkamoprSGdtnrT0cdu
-	 A29w2x9UtFTaS+jALpDaZr/zllPmWQHu6NgzdCLlKIQhzuw7A5NZovaTCoCqUtTg1d
-	 XERd6gK0dUi9ML0LgD4E+lq+5eyToLHmBKOEgsF3eKAVuabLCKU8mXzruRiNi6sZiS
-	 yEX5hzI3wzYwg==
-Message-ID: <d373f7b0-f822-4c31-990c-41a6cdc76db3@kernel.org>
-Date: Thu, 18 Dec 2025 09:44:11 +0100
+	b=XrTsMpU7hllhZ04KswkkiRAm06vv33hh3vVu7hHjiwrS6MOBlg5cz44P6Pt7JF1Rv
+	 ENfgZDfCn2LVf8z4m/hXaPOPAxxpH9QeSPYYBamwWnfUS6TItgeZ3Qey94JFbHWD0w
+	 3FQFSegoDFA1lk8DCx2p8yUzI0WPcrCJCtg4GDWYN3nI010FN1zcqn3fQsIHrrOajB
+	 Of5neRDjWPRC4CJZVAg6a3e8CvluVYtqhIZH+y9X+FeRS1u18WkfmAj4Jxk3TNB3do
+	 c0uUqV5D0aLM5EdD4kc7se6IW6vgbjYzC3YgGmv0cxWACYKMCPXrg8dbAoiEVTxR/X
+	 oITCvGrbiH6ag==
+Message-ID: <b5c3c6ba-ae4a-488b-be37-bbb612bb414e@kernel.org>
+Date: Thu, 18 Dec 2025 09:54:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-To: chengkaitao <pilgrimtao@gmail.com>, davem@davemloft.net,
- andreas@gaisler.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com
-Cc: kevin.brodsky@arm.com, dave.hansen@linux.intel.com, ziy@nvidia.com,
- chengkaitao@kylinos.cn, willy@infradead.org, zhengqi.arch@bytedance.com,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251217120858.18713-1-pilgrimtao@gmail.com>
+Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize
+ online check
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Cc: akpm@linux-foundation.org, david.hunter.linux@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, osalvador@suse.de,
+ skhan@linuxfoundation.org
+References: <20251207231056.71294-1-swarajgaikwad1925@gmail.com>
+ <20251218064159.7230-1-swarajgaikwad1925@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251217120858.18713-1-pilgrimtao@gmail.com>
+In-Reply-To: <20251218064159.7230-1-swarajgaikwad1925@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 84747C0004
-X-Stat-Signature: 5cc4e1kfzw59ryzsx4hsgeuhnrbts5nt
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766047458-640154
-X-HE-Meta: U2FsdGVkX19HKr+MjB8ko7+HDUrfMHba5yGyWMRJngOm152xKkIQkcNCoNIz6fEeNS42L44yapPzeyxrYI5KNz69/4dOApXY+ufCo/30eyPjMWnV0nGB2t0JfTZ8cYi1TVXKW+it9w3EoiGTxz4PdvqtQBs7oMZFYiQXebneRaxsc3twsL1iG4OKFyknNTO0L4v2+6RL+8HkCfYgSD2pNgEVCqV22ukERR5EHDKWg03mXh1lgIylrFjfP6nBBFmcy1LRjF9ihu8fWMliKvbE4suH+Kl5PLpn5kIKbQNyRuQQlP2Ow2hoO2/Dc414dqr7JPI327c9hE3G6wO04pEBY68GR/uQgwe388XML+8LsiKWBbAogCGhRaiAVaw8LJBim50TUvCI31RcpEcY1OgkQHk76fYJCpTdFiDYh5Yg0L15VM0SFxS36ayafDB8usCsx251lKrDR6MTQTMF4y66iXKOKRP6Wlg94f5v6F62l/Zs2H5Op2W7qUOxDHxC5/BtsmyHnIs5WF3kQJe4jV/hQE66f/7Yv/2EFxU8AKj9xNDjhCxoP8zsZCxJog9gfkjDHFlkgGYV/3doIpRiJ5CWELYOiY1wVb3TqqbhIgvBBwYhZAjvgqUx9HWfoMOdppBYbKVwru5n95l7NOSrGx7+U6i1DXP74MxQOOWy7mEL2KyxlyqlR6m/w/TY7ue7k8wVMIR32mmlk9ZrVKyngwZdGnU7p8CAkAOH8r4r7h2x+bqkcK06S+09mT8UGt5XTq3cCTV1AdnlkBR6mpC8dpTbA5tpKoZ47j0//Dwjb+1RMhEWXiyJR8Vnok2qRbCQtle117JlzZ3sDWm87/DpfQWpZ3eP1AIn9tezPFTe+uNyinyUDAGagKKzvmIi7GS9b6JscqnUzt7vuXpy7y2FkjqeTeQvzQoVtyDHGKGhl41Mh0qw00iF55Q9Yd/5n2stih4cn+JBl2yS+Rbj5L2cUOz
- 66m+dQnM
- AvDwqeBMuZQIdZk8+Gi5kLP1IY5myJVfDtg/r7ktbqbRYn3WoXkXU7b6dDqxjPsjMHvLysR7hBYJ1RINx1I0kADANHkt4Yt9gci2+07zEwGivQMgpU5H4cvk5HxaIximuF5V8R1rqbypUg2aPzhhMaMx/l/9n+Z2p0VxcwZB1N+0GgM2mu4naRGO5K6Ry1XTcbGUG+7YC+CdrPIKeRNVpHnx+PQepaSzODUQ/0ANjZ7NlJ3cd6IT6eyTK45HMWzrOhAs3S7JIlJpmdGoOjQXrHMtsY+RtLaQrSCs9B37EyCxVtVMYJAgpq5RyK8UY5UHmv4M61l90mfhuzbP13zL7p1mXCQ==
+X-Rspamd-Queue-Id: DF1454000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: d5t6w89pe7w9q9q7yrnfxqhuy3kc7kmo
+X-HE-Tag: 1766048080-696889
+X-HE-Meta: U2FsdGVkX19d91N2ISecgfHQGDo9/YhvoPxwG48nltvr6J5zQTzm1lKzKtyFfjN07z+17yMYKRDqrig9l8J1OhP/syFSa047qMl0DqMSlEvy4kUi7JkQ7GXMTj6DDOK4Xv6vvl7aPRsqE1mLk2CRcgtjWdyuvhPJpfwjhVkLZrgmqw3fJ2ru5UB/AkmvUki8VYlTbdEI9TIEqU8sZDcQYdxd/gHIB72wppRxot4FtwOoE7GWunzxnkdrufguaI9BruD5A0uu17yFgBeTrjjJzrohGiSp5W9QsbLZQYltmgez8fZzVbO5tBQUARUW7qtIji2f3UbjenHba6D+GkTwFYfM4JDy0BTMxyrhmdSVzPMQfHGoZazlQSGJqfKTOVKaJ9j0Urjfu1MPsMEqS2W5YYB+Ix12dJFauM6wZoTRzbKBWiqUpqQ95wqGbxCTN9b+XUecNTeJLbkkhKn5i/izeQYt9a+5/iusBF2jnl1KU1bQqVXXGEMTB+WDZbDSTm/HGZex07HOcF3dOPLVV9w68jRvaJ56C6Q9RTPtIYColYEIN8SfIUwzws1vGoEMV2teMYpbuxe7Nryy2l7scMSP6dkQGRN0nzRodtq7n2emuAvKw89dVgthsMuNJlJZpIe6EOSZ9bRGPpNUnXP3Rpsb7hXuTL9JDvmHKKkrlyn/DZowQo38IbfHkolV52XuW5AQ5qJWTNCc71hRb0F9Z7wx9+RgOP6F8xX+74TNqLgWoz8QBe+UsorXC/KyeB4+wkN5SbkTBaf2Tx4+5vNMwIdPrVvEA7zYNk8rSbO5twQMNUQupgiJvGwhMGy0o+PkfF9z73kuQBfKpdaxd0hX0Li2l9Yywo+ioYB2n97JnecxIzonYw2M2BIA7wyk/uVtFrsVJGIQT9B5gpqM915NnJ9C8ygxlnPzSjEcWi14mXsywDM7A/jInbOQ1akbK6RHcyscy2Ej0gmVviw1ynQMpR4
+ ZO0VNLDy
+ LG6AN1bQA+VitxoYWRJfv4lkfqSaXodB+3ZO9xKCCTca93tkQ/9/iXCTemDw/zmRXU8Eh7VqpkhqO3V2tYr++hoRf1cIdQtSMETwzeag5P1+YrVtB1O4k6rQPcbiTQIeykx1uxBdN+P00PtOHzKSyIHkjKLYHv641r0u2BQrLl/BUcf0h1I+Z/DPoJPKj0MwZm92a+sppBgfnfifujSwMFwEQefmIq9G5FLAkBjunDJJiDkIbX6Ehkye9jYbbtX5nfY4K5iWGBzXVyodhWYqkh+Uih2m0AL5tsTfc9U9iOPXCKcdPotyTOL1sE71BCe6SpENxsTKEou6YcLnMM3bQcWB1Uu0Feg5+FCZ29t8z4CjbWqvWgfMW48ZEG5FwjCZ2umq2jUDLy/Df108=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,152 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/17/25 13:08, chengkaitao wrote:
-> From: Chengkaitao <chengkaitao@kylinos.cn>
+On 12/18/25 07:41, Swaraj Gaikwad wrote:
+> Hi David,
+
+Hi!
+
 > 
-> 1. Added the vmemmap_false_pmd function to accommodate architectures
-> that do not support basepages.
-> 2. In the SPARC architecture, reimplemented vmemmap_populate using
-> vmemmap_populate_hugepages.
+> I’m just checking in on this patch to see if you’ve had a chance to review
+> the benchmark results I shared last week. 
+
+Not really, still traveling and this is veeeery low priority :)
+
+> To recap, the caching reduced the
+> execution time for the NUMA_NO_NODE case from ~2402 ns to ~453 ns in my test
+> environment.
+
+Yeah, but these micro-benchmarks don't really matter ... at all. What 
+would be interesting is what happens when you hotplug a lot of memory to 
+a system with a lot of nodes. I suspect it won't really be a problem.
+
 > 
-> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> ---
->   arch/sparc/mm/init_64.c | 56 ++++++++++++++++-------------------------
->   include/linux/mm.h      |  1 +
->   mm/sparse-vmemmap.c     |  7 +++++-
->   3 files changed, 28 insertions(+), 36 deletions(-)
-> 
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index df9f7c444c39..a80cdfa6ba98 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -5,7 +5,7 @@
->    *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)
->    *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)
->    */
-> -
-> +
->   #include <linux/extable.h>
->   #include <linux/kernel.h>
->   #include <linux/sched.h>
-> @@ -2397,11 +2397,11 @@ void __init paging_init(void)
->   	 * work.
->   	 */
->   	init_mm.pgd += ((shift) / (sizeof(pgd_t)));
-> -	
-> +
->   	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
->   
->   	inherit_prom_mappings();
-> -	
-> +
->   	/* Ok, we can use our TLB miss and window trap handlers safely.  */
->   	setup_tba();
->   
+> Please let me know if the performance gain justifies the change in your view,or
+> if you would prefer I send a v2 that simply updates the TODO comment as you suggested.
 
-Bunch of unrelated changes that should not go in here.
+I'd prefer if things that are not a real problem would not consume my 
+bandwidth while traveling ;)
 
-> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
->   EXPORT_SYMBOL(_PAGE_CACHE);
->   
->   #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-> -			       int node, struct vmem_altmap *altmap)
-> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-> +			       unsigned long addr, unsigned long next)
->   {
->   	unsigned long pte_base;
->   
-> @@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->   
->   	pte_base |= _PAGE_PMD_HUGE;
->   
-> -	vstart = vstart & PMD_MASK;
-> -	vend = ALIGN(vend, PMD_SIZE);
-> -	for (; vstart < vend; vstart += PMD_SIZE) {
-> -		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
-> -		unsigned long pte;
-> -		p4d_t *p4d;
-> -		pud_t *pud;
-> -		pmd_t *pmd;
-> -
-> -		if (!pgd)
-> -			return -ENOMEM;
-> -
-> -		p4d = vmemmap_p4d_populate(pgd, vstart, node);
-> -		if (!p4d)
-> -			return -ENOMEM;
-> -
-> -		pud = vmemmap_pud_populate(p4d, vstart, node);
-> -		if (!pud)
-> -			return -ENOMEM;
-> -
-> -		pmd = pmd_offset(pud, vstart);
-> -		pte = pmd_val(*pmd);
-> -		if (!(pte & _PAGE_VALID)) {
-> -			void *block = vmemmap_alloc_block(PMD_SIZE, node);
-> +	pmd_val(*pmd) = pte_base | __pa(p);
-> +}
->   
-> -			if (!block)
-> -				return -ENOMEM;
-> +bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-> +{
-> +	return true;
-> +}
->   
-> -			pmd_val(*pmd) = pte_base | __pa(block);
-> -		}
-> -	}
-> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
-> +				unsigned long addr, unsigned long next)
-> +{
-> +	vmemmap_verify((pte_t *)pmdp, node, addr, next);
-> +	return 1;
-> +}
->   
-> -	return 0;
-> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-> +			       int node, struct vmem_altmap *altmap)
-> +{
-> +	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
->   }
->   #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->   
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 15076261d0c2..5e005b0f947d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long size, int node,
->   void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
->   void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->   		     unsigned long addr, unsigned long next);
-> +bool vmemmap_false_pmd(pmd_t *pmd, int node);
->   int vmemmap_check_pmd(pmd_t *pmd, int node,
->   		      unsigned long addr, unsigned long next);
->   int vmemmap_populate_basepages(unsigned long start, unsigned long end,
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 37522d6cb398..bd54b8c6f56e 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->   {
->   }
->   
-> +bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-> +{
-> +	return 0;
-> +}
-> +
+Anyhow, there was a kernel bot complaint that you are using "struct 
+auto_movable_stats" before the compiler knows about it (and its size).
 
-Reading that function I have absolutely no clue what this is supposed to 
-do. :)
-
-Also, why are you passing pmd+node when sparc ignores them completely 
-and statically returns "true" ?
-
-If you can tell me what the semantics of that function should be, maybe 
-we can come up with a more descriptive name.
+When you resend, make sure to better describe the "why" we are doing it. 
+It cleans up the code a little, so that could be used as an argument.
 
 -- 
 Cheers
