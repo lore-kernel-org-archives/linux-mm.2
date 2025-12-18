@@ -4,203 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A433D6E2AD
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:53:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B58D6D232
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 15:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F02AD6B0095; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
+	id CDAE56B0098; Thu, 18 Dec 2025 10:54:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA9CD6B0098; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
+	id CAB586B009D; Thu, 18 Dec 2025 10:54:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D81B16B009B; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
+	id B7A236B009E; Thu, 18 Dec 2025 10:54:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E9E6B0095
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:53:01 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2323816014A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:53:01 +0000 (UTC)
-X-FDA: 84233035362.07.AD372BE
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013071.outbound.protection.outlook.com [40.93.196.71])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3F674A0016
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:52:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GpRvCtYT;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A5E0E6B0098
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:54:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B28C57744
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:54:39 +0000 (UTC)
+X-FDA: 84233039478.28.23B5FAD
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012045.outbound.protection.outlook.com [52.101.43.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CB4DC100007
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 15:54:36 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=geUy1JgY;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766073276; a=rsa-sha256;
+	cv=pass;
+	b=Dk4jeUzyddffTPIkAHjftW4gbI0HHkaIBANVa9UHOnkHZx4RtlVgD1xalFm22QnDpxk6Cd
+	Uk13mSKxBq5jA7PbSmlUEMEAKHT45kTdtaa8bbiEJv6H9x0dxHZvFsqqgeSTBsPK/eERyB
+	DBB1xmIM+LirSoXfcTj9kIEPiH4pWcY=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=geUy1JgY;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766073178;
+	s=arc-20220608; t=1766073276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
-	b=w/Zmnh2nblr3DREzH0Q1oOmWNEiITSNsdgfoui4YXIXFVkqxiRLIpOyhVL1Ul37OsTxcR9
-	62CG6Yj6pZT/ZA8WHLTfxXKK/JVAJ2adtAhr3jWSyJkvLb9xSpr+g/aQmt+CkPkI/8nW8r
-	Lg2ZCU2l+for+lJmq1Eh0h0MqYGUy/0=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GpRvCtYT;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766073178; a=rsa-sha256;
-	cv=pass;
-	b=NIH6lUmEo4TfWpf5EgRhfbYs9otXRowKv4q2LeoN5TzC34a4BZt/DU8Hh8CVNdlNdg74ks
-	zMhPEpfjtG8amishJ1wIw1sEiAaTjJ+X7yFpNxrCv9F4ugzfC8CpSrkSP7EvojIFuEzVTX
-	56j3pXli8mUfreS5Af4KlfKvqDmpEF0=
+	bh=ubOI3RAdhIpJWqIrFgi+2kr5PF4dCzie2rZziYOzxKY=;
+	b=lAJXCBxS87dFYdLR1P83/i7dUGsYzIiWR8ofvl3yqxddaHYvcdmwf3ci9IhJz92iLt9Xsf
+	E6IN1hNldSgpW1i8fKfqII61R0qqzAPzdepUNfm/kpzm9PdKnffuqZTACkN2aKs28ytxga
+	D1222bhZPRLrCow5LVGLMrG6e9X+s3g=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yex//+DZGcDIAMgrfg1rY55oIc9tbaAK2fM9WaEAo3EzyFjobialZXs6qWvjyqP8it9UVROucA06KsqTKShvvmDHBd+VnglzLUwlcP/9JTRdwnBCcQy5TbDaCKMBr/0qcoBB/UQOgeY9IiPmAs8AN0e/NA9mkjeEJcwTa0ckiLb/Rnw7t00UZyzGT/o+leanXzuedaQApdk6++3KLletCbeEBfplIXPS9lRBQyqB+q8vEDgt0cPZQegGUua0EZHcV3MXL81WJodpoKgtFHmiBXbYCCII1A+17Lm3MbjeA/uCI5CMJu6EYHAmvrMxwVuCOesHOKjRNYyi19QnU9y0xw==
+ b=q1uLEaINZDa4m7L5fSPTTwJgUUqZLgfy3xElPQcwr8gnBQt7UZFGRvXqjcDr/PQjvyloB+5qFhBjP/toT9ugaGUFW3ft0bZOxg7d5cVjCytiwnOyKZsZNpfndZwrMw3zx2VlYzn1jBbu05FK59aTmaHXtSyVYRlMA5TqdfKP+D6OSRg6wGQqRXHmpsIsVQGdAjRByGJl9Zc1Eej/CrwJA++Rhg28nGHn8DYicuDq449nbkiEK1eROfgFvM215pDfGmOOe6TfUwoVPoff/suMQ4ILYlAXQVYow8J9dVw7kTypgSsYuJhVGU9dTN4TOuIpdXe7H3MX0+WJJpTd4eoCBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
- b=e/2HoN5gjl4ouZ3SZGKMpIgBZ8WreWUgVs06orTNVeHYtrzZ5GU0o84Jg3qG52QoUCuBLOrD4HKcrTVmDpIoijlARPWx7KmHgNeyYe0O0i686XdvA/kGiLDsSjbfoL29OgHaMrkRdejdNXnsOvgKlPVk0Hn5+NZQ1GK5NxhIixrW9Bwhqchn9Fig9pCWu+I4Xeqazk1Ok12sZd7Q4RVEYx7nuMHgVxNvACTu5htIoZI86C2XbiV5PnH8pea6X0jujEHSclOtP+2cj3JNWIcqxaaW9ll3dg90Snx1z/lWmOqpUcN1kbgDvC17hnVHQNYJ/jncx65PIvhqCGZtwop9+g==
+ bh=ubOI3RAdhIpJWqIrFgi+2kr5PF4dCzie2rZziYOzxKY=;
+ b=Is+e/s8oZnhxWWPV8FVKdQNo1tOVESRGd2Y2iJqgRRRLdNkrcgN11eVrztbyrwJBTL2dLcxW67x7bEdlc5ZtzMxGb9qxRaS6HuozOxu0fVWemeJMHtQ9gRiCHXo+dGa9cPKOwOAtQ2TDM38MYyhLTK1NWDBoVgS6E1i9wJU3s+FYsN5kkqfCklX9EstiZfiJ+4wpvAwL+tSBGYVSP/4c/Tb4kDYs2vhDmezSBN9immIhQZgOi0zVhv1UEheNExWXrqpkpP0W1oufStT1nTNYIptmadoeh06hzzl+QcJeD2qqVWxMwUaHW1VL0v2a3l6KTVeugVuJaaYrDGoEgXgR8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DJumiU3u41xG20BwOCt0OCAVufoQTpUFxprLzHlxZeg=;
- b=GpRvCtYTjr+Xbp55Pq2n3uaLpD/NvAsN65kJK6KWRI8zOexG0kOWdPEkIK4JrldNCv3YksR3RD9d175jsVtOIzjgxHVx54WC5TzeAA+a6PVCnVIDXJVn1qitawUX2R7lKCcfyzLqTzDWFM8T+JX/+onVkekFoSGJj60NkqkuvuMXe+lonWW8860FS2EoQpbckN7agbR0/cFZ8vAfWbUn+wRzVFcHsvF5Uxd/jgZpQNCDVL1UhLnP5+Bc5XQOP0Byvt+qdCUDUT5/sDHnrSGFc6zbUM0efkWw8SlQZ1JaQ1POG/0UPPYNQsQiaJa/plhlI8oR17En8wqgfFOm2lTIZw==
+ bh=ubOI3RAdhIpJWqIrFgi+2kr5PF4dCzie2rZziYOzxKY=;
+ b=geUy1JgYEgRiUKc95Sn3rnCqVEi1lvwVl10IGEhfxmIZnRtq5+fSHR7ajZJOvilZ8njQA/Xo3LG67iQpcpZ/N3/mgMag0hD8C3Cp1tTbyhxfMMTkuo7FYCPaVm0OK+d1fUm0NUE59PFjuro+Ra4vIuv6MarOg80xEXeVdC/R19Nt1L6b4mmjHn6I01Vmua7swLcCAYqjE+Xa4IbxlPt96Pij6leaaqHlok0LbY6gbjKhcM5C1bpdt1zJ7xd0hiNOT/LjdcVDAX8m9QcsGOkTd4KZQGZjdlN/IRuo8V6LywGyFf1JnO9HvkPmLuCpi9RDmmJ5dpgiWSOv2gzBuJUYZQ==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  BL1PR12MB5825.namprd12.prod.outlook.com (2603:10b6:208:394::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
- 2025 15:52:53 +0000
+ 2025 15:54:33 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 15:52:53 +0000
+ 15:54:32 +0000
 From: Zi Yan <ziy@nvidia.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- sidhartha.kumar@oracle.com, jane.chu@oracle.com,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>,
- David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH v4 5/6] mm: cma: add cma_alloc_frozen{_compound}()
-Date: Thu, 18 Dec 2025 10:52:50 -0500
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: "Garg, Shivank" <shivankg@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/khugepaged: use enum scan_result for result
+ variables
+Date: Thu, 18 Dec 2025 10:54:30 -0500
 X-Mailer: MailMate (2.0r6290)
-Message-ID: <0168824D-37E8-4E22-AAF5-43DDB38F0FED@nvidia.com>
-In-Reply-To: <6e7df7a8-aaf4-4960-82be-dea118c5955c@huawei.com>
-References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-6-wangkefeng.wang@huawei.com>
- <4B10600F-A837-4FCA-808D-6F8637B073F7@nvidia.com>
- <0eb081b8-3982-48aa-a9ba-9cdde702b4df@huawei.com>
- <A276ED1B-89C8-45A0-8DA9-9D5CA1D8E2FF@nvidia.com>
- <6e7df7a8-aaf4-4960-82be-dea118c5955c@huawei.com>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <B6AB9DAB-7985-44F0-A0D0-9FE77D3853B5@nvidia.com>
+In-Reply-To: <b75674c4-2439-4515-9b4c-bc3d40f76fc9@kernel.org>
+References: <20251216111139.95438-2-shivankg@amd.com>
+ <20251216111139.95438-6-shivankg@amd.com>
+ <D9E6B402-528B-46F2-B4B0-9CD9549A449F@nvidia.com>
+ <79fb5cb2-8a24-4260-a9e9-bdf2c5ef602f@amd.com>
+ <b75674c4-2439-4515-9b4c-bc3d40f76fc9@kernel.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0329.namprd13.prod.outlook.com
- (2603:10b6:208:2c1::34) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: BL6PEPF00013DF7.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1001:0:9) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|BL1PR12MB5825:EE_
-X-MS-Office365-Filtering-Correlation-Id: 174ef180-5645-4480-f2a7-08de3e4d80f9
+X-MS-Office365-Filtering-Correlation-Id: 46a4d51b-83d1-4441-359e-08de3e4dbc1c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHNjNmE5TDN3RVZXdUY0TDUwNnk1STRYbTdmWWRManZHbW5PMStqS2N5OW5r?=
- =?utf-8?B?TDFPSUh6ZjhsZm1LbnlYSHpEWW05NG01dnBqYXBpU3lGZzFLREZoZGNUanBz?=
- =?utf-8?B?ejkzVzRxZk1ZT1JsZFk4TGpZSFZTWEhlbzBRZUkzL0VrV2xpQzNENmFXd2w5?=
- =?utf-8?B?cXM1YUdnc3hzYUprZkZmMUI4bnpDZkRONm9OK1BJR1JnbVB0bnhSZTc5ZW1s?=
- =?utf-8?B?NDdjWHZHZFpNWG1XSjM0WFg2MUtEdGcyV2gwYzdQNmRVTXFLb3FUdy9JUTZm?=
- =?utf-8?B?UmJJbWlpSVpPb1dZbDNUZGFzMkVYakpDVWpaZWQyVTIxQlR1STkrQ1ZQNUVp?=
- =?utf-8?B?WVlrNU5YYWdvSDg3aGs1b1BBanBGVG5pL0xraGRNYXkybGM0ODNCQVRZUFV6?=
- =?utf-8?B?RDZpMWxXRUtXMzRpQXZQTEpsQ3ZzZUJqUWt0cXh0SDFtOFZZbVh5S21CQlEr?=
- =?utf-8?B?Z1dJZWlUZ0FtbklaR3p3WnBrVzUrSHBCcWZnUXVhaDZkaFVOcmpyUEJJWEtz?=
- =?utf-8?B?TEM4b2hCdTFMclZmV2drL2tVbitrbVFpbFo3UTYvYVE2WmF3SmljMWJ6aEF1?=
- =?utf-8?B?eXJtTEJtbWVvanNaZ21ucGUzOEQ4QlFKYmVkc2RKNXZ1bzU2RytmQmxVaVRa?=
- =?utf-8?B?RFZvdlhGVWYzK09Id1VVVGZjSVV4eGZIOUNrWVI1Um1XVWtsb0E0b1FhaUc4?=
- =?utf-8?B?MkFIUUJFcmhMSDdjdFNMWXJpdEtYbTN5ZjN4dEQwUjkvTWlwVllSQ0xMbTFv?=
- =?utf-8?B?S2RwOGIwUmErb0pZRFM4RFR2QkpZbEQyMnBhM212YUkxQk1BaTFQZnJ6OVpM?=
- =?utf-8?B?S3JRSGhWamY1T1RkSHNtSzZRcWRrUVRHRzZKTzY5RnN0Qk1RNjRTUWxXZE9j?=
- =?utf-8?B?OUN0N1JlTGlNdDdaN3lON2J3a25acENYMGZiTkxXVjFwcVUxRWtyejNveVg2?=
- =?utf-8?B?ckdnbjh4RDlOaGJtdXk4YitIalFlRjV3RGJRc09YUlpVclBvcjdscGUvN1c1?=
- =?utf-8?B?SUovb3FsU3JFOFJmbzRuMzRxN3FhUS92WFVaVlcvQXR0QXRMOGNMZTRNMWFy?=
- =?utf-8?B?bUllY2NFV3dOZWhjRUY0WExLQis3WGozRkYvM0dCc05VWVplNEluVlpIUFBr?=
- =?utf-8?B?eWpkODhKbHdxeUx0MWNHOVhYUmxSMDVlYUJTd2hwcGRhRm13ckhXTXhIRFA1?=
- =?utf-8?B?cGxCZUxwQnB0OUR0d1ByL3Nkb0FDOW96ckFsdlNxY0ZCTTVDUi9Mc1NUY3NN?=
- =?utf-8?B?ZjZsaW9tMlJlZXMzYUZUZmlCa1FCSmhRWXVMb05hV2E1TnJSdFZ5MHFoTjNz?=
- =?utf-8?B?TlJ3Q0ZBM1NZOHEvcUpFRzU1RDEzdExhM2hOK3IwR2sxNWxFaG9LMDI0MkNm?=
- =?utf-8?B?NVVHdE56eTczSzhQbjR0TGFGeWJudUI3QXc1STBVQ21HbUtEZ0t1ZG9LOHdy?=
- =?utf-8?B?RitvUk1YUm5qYStsSUh4ckswbytscEIxcjNFMitlSUw1L2d6bDdocHAxU3o3?=
- =?utf-8?B?THhyOE9MUXVlWGltTmh3b2svNldwSlN3L2pjNFd4WmVERkJidDJDRmhaZmUz?=
- =?utf-8?B?V0hBSUZBTERLTU1saXBwNHFQeWRiaVh2M0Z5WVNpQ05vcU5nMnJKdUM2NnBx?=
- =?utf-8?B?Q0V5S1NpM3BrSHZNamdUVXFxZURpbVRvTzExbHRRdWJkSFhVWllIZUMyNTVp?=
- =?utf-8?B?YUVDdkVKcU0weitGTEs4ajVzbFB1K3JHdEhrL2hUTndseUp3WG9QU2VyNXVI?=
- =?utf-8?B?d3dQNi9vbWh4S3JIVGZ6L1pmVzBkSFZ0cndxSFRueStCek1xRjNzdEp3dXpx?=
- =?utf-8?B?OU1WbE1pYU1QbWpBNnNSbTBteVY0SVBQalhPUG5YRkd5TFE5c3lFb3FxcnBF?=
- =?utf-8?B?elAxUHRLUkJrWnVQaWJwWjFyZW81SSsrdGdjOFVuUW0wSWg5WWM2NzR1dzRU?=
- =?utf-8?Q?9z09GS0wzNWcPH2cSooTKUOmnmUrEBg9?=
+	=?us-ascii?Q?gFBASXaZy4kK5UCUYQMDtRIQEcDGeunysB1d4uTu9r26LG5nMnP6iOBHpLK7?=
+ =?us-ascii?Q?dDKAffloZOtMNLDjekNYu7Ox1MsCy+rN4bLW27ZEB9laocB7KrT/y/7PniTF?=
+ =?us-ascii?Q?ZCfP2THbikb+YLpiHqCMHzwwOuOqtNQcoxUPnMYhc5vSljJpmtIwE/9UI0sx?=
+ =?us-ascii?Q?NYSSywTcz0h+vV1pWQSWIII4NTJdkF7HWUBOHhboIX35i7SzwwqM05GS7IC1?=
+ =?us-ascii?Q?dFwNTVzbec8xHWexBOYcul7xkqfScbQsbGi+OJiTD/6hG2oDp3GjBcAKRw5z?=
+ =?us-ascii?Q?89KIEzNoTLaDv7tyNsXgk6JpNsK3NG4TtAIL6NVnDTRjUZenK6fEakHK53t2?=
+ =?us-ascii?Q?UKyGRJ+38HNXScQzqhtFl8nPz6oryIFWfF+Rdl3o7i7LZMxeAAdHKvu8LfDz?=
+ =?us-ascii?Q?bZnaHCSOP41NeHa1UTO4aPhtxYHx7woWKqIrKgLIKN/I8RGx9NJL4Wtdv6Yu?=
+ =?us-ascii?Q?C/iBdWVG7X55pTqjTVFEm9KR82TVkJ9l7VcaxvqAkx/nEV8IveizNGamV8s6?=
+ =?us-ascii?Q?uVJ2qx1Gngtl9vNMqUupzpidNvwwjHpMixFu9ZGE3Y8IxsaBkJ4bkWYsQqho?=
+ =?us-ascii?Q?eEQVED2QPsqr9s3z/ciFERDqZw+Qz0oW6lSL68dWmVvt+66fIimu51sEj7ir?=
+ =?us-ascii?Q?gIlvxeFuB5SLTlk3c+/dfAvqvhY3+7v+hilvPDY5qvWEFOyoTI1eIRXA3DrB?=
+ =?us-ascii?Q?BbeVrACoB6JnHKJWx9wVYODTUr7gAslHzOZEpLN80Z7E9WGIuTCypUM9zNsz?=
+ =?us-ascii?Q?6PTeTJVmhKC5UTYxpJ1TIn5l1QKdu1tcdgqZhWTczPZtDcJp+FCiMHWCEjE5?=
+ =?us-ascii?Q?iZ6/ImChvx264TBDlFzmMheP2azktHuZCmpMk5kQrmWQilNUDs7lHVJ+bNa+?=
+ =?us-ascii?Q?0uRMpWaKk0HT0HheG+dzHv6NfTd2jFRD2JZj0joS2yLpEy3meEBjkAeQhGDJ?=
+ =?us-ascii?Q?NM3aUCBBkHwNmmvZv+oH0HLwZZjZU94DnGVyEz33tv6RzVXiZ7bLMnPWASXV?=
+ =?us-ascii?Q?tN4e/zCxarH4Eb8V6TLTgxpazelCtNYmGPNZr0N7azvPOzLGl7b/rtEPt/Xp?=
+ =?us-ascii?Q?uZaYBN9p7eTEMg1v5FEpT1aDrlNBkQA3YQvu1iKFf9m4o6l7if8FKKkpbMar?=
+ =?us-ascii?Q?JfjwI/xgj1QeonHmJSFAHE2bIhMRp07FZfKHoXiGfv4HU9rgnWseEYzOzIU8?=
+ =?us-ascii?Q?OV+hfiXt9EtpXWeDmY5EtHWtHwl8XgJZu7CKRIrn1HQyXwSgX08GpHwg+6UO?=
+ =?us-ascii?Q?4cCqE/IU7Ud+KkNOGMcKqew5D58e8oVVld9+tfKkEn3m7X/RKJzJHLjgmSe3?=
+ =?us-ascii?Q?K+3WstL97Ws9SbKM/Udqbv2TyZ2u7br2VdpJIBeHer1AOLYOpmWQbsjTpn3s?=
+ =?us-ascii?Q?I4YBhTP83keUgzvGbOouPn0ULzECqj40ZGuQT4FZ5mgTnkcH1IsLo6eWnmex?=
+ =?us-ascii?Q?yWQMIUP2dfuTpt5jtKmyH/1p47ZPF1+Q?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzkxZU9SWGVIUkZsWEo1ZkhNclpnWWIyUHF5c3V6TFUwdTBVVCtLMllSMjRO?=
- =?utf-8?B?ck9WK1BNUzRXNkphZkgzZHNNeFdXMXZ5Z2pVSUpWT25UTHNWMzliVk0zRkVW?=
- =?utf-8?B?SUdFRWpTQ3VDQ3dtWEJkWk1MVm5lMTFUdGVka0NpRHhEWWpDNk0zWkRUSy9s?=
- =?utf-8?B?YS9xanJUTGdDMm9RTmxpaW1WRGdBcFZDbW1HeTdZV2tUaVduQ0VPZ1JDWTRh?=
- =?utf-8?B?S1lySEkxVWFsSFBwcWlFdkZxc3FNQ3BDd2pxT0dtT0hvQkcra01FbmpWWE53?=
- =?utf-8?B?L3E4bjFTUm00UkoxdjhtT01KZHNwVTJCZHExSURzWDA3bVdST0dOS1Y3WDdk?=
- =?utf-8?B?VWtmSU90amlxN0NoUGh3b254K2VrUEovODNycTB1dWNZeHQ4Rkh4RzFKU0JK?=
- =?utf-8?B?Z3JaUy9oMjhXR3FmNEJib1FJZmw1cWZoOTVQUTdkMTJoRzFTUHcrMlV5djBN?=
- =?utf-8?B?bWZtMlZKcnY2SnRqcFJNUHZuNjVpY29rT1dqU21xYUM2WU9YQUJ4eEZFTVB5?=
- =?utf-8?B?Y0hhVzByeEV3NllhZFlFUWhPMFBPbFBBZ0w5aitHK2xFSk8waFByZTlwRnVs?=
- =?utf-8?B?MVZvZEZGN1A1disyL1UyTlYxWCtGWHFWR2tzeXZnY2taS1R6TGN4MDZQN3k2?=
- =?utf-8?B?dWdTa2oxOGRBbkxOcExVcnQyVStvaGZEN0lNSC9ER0tWZE5rdDYzSFN1WVNq?=
- =?utf-8?B?b0tYNjMralJxNWE1R2hPbXhZNDQ1VjR0WkdneE5NdFNzdkNUMkRwVGNuNkZv?=
- =?utf-8?B?L3NLVGVjS01QRURpdXZCQWdzekxzQzc4bWRlM2NOejJ2QlZmREthNExnMVhv?=
- =?utf-8?B?NE1CM2pHOU1GMXFOdkJJWFpINTRFa1FBNk84MmZBZjNmZk5FeW1qblhzdmRh?=
- =?utf-8?B?RFlqK2FrbVpVM01ldnVLSzk2ZDBpZWNjNDdXV09iVWpMTkVsalhUR25mYy9h?=
- =?utf-8?B?TUZ1NzNhNVNVQ2NVdkpNUHJOQjN0ejVrZUtBTUpDUnVWMmpadGNWVUR2NHJ5?=
- =?utf-8?B?clBZWW9KNUdXcEo3ZWt3ZE40QWIyaWVoRy85Mjc1VFQvc2ZzR0pKbGZkS3Vn?=
- =?utf-8?B?UzNyUnRWRmNsbUdxaGxQZmdkYjVwbmkrQVhkRFJoSW1Dem83dnpoc2d0VTdl?=
- =?utf-8?B?VnBnRFJoRlZ5aW1tN2xuTWRWNHJJTkEwbW5EOUtvVUh0cnFmemljU2FQRTNN?=
- =?utf-8?B?d3ZzNThoYk1RUm12ZGx3bFYvbFUzMzdsWlhtVmp1a3hhSWRKcFB2V3NCeUNW?=
- =?utf-8?B?NGpVS0tFUi9vVjM2NWxLNVcwbWg0cHR4MEJ4REFjMHRxU3NiSXR0QTNIWnJ4?=
- =?utf-8?B?U3hCRXMyTWNQa3BrenlBR3V0a0ZEVC9QdG9ha2Ruek9SUEsrK3NncTh0cERj?=
- =?utf-8?B?NkdxSjYyT1NCNTN4Q0FiZ3p5alkrZjVSU2syWVVRdmpVYi9yNENjb0pTd2xr?=
- =?utf-8?B?QmIzWUJmV2k5VFYxMGE0czdmRng4dkEwV2lKdVdMemJlQVE0TnlXdjQzRE04?=
- =?utf-8?B?elllWlNWU0NXK1NoNmtLYUJZbE1DWVNUOTRZWHZxb1VFSGlHQ1djOFJsZmdC?=
- =?utf-8?B?OXcweE9xL0hBRHhrM1dTY2xxTWkzQUxxWW15cGc3ZmNiNkFvdGtTdDlrS2J3?=
- =?utf-8?B?RE9QbEpZNkZOOTM2T3pQcVpWWWxLMktkekJLRW9SVU42SHoybVhNU1ZVK0J1?=
- =?utf-8?B?eU5sOE5PS0ZQZnh2SExMQXRpSm5zV0Vtd1NxWjlZY01Sd2p5ZUg0RCtacmZN?=
- =?utf-8?B?cHk5K3pESG8yYzhyWmF3d0c5ckZKMUlBV1pxeWFCS3hFN01QeWZoVW1WdXo4?=
- =?utf-8?B?V1FFLzN4cWZJMVBIV1FTSW9Gb0dWUFJEYVNnWGR1TU5pa1NGNmJmVmsvZlhB?=
- =?utf-8?B?SCtqNlZ0ckk5ZnFjWHA2TGFDZ0t3SHNZNUJwQXNPenlBU3VPQ1AxTGdPWDdD?=
- =?utf-8?B?bnBEL0xqQUVxQzZWQ3JVTGl6NDV2SmdOZFFPRGhpNE5vdlJoc3ZuZWJVOERE?=
- =?utf-8?B?Wi9ZSUQwcWJIOXdGa1NEYTkrTVRxNlkwWlZ6OXR4RXNVQ3JFd0VnZmlqRkVy?=
- =?utf-8?B?bWpTUkNBWEV0cmNEZ0tObWcxZE9sQ2pBYTd0Z2RNbTFvM2haMlFLaFJyWUJo?=
- =?utf-8?Q?a9OgxAb5CqOmFs+GnwpSwgdac?=
+	=?us-ascii?Q?xjiDR07+fOEt90gqgFQVeSAZsn8rhSzfH64q95ymUdemWRkChnfAWL4qB54X?=
+ =?us-ascii?Q?CFbWujgJY6SA7vdGaAPE86/mMVeHg0UZah4LKzcAi8FJM3oodCsX4YSIDiBc?=
+ =?us-ascii?Q?+TinKkpnq/FsDP5ktw6V9TNnjb25LTEiVXKhygOQluCR8NCOnypwXOisU1Xf?=
+ =?us-ascii?Q?FM1X3+SfboppWKpR4pvTxBJKUhXthTK/N88FWy3Bv0gCffWnXh5pKEs2kDoq?=
+ =?us-ascii?Q?rBEKrMU1pCKMHwjLV9Sd/IqXhMR591nrdtw43P0FvMMpswMevtqO4+VhqC4f?=
+ =?us-ascii?Q?KAEvkZ+6zhyxYvbl/ml2VeslyebcSQOe9HRQg39kt8xNnwFxBfX9sahJGZc3?=
+ =?us-ascii?Q?IVjP8zGSg2Ju7+Nlhkw3N0o4ZlBQbSB/QHzXnDPXv44WM2LDoq3pQZaLQNCn?=
+ =?us-ascii?Q?O7C1O/fe2nrsZkw4qTWazAmyH68gvnYZv/fMqDvNqdakRsb8iQY0iJ7ywM+i?=
+ =?us-ascii?Q?mCRd3tPeHiQiQjTRZhgpAvn29YVp4M3gcviPHNHg0azB3OPoGTZ0Ph2TE4Sw?=
+ =?us-ascii?Q?uMNZ74ehMSxyALZ3HCDPCcisWuHTN/gCx90Om4mHUWOY4xlci711Yw1yHWmq?=
+ =?us-ascii?Q?aJGxLX4Kb3Tfbkl1QpcIRcF36zm2NLK+nC1NGzWNe6RDjDA8oy2tOltwIRe0?=
+ =?us-ascii?Q?eXNVYF3RWGJalv7rj7X+CFzSMkw6ltQT2n+ZZwcUL0hC55nKEDOoO17f2unm?=
+ =?us-ascii?Q?U6jTpRSFFPAUx0j2QoIdlfU9Rtl1z1JsLqraquuZVzEta9dKkRh7BaEnXrxb?=
+ =?us-ascii?Q?FDGdwi8mgb9lgkh9iijbmlhOuW+4UIvKdninEKsE+kdij94R8L/6lae/Tc5G?=
+ =?us-ascii?Q?TV2LOSNSNaatm2qhGD15Wq2mr0Jdnd6M+F6HRa9aiV/+rjDsb6IBxcK6ItBO?=
+ =?us-ascii?Q?uR91POAsofLeI3/m9Cv+vDIH9Q641dJ2lRMUbB7SXaPoAB5DRtSZB6kPO60X?=
+ =?us-ascii?Q?aUn6iecAcdmj6PAL+qTvYdg9YDjsVRXHOkT0xtLcfARPhYNgxCuTgKMHci/G?=
+ =?us-ascii?Q?eeI8aq3bL52LFdjrGJggVZhLtE7iJB9ndm2JzdnWi139b9pweSb84rBWCJWB?=
+ =?us-ascii?Q?xkKev9Z+cpND9BIaPDfrVXjGKQiG5hKY8UXOBniwjtmGe6Uq6I47PymNb7wL?=
+ =?us-ascii?Q?EzTAtyfDwAY0aKgxXrekDY+C5IjDc2e0+bTBi4EfNpgCSpFOIOJSZtPgX6k9?=
+ =?us-ascii?Q?lKm76KaLZb1DOq7nRZW1WQf/FLcRzS2LS0jrDknA1SWv1L4nNMquaLkY8NXc?=
+ =?us-ascii?Q?zED7C1Vvkwu1PGhCS5y1+hV6bocnfgCr/KB0CvZT3eRH0iaoz6MIzNR+hmbJ?=
+ =?us-ascii?Q?Z1rdtYZOQOMyNwoyfuJELMvQicSy2sKIm7pQZpUrmqhVb+AyR87fpPR0rUdM?=
+ =?us-ascii?Q?Etw5T78NyvgVW66f99LgKzW99rCxmaMqIcHvabK0W93bOLNOnBfdiH7lcUEF?=
+ =?us-ascii?Q?Ed8v6Lgr0+sJwLxUgnAW7BNLLKkT7moLcLVHkNKsVkfOTJuzaNPZu5DDD2RE?=
+ =?us-ascii?Q?B1Emsgz4EmX2ov016MBbBMOyyb23qdb2pMgPrRBUc4wXYBbS05jTG4J6Z3ei?=
+ =?us-ascii?Q?vCLGKmYGyTIeU1OYWXtB2u07xby/kL/BMAKNMChd?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 174ef180-5645-4480-f2a7-08de3e4d80f9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46a4d51b-83d1-4441-359e-08de3e4dbc1c
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 15:52:53.1687
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 15:54:32.3853
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NBiqyvH+0AEKxGVFKEWBsuFKjzOJ3Pk59Qy08e9vizoOcMDhz6KCjq4d1bIVy08j
+X-MS-Exchange-CrossTenant-UserPrincipalName: FPV8I/yqJG3vF3iPVkR1Svnk6IosSyEJtqnG6MSyjrLGU8RXR6iw6MMJfRLOqSTO
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5825
-X-Rspamd-Server: rspam02
-X-Stat-Signature: mkijgtkbpg3yrsx7yatjbj6d6f4cjoib
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F674A0016
-X-HE-Tag: 1766073178-14729
-X-HE-Meta: U2FsdGVkX19AGkEXuLLQ77ZSC0Z/a2fFSKhr342c2xU41RfAKjepBs8OjqQpr+B+AHcpOcoT9u4+SuChI8sdH61rAxxoJQym9yolpFelzDb7/B4DvQlAn9+5pkjALPbxDCukmEZyBJ6VnSW4V1fNXPg2SU6421QhzIV0+tLTh8Rs/xp2FKKl1MfmkIGEiTGImePsI4pxK74og9YYeSUtpjJczGmMyAXhh3c+fiHFIwiDcFQZ++L57ww8IBGPP+rd2hM+ifUelV255LsYjGD3BSSxWuTyfqtOCt00g5rckdc91EqmjDOBokf3cksvECG+VF6AaUOqNF58lxenifCGl2ycPRYtRJup2tfRBW16idK5GOw+S2K7Yv2iWDPtXfbcSKwZHEZygm28M+x0qeP+ZS4383Fo8FdlglLUM5SoQxbOkX0SbL/lmCbqyIkFo6m93f6kD7w7JhvvSDJz94wl8Ix/Uky0JwxALflQExloY6xkB3MjbiTwNC3DJn2ToYVlLEwz0t0+V1A2qwMotzknpcRfieagj4oLQYuVVuW5Tn6GIpH6Xw4paHFk66Tvp5q4U+LBNPho0vMEDD197DLMrPVOHf0L21HmJXOeDqfpw62w6tZjbqq3aWz5XRBn+EPctFO4CaqH2/cNTguEM+NzlGo9n+05N6hc7A+RROKx3M+AEQFLiTY4a4tKMa58+dDK4QwoM6SWG93E6wbBylcWzpWVNIILoDqogcd8raMuNUCIbOeNS5vOIrBiJbgSYbehsv+Wlnx+ZXFCq6crqqEw1nHNT96koxjCrubD5cQnGB+3OuMg//ZB682dqtFp8u8WghGWVeWdFAnktNWuwd5paJeOBpuDF6oShIgJkUNXxBoJtOlzvKzUoNBckzyp40e422JOjVgZeur+OKbWivB+MWerLgxzy75ZOZHQakQ0CZt75D3BdrdWgoCqb+GBS/YsCaIcZvpEG8QYBB3MJ1S
- ElsiWBDg
- m5h7GNIC3Lx0yc7/nhhAnsPn7XN/JdhUInGwdgGsKa6lEYZsITqNhSQWM1KGFyztMpT2sFeEobW8/CsXaUZjMaW1mm9+2lCFzLMAMzuNvTw4UcU2wUKC2zNLim2M8/qtGxh8C4tG/6vIF6jmnVVrtWy9jKVi7h8K/075AK7VGgeKid4Ni+KSqAnNUPbiWSwHp6wTxAw8qGmF6fNTrleIvp4zqAFtYpV+q/q1iDXz6y6BqfDqnalylBIfC6DVptrDXXw139kPSisHWbHEJvAImSSuVwNCogVXilBgPVEW91eLsjKGQT27jreE6QqysBneq6AHj1BqNDvBAVCu9W+BiKUdt4QupMF9r7M+pzOEUAqhuid04BPBmkYujW490jcSMAlO3d4RtjksBgOfXcpJyk2d7sfZO70IY7KXyDQGRQwo9oJE1QspnUljnBQWLb48ziLHySdg6ZUQkx0yd66QiVGl4v3wwWCwx+M9E
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CB4DC100007
+X-Stat-Signature: b16oae31zgmqimzyuqunwthizd4oq7ha
+X-HE-Tag: 1766073276-35243
+X-HE-Meta: U2FsdGVkX187Iwf5fSaZv6PsymDR8Qrk7BJ/1RqW8YRxfTtVkQbYoNGqIpf7I3iIJ9oZTD4JpG6F/aGvvk52Oxh3Lv8v5OUU6krIrECUpJiUZ4Y5Xpgb3V8x9chrZBobNdoQ2jSAPu+hAQdkI623403wkopLHna+iT8jDPoJUIGgFSidusB1tGQR1Cvin9DKppSTA9L1VVHVnbh/jbZAnEjqOKKWKw9TQo/n1c1sX/o8TvkihAn4M6npNRO6Cq7V6C5RN9t8/giHI6kS9S42EyY6sNhg8CkptyQbijR+NcDL2Z4fPlDggn3n/JdbmcIKrsSILJwRsTeiLpMbinulI8oy5gSD3qMFMkr6/pRo2hz9L9eQqr/gwYwS6D/r/S6K8ECsg2pGfK/fuHbNxyexKAeQ7v+jY9vIXm67mWtRudAztJ5/cCn8efTVjNVYEp4YAUw4pSjvfoLstzyfT5ZPF1nDKPw6Ff3vMshU7b4z2DZL+leKJFQTXcI8OGuWdVLoD1BbZR/ZAtSTzn/MLsqmZ+pciGdi+If/iNn2d/OF127Ed9ymSPm5NEqAnjnUItS73s3yD1cn4dLtnancKfDrNSq0FXfMVqw2sDuigJ9g7t6PddEym6p41hRVerPadfdtQZV2vEeEWrnnR7adAaWqEUvB50CEGEnuHNged3d5tFFFCJmlD84MmOEZk56Jc0+prGXSzVamZ8mQKxjEwTyVFRBlqIoEe5g9FxCWYY6Dj/j4DNY+LmOYM82OrBa3K2iq+6zvMMFMctVyNMbKCw4nJZMO36hszDiWSH5Xw8AJJyrYXEVDHZl1O94pDBBJCHZnZPBczbi0ry32ieuJR/0ogMNYtYKwm5K6X9NgkkcfXT5+Irea5fKLJCEkm0U/k33tXa5W/OvUldd8uhVqtOb3nueCFiYTsEtq9d4XRiYwHTv+/jG/lkDhy6urrv/wRQ1tycc5Yr/YJgrEMRrDmBw
+ V5/H6MYI
+ WzeHPx3V/Y0Rm0E0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -209,132 +193,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Dec 2025, at 7:54, Kefeng Wang wrote:
+On 18 Dec 2025, at 4:17, David Hildenbrand (Red Hat) wrote:
 
-> On 2025/12/18 3:38, Zi Yan wrote:
->> On 17 Dec 2025, at 3:02, Kefeng Wang wrote:
+> On 12/18/25 06:40, Garg, Shivank wrote:
 >>
->>> On 2025/12/17 2:40, Zi Yan wrote:
->>>> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
->>>>
->>>>> Introduce cma_alloc_frozen{_compound}() helper to alloc pages without
->>>>> incrementing their refcount, then convert hugetlb cma to use the
->>>>> cma_alloc_frozen_compound() and cma_release_frozen() and remove the
->>>>> unused cma_{alloc,free}_folio(), also move the cma_validate_zones()
->>>>> into mm/internal.h since no outside user.
->>>>>
->>>>> The set_pages_refcounted() is only called to set non-compound pages
->>>>> after above changes, so remove the processing about PageHead.
->>>>>
->>>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->>>>> ---
->>>>>    include/linux/cma.h | 26 ++++++------------------
->>>>>    mm/cma.c            | 48 +++++++++++++++++++++++++----------------=
-----
->>>>>    mm/hugetlb_cma.c    | 24 +++++++++++++----------
->>>>>    mm/internal.h       | 10 +++++-----
->>>>>    4 files changed, 52 insertions(+), 56 deletions(-)
->>>>>
+>>
+>> On 12/16/2025 9:08 PM, Zi Yan wrote:
+>>> On 16 Dec 2025, at 6:11, Shivank Garg wrote:
 >>>
->>> ...
+>>
 >>>
->>>>>    static bool __cma_release(struct cma *cma, const struct page *page=
-s,
->>>>> -			  unsigned long count, bool compound)
->>>>> +			  unsigned long count, bool frozen)
->>>>>    {
->>>>>    	unsigned long pfn, end;
->>>>>    	int r;
->>>>> @@ -974,8 +982,8 @@ static bool __cma_release(struct cma *cma, const =
-struct page *pages,
->>>>>    		return false;
->>>>>    	}
->>>>>
->>>>> -	if (compound)
->>>>> -		__free_pages((struct page *)pages, compound_order(pages));
->>>>> +	if (frozen)
->>>>> +		free_contig_frozen_range(pfn, count);
->>>>>    	else
->>>>>    		free_contig_range(pfn, count);
->>>>
->>>> Can we get rid of free_contig_range() branch by making cma_release() p=
-ut
->>>> each page=E2=80=99s refcount? Then, __cma_relase() becomes cma_release=
-_frozen()
->>>> and the release pattern matches allocation pattern:
->>>> 1. cma_alloc() calls cma_alloc_frozen() and manipulates page refcount.
->>>> 2. cma_release() manipulates page refcount and calls cma_release_froze=
-n().
->>>>
+>>>>   int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long ad=
+dr,
+>>>>   			    bool install_pmd)
+>>>>   {
 >>>
->>> Have considered similar things before, but we need manipulates page
->>> refcount only find the correct cma memrange from cma/pages, it seems
->>> that no big improvement, any more comments?
->>>
->>> 1) for cma_release:
->>>     a. cma find memrange
->>>     b. manipulates page refcount when cmr found
->>>     c. free page and release cma resource
->>> 2) for cma_release_frozen
->>>     a. cma find memrange
->>>     b. free page and release cma resource whne cmr found
+>>> And here.
+>> Since this function is declared in khugepaged.h, I need to
+>> move the enum definition to that header. I see two options for handlin=
+g
+>> the CONFIG_TRANSPARENT_HUGEPAGE check:
 >>
->> Right, I think it makes code simpler.
+>> 1. Define enum OUTSIDE the ifdef: This allows the static inline stub
+>>     to also return enum scan_result, keeping the API consistent.
+>> 2. Define enum INSIDE the ifdef: The enum is hidden when THP is disabl=
+ed,
+>>     forcing the stub to return int 0 instead.
 >>
->> Basically add a helper function:
->> struct cma_memrange* find_cma_memrange(struct cma *cma,
->> 		const struct page *pages, unsigned long count);
->>
->> Then
->>
->> __cma_release_frozen()
->> {
->> 	free_contig_frozen_range(pfn, count);
->> 	cma_clear_bitmap(cma, cmr, pfn, count);
->> 	cma_sysfs_account_release_pages(cma, count);
->> 	trace_cma_release(cma->name, pfn, pages, count);
->> }
->>
->>
->> cma_release()
->> {
->> 	cmr =3D find_cma_memrange();
->>
->> 	if (!cmr)
->> 		return false;
->> =09
->> 	for (; count--; pages++)
->> 		VM_WARN_ON(!put_page_testzero(pages);
->>
->> 	__cma_release_frozen();
->> }
->>
->> cma_release_frozen()
->> {
->> 	cmr =3D find_cma_memrange();
->>
->> 	if (!cmr)
->> 		return false;
->>
->> 	__cma_release_frozen();
->>
->> }
->>
->> Let me know your thoughts.
+>> The only external caller (uprobes.c) of collapse_pte_mapped_thp curren=
+tly
+>> ignores the return value.
 >
-> Yes, this is exactly what I described above that needs to be done, but I
-> think it will add more codes :)
+> Probably best to not expose that enum (especially when nobody cares ...=
+) and instead expose a new void function for uprobe purposes.
 >
-> Our goal is that convert all cma_{alloc,release} caller to
-> cma_frozen_{alloc,release}, and complete remove free_contig_range in cma,=
- Maybe no changes? But if you prefer above way, I can also update
-> it.
+> Maybe
+>
+> void collapse_pte_mapped_thp(...)
+> {
+> 	try_collapse_pte_mapped_thp();
+> }
+>
+> Maybe something like that?
 
-If the goal is to replace all cma_{alloc,release}() calls with the frozen v=
-ersion,
-there is no need to make the change as I suggested. Are you planning to sen=
-d
-another patchset to do the replacement after this one?
+Sounds good to me.
 
 Best Regards,
 Yan, Zi
