@@ -4,131 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D22D6ACE2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 10:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE722D6ACE2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 10:35:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01A576B0088; Thu, 18 Dec 2025 05:33:19 -0500 (EST)
+	id 5C7856B0088; Thu, 18 Dec 2025 05:35:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B2A6B0089; Thu, 18 Dec 2025 05:33:18 -0500 (EST)
+	id 54BB86B0089; Thu, 18 Dec 2025 05:35:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E169A6B008A; Thu, 18 Dec 2025 05:33:18 -0500 (EST)
+	id 44D846B008A; Thu, 18 Dec 2025 05:35:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDDD56B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 05:33:18 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92C4F1373CB
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:33:18 +0000 (UTC)
-X-FDA: 84232229676.29.03B75A3
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BEDA24000A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:33:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=joelfernandes.org header.s=google header.b=tsodB3Zw;
-	spf=pass (imf01.hostedemail.com: domain of joel@joelfernandes.org designates 74.125.82.43 as permitted sender) smtp.mailfrom=joel@joelfernandes.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 357EB6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 05:35:12 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E73AA6108D
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:35:11 +0000 (UTC)
+X-FDA: 84232234422.26.BE4FFCC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D00691C0009
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 10:35:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UDkUqeyI;
+	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766054110; a=rsa-sha256;
+	cv=none;
+	b=2zmIRMxKG7mMrEiyMQA8vA6gkGY8mGjn/ssn7G+8zvJSw+G6TqZz00j62ACmzLh5teO3hi
+	KETgS0SJhbNEhasBvvQAjjtF5gGX8/5xazBZSbjaVLGfVFrX5HTQs3qfwJMYwwfbjxO4Rr
+	JswgG8hti1UoEklmkqv0wM8UzgsLsUI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UDkUqeyI;
+	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766053996;
+	s=arc-20220608; t=1766054110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AAu1e8FBRNeI62zjm4DDzmRr/lJD1JUOnEjNmLdGRCc=;
-	b=mN7X95L8j66trmWKCArs464uxNOKPVuO2lYH2fQW5I46E6/OsOfVXFdQNk1L9wKRfPpwrL
-	XcyrkdZxE1ZR8wZrRfHvNk+u0HSNIbNrjhuaAU6Xgxoy+uO1Uuk+0rhYxA75hL+YiPcjyd
-	pJLNiHjN4u2UeGMj0tOZQR9fWZcdVc4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=joelfernandes.org header.s=google header.b=tsodB3Zw;
-	spf=pass (imf01.hostedemail.com: domain of joel@joelfernandes.org designates 74.125.82.43 as permitted sender) smtp.mailfrom=joel@joelfernandes.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766053996; a=rsa-sha256;
-	cv=none;
-	b=fLSaU+8c5+WxQS/imZ7KObzKjkvjfd/+z7SJhowVnihy/4sX0EtvCjwkW/lX53CeBXRdgr
-	budKGGQpeHnCmI3X3yc5vhg5LmrFPg/IFsUlPe09ZBBoUEmHkuXKUILGAko85GnCNvjIvc
-	tmvsJN9NQTLn2kVB0EqupVxTPxClR7w=
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-11b6bc976d6so2330452c88.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:33:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1766053995; x=1766658795; darn=kvack.org;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AAu1e8FBRNeI62zjm4DDzmRr/lJD1JUOnEjNmLdGRCc=;
-        b=tsodB3ZwrvMHl1GNcFL0AfDzZI/jhMUdTFcDYk+/wzzrIDxEjTPbY/rXXQvyOJcLcT
-         pE38wkLypRhgzpZJT21u0EJ3VEu1/vB/WtcA5R/08ie3L995qImrnZHxpiJoOgc8aVIA
-         Mjc4E9k94ZZXJqZgxzDtkt5qlYDfq7TnkNHPQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766053995; x=1766658795;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AAu1e8FBRNeI62zjm4DDzmRr/lJD1JUOnEjNmLdGRCc=;
-        b=jaGWe3gaQTkPULqvwdDOTanhe+h7+9VWrJlzxPX8ZSmVxLNhFMBMr+sd/StqCMwV0D
-         Cn1RG1oCP5gzpOe5RGGsH6QEe0vUc2aexjXyPNku7w/cvYKDvdNRJCegxGsbKICbBLFI
-         mlJTLDrl84LEfU6pwPChJJqZfXJ/jNRiU95I77hplGRCzGYXRrtmVCja2uWNUOMfxtkn
-         RlpemABx35+9fq04Z1lurKVoKs+cp4APfTF81uja0Kw8ljOxOerScKjmQhi+7zuQCbmd
-         kQxnxnKqzVGvl+vBW5Gbn583Sz018/13+2ViUkGY01HNz+DRLj/lVOe0i3FL1i9vIqa+
-         G3Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXvOIwdwT0h44ir4TJdwYpiA8Gm8753xKosh0Yr74ILkB9VKPk8MCEo2+TVBozRrQYkZpqjX39+OA==@kvack.org
-X-Gm-Message-State: AOJu0YxdG3m3rdAioQvR3JnxOstESNToV1PXATzPKHfqkM7Vfetq/H4I
-	Old/9XKGxxYPAuCUlpQG8ocuAK1ekN/gyyvFPvYeNC2lN7og8B3vJaZgxBwTg0dZdnk=
-X-Gm-Gg: AY/fxX6riXeW+MsJOlH0HIZ0+/jB+eqPFaXslZhy3souba1Ad1tA3bQn/pZA7VZokkw
-	7TJJz8YX+vISpjSL4yl/melIzT9DK025gVoPBpTqhukRa2PDmapxXrmpPPp/OBZBUGmOrhJbFFL
-	8XSZnoYq0h6KhZV5MEQzzgvIJYBLMia4qHM17dU1c+y6AzWJFW4KFzSrbIYsFVMKz2gYBd4KpkD
-	C4f8j30qCDZrqr+roMoPcxACEKI3y80ah6GMQCwp9fVDh+yHQs3ksg8xxdOndPd3jyUkTYsbns0
-	gYfAOkW226LmtN3tusTU8dVxW2Al7EZkx8CEobHdyDMkinrNWHUtJf9aC3+ySys5fPl+/Cs8bF2
-	a6+7eJAumHQMuaaTLJt4iioMrL24tbwIq2vJrO8Eip/Ku4Gdw5I3Z1J2yxCUXh9DQBx15zpEHbI
-	DrHVxgSUO7OyzdrkavDgfbxjU78QBPs4urEA==
-X-Google-Smtp-Source: AGHT+IFtqtcMyTzlaYKeDxicEozD/tLr/safKQ9+lAGXo8G2u7+cxfn0zs8VwmeAOGXFGsyxxH+sjA==
-X-Received: by 2002:a05:7022:7e8a:b0:11b:ca88:c4f1 with SMTP id a92af1059eb24-1206195c6d8mr2015036c88.20.1766053995200;
-        Thu, 18 Dec 2025 02:33:15 -0800 (PST)
-Received: from smtpclient.apple ([71.219.3.177])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061ef3383sm7327215c88.0.2025.12.18.02.33.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 02:33:14 -0800 (PST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Joel Fernandes <joel@joelfernandes.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [RFC PATCH v4 0/4] Hazard Pointers
-Date: Thu, 18 Dec 2025 05:33:02 -0500
-Message-Id: <54E94704-92C0-4F10-AED9-46DFCA61233B@joelfernandes.org>
-References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
- Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
- Mateusz Guzik <mjguzik@gmail.com>,
- Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org, lkmm@lists.linux.dev,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-X-Mailer: iPhone Mail (23B85)
-X-Stat-Signature: atce3wztgh19uooj61mnm3ygshsru7yt
+	bh=Ox6wssbehUd9TNy9xO6dZkl4Qcg/MXBnBGHnzoEEBXI=;
+	b=05etKf/9qJ55e8G2dm/LiZ17mfIf6TLtNifoWoIXM0p4n8Q3oxhMV83+1ruS3SnVIdNBW6
+	hCiMzf3gz9YtmUxSPVs4G+vpfFff/XJWZliz9Lrd4ngnlfvlowPLh3ZW5vImi6wlOlZbGG
+	vxydM8oq70RtPxGGhwEmsj4Yc3Q1r8U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766054109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ox6wssbehUd9TNy9xO6dZkl4Qcg/MXBnBGHnzoEEBXI=;
+	b=UDkUqeyICeVK3mXWEmP36DlHzS6QqdfsV3Fp9C8EQHyASLR7UD272U7Sr/nacIEmu3fhsy
+	ZkIqy/B30D4M+JJJj0wbSy5tvfhGtHTJEr8YCpWRcaQpRns6+cMsGZL3PhcvK81sQRg0yf
+	SuF1UCViFNNmXjlh5wY0uLWBtYFCqDU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-EObfuWrTPPKz-GkpgyspFQ-1; Thu,
+ 18 Dec 2025 05:35:03 -0500
+X-MC-Unique: EObfuWrTPPKz-GkpgyspFQ-1
+X-Mimecast-MFC-AGG-ID: EObfuWrTPPKz-GkpgyspFQ_1766054102
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D435F1800342;
+	Thu, 18 Dec 2025 10:35:01 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.95])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A8CB5180045B;
+	Thu, 18 Dec 2025 10:34:59 +0000 (UTC)
+Date: Thu, 18 Dec 2025 18:34:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
+Message-ID: <aUPYzWNHjkC0p4lX@MiWiFi-R3L-srv>
+References: <20251216211921.1401147-1-urezki@gmail.com>
+ <20251216211921.1401147-2-urezki@gmail.com>
+ <aUIpciUKUeclNk2s@MiWiFi-R3L-srv>
+ <aUKXs_3bxLyMvTgu@milan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUKXs_3bxLyMvTgu@milan>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BEDA24000A
-X-HE-Tag: 1766053996-233880
-X-HE-Meta: U2FsdGVkX197ZB3qYjrSFwdqfmcPH2L1Dnv737dN895/ngVcMFoHXbLzYgc9hBInKfxIJNy1kedtQvReNwrctISo7hD8CWgzQPAPNZTT9TKO89kwAKIZTOCNUvRYzmqqyjsbuk/E7p7GszdBDyTTRLQNJaf8wCoXEnz8soQ2mn5wRQLtgHENMXVXE146d1ixXBzkvCUZUWj7SvEAtapeqSiRhYdlwcC97bJeR7nCjNYwehIQGS644w55HAnnMuPe7o11caKKCmAmgKAW78kaCoeb1fVh+3EsvmObwD913ykeJSnG0LouHlrmFFUlfUdr6exXEFM0RGEy0Qno/0hIdFZlwpUY74JvbPM8oJ1xIKH8ZWz+6vFIvG1KFyv8Zh8VNnmynFhsGIGLW4JwTbhvb09oqW/zckbHhd+2JBagILeqzoNjT5+QLHDkFQTqsjfZOJUGRwgCo+HhJKWZqWgtnrtHCdHXcrajj2N6MDGIFbvcPpxoqE29LYfuLq/jdkCVpsJbAdbrGq7fsmpkHt/EA47Dxit7dSV8Ov8lfdpkJFf6dXq94TQoMvWhwI7JjBEzYyuHiuPwyrcvlKxr6BJ2eXvmu4xMql1385dTcOqhJ5osmjTfHX/JpJTBCrWpPV4WRmixm3OtdI6r9CsZMSQb+WubRoMZc9EfvwGm53/B8Ppu3k5Yo9aOh4B+MeQrmlvZzZnU4s1N64q+kCGdsVcTRtw0vOLmZ3iI27WbE++O56NMGOm+LRlgMlgq5WaVMcDI8UyiGZ7Wdvl4B89BCViRlyxeewzc+Pmwln7sW1xoMvlf8fSPJwRC5DRZlKscAXa5azWdDCVMErpTs1Le23Z/dasW5Pm0x59LqcC8yKA/pR6gHVljHmSdN1RhU0GUVmNFZ9jTCBEAPcNjp6Cp13sb2smYvd3OPnyIzTaeyMUSfHi2SKuFSy81mwVSyoOJWa+rLNxcSA6FksAPdlRkYoU
- HeIvho48
- 5L3eeL4StTcH/ty5obu7K34mcluJ1sv7pzpr0FEa4skbKAP2N2n/GsibQY80DEQn6lywuct+g5323+3NPM21AvEPMAJcZ1xuLfGAdh5eJgzdSGj4=
+X-Rspamd-Queue-Id: D00691C0009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 4omwsgrsbgdchxxxtdjfdcfwz8cntncp
+X-HE-Tag: 1766054109-896515
+X-HE-Meta: U2FsdGVkX1/7Gs6tiNkUqSNBMW1vS61Eh0YlO8+9zdc11gHHBFiHafngjnZu8KYH2yfi+muC7d/4Rav7V3PVb6Ks9wtbn+a1ovnoJacUribsMcY4mCGJApu+ZbXNaesBMwsaFYFKGCzX+dyIEJ9Xqm49OAe1SKIsAU97EHJJGD/VKc/Z3mhsPeqiXVNT+dj0F37+8DA91zY9WXfYO0fRCJ+XaaNgKcozqrhTcJaQzsWiKuTSQTuf83ivZOmEV60tXB1HT9Z4aQ32dtUoBZStHKnqk9xV8f/0INo9dug7Napn0tNuCEJdKGANA79RV9MLTH6nBhUwoGMrAlwNtpwUs/BLr7mwm9QHdqNkn5+45c/ZxVGOBKG7nW+JOef76J415PesxcYu3z3aKq1wUk9MZBFSUSbArPjGlIg5363yrLoe2emHMW9MyPOYw2eE00VICj1Qki7NTHvvQrUtyciRqn5qbvX2rD7pyhv7MAZhMwZ6WP3a/ZSzt4WCEn+Ca83oDIac7wo5kVhJQABzz9Lhu4pGMrnoZvX8ebJOkGM3Kd9NUMPtgZmi4HLq59dFhJfWRAMyvaa6JHAzrd8fSyX9GOCq9ddtS0HUZ7/oL+KLQLLnogjOC9w5YpfxYPy8i4UNQWgg+Kyc2T64LNcMlIe8Mji4pVGYCUIdzXM5M4GaZfvxHHpBK1dhEstYaukCVXIYoR55tEyrfcYvwBm7jEgbOga3AJTkRvRqG3qFJQagoo2xqh497MxAqZJ+HK6PFjy1RY1Ws+yoshWvvolFn3nnrvkZK+sgEgDD4/FO92prUAX3P7eB9jiNqE1WXM6l343o3nKDK6+FltbQZ4w1SVY8yY2V2+M6JBHku5+CGFjagKdrjusdyORrbQvXOqU9s/qKDixgoRMAvcveaZweDY69daFQc+x2UpXceO0j12fzR2wOiOD5VIoK7yhVAdEb5/WMKRiH2ii6Vo6aVd4L5Ly
+ JRAjn/o6
+ cC39OD21D02JaZ5M9Yh7sHxho4CaEDtpR4fZZfX2RtBJv3S54FVAc/yZEyEajuZa0VIXBsu8gtqyJpPKoG4Ef9w1y180dThTd/niQq0tRcXfN9mOzBsE6dBD/J3QYTQBSpZZa5qgyQQ8RnnDb3bFfNoF73VfYIejbO2NZUtOIBZuMnSKqG87q3dygfcUXaNG+VVwY8kQqHeIxrZNfvLsDfDrVycMsrMapPYzt+EMF8Y865fa6JmAtGXyZif7gEZ/wGMixXdCZtXS86G0DUpsOa3n7dLbC1ZBQ8d7qeLnrTQOw+62Ic06StjNozZ+xyqVJVwmWKg4GnbmwVr2WQmIjben1oZ0ovzr7pQTti0mLhWepPjOdFXmM1EeOuuljr36ezTadkBON6CsPEtlrfAF0Qb9pew46gBHstoCDCGrS/Nq4BOUgpbxF4byODCGgYyUOvejAt2SakPMoNkpS1IdPZt5sFIxDv4RfmdJBIy3aGnAYofA0rwcOi3Y9gX9RAy5dWDLYAn8rhDikSTc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,165 +107,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mathieu,
-Thanks for posting this.
+On 12/17/25 at 12:44pm, Uladzislau Rezki wrote:
+> On Wed, Dec 17, 2025 at 11:54:26AM +0800, Baoquan He wrote:
+> > Hi Uladzislau,
+> > 
+> > On 12/16/25 at 10:19pm, Uladzislau Rezki (Sony) wrote:
+> > > Introduce a module parameter to enable or disable the large-order
+> > > allocation path in vmalloc. High-order allocations are disabled by
+> > > default so far, but users may explicitly enable them at runtime if
+> > > desired.
+> > > 
+> > > High-order pages allocated for vmalloc are immediately split into
+> > > order-0 pages and later freed as order-0, which means they do not
+> > > feed the per-CPU page caches. As a result, high-order attempts tend
+> > 
+> > I don't get why order-0 do not feed the PCP caches.
+> > 
+> "they" -> high-order pages. I should improve it.
 
-> On Dec 17, 2025, at 8:45=E2=80=AFPM, Mathieu Desnoyers <mathieu.desnoyers@=
-efficios.com> wrote:
->=20
-> =EF=BB=BFHi,
->=20
-> Here is a revisited version of my Hazard Pointers series. Boqun, Joel,
-> if you guys have time to try it out with your use-cases it would be
-> great!
->=20
-> This new version does the following:
->=20
-> - It has 8 preallocated hazard pointer slots per CPU (one cache line),
-> - The hazard pointer user allocates a hazard pointer context variable
->  (typically on the stack), which contains the pointer to the slot *and*
->  a backup slot,
-> - When all the per-CPU slots are in use, fallback to the backup slot.
->  Chain the backup slot into per-CPU lists, each protected by a raw
->  spinlock.
-> - The hazard pointer synchronize does a piecewise iteration on the
->  per-CPU overflow slots lists, releasing the raw spinlock between
->  each list item. It uses a 64-bit generation counter to check for
->  concurrent list changes, and restart the traversal on generation
->  counter mismatch.
-> - There is a new CONFIG_PREEMPT_HAZPTR config option. When enabled,
->  the hazard pointer acquire/release adds and then removes the hazard
->  pointer context from a per-task linked list. On context switch, the
->  scheduler migrates the per-CPU slots used by the task to the backup
->  per-context slots, thus making sure the per-CPU slots are not used
->  by preempted and blocked tasks.
+Ah, git it now, thanks.
 
-This last point is another reason why I want the slots to be per task instea=
-d of per CPU. It becomes very natural because the hazard pointer is always a=
-ssociated with a task only anyway, not with the CPU (at usecase level). By p=
-utting the slot in the task struct, we allow these requirements to flow natu=
-rally without requiring any locking or list management.. Did I miss somethin=
-g about the use cases?
+> 
+> > > to bypass the PCP fastpath and fall back to the buddy allocator that
+> > > can affect performance.
+> > > 
+> > > However, when the PCP caches are empty, high-order allocations may
+> > > show better performance characteristics especially for larger
+> > > allocation requests.
+> > 
+> > And when PCP is empty, high-order alloc show better performance. Could
+> > you please help elaborate a little more about them? Thanks.
+> > 
+> This is what i/we measured. See below example:
+> 
+> # default order-3
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3718592 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3740495 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3737213 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3740765 usec
+> 
+> # patch order-3
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3350391 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3374568 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3286374 usec
+> Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 3261335 usec
+> 
+> why higher-order wins, i think it is less cyclesto get one big chunk from the
+> buddy instead of looping and pick one by one.
 
-I did some measurements about the task-scanning issue, and it is fast in my t=
-esting (~1ms/10000 tasks). Any input from you or anyone on what the typical t=
-ask count distribution is that we are addressing? I also made a rough protot=
-ype, and it appears to be simpler with fewer lines of code because I do not n=
-eed to handle preemption. It just happens naturally.
+Thanks a lot for the details.
 
-First of all, we can have a per-task counter that tracks how many hazard poi=
-nters are active. If this is zero, then we can simply skip the task instead o=
-f wasting cycles scanning all the task slot. Further, we can have a retire l=
-ist that reuses a single scan to scan all the objects in the retire list, th=
-us reusing the scan cost. This can also assist in asynchronously implementin=
-g object retiring via a dedicated thread perhaps with the tasks RCU infrastr=
-ucture. We can also make this per-task counter a bitmap to speed up scanning=
- potentially.
-
-I am okay with the concept of an overflow list, but if we keep the overflow l=
-ist at the per-task level instead of the per-CPU level, it is highly unlikel=
-y IMO that such an overflow list will be used unless more than, say, eight h=
-azard pointers per task are active at any given time. So its lock contention=
- would be rarer than, say, having a per-CPU overflow list. I would say that c=
-ontention would be incredibly rare because typically hazard pointers are use=
-d by multiple tasks, each of which will have its own unique set of slots. Wh=
-ereas in a per-CPU overflow  approach, we have a higher chance of lock conte=
-ntion, especially when the number of CPUs is low.
-
-Other than the task-scanning performance issue, what am I missing?
-
-Another nice benefit of using per-task hazard pointers is that we can also i=
-mplement sleeping in hazard pointer sections because we will be scanning for=
- sleeping tasks as well.
-
-By contrast, the other approaches I have seen with per-CPU hazard pointers f=
-orbid sleeping, since after sleeping a task is no longer associated with its=
- CPU. The other approaches also have a higher likelihood of locking Due to r=
-unning out of slots.
-
-Of course I am missing a use case, but I suspect we can find a per-CPU ref-c=
-ount use case that benefits from this. I am researching use cases when I get=
- time. I think my next task is to find a solid use case for this before doin=
-g further development of a solution..
-
-By the way, feedback on the scanning patch:
-
-Can you consider using a per-CPU counter to track the number of active slots=
- per CPU? That way you can ignore CPU slots for CPUs that are not using haza=
-rd pointers. Another idea is to skip idle CPUs as well.
-
-Have you also considered any asynchronous use case where maintaining a retir=
-ed list would assist in RCU-style deferred reclaim of hazard-pointer objects=
-?
-
-thanks,
-
- - Joel=20
-
->=20
-> It is based on v6.18.1.
->=20
-> Review is very welcome,
->=20
-> Thanks,
->=20
-> Mathieu
->=20
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: Joel Fernandes <joel@joelfernandes.org>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Zqiang <qiang.zhang1211@gmail.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: maged.michael@gmail.com
-> Cc: Mateusz Guzik <mjguzik@gmail.com>
-> Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
-> Cc: rcu@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: lkmm@lists.linux.dev
->=20
-> Mathieu Desnoyers (4):
->  compiler.h: Introduce ptr_eq() to preserve address dependency
->  Documentation: RCU: Refer to ptr_eq()
->  hazptr: Implement Hazard Pointers
->  hazptr: Migrate per-CPU slots to backup slot on context switch
->=20
-> Documentation/RCU/rcu_dereference.rst |  38 +++-
-> include/linux/compiler.h              |  63 +++++++
-> include/linux/hazptr.h                | 241 ++++++++++++++++++++++++++
-> include/linux/sched.h                 |   4 +
-> init/init_task.c                      |   3 +
-> init/main.c                           |   2 +
-> kernel/Kconfig.preempt                |  10 ++
-> kernel/Makefile                       |   2 +-
-> kernel/fork.c                         |   3 +
-> kernel/hazptr.c                       | 150 ++++++++++++++++
-> kernel/sched/core.c                   |   2 +
-> 11 files changed, 512 insertions(+), 6 deletions(-)
-> create mode 100644 include/linux/hazptr.h
-> create mode 100644 kernel/hazptr.c
->=20
-> --
-> 2.39.5
->=20
 
