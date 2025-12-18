@@ -4,93 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFDFCD68BE6
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 128B2D68BE6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 342916B0098; Thu, 18 Dec 2025 02:22:47 -0500 (EST)
+	id 7BAEB6B0089; Thu, 18 Dec 2025 02:25:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32CBF6B0099; Thu, 18 Dec 2025 02:22:47 -0500 (EST)
+	id 7925B6B0092; Thu, 18 Dec 2025 02:25:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264936B009B; Thu, 18 Dec 2025 02:22:47 -0500 (EST)
+	id 69E226B0093; Thu, 18 Dec 2025 02:25:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 182976B0098
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:22:47 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8E8D60F8B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:22:46 +0000 (UTC)
-X-FDA: 84231749532.14.D1D1C13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 45CD11C0002
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:22:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IiFtzWuM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766042565; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B5716B0089
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:25:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10185BE0CE
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:25:56 +0000 (UTC)
+X-FDA: 84231757512.18.B5DB014
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0EDE018000B
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:25:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kmykkNkT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766042754; a=rsa-sha256;
 	cv=none;
-	b=txy9+b+lxORCT9fbVJD6O5fAqfuOhQ/BU0c2BQBufeJoi9969UBXrM3vui5d5ahMclLXLu
-	FhVcBwCEgaa+0pgFKDYp3PlXwzZIoQ91GkQ4b8yH4xyB5yHA9f5L9lyvPbwxWEsIafwjdD
-	5MtZE5N2FXblK3OBusLHrXOVu6ysJ0w=
+	b=wpdQP/GF/f3EUebwLBTkSMvkbEeBJGtlW5iK3LrBZpUHKxKUMCYMzn7lJbVC4/PUDN1c6w
+	oYriD64J+y9wkj4egMcUZq8ldMSSrGFdDCNUD5GWecVGrkpOdpv2JQoHiZJy8L0mq+LRRl
+	aSYI0A8jR2FwT/c8FvAlu6rd8PhBMSw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IiFtzWuM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kmykkNkT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766042565;
+	s=arc-20220608; t=1766042754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06ivp1LsyfF/ybmuoASAsgqyQnssE8ZkhtWZFsUHRDo=;
-	b=ADy4/ic3y0HpV1WmcDcnRa97CfPP34j8j14eA1Sw/L8rQXeZeei41uQSrIoSxngFOug9ux
-	QDvoTev6vnHDQhDTwR7bo5gbdma+Bj+PsmqWo/khjqE380+b4b8mFYWFR7wor/ct8Z7Gzc
-	f5pl0byPQV5EmYmSgsPryjnZHcOn5T8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0B3744331;
-	Thu, 18 Dec 2025 07:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF704C4CEFB;
-	Thu, 18 Dec 2025 07:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766042563;
-	bh=v8cAalRQn43JyXFhRWos5ZPdRsZtNdz6rnazo+rNvyE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IiFtzWuMvKFyQXgkjfnEsQWHGnpImypXXT+oPLEYQCLJn/YvQN+eI2Et9GNHnUhN+
-	 i+gH/qKbSbixNoOHsW9F5Blvg01u7KKsvOyMcGXMzwRFqll2KtwgTGESGuzyZ0Do7M
-	 wMjhcvVZYs9r0oLSt1MBDGJNHqzosSrkpCPqxi3hbL/QZ3WR73t4Git79o6y4o9Wac
-	 3PzQS3ZWVuE/xF/nOchsxWXkJoPKH5QO/MC6JACnRIVKMk+PKgfgSj8YomHVYkPvW5
-	 UyBHYf5hV7J5ZeaXVCAQp/+cSoZ51yDkubbrrIn0jKf44Bfp3CTBIZzlhRzMFEZ60B
-	 2hCYXKZYq2Iog==
-Message-ID: <ecf02bf0-a107-4e84-93f0-48277fd4ba7c@kernel.org>
-Date: Thu, 18 Dec 2025 08:22:37 +0100
+	bh=Q4R88Xn/h+8caxsc4FK/Mwtw22v+IgmOvKUTH+FxRso=;
+	b=kimsHmmsa71mxF6TL6a48KnIiA8GlEH3KOJj1PiUvLd/2tUeSn+eqTzkbxtT0baB88Xcs7
+	7yQyI0hFHuhyWLGzHyW42f3N/NkyBG38PDVuMSM/MA8hayoefPc//+B6diX58U2aoGoUYz
+	+eNq17tEJ6me5HGLR7zA6ZUpZh3GrhY=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7baf61be569so415828b3a.3
+        for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:25:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766042753; x=1766647553; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q4R88Xn/h+8caxsc4FK/Mwtw22v+IgmOvKUTH+FxRso=;
+        b=kmykkNkTOBsW4gDnK0ItWnbkkucNzO43WYfA0b8POWAKWNd0nMWltrNMn58cXIKs3n
+         fqlPxBex63u0HklkSJlL0fcKvtrpug+BtlsuA0qmcPcC3myPXeB/0MZUtoLZmXvIzIvU
+         jkY49LgHi0zESy65xjP7vwChIlApxz+WQYqV+So4ROVkfjNIdDUFpVr7cFk1J5++t6gt
+         iQmsvwK1wRU5+i7uxpGRvF2t/g7PWcvBm5WbGuhu4tmtPuAH5idThLc8DxJiLyYihrhK
+         Coo/suI5tB5WAheRpP8mcCbyGH39Xrvc7gHkUPx1BNcOHJ5GdZsn5vKb60wmy/DqGjam
+         vfog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766042753; x=1766647553;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q4R88Xn/h+8caxsc4FK/Mwtw22v+IgmOvKUTH+FxRso=;
+        b=VBuEsfvExCmb+iRbuf5obK0C0M4N0owvR8UttV9lb91K+yYGqQtEnSyI7ehCXl+9Zl
+         NSBNjDHu/T3oRlFKaDlam2bhviTJXuaEEwxHZ6sIPw+aVXFYvQBMXzfZu5esdK7vOhbj
+         2Jcgtvm0/+DA8QlUStR2iqzjRLleYyJAZ0ovs1iS2evGE/IXkrFENPz86TtqqPCLT+MC
+         xl9XQPb3zia+v9WzrSGmclvkqhRDeMfF1gZ74wCnrohpOJRbn+DKOfrbwtwWU60R6r/+
+         QDthGYWi/MXYGGVK2C/ZJuFie8XXOxW4jFZkSuUp5sG9dHYZ6+vajOPZmlT0lPH14cpT
+         3kFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCqu7hlJUDRmmc8NEwEc9p/RcH5UAkXkqmXDD/bgDCukhoS0ryo8Wg19AydiqUnC3ydrSGY5m7gg==@kvack.org
+X-Gm-Message-State: AOJu0YzVqlYBRt7vZb+pMqkqCuknHXNSNPyPygqTnpBniQ4CKZl1/ouz
+	Crp+HBD6BCIT/YOjt7ZqP9eRhaXRySIPzgxVQaL0kOncdxSH1HNTmzMM
+X-Gm-Gg: AY/fxX65e8MApVoqMuWaLmsH3XiKKu7xiMnhDj3XKRw+fxd/5bniY1aa0q4e+eaR9K+
+	VsRqRMI1AyVtoIUzOhziLz+F/E6UfynoY+77ORajcxpXmiOMKgpan4dzG3nlowZW+t3dwfpQz6u
+	ek7PcV4fePnCOD9vEqNCtZF4QrHJU4jLrfdarpJoq7QkpwwbJRTQi2ZsEuBFstfLjS4kI0/1em0
+	hYhAiVDxPtG4C0zJ4KtfqSyLTye9oBXKbK/5y2GBlJvJttbGXIFytCXhOnYQ0RtJfxvgnYO1sXK
+	+vRHQChjcUwheBIPA2cTjqgCpVZ5QNurMHkytkbysF5WCDtlCjtIZ7DwrEn5c2PHEfDaMZzErzN
+	5Dg+fZ4j9YCvyKUif03TdtjzFJujJiJkKd6rksa55DpN1YVS7UMtkJHNW5lIsIg4PiYUqyO0LAt
+	BuK3OLfn81
+X-Google-Smtp-Source: AGHT+IE7QD6jcxGZ721fK16jncezgZTI4shZ+xr6T/MCI8KS1Fg2nLGW1aiuenpQ0XBQS71PTipzjQ==
+X-Received: by 2002:a05:6a00:3499:b0:7e8:4471:ae68 with SMTP id d2e1a72fcca58-7f669a8e5bfmr19659120b3a.52.1766042752688;
+        Wed, 17 Dec 2025 23:25:52 -0800 (PST)
+Received: from ubuntu.. ([103.163.65.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fe1427026dsm1595735b3a.46.2025.12.17.23.25.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 23:25:52 -0800 (PST)
+From: Dipendra Khadka <kdipendra88@gmail.com>
+To: hannes@cmpxchg.org
+Cc: akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memcg: reorder retry checks for clarity in try_charge_memcg
+Date: Thu, 18 Dec 2025 07:25:41 +0000
+Message-ID: <20251218072543.5071-1-kdipendra88@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251215204624.GE905277@cmpxchg.org>
+References: <20251215204624.GE905277@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 6/8] x86/clear_page: Introduce clear_pages()
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20251215204922.475324-1-ankur.a.arora@oracle.com>
- <20251215204922.475324-7-ankur.a.arora@oracle.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251215204922.475324-7-ankur.a.arora@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 45CD11C0002
-X-Stat-Signature: fx9adu5rqtqa8r3hd8xarqh4yy6zeq73
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0EDE018000B
+X-Stat-Signature: kymf6wejuexhi5oiwxhsxcr7jt6hg63z
 X-Rspam-User: 
-X-HE-Tag: 1766042565-576972
-X-HE-Meta: U2FsdGVkX1/9S2/ThM1o5B+j1ZkySXFSeM9/YqBLVmcioqOH0b3iLLxhAqRFFGfukZMUzQpByHQn2J98RFe8UEMxl1u29MPoZM1aanpsNaVQ00dAbx3JiT+FiIQtmB/jojSEuWHA/PTKQDE4hhUCCGQRFg39or0R01f6kAe0U2NTpqDPcvV0eWRepelpClyMIg/On58alKu5oxGGw0AvyCFI1eqSUvQPKz87ZLiZz5aQGai2wmSl7QiN79p4aJNgSu78vCjMXtlPNt+Ma+OMWzH2XyjbcHd2vYubeC6ixrvWJJPxKnROhHt/vGzcuRjx6SyMkfihx1X98H3wo/EKIkcStigVdE1rYczzOp251Q9iagEFh161m1NiWFckwW64a4ufKZ3Njw255HP8L5VvB2yJ5vbNjWP/PAcgxrAz9nrJ59gM0qQ1XscKz+dsL75Vl+i+X6KfDnm7sl4ZTpNR2cXCxW782mLfznCbJVIpqR9oEZ3dxJIoPhiiS0YKBOQAqeQfy4D8qZSuIfZdus3yFlJagEC+SrRduSKJAYwAs+sK1iYxbVyfEX+NjurxyfGGA/93nn9qt4QGGmcXSEGxBvHXIAtAvWlfXrmhntjMSUIox+xsEkouoo4m13cekUcGOQiD3WcuyZsPa/f2Ty+LxOCfoxaEz7mTEzLg1lF1qaBnYz+Kr+h9pcShpwttSfiGrVHMbQIigQKR45+b2MsJHTDktVFJE8+QCsrpIu1dy3x0votzPFurKKRLizisfPaFMprGFgxFuypN+Mv0gzrptfdeQCkSJ0ZwscIQ86+vVh3BV952Wyl/HSVkEshTDKBdotsUDQ+c6VF8+sdhJG1SCdTi91t9O50zjPykq3gEl9bLht7ng4EjxyhPCyPjYM1rFk2xI7KiCddEQ5cJ80HpGwxhFiqgTkzZjuZennwfnSioSrjuditdcH59RYHrJys1l30Om3TKRQfJvJD3crH
- Oy63hKO/
- tB3ej2V6Bt9GlhlA=
+X-HE-Tag: 1766042753-164176
+X-HE-Meta: U2FsdGVkX18+G+U//Mz59GgL4509b3Lsc6UUMUJ7z+KV1Xd25c/t+dz0/4SS4ajy8D4LsVh+igcFLOoHPFoNG4jiX6MybKxpLI1E8Bvtc1wDkffjcoJ/KTcGjVzaVepvuhzwhd31wKcRnJEHjc2ptaje6XEgywm/4ZBnZhketR60qALdm0d9Vcz0eB2uvXqZQcCow/p4mppUBizQN2hM29MYxbHDiVJyvIm8hCECkTeIi8vYozRxDe6dnlOS9mwh9pNKKB6IQLIOY0c9LzrE0WaIAFlU/09UxN0H8My+ipYAaBqaX/Nfa3dpJkTZNvOoADrD00sBR53mybhIWEW5GzlvUg9oofEM83A5TSAgsSr5oavH7RSMCZZhlaJjxAVxFhnQ8aDn4G62n8GCMh8bz3g7TgOdExP4uzYtZXNsqGx1vb6h/m1DL1/tsJJpyiZbuuPZy+UdFKcTR1h8/lCOgOS/kxGNSZVzVHp9TN8KISSZNcIs0B3GmBmHWwyKtZ9b6oFYHDFaA6B49KE9AL9gHplfk/q0a/6dAE0z+EHT3fexfQhe68drNWo1+5/LdaWL0kzM8LPO7fGONj85XtKvWmgtbj4RtMJyoNr/BuJR0mVVNRk6DUYqIsXWpbXXHJH3XkSkHPxM8HAGFeoe9+kgSuoPTItGQnmLBS0IrbCJWjLgG7rJSfrta4zQBd9vyoN9+ImluPOGpOxG3wML+44QVNz82dSERBHvCg0KXnSk1fRxAQcHsHZ50GJpMadWpNOXhImOJI/MfkIES4oPeUNoySLvUvrJQgEhqV46q/7ui5rbaJJ6eTpZJnjqOgE1ZIQomL+rtxUjkIIF9KT69k35zUlG+VZ6ojIBvTAUissyWDuwFB7aETfs/LivSOlsZsUZeKMj7G2IkIG0FgM0GPfWs7v+7FsfkNSf/z74J8E2v/4wChLjMfF/hXTD1QGiWmngiKqjwWeR4ZB5J8gT4uW
+ CwG224gi
+ mbnzlQLQCx/lbNT0b+b1TOhFcfXlTiLjbRT3rvrk1tQr8zOczOMwWQa1VkM3RqmWBUZ9rIAftimbmW+X9yi8ngdt4tX4jBz4o+qSkyEFqp8t0a3PSbx/rxqBGpANyK6VSDXxPO2P5q4dxs55vUL5D0ahHbkazOH6u3pv7o3zSjvVFNi97PwB4FRSyVh30FgKZHk51UH2+DfCuiI7DoaiWSRsx2kCYYpC9FKXjSrldtOdeInzW+7RuvwfO2RPZXMg5/UHZo+4ngW2Qc/7gZ347JNAt8a0dOtLLGaOWqf6E6poi8GLLIXtW0rNznuSue+fsyXrKa2MGzjegbBXfZV7M4fbv1tinzN18mEtaKlFfnwN2F2IkxQLUmBbnk9JF+wHtsibo9l18xYVYmnyjZac7tQr5mrppXfKxtGCn+dnhMH2SGPApZc5ZFdtJ1Hn4RC35JnoqK+PyRLEsi5b1s8x5AjquYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,48 +127,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/15/25 21:49, Ankur Arora wrote:
-> Performance when clearing with string instructions (x86-64-stosq and
-> similar) can vary significantly based on the chunk-size used.
-> 
->    $ perf bench mem memset -k 4KB -s 4GB -f x86-64-stosq
->    # Running 'mem/memset' benchmark:
->    # function 'x86-64-stosq' (movsq-based memset() in arch/x86/lib/memset_64.S)
->    # Copying 4GB bytes ...
-> 
->        13.748208 GB/sec
-> 
->    $ perf bench mem memset -k 2MB -s 4GB -f x86-64-stosq
->    # Running 'mem/memset' benchmark:
->    # function 'x86-64-stosq' (movsq-based memset() in
->    # arch/x86/lib/memset_64.S)
->    # Copying 4GB bytes ...
-> 
->        15.067900 GB/sec
-> 
->    $ perf bench mem memset -k 1GB -s 4GB -f x86-64-stosq
->    # Running 'mem/memset' benchmark:
->    # function 'x86-64-stosq' (movsq-based memset() in arch/x86/lib/memset_64.S)
->    # Copying 4GB bytes ...
-> 
->        38.104311 GB/sec
-> 
-> (Both on AMD Milan.)
-> 
-> With a change in chunk-size from 4KB to 1GB, we see the performance go
-> from 13.7 GB/sec to 38.1 GB/sec. For the chunk-size of 2MB the change isn't
-> quite as drastic but it is worth adding a clear_page() variant that can
-> handle contiguous page-extents.
-> 
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-> Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
+Hi Johannes,
 
-Nothing jumped at me.
+Thank you for the feedback. Let me clarify the scenario this patch addresses.
 
-Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
+The task_is_dying() check in try_charge_memcg() identifies when the
+CURRENT task (the caller) is the OOM victim - not when some other 
+process was killed.
 
--- 
-Cheers
+Two scenarios:
 
-David
+1. Normal allocator triggers OOM:
+  - Process A allocates → triggers OOM
+  - Process B is killed (victim)
+  - Process A continues with reset retries - task_is_dying() = false for A
+  → Unchanged by my patch
+
+2. Victim tries to allocate:
+ - Process B (victim, TIF_MEMDIE set) tries to allocate
+  - task_is_dying() = true
+  - Current code: wastes retries on hopeless reclaims
+  - My patch: exits immediately
+  → Optimization for this case
+
+The victim has three safety mechanisms that make the retries unnecessary:
+1. oom_reaper proactively frees its memory
+2. __alloc_pages_slowpath() grants reserves via oom_reserves_allowed()
+3. Critical allocations with __GFP_NOFAIL still reach force: label
+
+The retry loop for a dying victim is futile because:
+- Reclaim won't help (victim is being killed to free memory!)
+- Victim will exit regardless
+- Just wastes CPU cycles
+
+Would you like me to provide evidence showing the unnecessary retries,
+or run specific tests to verify the safety mechanisms are sufficient?
+
+Best Regards,
+Dipendra
 
