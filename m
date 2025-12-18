@@ -4,87 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48172D68BE8
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24F6D68BE7
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 07:47:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8DF76B0089; Thu, 18 Dec 2025 02:47:17 -0500 (EST)
+	id 09E746B0089; Thu, 18 Dec 2025 02:47:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3CAB6B008A; Thu, 18 Dec 2025 02:47:17 -0500 (EST)
+	id 048B86B008A; Thu, 18 Dec 2025 02:47:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91DCD6B008C; Thu, 18 Dec 2025 02:47:17 -0500 (EST)
+	id E8CFE6B008C; Thu, 18 Dec 2025 02:47:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E2826B0089
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:47:17 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7551160DD1
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:47:16 +0000 (UTC)
-X-FDA: 84231811272.15.98B4741
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9666540002
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:47:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DPhdx9VI;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D95F86B0089
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 02:47:49 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7185D140DB7
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:47:49 +0000 (UTC)
+X-FDA: 84231812658.05.F350A12
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EB2C6160015
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:47:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xGswW9mm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=12xfeIIr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xGswW9mm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=12xfeIIr;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766044035;
+	s=arc-20220608; t=1766044067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xtgxMJy+nJmKfNZGRwA0XhkF4m6Mp5Z7MBUdEpNpwCs=;
-	b=Z/nN0qlFOky2BxU4crRRi3JvjjUTTOr9BEsDk8Rf17VUyGq/dNetPOLSnsLK/sbnIAagRE
-	2mpST/LfyBsJx8nL9j1k794CEbsClymBsyMeuRCFCvfu4fvvjXtkwnnSqGo7xvDp7SPFbO
-	Bdt+VsIh6oVN4ZaTqdSDS1CkYsIKi34=
+	bh=pSlq6nuapXlPZtqsKEQ7mS1ImZ01jhm7Caka7wJ5hO8=;
+	b=FP5UKM2jmQ1X/NUi01vUAAwJF/dO+awU/k9hKOT38Wis+sfToIHUlLlWPLwn7wM7n+TUSD
+	qIjpMSOofPlJBTU/62TOxlmghCl5mS9pxgHOPjZw/DEYQiCiRk992dMH9N+YAqSzBNdkKs
+	6U04+iRd1Lwqf7zLSLo8c2KwUDGudvc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DPhdx9VI;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766044035; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xGswW9mm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=12xfeIIr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xGswW9mm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=12xfeIIr;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766044067; a=rsa-sha256;
 	cv=none;
-	b=vsLmtHbHQFclXVkqfr7Ha1FD3QlhWgrjO7HRGT6k0NRCyPfvMHUyVWZ+E3LZMYMoPUj4ea
-	+VWBbdz/6RQjlT5JkbST8xUsW4OxemQNnw6McQFFq8El1mwJYp0b4ZLyKin69pHqN6C4Yk
-	ymOlefwIO/Pa8eESSs30mbZ9D4/ovTo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766044030; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=xtgxMJy+nJmKfNZGRwA0XhkF4m6Mp5Z7MBUdEpNpwCs=;
-	b=DPhdx9VIfOzHZvJREc7n/0EhyREH2O7r3PvvspSDDI00dNFi8l7Cv7tA02lXcnQax7SW1qIQL4DwJJbNrBl5yQQZwSgVzkDY3k3s2VI+Rlgp/gEvnAp4OsGRSAQstk4d+hP2sNcXSqqOg1qjMt+b5d8r057h4nJWrRM8DfSA4iU=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wv7mHTb_1766044027 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 18 Dec 2025 15:47:08 +0800
-Message-ID: <89cdd927-fc88-42cf-b8a1-2fbd736d5f7c@linux.alibaba.com>
-Date: Thu, 18 Dec 2025 15:47:07 +0800
+	b=XL8+I7/FsyL7W255VIEgFaMgHLtJfjlkG9Qe6wrxE4afjkxLE42hggDsuBc8v8/FFfSYr4
+	RlMOzX0dOb5VNXGdCECoxg8tmyFHVwZYCLZgFwm4v2ZM5bIQmfhuW1oB3lmbU2aq05VF0i
+	8qrTc6IRp16cG+RlhtZtG3FPiZpYVm8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1608E336E3;
+	Thu, 18 Dec 2025 07:47:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766044065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pSlq6nuapXlPZtqsKEQ7mS1ImZ01jhm7Caka7wJ5hO8=;
+	b=xGswW9mmEdYxve8qWfUjRzkM0alEkhjtKTJql2b1uFo3KxBid93Ccp2YT5lW/tnR2/aq83
+	GnVwshDLCQ9OEARRJ+blcWw5Wl7RurDK7UmOcEhlE2Z2F4SfrzBbvbhYAVHXE9j6R5t4Lp
+	2PMhlBjHPhxgTYbOSHjVGtxyJ/yuGyQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766044065;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pSlq6nuapXlPZtqsKEQ7mS1ImZ01jhm7Caka7wJ5hO8=;
+	b=12xfeIIr0TEtg0oz9K8ds5m3lHbkuGcVBzuNqIxhI3qsl8sqFDjbH9XpqfCu6RFoILRFqv
+	lhZYgT/Cb4LCAyBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766044065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pSlq6nuapXlPZtqsKEQ7mS1ImZ01jhm7Caka7wJ5hO8=;
+	b=xGswW9mmEdYxve8qWfUjRzkM0alEkhjtKTJql2b1uFo3KxBid93Ccp2YT5lW/tnR2/aq83
+	GnVwshDLCQ9OEARRJ+blcWw5Wl7RurDK7UmOcEhlE2Z2F4SfrzBbvbhYAVHXE9j6R5t4Lp
+	2PMhlBjHPhxgTYbOSHjVGtxyJ/yuGyQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766044065;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pSlq6nuapXlPZtqsKEQ7mS1ImZ01jhm7Caka7wJ5hO8=;
+	b=12xfeIIr0TEtg0oz9K8ds5m3lHbkuGcVBzuNqIxhI3qsl8sqFDjbH9XpqfCu6RFoILRFqv
+	lhZYgT/Cb4LCAyBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE9853EA63;
+	Thu, 18 Dec 2025 07:47:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fLIwLqCxQ2nnCwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 18 Dec 2025 07:47:44 +0000
+Message-ID: <7b2673cb-1f0e-4a5a-84e3-0ae10437308d@suse.cz>
+Date: Thu, 18 Dec 2025 08:47:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm: rmap: support batched checks of the references
- for large folios
-To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <545dba5e899634bc6c8ca782417d16fef3bd049f.1765439381.git.baolin.wang@linux.alibaba.com>
- <cb4d7243-d8c6-4706-a254-6f5afc148910@arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <cb4d7243-d8c6-4706-a254-6f5afc148910@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH 0/2] introduce pagetable_alloc_nolock()
+To: Brendan Jackman <jackmanb@google.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, hannes@cmpxchg.org,
+ ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, catalin.marinas@arm.com, will@kernel.org,
+ kevin.brodsky@arm.com, dev.jain@arm.com, yang@os.amperecomputing.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20251212161832.2067134-1-yeoreum.yun@arm.com>
+ <916c17ba-22b1-456e-a184-cb3f60249af7@arm.com>
+ <aUGOPd7gNRf1xHEc@e129823.arm.com>
+ <100cc8da-b826-4fc2-a624-746bf6fb049d@arm.com>
+ <aUKKZR0u22KOPfd7@e129823.arm.com>
+ <d96ac977-222e-4e8d-9487-da1306198419@arm.com>
+ <aUKnfU/3FREY13g1@e129823.arm.com>
+ <d912480a-5229-4efe-9336-b31acded30f5@suse.cz>
+ <DF0J58HOVLL4.2E16Q87D2UXRW@google.com>
+ <d5354d96-6f28-41d7-9f66-64c254d9477b@suse.cz>
+ <DF0NWLWKRKYI.3PLY78UGGG2PD@google.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <DF0NWLWKRKYI.3PLY78UGGG2PD@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EB2C6160015
+X-Stat-Signature: tm4g7rnhpra6it6epgkoakc4sprjkgcd
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9666540002
-X-Stat-Signature: yohik84yq8yyixawpg543akojjenbfx3
-X-HE-Tag: 1766044033-920476
-X-HE-Meta: U2FsdGVkX18JdVz/bOW52xL0/3SLhUMTznp13JvASB4oz7LyO4fSFioIDfibh3xBFtOVdD4Gux4a9UcD0TXodC2q0p8GGZrvIRsX1WQ7qKuKgjBoWdvTQBRRzXP6yiSYIgmZ7fUvXHN9c8k5BQMaTaXWH58Z3e75STLAMvhS8FCGzaln4/G9J/sgoO0ozvOhhd1qWKoxUsgAuYV540IrArZxlQPpltXfFD6sof2Md9BsNfjdJLyk2Ste2WMR7GAkAbK5tlr1q2bhW+XzSNrXo0KsPaxawsv765D2uLz53vUVdrmHDmPjHoocMsBPhuXr52Jru4F5dj6mFomiiwF8VgpTJH3mzy006F9f/BjQs9neD7Ma20p3KXJBFktGA8AQxE74c28RcLX2kwcuS7J/TLxZuxqMBKYvTWV1QyMLKxQ2BKgHiqFOa2scnT1L++wu1lKie+wN2GC1MqLe1hsJW36J9ipHbZE/LOAL5yr0vUrMN6tA9vZg+JA7xitnqXVTZwYalrmJqxTLQRiI74LIdvEr8G9DvnJLXXnN4+ZhNadZvxq2qtAIE8AplGGQCyrxGunKz7DFLD9PYRiBDqCz2mzqtiwGujM1TJAPeJDd5PiMqzvztl4g7r2whUKhwUm2II9UFd3RYO/06KGc8VwipKIrGd2JZx1MxeZgdePbZQIQoxkrJFaF1ZdiF0zs54Mm9BekW8DmYANSLsP0S8HXAR4Xz1/SeOw9Ki82QxQhege+/qG3Jk92xTIUEp1DlM/AZWk6wswYe+35qy3nEsSWeROwTbot4nUjEUC7mW4EcWe4lAXiPxdyGj0zPRCXRva+95k3mkGA0lz0uSq4ownfMCD0Wf2bw2f3BI2Jg87q5uhW/s8biZMHS0itJRN/esps211I1OSs3amOG1wG0Xw2FpTD/A05KvgyfANG0QJMAjgqQ47arSmxIjRZOTrRKTOgkqtRqopSim9HLG2wXwU
- Mm2sARWH
- 1ZYMdTx59l8D3ALKKmHIZImOiTBN8N/drRknABKBkFAepaZBW5zL1Pdoh0LVVzTPqki2VIhidWWIm8FOp/WH0Ok5+lcUCAUpGNJNy69HOwqPWW5UexHqlM6aKU7PwFrmjpmQmXW5+8mRW1kEJcnFMzcXFqp6dZNkUW8D2EH55EmW8X62Gfci0NME17iixGdraBYRm3epvhqFMv6kAgfryAvfrAQgIucgtZ54T1399Jat2yKA9INtgzso8/MRDYvWcAzyb6iqM+ON0tG5YHfXT0sQb82RA76vrWTyJ3OCwQiZBhJBxwPJII/L7k5lIsmBVupQDMKNFBnEXqyo=
+X-HE-Tag: 1766044066-620779
+X-HE-Meta: U2FsdGVkX1+mIiHDWC4oKzznausa4+zuPn2bBnblnZJNiKY8Cf59lZZwRpS/GGUQeD7C0LX/ggzYPmJ40fd27/CSCaqYMR3jE5e9yllLq5R+Race80qVypqkvhGLjUHxTOTU4Du1PJ580K0y4ezLGvQMJZ15bni9g018mC807d62HvmXaR+JI6FxmEJemPPk+9Gh0wY2UY2igXSdtqv993h07nJAAz7aH+alo0KYrWWEdKKess1kKU2h9R68p/5xymd+DwmK0+MLkDCVSraWhTMIfX5os0XSLbPP6GNVPfL5T631L8offxUL9GwRBwhFvFCiGo6cHrqCNMpfsPDEWUocrSyFi3oJwpq4Ej2y4eEqEAVYpeBfA5lNz6jGW1DdqbCAKB8o3ze3GcJUpjdp0ZhyEC6xPBSE5nn0zec/KjEBFiVAimeXNneNg+cYuMYUsp6YUt7crYmHOHrFt6VHEm4MW6m+cv1g4vQIWDIHFypBSEBrKO4kYzcT5KX2msxJ8Urod57gp1w1DaCcXSVTyTO6xLG7buGoS3INOODWTitews54HU/ws8RESwA+Yu1Ppo7OdWZ1g7D4FZ8ue0011vWRaRUznYK6W0NaayVz0tzwABbWmh8vp5+lejfT0ohhOx56qE5Vx6oUIDX0Sp/vQHmd2prcVrol7G8jJZWQHWuWwvcUgXr/Hfe30y4UOxQc3EMLowqlUur4F188khVc6n9Zw0ZEw8Z8szqxBrlKb+C4zbhWWip1MDCDyG1hV/F4/Mc7SxOFZr1/u7YDVk6y/SDas79l+FoM6MH/TRtHS8j0Gmke/WjdfzPBrxHGSb+5DErHuVkArP7GxVM54XN3WwMNaGKxwDRS6ThFAPMFZS7NMoZakFRFxDzFaxse0JEWnebhXAbXl7VW72V+5t2vIttbPcfz+R9CNtYMl8CoCpVpbh/P01LumKPCdRPWSr/z0M8umlLbz+NIXBvLEJX
+ AOcp6Ezq
+ +KMWX4FGUqOEU3shQCzt+JNJJWfua+6sLix+jl37Yp9SqE64iGljE6ypBtv84iM2TE2FBpvMot5YxsS3k337rSaqLYnM08QbJw9/7aAQfb5VAvDZeuq/jN+cnZVRlUDkfA8WGh/FGi/qlC4vR2BKB1cYNOnJliylwau06Na0m2/cZ3zvxk9qE5dAMm8/AbXUQeKP1VCHSGJsuw3gomKberLXXfG4d2H6S6qsGM6U5TRoNieS8/A2m4hEPMHQ9esTZnotmitmqk4Xkb+l1Hg8/pVht71iChz3RGRj48KOFPvBPHp5bRaIU0O+kQGazuIDpDzgAqGMPNGvyppqvUJQTHCD8dzhiMHjokXjbbJks75nadkgAa1CxjGo/SJ4isXO8cCTOAcUqaaPzna10eTDXR8YQ328Q9NsZd4AstbCYpxIF4vQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,242 +196,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/18 00:39, Ryan Roberts wrote:
-> On 11/12/2025 08:16, Baolin Wang wrote:
->> Currently, folio_referenced_one() always checks the young flag for each PTE
->> sequentially, which is inefficient for large folios. This inefficiency is
->> especially noticeable when reclaiming clean file-backed large folios, where
->> folio_referenced() is observed as a significant performance hotspot.
+On 12/17/25 18:19, Brendan Jackman wrote:
+>>> From 4c6b4d4cb08aee9559d02a348b9ecf799142c96f Mon Sep 17 00:00:00 2001
+>>> From: Brendan Jackman <jackmanb@google.com>
+>>> Date: Wed, 17 Dec 2025 13:26:28 +0000
+>>> Subject: [PATCH] mm: clarify GFP_ATOMIC/GFP_NOWAIT doc-comment
+>>> 
+>>> The current description of contexts where it's invalid to make
+>>> GFP_ATOMIC and GFP_NOWAIT calls is rather vague.
+>>> 
+>>> Replace this with a direct description of the actual contexts of concern
+>>> and refer to the RT docs where this is explained more discursively.
+>>> 
+>>> While rejigging this prose, also move the documentation of GFP_NOWAIT to
+>>> the GFP_NOWAIT section.
 >>
->> Moreover, on Arm architecture, which supports contiguous PTEs, there is already
->> an optimization to clear the young flags for PTEs within a contiguous range.
->> However, this is not sufficient. We can extend this to perform batched operations
->> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
+>> There doesn't seem to be any move?
+> 
+> This is referring to [0] and [1].
+
+Oh I missed [0]. Thanks!
+
+>>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+>>> index 3de43b12209ee..07a378542caf2 100644
+>>> --- a/include/linux/gfp_types.h
+>>> +++ b/include/linux/gfp_types.h
+>>> @@ -309,8 +309,10 @@ enum {
+>>>   *
+>>>   * %GFP_ATOMIC users can not sleep and need the allocation to succeed. A lower
+>>>   * watermark is applied to allow access to "atomic reserves".
+>>> - * The current implementation doesn't support NMI and few other strict
+>>> - * non-preemptive contexts (e.g. raw_spin_lock). The same applies to %GFP_NOWAIT.
+> [0]                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>> + * The current implementation doesn't support NMI, nor contexts that disable
+>>> + * preemption under PREEMPT_RT. This includes raw_spin_lock() and plain
+>>> + * preempt_disable() - see Documentation/core-api/real-time/differences.rst for
+>>> + * more info.
 >>
->> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
->> of the young flags and flushing TLB entries, thereby improving performance
->> during large folio reclamation.
->>
->> Performance testing:
->> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
->> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
->> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
->> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
->> from approximately 35% to around 5%.
->>
->> W/o patchset:
->> real	0m1.518s
->> user	0m0.000s
->> sys	0m1.518s
->>
->> W/ patchset:
->> real	0m1.018s
->> user	0m0.000s
->> sys	0m1.018s
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   arch/arm64/include/asm/pgtable.h | 11 +++++++++++
->>   include/linux/mmu_notifier.h     |  9 +++++----
->>   include/linux/pgtable.h          | 19 +++++++++++++++++++
->>   mm/rmap.c                        | 22 ++++++++++++++++++++--
->>   4 files changed, 55 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index e03034683156..a865bd8c46a3 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -1869,6 +1869,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->>   	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
->>   }
->>   
->> +#define clear_flush_young_ptes clear_flush_young_ptes
->> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
->> +					unsigned long addr, pte_t *ptep,
->> +					unsigned int nr)
->> +{
->> +	if (likely(nr == 1))
->> +		return __ptep_clear_flush_young(vma, addr, ptep);
+>> Can we reference the "Memory allocation" section directly?
 > 
-> Bug: This is broken if core-mm tries to call this for nr=1 on a pte that is part
-> of a contpte mapping.
+> Yeah good point. I will send this as a standalone [PATCH] mail tomorrow.
 > 
-> The similar fastpaths are here to prevent regressing the common small folio case.
-
-Thanks for catching this. I had considered this before, but I still 
-missed it.
-
-> I guess here the best approach is (note no leading underscores):
+>>>   *
+>>>   * %GFP_KERNEL is typical for kernel-internal allocations. The caller requires
+>>>   * %ZONE_NORMAL or a lower zone for direct access but can direct reclaim.
+>>> @@ -321,6 +323,7 @@ enum {
+>>>   * %GFP_NOWAIT is for kernel allocations that should not stall for direct
+>>>   * reclaim, start physical IO or use any filesystem callback.  It is very
+>>>   * likely to fail to allocate memory, even for very small allocations.
+>>> + * The same restrictions on calling contexts apply as for %GFP_ATOMIC.
+> [1]     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 > 
-> 	if (likely(nr == 1))
-> 		return ptep_clear_flush_young(vma, addr, ptep);
 
-However, I prefer to use pte_cont() to check it. Later, I plan to clean 
-up the ptep_clear_flush_young().
-
-	if (nr == 1 && !pte_cont(__ptep_get(ptep))
-		return __ptep_clear_flush_young(vma, addr, ptep);
-
->> +
->> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
->> +}
->> +
->>   #define wrprotect_ptes wrprotect_ptes
->>   static __always_inline void wrprotect_ptes(struct mm_struct *mm,
->>   				unsigned long addr, pte_t *ptep, unsigned int nr)
->> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
->> index d1094c2d5fb6..be594b274729 100644
->> --- a/include/linux/mmu_notifier.h
->> +++ b/include/linux/mmu_notifier.h
->> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
->>   	range->owner = owner;
->>   }
->>   
->> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
->> +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
-> 
-> Shouldn't we rename this macro to clear_flush_young_ptes_notify()?
-> 
-> And potentially:
-> 
-> #define ptep_clear_flush_young_notify(__vma, __address, __ptep) \
-> 	clear_flush_young_ptes_notify(__vma, __address, __ptep, 1)
-> 
-> if there are other non-batched users remaining.
-
-There are no other non-batched users now, so seems there is no need to 
-add another redundant API.
-
->>   ({									\
->>   	int __young;							\
->>   	struct vm_area_struct *___vma = __vma;				\
->>   	unsigned long ___address = __address;				\
->> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
->> +	unsigned int ___nr = __nr;					\
->> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
->>   	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->>   						  ___address,		\
->>   						  ___address +		\
->> -							PAGE_SIZE);	\
->> +						nr * PAGE_SIZE);	\
->>   	__young;							\
->>   })
->>   > @@ -650,7 +651,7 @@ static inline void
-> mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
->>   
->>   #define mmu_notifier_range_update_to_read_only(r) false
->>   
->> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
->> +#define ptep_clear_flush_young_notify clear_flush_young_ptes
->>   #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
->>   #define ptep_clear_young_notify ptep_test_and_clear_young
->>   #define pmdp_clear_young_notify pmdp_test_and_clear_young
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index b13b6f42be3c..c7d0fd228cb7 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -947,6 +947,25 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->>   }
->>   #endif
->>   
->> +#ifndef clear_flush_young_ptes
-> 
-> Let's have some function documentation here please.
-
-Sure. Will do.
-
->> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
->> +					 unsigned long addr, pte_t *ptep,
->> +					 unsigned int nr)
->> +{
->> +	int young = 0;
->> +
->> +	for (;;) {
-> 
-> I know Lorenzo is pretty allergic to this style of looping :)
-> 
-> He's right of course, we should probably just do this the ideomatic way and not
-> worry about it looking a bit different to the others.
-
-Let me use the 'while (--nr) { }' instead.
-
-> 
->> +		young |= ptep_clear_flush_young(vma, addr, ptep);
->> +		if (--nr == 0)
->> +			break;
->> +		ptep++;
->> +		addr += PAGE_SIZE;
->> +	}
->> +
->> +	return young;
->> +}
->> +#endif
->> +
->>   /*
->>    * On some architectures hardware does not set page access bit when accessing
->>    * memory page, it is responsibility of software setting this bit. It brings
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index d6799afe1114..ec232165c47d 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -827,9 +827,11 @@ static bool folio_referenced_one(struct folio *folio,
->>   	struct folio_referenced_arg *pra = arg;
->>   	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->>   	int ptes = 0, referenced = 0;
->> +	unsigned int nr;
->>   
->>   	while (page_vma_mapped_walk(&pvmw)) {
->>   		address = pvmw.address;
->> +		nr = 1;
->>   
->>   		if (vma->vm_flags & VM_LOCKED) {
->>   			ptes++;
->> @@ -874,9 +876,21 @@ static bool folio_referenced_one(struct folio *folio,
->>   			if (lru_gen_look_around(&pvmw))
->>   				referenced++;
->>   		} else if (pvmw.pte) {
->> +			if (folio_test_large(folio)) {
->> +				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
->> +				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
->> +				pte_t pteval = ptep_get(pvmw.pte);
->> +
->> +				nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
->> +			}
->> +
->> +			ptes += nr;
->>   			if (ptep_clear_flush_young_notify(vma, address,
->> -						pvmw.pte))
->> +						pvmw.pte, nr))
->>   				referenced++;
->> +			/* Skip the batched PTEs */
->> +			pvmw.pte += nr - 1;
->> +			pvmw.address += (nr - 1) * PAGE_SIZE;
-> 
-> The -1 part is because the walker will increment by 1 I'm guessing?
-
-Right.
-
-> 
->>   		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->>   			if (pmdp_clear_flush_young_notify(vma, address,
->>   						pvmw.pmd))
->> @@ -886,7 +900,11 @@ static bool folio_referenced_one(struct folio *folio,
->>   			WARN_ON_ONCE(1);
->>   		}
->>   
->> -		pra->mapcount--;
->> +		pra->mapcount -= nr;
->> +		if (ptes == pvmw.nr_pages) {
->> +			page_vma_mapped_walk_done(&pvmw);
->> +			break;
-> 
-> What's this needed for? I'm suspicious because there wasn't an equivalent here
-> before.
-
-If we are sure that we batched the entire folio, we can just optimize 
-and stop right here.
-
-Thanks for reviewing.
 
