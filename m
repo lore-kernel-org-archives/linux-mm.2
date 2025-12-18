@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEEFD66BB3
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 04:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751EBD68BDC
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 05:13:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF1836B0088; Wed, 17 Dec 2025 23:55:54 -0500 (EST)
+	id 8A3D16B0088; Thu, 18 Dec 2025 00:13:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B74B16B0089; Wed, 17 Dec 2025 23:55:54 -0500 (EST)
+	id 851986B0089; Thu, 18 Dec 2025 00:13:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A80F26B008A; Wed, 17 Dec 2025 23:55:54 -0500 (EST)
+	id 750316B008A; Thu, 18 Dec 2025 00:13:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 931B56B0088
-	for <linux-mm@kvack.org>; Wed, 17 Dec 2025 23:55:54 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3538E60E5B
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:55:54 +0000 (UTC)
-X-FDA: 84231379428.20.A69D15A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 151D4A0006
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:55:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 61F536B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 00:13:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEDA9140CDE
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 05:13:29 +0000 (UTC)
+X-FDA: 84231423738.03.F56DC39
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7297C1A0015
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 05:13:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=abw4cd4g;
+	spf=none (imf19.hostedemail.com: domain of BATV+3d4854a57dc9b1fc88a2+8152+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3d4854a57dc9b1fc88a2+8152+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766033752;
+	s=arc-20220608; t=1766034808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lTP4/pC7O4ZRmjf8v09zc3/G5DEJNShooxS83M3u2Ko=;
-	b=X80rWFDb5un6dnzLAIyAHGLm3u2UUAhPaAurRaHWE7XdF+BEvciLbulVRBKg98VzgYTPMJ
-	AorS7fXaNv2jcdYT4LDStXSRBhUvj+os38kPu9BVx7BltMa8EcjeaqoQc7FD1N8yWb6Fwf
-	2LvdBt1S6+Qk2pqxLxBVh0aQ1f9+PuM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tBPJ4Mb1hzl4Z7frr1TdBSLbB+BZzWahy5/9Vf/Pvhc=;
+	b=DfBKGCpJHr8e6TL+4YHGs+Aw5T/TtjEsDYoCRMwimOWAInpAutzG97gUNQsFN/tA2zsQFq
+	dY62ZZt82ehiQzP0AXsJEiN3KbVXuq3fZNpwBMCz9tfV85ahFwAW6XaycjwhCLamBNI7K/
+	HNcYH62aL+11SpHOG/X2yEfzzzPZano=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766033752; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=abw4cd4g;
+	spf=none (imf19.hostedemail.com: domain of BATV+3d4854a57dc9b1fc88a2+8152+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3d4854a57dc9b1fc88a2+8152+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766034808; a=rsa-sha256;
 	cv=none;
-	b=x/kcNKea0HvFlJn3LkJuOlmNjCsC7+JPG+UHyrsLIkODvKlw/3gdYXFimQR8YgUBtjkFlt
-	kyaS2Xn5NFn6OO0yiO3Z8guQY+ra9f11Kzkv11/AyZPwS1hL1YeModiTcZRk0zTcM9v1ie
-	XYuRd+WHBYn5PF0ThusCUIUtfbsr3XE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C65DEFEC;
-	Wed, 17 Dec 2025 20:55:43 -0800 (PST)
-Received: from [10.164.18.63] (MacBook-Pro.blr.arm.com [10.164.18.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0FFC3F762;
-	Wed, 17 Dec 2025 20:55:48 -0800 (PST)
-Message-ID: <3d2fd706-917e-4c83-812b-73531a380275@arm.com>
-Date: Thu, 18 Dec 2025 10:25:46 +0530
+	b=at2pREK0Iv3C25khZtnrkbCp3kbLwtaFrU7F3butBbTFA/BDiDW2wExrBEnuqKaVQGfUil
+	mWXes4G8b1uTz+eeSfbiACjlwp8oAmrUbREimXYbSGP/pRvSTOf9gx0nGr6pT4DXCjnw+k
+	cbeKpVugTaRN3gN41qbeK394ZezqF2w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=tBPJ4Mb1hzl4Z7frr1TdBSLbB+BZzWahy5/9Vf/Pvhc=; b=abw4cd4gfRFytoBJvxcSsIJHiV
+	fTP+kYXIZNvnUjWwqMbMHSsaFhKWbczbKe42esy72v/t3MXfSQ6xXsBjCymYvJp5ZqqPdslnSp3Bb
+	3tu8c8YMRWcl2TdxNQvYGAEekcatcBCks3TCFP/neQwiZSJSwpTY79zXS9lT8ro2FbFjt3ac3V1EH
+	T87lYoHGc0PNpCz3XXc7ARnHWc2in3/+wNZqrDoI/TnSXvt/SpC9VPlksyNdaiOXAZLsRua30r/aR
+	HjowRulhJm54Py/OfUl5mk5QbtfaHdpaCy6vEwEqfqlpuJWY8ab23rYZnqHGWUIkHjKTCGAZonm0d
+	N3moyq9A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vW6KF-00000007om1-3lcr;
+	Thu, 18 Dec 2025 05:13:19 +0000
+Date: Wed, 17 Dec 2025 21:13:19 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] lib/buildid: use __kernel_read() for sleepable context
+Message-ID: <aUONb6wqk7Q-QxC9@infradead.org>
+References: <20251218005818.614819-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
-To: Ryan Roberts <ryan.roberts@arm.com>, Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Vishal Moola <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20251216211921.1401147-1-urezki@gmail.com>
- <20251216211921.1401147-2-urezki@gmail.com>
- <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com> <aUKb1bL7CUcCWi8V@milan>
- <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 151D4A0006
-X-Stat-Signature: 5qu6o5kpi7a7fpubr984wjq8abq8kxpk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218005818.614819-1-shakeel.butt@linux.dev>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qckjuggzazqtm6juyoht8ga5q9rh4h31
 X-Rspam-User: 
-X-HE-Tag: 1766033751-646439
-X-HE-Meta: U2FsdGVkX1/Wvq74pBbMpLgC/hgzvW6ln2MxD36pTIerGwKEJKyXAhR9ZABxbvweAcdq8ga8DHv7s4ErCi25qR2gnkC6++397r7nVlg06VCbAHwP8NgYzSAHiMiRgTB4TlaU9fNsc0vHNkIiz+BcqRnGRJjA8+gkpylBdnPu7DyZQAswRi/Wc7DTQLNRB2oalsi7ugtNiz7J+HICUMJJTDj3mG5H01u1p8J2xVGgDRkyEsyBwfJmDDToAPZOS/XuCIAFLZcrqAoQI9R2/5zPmFnkg9sgFc0EzKBgYuo4x/0uR9JV/XS3/zbd0D74t4pcEQ4YWigiRdWNej9ITRokS2Y6/ZUU7Bz4bJ2D4dBxNwy/HBPc8jHAkUN4lgE1F5r/tSJo2RnNheYT/efSnoKER9wgh+bHLxMEk1BahNjG1y+rQ8r+T23btcEIVGiPRMlaWAhOMd4zioRfNmB94Z3kvNwDEsK74pFy2LwdkvAkBj+WL+hBdDNClA4C3VcSv6KO6tXUC5gWH4+n7s2jFV4gDhC38tEodZDyUrDfxtiV0aXm8yqA0dE9+b/DpBE62P7tV12DB1oucIDgjez+Sn4vd6WTryJYAdfX6zpPP/szd2ESW7igqcPJ3psOCN7XjiyYwmPNgam5DlBb6R6q1YEkEdb/qiE1IR0lFRY9htaT/ibA0ZVKLPql9u8TUG5PileZ89qoiHhmzvH1kyhjp3MiTFcTs/LZzs8+N+74MSsVpD2tQ2wEm3Kk0NIVJ3N+scslHS0bbI2T0VM+T8BO+bJvgdV4K1er1VXhzONefJ32X0mYbMISCYovU4tpcUUE7mbH5gSVgAteQbeCEw6evAUTYQVZhsn3o2Ob/9xQjMsq1XbeTmWOsa/b1YnGhHO1Lz3Ia/rSBo7oefpMFttOvxs7EiOOLtkvRRsVuGcSZnz7gwySfaIZ6zfOKu0iAGqphXSZuu916fzXgIT5bhlIBaF
- nE3xXoCu
- EflBzcscRDy1cNPWUOa/JLgDLbRAujRhEjiIHK7+tJNXbWUVSGhNlL8vt2O8pesXIQgOJo8/WUZsbb6ouVuP1cZJFfH9pIH8IpzPdRwGmkMhRCo+DSk2Eu/AKK5Sdc1nAxpMtKcWGEGQy3VfEqz8W/XUg4qg7Eroj5HQMt/tSyJ35DzVZ+mZUOTp20GYrqsRuj6kLu6McdQjmSsx5FOD1GKRm4syuCj2fet1Q0mwlC3ojabtITxwokJr5WCGIJW5hMVM3GHTZu1QSaNZT+9+Kn/aFdVPtiN7vRORQY6lseJ7zt53d4MnZkcHan2Ip4na6FmvoQFYxmJU3d8MhOXu9agLJrA==
+X-Rspamd-Queue-Id: 7297C1A0015
+X-HE-Tag: 1766034807-454911
+X-HE-Meta: U2FsdGVkX1+3rHyCduINafuRGTZFthn/OYT8BSjrX0QuzjRdC58Aw+D9tkJFTwquAQkjtKpxBBJFF1kIKnoSWjksyPGMqaWnJgc16bIx20ogUUfs0PY0geGHdh+o3dR3FyxtocgydEwbcaw5/daxxAOB7IlmjOyVxGY6uwcl2RmRhfADtvwz0sgw2VK2Mvuigknnnk2+RFIeCBmlzuAu2dgfN6IcCN4jWV5FBRd/enhVXFUbyx7RR9ow2W+Jg0+rLJAv0/4KIwHS7LwW1Fhn221yvPTjwiyh7I1qKgS3xT2hvDRXMak+AqDQCj6CPPdmoNuRseF4n1NJExLmwitnAQ2Gl7owtM/ZU1GHZFIPchRx9wkcPSdiddP20r8+3h9q8xWNDGy0WshwOd3Jo4bcuIaTg0+IMnaWr12n2oxyq21QAqhIPYC/t7r7PDX494e4zrycfFtJ05xOaObEuJA43tKtXsr2cXbpASon0TOqMjLJNf3k1lUmJwiAdekdwNUsXFwApQ91uBq96Oh48zNJJqOJK8EBIS+ZzjDMgK/DdZ16zKOJMct1/wqwCJXrhJhK7RsndI+fOYYATnbNQX9l+n3rvpvnreYn9ixHrGnQFDyzFP8SClzi6vmIJp8QHwKJPIBlLT6rwQ1pqT/zVogGsMkUGlrT4ovJ1y3EDv/6kHu/2WfS1juJ+DGgzAU0k0LBCpP7nEXE9BvjFK/g5x/qQZo75iGSADoHqhp3mFIgQZN0gFkOfVxgTsxiK3WVu/f2MgxSxEox1Is6/7ZwmoADc88Om95o8+00XXqeqahd5mCoR+ARj9QWUP6+1UglFOlKPbNgcCMWk1R8o3RxgN/7AJlvjGinp32LK5ortbDUNekyid/nEK05gzzxmSpUf/lgAuaAeTdVaB+xlI/wqK1r3IOrd1GHdIrTNL1aGnjaTDXoOBhi7YyYyQ95fyuPFsBJmfuzREZc1Dq8kdnWyYF
+ 1LfL2k0u
+ vm69zTgXmnxCnCMcgGxYlV/Eynzhj5h3yTegPtU3i2Jh/xVuaaa2tTW9BeeII8aWkDDj6JYsuqCrhDksbXw8OQadkQYTLtdkgCNZIOBwSWiA2ZbjonqDPjzYG9eB+jVF15f3uiCGBPntq85aENDhWWHFfnVpwjWLGiD0xcOHe4jUP0C0CiIkZkjJl6K6lp+ativA3ing+DltONaNBciW71eZ2xaLOTJ1q0HD5M7CY/FtIqKjy4vM5vLnY3rvTuIoUhr6bAMc9Sm1Wc8eI4f9ybSJ7XV0NXD9ktDwkBS7AXuW3kzwiJJtVWzS79mnN28vYoSqLWIBRgIkO2f3hyqY3UmjOSxUNb1ccO239LPgSBUp3VrfXVH1j3A3MxDTpKRBghB0c16WO/4+Q8TMOZdghJFkBBpdpcty+TmMQLVqAmgvrojzmWUFtMe2ovyp21W1agDVJuYOSfEKtIiQmydoq9SVOraoZOIZw+PlXr9Wqb5Rx3NJVAz86lnGD3RQteGNrHzq8Fz3aUpbsAw1vmBlBMCumrETUBD9AHB/zIv9WGSa4EKml7FHarXYl5bLhyu2ckofmy976HchIPbUh2L/Q6+zCmbZcBoBM6CXm+iJdbr1JTg5mZJIn8GX+Mb53Ntog8rVlfX27MwrsgTo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,207 +100,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Dec 17, 2025 at 04:58:18PM -0800, Shakeel Butt wrote:
+> For the sleepable context, convert freader to use __kernel_read()
+> instead of direct page cache access via read_cache_folio(). This
+> simplifies the faultable code path by using the standard kernel file
+> reading interface which handles all the complexity of reading file data.
+> 
+> At the moment we are not changing the code for non-sleepable context
+> which uses filemap_get_folio() and only succeeds if the target folios
+> are already in memory and up-to-date. The reason is to keep the patch
+> simple and easier to backport to stable kernels.
+> 
+> Syzbot repro does not crash the kernel anymore and the selftests run
+> successfully.
+> 
+> In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+> non-sleepable contexts. In addition, I would like to replace the
+> secretmem check with a more generic approach and will add fstest for the
+> buildid code.
 
-On 17/12/25 8:50 pm, Ryan Roberts wrote:
-> On 17/12/2025 12:02, Uladzislau Rezki wrote:
->>> On 16/12/2025 21:19, Uladzislau Rezki (Sony) wrote:
->>>> Introduce a module parameter to enable or disable the large-order
->>>> allocation path in vmalloc. High-order allocations are disabled by
->>>> default so far, but users may explicitly enable them at runtime if
->>>> desired.
->>>>
->>>> High-order pages allocated for vmalloc are immediately split into
->>>> order-0 pages and later freed as order-0, which means they do not
->>>> feed the per-CPU page caches. As a result, high-order attempts tend
->>>> to bypass the PCP fastpath and fall back to the buddy allocator that
->>>> can affect performance.
->>>>
->>>> However, when the PCP caches are empty, high-order allocations may
->>>> show better performance characteristics especially for larger
->>>> allocation requests.
->>> I wonder if a better solution would be "allocate order-0 if available in pcp,
->>> else try large order, else fallback to order-0" Could that provide the best of
->>> all worlds without needing a configuration knob?
->>>
->> I am not sure, to me it looks like a bit odd. 
-> Perhaps it would feel better if it was generalized to "first try allocation from
-> PCP list, highest to lowest order, then try allocation from the buddy, highest
-> to lowest order"?
->
->> Ideally it would be
->> good just free it as high-order page and not order-0 peaces.
-> Yeah perhaps that's better. How about something like this (very lightly tested
-> and no performance results yet):
->
-> (And I should admit I'm not 100% sure it is safe to call free_frozen_pages()
-> with a contiguous run of order-0 pages, but I'm not seeing any warnings or
-> memory leaks when running mm selftests...)
+Getting the code further away from messing with internals is good:
 
-Wow I wasn't aware that we can do this. I see that free_hotplug_page_range() in
-arm64/mmu.c already does this - it computes order from size and passes it to
-__free_pages().
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
->
-> ---8<---
-> commit caa3e5eb5bfade81a32fa62d1a8924df1eb0f619
-> Author: Ryan Roberts <ryan.roberts@arm.com>
-> Date:   Wed Dec 17 15:11:08 2025 +0000
->
->     WIP
->
->     Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index b155929af5b1..d25f5b867e6b 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -383,6 +383,8 @@ extern void __free_pages(struct page *page, unsigned int order);
->  extern void free_pages_nolock(struct page *page, unsigned int order);
->  extern void free_pages(unsigned long addr, unsigned int order);
->
-> +void free_pages_bulk(struct page *page, int nr_pages);
-> +
->  #define __free_page(page) __free_pages((page), 0)
->  #define free_page(addr) free_pages((addr), 0)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 822e05f1a964..5f11224cf353 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5304,6 +5304,48 @@ static void ___free_pages(struct page *page, unsigned int
-> order,
->  	}
->  }
->
-> +static void free_frozen_pages_bulk(struct page *page, int nr_pages)
-> +{
-> +	while (nr_pages) {
-> +		unsigned int fit_order, align_order, order;
-> +		unsigned long pfn;
-> +
-> +		pfn = page_to_pfn(page);
-> +		fit_order = ilog2(nr_pages);
-> +		align_order = pfn ? __ffs(pfn) : fit_order;
-> +		order = min3(fit_order, align_order, MAX_PAGE_ORDER);
-> +
-> +		free_frozen_pages(page, order);
-> +
-> +		page += 1U << order;
-> +		nr_pages -= 1U << order;
-> +	}
-> +}
-> +
-> +void free_pages_bulk(struct page *page, int nr_pages)
-> +{
-> +	struct page *start = NULL;
-> +	bool can_free;
-> +	int i;
-> +
-> +	for (i = 0; i < nr_pages; i++, page++) {
-> +		VM_BUG_ON_PAGE(PageHead(page), page);
-> +		VM_BUG_ON_PAGE(PageTail(page), page);
-> +
-> +		can_free = put_page_testzero(page);
-> +
-> +		if (!can_free && start) {
-> +			free_frozen_pages_bulk(start, page - start);
-> +			start = NULL;
-> +		} else if (can_free && !start) {
-> +			start = page;
-> +		}
-> +	}
-> +
-> +	if (start)
-> +		free_frozen_pages_bulk(start, page - start);
-> +}
-> +
->  /**
->   * __free_pages - Free pages allocated with alloc_pages().
->   * @page: The page pointer returned from alloc_pages().
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index ecbac900c35f..8f782bac1ece 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3429,7 +3429,8 @@ void vfree_atomic(const void *addr)
->  void vfree(const void *addr)
->  {
->  	struct vm_struct *vm;
-> -	int i;
-> +	struct page *start;
-> +	int i, nr;
->
->  	if (unlikely(in_interrupt())) {
->  		vfree_atomic(addr);
-> @@ -3455,17 +3456,26 @@ void vfree(const void *addr)
->  	/* All pages of vm should be charged to same memcg, so use first one. */
->  	if (vm->nr_pages && !(vm->flags & VM_MAP_PUT_PAGES))
->  		mod_memcg_page_state(vm->pages[0], MEMCG_VMALLOC, -vm->nr_pages);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> +
-> +	start = vm->pages[0];
-> +	BUG_ON(!start);
-> +	nr = 1;
-> +	for (i = 1; i < vm->nr_pages; i++) {
->  		struct page *page = vm->pages[i];
->
->  		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		__free_page(page);
-> -		cond_resched();
-> +
-> +		if (start + nr != page) {
-> +			free_pages_bulk(start, nr);
-> +			start = page;
-> +			nr = 1;
-> +			cond_resched();
-> +		} else {
-> +			nr++;
-> +		}
->  	}
-> +	free_pages_bulk(start, nr);
-> +
->  	if (!(vm->flags & VM_MAP_PUT_PAGES))
->  		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
->  	kvfree(vm->pages);
-> ---8<---
->
->>>> Since the best strategy is workload-dependent, this patch adds a
->>>> parameter letting users to choose whether vmalloc should try
->>>> high-order allocations or stay strictly on the order-0 fastpath.
->>>>
->>>> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
->>>> ---
->>>>  mm/vmalloc.c | 9 +++++++--
->>>>  1 file changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>>> index d3a4725e15ca..f66543896b16 100644
->>>> --- a/mm/vmalloc.c
->>>> +++ b/mm/vmalloc.c
->>>> @@ -43,6 +43,7 @@
->>>>  #include <asm/tlbflush.h>
->>>>  #include <asm/shmparam.h>
->>>>  #include <linux/page_owner.h>
->>>> +#include <linux/moduleparam.h>
->>>>  
->>>>  #define CREATE_TRACE_POINTS
->>>>  #include <trace/events/vmalloc.h>
->>>> @@ -3671,6 +3672,9 @@ vm_area_alloc_pages_large_order(gfp_t gfp, int nid, unsigned int order,
->>>>  	return nr_allocated;
->>>>  }
->>>>  
->>>> +static int attempt_larger_order_alloc;
->>>> +module_param(attempt_larger_order_alloc, int, 0644);
->>> Would this be better as a bool? Docs say that you can then specify 0/1, y/n or
->>> Y/N as the value; that's probably more intuitive?
->>>
->>> nit: I'd favour a shorter name. Perhaps large_order_alloc?
->>>
->> Thanks! We can switch to bool and use shorter name for sure.
->>
->> --
->> Uladzislau Rezki
+I do not think making IOCB_NOWAIT never wait is feasily, though for the
+next step.
+
 
