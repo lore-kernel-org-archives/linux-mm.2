@@ -4,116 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B91D6ACF5
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB2ED6ACF5
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Dec 2025 12:30:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 946A76B0088; Thu, 18 Dec 2025 07:29:42 -0500 (EST)
+	id 26BB96B0088; Thu, 18 Dec 2025 07:30:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4286B0089; Thu, 18 Dec 2025 07:29:42 -0500 (EST)
+	id 22C916B0089; Thu, 18 Dec 2025 07:30:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6196B008A; Thu, 18 Dec 2025 07:29:42 -0500 (EST)
+	id 12C1B6B008A; Thu, 18 Dec 2025 07:30:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D41D6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:29:42 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0451B6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 07:30:57 -0500 (EST)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 156CF140ECD
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:29:42 +0000 (UTC)
-X-FDA: 84232523004.18.A78C154
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 345FF1C0003
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:29:40 +0000 (UTC)
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 97F178ADE4
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:30:56 +0000 (UTC)
+X-FDA: 84232526112.18.EEA2DF8
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2FC5E1C000E
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 12:30:54 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IzZJFtRz;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766060980; a=rsa-sha256;
-	cv=none;
-	b=FyK/FJvgQ++MIeGcVSVvSwIh2Em8gxL6rtn8xg8iFzoyJrhvVAhgbIadxXKw33rlDMXSij
-	BQlLZ73DM9BNHhLu4orIRPwgOI2KtE/CKGztIGheG1YEpLPlUmJalf9866h56rkwLj0Stm
-	1SA67oNOrpSTQ5UfAmgu1Y4rsesITrY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IzZJFtRz;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
+	dkim=pass header.d=0x0f.com header.s=google header.b=Ae3Q9rGH;
+	spf=pass (imf21.hostedemail.com: domain of daniel@0x0f.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766060980;
+	s=arc-20220608; t=1766061054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
-	b=swYqieN9Ut9WhZHzx04SvretkuWqLFxakRLH6rtdPOaq1BZB+5CeNQ94CiHijAnNo+BXf0
-	SpYwqi/pIXymXjjuH3fvuZ2AbTTV9xXIDzkgVtDNaSVYUcc+f/08cslwdIXJOFn3SXTvwY
-	HUzZFUvU9uUnoWVZGJqM1hTUNMsRbHc=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0bb2f093aso5995925ad.3
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:29:39 -0800 (PST)
+	bh=tP+xLtZgtlDLWdjd9tn46aUJf6F1I9NoEVzUNz8fHXU=;
+	b=FnaKeQYNY3N89R71r5k6kqxyKCE/b6Ga7bJ1Fcilp2H+g0wxrhUj5ZZ5WQ/vu24guAFiMW
+	o6gQeQvjOs2oK8HmrZUxp8L7/6y8A7XSbqIvxTe1u0km8VL1hIug7SHug13myxMb3XSS/m
+	TzZ/8zVq+8P/HWYMxAfpaIqTHwAW/B0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766061054; a=rsa-sha256;
+	cv=none;
+	b=lV2NlAaP+wG9WNEceRZFHUVFIDgCuKM0xAc/zBomvsd5h0MDxluOfJQho0ZfXFwP1/DKcK
+	BMtmztyZCPwwA3vkNJLcggBPdEzQh2ABYS1eQ6LZYzgC92COOkCs/ahimkXyTjSkViCm0O
+	iCkBXGtJbKybEYRLOvEg67suxQNOKmA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=0x0f.com header.s=google header.b=Ae3Q9rGH;
+	spf=pass (imf21.hostedemail.com: domain of daniel@0x0f.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34ccb7ad166so543695a91.2
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 04:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766060979; x=1766665779; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
-        b=IzZJFtRzqWD2A91Mz9VGf7hZaGsHwCchM3nfS7qKSBe1uwJPaA+Ai706Z9j+QxXBet
-         rSWLBMSqCO3gb2hmKzrPxvyO3vjlB4iUdZyIu645d2zERff7FnNlbRdIL+Ea36m3GPlG
-         QK9nEUhWknYKXoxYRy5yYrWWk8+S9GiSZqp4vmvV1mEDZvkWWm2NeNaC1zjzqQXEEfWx
-         Quk6/N4pvYpzHYqeffyqxLDwbbcxTs1RRCas1HU5ITi/b5beP97lHUgsF+8mUD4MNmv7
-         p5vIsDkEIs1mOeE3KgwOsXhJCtJoeiBVSCGxT4lfY+gIdT1tfSGJxI9I8HPe0PmTRwaO
-         LLSg==
+        d=0x0f.com; s=google; t=1766061053; x=1766665853; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tP+xLtZgtlDLWdjd9tn46aUJf6F1I9NoEVzUNz8fHXU=;
+        b=Ae3Q9rGHZdn/RRPPnCFURWi0c8iUP/mWQJDzDyDnmazYzvtH9grsCz94dCi1LobFjf
+         MgGfDxgU+lrWPXOgUF3IIXPJmMZY9GpOc0nahnMkrQrkzJ+zi3X8Ev9MkNT8h1hEI/xt
+         08k9X0IVxYg9x6YHu782B0enjb8i82tUKEsU4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766060979; x=1766665779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
-        b=uTdP/s6fDmD9fm5qqJiwtxl2JA1wP4NCjZSOlnfmj9Fa3//FnlSj1t5jUWq72M/s88
-         0cLClctzgUXZHsRN2k8vKmwZqNeqWp50aRkMjK6II6iim9t+PnMB67QEzA8rSZz/YBWw
-         xbgTZ75sE2L9q/LqMhRCCJZ7z6LsAXZa/DIeAB9je2kDL//8N16NPnuhGMiOzz57FW1M
-         sblvzX3YNhdxImPH/3pYATHDh5f/sA/8qKCvDiB8bpgX5dqBFs6FB7JYuH0EgFd/V37R
-         roicTzmFcHdPQEF9/C/SIkMnxxME9c4AyKA6CZlhtBR/dIwU2MQB/6I0wK4P86mde1wh
-         XJKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxjhdYgNEkZvvU2hVugTPhzQ+FHAY/RRYYrU4Cj3EInJ2TyV2lvszixCNFQvQZMnMhROKjVbTeLg==@kvack.org
-X-Gm-Message-State: AOJu0YycUW1MLBb4IZXb3DLQMOAP8xNn8zeaV5UjjMrqSUE8r1kVHc63
-	NVX+5vgk7X6SOGHPuoHzSREtfYC0Y4LfQX8d6eib3cAf70bWSf+aPQlQ4c6C8mEXkd8S6o3M+h3
-	R7JD6ZFNMW+bCJSv4OX7mq++9cohS9PU=
-X-Gm-Gg: AY/fxX5TxZIKJE/7KboylHLdhzxaDBpqzpmEpH7YTxnu2ZptCi96q9KIIS9g6J93JTI
-	bcVzZNogC/hix/wCVAFf4X4lgQN2wQpTSxnDRPZoKlfsVbf0df9jMUKsbTVM1bI3errkZ4+t5Ze
-	g8PPF4P+n8qHHDyD9k3q0/fyPBQoSawlZzIrdW7tI1y2U8721U7j2Gc4LvwXGJA/A9UbZtujsAe
-	kYk4bW3Ug3FTPkCgrI0MrzpThqt6hv0n1RL84vgzKbdVBDW1KMwq0WUWlzV/pPJGpPjnLuo5HHO
-	7RGg
-X-Google-Smtp-Source: AGHT+IEttbzL3TgeISd4JSQbWLlcIpr31jHSAc4dl7Ysmfw70BtvwM2g27MIdwEy92Jtor9ZBzlV7nCoDMgSPn0w63c=
-X-Received: by 2002:a17:903:1a03:b0:2a0:afeb:fbb6 with SMTP id
- d9443c01a7336-2a0afec014amr148642795ad.8.1766060978829; Thu, 18 Dec 2025
- 04:29:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766061053; x=1766665853;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tP+xLtZgtlDLWdjd9tn46aUJf6F1I9NoEVzUNz8fHXU=;
+        b=tkl3bkfXipi8S5w8M22eQrVcp/lGyvss/x3+vGX4+NToK7sarQep1ZOAxQnX7aqQwL
+         ZFnB5k1ApycHjSXdltFDDeieY16fqFAjNiyuuX0Ryl9/Dvb5G4R+qJ4iWlVkrkaZfEWl
+         3CoacF4JK+JQaxkE+6sz8RQD0jM0GojefvqmYtX9UZvVopiIIYIXaJk0kr8YBPLsDmPH
+         zKCfdnurd1bWmPKi8yCybVSJYFDjce6Os8GQpxHa58LW4JjBS4piBW3cvCG4l8Tm5Ct3
+         G7uNkwiB7o00yxeYB27mAxASbmPLfoabs/akNAyuOXNCdGw/vu1N3Yg6r4B2j5jL6gv0
+         55xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWSK/4bePfuCT4k8mKFeES1JZmBLoKIdKR6zgzlngWxY88ZvGw3X6Beaaldd0vdhBwZvg99TxEBWw==@kvack.org
+X-Gm-Message-State: AOJu0Yxcdi9Isk3gprt0wB0xMJUI8fnjYk87n8Jaou9Jc4n+SLyuzFBh
+	cHlVsGwQNIlSoGJv+xNHaesBBXGhymgwVES3zLQjtDaCrvcOMkYcTFGwXiuAaei+IbJTNnoOgmJ
+	lAh1sCLXqoE/kxca1zaFs7e8fap5F48Qs/M4lhCi8vA==
+X-Gm-Gg: AY/fxX6meAM/L0Lu19yKQKda7MxS5aG7SnoWS/k6uZPZ45CyDuwTfayPXSNw7ATji4M
+	1eouIukvIHrE9qM8kZbaQxgTsFugC92EYB4fH9SyTQbE729elJpZMLq7LgxklRFI0VmPBKf+uNE
+	HOSpyFJZW69RoKMcRbtZueTxYhSBkAxrvNzh3OeLp4Q/FLDdswpetowC7sNneJEQNoQGypmJakZ
+	v62PJ1F+WK/C8ETjZKB/Drkx1dSfmJggsru6Bxx4Qt0r1ieCSzmurIoNNGvwqnOCekJ+yWT
+X-Google-Smtp-Source: AGHT+IGu2Eu7RtcW9c2zBiOmY97+906uwUoVXUQplsN09hPVWMPuxt4uS8nUcxY/74bdSgMmsl9UMc9K+dT7k58K6I4=
+X-Received: by 2002:a17:90b:3a47:b0:340:d511:e167 with SMTP id
+ 98e67ed59e1d1-34abd5d38e2mr20348007a91.0.1766061052903; Thu, 18 Dec 2025
+ 04:30:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20251217120858.18713-1-pilgrimtao@gmail.com> <aUPiFbuaglcjqiB1@kernel.org>
- <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com> <aUPvecgVj8XXBcw5@kernel.org>
-In-Reply-To: <aUPvecgVj8XXBcw5@kernel.org>
-From: Tao pilgrim <pilgrimtao@gmail.com>
-Date: Thu, 18 Dec 2025 20:29:27 +0800
-X-Gm-Features: AQt7F2qe4Pk_SuV9V8zg1gW8M29Sp6bxxmJHkeChyw-ETnoQVSTJAeHwFR1AQTE
-Message-ID: <CAAWJmAa44SF=dj+FTiXn0aZwLLGbSTAieb8Cy73RE0sGAkAYLQ@mail.gmail.com>
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
-To: Mike Rapoport <rppt@kernel.org>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org, 
-	david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com, 
-	dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn, 
-	willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251218083200.2435789-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20251218083200.2435789-1-joshua.hahnjy@gmail.com>
+From: Daniel Palmer <daniel@0x0f.com>
+Date: Thu, 18 Dec 2025 21:30:42 +0900
+X-Gm-Features: AQt7F2rK_7wgkI2apPb4L0y_XrU2_RCv4C7E3ejczHCuGEQQAW2pFOcChHjoj5w
+Message-ID: <CAFr9PXnK+WCOGYs_e5HiCiwxN1SdjGhmR3DOi8w0BYRqooQONA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/page_alloc: Report 1 as zone_batchsize for !CONFIG_MMU
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 345FF1C0003
-X-Stat-Signature: 59ejrrg5ui4i6oh57pib1gifw6xj6ogc
+X-Stat-Signature: sg9gcsmwwgkgrnqx78cjefjk3p11uobi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2FC5E1C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766060980-766258
-X-HE-Meta: U2FsdGVkX1/k5Xbcy7Y6/jw08EQtWe1VLmhejvRNnLJCvhY/MqBX6ezC9aRvj0x4nLhUW0DPD2AhZOrg7UF+3oZaxzU0B6MdFSpwscQ2nU4P7UaeGC0KNSyv73X4Yvz77UWu2Su7/6XLIheqLoztB8bA0X7Za3zeXi4iYCDOvloZnlRJPhh8efdtfegqBIgLwgW5+wPQFXUxFlygXssP80LD2DnbyBCgWc9VjSQOwBp0WtXL1kjRx27p5Lwa3cyrtBssHHm4v9C//U64G2w61jOGS3NC+iC9yCGckzOGvE+EnHhc7BwYkbWscjH/cE4f7rCLurhWsyevvFC/eR2/w4dQktzMBuQK73TWvYam7chAONrx8TNX1Xf5wPHp7y19y3pwXYWLJbv4Mi5VfDBqma7LnKSy1aPW08lz98nTlYDeXFBupbvyrJIdOT4gmiH87rCHeHv8XZUqyHCaavpy8Ir7wArpN9qnzH70qOJ+Njq8lACq7kcXiCBsHWuRIetMmK90zhFlw86qE+sdVdBXKe7B7VM5OcLrFXqEbXF/FcfGMaodsG1ovdu5OUVyvYAX/mr2Zu/487F6jklbKLmfSL2l95VZOsUyEtsYy3+nArwepWltglvtvn1vNBIGb+oWyau0eaIznY3IUdNS7tgbo0Q/k0ziyD6VPsS8t3eCNfF1FKgzMBpfdDe85MZ5EXXdUYiKx1Y//hjO4jJVQ5YqBUgYDnkeqwd/nUfrKhu2t0nhh96FldAuDOYG9e3Za3vXnRrDljRe20wJkQ3ifa36xtco8vBbnq+FLq8Ea5ptxWv3+eWK+2rLKFeUer6Xxeh67NAlG0M0JD1womUcR2obvW5ATJ9/wvLTf+8QIuWiBZklGOhVSfynLEw5d5uKYSefkHKU70XlqEaySGxilCwKuDPFZdlVjkc/9u7witJBuCkIhVSoQ9CrQad7X+UO0+OAwqdhXEBIBUeDOdnQoYZ
- NENdqz61
- ALRMQeW5DqxEXgZb0EHwVdJ/SELxK6cdGK5f34hKNI7fQKJ9qWYlh79HI1jBbUc2L/7Nwi/AdvG6Mk1sB7vpBu9U2QkulfrgZUqZwwxe5ci7EvGnKTvoH19+kg2uSlnMcJdBuWx9IqnrPzBFM3r9FnEpFuu8jKboDLjLG4I3HWzgnjJchNmvmChKwQ/j2i8+6IFyRSLvWvl3nR0QsXfJ/Ctp4K8V7V4Psz8Yd+bAxQ/YmcEvMJdn0g5EQnMmSylDiTIqBtuPRBq5FaGg0swksTT4poM+eUYh1W3aXlE9eUErqbRZYN1ECBcekSVWpb0q4cDvNNoTHN7psW8FpTWayQCGGTNRU4OSSu6eiXwLr0OE7m4dAEZRBWW8V062sgRtAN9Wf+cAtn7lIHZRDGsOUoijI4k1YvDMFjSlOT+x9C0XNep97cw9PYGkYqaSlVgFzM1AGkMsijNp5HUWX/DEcxV+VLg==
+X-HE-Tag: 1766061054-917724
+X-HE-Meta: U2FsdGVkX1+pz+W1hiaGvGdqE1vkkMOSKW2e90Fdi+LkHn1kwj3sIFKIVqZB/CqKZeV0zCat3SS7zyDDrTc0Oio2LEhxNeHlTIKQQFsP7BOkFp8wH8nnr0hBG+6FlwNpZdlK3KbyTNr7agWoU3oLYHd++JRw9suiPsOqW8bTaD4ofpu5+Y4Swvi7tGIxzBxu5tM5liVs+Ic7PNwpNL13aBvr4zL6T47NluXk5/xETk9suc4cIBW6mbSM5hkRtOzhGrMqQjcmzDj5hvkYsF16S0Tq/PfOJyhtj7MVFReJ4tSGci3LZeVu/JeF6a2XOnpKHwogxM9lsDOK52neMdw5bZ8hVX5XIf/OXnNnk5XwHljin4T9JvYieqeP9DSP1EAMIx8FAUl4ZpvrzKh00VKJZXRpZ8FiUJVoLjvbHAB6LXNQW52o1FQPhslfQiMWgwf2XoG2kghjD7lLuTi6THDoW7+m3XflBazz8tl7LtmQp4bxP8DmA/bFwWq6VdBSgLNmReBnXQJeOEMi0q3mPZp1Ro4FCz+s82sJdsmNrupmNbo8ivT45Rh22M/aFjiZCYaSYEhdsiL+4vr/mBYTxigKOdJPA8kjGL+UaPh5dQCeM3k/UcdB2WQZmVOkkct5Dg/Tkk2d/5uzJYfrYH//B+JWZvYIy+Os59aO1sdKFCB9ltLuqasJOoO7RnFxtiG/k8RFr8OR8E/Z4xryz0te0ucC9rmbrUG9Z2IHX59h5o3kmcvSRLKNHU8KmwNrMuMueE8iiEJE2IJj0/qWvOm7/EJ5jxIvUnn9NJV34veTufk0C0hEkZFJ3hosrNJhG17/oIQNgTS093RGOxfGC7ZuvSmFAnIaAl8IqIoqBCQUqj2eg+MKa5JEh9N8ixVdVbl0I39OHI7r6xXBcEHQ3rej0QFzzoCkexMfTyCcmm5JBEg625bp4WMrif/Ius4TAMTRI4GKxlkpdgyO+a6WBhSBE23
+ +eb9kUwv
+ JJcqM8EBUKf2pwv5kKrLBXYGhV2hNqKh+aZFRi5naczq/BX6BPL0zxj3G8mkJGEFjHCnzk63xDFlTiYlleRR24q2dgZBQNsWOQJrjo+WMi1g1JWtim9QEvmLiKYAEDIXaRhnemL0DhXqhxxhDs0zgy0CEdnRuHfv6DfnmoMU7o5/bHFekcpK7LDLZVRL7vvI62vcQ9cfPs3Uxq1qmYJmvPfT1a5aJhkhJ8M1ypK05cPYEl6OEktoBcr7qMWCM0CJvyln8Z8dK6BxCVW0qoGtph89mzSyVqRN8pMoqI4n8yju4OdBnXJGVFejJOnrnI2CoKLjbnP1MPWc+fyH6Oxzn1yxCLttqriYg4Xq/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,49 +112,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 8:11=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
+Hi Joshua,
+
+On Thu, 18 Dec 2025 at 17:32, Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 >
-> On Thu, Dec 18, 2025 at 07:45:52PM +0800, Tao pilgrim wrote:
-> > On Thu, Dec 18, 2025 at 7:14=E2=80=AFPM Mike Rapoport <rppt@kernel.org>=
- wrote:
-> > >
-> > > On Wed, Dec 17, 2025 at 08:08:58PM +0800, chengkaitao wrote:
-> > > > From: Chengkaitao <chengkaitao@kylinos.cn>
-> > > >
-> > > > 1. Added the vmemmap_false_pmd function to accommodate architecture=
-s
-> > > > that do not support basepages.
-> > > > 2. In the SPARC architecture, reimplemented vmemmap_populate using
-> > > > vmemmap_populate_hugepages.
-> > >
-> > > What problem this patch is trying to solve?
-> >
-> > Following the pattern established by other architectures, vmemmap_popul=
-ate
-> > is reimplemented using vmemmap_populate_hugepages in the SPARC architec=
-ture,
-> > which fulfills the intended purpose of vmemmap_populate_hugepages.
+> Commit 2783088ef24e ("mm/page_alloc: prevent reporting pcp->batch = 0")
+> moved the error handling (0-handling) of zone_batchsize from its
+> callers to inside the function. However, the commit left out the error
+> handling for the NOMMU case, leading to deadlocks on NOMMU systems.
 >
-> But what's wrong with the current sparc::vmemmap_populate()?
+> For NOMMU systems, return 1 instead of 0 for zone_batchsize, which restores
+> the previous deadlock-free behavior.
 
-The current implementation of sparc::vmemmap_populate() is correct
-and functional.
+Tested this on my 68000 setup, filled the memory to cause an OOM and I
+got OOM instead of deadlock as expected.
 
-However, I believe that generalizing vmemmap_populate_hugepages()
-still results in certain architectures requiring special-case handling
-branches, which is contrary to our goal of a unified implementation.
+Tested-by: Daniel Palmer <daniel@thingy.jp>
 
-Another benefit is that it allows us to eliminate the external
-declarations of vmemmap_p?d_populate functions and convert
-them to static functions.
+FWIW There was a BoF about NOMMU at LPC last week and I did mention to
+the people presenting that seem to be using NOMMU in real world
+applications that NOMMU was broken in mainline. I hoped they would
+have chimed in on this..
 
-> > The functional logic remains unchanged.
-> >
-> > > > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> > > > ---
+Thanks!
 
---=20
-Yours,
-Kaitao Cheng
+Daniel
 
