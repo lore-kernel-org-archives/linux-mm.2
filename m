@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E67D711D3
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 03:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FADD74951
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 03:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6596B008A; Thu, 18 Dec 2025 22:12:17 -0500 (EST)
+	id 4DDFB6B0088; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAD836B008C; Thu, 18 Dec 2025 22:12:17 -0500 (EST)
+	id 48C306B0089; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB9326B0092; Thu, 18 Dec 2025 22:12:17 -0500 (EST)
+	id 36DD06B008A; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A87196B008A
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:12:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52DA61355CC
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:12:17 +0000 (UTC)
-X-FDA: 84234747114.02.6A946EB
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5AFAE80002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:12:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=FZgbOJz0;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 23EC56B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 759E0C050D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:54:00 +0000 (UTC)
+X-FDA: 84234852240.17.4387C61
+Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A9BA20002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:53:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=nD3atH0u;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766116438; a=rsa-sha256;
+	cv=none;
+	b=aCperfcs5QVd5ctTsLQQ6gck7FZ8//xI0p32RtIK7xRD9eGQHMjmd9x+yLvm5yAgtQKn7O
+	ht009pciAwFvtXqO1MCSCZjwigM/jlqHdoaNUh9tDDwSUJVWSEIuRVJGyBVjPECa9vn9Zc
+	6C9x1Q2LYWHewMM2jSsHTPmurIF8IOI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=nD3atH0u;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766113935;
+	s=arc-20220608; t=1766116438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOpFX73lOcA2xaIOC+spZOCBK4vYcGfoiXQtRzVcKYU=;
-	b=AgQP8t3o0vy3oMUhCdCcdIO3pCAaMk7xGP379clOluLDiBrbYUeOmvoBZj0i06UtQ19xzb
-	OuQGPm7PYRuWJJ6DDXBzr88zzQwX21ikAc46vb4RNVPdm1g51Eo2OjY/QjjZq9jTezh0kq
-	n/F7F8ukZSP7pbwZGsiekpCkHOUEu9E=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=FZgbOJz0;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766113935; a=rsa-sha256;
-	cv=none;
-	b=sHkC19dKRkak7VSjdGGP8lHITUQbMKYEdj6SfFO2EFAlcMi6Z4RDihMOfW80Y1aBLs/VEu
-	kup6d1dwPMvAgZS5wxOQq3cqC+q3QK3XFkL5ay3RIX6/HuLa7GBDmta0D/08t9rw237MCZ
-	P8J+FIPcIIr0PdRVpBgfk7onarGIIpE=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6492e78ce07so1655272a12.3
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:12:15 -0800 (PST)
+	bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
+	b=CeGwwwtgxCYThw95iqREXr6GjxrExHndWPDrUf++rTaw0GV0rrt/tqo0MSzFZyZoUhEHvw
+	JoIJJDs7OIJ2OwOP3fAMOIgShoCmLJ8WuoYo6kQhT7ALw3yzLAfPhj3aVHEoc33IPY5DEO
+	nVNjnxAx+64WAVxhNY7F7oUcY+dR+DA=
+Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-88a379ca088so14141166d6.0
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:53:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766113934; x=1766718734; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hOpFX73lOcA2xaIOC+spZOCBK4vYcGfoiXQtRzVcKYU=;
-        b=FZgbOJz0Wx8N2GN+npdXPlFhXD7Au+8UpNjD1R00wqz7YiGskeE7g0nCa6dFNRXU6j
-         0LQXyO2A/hbP0/Nrk8NtQ4MSLPW4ZMk90KkwwVYJlkPcL9ODxDOx0yK77+GL9QQkNjaH
-         9DaRlxSUqZ436sBonCJ3Tcndy3+TMIgtweb9L/rB1rOqFRkR+EFOYjVdqpf1U/RCHTio
-         GFlzox04a/nVh/tYCisnhLlngbgnaIBqF1Vr62hUx41DTsID1MHg//qZ88PD2RqTSQTR
-         hr3eViX91d5ZAFWdy3kzjzEt3fcd3TEuHUQSan8CitN5B9x/ROIrsh3qFOryZdoI6plJ
-         IReQ==
+        d=cmpxchg.org; s=google; t=1766116437; x=1766721237; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
+        b=nD3atH0upfyKhTARBUldqKAhnMcK+FqkgiH3oPWwQCcNp/oRfQ9uhpNJQjV68d/CqB
+         i5wxvFi2SLQxa6GJGdTTEykODmtd5o902gZyQCkZUwHG59DXuUgu/CXZkAfxWfr/7XD5
+         E9/EdCd9vLoMxWvOCP+PDNeNo2sLKahu5JfpHH57RDVr4ILFevYoCn+zT3lMw0qCdayv
+         0260U2LU63gLChNab8VVjtj1nbDUr5VZPI/f0P5TV9jqOVU9W9y9LemEtlgvazy6XSqO
+         cOe1pBzz0BB9YlmB56Du2citpCuaMVlSZQoS3jIl/OISE3PyA70nSn6mUu0iDZmP5c/F
+         7LSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766113934; x=1766718734;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hOpFX73lOcA2xaIOC+spZOCBK4vYcGfoiXQtRzVcKYU=;
-        b=fFvhbm+jaJHK1ZtW5Px1gpKm87IPdSRQKTRIejxiOnJ1Q5pduhd1fVInn2BaxkVXo0
-         Ytrc0XVEm2HvFAuQzLUi6GXtfI++0qcASQ7F2SJVB7SW4qAgijcyIg2p/DdHpH//aBXT
-         4ttR2o/EuSj5H9JsGOhORSgylhexPlgxS56uyNuQbJt27ZCm757UnCGspWNmoeIuLPJE
-         dsY9X0pMhYtxyZP9zO68bysVJzsHStGf//3Qy8q6z3Ismd+T0gwSKGtMXAW0Ifpp0xj6
-         MuQJgNWTqxATHQlUGvXkhGVVARWGFViX3dJpGzvHvlVXxRljSp5T5Z+WWl657S7ACntb
-         KoQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhPCP67ms+k7HVH5q6553XQCWaosVJ6+vZ9JSb4QBDjEKxpTlw+a6vNGA9B8+uk+HXLmAhGB8iFA==@kvack.org
-X-Gm-Message-State: AOJu0Yzd60f/zUMnMy657cPffjf1hbh8648kM+OpYfz5EM8LUqZ4jrmq
-	mrdXwvBRm/LjE3dVQn+PqlHqrxzhSi43osz9Sn0O9XkPOhwyx2sdGnzLTuIR2+M6LcmjMBynbgL
-	Q2smEwBHXXvBayISErrPQ57ih8mSDW9qkAPSbymohgA==
-X-Gm-Gg: AY/fxX4/JvTLZGjTDb5QnrB/fZccQta+oQbjJ0UQYqNLeM5Twpl4VI2av1Qu7yILut7
-	1WZYiAufYBIQjjtitcoclsQ+AtDpiwBdG0K3xwF6dHM+y8xHJC5RQrMmw9RyOmtjdOjNCpu24iC
-	Z9cCih7ksDo4jLUKL5UwWQ3Rc2br70PiBUbgc5hATeUE5szAwEf7Aroh8C5z3g1fl9JMqHvEcYv
-	2If2JcxWanXArdLxW66ouiiBA+YCHjuThrLckzDZKyyGYNLoFGgZHcc/dVBUagB7yV6lrVisLuU
-	9uie1JrpmNOgA2m1Fo8IjAuW
-X-Google-Smtp-Source: AGHT+IFyooNIycCBqCq+5Jx2fOAIn6oqy4Jno8KDmH6oL5s3lOpN0tocGVfnZ64XVTzHRE4tjkXy4qtN942OJlkN/zw=
-X-Received: by 2002:a05:6402:2345:b0:64b:42e8:4e38 with SMTP id
- 4fb4d7f45d1cf-64b8eeeafd7mr1422809a12.34.1766113933641; Thu, 18 Dec 2025
- 19:12:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766116437; x=1766721237;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
+        b=HQ+Mqh6z3o2dhlATzCFQqalNzrmqvfOCHY6Y96QtiBe903pQc2inZygkD4vVGrZMjg
+         x2HSeWzxNS8BJjVoLzWKX0uoPkKB4OPcDkaydQps0rR1a1MdnMmuGqgj7WeORwSjS4FQ
+         HzsQ2QPPlpKaYHLLtiPB97GL/y9D4M3KYqkMh3Lxq6svXyoCeuPBqxclEm2iV2vg95s9
+         7tqCjm1kq97GItr62aV8EDbYQfAUwTbPpra2Msv2o6ZNLskfs22t5ey17W9OF1HK1hsW
+         EcZ0+8SsCVnWTazTe+eRO4I+2mJFS0gdztmD1Khfq/PX0Mkqr9vePi5HbxekkTEy2MiV
+         IvgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvfRLDYLhU9ZAILCCF5LKIPV5/R+zBWbFkTdqOYzD+2H3WYdfrrk1PfSiQ+D7rnscJkoy8srq0Kw==@kvack.org
+X-Gm-Message-State: AOJu0YxPA7KjYZw9V6hemRtAxuE52Imt6/hjlDK9sE6UR8eDKtniwC+P
+	9e+2HLkFaUf07Br5GruJJl8zo9fCVb+2lwijqgWHaSsdD2Q7JVMytVp/1cc1LuPrH3Y=
+X-Gm-Gg: AY/fxX4xixTl6FUp+bebfT4RgoolkBb40mKfSDKZiokvX0XNxrdceLOdDaApUEop2pj
+	dQZhU34zVB/xaGPM88KeSf10gzRk8FqhTOM2kDoXwe4ZhiHmbQo//411BGdi9kijI+cZWKbGM6m
+	CC6i1RilJZs8woZ7Hrz1BQokrfF2JqdOyg02PnT+O+FA8JbmbjaoqDV/R5Mho3x86OJINweSD4I
+	pWTl46rkzRTesbqUu7lh/Pvuxo4jCVfGilBRZcIawvNXL31bdEwS53J84TbKXGy3VnEeJzs9wvP
+	v29kmrtmu/n84QE0glRphqVYB5IvfPMVrZyUnbDunuABk9TjbBTIqrTOBIsjRwBvHCcHdtyVD4o
+	TFf9pB9zpXRYGrgygbz3zUbjWWMohty/PjP1aaHq2O6rPDCvW9hIa5YypyRP4w8HBblnIeVd/AB
+	/jbIpNvXsfpQ==
+X-Google-Smtp-Source: AGHT+IGuYY97o/y/ARn4XW14juzlOImdtCYWCwBKScTq7uY6qi729cqFufMxSnRLQQHTYA8ofovkJA==
+X-Received: by 2002:a0c:f40f:0:b0:87f:b2d8:6020 with SMTP id 6a1803df08f44-88d86290cffmr27126906d6.38.1766116437011;
+        Thu, 18 Dec 2025 19:53:57 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623ffd2sm10768806d6.9.2025.12.18.19.53.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 19:53:56 -0800 (PST)
+Date: Thu, 18 Dec 2025 22:53:52 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, mhocko@suse.com,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chenridong@huaweicloud.com, mkoutny@suse.com,
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 08/28] mm: memcontrol: prevent memory cgroup release
+ in get_mem_cgroup_from_folio()
+Message-ID: <aUTMUKEkGu7cEgb2@cmpxchg.org>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <29e5c116de15e55be082a544e3f24d8ddb6b3476.1765956025.git.zhengqi.arch@bytedance.com>
+ <aUMkYlK1KhtD5ky6@cmpxchg.org>
+ <ot5kji77yk6sqsjhe3fm4hufryovs7in4bivwu6xplqc4btar3@ngl5r7clogkr>
 MIME-Version: 1.0
-References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
- <20251114190002.3311679-12-pasha.tatashin@soleen.com> <20251218215613.GA17304@ranerica-svr.sc.intel.com>
- <CA+CK2bDucySNG7QqE87bZndgjKH-QCw61romZVExD63S2iM6og@mail.gmail.com> <20251219024341.GC17600@ranerica-svr.sc.intel.com>
-In-Reply-To: <20251219024341.GC17600@ranerica-svr.sc.intel.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 18 Dec 2025 22:11:37 -0500
-X-Gm-Features: AQt7F2omSeqxNLm45MnOPfOBzp5TCJGywWDkGT9aUu_9wUiHPCem8lSZwdriBwc
-Message-ID: <CA+CK2bBg9xpkNyeWVR5+YQhpZYxSvWzB=nXV_d4D+DmzLdSB1A@mail.gmail.com>
-Subject: Re: [PATCH v2 11/13] kho: Allow kexec load before KHO finalization
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: akpm@linux-foundation.org, bhe@redhat.com, rppt@kernel.org, 
-	jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca, 
-	ebiggers@google.com, graf@amazon.com, kees@kernel.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	ricardo.neri@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8wqi89pst3tungg3uqo8ufbg3r9j379p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ot5kji77yk6sqsjhe3fm4hufryovs7in4bivwu6xplqc4btar3@ngl5r7clogkr>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A9BA20002
+X-Stat-Signature: 4f549z6amezu1pt5bzbjewsqqtwrxdcn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5AFAE80002
-X-HE-Tag: 1766113935-753680
-X-HE-Meta: U2FsdGVkX1+lCN63nQV7GiVgmZq/5BybTNTh9dprdm6wmIWps6e8wjeurGbVkdcIEobMEanN1M/CUpd8Fm8N7XFB3B3APCEypkWHNwFQYJDNXLphQx05bY+lFqY/rkLnrtbpZS3ZAwxAscwfS3q2yXwL8CyMz6Tgzz9QXEfzbNcTsJPbPiErPpNVNsy6b6AiyfZp5Fne5GfNretkjaqkxOnxra6TZdEs2yKaFpOQ4gfwp2wmip/WKBL+rHrwL1NKcPm48l/DpS8dSTMuCWvzfwv/cQfB1U7oybjuykfByRbDrlFVayK/ZiDnBaWGnDslBRNMqzPdAnz6u+LvoH0YQtBqnbaRzVwJ05nTdog4l0/oNZDmbAwmSuD0ENrgHhSpwJ0E1FK9d+MAeRYmkhWpu1of4A4TeJVRck6QZlvrLrhulYL1k3nn48lJsplxYQPK413YdTEWolAkga9W+9vAmDOEyRoFpzM7mSBVSTZ3VO1vs4Ns1cTi6AyacqHoXeU9/t+fLbyLNnimrMDm3Gu4Y5yUc3V4b2He9jl/pWHw/Z6dTWBw/XIbP5L4gJkPx+vC3gUvbiOblkGCyU3d68y+h91Df/mEzSav3HRdmc8zNplsUVuq+WNJ85QXjNMQzdKpVFGLUOuy9h7JrqJ4M2VdOrgsi8zQXlhV1WTVQE1zBxKMYb4+SK8su017UiOr7P6wr9WHwj57VFAnR3N2pp8sOfxTyeIYDFKzFFLPtTH7fIfpaJEc/XDhI/LoKPBUij+KgM/vNWcudXIWTGJOoEaIW/inX+404e0oybMCiPqJJxZnUDW6Ey/TXvREmzd81FncF7lb5Sk7WVwzk/4PVEwQa/7GiatfyABPf7kqtoSW28srRVwa9Phv3NlVd3ecFL/91KxgbwlSWIy5xD886v06iUoqSlxuz1kj9n1HSCrKF3PnYCrS5hrdDj2wXoY/1VabMWkPqOVodpIDzsmd5lz
- OjziUUtz
- eC4xjF5obptaWM+9GUH/ui0NKRJY96nb7VKWOZdkmZAZdCgmiG2iynO32mebRPea1ybVyxawNKx3indBjWIRyPF3aQt8cN7n9tL8I5o4OiuWdOTPmGimeu4nDqurkQxsjppcxvFzW9osi768p2CmFL9d9iOjkGGMkHf81o05zeqqQMdDm1OuHve+G96Q+qcFZRR+1fx3cUoL03LUcgd4651PwvoFZ4yqoJoW1uS9H5TiHFf3nJIEdjj2M9B86N/r2m7t+PYMCwVsDXeG3OL605CnIOsfpAtZWVMFbR5H1Qb626dA=
+X-HE-Tag: 1766116438-182393
+X-HE-Meta: U2FsdGVkX18exi+crt4h+Mygzvt7LupYdj3glUrco8hzMD4mhMMOlm9cobg8YmEr3T2SuCV+nGSowPjaNDy8bRMfQwxV+pTrQTuQ3yumK/3F8L8F7BPnPVFF8kXP5WBKj3ZNr/qI4fJUwmgoe+Oczoc0KKpWrIr6ruqIOs6ZNCXLUEWI9KFaXnFVHf+pKV7CcCBD/1AWx+KD+rpQoyC+Oe1hUDaYW01d3mER/8Qs9MZ+Zsv0mrdQHfBr1GRYgrsKpjSkHwEn6xQb1M0MZ12n791dCdOU1dgp0i/nbJkgUNP0e45rt8XPW8tNaSjSh8odnmQtwLr8k8Uown9cdiUBjgXYnjLXzx+Zmt9mBhYTH3btzA8+Uom7i929comw8vLHA3OPrzUWDgQO+KMuUasF5fzzdJGEPTRBt1jCscGzu6uLPervrX+nbqaAvFVFmIaJLCSXNwCt0qQNn4uscQLhau5pfSdPyh4KQkeYqj41xMkijgPDzcEgcD/M/4k/EBnCm11KNfARhKGk7yP4i5RsHiqKgdEzwhPsuO0Tm7SpRRpAnYLgMyjOla/r6pBzUdb+lFqBPGY3R17rRzT05jkuOfg28i2pGKrWU+vpYfDbri22EVn4O7NwHfGq+t47Ezyv1jftRdIqIT5GlkuYR+inJjKsZwS+p28mXgYG4WRiwF9jpqLWaPFNsVR6tQz8Co391RcJb0rNDVbDPlCbHBw3JQRoBWxMHBT8CMqaWLWdpfo4M4CHb6xL85kcOhKGdP6o9T/aq/Q/sMW5NHZNenae21KziIq2ioPg8q3sekjcuIkZznX1US/I48MgJ9BztndRYEd6ZfwI7ukNvqNbicpuSXFqX/YvfN0sd174rzIrz0KghgdHy2/0da+t/W1rGWeytDxLtFi6ar+CdVblzu2ypHphGBwILdTdQsSf+K2fFVa6hbONyu0nDspDCek/dAYOCouP1WzE5JsHJhKp08t
+ LiSfgCMO
+ TGK5ow9PyKlI1LwUwdGF3dmsj8BIcqfY8fLbRNdWW/pJVIZkFFv8lmDB9gP1m0WFQ4VkdJ3o7bdgT/P2GC1TeJJSaYyf81eLFlID+WBU5A3bkeFG0p1oQ7pV5JPsWpMe5vxIggBEtwLlsyjxpaWFNjAiAfLE///3cclIfzUhtwzYzE1h/z6Mbbv21A5Eup072Rjn0Z5ZExK51Xf0l2IsJtrezseB8X8s/9L9cAeoxqBXWGXr5QlrKN4GHgq2H7LwBIVxMtI0RDsT4N3SmjyDi2hEO26dvc97+HC84GfAluI7ebJyHRnq/HtfsMJwkFwZoOjb1xExr8VCCOGu4sRT/SKh18Nc0NQcZzDUlX+OmDLTG7NXEf5ZGMfLFWmIWPXiHsYDnRn00+LYzJn7OaZWsf2aYjbi0PIc/6a+m+3grZvjpaAYwXr7WPJkjAN8VVvhpO81FgLnlkWZ8bqSPkmdd3/+bWZGodIduwGyPX/aPpjllcBU0uhqMF5PbGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,96 +131,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 9:37=E2=80=AFPM Ricardo Neri
-<ricardo.neri-calderon@linux.intel.com> wrote:
->
-> On Thu, Dec 18, 2025 at 07:26:19PM -0500, Pasha Tatashin wrote:
-> > On Thu, Dec 18, 2025 at 4:49=E2=80=AFPM Ricardo Neri
-> > <ricardo.neri-calderon@linux.intel.com> wrote:
-> > >
-> > > On Fri, Nov 14, 2025 at 02:00:00PM -0500, Pasha Tatashin wrote:
-> > > > Currently, kho_fill_kimage() checks kho_out.finalized and returns
-> > > > early if KHO is not yet finalized. This enforces a strict ordering =
-where
-> > > > userspace must finalize KHO *before* loading the kexec image.
-> > > >
-> > > > This is restrictive, as standard workflows often involve loading th=
-e
-> > > > target kernel early in the lifecycle and finalizing the state (FDT)
-> > > > only immediately before the reboot.
-> > > >
-> > > > Since the KHO FDT resides at a physical address allocated during bo=
-ot
-> > > > (kho_init), its location is stable. We can attach this stable addre=
-ss
-> > > > to the kimage regardless of whether the content has been finalized =
-yet.
-> > > >
-> > > > Relax the check to only require kho_enable, allowing kexec_file_loa=
-d
-> > > > to proceed at any time.
-> > > >
-> > > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > > > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> > > > ---
-> > > >  kernel/liveupdate/kexec_handover.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate=
-/kexec_handover.c
-> > > > index 461d96084c12..4596e67de832 100644
-> > > > --- a/kernel/liveupdate/kexec_handover.c
-> > > > +++ b/kernel/liveupdate/kexec_handover.c
-> > > > @@ -1550,7 +1550,7 @@ int kho_fill_kimage(struct kimage *image)
-> > > >       int err =3D 0;
-> > > >       struct kexec_buf scratch;
-> > > >
-> > > > -     if (!kho_out.finalized)
-> > > > +     if (!kho_enable)
-> > > >               return 0;
-> > >
-> > > Hi Pasha,
-> > >
-> > > Using v6.19-rc1 (which has this changeset) and with:
-> > >
-> > > CONFIG_KEXEC_HANDOVER=3Dy
-> > > CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=3Dy
-> > > CONFIG_LIVEUPDATE=3Dn (i.e., nobody calling kho_finalize())
-> > > no reserve_mem=3D entries in the kernel command line
-> > >
-> > > I omit doing
-> > >
-> > > echo 1 > /sys/kernel/debug/kho/out/finalize
-> > >
-> > > before doing
-> > >
-> > > kexec -l <kernel> --initrd=3D<initrd> --commandline=3D"$(cat /proc/cm=
-dline)"
-> > > kexec -e
-> >
-> > Hi Ricardo,
-> >
-> > Thank you for reporting this bug. I created a fix here:
-> > https://lore.kernel.org/lkml/20251219002355.3323896-1-pasha.tatashin@so=
-leen.com
-> >
-> > Please let me know if it works.
->
-> Thanks for the quick reply, Pasha. Your patch does work for me (I saw you
-> will post a v2).
+On Thu, Dec 18, 2025 at 06:09:50PM -0800, Shakeel Butt wrote:
+> On Wed, Dec 17, 2025 at 04:45:06PM -0500, Johannes Weiner wrote:
+> > On Wed, Dec 17, 2025 at 03:27:32PM +0800, Qi Zheng wrote:
+> > > From: Muchun Song <songmuchun@bytedance.com>
+> > > 
+> > > In the near future, a folio will no longer pin its corresponding
+> > > memory cgroup. To ensure safety, it will only be appropriate to
+> > > hold the rcu read lock or acquire a reference to the memory cgroup
+> > > returned by folio_memcg(), thereby preventing it from being released.
+> > > 
+> > > In the current patch, the rcu read lock is employed to safeguard
+> > > against the release of the memory cgroup in get_mem_cgroup_from_folio().
+> > > 
+> > > This serves as a preparatory measure for the reparenting of the
+> > > LRU pages.
+> > > 
+> > > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> > > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> > > ---
+> > >  mm/memcontrol.c | 11 ++++++++---
+> > >  1 file changed, 8 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index 21b5aad34cae7..431b3154c70c5 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -973,14 +973,19 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
+> > >   */
+> > >  struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
+> > >  {
+> > > -	struct mem_cgroup *memcg = folio_memcg(folio);
+> > > +	struct mem_cgroup *memcg;
+> > >  
+> > >  	if (mem_cgroup_disabled())
+> > >  		return NULL;
+> > >  
+> > > +	if (!folio_memcg_charged(folio))
+> > > +		return root_mem_cgroup;
+> > > +
+> > >  	rcu_read_lock();
+> > > -	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
+> > > -		memcg = root_mem_cgroup;
+> > > +retry:
+> > > +	memcg = folio_memcg(folio);
+> > > +	if (unlikely(!css_tryget(&memcg->css)))
+> > > +		goto retry;
+> > 
+> > So starting in patch 27, the tryget can fail if the memcg is offlined,
+> 
+> offlined or on its way to free? It is css_tryget() without online.
 
-I have sent v2:
-https://lore.kernel.org/lkml/20251219030854.3527871-1-pasha.tatashin@soleen=
-.com
+Sorry, I did mean freeing.
 
->
-> From this patchset, I gather that kho_finalize() can be called multiple
-> times and in-kernel users of KHO should call it when done preparing their
-> subrees. Is that correct?
+But in the new scheme, they will happen much closer together than
+before, since charges don't hold a reference to the css anymore.
 
-This is correct, we now allow it to finalize multiple times. In kernel
-users can choose to do that during reboot, we also removed abort.
+So when css_killed_work_fn() does
 
-Pasha
+		offline_css(css);
+		css_put(css);
+
+on rmdir, that's now the css_put() we expect to drop the refcount to 0
+even with folios in circulation.
+
+The race is then:
+
+	get_mem_cgroup_from_folio()	cgroup_rmdir()
+	  memcg = folio_memcg(folio);
+            folio->objcg->memcg
+					  offline_css()
+                                            reparent_objcgs()
+					      objcg->memcg = objcg->memcg->parent
+					  css_put() -> 0
+	  !css_tryget(&memcg->css)
+
+and the retry ensures we'll look up objcg->memcg again and find the
+live parent and new owner of the folio.
 
