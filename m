@@ -4,109 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28C5D7879F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416B8D7879F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6C46B008C; Fri, 19 Dec 2025 13:34:05 -0500 (EST)
+	id A95946B0089; Fri, 19 Dec 2025 13:39:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC66D6B0092; Fri, 19 Dec 2025 13:34:05 -0500 (EST)
+	id A190C6B008A; Fri, 19 Dec 2025 13:39:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55966B0093; Fri, 19 Dec 2025 13:34:05 -0500 (EST)
+	id 8ED496B0092; Fri, 19 Dec 2025 13:39:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FC9C6B008C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:34:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 622801A0386
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:34:05 +0000 (UTC)
-X-FDA: 84237070050.03.8093B26
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9C144180013
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:34:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="IkFfdw/S";
-	spf=pass (imf24.hostedemail.com: domain of 3mppFaQgKCDccbTjbrTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3mppFaQgKCDccbTjbrTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--jiaqiyan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 788AF6B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:39:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8FA612F68
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:39:17 +0000 (UTC)
+X-FDA: 84237083154.18.B6555E7
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D87411C0012
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:39:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=r7Yag90D;
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf20.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766169556; a=rsa-sha256;
+	cv=none;
+	b=wqKszsLOYJb7+8CZ37CVD0Ta/DznWETfceVYjNqwUUWGMiDAZh5T1wYCPpTPh2vmOtv8fM
+	eN+EJfH1UTZkcXHQrKsMXNzDEBE0BA1T1gJGr7PXPGfo7TtAxWH7ze0sWoeW4TOw7sHBv3
+	t3c8hWeHKYTYimdgXrTcA1aIGjgPFXk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=r7Yag90D;
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf20.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766169243;
+	s=arc-20220608; t=1766169556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dexQnRTVXD+ocEkT49jxHkdd8wk4eYUcAZvG8cXVntY=;
-	b=KIDwW6JJjZ/RoPw7lWKk157MpioXL9GDIUuVzWykmXN79wPwCL0DzF/jSdv+IbRvuAGHAi
-	9okCCbt6v7VuD7BUNnTpyXPfGlSiwmwEJVIPEZsZqYNGuQ6L8D6zOR1vcZ+f8D5xOiropT
-	qPnCS5FJXRoSk3JbPWf8jRon9Ky3PYI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="IkFfdw/S";
-	spf=pass (imf24.hostedemail.com: domain of 3mppFaQgKCDccbTjbrTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3mppFaQgKCDccbTjbrTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--jiaqiyan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766169243; a=rsa-sha256;
-	cv=none;
-	b=nAVWYR04WxuIGfRVbcTKChCkTfdVt8oXGZZOyL4UC2h1ZHge7qnoS7i6NQI2EF7BGSm+2Z
-	uNt0fHOF1OZFLjZIZD/StudBXV8adSffrKLEumyt8ZrfhCN3DAbwVv3Vb9bhxLq2Xe4IZa
-	xbOne+lUpsAooyHZ4eeAzcyyqFmJxfE=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a07fa318fdso34297355ad.0
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:34:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766169242; x=1766774042; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dexQnRTVXD+ocEkT49jxHkdd8wk4eYUcAZvG8cXVntY=;
-        b=IkFfdw/SkxCpy0SqHBRaNztq5klHmxMoKDGdoSJJJED0Pw5UdPMJBoqHjPyuy8NVWS
-         dbKZRRMxcVP08w4svPpq7rKUEciCAvCCOt8wyYAsUHqLYGxX0ST07QBzJglQVJtPlGZR
-         FENnK79yWKrVeCC3vAVFqTDVeK06Kl3wGrqGqHhp5lbS8+XF7WVsTvfbduo/ZBcexVVw
-         gkWdsUztVvHGgxZmoHZ0Or9sAU/WKiL9TukLjIvvAIGlSVGgIAJB79eWnDVp1f1xjhG9
-         W+n+gB0Nh0zch/x+vhjK6fS2UHkNrsaDplPBySRDb4dpT0bxGvLVffmF49skrtHa0shZ
-         pl9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766169242; x=1766774042;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dexQnRTVXD+ocEkT49jxHkdd8wk4eYUcAZvG8cXVntY=;
-        b=apRdEYmAXyv+06ii8fIgTMCPnVqH/Sw/1u360C09DHJZKuD3OP+WtNJn3WQIgCxm51
-         VgeTCQJNnNGHx7FkCoD3wDOh02UjOnxIExYHUoXY+/BV9Gnu7EKU3GVJ5GsDNLcGOnxP
-         adNXuaOI3XliunJqnDT9ylBHDYxi4723dBAuxYpYBI5nBD1jFxOmtspMOYYa7mL3rorr
-         dC2wLrbPQ62N8Bhwd9OOoznTdWwQSd075p4pjYJm1QwAiCKFbEOoqi8ziygoID5/uWF6
-         e2J01Wt04KsX89/GwWODkHDyURzvnrIp8mEeFg54YXo5azi6YCC8dHrzrxZYZVc3vdxG
-         6SQA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0TV8zOLvrVaOBf3Qa1DoE5PQAL6fdiJ+8BEuniEHHN1datbq2P6oBXR8IlHer+gGPs2TxzzBOiw==@kvack.org
-X-Gm-Message-State: AOJu0YwWnpE5M3ZShOtkHbNToSbocAmuraEgdVi4SuoQL6K9KbesN9X8
-	Lmh5jFM2rlVlZw1HVex0eJz7OLlShPtbl8Ay/OuD+dLJ4VQXLLRq9QAHoaHu0dxUPyEN5nVTdKf
-	eMcQSiMTEpIMi/A==
-X-Google-Smtp-Source: AGHT+IGpZ2pGRoO+xCgyW/fLk9ttUQoZ2NHr3ntaK2W3TUshAxXp/I0SeosreA/3425khqCO+Yb9NQ3gG+U3Yw==
-X-Received: from plbmf11.prod.google.com ([2002:a17:902:fc8b:b0:2a1:5f23:7ddd])
- (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2448:b0:2a0:b7d3:1bf4 with SMTP id d9443c01a7336-2a2f2212833mr41416655ad.5.1766169242492;
- Fri, 19 Dec 2025 10:34:02 -0800 (PST)
-Date: Fri, 19 Dec 2025 18:33:46 +0000
-In-Reply-To: <20251219183346.3627510-1-jiaqiyan@google.com>
-Mime-Version: 1.0
-References: <20251219183346.3627510-1-jiaqiyan@google.com>
-X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219183346.3627510-4-jiaqiyan@google.com>
-Subject: [PATCH v2 3/3] mm/memory-failure: simplify __page_handle_poison
-From: Jiaqi Yan <jiaqiyan@google.com>
-To: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com, 
-	ziy@nvidia.com, harry.yoo@oracle.com, willy@infradead.org
-Cc: nao.horiguchi@gmail.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	william.roche@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
-	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
-	muchun.song@linux.dev, rientjes@google.com, duenwen@google.com, 
-	jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, Jiaqi Yan <jiaqiyan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: tqcgs8kfsq5qwqt4ru4wny76myyh1z6o
+	bh=dgosp44VAu2P7aU4KenxOvJYazdnvtt9NxyqcaL3Tns=;
+	b=Yaew9+dH1MxZ9hwwWiRWZrQ4JLHdwbyZRfjU8yA0VVgalLqviZkctKQPHIcgx/ZoOjC0bI
+	MtIEva5zD5Wsj+Lzvz5usoxhVceSrncfqwiFi2i5cuub9c45BnfQqlByW7cLlW5J5NMnwk
+	NaxAnxTnvyngRRG7OrDsKYM7YyYbSds=
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dXxC64LYVz1XM0pZ;
+	Fri, 19 Dec 2025 18:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1766169545; x=1768761546; bh=dgosp44VAu2P7aU4KenxOvJY
+	azdnvtt9NxyqcaL3Tns=; b=r7Yag90DdhVFdBZYPtWEBx9cmCCgXFjjEpr00iey
+	p+3zXepZk3G3B4Bwu97WCJb1s5MPa26ClqUCvQBDwMVJvuz50WwTPPwUFZe5E46U
+	ja5rUuNt4XNe/5D01S3EOF+T3RyTp91P0nuOYG2d6McW7+kHXp4wwJlozgS4PkCd
+	qp+p8gQa7mJHDXA26JtCjnOfk8C6CZ67nPnsZoyJqdw/5BjSRx3eJIxixLXL3e4l
+	vgETtAqLb8KL5bbR+McXEUlhwtoxeSkETq5HMtJtY0uulq95tLbcxqmBujTNeXEM
+	1UW3CESdF+sBn47W7phlV4LPya+8JJCzHNIyZAlMr0OSAg==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id lv8AghduxMyN; Fri, 19 Dec 2025 18:39:05 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dXxBk4GZrz1XM6Jc;
+	Fri, 19 Dec 2025 18:38:54 +0000 (UTC)
+Message-ID: <97e832b7-04a9-49cb-973a-bf9870c21c2f@acm.org>
+Date: Fri, 19 Dec 2025 10:38:53 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/36] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
+To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Will Deacon <will@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+ Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
+ Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Triplett <josh@joshtriplett.org>, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+ Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+ kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-3-elver@google.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20251219154418.3592607-3-elver@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D87411C0012
+X-Stat-Signature: xji9e5a9wmehq9aiu8x1ce6rsy3egrew
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9C144180013
-X-HE-Tag: 1766169243-475225
-X-HE-Meta: U2FsdGVkX1/rTA8bw7J74W+FysYSS+rNL+tp7nMMwOuj8teN90fegSrJ/mk4i1q6Qj2Xlcfmeck7kvsMUBInnl2ukY5D1OqSnza3vVtIjCyCWoyoLqxiw727l8wADVenvY4ewDbAFqmUis42ePvUeaqAyB62PvwtYwVUYyRCQgMk9jxpo8pT+EUxBB0BTS6WKaPLXWQZSJmcMeiLcn+0Rtc8IxNV76bEVZTFvCRJdvVNkSh3SdxT0TRbyYbzrlgACXIVUXVDgm6ZkhqZ9ZxThMHz5qM8kbqEjAvL1Mc2GYo792AKjY7zSccAerFVeraDfNu+itzz7B7Opp9uI5TWPpm5QeRPSb1qCrSBjKZejfUeFOZrd9QDAusQ37zj7YvvhReHog4Z4wdEIFJFut8ZT8fnwv3zYZiEhiIiHFaFWzcJVpVTocyFVVk5Uzv4vZVxII8UETnkZ6F56Ul/237woFXw26RPn+kTgTlC1ZwNWZ/qd6vldVreo1eF55WfgloTihx/7lCB2r6oh4XOYgpsOnSeLuA5DFrRyE8EWxgLUvZPRBgUvmT0pYo0/WQgZnoqtRAeL/P8uJce33IRFFV8+VPcW9xEyYBw5KCXiZ/vENkXsHDHYm0iNvKfYsku0dj3pkExGFNmBb/OTKqHhKvhr6Zj5dfjEvryW+m3U6oEpWcUIFE76Pp2RSSGmcEwcxvyudYxsnJYVa1DLX4/2Bj6AAvQLwv1K2DQY6nQkpzjdhe4dVTsNDEIZjn8XB4ua2/AaGvF+ceTXn9+IMpR+8YXNzRi7CuhHBew0KG6BthN5daVW/5AHpHHGr8GcnqlrdomHdqPtWOH9MCigCLoRr96kXES/eaq1cXo+qveSQK6bgy55VfkIsRBhv7hefR4bg45rfd7fwnPoK90wtO/WIIaVGEkcpgcPOX9j3fKsVZToP9nJG8ASrlFE7mj0jzFi/vOGsxIaAtc0p2FKXtwiRl
- DW7G7khb
- eVRWpc7j8jOdW+he0SdmtqkxEbrrmMWYGS0/moSpWGdKwRJL+sRMj0IMjc+KushVQ37g45kVdY0la1vBEoTHWMmtFwd1jrgdQK7PGzwMg5mwlB5wkvLhCJQMTj1TchKqcf3uEy9B5rsCdoPGaLTUHCAvNoMEVR0LSK4DzYY8fdG3HoBV8yWFp60CuksgCWVdD7OuId5xfHmurnuf2MgwAXr0/zuM6ILPyJ3QNy7JbWGHCXq65lHgN1qt7bFTOXxwI65zrmMMSfTUcD41w1YFmXzrss7Q50jlITWiRZ/rEVGXOptUpGVZgXIZeFyZoyA8Tud28r+jLb08wAXo56ou+my005z7eZV/M2TppORcc6gIqtvZfby6HCD//PVUbBwcchZfJB04+uHvscO0sn8jZjwPvAztrOReHOeiOPt83ONPSTL+a2gJ/1K1zo94gCB9LKxIj1yq+wVBE+DM2vkXLyjbeoswI5/ruztviYQsUtJjSXZjoXHnxq98XK7szvuWD2jo6f36BuvOFVWBsRIDBXxCOGVUKX0dYNN0oYaU9ZIbixTCiQvIihGxt4oG8lAvoMoqRKej0uQIMMXcUKJHV3NqS1vW4eI8RVy+i9AFiB1vGDzXbmNcsUYwj/1ZYm1fxKT6ryQhVXd3HdMUS3w0Bv4YhQQ0f4ZKXQ/X+3cjApg0Midc=
+X-HE-Tag: 1766169555-23789
+X-HE-Meta: U2FsdGVkX1+n/xjlM0CETXGJLqBpvYz7tD+z23yGIZtoXCfE2cnejEgPiG6tLGwktJBHk63xmN9e3qUf6fUFyD+lBnZJEv1fTg8WcqNesHU+bImpT298eMt31jIlSvsjsMYrNpQb3/7sqtqtcxehXKN14z7SgYfXAwgKeCOXS4soBVH4EeWL6xQc2KuWtXe5V6kK2/hihPl/ZikxBWEkjD4A7VSMDd8ZCXqWfGctRCEzB4DpScVQoH3glpvlN3fsT3EDqWwbwakOq0KD+HlVPDng/Zur0eb3HSVci63sTMcqtTH3vO8ErVrJ8wVH1CKDOFM6iuZIoXqmZ5nHtOeD3lv45LMB0j1WLVKO7SYSKpZbDZCV+G87e8wbQtX4XBQ2dG8aO5wnfZxM7e8Jo3qe1zWE92zpjw+R2e3kkXUBVLeNkM8pxSnZdufcm7lsknY7qucRctk5GPIrrRY5QfARZwhQzopKCKWp9f2Snuuel9g8MtAlZppJeZwZRAjUeZZJA8yhLSfqNah6ll8JGnRK5BeYmAd0Ln0RjaDl3jn8bifwzBhwUfiHFTMkHQrRxanZHatxK9wyspVbjKCJeaFUBoOkqb3zer0fjEq5Mbh3V6+BZ9QLTY48DjbV/jH7XlWGlxhMSjMDGQjyQpOF0IJZxdABQgatOTx4vHozmARKu/e+SoU8Ek+3H10g4s/VoSONC99wQNkI5430lBgW+IqjQCs453gR2JABFEJKp6/oMAfitnAa+qEmDYmhwlfHou4uR2DPvZm457T0sZ38n4iGIuYaTTsZBQfz3fd95bmgXRlE+DgQkXRnky1J/JMMACQRZRnZpnfH0TJ5OXhS8g6ro6CoVfSlicbgPo2vqgY1ujgd8yfG0cjXVzpUpklX9705BU0C+auJikYZzwMF0KPFaV2lAs+ALGAZSXiRgVPBVtEoQK7i7Wz1phHMHvYYAbQH59872hbYYplqD5+QGQH
+ Im6IfF4r
+ Qmf0MFUq5aL1Q7OK6I6nuEZdsIbT98DEky+VKfA7r3jwc+DMSmPDej9CGvb5AvnjAFFRnCeljh7x7dvWJS9iQDrQBP1AoQby7tA9WKqbVMaEkYLd0WCgBKpUmjGUcgxbL8Z7b30SpVSJjBbZjSWnYxrNqo39UKwsdK1Tob/5NeApBFbjb3Bu/Ah09LRQ3yRS5FYxcxv1FXRAXftMtc3NviWCIhF7Abh0DhNbTK2VkP95jLsrlVphSeJ+byDHzGrB7eFso0LSo+ZcQm2cM8DWDw04TuK8xZ9HqMlB0AgTD3SI19vX1QE2L6Mu0E5lrt07+baiaHjlGCmJTlCpZvxZxSdlZRLkbY8uVwSsidU0IuyJcRYhXNOqB7Gl9U9RgQPN2iJ0N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,87 +133,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that no HWPoison page will be given away to buddy allocator
-at the end of dissolve_free_hugetlb_folio, there is no need to
-drain_all_pages and take_page_off_buddy anymore, so remove them.
+On 12/19/25 7:39 AM, Marco Elver wrote:
+> +#if defined(WARN_CONTEXT_ANALYSIS)
+> +
+> +/*
+> + * These attributes define new context lock (Clang: capability) types.
+> + * Internal only.
+> + */
 
-Also make __page_handle_poison return either 0 for success or
-negative for failure, following the convention for functions
-that perform an action.
+How can macros be "internal only" that are defined in a header file that
+will be included by almost all kernel code? Please consider changing
+"internal only" into something that is more clear, e.g. "should only be
+used in the macro definitions in this header file".
 
-Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
----
- mm/memory-failure.c | 31 +++++--------------------------
- 1 file changed, 5 insertions(+), 26 deletions(-)
+> +/*
+> + * The below are used to annotate code being checked. Internal only.
+> + */
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index d204de6c9792a..54ea840ded162 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -164,33 +164,12 @@ static DEFINE_MUTEX(pfn_space_lock);
- 
- /*
-  * Return values:
-- *   1:   the page is dissolved (if needed) and taken off from buddy,
-- *   0:   the page is dissolved (if needed) and not taken off from buddy,
-+ *   = 0: the page is dissolved (if needed)
-  *   < 0: failed to dissolve.
-  */
- static int __page_handle_poison(struct page *page)
- {
--	int ret;
--
--	/*
--	 * zone_pcp_disable() can't be used here. It will
--	 * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() might hold
--	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
--	 * optimization is enabled. This will break current lock dependency
--	 * chain and leads to deadlock.
--	 * Disabling pcp before dissolving the page was a deterministic
--	 * approach because we made sure that those pages cannot end up in any
--	 * PCP list. Draining PCP lists expels those pages to the buddy system,
--	 * but nothing guarantees that those pages do not get back to a PCP
--	 * queue if we need to refill those.
--	 */
--	ret = dissolve_free_hugetlb_folio(page_folio(page));
--	if (!ret) {
--		drain_all_pages(page_zone(page));
--		ret = take_page_off_buddy(page);
--	}
--
--	return ret;
-+	return dissolve_free_hugetlb_folio(page_folio(page));
- }
- 
- static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, bool release)
-@@ -200,7 +179,7 @@ static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, boo
- 		 * Doing this check for free pages is also fine since
- 		 * dissolve_free_hugetlb_folio() returns 0 for non-hugetlb folios as well.
- 		 */
--		if (__page_handle_poison(page) <= 0)
-+		if (__page_handle_poison(page) < 0)
- 			/*
- 			 * We could fail to take off the target page from buddy
- 			 * for example due to racy page allocation, but that's
-@@ -1174,7 +1153,7 @@ static int me_huge_page(struct page_state *ps, struct page *p)
- 		 * subpages.
- 		 */
- 		folio_put(folio);
--		if (__page_handle_poison(p) > 0) {
-+		if (!__page_handle_poison(p)) {
- 			page_ref_inc(p);
- 			res = MF_RECOVERED;
- 		} else {
-@@ -2067,7 +2046,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 	 */
- 	if (res == 0) {
- 		folio_unlock(folio);
--		if (__page_handle_poison(p) > 0) {
-+		if (!__page_handle_poison(p)) {
- 			page_ref_inc(p);
- 			res = MF_RECOVERED;
- 		} else {
--- 
-2.52.0.322.g1dd061c0dc-goog
+Same comment here about "internal only".
 
+> +/**
+> + * context_lock_struct() - declare or define a context lock struct
+> + * @name: struct name
+> + *
+> + * Helper to declare or define a struct type that is also a context lock.
+> + *
+> + * .. code-block:: c
+> + *
+> + *	context_lock_struct(my_handle) {
+> + *		int foo;
+> + *		long bar;
+> + *	};
+> + *
+> + *	struct some_state {
+> + *		...
+> + *	};
+> + *	// ... declared elsewhere ...
+> + *	context_lock_struct(some_state);
+> + *
+> + * Note: The implementation defines several helper functions that can acquire
+> + * and release the context lock.
+> + */
+> +# define context_lock_struct(name, ...)									\
+> +	struct __ctx_lock_type(name) __VA_ARGS__ name;							\
+> +	static __always_inline void __acquire_ctx_lock(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_lock(var) { }	\
+> +	static __always_inline void __acquire_shared_ctx_lock(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_lock(var) { } \
+> +	static __always_inline bool __try_acquire_ctx_lock(const struct name *var, bool ret)		\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_lock(1, var)	\
+> +	{ return ret; }											\
+> +	static __always_inline bool __try_acquire_shared_ctx_lock(const struct name *var, bool ret)	\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_lock(1, var) \
+> +	{ return ret; }											\
+> +	static __always_inline void __release_ctx_lock(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_ctx_lock(var) { }	\
+> +	static __always_inline void __release_shared_ctx_lock(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_lock(var) { } \
+> +	static __always_inline void __assume_ctx_lock(const struct name *var)				\
+> +		__attribute__((overloadable)) __assumes_ctx_lock(var) { }				\
+> +	static __always_inline void __assume_shared_ctx_lock(const struct name *var)			\
+> +		__attribute__((overloadable)) __assumes_shared_ctx_lock(var) { }			\
+> +	struct name
+
+I'm concerned that the context_lock_struct() macro will make code harder
+to read. Anyone who encounters the context_lock_struct() macro will have
+to look up its definition to learn what it does. I propose to split this
+macro into two macros:
+* One macro that expands into "__ctx_lock_type(name)".
+* A second macro that expands into the rest of the above macro.
+
+In other words, instead of having to write 
+context_lock_struct(struct_name, { ... }); developers will have to write
+
+struct context_lock_type struct_name {
+     ...;
+};
+context_struct_helper_functions(struct_name);
+
+My opinion is that the alternative that I'm proposing is easier to read.
+Additionally, it doesn't break existing tools that support jumping from
+the name of a struct to its definition, e.g. ctags and etags.
+
+> +config WARN_CONTEXT_ANALYSIS_ALL
+> +	bool "Enable context analysis for all source files"
+> +	depends on WARN_CONTEXT_ANALYSIS
+> +	depends on EXPERT && !COMPILE_TEST
+> +	help
+> +	  Enable tree-wide context analysis. This is likely to produce a
+> +	  large number of false positives - enable at your own risk.
+> +
+> +	  If unsure, say N.
+
+Why !COMPILE_TEST?
+
+Thanks,
+
+Bart.
 
