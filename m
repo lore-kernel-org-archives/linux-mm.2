@@ -4,114 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C06CD767D4
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F69D767DB
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:17:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807936B0088; Fri, 19 Dec 2025 06:04:49 -0500 (EST)
+	id E8BD66B0088; Fri, 19 Dec 2025 06:17:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B1DA6B0089; Fri, 19 Dec 2025 06:04:49 -0500 (EST)
+	id E6BF76B0089; Fri, 19 Dec 2025 06:17:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B46D6B008A; Fri, 19 Dec 2025 06:04:49 -0500 (EST)
+	id D6AD66B008A; Fri, 19 Dec 2025 06:17:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 525B06B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:04:49 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D90C014052F
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:04:48 +0000 (UTC)
-X-FDA: 84235937856.15.AD82AD4
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B7DD68001C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:04:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=lZjo4bWD;
-	spf=pass (imf30.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766142287;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C44646B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:17:20 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78C8EC0736
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:17:20 +0000 (UTC)
+X-FDA: 84235969440.02.3DA5A72
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 949831C0009
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:17:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766143038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gv71NRDHP4NwL1A7ty5Xg2gOmk434WqlFyJQAH8wse8=;
-	b=VtgMEaAI7Jzk4/CuMxEa1EKqXYMj0pTZgYoVpw9u6+0cBEWtK4G5gw/VQTYQku3pAIUFTn
-	RKcu8fnI+5J+++o/9i1OKfwS1l/uDVq1UeptaQyR1r7dyMIKfxbqL5ZNp7Y16j0jQQUnjQ
-	JA20D1K981gGlm1UNXQdDzFRlescKl0=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=lZjo4bWD;
-	spf=pass (imf30.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766142287; a=rsa-sha256;
-	cv=pass;
-	b=stgeEU750Z3gQGyBCapkmnXALO7m1C2DQO5JuHNOAI9BXlx2a8GYD+PdDCoX+j+CiR7s1u
-	0/CCswoq6NgPtRx0zEfqcexAoXZKO0iEOEUGBIf9qdFlBRsnc4LvYDaUlmn/r08eWl/9q1
-	HdnPRhdazUr7cZHKaeBfoDTEoDXP12w=
-ARC-Seal: i=1; a=rsa-sha256; t=1766142279; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZSlsFDFFsJvPLLnQQCHxF8tfZfCR4g+3cNEvbxWarDPFRI8R64eaOYpfpfUgmIUIbxQ2aJbBa7w/YCTyBJMsEmoV3x4oMNiB/ldL/BR7vtM0BSZ2+VSwJ3Ua/E3GQJlR2blUDWBPunrSknCpc/tHwo9wGWMCVntgRiPNkdDnjbE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766142279; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Gv71NRDHP4NwL1A7ty5Xg2gOmk434WqlFyJQAH8wse8=; 
-	b=EmMZvdNwn82rr1S3D+HJcHDxRhDd+12541oSC7jghDQONM9wyA+fot4pRY86XQ99YVWtNXJw53NHQd9hIIMivrgf37WYYdx9nMkV84/9WAvChcgrHX04GJJhanaqkrJ9v4i7hkxsWAdGkfVBVG2iSxS50V9jj+BE1PfzmM0yWco=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766142279;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Gv71NRDHP4NwL1A7ty5Xg2gOmk434WqlFyJQAH8wse8=;
-	b=lZjo4bWDDFzAxA7WEmBQvGieBo05qkO6MuunLyJQNkdMT32zfCEUfsL9OfUsiH6r
-	1De+vonQHwtyryg6eylAbe+OdqxBGUGGtXMHJZxL2ov1ourY5HUvrmB8eZOKRP6GPKy
-	kKABT/CKcZB6tqheCsojIwhALyqVxUAsPq5cJvBw=
-Received: by mx.zohomail.com with SMTPS id 1766142276713127.65339699310107;
-	Fri, 19 Dec 2025 03:04:36 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v4] io: add io_pgtable abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
-Date: Fri, 19 Dec 2025 08:04:17 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Will Deacon <will@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Joerg Roedel <joro@8bytes.org>,
+	 in-reply-to:in-reply-to:references:references;
+	bh=XGAwITMqnfo+p/LgVP07Bzd4VLm5LwJwlkoPClnUyO0=;
+	b=7YjulUk1V49Ig5Xec/TrEY8WwZZZk+sjFiIQp1ZFbtjPzajNmP7rf63fbJydNfINY2juWD
+	s7UYLjXHf6cjtZrLU7wnunryrV9TsQZNcQQmTfW2EY8phHxdPTrIU8Rq+JRA3ApbNKvZHA
+	HdHtpQgb31QMqwpWhvuEY1n54Rk5890=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766143038; a=rsa-sha256;
+	cv=none;
+	b=fdx7/ysfOXeATQCHjiJdDc72Vwu8/bG/OgH8rPmWHAioC0LvTrRQ1Mz0Enq+rCVgNel2N/
+	q9FmAuscEtpF97vOSmMOSokDBy0s4xDlCBDHZXbafFE9+Pdahi1DZRGlv4DRKy7n/UxBx/
+	Hg716os+CHnDsnID/T3mtf3iTwsqqV4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 49022FEC;
+	Fri, 19 Dec 2025 03:17:10 -0800 (PST)
+Received: from [10.57.93.157] (unknown [10.57.93.157])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF1923F73F;
+	Fri, 19 Dec 2025 03:17:15 -0800 (PST)
+Message-ID: <4e191cba-a009-4354-bf0e-720f1a761a42@arm.com>
+Date: Fri, 19 Dec 2025 11:17:13 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
+Content-Language: en-GB
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Uladzislau Rezki <urezki@gmail.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- iommu@lists.linux.dev,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <63063977-BA16-4F00-AFBA-8DD6409902E1@collabora.com>
-References: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+ Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Vishal Moola <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20251216211921.1401147-1-urezki@gmail.com>
+ <20251216211921.1401147-2-urezki@gmail.com>
+ <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com> <aUKb1bL7CUcCWi8V@milan>
+ <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
+ <3d2fd706-917e-4c83-812b-73531a380275@arm.com>
+ <8490ce0f-ef8d-4f83-8fe6-fd8ac21a4c75@arm.com>
+ <307a3cb2-64c6-4671-9d50-2bb18d744bc0@arm.com>
+ <17bdf357-251a-4b95-8cba-6495ce11ceb7@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <17bdf357-251a-4b95-8cba-6495ce11ceb7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Stat-Signature: mt3rxrbmu6hids916bpg36fmnihc1wdm
+X-Stat-Signature: wb3umt1wsymowytgf74ru9ykcgunefaa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7DD68001C
-X-HE-Tag: 1766142285-757346
-X-HE-Meta: U2FsdGVkX19L4O5SdukDO4fUwuXRs16aq/O0W/5/fdZ4BL3fo1UUnuINlTG75gTS7I4ZsqjgNRm1Q7oh6nvvXpeu12UoRz0Ve0HisifIP0hgKtOkvNLNQ7LJIsoT7nHnf4cPLcaXJPHCHAjxcR8ktUesAik9q2h74xlCktVF2zv6nDUon5RyGmEG02XXBUMCVti1ImPJebFFpMOkz1DImVOIlZiyV8LxeX6Fx1C0eu5svYuWPLhBCrq537Mgq8UCE28iCEkv/GPgfZe/fblmaFIa/a2T6kvCF848bIJlm2wO+XyBCgtDs4N19e20rfDYZiG/UEFyEF6fwFlTMoXUciKsPf8zAzTd9y5o7QFTtMKnK9XNLejMTuxarRAuNS83rmyzb6vZSkLv2e86YRWLyQsEFs4ZCY+AmBTeT9V748XSasMIhHHUtfYbMcXBml+n/QzmfIzB/dF3+R4lnUykok9SyO/Ir1xMGxBo5TqEbDGmf/zVQUGPxcfO+JdTa8ypnaz1fcsTr6FoUNR9+vUvsdYb1CscNBrZI/bcqzM25EfnA37QbigJYIC2KimMs4sJEP/iYGr3Iz7cYDkImDC6Zi8GD3qpVeh9F7GugTY7KUyonVFV+NBprvNyzBnSJfFTGw/xN9AcQpv0im4FqiaFhC/Dr5+nLiy28bR003GvDbu1NVkXzTOcUAGB74pKaUnUQ3F9afRVNPePv/Fsepq55rGMqaO3almKSl+jdlYyQ9zIvk+EyVya1baely4BTSM/iVfBpkzGnFBSZWdAcT1w41v66d0RDV2VBA/hECbhmxs7iJ18oxnmjE4HN5+XC5sEY7uXS8CNG92r8HeGb1OsTwnIZwn6oAjDZV4vCS8+E7wOdwTwuvIcedWSLRlWGZQSgp/2JbAhV1AfmPrA3p/eIlCkTQDFsU8L0r3fFJMKfFkRXIqyQiiAprb91VrTjS6Hy/Znb+V0hqVa613stex
- I1K6jnhu
- 64Ku7ZTuoLhIbrND21x9Wy7EClyy44TnSxTsAE9xK57b+xw87PK+JtHn/QEP9HhJ6f1hRSzfNuVDM8r+xSItr5gDOFxxcJolx49yiRq44EmLAQUKIzsMfOX2EGaAPM+VsOuF8JflkTlcaKueKJEC24MDrucAwgxTuwYEM04y/kmMn6MMvJ372GUFfbDnWDHmDzvUAygYFkZkju5haIvTvuZ5XS7Zkw2Mx5oaJ44ujXIylyi/+c6T2iPeBXvoCEaIHmaNf4Ttsxk6N9+ASpoHLHjRy96kmAJjMyCVkOGTWvIgJyM6r9PcFm2SdPj3WZNhxiC3jCSw3/AW+k3K6E+dHj4TrqWAvG3anmenhMVUYhEkytei8UkYULLcia/bxrTfiGihQddZSy+PzB8k1hymm+d6YEW1mssSvkSGNn98QXrARK034QMf7KBrbRyYZL76VX2e5X6/a8XjCqqBjXs6YhKaae/Th+VD/K/5GJ4+8HVBSlUDTqOoa5xef76m/vbBgNtv1n/Cxghuvz0FZYPuPsRwVzs6Go4ULluSJvVGksIU5Ndw6Ff2KfLRA7bxHDWo/z4+1VpspB5UJQdMtokM1Q14PY6e/CNgzAgU5aS5dr+gyLzobWZmPDgg4BkvDPX0MUdVV
+X-Rspamd-Queue-Id: 949831C0009
+X-HE-Tag: 1766143038-797503
+X-HE-Meta: U2FsdGVkX1/mNmgiNoaJHJCWf+bgMZqs0GN30W6TkqQ38OzyNaYA/0aP1r0TZt2OlQF4S3aKYV+acqnwM4pCRhUu1nfJzGOLrUs8OTewqMW8UqmPK2Kocn9yHqloFPiwpHTLoFKUlts3Dhuv3lasKOL6RS+OjXatmOhBa9d2mcOlekjHhg5w9Pldz9g/HRWcQpP9zOwFLoYHLqv3bFDKz0vYFykeSE8Z/N1jKY2eGS65Me/bNDJJV0drOZQOZTV64kjtMNCddVJoTZhoSwgQqsLPHzFI772ux6k5gN2qbbV4HlrlVD7S4RoptjyRrRPrmEwoaIWHHxLU/U/BSgwlsACLplJkFswlc1Kt7vroeD/65Bf7oeInvsyXr53IA1qjz+gWqNbDXAvmj7S9iLb2JXXIMVvTc6r+tZErlXGoTMM18yGzKaQ8MQQNWD4gOrRvPXsbiJL+pMZeCktF6LdW4zVS7U9Y7Xu7fODzO3IeanZuaYYCHp63bIsjCkfz5KniJjKM5TQFFHvV8al1VhXiCScSxOuPf1f6MkxVxgYcPhB4728hWlgIGNHPlVRyvsS76nFBMWHe7+zHmm+1LKLOV1i4Aer6XXzDfdrmnD2bCv3et+VotLx8atdp/O+O7kUg31RvpaNTmfamK0s93kmjiD+GVhxMdL3ZqWDEhroo1uBcC51Z+eSyhIzgVbNp8Cqa5ImdKkniXQS/PhR44qJYHYze1WOkOYYhM+qZR2i4NjTTshb/afuc9V5yzf5/TWtIcuqYUUUbCJscKneXci651ggn43+weASgYUwtqCeWY/Q8jyKtTSSzHWWaDq7ru6+D0hgA8lyQP74bh0jGnUM5O9o9SR6nbQFVBu4Y80Kslbl3DqXzn6tPM7hq4EZ8g8bCQqDJ3ksyqUamFk8wMI++/lmqyqo45POK7DajB2Gq6IXUNk/sVtCsJuEiq+wWOywMxfLgOGTsj4/SIzqlfBR
+ Es79tQhs
+ 3ButO8EGEm1H6FiSmrSmocgE9ZFJ7f8KRPT3lzx9DxGZEGyL7FGST8w+0AMD4wZVyDUIWq9TftRAfWC9f9PrMPl2dyrdrgUZev9JGfJ+pOZvPp8uXwHpEkkYsJuAxPSByphl7WDYEjcMWNHw3DQayeaSX11Am+Rn5eXxciyHhYjJL+7qz9y0lohW8qjZD459eVs1tk3Sg9zw4P0HE5Gq9xLIW+jKz4MXKZSzTwEnwu7XUOmqHNfasdcvRmJYbG7s0mGTbRdzxtU/eo7pY2QURDLaSfe6AQLybj1Pn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,461 +96,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alice,
+On 19/12/2025 08:33, David Hildenbrand (Red Hat) wrote:
+> On 12/18/25 12:56, Ryan Roberts wrote:
+>> + David, Lorenzo, Matthew
+>>
+>> Hoping someone might be able to explain to me how this all really works! :-|
+>>
+>> On 18/12/2025 11:53, Ryan Roberts wrote:
+>>> On 18/12/2025 04:55, Dev Jain wrote:
+>>>>
+>>>> On 17/12/25 8:50 pm, Ryan Roberts wrote:
+>>>>> On 17/12/2025 12:02, Uladzislau Rezki wrote:
+>>>>>>> On 16/12/2025 21:19, Uladzislau Rezki (Sony) wrote:
+>>>>>>>> Introduce a module parameter to enable or disable the large-order
+>>>>>>>> allocation path in vmalloc. High-order allocations are disabled by
+>>>>>>>> default so far, but users may explicitly enable them at runtime if
+>>>>>>>> desired.
+>>>>>>>>
+>>>>>>>> High-order pages allocated for vmalloc are immediately split into
+>>>>>>>> order-0 pages and later freed as order-0, which means they do not
+>>>>>>>> feed the per-CPU page caches. As a result, high-order attempts tend
+>>>>>>>> to bypass the PCP fastpath and fall back to the buddy allocator that
+>>>>>>>> can affect performance.
+>>>>>>>>
+>>>>>>>> However, when the PCP caches are empty, high-order allocations may
+>>>>>>>> show better performance characteristics especially for larger
+>>>>>>>> allocation requests.
+>>>>>>> I wonder if a better solution would be "allocate order-0 if available in
+>>>>>>> pcp,
+>>>>>>> else try large order, else fallback to order-0" Could that provide the
+>>>>>>> best of
+>>>>>>> all worlds without needing a configuration knob?
+>>>>>>>
+>>>>>> I am not sure, to me it looks like a bit odd.
+>>>>> Perhaps it would feel better if it was generalized to "first try allocation
+>>>>> from
+>>>>> PCP list, highest to lowest order, then try allocation from the buddy, highest
+>>>>> to lowest order"?
+>>>>>
+>>>>>> Ideally it would be
+>>>>>> good just free it as high-order page and not order-0 peaces.
+>>>>> Yeah perhaps that's better. How about something like this (very lightly tested
+>>>>> and no performance results yet):
+>>>>>
+>>>>> (And I should admit I'm not 100% sure it is safe to call free_frozen_pages()
+>>>>> with a contiguous run of order-0 pages, but I'm not seeing any warnings or
+>>>>> memory leaks when running mm selftests...)
+>>>>
+>>>> Wow I wasn't aware that we can do this. I see that free_hotplug_page_range() in
+>>>> arm64/mmu.c already does this - it computes order from size and passes it to
+>>>> __free_pages().
+>>>
+>>> Hmm that looks dodgy to me. But I'm not sure I actually understand what is going
+>>> on...
+>>>
+>>> Prior to looking at this yesterday, my understanding was this: At the struct
+>>> page level, you can either allocate compond or non-compound. order-0 is
+>>> non-compound by definition. A high-order non-compound page is just a contiguous
+>>> set of order-0 pages, each with individual reference counts and other meta data.
+> 
+> Not quite. A high-order non-compound allocation will only use the refcount of
+> page[0].
+> 
+> When not returning that memory in the same order to the buddy, we first have to
+> split that high-order allocation. That will initialize the refcounts and split
+> page-owner data, alloc tag tracking etc.
 
-> On 19 Dec 2025, at 07:50, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> From: Asahi Lina <lina+kernel@asahilina.net>
->=20
-> This will be used by the Tyr driver to create and modify the page =
-table
-> of each address space on the GPU. Each time a mapping gets created or
-> removed by userspace, Tyr will call into GPUVM, which will figure out
-> which calls to map_pages and unmap_pages are required to map the data =
-in
-> question in the page table so that the GPU may access those pages when
-> using that address space.
->=20
-> The Rust type wraps the struct using a raw pointer rather than the =
-usual
-> Opaque+ARef approach because Opaque+ARef requires the target type to =
-be
-> refcounted.
->=20
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v4:
-> - Rename prot::PRIV to prot::PRIVILEGED
-> - Adjust map_pages to return the length even on error.
-> - Explain return value in docs of map_pages and unmap_pages.
-> - Explain in map_pages that the caller must explicitly flush the TLB
->  before accessing the resulting mapping.
-> - Add a safety requirement that access to a given range is required to
->  be exclusive.
-> - Reword comment on NOOP_FLUSH_OPS.
-> - Rebase on v6.19-rc1 and pick up tags.
-> - Link to v3: =
-https://lore.kernel.org/r/20251112-io-pgtable-v3-1-b00c2e6b951a@google.com=
+Ahha, yes, this all makes sense now thanks!
 
->=20
-> Changes in v3:
-> - Almost entirely rewritten from scratch.
-> - Link to v2: =
-https://lore.kernel.org/all/20250623-io_pgtable-v2-1-fd72daac75f1@collabor=
-a.com/
-> ---
-> rust/bindings/bindings_helper.h |   3 +-
-> rust/kernel/io.rs               |   1 +
-> rust/kernel/io/pgtable.rs       | 278 =
-++++++++++++++++++++++++++++++++++++++++
-> 3 files changed, 281 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
-> index =
-a067038b4b422b4256f4a2b75fe644d47e6e82c8..1b05a5e4cfb4780fdc27813d708a8f1a=
-6a2d9913 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -56,9 +56,10 @@
-> #include <linux/fdtable.h>
-> #include <linux/file.h>
-> #include <linux/firmware.h>
-> -#include <linux/interrupt.h>
-> #include <linux/fs.h>
-> #include <linux/i2c.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io-pgtable.h>
-> #include <linux/ioport.h>
-> #include <linux/jiffies.h>
-> #include <linux/jump_label.h>
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index =
-98e8b84e68d11ef74b2026d8c3d847a127f4672d..88253158448cbf493ca200a87ef9ba95=
-8255e761 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -10,6 +10,7 @@
-> };
->=20
-> pub mod mem;
-> +pub mod pgtable;
-> pub mod poll;
-> pub mod resource;
->=20
-> diff --git a/rust/kernel/io/pgtable.rs b/rust/kernel/io/pgtable.rs
-> new file mode 100644
-> index =
-0000000000000000000000000000000000000000..11096acfa41d45125e866876e41459a3=
-47e9afe6
-> --- /dev/null
-> +++ b/rust/kernel/io/pgtable.rs
-> @@ -0,0 +1,278 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! IOMMU page table management.
-> +//!
-> +//! C header: [`include/io-pgtable.h`](srctree/include/io-pgtable.h)
-> +
-> +use core::{
-> +    marker::PhantomData,
-> +    ptr::NonNull, //
-> +};
-> +
-> +use crate::{
-> +    alloc,
-> +    bindings,
-> +    device::{Bound, Device},
-> +    devres::Devres,
-> +    error::to_result,
-> +    io::PhysAddr,
-> +    prelude::*, //
-> +};
-> +
-> +use bindings::io_pgtable_fmt;
-> +
-> +/// Protection flags used with IOMMU mappings.
-> +pub mod prot {
-> +    /// Read access.
-> +    pub const READ: u32 =3D bindings::IOMMU_READ;
-> +    /// Write access.
-> +    pub const WRITE: u32 =3D bindings::IOMMU_WRITE;
-> +    /// Request cache coherency.
-> +    pub const CACHE: u32 =3D bindings::IOMMU_CACHE;
-> +    /// Request no-execute permission.
-> +    pub const NOEXEC: u32 =3D bindings::IOMMU_NOEXEC;
-> +    /// MMIO peripheral mapping.
-> +    pub const MMIO: u32 =3D bindings::IOMMU_MMIO;
-> +    /// Privileged mapping.
-> +    pub const PRIVILEGED: u32 =3D bindings::IOMMU_PRIV;
-> +}
-> +
-> +/// Represents a requested `io_pgtable` configuration.
-> +pub struct Config {
-> +    /// Quirk bitmask (type-specific).
-> +    pub quirks: usize,
-> +    /// Valid page sizes, as a bitmask of powers of two.
-> +    pub pgsize_bitmap: usize,
-> +    /// Input address space size in bits.
-> +    pub ias: u32,
-> +    /// Output address space size in bits.
-> +    pub oas: u32,
-> +    /// IOMMU uses coherent accesses for page table walks.
-> +    pub coherent_walk: bool,
-> +}
-> +
-> +/// An io page table using a specific format.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer references a valid io page table.
-> +pub struct IoPageTable<F: IoPageTableFmt> {
-> +    ptr: NonNull<bindings::io_pgtable_ops>,
-> +    _marker: PhantomData<F>,
-> +}
-> +
-> +// SAFETY: `struct io_pgtable_ops` is not restricted to a single =
-thread.
-> +unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
-> +// SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
-> +unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
-> +
-> +/// The format used by this page table.
-> +pub trait IoPageTableFmt: 'static {
-> +    /// The value representing this format.
-> +    const FORMAT: io_pgtable_fmt;
-> +}
-> +
-> +impl<F: IoPageTableFmt> IoPageTable<F> {
+> 
+>>> A compound page is one where all the pages are tied together and managed as one
+>>> - the meta data is stored in the head page and all the tail pages point to the
+>>> head (this concept is wrapped by struct folio).
+>>>
+>>> But after looking through the comments in page_alloc.c, it would seem that a
+>>> non-compound high-order page is NOT just a set of order-0 pages, but they still
+>>> share some meta data, including a shared refcount?? alloc_pages() will return
+>>> one of these things, and __free_pages() requires the exact same unit to be
+>>> provided to it.
+> 
+> Right.
+> 
+>>>
+>>> vmalloc calls alloc_pages() to get a non-compound high-order page, then calls
+>>> split_page() to convert to a set of order-0 pages. See this comment:
+>>>
+>>> /*
+>>>   * split_page takes a non-compound higher-order page, and splits it into
+>>>   * n (1<<order) sub-pages: page[0..n]
+>>>   * Each sub-page must be freed individually.
+>>>   *
+>>>   * Note: this is probably too low level an operation for use in drivers.
+>>>   * Please consult with lkml before using this in your driver.
+>>>   */
+>>> void split_page(struct page *page, unsigned int order)
+>>>
+>>> So just passing all the order-0 pages directly to __free_pages() in one go is
+>>> definitely not the right thing to do ("Each sub-page must be freed
+>>> individually"). They may have different reference counts so you can only
+>>> actually free the ones that go to zero surely?
+> 
+> Yes.
+> 
+>>>
+>>> But it looked to me like free_frozen_pages() just wants a naturally aligned
+>>> power-of-2 number of pages to free, so my patch below is decrementing the
+>>> refcount on each struct page and accumulating the ones where the refcounts goto
+>>> zero into suitable blocks for free_frozen_pages().
+>>>
+>>> So I *think* my patch is correct, but I'm not totally sure.
+> 
+> Free in the granularity you allocated. :)
 
-I don=E2=80=99t see a reason to keep struct Foo and impl Foo separate.
+Or in order-0 chunks if split_page() was called... Yes, I understand the
+requirements of the current __free_pages() and co, but my questions are all
+intended to help me figure out if we can do something better...
 
-IMHO, these should always be together, as the first thing one wants
-to read after a type declaration is its implementation.
+background:
 
-> +    /// Create a new `IoPageTable` as a device resource.
-> +    #[inline]
-> +    pub fn new(
-> +        dev: &Device<Bound>,
-> +        config: Config,
-> +    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
-> +        // SAFETY: Devres ensures that the value is dropped during =
-device unbind.
-> +        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
-> +    }
-> +
-> +    /// Create a new `IoPageTable`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// If successful, then the returned value must be dropped before =
-the device is unbound.
-> +    #[inline]
-> +    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> =
-Result<IoPageTable<F>> {
-> +        let mut raw_cfg =3D bindings::io_pgtable_cfg {
-> +            quirks: config.quirks,
-> +            pgsize_bitmap: config.pgsize_bitmap,
-> +            ias: config.ias,
-> +            oas: config.oas,
-> +            coherent_walk: config.coherent_walk,
-> +            tlb: &raw const NOOP_FLUSH_OPS,
-> +            iommu_dev: dev.as_raw(),
-> +            // SAFETY: All zeroes is a valid value for `struct =
-io_pgtable_cfg`.
-> +            ..unsafe { core::mem::zeroed() }
-> +        };
-> +
-> +        // SAFETY:
-> +        // * The raw_cfg pointer is valid for the duration of this =
-call.
-> +        // * The provided `FLUSH_OPS` contains valid function =
-pointers that accept a null pointer
-> +        //   as cookie.
-> +        // * The caller ensures that the io pgtable does not outlive =
-the device.
+In v6.18 vmalloc would (mostly) allocate order-0 pages then __free_page() on
+each order-0 page. In v6.19-rc1 Vishal has added a patch that allocates a set of
+high-order non-compound pages to satisfy the request then calls split_page() for
+each one. We end up with order-0 pages as before that get freed that same way as
+before. This is intended to 1) speed up allocation and 2) prevent fragmentation
+because the lifetimes of larger contiguous chunks are tied together.
 
-We should probably tailor the sentence above for Devres?
+But for some (unrealistic?) allocation patterns it turns out there is a big
+perforamcne regression; the large allocation is always going to the buddy
+whereas before it could usually get it's order-0 pages from the pcp list.
 
-> +        let ops =3D unsafe {
-> +            bindings::alloc_io_pgtable_ops(F::FORMAT, &mut raw_cfg, =
-core::ptr::null_mut())
-> +        };
+So I'm looking for ways to fix it, and have a patch that not only fixes the
+regression but improves vmalloc performance 2x-5x in some cases.
 
-I=E2=80=99d add a blank here.
+The patch basically looks for power-of-2 sized and aligned contiguous chunks of
+order-0 pages whose refcounts were all decremented to 0 then calls
+free_frozen_pages() for each of those chunks. So instead of posting each order-0
+page into the pcp or buddy, we post the power-of-2 chunk.
 
-> +        // INVARIANT: We successfully created a valid page table.
-> +        Ok(IoPageTable {
-> +            ptr: NonNull::new(ops).ok_or(ENOMEM)?,
-> +            _marker: PhantomData,
-> +        })
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct =
-io_pgtable_ops`.
-> +    #[inline]
-> +    pub fn raw_ops(&self) -> *mut bindings::io_pgtable_ops {
-> +        self.ptr.as_ptr()
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct io_pgtable`.
-> +    #[inline]
-> +    pub fn raw_pgtable(&self) -> *mut bindings::io_pgtable {
-> +        // SAFETY: The io_pgtable_ops of an io-pgtable is always the =
-ops field of a io_pgtable.
-> +        unsafe { kernel::container_of!(self.raw_ops(), =
-bindings::io_pgtable, ops) }
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct =
-io_pgtable_cfg`.
-> +    #[inline]
-> +    pub fn raw_cfg(&self) -> *mut bindings::io_pgtable_cfg {
-> +        // SAFETY: The `raw_pgtable()` method returns a valid =
-pointer.
-> +        unsafe { &raw mut (*self.raw_pgtable()).cfg }
-> +    }
-> +
-> +    /// Map a physically contiguous range of pages of the same size.
-> +    ///
-> +    /// Even if successful, this operation may not map the entire =
-range. In that case, only a
-> +    /// prefix of the range is mapped, and the returned integer =
-indicates its length in bytes. In
-> +    /// this case, the caller will usually call `map_pages` again for =
-the remaining range.
-> +    ///
-> +    /// The returned [`Result`] indicates whether an error was =
-encountered while mapping pages.
-> +    /// Note that this may return a non-zero length even if an error =
-was encountered. The caller
-> +    /// will usually [unmap the relevant pages](Self::unmap_pages) on =
-error.
-> +    ///
-> +    /// The caller must flush the TLB before using the pgtable to =
-access the newly created mapping.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * No other io-pgtable operation may access the range `iova .. =
-iova+pgsize*pgcount` while
-> +    ///   this `map_pages` operation executes.
-> +    /// * This page table must not contain any mapping that overlaps =
-with the mapping created by
-> +    ///   this call.
-> +    /// * If this page table is live, then the caller must ensure =
-that it's okay to access the
-> +    ///   physical address being mapped for the duration in which it =
-is mapped.
-> +    #[inline]
-> +    #[must_use]
-> +    pub unsafe fn map_pages(
-> +        &self,
-> +        iova: usize,
-> +        paddr: PhysAddr,
-> +        pgsize: usize,
-> +        pgcount: usize,
-> +        prot: u32,
-> +        flags: alloc::Flags,
-> +    ) -> (usize, Result) {
-> +        let mut mapped: usize =3D 0;
-> +
-> +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is =
-never null.
-> +        let map_pages =3D unsafe { =
-(*self.raw_ops()).map_pages.unwrap_unchecked() };
-> +
-> +        // SAFETY: The safety requirements of this method are =
-sufficient to call `map_pages`.
-> +        let ret =3D to_result(unsafe {
-> +            (map_pages)(
-> +                self.raw_ops(),
-> +                iova,
-> +                paddr,
-> +                pgsize,
-> +                pgcount,
-> +                prot as i32,
-> +                flags.as_raw(),
-> +                &mut mapped,
-> +            )
-> +        });
-> +
-> +        (mapped, ret)
-> +    }
-> +
-> +    /// Unmap a range of virtually contiguous pages of the same size.
-> +    ///
-> +    /// This may not unmap the entire range, and returns the length =
-of the unmapped prefix in
-> +    /// bytes.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * No other io-pgtable operation may access the range `iova .. =
-iova+pgsize*pgcount` while
-> +    ///   this `unmap_pages` operation executes.
-> +    /// * This page table must contain one or more consecutive =
-mappings starting at `iova` whose
-> +    ///   total size is `pgcount * pgsize`.
-> +    #[inline]
-> +    #[must_use]
-> +    pub unsafe fn unmap_pages(&self, iova: usize, pgsize: usize, =
-pgcount: usize) -> usize {
-> +        // SAFETY: The `unmap_pages` function in `io_pgtable_ops` is =
-never null.
-> +        let unmap_pages =3D unsafe { =
-(*self.raw_ops()).unmap_pages.unwrap_unchecked() };
-> +
-> +        // SAFETY: The safety requirements of this method are =
-sufficient to call `unmap_pages`.
-> +        unsafe { (unmap_pages)(self.raw_ops(), iova, pgsize, pgcount, =
-core::ptr::null_mut()) }
-> +    }
-> +}
-> +
-> +// For now, we do not provide the ability to flush the TLB via the =
-built-in callback mechanism.
-> +// Instead, the `map_pages` function requires the caller to =
-explicitly flush the TLB before the
-> +// pgtable is used to access the newly created range.
-> +//
-> +// This is done because the initial user of this abstraction may =
-perform many calls to `map_pages`
-> +// in a single batched operation, and wishes to only flush the TLB =
-once after performing the entire
-> +// batch of mappings. These callbacks would flush too often for that =
-use-case.
-> +//
-> +// Support for flushing the TLB in these callbacks may be added in =
-the future.
-> +static NOOP_FLUSH_OPS: bindings::iommu_flush_ops =3D =
-bindings::iommu_flush_ops {
-> +    tlb_flush_all: Some(rust_tlb_flush_all_noop),
-> +    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
-> +    tlb_add_page: None,
-> +};
-> +
-> +#[no_mangle]
-> +extern "C" fn rust_tlb_flush_all_noop(_cookie: *mut =
-core::ffi::c_void) {}
-> +
-> +#[no_mangle]
-> +extern "C" fn rust_tlb_flush_walk_noop(
-> +    _iova: usize,
-> +    _size: usize,
-> +    _granule: usize,
-> +    _cookie: *mut core::ffi::c_void,
-> +) {
-> +}
-> +
-> +impl<F: IoPageTableFmt> Drop for IoPageTable<F> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The caller of `ttbr` promised that the page table =
-is not live when this
-> +        // destructor runs.
+Anyway, from your explanation, I believe this is all safe and correct in
+principle so I will post a proper patch for review.
 
+But out of this discussion it has also emerged that arm64 is likely using
+__free_pages() incorrectly in it's memory hot unplug path; Dev is going to take
+a look at that.
 
-Not sure I understand this sentence. Perhaps we should remove the word =
-=E2=80=9Cttbr=E2=80=9D from here? ttbr is a register.
+> 
+>>>
+>>> Then we have the ___free_pages(), which I find very difficult to understand:
+>>>
+>>> static void ___free_pages(struct page *page, unsigned int order,
+>>>               fpi_t fpi_flags)
+>>> {
+>>>     /* get PageHead before we drop reference */
+>>>     int head = PageHead(page);
+>>>     /* get alloc tag in case the page is released by others */
+>>>     struct alloc_tag *tag = pgalloc_tag_get(page);
+>>>
+>>>     if (put_page_testzero(page))
+>>>         __free_frozen_pages(page, order, fpi_flags);
+>>>
+>>> We only test the refcount for the first page, then free all the pages. So that
+>>> implies that non-compound high-order pages share a single refcount? Or we just
+>>> ignore the refcount of all the other pages in a non-compound high-order page?
+>>>
+>>>     else if (!head) {
+>>>
+>>> What? If the first page still has references but but it's a non-compond
+>>> high-order page (i.e. no head page) then we free all the trailing sub-pages
+>>> without caring about their references?
+> 
+> Again, free in the granularity we allocated.
+> 
+>>>
+>>>         pgalloc_tag_sub_pages(tag, (1 << order) - 1);
+>>>         while (order-- > 0) {
+>>>             /*
+>>>              * The "tail" pages of this non-compound high-order
+>>>              * page will have no code tags, so to avoid warnings
+>>>              * mark them as empty.
+>>>              */
+>>>             clear_page_tag_ref(page + (1 << order));
+>>>             __free_frozen_pages(page + (1 << order), order,
+>>>                         fpi_flags);
+>>>         }
+>>>     }
+>>> }
+>>>
+>>> For the arm64 case that you point out, surely __free_pages() is the wrong thing
+>>> to call, because it's going to decrement the refcount. But we are freeing based
+>>> on their presence in the pagetable and we never took a reference in the first
+>>> place.
+>>>
+>>> HELP!
+> Hope my input helped, not sure if I answered the real question? :)
 
+Yes, it definitely helped! I saw Vishal's reponse too, which is much appreciated!
 
-> +        unsafe { bindings::free_io_pgtable_ops(self.raw_ops()) };
-> +    }
-> +}
-> +
-> +/// The `ARM_64_LPAE_S1` page table format.
-> +pub enum ARM64LPAES1 {}
-> +
-> +impl IoPageTableFmt for ARM64LPAES1 {
-> +    const FORMAT: io_pgtable_fmt =3D =
-bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
-> +}
-> +
-> +impl IoPageTable<ARM64LPAES1> {
-> +    /// Access the `ttbr` field of the configuration.
-> +    ///
-> +    /// This is the physical address of the page table, which may be =
-passed to the device that
-> +    /// needs to use it.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that the device stops using the page =
-table before dropping it.
-> +    #[inline]
-> +    pub unsafe fn ttbr(&self) -> u64 {
-> +        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for =
-`ARM64LPAES1`.
-> +        unsafe { =
-(*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.ttbr }
-> +    }
-> +
-> +    /// Access the `mair` field of the configuration.
-> +    #[inline]
-> +    pub fn mair(&self) -> u64 {
-> +        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for =
-`ARM64LPAES1`.
-> +        unsafe { =
-(*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.mair }
-> +    }
-> +}
->=20
-> ---
-> base-commit: 3e7f562e20ee87a25e104ef4fce557d39d62fa85
-> change-id: 20251111-io-pgtable-fe0822b4ebdd
->=20
-> Best regards,
-> --=20
-> Alice Ryhl <aliceryhl@google.com>
->=20
+Thanks,
+Ryan
 
-Looks good to me. Please wait for Deborah Brouwer=E2=80=99s Tested-By =
-tag if
-there=E2=80=99s no further comments from others.
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
 
