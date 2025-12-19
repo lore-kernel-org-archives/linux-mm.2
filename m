@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89D1D78780
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 14:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5849D78780
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 14:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAD566B0088; Fri, 19 Dec 2025 09:13:39 -0500 (EST)
+	id 48B7F6B008A; Fri, 19 Dec 2025 09:15:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AD66B0089; Fri, 19 Dec 2025 09:13:39 -0500 (EST)
+	id 44ED86B008C; Fri, 19 Dec 2025 09:15:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5CC86B008A; Fri, 19 Dec 2025 09:13:39 -0500 (EST)
+	id 38EFB6B0092; Fri, 19 Dec 2025 09:15:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C30786B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:13:39 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C0E116024C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:13:39 +0000 (UTC)
-X-FDA: 84236413758.26.904C549
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8AA514000E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:13:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SIqhcCbk;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 24F856B008A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:15:03 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D247C57ABB
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:15:02 +0000 (UTC)
+X-FDA: 84236417244.29.B45A8B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EA8A7140013
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:15:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O717isD1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766153617; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766153701; a=rsa-sha256;
 	cv=none;
-	b=vHmkgCflSuCg7u/+HM/VQ6su48wQYxG4KlKulkyy3es9FAhwFHiqHc9vQXvT/heYuSyZtr
-	/n4ttdvQY+kj00kec7Avub4+tpAwImTDx9RJ3G2GgyUPj9lVzGodrbk4v12UmMKQndNUZr
-	x7JC0Yztcrln/EZfyP/gZ3Q3uYYlrhE=
+	b=bowXVtPipQ3bTvFLHZhFWTUVUhBivlT3tmkJYvCTcKJHPKDhf04N5ROaTQylaKw2hI51di
+	sJEejmDO/kxawnr7u8QPUck1yIj+AIeFQku4j1UI7wi6FB6EjpuO9WMpzv9+iz9B8xQm0T
+	L1mpBTulUnynqmw5LkcRbumaI8qfF44=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SIqhcCbk;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O717isD1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766153617;
+	s=arc-20220608; t=1766153701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TlQ/lIf/NH2L7gawVyDEnk7kQGpH1lhVi27DWGZdvfY=;
-	b=zNOJZOECwldAazPK4MVyfo+DfhFxTJkFPZRTU+Vg8FWjexe2OTsGMPZoYvUW1BgqUHh/Cs
-	Ueyj3PJB/OQKjjbndpCYagVzPq2tVpr3sL4+5PhgRr9q8FazWNGxfC4GeS7psGpq7qAi6o
-	qjde9YY9wfgBNpwwRj/V+iH7jXiaE4s=
+	bh=GJ3wUbd728+Gok3VxLFpSx348UrfV5Dsy9YisZ0vT2w=;
+	b=cmYXTS2qsn8VDfzbwiokRdPQU2m6PyNSmxSoGYD35W7z9wrjnZjm0MInjkrKLJaDegnsnE
+	ASrFRrUZ2bH6kgLxwoj31G34Ea+UaowAGfN2h5rIlSyixynKPX5mcu9ECDqFxco/2LEa3O
+	CIptZyYcm9MZgZGnIA0VSE3j5qKv5Y4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E955A60165;
-	Fri, 19 Dec 2025 14:13:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BDAC4CEF1;
-	Fri, 19 Dec 2025 14:13:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F0A4643874;
+	Fri, 19 Dec 2025 14:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405DDC4CEF1;
+	Fri, 19 Dec 2025 14:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766153616;
-	bh=CrkOtUOzG/C+S+bRb/2kdsA2273FJPK3WzL22ob66m4=;
+	s=k20201202; t=1766153699;
+	bh=h9gatBXLPknkA9XB/kDpWVDHKRf+rqWFuU1zgf9gItM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SIqhcCbk/SIwcMNfwkO6NCQwBss4ZaAM97VIiSj20QW7XS2NrW7NOulPhtZLJtp08
-	 e1nUzeZMB9O+iEtSi9d+ad1kpcgyEEk+gEs5ef2H24VnyJnsiVOa8YM3Q3vATXR/R0
-	 TIy+DQ2c1E5KfOjFRk0ilcCxMgA+evAqU7CKjKSWrtcur5CbfPifNIqgbxqlTnDDGm
-	 vjEOJEdsszmmqzRVBKQMUVBWFC7cXbFWjU5Anz+tYT2JGXTRJtpzurxX0MeTxlAu23
-	 IoK3jhKkWRbgImICt9oH22aSiG/bSE9HalI4KLa5l+jYAO7gCqLdrg0rKIY/R3ob4l
-	 xQXQJRZfwTm9A==
-Message-ID: <2bbe1e49-95ba-42ea-b6af-5eeb61d68c4c@kernel.org>
-Date: Fri, 19 Dec 2025 15:13:29 +0100
+	b=O717isD1mHBm5W4zYOFNoyxyRF7E9NbvNqjbXcL4AhlmDAOPyLQ33+Kr9Lv7uuq14
+	 ohp1+/WYbEhEL/CST8pbWNnvW1sAS2iIOYrj8+0JrEqqvx3mvCjjI/LgdiYcd93cL6
+	 HCAERNkf2egSFz2ikTO1H4RjquN2pCH+Ajbdo0teEkX5FcAq1oLo+JGYJGghTlxmjQ
+	 5XqtpYvGZgHHWjpDNXYlBjZubxrTfFTk59FwbQz6CINzp98bvVwDsuCxsSD9bDXoaa
+	 ItcakAYKMnhUHmAucPOMJcoLlPH8n1AtCbGfuHdvDf/Gqm1zCOuRrh8nrgPdf8np1P
+	 yE+NKtFJE/Bzw==
+Message-ID: <3f3e2e99-cf87-4498-93a7-700ecb42a2a9@kernel.org>
+Date: Fri, 19 Dec 2025 15:14:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/hugetlb: fix two comments related to
- huge_pmd_unshare()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, Liu Shixin <liushixin2@huawei.com>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-3-david@kernel.org> <aUTYE9fHf5Fq3eHa@hyeyoo>
- <506fef86-5c3b-490e-94f9-2eb6c9c47834@kernel.org> <aUU1DY4206FibsLf@hyeyoo>
+Subject: Re: [PATCH V2] mm/memremap: fix spurious large folio warning for
+ FS-DAX
+To: John Groves <John@Groves.net>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: John Groves <jgroves@micron.com>, "Darrick J . Wong" <djwong@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, Gregory Price <gourry@gourry.net>,
+ Balbir Singh <bsingharora@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Aravind Ramesh <arramesh@micron.com>,
+ Ajay Joshi <ajayjoshi@micron.com>
+References: <20251219123717.39330-1-john@groves.net>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <aUU1DY4206FibsLf@hyeyoo>
+In-Reply-To: <20251219123717.39330-1-john@groves.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8AA514000E
-X-Stat-Signature: gfqicmk8tjf36wrtyuicu58jhc57f6eb
+X-Rspamd-Queue-Id: EA8A7140013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: zm1czkjqbroeid48gsnn7q113mfyhm34
 X-Rspam-User: 
-X-HE-Tag: 1766153617-125307
-X-HE-Meta: U2FsdGVkX19lgUm/As9xtOzxU+NNpuDsA2mMBFNef0SNeJVxRdlD0SKxf7lkZc4qcbh3wlgnLCaRAW+WLzH5hcCjpJXwzDenPI1Y3bJ47KdwukjKvxXEv6Ee3atUMUHyc7aQg0k9ykO9E15ZRqPgSVzBVV22zMDYaMLHj0aczKWi/Tb8yNneN6zjB4LV1LKn5SHBkun9XvMtD2nfGCmXo2Kt4AMVugEt9L4jBN0fju1ON93vrQTtqvnOG4imPWr9KFSC9hX5h4NFsnWiNib/Va/ikoz6j++3alx1j1E9USmTCjPOsbwBs2tGa5861Ldnzay/4EeMciNAqdfPeJnvlHaL8wNKIlVpevOpc5mcIUTC5jD+5u2JMn04Uqhmud16MpsJU8YJSGO4Jc2wD1Ys7UmnrxkLzmPgxTcHhZ3v/175c4DQ+JprOXHSA/uIwXsLxfPT3W2t+YmiRvdseNqEvX8Y6O4SH/GuJa5NdsbImFTc+3QAG34qDvy+4l17P4PB/SXGiywVDaxQz77kDNcn7TTzVpx91EYSuo9Vml6VxxEE0ok/VHfJPVdNQAjwA6yphwGyRcZecsZfo0JRdFiDoLjANXaPIo8jndw2vkX2QaUTzB5AZxLKn1sYw5wnsVi9rjMfVfc2RHhAX6UCtr7kTC9y/ORE8CK384HY74xKwr/UFJ7+NGExkqdTrytkIGikTDfv8S9AnGpgO75aGMSDiuKdvQxjCky/d++gHF4khxhqdW7adK03vS1URwqgFW5WyTVt+fOXSO8AGJRohTi59akR1DxGXHPfKht0cijGTzjHYqlmUUU17HXQnfYG7hkBW3hiOwX4wc7fhh9p11YXNz2jyRceeyy86yT1jt74cuhM3xcMuKpUmuhxXz1fuo+48oUjIS5cb9+8MELbAIRWSWow4mQ5X1kxOu68mZKvtTM14nlP3dBvJFtStRgaTxRKHADDA9EoUl6MdosBIGG
- msidKado
- Zf5vxK88JVARTfq93YHnMNi67ivQZZWT0dVoMDRqyV6MAzful9khz6djwIJd7HkOI6z+j9Duajv5UBHiDiGjV7akfCzs+qgIOiEqeOC1KXHVdkLpqQpBcAITldOSnaVctuntPAAnyo9uDBEGDh5YgIzDTemsGTYfDT0ptbHVDJuXbBLK7vm9G9Efpjy1HA4ObuhsXxk0gpIaLJERoUbYYS7hzbWhDI0hSf2RWVTGz3Rbq0xtdjFdu7ytNhLgG1H/F+jeQsix2QOoay+SsdPpLSzLsboYYlLw36Y/VByLY6o/3iZPJo8O8UcFHkxwRYUhg22D0A9l5kOuLkA/n+5pb8iRwnmRPo0N4od7myTqIlBtERuDGaJWXYoq/7D7itUN+98ihUjkow+PlQV2aaxyz4nMGy3UtjiJmhDe8lQ8Y93UqYREvXe2eHbXr/jh2cGvHBhc6cPaU/GI4azliXNYquVjUH56021VM5G6puURiVvWvG4mlHDxUb1E1IbfsaOW7yFBeg5MWr6ivRmQ2CH2SiV+b+A==
+X-HE-Tag: 1766153700-684838
+X-HE-Meta: U2FsdGVkX1/a5giyiLLSB0rTT20lbr4pUG4fZeSmTdniCeXY5pcBs8kCiWQPvKA4/+wXOjQn+RgbhPScEas4pQKO1AwuTK5lJuQO8wsHG9cKcbbe7PZjGI1cwaz+saD8o/LshiI8sQ4xezIYhBS73NjEgryL9ZmaLOGlv82CUGXeQrs4aGOzRvkGZdZQ7V34k9/+9A4Ow7V7wFNa4qSRfwavM9cCOZBx5VElf06Uj1F8mGoaDBTjvlpqDvrasAKesiq43rNwvcItyb0Fotf2y90lJtnW/xBeHnEnD64/+2uuEO06KCOdfcDvENGzuvd2qGSTtEcxBPcyJEQiK5RILXqb8T31cIMNDYtntTIBno3dtlVY+flwHCwN857bOs2nIp5ulnmgMvO50hxtJYXhdqYVzm7uRurXGpWgkTlNML9/LLz0N8RczKofTRkWmrExh7cBboO+yF1XHD6PYKTQjYjuNe7V/tEUfr4n6HEqrJCRk4abGTPiB195jkxUc4ZlBDaasRRj04lyIhCjaM1n3bwYRZqcEx46BeZ48uOLWwge584lv8dWvBqKGp7DhcyRxzSNwmpI9owyXuxOdoNE7AtO0Awmpybk0y6jt/RgUt95Zs9tdzmzQ4e8MKJy/8GMAE6DMq8MyH9om5k1RQFceciH/fyW+AaxOJvrnGdqGmJp5jh1nylolnBwwSr85KvLYxDoApWetX2cNTRZY3ptPBfetMiaLDBAc+Fztdr7zQ7GXQ6Z2Ajq6uqsnyia9C6V4HpKljSgrl+Ldre7yJ69J/5Ub7AsUldL9eOqKW4OMpuxXLTWsv5lrtnmtS2CaP6r9p/ZCk7kjAJYjpFd84bQuhmvgOFBlgI/gteo+FOGehnHF5Vm1mZx4oR5qf+yfGKAx7VIDzcvJrVzI0drjiyOt0JBbeSZDkq95/h2SQZ5VlEFMhKCMvUp5MJBEIX2SxTEhvS/LmpSuwiFw+HGT31
+ Q1UKkqtW
+ gNfDXGBxC7x/fQOHVsMbEeH+nnytN5i4PszbpYaM8XzkqY9iG2lvH85E6NFVZHlvNCC57gzemKCQGU2TuEVRdaw8QV36LjE/+aDwY7CLY8OLrZx4QyeT3Bkb+I1mmjPxdpZ/2mDOpmodGZNDwWN5HMNAB+0lfH9Y9T5zv112dV2zm3YcCVjmQtNQwCGe1l0J9l/Zf2j1qswOve+t9o7P7e5TCI0MqdV6y2dighbhWLScdwli6daxivmLNQeiga0HUm+uDUvceWIJSQsoBoxzxZ5LfakefjrnwK2pNxYiyxzo0XoU3TPVmJ3wcgqCRXRmoT1tZ3q6ZhyBWAd8prolwOaynHXNEd17NItJ/URSPBi5yM70=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,101 +100,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 12:20, Harry Yoo wrote:
-> On Fri, Dec 19, 2025 at 07:11:00AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/19/25 05:44, Harry Yoo wrote:
->>> On Fri, Dec 12, 2025 at 08:10:17AM +0100, David Hildenbrand (Red Hat) wrote:
->>>> Ever since we stopped using the page count to detect shared PMD
->>>> page tables, these comments are outdated.
->>>>
->>>> The only reason we have to flush the TLB early is because once we drop
->>>> the i_mmap_rwsem, the previously shared page table could get freed (to
->>>> then get reallocated and used for other purpose). So we really have to
->>>> flush the TLB before that could happen.
->>>>
->>>> So let's simplify the comments a bit.
->>>>
->>>> The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
->>>> part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
->>>> correctly after huge_pmd_unshare") was confusing: sure it is recorded
->>>> in the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do
->>>> anything. So let's drop that comment while at it as well.
->>>>
->>>> We'll centralize these comments in a single helper as we rework the code
->>>> next.
->>>>
->>>> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
->>>> Reviewed-by: Rik van Riel <riel@surriel.com>
->>>> Tested-by: Laurence Oberman <loberman@redhat.com>
->>>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>>> Acked-by: Oscar Salvador <osalvador@suse.de>
->>>> Cc: Liu Shixin <liushixin2@huawei.com>
->>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>>> ---
->>>
->>> Looks good to me,
->>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->>>
->>> with a question below.
->>
->> Hi Harry,
->>
->> thanks for the review!
+On 12/19/25 13:37, John Groves wrote:
+> From: John Groves <John@Groves.net>
 > 
-> No problem!
-> I would love to review more, as long as my time & ability allows ;)
+> This patch addresses a warning that I discovered while working on famfs,
+> which is an fs-dax file system that virtually always does PMD faults
+> (next famfs patch series coming after the holidays).
 > 
->>>>    mm/hugetlb.c | 24 ++++++++----------------
->>>>    1 file changed, 8 insertions(+), 16 deletions(-)
->>>>
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index 51273baec9e5d..3c77cdef12a32 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -5304,17 +5304,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>>    	tlb_end_vma(tlb, vma);
->>>>    	/*
->>>> -	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
->>>> -	 * could defer the flush until now, since by holding i_mmap_rwsem we
->>>> -	 * guaranteed that the last reference would not be dropped. But we must
->>>> -	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
->>>> -	 * dropped and the last reference to the shared PMDs page might be
->>>> -	 * dropped as well.
->>>> -	 *
->>>> -	 * In theory we could defer the freeing of the PMD pages as well, but
->>>> -	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
->>>> -	 * detect sharing, so we cannot defer the release of the page either.
->>>> -	 * Instead, do flush now.
->>>
->>> Does this mean we can now try defer-freeing of these page tables,
->>> and if so, would it be worth it?
->>
->> There is one very tricky thing:
->>
->> Whoever is the last owner of a (previously) shared page table must unmap any
->> contained pages (adjust mapcount/ref, sync a/d bit, ...).
+> However, XFS also does PMD faults in fs-dax mode, and it also triggers
+> the warning. It takes some effort to get XFS to do a PMD fault, but
+> instructions to reproduce it are below.
 > 
-> Right.
+> The VM_WARN_ON_ONCE(folio_test_large(folio)) check in
+> free_zone_device_folio() incorrectly triggers for MEMORY_DEVICE_FS_DAX
+> when PMD (2MB) mappings are used.
 > 
->> So it's not just a matter of deferring the freeing, because these page tables
->> will still contain content.
+> FS-DAX legitimately creates large file-backed folios when handling PMD
+> faults. This is a core feature of FS-DAX that provides significant
+> performance benefits by mapping 2MB regions directly to persistent
+> memory. When these mappings are unmapped, the large folios are freed
+> through free_zone_device_folio(), which triggers the spurious warning.
 > 
-> I was (and maybe still) bit confused while reading the old comment as
-> it implied (or maybe I just misread) that by deferring freeing of page tables
-> we don't have to flush TLB in __unmap_hugepage_range() and can flush later
-> instead.
+> The warning was introduced by commit that added support for large zone
+> device private folios. However, that commit did not account for FS-DAX
+> file-backed folios, which have always supported large (PMD-sized)
+> mappings.
+> 
+> The check distinguishes between anonymous folios (which clear
+> AnonExclusive flags for each sub-page) and file-backed folios. For
+> file-backed folios, it assumes large folios are unexpected - but this
+> assumption is incorrect for FS-DAX.
+> 
+> The fix is to exempt MEMORY_DEVICE_FS_DAX from the large folio warning,
+> allowing FS-DAX to continue using PMD mappings without triggering false
+> warnings.
+> 
+> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+> Signed-off-by: John Groves <john@groves.net>
+> ---
+> 
+> Change since V1: Deleted the warning altogether, rather than exempting
+> fs-dax.
+> 
+> === How to reproduce ===
+> 
+> A reproducer is available at:
+> 
+>      git clone https://github.com/jagalactic/dax-pmd-test.git
+>      cd xfs-dax-test
+>      make
+>      sudo make test
+> 
+> This will set up XFS on pmem with 2MB stripe alignment and run a test
+> that triggers the warning.
+> 
+> Alternatively, follow the manual steps below.
+> 
+> Prerequisites:
+>    - Linux kernel with FS-DAX support and CONFIG_DEBUG_VM=y
+>    - A pmem device (real or emulated)
+>    - An fsdax namespace configured via ndctl as /dev/pmem0
+> 
+> Manual steps:
+> 
+> 1. Create an fsdax namespace (if not already present):
+>     # ndctl create-namespace -m fsdax -e namespace0.0
+> 
+> 2. Create XFS with 2MB stripe alignment:
+>     # mkfs.xfs -f -d su=2m,sw=1 /dev/pmem0
+>     # mount -o dax /dev/pmem0 /mnt/pmem
+> 
+> 3. Compile and run the reproducer:
+>     # gcc -Wall -O2 -o dax_pmd_test dax_pmd_test.c
+>     # ./dax_pmd_test /mnt/pmem/testfile
+> 
+> 4. Check dmesg for the warning:
+>     WARNING: mm/memremap.c:431 at free_zone_device_folio+0x.../0x...
+> 
+> Note: The 2MB stripe alignment (-d su=2m,sw=1) is critical. XFS normally
+> allocates blocks at arbitrary offsets, causing PMD faults to fall back
+> to PTE faults. The stripe alignment forces 2MB-aligned allocations,
+> allowing PMD faults to succeed and exposing this bug.
+> 
+> 
+>   mm/memremap.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 4c2e0d68eb27..63c6ab4fdf08 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -427,8 +427,6 @@ void free_zone_device_folio(struct folio *folio)
+>   	if (folio_test_anon(folio)) {
+>   		for (i = 0; i < nr; i++)
+>   			__ClearPageAnonExclusive(folio_page(folio, i));
+> -	} else {
+> -		VM_WARN_ON_ONCE(folio_test_large(folio));
+>   	}
+>   
 
-Yeah, I am also confused by the old comment. I think the idea there was 
-to drop the reference only later and thereby deferred-free the page.
+LGTM
 
-One could now grab a reference to the page table to keep it alive even 
-after unsharing it (decrementing the shared counter), no longer 
-confusing shared vs. unshared handling.
-
-But the basic problem of the new exclusive owner reusing the page table 
-for something else is not really affected at all by that change. We must 
-flush before the exclusive owner could reuse it ... and the shared vs. 
-refcount split does not really help in that regard AFAIKS.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
