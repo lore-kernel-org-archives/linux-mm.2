@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D36D78797
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3DCAE668A5
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:44:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C28D6B0088; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
+	id 36C786B0088; Fri, 19 Dec 2025 18:44:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858B66B0089; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
+	id 31A5A6B0089; Fri, 19 Dec 2025 18:44:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 785316B008A; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
+	id 2265A6B008A; Fri, 19 Dec 2025 18:44:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 678496B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1155C1A01E7
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:37:54 +0000 (UTC)
-X-FDA: 84237835668.25.5C3DAD5
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BC100C0009
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:37:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ooGrO/n+";
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 11F486B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:44:21 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A6F2A8767D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:44:20 +0000 (UTC)
+X-FDA: 84237851880.19.131BC63
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AA72D40007
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:44:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l+TWJuFR;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187859; a=rsa-sha256;
+	cv=none;
+	b=N54aaz1EP8W/LpjCNCWDOkSD8dW7G6Vzpo1CdWlhsyki3dfojZYc9SMo3IsmEaZc9bLnsM
+	75iB2M9tk4hVksk7qWDuMmwapdLb08NbuWWZD1Oz1ltbCkcQwfoEO76Humpeq5MN/34d2S
+	Reo85sq+BDjmYAE2yhchU/YTZSHMUuY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l+TWJuFR;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766187472;
+	s=arc-20220608; t=1766187859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7iDiFa9C6BbQmq3eA90hwy/boYCk4vo9zcd1KlfWLIg=;
-	b=Drdk3aVMCamaXvRHhmWikDLdPxgGNksiLzMyw2C5A4j2HLxYN9egzeEA2QeStscmmJaJK+
-	crO55U/HyG3+SvH0UfDjhvDn6dCDSLy1Tn3RyLeanxG1D1xvpdp/wC5380D0rDOLBzKFYY
-	JKcFC0kN7vOe/RCd6jbTj2ApF/tLBkc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187472; a=rsa-sha256;
-	cv=none;
-	b=Ba3DUGSKz3Qii7R01081GFbI8U0XT/Jj6B/LuxlaLBfvwxofuR1wB23evFMjN0567JWHqU
-	LPtlJr/HQQvF/oDwNIc4YYP9fR23dhIrwHj44dcQRU52yThuOrpSQSFMuGMZ7xvcGI7etM
-	AX5ILftntzHvG+CvK1xgQ0sEgGDMufY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ooGrO/n+";
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7iDiFa9C6BbQmq3eA90hwy/boYCk4vo9zcd1KlfWLIg=; b=ooGrO/n+PKzaq+plXioglWkC5B
-	f0enapG8j3yHDRAH/dXfpWR92EkbWh/zKrKUI3itCreuFQhjay6EbjHMGRDlCbqk1m4fMAm+qec96
-	MsDQon4BD32uHjjhXV1HgZN/TCDLSCDnIdIyzjJXsxx8IG5fX74Y7NQX+WzW2cNOrdHYdDKJjrSNT
-	+jwmKsfrfve+jyGRqIeMdI5khflMH67fBlNHQXXtkpTRU8jbzlcGJCYMs3aby7Q85lLknTf/yzDvZ
-	Ku4RC2HFpriodsYWXOMIOmx0sCX7XI240JFlw8vAmYVoHJSatdbZQ/6wnya+fe2k54TMFyVWJW8lu
-	cZFd6qvQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWk2e-00000008JKw-0QQW;
-	Fri, 19 Dec 2025 23:37:48 +0000
-Date: Fri, 19 Dec 2025 23:37:47 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Vishal Moola <vishal.moola@gmail.com>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [linus:master] [mm/vmalloc]  a061578043:
- BUG:spinlock_trylock_failure_on_UP_on_CPU
-Message-ID: <aUXhy1Jyv7_GccIp@casper.infradead.org>
-References: <202512101320.e2f2dd6f-lkp@intel.com>
- <aUW05pyc9nZkvY-1@casper.infradead.org>
+	bh=lCNM7CKQvW7IiJWIjYWIMSk4y/8kklTp5sAV5yymdxY=;
+	b=OVd9QqxapvYtyGy/ItFJg2CQSk/vDK/4KWqRqHAMCMYE2Bv0i+KzIzz54fnlFHPIHL1onk
+	ZfERgcyyIDBjo6rnj/SeXjnhhs3stnx3O5UD4TPCI6F61U+Rj6DPbuO5EZNhQMdK+vHauD
+	sO94G3RmSlbUrUU8tJBYM3A8AY9nG9k=
+Date: Fri, 19 Dec 2025 15:44:03 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766187851;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lCNM7CKQvW7IiJWIjYWIMSk4y/8kklTp5sAV5yymdxY=;
+	b=l+TWJuFRGO7tbzkNJUMsZloXTqpansr0zSj8/bmjfFY+sDbfgD4v5O45o53OsXFM8IhqW0
+	Xoddxj09mZb+pRi4/CNUW3BOI1JGweiasx0O5asfdb3ebGENJH+QaZgBJKf0G0iBLY3eQL
+	erqHVHZVd58wzuk4zuQUYtqHdEVYwfA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 12/28] mm: page_io: prevent memory cgroup release in
+ page_io module
+Message-ID: <2vypu4pg3mfhmwyhwmlzozhdnjw4xne62sxe5hpqdohm3s2bjz@sk53oaivblz4>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <30588f984137d557e4663ae8dcf398b8c408169b.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUW05pyc9nZkvY-1@casper.infradead.org>
-X-Stat-Signature: uoyouikzixpf93yq9qk4tmpruythpwjc
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC100C0009
+In-Reply-To: <30588f984137d557e4663ae8dcf398b8c408169b.1765956025.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766187471-736003
-X-HE-Meta: U2FsdGVkX18DkQ6wJ++EVjFbjWXC1aPNIflPPuaDhvR0NXwbWg1/ENEveWLN+8HrqT1+G8wfdjkESwbZ9Onol7oTgZVguzOgGAuVquxCr+AROLkv8+WOaM8NysRDC7bUe3JkBF65H6mmc4kC0vc5e2vIRI07KKwW8jtl4oDzKOYuLdNSuqQkVrHYgAxJKFcUQUeGnUC16Vac/CjaL6Ir1Dy2/EmOsZxd/ypM+qTezNcWvHUIC1PbCNpJ9kSxsBgzqOv38NneTXTJsQtMpA1TOc2ebZKVbZsEvAdXFYdBplfyP3qTUO3HH+ul4NVX5BUoMXcZLbptbCC6uBc5t41p5+UfLLl2+cE09tP8S+zYyCAPIatFWFdZ6pRWF7+0gC2nw7nUIaDh2ZKPUhdKcEt6dbSWa5eZOKPrs+QcEvVcRJcafQ06Lz05Z3Vq4sNTerllSRZvQ2Zomr5KHI+wDNIijEXuGGGbGFlLmlPr7OlBpzCOE6HaXUbXtI9DPxNFAkbADZEWnEdOlnt2F9CU5KzaB7iNveyxvvSVT08MKy0yHVQCa0Tcw/g/n2H0xkDq5kSLx2kviwszJ0akUGcpXsIDxAP9p2qWSHPN+UGc1ooW48muOrudFmT+akRrSBVlJiBygfwFdZbCm2Jmh/OaLqiok4R9jJ0P6IROYnebF/I/M6g4x0NTb7dGiCAyVxj2glqoks0lOeIrH+Pk1C5hVnCVztDJ58XoLmIGYzWctrs5SbhOXFBk4EsFqCpOxkLcAA3TyDCBK1Q7cq8QlxO7kf1LRSnCLFIjCWwUtV1a7aoq5PpXkWKmuGoshERRikk+FzOgyffZ7Cf0ZIXn/88sQjevo1L7fqO1E9EkSUUSsHe5hG190mDLfmx9u4GEB8YRFypjhjY5aEim8Onv89bi0dJcVANGsNmo2eak2X6abHkpE74LOFQLvACOt8o5IV3X7Ezp4/dkU6IbW1dSmhFXq2Z
- IZPwGgUB
- MePwajN7h2vW7GZQus4+EW/ku1YVscD7e0U/x72J1sqxTO604ncp7y1yZ4qfmZJ0079ohIDAsZrd/d/fWHp5ZzDzTN79YX9NJLnd4CzDbaIHNrQYSS97s+RJk8yGWLgUt1kRgeEcea4ZZFzxHYJ87oYN5Jmvh+qhzb6IQS8Ya4cHwETLr+WDx9ehbQoiZjqfwosTuY78wljTyIPSWPgWe5dbEBZk2BELgjEe2y0q6rrjX+XzRDyg+Lla5MpcwWIpnbUnLLDcncLiF5/vFAZMc7xzcNm0gr6VRp8TWM2HOqdE5yN7S1Y3KovT+5X+QPZQ+yoQEuKFzK2uYa4vzwsbKchwWN6F3cK7UCbLXuxAkuJmeSehFOMGzqXgsRQ==
+X-Rspamd-Queue-Id: AA72D40007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: tuxwqmcw5ur8yr1nhhq9sta5ofnd6dt3
+X-HE-Tag: 1766187858-33201
+X-HE-Meta: U2FsdGVkX1+Mk1BYEi8WaQtxBlmxYSoFgZnQBfLNvXY8KeXlviduQ3fj4bPdYuVsILMGy6N0rljr2m182Fw2v9bJbXv+t/+bDiCFtN7vUF6W3lRCvoo8Nr224YuNYm0KNPkZZrsoUIWATAmLwWwV0aOfejGSsw1ZASsJulerZckpQ2/iODtpqFqW/LibvbXEl6tLMkALBSn5zjkuyZzPfFx3kSMTBmiHwlXmP4LYkEjN8RrTYMrA2Mu4Hxrumn5tm8H9ZOsJrzAHG65QTO4tTX5Bj6YOi3k4GjO7zVE2fxbPYqeq6hgLBvUnblgx10iF8m1F90UcOl6oddv1EnOybGC+P+r7vynpYeT/tgTZlY4Oge8NLcsmdVFSss5qR0C7TSfDXSk+FPSe4z0tz4oLAukCi30u38SzC54o8lmkjsbWPoP6HPq+la2GLxfL7S6D5u8afOwqG7T6JbwY5m4EnWNCOikkA+dOSsKatKKiKxDnfWevP+fJ+ghjl744GzaKEf5Nuc7VbrfXXBtLCOM/7crDFrmNdlGlVGoMfIJKQZoEoxw5SRcE+b+zbmFQQPD2ssz8TSG0aLybej9weZ6Kf7PtXW6jYn5yG7lqhACYHCjIK87Kqu7bWOO/c46iBl9bRH9IR6Lqk5wfxrSHrgKR9UDkECx4aZT1ZCALUCj3jwDnBvAhVjbslTEzyGkELKqMXHwUR6fyI0WEsCJB1PnZUh6flZRwsfg5iy5FmMiGXxSWZhEt3nBnyMnpfFFgWOI2YR4yK4Zc2qe/61MGi8AL3Gib5NE2JXheWvBC3xe17NamtlS/vKKeIXwJd2aXcJVwRYbXRtkw7B8GBZVGMMHa7R5EjJPIdFJepU1fJ27KFtDu5lrNTFaIFO7Mcb92/bY/KwaRq2IAvj+RwKx66LOz3fIH7jo5DFHdvE3wOD/wrqwUDdcjR/j9phCfHZpnvSwiw2aqwRctEindJEe6Zwb
+ oraIAVFS
+ YdXQOwQLjbU8NvWNFqgC4RvyTsJJKIYjNg86YMqn1qy0myacY5MG1Jp6o/90zVRmw8C2o3HCWayBywSzFgq/m+h/SVYD4qheTwbksV/6PtsgSlYs5W6b7V+ttRlaISuPLmJ2E0twkLD97CWjmxg9Rgtq0yUSrjtvFrt6xrGQ6cxk80MUTNZg+J1RTt3yE6HMsXy9M91RzMUChSKbxm2NHfgnqAADKyFwz3UQvvwul8gYX9mpCSC1xBGdli9PwuEdpwwqEGC5AH3Dx8Ofq7EFP7iH6lP6nG70UycBLJCMoaCU3tW/CBL3hvoR+qSwgDU/ZIpANtccMAsmVOoQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,18 +95,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 08:26:14PM +0000, Matthew Wilcox wrote:
-> Now, as I recall, we are very much doing this on purpose.  We decided
-> not to disable interrupts at this point for improved interrupt
-> latency, accepting the possibility that we'd occasionally fail
-> the trylock.  Except on UP that's now an assertion failure.
+On Wed, Dec 17, 2025 at 03:27:36PM +0800, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
+> 
+> In the near future, a folio will no longer pin its corresponding
+> memory cgroup. To ensure safety, it will only be appropriate to
+> hold the rcu read lock or acquire a reference to the memory cgroup
+> returned by folio_memcg(), thereby preventing it from being released.
+> 
+> In the current patch, the rcu read lock is employed to safeguard
+> against the release of the memory cgroup in swap_writeout() and
+> bio_associate_blkg_from_page().
+> 
+> This serves as a preparatory measure for the reparenting of the
+> LRU pages.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-This is stupid and wrong.  If we have CONFIG_SMP=n and
-CONFIG_DEBUG_SPINLOCK=n, then trylock always succeeds.  And we'll end
-up corrupting the data structure protected by the lock.  So the warning
-is real, and we need to fix this.
-
-With my distro hat on, I do not give two hoots.  We don't ship a nosmp
-kernel.  I suspect all other distros (except maybe something targetting
-m68k?) are in the same boat.
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
