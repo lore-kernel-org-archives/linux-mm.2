@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78759D7878A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A9ED7878A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC9B56B00B1; Fri, 19 Dec 2025 10:46:36 -0500 (EST)
+	id 6CC946B00B3; Fri, 19 Dec 2025 10:46:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5BD26B00B3; Fri, 19 Dec 2025 10:46:36 -0500 (EST)
+	id 6564B6B00B5; Fri, 19 Dec 2025 10:46:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFF846B00B4; Fri, 19 Dec 2025 10:46:36 -0500 (EST)
+	id 562D66B00B6; Fri, 19 Dec 2025 10:46:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A99D96B00B1
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:36 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F0B8160288
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:36 +0000 (UTC)
-X-FDA: 84236647992.10.E2D9F6A
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 785F5180004
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZmEhI80G;
-	spf=pass (imf16.hostedemail.com: domain of 3WHNFaQUKCKUJQaJWLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3WHNFaQUKCKUJQaJWLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--elver.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4281E6B00B3
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:40 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C89E584FC
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:40 +0000 (UTC)
+X-FDA: 84236648160.11.3118BA2
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2CBA340011
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GG87FSSt;
+	spf=pass (imf12.hostedemail.com: domain of 3XHNFaQUKCKkNUeNaPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3XHNFaQUKCKkNUeNaPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159194;
+	s=arc-20220608; t=1766159198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91/M6Wc5goo40nrJkJ1ulkL+/DliPVncC/51mYdmaQ4=;
-	b=EL/S/ku1nw88/Yqujvs+a8uVbs7JXVQKxp5vJVPi5s7w5cRp1QL/bIDJuGDeY1z1H2rDs6
-	ww3uuU2iNzAXhqNstyJaFiGpAjlq0HEeMKgtZQReSkvUQcemFQZhlDgA2ukAoZjdelbYHT
-	DSAKhxZM0Mz3AY0eC46egq0PbQk+iuA=
+	bh=pnCWdNxOjiV83xbv6/Q1ySENLnYMSFtAYAkCgCH7C/E=;
+	b=odwLlLkYY65P0mQHYrSO3dVHe0sLquFH5e2/b7qeTZTXMwsyFQ8Vy9z5SXy/a6BG1XXYYl
+	bwGxEuk6A8dbpIs6iz4MCFnPuO70CNpD/sDNnkKIIMOFH4BCSH4/mp1oQ1fHNri4enWg1L
+	ZM9/kh//TO+4pvw7OI49Ri9WU6hfkes=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZmEhI80G;
-	spf=pass (imf16.hostedemail.com: domain of 3WHNFaQUKCKUJQaJWLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3WHNFaQUKCKUJQaJWLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--elver.bounces.google.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GG87FSSt;
+	spf=pass (imf12.hostedemail.com: domain of 3XHNFaQUKCKkNUeNaPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3XHNFaQUKCKkNUeNaPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159194; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159198; a=rsa-sha256;
 	cv=none;
-	b=BHDdvNROmlMXvBqmUKCYV7RmzshKbSnMdNAB9nToonUkhBsfZAWnN0qekQXaUA5kUcgkTy
-	JNCOFaVUgCH+oJKO1GZKXV38UPJQFm8mPjHd4fDBHbP92pQy640IsfP+n7lWiCjPsMufVS
-	s8I1cUgyWXPEWKSCydpha1xX1IVZvOw=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47799717212so18621795e9.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:34 -0800 (PST)
+	b=izeXZaaYHB52VMgsPMauYGkSt7vvbGHsNd0+aYKuO4kiTHJJp33yu4b4tNdMSHkd8a3+Jy
+	pEkasZGSUKBFXs1M7+5tXjPMkVlwvJa/kugl1Em+hqqmma5Sr6bSPe2tqBb1IIzfA0iKJN
+	F1sBPKs1PZ9tqQ/WNPURjuOY1rsSWSs=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477964c22e0so15831055e9.0
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159193; x=1766763993; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=91/M6Wc5goo40nrJkJ1ulkL+/DliPVncC/51mYdmaQ4=;
-        b=ZmEhI80GDGo5aGzXySnmqHjsyfxasewhtBGJGyDyc4CdE5F95I23TShF5ctu3F0r1Q
-         3Lx1hFv/rCuH/P9bf+ktka5+nGlmZYhPnYbIce7EonRj8z8mEsVOwVkSghyVT05PM+cw
-         4aN1pXx6TcFfR6fhthWVIRjdnu0FPXwt775cZ+WVL7qNqq/S+e2fRZheO0943V1DZo/o
-         Kf4OY7Z3EMNRiWaNr/iR9KzKHx0OTFvk26TS3r5lw8trjMxnawhP7Jh0D0+HlnHYqrtj
-         W6ku0oW5W6qebF5AfrzEv+e7hVmj9SfvTeNrW/FkzWcg/vqSDgfePNr7iprQPyB4Jeex
-         Dmyw==
+        d=google.com; s=20230601; t=1766159197; x=1766763997; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pnCWdNxOjiV83xbv6/Q1ySENLnYMSFtAYAkCgCH7C/E=;
+        b=GG87FSStyAGBLv379KOLpU0q4qUEGfulWb7GIJJDS8IOm7ZBc5M8JMmy+aVrpR0ZFy
+         QeS4xoVY3DCqoBS/eyvljJGhJ0/NyFZhHcBejVGShuc0+dLVNF3DeauL/PIl8+6Q+6kV
+         fHID2VvlVwRhFPAii3OBfNTAISt5ppj18/Hvv8dgl7gD8QDb3NxMz/uPFYNnVXOvaFZ2
+         i5c9BTpgTw3tpHWp2SlZz2xRACVGc+0ee0xXwss6xHItgnPd8Ui5iS0S0ur9Wl4cWLOX
+         BuXzSMcBoYMaSyt0e3RVlszo6yghxwlp1CwXvIiSODm+KvgYqgIuAv3qDt30JDJNPP5I
+         33nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159193; x=1766763993;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=91/M6Wc5goo40nrJkJ1ulkL+/DliPVncC/51mYdmaQ4=;
-        b=HfIa2RSSXNMSXPUghPMeIsDidincb++/94xb7hs6sp5Y09xsqZ4yYzqoJKTH/kCT12
-         A1l9LBwq9M1qIQFRVpJEM5IZmmE5LLpJdpHSotTuglKILefRFk3Ytn8YhXCTq/VRcjvy
-         SuFHjdMXvShGcR4cRYSb8dTYR6OsXLXJx3W3H00Il2pyZy+wkq7/NVShPgzTEpFEvsbW
-         fo0qfGXo/nm2QVl9KKoajM0AaE+UrYype9FmYmODsbg2/CLZiNeOOnUcGMeuectMVjpt
-         4I76SAiFpDmZFKz63GTf2CXF+sGajIN4GwUdbO0BVZ/cgx3kvqk6q2EH+StW9Tux4AAB
-         DKmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp95QD3OE9nioFnGaOglB0jySVaWmi1JM+aB+0VcecOW3LyHHzBxrJ+vi+49zYg0BJk/6WqKwMtg==@kvack.org
-X-Gm-Message-State: AOJu0YxDPexzPvXgMK4giV6MfhQQ/Z1ExCNzBR7ZH6PEkhWu066Kn0Nn
-	gflrc8oGnXlWY2TKfVDmzXmpHEDgCTDlg0HO6aH2JLFvKkZsWgkwREisD+5ziYalTurDrzRE+B4
-	+gg==
-X-Google-Smtp-Source: AGHT+IGE1LgxqdKnUpQTqh6OwtRuQIXkK6E2bbB3uOqTPKnnNib9O3sYIDs/w4CmKbE3kIU0DbcVhMnPBQ==
-X-Received: from wmxb4-n2.prod.google.com ([2002:a05:600d:8444:20b0:477:5a4b:d57f])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1c28:b0:45d:dc85:c009
- with SMTP id 5b1f17b1804b1-47d1954586amr32388785e9.10.1766159192865; Fri, 19
- Dec 2025 07:46:32 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:40:06 +0100
+        d=1e100.net; s=20230601; t=1766159197; x=1766763997;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pnCWdNxOjiV83xbv6/Q1ySENLnYMSFtAYAkCgCH7C/E=;
+        b=UM4i5NZaTHOnrvXW3wLiOuSffpq15QkdwOyHlb4cGWjyA37cTM0wKZqJIaTPM3GvKd
+         UCsI2gDLZ/LFPDn+OmYnCovFizeltTBCihfED7ipUdWTWJsqK2y5atBS/0CzWmLjeD3t
+         hin8wj0D7KLPD1MljPgzuK02qKWoJdDWloecIjfZXIQPR8cCSUg3Mg+ef/cINdIzRPss
+         Qpq4o/sTeTq5+UhmIcA4L5JZJdmfqO99NOYb0ybKCfL4+q1/YA0aK51VckFVcY4cEvRl
+         tzk+3VtLRQf+5bYUJc+DEGAD3A1KYMSTyYQi9kVMHl20LOv2dqxUbM/m+2YwaBgIGtBe
+         iIBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTjD6r6iY0BhtIiQNx4v0qmk6X1mpHY08MMtW5fvLlg62hVZsFiXwlbwK2b4VTIpbeSnvuhJCGQA==@kvack.org
+X-Gm-Message-State: AOJu0Yy6BOqwtJZhELT6PW1dK2ZNVRU54vblNAJhokL2xUwqSoBLGR6x
+	r1Us60wks4DpAuTA/gscwlUSX0CqXJo24ZDVbIlmj9N3PwFIlmAVOaZjhyS1IwnEWRwjk7zUSh2
+	D6w==
+X-Google-Smtp-Source: AGHT+IH94p9GxjeE5eZFV8DN+RguEekXTKbRPlnErvQrVGXfEBJeQJYNzzYoe3WVGxRFHI0q7jnGDkVIDg==
+X-Received: from wmcn13.prod.google.com ([2002:a05:600c:c0cd:b0:477:a6e8:797a])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:888b:b0:477:9cec:c83e
+ with SMTP id 5b1f17b1804b1-47be2999667mr56775795e9.1.1766159196727; Fri, 19
+ Dec 2025 07:46:36 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:40:07 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-18-elver@google.com>
-Subject: [PATCH v5 17/36] locking/rwsem: Support Clang's context analysis
+Message-ID: <20251219154418.3592607-19-elver@google.com>
+Subject: [PATCH v5 18/36] locking/local_lock: Include missing headers
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +116,15 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 785F5180004
-X-Stat-Signature: 97dxynh1jpnfdpqf8b9mte8y1rdhymm3
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: msc49ug8oeujmzwwd4s8sdd1npmefrqp
 X-Rspam-User: 
-X-HE-Tag: 1766159194-703839
-X-HE-Meta: U2FsdGVkX19pTkR4leV0sEIh9Df6JadWqanR3UIBtkgpBGoFYoplyZw3aJVNJe8uT0I2VfgPOHSixQZQoLHr0tLo+EImy9c2OnOIwUFvkZ3anzBqEQjpv9DbZmL4CXwEf1mQ1+RH4XogCVF0cPMxe01uic3CWPiKoKIPdsCH7X34LtWJfWMvLchHeRUonQ8CLMw4GjQ8SDXetyQot7jG1QKCeGoRlhZkjPiX2orcPElp9Jtg1vSJCeSLeAMhtyt2uUt0rO0hYLtqTfddDz5v8BYkCf4IhkQgq/pANcUromt6Bhd5bp1rlKUlecqRZZQHSEsWefaE+d3U8OqaRYgk/PEtDjaVKbNdJ4fZ/cKmgBakNvmYRhjXC38sB9FCWVhEC9u2iThHhUIgVqTjRhRfdIJWSYtiqAHaqlcxnH4lEGDAU2cWdoOEUbl4islkeO0EX2X9SveVQPjt8mCdbTOIX7/0QigY367blP6+d8yne41qNlUVgSeOViz1rg5mkv/CndDkFjJ24LTrr1MF1QzT/nIeC50KiSUifCHj5qAzI3nJYz/IlL7d2mRbUEyQLUpuYoW7wKLweluSmrNHYDrprcgqaIQiH/G8MB7yzlxfx1StZbgDy3LdGEj1G6sTnBhmoJzr1TJKDmkFu8YhenFf72C3+7RjbMFhawT//NOxpnZGFeSS/3+436DNMVM3PpurBdE4GK3+dRSKuoENRp0yPlSD/gUCOlusKq+cB6jFbxaaxd95X3hd7VnyBu0WaKYTYh0exM8c38j/QbqTppqnm/qMW784/+GB7snXmDr8WLINnu8KkPOeTh97V5xR+fFuxWTIdeWZzELQ3RUa/tY24SKPpdFtV1OAEAi0XU3+6cE7kP8QpTevMww033X9tYLe/dVJkGkJZY3R6lwI5ksGR3roeNtuYVgVFDz4bu+rGQvcVMv1TkHVz7Micnvb/tmMagxxx7N5hXEunbh2pOp
- x0lxiC38
- aDYzLhQhgmufrw7E2GeS0McEXyMkgbS67Hkp/kuLO8o5+mh05GFzuUeuzS0/eQR+aHzv+WJ5FYsGn8JY5AmcUCoilgsyDJjnjxLc5TAVL6H5NXOrlYdeg4XxkVrEFurh3FvDQEcUjyPYEEPtAInC5sMfTvRlAU3nxwfDSU0pM1/cUdHtop9o0aFoc8G1frkREQC+33A/4hnuO9ecJF8Is27p4fdpKSg3MX6QPoCi3iDOzVu4Buim0DHSNc/VbHe/xD2xRTL4GCH9rZRDouKRbtG5u+t2V/QIc6yGPz2iFY1RTJ8bn8Mp1CM8/qhN2Zy9csZ0SnP5xktIV/RCGpdWYiz6reEfj1FdNYHuBzZtxZbHvt7Kk8QIA/pymSC8fQBMUBkms5rhq1j3u0JS2U3QaLe0QQlfkXzGOBPBCPAVZe5pPn4XoFEJ/cs2TdSb2WjbyeYwIZGjycPJSC6EpPCrfZPrOPsU2bCSaKi4IRHuYQJHFHhkJ1nlq6rQ3GEFVRxK4GJ3I25/FB3KhR5333SfjMU2gbv/knW99Fsr3h8pSAUmZU3l2grPTXF4aT3NIHNcjd/bRezHc+Qu76oOPA0MsIxsqEp+zwVZfNaqr66lHoP7rq24h7FzBYzHtaiHzUltFvEUh9LFDNcd/CblZau84lJWZsJAmk9oRUA25
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2CBA340011
+X-HE-Tag: 1766159197-118464
+X-HE-Meta: U2FsdGVkX18Er/sXHIK4mYDG2N05MgC5DSZp8Z4RyKmygfHoyr5SdjlHWCIE0zGjOmMA3GkQiXTC1eHi85J6L+SrWVLSMBNZtv1RCOL3Tbo1VYgJGy/eBt40aqqZc7KYN+ekVaghOggQ86bkS22ll1OdpNh3rOp3F0LtFK5qUv+KdXn8wi1Y0Lwfg1tiPlyi6d1NC9+E568P3AHi5wSXhvfbEc1ZT2OlFT3erwNydtQB5k2/PBWwD+0S9Jzp+ALNZsMS1n0hHziBsRmc5C3mdaejbIctyGHA+hDlfPOMJ2pEK8bnG8JLzUrEF5OWx+qjY+ctW9f4Frgq6W6IzUMt7a/ScqbPGB/aSw/eEIkcMPQN3LKj27fvr8XsFEYndLlg1RzZtXykAza6CpBKhqD08lng9fvup716TK+SvW0XhC/wRUwBAa+e7XETOShuCFFgz7T45oRBRKhtuxX5rzyxod27BOu3v7rPmWYKAuOKxvsAe7c1RmWZhOsSAxPZRVbJUiV1w8e6ri5CoVYoHrEFwNNkjM97Sogg0WuXEcIJxsullMXslafztMLXCb+yrXkmHNfjMRIMm1cm6zkcGfWTzbLM6VvG6yjlud+q4QgJOJCDPawIGPCXO8T0EzprpYfbFgCQG7pFc2slokkdqw16dbYI3LyAcYgrf3thDIB6FXTjq7fR8cMOHdiqvlFN6XuqslqeI/V+qNsFjxVdooEvSvJcWViKQAW1EfVyIujgdWWjz6SwARIlLhm7D49zBcL1g5Io962/hK085i7eQJSjIRdZRZmXuyk145hTBhaCW8x55zQku6vrQdd8yVIMZcx8hz9o0EjE203YXmt3yw8vN2Yia1TUUZu4kP0FCYBcTX2+3609KRy+d8zsnR5IJHw8WUS+hwnI0D/4uPXwshdhX1ZqrKYcoFS/chrUNDg2l/gYCP0pTXIM0iFELDP5XFqxAvhJqbZZkUldJWuE2rW
+ xDaQpF69
+ ccW8NSm4JB4507EQE/t35LV3YibxmeP2IMgEvtkZQOP2bHdIJjIMPnZbhaoK9PelE+nc7Uku6V/sg1n/u+oEb2Zqfx8hgTRZIT565fT/kZr9wm+SQxg4L8yqg6H2KjlSooV6DWBi93i/ttb9mkDFLCNxsT8bTquhVqZKvPzwwW4uztze9ygKYJoIIa3Mt4eSbpBlol+ZTdmreHX6JpEM7p5KkyZLVQLyz4UfUmAFHxBZgu4Ae6yFNeDmm5qCUMYnkIKQVi/7Rjm7FtX0cxdi3M8Anu6SJTWOk1CJV2WiLZAJ7h4weRUn+SHVo+QPyLeJuoUeCv9fQEE2CagKwnC3yu0P35YlIhEVOCmK2YWhDdJRzwuUEQiBY5OFJo7owNIjnK3/lJ0q8rODyT634EON3rVZZ6uDM90f+xDEmwef5zF0Cg3Dg4/JPoBVDC/4MPCsXsX/m/Bf3IEpJrj4w7p5uXS6sU6xDesueskPxi+HDrJLyDfgMOiGlxh4zbfqq4nPfHk0kvJiI1pN32N4mnxkOpSIegwvFz4Zac1DTPkZyeQzpVd492N0hHPLRLaDqIS/plLjEmSgZeOGxn4DgLOdHZN8/1OeSCfMmJgQK4VPiUoCm6NpcgaEf5+yIRJk7bny4C9tP6QsQptztmnEAq4gBEYb2LJsZcbelIClu4+CRVZ5pYTuMfWBO+MzKTob6gYKDIVy58px4ELO9sQOM1WwG9IJkTPqUxJBSTAMaJQq1/si3RA9t99nxqea1+gPm3u1zXFlVPdPtaahDofeR9kjplF48LQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,313 +133,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for Clang's context analysis for rw_semaphore.
+Including <linux/local_lock.h> into an empty TU will result in the
+compiler complaining:
+
+./include/linux/local_lock.h: In function =E2=80=98class_local_lock_irqsave=
+_constructor=E2=80=99:
+./include/linux/local_lock_internal.h:95:17: error: implicit declaration of=
+ function =E2=80=98local_irq_save=E2=80=99; <...>
+   95 |                 local_irq_save(flags);                          \
+      |                 ^~~~~~~~~~~~~~
+
+As well as (some architectures only, such as 'sh'):
+
+./include/linux/local_lock_internal.h: In function =E2=80=98local_lock_acqu=
+ire=E2=80=99:
+./include/linux/local_lock_internal.h:33:20: error: =E2=80=98current=E2=80=
+=99 undeclared (first use in this function)
+   33 |         l->owner =3D current;
+
+Include missing headers to allow including local_lock.h where the
+required headers are not otherwise included.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
-v5:
-* Rename "context guard" -> "context lock".
-* Use new cleanup.h helpers to properly support scoped lock guards.
+ include/linux/local_lock_internal.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v4:
-* Rename capability -> context analysis.
-
-v3:
-* Switch to DECLARE_LOCK_GUARD_1_ATTRS() (suggested by Peter)
-* __assert -> __assume rename
----
- Documentation/dev-tools/context-analysis.rst |  2 +-
- include/linux/rwsem.h                        | 76 +++++++++++++-------
- lib/test_context-analysis.c                  | 64 +++++++++++++++++
- 3 files changed, 114 insertions(+), 28 deletions(-)
-
-diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
-index f7736f1c0767..7b660c3003a0 100644
---- a/Documentation/dev-tools/context-analysis.rst
-+++ b/Documentation/dev-tools/context-analysis.rst
-@@ -80,7 +80,7 @@ Supported Kernel Primitives
- 
- Currently the following synchronization primitives are supported:
- `raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`,
--`bit_spinlock`, RCU, SRCU (`srcu_struct`).
-+`bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`.
- 
- For context locks with an initialization function (e.g., `spin_lock_init()`),
- calling this function before initializing any guarded members or globals
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index f1aaf676a874..8da14a08a4e1 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -45,7 +45,7 @@
-  * reduce the chance that they will share the same cacheline causing
-  * cacheline bouncing problem.
-  */
--struct rw_semaphore {
-+context_lock_struct(rw_semaphore) {
- 	atomic_long_t count;
- 	/*
- 	 * Write owner or one of the read owners as well flags regarding
-@@ -76,11 +76,13 @@ static inline int rwsem_is_locked(struct rw_semaphore *sem)
- }
- 
- static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
- }
- 
- static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
- }
-@@ -119,6 +121,7 @@ do {								\
- 	static struct lock_class_key __key;			\
- 								\
- 	__init_rwsem((sem), #sem, &__key);			\
-+	__assume_ctx_lock(sem);					\
- } while (0)
- 
- /*
-@@ -148,7 +151,7 @@ extern bool is_rwsem_reader_owned(struct rw_semaphore *sem);
- 
- #include <linux/rwbase_rt.h>
- 
--struct rw_semaphore {
-+context_lock_struct(rw_semaphore) {
- 	struct rwbase_rt	rwbase;
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map	dep_map;
-@@ -172,6 +175,7 @@ do {								\
- 	static struct lock_class_key __key;			\
- 								\
- 	__init_rwsem((sem), #sem, &__key);			\
-+	__assume_ctx_lock(sem);					\
- } while (0)
- 
- static __always_inline int rwsem_is_locked(const struct rw_semaphore *sem)
-@@ -180,11 +184,13 @@ static __always_inline int rwsem_is_locked(const struct rw_semaphore *sem)
- }
- 
- static __always_inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	WARN_ON(!rwsem_is_locked(sem));
- }
- 
- static __always_inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	WARN_ON(!rw_base_is_write_locked(&sem->rwbase));
- }
-@@ -202,6 +208,7 @@ static __always_inline int rwsem_is_contended(struct rw_semaphore *sem)
-  */
- 
- static inline void rwsem_assert_held(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	if (IS_ENABLED(CONFIG_LOCKDEP))
- 		lockdep_assert_held(sem);
-@@ -210,6 +217,7 @@ static inline void rwsem_assert_held(const struct rw_semaphore *sem)
- }
- 
- static inline void rwsem_assert_held_write(const struct rw_semaphore *sem)
-+	__assumes_ctx_lock(sem)
- {
- 	if (IS_ENABLED(CONFIG_LOCKDEP))
- 		lockdep_assert_held_write(sem);
-@@ -220,48 +228,62 @@ static inline void rwsem_assert_held_write(const struct rw_semaphore *sem)
- /*
-  * lock for reading
-  */
--extern void down_read(struct rw_semaphore *sem);
--extern int __must_check down_read_interruptible(struct rw_semaphore *sem);
--extern int __must_check down_read_killable(struct rw_semaphore *sem);
-+extern void down_read(struct rw_semaphore *sem) __acquires_shared(sem);
-+extern int __must_check down_read_interruptible(struct rw_semaphore *sem) __cond_acquires_shared(0, sem);
-+extern int __must_check down_read_killable(struct rw_semaphore *sem) __cond_acquires_shared(0, sem);
- 
- /*
-  * trylock for reading -- returns 1 if successful, 0 if contention
-  */
--extern int down_read_trylock(struct rw_semaphore *sem);
-+extern int down_read_trylock(struct rw_semaphore *sem) __cond_acquires_shared(true, sem);
- 
- /*
-  * lock for writing
-  */
--extern void down_write(struct rw_semaphore *sem);
--extern int __must_check down_write_killable(struct rw_semaphore *sem);
-+extern void down_write(struct rw_semaphore *sem) __acquires(sem);
-+extern int __must_check down_write_killable(struct rw_semaphore *sem) __cond_acquires(0, sem);
- 
- /*
-  * trylock for writing -- returns 1 if successful, 0 if contention
-  */
--extern int down_write_trylock(struct rw_semaphore *sem);
-+extern int down_write_trylock(struct rw_semaphore *sem) __cond_acquires(true, sem);
- 
- /*
-  * release a read lock
-  */
--extern void up_read(struct rw_semaphore *sem);
-+extern void up_read(struct rw_semaphore *sem) __releases_shared(sem);
- 
- /*
-  * release a write lock
-  */
--extern void up_write(struct rw_semaphore *sem);
--
--DEFINE_GUARD(rwsem_read, struct rw_semaphore *, down_read(_T), up_read(_T))
--DEFINE_GUARD_COND(rwsem_read, _try, down_read_trylock(_T))
--DEFINE_GUARD_COND(rwsem_read, _intr, down_read_interruptible(_T), _RET == 0)
--
--DEFINE_GUARD(rwsem_write, struct rw_semaphore *, down_write(_T), up_write(_T))
--DEFINE_GUARD_COND(rwsem_write, _try, down_write_trylock(_T))
--DEFINE_GUARD_COND(rwsem_write, _kill, down_write_killable(_T), _RET == 0)
-+extern void up_write(struct rw_semaphore *sem) __releases(sem);
-+
-+DEFINE_LOCK_GUARD_1(rwsem_read, struct rw_semaphore, down_read(_T->lock), up_read(_T->lock))
-+DEFINE_LOCK_GUARD_1_COND(rwsem_read, _try, down_read_trylock(_T->lock))
-+DEFINE_LOCK_GUARD_1_COND(rwsem_read, _intr, down_read_interruptible(_T->lock), _RET == 0)
-+
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_try, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_try, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_read_intr, __acquires_shared(_T), __releases_shared(*(struct rw_semaphore **)_T))
-+#define class_rwsem_read_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_read_intr, _T)
-+
-+DEFINE_LOCK_GUARD_1(rwsem_write, struct rw_semaphore, down_write(_T->lock), up_write(_T->lock))
-+DEFINE_LOCK_GUARD_1_COND(rwsem_write, _try, down_write_trylock(_T->lock))
-+DEFINE_LOCK_GUARD_1_COND(rwsem_write, _kill, down_write_killable(_T->lock), _RET == 0)
-+
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_try, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_try, _T)
-+DECLARE_LOCK_GUARD_1_ATTRS(rwsem_write_kill, __acquires(_T), __releases(*(struct rw_semaphore **)_T))
-+#define class_rwsem_write_kill_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(rwsem_write_kill, _T)
- 
- /*
-  * downgrade write lock to read lock
-  */
--extern void downgrade_write(struct rw_semaphore *sem);
-+extern void downgrade_write(struct rw_semaphore *sem) __releases(sem) __acquires_shared(sem);
- 
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- /*
-@@ -277,11 +299,11 @@ extern void downgrade_write(struct rw_semaphore *sem);
-  * lockdep_set_class() at lock initialization time.
-  * See Documentation/locking/lockdep-design.rst for more details.)
-  */
--extern void down_read_nested(struct rw_semaphore *sem, int subclass);
--extern int __must_check down_read_killable_nested(struct rw_semaphore *sem, int subclass);
--extern void down_write_nested(struct rw_semaphore *sem, int subclass);
--extern int down_write_killable_nested(struct rw_semaphore *sem, int subclass);
--extern void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest_lock);
-+extern void down_read_nested(struct rw_semaphore *sem, int subclass) __acquires_shared(sem);
-+extern int __must_check down_read_killable_nested(struct rw_semaphore *sem, int subclass) __cond_acquires_shared(0, sem);
-+extern void down_write_nested(struct rw_semaphore *sem, int subclass) __acquires(sem);
-+extern int down_write_killable_nested(struct rw_semaphore *sem, int subclass) __cond_acquires(0, sem);
-+extern void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest_lock) __acquires(sem);
- 
- # define down_write_nest_lock(sem, nest_lock)			\
- do {								\
-@@ -295,8 +317,8 @@ do {								\
-  * [ This API should be avoided as much as possible - the
-  *   proper abstraction for this case is completions. ]
-  */
--extern void down_read_non_owner(struct rw_semaphore *sem);
--extern void up_read_non_owner(struct rw_semaphore *sem);
-+extern void down_read_non_owner(struct rw_semaphore *sem) __acquires_shared(sem);
-+extern void up_read_non_owner(struct rw_semaphore *sem) __releases_shared(sem);
- #else
- # define down_read_nested(sem, subclass)		down_read(sem)
- # define down_read_killable_nested(sem, subclass)	down_read_killable(sem)
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
-index 39e03790c0f6..1c96c56cf873 100644
---- a/lib/test_context-analysis.c
-+++ b/lib/test_context-analysis.c
-@@ -8,6 +8,7 @@
- #include <linux/build_bug.h>
- #include <linux/mutex.h>
- #include <linux/rcupdate.h>
-+#include <linux/rwsem.h>
- #include <linux/seqlock.h>
- #include <linux/spinlock.h>
- #include <linux/srcu.h>
-@@ -262,6 +263,69 @@ static void __used test_seqlock_scoped(struct test_seqlock_data *d)
- 	}
- }
- 
-+struct test_rwsem_data {
-+	struct rw_semaphore sem;
-+	int counter __guarded_by(&sem);
-+};
-+
-+static void __used test_rwsem_init(struct test_rwsem_data *d)
-+{
-+	init_rwsem(&d->sem);
-+	d->counter = 0;
-+}
-+
-+static void __used test_rwsem_reader(struct test_rwsem_data *d)
-+{
-+	down_read(&d->sem);
-+	(void)d->counter;
-+	up_read(&d->sem);
-+
-+	if (down_read_trylock(&d->sem)) {
-+		(void)d->counter;
-+		up_read(&d->sem);
-+	}
-+}
-+
-+static void __used test_rwsem_writer(struct test_rwsem_data *d)
-+{
-+	down_write(&d->sem);
-+	d->counter++;
-+	up_write(&d->sem);
-+
-+	down_write(&d->sem);
-+	d->counter++;
-+	downgrade_write(&d->sem);
-+	(void)d->counter;
-+	up_read(&d->sem);
-+
-+	if (down_write_trylock(&d->sem)) {
-+		d->counter++;
-+		up_write(&d->sem);
-+	}
-+}
-+
-+static void __used test_rwsem_assert(struct test_rwsem_data *d)
-+{
-+	rwsem_assert_held_nolockdep(&d->sem);
-+	d->counter++;
-+}
-+
-+static void __used test_rwsem_guard(struct test_rwsem_data *d)
-+{
-+	{ guard(rwsem_read)(&d->sem); (void)d->counter; }
-+	{ guard(rwsem_write)(&d->sem); d->counter++; }
-+}
-+
-+static void __used test_rwsem_cond_guard(struct test_rwsem_data *d)
-+{
-+	scoped_cond_guard(rwsem_read_try, return, &d->sem) {
-+		(void)d->counter;
-+	}
-+	scoped_cond_guard(rwsem_write_try, return, &d->sem) {
-+		d->counter++;
-+	}
-+}
-+
- struct test_bit_spinlock_data {
- 	unsigned long bits;
- 	int counter __guarded_by(__bitlock(3, &bits));
--- 
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock=
+_internal.h
+index 8f82b4eb542f..1a1ea1232add 100644
+--- a/include/linux/local_lock_internal.h
++++ b/include/linux/local_lock_internal.h
+@@ -4,7 +4,9 @@
+ #endif
+=20
+ #include <linux/percpu-defs.h>
++#include <linux/irqflags.h>
+ #include <linux/lockdep.h>
++#include <asm/current.h>
+=20
+ #ifndef CONFIG_PREEMPT_RT
+=20
+--=20
 2.52.0.322.g1dd061c0dc-goog
 
 
