@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D3ED74965
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E96D74965
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:47:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50A736B0088; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
+	id 6F71C6B0088; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E2436B0089; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
+	id 6A51B6B0089; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40E986B008A; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
+	id 5B1026B008A; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 31BE06B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA9C8602E0
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:42:25 +0000 (UTC)
-X-FDA: 84235579050.18.CB6F8AF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 27D4A40002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:42:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skWdYr6L;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 479116B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D620958F72
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:47:26 +0000 (UTC)
+X-FDA: 84235591692.25.379F47C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 31F42180002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:47:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sdb8bgc0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766133744; a=rsa-sha256;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766134045; a=rsa-sha256;
 	cv=none;
-	b=HKbO7OyXUTzNMOZzOH/gdp9JiN+SODdCHzksoJ51A8a9dQvqJDdszeciGP9nMq24/j6qOL
-	qH9NRPXKDPOM4DMzCPHS/5IP1kDr6U1cTj6QCq3/xdD2e7DZtjimxtdlfBosrBaMxHypHw
-	r+2qIaA3bWsGsKzw6FuQOSoURidvihc=
+	b=SBx17etTUFFcbZQHTyPhrPaODgNASInITJa/pRn2sTSwm4lr/PtjSJZKBYFK+fww7shuFR
+	+YBut8bdGJd5n56MNXpbs8p0A+hUPLXm54/lkuy2hYUyce+xx/M9jU4L/maSw1coS+6/pC
+	j/kuCkSUnUmW02v6WtbcYqnk7JLTiXw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skWdYr6L;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sdb8bgc0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766133744;
+	s=arc-20220608; t=1766134045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+hCT4wjyj5+fMkqcJpe94XokFEHMYSmNZI5ReOoz8Cs=;
-	b=QCE172W4YJGcL576seeUn/crK0mrrhdPDMitxiqAa6s3EU4jbG14qKMBsINsB+1nXHDUM9
-	3Ezu6Ic1HTF9iV9367qVQTjx2pEmg8bnRBPeU8wO2+GzJjAGgMdSdbri5Q/ScmZRkxB8Jc
-	rqB+9fFpnlpyCKHy0eSnRYsvtabMrMc=
+	bh=OliIfUY2eT5KSiCiF63QVrnR/IvcInrMZ9L1dMRjVDc=;
+	b=4GujkHjZekYw2MkeAAtPofyz0IF/PFESVqQ7BMTIsrtSYJhGGwd43VWQ8pQoLGhGFL2lr5
+	xTfhj0zzxmSq5EqA+Gh9LTeJdvOUbTzahwYOvo9PW9PBCo/iWezLWKwVzQSfRe0TpLbmPY
+	mYVdBguuW7ZHqKYvQXrYp45jvln+MGE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 108504387D;
-	Fri, 19 Dec 2025 08:42:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A9C4CEF1;
-	Fri, 19 Dec 2025 08:42:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB7B16001D;
+	Fri, 19 Dec 2025 08:47:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EADCC4CEF1;
+	Fri, 19 Dec 2025 08:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766133742;
-	bh=BWoymR/P1tEaCYbA+6x3wLoQnAtu2UPZdgax6L4PcC8=;
+	s=k20201202; t=1766134044;
+	bh=TGs5B+GMZUdb5OMX5/di7bdBSNlBgR8ieYIBhM34LpU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=skWdYr6LtTEra/hEJKSRki4oTiaVMYJJp1E1cQJDgFd5/TER6asBGVlGh3eeiSKc2
-	 LNiq4vVCt345S4CoRaZjVlB+/k+vylJTmUTyL8dTk66CamK4lqZBOagGdhILd86n6W
-	 3Vr4Y2HufoSSg77k8mIwUROQI8C7Z0/QnAOyLqyg01hDYQ+DOTgDfT8TBEuQqV15Nd
-	 Ny5047KxgiXOX6dzRlOT+OZoLj8pofxB7WoYvn92uOhMmWcZQsh65VWq1MT/Tsxj6Y
-	 3iaW699Mxu9iYVBdi7G6lmezEOJ5YNQ2t/ev1BprX1hS/LlY04KJV3XLVvDIIY5pDd
-	 J9CweEgDtf4ow==
-Message-ID: <4c2027d3-2665-42e0-8cfa-712b1d8f8870@kernel.org>
-Date: Fri, 19 Dec 2025 09:42:16 +0100
+	b=Sdb8bgc0r+gRok+GaEPKKkfkD2nx5RJeivKTW3N5XzX4VHnCwB48u98bWG720dTGs
+	 2yrotDf6UVBVC6WxvH+agX8qXAU5d3bS+Ya6C+Tlr0C6oIen2mEgLfCBl4UvQAbNiZ
+	 QYbPWhc9MYKRZa4yAbrg488watiZq2oOyky2YEc9b40QnhfhIZDrbsy/7Axry6Sipk
+	 4r71ztnv0Wf+Ytf+5khWuBDf5EnuDsqYGkzQriRsHFACvk25OwWJWYt9lJIlOyB+Oh
+	 IaxdwJaeiQm8/roE93h3BlAHkiQFBkBG87R47tDq3hDJgS65Ke+RnoyQBeVoFtUL6V
+	 pz33/e6xh2vbg==
+Message-ID: <de04d804-d27b-4029-9b0b-30e863440aac@kernel.org>
+Date: Fri, 19 Dec 2025 09:47:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: bail out do_swap_page() when no PTE table exist
+Subject: Re: [PATCH 2/2] mm: avoid unnecessary PTE table lock during initial
+ swap folio scan
 To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
  rppt@kernel.org, surenb@google.com, mhocko@suse.com
 Cc: linux-mm@kvack.org, hanchuanhua@oppo.com, v-songbaohua@oppo.com
 References: <20251216075943.29593-1-richard.weiyang@gmail.com>
- <20251216075943.29593-2-richard.weiyang@gmail.com>
+ <20251216075943.29593-3-richard.weiyang@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251216075943.29593-2-richard.weiyang@gmail.com>
+In-Reply-To: <20251216075943.29593-3-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 27D4A40002
-X-Stat-Signature: 6fiust61qwawdixb3wzjinig8bnw5kgr
+X-Rspamd-Queue-Id: 31F42180002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: g9b8ypngyhh3u68xnadk6mfnagdxsb1z
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766133743-958541
-X-HE-Meta: U2FsdGVkX18Kl80CNf/rBgDimqq/I7DDxvZknXFX1nzSabFfUts4Eby4b+8kZ7g48uW2E3htnEzpK3JqaB7gFoizfwaefRGjspc+6jd32VFN86q8z7hvKmaEUlnXdv0VNZmjypf49giCiaaCV/IjSh9STC1Kd1TeAHb8dwAjI39YynqFOdbYdri3W7uBtucUzADBfSRTTaOGriLpuEuvtWUlSgA1PRFvAjLiMFPx/8I4hO4Gk+YQ0Djmx9P+v03QLRtYeMNu6p8DgNV189gRC7xhRHi7QdMVtYUTswTnSuuDp84sKn6vm3/2y4LBiTlIR515k6JRueCTKfXmMYP2feqVGPV/Mr8TTm5rJnHHjQEKukQt1CwuqWKCPVcNeq+h/hIAITK9SI4eJ2ccsUk4dxplMQcpPv3cavUsJWbBU/JTo/+Jv+8MHae6QwzKCxC9qUedisCS9qP9qCNFd+/8RtZ6QWE8qUb+VpxGcXgNnmAjE1LBXaFBsyJSdUtmQbpnNzzeVb3jeZ+WoMAJWeFJNy+Ms9eL4fPMichJbcy61FjO0i4YQ5NmyPyCya8CzMWO/SyXVjVTy+4RRJ2zT8bsjmoDTH0qSSzwnUhliYYPBCc8IKl5MYyqo2oGvqCchmlyFvqrvfVRyb+5ytSUpivUZ6xz78Te9jkBjkOpyxqv7+nDs1K9GuI7hD8TNn/XjGWr1G+Iae0WDGy5IErSTA9cCe1ZoHDDZo4bYwUmrvZxpHPw++qE222plfyuiRFg3IpMdumpbxF0VJ1bODOgN/h0RmmJ1EI7aqoNLRnHeSJ2Y8umQl40ugm5psBgUHzGPZ0NZ8GI6vYGm4fQ2KKLx7p8ox2+xzoTPhEEV0ujgPNguPhWz0WnU58zp/pTvsqYLzg0X3+uGysjOyB3HS6ikUL5ScuycyJnlDRGcvYfTS/1xWZYro+AoxPBAmJfPH3WXlN2ZxaXza2iAOrp3usM9KF
- 75mdUoxd
- pbxaWw8dz1IeQWsUc3GXA5OkuNDOE16P8wD7VmDQawj1LWPEuivMbYn9Yi3o6Dqmk1n0aI/H/LWQB57P2XVx7AEjzm/JE8NVGs9ZKez1YfjoKpQoNsTe41QreGKJOFwY4ZE8LpXItkLEjh07wtgWwl97x1z93btq90c+i1dyw0MKB1y6kzJx5dfmVpVofWawRAZ6hFcwAdRbJG22ev+QnHl/97dQyjLVECxeUDFBMp4iiW9FAYb7r5xvkCunR1TxzAXOqalEAs2OmBlAtSBi1jxkYaCg6ZB3J1gcWBOIT3HMVcVNyAl5HIOyzUELqHrjpWlYbaC8xBTggVWmr2sn21TzmK+vaF+gBw5oaV8LKhRYov1IYmSLRrM0S2z2Whose0j6FTHd4gX49azlDKqTu5PxRsV/Kw1qNTHn4Luvn+PJ2I/g=
+X-HE-Tag: 1766134045-680774
+X-HE-Meta: U2FsdGVkX1+T2ZPF3xmVro8f0qs2q3ThlVcjISJiJpfqLBM/cUdYUxWChQiMPYVjSPqMPla/z6IgxL4VwYSu0Zbk3dzz3oggi5+Qvbqeq8snR1p5BRqO/YZcVxwicY8Tle0Fr35On0ccZ9gebwvzA2s0Kd9XKSSOirtvB041gWuvbtIOKamLXAn56kOuZj6E/iEa010RXbnC2Esq/Fav26RZy+P+cNc44caiQ3ZM7R0BGSg2ObldSynAFIwDWFWWX8Fsdyzc2rIw0S14K3/4B3jflUBPTRFPHOET+rBIp5GYVJNjT8mk4gsCzS8QMGp053BsWvkUH7+z4AKm55rQ9U99X+Vp71fSA6T6iGF0/UYA3KOLGMOQdnL7L8urOnu9q+knA8gfZ7XDOs1CI0VL4v2UMehQovBs5gYbGybSKdKDfjEspcSpXTXexlZH3ROZtsyklB1kXkaYQmGlPYsiG2DoexqydTENgFsstuFrZWARwoKKL/K0nuU9fW1SPNaDJIJrVHYn+H3+dFVp9BnE5s/2IydMUjEqYu/AfRkolwXvnYNqI4WGrg56BrOREoy3sx8LFaaIuG/7rwKgrgHp6PeySAGYDAc6QJgzNNH9DuWOLj6lxGDbqrIf5aDJVBaiIw/3ULoC6AIqrjcOFG0/lZwz4Rw8dWpMU0SigDKuEjGhcU4cPD/11DPaN0pHeYNh8tadFVzz3jtUaSAqeUhm4LzxijoF22O9IPNtd259XXuAk/MqOP8n5TlB/wJHFZ0p0jITTcN1zSiRLUlOlTF1PGph7MDS3msBUg97QtHW/R5bfiCGZefXBksE8WUdgc9S42ZEMD7FvbQuhp8k+lQqOnVh+jPhZBlBG4s0EKOxPHOjmXBhXs2TvUb5MswDclVQWsC4CjEnnxkq7mYemGDAdKD9m1E8Kb+CUQWG/VxlNzmo+zFRQpCpYFUJ7Lge/i2EEyDHn05NdROn8FZe7mO
+ scPqtvh2
+ RtV50yfOtkdm/v4maXPnIJDVAzeopPaiybyPUufNu58BfrxqScZOQzYoYqQKE2SKKoMb8OQs500bLyU9ZQU551/TnUTk0iwotdmxNkxen6Dj0WzcU3gzXvUCQbOUUS+4pAJO2V0zrzshM6BlNZ+FIDc0Pa0hDXLPP6xdz5fPp5RqnM/WQ/5fe7ffhMStmzq8O7nDs3UI/7v8kFubC5cfha+gmzjVPa4s38+7Wt8HeXEWLvo2t0QwSl1CMeGS8w1NHoK9CgwG4rX5MN+BvXZSj1nHGtQ8v5wZBABjnMPfjPDlvxlTOKUx3lXklYSpvgzaLJ1ay+fBuMBQ9X7zjAb76H1ZZbEvsjjJoaTHJqlDD0gXbHGRgzCBAn2ZtJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,56 +98,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/16/25 08:59, Wei Yang wrote:
-> The alloc_swap_folio() function scans the PTE table to determine the
-> potential size (order) of the folio content to be swapped in.
+> The alloc_swap_folio() function performs an initial scan of the PTE
+> table solely to determine the potential size (order) of the folio
+> content that needs to be swapped in.
 > 
-> Currently, if the call to pte_offset_map_lock() returns NULL, it
-> indicates that no PTE table exists for that range. Despite this, the
-> code proceeds to allocate an order-0 folio and continues the swap-in
-> process. This is unnecessary if the required table is absent.
+> Locking the PTE table during this initial read is unnecessary for two
+> reasons:
 > 
-> This commit modifies the logic to immediately bail out of the swap-in
-> process when the PTE table is missing (i.e., pte_offset_map_lock()
-> returns NULL). This ensures we do not attempt to continue swapping when
-> the page table structure is incomplete or changed, preventing
-> unnecessary work.
+>    * We are not writing to the PTE table at this stage.
+> 
+>    * The code will re-check and lock the table again immediately before
+>      any actual modification is attempted.
+> 
+> This commit refactors the initial scan to map the PTE table without
+> acquiring the lock. This reduces contention and overhead, improving
+> performance of the swap-in path.
 > 
 > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 > Cc: Chuanhua Han <hanchuanhua@oppo.com>
 > Cc: Barry Song <v-songbaohua@oppo.com>
 > ---
->   mm/memory.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>   mm/memory.c | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
 > 
 > diff --git a/mm/memory.c b/mm/memory.c
-> index 2a55edc48a65..1b8ef4f0ea60 100644
+> index 1b8ef4f0ea60..f8d6adfa83d7 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -4566,7 +4566,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->   	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
->   				  vmf->address & PMD_MASK, &ptl);
->   	if (unlikely(!pte))
-> -		goto fallback;
-> +		return ERR_PTR(-EAGAIN);
+> @@ -4529,7 +4529,6 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>   	struct folio *folio;
+>   	unsigned long addr;
+>   	softleaf_t entry;
+> -	spinlock_t *ptl;
+>   	pte_t *pte;
+>   	gfp_t gfp;
+>   	int order;
+> @@ -4563,8 +4562,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>   	if (!orders)
+>   		goto fallback;
 >   
->   	/*
->   	 * For do_swap_page, find the highest order where the aligned range is
-> @@ -4709,6 +4709,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->   		    __swap_count(entry) == 1) {
->   			/* skip swapcache */
->   			folio = alloc_swap_folio(vmf);
-> +			if (IS_ERR(folio))
-> +				goto out;
->   			if (folio) {
->   				__folio_set_locked(folio);
->   				__folio_set_swapbacked(folio);
+> -	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+> -				  vmf->address & PMD_MASK, &ptl);
+> +	pte = pte_offset_map(vmf->pmd, vmf->address & PMD_MASK);
+>   	if (unlikely(!pte))
 
-How would we be able to even trigger this?
+Can can_swapin_thp() deal with concurrent unmap and possible freeing of 
+pages+swap?
 
-Trigger a swap fault with concurrent MADV_DONTNEED and concurrent page 
-table reclaim.
-
-Is that really something we should be worrying about?
+We have some code that depends on swap entries stabilizing the swap 
+device etc; the moment you allow for that concurrently to go away you 
+open a can of worns.
 
 -- 
 Cheers
