@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5EE0D7878A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E3ED7878A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38BF16B00B9; Fri, 19 Dec 2025 10:46:52 -0500 (EST)
+	id 459C56B00BB; Fri, 19 Dec 2025 10:46:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34B2B6B00BB; Fri, 19 Dec 2025 10:46:52 -0500 (EST)
+	id 413BF6B00BD; Fri, 19 Dec 2025 10:46:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2762C6B00BC; Fri, 19 Dec 2025 10:46:52 -0500 (EST)
+	id 2EBF16B00BE; Fri, 19 Dec 2025 10:46:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4AF6B00B9
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:52 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D6BB21A02B7
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:51 +0000 (UTC)
-X-FDA: 84236648622.27.FA55340
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0189B40014
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="uK4/ELzl";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3aHNFaQUKCLUZgqZmbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--elver.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3aHNFaQUKCLUZgqZmbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--elver.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159210; a=rsa-sha256;
-	cv=none;
-	b=lWHRu3F8UsciDCMwmyTMQK9G8Yb7SOwCbTLuRq3GCX72jS3qlRhh5Gl9V473nmw/NCdr8F
-	AougFPfhXH3YrXQx9LgDqyNnMQ8aNw52KYpOvl5eRCQpqOf311/V+kYHs1i7zLDJcblKx+
-	ZquKkvn/lnMxyTRoY3W5mLkuIVgLuyA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="uK4/ELzl";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3aHNFaQUKCLUZgqZmbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--elver.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3aHNFaQUKCLUZgqZmbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--elver.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BECD6B00BB
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:56 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC479B7E73
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:55 +0000 (UTC)
+X-FDA: 84236648790.17.9DFEA34
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 073E540007
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="nz1D/VIv";
+	spf=pass (imf17.hostedemail.com: domain of 3bHNFaQUKCLkdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3bHNFaQUKCLkdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159210;
+	s=arc-20220608; t=1766159214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwJwFE4RR+G0qPj93NacKXfc9Bqs8f3KUgfNaIjFSIY=;
-	b=vlitp3cbHTGN+mSgZDASkYOL4JgQ2/foXaZxPbSULkBXX4tEyYqj4w4Yv3Anheea+EQScg
-	gO7pq9bWrWX8uFboCA5v/dc45S8zDbxNqtPf326PkAiAF6341n3OWp8SHXvdBlMNu4wfbe
-	DY2IVOUIO36Vj60yuNqTOSbXD0dv+6U=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-64b7907dd42so1740565a12.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:49 -0800 (PST)
+	bh=BPiD3KqRf4YAgh6EJvt9JR+cuwWr4Dg7H+dSvPnSAFc=;
+	b=hjhsQXeJYVp19R1sLXMac/sFB83ZxFFHlU05ONyJTYv4UA3cuhWECFpiGqV8DSbpsw3O+H
+	tL2eW50yJVzTjmW0tCnPpd4ae1u8eOyFtixh0OKWqH1gj1oZe1uHQyMX6okeRvd69eO57i
+	JA0uCVXQ7AsTAYznqwllCWHh3ixI0hQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="nz1D/VIv";
+	spf=pass (imf17.hostedemail.com: domain of 3bHNFaQUKCLkdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3bHNFaQUKCLkdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159214; a=rsa-sha256;
+	cv=none;
+	b=mXtNPXZGW2VKhOzP93Bp1Jt7fO8aTMNPQ4WAagXTqMCvmbuWWfMlG3nvTmOxAXczPuCriq
+	WWgUMoH+bHLDtvqkumYMttqDHa1wrW9mlnsUN70vja579ZMZ+QeA4rygPiQVSoDlK4Xrkn
+	mIoBxoJ3sLXeJVflich+xbR35xQZslY=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477563e531cso12949165e9.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159208; x=1766764008; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159212; x=1766764012; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwJwFE4RR+G0qPj93NacKXfc9Bqs8f3KUgfNaIjFSIY=;
-        b=uK4/ELzljDbZXcEU/gtdkvHp8APOb0STn6FJC8sWBPXC4x5wkLFJB+TebauDt8v3mg
-         wpysxdfblQKFTRA9ZTd3Q2axVsYsoLWjOY7TMmwEW1OQmybIItRGR1rgY42Z7RJv+KS+
-         cocMtbjBP/f17L/4PEuJ5WAxae32jsfXCzlj8t/YwcybKlSGM5nGslna0YIPGdNdOxJV
-         e/DXecd7R8vdp1rGvEgAlhXBn87LHgUldz7o3nJXJzqGRUvMBK8EqnhL6u8YQ4SGdy6/
-         ybzMC80Fu5RAVUkLbggUQ0P30QRb3wmv/C1LTWYEghnFlC7m7RMPoFfYdXg81Nuf6IGq
-         sHEw==
+        bh=BPiD3KqRf4YAgh6EJvt9JR+cuwWr4Dg7H+dSvPnSAFc=;
+        b=nz1D/VIvcjaYD7klpK97P90H/DVHqEsECGQi20++igkMXeHle1ieVkpxecGPQ+Ch1+
+         qLKyb2nBdyKyH4uFM2xnxHiOwafDOo0tFv9Cio5maTYwf5Ah+7ymNqZ4WoMEYfhPeKi7
+         nyB+RCJ3HyYRp2988/jJJW7D/2G1VLrU7eu/iE4MdjdcGBeZKSbQmxlsjVC5PwP9+N1t
+         6/VE5XgZML6OkU41ZTcxlj31z4NCFpcxat/doz4eL6R7NuCAr6Le1N3zFvHVnFvI8/pt
+         5Q1wMUCF4ddDweI7S0z31ViZD74DqdZ9a5cbpqIZH8Njo69QUO4NLZvUu71FjArpjZwR
+         FdUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159208; x=1766764008;
+        d=1e100.net; s=20230601; t=1766159212; x=1766764012;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwJwFE4RR+G0qPj93NacKXfc9Bqs8f3KUgfNaIjFSIY=;
-        b=JO42yvXgvpU8Jnqb/yhCNLR7Q4sn8X9aJfRHKtP9EhopLe4BMcDakASrlpmTZpQ3Kc
-         n2sQYwHAx92vCWHefl60sloca3ELYzMtRXRcaXi6Yo87vFa3+T0K5u2I4txBLRy+iqyf
-         n0uSATYeREJkoroQYD2dMFZKdR4yzEHe0LsCJ6f5MMhyn9j5xMPUx/T7iLLwFaIKgDXc
-         hcOZdblSDpdGNAVgLg7fRGL2mYZpZIrwQjevXIl0YXajJ3agFkeH109p+YnQIHPL+GJK
-         4AuAS2MU/PD2lBJZ4y8ast5I0/Cab84CP47e/LEJ1GkLGzCURo6Pyig5zoPNxsq/21QE
-         btjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4cIck57k09/B57rj8HiKYnH7rY65eSSy8NGtS2wvucgEwya467sV9r421Zwa/bN60oMnh9iIL+g==@kvack.org
-X-Gm-Message-State: AOJu0YyIKZumzVQPm8UBHIdsMQp+QCVf7IXGL0dyRVa7cjzKBxe+VaKF
-	xaM3DGAQDFAO0OG8UgDTKDxJuROHWHJ5EhXHc96s0om5McS3NXU8wyMLueNrp46u5dJcYXxGqh3
-	aXA==
-X-Google-Smtp-Source: AGHT+IFnXG6cE34nzlKUaF0YLjZuRw/c6GtHv7aWsx/cCEAUfVEyphXLuEYpLswMSP0zGStw/fZIKiWOPA==
-X-Received: from edwv2.prod.google.com ([2002:aa7:cd42:0:b0:643:8c4d:bca0])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:27cb:b0:64b:46d4:5d5c
- with SMTP id 4fb4d7f45d1cf-64b8e9379dcmr2970087a12.5.1766159208169; Fri, 19
- Dec 2025 07:46:48 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:40:10 +0100
+        bh=BPiD3KqRf4YAgh6EJvt9JR+cuwWr4Dg7H+dSvPnSAFc=;
+        b=rcpsTmwIRPcTcUE/d5eledCjJTelQIk21ey0ABZzYa8Une+SZnT7RMzpdcaw1+EUVZ
+         Cq6Dg4IMGr6ZjHXZmmaZl2smS2QcV3hm94EFt/gaVm8m2vukfFHPzKlbbKHblpFBUIbc
+         pMJhVuJS26aAqkrzw1Gz1TaFmfrRL2sagCrcCWFuvo/h7R1FutfAe5tdJfxV5ddzn9AC
+         hmqFXfAxJUEdXEUb0e2uOKKaQklC24SxETqk5Ra5sLT0z25fcpUD1ZtOvv2f0i5H2fwu
+         NTNZr3jknc7kDszbl3bV0BGLZfKjrS/8YtBCfyDyvf0U9P6AGKVu7WFEiFfpYmfkkqM9
+         uSNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtSGvCQ2LiovUuFV7eSMhaM2g233rprpePLUukmT7Kejzzp4kUZ/EDnjU7YDbv6nQFnT2QT/dTVw==@kvack.org
+X-Gm-Message-State: AOJu0YwmnYx5x4SA7Mj+4KmAgz96slIe7dGjVxSL4BcYIYEpwFONeurh
+	ZUrlPEtPfas5SQcA4zEsJCtZSgKgbqQF5nqa1NAmuel9wylumnZrGdnvidl46g7hKPCGI2Vdu5v
+	HXg==
+X-Google-Smtp-Source: AGHT+IGhAhPmou604sSjPj23AvOGmEtACeK8/O1HXfeBpY2WmsP8AIbWuFkf2cEj+zrFEmw2cUXjp49BYQ==
+X-Received: from wmco23.prod.google.com ([2002:a05:600c:a317:b0:477:93dd:bbb1])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600d:108:20b0:477:214f:bd95
+ with SMTP id 5b1f17b1804b1-47d1c036d6cmr18724405e9.23.1766159212483; Fri, 19
+ Dec 2025 07:46:52 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:40:11 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-22-elver@google.com>
-Subject: [PATCH v5 21/36] debugfs: Make debugfs_cancellation a context lock struct
+Message-ID: <20251219154418.3592607-23-elver@google.com>
+Subject: [PATCH v5 22/36] um: Fix incorrect __acquires/__releases annotations
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -111,16 +111,18 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Tiwei Bie <tiwei.btw@antgroup.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Stat-Signature: hmub5ueyzd8jf5o44uf7ztxds1yue5cn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0189B40014
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4fr4mjaoweofumkyechipbfd34k8hemh
-X-HE-Tag: 1766159209-224679
-X-HE-Meta: U2FsdGVkX1+uj8k+2wAe0QGikGOG5RRqx78iBiNYeav1iAZ9nFdUxvW8gIVs0QFw8KfN+tMDI82NOGPGNgO2n7hJtwxDxJmLCRUKQnchsB6V9TP2jOauuQVw1h+5CvhTc56aWOafCvecToMTOjpc/05Rds6k5+1FZSUqcFtuqpioreSiLWQAVXlO46KjCH9GUewLqp+A2UzpfcJwTvj65RloNgyy/uwgIuiV1CUsUHe1W5hfoxWSmJKtf0gJVeJ49Mr39THqPf/iIB4+ueTqZ4gaW7aPtz/fx1IVuptLSdtHV/y+qpLmbSnL4f64D6GnTCnSzAe9wTDXsB5rwzbtRQ7lGMHduT1qqYLw6jVH7W2y/1W55lTyzUSH867bZ+5pejm5yaDmKwFzu1oXgOKUYH72noMXw/a8w3LhFJonQoIkorKl9YzuR/PFsixOCGNgF2RDc/gr9b446P10gCrHqVdNqpHS5tzWvvL/c311OLr/shDPsJBJDdGvU/DXIPGtXS3sLXAU0/pb4nFJ2vUpsoksW4YfQnxektEezQe6IHoiLty0VRoFaHhpWHUqemFZhS7zLwv9J7WJA6vMvOXV5bu4a/9Y+65agjOoDEjsLZiPYnY09ywM/1ItlaglUGxq20ujJVq1oaolf3pM07WRE99Ovi49lc+TWFKc33UGNbxDXps/8C+Ybw/+ou4gdfA5IPmr3LeUkxl5ad/iRuNsF0awZbuM/9d/QxhcHRueMVfC4a8JbvHNkrj2w+Piia9QKaiCQSvK1op4/heAR51B2tGm229XxIWVGNPueeRYY+3+yZGbgHTU5Zv/LPyLUz4ZPCpOtJVv9JqE2cjK/VhULoa7fDty2ojTh1GNyN3i2CmQ5u6T9Yiul+1ToIQzzd2H66LDnxU2ntx0w7RUy0WaQcW1jBVWFEP+XGcTCAaCvs4IdWG9KphTiv3Dy8wjZEn/7H0vgBERTcokvkgqFYL
- 1AomjCtu
- QpwrUZQ2VRoxWwN/Zu/pzrZNtC8f6R3d3N31RmZIhDKN7qps1y66V/1tvhubSlVLM4xJ4AZuiCood3FLoReakGAAzjEzBruKFk6XQ0kh/uRmiR82aBod99NCLOrZWRITpoyQr8XDHDYBJpecB1VYH0gSO56EiDlPLgVL5ClYsgUE8vF/wsllLWGbKuyIp7nGcZmKkQp+hUA50wc/YXKMCvSf/UsD69tO00W6B5gdibJY/cqSAjcqRklPhypvvUTUrmSto8RinsS6kKptm098KuTg8aVYLHBeg0TYQb5cRP0UhDR8t39uBzhBLhueXhT3Kt9CLFAR/kaIuViVB6pQNk4ZJNw4KHf0HniCQX30vwmSiNwnb6SHnRzAtOx9bZwQZRkMXSj0iio0ooa/DK4G9fHBtXzDbhUiCH6HR5VpueqO6FtSv8XFtYPo+EXMOTb7u/gHPSkf15G+X1DjadbilYJE2VYms1jBs1PuLHE8gV24PZPMIp23mpidGsGMK/BPU0ZSFw19PC9xROHvjC8vsnIpXBkwIZcMGRjLalP4kcoW1W2Kh/LoilDh94li3sCmCUn6dMjVLfPsrDORdYCQPiE9dXeuNHJqDZlhX9IO6Ftd91a41lENeg+w4CJhVJcR0Vm00NH9JnWDUQPfaGDGpiLvbw+x36Jk5J4sfhIOAJqGZgw2yRNIZsVXkIKzinDcLiyiZKzPcr1412c1xr1G5k2+IhJjtrN12gIQn+d76F263EQ04isMI3B9blA==
+X-Rspamd-Queue-Id: 073E540007
+X-HE-Tag: 1766159213-590955
+X-HE-Meta: U2FsdGVkX19wgC8UrLka1dKJRmbVTzuWQ59q4P39TvF3cjLR5oyENtroykzdBv2o9KAfD6wOFrkeQSl2ctq8b3kh1Yv+Hhj4yrkAFSU4xYoiqG9VzPEUieVPTKixtF5Gp8MzbySVB6aKY33drAcmVgrTn7WSFFsgGpmhdQwW8iJKagQAJeY2zE2YNRL41Vwxx3vicw4pZ72HY4ogxK3tQPhcmqDbHfP4+LQudYpvJAtww7zjxul194TcPQjPFtpqwptwYVFzNQD2IG7XS9gOoKq/SZD2JEdMhFNhIngzzukXz1EGejVsOfITQCF62j2GKpqwFC2XxoPUJHiVr6TCE77zKhRgGGTLeLqeRFK9vDxwY3wkYz/fLgb9PYB15T+xxBnIhsMti/zHtWgqHl16AQiZ4JUgK+oHXuQSH5pRXa1enVR6gJZSPpvLVIXLbJ+Jx55w9HZFnF0+1I2UGvMOJrvLUBGsf+qaJ5iVPTB+gArRq61uy3BcwQR6U6jt+6CmT5zgHZDnr55JMqc4rwqMP3aFB5KIybY95faAzrJdL8P3iCgVcviJT+fFdBAEL4v/4CnVZEEL1DV/Z3P7zx3344RdJaCH14QJSy2ReqNBYgb8+7O9I8M1qEayyTDQkOEkSflIK/X+Cj3A3XcSX+2PHC0JacmLQIqvuExZe3WrIVuaQOFMTzI72bRbd/dKXmVmbHpzJND0F+hj/sd6TNiNMSYu6/TR1dEOLQQGOIuW5IPEVMBxi8uGp8kpDlvHTH0PLS5UOOiRhD4HV49P8xmstcD3Mw4ohaP3tLwo6aBXIe3kF/G1s2Ph/F5K04AMnSWa0yRe+jvSq5/UnODyVbl7zpfsvACsblbp1jK46PUHux62preAMBa22WVFMh0yiMjHMh4XsrM80YFyfkSs9EsK4sng2a0k79AkzHe3aEHJxwE8YTSF+0Q3viqRnWx30FNZTlhCzqO8EDcQvDYSDPk
+ SIkQEk7V
+ ABVpPPQdUymcPWhgIQvGv8/IlHkb6bePUOsFPuCZCOJgpKhwWzjyr3QH9faMHcA1dogJypIsqInnwzZb6FqaHzMJe8aMlvLFCBseyAEnbsBpNa/zYzbkXjHhw9SEh01tbMSV8LNxKjuQXpznkFcuS/ZdAPAsSMNUqGIsC4dtHuwiqy7ubDaxUfwT0Xq4lHtLvkgzOVVeX1WkEOs88TOi2nfvBFoeWNBmdmaJ/iUDtpsRl9X0t97LtVlcp6MnG0LK+NfuWnzACabS3KVbDa3oOAhPtLqe00sgytacBfNvH5zTLn/qoOq6j8xo/JaW9meohRNMzvTqpPQvsu0tTVly2642YRrVzkKp33C3EsyobuN6LK5gLGj0lkphiItGOjz16w7AZigFglNoRmea6YFRpLd68ejY/YNWCbB6gyhCeOkhRp4eTeDndbsl12JvWpSFVsoQaJoobmeGzN5uO4Y4Zrtuo8vr3G4vHpT8ExRqLbYdgk4iRDjhAZik/JGKrPY+9mGoghQJKg22WZ9LvO8ueV3KHEEoIm9nDHgQYK113uHo+mA9Xh/w7HH4pnNsvxjLzqZsM5c/T/6K1dYxRs/mHuw0HYRjyuCIQm9XelHNqemv2UuKQFlzN3ajO14ER8B8ehpwcr1k8Q0GOrUoI21vHP5sryE3vzu6CJLw+sZDFv7j8ipVWTg14Q41D7emUCzKrOCkSCFzZchuER1IViD5bwZ3qT8zTlzWjR1Hz9TNA/8itCmsRZyPCspTxUUNx3kghCcPReylulUwU+A64XczwXKYlAe0FSUqh3dZyb7ogNBmawNQiCRHqCDSYF1Qp6OdxAVKj1a6Geb9BayFVyoy3UebcPRbzAUmwgLeP2pEMJf3UY1Wyh474So4GPJNMhh3doRUKDI+Rb7YxJNgt9e6iRlRJeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,59 +131,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When compiling include/linux/debugfs.h with CONTEXT_ANALYSIS enabled, we
-can see this error:
+With Clang's context analysis, the compiler is a bit more strict about
+what goes into the __acquires/__releases annotations and can't refer to
+non-existent variables.
 
-./include/linux/debugfs.h:239:17: error: use of undeclared identifier 'cancellation'
-  239 | void __acquires(cancellation)
+On an UM build, mm_id.h is transitively included into mm_types.h, and we
+can observe the following error (if context analysis is enabled in e.g.
+stackdepot.c):
 
-Move the __acquires(..) attribute after the declaration, so that the
-compiler can see the cancellation function argument, as well as making
-struct debugfs_cancellation a real context lock to benefit from Clang's
-context analysis.
+   In file included from lib/stackdepot.c:17:
+   In file included from include/linux/debugfs.h:15:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:7:
+   In file included from include/linux/list_lru.h:14:
+   In file included from include/linux/xarray.h:16:
+   In file included from include/linux/gfp.h:7:
+   In file included from include/linux/mmzone.h:22:
+   In file included from include/linux/mm_types.h:26:
+   In file included from arch/um/include/asm/mmu.h:12:
+>> arch/um/include/shared/skas/mm_id.h:24:54: error: use of undeclared identifier 'turnstile'
+      24 | void enter_turnstile(struct mm_id *mm_id) __acquires(turnstile);
+         |                                                      ^~~~~~~~~
+   arch/um/include/shared/skas/mm_id.h:25:53: error: use of undeclared identifier 'turnstile'
+      25 | void exit_turnstile(struct mm_id *mm_id) __releases(turnstile);
+         |                                                     ^~~~~~~~~
 
-This change is a preparatory change to allow enabling context analysis
-in subsystems that include the above header.
+One (discarded) option was to use token_context_lock(turnstile) to just
+define a token with the already used name, but that would not allow the
+compiler to distinguish between different mm_id-dependent instances.
 
+Another constraint is that struct mm_id is only declared and incomplete
+in the header, so even if we tried to construct an expression to get to
+the mutex instance, this would fail (including more headers transitively
+everywhere should also be avoided).
+
+Instead, just declare an mm_id-dependent helper to return the mutex, and
+use the mm_id-dependent call expression in the __acquires/__releases
+attributes; the compiler will consider the identity of the mutex to be
+the call expression. Then using __get_turnstile() in the lock/unlock
+wrappers (with context analysis enabled for mmu.c) the compiler will be
+able to verify the implementation of the wrappers as-is.
+
+We leave context analysis disabled in arch/um/kernel/skas/ for now. This
+change is a preparatory change to allow enabling context analysis in
+subsystems that include any of the above headers.
+
+No functional change intended.
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202512171220.vHlvhpCr-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Marco Elver <elver@google.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Tiwei Bie <tiwei.btw@antgroup.com>
 ---
-v5:
-* Rename "context guard" -> "context lock".
+ arch/um/include/shared/skas/mm_id.h |  5 +++--
+ arch/um/kernel/skas/mmu.c           | 13 ++++++++-----
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-v4:
-* Rename capability -> context analysis.
----
- include/linux/debugfs.h | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-index 7cecda29447e..4177c4738282 100644
---- a/include/linux/debugfs.h
-+++ b/include/linux/debugfs.h
-@@ -239,18 +239,16 @@ ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
-  * @cancel: callback to call
-  * @cancel_data: extra data for the callback to call
-  */
--struct debugfs_cancellation {
-+context_lock_struct(debugfs_cancellation) {
- 	struct list_head list;
- 	void (*cancel)(struct dentry *, void *);
- 	void *cancel_data;
+diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
+index fb96c0bd8222..18c0621430d2 100644
+--- a/arch/um/include/shared/skas/mm_id.h
++++ b/arch/um/include/shared/skas/mm_id.h
+@@ -21,8 +21,9 @@ struct mm_id {
+ 	int syscall_fd_map[STUB_MAX_FDS];
  };
  
--void __acquires(cancellation)
--debugfs_enter_cancellation(struct file *file,
--			   struct debugfs_cancellation *cancellation);
--void __releases(cancellation)
--debugfs_leave_cancellation(struct file *file,
--			   struct debugfs_cancellation *cancellation);
-+void debugfs_enter_cancellation(struct file *file,
-+				struct debugfs_cancellation *cancellation) __acquires(cancellation);
-+void debugfs_leave_cancellation(struct file *file,
-+				struct debugfs_cancellation *cancellation) __releases(cancellation);
+-void enter_turnstile(struct mm_id *mm_id) __acquires(turnstile);
+-void exit_turnstile(struct mm_id *mm_id) __releases(turnstile);
++struct mutex *__get_turnstile(struct mm_id *mm_id);
++void enter_turnstile(struct mm_id *mm_id) __acquires(__get_turnstile(mm_id));
++void exit_turnstile(struct mm_id *mm_id) __releases(__get_turnstile(mm_id));
  
- #else
+ void notify_mm_kill(int pid);
  
+diff --git a/arch/um/kernel/skas/mmu.c b/arch/um/kernel/skas/mmu.c
+index 00957788591b..b5017096028b 100644
+--- a/arch/um/kernel/skas/mmu.c
++++ b/arch/um/kernel/skas/mmu.c
+@@ -23,18 +23,21 @@ static_assert(sizeof(struct stub_data) == STUB_DATA_PAGES * UM_KERN_PAGE_SIZE);
+ static spinlock_t mm_list_lock;
+ static struct list_head mm_list;
+ 
+-void enter_turnstile(struct mm_id *mm_id) __acquires(turnstile)
++struct mutex *__get_turnstile(struct mm_id *mm_id)
+ {
+ 	struct mm_context *ctx = container_of(mm_id, struct mm_context, id);
+ 
+-	mutex_lock(&ctx->turnstile);
++	return &ctx->turnstile;
+ }
+ 
+-void exit_turnstile(struct mm_id *mm_id) __releases(turnstile)
++void enter_turnstile(struct mm_id *mm_id)
+ {
+-	struct mm_context *ctx = container_of(mm_id, struct mm_context, id);
++	mutex_lock(__get_turnstile(mm_id));
++}
+ 
+-	mutex_unlock(&ctx->turnstile);
++void exit_turnstile(struct mm_id *mm_id)
++{
++	mutex_unlock(__get_turnstile(mm_id));
+ }
+ 
+ int init_new_context(struct task_struct *task, struct mm_struct *mm)
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
