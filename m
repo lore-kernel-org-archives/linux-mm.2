@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4884D767EE
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88169D767F9
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1446C6B008C; Fri, 19 Dec 2025 06:58:39 -0500 (EST)
+	id E811F6B0092; Fri, 19 Dec 2025 06:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F2916B0092; Fri, 19 Dec 2025 06:58:39 -0500 (EST)
+	id E39086B0093; Fri, 19 Dec 2025 06:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F40A16B0093; Fri, 19 Dec 2025 06:58:38 -0500 (EST)
+	id D45206B0095; Fri, 19 Dec 2025 06:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E48BD6B008C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:58:38 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C22626B0092
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:58:46 -0500 (EST)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF633C06F6
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:58:38 +0000 (UTC)
-X-FDA: 84236073516.09.6CCC602
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DDE1B20010
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:58:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RVcGVFBw;
-	spf=pass (imf13.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 77286603F1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:58:46 +0000 (UTC)
+X-FDA: 84236073852.09.C8486C1
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8D349140008
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:58:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BKEamvUV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766145524; a=rsa-sha256;
+	cv=none;
+	b=1JcN8XyA0Uel8RyzTvJ22zvV2aGna0HG/oF1N2D431y7q/0YhAchvPEOY76lqsVemCeRmk
+	wmAJug4G0MDMogEoAj4TFYmrQNTbHJvBJuIaLGyWfwf9PPz4wHarRUW2xJ4c5SCqkDMSKD
+	iLCrwhik0edwo22A5kVdJV+t45AceE0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BKEamvUV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766145516;
+	s=arc-20220608; t=1766145524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XKBIZ7X3YGqQjD1QrQoyKYVgf0OWXgKlCuUAkiD9UlQ=;
-	b=FvMUmMhhlJm20ZI5CeSDLjo/VDsXLy14POwV7Nn1NWNpgYbCUFXcYfQEOzh3zN+V7EWihy
-	ml/JwfnekCAuL9E/IKWep1Kf5Snf5zRv9axt6w0/39AXNoiFdw/0LAUsXlVEWpnOGQIOHQ
-	b7YmjiM1M641kDVoMy3vn6Vy2LG/Dpw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RVcGVFBw;
-	spf=pass (imf13.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766145516; a=rsa-sha256;
-	cv=none;
-	b=8qHwVx+IgcVe4CGhCijzrZqjCmcYacFeEO05A60kvl/y3fHa64k6oVf9+ts7nuUAq8A0k4
-	A5iQ7sTcFz2Go1o0jwa2tZjR7NNAsk2U7v1g0lq4QXy/XiI5FIwd8yKTEHiwe9fryUyEN6
-	Mt4ijkexe0ss5JvM9N4xe2aeZRLiCWA=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7e1651ae0d5so1336224b3a.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:58:36 -0800 (PST)
+	bh=kVePrI9HNUUUrQXi6c3AiF1RzNZZo1pMhE3QtRBD0Es=;
+	b=35M5yZfGVQOp2s+59YlU6AgQzMqljRRbDVNU7gYBjITs3GcOT79/Ub4eDb8R5tDrbJ1Tot
+	X94CjDNVxheg/5yfPNwoUjMMT095Dv+tke6ZMKX4UVgWh2NhuaLg/a9xSroES6K9g9hDMm
+	t7SrJKamNRYkxgBzUHLJPgabH3d+YUE=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7acd9a03ba9so1858776b3a.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:58:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766145516; x=1766750316; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766145523; x=1766750323; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XKBIZ7X3YGqQjD1QrQoyKYVgf0OWXgKlCuUAkiD9UlQ=;
-        b=RVcGVFBwLJy+CJEP7xGjTLIPwhC9mPc4zsM5b3fqq2NJkO1FTzkU5Au3AUJjx1x7Tr
-         jtga1zqj9tHY0wlUcx4HeIZyY269ndLs54uGDW0o+NyeQkfq2RsQps4pJqUJmxJRjbIj
-         Uq1aU6e8pE0M+gCKpHlXIRrKY8Vdonv2Axaw5Uf3/dKFyZ60RmBNlaVv9AMeaZc78yX5
-         GujFEMOaQxDjdATSo3j1NKYdQArVPYuW313+6OUvRMMGMb9McLJ9dwdwvWJ8PPHI6eZZ
-         HWS1GhBsML4PEwwaTc17N+BNG4NRneNhUJH5xOZzI2BNaTllsirxZiAXHrxABDEhOjDo
-         P5rA==
+        bh=kVePrI9HNUUUrQXi6c3AiF1RzNZZo1pMhE3QtRBD0Es=;
+        b=BKEamvUVfbQP17eNOQ9HnncWTeRG8AG3HSdhsK/3iH3Hq27erUOl/dqwCS2uypRsg8
+         ev81+dYIKOlYgnfgpbOyJLHDaGeRTZAYwphJoNda4oPfxl/sWoz2LT5g63L8SYkwTEzA
+         eN3eT9OJse+NRPlFZZZQW6Lf1HIs/27gzjvpH4R0LSQKInHxNVRZJDJKGhhSMlh3CeiR
+         fy+mA/lCPDqzrk60c3zKePZNFpu3X9uAP/DvKj5mHbw/+LHvMS3G7iyNfTMq/BVY9+3b
+         4GSIBBVYp8uO5JyiMzmkogfvA/7M13TEfXMfIAt2uQjkrg/d1i4eMD1I2XJNNyc8psDK
+         CRPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766145516; x=1766750316;
+        d=1e100.net; s=20230601; t=1766145523; x=1766750323;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XKBIZ7X3YGqQjD1QrQoyKYVgf0OWXgKlCuUAkiD9UlQ=;
-        b=duX3QRtmCbUbd/lHt8qGqA8Qf4w4arT1MDSNnUNYM560/hP0z8vCvs8MJHh6lN3rCV
-         fmd+39vHHe7JHFFFzUEvNFL3YfyGGfvksJghiNzoRASRs19a3XGF76LSnWWFwppK+I3h
-         BWbtwiJNCFK8TuxI59pqKl0OAXItNnEmKtHZDG4s29X6HqpVFX4T91wT9mEggMrVrfYm
-         KlB2uUSN2V2wwgvLZ2JzYjiFgeQpCbAcnazT+2jU1mYM4/Ws7ABBFcc8cSgq/5u58S78
-         CmqTVYI80LGqkrVT5xZMOrrCbo/expNb/wZ/QFcALGix47httZpp92U49YIzfTu9ucH2
-         MqPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVyOBp7ljjik1ILUurvM/yNvNmj15dbWc/yuF5I0ZO3eiBJSIPEK7uHXnCdyDiNCKoYy0Od5u/y7g==@kvack.org
-X-Gm-Message-State: AOJu0YxhWA5JSNtWpHptQQ+gqQLLuJWUcsOWKwkPRr8AOIgfrbzV9vKk
-	7K+pNWBaJ0Y/a6f20XaEb+Ancl39Esvw8IP6CA6PLz85XboIPSsRlXxv
-X-Gm-Gg: AY/fxX4ox4qM2ZNZczRlFgLhC/jVXiHBMD1CEp4D4oSO8AXImxXWPZWtJKdXavtLTMK
-	jWfy42jdDg0SpiGU/l9AmgOZdUshlXYkYqmoFUmL5czwYQXcmLgw4xvAd8hkm9PvyZAfgU0ydhc
-	6duC92viOC1MAi5r+G47HzGuLW/8ZiTs6Dxmj9scwCUPKWXW87x6DXOC+7reC6Assu81BR64rEO
-	PHIro+i1vbVcf5lqFkGMqqYEUrURNMBQzqdgUdA50TA0szS+BeABTO+3kADK6VzGLYgK9XIZUhy
-	xaY80c26iV964s5Ry3qSMomVZKxqTDzuihbbnRRsZ3t27EDq/CfzZl58E52fR0/0PI/1Xw6m6TR
-	1sEbI5gF/PKLUqKnrsn7XFYxTew5q2+MQpzzr7c8FELoIxQ9qcyzhyuDZsKiJwIlzc5i4eN56FS
-	dmNlSZb2YJNQmnoDbjWiuSo9LmojwpC8snseflNgpbVhOcWcpy7nGw
-X-Google-Smtp-Source: AGHT+IGo8qcsBU7nnRMisHe+3/ZdYryGUHrh6G2oCtGYAIPB39ve/9QZxztOzFs0p/0RxiDANxcA3Q==
-X-Received: by 2002:a05:6a00:801b:b0:7e8:4587:e8cf with SMTP id d2e1a72fcca58-7ff66a6ea42mr2101088b3a.66.1766145515736;
-        Fri, 19 Dec 2025 03:58:35 -0800 (PST)
+        bh=kVePrI9HNUUUrQXi6c3AiF1RzNZZo1pMhE3QtRBD0Es=;
+        b=HO8GfquI5iTox8X4y98GzOwp3xzRz9SvOhJGQbTBxFxBDoo6S1SSyEsKeBf5eDxsYq
+         O9aCemSZxFZmO/l2iXnYGDa0fQbNwEMjUQO48kPRRNF26xsW5HDrPCXuNUEvR1f9FJVq
+         O4D1NdPW0KMl6x90t4T2mQHx0Cvmr0HVSjeBP0OdDK6CwDkc7Qy6JQJ3XFpR0WPvAFJq
+         ghCtGloqb2+oiGMqg1LcxcDBYcVrd9GDg496DznDUZI05GNMIaE46EaCNRghrR2odXkP
+         8EQcjy7ZAP3gK+x+K28h6JSDhmrN7RBpfxDVvreOfS5vKVnRyaQqHpnyMh52mHEIbTdr
+         6zGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlZ9AR3UfOgY4RQa3hE/0ljunahMNYoC4rPPOhKBtdC7lsO78waCiZyVXLBHP5YY6pKk1Nclglfg==@kvack.org
+X-Gm-Message-State: AOJu0YxEFgKZOgmu2U4eNvdDQlZzAXPBjb9ozon3DldE3WDCqOKGmmq1
+	aAk0A+9B6bk60OSeYu7rwETtw1DiS48KAacbIkQ/cucs6q+CkqLclDpw
+X-Gm-Gg: AY/fxX6T1GA+ZR3MJq8STJGR4U2w5IciWdlecg6nFdEcQywvjDXPu2AOH9Lb3MW94Gz
+	c7BNSTGo+5oRoqFTOSRQvQg6g6+TRNTF4IQUV8jnCV9b1XgaX6IdKseDRIoZ2M/43oBDJkPtpdb
+	2xQH/26AKNlTGMI7TDCpLGCjNfWndz1qDwVePxnLrxZk4eUYTGBXHmcMjvRhSlkjTzOLHPw3Fqp
+	5Rlk8AoTSbwcHWqnBWpMK9YYEBm2elRBU0MDyGTJPmwmDSvgirxqO6aCGyfiWd29/lyqAwcCPee
+	itf47cqa1tma7Vt+K2VeFmRPiK9uUlYr28tHkOz5FUV69VmbpqszPmBVAmgLTxzaBxTZefFaNQG
+	cEdpD4HS7ZUT6gmUVjRmFKY6MmrMTOCfWqnglrPH/PjBD0jHPWwV0JXztpGhdjKInDrO9HFwse5
+	zVmm4e0LnA/1HOafKzF+BNwv0zg3lHZ3OpNi+kLKpZFA==
+X-Google-Smtp-Source: AGHT+IEssKL24IcA70xxc4mhVvvw4D6teK050VKbdzvFCYfVJoKpYEGbrW4olo5yzEO8AY5fL8eV1g==
+X-Received: by 2002:a05:6a00:1bca:b0:7e8:4398:b358 with SMTP id d2e1a72fcca58-7ff6607b228mr1844327b3a.43.1766145523337;
+        Fri, 19 Dec 2025 03:58:43 -0800 (PST)
 Received: from localhost.localdomain ([116.128.244.171])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7b127b00sm2258560b3a.21.2025.12.19.03.58.28
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7b127b00sm2258560b3a.21.2025.12.19.03.58.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 19 Dec 2025 03:58:35 -0800 (PST)
+        Fri, 19 Dec 2025 03:58:43 -0800 (PST)
 From: chengkaitao <pilgrimtao@gmail.com>
 To: davem@davemloft.net,
 	andreas@gaisler.com,
@@ -111,22 +111,22 @@ Cc: kevin.brodsky@arm.com,
 	sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 1/3] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
-Date: Fri, 19 Dec 2025 19:58:10 +0800
-Message-ID: <20251219115812.65855-2-pilgrimtao@gmail.com>
+Subject: [PATCH v4 2/3] mm: Convert vmemmap_p?d_populate() to static functions
+Date: Fri, 19 Dec 2025 19:58:11 +0800
+Message-ID: <20251219115812.65855-3-pilgrimtao@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251219115812.65855-1-pilgrimtao@gmail.com>
 References: <20251219115812.65855-1-pilgrimtao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DDE1B20010
-X-Stat-Signature: shogcmb9aqrfarz74gyr4sytg6bnukeg
+X-Rspamd-Queue-Id: 8D349140008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: d88hasqpnmzqgz1yu78zg7hca3rtzfrc
 X-Rspam-User: 
-X-HE-Tag: 1766145516-86357
-X-HE-Meta: U2FsdGVkX195ZeTdQ4BnvYExA1SGNV5fFEf2Pyq2eFinYi5jHjWsvis7sCwrJ0+wWxyKb0tO2hCzWbnwl6baWNcMpweNltSaCrFdQL2XrwWTQuVfpD7wIprTDLYjfqiuDoamz35fKO9RZR/k8xR8MMnONy+tIMU78wSBrPiLJFnylXR3RfjWPm/ZN+8IuRqjfk+uDTMGhxbXtw15d55PzwZjsT2O6vlRaSfxbjurC7avwbF5ZuNCmeqntBRRlna/xLWFBOVZAdyTWhwGpydM4s5pkKPVrfv3WZWFxIfAchk+pX5np/k4EaIjxLM6rkmmE9lfTF4TPjyjz6iHiyEnQX8cI7jwntAYtl3Asc/cL3dxVpURqHfdqU2ymR6jWvOVxVsHI6nc2CocZfAU+Pvf1mVXkY5OsWTp425OoBJj7Y0bvYSkJ9SnCP/UwBGYLAzOCXYQ9dFEGR2BeWEyQGgD8kIJO+173CjZ7uzA0NKCliAdYG61FK8lLR7MVjg9/d/Nsi0ks+Xs5QMkxV0eRlElv95d2qz3B8PIVFDVP7SLPEIR3KHHJfFGJjXE6ThBs/A8WMFeHCxgvDlgRbNG3nGvegry5EdAWUzVnH50HKRnvvdYvQ/ime8ptZcH7wUvZi+b83bOrvXicagKh7DzDQ1W0mgfhiWRm9U/FpWYNH1Zz3AffGdjs/qGIiQyd50LynwIyZ+fbngHPYg+2EdAbg1bgqvqsrEeCjrtl+eZMKKzgJfAr9byk3sXRtubTF72SYR2JEjbZxeB2J4xwYZVm0BNt3wyL2mfaRYZN8P04BXSbhpna3JTEImg3p1TIG4CATqNBgQzIaVC1/sEvefy7jPxBi42UwfLmD5fSJvXtt4fAcwW2C6nxhTtPT1BbFyXhsk/HjfbZlmAijE8Vt5msjAdtfytErGrk35GFaEPR3D59ZtB92DAkJvapEqoibABV0KYb7FyhD4huEKe+OVolF7
- TA7s9Gmi
- Lhzg8Y/VoaZc2uBjY6LUHm+J0Mt5Vclobi18566BlhWlbz/xPjWCUeOgIxar2WxU0PIPYiLpgXLrSlvYD9ooTv9ugnBofRxZF2Rk1zd2JFzRBJHi44TkoaIQqcXEBvSgo3IouTPgScOsRc7G8W9Y5DCbuqDYtuRcBtGlI6j8Hcaf9jduCghEIOal17eDQvM4OX3OIGRfTSmLfXqJJwZD2yOK297ulf6ynEILRt9b5sXEibLMnXc+Bp3btlFVPpgXuz0dCUvLDnVVYw/upSpkYxIxe26a0sRVBgQ8mRB5L6U/yj4xrizos05g7jd3yvUwLGbGe3qikJGajrPAkQauWQmybokhhSuT2F/odKPPyey5pMl7/2rkkZpqjvEyfM79TZ36NR4UtDmjKaAJEO+R5Wd9mMCHXtgaopY9k1auTv1C/6bvQPqAgcYEaPQ==
+X-HE-Tag: 1766145524-96189
+X-HE-Meta: U2FsdGVkX1967UsYhgpt43Zdb0EG642rN8hLq4GwTDyZqhPA4HTe7WgP0UE2BpoU9W33hSniuaa7zox1erHIa7hXuJpa/+YQ8JhCFo34trHsQVrtUp2HlxaroOD0wvYzaDN2C9aqH74V9kybXHkiwoh0eoo11cu3n1zIbGEyx4kGuixjo9QOz+hDn2a8yr1Hr731vbuQrhbuS/qpUH+0U6SUB4uYECwMHs0IPD8mQv+IGZwwgRjCmSBPYuPhR6io6b3Mh7lcCxQNWMLgZYBdCkhgSbDH7hgu3Jd1T9+WjGxntSOoLb2SQ2LbpMbUUtRC6kGz8t67y52Z40ZFOR27KA5Nh4xSoskKwt9C9tWlafDZp4oTUa++iXTshNLUfxK4D2i8zJrlLA/saSJXWGyJzryyeZqZBShQ1PslQYYtRbtJ8oPGecI0zgqxPL4yppShaOUh0k8nwTATpJO0w9wXRnQG62aELge8TcjqRYwjDgfirnf1z5yoCB/ZaF0zVl/d9EkUD0LTQUB1AWxjA672UIDiM/VxTGp//IpqoVPc+emNZqpM8G3h1j9/INiq7kvcvveN0HnnpN+YgYS4wdpPo6TO+OeylLSlBlHFKLU3AQyVP20XQ/Cia+G/5tzdAC01Vk3Ie7w6OxPkV+Mg5rdRow+rt8ysEP36UY282/ClrFkTfRnOe3vfhNWWmB0O9pGbUjGNiAHdFT9pXsjS0FKgfiNl9vp+BEqNboRVt/IDshRGuyVqBhQVkAp2tefHCoPLerTNSohG68LOYNeBLPxRXevgYi8eZ6ZhueVXHUwaqlQywHCjrm+eB/tWdk+fQhNsPmqod1R9jtAmvk7CN2DYWtU4GgZd4GBLy02QQdPSFitB1wqwhXO2SbLCijYY9KnCPb7atbpCSfOommzU3sjSNNCDWWG3PiSZOHZ1JmDPy1V8jEtZW8yZEhQ2XFmhtgO4N0cEtbxTFcoawEOfrXb
+ lFUIZIkY
+ 4VucwEppvtfm0G2SNUIsxF+rHWUJHdcmepQlMlIG8LQ8FHdZ1I03YeCA+XFwRozQAQHlbbCYNEnX4u9XxlkkbTYqMiIdEKSw4r1Y7YVtiuzclYRZrH0VOhtnkkUldzNJpbo++DV73yA15u18OdRJ0UYBtZWlhEgZ2hJ4nCasAvawXBmKH0NykX0VCUfF1M2arMMc8AO6hIxdHFDBP+5TOu4HmecK0m5s/NFr46OWXAfSN3J+dhP/0vI4PgqMQchYHfdUJnfFpjTyzKHvN13w7e+bWXYrfowArSumGl1xhwBF6c6oNs+rqYM1S90dyuqN47i8DK30XboC+YSErYBAOcuSvHVWXS6Dbv52xUjhEMN9VRZJxkpVsaieF1vlg5gR4sfHyyuUD/qLoWKEHNzbX53op1RxA50rlxHrtxC2qPwDy5YQ4o3NnUJLZQoMwUpVTt6WhwJMLeYjMrktgiIZngwqRdaHjrvsSwiPH2cMWqd92GTKjV9L2BFlOuTziR1tDkzIZJb8AmpTgxLunIbfBmo4WhJObYHVr7LNO3ZjjUx4nlbO7lEJsB0rAuw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,85 +137,83 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chengkaitao <chengkaitao@kylinos.cn>
 
-1. In the SPARC architecture, reimplemented vmemmap_populate using
-vmemmap_populate_hugepages.
-2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
-when vmemmap_alloc_block returns NULL.
+Since the vmemmap_p?d_populate functions are unused outside the mm
+subsystem, we can remove their external declarations and convert
+them to static functions.
 
 Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
 ---
- arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
- 1 file changed, 16 insertions(+), 31 deletions(-)
+ include/linux/mm.h  |  7 -------
+ mm/sparse-vmemmap.c | 10 +++++-----
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index df9f7c444c39..858eaa6615ea 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
- EXPORT_SYMBOL(_PAGE_CACHE);
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
--int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
--			       int node, struct vmem_altmap *altmap)
-+void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-+			       unsigned long addr, unsigned long next)
- {
- 	unsigned long pte_base;
- 
-@@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
- 
- 	pte_base |= _PAGE_PMD_HUGE;
- 
--	vstart = vstart & PMD_MASK;
--	vend = ALIGN(vend, PMD_SIZE);
--	for (; vstart < vend; vstart += PMD_SIZE) {
--		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
--		unsigned long pte;
--		p4d_t *p4d;
--		pud_t *pud;
--		pmd_t *pmd;
--
--		if (!pgd)
--			return -ENOMEM;
--
--		p4d = vmemmap_p4d_populate(pgd, vstart, node);
--		if (!p4d)
--			return -ENOMEM;
--
--		pud = vmemmap_pud_populate(p4d, vstart, node);
--		if (!pud)
--			return -ENOMEM;
-+	pmd_val(*pmd) = pte_base | __pa(p);
-+}
- 
--		pmd = pmd_offset(pud, vstart);
--		pte = pmd_val(*pmd);
--		if (!(pte & _PAGE_VALID)) {
--			void *block = vmemmap_alloc_block(PMD_SIZE, node);
-+int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
-+				unsigned long addr, unsigned long next)
-+{
-+	int large = pmd_leaf(*pmdp);
- 
--			if (!block)
--				return -ENOMEM;
-+	if (large)
-+		vmemmap_verify((pte_t *)pmdp, node, addr, next);
- 
--			pmd_val(*pmd) = pte_base | __pa(block);
--		}
--	}
-+	return large;
-+}
- 
--	return 0;
-+int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-+			       int node, struct vmem_altmap *altmap)
-+{
-+	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..d98a38a6ac0e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4234,13 +4234,6 @@ unsigned long section_map_size(void);
+ struct page * __populate_section_memmap(unsigned long pfn,
+ 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+ 		struct dev_pagemap *pgmap);
+-pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
+-p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
+-pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
+-pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
+-pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+-			    struct vmem_altmap *altmap, unsigned long ptpfn,
+-			    unsigned long flags);
+ void *vmemmap_alloc_block(unsigned long size, int node);
+ struct vmem_altmap;
+ void *vmemmap_alloc_block_buf(unsigned long size, int node,
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 37522d6cb398..67f9a08c2376 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
+ 			start, end - 1);
  }
- #endif /* CONFIG_SPARSEMEM_VMEMMAP */
  
+-pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
++static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+ 				       struct vmem_altmap *altmap,
+ 				       unsigned long ptpfn, unsigned long flags)
+ {
+@@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
+ 	return p;
+ }
+ 
+-pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
++static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
+ {
+ 	pmd_t *pmd = pmd_offset(pud, addr);
+ 	if (pmd_none(*pmd)) {
+@@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
+ 	return pmd;
+ }
+ 
+-pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
++static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
+ {
+ 	pud_t *pud = pud_offset(p4d, addr);
+ 	if (pud_none(*pud)) {
+@@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
+ 	return pud;
+ }
+ 
+-p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
++static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
+ {
+ 	p4d_t *p4d = p4d_offset(pgd, addr);
+ 	if (p4d_none(*p4d)) {
+@@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
+ 	return p4d;
+ }
+ 
+-pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
++static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+ {
+ 	pgd_t *pgd = pgd_offset_k(addr);
+ 	if (pgd_none(*pgd)) {
 -- 
 2.50.1 (Apple Git-155)
 
