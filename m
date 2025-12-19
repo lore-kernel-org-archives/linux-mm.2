@@ -4,148 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89768E668A6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3420E668A5
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:31:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED01B6B0088; Fri, 19 Dec 2025 18:30:46 -0500 (EST)
+	id 46E956B008A; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E776E6B0089; Fri, 19 Dec 2025 18:30:46 -0500 (EST)
+	id 42C496B008C; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4F266B008A; Fri, 19 Dec 2025 18:30:46 -0500 (EST)
+	id 35A086B0092; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C42E16B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:30:46 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64CD7160179
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:30:46 +0000 (UTC)
-X-FDA: 84237817692.28.14C8455
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5A35720002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:30:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Otzhs7SN;
-	spf=pass (imf03.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 23EAC6B008A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE25AB61BA
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:31:56 +0000 (UTC)
+X-FDA: 84237820632.30.AFEEFF7
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D333880007
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:31:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZWZp3BGO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187115; a=rsa-sha256;
+	cv=none;
+	b=XpUQY1TaHUjiCfxqUYbI5cEF0quTQm9gB4XrVh2mC8qCq20OxYASK1jDWa1RVtdRadHQZU
+	gV82P9icfzGEkMnskHuWIe0cSv2N5mmHjpcbKrCT2oyZezUoa2zRs8hxppGqEkfXfIvgbq
+	0zHMNrww+KPOyuUgeWVROM1hOhWzhCw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZWZp3BGO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766187044;
+	s=arc-20220608; t=1766187115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xjhz9NvSIj1nkwStS3EsBbpnWvjG3hzX9yFNjSmaNpQ=;
-	b=vt7qzxc2zLF6VnEmcJj9Ecrqn/cqK4KpIUg4Qk1ypisEMO5heXpy3GJjd8XCtVjq5Q2Sqp
-	rF8FzqP1QqLiNRoEbhCnkragnyuLdj35pXsDZPiPcsxtWoOzs5ICdJlMkudIsJI5PtpzX1
-	opmDJjFqTx9w01jP5zr9HEDDE2mvwEM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187044; a=rsa-sha256;
-	cv=none;
-	b=WdoMGytS6zjjG5exqw6sQjt+HtPf7g7XIlW+t/bIsbWst/pbZmUjRwvxBiZthDurvVzkpG
-	kdOx/nMOw/LIYDH30SMMk+Lb67bcT/5MzEaIodfYtSewqqgSvWh5MbCtxlYdggSn2ZgEiE
-	X2L7BB3RkKW0Na7xIi0lB6JJi9LXCw0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Otzhs7SN;
-	spf=pass (imf03.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-c05d66dbab2so2354735a12.0
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:30:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766187043; x=1766791843; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Xjhz9NvSIj1nkwStS3EsBbpnWvjG3hzX9yFNjSmaNpQ=;
-        b=Otzhs7SNmLIBKSsjZA5SopY3a/XL4hcJU3jtaBZLKz9bD6VLB+HM9TXpvVmbf6v89v
-         LNiigp6hYgx6czkjZJ1u1f0463EomFwiaW9OCVCI4KfjiQDfblHKF3L88KWbxbuKC/R/
-         4SPrsMpETKl+xIIrLbnYWpmYTGyeNh97F52aAiePDr7bpffPU/BKf/9JmAFn+9RpPigr
-         aP0ABdlnHEs6W+28l66v9uaOh+F0ajGov9CDWdiX6zf0AKKT3vR533tpO4TC39MbSWbF
-         b/1sCMY1iQJlAHe+2+HxycNFnrUhpntTwbC0qf8jjV+SJmSJF1i/HtnRsrRnVWTW1GXu
-         OCGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766187043; x=1766791843;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xjhz9NvSIj1nkwStS3EsBbpnWvjG3hzX9yFNjSmaNpQ=;
-        b=tPf1K4WuuWPCv6pvXZM1lNf+sq370dj3U5NO9ctF52pUyPYIIVdBSxTl4km0tFQC00
-         pe4yn9fs6dGGfOIAjdJGqtkBC2uKO2QhFqt2IogCayMMdCXbyWHG9N+lp8xP8SnMxsTY
-         iiA0AZvdBpw4hrKt8DbQP45FugR2N9bmoiTuIL8bqCinPidKiomLBrWkRPrhV5o55tV+
-         eVXGeuTekjnmcccXIKWdoj4ViORV5afL2MampwgabMoVxmSXYDn7/uG9e8jUVqxzqDAG
-         poR+2bNNQBMzOfop5XBv7dgiwqFHhiJr541oMkoqKPfZueykvmYybvZsgfIeh1vQsyQo
-         JBbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJw0cm0iW9OjccJzRCOKCaBzOjB/amDaS8V/tnJOSGgPk5KlI5GR/N00WhP980UrH719ZxJ4H2ng==@kvack.org
-X-Gm-Message-State: AOJu0Yx6TOPzDwvhOugmhhqqrxnCWdBPXoxLA6uLX/nyho2ATKJ1WATo
-	l7SfmR22FxHZT46sGWoX4WBZJOYhkIbi/Hsj0nU3cfJ23mMgJd/4xabbYv1m39TdA7g=
-X-Gm-Gg: AY/fxX7kbtA51wYZ8DC0+rY6jRkKJDpVChdYn/XYzJr/qgcSeoy3Thr7g2m/O+hA7XB
-	U/qbaWaemdFT3XhcrBzasB5X6z0G/j8QAHvjRQ0IKa9dsHtSGdgIkfW4tVZkuSQqpiA7j/WRVbi
-	Zb7BqVbcZL3icb/aSJcDlr+MEfXUOhXIKIaWujqD4gTZnL3oORxayaMBLzcZLuZDgvG4p3/Fo5B
-	eHQvT5RnGgMWfENqcl/eJXKnW0+bfQv+gFmmVHoY7TCE2HYcbntpGig0YQ5D44EoYZYMMcuaEfh
-	mB++DWh0+RZzkxBQnagE+fJrcsbbAQrm1e7RFqW7s/KAKKIOAS152aJpR6FkV2UN+Gvakl97DL/
-	7c/96/OBvg+fYz0S/OTrlJWjzoWksmilYG4eVzg/FcPJi81YVIxHHp/GhYpc7vIX9hXzZIjD60e
-	BiyuNZT9EWOxLg3d//q/cocFEr9Q6yuGblp6KS7pfUHdJJCsOcPLZpMgXiaQzj0ukUO8glN0qQ6
-	8tvpPMxVw9LUNhDsBrC9EEbZvfy+g64az6l2DdCtq4Zo9zivoYRdgIVbRwqk/w6blXXpmGdg5w2
-	dNQ=
-X-Google-Smtp-Source: AGHT+IFD9VEfhTkWGAUJ+KrkgUpiheofAxrSZVwNtEffu0+8gx+hrdlGu9tKXSDKwQO+mDr4xt9mXg==
-X-Received: by 2002:a05:7022:3a83:b0:11c:b397:2657 with SMTP id a92af1059eb24-121722be81emr4954809c88.22.1766180747284;
-        Fri, 19 Dec 2025 13:45:47 -0800 (PST)
-Received: from ?IPV6:2a00:79e0:2e7c:8:5874:79f3:80da:a7a3? ([2a00:79e0:2e7c:8:5874:79f3:80da:a7a3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05fe99410sm10260116eec.2.2025.12.19.13.45.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 13:45:46 -0800 (PST)
-Message-ID: <ae957ee5-cb47-433f-b0b3-f4ac8ec7116b@gmail.com>
-Date: Fri, 19 Dec 2025 14:45:45 -0700
+	bh=7vOgNTsLKhausqFQtwp3EgZuPBkHhNtQ3ISVh7bYcnY=;
+	b=wE8sEu8hefZqvY+8RvqUPNXfHFdd3cd+WjgbM7uflcoex4UuEbRt7XAUtdR978FG1QtqyP
+	KLXl4sPaoiojVpKJgo3DqdEapXmbGLrvVAfxcdPtH+MS/3NFpe3vxhNqYhNtVk2usE59I3
+	lB7flvuqeT6oJWQOJwVjURntRyd7H4o=
+Date: Fri, 19 Dec 2025 15:31:36 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766187107;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7vOgNTsLKhausqFQtwp3EgZuPBkHhNtQ3ISVh7bYcnY=;
+	b=ZWZp3BGOxJ8WQwxJg2TsZfRWziizPCWD8adQ31MjlcBekLIqCb9Cd/7MCRgvgURLOGmRXS
+	R2ReQ8DTmIreOyurwVMJSmfRMQ5V+GFWhZrhfh/f3P0n0//PItZBHEaUQwqkQ7bYTpuhqJ
+	pRnkdAD5xbFndyAeJLsFHfsj+ciGU34=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 11/28] mm: memcontrol: prevent memory cgroup release
+ in count_memcg_folio_events()
+Message-ID: <th24uujlegbefmxlz2gngavlvddyfls4swm6zolqggtfoauztr@jhawlcvuiqsy>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bart Van Assche <bart.vanassche@gmail.com>
-Subject: Re: [PATCH v5 08/36] locking/rwlock, spinlock: Support Clang's
- context analysis
-To: Peter Zijlstra <peterz@infradead.org>, Marco Elver <elver@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-9-elver@google.com>
- <17723ae6-9611-4731-905c-60dab9fb7102@acm.org>
- <CANpmjNO0B_BBse12kAobCRBK0D2pKkSu7pKa5LQAbdzBZa2xcw@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CANpmjNO0B_BBse12kAobCRBK0D2pKkSu7pKa5LQAbdzBZa2xcw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 45dr7sxpwt8ry4sbsoarre4abi3yw9gc
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5A35720002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D333880007
+X-Stat-Signature: djgbwf6e1jmqpg9eprq9sozzffpsh3xu
 X-Rspam-User: 
-X-HE-Tag: 1766187044-318925
-X-HE-Meta: U2FsdGVkX1/C6Rw9IMwR+udnX0ZRf08Pyu80899yxruG/LOGlsrryy2s18eyTUDh5eVkFqTKFcw/N8p5rCgDor6ivLTIyuSQatSjQVW9/skm8KyPh2bYGbndd/Eqf8uoPNYyw8mquxUU+wjZNHZQMWNjfbUGjbXcXpTJ4OYKZp3ACm+ww25TKAjChTfhXSCodMJXk1mU7QiF8P5qeVv9Pnzji9TocdA+3oPzl0BTvAuYLd/jxxn/zwGXSe8tqv+iF/KUkZZ+z1CszbkxhMsyJNdRSTUIUds5jqK87WAVPiKZZ0mmyVMHThXV6aKzZKGXv5S2YTe+3Z6UMGBVa0M6+PHTPsYt+HMWwZqwix764nSw2e1YD1ntB+G9rq8qxXnXQfnFC4TbqDqJZ8ZGWXjKTNebu5Jt91hIzUmZoqySEKVxhmtDy11UfZo3gKbKU5REdT1sd3CWGtWTBvllWgERDFpJQcKnJaogpxjNepXZdDme+0pbeEaAFFj4kitQ96j8r+H6LxwC4ZC/vWX/bOkrSfyZqSH8oJuvrTLGo2RmN7zyHzXx1JLSuCtaH0/RGRXREcmGsQaYep1RzA+jYMfcYFjYj67ytlRTTvit8UdOHC2uCWdXbatgjfqnORSzMNQKnc4OW5uc+tPheYd75r2Ne+uUA4ts+PdHzBcl13NbycC8KR1lT8P1qpm4vPrczAybvzGPa1X5NT7DIUfIA1DPK3FJtvz6PpFMg44kA0RuzMPLWQbXWlVuXyWp+WXHAfGtrNhNZOBjkX65S90nHaKmZiFxyo1JDDqnkzbGdlV/2Smr6juGcnBkUuDX0XSVCvNKBh9vU4TlMXj1SzNPQHs6a/MesOLP3w29XlFtdr7jUdBTNH2tx9n2kk6zOnAudUFXXwaS9CVaJRBnuRB8exgBafme7OApUOn6EjF0h51MWmtVC+pJnBDmdH1jyvVwLSaYi4Dd7gOI6AH8oVkGY0d
- MBUYIqDt
- VtobnZ/FeKck8M1D4CY8la/E3XuRn/g7CA9Fsr9QjOc9CS+wLjR6SoUfPqN7AFkN8+Au+JeawD+9DOegEfiCmHdf1jiMAukx1RI0+HiBoC9TjELTjtxDuvJGMNjCcv5+RucxNqmWkKYnow5uB7/qX/ugK3gqucEGVNDJ4DwBUFAugwmv/BfWWKvsNEb2ac609wfHfwds92Z0Kg7+GVmaYDYmatE0BNKUreXdtlJgFM5xhvNBqtDPBSVHeiJm4bZbZi3rUM7M+jFJXpIUQvXtkkMR9aQikL+2ATq4AB0sBq31iIjZklgKZwNT9HLGWEAC63csaix0m96UsLycFEcfRsGjrV+RUnk75QgiIZAeCYUZQtaGXhD/Fx9PNu6m14Alq1DSRL4FhrLMyktxEv/lA911PSee4bs2VBsSs/ZIygJEsC9TJhov8zCvfwybmtReBcwcX6zDEbOaX1cqjmuioA90YiMQmv8rzaRyfX38ylmD527vFmCpmUXM5LtjG/4ILFsciJpLxwPGZsVFWUFc5yUR7eYoig7g+QlEbaTI3tWGJvQ75yD5jm05PQhP+HZ7AblwF80OSOHP2vtOUxPNSVgFXF7nGZGD9qY6JIozftNs7/VDN8N/RNElPT6eISVtK+VsLrgUZPj2WUeu3hgnlHD2pX3zXjNaBcHamp45lv5BjdlIzxCyawz1EKOXZsh3nzR8/PoK+HGiYhfszA2fOkbOgRDi7WeM0Y3UxK30ppqKioTKWX910PzH4LeEEOCazr9vz
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766187114-558670
+X-HE-Meta: U2FsdGVkX19PPykYQQWQVPRqrDKA4Ji1KHuCecO1yrpN3ndSEJNEOu32rHWRvfITyYPAU7VsEsjVU+0HYqXF1rwH31bBdWD4F9zk+9Qmi52Js5aTQGBkF0Lsf8muM/Z8smsDLM0i6r96chhGzI+Jmf39dpxGkSqwGL1iTfoj1sjcAbJJnZ1uFL/jsNbba+SjCn2rzYeIThu1bup7X8ofyLF+bnIBIRoCopYt6OQXtLkSFbWa7/Rzm9702aiLgMK0gWeJ1pn8RJDeETgaLvu9D2nDvMgoZTsmSa+g9QP5LrLyFlXgGeo1F7S+Jru5ea7HTPVmI9YhKL0OFZ3STqQgZ4TdrFD2kvM14Qot4jQQA3g8e+OUlQA8aV6wazY6A3idkS3qyrj9MJnBucK4zIbZJgQTAZcvfZmTa5Fa+7pigCfLZ7A0D8uwbjOLabfEPcTwgc10j0TakmivB/RyYxuqJyKtNhY8y7CJWfaBcvJzPxjgohBACWXmidKl+GH3XsiJ+HhEXORFwnSFh2VmlrO+BWHBytyv9cRAhJUrFyg5Fhrc8YLcipHMPxDf8N+NTkK4eOxCQtWn5DAJbSl4bgpPumdXgyLqY8CblZ0czlxW2tVnxnEzYQig70zR2vxcxuccGRNIH0q+c/f5FzHfin+mUjlAZ1EMSNLtx0KObPd/5uMxCghG0Vzkr2DMuoZiJ+jIccupoIn0jqZyGiQJDFWMFSsRwjnHDHThpbw9HpJ7yVEkQ0nCRWISXtBD+fc9O09MynrwJIjM1nhBWbyYsQtaMLRkOpsRzDmJqqe7OPlLKmzj/hJJindojl0PVWPgHAYdMkDPwlFQe4S5VXQ/IPqU4LaMr1g0FXx6G9n2qjahoJU1EgXGXr3PaOtZzkc0Tm7ONcAQTbZ9oK7E+A9gyXZcKruG5feVQ0mkJ+BCEy6be7B630Ck1RkLKk1BUkvea9SawtIuqoKX4bmaa8iE1Xd
+ UNj71FIt
+ c6sF6i0BHb5QeOADrytlVFm53aS1H3zl8trM2uSqXX2otsKKTjzM7+bbxrWGyvaayYOGVbTlblDwCCZpkYIg8EOG2SkXUoGHZ5KA5vgnVtu6cyHK1/9S3jpLzwpxwKhhn31Mz6MIS2sga+7UgGex3RBbU5sa58EzzddsZf01S+OqZilFX1EWKQC0JJEH1tEGAUsLZnnpygmuxcBURtfX/DdrwB6MMvnz0lbR95sy9XneQU3wIQTYQbieCrmCo1mgrvoeX1ax43TjO/mP4GAlxASjjLFeyEcWbgWpot1VsiJKLK3jgOY21BvAQWz4BEPvo3gpqxHl8ppbSuic=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,42 +95,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 1:02 PM, Marco Elver wrote:
-> On Fri, 19 Dec 2025 at 21:26, Bart Van Assche <bvanassche@acm.org> wrote:
->> On 12/19/25 7:39 AM, Marco Elver wrote:
->>> - extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
->>> + extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
->>
->> Given the "one change per patch" rule, shouldn't the annotation fixes
->> for rwlock operations be moved into a separate patch?
->>
->>> -typedef struct {
->>> +context_lock_struct(rwlock) {
->>>        arch_rwlock_t raw_lock;
->>>    #ifdef CONFIG_DEBUG_SPINLOCK
->>>        unsigned int magic, owner_cpu;
->>> @@ -31,7 +31,8 @@ typedef struct {
->>>    #ifdef CONFIG_DEBUG_LOCK_ALLOC
->>>        struct lockdep_map dep_map;
->>>    #endif
->>> -} rwlock_t;
->>> +};
->>> +typedef struct rwlock rwlock_t;
->>
->> This change introduces a new globally visible "struct rwlock". Although
->> I haven't found any existing "struct rwlock" definitions, maybe it's a
->> good idea to use a more unique name instead.
+On Wed, Dec 17, 2025 at 03:27:35PM +0800, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
 > 
-> This doesn't actually introduce a new globally visible "struct
-> rwlock", it's already the case before.
-> An inlined struct definition in a typedef is available by its struct
-> name, so this is not introducing a new name
-> (https://godbolt.org/z/Y1jf66e1M).
+> In the near future, a folio will no longer pin its corresponding
+> memory cgroup. To ensure safety, it will only be appropriate to
+> hold the rcu read lock or acquire a reference to the memory cgroup
+> returned by folio_memcg(), thereby preventing it from being released.
+> 
+> In the current patch, the rcu read lock is employed to safeguard
+> against the release of the memory cgroup in count_memcg_folio_events().
+> 
+> This serves as a preparatory measure for the reparenting of the
+> LRU pages.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-Please take another look. The godbolt example follows the pattern
-"typedef struct name { ... } name_t;". The "name" part is missing from
-the rwlock_t definition. This is why I wrote that the above code
-introduces a new global struct name.
-
-Bart.
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
