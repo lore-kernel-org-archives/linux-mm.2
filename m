@@ -4,139 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84947E6688C
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:35:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 677BEE66890
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:38:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1D266B009B; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
+	id B98996B0088; Fri, 19 Dec 2025 15:38:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCA9A6B009D; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
+	id B70456B0089; Fri, 19 Dec 2025 15:38:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A959E6B009E; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
+	id AAF5E6B008A; Fri, 19 Dec 2025 15:38:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9931A6B009B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44EC8535C5
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:35:39 +0000 (UTC)
-X-FDA: 84237376398.28.55F8DA8
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 37562A0015
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:35:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=kYZHsUm3;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R g/gGMV";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766176537; a=rsa-sha256;
-	cv=none;
-	b=rumg2rUclJhpKA1BySOlJRyZmQm00aStoSn97vggCSxMoSV4FFH+PPdTXLr58ZUUEgerAf
-	puVLIcWDOIGErzSaqfGXhVRKDJzlLT22mxXi2uvVAeavWQ/Qpu6umMxU3C743IXwO5GWsO
-	H1OIovtRaLw5IEk2bfOMKYjlDxumYAU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=kYZHsUm3;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R g/gGMV";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7896B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:38:55 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4A3F8136EA4
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:38:55 +0000 (UTC)
+X-FDA: 84237384630.07.35C7AD9
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2FE241A0003
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:38:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=23ejbMoW;
+	spf=pass (imf19.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766176537;
+	s=arc-20220608; t=1766176733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=;
-	b=Kc0ZMXi9/v8yzNDmftLtzk9NN0jfI4A8SfjzxAmTNFtM+8sDQ6vydWUlLtBLLzfF3kDz4P
-	JuSKq3ACpNQIHzP1aY9eVYt09ndIeggY5Uv9/NGguHo73+iR5qZA8SK0LdGCSY/b8EwZF+
-	xoeIofQhutozS2AJDbEmy0/U9hKA+hY=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 29D571D000A9;
-	Fri, 19 Dec 2025 15:35:36 -0500 (EST)
-Received: from phl-imap-17 ([10.202.2.105])
-  by phl-compute-04.internal (MEProxy); Fri, 19 Dec 2025 15:35:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1766176536;
-	 x=1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=
-	kYZHsUm3yqBHaQvpro/+WVGIWBVYSVMFfzAK54GcyEOPEhFKvEFuAPrGR+cJTmUh
-	WuqFNjPxZvQkkBDtAeuRT4Y6eEryMc/WKH8n1pZWJH0y0k42xCztHwa4qzaYSulv
-	c8fjOxu/1OEcujcVhSJRl1VueSwH7a0Ugi7lgTQ5pJVnjDFeQ+QadG4vzWSUDkJf
-	Gl2ii6dZ4T7T5QD5RZhU72HA+grnsmxMyM4UoZW8OJbUnvEkKRNTYf6Dyx7OFD1c
-	z/BtnKw4w6z4ekb5gkp4VO5JU4ctwu672Z8pByzhuSQ+RGzGy4TN2hQsMMQkhZp4
-	yDjEpWPhj/OnA/BzylISAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1766176536; x=
-	1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=R
-	g/gGMV6hGJSilE/ezNtky0vmAjZSzpFmvQe4yQSfpUOWkGu4+khqfe+CKsUsbbH/
-	NWhG+aLxCk7W9xlqRRomISPzMad0RNuBJ4JzW8+tV77CvLOrZwYZpBfBxOSSIz9v
-	cJinNF6Ej5OguuUgo8Ffg2liakO4Iuak9WNah7aNB2NdDJH+Agy4cPQGpoTO0R1I
-	E50NjYk69gfh6dHUbDP691rKb0j1Kwmm+hQck5oLYemr4vJt5HIyG0JkVIr8FnPc
-	MEIR7CnWx/AMfasIuVZN8J6smZ16rnvAZK0DfZAWUSQvK/TV++Mw9B67WJ7GlM/n
-	iHzqzayWG1vya99RM3gvg==
-X-ME-Sender: <xms:F7dFaetfjsH_R0FrwIjtYohr1MfQyeE2o_Kf225FkyDcAyfvlGgXag>
-    <xme:F7dFaeTM_mVgkLqy_zis7ZjunWXe23L2cRxu6fojMT-CUeK-upeQDeRRCMxTOLG3t
-    PM_he3EDc61UZJY2PHV6HnMgC-TNEEwy52aM303P8LlBxIBV9FxxI4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegledvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtth
-    hopegrnhgurhgvrghssehgrghishhlvghrrdgtohhmpdhrtghpthhtohepfihilhhlhies
-    ihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    giekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
-    hkrdhorhhgpdhrtghpthhtoheplhhinhhushdrfigrlhhlvghijheslhhinhgrrhhordho
-    rhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
-X-ME-Proxy: <xmx:F7dFabR9fuVGLS8b2nH0EJEL7gMeVQyE2RmW6pjAmP-j5ztg66sWYA>
-    <xmx:F7dFaSWdbgkitKG_ozO6MG4TRqQ12N7HBRnMw8O3mjcTSiNw9HFycw>
-    <xmx:F7dFaaautW2GXmPM0khIdUKFWjjMT3nNkDSx5fj18akTdZS3YoKf0g>
-    <xmx:F7dFab6-0sXi3QVEQ4kxkCC7Ickcc4xkhCmDssD-fi6cLmyMFZeyFA>
-    <xmx:GLdFaZ8lTCnaSOSLz8dsTEi9P5rYOub2PGkiNAXcyFkNFyLQKKniTZRF>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3E0EFC40054; Fri, 19 Dec 2025 15:35:35 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=M2FKNH25BsSSupvqYh8XNhufT7PJPLlufiLItK/K4/Q=;
+	b=JKbeaDe4amST8cRdvreMHTgCHRnLAl12KnXkEI7Tc4YT7sImMaM31ydsbOoBkcY9fw/rsT
+	ud1n6pnIssMz4s6oE3AYr8N4itPStHKLNTjUXnt70AtX6/47SsXCWpSJwqVdCXiqUG+N++
+	lJfWEZ3q8CZlSeMD2C7FU9wCx9BzNS4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=23ejbMoW;
+	spf=pass (imf19.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766176733; a=rsa-sha256;
+	cv=none;
+	b=AQfGdCg0A9pDGC8ZR7XhrXci6h0mliOjfSDn8Bs/zjKR65EeV8H4SPuioH2RwggSBDJTI5
+	OF6I/NAH0MbVKQfcNpDlG45QyA91zJ/xAFcReMGOgcXJC5geK1QNYG3eWT8KfLkRgJdBuS
+	mpouEfwU557Ztnz1JLDTao3RPbrGEbs=
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dXzs815rqzlwqPy;
+	Fri, 19 Dec 2025 20:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1766176724; x=1768768725; bh=M2FKNH25BsSSupvqYh8XNhuf
+	T7PJPLlufiLItK/K4/Q=; b=23ejbMoWSMGXSBFPZlmUzRtGna4H5HROcPKMbUup
+	V/WdRBWbup4GDNoX4ZzYi/+9a2QxQyjFpfuEdRS5ewl/8ts1Xxp1RTcZSs54u6Ol
+	V4+ys1ry+a515MDuanbl0Ud7DP9g1ofFdkwrrR83EYCeIoXuBBDi8v0Mx6Otj3WI
+	eXu2aS2vAeC+/lTfWViepaxFvMNipVgj+00o7/6Ytj/CfDmAbV43JA319Vk62LAg
+	y8BnF8cLm6gyyRXsKaD6m8R0XZAZMGGmDVyQ2i904nnISBAr0ieu6hnDNx9oLGke
+	a0C4gG35l9QIBTC0Lq9pBQ+IlBmqQe7BkmR8IZhBjfK2WA==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id MkJHsfOVfhWT; Fri, 19 Dec 2025 20:38:44 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dXzrm6hBtzlwqPY;
+	Fri, 19 Dec 2025 20:38:32 +0000 (UTC)
+Message-ID: <61037092-ddfb-4504-9351-7f6a3e5e4616@acm.org>
+Date: Fri, 19 Dec 2025 12:38:32 -0800
 MIME-Version: 1.0
-X-ThreadId: AQxZfb8dcq5J
-Date: Fri, 19 Dec 2025 21:34:33 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jason Gunthorpe" <jgg@nvidia.com>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Richard Weinberger" <richard@nod.at>,
- "Russell King" <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Message-Id: <513078d3-976a-4e6d-b311-dcfcfea99238@app.fastmail.com>
-In-Reply-To: <20251219171412.GG254720@nvidia.com>
-References: <20251219161559.556737-1-arnd@kernel.org>
- <20251219161559.556737-4-arnd@kernel.org>
- <20251219171412.GG254720@nvidia.com>
-Subject: Re: [PATCH 3/4] ARM: remove support for highmem on VIVT
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 12/36] bit_spinlock: Include missing <asm/processor.h>
+To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Will Deacon <will@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+ Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
+ Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Triplett <josh@joshtriplett.org>, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+ Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+ kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-13-elver@google.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20251219154418.3592607-13-elver@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 37562A0015
-X-Stat-Signature: hinsnhuy7qrx7ggpizs6qpxfgd8uh88e
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2FE241A0003
+X-Stat-Signature: 8hpd4jqaj7f7suubzj747784z4apoknu
 X-Rspam-User: 
-X-HE-Tag: 1766176537-568745
-X-HE-Meta: U2FsdGVkX19TBehG8BOAfUo0Geeip3f43Gsipczw4LujZKXjcKLeK4NOighFbl+p6DjccHpQpnRP0FQzyEf5ztYNQOJVVMhrUmfBxSNkVcaiv+gFd4gC5/feTHgV8r/kb/Au1T2uKEBRwcNK11fmyXTb02JqFlEs5voFRayPbr6ZrKFC8kBkTB6KO8K/k2YKOGS2enuw3WTM680Wxwa3mzjcS1yAkD+IFHXCgH6bvUKXDQ+4BT69z7bkaTi4M1cJC0sSisjQ82bReHjjnwvnWkXygYzNeAAIAujV/3VoEIs9mKtMhoDhDevvBENGKgY+i8so07kHw6aMoTiRpR/Jp8wbrwLxYIDAmcBRvORy1kyz9bARM5KI2mXeKTyBu1UtHM8gnP1+b/gmj1GImhMmYmG1UWfm3/qKSEj4jJxmypKELYEIqO/ria8DuD2kT3m+CIf9EYM7asLolZZncyQPL98PS6VZdHt+40B+6W50sOEeHs37RJymMl9Xt9237+SSQ/q8UJRGouzuhYtOGDVEUDp07J6aF6+j+LxOEPHv5KTdbpu1MtKgY3lgsBVuicyCONnpm2SgkXb2U7yftFdB2lZbwKYJmQTYyPGzrmi+8DW1e2irn0uvZGyP6dPvJtyYj2FA4h7PP6y30rbukwHbkyP70VzAodDjKyMwCaqx/SUNSihHz9dk5S/s0vIJu4QelTUrotoED93YqtiQQb/zja2itR7bI6KSAcrSPsD1rbBYZSXpMGZfe7q3gbxyAf/zjcmDHZoXjySDJy0ih2Xw/3JaUsRyrsp5v/8Y1xXyRHOn/3lOTa3g3BVC4djspK+T0wMT5HvOR7GMyaSrv8sYHy6HpbB1rFM6hFiaa5HWWnM9CYdj/phDq5UxSlpM+XFAtp4DVJSp+0ONlcl529SnkMEfta1N6hB6WQN06G6r0HoFJNv2jwSuf38Vcls08dH1WFO6iHI1lSQneEG3bfh
- 5SAyhbs4
- CMwdwcqnmGkj01UpfXYcwgB0PXDKq48XAN0M1zqgvjQAtRPFwBkjcSxfFJIgyRoBATrw2jH5eOmPBensoC20UmsIskttYPDCzHG0l5YH7AwLDS0lRS64UrKig9eLvKCZhCD8yX2xiryl0VSu1SiJQfs5Y7uAHBX3EYQcdysF5gPZBwpRMXRrFxMlBQKI/JVAAy0ZYR+lBUJlWtzs9u3+jEK7sYb/8mP9Ri859
+X-HE-Tag: 1766176733-989372
+X-HE-Meta: U2FsdGVkX1+0J91CBA4ViO6qQztR4vLh9BLKtsQeb9ewmQrRlFaEPkIlrwdHcXNL1rn0+Hu1/eoTpmLuT6pP4HhWtHffb41u0xWRqLhtQ9cymF3DR6mIBQ/m1F4RYVlo9lKKffQaOYBXM1u6kruNbLxN17UQcnwhpA0cOY2ADqY+UUEwI7KLZwblY6SbphasZmoedw7t1yHvGF5H76SdALbXlqlB3fBOtJ5S7JoGlRm5qJx4zldEp2zHf7joSc7IIsxndR5q4wYQ1KX30DArHAmSAqFYBV3xULdSEB5ZE0TD5tAlUlDWd07hLa6HUEeTu/ETE+PFdjl2UdfRQZ5TfrXg6hz+zcvyyuohgwMy7edL0gkuPRoOKzSqZuC/BDukF2vnA8ScZejoHAEohEWbOo3cjkkyaFn6fBaA1ELfs4SbXfHIRGqUthTCHAXOluwSPgq3kMh3Za316z+pnbLN+CY1FtT4iowpGqkwKLtvHSK8hMLXw3unPGzWdBkAM6hewZ8UYEqNozwuETDDdxyMCm2MCmXq3oYMSo6r/FzHvm4TX0yl/gxGp8Bujtxngjkpz2L9pscTH566K++QUEb0P9PIq1eNftswE8KflzIB9BoH8L9rL3gu9+9iV4R52BWU3nOEe0jOrAj9AqOdkpIpo45AIhAL2vMdvcC1XbvyGHSz2o2QbVBkFBwO7LLPqum6+kYrUW8SIdE/vWVnnH7DL5vgb/wOIq2mTCU/QzVnzF6TFkHH2WJdAf3IpjZG3rO2PJYD+7puf0QfKnAnlet0K8ZAJjI7O2qRqxYuc10R3EF35rdF9nOpu1OeEJ5vrm/R+BRhnImCaOicuEOPsgRSx+9v/aBVhjzJ7AypkQU2JpV0sSgi09FWRQtfG1Owm5ZOrcJ/hp52kMwKHrt3KQJESt9efF2a/rrceYnYGWsdnoIUOR/H/kSH6I1/pBIudfLkWXLCpcHw9nfOv7MiGBr
+ J55rGrON
+ qsq8UIUEkUO2P+5fF1OnN2PaKG1L3kbjcWKicwYBLKA9PwUYKvUMQiJo2CD5lHPT+YVdcTESh53JDw+anpM3bYUIMvT5hdYyZWbVjKRk2k2xUzITD1+FCz9GDJZJ9PGHv7xv/X5aoEu2ht2LfXX6rnUD4SfB3Zi8tSCAI84hag1y3jFmQ4vn0hvICyhwJBVP0cDR/wXr8uEyXP/2wXy/U5x7P7NCr0gRkYKrs5pjU/9AJDaQyFQnaegCS4fPxm6G0Fxh4SJpCM2S6a3vWMpihy7KUaawl6Bs1LrSSGtZRDdqlNbs5xQDUdsADeUuRc8DyTMUMaCh8q1LxNHK5UKax1JqjU8yQhdB1yzRrKOvzN3rUIqQAgBKp08fexLIR3EzGUbs7XGQJ7mb9WxGk2RmpNaiHV0i08KXHEoHdh/ZcSALT2CptImAByntSQVtm4AbSoKHyUW/HFtEcnbjw9bALANTgemHPosiPdOC6Hc4MYXas4UBIZER/Ux2F6RKWNmvwpfYq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,32 +132,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025, at 18:14, Jason Gunthorpe wrote:
-> On Fri, Dec 19, 2025 at 05:15:58PM +0100, Arnd Bergmann wrote:
->>  arch/arm/Kconfig                    |  1 +
->>  arch/arm/configs/gemini_defconfig   |  1 -
->>  arch/arm/configs/multi_v5_defconfig |  1 -
->>  arch/arm/configs/mvebu_v5_defconfig |  1 -
->>  arch/arm/include/asm/highmem.h      | 56 ++---------------------------
->>  arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
->>  arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
->>  arch/arm/mm/dma-mapping.c           | 12 ++-----
->>  arch/arm/mm/flush.c                 | 19 +++-------
->>  9 files changed, 16 insertions(+), 153 deletions(-)
->
-> This looks great, but do you think there should be a boot time crash
-> if a VIVT and HIGHMEM are enabled, just incase?
+On 12/19/25 7:40 AM, Marco Elver wrote:
+> Including <linux/bit_spinlock.h> into an empty TU will result in the
+> compiler complaining:
+> 
+> ./include/linux/bit_spinlock.h:34:4: error: call to undeclared function 'cpu_relax'; <...>
+>     34 |                         cpu_relax();
+>        |                         ^
+> 1 error generated.
+> 
+> Include <asm/processor.h> to allow including bit_spinlock.h where
+> <asm/processor.h> is not otherwise included.
+> 
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+>   include/linux/bit_spinlock.h | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/linux/bit_spinlock.h b/include/linux/bit_spinlock.h
+> index c0989b5b0407..59e345f74b0e 100644
+> --- a/include/linux/bit_spinlock.h
+> +++ b/include/linux/bit_spinlock.h
+> @@ -7,6 +7,8 @@
+>   #include <linux/atomic.h>
+>   #include <linux/bug.h>
+>   
+> +#include <asm/processor.h>  /* for cpu_relax() */
+> +
+>   /*
+>    *  bit-based spin_lock()
+>    *
 
-Do you mean in the common code or just for Arm?
+The abbreviation "TU" is uncommon so it's probably a good idea to expand
+it. Anyway:
 
-We could use the Arm specific cache_is_vivt() macro, but it feels like
-the 'dpends on !CPU_CACHE_VIVT' Kconfig check I added is both
-safer and simpler.
-
-In common code I don't see a way to detect vivt caches. There is
-cpu_dcache_is_aliasing(), but that also seems to cover ARM11
-processors with aliasing VIPT caches, which are otherwise fine
-here.
-
-     Arnd
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
