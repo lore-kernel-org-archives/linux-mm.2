@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0A9D711CC
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 00:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A65BAD711C8
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 00:16:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F23BD6B0088; Thu, 18 Dec 2025 19:08:35 -0500 (EST)
+	id 159456B0088; Thu, 18 Dec 2025 19:16:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4206B0089; Thu, 18 Dec 2025 19:08:35 -0500 (EST)
+	id 0FDB46B0089; Thu, 18 Dec 2025 19:16:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0DFA6B008A; Thu, 18 Dec 2025 19:08:35 -0500 (EST)
+	id 009EF6B008A; Thu, 18 Dec 2025 19:16:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD20A6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:08:35 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E2D476B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:16:49 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DA49136232
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:08:35 +0000 (UTC)
-X-FDA: 84234284190.11.7BA77CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E17F920015
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:08:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uPNsSIZ3;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84BBB586B7
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:16:49 +0000 (UTC)
+X-FDA: 84234304938.11.D7422D5
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AE4F8100002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:16:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MUBmcdQs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766103408; a=rsa-sha256;
+	cv=none;
+	b=bUwUZbbbtnb3z+7cXL6XCDX6Iuc2BVy82GMAQXB7OXSegtjoXkqfuEQtRP61Xrid8Nhx1Z
+	N+I0iVIWi61/s5fxUxuWZzHK5tCFlSk5O7/4pvGKkFyBIPBIMwgmPiTCGjSbNqnNaPYspv
+	Aoo6HlbS53h3Jd3aKCzm7RDHc+1P1jg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MUBmcdQs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766102914;
+	s=arc-20220608; t=1766103408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XGRqgNSVS+UDlUcqHaGXkyRi6BhU8rC2UKVCE9VNPvo=;
-	b=matD2I/3uAPo8LCs6pGbPzpAD122aWWI+AGIIcbbRbQzIskZe/WDmInE9Kxv5dxg1eCUHz
-	/5THd07pFqC5Cs766kvTPtqp38teJcQNNolpToDQo6Thsf4hOqxEmRgyiiYruT9uQOshvK
-	oNoSi0IQvAnUHV1I3fHzxkhESq6eZZc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766102914; a=rsa-sha256;
-	cv=none;
-	b=Q1g7d9C6KpQtm2GspQyhd8DMpBKu9LruZHb/ILquRIuEVbujiI7BDRNcKu8ICLaKgamuQ0
-	uag00KW3TeH7J+3pyEV4oktPBUHg/dhhcZGg6HX6uMQ2B2RkGPjei5CL/secH639ACOPr6
-	jxVR7G4IuTCybj9q2G7zwAR3Rx4kDF4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uPNsSIZ3;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A114143A72;
-	Fri, 19 Dec 2025 00:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F70BC116C6;
-	Fri, 19 Dec 2025 00:08:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766102912;
-	bh=Om4RAVVJQdKfwzKaJj92V+UB8EodP6GhuAZCtWgLCCs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uPNsSIZ35o4md4V6dNrHSmME7WdL0qZV7StG1dvRRrfv70KLhICGld/Z6aS9TUBi0
-	 bwNgeQsJrc/znWiM5RFkc3d830x+g7jPUkxG9wM5yboGvnNQjEjVZf/JqvVeW9eT3y
-	 PoMtQcFGXmwls+EbpnsoAgI0mkZ7il26mCQ/ZDfA=
-Date: Thu, 18 Dec 2025 16:08:31 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Marco Elver <elver@google.com>
-Cc: yuan linyu <yuanlinyu@honor.com>, Alexander Potapenko
- <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] kfence: allow change number of object by early
- parameter
-Message-Id: <20251218160831.566ae0c0e349e4d563c96c16@linux-foundation.org>
-In-Reply-To: <CANpmjNP1tMwdOUTNEqqTmWR2Ki8yDQ+H13iSHxzLkomj-WComQ@mail.gmail.com>
-References: <20251218015849.1414609-1-yuanlinyu@honor.com>
-	<20251218015849.1414609-4-yuanlinyu@honor.com>
-	<20251218155821.92454cbb7117c27c1b914ce0@linux-foundation.org>
-	<CANpmjNP1tMwdOUTNEqqTmWR2Ki8yDQ+H13iSHxzLkomj-WComQ@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z6nch6umfo6gxiyjf7wsxcir5orbcjsg
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E17F920015
+	bh=iaNwM6o2Q3buZTg4AtEVmQYeydc3nbq7x/hRmv9CsW8=;
+	b=ydRx6EpPIfrqpQNKX8w7PsvqbwFW1s/qNwQPumUoXwkX9LonzRiyqMz76qbzv+tUDLDxtw
+	g1iHhIU7h0q+IgHqAwGl5r0IjqX8ptC+OgRL9thikqdBwrSI8KMSVK5dGpYddXvZxWy7L5
+	7Erc6xARGHwrBdkzbGs4tCpwH2uks0A=
+Date: Thu, 18 Dec 2025 16:16:40 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766103405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iaNwM6o2Q3buZTg4AtEVmQYeydc3nbq7x/hRmv9CsW8=;
+	b=MUBmcdQsLHkz91tl1c96JusBFth6vDgdq2NU48+HTzjQEodmrBXYqr7M4W88k4qgSL6u8l
+	MkyPlC0HK6iVCumF+HMob8y2+CRjeVH0+uCXabMNbMM8w515bNixYVpr85tjP3Zen4caVv
+	Z1odTtd+sShuwGvwlRkpdTLQjJ9I+As=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Shaurya Rane <ssrane_b23@ee.vjti.ac.in>, 
+	"Darrick J . Wong" <djwong@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH bpf v2] lib/buildid: use __kernel_read() for sleepable
+ context
+Message-ID: <3lf3ed3xn2oaenvlqjmypuewtm6gakzbecc7kgqsadggyvdtkr@uyw4boj6igqu>
+References: <20251218205505.2415840-1-shakeel.butt@linux.dev>
+ <aUSUe9jHnYJ577Gh@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUSUe9jHnYJ577Gh@casper.infradead.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766102913-609126
-X-HE-Meta: U2FsdGVkX1+mOg9sPCydsUBGaUkWTdBlksUyrMFCg7BCW7LA1IZT2UVn9lwLT0PnEDcGEgaC4liFS/9ZsENrI+7e/8qmpQ96nQSwM/PELMnar4eheCsC6larqfLpb4Kyt0MvZYcE655WCTrB/TNOInSLVQZu9I+JsbS4N6EOZuoJ84j6/pNP0B3uH3KYNCfwBilBFIf099kUe/7U85q9/UqjlRyEwYG2ewX2nUjIgskMlCc0aGKeMhTZGw6bYH1ck1iblOzU1hTl2tYvb1nmLmjvN0Ae4+R24X/ISDpMvA844zrHnFtzp1bjZiQNC77BtMevyXkXN1bBokuj2VLdtSABocKTfbk5//xfe30uBJdt/MkHIqAg6CDDzvUDWw0NHWtWbSKwkr5C9gjwNJWATbpqHJaWlFhFjYk+etZ4d0QEoSMZhN2s89CPjncyG9n/Wb0Mse1DFnNDt4M6xTSvX+zLuE51jjoV0T9RSLJAeSZFvCMCtB+Trwx6s2LVlRmn/KJ5zKku5/DYKgaMT15V9XKP3gyjyUDHLAjxpOe2HaOiuN8XKqTLvuWqdc8CThDkiOTct1y/2La+s5Gng95fZ5BiCH7RPKRpGF2Qxgpwo3iWKcZtZX61hN1k/ZmzPB7ROVBtdsj8APrfqkwi3t6KgNrXfnZN17EZXCi9F1k1o3s28H7zsxtJ7SQjvD5n4vG1dR/b084pbotZ4xhxA1cYCyNIVaO1TjCRrWyf7n1c/+6KvgBFtvC4kh1vLnUQpl7O0no55xybusiXWMQ+t149pjrSjIrbzDl/+uItIxuwkiUQqZ1cTNtU3WdlZgojiG3Tw+5p34fUzLf3dp4cf7Sduhn77QCnHQq4XvXiWKSZPpl85WSelx0lcnGG5+WeTLcEa0m8YTVw47MyUa4xtXy48NLjVhvxjs675xuOd4oEsV7c42KIS4FdpzBvSc3tq3fhQzesjse7D8pD5vdMf3N
- 1Hgl3DEs
- Xw35BNYISafbGoXVsZBigfCPP0uGDB3SxXsg2jY9N1LFrbtVd0BmMQzq2y6zcQVEge+nzA69RrsBOidDd3dhTe5d+nFGL9O9C33HF5BUvSzW9+FULsoNTM/mXgkYy+aDAErOUpTTrZuCfs1GiSRkAo7uIdETQY1QGd8137MiPiP1Nv35nbXX2P6RS01HqWyyQNY5DX0yv0V+8b0hRhJHbZsgOvDba33QpDc/vx74lP8wFY/tWNJLJlmTD7bQkzQrwP1r7h5tzQrmqC6bBvm1vynevBRQckjchFdOPwLlL/Wpn8L8=
+X-Rspamd-Queue-Id: AE4F8100002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: ko1r4737uui84ihwnfpf84uagqsj6f9p
+X-HE-Tag: 1766103407-873500
+X-HE-Meta: U2FsdGVkX18jvsF489QmgD3zrOgrhT8L2+iI8l7sC/4j8pyk4e+0yeOfoq909FkRJzzMtkQzF6nNyyVdFwjGusKgelBNqST6xHC1E3zvZWGggwpL3wRnIzeYiqPdciIH0dxHgF/XRwTW6kB7+vswW5Tpeg1cc6D9uTiyH9mh4tD7VnjAZwpFEkV3h50RLeDQVLLGUEHs1sX5lM5zInLr4F5qIrvT+jzzVein2gqTBuMr9XSXhVPLzs9uuEb/LtdRA2XeFD8SV4HKQE0pLnKelJj1IlFw67vorVWd6jMcZfL4ZIsJEJZsAbW8qc/TI736I+/qIZKjQMDW3gl628s5H0viwVRRm/3ev+PzzH2a/GC6oMXgyObffsjx6TOFCxQdoqQM2hLYydSmR05zwKAJbi/aYxR4lTUHTwD/gisKYlDLk7/X2CABABCc1wYnaXw6fSoyvTkh3ujKLsO9JSpUSxr8LTha2jqXpDBoKpSvLDbWBBekmehHFiMo+3R9/Jz3B8CJjP9ZqD83Tm+CORz1Nr6N9vq1SakhB8R3G/1LOqg1hsTrTVDbuq3iDwwr/93O754sXYbeXei+UYA6dnEcsNLNiVsO8dOQ9RA1Wc5KxzqqTrdOznshbH4bwGnQuH4G2gHJ4V/ahE3oS47m93yXLWmRseWXzPQgC7J8/Gq/U52j+Oa9VJfV+uCqgp623eCSVdOmr5bvFAxTfo7N4HYZFWo/igwr/RJPyVbStRL01W11f5z7RyVJ7DoWcCUjTwGPU164/FwUmbwqT7mGX4QhOpBy+4xzXLl5a+uR9EE2RLYFcb2/G+mv5xu4y0YG1XfmqILtDi0Af4WxhAhtNh6CNPv1XCWjHBS5VmBllA2+ihPuXmM73+NsPh/yJlqQii9Yz5Ch++ljWS03a0Ml++cYN0Zuvhr0zfxKh0piKBMIW43iqPYLLIpiCw0A01kP+yiyFeVXlB3o+Nt1kbccDWq
+ x5KF4GL8
+ f9AT8ICuzaT3I5vm1d0pxqjvDXEEMLhieKmMnKpG6pZ3rUAp/5XGhiKMrZsxx3JTC0qgOevct6X4OB0FAt1RVlAhR8kA24tVGJNKQHfxttZWX3rfP40O8n2TL+q12c7LAn0zix9w5D6aYYL6mi2lQbF0tlidDGhnK13stHnY9MnigosNj/cl/679jqEY/ovXIE8iUMIyHj65krqMyYg7lROEfGGfpUr9abG3/t9lPLUJ8n9AJ6XEp8ETcbNGNXO7tfjYS2MFx4vB3wAHSTi+ZE6soOZUzot9bsezLofIuc5BkdMHHyY/2IKNzCrT+YUu2II2iUiacNpPDFEM62mYXl3vXCCoDSeunwV8/ogPnhhNDlVNd/gPSJ6d/vg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,27 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Dec 2025 01:03:11 +0100 Marco Elver <elver@google.com> wrote:
-
-> > >  include/linux/kfence.h  |   5 +-
-> > >  mm/kfence/core.c        | 122 +++++++++++++++++++++++++++++-----------
-> > >  mm/kfence/kfence.h      |   4 +-
-> > >  mm/kfence/kfence_test.c |   2 +-
-> >
-> > Can you please add some documentation in Documentation/dev-tools/kfence.rst?
-> >
-> > Also, this should be described in
-> > Documentation/admin-guide/kernel-parameters.txt.  That file doesn't
-> > mention kfence at all, which might be an oversight.
-> >
-> > Meanwhile, I'll queue these patches in mm.git's mm-nonmm-unstable
-> > branch for some testing.  I'll await reviewer input before proceeding
-> > further.  Thanks.
+On Thu, Dec 18, 2025 at 11:55:39PM +0000, Matthew Wilcox wrote:
+> On Thu, Dec 18, 2025 at 12:55:05PM -0800, Shakeel Butt wrote:
+> > +	do {
+> > +		ret = __kernel_read(r->file, buf, sz, &pos);
+> > +		if (ret <= 0) {
+> > +			r->err = ret ?: -EIO;
+> > +			return NULL;
+> > +		}
+> > +		buf += ret;
+> > +		sz -= ret;
+> > +	} while (sz > 0);
 > 
-> Note, there was an v2 sent 5 hours after this v1, which I had
-> commented on here:
-> https://lore.kernel.org/all/aUPB18Xeh1BhF9GS@elver.google.com/
+> Why are you doing a loop around __kernel_read()?  eg kernel_read() does
+> not do a read around __kernel_read().  The callers of kernel_read()
+> don't do a loop either.  So what makes you think it needs to have a loop
+> around it?
 
-Ah, OK, thanks, I confused myself.  I'll drop the v1 series and shall
-await a v3!
+I am assuming that __kernel_read() can return less data than the
+requested. Is that assumption incorrect?
 
