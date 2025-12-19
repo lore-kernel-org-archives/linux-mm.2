@@ -4,90 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB693D7496F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 09:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C02D7496F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 09:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C60E6B008A; Fri, 19 Dec 2025 04:30:00 -0500 (EST)
+	id 668496B0088; Fri, 19 Dec 2025 04:31:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56F9D6B008C; Fri, 19 Dec 2025 04:30:00 -0500 (EST)
+	id 653266B0089; Fri, 19 Dec 2025 04:31:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4760F6B0092; Fri, 19 Dec 2025 04:30:00 -0500 (EST)
+	id 56A176B008A; Fri, 19 Dec 2025 04:31:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 38F7E6B008A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 04:30:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D70BC13B17D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:29:59 +0000 (UTC)
-X-FDA: 84235698918.26.FAFB498
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 406486B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 04:31:22 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDAA41A0509
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:31:21 +0000 (UTC)
+X-FDA: 84235702362.08.A9A3710
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4C4B040008
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:29:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bWBUCWFN;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 593121C000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:31:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SvcBAeCu;
+	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766136598;
+	s=arc-20220608; t=1766136680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzhJp2fZAldpoQgk5qXzLZeAHqHFzypu2o+9jwq6qhM=;
-	b=Gyz9/bY9eBRtTRIwT01xGXzyk2TYIy/1oRU3ku7ld0OHfZaXCFHyUQ1oXC3F/PhUAsNy2a
-	Du+gBfysmDMEsaK17icqc1XMuJqav6sQmH4h1QxXxXnzwvkPyQ/5QzZGTUElUXNFPOSC/4
-	MyvaHfqf485ZRAGM74ChAgntkIiu45I=
+	bh=j8TZc5XwPNYMEoE4seJjAVwVtp8dsPoJJX4kIRgwWZM=;
+	b=tEoZJnpPNkgY4zo3F+pSIXgISGuGL1POSsXyBgifQkY2+0iLCiu41+0dKAO1+nNrL8bacx
+	6TCuglth+jyl2ERX8YHAUCJ01hTI9lw63OqRJ8lywiACqGJnXlEbvXpoaMU8HbZgIB9Bck
+	cfGNGiOOTDgqbBNwl1PmcueHgA/i4Hs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bWBUCWFN;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SvcBAeCu;
+	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766136598; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766136680; a=rsa-sha256;
 	cv=none;
-	b=f5Y8zjvyqNbbE63gdwPpGv4DByDkUH0CehFoyAOtyxyi7nSJtxxQKn85MXItqtdHaDmgwu
-	6IUyqXPUc2/ZiHOtZ+/6iTmWS25i1y3Lek18H/ASu1GB12Pzt7WfDLBIG/6DMAWngfnJvO
-	4AnukPtxi/L+FNmHl2WiPX00v+tXb0s=
+	b=BHxyZuhcj80kLk9U/7PmXeb6jInmeZnhmeWLP3mwwrfV3EZ1xr9Xugl8g35jDAYQqXJqUw
+	I9pqt2dK0wOmwS+1ycklqLjiibmbkxkShN2U6ExUQF1EN1sNNO8m/ZwqJ4BeSMfnUWb0iA
+	v0xDVqV6Zprtxd7crN4uDyizVB0nvks=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9C436001D;
-	Fri, 19 Dec 2025 09:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41525C116D0;
-	Fri, 19 Dec 2025 09:29:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4FE360018;
+	Fri, 19 Dec 2025 09:31:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C49C4CEF1;
+	Fri, 19 Dec 2025 09:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766136597;
-	bh=V/6lQG6kh+DJ+F+maEx/cpf9+v1suaX8xw+gTbpt5Cs=;
+	s=k20201202; t=1766136679;
+	bh=JDYyYGh8RrQI+zVY9L46NOe+/hWd6ylKrEcBti0g6qI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bWBUCWFNVeHiQZOp92aMo6bJbzBD3M61Yti8z0C2cvo71wg0c7Gm/GjgYbma3XIKE
-	 N1UEqpp2lVbUeK1kfjsENB3Aowo0dor0psKQ0UCYvTu+r/KZJkEcrl6S3yM25gTFXK
-	 SeUhIB4V40M5wckR4NtXg8/X4Sz5OAvyf06uzMdy27IdKtG9snvKJd1Mdn3Gp4G6kY
-	 uGTKpP2e0pzCzYAu7Irg6lhs6HBjpVLoekXOcawnSk3VkrWe6csdbLEAcDYQYyxqVJ
-	 HCviAwXQYxoQSZiIYwQVv20tigNKIG2g1h7aywqG4UHItiVTtXIDTUpoN9E3gGxH5Z
-	 g9MraE2fxb15A==
-Date: Fri, 19 Dec 2025 11:29:47 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: chengkaitao <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] Generalize vmemmap_populate_hugepages to sparc
-Message-ID: <aUUbC4QWMZn_BO8L@kernel.org>
-References: <20251218174749.45965-1-pilgrimtao@gmail.com>
+	b=SvcBAeCu/Pdh7bz9GUGnJaSUHchFxGcvlI53HUKKzdzPql2UPl+smqieCqxW1wsQZ
+	 EuoSKZEsntAzSe7zk6TKtg6GbVQJc+dU4H5Lq7/CRLTB0J7l2sP9cJQn0HJliWUu6B
+	 z/Zc64Ldf8XVFX+m5hUYl5sEYIXrETQG/TxcJeHkijpPLPwiHDjRyLOPTOORnsv/64
+	 cG6ZES1auagKZSszkJHI/LpAOHg6S0LU3FokQuuGl3jvEOGufr1Dwy8faUAoP3z8Tc
+	 ZKAd1OAGMCgQ8lofMQAk7vNtl10f6FWCCOuhf45N99nAuDYF6mxrcTKNE4tipo8/ES
+	 1VVHQZMet/rHQ==
+Date: Fri, 19 Dec 2025 09:31:10 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Aishwarya TCV <Aishwarya.TCV@arm.com>
+Subject: Re: [PATCH v10 2/3] mm: Fix OOM killer inaccuracy on large many-core
+ systems
+Message-ID: <2a772584-2269-4008-809a-6123e226ebe3@sirena.org.uk>
+References: <20251213185608.3418096-1-mathieu.desnoyers@efficios.com>
+ <20251213185608.3418096-3-mathieu.desnoyers@efficios.com>
+ <c8acf650-ef96-4449-ba85-557dedba0ffc@sirena.org.uk>
+ <72ad1fed-574e-4850-beac-91626e5aaa0e@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nB8gAt2CMqOecX2t"
 Content-Disposition: inline
-In-Reply-To: <20251218174749.45965-1-pilgrimtao@gmail.com>
+In-Reply-To: <72ad1fed-574e-4850-beac-91626e5aaa0e@efficios.com>
+X-Cookie: Save gas, don't eat beans.
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4C4B040008
-X-Stat-Signature: h6r7czb7ffkzjsbf5a65edo1pjjc4x41
+X-Rspamd-Queue-Id: 593121C000A
+X-Stat-Signature: sph58iogohy1tft5b5fieitet4ft11eg
 X-Rspam-User: 
-X-HE-Tag: 1766136598-977065
-X-HE-Meta: U2FsdGVkX1+Q1mZn5D59HsG7kFbjGYFrjORDzRbVrbgaouxaIYbXXvTvNqoq1sumq8ANEBJEpeU1w9anWIBrx0NPc+oo+556Sr4lr+JXgH7Dn7MOgeCWQTuSq6c/RfQAu2MoLOeDQEaF0I8Ihy2QnNCD651hti9CeG8HMdt1nkVaVkVyUJcMN79Ej/ssBgNlpmRXaDhuO2q3i+8KsJtXgIgxBza7GmH5hkMAhJZprCBDbEPSZdlCZzA3sDC8EGQJlzIy9DrZlpjSCz7as8X0XhQVWNrZphAfZGwz36tiLWPfK4UrW5pI7UcZc5AI3FI9d1uMcvIJq5zu+7xtvhP2j5RBRKFNf4ZCAYdOrwtOae7AF5ni+G+7AceuRkbPtR4u4wVDUsDSd4VdrP1DSKXbUydOaO+M5DoeDPIT5WpVjxSZdzYaQGHvaqUaTFQ9WzhtfORuuWYj6xGCJ+QDUhNzZEHIuc52BGiN80N98biYaJApCQHyuQJgaHC6HN+yrWl2deo5BvSDzx6XnGnaVoMBgZgJ2FuwcYdvp0hbDL9elbPbqJ98MXJEQCgQAv7HlG0Jo8+2m654OiuSiGITfasw+A6wEmeW8g0a/zcluJAP44B+Lyvb1DMIhux/gpRmXUqDEuW/xvFzihyS3Pprs9t8GoBPEEQQ0dHlFG9SMFeGbgYO1hxi/VCeVTJn2bWdvyfXyNnBTjiyJMuOp31K8ZZ6Y5aUN+pB60K+M2zzUdfXEQ8VaJAhBBfmOEh3D52VJUe79Ayzy2ssnx0sTkYxN/XfbtC+ahQxKKo1pprvl8EWWVnWoCPtWmaIIwO8Sw6P8hREJjDp0ACE8I9XNiZvbq7yQOCD/YKD5OTb9H3tMCHuSQKOCSjjf/VsRaj+xTRgNUZsroDa4m0XILhRmR979jDF3le6zerfLhKQghQ4syUO/lH8uCH7KT7pgNnQfX0RrgHWmEoNNdAbFNhiPBQ3ZIL
- 95kZxA8Q
- An4/xR0Pei0/KN0AfHEBkw8g+KIZ4vokwkLwsbGAwUQTtGTb3tfgVgytlPQZdBqxR8ry743wtO+d/OeRMBrlAoHF0p3l0edQYlpU38L84N++IqrbTbBRnaSMiIvpBjX7T17E2RNU5oJNe/qXs13SribZzCi9bE5h9ld2h7QysVzD9AzvWwZ+2lpm3ZO0M5rhfUcJwb6UJuKoccwaKkbzlx9H1ejzGK1nS6wD+2Q+q6gW8UiAgyURhGhPWwie/iQBs+tZxvbozQfAaMbgqUt3eo8zkjZD9eGHOipksjJHXyY0raDdCM8PHGJDGFcsY68DBA9SUGzGOQ0MddwbaKzGs+bYNizlCc2uXG0ML
+X-HE-Tag: 1766136680-55045
+X-HE-Meta: U2FsdGVkX191cPne/nec6a2UonXBuRglncxvHRuOZO+z9VMhRVwVU2tfK6bNBUlz3s6e+rVOPxG0vmXgemSAi/AlxME4aasfALsDk3CkpQ+zVp1p6XNskIhd6ApAbfJaqRzaCVenLXSn6eVGw30nhJu/IJaXwysxxxFsvk7LHxl3C7zlzi8QO3uBl9yMklMps3zNKzWPaGMeg2Y6RlRt0sRACAxtjU8JXYMf9m+HtzpYZ7KFxMp/anj/OFJK1VwWPU1gccUFm5VOtAJQ2mMrkz8YLNwQLo+MSAKmimG+SM3ySEsXRWlktZV4obuV9rJKNh0UV8/bIKIB/oBPvKbcqumlkqKkbFPwvu9KBV5xWbl9OIpZhynCdxpwY05wezH+7yxMXAopyuvb8BaKV0kgeNekmUfAdcRQ/S3FLCQTdsgI9dA365TkK5PlTSvvrwRLVbV6qWQiwLiS2uXom4MCeJuzbETCKxsZa5mHT3HmNAwe1Kq4YBqOpu877ISMAXPjSyUEFO8iGHEpqmH+GjUdNDVilotMOpHsQgb1WbnNgZd3SlZBnfaSViXT2udynM47k36cXfIhz3nULJ7PHjYCKqVf+Z0YsgKUrmwbGVRJerQvFMqOXG0uWPBRMTUsR8/mLEVH+goQO84j+a3QonrFHLG8nz4Te3R3rCEyg6Imy76AeAvPixfJtiwhMOxiMUlGa9RB51WzeuB5f+DOnoRruoDW+R//GMb/NPsPKh6DbJNFZeOvyATp2YavXLf0ESShkOT6GLcUjsGw84rmGNbZc0GcrcXpEZ7QnSaWHcKmJLNZHbNesntUWOusoI42Z2E/rfwoXqO3UlYiqn8X6Ec0STBVe3Qh0QbxriCJSkWu6u1GY01HaThiAlYnWjxagkUKeEnPOw2pwFL73+n5iJ3frGa/dkLEj255nix10MCNhR3Fq2NZ3Xpk42sUfy4TMv6QCsVI/ASkj34jMhvQFcb
+ ezd2z9F6
+ K6hqMLQt8if+0de0mAPeVlkTtK6mFBZJnYscgsJqn76v50PocWHFTV5GElzsidDSdTOrC77ImSU+zmf6PFquYF9i8XH+KDXZFNI4mJFLxYPRf+RB2loN4rgEjdjHMbLJc8L9EL7+e75TdjKkKUUVmF04kPAyw7uUR/RrhO1cRngCR0nyYLP5/8R9Ce9OkiVv+CViR1RGKoR7rMcUxjg5AwDjE5hSVzMDGUCqvejDksaXouVZfHNqIU/cRr3sp0w3qYx/z/YDXQ3/MX/iwZFUbEnEbPBrvqCxRoG6BibBUtugDHGfJptLRCxXygZ7USWUntiyQCePDBV5SIXmWj6wPpRilzluButkyr5O119F9Hb/JcI5UPxMkxdFqr/PXrwjdq2do
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,61 +125,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 01:47:46AM +0800, chengkaitao wrote:
-> Sparc implement vmemmap_populate using vmemmap_populate_hugepages
-> to streamline the code. Another benefit is that it allows us to
 
-If this is merged via mm tree, the cover letter would be a part of git
-history so I'd suggest slightly rephrasing the first sentence:
+--nB8gAt2CMqOecX2t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Change sparc's implementation of vmemmap_populate() using
-vmemmap_populate_hugepages() to streamline the code.
+On Thu, Dec 18, 2025 at 05:18:04PM -0500, Mathieu Desnoyers wrote:
+> On 2025-12-18 13:00, Mark Brown wrote:
 
-> eliminate the external declarations of vmemmap_p?d_populate
-> functions and convert them to static functions.
-> 
-> Since vmemmap_populate_hugepages may fallback to vmemmap_populate-
-> _basepages, which differs from sparc's original implementation.
-> During the v1 discussion with Mike Rapoport, sparc uses base pages
-> in the kernel page tables, so it should be able to use them in
-> vmemmap as well. Consequently, no additional special handling is
-> required.
-> 
-> Remove unnecessary whitespace from sparc.
-> 
-> Changes in v3:
-> - Allow sparc to fallback to vmemmap_populate_basepages
-> - Convert vmemmap_p?d_populate() to static functions
-> - Split the v1 patch
-> 
-> Changes in v2:
-> - Revert the whitespace deletions
-> - Change vmemmap_false_pmd to vmemmap_pte_fallback_allowed
-> 
-> Link to V1:
-> https://lore.kernel.org/all/20251217120858.18713-1-pilgrimtao@gmail.com/
-> 
-> Chengkaitao (3):
->   sparc: Use vmemmap_populate_hugepages for vmemmap_populate
->   mm: Convert vmemmap_p?d_populate() to static functions
->   sparc: Remove unnecessary whitespace
-> 
->  arch/sparc/mm/fault_64.c   |  4 +--
->  arch/sparc/mm/hypersparc.S |  4 +--
->  arch/sparc/mm/init_64.c    | 53 ++++++++++++--------------------------
->  arch/sparc/mm/io-unit.c    | 12 ++++-----
->  arch/sparc/mm/iommu.c      |  2 +-
->  arch/sparc/mm/swift.S      |  2 +-
->  arch/sparc/mm/ultra.S      |  4 +--
->  include/linux/mm.h         |  7 -----
->  mm/sparse-vmemmap.c        | 10 +++----
->  9 files changed, 36 insertions(+), 62 deletions(-)
-> 
-> -- 
-> 2.50.1 (Apple Git-155)
-> 
+> An ugly work-around that may work (and then we can improve on this),
+> at the end of mm/init-mm.c:init_mm (completely untested):
 
--- 
-Sincerely yours,
-Mike.
+>        .cpu_bitmap     = { [0 ... ((3*BITS_TO_LONGS(NR_CPUS))-1 + ((69905 * NR_MM_COUNTERS * 64) / BYTES_PER_LONG))] = 0UL },
+
+That doesn't seem to fix the FVP unfortunately (BYTES_PER_LONG doesn't
+exist, but even just deleting the division entirely fails in the same
+way).
+
+--nB8gAt2CMqOecX2t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlFG10ACgkQJNaLcl1U
+h9DefQf+JvhAM2zVW8yicN4Cg9fpYL03mrmvjIMlhXaVtEKithjABrlXzEEnlEg+
++zjtAMmjdy6Rk/9g54g3fYkcixYEqyyUsVAW9NMMWs+zzvVRaDvol9QqVeuaSn4g
+6IpUfrPOtlWq6PKKMhcCiLmiK2Rh+83F0NJYtr2/NpDNmg2pelTUgURJa3+6FRsv
+LxhkCeEDvayR0U6J4PT3iDQrRACrqkLZ+tXAArOS/jQ9BPC4yQhXfCISptkXadbI
+8fnQKlQUlAPh8OJN2lqiqUZWJ0z+OTl4/s5MKoRqB6sEh6bI6vftmyZCcFF7rjlW
+w2PeciwdUO+nJz/TS73YbVRA72dd9Q==
+=7twn
+-----END PGP SIGNATURE-----
+
+--nB8gAt2CMqOecX2t--
 
