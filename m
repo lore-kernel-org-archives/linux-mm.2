@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D73EBD711D3
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 00:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 838C5D711D3
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 00:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45CC16B0088; Thu, 18 Dec 2025 19:55:43 -0500 (EST)
+	id BCD2C6B0089; Thu, 18 Dec 2025 19:56:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40AA26B0089; Thu, 18 Dec 2025 19:55:43 -0500 (EST)
+	id B83B66B008A; Thu, 18 Dec 2025 19:56:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316926B008A; Thu, 18 Dec 2025 19:55:43 -0500 (EST)
+	id A85766B008C; Thu, 18 Dec 2025 19:56:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D7B06B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:55:43 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A61B8C61
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:55:42 +0000 (UTC)
-X-FDA: 84234402924.22.1EE653A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1112D180002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:55:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hmeJRar8;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9801C6B0089
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:56:19 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DBCAB8379
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:56:19 +0000 (UTC)
+X-FDA: 84234404478.20.FA81323
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 73487100003
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:56:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N6+0xoAA;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766105741;
+	s=arc-20220608; t=1766105777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XKf7NAvmeFIAlIyrPeEGD6S12tjcn3i5LQBUR7JDlO4=;
-	b=YagbolMvSofkB1YT/2P8cqm45cp4L0RbjtMgT/0+CbfzC3f+j6Mwsg7JjuQUFsHjy23g1C
-	2OpiE2xtMfq2KNB2/gSjFJO0LzQILdYeUpUe/sF+Hs4ZkJ+cfapJkqzx33ZrYxsgme105S
-	ABix0kZtUOh/W4WWHL5XkhUEoiOJmrE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hmeJRar8;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766105741; a=rsa-sha256;
+	bh=t2o/Vumy+Nw5btbRIBN01nzQJNm6p8LL2tmTgt6B/0g=;
+	b=T4qVT5C1iz6fShwWg+5Erfu77e8idPvcUWuiVCJ/P2lqnCWvA4pL0hVL8w78/+DZaDckwj
+	Um4FfZNbMb10IOAVVITM++Oyfwu21RUmvVnelKg+OgUeledV0l+PBBjAx+cNj5y3CPqh7u
+	65sbVoICDvaTr7GqWtzZGS5FBdV42CI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766105777; a=rsa-sha256;
 	cv=none;
-	b=bYiTIKjjtmsa9gaBzyPpkpNt++mby9xkoqmac22LMNiNHaRFIG86ide9NiPYzj6+9Ehooe
-	dOE0wKYMd+fowrn2Ml+BbMV3obWbYiz7p36XZjgMJ57OarXgRz01VH/ij4askSUHWummL3
-	xDgu80isasE997iyQ49xD+q2S3uf7Og=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D14A544331;
-	Fri, 19 Dec 2025 00:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA9FC4CEFB;
-	Fri, 19 Dec 2025 00:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766105739;
-	bh=O1LcidgndLzEkC1OJf94E8Uc/cfbHzpboI4JrAyy2AY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hmeJRar8IjmjTQao9wLarnCCJ7+qmVNA+7IK8+9GCoK/Cfn2vtG3zIWfHX9+2z69+
-	 XcfO4JPSyyVRepDDywNNF8b5U54xff441uDr/bQSsNkCy/pdZZP2U2pRFWVtxLB/w8
-	 JQbSl0o+fiWPpk13dF4zKGKLLVF7tMs/mcO5RF8w=
-Date: Thu, 18 Dec 2025 16:55:38 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
- osalvador@suse.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- corbet@lwn.net, muchun.song@linux.dev, laoar.shao@gmail.com,
- brauner@kernel.org, jack@suse.cz, hannes@cmpxchg.org,
- mclapinski@google.com, joel.granados@kernel.org, David Hildenbrand
- <david@redhat.com>, Mel Gorman <mgorman@suse.de>, David Rientjes
- <rientjes@google.com>
-Subject: Re: [PATCH v4] mm, hugetlb: implement movable_gigantic_pages sysctl
-Message-Id: <20251218165538.b299508aacdaf7d941035ec3@linux-foundation.org>
-In-Reply-To: <20251218151211.1237411-1-gourry@gourry.net>
-References: <20251218151211.1237411-1-gourry@gourry.net>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1112D180002
-X-Stat-Signature: tub5iptxhesp5rfda7u38kuyie8dym3r
+	b=rtiNYk6MuziCeIhC2/JI6xo4x2HTkjMObASTw5cRBn5bG/fticsaZqPnNfxp1UyXWwB8Bo
+	NAM+6iCFoE28dyZYIDfxVu6a/+nKD0RvCSSFrNTjG0urX5aI21KoY1VaQaldquRD0OlueX
+	qqI38ba7NcrtPgp5SlnnYLtOsIRZ3r8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N6+0xoAA;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766105773; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=t2o/Vumy+Nw5btbRIBN01nzQJNm6p8LL2tmTgt6B/0g=;
+	b=N6+0xoAArOybKVK8gEqXsENA4TNJA/LFzH+WXtdSszdh7Xj945F1iG8/3/0Cp4eLbs1SUr+ainvgAm5lseGsGN3KUKiRptos+lOdtFluJ3P7hqMgFpiV+SiSVVq5NTva4R4P2cG6xqN0NXwy9ocanBSm6fI/vA/L9meZBrxBAPM=
+Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvASlNx_1766105770 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 19 Dec 2025 08:56:11 +0800
+Message-ID: <121c8ffb-adff-4766-aae9-8be6d37d546a@linux.alibaba.com>
+Date: Fri, 19 Dec 2025 08:56:09 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] mm: rmap: support batched checks of the references
+ for large folios
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
+ <545dba5e899634bc6c8ca782417d16fef3bd049f.1765439381.git.baolin.wang@linux.alibaba.com>
+ <cb4d7243-d8c6-4706-a254-6f5afc148910@arm.com>
+ <89cdd927-fc88-42cf-b8a1-2fbd736d5f7c@linux.alibaba.com>
+ <0caffb55-f242-4b01-b60a-c8749aadf661@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <0caffb55-f242-4b01-b60a-c8749aadf661@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: i6tzgy14hyb9f4rawgr3z5ss7tewymyo
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 73487100003
 X-Rspam-User: 
-X-HE-Tag: 1766105740-812242
-X-HE-Meta: U2FsdGVkX1/1XspqfA0CTOZfgzVfefvA9u7KXW2XBZ5/sYAodX+CRbaYUmwxAPYwdag+s0gdYVxskTdwuY6Jy/PrU4OgfCaNOxKvRooVtSlB0LAafzExv3eltqFavYtXaChDyLlcCGtPls++63iET2eiFKaHqCloztwV2KCYIRzFXumIXXNLnqHfI2ywnFa+si9IC9Pt2LHRzasDTUHXDWyaEBc8uRI4QRp+BzR19NNp0CFNXd8NglXlMuKnOOMwPu8dOcBIOID08qfsaVTLjGePnFmJw+OYNOtlCKcjhGbNYijAc7nvnCg356Q2Ef2QF44+M/fZZX82hWh7SJwYMuxFHjd5P8oV2pTytg6C7xNtH2QXdAOjDxf/HIu7Dg1yJhUQ1LfYwg4dooH2PIUE3Qqv5+8GLf6TI4snXWk14KZUmOXKs6EUw3JCZ/d3sfV55pCekWpc6aDP1ol9e3n7Myg3l2nbHdNiUubw3OkVu0RxYUlRfninInH2howHXwkbbJdMab3ndPEc5ALod33e1XLWKx0ySe9DUWQOwkzbXrQ/VAjITQukgav1eRz9dTIlYPmNB6ktAbQTl9OGKjfZdK3ZbPkPKkZfWRpInyO4k3pPuvA50+K0+O2741Acr2EzIV5Ko+UZZ+qjp1RsCvYXbc8KAWLBuGAK8hziOcUUlUsPnAw0k2adx0yrew7ESI9eZNZ6i49BVUFVyhTkNU9NIsdhMS7pM1BOWikYFA/iU9YExcvm0E2IiGF64iizAfHNnI040uNzZKd/XBIQj+kgj0s2noiC4ZJdux72QbF1j4qVR618uSYoPT9cYlOcN2kblLE69TVyz5mpx9/xeTjfMnGY5xa0Zwgv2J8KnzVUXhuvWdgswZJym1+ZmYKN0RdqDcMWg/1Uje14xLRLO6AUITCQARUYXtxe1l9JQ0JHj0H8Xrb16uNHGz3CGyBADdytHNxriclsrMVmKWnPPmq
- TkDYZ+3e
- Tup17inKnKtgrN0nJ1e076zL5iwgHPpFgyePXS6ZRqanJ5uBFcS5jud0B2oiWBcEL8jOBTx2GvvcxDC5UX/3BAW4i45gqyCvmdNomSkVwwikZCB5sr57eNcV7fv5Bl1I6G6dDAkhppKe6FgPKWSu82jSfAJXJUBozbhbh7JlDSkWh+DwF24O/M03nCP+ZnVcMh5RSQsjyg4sa8qt4jfU9ymHi+AnRcYuX8ki1bCcez78vLyuY5YGAUAp0wM5AbkLlh+5XS9MqxbpXL8g5TT/dR1XIAkmDMDz22jqapA4ODpHubjJGGJdsTNA8BYQozrnz1rDnm4ATZISwhio7z66HvbAv1/WRUN40CNSnukDMjGoPMDT0ZFwjKFE6AqBOLnbrU/3P+R/ClSyb5krsOJJT/TcEgdljY+7IE00SxhtMuB1Zvp8=
+X-HE-Tag: 1766105776-37586
+X-HE-Meta: U2FsdGVkX1+ZGDnr3Dma8dMqd4LQtzHq/eIVrr81e+csym38BcbpoPFSS+OkH/c3hXMOADY4Dzhyb2wS1zV8tDqEqnvkGiqlCIZSy5oJsPkoasYRjP9DUzh5SOZ96v+V4zzDRsmEYZqoNkXRCoOQkqr4dLh34yr94QEchf1ve8UzA34I1uSFIbpcTCnBFFmxDiyFQpdV7QXLU6snRFZsQvHKwRvydcQPvdqOfYSEnEQBPuI/nmNcsKA0s5+QXclBSpcDeSb5FcwGYWXWnqT0KHDWsqJP7WBzFlV78eumSb4cKtiC8GjVTAh/ub2kexhMJGS4FtRp3TMzgsKB11bsIw9mz3LUFEeMRZ4C0IAUq9CxS0d/N5ltzHL1kpLNOWCNZd6kusLbDuvMouMxhoQPl+b3g1rMUQrZVceh0zmmL4h5LZxOHvXz5kWfvlu7BUKs2d163tBnQDkAzM7UJkTejAKrnzn946aNZaVbqhWHxp0M0YHXsQf7KuaDgfI+et/Ue0dcCSGyf9Vf51ts79Ag2I6wWwrU8LP9lLG3gQYCFKK7DDak+vqqGeQGkRAkpfoXR575moBG5ixkNfnKouBnUZmHtgRZMCK+k/ljatJTfE4OSxJ6yiNZqJX/uMvyRMIzVJld7UamqA97ku1yldP3hchf97BpZwTBt8iENA3HDTruUYO9zofncw1CcH4OzkYDRgndSei4HItYAxa7MsqYa1ZmuH+Al0tTU6g8pQhGS72HWUbrsr+BVCbKuRsKjSM3oCEY7Bes9lpsE9fPyo7UhQe8haf2IWyRaf3tVr07m/k9GU/9aaWfovMONFJKbwVp1FRCk69FkloTKZyrEg6NYR3o8ATciqMagTi+p2KWBvN1Bn5DP/e1K4vvnclKhNWi5USjGQo/R4mI6+sRuYXvq5xUqO7/8Z8OWe0JtfxlIJkngXRDf0ETRNvGc9jPHXbhuv2S6vs/nz20HvA0LCh
+ bPBqbFcd
+ aoeldnc+Zv8ZNq+0ekwur4QzE0oviX4WIW+pNVrqCEQ/pHIU/w0hrOojfMMUEAdqwUzfkaavuGBo3sHcmDZqdcATZKApbuplEYndz+mUg8KECI0mNWZVuGY+i8R0lMFRWPvl8elkleHQQgJDlX1luB+6E7Fi5P9G6WKrAVzbPuu1QnH5t+iS7pvISxUEQgudyys9j9GQ6kxvSg3O0Qnzbn7+4J+6sS1HrbaaNAPKuShFbbQYehZ7JM6FuQhKuKe8c5sxNTAhIZKR5Z/2nw2iYb7LL3SqfNMD6JzCgLZxkhXmDNOA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,53 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Dec 2025 10:12:11 -0500 Gregory Price <gourry@gourry.net> wrote:
 
-> This reintroduces a concept removed by:
-> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
+
+On 2025/12/18 20:08, Ryan Roberts wrote:
+>>>>    +#define clear_flush_young_ptes clear_flush_young_ptes
+>>>> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>> +                    unsigned long addr, pte_t *ptep,
+>>>> +                    unsigned int nr)
+>>>> +{
+>>>> +    if (likely(nr == 1))
+>>>> +        return __ptep_clear_flush_young(vma, addr, ptep);
+>>>
+>>> Bug: This is broken if core-mm tries to call this for nr=1 on a pte that is part
+>>> of a contpte mapping.
+>>>
+>>> The similar fastpaths are here to prevent regressing the common small folio case.
+>>
+>> Thanks for catching this. I had considered this before, but I still missed it.
+>>
+>>> I guess here the best approach is (note no leading underscores):
+>>>
+>>>      if (likely(nr == 1))
+>>>          return ptep_clear_flush_young(vma, addr, ptep);
+>>
+>> However, I prefer to use pte_cont() to check it. Later, I plan to clean up the
+>> ptep_clear_flush_young().
+>>
+>>      if (nr == 1 && !pte_cont(__ptep_get(ptep))
+>>          return __ptep_clear_flush_young(vma, addr, ptep);
 > 
-> This sysctl provides flexibility between ZONE_MOVABLE use cases:
-> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
+> Sure. That would follow the pattern in clear_young_dirty_ptes(). Please use the
+> likely() hint as is done everywhere else:
+> 
+> 	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
 
-My x86_64 allmodconfig blew up.
+Sure.
 
-> ...
->
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -49,7 +49,6 @@
->  #include "internal.h"
->  #include "hugetlb_vmemmap.h"
->  #include "hugetlb_cma.h"
-> -#include "hugetlb_internal.h"
->  #include <linux/page-isolation.h>
+> I notice that ptep_test_and_clear_young() and ptep_clear_flush_young() are both
+> testing aginst pte_valid_cont(). These could probably be relaxed to pte_cont()
+> since it is implicit the the pte must be valid?
 
-What's that doing there?  I put it back.  Helped!
-
-But the build still failed because the patch refers to
-
-	extern int movable_gigantic_pages __read_mostly;
-
-but forgot to define it.  v5, please ;)
-
-
-
-mm/hugetlb.c:497:56: error: 'struct hugetlb_cgroup' declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
-  497 | static void record_hugetlb_cgroup_uncharge_info(struct hugetlb_cgroup *h_cg,
-      |                                                        ^~~~~~~~~~~~~~
-mm/hugetlb.c: In function 'record_hugetlb_cgroup_uncharge_info':
-mm/hugetlb.c:505:30: error: invalid use of undefined type 'struct hugetlb_cgroup'
-  505 |                         &h_cg->rsvd_hugepage[hstate_index(h)];
-      |                              ^~
-mm/hugetlb.c:506:33: error: invalid use of undefined type 'struct hugetlb_cgroup'
-  506 |                 nrg->css = &h_cg->css;
-      |                                 ^~
-mm/hugetlb.c:517:30: error: invalid use of undefined type 'struct hugetlb_cgroup'
-  517 |                 css_get(&h_cg->css);
-      |                              ^~
-mm/hugetlb.c: At top level:
-mm/hugetlb.c:580:56: error: 'struct hugetlb_cgroup' declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
-
-<and much more>
+Yes, I think so. I can do a cleanup later in a separate patch.
 
