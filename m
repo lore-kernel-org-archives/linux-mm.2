@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38295D74965
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D3ED74965
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:42:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C806B0088; Fri, 19 Dec 2025 03:41:13 -0500 (EST)
+	id 50A736B0088; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EA146B0089; Fri, 19 Dec 2025 03:41:13 -0500 (EST)
+	id 4E2436B0089; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F6376B008A; Fri, 19 Dec 2025 03:41:13 -0500 (EST)
+	id 40E986B008A; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ADF46B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:41:13 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23F5BB9A6C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:41:13 +0000 (UTC)
-X-FDA: 84235576026.14.09C842C
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EDA8E1A0015
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:41:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PMdwFh9i;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766133671; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 31BE06B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:42:26 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA9C8602E0
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:42:25 +0000 (UTC)
+X-FDA: 84235579050.18.CB6F8AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 27D4A40002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:42:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skWdYr6L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766133744; a=rsa-sha256;
 	cv=none;
-	b=SjxmLdO6ocnKi9xACCGxOb7jPM+wNK4lhq2H2jKcLJ1ibo4NEnFYfcYI8BeTcpmhr4Rtj3
-	nWJI+ZXCARhYMDETgnkBgyvo3heQJYq5LY6/c2ypzApjL+zocx0kf6al1rOlckrGF5ERcj
-	saQWKq7zLiVYdgMzuBchQ/e5lROI458=
+	b=HKbO7OyXUTzNMOZzOH/gdp9JiN+SODdCHzksoJ51A8a9dQvqJDdszeciGP9nMq24/j6qOL
+	qH9NRPXKDPOM4DMzCPHS/5IP1kDr6U1cTj6QCq3/xdD2e7DZtjimxtdlfBosrBaMxHypHw
+	r+2qIaA3bWsGsKzw6FuQOSoURidvihc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PMdwFh9i;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skWdYr6L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766133671;
+	s=arc-20220608; t=1766133744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sUHONLbC5JmfhuQtv7hxDSLeRlsmZ7DLJDoyFpcnmnw=;
-	b=KMzxvWvRXuHjWzYOixni0Q0nRUHaaIHCCq2i1dQIGepsrBBKh5eXCoyrhWv0TUsUWJDS8F
-	NVyJ3yH5TDxSdI887pYk2EbV0S/lci8vKX1HM690NxSKm9aGVeu0VLeqhkLTOe7JxK/YFh
-	cwzQ9TImUgSu5iRHN2AIg56OEvylQ3U=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477a1c28778so15766755e9.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:41:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766133669; x=1766738469; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sUHONLbC5JmfhuQtv7hxDSLeRlsmZ7DLJDoyFpcnmnw=;
-        b=PMdwFh9ivd44EPI5bfuS8eo0P5a9AC3ESibX/za6BMVVNf7LScWdhAOt1BeMSEP8kv
-         LbFdF3lB8DIxciaEOd7YwKgnYDSaoYVSuobFgshklOJkio0oRRz6HwGd+F8ps5wOtBwS
-         l2BoCbdl4tXUYJ5BAGtapeeedHrQhxeD0HbtVg5xC0QhBe9lPuJ/kL/UuBzhGI8CmlBZ
-         0Q73GuVkcaFVahyLgIu2BaJMpMhvs9h3pVHfcTzyulrzX4vaXH1EgsSThYSCWSUIhNBg
-         TzzYl+Ab29l0BUk7WQXUf68dYTAUrJ4uV5XT8FjrU1PTrOPa7WMwaScgl0+zzQz2tfZ8
-         BHbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766133669; x=1766738469;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sUHONLbC5JmfhuQtv7hxDSLeRlsmZ7DLJDoyFpcnmnw=;
-        b=eCpaVZM73fgZqdVoFsaPgdD8dYvdf4mIAk8SFzQcQcdEc6ixfta/vvQdccb0JDIvrr
-         wE2nAP1TWL+Kapp1/+cyXgGdYy+8uehwftV/9YTpE4rZ8iTSIPJaUhHudyh6RLtX/Gy9
-         r2dQZo1hkvxGqvD/44eGfH2WwG1uYZjLt2y37ue0rP4yDwW4ElADrXlI4dm8CsRTm+57
-         5+hMWIIYmhLCk/IjCYKC6WeWjR4MKB9aqfHj4i8oGGpeEuU4/Q511BFx1ICauIkyOfE+
-         5i15j2MhLU2hUUeJyXLZaCMhyyL6ssMY8+kfEUYCRQW2IMy/zXxTzMX8ayoitzpfBdkH
-         toCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPG3FNF8OquO/SLYUiwFYPFqvoekLxJRPQFQqkAvdUWkS/wcDN4f3WrlBlzda24AJCMuzySSaI5A==@kvack.org
-X-Gm-Message-State: AOJu0Yy0JT/dhu2DwRZpo/GOIEgdHrmTlowmpmHXT0aZX+Fxdn0IHUZY
-	6bpyLBV49IuguoKZnIWIxVtEg8tdL3fVsoIpAt3zlXTNCmRv3TphD6/snyptgWAMA/g=
-X-Gm-Gg: AY/fxX5V/fTAUpJhTodJwUfoPshKjq7/HFlCqBvUQ2U7Av+D3Ru37FTO9ZcvkKFX1sj
-	sAfoRL9PtnAef1w9xZldDlTCgjMKcBVueFPVOJ5Zt9DU/JrdZBMfi/xPeqrmgNfltAxdxjU/TYO
-	QgxIm5mRXaweZaPxlWgioViFwjghG0CCrn7xy7rsuIXcdqhy7muk5dY8uob9xUbHQ9GE+99fA90
-	kcTXlHeeDNiTw7qhgLLHnrAj9Ihp8rNSGZA4t32vgnbSwBGdkuEddUj07wF1VuLtnqUM66xOUBx
-	vnz5SO47S4LwQUzi+g0qDnIkYf7N34ngJVvz6JdhDo2v8+kZHbJB4Mj3R0Suh6bINg3MJfe6QiX
-	UEpTqSiKHXhzWUy6WCeeJ0/jwgtKnygaJR085bNjdscdbcl1JPRbPK+tSt0yD0ueSqy21JUX6ze
-	05hLBQghJYxJhp9sKAlB7tF5mIDomDDViPpFo=
-X-Google-Smtp-Source: AGHT+IFcYKHJPYgcQllNij+gtuh3TUFyMdvjko5VxckTTrIpB5QdDmLRz7IVikid/Xpypc29wtbmXA==
-X-Received: by 2002:a05:600c:3146:b0:477:af8d:203a with SMTP id 5b1f17b1804b1-47d1959e697mr16323735e9.27.1766133669362;
-        Fri, 19 Dec 2025 00:41:09 -0800 (PST)
-Received: from localhost (109-81-80-251.rct.o2.cz. [109.81.80.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d19346e48sm32499035e9.2.2025.12.19.00.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 00:41:09 -0800 (PST)
-Date: Fri, 19 Dec 2025 09:41:08 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: ranxiaokai627@163.com
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	elver@google.com, andreyknvl@gmail.com, =osalvador@suse.de,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH] mm/page_owner: fix memory leak in
- page_owner_stack_fops->release()
-Message-ID: <aUUPpBDSfq82Wdlh@tiehlicka>
-References: <20251219074232.136482-1-ranxiaokai627@163.com>
+	bh=+hCT4wjyj5+fMkqcJpe94XokFEHMYSmNZI5ReOoz8Cs=;
+	b=QCE172W4YJGcL576seeUn/crK0mrrhdPDMitxiqAa6s3EU4jbG14qKMBsINsB+1nXHDUM9
+	3Ezu6Ic1HTF9iV9367qVQTjx2pEmg8bnRBPeU8wO2+GzJjAGgMdSdbri5Q/ScmZRkxB8Jc
+	rqB+9fFpnlpyCKHy0eSnRYsvtabMrMc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 108504387D;
+	Fri, 19 Dec 2025 08:42:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A9C4CEF1;
+	Fri, 19 Dec 2025 08:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766133742;
+	bh=BWoymR/P1tEaCYbA+6x3wLoQnAtu2UPZdgax6L4PcC8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=skWdYr6LtTEra/hEJKSRki4oTiaVMYJJp1E1cQJDgFd5/TER6asBGVlGh3eeiSKc2
+	 LNiq4vVCt345S4CoRaZjVlB+/k+vylJTmUTyL8dTk66CamK4lqZBOagGdhILd86n6W
+	 3Vr4Y2HufoSSg77k8mIwUROQI8C7Z0/QnAOyLqyg01hDYQ+DOTgDfT8TBEuQqV15Nd
+	 Ny5047KxgiXOX6dzRlOT+OZoLj8pofxB7WoYvn92uOhMmWcZQsh65VWq1MT/Tsxj6Y
+	 3iaW699Mxu9iYVBdi7G6lmezEOJ5YNQ2t/ev1BprX1hS/LlY04KJV3XLVvDIIY5pDd
+	 J9CweEgDtf4ow==
+Message-ID: <4c2027d3-2665-42e0-8cfa-712b1d8f8870@kernel.org>
+Date: Fri, 19 Dec 2025 09:42:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219074232.136482-1-ranxiaokai627@163.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EDA8E1A0015
-X-Stat-Signature: 67gg9kex8idamu7c99pu3u1ttng4xfto
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: bail out do_swap_page() when no PTE table exist
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Cc: linux-mm@kvack.org, hanchuanhua@oppo.com, v-songbaohua@oppo.com
+References: <20251216075943.29593-1-richard.weiyang@gmail.com>
+ <20251216075943.29593-2-richard.weiyang@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251216075943.29593-2-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 27D4A40002
+X-Stat-Signature: 6fiust61qwawdixb3wzjinig8bnw5kgr
 X-Rspam-User: 
-X-HE-Tag: 1766133670-156599
-X-HE-Meta: U2FsdGVkX1+ZuNIGuFO9pKs0rzTvUxzU4jDX1nbbi9ydkHy4Ihf5wp3xLIM9LvMHRGhemlZ8uDuNa97x9454pyEjUqfmHCt2IEeus+1STV4Vdju71eTInqEj7xXVejfA1gY8QMhAl2kbLzZzDZidvBgKAy7G/3QYX5owMjS/Z4lcR2oHhOYoW7CAuhAD5WRwGsJhbwivaJJn5/9WlLuTLOTHYxaWQX+G952CuYMA/dOaXHMQU/0KdCmFT3T2BQ7EbZJDpoOR+ouieoPqSz1xnHTylkAmQiir/EY7e7hYqP5Gli6Mn4vojRTncRXzcpsgxBK6Sy27T7tNSnlyZKHLwyuP+QjyXWc3XUSvpW9jPFhfFMsUw5YiAZJEQTT9jaXRtJzv1lqB0W2eFAq2blNI4/BF2Y0RI/Cs9rlceSCq5nX/vKvtMRCNlIg/mHNE/IpM9ZOsxXV5lNBtBewBawcmJ/Qm7DygwKeG/nico2fTczFYccjs9qaiDQNzwfc9Rnlf13llsBgxtg2WFtMO4NdMr4kLE7XKkvI4YC7nV5KVi9U3gR/Jjl1/T9wxAuPz9MLdxcGbzBuopwl5FY3ZYq2gYFuFkPOFZbw5sT3oPHoTpRbti64r+uykNxs4WNx67bRSsbXjY5HrRu3Gi+XSWM05/W64PPXG6g+dSdCBKtg2rI1uv0ig8qFaIztB+pYFzP6XlZoJKrJwD44lrJtsubJI+6U5Ex0NWy85CFCC8X7o1rt4HzucGQDSLiiu29KWqS/vI9pj2O/qqHILGYocu6jsVTyx/l6IOs3HkeIc4qmWO7nMos/n7berP5KmEbt1gQl1TWNbTZwT5Iiy3LHXrJa+0oaizLl9VarMc+ypLSnVeAHccxv9xO97DvOCXnyKF7KB6X4Do9apgR0yEvas9hOUvLjUtsPMVHmpRVWC2EM98nhSqSyJ7HhO0iT4y8lw3kIfSPr/4YI5pbBgPAh3eJv
- Wk2RAvCy
- x0S024MwyefdpOiDluXuQ/8VRUhXojt0kMXXViTDqXn+UY/1shAeKB9j23Eu/muaISKY98EyGrue3wGASgG0qrxleT0JzZe/W4NE4zm+gb6b1UGs7RdC48jYRN7bZ3qT8cCJqi7Uz3e6oZfcL6Jn+aSO61zmWgnRp+aDCgebFIHFntLnQAlNk9QsjY+Qf/htgXk+JrTqUtReStzKxa2TCYQny2y8PcQQjK4IrShjpUC6YfWUJb+dF0HWRqtZoDANAv7ieZhrzBv1wb6Y6++PLWeK2A7nftHpbMZUT566PiwRBobnPI4SdxvqbdEwM9tNlP4hak9nJ47u5w0C5c3s0eTru72rgxCK7ycoRebpEaydi8z67vIfqmwXBiKW4rMt1qmwlM+HFd6HeueYavjZLlw0U0ZGh5fFfysxFvfzVJcSQmNCI5DvqrYLO9dxIYeJ1XBuSYupg/g4KRm7av4sctiMRrFGddC1zPL6RosjSz/zeWK2qTsfH95qxh+aIYh5qr1BGZ+vGuLctQIY8bnCV40YVNE8/yg0m26BQ
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766133743-958541
+X-HE-Meta: U2FsdGVkX18Kl80CNf/rBgDimqq/I7DDxvZknXFX1nzSabFfUts4Eby4b+8kZ7g48uW2E3htnEzpK3JqaB7gFoizfwaefRGjspc+6jd32VFN86q8z7hvKmaEUlnXdv0VNZmjypf49giCiaaCV/IjSh9STC1Kd1TeAHb8dwAjI39YynqFOdbYdri3W7uBtucUzADBfSRTTaOGriLpuEuvtWUlSgA1PRFvAjLiMFPx/8I4hO4Gk+YQ0Djmx9P+v03QLRtYeMNu6p8DgNV189gRC7xhRHi7QdMVtYUTswTnSuuDp84sKn6vm3/2y4LBiTlIR515k6JRueCTKfXmMYP2feqVGPV/Mr8TTm5rJnHHjQEKukQt1CwuqWKCPVcNeq+h/hIAITK9SI4eJ2ccsUk4dxplMQcpPv3cavUsJWbBU/JTo/+Jv+8MHae6QwzKCxC9qUedisCS9qP9qCNFd+/8RtZ6QWE8qUb+VpxGcXgNnmAjE1LBXaFBsyJSdUtmQbpnNzzeVb3jeZ+WoMAJWeFJNy+Ms9eL4fPMichJbcy61FjO0i4YQ5NmyPyCya8CzMWO/SyXVjVTy+4RRJ2zT8bsjmoDTH0qSSzwnUhliYYPBCc8IKl5MYyqo2oGvqCchmlyFvqrvfVRyb+5ytSUpivUZ6xz78Te9jkBjkOpyxqv7+nDs1K9GuI7hD8TNn/XjGWr1G+Iae0WDGy5IErSTA9cCe1ZoHDDZo4bYwUmrvZxpHPw++qE222plfyuiRFg3IpMdumpbxF0VJ1bODOgN/h0RmmJ1EI7aqoNLRnHeSJ2Y8umQl40ugm5psBgUHzGPZ0NZ8GI6vYGm4fQ2KKLx7p8ox2+xzoTPhEEV0ujgPNguPhWz0WnU58zp/pTvsqYLzg0X3+uGysjOyB3HS6ikUL5ScuycyJnlDRGcvYfTS/1xWZYro+AoxPBAmJfPH3WXlN2ZxaXza2iAOrp3usM9KF
+ 75mdUoxd
+ pbxaWw8dz1IeQWsUc3GXA5OkuNDOE16P8wD7VmDQawj1LWPEuivMbYn9Yi3o6Dqmk1n0aI/H/LWQB57P2XVx7AEjzm/JE8NVGs9ZKez1YfjoKpQoNsTe41QreGKJOFwY4ZE8LpXItkLEjh07wtgWwl97x1z93btq90c+i1dyw0MKB1y6kzJx5dfmVpVofWawRAZ6hFcwAdRbJG22ev+QnHl/97dQyjLVECxeUDFBMp4iiW9FAYb7r5xvkCunR1TxzAXOqalEAs2OmBlAtSBi1jxkYaCg6ZB3J1gcWBOIT3HMVcVNyAl5HIOyzUELqHrjpWlYbaC8xBTggVWmr2sn21TzmK+vaF+gBw5oaV8LKhRYov1IYmSLRrM0S2z2Whose0j6FTHd4gX49azlDKqTu5PxRsV/Kw1qNTHn4Luvn+PJ2I/g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,40 +96,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 19-12-25 07:42:32, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On 12/16/25 08:59, Wei Yang wrote:
+> The alloc_swap_folio() function scans the PTE table to determine the
+> potential size (order) of the folio content to be swapped in.
 > 
-> The page_owner_stack_fops->open() callback invokes seq_open_private(),
-> therefore its corresponding ->release() callback must call seq_release_private().
-> Otherwise it will cause a memory leak of struct stack_print_ctx.
+> Currently, if the call to pte_offset_map_lock() returns NULL, it
+> indicates that no PTE table exists for that range. Despite this, the
+> code proceeds to allocate an order-0 folio and continues the swap-in
+> process. This is unnecessary if the required table is absent.
 > 
-> Fixes: 765973a098037 ("mm,page_owner: display all stacks and their count")
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
-
+> This commit modifies the logic to immediately bail out of the swap-in
+> process when the PTE table is missing (i.e., pte_offset_map_lock()
+> returns NULL). This ensures we do not attempt to continue swapping when
+> the page table structure is incomplete or changed, preventing
+> unnecessary work.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Chuanhua Han <hanchuanhua@oppo.com>
+> Cc: Barry Song <v-songbaohua@oppo.com>
 > ---
->  mm/page_owner.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   mm/memory.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index 27d19f01009c..b6a394a130ec 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -952,7 +952,7 @@ static const struct file_operations page_owner_stack_fops = {
->  	.open		= page_owner_stack_open,
->  	.read		= seq_read,
->  	.llseek		= seq_lseek,
-> -	.release	= seq_release,
-> +	.release	= seq_release_private,
->  };
->  
->  static int page_owner_threshold_get(void *data, u64 *val)
-> -- 
-> 2.25.1
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 2a55edc48a65..1b8ef4f0ea60 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4566,7 +4566,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>   	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+>   				  vmf->address & PMD_MASK, &ptl);
+>   	if (unlikely(!pte))
+> -		goto fallback;
+> +		return ERR_PTR(-EAGAIN);
+>   
+>   	/*
+>   	 * For do_swap_page, find the highest order where the aligned range is
+> @@ -4709,6 +4709,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>   		    __swap_count(entry) == 1) {
+>   			/* skip swapcache */
+>   			folio = alloc_swap_folio(vmf);
+> +			if (IS_ERR(folio))
+> +				goto out;
+>   			if (folio) {
+>   				__folio_set_locked(folio);
+>   				__folio_set_swapbacked(folio);
+
+How would we be able to even trigger this?
+
+Trigger a swap fault with concurrent MADV_DONTNEED and concurrent page 
+table reclaim.
+
+Is that really something we should be worrying about?
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
