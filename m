@@ -4,167 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C1FD7879C
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAC1FD7879C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79E666B00B3; Fri, 19 Dec 2025 11:22:23 -0500 (EST)
+	id E7A996B00C2; Fri, 19 Dec 2025 11:29:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F1F6B00B6; Fri, 19 Dec 2025 11:22:23 -0500 (EST)
+	id E0C726B00C6; Fri, 19 Dec 2025 11:29:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670CB6B00D0; Fri, 19 Dec 2025 11:22:23 -0500 (EST)
+	id D04EF6B00CC; Fri, 19 Dec 2025 11:29:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 546346B00B3
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:22:23 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10E3316030B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:22:23 +0000 (UTC)
-X-FDA: 84236738166.25.EB694DB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A2AAAC000C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:22:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E9yfC28Y;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RW2m2wbb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="NVtIbG8/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tDK4c30S;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766161341; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCC776B00C2
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:29:29 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7442A1A0299
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:29:29 +0000 (UTC)
+X-FDA: 84236756058.13.C0D60ED
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 76DBB40002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:29:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BEdnVURD;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766161767; a=rsa-sha256;
 	cv=none;
-	b=sQJcLJJhiANGu+vogwNnZI4GF2nLBIVffuaCSOz1VU4k24+tPb8gT/2t1CpXFODK05vyq0
-	GFRh8M5KIx7jrxHUnnifEjc3cBfmYRTqh24MF/HiK4so51Ou7aYVeokt/jzb7jBgP3zPhY
-	8CzUyuusRRhNIrE0cY2eeRdjD41LjUQ=
+	b=v+o0vgYcKBJ1V9GXTtDpbD6Lw4aBJ0QAmR2ncpoNWMAljrXM/POzWn+oW4qMU74FkJilab
+	go3utGen9NAt12GMxvTXXc53hX2Sh73yviFcH3QyNW6HAcsliOQA7LqLwwUkkLzZXXcC2J
+	XaqvKOTnSuydn28X9fXdSQzie/7OHzg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E9yfC28Y;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RW2m2wbb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="NVtIbG8/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tDK4c30S;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BEdnVURD;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766161341;
+	s=arc-20220608; t=1766161767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HjRkNrUoPD/Ci5NkKG692udcBe7n/qa+I/9BSJaQSts=;
-	b=Z+DTgLaudLfSvPahVMAAJlpJyYVMjekQ/HJhrYI+b8diipp4qbXaXD/QUAhUrKD+3g1GtQ
-	BWIVfZnjgboSS/Yxe8Q4ChS/xu4OkjdS4TUeq/UsEw5xCxCEo22t5yuPlmbo+O1xT89gFW
-	h9WZWiVoSG0HGhxd+Zoh66017d5uVLk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DFC7C5BF56;
-	Fri, 19 Dec 2025 16:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766161339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=HjRkNrUoPD/Ci5NkKG692udcBe7n/qa+I/9BSJaQSts=;
-	b=E9yfC28Ytuv6Q97rTbl9OJBKjaWHFiSnXVlQzKB7DMFILJKI2MOWliWfQF9G+w48fudiXp
-	dKNvP4j2WKx3lmReCUx2+4qDTUrsvFsyehBoh/sJSeFQer4N39L8FQ30bS6JONywAPzSVE
-	7j9/OucKwhl9/69PDCDd/jgvuEotEhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766161339;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=HjRkNrUoPD/Ci5NkKG692udcBe7n/qa+I/9BSJaQSts=;
-	b=RW2m2wbb5Km58KzKbWGLaDw++NSOZj68Ave9drPzdb4YM96zXQXbtsKfrojnOqTTtcBpyx
-	pePxnLNaYZfhp/DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766161338; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=HjRkNrUoPD/Ci5NkKG692udcBe7n/qa+I/9BSJaQSts=;
-	b=NVtIbG8/5a2rBj2Vtmw+kgd72aKySpO7ruFyX5jWinWVc0VYi/jQPETbMEoVTiQFZI1Slw
-	b+0QFOuXkjJlwgP6EJoLa4Oi1l6clkMrLcGZwPp/xR3vQ7A+W7UyFd+nojUwYJ+pWS0/1X
-	a0SFeWvzkf4X6th189xwBvreuVqCoas=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766161338;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=HjRkNrUoPD/Ci5NkKG692udcBe7n/qa+I/9BSJaQSts=;
-	b=tDK4c30SRG55dnpluunRQPoqHqvMFpjsEc8TeV8Rw2vM63Vz1B3nps/Th2sRmp+gwWVeDo
-	l8AupzGIiLroz9Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C8ACD3EA63;
-	Fri, 19 Dec 2025 16:22:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Vf3PLrp7RWmCUQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 19 Dec 2025 16:22:18 +0000
-Message-ID: <271c4413-2d6a-4dd9-9b31-714cfef3f28f@suse.cz>
-Date: Fri, 19 Dec 2025 17:22:18 +0100
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HTr2kO3AH5aV44rgROvP5AMfNOh764zNrIB60vgO1zc=;
+	b=iWggNU9CQg+4kPCOU9AbTJ0LX1dvDso97azEqVUCLtL0PWxlppHrO12MWSBOuMpCBWI94n
+	1ku8o8nVHmRNy7yQDMiDV9H4ZHD9xTtf1yxXBuGukksCJIoNojUEAag7cSt7d3MgPZyHbm
+	SQW3DeYJD/Up17uAOHy77gLbSERXFu0=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7ffa5d1b80so239701266b.0
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:29:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766161766; x=1766766566; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HTr2kO3AH5aV44rgROvP5AMfNOh764zNrIB60vgO1zc=;
+        b=BEdnVURDVtq3GAJj70itP0ok2yPe/LtPUZotVSIfzWn6Y2CeLJlMjnYXRY/LsSyR/l
+         70nyPhAugLHhdJK9d81MVAIizeLJ+oL8jGP/h3vU1n858FHRQXTB6ApCW8Ej7ayxjBfz
+         2liks2m5Y+agc7nSdmOTm1zu7+uPV1Fjb05rNT2KmuJEDpqlgquuvDQsdA5JQxoRwhJh
+         nOuOEoMEGnlkkIXrP3s1PRmGhDK/cTL7p00N4gT4fTmUfBdjIexYaiaoHiGpH73epiHR
+         h3T5IqUoIdChiqk1WCzy0qrput7UpxPUg0q1MfsO6Qkk393RlnPFK5kLJQqh0gxqVATA
+         YpPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766161766; x=1766766566;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HTr2kO3AH5aV44rgROvP5AMfNOh764zNrIB60vgO1zc=;
+        b=jgASX+bANMXm/iv/F23+sEuNCl/q3nvCAkygTRU44LpDk9kd1/OOSFxXY8J8CxIyMN
+         gmlwIa+ordZNTjS9kypdcJNgGhWMuMFW6EDnQQrBF6jphJE8tH6IQy9RIFkiLeyEHooC
+         aYlNeY6L1NMzYhVRPudoQwrFri72Kq2Vr+6XFFG2Fnp4MkbFHn1MXC39G/u7etduQPqw
+         oyo960K9qI+LXwx4WpzsUQFVBmMonJZxMUQ1nfbU0gb2jk3gh91S/bBzTc/Dx4TZ20ng
+         So1OUaFOQYA4raDCCoUtLbtqoee2Ee1kRPhFokh8cVRQDpOEvDvxnlxslTQmYQ7zJ9x2
+         CvGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvOBFxjfqnc+wDZzSDLFna0to6ImrfKXE/l9uX7zIYSzrvx6koN5CBjuHgmgbLMGVSV4e/vgQCaA==@kvack.org
+X-Gm-Message-State: AOJu0Yws86Pb8LbLAUnnLdpNPrETzFTwftJs8hM+8QbQddWPGs/0TZAe
+	/R2kqnEppdxkBS9BsIj2VJJdm+fzSxfkpn8puLd/gpitYgvIAkcA/s0s7JlUreeIa2TI4+jq6Rr
+	j3VH48pVbGjqZgFGbVqrVqfJBHRPx39J9IQ4TJUL7wA==
+X-Gm-Gg: AY/fxX5nBTHpPnRIV9k4zbq+L0eThvTY2PArzSl/P1C4mlW4B8OeYjJmerXVSdAXQ1j
+	owmeYuFN3GlqnMl8dgDHHu2PdtKn7cRTKDMZRoBAjwfnoGFKrIEYfzBIIxPnNq4szgmR25hLQyE
+	x4Y4tRtjHrii52onGtf5EAtsvSSjc5UtTMC9cWPcaic5LpvXhCPGQfNsMBLY61BG9TvWHQ83y6O
+	649CTwpCIyj90xzKF0zT2vo+g1Z24rxlDj1fTWRJ9+vj+jU/6VMkos08jNUW22KjinAglXnWcI5
+	6QW8XnextYRd+Rh91icttQSc
+X-Google-Smtp-Source: AGHT+IGofUtuvCgN109UZF/PypAnhjEWl72HM9EdTQ1Wf1lQtHMZjSd97H5VK6s4AyDQ+AGPgIsUiET6kxIVyVyiVZo=
+X-Received: by 2002:a17:907:1b15:b0:b76:2517:6927 with SMTP id
+ a640c23a62f3a-b80371d46bbmr380301766b.43.1766161765744; Fri, 19 Dec 2025
+ 08:29:25 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [GIT PULL] slab fix for 6.19-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@gentwo.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2AAAC000C
-X-Stat-Signature: dk8z35f4kw5fu7m86hohdznh8s65p8ts
+References: <20251216084913.86342-1-epetron@amazon.de> <aUFJH9xzJXYOt_X8@kernel.org>
+ <CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+ <aUF4fsWwD9BswkFh@kernel.org> <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+ <aUUYprAotKYMiEs0@kernel.org>
+In-Reply-To: <aUUYprAotKYMiEs0@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 19 Dec 2025 11:28:50 -0500
+X-Gm-Features: AQt7F2pTd4wK3RRR8DuXPyTXo-EBR6g4IBaYL5wdaMP_cdEs620s97K7y3D5Xr0
+Message-ID: <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Evangelos Petrongonas <epetron@amazon.de>, Pratyush Yadav <pratyush@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1766161340-733755
-X-HE-Meta: U2FsdGVkX1/UtuCeiiR9046BzVz9vPmVvgK3NixC3MnWV8h6AErcyxKGZLfclTbYbUIy9UR9ilnCuttpkVenTva2/tMbhAEPtYgWc+GqSkHaPz5fr2r4yDVQ2DM7CX1p398nslIOJWiqrWODBBuOHexLvBwknUs79sWcX+v38GF8ksFo+5QB8OD//WHQb7KqOKftQuxKPjxn29Ket+zZH96/9STt0Oklx+7vTpOMLHbMSbGOIYM/mu42m4wWraLAHgmZ7uajv47nkjmMdRxOZ9JR0l6ZLk9EBC6Dyt4ecaKeP9ywmrkiNyplWIFcz3UdQNeDRn0byqFYA6aSXe9A7LA42PVq2nBFbvMvXwzIt62xNS591njopPt/YZTP8kuh+Bpyet2Y88aBP8JfOt5gQhuKPTWPIQteEZL8pI8yBENDOqgyi9VHYZQD6gF4H0xRBb/yf2CY9yeRzc0q6XGqE+PSayyqs/sy0FRXcDBhlScZxXre95kD2cf81taZq0uTBmYMbfLaMmLM5uPHewDwk2HnqlzcihfqUhc2F5Ra6r5UIt2/44g2NJLT0OsK/WwOC0H/cLyBgl2janwpi3fQCA/JhM8YfQMblVwcgA/FQCC+7LmXBrUQbllx0XPljIGvcApzxH6wVmAFqn0Y2BZbv3oNEGnkBRecPeQvYqn5RvZaco32c/ICLfN9E8PKe0sozm8hXw3IfrRqdd9Y0Ozgko8etqPk/0jE7/IDs8y/CNhiTmjBZXoyv+oHQrY21FwbXQA7uuO5uqT5zHn6EZ6juSetWVypO2NW09KfJUx0SJMD/yz9pk+5pmvdLol4Exp0xhmT+/yZdvj424MHQk5GjqDSoNcVjfvBfOvqA6nyH2bDCARXxlcxzAZK4mO3ehcLaaiWHAq5ZuLZ/VAWVEeydtFo7G6Js+rZhPJD/XraTPvEElmgdUx3LkOtYzYUfhJjMovJP6EpM17+JYVRoGQ
- PGKCOSKD
- gJdcbbZtNIFUuzrHgUeWw52tdl+aU5A/mKX9jS1oJBRCYhJBgxs1e02s2BEzksZiduLg7r2lEy3d44+nh+KqExrY8HeBegysFBMPX/4n003ea7HEZXI1mgG0mvsoYD3NnTDxg+YlPQdtvSmmGfNdumIcpGKrcGQcqqAfsU2KcY6h0DWUuFCMqdwfJ6EXE9Ib9P2ossqpDy8UsmdDb/+N556bdoDvCheGMllAjcdRZX6DEf5BeDfQdpzp6J31fppmC96GBOVW40J5gpMEZDSZDqnaW0FHiToJZadREMfht9MW29WC//L8ND9c/nQg1wTK21J/t5qygHIHQyDbhyn39Q+HSDh3giqt/4P55
+X-Rspamd-Queue-Id: 76DBB40002
+X-Rspamd-Server: rspam04
+X-Stat-Signature: y9ofmzr655kegoej4ihxfdipa47ofpqu
+X-HE-Tag: 1766161767-105103
+X-HE-Meta: U2FsdGVkX1+vtW6UPuKhu3CFbxcao25apWzN0OaL6D6Dxcdsnq4d34/NjSAEH3as7hQXNWVhC6SAW0mVKgyPrl2La/L6eE3EFrwt+sU44/3+fLg/ucUBTLn18iOonkn5Sz0TSpFJNsymDTRm3NjrPponhiI2uFjd5dj6gXSQe4axP+/Rb28A1KdPuar4i9AhSd90SLWmrn1a+0glHHOkIVg9ES8ND7aYNY+WR6zRV9UQ3uksy6xQONzrC2aTrs2i3A802TF2Pmm0bwZJz6sYTrqlDPT14HL18Tw3XXaDPprR1wyLaYh9f7pqnVn6TATRDY6rksTfQ9kJcTRsJh22Wlb2cWGAxQn/4xbQZlhMRdlALHj5NTDG0X3xZ8Kw3+ElHtN5fHEpKyQ3iQ3e36b3NKKUkuVxv40y+J6582JEJOy2dLuqwvL+VdvbURgqCf4wf1By9FN3bVduYeqxSkprix21G6fbxCS+0oRp3dtOgJQVIwtfKC6jbY04ipToR5zmZS9AEz1Qc6sPrk1JQVcpH3EaOMOm2V2gnullblrQYpEJ9q5FuDT0zxhcvpv0aunq1G4HK0znZoU5BDNwo7RZ0kXWaeJsKd7ierKTJydCFVIhsfj1N2t2zK5vbH/kDd5cWgeZlgWe2TRgg0X9rO2yz+P6zwKskeGHZYx3uSjEFNK+XQYcmI2TIUi9bWs2eKc6Muc6LjPez2DUqzvYQQ7bc68brHbr4g5Bgx2zdAzUlawrF0HvkYMfks/HqWzQ7MCm7vd6d3xDH3cKLjuypVrUwdyvJHSIxbIUmGLZOQ0bi3Gprw8lqV+SUbcDGyDPV61JMZ6akpQsU2+L3Sb4d5RGc8GXBDomv0E7MtjrpseyRSA+7/vZxB4PC6T59QpueWfJgnWKWegm70k7g3I1g6chbUNLvcTHmTwC/MU5aGbNZGe3Vv9ISqy1XRa5v+FsR2K0ybgFepM6YA9h3CtGrLG
+ viyt+byf
+ Gb5NhOkwZ2dR0evuBnXHEP0oLnFrIAUItiLLbNnc0UfDDvqkkRPoTV0Y1OVI55xXRGfisAorhFq0E773k1jQClERa6haVlETgcDy3bqvlWQjV/uMs8PsXS6ATYgryRMWY/OxqKypYeC1VUpvtoKb9qQ8PNA7JHYuq4Vf9igjBjtcICMuZPgincO+2H3XUo52OfiWMGn7B/fqYcqHqBd590Wh9XA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,37 +122,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Fri, Dec 19, 2025 at 4:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Tue, Dec 16, 2025 at 10:36:01AM -0500, Pasha Tatashin wrote:
+> > On Tue, Dec 16, 2025 at 10:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org=
+> wrote:
+> > >
+> > > On Tue, Dec 16, 2025 at 10:05:27AM -0500, Pasha Tatashin wrote:
+> > > > > > +static struct page *__init kho_get_preserved_page(phys_addr_t =
+phys,
+> > > > > > +                                               unsigned int or=
+der)
+> > > > > > +{
+> > > > > > +     unsigned long pfn =3D PHYS_PFN(phys);
+> > > > > > +     int nid =3D early_pfn_to_nid(pfn);
+> > > > > > +
+> > > > > > +     for (int i =3D 0; i < (1 << order); i++)
+> > > > > > +             init_deferred_page(pfn + i, nid);
+> > > > >
+> > > > > This will skip pages below node->first_deferred_pfn, we need to u=
+se
+> > > > > __init_page_from_nid() here.
+> > > >
+> > > > Mike, but those struct pages should be initialized early anyway. If
+> > > > they are not yet initialized we have a problem, as they are going t=
+o
+> > > > be re-initialized later.
+> > >
+> > > Can say I understand your point. Which pages should be initialized ea=
+rlt?
+> >
+> > All pages below node->first_deferred_pfn.
+> >
+> > > And which pages will be reinitialized?
+> >
+> > kho_memory_init() is called after free_area_init() (which calls
+> > memmap_init_range to initialize low memory struct pages). So, if we
+> > use __init_page_from_nid() as suggested, we would be blindly running
+> > __init_single_page() again on those low-memory pages that
+> > memmap_init_range() already set up. This would cause double
+> > initialization and corruptions due to losing the order information.
+> >
+> > > > > > +
+> > > > > > +     return pfn_to_page(pfn);
+> > > > > > +}
+> > > > > > +
+> > > > > >  static void __init deserialize_bitmap(unsigned int order,
+> > > > > >                                     struct khoser_mem_bitmap_pt=
+r *elm)
+> > > > > >  {
+> > > > > > @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsig=
+ned int order,
+> > > > > >               int sz =3D 1 << (order + PAGE_SHIFT);
+> > > > > >               phys_addr_t phys =3D
+> > > > > >                       elm->phys_start + (bit << (order + PAGE_S=
+HIFT));
+> > > > > > -             struct page *page =3D phys_to_page(phys);
+> > > > > > +             struct page *page =3D kho_get_preserved_page(phys=
+, order);
+> > > > >
+> > > > > I think it's better to initialize deferred struct pages later in
+> > > > > kho_restore_page. deserialize_bitmap() runs before SMP and it alr=
+eady does
+> > > >
+> > > > The KHO memory should still be accessible early in boot, right?
+> > >
+> > > The memory is accessible. And we anyway should not use struct page fo=
+r
+> > > preserved memory before kho_restore_{folio,pages}.
+> >
+> > This makes sense, what happens if someone calls kho_restore_folio()
+> > before deferred pages are initialized?
+>
+> That's fine, because this memory is still memblock_reserve()ed and deferr=
+ed
+> init skips reserved ranges.
+> There is a problem however with the calls to kho_restore_{pages,folio}()
+> after memblock is gone because we can't use early_pfn_to_nid() then.
 
-please pull the slab fix from:
+I agree with the regarding memblock and early_pfn_to_nid(), but I
+don't think we need to rely on early_pfn_to_nid() during the restore
+phase.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc2
+> I think we can start with Evangelos' approach that initializes struct pag=
+es
+> at deserialize time and then we'll see how to optimize it.
+
+Let's do the lazy tail initialization that I proposed to you in a
+chat: we initialize only the head struct page during
+deserialize_bitmap(). Since this happens while memblock is still
+active, we can safely use early_pfn_to_nid() to set the nid in the
+head page's flags, and also preserve order as we do today.
+
+Then, we can defer the initialization of all tail pages to
+kho_restore_folio(). At that stage, we no longer need memblock or
+early_pfn_to_nid(); we can simply inherit the nid from the head page
+using page_to_nid(head).
+
+This approach seems to give us the best of both worlds: It avoids the
+memblock dependency during restoration. It keeps the serial work in
+deserialize_bitmap() to a minimum (O(1)O(1) per region). It allows the
+heavy lifting of tail page initialization to be done later in the boot
+process, potentially in parallel, as you suggested.
 
 Thanks,
-Vlastimil
-
-======================================
-
-- A stable fix for a missing tag reset that can happen in kfree_nolock()
-  with KASAN+SLUB_TINY configs. (Deepanshu Kartikey)
-
-----------------------------------------------------------------
-The following changes since commit 0f35040de59371ad542b915d7b91176c9910dadc:
-
-  mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction (2025-12-07 18:09:54 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc2
-
-for you to fetch changes up to 53ca00a19d345197a37a1bf552e8d1e7b091666c:
-
-  mm/slub: reset KASAN tag in defer_free() before accessing freed memory (2025-12-10 13:54:53 +0100)
-
-----------------------------------------------------------------
-Deepanshu Kartikey (1):
-      mm/slub: reset KASAN tag in defer_free() before accessing freed memory
-
- mm/slub.c | 2 ++
- 1 file changed, 2 insertions(+)
+Pasha
 
