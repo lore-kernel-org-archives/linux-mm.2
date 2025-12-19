@@ -4,157 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D548D78770
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B0ACE66882
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:17:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 413CC6B00A5; Fri, 19 Dec 2025 13:02:53 -0500 (EST)
+	id 1A16B6B0088; Fri, 19 Dec 2025 13:17:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3656A6B00AA; Fri, 19 Dec 2025 13:02:53 -0500 (EST)
+	id 172526B0089; Fri, 19 Dec 2025 13:17:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DF0E6B00A6; Fri, 19 Dec 2025 13:02:53 -0500 (EST)
+	id 07E866B008A; Fri, 19 Dec 2025 13:17:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03E3F6B00A5
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:02:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3925DC062E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:02:52 +0000 (UTC)
-X-FDA: 84236991384.28.655BB27
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B5B6CC0007
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:02:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mKihaSMk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766167370; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ECE576B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:17:44 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9771B569A2
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:17:44 +0000 (UTC)
+X-FDA: 84237028848.25.B9A1C5F
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B56FF80010
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:17:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TrCsy59G;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766168262; a=rsa-sha256;
 	cv=none;
-	b=7A+OmBAyw9+yiVSSVUC82HzTpU7OAv76lcSklO66I2ZB+Ujpl8Ksh/0VneAEyvg/0MWsVJ
-	JK7xxcSu+LbDBwfDykWrh2H5M/FsA8p8fuPhHDtyDDdFwc6jorFsJh0ueGitcEpdy/jpO+
-	p6lW3NvR5kXIw+OsrCanygWsShoaL1U=
+	b=YbB9hW498Svya/1ffnnLR66H+lsO92CRFwzQdmVaBeE3NX6QwwQipQ7lokOyPblcNRi1Ae
+	SPJ6TPS+7tqVnWhRBsGgbPVGXUtrED10+OVJTFj9ziCpTV1DKqutM/hOjmPYAqiL46Vdvh
+	1PFXMUbu5C253aPeNqEFZh+m0m05p2c=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mKihaSMk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TrCsy59G;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766167370;
+	s=arc-20220608; t=1766168262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iptTGl+1dG2vshTUeOsi9d9CUpec1GSylLykl5zE7Zw=;
-	b=tBnfDZo4XOP/MBJLHMV4UxrNWMWhiQ91JukCa9ugFcnYPgohWxx7Tqh3J8pAxbvJM0dmVZ
-	U03yqWyRAqet7axXI9rUNreoTsQvj6Wo8w1GctbqxwoPyapU5C6I+EGMCqja3/WxnWNxeI
-	eFv6drmsJtR9+5MP0l8qHDSiDdZFZrs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766167369; x=1797703369;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pbi5j6wJLQ20G3/u3yyZEWII3BRtiMRs/1WHV4lV7B0=;
-  b=mKihaSMkLajjjQpnYqCXYb5meUdjhr3UrUQawfCxEVBEHpfBGzRzuJZu
-   m5zm0QPX7pNiqrcxako7Nz6HpaSb8VFDDDUgsfxdRjK8Sls9qLQ71z2No
-   t2lr6r8lV4hPdKKL6okNPBtiXk4BRgtPM/aW2wzyaUo2wkoVUQ5mjcn2t
-   QLMZADIi9Vjh0ZK9Loe9SBctp4Z9sg31YCvhxWNN0JVQqMg6oaPR+q3FT
-   gB8Y4eAYDWWFKmXLEdEY8yo5mIl6hKOHiiOt9XLXcLGK0P0Qzt/TobD9j
-   98qlLh60c7IWcCIPLmEZmO45tDxsoPPLf3qEvuBi2f9JCC5PbO4XbrxLs
-   w==;
-X-CSE-ConnectionGUID: 1MK9mJ74Si6UTE/0HfAYkQ==
-X-CSE-MsgGUID: TAs1j6rFRaC6WbsbvjtslQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68176831"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
-   d="scan'208";a="68176831"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 10:02:45 -0800
-X-CSE-ConnectionGUID: +BWCN+9ETpCg/FgoJ2ROWQ==
-X-CSE-MsgGUID: wvwL0k54RKWOsIx1nq3Kaw==
-X-ExtLoop1: 1
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.100]) ([10.125.111.100])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 10:02:44 -0800
-Message-ID: <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com>
-Date: Fri, 19 Dec 2025 10:02:43 -0800
+	bh=25Nxn7S4ZrPxgXaTUt8/8ZR8LkJP8cPlzufs9a024sI=;
+	b=VU0JY5VE2i+9qq8t7/Je07WDAbTD7jFu3uRQHymPzTWjMn1A3n/bBsZRgXTtlJO8Maf1sD
+	0GtTuGyq3OJ87zCfKOmG7lglh3yxxEZLJspdHOvmxyK1PfTeb2jxIv3FePGtFdut31subP
+	moDCOKHJvBryz7pXwfHt9i5A374EtZU=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4f1b212ba25so17361911cf.2
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:17:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1766168262; x=1766773062; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=25Nxn7S4ZrPxgXaTUt8/8ZR8LkJP8cPlzufs9a024sI=;
+        b=TrCsy59GByy5zQurveJd0zfACroFyLuJShy7c1eQ84h9MTO5rdgUnG7Eh6vAQ6+jqp
+         koxnkeqDjQCyU4uItXqqDcG2fh7NUzZhJuliNLqv/vG669vSmCL9J1FJ9YKoo8Te3k7Y
+         VOjGHtoatBHkfrONhH7oMnLhwSh3tMl53JU4ZDIGbK4QEA7quoFrwALB2Q029sREIURu
+         9QoukT+MjRdkqR++C/1miqtPuks7iRE/fgusYgYxvnZZfY3NYQOZao07L7jGHUfwfrnw
+         5u67935UEqhagl/U6yWMhYR09e/zt0VIty51EFScAWNHRzh9aKRT28cR++is7VoW2iqG
+         Uslg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766168262; x=1766773062;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=25Nxn7S4ZrPxgXaTUt8/8ZR8LkJP8cPlzufs9a024sI=;
+        b=INOKZWuXECw5U7NN8ml0QLkjWSv4ytRhetX/mH/8q0p7H/T4Abi97eosjLW5FNr4gL
+         WS7NRCu99GRHr4yfGTwbz9WGXCwZEsUYbRxnXL5Z0FObGZEb7IMY2aNRiGTc5FMfVUET
+         Zd8frWMrjVY7LIXT51fuPUGjhMqhgp9NveByDksrHNjf1z1glTDW9no1U0xgifhShi37
+         LPV5BusuisHlDdfzmngpWsPJ/dlvCLSAh8PMK0lsfjei70XoAfHLKxC9eNKdLutp0Pfn
+         XHG9dOkzzNa5BpHpqVY4b2899f8qGSSiP4uSwuXPZhRdyn/AYXkFJ2yiPiqhyOVo3Srk
+         dvKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYNvzjPMf+RatBCQ/eSK3uaQFKoIpj/lSMaFe2R+FxrwLfX+4tlGOmZbLJ58/5yVFjf80aiWliXg==@kvack.org
+X-Gm-Message-State: AOJu0YxT6RXm2K7LhuP99ngJTSnSYvtpziHr5EtAsi4NxY6bv+KVIXp9
+	Aa/NvtJ4e367joKwsTA/6XQTrpAZmgbfLTAUdsJRVv/1zb9fGCOxhieuTwjym7W4S5s=
+X-Gm-Gg: AY/fxX4PBHPWluUzZWYvjfv+05K9quDnMMsiFlGr8hTBodzJFDp3OaPoMyXcqYx6FN/
+	RnBUqcSPoqHiySpOYBaGPHgF+VkdzzRKuZ+9iCZwfVvxe5DCkY0T9WY6+oqUJcesg8L9bTXytbk
+	DKvZM35qCN76f0ODG9qa2Af9RZb+4ERoU7eXh2/40z6C01mVBtk0bHh+NHtmSm0tmTSaxVd9mUQ
+	szPlXVvGhiqc1dZ6cF9oNPvczObpHMbL17VcjZTm2hYUbYGYN7p8rydNs2/01dZ3lR1B7KYmTJC
+	iXFRxZnYg3tRQTQ0DmKwUW/42zHCvsoolyWRYq7Oa9LFgO1zZ3nQuapd9LlMMnpHY3nChqTrJus
+	wWgx2/k7mKM9oGUhVItXu3M88nC7ASSI1uA8r45CmnKld+stzpIHdNlSZtDQovZ6EYU8UNYMtJt
+	DsoiVOxQ4tfVsu2K71j1eBbiFh3un+giB9LFZ1ebALh12IQ2H2kUH16slXsEXFfaubPY9s2Q==
+X-Google-Smtp-Source: AGHT+IF0gYf3nQ4VOxohCT8XCqBK3I81oOq0wI0PXWLv8zlad6o6AnkQGLlpRe25NrPXHzjn0M4qyA==
+X-Received: by 2002:ac8:5a4c:0:b0:4f1:ab28:d9f6 with SMTP id d75a77b69052e-4f4abd03195mr53240571cf.26.1766168261524;
+        Fri, 19 Dec 2025 10:17:41 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac66865asm23376721cf.31.2025.12.19.10.17.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 10:17:40 -0800 (PST)
+Date: Fri, 19 Dec 2025 13:17:03 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Cc: patchwork@huawei.com, guohanjun@huawei.com, wangkefeng.wang@huawei.com,
+	weiyongjun1@huawei.com, yusongping@huawei.com, leijitang@huawei.com,
+	artem.kuzin@huawei.com, stepanov.anatoly@huawei.com,
+	alexander.grubnikov@huawei.com, gorbunov.ivan@h-partners.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	harry.yoo@oracle.com, willy@infradead.org, yuzhao@google.com,
+	baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] mm: implement page refcount locking via
+ dedicated bit
+Message-ID: <aUWWn3YMOrPdyY_c@gourry-fedora-PF4VCD3F>
+References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <81e3c45f49bdac231e831ec7ba09ef42fbb77930.1766145604.git.gladyshev.ilya1@h-partners.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
-To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Andreas Larsson <andreas@gaisler.com>, Christophe Leroy
- <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>,
- Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Michal Simek <monstr@monstr.eu>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
-References: <20251219161559.556737-1-arnd@kernel.org>
- <20251219161559.556737-2-arnd@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251219161559.556737-2-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B5B6CC0007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8khfgb1tqr9uo1m9ipam8qsyos6iogbs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81e3c45f49bdac231e831ec7ba09ef42fbb77930.1766145604.git.gladyshev.ilya1@h-partners.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B56FF80010
+X-Stat-Signature: 3m8xnog8wrx54dyq9raft1utyskxyrc8
 X-Rspam-User: 
-X-HE-Tag: 1766167368-937677
-X-HE-Meta: U2FsdGVkX1/7FhaKJ/MV3G9PJ5Y2RvI0rsCFtEkKVsDlSgHIygNDe4E7f+f9dr8B/BnlOKpjljs9m9gjzeNwovx2airWmZ7QKFkS3udcxlTepz5SETmx50T1YbJ0aLf81ExUWaXZepZZEyx/09IoaWSd87bVy8lPk9JxyhKExIRDFtCjf587tILDn3A7lXqMpxfToQG3ETWCddBepuAm0qb1ibaoqhuCdssdFWyNIYtk/kC2wvY8S32W0aBonQGWrNtYUoF+kZb27ncAGz97Lk/R94tU/AmHQFa4C7MOJUvXbupH0LGYNnbMTBqJyK/nG0AP9qG2T14n3zNXOu89bBWD8O/CRiGYWvXNy+scMB8BlK4cfCKd9sJhU+yHYAnuydUY/Y1F33OrNyGCEMi7z+5ogI4S1HKzW6oWIdBk4d4jF0lNsqUt5U4HnLTCVZvouTlVIHRLMf/6DvUnV0GyWFWLC+Kbji0uh061XNfXyribyyDy3Fm6e3/Caatx6pIpBxR/rZRNPbyZRL0FbISRHOnX0OzaP4npcr/qPmP2Jbg/CV7vun7aZ7EwDawgd/Vu/992w1PBQ8BFEq00NaUxMw8cSHPry6c/cAtIC46Lwh4L+f63junIss3RDojH3h68RGc2AQVo+kcS5++Kf0XSp7+MXHxIIjnB7oemdw9WiZjQbSB3ggkHce0mvrrr6Gx0uxXjzqyCvHs5c5b3H/JX5P/tfDXvSDABohNCQyAbnVvvxA0YEkyzCNdMXJBN+oGY6GdvGifh29bN3EPjiGvCG6uL73rTifC4/BzOBw738rRRLjU2e+DYX0Kie/D/wBmvlr9Maul+2ENr+j5mrPC45d35sDNXkQywhVvseD+u4Xx5ay5ssCsmIT86pELonXGQQTKm3tDvL1A33jFz4mkK+Ob3UQLyfLW+KdKrxj7um9iAFgSiGqFU87OufqVBQ/mSCiukLuPlqtgkEGR7XzU
- hxok3Rlv
- nKD4SyEZVCoqusYs4NLVGHtOvhPmPUNN5IPgnzI2x3/bm1lD6bfAeQwNKJlhoKJ3oGwyVQJWrv23svY/SxeCK02B+LR4vzmqI61de1Etya5aRlttI3+PlWd1jCg5L5H7vMDuQnwz95/092BLxx8Woc3VCjFq21FJct3gbze13Iu77VOzaq4N27QtuBQH4eALObMUH/xXGC1eKxyt0haIn5oQDwRGDSUx8881u
+X-HE-Tag: 1766168262-490565
+X-HE-Meta: U2FsdGVkX194FNv4rldvJYqKKUb1+KpIKJ9P29RcCdPRYQOKspEI5X6CPIvPh1z81blgUN3/QhB2bZr/4lpR5ykbguPuqCar2DvYT309VNCdPRHxpLwQfTNWInQRGxKYTon4UhBPxGYWRPIc6d/E0Kxe+9xujRlfWxX5LC3OCPzTyAkLHGbfT7VJSCdI0MSXb5MGc57mBVgxBqrA1R3Ww5EBiGABfG02L8YBd2zXGl6IU7PD2CUy+0xXytvM9YwKDN20tjDWp1zY4m1i5WruqMnzmGtSxns1JrPNN5ELAyiV3JbpP90/uHlcD6UIZz647HW5Jmgyo/CFT++2lK33C648kzyCuP6zDFul1dIE4Eo0crii+XnjzfJBfphs78kEGJkRjChqvw0hkttMO4P/XN5xsVPHvSOrA5wLlaiHW6Kv8bWG8icLFj/HHNfbeWRw0I/S+HPZzSYcinHz1QVNC+o1GVp7Zbzep3uOxErzE5/4RrJC6gr7WyOFz0trbYwQ5g7aYth8nBiZny+qt8jMupUeS4bnKsZuFbaHY1gUoOXRFH0aXKqnrBopAnlabZXdHB5e2RGuZk7Ulle+2LTsabn3PtcdwRZvzzzU4ZYhbHRUuPNwzWmRGdzJjjoMH4gbEbWh97ytqVX4HPbGKlWb2yCWoSzmbadq0KEurA3d6d7cEbrR6xjSOmSiP7ybWwVGL7Fr8IfT7HBpWXhji4Ef3udtKUS+Q7RISG4yoe6s3fGQPwEWm/4z+OXWlzvIgaRqX2lO3Xf9YE9WJGKTPFccttKdMHHxdAu3bZv/3ACnJeIRqf83rm4EbwDs1BMM6peHBexYodJUt5LptcgSVk7RUGlHuy6cFw9uhzw3/L/CCxvvaOVSB9VTofeaEOk+w6y0pTYtK9VJ5m9hsj1JjuRwKtwl86XNHot20A0TNCgbbnDXCl+nnlxCN0lAu/1wwdjhkmgKfQTqIBJaO2AsV65
+ Bv9z2Mip
+ eY/KfsIJKLvFN3t1zsGv+v96dr1CI5DAoTTEt1J7Jl1tIUfdw9C1szImoVgnyXoshIvnTXqloo6PhzMV4BZw0d/uy0ZAFySD/hhJSnLDp3qEhu5lC4BW7gYK2Q/dXxR5HVRqr1Vh/vJ/y04h/FLBGpxuwS6feyoKQiNg9+s2Wf4V06sU38H0Rzg1a/qPl5rak2wCV0TI+RV3f0tyf6K9Q6ExO/gkn6/9jMZBuCDfN700kkDhvzZEMPYMzrxbBq2s8EEwPPGnd5hKvdjywPgaVz7Q2agVebrk73LtgFAbwh8YrCXTkz/WeQa9X0Yk/O7bbiXVXNvvKcWfXzcs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,32 +128,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 08:15, Arnd Bergmann wrote:
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1416,7 +1416,9 @@ config HIGHMEM4G
->  
->  choice
->  	prompt "Memory split" if EXPERT
-> -	default VMSPLIT_3G
-> +	default VMSPLIT_2G_OPT if HIGHMEM && !X86_PAE
-> +	default VMSPLIT_2G if X86_PAE
-> +	default VMSPLIT_3G_OPT
->  	depends on X86_32
+On Fri, Dec 19, 2025 at 12:46:39PM +0000, Gladyshev Ilya wrote:
+> The current atomic-based page refcount implementation treats zero
+> counter as dead and requires a compare-and-swap loop in folio_try_get()
+> to prevent incrementing a dead refcount. This CAS loop acts as a
+> serialization point and can become a significant bottleneck during
+> high-frequency file read operations.
+> 
+> This patch introduces FOLIO_LOCKED_BIT to distinguish between a
+> (temporary) zero refcount and a locked (dead/frozen) state. Because now
+> incrementing counter doesn't affect it's locked/unlocked state, it is
+> possible to use an optimistic atomic_fetch_add() in
+> page_ref_add_unless_zero() that operates independently of the locked bit.
+> The locked state is handled after the increment attempt, eliminating the
+> need for the CAS loop.
+>
 
-For simplicity, I think this can just be:
+Such a fundamental change needs additional validation to show there's no
+obvious failures.  Have you run this through a model checker to verify
+the only failure condition is the 2^31 overflow condition you describe?
 
--	default VMSPLIT_3G
-+	default VMSPLIT_2G
+A single benchmark and a short changelog is leaves me very uneasy about
+such a change.
 
-I doubt the 2G vs. 2G_OPT matters in very many cases. If it does, folks
-can just set it in their config manually.
-
-But, in the end, I don't this this matters all that much. If you think
-having x86 be consistent with ARM, for example, is more important and
-ARM really wants this complexity, I can live with it.
-
-Either way:
-
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+~Gregory
 
