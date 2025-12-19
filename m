@@ -4,106 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D67D711D6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07DCDD74961
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:14:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6C76B008C; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
+	id 6CD8E6B0088; Fri, 19 Dec 2025 03:14:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECB5F6B0092; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
+	id 67A7A6B0096; Fri, 19 Dec 2025 03:14:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCDD16B0093; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
+	id 57A076B0098; Fri, 19 Dec 2025 03:14:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CDF5F6B008C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5CDD8C0601
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:22 +0000 (UTC)
-X-FDA: 84235505844.21.1888170
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9A4474000A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvV56RgS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766132000; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 474326B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:14:48 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13E87B9990
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:14:48 +0000 (UTC)
+X-FDA: 84235509456.10.B9F96B5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A0F204000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:14:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nwttFawp;
+	spf=pass (imf04.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766132085; a=rsa-sha256;
 	cv=none;
-	b=HKp3uirw15BqJl5l/cbMcGCvtpFQwtvWE3sGWYSXkW8bfuw3PBUfxgyUw0/BgwVdV47isQ
-	oRg1MPvRnz0rRHnZpTOuy44dvvZWBRGN8n4S86MV9U13nzs610BW6lRgggZ73RQYrRUX7s
-	JwxaqXYL+jvaxTi+OgQhzvByVTJz5ak=
+	b=1iL/Y7meP1dPGfNVIAVhAK0TgKnpRRGuRnrk104t5B+Ep9WjJbNe2xQ84jIruquh+O84uH
+	j6qXhF85z57WPvH83g5HJyC4u8Z4qvZhUoIZmxUqcCGSWCqzX+ImLPmCdGowr2FFgxEH2g
+	t9JRFRR1tZ2XGM1PmNMfP78uc21wZe0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvV56RgS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nwttFawp;
+	spf=pass (imf04.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766132000;
+	s=arc-20220608; t=1766132085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4kZkHpdaiDkkZcvv8EinliAFULym58ZDDfTLrx6tdQ=;
-	b=0at+zsTR0GxSOBr2a9O3uLC6CiXJX+kjRYxBRj6urAwYvElh1rGbgbmvUM9JKZvwyp51q+
-	gGZDOFdMvZfoMnIK52HppyD/LsPnYF7mx+7Gn4LfbpfuREcBGxP1P4mqq+Mh9oQG/LsZDw
-	HbLP1+KlkR45j+QszrpF0mWWQBRfgPs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B70624416F;
-	Fri, 19 Dec 2025 08:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C38C116B1;
-	Fri, 19 Dec 2025 08:13:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766131999;
-	bh=c8UdFBb7F8dmejdnU77Se4Vh0A297D7YwvyeUjSzvGs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bvV56RgSwPdWBOuOtUPVcXSmtsttDdT6myfmjpB+QZDRMIVyr7unLn+z+isWBP0Wy
-	 Ny2hKlhPpLoymTC6JQ0DzSc0lTtu4IdOjoxflDk5ls0qr9rZjX4H6YN/PUpzbnQdAP
-	 YpBOlDFBUmVl0ocWFf3MbPKhlUbei8L4bQwXt0Rf0W+fKMNrpn0yKASpPBE+phUtE+
-	 eS0MjQp6QSCCa4q9q8ZjhuUYyTNuM7t+D6ja4QPtH8eUDpUit5SxogEKu15rseJwgW
-	 mLfXoM8WdWG/4ZWUCIaOk3MfOwvaMmfztq3vshIPQCpKqjoQqXVEii+dxxDbG6AI8Q
-	 Q/PUXYGj8Kqgg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5B5D380AA50;
-	Fri, 19 Dec 2025 08:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	bh=TLmAC4hT0OSI18H7TcOFY4Ez6H/3FbSY2SyIRVYgovE=;
+	b=2+WacExn/JNAEXmwu+eKq6dbSzmB86fgKV5r1QvtteNkmhQWxF+lYvC4SMuJdr911AlRdG
+	1KdhILCU7hNYpiAzRtvwpu0jPuldJWjxMD1J+V0irFtSbIYOR63YZKT8QYtpQvsIJKPabf
+	4meXaSsdhkV7Dm/4vuwl8QdiwMePkDw=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJnu1C009885;
+	Fri, 19 Dec 2025 08:14:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TLmAC4
+	hT0OSI18H7TcOFY4Ez6H/3FbSY2SyIRVYgovE=; b=nwttFawpHer+20l410dRlu
+	cKOvNOTC0wkbEAA7HSAbXIOCiHGVn5aehw+coVbKAolv/DFC3dnlV/HidILC1RDJ
+	CCh+RYEHq1677l3YMI5a4jFgK10x0QpRZlh1HCkN9LTk/yw36fMECqaei29Fe9yI
+	4M9htiVhpMNWFIaJ5YfUW9tleDQOqpEwT6FMpR7//SG6E7lDT1HyS1g+jZFnHuqd
+	AkEPq+c65fBdubmcTkNI8jbM/vyr734mKAZOMu5FTUY7lhh9gXEndXSUchimT2OX
+	YLw6zfxTC34hZPeFM4kffGzkaOqNurRSILC7oN25rPEjRF7S+AgPqkuId6duBtGw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3qacw0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Dec 2025 08:14:23 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BJ87tpl013021;
+	Fri, 19 Dec 2025 08:14:22 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3qacvr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Dec 2025 08:14:22 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJ7ZYkL001249;
+	Fri, 19 Dec 2025 08:14:21 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b4qvpjqj5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Dec 2025 08:14:21 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BJ8EHdx52822390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 08:14:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C98B2005A;
+	Fri, 19 Dec 2025 08:14:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CED9A20040;
+	Fri, 19 Dec 2025 08:14:13 +0000 (GMT)
+Received: from [9.124.209.192] (unknown [9.124.209.192])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 19 Dec 2025 08:14:13 +0000 (GMT)
+Message-ID: <041352df-41ce-4898-8535-d6b7fd74a52b@linux.ibm.com>
+Date: Fri, 19 Dec 2025 13:44:12 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
- user->kernel transition
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <176613180853.3684357.18339473690014642605.git-patchwork-notify@kernel.org>
-Date: Fri, 19 Dec 2025 08:10:08 +0000
-References: <20251114150133.1056710-1-vschneid@redhat.com>
-In-Reply-To: <20251114150133.1056710-1-vschneid@redhat.com>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rcu@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, luto@kernel.org,
- peterz@infradead.org, acme@kernel.org, jpoimboe@kernel.org,
- pbonzini@redhat.com, arnd@arndb.de, frederic@kernel.org, paulmck@kernel.org,
- jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org,
- samitolvanen@google.com, davem@davemloft.net, neeraj.upadhyay@kernel.org,
- joelagnelf@nvidia.com, josh@joshtriplett.org, boqun.feng@gmail.com,
- urezki@gmail.com, mathieu.desnoyers@efficios.com, mgorman@suse.de,
- akpm@linux-foundation.org, masahiroy@kernel.org, shenhan@google.com,
- riel@surriel.com, jannh@google.com, dan.carpenter@linaro.org,
- oleg@redhat.com, juri.lelli@redhat.com, williams@redhat.com,
- ypodemsk@redhat.com, mtosatti@redhat.com, dwagner@suse.de, ptesarik@suse.com,
- sshegde@linux.ibm.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm/hugetlb: ignore hugepage kernel args if hugepages
+ are unsupported
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
+ <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        x86@kernel.org, linux-arm64@lists.infradead.org,
+        linux-riscv@lists.infradead.org
+References: <20251218114154.228484-1-sourabhjain@linux.ibm.com>
+ <875xa3ksz9.ritesh.list@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <875xa3ksz9.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PyctZo-oqOS2S2ryVat7yBVzS80fLUM4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA2MyBTYWx0ZWRfXytVrcdj3UhfX
+ Z8Vv9kMP0lMlwbFYhGcACf7pjgeECzAYFhQeBfU3P07X5wGgFiK9l1nnIAu5mg9e4G5uAYB6xak
+ th58W2VYeaEcbUbuCrtcQn3a+sUnLl8JD6j3hdBrzuJfg4KQ7rt5RmL1A+BVc2qz79P2hwYP5ed
+ WqgZGZ/zmGdlvU+WpcYuFcw9dwq4Bj/OYhjS3fXjQAAsifERVxszD6rP/QQorzk4k/i7xH/AOuT
+ S+27eQb0MkDCeQ96c/ngWWgd6r2PMNDX3+vjEA6GID2JdwjmSh1jNLVO5Un4ntk2bMzcTjk0tVC
+ s9U+7Ay7aQva8pBivlzQDr+mXwnPciyysNUsjcyRXEj+gouTutQCHOZI62FwHpPivwDtoOXqlAx
+ H0Zm3o0A+OeCQJlE9WX7ZBlPQxgVRvroPCdMLKmlpeP9yVIs9shPkc0ydrcVnBTV9M6rTm6GeLl
+ Uez/4l3A21EnUiLKd/A==
+X-Proofpoint-ORIG-GUID: KZXZSziruriyHL7lrh2IB41nqPbe4UYL
+X-Authority-Analysis: v=2.4 cv=C/HkCAP+ c=1 sm=1 tr=0 ts=6945095f cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=ejwGrTNpCrPNuk7NXeMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_02,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512190063
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A4474000A
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4p9ho4jbmk873wtrfguc389pdxn5g945
-X-HE-Tag: 1766132000-780418
-X-HE-Meta: U2FsdGVkX1/wz4RDUlYFv0Y1Q3Z4U/dphW/wH0omnopKIhSwd/6h2b/SvWj6j8CoMHiu392USxQKNgP8i488hNnPa8XG1wbAfnZoKgMsBVUVB8SDV76fB4CBuMm8WOZcEPchXvWTpU43UrW6G/d3Yz0Bg8k7Ee3HTwQb0W5cJVo1jLvD232EE2oGgaGmCsqMjZCVPyyZVgxr682FtdYPlg3uUyKTgtnnEgmPJnKcnx1LEGrisnI8z6TjMyMuZvhzCnwqsPoEVwsldippYB9UYSXlDth7uXE8AFwEI8l522k0RGHoWKs1agV6B/JlMXWqwLO/pPa3EYxF/Sqk51IoADVMgg07bQbx8yEH99uQg9qR7cZzApp9H4EVuvV94B8WR18fsuTiefMyv1lo7aUuzXtqaEncYO5DKXcWNJJ/cJk5dw4MjPsQuoySYv8/JkVnyZEHfSyzZ6j4p0a5hq9GKfK3Ur6WmdHVS/xiAMa4B+75A/WAH7zKSz81ws6Popum20P1ei/ZBSE9qGD6uMOeUIgUNDDJkdBFx/Z1zQmunSjzhEiQySYuV7SqiPWZPrT4A7ieI0q1bT2obzL3iz9T+HWtTif3UxEyJj3Hh911wlOhxojea0bZ3kd7MgoFWlYPw6TkHUhQHOPvdq79Ter15ayPAF54p0hAN+QsLU4cIkA/FPIhkslZueYIAJHRNGWXr6F5h+sdTmtpNiAN5/6/VQVQTA5vydqoFbLEzzlcbHOSHElNkWIbJIRSxD3t2OtLAKyHyTXTtR+Stws0IExlulFE2g8hAKd2zt7RuxFyT7iIC+dHfICSVrgf1WqlTJXzEi63g1Dq2GHjlS/5WY6e/npZtaOombYR81GYctM8vWozXCoNbGk0TA8FgPAJlRRMjux7ci062BWNmefLODvhycvmtNeloPGU/tIxEOehiRkSw0bRGvW5NRGQOmVvNaWaO2MzQQrdbGgygfaCZMS
- VPH/amfm
- /p/iSNPVk3Tvr4Hu+pT7u6wwKLGyMb//oqmkniXG5T/8Nq+yIOcjjA6M+pqYxGvwnrwm5+qJYPeqAFPF0ARzLR3piy3mNFGIMbw0S64rpNKF9volHsmVOQ7kQJryfcyiKzMU/p+p2Jb8ESeO65PNjFRYeR1mb27DHj9nBcHvWxri8RH3LsK9G6su9llpHBj9YfYWQRRaNeV0v7WeJ/vQEERWvgnQvL53hyMu2yDm+ibARjtKVsiM0AEewVhq/lPYS3zGkfW8eWSQnjagZpKy3rTfoo3FshIhzCL5e5oLKVjfJ8UWf1EtsUvZffbnKB+ihzQ26RWZj+b1CdfPZBhfBxuBmO3OstpBxhCit/L8FVwwwVzy8RoYYf9+l+BSpUxm8ZZt91UFvbZf9EcMLn2s0nAMg4hyvfkzPP9lhzYl5S1zKac432jcPGFD55mqI70su+R5gMWORTiqPQLc=
+X-Rspamd-Queue-Id: A0F204000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ag6q4by516d8h6u3ooewfcu3xys4mydc
+X-HE-Tag: 1766132085-782013
+X-HE-Meta: U2FsdGVkX19WtU9uJg2ohqa1kF7TEiLRRDNUcCA/+S5y2AXLqT3Oiu9igQVJZYS2rhXliSKj/d2LghQdx2Xc+l868zlHzojftTBOjM8oTgr0h2LjLsuNeSiHuAC6ikNo9TYdphFsacx7pGdR2EBXvWKwueJ6jqLGyqfrba1Xh2xCKLoWrv1k7kyBRiNCl3PVyp7m+QsmWwYRte7y5t8b92xLXM0luwrh6izwlIk8VlvcGH1jWY5nc2PIbhRTKCIJppK848zcW1nmt8sjOyTNFCsP/eeWZrJCqdRLhBoEuyMT0W8o+9h9+P3f/i/QoO6/KWKC5Nm+MHKzQNynAH8hR2V/f9bwBx0qF8a8K6PnVSXVcuxHva1qb9mFr9uA91rWBosUrA0qq3iLtP5UtJ4ST3THZYv2H/uW82Yckj0IqO1noHcuYT5y0YgGsyRQ+f2w5/MAyrEGTySm6l6vwbQoTWiqti3dgsSqf+uWsQfVMt3IWw8cdLZEpn0AcvvWhXIELBvM3NCTy8Urs3J7+CFvRoxoL4MwzoodibCFIjUjDGBE7zQsXoowKfQE5tSLOCa44RlwuyNC2qkVwhv3xbYdc3ZxpQz2/+WaON0vLG56fP8fvUzLy+uq/jg16QobO7IUROUVXi5aHsJk5EoZJEPhNBN2HPkF33hC0YE4N9xJWQwSobtc4kVK6/3QYfhIAhA4pPN2WJi7QMx/s3Vpr9+VNcrJK77kePWmhu6WTBZfFmDENKz6yKzJ4TyCSqjtBFrM6FRK4mq8CKdKhmHejr1crgmzW3fWY7KviKOiYTrT3I+WOe8jxAUF6+fp2Uo8wL7Rckn3O28euhHrx9McpoINviydz/7Q3GxJ+FpwEP6+NZanVCeS/OKzP55MseQISL9PJXoBhjSSJFC0nuSHJhH6/Cy+rxyV9YPBthhCPLTHmTXkmZntRrOMwITzfAvi3lcho/Pbc81Sml3TAbh5gx4
+ wABTMKQE
+ bfto93WCzdJyCBA3+X9H3xaVMB80gUEmNuEO6hW9XOBBAQqLQCM+/X2J3r+eN3PEwltBBxY2c6EO4mkTZSqSNtSFU+MD7wA/hGpBBv7fImuhJXaTL7rn0XqcpuQRznTudAeUzXI8W114w/VMeQOGoREGf/d9MthmbdEqr4A0o+VwoFs1hZ251G08BxBSo49UsT/r1FDQZUMnJIUbkjJg/14JN0ArKmr0f6sC3aUJ54t22+TnK4B5Yqz2grbhKwnn+MO8usP8X1Xoz8PCsEGi8js0TjJKFWZR8WBtsN0BYLRUL97EkNksi6TQap73tE5PTLQBCPthTUOeFhwYONF09UtO3qgfR7jX+J3TsYapDtL3w/oCAYVrgEGHydj0gWij/5ODn6CKXwb/GyBsHDcpgjYe2CJ5u+362VHaRgllEIPJ2cFfsNI/Y0z4Zr74/azZHIE+ja4rQczuhfAhRBWjPSHHEzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,90 +162,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
-
-This series was applied to riscv/linux.git (fixes)
-by Frederic Weisbecker <frederic@kernel.org>:
-
-On Fri, 14 Nov 2025 16:01:02 +0100 you wrote:
-> Context
-> =======
-> 
-> We've observed within Red Hat that isolated, NOHZ_FULL CPUs running a
-> pure-userspace application get regularly interrupted by IPIs sent from
-> housekeeping CPUs. Those IPIs are caused by activity on the housekeeping CPUs
-> leading to various on_each_cpu() calls, e.g.:
-> 
-> [...]
-
-Here is the summary with links:
-  - [v7,01/31] objtool: Make validate_call() recognize indirect calls to pv_ops[]
-    (no matching commit)
-  - [v7,02/31] objtool: Flesh out warning related to pv_ops[] calls
-    (no matching commit)
-  - [v7,03/31] rcu: Add a small-width RCU watching counter debug option
-    https://git.kernel.org/riscv/c/d1e6d2773898
-  - [v7,04/31] rcutorture: Make TREE04 use CONFIG_RCU_DYNTICKS_TORTURE
-    https://git.kernel.org/riscv/c/82a224498005
-  - [v7,05/31] jump_label: Add annotations for validating noinstr usage
-    (no matching commit)
-  - [v7,06/31] static_call: Add read-only-after-init static calls
-    (no matching commit)
-  - [v7,07/31] x86/paravirt: Mark pv_sched_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,08/31] x86/idle: Mark x86_idle static call as __ro_after_init
-    (no matching commit)
-  - [v7,09/31] x86/paravirt: Mark pv_steal_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,10/31] riscv/paravirt: Mark pv_steal_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,11/31] loongarch/paravirt: Mark pv_steal_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,12/31] arm64/paravirt: Mark pv_steal_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,13/31] arm/paravirt: Mark pv_steal_clock static call as __ro_after_init
-    (no matching commit)
-  - [v7,14/31] perf/x86/amd: Mark perf_lopwr_cb static call as __ro_after_init
-    (no matching commit)
-  - [v7,15/31] sched/clock: Mark sched_clock_running key as __ro_after_init
-    (no matching commit)
-  - [v7,16/31] KVM: VMX: Mark __kvm_is_using_evmcs static key as __ro_after_init
-    (no matching commit)
-  - [v7,17/31] x86/bugs: Mark cpu_buf_vm_clear key as allowed in .noinstr
-    (no matching commit)
-  - [v7,18/31] x86/speculation/mds: Mark cpu_buf_idle_clear key as allowed in .noinstr
-    (no matching commit)
-  - [v7,19/31] sched/clock, x86: Mark __sched_clock_stable key as allowed in .noinstr
-    (no matching commit)
-  - [v7,20/31] KVM: VMX: Mark vmx_l1d_should flush and vmx_l1d_flush_cond keys as allowed in .noinstr
-    (no matching commit)
-  - [v7,21/31] stackleack: Mark stack_erasing_bypass key as allowed in .noinstr
-    (no matching commit)
-  - [v7,22/31] objtool: Add noinstr validation for static branches/calls
-    (no matching commit)
-  - [v7,23/31] module: Add MOD_NOINSTR_TEXT mem_type
-    (no matching commit)
-  - [v7,24/31] context-tracking: Introduce work deferral infrastructure
-    (no matching commit)
-  - [v7,25/31] context_tracking,x86: Defer kernel text patching IPIs
-    (no matching commit)
-  - [v7,26/31] x86/jump_label: Add ASM support for static_branch_likely()
-    (no matching commit)
-  - [v7,27/31] x86/mm: Make INVPCID type macros available to assembly
-    (no matching commit)
-  - [RFC,v7,28/31] x86/mm/pti: Introduce a kernel/user CR3 software signal
-    (no matching commit)
-  - [RFC,v7,29/31] x86/mm/pti: Implement a TLB flush immediately after a switch to kernel CR3
-    (no matching commit)
-  - [RFC,v7,30/31] x86/mm, mm/vmalloc: Defer kernel TLB flush IPIs under CONFIG_COALESCE_TLBI=y
-    (no matching commit)
-  - [RFC,v7,31/31] x86/entry: Add an option to coalesce TLB flushes
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
+On 19/12/25 09:45, Ritesh Harjani (IBM) wrote:
+> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>
+>> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
+>> default_hugepagesz) when hugepages are not supported by the
+>> architecture.
+>>
+>> Some architectures may need to disable hugepages based on conditions
+>> discovered during kernel boot. The hugepages_supported() helper allows
+>> architecture code to advertise whether hugepages are supported.
+>>
+>> Currently, normal hugepage allocation is guarded by
+>> hugepages_supported(), but gigantic hugepages are allocated regardless
+>> of this check. This causes problems on powerpc for fadump (firmware-
+>> assisted dump).
+>>
+>> In the fadump (firmware-assisted dump) scenario, a production kernel
+>> crash causes the system to boot into a special kernel whose sole
+>> purpose is to collect the memory dump and reboot. Features such as
+>> hugepages are not required in this environment and should be
+>> disabled.
+>>
+>> For example, fadump kernel booting with the kernel arguments
+>> default_hugepagesz=1GB hugepagesz=1GB hugepages=200 prints the
+>> following logs:
+>>
+>> HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated 58 hugepages.
+>> HugeTLB support is disabled!
+>> HugeTLB: huge pages not supported, ignoring associated command-line parameters
+>> hugetlbfs: disabling because there are no supported hugepage sizes
+>>
+>> Even though the logs say that hugetlb support is disabled, gigantic
+>> hugepages are still getting allocated, which causes the fadump kernel
+>> to run out of memory during boot.
+>>
+>> To fix this, the gigantic hugepage allocation should come under
+>> hugepages_supported().
+>>
+>> To bring gigantic hugepage allocation under hugepages_supported(), two
+>> approaches were previously proposed:
+>> [1] Check hugepages_supported() in the generic code before allocating
+>> gigantic hugepages.
+>> [2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes.
+>>
+>> Approach [2] has two minor issues:
+>> 1. It prints misleading logs about invalid hugepage sizes
+>> 2. The kernel still processes hugepage kernel arguments unnecessarily
+>>
+> And that every other architecture will have to duplicate this in their
+> arch_hugetlb_valid_size() whenever they face the same problem.
+>
+> Instead like at other places, hugepages_supported() should also be
+> checked in the following cmdlines setup functions.
+>
+>> To control gigantic hugepage allocation, it is proposed to skip
+>> processing the hugepage kernel arguments (hugepagesz, hugepages, and
+>> default_hugepagesz) when hugepages_support() returns false.
+>>
+> Right. Thanks for taking care of it. I guess after this patch [1] moves
+> hugetlbpage_init_defaultsize() to mmu_early_init_devtree(), it's good to
+> bring back these checks in the respective cmdline setup functions which
+> was removed as part of commit [2]
+>
+> [1]:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2354ad252b66695be02f4acd18e37bf6264f0464
+>
+> [2]: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c2833a5bf75b3657c4dd20b3709c8c702754cb1f
+>
+> LGTM. Please feel free to add:
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+Thank you for the review Ritesh.
+
+- Sourabh Jain
 
