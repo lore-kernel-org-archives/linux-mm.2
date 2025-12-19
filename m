@@ -4,126 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2303EE6688C
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A61E66891
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89E526B00A1; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
+	id B92496B00A4; Fri, 19 Dec 2025 15:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875956B00A4; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
+	id B66656B00A6; Fri, 19 Dec 2025 15:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7817A6B00A5; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
+	id A92DA6B00A7; Fri, 19 Dec 2025 15:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66DCE6B00A1
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 963E36B00A4
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:57:06 -0500 (EST)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36ADC13A5D0
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:55:26 +0000 (UTC)
-X-FDA: 84237426252.07.A87EE98
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2C75F1C0016
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:55:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b="iY/ltKNs";
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf18.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177724; a=rsa-sha256;
-	cv=none;
-	b=ZTdzIviAZuwkrjQ3sGZHnsM0Dv+15u0TEZlhaJIRmaUSt3Om+wDA+BPCpDX5sQTrLGbYbh
-	Q3dGUEjxuq/CwrE5W6uGHCT+49VmlH0qK1ZernzlBtRirdqKu2HB5ZOcWMYmlVO2YcM+tE
-	ewfKvTpd6GkkgO6tczhDWLx6DeJGZdA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b="iY/ltKNs";
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf18.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40C6FB6FC7
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:57:06 +0000 (UTC)
+X-FDA: 84237430452.07.686EABE
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 70BB740002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:57:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j0yrxQeM;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766177724;
+	s=arc-20220608; t=1766177824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XdZxKJLVv/us0MhlURSAieVC/jzQimy4qD0cHcgmVzU=;
-	b=avzhptdMk9cjcLBjtZEjHIfZsI/BfTfoH6ha/FuKoFp4aGAnP+sjBWxBVNWgb6QtNPEgsu
-	+SJi/3NemoX7xabjlf6ytRSD6is95AUpHAnLsefcFNO2QZjuFZp5K9mn7x+7bZI7cQBM1M
-	1pGGOCFhHSt9PG+c8d9quAnQgYPi6zc=
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY0DC1g6NzlxTSc;
-	Fri, 19 Dec 2025 20:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766177715; x=1768769716; bh=XdZxKJLVv/us0MhlURSAieVC
-	/jzQimy4qD0cHcgmVzU=; b=iY/ltKNsXjZN2SOn/7Mgk2nBiIFfkhQl9wu1rxsY
-	gqMl8gzI4Fdl7lRwvuyzu7BWqPG53SnYRBw92pU/YfkNHA1oj26W7lr6+j5RR0uF
-	yIO6LZVQLnDdYtCKFJK2JKXsUbas5xX9N0Cd4MqfHLRdUuyQFIFHBeQ4g++xzSQp
-	gU0eJDXxLL9HnDwtcV2Is8KV5H4vPha7HstD2vRL0jPgV4n/YaDhiqi6j32BHDhA
-	klf/01+b+GILMZcS2Xt+ypFduBskYOaif+4ge3c/WrC+gq03AbnGqHj3Xw4Txc6v
-	eiaB6hoDKfyCfX8yrnN20mCQbhQQgqc7PGjrVHpqbn8r2A==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id qbQZoCDMrrgt; Fri, 19 Dec 2025 20:55:15 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY0Cp5nntzlwmHT;
-	Fri, 19 Dec 2025 20:55:02 +0000 (UTC)
-Message-ID: <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
-Date: Fri, 19 Dec 2025 12:55:01 -0800
+	bh=t509bwztenot/CP8kNyRzbdexzlGui8MOb3iqN5WlEs=;
+	b=jqM82iouJYxohO/PqRWNNUxybW5z8rOY/lCg3hEQJaA7jRuxgSHlQ6LN8rZNUI+wfw5jU6
+	m1s2mjfD0YkGdoV94un0u5G6+SKL2XQHAXsr9SVQshD6PyE9kNM+r9N2XamuqM/LPdRg8+
+	ozpMKl2zI9BTzmsifqjHI+jFxxyPMeE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j0yrxQeM;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177824; a=rsa-sha256;
+	cv=none;
+	b=UDcJpKWLW8yL/xLPc3H3OGShRmf8uT+wlas4v0jPNOqTtlseF4Y7ygwHPj7d2yFJtC0P2Q
+	h+SHrwES5yCcXL0QyAs5OVDLiOBlEl1OG7EnzU9A61TJIbydDf77DC/Ng7Hc5fQbqDxa2N
+	RdxoQyhHxNczd9omlOS4X4d6lb556v0=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4f1ab2ea5c1so25886061cf.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1766177823; x=1766782623; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=t509bwztenot/CP8kNyRzbdexzlGui8MOb3iqN5WlEs=;
+        b=j0yrxQeMSHpfPQauwIf78bIVGOduyn+9o4vZGq/fHh+cFUhBG8UrIO68jPPa8TkJBG
+         PkMW/9ypgbNQJjdbqUyDagLDrt7fk10BR3qwApnxC3U+ZZZk6lGoeOWopJh+o6xJgayY
+         Uzl/MOMIv+rY3ZqNWurOfhJ4Mc4usC0dBkVRJFMYhpNnkDJQlrZ5dPixwgcOwfPVC5BE
+         rBL7lriVA0/IxTgo3VBWqFgVHT9akD3qtc0Ai5C7gLZjPVyoIy4sDV92+jd6mFKDZ8FQ
+         u5JnFT7jf7xsmT4dzHVyhHD3E50v8Xjm3z/6lFpoMDTVnx8yw2OOwOrxQ/hY07J5LWG3
+         BYzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766177823; x=1766782623;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t509bwztenot/CP8kNyRzbdexzlGui8MOb3iqN5WlEs=;
+        b=BQAW2qil5k80dU1ST456UVXF+cajYzHFwlAFT/gOBh+fpFXyBexx7R0thnl69jvv+W
+         a8yURz3YncqgQD9XQ4mglYBO47jAnk8lfxBa2FjftAX+cg2kgJR2huo+NH27VLvafpeD
+         uK0XpZP/aEY4VRbujT7ZpVp92Sf3sR9EzmRUC7o3oWvxnbvXjRmFgU4ZtL8PVgqqemsr
+         EC6fT1c7Fnk75gHaijIdrMM6i2WW4nbFhu2km0+mLvvJY+5qKhJ5tIOFt4ySiYz+3ehR
+         smwi+Lir/ta+pOwX/2ix+UY5a9R+PdAyEA+m0xkc9cpvEV946CH1vsTVmoeaF+exRxnF
+         zi2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWtUVO8ASfytAlvPIOEMRFX86JYzw1l3WgUrMCgMIFgiHNJ2Mnx2CBPpLVfZCxvdx7qWM/0n80uPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw2CRXhOC8+aOi6Renuwc6NDhCk+6vYsnGTeEAfP+SOtk2uuzXN
+	8XWBOqDkasjDelSfz5cHfksBC9/XRiw6KyQm6a82DkZBd+058DUbuQt4VlD2L9JNDYw=
+X-Gm-Gg: AY/fxX4Iku2lsrTw9sdZDhDBJbLDaChHS1L4n0JPSGHoWx1DP7EFADo0p5cTlRoTAzj
+	awjKIeNcYKaeg/j2OqPCsAh1HwhIz7l7Q+LV2pcBiIipwwJa9+I5dmusj8o6BHb3ndypuHZjGrd
+	n9npQATPHnn7pIrj7GEw+Dj8RyBE5su3C1PSIewCUKeFqg6xbS6E0Q9BggJy38R0PQkizcRhe5R
+	lRfc/LIHslyfDNJfeUOzbdSfqzEHQ1FzdxiJxtKacTo+GrkR5DpGhGCkyVvOG6O/GJqNEQWWy9P
+	P/i/Rnd/xJw7YtuEdyLieWh2AySoQfDj3tGj977VH4nsV8DoQqnskpiJAPb4hyvUQYk70gj0QtC
+	06Bf1oCpAHDgzrTiFs2M8GIZ1Mb2f/tSblWGwwXYq6FUCuQ2o5kKkZwUv5mvc9Z7OzhNrOwXMSm
+	CDgvj6KKS/90rvTRr5Iran4ytcveeir526J1A4c4YiJ+K6i6lMb30fUQKL3ODw+mhaMFsZ8A==
+X-Google-Smtp-Source: AGHT+IFcc982nWdpBtU/myoa3OSL4Lx+tf1/WhI5JBF/tQgeQcpMo4ERuhRNkwwEGYKvbboveZfS1A==
+X-Received: by 2002:a05:622a:904:b0:4ee:2459:3d6b with SMTP id d75a77b69052e-4f4abd6e209mr60644641cf.49.1766177823513;
+        Fri, 19 Dec 2025 12:57:03 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9aa3ac8fsm27024046d6.56.2025.12.19.12.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 12:57:03 -0800 (PST)
+Date: Fri, 19 Dec 2025 15:56:26 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+	osalvador@suse.de, rientjes@google.com, david@redhat.com,
+	joshua.hahnjy@gmail.com, fvdl@google.com
+Subject: Re: [PATCH v6] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <aUW7-sart2k302uO@gourry-fedora-PF4VCD3F>
+References: <20251218233804.1395835-1-gourry@gourry.net>
+ <20251219000800.tnpqzvcdyeqcwryt@master>
+ <aUVgoEiaXj94IBmW@gourry-fedora-PF4VCD3F>
+ <7EED2D83-AE17-49CB-BDB6-954793EAFDBF@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/36] locking/rwsem: Support Clang's context analysis
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-18-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-18-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2C75F1C0016
-X-Stat-Signature: qtnk93oc85xm66j3nrcxj7bp7q1rjdhq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7EED2D83-AE17-49CB-BDB6-954793EAFDBF@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1766177723-83043
-X-HE-Meta: U2FsdGVkX18px9Qtjn2bmiiLUHump9sqQ4LdocwORdNylwzc+ioSo51o7eBpm3NFAdlJ12980d0P9PxKUUNncezfbq0d87eTVeP9y2VW4yXOjuMs/vOMc8AikQwwsXDUUF+pU0vTTVHkXCZvdyL+vm4a1hTYGVM/ak7CJJVUGRnb8HZ7jtEjxSu8ou99k+Mo3qPYhYYORh2lKEQ781kAH0lXslprpUbDgT2JcAxwgY38LtZnYbxmyqqsH0YefkSxMviKt/TyuaoePnyS324DL0OinUqMjB2StBgcGAn2FHjaCSL+vH4o2Djf6kv3ZhEuOhlbY6yJlwgOYME7mcSNreUZdYi7lEEj1CjFNUb2zHHjol56ocB7kCJp0bI/s1DPHtp3jwuepIuQCGAoCZCgSRJQYQ6do1UcRjiHg70lcmpbfozBpiZtdusgqfKBnrlzQTPDuYbK+j3g6ckR+lDtBiLfpN+JMHiIsrPSRlvyGeF0ls035adHYENlX4qw3M8CSyWiiMmGgzLGRukqwkdZ+zK9Agtp7a64g+difevGi3DfdEddNZhWjWrY4pVv2E98/h+6WdXn2LxSOnW2lI3fslM28BlKmpODp02QqKeQsArq85T+292W+8QGB/E1hjR+4KJ6wl5slEx9+EYEwOwB4tmB07yJu+HqzFqyrvll11iUC5O5rFBepfWQHXjZhajJr1PNNDx286AATCQMQ9FGGT+HJ5utXMMFZCkTHh4v+PyZyft0Jzk8O2FV/xgm0MVRRIsEJUWP+vhNTuxgXH3c81pMhs7Qw3ORMPVK84WM6T+bp2+wnIcq+/Db3/A9Aw6zQAAdaSyHn+mSolXDoH8h5NRcv/dgATAbL8opb3wq5UpdEw17JvWdmdpBUqD6nn/i/c36uNYirn3ltDmBZ5/kNxrt1QT1yaaPh3u4urJlU8YoPAL2cZRrW2+sMKJwKkt2r9xGacJiq4+nzfbb0fo
- Gt9ZHuPl
- KcYzAM1jFfZIh9ZCxVAv/+/B9Ei/3tIrbVUSiOOyhMdV2m4cI/ixs69F4vF4qZruQGAQfxF2KdT7uF5JYQymzikZQBvLXJBU7BaCYnISZ7LtIUM0H2FGxm07VSp+bZD95pyeSR6cnMhdTLz/sVLRbqVsdcRIdXFJ2Og53e/QcJZf0M2BLbuPyaUrPYCz4zxV8Qr9KzuQlvqWzVvw/nItvWUjVuV8ydn4Z3vQc9y0g6Omn4YDnnoP/Y70KQWjOQXujG8r0JZ/MqSsp7pQcbIMsEwjhRR8E6tSvsMgafPTyOxGBP1OXQw/Aa5hdzqe7uxnjY2WihMUX0Xb/WPhnhoqT3mLXbjUVS+9ZtwMqZu7kAxeiQtGzCHI5cWwtpr9fmvzkk3UT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 70BB740002
+X-Stat-Signature: zcujo64xk3gjcidyqqnwbrcxnutd6zns
+X-HE-Tag: 1766177824-860188
+X-HE-Meta: U2FsdGVkX1/AI8nfJMJwbjPREpCHITRaIuh0g5j77NnaKLOwfV/JVxhtGmDg1EU7+FnNSNrTzmudFeW0ohp7ZXdUTFpIDaqpe/+t4DeUxtjzIEWcb4KE6Wj1HiwpnSmPH630ACCuK3in5/4nFsrv0zO01LZ+G57mXx3gtqKTii+jbY7qxIu/nItbnrQt7sUY+UP1ButWw0st9VweOYHk4ag1s/bq7kUE+WPs/sMYwTBSlpUms/aBm+Skaz1xzIK5h3tILMVfXW7PehGv8k+uPVZYS7SbgD4byB0/rJXhDRBMugL+X5wCfKygp1bi8KjprQVFRXka1QriTxDPSEA4s+Xs/mDt9fbU6bHhOtp0n8gNK1LsKvqT0ehEcNeNEPvwN339eWnm060i8iHSV1DqoRH8dDsP+VSCEXZ+taXVYQL3JlgzhPLxAu1AtINtrzee6+0+FduINm/CwLLRJVLxoMFA8iLFtj4VGn30zYhSBv1LP66MBL3fJNmIXb1/2hgsAT2/w7LIPAPdEZT+eAIQzAwZqjf5F8rjwSO+Db0MkIub/dL4mtHCM6WHrPNFslm/o3qFgM7FgzkhEnbgDUvlvge7mrPi7lRfSDeoQ5RjHo5m3Y+OHCoyF1+DTEqhObbJeJm6yRu68sIq1CFop4RCjIK38ysWXYV37zN03aclTacwz1B9OY2BwBRYInrvkq2xg5wyjFpKbIVgI9nZN5EXjyUmooqBlD8M8/zMgUfsf1n73ZYP9D254n+w+1ws2EtNH7mQfWP2dDT/Om3EsVXkezYAi47OEQkc9Se+LOqvKEXU2oRMdFkI5iIUhSchGPmRAB+AYxTwtL+wfcFzLFkuKIWDaACv7kEnj4kQmbAsUCMfXlcOepBcTAznfpZF8rBS3hqy7lTuk0sh4v6S6ViyE+juodSZfusHTDGhqrLpIG260l0z7KfnY35qL1JZAmQ1ixxvUxtnA977UoJRwhA
+ rDDKZyym
+ HpUPOTwpUrM8Pafji5lNn3SsTP76AKz2DeUnbrs6Ark4aC2MOMIqAHXvpFUjxf7ym0+yYpEi2rTRUHECq2HE2rviuGm87VuOd141fmjpIuX0Ah5vWUq5AnJ5wsin+TEiGBNcOKPqSGiMvEXa3j/LBPSYYT7fgV0osqjjy1VsQIJJBwSomfQB5tSufP3jAKBw/B+qT9nu4AyPNSTCHgg3qT/GzGzF+5JNHyBos9HGHdYbAq5CI/GkRXlUn8AnkRhF2jq9iYjHNk9mQyelT+EOv9cOdrkAgsodyZ76ldc+N0t3G12I4e2kYyYymIu/jTTFMlFnrA6+QUm9n2MN4Y4mScfc59u0fndef5QAg6zsyy5bcdAmrhi0TKbmkjTp76bPCepbRyoB9pgp9XfAxd0pbBRzIdMD8HClN7IIBhSLfwkRNYkcvYwbGKdvfSHiVgcZCgfpb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,29 +126,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 7:40 AM, Marco Elver wrote:
->   static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-> +	__assumes_ctx_lock(sem)
->   {
->   	WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
->   }
->   
->   static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-> +	__assumes_ctx_lock(sem)
->   {
->   	WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
->   }
-> @@ -119,6 +121,7 @@ do {								\
->   	static struct lock_class_key __key;			\
->   								\
->   	__init_rwsem((sem), #sem, &__key);			\
-> +	__assume_ctx_lock(sem);					\
->   } while (0)
+On Fri, Dec 19, 2025 at 03:46:25PM -0500, Zi Yan wrote:
+> On 19 Dec 2025, at 9:26, Gregory Price wrote:
+> 
+> > Will think about this for a bit.
+> 
+> The sole caller of pfn_range_valid_contig(), alloc_contig_pages_noprof(),
+> scans from the beginning of a zone to the end. pfn_range_valid_contig()
+> should see head pages all the time, except it scans in the middle of
+> a 1GB hugetlb when alloc_contig_pages_noprof() is asking for a smaller
+> nr_pages, like 2MB. But in that case, the if above i += (1 << order) - 1
+> would return false without reaching it. Basically, to get to
+> i += ..., pfn_range_valid_contig() needs to search for nr_pages larger
+> than PageHuge(page) and nr_pages is always power of two based on
+> alloc_contig_pages_noprof() requirement, but that means
+> pfn_range_valid_contig() always sees such PageHuge pages as a whole
+> within nr_pages range, thus cannot see a tail PageHuge page at the
+> point of i += ....
+> 
 
-Just like as for lockdep.h, I think that the above annotations should be 
-changed into __must_hold().
+right, and we hold the zone lock here, so we shouldn't see a page
+suddenly become a tail page mid-iteration.
 
-Thanks,
+I hadn't mentally worked through whether it was a good idea to encode
+this behavior now with only one user - but i suppose there's no point in
+optimizing for code that doesn't exist, so i agree.  This does seem
+fine.
 
-Bart.
+Thanks!
+Gregory
 
