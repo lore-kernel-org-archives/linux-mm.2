@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3529FD7878F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90C0AD7878F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:45:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EBC76B009B; Fri, 19 Dec 2025 10:45:53 -0500 (EST)
+	id 06A526B009E; Fri, 19 Dec 2025 10:45:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C35B6B009D; Fri, 19 Dec 2025 10:45:53 -0500 (EST)
+	id 016976B009F; Fri, 19 Dec 2025 10:45:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DCDB6B009E; Fri, 19 Dec 2025 10:45:53 -0500 (EST)
+	id E240C6B00A0; Fri, 19 Dec 2025 10:45:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C7926B009B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:45:53 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46BA4B8147
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:53 +0000 (UTC)
-X-FDA: 84236646186.30.79F8965
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 864D540013
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G2ly7KWj;
+	by kanga.kvack.org (Postfix) with ESMTP id C5D896B009E
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:45:57 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90BF08855B
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:57 +0000 (UTC)
+X-FDA: 84236646354.25.55DD276
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 881F84000D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LqXBqzir;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3LXNFaQUKCHocjtcpemmejc.amkjglsv-kkitYai.mpe@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LXNFaQUKCHocjtcpemmejc.amkjglsv-kkitYai.mpe@flex--elver.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159151; a=rsa-sha256;
+	spf=pass (imf11.hostedemail.com: domain of 3MXNFaQUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3MXNFaQUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159155; a=rsa-sha256;
 	cv=none;
-	b=wyp65HfNugny18rimrrn2eXkJKHMzB6fcKc/tfNhtm7P3V59DK9TH4aKmBdsmw+0W6nn9c
-	50FjmvVPdVQW9txHGAZA8QXqXrrZvP5Dz/oEiMfFPFPfF2sDJmoUaGUJ4oG/7ULdQr17xA
-	gyNkQfxzxUjIEjA69wRDNLx4MXY05BQ=
+	b=EIiEO4FzJrrrZrS2cx2r9isCoviDa6TcIxZLspuR+QxA0MFnxabmbAMurRVR482YUF8+0X
+	Vn6CnScGcGUKILewfhrcvKtEXX4cf0ej5J3ijQruGs041iNDW0aHpnfAXlqHXVamehejgT
+	Bgq69CZO213TEuiox98nKWvVwWD9bkM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G2ly7KWj;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LqXBqzir;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3LXNFaQUKCHocjtcpemmejc.amkjglsv-kkitYai.mpe@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LXNFaQUKCHocjtcpemmejc.amkjglsv-kkitYai.mpe@flex--elver.bounces.google.com
+	spf=pass (imf11.hostedemail.com: domain of 3MXNFaQUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3MXNFaQUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159151;
+	s=arc-20220608; t=1766159155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ppEU3vt21POuxnmNi7TnVPUBkU2y1/pB0srZ9HoiLa4=;
-	b=t2sjZLZEbMZ28dOgrPqbgcvLlllArpnIu/B9rAAN0+wBLs2Z63z3848bFqAc+cEAM8/FHC
-	NqssK3Jv/EEdQh8eIU+pcjsQHcUpvFapTWIAIygzR2kJMhbQJ8scDb8f4tEM+bKSrXyDm+
-	brp3uKbyadFdImzGJUqrXIRE0kubtdE=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477563a0c75so10562435e9.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:45:51 -0800 (PST)
+	bh=LZHgecIFhvgsrcrEA4ZlzfSc1wPirLGNMbpfzS64gTI=;
+	b=wsYnSzpCzUHoFIDcv3tCjK0VVSsyexisCBevj2wT7BYJnt5YvwBsQVOVPcghcJDMMBlS6s
+	LVpoJ8/7mXNCOyl+0EB7AmUNmB5PXcv1Qze/RpgwRIX42w2hUmiQipLMUb0WV98fqGGwWS
+	8FYT2Ntr6NHOP9tu1/H1t4LCs/YjvH0=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4776079ada3so15491725e9.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:45:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159150; x=1766763950; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159154; x=1766763954; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ppEU3vt21POuxnmNi7TnVPUBkU2y1/pB0srZ9HoiLa4=;
-        b=G2ly7KWjRyeRYqcvIA5vtMYkHPeQPn1fVPNwyn1hgUG7j3Ulr/+Wvu8I4Eyfuc2yjG
-         Cz8RTu1ohdzkKOJ6HwePU5M31uDSXQHs453xOyD+CdKPz18W1KkoQEwDB6lFGSg0el1n
-         WDFIDtmFOGcLKKGDG8KE5niWZhVNynS7BIabtL0TRcroRO79IKwdOrmqHBpQcv+LF0XJ
-         FwzMHeg1TOTPO0XKfJoaO5jDYtucT0xdBBx6k8SgheADOEbLWWnYwKyAmAdahdWz5o2V
-         9rA1dmUjHNXc2w6XhT5t9Xq4Kh7QFioiBlwrxLHlkYZcOeyz6NJ3NJAvhw2SWGIusI4u
-         mDDw==
+        bh=LZHgecIFhvgsrcrEA4ZlzfSc1wPirLGNMbpfzS64gTI=;
+        b=LqXBqzirCZOI6boKhRCD6rFlcAl7h9E1mhO6Exa1SN1+SEMkABUEEXmq2Fjonru+5o
+         3MV3HCuDn5aPTsDdvlKdEABkJsKOmEYitXxIxBRsKAKWQXLQHXG4+ERMp2dFBR5okCiy
+         DZa5WWMwnYHf/g3Y6FdMjnjnsFGHDhvdhPp3gusmofyS/YsWKXY7DFxsEEUFyg8HHUOq
+         yIQGDSAR4S1dw3j49g+xoaQ8wvoxsX1ScZh5sGzqhVv+3xnZDTNtohTmSj6cuMdHfJPq
+         KWiwPQiWOkfBRhP3vEh3OzggrdydWmZiyNVv+z/ZAwd3AqHlhhcRCm3Kbp+fmojkMOL9
+         BTsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159150; x=1766763950;
+        d=1e100.net; s=20230601; t=1766159154; x=1766763954;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ppEU3vt21POuxnmNi7TnVPUBkU2y1/pB0srZ9HoiLa4=;
-        b=dR9QSqzsQmakme0fC/8yhvLDnHkQiV9jcuAdrYqF7Yn0a3g32UaVHTyj/RfCK8djT7
-         jnVzwaucaLpANcNxMwPa6kZ1eIXeW6ZRpR7FWXHxqt2PQ3vdqJmoZgioy28/cPwvXbVg
-         UdWZuyyiRf9eh3bUQThgruOEdCWbExyUX5ke6jC6sCi1w4BEYO3Zhb8BA3z5CIv20t20
-         VPCyujp3hZ7f5qb/Ev6ZndHcTXW7N8FsfchwVrspGCJZIbzmwBeIRHkGSETYOtCl2qkC
-         JEt+5SV6SrZgr0wOQ6wRL09W9RWRr6mRlgxGTajhXMqfPQ2AmF0IJof1K7X2fzEt1eW5
-         SU4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrZGruBxKvSpHG+/yPpvtRLwcy7UjBfmZsJNuDUgPmpVMGKmPA8FE2bh4BgeMsX6j7elL6E5PvPg==@kvack.org
-X-Gm-Message-State: AOJu0YzaxOb18xnUrSzMokBuEjSFVfrpnE0Hljqjhsi8x0CDCwV20nnb
-	F8sKrVJi8ehd/MjoI8oEd9G6qlXm9OcfSWV8EMxIr2qoihfZVh0yzhbZLcrqIQe7ojw9C86oJ2X
-	YxQ==
-X-Google-Smtp-Source: AGHT+IFAZFqR3CocsGFs4abVuEztgsgnPQaBN0RWDQEu/FHy3Bb3a0zFWcTgbAs09JYX5Sh2VgApfT61VQ==
-X-Received: from wmcq18.prod.google.com ([2002:a05:600c:c112:b0:47b:e2a9:2bd3])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:19c8:b0:475:de68:3c30
- with SMTP id 5b1f17b1804b1-47d1955797amr31569585e9.16.1766159149911; Fri, 19
- Dec 2025 07:45:49 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:39:56 +0100
+        bh=LZHgecIFhvgsrcrEA4ZlzfSc1wPirLGNMbpfzS64gTI=;
+        b=NfrsiNSP/4z5q1/JnRQewaFkzGOLSIZc9cyJ5fHJiRsowEWkRzgon4aRQk81p6yqRl
+         uAKRtCDICmHmu8S/mzpwm2l7tx50ilJ2Posq6HarHunot2H7WknFtmaEjUCuW3RTCeVb
+         jkifS3HZvvztnc3LaA0KZ3VJZJ0O2ztdelB1H6xWSkwZQGjwrOK+ikghOYSOvMRxGbtF
+         KThgm9TPxqnmmqrRVF96AxWHYB/JooBJdfkjogz5zb9ECPMg/P3QTmxFaA6WlEXBGxJJ
+         VCppaX5APArH6mEQnTqhZgefo7s2957UadixUcuyEGk+KGgvKKf10NxhuhAcibCHRxlg
+         GHiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVS3z8vx2eUO4bD0GjyEerjhTPRmbqMKqVRYAZUkPH8FDvuIkEXsxP1qQDFTr7tzmyOjoEUWvwn6g==@kvack.org
+X-Gm-Message-State: AOJu0YwLxN16qsxXtBeqZOqrJdR/qGUG/amWrGph84PJrF6OOoOGLdzT
+	rRck2NylDVhfGGMeKZB/WbHjoL3458UC9OjESmjIDTcphMeIVml9dPi98oHnwfBiUO9Djol2JKY
+	t4A==
+X-Google-Smtp-Source: AGHT+IEpUU63biSp+CWF7qU2W/J2hwjdiwKMgpo7qODC5PYPPyNbstNZnKM/Tyt/Q4xoJ76QTobm1iH7/w==
+X-Received: from wmop19.prod.google.com ([2002:a05:600c:4693:b0:477:9dee:b5d5])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b0d:b0:477:569c:34e9
+ with SMTP id 5b1f17b1804b1-47d20021316mr14032265e9.23.1766159153854; Fri, 19
+ Dec 2025 07:45:53 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:39:57 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-8-elver@google.com>
-Subject: [PATCH v5 07/36] lockdep: Annotate lockdep assertions for context analysis
+Message-ID: <20251219154418.3592607-9-elver@google.com>
+Subject: [PATCH v5 08/36] locking/rwlock, spinlock: Support Clang's context analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 864D540013
+X-Rspamd-Queue-Id: 881F84000D
 X-Rspamd-Server: rspam03
-X-Stat-Signature: 1us7tic9u89o4jtu6mbnsxj3kkbjnx5z
+X-Stat-Signature: wcz9togpjuhrf8qqdgwkttp599hha1op
 X-Rspam-User: 
-X-HE-Tag: 1766159151-622019
-X-HE-Meta: U2FsdGVkX1+hfsPT2Hndp40AFiYlnj/8FkCAN6RXbtLk3hS/o+dwuvS6Vn8hhXvlwAPjPLdzEJHEhNpvWs4AmeJzFjPGeYEcQZCsufFb2aPlfQRb9qzsz+yEoffKq6CKrpZ8ug0aAJiMdO3ZxiycYawbC+klYp547gILXBRbSfmXyio4RXpczKYnsF4OoJOb0bTba9M7o2i7DBnQHzF9039f2SpA41tIonbXo2tLYQJXhF5oztv8EBflE66aokKqK0TfbFY4C87Ar6mD8iRdb21/dc3JWkFeZZcJ6lhXlCk42iuWNOBZZtium8dOJISrUUlI5F/Ux6L+dqBd1ThZ3nyf/aDaXj5iLiK6n6VVw/LuwH3D54hqnyRvcZvgmxy5Cg7dBV7UK8TA+Fc0eITOgKUlZujaJEMoxO9OKGCo8WwB/qJxhGno9Jsh86OwsVKxmxrH/zOejUIbxWnY7klUh3qcQqEvv0kSnksOZvy2t2RqjKhdFktH2Ewc567FPUcM/50el0bcgjNE33WQIuWZSyHw3cwO7D1FmsXAtKfhv05+oibfZooHOjGZVTpbruUOCudX7ud84lgLM88+/hhD6USHKxMhF5VaCcJhW3LoX9qGrYbrNrSVpqsc52qFH8ZsMoUutLQb34j7WbA0uf7o9zxVucb5XzjI68FRO58MPdsyK32IvPkI2TONhxecyUYXwZE+XQR9xgZ3t3EMm6gzlv66/f7esiLY1FwtZuMd/sU4Tf0G+aXWDrRGJxpBqHqTfQiJhpLzFmoYW9zAa9DNpfl9QY/MljZNBtjYy7RCxZ0C7S4gu9jlIWMmg10G04ABMRFtyNpZ1gexk1oGLh0CNGrLCLt0y/Oyz8nxZMSrAVsRH6xLhG8d7OZTuoIdZRL2E1ERvRqW9mG8BcmAworxdv33HDjS9ZDbg8twoq7a8HlUFl2aZ+e3MwJmbC1VAk+KDhrgQZ5yP62yCulP9r2
- ZLCIDEIU
- 8nP6LWmu3OMZLAzVEJuxMxn351kAFoJ3/kD/DJmIdB6+Sk0KOE5GST0AVTNKPjD7DNkqxB6K3ycdLw9bYR9NKa0hPSl+kkXevATEYEtjDuXTNVktt1cVtNRe81JQ4OzZS1Pr2ej0s9HI8BmzLND5W23ULTF+V5UCQHQxEPwNz66bByf53rge4NtynBw4MHejlS5xYZX9SWFJSAFP3NYUoBVLkrRwiR3AroCAI3nnutQmvK4nTfW/Ast+06z8mj5rzuNHmpsc4kQ93ZVo2aplA7gVP4yTZBtoK+Ne7seBlGE/CzRbxxotMU8+BXsKL6p8zRnizSZjucE0D9m8j1Hy0WCqQj+sC5E0w2WJBGKHhiGdmQwL3s+90W8Y1nmSXsbzUkJzBgxD/3VfHcKH4RFmZntR5KB2cY6W5EA2p
+X-HE-Tag: 1766159155-430012
+X-HE-Meta: U2FsdGVkX18VYgXWv6/Ixus1KMVRy5SY5Os35tHgz/cm1b3OIR6l63sQYLBNiSncArcHwNegY6c3DPVlw1hSnevCZi/xy0tuTMmktVfjqXc3+Fa4yzLYBnkL7WIJdOVN33ZYcJJ4zA+uJ9YIp0Z2tjelJN2AbP9QJy5R9crg1vfozX5JeT+x3XPpnXiEj+8+D/tzCsahf5wxs37BWirPQougLu6q3CXT5RpWRigVjELlh3ZVoOW0tH9CD33Lk7A2TuzKKVnMjV0BQTTWkyuBun+DdP7gBAIMLi32Dcx7whiZkAAtiVnG3XO7bx5snqrs5zBMSfdmUb83h9Ys/bvfNPh44tlD1kk2yNW72Ntnca4ZMB+r/MmMKgeoVW/JDIZqRWCjN5hjh+AMgrDQdrjrSqwju9QApunIJwLoMcz/rIN5cUYNhKkqe1s3R2HSaQLbc74yI2BBDMlSTOCqfdlWeozXpVeYl000Aebd/kl59pd87qfkcIoib60pKto0JSi0sPKy8Zb6oZN0n3ocOK7puj/2Da/zoSx+QP5C5G6nqTFq5nRWefFJYeKUOwn4MIxBq01y0dLUUMmU5l+Hy+1+uR5/k1Rn5j984NFTfZ1PEkW35zRaks1UUw5Z7keyqMt/YdzUiiO4sx1po8sJjduSAuZtkV7zlecCRzYd6i2JmObMk8B4RBYcl+SJSymis/bntz5s/EuoyWF7RBK8Tl4oa1gyZ93lQRKT/8T2HJ6BxuA4tGztgDxBMh7a2Vi2FZpMKO1LpBgZoEQQCeHUT1w/nKsT8S4LeT+o24vLaQHvEK6oCIH7MugJCvUANSdYLEW1uBbcllJbZgTnm00pmstjeoB9VJnc6ymIFwdPRVMK5ROhq6LDq1YUfY8zcqvi0JesF0A8KAszYbgMQV4Ra05nkM/YwqbOr7YV3cgD6dzM57bkE9s0nlVGYRn3M9SObGIZMUUKXZnH3O+w/+hGVV/
+ JY3NXOEp
+ /HewS+weqgBdp/V8DJxpXBGuQFWNu50qbsPixsF/gaFXHb7EtbV9hW7QD4jZU8TqxTlpqTMvI/MqeOcbsTQnItRfjT9kWLTdGk9F4MmbWbo7WxUEYL90ix6Jm4DTIddg0yWymNZzGiyS1scwM4I+Q/8ICEyGhLB6/NrY9CSt9G7t4WR8O//uB95HX8inJin8M91YLWRFnAbIjS2/P/hUz0GBv3qJ0Dp39kXMC54aJUCDBFM97qGN5IPpjgboFubxfUhCrgubTKbLxt+5y70dyD8Diu6yjw182izZbh3uVDk9bmo7xcMevmyhh8W2PRgUMgWW3j0mc6H6pE9lcV8iDZEBsNabrMu6kkH2PdLzRe96zI3a6tJYU1nWMoGrGrLXhc5Nj3/nw/lc9JMqby/0LotMbb2Eqp5cY1pH7nli/df+kZj96SHnkfVgnWhcM+Qzqsjm6K56o8id2nLNlIr8nYSiQ764lJQTGRR4ULsZNICER8HyfPtg00uA0gASTlDjd4bZXxDLqKpo8wjl2J1BmUclQ7zmf+CRhLbtsdEIZRW+FRZccZtJpIEs0vWK8gOowbnl248wYqR1XRGN/L9pPZLxQ7bcKWyvzwG+nojOM1JE5hH4KS/xb5uPOqzHwrja5BasIMdMWfkduCYxjTXJmXDya1JOTJGUgClF3kULAoN/I9xdIulVFV/v7Bof4ONxSWsDk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,67 +129,1260 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Clang's context analysis can be made aware of functions that assert that
-locks are held.
+Add support for Clang's context analysis for raw_spinlock_t,
+spinlock_t, and rwlock. This wholesale conversion is required because
+all three of them are interdependent.
 
-Presence of these annotations causes the analysis to assume the context
-lock is held after calls to the annotated function, and avoid false
-positives with complex control-flow; for example, where not all
-control-flow paths in a function require a held lock, and therefore
-marking the function with __must_hold(..) is inappropriate.
+To avoid warnings in constructors, the initialization functions mark a
+lock as acquired when initialized before guarded variables.
+
+The test verifies that common patterns do not generate false positives.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v5:
 * Rename "context guard" -> "context lock".
+* Use new cleanup.h helpers to properly support scoped lock guards.
 
 v4:
 * Rename capability -> context analysis.
 
 v3:
+* Switch to DECLARE_LOCK_GUARD_1_ATTRS() (suggested by Peter)
 * __assert -> __assume rename
 ---
- include/linux/lockdep.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/dev-tools/context-analysis.rst |   3 +-
+ include/linux/rwlock.h                       |  25 ++--
+ include/linux/rwlock_api_smp.h               |  29 ++++-
+ include/linux/rwlock_rt.h                    |  35 +++--
+ include/linux/rwlock_types.h                 |  10 +-
+ include/linux/spinlock.h                     |  93 +++++++++++---
+ include/linux/spinlock_api_smp.h             |  14 +-
+ include/linux/spinlock_api_up.h              |  71 +++++-----
+ include/linux/spinlock_rt.h                  |  21 +--
+ include/linux/spinlock_types.h               |  10 +-
+ include/linux/spinlock_types_raw.h           |   5 +-
+ lib/test_context-analysis.c                  | 128 +++++++++++++++++++
+ 12 files changed, 347 insertions(+), 97 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index dd634103b014..621566345406 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -282,16 +282,16 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
- 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
+diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
+index 47eb547eb716..746a2d275fb2 100644
+--- a/Documentation/dev-tools/context-analysis.rst
++++ b/Documentation/dev-tools/context-analysis.rst
+@@ -78,7 +78,8 @@ More details are also documented `here
+ Supported Kernel Primitives
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
- #define lockdep_assert_held(l)		\
--	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
-+	do { lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD); __assume_ctx_lock(l); } while (0)
+-.. Currently the following synchronization primitives are supported:
++Currently the following synchronization primitives are supported:
++`raw_spinlock_t`, `spinlock_t`, `rwlock_t`.
  
- #define lockdep_assert_not_held(l)	\
- 	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_HELD)
+ For context locks with an initialization function (e.g., `spin_lock_init()`),
+ calling this function before initializing any guarded members or globals
+diff --git a/include/linux/rwlock.h b/include/linux/rwlock.h
+index 5b87c6f4a243..151f9d5f3288 100644
+--- a/include/linux/rwlock.h
++++ b/include/linux/rwlock.h
+@@ -22,23 +22,24 @@ do {								\
+ 	static struct lock_class_key __key;			\
+ 								\
+ 	__rwlock_init((lock), #lock, &__key);			\
++	__assume_ctx_lock(lock);				\
+ } while (0)
+ #else
+ # define rwlock_init(lock)					\
+-	do { *(lock) = __RW_LOCK_UNLOCKED(lock); } while (0)
++	do { *(lock) = __RW_LOCK_UNLOCKED(lock); __assume_ctx_lock(lock); } while (0)
+ #endif
  
- #define lockdep_assert_held_write(l)	\
--	lockdep_assert(lockdep_is_held_type(l, 0))
-+	do { lockdep_assert(lockdep_is_held_type(l, 0)); __assume_ctx_lock(l); } while (0)
+ #ifdef CONFIG_DEBUG_SPINLOCK
+- extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
++ extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
+  extern int do_raw_read_trylock(rwlock_t *lock);
+- extern void do_raw_read_unlock(rwlock_t *lock) __releases(lock);
++ extern void do_raw_read_unlock(rwlock_t *lock) __releases_shared(lock);
+  extern void do_raw_write_lock(rwlock_t *lock) __acquires(lock);
+  extern int do_raw_write_trylock(rwlock_t *lock);
+  extern void do_raw_write_unlock(rwlock_t *lock) __releases(lock);
+ #else
+-# define do_raw_read_lock(rwlock)	do {__acquire(lock); arch_read_lock(&(rwlock)->raw_lock); } while (0)
++# define do_raw_read_lock(rwlock)	do {__acquire_shared(lock); arch_read_lock(&(rwlock)->raw_lock); } while (0)
+ # define do_raw_read_trylock(rwlock)	arch_read_trylock(&(rwlock)->raw_lock)
+-# define do_raw_read_unlock(rwlock)	do {arch_read_unlock(&(rwlock)->raw_lock); __release(lock); } while (0)
++# define do_raw_read_unlock(rwlock)	do {arch_read_unlock(&(rwlock)->raw_lock); __release_shared(lock); } while (0)
+ # define do_raw_write_lock(rwlock)	do {__acquire(lock); arch_write_lock(&(rwlock)->raw_lock); } while (0)
+ # define do_raw_write_trylock(rwlock)	arch_write_trylock(&(rwlock)->raw_lock)
+ # define do_raw_write_unlock(rwlock)	do {arch_write_unlock(&(rwlock)->raw_lock); __release(lock); } while (0)
+@@ -49,7 +50,7 @@ do {								\
+  * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various
+  * methods are defined as nops in the case they are not required.
+  */
+-#define read_trylock(lock)	__cond_lock(lock, _raw_read_trylock(lock))
++#define read_trylock(lock)	__cond_lock_shared(lock, _raw_read_trylock(lock))
+ #define write_trylock(lock)	__cond_lock(lock, _raw_write_trylock(lock))
  
- #define lockdep_assert_held_read(l)	\
--	lockdep_assert(lockdep_is_held_type(l, 1))
-+	do { lockdep_assert(lockdep_is_held_type(l, 1)); __assume_shared_ctx_lock(l); } while (0)
+ #define write_lock(lock)	_raw_write_lock(lock)
+@@ -112,12 +113,12 @@ do {								\
+ 	} while (0)
+ #define write_unlock_bh(lock)		_raw_write_unlock_bh(lock)
  
- #define lockdep_assert_held_once(l)		\
- 	lockdep_assert_once(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
-@@ -389,10 +389,10 @@ extern int lockdep_is_held(const void *);
- #define lockdep_assert(c)			do { } while (0)
- #define lockdep_assert_once(c)			do { } while (0)
+-#define write_trylock_irqsave(lock, flags) \
+-({ \
+-	local_irq_save(flags); \
+-	write_trylock(lock) ? \
+-	1 : ({ local_irq_restore(flags); 0; }); \
+-})
++#define write_trylock_irqsave(lock, flags)		\
++	__cond_lock(lock, ({				\
++		local_irq_save(flags);			\
++		_raw_write_trylock(lock) ?		\
++		1 : ({ local_irq_restore(flags); 0; });	\
++	}))
  
--#define lockdep_assert_held(l)			do { (void)(l); } while (0)
-+#define lockdep_assert_held(l)			__assume_ctx_lock(l)
- #define lockdep_assert_not_held(l)		do { (void)(l); } while (0)
--#define lockdep_assert_held_write(l)		do { (void)(l); } while (0)
--#define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
-+#define lockdep_assert_held_write(l)		__assume_ctx_lock(l)
-+#define lockdep_assert_held_read(l)		__assume_shared_ctx_lock(l)
- #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
- #define lockdep_assert_none_held_once()	do { } while (0)
+ #ifdef arch_rwlock_is_contended
+ #define rwlock_is_contended(lock) \
+diff --git a/include/linux/rwlock_api_smp.h b/include/linux/rwlock_api_smp.h
+index 31d3d1116323..6d5cc0b7be1f 100644
+--- a/include/linux/rwlock_api_smp.h
++++ b/include/linux/rwlock_api_smp.h
+@@ -15,12 +15,12 @@
+  * Released under the General Public License (GPL).
+  */
  
+-void __lockfunc _raw_read_lock(rwlock_t *lock)		__acquires(lock);
++void __lockfunc _raw_read_lock(rwlock_t *lock)		__acquires_shared(lock);
+ void __lockfunc _raw_write_lock(rwlock_t *lock)		__acquires(lock);
+ void __lockfunc _raw_write_lock_nested(rwlock_t *lock, int subclass)	__acquires(lock);
+-void __lockfunc _raw_read_lock_bh(rwlock_t *lock)	__acquires(lock);
++void __lockfunc _raw_read_lock_bh(rwlock_t *lock)	__acquires_shared(lock);
+ void __lockfunc _raw_write_lock_bh(rwlock_t *lock)	__acquires(lock);
+-void __lockfunc _raw_read_lock_irq(rwlock_t *lock)	__acquires(lock);
++void __lockfunc _raw_read_lock_irq(rwlock_t *lock)	__acquires_shared(lock);
+ void __lockfunc _raw_write_lock_irq(rwlock_t *lock)	__acquires(lock);
+ unsigned long __lockfunc _raw_read_lock_irqsave(rwlock_t *lock)
+ 							__acquires(lock);
+@@ -28,11 +28,11 @@ unsigned long __lockfunc _raw_write_lock_irqsave(rwlock_t *lock)
+ 							__acquires(lock);
+ int __lockfunc _raw_read_trylock(rwlock_t *lock);
+ int __lockfunc _raw_write_trylock(rwlock_t *lock);
+-void __lockfunc _raw_read_unlock(rwlock_t *lock)	__releases(lock);
++void __lockfunc _raw_read_unlock(rwlock_t *lock)	__releases_shared(lock);
+ void __lockfunc _raw_write_unlock(rwlock_t *lock)	__releases(lock);
+-void __lockfunc _raw_read_unlock_bh(rwlock_t *lock)	__releases(lock);
++void __lockfunc _raw_read_unlock_bh(rwlock_t *lock)	__releases_shared(lock);
+ void __lockfunc _raw_write_unlock_bh(rwlock_t *lock)	__releases(lock);
+-void __lockfunc _raw_read_unlock_irq(rwlock_t *lock)	__releases(lock);
++void __lockfunc _raw_read_unlock_irq(rwlock_t *lock)	__releases_shared(lock);
+ void __lockfunc _raw_write_unlock_irq(rwlock_t *lock)	__releases(lock);
+ void __lockfunc
+ _raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+@@ -145,6 +145,7 @@ static inline int __raw_write_trylock(rwlock_t *lock)
+ #if !defined(CONFIG_GENERIC_LOCKBREAK) || defined(CONFIG_DEBUG_LOCK_ALLOC)
+ 
+ static inline void __raw_read_lock(rwlock_t *lock)
++	__acquires_shared(lock) __no_context_analysis
+ {
+ 	preempt_disable();
+ 	rwlock_acquire_read(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -152,6 +153,7 @@ static inline void __raw_read_lock(rwlock_t *lock)
+ }
+ 
+ static inline unsigned long __raw_read_lock_irqsave(rwlock_t *lock)
++	__acquires_shared(lock) __no_context_analysis
+ {
+ 	unsigned long flags;
+ 
+@@ -163,6 +165,7 @@ static inline unsigned long __raw_read_lock_irqsave(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_read_lock_irq(rwlock_t *lock)
++	__acquires_shared(lock) __no_context_analysis
+ {
+ 	local_irq_disable();
+ 	preempt_disable();
+@@ -171,6 +174,7 @@ static inline void __raw_read_lock_irq(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_read_lock_bh(rwlock_t *lock)
++	__acquires_shared(lock) __no_context_analysis
+ {
+ 	__local_bh_disable_ip(_RET_IP_, SOFTIRQ_LOCK_OFFSET);
+ 	rwlock_acquire_read(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -178,6 +182,7 @@ static inline void __raw_read_lock_bh(rwlock_t *lock)
+ }
+ 
+ static inline unsigned long __raw_write_lock_irqsave(rwlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	unsigned long flags;
+ 
+@@ -189,6 +194,7 @@ static inline unsigned long __raw_write_lock_irqsave(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_write_lock_irq(rwlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	local_irq_disable();
+ 	preempt_disable();
+@@ -197,6 +203,7 @@ static inline void __raw_write_lock_irq(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_write_lock_bh(rwlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	__local_bh_disable_ip(_RET_IP_, SOFTIRQ_LOCK_OFFSET);
+ 	rwlock_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -204,6 +211,7 @@ static inline void __raw_write_lock_bh(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_write_lock(rwlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	preempt_disable();
+ 	rwlock_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -211,6 +219,7 @@ static inline void __raw_write_lock(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_write_lock_nested(rwlock_t *lock, int subclass)
++	__acquires(lock) __no_context_analysis
+ {
+ 	preempt_disable();
+ 	rwlock_acquire(&lock->dep_map, subclass, 0, _RET_IP_);
+@@ -220,6 +229,7 @@ static inline void __raw_write_lock_nested(rwlock_t *lock, int subclass)
+ #endif /* !CONFIG_GENERIC_LOCKBREAK || CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ static inline void __raw_write_unlock(rwlock_t *lock)
++	__releases(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_write_unlock(lock);
+@@ -227,6 +237,7 @@ static inline void __raw_write_unlock(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_read_unlock(rwlock_t *lock)
++	__releases_shared(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_read_unlock(lock);
+@@ -235,6 +246,7 @@ static inline void __raw_read_unlock(rwlock_t *lock)
+ 
+ static inline void
+ __raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
++	__releases_shared(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_read_unlock(lock);
+@@ -243,6 +255,7 @@ __raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+ }
+ 
+ static inline void __raw_read_unlock_irq(rwlock_t *lock)
++	__releases_shared(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_read_unlock(lock);
+@@ -251,6 +264,7 @@ static inline void __raw_read_unlock_irq(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_read_unlock_bh(rwlock_t *lock)
++	__releases_shared(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_read_unlock(lock);
+@@ -259,6 +273,7 @@ static inline void __raw_read_unlock_bh(rwlock_t *lock)
+ 
+ static inline void __raw_write_unlock_irqrestore(rwlock_t *lock,
+ 					     unsigned long flags)
++	__releases(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_write_unlock(lock);
+@@ -267,6 +282,7 @@ static inline void __raw_write_unlock_irqrestore(rwlock_t *lock,
+ }
+ 
+ static inline void __raw_write_unlock_irq(rwlock_t *lock)
++	__releases(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_write_unlock(lock);
+@@ -275,6 +291,7 @@ static inline void __raw_write_unlock_irq(rwlock_t *lock)
+ }
+ 
+ static inline void __raw_write_unlock_bh(rwlock_t *lock)
++	__releases(lock)
+ {
+ 	rwlock_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_write_unlock(lock);
+diff --git a/include/linux/rwlock_rt.h b/include/linux/rwlock_rt.h
+index 7d81fc6918ee..f64d6d319a47 100644
+--- a/include/linux/rwlock_rt.h
++++ b/include/linux/rwlock_rt.h
+@@ -22,28 +22,32 @@ do {							\
+ 							\
+ 	init_rwbase_rt(&(rwl)->rwbase);			\
+ 	__rt_rwlock_init(rwl, #rwl, &__key);		\
++	__assume_ctx_lock(rwl);				\
+ } while (0)
+ 
+-extern void rt_read_lock(rwlock_t *rwlock)	__acquires(rwlock);
++extern void rt_read_lock(rwlock_t *rwlock)	__acquires_shared(rwlock);
+ extern int rt_read_trylock(rwlock_t *rwlock);
+-extern void rt_read_unlock(rwlock_t *rwlock)	__releases(rwlock);
++extern void rt_read_unlock(rwlock_t *rwlock)	__releases_shared(rwlock);
+ extern void rt_write_lock(rwlock_t *rwlock)	__acquires(rwlock);
+ extern void rt_write_lock_nested(rwlock_t *rwlock, int subclass)	__acquires(rwlock);
+ extern int rt_write_trylock(rwlock_t *rwlock);
+ extern void rt_write_unlock(rwlock_t *rwlock)	__releases(rwlock);
+ 
+ static __always_inline void read_lock(rwlock_t *rwlock)
++	__acquires_shared(rwlock)
+ {
+ 	rt_read_lock(rwlock);
+ }
+ 
+ static __always_inline void read_lock_bh(rwlock_t *rwlock)
++	__acquires_shared(rwlock)
+ {
+ 	local_bh_disable();
+ 	rt_read_lock(rwlock);
+ }
+ 
+ static __always_inline void read_lock_irq(rwlock_t *rwlock)
++	__acquires_shared(rwlock)
+ {
+ 	rt_read_lock(rwlock);
+ }
+@@ -55,37 +59,43 @@ static __always_inline void read_lock_irq(rwlock_t *rwlock)
+ 		flags = 0;				\
+ 	} while (0)
+ 
+-#define read_trylock(lock)	__cond_lock(lock, rt_read_trylock(lock))
++#define read_trylock(lock)	__cond_lock_shared(lock, rt_read_trylock(lock))
+ 
+ static __always_inline void read_unlock(rwlock_t *rwlock)
++	__releases_shared(rwlock)
+ {
+ 	rt_read_unlock(rwlock);
+ }
+ 
+ static __always_inline void read_unlock_bh(rwlock_t *rwlock)
++	__releases_shared(rwlock)
+ {
+ 	rt_read_unlock(rwlock);
+ 	local_bh_enable();
+ }
+ 
+ static __always_inline void read_unlock_irq(rwlock_t *rwlock)
++	__releases_shared(rwlock)
+ {
+ 	rt_read_unlock(rwlock);
+ }
+ 
+ static __always_inline void read_unlock_irqrestore(rwlock_t *rwlock,
+ 						   unsigned long flags)
++	__releases_shared(rwlock)
+ {
+ 	rt_read_unlock(rwlock);
+ }
+ 
+ static __always_inline void write_lock(rwlock_t *rwlock)
++	__acquires(rwlock)
+ {
+ 	rt_write_lock(rwlock);
+ }
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ static __always_inline void write_lock_nested(rwlock_t *rwlock, int subclass)
++	__acquires(rwlock)
+ {
+ 	rt_write_lock_nested(rwlock, subclass);
+ }
+@@ -94,12 +104,14 @@ static __always_inline void write_lock_nested(rwlock_t *rwlock, int subclass)
+ #endif
+ 
+ static __always_inline void write_lock_bh(rwlock_t *rwlock)
++	__acquires(rwlock)
+ {
+ 	local_bh_disable();
+ 	rt_write_lock(rwlock);
+ }
+ 
+ static __always_inline void write_lock_irq(rwlock_t *rwlock)
++	__acquires(rwlock)
+ {
+ 	rt_write_lock(rwlock);
+ }
+@@ -114,33 +126,34 @@ static __always_inline void write_lock_irq(rwlock_t *rwlock)
+ #define write_trylock(lock)	__cond_lock(lock, rt_write_trylock(lock))
+ 
+ #define write_trylock_irqsave(lock, flags)		\
+-({							\
+-	int __locked;					\
+-							\
+-	typecheck(unsigned long, flags);		\
+-	flags = 0;					\
+-	__locked = write_trylock(lock);			\
+-	__locked;					\
+-})
++	__cond_lock(lock, ({				\
++		typecheck(unsigned long, flags);	\
++		flags = 0;				\
++		rt_write_trylock(lock);			\
++	}))
+ 
+ static __always_inline void write_unlock(rwlock_t *rwlock)
++	__releases(rwlock)
+ {
+ 	rt_write_unlock(rwlock);
+ }
+ 
+ static __always_inline void write_unlock_bh(rwlock_t *rwlock)
++	__releases(rwlock)
+ {
+ 	rt_write_unlock(rwlock);
+ 	local_bh_enable();
+ }
+ 
+ static __always_inline void write_unlock_irq(rwlock_t *rwlock)
++	__releases(rwlock)
+ {
+ 	rt_write_unlock(rwlock);
+ }
+ 
+ static __always_inline void write_unlock_irqrestore(rwlock_t *rwlock,
+ 						    unsigned long flags)
++	__releases(rwlock)
+ {
+ 	rt_write_unlock(rwlock);
+ }
+diff --git a/include/linux/rwlock_types.h b/include/linux/rwlock_types.h
+index 1948442e7750..d5e7316401e7 100644
+--- a/include/linux/rwlock_types.h
++++ b/include/linux/rwlock_types.h
+@@ -22,7 +22,7 @@
+  * portions Copyright 2005, Red Hat, Inc., Ingo Molnar
+  * Released under the General Public License (GPL).
+  */
+-typedef struct {
++context_lock_struct(rwlock) {
+ 	arch_rwlock_t raw_lock;
+ #ifdef CONFIG_DEBUG_SPINLOCK
+ 	unsigned int magic, owner_cpu;
+@@ -31,7 +31,8 @@ typedef struct {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map dep_map;
+ #endif
+-} rwlock_t;
++};
++typedef struct rwlock rwlock_t;
+ 
+ #define RWLOCK_MAGIC		0xdeaf1eed
+ 
+@@ -54,13 +55,14 @@ typedef struct {
+ 
+ #include <linux/rwbase_rt.h>
+ 
+-typedef struct {
++context_lock_struct(rwlock) {
+ 	struct rwbase_rt	rwbase;
+ 	atomic_t		readers;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+ #endif
+-} rwlock_t;
++};
++typedef struct rwlock rwlock_t;
+ 
+ #define __RWLOCK_RT_INITIALIZER(name)					\
+ {									\
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index d3561c4a080e..72aabdd4fa3f 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -106,11 +106,12 @@ do {									\
+ 	static struct lock_class_key __key;				\
+ 									\
+ 	__raw_spin_lock_init((lock), #lock, &__key, LD_WAIT_SPIN);	\
++	__assume_ctx_lock(lock);					\
+ } while (0)
+ 
+ #else
+ # define raw_spin_lock_init(lock)				\
+-	do { *(lock) = __RAW_SPIN_LOCK_UNLOCKED(lock); } while (0)
++	do { *(lock) = __RAW_SPIN_LOCK_UNLOCKED(lock); __assume_ctx_lock(lock); } while (0)
+ #endif
+ 
+ #define raw_spin_is_locked(lock)	arch_spin_is_locked(&(lock)->raw_lock)
+@@ -286,19 +287,19 @@ static inline void do_raw_spin_unlock(raw_spinlock_t *lock) __releases(lock)
+ #define raw_spin_trylock_bh(lock) \
+ 	__cond_lock(lock, _raw_spin_trylock_bh(lock))
+ 
+-#define raw_spin_trylock_irq(lock) \
+-({ \
+-	local_irq_disable(); \
+-	raw_spin_trylock(lock) ? \
+-	1 : ({ local_irq_enable(); 0;  }); \
+-})
++#define raw_spin_trylock_irq(lock)			\
++	__cond_lock(lock, ({				\
++		local_irq_disable();			\
++		_raw_spin_trylock(lock) ?		\
++		1 : ({ local_irq_enable(); 0;  });	\
++	}))
+ 
+-#define raw_spin_trylock_irqsave(lock, flags) \
+-({ \
+-	local_irq_save(flags); \
+-	raw_spin_trylock(lock) ? \
+-	1 : ({ local_irq_restore(flags); 0; }); \
+-})
++#define raw_spin_trylock_irqsave(lock, flags)		\
++	__cond_lock(lock, ({				\
++		local_irq_save(flags);			\
++		_raw_spin_trylock(lock) ?		\
++		1 : ({ local_irq_restore(flags); 0; }); \
++	}))
+ 
+ #ifndef CONFIG_PREEMPT_RT
+ /* Include rwlock functions for !RT */
+@@ -334,6 +335,7 @@ do {								\
+ 								\
+ 	__raw_spin_lock_init(spinlock_check(lock),		\
+ 			     #lock, &__key, LD_WAIT_CONFIG);	\
++	__assume_ctx_lock(lock);				\
+ } while (0)
+ 
+ #else
+@@ -342,21 +344,25 @@ do {								\
+ do {						\
+ 	spinlock_check(_lock);			\
+ 	*(_lock) = __SPIN_LOCK_UNLOCKED(_lock);	\
++	__assume_ctx_lock(_lock);		\
+ } while (0)
+ 
+ #endif
+ 
+ static __always_inline void spin_lock(spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	raw_spin_lock(&lock->rlock);
+ }
+ 
+ static __always_inline void spin_lock_bh(spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	raw_spin_lock_bh(&lock->rlock);
+ }
+ 
+ static __always_inline int spin_trylock(spinlock_t *lock)
++	__cond_acquires(lock) __no_context_analysis
+ {
+ 	return raw_spin_trylock(&lock->rlock);
+ }
+@@ -364,14 +370,17 @@ static __always_inline int spin_trylock(spinlock_t *lock)
+ #define spin_lock_nested(lock, subclass)			\
+ do {								\
+ 	raw_spin_lock_nested(spinlock_check(lock), subclass);	\
++	__release(spinlock_check(lock)); __acquire(lock);	\
+ } while (0)
+ 
+ #define spin_lock_nest_lock(lock, nest_lock)				\
+ do {									\
+ 	raw_spin_lock_nest_lock(spinlock_check(lock), nest_lock);	\
++	__release(spinlock_check(lock)); __acquire(lock);	\
+ } while (0)
+ 
+ static __always_inline void spin_lock_irq(spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	raw_spin_lock_irq(&lock->rlock);
+ }
+@@ -379,47 +388,53 @@ static __always_inline void spin_lock_irq(spinlock_t *lock)
+ #define spin_lock_irqsave(lock, flags)				\
+ do {								\
+ 	raw_spin_lock_irqsave(spinlock_check(lock), flags);	\
++	__release(spinlock_check(lock)); __acquire(lock);	\
+ } while (0)
+ 
+ #define spin_lock_irqsave_nested(lock, flags, subclass)			\
+ do {									\
+ 	raw_spin_lock_irqsave_nested(spinlock_check(lock), flags, subclass); \
++	__release(spinlock_check(lock)); __acquire(lock);		\
+ } while (0)
+ 
+ static __always_inline void spin_unlock(spinlock_t *lock)
++	__releases(lock) __no_context_analysis
+ {
+ 	raw_spin_unlock(&lock->rlock);
+ }
+ 
+ static __always_inline void spin_unlock_bh(spinlock_t *lock)
++	__releases(lock) __no_context_analysis
+ {
+ 	raw_spin_unlock_bh(&lock->rlock);
+ }
+ 
+ static __always_inline void spin_unlock_irq(spinlock_t *lock)
++	__releases(lock) __no_context_analysis
+ {
+ 	raw_spin_unlock_irq(&lock->rlock);
+ }
+ 
+ static __always_inline void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
++	__releases(lock) __no_context_analysis
+ {
+ 	raw_spin_unlock_irqrestore(&lock->rlock, flags);
+ }
+ 
+ static __always_inline int spin_trylock_bh(spinlock_t *lock)
++	__cond_acquires(lock) __no_context_analysis
+ {
+ 	return raw_spin_trylock_bh(&lock->rlock);
+ }
+ 
+ static __always_inline int spin_trylock_irq(spinlock_t *lock)
++	__cond_acquires(lock) __no_context_analysis
+ {
+ 	return raw_spin_trylock_irq(&lock->rlock);
+ }
+ 
+ #define spin_trylock_irqsave(lock, flags)			\
+-({								\
+-	raw_spin_trylock_irqsave(spinlock_check(lock), flags); \
+-})
++	__cond_lock(lock, raw_spin_trylock_irqsave(spinlock_check(lock), flags))
+ 
+ /**
+  * spin_is_locked() - Check whether a spinlock is locked.
+@@ -535,86 +550,132 @@ void free_bucket_spinlocks(spinlock_t *locks);
+ DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
+ 		    raw_spin_lock(_T->lock),
+ 		    raw_spin_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock, _try, raw_spin_trylock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
+ 		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
+ 		    raw_spin_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+ 		    raw_spin_lock_irq(_T->lock),
+ 		    raw_spin_unlock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
+ 		    raw_spin_lock_bh(_T->lock),
+ 		    raw_spin_unlock_bh(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_bh, _try, raw_spin_trylock_bh(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_bh_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
+ 		    raw_spin_lock_irqsave(_T->lock, _T->flags),
+ 		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
+ 			 raw_spin_trylock_irqsave(_T->lock, _T->flags))
++DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
++#define class_raw_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irqsave_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
+ 		    spin_lock(_T->lock),
+ 		    spin_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock, _try, spin_trylock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
+ 		    spin_lock_irq(_T->lock),
+ 		    spin_unlock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
+ 			 spin_trylock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_bh, spinlock_t,
+ 		    spin_lock_bh(_T->lock),
+ 		    spin_unlock_bh(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_bh_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_bh, _try,
+ 			 spin_trylock_bh(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_bh_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_bh_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_bh_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
+ 		    spin_lock_irqsave(_T->lock, _T->flags),
+ 		    spin_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irqsave, _try,
+ 			 spin_trylock_irqsave(_T->lock, _T->flags))
++DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, __acquires(_T), __releases(*(spinlock_t **)_T))
++#define class_spinlock_irqsave_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irqsave_try, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock, rwlock_t,
+ 		    read_lock(_T->lock),
+ 		    read_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock_irq, rwlock_t,
+ 		    read_lock_irq(_T->lock),
+ 		    read_unlock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1(read_lock_irqsave, rwlock_t,
+ 		    read_lock_irqsave(_T->lock, _T->flags),
+ 		    read_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
++DECLARE_LOCK_GUARD_1_ATTRS(read_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_read_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(read_lock_irqsave, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock, rwlock_t,
+ 		    write_lock(_T->lock),
+ 		    write_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock_irq, rwlock_t,
+ 		    write_lock_irq(_T->lock),
+ 		    write_unlock_irq(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irq, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irq, _T)
+ 
+ DEFINE_LOCK_GUARD_1(write_lock_irqsave, rwlock_t,
+ 		    write_lock_irqsave(_T->lock, _T->flags),
+ 		    write_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
++DECLARE_LOCK_GUARD_1_ATTRS(write_lock_irqsave, __acquires(_T), __releases(*(rwlock_t **)_T))
++#define class_write_lock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(write_lock_irqsave, _T)
+ 
+ #undef __LINUX_INSIDE_SPINLOCK_H
+ #endif /* __LINUX_SPINLOCK_H */
+diff --git a/include/linux/spinlock_api_smp.h b/include/linux/spinlock_api_smp.h
+index 9ecb0ab504e3..d19327e04df9 100644
+--- a/include/linux/spinlock_api_smp.h
++++ b/include/linux/spinlock_api_smp.h
+@@ -34,8 +34,8 @@ unsigned long __lockfunc _raw_spin_lock_irqsave(raw_spinlock_t *lock)
+ unsigned long __lockfunc
+ _raw_spin_lock_irqsave_nested(raw_spinlock_t *lock, int subclass)
+ 								__acquires(lock);
+-int __lockfunc _raw_spin_trylock(raw_spinlock_t *lock);
+-int __lockfunc _raw_spin_trylock_bh(raw_spinlock_t *lock);
++int __lockfunc _raw_spin_trylock(raw_spinlock_t *lock)		__cond_acquires(lock);
++int __lockfunc _raw_spin_trylock_bh(raw_spinlock_t *lock)	__cond_acquires(lock);
+ void __lockfunc _raw_spin_unlock(raw_spinlock_t *lock)		__releases(lock);
+ void __lockfunc _raw_spin_unlock_bh(raw_spinlock_t *lock)	__releases(lock);
+ void __lockfunc _raw_spin_unlock_irq(raw_spinlock_t *lock)	__releases(lock);
+@@ -84,6 +84,7 @@ _raw_spin_unlock_irqrestore(raw_spinlock_t *lock, unsigned long flags)
+ #endif
+ 
+ static inline int __raw_spin_trylock(raw_spinlock_t *lock)
++	__cond_acquires(lock)
+ {
+ 	preempt_disable();
+ 	if (do_raw_spin_trylock(lock)) {
+@@ -102,6 +103,7 @@ static inline int __raw_spin_trylock(raw_spinlock_t *lock)
+ #if !defined(CONFIG_GENERIC_LOCKBREAK) || defined(CONFIG_DEBUG_LOCK_ALLOC)
+ 
+ static inline unsigned long __raw_spin_lock_irqsave(raw_spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	unsigned long flags;
+ 
+@@ -113,6 +115,7 @@ static inline unsigned long __raw_spin_lock_irqsave(raw_spinlock_t *lock)
+ }
+ 
+ static inline void __raw_spin_lock_irq(raw_spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	local_irq_disable();
+ 	preempt_disable();
+@@ -121,6 +124,7 @@ static inline void __raw_spin_lock_irq(raw_spinlock_t *lock)
+ }
+ 
+ static inline void __raw_spin_lock_bh(raw_spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	__local_bh_disable_ip(_RET_IP_, SOFTIRQ_LOCK_OFFSET);
+ 	spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -128,6 +132,7 @@ static inline void __raw_spin_lock_bh(raw_spinlock_t *lock)
+ }
+ 
+ static inline void __raw_spin_lock(raw_spinlock_t *lock)
++	__acquires(lock) __no_context_analysis
+ {
+ 	preempt_disable();
+ 	spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+@@ -137,6 +142,7 @@ static inline void __raw_spin_lock(raw_spinlock_t *lock)
+ #endif /* !CONFIG_GENERIC_LOCKBREAK || CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ static inline void __raw_spin_unlock(raw_spinlock_t *lock)
++	__releases(lock)
+ {
+ 	spin_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_spin_unlock(lock);
+@@ -145,6 +151,7 @@ static inline void __raw_spin_unlock(raw_spinlock_t *lock)
+ 
+ static inline void __raw_spin_unlock_irqrestore(raw_spinlock_t *lock,
+ 					    unsigned long flags)
++	__releases(lock)
+ {
+ 	spin_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_spin_unlock(lock);
+@@ -153,6 +160,7 @@ static inline void __raw_spin_unlock_irqrestore(raw_spinlock_t *lock,
+ }
+ 
+ static inline void __raw_spin_unlock_irq(raw_spinlock_t *lock)
++	__releases(lock)
+ {
+ 	spin_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_spin_unlock(lock);
+@@ -161,6 +169,7 @@ static inline void __raw_spin_unlock_irq(raw_spinlock_t *lock)
+ }
+ 
+ static inline void __raw_spin_unlock_bh(raw_spinlock_t *lock)
++	__releases(lock)
+ {
+ 	spin_release(&lock->dep_map, _RET_IP_);
+ 	do_raw_spin_unlock(lock);
+@@ -168,6 +177,7 @@ static inline void __raw_spin_unlock_bh(raw_spinlock_t *lock)
+ }
+ 
+ static inline int __raw_spin_trylock_bh(raw_spinlock_t *lock)
++	__cond_acquires(lock)
+ {
+ 	__local_bh_disable_ip(_RET_IP_, SOFTIRQ_LOCK_OFFSET);
+ 	if (do_raw_spin_trylock(lock)) {
+diff --git a/include/linux/spinlock_api_up.h b/include/linux/spinlock_api_up.h
+index 819aeba1c87e..018f5aabc1be 100644
+--- a/include/linux/spinlock_api_up.h
++++ b/include/linux/spinlock_api_up.h
+@@ -24,68 +24,77 @@
+  * flags straight, to suppress compiler warnings of unused lock
+  * variables, and to add the proper checker annotations:
+  */
+-#define ___LOCK(lock) \
+-  do { __acquire(lock); (void)(lock); } while (0)
++#define ___LOCK_void(lock) \
++  do { (void)(lock); } while (0)
+ 
+-#define __LOCK(lock) \
+-  do { preempt_disable(); ___LOCK(lock); } while (0)
++#define ___LOCK_(lock) \
++  do { __acquire(lock); ___LOCK_void(lock); } while (0)
+ 
+-#define __LOCK_BH(lock) \
+-  do { __local_bh_disable_ip(_THIS_IP_, SOFTIRQ_LOCK_OFFSET); ___LOCK(lock); } while (0)
++#define ___LOCK_shared(lock) \
++  do { __acquire_shared(lock); ___LOCK_void(lock); } while (0)
+ 
+-#define __LOCK_IRQ(lock) \
+-  do { local_irq_disable(); __LOCK(lock); } while (0)
++#define __LOCK(lock, ...) \
++  do { preempt_disable(); ___LOCK_##__VA_ARGS__(lock); } while (0)
+ 
+-#define __LOCK_IRQSAVE(lock, flags) \
+-  do { local_irq_save(flags); __LOCK(lock); } while (0)
++#define __LOCK_BH(lock, ...) \
++  do { __local_bh_disable_ip(_THIS_IP_, SOFTIRQ_LOCK_OFFSET); ___LOCK_##__VA_ARGS__(lock); } while (0)
+ 
+-#define ___UNLOCK(lock) \
++#define __LOCK_IRQ(lock, ...) \
++  do { local_irq_disable(); __LOCK(lock, ##__VA_ARGS__); } while (0)
++
++#define __LOCK_IRQSAVE(lock, flags, ...) \
++  do { local_irq_save(flags); __LOCK(lock, ##__VA_ARGS__); } while (0)
++
++#define ___UNLOCK_(lock) \
+   do { __release(lock); (void)(lock); } while (0)
+ 
+-#define __UNLOCK(lock) \
+-  do { preempt_enable(); ___UNLOCK(lock); } while (0)
++#define ___UNLOCK_shared(lock) \
++  do { __release_shared(lock); (void)(lock); } while (0)
+ 
+-#define __UNLOCK_BH(lock) \
++#define __UNLOCK(lock, ...) \
++  do { preempt_enable(); ___UNLOCK_##__VA_ARGS__(lock); } while (0)
++
++#define __UNLOCK_BH(lock, ...) \
+   do { __local_bh_enable_ip(_THIS_IP_, SOFTIRQ_LOCK_OFFSET); \
+-       ___UNLOCK(lock); } while (0)
++       ___UNLOCK_##__VA_ARGS__(lock); } while (0)
+ 
+-#define __UNLOCK_IRQ(lock) \
+-  do { local_irq_enable(); __UNLOCK(lock); } while (0)
++#define __UNLOCK_IRQ(lock, ...) \
++  do { local_irq_enable(); __UNLOCK(lock, ##__VA_ARGS__); } while (0)
+ 
+-#define __UNLOCK_IRQRESTORE(lock, flags) \
+-  do { local_irq_restore(flags); __UNLOCK(lock); } while (0)
++#define __UNLOCK_IRQRESTORE(lock, flags, ...) \
++  do { local_irq_restore(flags); __UNLOCK(lock, ##__VA_ARGS__); } while (0)
+ 
+ #define _raw_spin_lock(lock)			__LOCK(lock)
+ #define _raw_spin_lock_nested(lock, subclass)	__LOCK(lock)
+-#define _raw_read_lock(lock)			__LOCK(lock)
++#define _raw_read_lock(lock)			__LOCK(lock, shared)
+ #define _raw_write_lock(lock)			__LOCK(lock)
+ #define _raw_write_lock_nested(lock, subclass)	__LOCK(lock)
+ #define _raw_spin_lock_bh(lock)			__LOCK_BH(lock)
+-#define _raw_read_lock_bh(lock)			__LOCK_BH(lock)
++#define _raw_read_lock_bh(lock)			__LOCK_BH(lock, shared)
+ #define _raw_write_lock_bh(lock)		__LOCK_BH(lock)
+ #define _raw_spin_lock_irq(lock)		__LOCK_IRQ(lock)
+-#define _raw_read_lock_irq(lock)		__LOCK_IRQ(lock)
++#define _raw_read_lock_irq(lock)		__LOCK_IRQ(lock, shared)
+ #define _raw_write_lock_irq(lock)		__LOCK_IRQ(lock)
+ #define _raw_spin_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags)
+-#define _raw_read_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags)
++#define _raw_read_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags, shared)
+ #define _raw_write_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags)
+-#define _raw_spin_trylock(lock)			({ __LOCK(lock); 1; })
+-#define _raw_read_trylock(lock)			({ __LOCK(lock); 1; })
+-#define _raw_write_trylock(lock)			({ __LOCK(lock); 1; })
+-#define _raw_spin_trylock_bh(lock)		({ __LOCK_BH(lock); 1; })
++#define _raw_spin_trylock(lock)			({ __LOCK(lock, void); 1; })
++#define _raw_read_trylock(lock)			({ __LOCK(lock, void); 1; })
++#define _raw_write_trylock(lock)			({ __LOCK(lock, void); 1; })
++#define _raw_spin_trylock_bh(lock)		({ __LOCK_BH(lock, void); 1; })
+ #define _raw_spin_unlock(lock)			__UNLOCK(lock)
+-#define _raw_read_unlock(lock)			__UNLOCK(lock)
++#define _raw_read_unlock(lock)			__UNLOCK(lock, shared)
+ #define _raw_write_unlock(lock)			__UNLOCK(lock)
+ #define _raw_spin_unlock_bh(lock)		__UNLOCK_BH(lock)
+ #define _raw_write_unlock_bh(lock)		__UNLOCK_BH(lock)
+-#define _raw_read_unlock_bh(lock)		__UNLOCK_BH(lock)
++#define _raw_read_unlock_bh(lock)		__UNLOCK_BH(lock, shared)
+ #define _raw_spin_unlock_irq(lock)		__UNLOCK_IRQ(lock)
+-#define _raw_read_unlock_irq(lock)		__UNLOCK_IRQ(lock)
++#define _raw_read_unlock_irq(lock)		__UNLOCK_IRQ(lock, shared)
+ #define _raw_write_unlock_irq(lock)		__UNLOCK_IRQ(lock)
+ #define _raw_spin_unlock_irqrestore(lock, flags) \
+ 					__UNLOCK_IRQRESTORE(lock, flags)
+ #define _raw_read_unlock_irqrestore(lock, flags) \
+-					__UNLOCK_IRQRESTORE(lock, flags)
++					__UNLOCK_IRQRESTORE(lock, flags, shared)
+ #define _raw_write_unlock_irqrestore(lock, flags) \
+ 					__UNLOCK_IRQRESTORE(lock, flags)
+ 
+diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
+index f6499c37157d..6bab73ee1384 100644
+--- a/include/linux/spinlock_rt.h
++++ b/include/linux/spinlock_rt.h
+@@ -20,6 +20,7 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
+ do {								\
+ 	rt_mutex_base_init(&(slock)->lock);			\
+ 	__rt_spin_lock_init(slock, name, key, percpu);		\
++	__assume_ctx_lock(slock);				\
+ } while (0)
+ 
+ #define _spin_lock_init(slock, percpu)				\
+@@ -40,6 +41,7 @@ extern int rt_spin_trylock_bh(spinlock_t *lock);
+ extern int rt_spin_trylock(spinlock_t *lock);
+ 
+ static __always_inline void spin_lock(spinlock_t *lock)
++	__acquires(lock)
+ {
+ 	rt_spin_lock(lock);
+ }
+@@ -82,6 +84,7 @@ static __always_inline void spin_lock(spinlock_t *lock)
+ 	__spin_lock_irqsave_nested(lock, flags, subclass)
+ 
+ static __always_inline void spin_lock_bh(spinlock_t *lock)
++	__acquires(lock)
+ {
+ 	/* Investigate: Drop bh when blocking ? */
+ 	local_bh_disable();
+@@ -89,6 +92,7 @@ static __always_inline void spin_lock_bh(spinlock_t *lock)
+ }
+ 
+ static __always_inline void spin_lock_irq(spinlock_t *lock)
++	__acquires(lock)
+ {
+ 	rt_spin_lock(lock);
+ }
+@@ -101,23 +105,27 @@ static __always_inline void spin_lock_irq(spinlock_t *lock)
+ 	} while (0)
+ 
+ static __always_inline void spin_unlock(spinlock_t *lock)
++	__releases(lock)
+ {
+ 	rt_spin_unlock(lock);
+ }
+ 
+ static __always_inline void spin_unlock_bh(spinlock_t *lock)
++	__releases(lock)
+ {
+ 	rt_spin_unlock(lock);
+ 	local_bh_enable();
+ }
+ 
+ static __always_inline void spin_unlock_irq(spinlock_t *lock)
++	__releases(lock)
+ {
+ 	rt_spin_unlock(lock);
+ }
+ 
+ static __always_inline void spin_unlock_irqrestore(spinlock_t *lock,
+ 						   unsigned long flags)
++	__releases(lock)
+ {
+ 	rt_spin_unlock(lock);
+ }
+@@ -132,14 +140,11 @@ static __always_inline void spin_unlock_irqrestore(spinlock_t *lock,
+ 	__cond_lock(lock, rt_spin_trylock(lock))
+ 
+ #define spin_trylock_irqsave(lock, flags)		\
+-({							\
+-	int __locked;					\
+-							\
+-	typecheck(unsigned long, flags);		\
+-	flags = 0;					\
+-	__locked = spin_trylock(lock);			\
+-	__locked;					\
+-})
++	__cond_lock(lock, ({				\
++		typecheck(unsigned long, flags);	\
++		flags = 0;				\
++		rt_spin_trylock(lock);			\
++	}))
+ 
+ #define spin_is_contended(lock)		(((void)(lock), 0))
+ 
+diff --git a/include/linux/spinlock_types.h b/include/linux/spinlock_types.h
+index 2dfa35ffec76..b65bb6e4451c 100644
+--- a/include/linux/spinlock_types.h
++++ b/include/linux/spinlock_types.h
+@@ -14,7 +14,7 @@
+ #ifndef CONFIG_PREEMPT_RT
+ 
+ /* Non PREEMPT_RT kernels map spinlock to raw_spinlock */
+-typedef struct spinlock {
++context_lock_struct(spinlock) {
+ 	union {
+ 		struct raw_spinlock rlock;
+ 
+@@ -26,7 +26,8 @@ typedef struct spinlock {
+ 		};
+ #endif
+ 	};
+-} spinlock_t;
++};
++typedef struct spinlock spinlock_t;
+ 
+ #define ___SPIN_LOCK_INITIALIZER(lockname)	\
+ 	{					\
+@@ -47,12 +48,13 @@ typedef struct spinlock {
+ /* PREEMPT_RT kernels map spinlock to rt_mutex */
+ #include <linux/rtmutex.h>
+ 
+-typedef struct spinlock {
++context_lock_struct(spinlock) {
+ 	struct rt_mutex_base	lock;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+ #endif
+-} spinlock_t;
++};
++typedef struct spinlock spinlock_t;
+ 
+ #define __SPIN_LOCK_UNLOCKED(name)				\
+ 	{							\
+diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
+index 91cb36b65a17..e5644ab2161f 100644
+--- a/include/linux/spinlock_types_raw.h
++++ b/include/linux/spinlock_types_raw.h
+@@ -11,7 +11,7 @@
+ 
+ #include <linux/lockdep_types.h>
+ 
+-typedef struct raw_spinlock {
++context_lock_struct(raw_spinlock) {
+ 	arch_spinlock_t raw_lock;
+ #ifdef CONFIG_DEBUG_SPINLOCK
+ 	unsigned int magic, owner_cpu;
+@@ -20,7 +20,8 @@ typedef struct raw_spinlock {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map dep_map;
+ #endif
+-} raw_spinlock_t;
++};
++typedef struct raw_spinlock raw_spinlock_t;
+ 
+ #define SPINLOCK_MAGIC		0xdead4ead
+ 
+diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
+index 68f075dec0e0..273fa9d34657 100644
+--- a/lib/test_context-analysis.c
++++ b/lib/test_context-analysis.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include <linux/build_bug.h>
++#include <linux/spinlock.h>
+ 
+ /*
+  * Test that helper macros work as expected.
+@@ -16,3 +17,130 @@ static void __used test_common_helpers(void)
+ 	BUILD_BUG_ON(context_unsafe((void)2, 3) != 3); /* does not swallow commas */
+ 	context_unsafe(do { } while (0)); /* works with void statements */
+ }
++
++#define TEST_SPINLOCK_COMMON(class, type, type_init, type_lock, type_unlock, type_trylock, op)	\
++	struct test_##class##_data {								\
++		type lock;									\
++		int counter __guarded_by(&lock);						\
++		int *pointer __pt_guarded_by(&lock);						\
++	};											\
++	static void __used test_##class##_init(struct test_##class##_data *d)			\
++	{											\
++		type_init(&d->lock);								\
++		d->counter = 0;									\
++	}											\
++	static void __used test_##class(struct test_##class##_data *d)				\
++	{											\
++		unsigned long flags;								\
++		d->pointer++;									\
++		type_lock(&d->lock);								\
++		op(d->counter);									\
++		op(*d->pointer);								\
++		type_unlock(&d->lock);								\
++		type_lock##_irq(&d->lock);							\
++		op(d->counter);									\
++		op(*d->pointer);								\
++		type_unlock##_irq(&d->lock);							\
++		type_lock##_bh(&d->lock);							\
++		op(d->counter);									\
++		op(*d->pointer);								\
++		type_unlock##_bh(&d->lock);							\
++		type_lock##_irqsave(&d->lock, flags);						\
++		op(d->counter);									\
++		op(*d->pointer);								\
++		type_unlock##_irqrestore(&d->lock, flags);					\
++	}											\
++	static void __used test_##class##_trylock(struct test_##class##_data *d)		\
++	{											\
++		if (type_trylock(&d->lock)) {							\
++			op(d->counter);								\
++			type_unlock(&d->lock);							\
++		}										\
++	}											\
++	static void __used test_##class##_assert(struct test_##class##_data *d)			\
++	{											\
++		lockdep_assert_held(&d->lock);							\
++		op(d->counter);									\
++	}											\
++	static void __used test_##class##_guard(struct test_##class##_data *d)			\
++	{											\
++		{ guard(class)(&d->lock);		op(d->counter); }			\
++		{ guard(class##_irq)(&d->lock);		op(d->counter); }			\
++		{ guard(class##_irqsave)(&d->lock);	op(d->counter); }			\
++	}
++
++#define TEST_OP_RW(x) (x)++
++#define TEST_OP_RO(x) ((void)(x))
++
++TEST_SPINLOCK_COMMON(raw_spinlock,
++		     raw_spinlock_t,
++		     raw_spin_lock_init,
++		     raw_spin_lock,
++		     raw_spin_unlock,
++		     raw_spin_trylock,
++		     TEST_OP_RW);
++static void __used test_raw_spinlock_trylock_extra(struct test_raw_spinlock_data *d)
++{
++	unsigned long flags;
++
++	if (raw_spin_trylock_irq(&d->lock)) {
++		d->counter++;
++		raw_spin_unlock_irq(&d->lock);
++	}
++	if (raw_spin_trylock_irqsave(&d->lock, flags)) {
++		d->counter++;
++		raw_spin_unlock_irqrestore(&d->lock, flags);
++	}
++	scoped_cond_guard(raw_spinlock_try, return, &d->lock) {
++		d->counter++;
++	}
++}
++
++TEST_SPINLOCK_COMMON(spinlock,
++		     spinlock_t,
++		     spin_lock_init,
++		     spin_lock,
++		     spin_unlock,
++		     spin_trylock,
++		     TEST_OP_RW);
++static void __used test_spinlock_trylock_extra(struct test_spinlock_data *d)
++{
++	unsigned long flags;
++
++	if (spin_trylock_irq(&d->lock)) {
++		d->counter++;
++		spin_unlock_irq(&d->lock);
++	}
++	if (spin_trylock_irqsave(&d->lock, flags)) {
++		d->counter++;
++		spin_unlock_irqrestore(&d->lock, flags);
++	}
++	scoped_cond_guard(spinlock_try, return, &d->lock) {
++		d->counter++;
++	}
++}
++
++TEST_SPINLOCK_COMMON(write_lock,
++		     rwlock_t,
++		     rwlock_init,
++		     write_lock,
++		     write_unlock,
++		     write_trylock,
++		     TEST_OP_RW);
++static void __used test_write_trylock_extra(struct test_write_lock_data *d)
++{
++	unsigned long flags;
++
++	if (write_trylock_irqsave(&d->lock, flags)) {
++		d->counter++;
++		write_unlock_irqrestore(&d->lock, flags);
++	}
++}
++
++TEST_SPINLOCK_COMMON(read_lock,
++		     rwlock_t,
++		     rwlock_init,
++		     read_lock,
++		     read_unlock,
++		     read_trylock,
++		     TEST_OP_RO);
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
