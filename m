@@ -4,158 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA0BD7495D
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C71D7495D
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85D466B0088; Fri, 19 Dec 2025 03:21:47 -0500 (EST)
+	id B53426B0088; Fri, 19 Dec 2025 03:25:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82B206B0089; Fri, 19 Dec 2025 03:21:47 -0500 (EST)
+	id B00CA6B0089; Fri, 19 Dec 2025 03:25:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D146B008A; Fri, 19 Dec 2025 03:21:47 -0500 (EST)
+	id 9E25C6B008A; Fri, 19 Dec 2025 03:25:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61FEA6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:21:47 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12D0E1604A2
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:21:47 +0000 (UTC)
-X-FDA: 84235527054.12.E5F4B2D
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9C1AE1C0005
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:21:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bn9DTFHu;
-	spf=pass (imf20.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CE2D6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:25:55 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E817140481
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:25:55 +0000 (UTC)
+X-FDA: 84235537470.10.A861C9D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 714EA20011
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:25:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f0IbDoos;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766132504;
+	s=arc-20220608; t=1766132753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6W3plN+ebcTGX0uV6ORb8fAOAbPv8HSPi9pqpKhBUug=;
-	b=UpOq0ILUAjZaLklUHKnBP6byEsvS6REFK/4jihCGQnrcPR5X5YdluJINE8CUbeoTb6rXmR
-	6XEF5MCpamKL+5csrp/u+J6Ei7SBJIQC04BVsO0NVzG+yq1Qs2BGmrJUgCybc2gXUrRInK
-	NLxazJZ7+UNt7DMCLHP17Lk8wudJoj4=
+	bh=5paFhCd2MStgH1s9GcR6Ks0T7xAHLV90aHWEAjX8t+Q=;
+	b=uPYH1cwjbcRR/hNObQd1m0EpWPTNxjsAyA+6Xbkx0nFOjzgm20h5+DVEMX5EmxKemcc7ww
+	0hYtKN9MuOiH23uJq3yLu5UVqnTAga9TNBdUHh9R7P4ES7Y/3rChMxZvEWExDNTGRxjYwD
+	bnz4nnV0S7it9c02dGN5ac3o/Ehr31s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bn9DTFHu;
-	spf=pass (imf20.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766132504; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f0IbDoos;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766132753; a=rsa-sha256;
 	cv=none;
-	b=Zzcuj/MMFcYYEdFiqMvVJHl54kPN3OMW21opC3PVmpy4Oa3sNMJiBL7k/StES2RNuBHhse
-	ked4nZd5wAv56xStstVwnPyqy0Z5wCcbKsS6P6PSu0v6UMUDOVZincnanIcdeyOCT4GDVv
-	RMLmEq05rWPImbIpIkKuMw3IQygdhiU=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJm9uq031421;
-	Fri, 19 Dec 2025 08:21:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6W3plN
-	+ebcTGX0uV6ORb8fAOAbPv8HSPi9pqpKhBUug=; b=bn9DTFHuCZGrhE2gIiGUIs
-	DDTJlsrfAs4XYUikyrmKJM0tRK09osVCOWl+8ItTqIBmNLHs8n21NVx1RYY7uJr6
-	MIHSSnO7cZoESYZ55UBe6zjnF4vDuzb8OAhgZAxhwQhSumSx7A8ExN0NkJYR0/ev
-	AVvWgo7CLtAeBpAfaolZ+YaVSoS/vRQZVbHYvaOan2SKbR7HuVWfhfj3gT6SCq8K
-	FS2HH7G77YpZ33Ax7nvyzHxTDApLc5EaPBvh2QGu5YGnS+3I3pIgu6hu97vGdniy
-	gkjhtbRHMsiDw0sNcXvVmdol5jd643yMdA68mawZAmlVmkhcWH+9f/INx/DpJrag
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3dje6v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Dec 2025 08:21:24 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BJ8G9nG022763;
-	Fri, 19 Dec 2025 08:21:23 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3dje6s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Dec 2025 08:21:23 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJ7o8Ws029562;
-	Fri, 19 Dec 2025 08:21:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b4qvqtrdv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Dec 2025 08:21:22 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BJ8LIEr30146976
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Dec 2025 08:21:18 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A94342004B;
-	Fri, 19 Dec 2025 08:21:18 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C470420040;
-	Fri, 19 Dec 2025 08:21:14 +0000 (GMT)
-Received: from [9.124.209.192] (unknown [9.124.209.192])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 19 Dec 2025 08:21:14 +0000 (GMT)
-Message-ID: <5acfcde7-0e8f-4228-8d9f-36b740900213@linux.ibm.com>
-Date: Fri, 19 Dec 2025 13:51:05 +0530
+	b=WGYYw3k1cV3sGb4cxDwo8VZJJNr/L1h4v5ZU9rEzNcT4Vt6y2u+0hKLBCVnzuY4uUb9FQm
+	OJfARQBFrKosUuXV9sraU80NRIEcIg2FNF+FlqmIRjRqqLMzmSW6Dz7V+OIDP+PlaJJVU2
+	1NnfyqfiiN+qnTsVbXKHn268HrmigZk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 61F5642A84;
+	Fri, 19 Dec 2025 08:25:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870E8C4CEF1;
+	Fri, 19 Dec 2025 08:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766132752;
+	bh=/RRZ3mRSlbHOY3u6KA/2jGTrq8Qaxhr/c/ozcV+Y+Fk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f0IbDoosSzUY1ZyRHNqb732zfUiSXMvzWpxfK/unVQgAuPAwYWbNvqyCsfYWR5fit
+	 7+x6bgUuA3CtH3n0GAiOZL9xk/LUcL45zYnr8neQPOgJmqRyuHRUXmN9KjwkF4/Em/
+	 X5CM7WgFFQ4dCoKXPcyKh4BCKw5LCWWQhw9lRKCo0KAMJ1h2QwhHQq82iaCQMCm0ye
+	 wqoEM3v8Sx0pioqN8h1Y0r7hLBMCbHwEstBASeMw6n4X9rlqwiuTd6EnP3fE6I5lXH
+	 UlQ48qppsN89wNNrss1UqRXly3H5rtZ6QBQkUOt8ix1v5B1mqVfRl873piLgi80d/a
+	 6+kU8A1On/9mw==
+Message-ID: <6dcfeb2a-dba6-4de9-ac1b-39312c6bbcb6@kernel.org>
+Date: Fri, 19 Dec 2025 09:25:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
- <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, linux-arm64@lists.infradead.org,
-        linux-riscv@lists.infradead.org
-References: <20251218114154.228484-1-sourabhjain@linux.ibm.com>
- <83920c44-47f5-4a46-bfa7-76713197d7e4@kernel.org>
- <1fddcf72-26f7-4fb4-84b8-1328e486d58e@linux.ibm.com>
- <64a9ca24-2968-4532-ac04-594c340ec2a2@kernel.org>
+Subject: Re: [PATCH RFC 3/3] mm/khugepaged: skip redundant IPI in
+ collapse_huge_page()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+References: <20251213080038.10917-1-lance.yang@linux.dev>
+ <20251213080038.10917-4-lance.yang@linux.dev>
+ <948d425a-2d6e-4439-a280-0ca9e7521b13@kernel.org>
+ <6fdf89ee-3f6a-420f-b4d6-b03e3e2c8c9b@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <64a9ca24-2968-4532-ac04-594c340ec2a2@kernel.org>
+In-Reply-To: <6fdf89ee-3f6a-420f-b4d6-b03e3e2c8c9b@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VMo57LUGB5mbL-L32x592RHzO_CETbAy
-X-Proofpoint-GUID: b35NuxmB0yfBlN4o5xEw0Ah1QGoT25Rc
-X-Authority-Analysis: v=2.4 cv=KrZAGGWN c=1 sm=1 tr=0 ts=69450b04 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=icKp7thR8Zr7BtekdgcA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA2NyBTYWx0ZWRfX45K0c7/r6Utl
- KNKXLWfdlayLBssJjNgVj7rEPBSAevK6l/LaGoQ0M2OKhT5Qf9MlgqZGfC/OF8nWI4jvsFn1lQP
- Y1FjKKtiotAj6+SrSiT2+FmJLB8KR9khO/CWVPGQiIh8XbteCM4csCF1eNb+eKnmicpWDyTNt4r
- 0/lr+1AHIzsVaZEimA7fpllXp0yY5lXI7MkrRSpPn7d9bCeMGQSsnCf3dSdDSavufzEzTbdfHcm
- ukyIRewxefX64hHILbTZT07U3yblpXnNyxZ0NJGc2CRKEL9JXZlpkw5ruePXww8vQnH47vMbhOY
- n2rMYhkujHoja5eoJ0Zb8IJnb4FhM1WEyK7wHdq8EfDWrufHxeEJuRau4OWrhgD1p54MAL5XR9L
- K3p3GYNKwEmN3/cuHCGpKGrQwzijtEyaBS/KG7EueNliCtpNZJdMNFqpQWsFyCTDFodp0uYcJu4
- ggpS+FRJEmgVlPMw/Cg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-19_02,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512190067
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ttrrfxnjjf8swie339sn9du7ajy359mh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C1AE1C0005
-X-HE-Tag: 1766132504-985245
-X-HE-Meta: U2FsdGVkX1/R/Fsb5kF5IlHo6MG4eA9BpxQMfynGBT1CvCkjxiGUe/xs0CPnyA7FKKZPuUdtFOYPy25AMoTMnpzsDSOessc/yIAHc6lqdaN4AXZQt9op8ZBxpBj/xd/kJ/vebCXuSMnikOAzyl923Tcp8usanZf2JCisV0GacUyUz7V78RQ5nu+D67xiFonCJtZaVxXQqXxessiCAiWwbXJQuOnbXg1x7G+V6mP8ADnnznuwYIEWJC3El2V0Q6GkXGWsJqedbNB9IGNdx3YzxMM/H1vXQimpAaR8pfC068r9MNo1U44RSDoCBdLIPO6TPTfW57zHXSIFjSNcq+hkOKEkd9cW0lJL9EPEgiYlyYwyv4DQt4Xj9sRYfqyCJNB9Gb48MKjVJrwI1nM6DsfsDJrZLjPbWyHMDj5TUnSGAmym5UxVSxM1je/a/0XsNAvjt3hjoJWePrjDv8YJNnxU0ou+mHUgl6ZJ7ZJJdEcAFQ2V3vZLt+ulsN+SpWGzNh5SwOa7YbAseHADRf0xGCDHE79+Gw6hBC5gsAQH+ytqDKrxwslLC5reQdOHnFiOfGnWSGlfeHn4+LrCt+t9i36scUsxJT3S3vu9iuMLRy0CqavbTGZ7gRPY7FuAgU7MIFi09Y5jHMPk85jxGN6qrfEJWIl9MyKIPmzhu+NQAEYsEJJk9guGxbOON1KFDiE+UV3uZ0qhv7r990C3oE5W3otWqzsWzAHkeMISbC+QpY4kfUl0rGSvflmKqqnCIgd2R6AWsQ0EnVNUHboLFfUhp7+ALdyLP7B2RrxAsEGwxKpL4kvYRUgRJaRh6Vh1zzrNBzkwRTgkdHFp/lPTdkB6g/bZizJwwMMs5s/ld6JRhcFOXuqeja3Fp0KSNPQr6teqfVndw9P9UbClGBCrhyNRA/IZR9F+V0V1+MDZ4Dx3FW0x4X26jzgUz3cEVIruYp3i0SRtP2PtzaWlT+S0n+9Pfhz
- ZWm65u3g
- q+umn+Ub1O5owUqKjSnAWAjjPlbqJgIN2Nud9eiEncARfZWRRBX+sxZCuoA9qwRYAvQmzbtaWu59EiUag5NOhYA7a4A02VhyCtox70lZH/D9YQ5XgIURFBDlzp+R32WKB9+HFGzj0h1HjIGfrzDPHzCo2kkcx489TM3bZZbYbD6nLm27/UVpi3sF7pDAZPu8H2zvRCvZEL8LCW7R4Cnajv4hg4FfDlOhiZCcw07beU2JZ8QHqR1ETl5U5zGqsftf/P4/c4Ahecspv3X8uCeg5++O7EGFf4LIgLfzycnTgQ1QvMbOtOHEG0+tQjItjBmX7eSslZnx/Z1fhDDQ/6j6WFH1BM2hMsQyMVWK5u7qpuq3ZhcKdkFYfF+xde4ExbKMuPdNjiDnOmtR7ukZHwvMhK80Eg7tYozF4zVFxWy5XPXz25xibq2vfM3B1Ba1IdqUQHkCBkPqT0/H/N83Acd9hsIT4ZA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 714EA20011
+X-Stat-Signature: onxpqk9etrnsfr8jw3in69dimb7gfd3x
+X-HE-Tag: 1766132753-724532
+X-HE-Meta: U2FsdGVkX1+HJmYAlCuJV1ls8IYNeIv4oGA2loiGhoagvpcKZLDhGUCnmWH3NW6dwR+9D1jh+N/AAhSk/ZeuYjnVumdTr+3XbRe+KhRZRNR5A5O75HICuiiq8EDfOfXSO/IHu1K2aZMFt/PTscpdgwqz/KBTl4liRLiSP3Y3W6hDQBuqkLDpvLFUfEKuP0UxbonsF4PgMi6eZzrkoAsrJIiImBvEfBJQYyFBZjbB4Mlni3NBD/PlpaOSr3xo1babjThk0UiyH5Ti3LF9S89XNYl2aN2Qzpez2KKKgp1h/AMxIKqUiU0Q3d8mZjwyTzM1TsOu1E3orwAHaUIg1IwSHDCnNgZxXhOLNY3C9++TfwinFqaksBKhmfqNIFm2YJhCEPwKecDPBPvgix4W43mBZL+PJ0f6Ynwc0aBHpq7w4Dr1sCWUYeg2IOhyuf0hyqeV2f7aAWsOfpV5zcNz8SML3hSenf1GY116fwExtkKxvEG8wuFqaTYXX4v9USdFtN/bH8c2xIqH7nk9WBRVAGC++dRz18j/pB+O/6uG8zddZQEiL5ZA9T4YlcF5Uhs2H1FF/DP4DC85E8oronyXHkoEj3ooecVQCJ4YJ/emDf7ncLgFwjng9XyDxY6KtaGuZklEW3oASTPZ8+vX6FCF7XIcmmWqxbqiyOcOiGG9LCqTRFo46bBmyAT85fEcqfrvEF/UUuGG4kF7uojOym463bhBO7KICwt1ioh1psEfu+Cw+ojCL1SmqHWfvh0v2Ai/rEEUQbAk88Yma1ZgFW+ysUn5aoTpgNq8htQF7OLuIgZyQhFswZEacf6asRELciSLEs7EMD8mpP2lpYBq8pYqT860Wey3iDTQX9kUwJKkHbMvb53Y1xe6VXcIrSgy3yFKWtS50ENOvuH3gpKNqTzL9drXKgIYxNTYUS2mbTbRUIeGGo6o7cUteiauvu01079hS5D9pq/DAtiimQOTxsxf1+A
+ yAXyqFWv
+ JGAsX9wJIIu2LxtOEdi4QFTBDhWuF/iyReT6mgRrsCLdQH0W81Jo1FfLeXhCzWat+GNJv6Jv3bZvNSg2n2NeuvnJKMFOSobGIdWJqPAi/SGEvHpeTam6uf4xp6hpWMsvks6BrioPcMhGwUpCovAA5rLirm7m0PKYq49MLhss6WArqZph3u9rgYYEQVch1I42DaaVJd3+yS69cjjvBbc7M/kKNiQf3kmORsy2vopEu8mH5Mc09bhr62soQccRNRVof5TnDPHvua5S347qJ5VLbWSl3lTr+LvTb3GUIzqFbkO2AKDbgKUsl8RPpkXiaXtbRCq/D2CBCm0cbw0L1+ZcvGaj3Mt4kxBD/NPso
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,116 +105,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 19/12/25 11:43, David Hildenbrand (Red Hat) wrote:
-> On 12/18/25 14:06, Sourabh Jain wrote:
->>
->>
->> On 18/12/25 17:32, David Hildenbrand (Red Hat) wrote:
->>> On 12/18/25 12:41, Sourabh Jain wrote:
->>>> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
->>>> default_hugepagesz) when hugepages are not supported by the
->>>> architecture.
->>>>
->>>> Some architectures may need to disable hugepages based on conditions
->>>> discovered during kernel boot. The hugepages_supported() helper allows
->>>> architecture code to advertise whether hugepages are supported.
->>>>
->>>> Currently, normal hugepage allocation is guarded by
->>>> hugepages_supported(), but gigantic hugepages are allocated regardless
->>>> of this check. This causes problems on powerpc for fadump (firmware-
->>>> assisted dump).
->>>>
->>>> In the fadump (firmware-assisted dump) scenario, a production kernel
->>>> crash causes the system to boot into a special kernel whose sole
->>>> purpose is to collect the memory dump and reboot. Features such as
->>>> hugepages are not required in this environment and should be
->>>> disabled.
->>>>
->>>> For example, fadump kernel booting with the kernel arguments
->>>> default_hugepagesz=1GB hugepagesz=1GB hugepages=200 prints the
->>>> following logs:
->>>>
->>>> HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated
->>>> 58 hugepages.
->>>> HugeTLB support is disabled!
->>>> HugeTLB: huge pages not supported, ignoring associated command-line
->>>> parameters
->>>> hugetlbfs: disabling because there are no supported hugepage sizes
->>>>
->>>> Even though the logs say that hugetlb support is disabled, gigantic
->>>> hugepages are still getting allocated, which causes the fadump kernel
->>>> to run out of memory during boot.
+On 12/18/25 15:35, Lance Yang wrote:
+> 
+> 
+> On 2025/12/18 21:13, David Hildenbrand (Red Hat) wrote:
+>> On 12/13/25 09:00, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
 >>>
->>> Yeah, that's suboptimal.
+>>> Similar to the hugetlb PMD unsharing optimization, skip the second IPI
+>>> in collapse_huge_page() when the TLB flush already provides necessary
+>>> synchronization.
 >>>
->>>>
->>>> To fix this, the gigantic hugepage allocation should come under
->>>> hugepages_supported().
->>>>
->>>> To bring gigantic hugepage allocation under hugepages_supported(), two
->>>> approaches were previously proposed:
->>>> [1] Check hugepages_supported() in the generic code before allocating
->>>> gigantic hugepages.
->>>> [2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes.
->>>>
->>>> Approach [2] has two minor issues:
->>>> 1. It prints misleading logs about invalid hugepage sizes
->>>> 2. The kernel still processes hugepage kernel arguments unnecessarily
->>>>
->>>> To control gigantic hugepage allocation, it is proposed to skip
->>>> processing the hugepage kernel arguments (hugepagesz, hugepages, and
->>>> default_hugepagesz) when hugepages_support() returns false.
+>>> Before commit a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
+>>> unconditional"), bare metal x86 didn't enable MMU_GATHER_RCU_TABLE_FREE.
+>>> In that configuration, tlb_remove_table_sync_one() was a NOP. GUP-fast
+>>> synchronization relied on IRQ disabling, which blocks TLB flush IPIs.
 >>>
->>> You could briefly mention the new output here, so one has a
->>> before-after comparison.
->>
->> Here is the fadump kernel boot logs after this patch applied:
->> kernel command had: default_hugepagesz=1GB hugepagesz=1GB hugepages=200
->>
->> HugeTLB: hugepages unsupported, ignoring default_hugepagesz=1GB cmdline
->> HugeTLB: hugepages unsupported, ignoring hugepagesz=1GB cmdline
->> HugeTLB: hugepages unsupported, ignoring hugepages=200 cmdline
->> HugeTLB support is disabled!
->> hugetlbfs: disabling because there are no supported hugepage sizes
->>
->> I will wait for a day or two before sending v2 with the above logs
->> included in
->> the commit message.
->>
+>>> When Rik made MMU_GATHER_RCU_TABLE_FREE unconditional to support AMD's
+>>> INVLPGB, all x86 systems started sending the second IPI. However, on
+>>> native x86 this is redundant:
 >>>
->>> Curious, should we at least add a Fixes: tag? Allocating memory when
->>> it's completely unusable sounds wrong.
+>>>     - pmdp_collapse_flush() calls flush_tlb_range(), sending IPIs to all
+>>>       CPUs to invalidate TLB entries
+>>>
+>>>     - GUP-fast runs with IRQs disabled, so when the flush IPI completes,
+>>>       any concurrent GUP-fast must have finished
+>>>
+>>>     - tlb_remove_table_sync_one() provides no additional synchronization
+>>>
+>>> On x86, skip the second IPI when running native (without paravirt) and
+>>> without INVLPGB. For paravirt with non-native flush_tlb_multi and for
+>>> INVLPGB, conservatively keep both IPIs.
+>>>
+>>> Use tlb_table_flush_implies_ipi_broadcast(), consistent with the hugetlb
+>>> optimization.
+>>>
+>>> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>>    mm/khugepaged.c | 7 ++++++-
+>>>    1 file changed, 6 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 97d1b2824386..06ea793a8190 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1178,7 +1178,12 @@ static int collapse_huge_page(struct mm_struct
+>>> *mm, unsigned long address,
+>>>        _pmd = pmdp_collapse_flush(vma, address, pmd);
+>>>        spin_unlock(pmd_ptl);
+>>>        mmu_notifier_invalidate_range_end(&range);
+>>> -    tlb_remove_table_sync_one();
+>>> +    /*
+>>> +     * Skip the second IPI if the TLB flush above already synchronized
+>>> +     * with concurrent GUP-fast via broadcast IPIs.
+>>> +     */
+>>> +    if (!tlb_table_flush_implies_ipi_broadcast())
+>>> +        tlb_remove_table_sync_one();
 >>
->> Not sure which commit I should use for Fixes. This issue has
->> been present for a long time, possibly since the beginning.
->
-> I don't know the full history, but I would assume that support for 
-> gigantic pages was added later?
->
-> It would be great if you could dig a bit so we could add a Fixes:.
-
-Sure, I will try to find it.
-
->
+>> We end up calling
 >>
->> I also noticed an interesting issue related to excessive memory
->> allocation, where the production/first kernel failed to boot.
->> While testing this patch, I configured a very high hugepages 
->> (hugepagesz=2M)
->> count, and the first kernel failed to boot as a result. I will report
->> this issue separately.
->
-> I'd say that's rather expected: if you steal too much memory from the 
-> kernel it will not be able to function. It's the same when using the 
-> mem= parameter I would assume.
->
-I reported this behavior as an issue yesterday; let's see what others 
-think about it.
-https://lore.kernel.org/all/cb9f3604-8a0a-478a-8bf7-2d139ccbc89d@linux.ibm.com/
+>>       flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+>>
+>>       -> flush_tlb_mm_range(freed_tables = true)
+>>
+>>       -> flush_tlb_multi(mm_cpumask(mm), info);
+>>
+>> So freed_tables=true and we should be doing the right thing.
+> 
+> Yep ;)
+> 
+>> BTW, I was wondering whether we should embed that
+>> tlb_table_flush_implies_ipi_broadcast() check in
+>> tlb_remove_table_sync_one() instead.
+>> It then relies on the caller to do the right thing (flush with
+>> freed_tables=true or unshared_tables = true).
+>>
+>> Thoughts?
+> 
+> Good point! Let me check the other callers to ensure they
+> are all preceded by a flush with freed_tables=true (or unshared_tables).
+> 
+> Will get back to you with what I find :)
 
+The use case in tlb_table_flush() is a bit confusing. But I would assume 
+that we have a TLB flush with remove_tables=true beforehand. Otherwise 
+we cannot possibly free the page table.
 
-Sourabh Jain
+-- 
+Cheers
 
+David
 
