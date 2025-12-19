@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B89D78798
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:09:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED4B2D7879C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F4206B0089; Fri, 19 Dec 2025 11:09:46 -0500 (EST)
+	id 27DBD6B00C0; Fri, 19 Dec 2025 11:16:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489896B00B5; Fri, 19 Dec 2025 11:09:46 -0500 (EST)
+	id 257B06B00C2; Fri, 19 Dec 2025 11:16:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5C56B00C6; Fri, 19 Dec 2025 11:09:46 -0500 (EST)
+	id 154906B00C6; Fri, 19 Dec 2025 11:16:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3266B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:09:46 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD074587F7
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:09:45 +0000 (UTC)
-X-FDA: 84236706330.23.540B8FA
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6D7E8100012
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:09:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cQPXOwId;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766160584;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z0mjmGpOW60lNIbtFI+r1yzZWjFojlQMo6AcrdT+eeU=;
-	b=MtX3zvV1vV7xBZZk4b+lI1GQw2M/t1Mas8HIpoCtOOKsrFPa3pSodN9tI0P+CWTyJ+x39l
-	nd1EjcPIys2+F6oMhMO4c2tcmZKkjP+JJKq3msQ9r3QeKiS4piY5kzMQ/qGJRcyqt5fjKx
-	bBLm2qcECDmHbpB9x/M0duGJ6Adv/oA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cQPXOwId;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766160584; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 03BC66B00C0
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:16:41 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABCA5C04EC
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:16:40 +0000 (UTC)
+X-FDA: 84236723760.16.989CD4D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D158C120014
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:16:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AJ64F8Y9;
+	spf=pass (imf29.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766160999; a=rsa-sha256;
 	cv=none;
-	b=i1klpxtHiaEvCaihfC+paUaEvhTNbHPEBUsUcWqMSByPt/SYOgM7ITzUYBbIn54uBBpHku
-	blLv9ZvaHN0iTlLrstMuYIDGVOwmHk2gBaW5bVG5B2sVVbWWxPK3olscu+1Kol8D69SFR0
-	+mC+ovR8fmDdczw1AI/H6BdL0eWMSCY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=z0mjmGpOW60lNIbtFI+r1yzZWjFojlQMo6AcrdT+eeU=; b=cQPXOwIdyvnpu/TFP07Kw09C6Z
-	Zgy1qKTMnuFS26B8P+aXQyJg4yZg3HLAkX0xEcQUFb9VBegbEKRjkggUWliQXDkfWH05DkjXRjOzA
-	C4BLRuOUlXgUUmKsfkfx6kx3zmv2NSgsK+y1W8xs4lHqP0rFqJVj1TuUoQKMEBLGbF3mTb79Q6zEJ
-	qP6HF/hiSnTrGdltfke63GdUe/UA+lwz6mkGqCjTkGmeZojrYwKo2MrL2Q1VmR3IzbxpjnDBUzzdf
-	Cfjw6depJXCBUEYA599KPGQpKSdlZIdHm/i8FF7iqSZ1+vNinkRhiBYj74IVjkx4IUl5Mq6kSTNQy
-	n2YND57A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vWd2p-00000007n7R-3Bk1;
-	Fri, 19 Dec 2025 16:09:31 +0000
-Date: Fri, 19 Dec 2025 16:09:31 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	akpm@linux-foundation.org, david@kernel.org,
-	catalin.marinas@arm.com, will@kernel.org,
-	lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
-	baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <aUV4u9pOHxvQiDcP@casper.infradead.org>
-References: <cover.1766121341.git.baolin.wang@linux.alibaba.com>
- <24b9d33acad627997febe9b61d398fc53739a333.1766121341.git.baolin.wang@linux.alibaba.com>
- <x2s3l56rqwgcpkhpu77pjt65tfwgmchuy4fuyrj7h7uag5gja3@c3jbws4quxrd>
+	b=HLFJyfdbSm7yB8sDbA7mhiYwDS7oXE4LCSfW4Up92uNjFPgESkhxpg2Z4gTdfuOIFyXX9e
+	+/KZTZJFtxQJ7wE3S9UeGM3BFIcNcn4pIf6pkKr5gp46favWH8d0EXpc+kP3FYT3pqg9sx
+	mYFy3cj7c13DVt9Qjti01IdJ/D4oFqU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AJ64F8Y9;
+	spf=pass (imf29.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766160999;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YrMU+/etl5QuQSZUiyvkx0eeq2klzraORmvlUQahEc8=;
+	b=AI29a3+zbdELeLnBWZ48Rig0Jww4E/JZicI/1U8sgq9AT0n0oC0Vw5W0hu0XhO/KFOP0D1
+	Fg8c8pxcNgUvKO2qOGUkupNSg6k5Qr3fFMlub2g9s6ZgkHFEdICRk2G+H0MtvNn6rWsuwX
+	/3JDFVU4T9FWsWBKJywNtUhZgeb+rg4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DA1D740A41;
+	Fri, 19 Dec 2025 16:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B064FC4CEF1;
+	Fri, 19 Dec 2025 16:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766160997;
+	bh=JUANTRw13L53ZJeWRkytCQq3wemKN/QVSV7VD+meYXA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AJ64F8Y9Olu9SXqmaxmT9KT0vAWaGBKrVOSF5D/0Oz74R9S7OUB4519d3Z2Lp1bl+
+	 O8u/lVF5zadcmz+Jg7ZazmZGrJW4d4Va1PnH2siAZQ+9ghPxuy5UAsm7DU/mLVfq5r
+	 hnksEovGij6hUHhTTaexE7/wA0zSddCm3xkBo5gXW6F07o6HD0gY/tadQ3Mrz7EbXB
+	 S1D4hNCpD473VLN7fQzyjsiHa49R2e0xMzWwQkDuiqzMQmmO9guk6Kqz94jCpgzdfP
+	 hn3U6Jmry9eImWjt1gJ5CsTA5x9BkByml4oyXj5zLBrNtTGtQjGdonwP5jZ7tWWVGG
+	 gJZ0MXw+MyIAw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org
+Subject: [PATCH 0/4] mm: increase lowmem size in linux-7.0
+Date: Fri, 19 Dec 2025 17:15:55 +0100
+Message-Id: <20251219161559.556737-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <x2s3l56rqwgcpkhpu77pjt65tfwgmchuy4fuyrj7h7uag5gja3@c3jbws4quxrd>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6D7E8100012
-X-Stat-Signature: d89krjgdz9i98mf69fd9trhfp9mfg85o
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766160583-666672
-X-HE-Meta: U2FsdGVkX1+hlgIgvlv0OFcipdainU/Tp63o2XeWGZG+CHFGoWujBDSkW4Mw9n1PnFyCpbkdoCoRdebUwdcUQsuwfGSGHcXX7F9yiI/lgcuMJ8nWUlG+MLH7F8Fxwv23+jor/YIPeOCl1E0PQjsvgBMN7NERfhxQof9tVAe8oJc48l0MbB7/bbmD7+jzh692WBmap7JUU9V/zKwAGqzynYCL751CETPEBdMZROQhG8aJD0Ge4Qx9ihfUNm9UORKqFMW7lIvGGtY8GOKq0th7yPMNCPk47c5VcEi8QldVaYquH0pXRBzAQTs1twzBywY/XgZcblf6cTA2CF/MxBNsf316uX8mU9qdpoWrX+SXMUDNloDHiw0ar1qGZzabM/SA2GaWQG957KbxBHS+Tg4Fq5BcxHbsYCDJgfNZa3/sZTfdmqvKdupv/EwCB3vSjH8oxwo5vuZ4jcP/zWqg8+x29TifGS3w+hZzrJvNbA9VHrDU1PYWjT8fqiv0sEt/mY29gEiAx4UyyYsLEzCWzAvjXoIkKPw5PcDRlF2tKCiIT1jWt0e+YUthYh0HwxP6LmtXtLMa+pmcAe3GN6PIQo62GWUFLzyRre+fwb+gpd1ORzxrwtq8RFB2wKpUt8cI/hHUyp+RUmTLmRr/YPpE8mgZtEPV57Iubdp1+9dwWHECaLbgt18WoXwWU+tUvkV2enRplQu8iMxvQCsFiXkBkrskc57SSqHIY78JtNvcw8gBswKYRNF2P1CUE+gqc8Qe1LqF0+bK08W4b3sFVFbblHD3JFPbrkxkWmDmL/7L5vTxUPeI0r2HdRWAowH1oLmVnsHfv9JF1VwnHh9k8Nsvp79vePnFiLLMXlWVmMj0DELwjlA/vjvYJIG3JvmwDOwK8WppJflFc+7KUREvHFSsCBG/cLLQmJ/8nmSPz5lMsMtfHSr0K5V4WxcdbapV+JUOo+0VRNF4vhC+mROVur1yxhh
- NPR8pw3B
- aWMc9F0N8oFqLye/7mgTP2tlkAFrMkaB33k5InPxwVuB7k/GoC24GLzwvrgulih8adCHritlDUMnvNptz2OxoGMQansvzbdjssIrBesvNzxo6bCpSR03Ako0752LvI+PhA3cEstsntYeuiqNRvVFboy6VkzUB+mcb3vC62YOM+hsjXig4MvaqBUG49rc1bb9IH0PXAzoN2ImRu8YW2EbnGF2qdyon+8ZeuHkDmpgK9e/r+E89gO1TJ221aq5PUWgKNVPN
+X-Rspamd-Queue-Id: D158C120014
+X-Rspamd-Server: rspam04
+X-Stat-Signature: hjbbpnbx6ruqydjby7ftzb4rgqdeh9k8
+X-HE-Tag: 1766160998-652977
+X-HE-Meta: U2FsdGVkX181Vj6rKzL/Pezu89u1SCuTx1NsnVZv/9xFsaCNmDk/QhMQikuYRQh418yM7AOtdDWvIKYiOxliCeXKWk5WCnxD5VXWWe23QUImqIz8Nm+Uct7r7bRFtmA1/qirjv2zlImBKA55wwGF6SIWGgckXJqo+15xpNA26XZkezbzItdhCnPjibvZe9QcJvSYfEkWm4ftcOu9TYebwZGbNys9Ju6zGx4jcorWc15VqTMH1LhfsR9q+kPyZr65Gu8NLm+izgvk0alBggWFj8fc5e/pnVMWP6JWzeqtc+7t0lVju+OaQdbdY7dBwZNLBniNClBeb2EHQ8/dU94QZYjxYr1GeFDwYntFje1I3syFbsrRlraQIxkW+u9zQKDazu0CNaNOkK8dFR321o203jr2LQuFxB6LowVJXM+E59jDWMjyUM1NcdDUWOgiQ+8bB+i1cnXh4bRFF9ledTWMBcRinOfdLARqe9BeaG3Sc9t2QvbuWodauR7JWODsbx6Nn5cM9YXmrDG25XKNj3xXZwEL0+FBslfSuzpYrN1hHe5yz10G9ctSIZsCBAr2btRoYW3gJSeafKfqctwLoANpMfrKDXWnv6FuNdYbkzK2wtbcKSSWWtSxVTBWNuPbLfSKuGLqLLIOT83/B+CkYladCYtFEd/Eqctj4O3yYDCCBFv8NwSP38LeaVO14lJa6xjvV22m3vkabmC0G03hCOWivXfeuHQ1JIv9BiXbBjHBUIezsDwNkgknSPrxMHpNaRlAzFHE0uphWUyuRrMh18cw4ik0Oz5tAtsYwLU1wo7f+vLUTsF7p2QdYp13odf4Z14evmPyt4LPd3rBIKVLOrNySly1yFdEygul7+Gg02OwIQJC/KwRHBNigh7E7bKvSahK/VIXb+j11gaEf/RITUzJB/g6up/KoivI3i1tHMKns7lPPNTlSk2Fl5z0nMWoZcr0mDc/HltwlBLpDnG25OR
+ FuXAg/7R
+ VB7AvIvf8ymfLreI2Bs2fbxAMv8w/HFjnxsGpRaIMv4E96YDnbXq+751dAhlbYWQHZEV39DXh3w28QQFdHWkcBvoNefRSepHz6WeRkv0DqetjAM+dfEJ7hW+OC7XO7O3iNK9jr33XwyGgW/bmtyfSAx9ut7WWCpJirKK8XXAY0i7Dv+zskZH/JgV71BlqvEQYNrii3Bf9lMbYERJV0agcXiuNn/FqlSuOKYIILRSg75oUPSLuLoj8RFCt4ZMTyiy46PntbvlfBdGuBD8zRgdPTe2+uhfM8iBNPTpO5lofdOQq2ltH/AYIRgOY5VB7VzWl+x+PrAoqx7fpvbLOKs7OmSPbGshdGToYlvTY53YBCSNFjDHXabPOYggOdK4I22cCX/tdtYuErnoZ8xItluyiX+KIrVhpwB/tygNc82eZgcrjirdQF1npaQxz3W8gMw9qLiANlHGT53Hflfmgfl0l4lbLvctOwi0/0BLwDUt8J7KVHOwj137LaSts0F0l/2l8eGTbuZaIjZYp21Cq0Zy67t0V2ithXBFdjam1h3PbrVoMW00hWVI+0/ka6m0q0ovMQwIKXXgQOYCEUokeX3+RdqzpP7J4Tp7OA+lC1DTVOgWNv0ekg4A1WNH+wHEBkWV5YVrHkOndJi/9NkO69W/wuq0J/8pRsCRoZY5NDnNv9FkB0/5FnkMePdgZeGoSvLycbeq2ogvBJj5gzLf/QyLO54pxo2RFTTq4/weGE+ZmVazA8nuFq+XQQNnT0P0Zht4ouz7phkpTfUBxR4U3OThN7gIuQw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,38 +101,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 10:47:52AM -0500, Liam R. Howlett wrote:
-> > -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-> > +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
-> >  ({									\
-> >  	int __young;							\
-> >  	struct vm_area_struct *___vma = __vma;				\
-> >  	unsigned long ___address = __address;				\
-> > -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-> > +	unsigned int ___nr = __nr;					\
-> > +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
-> >  	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
-> >  						  ___address,		\
-> >  						  ___address +		\
-> > -							PAGE_SIZE);	\
-> > +						nr * PAGE_SIZE);	\
-> 
-> Did you mean nr * PAGE_SIZE here?  I think it should be __nr or ___nr?
-> I think this nr variable works because it exists where this macro is
-> expanded?
+From: Arnd Bergmann <arnd@arndb.de>
 
-Yes, this should clearly be ___nr.
+At the kernel summit in Tokyo last week, I hosted a session on dealing
+with highmem in the long run, see the link below.
 
-> I am also not sure why you have ___nr  at all?
+My feeling was that we got sufficient consensus on the plan to keep the
+funcationality present for the time being but instead reduce the scope
+of highmem in the kernel as much as we can without hurting users.
 
-It's a macro cleanliness thing.  Imagine that we have a caller:
+The short summary is a three stage process:
 
-	a = ptep_clear_flush_young_notify(vma, addr, ptep, nr++);
+ 1. Nudge users towards using a larger lowmem zone with the
+    CONFIG_VMSPLIT_* options if at all possible.
 
-If you have two references to the __nr macro argument, then you end up
-incrementing nr twice.  Assigning __nr to ___nr and then referring to
-___nr within the macro prevents this.
+ 2. Drop most __GFP_HIGHMEM allocations and corresponding kmap()
+    calls from the kernel, leaving only the subset that is likely
+    to contain the majority of the actual allocations.
+    Specifically we will keep anonymous and regular file backed
+    user mappings, zsmalloc, and huge pages.
 
-That said, I'm not sure why ptep_clear_flush_young_notify() needs
-to be a macro instead of a static inline?
+ 3. In a few years, also drop the page cache allocations and leave
+    perhaps only zsmalloc using a much simpler interface.  I suggested
+    five years as the time until we do this, but the timing depends a
+    lot on how the first two stages work out in practice, and how long
+    the remaining highmem users plan to keep updating their kernels.
+
+This series implements stage 1, mostly using Kconfig changes to the
+default settings but leaving the traditional behavior as a CONFIG_EXPERT
+choice in Kconfig. With the new defaults, most installations that use
+highmem today with 1 GiB or 2 GiB of system RAM will see all of their
+RAM in the lowmem zone after upgrading their kernels. My estimate is
+that instead of 80% to 90% of maintained embedded 32-bit systems, this
+should cover over 98%.
+
+As I don't actually have hardware in the category that still needs
+highmem, I tested this using a qemu-system for Armv7 and PPC6xx running a
+Debian userland with all combinations of VMSPLIT and HIGHMEM options. I
+ran some kernel builds on the Arm guest to ensure that the new options
+don't cause functional or performance regressions for regular workloads
+that don't exceed the virtual address space. I also ran some tests
+with Firefox and was positively surprised to see that this still works
+on the VMSPLIT_2G_OPT configuration without highmem, though it gets
+close to both the address space and lowmem size limits.
+
+The change to use VMSPLIT_3G_OPT by default on Armv5 means that I could
+include a patch to no longer support highmem at all on VIVT caches,
+as suggested by Jason Gunthorpe.
+
+     Arnd
+
+Link: https://lpc.events/event/19/contributions/2261/
+
+Arnd Bergmann (4):
+  arch/*: increase lowmem size to avoid highmem use
+  ARM: add CONFIG_VMSPLIT_2G_OPT option
+  ARM: remove support for highmem on VIVT
+  mm: remove ARCH_NEEDS_KMAP_HIGH_GET
+
+ arch/arm/Kconfig                            |  12 ++-
+ arch/arm/configs/aspeed_g5_defconfig        |   1 -
+ arch/arm/configs/dove_defconfig             |   2 -
+ arch/arm/configs/gemini_defconfig           |   1 -
+ arch/arm/configs/multi_v5_defconfig         |   1 -
+ arch/arm/configs/mv78xx0_defconfig          |   2 -
+ arch/arm/configs/mvebu_v5_defconfig         |   1 -
+ arch/arm/configs/u8500_defconfig            |   1 -
+ arch/arm/configs/vt8500_v6_v7_defconfig     |   3 -
+ arch/arm/include/asm/highmem.h              |  56 +----------
+ arch/arm/mach-omap2/Kconfig                 |   1 -
+ arch/arm/mm/cache-feroceon-l2.c             |  31 +-----
+ arch/arm/mm/cache-xsc3l2.c                  |  47 +--------
+ arch/arm/mm/dma-mapping.c                   |  12 +--
+ arch/arm/mm/flush.c                         |  19 +---
+ arch/microblaze/Kconfig                     |   9 +-
+ arch/microblaze/configs/mmu_defconfig       |   1 -
+ arch/powerpc/Kconfig                        |  17 ++--
+ arch/powerpc/configs/44x/akebono_defconfig  |   1 -
+ arch/powerpc/configs/85xx/ksi8560_defconfig |   1 -
+ arch/powerpc/configs/85xx/stx_gp3_defconfig |   1 -
+ arch/x86/Kconfig                            |   4 +-
+ mm/highmem.c                                | 100 ++------------------
+ 23 files changed, 56 insertions(+), 268 deletions(-)
+
+-- 
+2.39.5
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
 
