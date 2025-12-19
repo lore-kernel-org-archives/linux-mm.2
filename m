@@ -4,87 +4,214 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B65E7D711CC
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BB0D711D2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:22:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 252806B0088; Thu, 18 Dec 2025 20:00:44 -0500 (EST)
+	id 97C616B0088; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6B56B0089; Thu, 18 Dec 2025 20:00:44 -0500 (EST)
+	id 929F16B0089; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E3056B008A; Thu, 18 Dec 2025 20:00:44 -0500 (EST)
+	id 7D4B06B008A; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5876B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:00:43 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F307F868A0
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:00:41 +0000 (UTC)
-X-FDA: 84234415482.25.1603683
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B79EB4000F
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:00:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=T9n7HrpS;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766106040;
+	by kanga.kvack.org (Postfix) with ESMTP id 6524C6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03088140393
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:22:16 +0000 (UTC)
+X-FDA: 84234469914.17.0F4DE9E
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010032.outbound.protection.outlook.com [52.101.46.32])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D377D80010
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:22:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sZ2nYLry;
+	spf=pass (imf30.hostedemail.com: domain of joelagnelf@nvidia.com designates 52.101.46.32 as permitted sender) smtp.mailfrom=joelagnelf@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766107334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IVOeY+3SuOrvYNqzmFJNbA4A4ujnPrtjXb52VW//WT8=;
-	b=IUQbHcC371PkSYw9cHz0DiikLqplAujyXIT243pKv8NLrLb3DtjkJr5X1H3hYQcUoe1KCL
-	SSK2AMo5Rt3yURi3v7V1y0mWRX/ILjqdwqoDDJ//h8fS9aROrK3wdfdGgV4swFtHN07FXw
-	bULFHmgHGduVJXOLdCqnktxLPpt7hwk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766106040; a=rsa-sha256;
-	cv=none;
-	b=dVZe5+ZgaWyiMGcsU8ESF3Rz/bkp3eixk7nMUEJ7jz/n9hGcAO+ZFLY6J9f8X68n2VHwLo
-	cDcid4TXtCNzx9HqvbNkZIlt3MonHKeF7gtLFpJyk11X+PO/qkzouNL2D4Tkjt2oLsO+iD
-	TKCwnrfSnw64rdkR5Jo6bE766ttUfpU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=T9n7HrpS;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766106036; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=IVOeY+3SuOrvYNqzmFJNbA4A4ujnPrtjXb52VW//WT8=;
-	b=T9n7HrpShv/EXa6XSaqoE0ydytE70mLojserRFrD3M3uNFcGplrNAYecWKLl3uhgrhZjftgGg8Tncw6+VgVf4KXXfgWIhl8sxxJLbUyKVvH/8zCo1G4maMe0KmOPVIj7U9ATYKIjJ/AtQBKl7IxZMpbr7O6gJQ7clfwhXMQz4KM=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvARIF8_1766106034 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Dec 2025 09:00:34 +0800
-Message-ID: <9c6393e1-fc88-46bf-9a3e-b28b8cda1c75@linux.alibaba.com>
-Date: Fri, 19 Dec 2025 09:00:34 +0800
-MIME-Version: 1.0
+	bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
+	b=4L7qZJazt7xv3dWou2OGLCrjdErWKMcsSZyrubnyEEL76H+khoyZJvmXIFvt7Pw/R+KHGG
+	BU26lHF4soCOOrJgac/YsTMnYD1ezrBPE1h+NOlZu9bc+OOfKB4FtGV0gIjNUw+JTj2r45
+	+kQfJWpP6lImDKLgls1xqVoG8/NS9V4=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sZ2nYLry;
+	spf=pass (imf30.hostedemail.com: domain of joelagnelf@nvidia.com designates 52.101.46.32 as permitted sender) smtp.mailfrom=joelagnelf@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766107334; a=rsa-sha256;
+	cv=pass;
+	b=GJ3SbK9+QUnTJPUfBYE3++M9Si4biMZoYMzBVa0qnLZ3bWGXzv3duR6KCmV0S9lUtr/CGH
+	zUBmHe4YnC0ycfBiIiwb1frryVEx7njHrzfSF9zcLQ6Z8BknomJ/IBm3MmG2Dr8WEIWXvg
+	J9H/dkrf+kzUfVRzdoX72RXP84ts0jU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UBPCd4TKaTOyiY36zfWDVP8ENZLd/KIIDqWLBvsaEWjdYWvBqv3oqd1KKjv/lAWpHo6rHQUVjlNE8KjJ+oD+TG8w1FUVeObdhRvF9kRiwfpQEHX12lXJccUtR5Tc3NhGgMKPbrIoN5zaHoU6RApbBCS9nawYu1pdII7Ty+LCxTy3o2Fb3SNadYbJZdKbbCnVZJ9hfFyoXPVKoUE7OQph8cKa7QyVTs15lrkFxyAU1V97LTLHw+TiqJ3BdHpuTBzOxModfAJBohJyZdNSNoPNIvOIkP8Rh/JZY28SBsZIdPV89bHAQDPii7q+zv7cqOHMF3XrxZKPMXku0Vk7v4YXNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
+ b=yI/mOgRCWWV7j3hUpex5mR2SvsKBytKZmmx8P0vVWrXx9y61/FfzypR5pi1BA8fbLoqjD/+ayzmWqQLH4vxMqcAjoLwdVZVaEIF0+3hciRN02rO95WsYHQqM24hyTBynHvk5bXHHMSOwicgO/ZS4CX8WYGGAL0Ifj0oW97x8RkDYhxZna8MeMZwJaT6ebEOFd/xDsqEZP/uMT8ZEi1XZcvxiIzpqzgNexzBy8VPG6UOawUfwQB7V/rJ5DJaN8giZFMie8l5+g+0xSr8D6HPvkSm5AR1tCdnyTNVtcqnpu1ok0QrpNPbuYb9+rFZh7y64EDQopYJH8j4GjWYsXl9gzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
+ b=sZ2nYLryNseEsRwiYTJa2xOHkaSidlsuq00RuY+ih17pBqRMzBCN9RdV1uuJCjoBJLszB0U8W4N+b48F6COUcYkk4wCMAFzITrYBZRyOIGM0U7r1/TuAxPhTcTmod17QdxO03LEvlzyPlEn/Ry1PLGiu3qgZ9Isci0fLjSk9tYwlF7R/q24Yo5yIio9AnYvcfMhmusbC9bpEKKF1vgjYK2MDjIZtnGdxYKYWGBicM2i9ve28mPYz5+D9C0MPEKsFdCN/tuoHgUNauVkjStoO423W0YSG2/tgKCRRSL8wJ3x2V2vwnCoMFMgaP1/v33cEpsn37pNkhEunkWXAr51O6A==
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
+ by DM4PR12MB6111.namprd12.prod.outlook.com (2603:10b6:8:ac::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Fri, 19 Dec
+ 2025 01:22:07 +0000
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9434.001; Fri, 19 Dec 2025
+ 01:22:07 +0000
+Message-ID: <6cbba525-3bcd-4673-a6a5-1fe16330868f@nvidia.com>
+Date: Thu, 18 Dec 2025 20:22:04 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] arm64: mm: support batch clearing of the young
- flag for large folios
-To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1765439380.git.baolin.wang@linux.alibaba.com>
- <e10f876ce130134fa089befe83f30561b48b9889.1765439380.git.baolin.wang@linux.alibaba.com>
- <1beaa7de-4b31-4f19-abee-83872f868e28@arm.com>
- <96c0adcc-abfd-4a44-be93-1c6bd7942d6d@linux.alibaba.com>
- <d3b40df8-e5cf-42aa-8205-de624024fad1@arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d3b40df8-e5cf-42aa-8205-de624024fad1@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gmawz4emg6cyhmjf5xonf9ugwkmkscb8
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B79EB4000F
+Subject: Re: [RFC PATCH v4 3/4] hazptr: Implement Hazard Pointers
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes <joel@joelfernandes.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
+ Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
+ Mateusz Guzik <mjguzik@gmail.com>,
+ Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, rcu@vger.kernel.org,
+ linux-mm@kvack.org, lkmm@lists.linux.dev
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+ <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: IA4P221CA0008.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:559::6) To PH7PR12MB8056.namprd12.prod.outlook.com
+ (2603:10b6:510:269::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DM4PR12MB6111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9912051b-ebe4-4074-66d0-08de3e9d069a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?L2U0NElnd0Q1YWNqaTFhUTM3by9oNlorcnltMDlNeXRmaEFtdmtZMzdMcG8y?=
+ =?utf-8?B?R0crYVJUMi9jNXFtbUlGcFhNY1NROVUyWjRBYmViSHFxMGJjbVlSa256cWla?=
+ =?utf-8?B?VHpGWHl3aHBFWE8xdGNLZXdFOWNJSFBFbUdUT01yeTI1WE1kY1N4S0V3MGpw?=
+ =?utf-8?B?NVAxQWt1RUVrUStLKytDcmJEK3J6dXFkNWMwbVpZWnZGYkltS1hkRUUySitD?=
+ =?utf-8?B?NlFrZnBxMjRqSUtldVhVTmw3bUFxbWhOYXY0YzBUQ3pWSzJWR1JNTThTVGJX?=
+ =?utf-8?B?NnB6VDFma29ncWFiZDduOHA3NHVCdXFyK2lUcS9LQ1VVL1FmZ1ZHcTg4SWZ0?=
+ =?utf-8?B?b01Md3F0Qmc4Sjl6aXp0RWpsMlZwSm16dEdBZ2UvcUp0VEhiekJyVy9hTk1x?=
+ =?utf-8?B?T0NkbkFSTElNWG9DWE1yT01JY1U0Q00ralBUSlc5aHVqL0xLM3B5cTRMN3cx?=
+ =?utf-8?B?UVBITDNPbnowNEswZjlyTlNMdjlqbnlXTU1Mc0thUjJzeE1RZGpTaHd3Zi9w?=
+ =?utf-8?B?SWVZYXh3aWgyUUhlRXRuUkpWNzY0SUVzQi9BWmROV0ZjQ2dtdjZaaEluSjdo?=
+ =?utf-8?B?TkJCRVpFeHhSb0JQQkRlNmI1Q3puNm5uc2ZnNTFOSlhGUXhLUnIrMzdyZGMw?=
+ =?utf-8?B?ZzU3YlJxZEFvcmc5ZmNDZGY1NklrRy96WFUxQW5UMFNlay9pVENhRFpRU3pv?=
+ =?utf-8?B?cHoyYlRIa25rTktqT1BtYkFGOExGR1J3VE51RkdJMlJYb2dwYXFldE9TaDB0?=
+ =?utf-8?B?TklXTkY1eCtDS0dvU2l6L0liVHJBVGtTTy90SHZ3b25zQyt6bVlmeXRBdDl2?=
+ =?utf-8?B?bkRPWm13ejdBVXZkYmNQRkpkNXFBSjNYRGpJV2RNUHpyMUxPVG9qcU9hdllG?=
+ =?utf-8?B?Kzd3UmRZdHFxV2xSQ0xOS3NEVS96SVNZTDhBelRSL1d5M0F2aisxaXhQd2Nw?=
+ =?utf-8?B?azlFaTQ4bExGRGlGa0FlSFZJUlA1UG5EU3JCYUxydzVWTTd0c2dteVc2RENj?=
+ =?utf-8?B?QjRucVkzZm5XcU96ZWFkMklDeGJ5a2VYbUN0dmpMcWJQL2x2ZGlQNWJya1N4?=
+ =?utf-8?B?U3BPTzIrMlBFa0RVcHpJdDlvY0dPWm1zQnYvMTd3dkJWcVBmY3dud1VYSkFR?=
+ =?utf-8?B?NkxoZzl0VzFYaXFSb09lc3NHZTlmTjZxbjJJWTNSN0lpcExYNUd0RmdZTVNV?=
+ =?utf-8?B?SVVGK1dPME02Q2ZrMlc5Z1VqZTMxQ3lvTUlNaFNuRlViUzJqb2U3RHovQzFF?=
+ =?utf-8?B?UW93Y0J6K1V3MnlGUVdSSmwwZGtqdlBDdFUrM3ZOVHVBOXdaTTAySGdQaXJB?=
+ =?utf-8?B?dXZ1WERYdXc3a0M2YzlramhqVm5OWVBuQ3c4RS9zQnByN2xtQlVvTUNSWUtB?=
+ =?utf-8?B?NnFkWWxnR1JWMFo2WkJYeUdEZXpuS3J6RTA4YWpHYWJyQmhzdUVGTVlTVldF?=
+ =?utf-8?B?WEJMb2VPNE9CODJLcjZnakkrOTJnKzdWTURZUGtRUzZ0SXVqcHVsY0Fyam96?=
+ =?utf-8?B?S2JTcTM5MFRpMnZCaUVjSXpaSTcrd0ZQWWJZRWVTOHdHd2I2cDBmb2sxVWVp?=
+ =?utf-8?B?MHpjL0JoeHUwQUFvZUxCWEtaSFpNOGwxSFpDTVZEeENHK2l5U2p2TTJ6VEFv?=
+ =?utf-8?B?ZUhqU3dndEZFTVBmNGwwYzJXcExmTTNIeEliaGFDY1NSWUY5R2xiaEFZQ3k1?=
+ =?utf-8?B?TDVEUFdxeW5tUjBZN3lxMlpDWVlZdk5qVmVKUmFqN2FvNCtBaUxZakxHK2Qv?=
+ =?utf-8?B?ekgzOW1hZ1BObncyWjJBSVZaQzVjVHVtM3lPYXdyNWd6TjhaemltcWE0UGgz?=
+ =?utf-8?B?RU9kWkJtazdSY2FJeXpKdnVOSXNYNmdnZmZ6ZUhldmY5ZEVZQzQxeXdCT2U4?=
+ =?utf-8?B?T0pyc01tRllSTjgwVTM3eEdEYzhad2xSU2tycWlFTi91WlBIWDdrajZCMlkx?=
+ =?utf-8?Q?V3omLGTD8PEsBc69X6TFAy/c6JGi9jIn?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MXlMakxPODlMMjdMbmlLWlJRY3dqRExMQS9GRDEwblRPeE9vaXV5aDBWcGRE?=
+ =?utf-8?B?UnBNRHNHOFV3aFlHRjgxV0VyWXdWSWNaR0JDazlZMTFuOERPWW45WGRJVE9V?=
+ =?utf-8?B?d1pJN084OG9PWExRMjkwSUlBcUdCRllIcVk0ckpjb2h4S2NQVTBtOS9sRjNM?=
+ =?utf-8?B?d0FhZ1k1SWtacXZpR0Z0WEJ1Wm1mS3RHZ3NaRU1pWTgrTVNRb3o5N2lNZEx1?=
+ =?utf-8?B?dXNNNnBUTFNEbzUzUVJVeTJZWHFkcXMvaWJZY29KQmg3ZUJpQ3owYmR3aFFp?=
+ =?utf-8?B?a0hOdkVOelZUMEV1OXpXb2VrY3NDTUFOQVJZdmt1Qy9pMmhyaHdSNDQzY1hT?=
+ =?utf-8?B?S3g1THhBUVlBSFFmVHlDNmFGVkppWFFkRE9UbUNFSkN4OHJRRW1lcEJiUm5j?=
+ =?utf-8?B?aGZveGpWUlhqc2duYU41NXN5RndScEw3V3lVcHpzazNOMyt4R1lNUFFlUk5k?=
+ =?utf-8?B?NXJIYXdxNEpPUGF0eUtlNlppcE9XRWQ1Umo0SVI2ZXNBRWNQVCtaSG9qZTNP?=
+ =?utf-8?B?ck1FYU1SNVYrcHFQVzlsTVREOC9ESHlqVFlMVG9GZjNPWndnclR3MTJjNUJ6?=
+ =?utf-8?B?UWtPd2NZY1FhV3hQQTE5d3MxenN2R3pGMWl6VVQ0SklmbWNma1VNV0lwd1Jx?=
+ =?utf-8?B?N2lnQ2tTbWFmcDdkWHRuM2N5NEdEV1F6dVV2bEw2eGZyeEZzcjJXalFTeVg0?=
+ =?utf-8?B?SS9lRWtFRjNlRTFNNFNVZjU2djcwcWpKSjNrOGR6QW1oUEloTXRLWUIxVXVN?=
+ =?utf-8?B?WWFlcURvZUlGdUpJQXBVQ0lpVHpvVDNhZyt4OU1sNXBxSGlra215U2QwaHFG?=
+ =?utf-8?B?NUtxRWxoa0VZaHBrcnNrcDlvcG5la1A1VUhockc2VGdDQTBvUXI5Rjh3ajMr?=
+ =?utf-8?B?eVdrSTZhYW5UK085bTdLTjVOekMwTVFkT1g2anJYNmVFSmRENzV2eFRSbEZn?=
+ =?utf-8?B?Sm5BOThmc1I3UXZPSlNpRWdPRHJ2a0hUWUV3cm5PcHRKWm96Y0poUVBuS0gv?=
+ =?utf-8?B?M2g1UGFHa2VTK2FVUGpvRzl2Z09XeFZFMFBmVUhONEtkREpuUUREMXhVVVR1?=
+ =?utf-8?B?K3g3REh1MjRDd202RVIyWEg1a1d5alFZMzJ2UXk1ejQyWUVKS0k2MnFBZElK?=
+ =?utf-8?B?VTRXWUp4VmphcEl5RUcwZVpmL3pLTVpTVFlYdVpURU5zS1NtWXVoV2dMeGNO?=
+ =?utf-8?B?bkl0WXJKMGlreklzUkl6NzZoZmhTMDZWVW8wSWwreHBOYjNiME9saVRueUZG?=
+ =?utf-8?B?Y0RvSlViSnVOSGFiQStGczNvbTlFMHNtbmpYaU10aVpVcGtkcDh3RU9wcldU?=
+ =?utf-8?B?VFlSOVExSEx5N0FqZUZ6Y1J4U21DZVZyOHdYVEVzc3ZjbDRWMEFQaTVPcll1?=
+ =?utf-8?B?OTc5eEFDL2UwYVk4dTl2TDdpcStpMTB3ZWhKTFQwTVhQb2UwelBNaXB0ek5C?=
+ =?utf-8?B?ZGREU1RrelRGQ1FFTzVxZUNRZDdDOHFIVnZYcE56d3dqRmNwWjNRRkNIZVFD?=
+ =?utf-8?B?d1V0c1R2M0NBaWI4MWVPdVNMT1pFS004czhrOVUzS0dFUTB6WTk5OEp5U1pD?=
+ =?utf-8?B?RDZ0ampUelZodFYvajdRQmM2NExhN004RXZRZTlPSzYxeFg3MFRjbW1PV3Iw?=
+ =?utf-8?B?Y3ozeE81TlVXUVFoRmFDRDM1MHRkUDVRdTIycmhGSlBXVFl5ZXZFRWtaUjdl?=
+ =?utf-8?B?Y25VL3AyUjlJREw4NmFWNWFVdFlqL3V6T1VFMGo2NkpkUkVyYkVRcmhpS0lY?=
+ =?utf-8?B?VlFvdmZyNEtFd3ZoK1FBZStyNHRhRk41YUJFODZ5SjV4WHlVejJhSGM2aEhD?=
+ =?utf-8?B?Uy9td3djM3VmbnpxaGFJVytRVUNOQm8yWnYrb3puWVFIaWhPdmV3OHBlemtx?=
+ =?utf-8?B?dmlkaTFIRkx3cHdnVysxcDR6S0VoL1RZVjZFVVJYb09JUVZKS29DcExpcUcy?=
+ =?utf-8?B?TXdvZ1E1Mi91K3FzcUNCcGdVRmdUYzRnZmJNcGFIcmg5ZHlpcG1sbkJOMHVQ?=
+ =?utf-8?B?Vm5pTTM5Y2hKckZGQ25rNHJwdk85eml0WlhnNWxTbVNOdGVwL002VDJKRHJR?=
+ =?utf-8?B?WnNYaWRKTGQzYzIxQUVVUFBQNEhGdVY1UnJVRHFMOFppL1BuTmt5VGEwcGdx?=
+ =?utf-8?Q?C8lBGpxp6w/f0MPH6XVqelspR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9912051b-ebe4-4074-66d0-08de3e9d069a
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 01:22:07.5734
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eg+qWSm+0k0ZpV5JSTySNOmtKBNmvpDBy0nPq+zegi4SsDk7ghsyQe8ncoxbV3QFgnFz5Y5ESjhNTBni4PKwqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6111
 X-Rspam-User: 
-X-HE-Tag: 1766106039-39468
-X-HE-Meta: U2FsdGVkX1/2YWcjHYLL5FuZ9E/1AuDvvftCrKDe7pbS1y0itZCoREl1o4wcDzL8gGZu44UsAQjMS/0Lqy/FesugrKuDC2qr6FFJ2j3KNXDNvkYiQGzaqByeyL/ksJ5nDz0DdCYXT2V4LRdg2aGWn4idRid64pm0TCqgOsXzmvWbvL5DRIL5w5D7ka4EmOeAQEKwf2WwcgjVNYjR8//YtkEwBXtgD/bpGiAcquXR7XDs7vicjG7ytGCRUXaJiMQsgx7l7mhe7eA6d1PfAWTe3ilK2XRp5axFJ5nfD472/KASNrgE/vFr/xjGUr8w/E+OHX2STfMTHDJrR41duGh/5AxvaYCmQAJ+elmgCtogg7xblY6VgLzIpvQzVXHPMpzcyZX6lZdARRajMkJoAqGqZWl9RmOSI3hFft7fV+a25W2MspmSVzAjn/kE3Wh4+qubhjWXKY4epxFenKMO346yXJq1/hurzZ06RFN/EHVXSPCwHF0TZ3LDXtbt5S2D3Y4Cg8fI3YW04skwtiSLtsg17O2TFdpzKXkmmx0pCPks3FXYlpxFVxlXTEFjl/g0+VDrViI8cp4VcNzRlTk/PJu6gfOBdTE+5M0q4Ly/oIGN518Fogt3uj6mUgEERNa0F/wFTVWutAOz5wCMEcN64YCM175QoX/LN/D5xeUU2Btz0k5FXi6cb9FPjEieu/bnqPx7RCXUFjTCbZV/uRo1JYZAuopJzEi0QOhzfrpBfZTHkcnSrzZktJl9scLB80v6BTkhn/LaAThwAZbp/v8TDxbNiZeIphTJrFFLT23xjPpk+ORqgMeP43zhEWuxjk74YKO8eQIEeSyUYv2WOF9xKW9I8qAGL6j0UY6/a3jlY+MjKjmLanxxgxUOuYQYtijDkdLuuRdSzIOTd31YZ3W2xW5FXo4n6RFNDEJt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D377D80010
+X-Stat-Signature: 9inf435pojfpahtko4tkqy757j88d6s8
+X-HE-Tag: 1766107333-428724
+X-HE-Meta: U2FsdGVkX18yn+sBUo2ExEwGN6H8dvP6qv4ilxhthUFc4uhVYF/ZN/aRjO/GzxpxVVEiTL1TGzseDr35dNZirJDZdgJMKQTRn3pimmqWnwBqApkBRi2eNywpiQARB2EnoFrY/qLXp06jSpM9ynJbX5Xcrg7dH9ZJ4JafqVXDjiWkxO/4lBu6q8Fr/39r9rLR4c2dAl+qbRRWU/bBN6DK3wNc0R0hQAL/1D4WQotQJmlYIm17s/zk+EDb5gMSi0tCqK1NzqJE8hmcI2RHO0HLvkPBSUffBUZKoEkSmUQCBu2BMZFsyFUqmnJyIfVUWpY0KqQBuHOkCypGBjxYZSGkZuuA3mr+EAZddZZcho5GfuVNOGWk91CoSkjM9NVRQmLiOcwa0S2ebJNF97QtqnIyriL3YVf/OOnzsKig2SJxf66xRd/4Yujnwqkfe+zCoh4JdtPYn4D10gjNOfJ2xSuTd5yxXMkFi9zjKHOpP72LxmQGZtzZc73/V3I5Y/toYAe/JCKVBF+EmO8LM9mvvTUw4fyo8UwwAtHIW3LEeTOpAZqTSNSOywfzjV4rrX0yw05tv73AItL0aoPpLOs5JE6IPVW3rn1x1+qmVsdDiM3/6hseV/d1iRvZyKI+qu+P2pMc52HaUYIp60xLgnBkD3iD0JqUPvJPvDqanqiguxOLtuTUVCSL6leAAVCSCLqbnyd57tRi8djzyvNLrsY95RP1W9sbO3gz6YLs5An5i+kPEBBK0KEBNgGn2tQcVbDU9wS++RtTuMmcVzsCcQYc3VQa66v3z0oz+Ucnp/Pv6M6cgdx4ZDx0096txNg8Nl32So1ExIfKzUwMbcnU+TYrsm/EQBTzPNSkzWQ5J5PWNCSUFot0X3N7GFc8xPo1CuvBHkqnmoIWZKW/xaLV0czgRUWlZS0MpglVddWSK+SuMhVphKxgBphUTs4C+RYUv+JQxP8f3gVX5JyYAkPgcSqRsNv
+ 3c07AYtO
+ b03HGUwF5yfBKjaBoSEE8KLf7wL/rH+VigpjOk6p0ofuzVwRL6AvawttcOzPAhujXNLFx1Sds9ytDNSQOV+KAQoCakUR8irk+1UVZK1zWgBZQe0zabVuJ9XaCuGX7xOPiD5NlzpZAEySy1pSuLM+LFLydeZiJUhvVmyWBZHOySwUWKFd4FVbCfxcHIfmogABiEwub7xrzss8CVP06JvLumAuegnKc5tCXbxf9oixXLwSBzlQGHqFjXEqUh5rWFvFutKDgcL1RG8XWWKZGMDhZ9Z42g16GVTvWbNBNHBXI3KYB2mNuMZY619b4k12kwOLjT61Gzydw412tBn6VtULvR8jIbEAUYE1r1R+6fEtEWvdO8FMyYTh6oKQm4XD6BBVuF5PCysPvOYlT/2TYyD9nMWVyYoEdkK2dU7zdU9lfkkOu1thpASZQqDd8opsjOaP1LRNc2+/+JtPebOo4N1rJD7EL6ghHSxixAwRPg3ohdsSqkmxB9/n3uVmuDSfEmOnaI0CpX6heLqjGFKko8xAdm83KGgzBjJ5qwCEs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,188 +220,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/12/18 20:20, Ryan Roberts wrote:
-> On 18/12/2025 07:15, Baolin Wang wrote:
->>
->>
->> On 2025/12/17 23:43, Ryan Roberts wrote:
->>> Sorry I'm a bit late to the party...
->>
->> Never mind. It's not late and comments are always welcome :)
->>
->>> On 11/12/2025 08:16, Baolin Wang wrote:
->>>> Currently, contpte_ptep_test_and_clear_young() and
->>>> contpte_ptep_clear_flush_young()
->>>> only clear the young flag and flush TLBs for PTEs within the contiguous range.
->>>> To support batch PTE operations for other sized large folios in the following
->>>> patches, adding a new parameter to specify the number of PTEs.
->>>>
->>>> While we are at it, rename the functions to maintain consistency with other
->>>> contpte_*() functions.
->>>>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>    arch/arm64/include/asm/pgtable.h | 12 ++++-----
->>>>    arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
->>>>    2 files changed, 37 insertions(+), 19 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>>> index 0944e296dd4a..e03034683156 100644
->>>> --- a/arch/arm64/include/asm/pgtable.h
->>>> +++ b/arch/arm64/include/asm/pgtable.h
->>>> @@ -1679,10 +1679,10 @@ extern void contpte_clear_full_ptes(struct mm_struct
->>>> *mm, unsigned long addr,
->>>>    extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>>>                    unsigned long addr, pte_t *ptep,
->>>>                    unsigned int nr, int full);
->>>> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>> -                unsigned long addr, pte_t *ptep);
->>>> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
->>>> -                unsigned long addr, pte_t *ptep);
->>>> +extern int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>>> +                unsigned long addr, pte_t *ptep, unsigned int nr);
->>>> +extern int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->>>> +                unsigned long addr, pte_t *ptep, unsigned int nr);
+On 12/18/2025 12:54 PM, Mathieu Desnoyers wrote:
+[..]
+>>> <mathieu.desnoyers@efficios.com> wrote:
+[..]
+>>> Here is a revisited version of my Hazard Pointers series. Boqun, Joel,
+>>> if you guys have time to try it out with your use-cases it would be
+>>> great!
 >>>
->>> The "contpte_" functions are intended to be private to the arm64 arch and should
->>> be exposed via the generic APIs. But I don't see any generic batched API for
->>> this, so you're only actually able to pass CONT_PTES as nr. Perhaps you're
->>> planning to define "test_and_clear_young_ptes()" and "clear_flush_young_ptes()"
->>> in later patches?
->>
->> Right. This is a preparation patch, and will be used in patch 2.
->>
->>>>    extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->>>>                    pte_t *ptep, unsigned int nr);
->>>>    extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->>>> @@ -1854,7 +1854,7 @@ static inline int ptep_test_and_clear_young(struct
->>>> vm_area_struct *vma,
->>>>        if (likely(!pte_valid_cont(orig_pte)))
->>>>            return __ptep_test_and_clear_young(vma, addr, ptep);
->>>>    -    return contpte_ptep_test_and_clear_young(vma, addr, ptep);
->>>> +    return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
->>>>    }
->>>>      #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
->>>> @@ -1866,7 +1866,7 @@ static inline int ptep_clear_flush_young(struct
->>>> vm_area_struct *vma,
->>>>        if (likely(!pte_valid_cont(orig_pte)))
->>>>            return __ptep_clear_flush_young(vma, addr, ptep);
->>>>    -    return contpte_ptep_clear_flush_young(vma, addr, ptep);
->>>> +    return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
->>>>    }
->>>>      #define wrprotect_ptes wrprotect_ptes
->>>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->>>> index c0557945939c..19b122441be3 100644
->>>> --- a/arch/arm64/mm/contpte.c
->>>> +++ b/arch/arm64/mm/contpte.c
->>>> @@ -488,8 +488,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>>>    }
->>>>    EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
->>>>    -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>>> -                    unsigned long addr, pte_t *ptep)
->>>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>>> +                    unsigned long addr, pte_t *ptep,
->>>> +                    unsigned int nr)
->>>>    {
->>>>        /*
->>>>         * ptep_clear_flush_young() technically requires us to clear the access
->>>> @@ -500,39 +501,56 @@ int contpte_ptep_test_and_clear_young(struct
->>>> vm_area_struct *vma,
->>>>         * having to unfold.
->>>>         */
->>>>    +    unsigned long start = addr;
+>>> This new version does the following:
 >>>
->>> Personally I wouldn't bother defining start - just reuse addr. You're
->>> incrementing start in the below loop, so it's more appropriate to call it addr
->>> anyway.
+>>> - It has 8 preallocated hazard pointer slots per CPU (one cache line),
+>>> - The hazard pointer user allocates a hazard pointer context variable
+>>>   (typically on the stack), which contains the pointer to the slot *and*
+>>>   a backup slot,
+>>> - When all the per-CPU slots are in use, fallback to the backup slot.
+>>>   Chain the backup slot into per-CPU lists, each protected by a raw
+>>>   spinlock.
+>>> - The hazard pointer synchronize does a piecewise iteration on the
+>>>   per-CPU overflow slots lists, releasing the raw spinlock between
+>>>   each list item. It uses a 64-bit generation counter to check for
+>>>   concurrent list changes, and restart the traversal on generation
+>>>   counter mismatch.
+>>> - There is a new CONFIG_PREEMPT_HAZPTR config option. When enabled,
+>>>   the hazard pointer acquire/release adds and then removes the hazard
+>>>   pointer context from a per-task linked list. On context switch, the
+>>>   scheduler migrates the per-CPU slots used by the task to the backup
+>>>   per-context slots, thus making sure the per-CPU slots are not used
+>>>   by preempted and blocked tasks.
 >>
->> OK.
->>
->>>> +    unsigned long end = start + nr * PAGE_SIZE;
->>>>        int young = 0;
->>>>        int i;
->>>>    -    ptep = contpte_align_down(ptep);
->>>> -    addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
->>>> +    if (pte_cont(__ptep_get(ptep + nr - 1)))
->>>> +        end = ALIGN(end, CONT_PTE_SIZE);
->>>>    -    for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
->>>> -        young |= __ptep_test_and_clear_young(vma, addr, ptep);
->>>> +    if (pte_cont(__ptep_get(ptep))) {
->>>> +        start = ALIGN_DOWN(start, CONT_PTE_SIZE);
->>>> +        ptep = contpte_align_down(ptep);
->>>> +    }
->>>> +
->>>> +    nr = (end - start) / PAGE_SIZE;
->>>> +    for (i = 0; i < nr; i++, ptep++, start += PAGE_SIZE)
->>>
->>> Given you're now defining end, perhaps we don't need nr?
->>>
->>>      for (; addr != end; ptep++, addr += PAGE_SIZE)
->>>          young |= __ptep_test_and_clear_young(vma, addr, ptep);
->>
->> Yes, good point.
->>
->>>> +        young |= __ptep_test_and_clear_young(vma, start, ptep);
->>>>          return young;
->>>>    }
->>>> -EXPORT_SYMBOL_GPL(contpte_ptep_test_and_clear_young);
->>>> +EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
->>>>    -int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
->>>> -                    unsigned long addr, pte_t *ptep)
->>>> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->>>> +                unsigned long addr, pte_t *ptep,
->>>> +                unsigned int nr)
->>>>    {
->>>>        int young;
->>>>    -    young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
->>>> +    young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
->>>>          if (young) {
->>>> +        unsigned long start = addr;
->>>> +        unsigned long end = start + nr * PAGE_SIZE;
->>>> +
->>>> +        if (pte_cont(__ptep_get(ptep + nr - 1)))
->>>> +            end = ALIGN(end, CONT_PTE_SIZE);
->>>> +
->>>> +        if (pte_cont(__ptep_get(ptep)))
->>>> +            start = ALIGN_DOWN(start, CONT_PTE_SIZE);
->>>> +
->>>
->>> We now have this pattern of expanding contpte blocks up and down in 3 places.
->>> Perhaps create a helper?
->>
->> Sounds reasonable. How about the following helper?
->>
->> static pte_t *contpte_align_addr_ptep(unsigned long *start, unsigned long *end,
->>                                          pte_t *ptep, unsigned int nr)
->> {
->>          unsigned long end_addr = *start + nr * PAGE_SIZE;
->>
->>          if (pte_cont(__ptep_get(ptep + nr - 1)))
-> 
-> I think this is safe but calling it out to check; you're not checking that the
-> pte is valid, so theoretically you could have a swap-entry here with whatever
-> overlays the contiguous bit set. So then you would incorrectly extend.
-> 
-> But I think it is safe because the expectation is that core-mm has already
-> checked that the whole range is present?
+>> This last point is another reason why I want the slots to be per task instead
+>> of per CPU. It becomes very natural because the hazard pointer is always
+>> associated with a task only anyway, not with the CPU (at usecase level). By
+>> putting the slot in the task struct, we allow these requirements to flow
+>> naturally without requiring any locking or list management.. Did I miss
+>> something about the use cases?
+>
+> I start from the hypothesis that scanning all tasks at synchronize
+> is likely too slow for a general purpose synchronization algo.
+>
+> This is why we have RCU (general purpose) tracking hierarchical per-cpu
+> state, and specialized RCU flavors (for tracing and other use-cases)
+> using iteration on all tasks.
+>
 
-Yes. They must be present PTEs that map consecutive pages of the same 
-large folio within a single VMA and a single page table. I will add some 
-comments to make this clear.
+I wouldn't call HP as "general" personally, it could be (should be?) usecase
+specific. That's why I am not opposed to the per-cpu approach, but I am not
+convinced that there is no room for a per-task slot approach which is simpler
+in many respects in the code.
 
->>                  *end = ALIGN(end_addr, CONT_PTE_SIZE);
->>
->>          if (pte_cont(__ptep_get(ptep))) {
->>                  *start = ALIGN_DOWN(*start, CONT_PTE_SIZE);
->>                  ptep = contpte_align_down(ptep);
->>          }
->>
->>          return ptep;
->> }
-> 
-> Looks good.
+If usecase has 1000s of CPUs but few tasks running, then per-task would be way
+faster. It would be even cheaper than per-cpu slots on the read-side:
+1. Unlikely to overflow relatively speaking, since plenty of slots distributed
+to tasks, thus avoiding locking.
+2. Preemption also doesn't require saving/restoring and locking.
 
-Thanks for reviewing.
+I would look at per-task HP as a more specific HP implementation if you will and
+per-cpu as more leaning towards "general". There's tradeoffs of course.
+
+> One of the highlights of hazard pointers over RCU is its ability to
+> know about quiescence of a pointer without waiting for a whole grace
+> period. Therefore I went down the route of scanning per-CPU state rather
+> than per-task.
+
+Sure, but there could be room for both flavors, no?
+
+>> I did some measurements about the task-scanning issue, and it is fast in my
+>> testing (~1ms/10000 tasks). Any input from you or anyone on what the typical
+>> task count distribution is that we are addressing? I also made a rough
+>> prototype, and it appears to be simpler with fewer lines of code because I do
+>> not need to handle preemption. It just happens naturally.
+>
+> It really depends on the access pattern here. If you want to replace
+> refcount decrement and test with hazard pointer synchronize, a delay of
+> 1ms on each hazptr synchronize is a *lot*.
+
+Yeah true but I don't think *that* is a fair comparison. The slow path is always
+going to be slower than an atomic refcount no matter which HP approach we talk.
+
+I think percpu_ref_kill is a better comparison which triggers a GP:
+
+  percpu_ref_kill()
+    - percpu_ref_kill_and_confirm()
+       ...
+       - call_rcu_hurry(&ref->data->rcu, percpu_ref_switch_to_atomic_rcu)
+
+> Of course perhaps this can be batched with a worker thread, but then
+> you are back to using more memory due to delayed reclaim, and thus
+> closer to RCU.
+
+If you have millions of objects with per-cpu ref count, that can go into the
+megabytes. With HP, you can negate that. So even with batched worker thread,
+there can be space savings and fast read-side (at the expense of slightly more
+overhead on write side). Sure lockdep usecase does not benefit since Boqun wants
+to speed up the write side in that case (synchronize_rcu_expedited) but we
+probably don't want to discount other potential HP usecases which want faster
+simpler read side while having preemptability, small structures etc and don't
+care about update side performance..
+
+>> First of all, we can have a per-task counter that tracks how many hazard
+>> pointers are active. If this is zero, then we can simply skip the taskinstead
+>> of wasting cycles scanning all the task slot.
+>> Further, we can have a retire list that reuses a single scan to scan all the
+>> objects in the retire list, thus reusing the scan cost. This can also assist
+>> in asynchronously implementing object retiring via a dedicated thread perhaps
+>> with the tasks RCU infrastructure. We can also make this per-task counter a
+>> bitmap to speed up scanning potentially.
+>>
+>> I am okay with the concept of an overflow list, but if we keep the overflow
+>> list at the per-task level instead of the per-CPU level, it is highlyunlikely
+>> IMO that such an overflow list will be used unless more than, say, eight
+>> hazard pointers per task are active at any given time.
+>
+> The PREEMPT_HAZPTR scheme achieves this as well, with per-CPU scan
+> rather than per-task.
+
+Sure, but with additional complexity and locking that per-task slot does not at
+all have.
+
+>
+>> So its lock contention would be rarer than, say, having a per-CPU overflow
+>> list. I would say that contention would be incredibly rare because typically
+>> hazard pointers are used by multiple tasks, each of which will have its own
+>> unique set of slots. Whereas in a per-CPU overflow  approach, we have ahigher
+>> chance of lock contention, especially when the number of CPUs is low.
+>
+> Contention on the per-CPU spinlocks would only happen if threads are
+> migrated between chaining of their backup slot (either if 8 hazptr
+> are in use by the thread, or on context switch), and release. Do
+> you expect this type of migration to happen so often as to increase
+> contention ?
+
+Is that really true? You have contention also when you exhaust all per-cpu slots
+not just on migration:
+
++			/*
++			 * If all the per-CPU slots are already in use, fallback
++			 * to the backup slot.
++			 */
++			if (unlikely(!slot))
++				slot = hazptr_chain_backup_slot(ctx);
+
+>
+>>
+>> Other than the task-scanning performance issue, what am I missing?
+>
+> Task-scan performance is the key issue. Also you have to set a limit
+> of per-task slots. How would you handle the scenario where a user
+> needs more slots than the limit ?
+
+Sure there is a limit but I wager that this limit is harder to hit than with the
+per-cpu case. If you have smaller number of CPUs, you might be hitting this all
+the time with per-cpu approach. I'd have a overflow node in task_struct to
+handle this. Billions of Linux systems have 8-16 CPUs.
+
+>> Another nice benefit of using per-task hazard pointers is that we can also
+>> implement sleeping in hazard pointer sections because we will be scanning for
+>> sleeping tasks as well.
+>
+> The PREEMPT_HAZPTR scheme takes care of this as well. Sleeping with a
+> hazptr held will trigger the context switch, and the scheduler will
+> simply move the hazard pointer from the per-CPU slot to the backup
+> slot. End of story.
+
+Yeah, but the per-task approach does not need that at all. In fact the hazard
+pointer context structure is smaller.
+
+>> By contrast, the other approaches I have seen with per-CPU hazard pointers
+>> forbid sleeping, since after sleeping a task is no longer associated with its
+>> CPU. The other approaches also have a higher likelihood of locking Due to
+>> running out of slots.
+>
+> Except for PREEMPT_HAZPTR. :)
+
+Ah you mean, because you make a copy of the slots into the task. But why not
+just keep it in the task to begin with :-D (your points on task scan latency is
+valid though..).
+
+>> Of course I am missing a use case, but I suspect we can find a per-CPU ref-
+>> count use case that benefits from this. I am researching use cases when I get
+>> time. I think my next task is to find a solid use case for this
+> before doing further development of a solution..
+>
+> Let me know what you find, I'm very interested!
+
+Sure :) will do, thanks.
+
+>> By the way, feedback on the scanning patch:
+>>
+>> Can you consider using a per-CPU counter to track the number of active slots
+>> per CPU? That way you can ignore CPU slots for CPUs that are not using hazard
+>> pointers. Another idea is to skip idle CPUs as well.
+>
+> I had this in a userspace prototype: a counter of used per-cpu slots.
+> But I finally decided against it because it requires extra instructions
+> on the fast path, *and* scanning 8 pointers within a single cache line
+> on synchronize is really cheap. So I'd need benchmarks to justify adding
+> back the counter.
+
+Interesting, makes sense.
+
+>> Have you also considered any asynchronous use case where maintaining a
+>> retired  list would assist in RCU-style deferred reclaim of hazard-pointer
+objects?
+>
+> This would be a logical next step indeed. I'll have to think
+> about this some more.
+>
+
+You might be able to re-use some of the RCU async processing machinery for that.
+Or maybe using timers/workqueues.
+
+Thanks.
+
 
