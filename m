@@ -4,86 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AB07E6689D
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:51:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2864E6689D
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:53:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDCBE6B0092; Fri, 19 Dec 2025 16:51:30 -0500 (EST)
+	id 302A56B0092; Fri, 19 Dec 2025 16:53:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E937A6B0099; Fri, 19 Dec 2025 16:51:30 -0500 (EST)
+	id 286186B0096; Fri, 19 Dec 2025 16:53:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEA2F6B009B; Fri, 19 Dec 2025 16:51:30 -0500 (EST)
+	id 184BD6B0098; Fri, 19 Dec 2025 16:53:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC0986B0092
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:51:30 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 961B5C0306
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:51:30 +0000 (UTC)
-X-FDA: 84237567540.16.3A62DFC
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9F8732000E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:51:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y0QuSSH7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766181089; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 07E026B0092
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:53:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6FE213AD02
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:53:13 +0000 (UTC)
+X-FDA: 84237571866.27.8731181
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1111D40006
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:53:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a8QkIX/j";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of alukostella110@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=alukostella110@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766181192; a=rsa-sha256;
 	cv=none;
-	b=wozUupbZIPaJy/wtD2WBA9KoEsYkA0/ryyoTxVCURk+eWSPSZLQ7zRnZ3mboTnrdTYfwjZ
-	W6k6MnF4z4TKZmZJhnWbu11Kjp1pOxNiucOAVSPSUSTcvcvh+IlkMnNn63erGDAlE4SIc9
-	O46UIUtu4rq/TOHyciAS07QEd5NqYQc=
+	b=ELC2RiKbZHBz3sIFErTc/3RS9SpcVsix2W8Ac6eR2Ll6h5coMGPLRfo08pNJXMV8xek6H/
+	XJcKhajgASl9woGCsaO266znRoeT5XX0PKsnAlRxhr/h2XideaUsmWQRkNzncsKSpe+oiY
+	FdfHKWt+WSmBekZQ1nABB2snuZS9eGY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y0QuSSH7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a8QkIX/j";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of alukostella110@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=alukostella110@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766181089;
+	s=arc-20220608; t=1766181192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rNFoqlgDQA56uiitPv8yysa4KehXudJlPS9PbYyd1Kc=;
-	b=vixnjwADfL27Y8kQxIxHExAZTUG0BJdPEsDCYlbyKrDrSPn2zwoVisoqHuL5q+LeRIzTBZ
-	GHGLOi3O5FlKqwQ1JO/KT90krY4b/6rm1XBN+fbnj4yTn3n7aDyKFxF0G4db1wqVEy4yV8
-	HdxQLuf/0sYgEAWRz1COd326596fXpY=
-Date: Fri, 19 Dec 2025 13:51:16 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766181081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rNFoqlgDQA56uiitPv8yysa4KehXudJlPS9PbYyd1Kc=;
-	b=Y0QuSSH7VEdDKnqC3BN09CEAzELOAU5UZEqNyfoLH1EHX8dL8l3w+tC3wraX8bHG/iMFQL
-	M1Qcok/2BD9DS+UtTWn38wNsv3juS6UJgxxsedqBFcyCXK0hbwQTU/5M6RmcL1H2MMKq/0
-	9E9EX/Gm045hLhbEI4uDGNV/6vrrBkM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Michal Hocko <mhocko@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH bpf-next v1 2/6] mm: introduce BPF kfuncs to deal with
- memcg pointers
-Message-ID: <nicnfk2rfemgjvrlp2wyztymyunfxgd4ixqfnkivzjckwn4x2v@fzxj6prn3c4b>
-References: <20251219015750.23732-1-roman.gushchin@linux.dev>
- <20251219015750.23732-3-roman.gushchin@linux.dev>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uZi9KzzF5bcd1uvlKRoWhKcmxbMR2TNYp+Q5fMhirik=;
+	b=Ta0UZS3XAUiR9AiM4msKfrAsrl1lAY7G9withFiWSVU+PrHn16+PLEMN/FrA6da2cFm9Vh
+	Zm5Ls3DCenxq4lOVc5/ZvLmVrjjC/AXX0WY85fJLHsi/lRyOLIWDx3YIhnJ4PWDGPPvOxI
+	k6GuWeqLYuAGXP96cyFZ5z70XKCet6g=
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5dbd8bb36fcso1629812137.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:53:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766181191; x=1766785991; darn=kvack.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uZi9KzzF5bcd1uvlKRoWhKcmxbMR2TNYp+Q5fMhirik=;
+        b=a8QkIX/jQETf8YAcTMvR9ZBhyLndXMQ0PPa6U5b3Rq9gPjDCP9W/iNJ+cVLMJkutyE
+         lYWKl9qklrotca/1F2uY0sdrz7oe340DMPZVjRhdfvUIHCowszQfvYwqsjd2rYDVwofu
+         OAX7UHXqUm5RaTvhK+p+7ZKW9z0oNfKtUJvrE+ibSLyKU9UcSxTDDpVsKUlqutOG+GpU
+         72GTerLi/0j9dgAl+PAZu+f40OsoHqggefw0ZmHbCnxwF1YTj73hQFSiztxcKvFDWAkV
+         pG6q9ShtRbIdpFnUxNZNgkj1AsHoJR2T6d6A+VxPPgkWmMGZ2Yfmbnvpzpd+F4lFZgkt
+         UHUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766181191; x=1766785991;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uZi9KzzF5bcd1uvlKRoWhKcmxbMR2TNYp+Q5fMhirik=;
+        b=tp2uodnO+oz+HVmOVenEpW1iPFqI+myt8rQC9nustNxyvohjYbEKdNPoGgIceCWTz9
+         XNX8YO4BzYQhVCPHDzQRamnLaqWtES+/0xeMaqVg9tYVsNUDGrhpWgKPx8tbhklkjJ77
+         7vq+lZC24OXP76e9yNVyN4le2s8uRFyrtBx2K/lzZxPZnfYFXD20vu7wZLb86iJeixOl
+         U3wrUEzWA8kAjpjBHRYtIXT4sRFHKZfALAop5s+4+/EWwAN/J2Yqy9VLzr2AvzemSmeJ
+         hLjs573P4FcILxl+SHhT5OR/eCB+hvHC7qie/fsl9+uA83WUELTlMgRVigxc+1pqjcs1
+         zExg==
+X-Gm-Message-State: AOJu0YzwU2idoYNbW1q5tSaIKduIVHerQu1IAghx0uZHaIh7aareNxeb
+	PbRx3KytZjEPy3cMnu1wbxKrDUkZ+v09ZL6NDLA2UnbYdiytm1dzS9MSUnQq8FP7MmbyWIivkxT
+	Q+0LXaYZjKC0fwPwsefdm7aMHe0TXqDtlylBp
+X-Gm-Gg: AY/fxX6SWTxjjq0EDq1lJeF+mjuKLTzmcjg3SDjFs6iKIhv+MWExTS/NLNDbHg1cGYx
+	DaVDaZNZ0AgU7CAtSOtGXHuDfHWlBA+nVaZDSwTi3kfKOoIKcFPwG0P/f/ysgO9B7zfok/HVW0o
+	kT46mBDjCA3U2rwwYW88grweKp0pMuSR3erxPYidSEnSSdQgOFivu8Ky1NwGXN9rvDkb2o+7ub9
+	YiRkXmJQV4hkiQl7D7CF4JvwpwBNiDfWlWD4wRbEJjW+oHNwzQXi45DGWwTXWm0oiQxhzLFvYGR
+	ENp1noi9dcE6YeEzBAQDMuqMZ8bWfCma
+X-Google-Smtp-Source: AGHT+IEn44AOCBX34I6O5yYxg7BtcWpCgmCzlERgs2cZaRjOSJpSfFTxdhHCjDh+IoN+2TZeUL4Ew5UDSsghqB388bA=
+X-Received: by 2002:a05:6102:26d1:b0:5dd:a0bf:8c89 with SMTP id
+ ada2fe7eead31-5eb023b641dmr2943753137.7.1766181190978; Fri, 19 Dec 2025
+ 13:53:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219015750.23732-3-roman.gushchin@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9F8732000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: etr4cj8m9fydnaympzprkg9qfeqx681s
+From: Stella Aluko <alukostella110@gmail.com>
+Date: Fri, 19 Dec 2025 22:52:57 +0100
+X-Gm-Features: AQt7F2qirqpokesaA1kQpoeLXf1ytQronnuOCGcmSrWCn0HEMEsfr91ct1zMCzg
+Message-ID: <CAM2Az-T0s7hdpbgQ=dFHiqqvGfq3bN_HNGkHo2bcgPPD75BCNw@mail.gmail.com>
+Subject: =?UTF-8?Q?Your_brand_gave_me_that_=E2=80=98my_old_neighbor_would_res?=
+	=?UTF-8?Q?pect_this=E2=80=99_feeling=E2=80=A6?=
+To: linux-mm@kvack.org
+Content-Type: multipart/alternative; boundary="0000000000007f51600646551a0f"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1111D40006
+X-Stat-Signature: ae9e1t9fqn1m1ztu588x58e5sk8c8zuq
 X-Rspam-User: 
-X-HE-Tag: 1766181088-286617
-X-HE-Meta: U2FsdGVkX186ifK0+ATQpBieMGgizNfV0aGG6DgNfgN8gwnCrrnmY/ijTkmHuaYQvHtLAK1LyNfP/GZKNnbsAOH8ABJ2ilRHMPMmS5xpcUkVxpbgi2Z0FYs166YVqfeU4tcBb34+xmKZlq0ogGNKHcOoTEA/PazN02RMmBxwJ9U2F+awADqmjcq74vkIna31Y5mA6IhJfg9fk8BdiVSpOIZC/ZV0CAMpUfx1SgsG+L1eMaS5FW5F0gi35Oh8qbhIo7ujTJjdGk8evdy1Jrop6pCR8MWf8zhAoxvGa+14xIU2oT0kHv5ZiAYMkloZ83rUQPRAOH4LIAfCAdQ+tczJa1DbdGlkWvBLa4gR4H7sJlJToCe64L38IFtjiLXdLKiqfSVojc7JxP76mVzrY8jrAXXsnuSPI53HgAr9Clit17DKG6tW19qxyyUQ2CdStkmJncS7f7tsiLMXxnFRDbKMWsZVibtc6+pRfrpldvvIiSKClKeIvf5GeNVe7VuE/6ZP319AuKEKpAdepTa9HhzQfh1Ufji26NDSfp+9K3G/fJN9fMx3CvLQphBaRMltZTP+o0UQKUcDo1XlEU5hWsDqfp+P+TW1GWWvBT+/yRjivcU/7BhCJd6IPQwqNaYiRp6Jr4ZE1+AuXvx7kLRfqvSoDuifSqJDO+yAHVlfRiDALXCpEUpfrIVyt+59LuX+rDuLNZ2Nm3A+v2Lq7n2R57riThDWUzNta1INJ6dPEV8y8DZtAtATqjYr0GRgn7CblkXPuf8kjMs8VV6SkUvxrR5LYIfKaItP8z2zNdnet1cNvPCqwPyhDxXlLWYZ/zzn8O7Fz/w3JyygIUX2XR7qI1ae/FhRz1IOOGnu7HHcDcxhp5WueJ/RKrEGnVfbeAC+r3m7ZULG9K4SC1N2W2uFdqWe0fgTVQf51fE8CNLqT6ozSySnvieaeh504eY7Xg04oJi8i07cM8JqHXCeOA1VUIW
- zaLkmCq2
- 7gH+InkzGtqpaI4W8hoG44B7dFfEj89+O1toYFu3Ffr7lzBWji7BJ2y3Ppbm8ijBTSWzuPUIGfXI7AhSwdKrCOjKPFmwtsQ7SirZyENvx0IIfxDXLMOyUz/c0nbBuy6MavJMnBoLWzQAnX8Mdtf7Aiw0qmLavtT5Gbp72ggU+eKhvBXaKN3lLmsY5i+Oh0r9sXaUM7KJAYrMlLTU=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1766181191-772741
+X-HE-Meta: U2FsdGVkX1/CMLgSRG041tIhsatU+E2QeML2CH38aE6F7UWYylSYMdatBvtOzjQ7lRVevliPYnvyb01W+wFirO+RD4rfeqPCUhr2iRxKgOrycrfe4Gu4BV4ZiDH2Y0yAEdJuY7T4WDoe3e/5gG1VDs9QVoRnQ2Yz2iIJzl3ArRBqfnAqmnJBX8tFcf2E4CeQPeajEshzJgS90NMBIa77K/0UNQ+DTHyxSjUJRbr0Yo314n1e5O8DnftJAoTcp32uy0emp3aj9p5fNo0x+FOlvNFlLnjqn3r2bNGLq8a2img6783OK6dVEM9kwNjWlDIkKi+jnN1MgWTjuKCeYEHwFI0SqWaI08+8SDevP9biP7VyL453pYEdzl7auo/JqlVaPbpEHV0337FTk+MiB/Ac4poDDcxX5hk1kEzECTf0LKgeNAFKpt5YMKnSsjS2Zw6Eh+LQFEsfQ5SnrTeWukKhFqct/9AzPgVkJzBBTeFQgmQv+1hnQSfCpWcdGO0RbgIfAr/ZaM4PhQ4sOi6uWl9pUzSPihJvJKhNSOWlYf7B1u5ZTSdEDEBOIKs/UTUFwFqEJfMoEvATJyvqykjSunhPfpD0lLKKKbvC6Fv3r7qd//bngs2fTtAuAVb5eY/XBbsuCg+rl0rthhAVTsYjRiJl5HIlaxW1SBAEJapLkekY36f8TdeFfKQ66MfsaUaGI2LWgZ5qpzIAwMKIjWmNxB1J4ThLIhFoRg+9vgIPXRzWqKNqnsP3OX3wbZi+TiJ2molWx+OTun/42BYjpAKp+iC/NBMPWRWRY17SrDr7bfiS4JDHg/NVLWcEoGjLSWcBWSuwGCTIzLF77OUUrTZP9I4ypZ7DrqC4fqYBzI0WYQ3lORpXyY3x3s4NlWKWaRaCj/9/dW0GLfmWUNSL7xW74CAVfwOOGomTCiGi7SHZPHUnlYdF9P0tWNahZ93puMrUxYIxdQP2Dj3VjNJR205G7Ej
+ ck3FG3jG
+ uIaipUncxGw5EA7ir2uoBt2O+frspDuZlMaxPRAWF76Gs4X0HuHLaFoHJSGYTrBNV/rfoP3KKIYRiLID3Lq8u22VGsJ1nU9dweOM39TLVuLiLwXUCe9+gjfjIyk7CuUrWVm9Doe4j0Xe8oC5ejj60T0OuM05cjS11HeZs/Ahpge5WZakyY2VaFAjZoA5AQH/Oj2+MsZDiogF1xyhQl2fY72U9ZZifxCUhHdVLYu++TDRX2SkJRScKX+O1kEMNmdUocSGsCtLwNGNC3Q+h69qUYQ1ekZzzJSfdqehGIjv3hkc64xlsgidrAJXvqUMR4C08NfAKenDTh2gHrUxwdi/vDNQNw4ZO1RVfNwGnKtEfQ1MzGNEDRk9cHpYBgmbaab93AUh6TGaQqPja2TcoEDKVki69Wq7KO7OnX+hxD+QVfMUVzapTTxVwxqVq1rst2wuyrWxZ
+X-Bogosity: Unsure, tests=bogofilter, spamicity=0.468634, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,154 +108,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 05:57:46PM -0800, Roman Gushchin wrote:
-> To effectively operate with memory cgroups in BPF there is a need
-> to convert css pointers to memcg pointers. A simple container_of
-> cast which is used in the kernel code can't be used in BPF because
-> from the verifier's point of view that's a out-of-bounds memory access.
-> 
-> Introduce helper get/put kfuncs which can be used to get
-> a refcounted memcg pointer from the css pointer:
->   - bpf_get_mem_cgroup,
->   - bpf_put_mem_cgroup.
-> 
-> bpf_get_mem_cgroup() can take both memcg's css and the corresponding
-> cgroup's "self" css. It allows it to be used with the existing cgroup
-> iterator which iterates over cgroup tree, not memcg tree.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  mm/Makefile         |  3 ++
->  mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+--0000000000007f51600646551a0f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Let's add this file to MAINTAINERS file.
+Hi Linux
 
->  2 files changed, 91 insertions(+)
->  create mode 100644 mm/bpf_memcontrol.c
-> 
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 9175f8cc6565..79c39a98ff83 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -106,6 +106,9 @@ obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
->  ifdef CONFIG_SWAP
->  obj-$(CONFIG_MEMCG) += swap_cgroup.o
->  endif
-> +ifdef CONFIG_BPF_SYSCALL
-> +obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
-> +endif
->  obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
->  obj-$(CONFIG_GUP_TEST) += gup_test.o
->  obj-$(CONFIG_DMAPOOL_TEST) += dmapool_test.o
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> new file mode 100644
-> index 000000000000..8aa842b56817
-> --- /dev/null
-> +++ b/mm/bpf_memcontrol.c
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Memory Controller-related BPF kfuncs and auxiliary code
-> + *
-> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
-> + */
-> +
-> +#include <linux/memcontrol.h>
-> +#include <linux/bpf.h>
-> +
-> +__bpf_kfunc_start_defs();
-> +
-> +/**
-> + * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-> + * @css: pointer to the css structure
-> + *
-> + * Returns a pointer to a mem_cgroup structure after bumping
-> + * the corresponding css's reference counter.
-> + *
-> + * It's fine to pass a css which belongs to any cgroup controller,
-> + * e.g. unified hierarchy's main css.
-> + *
-> + * Implements KF_ACQUIRE semantics.
-> + */
-> +__bpf_kfunc struct mem_cgroup *
-> +bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
-> +{
-> +	struct mem_cgroup *memcg = NULL;
-> +	bool rcu_unlock = false;
-> +
-> +	if (!root_mem_cgroup)
-> +		return NULL;
+Your brand has this honest, genuine vibe  the kind my old neighbor used to
+respect.
+He always said: =E2=80=9CGood work doesn=E2=80=99t brag, it shows up.=E2=80=
+=9D
+And your brand truly shows up.
 
-Should we also handle mem_cgroup_disabled() here?
+I specialize in building authentic Reddit marketing that amplifies brands
+with this same energy nothing forced, just real visibility and real
+customers.
+If you=E2=80=99re cool with it, I can share a short breakdown of what I=E2=
+=80=99d do
+specifically for you.
 
-> +
-> +	if (root_mem_cgroup->css.ss != css->ss) {
-> +		struct cgroup *cgroup = css->cgroup;
-> +		int ssid = root_mem_cgroup->css.ss->id;
-> +
-> +		rcu_read_lock();
-> +		rcu_unlock = true;
-> +		css = rcu_dereference_raw(cgroup->subsys[ssid]);
-> +	}
-> +
-> +	if (css && css_tryget(css))
-> +		memcg = container_of(css, struct mem_cgroup, css);
-> +
-> +	if (rcu_unlock)
-> +		rcu_read_unlock();
+Best regards,
+Stella Aluko
 
-Any reason to handle rcu lock like this? Why not just take the rcu read
-lock irrespective? It is cheap.
+--0000000000007f51600646551a0f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +	return memcg;
-> +}
-> +
-> +/**
-> + * bpf_put_mem_cgroup - Put a reference to a memory cgroup
-> + * @memcg: memory cgroup to release
-> + *
-> + * Releases a previously acquired memcg reference.
-> + * Implements KF_RELEASE semantics.
-> + */
-> +__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-> +{
-> +	css_put(&memcg->css);
+<div dir=3D"auto">Hi Linux<br><br>Your brand has this honest, genuine vibe=
+=C2=A0 the kind my old neighbor used to respect.<br>He always said: =E2=80=
+=9CGood work doesn=E2=80=99t brag, it shows up.=E2=80=9D<br>And your brand =
+truly shows up.<br><br>I specialize in building authentic Reddit marketing =
+that amplifies brands with this same energy nothing forced, just real visib=
+ility and real customers.<br>If you=E2=80=99re cool with it, I can share a =
+short breakdown of what I=E2=80=99d do specifically for you.<br><br>Best re=
+gards,<br>Stella Aluko=C2=A0</div>
 
-Should we NULL check memcg here? bpf_get_mem_cgroup() can return NULL.
-
-> +}
-> +
-> +__bpf_kfunc_end_defs();
-> +
-> +BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_TRUSTED_ARGS | KF_ACQUIRE | KF_RET_NULL | KF_RCU)
-> +BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_TRUSTED_ARGS | KF_RELEASE)
-
-Will the verifier enforce that bpf_put_mem_cgroup() can not be called
-with NULL?
-
-> +
-> +BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
-> +
-> +static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-> +	.owner          = THIS_MODULE,
-> +	.set            = &bpf_memcontrol_kfuncs,
-> +};
-> +
-> +static int __init bpf_memcontrol_init(void)
-> +{
-> +	int err;
-> +
-> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
-> +					&bpf_memcontrol_kfunc_set);
-> +	if (err)
-> +		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
-> +
-> +	return err;
-> +}
-> +late_initcall(bpf_memcontrol_init);
-> -- 
-> 2.52.0
-> 
+--0000000000007f51600646551a0f--
 
