@@ -4,126 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D3CE66882
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C48E6688C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5516B00A0; Fri, 19 Dec 2025 15:49:57 -0500 (EST)
+	id 569296B00A2; Fri, 19 Dec 2025 15:52:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8932F6B00A4; Fri, 19 Dec 2025 15:49:57 -0500 (EST)
+	id 516FF6B00A4; Fri, 19 Dec 2025 15:52:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AA4A6B00A5; Fri, 19 Dec 2025 15:49:57 -0500 (EST)
+	id 3CDAB6B00A5; Fri, 19 Dec 2025 15:52:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B89E6B00A0
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:49:57 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49F47B8BF9
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:49:57 +0000 (UTC)
-X-FDA: 84237412434.28.A4B665D
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 70773C000B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:49:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AywLvfsv;
-	spf=pass (imf22.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CEC96B00A2
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:52:28 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D391E8AB07
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:52:27 +0000 (UTC)
+X-FDA: 84237418734.19.7828061
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 72A88A0007
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:52:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gQMdzpOX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf15.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177545; a=rsa-sha256;
+	cv=none;
+	b=q6mtG0fNh1J/rMgiNPuAs+Ij0oQw2/1v7wx99Op4/7k16swYizymso+Bb1/n9Bbf4plq8v
+	2BrTEVAAIBtlEFgCgdTEx/UloGp8EkP+hqtsCIsAKEGo6BGWikg2+PZei/UMePiRf2QLWM
+	6TG5zX0B/PV/tuLB0KhOnwDX6WmLLs8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gQMdzpOX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf15.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766177395;
+	s=arc-20220608; t=1766177545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rM/P2MMDWg56fhUQ0iWC3oQCnvFdb3z2dk9Gbl198tE=;
-	b=ZIJSRcuPJTBghHKCgMaurLrkhPphPHNzSTF6Sd9pvtdOKiwKfyG+uAa/brqEp9N5N7Z/30
-	dUPE6FR58uH947wwTPPWzk1PfDyZz2cRR6XPa19g1yUMhOMt9qRRvIyCXb6ppcQphCDhz6
-	dHXiS7vqM0x/WTRKJ/K6TaZnXFgpwL0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AywLvfsv;
-	spf=pass (imf22.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177395; a=rsa-sha256;
-	cv=none;
-	b=xH4HxSISjzhvLAwPRRDZw2QO2gBlEfwyyD4+0BoyWfj/hkP6cIngqdJiXjnwrxQvAlemDi
-	1FgXqUhfjwf5ZzVloPJeLUBh3AxlD0FQCXYYB4Qy64CEebtv2kBTzW1VtDY3yjQSOd8TTK
-	4rQufrduiR42dPxHHaU3bnqTm2Oo0vA=
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dY05t3Kwcz1XM6Jk;
-	Fri, 19 Dec 2025 20:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766177387; x=1768769388; bh=rM/P2MMDWg56fhUQ0iWC3oQC
-	nvFdb3z2dk9Gbl198tE=; b=AywLvfsvVLx/i9HVA554oOttiBclTTktfo8LV6uY
-	KH2pYANUiLBah4PvzKlrzruwMuc1XpaO56swS1WExytL6MULjFVfxZsQbBajFwgp
-	zW0qmXouKxO5n01EHKjv9GJGuJQKgRMEcgB5t1a1AUpnYRlS1AxBkebt96jnYCPv
-	byD+Pb6L33rxcWeqx6MQ6lTl1244BPYjsUlYWoFuJJG436/ET2zvmSUnHlaliZWH
-	tk2S6maSDZXH+YLWrbEdlElDgYD3GKbaVnIKSn0V6n9rcYU4mXNzl+JSU0bb7hDg
-	bDs/34sNoKeOu+ohplnNqaSFvhaFbHTV0CPd5Pcdj1hTcw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id oFKrgFOoi46b; Fri, 19 Dec 2025 20:49:47 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dY05T54J7z1XM0pZ;
-	Fri, 19 Dec 2025 20:49:33 +0000 (UTC)
-Message-ID: <3fb5a98d-d44e-4edc-8220-149d411c1ab6@acm.org>
-Date: Fri, 19 Dec 2025 12:49:32 -0800
+	bh=i1/SJXZ90FI5UUfT5V9hfmtsaDq+2j5bDl9O0wW8jvQ=;
+	b=JF3T/MGT5E2sdxWeyDAntNtmX5qVHnp2aYdLTJYqwUVSeTHUm8dpARMw3JeqUvfwMTv3y+
+	qErHIjrEDEz6JPwWd8fN0DYk7UIEKicUOlXQIyPcxN71YEvLsdEqR7xMNk1SxgJrFa7g8M
+	ECm/ZF14TMvKeq9f6jwttpu8e0NG6OI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766177546; x=1797713546;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1UnP1phlC1N1TzoJ+erXdvhZj4LIIeRmGQfpPPyOIYU=;
+  b=gQMdzpOXo83zFqm4zsYa5EyTMBEZRzxIKlU+QHbTMwjQwQG7xd7pxOpI
+   w8xcNJwE3VHT5b7ufNQ81UWhialzhF5FIOcagpv1m4ukZRgGSu++gEq9d
+   iA5DWLDJvQuallkU1XZAsYWejOK4CuNOvmPpH7qbqEUNq7Fibxx9/Efdl
+   rmJCZaCgDFgmAgElHM1Z7wyF8jnuKjk90QgLDqAT2bTBxLqjiOMxJOpdJ
+   Gjvo14+DiEi4QvlDODjl0ES9qtODq1GUbXM8o+N42NEzWPA8CQTdzQDWw
+   PPjP04BcErxulsjc2I2yfqVURtbpcNtAFH/MCPq8AtznA2fJSHQxHSsen
+   w==;
+X-CSE-ConnectionGUID: CKqcjwqnSzWa03oPG7fnWA==
+X-CSE-MsgGUID: NfAS+bKZQ7m20VO2FeWN8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="78856581"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="78856581"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 12:52:24 -0800
+X-CSE-ConnectionGUID: 98Uh3zVhTE+23i7eXdgOKA==
+X-CSE-MsgGUID: bx3AzxBJRcaevFLfuS8vuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="199196097"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.100]) ([10.125.111.100])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 12:52:22 -0800
+Message-ID: <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com>
+Date: Fri, 19 Dec 2025 12:52:21 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/36] kref: Add context-analysis annotations
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-17-elver@google.com>
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+ linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>, Christophe Leroy
+ <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <monstr@monstr.eu>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
+References: <20251219161559.556737-1-arnd@kernel.org>
+ <20251219161559.556737-2-arnd@kernel.org>
+ <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com>
+ <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-17-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: qtfxua1pgu4twbik1wdhpomrzcfztnza
+X-Rspamd-Queue-Id: 72A88A0007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: f7bsdpjh97ui9qnwxbp6ohr36e15had5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70773C000B
-X-HE-Tag: 1766177395-794790
-X-HE-Meta: U2FsdGVkX19OhGT7CC5PSKLn9aZRimpnYfR1DwmMbBImnwBFW9Orz8U4/7HwZzporF7nNKJcTEIMhii+Cpbs8iC2Z3rPRBP8ndgVSEh+DnVUgJOMqSf3jfqwNLhH6QGnXgrSFe3F7kfsmeuqFnqpJbWR5Y8kLrslvMoTcuu2CTQYqRJ9GKzmX9Vp2rKBQ+IHCw9Ru5nGeIcrNzlB/SvAfyNNjOqkFP90o3PuX1ftIKgjoNqT4Z4lgZXicJYc13I7gPbXGx5sWdJyVVvY3syhQyLvU4zWRovjp0GncGNuMd6pHTAQ6CbzD4l2VQuR5bjPpX0glfXP6XSRx+YvkHHnm6F7GWJDKALcI0/yKwEYvwrY7JWzJvE2xO/ajts0jXGirWCF7liJdW4br+MeCrYfREmEaROreFYCD5uzx1lkpBshD7wrAjefuDb35R20TaWHWfJzOajYcp3uMnOlF+V2bFKCML50QMyj9/Yne+8hi0QcaHF2GqGDIKz6emy+u2jZt5hCA8MhJk8s34iXEVMQ2JTeWkeqmPiIHk7xNw5onRhE6q88umOcjAqhbEMEcQNHY44hFDwn51BG53EHK7vxPKSdu/N8AjduhNF9p6LqmEP+sz0dTucW1Bk3PCyWQhqOoCSYni70INNUf3SAF698/y1t1x3ZSCYHctWeujcQKxx524Q7LU2r2CIAycLV453MW9QRw90LPRf809lHi3Oz25xuQj9Okg46T+y5NtFiR94wSJY3bsEcocWAHPDc0FxwFRNgmbFDegblP11eJQ/AvHp0NMCUCC3IEFqmgVoiEOslN5AvKTqQSvwIoip1ojfYt4pTvDDqIRmn/Bi+vZaEXes9HYcVnD0Y/f8V9/Eb1SJP/TREh7hL2DbagAagAYJJZF91Tbb286KFvotZAk6V199IDHZTnIBGnduYE7AJuLAm2p86wdFMV7Ux/BjPE7E1/huKqNL3XLljfGLkBzv
- lJI3F23w
- MTPIlNbfMhL5Gidslf90XBq7pBfE/PPbWWrsBZUyP3CArOS1/UgnzMqFQ0OPMCrcHYdAnYN9NOOauANvoIVneYm6KretsAj0qn3JpYBlgtvF1Ipxv7M9+gxW03VgcZEhTOABkk0u99gXNVeRGsbfDKv5XzPOG9IjR1M585RBJAjcQZSc6+833ccm2hDZWuO8d8LMPolY9YaDhCs2CfOKVALVYRbnc083VpIy2+TRPLYOAB1rNb6qW/q5p1yZhpW56Pxwd3aA38qfBdI601H31V+rPG/bddlMVMvioTp2uP9p+UrHbe+91AWuQNW9gdYn08S0tC0ndLdn8/al/RPcLI51CHIWzXGWu0MIVoeUvyRdfvf+wJaUE+21k2gWg4wn2SgA297bk2msyN/v7sbQ0/7Ti/X+RQx+k8idXY3NDKLPhVfxCDtXzK5fKgg==
+X-HE-Tag: 1766177545-450097
+X-HE-Meta: U2FsdGVkX1/pmmtm7XH4BJTkpt4qPgCA1bfYT54cncmSWKmbcGtImIqJt2VPMukhM8N0AOH9/LEYopChUPDLX6RbaNoFZ53SQ0fbYpdVN80arf2bo9VIEaR7JWeOQ8Nm9zg222LZpBu2V1PcEmd1uWFnWvm8JWC2Si3NlkvfywvxuJy6HVhQLGnlPJ0zYT9gk6CSqwfi+JGxYRjMkdvzfhgWb9o5iGEzyh3Tze9TIzAECNchWL7ESYyVBgumxl8Zc9xc83568rRO+oKmQ7doVcFrTuqNCFAOftYqfT4OpsOVyatlPJlwbQdKvS6/Dlt+QmjgO2mRjdDPUU0SNEsmSI+WGbOAhIAY1Z0QndIxVZm4MLVhOeYbs++dRb/0cI73dl+GBPFEIqLnigVNzwZ927/zPKIZqsXuZHmliX6jj9OVgTpX78/vmcJJ/taGRdye/0AmWUwiNmIrHSXv3C9huySw+arlvezneb+jEYfRddc9xV4bkGvCHeOQLSz8fV2mHzD6/gllYOBTtFmLoc3bMpniiqaIsKiWAsQYiqmKAt4HKvRmQYWrT5bfOz8q3QcdvsqeWkrBcOIe4Zzdznqx6kN8zJY0hgGvS0p7GqOOzT9m5GhBSBsI96I5kaLFMlHS9V4m6J0U9qj0HSHgjp8zVjphyY9GUdW9gj6B/Azk3QfeGCgutOkZntO6BtbcAz8eP8ZZrXURb6okf9hLn60D9vWJ5/3b/WMp3BRgSe+agPRVTTLckj95n56P3U5U3SfEctlMa7VH42rEtO2DvscUgyDTLV0bh7f/oW6hoCVHyKNT+6atxYG70MkszJ6ZBeEjNQN/J9Y3z2qDk6ELNgT1uujblowCWLltTnJPi5LxzqU0zyPmXTnZIo3xKk/f8DW8fT+so2SGxprgKRqI97pUrhy85RUknPkneNRAtN10EctzboXO/rJe4DeA9tvv5HsjrJvRKuEdLfClu6KO4mX
+ gWzqlPps
+ XgNp54YCJwTFqFLerHU77h7Nq08fEX/X5kjSvRK6XU2D6l/oncgJvyiE6CkxdU7MhFjEBc8oG0Aitmp58HylFYI6I67MOZDVN+yjdCvThNRmgDHwx5U+OhnxSVgvH5mqx/s+ADklOxS1Wu8eTVVSlO14urhlJ0S7D0WYMLKAy1co4+a3W9UxAuHs9LbsGxWgEx6Mt6rROLKvUq6w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,7 +169,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 7:40 AM, Marco Elver wrote:
-> Mark functions that conditionally acquire the passed lock.
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+On 12/19/25 12:20, Arnd Bergmann wrote:
+>> For simplicity, I think this can just be:
+>>
+>> -	default VMSPLIT_3G
+>> +	default VMSPLIT_2G
+>>
+>> I doubt the 2G vs. 2G_OPT matters in very many cases. If it does, folks
+>> can just set it in their config manually.
+>>
+>> But, in the end, I don't this this matters all that much. If you think
+>> having x86 be consistent with ARM, for example, is more important and
+>> ARM really wants this complexity, I can live with it.
+> Yes, I think we do want the default of VMSPLIT_3G_OPT for
+> configs that have neither highmem nor lpae, otherwise the most
+> common embedded configs go from 3072 MiB to 1792 MiB of virtual
+> addressing, and that is much more likely to cause regressions
+> than the 2816 MiB default.
+> 
+> It would be nice to not need the VMSPLIT_2G default for PAE/LPAE,
+> but that seems like a larger change.
+
+The only thing we'd "regress" would be someone who is repeatedly
+starting from scratch with a defconfig and expecting defconfig to be the
+same all the time. I honestly think that's highly unlikely.
+
+If folks are upgrading and _actually_ exposed to regressions, they've
+got an existing config and won't be hit by these defaults at *all*. They
+won't actually regress.
+
+In other words, I think we can be a lot more aggressive about defaults
+than with the feature set we support. I'd much rather add complexity in
+here for solving a real problem, like if we have armies of 32-bit x86
+users constantly starting new projects from scratch and using defconfigs.
+
+I'd _really_ like to keep the defaults as simple as possible.
 
