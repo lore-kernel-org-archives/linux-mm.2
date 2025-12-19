@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FADD74951
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 03:54:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A6FD7494F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 03:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DDFB6B0088; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
+	id EAABB6B0088; Thu, 18 Dec 2025 22:56:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48C306B0089; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
+	id E40E06B008A; Thu, 18 Dec 2025 22:56:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36DD06B008A; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
+	id D5C3F6B0088; Thu, 18 Dec 2025 22:56:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EC56B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:54:01 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 759E0C050D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:54:00 +0000 (UTC)
-X-FDA: 84234852240.17.4387C61
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4A9BA20002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:53:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=nD3atH0u;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C66CD6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:56:04 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E8F91403E1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:56:04 +0000 (UTC)
+X-FDA: 84234857448.01.71EADBF
+Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com [209.85.160.193])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 81B95140006
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:56:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MCMRPmaK;
 	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766116438; a=rsa-sha256;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.193 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766116562; a=rsa-sha256;
 	cv=none;
-	b=aCperfcs5QVd5ctTsLQQ6gck7FZ8//xI0p32RtIK7xRD9eGQHMjmd9x+yLvm5yAgtQKn7O
-	ht009pciAwFvtXqO1MCSCZjwigM/jlqHdoaNUh9tDDwSUJVWSEIuRVJGyBVjPECa9vn9Zc
-	6C9x1Q2LYWHewMM2jSsHTPmurIF8IOI=
+	b=S5Gdo3TDXAJtcLfzCmjwZYq5ATz7/XMlJ2zZEWQNo+Egbv9apTctXIi0qYpYhnN1iGqmt9
+	smiQIoR0EtqcYNXf46E/7CYmdyw0jYvN1FvpOtm46aSAhAMjMN9NHaGvmin94qFvAqg0X0
+	y4O6tf/vU7bksgz3gngQJL+cjwlqG6A=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=nD3atH0u;
+	imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MCMRPmaK;
 	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.65 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.193 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766116438;
+	s=arc-20220608; t=1766116562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
-	b=CeGwwwtgxCYThw95iqREXr6GjxrExHndWPDrUf++rTaw0GV0rrt/tqo0MSzFZyZoUhEHvw
-	JoIJJDs7OIJ2OwOP3fAMOIgShoCmLJ8WuoYo6kQhT7ALw3yzLAfPhj3aVHEoc33IPY5DEO
-	nVNjnxAx+64WAVxhNY7F7oUcY+dR+DA=
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-88a379ca088so14141166d6.0
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:53:57 -0800 (PST)
+	bh=VTtfle4/MykGQYtmzDysxCuwpMvHg0hiZkC5ebsS7CQ=;
+	b=l/y2UW/SpEvQDLnJIIMJvkA5xfQvETQki1RrbCXddjyNAsA5eo68yU+zqvqooVxF8EAMhQ
+	b8lg6JmetlQWSLT9JpU+L8hBlrxmQbV182FsrsJacOz6uMzCHWR6x8io1hr9O1ltNnTRq4
+	Rj/QEpucm5PJQer3W9rH5Wcm9jLfu7k=
+Received: by mail-qt1-f193.google.com with SMTP id d75a77b69052e-4ed82e82f0fso13581031cf.1
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:56:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1766116437; x=1766721237; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1766116561; x=1766721361; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
-        b=nD3atH0upfyKhTARBUldqKAhnMcK+FqkgiH3oPWwQCcNp/oRfQ9uhpNJQjV68d/CqB
-         i5wxvFi2SLQxa6GJGdTTEykODmtd5o902gZyQCkZUwHG59DXuUgu/CXZkAfxWfr/7XD5
-         E9/EdCd9vLoMxWvOCP+PDNeNo2sLKahu5JfpHH57RDVr4ILFevYoCn+zT3lMw0qCdayv
-         0260U2LU63gLChNab8VVjtj1nbDUr5VZPI/f0P5TV9jqOVU9W9y9LemEtlgvazy6XSqO
-         cOe1pBzz0BB9YlmB56Du2citpCuaMVlSZQoS3jIl/OISE3PyA70nSn6mUu0iDZmP5c/F
-         7LSw==
+        bh=VTtfle4/MykGQYtmzDysxCuwpMvHg0hiZkC5ebsS7CQ=;
+        b=MCMRPmaKDuHUof2WLOv1v6NNQIK9oStYKZtmJrnQQli/pU3TCPjt6m20f5oFGIeCdw
+         2MwAiW6J1OvS8t7E2lx7HjS0j6cSbsJ1slObdy93laeuP0QfiEgk8xI8r10zIDvnMLFc
+         bwHpS9RP9KpafcQ7ioYLELR6ZArOVsrNIVNps4iH8KnKNdJh7RYeDurYC/p1dKAiUcdM
+         Np+cuBsCdJ16Ad0+avsi/W2ChCFniPCcMLuZw9yGT/UStSnFqBneK+zMArsfndDNwpZH
+         EHzaeTGv589m9JPHSSysP09N1BDQyTWrBunVtApiudcIJpL+T6mFBSqKdpJHBJ8CKQpl
+         FAzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766116437; x=1766721237;
+        d=1e100.net; s=20230601; t=1766116561; x=1766721361;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wO8ZD48aUCpKc6SiZGez/drh8VR8QFTGkKklbJiyBj4=;
-        b=HQ+Mqh6z3o2dhlATzCFQqalNzrmqvfOCHY6Y96QtiBe903pQc2inZygkD4vVGrZMjg
-         x2HSeWzxNS8BJjVoLzWKX0uoPkKB4OPcDkaydQps0rR1a1MdnMmuGqgj7WeORwSjS4FQ
-         HzsQ2QPPlpKaYHLLtiPB97GL/y9D4M3KYqkMh3Lxq6svXyoCeuPBqxclEm2iV2vg95s9
-         7tqCjm1kq97GItr62aV8EDbYQfAUwTbPpra2Msv2o6ZNLskfs22t5ey17W9OF1HK1hsW
-         EcZ0+8SsCVnWTazTe+eRO4I+2mJFS0gdztmD1Khfq/PX0Mkqr9vePi5HbxekkTEy2MiV
-         IvgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvfRLDYLhU9ZAILCCF5LKIPV5/R+zBWbFkTdqOYzD+2H3WYdfrrk1PfSiQ+D7rnscJkoy8srq0Kw==@kvack.org
-X-Gm-Message-State: AOJu0YxPA7KjYZw9V6hemRtAxuE52Imt6/hjlDK9sE6UR8eDKtniwC+P
-	9e+2HLkFaUf07Br5GruJJl8zo9fCVb+2lwijqgWHaSsdD2Q7JVMytVp/1cc1LuPrH3Y=
-X-Gm-Gg: AY/fxX4xixTl6FUp+bebfT4RgoolkBb40mKfSDKZiokvX0XNxrdceLOdDaApUEop2pj
-	dQZhU34zVB/xaGPM88KeSf10gzRk8FqhTOM2kDoXwe4ZhiHmbQo//411BGdi9kijI+cZWKbGM6m
-	CC6i1RilJZs8woZ7Hrz1BQokrfF2JqdOyg02PnT+O+FA8JbmbjaoqDV/R5Mho3x86OJINweSD4I
-	pWTl46rkzRTesbqUu7lh/Pvuxo4jCVfGilBRZcIawvNXL31bdEwS53J84TbKXGy3VnEeJzs9wvP
-	v29kmrtmu/n84QE0glRphqVYB5IvfPMVrZyUnbDunuABk9TjbBTIqrTOBIsjRwBvHCcHdtyVD4o
-	TFf9pB9zpXRYGrgygbz3zUbjWWMohty/PjP1aaHq2O6rPDCvW9hIa5YypyRP4w8HBblnIeVd/AB
-	/jbIpNvXsfpQ==
-X-Google-Smtp-Source: AGHT+IGuYY97o/y/ARn4XW14juzlOImdtCYWCwBKScTq7uY6qi729cqFufMxSnRLQQHTYA8ofovkJA==
-X-Received: by 2002:a0c:f40f:0:b0:87f:b2d8:6020 with SMTP id 6a1803df08f44-88d86290cffmr27126906d6.38.1766116437011;
-        Thu, 18 Dec 2025 19:53:57 -0800 (PST)
+        bh=VTtfle4/MykGQYtmzDysxCuwpMvHg0hiZkC5ebsS7CQ=;
+        b=tPMYO41lAWcnFYMrR5tAGE1LJyMJ96PAqCc0k1pEjEiY3oGM+5nksmWkcDHxw66gVE
+         c3a6us6mjXjQKQ9QzbFRC+GUCdLYEM5x9P46fIh7jHJWqLXLwYszLcMwwrEypmkzMewJ
+         0dY9A6nFxt+RpGl4KqSdbthlfyVSdgiJVhcl+R6W+ffqePz455aXS2dFhMBWPJYvJKVX
+         bv5qyeJLz3vQkqun2QmCh+/hDbdZB6PMk4lKIsPUsf+V4FosSltltHafNN3VCKwdCEn+
+         ubkRtnWwQUaiu2mJPYfaje5KBd6iDStyWh0xUT7nbrI1n4Q/6C/AB2RsBnGdS3rdw3wY
+         ZeUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWLkrPRGQqahBrWASYvRBztNIJ3sNJBsKTBM6H6gpWSXFfJLAx2mr8PzKSdB/C/hI2kw+Rwho3qBg==@kvack.org
+X-Gm-Message-State: AOJu0Ywx0E51LVlC3ZUxkEjocOe0FSWVGqTByKxdd24bAcvrXcFUhhqf
+	apVlFNpAOSq1+/Z3ytFLHM6Bh8HXHGB+4rG+wKdwGEdQL1yNVwx6NtOdgu9kb3U6hVc=
+X-Gm-Gg: AY/fxX6U6rH7KJF6JyUL8ZW6jVPuwWdnduxakiRuLFWNHcJoxjEYmO8w5i9omuqlrVQ
+	mqDWD8QF4jP2KpCljbX/4ie9ih0I+GmrXJnZsqRsuUxHkyRpGvj9DbAStc/ToNJf70FpUj0gdF/
+	MEl3CgrtbWan4qLr16ivq9hfY166swLN/0xV/Va7CAKSpOiixBDCB4QWDE6xmArI+FBznQTEQDA
+	tJDmolnA2MRiontxWOVDeDqejaQWGUCwRfZQEmrGU1vnzaUOYfZTecyaAj6X/X0QU+nEJFnrHsH
+	0fqrYMj4DHdl86OgqYGSWzbcOv+W+jYAX8FWNv5RLzC2LhvtDJmuX6XPY45mSIEChmvUOMk4PFJ
+	RMTd33apNXNt5P+96mZhwvb4MJ01OKAe/Bi8TgY2j8Mk/1k/1Bb+GnYL5AZwxFT0s29ScwNOiS2
+	6WALVbBkVvGXLMLT0P7uNJ
+X-Google-Smtp-Source: AGHT+IFb5/BXn9GeXqAyeNuOtJbDxjaPRu4NM7Bq86/JmBGVvG42Er/O0lr+BnQiTxNW6EgE2U/MvQ==
+X-Received: by 2002:a05:622a:2c9:b0:4eb:9df6:5d6f with SMTP id d75a77b69052e-4f4abdbe93cmr23315421cf.74.1766116561499;
+        Thu, 18 Dec 2025 19:56:01 -0800 (PST)
 Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623ffd2sm10768806d6.9.2025.12.18.19.53.55
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d997aed21sm12322946d6.30.2025.12.18.19.56.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 19:53:56 -0800 (PST)
-Date: Thu, 18 Dec 2025 22:53:52 -0500
+        Thu, 18 Dec 2025 19:56:00 -0800 (PST)
+Date: Thu, 18 Dec 2025 22:56:00 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, mhocko@suse.com,
@@ -106,23 +106,24 @@ Cc: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, mhocko@suse.com,
 	Qi Zheng <zhengqi.arch@bytedance.com>
 Subject: Re: [PATCH v2 08/28] mm: memcontrol: prevent memory cgroup release
  in get_mem_cgroup_from_folio()
-Message-ID: <aUTMUKEkGu7cEgb2@cmpxchg.org>
+Message-ID: <aUTM0MdsAbpcH9GM@cmpxchg.org>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
  <29e5c116de15e55be082a544e3f24d8ddb6b3476.1765956025.git.zhengqi.arch@bytedance.com>
  <aUMkYlK1KhtD5ky6@cmpxchg.org>
  <ot5kji77yk6sqsjhe3fm4hufryovs7in4bivwu6xplqc4btar3@ngl5r7clogkr>
+ <aUTMUKEkGu7cEgb2@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ot5kji77yk6sqsjhe3fm4hufryovs7in4bivwu6xplqc4btar3@ngl5r7clogkr>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4A9BA20002
-X-Stat-Signature: 4f549z6amezu1pt5bzbjewsqqtwrxdcn
+In-Reply-To: <aUTMUKEkGu7cEgb2@cmpxchg.org>
 X-Rspam-User: 
-X-HE-Tag: 1766116438-182393
-X-HE-Meta: U2FsdGVkX18exi+crt4h+Mygzvt7LupYdj3glUrco8hzMD4mhMMOlm9cobg8YmEr3T2SuCV+nGSowPjaNDy8bRMfQwxV+pTrQTuQ3yumK/3F8L8F7BPnPVFF8kXP5WBKj3ZNr/qI4fJUwmgoe+Oczoc0KKpWrIr6ruqIOs6ZNCXLUEWI9KFaXnFVHf+pKV7CcCBD/1AWx+KD+rpQoyC+Oe1hUDaYW01d3mER/8Qs9MZ+Zsv0mrdQHfBr1GRYgrsKpjSkHwEn6xQb1M0MZ12n791dCdOU1dgp0i/nbJkgUNP0e45rt8XPW8tNaSjSh8odnmQtwLr8k8Uown9cdiUBjgXYnjLXzx+Zmt9mBhYTH3btzA8+Uom7i929comw8vLHA3OPrzUWDgQO+KMuUasF5fzzdJGEPTRBt1jCscGzu6uLPervrX+nbqaAvFVFmIaJLCSXNwCt0qQNn4uscQLhau5pfSdPyh4KQkeYqj41xMkijgPDzcEgcD/M/4k/EBnCm11KNfARhKGk7yP4i5RsHiqKgdEzwhPsuO0Tm7SpRRpAnYLgMyjOla/r6pBzUdb+lFqBPGY3R17rRzT05jkuOfg28i2pGKrWU+vpYfDbri22EVn4O7NwHfGq+t47Ezyv1jftRdIqIT5GlkuYR+inJjKsZwS+p28mXgYG4WRiwF9jpqLWaPFNsVR6tQz8Co391RcJb0rNDVbDPlCbHBw3JQRoBWxMHBT8CMqaWLWdpfo4M4CHb6xL85kcOhKGdP6o9T/aq/Q/sMW5NHZNenae21KziIq2ioPg8q3sekjcuIkZznX1US/I48MgJ9BztndRYEd6ZfwI7ukNvqNbicpuSXFqX/YvfN0sd174rzIrz0KghgdHy2/0da+t/W1rGWeytDxLtFi6ar+CdVblzu2ypHphGBwILdTdQsSf+K2fFVa6hbONyu0nDspDCek/dAYOCouP1WzE5JsHJhKp08t
- LiSfgCMO
- TGK5ow9PyKlI1LwUwdGF3dmsj8BIcqfY8fLbRNdWW/pJVIZkFFv8lmDB9gP1m0WFQ4VkdJ3o7bdgT/P2GC1TeJJSaYyf81eLFlID+WBU5A3bkeFG0p1oQ7pV5JPsWpMe5vxIggBEtwLlsyjxpaWFNjAiAfLE///3cclIfzUhtwzYzE1h/z6Mbbv21A5Eup072Rjn0Z5ZExK51Xf0l2IsJtrezseB8X8s/9L9cAeoxqBXWGXr5QlrKN4GHgq2H7LwBIVxMtI0RDsT4N3SmjyDi2hEO26dvc97+HC84GfAluI7ebJyHRnq/HtfsMJwkFwZoOjb1xExr8VCCOGu4sRT/SKh18Nc0NQcZzDUlX+OmDLTG7NXEf5ZGMfLFWmIWPXiHsYDnRn00+LYzJn7OaZWsf2aYjbi0PIc/6a+m+3grZvjpaAYwXr7WPJkjAN8VVvhpO81FgLnlkWZ8bqSPkmdd3/+bWZGodIduwGyPX/aPpjllcBU0uhqMF5PbGQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 81B95140006
+X-Stat-Signature: stpa6zb5zj1qxsohh5bnz7ef6j41usfu
+X-HE-Tag: 1766116562-781882
+X-HE-Meta: U2FsdGVkX18vegeIU0hDpZL5mYn6KyRa5vYqUnpM3C9lh3QlJRUILxvtKVY5i4xv8WtnJm0gCJ80ROHnZaNZw9NrAhsgs4wuarVcRbij0WwjyQz8AWDG0hY/bVVm7c0w/3uQM/07qeuRzZ9Wnl1atshzZNEaUBOz1b9McRLm73NCsqvfEpPq68Yp8t26ntd2Gw6XOuBeTS7RwmY0laW5gqpfrCBZwoaKMmal/FpzioetjWtEO4xLtSZUwPpPI+EMTJAT7BCOs1Q++QiYWUESLG9JVdoCnbMtRtYbrr4ivv1tar0b01eo6eAq/BvRjzcdtxyHw8poMwuVKTTvN0qs7Z930EWHddP2uDdEJdKiNhSotgeFiNs74u1yvRqr6OISzrvKNdL4oaepj/UYkhLI7PfF4X2VynyF4mdDoy7wUM4OD/2XPI78zXHzTo/dv0rRN215JxaIUz4p9RmWzqRsguThMtP2TeMkXo6nVu/BFQWy2ozMssafmyEEJsM1c3p/arBTBjySh5LSXBVc6z7V7CQka+g73KJlSpJA1id/NVXGZQsNsaq1LGvx8WhNeD/D+9LYvBVg+x3J5XXgpQozTmWTpiPOPGNdNb17Vh9JDo7ttFZGa5U8n8/0nl/D1MvdITmnCihZfCzPEInwuVE9XE6NT9u+iUGDxdM4dsPwPl3D+kjC4dFhZXJc2KjHubIi92EG22t2Xg90EYY6ljmAKoeWWfipNFUAJl/T0h3/BDFgrHgZjp4x+A4YSHn7WZP8dzUhVvFwol/te/hO7fsxh2BBvd4cq5IY/O1E77cORBtEBcPKkbdE6jEJxDMdMJMjyBaFkvG7x+aTXoW8sTi+qf7lauK/OaMysVB8onymWSvIm5imyYcLPWVVAjSBXuW4jaKtimLT//WCscQIN87vqNgzkqt54zNtXH5AYSPCX/8DWD7V/rkn3wwNEx+VnNbE+JZBDmQb0yH3c1Bhl3d
+ c09lBgjw
+ oQPF1keaTHJQg66dOt/Y8sS6QIRtWGu5roYX9BSOYgYosm7feGKCyJ1mylMLbl9GHZLU2rnIiqtLQ4eMjKsZ5g2JCR8i7+/ll5KQ8FKbfU6EFQnE6DEkfR+7X+ayo97ZL5dAKCRRzycMGgHxLAlfhoVMhZoDM1EHP6GE0yEq9XaoT9w/8DT/IL9CbQX4VnrJ/MttLwd4c9zqImpI6E7s/DxdFr/0b8t1lgLmfsPuwFsTCLE/1ptEd2i7TkAwYd9ePqzfXw0W0WXABl1B3Xq6MuIsgItmaBrSJE+I7m1UZYecTC4468nu+ou8/Kyy627PkmmP4DnWByJr6CNPCC3kI9HbF3lGaqw+kn4ginISJTSlRUO4KkEhwodNcSgD6unDQy8Ku4G0fzm7/AkS7fucQbOHbw3FwpHy55Ag716ppqL7gU9437kxzrdA/SSyK2fucW3GbXKCT9cj12RVUQaL0xGSI5s/InHNq/C1E3QJlYhqK1gJJ7EC5WyEOTdIoHo39dtQaD7+cgpQyx/Y6EY+bxHfwVJPcUYSNyu9B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,82 +132,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 06:09:50PM -0800, Shakeel Butt wrote:
-> On Wed, Dec 17, 2025 at 04:45:06PM -0500, Johannes Weiner wrote:
-> > On Wed, Dec 17, 2025 at 03:27:32PM +0800, Qi Zheng wrote:
-> > > From: Muchun Song <songmuchun@bytedance.com>
-> > > 
-> > > In the near future, a folio will no longer pin its corresponding
-> > > memory cgroup. To ensure safety, it will only be appropriate to
-> > > hold the rcu read lock or acquire a reference to the memory cgroup
-> > > returned by folio_memcg(), thereby preventing it from being released.
-> > > 
-> > > In the current patch, the rcu read lock is employed to safeguard
-> > > against the release of the memory cgroup in get_mem_cgroup_from_folio().
-> > > 
-> > > This serves as a preparatory measure for the reparenting of the
-> > > LRU pages.
-> > > 
-> > > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> > > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> > > ---
-> > >  mm/memcontrol.c | 11 ++++++++---
-> > >  1 file changed, 8 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index 21b5aad34cae7..431b3154c70c5 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -973,14 +973,19 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
-> > >   */
-> > >  struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
-> > >  {
-> > > -	struct mem_cgroup *memcg = folio_memcg(folio);
-> > > +	struct mem_cgroup *memcg;
-> > >  
-> > >  	if (mem_cgroup_disabled())
-> > >  		return NULL;
-> > >  
-> > > +	if (!folio_memcg_charged(folio))
-> > > +		return root_mem_cgroup;
-> > > +
-> > >  	rcu_read_lock();
-> > > -	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
-> > > -		memcg = root_mem_cgroup;
-> > > +retry:
-> > > +	memcg = folio_memcg(folio);
-> > > +	if (unlikely(!css_tryget(&memcg->css)))
-> > > +		goto retry;
+On Thu, Dec 18, 2025 at 10:53:57PM -0500, Johannes Weiner wrote:
+> On Thu, Dec 18, 2025 at 06:09:50PM -0800, Shakeel Butt wrote:
+> > On Wed, Dec 17, 2025 at 04:45:06PM -0500, Johannes Weiner wrote:
+> > > So starting in patch 27, the tryget can fail if the memcg is offlined,
 > > 
-> > So starting in patch 27, the tryget can fail if the memcg is offlined,
+> > offlined or on its way to free? It is css_tryget() without online.
 > 
-> offlined or on its way to free? It is css_tryget() without online.
+> Sorry, I did mean freeing.
+> 
+> But in the new scheme, they will happen much closer together than
+> before, since charges don't hold a reference to the css anymore.
+> 
+> So when css_killed_work_fn() does
+> 
+> 		offline_css(css);
+> 		css_put(css);
+> 
+> on rmdir, that's now the css_put() we expect to drop the refcount to 0
+> even with folios in circulation.
+> 
+> The race is then:
+> 
+> 	get_mem_cgroup_from_folio()	cgroup_rmdir()
+> 	  memcg = folio_memcg(folio);
+>             folio->objcg->memcg
+> 					  offline_css()
+>                                             reparent_objcgs()
+> 					      objcg->memcg = objcg->memcg->parent
+> 					  css_put() -> 0
+> 	  !css_tryget(&memcg->css)
+> 
+> and the retry ensures we'll look up objcg->memcg again and find the
+> live parent and new owner of the folio.
 
-Sorry, I did mean freeing.
-
-But in the new scheme, they will happen much closer together than
-before, since charges don't hold a reference to the css anymore.
-
-So when css_killed_work_fn() does
-
-		offline_css(css);
-		css_put(css);
-
-on rmdir, that's now the css_put() we expect to drop the refcount to 0
-even with folios in circulation.
-
-The race is then:
-
-	get_mem_cgroup_from_folio()	cgroup_rmdir()
-	  memcg = folio_memcg(folio);
-            folio->objcg->memcg
-					  offline_css()
-                                            reparent_objcgs()
-					      objcg->memcg = objcg->memcg->parent
-					  css_put() -> 0
-	  !css_tryget(&memcg->css)
-
-and the retry ensures we'll look up objcg->memcg again and find the
-live parent and new owner of the folio.
+But yes, none of this happens until patch 27.
 
