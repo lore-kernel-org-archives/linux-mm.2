@@ -4,98 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AD7D74961
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F71D74964
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE9F86B0089; Fri, 19 Dec 2025 03:33:46 -0500 (EST)
+	id DB2EF6B0088; Fri, 19 Dec 2025 03:35:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6CE96B008A; Fri, 19 Dec 2025 03:33:46 -0500 (EST)
+	id D5D1A6B0089; Fri, 19 Dec 2025 03:35:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 978FB6B008C; Fri, 19 Dec 2025 03:33:46 -0500 (EST)
+	id C89896B008A; Fri, 19 Dec 2025 03:35:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 881026B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:33:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39112C0517
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:33:46 +0000 (UTC)
-X-FDA: 84235557252.02.7750599
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8946540002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:33:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZjsEG/9L";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766133224; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA6FC6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:35:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6447916022A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:35:18 +0000 (UTC)
+X-FDA: 84235561116.08.4B3CD90
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 76B0B1A0016
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:35:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PW1n1H/W";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766133316; a=rsa-sha256;
 	cv=none;
-	b=f6aaCDXPefelYY/ClETci/FO40do+1H44mZ2T8dq08hVGgA9oLOO1NhanTWVQrYnfOTrBD
-	QM9YBgrGZbMWHa9iPAXwzZqi/sWZImdtrlKMkbvLY4+L2ANvmNgMUeyddlUvj6x+ANGPkc
-	QkBWvuWDn5FQDMzTdR/8nGyOWC4Bjcw=
+	b=BPVNaJe9laeyIIdeOzACQWfQru/y0nf5EyY69tIqSO08hCiHDuqGLiJE+jicnOuL8lxjwF
+	EcEXufMnF8Ub4FdWB7Pwm/gMDdF7EP6vREeXrfAfaF2xvQpW9Ua9fU5fqmBVZAh+8/qlKu
+	GKnGQWYDzRdMoroySfbntiCr9DPk334=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZjsEG/9L";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PW1n1H/W";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766133224;
+	s=arc-20220608; t=1766133316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIDsQCwlqqgP9x9GwBolDPm/BGDimG14wr8Ggbd7TzM=;
-	b=FoEVnoOAZ8xg/f/3VrpSK16rkxH8zGVlVn6weX+jz2HZfdN9tdIqmFr6j0NKYkk3b0c8YX
-	JsSMhuPs4T+pSTiG8+GIRu9L2mbLYza7SSBnnpoeT+cjwO2e1mK4xeSFNCscZLwq40fbOT
-	7p/grTRYjMcoYCsQtUrxXaEuewmq6Ow=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 07D3460008;
-	Fri, 19 Dec 2025 08:33:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7294CC4CEF1;
-	Fri, 19 Dec 2025 08:33:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766133223;
-	bh=4B+l2MwUz1LMaqEP+Zj6ou6Q2OwRYmTVRKq1sbXUiYw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZjsEG/9LnbdsPCmJJJOnM4nJv2T9cbYHSWCO1ly86HNVVMYKd8R5Ky+hsvtHEgkkA
-	 tz/GDzPz177KWKPPn0ML9QgZ3BbnmIeOieeoSF50feiXiAxkuYfMMFKd9sD3nFKqY9
-	 jDkbEzjD6IVp1gh3xVX5HCru/ReqIk5rSANqJc2yo3W5JplQGQb2gSaLjcqTX6mRdg
-	 N4esTbRlRkCO8pTIXfNVbkvfUE2xnmETpoiQ3gsG6GZpuPq+k7xdYGrKZr+Zs4i9gH
-	 88EgAaEt9Bo+vzK6LJDu4rHEjhOjy+QYnIT/4ja4Ndlz3M4/Rr8OIdtXxsQu89ToOq
-	 MovY6cgMV3+BA==
-Message-ID: <17bdf357-251a-4b95-8cba-6495ce11ceb7@kernel.org>
-Date: Fri, 19 Dec 2025 09:33:37 +0100
+	bh=zmq1ynABAbkhs0OGsiz118T4MKIB/o9hyfGA0oaMdfE=;
+	b=kzU7ukeuTm6mBqgzuE/ki0myZqKxPk0k1TVLf/lUk4YWS0IrLf5b7gzXb5OHCAdrIXMGmI
+	22X87MQr5VPET5PxeOLfl3g8/VjeiGbLgqyQ9Gfy6P8WJ01AWJVFd4FoAAm4k33uAYm/eP
+	lvc3yZHLtHgQ1o+tUw59/cQpnO+43Is=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso2228726b3a.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 00:35:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766133315; x=1766738115; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zmq1ynABAbkhs0OGsiz118T4MKIB/o9hyfGA0oaMdfE=;
+        b=PW1n1H/WAAXIuQA03NPx6/LMbd2CawO9MqLKgtcrlJCEQL2XK4BMtDo72oWDKGwjOf
+         VHRNCSZDSN8c9DFPUDisOWNOCyJeI1o21jEuFjzMvrP/dD2x2Yiw/Rtvy5OTmMh9RUVI
+         n9vmSpniF9F7tL7ljxT3vx56rdJ4CBk8RfikF0r2gTSTyrLxQHiSk5DNXze71x3SN1R9
+         26XcLCUVqAPshYZx3OBQA//yMhEgga5foqVBm+JIqTcixHQz+1hlVtmoZxklu8tT2kc1
+         sxDNcNl/Gkbqt8UurOMo5ZuqDrUUyJzUDJF7vuuppfMpZ1NyRuUOovdYWDJZb8r+pp2/
+         JI3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766133315; x=1766738115;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zmq1ynABAbkhs0OGsiz118T4MKIB/o9hyfGA0oaMdfE=;
+        b=ZCoRaikrjWTJJXchjAGVvMP4RAtNn0M5wCQITTFLG26mU2lsmuyMJlO4enO9IaPV3s
+         HkLapHEMFc/RBQNupzFHLJLOx/u+aYLdaoZlOrgD/X4vsbj9JsZUcTbhB9NiqnlOfa3g
+         abBGWxTJQPkYiwvMnJo0vnMmpAbcW6d+pTWOFCdV4G+nrmiYKg+D+hLbGnh6pOlCKia3
+         KGZyoTY7PVcSALV6U0rIvr3lHoiLzTvUyAPXQoJA+bWUna3YU5WzCpws4mwHAgDCjLhM
+         gOhEe+P8KgqgYxjP7D4HgtDyNZS3459fdThhnA2IGbC9MmPJ1WrgHZ/WfKeJH5nVsrsX
+         K1GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdeo8RCcu15gUmWf+7zGkJYluEbt/zpOnuVYX0ZhKtfY8EfiFasYUCDXW+G2RSVyi7SWmyLrSrTQ==@kvack.org
+X-Gm-Message-State: AOJu0YyHl1tyMgrK0ttXHJrJi1Ih4faXXJIWf62prRZU3caSEGhSyqwp
+	/aZ/vbuxhXMyM71nSvBMfULfsv4Rqlhzd43HUtnxEUugzWpH39MQ4kvr
+X-Gm-Gg: AY/fxX5t29VpvX9WeOky7cFaKIuFJjLUpsx/S5aEUonvKaCO6bGgbKf6avcLynJsJe2
+	HmvsVAdzPetGhVJZTE2gzE9HYqSYWQ5iX4NuqFEe+itLikFE5zt5HrRx3hzVWfgYasmP1TQCAqV
+	1K9ZS4rzpvl6LbRPFAS5kImv3RXLUj3ov4J5cmqJj0bpRN680uR3niq13pUzUhQ78+fYzuRkO6C
+	yfuk3D7XBw2mv2LBxF399zC+AX2ualBcDWTjU8HF0dFLtpcLhvFsUUw8UTefC7RhBPwtIVSuSPm
+	vbnaSqtw271+RZzw3xw5EtSb/Zg6zY3oZqNlM8fs8hXpO33VD4OoZ8nFzlySDT+gIDUTpFnUsPs
+	pt0ssrpoYfJCuNqjpwclMWspBidcuFPkz312T75MrIw0/qU0KvfryNZLMolYo/oeP8QnU1ZSnfS
+	nFJ7Umrh4qP+6BWIIOnb4Ujbbh
+X-Google-Smtp-Source: AGHT+IEw5hDSeB3qpsLX+xm4ynqmmYxk8XGOldnANdFKvs9A2sBFAz6s9g/mHWXzWpte6A6cNYf/bw==
+X-Received: by 2002:a05:6a20:1586:b0:36a:dbc6:2572 with SMTP id adf61e73a8af0-376a7af532dmr2243918637.18.1766133315151;
+        Fri, 19 Dec 2025 00:35:15 -0800 (PST)
+Received: from localhost.localdomain ([114.231.217.195])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e76de1e41sm1870109a91.2.2025.12.19.00.35.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 00:35:14 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:35:09 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+Message-ID: <djh6xaia56grmgxdok23kp6ly3oe3ugsinxdp6jie3k2tzwaml@57gbrcr75jng>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
+ <26e65878-f214-4890-8bcb-24a45122bfd6@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmalloc: Add attempt_larger_order_alloc parameter
-To: Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Uladzislau Rezki <urezki@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Vishal Moola <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20251216211921.1401147-1-urezki@gmail.com>
- <20251216211921.1401147-2-urezki@gmail.com>
- <6ca6e796-cded-4221-b1f8-92176a80513e@arm.com> <aUKb1bL7CUcCWi8V@milan>
- <0f69442d-b44e-4b30-b11e-793511db9f1e@arm.com>
- <3d2fd706-917e-4c83-812b-73531a380275@arm.com>
- <8490ce0f-ef8d-4f83-8fe6-fd8ac21a4c75@arm.com>
- <307a3cb2-64c6-4671-9d50-2bb18d744bc0@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <307a3cb2-64c6-4671-9d50-2bb18d744bc0@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <26e65878-f214-4890-8bcb-24a45122bfd6@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 76B0B1A0016
+X-Stat-Signature: t8gfh8ykz9yr111hchecwnq1gbodp7dd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8946540002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: b4bm1ypskxeq96q1zx1jr1hpx3r7nzxe
-X-HE-Tag: 1766133224-773818
-X-HE-Meta: U2FsdGVkX18kOnYz1exM4gk+1NWIcTBdxUd5pTXmt9At5fnyueCu4v8ZH+Nm9uXOyODQbcnEhJIBDlZx0n568rBTlVT9uzPbM4HRj3WIloaZ0cZ0HCFXiIS8Kdu87e5FQfdhNcimvUjmOB1mL6sn7kT5eGQHE0WaVKfllVHTmcDWqfgkJ0h6+ZAWJdNaQwwmkSSshvlNogqyEfBUwDXljVJF1lHEPFvN3L3o+ktRY1cpXUmzvEMe/7ZfEMvN7K9jDIkUrFgbnDEKuulq1W4Z7ZLQyud0lQIcHirueEouMunKdT4wS7poag1YAZCZxoDKRbIydMWpALUcdSRfO16PlR74e0Qs7deaY+dI7YZ5TlKcKyNwGSvXEjYoSi5XKQHX2lz9q0gH9zHWI0uyPbB2YR13QTmODJB1DooWYsD2Yx+A8h56p1lX7MZXEuYomZfdB3q7O/4YZoYaeCxm/ogJDqvBGR8COf7a2hunLkz6dvNn5ZWTd/ZaSgF3XOBhscRfikaMtG3Rr9fN1aUuBEX7CKQPLIplaV73E+6+nLHo8gPogEUS2p83AMFU+rYFPKh7qhKu0gN8juern73QwI0Xjp+++qmbcrcwqwlMcpHbgsYRBakzRlN4RkXVoOb8QT9cBseRfjmJ0cCrtVkTlNBY1AozsDuyPdURxcXUwc5trGVcGw5ZE+YK+NilxMkrN3H9lVhY677LQiaAbw9kavW6J5osObZr5kj1Sj5ho7amNnL1KUch5u+YLoTNCe8FyZsFGcv17IzRo955vgCzNYEx4l/H2iunia28YjkZizNFzbAwxGwP0/QHT6dePcrDiwcQsO8FEsZRDLfvtajd42ok0BcOSOB0423xYTKhHPO/wj7AQWYmqvuQ01133sEDwYV9PYTwJZbsHuop8i0m1TBDoA1C3dxk0Pr8+DnhmfE4GVuLwAnuQO6wNIFaKm4GcX15LDk4e7ETIGXtcqUWJpT
- HoNLo+ea
- mnPyXwENftoBb2ZVH+ZtKoFDiqx10OOp0icg3JvfZ/HySvYO4bFmI7Rtao8m3Sh+7iWDzoP+5Y/P2jR6TveuYgD4zgPcnAZC9gJn+0rg1cNJFtK7K3b6STgplhA01rQjxBNYHkaIDqxKU9xuLgsIdQb6RmdRIn55LUmNulK9OfCScsiluU+/tCFXBXrOT3bAef/s/MR86xeUEGKNFOB4YxglwHZ6f+4e25UUkgBHxl3LOlcm9zHG0tz1AArik9MVov+KdWot0ftRWbPcWmtBidRtOvQ2Ttu4kutFqokEilTMVJ+diV2QagGek3CDadO0iPw668FiWpRLX2fv2tKR2MVxrsWrV+n2B9ojF5QDliwU9Ob7UeSuZTPNS4I6TgAkJyQ90
+X-HE-Tag: 1766133316-698266
+X-HE-Meta: U2FsdGVkX1/1sl20YCqaBG9DpDZIoNhDENrjA8ImT5eWxYDXSqYJ3N3h/IlhfIe2gCzPchgFC7MA5xnJYJLzZXI5wRrEu2sQkBxnBrbFUL6IkYvh5Xz9RJj2H1yspoMboITkHM1nA3AKYe3r2oV+ccIWqEoC6B+Qfbv051QzfMk8+T2wkdNmwUR0YC3JPjChH8zBMkkxyM+WuUb2WPvFxRm1vyjyfKyBFdgmO5OX+mfDgpcBTLW3RbZo74Z4DyzeBwieMgiQgkDtNXdWGLpEtnwnW2svqRyrr8Yfifv7mQiZ1e2CgM9n1iHC3RybfJmn64PWb90jR7qIUlCSx//242jtCooTxkcgzLi9BuBxXrPcPZotPI5j6uxk+UfDeN491btzjBGuFjBIriTNcJwxyCWVEUkRYlX5sbdOptB6GLvH2zMHgxQwX9VQxtIMS+APYrCVV2CvaxUUpBlOvg0SsVIISrhoL/3ueuAFEm/r+gdJvbSGe4LtPZGHFr9pWvlCtjJZpuIhzOzbfuNDJNZBLVSyGlXiIwek0MAoedJLG+8lTZQJr4tFaRH1RYCzBZEH70056/GKaRYxcrwCEpLZLoKQdSO9AAuB3FCjuxCQYnyCyBizRr4MymwFIVXk67mJz1hoaBS2WPcGX07MVs88oeY7VfAsOG9H13bV8WIkVjVve4/Mu3lpO2N43UlnkoVmqbCMVaKJRfB09LpBOddkS6QRhHOKOy3yW1rA7NhWb/6nmwGdSmOePrETbuEFoHlCyWURvlqm/uecB3xI9U4RMxa0vPgAemqg3bJRxZVgeavHlk5gvMWMVUEWowT2m/js4YZVNVpukdGS2eyYM+7+ZBYAlWR2Upu0XEEJ1OmeGU4lJ+ogo21Nav4983Zqidi1vMhVgcuneNpa5nABWBZmAFbWU3mhzeKdzgcQ/I/k16quQpu74PYbBMKvjRfc5pWZnIzSrDrP5zsvydK1WZv
+ ezG+18QB
+ OJgBUV4EF/3LiZlpIda2sjLoGrG9hHm9vuT3AHeNSe46Q2DZLY3s/xGFHN7GfsmSLMWJmkalXO1xzOLg6jxzsIm79dt0b138rauzbwSUZGQeIfpQCgfkyGu4vIShhy2gR6R1Vs8l4cumy0xL5d0p9Bmb/ai+NG07X1vuo0oPcfWIqekyiV6+ULQk8Iu7/LnDoaBB9/DN6F35Ki8bPvCgs8kX35VNHnLIBSA3gRmuX1XJoVuvy4kq2a80ijLAQxdI1GrzxYwOS6qHnSEqDpvz2JUIWDUl0iDl4SJ3V4zQDtgmxdA9+JHz3XjpHmr2+b/KQFTkHSkeHeSHH74LGtt0yDnfA5wUkKqobHSHMsIEOSC51e4fXRKWUd0oWr2McknIuSIFNonGJx8aWrVUXYCdSjAAMayBdyAXRR0Wuyy9zbc+ePn8J+KuKifZfmbNByLCfI7kThKG/nesqRL92Rpcw6unJvJe5cDusgnyiwTBpTDXoaGsnS9S8aiNfycN5ii1ageRZsua8ZzUg8jmH2WROom2vzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,161 +122,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/18/25 12:56, Ryan Roberts wrote:
-> + David, Lorenzo, Matthew
-> 
-> Hoping someone might be able to explain to me how this all really works! :-|
-> 
-> On 18/12/2025 11:53, Ryan Roberts wrote:
->> On 18/12/2025 04:55, Dev Jain wrote:
->>>
->>> On 17/12/25 8:50 pm, Ryan Roberts wrote:
->>>> On 17/12/2025 12:02, Uladzislau Rezki wrote:
->>>>>> On 16/12/2025 21:19, Uladzislau Rezki (Sony) wrote:
->>>>>>> Introduce a module parameter to enable or disable the large-order
->>>>>>> allocation path in vmalloc. High-order allocations are disabled by
->>>>>>> default so far, but users may explicitly enable them at runtime if
->>>>>>> desired.
->>>>>>>
->>>>>>> High-order pages allocated for vmalloc are immediately split into
->>>>>>> order-0 pages and later freed as order-0, which means they do not
->>>>>>> feed the per-CPU page caches. As a result, high-order attempts tend
->>>>>>> to bypass the PCP fastpath and fall back to the buddy allocator that
->>>>>>> can affect performance.
->>>>>>>
->>>>>>> However, when the PCP caches are empty, high-order allocations may
->>>>>>> show better performance characteristics especially for larger
->>>>>>> allocation requests.
->>>>>> I wonder if a better solution would be "allocate order-0 if available in pcp,
->>>>>> else try large order, else fallback to order-0" Could that provide the best of
->>>>>> all worlds without needing a configuration knob?
->>>>>>
->>>>> I am not sure, to me it looks like a bit odd.
->>>> Perhaps it would feel better if it was generalized to "first try allocation from
->>>> PCP list, highest to lowest order, then try allocation from the buddy, highest
->>>> to lowest order"?
->>>>
->>>>> Ideally it would be
->>>>> good just free it as high-order page and not order-0 peaces.
->>>> Yeah perhaps that's better. How about something like this (very lightly tested
->>>> and no performance results yet):
->>>>
->>>> (And I should admit I'm not 100% sure it is safe to call free_frozen_pages()
->>>> with a contiguous run of order-0 pages, but I'm not seeing any warnings or
->>>> memory leaks when running mm selftests...)
->>>
->>> Wow I wasn't aware that we can do this. I see that free_hotplug_page_range() in
->>> arm64/mmu.c already does this - it computes order from size and passes it to
->>> __free_pages().
->>
->> Hmm that looks dodgy to me. But I'm not sure I actually understand what is going
->> on...
->>
->> Prior to looking at this yesterday, my understanding was this: At the struct
->> page level, you can either allocate compond or non-compound. order-0 is
->> non-compound by definition. A high-order non-compound page is just a contiguous
->> set of order-0 pages, each with individual reference counts and other meta data.
+On Thu, Dec 18, 2025 at 10:29:18AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/15/25 10:04, Vernon Yang wrote:
+> > The following data is traced by bpftrace on a desktop system. After
+> > the system has been left idle for 10 minutes upon booting, a lot of
+> > SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+> > khugepaged.
+> >
+> > @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> > @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+> > @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+> > total progress size: 701 MB
+> > Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
+> >
+> > The khugepaged_scan list save all task that support collapse into hugepage,
+> > as long as the take is not destroyed, khugepaged will not remove it from
+> > the khugepaged_scan list. This exist a phenomenon where task has already
+> > collapsed all memory regions into hugepage, but khugepaged continues to
+> > scan it, which wastes CPU time and invalid, and due to
+> > khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> > scanning a large number of invalid task, so scanning really valid task
+> > is later.
+> >
+> > After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+> > SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+> > list. If the page fault or MADV_HUGEPAGE again, it is added back to
+> > khugepaged.
+>
+> I don't like that, as it assumes that memory within such a process would be
+> rather static, which is easily not the case (e.g., allocators just doing
+> MADV_DONTNEED to free memory).
+>
+> If most stuff is collapsed to PMDs already, can't we just skip over these
+> regions a bit faster?
 
-Not quite. A high-order non-compound allocation will only use the 
-refcount of page[0].
+I have a flash of inspiration and came up with a good idea.
 
-When not returning that memory in the same order to the buddy, we first 
-have to split that high-order allocation. That will initialize the 
-refcounts and split page-owner data, alloc tag tracking etc.
+If these regions have already been collapsed into hugepage, rechecking
+them would be very fast. Due to the khugepaged_pages_to_scan can also
+represent the number of VMAs to skip, we can extend its semantics as
+follows:
 
->> A compound page is one where all the pages are tied together and managed as one
->> - the meta data is stored in the head page and all the tail pages point to the
->> head (this concept is wrapped by struct folio).
->>
->> But after looking through the comments in page_alloc.c, it would seem that a
->> non-compound high-order page is NOT just a set of order-0 pages, but they still
->> share some meta data, including a shared refcount?? alloc_pages() will return
->> one of these things, and __free_pages() requires the exact same unit to be
->> provided to it.
+	/*
+	 * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+	 * every 10 second.
+	 */
+	static unsigned int khugepaged_pages_to_scan __read_mostly;
 
-Right.
+	switch (*result) {
+	case SCAN_NO_PTE_TABLE:
+	case SCAN_PMD_MAPPED:
+	case SCAN_PTE_MAPPED_HUGEPAGE:
+		progress++; // here
+		break;
+	case SCAN_SUCCEED:
+		++khugepaged_pages_collapsed;
+		fallthrough;
+	default:
+		progress += HPAGE_PMD_NR;
+	}
 
->>
->> vmalloc calls alloc_pages() to get a non-compound high-order page, then calls
->> split_page() to convert to a set of order-0 pages. See this comment:
->>
->> /*
->>   * split_page takes a non-compound higher-order page, and splits it into
->>   * n (1<<order) sub-pages: page[0..n]
->>   * Each sub-page must be freed individually.
->>   *
->>   * Note: this is probably too low level an operation for use in drivers.
->>   * Please consult with lkml before using this in your driver.
->>   */
->> void split_page(struct page *page, unsigned int order)
->>
->> So just passing all the order-0 pages directly to __free_pages() in one go is
->> definitely not the right thing to do ("Each sub-page must be freed
->> individually"). They may have different reference counts so you can only
->> actually free the ones that go to zero surely?
+This way can achieve our goal. David, do you like it?
 
-Yes.
+> --
+> Cheers
+>
+> David
 
->>
->> But it looked to me like free_frozen_pages() just wants a naturally aligned
->> power-of-2 number of pages to free, so my patch below is decrementing the
->> refcount on each struct page and accumulating the ones where the refcounts goto
->> zero into suitable blocks for free_frozen_pages().
->>
->> So I *think* my patch is correct, but I'm not totally sure.
-
-Free in the granularity you allocated. :)
-
->>
->> Then we have the ___free_pages(), which I find very difficult to understand:
->>
->> static void ___free_pages(struct page *page, unsigned int order,
->> 			  fpi_t fpi_flags)
->> {
->> 	/* get PageHead before we drop reference */
->> 	int head = PageHead(page);
->> 	/* get alloc tag in case the page is released by others */
->> 	struct alloc_tag *tag = pgalloc_tag_get(page);
->>
->> 	if (put_page_testzero(page))
->> 		__free_frozen_pages(page, order, fpi_flags);
->>
->> We only test the refcount for the first page, then free all the pages. So that
->> implies that non-compound high-order pages share a single refcount? Or we just
->> ignore the refcount of all the other pages in a non-compound high-order page?
->>
->> 	else if (!head) {
->>
->> What? If the first page still has references but but it's a non-compond
->> high-order page (i.e. no head page) then we free all the trailing sub-pages
->> without caring about their references?
-
-Again, free in the granularity we allocated.
-
->>
->> 		pgalloc_tag_sub_pages(tag, (1 << order) - 1);
->> 		while (order-- > 0) {
->> 			/*
->> 			 * The "tail" pages of this non-compound high-order
->> 			 * page will have no code tags, so to avoid warnings
->> 			 * mark them as empty.
->> 			 */
->> 			clear_page_tag_ref(page + (1 << order));
->> 			__free_frozen_pages(page + (1 << order), order,
->> 					    fpi_flags);
->> 		}
->> 	}
->> }
->>
->> For the arm64 case that you point out, surely __free_pages() is the wrong thing
->> to call, because it's going to decrement the refcount. But we are freeing based
->> on their presence in the pagetable and we never took a reference in the first place.
->>
->> HELP!
-Hope my input helped, not sure if I answered the real question? :)
-
--- 
-Cheers
-
-David
+--
+Thanks,
+Vernon
 
