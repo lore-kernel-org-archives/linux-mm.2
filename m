@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E09E8D7878A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36F0FD7878F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B51B6B0092; Fri, 19 Dec 2025 10:45:32 -0500 (EST)
+	id A223D6B0093; Fri, 19 Dec 2025 10:45:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484016B0093; Fri, 19 Dec 2025 10:45:32 -0500 (EST)
+	id 9D05F6B0096; Fri, 19 Dec 2025 10:45:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38C356B0095; Fri, 19 Dec 2025 10:45:32 -0500 (EST)
+	id 8CFD96B0098; Fri, 19 Dec 2025 10:45:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 26A2F6B0092
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:45:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8EC55867F
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:31 +0000 (UTC)
-X-FDA: 84236645262.16.3D8E353
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C8EFE1C000C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hFqYZIJ9;
-	spf=pass (imf18.hostedemail.com: domain of 3F3NFaQUKCGQGNXGTIQQING.EQONKPWZ-OOMXCEM.QTI@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3F3NFaQUKCGQGNXGTIQQING.EQONKPWZ-OOMXCEM.QTI@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BCB86B0093
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:45:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 499871602B6
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:39 +0000 (UTC)
+X-FDA: 84236645598.13.A296463
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 63B8D120012
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:45:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ljsq+SCt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 3H3NFaQUKCGwOVfObQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3H3NFaQUKCGwOVfObQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159137; a=rsa-sha256;
+	cv=none;
+	b=byUIm76n/egMET0W411CHpa+iG8TPBLZzvcUw4GnaBfITzlUAk7canEWArMquyrXTxCzNd
+	tRO4SF12kPToP4qIU+0WtlJapvwtI1i3oeesEhdsOPlYZ4UGXW1f9KH4u2z0/WNRVQJQrx
+	oXqNN/xWSWXmQYF3BZR89b0ftozRXuI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ljsq+SCt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 3H3NFaQUKCGwOVfObQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3H3NFaQUKCGwOVfObQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159129;
+	s=arc-20220608; t=1766159137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIbRhS5yAElvokIR1MvQQLNlZ/WUUA5jS9gYnuf7mNE=;
-	b=D7UxxQMj13l/JZ6Hyoa7NR1ec/a4Xx40x3IbnWmEnVNn1drNuXKhjsRr4mJ8qRakFuqKgn
-	lNPiBy6MkcVjQw6Q3as6cO5FLCsJQgtJcSGhen44QwiEIAD7KKGV3vRKLF1z5koQWvzm5N
-	7Vj+crW9i3TB1DHinBcqaiChPOq0Myc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hFqYZIJ9;
-	spf=pass (imf18.hostedemail.com: domain of 3F3NFaQUKCGQGNXGTIQQING.EQONKPWZ-OOMXCEM.QTI@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3F3NFaQUKCGQGNXGTIQQING.EQONKPWZ-OOMXCEM.QTI@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159129; a=rsa-sha256;
-	cv=none;
-	b=JOJW3GXkPBA+08AJqe9xkV/OHbRt24cKsM1RS7UIFlWJ+3bWI9y5J7wGQywXzDk9c4qj7i
-	d2U5zrxtu3G5yVq8tnR9q94iQvOfwGXCT8yX1wdss9iuwqzL0TVEmy8/9n/6xfA+JnAG1Y
-	uN/kAUvUCnM2d1AUBibG3uzlCz/qJ0E=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcf10287so1391065f8f.0
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:45:29 -0800 (PST)
+	bh=wNypD57EGX2MX8ivTIXP0XbqOR/mFQo2ssZAJ4O2zXU=;
+	b=rHuU9v/EoCQaOOA7inUq86wn9uUNLIIdfn6kuj0B/UzozfR4xcb9VH9LDCCf8DL6IRs6bl
+	FV4M3lSOUpb9pa1M6XzkVE6m/m12S0quvKjB/6/nor5Ow3I2NGVax0riZ30XGgxqwCA9nO
+	1uTEoluasAefciyCBmVVMr9t3RqYnQU=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779da35d27so17886315e9.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:45:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159128; x=1766763928; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159136; x=1766763936; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZIbRhS5yAElvokIR1MvQQLNlZ/WUUA5jS9gYnuf7mNE=;
-        b=hFqYZIJ9PJIoY6jq1FEfxWfOtajtOvYrExHhcjizu8EGRbYKBGjsUi77xUfJ+WJbgg
-         00bHcrn41g2ElJ9H+hcUJtWPIyaqFe/8JrweF1vYfExo/xrZEtk8O7HYJczQhzWV8QOC
-         y1GbZqnPF3oGncAnCNIdXgRf8i8Z58ky6Om9jcnCVPQf3tGOA/HxB9kC+AiB3LunxBwi
-         orBfOfuIdazcG76TVQOsYIsCtfC3jfc06aCyrx2Bq+5r32QmNL6HPNNIKvxomCytjCHx
-         DvB7zAZTILvaMbVjos92FDk7Izz/yROguPgsIdQ15P/yEJenS2eFvx8E2xJ5LHYAr1gY
-         cd2w==
+        bh=wNypD57EGX2MX8ivTIXP0XbqOR/mFQo2ssZAJ4O2zXU=;
+        b=ljsq+SCtVq70D3UA+L8VydTAtKDoxwD7Ow+9nYWIRyICaaG2rygDkahv2iykj6DiSQ
+         Bx8kJgLcKvHIFqu5yyQlEQttPXtePIyH4HsMFRJTvFZOJmn3Xchm3NjuBq9JEeP1zpU7
+         ah54LBjYpK+eOY6e16v/y1TEHwqsgDJBMTYFJIfAKZTLlLKf9popSyTQzDWpRcAtA0Z+
+         L3eYzi1ke/hqXhKJ6dzhhMrq+gsvvOumNJJyTpOWsgIhQ9Kz2Bh/cqMK0+CEI2OBAIQ/
+         6JSOnluAKfdB/V8YVKC5531DBBuzEJiiKvjDqjmIduhc0ycLEgglEZJuvE8EUSBqdo81
+         7N/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159128; x=1766763928;
+        d=1e100.net; s=20230601; t=1766159136; x=1766763936;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZIbRhS5yAElvokIR1MvQQLNlZ/WUUA5jS9gYnuf7mNE=;
-        b=RGK2uN6GTvXPjehU0GOCNGQTMPok2KGHM/xDxlC4pGRYKK8ANKVxG4XE6KTUMN61Rn
-         DqghPKycuoZwyi09vVAAEo8gH7HqLXDoGRiJl9kHvEhzdC3Wd/InRSGmzkTxRdbMoL2B
-         8DDsb6DHrVWWKrkwc92zd9CQcn5EFjCK6J/cdyRDVMs4IYax1djRR4l9jeHBjNFNTfi4
-         yroxsPKu+NjEwtu3N14r4qG/KkwZVqaqbnHh4nEzj1YLFNC9WDz4urOdTEN2VmMaMPCe
-         J2NJf4m3+Cb7VoPINfFvNNi1m9JEBqYRijR0Xn10qhqEjxZjjHoB3GKzFdu06AXmrP6q
-         VS6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWCB0OBo1JTscfqnAHQedmspeLqDYNVhzrD8XF6yUE0xxPUKKLP6/m7izRfnzDEsbRJCeYGQAiZog==@kvack.org
-X-Gm-Message-State: AOJu0YzXC/ltUetVg4Yuq+/2Q/29/nSj5Ww4qTLDC9k8YP3F+CHzIuMD
-	h7fOlFiTzEGcAHhFMAnzSXHyctnSZbnNPlGCdvBaKcWQLKVLn+MUykgjxEObFfIAcOAlMM9211g
-	Vww==
-X-Google-Smtp-Source: AGHT+IEWqNQ8B2uikI0R3t/CQ7ZJwgcNL1VKKMu3VpcFkJfSPyjiMbOXjCZK3QVkgDbXUfaVN8BdAwmGKw==
-X-Received: from wrbfu3.prod.google.com ([2002:a05:6000:25e3:b0:431:37f:7ba1])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5d09:0:b0:42f:a025:92b3
- with SMTP id ffacd0b85a97d-4324e4c0dd4mr3283947f8f.2.1766159127887; Fri, 19
- Dec 2025 07:45:27 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:39:52 +0100
+        bh=wNypD57EGX2MX8ivTIXP0XbqOR/mFQo2ssZAJ4O2zXU=;
+        b=DexBo10adFYR30ZlBoQdkNkJnIW0nJZjQH1nm+ewpa+2oGAmIQ57Drm5kML9Vi20uf
+         YnknuCksdxFMNoo6MRZMR5HJZ3b7o8+Ug2r+ruYHG80BiwN6XxiKPCYK2TyMMtKWT1cj
+         QeyQOUDFd5X7W8Mu7zZFLSr+QfQ2Dc2BudKQl5gW1W6EQC3s7PSLHMB4XTK8ABvf5Jkx
+         xWH4oLbEjTDB+TsW/XTNNoRIif34NyIhsZphkoYSccAFJS+vx9ydmRiJtLhQYPC8O7an
+         zqNBEDcpyYOz1BWb5gyub0EEqSNYn3ST/bAhkLz8xbSNxaj18nO/V5OUy0YMIQdA7rWN
+         Dxcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUF/bMxcFv2rfiMmYkWl7dyQ2cnciMVKOhfnEYPmxwq40PzHO+yQ553S348z1GnfMH6UZBMr+cjIw==@kvack.org
+X-Gm-Message-State: AOJu0Yw7ZNG+LQWwFCZkS5sL7MBuoXMz0e6ofiVyxAjmQsOF/KnfmaSm
+	OQfCt1THqcPj5riLnZci1MXjjA3S3Ij+kO0hDb/NJhFJvhfHdEHZJMQbfSKNy1lUsYzsLWsU/VO
+	W+Q==
+X-Google-Smtp-Source: AGHT+IHXXBJOd4wvSdy3ALXfB4Mt0dokW3EvzdUSRwHOp88UE22ws+JWjg7YwUgEMwqGcjEmAiNPIAdtCQ==
+X-Received: from wmco28.prod.google.com ([2002:a05:600c:a31c:b0:477:9976:8214])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:828c:b0:479:3a87:2092
+ with SMTP id 5b1f17b1804b1-47d19598e86mr23981475e9.36.1766159135626; Fri, 19
+ Dec 2025 07:45:35 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:39:53 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-4-elver@google.com>
-Subject: [PATCH v5 03/36] compiler-context-analysis: Add test stub
+Message-ID: <20251219154418.3592607-5-elver@google.com>
+Subject: [PATCH v5 04/36] Documentation: Add documentation for Compiler-Based
+ Context Analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +114,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C8EFE1C000C
-X-Stat-Signature: ms3fkjttqidp5opcwhztczdap1mz1yro
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 63B8D120012
+X-Stat-Signature: aqa61semugbfxjdhykxx7hetk39gm4mq
 X-Rspam-User: 
-X-HE-Tag: 1766159129-385339
-X-HE-Meta: U2FsdGVkX1+loXQxB6mL04cGzGLz1wNUes2FltnZjcYA5Uj8q7vpyQp5PSL2g7g46dvmuLKGaJFfbyvsmbyL5SC9krPr8ckHV/HzSDd8tBxgvjYBlqCv2rqdQfxxLoP2kcB70eHFmfYp2EmzPUJUGuLidtXmHW8lUlS9xDTq6Jgv9PV7jGe4GMpC6FNGfkzzYvHM77Nx5mYMtGv/eF1bwozmoDKG6uQkkkwjF/gV1ObO7gChnO65k8el6BCG9dRJdGO4Yr2wdK0EE5HuKsjHSDqDTokf02c2RtlrPeuWKpev1mKzpDbDOw+bSPhAcB2eqVONMnpjUJ+oj9LMzGp4w7f5UaxeDfSqmcNlZimAODlWfJjWkRWMeX5zKrT/Q+sGQwROwqw5zFWZFTMoYfQqPv/yquVvUQK3byc+w4n1dXYdkmP10L/Y6jwjW2LFS3+NK3rGyTSOxt5rWt+gpgGnA8602h5xspYnHUqm0+VNZ46R0M9jM5I/QBhk6bq21X1XO2tZ4ItwV2TWI+l+LqCDmT2nx63kfNM283PAoPuQsVGNrM75IIs7zP544WsVQ7NCmp8ml6cybC9xh/GmGyBKeCbWOGKbntfWGyQAmNBs5rg5thr5DAAiqexPsqk1BRUtMezpY1XOamTXPIzTQkD43np0NNiQLpufSwVny/oGYczwaG54/BPzdYJZeE5qlezazdoEdQurYu5m90xmlOjhDXFwmRQWH9QGos1JttS0fvZ9EVF3m+LcXYRgyJlFJLEBtU8eHnAq10fOZptPca+vb3qQx1YTOeQ9xiYroHOuL20QZ9EPd1ExVPErqwKPikGIVekCHWgHDgqNLDbh1pFqed8CDLAC1CjiTLXvwUIbVJJrsZe5n1K6ofPDJPpsDDAA9ybG1wPDFheEzqxADbqI5a/ggaTsGZvZMxZApJfYhW9Q0SHJFhradxGxbXoMg19QJJh1CqOw4OhjXIJuu8h
- lD0eIr5P
- L3N2COXR1h/Y4exIgLATdMOTm82/6w33i632f/N17EzGrImAEkxrF775LuGKgYLlVp3lOs/QhTbI7flW+3BZLeHFGwto0sPfvB5PlTFcgzzHSzrozSwGE0ozjf04oFIZMKPDWBF25vfkkk8+LlMQgq3I4hTgRqISNwaa0vUOoAmtF3tJsvBhaU6/OwITsjsmymjZMmtAw9TygltxOSk/jj5qj5yzfjS/zwvV7Va/KWoQFcFDnXOh4wAtzSS/xWvj5Rbn5Jx5jWz7N0rP6ZF/xRztXCLXUkJV66zjCs8YTejUugCiGLQv7AQX+XHFNDe+PQSw5IuGiHuMC8BCPbEr83v50v3DfU05/hMOuOhD/P9BeheO3HRejvR+Wmaold2K7YQmILtEgo7WROJaN0Wt5psxYlAQJ6MzgmMMfV9kuYEF5QYnHCvFFAcehMJZY/BLBxEeqbbgJgz6f7cjm5Ti2QsYVtUAhv1gR/XSy7MHDqwwr8xw9JBzPBH05bsfa614qHpX0C9y4bLfKbPsMn3bqAHEIW/fGextgECADG+7+mARj5y9WjKU6zggLbYKiTCfvvEEmHTSs8TEVm3/FY+lRX0zcfq85uyPujulJ3CbvW2tQUJ0=
+X-HE-Tag: 1766159137-993039
+X-HE-Meta: U2FsdGVkX19SVUHp0vrtFC4MuffQIM7YTD/A8UwnUEgla8GLMvA3irHFrtg1qjlSCJD1BGFpcGeDfXxRxRb5oYy23MY5OzW5qz+0Lu4jLFCacaD6p9f1FYIUedbuZCKFVvsS3Obr2uXM1gPRuTYWvjbf41WdA/6ZxOOXblfh9TrI3HfxmfW4o6tpe92bd13sCVg/DHSuOtCqrmF/M5E2hMzvJX7u2kv6Jmx2+TQk2njF0RCfPdjmYsny/e5hPi1+lrG7DeA89L1Bp0hee5FmLZNizRH4TTYqpYWbTsCSOdtS85IVbAQoWW+9dctcbT2nJVfypRvwNOeA39SpABbvgAiWMTiSa02gy7cvhEjpRLR7/vCGLoyPo/o5ZzA2RW2Gp7wMemFSB99CEa5kDm3CLsdc/txzQhelW9+9OuK3CnFWW6hugXSb+50vsrL+xX7SOhAphTAIJgfvF95kwqawrhWB+qAkalwbpj3iNNpULUPGoUYNrECbhNgiZPGzClDvDvJvsyx7q9gXHziMu6BICreXVNfm4iK78MlDfL9GxRvVEGXY7NfB2eNYm3e6HMBShVm92DPoYBqdybVPT1BusGsV/Ng2DB2w3f7JfMrOXghL8egmL+ClGIma6d5EBcb1CL+vCV/mPIhKiFnYXGLZTsZvGiWAQlvBAedmZYTOHbbuC/QRWffdMRIq9jgsdSIK+YtbFNOHSs8cupJ6lo5TWazvV7lpkoowHrfoEu7IQ7NMhkwU0Jgut6Cy+qY0swYV0p0pWUnbAWojFeZ64ox2Edkz6oipqkR9TUeQ0wFQTImb5gYE/95ChOzlkjJco/r+XsDsEk/GFXn2f92G+3i4qRvry30GNEoj9FPtoGw1dRA2do+MMC+Y3/SleL4wKWJm475SrDobGXM82J//wHhzYCVae5LjRVpumIjVmq6wWVaUORXokMyEpB1wEgWVvmYMBdaNGZSvF201iSdM7cu
+ AiwtPgus
+ pbZMgrFe0hc33iRAUR4ED4wSWDfpO0LsRMSbr3Ha9w4CtX6HGsk4JIqnCkYEJJZr6QO4mEk7BcDrg7MVrwEFDXuEaQEJgB0Vh++4Or/NIx3rYSeyzcT4OmsvjGlcNbzr31ee9JVJ4JDh3rOfCAu8TOWVWExGOYJDusyM3LrLZgG9uwUrqgxfBV3jk8RuYTVz3n8WdBgtab47JvE8shWZnrRkk4k8LCwHs0CjbGWcWXh8JP41MTem4bb6co7DfkvYnF7+RwgkU3KHzLBTooyl79ubY0uk6+LG4tpoeUMqJ4Re+u6ZS2GxICCs2RW2B/NDRKuJuUsTu8eZS+E5KWgkTjJZzkR0b7zs1wHDUIE7jQydl2XIm8krQ68yqlWN9k0WMZpBohWKrJhZ7LXWNj9fp8sfeRTCtuKPTHii7yTVwZf/sKph2jgFbI/nUmTJ07WXZ0pwsxUm8yH/gsQA8BLNF+XjXP3a+BGY+Z+KVrv8dIL9MkucXEA1QUJaQRF5QcYchjl0F7l4FXK/s0ZxIiXaNYFStexA9yuKO9AvzNQDalVZQSZrfyRTXZKbneyISpThvl+TMFs6T0IrERqByScEoM7BIbAItrLmt2878VQq5YAGHuLOIS5LPQaPPJ3Wa/Izqm2WDJPjhe7opXQp/PSnTL9XeayZ/VBmlLGoUBf/Kfar0uNWb9uwpb49pHwlDYQ0PZfSnY+FWTISSJmOtix+KtvpgzdeQAS1Klz7FyRqHDhaMM4lQ00A8qTrUg2q1xLDFo5gNNbQnd6Mrds3VtyxbJGRgqbKwtrIc4TIGkwVr0ZPgYSE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,8 +130,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a simple test stub where we will add common supported patterns that
-should not generate false positives for each new supported context lock.
+Adds documentation in Documentation/dev-tools/context-analysis.rst, and
+adds it to the index.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
@@ -139,74 +140,179 @@ v5:
 
 v4:
 * Rename capability -> context analysis.
----
- lib/Kconfig.debug           | 14 ++++++++++++++
- lib/Makefile                |  3 +++
- lib/test_context-analysis.c | 18 ++++++++++++++++++
- 3 files changed, 35 insertions(+)
- create mode 100644 lib/test_context-analysis.c
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index cd557e7653a4..8ca42526ee43 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2835,6 +2835,20 @@ config LINEAR_RANGES_TEST
- 
- 	  If unsure, say N.
- 
-+config CONTEXT_ANALYSIS_TEST
-+	bool "Compiler context-analysis warnings test"
-+	depends on EXPERT
-+	help
-+	  This builds the test for compiler-based context analysis. The test
-+	  does not add executable code to the kernel, but is meant to test that
-+	  common patterns supported by the analysis do not result in false
-+	  positive warnings.
-+
-+	  When adding support for new context locks, it is strongly recommended
-+	  to add supported patterns to this test.
-+
-+	  If unsure, say N.
-+
- config CMDLINE_KUNIT_TEST
- 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/lib/Makefile b/lib/Makefile
-index aaf677cf4527..89defefbf6c0 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -331,4 +331,7 @@ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
- obj-$(CONFIG_FIRMWARE_TABLE) += fw_table.o
- 
-+CONTEXT_ANALYSIS_test_context-analysis.o := y
-+obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) += test_context-analysis.o
-+
- subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
+v2:
+* Remove cross-reference to Sparse, since we plan to remove Sparse
+  support anyway.
+* Mention __no_context_analysis should be avoided.
+---
+ Documentation/dev-tools/context-analysis.rst | 144 +++++++++++++++++++
+ Documentation/dev-tools/index.rst            |   1 +
+ 2 files changed, 145 insertions(+)
+ create mode 100644 Documentation/dev-tools/context-analysis.rst
+
+diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
 new file mode 100644
-index 000000000000..68f075dec0e0
+index 000000000000..47eb547eb716
 --- /dev/null
-+++ b/lib/test_context-analysis.c
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Compile-only tests for common patterns that should not generate false
-+ * positive errors when compiled with Clang's context analysis.
-+ */
++++ b/Documentation/dev-tools/context-analysis.rst
+@@ -0,0 +1,144 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. Copyright (C) 2025, Google LLC.
 +
-+#include <linux/build_bug.h>
++.. _context-analysis:
 +
-+/*
-+ * Test that helper macros work as expected.
-+ */
-+static void __used test_common_helpers(void)
-+{
-+	BUILD_BUG_ON(context_unsafe(3) != 3); /* plain expression */
-+	BUILD_BUG_ON(context_unsafe((void)2; 3) != 3); /* does not swallow semi-colon */
-+	BUILD_BUG_ON(context_unsafe((void)2, 3) != 3); /* does not swallow commas */
-+	context_unsafe(do { } while (0)); /* works with void statements */
-+}
++Compiler-Based Context Analysis
++===============================
++
++Context Analysis is a language extension, which enables statically checking
++that required contexts are active (or inactive) by acquiring and releasing
++user-definable "context locks". An obvious application is lock-safety checking
++for the kernel's various synchronization primitives (each of which represents a
++"context lock"), and checking that locking rules are not violated.
++
++The Clang compiler currently supports the full set of context analysis
++features. To enable for Clang, configure the kernel with::
++
++    CONFIG_WARN_CONTEXT_ANALYSIS=y
++
++The feature requires Clang 22 or later.
++
++The analysis is *opt-in by default*, and requires declaring which modules and
++subsystems should be analyzed in the respective `Makefile`::
++
++    CONTEXT_ANALYSIS_mymodule.o := y
++
++Or for all translation units in the directory::
++
++    CONTEXT_ANALYSIS := y
++
++It is possible to enable the analysis tree-wide, however, which will result in
++numerous false positive warnings currently and is *not* generally recommended::
++
++    CONFIG_WARN_CONTEXT_ANALYSIS_ALL=y
++
++Programming Model
++-----------------
++
++The below describes the programming model around using context lock types.
++
++.. note::
++   Enabling context analysis can be seen as enabling a dialect of Linux C with
++   a Context System. Some valid patterns involving complex control-flow are
++   constrained (such as conditional acquisition and later conditional release
++   in the same function).
++
++Context analysis is a way to specify permissibility of operations to depend on
++context locks being held (or not held). Typically we are interested in
++protecting data and code in a critical section by requiring a specific context
++to be active, for example by holding a specific lock. The analysis ensures that
++callers cannot perform an operation without the required context being active.
++
++Context locks are associated with named structs, along with functions that
++operate on struct instances to acquire and release the associated context lock.
++
++Context locks can be held either exclusively or shared. This mechanism allows
++assigning more precise privileges when a context is active, typically to
++distinguish where a thread may only read (shared) or also write (exclusive) to
++data guarded within a context.
++
++The set of contexts that are actually active in a given thread at a given point
++in program execution is a run-time concept. The static analysis works by
++calculating an approximation of that set, called the context environment. The
++context environment is calculated for every program point, and describes the
++set of contexts that are statically known to be active, or inactive, at that
++particular point. This environment is a conservative approximation of the full
++set of contexts that will actually be active in a thread at run-time.
++
++More details are also documented `here
++<https://clang.llvm.org/docs/ThreadSafetyAnalysis.html>`_.
++
++.. note::
++   Clang's analysis explicitly does not infer context locks acquired or
++   released by inline functions. It requires explicit annotations to (a) assert
++   that it's not a bug if a context lock is released or acquired, and (b) to
++   retain consistency between inline and non-inline function declarations.
++
++Supported Kernel Primitives
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++.. Currently the following synchronization primitives are supported:
++
++For context locks with an initialization function (e.g., `spin_lock_init()`),
++calling this function before initializing any guarded members or globals
++prevents the compiler from issuing warnings about unguarded initialization.
++
++Lockdep assertions, such as `lockdep_assert_held()`, inform the compiler's
++context analysis that the associated synchronization primitive is held after
++the assertion. This avoids false positives in complex control-flow scenarios
++and encourages the use of Lockdep where static analysis is limited. For
++example, this is useful when a function doesn't *always* require a lock, making
++`__must_hold()` inappropriate.
++
++Keywords
++~~~~~~~~
++
++.. kernel-doc:: include/linux/compiler-context-analysis.h
++   :identifiers: context_lock_struct
++                 token_context_lock token_context_lock_instance
++                 __guarded_by __pt_guarded_by
++                 __must_hold
++                 __must_not_hold
++                 __acquires
++                 __cond_acquires
++                 __releases
++                 __must_hold_shared
++                 __acquires_shared
++                 __cond_acquires_shared
++                 __releases_shared
++                 __acquire
++                 __release
++                 __cond_lock
++                 __acquire_shared
++                 __release_shared
++                 __cond_lock_shared
++                 __acquire_ret
++                 __acquire_shared_ret
++                 context_unsafe
++                 __context_unsafe
++                 disable_context_analysis enable_context_analysis
++
++.. note::
++   The function attribute `__no_context_analysis` is reserved for internal
++   implementation of context lock types, and should be avoided in normal code.
++
++Background
++----------
++
++Clang originally called the feature `Thread Safety Analysis
++<https://clang.llvm.org/docs/ThreadSafetyAnalysis.html>`_, with some keywords
++and documentation still using the thread-safety-analysis-only terminology. This
++was later changed and the feature became more flexible, gaining the ability to
++define custom "capabilities". Its foundations can be found in `Capability
++Systems <https://www.cs.cornell.edu/talc/papers/capabilities.pdf>`_, used to
++specify the permissibility of operations to depend on some "capability" being
++held (or not held).
++
++Because the feature is not just able to express capabilities related to
++synchronization primitives, and "capability" is already overloaded in the
++kernel, the naming chosen for the kernel departs from Clang's initial "Thread
++Safety" and "capability" nomenclature; we refer to the feature as "Context
++Analysis" to avoid confusion. The internal implementation still makes
++references to Clang's terminology in a few places, such as `-Wthread-safety`
++being the warning option that also still appears in diagnostic messages.
+diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
+index 4b8425e348ab..d864b3da4cc7 100644
+--- a/Documentation/dev-tools/index.rst
++++ b/Documentation/dev-tools/index.rst
+@@ -21,6 +21,7 @@ Documentation/process/debugging/index.rst
+    checkpatch
+    clang-format
+    coccinelle
++   context-analysis
+    sparse
+    kcov
+    gcov
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
