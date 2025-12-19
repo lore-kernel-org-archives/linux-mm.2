@@ -4,112 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F41D7495A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:55:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D94D74960
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 07:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 366BB6B0088; Fri, 19 Dec 2025 01:55:26 -0500 (EST)
+	id 028466B0088; Fri, 19 Dec 2025 02:04:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 311946B0089; Fri, 19 Dec 2025 01:55:26 -0500 (EST)
+	id EEE2A6B0089; Fri, 19 Dec 2025 02:04:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23DF56B008A; Fri, 19 Dec 2025 01:55:26 -0500 (EST)
+	id DEC146B008A; Fri, 19 Dec 2025 02:04:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 13DA76B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:55:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C90F26B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:04:46 -0500 (EST)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE0C713679E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:55:25 +0000 (UTC)
-X-FDA: 84235309410.23.8BDA37F
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9381C0004
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:55:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QAfHK0iV;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766127323; a=rsa-sha256;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C10E13B0A2
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:04:46 +0000 (UTC)
+X-FDA: 84235332972.23.4631122
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 90A1516000E
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:04:44 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOr918U1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766127884; a=rsa-sha256;
 	cv=none;
-	b=Kpve1FLJKLFzS9C9OYodox8DAtajRxzi8VdN2yTNTy1bUM8YChozlSssYUGQR5DEb7oMrM
-	cv1MkxBIl6pbxhiqiMFD7xthWBD13CtgNubfNNBjSLh67JpksW/azppwzkHPedf0bIVi6w
-	2hDcY9ZOADyHHBn8qiOwyoFs7OuT1h8=
+	b=XQTHA7R8sA1/GzADU4eU/N1b38lm/0/4j3i82vUrmZp7N/Cbtwlyzx9gFTHsUeS5eErgkX
+	iCwl2DXfzJKx709lJkEcNclJ/xLHwQQpRn0Lp1UqAaRs5+CUzzXFJV8RoBiwMXmnAsgd2X
+	6aFET7zzll+DMUUpJdImjaTt2jFKX84=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QAfHK0iV;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOr918U1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766127323;
+	s=arc-20220608; t=1766127884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GicAORaQTtn70Bhd4n65cah4A4M454XvAKFCQLeoD8c=;
-	b=KoIF7veMmrKqXOkLX2qLdyIZvoDwi5D2g+jg2Q7h+IfNH7tavsGmJONWO3E9+VppgJ72nc
-	hLCkNtflhcDd2tCd3QQWkZDAR4yiQcMh43Ka36koj92AqpzfxLBLC6bj/smO1qKJTcR8zf
-	CyMSJXJCdbdSc4JZWAi4Q7ziQ2azyUQ=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-64b7318f1b0so1610510a12.2
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:55:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766127322; x=1766732122; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GicAORaQTtn70Bhd4n65cah4A4M454XvAKFCQLeoD8c=;
-        b=QAfHK0iVUp1Mn1z9ebuMi9mvY/4v4FO4V50jkSRbb/6lmdmeLGjJTuM3GxJ7kMkUNj
-         OqL6Wy0aJ0++ltWZA+Vbih3f7LdjwkCkC+LE9UoAyWasU+8OTqdI7KTzDSamsJcMy+1a
-         Tt25J2V18vfaUHQZxTvBNZZy6rTb1grk0nJ3AUGm3iIa9O+umJrOKuEnJiofcPtKnVCk
-         AmzMbyb+dDZeeT8HKrPOEaN+iQ0EG3bG6uRi4Yis84GBAW+kTTasvyZi8h5JUx6ZWlG4
-         jJzSa4NOqQRF4MPb0MSLfIrSA89CxQ29h7YH7bA24UVRYtAFLC9tM0trdeHoIocPRb9W
-         yocw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766127322; x=1766732122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GicAORaQTtn70Bhd4n65cah4A4M454XvAKFCQLeoD8c=;
-        b=py17frmnf2aHTms1Cai3SEP4+cBMWvVmO2NuIhvdWiJugLElFKWCxIiHpF3Mv13p2C
-         c77Q2Rg7FauwwgsKs9Bt88KW8/J/ukZl7bYR2aMbghaVLo/VT6AM8QM2uTItfIQELKWw
-         5EXrj6sGoJCDKMC9+ZBYLzcOwsauutLkCdDircZ2sCW9QLfA/MJmqBQ9qRdwkMVWfZvf
-         6cEeguZGaz17+8w/4QppT8OVyO/vHq4ki6xx3oNnEyEYx78qtBbpwWd5qDIUXQRrK9vL
-         bzggJJmc05ynWR+IDykpKlr8q/z3A+eF8SCsTjV9RoM9gs8AzpA30cYeUBBCitGQma1n
-         rj+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVSxJjK6uBH+2EYlpuuKta2gqP9WfXHKKJrgT1rDP8M8SBdtBWklPXQwYXuQugsJ4+U4VNyrLrDXg==@kvack.org
-X-Gm-Message-State: AOJu0Yy8T281M3P9a9cwgrsjoBdxDTGclnFpKJlU1nDIpXWiGj1jaWlW
-	eMieBP9Oebjam/83E4VfeCi9ZRwEpCm74P44Dpt0ObfG8fSFXSjR64l2K2pDT5huTfaXvTl/aav
-	huRn66AV0L6veUeSHB/ccHRdFuyT8/64SCWB6P5u+IQ==
-X-Gm-Gg: AY/fxX5jLNMgWvf0vKlSLDNYH6pR+ZJs1Iyp4VlrYGCzo5qyLjXpNUz5Dwic9ZLpluQ
-	CjAWgkUjlDlEh//Wlv+A/T3fYdqAfnNxP8+TVzlzZOWqsKAWb7vv0cVIzXxCl7xt2Hae0wIzNW8
-	i/UNysIO3BBNQtS1BC2ngIFxTeHFgnWEt3FYPflUkbRlP2Sblf6Q6sIrUmBxFlLsIdYs9LxAB6q
-	QIO4p9IKYoF+9Bl5cxMTXHy13hg94fFyV25zsAoJHXQUjEJefN7PcsfrfadJ6paMflBRhcWbArH
-	wu/gMYV0pre18pZHFusPy8LZ
-X-Google-Smtp-Source: AGHT+IHou/JmfF2RQNRr+BNX5nbXM6p2fRExcXxxWltOFGH7Sn48CRcP4gufZNoRYM5h+C8CtxTzr2wMwR5Fivp2QWM=
-X-Received: by 2002:a05:6402:274e:b0:64b:8d7a:71d7 with SMTP id
- 4fb4d7f45d1cf-64b8f214ed4mr1769650a12.32.1766127322243; Thu, 18 Dec 2025
- 22:55:22 -0800 (PST)
+	bh=y8pIRHj989/yP044y8FmVi5laJrkIYribs4FwH/K2J0=;
+	b=csB0H0lKa1Tx2DCMk+X9h1F6NK2AjuURFd5zX2WCMWBqPzyS4g3ihladYPh6cIVmC1xrgv
+	oDvaSpaTZkcwGsukQMabNz7maDnQZS74SnHS49pMfTph+8bgwJDbCXmpzZZZY97w7mN20V
+	40tQzNQt0rmJMsTgLQdsHlJahqxlN/I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B61243589;
+	Fri, 19 Dec 2025 07:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AD3C4CEF1;
+	Fri, 19 Dec 2025 07:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766127883;
+	bh=7pM3pg1E+9Zhsdy3FeEbki6cuZHG9Wz4UgMWqEJpnNo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TOr918U1kBoZTAW5Zj1HzhhsHwDFWVt795xvXCPwfM6E+PyiG9LY60zL1vfEb0RGX
+	 BOaVX40lZQaLWgAaghTz47Y8D2PAj338vLnd3yeAWHOH1xeiMIUP+VwqxG8iazyZRz
+	 DllbqGBkxwWKORxC/b4IqP0Y1gLEm0VHXomya3cgfHlvpuNMFSMTpj319w01wgL7d9
+	 TZ+J64XgCH7cmGJphFXXy8eAQN/cSbo6xtLpsWrXG+LJM6bJT27gvIBlX8jvjwsfcv
+	 jJDcoFzBbJyhf2ayhVy9BIG7iR4VmxYCQXn1zbDN7yxY3Qelg8xMTnKCpHtQsgPeh/
+	 sHhI61OJzC5sg==
+Date: Fri, 19 Dec 2025 09:04:34 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fork: Replace simple_strtoul with kstrtoul in
+ coredump_filter_setup
+Message-ID: <aUT5AsR_0G4GaGAf@kernel.org>
+References: <20251215142152.4082-2-thorsten.blum@linux.dev>
 MIME-Version: 1.0
-References: <20251219030854.3527871-1-pasha.tatashin@soleen.com> <aUTzrnz3ZBm_APmv@kernel.org>
-In-Reply-To: <aUTzrnz3ZBm_APmv@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 19 Dec 2025 15:54:46 +0900
-X-Gm-Features: AQt7F2psjUUg-_HCNwgY0wO0vsLXifNun1OdtrT8zx9aE6aRw32yyAylagurnxg
-Message-ID: <CA+CK2bDMcx-no18J9OA7zEfq6sdo511D=dW6igJciSyUhGpZcw@mail.gmail.com>
-Subject: Re: [PATCH v2] kho: validate preserved memory map during population
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, graf@amazon.com, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, pratyush@kernel.org, 
-	ricardo.neri-calderon@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215142152.4082-2-thorsten.blum@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C9381C0004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7a7fabfiqhxj9tf6zde1fqtfzit67zmt
-X-HE-Tag: 1766127323-762627
-X-HE-Meta: U2FsdGVkX1+cEKRBGIcruL4geAVihRFrK+dGKDw63WvASKHNPSMfR8Qe0JlCE5oUQfoj+TVYkYAKBdgEBWxneIa6N9bnso6x9Q1Yq5OYYDp/aX/MDdqDlo4nARpKkqScDKXv+IVrS4k0LEPMxKnS6B3/fujOzaTxTRgIsvN9ja7ftprAEMwQqOGeuBglAWfjBRKpxgoD/WUh+oNHtNjYw3SayHIeYaLYwe2I/Qj7YAj1pFLChOaeW/kRMDjGJLB6DoEVWwGV3hyvr+vPNcFgFzVk8zpGTLcGvPVEWxabasxiju99JfAGfdTytuCHqAFEIyoTIGqJOHv708lnUgwfHRu/qCFbiPdnVu929pMKwtP5R1J7lC6HgqeQn97wth6QZx5FUuwkpXvIekNSddEVxqbvX65i6DThDMQ7N5XMvmPehX8iR3lE31mHR0r83VNsBVKySjCHkEpfhZrIm+k9Z9wRq1u6n9tn15x9jwCTtJ5oaB7R/MtqUl1X4uRKaudrvVRMg5/E1nejLeYEQr8yllJkcGke9KRmTL+sNnGgnZfsAamw6q/tOjIz2DBBU4Hc/gPSZ3t1IxLj9LvtkF/jAXcSbMzesiPdmKHAtgDzugIPnoEjiR9u1fixGZDPT2jQszNyTVWwhKyLbJEhCl6N74QY+lPb0DK9QosiLC4X8RaBE86zEKTyzdS1XVKWOx1O51TbP69YToN3d7jb8iM2z+aSIz6NDkzWwSp+fWwCoeZzQZtOFGnoCf8l2acv7P8hm0gCIivlxoe7O9GFCR+sX4VlMbfpDdZNj62Qz0l6Ywu0SqQXXAhIOcphu/C7pj3a2YT9gmz7bxQDzkYx8BETMR5Anouoj2D4xz7H8rmyQ+yTYY0eh4sbdk3wtXLV2lXcL4FP5q7/h3ET1JyGK4SfRte85lwFWCa9u5P6/7aqy0BuV/YXgUKLZrJk418yKWSxeLCQg9zxgVPW14C8EZH
- NJYCuGvH
- RxKtrJn9VfPf3nFdRuR1yLXD+BHKLkBmTEBQm/dDrC0Vg4vstipjpkrGNbROl2RjkeUOcZIYli/Cj3YsO6svQKpYlcdhRUonIkhBRqV3Mecb9atJyLumBUWem3E5hLwLYzOfZrqOkYtbgVYzre98IMJTAMneo7gwQd+M7snFFrSu8XvPjbhs2xtk3ZaO6bJXc5lE/Rq1ZgYMGR4tW8h6lKH8uzsS87W4xe6ku1O70/8Z8xBKWs66H1DqPw9ZTBiiXM6psfMrRj5eS2bPWL3agbM8/0hA++qJAgNUWkiu02qiFHOHoi2LRbbEANsoXjo42OfJ9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 90A1516000E
+X-Stat-Signature: gcoubgkisncg1yrn7ffdx84yhhguy8qo
+X-HE-Tag: 1766127884-565752
+X-HE-Meta: U2FsdGVkX196c9HkbUmZCOI3E5kcT4gK9LihoulcU3LWVUXGJViefsoX5UqiQfbe8sXNMTCHUXgpkH1rp60X2jXC4ZVXpZd1dGZH9NBDwmgK3yFeB8I+aofs8CuHfnZYzDm9qyPsE0JBB18GOLHvdcGe4I996Ge9Af3KPYEjBhCNG5yGw7R9eCC0bJET43FHBv+4tmu9TER0m62WcHH1IiiepNm1nvv7JlfzFA4LVmL4gMNyYHXM0Aszn7JgWwozHQrBgUTwMzyYiPYcR4hv1xQiBxCKmkPco9AKCFtl3BY0oZ3vmXsgb+onmYFgqBI3UqeHvxyn0d3a8/+ej0K118IdEHjwwNmLxLN/uX7WiC+qZ+Pp0jha8ZJPG/pBHQ6ZL6yspIhJ5aCW4DSjG42/piPnL4VBwLC3ES9Tfox/5FmyMbZY309+NHcwU4pA13VGwaHdxmtgxYKbE/lFcvWgUV9lmvNCLUT+PwxVaTMcN6EUoGMgm64CMgAKd9WyzqIsjN6gKemhyE1hL+AzEeFRJ1vf2gtDz3zD3EdRXkNM8qid7oa31oPQmfwW5luuzXbk4sRXBru0cCAJCqOq+uvfp5XkF0KeDkK1DI9KXbYl0U6aVkUJO+anT7NW6BbXuARtupiVYX5Iab2Fj219PEbK+9OUor6IArXY0FULzWIESf2URXKaztro+hv9fl6lUT0xTp6D59WexQ6267+2AaED4959GOWfawCkW76qPZhJx2IB6VCRA1ppNZopFH1Hn7mhwvvbdoICfpB8wA62ZVhq7MOXqGUyw5aCdP2VDAvqwrCrzDwbW6ljx5BtmhTjLAWW52nLsso+O6p3CzQLQ6Li7UKlYsLy75VAqMFLdNfjbqW7ZNaRQFvSARr9ylQW+dMfZMBSRqWjWLMp1kS2aKEPKnmPH2LIdmI7cuRl2vbNJVWJ6O4tLzb7A7gSlkjdlgyjBFn5+iLA2mtjBVmR3fq
+ nQDm66dw
+ KmGtBf/z65nzi8nnMMZgtpADy4vBHuwMKdzH/HHc18oDLWJDCip1smCbyPT6ZnM7nrasyrUlOtt4k/OrCgAL1jUeacLbA/6a0EI85z20J1cD9gys/HAKR5zw/sp6LrlOBMYD7kaX1egm0P754IvZLf3oUA9FAHc026Sx/38m2OCCkTpy9dqOwQrKH5tKEvspAf/YnzvSX+BHTk+8OeSe9BVhNSk0Z9sF3Ui6YPHDleQBlj3Mz5Bjd4hnqByaTTwnibJVv1UAZNu5VqSfvySHV+PzanJn7WuKOsSmlSt9aNuqCnRVQ39jVxpNL/M74eMUlhTGpU6QJtolV0aw9gVvkThDWUNAFlbtOd3dGe8osQAzaLec=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,82 +105,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 3:41=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Thu, Dec 18, 2025 at 10:08:54PM -0500, Pasha Tatashin wrote:
-> > If the previous kernel enabled KHO but did not call kho_finalize()
-> > (e.g., CONFIG_LIVEUPDATE=3Dn or userspace skipped the finalization step=
-),
-> > the 'preserved-memory-map' property in the FDT remains empty/zero.
-> >
-> > Previously, kho_populate() would succeed regardless of the memory map's
-> > state, reserving the incoming scratch regions in memblock. However,
-> > kho_memory_init() would later fail to deserialize the empty map. By tha=
-t
-> > time, the scratch regions were already registered, leading to partial
-> > initialization and subsequent list corruption (double-free) during
-> > kho_init().
-> >
-> > Move the validation of the preserved memory map earlier into
-> > kho_populate(). If the memory map is empty/NULL:
-> > 1. Abort kho_populate() immediately with -ENOENT.
-> > 2. Do not register or reserve the incoming scratch memory, allowing the=
- new
-> >    kernel to reclaim those pages as standard free memory.
-> > 3. Leave the global 'kho_in' state uninitialized.
-> >
-> > Consequently, kho_memory_init() sees no active KHO context
-> > (kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
-> > allocating fresh scratch memory as if it were a standard cold boot.
-> >
-> > Fixes: de51999e687c ("kho: allow memory preservation state updates afte=
-r finalization")
-> > Reported-by: Ricardo <ricardo@example.com>
->
-> I believe Ricardo has a real email ;-)
+On Mon, Dec 15, 2025 at 03:21:52PM +0100, Thorsten Blum wrote:
+> Replace simple_strtoul() with the recommended kstrtoul() for parsing the
+> 'coredump_filter=' boot parameter.
+> 
+> Check the return value of kstrtoul() and reject invalid values. This
+> adds error handling while preserving behavior for existing values, and
+> removes use of the deprecated simple_strtoul() helper. The current code
+> silently sets 'default_dump_filter = 0' if parsing fails, instead of
+> leaving the default value (MMF_DUMP_FILTER_DEFAULT) unchanged.
+> 
+> Rename the static variable 'default_dump_filter' to 'coredump_filter'
+> since it does not necessarily contain the default value and the current
+> name can be misleading.
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-Oops :-)
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
->
-> > Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr=
-.sc.intel.com
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> > Changes v2:
-> > - Removed phys_to_virt() from kho_populate().
-> >
-> >  kernel/liveupdate/kexec_handover.c | 39 ++++++++++++++++--------------
-> >  1 file changed, 21 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index 9dc51fab604f..6ba554208c81 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned in=
-t order,
-> >       }
-> >  }
-> >
-> > -/* Return true if memory was deserizlied */
-> > -static bool __init kho_mem_deserialize(const void *fdt)
-> > +/* Returns head of preserved physical memory chunks pointer from FDT *=
-/
-> > +static phys_addr_t __init kho_get_mem_chunks_phys(const void *fdt)
->
-> Let's s/mem_chunks/mem_map/ everywhere please.
-> And the comment would become
->
-> /* Returns physical address of the preserved memory map from FDT */
+> ---
+>  kernel/fork.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b1f3915d5f8e..f33ee7fe53ad 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1012,13 +1012,14 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+>  
+>  __cacheline_aligned_in_smp DEFINE_SPINLOCK(mmlist_lock);
+>  
+> -static unsigned long default_dump_filter = MMF_DUMP_FILTER_DEFAULT;
+> +static unsigned long coredump_filter = MMF_DUMP_FILTER_DEFAULT;
+>  
+>  static int __init coredump_filter_setup(char *s)
+>  {
+> -	default_dump_filter =
+> -		(simple_strtoul(s, NULL, 0) << MMF_DUMP_FILTER_SHIFT) &
+> -		MMF_DUMP_FILTER_MASK;
+> +	if (kstrtoul(s, 0, &coredump_filter))
+> +		return 0;
+> +	coredump_filter <<= MMF_DUMP_FILTER_SHIFT;
+> +	coredump_filter &= MMF_DUMP_FILTER_MASK;
+>  	return 1;
+>  }
+>  
+> @@ -1104,7 +1105,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
+>  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
+>  	} else {
+> -		__mm_flags_overwrite_word(mm, default_dump_filter);
+> +		__mm_flags_overwrite_word(mm, coredump_filter);
+>  		mm->def_flags = 0;
+>  	}
+>  
+> -- 
+> Thorsten Blum <thorsten.blum@linux.dev>
+> GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+> 
 
-Sure, I will send version 3 soon.
-
->
-> Other than that
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Thanks,
-Pasha
+-- 
+Sincerely yours,
+Mike.
 
