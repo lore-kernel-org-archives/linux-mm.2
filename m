@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A33D7879F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A348D78770
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 18:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25D416B0088; Fri, 19 Dec 2025 13:34:01 -0500 (EST)
+	id DB7DD6B0089; Fri, 19 Dec 2025 13:34:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 209F86B0089; Fri, 19 Dec 2025 13:34:01 -0500 (EST)
+	id D102D6B008A; Fri, 19 Dec 2025 13:34:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1176F6B008A; Fri, 19 Dec 2025 13:34:01 -0500 (EST)
+	id B91E16B008C; Fri, 19 Dec 2025 13:34:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F339E6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:34:00 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98E301A035B
+	by kanga.kvack.org (Postfix) with ESMTP id A95266B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:34:02 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A5F413AC2F
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:34:02 +0000 (UTC)
+X-FDA: 84237069924.11.9B7C648
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A0EA7180017
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:34:00 +0000 (UTC)
-X-FDA: 84237069840.18.B890725
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DD49B2001E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:33:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N9gDA5UR;
-	spf=pass (imf13.hostedemail.com: domain of 3lZpFaQgKCDIXWOeWmObUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jiaqiyan.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3lZpFaQgKCDIXWOeWmObUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jiaqiyan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lKZqR1Du;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3l5pFaQgKCDQZYQgYoQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jiaqiyan.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3l5pFaQgKCDQZYQgYoQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jiaqiyan.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766169240; a=rsa-sha256;
+	cv=none;
+	b=zTG+tTuIaeIx7snoamQBbwK8nc/EmGo/AUYdApZlrZ6hnPGzjaJZSudeM1B0LN/qsTMmWB
+	ZcB6LyHGCXJaqKJx4xTt28OWUIIycI8+1UVrGxZn4v+2IElpXd1yrhfYQBQaVkaiQo/gug
+	1xaC6y1rtpEB/zXBRSO4vcBPna78/7Y=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lKZqR1Du;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3l5pFaQgKCDQZYQgYoQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jiaqiyan.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3l5pFaQgKCDQZYQgYoQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jiaqiyan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766169238;
+	s=arc-20220608; t=1766169240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lSNGnEFxOyI19g6eLd2Gx6lTfoT3c263QtqCA7O/6yo=;
-	b=P8ysClOLTTY6NLK+TW/nKPsO7uUJVsmQI4o6T+zZM+l19RlvUWHBbOaFQQE2YJiBSkDfO7
-	PmcnS5IYzh7XTPjpZgFsnIJxgdTpRwhqtIqSWq0GANvfIymJDaQ69Aq2v0Pbg5UrXdSr0I
-	X597mTvT3wTMfpDZZkWhHOe1Bqxqu7M=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N9gDA5UR;
-	spf=pass (imf13.hostedemail.com: domain of 3lZpFaQgKCDIXWOeWmObUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jiaqiyan.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3lZpFaQgKCDIXWOeWmObUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jiaqiyan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766169239; a=rsa-sha256;
-	cv=none;
-	b=B6w1kk2A2TuOn+nPUdeRQFfNebLM2eTOBnPlry7HTFVkFLjAN9IHBTfxhAKUTZ7bODvMIb
-	fUDq2wunblV8P8QPU6nkR9yk3ogW3QRn4OMiqPfQ3z2/Z5LVieWmHn0KnvAO7B9I1ICxRb
-	PRzPqGLUlX40rjZhL9Okqre3c7rtViw=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c38781efcso3760681a91.2
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:33:58 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YytVXTz7eotBywKq0D36ojs/TyujlRl38+2Xq1D1u2Q=;
+	b=Xfcqb/K1Lf4XETM+r5mGSxe4MCdI2EEH+OpXihzA5CoIVRcNVhGPPCXoSyUJy8W5BdszuX
+	iDAYSnsNLcBeg7H6aCn53ZQk2kBbeUOJNn0waA3aq+roG0eYc00sFxJj1ScJDY0u0hIcpP
+	ls3+Eoui4Iw+KCc6kqA+7uBjXjc8pps=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7f21951c317so1734067b3a.2
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:34:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766169238; x=1766774038; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lSNGnEFxOyI19g6eLd2Gx6lTfoT3c263QtqCA7O/6yo=;
-        b=N9gDA5URq/UmTncSWiw933Wu/POGTdZrHNgxlS9GwujYHwTLP2+/o0rHL8xriUpuqp
-         SHk4ZxshiPsOqIRwh9rBoZdKJIyifSZgc5sB6zQSJYY+dgrzsXrVMu0X8CJOJzdCnQ82
-         ihYMuPcBV1Nv0phUF135CnhviD4ktHvzTc+26YTekAmp5tWl9O5Qn91GIOZoTXKaX6+b
-         Ox1qQR41++UGymmPrrbhbsfXA77+a2Zyyx704I7t/ljZEVuUkbllO9xgsp6OXrRrTDVu
-         NxLZwQ4puYc+n5bIY8uNTRhwLOeHszAsRgPoUed2dBo1RHTBVselLXMAX0860P28iQeg
-         aNAQ==
+        d=google.com; s=20230601; t=1766169239; x=1766774039; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YytVXTz7eotBywKq0D36ojs/TyujlRl38+2Xq1D1u2Q=;
+        b=lKZqR1DujlmyRYSVuy58lu2dpkSdjlanXqtLdeBVlqEIxxFSEgP480gnztNem0yBvm
+         k3IiNx+5VKwVXQGctlrtCo1KzQ2bBa29rwiKa0mp9xgLYXTvbUWHlJYrCNiebuIGTLcU
+         yS6gY5KavSgtd+LVn10pmKpn6a/kHqR0GGl9JovtwY1YclvXv3/N44WlYKiY9ExI/4VC
+         xWoh5sJHtAR671dv49F34XefZKVKmzKgtDQ8P2Pd0BEo2VVbyMEoIv3e9s++Lxmd0yJ0
+         KbQRahCCRDQPJYWFFPbjbndz302cRd0wwqCAXs1+5cup20iKWFX9Q+dsoXzboE8O/pPy
+         XgCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766169238; x=1766774038;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lSNGnEFxOyI19g6eLd2Gx6lTfoT3c263QtqCA7O/6yo=;
-        b=f0Zil8ndRya1tGnchdLmyZd7jyjR4L99B4TEPVgSGYnnJsxydXi6p4gX0rLCcOMdaX
-         5JoFesdOyvKjb7QZC1MF9EQsZGQ+4vPvlt42E+8TDqrCrTZwfAjmmcKGwu7hq0+ZMeTy
-         2e2TgO/8KMsYxD9qN6DPtI+wJrA05qSpE7jp4uTRfxMdNTiQOrsCQqW+kMdBbbCD8dvM
-         cw6nToz++VsS20zhvW/IZwlmNwSa++WO3uJm97YrrZLls8YFGSe9vqTIxW49JVpGxcSb
-         wWfWURpFM+UL6V5613sO8Gp//seCvTFmKefsSnZbwIwkYxg2Cp5jchTxPo/u4Uh78JTn
-         l37g==
-X-Forwarded-Encrypted: i=1; AJvYcCWShgFjZiYLdO1sHvpCDVaXlW/eAL4Lvh7RMZtSgcSV9yOmmJ6mEmxVRugWXgPLHhG60eLdtRxtvA==@kvack.org
-X-Gm-Message-State: AOJu0YxoTyLwWlC0DDaNfAmbkEbf8C511Xke0aqvH6gDhjDCKcRpmSeW
-	hcJSM2vTCutim/n0z3qdYlaSXYRw+9JJmHhFRbKh3UKSEYjHskBAPBTeksedJXwGWAT3FPpwOhZ
-	x63cIt4pdkIvAug==
-X-Google-Smtp-Source: AGHT+IHlWbEQHHyZMRyN1CJ6TsZ1t3MpWoqaJTHXvpmESrp3COpy16aFWt0kD4JLtuxjkJkbgfBPzAd+vxBxzA==
-X-Received: from pjbsj11.prod.google.com ([2002:a17:90b:2d8b:b0:34c:36b0:4e39])
+        d=1e100.net; s=20230601; t=1766169239; x=1766774039;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YytVXTz7eotBywKq0D36ojs/TyujlRl38+2Xq1D1u2Q=;
+        b=iphq0ua9ns0PGabfupJBLXuDIeCBYiN1U5hCj0D7A/tV76s+rqjavhno4wiEZceUu6
+         Rdv/GjFQKStk88LZVo9xIinFCaKmaZpAFi5s6g7v0zb5tJL3JIrgnlEWlr//CFiE0BMB
+         5WwIabHrE7xvecE1LE6juxGbTo6V1/c6biBf3vjhNhWBTXZQx39T6Ng0RkUz0m7sZYJL
+         fyvxkId1G0q7suyhtkQ0W7tT7OofKZwiysLEyNCC9wgTTwmD+wzVZB4jWpDwo+jFnDL8
+         c/Y9+vlP2HX9g6TRwxhmY0PNEuRtMcoM8LymvVecVD3swEwlAHTQ5wYtBdmybSaQftIO
+         mBqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWjpR9kBRteqTz8JFDCKUSjnVpDhcI01LudLlJEKj1LcRNQAAZClDgkc4LvN5pHMgkMBp85wnDkg==@kvack.org
+X-Gm-Message-State: AOJu0Yw1IKz/RxRGNLfKifqUoPbMFmJvniSBcLfvMsBkG0zqo0WFnlSI
+	JtNVp41963tcv2ITqtmEGfLGhsvYj67j32dGdgCv7RwAw+CU/mh38OFMit6/0wVN+B6HJ8RCeOh
+	BRgaXR08UiYZWYA==
+X-Google-Smtp-Source: AGHT+IEzOjUKHHk546qLMa+fb+TkJDXbIwoDrKmpkBwNwz83aSZlApmXkbT2tXI+flv4Y4MXC/eUiYjM/ow/+g==
+X-Received: from pgjz22.prod.google.com ([2002:a63:e556:0:b0:bac:6acd:818a])
  (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2e0c:b0:341:8bda:d0ae with SMTP id 98e67ed59e1d1-34e921b7334mr2826873a91.20.1766169237687;
- Fri, 19 Dec 2025 10:33:57 -0800 (PST)
-Date: Fri, 19 Dec 2025 18:33:43 +0000
+ 2002:a05:6a20:9149:b0:353:110e:9b89 with SMTP id adf61e73a8af0-376a9acef57mr4054062637.49.1766169239272;
+ Fri, 19 Dec 2025 10:33:59 -0800 (PST)
+Date: Fri, 19 Dec 2025 18:33:44 +0000
+In-Reply-To: <20251219183346.3627510-1-jiaqiyan@google.com>
 Mime-Version: 1.0
+References: <20251219183346.3627510-1-jiaqiyan@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219183346.3627510-1-jiaqiyan@google.com>
-Subject: [PATCH v2 0/3] Only free healthy pages in high-order HWPoison folio
+Message-ID: <20251219183346.3627510-2-jiaqiyan@google.com>
+Subject: [PATCH v2 1/3] mm/memory-failure: set has_hwpoisoned flags on HugeTLB folio
 From: Jiaqi Yan <jiaqiyan@google.com>
 To: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com, 
 	ziy@nvidia.com, harry.yoo@oracle.com, willy@infradead.org
@@ -96,14 +99,14 @@ Cc: nao.horiguchi@gmail.com, david@redhat.com, lorenzo.stoakes@oracle.com,
 	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
 	mhocko@suse.com, Jiaqi Yan <jiaqiyan@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A0EA7180017
+X-Stat-Signature: 9a96sahmyze8mdfkjk8puz8opwixb7e5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DD49B2001E
-X-Stat-Signature: 7gxurechmpx4seo6kzwfy1zmgr9p8mjf
-X-HE-Tag: 1766169238-977270
-X-HE-Meta: U2FsdGVkX18FCVo2pc6WKLIqZ30yp1UJ3wwcv7oGc1VY7h63Yc5hNBhRuq44XexFwLCEWtxXGOFt5/vRtJrasCMBA9p7Wmwx6yIb+IVthsUaOnDuU9okGcuA4a7FTvRN2LCVObG8j+HMuZ6M6BebzjqoYrlox2E9ExQS2kk/OAXM0K9QjASsKlf2p1HNPAopoVksOBwjQL1MDL0zlxYguZN5/TqDTdzDnY4P1zYMUB3abE2JohK8jUVqAbWQj/1BahW5taOXOlSxJx5zms1wIWCQK5vBdAGtKgohGOXXSwJnYlnc66OgSb25jHqiQ90O/hBks9FMU2bVNBdNqi2lU9B0teRM4g14izt9HzE1HXEPBJA/0MOjpbmO/OV0vULp/5PjUdJ88iwGWZtXoec+FEZFc/bi8PGuJ0CcFN6DVPTEh68bW9GtT9ifR+d6BZ2iEhTTMR4iOCSoaoz5MN0tVDW3JcM5/3PRnAkY+hBl8zUs2b3cZAgJ7waLSbZhWeZTLBJzE3/asOfZayAI+41NJPWLbPun5kK5LwLTfpzm3932RKgXSmgn852opuDjoVgYPQfugs/HNJZTRHq+8Z1nabRe5G/BD2lXSJ5IpfZH7lhDnluH89K1+mfLI9rMDH23rUeuk+D8ia+vB3pe3aFCqXeY32/ZUkHBdrtKEQWOqXC9H/3sFrdIPjWhomNyjcywzbnhOEq09F6xi3TOwX7onZDkXVjW+q0ZuYQ0J1U8eUSQii5s8VDe0uKIOHo8bg8X9wVp46XkU9dLsAYIF2dA913+vIdv8jZmrkOGSmqAlnmmcstrTfNMk7Gp9NZ6DhYlhcQ45Smy0QchGsohVHhAMgwJrnkKi/bz/WCFtfYyQuNod9E1mRBozYcgnTabhURB9eyVD89CiSRE+kYFy1XZ/pDXIyKvFDpXSBfpV0KqOrGna7/CS1H3W3vacckK05dSASVWweISLLbHFFQKBLF
- Y1NkkgC1
- o1KVsx6dZgC2s4A211F+hXaOdzdMpdHsSAKW4FgdL7IGLdpilEQTIZkwEE6jGNH2sq21D0eh2UKRJFW1pFAX3qMGi54sGy8tUYUGTYVaDqQ+I3dv19fpLa+R205ZSUsq3s19wV8aUcxFCp+QyosfmHxX/69Zoqlehvxwk0/ERA62zMfA8iK4Xf0fEgYVup8Og6kS2djxdoR3QHoCkIUUPdItDegY3DzWb4VRX4+dzU+GMkuEyInh87GtzwrZ9d6fUpjftZuqqoQ+V3pRbOANLEb46PxnCRv9nhjn8RNSUWIoqOjOZCjJymhwI4eI4EZo/613eguNaSA+YpJY/4bMslZtjbQQ6latS+/ufto3uWERVraH6KUWhSG6Ch4AQ6I2Z2otXH4m4T0eYKw9YIFlVfmjd/1xAdIoYfGZ0hti2+BXW3FH5/8mPMQA6F9q6mPo8+cpF7mSw7NsZwSz3Stlus1Ol1xLTycVHLztcwIJGMX0cu6hLsxMfO1yll13+YiXsIkyKET9Gso6+gZO6MNTFwueJlm4AttZkRrnESqGiUEucco0C8wSVQABg7A+/bvTis9L5MEdA7XOZV3r5ZHLNPYdUYk4Y4Pp5/mm8yKc6lrrm2F0XNZ5cj3KwVr23kpYpV7fwDA0HwrZ+t//U63KFcVx2Ak+dz6QJAgRUFD9rjj0i8LvXdJGIyEM2riSSGPJuvJgzCjsaraJzdccUzh8GtzuNJhtFbeVWaZJLfuYW5gS3vz8=
+X-HE-Tag: 1766169240-515760
+X-HE-Meta: U2FsdGVkX1/8IWhs0o/2I0UuTPLkaHutJVozdAvT1QI/hxV0cDqLLnp6MDIaxKg0u2dQ33a22L5KViroNaGPbK30cNx/rDX6R0BVGh62c32+bqmTO1Jr9AWYe0PO1vl5fBVIJDdyD2rJ62UFMEwp1jQtOkO7E1TAn8sTJ7ejWoENwAd6fJ8XGoIKyEJtp+GleyYgLcMY9qRnSLSoGoBsLm8HUUA3Em/GlZl4FbGC4YkhO0DMrjOl8kQMdbgA5v2vytX9nOETG2EbgxZRGM47QnozX6t1RI7V3zS8OPk/lyU7c5/9tTMUVRoovNmE0KZKiuGqrRoC6o37x5IV3tjzweyR3sVvzjPa5EB32foGiTEqx6rloJ8Yd0VYo9EHhkG2DR2vinv14XnqGgodjwqxpVJjKA4xz6M77jTLFaLDzgJAM5nfFOjIbttWB7puxjdy4g6pHNm5LgxEk8ekPq+9Q+ymRHPSpYaXx5vyFk/NvQM/6svX2biqIMMxkBZKboXs1SIof17vxZJYqzaaCFen1MThx9WqyaoARiVO6RMcTQMBE5WO01sxYZW7GbTFtcWpgmt+Q9VVCPDxrqUIR67lMVlKLa4zTdrMrJ/pWpugYdQeLsAv+AhTFUv3MUaIEts2fKvloS6+7yDubgR7luxowLTpd45l3AthmcHWE/BVUXIOpvZQtsdWiC4Z+7/zP9A5mHbUUTQvxwdlE0czABWJ4/YDLXZq50p3X/unAOm0jOLkropaGk3OrP8e28mXSHr5bhtZmwr7n3fiXrxPqRhQJKkV+TzbnRczNZyKMbencB15VW5twusJCbJ/8aDX22AunlGR7dCPQLKR0voEdAnsXizzsR/CqTR9xet35clRWsI/05P4AftO2r/brY3wZLnGT999mNPuRa+zKyjkZEAPxwxnvhjYHb6KpAXdqvfOJ49YUf7nRFu4V3o0ykUkZzEWyvIkgS4WxoLoqycForr
+ P50RXsKj
+ ffOqKD84loWRHAGx4GvOSb+PsdO2+yGZHewVWoMd9RlK7+3ze0p7QYeTwEwyaLm8+Hw78WCOGfvVvoQ34V0qwfoji6ndp2nneDh53ge4gevJc50pa+wIDsORBH3Y+bNZg1Qgdjq6LJmrafdnnyUq+OKPIWL9LI+1q3u6dVzm8hklYtSAfZHB53n4/kKRuD6mMjiZ5v1AhrK739rP2qfrCjbebmP4rI1ibHx63NLBvBx4riucvsPYwft793G1vExVVOfhu02ZhPRMTphAbNbkqh9WrYKsmLMp2+SwcLHcaZ75fnjrocKJnG+7naiwcUE4LP4mLIgovli94tHSzOvlEvgHSKqSeF/PCII+CzIzQN5uKArO+UfDljCk8fclwkVnCOMImc09HUSQGW7XYKc6LQKQ3Ed3kV/3yBQJK65zKTCgpCDnDTFLdLWs0DzBlTl6tY2C/KITzH1KjeLIdoIfPnclm7otk8Dk0Vt57JthVAt6hFzJmaKFdWZbfreUJo7zCOqlqetjXeZkdYmFH6XG5GL/s7U6OFbz2zPzPkCRyKhizQhojeM7fNsHJhapbjIX0DNCIiXKXEiOUJl3QScpKrqTLLvi8/smFQPeVpk+Kqh6LVzvA4VkOTSYa3TqvSO6B1ETNWO7wKSFvS7l443Hmaa8uxfCxm6ll6KDKnim4muWUZZg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,76 +115,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-At the end of dissolve_free_hugetlb_folio that a free HugeTLB
-folio becomes non-HugeTLB, it is released to buddy allocator
-as a high-order folio, e.g. a folio that contains 262144 pages
-if the folio was a 1G HugeTLB hugepage.
+When a free HWPoison HugeTLB folio is dissolved, it becomes
+non-HugeTLB and is released to buddy allocator as a high-order
+folio.
 
-This is problematic if the HugeTLB hugepage contained HWPoison
-subpages. In that case, since buddy allocator does not check
-HWPoison for non-zero-order folio, the raw HWPoison page can
-be given out with its buddy page and be re-used by either
-kernel or userspace.
+Set has_hwpoisoned flags on the high-order folio so that buddy
+allocator can tell that it contains certain HWPoison page(s).
+This is a prepare change for buddy allocator to handle only the
+high-order HWPoison folio differently.
 
-Memory failure recovery (MFR) in kernel does attempt to take
-raw HWPoison page off buddy allocator after
-dissolve_free_hugetlb_folio. However, there is always a time
-window between dissolve_free_hugetlb_folio frees a HWPoison
-high-order folio to buddy allocator and MFR takes HWPoison
-raw page off buddy allocator.
+This cannot be done with hwpoison flag because users cannot tell
+from the case that the page with hwpoison is hardware corrupted.
 
-One obvious way to avoid this problem is to add page sanity
-checks in page allocate or free path. However, it is against
-the past efforts to reduce sanity check overhead [1,2,3].
+Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+---
+ include/linux/page-flags.h | 2 +-
+ mm/memory-failure.c        | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Introduce free_has_hwpoison_pages to only free the healthy
-pages and excludes the HWPoison ones in the high-order folio.
-The idea is to iterate through the sub-pages of the folio to
-identify contiguous ranges of healthy pages. Instead of freeing
-pages one by one, decompose healthy ranges into the largest
-possible blocks. Each block meets the requirements to be freed
-to buddy allocator by calling __free_frozen_pages directly.
-
-free_has_hwpoison_pages has linear time complexity O(N) wrt the
-number of pages in the folio. While the power-of-two decomposition
-ensures that the number of calls to the buddy allocator is
-logarithmic for each contiguous healthy range, the mandatory
-linear scan of pages to identify PageHWPoison defines the
-overall time complexity.
-
-I tested with some test-only code [4] and hugetlb-mfr [5], by
-checking the status of pcplist and freelist immediately after
-dissolve_free_hugetlb_folio a free hugetlb page that contains
-3 HWPoison raw pages:
-
-* HWPoison pages are excluded by free_has_hwpoison_pages.
-
-* Some healthy pages can be in zone->per_cpu_pageset (pcplist)
-  because pcp_count is not high enough.
-
-* Many healthy pages are already in some order's
-  zone->free_area[order].free_list (freelist).
-
-* In rare cases, some healthy pages are in neither pcplist
-  nor freelist. My best guest is they are allocated before
-  the test checks.
-
-[1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net/
-[2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net/
-[3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
-[4] https://drive.google.com/file/d/1CzJn1Cc4wCCm183Y77h244fyZIkTLzCt/view?usp=sharing
-[5] https://lore.kernel.org/linux-mm/20251116013223.1557158-3-jiaqiyan@google.com
-
-Jiaqi Yan (3):
-  mm/memory-failure: set has_hwpoisoned flags on HugeTLB folio
-  mm/page_alloc: only free healthy pages in high-order HWPoison folio
-  mm/memory-failure: simplify __page_handle_poison
-
- include/linux/page-flags.h |   2 +-
- mm/memory-failure.c        |  32 +++---------
- mm/page_alloc.c            | 101 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 108 insertions(+), 27 deletions(-)
-
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f7a0e4af0c734..d13835e265952 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -904,7 +904,7 @@ static inline int PageTransCompound(const struct page *page)
+ TESTPAGEFLAG_FALSE(TransCompound, transcompound)
+ #endif
+ 
+-#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
++#if defined(CONFIG_MEMORY_FAILURE) && (defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE))
+ /*
+  * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
+  * compound page.
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fbc5a01260c89..d204de6c9792a 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1952,6 +1952,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+ 	if (folio_test_hugetlb_vmemmap_optimized(folio))
+ 		return;
+ 	folio_clear_hwpoison(folio);
++	folio_set_has_hwpoisoned(folio);
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
