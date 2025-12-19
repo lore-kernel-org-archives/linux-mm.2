@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3420E668A5
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:31:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D36D78797
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:37:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46E956B008A; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
+	id 8C28D6B0088; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42C496B008C; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
+	id 858B66B0089; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35A086B0092; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
+	id 785316B008A; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EAC6B008A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:31:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE25AB61BA
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:31:56 +0000 (UTC)
-X-FDA: 84237820632.30.AFEEFF7
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D333880007
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:31:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZWZp3BGO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187115; a=rsa-sha256;
-	cv=none;
-	b=XpUQY1TaHUjiCfxqUYbI5cEF0quTQm9gB4XrVh2mC8qCq20OxYASK1jDWa1RVtdRadHQZU
-	gV82P9icfzGEkMnskHuWIe0cSv2N5mmHjpcbKrCT2oyZezUoa2zRs8hxppGqEkfXfIvgbq
-	0zHMNrww+KPOyuUgeWVROM1hOhWzhCw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZWZp3BGO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 678496B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:37:54 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1155C1A01E7
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:37:54 +0000 (UTC)
+X-FDA: 84237835668.25.5C3DAD5
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BC100C0009
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:37:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ooGrO/n+";
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766187115;
+	s=arc-20220608; t=1766187472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7vOgNTsLKhausqFQtwp3EgZuPBkHhNtQ3ISVh7bYcnY=;
-	b=wE8sEu8hefZqvY+8RvqUPNXfHFdd3cd+WjgbM7uflcoex4UuEbRt7XAUtdR978FG1QtqyP
-	KLXl4sPaoiojVpKJgo3DqdEapXmbGLrvVAfxcdPtH+MS/3NFpe3vxhNqYhNtVk2usE59I3
-	lB7flvuqeT6oJWQOJwVjURntRyd7H4o=
-Date: Fri, 19 Dec 2025 15:31:36 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766187107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7vOgNTsLKhausqFQtwp3EgZuPBkHhNtQ3ISVh7bYcnY=;
-	b=ZWZp3BGOxJ8WQwxJg2TsZfRWziizPCWD8adQ31MjlcBekLIqCb9Cd/7MCRgvgURLOGmRXS
-	R2ReQ8DTmIreOyurwVMJSmfRMQ5V+GFWhZrhfh/f3P0n0//PItZBHEaUQwqkQ7bYTpuhqJ
-	pRnkdAD5xbFndyAeJLsFHfsj+ciGU34=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 11/28] mm: memcontrol: prevent memory cgroup release
- in count_memcg_folio_events()
-Message-ID: <th24uujlegbefmxlz2gngavlvddyfls4swm6zolqggtfoauztr@jhawlcvuiqsy>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
+	bh=7iDiFa9C6BbQmq3eA90hwy/boYCk4vo9zcd1KlfWLIg=;
+	b=Drdk3aVMCamaXvRHhmWikDLdPxgGNksiLzMyw2C5A4j2HLxYN9egzeEA2QeStscmmJaJK+
+	crO55U/HyG3+SvH0UfDjhvDn6dCDSLy1Tn3RyLeanxG1D1xvpdp/wC5380D0rDOLBzKFYY
+	JKcFC0kN7vOe/RCd6jbTj2ApF/tLBkc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766187472; a=rsa-sha256;
+	cv=none;
+	b=Ba3DUGSKz3Qii7R01081GFbI8U0XT/Jj6B/LuxlaLBfvwxofuR1wB23evFMjN0567JWHqU
+	LPtlJr/HQQvF/oDwNIc4YYP9fR23dhIrwHj44dcQRU52yThuOrpSQSFMuGMZ7xvcGI7etM
+	AX5ILftntzHvG+CvK1xgQ0sEgGDMufY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ooGrO/n+";
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7iDiFa9C6BbQmq3eA90hwy/boYCk4vo9zcd1KlfWLIg=; b=ooGrO/n+PKzaq+plXioglWkC5B
+	f0enapG8j3yHDRAH/dXfpWR92EkbWh/zKrKUI3itCreuFQhjay6EbjHMGRDlCbqk1m4fMAm+qec96
+	MsDQon4BD32uHjjhXV1HgZN/TCDLSCDnIdIyzjJXsxx8IG5fX74Y7NQX+WzW2cNOrdHYdDKJjrSNT
+	+jwmKsfrfve+jyGRqIeMdI5khflMH67fBlNHQXXtkpTRU8jbzlcGJCYMs3aby7Q85lLknTf/yzDvZ
+	Ku4RC2HFpriodsYWXOMIOmx0sCX7XI240JFlw8vAmYVoHJSatdbZQ/6wnya+fe2k54TMFyVWJW8lu
+	cZFd6qvQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWk2e-00000008JKw-0QQW;
+	Fri, 19 Dec 2025 23:37:48 +0000
+Date: Fri, 19 Dec 2025 23:37:47 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: kernel test robot <oliver.sang@intel.com>
+Cc: Vishal Moola <vishal.moola@gmail.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [linus:master] [mm/vmalloc]  a061578043:
+ BUG:spinlock_trylock_failure_on_UP_on_CPU
+Message-ID: <aUXhy1Jyv7_GccIp@casper.infradead.org>
+References: <202512101320.e2f2dd6f-lkp@intel.com>
+ <aUW05pyc9nZkvY-1@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D333880007
-X-Stat-Signature: djgbwf6e1jmqpg9eprq9sozzffpsh3xu
+In-Reply-To: <aUW05pyc9nZkvY-1@casper.infradead.org>
+X-Stat-Signature: uoyouikzixpf93yq9qk4tmpruythpwjc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BC100C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766187114-558670
-X-HE-Meta: U2FsdGVkX19PPykYQQWQVPRqrDKA4Ji1KHuCecO1yrpN3ndSEJNEOu32rHWRvfITyYPAU7VsEsjVU+0HYqXF1rwH31bBdWD4F9zk+9Qmi52Js5aTQGBkF0Lsf8muM/Z8smsDLM0i6r96chhGzI+Jmf39dpxGkSqwGL1iTfoj1sjcAbJJnZ1uFL/jsNbba+SjCn2rzYeIThu1bup7X8ofyLF+bnIBIRoCopYt6OQXtLkSFbWa7/Rzm9702aiLgMK0gWeJ1pn8RJDeETgaLvu9D2nDvMgoZTsmSa+g9QP5LrLyFlXgGeo1F7S+Jru5ea7HTPVmI9YhKL0OFZ3STqQgZ4TdrFD2kvM14Qot4jQQA3g8e+OUlQA8aV6wazY6A3idkS3qyrj9MJnBucK4zIbZJgQTAZcvfZmTa5Fa+7pigCfLZ7A0D8uwbjOLabfEPcTwgc10j0TakmivB/RyYxuqJyKtNhY8y7CJWfaBcvJzPxjgohBACWXmidKl+GH3XsiJ+HhEXORFwnSFh2VmlrO+BWHBytyv9cRAhJUrFyg5Fhrc8YLcipHMPxDf8N+NTkK4eOxCQtWn5DAJbSl4bgpPumdXgyLqY8CblZ0czlxW2tVnxnEzYQig70zR2vxcxuccGRNIH0q+c/f5FzHfin+mUjlAZ1EMSNLtx0KObPd/5uMxCghG0Vzkr2DMuoZiJ+jIccupoIn0jqZyGiQJDFWMFSsRwjnHDHThpbw9HpJ7yVEkQ0nCRWISXtBD+fc9O09MynrwJIjM1nhBWbyYsQtaMLRkOpsRzDmJqqe7OPlLKmzj/hJJindojl0PVWPgHAYdMkDPwlFQe4S5VXQ/IPqU4LaMr1g0FXx6G9n2qjahoJU1EgXGXr3PaOtZzkc0Tm7ONcAQTbZ9oK7E+A9gyXZcKruG5feVQ0mkJ+BCEy6be7B630Ck1RkLKk1BUkvea9SawtIuqoKX4bmaa8iE1Xd
- UNj71FIt
- c6sF6i0BHb5QeOADrytlVFm53aS1H3zl8trM2uSqXX2otsKKTjzM7+bbxrWGyvaayYOGVbTlblDwCCZpkYIg8EOG2SkXUoGHZ5KA5vgnVtu6cyHK1/9S3jpLzwpxwKhhn31Mz6MIS2sga+7UgGex3RBbU5sa58EzzddsZf01S+OqZilFX1EWKQC0JJEH1tEGAUsLZnnpygmuxcBURtfX/DdrwB6MMvnz0lbR95sy9XneQU3wIQTYQbieCrmCo1mgrvoeX1ax43TjO/mP4GAlxASjjLFeyEcWbgWpot1VsiJKLK3jgOY21BvAQWz4BEPvo3gpqxHl8ppbSuic=
+X-HE-Tag: 1766187471-736003
+X-HE-Meta: U2FsdGVkX18DkQ6wJ++EVjFbjWXC1aPNIflPPuaDhvR0NXwbWg1/ENEveWLN+8HrqT1+G8wfdjkESwbZ9Onol7oTgZVguzOgGAuVquxCr+AROLkv8+WOaM8NysRDC7bUe3JkBF65H6mmc4kC0vc5e2vIRI07KKwW8jtl4oDzKOYuLdNSuqQkVrHYgAxJKFcUQUeGnUC16Vac/CjaL6Ir1Dy2/EmOsZxd/ypM+qTezNcWvHUIC1PbCNpJ9kSxsBgzqOv38NneTXTJsQtMpA1TOc2ebZKVbZsEvAdXFYdBplfyP3qTUO3HH+ul4NVX5BUoMXcZLbptbCC6uBc5t41p5+UfLLl2+cE09tP8S+zYyCAPIatFWFdZ6pRWF7+0gC2nw7nUIaDh2ZKPUhdKcEt6dbSWa5eZOKPrs+QcEvVcRJcafQ06Lz05Z3Vq4sNTerllSRZvQ2Zomr5KHI+wDNIijEXuGGGbGFlLmlPr7OlBpzCOE6HaXUbXtI9DPxNFAkbADZEWnEdOlnt2F9CU5KzaB7iNveyxvvSVT08MKy0yHVQCa0Tcw/g/n2H0xkDq5kSLx2kviwszJ0akUGcpXsIDxAP9p2qWSHPN+UGc1ooW48muOrudFmT+akRrSBVlJiBygfwFdZbCm2Jmh/OaLqiok4R9jJ0P6IROYnebF/I/M6g4x0NTb7dGiCAyVxj2glqoks0lOeIrH+Pk1C5hVnCVztDJ58XoLmIGYzWctrs5SbhOXFBk4EsFqCpOxkLcAA3TyDCBK1Q7cq8QlxO7kf1LRSnCLFIjCWwUtV1a7aoq5PpXkWKmuGoshERRikk+FzOgyffZ7Cf0ZIXn/88sQjevo1L7fqO1E9EkSUUSsHe5hG190mDLfmx9u4GEB8YRFypjhjY5aEim8Onv89bi0dJcVANGsNmo2eak2X6abHkpE74LOFQLvACOt8o5IV3X7Ezp4/dkU6IbW1dSmhFXq2Z
+ IZPwGgUB
+ MePwajN7h2vW7GZQus4+EW/ku1YVscD7e0U/x72J1sqxTO604ncp7y1yZ4qfmZJ0079ohIDAsZrd/d/fWHp5ZzDzTN79YX9NJLnd4CzDbaIHNrQYSS97s+RJk8yGWLgUt1kRgeEcea4ZZFzxHYJ87oYN5Jmvh+qhzb6IQS8Ya4cHwETLr+WDx9ehbQoiZjqfwosTuY78wljTyIPSWPgWe5dbEBZk2BELgjEe2y0q6rrjX+XzRDyg+Lla5MpcwWIpnbUnLLDcncLiF5/vFAZMc7xzcNm0gr6VRp8TWM2HOqdE5yN7S1Y3KovT+5X+QPZQ+yoQEuKFzK2uYa4vzwsbKchwWN6F3cK7UCbLXuxAkuJmeSehFOMGzqXgsRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,23 +95,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:35PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. To ensure safety, it will only be appropriate to
-> hold the rcu read lock or acquire a reference to the memory cgroup
-> returned by folio_memcg(), thereby preventing it from being released.
-> 
-> In the current patch, the rcu read lock is employed to safeguard
-> against the release of the memory cgroup in count_memcg_folio_events().
-> 
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+On Fri, Dec 19, 2025 at 08:26:14PM +0000, Matthew Wilcox wrote:
+> Now, as I recall, we are very much doing this on purpose.  We decided
+> not to disable interrupts at this point for improved interrupt
+> latency, accepting the possibility that we'd occasionally fail
+> the trylock.  Except on UP that's now an assertion failure.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+This is stupid and wrong.  If we have CONFIG_SMP=n and
+CONFIG_DEBUG_SPINLOCK=n, then trylock always succeeds.  And we'll end
+up corrupting the data structure protected by the lock.  So the warning
+is real, and we need to fix this.
+
+With my distro hat on, I do not give two hoots.  We don't ship a nosmp
+kernel.  I suspect all other distros (except maybe something targetting
+m68k?) are in the same boat.
 
