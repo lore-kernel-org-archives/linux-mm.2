@@ -4,139 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27766E66895
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA8FDE66895
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:38:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619BB6B0095; Fri, 19 Dec 2025 16:38:09 -0500 (EST)
+	id 2F0CD6B0096; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EFB36B0096; Fri, 19 Dec 2025 16:38:09 -0500 (EST)
+	id 29AF26B009B; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB796B0099; Fri, 19 Dec 2025 16:38:09 -0500 (EST)
+	id 19CD26B009D; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3F36B0095
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:38:09 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8EE0C0369
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:08 +0000 (UTC)
-X-FDA: 84237533856.02.4B9427B
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DB3F4120011
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aYtC+86Y;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 091FE6B0096
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE6E58A597
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:18 +0000 (UTC)
+X-FDA: 84237534276.18.A40E285
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BCF3E100014
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c2xbR6GJ;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766180287; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766180296; a=rsa-sha256;
 	cv=none;
-	b=QBZKjFlKWNJ2HdNVCRKSHfx5b0ejOEgXr7rHAH1iPPMQPqAh45+f3B7ACHf3gr2iygRdru
-	UqC0mAVvyhsQpSrgcviCnWLKNJKdZj8DGGm3HYfPZV7HP2h13jYdame+V9nrGz8HISWeQO
-	F/ho3+Mquw0ye3xOtWZ60elkRIL4urY=
+	b=nSKfJlWbVVaSycsCJ1m6gTOeFFBKG2TpbeqqF0hmeNF3avI9Puyep9QyJ6S9AwGjYuDrrA
+	f1iVSubK9Tp3OlXlvJCIREAB/uSh0i2Q6OhlPU3p7V9COeBkIH1PvVkRCCUI6ecDDgN3xO
+	/sxmSRL6JhLlBAgJmlQS0KUJrc+3irE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aYtC+86Y;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c2xbR6GJ;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
+	spf=pass (imf05.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766180287;
+	s=arc-20220608; t=1766180296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7qwBOZjXZNgWuokEpvkuCyDN4qULKX2eOsVZKGx+BRc=;
-	b=Sp/lpSRnIgFPtOpvgVANZ7kKWtwGBcBEiHS3dtFbMESVAH7sczYaZ8oVf5LEpdqVnXAFqc
-	3TmKHiJzaNTcRJkHNcZqPBUhWvBW+Q7TEpPgcVaZDVw5woiXfK2/YDFu0vnvG0lTEElUyr
-	MJj8V6ySrcCFb+o8Xyj+elVezhxYDks=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42b3c5defb2so1257805f8f.2
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:38:06 -0800 (PST)
+	bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
+	b=c9G6yKOOcwr/U6QsNwnOjQdmGhCLeBMXx/vD3RkLyE32yE5XCqIPpTh29IikdSciog/Mxb
+	0DChrWEsw5smaRTefJm6C5bDaYiuj7PqPXi7Ki+IYun0SWsF3Mx+482kk2Ez6U2OzCOrjl
+	0o3Dp1t0aq5zmaVzATcHlZSujVI/VU4=
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a0d52768ccso27772115ad.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:38:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766180285; x=1766785085; darn=kvack.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7qwBOZjXZNgWuokEpvkuCyDN4qULKX2eOsVZKGx+BRc=;
-        b=aYtC+86Yv2GBG2u4PrbRkijsyokz6iWx1GK9lniWRK90BDHnbVGiIrSrzuDfwdRdZP
-         nv6c9t0ZP/hS0lzUl4jmxd4MkLjEwbUMOtklz8UokaxSHMjPQDByMSClLLnsBLTLNsch
-         +z00nsjuzC5ub6zhW5BB6fSM9tchmLpPPeQ+vY99QYaeVCPedMS65G0hJxQ63df8YKAq
-         ALEL8s4YfH0a5hDHLp3bXj42vxgRRvVePisarkZ+32bIsPCcYyLrAute9h3Y+Tt+5Wlp
-         0wubDoXZq75QB3Fma3hpvvVwjWTLfe3g42mCVS4lAvuj/kxfvNRdEcig1EkrD+7tENoO
-         yBKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766180285; x=1766785085;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+        d=gmail.com; s=20230601; t=1766180295; x=1766785095; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7qwBOZjXZNgWuokEpvkuCyDN4qULKX2eOsVZKGx+BRc=;
-        b=HWU7PcvXfwExspjUvKh2W9mR9OFZfyZetS5wrQEYe16koT/oWggwQX+CRM8J6BHm8j
-         FRvPwcdVFzVnMiZL13R275iBw9S5H6F3HzIzTb7G2Xmz5fBuBD977TcF4SyKZ7s16ckq
-         3RBzIMDvI6KN59qux8C2eLORd8EB/7EG1CinBu7dvOEY4ywp0D3GtBkPJ8SQLmMAvkJ1
-         62v+7lISzjaPDm7SzTz2LmiksT2/svUEuV77G1VjiIuoMh6bUm8xeo/5mQxem/WGEAz9
-         dvT/rtDVjMZcvAMoPqJYoQ7avMtPW+/F2S3/DkhZrSrNC+/Pn8cP6rTM3PiNbwECihyv
-         e/Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVl+KEwjww0SZeBYs7f8vwHpl3DJiK3l9e3B9qg7PIe11PBpyXFiDLgm80vMZ7Y7TNiy1cnsM3mpw==@kvack.org
-X-Gm-Message-State: AOJu0YxN64vJk0MHFb8afTUelLfLy4FfHs2Ky7nyp6mC0hw9XjBZvhhq
-	VEv/GjQNhD4jga15DSBgCqyAdiEfZXb/liOVeRjd4kSMI2M3nXwjcIDv
-X-Gm-Gg: AY/fxX5V32acSsevOOZ2wsSMDJV5ObM06wSHeJxOlcHz9l8P7qLJsQybZHbxeqOiRZu
-	VIF5fAEKHUHw8O6vfc1845o7HlkHjL8Pl5GECiV6EacuTmr/i0w/Ekh7Ow6UhnoWV4Ko8/nib7f
-	fGhpSfw2330J7f4xYzPZgbz1bZz7CRi4Q5eoCclBO7D/Xm1iCVybIGb7d04+bwW1LJkuIl+98Gc
-	V6DVTid9WpUn+58Zdec/6xcQzOLo7Z2dIM98AaMYfEgHAu4X5/0QpkChKu0i9PK+6OhMvCZe5yi
-	9mbkgTl5dNNhvHm3Qt2lA2+d5nAthUprwTF/G0xqsbZX7gxICtDfg0Jv8euP+dVsgGDx8W3t3So
-	fmZUJezrYTJmRhey2+9e8fI2QK5EcAvHe1Cfecb9Gl7t23yvsuJdHrA4v2AopuiSmAh+taHgkpW
-	oDL6UzKbzUpef1B77TNZ9kdOY0J4YxT0s=
-X-Google-Smtp-Source: AGHT+IGyru8SGJqlxv8zJOxc9PglQsmvyTXqM/wZEemUdJ3eOipdnMijVxzSqXLtGy838wDBtvYe1A==
-X-Received: by 2002:a05:6000:178c:b0:431:918:501d with SMTP id ffacd0b85a97d-4324e702853mr4655672f8f.60.1766180285071;
-        Fri, 19 Dec 2025 13:38:05 -0800 (PST)
-Received: from smtpclient.apple ([212.59.64.34])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1b1b1sm6922431f8f.3.2025.12.19.13.38.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Dec 2025 13:38:04 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v2 2/4] mm/hugetlb: fix two comments related to
- huge_pmd_unshare()
-From: Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <2bbe1e49-95ba-42ea-b6af-5eeb61d68c4c@kernel.org>
-Date: Fri, 19 Dec 2025 23:37:50 +0200
-Cc: Harry Yoo <harry.yoo@oracle.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-arch@vger.kernel.org,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Liu Shixin <liushixin2@huawei.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3D7F0E85-2509-4925-BDD5-149E9E8D5C1F@gmail.com>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-3-david@kernel.org> <aUTYE9fHf5Fq3eHa@hyeyoo>
- <506fef86-5c3b-490e-94f9-2eb6c9c47834@kernel.org> <aUU1DY4206FibsLf@hyeyoo>
- <2bbe1e49-95ba-42ea-b6af-5eeb61d68c4c@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+        bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
+        b=c2xbR6GJwnrKU6KyALcnr3Pyooa2PMCf7PiD1dfkToTbtA0CaZnPZGb0JXI2KQkDV8
+         RR5ZfwYs1GmeHznLxNEvJLo0NfesPgwCbAv3PuDyQnGGajmW+6FWDrI0bHuOfkn3CgyX
+         PxK823zZjd7AhKrOoYFGfw7HSIyp+HaJ6wX+5zXWyiNp9pUvyLB6w6z5eqV9JAUKwS52
+         vWTKgyLYthI/9FcpA6BCSlFXLtdAIxshbHSxNsvEcywNcHwXvF2CIbuRb8x5uhU83nFy
+         rmJgsXSY13xVPqOELdfHkBjWoyKvNB6kWEarGy+yf5VRx4fUN/CD8sRQr/AQ2yJh+pXI
+         Ryug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766180296; x=1766785096;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
+        b=HgY55r+02omRhalDRpv97gh0Iz8YGYp7+E7HDzs7llf0d0SmBcPyGEMKB02eDJecNa
+         /5wThy7yCacNT7Hg91KCkO4WvdVO/W+w9cWQfYUWwmnkBXn0wW9bYpumFKrto8+Vnt2v
+         UXFu8jEACt3Mba5t3fxKDfJT4RUjkIPLAZzmuB/npEVvweS2jBpO6rhkJtdFyAn7oaBV
+         hZt5IhXSv/pfVDDpAFoY55/vTHjh88LcHPiQElCaxbqIK9QNbBopp0HS3zhOhTaNbjxr
+         GJXBSjvMKoQIyfvMrSiw3o4HN8MT6mzd0MrGt1P9uXSj6kBlCVPcWrEfNXn3uSE750am
+         AKUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWCndViGhJHwN9hV0aJLsjBeTMYCLoDzVlge8qxm0PZZD4zeOiLYTNutlM3gyieb8E2N/00JM8Wg==@kvack.org
+X-Gm-Message-State: AOJu0YybK14w8Rxk/4WLPXnAdPuUdIRjAHOAZ35/ZajRn3BEaWv5HqTY
+	+garGXNABfuPWJMvqRqkedKCr3UWZ7s1K6a/9QKm2wp0OCtx9CgITTJ3
+X-Gm-Gg: AY/fxX5mwDitgGoPEDlVP/WVwbFXGgQU1uGEvG07rkP65pRPUcQpg/B9nWd61zewFPK
+	BHFMDXcPbh3U8W+ieN6piuvsXn9zzC1SZcFfHIbxPVqVMd/JHc7IjI2J1u4VWUJ3mN5c2AH2FMz
+	0h2yktPe/XKQf2SH4SqB4GHKM6SiRolCygj2sfIIhSBm6zQeP+ShhpNMkh772dLy+U2Mq19v9XZ
+	F7J+HncmweExa7/MZ5zlrTxvgCsbBLyyjIORNF6NuyLIHPZwsROwdIo3MNUs47nYN0FexT0u0AD
+	icYBsaeaUDReO5HP0Fvy2MTf1EnKf+dn5Y8z+y+11jFW9dceHi03NQm6wZojKZBoVFeRWtGMqn9
+	hpe2kXsIMt2FLGIcphrLrQXC6VicTinvFySksGhs7OzypyQG71P90OMwaYmV+UY7aNghY5rYbPD
+	t7M+Boj6BaC1xwMNKXvTuos1O+zbQtnce/jwgH5551RYaYgv+Gpmzq3t6vyKoz1d7kmVccI+FE9
+	7/q3sTzbNWiToqEXlPtbeUVPetxk4NbzlUT7BC2ZEZ/2U75x32QbRj/8v98OzLQQDgod48lFMLj
+	R+c=
+X-Google-Smtp-Source: AGHT+IGivulZwqOvq9TkwT/0JBobQprm3JRJ6VtJUw4ydSXEmlT/iKTWxEeMw8/Q4ZWRYLdEwZEKQQ==
+X-Received: by 2002:a05:7022:e0c:b0:11a:f5e0:dc8 with SMTP id a92af1059eb24-121722f462emr3455845c88.28.1766180295388;
+        Fri, 19 Dec 2025 13:38:15 -0800 (PST)
+Received: from ?IPV6:2a00:79e0:2e7c:8:5874:79f3:80da:a7a3? ([2a00:79e0:2e7c:8:5874:79f3:80da:a7a3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfd95sm12051531c88.1.2025.12.19.13.38.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Dec 2025 13:38:14 -0800 (PST)
+Message-ID: <34cda24f-acdc-4049-9869-b666b08897d9@gmail.com>
+Date: Fri, 19 Dec 2025 14:38:12 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 23/36] compiler-context-analysis: Remove Sparse support
+To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Will Deacon <will@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+ Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
+ Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Triplett <josh@joshtriplett.org>, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+ Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+ kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-24-elver@google.com>
+Content-Language: en-US
+From: Bart Van Assche <bart.vanassche@gmail.com>
+In-Reply-To: <20251219154418.3592607-24-elver@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BCF3E100014
+X-Stat-Signature: 1r9by7x1o47bkw7g1f8hcup6ok9hkj8e
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DB3F4120011
-X-Stat-Signature: zu3ecea49k5appec83a7uqow3hmw3d8s
-X-HE-Tag: 1766180286-267593
-X-HE-Meta: U2FsdGVkX1/SGzGvm13SoRJZqxWXp3A68eKHQYNw/SAzIzbYBdiNyyK/IqMbIitSrM6apgOIetNh/De1IP1qexG5+XeQ9t/7fwsAczNdz85iDf4j8gw4qNK1XTfPC1a7UXSHu3OcT9TcxfHLRO4yLuvgI+LuPf4fsiEIQI/EoTuw+vggQvRpUWPmcZ+vIAwwufo4RLqdBztiR6wJ+nZNIKiyqPwiW5TQTwb2TO5IMobV/6xyYJyIp7qTtfKLWkzr0vMotbYSZQMutCRQRydhO2kokUxoi6QYmMqpAr6XTxO0vWJ0Rns2DEpOupZEzOw5X5DqpMl0YM37juYfCNyOahoWf67WCfyrxe1dEdMPloHpROr0P9FD3xiEIOK4GtHfprZkycuJaPIzOxyeWcWTKBfnV63sgucdNALOsFyOHgRAx56/kq3tnRloUONgZ4UHJqDZZdgkGPJ63+mrrPSKuaWdrCYI7h4qeUtCRUrHr0GWl+Avb2MUaoCYoANfj7YteTV8Rqpv8ZG9NWqB75Lc+UqDega1HKAK+oRJ1C3zhft6xUVQ660eLTjLy5sfDlzW07hynNgYX2JdQd4g6+qm3cduDwsxQdQ/EBZ7OD1ZgAwjwPLz5rF1MaojH0AO2kyfvYfUIY0LPl1nZagmpZJZ0/oELXgn8ZujBxQXkZOWgxbSqnAwgmg1Wvk4INDV+tA2NRMbB4RgdXxZJ2CrvoU2UVvaZBIuW3CGQ1NKuerDTUMpdhWfJPra3xjaGMGZ52G+PSMob6CMqQVmSV9El31CERPq/mBcr+ue7Ykw9vXK5zcSfm8PAcpb/LY6q86NXOfRs4pBhJ0aMsBt5Ms348eAcI7WY3x7IGBQOFVnKfVy36mUeJvtxhFNMzIyoZmA5a8nSZ2KrtbGjzYGOxBF7ct5mbNDC3QUN6JwO4GFUHl+7ntEpTrxvCm3UxV8+nivJK/DC4g+AgRWnxXQ9dPJ1yD
- GbMFVhx+
- hG48RUmYgeKDKwmM5viG5hXkcwNgksQkqRBwixKYZUiTC5lXWmAqLeeEu+/U9zXSQ5kbAHOrIpxxjcQvqwHK0fVGHvWROQmTfx6uhCQ7hqeSkEunfJIJAQNXMx/sDnKE2nEwKt9pOhTCVjuwsveygBjlMwpwM9VM9+ra7R/DBMYmKdkZ31foD3nMc7I1yvZed8vyCPdvo7AdnkuktlsEIBAgZGzUuBhiEJ726ndQSBIrO4amI6Sa5h9FiQwj3ZNjvBZO/v3fbidtPZKYple2Ff8rxaMZHmNZ/4FJUFOniJQPYrucy90NvC9nQEasynV20MC9EGup2LW6H6wcjPq8mF2FWUHNxICQO5itsBd4j/ARNDI4JvOB82ohHrEvYZXYxYUq6jxb3wUIF87aH6xFqiHV++e6joIZfe0/68MBQLWCQlPlbSg3xEdkJndQrNoX2fgC5SZ2smrrswQ2YTHO+GC0SympARlUu/Z0SBUqmoWPg2NabFWVmISU6DmZ1SSNWQ+ZDKiGR9P/vfMaFu220viAKQnzY2n17Ug2vqdj0V54SN+mZKGC66Qt0P06LpfbTp8uuiQ9l5afzdMA9QfRDj/f4suofv7uoTjuh6xhCXp9iOOtxdwbEyxrWZH8aztdW2yTF0/pcyzQL67wjPnOF2P01vw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766180296-858211
+X-HE-Meta: U2FsdGVkX1+u/XKdRxQ6cmSB0uiOXQefRWXdq7Qnhb9JqoNJ2ZB1nErhoXcjPBsJmzvaEKDd6IOlcTHChQ26FWs4FEjH3zYGFXA2kp0sWjWOTeZUWFAfq0GnH5fgqU3qAp7KBulnCLrcdN0R9Fx4dDTlxeIg6eIch8QEppwtPOAOL5Nl3e1qFU6Ee7UotUyZajgALqb50lipwa3mdGRxVMdT3CGf2g5QzdlsCODntt89hfFutK7F5CG40DOe0+CgL9qRcRe3BqwQLJGZ7IC0vb9bT59ZdBMc8cKTsuOiODRP3I4+8uVQJXy4xgXSOmjFVa9BkeGSSzgbXDJ5ExVq6CAhnKWHYb0pNT6cK7LdDGWU6kxaqoSPEno7iq8+FHPxZLmSPUKSwVjH+b313ExqKKVcOSubnTY9odizQ8xPYcJH1RW9aVfHvh2bhNdA5LpCun/3au04cQVA+PRl2W25W4aSrpi7bgvQFGQVYjiiLEq00suku5rU/NCn+B3KzMDx02J7NWYvPCqzEfQKP4yUJLAGcWrq3S/tQbZAY9PxiKbyYXOfPVL5Fhjz/I9/dcNBP3ZriTuLpCMAIeH3KbVG5u4LuvLLcLAgsGTsIGm9wLZyAHhqy1M0BNIhR7V1edghnn9Rpz3hgnmmbqLSZ3agS+XPwoILmEscD8YV33vKu3X50jvNpt0zRheYSc27gd9UHNmkn8fD8jxVGzTfSrTQg298/XSeno4jvfHFMyAQK5s4aLaSndNAxX0wFK93deicCO4BGGkoG2yPTOqUiwkAwt/nv2oZGvZ5wl/81DaWwDRv4G0AcXrEfOsL2QSLr1+eiEZr9byulwa2BQzco2swI2esIUGUxLiIc8D54QPLansb1BKTxRzMExRx3uuVcotvTUBDTHJrzFWV5UhZCH/q+hwxqVtYBp4eqfHUuBWh33MM63BbgPdx4DH7clTfl+ci0BPKcgIoiOr/SX1pfuI
+ NgNGIS8d
+ Njbh0tHit6dhCXnOdkPMlWTqsrXI7XD2T5g2r0oEfggmx6vecf4dMebY9jEvOWpmLHv4VO9VQx/+gGAm6zYKYzcFRP5RWAVrDpqqSzDYavi0jrFqt12Mk5uhZrYpPROnogmuJJfX0Lzatu6VRB+rpy7ZSzu43hkRAIIulqKDGTG9XwttI1g7CfE4tBhjQcRX5MGk+Iqpo3LcCm3/ws9eOs7lXKRLdvRu4e1QcCxJVsPVOs39Z/nc6VPtdvNVKzHBjIHwyPy3NUYE+FEta4yPjPRq2WQu0Yj2LCKNmmaNpTbU8Expv8azeqeTUGBgLH81nZ8NDwo1AwfkMCwZdpSyqj62JuHIFJEpQ3EAQUcqBcVOuQEK4ls9GbyuMsxfVtyO+zCziuOhD/Db4giCuEvugNm6ptWXgYKh1nwcTE8X9BZjZgD1/bEbvdvq/6pR4IBo4SbPhRP3W/hAVUjCbPdy7mqi32I4qvuJHy2A9APWrnOwY/nlR/0nZhjVThdZwndOl0C9BEsjSrtBn31kju92FlUZMd8Ybjgamkyhbx2nvuzyMsIMSTwlVSPC5KLLRpptlqKwsM7Y4gS6uk34IxyZgJEZuOuwd99yyqlOpcxtlzhpHB+jbnku0zeWT7908dpi3iumHKCSX4cSdWX9bljR9LTjRz5AL5qUE+P/M01z3auZFccE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,118 +153,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12/19/25 8:40 AM, Marco Elver wrote:
+> Remove Sparse support as discussed at [1].
 
+Kernel patch descriptions should be self-contained. In other words, the
+conclusion from [1] should be summarized in the patch description
+instead of only referring to that discussion with a hyperlink.
 
-> On 19 Dec 2025, at 16:13, David Hildenbrand (Red Hat) =
-<david@kernel.org> wrote:
->=20
-> On 12/19/25 12:20, Harry Yoo wrote:
->> On Fri, Dec 19, 2025 at 07:11:00AM +0100, David Hildenbrand (Red Hat) =
-wrote:
->>> On 12/19/25 05:44, Harry Yoo wrote:
->>>> On Fri, Dec 12, 2025 at 08:10:17AM +0100, David Hildenbrand (Red =
-Hat) wrote:
->>>>> Ever since we stopped using the page count to detect shared PMD
->>>>> page tables, these comments are outdated.
->>>>>=20
->>>>> The only reason we have to flush the TLB early is because once we =
-drop
->>>>> the i_mmap_rwsem, the previously shared page table could get freed =
-(to
->>>>> then get reallocated and used for other purpose). So we really =
-have to
->>>>> flush the TLB before that could happen.
->>>>>=20
->>>>> So let's simplify the comments a bit.
->>>>>=20
->>>>> The "If we unshared PMDs, the TLB flush was not recorded in =
-mmu_gather."
->>>>> part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
->>>>> correctly after huge_pmd_unshare") was confusing: sure it is =
-recorded
->>>>> in the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do
->>>>> anything. So let's drop that comment while at it as well.
->>>>>=20
->>>>> We'll centralize these comments in a single helper as we rework =
-the code
->>>>> next.
->>>>>=20
->>>>> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table =
-shared count")
->>>>> Reviewed-by: Rik van Riel <riel@surriel.com>
->>>>> Tested-by: Laurence Oberman <loberman@redhat.com>
->>>>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>>>> Acked-by: Oscar Salvador <osalvador@suse.de>
->>>>> Cc: Liu Shixin <liushixin2@huawei.com>
->>>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>>>> ---
->>>>=20
->>>> Looks good to me,
->>>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->>>>=20
->>>> with a question below.
->>>=20
->>> Hi Harry,
->>>=20
->>> thanks for the review!
->> No problem!
->> I would love to review more, as long as my time & ability allows ;)
->>>>>   mm/hugetlb.c | 24 ++++++++----------------
->>>>>   1 file changed, 8 insertions(+), 16 deletions(-)
->>>>>=20
->>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>> index 51273baec9e5d..3c77cdef12a32 100644
->>>>> --- a/mm/hugetlb.c
->>>>> +++ b/mm/hugetlb.c
->>>>> @@ -5304,17 +5304,10 @@ void __unmap_hugepage_range(struct =
-mmu_gather *tlb, struct vm_area_struct *vma,
->>>>>    tlb_end_vma(tlb, vma);
->>>>>    /*
->>>>> -  * If we unshared PMDs, the TLB flush was not recorded in =
-mmu_gather. We
->>>>> -  * could defer the flush until now, since by holding =
-i_mmap_rwsem we
->>>>> -  * guaranteed that the last reference would not be dropped. But =
-we must
->>>>> -  * do the flushing before we return, as otherwise i_mmap_rwsem =
-will be
->>>>> -  * dropped and the last reference to the shared PMDs page might =
-be
->>>>> -  * dropped as well.
->>>>> -  *
->>>>> -  * In theory we could defer the freeing of the PMD pages as =
-well, but
->>>>> -  * huge_pmd_unshare() relies on the exact page_count for the PMD =
-page to
->>>>> -  * detect sharing, so we cannot defer the release of the page =
-either.
->>>>> -  * Instead, do flush now.
->>>>=20
->>>> Does this mean we can now try defer-freeing of these page tables,
->>>> and if so, would it be worth it?
->>>=20
->>> There is one very tricky thing:
->>>=20
->>> Whoever is the last owner of a (previously) shared page table must =
-unmap any
->>> contained pages (adjust mapcount/ref, sync a/d bit, ...).
->> Right.
->>> So it's not just a matter of deferring the freeing, because these =
-page tables
->>> will still contain content.
->> I was (and maybe still) bit confused while reading the old comment as
->> it implied (or maybe I just misread) that by deferring freeing of =
-page tables
->> we don't have to flush TLB in __unmap_hugepage_range() and can flush =
-later
->> instead.
->=20
-> Yeah, I am also confused by the old comment. I think the idea there =
-was to drop the reference only later and thereby deferred-free the page.
+Thanks,
 
-My bad. I looked again, and the comment indeed doesn=E2=80=99t make much =
-sense. Thanks for fixing it.
-
-
-
+Bart.
 
