@@ -4,155 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39B0DD78770
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 19:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DBD7D78770
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 19:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A526B0089; Fri, 19 Dec 2025 14:12:11 -0500 (EST)
+	id E1B7C6B0089; Fri, 19 Dec 2025 14:16:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E1736B008C; Fri, 19 Dec 2025 14:12:11 -0500 (EST)
+	id DC2196B008C; Fri, 19 Dec 2025 14:16:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C2E36B0092; Fri, 19 Dec 2025 14:12:11 -0500 (EST)
+	id CC09F6B0092; Fri, 19 Dec 2025 14:16:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77F966B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:12:11 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2DFEF1390C4
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:12:11 +0000 (UTC)
-X-FDA: 84237166062.04.C3BAC8C
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 342A11C0011
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:12:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tz2g+Qqz;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B973B6B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:16:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2D140B83AE
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:16:27 +0000 (UTC)
+X-FDA: 84237176814.21.82C8A0F
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 39C7F120012
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:16:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=EAvUJWcz;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf29.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766171785; a=rsa-sha256;
+	cv=none;
+	b=THoOrUC/9X/IOM+ysLXqFsVEDwuz9Je8vX+H47EiybfCswX6BYrkLarDmxOZPd/Ky0RbdI
+	yEQt4V68m64M7yXFKTQxI8y8iqhCBJjcoOw3a5uWxX+lFz4jAPdbBUPa4KyJ9EjSiEhb1h
+	njJxLsxfGV9zU/Ko/6SzwDD29JgZx0c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=EAvUJWcz;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf29.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766171529;
+	s=arc-20220608; t=1766171785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xBMt69sCffmrONEUk9HcTp6E3Zeeun0qAoojziALA+o=;
-	b=kIuT0SlwMS1sc1DEPmn7GvZOGgL/LVJRTr/Rt9v/VJ5/ILFISFpVQSLjzXNmg/pmJiMD0q
-	PK08HbH8vqyIXpxXPxl4RgcuB+jRVlKUWlbSIxUVj1+O3XVtqaukhWPuPpWqjayVqQ1PvA
-	gRSpWc8fcYAngsi3p3OE7AiLcMusN9o=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tz2g+Qqz;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766171529; a=rsa-sha256;
-	cv=none;
-	b=aIuCtbHIEB2AlFc5yYk3NuIBq1LN7KyQ9JeM1L0fYqBUnJlKHSNp3I9nBkHzKsz7/BS+np
-	/V1W0Djx0FR64X4VHhHJpQC3LeFXkx9NGWWtZPVryx9xmHaj5HbuYWUAeUbl4cDRDzMVK3
-	NodXIBnrpaurf25CZjcUNkCyO0K8NcE=
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so20121375e9.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:12:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766171527; x=1766776327; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xBMt69sCffmrONEUk9HcTp6E3Zeeun0qAoojziALA+o=;
-        b=tz2g+QqzLB+OUFW5PbbkYelNpXaVgYmtM/CQY/0mGLU5T2wRUoUU9uG8ltejNR8cOl
-         VG3K+ZerGsSTvZzeS+Wr6Se3D38GE+NHG/z53qp1z1qUR8MABHK3h5l7H1nGY1lPVfgk
-         r6AmMS68K3AHr0w7rP7Sin3evAnSPLxeHxkkIFbkaqdQTbTCRuSwHTiy3T6iOAjR3yzj
-         3nM3uo+5p7xAzi9l/FFrSmbripQ7IO2cEJlqsFZcu/s/LgVFGDXoIPiPpxdQYm4BXiso
-         atbvQikXgrjF07nOaPo6I7JzuYcK97AqDJ20eAHDEHrV5bMUe3zi4eSHoxe39fbZbWUm
-         Uh/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766171527; x=1766776327;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xBMt69sCffmrONEUk9HcTp6E3Zeeun0qAoojziALA+o=;
-        b=CNA9Z8OVkoF6+iwwm4TW+ToVasnI8Q/0tpZE3txsIpXaDCUnN18OzQcj4CwzGau06j
-         N3jB+lEisiqRG0/w54heWLEK+q+mO62EcDhMuyWIfdQSBt8zwB3V3JhhUNwuPdxasySU
-         SIxWe4AqiMjXqsZH5wdZuT/QQAmOkDDJSKCKbfvJ7gZuB0KYuxHyZtPXf9f5gIaDlYC/
-         cVvQM0zhR35TiyXEalO2T15riPGsKGT7OPSLLeS9jMM3NwBP9W/tyg9TEtXBOy8nj9Ih
-         +XQq55hMxxX69dkDVHNC6ak1A9UaonVo376NwUJcUKMY2Nz4qPqdffp0w+W3yVnhWN0U
-         t9Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCJhA40hkk1acb7uGM/UVfksMi8orEo8txsQhZqQSqP67y3ssjPwZQWgkvMy+5UN0H7odMmB6JjA==@kvack.org
-X-Gm-Message-State: AOJu0Yyp2dcYX8hmxuLnnQGcbKnGyL/1Oe4keu+dcanF8oyzc7Imjz+/
-	WkMNOH/JOfB7EX70ZYrQ3HjG9Z6tB5qy8vBFghUgEK0JgU9rOQrbCbAw2vhD3L7KSw==
-X-Gm-Gg: AY/fxX6ZdeIq2tFN8knOXiBUQOjjOjns2dS1NBTf3c3iU42pVOpg+EBNAQOPbuACkHe
-	Y4so7wCyHU2oZOxLqBvvgS67GzvFOYFoVIQHpYKMIKtppBoCc8OJYG9/ivQMi8PFChnL86AMwal
-	RxwgVIHNx/JB88M7MjNJ4j4EMAmQF4hVYLb4uKYdwRpUS7bTyOvBn+AsJMtcqQxDRWmda2cRdfT
-	nHjOH5TzfwOX9w+GHIseOH153gTu5I/zUXcrqZfnfD8O9rDlw6m1NSf0g5sxH5BkGM+SbFb4/m1
-	OJnF9jVmXTyuk/ZHXSkkQPzxi8rxc22YKTPXTo5Ie6Ov9+gVboqKhC6J03vSFhgi2gZyGw8DPEF
-	0PQfRMtkHcZCdvuhdcTsal0xoau90Bdh2Y+BwPXvklvw0orGc6P4k3+epttfnAMqbagu1XwAspq
-	ytVf8dfuRE3HD9IaB+FApv4gMvAlIFWYKQ3Uq1wz6MmfyK1OuM46snZLXHnO4=
-X-Google-Smtp-Source: AGHT+IH9HIskBRHlFIQr/Osyy9yIUKVMwuoBBZxTrb8MCYHFqdOsUtEusA5GjiNqRLtoiyidJxfWVw==
-X-Received: by 2002:a05:600c:3506:b0:477:a246:8398 with SMTP id 5b1f17b1804b1-47d1953b774mr34567195e9.2.1766171527309;
-        Fri, 19 Dec 2025 11:12:07 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:f7c5:1bb4:fb06:fd5e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa2bdfsm6628486f8f.32.2025.12.19.11.12.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 11:12:06 -0800 (PST)
-Date: Fri, 19 Dec 2025 20:11:59 +0100
-From: Marco Elver <elver@google.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v5 02/36] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
-Message-ID: <aUWjfxQ1fIZdxd-C@elver.google.com>
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-3-elver@google.com>
- <97e832b7-04a9-49cb-973a-bf9870c21c2f@acm.org>
- <CANpmjNM=4baTiSWGOiSWLfQV2YqMt6qkdV__uj+QtD4zAY8Weg@mail.gmail.com>
- <2f0c27eb-eca5-4a7f-8035-71c6b0c84e30@acm.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xQZOjOLqndItDxSuuICusJe4gUprjMDmTGesnzlyh7Y=;
+	b=YV6kPQFPQbHzk4m54PdEA4w1h6WS3NWXA8IIlXhWWWcJqBum1aZkLDfmengw5USMwQLR0H
+	xSwhkv+tbkrgWzgZD6kx39o28s2NB2dDsS8HTucb7k7j1hSZjuw2EMyElwpdI85B4YiP2x
+	tzT3d5x1NhzYYA9hPF/EYccMIP26nF4=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJJCG1M239035;
+	Fri, 19 Dec 2025 19:16:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=xQZOjOLqndItDxSuuICusJe4gUprj
+	MDmTGesnzlyh7Y=; b=EAvUJWczU3KZmpDENoU1rVm6BEmCh/lADK3UGE3pYCJfm
+	gYkMewkWHn4bSU269POXPIr6RYGSdklt2zDgBlbdbw86Ao4fu8DzjvhWkn/RP9Di
+	XOOPA3ICDUFGfqShJJjNtmaD1V9ta/SGhs1SMdRUlGCJF3Dj9gH97zFbcEB+MHV/
+	JoE9Dy5gHBeKBvOAkC/BzskCAlvOgjGUiulH5Er/DuXeL7V3d55ZwEPArrTlagSg
+	/V1xv7wu6zkb1p45Z6wwKPKMfRlbdjyHyR7Wah7ai6GMOTfOkEdWKBjLxaALIfrN
+	071T0oH0pgNyzdwDgYVusbMDtnUHVzNiK85lu8y+A==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b4r291mtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 19:16:14 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJJBerX034854;
+	Fri, 19 Dec 2025 19:16:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b4qtdvjju-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 19:16:13 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BJJGDK4028211;
+	Fri, 19 Dec 2025 19:16:13 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b4qtdvjj1-1;
+	Fri, 19 Dec 2025 19:16:13 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
+        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
+        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
+        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
+        mhocko@suse.com
+Subject: [PATCH v2] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+Date: Fri, 19 Dec 2025 12:15:58 -0700
+Message-ID: <20251219191559.2962716-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f0c27eb-eca5-4a7f-8035-71c6b0c84e30@acm.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Rspamd-Server: rspam02
-X-Stat-Signature: o7sxo7hpwmxcjexntaeddwnccs6macdj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_07,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 bulkscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2512190161
+X-Authority-Analysis: v=2.4 cv=WZgBqkhX c=1 sm=1 tr=0 ts=6945a47e cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=0f2F8jj5qo72ZdTnQt8A:9
+X-Proofpoint-ORIG-GUID: AJaM2KpF6RXVrX7m5onzSgpPauQZeLvK
+X-Proofpoint-GUID: AJaM2KpF6RXVrX7m5onzSgpPauQZeLvK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDE2MSBTYWx0ZWRfX4IhXefT2nOw0
+ JivMV3mtwoxrk0TbHY4W6YiyYW5BlptMqmYvVUi5ZeOxoC8+EAtk3kh1Y8plPQfPz9yDQGZAG0G
+ L3lgLFPMPZTuPYhAVHytjWLo+VFt16TGrt3kNa04nO/XFtcJyf3wcoXAOFZfiPk3ZYGE/eYv3xK
+ JVUeBi9sqdpJPqajn7P/cLCZPbSHQGTlBVdwXz7JuFCVpxQKkNVt92u/ENUHfVfhy3fjXWe4Um0
+ Y6SQ/QFL4u5nuFvZi3YMUDGThezskxIEGZ5z5xeROCfIX+p6UDVwylFd1erYuR621AuqLhV5U/B
+ WM6rFHN+zin7eZ622EDb+ut+prihC4YmCZjUT2/1BK3FPeUDO1R+mBFD7swSZmmGzMkRZoJYJ1X
+ 0NkRkJX4w/0pWdR3rXfUK1JLHkWbHx21zOZB92aKq0o7CipDXM1pIf3/1Uq8aXg8rDAupo8+GCT
+ 6EzwRq0R5sw6+IFuohA==
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 342A11C0011
-X-HE-Tag: 1766171528-343992
-X-HE-Meta: U2FsdGVkX1/u71nt0pKddMf+dVnyfO+CgFvRaCR14YPTK+Y0WYk3hCh6ZPd3CTK81i93kpTFLuczW7pShY9C9dTf0iqvYFO+TxpgrBLmgCSHW6w//vsv27imqmwc1kiqj3KBGjSnCZS2/jjSapaD7a2DCSQ56BIRHT3ZZSC2R9KdWdEZQjuF/oT519U2eFp+KnvGWz/q3MgZytzPC5lugBoYICIrFTratsl1DHxj16fwdhy4qRFUEnVRlcLY69PVVJ89dll1xGYkUKXhrgwgWpQi9BhXEYoufW+17JUZ8UjklK5uu5QL5zGBrtEsbGP3a1TRCcHHypfh5w/ksuoYYCh4B0ZoM+P5pHOjqsFunWO0MA2ZqcE1VpPm6ny5rDjHzbydOt4dacpaIZVSezpEdn0PIQzLw0QAEJrUvD9MTLsW2KrEVt2WGVBjKO3l9e7OrsnAj/bGuYjP8aDkX6DNtZbA7cI0YNe/nLZroUn/fUTxwPfDdiP1XNWCrWiho4FqxU7doaBrqseV2N4HatqlWy3NqS3+Zf4gnTDn9wb8uI9qR4pC1K4OwG8W9TYx/1uW/2MsekNcj8+32lozswTnfXUPByzruFIZ64IR6jDEvyNpI9zWf3AO+6R5NOSEovdKOrBSal2PocrXx5N1R9O5/XpSO66tyk3jwRONuEiuPcCSAPCgW73rSS7OVEHmzLyEUI3XEQzuAtDClkqLzLspvAU7SKXA4NzTQzTar7lf77hzWdVYdc1du3fuQIhjbeBc8TcA001sraW/0m5uYkI+h62Nli8epFAkXJ2y1tw5zawIqN4/S2nuPch6tDRcD1nb+DofHYro8OKU20MaNpD3eaHjaY9XoAMiPn/41Py03Q9+E2+vktD0Sw8zXTaRi7IMBuqQM5hRKX73MJ74N6dd2quXAmhsfKNE+6v7+v/BWrkyAcLuMNIZ4QrB4BVImc2wfoJtN8TmWxKyDP6UhoW
- hoBjF29p
- MXpr+1mUyh1ixVoGGyJeiuJOofojSC8t/NS3aoTSKVoJAZpwxkX58TxbRq/B6YWcsnBSNv4995e/wuYq+3FnHv1Ln9u79VSGvRE0uM5kglRtCJsDpkXO449AQbiNgDuHGUc3OIZ+Ao4xQ3TQg/4bktjfi8gANFoNqXg7n7WLbvjP/ZVxrez6TV85XXSK8VjBYSUhuH0GaZsHNQsTCNcHvTi+ed/jhoSC3ImNPQoCuaHGqfziksbYHDDESQ6v944tXLoWpyxg/Z4SlZqBz4duTxj3AmdbhSsbkc+xe61ji3kAgT2P8toTCVQzWJxZq7rvh4hVlyiAIj1VKuz1pSRW05gA1bwL1G34Ek7aYX+XNzOpurP+f2Iu7LZjurHdZHipzkT/xdQRTI7WPJ7KyHZPcxsmrrRIDzsGf+JDZvth+sWGbEvAzJb8PhKO5w2XC0uB9Gr/50jv7AEtBQ3qmkcvKljqSvqHTRRZeZbjO
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 39C7F120012
+X-Stat-Signature: 88bbkuw838aisxnrxidn75sx7ngsdkme
+X-HE-Tag: 1766171785-336460
+X-HE-Meta: U2FsdGVkX18wsbImK9XQMRntKhBYFT3Oalw4ne9hliM9WAa02N+DNBGHmJTM39aagJHFvBMZp1c5hgpqc6S8XUmOlh+hkKJumrBpc/USeK7sN//kAISHwPriJ0GM1SIgy4H6mlPU5UqyDf3PZUsq0venmfhcu9VYf2RC+SUMzzdMgFLh2neeARZYRVHvikHjP7jWmU1hKKB4rfcFTGL0Stmzai0drPjYTkm6xKw+AjavTCO3NZhUC74yCthkwxn25qk5Zh9n0bTeSgy/F69DdbAAJwpCe84g0Nz8yhc59y7SVLxe0UpLi85qnqfaLHDz22qy9ZjseLY9DokptE6a/9ca2bdHq3lsMvmF9y0PJTRUxw6Tr9c1cCnnLzoe3LsEDHzL2B1CpO9RZjpfcCNouVoXYwHOiIRs3TdHLnz+S7PkhJICc8eyJ5DGcPYB19GFsL7iMo76e8JHcoBUUM0FqV5FxI+nOjrNEvg01Kdc75mO+JAqEdNfSoqmbmKBJEeLf+mFIHMJj3wliWPUWf6Dx2AqM6P1tnFWcSpQAew1SBcN5b17f7pN2VoCfYhv0ldHjzQ1BgD8mLlk0DRlwoQe0zwNdZbk88nDGAKN4tf/oWppiO3506G3OccNHuUEsufYVYRjS0DdRRNkDfwH5xfo7OSoOMVd1sG2OwRmVPWyTyJRqWRy2RzdYj/IFRKt0Qh8kXcXDaXkyI9HHnlqt5IV0I+34H0hcHutbjdu79yUQJPFfpt4hb2laql2SBj8VGPu+gnP4ppV9pxMc4rf6OSfckYMvS3jVnnZnfkccc2ihRe6UZZia+QdmlCurlkJqdvn3b2C98dLSELX3G/BTJlQETDfeaD+SHF2XHxtIx1ij3BEzsWikkT/9+0FOiioDAcMD84BKKQ4VW7BvvdQvk5QmqqPIawn9YdbIJd2iuqCNOpRKtN5opxqtqhVrxEaB8Dmh2JnX4fKKr46qN1tMV4
+ lTWWD1jg
+ jWBZICc4dYFliZFnxrsUM+ijAHzFOo3vnP63bd+00OeQm4Jj18ieL6m0gXAAGn0ess1EyGa0GZMOel9jUTZ7JUCP7IZZoWrqcgD39+dxr1gWYlBTvV14ZA8b7AWMYYIwo0ksNy2WDuo2nORKWJFk0z1tKxwL8DDCQnDlhHPsmAoqlMnHid4loEBFLQ9TcM7DE5dyA/LbwbWasbd5xa2mF8nSwALwxfsDWFepMR39wJM3PJoMe5rdwpZW2d0qP1OrgPBuFBuD46efNd/Se/ss8TOiVrfN1iPOoct5MEslUQOZNxig=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,80 +128,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 11:04AM -0800, 'Bart Van Assche' via kasan-dev wrote:
-> On 12/19/25 10:59 AM, Marco Elver wrote:
-> > On Fri, 19 Dec 2025 at 19:39, 'Bart Van Assche' via kasan-dev
-> > <kasan-dev@googlegroups.com> wrote:
-> > > I'm concerned that the context_lock_struct() macro will make code harder
-> > > to read. Anyone who encounters the context_lock_struct() macro will have
-> > > to look up its definition to learn what it does. I propose to split this
-> > > macro into two macros:
-> > > * One macro that expands into "__ctx_lock_type(name)".
-> > > * A second macro that expands into the rest of the above macro.
-> > > 
-> > > In other words, instead of having to write
-> > > context_lock_struct(struct_name, { ... }); developers will have to write
-> > > 
-> > > struct context_lock_type struct_name {
-> > >       ...;
-> > > };
-> > > context_struct_helper_functions(struct_name);
-> > 
-> > This doesn't necessarily help with not having to look up its
-> > definition to learn what it does.
-> > 
-> > If this is the common pattern, it will blindly be repeated, and this
-> > adds 1 more line and makes this a bit more verbose. Maybe the helper
-> > functions aren't always needed, but I also think that context lock
-> > types should remain relatively few.  For all synchronization
-> > primitives that were enabled in this series, the helpers are required.
-> > 
-> > The current usage is simply:
-> > 
-> > context_lock_struct(name) {
-> >     ... struct goes here ...
-> > };  // note no awkward ) brace
-> > 
-> > I don't know which way the current kernel style is leaning towards,
-> > but if we take <linux/cleanup.h> as an example, a simple programming
-> > model / API is actually preferred.
-> Many kernel developers are used to look up the definition of a data
-> structure either by using ctags, etags or a similar tool or by using
-> grep and a pattern like "${struct_name} {\$". Breaking the tools kernel
-> developer use today to look up data structure definitions might cause
-> considerable frustration and hence shouldn't be done lightly.
+When a newly poisoned subpage ends up in an already poisoned hugetlb
+folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+is not. Fix the inconsistency by designating action_result() to update
+them both.
 
-Fair point. In fact, it's as simple as e.g. (just tested with mutex) as
-this:
+While at it, define __get_huge_page_for_hwpoison() return values in terms
+of symbol names for better readibility. Also rename
+folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+function does more than the conventional bit setting and the fact
+three possible return values are expected.
 
-diff --git a/include/linux/mutex_types.h b/include/linux/mutex_types.h
-index 80975935ec48..63ab9e65bb48 100644
---- a/include/linux/mutex_types.h
-+++ b/include/linux/mutex_types.h
-@@ -38,7 +38,8 @@
-  * - detects multi-task circular deadlocks and prints out all affected
-  *   locks and tasks (and only those tasks)
-  */
--context_lock_struct(mutex) {
-+context_lock_struct(mutex);
-+struct mutex {
- 	atomic_long_t		owner;
- 	raw_spinlock_t		wait_lock;
- #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
-@@ -59,7 +60,8 @@ context_lock_struct(mutex) {
-  */
- #include <linux/rtmutex.h>
+Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+---
+v1 -> v2:
+  adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
+return values in terms of symbol names instead of naked integers for better
+readibility.  #define instead of enum is used since the function has footprint
+outside MF, just try to limit the MF specifics local.
+  also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
+since the function does more than the conventional bit setting and the
+fact three possible return values are expected.
+---
+ mm/memory-failure.c | 56 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 33 insertions(+), 23 deletions(-)
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3edebb0cda30..3eb9d23a4ad0 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1873,12 +1873,18 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+ 	return count;
+ }
  
--context_lock_struct(mutex) {
-+context_lock_struct(mutex);
-+struct mutex {
- 	struct rt_mutex_base	rtmutex;
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map	dep_map;
+-static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
++#define	MF_HUGETLB_ALREADY_POISONED	3  /* already poisoned */
++#define	MF_HUGETLB_ACC_EXISTING_POISON	4  /* accessed existing poisoned page */
++/*
++ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
++ * to keep track of the poisoned pages.
++ */
++static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ {
+ 	struct llist_head *head;
+ 	struct raw_hwp_page *raw_hwp;
+ 	struct raw_hwp_page *p;
+-	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
++	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_ALREADY_POISONED : 0;
+ 
+ 	/*
+ 	 * Once the hwpoison hugepage has lost reliable raw error info,
+@@ -1886,20 +1892,18 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+ 	 * so skip to add additional raw error info.
+ 	 */
+ 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+-		return -EHWPOISON;
++		return MF_HUGETLB_ALREADY_POISONED;
++
+ 	head = raw_hwp_list_head(folio);
+ 	llist_for_each_entry(p, head->first, node) {
+ 		if (p->page == page)
+-			return -EHWPOISON;
++			return MF_HUGETLB_ACC_EXISTING_POISON;
+ 	}
+ 
+ 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+ 	if (raw_hwp) {
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+-		/* the first error event will be counted in action_result(). */
+-		if (ret)
+-			num_poisoned_pages_inc(page_to_pfn(page));
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+@@ -1945,32 +1949,30 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
++#define	MF_HUGETLB_FREED			0	/* freed hugepage */
++#define	MF_HUGETLB_IN_USED			1	/* in-use hugepage */
++#define	MF_NOT_HUGETLB				2	/* not a hugepage */
++
+ /*
+  * Called from hugetlb code with hugetlb_lock held.
+- *
+- * Return values:
+- *   0             - free hugepage
+- *   1             - in-use hugepage
+- *   2             - not a hugepage
+- *   -EBUSY        - the hugepage is busy (try to retry)
+- *   -EHWPOISON    - the hugepage is already hwpoisoned
+  */
+ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+ 	struct folio *folio = page_folio(page);
+-	int ret = 2;	/* fallback to normal page handling */
++	int ret = MF_NOT_HUGETLB;
+ 	bool count_increased = false;
++	int rc;
+ 
+ 	if (!folio_test_hugetlb(folio))
+ 		goto out;
+ 
+ 	if (flags & MF_COUNT_INCREASED) {
+-		ret = 1;
++		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+ 	} else if (folio_test_hugetlb_freed(folio)) {
+-		ret = 0;
++		ret = MF_HUGETLB_FREED;
+ 	} else if (folio_test_hugetlb_migratable(folio)) {
+ 		ret = folio_try_get(folio);
+ 		if (ret)
+@@ -1981,8 +1983,9 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 			goto out;
+ 	}
+ 
+-	if (folio_set_hugetlb_hwpoison(folio, page)) {
+-		ret = -EHWPOISON;
++	rc = hugetlb_update_hwpoison(folio, page);
++	if (rc >= MF_HUGETLB_ALREADY_POISONED) {
++		ret = rc;
+ 		goto out;
+ 	}
+ 
+@@ -2019,22 +2022,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 	*hugetlb = 1;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+-	if (res == 2) { /* fallback to normal page handling */
++	switch (res) {
++	case MF_NOT_HUGETLB:	/* fallback to normal page handling */
+ 		*hugetlb = 0;
+ 		return 0;
+-	} else if (res == -EHWPOISON) {
++	case MF_HUGETLB_ALREADY_POISONED:
++	case MF_HUGETLB_ACC_EXISTING_POISON:
+ 		if (flags & MF_ACTION_REQUIRED) {
+ 			folio = page_folio(p);
+ 			res = kill_accessing_process(current, folio_pfn(folio), flags);
+ 		}
+-		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		if (res == MF_HUGETLB_ALREADY_POISONED)
++			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		else
++			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
+ 		return res;
+-	} else if (res == -EBUSY) {
++	case -EBUSY:
+ 		if (!(flags & MF_NO_RETRY)) {
+ 			flags |= MF_NO_RETRY;
+ 			goto retry;
+ 		}
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
++	default:
++		break;
+ 	}
+ 
+ 	folio = page_folio(p);
+-- 
+2.43.5
 
-So the existing macro does support both use-cases as-is. I suppose we
-could force the above use pattern.
-
-The reason it works, is because it forward-declares the struct anyway to
-define the helper functions.
 
