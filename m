@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D9ED74969
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 09:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B57D74970
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 09:38:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6E786B0088; Fri, 19 Dec 2025 04:34:23 -0500 (EST)
+	id 552936B0088; Fri, 19 Dec 2025 04:38:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D386C6B0089; Fri, 19 Dec 2025 04:34:23 -0500 (EST)
+	id 501A66B0089; Fri, 19 Dec 2025 04:38:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7CF36B008A; Fri, 19 Dec 2025 04:34:23 -0500 (EST)
+	id 3E1856B008A; Fri, 19 Dec 2025 04:38:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA5BA6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 04:34:23 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91D3213B12C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:34:23 +0000 (UTC)
-X-FDA: 84235710006.13.1632457
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3036D1A0003
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:34:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N5KOwCn2;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B73B6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 04:38:08 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C205B8AF13
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:38:07 +0000 (UTC)
+X-FDA: 84235719414.21.D4D340C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 190C640002
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:38:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UypafefL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766137086; a=rsa-sha256;
+	cv=none;
+	b=aL5xbtCcPbL2GFtz40RIvRMZ4dBkSiIxc4v+kiTUk8V68/DpDMo5J+6a7uNoD/SgJuZ6gL
+	v/11VuJCQj7+YigbYcC8bql4Lx+CV/sk4Of40OB+rCc7u/ICqAFWCHDKT3x7ScvsjZqlNu
+	0KcT4wuG4rE03qHzEpXU1920dJKSFlU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UypafefL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766136862;
+	s=arc-20220608; t=1766137086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J0F9l6NzUeNsAvS87e9I4hfcnyZJltLYqs3zdZPRgRA=;
-	b=5LXOQradz8xmkT81eIl7bc7fECplxzl4mMptd7pOxIIvSbGO5C07emlw9UdzJhGoLWdIQl
-	l2k8hZV9uQOJoTlmGJQ14hHo0UXePZsKcENQ90AAkgFKAg4FFS+lOIJ2hHH4HKizuNxSZo
-	UFfBLyUNf4YYyB6W6snMDqXkYZT0RRY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N5KOwCn2;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766136862; a=rsa-sha256;
-	cv=none;
-	b=FbUKtNLLyiX/yMkuNFXkbGnIVhBOYdE1tKOXG1IzSeJn8bPDs+SR6eqaV3Mijh7DQh+YQQ
-	9bAlVaVAISuqG8e/71zzsTpg/8qd7dyUFWaRIHMZE0yMHdl3TJ52YMUD9a5c0Gh7KLWI8u
-	Cy4FvAiqJ0N04DBpCWXVf5iIVfPNKB8=
+	bh=99m+UYZiJaObsz0ZOWVafjPumKPJGlkbn4mmMUz+loU=;
+	b=e2E1L7WGmX9R1yiys4waDEmtihVXex8oNaPGasrGAsXZuPqWhpHwHAafzIK0Gx6EQ6j3kz
+	ukrsrsAfBNMIiTd6Ofv1P0LPaVYMYLqEv5pqYt28YcoqlWo5+sarxhKUhXo7+EFFGa+0qQ
+	/kdxTuPm7LMsiflo8JduG+eSVmfzoAE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9F0286001D;
-	Fri, 19 Dec 2025 09:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DF7C116D0;
-	Fri, 19 Dec 2025 09:34:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E04DB43287;
+	Fri, 19 Dec 2025 09:38:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D1FC4CEF1;
+	Fri, 19 Dec 2025 09:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766136861;
-	bh=MHgQTaG61qGMuxEXN5cJbS8M2YCe8RD+w/6EJgGwGbo=;
+	s=k20201202; t=1766137084;
+	bh=QRucwd58Q3iUPx5TpAFxLvxSW3Ui4n0gJQQkxLBi0VY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N5KOwCn2sZfy3p8ScNckzmQBAclcYoqauxSc2WaSf2YFdtM52i2C/pLr+yEycW8N2
-	 l81ncubQWmQdQ1Lw0ElF9sFvwXHsQl+A0G/sXlckaAtYApqB6sKQhOx/JUf05x9uPx
-	 o5ukTiv/1QzEPsAPdaA1mLmlZ5pl8s4/+Ua8I1hUZFDzQaFYei9FaS0esHDdE0/Nnr
-	 uE2KxFSnzs1oRXaBl+RLO92fOMjkp8VXonqriNbEBJs6F5ux+UxRLGjqWGFRdXNspo
-	 X+e+b+rmaT7tF5liS1RNgvsxqnHrRAjcf+fewNxVZgVMLWOgb0PIlIOnnhUIgvCFn/
-	 xFIJ0SwyJnCbw==
-Date: Fri, 19 Dec 2025 11:34:11 +0200
+	b=UypafefLIlHW1HMmBo4AT2CBFg/Xz2177d7oodrDQgDkjRn+qBbEzPSSKxaL6f74S
+	 9XPrW3itvb8QKGb2oJ+OTHqvVP5fWM5SqQI+2FgsRyVOQkBcCULhRtfIfDAm7DWojj
+	 OHrGnzePuYVfsdEYRlQ/uXYEx9Vla1HD8By5/4hb4CBwQ7I1AImF2xfx1sKBfaMMiD
+	 ulJ6AXkuWiT6XdVoCOpXP3rXbB20Wf+dM6w/Y6ZV1R/r7sfaRn67BUopp6bD5Ti7eW
+	 sbcYAmfdPD12fDfK5DjIEo5N11mYuQHQltx9vnjDK6xKHZPIxhNz6IFoS4xRX594/P
+	 EJR8hkvrUcqfA==
+Date: Fri, 19 Dec 2025 11:37:56 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: chengkaitao <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/3] mm: Convert vmemmap_p?d_populate() to static
- functions
-Message-ID: <aUUcE8esEjyKingC@kernel.org>
-References: <20251218174749.45965-1-pilgrimtao@gmail.com>
- <20251218174749.45965-3-pilgrimtao@gmail.com>
+To: Tianyou Li <tianyou.li@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] mm/memory hotplug: fix zone->contiguous always
+ false when hotplug
+Message-ID: <aUUc9BNgUNguFS9K@kernel.org>
+References: <20251215130437.3914342-1-tianyou.li@intel.com>
+ <20251215130437.3914342-3-tianyou.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218174749.45965-3-pilgrimtao@gmail.com>
-X-Stat-Signature: ijze9wef9aw3npjbkcpe3owu9fbizi18
+In-Reply-To: <20251215130437.3914342-3-tianyou.li@intel.com>
+X-Rspamd-Queue-Id: 190C640002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: fzbp7bpbt78qw37r5c8p9bdn9qfqc3jb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3036D1A0003
-X-HE-Tag: 1766136861-452553
-X-HE-Meta: U2FsdGVkX1/0Ht/AbO6T+/W3SLu0FKBc6BB/NTLgQwdBTKso8aR9C52tWd8wODkNy1/OsMY8djcsMaLbwsKj7RHSQQcAsZ0hMdcrBojXhvK3+BFgM8eabozg0YNTm6elXfdhznV30xHdMC3X8QOtj7Za5a5olDgw4aV8CJN1RrcOh915La4/Ru1UgYu+4jq//hs9xYtG+SQkPaXPta/UIw9gYQP+F+gd0InPXqmM9r6qAICC+WNh8W7Skog4PeqJq80B6je9HsTkVPnpa/9L1RStE4Nh/d1R0tA6Tg+ukW0NTTPWQtOH/bWm4EPaQIuCSlbQWacuDuLlA/fry2YZvuGdUvDJz8m/Z7FUUEZ0gAW9VgEazNuKnwWFyJIcPsE1klFmkM/ziK8lFKsI2gUpDHq3SBISYkjYGUYm4awZJdqiGJCtouUtt+rPE1GJz2qa2wKnAVoNPK+/jpoxBxM+r3fUpfsukaPyCIQOVGbXKiySm8/cTr2P7RxOYcz2FX9o3rz0xKhHRB3ylG/ltVbBIYBL0WW9Jdvz04UWm6l/5UkUPfcngWv5Y9rqMomA/3DI0gLNaMx+RB9iQFvwFGieckhJaAKUcx8y7d4TeehvWaFevd7RVLpkjqfMXcD8uCRmjNRpQBIP5YMMryeIXWV5h30H0CxJvt4KCesEIvOz94+yWGtEKQemiqz4yNL5tUkXyeo2HC7V77c9A3TjEZ0ugYtlJowcsmbCirOgtNrB06vnQ6JKCZ0vd8NUEtpJoGVixBATN7tmzi77gq8f3jsx9uD4YeN5WcDym72WcqLHj6FLajrqapFJ9goF2zPpYzjAkM+aE56mrLzE+mN92IGjGZcHbYEfZTORcmKZ3c6XiipGEOwHrjQ1ntUfhcA8PZijDhtRy7M5aaD97YjcBP/s0wvoMjubChenbC9Ic1SVF/xxfBI8nqvcVmF9BiJyOx7H7C9AQJOy+zqIqVjDwvZ
- E9PIIfbz
- 5OqNyB+r1kxDA5hAWaZKFn/qqVK3j1TJ5Tw1gc7QBlDnnS81OfYCSxOlXKVtRLly50YiXmFjfQFVTiYU=
+X-HE-Tag: 1766137085-112491
+X-HE-Meta: U2FsdGVkX18SsX5uDe6ao6xW1LFVndeg6PnXnAj8RgDjDBqipI1Ki2G+5Fy6GZ4iq54PoCxwVXKnz6AvaYxUU/+ml1/HKn7B1AIIB/+MMrlGx8cZ+HJ+WpuGV68kFkmcux1GLmxiZ0dpvppxuLxriEyB5vzV+MGRxV81buWou2omb3sXJ+LyNzQfVOpdmtH134hnLAwExZCLHypcPaVljBE124P1j+bIyLspLCzRe5xn4Mb+3wm9UM7gJ/dFrKo0w7OifefnaeXzbE59FDMELJHRJOOWzNuKZx8qI0UXDfR2BJ0eSt5vDFaYHF8mC0bRoVoBaNFsUeGDqjDU1uSwggzBfE9YEndOOqbMl3B+RUCp69d55vugUNR8mMb1yjJFrfL8aoD1tltScOKU1iQXnc9lzUEky4GZKG8JmSgyqvnpHnjfBtXC0Mn0Jehop8bXEo7uDsg/+ScuvLz1A0piy+3c+u0/1tmgxo2Les8gIZoBkunWhog9oBOkO52k4HWBrAlfyNMMSO+LFZqskSm73gzMKZvK7uoPQiqbzbPJeYGFBuBVXXLcFcQEQifoFRNoKXO0FroHJd+oexPdxtaGpDkaxKsLhlrVVddtdJ2UtP0+TUI7Zk9CyBCTSddnGE9ssxBE0N6vWHwEHj7TCMwMjU/8p6HvXPH0y1JFxZvSxkTpaLjmRHegf9eL6wXiuxKHIJXOs6YsczyH5tR3PPtMbjdjlDhl1xY+FqEXzwm47dsZ6wYrvMm6KjORJ9cBRtJJkJzC7wh0ZQifTBoxK0E5ITGhAuzPo0sKDQz5d35Zg9yJejM8LOvd/wP7AK0BUARYT0KQMd41Ph+cZyp7lbyVQ0qgpL2dLYrpq5MOT1vJdKJpzbeZ7e3ZGbcwGK/g1OXVY13l2AhMV34yI332lXjj8QpeyNgN1SWNN6Me4206dTSe7vnVC+PA8UBmG2Ba9jk6pPfADjLusUK2SoK3c2R
+ gqTOVRVP
+ tzj12E8IRvVVNWf90PmlLzjPWZ4XTD9XuULU0Mzwq8MDRTixXBjYXsupV7TwiyN2XpLKBBypKUclNj/F0tgtCI+dQc3ih9SpOcmDRype776PcDZT8Ippfgc9HZ4eUb81fqBT6eqgahwT+RtNSCh1AxFt6am2zg/mMRCepG5+SX+tUNuFjEoEi8+EnaQY7K1IqyVKQyb0oNZURPwz32bk+U+y/E4pAwD+Es/hdgPuKNGcJH/eWovIKjHWj3CwjoCzzW4vlNAtuhpOdVHSEv8W3B2pQL1qsQBRr7SJQ1sWbBNyd7qO1wBo5WTiho4NcvJP2a2Ky1aemrGsws1VxhsLZgELfoZGd6X2/xpkWP6nwMimtZlNVx4Qi8F4oM5xWIgHINdse
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,92 +100,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 01:47:48AM +0800, chengkaitao wrote:
-> From: Chengkaitao <chengkaitao@kylinos.cn>
+Hi,
+
+On Mon, Dec 15, 2025 at 09:04:37PM +0800, Tianyou Li wrote:
+> From: Yuan Liu <yuan1.liu@intel.com>
 > 
-> Eliminate the external declarations of vmemmap_p?d_populate functions
-> and convert them to static functions.
+> Function set_zone_contiguous used __pageblock_pfn_to_page to
+> check the whole pageblock is in the same zone. One assumption is
+> the memory section must online, otherwise the __pageblock_pfn_to_page
+> will return NULL, then the set_zone_contiguous will be false.
+> When move_pfn_range_to_zone invoked set_zone_contiguous, since the
+> memory section did not online, the return value will always be false.
+> 
+> To fix this issue, we removed the set_zone_contiguous from the
+> move_pfn_range_to_zone, and place it after memory section onlined.
+> 
+> Function remove_pfn_range_from_zone did not have this issue because
+> memory section remains online at the time set_zone_contiguous invoked.
 
-Please also mention that they are unused outside mm.
-With that 
-
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+Since the fix is relevant even without the optimization patch, can we
+please reorder the patches so that the fix will be the first in the series?
+Than it can be applied to stable trees as well.
+ 
+> Reviewed-by: Tianyou Li <tianyou.li@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 > ---
->  include/linux/mm.h  |  7 -------
->  mm/sparse-vmemmap.c | 10 +++++-----
->  2 files changed, 5 insertions(+), 12 deletions(-)
+>  mm/memory_hotplug.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 15076261d0c2..d98a38a6ac0e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4234,13 +4234,6 @@ unsigned long section_map_size(void);
->  struct page * __populate_section_memmap(unsigned long pfn,
->  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
->  		struct dev_pagemap *pgmap);
-> -pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
-> -p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
-> -pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
-> -pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
-> -pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> -			    struct vmem_altmap *altmap, unsigned long ptpfn,
-> -			    unsigned long flags);
->  void *vmemmap_alloc_block(unsigned long size, int node);
->  struct vmem_altmap;
->  void *vmemmap_alloc_block_buf(unsigned long size, int node,
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 37522d6cb398..67f9a08c2376 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
->  			start, end - 1);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 12839032ad42..0220021f6a68 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -810,8 +810,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  {
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	int nid = pgdat->node_id;
+> -	const enum zone_contig_state new_contiguous_state =
+> -		zone_contig_state_after_growing(zone, start_pfn, nr_pages);
+> +
+>  	clear_zone_contiguous(zone);
+>  
+>  	if (zone_is_empty(zone))
+> @@ -841,8 +840,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
+>  			 MEMINIT_HOTPLUG, altmap, migratetype,
+>  			 isolate_pageblock);
+> -
+> -	set_zone_contiguous(zone, new_contiguous_state);
 >  }
 >  
-> -pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> +static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
->  				       struct vmem_altmap *altmap,
->  				       unsigned long ptpfn, unsigned long flags)
+>  struct auto_movable_stats {
+> @@ -1151,6 +1148,7 @@ int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
 >  {
-> @@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
->  	return p;
+>  	unsigned long end_pfn = pfn + nr_pages;
+>  	int ret, i;
+> +	enum zone_contig_state new_contiguous_state = ZONE_CONTIG_NO;
+>  
+>  	ret = kasan_add_zero_shadow(__va(PFN_PHYS(pfn)), PFN_PHYS(nr_pages));
+>  	if (ret)
+> @@ -1165,6 +1163,14 @@ int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
+>  	if (mhp_off_inaccessible)
+>  		page_init_poison(pfn_to_page(pfn), sizeof(struct page) * nr_pages);
+>  
+> +	/*
+> +	 * If the allocated memmap pages are not in a full section, keep the
+> +	 * contiguous state as ZONE_CONTIG_NO.
+> +	 */
+> +	if (IS_ALIGNED(end_pfn, PAGES_PER_SECTION))
+> +		new_contiguous_state = zone_contig_state_after_growing(zone,
+> +								pfn, nr_pages);
+> +
+>  	move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_UNMOVABLE,
+>  			       false);
+>  
+> @@ -1183,6 +1189,7 @@ int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
+>  	if (nr_pages >= PAGES_PER_SECTION)
+>  	        online_mem_sections(pfn, ALIGN_DOWN(end_pfn, PAGES_PER_SECTION));
+>  
+> +	set_zone_contiguous(zone, new_contiguous_state);
+>  	return ret;
 >  }
 >  
-> -pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
-> +static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  {
->  	pmd_t *pmd = pmd_offset(pud, addr);
->  	if (pmd_none(*pmd)) {
-> @@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  	return pmd;
->  }
+> @@ -1221,6 +1228,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+>  	};
+>  	const int nid = zone_to_nid(zone);
+>  	int need_zonelists_rebuild = 0;
+> +	enum zone_contig_state new_contiguous_state = ZONE_CONTIG_NO;
+>  	unsigned long flags;
+>  	int ret;
 >  
-> -pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
-> +static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  {
->  	pud_t *pud = pud_offset(p4d, addr);
->  	if (pud_none(*pud)) {
-> @@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  	return pud;
->  }
+> @@ -1235,6 +1243,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+>  			 !IS_ALIGNED(pfn + nr_pages, PAGES_PER_SECTION)))
+>  		return -EINVAL;
 >  
-> -p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
-> +static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  {
->  	p4d_t *p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d)) {
-> @@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  	return p4d;
->  }
+> +	new_contiguous_state = zone_contig_state_after_growing(zone, pfn, nr_pages);
 >  
-> -pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-> +static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
->  {
->  	pgd_t *pgd = pgd_offset_k(addr);
->  	if (pgd_none(*pgd)) {
+>  	/* associate pfn range with the zone */
+>  	move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_MOVABLE,
+> @@ -1273,6 +1282,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+>  	}
+>  
+>  	online_pages_range(pfn, nr_pages);
+> +	set_zone_contiguous(zone, new_contiguous_state);
+>  	adjust_present_page_count(pfn_to_page(pfn), group, nr_pages);
+>  
+>  	if (node_arg.nid >= 0)
 > -- 
-> 2.50.1 (Apple Git-155)
+> 2.47.1
 > 
 
 -- 
