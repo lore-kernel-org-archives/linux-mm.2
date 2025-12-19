@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4048D7878A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94472D7878F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57CE06B00A4; Fri, 19 Dec 2025 10:46:17 -0500 (EST)
+	id 0292F6B00AA; Fri, 19 Dec 2025 10:46:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53E2D6B00A5; Fri, 19 Dec 2025 10:46:17 -0500 (EST)
+	id F02536B00AB; Fri, 19 Dec 2025 10:46:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43D2A6B00A6; Fri, 19 Dec 2025 10:46:17 -0500 (EST)
+	id DED666B00AC; Fri, 19 Dec 2025 10:46:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5BD6B00A4
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF86E1310B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:16 +0000 (UTC)
-X-FDA: 84236647152.06.38E1C5A
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 18E0DA000C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3laFeL2g;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0766B00AA
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:46:20 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5D5D136C2D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:20 +0000 (UTC)
+X-FDA: 84236647320.04.88C96B2
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C03D920016
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sa5w6nBG;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3RXNFaQUKCJI07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3RXNFaQUKCJI07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159175; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of 3SXNFaQUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3SXNFaQUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159178; a=rsa-sha256;
 	cv=none;
-	b=ZIgf9idDymvnMd40jXOWz1sx+b70nQL8Y9hK00eu5beIZg+yllfR9Qw1ws4BxuZKdNdDwk
-	9KPi9lR7wzu/I6i3i4WFyBEae0JzBTH9KZmdRJZWgC/TQfDCSQ21eDZffP45F0SaOcNBz4
-	niJ8t1jKRliebaX+prXpRiu8cNzBCuo=
+	b=vHzowSFtHuskGIuixKs77TSrTxP6Xp/QR0yFUng2DunTx8uT8PCpdElesnZaSKoDo7YxS2
+	X7nzpvr5JQlE7GxVWcbyUEsRa5pLOENnl/YE96RsmYDx7DrVfpQ2Nuamuvo+tIjO5KT0iH
+	EBevBgilA8QiW/HkrPkwwzNMzDaV9UA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3laFeL2g;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sa5w6nBG;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3RXNFaQUKCJI07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3RXNFaQUKCJI07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com
+	spf=pass (imf13.hostedemail.com: domain of 3SXNFaQUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3SXNFaQUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159175;
+	s=arc-20220608; t=1766159178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GzqxblqNylMZssrhkzyYMNb717UQfTl85zNKlM2THvo=;
-	b=ug/a39s7U0vq7oh+OMjJ+weOB6xjTyh1Hn2gx1W72eJqKCAe1RJxyX0PR9/Kl7lZMatuSJ
-	FLTQ5LENuSSUyV6opj+mRxs56ABRZ1ZUHTA9GztnXkVcwUr/h1afu7VdDFOQ5kaoQViwaq
-	WWKFo7uZ+h5Obc977QK1EH4rRi3SxO8=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43065ad16a8so993131f8f.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:14 -0800 (PST)
+	bh=xxzeiPbUa31+hz0U8Tv6bmU7luRcJmafBg2S0XNVzY0=;
+	b=0906Di+dcIWogzocFm8QxmDHtXwUgp8DnMbQHb+hhaQ3SBrkTRveyhDWYyoXJoInpYlaMh
+	t9EvhZcKqz6kvIVsC99BJ7dmhXRUgt2wTGVNd21v/UttuEzNlw2LFraejWKouC9ymft3X3
+	+pyEgF80xjo0Xr2CmRIdr2exoVHkTCc=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4779ecc3cc8so13283745e9.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159174; x=1766763974; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159177; x=1766763977; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GzqxblqNylMZssrhkzyYMNb717UQfTl85zNKlM2THvo=;
-        b=3laFeL2geO3NBEkXo89SQ8zs5oNOuD4YXwtG/wGHy2kwexmUzSeZ530/lm/t3Vhuin
-         rtk3K5Y+iJg9f0gLPGrlc3ss2TvE7HC549PgwqYfAcjN6o9597GK0BT5lTKtNE3hI4/n
-         w97dLOW78oLU6fQTMo91vu8sdQP9m8+mDQw/yMm89f8QeyO2ng0pEYPWnGSeT74qI8wc
-         DZCyiFu5WMXx0dZejd0+fWUyidXrp6dwzr1NEPIAyAOFziIaL3yKZNnIq4h4mT22Gpcp
-         aBhc71aKCQ3b2E3+FeHQ61kfRQgo2d/mX8oumajeQ/We+SeeacpJ1C3xGeWeBXKdLIWR
-         fPiQ==
+        bh=xxzeiPbUa31+hz0U8Tv6bmU7luRcJmafBg2S0XNVzY0=;
+        b=Sa5w6nBGPbvk5xIXN5lUKZGcp5R/hYr8E15jnEVBvWRKHWGVRFqBe2AI6YHDZnLo/P
+         pN4Bc9lFJ3Pxk27Kf39um7QbI4mrIa/WkhpzkBJfOFFQKC05DYN/rqZleffhJLYrqwY2
+         btkuSMn6wz4ozOsaCtnb0NqaPMJUxXix7lI6ESlwMweaUu09c/ZaKlkjNblOt5NTjVnA
+         Mw+YQETSdS2mMdKwOzzKAmRttY6sV3UdNycPEKTnaadOhaM2E9jDB+bqG+d/w3517Nni
+         ckGzwDZnd8W2DXsw8+9ofvaDzBF0dTfFOKLWSjXSU7JQ/7e/p4+fKFKdVClgUwjx0Zjx
+         lWbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159174; x=1766763974;
+        d=1e100.net; s=20230601; t=1766159177; x=1766763977;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GzqxblqNylMZssrhkzyYMNb717UQfTl85zNKlM2THvo=;
-        b=rpv4mM+UgNgiaXnadkcszxzExdU2jxJi1gdmBz2RUwSgdYZuesJvtwHaaUqnX/CXLh
-         R0X2hPYxXq5t4uFtYAjgNfEw1/pZIfwFs2fBgp/hJg/ALP/80opn29iWmSAJzKqrNJlT
-         B7w3AmL8BH0MID6xo953kpxZ3lb2ISBcGKgm6qnA+tO7K99rj2iBfeT+Kcjq6FqPxz+v
-         lbIr1T+/95ghQDGxePScD5QwrUo5HKNRsFjz2rkrG+2iMk+un7v4aC3IJ5B+TtPPv4qg
-         u/hdlUH+e/vcSK9YYa56wk7c8KQO6LO1gVqNxUt1xx0KM4TIgcqjwO+hgcE/HZEfvwNo
-         7YjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVeH1FKP6RFtb6LyA6ywGogGlXxFLmEuhRQYeUkNuz3jUB6zLl1NSk9/Krc8VvPaP4YxCpwRgHcDw==@kvack.org
-X-Gm-Message-State: AOJu0Yxv8/V14th/9lABH5aPS6fblqPNEzj4EjtkQnG/9tMjP41NY9I0
-	9s2MO+1LRGtuSIL3Tc0/tiwqwCaiNmnGx8lKC79uPUfU8zQFgTBFoMMPaZq/xVWncJUOtOhfJsw
-	pLQ==
-X-Google-Smtp-Source: AGHT+IFDBzha0VLOsownpeE3/oX+GYClWE/LTUckt6t3nGkH3udhxqzAfrWi3SLQ1c5sHOt4XQ+QWDn3uQ==
-X-Received: from wmqn17.prod.google.com ([2002:a05:600c:4f91:b0:47d:1d7a:6d40])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c494:b0:479:35e7:a0e3
- with SMTP id 5b1f17b1804b1-47d19582aacmr29774555e9.30.1766159173561; Fri, 19
- Dec 2025 07:46:13 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:40:01 +0100
+        bh=xxzeiPbUa31+hz0U8Tv6bmU7luRcJmafBg2S0XNVzY0=;
+        b=rrMNhQkT/CnvpUSeRcyL1LIMPgFTaCLn0G6vEsN78hx9Q/8WuZmYlhhu+kOyw4IW2k
+         Tr5KGF2XnmjZ3lQz7+ulJ7vtyS+da4Iqk/Lnfiv3XZmTDxS28wCRteR9hXje3NrkHTtp
+         6LAujuJLzbN+Yuy2BCZ+kOxPbuQw3sGLNR+KrcTxuyzxYP5eVEfBiCiPu3miWCpKyvQ6
+         K0vkqF9gAag3q5wgI80iEfhGB7F55ewUHDNAWpul0SFTN2drbRgI8jSzGh+RKicwv2VW
+         Gjz7M+bXUVd4zxPdoOQbsThqJgqJIO9ZnwbuSxxeY0H5qy4PsByiIDqF+TvVNGyPtlVl
+         m9gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMGPugBsuY6ccpNbe7Qmf2Yu0/m9iRTb/yUUCs/Z6WpTwgnF5qx7PehjlXqTaj9o64opQxxaX96A==@kvack.org
+X-Gm-Message-State: AOJu0YxNP8TsgfFqcJk5OmZy69ZKXpYZG+b1slV83ZSqevoog+ByQutF
+	NCVHJkHl+x7ApiGLBnWKVtZkiUuSjPAEqaNo3TsU3KES5TXT4a23ygzA8OJsP8R5r9zEfNv1/6j
+	wLQ==
+X-Google-Smtp-Source: AGHT+IGaGS8VBg9MijqM6Ta4+HbU9bsl4GQbb/p7haK0nKuccuPDjffspfAf6ASbrAdFf7JACzcajKCfOA==
+X-Received: from wmbgx16.prod.google.com ([2002:a05:600c:8590:b0:47a:90c7:e279])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:820d:b0:479:3a87:208f
+ with SMTP id 5b1f17b1804b1-47d195aa085mr30269305e9.36.1766159177290; Fri, 19
+ Dec 2025 07:46:17 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:40:02 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-13-elver@google.com>
-Subject: [PATCH v5 12/36] bit_spinlock: Include missing <asm/processor.h>
+Message-ID: <20251219154418.3592607-14-elver@google.com>
+Subject: [PATCH v5 13/36] bit_spinlock: Support Clang's context analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C03D920016
+X-Stat-Signature: ddxbon5bainohqrfhxw47rmswhhxtbra
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 18E0DA000C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: apc7xpaj174cb7zk1b453wui5xdnixkf
-X-HE-Tag: 1766159174-225649
-X-HE-Meta: U2FsdGVkX18cPrIoO5exOfY4IaYu3bGZnYUlhFpx6a+LP7JCeEXGutS2TTvKRII/vJOYmWy8V5GU0hTIc1Yb+IuYxYyqGbBU1bl0R6RbW0lb0MULQOewFy+PBpv/nu7I6yH4oVeBGovr0KHRiz8meemU+0kQ6w+lrUzMm/FhqqH8k8ftU9OXA+FtcwM9Pc2wWG5jUsvi+T0H6pEwnmB7ZxU+7j8MaLK4i1paIAzW67IGTGynkBgl629BqQZJuuH/MaXJGr+WhHnRjjfEc1hZ769dSB00q0WVOD13nn355dxuS/crJ8xl6toLkNOfK9DzAAM4Wu1FVkGr0RoLJFSAAiS5P/5Si1Y5DLMJ+T9HMLYQFjm7EL+kk4lPeWCEMuQ8h6Ix624x7nD7Qwl3/SR28Vwihwpdw7nfwtLgeysg0vkOedRTZZXH+JtftuZesL9OE1GvT25R0a92zEN58LAPy3ewYCIBheWFMrR23Gq2oY3yPbKNUI+PJS75V4epF/aGPtTGeDSZfHpzhjgqxbHrUIguG/+e4pF1naN7uU1m9qB7Lz2+LCejnOQEl0ZSwo1OtkK2UhufzQX7/4We0NkXbCgdbUI7ufi3a9fLQm6keOVlf7r4ovIpKsmcXg5uVNsMTCiIL7KN3c83vt2xCnyYvOVKYLGZK/SaIpZdrS2+wPInTNzomg23wn2pWCAIQNUCzt2wYxwitrDmIP1yWGPxPIHDU469OhdwgA6K9z/xh+Uas7aLEkbxqZXu4SGORgH7nZvIaAbKCTb0v9eu9zAzcj405zqdBLmJ9RUtsGfJg6Q+vUBJ/OvCBastv8HCbgI5axhkMWbqGoGfffE/nDUyxUdNcVBDMQKhl598kAPYudTuLcQtZSvm5rjbwBA4y+kywc+bNBfULxtqP01NQmLY8A1cfDrD9zvRrmGM5/OFV5MaLCYEl2oRPFL5iVo8YSmnEqZfLdOAGTcf/SHfpit
- WTZ7OO0d
- HshCODSt0u39xJ+ZPzHC2q0uCjfvxJcoTBHv1DMExnolvVe2z6F9+tRSloAjUgbm2w446Ci5x7+TYDGch5d2TyFylkoOkx2QrMlFOtFbllyMk+ktPGdZQwZANdBh9iYjLblD4k6UhYEdfe8/Ck41Zerhq+X4Wu7EgQIUjfBSVVRNkQY/jxJyaLFYsnVV83pXkrJIMFSZkq7a7bFEhu51cIWHrglILsywuUD6nC9tY+wj5wPBBDR7G/gVMhsWwrOeimXnjJZjIDFFLiJey5CclBP4YKXYwtT0Yrb347O6pjDVmkDux2qYKpEN6en8EvJie+tBmqSMdjC/72pu4vhwalfpCY/9n7L/EWS8zpWGWOtcJlcwhoq8SxP9rGgcMKUIuhnLM5zi23P3jPmOmqCqsYgHAUNbxnUY2zKuehIrJJzGWQyOLoea3yj9Uwl6CNlaYNyKEr8dFqItgPZji10pOywcujIdkW+R7CMOBn9JWO5wyICXVhE8nEoVPUS6/n2Ur3yxmin0u+UOxm24LGLFLSuTc9YXT4ignZAw95jB7TH+sFD+hN4mn7dqxZqyrd0dCKwZY5RJJJcAP7SniW50KecOI2Pq0ioXECbP+w5F+mgELmIB5Aa3VClrB8hIDB9YkvPqge7oulKRJvVskagxH0/FpbbR9JgG64jD37GjiUvPYiC1nBNaMpQB/5fUSd0qADObW8Q4WkC2cpL8C/bGv5ZssUVGGQxS0nLo4ovy1Oj9iN9T5ig1cQr+X3ReZJ8Q+IeXsmwMM6votuf3GwRo6b4NehQ==
+X-HE-Tag: 1766159178-480978
+X-HE-Meta: U2FsdGVkX1+09co7OBsMtPu4po/A7J6rlvCLpYF9k11BOXPwFlbJVsXUKmu6lmUtXx/GKRXAJeGeA7fgrlgzoyPZAn4Bw0YL1RYh9SSonVv5+ZOM1ZAcUAuFKhhaX+puoit3m2cxDGTnIr120a9jkUE4ZVWsYpYg6KmmQph7/GRsBACfSeiXQqh6u5EfoQeOlGBkq/+XJWa+mMDaLNQORmLytb8SPrlKnrIODKkrPySn+qmo7MsE8N2O05Kr5JKfipACyIekH4cnYryfyttcZ4eac3DlbvMALgsEYVgICemwumwB+2/+AV5bqFwY8LhZWOEqw2ikZqZoc2f+6t7PPAn4hUbR80Gd2nUO5odWxMuQVzArnYOGy9DWYuezgFKpayfZGfp8Hw8kzdS82j0HPu9YNbPrEmF2/QHSJjH83RW+jarOTZoYxLAK7SYYoqIIk/Cy/nZ+MxTLfN6RyYzLy3E47m29xZR64UtU7LJxb4gdOzdKvTG6TspYjRqQlsy6k73FrT/i8wonIfr73xJ0/UfGo/8NeO5qRw1jhJ9kZzT8fSIf6TyHzAqvyoLUCRvBfVp5jBb6hYSWlhtew5Y050PcnxAKw7BIUYNEHUZpiXf5kjo6Bx2ZrA6VWXL924hY+jHlPHo2/r3DFY7jAHjNhTzckNSD0sT7ZgDFO87xJxVbClUBU++9E3j8Z9YB2C8t/D13VdgWxR1wCCH0codGrZ9OtBwPU5WH/EzcVYhVOgPBoIgEomhnfCVo8OEymaTOUgjeUApYwKpwxG3q3LFxWu0q/worlIasrjYcZh0uEfPAXtqttKMczLGIlxWe4cpmejwG8Qji2FoadXAM4AxnL/Lo9WQUDGuwh15DmqsdG1yYFBly5UBpY3jvcQ4X7LPcVChYuSXHZ2ovDl6P43SjNdRbKjvwnHpcOUsdgvwfZQAhJ87mzH/HkPqczdsgrKvrio9Ah8eTXkGFoyOveqi
+ ZZqqafAY
+ 6nOEuPC1eeFIOzEaQnjCfsNPJsyELr1RO9fRxHV+uB/TiopNIDjc+JDfMGdm493aaI+ZS2fVWmVFoZcnaGtDt8AtMDAyW3VCddxcYsfo/0v458Zrui2jGPauLKZMj6H/xjnSY8DrJZrKnjDMNexAZkRyrD1HcARldIBeDxsYLSSn38RybvTgTVyHKa7DQ35XuTDI0jBchMwgDiUQKUWzx7pzNzL4i10J98bYuBvj7wAhC65kO0eoFnFklJSVSldA5qZpJoomtVdWVgGtnSL1ot/RDak5esd6Q6/PD4OknXZ0VDn14WA8FJwJ0a08wfwLDiRptFKEYzr1OKRY3HOOfz/lTIghjDo3EHD2fIdSMbpot4ZOfEx9bQdnflLMhUXWdBu/1vfgIconsObTXQTE/DQFVwqraULHeRy51MPFIZVaCpojSA7poPI2j/lIV4My/VsdbYaWolce7ZME4rRrOT3fWWeIdImu7Qk3gVzDuZObUvKPWYsoLDhQokacjbY8nlTnpUIM3u2IvqIxoqycc9nax0SCixxMXcnVXY3KXCg2nMbmMeW6rz7u4YW61Wh5504EdLDmNXP7lAdPAv8YXeRVaj+OjkGcPyS6Und3r4BAFEgRnBx8c5wbwVPxZrSFSNXpCsiPl/QpgvUTCzbYe4gt/Y/aBfDMenfdqaHb0Hd0j0F6k7XD4kPOS7cIKaPOMCCzwOcOFspTcssg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,35 +129,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Including <linux/bit_spinlock.h> into an empty TU will result in the
-compiler complaining:
+The annotations for bit_spinlock.h have simply been using "bitlock" as
+the token. For Sparse, that was likely sufficient in most cases. But
+Clang's context analysis is more precise, and we need to ensure we
+can distinguish different bitlocks.
 
-./include/linux/bit_spinlock.h:34:4: error: call to undeclared function 'cpu_relax'; <...>
-   34 |                         cpu_relax();
-      |                         ^
-1 error generated.
+To do so, add a token context, and a macro __bitlock(bitnum, addr)
+that is used to construct unique per-bitlock tokens.
 
-Include <asm/processor.h> to allow including bit_spinlock.h where
-<asm/processor.h> is not otherwise included.
+Add the appropriate test.
+
+<linux/list_bl.h> is implicitly included through other includes, and
+requires 2 annotations to indicate that acquisition (without release)
+and release (without prior acquisition) of its bitlock is intended.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- include/linux/bit_spinlock.h | 2 ++
- 1 file changed, 2 insertions(+)
+v5:
+* Rename "context guard" -> "context lock".
 
+v4:
+* Rename capability -> context analysis.
+---
+ Documentation/dev-tools/context-analysis.rst |  3 ++-
+ include/linux/bit_spinlock.h                 | 22 ++++++++++++++---
+ include/linux/list_bl.h                      |  2 ++
+ lib/test_context-analysis.c                  | 26 ++++++++++++++++++++
+ 4 files changed, 48 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
+index 690565910084..b2d69fb4a884 100644
+--- a/Documentation/dev-tools/context-analysis.rst
++++ b/Documentation/dev-tools/context-analysis.rst
+@@ -79,7 +79,8 @@ Supported Kernel Primitives
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Currently the following synchronization primitives are supported:
+-`raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`.
++`raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`,
++`bit_spinlock`.
+ 
+ For context locks with an initialization function (e.g., `spin_lock_init()`),
+ calling this function before initializing any guarded members or globals
 diff --git a/include/linux/bit_spinlock.h b/include/linux/bit_spinlock.h
-index c0989b5b0407..59e345f74b0e 100644
+index 59e345f74b0e..7869a6e59b6a 100644
 --- a/include/linux/bit_spinlock.h
 +++ b/include/linux/bit_spinlock.h
-@@ -7,6 +7,8 @@
- #include <linux/atomic.h>
- #include <linux/bug.h>
+@@ -9,6 +9,16 @@
  
-+#include <asm/processor.h>  /* for cpu_relax() */
+ #include <asm/processor.h>  /* for cpu_relax() */
+ 
++/*
++ * For static context analysis, we need a unique token for each possible bit
++ * that can be used as a bit_spinlock. The easiest way to do that is to create a
++ * fake context that we can cast to with the __bitlock(bitnum, addr) macro
++ * below, which will give us unique instances for each (bit, addr) pair that the
++ * static analysis can use.
++ */
++context_lock_struct(__context_bitlock) { };
++#define __bitlock(bitnum, addr) (struct __context_bitlock *)(bitnum + (addr))
 +
  /*
   *  bit-based spin_lock()
   *
+@@ -16,6 +26,7 @@
+  * are significantly faster.
+  */
+ static __always_inline void bit_spin_lock(int bitnum, unsigned long *addr)
++	__acquires(__bitlock(bitnum, addr))
+ {
+ 	/*
+ 	 * Assuming the lock is uncontended, this never enters
+@@ -34,13 +45,14 @@ static __always_inline void bit_spin_lock(int bitnum, unsigned long *addr)
+ 		preempt_disable();
+ 	}
+ #endif
+-	__acquire(bitlock);
++	__acquire(__bitlock(bitnum, addr));
+ }
+ 
+ /*
+  * Return true if it was acquired
+  */
+ static __always_inline int bit_spin_trylock(int bitnum, unsigned long *addr)
++	__cond_acquires(true, __bitlock(bitnum, addr))
+ {
+ 	preempt_disable();
+ #if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
+@@ -49,7 +61,7 @@ static __always_inline int bit_spin_trylock(int bitnum, unsigned long *addr)
+ 		return 0;
+ 	}
+ #endif
+-	__acquire(bitlock);
++	__acquire(__bitlock(bitnum, addr));
+ 	return 1;
+ }
+ 
+@@ -57,6 +69,7 @@ static __always_inline int bit_spin_trylock(int bitnum, unsigned long *addr)
+  *  bit-based spin_unlock()
+  */
+ static __always_inline void bit_spin_unlock(int bitnum, unsigned long *addr)
++	__releases(__bitlock(bitnum, addr))
+ {
+ #ifdef CONFIG_DEBUG_SPINLOCK
+ 	BUG_ON(!test_bit(bitnum, addr));
+@@ -65,7 +78,7 @@ static __always_inline void bit_spin_unlock(int bitnum, unsigned long *addr)
+ 	clear_bit_unlock(bitnum, addr);
+ #endif
+ 	preempt_enable();
+-	__release(bitlock);
++	__release(__bitlock(bitnum, addr));
+ }
+ 
+ /*
+@@ -74,6 +87,7 @@ static __always_inline void bit_spin_unlock(int bitnum, unsigned long *addr)
+  *  protecting the rest of the flags in the word.
+  */
+ static __always_inline void __bit_spin_unlock(int bitnum, unsigned long *addr)
++	__releases(__bitlock(bitnum, addr))
+ {
+ #ifdef CONFIG_DEBUG_SPINLOCK
+ 	BUG_ON(!test_bit(bitnum, addr));
+@@ -82,7 +96,7 @@ static __always_inline void __bit_spin_unlock(int bitnum, unsigned long *addr)
+ 	__clear_bit_unlock(bitnum, addr);
+ #endif
+ 	preempt_enable();
+-	__release(bitlock);
++	__release(__bitlock(bitnum, addr));
+ }
+ 
+ /*
+diff --git a/include/linux/list_bl.h b/include/linux/list_bl.h
+index ae1b541446c9..df9eebe6afca 100644
+--- a/include/linux/list_bl.h
++++ b/include/linux/list_bl.h
+@@ -144,11 +144,13 @@ static inline void hlist_bl_del_init(struct hlist_bl_node *n)
+ }
+ 
+ static inline void hlist_bl_lock(struct hlist_bl_head *b)
++	__acquires(__bitlock(0, b))
+ {
+ 	bit_spin_lock(0, (unsigned long *)b);
+ }
+ 
+ static inline void hlist_bl_unlock(struct hlist_bl_head *b)
++	__releases(__bitlock(0, b))
+ {
+ 	__bit_spin_unlock(0, (unsigned long *)b);
+ }
+diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
+index 53abea0008f2..be0c5d462a48 100644
+--- a/lib/test_context-analysis.c
++++ b/lib/test_context-analysis.c
+@@ -4,6 +4,7 @@
+  * positive errors when compiled with Clang's context analysis.
+  */
+ 
++#include <linux/bit_spinlock.h>
+ #include <linux/build_bug.h>
+ #include <linux/mutex.h>
+ #include <linux/seqlock.h>
+@@ -258,3 +259,28 @@ static void __used test_seqlock_scoped(struct test_seqlock_data *d)
+ 		(void)d->counter;
+ 	}
+ }
++
++struct test_bit_spinlock_data {
++	unsigned long bits;
++	int counter __guarded_by(__bitlock(3, &bits));
++};
++
++static void __used test_bit_spin_lock(struct test_bit_spinlock_data *d)
++{
++	/*
++	 * Note, the analysis seems to have false negatives, because it won't
++	 * precisely recognize the bit of the fake __bitlock() token.
++	 */
++	bit_spin_lock(3, &d->bits);
++	d->counter++;
++	bit_spin_unlock(3, &d->bits);
++
++	bit_spin_lock(3, &d->bits);
++	d->counter++;
++	__bit_spin_unlock(3, &d->bits);
++
++	if (bit_spin_trylock(3, &d->bits)) {
++		d->counter++;
++		bit_spin_unlock(3, &d->bits);
++	}
++}
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
