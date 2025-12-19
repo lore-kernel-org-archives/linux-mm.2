@@ -4,127 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40744E66882
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:26:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84947E6688C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:35:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FF8F6B00A2; Fri, 19 Dec 2025 15:26:39 -0500 (EST)
+	id C1D266B009B; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E7A46B00A4; Fri, 19 Dec 2025 15:26:39 -0500 (EST)
+	id BCA9A6B009D; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EA856B00A5; Fri, 19 Dec 2025 15:26:39 -0500 (EST)
+	id A959E6B009E; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E6A76B00A2
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:26:39 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1728713AC5E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:26:39 +0000 (UTC)
-X-FDA: 84237353718.21.D9A5661
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 278F412001A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:26:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=3LHIpw+i;
-	spf=pass (imf29.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9931A6B009B
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:35:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44EC8535C5
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:35:39 +0000 (UTC)
+X-FDA: 84237376398.28.55F8DA8
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 37562A0015
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:35:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=kYZHsUm3;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R g/gGMV";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766176537; a=rsa-sha256;
+	cv=none;
+	b=rumg2rUclJhpKA1BySOlJRyZmQm00aStoSn97vggCSxMoSV4FFH+PPdTXLr58ZUUEgerAf
+	puVLIcWDOIGErzSaqfGXhVRKDJzlLT22mxXi2uvVAeavWQ/Qpu6umMxU3C743IXwO5GWsO
+	H1OIovtRaLw5IEk2bfOMKYjlDxumYAU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=kYZHsUm3;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R g/gGMV";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf25.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766175997;
+	s=arc-20220608; t=1766176537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+XIWCwsoEOSiUB9cSDM01ohKHVap8EzItAr4kGei6l0=;
-	b=7h47fw0YibT7R0JWvxMFcWtxZ01vjinsctuDaYh/2UBBotO4rna+XYb9n1Y3MnHacYPnPV
-	PxPWhPsVp2hQIVHXuRKVLaEJ1hx8tfwfzH2OH8DpH8nMfPo8yNZyNuCHfx3DyO48Xhh5kA
-	/PvNmJxi0tUIC4JNdkdldEWs6WhzaeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766175997; a=rsa-sha256;
-	cv=none;
-	b=Ci5YjBCh6hWIvbUEesUeHqurF/fteOEPn2DlY29GwLH1OYTnUxbiJ3BtTfj8wDusX8CIjr
-	dKETM49GXfGAcpMZu2DFTsz7LkRPWVTNvw3ZQuCYh/4VSc/onlk+Sbaiy5drSCQXWrjAEY
-	tgQ/9jTSHNkyr9uBWMmMKxZN/zSrxIs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=3LHIpw+i;
-	spf=pass (imf29.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dXzb00Dlzz1XM0pZ;
-	Fri, 19 Dec 2025 20:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766175988; x=1768767989; bh=+XIWCwsoEOSiUB9cSDM01ohK
-	HVap8EzItAr4kGei6l0=; b=3LHIpw+ieGDbEleAlfBlytRlkHzz0FuNkyXKj3yU
-	S32iMbGcs0xQwrQ96fRo/sfT2B1xWjxWBl4Zmwsh3C+nrtdKA6Xed25MPdOCf9cm
-	OqPTEBPUhtk0GS4PDhB/osqX2tyQ5qlnUBv7p0VyAR6hSFuFmB0OawSv0O47US5/
-	JVEkmMhGnXcUDadT9IfMciHirW0f53kX6OuysmpCmU7SzmEVCZCFZ5kBWMSaeAD5
-	ifMcPAA3c5cPVUXL08MT0F8lNI15xLyN9g+ZI4CeiJTFZ9V40mxi28nG+Y2Qlfgn
-	U/PZ4Dn7NZgRHwASo68yhekJGP/2bVFKJP5Y3DR1pjapoQ==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id qiEhQEwhfLs6; Fri, 19 Dec 2025 20:26:28 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dXzZd0R6zz1XM6Jk;
-	Fri, 19 Dec 2025 20:26:16 +0000 (UTC)
-Message-ID: <17723ae6-9611-4731-905c-60dab9fb7102@acm.org>
-Date: Fri, 19 Dec 2025 12:26:16 -0800
+	bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=;
+	b=Kc0ZMXi9/v8yzNDmftLtzk9NN0jfI4A8SfjzxAmTNFtM+8sDQ6vydWUlLtBLLzfF3kDz4P
+	JuSKq3ACpNQIHzP1aY9eVYt09ndIeggY5Uv9/NGguHo73+iR5qZA8SK0LdGCSY/b8EwZF+
+	xoeIofQhutozS2AJDbEmy0/U9hKA+hY=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 29D571D000A9;
+	Fri, 19 Dec 2025 15:35:36 -0500 (EST)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-04.internal (MEProxy); Fri, 19 Dec 2025 15:35:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1766176536;
+	 x=1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=
+	kYZHsUm3yqBHaQvpro/+WVGIWBVYSVMFfzAK54GcyEOPEhFKvEFuAPrGR+cJTmUh
+	WuqFNjPxZvQkkBDtAeuRT4Y6eEryMc/WKH8n1pZWJH0y0k42xCztHwa4qzaYSulv
+	c8fjOxu/1OEcujcVhSJRl1VueSwH7a0Ugi7lgTQ5pJVnjDFeQ+QadG4vzWSUDkJf
+	Gl2ii6dZ4T7T5QD5RZhU72HA+grnsmxMyM4UoZW8OJbUnvEkKRNTYf6Dyx7OFD1c
+	z/BtnKw4w6z4ekb5gkp4VO5JU4ctwu672Z8pByzhuSQ+RGzGy4TN2hQsMMQkhZp4
+	yDjEpWPhj/OnA/BzylISAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1766176536; x=
+	1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=R
+	g/gGMV6hGJSilE/ezNtky0vmAjZSzpFmvQe4yQSfpUOWkGu4+khqfe+CKsUsbbH/
+	NWhG+aLxCk7W9xlqRRomISPzMad0RNuBJ4JzW8+tV77CvLOrZwYZpBfBxOSSIz9v
+	cJinNF6Ej5OguuUgo8Ffg2liakO4Iuak9WNah7aNB2NdDJH+Agy4cPQGpoTO0R1I
+	E50NjYk69gfh6dHUbDP691rKb0j1Kwmm+hQck5oLYemr4vJt5HIyG0JkVIr8FnPc
+	MEIR7CnWx/AMfasIuVZN8J6smZ16rnvAZK0DfZAWUSQvK/TV++Mw9B67WJ7GlM/n
+	iHzqzayWG1vya99RM3gvg==
+X-ME-Sender: <xms:F7dFaetfjsH_R0FrwIjtYohr1MfQyeE2o_Kf225FkyDcAyfvlGgXag>
+    <xme:F7dFaeTM_mVgkLqy_zis7ZjunWXe23L2cRxu6fojMT-CUeK-upeQDeRRCMxTOLG3t
+    PM_he3EDc61UZJY2PHV6HnMgC-TNEEwy52aM303P8LlBxIBV9FxxI4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegledvkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtth
+    hopegrnhgurhgvrghssehgrghishhlvghrrdgtohhmpdhrtghpthhtohepfihilhhlhies
+    ihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    giekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
+    hkrdhorhhgpdhrtghpthhtoheplhhinhhushdrfigrlhhlvghijheslhhinhgrrhhordho
+    rhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
+X-ME-Proxy: <xmx:F7dFabR9fuVGLS8b2nH0EJEL7gMeVQyE2RmW6pjAmP-j5ztg66sWYA>
+    <xmx:F7dFaSWdbgkitKG_ozO6MG4TRqQ12N7HBRnMw8O3mjcTSiNw9HFycw>
+    <xmx:F7dFaaautW2GXmPM0khIdUKFWjjMT3nNkDSx5fj18akTdZS3YoKf0g>
+    <xmx:F7dFab6-0sXi3QVEQ4kxkCC7Ickcc4xkhCmDssD-fi6cLmyMFZeyFA>
+    <xmx:GLdFaZ8lTCnaSOSLz8dsTEi9P5rYOub2PGkiNAXcyFkNFyLQKKniTZRF>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3E0EFC40054; Fri, 19 Dec 2025 15:35:35 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/36] locking/rwlock, spinlock: Support Clang's
- context analysis
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-9-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-9-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: AQxZfb8dcq5J
+Date: Fri, 19 Dec 2025 21:34:33 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jason Gunthorpe" <jgg@nvidia.com>, "Arnd Bergmann" <arnd@kernel.org>
+Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Christophe Leroy" <chleroy@kernel.org>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Russell King" <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Message-Id: <513078d3-976a-4e6d-b311-dcfcfea99238@app.fastmail.com>
+In-Reply-To: <20251219171412.GG254720@nvidia.com>
+References: <20251219161559.556737-1-arnd@kernel.org>
+ <20251219161559.556737-4-arnd@kernel.org>
+ <20251219171412.GG254720@nvidia.com>
+Subject: Re: [PATCH 3/4] ARM: remove support for highmem on VIVT
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j9qso9kd9jazutk5zjha811eb5pppdzr
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 278F412001A
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 37562A0015
+X-Stat-Signature: hinsnhuy7qrx7ggpizs6qpxfgd8uh88e
 X-Rspam-User: 
-X-HE-Tag: 1766175996-219352
-X-HE-Meta: U2FsdGVkX18aB4hrOaT8aaDTTJr1n56gSVBD3m2kAf6VCS2fYeIDWatVg1Ikth1aQAm1xKmM08s+rFj8JO4eUyKO10rtGiR+sb0YS97NUnyKs7DKa1gyaQWMRnJPcSr2XfiHWFw4lsuYsGA4QduGuy1WPUXBv/OMrdLXnvMzY/VTBG6NMSxFu6tzPOfkiXT5xri3dYGdjzn/r3NKoGntRRe4GhNmHg5ZQJtus78HiAXJaj/inBl/6WOR7F7uunDPE0nHyNFDgS13B4yIx4LXFLntWoD0KeBOdm960rIiBYTm4e1M8EB1M2juGjQzOSKTnBCxTp+L3AJJhqR4EI5NqfYylk8nsGgzYCo4qgDIqfVhsVrhH61RnzO2OmphSS/CdCDekBbYFl51OW9rb75KAJzjfSGmKCPaWAgWjMgx4sQpP9Nv3n5KDSv/4jYJFELPiM6EWXxFN6UypZFRfXUD10ZSeRwfk1UQ6iT6esNqsrJC8+hLoGGQ0Ro0usQXDH4P/4ihqMiFyLSMZ0WTUF7GXqqnsiYT2+cB1ak6rMbCJ2zil3wUaB/EZ5VDrs8dRyFy9mRSz5WBRn1hh0RIgrv0H/vx1g2Ttj80/OyYGExcmdC8sUg4HRCfvRS9tbsdXDg9b/gnr6sAaPFJnXzq+h7f5xBPinPlgpIPAOMynf8ifRCf1pkkwETdxJ8VmUyiRCJH3l8A2s88xq3srMVIv6RlWAj9arcGMN7Kuoni47+g+rQ2fBxm7mAit5H153BclYQUj8Tt8HhGNVIEN7Wx4RqyHEvCHLUX4P1GkeWyPFiMJWTgYesXhjV/fsiq4ClcKTdcJHmU0hOWTXbsgQMau82ZxBhSiPZofBPJlbES4X+h8H5e4JV+M6vgJr8G7nxbbBrGW2Ywt08k7zZzc+d5VwVkzvhiqfsQ2eB5Hf4nMsZu1k08S7546NWPKazl8htE64eDfn53DCuQc2BJW9CCCzx
- D9voJSgS
- I1rmmoD1uz1Bo3jnXJc1qRQqQhsR9XOhPCUtugP7cl1jSLiZV98qe2Ez84Jil2KfmARlAELA3/7TDUQauJw/6sielQXsOrxxpg3Xg6KVYFxCaUYa40vgUbCmlR5OrbRzrOA+9mhdJ6iFL0uIp274BFPALLqNpbP6IyRwNxvdhRks0IJl/qIvJ2odx5RhFm9S/YBwy/rW0NRddOyyKGXXXl3CViaPR1dNQZKP2Wc6Nsjs2kqvVFB+X9nCZvCvgadValaO6JDU1VyqD5Zf0k5SsXn80+AxeTj/hQFJTF11MGibL1meErSwo8K9BkZI8FYKUpK6CQloH7EqmQG9Zr6erEfv2Og0pzbRVL84nXtKP5hJ/hCCk673Lj4LsVibZyvVQ9xVY
+X-HE-Tag: 1766176537-568745
+X-HE-Meta: U2FsdGVkX19TBehG8BOAfUo0Geeip3f43Gsipczw4LujZKXjcKLeK4NOighFbl+p6DjccHpQpnRP0FQzyEf5ztYNQOJVVMhrUmfBxSNkVcaiv+gFd4gC5/feTHgV8r/kb/Au1T2uKEBRwcNK11fmyXTb02JqFlEs5voFRayPbr6ZrKFC8kBkTB6KO8K/k2YKOGS2enuw3WTM680Wxwa3mzjcS1yAkD+IFHXCgH6bvUKXDQ+4BT69z7bkaTi4M1cJC0sSisjQ82bReHjjnwvnWkXygYzNeAAIAujV/3VoEIs9mKtMhoDhDevvBENGKgY+i8so07kHw6aMoTiRpR/Jp8wbrwLxYIDAmcBRvORy1kyz9bARM5KI2mXeKTyBu1UtHM8gnP1+b/gmj1GImhMmYmG1UWfm3/qKSEj4jJxmypKELYEIqO/ria8DuD2kT3m+CIf9EYM7asLolZZncyQPL98PS6VZdHt+40B+6W50sOEeHs37RJymMl9Xt9237+SSQ/q8UJRGouzuhYtOGDVEUDp07J6aF6+j+LxOEPHv5KTdbpu1MtKgY3lgsBVuicyCONnpm2SgkXb2U7yftFdB2lZbwKYJmQTYyPGzrmi+8DW1e2irn0uvZGyP6dPvJtyYj2FA4h7PP6y30rbukwHbkyP70VzAodDjKyMwCaqx/SUNSihHz9dk5S/s0vIJu4QelTUrotoED93YqtiQQb/zja2itR7bI6KSAcrSPsD1rbBYZSXpMGZfe7q3gbxyAf/zjcmDHZoXjySDJy0ih2Xw/3JaUsRyrsp5v/8Y1xXyRHOn/3lOTa3g3BVC4djspK+T0wMT5HvOR7GMyaSrv8sYHy6HpbB1rFM6hFiaa5HWWnM9CYdj/phDq5UxSlpM+XFAtp4DVJSp+0ONlcl529SnkMEfta1N6hB6WQN06G6r0HoFJNv2jwSuf38Vcls08dH1WFO6iHI1lSQneEG3bfh
+ 5SAyhbs4
+ CMwdwcqnmGkj01UpfXYcwgB0PXDKq48XAN0M1zqgvjQAtRPFwBkjcSxfFJIgyRoBATrw2jH5eOmPBensoC20UmsIskttYPDCzHG0l5YH7AwLDS0lRS64UrKig9eLvKCZhCD8yX2xiryl0VSu1SiJQfs5Y7uAHBX3EYQcdysF5gPZBwpRMXRrFxMlBQKI/JVAAy0ZYR+lBUJlWtzs9u3+jEK7sYb/8mP9Ri859
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,84 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 7:39 AM, Marco Elver wrote:
-> - extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
-> + extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
+On Fri, Dec 19, 2025, at 18:14, Jason Gunthorpe wrote:
+> On Fri, Dec 19, 2025 at 05:15:58PM +0100, Arnd Bergmann wrote:
+>>  arch/arm/Kconfig                    |  1 +
+>>  arch/arm/configs/gemini_defconfig   |  1 -
+>>  arch/arm/configs/multi_v5_defconfig |  1 -
+>>  arch/arm/configs/mvebu_v5_defconfig |  1 -
+>>  arch/arm/include/asm/highmem.h      | 56 ++---------------------------
+>>  arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
+>>  arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
+>>  arch/arm/mm/dma-mapping.c           | 12 ++-----
+>>  arch/arm/mm/flush.c                 | 19 +++-------
+>>  9 files changed, 16 insertions(+), 153 deletions(-)
+>
+> This looks great, but do you think there should be a boot time crash
+> if a VIVT and HIGHMEM are enabled, just incase?
 
-Given the "one change per patch" rule, shouldn't the annotation fixes
-for rwlock operations be moved into a separate patch?
+Do you mean in the common code or just for Arm?
 
-> -typedef struct {
-> +context_lock_struct(rwlock) {
->   	arch_rwlock_t raw_lock;
->   #ifdef CONFIG_DEBUG_SPINLOCK
->   	unsigned int magic, owner_cpu;
-> @@ -31,7 +31,8 @@ typedef struct {
->   #ifdef CONFIG_DEBUG_LOCK_ALLOC
->   	struct lockdep_map dep_map;
->   #endif
-> -} rwlock_t;
-> +};
-> +typedef struct rwlock rwlock_t;
+We could use the Arm specific cache_is_vivt() macro, but it feels like
+the 'dpends on !CPU_CACHE_VIVT' Kconfig check I added is both
+safer and simpler.
 
-This change introduces a new globally visible "struct rwlock". Although
-I haven't found any existing "struct rwlock" definitions, maybe it's a
-good idea to use a more unique name instead.
+In common code I don't see a way to detect vivt caches. There is
+cpu_dcache_is_aliasing(), but that also seems to cover ARM11
+processors with aliasing VIPT caches, which are otherwise fine
+here.
 
-> diff --git a/include/linux/spinlock_api_up.h b/include/linux/spinlock_api_up.h
-> index 819aeba1c87e..018f5aabc1be 100644
-> --- a/include/linux/spinlock_api_up.h
-> +++ b/include/linux/spinlock_api_up.h
-> @@ -24,68 +24,77 @@
->    * flags straight, to suppress compiler warnings of unused lock
->    * variables, and to add the proper checker annotations:
->    */
-> -#define ___LOCK(lock) \
-> -  do { __acquire(lock); (void)(lock); } while (0)
-> +#define ___LOCK_void(lock) \
-> +  do { (void)(lock); } while (0)
-
-Instead of introducing a new macro ___LOCK_void(), please expand this
-macro where it is used ((void)(lock)). I think this will make the code
-in this header file easier to read.
-    > -#define __LOCK(lock) \
-> -  do { preempt_disable(); ___LOCK(lock); } while (0)
-> +#define ___LOCK_(lock) \
-> +  do { __acquire(lock); ___LOCK_void(lock); } while (0)
-
-Is the macro ___LOCK_() used anywhere? If not, can it be left out?
-
-> -#define __LOCK_BH(lock) \
-> -  do { __local_bh_disable_ip(_THIS_IP_, SOFTIRQ_LOCK_OFFSET); ___LOCK(lock); } while (0)
-> +#define ___LOCK_shared(lock) \
-> +  do { __acquire_shared(lock); ___LOCK_void(lock); } while (0)
-
-The introduction of the new macros in this header file make the changes
-hard to follow. Please consider splitting the changes for this header
-file as follows:
-* A first patch that splits ___LOCK() into ___LOCK_exclusive() and
-   ___LOCK_shared().
-* A second patch with the thread-safety annotation changes
-   (__acquire() -> __acquire_shared()).
-
->   /* Non PREEMPT_RT kernels map spinlock to raw_spinlock */
-> -typedef struct spinlock {
-> +context_lock_struct(spinlock) {
->   	union {
->   		struct raw_spinlock rlock;
->   
-> @@ -26,7 +26,8 @@ typedef struct spinlock {
->   		};
->   #endif
->   	};
-> -} spinlock_t;
-> +};
-> +typedef struct spinlock spinlock_t;
-
-Also here, a new global struct name is introduced (spinlock). Maybe the
-name of this new struct should be made more unique?
-
-Thanks,
-
-Bart.
+     Arnd
 
