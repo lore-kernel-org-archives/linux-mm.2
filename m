@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EDFBE66881
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD3F4D7879C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 16:19:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14CAD6B00CA; Fri, 19 Dec 2025 11:16:58 -0500 (EST)
+	id 3944E6B00D1; Fri, 19 Dec 2025 11:19:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B92B6B00CC; Fri, 19 Dec 2025 11:16:58 -0500 (EST)
+	id 342616B00D2; Fri, 19 Dec 2025 11:19:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0A716B00CE; Fri, 19 Dec 2025 11:16:57 -0500 (EST)
+	id 26BFD6B00D3; Fri, 19 Dec 2025 11:19:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC50B6B00CA
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:16:57 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8669489AA7
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:16:57 +0000 (UTC)
-X-FDA: 84236724474.14.7FF0BD1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C2D381C0014
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:16:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dr1njzt/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766161015; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 10D776B00D1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:19:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D448C1602FA
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:19:08 +0000 (UTC)
+X-FDA: 84236729976.04.3C185C4
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0700C4000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:19:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766161147; a=rsa-sha256;
 	cv=none;
-	b=oUVwsKxvupDMTyYUY8UNupfSNRb62QfvPlRsSwU6IT5kfjMIC1H2KN32meayrhLLPBmEL2
-	kuvkPgPv2kstbHdWUWf6mOmBHiqRr7FZawOGIfxWTKRai70mmxVEn0TdC4kLVP2+GEvfwI
-	1WR9im1E87QLFmSLH3+Z7d6/GEaJCRk=
+	b=UTQpyfraag2gum3NoW7SRLDIUrFu6TgHqYqdKX1Gispm4YQWgyYPdbPZjU2jcuJxPt8bzi
+	fFoJ985fUr+I/2kifaUeMDmDCv7xJedDuIpVZfgmM51//TGdcbhKh+FxSJ9N6OB5U6Dq+v
+	Qdt4XDBmSRiP/xh7jx9zoGWpPsktXqY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dr1njzt/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766161015;
+	s=arc-20220608; t=1766161147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oG9kzwziN2rWpW0J23ulZ8PPa8l4j1tYoxfToGcGa/c=;
-	b=KBbg6f9O0jRy7U5yBfcoKHhiMOQwJZbZadES2kxzHR5v5JeOuwssWFJ7mXxXHgD7ZzYNbw
-	uh7AzURdC5gfY5MrqyLu2pFG4Y1r5LzZmxNcbA7J/FVWCDJK9JppQsvVcWziEQB7DruHz6
-	NSy2CHQePL93xA4l1NKFTYjaI1kb3fc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3C3241747;
-	Fri, 19 Dec 2025 16:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC90C4CEF1;
-	Fri, 19 Dec 2025 16:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766161014;
-	bh=F/duNi/R+z4Zxeogcma6jsyj8uMoppVrtRXoOSW/Mnw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dr1njzt/ZA2YkMrI9vlpvAk58EeOXzfZgvm82fooWsxvAjI+WLQL7Q/izIntoUvci
-	 lNYwSN6zJDeOAv7Py5/fvtKwuZt6c2r6QNzKrLsZia6iFqr8ljf+27wmsA5sQxOs6C
-	 NLuL6dY8TCD75VnCUFjGlNOmAgKtpE7NrmheisGdmSORBdfWQXvrwt02aM4URw2mmn
-	 cKZVwFvtZcBGtj/TYUN05rtShkZUV5gWS9VMqCZm0z665W4wfFZKeO8C4ZqI5hJBmB
-	 aNNcdeMS86UdNRfi3hcsDCaqTY/hITk5Gev5USZjW4RHdd+QAmsh8MnJGwlJmyb3a9
-	 fJ9AM8CkZhLuA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-mm@kvack.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org
-Subject: [PATCH 4/4] mm: remove ARCH_NEEDS_KMAP_HIGH_GET
-Date: Fri, 19 Dec 2025 17:15:59 +0100
-Message-Id: <20251219161559.556737-5-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251219161559.556737-1-arnd@kernel.org>
-References: <20251219161559.556737-1-arnd@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SCOGkH/6j3QWcghM8uzQeZPaIiWRAWQlI3w6LEHKRyM=;
+	b=kOusxKC+RWFT9KiBhY8abOEZT2myDy0IP+4Htk3OWqaRoHUMJkA7ZYWSS6vejGcxrQijT/
+	Kfy4cQ4K/uWEPctE4wxLCiWnhFPtroaU5BBGXLEfQObuacYNq/NQ3veqsCMXnvPbH7QEJ0
+	bsAil3ni3h8wFvYlLdsmAxNxAob8Scs=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXt4j3NmNzJ467y;
+	Sat, 20 Dec 2025 00:18:29 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4D02B40539;
+	Sat, 20 Dec 2025 00:19:02 +0800 (CST)
+Received: from [10.123.123.67] (10.123.123.67) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 19 Dec 2025 19:18:58 +0300
+Message-ID: <9822c658-c2f0-4b1c-9eef-9ffa865e44f7@h-partners.com>
+Date: Fri, 19 Dec 2025 19:18:53 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C2D381C0014
-X-Stat-Signature: frgw8w1uc6oep5u8ae1g56i4gw5pgmxx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] mm: implement page refcount locking via dedicated
+ bit
+To: Kiryl Shutsemau <kirill@shutemov.name>
+CC: <guohanjun@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<weiyongjun1@huawei.com>, <yusongping@huawei.com>, <leijitang@huawei.com>,
+	<artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<alexander.grubnikov@huawei.com>, <gorbunov.ivan@h-partners.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ziy@nvidia.com>,
+	<harry.yoo@oracle.com>, <willy@infradead.org>, <yuzhao@google.com>,
+	<baolin.wang@linux.alibaba.com>, <muchun.song@linux.dev>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <81e3c45f49bdac231e831ec7ba09ef42fbb77930.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <iv7m5rmuwssltl6yzwuop3ry5s4l653lykyvrmmy6qdbyyuoew@th5xuev3mwus>
+Content-Language: en-US
+From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+In-Reply-To: <iv7m5rmuwssltl6yzwuop3ry5s4l653lykyvrmmy6qdbyyuoew@th5xuev3mwus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.67]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766161015-512682
-X-HE-Meta: U2FsdGVkX18Ixc2xCtbG0MoM5YFQerj5G8IEGXro6j3lKxWPbk+o5L1EjyizwmQkm3fFnVYN7QqxbeN/yekCi/wqmgEzA2TqmDCPUWUuqzxrM+qDoIuticQrU4I4P4ZorGv8K8vtlfKbYVd/v21VaIqrgO8R2SJR1jyHMcgPu/TfHnXUE6Cr2y/nx7adttxZRzIx+iKs+nYrUTa3xjOnooi/3+CGgl6petaKEajr9f1JBRtVOFa0HN4+9IkP/r9TDUOoeNNE29xPQ7NlDpp7NU3RsE+Lgh+BLVNwxflWDSgpwyOKwSxfbtgPS0iQmj/YFLilZ/OTOtLzkhTz9Jy09PjmALrhVkjAe5JNSvEmKjpW/bJy/PcJCYdwugYsyltXdUCvtZ02pas9dNUCaHx5W7/rOijDYw9hd5MWA/w7BVmn0+rMiUkB2qsWqmEVAZs1td+UTwWoQY0MBCfwkw/KoySTMtlTTjC38CIbbIrBjyz75S0FymjsRK3pwqUwhwL768i5/higxI6ODkJh8eM2zpBjssMHJacyDV32kbSr9J0lamNrlP33tDBzMThTscHtpSd6DOdIanF2p2paksMqiQEu91eJxmQ/iQc4QqYKmiuvMlTNOESEzqd88UzZ+J6HIQNrnogWSwp26lj7ESD65or5hOa9bE+0Zix6t0u8iFUa1TY2si3/OGbj8Q7yjmlx/7fNyqKXT1fLzvIlsHgQiYJG2+qd8C7fHCCFsSZvY+ish9aFjHWOvEmuIfz+ExM3/uKWIdya7OxkPS5KHngQ0FyP3miDS6KbGOjo5RWnwK2+uqIcaiGfBIugV+0cuJZHRrRwgwEEwzmsM5yjBpeEdq6SKcNM3O/0gi/xLZil+Pxo7FjfKstvvNv8T/GZXapDfL6SsiuEYkd5v2J6d1gB6Fr9eM/5g6l83xSJtJRjuEyHsDTLQyjti+aMoMf6Ua04AH9G8GUo7vIcZ/8ABdq
- WIvSz+Ur
- Ko3PA3niglSi+uAwBnjGyLe50ED4hLQ3EGRJATHEWD3mtxW0613lzyepJlo0QNQrT1WPtDJ5u3WIwiMQKYJZGKE+pvwNuIDSWY8dWJIXuG3/vUyY8pHAreVltmXBfSCTNqK9kRJTFYnoV+WJFZpADo2nRUHVjks3FjEOKxItWe3t9rtGqykzrpUQHw86s1YNoxwU3GM5so6flc1yQF/xO/9mL4+YdAfsSl3VBYpGB8KnRHdz/6uqtmLrc6IEmJedHd1FF
+X-Rspamd-Queue-Id: 0700C4000A
+X-Rspamd-Server: rspam10
+X-Stat-Signature: t4iutz6jmtpu5yt5zebmqcx3q16neu5a
+X-HE-Tag: 1766161145-991175
+X-HE-Meta: U2FsdGVkX1+LGIZsDKPpkWlSSr8C8Er4zXd4OwgfrBEPVPjXqHYTl/crYYtvRTkDe8jVVIAS4V5drbKFDf+3ECnHHwmD1uFl6jKAp/xO8VIysatqKEdmxEsYdMDzsNJOjFMgVwp1WNT2MG8nX8n8oQA9pDPviQs0iNO5imTE0dAGbgbuVCa4yZ9V19Z9Z3snukj0yQG+P7E45PE1uTu4hICvQL29kxUt6tN+S88XeRDipl0pgTbqj5G63KBJ8LjJJWttiOp/IV98LnPCue4rk7kxPFfSTmpYO5O/zRa/q0H5jHXvysZ1Rf7jK2f7hT4r+ONXYm4iRZSE0KYSJEVNEBWHDXoWsFENEtHPIa2WSQtmq/JSZOi/sWD6sOoLtGgJWJCfigXiMRajZjcvCVanycgGYfdU5qQlHqAhz7wK0rpggY4jsKrKP6QEoDVBGKlS7rvIR/PJ3RmD3JIlGb7qHceM75H6R3F+4suDOyF4HJb2zNs2A4D76cQsxAkMegQ9b8gO/L6cVPks+3XeO5PMaVRQHLxOOKlyoJpJ11aFLNt/uq6ou2+pzKOllslzk2yzoePzm1djaxLLFSbnN6kMKLUsXk8aGDv0proM/PmGzXyWcQzeXJ/+g9ITXqcIHZWAZPfN6qYBTnMdAUceIGCuAMCON6PFNxGDoMGKYn6/+OMXbx22qlzqI7yzQ0cE7Lo9qKXCESg5WXQkguZLU90H4Ug6GHp+DqTv5S3c5eO1UnETwn4NNCu+/7x4XveKs24ZLlkQatjkcLJnLmbTZJiqRlzNaBggr3O8rIIJwNBuvl1yWIzRDhaZ6LgE/z/yeJ9TaWVCMU+FPxCobjnCsL/JQMUVZWpcT51BVUG+3UxGa5BS2zUoFBwiBEgP7P7TjkYfhqXWXjez1YiZpqi8KAs70T+WkwwaZOgZELCu0S0GNGGnZO2iffmnYhpafjeypb7xJ3cpWt28H45PnwdnqBh
+ TBI1eiPQ
+ yiPu/SZ2qNDfgPvwXc1VHJkRtAX0OvEFD/4pQpm8rO2WjJ63ik29Lnv4bSdiafPObUH2hQVuPRHvji6VCz1yoC7LDRyHFrdkFKMsZEoYPp4CvrHQiHSea0hk9rIml/9ZTzOeSL8AbXXZS7XYljrVw5ZwhLw7GerMHprU2an1uq7WbW84d9YFVRWoPxVl4yeFMuF1VK9YAOMHgrZWSb25KTidsSYFI1wjaU9+p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,219 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 12/19/2025 5:50 PM, Kiryl Shutsemau wrote:
+> On Fri, Dec 19, 2025 at 12:46:39PM +0000, Gladyshev Ilya wrote:
+>> The current atomic-based page refcount implementation treats zero
+>> counter as dead and requires a compare-and-swap loop in folio_try_get()
+>> to prevent incrementing a dead refcount. This CAS loop acts as a
+>> serialization point and can become a significant bottleneck during
+>> high-frequency file read operations.
+>>
+>> This patch introduces FOLIO_LOCKED_BIT to distinguish between a
+> 
+> s/FOLIO_LOCKED_BIT/PAGEREF_LOCKED_BIT/
+Ack, thanks
 
-Arm has stopped setting ARCH_NEEDS_KMAP_HIGH_GET, so this
-is handled using the same wrappers across all architectures
-now, which leaves room for simplification.
+>> (temporary) zero refcount and a locked (dead/frozen) state. Because now
+>> incrementing counter doesn't affect it's locked/unlocked state, it is
+>> possible to use an optimistic atomic_fetch_add() in
+>> page_ref_add_unless_zero() that operates independently of the locked bit.
+>> The locked state is handled after the increment attempt, eliminating the
+>> need for the CAS loop.
+> 
+> I don't think I follow.
+> 
+> Your trick with the PAGEREF_LOCKED_BIT helps with serialization against
+> page_ref_freeze(), but I don't think it does anything to serialize
+> against freeing the page under you.
+> 
+> Like, if the page in the process of freeing, page allocator sets its
+> refcount to zero and your version of page_ref_add_unless_zero()
+> successfully acquirees reference for the freed page.
+> 
+> How is it safe?
 
-Replace lock_kmap()/unlock_kmap() with open-coded spinlocks
-and drop the now empty arch_kmap_local_high_get() and
-kmap_high_unmap_local() helpers.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- mm/highmem.c | 100 ++++++---------------------------------------------
- 1 file changed, 10 insertions(+), 90 deletions(-)
-
-diff --git a/mm/highmem.c b/mm/highmem.c
-index b5c8e4c2d5d4..bdeec56471c9 100644
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -143,25 +143,6 @@ static  __cacheline_aligned_in_smp DEFINE_SPINLOCK(kmap_lock);
- 
- pte_t *pkmap_page_table;
- 
--/*
-- * Most architectures have no use for kmap_high_get(), so let's abstract
-- * the disabling of IRQ out of the locking in that case to save on a
-- * potential useless overhead.
-- */
--#ifdef ARCH_NEEDS_KMAP_HIGH_GET
--#define lock_kmap()             spin_lock_irq(&kmap_lock)
--#define unlock_kmap()           spin_unlock_irq(&kmap_lock)
--#define lock_kmap_any(flags)    spin_lock_irqsave(&kmap_lock, flags)
--#define unlock_kmap_any(flags)  spin_unlock_irqrestore(&kmap_lock, flags)
--#else
--#define lock_kmap()             spin_lock(&kmap_lock)
--#define unlock_kmap()           spin_unlock(&kmap_lock)
--#define lock_kmap_any(flags)    \
--		do { spin_lock(&kmap_lock); (void)(flags); } while (0)
--#define unlock_kmap_any(flags)  \
--		do { spin_unlock(&kmap_lock); (void)(flags); } while (0)
--#endif
--
- struct page *__kmap_to_page(void *vaddr)
- {
- 	unsigned long base = (unsigned long) vaddr & PAGE_MASK;
-@@ -237,9 +218,9 @@ static void flush_all_zero_pkmaps(void)
- 
- void __kmap_flush_unused(void)
- {
--	lock_kmap();
-+	spin_lock(&kmap_lock);
- 	flush_all_zero_pkmaps();
--	unlock_kmap();
-+	spin_unlock(&kmap_lock);
- }
- 
- static inline unsigned long map_new_virtual(struct page *page)
-@@ -273,10 +254,10 @@ static inline unsigned long map_new_virtual(struct page *page)
- 
- 			__set_current_state(TASK_UNINTERRUPTIBLE);
- 			add_wait_queue(pkmap_map_wait, &wait);
--			unlock_kmap();
-+			spin_unlock(&kmap_lock);
- 			schedule();
- 			remove_wait_queue(pkmap_map_wait, &wait);
--			lock_kmap();
-+			spin_lock(&kmap_lock);
- 
- 			/* Somebody else might have mapped it while we slept */
- 			if (page_address(page))
-@@ -312,60 +293,32 @@ void *kmap_high(struct page *page)
- 	 * For highmem pages, we can't trust "virtual" until
- 	 * after we have the lock.
- 	 */
--	lock_kmap();
-+	spin_lock(&kmap_lock);
- 	vaddr = (unsigned long)page_address(page);
- 	if (!vaddr)
- 		vaddr = map_new_virtual(page);
- 	pkmap_count[PKMAP_NR(vaddr)]++;
- 	BUG_ON(pkmap_count[PKMAP_NR(vaddr)] < 2);
--	unlock_kmap();
-+	spin_unlock(&kmap_lock);
- 	return (void *) vaddr;
- }
- EXPORT_SYMBOL(kmap_high);
- 
--#ifdef ARCH_NEEDS_KMAP_HIGH_GET
--/**
-- * kmap_high_get - pin a highmem page into memory
-- * @page: &struct page to pin
-- *
-- * Returns the page's current virtual memory address, or NULL if no mapping
-- * exists.  If and only if a non null address is returned then a
-- * matching call to kunmap_high() is necessary.
-- *
-- * This can be called from any context.
-- */
--void *kmap_high_get(const struct page *page)
--{
--	unsigned long vaddr, flags;
--
--	lock_kmap_any(flags);
--	vaddr = (unsigned long)page_address(page);
--	if (vaddr) {
--		BUG_ON(pkmap_count[PKMAP_NR(vaddr)] < 1);
--		pkmap_count[PKMAP_NR(vaddr)]++;
--	}
--	unlock_kmap_any(flags);
--	return (void *) vaddr;
--}
--#endif
--
- /**
-  * kunmap_high - unmap a highmem page into memory
-  * @page: &struct page to unmap
-  *
-- * If ARCH_NEEDS_KMAP_HIGH_GET is not defined then this may be called
-- * only from user context.
-+ * This may be called only from user context.
-  */
- void kunmap_high(const struct page *page)
- {
- 	unsigned long vaddr;
- 	unsigned long nr;
--	unsigned long flags;
- 	int need_wakeup;
- 	unsigned int color = get_pkmap_color(page);
- 	wait_queue_head_t *pkmap_map_wait;
- 
--	lock_kmap_any(flags);
-+	spin_lock(&kmap_lock);
- 	vaddr = (unsigned long)page_address(page);
- 	BUG_ON(!vaddr);
- 	nr = PKMAP_NR(vaddr);
-@@ -392,7 +345,7 @@ void kunmap_high(const struct page *page)
- 		pkmap_map_wait = get_pkmap_wait_queue_head(color);
- 		need_wakeup = waitqueue_active(pkmap_map_wait);
- 	}
--	unlock_kmap_any(flags);
-+	spin_unlock(&kmap_lock);
- 
- 	/* do wake-up, if needed, race-free outside of the spin lock */
- 	if (need_wakeup)
-@@ -507,30 +460,11 @@ static inline void kmap_local_idx_pop(void)
- #define arch_kmap_local_unmap_idx(idx, vaddr)	kmap_local_calc_idx(idx)
- #endif
- 
--#ifndef arch_kmap_local_high_get
--static inline void *arch_kmap_local_high_get(const struct page *page)
--{
--	return NULL;
--}
--#endif
--
- #ifndef arch_kmap_local_set_pte
- #define arch_kmap_local_set_pte(mm, vaddr, ptep, ptev)	\
- 	set_pte_at(mm, vaddr, ptep, ptev)
- #endif
- 
--/* Unmap a local mapping which was obtained by kmap_high_get() */
--static inline bool kmap_high_unmap_local(unsigned long vaddr)
--{
--#ifdef ARCH_NEEDS_KMAP_HIGH_GET
--	if (vaddr >= PKMAP_ADDR(0) && vaddr < PKMAP_ADDR(LAST_PKMAP)) {
--		kunmap_high(pte_page(ptep_get(&pkmap_page_table[PKMAP_NR(vaddr)])));
--		return true;
--	}
--#endif
--	return false;
--}
--
- static pte_t *__kmap_pte;
- 
- static pte_t *kmap_get_pte(unsigned long vaddr, int idx)
-@@ -574,8 +508,6 @@ EXPORT_SYMBOL_GPL(__kmap_local_pfn_prot);
- 
- void *__kmap_local_page_prot(const struct page *page, pgprot_t prot)
- {
--	void *kmap;
--
- 	/*
- 	 * To broaden the usage of the actual kmap_local() machinery always map
- 	 * pages when debugging is enabled and the architecture has no problems
-@@ -584,11 +516,6 @@ void *__kmap_local_page_prot(const struct page *page, pgprot_t prot)
- 	if (!IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) && !PageHighMem(page))
- 		return page_address(page);
- 
--	/* Try kmap_high_get() if architecture has it enabled */
--	kmap = arch_kmap_local_high_get(page);
--	if (kmap)
--		return kmap;
--
- 	return __kmap_local_pfn_prot(page_to_pfn(page), prot);
- }
- EXPORT_SYMBOL(__kmap_local_page_prot);
-@@ -606,14 +533,7 @@ void kunmap_local_indexed(const void *vaddr)
- 			WARN_ON_ONCE(1);
- 			return;
- 		}
--		/*
--		 * Handle mappings which were obtained by kmap_high_get()
--		 * first as the virtual address of such mappings is below
--		 * PAGE_OFFSET. Warn for all other addresses which are in
--		 * the user space part of the virtual address space.
--		 */
--		if (!kmap_high_unmap_local(addr))
--			WARN_ON_ONCE(addr < PAGE_OFFSET);
-+		WARN_ON_ONCE(addr < PAGE_OFFSET);
- 		return;
- 	}
- 
--- 
-2.39.5
-
+Page is freed only after a successful page_ref_dec_and_test() call, 
+which will set LOCKED_BIT. This bit will persist until set_page_count(1) 
+is called somewhere in the allocation path [alloc_pages()], and 
+effectively block any "use after free" users.
 
