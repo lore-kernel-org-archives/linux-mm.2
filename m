@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7CCD7878F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:47:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB999D7878F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:47:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 376836B00C4; Fri, 19 Dec 2025 10:47:14 -0500 (EST)
+	id 1BB3F6B00C5; Fri, 19 Dec 2025 10:47:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32A686B00C5; Fri, 19 Dec 2025 10:47:14 -0500 (EST)
+	id 179336B00C7; Fri, 19 Dec 2025 10:47:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22CA66B00C6; Fri, 19 Dec 2025 10:47:14 -0500 (EST)
+	id 0A6886B00C8; Fri, 19 Dec 2025 10:47:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 107276B00C4
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:47:14 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD723C0472
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:13 +0000 (UTC)
-X-FDA: 84236649546.27.C4F46BB
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 01E8D2000E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TqGu9kgx;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EA8946B00C5
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:47:17 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8D6B1369ED
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:17 +0000 (UTC)
+X-FDA: 84236649714.10.38DF570
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AA90B140003
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t2XdKkqb;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3fnNFaQUKCMsv2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fnNFaQUKCMsv2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159232; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of 3gnNFaQUKCM8z6GzC19916z.x97638FI-775Gvx5.9C1@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3gnNFaQUKCM8z6GzC19916z.x97638FI-775Gvx5.9C1@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159235; a=rsa-sha256;
 	cv=none;
-	b=OB3t0rU8zvE4IximiEnjtSR05CVCore8npyf749/uQ7CJn4pxhaqtSdzENNE5LRa2V54ic
-	UG7pZsPwQAxEuuW3npzaW7dE69/NwZFqxpSgKIAwZRFvFuuVU+xzXrxHa3UEeojgYEfD2l
-	YbsObNt9cnR8jbqK5ajCECZ7adpG9WY=
+	b=gwPo2TsbI1HygBJfNsBD+afVLq6XgvsZDtKlXqLwYUYTE8Dt9CSH0PrtKQ8aNUVjoWrtyt
+	rsVAbyYfzbP9kOgaADWCUzd8a93FHPSfsmp9oPMrwjif6mr9K9YUKrkaJG8CzumVlvywfS
+	CYCCBIC2aZiZHvwTwncuc3+wbfFYhao=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TqGu9kgx;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t2XdKkqb;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3fnNFaQUKCMsv2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fnNFaQUKCMsv2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com
+	spf=pass (imf09.hostedemail.com: domain of 3gnNFaQUKCM8z6GzC19916z.x97638FI-775Gvx5.9C1@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3gnNFaQUKCM8z6GzC19916z.x97638FI-775Gvx5.9C1@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159232;
+	s=arc-20220608; t=1766159235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J3sgEnhMWMLOYj1/OofGWKavVFtW6YP1ndiLQ0rOu/8=;
-	b=HjtNJMYREiqX5lUEkPzboouQBVnPwNn5EGrHYpQXjHyDzMHFJ+PAdfzoP8a4EQKQ4dZV3M
-	Xugjbuxp6V4niai/lzmUbys2/seo+IesncQehIl8Cs1nQHrhQaL7/QUvW1ptNR2BsD4FlY
-	zPcQzMDC0QPuczK2G4QUvy91V9tb1rM=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47a97b785bdso13262625e9.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:47:11 -0800 (PST)
+	bh=Oz8u5mnRRtKrmwrW53CCOIRd71oba2M2eRROatW6JBk=;
+	b=30R9/43ZKFZRcODt0TwoUvPEGy/KsF/Rscij0YOMSDHPGjZ3MHxxdzmRDSwICMOQ/ukggx
+	JX/zHa/XI/mJHBUTvAGC8G3e8aNIaSHyz2TyAk9gtDdif1CbymTqwraFvaMDWRnyeNePGK
+	yUlzvlrDQdWZ201aHgfRkhG8q/wmkQY=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d1622509eso9288305e9.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:47:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159230; x=1766764030; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159234; x=1766764034; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J3sgEnhMWMLOYj1/OofGWKavVFtW6YP1ndiLQ0rOu/8=;
-        b=TqGu9kgx4VWdL94Ce4/3003y+KffRCL5cEaSowkvc1L+mWAWryaqLE6IZbdyrBk1ni
-         UUwKRUtQY3ukNH/4Vm583QXNZELcED6y1Zimf5x9kr/8n+HpmeupmhNCS/tkLsBSWJ+A
-         JPc+wZPIwr4sulyDdm/X28dxKwMmyaFnFAjyFkttQmxBx2bosS70sLywChNabwq3Zf4H
-         VIjfcAyqkX+PTjLMNIsWPBHcPbRNgPtrjYnnVwkgvZP4lTlLWkHYVpyX2nrNbeC6BX1N
-         HDaBMgsOUj5cFf3pXYUQ39EjKlgdXVUcPvOV77UZybFOXWwYiRF8/T7IyhJmejhRKrdV
-         p+WQ==
+        bh=Oz8u5mnRRtKrmwrW53CCOIRd71oba2M2eRROatW6JBk=;
+        b=t2XdKkqb4995nQ1PJuv56ppJ68wLJuxASQeYyaNNXKs9j8hDQwIBr7+jrn2ZtGLqlf
+         uIcy6OfnouqeTaWcYVZD6rA3+svPSz+a94K1UEQoQnUQ2PrzHc0W0Chce2lnYLpuF4tj
+         uxmbo22DNkvsjbDs4jb0gjNPWxOq1UZtxplMIFkzcZbY7x/POs2NzT4jMcwB2CQpCmnd
+         3fYdDmaFQTfzz2f8qHreW0QXVxGx06iD5Cxph7ECZlhlpvZu+JdF+jqeRcEhuCtjTeon
+         09jSoWhtNIfPuGGqWzo+pXmRZZoVdj5X5MR80oJo9HrDuaucI74drVQ36AZuHoj33ygi
+         gowQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159230; x=1766764030;
+        d=1e100.net; s=20230601; t=1766159234; x=1766764034;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J3sgEnhMWMLOYj1/OofGWKavVFtW6YP1ndiLQ0rOu/8=;
-        b=h/+rd2jEyTewpyQsgiQzaeORwhBljGdU4NWUoGOn69+y1+UwlUByzRfwkG52N3o4Mk
-         AJtdHbetfC9jqtGsj2UQCGAFq1+cxvamUFe5cGbBxn6qkSraxnCuITsyxAshghYgesSA
-         FuFzKW5j0aXi7DLXE9EHOHs5V/lt5mO0foZVk/HEZ9y17nFJZiWMADtIHMB2iM3ZKmn1
-         vMjXYfeoi84kZofuwhJmYIVZvRQPDO4ocL2LPieSGUlQaTye7pUjAmQCF9laeoSN1T15
-         CltNGYBS8Qhzk7bC2TNFg4fzdTRkdlx6GGsqbg+RXGD+fR5bhIuz6w8PSTT67HsT8jYa
-         u1uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5nui9xhfP4m7woTAmu4NkSkz/YFm260uOJFgiCrUPM4yUz4uxy6m8CkU0169AiIo5BC0jzxHPLg==@kvack.org
-X-Gm-Message-State: AOJu0YybhbDvdUDKWHnlWaLD3QN3yIfcGSnCq4ruMwrE8npZ9R+oSaqD
-	g1GEBa/0UIV0nIeG607iwbMMvKtV5sK5x/3kYiIe2KlvviZgt3zcpgpgbtHGfo1zuF8nmjrsVHE
-	xow==
-X-Google-Smtp-Source: AGHT+IG6Z5Tj65gpnRG9ZfygNEOWxPYymEwwgB1rgfvjvus65EDRt+hfREOXwzDTtwSRis3WLEZWS8/1FQ==
-X-Received: from wmcq18.prod.google.com ([2002:a05:600c:c112:b0:47b:e2a9:2bd3])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:46d1:b0:47a:8088:439c
- with SMTP id 5b1f17b1804b1-47d1959d6a0mr26330495e9.35.1766159230294; Fri, 19
- Dec 2025 07:47:10 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:40:15 +0100
+        bh=Oz8u5mnRRtKrmwrW53CCOIRd71oba2M2eRROatW6JBk=;
+        b=nLGdDH2Qh7U5sWVkwdxFBk8wNG5UH/qwxbSkv+a2F6K32GXnRKxfQkpOXYzBZEVkZF
+         7NZMYcDc7E0XahS90aRUxj+Z+EGWm+9PUiDSttiFGDHy3JlaV/K3y0lLBZ+Vo5urlJSj
+         Wi/rzRb9D6y/FUC6cY5avpJRSOZyeAwLH1af4ooqttFyKhxMvySlC6KQ0J+5Ow6BWdYA
+         Os4p5Jwfj4aRBwvFRz5/vny0C39tN9SsZb+i4jVNns3wkrX2va1Wb7D4UWhxJxHojOTD
+         0wScd+rX2cEolDBcR6bhOf8FtZ7ygrFgUYoBYTP1f6O5gJCX49iDsuWXUEw2XvUBh2SF
+         EFDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVV25AqRYoRmuer/ngnfxk4WwZFU6HmSQu8RHB4l52UywqZBJUty27PKlPIMWczzVRuv2q0qj2wvA==@kvack.org
+X-Gm-Message-State: AOJu0YwLrVStlnWQjhlugL7aLanWeBA0hJqaVIuo7llv1DSq1v/1wIYE
+	H5rOIdyRGyLtmnJnoLH39nN/DZEJ6Ul2YTJOoYDMSw+KTgHFXNBZdiuOaemcLHBzsfuVr21rxvU
+	Y6g==
+X-Google-Smtp-Source: AGHT+IEwqTwwND1oOGnUGB6Esw6SWTC15eB9YSENtXjOOBgQW9BC3hhYUlWG2oQBl8kMDLj0dbJpcjcvdQ==
+X-Received: from wmdd3.prod.google.com ([2002:a05:600c:a203:b0:477:54e1:e29e])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c16f:b0:47a:810f:1d06
+ with SMTP id 5b1f17b1804b1-47d1953bb06mr26654055e9.4.1766159234094; Fri, 19
+ Dec 2025 07:47:14 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:40:16 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-27-elver@google.com>
-Subject: [PATCH v5 26/36] compiler: Let data_race() imply disabled context analysis
+Message-ID: <20251219154418.3592607-28-elver@google.com>
+Subject: [PATCH v5 27/36] MAINTAINERS: Add entry for Context Analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 01E8D2000E
-X-Stat-Signature: 75b3xcctcz68saxghjhrj8meb53t3j61
+X-Rspamd-Queue-Id: AA90B140003
+X-Stat-Signature: 87n55ihmugduu3rmyh4dqwg3daatf9a6
 X-Rspam-User: 
-X-HE-Tag: 1766159231-809351
-X-HE-Meta: U2FsdGVkX19VpFy2x1wnw+gJmlgUt+abLPa4gEp+NGtc4gXWT96OJzJi0L1jlkk3yL/LByY674ICUmV43uOyQrnlNQ3DuysZcPZOliHwg8uwCQToEldKEaZkt657wtUWADGEPQDVJ4yO0i9pHDaDYZLzfE8hW0UDlNsY9Ug5eU66D6w40eoNyzZZhsmKAz37M0i4DIDTkl5r7ZQAvq3l2+i5HvkScaemq2eSz7StJTy1zdWhuF+MnPiw50+ayB6uk0djUrgkdEUxb7pEALGaL6tJ4s2Sp7YWtxV3MaMM1gv5eOEdzHsnyUHBAlIfvXdD6L4S9TrKMWMutu8qUkcXBlw1VKG450lHDo80gK3dtigBjeHXLuqiZ1lzDNUHY6ZIYsMaOoh2OmvRWiwSO6bBuElUl6NlFyEqTXfAXIs797EaMTH6cjPG54Jlg72R0Vr4JwY63GNLvhNdEuQOBuwM2NWugdb9Y+KrRjr8aTysr/yRAW55HsGfM4Hq+rUZbPNv5OyQlfeOAQMeUzq0k86T0+0+n86iXITIuX2VAZK0hR35+BGQ6JhNPA2ojQ1d9yqPMMrMZanWJOf+NiIQPvemNfrnhKZ1cKWDnErVLR6Dz9HuFLZN8jRs0ln5hWXIwTG1dNTY/uPdQ3RI2TXBSuEuzcJVedsWn4GwGaOZh0mKalNAuSQ1SfUpkA+GiwnNKtwyvbKjOsg58MRK+e7VFQeoPnCAW+uGsqV9NDCiYOA32GeP8hhHvcaY/byI5uHnjuxYwOVS0m+Y6+i35JFJUUD30L7gJZqjHnY6WEaDeuGPhy7mK8KUjWxHVSYs78LS5D5Q3qCaECNy8na6iqJp9Im+4TBHIMRhsrv+kjaUBKhA6rlE20K1zdEZktuYYccWgsAUmAioGNtGaEoTdxPaLXbU3tHnE5aSKommJnQSCguqY1Srqe9n4p5udqa5vn9H4w6sjS7ToWmS7vV6jkKhLYO
- gWuXO2FF
- RKZu0zU9pmIIN4c+bOA0rKsn0jpxU88k48mGtjk4YvCiWxnkIwzn5NXmifjJ9dno38LYaWR2fBR35j5r/9Bksl6SNLoqGvUWHFX3MIHXd4WHtpW8uo9EmVHkcN6XAi7J0DPhGF+AiH7XD7kAJsnCfyZq9klcmFtkz5EvOuve92dHL887qNpZYKOtcP8/LD0E5SrJgOoPT6d90/fNCOqsTOhfT+lmGGiYPX3m/5zBo+NwRjN6ZvWv19MxqnCFdmF4Xerw1hf73u0/CtUXoKW1aUQr1fHvYHefID2WvZtvxs2OnEh5QbWTLBvV1BkypBjQrbCaGr3xjb5M6uD1kbDpvc125Sk0yRojIDFPymH5zz+QO/vJrAY046lNJZu48mIqNALtqI9I1DAE6o3n0fn3sQlZFgp3VoFcyaBxzjbiOTf44WlHHF3eVxOypwyto4uNoyk9ZO5WCXVI8I4A1yISCLBe/+zyiOWs7wOIWHt4ipdMAe1xEbg0urQUT9rteALxe1wZYUu1Wfw7RvuKqioL0WqL7kHg0bKQ/dzMinD86vgkUDua04lGddhepd+YyL+jRttH7ot+N4Dfr5cXNBw2r4VDkjmlSW653LmmzW266bLOPSqOl47dXez7CEfylweFQKg7OtF6kgOuvENEfv8u1OC7YBzkre0nGOi8ovojE1XtwjAdLias2ByxMXGoTycz4FKlupEV/Kol646uc50ks4VWDmWBCRfmPplcALuO80Wo2oWrUAq6Mo2clEA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766159235-543488
+X-HE-Meta: U2FsdGVkX1+uFhZYvDPSWQMqhEGRXf7iLlWjmPkqQo8EjRZbSc1PXbN+UIuPvSgIlEyzNKGlS8HDR/Wx1b3kHa0Kg5VOvOwsJc/UqrTrV6NhH48x3rYLNky4Uy9hEn45CR5uI9AQ0LabPRzze8Vi+CLyXQym2ckGTIVfy2CSaggpODbdE1RxbaQDKmKKCInLzaSkM4F/6EJLKu1p7uQG+dDnVrcTkoIQpiVs0p5gX2HfFDjAF2+zcYFU+3GhOa//XJ2zvBcjR04M8ra+yX8ndUmWZchw1IyP8w/YHtyZFtDlwXWUbEr39g4npZGSkJtT3h1XPkOKoQ+BSHFYLn8iypkS43hKTbjptb4mi9WIvTbDSseD6VceYZq8v0sqd4K1/fIrR8/EOrDsCEvIZ+k21S7+X/ac/prnhAUBRimmrIPEG15ylJEuIZDS5x8JI3RE+61xtsuwO66uLxOLJYBcmuffpMiEvqGinWRrNRkG0VMSckwVdO3BG6VwSHIWIxP8BotIh7+rk3Jv+PvxKjvh/pu+UBsTesxXTxddGfBgSwStl6UndZHVk+wcTNZDLVmO+264qJ+D2/l0CLtPmeSUFY8CRLoicbX+jkd1MB1kFwjvtyMwAbeE74LFYAtzUQuTbiKRlE0k8QG15x0U3dTMNejA/NYpgLOKnuXT4ZtCjdfxNTqdyucAg1/K+vaddlXcynzqg11bt9h3FJrx18etTB99TtOsgxdGUp6lNMR+faSMQ1rh7xkk99aSjW3PusSWm36jND20kojCDL5mn4612rC5IgSHJTcyAGjBFRO2p4NXdYFClfNuS8WJpfCNUAHFo5AO4OgMNajHKRkypX8XzKDvPig7KGpluhKBI6C07JkDcCoVgLgwNvTz+vD8gLpUeHQ3YtldtXakN1FRu4NBkW+nM2FsMi2GOMseE1hu8/62MKJBoNsWg3UUhPAwRTOLQMhW6NCVKKOrGO4GBWF
+ II4BKo7n
+ FSnW88r6xfyfbMVNkcN0WKfWOFBUDF84pIqscXhVuEZ0yj2BFsyvB6+PqBcgliOgXiPCD5dbg2FemDItrQwp9s8HTORYEi2a7DFG3zDv13kuBWYvUn/FWzA2PVPEmWFVC/No5YbPmvcqKmqzpRiy1powqr4aItxtTSEukjoHvqfUCShRnO7wG6RpRGwao2bzx9sPspA32kGoGiqCyilCxiPFLGouachldDAxD8DHXpAr9C5GSqwnKXKYqM7P60MNHO1SoKHyb7SEoBWsFdGjFXkYWzCunhKruvyzxTt5aTJaHTvqWsavd/KGKfEoFwx8rBXUfxcTvlLp6YmkUMYHaL4sd3ed83b4T3pKzltZX3gQufvHYPXZVQN9rQUetLIfneqY8qkLXR78argqr7wUxYzuVvd/cDXCmcg6DNg62Y/+af3/GKScY3+vevayBh/ROJg2lQKMhWM8mYccCDHh2o/q2VW3k3f3lIB+P3Wmap4+8TUOXPfuN5iFhd3OuKW329lwlZPPxL7GBOZfqJUHLH/KXRyKQR1cT4V/D8dFBZiNFGcupDl/+il5wN+KHbD7S7ACmmoa/pixxlsEOHweNFptugPs7L3mvZpseHwbZ4lIGeMSoKyN+oVotzh13dWcRVAWul1xxaTPmDo/pFlouL8m62L6D6PJX68dvKgxH30VNOUeWUZOA4EvLN55uo3gmPc8/gI4pdw/xber+B10fBAwaoL0KsjrBXgH1UuLCDg+rc2RE7r623nROqJ2TAjWc/MXL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,54 +129,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Many patterns that involve data-racy accesses often deliberately ignore
-normal synchronization rules to avoid taking a lock.
-
-If we have a lock-guarded variable on which we do a lock-less data-racy
-access, rather than having to write context_unsafe(data_race(..)),
-simply make the data_race(..) macro imply context-unsafety. The
-data_race() macro already denotes the intent that something subtly
-unsafe is about to happen, so it should be clear enough as-is.
+Add entry for all new files added for Clang's context analysis.
 
 Signed-off-by: Marco Elver <elver@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
 v4:
 * Rename capability -> context analysis.
-
-v2:
-* New patch.
 ---
- include/linux/compiler.h    | 2 ++
- lib/test_context-analysis.c | 2 ++
- 2 files changed, 4 insertions(+)
+ MAINTAINERS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 04487c9bd751..110b28dfd1d1 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -190,7 +190,9 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
- #define data_race(expr)							\
- ({									\
- 	__kcsan_disable_current();					\
-+	disable_context_analysis();					\
- 	auto __v = (expr);						\
-+	enable_context_analysis();					\
- 	__kcsan_enable_current();					\
- 	__v;								\
- })
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
-index 2dc404456497..1c5a381461fc 100644
---- a/lib/test_context-analysis.c
-+++ b/lib/test_context-analysis.c
-@@ -92,6 +92,8 @@ static void __used test_raw_spinlock_trylock_extra(struct test_raw_spinlock_data
- {
- 	unsigned long flags;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b11839cba9d..2953b466107e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6132,6 +6132,17 @@ M:	Nelson Escobar <neescoba@cisco.com>
+ S:	Supported
+ F:	drivers/infiniband/hw/usnic/
  
-+	data_race(d->counter++); /* no warning */
++CLANG CONTEXT ANALYSIS
++M:	Marco Elver <elver@google.com>
++R:	Bart Van Assche <bvanassche@acm.org>
++L:	llvm@lists.linux.dev
++S:	Maintained
++F:	Documentation/dev-tools/context-analysis.rst
++F:	include/linux/compiler-context-analysis.h
++F:	lib/test_context-analysis.c
++F:	scripts/Makefile.context-analysis
++F:	scripts/context-analysis-suppression.txt
 +
- 	if (raw_spin_trylock_irq(&d->lock)) {
- 		d->counter++;
- 		raw_spin_unlock_irq(&d->lock);
+ CLANG CONTROL FLOW INTEGRITY SUPPORT
+ M:	Sami Tolvanen <samitolvanen@google.com>
+ M:	Kees Cook <kees@kernel.org>
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
