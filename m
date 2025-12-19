@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C336BD711CC
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D6AD711CC
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 02:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 355676B0095; Thu, 18 Dec 2025 20:58:38 -0500 (EST)
+	id C08966B0088; Thu, 18 Dec 2025 21:10:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E8926B0096; Thu, 18 Dec 2025 20:58:38 -0500 (EST)
+	id BB5776B0089; Thu, 18 Dec 2025 21:10:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F4AE6B0098; Thu, 18 Dec 2025 20:58:38 -0500 (EST)
+	id AE2DA6B008A; Thu, 18 Dec 2025 21:10:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AB636B0095
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:58:38 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B679814039B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:58:37 +0000 (UTC)
-X-FDA: 84234561474.09.1AB778F
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 22011140008
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:58:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pmCTAcXL;
-	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CD9A6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:10:10 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 422CC1364C1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:10:10 +0000 (UTC)
+X-FDA: 84234590580.28.4D53BA4
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 88406C0008
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:10:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bomkr5sk;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766109516;
+	s=arc-20220608; t=1766110208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQdgJ5EpKkLsM5Kk9PcaQQ6OLHn5Pe6OjvVecT6Mnh4=;
-	b=GaaUjmuSBBwngNnE6EfybO79EBew3jW93nKnx3EB5WD7zpg0Cx32L1qDQ1gZ4XAXE7OQjG
-	YLiFQrJBBuCu9kXTLhvDuCUtvVjf6g0FKS+jgFQa2Epk9ChbyjQ2Xq2GMTJeu4LVjd+X4F
-	ZXlDIUeg36REpGTJjKABsQZ6lYEVRlc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pmCTAcXL;
-	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766109516; a=rsa-sha256;
+	bh=XU/sltETz4db1d6NIyN/LIXo1b6za3STnrY0+ajqCb8=;
+	b=62MdvYvTiHqMorlNS7dpYTArbNxNsQzU52V4JJjW/rIrsgsZY7aJedAZ5NSefA2fdmixWk
+	yGsqwTs/sdqIRZ0TOWF89CxgxH8kRO468Uhg7/8GvZBStBTWXTezVarPnx+DR4pgxOWvXs
+	E4x5Q6H9QXfQZcdO3andcCdN+STWfDE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766110208; a=rsa-sha256;
 	cv=none;
-	b=pS+2RmCWA/yRnhJ7ZaXRqRplHpxPav6PQ7V+2UZ4J+VaGeJAgEG4ZNOs6rnKd/FmJita19
-	IGxn8z3iP66Esb5Q3kt2Qlh94DgXVWlFZI2oMhv2qbm2zXquAS7Gb5VFvKl3lKd9YDCFIi
-	R3t0+fyFyCkJMJyuWlz8/TgBHZclMPI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	b=QNRX4xjytGbjWHmeIcekOh+RWIrhtF3PCXsB3lYXOm5wuu60eX3YGJLB9bns4NcHc5aASU
+	7PJmK3V4JeP9pQ9reA5iDXCqaHxDQHT4JCG4YDqnU7FvsEL2lMCHViaJ5u0AtUS3gXqik9
+	i2wCzKP2IFx6ZdB/qMBomweR/wbZwis=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bomkr5sk;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 18 Dec 2025 18:09:50 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766109499;
+	t=1766110199;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qQdgJ5EpKkLsM5Kk9PcaQQ6OLHn5Pe6OjvVecT6Mnh4=;
-	b=pmCTAcXLYKihBkgCQMNV3HqiC9p2aTLFPd/YlGQ2bQ18mrslVJ2em/TbMnKHHJd5lukfXG
-	aiG3o3lmFbCP99qsZzUyINwZJQZscBymtLt4tHMlbxKIL/KAgve4/dpn8Q1SdumJ0ap9Li
-	w04mAMYAdHgm7zmM/xmRtRr80LHW29g=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: JP Kobryn <inwardvessel@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: [PATCH bpf-next v1 5/6] mm: introduce BPF kfunc to access memory events
-Date: Thu, 18 Dec 2025 17:57:49 -0800
-Message-ID: <20251219015750.23732-6-roman.gushchin@linux.dev>
-In-Reply-To: <20251219015750.23732-1-roman.gushchin@linux.dev>
-References: <20251219015750.23732-1-roman.gushchin@linux.dev>
+	bh=XU/sltETz4db1d6NIyN/LIXo1b6za3STnrY0+ajqCb8=;
+	b=bomkr5ske46dcXHXoPOJ77r8YbOhDox6UbCohl7xofxLl3s2EIboOt1KronjtFal1wVRXR
+	01z5ic3jRvUzKY6eJNDlVojgMovkW02GkCCudTHFvM+j1kduHbwCF8oHNdIysmtOW5bfV7
+	3zE1pyON8/35o35q8rr774DIdHh4IfU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 08/28] mm: memcontrol: prevent memory cgroup release
+ in get_mem_cgroup_from_folio()
+Message-ID: <ot5kji77yk6sqsjhe3fm4hufryovs7in4bivwu6xplqc4btar3@ngl5r7clogkr>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <29e5c116de15e55be082a544e3f24d8ddb6b3476.1765956025.git.zhengqi.arch@bytedance.com>
+ <aUMkYlK1KhtD5ky6@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUMkYlK1KhtD5ky6@cmpxchg.org>
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: bk16j3fmtdjkpj9bu4gd165d1agkeomq
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 88406C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 22011140008
-X-Stat-Signature: hsit7n3sec4rk14dggmbf8qo13s5d4wa
-X-HE-Tag: 1766109515-501646
-X-HE-Meta: U2FsdGVkX19+8Uk8tYRQxa68ChHDWcE5oluCe/PWeqFJApcOSdoNGrSITxg/aw0VUm0WClO2r9s8tkYcV5uynRijRnXyByN8a/dgBLx68AXYd7owE1QNYlr4XYMFRKGXTZTOtAa3i24FTmOd7jicU3JH+8D4dF9lt3fHz7UIvsmySLC+QPPFBDdZm5RjHp8/guwMvhNmcD4KQvJ3B/0Ejwf42LhMP6B4XaO1X1WRfUSMkGAOLeT3FbKSrVy0o158E+b5kg8zWgN4pInGwtECe17w3lzpOuNYg1x5dHq+andGyY1vaWy69vLqUEQGCLVtcoFLDrfOwe50YZQfS1hZLAOBH68bRWDQbxem2OW7OTjhpvqNDc3j9yC06B6bn+GhNeQoHSN9X7VWT2moZ/isKbigyufUuW0RSj0vSWDgQUEIxj6xWS1TddnREsLGGD9bmYKfhb2mU1/ftJAeOSvCO4trZWnjnLPBU930jH6DIYEXyw5UobSXyf2QNWjkFNnJswOhD3aVybkG097WtKo1Yiu3G+FPwc6rXR1+vssX4KBlW36P/ct6Cr3cClDimdV9liYcy3eF6y9AVueeRTTa0OI/nIQonskoJpdcI/a0FigqTUpggm9iqc4s3HquNgMGGxaW3Re5IopxTbdl3XHGDPa9Tm6j5LtquIUf9rS/bTMZUI6Y5oamxE/NOWWy2RNP28uMX+OW8CyDIJuXdYVQlcsxfw59zEeszvGUglYh/TqL00wJlk4G5bPCaRyEBTym+60N9zSppujE/p5qMEjyhPT+EVUKag0po5HCc7I4YCj/HlVzvatbHdwCi39/mH9wJ1cWN3tQH12nDHk4SlBUxXtifwgKIMD0/RPVbCA6Qtlv8daR5IMsbpC3L62GxPV5lrf23+toXxk0zy2wZXMt8L6JE/5xG1EBhnxPUJ/OD6Y/qKk9Mz2tG1hHfowFGlABcpM0kGz1rnjp0e773w5
- kWPSdOHd
- 4vyXheQunjx+D+VIgifftF25iAMCNL2VGVx5u9yxVEKVCWJYilGkIiTYQ2Q2jkJZ2MM00j/1yDn1qHJ3ubn2+N/oBSMSjwVsieTZW2CAgLln8EgxUAHWz9IrtoKzrYjEfBN5s0Uo2zA70joo56Pn34mPugQ2hGkYkz1/LCb6dNsj+Wt0NEMGX6y2SOZftY4t60Rhz6GPOAEBRXctigQiBH6EKFb02labkK3EG
+X-HE-Tag: 1766110208-506332
+X-HE-Meta: U2FsdGVkX1+Olgqjn0fs3gssepYoo3a1PsQjbQWRq3Ofciu18Gnl1NmCOapImYfpQKucTxxgFuu7f/Nm285/MR8Q+a9yWBzgC+tyKxlXZ8dPV4kP2NRazx+yOEjf9HSfZRrru5s0ido4xblVAL3+gSVQvbofHvDN9lC9m5apTWZt/IOngCiyLZ5FvzMOoe3daVLzv053t8BI9QkTs0VA5RUpABUlavXXnItbQ8sAAoZu3vKu5AxnLedMJeughZoTFQZs6hhYHNueHna+QkGSKK12bzK6TSqD7h1TDdtzIOZph4GDBbIAKass8hXcbwg0+Oh/mVfEY40e5HvhOHg/8S8Di0dHD9v7eU92Cu7who2N1UeSl4y2yJ6IvsVsVAxXTfYvD1CiUkbrMkweT0n2LtuEFsPg5VcuMI55ia3da85b741zU5FKveYR8/fYDsYfxPCxiEDq4863ucfZnYnZNVz4OaXBDkqG266iE+B1RNKNVVetC/eO7IxZKkpei+RyHlQnp0mlmlBxneJJR5ZlOpt69Ukjz9vwd6/ANCXuBxBkijTLuo7IbKcHCpE7CSWl1W0pIfXX/pWbOZ9/na7v+jRAW2yvKiZ2WhcPemzX08gwfQ3Wp505oZZS8CTdxmZW/cZdc9+lhFtCmnxgXKg7pAyH/saYD9H90inJQiqLkYxRgMQ4MW4hkc2S3MCCWM/Fcly2U13PQlzvjusZDWPkxK5Klp3LQLKeMXagf+OhNWRjxNM9HSMqGOUjk90PsIZMF2lvdgkOwip9eNV/hWqcTJ3exoTyroRUqCPS26FXnJ+ZvBkEaMp/N1TE3JB4DAH9BMcW3050vJSl3ELb30vyvqnbnRz2Ew3IJKiHWCt94duzxhdZW89f5QuJjTnRRq9MNvDphmadkcjU4hw+JeUFcvjh6CcMobFIoaoIIfp23DmPtxvFJvf0ZlcMpsF3yQeSLUSgNNUj5VH3DuCuIwz
+ ySvG4SOa
+ YmTjmt7TAKjPRnbuFOLaHfX3qA1XPw0G5bcZrWdMnofHSwkcF2JoEJ3+b1UdbooweaTQRSD4NaJbKqJK7exkx5iCbcy9cg3VlElJ8zbDrNyZHv9Xu33inXytbQuAXbN23qXpo36VgMn8I0r6S1P35usaBkoARsCHNPBEjiIcJPFkcwg3C7zbcqcQluTum2fFNvJMp1uRieUR+z3iiAzeszo2DbJcoRspeZJpXbTs4GYEtjQ1kKqMwp3cw0BjT3qeXjhC3zrf06eFUub/GdffiP4VV3euVmp+hXKFjGiUIfQC8Nwg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,52 +96,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: JP Kobryn <inwardvessel@gmail.com>
+On Wed, Dec 17, 2025 at 04:45:06PM -0500, Johannes Weiner wrote:
+> On Wed, Dec 17, 2025 at 03:27:32PM +0800, Qi Zheng wrote:
+> > From: Muchun Song <songmuchun@bytedance.com>
+> > 
+> > In the near future, a folio will no longer pin its corresponding
+> > memory cgroup. To ensure safety, it will only be appropriate to
+> > hold the rcu read lock or acquire a reference to the memory cgroup
+> > returned by folio_memcg(), thereby preventing it from being released.
+> > 
+> > In the current patch, the rcu read lock is employed to safeguard
+> > against the release of the memory cgroup in get_mem_cgroup_from_folio().
+> > 
+> > This serves as a preparatory measure for the reparenting of the
+> > LRU pages.
+> > 
+> > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> > ---
+> >  mm/memcontrol.c | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 21b5aad34cae7..431b3154c70c5 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -973,14 +973,19 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
+> >   */
+> >  struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
+> >  {
+> > -	struct mem_cgroup *memcg = folio_memcg(folio);
+> > +	struct mem_cgroup *memcg;
+> >  
+> >  	if (mem_cgroup_disabled())
+> >  		return NULL;
+> >  
+> > +	if (!folio_memcg_charged(folio))
+> > +		return root_mem_cgroup;
+> > +
+> >  	rcu_read_lock();
+> > -	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
+> > -		memcg = root_mem_cgroup;
+> > +retry:
+> > +	memcg = folio_memcg(folio);
+> > +	if (unlikely(!css_tryget(&memcg->css)))
+> > +		goto retry;
+> 
+> So starting in patch 27, the tryget can fail if the memcg is offlined,
 
-Introduce BPF kfunc to access memory events, e.g.:
-MEMCG_LOW, MEMCG_MAX, MEMCG_OOM, MEMCG_OOM_KILL etc.
+offlined or on its way to free? It is css_tryget() without online.
 
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
----
- mm/bpf_memcontrol.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> and the folio's objcg is reparented concurrently. We'll retry until we
+> find a memcg that isn't dead yet. There's always root_mem_cgroup.
+> 
+> It makes sense, but a loop like this begs the question of how it is
+> bounded. I pieced it together looking ahead. Since this is a small
+> diff, it would be nicer to fold it into 27. I didn't see anything in
+> between depending on it, but correct me if I'm wrong.
 
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 4d9d7d909f6c..75076d682f75 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -99,6 +99,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
- 	return page_counter_read(&memcg->memory) * PAGE_SIZE;
- }
- 
-+/**
-+ * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event value
-+ * @memcg: memory cgroup
-+ * @event: memory event id
-+ *
-+ * Returns current memory event count.
-+ */
-+__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
-+						enum memcg_memory_event event)
-+{
-+	if (event >= MEMCG_NR_MEMORY_EVENTS)
-+		return (unsigned long)-1;
-+
-+	return atomic_long_read(&memcg->memory_events[event]);
-+}
-+
- /**
-  * bpf_mem_cgroup_page_state - Read memory cgroup's page state counter
-  * @memcg: memory cgroup
-@@ -133,6 +149,7 @@ BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_TRUSTED_ARGS | KF_ACQUIRE | KF_RET_NUL
- BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_TRUSTED_ARGS | KF_RELEASE)
- 
- BTF_ID_FLAGS(func, bpf_mem_cgroup_vm_events, KF_TRUSTED_ARGS)
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_memory_events, KF_TRUSTED_ARGS)
- BTF_ID_FLAGS(func, bpf_mem_cgroup_usage, KF_TRUSTED_ARGS)
- BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state, KF_TRUSTED_ARGS)
- BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_TRUSTED_ARGS | KF_SLEEPABLE)
--- 
-2.52.0
+I agree to fold it in the patch where it is needed. Currently at this
+point in series I don't see how css_tryget() can fail here.
 
+> 
+> Minor style preference:
+> 
+> 	/* Comment explaining the above */
+> 	do {
+> 		memcg = folio_memcg(folio);
+> 	} while (!css_tryget(&memcg->css));
 
