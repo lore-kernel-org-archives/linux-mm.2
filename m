@@ -4,96 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC7DD78789
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16478D78770
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A7FF6B0088; Fri, 19 Dec 2025 10:26:18 -0500 (EST)
+	id 77CB36B0088; Fri, 19 Dec 2025 10:27:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 631A66B0089; Fri, 19 Dec 2025 10:26:18 -0500 (EST)
+	id 767B96B0089; Fri, 19 Dec 2025 10:27:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55F1B6B008A; Fri, 19 Dec 2025 10:26:18 -0500 (EST)
+	id 6712D6B008A; Fri, 19 Dec 2025 10:27:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 482E06B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:26:18 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E56D2B7C85
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:26:17 +0000 (UTC)
-X-FDA: 84236596794.04.50F9811
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 40573C0004
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:26:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="R3/X1Ce3";
-	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 512E66B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:27:46 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07464B7FC8
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:27:46 +0000 (UTC)
+X-FDA: 84236600532.19.6819223
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 25239C0017
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:27:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=pKdvdyer;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf10.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766158064; a=rsa-sha256;
+	cv=none;
+	b=vy5mEJbIh3W7XCjjZmByqfq82vyjyum1GeZnQdcXUoagjc1ZdwAenAgZ6YfBAU2RPVga3Q
+	dgcoBz9mapYOKiV3WuwPrQ1VMZFvXt77jTFZbzZzmyRBdZ+MHbrsyl+xCet3VM+UDg3RVF
+	QCqTHtxw+kvG/8+YG6XmVSreVombVj8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=pKdvdyer;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf10.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766157976;
+	s=arc-20220608; t=1766158064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AV6l+3QPJOj+3ABXPS+GUdyLpMiv6Gbs09n7zqVMbwA=;
-	b=y4us3SSTGVrfJpgMDlG8+nNdGrO3W2OdsQnGndgKALG6SRhhVUoYe8//qTkhJAG0mZOSUV
-	ETIXCeq/qnLXMITfn7FP3FJ7fRouvtQZwJitzxOciZl9XUYLmIh0vNrrZdUBqrsh+g30cB
-	fCIu9D6hItcXIYY7L5RXjsBNi4cZMGg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="R3/X1Ce3";
-	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766157976; a=rsa-sha256;
-	cv=none;
-	b=byjEYe8Xnbf6zpcIg9/k7dPgyFfEVIemdIh0wpxZYTQ/TZz72xlN+Og2Looyk/E0U0HK89
-	Guc1/WPLrDxCHkrc1SUH5TFf3+G/Ilo3pgvxYjGuhFPwaHxoxZnNF1mfhPWw8cX4Dkmmty
-	h3p/J+z8jzCNLyw1puuvD77aJjWkvng=
-Date: Fri, 19 Dec 2025 15:26:04 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766157974;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AV6l+3QPJOj+3ABXPS+GUdyLpMiv6Gbs09n7zqVMbwA=;
-	b=R3/X1Ce3qK0UY2cGkwZriN0mfPxH7BKu3e44uRo1xI2IeUOmIIQ/OHYjE17tya25yQ16fD
-	EVaqs/Rb2QvpXVI0fWgrlr5x/wta6dnXtWIJMgQMbqHaku2y1+RHbC0nGQW0Wlw73BK2ev
-	irSs4A8Ao67m4tnsTzJYxkz0cJiNhFc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Message-ID: <uqznqihjuyfk3ifyxsjwp6x7nvk2vloinody6fomfuqepfu64n@25yboetztah3>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
- <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
- <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <vc65dxjoledwtojbcdgyxh2xt3hhlqrzgxcnbgufji7sgnhkus@fqkcflhwbags>
- <SJ2PR11MB847267511A5B6CF9EBFA1A0DC9A9A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+	bh=SDncrGiyCjgaDIVym4h8nDFMc3r2dgxvZ9yUDX7s8ZI=;
+	b=3g68Q72hqUbK+4O9eoHH59QlD9GHixWBwVejodqFsY1Xe/UzsOS+15EfsEK2Y28Tbt51Zr
+	m390I6xsjSZEfAAcbQzUODN6BBqhJHa3aATCakVfvUHdICtWVBOHT6bfgUZTgiYhiVL63S
+	8v2qJ6+vW3iN8i4zp4E6jB4+mRQXNF4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1766158061;
+	bh=Uhsnqls4yZ2FtTg119wqQBE9SzpCbIHrU71KeMrbDAk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pKdvdyeryGRVMBfv709CDYYmO0cuRXd2BnCxxG4w+ZSddK9HBwFqTUsEMxuTF12u5
+	 CDo58VONE+RyJQ0KGtQqMoSvSz3Td9A+4trRs2+8K1Nr8eoNOKseJ9Bbxsfyt0FHeG
+	 mJzd9g2aylzV55QtB81eE6ZjcWQVV+gM86qgdESR7+TjSL8JDgyWhV4LWQ1hjMpPxA
+	 6QMeBLKcP0THsmy3BNAGYlWzBJ9oF8sfGN++CjXlnGoOvRI9VZkIweSUKRC9sG2ErH
+	 G3Fa5qYy2qV3jIrhiI09Dn/7xgYNflu+s8wYLQbdaocxocHIe4rdFmAMu5sB2x1h9e
+	 WeBeLz7yyb0Xg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id AD80E17E137B;
+	Fri, 19 Dec 2025 16:27:40 +0100 (CET)
+Date: Fri, 19 Dec 2025 16:27:34 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Will
+ Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Asahi Lina <lina+kernel@asahilina.net>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH v4] io: add io_pgtable abstraction
+Message-ID: <20251219162734.46f3aa9d@fedora>
+In-Reply-To: <20251219151434.GI31492@ziepe.ca>
+References: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
+	<20251219140557.GH31492@ziepe.ca>
+	<aUVje_QZvJ9rjedp@google.com>
+	<20251219161153.420d1c46@fedora>
+	<20251219151434.GI31492@ziepe.ca>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ2PR11MB847267511A5B6CF9EBFA1A0DC9A9A@SJ2PR11MB8472.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: hqakyq7i8onangacqioudyt4b3to618h
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 25239C0017
+X-Stat-Signature: tjhsdbgggz8jxxrgc4dqd9mkdhqczdpq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 40573C0004
-X-HE-Tag: 1766157975-788076
-X-HE-Meta: U2FsdGVkX19+IkLT1Our30p2nun+GWTaISXJZu0hPYGuQcovL7CEh93rc3i6H/ljrn6d1NvFCXNUZodXbKOO1fExK2ZUXwWSldaJt+ayYh+186DObBosDJam5fCkja3/PM4imZY5LY77UJWi92c+3SzDdWhICN5fJ/J6+2zPh5wkaMluzSP+yk9OZB5ezpOwDgtRDFYWsTIYpcHr76KWu7pTnEjSAMocNs7j/qDIDx3YRFAa3MkxSuP9u5wsB89bZFQ/iC0bWI1K1EgMJf2GRGRM99vk/2ze1CSDG/laawgiEaX4qLochlacgL42HOJSdU52Q9gcKmCmcRDXaVfGAHkeMliJ0dU2Jcu0FC1h+XxU9R1nCUt8uTkQ3Kbc+5A+xXntaj7z+NgsfYwg/7qScWdSkO4r6QGipiS9Og0ygUsazsJAZJnEODm+2b56kobT9/CYc+zqxGCjMaK3BS1vwd+nLfiShcU/514IGOtwBZCHZyCas4nWnzmkhjLfztZhvRHMTk+11r+r/iu9DmV6x+O39aHb5eh8Xrei+WudIODoVfN+ziRXgQ0y+k0pOmiF5RK9yiOitVtEFh9bsKwPmsRAgBSJ2W7nnBhzbDheYVDr5Wqvms+gXsMbV7Gdj5WiO5qNx9o1IhmfnlAFcNweN+McHOuXBo3XiYzwEniesz00Rq5iOP9xGYjuS01C71NvYd5O8Hn9T5guPFbcQiA1BpMPvIOn3ZH2RBEBHGG3I6r12Kl8N1fKBLbK9zwtlVILlOC39ugGkbjoAE9JM6zGI2pv+EBdJeBhpDBTjNc17HGWuksIELjsp/3HShlGYw0RtJoA90mQhfeHC/e0KS+pyvAE3uouaV8eNRUKwiHcAINIYInDNnABvk3THQ+6+A9hcFjEJiROl7Sl7RJ4N8QauvO7RdACm6W9WHsR7OII5uny6r7OI06r7sKoUSrT5rOBVEkFYZaZ9vk=
+X-HE-Tag: 1766158063-597654
+X-HE-Meta: U2FsdGVkX1/D3Rn7I1ZZIMumev/jAne3OmYQFVcq7W5hMtJyEhuTjZnOVmJOUCwa5vqB0vM69Pt22LVc3so6WrFCEFHaCqAo5QWaqmY6hxL2Zpf2YX13jyUmkBaEuNuN6qh1kdNAM7ow1iiulyk4P7Qbfm4yGYqqLqS5EUPcb+iGNUUedBvRiLh6pczBE913nzI5n7dK8nsWeFVRecnEEqdJAP3u5M8US6WEbQHloQCicbl22OyM5VxUcqV+8wXYusJu1+n8CWBoZprS0nfNKVPCbZ/URq8zGUpZKnlkNbtCPaNSLvG/nHRU4tKM4oE/TEqN7fU2JFrOEfcmfA/PDqHPLfLNrySOR/sWBjk0LQVXKkhageVmxyd0rW/KlGBXSLqmD2up1gTu+u3WY5Ft/nMAhn+TaCJRNqafr35USNf572Ky96YYGNoCFNRAxJyg0RacN6NPjx+z0pxJE+QX4NBVvU9To/tqik4ftZ+6m15js5tXWrPClc50v4YNgKFFMaZkHSXP/iaD8aTvI5PiF5xKuCF7+O3uP1r2uNzOlmonZol84XEmy3a8gEOS7R9Kc4dCHY7uYWZhceaLizw0syBP4zMEeBLyHOI8LZeJ6xT3ZQneuP59VzOlMvk8C5YzqMWxoc3aJKE/Iqa500zgjEKK7eXu4sWE1kvGH03Hm2r3WFj1QP1jSexbLrIp9C0lbZmdnW84xGg1hGykeYy1NYTwVbapTr4TuS+2p0jvV/sVx9TOoQvTTpNGqmtvd4fnL43UM1KEBCd/61WBd+WCcVLfE2/1/hR8C+fgVBFJfGSJcjGDYt3BHCyFkZMKmgjcEu0f1zwh2Q+MkfU41wX/VIexrJWeMrsZtfhCURB1gBHlkW+awbKPfkCJBTPCZTcLSZrv/Hg6gJPfjInn+qLuTQEq/jw8UWpBipHuOun/PET31mdEAQ93ullTciaZd/IZDI/kIbdThovt82dkgcq
+ iMDnskfd
+ 3mxaGubqZY5N6AkIRrcPmhOds3lZHi/cAf/7h8e+qhTrb8alojvRzUPd975R9tTwlZUQOeLICQteShq0HzzrXhDqA9ChTppa0b38WnG39esP8BtmugwESw2t5MSrMq9pZmpRLpdGzK8urYh77fvXFeiqFM2V9v4hsWriY68hkaoXfLoBYYtwCAONCXb4bgyEsOZAEpeUr9uZjThTIwyhD+odcv7junsKEgbew30WkqWqud221yE5wg04HIpTIZq9p/N/8xgzmwx1E11d9KeE4HByCmcQV5QcZ+Nw7JnOpUMZNshzTI1XHThrkkdJVaFY9dwzQtEpJhwUiMe3jBJq/J68/Nqp+XBwp3NFEEEc8hP3GnjavwhX5iuQP3PxZLO2x2PEwkToIjfRuxUmU2o9bkMr70FVIamBzUjCSBF20strPCJE/7mpj/yx36n1OPlMU00M6S3mI8bQ2PkOHdcuLDCUQDTjMk8It+bobeznK2gWc8UXpq7DVtfsVBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,107 +109,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 02:29:15AM +0000, Sridhar, Kanchana P wrote:
-> 
-> > -----Original Message-----
-> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > Sent: Thursday, November 13, 2025 4:46 PM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
-> > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>;
-> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > <vinodh.gopal@intel.com>
-> > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
-> > compress batching of large folios.
-> [...]
-> > > > > Architectural considerations for the zswap batching framework:
-> > > > >
-> > > >
-> > ==============================================================
-> > > > > We have designed the zswap batching framework to be
-> > > > > hardware-agnostic. It has no dependencies on Intel-specific features
-> > and
-> > > > > can be leveraged by any hardware accelerator or software-based
-> > > > > compressor. In other words, the framework is open and inclusive by
-> > > > > design.
-> > > > >
-> > > > > Other ongoing work that can use batching:
-> > > > > =========================================
-> > > > > This patch-series demonstrates the performance benefits of compress
-> > > > > batching when used in zswap_store() of large folios. shrink_folio_list()
-> > > > > "reclaim batching" of any-order folios is the major next work that uses
-> > > > > the zswap compress batching framework: our testing of
-> > kernel_compilation
-> > > > > with writeback and the zswap shrinker indicates 10X fewer pages get
-> > > > > written back when we reclaim 32 folios as a batch, as compared to one
-> > > > > folio at a time: this is with deflate-iaa and with zstd. We expect to
-> > > > > submit a patch-series with this data and the resulting performance
-> > > > > improvements shortly. Reclaim batching relieves memory pressure
-> > faster
-> > > > > than reclaiming one folio at a time, hence alleviates the need to scan
-> > > > > slab memory for writeback.
-> > > > >
-> > > > > Nhat has given ideas on using batching with the ongoing kcompressd
-> > work,
-> > > > > as well as beneficially using decompression batching & block IO batching
-> > > > > to improve zswap writeback efficiency.
-> > > > >
-> > > > > Experiments that combine zswap compress batching, reclaim batching,
-> > > > > swapin_readahead() decompression batching of prefetched pages, and
-> > > > > writeback batching show that 0 pages are written back with deflate-iaa
-> > > > > and zstd. For comparison, the baselines for these compressors see
-> > > > > 200K-800K pages written to disk (kernel compilation 'allmod' config).
-> > > > >
-> > > > > To summarize, these are future clients of the batching framework:
-> > > > >
-> > > > >    - shrink_folio_list() reclaim batching of multiple folios:
-> > > > >        Implemented, will submit patch-series.
-> > > > >    - zswap writeback with decompress batching:
-> > > > >        Implemented, will submit patch-series.
-> > > > >    - zram:
-> > > > >        Implemented, will submit patch-series.
-> > > > >    - kcompressd:
-> > > > >        Not yet implemented.
-> > > > >    - file systems:
-> > > > >        Not yet implemented.
-> > > > >    - swapin_readahead() decompression batching of prefetched pages:
-> > > > >        Implemented, will submit patch-series.
-> > > > >
-> > > > > Additionally, any place we have folios that need to be compressed, can
-> > > > > potentially be parallelized.
-> 
-> [...]
-> 
-> > For example, you should remove mentions of ongoing work and future work,
-> > simply because things change and they may not land. Just briefly
-> > mentioning that there are future use cases (with maybe an example) is
-> > sufficient.
-> 
-> Hi Yosry,
-> 
-> The mentions of ongoing/future work were included as per Andrew's suggestion.
-> Hence, I would like to keep these in the commit log. Hope this is Ok with you?
+On Fri, 19 Dec 2025 11:14:34 -0400
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-We can keep them, but not in the detail they are currently in, and
-avoiding mentioning what is implemented or not implemented yet because
-it's not very relevant to the patch imo.
-
-So maybe focus on the fact that the compression batching can be used for
-other use cases like batching decompression in zswap writeback, batching
-compression in zram, batch compression of different folios during
-reclaim, etc -- without going too much into detail because these details
-will probably change when these extensions are proposed.
-
-
+> On Fri, Dec 19, 2025 at 04:11:53PM +0100, Boris Brezillon wrote:
 > 
-> Thanks,
-> Kanchana
+> > There's actually a confusion between TLB invalidation and L1/L2 cache
+> > flush/invalidation. The things we can decide to flush/invalidate around
+> > map/unmap ops are L1/L2 caches. The TLB invalidate, we don't have
+> > direct control on: it happens as part of the LOCK+UNLOCK sequence, and
+> > no matter what you execute (map or unmap), you have to surround it with
+> > a LOCK/UNLOCK to provide support for atomic updates (GPU is blocked if
+> > anything accesses the locked range while an update is on-going).  
 > 
+> That makes more sense, so these GPU drivers just flush the entire TLB
+> every time they change it - built into the UNLOCK operation?
+
+I don't have implementation details, so I can't really tell what
+happens internally. What's sure is that LOCK takes a range, so they
+might be optimizing the TLB flush to only evict entries covered by this
+range, dunno.
 
