@@ -4,214 +4,231 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BB0D711D2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00F3D711CC
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97C616B0088; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
+	id 2C1956B0088; Thu, 18 Dec 2025 20:31:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929F16B0089; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
+	id 26C2D6B0089; Thu, 18 Dec 2025 20:31:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D4B06B008A; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
+	id 0D99A6B008A; Thu, 18 Dec 2025 20:31:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6524C6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:22:17 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03088140393
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:22:16 +0000 (UTC)
-X-FDA: 84234469914.17.0F4DE9E
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010032.outbound.protection.outlook.com [52.101.46.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D377D80010
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:22:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sZ2nYLry;
-	spf=pass (imf30.hostedemail.com: domain of joelagnelf@nvidia.com designates 52.101.46.32 as permitted sender) smtp.mailfrom=joelagnelf@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1E06B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:31:44 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB4E91320A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:31:44 +0000 (UTC)
+X-FDA: 84234493728.09.0F825CD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 80EED100008
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:31:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cmY+bKas;
+	spf=pass (imf14.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766107334;
+	s=arc-20220608; t=1766107901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
-	b=4L7qZJazt7xv3dWou2OGLCrjdErWKMcsSZyrubnyEEL76H+khoyZJvmXIFvt7Pw/R+KHGG
-	BU26lHF4soCOOrJgac/YsTMnYD1ezrBPE1h+NOlZu9bc+OOfKB4FtGV0gIjNUw+JTj2r45
-	+kQfJWpP6lImDKLgls1xqVoG8/NS9V4=
+	bh=VP6tgqA6LaVUDQqypRsewliNKGfu5DcBHaXXZMijYCk=;
+	b=X+8xElZyufkdIQO435X/BCysfKhTiYA5BYkytr8cBk7wSS4GdD2GTQpqN3doXqSQcQ4J5u
+	ckbsN/jptUtpwZMrARPn1w+Aw9QXFCTmorTay95LeSjeP+ctWm9+2B59DNDdyvcJN0S0Yv
+	JgoGIXwyj0oANmK4ZemHuZrq7aBVjuo=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sZ2nYLry;
-	spf=pass (imf30.hostedemail.com: domain of joelagnelf@nvidia.com designates 52.101.46.32 as permitted sender) smtp.mailfrom=joelagnelf@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766107334; a=rsa-sha256;
-	cv=pass;
-	b=GJ3SbK9+QUnTJPUfBYE3++M9Si4biMZoYMzBVa0qnLZ3bWGXzv3duR6KCmV0S9lUtr/CGH
-	zUBmHe4YnC0ycfBiIiwb1frryVEx7njHrzfSF9zcLQ6Z8BknomJ/IBm3MmG2Dr8WEIWXvg
-	J9H/dkrf+kzUfVRzdoX72RXP84ts0jU=
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cmY+bKas;
+	spf=pass (imf14.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766107901; a=rsa-sha256;
+	cv=fail;
+	b=IL2lYT6s83HpoM5MdcSEnGM8xkaVxWL0onrZQiabmXdphnNlUoHBbrmEk6ClIloWN8H//Z
+	F9MCf4KKCPvOTnXEKIQ1bZ94VNFVmndfiy6IdKB7cg0839PlFRjOwjJCf+vnB2dgDcz9wq
+	TxjOrRI1HCYyenD46vNafUAwdfK/Q9w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766107901; x=1797643901;
+  h=message-id:date:subject:from:to:references:cc:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=6/uZs8wjM0e7vvTYsI4a2uWfSopmWo5igvtxKuwaqWw=;
+  b=cmY+bKasSDqBI8AVdUrMnojRZLOW4DFCjwrBhbxhHavPJ8Kq+5SMWY3d
+   YaJdTH/XheivcxcbAW4+lB8veMnSG62B8NkWCzWnf+zWcju2iqhIjJVK0
+   rt4/DSKnitrIYGwc5TISZLwaBgCA09cqX6Jx8D0Nx9/t53n2OMojKf4qy
+   Pw9/xLpn1HIq8PIGaRa3Qd/0zBj9zzaZ3QnT/oWw8+vWDIBWt6n+1v8/X
+   gFZoW0B3vNB5VRhe6Gn+8eVf80W+ZJHr5F839xxcnVQLw5DiBAePjFdGF
+   N51oQL142Gu7HjCzbVWQDJrzeMc1Xxg8KRueR8orgzh24jdbHMWmaUvKo
+   g==;
+X-CSE-ConnectionGUID: uGVtKdKwRHmEXXCIev2DDg==
+X-CSE-MsgGUID: TfYTrPJdSt69spvL/GBvkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67948168"
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="67948168"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 17:31:39 -0800
+X-CSE-ConnectionGUID: Qnnt0JM6T2y+7spCn5VNTA==
+X-CSE-MsgGUID: tOA+QOx1T02opzU7QlZJ8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="202910838"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 17:31:39 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 18 Dec 2025 17:31:38 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 18 Dec 2025 17:31:38 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.20) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 18 Dec 2025 17:31:38 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UBPCd4TKaTOyiY36zfWDVP8ENZLd/KIIDqWLBvsaEWjdYWvBqv3oqd1KKjv/lAWpHo6rHQUVjlNE8KjJ+oD+TG8w1FUVeObdhRvF9kRiwfpQEHX12lXJccUtR5Tc3NhGgMKPbrIoN5zaHoU6RApbBCS9nawYu1pdII7Ty+LCxTy3o2Fb3SNadYbJZdKbbCnVZJ9hfFyoXPVKoUE7OQph8cKa7QyVTs15lrkFxyAU1V97LTLHw+TiqJ3BdHpuTBzOxModfAJBohJyZdNSNoPNIvOIkP8Rh/JZY28SBsZIdPV89bHAQDPii7q+zv7cqOHMF3XrxZKPMXku0Vk7v4YXNA==
+ b=SDWjOi5+s6cOfZKuI1H9jUQrwz9gQInhWO7IpKhizrOFrBQvm6sbpXgYvRwAqG/gIGHuibpLi8TsiNgcf9JshrLHCTulkrZfTIadKecObWpVIFyeZdryyRRCf0kueHSazjIqJZPjFw79PySQ4i7OlSLCGeaH3AAOmQBBC0/xncOXGFu9cgTs3eupNA4kKTqBnG+vk17jL0BE8f8WGc2Vvc6xPNdF77oM3vYJyjHdoJNf2SXZsq6CNSzSMDlKhDL/5HLsenT+iFvpsuAF24mg3cvc87q5WSqkqh5z/ijlmQg79KI1feSOKEFTAAAcCOnvMRpi8FO9rX1fpxjqwuHcyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
- b=yI/mOgRCWWV7j3hUpex5mR2SvsKBytKZmmx8P0vVWrXx9y61/FfzypR5pi1BA8fbLoqjD/+ayzmWqQLH4vxMqcAjoLwdVZVaEIF0+3hciRN02rO95WsYHQqM24hyTBynHvk5bXHHMSOwicgO/ZS4CX8WYGGAL0Ifj0oW97x8RkDYhxZna8MeMZwJaT6ebEOFd/xDsqEZP/uMT8ZEi1XZcvxiIzpqzgNexzBy8VPG6UOawUfwQB7V/rJ5DJaN8giZFMie8l5+g+0xSr8D6HPvkSm5AR1tCdnyTNVtcqnpu1ok0QrpNPbuYb9+rFZh7y64EDQopYJH8j4GjWYsXl9gzQ==
+ bh=VP6tgqA6LaVUDQqypRsewliNKGfu5DcBHaXXZMijYCk=;
+ b=IWe6glPwOmpowWEK+BmnGY4wO3ECOgQy3b5dJroSk5T1++vcRLQoiYN21CEwmHr4lpa/4B5VjqXTbhtLu9aaxy14ZD3Wlyx6Koc8N820nDMEUfUeStEpXwjjlXZ721eUhDEmauCVRHw1whiHKB3tHxVjC0sT2ysUSkwVPgui/v7Ltq8BVbrqHzGi9u7RWfVm8yfq8L2BaunRiMI/HbVul0ScUgUmyaXMpl5GSymsSz8nzAEeCLjiOFTTzdycmQ6vX5dYgxLvDyItrlGDIatuYikJmqB/u3fqPNsT87r91eFIL+nbK/EB2nq1W2vMeMBC5j+Z4R8NzzVThCH1heds3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dct/EvUQPPx31Df+Pv+35vuARECsJYIvpaim9JfYX38=;
- b=sZ2nYLryNseEsRwiYTJa2xOHkaSidlsuq00RuY+ih17pBqRMzBCN9RdV1uuJCjoBJLszB0U8W4N+b48F6COUcYkk4wCMAFzITrYBZRyOIGM0U7r1/TuAxPhTcTmod17QdxO03LEvlzyPlEn/Ry1PLGiu3qgZ9Isci0fLjSk9tYwlF7R/q24Yo5yIio9AnYvcfMhmusbC9bpEKKF1vgjYK2MDjIZtnGdxYKYWGBicM2i9ve28mPYz5+D9C0MPEKsFdCN/tuoHgUNauVkjStoO423W0YSG2/tgKCRRSL8wJ3x2V2vwnCoMFMgaP1/v33cEpsn37pNkhEunkWXAr51O6A==
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
- by DM4PR12MB6111.namprd12.prod.outlook.com (2603:10b6:8:ac::21) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
+ by PH0PR11MB5029.namprd11.prod.outlook.com (2603:10b6:510:30::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Fri, 19 Dec
- 2025 01:22:07 +0000
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9434.001; Fri, 19 Dec 2025
- 01:22:07 +0000
-Message-ID: <6cbba525-3bcd-4673-a6a5-1fe16330868f@nvidia.com>
-Date: Thu, 18 Dec 2025 20:22:04 -0500
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Fri, 19 Dec
+ 2025 01:31:31 +0000
+Received: from MW4PR11MB8289.namprd11.prod.outlook.com
+ ([fe80::d626:a4f8:c029:5022]) by MW4PR11MB8289.namprd11.prod.outlook.com
+ ([fe80::d626:a4f8:c029:5022%6]) with mapi id 15.20.9434.001; Fri, 19 Dec 2025
+ 01:31:31 +0000
+Message-ID: <127930dd-3dd8-4b18-9bdd-9b8dea9496ae@intel.com>
+Date: Fri, 19 Dec 2025 09:31:22 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 3/4] hazptr: Implement Hazard Pointers
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes <joel@joelfernandes.org>,
- "Paul E. McKenney" <paulmck@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan
- <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
- Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
- Mateusz Guzik <mjguzik@gmail.com>,
- Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org, lkmm@lists.linux.dev
-References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
- <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v5 1/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+From: "Li, Tianyou" <tianyou.li@intel.com>
+To: Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>, Mike Rapoport <rppt@kernel.org>
+References: <20251208152544.1150732-1-tianyou.li@intel.com>
+ <20251208152544.1150732-2-tianyou.li@intel.com>
+ <aTpRoUt0WvEULeKE@localhost.localdomain>
+ <4a81dd12-1bba-4a89-821b-7a12edc02e04@intel.com>
 Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: IA4P221CA0008.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:559::6) To PH7PR12MB8056.namprd12.prod.outlook.com
- (2603:10b6:510:269::21)
+CC: <linux-mm@kvack.org>, Yong Hu <yong.hu@intel.com>, Nanhai Zou
+	<nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>, Tim Chen
+	<tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen
+	<yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>, Chen Zhang
+	<zhangchen.kidd@jd.com>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <4a81dd12-1bba-4a89-821b-7a12edc02e04@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG3P274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::30)
+ To MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DM4PR12MB6111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9912051b-ebe4-4074-66d0-08de3e9d069a
+X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|PH0PR11MB5029:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6c8155a-90a3-42e7-12ce-08de3e9e5662
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L2U0NElnd0Q1YWNqaTFhUTM3by9oNlorcnltMDlNeXRmaEFtdmtZMzdMcG8y?=
- =?utf-8?B?R0crYVJUMi9jNXFtbUlGcFhNY1NROVUyWjRBYmViSHFxMGJjbVlSa256cWla?=
- =?utf-8?B?VHpGWHl3aHBFWE8xdGNLZXdFOWNJSFBFbUdUT01yeTI1WE1kY1N4S0V3MGpw?=
- =?utf-8?B?NVAxQWt1RUVrUStLKytDcmJEK3J6dXFkNWMwbVpZWnZGYkltS1hkRUUySitD?=
- =?utf-8?B?NlFrZnBxMjRqSUtldVhVTmw3bUFxbWhOYXY0YzBUQ3pWSzJWR1JNTThTVGJX?=
- =?utf-8?B?NnB6VDFma29ncWFiZDduOHA3NHVCdXFyK2lUcS9LQ1VVL1FmZ1ZHcTg4SWZ0?=
- =?utf-8?B?b01Md3F0Qmc4Sjl6aXp0RWpsMlZwSm16dEdBZ2UvcUp0VEhiekJyVy9hTk1x?=
- =?utf-8?B?T0NkbkFSTElNWG9DWE1yT01JY1U0Q00ralBUSlc5aHVqL0xLM3B5cTRMN3cx?=
- =?utf-8?B?UVBITDNPbnowNEswZjlyTlNMdjlqbnlXTU1Mc0thUjJzeE1RZGpTaHd3Zi9w?=
- =?utf-8?B?SWVZYXh3aWgyUUhlRXRuUkpWNzY0SUVzQi9BWmROV0ZjQ2dtdjZaaEluSjdo?=
- =?utf-8?B?TkJCRVpFeHhSb0JQQkRlNmI1Q3puNm5uc2ZnNTFOSlhGUXhLUnIrMzdyZGMw?=
- =?utf-8?B?ZzU3YlJxZEFvcmc5ZmNDZGY1NklrRy96WFUxQW5UMFNlay9pVENhRFpRU3pv?=
- =?utf-8?B?cHoyYlRIa25rTktqT1BtYkFGOExGR1J3VE51RkdJMlJYb2dwYXFldE9TaDB0?=
- =?utf-8?B?TklXTkY1eCtDS0dvU2l6L0liVHJBVGtTTy90SHZ3b25zQyt6bVlmeXRBdDl2?=
- =?utf-8?B?bkRPWm13ejdBVXZkYmNQRkpkNXFBSjNYRGpJV2RNUHpyMUxPVG9qcU9hdllG?=
- =?utf-8?B?Kzd3UmRZdHFxV2xSQ0xOS3NEVS96SVNZTDhBelRSL1d5M0F2aisxaXhQd2Nw?=
- =?utf-8?B?azlFaTQ4bExGRGlGa0FlSFZJUlA1UG5EU3JCYUxydzVWTTd0c2dteVc2RENj?=
- =?utf-8?B?QjRucVkzZm5XcU96ZWFkMklDeGJ5a2VYbUN0dmpMcWJQL2x2ZGlQNWJya1N4?=
- =?utf-8?B?U3BPTzIrMlBFa0RVcHpJdDlvY0dPWm1zQnYvMTd3dkJWcVBmY3dud1VYSkFR?=
- =?utf-8?B?NkxoZzl0VzFYaXFSb09lc3NHZTlmTjZxbjJJWTNSN0lpcExYNUd0RmdZTVNV?=
- =?utf-8?B?SVVGK1dPME02Q2ZrMlc5Z1VqZTMxQ3lvTUlNaFNuRlViUzJqb2U3RHovQzFF?=
- =?utf-8?B?UW93Y0J6K1V3MnlGUVdSSmwwZGtqdlBDdFUrM3ZOVHVBOXdaTTAySGdQaXJB?=
- =?utf-8?B?dXZ1WERYdXc3a0M2YzlramhqVm5OWVBuQ3c4RS9zQnByN2xtQlVvTUNSWUtB?=
- =?utf-8?B?NnFkWWxnR1JWMFo2WkJYeUdEZXpuS3J6RTA4YWpHYWJyQmhzdUVGTVlTVldF?=
- =?utf-8?B?WEJMb2VPNE9CODJLcjZnakkrOTJnKzdWTURZUGtRUzZ0SXVqcHVsY0Fyam96?=
- =?utf-8?B?S2JTcTM5MFRpMnZCaUVjSXpaSTcrd0ZQWWJZRWVTOHdHd2I2cDBmb2sxVWVp?=
- =?utf-8?B?MHpjL0JoeHUwQUFvZUxCWEtaSFpNOGwxSFpDTVZEeENHK2l5U2p2TTJ6VEFv?=
- =?utf-8?B?ZUhqU3dndEZFTVBmNGwwYzJXcExmTTNIeEliaGFDY1NSWUY5R2xiaEFZQ3k1?=
- =?utf-8?B?TDVEUFdxeW5tUjBZN3lxMlpDWVlZdk5qVmVKUmFqN2FvNCtBaUxZakxHK2Qv?=
- =?utf-8?B?ekgzOW1hZ1BObncyWjJBSVZaQzVjVHVtM3lPYXdyNWd6TjhaemltcWE0UGgz?=
- =?utf-8?B?RU9kWkJtazdSY2FJeXpKdnVOSXNYNmdnZmZ6ZUhldmY5ZEVZQzQxeXdCT2U4?=
- =?utf-8?B?T0pyc01tRllSTjgwVTM3eEdEYzhad2xSU2tycWlFTi91WlBIWDdrajZCMlkx?=
- =?utf-8?Q?V3omLGTD8PEsBc69X6TFAy/c6JGi9jIn?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?M0hWOFJraDUvb0liYnp3MDB1bUFYQUNYcjR0SnJOTnB1TXFDSEgxYnZOdHBw?=
+ =?utf-8?B?bDRibllEVGI3SmlpbDFwUDhpd2t5WVcyU2RGWjMra0lvK0NFRkVpQlk4dlNh?=
+ =?utf-8?B?OU9vcmhlVDk3ZkJhcGhWMWtqaUl6NnUyNkhVZFFWb05vUVdhRGhqaFNTRG5P?=
+ =?utf-8?B?QmYyYkVRS0w3eVdPN3lJWEVBL0ozaDQ5K0kyUjhtRnkxUGtNaVZDT25qRGdC?=
+ =?utf-8?B?dVV3U256ZnJTMFd1VFBVcEl4WlZiQkxyWWVZbVV1TFlUeWx6RXdqVHRuRnAr?=
+ =?utf-8?B?YTVreFY4Y00rc2g5a3hoMlNFZlBjRllHYmtzME5mL2RyQ0Y5M1J0UitIeVZ3?=
+ =?utf-8?B?bktKbXhpYi9aNDRCT1lXekY0SXdDRDZTK1Z3MGt1Vng5cVdOeVM4eFhqWGVP?=
+ =?utf-8?B?b2F0QjMzcHpILy9ISVlkN3V1V2RnbTV2Q3IvUnQ2d0hRUmlpQ29kU0pzcHgw?=
+ =?utf-8?B?TjA4Mk1aNUwyR2R2Z0h2NFEybkdrNWgrQU8wQi9wSllXODA0WFVCa3A5UEt2?=
+ =?utf-8?B?WmF0MFk3ekRmK0tSdkRsajl4Rk84SGtnNkRZWm1nUzV0aWpCWm4rN0c5RU8r?=
+ =?utf-8?B?c3ZKRVRWREc4cmxHTWxtK3RWWkhQR3hoL2F1ZTVtUFBiMVp4UGw0cUl4UVV4?=
+ =?utf-8?B?N1BkbkxoR2l2d2VZRFkva292YXNUNmg1bFlydVFtTHZLSitLMHZkZ25lRDJ2?=
+ =?utf-8?B?blpPK3RqaXhmMUdJOWZDdzRCcllFWE1xZTkxaDB4Z0lrNlZUcUloSGgvdGxR?=
+ =?utf-8?B?VncxYVZTc3lkUG1UbnBSckNEVUdIako2R0JtZEFDTWtOUzlkMWcxQVV1aWth?=
+ =?utf-8?B?czZySExYRUxPNGVJOFRRbWJDdlRGMEJmUXhDcVBjczNDcEdrZ1FweXlBekov?=
+ =?utf-8?B?aWVlN3N1KytZMmpXTTR5RE95VXpIR3d5Mi96L0RMVjF3UjkvSWY1MUs3MFNL?=
+ =?utf-8?B?Rm1SVTJnR1lPVEF6Wm1ZMVp5dG40WlgxYjlSaVVuZ05yQzFHU3dhUTEvWUox?=
+ =?utf-8?B?bzJ6Rk5kWm4yekpNY05Jd3o1UlQwTnIvWVJtK1FTNkRCbENIT2lkSzdxNjhN?=
+ =?utf-8?B?ejlqRGlWMzU2SUl5bFN3VXp0RGI0Y3VrOGN5YmhXaUplTVBjSXU5UnIxbkZV?=
+ =?utf-8?B?a1YxdmNtY29Cd3ZrSG9ZUjRVZGs1ZkdnaUtmTzlTTW13elJ6Ky93R2l4NE12?=
+ =?utf-8?B?VER4d1YzUDJ2dUMrTDlnTkVMUXN6S3Q4a0lYMXc0eGNTMnYvajNySWUyWW5K?=
+ =?utf-8?B?d0hVOUhTc1k3R28rNWJGSDFrOHlkTzB3QWJBeWg4VVhENVNOQjQ1TUZiWVRa?=
+ =?utf-8?B?eVJiOG02YzFlc2lkWXNma25PRitTYk5yM291aDNzNTVjTGhJUXptK255VDYz?=
+ =?utf-8?B?elJVdmZnejBxZlpWM2s2N0hRcnRhazRoYXJPY1diakxpOXFxdkMzU0wweFhW?=
+ =?utf-8?B?RXBHeXVhbkRJK3ZxRGlYV2JWTnJsL0lPUkloakl1OHpzTWg5YlhYRkczN2s0?=
+ =?utf-8?B?aFFyWWRuL1AyeWFMWUVXZFM0ZkNtdHl6bWRCTVZrT1l2bjh5UDR6SW96dG1h?=
+ =?utf-8?B?VWNYdGo1TWJOaFpQbnRXSFRpMWtmV0YxSnV0U1YwMTQ1WE91dDQvZndqc0xv?=
+ =?utf-8?B?aUNrQ2VJanRXTUlFTUdTYjZ2WnB3SGxvZk10Mll1YkJqdUdvaGpRSEV2ZTZX?=
+ =?utf-8?B?M3NyeUFxOVF5VVZyamZpL0xwV25Nc2UwaVB3M1VsRS9RSUNOVXZlZ0dMV3pK?=
+ =?utf-8?B?TGdLd2ZGaWxaWGJpTzNzWThlbGpKM0Zub0svK0hQbVVadHpLT3h4TUJ1YkpT?=
+ =?utf-8?B?Unl5aENENnZFYUtHMWw5dUk3WTZRZmtEZ0RzMGJ1SjNWVkZhTkR0cjA0anRO?=
+ =?utf-8?B?V09XcitOblppOGN3N3Z4SnBwSldTNHpPdlBXcXZFVzdCdjBoVk95TnBObWFN?=
+ =?utf-8?Q?7Ia25XgPAnFAMLWeAwUpcxm/v4DcP5dh?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXlMakxPODlMMjdMbmlLWlJRY3dqRExMQS9GRDEwblRPeE9vaXV5aDBWcGRE?=
- =?utf-8?B?UnBNRHNHOFV3aFlHRjgxV0VyWXdWSWNaR0JDazlZMTFuOERPWW45WGRJVE9V?=
- =?utf-8?B?d1pJN084OG9PWExRMjkwSUlBcUdCRllIcVk0ckpjb2h4S2NQVTBtOS9sRjNM?=
- =?utf-8?B?d0FhZ1k1SWtacXZpR0Z0WEJ1Wm1mS3RHZ3NaRU1pWTgrTVNRb3o5N2lNZEx1?=
- =?utf-8?B?dXNNNnBUTFNEbzUzUVJVeTJZWHFkcXMvaWJZY29KQmg3ZUJpQ3owYmR3aFFp?=
- =?utf-8?B?a0hOdkVOelZUMEV1OXpXb2VrY3NDTUFOQVJZdmt1Qy9pMmhyaHdSNDQzY1hT?=
- =?utf-8?B?S3g1THhBUVlBSFFmVHlDNmFGVkppWFFkRE9UbUNFSkN4OHJRRW1lcEJiUm5j?=
- =?utf-8?B?aGZveGpWUlhqc2duYU41NXN5RndScEw3V3lVcHpzazNOMyt4R1lNUFFlUk5k?=
- =?utf-8?B?NXJIYXdxNEpPUGF0eUtlNlppcE9XRWQ1Umo0SVI2ZXNBRWNQVCtaSG9qZTNP?=
- =?utf-8?B?ck1FYU1SNVYrcHFQVzlsTVREOC9ESHlqVFlMVG9GZjNPWndnclR3MTJjNUJ6?=
- =?utf-8?B?UWtPd2NZY1FhV3hQQTE5d3MxenN2R3pGMWl6VVQ0SklmbWNma1VNV0lwd1Jx?=
- =?utf-8?B?N2lnQ2tTbWFmcDdkWHRuM2N5NEdEV1F6dVV2bEw2eGZyeEZzcjJXalFTeVg0?=
- =?utf-8?B?SS9lRWtFRjNlRTFNNFNVZjU2djcwcWpKSjNrOGR6QW1oUEloTXRLWUIxVXVN?=
- =?utf-8?B?WWFlcURvZUlGdUpJQXBVQ0lpVHpvVDNhZyt4OU1sNXBxSGlra215U2QwaHFG?=
- =?utf-8?B?NUtxRWxoa0VZaHBrcnNrcDlvcG5la1A1VUhockc2VGdDQTBvUXI5Rjh3ajMr?=
- =?utf-8?B?eVdrSTZhYW5UK085bTdLTjVOekMwTVFkT1g2anJYNmVFSmRENzV2eFRSbEZn?=
- =?utf-8?B?Sm5BOThmc1I3UXZPSlNpRWdPRHJ2a0hUWUV3cm5PcHRKWm96Y0poUVBuS0gv?=
- =?utf-8?B?M2g1UGFHa2VTK2FVUGpvRzl2Z09XeFZFMFBmVUhONEtkREpuUUREMXhVVVR1?=
- =?utf-8?B?K3g3REh1MjRDd202RVIyWEg1a1d5alFZMzJ2UXk1ejQyWUVKS0k2MnFBZElK?=
- =?utf-8?B?VTRXWUp4VmphcEl5RUcwZVpmL3pLTVpTVFlYdVpURU5zS1NtWXVoV2dMeGNO?=
- =?utf-8?B?bkl0WXJKMGlreklzUkl6NzZoZmhTMDZWVW8wSWwreHBOYjNiME9saVRueUZG?=
- =?utf-8?B?Y0RvSlViSnVOSGFiQStGczNvbTlFMHNtbmpYaU10aVpVcGtkcDh3RU9wcldU?=
- =?utf-8?B?VFlSOVExSEx5N0FqZUZ6Y1J4U21DZVZyOHdYVEVzc3ZjbDRWMEFQaTVPcll1?=
- =?utf-8?B?OTc5eEFDL2UwYVk4dTl2TDdpcStpMTB3ZWhKTFQwTVhQb2UwelBNaXB0ek5C?=
- =?utf-8?B?ZGREU1RrelRGQ1FFTzVxZUNRZDdDOHFIVnZYcE56d3dqRmNwWjNRRkNIZVFD?=
- =?utf-8?B?d1V0c1R2M0NBaWI4MWVPdVNMT1pFS004czhrOVUzS0dFUTB6WTk5OEp5U1pD?=
- =?utf-8?B?RDZ0ampUelZodFYvajdRQmM2NExhN004RXZRZTlPSzYxeFg3MFRjbW1PV3Iw?=
- =?utf-8?B?Y3ozeE81TlVXUVFoRmFDRDM1MHRkUDVRdTIycmhGSlBXVFl5ZXZFRWtaUjdl?=
- =?utf-8?B?Y25VL3AyUjlJREw4NmFWNWFVdFlqL3V6T1VFMGo2NkpkUkVyYkVRcmhpS0lY?=
- =?utf-8?B?VlFvdmZyNEtFd3ZoK1FBZStyNHRhRk41YUJFODZ5SjV4WHlVejJhSGM2aEhD?=
- =?utf-8?B?Uy9td3djM3VmbnpxaGFJVytRVUNOQm8yWnYrb3puWVFIaWhPdmV3OHBlemtx?=
- =?utf-8?B?dmlkaTFIRkx3cHdnVysxcDR6S0VoL1RZVjZFVVJYb09JUVZKS29DcExpcUcy?=
- =?utf-8?B?TXdvZ1E1Mi91K3FzcUNCcGdVRmdUYzRnZmJNcGFIcmg5ZHlpcG1sbkJOMHVQ?=
- =?utf-8?B?Vm5pTTM5Y2hKckZGQ25rNHJwdk85eml0WlhnNWxTbVNOdGVwL002VDJKRHJR?=
- =?utf-8?B?WnNYaWRKTGQzYzIxQUVVUFBQNEhGdVY1UnJVRHFMOFppL1BuTmt5VGEwcGdx?=
- =?utf-8?Q?C8lBGpxp6w/f0MPH6XVqelspR?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9912051b-ebe4-4074-66d0-08de3e9d069a
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WkQxOU9kaEs2N3hjMWN0RE9MYkF0cXI1N2hEY1FXa2xNY3BPeWdta29RenFC?=
+ =?utf-8?B?QlRGazc5cjVtL3JrSXF6dFNnckJDaDBpcEc4cURqUGR1SStSUjlBWVJKVUl0?=
+ =?utf-8?B?VEc4NWJNeWJCOUVidHJ2WVRwcmF0R1hRNUFSNFowMmdiUzhMOGRzTHJVVndP?=
+ =?utf-8?B?dXRLL3Z5SnJLSGZOMXFuUkc5UmsweExaL2dpaVNnVXJyRjZBUURlcmVpK2NZ?=
+ =?utf-8?B?Mng3dDdlakx4NTlMMkpWRzBYQmJBWlpzbU1oSmRjWGNFWFJrdUwzSUZpY0VT?=
+ =?utf-8?B?TlJXTytzVVJWa0dZNERhdmo0eVZ1MDFCVkVzQTFsNXhiVjV6VGdjbm92NmRn?=
+ =?utf-8?B?b1g3M0VtWHRuaEZzVVBoZUhKTURQZkxtblVVQjJvQWlsNi9nL3hCQmwyTldi?=
+ =?utf-8?B?WEdRL3RXcVRDT3ZrcTNIalQxcG53eFRKdWd4SWNSS2pIQVdPckd5TTI2TmEx?=
+ =?utf-8?B?ZXhhRElrNGJXdCtQaUN2cGpPbTJYR3BnQTZ3THN3MEluN0h1TmhwYnNpVHZL?=
+ =?utf-8?B?WlZVTlJKWGhHd2VJaDVtZk9XaXI0Z0tHeUxIRjFiY1hzMEM5QkVucE5LdE9z?=
+ =?utf-8?B?MmFnb0I0ZEFTWDQ2WjVOd0FqTU9pVmpDYkhCZ3JsU2JRekRyWmFUY09ObTlC?=
+ =?utf-8?B?TmhpVjFoM3crUG9IZzRtZ3dQSmc3eXMwbVNuNTlMbFIvUE1tdkNaZTVrRW95?=
+ =?utf-8?B?Y0N3RmV3RXhyTkVYV0tLeXU4bUpVR2hYVWtKUTlQZ0hZZ0FVMmNvckppLzRI?=
+ =?utf-8?B?UkNZNnhWSzJkdXVrOFdJWE8yeWh3TG5aVUNsbFdKaFFUQWRsdFNxVmlHRy90?=
+ =?utf-8?B?WHNsWWk5eU1iTmE1aG5QT0U5SE9tamNuajBZL0dWM3hFRnRJZGNMZzNPdFlz?=
+ =?utf-8?B?ZFZJTlVZaitGOWN3eWFyNmVFU3p6Q09oN0tnUzRSNFRwYllieHE4MmpMMDJ6?=
+ =?utf-8?B?NXVrZ0lvNnMyS3V5TWxVQ3Y0MytxZXV5YVZkRlFqZUdlMmpudW9xU2tja2Fw?=
+ =?utf-8?B?T0l6Z1YxVytYZXBKNGtEVnFmQUI1VDdvTW5LQ2ZOU0NqSHp0VXNwN2dMT25o?=
+ =?utf-8?B?YUtQQnNGNGc2ZmV5OU53eXAyME1uWllGeGlvK3REM3g3ZXJydnluS3FZTHE4?=
+ =?utf-8?B?czFoUThmV2VuNnp4VEdBRDY1eXNFeVprMjdmMkY2TW9PaC9sRjBoVHFEVmgv?=
+ =?utf-8?B?a3VSRTJic1RIYjRhWXcydFdRUUk2UUhRWnlMMU12UXRNb1pxWTlWMmorQmJV?=
+ =?utf-8?B?b0llVHVxUmJOTExkdEdkUDhKMThBTU1GMGlSdlJUYUUzQ0dUWGhTTXFsRWFr?=
+ =?utf-8?B?MERCWnhaK281dTB1ZWE0UXd6NFFEMkIvcWM1TnFoKzJIaDBGMk9tcXl2aUE4?=
+ =?utf-8?B?K3FHWEdlUkkweUFQdDZZZWIxNjdXUFJsTlZrN0d5aHhzZStYNXdGWDNwV0ZU?=
+ =?utf-8?B?VWtyVzZuT3FqTXhGUjEvOTdwTEw2N2hocDJpWHd1dTdZRFJubS9zQ21ldTZz?=
+ =?utf-8?B?RTZLckk4WkdiTldlU1phNHZKNXpBbEVjQzRPVDFsMm05RDBFYWFqNXVtNHgy?=
+ =?utf-8?B?Z3pTaksySlhndmhVNmpBOUhWY1lwelVYOEhtUDhVcmZYL1h0aXBPZmxnS1BZ?=
+ =?utf-8?B?R29qSGhvbWtqUDZzSXM4V1lISUxiYWJ1OWo2NkV1SmlvVkJKWDZOdG1jc0NE?=
+ =?utf-8?B?YWl4eFU3bk9peW51NGhWdDZwR1NBZW04Z1ovSlZIRkZnQUxFSXZYRzJNL0dU?=
+ =?utf-8?B?bFRiNU1vOWpNNU5wTkxqaDl2TXJFZUgxK0FDV284Ykt3a0hXSnZCUEJSZkZI?=
+ =?utf-8?B?bTJQZkwyYnI1N3FXdmNHWU5DU0xNSmxGN0NWV3EzL24wZk9ra0U4MENVRll4?=
+ =?utf-8?B?RFZYUEJzNFo1TndaaThBWE83ZW1MTXZLMFg2NjJUWVY2VzFJV1c1NCtuT29D?=
+ =?utf-8?B?UE50QjRpNW5odjR5VzBUaEZDQnZvdHN4QktsanYycFBEeDBlZ3RRWmVhZzUv?=
+ =?utf-8?B?UEZkR3lzc0gwRU5HRXN0OSsxT0g0ZTkxVEJTNVMzQnRzMjdSWmt4bDRWNzRs?=
+ =?utf-8?B?SFA1MDhpS1JuSTBWM3p4Zi8wbW44emxyaExUanV1MjMrK09JUEJsaDZqN3dE?=
+ =?utf-8?Q?G7xusRdAZfIZ8agFz7/AESfjR?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6c8155a-90a3-42e7-12ce-08de3e9e5662
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 01:22:07.5734
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 01:31:31.2093
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eg+qWSm+0k0ZpV5JSTySNOmtKBNmvpDBy0nPq+zegi4SsDk7ghsyQe8ncoxbV3QFgnFz5Y5ESjhNTBni4PKwqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6111
+X-MS-Exchange-CrossTenant-UserPrincipalName: /qMeVY6pRxTsK+L3VfE668RlpgKC+vTx8gkdcObOVGCxEMl6aB0Gm5ErcT4A95kr9kkqlc2Kz3oidgljbQ2I8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5029
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 3xrixcf7z79c9gyb1ezncu49kessh7py
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D377D80010
-X-Stat-Signature: 9inf435pojfpahtko4tkqy757j88d6s8
-X-HE-Tag: 1766107333-428724
-X-HE-Meta: U2FsdGVkX18yn+sBUo2ExEwGN6H8dvP6qv4ilxhthUFc4uhVYF/ZN/aRjO/GzxpxVVEiTL1TGzseDr35dNZirJDZdgJMKQTRn3pimmqWnwBqApkBRi2eNywpiQARB2EnoFrY/qLXp06jSpM9ynJbX5Xcrg7dH9ZJ4JafqVXDjiWkxO/4lBu6q8Fr/39r9rLR4c2dAl+qbRRWU/bBN6DK3wNc0R0hQAL/1D4WQotQJmlYIm17s/zk+EDb5gMSi0tCqK1NzqJE8hmcI2RHO0HLvkPBSUffBUZKoEkSmUQCBu2BMZFsyFUqmnJyIfVUWpY0KqQBuHOkCypGBjxYZSGkZuuA3mr+EAZddZZcho5GfuVNOGWk91CoSkjM9NVRQmLiOcwa0S2ebJNF97QtqnIyriL3YVf/OOnzsKig2SJxf66xRd/4Yujnwqkfe+zCoh4JdtPYn4D10gjNOfJ2xSuTd5yxXMkFi9zjKHOpP72LxmQGZtzZc73/V3I5Y/toYAe/JCKVBF+EmO8LM9mvvTUw4fyo8UwwAtHIW3LEeTOpAZqTSNSOywfzjV4rrX0yw05tv73AItL0aoPpLOs5JE6IPVW3rn1x1+qmVsdDiM3/6hseV/d1iRvZyKI+qu+P2pMc52HaUYIp60xLgnBkD3iD0JqUPvJPvDqanqiguxOLtuTUVCSL6leAAVCSCLqbnyd57tRi8djzyvNLrsY95RP1W9sbO3gz6YLs5An5i+kPEBBK0KEBNgGn2tQcVbDU9wS++RtTuMmcVzsCcQYc3VQa66v3z0oz+Ucnp/Pv6M6cgdx4ZDx0096txNg8Nl32So1ExIfKzUwMbcnU+TYrsm/EQBTzPNSkzWQ5J5PWNCSUFot0X3N7GFc8xPo1CuvBHkqnmoIWZKW/xaLV0czgRUWlZS0MpglVddWSK+SuMhVphKxgBphUTs4C+RYUv+JQxP8f3gVX5JyYAkPgcSqRsNv
- 3c07AYtO
- b03HGUwF5yfBKjaBoSEE8KLf7wL/rH+VigpjOk6p0ofuzVwRL6AvawttcOzPAhujXNLFx1Sds9ytDNSQOV+KAQoCakUR8irk+1UVZK1zWgBZQe0zabVuJ9XaCuGX7xOPiD5NlzpZAEySy1pSuLM+LFLydeZiJUhvVmyWBZHOySwUWKFd4FVbCfxcHIfmogABiEwub7xrzss8CVP06JvLumAuegnKc5tCXbxf9oixXLwSBzlQGHqFjXEqUh5rWFvFutKDgcL1RG8XWWKZGMDhZ9Z42g16GVTvWbNBNHBXI3KYB2mNuMZY619b4k12kwOLjT61Gzydw412tBn6VtULvR8jIbEAUYE1r1R+6fEtEWvdO8FMyYTh6oKQm4XD6BBVuF5PCysPvOYlT/2TYyD9nMWVyYoEdkK2dU7zdU9lfkkOu1thpASZQqDd8opsjOaP1LRNc2+/+JtPebOo4N1rJD7EL6ghHSxixAwRPg3ohdsSqkmxB9/n3uVmuDSfEmOnaI0CpX6heLqjGFKko8xAdm83KGgzBjJ5qwCEs
+X-Rspamd-Queue-Id: 80EED100008
+X-HE-Tag: 1766107900-514623
+X-HE-Meta: U2FsdGVkX18DZB7Q+Fs5pVj2c0ysT34n+8Ez6VbUql76R/YwnWG/vQElRR/ih6KQHOydcqZj2Bd7zQwcblAOXzrMAhROkrM7Xgbh103PLxoh+d9UZv9bv1oTPa4ekuob3M4YWjqoT55E+pBiEqv5IqQLh2czmNb+Fng+xpE2l9N1vK7sTTiy8t6QGaTg0mtkXs/0UErolLu/wYU17BsgUyvU1aJ0Zb51CIY+AT20AX3ooislrvUZ+zs2NM/4LADY+vZd5qxl2rc+jcmysHOoS9BvyxDlf7nGyOCNZzkGBx/F/hFADv/RXgPW+mSE0joQ0UBBfD04oJIWjECKpeAld3knnvMbnbWTFywY/OZn+jFBFa9MjHSYiy5nVMGP39Z26U11tZKLgie88qtCSnsFp9eIem2pc/QAGytH2khXe2IWVF+H30zZIRTyh+zIZBfbxNvcW2FgMr7V3TIJsGiEAzt5eKXCdYwh+alGHaTpYe8SwPyiW+f7PQZnyA65rXVFDNVHbuVlVeTXzHHrSPB1ZL/A3PDR/rzFDRNoBVK5JafkhC/DATbD2XtEPlt3Cqlfy+pVgGU4kK5+kE5zGAVriDAKq5i2q2SS+fKJuh8ymXlopXGVQUYSOT1GmevL2UekVHeudEFtaM2VvQgFKMhUA/w76W2jdRe52HnGU/hxqS7rJnuolYMXhXwHRT46SvhkqlgdLWQ/z3VvT9ONaYOfOmH6w62rTukeu0qrDICN4nLXjDA+HEt2BPqCGgWVkXsHmX/lu/oWlZlx6N/u0r4mUpzjag9TKqlDlf3bm7GSz1pFtKR0sxfUie2n/1gkfUPOYeYbbnQPN9+x+A9hb+pKndNljuDJsqygjZvLKjAmlt0lPFzig68OJsiwNUQ29O0CESMWYPDlqX6oxrB2E1lcwMw+vYwMJTqDQEWE4HvRkJ8lZ+DDMFc0yqYQ4x4qE6qetWj9CKYVjeU/dmVecKI
+ S7xXDVs2
+ VcsSYCAZlN1et71JiYZHGvGcG1CIN2wjFIqBpTEgkWZftJEJBFl33KwIRSPTnJRqos9u3YeUY8cHPXrvP7joTSbM7ZzkuGK9z3/s3WnDjoGP+u6OgSNGgeqjo0kRq/m0EkfJ8J3uuadeSkTsDY61n6GHka8mRs9/+EXfjF/N6Snd2mjx/BKzY0w6RULtHu9sTjM5GYu5rfTO8vQsFozPb33+TVAfbL9GKVMNzU9VjULY/7ReYGEoTnr5/oCRwD3Fhk6LK8ezqBEcVZW6tZ+VNx6v6HkVucqyuBZ3Q8XPx2crYi3IUtVtJz7UGHmmc1OR9G//IBvr+Q9ZVx5AJGIqldpbEhM9iQ/EbiAd93KIqmjsMBwgtCPXYD81prabnmXKNpA5DZm906fpwrS0oXdUNwvv6CznX5F+PrWzoVp/DNj2EeY07uCKrgBCUaPRq5f0F8Mjqoj3Xo19v6swiggIrcfxWkmfU9AnfUG2TGTvwoH5jvg6nPA8iytA7DLuBGzGle65CgL0rqzfwSgCXRuHIIayc3qW6J4Pprmwfamcj+zEgB/mAT/Po6gjb1BL7JSPXlwzGnmq0b+sQ9/YypcRO9NRJlAquKJgu5z1Jqnup3WXrP6d2/skvhTxbCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -220,217 +237,283 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/18/2025 12:54 PM, Mathieu Desnoyers wrote:
-[..]
->>> <mathieu.desnoyers@efficios.com> wrote:
-[..]
->>> Here is a revisited version of my Hazard Pointers series. Boqun, Joel,
->>> if you guys have time to try it out with your use-cases it would be
->>> great!
+Thank you all for your time and efforts. We have submitted the patch v6, 
+tested through the last weekend. Any comments or suggestions are 
+welcomed. Appreciated.
+
+
+Regards,
+
+Tianyou
+
+
+On 12/12/2025 1:27 PM, Li, Tianyou wrote:
+>
+> On 12/11/2025 1:07 PM, Oscar Salvador wrote:
+>> On Mon, Dec 08, 2025 at 11:25:43PM +0800, Tianyou Li wrote:
+>>> When invoke move_pfn_range_to_zone or remove_pfn_range_from_zone, it 
+>>> will
+>>> update the zone->contiguous by checking the new zone's pfn range 
+>>> from the
+>>> beginning to the end, regardless the previous state of the old zone. 
+>>> When
+>>> the zone's pfn range is large, the cost of traversing the pfn range to
+>>> update the zone->contiguous could be significant.
 >>>
->>> This new version does the following:
+>>> Add fast paths to quickly detect cases where zone is definitely not
+>>> contiguous without scanning the new zone. The cases are: when the 
+>>> new range
+>>> did not overlap with previous range, the contiguous should be false; 
+>>> if the
+>>> new range adjacent with the previous range, just need to check the new
+>>> range; if the new added pages could not fill the hole of previous 
+>>> zone, the
+>>> contiguous should be false.
 >>>
->>> - It has 8 preallocated hazard pointer slots per CPU (one cache line),
->>> - The hazard pointer user allocates a hazard pointer context variable
->>>   (typically on the stack), which contains the pointer to the slot *and*
->>>   a backup slot,
->>> - When all the per-CPU slots are in use, fallback to the backup slot.
->>>   Chain the backup slot into per-CPU lists, each protected by a raw
->>>   spinlock.
->>> - The hazard pointer synchronize does a piecewise iteration on the
->>>   per-CPU overflow slots lists, releasing the raw spinlock between
->>>   each list item. It uses a 64-bit generation counter to check for
->>>   concurrent list changes, and restart the traversal on generation
->>>   counter mismatch.
->>> - There is a new CONFIG_PREEMPT_HAZPTR config option. When enabled,
->>>   the hazard pointer acquire/release adds and then removes the hazard
->>>   pointer context from a per-task linked list. On context switch, the
->>>   scheduler migrates the per-CPU slots used by the task to the backup
->>>   per-context slots, thus making sure the per-CPU slots are not used
->>>   by preempted and blocked tasks.
+>>> The following test cases of memory hotplug for a VM [1], tested in the
+>>> environment [2], show that this optimization can significantly 
+>>> reduce the
+>>> memory hotplug time [3].
+>>>
+>>> +----------------+------+---------------+--------------+----------------+ 
+>>>
+>>> |                | Size | Time (before) | Time (after) | Time 
+>>> Reduction |
+>>> | +------+---------------+--------------+----------------+
+>>> | Plug Memory    | 256G |      10s      |      2s      | 80%      |
+>>> | +------+---------------+--------------+----------------+
+>>> |                | 512G |      33s      |      6s      | 81%      |
+>>> +----------------+------+---------------+--------------+----------------+ 
+>>>
+>>>
+>>> +----------------+------+---------------+--------------+----------------+ 
+>>>
+>>> |                | Size | Time (before) | Time (after) | Time 
+>>> Reduction |
+>>> | +------+---------------+--------------+----------------+
+>>> | Unplug Memory  | 256G |      10s      |      2s      | 80%      |
+>>> | +------+---------------+--------------+----------------+
+>>> |                | 512G |      34s      |      6s      | 82%      |
+>>> +----------------+------+---------------+--------------+----------------+ 
+>>>
+>>>
+>>> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>>>      object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>>>      device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>>>      qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>>>      qom-set vmem1 requested-size 0G (Unplug Memory)
+>>>
+>>> [2] Hardware     : Intel Icelake server
+>>>      Guest Kernel : v6.18-rc2
+>>>      Qemu         : v9.0.0
+>>>
+>>>      Launch VM    :
+>>>      qemu-system-x86_64 -accel kvm -cpu host \
+>>>      -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>>>      -drive file=./seed.img,format=raw,if=virtio \
+>>>      -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>>>      -m 2G,slots=10,maxmem=2052472M \
+>>>      -device 
+>>> pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>>>      -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>>>      -nographic -machine q35 \
+>>>      -nic user,hostfwd=tcp::3000-:22
+>>>
+>>>      Guest kernel auto-onlines newly added memory blocks:
+>>>      echo online > /sys/devices/system/memory/auto_online_blocks
+>>>
+>>> [3] The time from typing the QEMU commands in [1] to when the output of
+>>>      'grep MemTotal /proc/meminfo' on Guest reflects that all 
+>>> hotplugged
+>>>      memory is recognized.
+>>>
+>>> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+>>> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+>>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>>> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+>>> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+>>> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+>>> Reviewed-by: Pan Deng <pan.deng@intel.com>
+>>> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>>> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+>>> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+>> Overall this looks good to me, thanks Tianyou Li for working on this.
+>> Just some minor comments below:
+>
+>
+> Very appreciated Oscar for your time to review the patch! Yuan and I 
+> will work on the patch v6 to address all your comments/suggestions.
+>
+> We will test the patch v6 across the weekend. If any other comments 
+> during those days, we will need more days probably. Thanks.
+>
+>
+>>> ---
+>>>   mm/internal.h       |  8 +++++-
+>>>   mm/memory_hotplug.c | 64 
+>>> ++++++++++++++++++++++++++++++++++++++++++---
+>>>   mm/mm_init.c        | 13 +++++++--
+>>>   3 files changed, 79 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/mm/internal.h b/mm/internal.h
+>>> index 1561fc2ff5b8..1b5bba6526d4 100644
+>>> --- a/mm/internal.h
+>>> +++ b/mm/internal.h
+>>> @@ -730,7 +730,13 @@ static inline struct page 
+>>> *pageblock_pfn_to_page(unsigned long start_pfn,
+>>>       return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
+>>>   }
+>>>   -void set_zone_contiguous(struct zone *zone);
+>>> +enum zone_contig_state {
+>>> +    ZONE_CONTIG_YES,
+>>> +    ZONE_CONTIG_NO,
+>>> +    ZONE_CONTIG_MAYBE,
+>>> +};
+>>> +
+>>> +void set_zone_contiguous(struct zone *zone, enum zone_contig_state 
+>>> state);
+>>>   bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
+>>>                  unsigned long nr_pages);
+>>>   diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>>> index 0be83039c3b5..d711f6e2c87f 100644
+>>> --- a/mm/memory_hotplug.c
+>>> +++ b/mm/memory_hotplug.c
+>>> @@ -544,6 +544,28 @@ static void update_pgdat_span(struct 
+>>> pglist_data *pgdat)
+>>>       pgdat->node_spanned_pages = node_end_pfn - node_start_pfn;
+>>>   }
+>>>   +static enum zone_contig_state __meminit 
+>>> zone_contig_state_after_shrinking(
+>>> +        struct zone *zone, unsigned long start_pfn, unsigned long 
+>>> nr_pages)
+>> Why do we need the __meminit? These functions are only used from 
+>> memory-hotplug
+>> code so we should not need it?
+>
+>
+> Got it. Will remove the __meminit in patch v6.
+>
+>
+>>> +{
+>>> +    const unsigned long end_pfn = start_pfn + nr_pages;
+>>> +
+>>> +    /*
+>>> +     * If the removed pfn range inside the original zone span, the 
+>>> contiguous
+>>> +     * property is surely false.
+>>> +     */
+>>> +    if (start_pfn > zone->zone_start_pfn && end_pfn < 
+>>> zone_end_pfn(zone))
+>>> +        return ZONE_CONTIG_NO;
+>>> +
+>>> +    /* If the removed pfn range is at the beginning or end of the
+>>> +     * original zone span, the contiguous property is preserved when
+>>> +     * the original zone is contiguous.
+>>> +     */
+>>> +    if (start_pfn == zone->zone_start_pfn || end_pfn == 
+>>> zone_end_pfn(zone))
+>>> +        return zone->contiguous ? ZONE_CONTIG_YES : ZONE_CONTIG_MAYBE;
+>>> +
+>>> +    return ZONE_CONTIG_MAYBE;
+>>> +}
+>>> +
+>>>   void remove_pfn_range_from_zone(struct zone *zone,
+>>>                         unsigned long start_pfn,
+>>>                         unsigned long nr_pages)
+>>> @@ -551,6 +573,7 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>>>       const unsigned long end_pfn = start_pfn + nr_pages;
+>>>       struct pglist_data *pgdat = zone->zone_pgdat;
+>>>       unsigned long pfn, cur_nr_pages;
+>>> +    enum zone_contig_state contiguous_state = ZONE_CONTIG_MAYBE;
+>> I think that new_contiguous_state is clearer, but I do not have a strong
+>> opinion here.
+>
+>
+> Will do in the patch v6.
+>
+>
+>>>       /* Poison struct pages because they are now uninitialized 
+>>> again. */
+>>>       for (pfn = start_pfn; pfn < end_pfn; pfn += cur_nr_pages) {
+>>> @@ -571,12 +594,13 @@ void remove_pfn_range_from_zone(struct zone 
+>>> *zone,
+>>>       if (zone_is_zone_device(zone))
+>>>           return;
+>>>   +    contiguous_state = zone_contig_state_after_shrinking(zone, 
+>>> start_pfn, nr_pages);
+>>>       clear_zone_contiguous(zone);
+>>>         shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
+>>>       update_pgdat_span(pgdat);
+>>>   -    set_zone_contiguous(zone);
+>>> +    set_zone_contiguous(zone, contiguous_state);
+>>>   }
+>> ...
+>>> @@ -752,7 +809,8 @@ void move_pfn_range_to_zone(struct zone *zone, 
+>>> unsigned long start_pfn,
+>>>   {
+>>>       struct pglist_data *pgdat = zone->zone_pgdat;
+>>>       int nid = pgdat->node_id;
+>>> -
+>>> +    const enum zone_contig_state contiguous_state =
+>>> +        zone_contig_state_after_growing(zone, start_pfn, nr_pages);
+>> Same comment from remove_pfn_range_from_zone.
+>
+>
+> Will do in the patch v6.
+>
+>
+>>>       clear_zone_contiguous(zone);
+>>>         if (zone_is_empty(zone))
+>>> @@ -783,7 +841,7 @@ void move_pfn_range_to_zone(struct zone *zone, 
+>>> unsigned long start_pfn,
+>>>                MEMINIT_HOTPLUG, altmap, migratetype,
+>>>                isolate_pageblock);
+>>>   -    set_zone_contiguous(zone);
+>>> +    set_zone_contiguous(zone, contiguous_state);
+>>>   }
+>>>     struct auto_movable_stats {
+>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>> index 7712d887b696..e296bd9fac9e 100644
+>>> --- a/mm/mm_init.c
+>>> +++ b/mm/mm_init.c
+>>> @@ -2263,11 +2263,19 @@ void __init init_cma_pageblock(struct page 
+>>> *page)
+>>>   }
+>>>   #endif
+>>>   -void set_zone_contiguous(struct zone *zone)
+>>> +void set_zone_contiguous(struct zone *zone, enum zone_contig_state 
+>>> state)
+>>>   {
+>>>       unsigned long block_start_pfn = zone->zone_start_pfn;
+>>>       unsigned long block_end_pfn;
+>>>   +    if (state == ZONE_CONTIG_YES) {
+>>> +        zone->contiguous = true;
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    if (state == ZONE_CONTIG_NO)
+>>> +        return;
+>>> +
+>>>       block_end_pfn = pageblock_end_pfn(block_start_pfn);
+>>>       for (; block_start_pfn < zone_end_pfn(zone);
+>>>               block_start_pfn = block_end_pfn,
+>>> @@ -2283,6 +2291,7 @@ void set_zone_contiguous(struct zone *zone)
+>>>         /* We confirm that there is no hole */
+>>>       zone->contiguous = true;
+>>> +
+>> Not needed?
+>
+>
+> My mistake, thanks. Will do in the patch v6.
+>
+>
+> Regards,
+>
+> Tianyou
+>
+>
+>>>   }
 >>
->> This last point is another reason why I want the slots to be per task instead
->> of per CPU. It becomes very natural because the hazard pointer is always
->> associated with a task only anyway, not with the CPU (at usecase level). By
->> putting the slot in the task struct, we allow these requirements to flow
->> naturally without requiring any locking or list management.. Did I miss
->> something about the use cases?
 >
-> I start from the hypothesis that scanning all tasks at synchronize
-> is likely too slow for a general purpose synchronization algo.
 >
-> This is why we have RCU (general purpose) tracking hierarchical per-cpu
-> state, and specialized RCU flavors (for tracing and other use-cases)
-> using iteration on all tasks.
->
-
-I wouldn't call HP as "general" personally, it could be (should be?) usecase
-specific. That's why I am not opposed to the per-cpu approach, but I am not
-convinced that there is no room for a per-task slot approach which is simpler
-in many respects in the code.
-
-If usecase has 1000s of CPUs but few tasks running, then per-task would be way
-faster. It would be even cheaper than per-cpu slots on the read-side:
-1. Unlikely to overflow relatively speaking, since plenty of slots distributed
-to tasks, thus avoiding locking.
-2. Preemption also doesn't require saving/restoring and locking.
-
-I would look at per-task HP as a more specific HP implementation if you will and
-per-cpu as more leaning towards "general". There's tradeoffs of course.
-
-> One of the highlights of hazard pointers over RCU is its ability to
-> know about quiescence of a pointer without waiting for a whole grace
-> period. Therefore I went down the route of scanning per-CPU state rather
-> than per-task.
-
-Sure, but there could be room for both flavors, no?
-
->> I did some measurements about the task-scanning issue, and it is fast in my
->> testing (~1ms/10000 tasks). Any input from you or anyone on what the typical
->> task count distribution is that we are addressing? I also made a rough
->> prototype, and it appears to be simpler with fewer lines of code because I do
->> not need to handle preemption. It just happens naturally.
->
-> It really depends on the access pattern here. If you want to replace
-> refcount decrement and test with hazard pointer synchronize, a delay of
-> 1ms on each hazptr synchronize is a *lot*.
-
-Yeah true but I don't think *that* is a fair comparison. The slow path is always
-going to be slower than an atomic refcount no matter which HP approach we talk.
-
-I think percpu_ref_kill is a better comparison which triggers a GP:
-
-  percpu_ref_kill()
-    - percpu_ref_kill_and_confirm()
-       ...
-       - call_rcu_hurry(&ref->data->rcu, percpu_ref_switch_to_atomic_rcu)
-
-> Of course perhaps this can be batched with a worker thread, but then
-> you are back to using more memory due to delayed reclaim, and thus
-> closer to RCU.
-
-If you have millions of objects with per-cpu ref count, that can go into the
-megabytes. With HP, you can negate that. So even with batched worker thread,
-there can be space savings and fast read-side (at the expense of slightly more
-overhead on write side). Sure lockdep usecase does not benefit since Boqun wants
-to speed up the write side in that case (synchronize_rcu_expedited) but we
-probably don't want to discount other potential HP usecases which want faster
-simpler read side while having preemptability, small structures etc and don't
-care about update side performance..
-
->> First of all, we can have a per-task counter that tracks how many hazard
->> pointers are active. If this is zero, then we can simply skip the taskinstead
->> of wasting cycles scanning all the task slot.
->> Further, we can have a retire list that reuses a single scan to scan all the
->> objects in the retire list, thus reusing the scan cost. This can also assist
->> in asynchronously implementing object retiring via a dedicated thread perhaps
->> with the tasks RCU infrastructure. We can also make this per-task counter a
->> bitmap to speed up scanning potentially.
->>
->> I am okay with the concept of an overflow list, but if we keep the overflow
->> list at the per-task level instead of the per-CPU level, it is highlyunlikely
->> IMO that such an overflow list will be used unless more than, say, eight
->> hazard pointers per task are active at any given time.
->
-> The PREEMPT_HAZPTR scheme achieves this as well, with per-CPU scan
-> rather than per-task.
-
-Sure, but with additional complexity and locking that per-task slot does not at
-all have.
-
->
->> So its lock contention would be rarer than, say, having a per-CPU overflow
->> list. I would say that contention would be incredibly rare because typically
->> hazard pointers are used by multiple tasks, each of which will have its own
->> unique set of slots. Whereas in a per-CPU overflow  approach, we have ahigher
->> chance of lock contention, especially when the number of CPUs is low.
->
-> Contention on the per-CPU spinlocks would only happen if threads are
-> migrated between chaining of their backup slot (either if 8 hazptr
-> are in use by the thread, or on context switch), and release. Do
-> you expect this type of migration to happen so often as to increase
-> contention ?
-
-Is that really true? You have contention also when you exhaust all per-cpu slots
-not just on migration:
-
-+			/*
-+			 * If all the per-CPU slots are already in use, fallback
-+			 * to the backup slot.
-+			 */
-+			if (unlikely(!slot))
-+				slot = hazptr_chain_backup_slot(ctx);
-
->
->>
->> Other than the task-scanning performance issue, what am I missing?
->
-> Task-scan performance is the key issue. Also you have to set a limit
-> of per-task slots. How would you handle the scenario where a user
-> needs more slots than the limit ?
-
-Sure there is a limit but I wager that this limit is harder to hit than with the
-per-cpu case. If you have smaller number of CPUs, you might be hitting this all
-the time with per-cpu approach. I'd have a overflow node in task_struct to
-handle this. Billions of Linux systems have 8-16 CPUs.
-
->> Another nice benefit of using per-task hazard pointers is that we can also
->> implement sleeping in hazard pointer sections because we will be scanning for
->> sleeping tasks as well.
->
-> The PREEMPT_HAZPTR scheme takes care of this as well. Sleeping with a
-> hazptr held will trigger the context switch, and the scheduler will
-> simply move the hazard pointer from the per-CPU slot to the backup
-> slot. End of story.
-
-Yeah, but the per-task approach does not need that at all. In fact the hazard
-pointer context structure is smaller.
-
->> By contrast, the other approaches I have seen with per-CPU hazard pointers
->> forbid sleeping, since after sleeping a task is no longer associated with its
->> CPU. The other approaches also have a higher likelihood of locking Due to
->> running out of slots.
->
-> Except for PREEMPT_HAZPTR. :)
-
-Ah you mean, because you make a copy of the slots into the task. But why not
-just keep it in the task to begin with :-D (your points on task scan latency is
-valid though..).
-
->> Of course I am missing a use case, but I suspect we can find a per-CPU ref-
->> count use case that benefits from this. I am researching use cases when I get
->> time. I think my next task is to find a solid use case for this
-> before doing further development of a solution..
->
-> Let me know what you find, I'm very interested!
-
-Sure :) will do, thanks.
-
->> By the way, feedback on the scanning patch:
->>
->> Can you consider using a per-CPU counter to track the number of active slots
->> per CPU? That way you can ignore CPU slots for CPUs that are not using hazard
->> pointers. Another idea is to skip idle CPUs as well.
->
-> I had this in a userspace prototype: a counter of used per-cpu slots.
-> But I finally decided against it because it requires extra instructions
-> on the fast path, *and* scanning 8 pointers within a single cache line
-> on synchronize is really cheap. So I'd need benchmarks to justify adding
-> back the counter.
-
-Interesting, makes sense.
-
->> Have you also considered any asynchronous use case where maintaining a
->> retired  list would assist in RCU-style deferred reclaim of hazard-pointer
-objects?
->
-> This would be a logical next step indeed. I'll have to think
-> about this some more.
->
-
-You might be able to re-use some of the RCU async processing machinery for that.
-Or maybe using timers/workqueues.
-
-Thanks.
-
 
