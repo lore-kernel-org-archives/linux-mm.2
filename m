@@ -4,116 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF3DD7879F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:38:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA7AE66882
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F2EB6B00A8; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
+	id 549026B00A9; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3962B6B00A9; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
+	id 4323E6B00AD; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2571D6B00AC; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
+	id 2F3876B00AA; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 102B46B00A9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ECDD6B00A8
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:38:57 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1D3E160272
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AEDCF140355
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:38:56 +0000 (UTC)
-X-FDA: 84236931072.22.F71C73E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6CAFE1C000F
+X-FDA: 84236931072.23.7A15189
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5A0AA1C000F
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:38:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=U9iFsI83;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JRFUhRwT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=U9iFsI83;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JRFUhRwT;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766165934; a=rsa-sha256;
 	cv=none;
-	b=AQ/taGaDQ/2XRhbT4t9yR5iHLEMBGhHwgzAqxmd/+BBfbews2vu3HpzDmXCN91nNbmrkg1
-	uGDI+VyL4EAUhEV6mAa4d43WyznMcgGlypAHk4WBlrPlEevfHUTT81s0WVCHzJwtNLzs6F
-	tsLha8uVBB1LvXNVPdU5hdLJfHQGu78=
+	b=J8YlkmgQZ9pnl9GxE3Q4aB5dCeKW0A1r8TALHqzUXMSQ8uoafatqUR1EPJrhO/UYG1qrl2
+	IoTTUP/+Fk6aQEF7Sp5/cPaKxzeLgxgWP5lSGtAnUG3qTjPQKsAlHoP9maiYu9xQMeXRWf
+	CdMlVZPukJFvrIXYT1mCLTAXCGrRgFQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=U9iFsI83;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JRFUhRwT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=U9iFsI83;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JRFUhRwT;
+	imf21.hostedemail.com;
+	dkim=none;
 	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766165934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VGvFR7VRtSBd6YuWyK7fF4KvZ/6HteMl6uD6VpFe+m8=;
-	b=4dwM2pzvj1PZPU5o/D87KO2J8URlIZhszfAqjJQY4bkUJPO+M5/Y6HSNjEEAKLMuj56Vjy
-	b7PflHznWLHyAjD3k/pWF2mvszDq+OYNkPYI7XFIBkxvFQvKXNT+WFGweTqn8VrDvr/fow
-	07i4pVIz581LP5GlYfpbBE6rfXN93/4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5fr6jEHcLUeyOFYLqwfaj51KcDsio7/lQnq9Mpq5x9Q=;
+	b=zJSCu0kBDqRYXSpLBuRyW2Wd28xY4YnBubU3DxjuTLFAKmX5oTHIrI+4hoq8eIvs2ZC+fc
+	OrkTDiJ4UP8ivIZy0Qf+UE30PwHT8j7GN4NCmvwsFUYIssm/27jLX6DGjqRS7mq+Xntl4L
+	/JKJRwi2yamyXB9vlnR10A+mp3IBCEo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 945EA336FB;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CA58D5BD00;
 	Fri, 19 Dec 2025 17:38:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766165932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VGvFR7VRtSBd6YuWyK7fF4KvZ/6HteMl6uD6VpFe+m8=;
-	b=U9iFsI833t/QXgfqB0Fzc6z/4gBTEcDkzjQ5NkZcbyv5oH6XQ3S77zyAmbJW2vSNS/3Lo8
-	07Lt/LWUq498CxXM4qxFui13r1ycTnuklukU1M0WMxRiMsx8H2vyW30rNNcmIa4sq5Nnmx
-	E9mH49yF3UOW/hoFOg6GJ+ZnqJlXjgA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766165932;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VGvFR7VRtSBd6YuWyK7fF4KvZ/6HteMl6uD6VpFe+m8=;
-	b=JRFUhRwTcZ9lSk1p7plbtnZZnSuVUwDe2zJ7smD0Dp4xQ21aupNuQacUxGKG9m/7Kio6I5
-	Ahv1BHrLZVWoElCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766165932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VGvFR7VRtSBd6YuWyK7fF4KvZ/6HteMl6uD6VpFe+m8=;
-	b=U9iFsI833t/QXgfqB0Fzc6z/4gBTEcDkzjQ5NkZcbyv5oH6XQ3S77zyAmbJW2vSNS/3Lo8
-	07Lt/LWUq498CxXM4qxFui13r1ycTnuklukU1M0WMxRiMsx8H2vyW30rNNcmIa4sq5Nnmx
-	E9mH49yF3UOW/hoFOg6GJ+ZnqJlXjgA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766165932;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VGvFR7VRtSBd6YuWyK7fF4KvZ/6HteMl6uD6VpFe+m8=;
-	b=JRFUhRwTcZ9lSk1p7plbtnZZnSuVUwDe2zJ7smD0Dp4xQ21aupNuQacUxGKG9m/7Kio6I5
-	Ahv1BHrLZVWoElCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 73A833EA63;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABACA3EA66;
 	Fri, 19 Dec 2025 17:38:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5DXnG6yNRWlTYAAAD6G6ig
+	id aHaiKayNRWlTYAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Fri, 19 Dec 2025 17:38:52 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH RFC v2 0/3] tweaks for __alloc_pages_slowpath()
-Date: Fri, 19 Dec 2025 18:38:50 +0100
-Message-Id: <20251219-thp-thisnode-tweak-v2-0-0c01f231fd1c@suse.cz>
+Date: Fri, 19 Dec 2025 18:38:52 +0100
+Subject: [PATCH RFC v2 2/3] mm/page_alloc: refactor the initial compaction
+ handling
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKqNRWkC/32NTQ7CIBSEr9K8tRh41Zq6amLiAdyaLig8LTGBB
- hB/Gu4u4QAuZvHNZGZWCOQNBTg2K3hKJhhnC+CmATVLeydmdGFAjnuBomNxXopMsE4Tiy+SD6Z
- 6hVJNrezwAKW4eLqZdx29wuV8grGYpRKd/9SjJGr0bzMJxhmnXd9r0WqkaQjPQFv1hTHn/APIn
- +UNtwAAAA==
-X-Change-ID: 20251216-thp-thisnode-tweak-c9c2acb3a627
+Message-Id: <20251219-thp-thisnode-tweak-v2-2-0c01f231fd1c@suse.cz>
+References: <20251219-thp-thisnode-tweak-v2-0-0c01f231fd1c@suse.cz>
+In-Reply-To: <20251219-thp-thisnode-tweak-v2-0-0c01f231fd1c@suse.cz>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -126,14 +85,21 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6CAFE1C000F
-X-Stat-Signature: 7ropin7id8569nu7yab9dh9se5j3dq1i
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1766165934-23398
-X-HE-Meta: U2FsdGVkX19//cSCTn6vWz/s/bAaUroeg5Fhta2gMADhX8R0Yy26Xgpq+Tne9SwGOvlQOHfCNSjs0sVG7P7YNIhv9Scy/97hwnKpwLb1Vm9AxRIA1m+uVhS6CCwcK/INvNtQ8zSqMixdozeUDNq+vxh+wnu2i4X5zygVO1ycZNjdVVw68FfzYdUtDPCaj3FJv5KANHR2ZLsJByHfmECsxdmwNNuHFMN5yRJGpkk07P5+8usbC2CQoCvX3hTqBOWQ/53aN565Qr8jDSCEQ7jtAUSZfspKldj57U9wY9X13Z41PqOzby343ByVsr1WjaDcOOg3QhvMOqDida2ziYLfLEKoPPjx27Y0dw0EDWjrfv74HrOJcFrAOqPX/dxjptu8QVcjkyD+Y25/cENlpulVKXWeEP3kivi6exzsWgIkKlFgvIB0P9xX+qOHn/qsiif0PMfu1sD6GcyfE1pFGwZhUiiy28aVLqHp5zRSsSH1tutKUMzo+Abw2aeaTL9Uguk7ZqwJuHhTLWDvr8cg/nV0RNhwzPiySYMp2nEqyaKrGrClpAE8ahn7MtSFe3Y31xMjMQO94YvnK0Bgt2d567og82vXVWscWir35oZj2C1rY864QQRgwu6e38+k20T9bsJh43FIAeGKJ9mn82aoot54BAGPmU8VINYbn4y8dcqTN+erM5uDnzsZhAMejhXBCo2bx2KuDYs5wN/ikPsnXTSFkm0kBtXz7KgAc7inSVn26RdATC5q6Pv+LvK/F6U9Aoo6WqR+Oufn5dhD2ZbU6ued6DbqewWcB3O0nPRMU1vKrudrm1hTeLI7eDgWDwkgg3ThMLqJsav12OBliFjpnZ28/9HntUhfmiG1ovPdQTplg7M6mJyWDDEL6syeOGptyDX5ktFxk4JZvikmRmnTdSHU9x+mlQ8IY1tlTkOmtV0aO7APqZgvRFCvJ4fmSZ/kfsC3JHsquNdNYWN0h7Kk9Tq
- Pfozg49U
- 8V3PqiZPRU8L/R5SNgCFriaZs5kqpdHN3Z4E1D6xWmSD7RENdKpbwxC9GiDC/SuGAPgspwkNsCAHr0yuBSBRa4ogkNhoOdamXknMQfCBlvxxbjn8Y2zPSWec8265WWj+yTRJjLQTeuWBHHfB3hP9VBuHPEHIf9Ll1gI4+X8OmC+HZu4lFOJNWntfcnx/1wG8uenlvz7mH3Bef6FMwOWE5XQzaHobsHCcupVQT6UPpfx+WNrAicbAXtcYDdLnboAWLERl1U9TO9YwEMioD/v2BZABVgvjjn0kEviIDG8oxkVWomZrGLlgljBvL6mYdjZLS/Tf1e17F4nglQndrEb/r5+8qStB8WD8seCGofJSURxIvHOVhPf27STwDvW0KpAv9mwLwFsoN1s/gicSc14v4/wrJdI5rGjS3oGrY//K8SKMOvQRujxtfezBw3vZ6KyW3/bD7r/pZbVx0pOTY9pi+NaMDXCqP0W5Vbrud
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5A0AA1C000F
+X-Stat-Signature: otsoth4yixuo8fswn5hiebs9xu6qtgyb
+X-HE-Tag: 1766165934-361990
+X-HE-Meta: U2FsdGVkX18X5zIB1ASnysbMy3FwBpb0Iiv9fQC4FaZJ3EQ3wIcacVSBuVy3grA8lWyULFWQQuLjt1V6QOx4cbYTkoXBpXy9A76Ej1v+BeqtH1GvwMGu8aaLzBicT1Icj+AffE/+nUAvbFm4SqOXSdNR0OR0FIdPKyHKshomrrq2ohwemTV7iMBY2zWTRq7MRuptkse2PdmJokshAA5z24u7a1c953Y0RK9zefOsh5TqrJjmB3BtHX4HIPp7tJadbvJaxs4jCSc7LmJrKwBIVnRg+sfI4Ybk96uwWk8vpIX5D2YMUd4U9TM/7HDDFuyqICj34/ZV8Okg2g4mIB+OxltR6QUIBsoBsOI7VsIucbtKmTIM4QBjdRG+1n1n8obs/v4xILmHOs8wFE/ZwydvjnQ9MrctX76keKeyeMPM6N21K+nVE9AqiBp3nqE8H3Hw0rFz4dlkWmKJvJPPIxoqVDUNgnEmOniGnBq1Lqdvws66XzPPVJlufxAHg2HZU8nG71vCk5B10c+JaY6aBXf3mcRBtYh0gcBBVACrzAH7COIccUFQXrdPVIr5o9fJr6eiR96m1W4vgJIvRiSVy9UsDs78mmNLNqnmQfvnBH6dJi4vhEZgTeSSGNJ7H6lxhzFa6tVCLRFp0ASiGvcAJRBleFUNXLsUyPF5fIkn3eKIclPXiiVZHXuYrXeUpPFvbcxZSnbdVHjavUBJYX0AQ5K4XJp5D+SL9M3J6C9PM60JTRxdJMiMO51osF/1OywDWeItqkk5VxhhcikJIPV0yrXJu0yCwDM1YgRhlJ3DWbqYMF5YB4+4Kr6B4qhY+SB8IMvA9/EahJbatEHTtrJzGXx9lM7vrOMLnQGGZnkgQyTm+7eX5jnCxsKMfvzg1r8WmvemDM/jADjaUw1fuDZsusTYv/zlX+pIhJE3NtE1cxX3dNV751eIOH+V8ueZRWtE8Em8dy2Qu891+6h78UcU0H9
+ XpgY0hHR
+ 40oZSUCqstsDLFWaLdrrcbTnVU+KTIXQSMmhRvRkF3xdnXAwsQJByBbUjOAUqgxD/4M8a2FjTFsKiaiX7bTsdyLdOCC9Yit7x3a7n4/5ONb2B6hQ+k5VzrWigmFNUOuh5+L1krIkOBXwffrFRrGstBy4fUHsjSiRXSLu2gGZRD/CYzwFYghqnjHGfmcx2XFCFwq3DMasN9y2n5tArGju0ELFB9q+GqMQNBCx+MqIQ8zppXi0h5s/4B9K2BjOCI3QGLS0Q6Dzegc5MrIU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,44 +108,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-RFC, feel free to ignore until next year... Sending just in case
-some feedback will materialize.
+The initial direct compaction done in some cases in
+__alloc_pages_slowpath() stands out from the main retry loop of
+reclaim + compaction.
 
-Since v1 the main motivating fix (patch 1 of v1) was sent separately:
-https://lore.kernel.org/all/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz/
+We can simplify this by instead skipping the initial reclaim attempt via
+a new local variable compact_first, and handle the compact_prority to
+match the original behavior.
 
-In patch 2 of v1 I have proposed not to attempt reclaim for costly
-__GFP_NORETRY allocations at all. Johannes suggested that we should not
-change the semantics that much, so now instead we allow them all (except
-with __GFP_THISNODE). The main idea that remains is that we don't decide
-based on the exact compaction result anymore.
-
-Patch 3 is a cleanup also based on a suggestion from Johannes, and Patch
-4 became the obvious next step in that direction. These should be making
-no functional changes.
-
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
-Changes in v2:
-- actual THP reclaim fix sent separately
-- allow one reclaim attempt for __GFP_NORETRY allocations
-- further __alloc_pages_slowpath() cleanups
-- Link to v1: https://patch.msgid.link/20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz
+ mm/page_alloc.c | 106 +++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 54 insertions(+), 52 deletions(-)
 
----
-Vlastimil Babka (3):
-      mm/page_alloc: ignore the exact initial compaction result
-      mm/page_alloc: refactor the initial compaction handling
-      mm/page_alloc: simplify __alloc_pages_slowpath() flow
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 9e7b0967f1b5..cb8965fd5e20 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4512,6 +4512,11 @@ static bool oom_reserves_allowed(struct task_struct *tsk)
+ 	return true;
+ }
+ 
++static inline bool gfp_thisnode_noretry(gfp_t gfp_mask)
++{
++	return (gfp_mask & __GFP_NORETRY) && (gfp_mask & __GFP_THISNODE);
++}
++
+ /*
+  * Distinguish requests which really need access to full memory
+  * reserves from oom victims which can live with a portion of it
+@@ -4664,7 +4669,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 						struct alloc_context *ac)
+ {
+ 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+-	bool can_compact = gfp_compaction_allowed(gfp_mask);
++	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
+ 	bool nofail = gfp_mask & __GFP_NOFAIL;
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+@@ -4677,6 +4682,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	unsigned int cpuset_mems_cookie;
+ 	unsigned int zonelist_iter_cookie;
+ 	int reserve_flags;
++	bool compact_first = false;
+ 
+ 	if (unlikely(nofail)) {
+ 		/*
+@@ -4700,6 +4706,19 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	cpuset_mems_cookie = read_mems_allowed_begin();
+ 	zonelist_iter_cookie = zonelist_iter_begin();
+ 
++	/*
++	 * For costly allocations, try direct compaction first, as it's likely
++	 * that we have enough base pages and don't need to reclaim. For non-
++	 * movable high-order allocations, do that as well, as compaction will
++	 * try prevent permanent fragmentation by migrating from blocks of the
++	 * same migratetype.
++	 */
++	if (can_compact && (costly_order || (order > 0 &&
++					ac->migratetype != MIGRATE_MOVABLE))) {
++		compact_first = true;
++		compact_priority = INIT_COMPACT_PRIORITY;
++	}
++
+ 	/*
+ 	 * The fast path uses conservative alloc_flags to succeed only until
+ 	 * kswapd needs to be woken up, and to avoid the cost of setting up
+@@ -4742,53 +4761,6 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
+ 
+-	/*
+-	 * For costly allocations, try direct compaction first, as it's likely
+-	 * that we have enough base pages and don't need to reclaim. For non-
+-	 * movable high-order allocations, do that as well, as compaction will
+-	 * try prevent permanent fragmentation by migrating from blocks of the
+-	 * same migratetype.
+-	 * Don't try this for allocations that are allowed to ignore
+-	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
+-	 */
+-	if (can_direct_reclaim && can_compact &&
+-			(costly_order ||
+-			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
+-			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
+-		page = __alloc_pages_direct_compact(gfp_mask, order,
+-						alloc_flags, ac,
+-						INIT_COMPACT_PRIORITY,
+-						&compact_result);
+-		if (page)
+-			goto got_pg;
+-
+-		/*
+-		 * Checks for costly allocations with __GFP_NORETRY, which
+-		 * includes some THP page fault allocations
+-		 */
+-		if (costly_order && (gfp_mask & __GFP_NORETRY)) {
+-			/*
+-			 * THP page faults may attempt local node only first,
+-			 * but are then allowed to only compact, not reclaim,
+-			 * see alloc_pages_mpol().
+-			 *
+-			 * Compaction has failed above and we don't want such
+-			 * THP allocations to put reclaim pressure on a single
+-			 * node in a situation where other nodes might have
+-			 * plenty of available memory.
+-			 */
+-			if (gfp_mask & __GFP_THISNODE)
+-				goto nopage;
+-
+-			/*
+-			 * Proceed with single round of reclaim/compaction, but
+-			 * since sync compaction could be very expensive, keep
+-			 * using async compaction.
+-			 */
+-			compact_priority = INIT_COMPACT_PRIORITY;
+-		}
+-	}
+-
+ retry:
+ 	/*
+ 	 * Deal with possible cpuset update races or zonelist updates to avoid
+@@ -4832,10 +4804,12 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto nopage;
+ 
+ 	/* Try direct reclaim and then allocating */
+-	page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags, ac,
+-							&did_some_progress);
+-	if (page)
+-		goto got_pg;
++	if (!compact_first) {
++		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
++							ac, &did_some_progress);
++		if (page)
++			goto got_pg;
++	}
+ 
+ 	/* Try direct compaction and then allocating */
+ 	page = __alloc_pages_direct_compact(gfp_mask, order, alloc_flags, ac,
+@@ -4843,6 +4817,34 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
+ 
++	if (compact_first) {
++		/*
++		 * THP page faults may attempt local node only first, but are
++		 * then allowed to only compact, not reclaim, see
++		 * alloc_pages_mpol().
++		 *
++		 * Compaction has failed above and we don't want such THP
++		 * allocations to put reclaim pressure on a single node in a
++		 * situation where other nodes might have plenty of available
++		 * memory.
++		 */
++		if (gfp_thisnode_noretry(gfp_mask))
++			goto nopage;
++
++		/*
++		 * For the initial compaction attempt we have lowered its
++		 * priority. Restore it for further retries. With __GFP_NORETRY
++		 * there will be a single round of reclaim+compaction with the
++		 * lowered priority.
++		 */
++		if (!(gfp_mask & __GFP_NORETRY)) {
++			compact_priority = DEF_COMPACT_PRIORITY;
++		}
++
++		compact_first = false;
++		goto retry;
++	}
++
+ 	/* Do not loop if specifically requested */
+ 	if (gfp_mask & __GFP_NORETRY)
+ 		goto nopage;
 
- mm/page_alloc.c | 169 ++++++++++++++++++++++++++------------------------------
- 1 file changed, 77 insertions(+), 92 deletions(-)
----
-base-commit: 81a5997c0d5ac4cb3ce65f1128197cb751ccd15b
-change-id: 20251216-thp-thisnode-tweak-c9c2acb3a627
-
-Best regards,
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.52.0
 
 
