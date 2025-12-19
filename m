@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA8FDE66895
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5289E66895
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 21:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F0CD6B0096; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
+	id 235EC6B0093; Fri, 19 Dec 2025 16:42:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29AF26B009B; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
+	id 205B46B0099; Fri, 19 Dec 2025 16:42:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19CD26B009D; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
+	id 111496B009B; Fri, 19 Dec 2025 16:42:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 091FE6B0096
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:38:19 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F05B76B0093
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:42:44 -0500 (EST)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE6E58A597
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:18 +0000 (UTC)
-X-FDA: 84237534276.18.A40E285
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BCF3E100014
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:38:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c2xbR6GJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766180296; a=rsa-sha256;
-	cv=none;
-	b=nSKfJlWbVVaSycsCJ1m6gTOeFFBKG2TpbeqqF0hmeNF3avI9Puyep9QyJ6S9AwGjYuDrrA
-	f1iVSubK9Tp3OlXlvJCIREAB/uSh0i2Q6OhlPU3p7V9COeBkIH1PvVkRCCUI6ecDDgN3xO
-	/sxmSRL6JhLlBAgJmlQS0KUJrc+3irE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c2xbR6GJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 942B786935
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:42:44 +0000 (UTC)
+X-FDA: 84237545448.18.69D2F37
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9431EA001B
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 21:42:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jqlzBM9K;
+	spf=pass (imf25.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.215.196 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766180296;
+	s=arc-20220608; t=1766180562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
-	b=c9G6yKOOcwr/U6QsNwnOjQdmGhCLeBMXx/vD3RkLyE32yE5XCqIPpTh29IikdSciog/Mxb
-	0DChrWEsw5smaRTefJm6C5bDaYiuj7PqPXi7Ki+IYun0SWsF3Mx+482kk2Ez6U2OzCOrjl
-	0o3Dp1t0aq5zmaVzATcHlZSujVI/VU4=
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a0d52768ccso27772115ad.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:38:16 -0800 (PST)
+	bh=xhB1Fco/aAscGV7BUmHv+KRyMsa6iylEkhRycjuIJTw=;
+	b=deQNt76RRuzULxgt8j5ysdf764bI2knC9C59vOfyObOEz4Jk0sPokpvcn8VyUA0F6BfgRj
+	DTa5VushXEFrflMppxWymheTSvlnBKqVIVxOfo6Da4sivtsnm73jVHqBjNeVq6YvaOxYGR
+	3VW8ENSyGqGfMagXPpbQ02v8aLPDVsc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jqlzBM9K;
+	spf=pass (imf25.hostedemail.com: domain of bart.vanassche@gmail.com designates 209.85.215.196 as permitted sender) smtp.mailfrom=bart.vanassche@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766180562; a=rsa-sha256;
+	cv=none;
+	b=27RPHle/xoIpCHUK+tMvhQWLSpi0TjfxYK/syBiazjAUKz87fwe/YE+c9SJbALlYxZ8hWs
+	CJObBMmF2yIGH0ARca8hAgWiRSk7bnHHIbQNOvs5rxq4nrcMYjSh90e3sL3wkR2BIwfefp
+	6w2jyBpVNdfJlKqSAouL4e9RrBaUueQ=
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-c03eb31db80so1672731a12.2
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 13:42:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766180295; x=1766785095; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766180561; x=1766785361; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
-        b=c2xbR6GJwnrKU6KyALcnr3Pyooa2PMCf7PiD1dfkToTbtA0CaZnPZGb0JXI2KQkDV8
-         RR5ZfwYs1GmeHznLxNEvJLo0NfesPgwCbAv3PuDyQnGGajmW+6FWDrI0bHuOfkn3CgyX
-         PxK823zZjd7AhKrOoYFGfw7HSIyp+HaJ6wX+5zXWyiNp9pUvyLB6w6z5eqV9JAUKwS52
-         vWTKgyLYthI/9FcpA6BCSlFXLtdAIxshbHSxNsvEcywNcHwXvF2CIbuRb8x5uhU83nFy
-         rmJgsXSY13xVPqOELdfHkBjWoyKvNB6kWEarGy+yf5VRx4fUN/CD8sRQr/AQ2yJh+pXI
-         Ryug==
+        bh=xhB1Fco/aAscGV7BUmHv+KRyMsa6iylEkhRycjuIJTw=;
+        b=jqlzBM9Kr0uhfl9F/bDU1HsTvVuJiPrfHF3yt5sY+e7JL40XDJpeNwvN1s37clJaPw
+         9sBxOS2ljz7xC2s0iOWPqMud/M/9+h0wHtJRZJX6EWVb6fP3/IiJ9beL9X7h8WFiK5z4
+         dbJbp4WffV5n2fMRSLD1DJM5Mvj3+WArriPy86HuM9j4q0bO5A5uxn+DIAfrXm4EzeqU
+         5WmwZ7SSoL8BTU1EIfEOy1tOrZUImsNtX60q1Lvipj4i5QteJn8O5RZheKERrCRPTzwi
+         NQWWF5NqywnklAJDeVEjO5TiRltwTOD7ZyxzR0n3d5RXrjIgHaSOLdTzDh560Yz3sxhb
+         +Dlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766180296; x=1766785096;
+        d=1e100.net; s=20230601; t=1766180561; x=1766785361;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SBHXkRgMesGUJGSlI+YkckhHJhyJOUbeeY6s/H5FeUc=;
-        b=HgY55r+02omRhalDRpv97gh0Iz8YGYp7+E7HDzs7llf0d0SmBcPyGEMKB02eDJecNa
-         /5wThy7yCacNT7Hg91KCkO4WvdVO/W+w9cWQfYUWwmnkBXn0wW9bYpumFKrto8+Vnt2v
-         UXFu8jEACt3Mba5t3fxKDfJT4RUjkIPLAZzmuB/npEVvweS2jBpO6rhkJtdFyAn7oaBV
-         hZt5IhXSv/pfVDDpAFoY55/vTHjh88LcHPiQElCaxbqIK9QNbBopp0HS3zhOhTaNbjxr
-         GJXBSjvMKoQIyfvMrSiw3o4HN8MT6mzd0MrGt1P9uXSj6kBlCVPcWrEfNXn3uSE750am
-         AKUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWCndViGhJHwN9hV0aJLsjBeTMYCLoDzVlge8qxm0PZZD4zeOiLYTNutlM3gyieb8E2N/00JM8Wg==@kvack.org
-X-Gm-Message-State: AOJu0YybK14w8Rxk/4WLPXnAdPuUdIRjAHOAZ35/ZajRn3BEaWv5HqTY
-	+garGXNABfuPWJMvqRqkedKCr3UWZ7s1K6a/9QKm2wp0OCtx9CgITTJ3
-X-Gm-Gg: AY/fxX5mwDitgGoPEDlVP/WVwbFXGgQU1uGEvG07rkP65pRPUcQpg/B9nWd61zewFPK
-	BHFMDXcPbh3U8W+ieN6piuvsXn9zzC1SZcFfHIbxPVqVMd/JHc7IjI2J1u4VWUJ3mN5c2AH2FMz
-	0h2yktPe/XKQf2SH4SqB4GHKM6SiRolCygj2sfIIhSBm6zQeP+ShhpNMkh772dLy+U2Mq19v9XZ
-	F7J+HncmweExa7/MZ5zlrTxvgCsbBLyyjIORNF6NuyLIHPZwsROwdIo3MNUs47nYN0FexT0u0AD
-	icYBsaeaUDReO5HP0Fvy2MTf1EnKf+dn5Y8z+y+11jFW9dceHi03NQm6wZojKZBoVFeRWtGMqn9
-	hpe2kXsIMt2FLGIcphrLrQXC6VicTinvFySksGhs7OzypyQG71P90OMwaYmV+UY7aNghY5rYbPD
-	t7M+Boj6BaC1xwMNKXvTuos1O+zbQtnce/jwgH5551RYaYgv+Gpmzq3t6vyKoz1d7kmVccI+FE9
-	7/q3sTzbNWiToqEXlPtbeUVPetxk4NbzlUT7BC2ZEZ/2U75x32QbRj/8v98OzLQQDgod48lFMLj
-	R+c=
-X-Google-Smtp-Source: AGHT+IGivulZwqOvq9TkwT/0JBobQprm3JRJ6VtJUw4ydSXEmlT/iKTWxEeMw8/Q4ZWRYLdEwZEKQQ==
-X-Received: by 2002:a05:7022:e0c:b0:11a:f5e0:dc8 with SMTP id a92af1059eb24-121722f462emr3455845c88.28.1766180295388;
-        Fri, 19 Dec 2025 13:38:15 -0800 (PST)
+        bh=xhB1Fco/aAscGV7BUmHv+KRyMsa6iylEkhRycjuIJTw=;
+        b=hHmS+tds2yLLNrLEdBb2QCZhdVdiziZVcXCjpAtUs//CjtrtbriSyVYfvE1Wa5SuwB
+         D0eUJW3YYEs8V73L9tdEcpIsKSM5ljMqdCWem0F4MuqSwEVvwv7x0TrOIJEjD9m8F3br
+         ceRMvoHzIzOgDgo56Xs7QMq8oUe2cR8vUAh0A+B90R0iRZL5wNka0ttcHtoV/9wfDYyf
+         T6TpHwM5OJt0wUmTR1Q4YB3M8vuK3R2vVGRCF0gDnh0WxVSrNCWmOlhBfDyfFE671L9P
+         Szuk9DgubgMH/YFkDfeXr1xzj9bsmEkcYz3fvJIvzXM9nRP6D8zyn6RFPs6+VmrMl6wk
+         CYwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHY7lz29JtRnDfluhvScnuB/KjK7Kzlwurx5TCfISv+YxwEGK7Z58JJhu/kL6uQ376XgG2XO1jBA==@kvack.org
+X-Gm-Message-State: AOJu0YwZoj72YZRoeT6Tvl0xXfe+bTF3P5OtqvfN+LPggY65FQhtXo/j
+	EBdPJI4VVzC76d2KXiEqY2oIDxFB/r045vm/lFuI8Mks/9dr9mazAd1B
+X-Gm-Gg: AY/fxX7VWfSCVCz8Yk+EUIVURcEvHrr9q4EZGm+42mED6F4W6s/OLgMfRt7zERsFWth
+	FBdCEyPPFxP33Mc8tM1nMKiOZtZvpoCGwyArfmpkcg+ZLPiOnNqMbPDUqdXgbr//E8fCc7fAQqj
+	wM1wc8b3gc2eUbGTCct4jubMPphswQHhqN7Hzx3soaWN9MqiRXymE9MxR8BHjiStek92cOYpfXB
+	ma8kWEvfCEI3tUJT2Qrdbe03YSNlGBqFGguDmhmdNBAdMQxC6Us17oJMPHOpNhPKk82XSsjR2Dk
+	7hDlPMlEMy/XcEBAK5NUUlsrbifnQQRv/d1hP9atSHDA3emM5y7s/cdFEAikdUSBGm/u0Tjdtg7
+	V3otIm6X2OJUJVjB9Sp22BBdQMH4srX1kxcg32icqSK/JW7jbpGhrSKZe42muPJVaDXzaQaGbea
+	kr/Wfgp5vgQaurgr5mgKxI/seROas3P9VdCsXHk5QDrHWFkJYhqInvqjASBpRpD4gLt5EBvr42O
+	jYtCFtKx1HGjDp4EWyQiiOsX2+Vgk2Acqaj5LJpW9EsWnhKoBUp7T2VxHiWZqn7HCehRvV1C31c
+	VcU=
+X-Google-Smtp-Source: AGHT+IGTM6mjPPfNhqA9HPe48U2bDECheHzAzGuJpcTxojW/wC3VfdWLu4jNEE4Msq7vw7t+QoPUtw==
+X-Received: by 2002:a05:7022:62a9:b0:11b:78e6:8323 with SMTP id a92af1059eb24-121722fd212mr4438541c88.37.1766180561251;
+        Fri, 19 Dec 2025 13:42:41 -0800 (PST)
 Received: from ?IPV6:2a00:79e0:2e7c:8:5874:79f3:80da:a7a3? ([2a00:79e0:2e7c:8:5874:79f3:80da:a7a3])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfd95sm12051531c88.1.2025.12.19.13.38.13
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217254c734sm11636083c88.13.2025.12.19.13.42.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 13:38:14 -0800 (PST)
-Message-ID: <34cda24f-acdc-4049-9869-b666b08897d9@gmail.com>
-Date: Fri, 19 Dec 2025 14:38:12 -0700
+        Fri, 19 Dec 2025 13:42:40 -0800 (PST)
+Message-ID: <9af0d949-45f5-45cd-b49d-d45d53f5d8f6@gmail.com>
+Date: Fri, 19 Dec 2025 14:42:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 23/36] compiler-context-analysis: Remove Sparse support
+Subject: Re: [PATCH v5 24/36] compiler-context-analysis: Remove __cond_lock()
+ function-like helper
 To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
  Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Will Deacon <will@kernel.org>
@@ -131,20 +132,20 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
  linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-24-elver@google.com>
+ <20251219154418.3592607-25-elver@google.com>
 Content-Language: en-US
 From: Bart Van Assche <bart.vanassche@gmail.com>
-In-Reply-To: <20251219154418.3592607-24-elver@google.com>
+In-Reply-To: <20251219154418.3592607-25-elver@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BCF3E100014
-X-Stat-Signature: 1r9by7x1o47bkw7g1f8hcup6ok9hkj8e
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9431EA001B
+X-Stat-Signature: igcyzhc8redm7b96bbho4gdrinbzwnm3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766180296-858211
-X-HE-Meta: U2FsdGVkX1+u/XKdRxQ6cmSB0uiOXQefRWXdq7Qnhb9JqoNJ2ZB1nErhoXcjPBsJmzvaEKDd6IOlcTHChQ26FWs4FEjH3zYGFXA2kp0sWjWOTeZUWFAfq0GnH5fgqU3qAp7KBulnCLrcdN0R9Fx4dDTlxeIg6eIch8QEppwtPOAOL5Nl3e1qFU6Ee7UotUyZajgALqb50lipwa3mdGRxVMdT3CGf2g5QzdlsCODntt89hfFutK7F5CG40DOe0+CgL9qRcRe3BqwQLJGZ7IC0vb9bT59ZdBMc8cKTsuOiODRP3I4+8uVQJXy4xgXSOmjFVa9BkeGSSzgbXDJ5ExVq6CAhnKWHYb0pNT6cK7LdDGWU6kxaqoSPEno7iq8+FHPxZLmSPUKSwVjH+b313ExqKKVcOSubnTY9odizQ8xPYcJH1RW9aVfHvh2bhNdA5LpCun/3au04cQVA+PRl2W25W4aSrpi7bgvQFGQVYjiiLEq00suku5rU/NCn+B3KzMDx02J7NWYvPCqzEfQKP4yUJLAGcWrq3S/tQbZAY9PxiKbyYXOfPVL5Fhjz/I9/dcNBP3ZriTuLpCMAIeH3KbVG5u4LuvLLcLAgsGTsIGm9wLZyAHhqy1M0BNIhR7V1edghnn9Rpz3hgnmmbqLSZ3agS+XPwoILmEscD8YV33vKu3X50jvNpt0zRheYSc27gd9UHNmkn8fD8jxVGzTfSrTQg298/XSeno4jvfHFMyAQK5s4aLaSndNAxX0wFK93deicCO4BGGkoG2yPTOqUiwkAwt/nv2oZGvZ5wl/81DaWwDRv4G0AcXrEfOsL2QSLr1+eiEZr9byulwa2BQzco2swI2esIUGUxLiIc8D54QPLansb1BKTxRzMExRx3uuVcotvTUBDTHJrzFWV5UhZCH/q+hwxqVtYBp4eqfHUuBWh33MM63BbgPdx4DH7clTfl+ci0BPKcgIoiOr/SX1pfuI
- NgNGIS8d
- Njbh0tHit6dhCXnOdkPMlWTqsrXI7XD2T5g2r0oEfggmx6vecf4dMebY9jEvOWpmLHv4VO9VQx/+gGAm6zYKYzcFRP5RWAVrDpqqSzDYavi0jrFqt12Mk5uhZrYpPROnogmuJJfX0Lzatu6VRB+rpy7ZSzu43hkRAIIulqKDGTG9XwttI1g7CfE4tBhjQcRX5MGk+Iqpo3LcCm3/ws9eOs7lXKRLdvRu4e1QcCxJVsPVOs39Z/nc6VPtdvNVKzHBjIHwyPy3NUYE+FEta4yPjPRq2WQu0Yj2LCKNmmaNpTbU8Expv8azeqeTUGBgLH81nZ8NDwo1AwfkMCwZdpSyqj62JuHIFJEpQ3EAQUcqBcVOuQEK4ls9GbyuMsxfVtyO+zCziuOhD/Db4giCuEvugNm6ptWXgYKh1nwcTE8X9BZjZgD1/bEbvdvq/6pR4IBo4SbPhRP3W/hAVUjCbPdy7mqi32I4qvuJHy2A9APWrnOwY/nlR/0nZhjVThdZwndOl0C9BEsjSrtBn31kju92FlUZMd8Ybjgamkyhbx2nvuzyMsIMSTwlVSPC5KLLRpptlqKwsM7Y4gS6uk34IxyZgJEZuOuwd99yyqlOpcxtlzhpHB+jbnku0zeWT7908dpi3iumHKCSX4cSdWX9bljR9LTjRz5AL5qUE+P/M01z3auZFccE=
+X-HE-Tag: 1766180562-143698
+X-HE-Meta: U2FsdGVkX19Q+/QDh6P2/0kowIrvvR42ux5u/d3DlVnm6Bqgry+pDuFi4IfjskfcEjqfxyde/Ceid0Z3B17VV3Mfq4BjFqiZld1SbFdbOKk+MxUITYjE6jO7xLUuxGIPV5ujJhVAHmVhy/lXF/Hv85au+f6DlaSN356JVR2x5rIcDBCJx7sgXkfc7or0SSngQZjtKn8SRSaQUsaDwM0zc8HshSNu+InWZpzZDBcVT5YO0aUxGDLrBZo5ryDNWcoEy6UdvS+tUjEbhaMsJyw4BuKfIOD2aKChyf2YkL80z4V+mJQwanSEESeMS9DQt9ZvtlsCbcxfrPOV+KOv30CmaizYGdYtCAj2U6zwLJJNKHGLtaHMOe2PvVzhkp14MANY8t8bFzDAVZf43b03PcyHVUwbAbjwe4gx+HL+anx+LbFn1wyKuNCrulglmB/6E6ijMSJxWhezddiWOHYZL+hWAIGui1NgnNhgzp3Yya9lsEyjIf/InubAVEB7vE6jgWUIxwfa9a7NEybymVttSvaYzV4Pkn1Bs02dM5sWIs0FmMe/P9EUxsEV8KPnrUlIat2+7+hzAzpyPhmEnt/cSZoCoGew/QXHHikgJl1lRgRruoDDRn3gtaEF1NoaGVFV1e3G5UXm7n10prIuMpZ18RmeIndtUGLzv7z9vgE5hiXMgEGP9QWNHaNIDRQPugJGBImuXiJBkQ3jDiu2xA0vTrhjRHAWqXvg4jX2WleTRypzX2ahW06bm1RlLUZxfptnqip9yVyyO4ibnjcWW+N3WdHQ5oInPn9XQRARZD46F9PHT6g+adAvItVK7HqhaUSHdIA1FHPiFhfEH39icso4U6QGOqmm/BWTMzGbX057iG/lzgDGg1X/YYSuSLhVozr37SeEMz0d+7wWCSEE8R8UIF5evSPnkjNsx8myebFytG38WjwaiP/PNkJqZ3PLp3wzkg5cRNBIXQXjax2mrPcOHVT
+ fG2osXOU
+ xAO/4D84tVREROqxAEU9SG6taF/Cw0Okbt06jK8xePhvrMLxLaj5rZorift/2zLavzqn9gav0M42B4q61Fiyk6d6c/yNtwOPdj+bD5km+JeDUyPYcL4K+VBKomxOv4H0z8mQb8cTILjCLfOO4C+WdXHQddCxYw3Np8ent4wY50s+rTylO1oRwEZAmzr7Of2NYdy6zwzAL+T2NDMDeMOpCHRSuaF8sV9KPegEqyoDQecSbtIb+gyzSzQWMqOCvwNWHGg+wt0RNtCdiLYk9oQrluK8p6AcXv4t4QcMc0R3VJiYsIGe8r4pcgk1V6Q397BUKnd5BGFEme7jR5+48GI4ht8ExrM+0rReV6CwY+QyefMaa7qncFN2UIdfFxWY/L4Ycms/HSsEgsPp//nVJm8CQ/hrsMj4+WlOGA/HyAJdrliisMO+2NFvJJlYucG1OwdKb5lN2phFoUAMqP7wwh2b3Mg7VQ9nobS11xQK9JhYtgrrrHZ/w90lriVd536JDKExc4xJTA5qbaqebK0VP1kQoMXECqgynX2bTO67PvKMIVX8Y50c5FQMUa7stOR2lLA+CXfN+1D53DAhpnNnhTbHNwFKB0baJm93Y72H3TGGNDq+bsLQ/SRx20RAs4HA7InbQ8opRkEnWYCcloJSFeuHxZ2B0+S4JDt9bHLAqZ2MhpKBYevAhe8pONDVV0m4UD9sGKuAdWY2ijCjWohfaoXaAgB9H1AsDHnidjrDK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,11 +155,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/19/25 8:40 AM, Marco Elver wrote:
-> Remove Sparse support as discussed at [1].
+>   Documentation/dev-tools/context-analysis.rst  |  2 -
+>   Documentation/mm/process_addrs.rst            |  6 +-
+>   .../net/wireless/intel/iwlwifi/iwl-trans.c    |  4 +-
+>   .../net/wireless/intel/iwlwifi/iwl-trans.h    |  6 +-
+>   .../intel/iwlwifi/pcie/gen1_2/internal.h      |  5 +-
+>   .../intel/iwlwifi/pcie/gen1_2/trans.c         |  4 +-
+>   include/linux/compiler-context-analysis.h     | 31 ----------
+>   include/linux/lockref.h                       |  4 +-
+>   include/linux/mm.h                            | 33 ++--------
+>   include/linux/rwlock.h                        | 11 +---
+>   include/linux/rwlock_api_smp.h                | 14 ++++-
+>   include/linux/rwlock_rt.h                     | 21 ++++---
+>   include/linux/sched/signal.h                  | 14 +----
+>   include/linux/spinlock.h                      | 45 +++++---------
+>   include/linux/spinlock_api_smp.h              | 20 ++++++
+>   include/linux/spinlock_api_up.h               | 61 ++++++++++++++++---
+>   include/linux/spinlock_rt.h                   | 26 ++++----
+>   kernel/signal.c                               |  4 +-
+>   kernel/time/posix-timers.c                    | 13 +---
+>   lib/dec_and_lock.c                            |  8 +--
+>   lib/lockref.c                                 |  1 -
+>   mm/memory.c                                   |  4 +-
+>   mm/pgtable-generic.c                          | 19 +++---
+>   tools/include/linux/compiler_types.h          |  2 -
 
-Kernel patch descriptions should be self-contained. In other words, the
-conclusion from [1] should be summarized in the patch description
-instead of only referring to that discussion with a hyperlink.
+This patch should be split into one patch per subsystem or driver.
+E.g. one patch for the iwlwifi driver, another patch for the mm
+subsystem, one patch for the rwlock primitive, one patch for the
+spinlock primitive, etc.
+
+The tools/include/linux/compiler_types.h change probably should be
+left out because it is user space code instead of kernel code and
+the rest of the series applies to kernel code only.
 
 Thanks,
 
