@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40170D767F7
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0373D767F7
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 11:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 993366B008A; Fri, 19 Dec 2025 06:46:15 -0500 (EST)
+	id 09ACD6B008C; Fri, 19 Dec 2025 06:46:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9409E6B008C; Fri, 19 Dec 2025 06:46:15 -0500 (EST)
+	id 041736B0092; Fri, 19 Dec 2025 06:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84CA16B0092; Fri, 19 Dec 2025 06:46:15 -0500 (EST)
+	id EACA16B0093; Fri, 19 Dec 2025 06:46:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74A276B008A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:46:15 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 104A51A0597
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:46:15 +0000 (UTC)
-X-FDA: 84236042310.12.ED4A149
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 12BA716000D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:46:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bf1Vw9GC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766144773; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D81F46B008C
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:46:48 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F4A6140436
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:46:48 +0000 (UTC)
+X-FDA: 84236043696.11.2993B09
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CCEE6140006
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:46:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dETzg5j3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766144807; a=rsa-sha256;
 	cv=none;
-	b=Dqm56f5AtIYdJUBMStjZdrfEYnNJszmWpd0Dmb0OXQ8Uh/qXEF6u4JLfNTVuaWqvOWVicm
-	zutXtWGIztceWXGfOHIMENp5OFeGhrKxtquQdoWVzZuF0RE4NKyPYxnNVaRjVp5G11in5m
-	krYr8g3Dw3UI1no1NjeJzPTLhVgd3gU=
+	b=p0fDXLKXmuResZ9G3qbRIvZ8TpnqbM4S7onwpdun6c5J++Rqyo/MpV31+omTCRM8vTch07
+	DdeQiRfProyjC+xtbuZEP7dbAy476SNoZZy+sc53sfj7O09voWofhlLPYny+BWNbpy9lrP
+	P9t+onMYhFCULNbsZ2GPu6DPRjmlAnM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bf1Vw9GC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dETzg5j3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766144773;
+	s=arc-20220608; t=1766144807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rl/HhfNUmBpNdPZ4Vhl3wzuhLZQ6/j34huusrLevL3I=;
-	b=STSQijL2JZMxIvVUEkC5H2cHymDp5cmABCw7zY8+SZZWjKhBSK6gSLVj8TGn4aHA5pOLMp
-	JXMvYjRil7AQhABuf2kNls3Z1BL7Yy/UnN6raEjChY5dRkwDDcOM2toAQp2jrNK8c9Jc9h
-	4mkc116AHt7WjFH2i53uipyZ5cb2aJ0=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7f1243792f2so1169407b3a.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:46:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766144772; x=1766749572; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rl/HhfNUmBpNdPZ4Vhl3wzuhLZQ6/j34huusrLevL3I=;
-        b=Bf1Vw9GCUvGSY9kQi8BCPwCIt9TyqRxsQCIKdCo7i940usECM0XGStRZSI8n+VVIOP
-         yvYek9W5QyqZRGxxFfrj8fTpNrk4A9SUzDMCqakphVYofIGfm0uIdzXS0jdvGEjqMfCP
-         1tU32arMqxgefY0suOINjPSHxvoo/SgstbxiIu7o49E+7sJtTTCR8zn6Mej8DeGZYX3T
-         zxgDSDxl1OYNpltzc2hh4cPweb5P332oJqxfd1w1LOeY/SH+uEg8byUzi0w8RBMiIPOf
-         sLHIFJ4AIfIshPkUjZWCBuld4TBCtgNVyaHg6FAG4Cx2fM7zDLnQymU8h0qykNwcppN4
-         sr+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766144772; x=1766749572;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rl/HhfNUmBpNdPZ4Vhl3wzuhLZQ6/j34huusrLevL3I=;
-        b=s8r1gEhUNciKg3zww5wFNxhCmJ02N7ZbUf4GBS+wS456s+zUKhiK5IbbHiQJvrQiEe
-         +m3MowbxfoKot6DbYHK8Rt0NU4hmsHHChkSv9pKqAm+AmVnCGADWDFFwqLD5nqJLg+C4
-         HnnhoVy/ywfl+RJPaB6w2ZLzEoAnDqmmOxjnr2zEJ9mxN7R9rPQqqetf3SrEuUoxHIwd
-         Zw3SivB60aZkOKcRhRrn7iViXIbSdJtf7pIM/UDwUirwGmE6dSg7wCn/prZKSxV2v6cs
-         TKDzppqZrWIKzpfscCkftHwDh8Sqqd4J1K8dIY6rbB0+49yChj9rPpUZL7k7kyU+D4hq
-         GLow==
-X-Gm-Message-State: AOJu0Yz5teErUuidrsKr38CGNXRBu4hO4wVJD0qEWoWu+ehxSSqV8Eg1
-	ZRUFVYz1KmNQ5g12Nxgc5RiCue6j9YApEBpbY/fh/fa+238Z9TRwR1Is
-X-Gm-Gg: AY/fxX6W4xVgqoHPYXe8ts29FhrCKtTBv+GWPYylHGjEfpL35pYo592sQy+wugDTXHT
-	hUoDU8h6lk1wDG2ETVqDiapbAy3C00FXvJJz3GPPJjC/vl12TWJmlOY0Rrz3hkTmia3aw7ltRAu
-	DdNBA8SoDv+oX6ckZYXz0cdP6b3MMu+qI4vyId0zy9lODBP8N3y5tui45a/Eyc4Tm68s3uhVd5a
-	eHRrALmj8wkWIT0vN443kwrGPiJHrjl6l0Xfg3RXgWajuTjHBbvP2zJaHMLyJt0N6PgUNhH0uYX
-	IGjr7t4+0FuKiWpGkDz0AV3PbuClMtBSpdMrFhxliQIxZeMIDNUHzbt4zwWA13Kzyz7aqtp8XU2
-	NbFXY6xv4699aZ03gmsYblzYhUllnbjzWMzd/ZCQXobdsCPCFnpjz396sJ+Ivi8I1fOk6K3jHQR
-	MWN53itdePdGlueIHexXY4r/5CsU5iyOukHRM3i3Pj+VtBp8dS/mq6gYZJQ/igaQ==
-X-Google-Smtp-Source: AGHT+IHzCGGOJMbQVjU+hHPeRVwjO5kFs5Ts9BqZjo3kbiC4p8MmrtBR6zUkgvgBtrq1eN6zOAJ73A==
-X-Received: by 2002:a05:6a00:430d:b0:7a4:f552:b522 with SMTP id d2e1a72fcca58-7ff659964b9mr2333866b3a.27.1766144771692;
-        Fri, 19 Dec 2025 03:46:11 -0800 (PST)
-Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfac28fsm2201725b3a.32.2025.12.19.03.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 03:46:11 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 19 Dec 2025 19:46:00 +0800
-Subject: [PATCH] mm/gup: remove no longer used gup_fast_undo_dev_pagemap
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JxgLbUKw1Akc5EtQqDOSy+Z3+O0YY6pI9k2byi7wuBE=;
+	b=difPI6yXk1Kf3ZrQ0R7LHsfknn/WzkmMeSC0WyVlk9iQU0T292x+ioSdNmfwi8L68r4Xix
+	slSpNvjxteGmj4/7Mru79LCm98Pwu0ZuePHtsuaiKjrd1EkB9K7RiD8jJkriT/ts5YEQA3
+	qEKGDHHrLxlQlWUKzGdzmvPKbhqhd9o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EAA940A54;
+	Fri, 19 Dec 2025 11:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380C5C4CEF1;
+	Fri, 19 Dec 2025 11:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766144805;
+	bh=ZMIY8bvpAjYIhNLbORbK74fYFOO6FDDan9bMjBbDML8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dETzg5j31g043NXtaTvY6nlXP+kWJJme+5yA3MJx9PHC3Z5sdLJJz5nShg8YmxH3e
+	 5kIbk4xdU9H14nPUvieVZekusoB8RbaKbI5ZBpQPK4SkF6y1MFDZ6jBfGAhSZBN5ZO
+	 sms3XtIeFwh+QBCpoK+AgpGu5kv6irIZOTGiDgTl49GJJimpTLOD19j1sJwXtbCJM4
+	 5dcuFovc9TBKgu/KpH04pZt4T4mgwMIOwsqi9IMyXfIqWqEkEAdsgW02uvD1Tc/Mns
+	 b5Wg5Vz3/p5Es7/CbIVMgmeK+Bu+z1NXpbjC6U9rZvHEjdi5jFDdNPoDE5ZOqNifI6
+	 0IG872Xai0aIg==
+From: SeongJae Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
+Date: Fri, 19 Dec 2025 03:46:32 -0800
+Message-ID: <20251219114633.41156-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2c8dd0de-e650-4a74-b1f7-61ed81c03d26@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251219-gup-cleanup-v1-1-348a70d9eecb@tencent.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDI0NL3fTSAt3knNTEPCBtYWhilmRhYWFibGqoBNRRUJSallkBNi06trY
- WAKFW6S9dAAAA
-X-Change-ID: 20251219-gup-cleanup-8146b8884351
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766144768; l=1084;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=RA7i/WKYkPXoCVUQxPSGg2satJ4YPVo+ZVeopQrpnUY=;
- b=UVL/7+vIF/V8O1SDKoLPknoK7nXp18RY4NmbHGE9Fd46Me6gjufTrcWjLyzASiIBXh9Ux2Gwo
- eyjygctzBR3B3VWySHFX2zCZvji4198C2ubvjV1RbzlLHHflbfV1g7I
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CCEE6140006
+X-Stat-Signature: o6k3szebygon4qpfszo934g3ob5t9z1s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12BA716000D
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 5xufchcxitnjmfthfd9a6dhyxeo4js3c
-X-HE-Tag: 1766144772-377451
-X-HE-Meta: U2FsdGVkX180N/cLF5r9ich6hVli3slrURKquQG6ZxuGMbqvmEEAZNuetr0wfObKsqcyYIPCtEQpi0oLqPGtF/ljx3XNI2ZmpdXY04iNNpDOUh3aKVkCUlRwduk05ndlluEZ3+9fAogQcsTSeVOZwfINpG9PFvuIbOKrE+we0imDPeyYqTvIwxnLAyUTfFfyirJmGCgZ1epNCmUgVPvhdUAEVtAq6i9tmXfSOR1vwWfDH9CnSCrPSernSQRK1dVSgMBF1i1ZbIu7cxm2/xEGnZq5Jg+noGYWf3tht54CqWZfuiu/705k6hNCQLFhuv78q2ROSi3DMNXQWeMqf9H8Y8CR26Rd69Ug3Sc2Qm4cvhfj2ZL5gEfA6WbAB5mDV0+MJbSxTjtyrO9ngwY4JrBleklfGyNqiSmhplnrzrQx7ZDZRD6mw1WxPMMWxUk7bYweO8FVH5eD/EldQ3pTdNLG8XfARlOqgRR7IRvdKx5WrrMU3snmvUyXsO2U8rgq3JFnLEf7fGvPZBBMMd2rQsYcS36ObPWeqmwBsYoM6Sh7rBLDqdSxDqCGJiLhSFs2Ary2yLg4pvvcAHiaLGcWelYEfftVLDcnOI54X9QGm7+/6JwvMrnqgJh1aN0KvVuawURrpcztL8IHTa65sbhJ0p8nCJigzk/C4ROv9x8NfT2TrG/wSL701AlxSmzAIzvjnD/36Yu0vBLqXcAvkCt4uwDicyHkH4rd2keLr5g3ZSpNdNrNfr9WBS5WvV9EmGzu85P6u1WdaRr/ac1mLk0tCPqYhi45jnSDTdL7BsZugauXahK7nxlWkJVNyKdOodd3trdSwhDUVIAJm209Qm9Yd7wGrcScDShN+eCJydyx9WVpr5a6i6dFD+IhASzdVgAnQ5lo/TVxdgMyMZkS8GTqTeB2tX6hgKQLf3sXZH09khFyifqy622oI7+nCZa87yyivotZKr3gvwBK57vmsNfuFoN
- PcLmu3aN
- 3PUj1F0Dr/98O+W8TDzyZBUaf5vrS7KSonMRLl/7gEuxQiK73RIaBjSxH+I2ZBnzYCKsKX/nwlruuUdVaUrAT1G8X7YvTHCkRX+EyugrmLralugwfcawut2qOSxeYYo99Gu25sSqvd2gfN7+mLY2XuHzNVVSWOhtpw0foC3lJuJLlwRi6aa/aJWtcCsbd3DNR1idm9c486N2y+N6jxkA+tdL/Y4OfrHkbr4O0PtMymyG8mQLyuNxNAMLLc1N7FRMMS1Z2x4HLelO+3HGZNyqb8lKdLwI8BmbDk0x9B80n6cVam9xC+6O9C9Ok8QIZYEgRIGQ8H5hg1QLDSbXBZgwXzlCOj+dx1t765CDQLFus+V/uWTV6nOPvPXyCE6p1g/eqAeqVT9W51ulcI5Lw2iZIW1MsXYikOdP1bQmvSpJnuuYkjbLXI8uOHbm0TQ==
+X-HE-Tag: 1766144806-930886
+X-HE-Meta: U2FsdGVkX1+D/tgQCWPo8hyEhzsFSJUBe96XQt6xoSg9QPcVJzgzj5t7q5qphuLxje0EenGcTvueLF4cm5FrPtfsBUDUHoJrWUrgFOXQvQZ9SolK8eseE9VoE3hmdLm2Q4VOH7mJ0bAd8BjxvdB85QXaI0SIabXqDrL36UOQ1wPyC3qghPXxUtnEI2sG2dEAp38srNAygVRCBny57U4+vg4E09wEb+jTYD0MjWd1UUbSaqn9rYL5p56yaiCvdIwx0Jyq4SaZIvrb3eFrhRW/KnVSeRT6DEIfe3UK9od3mVFiOrhCs/Nw40svmKypI1u8Jw4yVPJYZ4jecfDvLl8RVz6/tVrzPBbF1xvvt+fD17aVf/PV2UklKy2AnGre8zCg8Jtg2Ligc56ilNhs0ml7Dp+J0U/AqbP9jRJ2sSnCKHxZ33Jvug1KtemuhU3I1MNJ4I2P8j3Y5/sNnla94yZ2HovNcLHfG5HzcQTs33O0CTAHwNqJ/spaCfE37ua024d838m2QlR2OXoiTrrmlpZqD4WnCAf+rMq0W+MKy1z1X/hQz+m9zu1At1dXvOaaErE/5Szvz8JfoCZulQuHGaP9D8pXKaEwKfmzxfi0oQKRxJwKBbtwAVZW4GrK2oso2rgoDZifzAZ9iRLhI3Jo0y3N5lcfS5Z2XX/gtELnXJlB/FkB8C6gHW91oGKHa6kBBHeHXwH25AsTd6zabSef3Vn95CHW0jwBXP1FfV5lo0QvfD6m48UuQ0DyIyJbVEuvFkNTl3aXvT/jsM6YCsTURCz6AVrCNUR87l8pQxc3jdqeurBK5OgKAKl0WAzqHu1BOCIulYImADnmjNhQ5eNDQU7b6qUGlGCyeg7xE3CwzlPyddS8rsBiOtiu+xg/ezEbVPjDZEUTqMmdg1tzN3+nL5PBpfijzu3YowuvtttYm+Kr3Q2N/vtWeQgiFCXT6l8JOGpcbwpTIMq+j342KLuURiX
+ iBmV/RPL
+ nQd1FqEghIqOMl+he34OLAs5Jggheb0qlqHpqVMhiZk/MaUTU5bYaCkY5+1uV3KM23j/VWhpEWE4T7xFj3jHFg+/xR6+8JMMPvOR2AMfQbLZwBeZY+WvIfBzcmfv3Qtx/X169PysvwzzRAKZQcaRRkJXb+v2OInTSD53AUKf//KKYoqclS6plg5IS/zgKqKo4CT2Cu/hKlrqRdiuVjXFEalY2eF4WFz0m6W9hCewKzYG9Rxx3eSCNz8Nkjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,45 +96,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
-This helper is no longer used after commit fd2825b0760a ("mm/gup: remove
-pXX_devmap usage from get_user_pages()").
+> On 2025/12/16 07:16, SeongJae Park wrote:
+> > Hello Enze,
+> > 
+> > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> > 
+> >> This patchset makes DAMON's advanced memory management accessible to a
+> >> broader range of users through two complementary enhancements.  First,
+> >> it exports the necessary DAMON core symbols to enable building loadable
+> >> kernel modules.  Building on this foundation, it then introduces the
+> >> 'prdm' module, which extends the concept from the DAMON sample code
+> >> (prcl.c) into a production-ready, user-friendly tool.
+> >>
+> >> The key strength of this module is its out-of-the-box simplicity: by
+> >> simply specifying the PIDs of target processes and enabling the module,
+> >> users can concurrently monitor memory access patterns across multiple
+> >> processes and trigger proactive reclamation automatically.  This
+> >> significantly lowers the barrier to using DAMON, allowing system
+> >> administrators and regular users without deep kernel expertise to easily
+> >> apply sophisticated memory optimization.
+> > 
+> > I agree your points about the problems and the direction for improving the
+> > situation.
+> 
+> Thank you, SJ!  Glad we are on the same page. :)
+> 
+> > However, we have a module for such use case, namely DAMON_RECLAIM.
+> > It was designed for a reason that very same to what you described above.  One
+> > key difference between DAMON_RECLAIM and prdm is, to my understanding,
+> > DAMON_RECLAIM works for the physical address space, while prdm works for
+> > virtual address spaces.
+> 
+> Yes, I have studied the implementation and architecture of this module
+> quite thoroughly.  However, there are certain limitations when
+> considering it for production use.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/gup.c | 11 -----------
- 1 file changed, 11 deletions(-)
+To my understanding, DAMON_RECLAIM is being used in multiple real world
+products.  I understand you are saying there could be limitations for some
+different production uses, and I agree.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 95d948c8e86c..8e7dc2c6ee73 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2806,17 +2806,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 	return !reject_file_backed || shmem_mapping(mapping);
- }
- 
--static void __maybe_unused gup_fast_undo_dev_pagemap(int *nr, int nr_start,
--		unsigned int flags, struct page **pages)
--{
--	while ((*nr) - nr_start) {
--		struct folio *folio = page_folio(pages[--(*nr)]);
--
--		folio_clear_referenced(folio);
--		gup_put_folio(folio, 1, flags);
--	}
--}
--
- #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
- /*
-  * GUP-fast relies on pte change detection to avoid concurrent pgtable
+> To my knowledge, few would perform
+> indiscriminate page reclamation across the entire system.  In most
+> practical scenarios, people prefer to protect critical processes from
+> being swapped out, while applying page migration and reclamation only to
+> less critical or performance-insensitive processes.
 
----
-base-commit: 67a1f192fe6d4c1ee84e296e7d518bb881d03c94
-change-id: 20251219-gup-cleanup-8146b8884351
+Thank you for kindly explaining above.  I agree such protection of critical
+processes could be useful and required.  Nonetheless, to me, it sounds like you
+could also do such protection using DAMOS_FILTER_TYPE_MEMCG.  Actually the
+feature was developed for such use cases, and I recently met some people who
+willing to use DAMON on their products in a way very similar to what you
+described.  I suggested them to try DAMOS_FILTER_TYPE_MEMCG.  Have you
+considered using DAMOS_FILTER_TYPE_MEMCG?
 
-Best regards,
--- 
-Kairui Song <kasong@tencent.com>
+> 
+> As we all know, frequent page migration inevitably introduces some
+> latency to process response times.  Therefore, the ability to target
+> large, inactive memory consumers for reclamation addresses a strong,
+> genuine demand from real production environments.
+> 
+> > Is the virtual address spaces proactive reclamation is
+> > what you really need?  If so, could you please further describe your expected
+> > or planned usage of it?
+> 
+> Consider the following scenario: a host machine runs three virtual
+> machines -- Machine A, Machine B, and Machine C.  It is known that
+> Machine A handles massive traffic, while Machines B and C have
+> relatively light workloads.  When memory pressure arises, besides
+> releasing caches, the system can utilize prdm to perform precise page
+> migration targeting Machines B and C, ensuring memory usage remains
+> within a safe margin.
+> 
+> The data below, collected from a test environment, demonstrates the
+> effectiveness of prdm.  After enabling prdm to monitor the two
+> lower-activity VMs (2316, 2284), I observed that the DAMON-based prdm
+> successfully migrated 5.5 GB of pages to the swap partition.
+> 
+>  PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+> 2253 qemu  20   0 11.251g 3.822g  32.7m S 4.989 12.28   0:48.75
+> qemu-system-x86
+> 2316 qemu  20   0 12.191g 1.524g  34.3m S 5.322 4.893   0:49.05
+> qemu-system-x86
+> 2284 qemu  20   0 12.092g 1.184g  32.5m S 5.987 3.803   0:48.10
+> qemu-system-x86
+> 
+> root@localhost /s/m/p/parameters# free -h
+>        total        used        free      shared  buff/cache   available
+> Mem:    31Gi        12Gi        15Gi       5.5Mi       3.2Gi        18Gi
+> Swap:   31Gi       5.5Gi        25Gi
 
+Thank you for sharing this nice explanation use case.  I think this all make
+sense.
+
+> 
+> > 
+> > If the virtual address spaces proactive reclamation is really what you need, I
+> > think extending DAMON_RECLAIM for the purpose might be doable and even simpler
+> > than introducing a new module.  How about doing so?
+> 
+> Before developing prdm, I had considered implementing the same
+> functionality based on DAMON_RECLAIM.  However, I gradually realized
+> this would make DAMON_RECLAIM overly complex and less
+> user-friendly—especially given its existing module-specific exported
+> interfaces, which could confuse users.  This approach would create
+> significant barriers to promoting wider DAMON adoption.  Consequently,
+> building upon the prcl sample became the preferred choice.
+
+I agree DAMON_RECLAIM already have no small number of parameters, and adding
+more may make it look even more complex.  But, users may use only parameters
+that really need to be set for their real use case.
+
+For example, if we implement virtual address spaces mode in DAMON_RECLAIM, I
+think we can simply add target_pid parameter that works very same to that of
+prdm.  If it is unset, DAMON_RECLAIM works in the physical address mode.  If it
+is set, it works in the virtual address mode.  Adding just one more parameter
+that doesn't break old usage doesn't seem that complex change to me, at least
+in terms of the user experience.
+
+As I mentioned above, yet another example would be using
+DAMOS_FILTER_TYPE_MEMCG.  For this, we may be able to add a parameter for
+describing the memcg of critical processes.  Again, adding just one more
+parameter that doesn't affect old usages doesn't seem too complex changes to
+me, at least in terms of the user experience.
+
+Meanwhile, I agree adding a new simpler module could make it easy for new
+users.  But, I concern if having two modules for DAMON-based reclamation will
+make users get difficulty at finding the correct one for their usage, since
+they may now need to compare two modules.
+
+For the above reasons, I still feel extending DAMON_RECLAIM is a better
+approach in terms of user experience.
+
+I'm not saying DAMON_RECLAIM's user interface is perfect.  Especially its
+documentation may have many rooms to improve.
+
+And I'm not very sure if the virtual address spaces reclamation is somewhat
+need to be supported from modules rather than using DAMON sysfs interface or
+DAMON user-space tool.  I implemented DAMON modules including DAMON_RECLAIM,
+DAMON_LRU_SORT and DAMON_STAT for users who willing to enable those always, and
+therefore want to avoid runtime controls.  That is, users can use those modules
+by modifying the kernel command line options.  My expectation for DAMON modules
+may not well documented.  If so, it's my bad.  I will try to recheck the
+documentation and make that more clearly documented.
+
+For virtual address spaces reclamation, however, runtime control is essential
+since you don't know the pid of the processes before the runtime.  In the case,
+I think using DAMON sysfs interface or DAMON user-space tool could be a better
+approach.  Have you considered using those?
+
+> 
+> > 
+> > And, even more importantly, why it should be a loadable module rather than a
+> > static module?  Do you have a specific use case that requires it to be a
+> > loadable module?
+> 
+> Yes, loadability is crucial for operational flexibility in practical
+> production environments.  Beyond some obvious advantages, I would like
+> to highlight a key scenario: system administrators can load the prdm
+> module upon detecting memory pressure and unload it immediately after
+> reclamation is complete, thereby eliminating any overhead during normal
+> operation.
+
+I agree always having prdm in kernel is an overhead.  But, I think the
+overhead is not meaningfully big.  Also, as I mentioned above, my intended use
+cases of DAMON modules is for cases that willing to simply always use the
+modules.  If runtime controls are essential, I think using DAMON sysfs
+interface or DAMON user-space tool is a better choice.
+
+Someone might argue DAMON sysfs interface is unnecessarily big compared to
+prdm.  But, I have to ask again in the case.  Does the overhead really
+meaningfully big for a real world use case?
+
+> Furthermore, it supports zero-downtime updates, meaning that
+> improvements targeting prdm can be deployed via a simple module reload,
+> avoiding costly system reboots.
+
+So I'm not really convinced at needs of prdm module at the moment.  But I agree
+your above point is a good example advantage of loadable modules.  Also there
+were private requests to support loadable DAMON modules.  No one among those
+were for real production use case, and I understand you are also doing this
+work for imaginable use cases, not your real products.  Please correct me if
+I'm wrong.  But as the request is repeated, if you willing to convert existing
+DAMON modules to support loadable modules build and expose required DAMON
+functions for that, at least I wouldn't oppose.
+
+> 
+> Finally, I would like to add that designing prdm with an extremely
+> simple workflow -- load the module, set the target PIDs, and enable the
+> switch -- will contribute to the promotion of DAMON, allowing a broader
+> user base to benefit from the DAMON system.
+
+That workflow is definitely much easier than directly using DAMON sysfs
+interface.  But, for the reason we have DAMON user-space tool.  Using it, the
+workflow can also be as simple as prdm, like below.
+
+   # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0% 0% --damos_age 2m max
+
+
+Thanks,
+SJ
+
+[...]
 
