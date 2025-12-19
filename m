@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFA50D7878A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E79D7878F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:47:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C2BE6B00BD; Fri, 19 Dec 2025 10:47:01 -0500 (EST)
+	id 460766B00BF; Fri, 19 Dec 2025 10:47:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2806B6B00BF; Fri, 19 Dec 2025 10:47:01 -0500 (EST)
+	id 3EB1B6B00C1; Fri, 19 Dec 2025 10:47:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 183376B00C0; Fri, 19 Dec 2025 10:47:01 -0500 (EST)
+	id 2CD496B00C2; Fri, 19 Dec 2025 10:47:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 068946B00BD
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:47:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8B2187EFB
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:00 +0000 (UTC)
-X-FDA: 84236649000.29.67F365A
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D9EC340008
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:46:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EunFpv1r;
-	spf=pass (imf17.hostedemail.com: domain of 3cXNFaQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3cXNFaQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E1536B00BF
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:47:05 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D89041A019F
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:04 +0000 (UTC)
+X-FDA: 84236649168.01.9CB2FFE
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D76D414000C
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:47:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=aMHWo6Yd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3dXNFaQUKCMImt3mzowwotm.kwutqv25-uus3iks.wzo@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3dXNFaQUKCMImt3mzowwotm.kwutqv25-uus3iks.wzo@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159223; a=rsa-sha256;
+	cv=none;
+	b=ItElo2H4kQ9OtjkWMzwzYtVb6wy8Z9Mad8wJElqDR0YQvrYNs9aB6ubZ3JM9NRuZAVgPZ4
+	V2oYXTaSwYSlghc5QOUzS/8ZwCryVBZoQ1QQYUbkPrLTpBjt2Xu9sJN3Kj7zk2gbTqPFb2
+	3VSQdyWCwsQYSJOVhoHa6MdenXEhab8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=aMHWo6Yd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3dXNFaQUKCMImt3mzowwotm.kwutqv25-uus3iks.wzo@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3dXNFaQUKCMImt3mzowwotm.kwutqv25-uus3iks.wzo@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766159219;
+	s=arc-20220608; t=1766159223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BXcHXIDfWoSkrk6mEFbnYEvAXHgRRlXY75uZgyD6jWc=;
-	b=vsBiJNMhLr6Uaw96EXgHjLFteUi/L2G0yGpaGKnui/WR4yliEN/x0A0qetmAZMpri4LwnG
-	AXnsWQfBqpyakKYhlUlBexdPIsMOst1CSFoZE/AsvUWxLTM7naGKXoAdJQtBAeEF29mkHg
-	FTyt8HFr2YiB6QnG/ANtAXgPghiBvYw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766159219; a=rsa-sha256;
-	cv=none;
-	b=c3c/TqyXnkncE3axacnm2hEmAsk6fGXreqeJXvkUR2DiW4Na1/FLhQqRTN0L2XFH3Nm+Fs
-	96Sa4BadE9fqOGoQpx7DEAuu0UZxnsScwQGROPb4AHUZUZs/9ZUKAHTnE8oXtZdfqufliW
-	/kFVwd1n977DMsQ8syatriGUq+CoUf0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EunFpv1r;
-	spf=pass (imf17.hostedemail.com: domain of 3cXNFaQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3cXNFaQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4788112ec09so18339595e9.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:46:58 -0800 (PST)
+	bh=AfZmGahRmjCLlpnNWraYfqLt+QA3PGG/MMgJtDqy5AE=;
+	b=y07ExLvPaMtSG7cuKHhvHv/VoJg46JPuGVz47pXba5qL9/fDo4XGCj+NeEYtbnRNkaOV++
+	x3xoetLCgXbdFDQ6JfWOCDG1sOxqGWm5jRIjTSBMWJSy8LxmwFgSSnsGr5s741Fj31UiEh
+	4D+E84uNOngL8MAitmF9znUieI4LIbM=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477c49f273fso24039355e9.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:47:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766159217; x=1766764017; darn=kvack.org;
+        d=google.com; s=20230601; t=1766159221; x=1766764021; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXcHXIDfWoSkrk6mEFbnYEvAXHgRRlXY75uZgyD6jWc=;
-        b=EunFpv1rPFqZ1HeCXwok+OsHlacs/6s7NJkxXa+lK35gNaZ5ZoMxVAiUE7GhFcPnP6
-         TAZ6qIkbyGAfR5xAzzQIvI2YPm2mt20mq40wKtsSIYg5Imvxs/HJRfI+mHHHM7DbcKiP
-         2FPjWl0kCqtCT8G+wrR6mVLMtUzDZkW6YnFH5+Q+GeqQ2mSDzyO6hJ2MhAD5ZPfRczoT
-         8xxFb+ynaP8tP9AaBcq+URpVt2paB9bHk8naC3/wXUt9JSRLkYbXV64pWKoBw18nT3vm
-         /1w3xmIsY43M6pxOaxsTMv+U71oterNThOTRI/wQrp/O/po0S4j1FdVbVdQ8UTRSqSu0
-         cFlg==
+        bh=AfZmGahRmjCLlpnNWraYfqLt+QA3PGG/MMgJtDqy5AE=;
+        b=aMHWo6Ydb2QYW2j0yQd+Af6OpeK7c2rIefIpm4nHXPcf/rIcOrQYhTYBORbwBjfDPS
+         LPHb8mFKupNV+zShUSnYzqSIjyrO3LNx2JOa9r5Jz0U7+FAUy2qDHP67Upm5xP8/zT9C
+         f6eJ/BIBWzZEZILVW6YuQSGtji9o3cXXNlJNRznamWgAElyFeMjfAMrvIAGgEeRoOuW+
+         P9h8kXi64uAENk4xqocbMxA6DWcIJCeTIgfqemzJWAJazw5xG8j+x6hic/v3nuIVeF6Q
+         wL/De1qCeGvHrD96THTtIBqxcpbMoRSJxKso6QcDqKSQdnGQQX4CQWCHrizy39TReFWE
+         t0Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766159217; x=1766764017;
+        d=1e100.net; s=20230601; t=1766159221; x=1766764021;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXcHXIDfWoSkrk6mEFbnYEvAXHgRRlXY75uZgyD6jWc=;
-        b=Z6ptLJz18rzumIodXpnO0WgEcjRxIvPTpKxiQu1azeI8oZLBRfsW+dIQasZtGAI0hX
-         ymluq0KbWjhotkHaSCzblEhmfA+6/vZObl4iiFxai5wm0xsuR3yxQRf6hCNoAgXxnsB3
-         MCB9zG0fgz62vbLVOGdG8mnC2wK1o35UFicu9Hr8uHyBrSzpvChLm2x0lq/2sKns9TP8
-         0Rxc+/K4c4FAxM/02fSNTvfTGvyIzm+4PCRnak7z+I89AIYUnKoLIxIDs/27hVtKp6BH
-         YLOepqlavm+FLmkWIjRGbzQdx6zzSmC0EP6Y1IqFZet12S/aPqPEVYoKbMf9uiCJN0Pe
-         DLQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUV0jRP9QPQchGHk2slCyBv1jk6oxXmLlqMJdCpA7mHONUPwoV5himkny2K7qTORUdi/qh9O2x0Xw==@kvack.org
-X-Gm-Message-State: AOJu0YwZ1iuR52nzRuWdYcYPqV/dGE5lySccHH95qKEjxh/8LFirDcgg
-	Z8gEly/TDbnzGtTjhHb/XEFkHP3HMt38CSaEYvEX1y6bt4BN8Fwc4zmUYVDKH9SZQ2OngWo1Z6P
-	2uw==
-X-Google-Smtp-Source: AGHT+IHyKiIB7A3/4NS3dgdSOn3IONvOE4PwqBUh1HTTKAWUaRZZqyIHVFzTOOWTZuodACVR6hwE9Va7/g==
-X-Received: from wmco28.prod.google.com ([2002:a05:600c:a31c:b0:477:afa:d217])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:45cf:b0:47a:7fdd:2906
- with SMTP id 5b1f17b1804b1-47d1954a550mr28322755e9.12.1766159217354; Fri, 19
- Dec 2025 07:46:57 -0800 (PST)
-Date: Fri, 19 Dec 2025 16:40:12 +0100
+        bh=AfZmGahRmjCLlpnNWraYfqLt+QA3PGG/MMgJtDqy5AE=;
+        b=aXt5S02Q9Pe1CCdRT4NCoci1lIwBOgupFMIVvfK4Hw4zRMeJUT5kwuXf82/yv6fJ47
+         uFZZkMcQSDgwXPosFevEiwX5CgXYvy4bS5pUrXJyo8byOL0UnLl0kl62df3ye2JIFCQk
+         StBqBOEtDoBBEI4TbN6vDTUJ85gdqwPbTaqa4c+eJxcLc9yLM1RtSAyS0d8FnKfNDJZv
+         bjSGF0bRRNOfjn+G5Qi7kIJElbjS+MEBhSzU5l1uQ0Sz3u/41sOCVf7WD41QTM8Ar86v
+         mmS+O72DUK08RGhRZqd+aMmlOIO/dfE/u+VW3BOE2pAeGzgXFUc1HWcFucII5P61sfJl
+         5FyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVN7mT3h+qhPMPr1dwYcD9f6rUaS2yoOT+uFe8XByKXrFzCgb8DrQZ7NGr4Jyqc8QoKf22InV7R2A==@kvack.org
+X-Gm-Message-State: AOJu0YzUCGcCGi3R5ZJpsFQ1kAJGkYHtpcphAvyLkHx4hTzFaaLvluEk
+	+mfqSKot/pDVuX2ZBtntyPWQkdDJAvSmbTqY0c2X9soeNwWiUW+LnYaBo+vsla2dUwKoZsR2uOa
+	QDQ==
+X-Google-Smtp-Source: AGHT+IEZNHKaNIRNM2ArqHw56kxfvsWaHKJ6IaDu69Clwad86uzCdoCmGvirxShdiFM9zAcPiXEpvPOhBg==
+X-Received: from wmco23.prod.google.com ([2002:a05:600c:a317:b0:475:dca0:4de3])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:820d:b0:477:7b16:5fb1
+ with SMTP id 5b1f17b1804b1-47d1955b971mr27204115e9.7.1766159221332; Fri, 19
+ Dec 2025 07:47:01 -0800 (PST)
+Date: Fri, 19 Dec 2025 16:40:13 +0100
 In-Reply-To: <20251219154418.3592607-1-elver@google.com>
 Mime-Version: 1.0
 References: <20251219154418.3592607-1-elver@google.com>
 X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219154418.3592607-24-elver@google.com>
-Subject: [PATCH v5 23/36] compiler-context-analysis: Remove Sparse support
+Message-ID: <20251219154418.3592607-25-elver@google.com>
+Subject: [PATCH v5 24/36] compiler-context-analysis: Remove __cond_lock()
+ function-like helper
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +114,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: jghp8hndj5ftoz637xui44kpy83jif4h
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9EC340008
 X-Rspam-User: 
-X-HE-Tag: 1766159218-66270
-X-HE-Meta: U2FsdGVkX1/d0JrmIfGggLpDoLhCmgYoJFdCBJt9EP+3A9M6jwqcm8xssxy1G+ruVuUn0vWd2LiAJUXWmfAN3GESVpp3QYPqPfFWFSXmYzPYjJpd469xPhYq20E42rcBLUsmVxhWAEZnqKxumGOXJopHGW+p3SBHmeggfnfQFOZg3XWAtkG5oUxCHoXSsYKiy0cNsoPypc4R2vgzbXW2/8p7cRAnGQ+eWT+EKNQfGBTKDr30fAgOfSuawi2ueCrL13ybGBqgbX8d94NE9xRfS+Ra2uRj+wAiHTNmV7wI1P36SQVHDFJG88K20TN8AUFbTdJHSrE+cF3Vel56z6qrQSbGcQR7rm6FoGgT54JUfuS15K678Z4gPnZQj7YFAz29qj/Zd7kgECn9q+TWERD8XOaY20YF30E/ft/3/zpgbXa5siDvh3MICjw1T4gBs6ZKaZxgNBc29MQPYzjp/nRNrsXMSzzJIlTCHiNuAAqIZVI06up9QsSP6fK+ZPIouIWOuikXL+G6RuMpCEDQxAjcfVEX9qfOXnuqO7ReNxsIal01ZaVEyvJwKhRCZe3kkDG5S6tsIqAG2onJYNaFKLb2lAEoBVaJ7/vOCUunsRtX1T1eFjXGGdt+Zto4myrLcW9mq17AL68ePZKdzVcyUyPagk+MW1y4sAWY4mUoP21S58KM5+7FUOFnAW2lDaRMpSmkpVjpeUUL1Y/hYj923E0hbEYMb8x/MLUPbcmQdBI24H+21W6BUednczWi+9vTTkCjQAr9+30uiTwtuP30cOsp9xBHJI2gHk07+pW+T03uOnKD9w9zJdVO/akRnraUdJPu1S851oWzC2giRgG8YrXw7kDJ7lI8PExjCRBQ74VS16+W0h1d1tt5HMzy41rMprrD72qBYLCw3w5S1F4XlwKhAu0TE+18879H4z0t75Li56hZLKiVIeDgoHRlJIuyBa4YD4qXtW0HJoG3bPkBVVk
- WVp2o3Oh
- 5KWF2E8/iEhepaPicodySTVl99Slc9MaQOmxEaMqqBdRs2kPXDAA+CbTYHdxbjEvBVCm2GXslBkQTpn7q6DZjRcC7gIQ+J3lUSGO6UoudalEJpbnfWaaRCmtetQS1BLJzkAZ6nEe0qJY2+J8PCk5TFnpW1nF1saNFmRteRaF3y9jDJ6fOKOutOMErAWEJh6X3P8GGW+Jb6eRlJpOFRO3LIJLbF49Fa6TBZPi23lmW8OarmCVCVwo8lBL78kWR2/JAd0sNj7W+4RUTvU1JtDQgm1BI073YflV/9NF1/8JT9FCatYz3nNNsg4RAS8tvLzu7kEApV7dGPH0Khjst3r0/n14iWbLNCrRn+XTkpp3lqhHj1C3/v/eRA2Y2Z9aSSIV7RPk0ro8d4s6FqxNjSjQHpuX+Js5TqmD49rZ1PrktOQdUbAVW3j9ul7wxov7tg2/bLciY7/hy4GXEUf8kpe+hptZZEWtf7yALBk7F1R+jXK8TDcBPWSUIk+jEncLswaBqlwvZzxiS0UHxcszFt0t2ghW2+9WQf6B4iGgFEZJ7GSE+O5YXz9dMvlPCcwxVQGfmhHPdns+bHtlRkrW4xbk3TY3PtnF95ovZ6gssGajFNq0V8Ip5FT6vvAWUbKhie1TpMPcnmbLloaE+Yj2SvUjehZKODUClUgMTVUGGMQ4Dd8ipXHRRHUN/k75pPU6ehWUmQ+0ucgde+KXc6iQia7OxHaCRgHQRma9xBcWT0uWZfp7NCYEm3oe59uJJcl1YueuETabHa2vM7EFzVMGpV0PRxizuXLVYryU7NOPOYIi6aZMYh/KrvLOuJWkiBCv8u3majbB6IcLCmaE/ct2qGFkOKjYZ0htVDB5hwtiiQy7/+yea8M736pyJ8hFVUQQlkaDI8DjVFqfcNnS3CoZCixpp6uTIbJ65s0VtqK9Y
+X-Rspamd-Queue-Id: D76D414000C
+X-Rspamd-Server: rspam10
+X-Stat-Signature: ia5j3hpnez5zs4s5f3w3ikfsthxggpi5
+X-HE-Tag: 1766159222-812731
+X-HE-Meta: U2FsdGVkX19BXyvK4uLl2qKtZN69vU+4/GRLklKnzHLc4YyHs3KMoxppEnrRSNG0AyTYQf717LGiQrs7IBIt7CPzAYTGnsARj2dOxXCxkxGzT3CJTNVCuPtIznRoyQBPP+TXnq0LyUN3Pz8fat4Qg7K7Jm9zehSPSUnNH63QauRn0ES6R3X6k42atrrddRf6Ik8IOz7xKDq1dZH7uec86FegBl0q33O3a/Vi/NNpKoWIel8oOwI6GXonGWZqq+LYpBycuwomQv8cEzKp+hwaGTr08ab5chKxrwakgo1TapPmrV5StrgLmRbNv4XTdz9PwEQ9HJqjXv9iYBYmhOMHMlfKKB89smHivy4bpI/RYE7VnQ4bCmPCIpUO8QLBLBOgUGhLXtUxU9o73tgh14zvElGET3F1/NASXYTNBTqIchhg8Dp3gHj5zU+ULmCkYNiIoDZm+K6/HF0NJSeYnT6cs4ZAi2/2WmCJVQnj3U7BFo5XP3dMpD069bzGoShGEBhte4W2pzpccwnXom/NwHUTuLwOdSFMwgsTuuHGEyO1qETD6JE92Iei+nDiIle6T2SpW2t2HkjUqvAAodI+raJ8JjFPTHPe/V2rXzpGrHyzNjmgsyfvqBOLb8TCjFznytAIxe6ZCMwdyfuN/gyjw3IuN+sAiOPNBZ7QQRakk2gbjPqvmTceH0ssTujZ6W5jZUwiV/Jiwozcs3IOgX8S0hK9vBluUDZwbhhMRgSsjIoSCn7yIiNnQ+Xi8c7OfH4KywPtV1GT8gQcY8Ak+i2U9U3PGbCddi9oLB68OdMwn6OvP9oOE94GSfE1Vck22pwJv/+CHhGEeQ187J7GqsJDuOCq66tDIAO5Tw7IW2iPwPrRgjVEjoyeMfiPi8tx2RQWDae3g6jvVPcR4Ro3vbWVZb2MWHHUfT95R0BXBVmRRs0DlAX9F4/WgZ/UTH2ViXPanO2xluG9reLYGJz32VxAqz1
+ bDwCGFVy
+ htZk3IBSihAMW8KU1AzmF7kTOxmKqOLu02chkLisIGh80ChrmQL8yFlJnUJ3JqUMYWQENZm+XnRgdUja2+MjV5gySrao+CSth2qUEiOHt9w0TSWcpf5iMd7FqwQ7XyqJaTon+U8XvU1LdWkVL0oepcmSFm0NBE6rSIirz27RsUApqzFAj9GcmCqYdabzLDOh9gMSk7FvvA7Hmjoza2uXlzn6RgiX8bl5L0zR/cbrEqTJL8XV9ow4V/JOWj5gNWLJ92DDQwOAoHY9+cYLRHKZHSWGHuglYo+i6XOR+xMmc18jFSXXKEcp2KXl9Zd2CUqKC8V8ZUGofY2FWCIEc6slxF8Dz6qVdaTjaWwNHbUI/umXkEIfYPwWMHGttN6DVTqj3+ieM5CmlOyLEYw0Vy82PYZKTpmc9MMHOF1DeQdsSM5hFqstwYYqLzhWTq5t0GHEguoILAxDcDPeXTKR1CuIcc/iYl/3p+2ulJ2FGTP58FeRaJwxdJ7++/6UNwuzA7Tg40997KLw/0QKAP84fM+IjwrofYJZvTUW9q/o5NFv8B1WGp41gLiJhApKS7gdkjzPvy3NwsJ4QEew6qaR0Vs0xKDiY3k2jS2Pra2iHy0J7+bZ41AnGvTx6X9V6SP5kduU/y0R0JWT+Tc91DjJEVc6NNyalp/pTS7MlHiZ/Xw109M0RUxvaYJxrOs9YFlMQr/ZxCgvxNDSAxsSItcs/1ozFcZpMzRjcpd0qT33kE0tvqE+iO9P3oOEg4bWhlVi6ihGTu7Jyro/T3djgyKFx1/T2o+PTEyv6bhs9EU363VPB3KYXqA5zVMoyBj6TvyOXI+2pN9DbX/ID6rXKeX5QX4ajosVCDRcavXPxvw2ZRaYhyusKuZOeciGpC3pBZIkj/t488tnr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,290 +130,857 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove Sparse support as discussed at [1].
+As discussed in [1], removing __cond_lock() will improve the readability
+of trylock code. Now that Sparse context tracking support has been
+removed, we can also remove __cond_lock().
 
-The kernel codebase is still scattered with numerous places that try to
-appease Sparse's context tracking ("annotation for sparse", "fake out
-sparse", "work around sparse", etc.). Eventually, as more subsystems
-enable Clang's context analysis, these places will show up and need
-adjustment or removal of the workarounds altogether.
+Change existing APIs to either drop __cond_lock() completely, or make
+use of the __cond_acquires() function attribute instead.
 
-Link: https://lore.kernel.org/all/20250207083335.GW7145@noisy.programming.kicks-ass.net/ [1]
-Link: https://lore.kernel.org/all/Z6XTKTo_LMj9KmbY@elver.google.com/ [2]
-Cc: Chris Li <sparse@chrisli.org>
-Cc: "Luc Van Oostenryck" <luc.vanoostenryck@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
+In particular, spinlock and rwlock implementations required switching
+over to inline helpers rather than statement-expressions for their
+trylock_* variants.
+
+Link: https://lore.kernel.org/all/20250207082832.GU7145@noisy.programming.kicks-ass.net/ [1]
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v5:
-* Rename "context guard" -> "context lock".
-
-v4:
-* Rename capability -> context analysis.
+* Fix up include/linux/lockref.h, too.
 
 v2:
 * New patch.
 ---
- Documentation/dev-tools/sparse.rst        | 19 -----
- include/linux/compiler-context-analysis.h | 85 +++++++----------------
- include/linux/rcupdate.h                  | 15 +---
- 3 files changed, 28 insertions(+), 91 deletions(-)
+ Documentation/dev-tools/context-analysis.rst  |  2 -
+ Documentation/mm/process_addrs.rst            |  6 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  4 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  6 +-
+ .../intel/iwlwifi/pcie/gen1_2/internal.h      |  5 +-
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         |  4 +-
+ include/linux/compiler-context-analysis.h     | 31 ----------
+ include/linux/lockref.h                       |  4 +-
+ include/linux/mm.h                            | 33 ++--------
+ include/linux/rwlock.h                        | 11 +---
+ include/linux/rwlock_api_smp.h                | 14 ++++-
+ include/linux/rwlock_rt.h                     | 21 ++++---
+ include/linux/sched/signal.h                  | 14 +----
+ include/linux/spinlock.h                      | 45 +++++---------
+ include/linux/spinlock_api_smp.h              | 20 ++++++
+ include/linux/spinlock_api_up.h               | 61 ++++++++++++++++---
+ include/linux/spinlock_rt.h                   | 26 ++++----
+ kernel/signal.c                               |  4 +-
+ kernel/time/posix-timers.c                    | 13 +---
+ lib/dec_and_lock.c                            |  8 +--
+ lib/lockref.c                                 |  1 -
+ mm/memory.c                                   |  4 +-
+ mm/pgtable-generic.c                          | 19 +++---
+ tools/include/linux/compiler_types.h          |  2 -
+ 24 files changed, 163 insertions(+), 195 deletions(-)
 
-diff --git a/Documentation/dev-tools/sparse.rst b/Documentation/dev-tools/sparse.rst
-index dc791c8d84d1..37b20170835d 100644
---- a/Documentation/dev-tools/sparse.rst
-+++ b/Documentation/dev-tools/sparse.rst
-@@ -53,25 +53,6 @@ sure that bitwise types don't get mixed up (little-endian vs big-endian
- vs cpu-endian vs whatever), and there the constant "0" really _is_
- special.
+diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
+index 8dd6c0d695aa..e69896e597b6 100644
+--- a/Documentation/dev-tools/context-analysis.rst
++++ b/Documentation/dev-tools/context-analysis.rst
+@@ -112,10 +112,8 @@ Keywords
+                  __releases_shared
+                  __acquire
+                  __release
+-                 __cond_lock
+                  __acquire_shared
+                  __release_shared
+-                 __cond_lock_shared
+                  __acquire_ret
+                  __acquire_shared_ret
+                  context_unsafe
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index 7f2f3e87071d..851680ead45f 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -583,7 +583,7 @@ To access PTE-level page tables, a helper like :c:func:`!pte_offset_map_lock` or
+ :c:func:`!pte_offset_map` can be used depending on stability requirements.
+ These map the page table into kernel memory if required, take the RCU lock, and
+ depending on variant, may also look up or acquire the PTE lock.
+-See the comment on :c:func:`!__pte_offset_map_lock`.
++See the comment on :c:func:`!pte_offset_map_lock`.
  
--Using sparse for lock checking
--------------------------------
--
--The following macros are undefined for gcc and defined during a sparse
--run to use the "context" tracking feature of sparse, applied to
--locking.  These annotations tell sparse when a lock is held, with
--regard to the annotated function's entry and exit.
--
--__must_hold - The specified lock is held on function entry and exit.
--
--__acquires - The specified lock is held on function exit, but not entry.
--
--__releases - The specified lock is held on function entry, but not exit.
--
--If the function enters and exits without the lock held, acquiring and
--releasing the lock inside the function in a balanced way, no
--annotation is needed.  The three annotations above are for cases where
--sparse would otherwise report a context imbalance.
--
- Getting sparse
- --------------
+ Atomicity
+ ^^^^^^^^^
+@@ -667,7 +667,7 @@ must be released via :c:func:`!pte_unmap_unlock`.
+ .. note:: There are some variants on this, such as
+    :c:func:`!pte_offset_map_rw_nolock` when we know we hold the PTE stable but
+    for brevity we do not explore this.  See the comment for
+-   :c:func:`!__pte_offset_map_lock` for more details.
++   :c:func:`!pte_offset_map_lock` for more details.
  
+ When modifying data in ranges we typically only wish to allocate higher page
+ tables as necessary, using these locks to avoid races or overwriting anything,
+@@ -686,7 +686,7 @@ At the leaf page table, that is the PTE, we can't entirely rely on this pattern
+ as we have separate PMD and PTE locks and a THP collapse for instance might have
+ eliminated the PMD entry as well as the PTE from under us.
+ 
+-This is why :c:func:`!__pte_offset_map_lock` locklessly retrieves the PMD entry
++This is why :c:func:`!pte_offset_map_lock` locklessly retrieves the PMD entry
+ for the PTE, carefully checking it is as expected, before acquiring the
+ PTE-specific lock, and then *again* checking that the PMD entry is as expected.
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index cc8a84018f70..fa1442246662 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -548,11 +548,11 @@ int iwl_trans_read_config32(struct iwl_trans *trans, u32 ofs,
+ 	return iwl_trans_pcie_read_config32(trans, ofs, val);
+ }
+ 
+-bool _iwl_trans_grab_nic_access(struct iwl_trans *trans)
++bool iwl_trans_grab_nic_access(struct iwl_trans *trans)
+ {
+ 	return iwl_trans_pcie_grab_nic_access(trans);
+ }
+-IWL_EXPORT_SYMBOL(_iwl_trans_grab_nic_access);
++IWL_EXPORT_SYMBOL(iwl_trans_grab_nic_access);
+ 
+ void __releases(nic_access)
+ iwl_trans_release_nic_access(struct iwl_trans *trans)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index a552669db6e2..688f9fee2821 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -1063,11 +1063,7 @@ int iwl_trans_sw_reset(struct iwl_trans *trans);
+ void iwl_trans_set_bits_mask(struct iwl_trans *trans, u32 reg,
+ 			     u32 mask, u32 value);
+ 
+-bool _iwl_trans_grab_nic_access(struct iwl_trans *trans);
+-
+-#define iwl_trans_grab_nic_access(trans)		\
+-	__cond_lock(nic_access,				\
+-		    likely(_iwl_trans_grab_nic_access(trans)))
++bool iwl_trans_grab_nic_access(struct iwl_trans *trans);
+ 
+ void __releases(nic_access)
+ iwl_trans_release_nic_access(struct iwl_trans *trans);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+index 207c56e338dd..7b7b35e442f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+@@ -553,10 +553,7 @@ void iwl_trans_pcie_free(struct iwl_trans *trans);
+ void iwl_trans_pcie_free_pnvm_dram_regions(struct iwl_dram_regions *dram_regions,
+ 					   struct device *dev);
+ 
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent);
+-#define _iwl_trans_pcie_grab_nic_access(trans, silent)		\
+-	__cond_lock(nic_access_nobh,				\
+-		    likely(__iwl_trans_pcie_grab_nic_access(trans, silent)))
++bool _iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent);
+ 
+ void iwl_trans_pcie_check_product_reset_status(struct pci_dev *pdev);
+ void iwl_trans_pcie_check_product_reset_mode(struct pci_dev *pdev);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+index 164d060ec617..415a19ea9f06 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+@@ -2327,7 +2327,7 @@ EXPORT_SYMBOL(iwl_trans_pcie_reset);
+  * This version doesn't disable BHs but rather assumes they're
+  * already disabled.
+  */
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent)
++bool _iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent)
+ {
+ 	int ret;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+@@ -2415,7 +2415,7 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	bool ret;
+ 
+ 	local_bh_disable();
+-	ret = __iwl_trans_pcie_grab_nic_access(trans, false);
++	ret = _iwl_trans_pcie_grab_nic_access(trans, false);
+ 	if (ret) {
+ 		/* keep BHs disabled until iwl_trans_pcie_release_nic_access */
+ 		return ret;
 diff --git a/include/linux/compiler-context-analysis.h b/include/linux/compiler-context-analysis.h
-index 9ad800e27692..fccd6d68158e 100644
+index fccd6d68158e..db7e0d48d8f2 100644
 --- a/include/linux/compiler-context-analysis.h
 +++ b/include/linux/compiler-context-analysis.h
-@@ -262,57 +262,32 @@ static inline void _context_unsafe_alias(void **p) { }
- 	extern const struct __ctx_lock_##ctx *name
+@@ -341,24 +341,6 @@ static inline void _context_unsafe_alias(void **p) { }
+  */
+ #define __release(x)		__release_ctx_lock(x)
  
- /*
-- * Common keywords for static context analysis. Both Clang's "capability
-- * analysis" and Sparse's "context tracking" are currently supported.
+-/**
+- * __cond_lock() - function that conditionally acquires a context lock
+- *                 exclusively
+- * @x: context lock instance pinter
+- * @c: boolean expression
+- *
+- * Return: result of @c
+- *
+- * No-op function that conditionally acquires context lock instance @x
+- * exclusively, if the boolean expression @c is true. The result of @c is the
+- * return value; for example:
+- *
+- * .. code-block:: c
+- *
+- *	#define spin_trylock(l) __cond_lock(&lock, _spin_trylock(&lock))
 - */
--#ifdef __CHECKER__
+-#define __cond_lock(x, c)	__try_acquire_ctx_lock(x, c)
 -
--/* Sparse context/lock checking support. */
--# define __must_hold(x)		__attribute__((context(x,1,1)))
--# define __must_not_hold(x)
--# define __acquires(x)		__attribute__((context(x,0,1)))
--# define __cond_acquires(ret, x) __attribute__((context(x,0,-1)))
--# define __releases(x)		__attribute__((context(x,1,0)))
--# define __acquire(x)		__context__(x,1)
--# define __release(x)		__context__(x,-1)
--# define __cond_lock(x, c)	((c) ? ({ __acquire(x); 1; }) : 0)
--/* For Sparse, there's no distinction between exclusive and shared locks. */
--# define __must_hold_shared	__must_hold
--# define __acquires_shared	__acquires
--# define __cond_acquires_shared __cond_acquires
--# define __releases_shared	__releases
--# define __acquire_shared	__acquire
--# define __release_shared	__release
--# define __cond_lock_shared	__cond_acquire
--
--#else /* !__CHECKER__ */
-+ * Common keywords for static context analysis.
-+ */
- 
- /**
-  * __must_hold() - function attribute, caller must hold exclusive context lock
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the caller must hold the given context
-- * lock instance @x exclusively.
-+ * lock instance(s) exclusively.
-  */
--# define __must_hold(x)		__requires_ctx_lock(x)
-+#define __must_hold(...)	__requires_ctx_lock(__VA_ARGS__)
- 
- /**
-  * __must_not_hold() - function attribute, caller must not hold context lock
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the caller must not hold the given context
-- * lock instance @x.
-+ * lock instance(s).
-  */
--# define __must_not_hold(x)	__excludes_ctx_lock(x)
-+#define __must_not_hold(...)	__excludes_ctx_lock(__VA_ARGS__)
- 
- /**
-  * __acquires() - function attribute, function acquires context lock exclusively
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the function acquires the given context
-- * lock instance @x exclusively, but does not release it.
-+ * lock instance(s) exclusively, but does not release them.
-  */
--# define __acquires(x)		__acquires_ctx_lock(x)
-+#define __acquires(...)		__acquires_ctx_lock(__VA_ARGS__)
- 
- /*
-  * Clang's analysis does not care precisely about the value, only that it is
-@@ -339,17 +314,16 @@ static inline void _context_unsafe_alias(void **p) { }
-  *
-  * @ret may be one of: true, false, nonzero, 0, nonnull, NULL.
-  */
--# define __cond_acquires(ret, x) __cond_acquires_impl_##ret(x)
-+#define __cond_acquires(ret, x) __cond_acquires_impl_##ret(x)
- 
- /**
-  * __releases() - function attribute, function releases a context lock exclusively
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the function releases the given context
-- * lock instance @x exclusively. The associated context must be active on
-+ * lock instance(s) exclusively. The associated context(s) must be active on
-  * entry.
-  */
--# define __releases(x)		__releases_ctx_lock(x)
-+#define __releases(...)		__releases_ctx_lock(__VA_ARGS__)
- 
- /**
-  * __acquire() - function to acquire context lock exclusively
-@@ -357,7 +331,7 @@ static inline void _context_unsafe_alias(void **p) { }
-  *
-  * No-op function that acquires the given context lock instance @x exclusively.
-  */
--# define __acquire(x)		__acquire_ctx_lock(x)
-+#define __acquire(x)		__acquire_ctx_lock(x)
- 
- /**
-  * __release() - function to release context lock exclusively
-@@ -365,7 +339,7 @@ static inline void _context_unsafe_alias(void **p) { }
-  *
-  * No-op function that releases the given context lock instance @x.
-  */
--# define __release(x)		__release_ctx_lock(x)
-+#define __release(x)		__release_ctx_lock(x)
- 
- /**
-  * __cond_lock() - function that conditionally acquires a context lock
-@@ -383,25 +357,23 @@ static inline void _context_unsafe_alias(void **p) { }
-  *
-  *	#define spin_trylock(l) __cond_lock(&lock, _spin_trylock(&lock))
-  */
--# define __cond_lock(x, c)	__try_acquire_ctx_lock(x, c)
-+#define __cond_lock(x, c)	__try_acquire_ctx_lock(x, c)
- 
  /**
   * __must_hold_shared() - function attribute, caller must hold shared context lock
-- * @x: context lock instance pointer
   *
-  * Function attribute declaring that the caller must hold the given context
-- * lock instance @x with shared access.
-+ * lock instance(s) with shared access.
+@@ -417,19 +399,6 @@ static inline void _context_unsafe_alias(void **p) { }
   */
--# define __must_hold_shared(x)	__requires_shared_ctx_lock(x)
-+#define __must_hold_shared(...)	__requires_shared_ctx_lock(__VA_ARGS__)
+ #define __release_shared(x)	__release_shared_ctx_lock(x)
  
- /**
-  * __acquires_shared() - function attribute, function acquires context lock shared
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the function acquires the given
-- * context lock instance @x with shared access, but does not release it.
-+ * context lock instance(s) with shared access, but does not release them.
-  */
--# define __acquires_shared(x)	__acquires_shared_ctx_lock(x)
-+#define __acquires_shared(...)	__acquires_shared_ctx_lock(__VA_ARGS__)
- 
- /**
-  * __cond_acquires_shared() - function attribute, function conditionally
-@@ -410,23 +382,22 @@ static inline void _context_unsafe_alias(void **p) { }
-  * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the function conditionally acquires the
-- * given context lock instance @x with shared access, but does not release it. The
-- * function return value @ret denotes when the context lock is acquired.
-+ * given context lock instance @x with shared access, but does not release it.
-+ * The function return value @ret denotes when the context lock is acquired.
-  *
-  * @ret may be one of: true, false, nonzero, 0, nonnull, NULL.
-  */
--# define __cond_acquires_shared(ret, x) __cond_acquires_impl_##ret(x, _shared)
-+#define __cond_acquires_shared(ret, x) __cond_acquires_impl_##ret(x, _shared)
- 
- /**
-  * __releases_shared() - function attribute, function releases a
-  *                       context lock shared
-- * @x: context lock instance pointer
-  *
-  * Function attribute declaring that the function releases the given context
-- * lock instance @x with shared access. The associated context must be active
-- * on entry.
-+ * lock instance(s) with shared access. The associated context(s) must be
-+ * active on entry.
-  */
--# define __releases_shared(x)	__releases_shared_ctx_lock(x)
-+#define __releases_shared(...)	__releases_shared_ctx_lock(__VA_ARGS__)
- 
- /**
-  * __acquire_shared() - function to acquire context lock shared
-@@ -435,7 +406,7 @@ static inline void _context_unsafe_alias(void **p) { }
-  * No-op function that acquires the given context lock instance @x with shared
-  * access.
-  */
--# define __acquire_shared(x)	__acquire_shared_ctx_lock(x)
-+#define __acquire_shared(x)	__acquire_shared_ctx_lock(x)
- 
- /**
-  * __release_shared() - function to release context lock shared
-@@ -444,7 +415,7 @@ static inline void _context_unsafe_alias(void **p) { }
-  * No-op function that releases the given context lock instance @x with shared
-  * access.
-  */
--# define __release_shared(x)	__release_shared_ctx_lock(x)
-+#define __release_shared(x)	__release_shared_ctx_lock(x)
- 
- /**
-  * __cond_lock_shared() - function that conditionally acquires a context lock shared
-@@ -457,9 +428,7 @@ static inline void _context_unsafe_alias(void **p) { }
-  * shared access, if the boolean expression @c is true. The result of @c is the
-  * return value.
-  */
--# define __cond_lock_shared(x, c) __try_acquire_shared_ctx_lock(x, c)
+-/**
+- * __cond_lock_shared() - function that conditionally acquires a context lock shared
+- * @x: context lock instance pinter
+- * @c: boolean expression
+- *
+- * Return: result of @c
+- *
+- * No-op function that conditionally acquires context lock instance @x with
+- * shared access, if the boolean expression @c is true. The result of @c is the
+- * return value.
+- */
+-#define __cond_lock_shared(x, c) __try_acquire_shared_ctx_lock(x, c)
 -
--#endif /* __CHECKER__ */
-+#define __cond_lock_shared(x, c) __try_acquire_shared_ctx_lock(x, c)
- 
  /**
   * __acquire_ret() - helper to acquire context lock of return value
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 50e63eade019..d828a4673441 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -1219,20 +1219,7 @@ rcu_head_after_call_rcu(struct rcu_head *rhp, rcu_callback_t f)
- extern int rcu_expedited;
- extern int rcu_normal;
+  * @call: call expression
+diff --git a/include/linux/lockref.h b/include/linux/lockref.h
+index 815d871fadfc..6ded24cdb4a8 100644
+--- a/include/linux/lockref.h
++++ b/include/linux/lockref.h
+@@ -49,9 +49,7 @@ static inline void lockref_init(struct lockref *lockref)
+ void lockref_get(struct lockref *lockref);
+ int lockref_put_return(struct lockref *lockref);
+ bool lockref_get_not_zero(struct lockref *lockref);
+-bool lockref_put_or_lock(struct lockref *lockref);
+-#define lockref_put_or_lock(_lockref) \
+-	(!__cond_lock((_lockref)->lock, !lockref_put_or_lock(_lockref)))
++bool lockref_put_or_lock(struct lockref *lockref) __cond_acquires(false, &lockref->lock);
  
--DEFINE_LOCK_GUARD_0(rcu,
--	do {
--		rcu_read_lock();
--		/*
--		 * sparse doesn't call the cleanup function,
--		 * so just release immediately and don't track
--		 * the context. We don't need to anyway, since
--		 * the whole point of the guard is to not need
--		 * the explicit unlock.
--		 */
--		__release(RCU);
--	} while (0),
--	rcu_read_unlock())
+ void lockref_mark_dead(struct lockref *lockref);
+ bool lockref_get_not_dead(struct lockref *lockref);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..f369cb633516 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2975,15 +2975,8 @@ static inline pud_t pud_mkspecial(pud_t pud)
+ }
+ #endif	/* CONFIG_ARCH_SUPPORTS_PUD_PFNMAP */
+ 
+-extern pte_t *__get_locked_pte(struct mm_struct *mm, unsigned long addr,
+-			       spinlock_t **ptl);
+-static inline pte_t *get_locked_pte(struct mm_struct *mm, unsigned long addr,
+-				    spinlock_t **ptl)
+-{
+-	pte_t *ptep;
+-	__cond_lock(*ptl, ptep = __get_locked_pte(mm, addr, ptl));
+-	return ptep;
+-}
++extern pte_t *get_locked_pte(struct mm_struct *mm, unsigned long addr,
++			     spinlock_t **ptl);
+ 
+ #ifdef __PAGETABLE_P4D_FOLDED
+ static inline int __p4d_alloc(struct mm_struct *mm, pgd_t *pgd,
+@@ -3337,31 +3330,15 @@ static inline bool pagetable_pte_ctor(struct mm_struct *mm,
+ 	return true;
+ }
+ 
+-pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
+-static inline pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr,
+-			pmd_t *pmdvalp)
+-{
+-	pte_t *pte;
++pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
+ 
+-	__cond_lock(RCU, pte = ___pte_offset_map(pmd, addr, pmdvalp));
+-	return pte;
+-}
+ static inline pte_t *pte_offset_map(pmd_t *pmd, unsigned long addr)
+ {
+ 	return __pte_offset_map(pmd, addr, NULL);
+ }
+ 
+-pte_t *__pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+-			unsigned long addr, spinlock_t **ptlp);
+-static inline pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+-			unsigned long addr, spinlock_t **ptlp)
+-{
+-	pte_t *pte;
 -
-+DEFINE_LOCK_GUARD_0(rcu, rcu_read_lock(), rcu_read_unlock())
- DECLARE_LOCK_GUARD_0_ATTRS(rcu, __acquires_shared(RCU), __releases_shared(RCU))
+-	__cond_lock(RCU, __cond_lock(*ptlp,
+-			pte = __pte_offset_map_lock(mm, pmd, addr, ptlp)));
+-	return pte;
+-}
++pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
++			   unsigned long addr, spinlock_t **ptlp);
  
- #endif /* __LINUX_RCUPDATE_H */
+ pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
+ 				unsigned long addr, spinlock_t **ptlp);
+diff --git a/include/linux/rwlock.h b/include/linux/rwlock.h
+index 151f9d5f3288..65a5b55e1bcd 100644
+--- a/include/linux/rwlock.h
++++ b/include/linux/rwlock.h
+@@ -50,8 +50,8 @@ do {								\
+  * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various
+  * methods are defined as nops in the case they are not required.
+  */
+-#define read_trylock(lock)	__cond_lock_shared(lock, _raw_read_trylock(lock))
+-#define write_trylock(lock)	__cond_lock(lock, _raw_write_trylock(lock))
++#define read_trylock(lock)	_raw_read_trylock(lock)
++#define write_trylock(lock)	_raw_write_trylock(lock)
+ 
+ #define write_lock(lock)	_raw_write_lock(lock)
+ #define read_lock(lock)		_raw_read_lock(lock)
+@@ -113,12 +113,7 @@ do {								\
+ 	} while (0)
+ #define write_unlock_bh(lock)		_raw_write_unlock_bh(lock)
+ 
+-#define write_trylock_irqsave(lock, flags)		\
+-	__cond_lock(lock, ({				\
+-		local_irq_save(flags);			\
+-		_raw_write_trylock(lock) ?		\
+-		1 : ({ local_irq_restore(flags); 0; });	\
+-	}))
++#define write_trylock_irqsave(lock, flags) _raw_write_trylock_irqsave(lock, &(flags))
+ 
+ #ifdef arch_rwlock_is_contended
+ #define rwlock_is_contended(lock) \
+diff --git a/include/linux/rwlock_api_smp.h b/include/linux/rwlock_api_smp.h
+index 6d5cc0b7be1f..d903b17c46ca 100644
+--- a/include/linux/rwlock_api_smp.h
++++ b/include/linux/rwlock_api_smp.h
+@@ -26,8 +26,8 @@ unsigned long __lockfunc _raw_read_lock_irqsave(rwlock_t *lock)
+ 							__acquires(lock);
+ unsigned long __lockfunc _raw_write_lock_irqsave(rwlock_t *lock)
+ 							__acquires(lock);
+-int __lockfunc _raw_read_trylock(rwlock_t *lock);
+-int __lockfunc _raw_write_trylock(rwlock_t *lock);
++int __lockfunc _raw_read_trylock(rwlock_t *lock)	__cond_acquires_shared(true, lock);
++int __lockfunc _raw_write_trylock(rwlock_t *lock)	__cond_acquires(true, lock);
+ void __lockfunc _raw_read_unlock(rwlock_t *lock)	__releases_shared(lock);
+ void __lockfunc _raw_write_unlock(rwlock_t *lock)	__releases(lock);
+ void __lockfunc _raw_read_unlock_bh(rwlock_t *lock)	__releases_shared(lock);
+@@ -41,6 +41,16 @@ void __lockfunc
+ _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+ 							__releases(lock);
+ 
++static inline bool _raw_write_trylock_irqsave(rwlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock)
++{
++	local_irq_save(*flags);
++	if (_raw_write_trylock(lock))
++		return true;
++	local_irq_restore(*flags);
++	return false;
++}
++
+ #ifdef CONFIG_INLINE_READ_LOCK
+ #define _raw_read_lock(lock) __raw_read_lock(lock)
+ #endif
+diff --git a/include/linux/rwlock_rt.h b/include/linux/rwlock_rt.h
+index f64d6d319a47..37b387dcab21 100644
+--- a/include/linux/rwlock_rt.h
++++ b/include/linux/rwlock_rt.h
+@@ -26,11 +26,11 @@ do {							\
+ } while (0)
+ 
+ extern void rt_read_lock(rwlock_t *rwlock)	__acquires_shared(rwlock);
+-extern int rt_read_trylock(rwlock_t *rwlock);
++extern int rt_read_trylock(rwlock_t *rwlock)	__cond_acquires_shared(true, rwlock);
+ extern void rt_read_unlock(rwlock_t *rwlock)	__releases_shared(rwlock);
+ extern void rt_write_lock(rwlock_t *rwlock)	__acquires(rwlock);
+ extern void rt_write_lock_nested(rwlock_t *rwlock, int subclass)	__acquires(rwlock);
+-extern int rt_write_trylock(rwlock_t *rwlock);
++extern int rt_write_trylock(rwlock_t *rwlock)	__cond_acquires(true, rwlock);
+ extern void rt_write_unlock(rwlock_t *rwlock)	__releases(rwlock);
+ 
+ static __always_inline void read_lock(rwlock_t *rwlock)
+@@ -59,7 +59,7 @@ static __always_inline void read_lock_irq(rwlock_t *rwlock)
+ 		flags = 0;				\
+ 	} while (0)
+ 
+-#define read_trylock(lock)	__cond_lock_shared(lock, rt_read_trylock(lock))
++#define read_trylock(lock)	rt_read_trylock(lock)
+ 
+ static __always_inline void read_unlock(rwlock_t *rwlock)
+ 	__releases_shared(rwlock)
+@@ -123,14 +123,15 @@ static __always_inline void write_lock_irq(rwlock_t *rwlock)
+ 		flags = 0;				\
+ 	} while (0)
+ 
+-#define write_trylock(lock)	__cond_lock(lock, rt_write_trylock(lock))
++#define write_trylock(lock)	rt_write_trylock(lock)
+ 
+-#define write_trylock_irqsave(lock, flags)		\
+-	__cond_lock(lock, ({				\
+-		typecheck(unsigned long, flags);	\
+-		flags = 0;				\
+-		rt_write_trylock(lock);			\
+-	}))
++static __always_inline bool _write_trylock_irqsave(rwlock_t *rwlock, unsigned long *flags)
++	__cond_acquires(true, rwlock)
++{
++	*flags = 0;
++	return rt_write_trylock(rwlock);
++}
++#define write_trylock_irqsave(lock, flags) _write_trylock_irqsave(lock, &(flags))
+ 
+ static __always_inline void write_unlock(rwlock_t *rwlock)
+ 	__releases(rwlock)
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 7d6449982822..a63f65aa5bdd 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -737,18 +737,8 @@ static inline int thread_group_empty(struct task_struct *p)
+ #define delay_group_leader(p) \
+ 		(thread_group_leader(p) && !thread_group_empty(p))
+ 
+-extern struct sighand_struct *__lock_task_sighand(struct task_struct *task,
+-							unsigned long *flags);
+-
+-static inline struct sighand_struct *lock_task_sighand(struct task_struct *task,
+-						       unsigned long *flags)
+-{
+-	struct sighand_struct *ret;
+-
+-	ret = __lock_task_sighand(task, flags);
+-	(void)__cond_lock(&task->sighand->siglock, ret);
+-	return ret;
+-}
++extern struct sighand_struct *lock_task_sighand(struct task_struct *task,
++						unsigned long *flags);
+ 
+ static inline void unlock_task_sighand(struct task_struct *task,
+ 						unsigned long *flags)
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 7e560c7a7b23..396b8c5d6c1b 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -213,7 +213,7 @@ static inline void do_raw_spin_unlock(raw_spinlock_t *lock) __releases(lock)
+  * various methods are defined as nops in the case they are not
+  * required.
+  */
+-#define raw_spin_trylock(lock)	__cond_lock(lock, _raw_spin_trylock(lock))
++#define raw_spin_trylock(lock)	_raw_spin_trylock(lock)
+ 
+ #define raw_spin_lock(lock)	_raw_spin_lock(lock)
+ 
+@@ -284,22 +284,11 @@ static inline void do_raw_spin_unlock(raw_spinlock_t *lock) __releases(lock)
+ 	} while (0)
+ #define raw_spin_unlock_bh(lock)	_raw_spin_unlock_bh(lock)
+ 
+-#define raw_spin_trylock_bh(lock) \
+-	__cond_lock(lock, _raw_spin_trylock_bh(lock))
++#define raw_spin_trylock_bh(lock)	_raw_spin_trylock_bh(lock)
+ 
+-#define raw_spin_trylock_irq(lock)			\
+-	__cond_lock(lock, ({				\
+-		local_irq_disable();			\
+-		_raw_spin_trylock(lock) ?		\
+-		1 : ({ local_irq_enable(); 0;  });	\
+-	}))
++#define raw_spin_trylock_irq(lock)	_raw_spin_trylock_irq(lock)
+ 
+-#define raw_spin_trylock_irqsave(lock, flags)		\
+-	__cond_lock(lock, ({				\
+-		local_irq_save(flags);			\
+-		_raw_spin_trylock(lock) ?		\
+-		1 : ({ local_irq_restore(flags); 0; }); \
+-	}))
++#define raw_spin_trylock_irqsave(lock, flags) _raw_spin_trylock_irqsave(lock, &(flags))
+ 
+ #ifndef CONFIG_PREEMPT_RT
+ /* Include rwlock functions for !RT */
+@@ -433,8 +422,12 @@ static __always_inline int spin_trylock_irq(spinlock_t *lock)
+ 	return raw_spin_trylock_irq(&lock->rlock);
+ }
+ 
+-#define spin_trylock_irqsave(lock, flags)			\
+-	__cond_lock(lock, raw_spin_trylock_irqsave(spinlock_check(lock), flags))
++static __always_inline bool _spin_trylock_irqsave(spinlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock) __no_context_analysis
++{
++	return raw_spin_trylock_irqsave(spinlock_check(lock), *flags);
++}
++#define spin_trylock_irqsave(lock, flags) _spin_trylock_irqsave(lock, &(flags))
+ 
+ /**
+  * spin_is_locked() - Check whether a spinlock is locked.
+@@ -512,23 +505,17 @@ static inline int rwlock_needbreak(rwlock_t *lock)
+  * Decrements @atomic by 1.  If the result is 0, returns true and locks
+  * @lock.  Returns false for all other cases.
+  */
+-extern int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock);
+-#define atomic_dec_and_lock(atomic, lock) \
+-		__cond_lock(lock, _atomic_dec_and_lock(atomic, lock))
++extern int atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock) __cond_acquires(true, lock);
+ 
+ extern int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
+-					unsigned long *flags);
+-#define atomic_dec_and_lock_irqsave(atomic, lock, flags) \
+-		__cond_lock(lock, _atomic_dec_and_lock_irqsave(atomic, lock, &(flags)))
++					unsigned long *flags) __cond_acquires(true, lock);
++#define atomic_dec_and_lock_irqsave(atomic, lock, flags) _atomic_dec_and_lock_irqsave(atomic, lock, &(flags))
+ 
+-extern int _atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock);
+-#define atomic_dec_and_raw_lock(atomic, lock) \
+-		__cond_lock(lock, _atomic_dec_and_raw_lock(atomic, lock))
++extern int atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock) __cond_acquires(true, lock);
+ 
+ extern int _atomic_dec_and_raw_lock_irqsave(atomic_t *atomic, raw_spinlock_t *lock,
+-					unsigned long *flags);
+-#define atomic_dec_and_raw_lock_irqsave(atomic, lock, flags) \
+-		__cond_lock(lock, _atomic_dec_and_raw_lock_irqsave(atomic, lock, &(flags)))
++					    unsigned long *flags) __cond_acquires(true, lock);
++#define atomic_dec_and_raw_lock_irqsave(atomic, lock, flags) _atomic_dec_and_raw_lock_irqsave(atomic, lock, &(flags))
+ 
+ int __alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask,
+ 			     size_t max_size, unsigned int cpu_mult,
+diff --git a/include/linux/spinlock_api_smp.h b/include/linux/spinlock_api_smp.h
+index 7e7d7d373213..bda5e7a390cd 100644
+--- a/include/linux/spinlock_api_smp.h
++++ b/include/linux/spinlock_api_smp.h
+@@ -95,6 +95,26 @@ static inline int __raw_spin_trylock(raw_spinlock_t *lock)
+ 	return 0;
+ }
+ 
++static __always_inline bool _raw_spin_trylock_irq(raw_spinlock_t *lock)
++	__cond_acquires(true, lock)
++{
++	local_irq_disable();
++	if (_raw_spin_trylock(lock))
++		return true;
++	local_irq_enable();
++	return false;
++}
++
++static __always_inline bool _raw_spin_trylock_irqsave(raw_spinlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock)
++{
++	local_irq_save(*flags);
++	if (_raw_spin_trylock(lock))
++		return true;
++	local_irq_restore(*flags);
++	return false;
++}
++
+ /*
+  * If lockdep is enabled then we use the non-preemption spin-ops
+  * even on CONFIG_PREEMPTION, because lockdep assumes that interrupts are
+diff --git a/include/linux/spinlock_api_up.h b/include/linux/spinlock_api_up.h
+index 018f5aabc1be..a9d5c7c66e03 100644
+--- a/include/linux/spinlock_api_up.h
++++ b/include/linux/spinlock_api_up.h
+@@ -24,14 +24,11 @@
+  * flags straight, to suppress compiler warnings of unused lock
+  * variables, and to add the proper checker annotations:
+  */
+-#define ___LOCK_void(lock) \
+-  do { (void)(lock); } while (0)
+-
+ #define ___LOCK_(lock) \
+-  do { __acquire(lock); ___LOCK_void(lock); } while (0)
++  do { __acquire(lock); (void)(lock); } while (0)
+ 
+ #define ___LOCK_shared(lock) \
+-  do { __acquire_shared(lock); ___LOCK_void(lock); } while (0)
++  do { __acquire_shared(lock); (void)(lock); } while (0)
+ 
+ #define __LOCK(lock, ...) \
+   do { preempt_disable(); ___LOCK_##__VA_ARGS__(lock); } while (0)
+@@ -78,10 +75,56 @@
+ #define _raw_spin_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags)
+ #define _raw_read_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags, shared)
+ #define _raw_write_lock_irqsave(lock, flags)	__LOCK_IRQSAVE(lock, flags)
+-#define _raw_spin_trylock(lock)			({ __LOCK(lock, void); 1; })
+-#define _raw_read_trylock(lock)			({ __LOCK(lock, void); 1; })
+-#define _raw_write_trylock(lock)			({ __LOCK(lock, void); 1; })
+-#define _raw_spin_trylock_bh(lock)		({ __LOCK_BH(lock, void); 1; })
++
++static __always_inline int _raw_spin_trylock(raw_spinlock_t *lock)
++	__cond_acquires(true, lock)
++{
++	__LOCK(lock);
++	return 1;
++}
++
++static __always_inline int _raw_spin_trylock_bh(raw_spinlock_t *lock)
++	__cond_acquires(true, lock)
++{
++	__LOCK_BH(lock);
++	return 1;
++}
++
++static __always_inline int _raw_spin_trylock_irq(raw_spinlock_t *lock)
++	__cond_acquires(true, lock)
++{
++	__LOCK_IRQ(lock);
++	return 1;
++}
++
++static __always_inline int _raw_spin_trylock_irqsave(raw_spinlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock)
++{
++	__LOCK_IRQSAVE(lock, *(flags));
++	return 1;
++}
++
++static __always_inline int _raw_read_trylock(rwlock_t *lock)
++	__cond_acquires_shared(true, lock)
++{
++	__LOCK(lock, shared);
++	return 1;
++}
++
++static __always_inline int _raw_write_trylock(rwlock_t *lock)
++	__cond_acquires(true, lock)
++{
++	__LOCK(lock);
++	return 1;
++}
++
++static __always_inline int _raw_write_trylock_irqsave(rwlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock)
++{
++	__LOCK_IRQSAVE(lock, *(flags));
++	return 1;
++}
++
+ #define _raw_spin_unlock(lock)			__UNLOCK(lock)
+ #define _raw_read_unlock(lock)			__UNLOCK(lock, shared)
+ #define _raw_write_unlock(lock)			__UNLOCK(lock)
+diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
+index 6bab73ee1384..0a585768358f 100644
+--- a/include/linux/spinlock_rt.h
++++ b/include/linux/spinlock_rt.h
+@@ -37,8 +37,8 @@ extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock)
+ extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
+ extern void rt_spin_unlock(spinlock_t *lock)	__releases(lock);
+ extern void rt_spin_lock_unlock(spinlock_t *lock);
+-extern int rt_spin_trylock_bh(spinlock_t *lock);
+-extern int rt_spin_trylock(spinlock_t *lock);
++extern int rt_spin_trylock_bh(spinlock_t *lock) __cond_acquires(true, lock);
++extern int rt_spin_trylock(spinlock_t *lock) __cond_acquires(true, lock);
+ 
+ static __always_inline void spin_lock(spinlock_t *lock)
+ 	__acquires(lock)
+@@ -130,21 +130,19 @@ static __always_inline void spin_unlock_irqrestore(spinlock_t *lock,
+ 	rt_spin_unlock(lock);
+ }
+ 
+-#define spin_trylock(lock)				\
+-	__cond_lock(lock, rt_spin_trylock(lock))
++#define spin_trylock(lock)	rt_spin_trylock(lock)
+ 
+-#define spin_trylock_bh(lock)				\
+-	__cond_lock(lock, rt_spin_trylock_bh(lock))
++#define spin_trylock_bh(lock)	rt_spin_trylock_bh(lock)
+ 
+-#define spin_trylock_irq(lock)				\
+-	__cond_lock(lock, rt_spin_trylock(lock))
++#define spin_trylock_irq(lock)	rt_spin_trylock(lock)
+ 
+-#define spin_trylock_irqsave(lock, flags)		\
+-	__cond_lock(lock, ({				\
+-		typecheck(unsigned long, flags);	\
+-		flags = 0;				\
+-		rt_spin_trylock(lock);			\
+-	}))
++static __always_inline bool _spin_trylock_irqsave(spinlock_t *lock, unsigned long *flags)
++	__cond_acquires(true, lock)
++{
++	*flags = 0;
++	return rt_spin_trylock(lock);
++}
++#define spin_trylock_irqsave(lock, flags) _spin_trylock_irqsave(lock, &(flags))
+ 
+ #define spin_is_contended(lock)		(((void)(lock), 0))
+ 
+diff --git a/kernel/signal.c b/kernel/signal.c
+index e42b8bd6922f..d65d0fe24bfb 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1355,8 +1355,8 @@ int zap_other_threads(struct task_struct *p)
+ 	return count;
+ }
+ 
+-struct sighand_struct *__lock_task_sighand(struct task_struct *tsk,
+-					   unsigned long *flags)
++struct sighand_struct *lock_task_sighand(struct task_struct *tsk,
++					 unsigned long *flags)
+ {
+ 	struct sighand_struct *sighand;
+ 
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 80a8a09a21a0..413e2389f0a5 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -66,14 +66,7 @@ static const struct k_clock clock_realtime, clock_monotonic;
+ #error "SIGEV_THREAD_ID must not share bit with other SIGEV values!"
+ #endif
+ 
+-static struct k_itimer *__lock_timer(timer_t timer_id);
+-
+-#define lock_timer(tid)							\
+-({	struct k_itimer *__timr;					\
+-	__cond_lock(&__timr->it_lock, __timr = __lock_timer(tid));	\
+-	__timr;								\
+-})
+-
++static struct k_itimer *lock_timer(timer_t timer_id);
+ static inline void unlock_timer(struct k_itimer *timr)
+ {
+ 	if (likely((timr)))
+@@ -85,7 +78,7 @@ static inline void unlock_timer(struct k_itimer *timr)
+ 
+ #define scoped_timer				(scope)
+ 
+-DEFINE_CLASS(lock_timer, struct k_itimer *, unlock_timer(_T), __lock_timer(id), timer_t id);
++DEFINE_CLASS(lock_timer, struct k_itimer *, unlock_timer(_T), lock_timer(id), timer_t id);
+ DEFINE_CLASS_IS_COND_GUARD(lock_timer);
+ 
+ static struct timer_hash_bucket *hash_bucket(struct signal_struct *sig, unsigned int nr)
+@@ -600,7 +593,7 @@ COMPAT_SYSCALL_DEFINE3(timer_create, clockid_t, which_clock,
+ }
+ #endif
+ 
+-static struct k_itimer *__lock_timer(timer_t timer_id)
++static struct k_itimer *lock_timer(timer_t timer_id)
+ {
+ 	struct k_itimer *timr;
+ 
+diff --git a/lib/dec_and_lock.c b/lib/dec_and_lock.c
+index 1dcca8f2e194..8c7c398fd770 100644
+--- a/lib/dec_and_lock.c
++++ b/lib/dec_and_lock.c
+@@ -18,7 +18,7 @@
+  * because the spin-lock and the decrement must be
+  * "atomic".
+  */
+-int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock)
++int atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock)
+ {
+ 	/* Subtract 1 from counter unless that drops it to 0 (ie. it was 1) */
+ 	if (atomic_add_unless(atomic, -1, 1))
+@@ -32,7 +32,7 @@ int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock)
+ 	return 0;
+ }
+ 
+-EXPORT_SYMBOL(_atomic_dec_and_lock);
++EXPORT_SYMBOL(atomic_dec_and_lock);
+ 
+ int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
+ 				 unsigned long *flags)
+@@ -50,7 +50,7 @@ int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
+ }
+ EXPORT_SYMBOL(_atomic_dec_and_lock_irqsave);
+ 
+-int _atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock)
++int atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock)
+ {
+ 	/* Subtract 1 from counter unless that drops it to 0 (ie. it was 1) */
+ 	if (atomic_add_unless(atomic, -1, 1))
+@@ -63,7 +63,7 @@ int _atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock)
+ 	raw_spin_unlock(lock);
+ 	return 0;
+ }
+-EXPORT_SYMBOL(_atomic_dec_and_raw_lock);
++EXPORT_SYMBOL(atomic_dec_and_raw_lock);
+ 
+ int _atomic_dec_and_raw_lock_irqsave(atomic_t *atomic, raw_spinlock_t *lock,
+ 				     unsigned long *flags)
+diff --git a/lib/lockref.c b/lib/lockref.c
+index 9210fc6ae714..5d8e3ef3860e 100644
+--- a/lib/lockref.c
++++ b/lib/lockref.c
+@@ -105,7 +105,6 @@ EXPORT_SYMBOL(lockref_put_return);
+  * @lockref: pointer to lockref structure
+  * Return: 1 if count updated successfully or 0 if count <= 1 and lock taken
+  */
+-#undef lockref_put_or_lock
+ bool lockref_put_or_lock(struct lockref *lockref)
+ {
+ 	CMPXCHG_LOOP(
+diff --git a/mm/memory.c b/mm/memory.c
+index 2a55edc48a65..b751e1f85abc 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2210,8 +2210,8 @@ static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
+ 	return pmd;
+ }
+ 
+-pte_t *__get_locked_pte(struct mm_struct *mm, unsigned long addr,
+-			spinlock_t **ptl)
++pte_t *get_locked_pte(struct mm_struct *mm, unsigned long addr,
++		      spinlock_t **ptl)
+ {
+ 	pmd_t *pmd = walk_to_pmd(mm, addr);
+ 
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index d3aec7a9926a..af7966169d69 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -280,7 +280,7 @@ static unsigned long pmdp_get_lockless_start(void) { return 0; }
+ static void pmdp_get_lockless_end(unsigned long irqflags) { }
+ #endif
+ 
+-pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
++pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+ {
+ 	unsigned long irqflags;
+ 	pmd_t pmdval;
+@@ -332,13 +332,12 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+ }
+ 
+ /*
+- * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal implementation
+- * __pte_offset_map_lock() below, is usually called with the pmd pointer for
+- * addr, reached by walking down the mm's pgd, p4d, pud for addr: either while
+- * holding mmap_lock or vma lock for read or for write; or in truncate or rmap
+- * context, while holding file's i_mmap_lock or anon_vma lock for read (or for
+- * write). In a few cases, it may be used with pmd pointing to a pmd_t already
+- * copied to or constructed on the stack.
++ * pte_offset_map_lock(mm, pmd, addr, ptlp) is usually called with the pmd
++ * pointer for addr, reached by walking down the mm's pgd, p4d, pud for addr:
++ * either while holding mmap_lock or vma lock for read or for write; or in
++ * truncate or rmap context, while holding file's i_mmap_lock or anon_vma lock
++ * for read (or for write). In a few cases, it may be used with pmd pointing to
++ * a pmd_t already copied to or constructed on the stack.
+  *
+  * When successful, it returns the pte pointer for addr, with its page table
+  * kmapped if necessary (when CONFIG_HIGHPTE), and locked against concurrent
+@@ -389,8 +388,8 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+  * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
+  * pte_offset_map() and co once the vma is detached from mm or mm_users is zero.
+  */
+-pte_t *__pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+-			     unsigned long addr, spinlock_t **ptlp)
++pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
++			   unsigned long addr, spinlock_t **ptlp)
+ {
+ 	spinlock_t *ptl;
+ 	pmd_t pmdval;
+diff --git a/tools/include/linux/compiler_types.h b/tools/include/linux/compiler_types.h
+index d09f9dc172a4..067a5b4e0f7b 100644
+--- a/tools/include/linux/compiler_types.h
++++ b/tools/include/linux/compiler_types.h
+@@ -20,7 +20,6 @@
+ # define __releases(x)	__attribute__((context(x,1,0)))
+ # define __acquire(x)	__context__(x,1)
+ # define __release(x)	__context__(x,-1)
+-# define __cond_lock(x,c)	((c) ? ({ __acquire(x); 1; }) : 0)
+ #else /* __CHECKER__ */
+ /* context/locking */
+ # define __must_hold(x)
+@@ -28,7 +27,6 @@
+ # define __releases(x)
+ # define __acquire(x)	(void)0
+ # define __release(x)	(void)0
+-# define __cond_lock(x,c) (c)
+ #endif /* __CHECKER__ */
+ 
+ /* Compiler specific macros. */
 -- 
 2.52.0.322.g1dd061c0dc-goog
 
