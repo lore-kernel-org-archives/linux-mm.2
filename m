@@ -4,82 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7405CE66882
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2303EE6688C
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:55:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBAE96B0089; Fri, 19 Dec 2025 15:54:02 -0500 (EST)
+	id 89E526B00A1; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D61956B008A; Fri, 19 Dec 2025 15:54:02 -0500 (EST)
+	id 875956B00A4; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E5E6B008C; Fri, 19 Dec 2025 15:54:02 -0500 (EST)
+	id 7817A6B00A5; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E136B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:54:02 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EDC316038C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:54:02 +0000 (UTC)
-X-FDA: 84237422724.03.996FC25
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66DCE6B00A1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:55:26 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36ADC13A5D0
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:55:26 +0000 (UTC)
+X-FDA: 84237426252.07.A87EE98
 Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7C2B4140010
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:54:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=UfehkjIJ;
-	spf=pass (imf23.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2C75F1C0016
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:55:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b="iY/ltKNs";
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf18.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177724; a=rsa-sha256;
+	cv=none;
+	b=ZTdzIviAZuwkrjQ3sGZHnsM0Dv+15u0TEZlhaJIRmaUSt3Om+wDA+BPCpDX5sQTrLGbYbh
+	Q3dGUEjxuq/CwrE5W6uGHCT+49VmlH0qK1ZernzlBtRirdqKu2HB5ZOcWMYmlVO2YcM+tE
+	ewfKvTpd6GkkgO6tczhDWLx6DeJGZdA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b="iY/ltKNs";
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf18.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766177640;
+	s=arc-20220608; t=1766177724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n0Uo17R9WMorX1SnpOAKwu8b4IBQKRGE96JfpenCXBM=;
-	b=hLcxdVcongvPtZ3/bLculViRo668jpq3/kv9CCbYN2G3FJoIryH+H33eDfCErB+dZ6elOY
-	Xoo7Gh6q9NiuCus0eRP5RA5Z/quEemgmlRtDsCue4vRA8A16POwFS6rRq711UQwgHQZhzA
-	X5yT2XWRQtNNQwIkFSJbGmHhosYRqVA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=UfehkjIJ;
-	spf=pass (imf23.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177640; a=rsa-sha256;
-	cv=none;
-	b=UIU0Kjh1eS4WVbgy5iO7ngsCwY4eICT7VTdHpjsThELKCglfgJFCdctSyNBk/mVEDiOtrt
-	ziQNft0xSQTi3Z1hePiIYFeQSR/+oGbPqH2crpAErTw9ZwQ7gDNcUVvo6a4eTPiW8l4fJ1
-	3UMdbCAWZgiC/9tRrMjbPz+iaYi7EjU=
+	bh=XdZxKJLVv/us0MhlURSAieVC/jzQimy4qD0cHcgmVzU=;
+	b=avzhptdMk9cjcLBjtZEjHIfZsI/BfTfoH6ha/FuKoFp4aGAnP+sjBWxBVNWgb6QtNPEgsu
+	+SJi/3NemoX7xabjlf6ytRSD6is95AUpHAnLsefcFNO2QZjuFZp5K9mn7x+7bZI7cQBM1M
+	1pGGOCFhHSt9PG+c8d9quAnQgYPi6zc=
 Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY0Bb26BgzlgyG0;
-	Fri, 19 Dec 2025 20:53:59 +0000 (UTC)
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY0DC1g6NzlxTSc;
+	Fri, 19 Dec 2025 20:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
 	content-transfer-encoding:content-type:content-type:in-reply-to
 	:from:from:content-language:references:subject:subject
 	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766177631; x=1768769632; bh=n0Uo17R9WMorX1SnpOAKwu8b
-	4IBQKRGE96JfpenCXBM=; b=UfehkjIJdc0Hxhy6e1QrqozCPDNCsdBaBTSNAMAE
-	KsX0uDHgLFBBSrs9xSwfM3qph2C8+tbTb7M9XBr9DWnYeElRdF0N5FkNATZoOm2w
-	d9a9JYW75qJFA4k5r1QWHovpAcRZQt+sieHUKqQwpbWOE9k5jNutrfaRN59H54bt
-	MYntbfUUaSDX7hnAvMzk9AdUr66yGKIn+c/kBY2oO9xYFVJmWlBkVGJuHOLyUFlu
-	hmMmOyvGGnzkX+vq0/0DsUm0fnGWj9DmTR9vkB421Q46RF2Bpcx1RMMwQ10vmHKf
-	/mt2CDUYrOjmtKcd35CqH/Zwc2a1AjvbVgEAHtuyr4UgYw==
+	 s=mr01; t=1766177715; x=1768769716; bh=XdZxKJLVv/us0MhlURSAieVC
+	/jzQimy4qD0cHcgmVzU=; b=iY/ltKNsXjZN2SOn/7Mgk2nBiIFfkhQl9wu1rxsY
+	gqMl8gzI4Fdl7lRwvuyzu7BWqPG53SnYRBw92pU/YfkNHA1oj26W7lr6+j5RR0uF
+	yIO6LZVQLnDdYtCKFJK2JKXsUbas5xX9N0Cd4MqfHLRdUuyQFIFHBeQ4g++xzSQp
+	gU0eJDXxLL9HnDwtcV2Is8KV5H4vPha7HstD2vRL0jPgV4n/YaDhiqi6j32BHDhA
+	klf/01+b+GILMZcS2Xt+ypFduBskYOaif+4ge3c/WrC+gq03AbnGqHj3Xw4Txc6v
+	eiaB6hoDKfyCfX8yrnN20mCQbhQQgqc7PGjrVHpqbn8r2A==
 X-Virus-Scanned: by MailRoute
 Received: from 013.lax.mailroute.net ([127.0.0.1])
  by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id vHlYWjU2OGjG; Fri, 19 Dec 2025 20:53:51 +0000 (UTC)
+ id qbQZoCDMrrgt; Fri, 19 Dec 2025 20:55:15 +0000 (UTC)
 Received: from [100.119.48.131] (unknown [104.135.180.219])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY0BC4DBmzlwqQL;
-	Fri, 19 Dec 2025 20:53:39 +0000 (UTC)
-Message-ID: <cdde6c60-7f6f-4715-a249-5aab39438b57@acm.org>
-Date: Fri, 19 Dec 2025 12:53:38 -0800
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY0Cp5nntzlwmHT;
+	Fri, 19 Dec 2025 20:55:02 +0000 (UTC)
+Message-ID: <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
+Date: Fri, 19 Dec 2025 12:55:01 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/36] lockdep: Annotate lockdep assertions for context
- analysis
+Subject: Re: [PATCH v5 17/36] locking/rwsem: Support Clang's context analysis
 To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
  Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Will Deacon <will@kernel.org>
@@ -111,20 +110,20 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
  linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-8-elver@google.com>
+ <20251219154418.3592607-18-elver@google.com>
 Content-Language: en-US
 From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-8-elver@google.com>
+In-Reply-To: <20251219154418.3592607-18-elver@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7C2B4140010
-X-Stat-Signature: hk364g37kirckiymth4qadac9ya1oyw6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2C75F1C0016
+X-Stat-Signature: qtnk93oc85xm66j3nrcxj7bp7q1rjdhq
 X-Rspam-User: 
-X-HE-Tag: 1766177640-555804
-X-HE-Meta: U2FsdGVkX1+c74HN5Yvv0RgGK7DHrgOitQyPafwIsT8z89108PDqzaSG0RLRDDk5p7SCQgQbuKjZPTYFjGg4xKxSkNIcvRGdeBXlbJeqSpSlOEOdd3SW1ub12iBX7FE5uX0tYU5ujARDwkmGqrsq3vhenKA9qIEW7NKtxc8sKMDQHqTFtGbzz0j/88AhkQ8G64qAhimEr4eKpW2tX46Lbi8aNto32bOfcbKbGfpTqi0kZuOvl29xYI11IccQTnsRmtpbpwwr9Ju55pn6zP+8oeYix/RK/iSgQiwwXeCCVbePW0wxc0s1MzE0EAnZrluLLWBZbDaIl/CYmkFa4qJEHrv0RD5PzITPW5yohY4+lGTJ15GpHIq3avfUO8sCyBcyOCm1gbHSLN2vf1QjksvNzrKVtMJk2+EXEZSsqs5MR7QsrsLwg2u2scqt7FmxG2Mk4QvGA1EhYgaDOiLHhlz/1RNjyKmjpRmJxZRy4vO5MzE0n+l2WbE5ezROGF1daHNKu8ub1ePvs+qJWhs5KhesqBE0CBL2Qfty/K98gqdbg8oS4Mu+fZzEeFD/lOrFJp3v1I9QiD/PPafWrRvVK1dCkOn17AE3tRAVcBpuujKnOOGv9s+cvRM5J34TIen0WYCarpZ0hD98R/PVklOskhdanM9SvkbzVr2IT3AwlEBjZKEqtMMT6hYOkaZMAX/KiMdSAr00oHYW0FmOPhvj3sN7G7yjd9IRsOhNXwtrIDRzQFVDw9Uwh2hrUefN06OkwiqS2ZL6foc+N6YdQzrLnHmftsmsg4aM4222ulIP2ItFd3mSPFRx2FSDj1JPiS9rAPrqzTN9Lbf7pDnvCtkjL52xxPDN89zP6BksoLStgY+c8lhMm2rb+zl2pJGWEdOtTcXCQm8+aXcU+VbOaihMV7SdujQJ+ZMwCeEPLjddreTNFlfTA/9/8xSU8fYLfRqgmshw7zXgVJcp1e9zLyr4yLN
- m6lH1zIV
- U2stgJlGDkdN/W//pj/b8/I23A4cxgm3ETNnhFQZi/WBZMwemx8v+7ec+w4fyDRSs6lIbcKcXT7z2w1i39uR8r4RVZLmanP4BU+L4BPI/4l0TMhkW+f5Xc1SE17a3iA9NJytXNlpdFHnVDDeyd2gFC7aZme49o+jot7mY/s1DkbJo/bOQWOic212dNYB+QkkZcRzs6LRksOT+N62Lby8RxQ3S/dU3WhAyrSayhcoro+EdsNBSBlPzHnYvG6wFiiUKezp7eLSKPQICK/ccWfh3kAoHHD71I+e62DYK7aar6d5he0T/lgToQmOQ/3MRX2/sjRBbdRvl1Co8VJBhVtUYTe0QttiPH4iUPmVdo6q5ZZh3r6lcO+g4M+BCUdPZ2UeNjIZcNcRJsZyRGBLw/H72HaPnPPSJNAPcmnNa
+X-HE-Tag: 1766177723-83043
+X-HE-Meta: U2FsdGVkX18px9Qtjn2bmiiLUHump9sqQ4LdocwORdNylwzc+ioSo51o7eBpm3NFAdlJ12980d0P9PxKUUNncezfbq0d87eTVeP9y2VW4yXOjuMs/vOMc8AikQwwsXDUUF+pU0vTTVHkXCZvdyL+vm4a1hTYGVM/ak7CJJVUGRnb8HZ7jtEjxSu8ou99k+Mo3qPYhYYORh2lKEQ781kAH0lXslprpUbDgT2JcAxwgY38LtZnYbxmyqqsH0YefkSxMviKt/TyuaoePnyS324DL0OinUqMjB2StBgcGAn2FHjaCSL+vH4o2Djf6kv3ZhEuOhlbY6yJlwgOYME7mcSNreUZdYi7lEEj1CjFNUb2zHHjol56ocB7kCJp0bI/s1DPHtp3jwuepIuQCGAoCZCgSRJQYQ6do1UcRjiHg70lcmpbfozBpiZtdusgqfKBnrlzQTPDuYbK+j3g6ckR+lDtBiLfpN+JMHiIsrPSRlvyGeF0ls035adHYENlX4qw3M8CSyWiiMmGgzLGRukqwkdZ+zK9Agtp7a64g+difevGi3DfdEddNZhWjWrY4pVv2E98/h+6WdXn2LxSOnW2lI3fslM28BlKmpODp02QqKeQsArq85T+292W+8QGB/E1hjR+4KJ6wl5slEx9+EYEwOwB4tmB07yJu+HqzFqyrvll11iUC5O5rFBepfWQHXjZhajJr1PNNDx286AATCQMQ9FGGT+HJ5utXMMFZCkTHh4v+PyZyft0Jzk8O2FV/xgm0MVRRIsEJUWP+vhNTuxgXH3c81pMhs7Qw3ORMPVK84WM6T+bp2+wnIcq+/Db3/A9Aw6zQAAdaSyHn+mSolXDoH8h5NRcv/dgATAbL8opb3wq5UpdEw17JvWdmdpBUqD6nn/i/c36uNYirn3ltDmBZ5/kNxrt1QT1yaaPh3u4urJlU8YoPAL2cZRrW2+sMKJwKkt2r9xGacJiq4+nzfbb0fo
+ Gt9ZHuPl
+ KcYzAM1jFfZIh9ZCxVAv/+/B9Ei/3tIrbVUSiOOyhMdV2m4cI/ixs69F4vF4qZruQGAQfxF2KdT7uF5JYQymzikZQBvLXJBU7BaCYnISZ7LtIUM0H2FGxm07VSp+bZD95pyeSR6cnMhdTLz/sVLRbqVsdcRIdXFJ2Og53e/QcJZf0M2BLbuPyaUrPYCz4zxV8Qr9KzuQlvqWzVvw/nItvWUjVuV8ydn4Z3vQc9y0g6Omn4YDnnoP/Y70KQWjOQXujG8r0JZ/MqSsp7pQcbIMsEwjhRR8E6tSvsMgafPTyOxGBP1OXQw/Aa5hdzqe7uxnjY2WihMUX0Xb/WPhnhoqT3mLXbjUVS+9ZtwMqZu7kAxeiQtGzCHI5cWwtpr9fmvzkk3UT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,53 +132,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 7:39 AM, Marco Elver wrote:
-> diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-> index dd634103b014..621566345406 100644
-> --- a/include/linux/lockdep.h
-> +++ b/include/linux/lockdep.h
-> @@ -282,16 +282,16 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
->   	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
+On 12/19/25 7:40 AM, Marco Elver wrote:
+>   static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
+> +	__assumes_ctx_lock(sem)
+>   {
+>   	WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
+>   }
 >   
->   #define lockdep_assert_held(l)		\
-> -	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
-> +	do { lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD); __assume_ctx_lock(l); } while (0)
->   
->   #define lockdep_assert_not_held(l)	\
->   	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_HELD)
->   
->   #define lockdep_assert_held_write(l)	\
-> -	lockdep_assert(lockdep_is_held_type(l, 0))
-> +	do { lockdep_assert(lockdep_is_held_type(l, 0)); __assume_ctx_lock(l); } while (0)
->   
->   #define lockdep_assert_held_read(l)	\
-> -	lockdep_assert(lockdep_is_held_type(l, 1))
-> +	do { lockdep_assert(lockdep_is_held_type(l, 1)); __assume_shared_ctx_lock(l); } while (0)
->   
->   #define lockdep_assert_held_once(l)		\
->   	lockdep_assert_once(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
-> @@ -389,10 +389,10 @@ extern int lockdep_is_held(const void *);
->   #define lockdep_assert(c)			do { } while (0)
->   #define lockdep_assert_once(c)			do { } while (0)
->   
-> -#define lockdep_assert_held(l)			do { (void)(l); } while (0)
-> +#define lockdep_assert_held(l)			__assume_ctx_lock(l)
->   #define lockdep_assert_not_held(l)		do { (void)(l); } while (0)
-> -#define lockdep_assert_held_write(l)		do { (void)(l); } while (0)
-> -#define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
-> +#define lockdep_assert_held_write(l)		__assume_ctx_lock(l)
-> +#define lockdep_assert_held_read(l)		__assume_shared_ctx_lock(l)
->   #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
->   #define lockdep_assert_none_held_once()	do { } while (0)
+>   static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
+> +	__assumes_ctx_lock(sem)
+>   {
+>   	WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
+>   }
+> @@ -119,6 +121,7 @@ do {								\
+>   	static struct lock_class_key __key;			\
+>   								\
+>   	__init_rwsem((sem), #sem, &__key);			\
+> +	__assume_ctx_lock(sem);					\
+>   } while (0)
 
-I think these macros should use __must_hold() instead of __assume...().
-lockdep_assert_held() emits a runtime warning if 'l' is not held. Hence,
-I think that code where lockdep_assert_held() is used should not compile
-if it cannot be verified at compile time that 'l' is held.
+Just like as for lockdep.h, I think that the above annotations should be 
+changed into __must_hold().
 
 Thanks,
 
 Bart.
-
-
 
