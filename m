@@ -4,145 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B46D711D5
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD84D711CC
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2E546B0092; Thu, 18 Dec 2025 20:40:29 -0500 (EST)
+	id B55E96B0088; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE6CA6B0093; Thu, 18 Dec 2025 20:40:29 -0500 (EST)
+	id AD9A06B0099; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB3D56B0095; Thu, 18 Dec 2025 20:40:29 -0500 (EST)
+	id 9E5286B009B; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CA0B06B0092
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:40:29 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A86C1B8F86
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:40:29 +0000 (UTC)
-X-FDA: 84234515778.17.B8EE748
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A93F6140006
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:40:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e1dSNyZc;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766108427; a=rsa-sha256;
-	cv=none;
-	b=2YkfKpu98PibhbHdNibQENQpybRrTF7Bp0wYuoRhXGebK3Jf2wJKdJ2hIUlMSnLHjvTqT7
-	rCzoBXbgv1B0mNwvulHJaeyma3N/ISDKzkPJJj+EwAuYcw7ZTXKLWxStu0GBXwkauN/qwQ
-	w86mXLjzwPSwf5OYw9ke57ZYI6SnWeI=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e1dSNyZc;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D5E66B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F4AEB8A15
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:29 +0000 (UTC)
+X-FDA: 84234520818.22.6484857
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A303D140005
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TVwXy+6C;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766108427;
+	s=arc-20220608; t=1766108547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TWXueLrhDneeDmCGizpSHzMSgAg8yMgxTmeT/qXEn+I=;
-	b=plra1vxNAmu2QFnJvR2CN3mfG5EcFBMXBoQcaDCKQ+85xYvFmb3zxNnSBq82P33ql3dgNQ
-	dr9xXH0JKwT6VQd3QY62cmKj+aNKmoSF6aN/kxLHmw5puaMBLgWy7xaURv2b5fU2ABQDoP
-	JZNw+4kHLItiTncq53jVew1wLPlxYI0=
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-78ab039ddb4so12192737b3.3
-        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 17:40:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766108427; x=1766713227; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TWXueLrhDneeDmCGizpSHzMSgAg8yMgxTmeT/qXEn+I=;
-        b=e1dSNyZcxj2QBCKmpYCMpOdeF04g8nCGOu4Ydv9Ggkr6lKnimhbx+s1Kr2LUBgF0qU
-         /qzuhuB1ORV+YS6LJFD68zIIa1jp6q+YrbTnqgbMhdh59+BMtv8Q5PVIiAaPydEcxsnZ
-         59F1iZWbGqYANaZTotrmDbwFFrFDweUuyD/pEeHBgcanOwo5AJW8Ph7Heq/k4Ve0A4sZ
-         DJLs/+E4jp1hs0w7D78JtltfN3eCnwONV67jaGCizdbgruBoGd61S9OTjzPskEwRtJNS
-         JhhqVxDGeGJFyqPS8V1SF2v3viPQoj9Pxn3975iWwpUGWkkTOdymB1EFvGf9MYV7/Mmx
-         cB5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766108427; x=1766713227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TWXueLrhDneeDmCGizpSHzMSgAg8yMgxTmeT/qXEn+I=;
-        b=LBsp4iNXSPdasMEOJ7pXJtqDmIrc+z1/96+zhhoLDyiWAO+JTNUzBLK5FHj5x7Ke/y
-         60aXSiirRnH2kDUuR7LAGJ6rEHs5mo+4mH8GjNP/Upez+8o8NVwaVBUAk6Dbcasjsel+
-         OBAaMQYcZoW8hIkgdrg4X3IBMPcRJbuDeS5pKb8YDj9u1TRm/W8LphpM01YFToSOuA0b
-         TZNFNp5cGYAv9Ip4kpPdUvqZZSy0tfDUSv1I+CSI6qbWDMZ1jDKwH23r78MOXwfVYjAY
-         xEaRCrgKjnsYHMaoHqWZ+daVrcBYfL10gJgVGM3VKsyUD/0CqtNgJD7bQBEjhTj8Llzk
-         9dcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXafz/eKIPbbaACyKyJBJuceKRm5efiqd8aJDVUpA7DJu6IAi8/1XFg8lKMq9byQx3YZ6dLsMEYEA==@kvack.org
-X-Gm-Message-State: AOJu0Yxfyp9J4VKH/oMut0+bN7E5c/8cjxruqgtOkgGhwe7/50eEoYDA
-	+I9Dr6p0Q3IVsDD0iPFfUtRN6XAEsTJu3XMWszXPLnq+2CtfPKl1pX2/
-X-Gm-Gg: AY/fxX50c7Wj/2TrXn3Wz65u3fFOr+oa45KSI0XsTpbIW8QqY5IEiN6k2FhJ6Ia/2TI
-	ZeHfF+kWmhuVElJAIH13fyLhfjRxdGXDLAadjiJt4EX5fMhEdUQCdGnG8lFNk8R26p5kUFy0tQZ
-	MBEypBPx2oKrxetOrzgoo3oeyvA96kQHPUfy5ysoEza0PNWmhBEYBgW+V3bxLdl3fWQb9kZ5ee3
-	zj89NQ42gtVO/rG0rILY+6xAVcqgKrlvr8/qcNQGjZDrfWQnWxs9zOu08SQ0S1UQF1gMmACiE+4
-	0hH+4RIRH6/om13HDnzzLYzB2mRzlEn2Z72JQlIvYyAcU0BEp+OWmFtahrcL7DtqiKYXOX9ISG0
-	Fs8mqqa0wBNZSxhwyNDuqrc+TAzNYX3+Nx0aOWRgwMKQWebRoiTsepotF/ux+cHiMkFIxcchg7i
-	AD3bEO0aHEVadzHNzvv5OzVQ==
-X-Google-Smtp-Source: AGHT+IH3p9ADp/oHBdoztOVSqKQjC9Vqk5imr82sTyt1OVvJnxpaC916KbcOtyFMgx08q9d2A6awgA==
-X-Received: by 2002:a05:690e:1a20:b0:63e:145f:a4bd with SMTP id 956f58d0204a3-6466a849f02mr942310d50.22.1766108426712;
-        Thu, 18 Dec 2025 17:40:26 -0800 (PST)
-Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb43782bfsm4425717b3.5.2025.12.18.17.40.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 17:40:22 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 27D7F4001B5F; Fri, 19 Dec 2025 08:40:18 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Media <linux-media@vger.kernel.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	linaro-mm-sig@lists.linaro.org
-Cc: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Mao Zhu <zhumao001@208suo.com>,
-	Shaomin Deng <dengshaomin@cdjrlc.com>,
-	Charles Han <hanchunchao@inspur.com>,
-	Jilin Yuan <yuanjilin@cdjrlc.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	George Anthony Vernon <contact@gvernon.com>,
-	Thomas Graf <tgraf@suug.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH mm-hotfixes 2/4] textsearch: Describe @list member in ts_ops search
-Date: Fri, 19 Dec 2025 08:40:05 +0700
-Message-ID: <20251219014006.16328-4-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251219014006.16328-2-bagasdotme@gmail.com>
-References: <20251219014006.16328-2-bagasdotme@gmail.com>
+	bh=ErxvyipvL98VqcIt+BEu7/k5SVUdoeQoBQCwgW4JgEA=;
+	b=HDebDNxRnFaAar/XgiYGAdhYa3kW9TWHlKm2e+xBGSg7L3nXBNzpOhcFyKEopL806uvyNr
+	ApLJsLItO88b+mAAef2H81PCMgzwh2t1JSr9w0lHNN9MvQgHWrcbxiqRsJ2fSs6Ku9E3OT
+	XaDWPjv0q36QpsOREwFTKuXMmb31/w8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TVwXy+6C;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766108547; a=rsa-sha256;
+	cv=none;
+	b=5IzOcPRPZdxdBrqC+t5MzP+rcHlZAXghz2z+MZ4/2Pau0pw+BhUYsT+7sNoELzMbI5/GjP
+	zqaJa2430mycQLhG0JawSJoEfoZjY54nHDDR3GpjI5UpCC5/UZTOPHIiaqrhUWJNLS+Jhe
+	z8xZTnLMC20lWpLostyeaRZY7lBowtY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766108542; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ErxvyipvL98VqcIt+BEu7/k5SVUdoeQoBQCwgW4JgEA=;
+	b=TVwXy+6C92zjCK1DHhzXNOgPRW/PWgjPnMEBgzCPqjbLql1mocfHozzfWiiR+IqCkwQfGDtrLs0qj3NY4fFdhNaMMnC4Aq6eHzsVstZ/agG6zQz0DysmjA9dF8FxpvtnPj8k2wywDTG0xtnRN+AuyxyoH5DNxI36vSHLo1aQZGU=
+Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvAfIbP_1766108540 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 19 Dec 2025 09:42:21 +0800
+Message-ID: <f0c962cf-20db-4ca8-897c-b64a5976bb89@linux.alibaba.com>
+Date: Fri, 19 Dec 2025 09:42:20 +0800
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=896; i=bagasdotme@gmail.com; s=Zp7juWIhw0R1; h=from:subject; bh=1tOY86lhWOCbSHsqmK/tuDEilXGPwKXl/15tM3wSixs=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkuqxc3vZ90ZFcEw8Rtxid2Hom5f4yhYqXFcq57N+59L vj0bM6pRR2lLAxiXAyyYooskxL5mk7vMhK50L7WEWYOKxPIEAYuTgGYiNE2RobF7lMmi/C/YzPS 7fCZWpbXxTBf8soDN/VTbIlqj6/Ud19jZGjc83oDg/Gns/PlE4ouzVAQWMm0aaeV5R+r5y+cjA4 wf+EFAA==
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A93F6140006
-X-Stat-Signature: 3p71i1wtu1cn6x8zksb4wd5yijiryc6d
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in
+ folio_expected_ref_count()
+To: Wei Yang <richard.weiyang@gmail.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Bijan Tabatabai <bijan311@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, shivankg@amd.com,
+ Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>
+References: <20251216200727.2360228-1-bijan311@gmail.com>
+ <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
+ <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
+ <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
+ <20251219002134.uqgtnr43zz7vvvtd@master>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251219002134.uqgtnr43zz7vvvtd@master>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: zpkdjwjn5f8acxtbp1y9dfrazoxe75ww
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766108427-64620
-X-HE-Meta: U2FsdGVkX1/qY7UQF9/NibRextHfLrIg8yHhNbWptQPh+K62RwTQxgg+Sc3LBswwtLrIOHHN05cY0fODWjdH4IIx9YA5VzY4f1n18W9dU/PTlpTzuaSOv3aWzqFvBiZowERCIATTwCBjlwYud+OOvdfjrKwUJbw6BKCJeWhTz8MFxAag9d8kKXj/1gwX4Q9slcym6L+zeu9YaZD+jsCe/zll/r8uMMFU/4jOsVqsrEp2vkc6bQqBPraaa0r0EAebqD6YyPG5ZJ31CCKvzCwcVokgpvOo2TfHVd6/5lQD/iUNK7l1Rkki2mhovsm5QL7lV4a2HcMfiVc5xYx+zPAGUWnupyb8MUGRWRPRx4cxa/ME1utkWspPd5zXfAV2661sHijqRpjRd27Nycs5Xh+7gNX+RoN8r22Vndob7PcirmGGXOLNpHs0WbUL6AqT0/ZuNQsQQ65tgSjcGIbF16kc4pCmdvT8cnMUG9GEb/Ha8+jy8/sgCRSyl0fobvz4Sn7Wkunt3oLaYFXmMU4+Ikx+/GotdREi1rtLKNJZCkmgC/YF9OY+hXCaIbt5rAR8Zl1aMwsXuVixmbwqsaUN71wk40JjnabAe8U/H4/mPlfcj4+nljWNsFoEF8nNQbEhYzcmdDnv12NyF+wya+RwmL2Zq9Gu98QO01Gg3QUTd0JLcSSPlqelXOvX4W7RKBNYZUBNDoosDa0CeFBZx2/UbAIeZPr4PTDjv8/545GowiDxBTgN+Ok5tAYQ2K38V39lhqvoI+Hdd89GCLn2qyU+rvYZKAvek6GdKfhSDcsq2YI/Im9mAOuCaxsVs4RX6ClEYlKdOeTrSywFOUHc1ZQYOJNY669R16Sg/dj89i0O4lKaC3ImvHvTAOCyF3QVVjMamsPtDMGMjl7ctZRsW+B9QH6HJ3dihbNT9cWFDJZGN84KQ4qe3E719EwCEwkQ5NabKLXkR9c5rrl1wqul4L2cIP2
- lb0u9M7E
- 4UMMhMozYhK17iKvUDHHvCAoXsY7UPrA4yyZbxTkuFOJkdc70dk0WTj3SUrbHcD8dK2xXoTQY+Nq2plOVU370oprUOnBcbHr0aTTHKOlpCKI8VN/uDFuNrrzaaIpxVd3xbNgfEph/266pTFGexLv7llfEXm+kVXgkB53cq071yWZ4vjns3X78fSQ94Muf9qJVAh4UleI9dbm0EyFDcbo40sifNAzJNelllc/ImG2SAXiS+R/Sq/kbxZj4vOUuqAzrHe88xniPYqhmAeDh4SP0Wb3PqBS7rjkFePVI7KW2a00Rp8eNAJ9gpgcTNUr4H7S58bYohr+yEQ/mAOflHaAGBeXQAGJUTSDpBpzLhstyQZobc5g63qNdVoAbgjWppNhIVksWOGkoBdoP3LmecxeGKekBIjYTSybKUlKNWP383jvnRM1IJs+kkmUSm+2Zgs5v87Su5L95oH8qzUj3+xRw54JRdE2cT5UBlebvxfVh5Pe9IYAqcpkE5VDnuAWKqfgo7RGqxA6i/r1L4iNbfu2YV2M83AOicZreKhq493B4+ARCJG5095hLV/QFDYLjPTPQD+YsEkajKmoT5lol8UwzIue+gkwCB1pJq5xMSei5s5FpsY2D0/6H4PTmtwb71JjE6s8mTjcR83yb98OT2CkgtBNhLQYHndF4agAZAmq2kaivs+U=
+X-Rspamd-Queue-Id: A303D140005
+X-HE-Tag: 1766108545-303593
+X-HE-Meta: U2FsdGVkX1+qtmJWnxGHhF304oSuDKaIGsQdJSTNwG29A8jqBN7knvfi7JnYF1b0ctJy9k3XZ9s3E/Wu7rdr65oE5QBNt86lgRiqlfD+fZI0bTmKAER3eSzf8mivQ5VX78ZTVtPUbqqsyHjFSEVrEGBIU8Cnc89FCD8lUx+vEJypRNtmg1lw3s3H7c4f45nLzLakgv5b3LGVgxsb9QiEH4o+gcPPtk6bVNoFGNujzoEcg3UkdMXm2W6FRYeTANh+JqZw0bqBmYYV0Fc45Kffnqhg3qQ32SsCvezF0B46G35U2OPGwjI5iBX83ePgeGFksvAmPfwtsXQ6fxYVR2LIXWM6tkehsRSIM6ZduRre5vZVVfaH1pDT3SsspJaT1elC2HeD8YFhlni0Mc0Gnq95nVRiH0XbCfxSD5+UoysBKkx4fyCb+yvvVFotfAVnDvzVEyKOjJd/afvYWrKr4IYULES8KtOlgSTTbeDZjs2p/7eMWJBw/3ZQXh8np4iXkc3n+GFV3JAoQalPCQypprcwjOZdFzBAPAQMaCuH5KkoEs3iOKbpAbGK2EbmPavqVhxR6g+uZJ0U8toZrQ6oSaNlZ8I6elGsXcHXKtLtYiUmtzTgRTnSoi7RLgvdCzIyHYlmIsX5+2S60EUJXCEFLAGMxx2d3ztfNCpf1amxzCGkV6cHbf+Tc4ptwyQbwHeCcQDS3kxpaKUiH2u7fGcgAz+UL18vYud7hvgAcVUOboNk04dT6v+ok7mc0II4dZsktqAEulH2dWYe3XZuW0oLiYXkGpHZOLDANnkYw6j4C5xUAikk6XeLin3DCiQXxa4ybfukszNODhTsKjWlpmt0unGQVKohbrNMAszKe4xsnP5cAbjoQOtYCyNcWayxJ2wC5dRKHmFO5+/jGWWcmPQ4JH+lxg+UtN2OxV8vIwpWQwVcADGt9ksIcy1RWrW2LGuWbr8BQ8cu2EqyzIU8KXdFcgz
+ bGwG4+Se
+ tj3pmQXI5Eb1pMUBh9kMHLBxuI6IqfGVUO9/xZG5A688hBJ48Ux5wKWnla2GQbQc7BVInU4j1dkOIxLllbXbtDjFiFhm7qSjuubN05aqOUkNKIgsn+zMiiPnZXxggIdQKM39JgrDEOexZ1jbEWYUvjVE/obsbbQPCIt0edFLZj54cpyJ24ZBJmGMftVHEfzvMckuqDCHdv3Mt+lC7G6WyMSdyqVgtHWAlQqxn9eZpT4cQfdPK5dNuUoiMBPiDuiGL0WtRgT6FCbcPLvyzyWfvzJbfHcZlTuyc2/wuPk5Bo7dYSpf1wwBO9hl9oP+zB5Xw3ceFR3KJqAFS5WfBOWUdZKRAVBzeiqgHC99HgZC8PdwS/928CbE4YK2FI+bBoU1WoY+r+tyZuhwpQlapVN/DOUeLK70pR6j6To6udzBEQMs5rmzbm6G8RkthqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,33 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sphinx reports kernel-doc warning:
 
-WARNING: ./include/linux/textsearch.h:49 struct member 'list' not described in 'ts_ops'
 
-Describe @list member to fix it.
+On 2025/12/19 08:21, Wei Yang wrote:
+> On Wed, Dec 17, 2025 at 02:04:16AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>>
+>>>>> I am not very familiar with the memory hot-(un)plug or swapping code, so
+>>>>> I am not 100% certain if this patch actually solves the root of the
+>>>>> problem. I believe the issue is from shmem folios, in which case I believe
+>>>>> this patch is correct. However, I couldn't think of an easy way to confirm
+>>>>> that the affected folios were from shmem. I guess it could be possible that
+>>>>> the root cause could be from some bug where some anonymous pages do not
+>>>>> return true to folio_test_anon(). I don't think that's the case, but
+>>>>> figured the MM maintainers would have a better idea of what's going on.
+>>>
+>>> I am not sure about if shmem in swapcache causes the issue, since
+>>> the above setup does not involve shmem. +Baolin and Hugh for some insight.
+>>
+>> We might just push out another unrelated shmem page to swap as we create
+>> memory pressure in the system I think.
+>>
+> 
+> One trivial question: currently we only put anon/shmem folio in swapcache,
+> right?
 
-Cc: Thomas Graf <tgraf@suug.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Fixes: 2de4ff7bd658c9 ("[LIB]: Textsearch infrastructure.")
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- include/linux/textsearch.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/textsearch.h b/include/linux/textsearch.h
-index 6673e4d4ac2e1b..4933777404d618 100644
---- a/include/linux/textsearch.h
-+++ b/include/linux/textsearch.h
-@@ -35,6 +35,7 @@ struct ts_state
-  * @get_pattern: return head of pattern
-  * @get_pattern_len: return length of pattern
-  * @owner: module reference to algorithm
-+ * @list: list to search
-  */
- struct ts_ops
- {
--- 
-An old man doll... just what I always wanted! - Clara
-
+AFAICT, Yes (note a special case for anonymous folios: lazyfree 
+anonymous folios will be directly freed instead of being swapped out).
 
