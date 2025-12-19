@@ -4,126 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2B06E66891
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBDAEE66892
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 20:59:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52CA96B00A0; Fri, 19 Dec 2025 15:57:18 -0500 (EST)
+	id 5EC186B00A7; Fri, 19 Dec 2025 15:59:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500F26B00A6; Fri, 19 Dec 2025 15:57:18 -0500 (EST)
+	id 5B6886B00A8; Fri, 19 Dec 2025 15:59:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424696B00A7; Fri, 19 Dec 2025 15:57:18 -0500 (EST)
+	id 497F46B00A9; Fri, 19 Dec 2025 15:59:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CCF86B00A0
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:57:18 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD55E8983C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:57:17 +0000 (UTC)
-X-FDA: 84237430914.04.D0EFA2F
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CFA95A000E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:57:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=42advhE8;
-	spf=pass (imf25.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 378EB6B00A7
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:59:43 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC1AE1363CD
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:59:42 +0000 (UTC)
+X-FDA: 84237437004.03.65217D4
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0DF34A0016
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:59:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=drwd8QVo;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766177836;
+	s=arc-20220608; t=1766177981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4FWBwq5pA2UdoaEgzi2KEETeO4vK6VBDGoxeKhWq2EE=;
-	b=ekDagj/e5d818BYAza3j03nVZE/jFchLG5X3lGSuihNrGAcdeMnJaxBFAYaahP51QmTGLt
-	1FmpPZB0JO4hFRKRAzghgJdqI0AHeZ+G09NlBsZ2sD2KNzpTOWVw/3rIHSW0/JU72ixGnw
-	srvcFH5bdx95dFLXHFvWZhm3otnc5GU=
+	bh=adTHpWU6QNV63deZGh87BKlrZQhBd61B8Pt320imYrQ=;
+	b=tVm/lMkdpCyY7xCpt8j/1dGCFpN/M3UuIQn7j7XdkS4L9I8XbdrEsGTmA8ogKiPwQKNQzj
+	ZCjBAhxVj9b0ywdYpHGLCzETHwrXx46x/FBn7rfEwxhYZJ67UysHWC+pbTNcMgOD9XhCXK
+	AHCVqV+FOJMZvrzh1zFyYF58oU91bPA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=42advhE8;
-	spf=pass (imf25.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177836; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=drwd8QVo;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766177981; a=rsa-sha256;
 	cv=none;
-	b=J1JvoTfLT41PlBKIg5Et64fMclL56cW1DduCvKNZ4Wwd+j01rzKgD87y52ZTIaMKUZ7I9N
-	5mrXUG0f+AaCr82DFAuacAO4cq6PkX7uKTyPLss9sYYY1l3lqqjJcqKI0heNDv1I7+og3A
-	EtGZi+QLA/ABdcVdn51EjYbiGRAtfYw=
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY0GL6DqzzlwqQK;
-	Fri, 19 Dec 2025 20:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766177827; x=1768769828; bh=4FWBwq5pA2UdoaEgzi2KEETe
-	O4vK6VBDGoxeKhWq2EE=; b=42advhE8BUZnyv/5oJUUeZfNT/pyn/krhapzDFZR
-	OBUJ0SwyUsXO7uWfZ6iD0TrvIUO0ufVYHcs9gPs9Yqxc4qotWvsEzwGramYp6CYN
-	o+EGCohH3V8J9IhuomIk/LCHjW3RgZPH2dV8y8Y9/buyyKUpXBWBMrItfx8AOqTX
-	jq7pYXvADCFY2Cl8TGfhSzpmEiMCCTvc43oPwpNA7c+USkz6m87eVaXEmQbE1pLZ
-	puRIt1KDSkfXRrJ6t868WlCL5q0CmJX9IeVQSPmC/fOCbhWY/f8+bgPqRX1GSUKF
-	gqoq4DJuwCbsLvpoRdEwWeEfLonpdDECo4UR7y1nVmqsyg==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id cbXucOoI7gI2; Fri, 19 Dec 2025 20:57:07 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY0Fy2c2mzlwqPy;
-	Fri, 19 Dec 2025 20:56:53 +0000 (UTC)
-Message-ID: <4d6ba8aa-cc33-42a5-ae28-7a480d660c45@acm.org>
-Date: Fri, 19 Dec 2025 12:56:53 -0800
+	b=N79qd/Wkv21Is1gyw72o9IuTWdbXXDYb6TTu5CXf9vWGnQrl7re6u+X5wgahmZv1QoT+6Q
+	FtjimgC0xkoWIF81s6jXveT6wj6AtmeUUUlqep4JRQCrxdNVFeebZsd3FHQQm1GqlqQkA3
+	p18Hi821eVf/GB0NlLtYMEeuUOM66lk=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4eda057f3c0so22594451cf.2
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:59:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1766177980; x=1766782780; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=adTHpWU6QNV63deZGh87BKlrZQhBd61B8Pt320imYrQ=;
+        b=drwd8QVog4hutYTFKAqKBiFoUuLXyZ0pqFp35YAUEynNCWCqBLZNZviW6I2srtBAlJ
+         76Z1bo+QJ+fV8ObgEjQoRUA1xtkmOvyMBHKha527YB9luOWridbXhXNt6W0CNFkjPgQC
+         DEFftA53VDOrS3ZhUjBVA6WRn+aaTHuKkThTpAwzKnQKOTMMH41YKyPQCaLBeBKCyMgK
+         ZNGckYXUGjA/enzcZV4JDBiggcMaGhIOCJQ87cpyE0NRUnVJkVrmSUh4OH8HIDMfmOKh
+         eGPEQTN6XjUCNVr6C1FY3JtSA+xdNUGMML6cZVarP+RYU0UZ8LILIjeFLIOEQRGxmOVR
+         76qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766177980; x=1766782780;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=adTHpWU6QNV63deZGh87BKlrZQhBd61B8Pt320imYrQ=;
+        b=EdHD5cxumpQ1EECILNvAN6fEkDTqn0d7/aWLp3qrMKe0CgeRvULqTYTmx+m0hpDYb7
+         rTs6bqvbV83HtmA3vFUxXZ8bG2RNqSaTJEDWQR5i0iWcLUg+iz8ZQH5Ak+qrIZHGovxA
+         A9AtfsKQezracfENjCcGd/4iWIj/5Dv4aiwsusREh77jOy3bjissj0jlP+hvAdymRCpJ
+         gU+P0tjkpDWd0f41hoB+T7mg5V2RmpdJFaoLgzjc4OfTmXEiexR6iFg89kv7XDHuYz0Z
+         sQKd7lcEeEn5yJhKNLQmlbKOxaY1gIalONjqxxPIuTCddj0MyQcnALzMrlMhk/PecGB2
+         ieGQ==
+X-Gm-Message-State: AOJu0YznV4BIwRmZia0wh7ZtBoQqv+MJb8FOMMgEC/yHHMetdKaosVXP
+	JODyWrgnq+hg4KQnHhS2DX27V7X4/xUKdturEcSHiMwA6E09b6x/C5XhXI0y6KINb3U=
+X-Gm-Gg: AY/fxX4Sq6yp4bhK2Hg5cEcX0M6mRzwvvpErm4vAN2eLMooj4NMGqtWmcPeGcupQl7T
+	2utckIhGd4z/6iqmL/GMy77KYbrJ4kdVFby+N9GMNlGBrRD+OxQiEmOtUSQcZh7N5pHo7tCXNEd
+	OeemaLBdrlSRJv41eYJOw4M4fnHpittplycAHuQenPWROBx5ohFPh4Ot9zIurBExq+eiSaN2zl+
+	w5rgOQddD9zGsUyw3B4NwVt2Xr4Xs8Eym0JFi/bV+saZWrA4ZDFnbnAcUecyP1Lb36e1eJX6u8+
+	SYUOKuTkqsHSY1YnL/r2ga9psJXwNtfUOB63nYZapO51ZEFZt1c02MEo1viWpQNUIiLxV4Iayqu
+	QusMCPpNtG5GsC6U9jtH6F0nzf1JEMPX19th+KFqV7WalaTfMO+myvxrajDXp04f0gIekif/Syc
+	+GrA+WNGg8i6DnAy4enlKkp8rlTrXrxGzwXwhqn95tjVJlQkzgum061mA2syBwqzumsC0u61YAl
+	4R56oWL
+X-Google-Smtp-Source: AGHT+IGdjIBQjfoPLIzlJZUXRz25M9TeKiAKaKT62Kb77A1OxDeEodfvFIQzywYpMhAdgvBvyugk9w==
+X-Received: by 2002:a05:622a:1314:b0:4f1:b742:9cd2 with SMTP id d75a77b69052e-4f4abd944femr65192851cf.57.1766177980102;
+        Fri, 19 Dec 2025 12:59:40 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac531df9sm23918341cf.5.2025.12.19.12.59.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 12:59:39 -0800 (PST)
+Date: Fri, 19 Dec 2025 15:59:02 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+	richard.weiyang@gmail.com, osalvador@suse.de, rientjes@google.com,
+	david@redhat.com, joshua.hahnjy@gmail.com, fvdl@google.com
+Subject: Re: [PATCH v6] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <aUW8lsodni9C583j@gourry-fedora-PF4VCD3F>
+References: <20251218233804.1395835-1-gourry@gourry.net>
+ <1E3BF4A4-C8F5-4FB9-A658-9D40804CDAD6@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 18/36] locking/local_lock: Include missing headers
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-19-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-19-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Stat-Signature: i7oe889b99d78s6q6r44y6bpx6jot6fq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1E3BF4A4-C8F5-4FB9-A658-9D40804CDAD6@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0DF34A0016
+X-Stat-Signature: jw8j6jwgcispsuj7c39fjjhgm8dfef3t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFA95A000E
-X-HE-Tag: 1766177835-597204
-X-HE-Meta: U2FsdGVkX1+6dz3S//npUOIzE7KVw9YHM+x7Oha+FJuO4mM/AYkrGSEbG5mGbQcb02kylN+nSl9Fpb+pZ8d8xINVanjl1DTPtVQsnz5SnA9xT11qzXjGnRzhVWxs+ksTdMqpPa7Jf4DJUU2QX48TM5bHhS8SC2O9aGVB3OMNWOKPAv7hVhXDe6fXnpCpSUvKQ3YmgyvLa4xW720hi2szxsSLVquBZutPBeBtidJJspfqbCnYqsqAUZlvQpIMjJHOIU9agLO2JrO5x6Igj/fdB37NV94tt8wPX2Q9T0LngrADjn4KoS3IC5pHE56gy/YiDhHXPM8ic7JKu+jtuCTgSNp0WXDObkKVoF4U0H1n8LtvGZeSd1SjdtbUQoHPu3ArTOV2RsKjS2E1LJahX+7E4gmIgLNxLunS/fKC4L05cJ2RdGluu1T68lE3V/QeykXWiE6SA1atGRCxqZgUwQbI0jgoYQSMi1bIebfIcTGpCXx4kVgN6I2WAWhTi64hS7yTEDE/rlOhRkpcMmLonPEm1lKijA3BwpVeSYlN7aSMPlYaIV7YD6fmvzYgBFZVNIRphMrrNSXv46GhCdD90cmvI8qam/du+sAzsJGixo1954bh+pathZRwjM2PaJXjeZNyY6hrPz4gt5RwlsiOxqnE2WXfzb/iuRRLGN0icEIG1WR8gjfgCy6gVTsprGxKkxw42sHuiR/oYKhD78E+d30uJeI0jQWwZ0sPDqJYx4X8MT2gOeinfGvgFII2+6rVGZ3u2FZ+UV1gPTv5C1Zd1vRn6GLGMoeig4UKSGQGceCIBJOI8tojyDYGCIi6J9f1L9J9wos3EMqUt+x3gPEbeNZGWf58pnwuNueWkGXeNHvDSTfPGTi/mq86SLER0rYv0vgOQCTA9ql+Kal7nFnETHwBr0g6ZzQJq5ff/Gshl5vdsX+WNLqvOG8u8jlMMB+zl41XpjN01Y/08Q1k4a2vMJO
- VMQuT6ab
- KhMdard36MTRR3EflGt6VOv04ld8QC3BL/KHTcncUyqj8uqpvQtTvzPxInsRrolIJH2iXNnFoPzwGXnnbQsINZbRShVB+QLNlhrxTwJkD12BwqfniNAPbtcggvYVje3J4p4CcYepCPgl/mPPp76L+YGvODWq7Rl+tzprQD+kCfzL9HhvauhQfvlVajeRVSBDCEW7l50iTbW5ub3Yh1SDmaf98v0HOM5RsDCLO5K56sWDMjI91tB/1LiH4UCAfKje1IBvIExqYbSdxDanMH8oXNEBwcizbGWeGsQtIWpxn0K4Usol6GO2lBtBUR46nq6Cud8Qt2Ul0DARskSFAdMce5SCTUiFB2mu2U7vfvJxbPRph305ybmawsq7iD12rPoAGHFmd7vVXYL8mnKB30GefIxZI5ue4e64bqnAvNufamd99H58Skzd0QW2FxnL94HgVbEK8rsXRbF5uzN3/oV8SkmsZmIVTTNbpvW3v0kbRWpkTctaGcV4d+IzLcNXc/qqU2RRq
+X-HE-Tag: 1766177980-435436
+X-HE-Meta: U2FsdGVkX199ZYyQEE+Mg+J5Ji/gPHox0k2e1F+GlXL3nTwiUJHQkdY+HKKKmcJaqanIJr5gSghl6TqR4n+wloa6zYCwK1rmEL/RWwgAyuFxYadcD20uyK9SpEJ9uFURFnawEafsoZQ+9GpBWuW1AD/xDblfzHFkmBovyIAFx/mnSwLs59mM39LR3W2/BEyXsxdJwHlNndfN4Ut0wXlAm4Aq59fVb7XRUfWaxZs3f8OvCo21KBSs/FXpptQ0wltIlFOLBZKiDFHFbp5Y1ougEN1D3ABQ/SfO7aROVRfb78gdVWc+qTzNw1vh3+KeExsbSuqoqq7zPuHCkUnD6az/Klue7pQeCiMWThbRdn3nxGfFuk7ycrQODQQtPhganCTWwTTxr/q3k0ontdWhYpdbrZZgpxl4K51EKrRNYLosL/b41zS/3TNkgH6X+VR4BWjyxyf1oEAq2cqqvZHLJ/gp6eY2VoMBPteu+KsiSfy8Rf/jdb6o/gYS/ICHFWM1fGt9Vu2X6xztb77cvMIlPceFP+V47uCaVjAJu/9vfz+NSGRhWVUinv7Yk6lZPhpp6qkKpZv2zrf7MdU6JOsJNLo6X3ziRpSRRJ3tyuS5xVdWiX2o6l5PYqyXeliXVQNKZ9JLzrp3gBOTusqxrbZkTaWPB0j5RJjDDsx9c5ypIQsCc4Ya/f/HBlYPNF6eELCwF3oEm7zC2MBPLxH/sRgGZ6C/3o37A4m0Rd/69C960Kz7c73WgoETJVCvRxyKZ/1Z1dFTiZxXFZcv9RKe4ea5c76ZVJzTFczyWb2jpCr0QRxWtKq9zSTIriRRYSPuQViNeHGtZe6/YvmBnREAjmwsxxkkm3AspZRnRPANSfYfMRKEwvvyHQFlSE9B7tOnSO0RkQLZVG8f28Evvix3YRudkYDUaQ2YjIvkWUB1Zgwi5LGf2R9GYmkJ+Rdm+Zv2e6nfHcEueac0Hy9rjk6q5Rad2L9
+ 38XWJj1D
+ 4ZU65uPgMX7FOYY0m3tpmDGyjTj/ZVIOqhn3NhKpks50etIgLv764CzXG6PdmM0AhyKsDpB6guJBkyTK+f3wkc4MiezA572brRfmIOB28nfLqbG5gUJypskicAGLNB+LgdhFhhxn9YBopDwcTzXjl1Me2XsBfPaw98yaeXHa3remGiGdmZPuqkQofQKf8mLyKehHLuWRzuUDOLmmU/y1LfXfgPeC4KimtHuwWYQTbCbs+fT8BqC0Q+xpPzgiHy4PnekDg+MZHYBMj39FyzzKyMG9sTshuQm0+adg0OEMRYIXPc1qUZ3IgYJVTm0mbu4n8BdQu6R4jwVqRiTQ68nzyf++PH9AUYfruy5Zevlh1hnvCrYisNWIWQzzeTn5NSFX2zw3kW21BRU1KZ9xSHY2f8aGuEMcdjZXXXmO5vwQbdbwnzZMwBHWE5+deor66RQmrbrMSylnfUwJfr1j2kYEmsY+uoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,52 +123,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 7:40 AM, Marco Elver wrote:
-> Including <linux/local_lock.h> into an empty TU will result in the
-> compiler complaining:
->=20
-> ./include/linux/local_lock.h: In function =E2=80=98class_local_lock_irq=
-save_constructor=E2=80=99:
-> ./include/linux/local_lock_internal.h:95:17: error: implicit declaratio=
-n of function =E2=80=98local_irq_save=E2=80=99; <...>
->     95 |                 local_irq_save(flags);                        =
-  \
->        |                 ^~~~~~~~~~~~~~
->=20
-> As well as (some architectures only, such as 'sh'):
->=20
-> ./include/linux/local_lock_internal.h: In function =E2=80=98local_lock_=
-acquire=E2=80=99:
-> ./include/linux/local_lock_internal.h:33:20: error: =E2=80=98current=E2=
-=80=99 undeclared (first use in this function)
->     33 |         l->owner =3D current;
->=20
-> Include missing headers to allow including local_lock.h where the
-> required headers are not otherwise included.
->=20
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->   include/linux/local_lock_internal.h | 2 ++
->   1 file changed, 2 insertions(+)
->=20
-> diff --git a/include/linux/local_lock_internal.h b/include/linux/local_=
-lock_internal.h
-> index 8f82b4eb542f..1a1ea1232add 100644
-> --- a/include/linux/local_lock_internal.h
-> +++ b/include/linux/local_lock_internal.h
-> @@ -4,7 +4,9 @@
->   #endif
->  =20
->   #include <linux/percpu-defs.h>
-> +#include <linux/irqflags.h>
->   #include <linux/lockdep.h>
-> +#include <asm/current.h>
->  =20
->   #ifndef CONFIG_PREEMPT_RT
->  =20
+On Fri, Dec 19, 2025 at 03:48:45PM -0500, Zi Yan wrote:
+> On 18 Dec 2025, at 18:38, Gregory Price wrote:
+> 
+> > +		if (PageHuge(page)) {
+> > +			unsigned int order;
+> > +
+> > +			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
+> > +				return false;
+> > +
+> > +			if (skip_hugetlb) {
+> > +				*skipped_hugetlb = true;
+> 
+> I do not know whether we should check if skipped_hugetlb is NULL or not,
+> since pfn_range_valid_contig() is only called by alloc_contig_pages_noprof().
+> I have no strong opinion on an additional skipped_hugetlb check.
+>
 
-The abbreviation "TU" is uncommon. Hence, please expand that
-abbreviation. Anyway:
+I'm fine either way if folks have a preference.  Compiler might even
+optimize it anyway after things get inlined.
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> Otherwise, LGTM.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+
+Thanks again!
+~Gregory
 
