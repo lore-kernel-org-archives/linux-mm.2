@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B67CD711D6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:13:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B497FD74964
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:13:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D396B0089; Fri, 19 Dec 2025 03:13:11 -0500 (EST)
+	id 260916B008A; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B79C16B008A; Fri, 19 Dec 2025 03:13:11 -0500 (EST)
+	id 1C2756B008C; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8EDE6B008C; Fri, 19 Dec 2025 03:13:11 -0500 (EST)
+	id 10D036B0092; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 999366B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:13:11 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C1011A04D1
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:11 +0000 (UTC)
-X-FDA: 84235505382.30.DF374CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A46EC180002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k3+Ld/gM";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766131989; a=rsa-sha256;
-	cv=none;
-	b=EMExIonDoJ5wk8VdIS6q/jM3AY/4AX/zjT3AZuJZeDOpR4e6YZ5M5FaJqPSad/gYKkQIJ8
-	hzOqYXyNCkZjdn9zFBJFA8kub2zfeQXd+lZv5lJ6akuC54PCbP3PjBHsMlJL92Fd+XVcat
-	r42999pqLxOn/Rvgm2wNcNGRJK4SZt8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k3+Ld/gM";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F39866B008A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:13:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8876AC0600
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:15 +0000 (UTC)
+X-FDA: 84235505550.08.2EEFA38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EDCC94000D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p89JPvBN;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766131989;
+	s=arc-20220608; t=1766131993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2v7RKZadUXAV0Q2emGoQzJ+lO/DOaMJyHLYdZ/vVZDA=;
-	b=QKrsayFk8rIe9ud2ziT/mZbIR/xNrXOFclFM66ZjyCGz0eivOI9pnGKMb48eVQiuKUvA5B
-	TCfE7G07AMZmOTLPmDypx/K9qdsl8D/6aoIK/1u4SVjEsIlkhrJicu5D7XM0dgXCOdqlKW
-	0GJWw/YXI4216EE1HRE79ssT2ZzjW+8=
+	bh=JbLLpyM3ayapy/UsfZJST95cLNuEfK4YIp6V+IT3Lsc=;
+	b=ZLL35832HwP9rJkiVzyt0gms/DD/h9Nnc9p1CtUJkJvSLSRkgduFjonkz9pH843Fg+OcZ3
+	2V8pF+DaaxdbXx9qIwcZrCGZxx7QrR2J0vPPbGQDB5bO9HxRS4Z/kMrl92YOdtSiX3LadX
+	60eop/+kwQULVTYv3Iay5qbeBi3+ha4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p89JPvBN;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766131994; a=rsa-sha256;
+	cv=none;
+	b=M9x7M5qZ88fb32boNlQk3RgPPo54e8fAavKT/DPB3DDtpsyWS3NEemWXtsoeU+1bwbCqBx
+	gHaqDUIc1wyeFsvinaHhMApV2tayFiGXQU/T8EC1hJtfC/OLVc5by9EU6Q9MVCdGvaAMYu
+	W6oNVMCWf7P3XbOSjelpD1EHldQISN8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A036B4446B;
-	Fri, 19 Dec 2025 08:13:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFBCC116D0;
-	Fri, 19 Dec 2025 08:13:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1507060125;
+	Fri, 19 Dec 2025 08:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6E1C4CEF1;
+	Fri, 19 Dec 2025 08:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766131988;
-	bh=d8hfIZrr4/YXPj8cN2Cj2/92hRyCmo8T5+xN5aVcRQQ=;
+	s=k20201202; t=1766131992;
+	bh=+A23adoC9TayllzNX6/T+neHMWZRAShmj4hgCmrmgJ4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=k3+Ld/gMgJdQln6OYHiKMS1MJHb7f7DcLdsqE0tNLr1lddoHDAG2kbDRMYAqOiZC0
-	 ljyJ/uW1xSSjlmHEnwdR5HTtwuKGqrR4nnfjNto4oUq0/ZKPv52jdgz3sMpSwa5INl
-	 w2WrclITAvmoSbYgAq9UJ50/LqzbUQTrUKzDS3SutXXJ7ulB8ZC0ShLlpfH2KVddgi
-	 GLh76tDdnwFtoBFaFbN0H/CeqSn35onbRnoNNuqJAshypHMNPP9j3HzDwHVFExFWW4
-	 RiJBPscY5fyO/An3piZdVOGDZCVvtVPYlWtWiSB39EfTtQNoCI5TtJbo/Butp7rBWY
-	 Vt7k192nPv08g==
+	b=p89JPvBNTfp1Zxaf6AHlXPUAW5vH+0h/aZBWlIuoc8rpJoH+z3qETdxMxuFJAV6k7
+	 amnpVXf6MZnK9NgXMRyK02DHNlLTm9j0h7DawEXTIpuZXjAZYo4vvcWq5huGMRsQPE
+	 mtOfS164rBVpeq7K9IWV1kqWnbV0UyCNdUO7eYnA9/AFYIn+lY6r8/UfQ3lncDahyR
+	 RL4Txwr0Cuo9wikDA271JZSSCweDDkIMAvfxGNY5ZYTQ+ImUbEPxYAz6Ca9qcSQC37
+	 PKnkuVb8wyAiMT/frsE2y4GUuxmeZ6cqN8jbYtjxbXpYApAc3Nwlw7e2vh9rlhpZW7
+	 hhT3fx+FdWTWQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BAFFF380AA50;
-	Fri, 19 Dec 2025 08:09:58 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F3393380AA50;
+	Fri, 19 Dec 2025 08:10:02 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V15 0/6] mm: Add soft-dirty and uffd-wp support for RISC-V
+Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
+ physical memory aliases
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <176613179753.3684357.9232536876700383473.git-patchwork-notify@kernel.org>
-Date: Fri, 19 Dec 2025 08:09:57 +0000
-References: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
-In-Reply-To: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
-To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
- paul.walmsley@sifive.com, palmer@dabbelt.com, robh@kernel.org,
- krzk+dt@kernel.org, viro@zeniv.linux.org.uk, linux-mm@kvack.org,
- peterx@redhat.com, arnd@arndb.de, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- axelrasmussen@google.com, yuanchu@google.com, aou@eecs.berkeley.edu,
- alex@ghiti.fr, devicetree@vger.kernel.org, conor@kernel.org,
- debug@rivosinc.com, ved@rivosinc.com, linux-fsdevel@vger.kernel.org,
- brauner@kernel.org, jack@suse.cz, linux-kernel@vger.kernel.org,
- zhang.lyra@gmail.com
+ <176613180179.3684357.1299267450443574866.git-patchwork-notify@kernel.org>
+Date: Fri, 19 Dec 2025 08:10:01 +0000
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+In-Reply-To: <20251113014656.2605447-1-samuel.holland@sifive.com>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: linux-riscv@lists.infradead.org, palmer@dabbelt.com, pjw@kernel.org,
+ akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
+ devicetree@vger.kernel.org, surenb@google.com, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, mhocko@suse.com, conor@kernel.org,
+ lorenzo.stoakes@oracle.com, krzk+dt@kernel.org, alex@ghiti.fr,
+ kernel@esmil.dk, robh+dt@kernel.org, vbabka@suse.cz, Liam.Howlett@oracle.com,
+ apw@canonical.com, dwaipayanray1@gmail.com, joe@perches.com,
+ Julia.Lawall@inria.fr, lukas.bulwahn@gmail.com, nicolas.palix@imag.fr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A46EC180002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: kzx753segzwar5ifdrzkkhizf5ew4w1q
-X-HE-Tag: 1766131989-851028
-X-HE-Meta: U2FsdGVkX1+ntqURZX8ZqbWLpzXF0K7cJMcIcE/jojQxdLWd4WVg3V8cSiOQ65ZPiNdFOw0Y3uJ/xwBgcnYTTbHS6T+TvTTRQ/uMxnS1AfeqGIXcBEt3QkpzycRzeyK7oEZQ07mcynb+lIjTnjbimCj0OS87XbIKlC2nf0wRBs/32ddC2d401p1GBGB0Pj5vdUvYJQ/QT/vzm4SEqufXvjzM5cm4JJv5Uk0DNirdAsh53t2oT1CSn2EnbwNduKtDxawN2rYvkcNtUr9rbpf2e/ux5fz4L6MlnSRn18QHvct+FxTP/s/RESkPClsDsRacvmgta0P9Iuok4600Uhi7J9w29QsOnzrcdrObO/qzALZQsUHOZZFg5FgC5Af/zD4HSEBzWgCfsJ/3lhYUYW1Mr8q5HDPZJf3OrBdZF8wgA8d4F87edd0eHmcYWSj3GbwpkT4AKjj6T784rEJVSBTHkCgzyG6FKTSeuh9Td+seQBP4hQbwVjvkBJzmpTSnaChi2TmX+IE+Oaahd7ocB5APDI8b0rB+lxunUUUdfufSQ8zNZechTAm549X0D5g+5NL0Rr2rMLSSAyPPxGv3CNjzcRyTkFfi/Hqtc2DcFDfU2H565WyrtV+W19WxegEuHUlTxfcZ9Dm3lnHKioGpBRnt7NPOY+n3NlGr35Id0AbHWeNnVDKSEZnP2BC4IiwyC4M4uVqfGK+OVtGBqRfXWltn5x8RHi42k+b0UAPj99xtYoSWRuupn3O22+oDcPNM7lXwdOg1m0E+cSTnhHs77Kc9fVtEanrv55asYHX2IoY4fHlEdUCggKD2PPK8/8Pd59J6mTFsxmRx2UEeZg3Jo9NjnarKMHWSSf+WL2meElwAQLSTlM1hTlpuSYCVwfrGo3ujrG9x0Sb3CUkg4ggYu55Lmt/z7fOY2aWhC/pVZlty0D58piOqp+O3NHy59xtLy2MC/vJ8xRtAwxhbaeZdOOq
- jynkhHsn
- XPl3RC5ReCH1IxBEgE0IR91h9SlyvCWS0dwH6FyUybBFYbZ0EhvOBSw49HHQsKyTRxjHA21BUGy5B5zj4TkvTscM6McM8dp03VMwYUtOwzJRNxGUDLR0OGDh9bOGdzu4Cih7r/SkpGzw2X+x/o8BVyAUfZOfeaQz6ntIlre7XKzyFDGPLP/Zt0iju4jfggvf391quwky7JxZ7b1rgame/gZO8jpwvBmJ6XWWpwd5nYLxtNvCDyr9919azHmrPPGH9NdyMMoo5pz0nPmdTSndqDpXpoMUte74wkpZGXworh5wGyDQPV7dVJ0dBG2baLH9WLGnPwiS8CjspunzgW4e+BL2dcA7fm9mRgUpqh221riT9OO0BpsoUK6+ncVuXU+H3n9Yvs4pVa4lU7G/ypZrdAu/uE5zWxguCQth5cVIpsFyqOp3PBTCE4jOtFRosN8crgsDG27PP7WefQ8FXezyUrP/grw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EDCC94000D
+X-Stat-Signature: 1b17e9h53xp1mzsaopuq41a45uu4cnos
+X-HE-Tag: 1766131993-336503
+X-HE-Meta: U2FsdGVkX1/zZG14mlcB5tgWkjSYlRGmyRRv1Vj0H7QI+xd6YdyeQD857XTWqf5JFjGbSMB4aMl98X1/Goe9PF2v70x8IaDGJZm8bM/ghx62XEgh6qXnLBW1mwu+FI5ChjCIjsQRUAHfhTny7f2HKsYkPFdAqpLSYH/cKs1GVzO4NOFAHtAnBvz5W7jm9nOiaXXvGmLPs0PaEBNxxE2FRT/Si8+IEIiIvr6dgTQtnjFpPPGRnpR395dvoQn5nWRozwlAmsVOCNhJw/So2JrGMYRpAHpBXOgJgKpaKTVlBclXGyJjAmjUfYM345HqlMi2lqdgZkKeugtW0pWjkyiYDtKd4RERFdBeEfumZ3ZgZ2LjNDjmmHddLdJNk4PT3y9vyjZFyThTm1hUoFAw1nldWJS4/AmCKesWxddHIebNZc4Tad4PiEczEQBoNRmt/WUvASguL2PbRrGmq3lZg7GaeUIBGXjPJGXAGAIxTpLKQM6HPn/mjjUpjtt6CMjr5KZ6mIm2ME/WnlL2Fm48JFXHhSpHolcmB3UYusLAiQdKPbuRMy1gvM8XcqIaqZrsmJ3LvcCRIae8g7lkQA7/XYmZ/3BhLLzdA6/2wd6vhOMXaCzV0DQ9oCvFKxM5GWsy3keP4578kQYHNTwros4BSIIq1WuGoL7XbgcXFr8jFeSqHcHHPnSOqfjefKnfOBAmxjkkNMrdGHpUmUAYbeftqShQ3A8RVwrzVEJDzRZAMj4smfpqbm3tq766iT/rXSr3bcfI/TdKwZwDXkcX0A/z/X8LZlzAMn6KW+3KOPZXZ3Hky/2ZS8hcNJP01hVNUMFnMwdHX3VX0FtvGTk62pgTDrPmC7JPLhfwkoXpg2jz8OEjiCbQ0wzqCM5dDKcs3nkSO/+YtxExmA6Z5QzEv/xEesSvsnb9Ah+ABN93CsvKLd8vg6MxTydCL7LksfZi3sUXtf86AwUKa9pgT7967egvWA0
+ nr1etdpY
+ OX1SpWiX60Kw42KxNZwlzaJ3kGIk3+m+4UeIIe+P5pX5JHiSzw6tgLI9vR6REN2B8hMlaLKgB9OdH/PBIlaDCLVEM8Ej2/CM9FjdM+qAFg7HeNq7Rm2qgmLwjvLsYL0yNlyrE7jQSvlNNzRbZBXJ3Zf1TxMMCgKTLhLUnX49yqqxclvy3kpPzYifuzTF3wLuJSSObw3wvgZmNBEGGpgsGl0ktpEFSshQ3ejNXOwBgDYH6kz/9rlXYDC+YEIP/WT5go7C8zVcdvcBDtfSHQOXg6szf+8hpauE1giLAfN1kmRvl1GVPotIrVcvoNxw77Cr/JVu+vLnPeoai1XzGKV6eMeGnBml+62LjSJhzrZE28cjlqdIkhZaYmUwqLlhYB+2cYbnOQCnHq2eN8xoh55Xv1+rHeqjrjfc1Emq8qvTvWTWr+F/38pYYiexAxlWNup7vTyccfV8RB4s0jYnKjAjX/oEIhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,33 +108,62 @@ Hello:
 This series was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Thu, 13 Nov 2025 15:28:00 +0800 you wrote:
-> This patchset adds support for Svrsw60t59b [1] extension which is ratified now,
-> also add soft dirty and userfaultfd write protect tracking for RISC-V.
-> 
-> The patches 1 and 2 add macros to allow architectures to define their own checks
-> if the soft-dirty / uffd_wp PTE bits are available, in other words for RISC-V,
-> the Svrsw60t59b extension is supported on which device the kernel is running.
-> Also patch1-2 are removing "ifdef CONFIG_MEM_SOFT_DIRTY"
-> "ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP" and
-> "ifdef CONFIG_PTE_MARKER_UFFD_WP" in favor of checks which if not overridden by
-> the architecture, no change in behavior is expected.
+On Wed, 12 Nov 2025 17:45:13 -0800 you wrote:
+> On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
+> DRAM is mapped to multiple physical address ranges, with each alias
+> having a different set of statically-determined Physical Memory
+> Attributes (PMAs), such as cacheability. Software can alter the PMAs for
+> a page by selecting a PFN from the corresponding physical address range.
+> On these platforms, this is the only way to allocate noncached memory
+> for use with noncoherent DMA.
 > 
 > [...]
 
 Here is the summary with links:
-  - [V15,1/6] mm: softdirty: Add pgtable_supports_soft_dirty()
+  - [v3,01/22] mm/ptdump: replace READ_ONCE() with standard page table accessors
+    https://git.kernel.org/riscv/c/11119b19f62d
+  - [v3,02/22] mm: replace READ_ONCE() with standard page table accessors
+    https://git.kernel.org/riscv/c/c0efdb373c3a
+  - [v3,03/22] mm/dirty: replace READ_ONCE() with pudp_get()
+    https://git.kernel.org/riscv/c/b4e53984f240
+  - [v3,04/22] perf/events: replace READ_ONCE() with standard page table accessors
     (no matching commit)
-  - [V15,2/6] mm: userfaultfd: Add pgtable_supports_uffd_wp()
-    https://git.kernel.org/riscv/c/f59c0924d61a
-  - [V15,3/6] riscv: Add RISC-V Svrsw60t59b extension support
-    https://git.kernel.org/riscv/c/59f6acb4be02
-  - [V15,4/6] riscv: mm: Add soft-dirty page tracking support
-    https://git.kernel.org/riscv/c/2a3ebad4db63
-  - [V15,5/6] riscv: mm: Add userfaultfd write-protect support
-    https://git.kernel.org/riscv/c/c64da3950cf4
-  - [V15,6/6] dt-bindings: riscv: Add Svrsw60t59b extension description
-    https://git.kernel.org/riscv/c/519912bdaee8
+  - [v3,05/22] mm: Move the fallback definitions of pXXp_get()
+    (no matching commit)
+  - [v3,06/22] mm: Always use page table accessor functions
+    (no matching commit)
+  - [v3,07/22] checkpatch: Warn on page table access without accessors
+    (no matching commit)
+  - [v3,08/22] mm: Allow page table accessors to be non-idempotent
+    (no matching commit)
+  - [v3,09/22] riscv: hibernate: Replace open-coded pXXp_get()
+    (no matching commit)
+  - [v3,10/22] riscv: mm: Always use page table accessor functions
+    (no matching commit)
+  - [v3,11/22] riscv: mm: Simplify set_p4d() and set_pgd()
+    (no matching commit)
+  - [v3,12/22] riscv: mm: Deduplicate _PAGE_CHG_MASK definition
+    (no matching commit)
+  - [v3,13/22] riscv: ptdump: Only show N and MT bits when enabled in the kernel
+    (no matching commit)
+  - [v3,14/22] riscv: mm: Fix up memory types when writing page tables
+    (no matching commit)
+  - [v3,15/22] riscv: mm: Expose all page table bits to assembly code
+    (no matching commit)
+  - [v3,16/22] riscv: alternative: Add an ALTERNATIVE_3 macro
+    (no matching commit)
+  - [v3,17/22] riscv: alternative: Allow calls with alternate link registers
+    (no matching commit)
+  - [v3,18/22] riscv: Fix logic for selecting DMA_DIRECT_REMAP
+    (no matching commit)
+  - [v3,19/22] dt-bindings: riscv: Describe physical memory regions
+    (no matching commit)
+  - [v3,20/22] riscv: mm: Use physical memory aliases to apply PMAs
+    (no matching commit)
+  - [v3,21/22] riscv: dts: starfive: jh7100: Use physical memory ranges for DMA
+    (no matching commit)
+  - [v3,22/22] riscv: dts: eswin: eic7700: Use physical memory ranges for DMA
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
