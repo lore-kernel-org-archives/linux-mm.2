@@ -4,96 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667A3D78784
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 14:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03EB0D78784
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 14:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B763B6B0088; Fri, 19 Dec 2025 09:26:46 -0500 (EST)
+	id 6B6596B0089; Fri, 19 Dec 2025 09:27:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFA236B0089; Fri, 19 Dec 2025 09:26:46 -0500 (EST)
+	id 660C36B008A; Fri, 19 Dec 2025 09:27:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FC156B008A; Fri, 19 Dec 2025 09:26:46 -0500 (EST)
+	id 58DB96B008C; Fri, 19 Dec 2025 09:27:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F21E6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:26:46 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E5D713639F
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:26:46 +0000 (UTC)
-X-FDA: 84236446812.30.7507158
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6752718000D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:26:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eEW2bq+h;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4972D6B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:27:21 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C48AC0361
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:27:21 +0000 (UTC)
+X-FDA: 84236448282.08.DA47AF4
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4AD5E8000F
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:27:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FI10MAdM;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766154404;
+	s=arc-20220608; t=1766154439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=upOt2JTZuib8zVPSSBRi7Ch4qhGB1jIMby/yz6+gnG8=;
-	b=gEEOfBf/Ho4FIDr7TfXohlEfqhGTPM7d762LLZVTLZLBaZYHzLYNCm9klDQA6M+vWxMceb
-	xT2OeC/IO5zzcXK/4HX71tM6PWcVaek5Uc77KpEWzpBXO1thMDQKJsKi5FXoJ905rotleK
-	e/ximEARxxFrfKFnYqUctH6k1rioV4I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766154404; a=rsa-sha256;
-	cv=none;
-	b=CHCx4CShuL33+j0bJZBkKZ5L20kuYdkubd7/KaF3NtxcxBqNtvQ3rGESy19IwA9eS7wHZg
-	fifimTpB8cmLcz/F5NxxkWlNs0sL0EGSmflO/RtbLoGgYcNgm+kaEDBf4whGuNvvN909YV
-	wfVl7eE3LJTZfEEv6aQJ4+zZOBPZTbw=
+	bh=u5IhjDUP/NczS+J8Ok9NbT6xw9wH/Rgf3ojkCWKEhKc=;
+	b=iiWZomyYW8NXLj3Tdm292GKxFN8pprMkYjOYtZIYizC71Oj7NORlwcoEB2776Rq91vhRuJ
+	FCjPOvidx9rnhMlTxfIJBVf1yN3fAVkOOVieBBHTgrrismlmyiD1NzejaUvqcJFPbcffP6
+	knFjqJPG8Tdp4rwhmVEWne4Aj2wrJQ0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eEW2bq+h;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DE074360E;
-	Fri, 19 Dec 2025 14:26:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123E7C4CEF1;
-	Fri, 19 Dec 2025 14:26:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766154403;
-	bh=NtruIzmWs3/RkjSPS22/BFy28sNI1V1xZlShtSygzL0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eEW2bq+hSt8aoY5+vSw/devvW8oiU02Te1vhx1dn7FvQ99+3FV52/VzCC4eo1+ckT
-	 EU4csDq6JMTCFPedkuaiQ6HVeVi9guzYLqET7EZwFjD33t0sDXh25rnE/e5LdMJytg
-	 YwM7FnigemDfwy3Y8dbz486RGJo+iiSlkje3MHOAtFPxbgHDCoEbexUqRzpLeHoSCh
-	 Kzji5tTOB2g/mHMNJtnwA4/fCil7VW0dMtG9MN5lyHq2NRIwfJG4Q+0l4G/77KteLY
-	 JJEBZXf9nVaiJlGDUgjV3kcf1M/PnFJr3LP+z1U9BDGAVIR6/eDnkHvxPbdYLB7t3w
-	 EYx10A3miyx3A==
-Message-ID: <ad240d4c-0a4a-41dd-aa19-87293530a937@kernel.org>
-Date: Fri, 19 Dec 2025 15:26:37 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: use end_folio to terminate anonymous
- folio remapping
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FI10MAdM;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766154439; a=rsa-sha256;
+	cv=none;
+	b=t35yfLXdmQ0CgGwtKYPF9HDDn9jir6CwhjGi2Mq1/0PjytX9+X/YGclTyHvRTiqrJlk6Ba
+	1a6Jy5RdMUKTm3Qd48SyvEqDTC/IQDsnjmD6rVoCA+5luwOSuv+zN3Pf0n3C+yvMhZ6acA
+	qMkDVsmccGCh5E9qQMk89hDAuYSJs3k=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88a3d2f3299so21134306d6.2
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1766154438; x=1766759238; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u5IhjDUP/NczS+J8Ok9NbT6xw9wH/Rgf3ojkCWKEhKc=;
+        b=FI10MAdMZ6L3LG5x18+KERUQTiVyBpwkYx/j+8BfI04IZa1d43Qo45KpA/RwJ1QRWF
+         4PHNbDCGxkeetpSiWimKjl5HtvwwRrGxik5V9z0jaYNTBK6jakmnBVrgP7M+lAY5EFmv
+         NHMwZdYMFy7yuH32a+NIIU8rCQ5Ry+u0eya1OgeIgE8VihovpQQTdimoiNykTHwTSAUF
+         1v8tIhoaLg+1M/elxjomeY3QK/c9yvnNnnXej3K0hDcxxWagMYIHYLgxeLGSxJ7Rs0Yl
+         IEeQ+Sop9yD++25T0rC73s3m/F610ean4vUS3/uOHMA98PpClZyfnTSXZqtkA55J0Jzb
+         tO2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766154438; x=1766759238;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u5IhjDUP/NczS+J8Ok9NbT6xw9wH/Rgf3ojkCWKEhKc=;
+        b=D9w7a8js81GtsDyi1k6AT+0KSiUs0Zqwj55ePEJb90feAOaohst1HGfqyMsqMsso5O
+         N5NQqUfDVaRCCuPm3y7OEAMGfpoj/TrVZgPSq8ZwayltdjGg830jrX13ww02FBMuLlBF
+         M7EeuWCu0TU0gwMOnn4FL9OLVMM197Kc7wEprrQ462gsbofjkOX5DiN9FI/WhXohMt+f
+         nq8APzIT0KuXyuXBPlQj7ZhO+rk1MqIF0sqpF5a0X+EAoyPCrxXSPciv4Qbfp1OIUhtz
+         quPX3r/uGR1nGMiAThDMvs9BXyj7/+dK9v2VFrbV1Tpewg20WxtkdFLDIQhvCPhlBAbw
+         luIQ==
+X-Gm-Message-State: AOJu0YyYRq6T7D9pq82lSP0lhUQPnnhn2MGND+QkD2dtNiivn4CJMMqQ
+	J8jtO0WKckRVC2qWuiL6b/dga5bd95fCTnNxZB9ViDLas/ozXZRullGTHyWsOt9q2u4=
+X-Gm-Gg: AY/fxX5knejzJdvh5R8RZGP7pTzKYoETwsD/P98gFSIKo2KuEeIQeAmDHRwUBGw2DUI
+	KiO6AoILuC9EzHWFIHfI4+nYmvJRCuSluXE6jWko1dhat5kU+wduB4WGQWQQO4XDMzjJoEdxNrL
+	E2AAmdjdqEbiPZJFnbvEOj8FZk+TjittBMpfFS/oPquMfS8sg6zzyzPYU5SDY57RQTHEwzwjIPQ
+	0UncXSlyjwNZY1w6YW7tTWLUyq75rs+ZV/6c226OsSU75V9f0YGz90FoksvsPSg95VPI4P0mMbV
+	xwpzgfYPDMc0Kcgznic7dayZDqC4ZJVXxk98UN0cAVsN3q3u2rW8TNRk9DCaLWOWrhxS9hQgbeH
+	14bgedQD+ZnAlzgcwXK25Pts+sVwa8Zw8Mdugxy8A5qjEVZsWFHCwyXRd4AShlohz6yWw0Rnag4
+	afksbVHc+s8gqlLEtE/sSswXD2AAVLu9JmxJOMnk+q+8ELvW4fJYXryK2YGFNqt/3IjRCUHw==
+X-Google-Smtp-Source: AGHT+IGBIKHJ5spcgh/qjVrTK4bS+iVhwL7ifjF3JY46vvR0Acnl2S82zGRYZj6g/6YfbIpf102MhQ==
+X-Received: by 2002:a05:6214:2c02:b0:880:4ac3:fbde with SMTP id 6a1803df08f44-88d86869862mr54299226d6.46.1766154438159;
+        Fri, 19 Dec 2025 06:27:18 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c096a8c758sm193246585a.24.2025.12.19.06.27.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 06:27:17 -0800 (PST)
+Date: Fri, 19 Dec 2025 09:26:40 -0500
+From: Gregory Price <gourry@gourry.net>
 To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org
-References: <20251215004836.694-1-richard.weiyang@gmail.com>
- <CAGsJ_4w3535fwxa_WkkQLcfNjzRkJYbBJ0WfpYJ+v2hwovdvWA@mail.gmail.com>
- <20251215084353.nmznnnmcpcqo4ldy@master>
- <CAGsJ_4yPnv_G0vciNLabA_kn=0k=RP6kBpuD04btj3HM_zarTA@mail.gmail.com>
- <37c5dbc1-bd66-4124-987f-8983a06d576e@kernel.org>
- <20251218152837.kbgmrjb5i6be7xow@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251218152837.kbgmrjb5i6be7xow@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7zxe16uaiconqw88y4pem4r43a56qpzi
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6752718000D
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, osalvador@suse.de, rientjes@google.com,
+	david@redhat.com, joshua.hahnjy@gmail.com, fvdl@google.com
+Subject: Re: [PATCH v6] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <aUVgoEiaXj94IBmW@gourry-fedora-PF4VCD3F>
+References: <20251218233804.1395835-1-gourry@gourry.net>
+ <20251219000800.tnpqzvcdyeqcwryt@master>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219000800.tnpqzvcdyeqcwryt@master>
 X-Rspam-User: 
-X-HE-Tag: 1766154404-705481
-X-HE-Meta: U2FsdGVkX1+B27pFrgh2sYORcJPiyDTfRDNO/L6IsEFxFwPPX2n5Honca6xdof4XjKmwj1fEVw5cC/1ZfMukB6Ia5Pu1ExKMJk5t6zguqijYnkn/ANQ12LVvUUJ3uKaL55KUN7y0fBP1SJPID8xFrtYQohx8z5g/3IAyXmdMdd6b6gPNHpatZw/1z6M32sHCPCxAOUj4r/6mzO6lGQgkWCUKT4GBbswFfw9FNlEKD6PDJWBmjxliFo+ffIThaWZU0wrEmsTLumHK8vRs5fLFdnn8WfcOGSj4ULpSE549gUwsZIqXjLXwEaOJvZw97BgnnZodT3ougQjDXNTYBVHiq1P9+NWCPown/00pQCmBhnFFvaFvh+Z0b+rJYgHFFzq+ZDbNWVjjQQaOzwjZaLGDJonKXfWjt2HuMAf6VvrL2avHPZWsWNTMz/UrgJoHk4Ak2rxwQhS9Flet5RXvQRDNFGxu4Zf99LBAswTZSxcQH63TwHHzCMetKvq/ZYuDvPq7+KqdHy4D8CbjU18nzGLcuKtsV8+dd3zQWwjUgJRsLpPEOn26bH9emTGUNavwZJb6gvtYe8S34DrFdjnKk5DJj66L4REmWgiog/rf7/j8JJS8yhyW+7wgIf4Tw8aPdfAHELOTrOV02BWbV5njniNYExn5w8BSYCMLnhLNxPtNEGo8oE9w2TPptCKpIATKZS1GkccOEdjV3BfEBE5jP1+o65Z7mXnvCW2M1nF+kISRODGRTGZpL+xWjRMxxbPjLXKufHMRRrFBUJiOQjl2r4zc5n39Jo1uEgUFljFRjmCq+BzHRlXNsf7Cda8JGq5uUzqti4K7oR+C2cPdEehx1bLbsiPRGJ5oOTBViUJZAmNzPY5ObZmz2FzYiFRHW3mXjOiUnZm0EKD4OOEyxqi0HcEpZ5RQybiuZFYrfoZ/T9pZ4sQmV/AFx1d6mCs0khunwYOfNZnNyCz6Z30ysxlb2j+
- B9qxs6cP
- m6Oup1mm+kd6RksYMzR7E/RIh7vvmx/kBxm6ylb73EztZbJP3v+KhGog/CQqg2TVrBPw8/gD2VCya8M1Dk92Vw+KhV6fXyzsCj4Cz28LmtiGWhqlQ2kmF2uLKmbMZ2OMnefUqtkNx71T5oIfGYAySVWDPOWCNsbdAyR23vGLIxRyko7wg0OqQMot31H39GF+gY3UTiWH6B0cPVdBwUwiu5bDEW9fFEgTEPzfcBkp4JuT1tbZlEjANUZ8sWGL2zntAogBw3g+He6HSrrcel72Jq/TkrV25Of0WcYMfrJBrbV29AvHl1NAqNPuA58qSaCsgtkbyQu4//kabpS3T+QtypcvAE2uG0zzy4fPmTbaup1wUMcO22gDN88Qg7JR7fvAtmjQ01EmfwVoeNR6J10EL7Z00TNIZ9B2/BdhyWoZ1gniY1b2Lt2C4ixLF9Uz0ErlpaScj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4AD5E8000F
+X-Stat-Signature: 9a56ken6k7c87utm9a6m38nfswanwodn
+X-HE-Tag: 1766154439-463073
+X-HE-Meta: U2FsdGVkX1+YwUSO8tD3pWTXA9av1295PdAwfbKdFgnuTyk0CeVyQPpP9xDLqz/bGsON0b/ni5P2sPlKIecojlBRDiO1QfZlRQNT9z2GFOZbvHbw8IAgTsUfUUmEoJiyFjBRFqyYFzQF7tEUNmx1HbtJOvZr69R5+L8p2mf3UNDSSAkwD+ahOY8GpcHCy5YnpxjsrSF9xzMl7Erk26PJDTCF+CERYhiPdueq1ZZpdEhZZtvr89XVMR7VHU/+WLnLpy60sbUdtOPDAVeMIlD2PuWsfcVNoWFBd6WToCy7YPXMGiDVmHl1GIdAP1BDD7Q1cVqE1a0KwJiuKaAiSPhiQioFyc9y8xf2Ws2d6wZrI3y3i2G5hm1RJl6gwWoyHZWF9kJdSA0OMc6vQLvhHWR5srQKJ8Cw6aS6ZxMh7cmLab+eXNh0EiZOCKxaRXte/HNOy7x60mX3rOUh/gp9iPZh2cAtLWUci/x0b20J4r0uPT4YG0or2xzvp2svO3O2b7OuiXStxLwgvOcxHLXJw9tLwGvR1iIi63HGI7oU8wFbdZDZscxJJZQKPpHtQuMYyRaGj0BLHhpyi2v8MIXKaz8DvQXGMsbOkUckmyy2imVoD4uHBcA6DSpFWu1XlebuNpPeQcWeO89ZSX27s4yp8ZpOoUgmZhA3eOQp/Tybi7tHoWk4FC6WYEvLYpNmHDeOALtuh0mryq0bhXQ5b2B5f0MfKuQ9ch0CMvw3IPKzTmeHf7Jitsfcn+FQsiMzrhE28tb+PlswlDYN4pXmGCMRgFm20fen0PA4fEfrHizfygpo9J8XwqXDmo+XOl6UDEjQQf0o/rzEPuNuvUZv5KkKDpvNUXfNB6PCcM6gpR0sIGrFHFUGxTV6wznm6nUUCg4+EhWWJuI+XSahDFBV1Fxos8HjZ8/vnj6Wh+dPBldd7po01XHADT8HUPc+4DxVm0tsMu9BA/PCHTKkakpAEc41Z5j
+ INCnb1KH
+ baA1OXzHL5nmW2Yf5T8GIs92n8BjipHks6snjnMRsYPs7UZths5FXMCxA8E7UAfiYJLrsaKCgrPliJ7T2qF0Cgo0RkW+jlaFosZ8+rxCQ5LoTK4GBNAiKwvTQh00sAswstFxkUWCo1Vf4LkDGq4s5XIp4Zgotc7TqxoXPiTmzHfCgVdUimd2ypAmff9d7Km1/JnZqLfSHOd7dfVZrOoIbN492LK4phNIjETpqtfkT9pw/kZr8dXuG10QHdbw3C3VH3t0dvwLezwyiS5dmkeTgsezPwwuu4YMGVCeSxrPQrU7HPTHKxBmY5fCzRCFmwnA+fLZChXJPY5G+ljvompQfE24d8kZY3PPa9dMEHMfJDRUL4Zkae4l/lghAp6ak8E6rmAw8ByUG5dGXAQc0q40qAoz9lNxrgCTQN6XgfugyKuJbICbKVWSOOlV/f7z4GHs65hFT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,120 +122,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/18/25 16:28, Wei Yang wrote:
-> On Thu, Dec 18, 2025 at 10:58:36AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/15/25 10:15, Barry Song wrote:
->>> On Mon, Dec 15, 2025 at 4:43 PM Wei Yang <richard.weiyang@gmail.com> wrote:
->>>>
->>>> On Mon, Dec 15, 2025 at 10:31:15AM +0800, Barry Song wrote:
->>>>> On Mon, Dec 15, 2025 at 8:49 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->>>>>>
->>>>>> After splitting a large folio, it is necessary to remap the resulting
->>>>>> anonymous folios.
->>>>>>
->>>>>> The current implementation determines the end of the remapping process
->>>>>> by counting the number of pages that have been processed.
->>>>>>
->>>>>> Since the final folio in the sequence, end_folio, is already known and
->>>>>> tracked, this commit refactors the remapping loop to leverage end_folio
->>>>>> as the termination marker.
->>>>>>
->>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>>>
->>>>>> ---
->>>>>> v2: move folio assignment in loop
->>>>>> ---
->>>>>>    mm/huge_memory.c | 13 ++++---------
->>>>>>    1 file changed, 4 insertions(+), 9 deletions(-)
->>>>>>
->>>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>>>>> index 40cf59301c21..fe812d9c7807 100644
->>>>>> --- a/mm/huge_memory.c
->>>>>> +++ b/mm/huge_memory.c
->>>>>> @@ -3423,20 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->>>>>>           return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
->>>>>>    }
->>>>>>
->>>>>> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
->>>>>> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
->>>>>>    {
->>>>>
->>>>> Do we actually see an improvement in readability or performance?
->>>>> The existing code feels a bit more readable to me; nr is clearly
->>>>> the number of pages :-)
->>>>>
->>>>
->>>> Hi, Barry,
->>>>
->>>> Thanks for your review.
->>>>
->>>> Currently end_folio has been used in __folio_split() and
->>>> __folio_freeze_and_split_unmapped() as a termination marker. So continue to
->>>> use end_folio here as a termination marker looks consistent and improves
->>>> readability to me.
->>>
->>> In both cases the variables are temporary, and they look fine within their
->>> own self-documented contexts.
->>>
->>> Now that we’re crossing two functions in the context of remap_page(), this
->>> doesn’t seem to be the case, though.
->>>
->>>>
->>>> But yeah, this is my personal preference. If it is not the case, I am fine to
->>>> keep as it is now. :-)
->>>
->>> I personally find the existing code clearer, but I’m also okay if
->>> others like your new approach more.
->>
->> Me too. Well, the existing code could be cleaned up
->> * nr -> nr_pages
->> * remove i and subtract from nr_pages instead
->>
+On Fri, Dec 19, 2025 at 12:08:00AM +0000, Wei Yang wrote:
+> >+
+> >+			page = compound_head(page);
+> >+			order = compound_order(page);
 > 
-> Sorry for my poor taste :-)
+> The order is get from head page.
 > 
-> Is this what you expect?
+> >+			if ((order >= MAX_FOLIO_ORDER) ||
+> >+			    (nr_pages <= (1 << order)))
+> >+				return false;
+> >+
+> >+			/* No need to check the pfns for this page */
+> >+			i += (1 << order) - 1;
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1db9cfb09533..b8ee33318a60 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3423,17 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->   	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
->   }
->   
-> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
-> +static void remap_page(struct folio *folio, unsigned long nr_pages, int flags)
->   {
-> -	int i = 0;
-> -
->   	/* If unmap_folio() uses try_to_migrate() on file, remove this check */
->   	if (!folio_test_anon(folio))
->   		return;
->   	for (;;) {
->   		remove_migration_ptes(folio, folio, RMP_LOCKED | flags);
-> -		i += folio_nr_pages(folio);
-> -		if (i >= nr)
-> +		nr_pages -= folio_nr_pages(folio);
-> +		if (!nr_pages)
->   			break;
+> So this advance should based on "head page" instead of original page, right?
+>
 
-Right, I think we would never underflow nr_pages.
+hm, I think the thought here was that since we're moving forward from
+start of an aligned chunk, we'd never hit a non-head page - but this
+may not be true.  
 
->   		folio = folio_next(folio);
->   	}
-> 
->> probably more ... :)
->>
-> 
-> Don't catch this. Sounds you have more idea on further cleanup?
+Will think about this for a bit.
 
-I was rather wondering whether there could be more cleanups, but I have 
-nothing concrete in mind.
-
--- 
-Cheers
-
-David
+~Gregory
 
