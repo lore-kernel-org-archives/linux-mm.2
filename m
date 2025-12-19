@@ -4,89 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC34D711CC
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 02:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8EAD711D3
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 02:15:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBE746B0088; Thu, 18 Dec 2025 21:14:40 -0500 (EST)
+	id 435986B0088; Thu, 18 Dec 2025 21:15:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9F986B0089; Thu, 18 Dec 2025 21:14:40 -0500 (EST)
+	id 402CA6B0089; Thu, 18 Dec 2025 21:15:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD6716B008A; Thu, 18 Dec 2025 21:14:40 -0500 (EST)
+	id 33A076B008A; Thu, 18 Dec 2025 21:15:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CEA766B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:14:40 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80AA713AC98
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:14:40 +0000 (UTC)
-X-FDA: 84234601920.27.EB8E359
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C64BB80008
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:14:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xpVzXD1G;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766110479; a=rsa-sha256;
-	cv=none;
-	b=1XNo7fj5GzJiFu381K34ogL3S2CxCL9HBiKm7btORy4xSugijDNoBnnSymBIw6UitGSXdh
-	DIgiM94n/OUN+gEevPxVJtUCO404oshXY79K7rIN3hnwTGZ6gjgP7ZSUocNLbSD63i/Aa8
-	durQAzS5nTs9YbvEMvWfLpBZqnur66I=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xpVzXD1G;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 21BF06B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:15:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC8C11A0410
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:15:14 +0000 (UTC)
+X-FDA: 84234603348.01.590329F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2586B14000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:15:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ohOY26Jz;
+	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766110479;
+	s=arc-20220608; t=1766110513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MaSewMPFpzgfIXddZ9UUgGWOgyUZdsrAm8yw6vZO0OI=;
-	b=t0xfoiCNLtOywvzGNKuTmzpryQ4mo3ttU1UeJTBiMNy56I8QPtyZEr37M8n1vvjSW7/Idf
-	BZ5H6mJwpWDl20GXq/kaaJA7URrwgRxGrLNC2CA2pouseC2U3eUNugy+ot669IKkrf0KuN
-	bOFr5/pp/eVqExFiX3fiLW+6uDZ23JU=
-Date: Thu, 18 Dec 2025 18:14:24 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766110471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MaSewMPFpzgfIXddZ9UUgGWOgyUZdsrAm8yw6vZO0OI=;
-	b=xpVzXD1Ggi7BKe0yZG+mdTj4GPIZQ2eHcL7soEZ+iQNUDl98A6C+S/UO2f1bu+vuOaar4U
-	cEF9ZqPXFHMK2W82Pi+fh3vSIuvYY7k98cXwXJ/EPszhGhxYWKVAxL8dhHpzejl/rWb/qM
-	NiQez3/6p932qHFBJnWFWFfE7Q7rD2I=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 09/28] buffer: prevent memory cgroup release in
- folio_alloc_buffers()
-Message-ID: <63h3n6m5ek623nzq4pwkwkhu72jqjjastxgnsjuvrvwpevv57v@2ki32ihzx7lj>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <bd87d13b99c159de77f23f61c932724a8b2d000b.1765956025.git.zhengqi.arch@bytedance.com>
+	bh=YJE1Djyq4PaKQBKJcJnUzyxofgvgCdCS26m9yVTAGAA=;
+	b=mFNXOiy3VYgpE2TxL5n68wNbMJUFb1GSK2nSRGNhv948IvaWtejkkfrsWjt652G1FWx5OH
+	59pLbLYM4gh2GkLbnAMmi7a33WAe7bN2ZTNBalKwTfK6W9Kjf9Je1NR3Hw7l7tyACu/9oy
+	7YUYdunFIAW2HxHwloKgGpIxlZ2S5NM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ohOY26Jz;
+	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766110513; a=rsa-sha256;
+	cv=none;
+	b=xo85QY/rcbSzjFep4CA62gFKuaB1pJ7WD0Zvu6AcjnKWPJIH5lONwgltPleO6/p7sxBaLm
+	bwmlu0lZRcWwHBapoe7LD4jgxQ0LmtuT1Cp8hpLzbIky+Qq0aPGtAXyIhQhtV3R8q3H4wb
+	ZPK7++OlGLGPEfbh0rqnP9t0d8Jutnk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3CC784374D;
+	Fri, 19 Dec 2025 02:15:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C1DC4CEFB;
+	Fri, 19 Dec 2025 02:15:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766110512;
+	bh=jbSSl/iAC0Y6PJMSUrlMAn/BWY9Mt013nMXshs1xgDs=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=ohOY26JzrJ84xK6XyL8AqFmyDkTo9LE/qIAUO8G0H5ib8aLYkqsqgg4iN4HhwC9A8
+	 dSCzzo+xsEtHkc7jQ89GIDOau3gUAOxUVGwQECL+G4gWuQ39gpN4wNlvTaJw6S4eCK
+	 6cauPx1p8PM4trko8Ybe0AOqRbLrch7ro1uFZaESGAkC4yrEtka4JS/mJQb+cz9OBs
+	 VyLO4ZxrNZu41kCGli0yUgqOe5BHni16a6XnX7cGom+wTldN+siH/m/WQ7cBSSnvFu
+	 p+6l9II2GAjI69e6mCttfNJniZ2cFHw8I1y5eFA3aZdR5kW4p5ErP9PalcG5xHtwHP
+	 +JMxQvcfiW7bg==
+Content-Type: multipart/mixed; boundary="===============1148049922040317406=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd87d13b99c159de77f23f61c932724a8b2d000b.1765956025.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <e80e8faecbfd7099950485f4de08a1226ae10282ec44fe9e6b3610fcb00c8400@mail.kernel.org>
+In-Reply-To: <20251219015750.23732-5-roman.gushchin@linux.dev>
+References: <20251219015750.23732-5-roman.gushchin@linux.dev>
+Subject: Re: [PATCH bpf-next v1 4/6] mm: introduce BPF kfuncs to access memcg statistics and events
+From: bot+bpf-ci@kernel.org
+To: roman.gushchin@linux.dev,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kernel@vger.kernel.org
+Cc: inwardvessel@gmail.com,ast@kernel.org,daniel@iogearbox.net,shakeel.butt@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,roman.gushchin@linux.dev,mhocko@suse.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri, 19 Dec 2025 02:15:11 +0000 (UTC)
+X-Rspamd-Server: rspam02
+X-Stat-Signature: bwx67pjr7csa4tkd4zai9kk19p3t367n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C64BB80008
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4tzyzkdi47jphqt4m9hyynb768d8md9h
-X-HE-Tag: 1766110478-492967
-X-HE-Meta: U2FsdGVkX19QX0FfHfC0bCiZNR0TfwwzmB685L8UTy9V7zYd8Wx68ZSDK4l4VgP6iDmMxlINL5N+3PFDj3WMbqLmTDxV+ZdmePfrMEhyKYcH0jlRm+Lw0je9C+gClbacp5uBhFYj+oiaZK7HLmjBsBbNP8Pn9ck4SWsa+SOxvUasQo+Oa0OQK/gp0J7QDVKysdb6OJH+GxWTpWRUKpWFK+Wvgfg6RzzP9gxh+j5xhFBCFGw6PYfaPU/dQznOsx9OcMhaY99oj8QOdYv3YWEuqEshSc2LTMdgROgWxFf4p59iiLiOmwS02XsS0hrGdcsK6yvcFmxHVw0bTmKowcCxhj+8ktUF46DfY/4cwtY/LLclMPi/8rfVMoNHKBE5ttThV5BTrXuxllMyeAGAF2e00vGVcy+KgVWoiQz1h7GOZW1PFrtx1YuIO0GRnurZU0Bkh3hub/rrXMZ5TLWwYMTk+5GYuryheMq38nrzj+4ObWZtexmzuHwq0OmMrgPhvtGPGEq13Z0zp52f+W93VsO2NdxKeP635fY+QYvmNeksqACmcpKvZ6r37ow7DHuKxOvHVPtG7dcJkQz3fPFibH3WzB7FVtupZhrqEEahOPBYRYlgZzVt+PnuAwq2+Kjwan8emXcK45297VC5OBVJTMBfRBhI1VKRsPgashkJi7KciOp8JwjyliUH/N21TlPpQeyWlB3/NOI1jyZYrCENOnmh4KqQ0PUUttT+Hfcee5topUITh6AY/1KXtH/GQFDaMfCZbWHO2MXFtES3AWNtFg23wsUBWsgewi7FFaTnLlz4S8OdNFuPKCdJeUZygaT8XzdwmTzURw31G+paMwgD4JeyZORSDf5ksendVPOMja4hJbj6kv1ijdCLhidCe/HGpOTu7rXnQ02I4SDhssRuMlL16TsI9ES7vQuiFw6VHvziwXo/gE6YgKeRPL8eO4E6Keb3FEx7Nzk4sS3X1BMu2rf
- AL2FDOu4
- Ao6cZLqoMBf54PBzkIaNeNmaoiixfVhiUypqAmYAxXrcsqYOR+gqdHpWQ/AWIj1ktacGUt+zloDxlu1Cawq24moxaQGhR5I4NRYKoxGYv+6vrwIls8VROujsIPe1eDphz1dBG+OP2sc2Ffs+oxHMmWDtP7tvwFZFS1nXwIUH5tjNimP/SqtbwlIFTp+x3eebQY0EKK3unOqIZc49Y0h1/Jz/DiVWazw0YW7zxDCNERADzTqGiq1J+TY/BiLF29uqud+5kpCnuP5F22+1AkwBfq7SUfIYXPl+nXUcIf7Q17HG8QS7Ehm5yqVsRVt9MYXEnSFnrlcFhk27vy9k=
+X-Rspamd-Queue-Id: 2586B14000A
+X-HE-Tag: 1766110512-803010
+X-HE-Meta: U2FsdGVkX19WLEbt6AE3Jt/u8Tqwi7IGO3fuHlwwZ0wR8gKGJ8bNG/kVn3f5mOoKV+2MOeEpZeOBRy1n2k0WcBhLZYYwmBRSKcoQZYeZp7twTFQ2t07Apq4+wgif6+OqNeLHnHcteLl433s4QzVC3InrHEk8pWZkRfb+jPy1q7hlGCXcBXaBC/5oK8LTekGkgZF4rYmwa8ofEhRvdrPaAjPhK/AjfYR0fDHtBsaqi9oz05Z1Yp/NDf6RvLt6lLaIqUFzO+G/2NiEVqw9E/UWsrynKDWBtN2FSb3M0Wxa6rEJ6S+HSYzWboEwTA9gZldK9soKiwJ9Zr4N4CM/F1mmtd2l5BOB6luRIcntBAIVRsDnPJzGF6yeg0adRr+vo4q6Q5Uy6Q7jTw6+cZnRcjOpCiQnDkkL4GAmcxJM2kwVp7CuWRAifIVfI9QIsXT3QAvU92KbB5r8Qky01EZMUWAj8Y/xZixnWNszTAKoCAAWUlG0akZm40hH3Pj17qS/dP/QghSCPqdA+WCZFCNoOMHvz2E2zb7g59TT+zfsW+7CPPUJv83+EBKza8yhfKYEkaJZsKuskNWFnazJ3h6sZfBtANpvuF25k9+x9Uru9oPGdsva9RKo4jn0jodXdpAmnDD1LWkaS+8z/s3pAtSgIQY5sUmu+C15sU8NuMoMuHTDRAYphrcTJY0bi48Xkum8ZHOwS5QYTrAweemawPPn2joroKmcDv/5zuC+6CZjaNRWU9UvHIpaXT6NJbAfEbNo3HHStJinJUTHC6vkf8r0coNTO/EeWf+yUPwHkLVPGMaeJ1nidXT1H2nS+jeFIlAK+2VYBFIA1ekW3jAmgTbNobrxiSlncqifW5hsndHCTP+y8j9QeuRXtL47bwUH88hzQ+Nidq++8m0VR6kClmCBiJisv/T5ExkIK7RZvdigSeJF2NePxhWQ1iK+ePWb9rq6BpI/LC+M0okRSe+uM2J1TIw
+ zRiHSUiV
+ RObwzhlYnD6KKPwnmYG3x0qOaN00sT0hsVVjjvWVJhmVoz0JrsWUo4fHoAxej/8bIo4bzUNekgj6UKT3f7d9Z8VJEtIDRFxgq8oFihD0zLhOKGtmML1a7SiqFZs8v+MmcS3EWC8aS0vFzKjL9OyeUSgmB0jiRhgTsnbc4Lc8QNikFswQaEvSPtAnXQfY4ag7DgDhrvQUFxXtWD85TEvCZ7GeEOJlODtJN32PHbBGitqlgSMp3bFqzQXsylehXU+L7DdV+94TA6b5erkWDtJZK91WVePLpR8dTNKBf46BRSnDzUF3hldHLl460UAhaug6FMHJXoMC9GpXY904rb9emaKF6jDVVUKGciZHZSPacnxddf4G+BUPMK8OXxNSEHsFV9C5fG9GSLAWYs1DbZLYXsLS+tCcQwS/NLLSGiI6/Mz7o2tM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,22 +89,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:33PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. To ensure safety, it will only be appropriate to
-> hold the rcu read lock or acquire a reference to the memory cgroup
-> returned by folio_memcg(), thereby preventing it from being released.
-> 
-> In the current patch, the function get_mem_cgroup_from_folio() is
-> employed to safeguard against the release of the memory cgroup.
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+--===============1148049922040317406==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index 6d0d73bf0dd1..4d9d7d909f6c 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
+
+[ ... ]
+
+> +/**
+> + * bpf_mem_cgroup_vm_events - Read memory cgroup's vm event counter
+> + * @memcg: memory cgroup
+> + * @event: event id
+> + *
+> + * Allows to read memory cgroup event counters.
+> + */
+> +__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
+> +						enum vm_event_item event)
+> +{
+> +	return memcg_events(memcg, event);
+> +}
+
+Should bpf_mem_cgroup_vm_events() validate the event parameter before
+passing it to memcg_events()? The call chain is:
+
+  bpf_mem_cgroup_vm_events() -> memcg_events() -> memcg_events_index()
+
+And memcg_events_index() does:
+
+  return mem_cgroup_events_index[idx];
+
+where mem_cgroup_events_index is an array of size NR_VM_EVENT_ITEMS. If a
+BPF program passes event >= NR_VM_EVENT_ITEMS, this would be an
+out-of-bounds array read.
+
+The sister function bpf_mem_cgroup_page_state() below validates its idx
+parameter before calling its callee:
+
+> +/**
+> + * bpf_mem_cgroup_page_state - Read memory cgroup's page state counter
+> + * @memcg: memory cgroup
+> + * @idx: counter idx
+> + *
+> + * Allows to read memory cgroup statistics. The output is in bytes.
+> + */
+> +__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
+> +{
+> +	if (idx < 0 || idx >= MEMCG_NR_STAT)
+> +		return (unsigned long)-1;
+> +
+> +	return memcg_page_state_output(memcg, idx);
+> +}
+
+Should bpf_mem_cgroup_vm_events() have a similar bounds check, perhaps:
+
+  if (event >= NR_VM_EVENT_ITEMS)
+      return (unsigned long)-1;
+
+before calling memcg_events()?
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20357445962
+
+--===============1148049922040317406==--
 
