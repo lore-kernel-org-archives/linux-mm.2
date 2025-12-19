@@ -4,119 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89A0DD7495A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACE3D7495D
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77906B0088; Fri, 19 Dec 2025 01:28:44 -0500 (EST)
+	id 0A6956B0088; Fri, 19 Dec 2025 01:42:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4FAC6B0089; Fri, 19 Dec 2025 01:28:44 -0500 (EST)
+	id 04B506B0089; Fri, 19 Dec 2025 01:42:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4E716B008A; Fri, 19 Dec 2025 01:28:44 -0500 (EST)
+	id E783F6B008A; Fri, 19 Dec 2025 01:42:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C31176B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:28:44 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 59AF258E1E
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:28:44 +0000 (UTC)
-X-FDA: 84235242168.21.B7ED1C5
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 63B381C0004
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:28:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cFu1T7t0;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf18.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766125722; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D69266B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:10 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94447C05BD
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:41:59 +0000 (UTC)
+X-FDA: 84235275558.26.7F936FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DE844A0009
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:41:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtdQwEF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766126518; a=rsa-sha256;
 	cv=none;
-	b=s3hg+Do77MiUfimveTLwtaiDeDkTsnWKa8FWiGHRMjmsgag6U/KtRLX+3RTz1DyiQnlxzA
-	mcztmjtGqeSDl0XHvSMMciTcHCVZ3O92bTEQ9G5TaX5XD81AZTYVtNZT96Ea2ixKImNh6n
-	kSE+m8uYAtpIhGfoj1UNQlMP/XrzDZA=
+	b=NBVeOWMFFfZ/ENHs895VocU0zj4H0ELxS55qMj58U6SDzKzi4g7PJFg4lDoQNMTfJmj+WO
+	5T95d39qVoCwvLqediBqsSdKrA1VeHwS0t7zMa+Pn2OdLRPp2+OnLic4P8+Bo2zuJFXNPk
+	6n0SdCHbWE3++Xx/OMiO0pFZ0oBu46M=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cFu1T7t0;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf18.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtdQwEF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766125722;
+	s=arc-20220608; t=1766126518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I6QrtPwtlqYhnAG5c9JpOVRkSlpdeSTls/VSNXrj580=;
-	b=IyWTXbDNWR1uE7KP/w8XPzEHBoCUKB6ftO8JbOwQsZfLe+Utbg6UR9rRhNXtwGqlSxWk3b
-	9pfDuaPO0muAzJk7nx7dZS98FnN0lpycDZGNQXR/o1L9iDUkWeuRpLtXxMD7zmCwY1XiAq
-	B2lW5N9jGMP43V2ro9QT6pLhcek/lkc=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJ3Ec192694735;
-	Fri, 19 Dec 2025 06:28:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=I6QrtPwtlqYhnAG5c9JpOVRkSlpde
-	STls/VSNXrj580=; b=cFu1T7t0oEapEdpYUbK6tN3PDkBLfck8/2XxO8Ejsxw+N
-	vhI6IOw4oejqjctteTymVA5pc9C2nM33e6l/UnGgunR+Lc3+U+c0ZH6pbmAbxzMu
-	4Izo2+mzxhJpF46ctNi11AvxOYeyKxcB6USYhEN3HV8zqlQUORDv8jjEGm/p1yp2
-	DlFn85lkxNt8ZkWCevfMXRqzJGSLmJG9aRUXw5kQTJWgBii95F0BQbCpgMot8sOi
-	uJIjU7HYZprPY2JxqPOeZCZjjPzMZK/g1UJyYKuY3qZypxqFqw6K+TytI6o+GNA1
-	6WakfZWy03voPgy6a5Rbc4CQ34VeYf3vA634yatSA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b4r290jan-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Dec 2025 06:28:31 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJ4pwKR023986;
-	Fri, 19 Dec 2025 06:28:30 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b4qtdrjy0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Dec 2025 06:28:30 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BJ6STqC022140;
-	Fri, 19 Dec 2025 06:28:29 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b4qtdrjwe-1;
-	Fri, 19 Dec 2025 06:28:29 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-        linmiaohe@huawei.com, jiaqiyan@google.com, william.roche@oracle.com,
-        rientjes@google.com, akpm@linux-foundation.org,
-        lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-Date: Thu, 18 Dec 2025 23:28:19 -0700
-Message-ID: <20251219062819.2499399-1-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oAP6Z0e/yWsNG1D2mwSpfmhrnvSiAbTcGRMa3P4yRgA=;
+	b=EG9pKjsq6BUMSOtv3v9nKzt1aDDusHbrZQXDzZxB7ChkHJwIqLR+UM0NTKEr3tL8gtxHRC
+	outTuSPSvsg864FAYIXyv7OxwBitPpjO2XKYK5FJqxbxW/SlPkd4K9KUSNLVU3ljkaey/X
+	AbYxLh6UBdJfefct0AOc58C0kl1n770=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DFE1440734;
+	Fri, 19 Dec 2025 06:41:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC21C4CEF1;
+	Fri, 19 Dec 2025 06:41:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766126516;
+	bh=HzEKMFvO/dlheq7ln+rLHMiIciSJnfxSw3qvsSgM+PU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YVtdQwEF8ZPRKcW5SvddzS/n5jX0AfDpfi6uBms4JQBoUoqt9ySK4jaBmNy3/v93x
+	 z6plPJd7pHQPJi0rdGg6otDHy0kDOnOtoCE44riDat91Jzd2FPuTOFQIdLPehcV8Vc
+	 /9YVerVnQnb6vYuBKWOpS70A8Vj8JHFixjEJE/ZCzvJ70x1KVKgF7UfRg+VbDM6biP
+	 L0AHmjPx6QGhyeO4wwyfSQCO0pA6kUpAU2yGcVd+fG4cWbmPY87ukp71Cjr3GjAVyx
+	 4wLvcQ9WGBJeVO6Z6nfHX1mBcSqTDJBMEo0FVEu5YwMn/9jnbZ6mq8QvdNzts4R7p9
+	 fhYRoT+OpH1Hg==
+Date: Fri, 19 Dec 2025 08:41:50 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, graf@amazon.com,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org, pratyush@kernel.org,
+	ricardo.neri-calderon@linux.intel.com
+Subject: Re: [PATCH v2] kho: validate preserved memory map during population
+Message-ID: <aUTzrnz3ZBm_APmv@kernel.org>
+References: <20251219030854.3527871-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-19_02,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2512190052
-X-Proofpoint-ORIG-GUID: 3gq8SPjeieSOd0fhM_CRtXdX1oBwAd-h
-X-Proofpoint-GUID: 3gq8SPjeieSOd0fhM_CRtXdX1oBwAd-h
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA1MSBTYWx0ZWRfX9Wq9wk/Hp6J0
- hoZvLTkEiBAa2NKJmqWlPcildrr74IVPJbQTaFISIp8tURm0DZXAGSxLUOE7u6wiThisjYR1jN6
- pVTzjwRuwp82sV0murtvwuUughyGAA1ZjDEODTUKTMlkheognJvCYLeB4e2/r8hiPT1cBn4wy75
- yE5CbbmyazhjGvZu734FHOBrlMAO81lpqdDDmormQRv+tvZvt8pIIPGKhaVwCbMiaIMBXiesz/6
- 5DoFs75AHoehOGEzj14bZUIfzxRgqOH6kTuViCRBa5XmNFgQ83GUraYKWJ8aQVw/D2sq7beRm4B
- KamdFJh4oyFRRXFtFNK8VKl2FIbG5ZIv5dMxbBFEOnah8Zk+E0qymwhnqiArS2QPWQUvEpNWAkB
- 7Lwtd2zWCxSN1Z0qat+Dfdt/6r5NbsCYOyZ9T+cyCaJNDUh8EikObFVfvva/Csihs5AF/OCzerz
- +vSpCjuvLtvrORdVZjw==
-X-Authority-Analysis: v=2.4 cv=efkwvrEH c=1 sm=1 tr=0 ts=6944f08f b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
- a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=f-Xke4JHVjhQjhv6I2sA:9
- a=1CNFftbPRP8L7MoqJWF3:22
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 63B381C0004
-X-Stat-Signature: tbfq6t96yfuxz5813zsumdc159s1n5hc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219030854.3527871-1-pasha.tatashin@soleen.com>
+X-Rspamd-Queue-Id: DE844A0009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6wuqjpgynuimegtnraczzppse99391kk
 X-Rspam-User: 
-X-HE-Tag: 1766125722-66691
-X-HE-Meta: U2FsdGVkX1+qHRrRqjkAMpT9BuYxV1gZR40lE7fXNd9K9f2+H1WYB6KciUJlUJ8hgfLbViDn76hM5YIXLZshRKxh0UmjAcyG2XSCNItDbXUOdPO/8MW5Byotip0yOa98SCSB2CTIfwU3rZ/OB/Ux2jJOr/MOuZZkpXftkjxBRW3vxJaENc0aIciBbNDP3QlajUeevjbxHGBarALgw1COfRw7WIz59ou52l/ydxxOn6zX6pm6aU5dEtbbfaqazSXGEkkmmnCfwQHNL39gaGSYQPwb7+AqE3g8bmS4QtcFzg0hBJNEkCteMtRkRJFbIXf7IJuYe+PaXel7H3wavWSvu2Aod1Qy2LVkDhZk2haeEVIiCxXasfrZ2lzSgtM5Wwsej2LnWVCp6FESosZQtw71JB00yMoVLsl48aE5L3sl3ogKDeG6G4qFUd8sm7lga9A6/ky0c8yn6A8WAcQqr8ROLp5ulFfiyFpSDwEoaSCpmTinQJ7ufRryFY0HL4DaA1BEvg/tgQXrAKSU0MIBrtBwuOOE38He8peUaySkr7Fky7A131CPdsgFX3ykgU4+tTRXbDWZ790My6wv3/hyUUCiFKhLJj6bWiqHJCkzxcR6/wtYCVLx/UyQ3F7GKnqciGN2ucRfJ2oRGY4JVHucgwv6kpV7BSMnyxc9861NtCWAnjNizScjvawN9GwwKcWEhf4IkWJW6lan+HNIQaTalwC+D071LWgvjax7rUuWh0XzAVwmzx7yvHnJg+k1M+9B8oadgTr87n56PfMAQCY7pYciO3NyvpsjlqeO/xAQAkqzZfzP7pK89XU+dpXp5dTi6h+CFsdcaK2geBJo3Zvx+pXDSC/VBmzPUT8DQlvonbmy2lcA/l6DfqiqIWXCLtLSZmL2hZplYa59E+A11ik1kbQ7MtaOoh2zD/K1gvNkLHeBJ9z+w2H1dzt36O8lIL+hryUA
+X-HE-Tag: 1766126517-996429
+X-HE-Meta: U2FsdGVkX1+4fkWkFtJPxiHyReU04+nkxSjRKCuQDZ2hcyvAhfH/RGqL2F2KFDj2LYq4ZanZuv9Bd5m5aeM/FqSi1Wa7sF29t0uG/YjtTCdqbSAnxfp4eVoWuzLXz7LSgNdTtMxDA7QC+LcXJzljy82Sk7wfikDatcj4VhyDUx+YZKgXLoJky19IXoI4b3m2aGnoCNKgoCpel3CCim20RflencCQJ1MCmcr1PRdYR4j/gDbzAIyRqmsE52P1wSfRwJBpTPuOnlQLNoWGM7fyYH58VhcXHjUC6xc1VXkoft9cKj0R+bOhNI9hpqdd5fF8J8qAzBYUYJmw29Ur3+YnyVGONi2SYefR4tDEqWqDXEe+H5fXYOcPyeCK9K5Qk/xOLgtV3/hoLLWV/zP3bUV2yCaEfiCn0Bx3oBaCbnRAvtU2KXbamEzOOmKKmG3kd1456yZVtltWg15u9RYiD61E5vrFuoWnuW38OSTr/SURrSYPazXKFIa64pwN/PQvE5ppvXBXxOGVmOohs5GvDwEJx01K7uGuWUUGe//0DxT5cQPTq3sd7kqh0B7jS0NbStAHnwHVFEHjJHSkSH8tiM1L+H6CaMPqMupLrAhzFnNZPI6XPYwR8mng+uDh7NJsDkd9KqJLg6sRjslnkIEcbf6q/d/zwUo4Y828p/eSs58hWKBkgOtnSoi9tseQyZHZilL03dCWjD6R0rZHZkL2ZI4/Iq2CxfL2LhnSn2XiXeTyjIowHzCL7mayJe5Hd3eM6yHh+efQmsb/c8Z2NjPvYRXYt6W3gB+CGexSS0V+sNfWz5Xz4hfY4F/wY3Tt0e/GFZdJhx1I9eYZNtYjPyugkw7+aeIzMPg1QSj/B0xvnjIKFFjOzUj8Ky2CO6STKb80Ew8gv18XyfYm1FFZcImQhcycmVlTZzMXens2MAiRnt6lJWS5Tsg6+VuhqsItU6b+rzqgcc1lxtnJCgJ5fmFuj+0
+ lRfZRRNY
+ ocIOXrc+dBnJlcjQ9jxfcEDKIdD+ejNTD7qvjfCUhIOAXx2WhrD7Nl3cLhEtS4B755zhSm1t4O+wTjpZP/fH6ZsG5nNjlBrzOtxHGIgiInSyH/cGMtl67cZAcOTEt2MKbyluKsaGNmA3vZW58o+kcpTEhccT2DfbWJ8jmF7f14KK8qD+Z0JMC71XUB2VxEsvIIuCjA3ykizqXOAlmkCeoGwkiZlazV8EHvyQoOzFzpfIBLGR502pwrwaJSjGpIZvOtfR3L6IZdIwOtj6mMofvDGSwhf0NrHqqwkaf9ZT4ristRSmYqV3gAoQkv+4cEToTZNQk+v31+kuY2inPSDSeQnjg8qNkz+VJJxdwaJ4MVZt9PI/zqRB7YrKLEYNBtLZzMPPa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,99 +93,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-passed head pfn to kill_accessing_process(), that is not right.
-The precise pfn of the poisoned page should be used in order to
-determine the precise vaddr as the SIGBUS payload.
+On Thu, Dec 18, 2025 at 10:08:54PM -0500, Pasha Tatashin wrote:
+> If the previous kernel enabled KHO but did not call kho_finalize()
+> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
+> the 'preserved-memory-map' property in the FDT remains empty/zero.
+> 
+> Previously, kho_populate() would succeed regardless of the memory map's
+> state, reserving the incoming scratch regions in memblock. However,
+> kho_memory_init() would later fail to deserialize the empty map. By that
+> time, the scratch regions were already registered, leading to partial
+> initialization and subsequent list corruption (double-free) during
+> kho_init().
+> 
+> Move the validation of the preserved memory map earlier into
+> kho_populate(). If the memory map is empty/NULL:
+> 1. Abort kho_populate() immediately with -ENOENT.
+> 2. Do not register or reserve the incoming scratch memory, allowing the new
+>    kernel to reclaim those pages as standard free memory.
+> 3. Leave the global 'kho_in' state uninitialized.
+> 
+> Consequently, kho_memory_init() sees no active KHO context
+> (kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
+> allocating fresh scratch memory as if it were a standard cold boot.
+> 
+> Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
+> Reported-by: Ricardo <ricardo@example.com>
 
-This issue has already been taken care of in the normal path, that is,
-hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-correctly in the hugetlb repoisoning case, it's essential to inform
-VM the precise poisoned page, not the head page.
+I believe Ricardo has a real email ;-)
 
-[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
-[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
+> Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+> Changes v2:
+> - Removed phys_to_virt() from kho_populate().
+> 
+>  kernel/liveupdate/kexec_handover.c | 39 ++++++++++++++++--------------
+>  1 file changed, 21 insertions(+), 18 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 9dc51fab604f..6ba554208c81 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
+>  	}
+>  }
+>  
+> -/* Return true if memory was deserizlied */
+> -static bool __init kho_mem_deserialize(const void *fdt)
+> +/* Returns head of preserved physical memory chunks pointer from FDT */
+> +static phys_addr_t __init kho_get_mem_chunks_phys(const void *fdt)
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
----
- mm/memory-failure.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+Let's s/mem_chunks/mem_map/ everywhere please.
+And the comment would become
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 3edebb0cda30..c9d87811b1ea 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -681,9 +681,11 @@ static void set_to_kill(struct to_kill *tk, unsigned long addr, short shift)
- }
- 
- static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
--				unsigned long poisoned_pfn, struct to_kill *tk)
-+				unsigned long poisoned_pfn, struct to_kill *tk,
-+				int pte_nr)
- {
- 	unsigned long pfn = 0;
-+	unsigned long hwpoison_vaddr;
- 
- 	if (pte_present(pte)) {
- 		pfn = pte_pfn(pte);
-@@ -694,10 +696,11 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
- 			pfn = swp_offset_pfn(swp);
- 	}
- 
--	if (!pfn || pfn != poisoned_pfn)
-+	if (!pfn || (pfn > poisoned_pfn || (pfn + pte_nr - 1) < poisoned_pfn))
- 		return 0;
- 
--	set_to_kill(tk, addr, shift);
-+	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
-+	set_to_kill(tk, hwpoison_vaddr, shift);
- 	return 1;
- }
- 
-@@ -749,7 +752,7 @@ static int hwpoison_pte_range(pmd_t *pmdp, unsigned long addr,
- 
- 	for (; addr != end; ptep++, addr += PAGE_SIZE) {
- 		ret = check_hwpoisoned_entry(ptep_get(ptep), addr, PAGE_SHIFT,
--					     hwp->pfn, &hwp->tk);
-+					     hwp->pfn, &hwp->tk, 1);
- 		if (ret == 1)
- 			break;
- 	}
-@@ -772,8 +775,8 @@ static int hwpoison_hugetlb_range(pte_t *ptep, unsigned long hmask,
- 
- 	ptl = huge_pte_lock(h, walk->mm, ptep);
- 	pte = huge_ptep_get(walk->mm, addr, ptep);
--	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h),
--					hwp->pfn, &hwp->tk);
-+	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h), hwp->pfn,
-+				&hwp->tk, pages_per_huge_page(h));
- 	spin_unlock(ptl);
- 	return ret;
- }
-@@ -2023,10 +2026,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 		*hugetlb = 0;
- 		return 0;
- 	} else if (res == -EHWPOISON) {
--		if (flags & MF_ACTION_REQUIRED) {
--			folio = page_folio(p);
--			res = kill_accessing_process(current, folio_pfn(folio), flags);
--		}
-+		if (flags & MF_ACTION_REQUIRED)
-+			res = kill_accessing_process(current, pfn, flags);
- 		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		return res;
- 	} else if (res == -EBUSY) {
-@@ -2037,6 +2038,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
- 	}
- 
-+
- 	folio = page_folio(p);
- 	folio_lock(folio);
- 
+/* Returns physical address of the preserved memory map from FDT */
+
+Other than that
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 -- 
-2.43.5
-
+Sincerely yours,
+Mike.
 
