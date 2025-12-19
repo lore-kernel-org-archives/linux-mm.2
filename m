@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD84D711CC
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B7CD711CC
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 01:58:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B55E96B0088; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
+	id 55DAF6B0088; Thu, 18 Dec 2025 20:58:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD9A06B0099; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
+	id 514856B0089; Thu, 18 Dec 2025 20:58:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E5286B009B; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
+	id 43E2B6B008A; Thu, 18 Dec 2025 20:58:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D5E66B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:42:29 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F4AEB8A15
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:29 +0000 (UTC)
-X-FDA: 84234520818.22.6484857
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A303D140005
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TVwXy+6C;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 31A7F6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 20:58:14 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5A9AC0314
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:58:13 +0000 (UTC)
+X-FDA: 84234560466.23.4616327
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 74D0CC000C
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:58:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KWH08YEc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766109492; a=rsa-sha256;
+	cv=none;
+	b=NyvHzjB+9WM6lXr0edGB9kdD5s12YLKPNgaGAhe+fN4G6N0GCTWBJM77D0U/IXUbFwwCCd
+	hBKqUcvZaIu6iLVnf6jMvvWzT+nRbWqYTE8WFaFCXoqPditG/cKJo/3dKv1AgxUSpdhhWi
+	63YmNEFIaXrI/XWasoWgOFQVlrAM5L8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KWH08YEc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766108547;
+	s=arc-20220608; t=1766109492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ErxvyipvL98VqcIt+BEu7/k5SVUdoeQoBQCwgW4JgEA=;
-	b=HDebDNxRnFaAar/XgiYGAdhYa3kW9TWHlKm2e+xBGSg7L3nXBNzpOhcFyKEopL806uvyNr
-	ApLJsLItO88b+mAAef2H81PCMgzwh2t1JSr9w0lHNN9MvQgHWrcbxiqRsJ2fSs6Ku9E3OT
-	XaDWPjv0q36QpsOREwFTKuXMmb31/w8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TVwXy+6C;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766108547; a=rsa-sha256;
-	cv=none;
-	b=5IzOcPRPZdxdBrqC+t5MzP+rcHlZAXghz2z+MZ4/2Pau0pw+BhUYsT+7sNoELzMbI5/GjP
-	zqaJa2430mycQLhG0JawSJoEfoZjY54nHDDR3GpjI5UpCC5/UZTOPHIiaqrhUWJNLS+Jhe
-	z8xZTnLMC20lWpLostyeaRZY7lBowtY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766108542; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ErxvyipvL98VqcIt+BEu7/k5SVUdoeQoBQCwgW4JgEA=;
-	b=TVwXy+6C92zjCK1DHhzXNOgPRW/PWgjPnMEBgzCPqjbLql1mocfHozzfWiiR+IqCkwQfGDtrLs0qj3NY4fFdhNaMMnC4Aq6eHzsVstZ/agG6zQz0DysmjA9dF8FxpvtnPj8k2wywDTG0xtnRN+AuyxyoH5DNxI36vSHLo1aQZGU=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvAfIbP_1766108540 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Dec 2025 09:42:21 +0800
-Message-ID: <f0c962cf-20db-4ca8-897c-b64a5976bb89@linux.alibaba.com>
-Date: Fri, 19 Dec 2025 09:42:20 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=L2xoCujIaM8urCKbtnvhzmEUA6Re927k76kBPypVsAM=;
+	b=Dy/KnxAqqN+Y+PqSpnF3XDJGZlRortiod+tC26XjVdb3Vl8L85fy98bH9rWNVoIsZIHYGw
+	i/ErYwkLKFymmBro7xAvAVbcO4Ae/I5AJXJneGHkMTjgQsSb9TOhUMXsfSgV2KlQGA2NW5
+	0WjKo4GD+yO10avbNDnJGMBm7tvcwtg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766109482;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=L2xoCujIaM8urCKbtnvhzmEUA6Re927k76kBPypVsAM=;
+	b=KWH08YEcj7C6mMQvC0lfQRUPN/zJanVLFFqax3ysRJi1W8cnghsrSM5QUDS1uBEUATGQ+R
+	8EK9RZlyY1ZuRe8c+hsSZUFQ0IqM23cQOZEUNbdebKw0yQl+ZGFEjzCVOIvqczdIXjsPix
+	8GsMwEGyXGDA30sjJgBKhJNuprh6g44=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: JP Kobryn <inwardvessel@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v1 0/6] mm: bpf kfuncs to access memcg data
+Date: Thu, 18 Dec 2025 17:57:44 -0800
+Message-ID: <20251219015750.23732-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in
- folio_expected_ref_count()
-To: Wei Yang <richard.weiyang@gmail.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Bijan Tabatabai <bijan311@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shivankg@amd.com,
- Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-References: <20251216200727.2360228-1-bijan311@gmail.com>
- <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
- <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
- <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
- <20251219002134.uqgtnr43zz7vvvtd@master>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251219002134.uqgtnr43zz7vvvtd@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: zpkdjwjn5f8acxtbp1y9dfrazoxe75ww
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A303D140005
-X-HE-Tag: 1766108545-303593
-X-HE-Meta: U2FsdGVkX1+qtmJWnxGHhF304oSuDKaIGsQdJSTNwG29A8jqBN7knvfi7JnYF1b0ctJy9k3XZ9s3E/Wu7rdr65oE5QBNt86lgRiqlfD+fZI0bTmKAER3eSzf8mivQ5VX78ZTVtPUbqqsyHjFSEVrEGBIU8Cnc89FCD8lUx+vEJypRNtmg1lw3s3H7c4f45nLzLakgv5b3LGVgxsb9QiEH4o+gcPPtk6bVNoFGNujzoEcg3UkdMXm2W6FRYeTANh+JqZw0bqBmYYV0Fc45Kffnqhg3qQ32SsCvezF0B46G35U2OPGwjI5iBX83ePgeGFksvAmPfwtsXQ6fxYVR2LIXWM6tkehsRSIM6ZduRre5vZVVfaH1pDT3SsspJaT1elC2HeD8YFhlni0Mc0Gnq95nVRiH0XbCfxSD5+UoysBKkx4fyCb+yvvVFotfAVnDvzVEyKOjJd/afvYWrKr4IYULES8KtOlgSTTbeDZjs2p/7eMWJBw/3ZQXh8np4iXkc3n+GFV3JAoQalPCQypprcwjOZdFzBAPAQMaCuH5KkoEs3iOKbpAbGK2EbmPavqVhxR6g+uZJ0U8toZrQ6oSaNlZ8I6elGsXcHXKtLtYiUmtzTgRTnSoi7RLgvdCzIyHYlmIsX5+2S60EUJXCEFLAGMxx2d3ztfNCpf1amxzCGkV6cHbf+Tc4ptwyQbwHeCcQDS3kxpaKUiH2u7fGcgAz+UL18vYud7hvgAcVUOboNk04dT6v+ok7mc0II4dZsktqAEulH2dWYe3XZuW0oLiYXkGpHZOLDANnkYw6j4C5xUAikk6XeLin3DCiQXxa4ybfukszNODhTsKjWlpmt0unGQVKohbrNMAszKe4xsnP5cAbjoQOtYCyNcWayxJ2wC5dRKHmFO5+/jGWWcmPQ4JH+lxg+UtN2OxV8vIwpWQwVcADGt9ksIcy1RWrW2LGuWbr8BQ8cu2EqyzIU8KXdFcgz
- bGwG4+Se
- tj3pmQXI5Eb1pMUBh9kMHLBxuI6IqfGVUO9/xZG5A688hBJ48Ux5wKWnla2GQbQc7BVInU4j1dkOIxLllbXbtDjFiFhm7qSjuubN05aqOUkNKIgsn+zMiiPnZXxggIdQKM39JgrDEOexZ1jbEWYUvjVE/obsbbQPCIt0edFLZj54cpyJ24ZBJmGMftVHEfzvMckuqDCHdv3Mt+lC7G6WyMSdyqVgtHWAlQqxn9eZpT4cQfdPK5dNuUoiMBPiDuiGL0WtRgT6FCbcPLvyzyWfvzJbfHcZlTuyc2/wuPk5Bo7dYSpf1wwBO9hl9oP+zB5Xw3ceFR3KJqAFS5WfBOWUdZKRAVBzeiqgHC99HgZC8PdwS/928CbE4YK2FI+bBoU1WoY+r+tyZuhwpQlapVN/DOUeLK70pR6j6To6udzBEQMs5rmzbm6G8RkthqQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 74D0CC000C
+X-Stat-Signature: 6kx68og8641pmuqfmjppyyt4c81wpt1o
+X-HE-Tag: 1766109490-321672
+X-HE-Meta: U2FsdGVkX1/tcr2KJ8cfWFD4LzqbzIY80VQLTK9ePtIyfuc//T8/bYrDUevKRvR672fepkNqTLE9gWWo1cqIdxM5BS4AGSnYz4BZ7uji7MnEuJKacab8Mcd0qtI+VEYso4ZGAZ8crPRnVBAvzhybFbq9F1HJrnyIIdHLPneG/NvhPLiAHRgltouk6mg0tS8Fl7QeQqQ3bq8uQ0q6KA0wXmA/MV2e/N4Iw47HklWXBhf1ZpvYENxGM+yWhvn+qHhh96OXZvYsI1t1tGMGnqD8Ov4c22pkLsMGsQVpFFuZf1y8mHStuT7bdL1Th7037ExV7DpMwVc+K5hCuwCUmXAyDBXvp8cS7cm5ftHf9DXy0mgEhVZQFDz/ijRv6l1lNVMbZJ8oscc4WRtAzkr8SOA5N3I+bqjJKLIIJxnEoFeQ0BFROd/BtkFXsLn/8W599wxv29NQCdia0mHEg4DNZDw4s1KPU5oYufAcT4Y9mSLp2UxRWioX3U6utEb6HcdgYfvXKsKDQ8GFn+upSCC47oVLeeJokLna6GrXFSaX32kMlhykaUHDygRcA6sjoJtIrv9wxDTo+xPaRvmjFrWb6dltfxIHX/bGdoEyed4IoJS60dq/L9DlBjk3AB7dCjOLTdk2LddaCfkaTDqcxmcNU7o9GCSP27UyT66dg6hI+g7VEMfTEDZpTwK0K7tfoPbZ27VF8xaqZzGFzG+4qYEs3MkGl7KYGVTaREf7i1pwAnFqFwME6UCZ0NHk2biDUIJX9ZqSG3dpgI4wdj57axT2ViZveDf48f37GLAqQ+nCD+lj2xisS70ED1TH7fw8M//LdLZhC9QF6dRmVXaVCmzvgm/xagyIAUSKFqFByO9IXEUFL4PJocalq/1LyJhch0hwpaj5fjgtW1mwNzz+of7tRkdcLbvP593+X4fFiPIGMfLPVI5rl7WTDlyQpzdzlxFuxofG3IFWq+UTRNJCe4NObSZ
+ tIwB+HHb
+ TUUS3kNZ0mUVtpt7fLhYISV/5bdaetcPGxcOhZEEQBQL3wVWu5W5A+Riueqz4YXYWRfmHIYQXuKWtJ2BaCrHVODIvZ3fMmBRc/dbXxKg3s7j2rmIN+cuU7jc4YaSKLpnflfBUvwxw6B/kgsCnE0O+FWz/SPiD4TMK5upf3vogxB/c2Q+gwlSN51R17457pwq8d5+J
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,30 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Introduce kfuncs to simplify the access to the memcg data.
+These kfuncs can be used to accelerate monitoring use cases and
+for implementing custom OOM policies once BPF OOM is landed.
+
+This patchset was separated out from the BPF OOM patchset to simplify
+the logistics and accelerate the landing of the part which is useful
+by itself. No functional changes since BPF OOM v2.
 
 
-On 2025/12/19 08:21, Wei Yang wrote:
-> On Wed, Dec 17, 2025 at 02:04:16AM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>
->>>>> I am not very familiar with the memory hot-(un)plug or swapping code, so
->>>>> I am not 100% certain if this patch actually solves the root of the
->>>>> problem. I believe the issue is from shmem folios, in which case I believe
->>>>> this patch is correct. However, I couldn't think of an easy way to confirm
->>>>> that the affected folios were from shmem. I guess it could be possible that
->>>>> the root cause could be from some bug where some anonymous pages do not
->>>>> return true to folio_test_anon(). I don't think that's the case, but
->>>>> figured the MM maintainers would have a better idea of what's going on.
->>>
->>> I am not sure about if shmem in swapcache causes the issue, since
->>> the above setup does not involve shmem. +Baolin and Hugh for some insight.
->>
->> We might just push out another unrelated shmem page to swap as we create
->> memory pressure in the system I think.
->>
-> 
-> One trivial question: currently we only put anon/shmem folio in swapcache,
-> right?
+JP Kobryn (2):
+  mm: introduce BPF kfunc to access memory events
+  bpf: selftests: selftests for memcg stat kfuncs
 
-AFAICT, Yes (note a special case for anonymous folios: lazyfree 
-anonymous folios will be directly freed instead of being swapped out).
+Roman Gushchin (4):
+  mm: declare memcg_page_state_output() in memcontrol.h
+  mm: introduce BPF kfuncs to deal with memcg pointers
+  mm: introduce bpf_get_root_mem_cgroup() BPF kfunc
+  mm: introduce BPF kfuncs to access memcg statistics and events
+
+ include/linux/memcontrol.h                    |   3 +
+ mm/Makefile                                   |   3 +
+ mm/bpf_memcontrol.c                           | 175 ++++++++++++++
+ mm/memcontrol-v1.h                            |   1 -
+ .../testing/selftests/bpf/cgroup_iter_memcg.h |  18 ++
+ .../bpf/prog_tests/cgroup_iter_memcg.c        | 223 ++++++++++++++++++
+ .../selftests/bpf/progs/cgroup_iter_memcg.c   |  42 ++++
+ 7 files changed, 464 insertions(+), 1 deletion(-)
+ create mode 100644 mm/bpf_memcontrol.c
+ create mode 100644 tools/testing/selftests/bpf/cgroup_iter_memcg.h
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+ create mode 100644 tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+
+-- 
+2.52.0
+
 
