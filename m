@@ -4,97 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B497FD74964
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:13:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D67D711D6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:13:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 260916B008A; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
+	id EF6C76B008C; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C2756B008C; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
+	id ECB5F6B0092; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10D036B0092; Fri, 19 Dec 2025 03:13:16 -0500 (EST)
+	id DCDD16B0093; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F39866B008A
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:13:15 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8876AC0600
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:15 +0000 (UTC)
-X-FDA: 84235505550.08.2EEFA38
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EDCC94000D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p89JPvBN;
-	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF5F6B008C
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:13:22 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5CDD8C0601
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:22 +0000 (UTC)
+X-FDA: 84235505844.21.1888170
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9A4474000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:13:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvV56RgS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766132000; a=rsa-sha256;
+	cv=none;
+	b=HKp3uirw15BqJl5l/cbMcGCvtpFQwtvWE3sGWYSXkW8bfuw3PBUfxgyUw0/BgwVdV47isQ
+	oRg1MPvRnz0rRHnZpTOuy44dvvZWBRGN8n4S86MV9U13nzs610BW6lRgggZ73RQYrRUX7s
+	JwxaqXYL+jvaxTi+OgQhzvByVTJz5ak=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvV56RgS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766131993;
+	s=arc-20220608; t=1766132000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JbLLpyM3ayapy/UsfZJST95cLNuEfK4YIp6V+IT3Lsc=;
-	b=ZLL35832HwP9rJkiVzyt0gms/DD/h9Nnc9p1CtUJkJvSLSRkgduFjonkz9pH843Fg+OcZ3
-	2V8pF+DaaxdbXx9qIwcZrCGZxx7QrR2J0vPPbGQDB5bO9HxRS4Z/kMrl92YOdtSiX3LadX
-	60eop/+kwQULVTYv3Iay5qbeBi3+ha4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p89JPvBN;
-	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766131994; a=rsa-sha256;
-	cv=none;
-	b=M9x7M5qZ88fb32boNlQk3RgPPo54e8fAavKT/DPB3DDtpsyWS3NEemWXtsoeU+1bwbCqBx
-	gHaqDUIc1wyeFsvinaHhMApV2tayFiGXQU/T8EC1hJtfC/OLVc5by9EU6Q9MVCdGvaAMYu
-	W6oNVMCWf7P3XbOSjelpD1EHldQISN8=
+	bh=l4kZkHpdaiDkkZcvv8EinliAFULym58ZDDfTLrx6tdQ=;
+	b=0at+zsTR0GxSOBr2a9O3uLC6CiXJX+kjRYxBRj6urAwYvElh1rGbgbmvUM9JKZvwyp51q+
+	gGZDOFdMvZfoMnIK52HppyD/LsPnYF7mx+7Gn4LfbpfuREcBGxP1P4mqq+Mh9oQG/LsZDw
+	HbLP1+KlkR45j+QszrpF0mWWQBRfgPs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1507060125;
-	Fri, 19 Dec 2025 08:13:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6E1C4CEF1;
-	Fri, 19 Dec 2025 08:13:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B70624416F;
+	Fri, 19 Dec 2025 08:13:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C38C116B1;
+	Fri, 19 Dec 2025 08:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766131992;
-	bh=+A23adoC9TayllzNX6/T+neHMWZRAShmj4hgCmrmgJ4=;
+	s=k20201202; t=1766131999;
+	bh=c8UdFBb7F8dmejdnU77Se4Vh0A297D7YwvyeUjSzvGs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=p89JPvBNTfp1Zxaf6AHlXPUAW5vH+0h/aZBWlIuoc8rpJoH+z3qETdxMxuFJAV6k7
-	 amnpVXf6MZnK9NgXMRyK02DHNlLTm9j0h7DawEXTIpuZXjAZYo4vvcWq5huGMRsQPE
-	 mtOfS164rBVpeq7K9IWV1kqWnbV0UyCNdUO7eYnA9/AFYIn+lY6r8/UfQ3lncDahyR
-	 RL4Txwr0Cuo9wikDA271JZSSCweDDkIMAvfxGNY5ZYTQ+ImUbEPxYAz6Ca9qcSQC37
-	 PKnkuVb8wyAiMT/frsE2y4GUuxmeZ6cqN8jbYtjxbXpYApAc3Nwlw7e2vh9rlhpZW7
-	 hhT3fx+FdWTWQ==
+	b=bvV56RgSwPdWBOuOtUPVcXSmtsttDdT6myfmjpB+QZDRMIVyr7unLn+z+isWBP0Wy
+	 Ny2hKlhPpLoymTC6JQ0DzSc0lTtu4IdOjoxflDk5ls0qr9rZjX4H6YN/PUpzbnQdAP
+	 YpBOlDFBUmVl0ocWFf3MbPKhlUbei8L4bQwXt0Rf0W+fKMNrpn0yKASpPBE+phUtE+
+	 eS0MjQp6QSCCa4q9q8ZjhuUYyTNuM7t+D6ja4QPtH8eUDpUit5SxogEKu15rseJwgW
+	 mLfXoM8WdWG/4ZWUCIaOk3MfOwvaMmfztq3vshIPQCpKqjoQqXVEii+dxxDbG6AI8Q
+	 Q/PUXYGj8Kqgg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F3393380AA50;
-	Fri, 19 Dec 2025 08:10:02 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5B5D380AA50;
+	Fri, 19 Dec 2025 08:10:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
- physical memory aliases
+Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <176613180179.3684357.1299267450443574866.git-patchwork-notify@kernel.org>
-Date: Fri, 19 Dec 2025 08:10:01 +0000
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
-In-Reply-To: <20251113014656.2605447-1-samuel.holland@sifive.com>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: linux-riscv@lists.infradead.org, palmer@dabbelt.com, pjw@kernel.org,
- akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
- devicetree@vger.kernel.org, surenb@google.com, linux-kernel@vger.kernel.org,
- rppt@kernel.org, mhocko@suse.com, conor@kernel.org,
- lorenzo.stoakes@oracle.com, krzk+dt@kernel.org, alex@ghiti.fr,
- kernel@esmil.dk, robh+dt@kernel.org, vbabka@suse.cz, Liam.Howlett@oracle.com,
- apw@canonical.com, dwaipayanray1@gmail.com, joe@perches.com,
- Julia.Lawall@inria.fr, lukas.bulwahn@gmail.com, nicolas.palix@imag.fr
+ <176613180853.3684357.18339473690014642605.git-patchwork-notify@kernel.org>
+Date: Fri, 19 Dec 2025 08:10:08 +0000
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+In-Reply-To: <20251114150133.1056710-1-vschneid@redhat.com>
+To: Valentin Schneider <vschneid@redhat.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, rcu@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, luto@kernel.org,
+ peterz@infradead.org, acme@kernel.org, jpoimboe@kernel.org,
+ pbonzini@redhat.com, arnd@arndb.de, frederic@kernel.org, paulmck@kernel.org,
+ jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org,
+ samitolvanen@google.com, davem@davemloft.net, neeraj.upadhyay@kernel.org,
+ joelagnelf@nvidia.com, josh@joshtriplett.org, boqun.feng@gmail.com,
+ urezki@gmail.com, mathieu.desnoyers@efficios.com, mgorman@suse.de,
+ akpm@linux-foundation.org, masahiroy@kernel.org, shenhan@google.com,
+ riel@surriel.com, jannh@google.com, dan.carpenter@linaro.org,
+ oleg@redhat.com, juri.lelli@redhat.com, williams@redhat.com,
+ ypodemsk@redhat.com, mtosatti@redhat.com, dwagner@suse.de, ptesarik@suse.com,
+ sshegde@linux.ibm.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EDCC94000D
-X-Stat-Signature: 1b17e9h53xp1mzsaopuq41a45uu4cnos
-X-HE-Tag: 1766131993-336503
-X-HE-Meta: U2FsdGVkX1/zZG14mlcB5tgWkjSYlRGmyRRv1Vj0H7QI+xd6YdyeQD857XTWqf5JFjGbSMB4aMl98X1/Goe9PF2v70x8IaDGJZm8bM/ghx62XEgh6qXnLBW1mwu+FI5ChjCIjsQRUAHfhTny7f2HKsYkPFdAqpLSYH/cKs1GVzO4NOFAHtAnBvz5W7jm9nOiaXXvGmLPs0PaEBNxxE2FRT/Si8+IEIiIvr6dgTQtnjFpPPGRnpR395dvoQn5nWRozwlAmsVOCNhJw/So2JrGMYRpAHpBXOgJgKpaKTVlBclXGyJjAmjUfYM345HqlMi2lqdgZkKeugtW0pWjkyiYDtKd4RERFdBeEfumZ3ZgZ2LjNDjmmHddLdJNk4PT3y9vyjZFyThTm1hUoFAw1nldWJS4/AmCKesWxddHIebNZc4Tad4PiEczEQBoNRmt/WUvASguL2PbRrGmq3lZg7GaeUIBGXjPJGXAGAIxTpLKQM6HPn/mjjUpjtt6CMjr5KZ6mIm2ME/WnlL2Fm48JFXHhSpHolcmB3UYusLAiQdKPbuRMy1gvM8XcqIaqZrsmJ3LvcCRIae8g7lkQA7/XYmZ/3BhLLzdA6/2wd6vhOMXaCzV0DQ9oCvFKxM5GWsy3keP4578kQYHNTwros4BSIIq1WuGoL7XbgcXFr8jFeSqHcHHPnSOqfjefKnfOBAmxjkkNMrdGHpUmUAYbeftqShQ3A8RVwrzVEJDzRZAMj4smfpqbm3tq766iT/rXSr3bcfI/TdKwZwDXkcX0A/z/X8LZlzAMn6KW+3KOPZXZ3Hky/2ZS8hcNJP01hVNUMFnMwdHX3VX0FtvGTk62pgTDrPmC7JPLhfwkoXpg2jz8OEjiCbQ0wzqCM5dDKcs3nkSO/+YtxExmA6Z5QzEv/xEesSvsnb9Ah+ABN93CsvKLd8vg6MxTydCL7LksfZi3sUXtf86AwUKa9pgT7967egvWA0
- nr1etdpY
- OX1SpWiX60Kw42KxNZwlzaJ3kGIk3+m+4UeIIe+P5pX5JHiSzw6tgLI9vR6REN2B8hMlaLKgB9OdH/PBIlaDCLVEM8Ej2/CM9FjdM+qAFg7HeNq7Rm2qgmLwjvLsYL0yNlyrE7jQSvlNNzRbZBXJ3Zf1TxMMCgKTLhLUnX49yqqxclvy3kpPzYifuzTF3wLuJSSObw3wvgZmNBEGGpgsGl0ktpEFSshQ3ejNXOwBgDYH6kz/9rlXYDC+YEIP/WT5go7C8zVcdvcBDtfSHQOXg6szf+8hpauE1giLAfN1kmRvl1GVPotIrVcvoNxw77Cr/JVu+vLnPeoai1XzGKV6eMeGnBml+62LjSJhzrZE28cjlqdIkhZaYmUwqLlhYB+2cYbnOQCnHq2eN8xoh55Xv1+rHeqjrjfc1Emq8qvTvWTWr+F/38pYYiexAxlWNup7vTyccfV8RB4s0jYnKjAjX/oEIhg==
+X-Rspamd-Queue-Id: 9A4474000A
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4p9ho4jbmk873wtrfguc389pdxn5g945
+X-HE-Tag: 1766132000-780418
+X-HE-Meta: U2FsdGVkX1/wz4RDUlYFv0Y1Q3Z4U/dphW/wH0omnopKIhSwd/6h2b/SvWj6j8CoMHiu392USxQKNgP8i488hNnPa8XG1wbAfnZoKgMsBVUVB8SDV76fB4CBuMm8WOZcEPchXvWTpU43UrW6G/d3Yz0Bg8k7Ee3HTwQb0W5cJVo1jLvD232EE2oGgaGmCsqMjZCVPyyZVgxr682FtdYPlg3uUyKTgtnnEgmPJnKcnx1LEGrisnI8z6TjMyMuZvhzCnwqsPoEVwsldippYB9UYSXlDth7uXE8AFwEI8l522k0RGHoWKs1agV6B/JlMXWqwLO/pPa3EYxF/Sqk51IoADVMgg07bQbx8yEH99uQg9qR7cZzApp9H4EVuvV94B8WR18fsuTiefMyv1lo7aUuzXtqaEncYO5DKXcWNJJ/cJk5dw4MjPsQuoySYv8/JkVnyZEHfSyzZ6j4p0a5hq9GKfK3Ur6WmdHVS/xiAMa4B+75A/WAH7zKSz81ws6Popum20P1ei/ZBSE9qGD6uMOeUIgUNDDJkdBFx/Z1zQmunSjzhEiQySYuV7SqiPWZPrT4A7ieI0q1bT2obzL3iz9T+HWtTif3UxEyJj3Hh911wlOhxojea0bZ3kd7MgoFWlYPw6TkHUhQHOPvdq79Ter15ayPAF54p0hAN+QsLU4cIkA/FPIhkslZueYIAJHRNGWXr6F5h+sdTmtpNiAN5/6/VQVQTA5vydqoFbLEzzlcbHOSHElNkWIbJIRSxD3t2OtLAKyHyTXTtR+Stws0IExlulFE2g8hAKd2zt7RuxFyT7iIC+dHfICSVrgf1WqlTJXzEi63g1Dq2GHjlS/5WY6e/npZtaOombYR81GYctM8vWozXCoNbGk0TA8FgPAJlRRMjux7ci062BWNmefLODvhycvmtNeloPGU/tIxEOehiRkSw0bRGvW5NRGQOmVvNaWaO2MzQQrdbGgygfaCZMS
+ VPH/amfm
+ /p/iSNPVk3Tvr4Hu+pT7u6wwKLGyMb//oqmkniXG5T/8Nq+yIOcjjA6M+pqYxGvwnrwm5+qJYPeqAFPF0ARzLR3piy3mNFGIMbw0S64rpNKF9volHsmVOQ7kQJryfcyiKzMU/p+p2Jb8ESeO65PNjFRYeR1mb27DHj9nBcHvWxri8RH3LsK9G6su9llpHBj9YfYWQRRaNeV0v7WeJ/vQEERWvgnQvL53hyMu2yDm+ibARjtKVsiM0AEewVhq/lPYS3zGkfW8eWSQnjagZpKy3rTfoo3FshIhzCL5e5oLKVjfJ8UWf1EtsUvZffbnKB+ihzQ26RWZj+b1CdfPZBhfBxuBmO3OstpBxhCit/L8FVwwwVzy8RoYYf9+l+BSpUxm8ZZt91UFvbZf9EcMLn2s0nAMg4hyvfkzPP9lhzYl5S1zKac432jcPGFD55mqI70su+R5gMWORTiqPQLc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,63 +115,81 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Andrew Morton <akpm@linux-foundation.org>:
+by Frederic Weisbecker <frederic@kernel.org>:
 
-On Wed, 12 Nov 2025 17:45:13 -0800 you wrote:
-> On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
-> DRAM is mapped to multiple physical address ranges, with each alias
-> having a different set of statically-determined Physical Memory
-> Attributes (PMAs), such as cacheability. Software can alter the PMAs for
-> a page by selecting a PFN from the corresponding physical address range.
-> On these platforms, this is the only way to allocate noncached memory
-> for use with noncoherent DMA.
+On Fri, 14 Nov 2025 16:01:02 +0100 you wrote:
+> Context
+> =======
+> 
+> We've observed within Red Hat that isolated, NOHZ_FULL CPUs running a
+> pure-userspace application get regularly interrupted by IPIs sent from
+> housekeeping CPUs. Those IPIs are caused by activity on the housekeeping CPUs
+> leading to various on_each_cpu() calls, e.g.:
 > 
 > [...]
 
 Here is the summary with links:
-  - [v3,01/22] mm/ptdump: replace READ_ONCE() with standard page table accessors
-    https://git.kernel.org/riscv/c/11119b19f62d
-  - [v3,02/22] mm: replace READ_ONCE() with standard page table accessors
-    https://git.kernel.org/riscv/c/c0efdb373c3a
-  - [v3,03/22] mm/dirty: replace READ_ONCE() with pudp_get()
-    https://git.kernel.org/riscv/c/b4e53984f240
-  - [v3,04/22] perf/events: replace READ_ONCE() with standard page table accessors
+  - [v7,01/31] objtool: Make validate_call() recognize indirect calls to pv_ops[]
     (no matching commit)
-  - [v3,05/22] mm: Move the fallback definitions of pXXp_get()
+  - [v7,02/31] objtool: Flesh out warning related to pv_ops[] calls
     (no matching commit)
-  - [v3,06/22] mm: Always use page table accessor functions
+  - [v7,03/31] rcu: Add a small-width RCU watching counter debug option
+    https://git.kernel.org/riscv/c/d1e6d2773898
+  - [v7,04/31] rcutorture: Make TREE04 use CONFIG_RCU_DYNTICKS_TORTURE
+    https://git.kernel.org/riscv/c/82a224498005
+  - [v7,05/31] jump_label: Add annotations for validating noinstr usage
     (no matching commit)
-  - [v3,07/22] checkpatch: Warn on page table access without accessors
+  - [v7,06/31] static_call: Add read-only-after-init static calls
     (no matching commit)
-  - [v3,08/22] mm: Allow page table accessors to be non-idempotent
+  - [v7,07/31] x86/paravirt: Mark pv_sched_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,09/22] riscv: hibernate: Replace open-coded pXXp_get()
+  - [v7,08/31] x86/idle: Mark x86_idle static call as __ro_after_init
     (no matching commit)
-  - [v3,10/22] riscv: mm: Always use page table accessor functions
+  - [v7,09/31] x86/paravirt: Mark pv_steal_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,11/22] riscv: mm: Simplify set_p4d() and set_pgd()
+  - [v7,10/31] riscv/paravirt: Mark pv_steal_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,12/22] riscv: mm: Deduplicate _PAGE_CHG_MASK definition
+  - [v7,11/31] loongarch/paravirt: Mark pv_steal_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,13/22] riscv: ptdump: Only show N and MT bits when enabled in the kernel
+  - [v7,12/31] arm64/paravirt: Mark pv_steal_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,14/22] riscv: mm: Fix up memory types when writing page tables
+  - [v7,13/31] arm/paravirt: Mark pv_steal_clock static call as __ro_after_init
     (no matching commit)
-  - [v3,15/22] riscv: mm: Expose all page table bits to assembly code
+  - [v7,14/31] perf/x86/amd: Mark perf_lopwr_cb static call as __ro_after_init
     (no matching commit)
-  - [v3,16/22] riscv: alternative: Add an ALTERNATIVE_3 macro
+  - [v7,15/31] sched/clock: Mark sched_clock_running key as __ro_after_init
     (no matching commit)
-  - [v3,17/22] riscv: alternative: Allow calls with alternate link registers
+  - [v7,16/31] KVM: VMX: Mark __kvm_is_using_evmcs static key as __ro_after_init
     (no matching commit)
-  - [v3,18/22] riscv: Fix logic for selecting DMA_DIRECT_REMAP
+  - [v7,17/31] x86/bugs: Mark cpu_buf_vm_clear key as allowed in .noinstr
     (no matching commit)
-  - [v3,19/22] dt-bindings: riscv: Describe physical memory regions
+  - [v7,18/31] x86/speculation/mds: Mark cpu_buf_idle_clear key as allowed in .noinstr
     (no matching commit)
-  - [v3,20/22] riscv: mm: Use physical memory aliases to apply PMAs
+  - [v7,19/31] sched/clock, x86: Mark __sched_clock_stable key as allowed in .noinstr
     (no matching commit)
-  - [v3,21/22] riscv: dts: starfive: jh7100: Use physical memory ranges for DMA
+  - [v7,20/31] KVM: VMX: Mark vmx_l1d_should flush and vmx_l1d_flush_cond keys as allowed in .noinstr
     (no matching commit)
-  - [v3,22/22] riscv: dts: eswin: eic7700: Use physical memory ranges for DMA
+  - [v7,21/31] stackleack: Mark stack_erasing_bypass key as allowed in .noinstr
+    (no matching commit)
+  - [v7,22/31] objtool: Add noinstr validation for static branches/calls
+    (no matching commit)
+  - [v7,23/31] module: Add MOD_NOINSTR_TEXT mem_type
+    (no matching commit)
+  - [v7,24/31] context-tracking: Introduce work deferral infrastructure
+    (no matching commit)
+  - [v7,25/31] context_tracking,x86: Defer kernel text patching IPIs
+    (no matching commit)
+  - [v7,26/31] x86/jump_label: Add ASM support for static_branch_likely()
+    (no matching commit)
+  - [v7,27/31] x86/mm: Make INVPCID type macros available to assembly
+    (no matching commit)
+  - [RFC,v7,28/31] x86/mm/pti: Introduce a kernel/user CR3 software signal
+    (no matching commit)
+  - [RFC,v7,29/31] x86/mm/pti: Implement a TLB flush immediately after a switch to kernel CR3
+    (no matching commit)
+  - [RFC,v7,30/31] x86/mm, mm/vmalloc: Defer kernel TLB flush IPIs under CONFIG_COALESCE_TLBI=y
+    (no matching commit)
+  - [RFC,v7,31/31] x86/entry: Add an option to coalesce TLB flushes
     (no matching commit)
 
 You are awesome, thank you!
