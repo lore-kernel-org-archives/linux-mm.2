@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E96D74965
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9862D74965
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 08:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F71C6B0088; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
+	id 1DAFF6B0088; Fri, 19 Dec 2025 03:56:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A51B6B0089; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
+	id 1B22D6B0089; Fri, 19 Dec 2025 03:56:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1026B008A; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
+	id 0E8F36B008A; Fri, 19 Dec 2025 03:56:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 479116B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:47:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D620958F72
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:47:26 +0000 (UTC)
-X-FDA: 84235591692.25.379F47C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F35A36B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:56:04 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5F36600D6
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:56:04 +0000 (UTC)
+X-FDA: 84235613448.12.8E94753
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 31F42180002
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:47:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sdb8bgc0;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0CEFFC0004
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 08:56:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=riRT1xQP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766134045; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766134563; a=rsa-sha256;
 	cv=none;
-	b=SBx17etTUFFcbZQHTyPhrPaODgNASInITJa/pRn2sTSwm4lr/PtjSJZKBYFK+fww7shuFR
-	+YBut8bdGJd5n56MNXpbs8p0A+hUPLXm54/lkuy2hYUyce+xx/M9jU4L/maSw1coS+6/pC
-	j/kuCkSUnUmW02v6WtbcYqnk7JLTiXw=
+	b=QNcacxU0WeLcaOxLXrJfYDVyRGXzqIk8lwyWCPo3rkefRQqWfkOQ3SOKj5iX2LWXZZ2JMz
+	WvisZS1xd7v5lpqscc+ETu9kxOWRTAVCrmr2OQQvdRMn/4p1E5CftOG3JImAu1zmM0wtvR
+	ndQzoL/fXgTKBIGBNP+TMDYr+YOVFWY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sdb8bgc0;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=riRT1xQP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766134045;
+	s=arc-20220608; t=1766134563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OliIfUY2eT5KSiCiF63QVrnR/IvcInrMZ9L1dMRjVDc=;
-	b=4GujkHjZekYw2MkeAAtPofyz0IF/PFESVqQ7BMTIsrtSYJhGGwd43VWQ8pQoLGhGFL2lr5
-	xTfhj0zzxmSq5EqA+Gh9LTeJdvOUbTzahwYOvo9PW9PBCo/iWezLWKwVzQSfRe0TpLbmPY
-	mYVdBguuW7ZHqKYvQXrYp45jvln+MGE=
+	bh=4a7L3FSTZVaSCzuECgE9d16CQIb9zGAU66cxFRoZyJ4=;
+	b=mgpV+NMMUl+2LVgV4u9XCXn5RvxAyGyHCmNeL2CXBdD7vIQV/I6Jov+7sfbhlpCHIsSAwM
+	M+6+u6FtVVh5dMPZ06ScgRWvV6CBNIatPl7C89Z05tUQhh8YpP4fSBAXkZrlkxszXpIljB
+	RjpuTWUKhovbUWMCDbQT9GKDNcy/91k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB7B16001D;
-	Fri, 19 Dec 2025 08:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EADCC4CEF1;
-	Fri, 19 Dec 2025 08:47:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D0B760018;
+	Fri, 19 Dec 2025 08:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA41C4CEF1;
+	Fri, 19 Dec 2025 08:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766134044;
-	bh=TGs5B+GMZUdb5OMX5/di7bdBSNlBgR8ieYIBhM34LpU=;
+	s=k20201202; t=1766134562;
+	bh=TPE5OS05vI0tJdNvhgg9vrKHc5kLwjyEu0iLvyC1V7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Sdb8bgc0r+gRok+GaEPKKkfkD2nx5RJeivKTW3N5XzX4VHnCwB48u98bWG720dTGs
-	 2yrotDf6UVBVC6WxvH+agX8qXAU5d3bS+Ya6C+Tlr0C6oIen2mEgLfCBl4UvQAbNiZ
-	 QYbPWhc9MYKRZa4yAbrg488watiZq2oOyky2YEc9b40QnhfhIZDrbsy/7Axry6Sipk
-	 4r71ztnv0Wf+Ytf+5khWuBDf5EnuDsqYGkzQriRsHFACvk25OwWJWYt9lJIlOyB+Oh
-	 IaxdwJaeiQm8/roE93h3BlAHkiQFBkBG87R47tDq3hDJgS65Ke+RnoyQBeVoFtUL6V
-	 pz33/e6xh2vbg==
-Message-ID: <de04d804-d27b-4029-9b0b-30e863440aac@kernel.org>
-Date: Fri, 19 Dec 2025 09:47:17 +0100
+	b=riRT1xQPLrYDVyFN4+gJRO8GnwpqwsepD4GrOnhnTkDfu2yo7Tru/Eqy6S3c8pqhg
+	 Yb8uitMooT2OwotTnY+5Nwv+I6KWlomj9jHp8ZQiKhyXf3s2X4st9s9Wc4TslGKaaU
+	 M4++FD6dcfRUS247JlqI/qmp+GAvHvpED/763jsvFmuwIdAiIRofnxed8crhEoWNf9
+	 aaGDUQolapPeS9inoOSerbZ7fG0jO+lF3uTeMJMJ9CO7+pl2LHpTcIEz3r0cGruklE
+	 3Cm6gKnD3FZLt5S/lvlREwCkmPmtEM6qwb8EtW7cOembXQDczDdGnTim5plb+S+ml/
+	 yA7pVwnJ7VShQ==
+Message-ID: <adaffa11-c0a8-484e-9de3-e15eeddcf922@kernel.org>
+Date: Fri, 19 Dec 2025 09:55:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: avoid unnecessary PTE table lock during initial
- swap folio scan
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, hanchuanhua@oppo.com, v-songbaohua@oppo.com
-References: <20251216075943.29593-1-richard.weiyang@gmail.com>
- <20251216075943.29593-3-richard.weiyang@gmail.com>
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
+ <26e65878-f214-4890-8bcb-24a45122bfd6@kernel.org>
+ <djh6xaia56grmgxdok23kp6ly3oe3ugsinxdp6jie3k2tzwaml@57gbrcr75jng>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251216075943.29593-3-richard.weiyang@gmail.com>
+In-Reply-To: <djh6xaia56grmgxdok23kp6ly3oe3ugsinxdp6jie3k2tzwaml@57gbrcr75jng>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 31F42180002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: g9b8ypngyhh3u68xnadk6mfnagdxsb1z
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0CEFFC0004
+X-Stat-Signature: x545ko4g59ha7szxu471p1szoyjgtprd
 X-Rspam-User: 
-X-HE-Tag: 1766134045-680774
-X-HE-Meta: U2FsdGVkX1+T2ZPF3xmVro8f0qs2q3ThlVcjISJiJpfqLBM/cUdYUxWChQiMPYVjSPqMPla/z6IgxL4VwYSu0Zbk3dzz3oggi5+Qvbqeq8snR1p5BRqO/YZcVxwicY8Tle0Fr35On0ccZ9gebwvzA2s0Kd9XKSSOirtvB041gWuvbtIOKamLXAn56kOuZj6E/iEa010RXbnC2Esq/Fav26RZy+P+cNc44caiQ3ZM7R0BGSg2ObldSynAFIwDWFWWX8Fsdyzc2rIw0S14K3/4B3jflUBPTRFPHOET+rBIp5GYVJNjT8mk4gsCzS8QMGp053BsWvkUH7+z4AKm55rQ9U99X+Vp71fSA6T6iGF0/UYA3KOLGMOQdnL7L8urOnu9q+knA8gfZ7XDOs1CI0VL4v2UMehQovBs5gYbGybSKdKDfjEspcSpXTXexlZH3ROZtsyklB1kXkaYQmGlPYsiG2DoexqydTENgFsstuFrZWARwoKKL/K0nuU9fW1SPNaDJIJrVHYn+H3+dFVp9BnE5s/2IydMUjEqYu/AfRkolwXvnYNqI4WGrg56BrOREoy3sx8LFaaIuG/7rwKgrgHp6PeySAGYDAc6QJgzNNH9DuWOLj6lxGDbqrIf5aDJVBaiIw/3ULoC6AIqrjcOFG0/lZwz4Rw8dWpMU0SigDKuEjGhcU4cPD/11DPaN0pHeYNh8tadFVzz3jtUaSAqeUhm4LzxijoF22O9IPNtd259XXuAk/MqOP8n5TlB/wJHFZ0p0jITTcN1zSiRLUlOlTF1PGph7MDS3msBUg97QtHW/R5bfiCGZefXBksE8WUdgc9S42ZEMD7FvbQuhp8k+lQqOnVh+jPhZBlBG4s0EKOxPHOjmXBhXs2TvUb5MswDclVQWsC4CjEnnxkq7mYemGDAdKD9m1E8Kb+CUQWG/VxlNzmo+zFRQpCpYFUJ7Lge/i2EEyDHn05NdROn8FZe7mO
- scPqtvh2
- RtV50yfOtkdm/v4maXPnIJDVAzeopPaiybyPUufNu58BfrxqScZOQzYoYqQKE2SKKoMb8OQs500bLyU9ZQU551/TnUTk0iwotdmxNkxen6Dj0WzcU3gzXvUCQbOUUS+4pAJO2V0zrzshM6BlNZ+FIDc0Pa0hDXLPP6xdz5fPp5RqnM/WQ/5fe7ffhMStmzq8O7nDs3UI/7v8kFubC5cfha+gmzjVPa4s38+7Wt8HeXEWLvo2t0QwSl1CMeGS8w1NHoK9CgwG4rX5MN+BvXZSj1nHGtQ8v5wZBABjnMPfjPDlvxlTOKUx3lXklYSpvgzaLJ1ay+fBuMBQ9X7zjAb76H1ZZbEvsjjJoaTHJqlDD0gXbHGRgzCBAn2ZtJw==
+X-HE-Tag: 1766134562-875633
+X-HE-Meta: U2FsdGVkX18UNj41VX0wxOPf43yD2QY1pUqzsICayNtTPcyzr64/+clOea6BwcJqP1CRPz/EjvscFO62mQDe8oADCSeXeu1CvSPuPERM9Zgb+om8HrwVa4MJym65ktvEZVOzZMCdzueU+kpVqhOgkRfNEwKSTC3JZ7ekUWXQPXt+hJxEdXI+1LutHZXsGb7kNgP1Zzud+6nKFMh3ldSSZSmSIU8+xRV/m9pPZj0FsZ4/XgpUd4YOgLh9+1JFVt3LnxoZBvxGLgdWTSIafslzq7iU7slh/iLTE1YNi8GkRmKZORPdGJEyWglvMc7971SSSdLh6zcFyMyQUkAsii0bdYA3LmzcItnOXmRfoAeB8llAftUmKucP8FIXuHf872WlKxxek/vfVfOAefWQqsaWjL65cn3uWGszB40srMwxap0E4mwZOGJRmqwO3vgrXApQEwgB/Q23kNpRlU7acImuvz6hXHtH6/mBAOJF7fLeMEAZ/ybTF9XY24kXcthPfdFb0NwP+f1v2BEv2AMa8YpuDdkW49VWxVLxZIznYs3V1nUipaAyFEy6DuhsBTLxHIn/i7YEZUmF8p3ZMJNPwjPEuk9K3xjYQ9pMTNyZpyGbGstkn41fc8NnLjVjahzmd+h9hQETwaSVlUV95ZwAnJ3GcaswumwqImgtFZJ/3FypTNDvr69omGZKYwRWgcwg3csalVTVwGrWKBbuNytUzJ+0/QW/+zS2AMCynpr1ArS3B/Wy9q6uOEVkKuIH3hQGJKOByo8jz7pW6jvqX2bPyM1Rp3PB2oqMGLEYq0XJJmIF1lXyq2vuNOWOaEIZPtEnDGjWX4K4RmLXtPK18th5bPePdt2oU63vzCcQn5kzoOEN08CcU9z3gephfV2ind3W7I/7Iklazmt9jS22H6FoINEpTwwbpJrFeQO5TRMDE0L3wDT7A6XGt82VNzZg42D9eMThJcBEWmFhxHtFtCXbUNn
+ Pk3VPpFN
+ AF8YvPg0adrbZjoAK6wXajefFVR0zDcxndlclqxYJD7Vb5mG+hUHeN+f7An7yI27po5utwewii49F6Eu78fqxjnXYS7zUooBNon2WmgwliWQCHl5oWmcsS3HJVlDTiAB/e4FVTEeI2nW3jPWkIJ2yseeSmK7uah4qx3CI2YElOjM5Ovklv38tTdKGdC5OWymvgqwfj3HJ9m7bv5LW7ERGqYRM0ypQ+iFSBAUP46Z4id1/bbm0crM9f74lDGs2VFHYnlXw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,57 +99,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/16/25 08:59, Wei Yang wrote:
-> The alloc_swap_folio() function performs an initial scan of the PTE
-> table solely to determine the potential size (order) of the folio
-> content that needs to be swapped in.
+On 12/19/25 09:35, Vernon Yang wrote:
+> On Thu, Dec 18, 2025 at 10:29:18AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 12/15/25 10:04, Vernon Yang wrote:
+>>> The following data is traced by bpftrace on a desktop system. After
+>>> the system has been left idle for 10 minutes upon booting, a lot of
+>>> SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+>>> khugepaged.
+>>>
+>>> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+>>> @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+>>> @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+>>> total progress size: 701 MB
+>>> Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
+>>>
+>>> The khugepaged_scan list save all task that support collapse into hugepage,
+>>> as long as the take is not destroyed, khugepaged will not remove it from
+>>> the khugepaged_scan list. This exist a phenomenon where task has already
+>>> collapsed all memory regions into hugepage, but khugepaged continues to
+>>> scan it, which wastes CPU time and invalid, and due to
+>>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+>>> scanning a large number of invalid task, so scanning really valid task
+>>> is later.
+>>>
+>>> After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+>>> SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+>>> list. If the page fault or MADV_HUGEPAGE again, it is added back to
+>>> khugepaged.
+>>
+>> I don't like that, as it assumes that memory within such a process would be
+>> rather static, which is easily not the case (e.g., allocators just doing
+>> MADV_DONTNEED to free memory).
+>>
+>> If most stuff is collapsed to PMDs already, can't we just skip over these
+>> regions a bit faster?
 > 
-> Locking the PTE table during this initial read is unnecessary for two
-> reasons:
+> I have a flash of inspiration and came up with a good idea.
 > 
->    * We are not writing to the PTE table at this stage.
+> If these regions have already been collapsed into hugepage, rechecking
+> them would be very fast. Due to the khugepaged_pages_to_scan can also
+> represent the number of VMAs to skip, we can extend its semantics as
+> follows:
 > 
->    * The code will re-check and lock the table again immediately before
->      any actual modification is attempted.
+> 	/*
+> 	 * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+> 	 * every 10 second.
+> 	 */
+> 	static unsigned int khugepaged_pages_to_scan __read_mostly;
 > 
-> This commit refactors the initial scan to map the PTE table without
-> acquiring the lock. This reduces contention and overhead, improving
-> performance of the swap-in path.
+> 	switch (*result) {
+> 	case SCAN_NO_PTE_TABLE:
+> 	case SCAN_PMD_MAPPED:
+> 	case SCAN_PTE_MAPPED_HUGEPAGE:
+> 		progress++; // here
+> 		break;
+> 	case SCAN_SUCCEED:
+> 		++khugepaged_pages_collapsed;
+> 		fallthrough;
+> 	default:
+> 		progress += HPAGE_PMD_NR;
+> 	}
 > 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Chuanhua Han <hanchuanhua@oppo.com>
-> Cc: Barry Song <v-songbaohua@oppo.com>
-> ---
->   mm/memory.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 1b8ef4f0ea60..f8d6adfa83d7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4529,7 +4529,6 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->   	struct folio *folio;
->   	unsigned long addr;
->   	softleaf_t entry;
-> -	spinlock_t *ptl;
->   	pte_t *pte;
->   	gfp_t gfp;
->   	int order;
-> @@ -4563,8 +4562,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->   	if (!orders)
->   		goto fallback;
->   
-> -	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-> -				  vmf->address & PMD_MASK, &ptl);
-> +	pte = pte_offset_map(vmf->pmd, vmf->address & PMD_MASK);
->   	if (unlikely(!pte))
+> This way can achieve our goal. David, do you like it?
 
-Can can_swapin_thp() deal with concurrent unmap and possible freeing of 
-pages+swap?
+I'd have to see the full patch, but IMHO we should rather focus on on 
+"how many pte/pmd entries did we check" and not "how many PMD areas did 
+we check".
 
-We have some code that depends on swap entries stabilizing the swap 
-device etc; the moment you allow for that concurrently to go away you 
-open a can of worns.
+Maybe there is a history to this, but conceptually I think we wanted to 
+limit the work we do in one operation to something reasonable. Reading a 
+single PMD is obviously faster than 512 PTEs.
 
 -- 
 Cheers
