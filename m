@@ -4,95 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3006E66882
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 19:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80679D78770
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 19:44:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E4826B0005; Fri, 19 Dec 2025 14:37:31 -0500 (EST)
+	id C0C216B0088; Fri, 19 Dec 2025 14:44:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28CDF6B0088; Fri, 19 Dec 2025 14:37:31 -0500 (EST)
+	id BDA966B008A; Fri, 19 Dec 2025 14:44:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18BBC6B0089; Fri, 19 Dec 2025 14:37:31 -0500 (EST)
+	id AB8D86B008C; Fri, 19 Dec 2025 14:44:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 01C5B6B0005
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:37:30 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A35FB139F1C
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:37:30 +0000 (UTC)
-X-FDA: 84237229860.28.EC9CEA6
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C8EF04000B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:37:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf01.hostedemail.com: domain of 3d6lFaQkbADIgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3d6lFaQkbADIgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766173048; a=rsa-sha256;
-	cv=none;
-	b=qUG3xQofKvvgeLApKAZe/2mn+k9T5sp2twf7Kx8BW1RzCAzPWsClivHcUSMi7q/QvMrNER
-	JJb80mDlbDd0eO016c3Xzc9elZZ4+c/ynpY/OEzXXKZa2I7DLcaxfs+QtkJn8OiyquDwrC
-	p5PaXN+DL3fVs6abWQAI1/HmkiIX3jU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf01.hostedemail.com: domain of 3d6lFaQkbADIgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3d6lFaQkbADIgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9810E6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 14:44:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 434D3160158
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:44:20 +0000 (UTC)
+X-FDA: 84237247080.21.E3CADA8
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 422E510000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:44:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kgx/Jkdw";
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766173048;
+	s=arc-20220608; t=1766173458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=BP0RWLAyRhHu9ohQtCCX4/g/RB+AGRKBZSPWi5YHOa0=;
-	b=HQqpdM8j7Iy4hyuTQUWSPLET4kr+lUy4sBofyObBwB4UAhs1N52MPGccd2RDkqS0wFq2Km
-	JV54sIj0QJy8t6sPNgs7dMD13+V/5srxCzcbTDr1PDf318sFH9+9gECuwzkiUYlvhxJBtE
-	vL2WaLcJSpXjuhTp08reNUi4h+8XyaQ=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-65b2fb9d54bso3198285eaf.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:37:28 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oKITxhWaTrx7T/+fL+zdtXl3HxN4mbsgucwgGMOva20=;
+	b=qR0vGoWLeNucrDAclccBYi5gO4arL5K018mk/FgAP9O8qH+2yGT480moCUKRc6pdwDdRbM
+	Xr3Pcb/pJmRQmu47rLVtMXwSzHImiJ+2JgmljQN3+7xdwXPICD/7hYddrX6OD54db0gvgg
+	kAwAC44pR9XG1fKzd8f87j/Fq/77zyc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kgx/Jkdw";
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766173458; a=rsa-sha256;
+	cv=none;
+	b=5YFQ11x7Uyk4HD30cDECKfOUy0cX1yfw/zBtUbq3cZfkHc3HlpnRU2tx3BOGQKOPGAZwLe
+	AWLurJwlB7nW2OC/m2iM0KAU0nXRBzcgV/X0AYFohHA5wimr72XJHTQwQZJ8gIXIax2pGN
+	y5N3ML3sbSTfl5bwJHlyFxcakI18rg8=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso23490725ad.1
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 11:44:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766173457; x=1766778257; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oKITxhWaTrx7T/+fL+zdtXl3HxN4mbsgucwgGMOva20=;
+        b=kgx/JkdwxeYXe5JGTSZir+X2eUbHdbxEGm/hWLJoueNVSa5kZf6rBtxgtENnYqWF+y
+         GE7Q5Nd+EgE5+Hjue+e+LXU5SkdmMAbpBmCfWJYnlOfAKkUslW6i4TS7RwQ40CmgRCwP
+         t3juzO5oBc25aOeL1h1OCk7SG0HEBQ3LR6nW87EHjDITMUTRQzChh+VnHveulnP41XhT
+         MQLo1fw50aiFoaVvOjYrlXRSfU7cxZ9H2L8xDdAuuIAKYR0sVMk3KpV5Ju5bhYFJAPP9
+         +P03jZ2h7cpPnYxDVKsPPg+YF88HhL/vgJgllx41+DdGfqpBWOuK/WpiyEpSjaqT7Bpr
+         0mFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766173048; x=1766777848;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BP0RWLAyRhHu9ohQtCCX4/g/RB+AGRKBZSPWi5YHOa0=;
-        b=m99XnLeNgI9rMk9FKkDYM3LUN8J4PmFy7Bn10zHhphKpYm5+2pF6vfzA4xktMjpy2j
-         wlgbY1uniYAzWi9HeBJGx1H3t1lEOVnqoQBx6WAEQsgV4kAeBeRbmK/qoYCB/tAqh4SZ
-         nnQ7meQAP/MQYDn+gu0sI0VcihJfn0HGYmDXEQ1nGPEDJ6xUhOdz8xOKSIpbgMO2XcqP
-         1+wmTS8If4TIhXmFVmexXpC1r72nzzn11O2381UhTL3dLrj/pHANzk+FAVo4FDFUxVHn
-         32P0MeDL1pWDucoCwLKPi0iy6B8b6wiy08tx3ZFpK1xZDI31f1w3dId2lGXVvnH+xfmb
-         XZ4g==
-X-Forwarded-Encrypted: i=1; AJvYcCXh8nJ5CLWwkUzzrtOroCvbj5tSpLyhv366yGNIz9g9G2M/iVSvJiZZxpx5wz5a6GI6swtldlBxlg==@kvack.org
-X-Gm-Message-State: AOJu0Yxj8irZ5pgkUsMLtuSpPTHHbjoSsU0X4Tq3wre+IyYRXleHT++L
-	GQcwY95DjlvfYTMI+Gbu3FGbu08g9Qs4bO9wQ+rVJFI0IWD3s3BIh699M6fYCRPVtgjaTIODwGE
-	ntgF9o7r7y3PBv+RQIb7PhLCGhHVdHdZ/eVoZWmq1c8ZRledXREXm3lCtXGQ=
-X-Google-Smtp-Source: AGHT+IG12J63ubVefcKRPgqZoGvqHvqElintOD1u5pd2UoSFgJ3SLnY95dRb91ewhelNq/D3bd4EQHqYumD/xRSOmG7kSn0OU5wQ
+        d=1e100.net; s=20230601; t=1766173457; x=1766778257;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oKITxhWaTrx7T/+fL+zdtXl3HxN4mbsgucwgGMOva20=;
+        b=Z+uXUnAxJ24x2IWh02dmdU4PsEL5rhTrT7j2XSc2Ftop5fhDm35TqKxpU2QoISAHeT
+         cDHutffkQxTHn5aP7GAgStgGE6+bbaI6DigYXv39lETKDxd+LPwsRu2qYYAm85V+RamT
+         o+4iMHueZo6eR3Spyp2Ty6IxqpIQCHakUrc+I5TG8MOnIDl70Qar1hcxa3CbSTJf77Vv
+         Qn2XAXCX+cpq3mvim9zSaOhpKR9mJH+xqn/gdkTJfEXugPqN18k7AC86Eck+2NUIGZ+/
+         7zFPAzlNSI6toh1BAYzhlb1pGjw9sikCzN81rEV21f9iT/84rkAGauTeUzIPwuvMJ2nb
+         QQ0g==
+X-Gm-Message-State: AOJu0Yxqignk7C41H3I9QcA/QZ//r/o6JlzkNzjDS0E4wR4hTUm9+h7M
+	Qte/04ZANA1KBTLp/Zs+NJVVDv6Hm6qtq5vDeW7XEpQJ//lzlZN6OauO
+X-Gm-Gg: AY/fxX41e0ILVOzKYYnV6/YD62K5oU/drSlsN42sRtqdj9xOsxJn4MBXo2p5PKxMtT4
+	sV0iC5z/SQpKRsWykyhg9MGCaaandtTkv6IMumJMUmg4g/QDpeKpqc26qeM9+Piq4wwItoTwcOw
+	M7dznWkydlnoQ6alYwJzLKgO0KEVwtZgklgt2FoHavPllLRXc75TYoah6hi5qoh8QQpbQOx4gCe
+	0tKT9QXkL11x6g3OkyySiYDls4AU23n5vVvAWz/F0fai+ArhXjXluc0F2ygk2sMVtlBT6A2uYdO
+	3i6aLQaD3nJkjjzj9VSUggzC6XlZSDFRTXm4oHUqO9GM5xPGTHsSz3opVimcMA2Gc+fUHjJpm3T
+	MGWObXflUqVpkKDE9lyMdWDK32jFmloc1zgv6bV/9cnUt4aAujxCWnWUbxgbFVyCrRQR9MNgfwm
+	vsJGrZkxjhnxIzWuz1eh9vTmMsuTHil3KpZlDcJaeXxioJEMQxtWjf
+X-Google-Smtp-Source: AGHT+IHfRtNT6VJT777zC29z6v+bOEkHUvfWHIfyAb14Z2bqgbzG5Ai69rkUcZuip31K3YZEyvlWgA==
+X-Received: by 2002:a17:903:32cd:b0:2a0:be7b:1c50 with SMTP id d9443c01a7336-2a2f222b551mr36501175ad.14.1766173456883;
+        Fri, 19 Dec 2025 11:44:16 -0800 (PST)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d76ceesm30170985ad.91.2025.12.19.11.44.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 11:44:16 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+Subject: [PATCH v5 00/19] mm, swap: swap table phase II: unify swapin use
+ swap cache and cleanup flags
+Date: Sat, 20 Dec 2025 03:43:29 +0800
+Message-Id: <20251220-swap-table-p2-v5-0-8862a265a033@tencent.com>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:ddc1:0:b0:65b:2b26:8022 with SMTP id
- 006d021491bc7-65cfe667108mr2922608eaf.6.1766173047808; Fri, 19 Dec 2025
- 11:37:27 -0800 (PST)
-Date: Fri, 19 Dec 2025 11:37:27 -0800
-In-Reply-To: <68a7eee9.a00a0220.33401d.0168.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6945a977.a70a0220.207337.011c.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_munmap (2)
-From: syzbot <syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, bigeasy@linutronix.de, 
-	david@kernel.org, harry.yoo@oracle.com, jannh@google.com, jpoimboe@kernel.org, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, peterz@infradead.org, pfalcato@suse.de, 
-	riel@surriel.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XOTWrDMBCG4asEraMymtGPk1XvUbqQ5XEiaG1jG
+ SUl+O6RQyCNvfwGnpe5icRj5CSOu5sYOccU+64Ms9+JcPbdiWVsyhYIaBSAk+niBzn5+oflgNI
+ 1BJVlE6jyophh5DZeH72v77LPMU39+PfIZ7VcnyU8rEpZSZDUaGqpthwIPyfuAnfTR+h/xdLK+
+ PJKrT/JuHjnCNiyt43Zevrn0aw9LZ5ao1sHzpuw9frlETZeFx9qx1h5tF7Du5/n+Q4h4zaRbAE
+ AAA==
+X-Change-ID: 20251007-swap-table-p2-7d3086e5c38a
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+ David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>, 
+ linux-pm@vger.kernel.org, "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766173451; l=9183;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=cY3UzxPPw7NiQLeyBv8mkIRNHqoSk87zp6LmiyiFzcs=;
+ b=MJBUgHScWWRicL5h6ZgvSsCmbA6ekauJ+P/+euDmnrkf9NSxRWwTw5/wuOekhTrzcWnIC2HXJ
+ XU+1X7pmP7vCiChaJtHzAkR5Lij/Kgl7PZrftGdt5TIuwUzalOqXbFA
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 422E510000A
+X-Stat-Signature: kium7mp95nspk63jbgbx3a15qx3ijq94
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8EF04000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: je4wytxusxpbox7ipd8wdz1wha1enjud
-X-HE-Tag: 1766173048-889364
-X-HE-Meta: U2FsdGVkX1+8BmLx07UR8kEqnzz2uLEan49hZeZLzbFc5UAR44DqiWIs+WsedSOOZHbXsiN21CIzh5b7BiMgTe1Gkmp4ybDoYUYFgLniFz1js2MSVFZmUHu8Uq/BdkMqbeqoF+UUCt5k41Jp5E6CnP+/6RmaKv57UgaOW2bQK+hhUKSRdiyCoUbQzN6hb8lk/ejcmw02vzl0WRQx1rddtTFfZ6FwD0XOJlnCdgGCBH7ENyxzwxkiPFJYTBVVWcjb1Yvw6gIUAAgdXg9rCnMjWcCz4OYBHaglLpsNp5p8BZ8Hp58Zl7Ra0teKEXnzxvTYECsGx5GoWHKkJWuqVUgSZEGXCqVVhiRpdWTE2/K4QHOXAdSitcAgxZ3ABRjcBj5NRRn14MxnPb0BdHPRXOJ8MiSn5V4MHWqWvJZoG/bxSmlqqY0Npyany5aYwWjiY7l37Kszyapw6GpmBglDBj1VJWnxpMDjMH2U0Jglwv2SbTwFiZzuqdiiLOuIoeUZxhPLYObzg2qV0SQpxOcaNZ9UZaPfthjnUP0LsadFNr1zphC4LYOpJpuHsV9oxViEo0Pawo+tD343L+6EEF60ykRn2shsise3dI0LJRKnhucC+z6cEecvMOAgBuPqb4vT9Vhw0geoV4GJoASr1ujlsx4SjR4nKAOyvYIEiYxHsrWeeL2wuTJe7n8CY1kwGjj+6kqPkdmBwVmFasPMHiRdYV9gjGkBXP4e/Y23l12jovIxg52pQpfn4R0vhFZTN2LhvQDafvm5dg9+OHPOATDOJ+0hmRS0MODAuCHwreRTVlBh9d4nPLA+94Jqsaxmtl8s/DUVM0so7mHJYku5eot3KYCIMTzTcpddmvbaaSJC0RA3NHMm9LrJVp4kMOEt5/h08Xjdc4N+KEYVVjDO8e2NbkV3zrUpVMpz/R0pDMnWQJ9/VtzLnDqOgUwTzhFiHjHOS+++d5sOBC9AgzQm7LBCqqe
- zaSWnFpw
- lGxmpkvQWKtD/fHgr5BysR6eXsb1ox4Il0YgI2ERu8xXg4iI0LoRW6CKjdB1TA6pGtigzT4rFG+qcY6NvYNBwSz1ij6fjChTrdSnVS0wAk+VvVyhIt2/0VZFqf7g6PL0HbifryjbE+un51iResws2vL6zVV2J3WGz9G0eSmqd2uUVrvoqv4opZ/C1m0KQrrw6DuKV8EThCIRCIK2XJy+jO+W5WtGlXkaMsFMeKuSAoowN/1dvxcqM/QEsR8e6w4ZhWR6+Ace2FvEa8cR6h7Z6cGo1hnVeYmHaXwf8aWkC9SZWEKb8gTYQlasr6dQcPiW3qUdsHXVxf+SpT3RBgfABSRE9xffBtqa2wlPbzyFnrNGdndsXGD6FsRVaVgdJ1PgOC2vnAkUeCTQRfwukuD0yOa8XLKanBaEjk5Aq7YtnGjEtCtRYTPaVJgOv2vGyK54PathOb6DkrpQ8rQmkqg9OTM9a/aLau7kle4CiSeD8/R7DNs1a8F6ldqvztGpdPawXFS8nVY1PWwVup8nRqFdUnsMAuTfgRjb7jGF+Xk6tjA/KMyVZeo7ta1ZHH1bIhblf6IFql7rxrLfhf9+Npv/t+qh8Fui5Shj77KniTnujXdYntoqly0/yL1kaky3upsbHHhTAwrMpNsiRJrIc25YgvIbnNv5GCdj6MjJlnI+BJu4YWRQxvyZZEUouQJxPNX7aRZ6hPR+NhTX27y9f2vHpCSKHIm4EpS0HD6AUa3855epeBLgAOQvzfXtAFTtRJyGsOe35JQha5rPQ9SIGk2ccPcu1udLs6fR1n7kBEtebcN3FGyMbzdYA+KWr+IefXPZvxko/AW+h7fymob0iSQLevuW1vf91MtD3OqCtnmfyMypRAZS6A+x+b7bJXQMgZ38pifBedrvZ8FJIDlE3BiXlbyfZ7aNDsgG7H+aa0q2EzQbXlxqK9qQrHK6COcLxvXAYTvPfQhBPLqt1VE4AfR/fnsM8Mvky
- FlkQ9zWK
- a4agNCy3me01uLfCGV4qhy1dyxxsrWB55pyCbkLguCPyFUwYw8psWAIpsAEEBqcg/tMP9G6DlrthUzSvfE7NVHUnlkgYs8MirnPQMD5pDDmPpILA/3gQU5m08ModQ4+WRWCfFzCISbtzBBMApAsNRMeYn+SUUbxSAAlqD/d0i215Gz5O/g90CW0zgUsvJMHzvSIeauU6QV2G16zuGINCgZNt3DYLWBjxArBHK7sSok4bgilSqYEur1VGDGmTpV2VaTboM0OF02KWoMDlNLd4P3vYr/W95da97JGSodYakA29b+bsNWU/igOlDQYGMbKBbf+okGjliRVPg95LolUo54AS8bDAsDjo
+X-HE-Tag: 1766173458-761056
+X-HE-Meta: U2FsdGVkX1/QXDaMUabdi5SAJL/Xf3H6UdlxWK6+KqYZsup2YxJVWqMPgBCmj3z+wwlawtmTazwUSfnXsQufw9gy+OCOo6ZxX+W2n/KnKeqht5l+n0dW6Z4LSDyNORQfmXjSSubo3sGyjGX4O22punmeEq4Z6kBJlrwZwO5K75HFKE6mLcFkHYN+RBcbectH1WWpkfO1API4H99BMNJPlubCMRbQkH6xMD6asSKxgegI3hJ3h9g8m+94bdBJcsmPttc6OpoqxqfkFsExqeq/xAVCXCCk57NtjYXIvcXidrZC5RBKcvNJ5y14nG9fHnkSRZJi9R2/va4gM394zg9RmIe1vQlATn2G8UhE9vxLWR/YNC63XtLPySbLdkAGbyRUBUuexm6qmhleJCqGwUPg5HvuDlVXdbv3T8FRsC9DCnPTYkzSRK805NQdDM6/BissIhNLciiL9i6j3sFBKsAi8Gcmdab0ceuQu74ITke++fpwxNLzlOn+sqafAF/T3x+RchLBLU97nl5exIpd66hhLMzbc0x6rLz4WLLQwkKSyfBiGUCw5yKhRU5qlJFwQJfgQXqhS16s9TY0EeraaAIh5Qo9+ovrpzmSSCiZtRZ8achJrFugVQMD11NzjWCVANLi3jdpY4ic0LQ+izvjS353SbF+Wt+VpL3T85RKOkalEpJemvlcjerwT6TLI+mHffV35hsuID9P///veWrJaOB2hBYPSWAzlOnbnDhtptudPHqCZbCx5tNXs2w4p/9PVByY4yEwJBA5tiN1OGnacYO67mR0orFPqvO4MlvkaWeGTA8WuEJdw4jIG69x+lOMgNoIFqYxZXlbjC29B/Mvenk8nXCxCrTUUbPPVOYrm8u9PwhsacDxNUNQU4qwFbny7hBVFIAm+TKOpSpsKXZQEyBynEu6VQ9bk+2P3KH1rvt/wPJpAVWXs7ho05vrbXEgyn50EdrZ0bPtttZv5hjc5X8
+ z5liu3AX
+ bVMi6Wgud+22rnrqfQCVJ79MevPBmkKlwJlaYDy5Am1uBQgMUuffHtRv2bXO/zujiQrB0Q78GURZNf/UKPgwPmBoF9KuCZwT+M/PACMLFnwy/01rCHuQO7fIHhK0cDyawKzMLaTUHg3UlX4HE4T6OGlrGSjubHThVuNKbQgax1oasotRCLyN7USwl4I3xAoad3AdGqTpoh9Rr9+16DHIlPFrDwX2Y/zY9WWsCTc+1aVcME/h8+jJhzD7eMbUT08wuKbiyT0n00y8WJ69LuV0dTYucdxAP5MWzpR7/txfCTHO0aMm9feViiUbmJLgbArV+/VZXJzT8ftxdiH6cfUrMGKwZkzHT6TBnRcEiT878VWESVb24RGHCiiGQHv3wm/x9zM3zPXIPn89qavKj/V4TxEUl+HKAQAI3JIHZsSdpwrlo6USJ0jGOj2X9LiV1TdsH0gOfQg4qEaG5PZC301XS+8Ed/hAu+cT8w22h
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,142 +140,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+This series removes the SWP_SYNCHRONOUS_IO swap cache bypass swapin code and
+special swap flag bits including SWAP_HAS_CACHE, along with many historical
+issues. The performance is about ~20% better for some workloads, like
+Redis with persistence. This also cleans up the code to prepare for
+later phases, some patches are from a previously posted series.
 
-HEAD commit:    dd9b004b7ff3 Merge tag 'trace-v6.19-rc1' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10010d1a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a94030c847137a18
-dashboard link: https://syzkaller.appspot.com/bug?extid=8785aaf121cfb2141e0d
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1519cd58580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1438f9b4580000
+Swap cache bypassing and swap synchronization in general had many
+issues. Some are solved as workarounds, and some are still there [1]. To
+resolve them in a clean way, one good solution is to always use swap
+cache as the synchronization layer [2]. So we have to remove the swap
+cache bypass swap-in path first. It wasn't very doable due to
+performance issues, but now combined with the swap table, removing
+the swap cache bypass path will instead improve the performance,
+there is no reason to keep it.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/ea0a8b24838c/disk-dd9b004b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/67ac69e3e131/vmlinux-dd9b004b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/570521afa03d/bzImage-dd9b004b.xz
+Now we can rework the swap entry and cache synchronization following
+the new design. Swap cache synchronization was heavily relying on
+SWAP_HAS_CACHE, which is the cause of many issues. By dropping the usage
+of special swap map bits and related workarounds, we get a cleaner code
+base and prepare for merging the swap count into the swap table in the
+next step.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com
+And swap_map is now only used for swap count, so in the next phase,
+swap_map can be merged into the swap table, which will clean up more
+things and start to reduce the static memory usage. Removal of
+swap_cgroup_ctrl is also doable, but needs to be done after we also
+simplify the allocation of swapin folios: always use the new
+swap_cache_alloc_folio helper so the accounting will also be managed by
+the swap layer by then.
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P6120/1:b..l
-rcu: 	(detected by 0, t=10502 jiffies, g=13285, q=486 ncpus=2)
-task:dhcpcd          state:R  running task     stack:25432 pid:6120  tgid:6120  ppid:5490   task_flags:0x400040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
- preempt_schedule_irq+0xb5/0x150 kernel/sched/core.c:7190
- irqentry_exit+0x5d8/0x660 kernel/entry/common.c:216
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:lock_acquire+0x16c/0x340 kernel/locking/lockdep.c:5872
-Code: 00 00 00 00 9c 8f 44 24 30 f7 44 24 30 00 02 00 00 0f 85 cd 00 00 00 f7 44 24 08 00 02 00 00 74 01 fb 65 48 8b 05 d4 38 e0 10 <48> 3b 44 24 58 0f 85 e5 00 00 00 48 83 c4 60 5b 41 5c 41 5d 41 5e
-RSP: 0018:ffffc900031970d8 EFLAGS: 00000206
-RAX: e8c1bbb3b5be3a00 RBX: 0000000000000000 RCX: e8c1bbb3b5be3a00
-RDX: 000000005594689c RSI: ffffffff8d979233 RDI: ffffffff8bc08360
-RBP: ffffffff81743f85 R08: ffffffff81743f85 R09: ffffffff8df41a20
-R10: dffffc0000000000 R11: ffffffff81ada120 R12: 0000000000000002
-R13: ffffffff8df41a20 R14: 0000000000000000 R15: 0000000000000246
- rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- rcu_read_lock include/linux/rcupdate.h:867 [inline]
- class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
- unwind_next_frame+0xc2/0x23d0 arch/x86/kernel/unwind_orc.c:495
- arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
- stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
- kasan_save_stack mm/kasan/common.c:56 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
- poison_kmalloc_redzone mm/kasan/common.c:397 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:414
- kasan_kmalloc include/linux/kasan.h:262 [inline]
- __kmalloc_cache_noprof+0x3e2/0x700 mm/slub.c:5776
- kmalloc_noprof include/linux/slab.h:957 [inline]
- slab_free_hook mm/slub.c:2492 [inline]
- slab_free mm/slub.c:6668 [inline]
- kmem_cache_free+0x16b/0x620 mm/slub.c:6779
- anon_vma_free mm/rmap.c:136 [inline]
- __put_anon_vma+0x12b/0x2d0 mm/rmap.c:2780
- put_anon_vma include/linux/rmap.h:117 [inline]
- unlink_anon_vmas+0x503/0x670 mm/rmap.c:443
- free_pgtables+0x735/0x9d0 mm/memory.c:414
- vms_clear_ptes+0x423/0x530 mm/vma.c:1236
- vms_complete_munmap_vmas+0x206/0x8a0 mm/vma.c:1280
- do_vmi_align_munmap+0x364/0x440 mm/vma.c:1539
- do_vmi_munmap+0x253/0x2e0 mm/vma.c:1587
- __vm_munmap+0x207/0x380 mm/vma.c:3203
- __do_sys_munmap mm/mmap.c:1077 [inline]
- __se_sys_munmap mm/mmap.c:1074 [inline]
- __x64_sys_munmap+0x60/0x70 mm/mmap.c:1074
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd7d0dad2e7
-RSP: 002b:00007ffd60bdc648 EFLAGS: 00000206 ORIG_RAX: 000000000000000b
-RAX: ffffffffffffffda RBX: 000055f3a7cc03f0 RCX: 00007fd7d0dad2e7
-RDX: 0000000000000002 RSI: 0000000000061018 RDI: 00007fd7d0add000
-RBP: 00007ffd60bdc750 R08: 0000000000000030 R09: 000055f3a7cc0fa0
-R10: 00007ffd60bdc580 R11: 0000000000000206 R12: 00007ffd60bdc698
-R13: 00007fd7d0dc0000 R14: 000055f3a7cc03f0 R15: 0000000000000000
- </TASK>
-rcu: rcu_preempt kthread starved for 10455 jiffies! g13285 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:27736 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6960
- schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 6122 Comm: vhost-6117 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:do_user_addr_fault+0x1cd/0x1380 arch/x86/mm/fault.c:1293
-Code: e8 b8 39 54 00 fb 4c 89 7c 24 38 0f 1f 44 00 00 e8 a8 62 4c 00 44 89 f6 83 e6 40 31 ff 48 89 74 24 30 e8 76 67 4c 00 44 89 f6 <83> e6 02 31 ff 48 89 74 24 40 e8 64 67 4c 00 45 31 ff 4c 89 f6 48
-RSP: 0018:ffffc900031b7878 EFLAGS: 00000293
-RAX: ffffffff81754fba RBX: 0000000000000200 RCX: ffff88802c92db80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: dffffc0000000000 R08: ffffffff8f822077 R09: 1ffffffff1f0440e
-R10: dffffc0000000000 R11: fffffbfff1f0440f R12: ffffc900031b7968
-R13: 0000000000000002 R14: 0000000000000000 R15: ffff88802c92db80
-FS:  000055555ad2e500(0000) GS:ffff888125f35000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000002 CR3: 00000000322fa000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x82/0x100 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0010:__get_user_nocheck_2+0x6/0x20 arch/x86/lib/getuser.S:130
-Code: 01 ca e9 c8 d6 b5 f5 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 01 cb 0f ae e8 <0f> b7 10 31 c0 0f 01 ca e9 98 d6 b5 f5 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900031b7a10 EFLAGS: 00050202
-RAX: 0000000000000002 RBX: ffff8880244f01e0 RCX: ffff88802c92db80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8880244f01e0
-RBP: 0000000000000000 R08: ffffffff8f822077 R09: 1ffffffff1f0440e
-R10: dffffc0000000000 R11: fffffbfff1f0440f R12: dffffc0000000000
-R13: dffffc0000000000 R14: ffff8880244f0290 R15: ffffc900031b7a18
- vhost_get_avail_idx+0xc4/0x450 drivers/vhost/vhost.c:1531
- vhost_enable_notify+0x303/0x650 drivers/vhost/vhost.c:3245
- vhost_transport_do_send_pkt+0xf55/0x1330 drivers/vhost/vsock.c:125
- vhost_run_work_list+0x14e/0x1e0 drivers/vhost/vhost.c:454
- vhost_task_fn+0x27c/0x430 kernel/vhost_task.c:49
- ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
+Test results:
 
+Redis / Valkey bench:
+=====================
+
+Testing on a ARM64 VM 1.5G memory:
+Server: valkey-server --maxmemory 2560M
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 460475.84 RPS               311591.19 RPS
+After:  451943.34 RPS (-1.9%)       371379.06 RPS (+19.2%)
+
+Testing on a x86_64 VM with 4G memory (system components takes about 2G):
+Server:
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 306044.38 RPS               102745.88 RPS
+After:  309645.44 RPS (+1.2%)       125313.28 RPS (+22.0%)
+
+The performance is a lot better when persistence is applied. This should
+apply to many other workloads that involve sharing memory and COW. A
+slight performance drop was observed for the ARM64 Redis test: We are
+still using swap_map to track the swap count, which is causing redundant
+cache and CPU overhead and is not very performance-friendly for some
+arches. This will be improved once we merge the swap map into the swap
+table (as already demonstrated previously [3]).
+
+vm-scabiity
+===========
+usemem --init-time -O -y -x -n 32 1536M (16G memory, global pressure,
+simulated PMEM as swap), average result of 6 test run:
+
+                           Before:         After:
+System time:               282.22s         283.47s
+Sum Throughput:            5677.35 MB/s    5688.78 MB/s
+Single process Throughput: 176.41 MB/s     176.23 MB/s
+Free latency:              518477.96 us    521488.06 us
+
+Which is almost identical.
+
+Build kernel test:
+==================
+Test using ZRAM as SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1379.91s          1364.22s (-0.11%)
+
+Test using ZSWAP with NVME SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1822.52s          1803.33s (-0.11%)
+
+Which is almost identical.
+
+MySQL:
+======
+sysbench /usr/share/sysbench/oltp_read_only.lua --tables=16
+--table-size=1000000 --threads=96 --time=600 (using ZRAM as SWAP, in a
+512M memory cgroup, buffer pool set to 3G, 3 test run and 180s warm up).
+
+Before: 318162.18 qps
+After:  318512.01 qps (+0.01%)
+
+In conclusion, the result is looking better or identical for most cases,
+and it's especially better for workloads with swap count > 1 on SYNC_IO
+devices, about ~20% gain in above test. Next phases will start to merge
+swap count into swap table and reduce memory usage.
+
+One more gain here is that we now have better support for THP swapin.
+Previously, the THP swapin was bound with swap cache bypassing, which
+only works for single-mapped folios. Removing the bypassing path also
+enabled THP swapin for all folios. The THP swapin is still limited to
+SYNC_IO devices, the limitation can be removed later.
+
+This may cause more serious THP thrashing for certain workloads, but that's
+not an issue caused by this series, it's a common THP issue we should resolve
+separately.
+
+Link: https://lore.kernel.org/linux-mm/CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+2i_mhuP5CQPSOPrmQ@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/linux-mm/20240326185032.72159-1-ryncsn@gmail.com/ [2]
+Link: https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmail.com/ [3]
+
+Suggested-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v5:
+Rebased on top of current mm-unstalbe, also appliable on mm-new.
+- Solve trivial conlicts with 6.19 rc1 for easier reviewing.
+- Don't change the argument for swap_entry_swapped [ Baoquan He ].
+- Update commit message and comment [ Baoquan He ].
+- Add a WARN in swap_dup_entries to catch potential swap count
+  overflow. No error was ever observed for this but the check existed
+  before, so just keep it to be very careful.
+- Link to v4: https://lore.kernel.org/r/20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com
+
+Changes in v4:
+- Rebase on latest mm-unstable, should be also mergeable with mm-new.
+- Update the shmem update commit message as suggested by, and reviewed
+  by [ Baolin Wang ].
+- Add a WARN_ON to catch more potential issue and update a few comments.
+- Link to v3: https://lore.kernel.org/r/20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com
+
+Changes in v3:
+- Imporve and update comments [ Barry Song, YoungJun Park, Chris Li ]
+- Simplify the changes of cluster_reclaim_range a bit, as YoungJun points
+  out the change looked confusing.
+- Fix a few typos I found during self review.
+- Fix a few build error and warns.
+- Link to v2: https://lore.kernel.org/r/20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com
+
+Changes in v2:
+- Rebased on latest mm-new to resolve conflicts, also appliable to
+  mm-unstable.
+- Imporve comment, and commit messages in multiple commits, many thanks to
+  [Barry Song, YoungJun Park, Yosry Ahmed ]
+- Fix cluster usable check in allocator [ YoungJun Park]
+- Improve cover letter [ Chris Li ]
+- Collect Reviewed-by [ Yosry Ahmed ]
+- Fix a few build warning and issues from build bot.
+- Link to v1: https://lore.kernel.org/r/20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com
 
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Kairui Song (18):
+      mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+      mm, swap: split swap cache preparation loop into a standalone helper
+      mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+      mm, swap: always try to free swap cache for SWP_SYNCHRONOUS_IO devices
+      mm, swap: simplify the code and reduce indention
+      mm, swap: free the swap cache after folio is mapped
+      mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
+      mm, swap: swap entry of a bad slot should not be considered as swapped out
+      mm, swap: consolidate cluster reclaim and usability check
+      mm, swap: split locked entry duplicating into a standalone helper
+      mm, swap: use swap cache as the swap in synchronize layer
+      mm, swap: remove workaround for unsynchronized swap map cache state
+      mm, swap: cleanup swap entry management workflow
+      mm, swap: add folio to swap cache directly on allocation
+      mm, swap: check swap table directly for checking cache
+      mm, swap: clean up and improve swap entries freeing
+      mm, swap: drop the SWAP_HAS_CACHE flag
+      mm, swap: remove no longer needed _swap_info_get
+
+Nhat Pham (1):
+      mm/shmem, swap: remove SWAP_MAP_SHMEM
+
+ arch/s390/mm/gmap_helpers.c |   2 +-
+ arch/s390/mm/pgtable.c      |   2 +-
+ include/linux/swap.h        |  71 ++--
+ kernel/power/swap.c         |  10 +-
+ mm/madvise.c                |   2 +-
+ mm/memory.c                 | 276 +++++++-------
+ mm/rmap.c                   |   7 +-
+ mm/shmem.c                  |  75 ++--
+ mm/swap.h                   |  70 +++-
+ mm/swap_state.c             | 338 +++++++++++------
+ mm/swapfile.c               | 861 ++++++++++++++++++++------------------------
+ mm/userfaultfd.c            |  10 +-
+ mm/vmscan.c                 |   1 -
+ mm/zswap.c                  |   4 +-
+ 14 files changed, 858 insertions(+), 871 deletions(-)
+---
+base-commit: dc9f44261a74a4db5fe8ed570fc8b3edc53a28a2
+change-id: 20251007-swap-table-p2-7d3086e5c38a
+
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
+
 
