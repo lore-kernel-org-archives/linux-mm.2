@@ -4,86 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65BD0D7495D
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:48:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B54D9D7495D
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:54:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5F6F6B0089; Fri, 19 Dec 2025 01:48:49 -0500 (EST)
+	id 2596E6B0088; Fri, 19 Dec 2025 01:54:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0C5D6B008A; Fri, 19 Dec 2025 01:48:49 -0500 (EST)
+	id 1D9056B0089; Fri, 19 Dec 2025 01:54:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEE356B008C; Fri, 19 Dec 2025 01:48:49 -0500 (EST)
+	id 0B2326B008A; Fri, 19 Dec 2025 01:54:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3E96B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:48:49 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 212268AA62
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:48:49 +0000 (UTC)
-X-FDA: 84235292778.18.1B061AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7F26914000B
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:48:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JelpeCHz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766126927; a=rsa-sha256;
-	cv=none;
-	b=x3C0Mj42KPs4z0f+i5kp5iQqEgKTGmjeCVegJrLr/Zj2keGkH6pjRVlpckmRcpB9W0Wjtm
-	erC38RkRx3je89Xu7FxcTRlmhpCax5nwnj1/63KJ+/Pw9gqDYGPTT/JWtDPTfScB4HI3LD
-	YwLra3D6qxbWIfZsi4UC6uy7IBHPjzg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JelpeCHz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4C46B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:54:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F49D1A0482
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:54:08 +0000 (UTC)
+X-FDA: 84235306176.30.95ED751
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6F1D9100007
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:54:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=XRUpC4tn;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766126927;
+	s=arc-20220608; t=1766127246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/S0Me2pCLXAM6ClNP6PGNxTq7G94gU50Qu8HwqC3aDQ=;
-	b=MNmPHd5lhgS4U1MMflhKzP9cEwJ2u9LikFaXILzUkSgr3iUqT0OWbHQHkZSMiVTB2eAvkj
-	p4z0qJCSh7XFyGw1tlrx9WoLHLG6eWYtPwB1dVQho+qUPS2+5sXSDZ3YE78FU1zVoZhWbj
-	+RYxdMkLoVnXCJ2Hm7vvl00JMABnJgI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8ABB8418BF;
-	Fri, 19 Dec 2025 06:48:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4B1C4CEF1;
-	Fri, 19 Dec 2025 06:48:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766126926;
-	bh=/ySOtmeMRDp4N9rbZ2NlzdqHyHV/b+UP5NXd1nymqo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JelpeCHzi74fL/WhpTjc54Vx0PrM6nNhvgo+NU9h8a7SXlcx592szoj8iwAjACiiD
-	 BSNadqpOMXh0OHj3wWfJaEWH5xLQCiMjL8zrG+Izx1mk73zGFi7mJoJys2O1sYQbjK
-	 +3h2V2RAYCx6NNrsQkGwQUXbzG4txMsBiiaQMbe3qOXefDtg5CcYUY/GoEDQTorn7X
-	 UMnPjeCJawrpP53K7M7MVd7sMVWIsBufV0oxHyo0D3Hh/CuONcpqgkfODzwnYsZz1a
-	 ADhVohJluwwR5lGKHl4xWn0nLrZOyWnTT1eqD3K2s6HgS8n53zQOjOPmT9+j0/6sWa
-	 9l6dxl1xuJwfQ==
-Date: Fri, 19 Dec 2025 08:48:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mm_init: Replace simple_strtoul with kstrtobool in
- set_hashdist
-Message-ID: <aUT1SCTniYr7PA07@kernel.org>
-References: <20251217110214.50807-1-thorsten.blum@linux.dev>
+	bh=9xPgikAmC9i7Nsw/6vUb2OZB8xX6nsoxbg7H2rqfFGg=;
+	b=G8YE2VvWLifOOshcLP9FkilXfA5ETxjiPeltOWa3r2S/d7brfLs1XQUNM5hZuBRK8E/au5
+	QqVb0Y7g3nvdTltJ7D1aLKBWcqOz4SIHjmJVBf5ZpUsDsQF5uBq6KtJv44uXL/Ur199mPI
+	W3mP0tre8UcjoZJNWBqHLPxO7UvrYUk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766127246; a=rsa-sha256;
+	cv=none;
+	b=dTW86sgYg99sa75RTcOL+arb3xvxlT26F4eRAk/UrjtuULFCDOaNfEPpIhcOGWAaqXVs+S
+	1V2RIMZBbjM/4uJ4PwBrSleRZL882uERvurXd+HTWTw9a9sr3GJE9cE8LWPRs+wNIhAdh+
+	9RV+pxsIdIkSMmip1kBJe7Z/BtADPnc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=XRUpC4tn;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64b7318f1b0so1609533a12.2
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766127245; x=1766732045; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9xPgikAmC9i7Nsw/6vUb2OZB8xX6nsoxbg7H2rqfFGg=;
+        b=XRUpC4tnMlWluPVKrbMzWZNUociYN00YoK/KjQ6bqyg70066SywbGhydLPm0spB2pt
+         j/CGF6Ad2ZgVlZ66FJYt6KBT8pSVKiTPwHsCDFKgJOBCRqe0iIvzkwooY147afCszPGC
+         tXRNQdbJZw8EXSpXA2tnpgK+PA/NKHmDae2tbMQG8ppXqiMKPfv1yZff96BAC6BCS5O3
+         rWqL7oQz6mSYsZQz/WtPU4F1Kpv66JI5bNxrlOluLQ/UxVdSqfGeeywtEbXjgnQkrpdt
+         w2ckYpZENZGv6jy4F9jySNLZN+GmdmCpRHWeJ7iQGij6Xv+IYDaw3tiZeHlrNoYEfnZo
+         jYag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766127245; x=1766732045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9xPgikAmC9i7Nsw/6vUb2OZB8xX6nsoxbg7H2rqfFGg=;
+        b=M1ExVppTe6vOitFKg0bYQeef3L3g19fWiCQeckdEmDJDN7BkSdi5GgCH1Th+1QsfUz
+         2CTLQDV/3+CIkKzoQ3EVbhdh/KQq4C+EIr4uW14lWFetg53ZcHfeFE3+8A4dxViHsiOg
+         u9vLdIZi9IE4aATDRN8VcVaWoNMq80P8P6+6d1v1MOtVCcOFFB+lB//g7rmUD61bf0bW
+         v8gcAC6oeZTahyQJOzKQ5q/eYo50EFS/hPPsYiLx69Z7GrwNygWgGc2VPo9ovTlkd2L5
+         /nAlE0f7tDqnt/hXEWXS3ARFH8B9MIzBGmxnLu2uqPlZXR7ZxPeIbzIT9k+/jDbLt7AA
+         fy/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUslL9FH9WaB7UHdZDpQjagJi8zgskG97RMW/rgf6HZPGcNv/v0Nl9/K65/DGSWpFeGXufXUhgAtg==@kvack.org
+X-Gm-Message-State: AOJu0YzFcdqCQAoSX61FC9N4b/EoVG7DENDRyyfzLlZ7uEZTCAheRvig
+	2hB2liBzs1dSv0GSvqVgf5HauQJ9C/I9vk0x7KiWgVGjNuPloIyy5E2k7IJNNLG8r43AenUN0i4
+	0DbnrQwuFxCc10d2BLdqFxmN0lZoeL7AFHJsT9lOGow==
+X-Gm-Gg: AY/fxX4t+kqCc6+eUip5oGi/atbhHkSc2L726AH5/z9P4kpfDbhC72xNeW0lcR5T3G5
+	wAXDQwCMeRSOQ+pCwv6rBsC6Rukb6I7pirXG3dmnnN6zhtegHsSRjN5kpve2V/mR5x75CPpcLsv
+	NsfmBZOZWy8hZFgXN16FydXtDK78/FfkPhIrWi8sa8rE+aejvIK88P7uN5slrd+jx8KzjsleF9M
+	kEkyt7/LT/1iYvSigQVIuegbnu35QzBD3VHvUwsPqjC3QAPv/V9LFItJmjd0XjXaGb7+iCFCiyq
+	nQI/x0a1/ZG+rbDDc5nMr5ZI
+X-Google-Smtp-Source: AGHT+IHrr7hQ3L9AzJHAIVCcMTLwAuIUALeFI8OkI6T6XMYbQqiUt4uWpGU71bncz0pI6DpLPHJmKO73H1onEQqgyIs=
+X-Received: by 2002:a05:6402:1474:b0:64b:588b:4375 with SMTP id
+ 4fb4d7f45d1cf-64b8eb62574mr1699136a12.2.1766127244662; Thu, 18 Dec 2025
+ 22:54:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217110214.50807-1-thorsten.blum@linux.dev>
-X-Rspamd-Queue-Id: 7F26914000B
-X-Stat-Signature: yzxn3s9ermeyh7p5zpy9dbo97ywfp378
+References: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
+ <20251218130725.1b93a521c039ce121de62472@linux-foundation.org> <aUT0sJsDWZHGT-Q9@kernel.org>
+In-Reply-To: <aUT0sJsDWZHGT-Q9@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 19 Dec 2025 15:53:28 +0900
+X-Gm-Features: AQt7F2qsC_Dg8UikLympbtL4IhWS-dbiSuY-RHAMjIQpkrLWg8l_6viyY9c8OTc
+Message-ID: <CA+CK2bDGzUrh6-hJMtZZ3rWLmvQYKa=WnXrwHK_tZEWgP1=n3w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] list private v2 & luo flb v9
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, pratyush@kernel.org, dmatlack@google.com, 
+	skhawaja@google.com, rientjes@google.com, corbet@lwn.net, kees@kernel.org, 
+	davidgow@google.com, pmladek@suse.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, nicolas.frattaroli@collabora.com, 
+	linux-doc@vger.kernel.org, tamird@gmail.com, raemoar63@gmail.com, 
+	graf@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: dm5t9n5i57e9xgduky81m7r83fmcyw8e
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6F1D9100007
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766126927-45904
-X-HE-Meta: U2FsdGVkX1/6VSnq45WLUPr1VkLCSvB57BqkVvFBgeRQ/r1a4mDeVYKUOZMgeDxpS/tA/kX14nEuMf9O/meyqiF6E/TYIk/Liu9aduP+mTnr+OR1sKrFQfzUIsu9jh+P356lLAjuB/HweyyOkhoYhw1nkpUBh9dXKnkoQDdT9SBpJfQNRcfUZ4p+8cxjMWo2VBK8lvVKzmHkfZyR5aVQ0UU06P3MNHLzba0lsv2RxKSqhM/qql3Wu6AgGQgVO7e15ctbe0hnwSfAvxLp/+htvo3x5byB7T1gcmbhjEJszhGp6OS49cWCgi/fNe7PZ1s3KBFZm6R3rM3voUNYKwkq/Uz/F4snE/i8MA7HbLxHY9EZJmdnRPZ/vRTLAZX6YMJlQxl21nf7rHjfZWl3zHRqZAtDGO3vFwrPKr5e9yaX83XbIdrXVMUK/5Ap3WeyR8O3U6I75lSD6t5HeYqBhT7Rroqw3woxCZqvyRujczvRdOF88SUzwa7ZQgRBqQnNCcQjMQAFuMFbb3NGh3qF0Hk/P1pNnVXKlx3bDbT4SN0kbVNaUmZ0gId/H4F4uiqqqDcg8lRGZcj1wvArQl/X8vZ8oagLePzOS0d7sEmCg2sHQAFdrNfuP3Jir3UzZ5cdLcKmKb+M4AbGFD/vJYc0QFTQLbabJvLdiGtMzPZD5XF7tiyUZQBliAlqEsSFSQTGRiNMHM12cqToSlnw9zzrIQ0qvCnnGBN3YTLbm+/Ml2H+FQobNulJsFQNGVA73qh6k1MS0fXrOZbSvtY05jcs2OkvvSmk03aqXaesmrDNaTfmS8y5I2OewNzH0dYOZPMpbzdBNcAwK/4TzqzaoEJ7KLEA7ie56XskgyHvukPITRnm5x2Dfp/pJ7OsDXdJGf94nQctccCF5oXxn/6spIBC+UYuFli42VH7K8BBc9m+CXSsEyBoYIllzcbASS0oto9FwL0M8sm7bkzadlOpsK6LOvo
- WwLEjcXq
- zX6TFZ3GJnG+WErb8g2PW7X04zmmawgS0SRWDXcSBBlGCDMLYE4pwoMJ9KJB8PmiTeKAeAsbMfum4zI4oHeYV49wCPlA1fFygfTwLgwfJVhsd83qxcreL4ktv5wRMZrgKkNsAT+INo3uPd7zckrG2sloPn8nFzb5orCyyNI3G4/SGdCtOFrBNRGWCw7gAsGaiF84bk07W57YeqSxs8XNdBfF71/Qnx+bQ6Dj0ZX5jCJMG39qvRciHklWiRtdNkWisIj/18t7kNP7l7nd43x6EsHEcYRw5zFTvX0Rgy27LhAQwrw636DtYntSwrRRwN0HsZVTO
+X-HE-Tag: 1766127246-705740
+X-HE-Meta: U2FsdGVkX18l6n4kBRA4QYdNGjTZOb+J9f3JwtTF0/jFbOx5ftPMA65QacDUBPs0ov4Gu7IHLap4JTVbuPwuf6AFbFmKcCNOj5EGCr2tO+VnqwIi/x+RH7KFqM5qgA9IqbH5qJT6BcxtMUjguz2voho88GwihqadrpBdbAeS3kvM1BU/d8ng6/p0uoNKNNGTQoGZpCc9moWo+D6FnODXGhOSXX9LTQWOveCd0FmLU8M/A5LTEYfHceEdKvXdsYD0Fr5X7ur0vC/6K9Z94AnbFqcBpGxEnpjv5nRRIuqKPO5dXJ9OQMG/aFlsWvLqhAqQrio6Tt8Pbi/LYBBQsFsFOnvwkC0ysjDPFol8GSQ1GioTAE7y/FpXkWdJFlGop0uIDT/FK57PFQpfaatsv0xcXK0ZRsOS1IhBS2zCWcrkkk2I7i646peRuwJ9u4NZLwBQBYqbXJBuHameSt8k/ZUwAhSQvhHulczSkSP9C+nw/CES5+ILuW1nzICa0v4jeYrOYLqt8ip0os0W9gRLuP+fdYIsXvSQb5Y1fNmQdmSI4d7Ecx0RDkQc0Fww6p3pUaSbGfFsz41EcgMI5j1P68dm//wFzpEq0Ymm6rbhdh8GJ7UGR1Oy5SG2PI6oiR7cg8RtDEMPa/jtIYHp/2EFlst1JARRRO63tOR1iejuVha2koxOGcsazj2E07uJUsnOpAAUfeFTPtRdOZhpMtEfc950jFy5EBAZpfdJkei1gN0VB+epzJCL9E5qx/JEpLNosXxGlC51ROOGQO1ZWT1bafmzVqbjEzro0yr+osZntF9T2Xp2PIOd6X4VZlNU2E9qTMiQFoQyG6OuvjWKtTBUpZQL0L7VmHCtDaYG5KXlem7xviPt0YRparnYvfrsChXsjakGMnyVDo/r/0TSNHH9y2/iK9WnscLOxt2W7YMbAT7AMHQPSbYpPbGB0oixM065wMoi0bdY+4oRoEjegXuECPV
+ uwKVizwU
+ qa4LmN6JtyxIAjo+sVs+jNwWAUK+TKjdURivicxZSKeu1AQ7m2IoCIrjxVETjnx6KEyW0NeFCD318VoBkK5XypssrhvKSGQB1vBAFKnb5A6Jf78nAKGKHPfokGepqNPUaXEvmiEQnEU88SVxLylkuTk24x5NGeo9pgBQBEGmqQfauKzkX5PztLCyzVvl3oErtxq2nbzUdxa7+M1P9XEw503z9lYw6ivXtcQKl787B896Ldt24WEH35pxgjMq8PjNnMH+5u7EEJj4pce3rz2eHgTTjIw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,31 +122,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 12:02:13PM +0100, Thorsten Blum wrote:
-> Use bool for 'hashdist' and replace simple_strtoul() with kstrtobool()
-> for parsing the 'hashdist=' boot parameter. Unlike simple_strtoul(),
-> which returns an unsigned long, kstrtobool() converts the string
-> directly to bool and avoids implicit casting.
-> 
-> Check the return value of kstrtobool() and reject invalid values. This
-> adds error handling while preserving behavior for existing values, and
-> removes use of the deprecated simple_strtoul() helper. The current code
-> silently sets 'hashdist = 0' if parsing fails, instead of leaving the
-> default value (HASHDIST_DEFAULT) unchanged.
-> 
-> Additionally, kstrtobool() accepts common boolean strings such as "on"
-> and "off".
-> 
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+On Fri, Dec 19, 2025 at 3:46=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Thu, Dec 18, 2025 at 01:07:25PM -0800, Andrew Morton wrote:
+> > On Thu, 18 Dec 2025 10:57:47 -0500 Pasha Tatashin <pasha.tatashin@solee=
+n.com> wrote:
+> >
+> > > This series includes two separate workstreams. This is because FLB
+> > > should be applied on top of list_private, as it uses some of its
+> > > interfaces.
+> > >
+> > > 1. List private v2 (first 3 patches) Previous version:
+> > > https://lore.kernel.org/all/20251126185725.4164769-1-pasha.tatashin@s=
+oleen.com
+> > > For details, please read the cover letter from the previous submissio=
+n.
+> > >
+> > > v2 Changelog:
+> > > - Added a Reviewed-by from David Gow.
+> > >
+> > > 2. LUO FLB v9 (last 2 patches) Previous version:
+> > > https://lore.kernel.org/all/20251125225006.3722394-2-pasha.tatashin@s=
+oleen.com
+> >
+> > Please, no.
+> >
+> > This patch series is intended for the Linux kernel.  Your grandchildren
+> > will read the above wondering "what did granddad do".  It's just lazy
+> > for us to expect readers to have to chase down links to earlier
+> > versions and then to figure out what changed and why we changed it,
+> > etc, etc.
+> >
+> > Let's give our audience a nice, self-contained and complete description
+> > of the proposed changes which doesn't refer them to the minute details
+> > of the ongoing development process.  A process which is utterly
+> > uninteresting three years from now.
+> >
+> > IOW, can we please have a complete and standalone description of *this
+> > patchset* which doesn't refer to earlier obsolete stuff?
+>
+> And I would even say this should be two patchsets, one with private list
+> and the other one with FLB.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+They are not bundled, I sent them together only because FLB was
+already in Andrew's tree, but it should be placed after private list
+(since private list patch series deletes the LUO private list iterator
+macro), now they are properly placed, and the private list can be
+merged before FLB.
 
-> ---
->  include/linux/memblock.h | 4 ++--
->  mm/mm_init.c             | 9 +++------
->  2 files changed, 5 insertions(+), 8 deletions(-)
+Pasha
 
--- 
-Sincerely yours,
-Mike.
+>
+> > Thanks.
+>
+> --
+> Sincerely yours,
+> Mike.
 
