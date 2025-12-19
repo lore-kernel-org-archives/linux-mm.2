@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACE3D7495D
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9636D7495D
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 06:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6956B0088; Fri, 19 Dec 2025 01:42:11 -0500 (EST)
+	id 02B1F6B0088; Fri, 19 Dec 2025 01:46:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04B506B0089; Fri, 19 Dec 2025 01:42:11 -0500 (EST)
+	id F0D6D6B0089; Fri, 19 Dec 2025 01:46:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E783F6B008A; Fri, 19 Dec 2025 01:42:10 -0500 (EST)
+	id E1D1A6B008A; Fri, 19 Dec 2025 01:46:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D69266B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:42:10 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94447C05BD
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:41:59 +0000 (UTC)
-X-FDA: 84235275558.26.7F936FA
+	by kanga.kvack.org (Postfix) with ESMTP id CDDD06B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 01:46:20 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9428F1A0476
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:46:20 +0000 (UTC)
+X-FDA: 84235286520.24.4EEB0C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DE844A0009
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:41:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtdQwEF;
+	by imf01.hostedemail.com (Postfix) with ESMTP id EB5354000A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 06:46:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jsMVxo1i;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766126518; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766126779; a=rsa-sha256;
 	cv=none;
-	b=NBVeOWMFFfZ/ENHs895VocU0zj4H0ELxS55qMj58U6SDzKzi4g7PJFg4lDoQNMTfJmj+WO
-	5T95d39qVoCwvLqediBqsSdKrA1VeHwS0t7zMa+Pn2OdLRPp2+OnLic4P8+Bo2zuJFXNPk
-	6n0SdCHbWE3++Xx/OMiO0pFZ0oBu46M=
+	b=tjvQCoBXiWS0DYuQLFnnYN3Ee00tg6PjWmrDEpU8qEVcCEkYXoYk140Ay7gEw/k9KDIPN/
+	lxJpA2kF8x5EzvXybAFZUj0oSa0n7zDTbeIu+0/QaJaA/Ya3rvyb2p8ji2fy4rBBd7fMwz
+	Tnl1EpW2+oSSGmbAkeMz5c1DuyJPzC0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtdQwEF;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jsMVxo1i;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766126518;
+	s=arc-20220608; t=1766126779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oAP6Z0e/yWsNG1D2mwSpfmhrnvSiAbTcGRMa3P4yRgA=;
-	b=EG9pKjsq6BUMSOtv3v9nKzt1aDDusHbrZQXDzZxB7ChkHJwIqLR+UM0NTKEr3tL8gtxHRC
-	outTuSPSvsg864FAYIXyv7OxwBitPpjO2XKYK5FJqxbxW/SlPkd4K9KUSNLVU3ljkaey/X
-	AbYxLh6UBdJfefct0AOc58C0kl1n770=
+	bh=kbKkbECJGYSYNBKg2CTk2JoGUnf3Md2EF7oYfClxvgQ=;
+	b=7zoBNtqf50AR7Z6EE44/+yMO4tkRTqeF2WOFUZIT85Gk6VptLuJsT5+Aeh/QTIwffQPVw8
+	FQBZ1rlooMZsGgoK9yEtpj7hB2qd8EbuEkIW+iUfdMt0ZIn80oUMgDFrsgHicyrq7nyiEj
+	S7MYE0H5nxOAMNKlr+eh4OskKQoIUJU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFE1440734;
-	Fri, 19 Dec 2025 06:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC21C4CEF1;
-	Fri, 19 Dec 2025 06:41:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D6E4540E3D;
+	Fri, 19 Dec 2025 06:46:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDD3C4CEF1;
+	Fri, 19 Dec 2025 06:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766126516;
-	bh=HzEKMFvO/dlheq7ln+rLHMiIciSJnfxSw3qvsSgM+PU=;
+	s=k20201202; t=1766126777;
+	bh=GCtvC7JQ0sW45JFNIzTHFaQFaunZxr+uykDzvh97kGA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YVtdQwEF8ZPRKcW5SvddzS/n5jX0AfDpfi6uBms4JQBoUoqt9ySK4jaBmNy3/v93x
-	 z6plPJd7pHQPJi0rdGg6otDHy0kDOnOtoCE44riDat91Jzd2FPuTOFQIdLPehcV8Vc
-	 /9YVerVnQnb6vYuBKWOpS70A8Vj8JHFixjEJE/ZCzvJ70x1KVKgF7UfRg+VbDM6biP
-	 L0AHmjPx6QGhyeO4wwyfSQCO0pA6kUpAU2yGcVd+fG4cWbmPY87ukp71Cjr3GjAVyx
-	 4wLvcQ9WGBJeVO6Z6nfHX1mBcSqTDJBMEo0FVEu5YwMn/9jnbZ6mq8QvdNzts4R7p9
-	 fhYRoT+OpH1Hg==
-Date: Fri, 19 Dec 2025 08:41:50 +0200
+	b=jsMVxo1i4HZyEIFV7s7muMvbrYA1u4urWTJy/arP8omdTOVw3SZtZR/hvldWPHBiP
+	 R5R4AF2JueetEmMspogbZDMmog1r/MkpmXAQ4GLsbORnw79EhcW5kDAEU1JtB0oTCX
+	 XKS2Xy2mjBrRLpEfgrKfic5rLst27vfBT0VXefL+CZp/v2nJlWXg9++3xKgFNIpRPe
+	 zROYBcO2ZdINdHza/Sk9mBS3+87JXsUEHCWPlANrDPA/r6mjQJHsgs+NlQKso53RKU
+	 hr2MM0mHvhZLSCbQ1UAhGfBf7HxhpASl6j9gujFMYZ+F7GD98AGh30Ekb4OTLIdrs4
+	 HLKHh29bGv8mw==
+Date: Fri, 19 Dec 2025 08:46:08 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, graf@amazon.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, pratyush@kernel.org,
-	ricardo.neri-calderon@linux.intel.com
-Subject: Re: [PATCH v2] kho: validate preserved memory map during population
-Message-ID: <aUTzrnz3ZBm_APmv@kernel.org>
-References: <20251219030854.3527871-1-pasha.tatashin@soleen.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
+	dmatlack@google.com, skhawaja@google.com, rientjes@google.com,
+	corbet@lwn.net, kees@kernel.org, davidgow@google.com,
+	pmladek@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	nicolas.frattaroli@collabora.com, linux-doc@vger.kernel.org,
+	tamird@gmail.com, raemoar63@gmail.com, graf@amazon.com
+Subject: Re: [PATCH v2 0/5] list private v2 & luo flb v9
+Message-ID: <aUT0sJsDWZHGT-Q9@kernel.org>
+References: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
+ <20251218130725.1b93a521c039ce121de62472@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251219030854.3527871-1-pasha.tatashin@soleen.com>
-X-Rspamd-Queue-Id: DE844A0009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6wuqjpgynuimegtnraczzppse99391kk
+In-Reply-To: <20251218130725.1b93a521c039ce121de62472@linux-foundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1766126517-996429
-X-HE-Meta: U2FsdGVkX1+4fkWkFtJPxiHyReU04+nkxSjRKCuQDZ2hcyvAhfH/RGqL2F2KFDj2LYq4ZanZuv9Bd5m5aeM/FqSi1Wa7sF29t0uG/YjtTCdqbSAnxfp4eVoWuzLXz7LSgNdTtMxDA7QC+LcXJzljy82Sk7wfikDatcj4VhyDUx+YZKgXLoJky19IXoI4b3m2aGnoCNKgoCpel3CCim20RflencCQJ1MCmcr1PRdYR4j/gDbzAIyRqmsE52P1wSfRwJBpTPuOnlQLNoWGM7fyYH58VhcXHjUC6xc1VXkoft9cKj0R+bOhNI9hpqdd5fF8J8qAzBYUYJmw29Ur3+YnyVGONi2SYefR4tDEqWqDXEe+H5fXYOcPyeCK9K5Qk/xOLgtV3/hoLLWV/zP3bUV2yCaEfiCn0Bx3oBaCbnRAvtU2KXbamEzOOmKKmG3kd1456yZVtltWg15u9RYiD61E5vrFuoWnuW38OSTr/SURrSYPazXKFIa64pwN/PQvE5ppvXBXxOGVmOohs5GvDwEJx01K7uGuWUUGe//0DxT5cQPTq3sd7kqh0B7jS0NbStAHnwHVFEHjJHSkSH8tiM1L+H6CaMPqMupLrAhzFnNZPI6XPYwR8mng+uDh7NJsDkd9KqJLg6sRjslnkIEcbf6q/d/zwUo4Y828p/eSs58hWKBkgOtnSoi9tseQyZHZilL03dCWjD6R0rZHZkL2ZI4/Iq2CxfL2LhnSn2XiXeTyjIowHzCL7mayJe5Hd3eM6yHh+efQmsb/c8Z2NjPvYRXYt6W3gB+CGexSS0V+sNfWz5Xz4hfY4F/wY3Tt0e/GFZdJhx1I9eYZNtYjPyugkw7+aeIzMPg1QSj/B0xvnjIKFFjOzUj8Ky2CO6STKb80Ew8gv18XyfYm1FFZcImQhcycmVlTZzMXens2MAiRnt6lJWS5Tsg6+VuhqsItU6b+rzqgcc1lxtnJCgJ5fmFuj+0
- lRfZRRNY
- ocIOXrc+dBnJlcjQ9jxfcEDKIdD+ejNTD7qvjfCUhIOAXx2WhrD7Nl3cLhEtS4B755zhSm1t4O+wTjpZP/fH6ZsG5nNjlBrzOtxHGIgiInSyH/cGMtl67cZAcOTEt2MKbyluKsaGNmA3vZW58o+kcpTEhccT2DfbWJ8jmF7f14KK8qD+Z0JMC71XUB2VxEsvIIuCjA3ykizqXOAlmkCeoGwkiZlazV8EHvyQoOzFzpfIBLGR502pwrwaJSjGpIZvOtfR3L6IZdIwOtj6mMofvDGSwhf0NrHqqwkaf9ZT4ristRSmYqV3gAoQkv+4cEToTZNQk+v31+kuY2inPSDSeQnjg8qNkz+VJJxdwaJ4MVZt9PI/zqRB7YrKLEYNBtLZzMPPa
+X-Rspamd-Queue-Id: EB5354000A
+X-Rspamd-Server: rspam10
+X-Stat-Signature: xxhob68seqjcf7didg6p19g5qjmouhu4
+X-HE-Tag: 1766126778-325203
+X-HE-Meta: U2FsdGVkX18P3nLRWh7LMAoVQy14f4eEZErh8SL+sn2bmqO9va3vAMLOr1mSJGLWcJTgPZbg0Mz4fDKhdT9nPcxdKwMlzHN7GB2lMUJ95+SB7Fhr3aauYEdCye5kAs4Eypg5ZD4x76rSzgovjfjM2Gkas+xHt+yDLzsW3WsdyO6u1tlGwaVP5AtWgmsKiHnC6oQNqHkErTPBnRTG5GzbztNi8+Uilphg6a2JZP0IQgatpaj91+cbM9LNO9mXHYo8DT/6oQdHZ1WR1nnz1HpNagRdozGW00n2iOceXH9J0DeER9kP/dr9iVRJV62tQQ+Y0ZNOoirhSHkOfclCmTlgu1wVTuC7mDxz+ka7Sw/lVHWVoiOLel3/z1jVVuaDUOfC+kmKt2uoIcVpG6L6ElzD+KQh2pDIq7e2gmgmE6k6UYQIJNqU6FAFM3i7s/HmCZBapaKx/uLA/b2BdkaOTkPz+jP21mku7sDuzmGQnwsIp6AqVxTeF3KugtKALsJEjwr1v8j1xy00DbgjX95XagNJwFOySfuQW+8pnvjooshyeNSyfzSTObw30W82frjlteO/Uuty2/UyXB1jMsGVB7o1CFbxzkHVPDL5fZLsLXW0Xh+pXKoI/FEyx/JjxglMDsjtFoRSOwq02JEceOBehMynbfvujTRDH4o9XeFRI6o2RVHxoxoKePqQ26x3uUCpiiYPz/drib4YnWzqeAiGsse68lCvzZQT1wa8CSCgU+F0icQnlFvQT0hwCrKjm++J7gh4DMwnMJnLP++FOvHcDPPrZ+/t3Ke1ZhAp9r5Go57rt4aUYUw8HQQp4SzIoq/aej9rduQaL1Qf/t8HMptmTau5LDewD8jmIifKMZ7x9sEPEbYjH8HKJuyp/gfbFKd5TRbTno9w5L6ZBYVD+ogRRDO+yPHZNZSXB87+NaQNOzeFi8EnyXY27NCJra8Ns91Tc/vgheGF0E+32CjzRkBTupp
+ 9/XrRVCt
+ ivqFFO29KndMb56PT01VMsi/h5c8TtWZ9jq6pDv7l/0+Wj+i5JRz/mPMlQgbf+2hqRQnDXz7yQJnAlFcd7Pqr7+r7MHi4yHkiliU0E9opAgVeWpvLjLgLMCYyVHtXBnO2eqpljbY38Hp6NmFdfWoMz8EmWmK99HFRFBpbttWO1HI9QZaYZuX9AVWlGEEtEKlqF460DMa3Au2SyO3QXFTZ6B42fWaXaR+aCX75rX38AiZJQs8dnRB7HCfQIs9TIEV9aa8Hwe4ZbGWmO8egoCQSn9RUV/HB5XsxsHg5MMrbjitCVgAittJ4wkzmPCYXZ39GvJdtEKzpU5XCrrlUJtOoq2AMWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,64 +96,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 10:08:54PM -0500, Pasha Tatashin wrote:
-> If the previous kernel enabled KHO but did not call kho_finalize()
-> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-> the 'preserved-memory-map' property in the FDT remains empty/zero.
+On Thu, Dec 18, 2025 at 01:07:25PM -0800, Andrew Morton wrote:
+> On Thu, 18 Dec 2025 10:57:47 -0500 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
 > 
-> Previously, kho_populate() would succeed regardless of the memory map's
-> state, reserving the incoming scratch regions in memblock. However,
-> kho_memory_init() would later fail to deserialize the empty map. By that
-> time, the scratch regions were already registered, leading to partial
-> initialization and subsequent list corruption (double-free) during
-> kho_init().
+> > This series includes two separate workstreams. This is because FLB
+> > should be applied on top of list_private, as it uses some of its
+> > interfaces.
+> > 
+> > 1. List private v2 (first 3 patches) Previous version:
+> > https://lore.kernel.org/all/20251126185725.4164769-1-pasha.tatashin@soleen.com
+> > For details, please read the cover letter from the previous submission.
+> > 
+> > v2 Changelog:
+> > - Added a Reviewed-by from David Gow.
+> > 
+> > 2. LUO FLB v9 (last 2 patches) Previous version:
+> > https://lore.kernel.org/all/20251125225006.3722394-2-pasha.tatashin@soleen.com
 > 
-> Move the validation of the preserved memory map earlier into
-> kho_populate(). If the memory map is empty/NULL:
-> 1. Abort kho_populate() immediately with -ENOENT.
-> 2. Do not register or reserve the incoming scratch memory, allowing the new
->    kernel to reclaim those pages as standard free memory.
-> 3. Leave the global 'kho_in' state uninitialized.
+> Please, no.
 > 
-> Consequently, kho_memory_init() sees no active KHO context
-> (kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
-> allocating fresh scratch memory as if it were a standard cold boot.
+> This patch series is intended for the Linux kernel.  Your grandchildren
+> will read the above wondering "what did granddad do".  It's just lazy
+> for us to expect readers to have to chase down links to earlier
+> versions and then to figure out what changed and why we changed it,
+> etc, etc.
 > 
-> Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
-> Reported-by: Ricardo <ricardo@example.com>
-
-I believe Ricardo has a real email ;-)
-
-> Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
-> Changes v2:
-> - Removed phys_to_virt() from kho_populate().
+> Let's give our audience a nice, self-contained and complete description
+> of the proposed changes which doesn't refer them to the minute details
+> of the ongoing development process.  A process which is utterly
+> uninteresting three years from now.
 > 
->  kernel/liveupdate/kexec_handover.c | 39 ++++++++++++++++--------------
->  1 file changed, 21 insertions(+), 18 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9dc51fab604f..6ba554208c81 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
->  	}
->  }
->  
-> -/* Return true if memory was deserizlied */
-> -static bool __init kho_mem_deserialize(const void *fdt)
-> +/* Returns head of preserved physical memory chunks pointer from FDT */
-> +static phys_addr_t __init kho_get_mem_chunks_phys(const void *fdt)
+> IOW, can we please have a complete and standalone description of *this
+> patchset* which doesn't refer to earlier obsolete stuff?
 
-Let's s/mem_chunks/mem_map/ everywhere please.
-And the comment would become
-
-/* Returns physical address of the preserved memory map from FDT */
-
-Other than that
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+And I would even say this should be two patchsets, one with private list
+and the other one with FLB.
+ 
+> Thanks.
 
 -- 
 Sincerely yours,
