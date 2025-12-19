@@ -4,101 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 492B6D78786
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0796D78786
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 15:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 996A66B0088; Fri, 19 Dec 2025 10:12:03 -0500 (EST)
+	id 53D166B0088; Fri, 19 Dec 2025 10:13:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93BE26B0089; Fri, 19 Dec 2025 10:12:03 -0500 (EST)
+	id 510E56B0089; Fri, 19 Dec 2025 10:13:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820176B008A; Fri, 19 Dec 2025 10:12:03 -0500 (EST)
+	id 427C36B008A; Fri, 19 Dec 2025 10:13:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C7EF6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:12:03 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 333ED1303D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:12:03 +0000 (UTC)
-X-FDA: 84236560926.05.F18A844
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 251FA40016
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:12:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=fm8LUnUO;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf12.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766157121; a=rsa-sha256;
-	cv=none;
-	b=utmbLfb4AVV2ZnigVUV98wZf5uNScVbxM6IVqaIc6No7DGBbXIQNyYC56aBPQSV6t3wCUQ
-	MERe+P0cKXS06xDWab5sZhRgaKzA12yPEigbhpA42aS4707CcCBVvXsOY6t39JsVk8qK4B
-	OYKzSURujoTGy6wr5M3QRSNybtbuQ/8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=fm8LUnUO;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf12.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DFB66B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 10:13:43 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD5331A0213
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:13:42 +0000 (UTC)
+X-FDA: 84236565084.15.A6C935F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5FBB3140006
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 15:13:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g2AK8cSa;
+	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766157121;
+	s=arc-20220608; t=1766157220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wDifhEBRD+OaehkuaqWPLTaYGTDec8iM6CzifJ5l/1A=;
-	b=fORofo4J/63eq/lCsbdIuNVqOxuEYKfEDT+k8S5wjxfUj9cdR+UYuaDkpIH+4w0las1lix
-	GFgGXrKbCWw/GhtpDB5rIN+3ljUDHGBsk0WkVV0N9r5lpCibb1QBX0CALmSOyCWvo/LuB0
-	TODdBzXZ8BQTz/rMZVaLSK+XCR40npY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1766157118;
-	bh=hbXC2AdsrfOcablKNwPdrwTw50dVWbz4YA+va0S+KXg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fm8LUnUON6zeA0olAxNc0JU+8h3LF7uwreCv3zmfhIqhq3cZIVfo691ye0odnLRjx
-	 ya8cG6pNcSmizToFufznzPsErbNG8+ZH6J8/ihp/tkBL8ElCiWasFSSGZU+do880P2
-	 l1a+SXVcQtzwxTEpXy94YKF/UUw7Nqg2rxGb4ZHYKfxrB4W7nnP9lXxKoLyrArRHrq
-	 bLgVJFttqPGml0Gd21HOgdDgLOl7Lu7Na2gMtf3T6O8kkpDPcNusGaxq00jP1xhGMJ
-	 L5O9f+aakBx+R/WoniuXLojoh1DXotOx7RC24OshSCo1vfg4S4JlfryWWrXkkNUgPV
-	 xl+2BLkR5XZSQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 820E817E0CA3;
-	Fri, 19 Dec 2025 16:11:57 +0100 (CET)
-Date: Fri, 19 Dec 2025 16:11:53 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Miguel Ojeda <ojeda@kernel.org>, Will
- Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Robin Murphy <robin.murphy@arm.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Asahi Lina <lina+kernel@asahilina.net>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v4] io: add io_pgtable abstraction
-Message-ID: <20251219161153.420d1c46@fedora>
-In-Reply-To: <aUVje_QZvJ9rjedp@google.com>
-References: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
-	<20251219140557.GH31492@ziepe.ca>
-	<aUVje_QZvJ9rjedp@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	bh=ZQ3vOUUQ1NjGmI17rM2LbdHZ3220JBGGJd5kbhGRHEQ=;
+	b=poFGKGcKqEZ5AFbwFMlQCi0Nwf5LU+5+VAeHpfk81dFxeUdCMePy3uPNF59QeIvMRghgCz
+	pDx6pEcdNae8upHPj6tU0jFEvpMynzuZAQkufwjvl1gW/QUXPJHa9GHVJ/RUAyJWUMsnrA
+	0j4k1OoFwt5Ic+88fqEikKY1zTcClqI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g2AK8cSa;
+	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766157220; a=rsa-sha256;
+	cv=none;
+	b=SarxOH7noUWbQwcsW4XuurSGdoIV5BEUGu9HQ+4lnbYdCZYjwv2Kn2zl3nDiX5UtjT7ykz
+	EB6gMxVSq83/dGlPkF/AuQZa7pSm6O5ZOsWsEyqWsFWJa6wEA0cRZmBm5AzBAQlpDTiOg7
+	iPvM6uDvY6TNWyzyDb8ZVxY7HefTsw8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766157203;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZQ3vOUUQ1NjGmI17rM2LbdHZ3220JBGGJd5kbhGRHEQ=;
+	b=g2AK8cSaoA2KOXtElvpGfbrUjkGBTjf7A0rAZd6uYXsDLtuVie3ud2VHr+fPyomu6Qf/jC
+	E4VtbRAnqgJooPOd2ecuj7bac59778ilRjGi0L2iDJl45bJEtJ+z4q/+ao/Jw1KQnN2a6o
+	WnL89oDfmYBdX3IByJU9HVi5Ls6W3L8=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-oCsorKl8Oh-DsAnIu8wSIA-1; Fri, 19 Dec 2025 10:13:08 -0500
+X-MC-Unique: oCsorKl8Oh-DsAnIu8wSIA-1
+X-Mimecast-MFC-AGG-ID: oCsorKl8Oh-DsAnIu8wSIA_1766157185
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b6963d163eso420292785a.3
+        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 07:13:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766157185; x=1766761985;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZQ3vOUUQ1NjGmI17rM2LbdHZ3220JBGGJd5kbhGRHEQ=;
+        b=nQ6jvqeYlKxsLhN0K8Fhrf0uIQDO+jAbYZrIoMM2sEVB9Bev5CD2I1oKObThCNkQ5A
+         FFcMUN2t89XBOKWbzfdWm3fNvoqt8fkL1pL1uE4ss7kz1fj1wHQLIF5wKp2LMdaVQkMh
+         ZP7zOx2el4y6sgAX45SkFuS4F9TNPNfCnGiS88dKXndl/uvI9hndRdVuPBikvkJrNvaS
+         ThuHysp9yBkMk+JBFHYkFmHO3yv0Bw7Sz349QvPuihMeKOGKFd4wzwOcw1YWmeDYy/aA
+         95qrNfAb0BiGFo2zi1Ui9rTZJRgGP5SBO/577YUR5HSnvs/mfdwVdCsCe8G0rp0HTac5
+         nZUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWEFkqJ4bhfWbUknePlo1IXTG59hKk/elRzGXZlsz+m5/KxwoZwxgv1xdJyPPcrhemq5gZedGl+xg==@kvack.org
+X-Gm-Message-State: AOJu0YwrszRRV92kT8cK2GU1JIm5En6AWS2GRv3rVMn0TBqDeKnLITWY
+	hdRud8CMoT6Ri/jA3aRWHnQ12QF7VSOW8xq16Bze+qXObYzQxXVQDJZ5NUj+qzMyg5UyHBfP3zB
+	Xj7ckrIqe68qKEri49FTi1EhMrv0sGYra1UWq4vewhuiavNaAJ908
+X-Gm-Gg: AY/fxX6z0zkfAxs1FwJTfusdQ1L9NtmGChxSjwBtxvaSsGmO/eeDJB1CMgBFla2e76X
+	2GILkrRePzby4FJs4wVkhS05YfdpwYZ9Nn6oK8N+RNkOP05wtOAHt2u9z9ghv2u8ux3YdeGMZLJ
+	HX/W1oxg5cWUMaQ+hMX7wvk1jPgob/PAFj7sU64ED4UakGuo32RADmFaHaolDpDMtDtMBNhHYVp
+	8KpqaPI/r/R9vsHR3sou7ir7OaryI2hmurjCCh+65nci25hMdYESCg0DTMEpAEbpfx0uvlssN3y
+	3iCkZ2mDcD9PDCmqnrZdnh8c6qdww3uKLiNjFpNU1Ujl+v9zUMO85+wtnXJ6eVvpTpa39ft/uQs
+	PIOk=
+X-Received: by 2002:a05:620a:2545:b0:8be:92e3:916a with SMTP id af79cd13be357-8c08fbd08c5mr525924685a.88.1766157184857;
+        Fri, 19 Dec 2025 07:13:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEABygr+TjXx8kPMcVgd88EC2i1KOIT0Poa6j5o9tNZ+dAjo/xEl7EzQTikQ39L491y0GI2Tw==
+X-Received: by 2002:a05:620a:2545:b0:8be:92e3:916a with SMTP id af79cd13be357-8c08fbd08c5mr525917085a.88.1766157184316;
+        Fri, 19 Dec 2025 07:13:04 -0800 (PST)
+Received: from x1.local ([142.188.210.156])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0973f28e3sm210526485a.45.2025.12.19.07.13.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 07:13:03 -0800 (PST)
+Date: Fri, 19 Dec 2025 10:13:02 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
+Message-ID: <aUVrfs1w6Sg0jfRw@x1.local>
+References: <20251204151003.171039-3-peterx@redhat.com>
+ <aTWpjOhLOMOB2e74@nvidia.com>
+ <aTnWphMGVwWl12FX@x1.local>
+ <20251216144427.GF6079@nvidia.com>
+ <aUF97-BQ8X45IDqE@x1.local>
+ <20251216171944.GG6079@nvidia.com>
+ <aUGYjfE7mlSUfL_3@x1.local>
+ <20251216185850.GH6079@nvidia.com>
+ <aUG2ne_zMyR0eCLX@x1.local>
+ <20251219145957.GD254720@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20251219145957.GD254720@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SemwJSU-xRjKPCdscNeujnJFVCCMAeFT7QoBdwPbKmE_1766157185
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Stat-Signature: jmwirnjhdrh1dhm9jenseqkrrhd6ejqd
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 251FA40016
-X-Stat-Signature: 3w14q39wwri6rta8jej6p4pic3bykhbn
-X-HE-Tag: 1766157120-911443
-X-HE-Meta: U2FsdGVkX19oNc6lVwj7RKPWI97DIQQHJ7pfEh8ascrYbFYslZj+BrowzJvKznvGK0bnjp9rjKYAX1x4hXBTSOv4Y9aOuCoqqvKkulmI6jySOs/pCnSQA4/BlaQIO0shTC48cb5K95nK0g5m2NKCr3XgYhRfLG23YpBuwbjX4TIx4YGERpdwNyyffyZJlSKagchM2zUagL8df9sbY4Op+YpJQq099ksV9VYEHgaKy+gcEfCDhnjF3U0DbktzF76ERoTiVzZ0uEcsvecA8fAudTFdfJtcfSSGo/9hnhQHmiuuPszgDoACiOO5KxN6FQJZiHJKsnfYno0Io6HhIct29RVCEk8z63RShYGPBRrTH3M0H/8V7Ev9lO1Atqon5WZPe6NhAjK4Ky9b+TQsdvAfQ3m4qyn3scNCs1OdC7qmMhKmHvYa7oUAMivRauKODrtldBW6aeEdRUeQmDd+aSkMWQLRzHUzF0+1kLRSDTq1RJgg2YeDJAVxXafgd/pdiCeui4PXpnVi/n6B7wR4Mb98tJP5VXRmh7Mf7ikJNhGiFAKVT4Omnm2TZUPOdxRTeZwJnM9BFzMm8XDB37WRS9Ke4sB8al4ILyAdKPdh9WmWwDPhxtt4MAmdVnG1Lq0NkfmO5Vb1QzGv+zS0KilKuVM9WTH3+RQtimdQdvPDm3GmarfNdLGUaBOwlGRNsGKcGnUgbtzw3e2D5gqZ9azEB2AaeHUygIda4z5+FB1avfYtWfkAUDyeKhf3CxSeMRs9gS1/1ym7/0HfxUaX0//Ch9I2sKAnVEeRhuHkrmD2h69MIVJjICzkPSDYcPJwP8IxqdnPq3fKrr3ziLMBArv+XaJjXneCm+9UVYjzSU+ot9wdMKIxw1DSdIQp3qqHrUzKhu3gmf2kqwMWMkngWuN0pDDeSrUt1ZPGqboDseY7imS7/Lez0Pc4HqGejK5+o3SibAm4eJNSYXiPfQMhe2+iHjd
- vNjj7uPj
- ZPuT71vqLdXilB4P9rogwrGwHCvO6AHg1fi1cjVmgj3DcoMoSBlWeSC+pMHWAHrT1K/k+B/+uD+4XxoPx65ZFKjCdV3ML7xVHbqqlsUMsUzVy+PCK0RFXiVsqGOORYv0jrF0+QZiXQphed6dKFkyg3FI3HASPrDap+yhoKtPAJKSqrdMSaz5GUB2pu/Runz3Q8MCC69z00Q2kaMKtxhDJ86qS1nT/kSpM9vIpuBfjHl3QiUNhLRvdXWn9NphARu8JUJ+WrN6OGHqhz/SC11FIvXnAUc0/L6aIAEfzm4k2uiQRBpHbhB0vs/Qc4QgN2kV/cvQNn48D05o0S0/nWFDGx4CNJQoeVNji30JyzzbjMkAT8fwTd4wrDTQ2rOrZgBy1Lm7cAMWoCmnkN84Ppz9JShJE4yXCF9awRcvJr21LPK+5lZU9VtTlyDqe6hPgz00Qq2x2e64DZgYRGh8=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5FBB3140006
+X-HE-Tag: 1766157217-414511
+X-HE-Meta: U2FsdGVkX18ylR5qMiNH/pyEiN9QRLRPwJntxqhuckQio+2entWz9wSo8ATX95dvjF8zKpjPoinAFYIMywFaBxI8S2hofdEgHSLlEPKWM2sZs1o2Hwc7O3a/dvhxocpUPfLS7NNG7upWRVyMSfuDwi7bv6KO+WfFynx/ZzFruhzfXDe1nNR0xHoRniMGVgNF30qmGRaeyCxkcQsG4+BDeyNFQmPq+G3js4b2xkHROgSYxFEeJVOvs2UfoK15vtYlKvTK2qXVGS2HWMxw6eobZ0HOp4ajFtMwDkAiBEGLEUvHyXNjF2oRVN9SUXzh5KjzWdYVfeOeGjeLfnOO6ujrRhKCAyGnNXyD4jcM1KCt+XvmM7bDsXEBXkkE/19+qZrImErVIrObEPSfnjM+vvnFJ2DPFmSaXgqvnqXDXp8TYd0HmVgv+4Lm1j5wvUiXMUE0xoL4mE5fYUWIGBh67DKh1iapyAaK/+YDt6xAqm4A/4CuC0vP27rYiaotFfLsMp+OWdW9s7fDkYvbQts2cqwTNV3pWK3YXTp4/nySr76F8xXcPXokBLAAn7C8ED9YAZ9pnGwsMZoTi/X0o8EdkjRqksZm9twXkDCfOQvdfCeD0GsON/DDsgwfvQD5vve4OTe5SXRV9VmZ+IANI12oitDG0WbgqIqskJoGlY/CDkjIEw6tngigfgahFpGmqeWOLzXBSfSHIs7hWubp/WQzmI6C6tjbjlfjOM72QwRqa1wN00MIDg+kn9iYYdN6XITJP2CEnrtuXIrGLoi9JhrmrGLbBQ3n0sWTtIQ281Dq6+JxLMuBA/Zj9l1LYturiGcaRdSvUxYAeIO+TpnRD2TYYTBf3nySMdf6Uef6DGqJ6r2xouV+/fXmgcpQyo+ZNcQdX4tzDiGI4NwKZoo/8uJfTO1IMJOMleHVxycxnlH/LGgFGaBsIgw3cOTinZeMAyIRozYeLW9OlyGN2bOL5JzNTuu
+ /fbFJJAn
+ u+z99TxCCo+tsp6ti0dJ4MLwR7ic9JwA+73wT8IzonkyGPHeCbUKq2SbK3XA/f2N3ZlE/10vZSR73Tyio2jE1cH51Fj4YyL560Ud45TMozsr5F/p04E5LL3hP8j4s4HdSv+gkToXSV4E+t6p/6h93YfjcV55otJC2I4jluWHK47udYh3R+jENccsBYOjTFLw0TpVC4BRV2IYwR47fmiOJ8oFoU+y18FexRa2Lb2+BS6VSi95IEYGXjLx2BC2OlyxHmlaKMFqUkcgxKm91ACuax9+ZD5DYdse/z7t08upmnATinvxhvk3cQ4WILJuULWo+XxU2eStlc2pqVIQlhdnFE8iJ8de7qYU9ViSdvdVcbM0vnuIYDFbyKtbYblLixOM+qPkBHsVmpCNflbQyLefUpSZZ99ve6wxo7ec1WRS4jFVrSfoUDweYX0Uk0HDfKoKlsqQUB1vaPd+1Q6jgd1lLhawRP/PK23dpBrJppSTrbAa0rGq2fU9j4KnAwQkikAp8r4VY4axHgVNQ3d4zZKMOFlsmzAH2VXTtcu7S7RT/XFRb+Fw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,53 +142,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Dec 2025 14:38:51 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Fri, Dec 19, 2025 at 10:05:57AM -0400, Jason Gunthorpe wrote:
-> > On Fri, Dec 19, 2025 at 10:50:52AM +0000, Alice Ryhl wrote:  
-> > > +// For now, we do not provide the ability to flush the TLB via the built-in callback mechanism.
-> > > +// Instead, the `map_pages` function requires the caller to explicitly flush the TLB before the
-> > > +// pgtable is used to access the newly created range.
-> > > +//
-> > > +// This is done because the initial user of this abstraction may perform many calls to `map_pages`
-> > > +// in a single batched operation, and wishes to only flush the TLB once after performing the entire
-> > > +// batch of mappings. These callbacks would flush too often for that use-case.
-> > > +//
-> > > +// Support for flushing the TLB in these callbacks may be added in the future.
-> > > +static NOOP_FLUSH_OPS: bindings::iommu_flush_ops = bindings::iommu_flush_ops {
-> > > +    tlb_flush_all: Some(rust_tlb_flush_all_noop),
-> > > +    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
-> > > +    tlb_add_page: None,
-> > > +};  
+On Fri, Dec 19, 2025 at 10:59:57AM -0400, Jason Gunthorpe wrote:
+> On Tue, Dec 16, 2025 at 02:44:29PM -0500, Peter Xu wrote:
+> > > > Or maybe I misunderstood what you're suggesting to document?  If so, please
+> > > > let me know; some example would be greatly helpful.
+> > > 
+> > > Just document the 'VA % order = pgoff % order' equation in the kdoc
+> > > for the new op.
 > > 
-> > This comment seems quite off..
-> > 
-> > Usually you don't flush on map, you flush on unmap. The TLB should be
-> > empty upon mapping and not need flushing - except for the rarer
-> > special cases of clearing the walk cache which cannot be detected any
-> > other way than using these callbacks. Doing a big flush on map to deal
-> > with the walk cache would be worse than implementing these callbacks.
-> > 
-> > The flush on unmap, at least for ARM style invalidations, needs these
-> > callbacks because they provide required information. If the actual HW
-> > does not use an ARM style invalidation system then this page table
-> > code is not optimal for it.  
+> > When it's "related to PTEs", it's talking about (2) above, so that's really
+> > what I want to avoid mentioning.
 > 
-> You should not assume that the way I worded something implies that the
-> GPU hardware does something weird. It's more likely that I just got
-> something wrong.
+> You can't avoid it. Drivers must ensure that
 > 
-> It looks like panthor / tyr flush the range that was modified after both
-> map and unmap operations.
+>   pgoff % order == physical % order
+> 
+> And that is something only drivers can do by knowing about this
+> requirement.
 
-There's actually a confusion between TLB invalidation and L1/L2 cache
-flush/invalidation. The things we can decide to flush/invalidate around
-map/unmap ops are L1/L2 caches. The TLB invalidate, we don't have
-direct control on: it happens as part of the LOCK+UNLOCK sequence, and
-no matter what you execute (map or unmap), you have to surround it with
-a LOCK/UNLOCK to provide support for atomic updates (GPU is blocked if
-anything accesses the locked range while an update is on-going).
+This is a current limitation that above must be guaranteed, there's not
+much the driver can do, IMHO.
 
-Robin, feel free to correct me if I'm wrong.
+If you could remember, that's the only reason why I used to suggest (while
+we were discussing this in v1) to make it *pgoff instead of pgoff, so that
+drivers can change *pgoff to make it relevant to HPA.
+
+I didn't take that approach as I want to make this simple until it's
+justified to be required.
+
+It holds true for vfio-pci, I hope it holds true forever.  If not, this API
+will stop working, afaict.
+
+-- 
+Peter Xu
+
 
