@@ -4,139 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D235BD7879F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEE2D7879F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:55:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193256B00AD; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
+	id 15BF46B0089; Fri, 19 Dec 2025 12:55:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 172716B00B0; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
+	id 101DA6B008A; Fri, 19 Dec 2025 12:55:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09C766B00B2; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
+	id F19036B008C; Fri, 19 Dec 2025 12:55:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5796B00AD
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:46:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 97FDE8983D
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:46:46 +0000 (UTC)
-X-FDA: 84236950812.02.E740C7B
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9451B20011
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:46:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E xazx2S";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iRYwswjU;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E07BE6B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:55:46 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 942B6589C5
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:55:46 +0000 (UTC)
+X-FDA: 84236973492.25.CDF7396
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BC27D1C0010
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:55:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=C5YomseO;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf21.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766166944; a=rsa-sha256;
+	cv=none;
+	b=m3FLpejK3Jukewe9SNoCJjMoOIa1frhymy2XVx9ny6EhSk1cm0zrt3rXZhXz2P3hTvgDv9
+	LVfZzgxNitbmjLUCVYVggTQOonpUOwMRcVHjZTxG9xu5dOl2XyLmvCwI/14zCSpLf3vjlB
+	ujLPWaRaF31uAudPadjF7vJoHPbVkrs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=C5YomseO;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf21.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766166404;
+	s=arc-20220608; t=1766166944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjxfX+HLNZM=;
-	b=j0ElGLAIzMYis2EIWx1xmHEiXsmLgkWE0wyJQuNjsmAu8DIwB3/fnmLqOsBfObOyBirzQD
-	R1L4bS4sK8sDQqJ7n0LN2Tlg6ELnOAUfBR80vv87okNruXP6iFIDmyyZkVckb5AJkqEg45
-	EH+Q22I+BoZGs+dOVb2EG7uewMDzFwE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E xazx2S";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iRYwswjU;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766166404; a=rsa-sha256;
-	cv=none;
-	b=wBF2M0xCN1EApNRWR3wRK738vfWei+J37AaPDLIDHEgefPSmbjZdWuDXJqG2FlaMrjMZTo
-	vAwoZA8HdD6aTrRK7goEIafGb/w5LJA4GbabB2w/LgI4hEmT0MIQUpyMTh0qB7UXrvF8vN
-	qFUPYBMB86FsfLnWMW8Yh3rXdbPP0yE=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id C5E7A13800C8;
-	Fri, 19 Dec 2025 12:46:43 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 19 Dec 2025 12:46:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1766166403; x=
-	1766173603; bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjxfX+HLNZM=; b=E
-	xazx2SrMIw9ZUs9geIvDyOTgE0ar83/WRcd9GqsSMB37Ch44sNAA5iXVCBDj5yiR
-	vqpKok5koCnvVk+8aV2e5qLtBG9cwzVDtn/lGjtgjQ80NI/f/R7HTDViP9g69BPV
-	cSqUmD3lmZX5wRB7nDLkwXtkllaTqeItQDVT6qTI8NK3KTgTq6hfjO9A1yVbesXI
-	52xjy10TW6pQHl88NEJt4PC1Svb/uDQjguqgyQpsCynFGKNlEBQufJ/sOtog0kn0
-	3HyupMLp/qN2mf5LTDYvNSv2mC3Md14su2l7pJ+pi3LuqC6TlVH8B99oGiHETkkP
-	IA1txELq2o3E4b7vDlqIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1766166403; x=1766173603; bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjx
-	fX+HLNZM=; b=iRYwswjU6McptpLB4eoG0trSl7tYnPgD9kLXZSpd38cT8DlVhGX
-	6Uq47MPgTn4bi6Ct92Lm1/Iz3/C7XhZuJTuiliUJ78p7WL4JTv24sb8mw5O+qLp1
-	LCPxyHVpjV+xtSS4dHBUnpi1M1x6U1RKCz/0tI0YTZX5EPHDlIpC1PT5w0Cnhqcy
-	nxDgLXXlsysE+3bzLnWJSVA1TFeNLCVIXKcZKsIvWW2hKmpaLvyVy2tWsnpY1UCl
-	+p9nDrR+x0YQRtBYGrVTndTf7aJ1FxBga2i2CwlE7bOXQpmK4h8CqZ93fN0+dCc4
-	JpW/R+YHG3MSfOi8dIslJnfFVHGJcLgufcA==
-X-ME-Sender: <xms:gY9FaYL-bsVWqQcrv9ei-mfEnvFsaG2tR0P3rEPkTvgeVGV1Y29Uog>
-    <xme:gY9FaTDe_dbmLZ7wjF65wzcLzAxS-vtjM9l_l-NHzbY_0jyJwR2ZmUedtQMVEvkir
-    PECOqd7796TwIR1FrcSbminLnmG9bPV_V5u0u7Bhb650aCO1D0PPQ>
-X-ME-Received: <xmr:gY9FabnW2jUf2ioE0zD-vYESI0xDb5sxBU-Pr0eOnr3Zs4J4Mf1DJrTrpwgGZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegkeelfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohephedv
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehglhgrugihshhhvghvrdhilhihrg
-    dusehhqdhprghrthhnvghrshdrtghomhdprhgtphhtthhopehguhhohhgrnhhjuhhnsehh
-    uhgrfigvihdrtghomhdprhgtphhtthhopeifrghnghhkvghfvghnghdrfigrnhhgsehhuh
-    grfigvihdrtghomhdprhgtphhtthhopeifvghihihonhhgjhhunhdusehhuhgrfigvihdr
-    tghomhdprhgtphhtthhopeihuhhsohhnghhpihhngheshhhurgifvghirdgtohhmpdhrtg
-    hpthhtoheplhgvihhjihhtrghngheshhhurgifvghirdgtohhmpdhrtghpthhtoheprghr
-    thgvmhdrkhhuiihinheshhhurgifvghirdgtohhmpdhrtghpthhtohepshhtvghprghnoh
-    hvrdgrnhgrthholhihsehhuhgrfigvihdrtghomhdprhgtphhtthhopegrlhgvgigrnhgu
-    vghrrdhgrhhusghnihhkohhvsehhuhgrfigvihdrtghomh
-X-ME-Proxy: <xmx:gY9FafFXRbY4sb5fGPF35vKKf24lSM6JmJ5LB4oibWq3tjbQWSjaHQ>
-    <xmx:gY9Faaiq43KSrQaI_FyCO2dZYBQMTNNAmEI5gfjSPFb4OVwx8sTJyA>
-    <xmx:gY9FaXd-kKsU4LZXAWbcuBMk9FqgWtrQlNeSsayZ5NqvSqieWFwAkg>
-    <xmx:gY9FaQ-IOYlRU3dhSD6rFg51kB1cJFGEFMrqqFEdNAQXk6_EO5Buww>
-    <xmx:g49FacJDpk8LC7y32lqUDNGe4jcqDf4325jPHcPWprbCELfuq3eQtEUF>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Dec 2025 12:46:41 -0500 (EST)
-Date: Fri, 19 Dec 2025 17:46:40 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-Cc: guohanjun@huawei.com, wangkefeng.wang@huawei.com, 
-	weiyongjun1@huawei.com, yusongping@huawei.com, leijitang@huawei.com, 
-	artem.kuzin@huawei.com, stepanov.anatoly@huawei.com, alexander.grubnikov@huawei.com, 
-	gorbunov.ivan@h-partners.com, akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, harry.yoo@oracle.com, 
-	willy@infradead.org, yuzhao@google.com, baolin.wang@linux.alibaba.com, 
-	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] mm: implement page refcount locking via
- dedicated bit
-Message-ID: <ans3mrfqd6jv5hfarbx5bzsl2ugtatbfyjw2vlv5ybuhevjc4i@46f45fdds5m7>
-References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
- <81e3c45f49bdac231e831ec7ba09ef42fbb77930.1766145604.git.gladyshev.ilya1@h-partners.com>
- <iv7m5rmuwssltl6yzwuop3ry5s4l653lykyvrmmy6qdbyyuoew@th5xuev3mwus>
- <9822c658-c2f0-4b1c-9eef-9ffa865e44f7@h-partners.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sNe/0MAXAOC1VNXdnuf7J8X0YhBVVBH20168b+oieb8=;
+	b=7kCn+UTLMrqVorCCCF13dg9BWzHFFp/0y8ee7SxgYh4HQJiLSSQTrmPWYmaXPRKI3AvqLh
+	kLHC7S+gkKJB+QERdpOa04ftO0VoRnwa+mx23w2AUFwQTGX87h8vf10on3nT1BFNDZ4A4c
+	6vkzqCCKyy9J/yUVAt/rybU9VY+IGmo=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJGaEGc2980959;
+	Fri, 19 Dec 2025 17:55:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=sNe/0MAXAOC1VNXdnuf7J8X0YhBVV
+	BH20168b+oieb8=; b=C5YomseOba3BQsI1NdbPM6SVMDzclhnRb/CGjwqf0gjzn
+	eGS+kgNYoo0JQwopoipUM1641QraMXjNy/gdqbYOnTntqHs0z1qQzEL9V894mXbb
+	yXrdPvl9fG8Tc2gYhs9PBbNGfTkW3eHyQCmNmtXHucj4KwOLHt1NoqTDtDoprjWV
+	iy1Mg9XkHshXAqEhBWnSzg3Xjs3DA5MzD9f6wE01kZMcHYO73nn/u1E0nPKblC3j
+	dH4Q+MVvku5yDpCJie9Hhfdrg7DVSvQWX7DjN0dJsYVaNYo5JxIQPxJ7Np1UoagE
+	LtDDA10+f8O+SiYuf72z78FhYgHdvKJ+kA5PXaJlA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b4r291h5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 17:55:35 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJGgUiV023755;
+	Fri, 19 Dec 2025 17:55:34 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b4qtb984y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 17:55:34 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BJHtYGX015634;
+	Fri, 19 Dec 2025 17:55:34 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b4qtb9844-1;
+	Fri, 19 Dec 2025 17:55:34 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
+        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
+        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
+        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
+        mhocko@suse.com
+Subject: [PATCH v2] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
+Date: Fri, 19 Dec 2025 10:55:16 -0700
+Message-ID: <20251219175516.2656093-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9822c658-c2f0-4b1c-9eef-9ffa865e44f7@h-partners.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_06,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2512190150
+X-Authority-Analysis: v=2.4 cv=WZgBqkhX c=1 sm=1 tr=0 ts=69459197 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
+ a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=f-Xke4JHVjhQjhv6I2sA:9
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-ORIG-GUID: i9u8nulIWI20L2djzK7Y8_P-03FJISUO
+X-Proofpoint-GUID: i9u8nulIWI20L2djzK7Y8_P-03FJISUO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDE1MCBTYWx0ZWRfX2SrnGd1Q1guE
+ zmC0VgapUQCEqw5sPzeXeHlV+sET1e0cdKC+zAprTS3hiS8UROJKxzuU+tHRteBm1trTn1xsJji
+ 8VvJwEkPN4svxeGNsIksCKurKHjRmWH7gCXp3flRznry7VmET+qlUDewanBnds7dHpjxWv4wBK8
+ rLlGI+qMrliSdKkICnoPegHaQI3jkR9unI1NyJQejC9DwylPYCV2Ec3vUubgcxeFCXAw+fGIId3
+ cP8eZW7wnedSnOM3GP3g4ob6cK4Qumd/xW/7p+ZR1HEM6A6SwcvJTx+W23ZuoQevutlxKNVOHFN
+ 6q48YAoRCHfOa9P7ruNfmsyrgkWbnt6E5APd8R4v+Sv7Y+peBB17h6vBeufDohc9xy0v50OynLE
+ 12RdbNj1PdxvPjaRPqdQamuVqIDplV0xDyVBd6QlsPpYRkvZhWNPDxcVXDcKZkhzmPPNIavAYOR
+ Vlp9HrUEH+weJOgonUQ==
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9451B20011
-X-Stat-Signature: gsp863p6ksb7ja78adm1d6tigs383nqq
-X-HE-Tag: 1766166404-260394
-X-HE-Meta: U2FsdGVkX18nipsNdqsZCmTLNUkfn5Jw8r4A0KmTV3ByUkQKnBliAbFos1Qr8XgC8E5m6f+bL0rH+wtK0k8BZF8nOx2HOcr0affiu4CyP6t/iDjjPODyLKveKVc8aYMYYeLD8iRvgTfHp2BxbkRIxXN3jEzH2oqrjy2wXn7yenvIyF7tsyCEsySnbkzdYSiyyS3oloGU7MUZAxd0WgBvivbPO0iFzwCIQwyPQi6KqcH7f1IhqRkSqMHwwZnLzh8WCHKuKvuuoXmpKCgySOFaFQIzDyQOFvRXucgQp5Zd6zc6Fl2k1Ggik1c/AJPBtw3U6Rlz2bK+7egVKaiU55hV/aSXMaD0y3UuXSO2tobXBPqKCBDjcRubaJm4nfWwS3Xbf17avEwBDI4lbSlaetzKs5o+RpxjQH9aJ0WMMYdxjR+eBR5YkAnPTs+Ljwsc3/N2383QuzeYex+Rbbe+mPzfvy76QTT1B07Lv5OMzkWTtx9uHzfYGkpiBqulJ676i1m4d3D3lfxtMzS5qm7vHz7UW2xg5ZU1XmX1b30pAKIbipYxBcu420WN5oJT1/kHSGaAC8Ww6fRntV+8gctwj6nvGAizYQfzHGwZuYWkuU9+bJFGfY0log+Wls5uN+6by6ONsdg7iO2UAW4qRpUwCYJgp60eHRgJfOn56AgrMaRcDtZGphgypnYzhaaVKfqEuLEunrJorJAoy0L4ZkUKheOmmNpLnzViyfXN7yLvfGltbEODr2WWLOkonNH6p9rgydAryfz+p8R04ucPoXy5+hMJoLVJcR4Rkosoxm1CbIFRDkR4+GMmY6y+VW9U8TOQ/28H16uAw4iCizljo0NytjZFXldoe/0sGb1GjH1hPIDml9dQg2xKwUQazOHHRUFGjwKy1tO0YGbAXuyZeqK67aiGgTL4pCLgT0whmskIGK9Nv+/cMZnvCknwMn3T0YnEyYhhdmv5GUsZ3ohh+SRXI3b
- I9otGe8U
- UQM7cv6JNuiyOWC+xZBFazlrR0lgfXsCT37a0GdrrnrFpkyxLPjXUJ3SEREgfo8IlE9mdpUQqEFjS5AeM0OBFnT5/HUO+srSxofERfI2vqBzxglHs60fsqBbmHpzvX4zkrn7GJxs07u/LtVuRx81CK0CBcCpsZh/u6Djn1yTIVhmL1wN/+0N4Bdh3mkFL7oKAMy8bqkO9BzmTyjhtHWwmuXrB2Lkp7H/01JkzXm7DN6GYKLGl45NF1xyd35SbInipyVMwU0d2Qy7jn0O8+sHgQwImuMSPkRQg3caXZA9oKNfhKME/zG1OpjO49WNV6AaNsxfUbbLHtyQY7rQDaRZuP3dP5FBAAqy+5pk1WKLpbOO8R6C97yYHMCtLpwyMRd9YhmbLpe4tt5hPUTvj79RYOiWPLvfI0Pli0cebcAKgpfI+BO5pI5di9TPR2Tjodqc8QTEK
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BC27D1C0010
+X-Stat-Signature: c1s979rsj4zmux9phaa1wgtar3h1dkaq
+X-HE-Tag: 1766166944-422912
+X-HE-Meta: U2FsdGVkX18h7w0iJfwPxFR/K4d1ouU0BoFCFvSD6stRgCBSJ2p4HDuTMpQ0xFMzqJ+6sUUAGftKNc/25E6cRcWi5Jylbj1wjoRKWHrEDQEOO3yfXKiwWMBF5lhhaKFYWzkb9YL+P6sTamF/E29gjut2lCuEfkulWdarJ6I3HhPYiQ7QM469q/KRG37P5V43hbGCLC6Ooh1fbLgNRhPzorgADoZT26psj8m+6qtm9kGKn02pmJN+hTkugWjxtcQO7UTWfIUk6VNFhAstt5TFWHLp4nCGVYHttZvUD6us5C1Lh2p+GmRgKvRf+/EpCRnsjUec4X6uoC6OasxV5x4IQ+YixJUErOcYQA3gRfxgLSyMoHiq+oNbtxsSUGQjuaBH0KMPOXJjEh81/01xJfIomnVdOD3OxD4LPDJ4hrX4wHndcabu8pwByFf/G2STghVfx76oqUXeqo/IOyNxI8GiFz1ZoNcpCT5n6AfsXJya/QF3TSwuFzGQvvQ48xxUX5Lz1U9KIuuhVICTBxv7tFfSpLMfXcJH6ekKOSN9H8SydyJ/J1HcEEh5FVTf1JWRmFIng3GnhhZSQN+/vpksr4Vfrtt9NwtkR1nzU/ghtF7Q2ZXqyEapEaGBEwhzT2Ww8RtuD1i/keJUplo4yE16rYDi/o/jXw8sWWzqh9Q8kmPw02iNirHnRWR/PugS5zP9ZRY8NHFHMTvR+H0iNondObFd4OIoyyPV+m04wJEmEmgTnT+ezLCrb+PTNmtn/zX1GEiVGbtrwAJ5/Xe7kN13p+3CNuVLGD3Pz/zv0v4sj49iYJpuyHWfRgGsy3BpnWaowoa9adtsktz5ttbepbzA3op1H+UFcsl88Er750qFloFmYJTRVTX7WzSEOluxoUqo4XCvcQwwxjRU+4Nzdm0KYXKBvQQIBdre1New/yVQh2eHicyC3iuMVluDXAIhuiLOgTv7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,60 +127,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 07:18:53PM +0300, Gladyshev Ilya wrote:
-> On 12/19/2025 5:50 PM, Kiryl Shutsemau wrote:
-> > On Fri, Dec 19, 2025 at 12:46:39PM +0000, Gladyshev Ilya wrote:
-> > > The current atomic-based page refcount implementation treats zero
-> > > counter as dead and requires a compare-and-swap loop in folio_try_get()
-> > > to prevent incrementing a dead refcount. This CAS loop acts as a
-> > > serialization point and can become a significant bottleneck during
-> > > high-frequency file read operations.
-> > > 
-> > > This patch introduces FOLIO_LOCKED_BIT to distinguish between a
-> > 
-> > s/FOLIO_LOCKED_BIT/PAGEREF_LOCKED_BIT/
-> Ack, thanks
-> 
-> > > (temporary) zero refcount and a locked (dead/frozen) state. Because now
-> > > incrementing counter doesn't affect it's locked/unlocked state, it is
-> > > possible to use an optimistic atomic_fetch_add() in
-> > > page_ref_add_unless_zero() that operates independently of the locked bit.
-> > > The locked state is handled after the increment attempt, eliminating the
-> > > need for the CAS loop.
-> > 
-> > I don't think I follow.
-> > 
-> > Your trick with the PAGEREF_LOCKED_BIT helps with serialization against
-> > page_ref_freeze(), but I don't think it does anything to serialize
-> > against freeing the page under you.
-> > 
-> > Like, if the page in the process of freeing, page allocator sets its
-> > refcount to zero and your version of page_ref_add_unless_zero()
-> > successfully acquirees reference for the freed page.
-> > 
-> > How is it safe?
-> 
-> Page is freed only after a successful page_ref_dec_and_test() call, which
-> will set LOCKED_BIT. This bit will persist until set_page_count(1) is called
-> somewhere in the allocation path [alloc_pages()], and effectively block any
-> "use after free" users.
+When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
+passed head pfn to kill_accessing_process(), that is not right.
+The precise pfn of the poisoned page should be used in order to
+determine the precise vaddr as the SIGBUS payload.
 
-Okay, fair enough.
+This issue has already been taken care of in the normal path, that is,
+hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
+correctly in the hugetlb repoisoning case, it's essential to inform
+VM the precise poisoned page, not the head page.
 
-But what prevent the following scenario?
+[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
+[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
 
-		CPU0					CPU1
-page_ref_dec_and_test() 
-  atomic_dec_and_test() // refcount=0
-					page_ref_add_unless_zero()
-					  atomic_add_return() // refcount=1, no LOCKED_BIT
-					page_ref_dec_and_test()
-					  atomic_dec_and_test() // refcount=0
-					  atomic_cmpxchg(0, LOCKED_BIT) // succeeds
-  atomic_cmpxchg(0, LOCKED_BIT) // fails
-  // return false to caller
-// Use-after-free: BOOM!
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+---
+v1 -> v2:
+  pickup R-B, add stable to cc list.
+---
+ mm/memory-failure.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3edebb0cda30..c9d87811b1ea 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -681,9 +681,11 @@ static void set_to_kill(struct to_kill *tk, unsigned long addr, short shift)
+ }
+ 
+ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+-				unsigned long poisoned_pfn, struct to_kill *tk)
++				unsigned long poisoned_pfn, struct to_kill *tk,
++				int pte_nr)
+ {
+ 	unsigned long pfn = 0;
++	unsigned long hwpoison_vaddr;
+ 
+ 	if (pte_present(pte)) {
+ 		pfn = pte_pfn(pte);
+@@ -694,10 +696,11 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+ 			pfn = swp_offset_pfn(swp);
+ 	}
+ 
+-	if (!pfn || pfn != poisoned_pfn)
++	if (!pfn || (pfn > poisoned_pfn || (pfn + pte_nr - 1) < poisoned_pfn))
+ 		return 0;
+ 
+-	set_to_kill(tk, addr, shift);
++	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
++	set_to_kill(tk, hwpoison_vaddr, shift);
+ 	return 1;
+ }
+ 
+@@ -749,7 +752,7 @@ static int hwpoison_pte_range(pmd_t *pmdp, unsigned long addr,
+ 
+ 	for (; addr != end; ptep++, addr += PAGE_SIZE) {
+ 		ret = check_hwpoisoned_entry(ptep_get(ptep), addr, PAGE_SHIFT,
+-					     hwp->pfn, &hwp->tk);
++					     hwp->pfn, &hwp->tk, 1);
+ 		if (ret == 1)
+ 			break;
+ 	}
+@@ -772,8 +775,8 @@ static int hwpoison_hugetlb_range(pte_t *ptep, unsigned long hmask,
+ 
+ 	ptl = huge_pte_lock(h, walk->mm, ptep);
+ 	pte = huge_ptep_get(walk->mm, addr, ptep);
+-	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h),
+-					hwp->pfn, &hwp->tk);
++	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h), hwp->pfn,
++				&hwp->tk, pages_per_huge_page(h));
+ 	spin_unlock(ptl);
+ 	return ret;
+ }
+@@ -2023,10 +2026,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 		*hugetlb = 0;
+ 		return 0;
+ 	} else if (res == -EHWPOISON) {
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
++		if (flags & MF_ACTION_REQUIRED)
++			res = kill_accessing_process(current, pfn, flags);
+ 		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		return res;
+ 	} else if (res == -EBUSY) {
+@@ -2037,6 +2038,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+ 	}
+ 
++
+ 	folio = page_folio(p);
+ 	folio_lock(folio);
+ 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.5
+
 
