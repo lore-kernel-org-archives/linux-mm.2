@@ -4,86 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB7ED711D7
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 02:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72661D711D3
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 03:09:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 998A66B0088; Thu, 18 Dec 2025 21:51:37 -0500 (EST)
+	id ADEDF6B0088; Thu, 18 Dec 2025 22:09:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91BD56B0089; Thu, 18 Dec 2025 21:51:37 -0500 (EST)
+	id A8C806B0089; Thu, 18 Dec 2025 22:09:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8278A6B008A; Thu, 18 Dec 2025 21:51:37 -0500 (EST)
+	id 999156B008A; Thu, 18 Dec 2025 22:09:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D5F16B0088
-	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 21:51:37 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11622B9155
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:51:37 +0000 (UTC)
-X-FDA: 84234695034.22.1E4C8F2
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 68012120011
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 02:51:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lXUnWFOj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766112695; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 874D56B0088
+	for <linux-mm@kvack.org>; Thu, 18 Dec 2025 22:09:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DBD7B92E2
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:09:01 +0000 (UTC)
+X-FDA: 84234738882.28.370FFB2
+Received: from mail-yx1-f67.google.com (mail-yx1-f67.google.com [74.125.224.67])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 40FA440009
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 03:08:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=e9kneTzz;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766113739; a=rsa-sha256;
 	cv=none;
-	b=3aMicY2KPsxfPWR65/zmgb7joISptBZJ+sH7LX8AmU0iyMxbXLnWdWB9rTX2S6dIW0If2T
-	w18/mpnx3CoPgzG4OBkz3pTGlJuigbftKIBW76djuFAN7qWfvDXKi5+NivATht0IHth+fR
-	tGjPzXefFf77ebp/Foirt243f1Upp/I=
+	b=3GguYbGLqPYhiAFGJ2CaoAxSFEWqZEwsOOGGYCiMxBkZOEOC/h9Mwwqr7Xj1v2lMnZhsCO
+	IiTKp4s8VOko6+enW84qBWoRRWAceI4rC5xENcLiKcsgpBMfU/uMpG0Hd7XFjTsb53ILsj
+	3muCQYTR+jLBoXJtUzJZMpAEa/gn/d4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lXUnWFOj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=e9kneTzz;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766112695;
+	s=arc-20220608; t=1766113739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZX9EdKmymQBf6dTDpGNXCbWaUIzPPXzTY2GtSXhpfr4=;
-	b=OVtWvFUXb3P84kuOE18C9xL3/v6cnHXH+wBdb4k5NvpRxYzallSt/LbQG5Ny7bSEW4KSqI
-	2l5ijBJJseywkFZj0cpXyrdqIVFmKEFlmCPPyxBvpMEoChsLx3o7bJzeY4KtMGxgmSLuIf
-	RJFkxIF6s/HzsScSZLIg4iUh8O7QNXg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766112689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZX9EdKmymQBf6dTDpGNXCbWaUIzPPXzTY2GtSXhpfr4=;
-	b=lXUnWFOjmasnyhi98G8wHqdqJ411bv16T/4L+YoejiUdO0fpW3TqnCGHIdx3f8yFsRwk8p
-	YlyVWZh6UBZJZbW+pajOOEUocfoYU0Gh4BzANXLTw1MDAeXqTw393pirs7nOpCh/RPGfw+
-	2sxUkLngcYgWoIOn9ZZa0Qsu0+18rZg=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-  inwardvessel@gmail.com, ast@kernel.org, daniel@iogearbox.net,
- shakeel.butt@linux.dev, mhocko@kernel.org, hannes@cmpxchg.org,
- andrii@kernel.org, martin.lau@kernel.org, eddyz87@gmail.com,
- yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next v1 5/6] mm: introduce BPF kfunc to access
- memory events
-In-Reply-To: <cf8d48e8bcdba2515366bc8b6c85f581ca3d18ead24db9cb3ba9b98db252e0b9@mail.kernel.org>
-	(bot's message of "Fri, 19 Dec 2025 02:21:40 +0000 (UTC)")
-References: <20251219015750.23732-6-roman.gushchin@linux.dev>
-	<cf8d48e8bcdba2515366bc8b6c85f581ca3d18ead24db9cb3ba9b98db252e0b9@mail.kernel.org>
-Date: Thu, 18 Dec 2025 18:51:23 -0800
-Message-ID: <873457b2vo.fsf@linux.dev>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r2/OhVQU+QVH8G/cODFOhwoAozt9Fs2Kb3PN40QPAds=;
+	b=xzOd8CwA9g5aULrvs0H8fkKuR1crdkQHGvlk3SFeEFTrQMTtXslKMbW1oNNqxk5JJKj4Vh
+	2wcWIlHC2UUS3Ctooht8WMMfOnnrcCOqUSOTwISUNSn6xUVo+VGUfQ7pGWLWe6wQTMeFAa
+	dC2ZVZ49R6kYkg8SePQgC0aHrnW3j7A=
+Received: by mail-yx1-f67.google.com with SMTP id 956f58d0204a3-64471fcdef0so999736d50.1
+        for <linux-mm@kvack.org>; Thu, 18 Dec 2025 19:08:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766113738; x=1766718538; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r2/OhVQU+QVH8G/cODFOhwoAozt9Fs2Kb3PN40QPAds=;
+        b=e9kneTzzwqhVybYvFUnP8RhhUN2s+DY3mRSREI5GZoxyWZ1FMC5H+iwOzRVqT/pPf3
+         UvjEPMng+497ZU8RQU35PzY7l7R7oqJFBmfNazYQSEJmyihkL6yBbn4ivJLHAO1xTnxq
+         BCPgTnd81E9NGXdMAdTix5MkHaGzSaLk7GNi1FV9ELeQLMlcbmCDCgo9P8Yh2Q3Evs05
+         9w1Fh7r8gSQJ4iU5+jCVePPIkvILdzmrMMjvO87+tUTPU2icevWt2ceMBEWL1mbR0StN
+         //Kg2yahwY6fCfN+K90wJFbd1ajgrdCqKvB1hAcFcxNPiC3TElaLd/Iuh1LAet4PxCVz
+         5adg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766113738; x=1766718538;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r2/OhVQU+QVH8G/cODFOhwoAozt9Fs2Kb3PN40QPAds=;
+        b=lnyHcLGi4jxyHEO/nwlpZiMJnNYkJFPA9Y1KksUzHJD+dk9w9bu7bd2yJ5ZUdK1zuJ
+         z2qCsmQ1RfsDkSzE3njTpSYm/N/MXBC5x6bO/dL916mI7TAAjKDNlQbIqROe1B2TtbKa
+         hOXi8BZ+e0DufZ5XmovTgXZFpRpJ7sg1NiJO79N42cw73d0xmUGBZwg8iUzxUsxckkBI
+         wWKGMzBkdqiGF4Q6TYPx2DI5NnCp0JO16NYC7PHVTjqjbbdcihYIOYgmfxlCAZ0YpE+z
+         OuVgqB5ycIWEdJHh6kFWHqGDv079g1LY7zdQcpZdRDP019dp9JlClogy7p1CGwzAh+Gq
+         G5Og==
+X-Forwarded-Encrypted: i=1; AJvYcCUmqicqS0dZeB2gzTFsNXTJN+CyJQ8u1yCjwIPotwJriXRM2lTmsFlAceVC0MFb4g2021TR1MzxlA==@kvack.org
+X-Gm-Message-State: AOJu0YynoCEhzusHDU1eozk3rA0ikpNULtJHv/Iclrlbf6L9m0a9Gbsg
+	AGAYKjHVOotORU/GVeNKP4f6FlUAxj1s3eZRTnSIfb3A2BBhJ+5OPiN0znG7dKQHzEY=
+X-Gm-Gg: AY/fxX6qVfFmBxqK54zia54wHt//y52a6Z8Szwufgigw+8TPwI6rqKgFpreSG2xWZvy
+	8CF+qv4Oww1E75i/SGsqI8VHFqs9sO2+GTjEHxNfA+B3pattGUYzosaGWBd4pjvnUVN5Hkfztwi
+	7/M48lUQlExE/NsDL1pwtZXtjyZSfJZgpgHyHbFTBzKXSli8yURl8V24KCBuFGRU6KJMlHaB4HG
+	dqRqGhhYVOcOQxOTMVDdYQUNdNO4Y2Uy/3B1CWMd54Cm586PmsrRJPDxT3T6dXzk+qmba114muW
+	zSsuAEBLd4np56hvN2CDkJc1uc0bsygULGaWS6esrxt4P9IxE21vC0i/zEpS+tIudySJLngYlCd
+	RCi9X8YpO0R+bfo0gqWBmoXECbSb8cs6PRy/iUj1Gps2BEqrxgQNFAs+k4TowzvEPXpAKH4NiKT
+	LDN0yflOF2+4xhJ6RR2XJKin5k0RLmaPc4b7WQ2BSeYPYMn0BxZrtwRIkjjxXdwxQb28A/WpciE
+	mdkHNU8eZIct49a0ZtDcrR8wsK/uzCXzpMlDA==
+X-Google-Smtp-Source: AGHT+IH0SFFGcLuZ3Rz+C1B/s4/iGdSlEwbIjM/JS7E1t+K9R5SfPZNhnq31cCe+ZYL8cHIylt29xg==
+X-Received: by 2002:a05:690c:c4f6:b0:786:5afa:375c with SMTP id 00721157ae682-78fb40d9808mr27748627b3.67.1766113738125;
+        Thu, 18 Dec 2025 19:08:58 -0800 (PST)
+Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb43790dcsm5069027b3.11.2025.12.18.19.08.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 19:08:57 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	graf@amazon.com,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	pratyush@kernel.org,
+	ricardo.neri-calderon@linux.intel.com
+Subject: [PATCH v2] kho: validate preserved memory map during population
+Date: Thu, 18 Dec 2025 22:08:54 -0500
+Message-ID: <20251219030854.3527871-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 40FA440009
+X-Stat-Signature: 7z8gn84dgx9o131ass93shugi7krto8e
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 68012120011
-X-Stat-Signature: ktmojmwgyyhc3c3ccuijsg1wazc8w88t
-X-HE-Tag: 1766112695-903715
-X-HE-Meta: U2FsdGVkX18qzz3GPNm5uhIfI/dQ2nPEL8dXdBFCQkkuWtpKK7jOG/5RqXq4YLRFJPUEIs1HEUgs7b9dx/vnTTqtrbCen1ZwqPMqbggWC9Rzuk0AVgs7agf6cc+AggOPRClO4uxkY9F82w3GAU9CwhHoC1a4FUedz7HmevKXzN+aWIUFxVIEiUvnBA6GuSePvZqPc90WQvSWtATf/H+pLU4a6/QSD2J1kbaY0bnaUrt+lrE4uBvA8iDdosyDcaiHZiMnyA4J4DFE/mgJ3NrV7IyIO8qPq9rqDLk83hUrZdKzdTScLDWQ+kSZtxkDiGVTEO6S7zrjE1h3e4AFc3Sfd03hcbueMEGhW75v5AmI7eVb1GhT/Dc0jCZci8Ks/+FpLR3rZargUrLEyOUSgbd2VvubOljj/znmTQ9VNbxHA27iIo5Y7CaaDPS/3GsEHtfnEhfwhMmmUzFAR9FALiLnOZYYsdfWtpMvEl8nQtie28CM7tuhKnDRwdxzRDRKHcOddDnth10b9lgkFRhtzSnqsnIanU0ydl0IUnPQrgqm/17+2m7U8S4hL+CFv46EUGBbANyubv5YlYq0pEd4i98Vc1L+8SGheSgKn+2ikDpnDRC1vPEGLBUxxC5dD0B5wT+V4fWenLZbooeQO9bBaH547hYuW0Fp/0D4KlhQyQADeEjNOMuuULlR7s8u3vQq1ufhj3jgjls2r+YFw7qFxHErnZ8dobAgpqqkDBTVUU6/SuAHeMQYV40zD5gzTTvOxCsa/fi+28IJka8YQx57NoGvxCMkIH5zqaqfkNyJ2nxau+Nt+xzTnW6OK0P/DPUPSKLNAy3+V83u1sIKaV9Vtz4xCO1qmBwNer3z4JyL5PLAON29acqnIcTheyOkjBYV6XjGmI3dsGerp64lP7uXTkxzo1UYMYCg+s9HGTmn8HblvR8OtsCr1D+p/rL2y+kx5eyqoGjlI6SJ74VOQOqtYVy
- /AkMQ73D
- c+NpvN8wkWfztV6n0MsM4A21MFCG+ZSOPy/016B14QmCLL6K4c2gEuzx3LLl7K/5ksI1QvPzk2fXmc/bnC3mNSOQ/rVdpVgcEw2T/6gL3qGohW1U3EhjjDq5CdrI4vE6hwegB4ShtR6Plr1JKHsWzJyQcu9O9brBGcmopepF/oLj/ljXoM5RKrKKczufsx4YrejISAh8apq0ZbSElXrwV7I5EU9BXyiiyjbfE
+X-HE-Tag: 1766113739-111725
+X-HE-Meta: U2FsdGVkX19/mkSh8IwU+9Otvyqpr84sFlo2onDIvDi0qzSsIVCtxlEzbXp4WRT4YQxuauxIZfZpW7u1mE31cxcxjFo1BOt76iO0mTHF6Jjuae7gQanWtX1TnKzGwGMd6B3Kyeond8axKS1TfbrWFkCToSC/P7mK1RJ9W6t0efN/J5jEmgRyqa8rIBm0tp0+a8k4P5DdjkEyB2UbwON0m+SjPadLtVSldJxCIUjaTr22CBtFh+kEF+YamGuDaLhnrY36NwSXZMaNoM/lKnXbM4j85KpobO7LDipDB/2MgxIF508MjmjRb5XpaHs0DfvIcHYRr7lR6GeLUiPv/qu9d+8bVU+eUiPORVP+VBC+Z060xfFagfMPgbj++YkW5ZAD91iHbM1dqcGNOd+50PjwIuSbxUtquEmCf9RwegANlY9AtWKIpheC0Kt2cI5eIjf2+60xH6csNO3B45gBEzPiINrik45QYLGHol7V8GfqQunmX9PqlAk/tRbI8LkOJgQYEVUWsu8p+0UkR1ntGAPG9G0D6U6FJmSI/io9ZkC+A7H4FTqZQt7RbHPQnBpc+VU+sQ6whsDqtQ2Wgci73SM6wNSm3mum+O5zGonER05A/cRy8qYN3sthHrOdFlK4HtL4AcMB81eqxAWhpkFZm+SLLI7UYuTh39BKTaUxkj6prNGkdAU/KFAB1hogs+kwXbF2ZuFokAhDI9PDReFZ/NWsJsoprvMnl9mhRG59OWldHvZ//YYi79KqH+oH4yTiayU+YzohzdgH6LpxyMBG3CWklI5ngjcywsOxq4tmZlhrTak6DRuJgrfE1jfLsoE+WdWv7qNFO47u0w7l6T0yusaN3SgqV1IK44HlNLR0MwrItws3tIBiQOfUn9qMl0u/XL6yTApo+/adGwWK6yyp4l8OBT5kdLQ43JLYU23UhyFwTQVFKnSxC7sSMKyWaHqmQsBn3iw5gpF4Fgct6T0R+/W
+ c08KIY1y
+ DnAFgE7A1j0mnmhYRbcw3YavDv28xQ0JzcCETqiBIbSAwDc7h70hX1LjokSaIZR/QoIUAyb7GNG0f1gdcHd4TVeRkT/vP1XWUdmGH53dyHnVGTHHdv2hRheX/UuDnIXeXGzU5lukfUe1aoj64mPK9T1MVc4zTVFVe0rxf/Cn5aKVgzHQnTEcSr/e/zTRrMqz9vP0ZQV4NyH/WupKefMJDfz+zMyo3KHJX7L82zWvnEM+Se+SL8yf+PgF/NwhDAk0XG2zHDEjPwCwIb/LxaalUwTxP30+1QapDuK/ZqOeKe8KF91MUWnZJGNvu6jVGOTbk3/qHgGiID91xNT4uFpK+sHsKWQUM62SE9WzIWz92tCI5qVnU+T0/e1aV6W99pnXUI7O7pKOsfL41mPOQTBG2Z0tWLZ/4e8l7DLmvh+UGqkIPhqrN1n5ZWFIVMg+nqFNwLp2Yv5qvwae7LJkjUfppYfQwInS+KKd8A/uz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,39 +122,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-bot+bpf-ci@kernel.org writes:
+If the previous kernel enabled KHO but did not call kho_finalize()
+(e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
+the 'preserved-memory-map' property in the FDT remains empty/zero.
 
->> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
->> index 4d9d7d909f6c..75076d682f75 100644
->> --- a/mm/bpf_memcontrol.c
->> +++ b/mm/bpf_memcontrol.c
->
-> [ ... ]
->
->> +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
->> +						enum memcg_memory_event event)
->> +{
->> +	if (event >= MEMCG_NR_MEMORY_EVENTS)
->> +		return (unsigned long)-1;
->> +
->> +	return atomic_long_read(&memcg->memory_events[event]);
->> +}
->
-> Could this cause an out-of-bounds access if a BPF program passes a negative
-> value for event? The enum type is signed, so if event is -1, the check
-> "event >= MEMCG_NR_MEMORY_EVENTS" would evaluate to false (-1 >= 10 is
-> false), allowing access to memcg->memory_events[-1].
->
-> The existing bpf_mem_cgroup_page_state() in the same file uses both lower
-> and upper bound checks:
->
->     if (idx < 0 || idx >= MEMCG_NR_STAT)
->         return (unsigned long)-1;
->
-> Should bpf_mem_cgroup_memory_events() follow the same pattern with:
->
->     if (event < 0 || event >= MEMCG_NR_MEMORY_EVENTS)
+Previously, kho_populate() would succeed regardless of the memory map's
+state, reserving the incoming scratch regions in memblock. However,
+kho_memory_init() would later fail to deserialize the empty map. By that
+time, the scratch regions were already registered, leading to partial
+initialization and subsequent list corruption (double-free) during
+kho_init().
 
-Same here: the check is enforced by the bpf verifier based on the type
-information. Not a real issue.
+Move the validation of the preserved memory map earlier into
+kho_populate(). If the memory map is empty/NULL:
+1. Abort kho_populate() immediately with -ENOENT.
+2. Do not register or reserve the incoming scratch memory, allowing the new
+   kernel to reclaim those pages as standard free memory.
+3. Leave the global 'kho_in' state uninitialized.
+
+Consequently, kho_memory_init() sees no active KHO context
+(kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
+allocating fresh scratch memory as if it were a standard cold boot.
+
+Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
+Reported-by: Ricardo <ricardo@example.com>
+Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+Changes v2:
+- Removed phys_to_virt() from kho_populate().
+
+ kernel/liveupdate/kexec_handover.c | 39 ++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 9dc51fab604f..6ba554208c81 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
+ 	}
+ }
+ 
+-/* Return true if memory was deserizlied */
+-static bool __init kho_mem_deserialize(const void *fdt)
++/* Returns head of preserved physical memory chunks pointer from FDT */
++static phys_addr_t __init kho_get_mem_chunks_phys(const void *fdt)
+ {
+-	struct khoser_mem_chunk *chunk;
+ 	const void *mem_ptr;
+-	u64 mem;
+ 	int len;
+ 
+ 	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+ 	if (!mem_ptr || len != sizeof(u64)) {
+ 		pr_err("failed to get preserved memory bitmaps\n");
+-		return false;
++		return 0;
+ 	}
+ 
+-	mem = get_unaligned((const u64 *)mem_ptr);
+-	chunk = mem ? phys_to_virt(mem) : NULL;
+-
+-	/* No preserved physical pages were passed, no deserialization */
+-	if (!chunk)
+-		return false;
++	return get_unaligned((const u64 *)mem_ptr);
++}
+ 
++static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
++{
+ 	while (chunk) {
+ 		unsigned int i;
+ 
+@@ -489,8 +485,6 @@ static bool __init kho_mem_deserialize(const void *fdt)
+ 					   &chunk->bitmaps[i]);
+ 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+ 	}
+-
+-	return true;
+ }
+ 
+ /*
+@@ -1253,6 +1247,7 @@ bool kho_finalized(void)
+ struct kho_in {
+ 	phys_addr_t fdt_phys;
+ 	phys_addr_t scratch_phys;
++	phys_addr_t mem_chunks_phys;
+ 	struct kho_debugfs dbg;
+ };
+ 
+@@ -1434,12 +1429,10 @@ static void __init kho_release_scratch(void)
+ 
+ void __init kho_memory_init(void)
+ {
+-	if (kho_in.scratch_phys) {
++	if (kho_in.mem_chunks_phys) {
+ 		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+ 		kho_release_scratch();
+-
+-		if (!kho_mem_deserialize(kho_get_fdt()))
+-			kho_in.fdt_phys = 0;
++		kho_mem_deserialize(phys_to_virt(kho_in.mem_chunks_phys));
+ 	} else {
+ 		kho_reserve_scratch();
+ 	}
+@@ -1448,8 +1441,9 @@ void __init kho_memory_init(void)
+ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 			 phys_addr_t scratch_phys, u64 scratch_len)
+ {
+-	void *fdt = NULL;
+ 	struct kho_scratch *scratch = NULL;
++	phys_addr_t mem_chunks_phys;
++	void *fdt = NULL;
+ 	int err = 0;
+ 	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
+ 
+@@ -1475,6 +1469,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 		goto out;
+ 	}
+ 
++	mem_chunks_phys = kho_get_mem_chunks_phys(fdt);
++	if (!mem_chunks_phys) {
++		pr_warn("setup: handover FDT (0x%llx) present but no preserved memory found\n",
++			fdt_phys);
++		err = -ENOENT;
++		goto out;
++	}
++
+ 	scratch = early_memremap(scratch_phys, scratch_len);
+ 	if (!scratch) {
+ 		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
+@@ -1515,6 +1517,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 
+ 	kho_in.fdt_phys = fdt_phys;
+ 	kho_in.scratch_phys = scratch_phys;
++	kho_in.mem_chunks_phys = mem_chunks_phys;
+ 	kho_scratch_cnt = scratch_cnt;
+ 	pr_info("found kexec handover data.\n");
+ 
+
+base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
+-- 
+2.52.0.322.g1dd061c0dc-goog
+
 
