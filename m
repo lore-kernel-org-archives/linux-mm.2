@@ -4,118 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFFABD7879F
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D235BD7879F
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 17:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB056B00AC; Fri, 19 Dec 2025 12:42:29 -0500 (EST)
+	id 193256B00AD; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18BBA6B00AD; Fri, 19 Dec 2025 12:42:29 -0500 (EST)
+	id 172716B00B0; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09B486B00B0; Fri, 19 Dec 2025 12:42:29 -0500 (EST)
+	id 09C766B00B2; Fri, 19 Dec 2025 12:46:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E8D456B00AC
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:42:28 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A87DB136434
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:42:28 +0000 (UTC)
-X-FDA: 84236939976.26.A21689E
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C61901C000F
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:42:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b53bb7RM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766166146; a=rsa-sha256;
-	cv=none;
-	b=c05SGGKlHRcwcN/2gn3r7MkBDgUkAQF+4jgU5Ttz5Jg/YOimNrNOfsbWF/wTpf3BEtfOiE
-	V/OYDj0qGBTpgmPOHO0F5eXKJm60fbu9hhvOsi8tm98DGCcmoOdHCASeD9RI7PO7Fde497
-	MqOOyB9elOHJuDuEBq9ivblicAPzGxg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b53bb7RM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC5796B00AD
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 12:46:46 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 97FDE8983D
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:46:46 +0000 (UTC)
+X-FDA: 84236950812.02.E740C7B
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9451B20011
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 17:46:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E xazx2S";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iRYwswjU;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766166146;
+	s=arc-20220608; t=1766166404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JW8x981xzKG4MFNW1u7R47ZafSPsRMNXeILtwJPy3Eo=;
-	b=lpIxCeSOcQJDUlgDhQaLCTtcQaWLXzruTHJbn1YvQZWAItcqkkaPc+dl64tuvg26GRCa8Y
-	ox4TeRuhDZ8ArUuzi2RHxi1HVpykvk+yvIi00MH6guqUOeUxiETvAJpO1pBNAE5dzPBPRF
-	wJP92TTagyDjeeicAs9pK5sjVnYQwwc=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34c93e0269cso1610712a91.1
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 09:42:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766166146; x=1766770946; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JW8x981xzKG4MFNW1u7R47ZafSPsRMNXeILtwJPy3Eo=;
-        b=b53bb7RMN14m4/Axo1UF/ZHmxClY3vhdnL7Joym/D9n6tyx0G43KwvILN2+RC9B1aV
-         l4cKBe9awPVnolmLOh1j7fkhUdu8s2UJoTxy0Uu92l0yYLFh7lgPlZYlzMWpFJ5FPesI
-         8crgIU/9pBLGIUXm98gNxx3d37r0quinNUAyiJ6FAnlO7spMPcMeSRvkstat3h/G+gtU
-         e+D6qKJOh6ur6bf3x8Fl7Zr6svtM51Xm2jyFjQz33slWDnxpuIaS+zex9XMBW0ZCmnGZ
-         xKs0tiJolS1dRWy+tcT6vBmbREB/ZiIs3Px/UNI0S49qoiF3hzALxqGYut7C5KbiPduk
-         F+NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766166146; x=1766770946;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JW8x981xzKG4MFNW1u7R47ZafSPsRMNXeILtwJPy3Eo=;
-        b=Ce8f7kEAkXG/+YGXXigHuLp4roTYWkxT0v6KDQkxcJAK6/euLR1tqEi3j9wsK9d7gb
-         TtxU4UQl0wY9DinKixpEYmHi5DR05W9U2gJJpBhQ32mRD82RNZxmVbf72cai1SJ/hj2y
-         e1mPryAkEsq1ApX46z6TZTWeBmub1GAHWtchixl5jfwWK7flo20g3oCZ/eKfw42XjCMV
-         wXvz26SvTiB88/eNhxhN8Ngzp1RUH+2RIcmfhgziZ1Gu3Kt2rCem6de4N0gUmKseK/OX
-         QBsV1zOLAl0zY1Ek3Rf48LneNIiWpubsmWt7iDU4EikZwJlmjgkKq9/Sy9k9rmg1upYH
-         qXZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9ebVSkIfIV+s85wob3bdPPYbuWB+ouFSHGc8rbsE3ABNpOpZq73IwfgwYweECngc+wwR9jKV2wQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw0/fmvFvWcUWwTMKVDgOnjOSJJOTn4zccVoobOAQlu8+pC4+jE
-	VrREWHMzvtoUv5J31s/Sz4ys9MBcNVmxO60llDCYBVH8hUlB/IP2+pLmLPaNiDb0JSkdSC+b5cX
-	UgTaR0DxAqZG3KUEJVDCEh0+mPJaWw78=
-X-Gm-Gg: AY/fxX6tQycwQ/9yV0F8OPRK9hpTpTj/A6RqZ9X2pRIwuwagTKRNpjdDtvaWmGFTHXQ
-	1IF6auUNTQGCgkhQgLCmYEnSOG3U58smQ7aBNOq5e4fK0W0zdhJCiJCaVDwVaNDXDRQCoAyFWko
-	EL0ZJGHo4sH4kxzVzBSRHfeTgFF1041e+K3G8HZGnCDSNOofkSfmXsgQmcFExJAzj3i//RdTOff
-	5VwgJ+d3nM6VOBdmklMn/oWGLWMPZX8PA9bcgIDpVohOVz5yDhDdq4cLN8Agzo8vK9OQSY=
-X-Google-Smtp-Source: AGHT+IHpINJuwfKifBLEq1prr5FrJkIDHltFeoo+6LV09TLdfIop0tuY4u1d1V1PT4Cd13YrZszjS9knwymVFnKkxe8=
-X-Received: by 2002:a17:90b:3c8d:b0:34e:6e7d:7e73 with SMTP id
- 98e67ed59e1d1-34e71e0910emr5359098a91.11.1766166145554; Fri, 19 Dec 2025
- 09:42:25 -0800 (PST)
+	bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjxfX+HLNZM=;
+	b=j0ElGLAIzMYis2EIWx1xmHEiXsmLgkWE0wyJQuNjsmAu8DIwB3/fnmLqOsBfObOyBirzQD
+	R1L4bS4sK8sDQqJ7n0LN2Tlg6ELnOAUfBR80vv87okNruXP6iFIDmyyZkVckb5AJkqEg45
+	EH+Q22I+BoZGs+dOVb2EG7uewMDzFwE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E xazx2S";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iRYwswjU;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766166404; a=rsa-sha256;
+	cv=none;
+	b=wBF2M0xCN1EApNRWR3wRK738vfWei+J37AaPDLIDHEgefPSmbjZdWuDXJqG2FlaMrjMZTo
+	vAwoZA8HdD6aTrRK7goEIafGb/w5LJA4GbabB2w/LgI4hEmT0MIQUpyMTh0qB7UXrvF8vN
+	qFUPYBMB86FsfLnWMW8Yh3rXdbPP0yE=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id C5E7A13800C8;
+	Fri, 19 Dec 2025 12:46:43 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 19 Dec 2025 12:46:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1766166403; x=
+	1766173603; bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjxfX+HLNZM=; b=E
+	xazx2SrMIw9ZUs9geIvDyOTgE0ar83/WRcd9GqsSMB37Ch44sNAA5iXVCBDj5yiR
+	vqpKok5koCnvVk+8aV2e5qLtBG9cwzVDtn/lGjtgjQ80NI/f/R7HTDViP9g69BPV
+	cSqUmD3lmZX5wRB7nDLkwXtkllaTqeItQDVT6qTI8NK3KTgTq6hfjO9A1yVbesXI
+	52xjy10TW6pQHl88NEJt4PC1Svb/uDQjguqgyQpsCynFGKNlEBQufJ/sOtog0kn0
+	3HyupMLp/qN2mf5LTDYvNSv2mC3Md14su2l7pJ+pi3LuqC6TlVH8B99oGiHETkkP
+	IA1txELq2o3E4b7vDlqIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1766166403; x=1766173603; bh=A2gbCq/TeBYPxiITWPNdSmIe+GVkyoCIvjx
+	fX+HLNZM=; b=iRYwswjU6McptpLB4eoG0trSl7tYnPgD9kLXZSpd38cT8DlVhGX
+	6Uq47MPgTn4bi6Ct92Lm1/Iz3/C7XhZuJTuiliUJ78p7WL4JTv24sb8mw5O+qLp1
+	LCPxyHVpjV+xtSS4dHBUnpi1M1x6U1RKCz/0tI0YTZX5EPHDlIpC1PT5w0Cnhqcy
+	nxDgLXXlsysE+3bzLnWJSVA1TFeNLCVIXKcZKsIvWW2hKmpaLvyVy2tWsnpY1UCl
+	+p9nDrR+x0YQRtBYGrVTndTf7aJ1FxBga2i2CwlE7bOXQpmK4h8CqZ93fN0+dCc4
+	JpW/R+YHG3MSfOi8dIslJnfFVHGJcLgufcA==
+X-ME-Sender: <xms:gY9FaYL-bsVWqQcrv9ei-mfEnvFsaG2tR0P3rEPkTvgeVGV1Y29Uog>
+    <xme:gY9FaTDe_dbmLZ7wjF65wzcLzAxS-vtjM9l_l-NHzbY_0jyJwR2ZmUedtQMVEvkir
+    PECOqd7796TwIR1FrcSbminLnmG9bPV_V5u0u7Bhb650aCO1D0PPQ>
+X-ME-Received: <xmr:gY9FabnW2jUf2ioE0zD-vYESI0xDb5sxBU-Pr0eOnr3Zs4J4Mf1DJrTrpwgGZA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegkeelfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
+    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohephedv
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehglhgrugihshhhvghvrdhilhihrg
+    dusehhqdhprghrthhnvghrshdrtghomhdprhgtphhtthhopehguhhohhgrnhhjuhhnsehh
+    uhgrfigvihdrtghomhdprhgtphhtthhopeifrghnghhkvghfvghnghdrfigrnhhgsehhuh
+    grfigvihdrtghomhdprhgtphhtthhopeifvghihihonhhgjhhunhdusehhuhgrfigvihdr
+    tghomhdprhgtphhtthhopeihuhhsohhnghhpihhngheshhhurgifvghirdgtohhmpdhrtg
+    hpthhtoheplhgvihhjihhtrghngheshhhurgifvghirdgtohhmpdhrtghpthhtoheprghr
+    thgvmhdrkhhuiihinheshhhurgifvghirdgtohhmpdhrtghpthhtohepshhtvghprghnoh
+    hvrdgrnhgrthholhihsehhuhgrfigvihdrtghomhdprhgtphhtthhopegrlhgvgigrnhgu
+    vghrrdhgrhhusghnihhkohhvsehhuhgrfigvihdrtghomh
+X-ME-Proxy: <xmx:gY9FafFXRbY4sb5fGPF35vKKf24lSM6JmJ5LB4oibWq3tjbQWSjaHQ>
+    <xmx:gY9Faaiq43KSrQaI_FyCO2dZYBQMTNNAmEI5gfjSPFb4OVwx8sTJyA>
+    <xmx:gY9FaXd-kKsU4LZXAWbcuBMk9FqgWtrQlNeSsayZ5NqvSqieWFwAkg>
+    <xmx:gY9FaQ-IOYlRU3dhSD6rFg51kB1cJFGEFMrqqFEdNAQXk6_EO5Buww>
+    <xmx:g49FacJDpk8LC7y32lqUDNGe4jcqDf4325jPHcPWprbCELfuq3eQtEUF>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 19 Dec 2025 12:46:41 -0500 (EST)
+Date: Fri, 19 Dec 2025 17:46:40 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Cc: guohanjun@huawei.com, wangkefeng.wang@huawei.com, 
+	weiyongjun1@huawei.com, yusongping@huawei.com, leijitang@huawei.com, 
+	artem.kuzin@huawei.com, stepanov.anatoly@huawei.com, alexander.grubnikov@huawei.com, 
+	gorbunov.ivan@h-partners.com, akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	willy@infradead.org, yuzhao@google.com, baolin.wang@linux.alibaba.com, 
+	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] mm: implement page refcount locking via
+ dedicated bit
+Message-ID: <ans3mrfqd6jv5hfarbx5bzsl2ugtatbfyjw2vlv5ybuhevjc4i@46f45fdds5m7>
+References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <81e3c45f49bdac231e831ec7ba09ef42fbb77930.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <iv7m5rmuwssltl6yzwuop3ry5s4l653lykyvrmmy6qdbyyuoew@th5xuev3mwus>
+ <9822c658-c2f0-4b1c-9eef-9ffa865e44f7@h-partners.com>
 MIME-Version: 1.0
-References: <20251218205505.2415840-1-shakeel.butt@linux.dev>
- <aUSUe9jHnYJ577Gh@casper.infradead.org> <3lf3ed3xn2oaenvlqjmypuewtm6gakzbecc7kgqsadggyvdtkr@uyw4boj6igqu>
- <aUTPl35UPcjc66l3@casper.infradead.org> <64muytpsnwmjcnc5szbz4gfnh2owgorsfdl5zmomtykptfry4s@tuajoyqmulqc>
-In-Reply-To: <64muytpsnwmjcnc5szbz4gfnh2owgorsfdl5zmomtykptfry4s@tuajoyqmulqc>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 19 Dec 2025 09:42:13 -0800
-X-Gm-Features: AQt7F2rfNtQWCgEkml7MtGjiHiq38CyNWFSgjhPC7t5q8T4gXasMjJ76tzv38qA
-Message-ID: <CAEf4BzY2YYJJsMx8BgkKk7BG67pj52stv_GRGwZkj3jnuipw+Q@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] lib/buildid: use __kernel_read() for sleepable context
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Shaurya Rane <ssrane_b23@ee.vjti.ac.in>, 
-	"Darrick J . Wong" <djwong@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, 
-	Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C61901C000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 4z99ckyqhb738hqw8mgtwq9cwd4prpga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9822c658-c2f0-4b1c-9eef-9ffa865e44f7@h-partners.com>
 X-Rspam-User: 
-X-HE-Tag: 1766166146-23782
-X-HE-Meta: U2FsdGVkX19BYVF4wUYGOnlISVxmoQwI8kqEIzQHQIeKrDgrXA5mDcN99ElCEJj7+b290asPZkDecPWjPUI/cVDnwga8Qb/LkjstPf7xJl7oyjk0cHDdtixUCCEx/WOZyvCWwv0LSHbLeGyPtNpO6V7Y7T83mQZrCCAXJWXdnSb5whpxh24BLclsE88OTQBsmrkmnRbZji0Gg8MihyleSPf4ygJEX3dv80xY4koRhop5Ftwyn4EYK3t0HpGhd1e7ZRN84moJwfK9pj7f/4RzrRj1s080WWCpormSmtNbR4kZOLsvaqdZrNkgqGWbo9UwLsPABxNl3AL+rpMOcSgcvQsSG23SCHLjVmM+ZfIJg08YK8sa4NTWY9EFcovQg96lqaqvRTpt/BKWNLaCeiIdTd8fSjbhbGjjskN42NBiKCHKAJMAvXoaQwl8ODGLaW4NTSMxzjvVreuU2/c4U36mZbvnog+Patx3eRCkHTN5jYPkxdeEQYB2kzoqqnxaaQGuzrGwcOvnn+kFQTKCxJckO8C/eGo2X4/neJfT40hzbErLx3LWY88Tk0ZoaFKYmuatAlQqyRWmrno2ZMZr0i9FRZ1/Rtj9HAI/wpgiEzEwJiWyauyEf3UsKm+t90a1QdU5k4YBfljT4MI0A/lxGNQT8uAqOZlS3bdX20+fTu27AsMmyCd+G3eEOspxxIvSICbQWJdGZRTUBTv+hhEuUwLRR6+S0jUk5yErbNxqq2R2cl5Ucn2aNgiBhvMqkh7+iKpR6HQqYmYw+gdDhZueUH1e6emXlFwgVCRqjqaGdu4iFll5jOeRY18REkWHm68ouR/wcqM79p3g3PxMDFWAy/24VSUyw1GL15NRJIAOT5ihsqq4FLKSplfUicEj75I+66m+DH4hnboVeKd1LmUbB1tpZp54zz1QRkV/ZvcMq3NQ86sfiDC2kqA2okbE6D0LI9V6vQpCNPKkyg7tRLAdDaK
- JlgRr74n
- 72EfAZDfir4fChtOveRFvMWBS2pYQCAEzYaxpus6E15nCItVKiBDwkk4qZqKS7if+U24HZI8DxaJCWGGtZmmVyXJsWEl/hGrz4FO2stM/EEMj1IsaZOx6+GkgZGR/SHyAY3D91hbWP/Qe3bMSuI5Y0Zppoh6XaLIq0aIzp7w2kTiU9IDNfghDHVWBUFznnLWv94I4LXnDKdh4zF90Mk4tl31iejSWAPJDst45xYWFlg7Q1phHI6cYIkXZIUBh1VCw8hf4mTswMb1BUg1KjuoQMvEPlpIHVDOUQCH39GonxV4v4qHj8w5km8qHXQiEE96b++IwdOMEHvsGR4tWYWsXIqcu8ymBb20M2rZSIbtCWIZN9iiSRiUEfhkJIGDfa/sFslJqGpbLtHwRq3igokEiHWTGCexrBEN4LuMKMYVX2cG565UyARaKzxIBa3sf3sRo9dJbZ5zaUprzPonaa4IN35bHVcxOtrPtUkTqtxwrvGcfxoSpQlPtHW5ru1zDnxnseTtdH9W0/FAplW7ljsSdL0cuug==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9451B20011
+X-Stat-Signature: gsp863p6ksb7ja78adm1d6tigs383nqq
+X-HE-Tag: 1766166404-260394
+X-HE-Meta: U2FsdGVkX18nipsNdqsZCmTLNUkfn5Jw8r4A0KmTV3ByUkQKnBliAbFos1Qr8XgC8E5m6f+bL0rH+wtK0k8BZF8nOx2HOcr0affiu4CyP6t/iDjjPODyLKveKVc8aYMYYeLD8iRvgTfHp2BxbkRIxXN3jEzH2oqrjy2wXn7yenvIyF7tsyCEsySnbkzdYSiyyS3oloGU7MUZAxd0WgBvivbPO0iFzwCIQwyPQi6KqcH7f1IhqRkSqMHwwZnLzh8WCHKuKvuuoXmpKCgySOFaFQIzDyQOFvRXucgQp5Zd6zc6Fl2k1Ggik1c/AJPBtw3U6Rlz2bK+7egVKaiU55hV/aSXMaD0y3UuXSO2tobXBPqKCBDjcRubaJm4nfWwS3Xbf17avEwBDI4lbSlaetzKs5o+RpxjQH9aJ0WMMYdxjR+eBR5YkAnPTs+Ljwsc3/N2383QuzeYex+Rbbe+mPzfvy76QTT1B07Lv5OMzkWTtx9uHzfYGkpiBqulJ676i1m4d3D3lfxtMzS5qm7vHz7UW2xg5ZU1XmX1b30pAKIbipYxBcu420WN5oJT1/kHSGaAC8Ww6fRntV+8gctwj6nvGAizYQfzHGwZuYWkuU9+bJFGfY0log+Wls5uN+6by6ONsdg7iO2UAW4qRpUwCYJgp60eHRgJfOn56AgrMaRcDtZGphgypnYzhaaVKfqEuLEunrJorJAoy0L4ZkUKheOmmNpLnzViyfXN7yLvfGltbEODr2WWLOkonNH6p9rgydAryfz+p8R04ucPoXy5+hMJoLVJcR4Rkosoxm1CbIFRDkR4+GMmY6y+VW9U8TOQ/28H16uAw4iCizljo0NytjZFXldoe/0sGb1GjH1hPIDml9dQg2xKwUQazOHHRUFGjwKy1tO0YGbAXuyZeqK67aiGgTL4pCLgT0whmskIGK9Nv+/cMZnvCknwMn3T0YnEyYhhdmv5GUsZ3ohh+SRXI3b
+ I9otGe8U
+ UQM7cv6JNuiyOWC+xZBFazlrR0lgfXsCT37a0GdrrnrFpkyxLPjXUJ3SEREgfo8IlE9mdpUQqEFjS5AeM0OBFnT5/HUO+srSxofERfI2vqBzxglHs60fsqBbmHpzvX4zkrn7GJxs07u/LtVuRx81CK0CBcCpsZh/u6Djn1yTIVhmL1wN/+0N4Bdh3mkFL7oKAMy8bqkO9BzmTyjhtHWwmuXrB2Lkp7H/01JkzXm7DN6GYKLGl45NF1xyd35SbInipyVMwU0d2Qy7jn0O8+sHgQwImuMSPkRQg3caXZA9oKNfhKME/zG1OpjO49WNV6AaNsxfUbbLHtyQY7rQDaRZuP3dP5FBAAqy+5pk1WKLpbOO8R6C97yYHMCtLpwyMRd9YhmbLpe4tt5hPUTvj79RYOiWPLvfI0Pli0cebcAKgpfI+BO5pI5di9TPR2Tjodqc8QTEK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,52 +145,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18, 2025 at 9:59=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> On Fri, Dec 19, 2025 at 04:07:51AM +0000, Matthew Wilcox wrote:
-> > On Thu, Dec 18, 2025 at 04:16:40PM -0800, Shakeel Butt wrote:
-> > > On Thu, Dec 18, 2025 at 11:55:39PM +0000, Matthew Wilcox wrote:
-> > > > On Thu, Dec 18, 2025 at 12:55:05PM -0800, Shakeel Butt wrote:
-> > > > > +       do {
-> > > > > +               ret =3D __kernel_read(r->file, buf, sz, &pos);
-> > > > > +               if (ret <=3D 0) {
-> > > > > +                       r->err =3D ret ?: -EIO;
-> > > > > +                       return NULL;
-> > > > > +               }
-> > > > > +               buf +=3D ret;
-> > > > > +               sz -=3D ret;
-> > > > > +       } while (sz > 0);
-> > > >
-> > > > Why are you doing a loop around __kernel_read()?  eg kernel_read() =
-does
-> > > > not do a read around __kernel_read().  The callers of kernel_read()
-> > > > don't do a loop either.  So what makes you think it needs to have a=
- loop
-> > > > around it?
-> > >
-> > > I am assuming that __kernel_read() can return less data than the
-> > > requested. Is that assumption incorrect?
-> >
-> > I think it can, but I don't think a second call will get any more data.
-> > For example, it could hit EOF.  What led you to think that calling it i=
-n
-> > a loop was the right approach?
->
-> I am kind of following the convention of a userspace application doing
-> read() syscall i.e. repeatedly call read() until you hit an error or EOF
-> in which case 0 will be returned or you successfully read the amount of
-> data you want. I am handling negative error and 0 and for 0, I am
-> returning -EIO as that would be unexpected end of an ELF file.
->
-> Anyways the question is if __kernel_read() returns less amount of data
-> than requested, should we return error instead of retrying? I looked
-> couple of callers of __kernel_read() & kernel_read(). Some are erroring
-> out if received data is less than requested (e.g. big_key_read()) and
-> some are calling in the loop (e.g. kernel_read_file()).
+On Fri, Dec 19, 2025 at 07:18:53PM +0300, Gladyshev Ilya wrote:
+> On 12/19/2025 5:50 PM, Kiryl Shutsemau wrote:
+> > On Fri, Dec 19, 2025 at 12:46:39PM +0000, Gladyshev Ilya wrote:
+> > > The current atomic-based page refcount implementation treats zero
+> > > counter as dead and requires a compare-and-swap loop in folio_try_get()
+> > > to prevent incrementing a dead refcount. This CAS loop acts as a
+> > > serialization point and can become a significant bottleneck during
+> > > high-frequency file read operations.
+> > > 
+> > > This patch introduces FOLIO_LOCKED_BIT to distinguish between a
+> > 
+> > s/FOLIO_LOCKED_BIT/PAGEREF_LOCKED_BIT/
+> Ack, thanks
+> 
+> > > (temporary) zero refcount and a locked (dead/frozen) state. Because now
+> > > incrementing counter doesn't affect it's locked/unlocked state, it is
+> > > possible to use an optimistic atomic_fetch_add() in
+> > > page_ref_add_unless_zero() that operates independently of the locked bit.
+> > > The locked state is handled after the increment attempt, eliminating the
+> > > need for the CAS loop.
+> > 
+> > I don't think I follow.
+> > 
+> > Your trick with the PAGEREF_LOCKED_BIT helps with serialization against
+> > page_ref_freeze(), but I don't think it does anything to serialize
+> > against freeing the page under you.
+> > 
+> > Like, if the page in the process of freeing, page allocator sets its
+> > refcount to zero and your version of page_ref_add_unless_zero()
+> > successfully acquirees reference for the freed page.
+> > 
+> > How is it safe?
+> 
+> Page is freed only after a successful page_ref_dec_and_test() call, which
+> will set LOCKED_BIT. This bit will persist until set_page_count(1) is called
+> somewhere in the allocation path [alloc_pages()], and effectively block any
+> "use after free" users.
 
-From a user perspective, I'd very much appreciate it if I get exactly
-the requested amount of bytes from freader_fetch_sync(), so yeah,
-let's please keep the loop. It does seem that ret <=3D 0 handling is
-correct and should not result in an endless loop.
+Okay, fair enough.
+
+But what prevent the following scenario?
+
+		CPU0					CPU1
+page_ref_dec_and_test() 
+  atomic_dec_and_test() // refcount=0
+					page_ref_add_unless_zero()
+					  atomic_add_return() // refcount=1, no LOCKED_BIT
+					page_ref_dec_and_test()
+					  atomic_dec_and_test() // refcount=0
+					  atomic_cmpxchg(0, LOCKED_BIT) // succeeds
+  atomic_cmpxchg(0, LOCKED_BIT) // fails
+  // return false to caller
+// Use-after-free: BOOM!
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
