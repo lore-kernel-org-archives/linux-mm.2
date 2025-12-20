@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53FD4E668AF
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938B1E668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8F346B0089; Fri, 19 Dec 2025 23:13:16 -0500 (EST)
+	id E99A96B008A; Fri, 19 Dec 2025 23:13:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A856B008A; Fri, 19 Dec 2025 23:13:16 -0500 (EST)
+	id E60A26B008C; Fri, 19 Dec 2025 23:13:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A740D6B008C; Fri, 19 Dec 2025 23:13:16 -0500 (EST)
+	id D918E6B0092; Fri, 19 Dec 2025 23:13:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96F806B0089
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:13:16 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4B24316035B
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:13:16 +0000 (UTC)
-X-FDA: 84238529592.06.3FC8484
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 86FE9C0007
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:13:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NAFuJG62;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766203994; a=rsa-sha256;
-	cv=none;
-	b=UxonqyyQW7edwe1dM5GbVSSDYemyLxvaU7PrLY8cpfMfAWCOFby7gIVfFT7QNl7ZX+lKR2
-	nNOfIa/5HrRAsW7A8HIIVhtOkGMh4P+Gb+NdiJTS3QJeEFJC/57Aa8jgKIaWQiBTIaukfl
-	rRsacRbn2+pKjUf1/arYpR3W1QCzk0s=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NAFuJG62;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C7B376B008A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:13:19 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6AE1313A7B5
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:13:19 +0000 (UTC)
+X-FDA: 84238529718.14.B683A43
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 27713160006
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:13:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sWqi11Yi;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766203994;
+	s=arc-20220608; t=1766203996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bPQTxbjOsUH1fDrPgGNgOPUx/ZBOkWfSHpGi3Oz7pPA=;
-	b=sZxNSqYWv/jBdazS3nR15phph71ZBw148ZN0aT+tx/YJskkgHq6p0HkL5ZvzL3iGdpefzq
-	8edz3g1C7JCw0tgNHGqclMdC1j/A4bfkI9MjxotDjBgm8DlIoOw6716doLRXAGY6WDF/Ha
-	ZY+r57QvV8t3oE3Zx/+R+20NsYashJQ=
+	bh=+QSJTSDVQWiKe8Yn9P+ThjPphZH9zD1eW5Vd3nR6fOA=;
+	b=pVIQcUixC+PnfAsPHpi/bbXwGcH/yZQjhd9c81ijbVXXMWKLaRsGB6FD5kPPMRor/y8k8T
+	GDT9Kg2uC1Tlylcs4i1Tyi4Rfw89Y8bEP3TKPOmfDtiNmlNNRnZchf7hklKrbsF5DNEdGM
+	EYbeDMYeO286dzrveINc3vGpw0rwhKE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sWqi11Yi;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766203996; a=rsa-sha256;
+	cv=none;
+	b=knDPnRBgsb40JgIdwnS8Wkui3O6+Ar4jcJDDLHBp0cGM8fffHeJ8cad15xr653sGMehOWY
+	Fazc74rAJYm0wwMfCR7bFkWWMS/xehDiI6XdZka4w7C7VV+m2SLzf9j1aj6Kxhuue4rKGA
+	uNKvs5ZSeruUhIr2pFc4Od4TdJwZDrY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766203986;
+	t=1766203994;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bPQTxbjOsUH1fDrPgGNgOPUx/ZBOkWfSHpGi3Oz7pPA=;
-	b=NAFuJG629yY6Nhfr9Us/v7fJyz37uH4uunecV/tadsZ5GP8rCD3f+908GyEqk3QU5C5PSP
-	nmsFCXDBYgQit8pWulqlilS0o4+Z9izosHwV0Rxa6F+P5Abq5fgTpU+Vkrel8ZGTvyUTPy
-	H2KuQ45lM144qRyi1uN24A/LTj0vQGE=
+	bh=+QSJTSDVQWiKe8Yn9P+ThjPphZH9zD1eW5Vd3nR6fOA=;
+	b=sWqi11YiqXfaC4q538Oi6YnjR2MSP8tTLim8jXiIFt4IKJJyXeziCX3dWTTdJK7u6wRacv
+	DWZJ6jebb21kHCjYJ+tj+ageCL0XhRlOYpZhjjcBn9IdYm/zbE1cLIJOMjPomVt+PMw0Rh
+	vpkVuj89b6hPDNdWFXf3NlxouB83tes=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: bpf@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -69,24 +69,23 @@ Cc: JP Kobryn <inwardvessel@gmail.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Michal Hocko <mhocko@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH bpf-next v2 1/7] mm: declare memcg_page_state_output() in memcontrol.h
-Date: Fri, 19 Dec 2025 20:12:44 -0800
-Message-ID: <20251220041250.372179-2-roman.gushchin@linux.dev>
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v2 2/7] mm: introduce BPF kfuncs to deal with memcg pointers
+Date: Fri, 19 Dec 2025 20:12:45 -0800
+Message-ID: <20251220041250.372179-3-roman.gushchin@linux.dev>
 In-Reply-To: <20251220041250.372179-1-roman.gushchin@linux.dev>
 References: <20251220041250.372179-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 86FE9C0007
-X-Stat-Signature: qokxper6jn9zifnnnmy3bj17gd3mud39
+X-Stat-Signature: boo8qbbztj6taynqga9o1yigdu66jxdz
 X-Rspam-User: 
-X-HE-Tag: 1766203994-944128
-X-HE-Meta: U2FsdGVkX1+3wWO/g1QaVDXoIKMOPG7V1jYPvKDvt00YwZ3hkGXjRRmVhaTzfY2lSWdCnXxFDOg3y5+xicMiovK84ZR8UvpYNM4tS2CNYF8OixWY1lXxf7S5io4o3N0wp7RzMAMJ7NOqclrZtGH4Q2b/GLuYy9vFubAgGcgoAZd9Po4aVD9bnXgiWso3qBOKQNTH1/Hwwzph7mOfN923QNR2KAJf0I0uHDFVcabBukR1FAxwHdrYL1zHFgEyCy2hVI81g/Hv3wxOYcXeL98ZdrqGX+T66uH8BVBdvqfeHgPdhMQVF6mVY1yTQRyhxM2SbLqC1tncx5vB2M1FpHACcg8JIC42FFsyEfT1MmQq0JAFv4VJrxjr1Uw0x3SLCNH0Ox+UvVYBdV3to5RPNGcqBUcDtB52AeJ87fkuPbL6tEU2Gxj7zD1W4yige1mNau5hpJ4yhqQpZxyM2jvfKiUK/QgW+Iisb0kJYUhOVEJ2fPZ/Mqw2Yo/czINJadX8/OFKTeZxgnEl5Mglf4w8iNYs6n0hNk1cvX+2yzBfru4SY8xwhcnSatLbspsNO4x0MZHpeXpBSph0ZoLXUk987QP5YLbL4PqH61pNoKGHI0ChUVQhAMD6GCJgc+aQv630eiZR+PSpccotORgMpHRjWxHxrrSB56Cmuq/zsKpblFZI6Q1B9tGU9lz8BJZ6e8J3Ca7+nVRqTWjlIUG40ycvtlzHGyZxC7G2d8RD/EXnFR0LTDUXRjl/OPS362D1FSEaq+MiNpImS42OSYEGjvJ7X7qq62R+KK2F/HUsJHnHKijqNwFSI5gEGR1buiBTP1Pwqy/ZfZPjYV1A04vuq5+nU712vuck547FaGmrjpPXqRjkmYETuCTOJFCgwwdsW/Kf7CQF1A7jlLBiQvRL6mdeXAUJMbnlHIESn0q4ZihrNJisv2/BdcKg75IQit+JOuux0ytIX6Wq6he+Y4cnpfTNYww
- C/BWeLGo
- FXn4vUmRMS8Icyi0HAm49MV2s2psYSAA1V3nU7/wGYjh3/cs7d2mYGMzFC5A4YQgCVpLVI2987Rkr00+ZtYeSgMc8SqVALVn+bbZ5bEBUfkCaudWSXPUmCTc5j3VLyJn8TTOo8oPNMmm54S0K9Q7WGafdsyXkDwu9gGH1crT3VEnA6Ez5sSuJHmL7GiJwlC2t+WZcLykEyDcXgNmTquSXLz/tO1TYvBJxC7BBwxuTklUNdCn+YVANrQ0AhAFgDFTIbgnm93bxZh78FWFkTo/F6zDlhfBZuwlRTMvrIZIISV2SFpvbev+ZcmICugDvoyR+NZq06Tkm7mHN+Or1j+kb4VbA6A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 27713160006
+X-HE-Tag: 1766203995-760466
+X-HE-Meta: U2FsdGVkX19dQGLJ713GkhUQ5mcDCUrsOhJ4MR4pOWFmIor8+12MZSr+d8PW14v8f0xGV3WMetq1F2vKrNoTXLZ4k/mPHq0CXyYmgQSTkBn7eenUjem2xendQL5pNMxCNTCV9NqBa2TvK2x1RIHWPoYl6ZGQ9LgcCT8P68Y7CdsPCy4n15+Pug+8LV+sQ9FUn7l/GnAKwq75bKyoday/eJTbL0hTmMii5yuvz64rvfFLgDRM27ccSYvBkrAMuGM0EC/xTh8OSkWNEOlwv6jWNbh3Oii7FOjM3SiZbMOxObT+r7pnk0SAMca3MUAN331IBYerlXOLtakTlBaG6INNxOa615oDPWNwl3eA5+rO1VDV0wDceL60OrD8gwUT1EkQxUsqiK45rAgaEiRAdnbMGtb6C8ChxAM2mb9i9dlNdc/7rvcmteQujrmoVMN/RbvoGuIOmnhf3qKEU/++DeGCavf9lqyT9KSC4tEqyVl2C4xz5AR8NPkYqvkxKXRnwaD5jb4dKCr9Cmr9LNGejkYdY8J7VCZmYu877AOhac5n+bPp80LEof5UX7cp+XQbUowAGeXr5qvMb9kViznznHrbXlC3+PQmWoK5aaOvb6fPrvBp5SUTkKig7eDxSrAw3Q+kMTUxDuVxRG0ibHXTSqZNYbHm5eoKTMe18fy0CgZKlvhvstWLGcdaYFHIW9WXhUdlqnVKeVop+tgnGwgjc1Jxkb+VkdQJcyw388mX8azYvVQ3at+PFobpvn2g1X1R4EjrgG6rthyfD8FTq9MnS0/U03+1lOSgsW1cxL4xVZQx9OMe/Akyx+c8jFqARxVycbtE1lb9oKWmZJQ96M9Gk8c6qEDRrC/+yULhInh8/99rE5RGo/Bz40WT0UIt+zE3qCC42xYpy75uelw/5D+s7Onm4PD4DfWqkGMDMDyewye5VwxcpYZT1QZTnrcFSrLs7i9B0jNbFJTcJLO46jTooIM
+ q9CtfXeR
+ evS6a6VnTQ9hN2OCxwZ2tovY+aaN0iN9O+SqMggf29+bA17XNAOS5MUV0929890KUPUPl9dieuWXIxqkdwbHPg+3KPfsKA3Y0p26iaPBIq5gCPty4oaR9rus4Pc3lZQiXlUH92A90dBKG114O6TRAsnAIpVjfASQlcZD1S2beF3m8AbnKd81jGTkWWKj61c+eI5Zi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,41 +94,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To use memcg_page_state_output() in bpf_memcontrol.c move the
-declaration from v1-specific memcontrol-v1.h to memcontrol.h.
+To effectively operate with memory cgroups in BPF there is a need
+to convert css pointers to memcg pointers. A simple container_of
+cast which is used in the kernel code can't be used in BPF because
+from the verifier's point of view that's a out-of-bounds memory access.
+
+Introduce helper get/put kfuncs which can be used to get
+a refcounted memcg pointer from the css pointer:
+  - bpf_get_mem_cgroup,
+  - bpf_put_mem_cgroup.
+
+bpf_get_mem_cgroup() can take both memcg's css and the corresponding
+cgroup's "self" css. It allows it to be used with the existing cgroup
+iterator which iterates over cgroup tree, not memcg tree.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/memcontrol.h | 1 +
- mm/memcontrol-v1.h         | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ mm/Makefile         |  3 ++
+ mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+ create mode 100644 mm/bpf_memcontrol.c
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 6a48398a1f4e..b309d13110af 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -950,6 +950,7 @@ static inline void mod_memcg_page_state(struct page *page,
- }
- 
- unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
-+unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
- unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
- unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 				      enum node_stat_item idx);
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index 6358464bb416..a304ad418cdf 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -27,7 +27,6 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
- void drain_all_stock(struct mem_cgroup *root_memcg);
- 
- unsigned long memcg_events(struct mem_cgroup *memcg, int event);
--unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
- int memory_stat_show(struct seq_file *m, void *v);
- 
- void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
+diff --git a/mm/Makefile b/mm/Makefile
+index 9175f8cc6565..79c39a98ff83 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -106,6 +106,9 @@ obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+ ifdef CONFIG_SWAP
+ obj-$(CONFIG_MEMCG) += swap_cgroup.o
+ endif
++ifdef CONFIG_BPF_SYSCALL
++obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
++endif
+ obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
+ obj-$(CONFIG_GUP_TEST) += gup_test.o
+ obj-$(CONFIG_DMAPOOL_TEST) += dmapool_test.o
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+new file mode 100644
+index 000000000000..03d435fc4f10
+--- /dev/null
++++ b/mm/bpf_memcontrol.c
+@@ -0,0 +1,88 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Memory Controller-related BPF kfuncs and auxiliary code
++ *
++ * Author: Roman Gushchin <roman.gushchin@linux.dev>
++ */
++
++#include <linux/memcontrol.h>
++#include <linux/bpf.h>
++
++__bpf_kfunc_start_defs();
++
++/**
++ * bpf_get_mem_cgroup - Get a reference to a memory cgroup
++ * @css: pointer to the css structure
++ *
++ * Returns a pointer to a mem_cgroup structure after bumping
++ * the corresponding css's reference counter.
++ *
++ * It's fine to pass a css which belongs to any cgroup controller,
++ * e.g. unified hierarchy's main css.
++ *
++ * Implements KF_ACQUIRE semantics.
++ */
++__bpf_kfunc struct mem_cgroup *
++bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
++{
++	struct mem_cgroup *memcg = NULL;
++	bool rcu_unlock = false;
++
++	if (mem_cgroup_disabled() || !root_mem_cgroup)
++		return NULL;
++
++	if (root_mem_cgroup->css.ss != css->ss) {
++		struct cgroup *cgroup = css->cgroup;
++		int ssid = root_mem_cgroup->css.ss->id;
++
++		rcu_read_lock();
++		rcu_unlock = true;
++		css = rcu_dereference_raw(cgroup->subsys[ssid]);
++	}
++
++	if (css && css_tryget(css))
++		memcg = container_of(css, struct mem_cgroup, css);
++
++	if (rcu_unlock)
++		rcu_read_unlock();
++
++	return memcg;
++}
++
++/**
++ * bpf_put_mem_cgroup - Put a reference to a memory cgroup
++ * @memcg: memory cgroup to release
++ *
++ * Releases a previously acquired memcg reference.
++ * Implements KF_RELEASE semantics.
++ */
++__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
++{
++	css_put(&memcg->css);
++}
++
++__bpf_kfunc_end_defs();
++
++BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
++BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_TRUSTED_ARGS | KF_ACQUIRE | KF_RET_NULL | KF_RCU)
++BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_TRUSTED_ARGS | KF_RELEASE)
++
++BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
++
++static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
++	.owner          = THIS_MODULE,
++	.set            = &bpf_memcontrol_kfuncs,
++};
++
++static int __init bpf_memcontrol_init(void)
++{
++	int err;
++
++	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
++					&bpf_memcontrol_kfunc_set);
++	if (err)
++		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
++
++	return err;
++}
++late_initcall(bpf_memcontrol_init);
 -- 
 2.52.0
 
