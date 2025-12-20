@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C79D637B2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEAC6E668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A1996B00AE; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
+	id 1E5636B00B1; Fri, 19 Dec 2025 23:29:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94B316B00B1; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
+	id 16BA86B00B2; Fri, 19 Dec 2025 23:29:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 824326B00B2; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
+	id F32876B00B3; Fri, 19 Dec 2025 23:29:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F2456B00AE
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E2BDB6329
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:46 +0000 (UTC)
-X-FDA: 84238571172.01.DD8C950
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9A76918000A
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kuqnLWCA;
-	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E38526B00B1
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:29:47 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A947B8AEC6
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:47 +0000 (UTC)
+X-FDA: 84238571214.18.B788F7B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 14F1B8000B
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:45 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B46/qmCG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204986; a=rsa-sha256;
+	cv=none;
+	b=0YmugmiOL79VmNEBNaO33y8lr/l1NjKGABfvAovsPUGthTAtfKSdF1qwol8HHLt+osxn21
+	9a9buDSUNFummbeNuZlVwc9BLGMDeK4/b5D2Bdi9iSNa2LJdrLVib67zMEfpGsc6ung2BG
+	pTZHMaMSwgwuhThR7GJnilOdh35xDak=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B46/qmCG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766204984;
+	s=arc-20220608; t=1766204986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=moxrTDRP6uua1SfOpGtjjCHSc7BhEFDyhQGMp73I3aE=;
-	b=BKyH3hA1G5KgI6qdpo7Le5BqL7urmsAkZk7oRfqB/V+7HdGZ3TtxqK07eopiRfIzuRVzu3
-	Njb63b4UREfVNoPJ3fgnoP/BW6dxrMAxxafVou+Q/40U+quEWg65nPVUfD+JBvSU5AzhOL
-	eGqRaCaevslzg9riu6dmwZLhXHEBrnA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kuqnLWCA;
-	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204984; a=rsa-sha256;
-	cv=none;
-	b=VlDl67dmjKkQ8GuckJNTNU99nq+++caO/bBG7TMdUe1MW4pv1/jFa/3sQxX14AUVn9bHxs
-	PJJUYxhJ0i0Kcltjn4uHlY1S86oHcDY9Gko9dR7DV8Kh6myQLrRfzTewaJSVUW4kbTsJay
-	+3QOwbfPa8YOxnYYDw1FQuHdAlRjdH8=
+	bh=V4XDhgwwbC3cRnJIjcX/AntjoNCuEa2MpX3QyJCF5Vk=;
+	b=Q+KGcPUZkUTPwbQgd7FVpSyNwEqc0o+0a/38s/6E1XTG+HqJI9op0L/byp9z8sr6A6uF41
+	UCvA1cavk0W9i4EPIcM1bxZNptx9JfDMpxEvrL3Xtg+Hv8rf7to2ekVbBvMRSiIOQS2Eao
+	Dfcb139wnk4Yi3nOqYyucLcrQoqyKOA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C530B6000A;
-	Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39741C4CEF5;
-	Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 12F33444B9;
+	Sat, 20 Dec 2025 04:29:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7B5C116C6;
+	Sat, 20 Dec 2025 04:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766204983;
-	bh=LHAu/dZyFQqqK29xEpICrXmsoRaq6iiP4g0Utho5RUI=;
+	s=k20201202; t=1766204984;
+	bh=Z9JOLErhQJXlltHr9P9A8oYRxRDSKmJ1+qQX8KwZG7Y=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=kuqnLWCAZTNO1hFuZFoMgWDhDNkPQA3euPYG79oVTR2ZJ9D365HS8d7tZSORwJhJ/
-	 2rudc3555K/aZ5zARBsFmLwnjDNe1ZNRhrygMNOp7EV43nQBvb7diJ06zvyUEAivvL
-	 EV/nJuLjVrIndgEIHzagDZKITQLb7OszTygz3PYiueJx8zWJRMMrf9S2DPsPcxGljK
-	 FDQpbW46oxRN9EWFbWngsVHKM8g8bFmIcyBoavAo+FdT0xg9MV53pN91Goy79/BdWj
-	 unZPMBTA7pti/eLQ+vDZDTUbGzbQLVLVsBw0Y5OH4vbq0kxsouTsimqhyNW9VtExpz
-	 amjowlt6QNPtA==
-Content-Type: multipart/mixed; boundary="===============1907785491009621542=="
+	b=B46/qmCGfQTJUTcuLEOwXHSbfxWtorMZkB6aFjFPVkPs++W+Iya8ZoagzJPWtLTf+
+	 prRuo7ju/Y0Z7ikQYxRUWPOgig2YWrhuYvWyFSqJbJ9BtLcju/eXCEe5h02ptMa9MY
+	 cuP1MRFUZho0vUSt0Jc0HgQZ9T6bklJUjutOPpxqQ32bZ8mliCtSDWmKQSCtjag/aO
+	 7N0GY6kfq55xqf19DJHXByTe9ePh1KamaXNZdcdFQFhzJsLg3NA0DhDjbSb7nba0FR
+	 0ENAkZZoz3RQuhEJKu/37q7hspwR8rHcNqkt91uo8miODiJULioX/OiRzzPZrskT/2
+	 7t7zDGZMh23lA==
+Content-Type: multipart/mixed; boundary="===============8958172171642077659=="
 MIME-Version: 1.0
-Message-Id: <1b78506003b674f5e66bc7ac61f279a363f5cacc8d2fcb615d06abb0316ef00c@mail.kernel.org>
-In-Reply-To: <20251220041250.372179-5-roman.gushchin@linux.dev>
-References: <20251220041250.372179-5-roman.gushchin@linux.dev>
-Subject: Re: [PATCH bpf-next v2 4/7] mm: introduce BPF kfuncs to access memcg statistics and events
+Message-Id: <8f23848b8ac657b4b4a2da04da242039c59e9ad9826a8d5fa0f5aee55acfecc9@mail.kernel.org>
+In-Reply-To: <20251220041250.372179-6-roman.gushchin@linux.dev>
+References: <20251220041250.372179-6-roman.gushchin@linux.dev>
+Subject: Re: [PATCH bpf-next v2 5/7] mm: introduce BPF kfunc to access memory events
 From: bot+bpf-ci@kernel.org
 To: roman.gushchin@linux.dev,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kernel@vger.kernel.org
-Cc: inwardvessel@gmail.com,ast@kernel.org,daniel@iogearbox.net,shakeel.butt@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,roman.gushchin@linux.dev,mhocko@suse.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9A76918000A
-X-Stat-Signature: ifcf33seq8szx9phqaaukh4f9z3srz9s
+Cc: inwardvessel@gmail.com,ast@kernel.org,daniel@iogearbox.net,shakeel.butt@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sat, 20 Dec 2025 04:29:44 +0000 (UTC)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 14F1B8000B
+X-Stat-Signature: o146j67k7oonub88gbmpugiu3koxgua4
 X-Rspam-User: 
-X-HE-Tag: 1766204984-668739
-X-HE-Meta: U2FsdGVkX19/8GxSZDTTUXUChTiAhmc8RMnUc5V1oXXQjmd6TEvJ1V1N226NqPzXDT9yQNW6ECtpqbWq1MORV7eIiYqiKcPrrgWKN4E9+az8ekW1DjsynRo7GZ8mjtDCoYcxsm7zxFs5W2ApXZdoJb5A+a4r0g4qXb3WOmrYoRTGhbr5jbmDRph2fefwqrY4FRticGuEY1JJGvwDOW2kmOasIiBG+ikUEejzBH9QoCDrZWuKq6Dp2MZjgOBV/f1IP+bqKp4alj5OoGI3QTEar7gVs55PVYr2tnqVkExH4fO6HIm96tjCEiDaSu5fBHNW3181axdwdad2vU6LwUbPxDbVmBMOTCjy7p9hEZrPQ5/Za+zEJ/dVPvxDRC9HsE7eRbtD9Qdkog5uy4TsfkdSQx8EFa7NIdf5Eezh5+L6nuFzfbita5kmrn7607YWk6NIJaPHyr6Wwb/oIJcTmx3dTLrTg+32AiGWi0d/Zlc7c68PktRxS0Iyo3AuBcQYbGk5DAXEO9M1/c3GPbYIc8330yyw5z2PowGyFCJLyimEq/4FhOb/Yz6F5bM+6qg/IXWmD61iFaJRlNc1fFV63GCYfaarwQV71VzFCfwvSQgCCL+HHuHmy5ghJ7o45qzjhO91T0tpElzeTmQlyUfYohHxfxnXA6T50cjoXPd8HvbI1P/i8kK7tf/JPShgrsK7vMrum7L3cZS1cjDKBMdnslzkUD7r4B19G0EsH/RxTqsgeJ8zqKr3xvPkMq6+NCKOF6iHo8lez+bcDyhUduMj549bBE68G3UArgVf/nypl71XLEy730fDOd5wwDqjMWO2q7B5u5W9YIJ4Mxl4FhvYZ2qQrtKm7k9e4f60kVp3L+JQ38Ye2LMge2xHgOkzeQEooNqeUGoYL3hhagQo+8QPiwfmmer1hZefvM2F/+Yj2b4pL7i6OvoF+QDKc03ugHDtJX5FefNIsnVaDFT/dSNR97V
- BUmUGM/n
- YJ3Ibqm9tovMcCMkRjDVFTMqK2+S8BSGjylLbxDhYM6b43idC6hwlSPxY8xzmWne+xu4k587pdZRCZAEcTmPXaSggWxz8ApS3kfZAKYjiPsBB2GP41tqlAikE4KH4cAPQM4MDI2G2uobf6zubBRQA2+DKF7Uas3U4ZRIpwMHtkXopIQSyqkSTyhBfj4R10CLpmI0JTtipCR1nAK3xJ4SIeWrSyY3fDBh6edNku/7ICOgPz8JfeibikRsTQpGaZhZBbG9+y97cyOWVoxpD5B4JLZV8OgtmrQU9DPJd8irnRJ9mmbeLUI8N4Lntxjm36SkYvY10uaFzBKAAM1uK+QvCf7+hFuj9Tn6jgb66V+AmC42l4y+a43pXEzlyzfHNmswOb26Cfi2haIzJtM/aNOkXXZ0lTNW7TmLIIMs+s40lJBOE9/k=
+X-HE-Tag: 1766204985-64791
+X-HE-Meta: U2FsdGVkX18UAHOud9uGkzNBl9kZ/ao+sTScs22CveaPW46JpaY+U7o24Bx9Uc9db8zQp0OCPrJarDxSddDqQDyvE9YsOunmusYXOamz+39y1dL7peAVzeOs5YearC338/TSH9wPEQ9FuA0tRe2Ql6gqyVAz7uafIREMNvETTBk/a5FHZ2xL+xnXFCfpcYgdPaGtDcCAfSQSldm3Z0wIOrzwopUArZaovLG48vBRgTtzqfLWX9MtnWJsMg63ZbsU3YuFQ0DHIBToU0MEvi+jtO+MA9hETms516yXQ8VCEH+FeGLaYnmb5uv2J7mzAEHiDWrsJ5ZWMKlD1vS4i15hzMxYb/yzXbIufzgo1xTBQjYFcA0sHcSrfRYOLwfr9UHUN57VeCaOpSZGaqwkp6rxYmNNeu9I/N5TzZ5RybFzFrIsZiJtcCxPI4Juw9rm7LHAW1yNDimSaRFp6Us2qWkYQ5gLr2nK48aHUcIzUC1s0xurroMhcCi6uLvCpzccghfw0xXqlbqcgsPSTwaaK5VPcLmcnTWQKRBBR8JERYLbsmL5S+jdCw9LkXsI4cXgKFvZjjge+MccVD3nZ0ZD4ReGK13mqHv+sX6Air8Ku2Uv0mMEbflKjaGSwNBBIe7P8LLtF7JoAmA/v9BPvNsE9iAgicdyQDEwI5lda634UnC0x32jqElWIXRLjlo9zlr2qhdgk/PhvmvqJpmHA7jxae9GfiJmw2Qx5QvJIsD8C2W5PrsE/zR+qmlWbU7LNB3/4i8Zvt64RHxIgFhoMWmct4qBJNdYD6ZvwJjvveFRCXsQyZpbIqY8fYU5gYp1RYSCb9OLX0+cdcdk7W+LcllFOB5l3BKU/+YCzaelbOPHLvGpgjsD5SxdmQ5HL5wVkunxH9XDlBTK5rreVQUd5rVX7nVvhfGcq/kTatqjW0V0Hl5/TJuQBbIVbRls11kKX/OVfs+j7YEH4pffEvk/r6eacW8
+ vhfbT+6v
+ HrKsqUVjLn1O4g1herJUlv+gBqtmnAQKUxV3Hnm/zG/wEta9zT0e+zG01l/nF1CFkjjznMf37jrxN/2X+gzV63WshZ4X39vfQmK/TyEsIHUVGJ5zo+7LZBKaJtH2LhrNbmvIlrVIFek5zQwU1DZb/zotehFTog83HkpW+/9DvB3FzNBlMlmdEQ9/TbL/6RnQoa7/FNYq43ae9y/lTz5ArleP0ANMghHkFAb6PXgTkwrxnrIVAA41IcSXJ62iwkj0s36YNkWqgEgS/AVznC+YzQQ7i9O6J1CTxJRkOXIz7Ktan4jdq237nMNNHeO+O2bx0ldAFfGNvH9SPVmcAIarCabqlLjGxtt+T+JZcxNls8+oJs9RxzxrhCWD/21mNHLY0vRz2cOxZCyuvKOqAYbv+h8QNwpvb+2Oky65CYkRc813KbNE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,66 +89,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1907785491009621542==
+--===============8958172171642077659==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 > diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index 2d518ad2ad3f..d84fe6f3ed43 100644
+> index d84fe6f3ed43..858eb43766ce 100644
 > --- a/mm/bpf_memcontrol.c
 > +++ b/mm/bpf_memcontrol.c
-> @@ -78,6 +78,57 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
->  	css_put(&memcg->css);
+> @@ -103,6 +103,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
+>  	return mem_cgroup_usage(memcg, false) * PAGE_SIZE;
 >  }
 >
 > +/**
-> + * bpf_mem_cgroup_vm_events - Read memory cgroup's vm event counter
+> + * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event value
 > + * @memcg: memory cgroup
-> + * @event: event id
+> + * @event: memory event id
 > + *
-> + * Allows to read memory cgroup event counters.
+> + * Returns current memory event count.
 > + */
-> +__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
-> +						enum vm_event_item event)
+> +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
+> +						enum memcg_memory_event event)
 > +{
-> +	return memcg_events(memcg, event);
-> +}
-
-Should this function validate the event parameter before passing it to
-memcg_events()?
-
-The call chain bpf_mem_cgroup_vm_events()->memcg_events()->memcg_events_index()
-reaches an array access in memcg_events_index():
-
-    static inline int memcg_events_index(enum vm_event_item idx)
-    {
-        return mem_cgroup_events_index[idx];
-    }
-
-The array mem_cgroup_events_index is declared with size NR_VM_EVENT_ITEMS.
-If a BPF program passes an event value >= NR_VM_EVENT_ITEMS, this would
-cause an out-of-bounds array read.
-
-For comparison, bpf_mem_cgroup_page_state() below validates its idx
-parameter before calling memcg_page_state_output(). A similar check here
-would prevent the potential out-of-bounds access:
-
-    if (event < 0 || event >= NR_VM_EVENT_ITEMS)
-        return (unsigned long)-1;
-
-> +
-> +/**
-> + * bpf_mem_cgroup_usage - Read memory cgroup's usage
-
-[ ... ]
-
-> +__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
-> +{
-> +	if (idx < 0 || idx >= MEMCG_NR_STAT)
+> +	if (event >= MEMCG_NR_MEMORY_EVENTS)
 > +		return (unsigned long)-1;
+
+Should this also check for negative values?  The enum type is typically
+signed, so a BPF program passing a negative event value would pass this
+check but cause an out-of-bounds read from memcg->memory_events[].
+
+The similar bpf_mem_cgroup_page_state() in this same file uses:
+
+    if (idx < 0 || idx >= MEMCG_NR_STAT)
+
+which checks both bounds.  Could the check here be changed to:
+
+    if (event < 0 || event >= MEMCG_NR_MEMORY_EVENTS)
+
+to match that pattern?
+
 > +
-> +	return memcg_page_state_output(memcg, idx);
+> +	return atomic_long_read(&memcg->memory_events[event]);
 > +}
 
 [ ... ]
@@ -160,5 +142,5 @@ See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20389033088
 
---===============1907785491009621542==--
+--===============8958172171642077659==--
 
