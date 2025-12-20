@@ -4,120 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED829E668B1
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCECE668B1
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 600216B0089; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
+	id A0D606B0088; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AAEC6B008A; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
+	id 9BA206B0089; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7166B008C; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
+	id 8AFB16B008A; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CAF96B0089
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD9ECBA613
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:12:13 +0000 (UTC)
-X-FDA: 84240190146.28.EC5CDA6
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E430916000A
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:12:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cwPBHw3+;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766243532; a=rsa-sha256;
-	cv=none;
-	b=5bhMhWwbZhBrvkZty/XADNWRBWVHJ9bbV4M86o3LgpjRR4xZSYQ7s6otMN4wAU3adj6CGz
-	4l9n8bRdw4OS9hmmgA3BN4YB0woG1+GbU67glb+OPxxr3SVsWPgBF55GfOFXHr0cUNTWZD
-	03rX0juf6YpqGEhv0bX3T+nW6ZRsC+o=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cwPBHw3+;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B2606B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2DB813B770
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:44:27 +0000 (UTC)
+X-FDA: 84240271374.14.67467D6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0953140005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:44:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=O9iqtskN;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766243532;
+	s=arc-20220608; t=1766245465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
-	b=Yu0iwh0owiybIffjkhqpLi1hvKFbY2B1P4L2ioou//SZR2WDcZT33Z/kQ82kIxNOR0eqcJ
-	y6zDzQjcf2Ua7+UvT6+RX+ZOHwqlXsQ/0tuNxGswAKMq+xMjBc96P8cnq+f52UKR0u2BUb
-	W/2T1j+25AO0A8UyuGkaARkWyD69hPE=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b9b0b4d5dso2895036a12.1
-        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 07:12:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766243530; x=1766848330; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
-        b=cwPBHw3+Lav8bYeEoCEFXeWfa5qnw8LTXbx+F5uSCWjYG94JZTcLPRmpwbLAiI05mC
-         YFjO/ChbBHjPjBdW1ODZ/k/aXM19089+9nh5lwRqGVp8Ld8k3gcyI1ag/t/ujynXrKLa
-         GYhQvp6knXntvJjTb+wnRiv2i8+2OT7r9ctvMVzMK0E3e7y+tU0peUjfra0LbXx0RKqU
-         iKW+mSpVKeJ6Q0aQSH+Hpa2+h3vL7hhP14CrRdvCPZ4MZyjaK7OGzl3IBG6jAXE6QoIR
-         WZ5r1ZV6tMpGykKAauqhKYAtsh3XlmXkKk88WT+9ChcgWRtaStupQmIc4CwGk0hUjpwJ
-         U9YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766243530; x=1766848330;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
-        b=QBvDvwDt9YEhLG71JjcDgBkKMexw6f7KU7d9tpSQ9i77LYvSARHfzkTVsEriI/DMaZ
-         obxCzSrFlZe+FqpY+/nip4cBw/0H+be3oXLTPxn8PQdYB36k2oRdBc6af0dd6LTGsGwK
-         X5xCouhhnSKdnNYddet7J3op1jrZsZKjF7aexVlXsTR475xC4lDXoKkaN38seyHz2f3W
-         ocnZyLIN5+Doi7EODujXx1yDadOtAA3CSxU0eeoq0fnPp0Kd6u7Fg+8tvL/+vY5I2CDn
-         7t0qo4oJPHTVhF0F5+2q8efk7zBTXYJcQjdL08947dDjltGEAI0BjC0hsXl5XbJ1lLYU
-         uYCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsCUpWToKIJh/hWbqh87tuXIGBzvRYNlW+uYZcVkwX4T4Po4uJ9HV7fAaYSGh21WE43JGsCA7oWA==@kvack.org
-X-Gm-Message-State: AOJu0Yyzi3Jl6VltMsr8d9gn98eXLMn3LbmZYzEbD6H0LAC3rDd4IGfN
-	TUgjFyMbJ6XDwHZ752yK1sINjIJODWwGyTDmXEB24mf6Jw3iFDNJ81mgDl6JOrQVI/NuqhPH2ze
-	CF3UobohhZwyM7FL1+WorLSuScs0584Eh4gzp081fW/0V7pz6bDUsMqs=
-X-Gm-Gg: AY/fxX5sr4hJXWz+an16o4s0IBG5f6iAECo7UQKmxWUJWJZ/xkTM/8KLDvPtQAt+Haf
-	ZUDJ35ud9xrrXDHwAywH5W8YF5UDnpxGJiEoxB7x7yhtVh2q8r0sPUZttS6jfsv+zl8z6Z8pzmc
-	bMeynioFkrJq60gY4A4A7ZkV2fgrSFZ5BGpeaXHVaDRB6Rsp+7VfFMXx04wbU0kRStDfIx9O/R0
-	GXfVGPP3TqWnFRIm0dRic+OaDOSTfpcx7RZybgjsSNqqq+AzGXzvnMS+DQIuHQWw4MMb5zOs53a
-	7RcO4NIM5tgMNIgwB+7tzc2V65jtpg1RyvRb64Woj/F+fixbeoyVlvIP2o99WA==
-X-Google-Smtp-Source: AGHT+IG2H0JMzpZ4Rw9d+GSeTdHtlvEwfcgulZM7WmjLKT/BwHOEpNubFax4Xm7riytdiegSHPUBkYePz2N2H5EqPpE=
-X-Received: by 2002:a05:6402:34c5:b0:649:230e:ec52 with SMTP id
- 4fb4d7f45d1cf-64b8e935a65mr4687631a12.1.1766243530490; Sat, 20 Dec 2025
- 07:12:10 -0800 (PST)
+	bh=zMl/TGA0u1xBmBaMRlepUrMqntUGhGfVo9a9FRBDMXc=;
+	b=2eY5D1zKrAZuC8iFcrqlFEl35mP9Mn5gHQPD330u74XczPg+RKUevCAGs1txFhi2u4Ab7P
+	/bBCfPZLIC+nZzg63GsskL+4yZN3WV3LvgYWDj53aqq5U7H9Dwdqp0ckVuFNVuWsd1WPKZ
+	8PGiSiYtrAvagzgr+MxqtWTQdTCpRow=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=O9iqtskN;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766245465; a=rsa-sha256;
+	cv=none;
+	b=1pf16ECXro54JP6h8AZ4F8bVlmCFon+XpTQxJTvXqjA68zhJ1FeBHTP3ApOON7Lq5xleRh
+	8p7oLi0KNH5wDVWxpzP6XMXJJ5Uc2u5XmLQZAUp45CdKG+hNvnYchmH28ncflWZVm3Xfvx
+	KiJzIfhWoDyKDdhLtmJUNFRN0G3jbCw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766245465; x=1797781465;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i30qgdidF5swEfrY8bISvHkNXQBtVxmPrBDz6HH/8cE=;
+  b=O9iqtskNA5KY/6Ecw5zASgsMZjKfABKdxlTFJsLX7ZCn/RgKka50dsK3
+   BBl2NXNxkrYGb0jyxG0QO1Eb2UWbLU+II45XMthVK+sVRmkvrMx1rJD3/
+   lCUCQ/B/iOsCTKGFHmrmibzrHgSOVqe9j7Nnej9ALRMJLgz7jun55t/tV
+   uCRlcNy0qDyv8yTFIsVFdSFfyl6Zq428lQu7TeR16kScQ/mhTJJJKr5UH
+   bY3Hwlc0DM91z4EcbpRZ8kHfy1sYnSpBvPrXIsmo3744Kgzz+/eMfwzdP
+   yy8jSI6GuSp7YZ1mVKuGsQe5yDkFf95W5zFb0eSTP09DEi6B2B9KNuMx7
+   A==;
+X-CSE-ConnectionGUID: DPuQniRPQ/+SYdNOxKDJBw==
+X-CSE-MsgGUID: gfzuAytwSJOLnKHDc5ZUyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="79297145"
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="79297145"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 07:44:24 -0800
+X-CSE-ConnectionGUID: 7rxyLLmsSwu8Qk61HDxw4w==
+X-CSE-MsgGUID: odg2+K3HSBq45ro0hb4fag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="236535410"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 20 Dec 2025 07:44:18 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vWz7v-000000004m1-2LBa;
+	Sat, 20 Dec 2025 15:44:15 +0000
+Date: Sat, 20 Dec 2025 23:43:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	houtao1@huawei.com
+Subject: Re: [PATCH 03/13] kernfs: add support for get_unmapped_area callback
+Message-ID: <202512202307.ewUcqBQV-lkp@intel.com>
+References: <20251220040446.274991-4-houtao@huaweicloud.com>
 MIME-Version: 1.0
-References: <20251206230222.853493-1-pratyush@kernel.org> <20251206230222.853493-5-pratyush@kernel.org>
- <CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com> <86wm2hj0ky.fsf@kernel.org>
-In-Reply-To: <86wm2hj0ky.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Sat, 20 Dec 2025 10:11:34 -0500
-X-Gm-Features: AQt7F2rkD8DzKJtnBrRBVjSiNOllvUXl1o05w5fOraa6mNPG1z2m3wrrR9PJQmQ
-Message-ID: <CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
-Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
- early boot
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, 
-	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E430916000A
-X-Stat-Signature: ga69a1z1y63cbexn3wke1kxh3m4tyw9y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251220040446.274991-4-houtao@huaweicloud.com>
+X-Stat-Signature: 54umbb954ns6aaygy7baymnjxdx8ab58
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766243531-866775
-X-HE-Meta: U2FsdGVkX1/pByF6P0z09aqEqicptLR+oEF9na8EHj2ECl4fn88OG+ppgVO84h9Nxmy06fOeqvk4pFxC/k3/n4WlG94K6n+5QUW8Mpqt9+622fKtWqJx4iCgoW2MuPetmJjHiVVZpUK7v1mVrNjEoJVFFf8kuuYeuUC/2a+di7Mvrjk2C8Ev/cGjmS5L7pqKp2X00KEkfDLPmn7iPDewKM7rvbHOHZqD4TxlCqPKcM6smj5pFh+ykqK6Pcb2Tkt2hJjnZ2NcQ/7DSA0pPKVVwxefkPmLkzY3YIKBqa8CrnP3x2MAN+oh4s/HI3QBph9eUSS/0mKzYBK8vJuzE6tX8oTmUejtYG3VoxgZK+tcxmD9o0aX7hzRmSy0acQN8PYAeBQvoaGEgAbFUT/2QZJPRSQAWWXnvQbWaO88VwSccLE8FM7BvGJhfpREVwvxBICRpZ4+2d0TwyA8KWCYGa+QJuW8maiQOxGJ+RzFePHyP1u8nFP2zU4jjmJPQcP99/XN/LVRlTJkxzVfbXj1tagzZV3Nh3esnVwGYAx4m5iKq3Q5spJSuciKMSxYdl6KCbrC8wQSaccAgyHyzqynoAo5r95o7iXzo+5m4cHfUrjOAqNTf6UIjzl5f67VTHJU8nDB6lJUefRXYV8cVmKWUS1YACXEq4+pKaQ7qtCUzCogmFR1brBDgINzdYxXXfLwfW61QxO5mLK5Rbiqd7aB6i/JhtR12nuyUHXSy0fV7wluSO49YEs5U7ZlqjQcasi0gHCmtXlnKdouS+Hl5rnsQJDDFHEb6L7D4znoG1w36m+lOvuQyP4REkpRA7OYqaziyBtqQRXii9vk9p1r5JiZsRi/h0UA1wYO0coDXWVnv7SWs27gloS3SHLgbkHodxrhnmoxRXLbJdk3bqB9aUg93+1g8hGp1BI599Yq9cN8AnGEvAVayeVVVn4GUD66vpw9uC3zj76OtFoVMYi3BEDa9N2
- creNxPup
- oEIFKQZYrLAjfEcD6SjgfIQK7mQDC+mYvXTKEH/IPRXYUb1nGVmOD1oSR6Ib44IwtQLJK+60VCMAi+bpHv0Y39IYf61Ds5MSKVZG5G4tHlq8PgCDTyU8SP4FpC+OvwuOTlzJgfhFi3t3CiqZ8icGl0Pr7Yg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0953140005
+X-HE-Tag: 1766245464-94354
+X-HE-Meta: U2FsdGVkX18Qx8cSXIMw8BRjqobCB6tQbL28j4KpxcipxhDytpDMcSjX0lbdex1bnatSvJBifzkUF8WxgUGlg4HaNkASSqpXwIH5FzWJjb9YsX7lvMxXyU/PLQ111UQ6XgcK3CHN/XuF8XU6+UmVseu/t9LLk6D9ZjwB+/8sWQr5Fc3eAuT7a+B97hsiotRJpJFehiSuGlYzy+kN8Cr8eadZ3HhaLIieomnkDateMC57W9siLzgoyD3kGm+hEZxW5nGOPm4zHfABZzN1rl6pScIsP7+z4/1q/VrtgLNM3mOZ1YAiO8xHcoMUC8nEfsMJgDlMeUwSKwvJFMNetXDYCYHaVVS7odSyOrhQ0CGlWEF/sv8XUYWkP2XqTj93orPl7i4cCb5Iwvqouxgnfl/SV2KnLxHnV+exBNILwKn5Mnv40S0p9rlj7p98RB1OdvI2D2Z2oExjm5FrCfjo9xkk0kziXm6YP8Dg+ldznBe74SagPR0gZ0Cqr4KbmLFxGKCu/wQKgEwGHgFrsWpXf2lljWzkDr6fpO6d9bVfFWqjxuryNQPJ8hkQGuIAAxLAlK+Xhs725y0puaPZo/5X37+rivxu0NA4ruRnOoyBUjO8JgmMxM5t2XhUQ2WfQEdkvmcnyt47UL/ksiNqSOM8jbpUdjBx7p9j24NDJf6Xn0hznxkYkB5n/7Gy1XJQ5ZlD0NJgZsd/nziCwDhVL71sbNLRFmrXGAPA63H2syydynEJjBpzyTy3OQn306BRRNEGnWeqhMASw+pQ3DWElSVapD9UA7AdfaEgbUPQq6pDFS/SIcMlgDUXC1rztAhogLMhIqKj+tp1QJaq8ucGkUbJIOyXjzNZgte+AkX4Gv/tuNIdruYJrXgmtjkg6/yucmIqIvnq27OsA1+OakCT0X4diSqQJpZXZuFLLJ4kg4DsLxBSqZ6WUJZyWlUbBkMC1MlsHIvIJFVmYwYe2Z+SgjO0YME
+ vySVUleC
+ kGUMs7ry0eWjOMLI211nNtMogaJQhk2mM80bLAiNKhNEDB9yDaBZw71dYWZzAnlS/7lxX71pC5wrunE2NJ/DZOd4RDI27kcHRICcn8Sda1+JXpgiFsH8IORavI2vv9mdVmpSAPl0/d8Mim7Sj7jZU6ViSEctqpY+MC0Gdvmow6eRTk2Olg8uPAxJclZn5q29lneV0qVjgnRvgasxzh9S5pFIiX+qsd+yMfp6STrxfmCpTdAEf5kIuD+vKu6jiZ3mc/GfE7/AaLAyW9rKkqk/tE8zZSS2zPXI1Hid9bf5UlPmMLKXM/0AgZESETt+KJ1639zO/VEJ49AXgCXClZx3XGghPAk2v1y6kzyZR9qmnVe24+RKRgn7SvBYhjg8cps57y9MRSVcAX9UMMFJJl3ZLN8coyOpmVH4QgQWLBCUTzPZLsX8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,31 +120,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > [Follow-up from LPC discussion]
-> >
-> > This patch is not needed, you can use liveupdate_flb_get_incoming()
-> > directly in early boot. The main concern is that we take mutex in that
-> > function, but that I think is safe. The might_sleep() has the proper
-> > handling to be called early in boot, it has "system_state ==
-> > SYSTEM_BOOTING" check to silence warning during boot.
->
-> Right. I will give it a try. For hugetlb, this works fine since it
-> doesn't really need to do much in FLB retrieve anyway, it just needs to
-> parse some data structures.
->
-> If other subsystems end up needing a two-part retrieve, one in early
-> boot and one later, then I think it would be a good idea to model that
-> properly instead of leaving it up to the subsystem to manage it.
->
-> Anyway, that isn't a real problem today so let's look at it when it does
-> show up.
+Hi Hou,
 
-FLB has exactly one .retrieve() lifecycle event. Once called, the data
-is considered fully available and cached in private->incoming.obj.
+kernel test robot noticed the following build errors:
 
-If a subsystem has a requirement where it needs a specific state
-available very early and other state available much later, the clean
-solution is simply to register two separate FLBs.
+[auto build test ERROR on driver-core/driver-core-testing]
+[also build test ERROR on driver-core/driver-core-next driver-core/driver-core-linus akpm-mm/mm-everything linus/master v6.19-rc1 next-20251219]
+[cannot apply to pci/next pci/for-linus]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Pasha
+url:    https://github.com/intel-lab-lkp/linux/commits/Hou-Tao/PCI-P2PDMA-Release-the-per-cpu-ref-of-pgmap-when-vm_insert_page-fails/20251220-121804
+base:   driver-core/driver-core-testing
+patch link:    https://lore.kernel.org/r/20251220040446.274991-4-houtao%40huaweicloud.com
+patch subject: [PATCH 03/13] kernfs: add support for get_unmapped_area callback
+config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20251220/202512202307.ewUcqBQV-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202307.ewUcqBQV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512202307.ewUcqBQV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   fs/kernfs/file.c: In function 'kernfs_get_unmapped_area':
+>> fs/kernfs/file.c:480:16: error: implicit declaration of function 'mm_get_unmapped_area'; did you mean 'get_unmapped_area'? [-Wimplicit-function-declaration]
+     480 |         addr = mm_get_unmapped_area(file, uaddr, len, pgoff, flags);
+         |                ^~~~~~~~~~~~~~~~~~~~
+         |                get_unmapped_area
+
+
+vim +480 fs/kernfs/file.c
+
+   456	
+   457	static unsigned long kernfs_get_unmapped_area(struct file *file, unsigned long uaddr,
+   458						      unsigned long len, unsigned long pgoff,
+   459						      unsigned long flags)
+   460	{
+   461		struct kernfs_open_file *of = kernfs_of(file);
+   462		const struct kernfs_ops *ops;
+   463		long addr;
+   464	
+   465		if (!(of->kn->flags & KERNFS_HAS_MMAP))
+   466			return -ENODEV;
+   467	
+   468		mutex_lock(&of->mutex);
+   469	
+   470		addr = -ENODEV;
+   471		if (!kernfs_get_active_of(of))
+   472			goto out_unlock;
+   473	
+   474		ops = kernfs_ops(of->kn);
+   475		if (ops->get_unmapped_area) {
+   476			addr = ops->get_unmapped_area(of, uaddr, len, pgoff, flags);
+   477			if (!IS_ERR_VALUE(addr) || addr != -EOPNOTSUPP)
+   478				goto out_put;
+   479		}
+ > 480		addr = mm_get_unmapped_area(file, uaddr, len, pgoff, flags);
+   481	
+   482	out_put:
+   483		kernfs_put_active_of(of);
+   484	out_unlock:
+   485		mutex_unlock(&of->mutex);
+   486	
+   487		return addr;
+   488	}
+   489	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
