@@ -4,119 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C10EE668A7
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417E1E66886
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 940C56B0088; Fri, 19 Dec 2025 22:24:12 -0500 (EST)
+	id A21FE6B0088; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9215D6B0089; Fri, 19 Dec 2025 22:24:12 -0500 (EST)
+	id 9A5416B0089; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 858376B008A; Fri, 19 Dec 2025 22:24:12 -0500 (EST)
+	id 8A7886B008A; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7846B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:24:12 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 32D281A03F9
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:24:12 +0000 (UTC)
-X-FDA: 84238405944.11.0BF6F87
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3319580002
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:24:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FeMHDBO5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766201050; a=rsa-sha256;
-	cv=none;
-	b=SoJoF4GiS22eiJbVwMLyrKY43R/moC4SDCURmyivellQSfym9H+lChrNJ7qo6DSNDT2BN+
-	Jk0M31RZwWr2yTXg/5vrCG3YNgYqhQuZPpjTMTlaVp28+9k3J0IMj5iYJIVN7N+hXt5eMw
-	niHvhvb2FTf1t/NtxtGJG3vXjpRJn1o=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FeMHDBO5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C1006B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27058140420
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:26:18 +0000 (UTC)
+X-FDA: 84238411236.18.556F419
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 56FA64000A
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:26:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phms4Nd6;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766201050;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1766201176;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjaaQbGCilX+QTlDAoBr5owkPKMEsDgEzRlO9ba8qkk=;
-	b=ghTd/iQH3gNTeLiL23wlyS/g1bHxftaaSPcyDznPZ9ZRgcpBmCh5a4JK05a4Qe67pOMpM8
-	fNuoq9J0oXN2BxJ1lhB9fiz3OGSWXCv6NDGrrCu1MBcVuuyOB4hxsdhUcnFtHfA0yxNZiY
-	B87jo1cAg/MEFr3BdtRSedc99qLbNXM=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b72b495aa81so396664466b.2
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:24:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766201048; x=1766805848; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mjaaQbGCilX+QTlDAoBr5owkPKMEsDgEzRlO9ba8qkk=;
-        b=FeMHDBO59Sq+vO+biLo+tcJ5ybux1tnzo1feK2yaj7fNBXyIBeudCjyvwXxxWSXjyU
-         V+3YbmkHc14xXKujq8Mn4DIf31AVh2tY3JqyDoIcyh1iT+uH6xPtZ1vidmIcyH3OkJRs
-         LnPFlDk7M+sV2kFD0WXWlyRt+cTGpAA4+n6hxgrpczNXknZQpi7uMWU25QunWzl6fTd5
-         /oqTuD0rKLM5iraKbCRQCl+OxHczYvWNL13I0Kg97LuFEfTK25w6oXbhj8oMGyWRjZSl
-         Cl7nVtmKxmoFdcbEhhNySQxWd3fhrjD1+zJQIEHMtxddM5nFmHKRVyZ3mB+H0RfRm6iU
-         uWvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766201048; x=1766805848;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mjaaQbGCilX+QTlDAoBr5owkPKMEsDgEzRlO9ba8qkk=;
-        b=rWAB91oOfcsltg3TvBHK4iwCx5Ap/sZAvRm5syGw6tkBVuJ60SaFNlBT8gXdIeZlZG
-         zFpYEhWKm94XPsTRqYBvMlW5l8DN+oZI8QOoYKLdxLLbkGygGoyOBrfMNSRaf1HSkKcJ
-         3g7R5DCiu2qUC/IzK4lg7nq4FIlMMC9p+fDQqIeXQR8FL+hQkutkxzkQG29stNJMdpJF
-         52b6HzAkphi1Tjeg1GdZhrqRey9laqiu+B8k5hI1H0msBY5oeLRlgu7JFPRSvT/uoCmU
-         19Ixa+WeTX38yVfK7/3VGX7VAkNfAb63JW9Rl7gwFNTJJOT0BeYUCmyCdPF2K17lyUJP
-         F8oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWezCyfkT3sUWfZHTRy5usFQOGpGH7kZoG1sDErjqVNuS+2hKO3Akt02q5+3BuNcoylptisnMKDPg==@kvack.org
-X-Gm-Message-State: AOJu0YyqLfacq/UdFmg8/nmcwVnfrKeLnkMjSlTTrklYd/QXT42Mh4hh
-	g8ItCJkfc8BRlJ4Ma4thhPFKLJArjbE1BtzZRRHZ2OPevbrh67PgDTrg
-X-Gm-Gg: AY/fxX7jl1uzgeKHiHAKjD/7hO3aYeiJj1jjVLRVnz1GsElli2AO6VoxDnF6VkLYnc2
-	/TL3B5CpiBhpdNB+uXBxdaGTbppCs/+1oEB/9KvrE/fOOMOzt/FijYqZDJEgVnlui2uyNLXEW83
-	cdWcyM2VNhDci9cY3YmPO+hyxXdDQqqOjb0XGN+35Lc4j2C0biIx7cZNNq3tVnkjFujPWIMDBru
-	sVuUJcUesqmI8X/WwGlMMLv3lgy36JDVavV/Lc0/En5GVyrJ4Dvl1goZeCG+tR2aTQpRG3DK+Wo
-	XOSvWTI23e65WY+3Wc1Ecw05uxGThaiDevzVYCIqxNsYE74qGYn27pASNEbNypCGhiaVJBHj02/
-	VCf7CzFKpVjeyZlJOObVfWxZeiQ/p6GVE6YpK5BFj/v1BLbeCsIwrdqPXUaaB3c08vHsFpnDDHj
-	sS7DgREEgOSg==
-X-Google-Smtp-Source: AGHT+IEBUU+i5igZdM1AcnFNk8rSk+v7D6YYygZwlK066iTkW8ZtBdmpF1j7kEMa1rmDlFNxsm05+w==
-X-Received: by 2002:a17:907:970f:b0:b7c:e597:f444 with SMTP id a640c23a62f3a-b8037261014mr487307566b.54.1766201048229;
-        Fri, 19 Dec 2025 19:24:08 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ae2de9sm399445466b.26.2025.12.19.19.24.07
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 19 Dec 2025 19:24:07 -0800 (PST)
-Date: Sat, 20 Dec 2025 03:24:07 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-mm@kvack.org, hanchuanhua@oppo.com, v-songbaohua@oppo.com
-Subject: Re: [PATCH 1/2] mm: bail out do_swap_page() when no PTE table exist
-Message-ID: <20251220032407.xeszwxus664jp7tq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251216075943.29593-1-richard.weiyang@gmail.com>
- <20251216075943.29593-2-richard.weiyang@gmail.com>
- <4c2027d3-2665-42e0-8cfa-712b1d8f8870@kernel.org>
+	bh=a4+Amfyrox8uas0sWao73yoqMJGIxvV4pb6+PRCdA3s=;
+	b=wMAPbx/viWhivJe4JufTafJ8VtwRHDf4Zo+8cEfT3x4rAnlduIR8T/UorBI5tlANCXUXbZ
+	VFjYamkk0NY5fYGNXueNt75sexqIvjqkwNxTVE3UoaLACbqbP+NIWRDvxFVZlbEoVJkbkj
+	dOZmO2D3xsh3cONnAJsrR1LDYQ1dNRQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phms4Nd6;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766201176; a=rsa-sha256;
+	cv=none;
+	b=B/TJOzDlQNIQT9wLZnWXHp6o+AEfeHwINwSBSPCjGa4+NCpa1t5uO9Cpn5C/4+xzzdYZ3H
+	QwMilPo1sPP7HXJdva6hHVJf4RRYw6HtUto97hgNX0C5Ealz40WYwvcu+rM+2b9/SlAYIi
+	JceteTGPgg17wo4IwKEhThFFdItvoY4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 55C084437A;
+	Sat, 20 Dec 2025 03:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15A2C4CEF5;
+	Sat, 20 Dec 2025 03:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766201175;
+	bh=EnAo8tjl0LeLPwSTVsKJgQguKuTTfJq16l9GOU0BmgI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=phms4Nd6aQSaSqIIrs7tdFGtUthysBdYR/4KUwsLEko27qXKr9jeITU/Y660l86gX
+	 dnDJBEWToNz9fEG6IGkuV7uKzIcIKzTF5pnuo52ubwmGMfSHDV4Ab5LQetAx4dhYLU
+	 DQCPur2SWniNGSj6O0YbWfGGYPomemOaisSZyoDKGQhG5uF6ymmvwXdf4cdLCrYrFe
+	 gUtTS33mU/WNSQKk+AeI/8T1+lFeukh+B5DmNx6bFr1a6ihStU+lxVih2azmbAVTie
+	 hS9hWVFX2ObIMZWnGz4wektpS41jHSJ8W+XdOE2HhKwLgZcUrfbZI7EeUm7LkphO5S
+	 Y5ZiABDTgnitQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
+  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
+ Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
+ <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
+ <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
+ Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
+  Vipin Sharma <vipinsh@google.com>,  Zhu Yanjun <yanjun.zhu@linux.dev>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-doc@vger.kernel.org,  kexec@lists.infradead.org
+Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
+ early boot
+In-Reply-To: <CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
+	(Pasha Tatashin's message of "Thu, 18 Dec 2025 13:25:32 -0500")
+References: <20251206230222.853493-1-pratyush@kernel.org>
+	<20251206230222.853493-5-pratyush@kernel.org>
+	<CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
+Date: Sat, 20 Dec 2025 12:26:05 +0900
+Message-ID: <86wm2hj0ky.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c2027d3-2665-42e0-8cfa-712b1d8f8870@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ga56i33iqtrjhyfmsbesr8z9yr36r6dk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3319580002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: bu173pq9fp9fb7ay45h97hg1tue1enfi
-X-HE-Tag: 1766201049-460274
-X-HE-Meta: U2FsdGVkX18YrQeIveRwWmBg1l4H2WE3Adw4yX9KamvYJm8IXiBjrPgnXV//9OH5XiOY+c0+Bpkb6aFgcuaqzz3nTi4N5WEeiNtEcOCpLbumm2PlnP7E/ZP4ClZ4lA91OOSv13Na4yYmolqoZ2s7x0+wJro8RN9hyHgbnVOIRCAAf7xql3qwrYcZIqQECr+vcXWP4ow2UuJsw1n9gblz5nUmCLSIrJV8Iii8TsUUoENk/AvEcKGzYpnAd8s1DNksN2d9lYJsaAJx2LRvQiHi9+BZucG7lwMpIBDHXtwct5tQ9H05cNSltp0COxhl4nzLIZqi98smuLaEJGOx7oRpEX5P/8PRCEudCUcqQ7E0Qp80OG2aIOzrz4jz1h/jv+6TfkxloPFnapDt8GmUZM+6gPg1BOpJlFqMhMBJ6GXVT0yztTC47LZsjPvRbMA2HLUqw0R5zvVzzITT37SaoZsiRXGZLYkWtvNB7RFr3ZadYeM3cGClxuwXOyUdUXzEptg8JafmisCH8Bd/2Kr50Xn4KEasNXLZPBaexrG8xGctKnj84nXjLdmLz5FYeeNe1XUPZmD3WfIrYQ+q5chNW47JU9ie3Q2EOLyjHHrPIyXwX35Q17L4mKcAKO+rYA0RKC0g5GBHa+ikrk7JmUlgTbOaLH1kNAgaBI5Xg4c6muPncIa1nmLKnSbaqtoOfgizhf0A0AOIOF3xovWpjHjZWIeLPO5ylNccurc7x3Nt/bCgYoJy1pV27QrugEWwu43kvz7Sx7gtNz+ARtXxTN3TtIuv0J3Dh0aRMqztkFLtYHUnsunVGupyyAdbN+A2WoDwTD5dwyhYEbdap6BkJRnp6IbqUhMyN62kaPRHW387LwkX2Jvk4RJfcmGq+Gg3xPFUcP3csjhmwQgUDosFqiC2FnWZNFd60iLNAFeM8eQJu59zmmDPBJr6V1HKxtSqyP1vgEc2sXI05KHisysKqvGNgNT
- eXRojA4R
- 93sI/pLu2xx8jnhBUEY2cRwYLO1gt9zwyyPMJIVBvSrAABIO78E7BcN1poJG+o5OfWLVr23mSJGYqT6vKOkalOIGT4bPWUlyTfmcKhsUN3IZxRhzJV74IbWQrbiSzrlaphXOWh45qZlHquFSBWywy7GTaf1TSVNCSVrgJ/q0/TYMK3YLoEQ/BuKeISg6xdPdpRxLVMNzKRZGx58iEqQjnOBuz9e9KvpItc/o4IKMftmIJEvUiZxTs9mhSScChGdFUfjh7ds4yzNS0pyC7RA6jz60/GyZMb48vfJwAqOh00rpyxpHCX6a+vzJvpuUiRCn6S4iLbpLQCn9q5kgpAEnIEcwnOtwFHBRno409pn/nff6FhATnAjlH4LUTuA7W8MtpRkzF+1zoRc3oI59mgrq+VF/o7PD3N49SF3K1c+txquRatSZbgIJQXUxJYtViWxCmIgElGk9eMQ2An5lWPSi15Ca11IcJYeIjz3frcdO6+OQzE7xoIp4rd77XNSR9KLE6Pelk2Hhh530CDHRLIibDJVucwces9Kytq5rWsXx0i1M29N0vlMn/v2XyY+VPWyayU8EpXetacaKbdcDuQDva0hGa1IFfeKgbri8L5hXUA8BUxG0IPEXgnojUWeJd7SWEs4ZHJcah+diWawfIamV5MZdYFUjvfpkXzSL0b4AaJGfhdRHS5Gv11FKaZPwc+34D3WPINRmCF5UQx0KyKbvQ5BeCtjvxFuo39CqAjvUEcWnBZ35KNI4dFS09IKnmPNWc0T4jB1DGOUBFHJkuVc/GIK6B770Cn3Sz2yCl8OdyPFLyhio=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 56FA64000A
+X-HE-Tag: 1766201176-849032
+X-HE-Meta: U2FsdGVkX18A5FkzOjJ/S3b+h5480QB8az/Xaf6fJOjL29woBvPztg/8b9GjBiDsoB1erNul3PZY4OpsmqLaMtbo0klrzE73LKglp9psrTnTZgMuO+mski7nwG+HP/4xSvasRvtgpqF7nVHQ20FBkLoc2VOya71sUV3RtQ1htm/O+/QTl0ukIa7CA/L9WoZnZRn0FOmbFYYXJS2/ogGPJwOFeC8fiGi6eHwwPkAjaerDXE9mrPbc8cI459IsAGG68FVGlGBjBLOHU2mw4A+naREQCUScf3Lpnr5L2arypyqqzunkMA3Sqx+thb4UHTsAh2YL5XyerLCP6Y9FAqziK75aL0IYLHpoy47c75Gd6tfyBisrYBAkya3gkF2qxlJ+Np0dFJxMzCEs9K6KVHphi5UF1IakmWmc2Ca9Mc9GmtvDVM4Z8/lZGay05BSgsqe/Sn6zxuhLN9hWtQ3/3V7XwcTPorLHmSrRrFcdgbx8W+/8StEy9UcIm3jWBGehduW43yfJ9gIzGcDalYOqyb5X5RTCRcfR6H0VsRQbq2G3ujZnMKHL5e4ZaFHw9iRcTGxDd9+WoWdEwv5Anqg3QnXsnHsNWBDVxNr+vLMBiKb1LV4XoWjkGOUfHyKvBlN/+9Bs5iRnN+mRLbWUxDYOsrHtgYD5XDBw4ZUlwQTSuqL9vMi0EzLCtkXQ0hVIX+yB9bq/+OnfjEvZikvE5+rp7DMldogS2fze1qXukXISdzBIBtqQ5u4TZzdicuy3LmP+xluZEwOg68DGGFQZ9zeB82kDoq+sXVp1MPxCsns9WmOLcxoqPXKmC+m+ysNpjAeS3I2CpZBllllsltX6xnzn29xPDq6Drrb7s++8g3rGNgAecrPvxJSyH+K0jb+z7MKqHi1R3LbnkVdoSd6vOlrMndNIsPtBfauV4m9+Ng3b/2UxVLjyOSwBE5sOaZt4RbLcmCqpJWCAaFjTlQBKjauIxAi
+ Bv9U61/w
+ utF58fSaf6XBWfrdq/fUwr8I7tavqiVzSdzuskTAPcjQ+dbHhQANBqPmoMZ9xUigDIJnlWtsDoSN0+NkALAjiW7L6HzdhHbq8XtzhRbxG5gAQBXX2indZjWItA7DSRr4I56jDlXTNWptYvYAfnOP0U7f/3KqhKu4cxDa3fgMbKPhmHzXGannEAvwW9pf82Ag7OeF9G2IPcgj8MsY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,85 +110,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 09:42:16AM +0100, David Hildenbrand (Red Hat) wrote:
->On 12/16/25 08:59, Wei Yang wrote:
->> The alloc_swap_folio() function scans the PTE table to determine the
->> potential size (order) of the folio content to be swapped in.
->> 
->> Currently, if the call to pte_offset_map_lock() returns NULL, it
->> indicates that no PTE table exists for that range. Despite this, the
->> code proceeds to allocate an order-0 folio and continues the swap-in
->> process. This is unnecessary if the required table is absent.
->> 
->> This commit modifies the logic to immediately bail out of the swap-in
->> process when the PTE table is missing (i.e., pte_offset_map_lock()
->> returns NULL). This ensures we do not attempt to continue swapping when
->> the page table structure is incomplete or changed, preventing
->> unnecessary work.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Chuanhua Han <hanchuanhua@oppo.com>
->> Cc: Barry Song <v-songbaohua@oppo.com>
+On Thu, Dec 18 2025, Pasha Tatashin wrote:
+
+> On Sat, Dec 6, 2025 at 6:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>>
+>> To support hugepage preservation using LUO, the hugetlb subsystem needs
+>> to get liveupdate data when it allocates the hugepages to find out how
+>> many pages are coming from live update. This data is preserved via LUO
+>> FLB.
+>>
+>> Since gigantic hugepage allocations happen before LUO (and much of the
+>> rest of the system) is initialized, the usual
+>> liveupdate_flb_get_incoming() can not work.
+>>
+>> Add a read-only variant that fetches the FLB data but does not trigger
+>> its retrieve or do any locking or reference counting. It is the caller's
+>> responsibility to make sure there are no side effects of using this data
+>> to the proper retrieve call that would happen later.
+>>
+>> Refactor the logic to find the right FLB in the serialized data in a
+>> helper that can be used from both luo_flb_retrieve_one() (called from
+>> luo_flb_get_incoming()), and from luo_flb_get_incoming_early().
+>>
+>> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 >> ---
->>   mm/memory.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->> 
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 2a55edc48a65..1b8ef4f0ea60 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4566,7 +4566,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->>   	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
->>   				  vmf->address & PMD_MASK, &ptl);
->>   	if (unlikely(!pte))
->> -		goto fallback;
->> +		return ERR_PTR(-EAGAIN);
->>   	/*
->>   	 * For do_swap_page, find the highest order where the aligned range is
->> @@ -4709,6 +4709,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>   		    __swap_count(entry) == 1) {
->>   			/* skip swapcache */
->>   			folio = alloc_swap_folio(vmf);
->> +			if (IS_ERR(folio))
->> +				goto out;
->>   			if (folio) {
->>   				__folio_set_locked(folio);
->>   				__folio_set_swapbacked(folio);
+>>  include/linux/liveupdate.h  |  6 ++++
+>>  kernel/liveupdate/luo_flb.c | 69 +++++++++++++++++++++++++++++--------
+>>  2 files changed, 60 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+>> index 78e8c529e4e7..39b429d2c62c 100644
+>> --- a/include/linux/liveupdate.h
+>> +++ b/include/linux/liveupdate.h
+>> @@ -232,6 +232,7 @@ int liveupdate_unregister_flb(struct liveupdate_file=
+_handler *fh,
+>>
+>>  int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp=
+);
+>>  int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp=
+);
+>> +int liveupdate_flb_incoming_early(struct liveupdate_flb *flb, u64 *data=
+p);
 >
->How would we be able to even trigger this?
-
-To be honest, I haven't thought about it. Thanks for the question.
-
+> Hi Pratyush,
 >
->Trigger a swap fault with concurrent MADV_DONTNEED and concurrent page table
->reclaim.
+> [Follow-up from LPC discussion]
 >
+> This patch is not needed, you can use liveupdate_flb_get_incoming()
+> directly in early boot. The main concern is that we take mutex in that
+> function, but that I think is safe. The might_sleep() has the proper
+> handling to be called early in boot, it has "system_state =3D=3D
+> SYSTEM_BOOTING" check to silence warning during boot.
 
-Let me try to catch up with you.
+Right. I will give it a try. For hugetlb, this works fine since it
+doesn't really need to do much in FLB retrieve anyway, it just needs to
+parse some data structures.
 
-  swap fault is triggered because user is access this range.
-  MADV_DONTNEED is also triggered by user and means this range is not necessary.
+If other subsystems end up needing a two-part retrieve, one in early
+boot and one later, then I think it would be a good idea to model that
+properly instead of leaving it up to the subsystem to manage it.
 
-So, we don't expect user will do these two contrary behavior at the same time.
-This is your point, right?
+Anyway, that isn't a real problem today so let's look at it when it does
+show up.
 
->Is that really something we should be worrying about?
->
-
-Now I question myself why alloc_anon_folio() need to bail out like this.
-
-page fault vs MADV_DONTNEED is not in concern. So page fault vs khugepaged
-is the case? But I see khugepaged would mmap_write_lock(), which prevent page
-fault in my mind, before collapsing pmd.
-
-I am curious alloc_anon_folio() tries to handle which case here.
-
->-- 
->Cheers
->
->David
-
--- 
-Wei Yang
-Help you, Help me
+--=20
+Regards,
+Pratyush Yadav
 
