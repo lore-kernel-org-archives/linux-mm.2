@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C53E668B6
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED829E668B1
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 103886B0088; Sat, 20 Dec 2025 10:10:27 -0500 (EST)
+	id 600216B0089; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 087406B0089; Sat, 20 Dec 2025 10:10:27 -0500 (EST)
+	id 5AAEC6B008A; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED4EB6B008A; Sat, 20 Dec 2025 10:10:26 -0500 (EST)
+	id 4D7166B008C; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D94826B0088
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:10:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84AFE140614
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:10:26 +0000 (UTC)
-X-FDA: 84240185652.19.3101977
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C1878140006
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:10:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="T/WYMZ6F";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=klourencodev@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766243424; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CAF96B0089
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:12:14 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD9ECBA613
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:12:13 +0000 (UTC)
+X-FDA: 84240190146.28.EC5CDA6
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E430916000A
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:12:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=cwPBHw3+;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766243532; a=rsa-sha256;
 	cv=none;
-	b=YPemIaf4cUnayMTynu2l1RjnGRbGbD9h3QcwD+PzCAFO5gM4M1GMiC32ZO+WdI+HBABuaC
-	8EYJdMNI9idsLc0jX/HYmrzVeBem8k33geSCrbQ2dGVtbfXSPoFLlmxLs2hsoXF4ONPqtA
-	4EQweMHXmInyrJ7XJgrIKAiKp1SZfWQ=
+	b=5bhMhWwbZhBrvkZty/XADNWRBWVHJ9bbV4M86o3LgpjRR4xZSYQ7s6otMN4wAU3adj6CGz
+	4l9n8bRdw4OS9hmmgA3BN4YB0woG1+GbU67glb+OPxxr3SVsWPgBF55GfOFXHr0cUNTWZD
+	03rX0juf6YpqGEhv0bX3T+nW6ZRsC+o=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="T/WYMZ6F";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=klourencodev@gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=cwPBHw3+;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766243424;
+	s=arc-20220608; t=1766243532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4pRFBDVthdqqaxQ2bcD0cfzZVLFsuAZhmcRd/6/xmtg=;
-	b=1WeXG8vdr7GH3iDiJr2oyvqk3cHJ2jETOrxZ/fyFRuRVxqUT6qVrJsiVwY2XXJdrHgWMe6
-	4ArNHhxnWsgAczSDEi1F1OIFKAcG00jDjt/eeCoBWFGyxo6NCP8y5WXLrHlcD0LfUzVMFU
-	dK3L/qHhAUXXjVEewQjurlcHlOIczuk=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477b198f4bcso18008815e9.3
-        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 07:10:24 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
+	b=Yu0iwh0owiybIffjkhqpLi1hvKFbY2B1P4L2ioou//SZR2WDcZT33Z/kQ82kIxNOR0eqcJ
+	y6zDzQjcf2Ua7+UvT6+RX+ZOHwqlXsQ/0tuNxGswAKMq+xMjBc96P8cnq+f52UKR0u2BUb
+	W/2T1j+25AO0A8UyuGkaARkWyD69hPE=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b9b0b4d5dso2895036a12.1
+        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 07:12:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766243423; x=1766848223; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4pRFBDVthdqqaxQ2bcD0cfzZVLFsuAZhmcRd/6/xmtg=;
-        b=T/WYMZ6Fuc3i92onQ7AjHHkVyYFe12lb42hq7D2VpUJHCHkGgBty42PtqUnfWD+V0/
-         sTvlYdZOinZK48+BrXBQ5Gf7aFYdQwJ0s60OqD/N24A8ypRXNT0VSb4tJoh/hFJsoRc5
-         XmRRLsCg/PoP/0kCZfv8PJmxAFGNiUv3vxK4VL0Prt4V8/+cBpC0wtSKTcVohaKHkgWK
-         ElhSuVrImVGSIHiHXLlC2BuiAj5EMtutyguP8RFTJdKOx2yDGr6a+y6PvfjelH+7i3Mw
-         XuKUH/cM5SXMEu6BWgTO9GDsUQGVOl+pE4z9Azd/qZtLea+9r1+u3BvCdbjAx6g8rhvU
-         FW7Q==
+        d=soleen.com; s=google; t=1766243530; x=1766848330; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
+        b=cwPBHw3+Lav8bYeEoCEFXeWfa5qnw8LTXbx+F5uSCWjYG94JZTcLPRmpwbLAiI05mC
+         YFjO/ChbBHjPjBdW1ODZ/k/aXM19089+9nh5lwRqGVp8Ld8k3gcyI1ag/t/ujynXrKLa
+         GYhQvp6knXntvJjTb+wnRiv2i8+2OT7r9ctvMVzMK0E3e7y+tU0peUjfra0LbXx0RKqU
+         iKW+mSpVKeJ6Q0aQSH+Hpa2+h3vL7hhP14CrRdvCPZ4MZyjaK7OGzl3IBG6jAXE6QoIR
+         WZ5r1ZV6tMpGykKAauqhKYAtsh3XlmXkKk88WT+9ChcgWRtaStupQmIc4CwGk0hUjpwJ
+         U9YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766243423; x=1766848223;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1766243530; x=1766848330;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4pRFBDVthdqqaxQ2bcD0cfzZVLFsuAZhmcRd/6/xmtg=;
-        b=vVkaBV1KIUk6/gIgAujDOSgbH2oCqMmgO2fi5JQk/qV8OnN34EfH/3z8QdPTCaHzdz
-         U6OfxWl4YkRUMMfUhbzZs6yyxSBHjCWWHVYwkLB9Ph+jZR1OYCFp4+jV8kb29zMp3Ku5
-         NZFdmKVZ/pkF9pPBlWY2/gU/ET+djCDbzOdbH6fSZRFwjFSQY2DFul7qGz8x/tRJwzxR
-         nFvv5LMdxTb9On1fLQZXrSHakmq7m7lvqJyPtcBQSCUot5Vz89KLIBSij9dnUt/y/pW8
-         XRz9AbOf8GNVlmUuDi1lGOwyEOv5P1bQXdVJMQYiWek3DkG1vyIiq5ljUUWYBZqk/Q9p
-         Wpmg==
-X-Gm-Message-State: AOJu0YzES35uDPlGIjLiaEeqmL/Ebxpww32OpIngEXLtyruAEjgPTN7t
-	iASpkfCdSIJNRbElPk+YwFWj3zO5Jr6SPC6sbxnUXvzjxkmsKBYzFWfa3U7rmQ==
-X-Gm-Gg: AY/fxX5DX8UzXIb7xKcIArGtLCyzMKrnDSLTnzqk8BsBAvzjeQS0mYgW2Sq/Sf+AtDC
-	HUlrEa9HpYih/GiysAvjIFKMfXzBdaqDQNopIyQ5v+cz2TkGzVqVXeZBjr/GQFLA9uyUt4ivhM5
-	ZsojKgTY1mkoGlH8XcUtc74lgw+S20Vw03jv3vhTnyfxLvK3Eclr32F5zOIZlRivhTcl4fHcRaf
-	pCSxjhtxsX9vcAXynJ0aclehuT/xR9lvFAhRzNtEFIDGLOS+p5Njge60qj6GpRUGaC1Vv4VPdzB
-	HpJRbrSN3myW22Bk9Eeu9wpwnAkP6+1EwhMMhm6FGWL758r0UH40EWWcna4xOTaUSJf1ruTRofe
-	zw/hkq37b0rU2ZNdxcmXeh4+jKgg3PjYKJOdkgO4hE6q6bEGSy3TREdbC6NVa5psqbLuVC5H6+C
-	d63k857chJQQMs6IVg3qhv/VtU4msJLap9YfdxaJHo8CuCnrBWUtbguIbeU6eDJfrJK6f1bkVwu
-	IyxQnj4tdcnyGyXLw==
-X-Google-Smtp-Source: AGHT+IFyonXEOs7iSrYuyCY/eJq3lys1NL/18EPNFRtSP71UNnfd6pdmwLwXoKaKQuDlp08wcDd19A==
-X-Received: by 2002:a05:600c:c086:b0:47b:e0ff:60f9 with SMTP id 5b1f17b1804b1-47d19577114mr45324505e9.20.1766243422826;
-        Sat, 20 Dec 2025 07:10:22 -0800 (PST)
-Received: from desktop-mu90jgd.home (2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr. [2a01:cb00:676:9b00:1185:461c:960a:9b50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d19352306sm93891405e9.5.2025.12.20.07.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Dec 2025 07:10:22 -0800 (PST)
-From: klourencodev@gmail.com
-To: linux-mm@kvack.org
-Cc: rppt@kernel.org,
-	Kevin Lourenco <klourencodev@gmail.com>
-Subject: [PATCH] mm/memtest: prevent arithmetic underflow in end pointer calculation
-Date: Sat, 20 Dec 2025 16:10:19 +0100
-Message-ID: <20251220151019.19473-1-klourencodev@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=NirtzK3cSKP6Dn8RC3SUqGY+8QtbdDa8PCdCAnfz/Ds=;
+        b=QBvDvwDt9YEhLG71JjcDgBkKMexw6f7KU7d9tpSQ9i77LYvSARHfzkTVsEriI/DMaZ
+         obxCzSrFlZe+FqpY+/nip4cBw/0H+be3oXLTPxn8PQdYB36k2oRdBc6af0dd6LTGsGwK
+         X5xCouhhnSKdnNYddet7J3op1jrZsZKjF7aexVlXsTR475xC4lDXoKkaN38seyHz2f3W
+         ocnZyLIN5+Doi7EODujXx1yDadOtAA3CSxU0eeoq0fnPp0Kd6u7Fg+8tvL/+vY5I2CDn
+         7t0qo4oJPHTVhF0F5+2q8efk7zBTXYJcQjdL08947dDjltGEAI0BjC0hsXl5XbJ1lLYU
+         uYCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUsCUpWToKIJh/hWbqh87tuXIGBzvRYNlW+uYZcVkwX4T4Po4uJ9HV7fAaYSGh21WE43JGsCA7oWA==@kvack.org
+X-Gm-Message-State: AOJu0Yyzi3Jl6VltMsr8d9gn98eXLMn3LbmZYzEbD6H0LAC3rDd4IGfN
+	TUgjFyMbJ6XDwHZ752yK1sINjIJODWwGyTDmXEB24mf6Jw3iFDNJ81mgDl6JOrQVI/NuqhPH2ze
+	CF3UobohhZwyM7FL1+WorLSuScs0584Eh4gzp081fW/0V7pz6bDUsMqs=
+X-Gm-Gg: AY/fxX5sr4hJXWz+an16o4s0IBG5f6iAECo7UQKmxWUJWJZ/xkTM/8KLDvPtQAt+Haf
+	ZUDJ35ud9xrrXDHwAywH5W8YF5UDnpxGJiEoxB7x7yhtVh2q8r0sPUZttS6jfsv+zl8z6Z8pzmc
+	bMeynioFkrJq60gY4A4A7ZkV2fgrSFZ5BGpeaXHVaDRB6Rsp+7VfFMXx04wbU0kRStDfIx9O/R0
+	GXfVGPP3TqWnFRIm0dRic+OaDOSTfpcx7RZybgjsSNqqq+AzGXzvnMS+DQIuHQWw4MMb5zOs53a
+	7RcO4NIM5tgMNIgwB+7tzc2V65jtpg1RyvRb64Woj/F+fixbeoyVlvIP2o99WA==
+X-Google-Smtp-Source: AGHT+IG2H0JMzpZ4Rw9d+GSeTdHtlvEwfcgulZM7WmjLKT/BwHOEpNubFax4Xm7riytdiegSHPUBkYePz2N2H5EqPpE=
+X-Received: by 2002:a05:6402:34c5:b0:649:230e:ec52 with SMTP id
+ 4fb4d7f45d1cf-64b8e935a65mr4687631a12.1.1766243530490; Sat, 20 Dec 2025
+ 07:12:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251206230222.853493-1-pratyush@kernel.org> <20251206230222.853493-5-pratyush@kernel.org>
+ <CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com> <86wm2hj0ky.fsf@kernel.org>
+In-Reply-To: <86wm2hj0ky.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 20 Dec 2025 10:11:34 -0500
+X-Gm-Features: AQt7F2rkD8DzKJtnBrRBVjSiNOllvUXl1o05w5fOraa6mNPG1z2m3wrrR9PJQmQ
+Message-ID: <CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
+Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
+ early boot
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, 
+	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: E430916000A
+X-Stat-Signature: ga69a1z1y63cbexn3wke1kxh3m4tyw9y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1878140006
-X-Rspamd-Server: rspam10
-X-Stat-Signature: ez5swokhe1tx1yqabdfpktk3a5uubm87
-X-HE-Tag: 1766243424-487907
-X-HE-Meta: U2FsdGVkX1/AiH2ePv9vyTY53eTF/FBMA7Rim2tYuG50Jtsw2N0nsm6TpTMUk+CHmzvycZWYPw4uxLM9KszvxcPBLKPc5YEQZEW+Msq84yPMf/dz2JTuvWDuRFREQ2THBny7InmeEjo9nn0xllBUcRsLtotpIOh0qbGP5Ap+yPUXEJSM8ghheqAKd49KcoPaS+zJ4B5qv+kr0p9NCUmZBTiAAAGiFNBqWzjIOZfZ7H32803CKovOz+89w6U5TqzKFRW9TCMLy0mKh+VKpSmOHecCrSnJMczKgK6WbMjRvHTgqcwJSjucBMn473B/tlCU6iYh0zbwJ8aSk4q82lX83NSbSZZ5L9kv9RTefAeztJfzaOYK6oWulC0n4Z7NGoFOe3WPN77y/nWe6pwWeiq73D1hftmNpzr0/rxt3eNsFgRRfTqILB3jo33UQoC1Sk1ocOBLRw9K9DSZJUUGeMqxHGMZIGnxlV3GLC7W67UH9hH4A7FKc3XhsTmJpivjZiMmdvcPnke82p0VEdFnUHAwveuAqsRiwYu6kvlbyQIfYw0pTSZYYft9Ir5YKiBLpbuuPF/gqmLr1yyeLECgvcziqjAVKyBhhyfVh/YBU6tErqShSLwIPP6ziAThvomJAsmeQ1RgPHItIl7gKX3Z/CqbGSguiL9/93BAzHoUlIyRFPNV5+qhZxkA6jbioInRj2Gn0qCvyZi+3MndEkAJ0xoMzGaT3D1cWoGg3TvvCwtvlUS/Ru1FkaAYlZs1rOD174DWe6I3JIcX0Nvoi5rzanSjJ53Kmbhp7pblRNMcujcbj/UoJqHI4Q4dnEYbqNRO52VJUNOHWQ+sf6uSUwSNtDqBilgmruyQVj0cZ/pvW1iywoQMC/5Qwn1NFfV6z1pDxhMhjbCeRfvT30iPDBVZtAIxkgxzm+OvSyy37iQo33HLXef9QgilzFRFhBZcw8nEMQ04Nc5kCDieINK7ZDbdHOe
- ocI6tZtL
- Ly+hTE1OEJs/6C/ulm4UFOO+772UsXF9cuF1kfxffvrvyj0q93O+0GBd4flg0QkFiyulcax2/p2RO7LGi9Y0rE4Ai+LVtvdCly6Rn/L4yBjQR+xmQc2XdJiFBnMEs+x3+uDQtIaMYQDySRuU/xY7OBz3dPz0jeFjO4nXbYjIO7dgdPsoj3fISILanbNtNFVsETPYvCTvyx6WuOn6lbCGWHGcGPloVOpFhQZFThtk+Ix6GkCCQDJrN+AF5LPxYNHlRWG44Di8HuBK61vGIexID/f1pJ2NKGXVHn5qMPND6mQH2Qm1IB2UNxGVbbErVqa4x2PiH9OEUe0lgNnduo5CQHtdy053ch/iCuqKPq75hZYNdaVLUHGRuuZ3N2xZLiBfZaoykWfco3sqbrAGJOuzYYpldL+rGXDQeLAJy
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766243531-866775
+X-HE-Meta: U2FsdGVkX1/pByF6P0z09aqEqicptLR+oEF9na8EHj2ECl4fn88OG+ppgVO84h9Nxmy06fOeqvk4pFxC/k3/n4WlG94K6n+5QUW8Mpqt9+622fKtWqJx4iCgoW2MuPetmJjHiVVZpUK7v1mVrNjEoJVFFf8kuuYeuUC/2a+di7Mvrjk2C8Ev/cGjmS5L7pqKp2X00KEkfDLPmn7iPDewKM7rvbHOHZqD4TxlCqPKcM6smj5pFh+ykqK6Pcb2Tkt2hJjnZ2NcQ/7DSA0pPKVVwxefkPmLkzY3YIKBqa8CrnP3x2MAN+oh4s/HI3QBph9eUSS/0mKzYBK8vJuzE6tX8oTmUejtYG3VoxgZK+tcxmD9o0aX7hzRmSy0acQN8PYAeBQvoaGEgAbFUT/2QZJPRSQAWWXnvQbWaO88VwSccLE8FM7BvGJhfpREVwvxBICRpZ4+2d0TwyA8KWCYGa+QJuW8maiQOxGJ+RzFePHyP1u8nFP2zU4jjmJPQcP99/XN/LVRlTJkxzVfbXj1tagzZV3Nh3esnVwGYAx4m5iKq3Q5spJSuciKMSxYdl6KCbrC8wQSaccAgyHyzqynoAo5r95o7iXzo+5m4cHfUrjOAqNTf6UIjzl5f67VTHJU8nDB6lJUefRXYV8cVmKWUS1YACXEq4+pKaQ7qtCUzCogmFR1brBDgINzdYxXXfLwfW61QxO5mLK5Rbiqd7aB6i/JhtR12nuyUHXSy0fV7wluSO49YEs5U7ZlqjQcasi0gHCmtXlnKdouS+Hl5rnsQJDDFHEb6L7D4znoG1w36m+lOvuQyP4REkpRA7OYqaziyBtqQRXii9vk9p1r5JiZsRi/h0UA1wYO0coDXWVnv7SWs27gloS3SHLgbkHodxrhnmoxRXLbJdk3bqB9aUg93+1g8hGp1BI599Yq9cN8AnGEvAVayeVVVn4GUD66vpw9uC3zj76OtFoVMYi3BEDa9N2
+ creNxPup
+ oEIFKQZYrLAjfEcD6SjgfIQK7mQDC+mYvXTKEH/IPRXYUb1nGVmOD1oSR6Ib44IwtQLJK+60VCMAi+bpHv0Y39IYf61Ds5MSKVZG5G4tHlq8PgCDTyU8SP4FpC+OvwuOTlzJgfhFi3t3CiqZ8icGl0Pr7Yg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,51 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kevin Lourenco <klourencodev@gmail.com>
+> > [Follow-up from LPC discussion]
+> >
+> > This patch is not needed, you can use liveupdate_flb_get_incoming()
+> > directly in early boot. The main concern is that we take mutex in that
+> > function, but that I think is safe. The might_sleep() has the proper
+> > handling to be called early in boot, it has "system_state ==
+> > SYSTEM_BOOTING" check to silence warning during boot.
+>
+> Right. I will give it a try. For hugetlb, this works fine since it
+> doesn't really need to do much in FLB retrieve anyway, it just needs to
+> parse some data structures.
+>
+> If other subsystems end up needing a two-part retrieve, one in early
+> boot and one later, then I think it would be a good idea to model that
+> properly instead of leaving it up to the subsystem to manage it.
+>
+> Anyway, that isn't a real problem today so let's look at it when it does
+> show up.
 
-The computation of the loop end pointer can underflow when size is
-smaller than the alignment offset:
+FLB has exactly one .retrieve() lifecycle event. Once called, the data
+is considered fully available and cached in private->incoming.obj.
 
-    (size - (start_phys_aligned - start_phys))
+If a subsystem has a requirement where it needs a specific state
+available very early and other state available much later, the clean
+solution is simply to register two separate FLBs.
 
-If size < offset, the unsigned subtraction wraps to ~0, causing a
-massive loop iteration that writes far beyond the intended region,
-leading to memory corruption during early boot.
-
-While unlikely in practice (memblock regions are typically KB/MB), cost is negligible
-(one comparison), but it prevents catastrophic memory corruption in
-edge cases.
-
-Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
----
- mm/memtest.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memtest.c b/mm/memtest.c
-index c2c609c39119..d86c41f1c189 100644
---- a/mm/memtest.c
-+++ b/mm/memtest.c
-@@ -41,12 +41,17 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
- {
- 	u64 *p, *start, *end;
- 	phys_addr_t start_bad, last_bad;
--	phys_addr_t start_phys_aligned;
-+	phys_addr_t start_phys_aligned, offset;
- 	const size_t incr = sizeof(pattern);
- 
- 	start_phys_aligned = ALIGN(start_phys, incr);
- 	start = __va(start_phys_aligned);
--	end = start + (size - (start_phys_aligned - start_phys)) / incr;
-+	
-+	offset = start_phys_aligned - start_phys;
-+	if (size < offset)
-+		return;
-+
-+	end = start + (size - offset) / incr;
- 	start_bad = 0;
- 	last_bad = 0;
- 
--- 
-2.47.3
-
+Pasha
 
