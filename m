@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D809E66886
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34941E66886
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:20:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CC3E6B0088; Fri, 19 Dec 2025 22:20:11 -0500 (EST)
+	id 8560B6B0089; Fri, 19 Dec 2025 22:20:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14FFB6B0089; Fri, 19 Dec 2025 22:20:11 -0500 (EST)
+	id 7FFAA6B008A; Fri, 19 Dec 2025 22:20:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05BBC6B008A; Fri, 19 Dec 2025 22:20:10 -0500 (EST)
+	id 702456B008C; Fri, 19 Dec 2025 22:20:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E98726B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:20:10 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 955FE56838
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:20:10 +0000 (UTC)
-X-FDA: 84238395780.06.3958A49
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C6E2AC0011
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:20:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d3OaU/Od";
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60CCC6B0089
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:20:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07F7A140426
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:20:19 +0000 (UTC)
+X-FDA: 84238396158.03.4CF8C63
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 22D0B40005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:20:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AqfSN9En;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766200817; a=rsa-sha256;
+	cv=none;
+	b=fIuP+3dzfk8Z7Inj4cA20RYaUsqfWHZoG3x+Ojl1efx74YGWtEagKKEkvhy2HVGcn8cP/2
+	R/BoPBBaFLY3hDIITFg+ngAqHaDkdXWGTocWsIT7Hqgm4CNIuTd9UsuGGROVPl4fnTihat
+	tSf0dYE3yONW4x9EQ+8Z9bllR2HDO/Q=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AqfSN9En;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766200809;
+	s=arc-20220608; t=1766200817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1SKx+S0FkyJgsVAeCS9CdFTq8gPlDnAtjpP2X9NjBVc=;
-	b=HnzLeQThLzkY24n8gXiLFCmokbbVSJh2M3EQt9fAeYoAy8bQm3a0eK8wfI81Yws5yrxWbC
-	lY5v3hlQdcHkJxNW+AFTl6SszuhiVGzdbyNyeO6Aw1Yr94SrOntx+/axrrck4sxsNukkJD
-	k8oJ6Z2ibGibqHvPiXhQhsy85tremig=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d3OaU/Od";
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766200809; a=rsa-sha256;
-	cv=none;
-	b=b2CgvXHETz+X5j7mVnc+2I48ZQUfWwq0/ikygLHgQiarszIhiP4wKVcb00+wAmkUEpR6SX
-	7nWLJPvBDZisBDj/wfJdKLRT2i+30x/oiZLrC9ODIDXgCI6atw+d0y87DWdw6kezP4sNAL
-	hR6VQFM3j/gv86W/InLJirAxyIH2eIU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA77043B58;
-	Sat, 20 Dec 2025 03:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9279CC4CEF1;
-	Sat, 20 Dec 2025 03:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766200807;
-	bh=PQoYiqwGtHkDFoeLJkBa9fjc7yrVcV49QT03Es5KPS8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=d3OaU/Odir3KCpAeDg2VtrL0s7Tv4VK4KjGhQzLhaCCeBuaKhbN4EK3PylJb1AVGt
-	 otpqz1foWorLZpdgH2IeuBbJ0btf4gFfX7Hhn/GNTqPDA0kWpByy5CM2dvWC2Xmbqh
-	 +FJUWBoL4DtkZT0Cut3hYTwiF/MegdUUg3j0HLswbeUt6zLVTLzbh7Kl1Sg5ilDPQu
-	 MmfJRxuGDJ+asd2YsQn5erxv803SlEHiFcPy+0N/vof1w2zlJqORme2X0hu97df65c
-	 Iial1U/dJo/crLdmQb6xJgc6c7DajZtP8Zv7MQ7+RyfxxTytYf0bA8mUPs1xwqPXGC
-	 e9gOsckGcCkzg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>,  Evangelos Petrongonas
- <epetron@amazon.de>,  Pratyush Yadav <pratyush@kernel.org>,  Alexander
- Graf <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Jason
- Miu <jasonmiu@google.com>,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  nh-open-source@amazon.com
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-In-Reply-To: <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
-	(Pasha Tatashin's message of "Fri, 19 Dec 2025 11:28:50 -0500")
-References: <20251216084913.86342-1-epetron@amazon.de>
-	<aUFJH9xzJXYOt_X8@kernel.org>
-	<CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
-	<aUF4fsWwD9BswkFh@kernel.org>
-	<CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
-	<aUUYprAotKYMiEs0@kernel.org>
-	<CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
-Date: Sat, 20 Dec 2025 12:20:02 +0900
-Message-ID: <861pkpkffh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=KSWnxPF7s7XrgaAgGOnY7K1GNIzL+YqDV6JYLvAhZaU=;
+	b=Bk3EVGMkVRlJcq43MpLmXZYeUSRrtfnCVlWz1ZeENIissqthe+q/2jx73vJ+Y947OGR/Wx
+	JaR8fbZwsEr7EoeME9qiSnxGxLCc74BnB6EZmc/SrvL1FyvmtBr5/TP65B7MmzxyxIFlbR
+	weTJA2OS9RHSLiUed3AvlbUD3FNqshY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766200810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KSWnxPF7s7XrgaAgGOnY7K1GNIzL+YqDV6JYLvAhZaU=;
+	b=AqfSN9EnBu+pQ+55c6KrxraFWofHwRehkLXlObC2WQPuyODI6sRp51PUDiCH3FSpSQ7hHV
+	WCMjBb/r91usuQ1LiKsr/XDzXH2rvZl2CtPrYl/dV9uHmZAF0fjFp3qytDa7/4JaXToPF3
+	h06Y8zGnLjlifMc3TK1SqU1GZykFUFQ=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: bpf@vger.kernel.org,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  JP Kobryn <inwardvessel@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,
+  Daniel Borkmann <daniel@iogearbox.net>,  Michal Hocko
+ <mhocko@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH bpf-next v1 6/6] bpf: selftests: selftests for memcg
+ stat kfuncs
+In-Reply-To: <2xhmcrporen72rskghn6hmg6obnojptuerwzqgu7mqzhnxaxs5@33dxlwa6rqlh>
+	(Shakeel Butt's message of "Fri, 19 Dec 2025 15:07:11 -0800")
+References: <20251219015750.23732-1-roman.gushchin@linux.dev>
+	<20251219015750.23732-7-roman.gushchin@linux.dev>
+	<2xhmcrporen72rskghn6hmg6obnojptuerwzqgu7mqzhnxaxs5@33dxlwa6rqlh>
+Date: Fri, 19 Dec 2025 19:20:04 -0800
+Message-ID: <87cy49g7q3.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: uairkku8w63cprzkq9yuuybbgah5nc89
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 22D0B40005
+X-Stat-Signature: 8oej84nxu8nms8cpranhkuayuodzse3k
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C6E2AC0011
-X-HE-Tag: 1766200808-199731
-X-HE-Meta: U2FsdGVkX1+nbG9ac8pSLIAKB36o2slpRzNmGifDZlhAG8F/PAWg//KZQCOAnbH6o0uHuEn9z7gihIGxOkueR3Oo/0HF+J33Ba3UF+yG9xf+cehRt/axPvD6KahjvZ8CB2qPVpQgNgeLbmhCDUoZllcycW/q5WXimsbArQwP92qvLxAbbd3Ew8Orlc8YHU9zVkpyaHnWLT0CN74+cMGVEETD03D8rovWaJU/SF1aDSQ76ZP6sG2XKD51cGs5yTPtAkF2mY1EG0UNb46bL7c0robOy6n/IsmbgB5njVlEsvrjvJ/lxibsPvmeiXH8OFpKgTHSApIKHoG5rvzSaPH+tVgqt0OjeTp6dn4HUse1GNUf5g6KfNmc5UFoRRDDgfbS5yXc0SSgzvcNAlqGd3PRacEyKAa/2xHQGYHHUP3Mm8k0VOl7S7A0gKJDChDevvduBHMfuAonlXbRH8M63DMGe8nHGCnsztCWHvaLiBczogdjurG/xPhZDVlUd98jwdfIclapRd0VP9lAhyaIbpT+bRsNsYRsubbnbkL8RRrKUI2ZO3Ci8suwf3a1JFIzFkoByWZYxgofDnQbQY0VSfbaLInu5z/i5pL15kQLAa514xuBCrkiqJk8WvKqgm2wUwg11AN/Uvy+v+sz5bXwyMIhtXxZ8k/zeQaKB3hbjmzKKdmaAw5IE2rsnmCNxBRApkQp5cthTiDQQXZhAcMKTzpZ9vjb9ZpucMLOFZyj7wlPF++O5TTYHg4QxtNXJQDBNWEMmLVsT+9ny9uQwjTAGwVALzpd7qDa7+d7woVzIgi7S53SRZyvXlirT1qnAb3y1aCcblR4ijjSJohxmpqcI0KsJwigR26QdOm2dEDsxWRR8Tse7+ncHBE/aat8gWllzxXT1baasqbN7VEEc/dwr8IaPThTyt8UT7Qua/qQTMdniQPzr7MTYnLdWxpb2Y69wGMenOgBpC/hZCbTlXIDx7j
- xyefU6OU
- uRWP/BniWIl5DSpGfOa5pJRMfAx0cDVs9rub74bSdbjgHymwECZ4YJLhpgj41Rh6Jlr8ALi1sEH1VblEevAB3LsO2MplFfLYiHNqbSIfT31Mv0K6AqeJsWJ7L6l9/FG46vLpcg9RQzqf4hBR4NbiOFg0bI9omXhI+tWIZKraU1E0zFsYKt+XNsOWgvJi3oD+ACvmg28eP9W4wbTtG+CbDFz3wAoQy4Qw3KSHSVH2aRA4+2J2gS9ukH7F1Dw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766200816-244508
+X-HE-Meta: U2FsdGVkX1+ESYN3KHVJnyfbUSkDJA6cJA8snxwhhsFpLyX6MCsHUqYG6csVskWRRpQlTotbyt2AQUMzgdOfdOPfNxq6Yjpb6nc9SW+fO31m5qBrftMrxga2XhczPEmbQkc6F47ubqggrrxbtOEJmYGbJa48TGZZoUjkfFy80hKwOLXsrjz4wmCAovhle91cihKV05b1/4LCoHc2Q9+wGXj5wjhZy4iD78VqFcnIs15VIPi8NyV/nF7G9btNDs0q0owWut3vyYiedY2IRa630Jfcz163In7tJcz9lU/ea0+jit65sIYIX181wie0APqRoxTc4v1uj25BPsYz5u9haV79afO0cO2TeecZ2qFgcUFvn7oVNfcqkfdoGa/OEQQtfWrXTAWwnQu3CtjVPCOXwJzcZNfefiFfOKu5dRYVSNiLefMS+QJqzBdHM0dvjh6M3zVi5G9wsfI+UWkIa25sBDV01o4JHeFUgV3ljDoyKxWSXrUc0EHqUIIo1BCOVnrFeUl2Sp2cTFah+JNKDJu9QqA5TxTq8qVArK+2lzrLkvRP0w2UPBEsAqFEui/Ho6pr9/5HNIYLVk+YVJ/NHecaWz6yp8To5RuT+1xgid+wjPcavRtVPaZd62dTa9yGU+o6oxQ51DfWEAqblpr2kDc5rPE0MzGP2NZOGicvsODcTnqLEDd6ns8TxmR2tXLC+hr5NAk0OhE06sbbabPB7Yc5U8LlbRsSfmSDq9Ov7iuCc5QNLkamtMxegKNVYNYAlACzukKDmIoOVjC6jvz4q5sKN/u9/lI+1GCm/t1AfZtXUUFnFjLRgr/8R3lS40Klzxr6ofj4uabVsrtHCQUBULm7KJdZVfxgo57PWhOBxZPNZVFfMcjsoJAcKea/YSg7OkTVm/R+bpiF50UkC/JwVsl1G4cBSJQJiNT567rKtZsPQNdatdTSTMW+myKEejwdfIlEskfmP7SZ6fA8aAtA0zu
+ m3IcToAv
+ H8DtR2QotoQqdKm3cInTe3mnPGqyeEUSfQCdV3NH3asHDxJQxKrZrj0fnQ6xoKwOL4LOy4rSh37UUAOJbEnXh9jXNz3FoKShb1zNzuMGUbEbqNfSDwgE1tBsx3ZdzlbajJQdZ4X/ZX4bNe6Y1iyCeNK94lE3Qd6OlPVNVdkkMuLR07aPi/E5tqu8auBvFEL7fhp6LvxTOucfhhzf1dNdVGyxirQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,169 +92,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19 2025, Pasha Tatashin wrote:
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-> On Fri, Dec 19, 2025 at 4:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org> w=
-rote:
->>
->> On Tue, Dec 16, 2025 at 10:36:01AM -0500, Pasha Tatashin wrote:
->> > On Tue, Dec 16, 2025 at 10:19=E2=80=AFAM Mike Rapoport <rppt@kernel.or=
-g> wrote:
->> > >
->> > > On Tue, Dec 16, 2025 at 10:05:27AM -0500, Pasha Tatashin wrote:
->> > > > > > +static struct page *__init kho_get_preserved_page(phys_addr_t=
- phys,
->> > > > > > +                                               unsigned int o=
-rder)
->> > > > > > +{
->> > > > > > +     unsigned long pfn =3D PHYS_PFN(phys);
->> > > > > > +     int nid =3D early_pfn_to_nid(pfn);
->> > > > > > +
->> > > > > > +     for (int i =3D 0; i < (1 << order); i++)
->> > > > > > +             init_deferred_page(pfn + i, nid);
->> > > > >
->> > > > > This will skip pages below node->first_deferred_pfn, we need to =
-use
->> > > > > __init_page_from_nid() here.
->> > > >
->> > > > Mike, but those struct pages should be initialized early anyway. If
->> > > > they are not yet initialized we have a problem, as they are going =
-to
->> > > > be re-initialized later.
->> > >
->> > > Can say I understand your point. Which pages should be initialized e=
-arlt?
->> >
->> > All pages below node->first_deferred_pfn.
->> >
->> > > And which pages will be reinitialized?
->> >
->> > kho_memory_init() is called after free_area_init() (which calls
->> > memmap_init_range to initialize low memory struct pages). So, if we
->> > use __init_page_from_nid() as suggested, we would be blindly running
->> > __init_single_page() again on those low-memory pages that
->> > memmap_init_range() already set up. This would cause double
->> > initialization and corruptions due to losing the order information.
->> >
->> > > > > > +
->> > > > > > +     return pfn_to_page(pfn);
->> > > > > > +}
->> > > > > > +
->> > > > > >  static void __init deserialize_bitmap(unsigned int order,
->> > > > > >                                     struct khoser_mem_bitmap_p=
-tr *elm)
->> > > > > >  {
->> > > > > > @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsi=
-gned int order,
->> > > > > >               int sz =3D 1 << (order + PAGE_SHIFT);
->> > > > > >               phys_addr_t phys =3D
->> > > > > >                       elm->phys_start + (bit << (order + PAGE_=
-SHIFT));
->> > > > > > -             struct page *page =3D phys_to_page(phys);
->> > > > > > +             struct page *page =3D kho_get_preserved_page(phy=
-s, order);
->> > > > >
->> > > > > I think it's better to initialize deferred struct pages later in
->> > > > > kho_restore_page. deserialize_bitmap() runs before SMP and it al=
-ready does
->> > > >
->> > > > The KHO memory should still be accessible early in boot, right?
->> > >
->> > > The memory is accessible. And we anyway should not use struct page f=
-or
->> > > preserved memory before kho_restore_{folio,pages}.
->> >
->> > This makes sense, what happens if someone calls kho_restore_folio()
->> > before deferred pages are initialized?
->>
->> That's fine, because this memory is still memblock_reserve()ed and defer=
-red
->> init skips reserved ranges.
->> There is a problem however with the calls to kho_restore_{pages,folio}()
->> after memblock is gone because we can't use early_pfn_to_nid() then.
+> On Thu, Dec 18, 2025 at 05:57:50PM -0800, Roman Gushchin wrote:
+>> From: JP Kobryn <inwardvessel@gmail.com>
+>> 
+>> Add test coverage for the kfuncs that fetch memcg stats. Using some common
+>> stats, test scenarios ensuring that the given stat increases by some
+>> arbitrary amount. The stats selected cover the three categories represented
+>> by the enums: node_stat_item, memcg_stat_item, vm_event_item.
+>> 
+>> Since only a subset of all stats are queried, use a static struct made up
+>> of fields for each stat. Write to the struct with the fetched values when
+>> the bpf program is invoked and read the fields in the user mode program for
+>> verification.
+>> 
+>> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+>
+> Need your signoff
 
-I suppose we can select CONFIG_ARCH_KEEP_MEMBLOCK with
-CONFIG_KEXEC_HANDOVER. But that comes with its own set of problems like
-wasting memory, especially when there are a lot of scattered preserved
-pages
-
-I don't think this is a very good idea, just throwing it out there as an
-option.
+Sure, will add, thanks.
 
 >
-> I agree with the regarding memblock and early_pfn_to_nid(), but I
-> don't think we need to rely on early_pfn_to_nid() during the restore
-> phase.
+> [...]
+>> +
+>> +#define NR_PIPES 64
+>> +static void test_kmem(struct bpf_link *link, struct memcg_query *memcg_query)
+>> +{
+>> +	int fds[NR_PIPES][2], i;
+>> +
+>> +	/*
+>> +	 * Increase kmem value by creating pipes which will allocate some
+>> +	 * kernel buffers.
+>> +	 */
+>> +	for (i = 0; i < NR_PIPES; i++) {
+>> +		if (!ASSERT_OK(pipe(fds[i]), "pipe"))
+>> +			goto cleanup;
+>> +	}
+>> +
+>> +	if (!ASSERT_OK(read_stats(link), "read stats"))
+>> +		goto cleanup;
+>> +
+>> +	ASSERT_GT(memcg_query->memcg_kmem, 0, "kmem value");
+>> +
+>> +cleanup:
+>> +	for (i = 0; i < NR_PIPES; i++) {
 >
->> I think we can start with Evangelos' approach that initializes struct pa=
-ges
->> at deserialize time and then we'll see how to optimize it.
->
-> Let's do the lazy tail initialization that I proposed to you in a
-> chat: we initialize only the head struct page during
-> deserialize_bitmap(). Since this happens while memblock is still
-> active, we can safely use early_pfn_to_nid() to set the nid in the
-> head page's flags, and also preserve order as we do today.
->
-> Then, we can defer the initialization of all tail pages to
-> kho_restore_folio(). At that stage, we no longer need memblock or
-> early_pfn_to_nid(); we can simply inherit the nid from the head page
-> using page_to_nid(head).
+> Instead of from 0 to NR_PIPES, we need to go from i-1 to (and equal to) 0
+> otherwise we can potentially close() junk values.
 
-Does that assumption always hold? Does every contiguous chunk of memory
-always have to be in the same node? For folios it would hold, but what
-about kho_preserve_pages()?
+Good catch, will fix.
 
 >
-> This approach seems to give us the best of both worlds: It avoids the
-> memblock dependency during restoration. It keeps the serial work in
-> deserialize_bitmap() to a minimum (O(1)O(1) per region). It allows the
-> heavy lifting of tail page initialization to be done later in the boot
-> process, potentially in parallel, as you suggested.
+>> +		close(fds[i][0]);
+>> +		close(fds[i][1]);
+>> +	}
+>> +}
+>> +
+>
+> [...]
+>
+>> +
+>> +SEC("iter.s/cgroup")
+>> +int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
+>> +{
+>> +	struct cgroup *cgrp = ctx->cgroup;
+>> +	struct cgroup_subsys_state *css;
+>> +	struct mem_cgroup *memcg;
+>> +
+>> +	if (!cgrp)
+>> +		return 1;
+>> +
+>> +	css = &cgrp->self;
+>> +	if (!css)
+>
+> Will css ever be NULL here?
 
-Here's another idea I have been thinking about, but never dug deep
-enough to figure out if it actually works.
+Hm, I think previously the verifier wasn't smart enough to understand
+that it's always a valid pointer, but I just tested it with linux-next
+and it worked well. I'll drop the check.
 
-__init_page_from_nid() loops through all the zones for the node to find
-the zone id for the page. We can flip it the other way round and loop
-through all zones (on all nodes) to find out if the PFN spans that zone.
-Once we find the zone, we can directly call __init_single_page() on it.
-If a contiguous chunk of preserved memory lands in one zone, we can
-batch the init to save some time.
-
-Something like the below (completely untested):
-
-
-	static void kho_init_page(struct page *page)
-	{
-		unsigned long pfn =3D page_to_pfn(page);
-		struct zone *zone;
-=09
-		for_each_zone(zone) {
-			if (zone_spans_pfn(zone, pfn))
-				break;
-		}
-=09
-		__init_single_page(page, pfn, zone_idx(zone), zone_to_nid(zone));
-	}
-
-It doesn't do the batching I mentioned, but I think it at least gets the
-point across. And I think even this simple version would be a good first
-step.
-
-This lets us initialize the page from kho_restore_folio() without having
-to rely of memblock being alive, and saves us from doing work during
-early boot. We should only have a handful of zones and nodes in
-practice, so I think it should perform fairly well too.
-
-We would of course need to see how it performs in practice. If it works,
-I think it would be cleaner and simpler than splitting the
-initialization into two separate parts.
-
-Evangelos, would you mind giving it a try to see if the idea works and
-how well it performs?
-
---=20
-Regards,
-Pratyush Yadav
+Thanks!
 
