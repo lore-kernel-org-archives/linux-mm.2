@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89191D637B2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C83AE668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B9A76B00A9; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
+	id 8DC536B00AA; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490A36B00AA; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
+	id 86EA96B00AC; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 345296B00AC; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
+	id 784376B00AD; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B9636B00A9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CD486B00AC
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8BA7C07E2
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:19 +0000 (UTC)
-X-FDA: 84238537278.21.33B29E4
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15F228ADC5
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:20 +0000 (UTC)
+X-FDA: 84238537320.10.DC8D3A2
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9DC8F1C0005
+	by imf18.hostedemail.com (Postfix) with ESMTP id A0EEA1C000B
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204178; a=rsa-sha256;
+	cv=none;
+	b=nww5iPA4/Hr7XmDva0VkkJUTzFS0xY031JnjcvAh+Hhm7qVfjK193r0BlhoYUVEPPVXAYB
+	TywyK35aBry9aHns2t9Z2gdjTjbnoDW/VqWd5Z4WihLcaspp9Dz05vEzvAdyDVbO90Dj6+
+	GulzWNf/AbTH+CcEbRKl2YcPBqAF7Fk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766204178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KT8JjtzAf38iL8X+gBQNnh0tR7lsAFfn57Ng7z4QAak=;
-	b=wHEjwO1japSzFkqHPkGIeaZyPLjSMryfniL47m2wZq3rfLJNTP49c5LN0V3CxNOPfPsa9u
-	D9MvN9ifYIp+fkea8zsAS6eGpDgLPPwWlhE0RouuRq7UyQao0Ivr4lEMKrTlBErYim/YZq
-	qGw+64ydCgued/1sA4WGTqyu6AsO+T4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204178; a=rsa-sha256;
-	cv=none;
-	b=Bnz0+AwvlLG6mxDDYmEURe2iReCERgpaBCzThkfLEkOt6N8J8v6JpoIL1KLeFWnKPEwp+2
-	4g9yKUG4Csb2qmdxxHJsEjxPXbOy0xSX+20PVwdCZ2R/9kTDSo4YmLjHysWcLVpj2YUmzb
-	SNwPN6eA4kgYZeMEdKB3ulEojKRKYJw=
+	bh=Fd7QPU28XrpoVNC4vn0t7kuABEPBAgbJqdp0oaBXEnw=;
+	b=e/UL3KvWqtpBDRwFiOLs4Je37lieHF+x+BQn4d58Kq1tvxHIsJ8ageF2plq3OL3TRZUFCz
+	jwi3JUlkiSAdN85DV3YHUSbRfudtcC76haTkwjGrdNqOX3mQoI/Yt19W33vkKvQAXTDmOh
+	V4IwxnPkfdURk6OiFXh9oMmO1w4W9F4=
 Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0V4XdfzKHML2
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0V3Cn4zKHML7
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:54 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id C671F4057D
+	by mail.maildlp.com (Postfix) with ESMTP id 9B0A04058D
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S17;
+	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S15;
 	Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: linux-kernel@vger.kernel.org
@@ -76,41 +76,41 @@ Cc: linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
-Subject: [PATCH 13/13] PCI/P2PDMA: enable compound page support for p2pdma memory
-Date: Sat, 20 Dec 2025 12:04:46 +0800
-Message-Id: <20251220040446.274991-14-houtao@huaweicloud.com>
+Subject: [PATCH 11/13] PCI/P2PDMA: add helper pci_p2pdma_max_pagemap_align()
+Date: Sat, 20 Dec 2025 12:04:44 +0800
+Message-Id: <20251220040446.274991-12-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S17
-X-Coremail-Antispam: 1UD129KBjvdXoWruF13Jw1xKFWxGw48Zw4fKrg_yoWDWwbEvF
-	4UZ34rXr4kGa42gFyqy34xZrW5tay8Wr1kWF4vya45ZFy09a1vvr1qvry5Xry8Wr97WF98
-	CasrCF1I9ryjkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbgAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s
-	0DM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
-	Y2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2
-	WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCj
-	c4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4
-	kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
-	5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZV
-	WrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY
-	1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
-	AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZE
-	Xa7IU0FJmUUUUUU==
+X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S15
+X-Coremail-Antispam: 1UD129KBjvJXoWxJF15Gw1rWr1fKr48Xr48Crg_yoW8Ww43pF
+	1kAFZ5Xr18KF47Ar9xA3Z0k3ZYvrs3Ca42krW3Kan7ZFy7Jws5Kr4UGF1Ygr1rWrWvkrWf
+	JrsayF4Fk3sxt3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
+	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
+	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
+	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
+	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
+	xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE
+	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
+	kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
+	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GF
+	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvE
+	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
+	pf9x07j4fO7UUUUU=
 X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
-X-Rspamd-Server: rspam02
-X-Stat-Signature: f5ham46o97dwdmu8cge3bfew7bgigsd6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A0EEA1C000B
+X-Stat-Signature: g44bo63j7po9npmtx8po696ghc6bxfh1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9DC8F1C0005
-X-HE-Tag: 1766204177-52843
-X-HE-Meta: U2FsdGVkX19Uvm0tjgmZaGQKUHfWCWlDveOnWpeJcxSgqFAyCY5zdaGtPKYdHHQc43gr7BY7XNZC4fk2lcThKpzD/73UNFzwBqXcC1dvaDRgLnjujmhWnXsFPonTqzfH+TJ+eyGccLgDfJ6o08pG4dDPovAtWEYZF69ORaPfSJ+6Y/dBHqoMVIwg7iHX56qf9chbaGQ2nMtq1hvn/ySYGVkQbohx6fLTeAsE/43tej9tHX36kJE32LWKMKZeyE6sUXxRltJGVIFr+gAIWoICZ8SRdJ/Ih+5wEwCkQyqLvbquCZVQWIB5FYOQQrfRqiqjq3dHtbdTBEdouQiC7eNzdkvO82frtoyjvnrvjNfAXN8l5cBF9Mr/n4HKfvKS6X3G+txKrRNT91GO4hG9X11HYmGqnQv9SDhMV+1P+Su5Mt/ONtcO8q4S7sOMXNTcbNlzvh6rLUwpooutZwZaxO3HzCE2/HfuWdFdfwo9MF6K7BQ65CD6C8Zc/UCJ7X+6Bu+m4D5TCqXGsYZTdazWpD0aqEgqzyRzTtlF7LFNZHZQ/OFSeRRxkEeUfIDlPvnYUuky/zrRPSXALTfwV+MXpzM6sV1qlkv4opYhAg/eKnBZKSomsjEWku+1LN3l66AYvN2E+vnuA/cZ5jd0tj5AfSN2foZxum2NkCKQxnlIgv3uhbgfwHBwGarrME+mLJ0Cv/xWFRKR4SA2lwAGJNZg7vKbdPSh+anVx5s9X6xQcZXftFr3c7xNGXnPrBnmjYpB4wU23H3uZT4YUCRUKpHcaSzIc4NMN+Qfi8ssmnZ4qC+xKYUUA+HqGkxmFA5AcXNXOV3bAqnpRlsQXC0rNhRP/SHK/QhYHk52fjvb04WAkbwZXCO9kNAs0mjK+KI6owU4qhb++2fPRvn5pRZosI0qiYuo/UzDYKjnNdmHHcqF8Kf2TszPn+g+IDSo8gBjheFXbalOhI5CjPi6zhZ+JsJCmTe
- ekSFaG+u
- ukdlwGvFrj956dw6lGlNf2/Y14Cd3FSiccewZ8rSpTT8TK++S5VFSaEmhsEbWO5Or4adohjNlsLDvlya1ghtLTrH1ajQsd9UjDHYD
+X-HE-Tag: 1766204177-519793
+X-HE-Meta: U2FsdGVkX18tFDUC5pkgzHAPh2UjIKkFkG9wGbPIuiVkd3sjAO4fSQwAy+nK3cBtP203odeXquxD9BdxAeiMT8VEcz3RiFbXUBjUknm/UBA6PvZgJYhSYhUp5hHJR1RZ6V3FDlsxhgtPhR703wbyUmBOprGRez92XX4Tw9pIK+o7kYU7INYqnEQiOorNTDfc41OQ31MURcmc4wShbJL7GtDAl2TfYwPWozhaiAUY3ZpEnapIpEBRCZ3GNkktB+GKdvMVnpwfj+vzhhdZCzcaGYWa+dwGFB59n1hfSvK20nrpCQ42OwDUPbokgfpSjhbeoezs63RmLutGGiYc1RL3YEc9xvgJq2RtoAF/ljSavVri6uOIBd3i/mEVpLL+VLnhRjiclEuS/bEqkuoMQByUoGnSrvY7oyMAUgiM5Y8I/hyRSF6ULFiEHL+RQBNenhqJWQ8nyLL4vEUK4+xE8nYorEp6i0lCpJlHRHIrI/YoE+/5CAzY6hhrSUD8FAO5JfIb8jhDKHtF8w9Dfn8mdjUBEFWOj5j8EXrf8grmlaPQGoM+pEeerrWiiODvU7EcPU6whFtCzqf4C5pZ5HHlj6ZdIGVv1PkkzqmvaYRA2JMeBdgMXrUbqpnxU0vALlqBux1Vqmg/JOGvda2MbWYB4nyLgWZixDSez4v+rkAQRerkwk5/wgucJUPunk1uCkz+HUkdUNY71d9mt60/TNYgSZZIjIenuZKca/H8EdRJzLyL9pj03XPIrG7ClFnFAYx2pQDRHkYT0zglvLepSDmYC2KzRxrmZoSQEgwxIRW9UX47aWXmjhoEWBlARsvhQQFg1VhJnhQLIQmJFUMOphNCwLVw/fGjE8ykAPiLr2QIEghLF+tq76JBvqjZQ+9SK9UlAwAfV26Gpxk0df9/qFJIOhHQ7wrZ4s91CA9KpcW3JIY3e1z13f+HQLoW2uf7VUbpG9uJ7slBn/7WFRownYx9IVx
+ ucnks29W
+ R+3CIXYdIb909f9yzamDYg3IwjG2sguYPEyNqeAHiiWeLBhbd51TtfJqq6+e0JIlEZNQNAGMfMJj7nyKHoCQkJtziELN4G5JsWyNPf/l1yKXcAZjufn7MyNZpzKiZSbwRlkB3d2Rn1rvsxUUrc5JRBGPNkpNMs2ANTot0jKTy/gBBmqnq8qiZ5tuHrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,38 +121,53 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hou Tao <houtao1@huawei.com>
 
-Compound page support for P2PDMA memory in both kernel and user space is
-now in place. Enable it by allowing PUD_SIZE and PMD_SIZE alignment.
+Add helper pci_p2pdma_max_pagemap_align() to find the max possible
+alignment for p2p dma memory mapping in both userspace and kernel space.
+
+When huge transparent page is supported, and the physical address, the
+size of the BAR and the offset is {PUD|PMM}_SIZE aligned, it returns
+{PUD|PMD_SIZE} accordingly. Otherwise, it returns PAGE_SIZE.
 
 Signed-off-by: Hou Tao <houtao1@huawei.com>
 ---
- drivers/pci/p2pdma.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/linux/pci-p2pdma.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 4a133219ac43..969bdacdcf8b 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -452,9 +452,19 @@ static inline int pci_p2pdma_check_pagemap_align(struct pci_dev *pdev, int bar,
- 						 u64 size, size_t align,
- 						 u64 offset)
- {
-+	if (has_transparent_pud_hugepage() && align == PUD_SIZE)
-+		goto more_check;
-+	if (has_transparent_hugepage() && align == PMD_SIZE)
-+		goto more_check;
- 	if (align == PAGE_SIZE)
- 		return 0;
- 	return -EINVAL;
-+
-+more_check:
-+	if (IS_ALIGNED(pci_resource_start(pdev, bar), align) &&
-+	    IS_ALIGNED(size, align) && IS_ALIGNED(offset, align))
-+		return 0;
-+	return -EINVAL;
+diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
+index 2fa671274c45..5d940b9e5338 100644
+--- a/include/linux/pci-p2pdma.h
++++ b/include/linux/pci-p2pdma.h
+@@ -210,4 +210,30 @@ pci_p2pdma_bus_addr_map(struct p2pdma_provider *provider, phys_addr_t paddr)
+ 	return paddr + provider->bus_offset;
  }
  
- /**
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static inline size_t pci_p2pdma_max_pagemap_align(struct pci_dev *pdev, int bar,
++						  u64 size, u64 offset)
++{
++	resource_size_t start = pci_resource_start(pdev, bar);
++
++	if (has_transparent_pud_hugepage() &&
++	    IS_ALIGNED(start, PUD_SIZE) && IS_ALIGNED(size, PUD_SIZE) &&
++	    IS_ALIGNED(offset, PUD_SIZE))
++		return PUD_SIZE;
++
++	if (has_transparent_hugepage() &&
++	    IS_ALIGNED(start, PMD_SIZE) && IS_ALIGNED(size, PMD_SIZE) &&
++	    IS_ALIGNED(offset, PMD_SIZE))
++		return PMD_SIZE;
++
++	return PAGE_SIZE;
++}
++#else
++static inline size_t pci_p2pdma_max_pagemap_align(resource_size_t start,
++						  u64 size, u64 offset)
++{
++	return PAGE_SIZE;
++}
++#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++
+ #endif /* _LINUX_PCI_P2P_H */
 -- 
 2.29.2
 
