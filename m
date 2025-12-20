@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D985E668AA
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 01:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B477E668A7
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 01:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5EBB6B0088; Fri, 19 Dec 2025 20:05:54 -0500 (EST)
+	id B9A2F6B0088; Fri, 19 Dec 2025 20:07:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12D96B0089; Fri, 19 Dec 2025 20:05:54 -0500 (EST)
+	id B50D66B0089; Fri, 19 Dec 2025 20:07:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EE3B6B008A; Fri, 19 Dec 2025 20:05:54 -0500 (EST)
+	id A69BD6B008A; Fri, 19 Dec 2025 20:07:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F8496B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:05:54 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B00A1371C6
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:05:54 +0000 (UTC)
-X-FDA: 84238057428.05.96398B5
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 45F86120012
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:05:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qe1wjWu2;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 957DE6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:07:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 425D68ACCA
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:07:11 +0000 (UTC)
+X-FDA: 84238060662.26.84F8D94
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7052D140003
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:07:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g97rdkIf;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766192752;
+	s=arc-20220608; t=1766192829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SfLNkGCAF0+g8Lnr0ESMOHhXlA4+J+E6HZL9gx3I48E=;
-	b=JX5ZnsjZN4m+Q0cbmyod1aLk0Dd9/YINA66FRqb7a4rKSIw+oZAJTkWzL8lidI91KzvIUx
-	0SyQm0+wT8gdNESXEbErmvs+lpQNAZFADMEKcK1RJ0A3koCqQ+y9APwbKgHNCI1hi+7XX5
-	ADpLLM9vxTK0uvcnNAP4m/6UXHauCqs=
+	bh=AAphKjrqjGtN1vzz2t4LPcLdAhrEHZK9BY0S7mNcbOo=;
+	b=RiUQYRFQnHW4LW4cJYpfjbgbPlCSk+UcoSVZOkm/bb808EAkStHizh+bps7uRVmebK56mo
+	t0kX9ECb3oGm9lTqS4BpSTFSGhPbRB0Fxgn69ZYBXX9DfXWxIlCNSE+6VfDl8uOSh/za6B
+	12A2gianNvbNjToLQOTvoXcjpxfU98Q=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qe1wjWu2;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g97rdkIf;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766192752; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766192829; a=rsa-sha256;
 	cv=none;
-	b=HVwfyEDZwenyDnTbdHn3QF5Hhlb/fmd44pRFzlq3JLKAxBBwSJrxyPwfCl5p2gqotFrIEc
-	s/KOUkmGi8jfcWvfr7iTgr0KkR4NtxBhc2tl9OQLaivc4W2am/61JkLhGteHwZk5eHCAb0
-	R0eujakQaX923Z2oNJoavyO6XQ1l2/Y=
-Date: Fri, 19 Dec 2025 17:05:28 -0800
+	b=udhfaGgyl56IGHM5UkW+put/B032hLXivI9nb9G882snNyywjlGq2iLc/k87a4gFLkPXSw
+	pjm+c/T8z71/+jRZuHC7dnLWU9oHkl/71DJs15We9JemTg1mHoyP6zyuFzBFi6bOKIlsWS
+	5tAEXfu3LVrZg6kAmoHfXSF/hYtYVpk=
+Date: Fri, 19 Dec 2025 17:06:59 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766192735;
+	t=1766192826;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SfLNkGCAF0+g8Lnr0ESMOHhXlA4+J+E6HZL9gx3I48E=;
-	b=qe1wjWu2ZXycHOf1GXkHnl23q0KLg38QouBXIGvd0M4pC0ZD1tOXAcRAy/uCkYXh7k+F6S
-	jzTMdMkhcwzirSsBRSGQdDpXSmVum6lYJpYCGuCq9VBSVJWi82V1pnaHZ9LJf9neFzCR30
-	dSW6yj6SFyHQQ9w18Pu8Ntm+7hwh0gQ=
+	bh=AAphKjrqjGtN1vzz2t4LPcLdAhrEHZK9BY0S7mNcbOo=;
+	b=g97rdkIfpKg5QZCcDhxIFJj91XdkNfq+KPIsDhnCs+oGBSkSRyLaIrD2sN93t37sWEU6Dy
+	D711jbRqsHUL+u2X9oNbjKz//ZUGa28D65CER8I/7cZC6Gm6cKKxdM5bbdqdTm0Ak/Eoog
+	Q6RWmMkUM8kVxoS2RXd88NyY2rnd5jg=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Qi Zheng <qi.zheng@linux.dev>
@@ -69,24 +69,24 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
 	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
 	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 15/28] mm: memcontrol: prevent memory cgroup release
- in mem_cgroup_swap_full()
-Message-ID: <hvta76slujbvyb4av4cgipcevd7jctjrq2tmyw2pwpynfpjytg@ihr3aqp2brzq>
+Subject: Re: [PATCH v2 16/28] mm: workingset: prevent memory cgroup release
+ in lru_gen_eviction()
+Message-ID: <o6eacprzhnuyewlcorgx6l224jhga455is3kvnunpciqdn4lqx@p45cggmww6lq>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <4dd1fb48ef4367e0932dbe7265d876bd95880808.1765956025.git.zhengqi.arch@bytedance.com>
+ <86b0573753db20e40315c61f5d6e01bdc6a8313a.1765956025.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4dd1fb48ef4367e0932dbe7265d876bd95880808.1765956025.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <86b0573753db20e40315c61f5d6e01bdc6a8313a.1765956025.git.zhengqi.arch@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: gmj5ewn48pagykpp6wti6quuodohfpsc
+X-Stat-Signature: 1k3zs189tg6jj6qwhckiqikksrpho9cb
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 45F86120012
-X-HE-Tag: 1766192752-833765
-X-HE-Meta: U2FsdGVkX19k5DTbZAFXd/TBc5uI++3w0W2hN3tbC3qxk5RnARenoVMvxgNfhGJOfpR2D7YVaUvLGOH9L19e9Djwa91qGGoIR9beZ7tCPCFsddIbR5INBnPUJw0mpx80BHNK8dztkzi07lZC4BR1Olfh99/IkzMdY4zh22zZvI68IQEk/oUkAeoBmNaNDjngqaEVhi5U67BSiy00CBbDM91I7dcrXBpHDOG4r/c08KfB/eX+7p3vzPLIT82HMlsG0PXrbbjguXsBIn/430cTU+v93z4kyl3fM0YreYE3lQeIt7wfS948wqiV3nEhzDwuSNEyqWLi1GR14Lx1Yd1RRW4Ux1Kw+0I6i5gbuzCRJcTxzetOddypo3rZFXHp9uXNLtj5CNpCRQjqAi1rpiamqkiWpx+9/YNT5xRaoKiLBIyow0K4Yh43f0N5E9Nx3CzUaVFaNvVzpvJyGasQHrsjEGmypGF5Ws1Ann1rUdx1eHF9zQHA4L5F7Gt2VdhVS1u5NbzHzUKvoy4nNYr92AOPxoey9lUxH4/BO6oJDUR0vK6JboGCHbetpCEPqR3pXA3vAKoPCiCQO3iwbmEF9fLcAC1cp2MJZp2AwyYbHCQCwtwMxPe2xiSzO0cRdEqiLFq2zsgMVlEjW9C51AtMvSOW2dZ9bWmQ8Dvy8ieyZHj9q8x9g1SLbdgMru+LKf3pwgWxpEqJatWu9wYLVldfm0eUZDD9zJVNhy13efRCk0FmeHhiHdhG/kdUIRmzrE/4nExN2iMz4523SWprpMkvnJfkcHRzpsFZLbDwCppL3zw652YDXaPaRF9xjeMY2bV+Ir4o+VK1BsjcXizUB+pJ42u/kjVGdbbCBJtALbr088GjlhbA7WX+VMuHdFaXvwPjrwAUDfUg+G9SDp4W81/b74kaMoMc5zbjfji/SvRY5dgV6IFZy5KOndf5eCpdaVbyIzVdpFxNrPPEeCsKJXqd03v
- vQG1fb6Z
- 79kLykMLjePuacSjP4gnsh7t1TNmX3HbQaAq/iS+rN5ghikFS7BZw2ri1LvOmchUOAQ0Gur2smQByqbyP2+Mk3E2uFC6+hdA3sre+35uufttlptCuP/lN0ucEw03wUCpUvk4HsJpsaTWQAp30+91GJbaFwWNEtpn2mfjK2PCWDI/bwGvGRbYPmSgbeJ36teOkaOEf5vgRC3/lGpvoteCqoz8ZEF5TTYHuCzv0sWV/ZEOsOWyL1XD81sJyHt3LblBDOYqq6SVJsppsSOQ91L93bGXVvg21Madk/zDDXA7KtBy+4L4=
+X-Rspamd-Queue-Id: 7052D140003
+X-HE-Tag: 1766192829-921656
+X-HE-Meta: U2FsdGVkX1/HsiHkYP90+bTChH8H7ee37Td64j9NCdaU8/yLcHD/nRbpJeXPp+idfdAeu8isX6n6thqzs+Ik62GsVj2n6IRljFatrUpNZJcKNXIc2SI6iepfFFYgBIo5RHhjTwNFFxmHg3DEfsF0WqMCV9C8Cb9LO4bos/aRwhnvK2c3ZMybYxRTOevX1Wws22ubwgNcizmd7q0IYdjZkEAoeiQYlU89LVShqb1bVkNH9w0A/UdgtGQjlzsuEcufPPDnNQQHyvT8EXT9hSz0kkFOzSSarD2LTnuX8KhFTVpmTm3zJy1ANTZZaYBCW8gWvjf8iHbeaUNx+4GDpx1ExiZdWiY0nW9knM0u7/exlB3SvDYSVPpWMPqZ8z6dStGOh1Wsb99nnE2JqSVYLZilxljCfwfGutuDinNbNgim7KdFnSq7LGyynwR2bFBDo07md1uH3m8VyZFkiReI35Zf80mo7008kweswcWBkReS/zP3VzKmMtLT5RNYrIm4yLwQ8c2CV5O8wNDcd7ryPUO7cze+10bdWsLtNsUo0CKBoRhOX04EwXBEXiP1TGvPt3KzO1Dv4GF4djes/KP9iljVf1YYh5HlqhLRS7IlgHukQEPvSzWsmiSE/M5gTgo2c1amZpOMeizNEIoMhoGHSjHJxz4iB50vuakKFx1BgXulhnDRV9iix8T7KvldM2sUhLdm9v9f+AII6r3BFQTdMB1zKCaTvgs34QvKWd93j7xsRHAf7trG5b+HVFICytGfkkrh/tEJVv3LFzUh7U7ETqlAstn18DXzrnMFLqMT+bXvwMN4uCFlPEeWu6sy11nzWxpfzTqNoJ1lRSxqNgWOsn11E/DT1E8hugQoS+kd8jRKEYR1tWvhLGjxDuQfcc1pvlqq7o6x8dr8fWBXe/ZCpgZCH5sSypmWb0GsMRswARdLf2SKDy8YWtPGCO4KCWUAiM26YF6pKAAa8Px5nwk0NpD
+ Y6ryyA01
+ LgeayZpDWsvkuM6o0xSbLzmn9gb7oiCNUp7RjwIgJOwZqzuEprHkMOCD7whAAzMr1qrz/LbFgo+lU7LJaMCwEgahQILK/LFm61Q5Akpr7mcbHss7jaUmTWDyOl2KWJXNm5ItMF8gbsc5iSwsdwu7qSzepvaQy0PJNb+DHaLdntjOf85eKLKr+XGVqE3VN2ya/MMo/rtaR5KZfwggqrqrD4Mw7Z8ocerw6/JtW92rRrv9FcD43kmbwe82cNk3cEufhxa2WGvVh8d6QC4sUxjiGehjHKZTDo7mytbImBfSzi4y1/n71JYHVGvXKJnLy/rUzk6h6Oh0mXyfADYg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,7 +95,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:39PM +0800, Qi Zheng wrote:
+On Wed, Dec 17, 2025 at 03:27:40PM +0800, Qi Zheng wrote:
 > From: Muchun Song <songmuchun@bytedance.com>
 > 
 > In the near future, a folio will no longer pin its corresponding
@@ -104,7 +104,7 @@ On Wed, Dec 17, 2025 at 03:27:39PM +0800, Qi Zheng wrote:
 > returned by folio_memcg(), thereby preventing it from being released.
 > 
 > In the current patch, the rcu read lock is employed to safeguard
-> against the release of the memory cgroup in mem_cgroup_swap_full().
+> against the release of the memory cgroup in lru_gen_eviction().
 > 
 > This serves as a preparatory measure for the reparenting of the
 > LRU pages.
@@ -112,80 +112,6 @@ On Wed, Dec 17, 2025 at 03:27:39PM +0800, Qi Zheng wrote:
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/memcontrol.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 131f940c03fa0..f2c891c1f49d5 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -5267,17 +5267,21 @@ bool mem_cgroup_swap_full(struct folio *folio)
->  	if (do_memsw_account())
->  		return false;
->  
-> -	memcg = folio_memcg(folio);
-> -	if (!memcg)
-> +	if (!folio_memcg_charged(folio))
->  		return false;
->  
-> +	rcu_read_lock();
-> +	memcg = folio_memcg(folio);
->  	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
->  		unsigned long usage = page_counter_read(&memcg->swap);
->  
->  		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
-> -		    usage * 2 >= READ_ONCE(memcg->swap.max))
-> +		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
-> +			rcu_read_unlock();
->  			return true;
-> +		}
->  	}
-> +	rcu_read_unlock();
->  
->  	return false;
->  }
-
-How about the following?
-
-
- bool mem_cgroup_swap_full(struct folio *folio)
- {
- 	struct mem_cgroup *memcg;
-+	bool ret = false;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
- 	if (vm_swap_full())
- 		return true;
--	if (do_memsw_account())
--		return false;
- 
--	if (!folio_memcg_charged(folio))
--		return false;
-+	if (do_memsw_account() || !folio_memcg_charged(folio))
-+		return ret;
- 
- 	rcu_read_lock();
- 	memcg = folio_memcg(folio);
-@@ -5277,13 +5276,13 @@ bool mem_cgroup_swap_full(struct folio *folio)
- 
- 		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
- 		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
--			rcu_read_unlock();
--			return true;
-+			ret = true;
-+			break;
- 		}
- 	}
- 	rcu_read_unlock();
- 
--	return false;
-+	return ret;
- }
- 
-
-Anyways LGTM.
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
