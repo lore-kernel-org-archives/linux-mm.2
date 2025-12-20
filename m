@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCECE668B1
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5F1E668B4
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 15:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0D606B0088; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
+	id D4E4C6B0088; Sat, 20 Dec 2025 10:57:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BA206B0089; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
+	id CFC116B0089; Sat, 20 Dec 2025 10:57:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AFB16B008A; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
+	id C07C96B008A; Sat, 20 Dec 2025 10:57:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B2606B0088
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:44:28 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2DB813B770
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:44:27 +0000 (UTC)
-X-FDA: 84240271374.14.67467D6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0953140005
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:44:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=O9iqtskN;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFA696B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 10:57:28 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 532441A063B
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:57:28 +0000 (UTC)
+X-FDA: 84240304176.16.1F04C88
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1A81C1C0006
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 15:57:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PE9QxOcC;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766246246; a=rsa-sha256;
+	cv=none;
+	b=iPpH7HQMQEuhvQCpfl4vBFfSVcaPn9gUEg/TCJwdVEbg7piV9DqcrYf4Wy2nLec6HDEBuB
+	kZ7g8CfCqw5NMbx2dJI2VQVyQeB5+nY5QJY3WK2bLb7rnqfhs/vpcbTKOaxFgULlBJPbzJ
+	gEsy5dhe1jVK3eEWH/EQnCWnDTFbTa4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PE9QxOcC;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766245465;
+	s=arc-20220608; t=1766246246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zMl/TGA0u1xBmBaMRlepUrMqntUGhGfVo9a9FRBDMXc=;
-	b=2eY5D1zKrAZuC8iFcrqlFEl35mP9Mn5gHQPD330u74XczPg+RKUevCAGs1txFhi2u4Ab7P
-	/bBCfPZLIC+nZzg63GsskL+4yZN3WV3LvgYWDj53aqq5U7H9Dwdqp0ckVuFNVuWsd1WPKZ
-	8PGiSiYtrAvagzgr+MxqtWTQdTCpRow=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=O9iqtskN;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766245465; a=rsa-sha256;
-	cv=none;
-	b=1pf16ECXro54JP6h8AZ4F8bVlmCFon+XpTQxJTvXqjA68zhJ1FeBHTP3ApOON7Lq5xleRh
-	8p7oLi0KNH5wDVWxpzP6XMXJJ5Uc2u5XmLQZAUp45CdKG+hNvnYchmH28ncflWZVm3Xfvx
-	KiJzIfhWoDyKDdhLtmJUNFRN0G3jbCw=
+	bh=lzkROV+8+ZPemaiG7wDR+25RDFXtoSWM+BuOBMKEnXw=;
+	b=4mf46TWryroodyc1VxLN1/WnOeAnv81YjO6t1J7zkNeH0eHsf2s7IuaIVQYo2s9lMtAlo1
+	wD9oi1XeG3d5a8wwJLJzEe/aWPCMQEtndTcWJ3Ib8AvrKsWCQGRU94woyIme4aVxLDVE/F
+	MKq+Zel1B6Du5d7RI+D96u+977nxQ3A=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766245465; x=1797781465;
+  t=1766246246; x=1797782246;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=i30qgdidF5swEfrY8bISvHkNXQBtVxmPrBDz6HH/8cE=;
-  b=O9iqtskNA5KY/6Ecw5zASgsMZjKfABKdxlTFJsLX7ZCn/RgKka50dsK3
-   BBl2NXNxkrYGb0jyxG0QO1Eb2UWbLU+II45XMthVK+sVRmkvrMx1rJD3/
-   lCUCQ/B/iOsCTKGFHmrmibzrHgSOVqe9j7Nnej9ALRMJLgz7jun55t/tV
-   uCRlcNy0qDyv8yTFIsVFdSFfyl6Zq428lQu7TeR16kScQ/mhTJJJKr5UH
-   bY3Hwlc0DM91z4EcbpRZ8kHfy1sYnSpBvPrXIsmo3744Kgzz+/eMfwzdP
-   yy8jSI6GuSp7YZ1mVKuGsQe5yDkFf95W5zFb0eSTP09DEi6B2B9KNuMx7
-   A==;
-X-CSE-ConnectionGUID: DPuQniRPQ/+SYdNOxKDJBw==
-X-CSE-MsgGUID: gfzuAytwSJOLnKHDc5ZUyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="79297145"
+  bh=mvgKR5eBPfsudG+7ydx/1/S0torXhJ+RG9LyOYP6tlY=;
+  b=PE9QxOcC91ijSXABanApfWrqJz82Pg/1+dioaE/O//cn11Ew0IbIfAZn
+   vFXGuDgY51FHyFapoB/gXqC3yfZAMK5NgSeth69oIcGDQp6b+8gi5IiNl
+   OZqBs1duYMDJzoiDUBtJkhgbcj/rDRhowLqfGMKOpSQj3gz2b8tKVBbwo
+   mQyhnHMI63yYf7414/1Ah+eA4VUV7cegI15eIO5l4iLqiQqInq8PfkR2R
+   +KJHg8ZZ85GOTuxwSkA6gMFtm87fHIe7qc7TwlP0ObyzL52I3xT9bD6hp
+   +T8Zvrue1krWmwhmqZNZCSJ2rypgVvc8cHWFC+NJ2e8v22nKbzkEqK9ey
+   w==;
+X-CSE-ConnectionGUID: E2s2WNU+RsqMLkjeqvqRTA==
+X-CSE-MsgGUID: 1GD3UbVmRsOzb28Lh/0FIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="70748110"
 X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="79297145"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 07:44:24 -0800
-X-CSE-ConnectionGUID: 7rxyLLmsSwu8Qk61HDxw4w==
-X-CSE-MsgGUID: odg2+K3HSBq45ro0hb4fag==
+   d="scan'208";a="70748110"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 07:57:25 -0800
+X-CSE-ConnectionGUID: OK5FWqYtSzGM3+TRRKERfw==
+X-CSE-MsgGUID: UyYosMaJTDaoOZl/8+B6Nw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="236535410"
+   d="scan'208";a="199642886"
 Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 20 Dec 2025 07:44:18 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 20 Dec 2025 07:57:20 -0800
 Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vWz7v-000000004m1-2LBa;
-	Sat, 20 Dec 2025 15:44:15 +0000
-Date: Sat, 20 Dec 2025 23:43:44 +0800
+	id 1vWzKX-000000004nl-31dx;
+	Sat, 20 Dec 2025 15:57:17 +0000
+Date: Sat, 20 Dec 2025 23:57:06 +0800
 From: kernel test robot <lkp@intel.com>
 To: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	Bjorn Helgaas <helgaas@kernel.org>,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, Bjorn Helgaas <helgaas@kernel.org>,
 	Logan Gunthorpe <logang@deltatee.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Leon Romanovsky <leonro@nvidia.com>,
@@ -98,20 +98,20 @@ Cc: oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
 Subject: Re: [PATCH 03/13] kernfs: add support for get_unmapped_area callback
-Message-ID: <202512202307.ewUcqBQV-lkp@intel.com>
+Message-ID: <202512202338.qFqw6FI8-lkp@intel.com>
 References: <20251220040446.274991-4-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251220040446.274991-4-houtao@huaweicloud.com>
-X-Stat-Signature: 54umbb954ns6aaygy7baymnjxdx8ab58
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0953140005
-X-HE-Tag: 1766245464-94354
-X-HE-Meta: U2FsdGVkX18Qx8cSXIMw8BRjqobCB6tQbL28j4KpxcipxhDytpDMcSjX0lbdex1bnatSvJBifzkUF8WxgUGlg4HaNkASSqpXwIH5FzWJjb9YsX7lvMxXyU/PLQ111UQ6XgcK3CHN/XuF8XU6+UmVseu/t9LLk6D9ZjwB+/8sWQr5Fc3eAuT7a+B97hsiotRJpJFehiSuGlYzy+kN8Cr8eadZ3HhaLIieomnkDateMC57W9siLzgoyD3kGm+hEZxW5nGOPm4zHfABZzN1rl6pScIsP7+z4/1q/VrtgLNM3mOZ1YAiO8xHcoMUC8nEfsMJgDlMeUwSKwvJFMNetXDYCYHaVVS7odSyOrhQ0CGlWEF/sv8XUYWkP2XqTj93orPl7i4cCb5Iwvqouxgnfl/SV2KnLxHnV+exBNILwKn5Mnv40S0p9rlj7p98RB1OdvI2D2Z2oExjm5FrCfjo9xkk0kziXm6YP8Dg+ldznBe74SagPR0gZ0Cqr4KbmLFxGKCu/wQKgEwGHgFrsWpXf2lljWzkDr6fpO6d9bVfFWqjxuryNQPJ8hkQGuIAAxLAlK+Xhs725y0puaPZo/5X37+rivxu0NA4ruRnOoyBUjO8JgmMxM5t2XhUQ2WfQEdkvmcnyt47UL/ksiNqSOM8jbpUdjBx7p9j24NDJf6Xn0hznxkYkB5n/7Gy1XJQ5ZlD0NJgZsd/nziCwDhVL71sbNLRFmrXGAPA63H2syydynEJjBpzyTy3OQn306BRRNEGnWeqhMASw+pQ3DWElSVapD9UA7AdfaEgbUPQq6pDFS/SIcMlgDUXC1rztAhogLMhIqKj+tp1QJaq8ucGkUbJIOyXjzNZgte+AkX4Gv/tuNIdruYJrXgmtjkg6/yucmIqIvnq27OsA1+OakCT0X4diSqQJpZXZuFLLJ4kg4DsLxBSqZ6WUJZyWlUbBkMC1MlsHIvIJFVmYwYe2Z+SgjO0YME
- vySVUleC
- kGUMs7ry0eWjOMLI211nNtMogaJQhk2mM80bLAiNKhNEDB9yDaBZw71dYWZzAnlS/7lxX71pC5wrunE2NJ/DZOd4RDI27kcHRICcn8Sda1+JXpgiFsH8IORavI2vv9mdVmpSAPl0/d8Mim7Sj7jZU6ViSEctqpY+MC0Gdvmow6eRTk2Olg8uPAxJclZn5q29lneV0qVjgnRvgasxzh9S5pFIiX+qsd+yMfp6STrxfmCpTdAEf5kIuD+vKu6jiZ3mc/GfE7/AaLAyW9rKkqk/tE8zZSS2zPXI1Hid9bf5UlPmMLKXM/0AgZESETt+KJ1639zO/VEJ49AXgCXClZx3XGghPAk2v1y6kzyZR9qmnVe24+RKRgn7SvBYhjg8cps57y9MRSVcAX9UMMFJJl3ZLN8coyOpmVH4QgQWLBCUTzPZLsX8=
+X-Rspamd-Queue-Id: 1A81C1C0006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: wzdwggjn1a1t4frfpq9dribxobx8tfaf
+X-HE-Tag: 1766246245-210732
+X-HE-Meta: U2FsdGVkX1/0JBr7x4nDN518iGQA+VM6maS7VLY8A9sLmw1gN5mXVFbWdocUhyMt+HPyykIrFpjBtCOIxQ2E7H6ndV6GNCRBt4aYopUA7rk892D2MdmE0J5GkSim5UxF0Ph4YON0XcunvPAPp8gNzdg/eYS3xEhOhJWIHsX9eeC4nsRPQSF902xAnRHKQTAunBQtLzDTw0t7ATf+c/3yCtqVelAxRyaM0E4GEYZejiDLeL4yxxYHct7YBy3erOrNAGcrvFs0Gq3b4uvsDEtkPqyN63rwTrAy4+nQ/fIYrBxlRyg4+bypXQDO9DTgB9N4QuHfvG9gQmPupkGnkQYtsrIfE7m/S9f5M0kXHYp94yZW64HdUbm7ppS9308jKayvtztlite3xN58GC99EaBhyPScrDuSYuXopfg11t7FR+Iaug9PQNw8EK9Bh6JlK/m4q52oogjjSLZGT+jEMLlG5Hdki6KawvvM8LnmSMxgYJsgZ9v/5tPLZ/CLcwf6b6v9peL8gV89FPhXj8WSPFr+dlE+VxGwYZauk7gVS26FfmBKSsczlDhemoPPwoahR8rHbfjL/MXpWVHPqHudfVdHeKqgEGBr29shXdQZ3GuIT3G0T1MQIXImnoK2vR0lz8tb4vpBUS0PztI3h0zXDfBA+7N5US3WRp1Brgh41bsks6Dz8K1F0mtQAeal+ehihL2+NPDfc0J3+EddoX68t4LXIV0g4bd8XlnLKa4hok3m4XChe7WkB8NbtjKpbJYtAgZiUaGti+oW7n/6IlYf7lG/VPMirX9gNM4zBrXR8djRBUzL8crkGtpS7PTOiLlSush0hqzfMa8MNSJl9xyYN+AILwS8IwBNfQw2UTMViCP+xOGR2xuDKVOfKN1nMJYR89tneumakVP2l/iIQFeakLGGLqjqCDnHdiK/jWx4fY+Ka5KlgWpNQEJycTbo7KYc5bXoLM7wZd2Lke4h2UAtw6l
+ wiaj76MC
+ qDdN/QLp/Lf2PXmJwnOaO6nkeLX7W5gMne88M5cyTcJWV0ZB9QubKUdMn/ehJSKbu5mxlHmwWfxqUZ9jhncQ/FMrDxoOilBA16yV2LALm2wKpD5xqPcghklRXa1Es4dLpBfBF6j0BV6FuLcaVuF40wPe8eJxHhfKfGUqiEDxOeEUQvjHOrvelnvaOlj6IRf7JQSDJsO1y2srpu11JymTCn9+wHH0upcd+GwGK/Dn3MTl1b91Cyy/0Y9NvNq+ox4gRMrWiE37E1NbE/TYNsyzJMZ30CqzK4UziMYOO68on6bD5h1nUZVKOytO5+C0bl+/k/8E8qeJkIFbYUVi8BWa2QvjYibbXkiUr0pc3hgnMyaf3shZ6LPWnCRBFIuKZboI6DpWCI/lBrW3KjOLtNQoV33U3+BPGflVz3PAyJ/QcN/jMDfk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,25 +135,28 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Hou-Tao/PCI-P2PDMA-Releas
 base:   driver-core/driver-core-testing
 patch link:    https://lore.kernel.org/r/20251220040446.274991-4-houtao%40huaweicloud.com
 patch subject: [PATCH 03/13] kernfs: add support for get_unmapped_area callback
-config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20251220/202512202307.ewUcqBQV-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202307.ewUcqBQV-lkp@intel.com/reproduce)
+config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251220/202512202338.qFqw6FI8-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project b324c9f4fa112d61a553bf489b5f4f7ceea05ea8)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202338.qFqw6FI8-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512202307.ewUcqBQV-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512202338.qFqw6FI8-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   fs/kernfs/file.c: In function 'kernfs_get_unmapped_area':
->> fs/kernfs/file.c:480:16: error: implicit declaration of function 'mm_get_unmapped_area'; did you mean 'get_unmapped_area'? [-Wimplicit-function-declaration]
+>> fs/kernfs/file.c:480:9: error: call to undeclared function 'mm_get_unmapped_area'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      480 |         addr = mm_get_unmapped_area(file, uaddr, len, pgoff, flags);
-         |                ^~~~~~~~~~~~~~~~~~~~
-         |                get_unmapped_area
+         |                ^
+   fs/kernfs/file.c:480:9: note: did you mean '__get_unmapped_area'?
+   include/linux/mm.h:3671:1: note: '__get_unmapped_area' declared here
+    3671 | __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+         | ^
+   1 error generated.
 
 
-vim +480 fs/kernfs/file.c
+vim +/mm_get_unmapped_area +480 fs/kernfs/file.c
 
    456	
    457	static unsigned long kernfs_get_unmapped_area(struct file *file, unsigned long uaddr,
