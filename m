@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7AFFE668B2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F0EE668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49B706B00AC; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
+	id 84D396B00AD; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C416B00AD; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
+	id 7B94F6B00AE; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CF566B00AE; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
+	id 698AA6B00AF; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 156596B00AC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3496B00AE
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9C2F1A0430
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:21 +0000 (UTC)
-X-FDA: 84238537362.22.1FCBA7A
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28B941A0422
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:22 +0000 (UTC)
+X-FDA: 84238537404.07.361AFD0
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4D3641C0010
+	by imf27.hostedemail.com (Postfix) with ESMTP id 49B2C40004
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204180; a=rsa-sha256;
+	cv=none;
+	b=ykxjINfgX5vhZBXQD8rW+emQfiOTdBn4hPW9yuVddjxZ/pk7pk9JnkJUUf/jhsTzUnxFBU
+	jxeT8Hv1xfZ/cnEVNIo45h8SsmJELEXJW+jBrlX5TNapw4Ni6zgpx1x7rdjd13UOztG624
+	jUXiKoY7W1T7cBQSBFlD0xC6MuJ/lZM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766204180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=coPjan8U2JfRZyHmLaEhcYe8a9WJSP4/FpLVQVNG438=;
-	b=bUkUfXfnWhfFKestqaJrpGK3hNWc5fC7UwbqNH9nU8Qqk9HjZDJBVrpDj9HdaV8tzLlD7d
-	SXR7NLPPchegn9B5t8oXQrM1dJc4z1SoV144ecXnZm4C4F1J/7RPP56AhoNDYd1ghAvD6A
-	enaDu0pEAx6PMMGgsX34Ug1TDg4kPTk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204180; a=rsa-sha256;
-	cv=none;
-	b=jY3Un8vj3169z2lx2/gEKDMiFXvyzuROwf0BfUMUG5ipQItt8aYDeXB8s2WyTZcGiha4bJ
-	io/kG56RxIKm7krk9iSF3o87GIrR1TQpFfq3c+VrWcgeyMoJ6whcHSMbOsY6bPDvCtnM+U
-	JyYlbFoQC0B4F8LZNS7ivS6UrDZNRMI=
+	bh=52FytA84TX05ZJauWansx1ZnrZwF9IDwipMMg6E/ADU=;
+	b=et9KDmBVwQrm5/PHi6u3ez+T4S/D5n2GQ/sBmE3YGLleY3Um4sKcccyrAMBVv8stI4sj1b
+	ESxSkOLRQ6ECn2Nku4jbcqiZoV4rgWk1VWIpN9PQ1gf01YEOtYsTmlTGygGMSpliV/qVEj
+	C4TaoRllcdFw4le1pT7KJ98EyZgEYSI=
 Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dYB080rhpzYQths
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dYB082pFGzYQtjT
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:36 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 72E1B4056C
+	by mail.maildlp.com (Postfix) with ESMTP id B6C114056B
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S13;
+	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S16;
 	Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: linux-kernel@vger.kernel.org
@@ -76,18 +76,18 @@ Cc: linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
-Subject: [PATCH 09/13] PCI/P2PDMA: support get_unmapped_area to return aligned vaddr
-Date: Sat, 20 Dec 2025 12:04:42 +0800
-Message-Id: <20251220040446.274991-10-houtao@huaweicloud.com>
+Subject: [PATCH 12/13] nvme-pci: introduce cmb_devmap_align module parameter
+Date: Sat, 20 Dec 2025 12:04:45 +0800
+Message-Id: <20251220040446.274991-13-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S13
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw1UWFW5JF1UAF15GF15urg_yoW8Kr18pF
-	WrtF98JrW8twsrKFWaya1DZry3Wwn5KryjkrWxK34a93W3GFnxWay5Aa4YqF13J34kW3W7
-	tanIkr47urWDJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S16
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFykWw48tw1xKr1xWF43trb_yoW8try3pa
+	4DZFn8XFWakF1ay3yaywsrZas8Zw4v93yUAFW3Gw17u347tFZayFyUGa4YgFy5WrWDuF13
+	AF42kryxWay7AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
 	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
 	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
@@ -98,19 +98,19 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7uw1UWFW5JF1UAF15GF15urg_yoW8Kr18pF
 	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
 	kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
 	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GF
-	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
+	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvE
 	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
+	AFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
 	pf9x07j4fO7UUUUU=
 X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+X-Rspamd-Queue-Id: 49B2C40004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7p1owsgkpbe86gsg4mrsou8n8rgytt5h
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4D3641C0010
-X-Stat-Signature: inz4t1ud7fhrpsyt6xazj74f7yqhog8p
-X-HE-Tag: 1766204178-641207
-X-HE-Meta: U2FsdGVkX1+e/Qzho6DT+F+PDoxNx+MXBNXL0Td1hRFfKJIdKlMEckKNIIK7Y0Qk/7vH8avZVt2IM+Jm/5i4srko4CM0VK0hoJ/mtB79e2H8YarfMT0aEkUYkj2CQ3XFJsAgSjsEkb71sHt1J5sbiU8vAWtkXTGY0DNmxtqxSRXiiNCFy4mE35/7byYGi+VqjXfrtmmRshitMVXTKWdRdhJRgTGdWVhodY1fcwPJYP9qdrqncOL7yo65wUETkbStzHj/FEkA9y9ivFuRK6at+lnTDRMmw+H3ZnPWt/657B9lVxIDUUuSgjS0MsQtkxcS0Bxn00SUvF50bQ2lvHDMTj3LWKO/UwmEzlntbI8osppoveKBeVN3gNLfeGZG+YLdH2h8Zf5nARRtpvwgsxfTQQ/oi59j9ibcQ8k/oCLCxLiOp0hUGSSAO1A8m+e3MaKKvoDX4na1CIr6pDfOFmh81wFim/yz/f7J/g9IGFJwbKCLRj4p4jZNDYXVxgB8TckvwqsA/m/2Du0ZNBL2aTgWT5jrC8MjeQKBlSzT8Z+DhYyplKleKt5IF6cTXdlBF/KqRtR2XdlaYxHWSFjiamd3Zyb6ebb375ilGMaog2RWoKaBJAQjy8UAb4UhzvS9xUvtQmcZZas4k2WY7jf0SclxibnqIbdtD8sw+aiD+ovpGdn2dPAWmHjELzC2Xw4/X8/vYbYbWfcEELWMLiY8fGwpbn/P3CHhCTvpvKRwzAxkqNeuo2eof26cQWpKKc/9pykOsPKJyUk6LYapx3yzZP+Lg0Fj3GA5BlFUgwaLEstEvqFZTiRH8wdkVj+IQ75QOM+oxPpAfk8j5ExTL+LL0pJfZ7tKeuQjLlaSiLPTc3aPzSgB9e/L077bUKmqYuxdM2JnNjpG7k2nKPuELxGgVNTEo38otAMbtiJG+ORQ/nCzDPBsoueYKx4CyfBeRTKEN4cxPPdKiHAHcqeZv0Zs313
- zhxctmfU
- 8Tr93XqwSqoYwio2evvCNjH6DP6qkqlqwOLu2JICLrWFgoJdME3Z0p48lDBHm21cFmlT5No8218KU5vSx5kRNYAXk7uvzE4svJ69Hj2iABrlzwG+xJoAQUdKE5u0Yk3NToKlcseIIVJ4J+DU=
+X-HE-Tag: 1766204178-95552
+X-HE-Meta: U2FsdGVkX1/WpeyGJkk8mqQT7E+nTzBi+OIkMGKnemtzO2vHGVfNOeu45/3RmYwDtdLiKigM3hwIZ9GyoSs/8owuB4j/StvVWII9jkElygrUUWsCTvJJjpZ6nBC97ETO/F8bAHAVgX/dq96SneAFLH0BahlBqMQSYR7bXPNxjpo4asvYlmTG4Tt2+RajfprUMuE5UVHDHc1/1DlLMAwAeG9qoJUUk71M7c4inhgP4elbxmQqqhGj4vZkroP/mj9QrOYr14wqTMGQDN1sXcuFb2ipI5o509T2+CAT94xExdwjHuUW54RqVd2uvX1YKqdInoO6VMIknvR3xfou5B/RRTKNLN/7CYQPk92d/QSNynqQwUFrMWf3lheaTcviDNenb87X8trW1qb2Jy8eKqqObgFuw+alPOSXYRBOLHl4yRMMoZo4F1dLowkQ12j5PUL6n/iugkKFFtngt6rSQQaZsuSx7eaaBXbYBsEOB8xUYY36gySgHadCYU7+yU48OBLGvbJzvnBlHGmEFKJnDqOlHaLXVghg0QYRDJ40Ifb2aB6Fddem25hNW66ez/eFVmpM3jGPHxejbMFQBVxjzqe65iKZhz1CJe+I0IIN9UAF+w5Vrenp0c2YLsk7dxoMN1XMHGJBWxhHYhqjMEycGYgbkKgVtyEDlV5O2HxlfUoMcILUDuzl3mC9uQJujA/c4Qw+9BOXeoob8FxzDqvVzwT7P0OVcoVjzR1fkpnnkEhGpWblYAKCc2/nWRBlaJlNizd4kf19GPwR6vTo2QwB2CUx/AhRJB6pAiCvqddEvVxa7bYpDP97NztY6CwcauCjBKKW7X/0bYX/XNWgIS6QAS/dHPuk/AiwygSdKr7p7MeG8CtXdGZkk+YpKVMMAqUHu1qQGOkXxGFeaypfEJ/UcLYPa5dzOlLW+iyQoMoNCgW/LkEhaHxS2Pf7Cfmt9pZuZi1Ggq/PdUaXOf4pTbYOYoH
+ ofp6yx4S
+ VZoXU/gKXGOySKwXrZfkKHWod4GKuFKDl2mvhZH2IEITwB93nSab8wIYxvmzQuaMqo7acXz+Fn1siqCJC+4e4U7sFpohkcgdfwilhah0oM4KN2/rv79vsMg/3J/lU4eFnnUGdDmOt6f/cI2E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,74 +121,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hou Tao <houtao1@huawei.com>
 
-P2PDMA memory already supports compound page. When mmapping the P2PDMA
-memory in the userspace, the mmap procedure needs to use an aligned
-virtual address to match the alignment of P2PDMA memory. Therefore,
-implement get_unmapped_area for p2pdma memory to return an aligned
-virtual address.
+P2PDMA memory has supported compound page. It is best to enable compound
+page for p2pdma memory automatically accordingly to the address, the
+size and the offset of the CMB, however, for nvme device, the p2pdma
+memory may be used in the kernel space (e.g., for SQ entries) and it
+will incur a lot of waste when a PUD or PMD-sized page is enabled for
+nvme device.
+
+Therefore, introduce a module parameter cmb_devmap_align to control the
+alignment of p2pdma memory mapping. Its default value is PAGE_SIZE. When
+its value is zero, it will use pci_p2pdma_max_pagemap_align() to find
+the maximal possible mapping alignment.
 
 Signed-off-by: Hou Tao <houtao1@huawei.com>
 ---
- drivers/pci/p2pdma.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/nvme/host/pci.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 7180dea4855c..e97f5da73458 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -90,6 +90,44 @@ static ssize_t published_show(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RO(published);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index b070095bae5e..ca0126e36834 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -79,6 +79,10 @@ static bool use_cmb_sqes = true;
+ module_param(use_cmb_sqes, bool, 0444);
+ MODULE_PARM_DESC(use_cmb_sqes, "use controller's memory buffer for I/O SQes");
  
-+static unsigned long p2pmem_get_unmapped_area(struct file *filp, struct kobject *kobj,
-+					      const struct bin_attribute *attr,
-+					      unsigned long uaddr, unsigned long len,
-+					      unsigned long pgoff, unsigned long flags)
-+{
-+	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
-+	struct pci_p2pdma *p2pdma;
-+	unsigned long aligned_len;
-+	unsigned long addr;
-+	unsigned long align;
++static unsigned long cmb_devmap_align = PAGE_SIZE;
++module_param(cmb_devmap_align, ulong, 0444);
++MODULE_PARM_DESC(cmb_devmap_align, "the mapping alignment of CMB");
 +
-+	if (pgoff)
-+		return -EINVAL;
-+
-+	rcu_read_lock();
-+	p2pdma = rcu_dereference(pdev->p2pdma);
-+	if (!p2pdma) {
-+		rcu_read_unlock();
-+		return -ENODEV;
-+	}
-+	align = p2pdma->align;
-+	rcu_read_unlock();
-+
-+	/* Fixed address */
-+	if (uaddr)
-+		goto out;
-+
-+	aligned_len = len + align;
-+	if (aligned_len < len)
-+		goto out;
-+
-+	addr = mm_get_unmapped_area(filp, uaddr, aligned_len, pgoff, flags);
-+	if (!IS_ERR_VALUE(addr))
-+		return round_up(addr, align);
-+out:
-+	return mm_get_unmapped_area(filp, uaddr, len, pgoff, flags);
-+}
-+
- static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		const struct bin_attribute *attr, struct vm_area_struct *vma)
- {
-@@ -175,6 +213,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- static const struct bin_attribute p2pmem_alloc_attr = {
- 	.attr = { .name = "allocate", .mode = 0660 },
- 	.mmap = p2pmem_alloc_mmap,
-+	.get_unmapped_area = p2pmem_get_unmapped_area,
- 	/*
- 	 * Some places where we want to call mmap (ie. python) will check
- 	 * that the file size is greater than the mmap size before allowing
+ static unsigned int max_host_mem_size_mb = 128;
+ module_param(max_host_mem_size_mb, uint, 0444);
+ MODULE_PARM_DESC(max_host_mem_size_mb,
+@@ -2266,6 +2270,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	u64 size, offset;
+ 	resource_size_t bar_size;
+ 	struct pci_dev *pdev = to_pci_dev(dev->dev);
++	size_t align;
+ 	int bar;
+ 
+ 	if (dev->cmb_size)
+@@ -2309,7 +2314,10 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 			     dev->bar + NVME_REG_CMBMSC);
+ 	}
+ 
+-	if (pci_p2pdma_add_resource(pdev, bar, size, PAGE_SIZE, offset)) {
++	align = cmb_devmap_align;
++	if (!align)
++		align = pci_p2pdma_max_pagemap_align(pdev, bar, size, offset);
++	if (pci_p2pdma_add_resource(pdev, bar, size, align, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
+ 		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
 -- 
 2.29.2
 
