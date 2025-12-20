@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DA0E668AF
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35256E668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 335B96B00AB; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
+	id 54A7C6B00A6; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A2D96B00A6; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
+	id 454C26B00AA; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15766B00AA; Fri, 19 Dec 2025 23:16:16 -0500 (EST)
+	id 0C75F6B00A7; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C99A36B00A4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D2C4B6B00A6
 	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:16 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C28113AFC3
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C778601EB
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:16 +0000 (UTC)
-X-FDA: 84238537152.27.9BF7886
+X-FDA: 84238537152.26.805DF60
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B31CC180003
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204175; a=rsa-sha256;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 346534000A
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204174; a=rsa-sha256;
 	cv=none;
-	b=JyzFu3XFo1v/OH91CJJF3cfW5CBLrPH9hq3NQkC5hZGGvh7gfk8f9Nu+ddlrNnS5M46PIF
-	+0LmncTtCKOgcC7hSb95Xi7W+NYzxgp+uR6B0fmdXEbX5P+szYBmi9DmeSodYRaKl9VEeX
-	rqKJpNah8Qsw2QNAePhscrXD8DraV9s=
+	b=mqedblIikdEcT14Mkadb/UF8AvSEmcW8UNvNWAzbzm7UEpgyzjezC49tvT4ErD+ZjVbmd3
+	UMy6YkNTlEXvIAaOA4EkDxVScIRCr5M/QZfqJ6njZhO/kNYnjBvGzxUFF5N/nUib1hp4Kh
+	JImdhkzPt/Olfww0w2KUIEOkOaqH3Fg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+	spf=pass (imf01.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766204174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oPgOjkwgvrQvJR2MazjYU23Ktqe3nsfuni11l9o53JQ=;
-	b=gJOH9OFK28JZ5VaeW5deo2PuExBOCI3f1C+Goa7UJRefuvP/pcEIkJW5zFcepQa6te8cOa
-	a58oc/3iurDAVllg+t6oslmL/R5PzEW3IfMreRHfBNGk3T/NiWP7zuLXWlSAJFwtPyNvYd
-	M4KaF7dWw8mp79K+i1yUSjhf3tBuxmc=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0V2YYgzKHMLC
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:54 +0800 (CST)
+	bh=nHSxXsmvYGLR7vfZHfzfTQz8iHaAe/U5mySPzzgTYXM=;
+	b=ijry6X0vCeKDCVi/bDQHBPD+GPIYQzyqpMDEG4Tyjetk66ik/Tqtrttru0uu7oVWW0teak
+	q9e8kxRKF6rGr6EIDYPg+Wwkz3CmsjoKwzBxBKYFSMmHahUXp9151I2rcprXPxmFRtU529
+	UVJz/g5OLy3LkxTO2IouuITxXYlUfQY=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0T4lDkzKHM0K
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:53 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 808DC40591
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:07 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id C997C40575
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:06 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S14;
-	Sat, 20 Dec 2025 12:16:07 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S6;
+	Sat, 20 Dec 2025 12:16:06 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-pci@vger.kernel.org,
@@ -76,41 +76,41 @@ Cc: linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
-Subject: [PATCH 10/13] PCI/P2PDMA: support compound page in p2pmem_alloc_mmap()
-Date: Sat, 20 Dec 2025 12:04:43 +0800
-Message-Id: <20251220040446.274991-11-houtao@huaweicloud.com>
+Subject: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+Date: Sat, 20 Dec 2025 12:04:35 +0800
+Message-Id: <20251220040446.274991-3-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S14
-X-Coremail-Antispam: 1UD129KBjvJXoWxurykGr1DCF13Gw1UJF4xJFb_yoWrWr4rpF
-	WrK3WqqayrGw42gw13Aa1DuFyavw1vg3yUta4xK34I9F1aqFWY9F18JFyYqF4YkrykWr1S
-	qF4Dtr1UuFs0k3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE
-	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
-	kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GF
-	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07j4fO7UUUUU=
+X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S6
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr18GF15tF13WF1DAr1DWrg_yoW8Ar13pF
+	W3GF17GrWktr43JF4DJ3Z8ury5Aan3uFWUKFWUXw1UuF13urWjkw48tF95Jry5try8Ar1S
+	qFs8ur1jyF1DAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXw
+	A2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
+	Ij6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkE
+	bVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7
+	AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wr
+	ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxV
+	WUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU
+	xXTmDUUUU
 X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
-X-Rspamd-Queue-Id: B31CC180003
-X-Stat-Signature: p3wh46edjd3ryu8rfnu6jxs6aaetxjcs
+X-Rspamd-Queue-Id: 346534000A
+X-Stat-Signature: shey8g9jnjoee4z54rdw3ychqcgh31pk
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1766204172-975840
-X-HE-Meta: U2FsdGVkX1+X3bl7L1aUdOc8d+5ZalZJoGqPYV7g9dxusbrAA8KDG0hTE07zoxJmNZSL9oxGNXAvxe0/YdNjRvEI7iqeIhb5N+9HqGi3cpCzzPaL3pdDQ+NW78bMBOZOknqhWSvYMIQH7EZ5LNL16F4wr2RbDOohHMgppPb3fyvr+HpRNRkqKHQrvE7Bb7a0x79NnThQ6n8lNqYb+31bl2fXg1csUOBRuHigYKgyC3HZiK2eClrAVzZv6TDhGBj/mQBkgFjwzUE/1lkRr0YJDC/K8oWF8Nl2R8xpqgr9FOoX6ftWAKElX3QdpY3kdn3WH5ds8QbIfxmDNFfyB/blgXnSKBxipqyDW3xj/oDdeG0WGBhSYAZWIxWJmU7gzmBjmmLSNXg5CHggfK1CWHb4GbDvFwVW7sI3knyz+1ha7A1eKUSWljvcqVVY5rv/R7Y2770PNxtgsk2NJKO8XJ+opVONOgdYI/pOcaJF9C73BKQAMq/k5qntdB61HkfS+2t6AhWABrg8kXMX1Z25X3wdsjGU/7tZrFl1eoUSfgZ3g3BS7zQCgTuk7SishfRV79EypXIguLeMih012jdB75ayMxGe5oCKcQj5IbQpqOZbFGYZH3KBpoyrDieGw4GKXs7Vzpg77q2UYJxZj+Xa8co8KsTfki0/TZbtlxhYjHgcc9Xm0dKMN10n5n2M9tG8aq5RBToAIN8e8+qXN0AiDteHrZBhkurOI2HT0ia4fU2HB6uEEtfS1JKfW1IW4SH0PQyrmyjzjVGxFiJhdP4qkMv/b+PP+6IeBhVcW39k6t5Pe9vYAC3Z9g5FfQeiywQ+zoMWNyFvyZ2sR/nZ9Sb9jN3JI5lAfkYBLvfRdQzVp1t61WLYV5pOyiyOiwo+83wBS7g4NsR7HTbgB4W/lChY4SQuUdYVs5QwSs0NDR1WPwMuJE5jddr37QlTK0AO8D0aG2zae4m4U2YPunjd83QGvVH
- Odgs32hN
- bdEnb1Mdw/5mhEYRdkT9cRoCiEkHMZMdfYeO2dnaBROA+dYxstBOij7jSRpBfWZIabOF5CWc3jLP7q3FqoE4DeVnqfGzWPH4Z0DfDyS/J/U3Iv6ZTq+U8tH7yj8vdeNiOJnQZnN0DsfzOEhU=
+X-HE-Tag: 1766204171-187608
+X-HE-Meta: U2FsdGVkX18dqQaX73f+84gAitCund2tRwR5n4O/XXnpH1M9vWP/71QEMnUL8AGZb3QdMsYn70YrXZDHhdLyxzW9NQOidJXo1DVuK+rKuZSC21kCoPW1XjjlRE/R1xrQbB1RTBYUYDECfppy+h45a2KUSjBGBl4TfJti2HX5i5rGvAxGVVOnbF598Rw6izGg2gaDDu/dYQ5CVdoJsEdpSfW50iwz959AzoYytLYIn0XM2YYln3dDTbDS/8thoUxfkVUMJGFJZjDKx4hdnyEnHxIrNvmRXkQliZpGBdM0VGaXIsebCRvAXy0WecYIZg1UWT35NPIcMnurII2OaJqICATbinctLY5yMY+SJ5Lk+4IHbnnaE/RJUNgAZB3UxN8jXY8ADmsl9m8JxihHEGaHkhpnIJBeeN4fnjCABluj9BeDasuGrDtSHVQUjioLIlfled0CjVx4q8RFo4A/Hex3E2V273wEnmfBLF7ffBaAKxcUJ+531AYCvdWFJ35rQlwPeyWEs5wJRP9TknRR5sBlene7+giu1mmXfkDza/OQg0zsqEpt0lhmzaenwjK6kvTwo5fAxik2OiReNQJDzdDlJb0SWUA1QYAHpBGtsm+4dgoGaGC/96SvbzNFO3wq3cp6GXeevGc/48u5KuDpsN/odW76fjyxVKS0QlbHdVH0Dzq2osQqoIrAJycawwRAXb6db+L3KJjIPCHeUhMeGpRzd3qUCaKAnQtmWYdKftineE8GYfFjOYGVlYsoVzY7xJTBWgjOblX0MTkEnjOf0ARYsj0+IXEZp1OLI9dtOs92ciqhjB5mAbj6KzLRdXBZK+NnLiHgNn7gMlHjutu9Vj7nI8Xq8Y3jcBZH/uapnImhSXaxXJZ6chtFKDADr+5bUFN/FAU7EUTKmZhKZ1yw8zFbjjvJh5g74f0MU8uBRKJrig3OVXoXLkynHXKF15KiNdLW+O01LhFnsUSaB/5RwCu
+ BgvB89Aj
+ q47TEeVNZlA1SzuXC4n/QCdmjiz6SsbinwdCpw3FMSub/yTxgq24RjPsfO7AwqX18ptc3B6bm/WPRCdf6AaJtyZDTWHzxkiFbMhnNeznNfM7FeTVqcuI/dhL+DRhTwr+v0OCRJKzwmbWpNps=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,122 +121,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hou Tao <houtao1@huawei.com>
 
-P2PDMA memory has already supported compound page and the helpers which
-support inserting compound page into vma is also ready, therefore, add
-support for compound page in p2pmem_alloc_mmap() as well. It will reduce
-the overhead of mmap() and get_user_pages() a lot when compound page is
-enabled for p2pdma memory.
+Commit b7e282378773 has already changed the initial page refcount of
+p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
+"VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
+refcount should not be zero and the following will be reported when
+CONFIG_DEBUG_VM is enabled:
 
-The use of vm_private_data to save the alignment of p2pdma memory needs
-explanation. The normal way to get the alignment is through pci_dev. It
-can be achieved by either invoking kernfs_of() and sysfs_file_kobj() or
-defining a new struct kernfs_vm_ops to pass the kobject to the
-may_split() and ->pagesize() callbacks. The former approach depends too
-much on kernfs implementation details, and the latter would lead to
-excessive churn. Therefore, choose the simpler way of saving alignment
-in vm_private_data instead.
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
+ flags: 0x20000000002000(reserved|node=0|zone=4)
+ raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
+ raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+ page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
+ ------------[ cut here ]------------
+ WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
 
+Fix by using "page_ref_count(page)" as the assertion condition.
+
+Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
 Signed-off-by: Hou Tao <houtao1@huawei.com>
 ---
- drivers/pci/p2pdma.c | 48 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+ drivers/pci/p2pdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index e97f5da73458..4a133219ac43 100644
+index 218c1f5252b6..dd64ec830fdd 100644
 --- a/drivers/pci/p2pdma.c
 +++ b/drivers/pci/p2pdma.c
-@@ -128,6 +128,25 @@ static unsigned long p2pmem_get_unmapped_area(struct file *filp, struct kobject
- 	return mm_get_unmapped_area(filp, uaddr, len, pgoff, flags);
- }
- 
-+static int p2pmem_may_split(struct vm_area_struct *vma, unsigned long addr)
-+{
-+	size_t align = (uintptr_t)vma->vm_private_data;
-+
-+	if (!IS_ALIGNED(addr, align))
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+static unsigned long p2pmem_pagesize(struct vm_area_struct *vma)
-+{
-+	return (uintptr_t)vma->vm_private_data;
-+}
-+
-+static const struct vm_operations_struct p2pmem_vm_ops = {
-+	.may_split = p2pmem_may_split,
-+	.pagesize = p2pmem_pagesize,
-+};
-+
- static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		const struct bin_attribute *attr, struct vm_area_struct *vma)
- {
-@@ -136,6 +155,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 	struct pci_p2pdma *p2pdma;
- 	struct percpu_ref *ref;
- 	unsigned long vaddr;
-+	size_t align;
- 	void *kaddr;
- 	int ret;
- 
-@@ -161,6 +181,16 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		goto out;
- 	}
- 
-+	align = p2pdma->align;
-+	if (vma->vm_start & (align - 1) || vma->vm_end & (align - 1)) {
-+		pci_info_ratelimited(pdev,
-+				     "%s: unaligned vma (%#lx~%#lx, %#lx)\n",
-+				     current->comm, vma->vm_start, vma->vm_end,
-+				     align);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	kaddr = (void *)gen_pool_alloc_owner(p2pdma->pool, len, (void **)&ref);
- 	if (!kaddr) {
- 		ret = -ENOMEM;
-@@ -178,7 +208,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 	}
- 	rcu_read_unlock();
- 
--	for (vaddr = vma->vm_start; vaddr < vma->vm_end; vaddr += PAGE_SIZE) {
-+	for (vaddr = vma->vm_start; vaddr < vma->vm_end; vaddr += align) {
- 		struct page *page = virt_to_page(kaddr);
- 
- 		/*
-@@ -188,7 +218,12 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+@@ -147,7 +147,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+ 		 * we have just allocated the page no one else should be
+ 		 * using it.
  		 */
- 		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
+-		VM_WARN_ON_ONCE_PAGE(!page_ref_count(page), page);
++		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
  		set_page_count(page, 1);
--		ret = vm_insert_page(vma, vaddr, page);
-+		if (align == PUD_SIZE)
-+			ret = vm_insert_folio_pud(vma, vaddr, page_folio(page));
-+		else if (align == PMD_SIZE)
-+			ret = vm_insert_folio_pmd(vma, vaddr, page_folio(page));
-+		else
-+			ret = vm_insert_page(vma, vaddr, page);
+ 		ret = vm_insert_page(vma, vaddr, page);
  		if (ret) {
- 			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
- 			percpu_ref_put(ref);
-@@ -196,10 +231,15 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		}
- 		percpu_ref_get(ref);
- 		put_page(page);
--		kaddr += PAGE_SIZE;
--		len -= PAGE_SIZE;
-+		kaddr += align;
-+		len -= align;
- 	}
- 
-+	/* Disable unaligned splitting due to vma merge */
-+	vm_flags_set(vma, VM_DONTEXPAND);
-+	vma->vm_ops = &p2pmem_vm_ops;
-+	vma->vm_private_data = (void *)(uintptr_t)align;
-+
- 	percpu_ref_put(ref);
- 
- 	return 0;
 -- 
 2.29.2
 
