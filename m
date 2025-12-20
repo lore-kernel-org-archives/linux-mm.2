@@ -4,104 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417E1E66886
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A39EE668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 03:30:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A21FE6B0088; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
+	id A64D86B0088; Fri, 19 Dec 2025 22:30:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A5416B0089; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
+	id A12FA6B0089; Fri, 19 Dec 2025 22:30:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7886B008A; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
+	id 8F46C6B008A; Fri, 19 Dec 2025 22:30:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1006B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:26:18 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27058140420
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:26:18 +0000 (UTC)
-X-FDA: 84238411236.18.556F419
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DAA96B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 22:30:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08B2B1A0427
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:30:50 +0000 (UTC)
+X-FDA: 84238422660.27.CB42764
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 56FA64000A
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:26:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phms4Nd6;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 569AB8000C
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 03:30:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gcsrlEDN;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766201176;
+	s=arc-20220608; t=1766201448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a4+Amfyrox8uas0sWao73yoqMJGIxvV4pb6+PRCdA3s=;
-	b=wMAPbx/viWhivJe4JufTafJ8VtwRHDf4Zo+8cEfT3x4rAnlduIR8T/UorBI5tlANCXUXbZ
-	VFjYamkk0NY5fYGNXueNt75sexqIvjqkwNxTVE3UoaLACbqbP+NIWRDvxFVZlbEoVJkbkj
-	dOZmO2D3xsh3cONnAJsrR1LDYQ1dNRQ=
+	bh=l+49Rimbg5lu33r/DaYgbOd2mhN16SETdATd5FhkZFI=;
+	b=lgziKhhjUmOfL7/2TUlvaolPO/95Wu2QSuvxEqwBgfb/E4WPIwuGRvvIcPbzfDx25VzxDQ
+	/MJK3IThXWY4PL4GiaQMiisS6ivr8wwB6F675ZViBJAtkZ81qkgE6RK8EipxTCw0K6lf3R
+	L/H+Audxg2i9sNGo41/wxY+WBdtoAYg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phms4Nd6;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gcsrlEDN;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766201176; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766201448; a=rsa-sha256;
 	cv=none;
-	b=B/TJOzDlQNIQT9wLZnWXHp6o+AEfeHwINwSBSPCjGa4+NCpa1t5uO9Cpn5C/4+xzzdYZ3H
-	QwMilPo1sPP7HXJdva6hHVJf4RRYw6HtUto97hgNX0C5Ealz40WYwvcu+rM+2b9/SlAYIi
-	JceteTGPgg17wo4IwKEhThFFdItvoY4=
+	b=lRKELlRnZcR7RUBtdUBrRrOwMSdVYArtBySIUcuMpbIO8NRTsT84kVL/umwEGOnJuZ4MWF
+	n4kbWNaM1a5t7qY2fbCUeOEtryYApruKXU+imdZmw6ZfTx/1NsnmQtKeOZvd+2QOUKS7+C
+	cj9xKL4MeDa2ZR12XWwS3v9yrjlUGCA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55C084437A;
-	Sat, 20 Dec 2025 03:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15A2C4CEF5;
-	Sat, 20 Dec 2025 03:26:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 20D8C42E4B;
+	Sat, 20 Dec 2025 03:30:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F37DC4CEF5;
+	Sat, 20 Dec 2025 03:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766201175;
-	bh=EnAo8tjl0LeLPwSTVsKJgQguKuTTfJq16l9GOU0BmgI=;
+	s=k20201202; t=1766201447;
+	bh=iUdJa3ZP1iU0bgE8m+U5BrelPEBq+tJ2Onv6xomprvY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=phms4Nd6aQSaSqIIrs7tdFGtUthysBdYR/4KUwsLEko27qXKr9jeITU/Y660l86gX
-	 dnDJBEWToNz9fEG6IGkuV7uKzIcIKzTF5pnuo52ubwmGMfSHDV4Ab5LQetAx4dhYLU
-	 DQCPur2SWniNGSj6O0YbWfGGYPomemOaisSZyoDKGQhG5uF6ymmvwXdf4cdLCrYrFe
-	 gUtTS33mU/WNSQKk+AeI/8T1+lFeukh+B5DmNx6bFr1a6ihStU+lxVih2azmbAVTie
-	 hS9hWVFX2ObIMZWnGz4wektpS41jHSJ8W+XdOE2HhKwLgZcUrfbZI7EeUm7LkphO5S
-	 Y5ZiABDTgnitQ==
+	b=gcsrlEDN3DXmkvFdNY57ugc+QQe96QWVElttk9jICytrE5OUc2pgeqZlEes1FtmQS
+	 Wq1OdG/EGBrFKpN2szp8TuYPDcvOgRWbL6jYBT0vfF7bKCNjmOaRSgzo2S+rBeJJs1
+	 ppYT2+yZdSm0xlqRoXPtLmOVXhrqiGHvIM3ubwvFEVnHLzIyPcqqQ/whTHpGS7KmPV
+	 tvvFdvUm6WFf9IqgVnfxxt3kVugGfrcHhfvQ+YB0qY8ZJjIhfsCk0He+SyfvqyhJeh
+	 VQXRkZwqG/TFzY1PgHimR1e+wz3BP7JHjM4C1pFfgoIO/1tsW1vEzl8cuExCGIbWh3
+	 Go+hvM1CBi66g==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam
- R. Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
-  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
-  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
-  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
- Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
- <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
- <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
- <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
- Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
-  Vipin Sharma <vipinsh@google.com>,  Zhu Yanjun <yanjun.zhu@linux.dev>,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  linux-doc@vger.kernel.org,  kexec@lists.infradead.org
-Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
- early boot
-In-Reply-To: <CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
-	(Pasha Tatashin's message of "Thu, 18 Dec 2025 13:25:32 -0500")
-References: <20251206230222.853493-1-pratyush@kernel.org>
-	<20251206230222.853493-5-pratyush@kernel.org>
-	<CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
-Date: Sat, 20 Dec 2025 12:26:05 +0900
-Message-ID: <86wm2hj0ky.fsf@kernel.org>
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  Dan
+ Carpenter <dan.carpenter@linaro.org>,  Jason Gunthorpe <jgg@nvidia.com>,
+  Samiullah Khawaja <skhawaja@google.com>,  David Matlack
+ <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason Miu
+ <jasonmiu@google.com>,  <linux-arch@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <kexec@lists.infradead.org>
+Subject: Re: [RFC PATCH] liveupdate: list all file handler versions in
+ vmlinux section
+In-Reply-To: <aUFdp_fsGCNrFf76@dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com>
+	(Evangelos Petrongonas's message of "Tue, 16 Dec 2025 13:24:55 +0000")
+References: <20251211042624.175517-1-pratyush@kernel.org>
+	<aUFdp_fsGCNrFf76@dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com>
+Date: Sat, 20 Dec 2025 12:30:40 +0900
+Message-ID: <86sed5j0db.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ga56i33iqtrjhyfmsbesr8z9yr36r6dk
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 569AB8000C
+X-Stat-Signature: dc4i416cd4ko1i9ykq4z9ayyy5fiwe5s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 56FA64000A
-X-HE-Tag: 1766201176-849032
-X-HE-Meta: U2FsdGVkX18A5FkzOjJ/S3b+h5480QB8az/Xaf6fJOjL29woBvPztg/8b9GjBiDsoB1erNul3PZY4OpsmqLaMtbo0klrzE73LKglp9psrTnTZgMuO+mski7nwG+HP/4xSvasRvtgpqF7nVHQ20FBkLoc2VOya71sUV3RtQ1htm/O+/QTl0ukIa7CA/L9WoZnZRn0FOmbFYYXJS2/ogGPJwOFeC8fiGi6eHwwPkAjaerDXE9mrPbc8cI459IsAGG68FVGlGBjBLOHU2mw4A+naREQCUScf3Lpnr5L2arypyqqzunkMA3Sqx+thb4UHTsAh2YL5XyerLCP6Y9FAqziK75aL0IYLHpoy47c75Gd6tfyBisrYBAkya3gkF2qxlJ+Np0dFJxMzCEs9K6KVHphi5UF1IakmWmc2Ca9Mc9GmtvDVM4Z8/lZGay05BSgsqe/Sn6zxuhLN9hWtQ3/3V7XwcTPorLHmSrRrFcdgbx8W+/8StEy9UcIm3jWBGehduW43yfJ9gIzGcDalYOqyb5X5RTCRcfR6H0VsRQbq2G3ujZnMKHL5e4ZaFHw9iRcTGxDd9+WoWdEwv5Anqg3QnXsnHsNWBDVxNr+vLMBiKb1LV4XoWjkGOUfHyKvBlN/+9Bs5iRnN+mRLbWUxDYOsrHtgYD5XDBw4ZUlwQTSuqL9vMi0EzLCtkXQ0hVIX+yB9bq/+OnfjEvZikvE5+rp7DMldogS2fze1qXukXISdzBIBtqQ5u4TZzdicuy3LmP+xluZEwOg68DGGFQZ9zeB82kDoq+sXVp1MPxCsns9WmOLcxoqPXKmC+m+ysNpjAeS3I2CpZBllllsltX6xnzn29xPDq6Drrb7s++8g3rGNgAecrPvxJSyH+K0jb+z7MKqHi1R3LbnkVdoSd6vOlrMndNIsPtBfauV4m9+Ng3b/2UxVLjyOSwBE5sOaZt4RbLcmCqpJWCAaFjTlQBKjauIxAi
- Bv9U61/w
- utF58fSaf6XBWfrdq/fUwr8I7tavqiVzSdzuskTAPcjQ+dbHhQANBqPmoMZ9xUigDIJnlWtsDoSN0+NkALAjiW7L6HzdhHbq8XtzhRbxG5gAQBXX2indZjWItA7DSRr4I56jDlXTNWptYvYAfnOP0U7f/3KqhKu4cxDa3fgMbKPhmHzXGannEAvwW9pf82Ag7OeF9G2IPcgj8MsY=
+X-HE-Tag: 1766201448-463532
+X-HE-Meta: U2FsdGVkX1+ZoRq19B76esyDoyTuOENgRpg8C5Wewq2Zj4BQwX4JCTw3g6FfHYFaIGHNMMVlBdfYMYfPw+jFJUD0iL7NMZ7/ivm3bPdYTL7jl5Ny3Ii4xnEjX5A0J8kGYmnr3MdfBLBff4LfqGfSpXBlfiYyrAG2duWGd8++MhScnUnjhYKCKSfM2kXewmjX7EcVfdCC/aDtLRY34JkL1Hoq3Rj23LRKHecsPUyQgIS7LbucOz6XdUye9XMVsjgrKQZPbJuNfc+f5of2HYJhPbp/LGrzwX52U1TCLW0l0Zmfq5V7uIUxIykDP45tBJlWQPc7u9eYIEevqs3YZaci1LT4Njv3Iyw5aiF2C3DIOM+gXCaS8iZcy4U0BB71p3jbOKVqhzqaEUgX+lUQBcOh4j+KqEzIdDY1BqfSegTMJCW9IB2RSZgzNd/BjlSudfahZQOAm+fXDUV4EBB8CHdlkyfOx1SPp4/FaPREh/NFfasZPmpFXmRK8m+XfY+AeegJdlidZ5dyVIxEbEMI9CH/mKlVSrIUvXuImT/eWzNAYeUYdMhjDUSWYkJbooKTY9L7Ay1sEMQadTJ/NadOcionu3ctc8mx09fa/95hyKHoo95q/6zB1jnjkad9WgThsacVyw22ona3YqeVyi7rTPibZUkjhwfmjpeX8flKTVTqTAYqglq9nCrRjiwABuJsnIxakla9Fm3JQqUxAA2qRx7aJ72LDaDwgm1J729yeuJRO50KPqMgo6ZSK7CG38pByKzm8TSgJnJ/YcK21TqVv3N3vZ+mK3A1Xrf3LKfPGPves7kpj/7WR2iSoZVgdkmtaSl6I6UegR+K23MNFv/jM+iJh0lMYSQVbE0ytj85EQenhlGVtSOSFtxZ16zG46pOYrecHSc1iT4gxgLRq4FOjvJ19SM9sdOobqwdBA9eNuEXCUAOJDQkH8ppjW0Zq4BCihSl0MUJkLRhqxMOTQSNlp0
+ x0hMMk58
+ xfhD9jZLJ19KIVH/I1IKIUIOv1Q9AGP5th7NaLus9fu9+zRG+kUBdys18G8t29J/iLXh9DK6tf5GejIU8+hUVm93zv+nVrWdTmhH5h+nuGNgcFSF5wkS4DmODqqKwiAVKM7J0vBXnwjhp7q31IxRT4u5ecL9s4ALBcfXO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,71 +101,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 18 2025, Pasha Tatashin wrote:
+On Tue, Dec 16 2025, Evangelos Petrongonas wrote:
 
-> On Sat, Dec 6, 2025 at 6:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
-g> wrote:
->>
->> To support hugepage preservation using LUO, the hugetlb subsystem needs
->> to get liveupdate data when it allocates the hugepages to find out how
->> many pages are coming from live update. This data is preserved via LUO
->> FLB.
->>
->> Since gigantic hugepage allocations happen before LUO (and much of the
->> rest of the system) is initialized, the usual
->> liveupdate_flb_get_incoming() can not work.
->>
->> Add a read-only variant that fetches the FLB data but does not trigger
->> its retrieve or do any locking or reference counting. It is the caller's
->> responsibility to make sure there are no side effects of using this data
->> to the proper retrieve call that would happen later.
->>
->> Refactor the logic to find the right FLB in the serialized data in a
->> helper that can be used from both luo_flb_retrieve_one() (called from
->> luo_flb_get_incoming()), and from luo_flb_get_incoming_early().
->>
+> On Thu, Dec 11, 2025 at 01:26:22PM +0900 Pratyush Yadav wrote:
+>> As live update evolves, there will be a need to update the serialization
+>> formats for the different file types. This could be for adding new
+>> features, for supporting a change in behaviour, or to fix bugs.
+>> 
+>> If the current kernel does not understand the same set of versions as
+>> the next kernel, live update will inevitably fail. The next kernel will
+>> be unable to understand the handed over data and will be unable to
+>> restore memory, devices, IOMMU page tables, etc.
+>> 
+>> List the set of versions the kernel understands in a section in vmlinux.
+>> This can then be used by userspace tooling to make sure the set of file
+>> descriptors it uses have the same version between both kernels. If there
+>> is a mismatch, the tooling can catch this early and abort live update
+>> before it is too late.
+>> 
+>> The versions are listed in a section called ".liveupdate_versions". The
+>> section has a header that contains a magic number and the version of the
+>> data format. The list of version strings directly follow this header.
+>> Only the version strings are listed, and it is up to userspace to map
+>> them to file descriptor types.
+>> 
+>> The format of the section has the same ABI rules as the rest of LUO ABI.
+>> 
+>> Introduce a LIVEUPDATE_FILE_HANDLER macro that makes it easy to define a
+>> file handler while also adding its version string to the right section.
+>> 
 >> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 >> ---
->>  include/linux/liveupdate.h  |  6 ++++
->>  kernel/liveupdate/luo_flb.c | 69 +++++++++++++++++++++++++++++--------
->>  2 files changed, 60 insertions(+), 15 deletions(-)
->>
->> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
->> index 78e8c529e4e7..39b429d2c62c 100644
->> --- a/include/linux/liveupdate.h
->> +++ b/include/linux/liveupdate.h
->> @@ -232,6 +232,7 @@ int liveupdate_unregister_flb(struct liveupdate_file=
-_handler *fh,
->>
->>  int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp=
-);
->>  int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp=
-);
->> +int liveupdate_flb_incoming_early(struct liveupdate_flb *flb, u64 *data=
-p);
+>> 
+>> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+>> index e04d56a5332e..a474c9529a5f 100644
+>> --- a/include/asm-generic/vmlinux.lds.h
+>> +++ b/include/asm-generic/vmlinux.lds.h
+>> @@ -342,6 +342,17 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+>>  #define THERMAL_TABLE(name)
+>>  #endif
+>>  
+>> +#ifdef CONFIG_LIVEUPDATE
+>> +#define LIVEUPDATE_VERSIONS						\
+>> +	. = ALIGN(8);							\
+>> +	.liveupdate_versions : AT(ADDR(.liveupdate_versions) - LOAD_OFFSET) {	\
+>> +		KEEP(*(.liveupdate_sec_hdr))				\
+>> +		KEEP(*(.liveupdate_versions))				\
+>> +	}
+>> +#else
+>> +#define LIVEUPDATE_VERSIONS
+>> +#endif
+>> +
+>>  #define KERNEL_DTB()							\
+>>  	STRUCT_ALIGN();							\
+>>  	__dtb_start = .;						\
+>> @@ -544,6 +555,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+>>  	RO_EXCEPTION_TABLE						\
+>>  	NOTES								\
+>>  	BTF								\
+>> +	LIVEUPDATE_VERSIONS						\
+>>  									\
+>>  	. = ALIGN((align));						\
+>>  	__end_rodata = .;
+>> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+>> index 4a1cc6a5f3f8..57ef75695f62 100644
+>> --- a/include/linux/kho/abi/luo.h
+>> +++ b/include/linux/kho/abi/luo.h
+>> @@ -244,4 +244,38 @@ struct luo_flb_ser {
+>>  #define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
+>>  #endif
+>>  
+>> +#define LIVEUPDATE_VER_HDR_MAGIC 0x4c565550 /* 'LVUP' */
+>> +#define LIVEUPDATE_VER_HDR_VER   1
+>> +
+>> +/**
+>> + * struct liveupdate_ver_hdr - Header of vmlinux section with version lists
+>> + * @magic:     Magic number.
+>> + * @version:   Version of the header format.
+>> + *
+>> + * This struct is the header for the vmlinux section ".liveupdate_versions". The
+>> + * section contains the list of file handler versions that the kernel can
+>> + * support.
+>> + */
+>> +struct liveupdate_ver_hdr {
+>> +	u32 magic;
+>> +	u32 version;
+>> +};
 >
-> Hi Pratyush,
+> I believe we are going to have two main classes of LUO objects that are
+> going to participate in Liveupdates, when it comes to their criticality
 >
-> [Follow-up from LPC discussion]
+> - Core/Mandatory components. Theese components are necessary for the
+> kexec to be succesfull. Think components like IOMMU page tables, as
+> you have mentioned.
 >
-> This patch is not needed, you can use liveupdate_flb_get_incoming()
-> directly in early boot. The main concern is that we take mutex in that
-> function, but that I think is safe. The might_sleep() has the proper
-> handling to be called early in boot, it has "system_state =3D=3D
-> SYSTEM_BOOTING" check to silence warning during boot.
+> - Acceleration/Optional Components. As we strive to minimise the blackout
+> time, we will trying to persist more and more state across kexec, that
+> are currently being initialised from scratch during boot. Thing of
+> certain optimisation like PCI onboarding (at least parts of it)
+> and the PCI Config Space Cache. If theese components are incompatible
+> between versions, we might still want to proceed, with the LU, at the
+> cost of increased blackout time.
+>
+> I believe it will be quite usefull to be able to have the ability
+> to differentiate between the two.
 
-Right. I will give it a try. For hugetlb, this works fine since it
-doesn't really need to do much in FLB retrieve anyway, it just needs to
-parse some data structures.
+I agree that it would be useful. But I've been thinking about this for a
+bit. I think it will be hard for the kernel to judge what is a mandatory
+component and what is an optional one. There might be some setups where
+you would deem some PCI devices as mandatory and some as optional. I
+don't think we should even try to encode that kind of policy in the
+kernel.
 
-If other subsystems end up needing a two-part retrieve, one in early
-boot and one later, then I think it would be a good idea to model that
-properly instead of leaving it up to the subsystem to manage it.
+So I think we need a UAPI for userspace to tell us what is mandatory.
+That is more UAPI exposure. Dunno if now is the right time to take
+that, before we know more how this works out in practice...
 
-Anyway, that isn't a real problem today so let's look at it when it does
-show up.
+[...]
 
---=20
+-- 
 Regards,
 Pratyush Yadav
 
