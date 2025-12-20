@@ -4,89 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0135E668AF
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C79D637B2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:29:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD2416B00AD; Fri, 19 Dec 2025 23:29:22 -0500 (EST)
+	id 9A1996B00AE; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D55196B00AE; Fri, 19 Dec 2025 23:29:22 -0500 (EST)
+	id 94B316B00B1; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61B46B00AF; Fri, 19 Dec 2025 23:29:22 -0500 (EST)
+	id 824326B00B2; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B19F46B00AD
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:29:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 642951A0431
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:22 +0000 (UTC)
-X-FDA: 84238570164.28.396B42C
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D8253C0004
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=woWtFC8D;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F2456B00AE
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:29:46 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E2BDB6329
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:46 +0000 (UTC)
+X-FDA: 84238571172.01.DD8C950
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9A76918000A
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:29:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kuqnLWCA;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766204960;
+	s=arc-20220608; t=1766204984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cO8WtEaXesAo47SuaG+o4/YJs4sol1oYaZp1SwxhQ0k=;
-	b=SiPeCmqtLRZ3X0FkVvAZ17OIqnFoNQLtkrvpcG0dkuis/UJn7sWJTDw6qL6PJoJTm+GC9o
-	hcbXwp4aU8DV8Ol+XQ2k4+XPmpf3oi+eaD9iLDFUoNF5+MUBG31iQgyz7zGG9fKMhzX0yM
-	xumtszufimqmdYEpIy7EDQ9iCiFsXIA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204960; a=rsa-sha256;
-	cv=none;
-	b=JEatNYM1Qnwcsc0Vd3iE5nauU6dEefm3BMgnqQtc318SW3W+jZE40+1awgmkVXiI8ao7x8
-	Q0TMpLeGbgDIgmG/DEwubZWBfgcVth+/0WpHUJbiKGDmMt/GXoeA0XiSJOiB70auCALGCt
-	XP+o+zS0HdVRupxafsdKJwa8bKJtnxA=
+	bh=moxrTDRP6uua1SfOpGtjjCHSc7BhEFDyhQGMp73I3aE=;
+	b=BKyH3hA1G5KgI6qdpo7Le5BqL7urmsAkZk7oRfqB/V+7HdGZ3TtxqK07eopiRfIzuRVzu3
+	Njb63b4UREfVNoPJ3fgnoP/BW6dxrMAxxafVou+Q/40U+quEWg65nPVUfD+JBvSU5AzhOL
+	eGqRaCaevslzg9riu6dmwZLhXHEBrnA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=woWtFC8D;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766204955; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cO8WtEaXesAo47SuaG+o4/YJs4sol1oYaZp1SwxhQ0k=;
-	b=woWtFC8DFaElUqBMdx6sb+qbrhswM5mFwAtjHxVfPA4Jti/ao60IsV+XS+Pd/xQ9ee/3WxdzeqqVNR/Rfa4V93Gx7OlIukWy+4gJf9ApQBzNJL6hRKuBpcgbj3+mpLMM616+CexNi+wCH8lEcdXcJMTJ90pFUnjI5fvbW5/zgvY=
-Received: from 30.170.69.111(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvF13NW_1766204952 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 20 Dec 2025 12:29:13 +0800
-Message-ID: <17b923c4-48cc-45f0-93fe-84a13568c1bf@linux.alibaba.com>
-Date: Sat, 20 Dec 2025 12:29:11 +0800
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kuqnLWCA;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204984; a=rsa-sha256;
+	cv=none;
+	b=VlDl67dmjKkQ8GuckJNTNU99nq+++caO/bBG7TMdUe1MW4pv1/jFa/3sQxX14AUVn9bHxs
+	PJJUYxhJ0i0Kcltjn4uHlY1S86oHcDY9Gko9dR7DV8Kh6myQLrRfzTewaJSVUW4kbTsJay
+	+3QOwbfPa8YOxnYYDw1FQuHdAlRjdH8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C530B6000A;
+	Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39741C4CEF5;
+	Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766204983;
+	bh=LHAu/dZyFQqqK29xEpICrXmsoRaq6iiP4g0Utho5RUI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=kuqnLWCAZTNO1hFuZFoMgWDhDNkPQA3euPYG79oVTR2ZJ9D365HS8d7tZSORwJhJ/
+	 2rudc3555K/aZ5zARBsFmLwnjDNe1ZNRhrygMNOp7EV43nQBvb7diJ06zvyUEAivvL
+	 EV/nJuLjVrIndgEIHzagDZKITQLb7OszTygz3PYiueJx8zWJRMMrf9S2DPsPcxGljK
+	 FDQpbW46oxRN9EWFbWngsVHKM8g8bFmIcyBoavAo+FdT0xg9MV53pN91Goy79/BdWj
+	 unZPMBTA7pti/eLQ+vDZDTUbGzbQLVLVsBw0Y5OH4vbq0kxsouTsimqhyNW9VtExpz
+	 amjowlt6QNPtA==
+Content-Type: multipart/mixed; boundary="===============1907785491009621542=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] mm: rmap: support batched checks of the references
- for large folios
-To: Matthew Wilcox <willy@infradead.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, baohua@kernel.org, dev.jain@arm.com,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <cover.1766121341.git.baolin.wang@linux.alibaba.com>
- <24b9d33acad627997febe9b61d398fc53739a333.1766121341.git.baolin.wang@linux.alibaba.com>
- <x2s3l56rqwgcpkhpu77pjt65tfwgmchuy4fuyrj7h7uag5gja3@c3jbws4quxrd>
- <aUV4u9pOHxvQiDcP@casper.infradead.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aUV4u9pOHxvQiDcP@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: se5g61nxuwaeyzzz4g9ebnpcho7w45c3
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D8253C0004
+Message-Id: <1b78506003b674f5e66bc7ac61f279a363f5cacc8d2fcb615d06abb0316ef00c@mail.kernel.org>
+In-Reply-To: <20251220041250.372179-5-roman.gushchin@linux.dev>
+References: <20251220041250.372179-5-roman.gushchin@linux.dev>
+Subject: Re: [PATCH bpf-next v2 4/7] mm: introduce BPF kfuncs to access memcg statistics and events
+From: bot+bpf-ci@kernel.org
+To: roman.gushchin@linux.dev,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kernel@vger.kernel.org
+Cc: inwardvessel@gmail.com,ast@kernel.org,daniel@iogearbox.net,shakeel.butt@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,roman.gushchin@linux.dev,mhocko@suse.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sat, 20 Dec 2025 04:29:43 +0000 (UTC)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9A76918000A
+X-Stat-Signature: ifcf33seq8szx9phqaaukh4f9z3srz9s
 X-Rspam-User: 
-X-HE-Tag: 1766204958-954649
-X-HE-Meta: U2FsdGVkX18gNJcBoQ6bj9KkywlIjEC7yj1TgnCfO68UIrFt0DCaexRqEzSOrmBp7N0Hucv7miD6SGPNg4DEY9dfofibCkuYx6K9F2LUri7Kr8ez1wzED3t3Xd9fZRAMvPe7y/fCtI5WIPmIgrOBoqDXOKjsGbItSVmFH5X5jDTsX1o1TdQ3hlfv9KPgNuY9Yyv120CY6a2LsPbrGb5fbTU+iA0JR4BONFCWVWBENSZ9OWOZtpq//oGE4MPW/gReYwYAO/b3sKG4fisRM7zeoRkRCi9Y0i9js/FOyvOYNXYYBznkM4VQk2sfH+8QaeL2Q4IxnSpD25aHUjPg1vStAlUFS+7I2GQkya7RpVLbehxz1CvVN/XUn2T7b745AzO+/uEZXa4PZWG1orSvaZPRtCpskofBuZpfQ93yAzcZBUiauyhXlmCU9a9+Fb6C2pvsuhsI77lZ3KBIosYr+FZMVOTbCeNeOJy7FGLL+zQS0SmbiAIrsILXOOze5HA8o0/wi3+h34Bm7poTpnizPVNogyg4FsrsfV1A4DcGRzi6g3Vm8eTQ3d7onc4rFW78a7RYXy9RkzgCl5BsYH25KtGbk3CloCgFPT8bDsxoEcZ868f3ZwJ4NJZUFr9jNtPcPan5E/QxLj7Ehav5L5MG2Jsw6DvILtMzoXGeoQ0Wb0pBuMr/p+lIXL/VGDbfvLBTSKdnJ0E4XMtbzGetDYrbTcD2IaigibhH9MkgOK9FnqMzXIsxbWrZP5sa4OqW7reEJga4mQZhsOhTD0Qt4ucxxkxJpZNSW+0Cle8u5gOztMjaK4Kd44Y8diEsI1Na4ZUcvrEpg7iPylelhkQo8h9IAFmCG7WcbkNGc/6bU0iFDLlH8/vyUq8aHwDuJ6SN/J5iMN6gf/uI+lJEzQcwo1K7YpIcDWYskkBMUC/rJkULTmMjdC3NHLbvYvnXXfpLuatWi80vfLr1yEFmR5Q3tjDkJoC
- S91WP2xU
- aPRP+ukIO9nNCZYr7pNNTdBxE2DWoVIRscVQZWMCvjoUi+zqCOgM9cskDCOVa6DjLoYV+w1AcFZUPk3me6FhOEm5f3s2v95onw3bA9tdGB3W9hYn8he4XB7YOIvy0BY7CAvTpWBhRGhBSUtM43cFbET/Yb7MY8IytCu16OTPtcrsd5BMP2k39sCz+6bLSFiU42h8r+SgQa6ZTRSn+8aH4WrCxprLeNBDDNB+b81BnvxAXAmpvaPuCukmxaiFO7EsNWJDf8xP/zIEaDDwHiqgxThSuzAq169+oXbsX11jW+bBSLqBETeNjDmq3nmpbQP446ui/
+X-HE-Tag: 1766204984-668739
+X-HE-Meta: U2FsdGVkX19/8GxSZDTTUXUChTiAhmc8RMnUc5V1oXXQjmd6TEvJ1V1N226NqPzXDT9yQNW6ECtpqbWq1MORV7eIiYqiKcPrrgWKN4E9+az8ekW1DjsynRo7GZ8mjtDCoYcxsm7zxFs5W2ApXZdoJb5A+a4r0g4qXb3WOmrYoRTGhbr5jbmDRph2fefwqrY4FRticGuEY1JJGvwDOW2kmOasIiBG+ikUEejzBH9QoCDrZWuKq6Dp2MZjgOBV/f1IP+bqKp4alj5OoGI3QTEar7gVs55PVYr2tnqVkExH4fO6HIm96tjCEiDaSu5fBHNW3181axdwdad2vU6LwUbPxDbVmBMOTCjy7p9hEZrPQ5/Za+zEJ/dVPvxDRC9HsE7eRbtD9Qdkog5uy4TsfkdSQx8EFa7NIdf5Eezh5+L6nuFzfbita5kmrn7607YWk6NIJaPHyr6Wwb/oIJcTmx3dTLrTg+32AiGWi0d/Zlc7c68PktRxS0Iyo3AuBcQYbGk5DAXEO9M1/c3GPbYIc8330yyw5z2PowGyFCJLyimEq/4FhOb/Yz6F5bM+6qg/IXWmD61iFaJRlNc1fFV63GCYfaarwQV71VzFCfwvSQgCCL+HHuHmy5ghJ7o45qzjhO91T0tpElzeTmQlyUfYohHxfxnXA6T50cjoXPd8HvbI1P/i8kK7tf/JPShgrsK7vMrum7L3cZS1cjDKBMdnslzkUD7r4B19G0EsH/RxTqsgeJ8zqKr3xvPkMq6+NCKOF6iHo8lez+bcDyhUduMj549bBE68G3UArgVf/nypl71XLEy730fDOd5wwDqjMWO2q7B5u5W9YIJ4Mxl4FhvYZ2qQrtKm7k9e4f60kVp3L+JQ38Ye2LMge2xHgOkzeQEooNqeUGoYL3hhagQo+8QPiwfmmer1hZefvM2F/+Yj2b4pL7i6OvoF+QDKc03ugHDtJX5FefNIsnVaDFT/dSNR97V
+ BUmUGM/n
+ YJ3Ibqm9tovMcCMkRjDVFTMqK2+S8BSGjylLbxDhYM6b43idC6hwlSPxY8xzmWne+xu4k587pdZRCZAEcTmPXaSggWxz8ApS3kfZAKYjiPsBB2GP41tqlAikE4KH4cAPQM4MDI2G2uobf6zubBRQA2+DKF7Uas3U4ZRIpwMHtkXopIQSyqkSTyhBfj4R10CLpmI0JTtipCR1nAK3xJ4SIeWrSyY3fDBh6edNku/7ICOgPz8JfeibikRsTQpGaZhZBbG9+y97cyOWVoxpD5B4JLZV8OgtmrQU9DPJd8irnRJ9mmbeLUI8N4Lntxjm36SkYvY10uaFzBKAAM1uK+QvCf7+hFuj9Tn6jgb66V+AmC42l4y+a43pXEzlyzfHNmswOb26Cfi2haIzJtM/aNOkXXZ0lTNW7TmLIIMs+s40lJBOE9/k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,49 +89,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--===============1907785491009621542==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index 2d518ad2ad3f..d84fe6f3ed43 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
+> @@ -78,6 +78,57 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+>  	css_put(&memcg->css);
+>  }
+>
+> +/**
+> + * bpf_mem_cgroup_vm_events - Read memory cgroup's vm event counter
+> + * @memcg: memory cgroup
+> + * @event: event id
+> + *
+> + * Allows to read memory cgroup event counters.
+> + */
+> +__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
+> +						enum vm_event_item event)
+> +{
+> +	return memcg_events(memcg, event);
+> +}
+
+Should this function validate the event parameter before passing it to
+memcg_events()?
+
+The call chain bpf_mem_cgroup_vm_events()->memcg_events()->memcg_events_index()
+reaches an array access in memcg_events_index():
+
+    static inline int memcg_events_index(enum vm_event_item idx)
+    {
+        return mem_cgroup_events_index[idx];
+    }
+
+The array mem_cgroup_events_index is declared with size NR_VM_EVENT_ITEMS.
+If a BPF program passes an event value >= NR_VM_EVENT_ITEMS, this would
+cause an out-of-bounds array read.
+
+For comparison, bpf_mem_cgroup_page_state() below validates its idx
+parameter before calling memcg_page_state_output(). A similar check here
+would prevent the potential out-of-bounds access:
+
+    if (event < 0 || event >= NR_VM_EVENT_ITEMS)
+        return (unsigned long)-1;
+
+> +
+> +/**
+> + * bpf_mem_cgroup_usage - Read memory cgroup's usage
+
+[ ... ]
+
+> +__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
+> +{
+> +	if (idx < 0 || idx >= MEMCG_NR_STAT)
+> +		return (unsigned long)-1;
+> +
+> +	return memcg_page_state_output(memcg, idx);
+> +}
+
+[ ... ]
 
 
-On 2025/12/20 00:09, Matthew Wilcox wrote:
-> On Fri, Dec 19, 2025 at 10:47:52AM -0500, Liam R. Howlett wrote:
->>> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
->>> +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
->>>   ({									\
->>>   	int __young;							\
->>>   	struct vm_area_struct *___vma = __vma;				\
->>>   	unsigned long ___address = __address;				\
->>> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
->>> +	unsigned int ___nr = __nr;					\
->>> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
->>>   	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->>>   						  ___address,		\
->>>   						  ___address +		\
->>> -							PAGE_SIZE);	\
->>> +						nr * PAGE_SIZE);	\
->>
->> Did you mean nr * PAGE_SIZE here?  I think it should be __nr or ___nr?
->> I think this nr variable works because it exists where this macro is
->> expanded?
-> 
-> Yes, this should clearly be ___nr.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Ah, yes, my mistake. Thanks for pointing it out. Will fix.
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20389033088
 
-> 
->> I am also not sure why you have ___nr  at all?
-> 
-> It's a macro cleanliness thing.  Imagine that we have a caller:
-> 
-> 	a = ptep_clear_flush_young_notify(vma, addr, ptep, nr++);
-> 
-> If you have two references to the __nr macro argument, then you end up
-> incrementing nr twice.  Assigning __nr to ___nr and then referring to
-> ___nr within the macro prevents this.
-
-Yes.
-
-> That said, I'm not sure why ptep_clear_flush_young_notify() needs
-> to be a macro instead of a static inline?
-
-Lorenzo also mentioned this. I'll clean up these macros in a follow-up 
-after this patchset. Thanks.
+--===============1907785491009621542==--
 
