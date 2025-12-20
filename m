@@ -4,131 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7CAE668AC
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 00:47:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B61EE668AC
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 00:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8648E6B0088; Fri, 19 Dec 2025 19:47:29 -0500 (EST)
+	id 06C2E6B0088; Fri, 19 Dec 2025 19:58:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 832B06B0089; Fri, 19 Dec 2025 19:47:29 -0500 (EST)
+	id 002F56B0089; Fri, 19 Dec 2025 19:58:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73F076B008A; Fri, 19 Dec 2025 19:47:29 -0500 (EST)
+	id E51056B008A; Fri, 19 Dec 2025 19:58:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6071D6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:47:29 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0B68D1403F2
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:47:29 +0000 (UTC)
-X-FDA: 84238011018.28.44AF5B5
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EFAC114000C
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:47:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Elh1OWRn;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766191647;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqGGiBGIBzqIDXbf6caOhs98baOh9Bc0Em5bUFyjY94=;
-	b=vFbKcG7GX6ZjF+AFWRV6XLBrcwuZvoSQahbxeWaxEhX/XFIdmaQAh2ll4BelBdRK+o6L2b
-	P/sKTJcP7S949uGd+oF5Qs5kWbts63pLnmYTc84NrquZ5ewzAXnj5Qkpl70UTSxXCi8pMq
-	wU3semrDwpHJUbH9JDEf9OwViqVwoY4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766191647; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D01756B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:58:42 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D681C0457
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:58:42 +0000 (UTC)
+X-FDA: 84238039284.09.C1F6A30
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 25D7740004
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:58:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bVJ4Wr3M;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766192320; a=rsa-sha256;
 	cv=none;
-	b=ebwuIMEwyR2bhGdVzvD2Q0eJjuEh+2NoQUYvidelEz5krKyq22PJjsVbybJe7IUYDiSeHA
-	6T3h3cn0g3+2WJsLgbvH4iXBBDQTiJAsSaEDgnaXmhC+8VlgeHXik7h3Y4usbhekIs9A5V
-	hgBTaOL69RE7oAsOKSvIl+RL/JiF79k=
+	b=zozPVyryI8l3y5+SJO2pCT+HgYcFcgtQPKWqMUFYsoHICKSajbmVNY7eCQ6QNEzBFV1S2r
+	Nf0mGE0hIUBCbZV/ZxhkX7XbOVDoGc/Xiek+cmq47QUSR3ocMPptgYX/H1foAA2JncLpsQ
+	kh6CQHbjixymSvv0jELwObsC450K5Lo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Elh1OWRn;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so1231630a12.3
-        for <linux-mm@kvack.org>; Fri, 19 Dec 2025 16:47:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766191645; x=1766796445; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nqGGiBGIBzqIDXbf6caOhs98baOh9Bc0Em5bUFyjY94=;
-        b=Elh1OWRnl/iSGiCGIBkAzo8q5pYpBzvB96QZobgHCPzcyAGqE6Yjd2P/YhfZzwQRy0
-         FobCeA8ntCyYeutN2jWdj1t7x7P73f9y7mXpBX6juOQEPWQWCRs1bBnPXOBQlarVBOps
-         KPIe5GSeRNhagVK42UakHIvBcqVs/+x5vKEpp06DNiG45TaEyAxB+X6PIowNe7Ob4Rw0
-         Cim/lBS5lq0KA2OeHTM8oZRljnnSegc0b0ASJiDjk5/PWpa0bXxQ1NdO5N4ZWz2Kf061
-         jwY8PRz/t87EFrX6kvb3vsYG9CPi9plk7OEHLtTsMFxKVaMgqUIroCFBNydm+MuqSpWc
-         ECsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766191645; x=1766796445;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nqGGiBGIBzqIDXbf6caOhs98baOh9Bc0Em5bUFyjY94=;
-        b=XzfmsZ17zamZu/FJ5RgJy1VnBRMkTLawiM2VW+AZ5KTaYgzlBITNYRMk3Uown9JpKZ
-         hJQssI1Yk6axEN8LlU+/rqjYfkHK9M7jrNn1OhInZZi/yF9jFG3lXU3/LKLSodie9tTU
-         irH+U4APtiuSQZSSn8J+fg/y2QtTZOWzP10LfdUJiZO7LvxRtrNQkhaz13JcBfAtt4aZ
-         IjZeKrPYIp1odpn/3kPfNghLFYu59nTiko9s9i4gPMODFK4B4bVFaw+Yk1LHc21BToLV
-         bFl6GLBYHo4Xm1J7m5BJcHPqaASbADlvkfsPkzmCb7VlF1vGx2APirXbexeSZn2Hf++e
-         Z1Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCv8CG5/ic3KZSL/VAspYbzRE5b4PlaHqNrJ8WsSon6sYGo/b0khGdr3A41EmJ8VY7gJf/u1iyng==@kvack.org
-X-Gm-Message-State: AOJu0YwO75agniAW3C0fW5YVC3PGU4QR4UAclVrM7iyNf5sS93gObEnH
-	mHj67XzP4V7w8heeaVKzV4vbQaSSeevglesrNVnBUwXBHcgA32uZDKV1
-X-Gm-Gg: AY/fxX4SOlryzh3SNFHhcc4uJCQb/oMaGqLTG+uAZIxALnwY9cWL6EXLPA1/eYXs5VO
-	4Lfm1R+OpMApk5CnlkBWPkbj0uAVRUXIKl+NAxy+qA2EuolGh4NjXHGbAiE8qXrESG8hvf/NCGy
-	z9KtEILBGwhQtneI8iJi9h2JpeWiCY/NNZB4ojYlC57LhLIDBgJzBV1W4wPeATg1OTxZ7F1ydeC
-	Jp2T2O/+Tt/uw5UT/qW2WNUEMcOrzH5ri96sM5+FcGr/Sa6ZIl/j11RE5WDZuOHp/Q/CQhLoEWy
-	YLkgo/hkKcFrH0zZI1xk1Av2BV1fslIeN7GG9NnrNCSqzzKabWNU8zacGemVg024aQftzgN6eLn
-	vHrgozABDCqzy6Dh9xzf/9OeJ+pirxJrCf8N+q7QfU8QTzk5NV9OJPcdR33l7aYQ+4SaU85nqeL
-	GRbz8CadgjOQ==
-X-Google-Smtp-Source: AGHT+IE3zz/T2eYzh/DpdpgtZ2AxbF3wFfdR861oOsjU+UVc6klb7w7mN+3jT1/xcpdOd5OdzJXUhg==
-X-Received: by 2002:a17:907:72c6:b0:b7a:2ba7:197e with SMTP id a640c23a62f3a-b8036fba99dmr438564366b.29.1766191645250;
-        Fri, 19 Dec 2025 16:47:25 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b9159ac90sm3470027a12.29.2025.12.19.16.47.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 19 Dec 2025 16:47:24 -0800 (PST)
-Date: Sat, 20 Dec 2025 00:47:24 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>, Bijan Tabatabai <bijan311@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, shivankg@amd.com,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>
-Subject: Re: [PATCH] mm: Consider non-anon swap cache folios in
- folio_expected_ref_count()
-Message-ID: <20251220004724.b4akrh6ljreoyg5j@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251216200727.2360228-1-bijan311@gmail.com>
- <6b4cadb2-6246-48cc-9c76-64ba0a23198b@kernel.org>
- <0C218C18-916B-4BB0-8B37-AC82503E4AD9@nvidia.com>
- <a47adffe-b2c6-4d86-a970-b31c2e620146@kernel.org>
- <20251219002134.uqgtnr43zz7vvvtd@master>
- <CAMgjq7DU0U3RVw4cuFeNSSmTWnOmvRF9bQn5oaeZUOvXTVTdYQ@mail.gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bVJ4Wr3M;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766192320;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BmHwGQf18ijS41p6mfFhQcrUixQzLRzSixBXG5dU4lU=;
+	b=HgU+A4OtlbNZYAdyqjVGGgckjCIsrGrAd3s6ST8nADPFmpwLMQachiCIRa+3odbXZqBC7H
+	ZlKA1LYF7loLo7ZdUZtthwieRyg0yOFInOW1in53O26AmFa+StZHc12G6AAB/Mo/XtmLAV
+	zKSbBi6CeWDHVYXgF24tITZP3YaQ8C0=
+Date: Fri, 19 Dec 2025 16:58:26 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766192317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BmHwGQf18ijS41p6mfFhQcrUixQzLRzSixBXG5dU4lU=;
+	b=bVJ4Wr3MVaABvgDeKaqo7NNNZVp+khl0wXKX4pY8nlxEGr6vGK/1LEusvywoYSKQy0ehl0
+	R46y804hOIrqjM+O8KupKBQg9jeFPxKUBeV81S2u6cN4mEtP9sW88I+TQN3VoWW6K1aemG
+	obUOK/Xybecz3aHbDAH7h5y7qvaxW5M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 14/28] mm: mglru: prevent memory cgroup release in
+ mglru
+Message-ID: <id7sx5zsl6a7v7aoy2p4r6puxkvtlib6jlqv3rnt7pegbucbhx@5plupkfwo6en>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <ab60b720d6aef1069038bc4c52d371fb57eaa6e8.1765956025.git.zhengqi.arch@bytedance.com>
+ <aUMsQPjBtYtVWjwf@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7DU0U3RVw4cuFeNSSmTWnOmvRF9bQn5oaeZUOvXTVTdYQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: rq1yepcez1tu1j1cttxnkmm1rd1da5j8
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EFAC114000C
+In-Reply-To: <aUMsQPjBtYtVWjwf@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766191646-248074
-X-HE-Meta: U2FsdGVkX18gnUeCHjR2RVFxCToyS8Az2x4fFPnz8mAO+GtahIDZmbuvUevJkh9iC9HvgFa4Ih2Fkjq068i1d8waYtHWamvMUPnqd4NOfYaZN01nMaxLe87SKfTuDTKRNdLD7u+pO9+xkGApWFaamkRVRMnYuHqK7rmqRR/iqPjDuIq1qEs6Qf7vw3ZXhqdDR83LXx2IGYKWsQCNBPtN+2NEma4EiVF8+kar69sFu09V5/6AHEJN34yUPRLFW6axgkfEfaROX9Z/BYFFuQb9evPmr4VNtbwvM/O8VLRZ8Lg5sK+wQg91w7qRN22d9LMoKh9OlXmfLpeXnrS70eMuBOww/1o48zvVSuS0fqHZ2sxyHkZzGGPsAigN0dMFdEmuPj4j7dTGUqunbU3dH4UoQTyhW0B+ZFEPDOSNDCnp+sS6lnNpwz+EeKKzo2H5/US8RGJsOexd33boF0r34bTgjJegda4UiJ1stzwgfE8wla0S5BFJCvrEHHGT3w33X5sbsp/urhWgqPmBL6BF90+iDbBAwwxbYKYVh7FJVK1f5E41c4IOHod5YTjchQqFpXwTmGIqJecnpTselOtTnyV7Id1OtA573vLkNb1bIDVWJj9aq27OM6LOPxMltz9TRj6D66xGXg/Upm8zsGY5ZYduiKSUOZ4aQVybEylhxt265/PVhwdU4aH+pkpxV7yiwoIXu7k5cPjUu2VQqkXPUBF9/tRH2PpmanswRcwjFPaCDtzOP6Q6tP+sG/StvpsK7BG+hQZ3/TbnHv3G5iJYKFfe2qMRT1L0pbtDlhvrcXoneEX9CR8qPjgN11irZYHuK/YfkrjFTR4CleO7E9ip/Wxglt4IrMg3Kq2qJEcib4SVUqtRFbTbbNLJ9WbQg6OAdQOEH8RT3tn8i4mPp0nc+yPNzmmNq8eg/yyLP+ZFG3zb8q1sSBBAmDb5vDDnKaTp8z0CLafyTVYd9GI29jg9v3m
- vaW6QVrn
- 44VDwtjy1AMgv6BaZyldfFTOGmgYvv6RxfMoQ6ZTYUkhXQpZoFGmlSYdVWS4+hOccxH34WEjSE0/PgBAAcfEIcjontCmeJIDSXTnOgxGAmEhFW3UXD4zuheSdJiP95BdKsKKs8J4ys5PFwIDYwki1ZK04cEHNKEOXwY1Kowel/SabU4sTh+wGjX3LIqMKwrr4FCTdgCzjtsMGDKHaHHQey3TSHBd6iM0PQqqlCWIBJsyfkzYpxrcqi/9dCojnvIX2dnIRiec6VCC1t5Z7tPCbdDPuNCbb153I0yrQR78ji48Ag0HW+Id+A410mHAR2qhq0KmarCQp39JfS9LqUtm0nUTQYt+IR98YWMcOYEWH2BTQfHQXgGTJaTQIVvs56m1S1p5KUdaZr80Hx1q61fRFIBGs9dS+lj2y88qYJtiq/P51iWZh8ETetcaVtNofcmDK+cYvoyky/xcV3v3U/uiNK1qlf8cMGis8UhDL2gpt/FjUluXZ3PJ8apyczg9oEgNBGmU1lWjl+mxrl50Di9JKFRtO02C1f5X0b0rB/CfAa7ZXIJhPSO+AzJwR21oR6LbvRyQfuSaojJO5F5oX9T/DRnKrDxr7dvlIZptKp+/sqtVj/CxhXE+J+TTSR1Q6wKqWbU+kSO7RThk9Dn/L+/ExYecgc8orMT+V2Cgmcr3CaHaH0DSJDkVCo9KBAZWZb/DMrAEuEkxfXqJfqX9CxHBGxIMoNxhbD9kw/7A6R5GS/8fDcR6uGiYmruP8bqsK+p/2sJdxm0TeAVz2A3LZX93Q9ZwKdVVaLkAPtKn90QEjcgQrdgo=
+X-Rspamd-Queue-Id: 25D7740004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: xeztaig378gqcoggwue4jbds5irwu139
+X-HE-Tag: 1766192319-695179
+X-HE-Meta: U2FsdGVkX1/NLTnWGKFdP6pP2GVFX2d+s1oEWV5pthJbvRCsLClJqnb+TO0NyCci+PVikK4wS2XHWV010sfDLPct68znFUa3zvcJBqsk6njJIyADqLVNsxFFGfJvkj60f4VaHFB1ANYfWZNjjJF/CmvkN3ooNPQZI3gAIKMX0clY2KmhY8jAwsQ0z66kTxuy3DjyZamUDVCc6zotJTlmiesBv/oxJ75ihuO0/o71qy443u43En1o1ncuZZghwgZRokrllrkFqh9f+mnkX0ezWXOG8cuwZjxu1h0FwG4YqbJidyyezNqUE/LtRaYeKiz1WOIrOw3lRqNxMKeadD0yqQ84B6rKnXt7f/AYwhSQiRuOn/JgHTMwKeIfIoKCzZ4hFSqJHIslXT8Xvu+4BOKKCD+Rmo12RoER+aeJlJn1mPXyFShrbrgkCeAO8+q9+EqfyjdB8VBexzkBzi4dYSKSNE1F9A/7JSXFFIAaeUvWSOM36gYrlinjN0mm3ya0xzVLpp5mg/+HkAvUda7kjnm2kz1lli8L2ikCzYfuDobKikP0mm3nuvU8NFSUMTHaW4DOe0JPNDNSnWyv2eJa36llTTJwiR3y5bTSREq3X0zGjnLiyDPGfAV7g6iM/bH+keYE8CjzgWUYNX5KJhdnHqSmkcOdtXggshD5XS3/XmMMFvHMGEufnQkB23nRxxWYZxoVKH3L3woniNp5zvmEPkUjhSXy7MxDqcts9CbJ2Zq1tQAppkbZ6ckXzPTM8LmF4pJU2Ixxe40RNuk3ARbDia/0ZIyZT96M4Pm88XMvjH/3FNRTlwizUtLicP953UUdkcYNeyLHaNEFDYgGKRQLg5ffKrf0GI01L5EjK1hsl0MX0RCEbdwUM3FEjNfh4ch3IRYe8diSxUtz3GVsDNa6eGea8Butm+E5mA0S2TsHIL4GnrnuZ1HbXTexCgLpdqVSBIM5gUuKYvPxSSw8jU3uNub
+ 1I2cgdzA
+ LKMgGsF6SQAm5T1hFgab04yzkMqEoYPdubmBptxQd2QKh+nRNQFOZ4qr5ngYjrBQZnbRO53PIgEUzn8niqSBbe1WQSTQKmmUoYeJvgkV4ShS4RVq9JKc6TKj1ZSssURqpmQkycqmg1+oshf+RjijyxskrTQD7j9ScS1EpVLx/K9YNHsqOIbsuQFSZ18GOjzQIFCbmhRyKqnfqUAA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,54 +96,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 10:35:05AM +0800, Kairui Song wrote:
->On Fri, Dec 19, 2025 at 8:21 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->> On Wed, Dec 17, 2025 at 02:04:16AM +0100, David Hildenbrand (Red Hat) wrote:
->> >> > >
->> >> > > I am not very familiar with the memory hot-(un)plug or swapping code, so
->> >> > > I am not 100% certain if this patch actually solves the root of the
->> >> > > problem. I believe the issue is from shmem folios, in which case I believe
->> >> > > this patch is correct. However, I couldn't think of an easy way to confirm
->> >> > > that the affected folios were from shmem. I guess it could be possible that
->> >> > > the root cause could be from some bug where some anonymous pages do not
->> >> > > return true to folio_test_anon(). I don't think that's the case, but
->> >> > > figured the MM maintainers would have a better idea of what's going on.
->> >>
->> >> I am not sure about if shmem in swapcache causes the issue, since
->> >> the above setup does not involve shmem. +Baolin and Hugh for some insight.
->> >
->> >We might just push out another unrelated shmem page to swap as we create
->> >memory pressure in the system I think.
->> >
->>
->> One trivial question: currently we only put anon/shmem folio in swapcache,
->> right?
->
->For swapout, yes, the entry point to move a folio to swap space is
->folio_alloc_swap, only anon and shmem can do that (vmscan.c ->
->folio_test_anon && folio_test_swapbacked, and shmem.c).
->
+On Wed, Dec 17, 2025 at 05:18:40PM -0500, Johannes Weiner wrote:
+> On Wed, Dec 17, 2025 at 03:27:38PM +0800, Qi Zheng wrote:
+> > @@ -4242,6 +4244,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+> >  		}
+> >  	}
+> >  
+> > +	rcu_read_lock();
+> > +	memcg = folio_memcg(folio);
+> > +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> > +	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
+> > +	gen = lru_gen_from_seq(max_seq);
+> > +	mm_state = get_mm_state(lruvec);
+> > +
+> >  	arch_enter_lazy_mmu_mode();
+> >  
+> >  	pte -= (addr - start) / PAGE_SIZE;
+> > @@ -4282,6 +4291,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+> >  	if (mm_state && suitable_to_scan(i, young))
+> >  		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> >  
+> > +	rcu_read_unlock();
+> > +
+> >  	return true;
+> 
+> This seems a bit long to be holding the rcu lock. Maybe do a get and a
+> put instead?
 
-Thanks for this information.
-
->Swapin is a bit different because of readahead, readahead folios are
->not marked as anon / shmem (folio->mapping) until used, they do belong
->to anon / shmem though, but we don't add them to the mapping until
->that mapping does a swap cache lookup and use the cached folio.
->
-
-I saw this. So there is some folio which is in swapcache but no sure is
-anon/shmem yet.
-
->Also maybe worth mentioning, swap cache lookup convention requires the
->caller to lock the folio and double check folio still matches the swap
->entry before use (folio_matches_swap_entry), folios there are unstable
->and could no longer be a valid swap cache folio unless locked.
-
-Thanks for this notice, will pay attention to this.
-
--- 
-Wei Yang
-Help you, Help me
+This function is called under ptl lock, so at least for non-RT kernels,
+the preemption is disabled across the function. Anyways no strong
+opinion either way.
 
