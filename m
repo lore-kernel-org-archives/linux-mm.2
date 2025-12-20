@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BCCE668AC
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 01:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC4EFE668AC
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 01:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66C6B6B0088; Fri, 19 Dec 2025 20:25:11 -0500 (EST)
+	id 0C2736B008A; Fri, 19 Dec 2025 20:26:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 619836B0089; Fri, 19 Dec 2025 20:25:11 -0500 (EST)
+	id 06C226B008C; Fri, 19 Dec 2025 20:26:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5259D6B008A; Fri, 19 Dec 2025 20:25:11 -0500 (EST)
+	id EDB0A6B0092; Fri, 19 Dec 2025 20:26:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4369F6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:25:11 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEAE858D07
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:25:10 +0000 (UTC)
-X-FDA: 84238105980.05.108AF56
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1A36A8000D
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:25:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Fp2Uk85P;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DE9896B008A
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 20:26:03 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A40C56B75
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:26:03 +0000 (UTC)
+X-FDA: 84238108206.03.9ABDF6E
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BEABC18000B
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 01:26:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3WKDaPi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766193961; a=rsa-sha256;
+	cv=none;
+	b=YI/N/UgDrAOvckGTv1REO6r3CgZesAsu3AFhUpPqNJUWqnAd/HFUwWwdwoEM8XodcJ4Zwi
+	7HFWmnRrSOsVO0zJITWZam3FxDAqUEbOZbNjKGKayIvIxNj2FXmkNfgrnk0oG5fp+mxC/n
+	u1Ne10qRGr+XJQGHxyjwrdWWDpaGtuw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3WKDaPi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766193909;
+	s=arc-20220608; t=1766193961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X4rj5Kk8zj7DgKXiaSbgv2uhdn7Z5onK0VOn5gyo83I=;
-	b=LTvIP5fIs/F2k+ZUUL9tVP9sQax4qBQ4o17M5Won5X8u6pzY1yDSxE+A789AENWGRLV3ZW
-	7NAeI1us22A/P6Nya2GX7eONeJtGB/vCfFcHWDKFj5O2xZzZ0RhuCOgnwTUY/clhwAisIq
-	X7hEzA7aU1tFRDcGKcteoZndSDM1GGk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766193909; a=rsa-sha256;
-	cv=none;
-	b=R04uGb3eZuD4HgzCi2kvJk0d3Ge/MhnwZ8Nl7SzHBVc0SHiWncULRRvDbaFaS0zYm8XRhr
-	nr0aPmxNgII5svlAZT0TbT1ajnI3I0O4dbVWW7yjvYiMRNEbAQr2yy8dJV+5BeatgaXbhQ
-	BTP/uDMlshFYUmiH90UcYBhFjGvimFw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Fp2Uk85P;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 19 Dec 2025 17:24:52 -0800
+	bh=voaV2xOJnTqXL1OSyKUQC5/CATHtEmV/NM52XoZ8tvQ=;
+	b=eupVulsrbZILBvkobgfNTilMmgnxNxotAGN6cbtUVn9DuFUtKAq57VKotk2PfItEAK4MN3
+	7wN7YVBBnzancWpddTT2R2EEYSkhaaOc1uchWKwnaDw40ePozBlqYfTzMA3w5TAorYUdoV
+	8KIracS0qbEm6b34N+/QQBkUektUP1M=
+Date: Fri, 19 Dec 2025 17:25:47 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766193907;
+	t=1766193954;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X4rj5Kk8zj7DgKXiaSbgv2uhdn7Z5onK0VOn5gyo83I=;
-	b=Fp2Uk85PyuP1BaWh9pYFtMj1d0JEhBx6b+4qF4ME84XdryKQheKuRa9snVdzLtKDHV+uBM
-	v5V+UQyjdh+0pXLQaEhVnWghDeoSpB1Om3sh1esBOK/e3fJxJ9GnP+A7pvZihUJMv0t4Q8
-	svJFYNSf63jKiHrl4iGcaDaTsAsbMtg=
+	bh=voaV2xOJnTqXL1OSyKUQC5/CATHtEmV/NM52XoZ8tvQ=;
+	b=r3WKDaPiy3qy7ziqEqHCTHCBq52Q0Q8OVceRdAoCsWBxiN0pGQzedZgq4H6rBql3fhZFVl
+	TRom9X4l+iQxK5ZMnIb1qWJjnMjcT/t31vjho6t69XnFQz+RSjhkXtsO3xyX/fWRZly8OW
+	wBeIFfUla4ujWBMnXcIkETZxhTLrHhQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Qi Zheng <qi.zheng@linux.dev>
@@ -69,24 +69,24 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
 	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
 	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 21/28] mm: swap: prevent lruvec release in
- lru_gen_clear_refs()
-Message-ID: <6as6jdgqy4vrq2skolwnqzef2n7xljpw7yul6vm6g3k5pbzd2k@vluyqctcvxj5>
+Subject: Re: [PATCH v2 22/28] mm: workingset: prevent lruvec release in
+ workingset_activation()
+Message-ID: <3eiitl5ghm3dvueb73oedjbrungpidx42fae5t26gzvpsxgrh3@aeormwrvvkrr>
 References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <42682f81686e31019504a6e025fa08d2c9dea718.1765956026.git.zhengqi.arch@bytedance.com>
+ <195a8cb47b90e48cd1ec6cb93bc33a8e794847f6.1765956026.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <42682f81686e31019504a6e025fa08d2c9dea718.1765956026.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <195a8cb47b90e48cd1ec6cb93bc33a8e794847f6.1765956026.git.zhengqi.arch@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: eqkquxtrotb55y7jz74u1krkwwugqxx7
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1A36A8000D
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BEABC18000B
+X-Stat-Signature: g6cxtk6n1meemg3f1fd6jrtd7fmtzmkj
 X-Rspam-User: 
-X-HE-Tag: 1766193908-669764
-X-HE-Meta: U2FsdGVkX1/icuOrK4tGUn3FjH+pX4cdj++piWJAM4t49pI466LEexIR1/EuCpubEdo6dzMaLYsJz7/mJrWMvVE+wDjPFwSzVquYvxZbuZ98ntIiXMMrAC1tKt8CO1yHNCuhhfZjuty9OTpqfcVYGIBO8D0S6Gdvz9CbRZpA1lRNeSBkCIh++ODox/cydFhXrV3aVHNpF2B9TViJOIgoGnU+Kr2JeKOwaaMAbfLU8/Lmz+3rf4+D2vZ/oEPI31sDc5djV+hX8MZWhE9k7EYDsyR5xF+BDWCdbd2HSV9JM/td6RjOmYMpK2zVfAcb/zEdE2ERRM9Zt77P6XRDEEP0fhqxudEmAD9CwNjIIUueUtlBiJsI3+CyXUmTd0t2NIxc4OrP7E9L8Rpw8RBbuq9IqKLRo25ZWvYk1vv72RO5Sy4gOA3ndRR71N47zReRCBcyezeouuOmBIjtR2fQh+kvcnikvQt2KbTDE4241EyXzBwyQzCQLptaU4K1v+eEsXnX5TzWum15SdgijWzsVCKCy961FbHz1alEQGcs8jrPZG+H5yuANazgP3ce0xykO0xS+kycENuEZjKZk+s9+W5/t0uhfOWrUHByE3IFXvytW5tSYJW1+tlPdLEMCf9Mq4VjzGKw36ZOg0FmPKkXX9F+I0qPx8IZljkW4pyHFxYOtk7nL+wnm8dsR0G8GB4UjBgn80pyPKGYjd664mGAdMu1DgKvFL5zGld6nkDflESB20h6IE1+R1vs6L9iGTr7pVCKa2qdYJac+eFDGSmexqQOF/k5ES28sZglNYqLxI86eYCAOj7H+LwinYcVYrA3RZmqmt18UTCnZIFy662EiI8UcHGOYONTWQUCRNxWiFoUTzkBAOyyNZDGGoGayk/NIh6ow9izeWe2LEo146RAeo6D7+WI8D2nnIbNmGlboA0HFocpLsGn6rJ52utA2rRt3LLETYArlvWDFXReDCEZLZA
- 0NKdKvig
- xNhsetvEB4ptjhnrIyOildJM3M9GPbYoC8iZKdjvBONhEDtuWz9G0MGmGoHF2IUjduqeRWxHnRYt6YAxKYG0VNiiJvfo8He/hzWn8Xepxc+RhiQywpEWVVsLnCBHhYUpGGKxxtP7K+OoTAAfHpk3et2WKyx/mQ85Ze3CtEjoj7xz5HR/2oiAr37WoR5eiYaw+7jm/C9nPPfmPIydJBUzLmcjqnby7f1NAKZ8z1cDyJSBGTNbY6reRLf+SOqlrjSt1u8VXbK3aXpil9f3KxfktYcSKjxa9RajGRYnTLMY2KR0RBas=
+X-HE-Tag: 1766193961-921450
+X-HE-Meta: U2FsdGVkX1+T3UojV7Wn+YyI2q1jrR66paqQcScltfch2Qr0GTJ/9GadtOYejODWsWxPfNNIy90p2oRK6sz5+EmaLttL/HPnpQUlkDSiXGwZpJJDdKrc398JIcmRuvJ/9UwnYBv2u5Y7/fiGykH/TdVyRd1EfIkNm8jaYaEmk8QfM2w38nGhhme190EM2HHFJNqC81+sffp7JVdgvt7G1y62kW/enyCm61zMZ18k+IHSjp86vvQd9ao9uLJCgr2V1avNFAobTyJt35dOcwbn2Krl9ksbh5pIWMFs4q4VqSdX9v6U2OwAH4uhp2uU2vWgQi7q+n+baph7rk3hSB3anQuMwDMux2yIjOeUNoVOJJmPG/qj4HuLRxKc9sqSC4LOE8ARRuffjp08iAaZzzN9iAXhXFsPqYqeLmtuvKydrNRA7mqePvp3XSu9ycCr8gnfzWQLvlWxlUigik+zvZnSpTT4beQcBvt5Fq4d1Y38RJ61zciTd3Gu5CHuFJNvub5xBT77vDx8jXrsLrO3m5Rqqpft9HJ1zH84jdoRCTvX3Y5mC5Y9HSBkBEqC0bZ31iuvrN+5a/1AKitW1U9Sj2YkSgWUTu4/AUGlPEMCuPOtU9ErI5V0cTUHiIpdWwGAAY1b1w4qnu7lHVz5mEk8PhIKD+D1oGKaldVE5pNsQVhpa5MYaimUip9TtngAqaL1tUyRmRJJVL02RRYjgZkULcvv8tw+sC+Yo65MOw9XvwXt9N4VgcG2lbiHE2LUyvtmzopQ8o8iEUlgzCk84mCH+GHaQfYD29VMJYYnR85xYXk7/rLfqrKLtfYBOHntAeCgrcl3meoaRd7qEZ6Rwa/LGPashW21Z0Nn86PpMyZ/aMmsrI4lIMJLNNChmoJUzs6ZiGQIy2hyeA+avu8AMhNtnBGy3jGF+oI/RwlfgHezUgBscvkac5UyToArtlpeK3wWIMSYpDd8VgoK5xCEbSWFRLf
+ YUiO5TVH
+ DAaxizwFJhWoWYaEwtxc5XoDzmHi+4jelxA7HxUNmfA8xqub/8BUj2mwWOl+RHFPl5y3+3aU9d+S5kuKZjXZr2HTT14IiyOgKdjqwhvMKUxpQ96ZMMvKW2HQCL4TCLcgVXoznNew+RyHZjIf6vtLN9I6bKu4BG2R44R9oHrwkZID2YPntjSpNDPMCmjKoE4fRfdbvG43C2qOgSjCBnbuQW2UaLMC0KLDDZq7ACdKeLY09ic/ebzpBanh/PU5Rj3TDkocOZIn69EiEqAJqsSmSJsn5j+gw/pD3/PqQbmbycCcadFQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,7 +95,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:45PM +0800, Qi Zheng wrote:
+On Wed, Dec 17, 2025 at 03:27:46PM +0800, Qi Zheng wrote:
 > From: Muchun Song <songmuchun@bytedance.com>
 > 
 > In the near future, a folio will no longer pin its corresponding
@@ -104,7 +104,7 @@ On Wed, Dec 17, 2025 at 03:27:45PM +0800, Qi Zheng wrote:
 > cgroup.
 > 
 > In the current patch, the rcu read lock is employed to safeguard
-> against the release of the lruvec in lru_gen_clear_refs().
+> against the release of the lruvec in workingset_activation().
 > 
 > This serves as a preparatory measure for the reparenting of the
 > LRU pages.
