@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995CED78797
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 00:02:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A6C4E668AA
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 00:27:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7CE66B0088; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
+	id ABAD66B0088; Fri, 19 Dec 2025 19:27:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B54866B0089; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
+	id A68746B0089; Fri, 19 Dec 2025 19:27:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A53BF6B008A; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
+	id 974656B008A; Fri, 19 Dec 2025 19:27:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 939326B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CCB0569A7
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:02:47 +0000 (UTC)
-X-FDA: 84237898374.16.F05EA0A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 35722100003
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:02:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VOgrW77Q;
-	spf=pass (imf14.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 833D26B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:27:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D32B16032B
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:27:55 +0000 (UTC)
+X-FDA: 84237961710.02.50D0FB5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8495C180012
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:27:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IFDFGDQn;
+	spf=pass (imf24.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766188965;
+	s=arc-20220608; t=1766190473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=76P357GKLseaAavWY90mvS2jw7NFVzdOZcsZQJD/rVo=;
-	b=XQtQxVPJeKR5lyfGmFZv46hUOuJqdSo6Wsy6uYOqA05yXgC/qrhUJvOa1q2fJRLsLQGtGb
-	6/EyzcmRFMpFdAykJBdxoTnymgHEKxDvfoKHwQlWR1ZLIHBxRIgRMdKoc0T3wYqA4rSxnh
-	b/wJn8IFnSGIJnGQ48vtD3KOCy2hsrQ=
+	bh=z41Y4lYi8ApBh35NT2Kw6vmYaFS3Uq3m5s9hJcP024I=;
+	b=x0Z/3YGn2Z0wStmbtb9KHWv7fly7afPsobQYeCS2M03JvaxqvnvcSjrj8mfFN9+4Nx+bpz
+	HgJ7VX4Tkxx80FJaPqqmneNwiRpMsrudnlmr4I+JfRMBnTzYik6ZjUaNR/ylhulGjajcPq
+	3S41clzay5B8UwP4a5cKD+GmgTY1yE8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VOgrW77Q;
-	spf=pass (imf14.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766188965; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IFDFGDQn;
+	spf=pass (imf24.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766190473; a=rsa-sha256;
 	cv=none;
-	b=T4OaHLAXIWU+XEUivZUhqN5QhY17otIKmRPt8ozIkpx+wLR0PW56cvn0XNcyQyb3/ijtIg
-	Z7Hpt2uxcVcr/r+vzrano0ceMngVh1/MGkkYkZA+JSAnfliqoRDxy040PUduT1sfAlItvj
-	rruv5Ustj43zGZHCNK1korKpaJj36d8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766188964; x=1797724964;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vc+XxLwHeHijZjTHWLK3bfvxAqVVeHaAZAFFzRoBPHg=;
-  b=VOgrW77QyOzfLIKng8o0fQZDA/noSg9+P0/bqpkle4p/f65Sj8Tsd9LC
-   AJYqLOXzKEiQtva6wjzBAmIlK5sEQ8Xo07Xi35n6Nd0Zi0xSCskH4VKAV
-   bjR6nn7VquKQya16zmYSvXQ1SHePdsgc3RTKqnW5M66BF7mWJSoWPxR+S
-   rMeRlHkBz50Gh5qmk4B3wQyEtCohVgNU25xwHVcP6yhtEkkyYPuVRfjSO
-   c7KfoQrxSLVL9NkCXmWOg5zOccm3/oiso+u7ZFh88W/M3bByTpK62+Xlf
-   +ygMwY7Mi+XqSWwcBUhFg8VkfhpSrBKH1MV9HZV7lQ0zieIwRXryasOe0
-   g==;
-X-CSE-ConnectionGUID: sqE+RbSBRxSkpcAIahQNSg==
-X-CSE-MsgGUID: j+kZKI4wQF+Je9k0v5OpQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="72011084"
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
-   d="scan'208";a="72011084"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 16:02:43 -0800
-X-CSE-ConnectionGUID: t6+gLKB7S9SdlyizljaHAg==
-X-CSE-MsgGUID: Z2883YGqTfKX0tfEpDL3tQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
-   d="scan'208";a="203518335"
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by orviesa004.jf.intel.com with ESMTP; 19 Dec 2025 16:02:42 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: akpm@linux-foundation.org
+	b=5VPAsVdRvdlfGBRs7ZQ3o+0NbSeba0Ou1qQ0W+dAxpxHyaiVZmNS1R7TKFWCKWPQxRnjUQ
+	y+/88jcS07s6vpuvDjeX0O2xRjIx+s2V5VEGpEj6AtgFoXw58N5wAK5XtWizi7/Fd9fQTh
+	COesXf3Tgh9BY86GSQpmtVd+9V2W6hA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D8C9260148;
+	Sat, 20 Dec 2025 00:27:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C86C116C6;
+	Sat, 20 Dec 2025 00:27:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766190472;
+	bh=7Z2OUXbptO/NfN1gs7yJUEVPzBYeU2xaHDk1S3Mo/cg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IFDFGDQncdyg7irsjOsa/9aWsv/+Acb26f0qgrg8YAxrs22pQGTxDChAWem+2bFrJ
+	 EbRLXyi+lW0tTs3xp138QclAIRiecBbtUcuicSE3UerdJujDsUK+Kse0YgWF6JYBXG
+	 Z00G1TMsYgnQSs23ADduzsthRm6vD2AfS0RUSGLJvg7aNLE1SRsOrfvmb4KbEgPO3a
+	 KHnm7ehQyGxlcZul4ihITO/zG71ScxvHHFnamV/9Vi6HN4QXVIQcqCIzFbKVXCJRVU
+	 ZItKb54c4kt/vXb5W8tztQV5r/vXOuXqL2uXzh4gEb2ZAOlWD/zwWpMIx8PlCNUsVz
+	 ALcxI5JsrqqeA==
+From: Dennis Zhou <dennis@kernel.org>
+To: Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	John Groves <John@Groves.net>
-Subject: [PATCH] MAINTAINERS: Notify the "Device Memory" community of memory hotplug changes
-Date: Fri, 19 Dec 2025 16:03:27 -0800
-Message-ID: <20251220000327.3502994-1-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.51.1
+	linux-kernel@vger.kernel.org,
+	Dennis Zhou <dennis@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH] percpu: add basic double free check
+Date: Fri, 19 Dec 2025 16:27:37 -0800
+Message-ID: <20251220002737.84100-1-dennis@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35722100003
-X-Stat-Signature: sshap7jo43bnzc53n9s44p9pr9fcjrfr
-X-HE-Tag: 1766188963-732258
-X-HE-Meta: U2FsdGVkX18QYgzM/CXhblF+OjXYgqm5QtWndJO5qu3oYrQY0x2vEc6ez1wygF+D9ndDYsC2WFqW2scp5m3BK6EWLqzfYx3DtmTq3F3hz/iE/FKBTE20rgfZj3anmREfyYZQL3OeLp3jerlmI24xadSG9NsobnYSu21+4BjM+JUyCAaqLsvDl9a0iMEPkT/K9NdFC+cEeMEYnqo5CbZVIptuDb8qmMy1IF5Zh1JNjv2eWFmdmv6Qu2ovIYk977uFcwmPX/Spq4v5M+pLg8J7AoliyYtjnIGVW/BHdE+yALWxfw8cMZv55tnGhp2Tylx5uTckyvD0Jm9n7hPnxWgZ7nffPHCBsAoF/Hn97pwvQx1zdRIP4F+Jc65DEup4/KJEH1BRPofLTeVH07v6CfzcpqThKG1I9FvS3XUoUB0k9wkjm2+zvexobz3cKurOAr3YzPzhP1/arC8jCq49piVANQw82edD/oNWQymBDf+2LEZzairXuW03rDoR7CW0/ApThMdwOin0VhaA9L7LsrtIKpqhBw7VVXFLN3wbvtGHmT/a2qjcZ6UT/PjRaMS2nV4FQ5cSKSLzJ2dV9NlTvxDNwSbwgXU1MCOXsCr/1CrWV+jvhoFizcMNz9aZPu52CLCfHCjpHHLAD4KYIRxyVPGacYDyzleOaRUQMA5HteX3ivqyuKnd24z4D7efE6f04InZVMjV1M7BXoMhrzcdgvWLMjxvEAD7QGITcgi8GwNDK8W5Q9DhA2YkzQO9xaUG0Jx35n9VUU2t2hkv0upTNcyNHAoQfxDQzJ7Qq3uOYin02mnLmOZOJ3CwbGMrSWYBmHIKaHeTfSrc3xwjlZzRfkTy1S3r1KOaoenAtftBjenXHgi3jDi48al49D46JBwld+OSCGOdWVOZARrJYGIgKZL4QWJ6IyyCeIb2+5s5wSiPjHtUaX+suK3HHemAqe++ReaQAD8Ut4wPfBBe9tHUvad
- 5SMzANQN
- MsFTk5a7tGzW7gnefc3O24wJcVEqiPLozYeS7YoCktpn9OpBVID6fG6Pk2K/4e6cuaPuxTw6giuEwlxnPUgO8v0ijMnr0FtVVwzPuKvq8gcJfRRdQeTdL5+uk4kbzCsnq7JK9PhgEXVTiAjGzbNJoI0YduH09Kzr2PL/b9/IOVvYwE3fDmJsZAAetx/seTI6SWmX5Ri0MYazrpaSfSmkwsOdUoIOeJU4Y9R5iWl7UdPzTedU25/bnyT/GCar70qzjcZo0ezRS6523SE6Mlp0eI4m60MSL1K7n1XGk2s9jeH24OAOmOssamh1pl0eR2LEjTaAhvBNdv0lVklO9QN6alYXsZFxn0/XHbE2aSTY03xGCWNPhWNwIOz3820JKPl+XxnM/EAC/qBV0mOnUktqzFj6VUA==
+X-Rspamd-Queue-Id: 8495C180012
+X-Stat-Signature: dzk9kcxrcauwxxgmbzpjfpjuqnp7pzw7
+X-HE-Tag: 1766190473-124643
+X-HE-Meta: U2FsdGVkX18DxSwjOcEaV/zB73QY1BuY/o//ZxROh8bGyl/zYiAyktKlrNMEkG9rI1wSAvcZvFpUAW535u6sv9sLFufD9d6op5hXyTZUaPBy/SI2WnZOtOMsG95/FnKjoURzoUNM6ue37xOg/4NxBCWOPRg28uM6G/aGxUuiGKEfosws3jK4gJhWm46+7HYG1VQJDvR3V4dWqX1OIEywtiKlj2tdYGMiHjUgxtCl3GD9yFAp4VpNVe83bTq4/Uw87Mirmkn1KYFgExOUhvy8dRnPOVoGPgqsSq3y3DoVpllZn7xWjjNg5SEGiCaRmHIMbMyZyoHRxFd7Cq5JE4PTMM/89QbC0YxmMCizJmbc0r0uT5Rn/jdX47s7suQED/1PQ5HGp0fN5d50hQbVzyNDNeweO8BPlijudXIn4m2WCuwizMqKiU0o9Ir7oO+td/DlGnpPYgkFe+txgwPNjdsjkUVeBDsjywpoHWW/E1i/rngksigwG9Sio4VYENhpfWgwKOlWN7ancGzM/i1GDBOwAzOgwjI91ayqjxY1kUBEiT1xKCI3MDCYZTEOQS5eZbOpLHLIFjy4ZDSliPstHtEK8m0xlrB1V/fRfRmVwh0LTVZsEbzu4/pC7HdNIgWBtBGjX4yBQVM7ho0Os46jzX9j3sPZ57NXAF84uBO953fAdUpQj8xedkz0iy2+xAyetXfAqG9ZOUyxT+eDTWdnHOTEdi41/4KFChOyWBx2xuffK5dDIjTfzbpXHnevIybvKlL7QNKsO/NrGycr0Ns65qfowwdtsNMoG9a8aGpKXq4XpNrW9fj/+am/9k79vNB6NfYSqygnqURoxlpX7Dmpwdl02drtkyYwFtwE24804uEqhTwbBP5ZhT2mzW9KA/1VDfC5hMuD94OwMSu6FfegyvgS+xToveQ6JeBV4Ijr1bY6jAz+UprbugaxosptbmFGKSwCUWZafXz0ukNmAzPBQqp
+ H4O+lE5+
+ CGh+mt337rHt5RKnjsWxPRF20NzB7Q2EGYKa0f1Yxj3a6uGdbIMh/RpLrXhtw8Y15Q7d9cSpPfMOf5SRRx7FOvtUp1TmZsM/7YPASH9a/0bQTp+urOV5JhESK2U5nDkvLIuIfKfGSJmVuO0nFvT3qPUKLXxkpu3iIU2tNcS/X7oXzvQAZpI64KTfqR0KqKMC/8cpvbLhnPxckRAal4XyanMkr7Ss0d8Fa/xJ8iLRoEyuVYFkxGBxyJ8tIUOIZP58qBmqy7a74J6CPPAxxg+dxQD8CVYaRocapK2FfsincOqF72YA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,42 +93,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The recent episode of a warning regression in memremap_pages() [1]
-highlights that relevant updates are being missed by folks that care about
-core ZONE_DEVICE changes. Yes, CXL folks should pay more attention to
-linux-mm@, but it also would not hurt to copy linux-cxl@, where most Device
-Memory folks hang out, on memory hotplug changes by default.
+This adds a basic double free check by validating the first bit of the
+allocation in alloc_map and bound_map are set. If the alloc_map bit is
+not set, then this means the area is currently unallocated. If the
+bound_map bit is not set, then we are not freeing from the beginning of
+the allocation.
 
-Link: http://lore.kernel.org/20251219123717.39330-1-john@groves.net [1]
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: John Groves <John@Groves.net>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+This is a respin of [1] adding the requested changes from me and
+Christoph.
+
+[1] https://lore.kernel.org/linux-mm/20250904143514.Yk6Ap-jy@linutronix.de/
+
+Signed-off-by: Dennis Zhou <dennis@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ mm/percpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9d..076322fe91de 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16426,6 +16426,7 @@ MEMORY HOT(UN)PLUG
- M:	David Hildenbrand <david@kernel.org>
- M:	Oscar Salvador <osalvador@suse.de>
- L:	linux-mm@kvack.org
-+L:	linux-cxl@vger.kernel.org
- S:	Maintained
- F:	Documentation/admin-guide/mm/memory-hotplug.rst
- F:	Documentation/core-api/memory-hotplug.rst
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..c9f8df6c34c3 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -79,6 +79,7 @@
+ #include <linux/mutex.h>
+ #include <linux/percpu.h>
+ #include <linux/pfn.h>
++#include <linux/ratelimit.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/vmalloc.h>
+@@ -1285,6 +1286,11 @@ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+ 
+ 	bit_off = off / PCPU_MIN_ALLOC_SIZE;
+ 
++	/* check double free */
++	if (!test_bit(bit_off, chunk->alloc_map) ||
++	    !test_bit(bit_off, chunk->bound_map))
++		return 0;
++
+ 	/* find end index */
+ 	end = find_next_bit(chunk->bound_map, pcpu_chunk_map_bits(chunk),
+ 			    bit_off + 1);
+@@ -2225,6 +2231,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
+  */
+ void free_percpu(void __percpu *ptr)
+ {
++	static DEFINE_RATELIMIT_STATE(_rs, 60 * HZ, DEFAULT_RATELIMIT_BURST);
+ 	void *addr;
+ 	struct pcpu_chunk *chunk;
+ 	unsigned long flags;
+@@ -2242,6 +2249,13 @@ void free_percpu(void __percpu *ptr)
+ 
+ 	spin_lock_irqsave(&pcpu_lock, flags);
+ 	size = pcpu_free_area(chunk, off);
++	if (size == 0) {
++		spin_unlock_irqrestore(&pcpu_lock, flags);
++
++		if (__ratelimit(&_rs))
++			WARN(1, "percpu double free\n");
++		return;
++	}
+ 
+ 	pcpu_alloc_tag_free_hook(chunk, off, size);
+ 
 -- 
-2.51.1
+2.43.0
 
 
