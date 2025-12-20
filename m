@@ -4,130 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37170D78797
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 12:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533B9D78797
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 12:54:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DA16B0089; Sat, 20 Dec 2025 07:52:53 -0500 (EST)
+	id B68486B0088; Sat, 20 Dec 2025 07:54:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 947546B008A; Sat, 20 Dec 2025 07:52:53 -0500 (EST)
+	id B414E6B0089; Sat, 20 Dec 2025 07:54:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849E76B008C; Sat, 20 Dec 2025 07:52:53 -0500 (EST)
+	id A5F2F6B008A; Sat, 20 Dec 2025 07:54:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 734496B0089
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 07:52:53 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F89F8B391
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:52:53 +0000 (UTC)
-X-FDA: 84239839026.17.987C34A
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4280D4000B
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:52:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4GUu1Nz/";
-	spf=pass (imf12.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 942906B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 07:54:02 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30F535888E
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:54:02 +0000 (UTC)
+X-FDA: 84239841924.26.2335D9E
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 44BC31A0017
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:54:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dLfY1L7Y;
+	spf=pass (imf19.hostedemail.com: domain of kari.argillander@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=kari.argillander@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766235171;
+	s=arc-20220608; t=1766235240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mbJUZ0xTndCf3VdowDat4Wdfn4Fu9I8D0dKSNYqhcFE=;
-	b=JzWqvpYpDp6TffbvxDA0FRGowsKBBdiuRCZYQwHSNgb9v+Q3tYwW5pXVGD8ukU+elM6LIa
-	97VnTEU6tEDsD78epHY8VLlAvLMSHW5jS7HXxwyv9ViHaDdI99c5lRrnpPCFHyTrTYON8J
-	zcI9JZZeoJ4KNqMLd4pQbbb5aZwZiOY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766235171; a=rsa-sha256;
-	cv=none;
-	b=hgiUDY1yAKvsMVG6mvdqg12PNqMlUMzPxNTZyE9STRWWSzbc8DQW9ZpvYUXrFJVv9blEzi
-	/EpQEuPiIl+RNo2m/s9Y4ZgZrR9vlBeZ0nL1qJK+M4na1yWFGxBKOeZfO5s80DSNddGF4w
-	4rCl4HFvE00U+MSC3c/5sQWZKPY61Dg=
+	bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
+	b=wCLBpmLOpqkPribQ6jmL4mVCkeBZj0OGoo0CcWJ0uO2iQ+wIB/3vv1YsFejcvYbC/sGbKY
+	OQU1OVI4T3vOt3CDwtzdeLgMqKfQuDDuuQ0lUH+0xQAeKLTqn1LbF7S3oaYGM5NhKihiql
+	0qC4DygeQ1VEbXOv5EDqVZuZi9w/5ho=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4GUu1Nz/";
-	spf=pass (imf12.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0833b5aeeso35676895ad.1
-        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:52:51 -0800 (PST)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dLfY1L7Y;
+	spf=pass (imf19.hostedemail.com: domain of kari.argillander@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=kari.argillander@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766235240; a=rsa-sha256;
+	cv=none;
+	b=bKRq6uzn48QVQ7EBpa37CDiWrJHRi2qeNFVpq8aqjDxRhm+BITEGC5wIsR1dyJYrzui0fQ
+	aUhU6Fxg+aNuF4C+0F0/iUyTSD6DkXOmK+25wUEp1hoJzMgNIqXF25pQpflNM0FX2k5bEo
+	QFt46eJRBR7hKNgek6gbBj5+voEZk8A=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34aa62f9e74so3380687a91.1
+        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:54:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766235170; x=1766839970; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mbJUZ0xTndCf3VdowDat4Wdfn4Fu9I8D0dKSNYqhcFE=;
-        b=4GUu1Nz/x36+8QCRUn3PTLOS9ak+ME0HF34i2r00HOGnhLiwqH6M26keyydChPG85n
-         T57aGaf3dr3lutYo3UxF+4c2uk5AWbW5SkKJZ5Rr23CBJwBFtqLa82e+GM5bOjVTsW4V
-         TlxXqMF+AwaYJI+kcFPs1LPXN5iQJL9ivRoSN613SdkqNZtlEer50AXll/R2Q457OsjG
-         bBSTMYk7ybpzIPDlcdqkjAJPa3QgAfRknzK4JPmZPBrdQdf1QdERCtFThNlS8XK4sSjs
-         JFjKg8iicnfeOxVNpWevXwjiL8T6xav9OBzQtWYsHM8Fuo8lW6XEOzWt8W8llzyUN/Eh
-         gD8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766235170; x=1766839970;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766235239; x=1766840039; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mbJUZ0xTndCf3VdowDat4Wdfn4Fu9I8D0dKSNYqhcFE=;
-        b=isuOGGMGPXVrKI6eZOjosRPTeWNugGRgvUkC7AJg1HIK+Q96AXmLGh4TY01VeuDT8J
-         IWBVS15wYI/x19zJpri7Qw9Om/gARF4srMr+xWG9MhR8FyjCkrXNuytsjgNSCEe75BSL
-         LiSUY8kFlUIA8DOGg4mluwDloZ2gywOCeVmf1OV6UXmw4AQyo/s3JZ9BkY26+nJoz5hb
-         t6c7W8Pl9hf1FNSxTiHOrS0d1ye74TA3vaYBds+wae77g9JULJGh12tnp2mmedhXfHIA
-         n9/WvAyH/K+lcIUWXAQzaSQJHVFpYmcCvqiuiXaZroHnzf/3GRbibBJfA4ESD6rbKGn8
-         Ad2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWHIpLQXUlSTI9a2QJQ+ATjZ6sXqfCi9o44doe6pPm6Si0h7AIN+ByUyUmPObx02bNAiAuOd75jgw==@kvack.org
-X-Gm-Message-State: AOJu0Yyg4cs2oEvFAT29zdMTvGSCUelJKzscUpRkNoU6sSouc1sDdFQQ
-	DrpY+x+658nqPHJmTmLOoLSCxgbVKusX549jvUuogFmI9mJ3sp9Texxj01aOujhBHK3o8coqRT9
-	EOO/OB6KKzmFcSO7bQs9lNy0BttY95gRoLBrsmV43
-X-Gm-Gg: AY/fxX4dm8exhJ/Dk+7Rcul5Qh22NNVngkVqbvuWB6Egr+mbM/RkaZkJ/lIgTyu2Huj
-	28CFLbEnwEdxsCnYHsOgRDGz1AyhS3iGQbKVy+ZbsAMfIIJuPi8bwfyc07uaxtIwbtq3Pm9upo9
-	pJ7hnJdzsqwmoFudUScytG9VHOOQ4R8F3ZFcRloWn//n04Le/q25l2gG6tpb74Virfno6ittVnR
-	DnzC/7lNtzHMnwpXEtuCz8tHXqiYRuntk+8Kz4GUEy3P6y6Kt7Tb2l2ooGc8mrzOorYJBUTU4Uy
-	sKe02HqOIN/h0FtBSiOUatmWaFU=
-X-Google-Smtp-Source: AGHT+IETmgOAcDHbF6MqcLCKTf5epOZwA9tGllY35Ia+ZmQjsZsBscMmnIOEXdoPmuZFimi3nJyivgIHK6DMRk5k25A=
-X-Received: by 2002:a05:7022:6722:b0:119:e569:f626 with SMTP id
- a92af1059eb24-121722e0444mr6670285c88.31.1766235169708; Sat, 20 Dec 2025
- 04:52:49 -0800 (PST)
+        bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
+        b=dLfY1L7YnfUJIDe1GEcLRIDWLhxGNEuP7loElHOVsW7CrW+acoD7P97FOqob68s0w7
+         fqaTjKo+HKuZ1Cn46eOgFO1ZawZwkZ04aO7K/AtYeBVK9EJbywQhfpiomeVrHmawv5MW
+         mjpp2fiSSj7sWz5MkRUAVcTfHkxUf/Wrv77u0YOp9z70eqKp1G1/Ki3tTyNiunmpqpPn
+         D1vHnpfuNeLPo2xdqX4wYYU0RkVSJlMaqkR9D2h3+5Dwik9Fn3m+LEqO5N/ZxaJrg3KH
+         odSfMPbGej6UUdh/XAAzSytGZ/BdbatHm5mRqK14npTq3sm0xdkMGqKav/ZjjpTR37Wa
+         k5oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766235239; x=1766840039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
+        b=Tk6/tmszUjzJNm2FGWjuSSVorhI6XFRtRdqSTlCsNReJeW3xNMjjll4bf+aEcVlMiC
+         FohbaALeDcQ7G+168nF2hiEObxOByw/Mvh6dnVet1mCKDosRl2aKWKvGi1Eghh7DdhrU
+         95j3XCQAe84CS/oDfYJvI68gAz4E9+mVo/brA+XPMZLTNs1o+YsIs6OJSnm1Drek3Zoc
+         2sHoiFc4JubQF3tiegURfLcmt0qN8teIJUlJKjpwRzFwdFB267Fw7IV8a3Lzx/PVSbpB
+         JWa88LjcDvce3QlN7d2uBmV+QNr6tOgLQUil6c0edXAcKViUN+0OiS9tzrrPSUjTkVPU
+         Nh1A==
+X-Forwarded-Encrypted: i=1; AJvYcCW442dQTbKYoMbcRbD9rvZ/JuIZrmK2f06i2R1u+99nCMwjN7rKRZXw5twwI23k2SlEnd9Sab+kbg==@kvack.org
+X-Gm-Message-State: AOJu0YxbqrN6dNhVUBEtTnDNLyY/7LEXMa6HyVale2w7gX4V6+rcEv3J
+	HK4JAHzAcRtYV91gGjA1p3mDJUgCnidGeLJIt74zUxvq5sLOa1KrmuuYWjbpEnFLrmZhc2fiZI1
+	ashLEcM6hPi1dXm1H5ayxKcfJKt82BRQ=
+X-Gm-Gg: AY/fxX7+oxGn4ztwH91xBnO6EKRDoXoFgaYTFBO1fPybOdZeAjJPQQZazcG+ReVqR5w
+	ulVq60SUVZgt3ZIB8qyyVKFyXtt/W/1kgZrSY8dHpY+Eyy4pfpjl/OK7y5wS01Tgy1fBMqP2zer
+	7PQX/FxVAAD6kMA4mEIdpU3YlT6RWT5BV/HM19EttS2UTQ8MYfXvbIPpr9Twy4CK9LVtadnq2My
+	YCysYWve/7+Nc9XWks3N46+3qS7QBnLvokpnefmwi4t8DtobZRqBja/jo4yjjtIzg2w8MgMknyj
+	Kpp33ryA/CtquGcvDmkQD4Y8Uww=
+X-Google-Smtp-Source: AGHT+IGxNP/OFMZ9VQzxbDRyZknUn4r2tWcISDr4M8YPv4RUlT3pFlEiCYhZwoZk9P9jMjfG7pp8xWIa63+jRalj8zo=
+X-Received: by 2002:a17:90b:590b:b0:34e:5aa2:cf61 with SMTP id
+ 98e67ed59e1d1-34e921cc3b8mr4507598a91.28.1766235239094; Sat, 20 Dec 2025
+ 04:53:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-18-elver@google.com>
- <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
-In-Reply-To: <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
-From: Marco Elver <elver@google.com>
-Date: Sat, 20 Dec 2025 13:52:13 +0100
-X-Gm-Features: AQt7F2oG2tk1HNWJ4txFgkKVTgQOAoxLExF81nhreitjIuVCBm-zQmVADhDjpfw
-Message-ID: <CANpmjNMAGYeFK-jYafSihmA+T7wi3zC8Sb4fJ+ZjzDK5jGuMvQ@mail.gmail.com>
-Subject: Re: [PATCH v5 17/36] locking/rwsem: Support Clang's context analysis
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
-	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>, 
-	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
-	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
-	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219-rust-page-check-v1-1-df2e52fa3bd5@gmail.com> <9efae3dc-05d5-475b-bc69-250c2186dd70@gmail.com>
+In-Reply-To: <9efae3dc-05d5-475b-bc69-250c2186dd70@gmail.com>
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Sat, 20 Dec 2025 14:53:43 +0200
+X-Gm-Features: AQt7F2q2KCAmh1RkxHvGyCP5QJH5FmUFdWQjor_e7FhxwJWiL0SnJgUIgH-KIfU
+Message-ID: <CAC=eVgSkqruKPn=-5RJW-1SR5TmPRj5BtbPH0Nu3_kuUqk53Eg@mail.gmail.com>
+Subject: Re: [PATCH] rust: page: Simplify overflow check using checked_add()
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: bdwzic6koxtbrukecd5yjuf4fs4hsn4a
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4280D4000B
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 8kw4d84ku3xi3sprhaciu1b9wp9qa7es
 X-Rspam-User: 
-X-HE-Tag: 1766235171-408518
-X-HE-Meta: U2FsdGVkX1/FHAkEhBA2pE6rRcuEDTIwCHN2wp2nPXytZDEI2z8N8d3s4pWIJbU26OfkaOzgnbmuQH+K4e+lJGVuyMtSEkoE/V+Cen9EpszFPargSiHZvBVLmrFxJJ7rk6rSeKxx7Y2GVn6FRxiOWr6MsBj+BDa3sZD+WV+w3sWXRvkATuW/YpERxoh3bF2xX/gwSO19qsDS9EFC3GBCLlD4xHUPZ3OmYYzVEJNqHm+IDHPzZK6K2nC7A/rfJ3WTM7m/mjKeS7uzPknfXSbnoGyycIzH7A6wGLYoCfVjb+tYz6rvtEQvFrnqSIbbA6mVoyGFcNaYl4Sf4kX2gUh9ozebFGeGT5kjVR3AUCpTXbC39Nd5aRGbATEQyCArUAcmqnjHQpZXn9FaYu1Ms4ugbFqGumj3h+zve38oDHiiWLonFq/34cqSpHmfE67SlnaYQAq8e72mOiKpnLm8QGsUg11l1eRydKye4A+rln5k2ihlDjEqRDa0Qw6GxHzg//+bqVSBVzBQKfvXiES1qci2/zkhOay2gCw9s/YgDPjXo/c7oLtWmOQCYBDPg6uc/W9wVPTw86KEYlU8i3ezmDUupFTxRfRi1K5IFXE5HSCw/1NXv0pJq/Ith8iyOrB3wpnKRTgn9vbvYUVQwXQkqwUqBu0oz5QbNI9jB82I9Xw7wOOOQqEzPvW/ydgQXtq5C4skfoqISZfnVmIT18VvowAmfSghVOXAyfeBQoSEa1kAsq/OoPGcRi5VU9bxeTNCpXUEtfyDb6dGCi/ji/SlpRxkxZ0pGJT3h6g7x2ROwHP7zsC99n/3kvm+n+zbreYRASkpFVTWU/PbUL9+Jq+5waJS9Dc/9Xl6FP+R8BtpQwyx600+LmO0XThL1o9Rlc9j9pf3lMnskykydR0jrWoMOrd0kahi7lkSu2LWgjrjTCQ6yzu7psoQECp8IyrCMJan8Lo9aOgvdRjxI4cXsUZgsPx
- TvGiTSqZ
- l9ynCUgtTqEpKz1S8Qh61ZyY8i8le8WefGjI48UwmC6NED7xjHXg0t6xh1wmQ/zBInpgDe18Y2EwGdMk7GPosVlZFp6TjWjICqGTr2hooOJ0ZlpKhMhJrsZICyWlRscmho37bdwzqRPWQtutE5h2gKDnxiWSHh8Hdmj3pXW93JRrrv7rikvuG/qUbtwCyti2cJ5Iqh1yV7Uqk/pF/4ESx8L3dAGs70wyr8BRsqdZ+rByCQo1JL1/9vDNd0EpP3ag06DOg/SynDApIQCFhuaIYt7MfJPv7+smnE4hwQezeIdzRPiMi/Ea0YUyIjT74QWlUQN78PUDFdQHzDB1UmJ+DGPXmOBMwfPMqIH9RiwD7truexo/x9rq84bPaQA==
+X-Rspamd-Queue-Id: 44BC31A0017
+X-HE-Tag: 1766235240-90186
+X-HE-Meta: U2FsdGVkX19PEmnVdNGwF/Eyskd784wofl8RLGPNOV6jNAKEiM9zR1VPmeKtG+fapA10QEMVhLyD8qqTd7YPSEe/cz7WwafCOgSodDDM6rgM+IsOD3BULbHHJFgcqMO0x0A5+OhzDeT87ZcO9CsZrXZSK8fhg5+U67E1LIf39Jsg35RdkLeKkS0K+FohJFvmuwGydPaI5Uq0QNLSa0RY9IYIcK7xm7ba6j2pdzN4rADE/u8QCs+1UBvKvl0FLatYOcGz1Z6ghL5pt4B/G1KDwjWF5fwq/fVQ+BgRAMsYKuDuPMS9vFb157KYUNxkcsghluqxTvP/KfwSu0Q4gqGw5GGqp9USmLneRj3z1UbJ0ijox3z4JZ6djMdKOHNGBZW6aIUOJ9qLrJX04cFCJa/ad9aM5Q66q3SFBUsqeY+1Eq1mXT8tB2Z9GrXMIt4VkLaJQBKInMTUZX9W2+WptnzyYU5ZjBHyCVPtGm2aekZG6ZduUSdc8Zxk3th9Ojc3EH7Xu7ji89X5GLSBciaiCg7Bg/Xk/xMu2WJC3dLLOwIBF/7x8SNIVnp4olCf2NUnoI9P2+PLAz4lvsApE42B7xQyKSAbSsRf8YOqjhRQJi3ISYZIN6OR8DWse4xLGJ++LEFzwp4KcbmgvjdXEOtD1yLbxBEwCuUcp8tiQhH6cJLeaBiUuvkXI2rwDFXHm6aRe+vnJye3sfLmnKBzlJ7rkvUi7wyKbbDPhRI7wAxdxFwy7PYRiNwAMyLt+1iZHZiDQQRtSat49+oKuLiu0CR/YsfGV3KEICslaVFYJpAeTtu7GD75stP+guTWD4YE7smNXpITiek7Rw8eq2gdCcMRpMDyHqUs3pXVGk2tCjMaZX0knIfLaG2dcer2RHtf3A5qEBF+GAl6XVmbFc/IRM06JhekmCEkTX4+5/2Lmi/WUnVqHqr/ZuHRk9JU0z7jAmne920X6hWgagCUWji3p/DR4V8
+ mQFCKtSF
+ VTH6TGEWRZekSi0zNxj1R+gn2fZvmVBmA6sSRSN+4QYBsWem0XgBhzg9zrBBvneLUNADTeJU9bpzQwJbQepfq5RjnJ+pTbqb+INKGHLW150PMui0ZbaYZKbafe6TeLwyI8MRcQLr4byf3TJ7Nlq27W9uBmE4Y4T5FmWcXMqP05hZkWuGiff177bNx0EooV1yw4s9DQjzkNeE8hUvvuAgpUiKHeccn98iFcM1dzGtyHazTVHltFL8BczKRSlcgPHHD6NTaGwNJxeqftkeCGiSQ4meuqaRUNHU+p6T/7NIdhECra+iqothQuxAKkFZfGU3WiekVk+pS2wvcmLmMuqoXbeJOQ8AU0KznHtbQDBKHfRJcN4d4zCjWeOwPHz5put3e74MGRKNL2KpNbZd71tLTslHzg0gr0fNOli6VxAhsKgQpT4HAXr1HyX/xNKpBIk6Ynj2z0iW6AgHw4K7mMoLXLoMADV2BVAH+DqCH2l1Lu1ttbLU4Qsd08RtXhcWSTO37k/9Zk30XPkgHs5yXwNGb6W6aKCJtp389ZdRCr7C6LvK+p94=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,36 +122,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Dec 2025 at 21:55, 'Bart Van Assche' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
+On 20.12.2025 10.41 Dirk Behme (dirk.behme@gmail.com) wrote:
 >
-> On 12/19/25 7:40 AM, Marco Elver wrote:
-> >   static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-> > +     __assumes_ctx_lock(sem)
-> >   {
-> >       WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
-> >   }
+> On 19.12.25 22:29, Kari Argillander wrote:
+> > Option::is_none_or() would be nicer, but it requires Rust 1.82; the
+> > kernel currently targets 1.78.
 > >
-> >   static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-> > +     __assumes_ctx_lock(sem)
-> >   {
-> >       WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
-> >   }
-> > @@ -119,6 +121,7 @@ do {                                                              \
-> >       static struct lock_class_key __key;                     \
-> >                                                               \
-> >       __init_rwsem((sem), #sem, &__key);                      \
-> > +     __assume_ctx_lock(sem);                                 \
-> >   } while (0)
 >
-> Just like as for lockdep.h, I think that the above annotations should be
-> changed into __must_hold().
+> I just wonder if we would like to add a comment like
+>
+> // TODO: replace `map_or` with `is_none_or` once the MSRV is >=3D 1.82.
+>
+> like we do in e.g. transmute.rs [2]?
 
-My point is the same: we use it to delegate to dynamic analysis where
-we reach the limits of static analysis, to avoid false positives [1].
-Code should apply __must_hold() or __guarded_by() to called or
-protected variables respectively, which is both cleaner and the
-idiomatic way to use all this.
+Sure, I can do that. I=E2=80=99ll send a respin maybe next Tuesday.
 
-[1] https://lore.kernel.org/all/CANpmjNPp6Gkz3rdaD0V7EkPrm60sA5tPpw+m8Xg3u8MTXuc2mg@mail.gmail.com/
+> [2]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/r=
+ust/kernel/transmute.rs#n75
 
