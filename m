@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD77E668B2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89191D637B2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E27F26B00A7; Fri, 19 Dec 2025 23:16:19 -0500 (EST)
+	id 4B9A76B00A9; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDCFC6B00A9; Fri, 19 Dec 2025 23:16:19 -0500 (EST)
+	id 490A36B00AA; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB5586B00AA; Fri, 19 Dec 2025 23:16:19 -0500 (EST)
+	id 345296B00AC; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B19126B00A7
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85447B981B
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9636B00A9
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8BA7C07E2
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:19 +0000 (UTC)
-X-FDA: 84238537278.02.6800B48
+X-FDA: 84238537278.21.33B29E4
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1C73F180002
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9DC8F1C0005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766204177;
+	s=arc-20220608; t=1766204178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SJkD/tBeeEEJmstxapoYxLUzG9IOFg4LsR8Q3wzbbGs=;
-	b=RECprWADzi07XEd0JUZZxdsH5wCfqc+89oA8OrLKcze5CMpBV8ucghwl4+xTTzY3coj+1E
-	b1KmqS7F1z0gmspROiKkUJLnNuFOuP4OejbRje0QOE5P0o6SYmfgEwee8U9P+cNoue8UyB
-	oaUAK2xtxiriRqmcDh3/0yGP8jCiDXI=
+	bh=KT8JjtzAf38iL8X+gBQNnh0tR7lsAFfn57Ng7z4QAak=;
+	b=wHEjwO1japSzFkqHPkGIeaZyPLjSMryfniL47m2wZq3rfLJNTP49c5LN0V3CxNOPfPsa9u
+	D9MvN9ifYIp+fkea8zsAS6eGpDgLPPwWlhE0RouuRq7UyQao0Ivr4lEMKrTlBErYim/YZq
+	qGw+64ydCgued/1sA4WGTqyu6AsO+T4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf20.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com;
+	spf=pass (imf20.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204177; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204178; a=rsa-sha256;
 	cv=none;
-	b=mj02hcNpeWLFwaFU6LAlydBqBwdId+Jj1DDiOiRvCgzJ69DbJEJCBbF8b420UcV8pe2HNj
-	+ggGwYPrz6N6CjFVngBiGBXZsW7FRrYAW4aYpegnCTdJ0KO346+oLsHgw+Uuowx6i0WnBg
-	oFxIBqjs1Ki2Vd3vArU/o3IjagSEm0I=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0T6tftzKHM0f
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:53 +0800 (CST)
+	b=Bnz0+AwvlLG6mxDDYmEURe2iReCERgpaBCzThkfLEkOt6N8J8v6JpoIL1KLeFWnKPEwp+2
+	4g9yKUG4Csb2qmdxxHJsEjxPXbOy0xSX+20PVwdCZ2R/9kTDSo4YmLjHysWcLVpj2YUmzb
+	SNwPN6eA4kgYZeMEdKB3ulEojKRKYJw=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dYB0V4XdfzKHML2
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:54 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 22B8840577
+	by mail.maildlp.com (Postfix) with ESMTP id C671F4057D
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S9;
-	Sat, 20 Dec 2025 12:16:06 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S17;
+	Sat, 20 Dec 2025 12:16:07 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-pci@vger.kernel.org,
@@ -76,41 +76,41 @@ Cc: linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
-Subject: [PATCH 05/13] sysfs: support get_unmapped_area callback for binary file
-Date: Sat, 20 Dec 2025 12:04:38 +0800
-Message-Id: <20251220040446.274991-6-houtao@huaweicloud.com>
+Subject: [PATCH 13/13] PCI/P2PDMA: enable compound page support for p2pdma memory
+Date: Sat, 20 Dec 2025 12:04:46 +0800
+Message-Id: <20251220040446.274991-14-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S9
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF48Xw1DWw45tr1rXFy8AFb_yoW8uF4rpF
-	sYk343XrZ7G3srKr9xAFW5W343KwnrGr1q9rZ2g343AwnrtF9Ig3yjya15JryrJrW8Cr1x
-	KF429ryYkrW5G37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE
-	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
-	kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GF
-	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07j4fO7UUUUU=
+X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S17
+X-Coremail-Antispam: 1UD129KBjvdXoWruF13Jw1xKFWxGw48Zw4fKrg_yoWDWwbEvF
+	4UZ34rXr4kGa42gFyqy34xZrW5tay8Wr1kWF4vya45ZFy09a1vvr1qvry5Xry8Wr97WF98
+	CasrCF1I9ryjkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbgAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s
+	0DM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
+	Y2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14
+	v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
+	wI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2
+	WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCj
+	c4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4
+	kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
+	5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZV
+	WrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY
+	1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
+	AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZE
+	Xa7IU0FJmUUUUUU==
 X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
-X-Stat-Signature: 6hmqqki9ujazku75eftazwamgmk4mh5e
+X-Rspamd-Server: rspam02
+X-Stat-Signature: f5ham46o97dwdmu8cge3bfew7bgigsd6
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1C73F180002
-X-HE-Tag: 1766204176-579274
-X-HE-Meta: U2FsdGVkX186mz+1bJnoxbtQ78NTBXMr0nxeafKQ7eIWWGfcI3ToPARtmbX7/q6RGicau3osXBAYHkOrP8v/UMXsJy2RCkI9hkC8K95vfFHyxalDjrZfpKNr2xIPVvxwqd01uP+Q+BCpko+0rBtfgyRfGov9FFfahHHuQPXfCTX4axDzZPgXYdXLgeklwEVkyE9PmV59J4nrHnbZBcZlr1riOgEmshyMGu6v9niV18a3JPh/im8hDbXScbQnyINJlwK6y9KY+D+8h0H7iewp7IBIP2OY7ONPNbMCddMAn1VXtbWuONXo/GDUYvpEvRw4NEsq1fotAk3tzLGaflcmeXW8lGuO3BXsD2cltoeL8H0yXiWA0ZMah2wfuvLeuIzW6d88zE9LbzxU1efPK5IvBhkJ7AnHCDt5tJcpgSmTeLIEkaRXVAfTBydwDdzpuHv+MkYFZ2H0mTmbwIB8bqaQiZu9NBBLZXZ4SSZRFPdZPX9+Et2KpCJ/jQ6AkMPTod6Db7qyj0m2VPbeI/pWiE4jcpOdTh//1Uh/iYN9YVFEHpFNcBFRmMg9qdsA91TM9lIcAEQFW7mXUCM1q2ZuIlfwGem9CkvjBEGr892EDCr0RLUnFR7LFdJT3PcaseYsgLWbaCAA/iJ5o6/oYS92iGNaxTucMUFZ3Y4pnkxsxckh8Ttg1Y8+/fZxErAXkuZxGwAjiKIQNxWOmRyO6mnJqmYHDA4mCPajmu0fzf1+pweyS9mcqQaNbQKCBeHd3fshDZHzutuipaLd7EsL4vL3wCaj3sg7sKhHgC5QdE7PerbQ5aHzSjfMm5TVtZ70sXkpFMkcNVECGQpRtouPKJxPicp6uX3qsSnnmighgWjCNTLtblgRS0jAgZBRPzKYVib2540oCFdJh6SRnmTC/6aBrMJGGNi5d6NeOz/MfsGtiFXw1xgfa0mXl2xibgIVkgitWpNMOXfcjhQGSUnWkeglnR9
- OhIhFKVu
- 0EinecqF3dZcis2aq5ojWoyVKuyNa5dvqL81OuvwFEI+Qu4UiHw2R3D+U+1EYOkn7/6+oTPnM+tRZTca9j1yfJNkmM7x6uIf6A6fC
+X-Rspamd-Queue-Id: 9DC8F1C0005
+X-HE-Tag: 1766204177-52843
+X-HE-Meta: U2FsdGVkX19Uvm0tjgmZaGQKUHfWCWlDveOnWpeJcxSgqFAyCY5zdaGtPKYdHHQc43gr7BY7XNZC4fk2lcThKpzD/73UNFzwBqXcC1dvaDRgLnjujmhWnXsFPonTqzfH+TJ+eyGccLgDfJ6o08pG4dDPovAtWEYZF69ORaPfSJ+6Y/dBHqoMVIwg7iHX56qf9chbaGQ2nMtq1hvn/ySYGVkQbohx6fLTeAsE/43tej9tHX36kJE32LWKMKZeyE6sUXxRltJGVIFr+gAIWoICZ8SRdJ/Ih+5wEwCkQyqLvbquCZVQWIB5FYOQQrfRqiqjq3dHtbdTBEdouQiC7eNzdkvO82frtoyjvnrvjNfAXN8l5cBF9Mr/n4HKfvKS6X3G+txKrRNT91GO4hG9X11HYmGqnQv9SDhMV+1P+Su5Mt/ONtcO8q4S7sOMXNTcbNlzvh6rLUwpooutZwZaxO3HzCE2/HfuWdFdfwo9MF6K7BQ65CD6C8Zc/UCJ7X+6Bu+m4D5TCqXGsYZTdazWpD0aqEgqzyRzTtlF7LFNZHZQ/OFSeRRxkEeUfIDlPvnYUuky/zrRPSXALTfwV+MXpzM6sV1qlkv4opYhAg/eKnBZKSomsjEWku+1LN3l66AYvN2E+vnuA/cZ5jd0tj5AfSN2foZxum2NkCKQxnlIgv3uhbgfwHBwGarrME+mLJ0Cv/xWFRKR4SA2lwAGJNZg7vKbdPSh+anVx5s9X6xQcZXftFr3c7xNGXnPrBnmjYpB4wU23H3uZT4YUCRUKpHcaSzIc4NMN+Qfi8ssmnZ4qC+xKYUUA+HqGkxmFA5AcXNXOV3bAqnpRlsQXC0rNhRP/SHK/QhYHk52fjvb04WAkbwZXCO9kNAs0mjK+KI6owU4qhb++2fPRvn5pRZosI0qiYuo/UzDYKjnNdmHHcqF8Kf2TszPn+g+IDSo8gBjheFXbalOhI5CjPi6zhZ+JsJCmTe
+ ekSFaG+u
+ ukdlwGvFrj956dw6lGlNf2/Y14Cd3FSiccewZ8rSpTT8TK++S5VFSaEmhsEbWO5Or4adohjNlsLDvlya1ghtLTrH1ajQsd9UjDHYD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,62 +121,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hou Tao <houtao1@huawei.com>
 
-Add support for ->get_unmapped_area callback for binary sysfs file. The
-following patch will use it to support compound page for p2pdma device
-memory when the device memory is mapped into userspace.
+Compound page support for P2PDMA memory in both kernel and user space is
+now in place. Enable it by allowing PUD_SIZE and PMD_SIZE alignment.
 
 Signed-off-by: Hou Tao <houtao1@huawei.com>
 ---
- fs/sysfs/file.c       | 15 +++++++++++++++
- include/linux/sysfs.h |  4 ++++
- 2 files changed, 19 insertions(+)
+ drivers/pci/p2pdma.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
-index 3825e780cc58..e843795ebdc2 100644
---- a/fs/sysfs/file.c
-+++ b/fs/sysfs/file.c
-@@ -164,6 +164,20 @@ static ssize_t sysfs_kf_bin_write(struct kernfs_open_file *of, char *buf,
- 	return battr->write(of->file, kobj, battr, buf, pos, count);
- }
- 
-+static unsigned long sysfs_kf_bin_get_unmapped_area(struct kernfs_open_file *of,
-+						    unsigned long uaddr, unsigned long len,
-+						    unsigned long pgoff, unsigned long flags)
-+{
-+	const struct bin_attribute *battr = of->kn->priv;
-+	struct kobject *kobj;
-+
-+	if (!battr->get_unmapped_area)
-+		return -EOPNOTSUPP;
-+
-+	kobj = sysfs_file_kobj(of->kn);
-+	return battr->get_unmapped_area(of->file, kobj, battr, uaddr, len, pgoff, flags);
-+}
-+
- static int sysfs_kf_bin_mmap(struct kernfs_open_file *of,
- 			     struct vm_area_struct *vma)
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 4a133219ac43..969bdacdcf8b 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -452,9 +452,19 @@ static inline int pci_p2pdma_check_pagemap_align(struct pci_dev *pdev, int bar,
+ 						 u64 size, size_t align,
+ 						 u64 offset)
  {
-@@ -268,6 +282,7 @@ static const struct kernfs_ops sysfs_bin_kfops_mmap = {
- 	.mmap		= sysfs_kf_bin_mmap,
- 	.open		= sysfs_kf_bin_open,
- 	.llseek		= sysfs_kf_bin_llseek,
-+	.get_unmapped_area = sysfs_kf_bin_get_unmapped_area,
- };
- 
- int sysfs_add_file_mode_ns(struct kernfs_node *parent,
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index c33a96b7391a..f4a50f244f4d 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -321,6 +321,10 @@ struct bin_attribute {
- 			 loff_t, int);
- 	int (*mmap)(struct file *, struct kobject *, const struct bin_attribute *attr,
- 		    struct vm_area_struct *vma);
-+	unsigned long (*get_unmapped_area)(struct file *, struct kobject *,
-+					   const struct bin_attribute *attr,
-+					   unsigned long uaddr, unsigned long len,
-+					   unsigned long pgoff, unsigned long flags);
- };
++	if (has_transparent_pud_hugepage() && align == PUD_SIZE)
++		goto more_check;
++	if (has_transparent_hugepage() && align == PMD_SIZE)
++		goto more_check;
+ 	if (align == PAGE_SIZE)
+ 		return 0;
+ 	return -EINVAL;
++
++more_check:
++	if (IS_ALIGNED(pci_resource_start(pdev, bar), align) &&
++	    IS_ALIGNED(size, align) && IS_ALIGNED(offset, align))
++		return 0;
++	return -EINVAL;
+ }
  
  /**
 -- 
