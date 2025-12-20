@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AC0FE668A2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Dec 2025 23:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995CED78797
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 00:02:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE92E6B0088; Fri, 19 Dec 2025 18:51:43 -0500 (EST)
+	id B7CE66B0088; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D96C16B0089; Fri, 19 Dec 2025 18:51:43 -0500 (EST)
+	id B54866B0089; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA26D6B008A; Fri, 19 Dec 2025 18:51:43 -0500 (EST)
+	id A53BF6B008A; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BAB7B6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 18:51:43 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 419C6136FC1
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:51:43 +0000 (UTC)
-X-FDA: 84237870486.30.553BE9D
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7A5851A0003
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:51:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BuTPEfHz;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 939326B0088
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 19:02:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CCB0569A7
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:02:47 +0000 (UTC)
+X-FDA: 84237898374.16.F05EA0A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 35722100003
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 00:02:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VOgrW77Q;
+	spf=pass (imf14.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766188301;
+	s=arc-20220608; t=1766188965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XCrh45RVm6ird5mYb6C/XHEt4dgYPxVyQmx1eiSJEWM=;
-	b=vFyX8MUXXOYfcIt+If4hgGh1JAd6/o16jGLE26uFL4TUINCTbmecAPmnDK2x56xsL7T5/b
-	5OcI/k2/HBQ0/i5u+umA2EHZFAdRHAcm73jNu4KIBMGEDPw1W3WGX3Uu6wczyO2xvvIT3b
-	dGpiX/OzmSDB4LWzcNG0OgNgl7A4a9Q=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=76P357GKLseaAavWY90mvS2jw7NFVzdOZcsZQJD/rVo=;
+	b=XQtQxVPJeKR5lyfGmFZv46hUOuJqdSo6Wsy6uYOqA05yXgC/qrhUJvOa1q2fJRLsLQGtGb
+	6/EyzcmRFMpFdAykJBdxoTnymgHEKxDvfoKHwQlWR1ZLIHBxRIgRMdKoc0T3wYqA4rSxnh
+	b/wJn8IFnSGIJnGQ48vtD3KOCy2hsrQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BuTPEfHz;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766188301; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VOgrW77Q;
+	spf=pass (imf14.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766188965; a=rsa-sha256;
 	cv=none;
-	b=FWS3AJtVo7MSJImCyBlArjhJVbS59u5BO+g5nQEDoh2IVOQ1D9SVaZplJBFAhBLVeoIFG0
-	lsZo55uLh6OUzZWbm3rgXJS1mFHTqgKa1m1FLszu+veinBUYCPY9TjLQIGs0EDfJVuCxyr
-	abqEfUiPhuXL25eugPTbGacJcDZ5HBQ=
-Date: Fri, 19 Dec 2025 15:51:26 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766188294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XCrh45RVm6ird5mYb6C/XHEt4dgYPxVyQmx1eiSJEWM=;
-	b=BuTPEfHzEXHAWe9VeYOFKGU8Zgr8LTdKcvswRzA2SueIoGtOQP1J3qyYq3L6ogSrPNQ0+k
-	GhZuAcZOGPPyIU2NBBQ8pWFdTltNL3DkMYj3liUbjN2NHdMdlzN7HK72O78zpyHPcfePUa
-	YNX8bzInWtXOCw6PixjxVzaiZpeAWUQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 13/28] mm: migrate: prevent memory cgroup release in
- folio_migrate_mapping()
-Message-ID: <4icfifjfr77f4yle5cn4buotiscvpwxccxerwuzuj227l5kqs2@bdkeysc6xigp>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
+	b=T4OaHLAXIWU+XEUivZUhqN5QhY17otIKmRPt8ozIkpx+wLR0PW56cvn0XNcyQyb3/ijtIg
+	Z7Hpt2uxcVcr/r+vzrano0ceMngVh1/MGkkYkZA+JSAnfliqoRDxy040PUduT1sfAlItvj
+	rruv5Ustj43zGZHCNK1korKpaJj36d8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766188964; x=1797724964;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vc+XxLwHeHijZjTHWLK3bfvxAqVVeHaAZAFFzRoBPHg=;
+  b=VOgrW77QyOzfLIKng8o0fQZDA/noSg9+P0/bqpkle4p/f65Sj8Tsd9LC
+   AJYqLOXzKEiQtva6wjzBAmIlK5sEQ8Xo07Xi35n6Nd0Zi0xSCskH4VKAV
+   bjR6nn7VquKQya16zmYSvXQ1SHePdsgc3RTKqnW5M66BF7mWJSoWPxR+S
+   rMeRlHkBz50Gh5qmk4B3wQyEtCohVgNU25xwHVcP6yhtEkkyYPuVRfjSO
+   c7KfoQrxSLVL9NkCXmWOg5zOccm3/oiso+u7ZFh88W/M3bByTpK62+Xlf
+   +ygMwY7Mi+XqSWwcBUhFg8VkfhpSrBKH1MV9HZV7lQ0zieIwRXryasOe0
+   g==;
+X-CSE-ConnectionGUID: sqE+RbSBRxSkpcAIahQNSg==
+X-CSE-MsgGUID: j+kZKI4wQF+Je9k0v5OpQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="72011084"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="72011084"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 16:02:43 -0800
+X-CSE-ConnectionGUID: t6+gLKB7S9SdlyizljaHAg==
+X-CSE-MsgGUID: Z2883YGqTfKX0tfEpDL3tQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="203518335"
+Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
+  by orviesa004.jf.intel.com with ESMTP; 19 Dec 2025 16:02:42 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	John Groves <John@Groves.net>
+Subject: [PATCH] MAINTAINERS: Notify the "Device Memory" community of memory hotplug changes
+Date: Fri, 19 Dec 2025 16:03:27 -0800
+Message-ID: <20251220000327.3502994-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 91btz8oarrn13xft67ey5uijh886fijd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7A5851A0003
-X-HE-Tag: 1766188301-270728
-X-HE-Meta: U2FsdGVkX18/j7LONlRXy6vmbTkP1rrpVJ+5SCQIms8TyumlDYdshICjLoKZmVD7HV0ShvkpeOZV9ImGogM9wfEnrwZhgBh+1XyA8Zpq6tagJ+Uhr7MwWZIYkFqx30z8QaBg9TmpatKFd7fCezGUX7vSzS3HPdLSDkjtOGd30oNNKwCE16XzFBK7LxarLnk5mUcVD5x9HoswEMMEL3IPH3IN7En2BSthevEw5cNPfchc4aFe/ahIxlaoatXCVrd9xBnF9PnsVv+7D+eOP6yl3MLweEQLz4k1lcSwFMzxTlwry4fyhlv/SmLOcxitCpcoVV5kaYHxrTc5Rhag7pJ79KtYJQdpKKXlhLNVa4pyCXXTnE+iziCJidymLejWkgrbSoSFWOOX6PSvh1IdTIq4i3UFQ4B1sp/lbElmgk/fJeB/WQ0bAqXbuWNzn6X36At8mArAYnzm5oQM/Nirw7DwUsx10OZbMd0kL0G8tbLPI7bdtheo/P6QSoBAFS78Y9OTnEF2ipb7PDwQM1VnB/ufteqzqEpcFegXU5d1Q2AWZAruv45mVYTsd9/d105EZAuZ1U19Ndaa2H5qN3M2b/qaDMh3hZbaG2O+FqEk4kVbcmsN1VR3ZyPaFILcNUGIzvnif/1FMbP54S+NznCUKQBVgVm13pRL2le87cl7OChbxFaBfkOXYEXGEZJn7G8ZyahI3avGZXCRkmRpIyKRRkMPCpHO1Ob/uiHgM7YIz04ce/yUFoKB8mfuqoacoEoGq34OPQr+Wm0LskHaGX2fewVwY5FxDfz7ygpvTL08L+szB6Ld9xZzBVy7FoFoSh1qcfLv0uzAhEVzM91hXPTgHhHjnPscquw42rvL6PqPEQAPOFVeVw4Aqs//7KCnFBdBdwnVjuA2xvw/+HHjdtvEhkJOpa/3//4OgR5iEzfB1f3xPBgSJVP+YLzuJg6TRZ3iSIDiOJf8KeU0onSeu7VtBdW
- j1N1sZln
- q4avN3lnwy1izNrkmTlUsX3q4UNq0sGuje1EsS5OEpcPY/ixmIbuNoiD0RtphAHylw0fqzSCiswLEiUwqC526uBvOieGgF9RjnNKeBAOmkCMP6o50btOjp9O/mi59Z6SmDoMyejhEELLPExrSKU8Lnr8TbRXt+UPsxXNRzokP9dnGaAbBaDJmHw3IFSOesoqGcVBFMy2A9GstjUcH324s3xKWEX3IfsfRHm+OTQAJnOWEjgIzctBjlvNpzuMq2bYDaqWloZCmLTM35OKzUk6ov6nqezAKCLL5boqhS3+Ic8E8kpBqzqKgHxRJXL5rzemSg9yiB+aVS2FbBmg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35722100003
+X-Stat-Signature: sshap7jo43bnzc53n9s44p9pr9fcjrfr
+X-HE-Tag: 1766188963-732258
+X-HE-Meta: U2FsdGVkX18QYgzM/CXhblF+OjXYgqm5QtWndJO5qu3oYrQY0x2vEc6ez1wygF+D9ndDYsC2WFqW2scp5m3BK6EWLqzfYx3DtmTq3F3hz/iE/FKBTE20rgfZj3anmREfyYZQL3OeLp3jerlmI24xadSG9NsobnYSu21+4BjM+JUyCAaqLsvDl9a0iMEPkT/K9NdFC+cEeMEYnqo5CbZVIptuDb8qmMy1IF5Zh1JNjv2eWFmdmv6Qu2ovIYk977uFcwmPX/Spq4v5M+pLg8J7AoliyYtjnIGVW/BHdE+yALWxfw8cMZv55tnGhp2Tylx5uTckyvD0Jm9n7hPnxWgZ7nffPHCBsAoF/Hn97pwvQx1zdRIP4F+Jc65DEup4/KJEH1BRPofLTeVH07v6CfzcpqThKG1I9FvS3XUoUB0k9wkjm2+zvexobz3cKurOAr3YzPzhP1/arC8jCq49piVANQw82edD/oNWQymBDf+2LEZzairXuW03rDoR7CW0/ApThMdwOin0VhaA9L7LsrtIKpqhBw7VVXFLN3wbvtGHmT/a2qjcZ6UT/PjRaMS2nV4FQ5cSKSLzJ2dV9NlTvxDNwSbwgXU1MCOXsCr/1CrWV+jvhoFizcMNz9aZPu52CLCfHCjpHHLAD4KYIRxyVPGacYDyzleOaRUQMA5HteX3ivqyuKnd24z4D7efE6f04InZVMjV1M7BXoMhrzcdgvWLMjxvEAD7QGITcgi8GwNDK8W5Q9DhA2YkzQO9xaUG0Jx35n9VUU2t2hkv0upTNcyNHAoQfxDQzJ7Qq3uOYin02mnLmOZOJ3CwbGMrSWYBmHIKaHeTfSrc3xwjlZzRfkTy1S3r1KOaoenAtftBjenXHgi3jDi48al49D46JBwld+OSCGOdWVOZARrJYGIgKZL4QWJ6IyyCeIb2+5s5wSiPjHtUaX+suK3HHemAqe++ReaQAD8Ut4wPfBBe9tHUvad
+ 5SMzANQN
+ MsFTk5a7tGzW7gnefc3O24wJcVEqiPLozYeS7YoCktpn9OpBVID6fG6Pk2K/4e6cuaPuxTw6giuEwlxnPUgO8v0ijMnr0FtVVwzPuKvq8gcJfRRdQeTdL5+uk4kbzCsnq7JK9PhgEXVTiAjGzbNJoI0YduH09Kzr2PL/b9/IOVvYwE3fDmJsZAAetx/seTI6SWmX5Ri0MYazrpaSfSmkwsOdUoIOeJU4Y9R5iWl7UdPzTedU25/bnyT/GCar70qzjcZo0ezRS6523SE6Mlp0eI4m60MSL1K7n1XGk2s9jeH24OAOmOssamh1pl0eR2LEjTaAhvBNdv0lVklO9QN6alYXsZFxn0/XHbE2aSTY03xGCWNPhWNwIOz3820JKPl+XxnM/EAC/qBV0mOnUktqzFj6VUA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,23 +110,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:37PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. To ensure safety, it will only be appropriate to
-> hold the rcu read lock or acquire a reference to the memory cgroup
-> returned by folio_memcg(), thereby preventing it from being released.
-> 
-> In the current patch, the rcu read lock is employed to safeguard
-> against the release of the memory cgroup in folio_migrate_mapping().
-> 
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+The recent episode of a warning regression in memremap_pages() [1]
+highlights that relevant updates are being missed by folks that care about
+core ZONE_DEVICE changes. Yes, CXL folks should pay more attention to
+linux-mm@, but it also would not hurt to copy linux-cxl@, where most Device
+Memory folks hang out, on memory hotplug changes by default.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: http://lore.kernel.org/20251219123717.39330-1-john@groves.net [1]
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: John Groves <John@Groves.net>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b11839cba9d..076322fe91de 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16426,6 +16426,7 @@ MEMORY HOT(UN)PLUG
+ M:	David Hildenbrand <david@kernel.org>
+ M:	Oscar Salvador <osalvador@suse.de>
+ L:	linux-mm@kvack.org
++L:	linux-cxl@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/admin-guide/mm/memory-hotplug.rst
+ F:	Documentation/core-api/memory-hotplug.rst
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.51.1
+
 
