@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4803E668B2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB59CE668AF
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 04:16:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FB526B00A4; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
+	id 8EE246B00A5; Fri, 19 Dec 2025 23:16:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BF596B00A9; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
+	id 8164C6B00A7; Fri, 19 Dec 2025 23:16:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67BF76B00A4; Fri, 19 Dec 2025 23:16:17 -0500 (EST)
+	id 6845F6B00A9; Fri, 19 Dec 2025 23:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA7D46B00A9
-	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:16 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BAEA36020A
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:16 +0000 (UTC)
-X-FDA: 84238537152.18.FF7A00C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 52B1A6B00A5
+	for <linux-mm@kvack.org>; Fri, 19 Dec 2025 23:16:18 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3008160077
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:18 +0000 (UTC)
+X-FDA: 84238537236.01.1688103
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 749838000B
+	by imf26.hostedemail.com (Postfix) with ESMTP id CA04B140003
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 04:16:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204175; a=rsa-sha256;
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766204176; a=rsa-sha256;
 	cv=none;
-	b=i29jE5yH8BuP8pdSUSpHs34NqJHq6eyRiEKR9aEKwe6uZRsIC3r84Pi1DhPZe/n5XgHrwW
-	w/ABiz21bdnweUTu90CC6VkFQnmaD5svczIvp7w2GYpO54SIwd3EfoiVnO1BZFYtKwEkA1
-	6lJMvlraTchuF3q4Rhb5f5zQRj5sF1Q=
+	b=SC7gO9Nd5rgkJbjQfv2JKR8BWulOGnr1wh9xpLK9iVJaL96E1FXPep83OvXu/aJayx6k4G
+	BigTFEY/Mn+u5CnuwcBd390Un0oeiK2WFVwoR18ZETAUpvs2m4U2oGPV1BekHnulLyPHxD
+	2BO3GG/kejogDrSNGDLZjnSB+8acCVM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
+	spf=pass (imf26.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766204175;
+	s=arc-20220608; t=1766204176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I5FerDu7RqzrPbgAgjJW0uMWeVImqYUIaYQGRqAYz8k=;
-	b=1j666IAfJTHFlLrF68mVJ2AgO2pqHirCnT/7YCTKnbwblnCbc+x2pWjNHPfnV+N3MNeZ/O
-	kv1A3/K1/2E3iwGH27gxENO8GmcQ8T2Ycu3pr95SOEEf8iCPZDPATK1BSNjiFSjdwuVprC
-	nHXeSWWNe4hwhNNoXnyXeJzYzbEpC3w=
+	 in-reply-to:references; bh=hlsVE1RbKQ7XDTgD3HJi7vQWF8YzBkGh1fqJXl4Zaj4=;
+	b=qsS0Mx9kb5195nuBQPpucT/jJy5EzSMKQ9xLtye6PEhKawzoXHpDTXwuJjkEBiM7h093Q8
+	ubNe/TGIa96ny0MI3xV8ym1KQCXL6epsER9amImkJxnW/HOwG9EYbjhjP5aH2P/l8zUc8D
+	kQkVfIRLCjEr/0SlvYvlmIkwJYIbIHw=
 Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dYB074JDczYQtdx
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dYB072K0MzYQtFr
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:15:35 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E75A740575
+	by mail.maildlp.com (Postfix) with ESMTP id A557040573
 	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 12:16:06 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S7;
+	by APP4 (Coremail) with SMTP id gCh0CgD3WPn5IkZpFwpFAw--.56015S4;
 	Sat, 20 Dec 2025 12:16:06 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: linux-kernel@vger.kernel.org
@@ -76,39 +75,38 @@ Cc: linux-pci@vger.kernel.org,
 	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	houtao1@huawei.com
-Subject: [PATCH 03/13] kernfs: add support for get_unmapped_area callback
-Date: Sat, 20 Dec 2025 12:04:36 +0800
-Message-Id: <20251220040446.274991-4-houtao@huaweicloud.com>
+Subject: [PATCH 00/13] Enable compound page for p2pdma memory
+Date: Sat, 20 Dec 2025 12:04:33 +0800
+Message-Id: <20251220040446.274991-1-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
-References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S7
-X-Coremail-Antispam: 1UD129KBjvJXoWxArWDZr4ftw1DCry8urWrGrg_yoW5CrW8pF
-	s5KryYqrWxJr92kr13JF95Zr1av3s7Ka42va4Ig3sYyw1jqFnxXr4Y9F98Gr1rX34rAw42
-	yanFgayYkw45JrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUWw
-	A2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
-	Ij6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkE
-	bVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7
-	AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
-	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wr
-	ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxV
-	WUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU
-	xQzVUUUUU
+X-CM-TRANSID:gCh0CgD3WPn5IkZpFwpFAw--.56015S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxWF1rur4fWw13Zw4DGr4kZwb_yoW5Ar1DpF
+	Z5KF98JrnrG342y3sxAa1DCr13Zw4rKFWUta4fK3sxCw13JF1Iv3yUtF15Xw1UXrsxG3WY
+	qF4xZryxu3Z5XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x02
+	62kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+	GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+	vEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
+	9x07j438nUUUUU=
 X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+X-Rspamd-Queue-Id: CA04B140003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7d9u6atiokbgdi6yc9odd7uboypw7eoc
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 749838000B
-X-Stat-Signature: 4q93xy3op9ku8d63oo4sjhiy7o4ag7fr
-X-HE-Tag: 1766204174-591968
-X-HE-Meta: U2FsdGVkX1+0OOwMG+j28nmTKR4dfZqbTwkffjY46DBgfXidZ5T7OoY7RJZ0lKlHzqMnvEuZmqc1D0/FMVRg6rm9kse8UqRjiNHiO5w2yAYUbR6uKP9LMT69/MrJaEGIF8dOF0yoNv6DXmeiKOq0yBzkJYEYki+bup5KhkC3LLrNIqWOl8owUBhui7K2dbFnCM3f6vn3FlF4yL9FZopilryD7cw7khG2ME06XcjHY8fyVV9MHkYMTIViNULe7gw9qXyfiR3AWMhyX66mBHty3VD9FMUM8p4iwgYkh1c8esnm7YxK///08K64Y5JZrn/hmHql+LzNEra7eFDU3iXPFyIK+o3ECuiR6MQWHTht3XZkxZr6zSybCulC9NZTMUgphFkJdIXVMaNspfwAel4BO7wmKCIg4Zv8R/eIzLxdf5BpTdGQv4F0j1R693g5IGiFUlVKgWRVOP7L0OPbOWnGHsej+FlppPkgJSTkM02CA1NF573IUjmMzUKZKwVdDbBy346oBlp+GHWOXm4m5YBUylIAzd8huX3MTpGhOh99In+CACMpWn2/ihxJ5IrSXpwkXD5STYPyuv11wr4aFcC41wKm4PXHvxtKIL7BWptvTxZ2hMBZ9QGoT/BQp72KJ3bCG3jImfOv+mTy6jZe6gAJnHSa4R8ssG3ZDp0YrBCA2ygIh8lLbaEPVrO8ilbEruaSIDyE02jBB+hIlSFoi+h0QrUCFQE7uCY8JlgLwJYzJt6IyeiZanSmiJTVCuWL7xe/QEj5ebdEr/POEDJe4c6sWCsai/SZStcmQ3xxMATQEc9t/f4KoE8JmI9vIMWNTLvND6FRhvIIB/97twhpyHb/cJ0AfRjPKPZ9J2GQSdTWR2ICShvMrZJeiw==
+X-HE-Tag: 1766204174-641899
+X-HE-Meta: U2FsdGVkX1+/CymLg9zypcng3dJXZLXqvpKIK0yMpOIBVjSnkF5Gde348z4uTsfdXUC4yyR5swwlvKRNK8UoSIKFfiC12AdXPOp9ncRUXdFVN30UulH20KUSm+hXDoCh+rnSoeYK1PnusCR0lUVsmzCnQ9plMuu06V4JxPD3m2q7kpwlaEPERwpRP0WQLA8bGpr4y1JZ9RngCf7kZoQ/UdjdQ3hTRTskZbTjnyHpLvQE9pyt1RQTMdBbClqpptlsEqyye3J1quzN3NeRI6FyJCjIsqANuXFrULNtoU30nOIgEyHrv5lfyiwq8oK2w6mHvUAKtB2TUepFMNdom/kx3fRbLUlDTsp88YzRvqlsSyv/zx5gPFwTpmKSO/jtp7EFO7FCW9+LK+nAaT4PSBtdYqUtyIw/ngHdmdm+yT/PGBfXkrCmvndF+4qRCaUqAmzbog7RhiZxAorLveutRpVvDTSEcYx12HbRmPy0HBOyl9qjuyHfbcPQu5FmYJTc76ioKES/EgsukuScRFAJAjHUKB0EJTUxqOkI/XXLRoinS3FXaA7csRyjh6mFPgNNArtqgXE+9ys9VnVYDovxWLxnTzI3uVAY9W8AQvxE3zYqF0JoCdLqO24kqNdAAhOqCCbvQfkjoHSeNiiT5KlKrE3eQ5XvXVmn3Sc99Zq2apnJd8oHKPKCYFd01m5Iuy1B9OtozTCctb+etsuITx5Dpfv3DVpAZHJQLLcrlmFLpyA8wbhj/qGFN4FkXFZmOkF6qKL2Bi4/FHHrIcMAfTbGDvn6nX3nttuULN7gkJFZKzxuHD/xC3RQRgoBfF0lnh5o4sescM6Gah8IJaujT1C9uYudkjwG5wRDdN1dfeNLiemCcgRbFYRYb0mLVX1plaRcgJGBVOlGKCO8xlMcLOFm+9EgcCPHsNKbNQF+Jg0rZDkqu2LysmLZg+SRl5EBBwgVIwNbgjtuLT9S2u9E/XuSV2F
+ 6D1pf0E4
+ 5INGE9Woy8wzy2emPyKEyibd6pXyHLSkUCkYQ07zbUF8bRoU6Mo1s6daAcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,97 +117,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hou Tao <houtao1@huawei.com>
 
-kernfs has already support ->mmap callback, however it doesn't support
-->get_unmapped_area callback to return PMD-aligned or PUD-aligned
-virtual address. The following patch will need it to support compound
-page for p2pdma device memory, therefore add the necessary support for it.
+Hi,
 
-When the ->get_unmapped_area callback is not defined in kernfs_ops or
-the callback returns -EOPNOTSUPP, kernfs_get_unmapped_area() will
-fallback to mm_get_unmapped_area().
+device-dax has already supported compound page. It not only reduces the
+cost of struct page significantly, it also improve the performance of
+get_user_pages when 2MB or 1GB page size is used. We are experimenting
+to use p2p dma to directly transfer the content of NVMe SSD into NPU.
+The size of NPU HBM is 32GB or larger and there are at most 8 NPUs in
+the host. When using the base page, the memory overhead is about 4GB for
+128GB HBM, and the mapping of 32GB HBM into userspace takes about 0.8
+second. Considering ZONE_DEVICE memory type has already supported the
+compound page, enabling the compound page support for p2pdma memory as
+well. After applying the patch set, when using the 1GB page, the memory
+overhead is about 2MB and the mmap costs about 0.04 ms.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
----
- fs/kernfs/file.c       | 37 +++++++++++++++++++++++++++++++++++++
- include/linux/kernfs.h |  3 +++
- 2 files changed, 40 insertions(+)
+The main difference between the compound page support of device-dax and
+p2pdma is that p2pdma inserts the page into user vma during mmap instead
+of page fault. The main reason is simplicity. The patch set is
+structured as shown below:
 
-diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index 9adf36e6364b..9773b5734a2c 100644
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -454,6 +454,39 @@ static const struct vm_operations_struct kernfs_vm_ops = {
- 	.access		= kernfs_vma_access,
- };
- 
-+static unsigned long kernfs_get_unmapped_area(struct file *file, unsigned long uaddr,
-+					      unsigned long len, unsigned long pgoff,
-+					      unsigned long flags)
-+{
-+	struct kernfs_open_file *of = kernfs_of(file);
-+	const struct kernfs_ops *ops;
-+	long addr;
-+
-+	if (!(of->kn->flags & KERNFS_HAS_MMAP))
-+		return -ENODEV;
-+
-+	mutex_lock(&of->mutex);
-+
-+	addr = -ENODEV;
-+	if (!kernfs_get_active_of(of))
-+		goto out_unlock;
-+
-+	ops = kernfs_ops(of->kn);
-+	if (ops->get_unmapped_area) {
-+		addr = ops->get_unmapped_area(of, uaddr, len, pgoff, flags);
-+		if (!IS_ERR_VALUE(addr) || addr != -EOPNOTSUPP)
-+			goto out_put;
-+	}
-+	addr = mm_get_unmapped_area(file, uaddr, len, pgoff, flags);
-+
-+out_put:
-+	kernfs_put_active_of(of);
-+out_unlock:
-+	mutex_unlock(&of->mutex);
-+
-+	return addr;
-+}
-+
- static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct kernfs_open_file *of = kernfs_of(file);
-@@ -1017,6 +1050,7 @@ const struct file_operations kernfs_file_fops = {
- 	.write_iter	= kernfs_fop_write_iter,
- 	.llseek		= kernfs_fop_llseek,
- 	.mmap		= kernfs_fop_mmap,
-+	.get_unmapped_area = kernfs_get_unmapped_area,
- 	.open		= kernfs_fop_open,
- 	.release	= kernfs_fop_release,
- 	.poll		= kernfs_fop_poll,
-@@ -1052,6 +1086,9 @@ struct kernfs_node *__kernfs_create_file(struct kernfs_node *parent,
- 	unsigned flags;
- 	int rc;
- 
-+	if (ops->get_unmapped_area && !ops->mmap)
-+		return ERR_PTR(-EINVAL);
-+
- 	flags = KERNFS_FILE;
- 
- 	kn = kernfs_new_node(parent, name, (mode & S_IALLUGO) | S_IFREG,
-diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-index b5a5f32fdfd1..9467b0a2b339 100644
---- a/include/linux/kernfs.h
-+++ b/include/linux/kernfs.h
-@@ -324,6 +324,9 @@ struct kernfs_ops {
- 
- 	int (*mmap)(struct kernfs_open_file *of, struct vm_area_struct *vma);
- 	loff_t (*llseek)(struct kernfs_open_file *of, loff_t offset, int whence);
-+	unsigned long (*get_unmapped_area)(struct kernfs_open_file *of, unsigned long uaddr,
-+					   unsigned long len, unsigned long pgoff,
-+					   unsigned long flags);
- };
- 
- /*
+Patch #1~#2: tiny bug fixes for p2pdma
+Patch #3~#5: add callbacks support in kernfs and sysfs, include
+pagesize, may_split and get_unmapped_area. These callbacks are necessary
+for the support of compound page when mmaping sysfs binary file.
+Patch #6~#7: create compound page for p2pdma memory in the kernel. 
+Patch #8~#10: support the mapping of compound page in userspace. 
+Patch #11~#12: support the compound page for NVMe CMB.
+Patch #13: enable the support for compound page for p2pdma memory.
+
+Please see individual patches for more details. Comments and
+suggestions are always welcome.
+
+Hou Tao (13):
+  PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page()
+    fails
+  PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+  kernfs: add support for get_unmapped_area callback
+  kernfs: add support for may_split and pagesize callbacks
+  sysfs: support get_unmapped_area callback for binary file
+  PCI/P2PDMA: add align parameter for pci_p2pdma_add_resource()
+  PCI/P2PDMA: create compound page for aligned p2pdma memory
+  mm/huge_memory: add helpers to insert huge page during mmap
+  PCI/P2PDMA: support get_unmapped_area to return aligned vaddr
+  PCI/P2PDMA: support compound page in p2pmem_alloc_mmap()
+  PCI/P2PDMA: add helper pci_p2pdma_max_pagemap_align()
+  nvme-pci: introduce cmb_devmap_align module parameter
+  PCI/P2PDMA: enable compound page support for p2pdma memory
+
+ drivers/accel/habanalabs/common/hldio.c |   3 +-
+ drivers/nvme/host/pci.c                 |  10 +-
+ drivers/pci/p2pdma.c                    | 140 ++++++++++++++++++++++--
+ fs/kernfs/file.c                        |  79 +++++++++++++
+ fs/sysfs/file.c                         |  15 +++
+ include/linux/huge_mm.h                 |   4 +
+ include/linux/kernfs.h                  |   3 +
+ include/linux/pci-p2pdma.h              |  30 ++++-
+ include/linux/sysfs.h                   |   4 +
+ mm/huge_memory.c                        |  66 +++++++++++
+ 10 files changed, 339 insertions(+), 15 deletions(-)
+
 -- 
 2.29.2
 
