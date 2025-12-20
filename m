@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680F4E668B4
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 14:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 216E2E668B4
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 14:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 991506B0088; Sat, 20 Dec 2025 09:46:20 -0500 (EST)
+	id 7521A6B0088; Sat, 20 Dec 2025 09:50:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F2D6B0089; Sat, 20 Dec 2025 09:46:20 -0500 (EST)
+	id 6FCCC6B0089; Sat, 20 Dec 2025 09:50:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85F2E6B008A; Sat, 20 Dec 2025 09:46:20 -0500 (EST)
+	id 5DDF56B008A; Sat, 20 Dec 2025 09:50:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D9E76B0088
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 09:46:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D9C11405D6
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 14:46:20 +0000 (UTC)
-X-FDA: 84240124920.23.3AC530C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 894D3120012
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 14:46:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eCxmx9fx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766241977; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C6806B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 09:50:25 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ECE341405E0
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 14:50:24 +0000 (UTC)
+X-FDA: 84240135168.15.B477124
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E928616000D
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 14:50:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="K2vru7/K";
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766242223; a=rsa-sha256;
 	cv=none;
-	b=ZWCkQj0PuPL3B5LqNpaU8j6n5/aJqAAh0ZL/uFV4vZTOqJn2MtuMSeDlYOgIiltpUJEJT2
-	UxBJXOhSmvSQOeSoLBodGX6Ivf9IOc2MmKdQaMTHteLzJJdkYlnTPgiW3+uBvLe5/Fr+sd
-	6MNH2QGMZKGQRl1F9i/N7HYA1+S4kME=
+	b=lk7XWDWpw5I+o5fC8waj0lu4VZRDgLNtB5c43G1lGlocnXPngQued4o4WD/hlJX+CloSDV
+	ALUcs/0oDY5FUNhEiyk1hztOLKJ8m6dhLrOMaB66+tkoLIa7oBFo6Rw/fvPhHsL3rJfsDa
+	fbgaIy9G1Z1JkK81Nbe53NwBhl9qxVs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eCxmx9fx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="K2vru7/K";
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766241977;
+	s=arc-20220608; t=1766242223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AqrQsZ730aQuJQDgadVa17wgtOV7hwAK8gwkm7UQcjY=;
-	b=U99lFnY4M8BAVQ5LSEdP/XPa28Cxi2xItWuPxD8+9wE/0ZooicNoxgnRS/eAdVC3s29ulT
-	nJhxwTZXcjwJGhMdjzg33CeVpf/KtgKeolHSkj+DyfBfEFODBJNIsucLBqflMR9FdLNER4
-	zLr0VmFJhtuG96c6Dd3LrkFIACPYMpQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766241978; x=1797777978;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0/9AqWDR0QjCmpU+CYPu2fRg5LQPeaeBa8kwPoIxDO4=;
-  b=eCxmx9fxNPbiUEUMnwxLX8eqwRf5kRVsthlRO1H4H7IQVV93Z2rjGybR
-   b1voqrmrZXQXcdQc3xZz5FHe+y/laB/TWoYT+ozKfG/kA98YpelojHhlc
-   VB2mr4GdtGoqTqCqM4mzYIjjaW8r9PI0BnOTq07iQGXHswZm5Q9sVq4tX
-   bbJ44RGfDWe/HnEPKB1P4CIakmbp67ubY/MTz7vHmdForH9fcXWFHckO0
-   Tjg6Jr+5QcwDLTJn4HD2bwggaUJuAYfvG943LiKdHIzTRtl+JqM++yxXD
-   QwUeoykApRVPHpQCSbA8F5SKiooiPxMLTip/GTZeMzVXcy/06JOLKE0NK
-   A==;
-X-CSE-ConnectionGUID: tuE1KMbAT7Otkmpp9vey7g==
-X-CSE-MsgGUID: XXLpGtkETjak4PNLIlIxNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="85760390"
-X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="85760390"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 06:46:16 -0800
-X-CSE-ConnectionGUID: zaOdA7FhQs+c+8EGhahraQ==
-X-CSE-MsgGUID: Gd8F3kBzSy6LdBZnFHEqKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="199024654"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 20 Dec 2025 06:46:09 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vWyDf-000000004fu-1cUP;
-	Sat, 20 Dec 2025 14:46:07 +0000
-Date: Sat, 20 Dec 2025 22:45:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yunhui Cui <cuiyunhui@bytedance.com>, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, andii@kernel.org, andybnac@gmail.com,
-	apatel@ventanamicro.com, ast@kernel.org, ben.dooks@codethink.co.uk,
-	bjorn@kernel.org, bpf@vger.kernel.org, charlie@rivosinc.com,
-	cl@gentwo.org, conor.dooley@microchip.com, cyrilbur@tenstorrent.com,
-	daniel@iogearbox.net, debug@rivosinc.com, dennis@kernel.org,
-	eddyz87@gmail.com, haoluo@google.com, john.fastabend@gmail.com,
-	jolsa@kernel.org, kpsingh@kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-	linux@rasmusvillemoes.dk, martin.lau@linux.dev, palmer@dabbelt.com,
-	pjw@kernel.org, puranjay@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 2/3] riscv: introduce percpu.h into include/asm
-Message-ID: <202512202218.FI6bB5kV-lkp@intel.com>
-References: <20251216014721.42262-3-cuiyunhui@bytedance.com>
+	bh=Goy8IvAF5EH1SjhL5f9/XSFbPZ8S1XtNVpjt6+v7B50=;
+	b=nTvim6zWOLBAeeGaEEuQRNKA7l0AW4ywILlOHaSoQcTYr5FAXISsTfDn0SbkHvh2Wz6n0G
+	Ycr9Z0PUYC7Mdb5m3pOHkGOybDs7wLYepHosboYzg3zjNeNvfp6FzuQ2ThPZtLQ5cVIbyR
+	pL/486d19OzVBqzn5qKqM1nSKY2zyiQ=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b8e5d1611so2459876a12.3
+        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 06:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766242221; x=1766847021; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Goy8IvAF5EH1SjhL5f9/XSFbPZ8S1XtNVpjt6+v7B50=;
+        b=K2vru7/KRZTNEclXRFpFs0Hm+JYurIA4HTZ5QTjyC1typGPgKp7bU660QQlpdWnalM
+         MbVPbwqMkoTXk+B+AOu/4NkdA9z06YNMM5TLIHqHE5Hy05K0X/SbECXWphvBq9TnJiQW
+         WXwuFxdu7awlX2cl7VBI8nVtz52gA47wct5KGZQeWWkoVHROJsfDCKTDzyFzuWWKay+r
+         1x5mmjgs8TXsPdT/NtNJB8ZhrCgPQfZGlw19y36oiygtAp+kUiBi0AaO8nIn5mSi8Fj8
+         +tp3eEh+xAsvmElQN1acHlxhVfsKC220nO+7Qu0laZ8kBBbW+qXqP/sTG3f8+VeJDX52
+         Eiow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766242221; x=1766847021;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Goy8IvAF5EH1SjhL5f9/XSFbPZ8S1XtNVpjt6+v7B50=;
+        b=HBuJQ/Lmp7sQc13tBaeA96Hf6/kGON2qo8l0UlaBQsvFTXWRp+nZNN/ZNzbfTR+T9v
+         ekvSpHN+R/5JuPVktpBiSAGF3MwlLAIbI7xj9jH+FHq/yGMjAgU4GgK48bIU74UH3roc
+         5/JeH+cooWdZ+St6LX4VQ193BP/A9rg0MiQLdtoxq3pYnAliUjPP2p0TAy0bGo/3Yqam
+         Krn0D1LZd9g6Z53w10vk9iN3wbM5WXLfa/hLxwjimz1T3JojMS6D51CWQq5tjHw3CotL
+         b4Xu05B6MjcA9iUTRvyjbi1hwyflKTklYovtrWKXNJ+czdstXe6+M/myaC33slawNqmZ
+         Kudg==
+X-Forwarded-Encrypted: i=1; AJvYcCVeSe7K/5XS49LfOAdO0GmagXyWbHnYH/l+wlwCLjVuGqjdB71WaffhDG0koBGyg56mfHY9t1TbGw==@kvack.org
+X-Gm-Message-State: AOJu0YxIlpYEIA7A74AmFao3lCm9KG0j55xQw/bS1BUoVXq49WAzYbcy
+	7DCMYAUkAjFejFg5I9XcjSkCr0SG0VAkVVPRRS8yJalnq53jrVmQuUzkS9ImMs6R16B2V/8wUoj
+	EGk4xI5Fi9AoO+JpijLouZMEdpU4vrYrkMZSGgrNEFg==
+X-Gm-Gg: AY/fxX5xdhubTX4MKxiyqIpoPjwb0v4qp24Be8ak7/hroP6OL9UEdqDemISrJ5D76nJ
+	zVW2WC0Q4q+uAdoLLoj//oL2NUBls3EIBcqPax+JMY86dd/1Xqz7zz9ACL4ivGzvJcoIPKHGo6Z
+	eedCt8E0RGeV9LFqTzRG+JJi60ovHOGhCzg18blEVEbHIDBw7YlnRCEQkbq29BiX+YVN0MvdF4u
+	Wmz4GS3hzN5uNZHqpKGMRz7N6MSboKHt3AyRINw5ccto8VccRhwWqshjpjeJ3BaZ1ux3jLsOsQA
+	o0Sq+IIXg5OEAA0lGhcKNvzMou7e4DXlAjbMOKdLkDdUnlQDZkaVSnRaAWbJrw==
+X-Google-Smtp-Source: AGHT+IHIVqx9ytn5gAi5USUsY1jHhg2U2WSPQJtGGGCkUnwGVGj9YPZ5VMAqtf8TXFny2QtHU4UHSdIoz7ul+hi7Q0g=
+X-Received: by 2002:a17:906:794e:b0:b5b:2c82:7dc6 with SMTP id
+ a640c23a62f3a-b80371a71c3mr658870566b.40.1766242221134; Sat, 20 Dec 2025
+ 06:50:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216014721.42262-3-cuiyunhui@bytedance.com>
-X-Rspamd-Queue-Id: 894D3120012
-X-Rspamd-Server: rspam03
-X-Stat-Signature: gak9xhdcje1drnzg6jgkeygsyoqcuu71
+References: <20251216084913.86342-1-epetron@amazon.de> <aUFJH9xzJXYOt_X8@kernel.org>
+ <CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+ <aUF4fsWwD9BswkFh@kernel.org> <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+ <aUUYprAotKYMiEs0@kernel.org> <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+ <861pkpkffh.fsf@kernel.org>
+In-Reply-To: <861pkpkffh.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 20 Dec 2025 09:49:44 -0500
+X-Gm-Features: AQt7F2pK4XT9_pgkJJh3fHmDqAK72t11dkqY99si46dJ87InO_jQlAkNaSjE-J0
+Message-ID: <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1766241977-523520
-X-HE-Meta: U2FsdGVkX1+0dmkThCHMUW76CxZ/g1HzN0BvrKuQL0IPW/GmxOpvcQsVH20BBK66y0JbvvBIm7pFtw3ThHmgxfp089yJzENrN6vHmfeFnOswo87Bd/TRgkXzJ9dXGX+84th1oeTrrTYMhMUI1SqJ/FsJFs8dzEISMa9ZYnQuXyyAJz42DR/XixpCW5Op1fGxEwTKRQH0QA2i4vWlZiZXvXGkws3mD4EzzW0YA82L3wc/WLo66DiMI0KuEbk3wAqnxZ74yqlDjb4zBzhxAonO+YghfsjWddNXijcozQU9gMHJtCevEtZ66XaqRwVq9NOTRKuaF2vDUZ3CdoXGisUmuqe9Z5WEYJvH6QIBo7EIYIqIOX1GwPPNo7joVtvc/jRq1FOcOe4LwzwxZiDgF2yQ+c9Iqs0xhII+mGmikf/a7F3Z46ob9Rsjeghb1IBNAK716/499vddK8guiZLIpQKx4t15gtSuvIk4gL5qlqrYuAKglyYO++kcs4Vl8wxKTgNlCEvwdhPEJ2w2fJOnt38m063KP6Fl1NsvF/scqypfJ9KdHLfydZF6+niI5f1nrGlsmGQGFWJ0Ed6N/K1SonmMiOO81VEcfxinc+eWi6jCWL34vLzFlCX7ko5xrzfOMxDVHsyjw1GCNw0JDaDUE6huSk0GbRQcA/KctZpbP4/PXACJOgdaYiZDy1yAw4LeBBSf7KoN1AkmRBuVUwu0fqDNX774K4fC87NZ7kYfmM15/6JTavxxnAcC8mswEf09utsWqoBrvLAAXjY/H+lLjDCPfe01Lr0FhB+1wH+CMD/NHMTGamtGFLPVVXr7FtkTm0qmPaVyA91tv/CbCAaGTi3nJMazcP9zZK6YqRX9HcdVyAuALW31NBu2UaYDBXDDdYaxvf7W//PZCi99UnKvgpTkEw+IwbrB/Q4lJtTUTt+eNrJbUDvYpwe+dYkax+oIN7SSySiSXQq0njxNCPP7Cd+
- FnRMEjkp
- is89tRHOVC+vcN6IFDz5N49RkojvlSrz26cPpgj0duhHnR6XpvWVX25EdT/FoMnLx2+T+DnRrcv76IKhiaIuPwK8o7A+6SkFTMl9i1v/a7pg2p29K2sBfdhTUZjaf5E4vRf/CSJEdQEYrs6wlAtDMMPHJrT/ZUCn23qh2QaoA0BG1c6WTMhbz2scXXLEGRUD5T8FO2GglkuDc/zI2Wf03hy4Zbzb6bObdU8aWZEaofYOrVIiFDjVNu4vOQnuMUteHHtJkgcB5hRAIq0r7R71WM75fi9uJZGdvmw7EegWW/iJ6iEesYeW24fyeiOEr182oPZAKnijghKZ5dXK+9DUfoVnwtHtTE4QjM/NLzdIEbc5dmqhr42KLfpk7rHU2eOTIbQU/ogqh5PuoxevReo+UaWbOr9WbHsjfylkiP8c+zNHyP9fCeVOYlqdgvd8DkWE3YODi
+X-Rspamd-Queue-Id: E928616000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zcx7q7aq7kf1jmbpkagrqoq79qd8bzh8
+X-HE-Tag: 1766242222-855536
+X-HE-Meta: U2FsdGVkX19MIFdIorL7tCnUneSlCbaR1amfp+zMDemZ6gXUAUsT0NxILr0asWua9dtlkB1f2M53bLtGP+Bcsd+fxvHysdqg7pCTkryYHOH1gvJVDUrfGabGj8MH/mCBHDYMPddraRr3BEPhGR2GB0klQNiZRTf8aDHzM5i0T5+ISUJXzChCKgsC8vgm8eRFuxmXQimfnP70Wh8g0LSdNMTgSw7lBQgXigDygkhJBbFDa5CMlYQo9cXcSob0gsKsHZsOKjZnv3cyKJst4LqFZJB2jqdlN1MnuDo+FKHQ6rm1mGdZfi+HEgZVhpx7sKUxjzFuO5oqCa3ZSFTih/D2xOcQDTOWScSp2XdkhWCwEA+r//mZJAYMrfFvNqjCPAWyD2t7bktXWaYNq9uvdNOcKDV+Gc6GD1GoPhhrY/70BdQdl1WF+Aln1pYXjOaliPunspe3oZ6sG+IRKGTFm5jnqauhB81f92zbxwoWMWGGhCsLJo0bEjdYkd3/ONtLerScU8cJPMVthq88yOkj6zh5z4VvFGP6RQt2I/H2NA5Ka/49z/YH1gLQebjIrMSR4J1IMXMjHqfVfA1D963Vj+ZNaqtzfSsbMO7z5P9npJOHFpKbSp0RUqiNVdBP21dUdHgSCG7P6WEPlyvWXxhsC/zujrC93xUtr7fQ/gPJafeARwM8wDi/qdKg4q/b/9AM5Em+mdqmV5ZTIWx8k4NgKOTfZZXBKFgfDVtYEGcThJJLY814OR9uoEAJwpIwv5TYPqnrRt9YCehVsLX9ltWf7tQw6Zf64L5Lol+mX9dvCuo1CxgH+GYYPdujkuZQLfKofYo/Roqsa1/fvvgr/WNVwYp3hQ17o562EsYghx5IdLhmDUK1askzERie6j9DGxPB5/VOAkcaYABZ9RzqmSE9sHsYVcrE+nhAwQUw6hRH+uFyh+GKXajwweFaqKZSgoEtnGwOTYHqLTN/u931Zs5/OtG
+ u/cQcP/L
+ gTnBqXMmsIXvxJKfxDutpr0hxCmAwEhFscx8dxASpYmLOfEq6YDuBsNu8lnA0OUVlx/v++c5V7rg6FdNccr6zry+CiIaye50UnHBZ17SPQtVoyLBlCOTjrkH4Z+F3mxJPPyeTYt8XTwGRDPQewyGTcXC6a3aPkrHyBsdgP1YTGWXxEiTWsygdUu0WOnYvuHlIwd5G4KJuYlHRdBc+ACbwdm+8xA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,252 +123,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yunhui,
+On Fri, Dec 19, 2025 at 10:20=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>
+> On Fri, Dec 19 2025, Pasha Tatashin wrote:
+>
+> > On Fri, Dec 19, 2025 at 4:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
+ wrote:
+> >>
+> >> On Tue, Dec 16, 2025 at 10:36:01AM -0500, Pasha Tatashin wrote:
+> >> > On Tue, Dec 16, 2025 at 10:19=E2=80=AFAM Mike Rapoport <rppt@kernel.=
+org> wrote:
+> >> > >
+> >> > > On Tue, Dec 16, 2025 at 10:05:27AM -0500, Pasha Tatashin wrote:
+> >> > > > > > +static struct page *__init kho_get_preserved_page(phys_addr=
+_t phys,
+> >> > > > > > +                                               unsigned int=
+ order)
+> >> > > > > > +{
+> >> > > > > > +     unsigned long pfn =3D PHYS_PFN(phys);
+> >> > > > > > +     int nid =3D early_pfn_to_nid(pfn);
+> >> > > > > > +
+> >> > > > > > +     for (int i =3D 0; i < (1 << order); i++)
+> >> > > > > > +             init_deferred_page(pfn + i, nid);
+> >> > > > >
+> >> > > > > This will skip pages below node->first_deferred_pfn, we need t=
+o use
+> >> > > > > __init_page_from_nid() here.
+> >> > > >
+> >> > > > Mike, but those struct pages should be initialized early anyway.=
+ If
+> >> > > > they are not yet initialized we have a problem, as they are goin=
+g to
+> >> > > > be re-initialized later.
+> >> > >
+> >> > > Can say I understand your point. Which pages should be initialized=
+ earlt?
+> >> >
+> >> > All pages below node->first_deferred_pfn.
+> >> >
+> >> > > And which pages will be reinitialized?
+> >> >
+> >> > kho_memory_init() is called after free_area_init() (which calls
+> >> > memmap_init_range to initialize low memory struct pages). So, if we
+> >> > use __init_page_from_nid() as suggested, we would be blindly running
+> >> > __init_single_page() again on those low-memory pages that
+> >> > memmap_init_range() already set up. This would cause double
+> >> > initialization and corruptions due to losing the order information.
+> >> >
+> >> > > > > > +
+> >> > > > > > +     return pfn_to_page(pfn);
+> >> > > > > > +}
+> >> > > > > > +
+> >> > > > > >  static void __init deserialize_bitmap(unsigned int order,
+> >> > > > > >                                     struct khoser_mem_bitmap=
+_ptr *elm)
+> >> > > > > >  {
+> >> > > > > > @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(un=
+signed int order,
+> >> > > > > >               int sz =3D 1 << (order + PAGE_SHIFT);
+> >> > > > > >               phys_addr_t phys =3D
+> >> > > > > >                       elm->phys_start + (bit << (order + PAG=
+E_SHIFT));
+> >> > > > > > -             struct page *page =3D phys_to_page(phys);
+> >> > > > > > +             struct page *page =3D kho_get_preserved_page(p=
+hys, order);
+> >> > > > >
+> >> > > > > I think it's better to initialize deferred struct pages later =
+in
+> >> > > > > kho_restore_page. deserialize_bitmap() runs before SMP and it =
+already does
+> >> > > >
+> >> > > > The KHO memory should still be accessible early in boot, right?
+> >> > >
+> >> > > The memory is accessible. And we anyway should not use struct page=
+ for
+> >> > > preserved memory before kho_restore_{folio,pages}.
+> >> >
+> >> > This makes sense, what happens if someone calls kho_restore_folio()
+> >> > before deferred pages are initialized?
+> >>
+> >> That's fine, because this memory is still memblock_reserve()ed and def=
+erred
+> >> init skips reserved ranges.
+> >> There is a problem however with the calls to kho_restore_{pages,folio}=
+()
+> >> after memblock is gone because we can't use early_pfn_to_nid() then.
+>
+> I suppose we can select CONFIG_ARCH_KEEP_MEMBLOCK with
+> CONFIG_KEXEC_HANDOVER. But that comes with its own set of problems like
+> wasting memory, especially when there are a lot of scattered preserved
+> pages
+>
+> I don't think this is a very good idea, just throwing it out there as an
+> option.
+>
+> >
+> > I agree with the regarding memblock and early_pfn_to_nid(), but I
+> > don't think we need to rely on early_pfn_to_nid() during the restore
+> > phase.
+> >
+> >> I think we can start with Evangelos' approach that initializes struct =
+pages
+> >> at deserialize time and then we'll see how to optimize it.
+> >
+> > Let's do the lazy tail initialization that I proposed to you in a
+> > chat: we initialize only the head struct page during
+> > deserialize_bitmap(). Since this happens while memblock is still
+> > active, we can safely use early_pfn_to_nid() to set the nid in the
+> > head page's flags, and also preserve order as we do today.
+> >
+> > Then, we can defer the initialization of all tail pages to
+> > kho_restore_folio(). At that stage, we no longer need memblock or
+> > early_pfn_to_nid(); we can simply inherit the nid from the head page
+> > using page_to_nid(head).
+>
+> Does that assumption always hold? Does every contiguous chunk of memory
+> always have to be in the same node? For folios it would hold, but what
+> about kho_preserve_pages()?
 
-kernel test robot noticed the following build warnings:
+NUMA node boundaries are SECTION_SIZE aligned. Since SECTION_SIZE is
+larger than MAX_PAGE_ORDER it is mathematically impossible for a
+single chunk to span multiple nodes.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.19-rc1 next-20251219]
-[cannot apply to bpf-next/net bpf-next/master bpf/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > This approach seems to give us the best of both worlds: It avoids the
+> > memblock dependency during restoration. It keeps the serial work in
+> > deserialize_bitmap() to a minimum (O(1)O(1) per region). It allows the
+> > heavy lifting of tail page initialization to be done later in the boot
+> > process, potentially in parallel, as you suggested.
+>
+> Here's another idea I have been thinking about, but never dug deep
+> enough to figure out if it actually works.
+>
+> __init_page_from_nid() loops through all the zones for the node to find
+> the zone id for the page. We can flip it the other way round and loop
+> through all zones (on all nodes) to find out if the PFN spans that zone.
+> Once we find the zone, we can directly call __init_single_page() on it.
+> If a contiguous chunk of preserved memory lands in one zone, we can
+> batch the init to save some time.
+>
+> Something like the below (completely untested):
+>
+>
+>         static void kho_init_page(struct page *page)
+>         {
+>                 unsigned long pfn =3D page_to_pfn(page);
+>                 struct zone *zone;
+>
+>                 for_each_zone(zone) {
+>                         if (zone_spans_pfn(zone, pfn))
+>                                 break;
+>                 }
+>
+>                 __init_single_page(page, pfn, zone_idx(zone), zone_to_nid=
+(zone));
+>         }
+>
+> It doesn't do the batching I mentioned, but I think it at least gets the
+> point across. And I think even this simple version would be a good first
+> step.
+>
+> This lets us initialize the page from kho_restore_folio() without having
+> to rely of memblock being alive, and saves us from doing work during
+> early boot. We should only have a handful of zones and nodes in
+> practice, so I think it should perform fairly well too.
+>
+> We would of course need to see how it performs in practice. If it works,
+> I think it would be cleaner and simpler than splitting the
+> initialization into two separate parts.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/riscv-remove-irqflags-h-inclusion-in-asm-bitops-h/20251216-094956
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20251216014721.42262-3-cuiyunhui%40bytedance.com
-patch subject: [PATCH v3 2/3] riscv: introduce percpu.h into include/asm
-config: riscv-randconfig-002-20251217 (https://download.01.org/0day-ci/archive/20251220/202512202218.FI6bB5kV-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202218.FI6bB5kV-lkp@intel.com/reproduce)
+I think your idea is clever and would work. However, consider the
+cache efficiency: in deserialize_bitmap(), we must write to the head
+struct page anyway to preserve the order. Since we are already
+bringing that 64-byte cacheline in and dirtying it, and since memblock
+is available and fast at this stage, it makes sense to fully
+initialize the head page right then.
+If we do that, we get the nid for "free" (cache-wise) and we avoid the
+overhead of iterating zones during the restore phase. We can then
+simply inherit the nid from the head page when initializing the tail
+pages later.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512202218.FI6bB5kV-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:846:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     846 |         insw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:109:53: note: expanded from macro 'insw'
-     109 | #define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from mm/slub.c:14:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:854:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     854 |         insl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:110:53: note: expanded from macro 'insl'
-     110 | #define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from mm/slub.c:14:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:863:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     863 |         outsb(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:122:55: note: expanded from macro 'outsb'
-     122 | #define outsb(addr, buffer, count) __outsb(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from mm/slub.c:14:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:872:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     872 |         outsw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:123:55: note: expanded from macro 'outsw'
-     123 | #define outsw(addr, buffer, count) __outsw(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from mm/slub.c:14:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:881:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     881 |         outsl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:124:55: note: expanded from macro 'outsl'
-     124 | #define outsl(addr, buffer, count) __outsl(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from mm/slub.c:14:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:140:
-   include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-    1209 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
-         |                                                   ~~~~~~~~~~ ^
->> mm/slub.c:4385:9: warning: variable '__old' is uninitialized when used within its own initialization [-Wuninitialized]
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    4386 |                                              &old.freelist_tid, new.freelist_tid);
-         |                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:2: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/percpu.h:110:24: note: expanded from macro '__cpu_fallback_try_cmpxchg'
-     110 |         __val = _cmpxchg(pcp, __old, nval);                             \
-         |                 ~~~~~~~~~~~~~~^~~~~~~~~~~~
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/atomic/atomic-instrumented.h:4810:32: note: expanded from macro 'cmpxchg_relaxed'
-    4810 |         raw_cmpxchg_relaxed(__ai_ptr, __VA_ARGS__); \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-   arch/riscv/include/asm/cmpxchg.h:265:24: note: expanded from macro 'arch_cmpxchg_relaxed'
-     265 |         _arch_cmpxchg((ptr), (o), (n),                                  \
-         |         ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     266 |                       SC_SFX(""), CAS_SFX(""),                          \
-         |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     267 |                       SC_PREPEND(""), SC_APPEND(""),                    \
-         |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     268 |                       CAS_PREPEND(""), CAS_APPEND(""))
-         |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/cmpxchg.h:218:32: note: expanded from macro '_arch_cmpxchg'
-     218 |         __typeof__(*(__ptr)) __old = (old);                             \
-         |                              ~~~~~    ^~~
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:1:5: note: instantiated into assembly here
-       1 |         0:      lr.d s9, 0(a1)
-         |                 ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:3:2: note: instantiated into assembly here
-       3 |         sc.d a3, a0, 0(a1)
-         |         ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:1:5: note: instantiated into assembly here
-       1 |         0:      lr.d s9, 0(a1)
-         |                 ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:3:2: note: instantiated into assembly here
-       3 |         sc.d a3, a0, 0(a1)
-         |         ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:1:5: note: instantiated into assembly here
-       1 |         0:      lr.d s10, 0(a1)
-         |                 ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-    4385 |         return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-         |                ^
-   mm/slab.h:31:39: note: expanded from macro 'this_cpu_try_cmpxchg_freelist'
-      31 | #define this_cpu_try_cmpxchg_freelist   this_cpu_try_cmpxchg64
-         |                                         ^
-   include/asm-generic/percpu.h:520:47: note: expanded from macro 'this_cpu_try_cmpxchg64'
-     520 |         __cpu_fallback_try_cmpxchg(pcp, ovalp, nval, this_cpu_cmpxchg64)
-         |                                                      ^
-   <inline asm>:3:2: note: instantiated into assembly here
-       3 |         sc.d a3, a0, 0(a1)
-         |         ^
-   mm/slub.c:4385:9: error: instruction requires the following: RV64I Base Instruction Set
-
-
-vim +/__old +4385 mm/slub.c
-
-0b303fb402862d Vlastimil Babka 2021-05-08  4376  
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4377  static inline bool
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4378  __update_cpu_freelist_fast(struct kmem_cache *s,
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4379  			   void *freelist_old, void *freelist_new,
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4380  			   unsigned long tid)
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4381  {
-b244358e9a1cd6 Vlastimil Babka 2025-11-07  4382  	struct freelist_tid old = { .freelist = freelist_old, .tid = tid };
-b244358e9a1cd6 Vlastimil Babka 2025-11-07  4383  	struct freelist_tid new = { .freelist = freelist_new, .tid = next_tid(tid) };
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4384  
-b244358e9a1cd6 Vlastimil Babka 2025-11-07 @4385  	return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
-b244358e9a1cd6 Vlastimil Babka 2025-11-07  4386  					     &old.freelist_tid, new.freelist_tid);
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4387  }
-6801be4f2653e5 Peter Zijlstra  2023-05-31  4388  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Pasha
 
