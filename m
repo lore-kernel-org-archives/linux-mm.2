@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA9DE668BC
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 18:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32050E668BC
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 19:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE096B0088; Sat, 20 Dec 2025 13:58:16 -0500 (EST)
+	id 5DD226B0088; Sat, 20 Dec 2025 14:20:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6960A6B0089; Sat, 20 Dec 2025 13:58:16 -0500 (EST)
+	id 561B96B0089; Sat, 20 Dec 2025 14:20:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A4146B008A; Sat, 20 Dec 2025 13:58:16 -0500 (EST)
+	id 463096B008A; Sat, 20 Dec 2025 14:20:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C4B6B0088
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 13:58:16 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA5158B121
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:58:15 +0000 (UTC)
-X-FDA: 84240759750.07.89430F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2170780006
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:58:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="08/+s6Qc";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 370966B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 14:20:49 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE1FA1A0615
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 19:20:48 +0000 (UTC)
+X-FDA: 84240816576.12.E2B89B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4149B40005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 19:20:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HG8uF931;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766257094;
+	s=arc-20220608; t=1766258447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tr/IOM3p1pmqX7U/AQRmqIDJoiFSHxqGNOCFo88q19E=;
-	b=fF3/iMPo/Z0HEyt5H7h6Zlt4hAGjirKOhbzU3Jn8J3MAkDyq3onc9VazuVI4zlOXj1CZtK
-	aFGGdR6t9II9h2M5BhPLMFpAH9OxjZkEP0nF6HzNG4kcIHxPtkykVBhQO/a1WXU67ZMKWj
-	Wi+oAB1jcSMmOivHFfxk/ZvhLKLoBQ4=
+	bh=uoVI/xpGf5JHRjd3/J3F0l2xqOiQIGhnWiT4QFOt1uc=;
+	b=cA3GrxgP4/oG+iclTr4CPHBL7e2ISTTO692EDJDmgKY38+qxsr0dAfqKd4U4cVqJc02+nu
+	CZWUsiVQKPjeYNxkJlTPHYVahqr6EJUeEcbR+c/fyTb7+JZXIziSH1KXR4mTJSzDJwofG5
+	gOVsZXfIdQwym16x3RK04I2JOOsZDno=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="08/+s6Qc";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HG8uF931;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766257094; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766258447; a=rsa-sha256;
 	cv=none;
-	b=rE6HbehyqpYlKN841Rl/Pg20Y4WYjWeNp8L+MLWGJ90i6/4jdJVWV6w50fQ1Kx/RNlPvya
-	PcuEG2g3j5YZOeOVE6LX+JLclnRGTkGmCxxPZIcStHiW0GVEcHTXtUTwaL89a9yWy/R2V+
-	R7z9OcPvK0FANcW1z0RLu8ADhFXVpNE=
+	b=XZFeUW6f+Bvg5BfvMzsUogNGGmF3lksZg3//8rFDq45/LcVtlLMOaKwU3c1Oymnn3/Ho94
+	dhTioCjGlf2ALfTkM9DiJcdRNo8EFJfsZKVpssMvj83WWCZQO5YXBgc7qSPjIRyRT/+yi9
+	eUGrNrGM6CUrUbtsVqoFrArB8Z1sCH4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E583E436F1;
-	Sat, 20 Dec 2025 18:58:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1B0C4CEF5;
-	Sat, 20 Dec 2025 18:58:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F61C60053;
+	Sat, 20 Dec 2025 19:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5CEC4CEF5;
+	Sat, 20 Dec 2025 19:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766257092;
-	bh=hNYk6WvWY18rpSMRepWtGWSsWj/pCn+KqXDaxv4oSAU=;
+	s=korg; t=1766258445;
+	bh=kKhMT8Mje8TVBJP8X15PI4OV/2bCI5xsEnfBkKi5YAk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=08/+s6Qcq4HVi/H4W3MD2fJtmg7A9T0b0dpAdF6cTj998kxZ05Wn5oTdiktIwlApz
-	 0EchykW636s6Lpq0OHCtMt0h4Wp27k4JHqqKiipg8mEBrTJZ4AeuriGkskTQYloVrd
-	 Mo7nYwxl7wCG5hi5yvisMSx9xRVdadUMOkYeiQ0s=
-Date: Sat, 20 Dec 2025 10:58:11 -0800
+	b=HG8uF931r6uX5DDIN5X1v3f5o18hAWfxLQDvcpUMMZ+9KnJTkWSPkupSB7XXufZK8
+	 /PwUEV8huMAKinw0AmteSO9d6pqfecvHhqDRDNrWCBl2atbs9KQZ3WCFhubs159V1F
+	 jpYqJXAZ5IvRodv++3xFsYZWZQOvNSwReWNB/Xtc=
+Date: Sat, 20 Dec 2025 11:20:44 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Li Wang <liwang@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Mark Brown
- <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, Waiman Long
- <longman@redhat.com>
-Subject: Re: [PATCH 1/3] selftests/mm/write_to_hugetlbfs: parse -s with
- strtoull and use size_t
-Message-Id: <20251220105811.3516167661cd696f464cc3b0@linux-foundation.org>
-In-Reply-To: <20251220111645.2246009-2-liwang@redhat.com>
-References: <20251220111645.2246009-1-liwang@redhat.com>
-	<20251220111645.2246009-2-liwang@redhat.com>
+To: Bing Jiao <bingjiao@google.com>
+Cc: linux-mm@kvack.org, gourry@gourry.net, Waiman Long <longman@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ =?ISO-8859-1?Q?"Michal_Koutn=FD"?= <mkoutny@suse.com>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: respect mems_effective in
+ demote_folio_list()
+Message-Id: <20251220112044.ee858d2160f819e181598ce1@linux-foundation.org>
+In-Reply-To: <20251220061022.2726028-1-bingjiao@google.com>
+References: <20251220061022.2726028-1-bingjiao@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4149B40005
+X-Stat-Signature: 9e4cxsme5kwyc6prachmo91ywybugxn7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2170780006
-X-Stat-Signature: sgtmng5id94t4nyezro9bzqoznsj57zk
-X-HE-Tag: 1766257093-827944
-X-HE-Meta: U2FsdGVkX1/wdyHuorNhHKBwYS9QYKivArVU/8vdQ1HaX9zzQVVdzbshdV5A0yegEUfyXDJsdgPT8+vghUeE1h4/ZVxYU11TfJJ+1TqnznP5xHRzzIbyaIEmvTLpIzwJ3ZABFdaXGQ95/scRxS1IMK4S2nx5R6CuBfKt/s2Pj9kJCI7u73/YqttxPhU4N64Wi9V8Pc3gB2ty9Sp6hRwgZT46R6IJTHjchzEvHJeHgGatEuxl/vTdsQjcQEm3c55+R5U/1Zt8e3Rz8taxirzcI5tyTw8IRTI90guQGVO9rpfkxo5JKKgKozgDInMwh4f8F8EwxXegk7ueeWPYqX/Ia5zN0deuHQN7R4JmmB+aqxk1GmQDvNHsaz2KfUBudA27ELFAcKfrXxcNfEKpVbIQV/ho2MyzOrYZ8O+OTHI5K829JOuTUmqWS1GYU+7KfcWuWWvi7DfXm4SMhCslCO/GKgpX0uWBOPym/xGcNhQ/1vQ3vw7UGWDHGaHCbv/eO0gdKz+F29B7DJxoEGvwU5Gr0WK3Eqle/IpyYrdQWGQHCQq84xqlNzdTeQlVxDzitbUXuAOWj/mk1ky5c2vjXJE2IjbC2HLWBnbUVA77qEQUr0g5FevUM0SezOhkxM+rPpk4M/cpxHKofhfIqUZCFbdx3QHVegHAFW7IG/EwnN9TOjTly3psPxVhHAgAPDf/DYZlZMLL/Tws6qEs73Ss/IF/ovcIUXV8yGiLGGdbmGbanDzv62hS+WMpCOAP/hcos1klJR3V/NCzWfGx7yImqwxAYYfNgm7IZEGV56rBObs9rYrtJOD/cT3iYpDLMx5R0fO8ehSXqyPqU7ls3mO3Q601GTEEelHO3Z2CRjhul+Czwm4owhLlXfDr3CndVwKefhYEcGZYNzmmAtThq/F645ktN6URh95mvbH2gMOFmmny0XQkmaTuzryvwjGxySaNCKZ92KcoYA1dOOr0YyA2jV8
- VcbnUwXy
- mss5D8TNFzQiienneo2xlt83mf66PBYZXDdW0Rmtv/VNInpOkUy733CCWka+ox5KTxzhEvUqH6gMyD68KkeOBkLC5srJZJs1wxzWzhyN9eml5iHpN5V92o/xJuGKq4/0Qx/e4/jZ0Vya+DrVPzdadKLBETfkrLx+cmPVAzDXaAHQ0Xdfhl1Hrn6i3FCC1M9iDB6hgbTNhVx0CWr1/XdRnNV4YoszDXC400Y9LH7fg6zZWqGY0J5gB9HUlrRW79wNCshMr+BeX9EXObFyVU7+BhmslIX2EOAFEy78dpoS1VuHPA/Cj1klTYpajW/oFUZfuIk2n
+X-HE-Tag: 1766258447-869554
+X-HE-Meta: U2FsdGVkX1/EBTiGZQ0Qa2b4Cd622c6DSuSwiMT+5U3CK1HTl2RO6R1BV82CyKjP7IfxrJL9BB8ubOkvcVN82H8mujOxrmq029yISl8HBTLgvCh/L14GFOajC6CRmQTVgZw95daKUSs6CVH5+9BZXOVogtcheCe0TgJDZccdPu2lUjRWsUeJK7vz4L9R3qnrKRpKe0S21s/+LiHHVod+DtNlZ8QhsDBzRKg0D+6AMejor/XJfTghZn4LPoLk5GVkUrexHHusqRnH26rKnM+q5QiNceqJRTIax8QZe2XVgcxvgLwsiA6Vp3SCsGOX79tq+6EB+08lSkjxkv0xW+FgRzS7qYV/3Ml3hJQs01z1ufw1vhdq4IsPxB0iocX1+IC/CbfRDawOFD5y9pefOE56zXjaLcXaKOIm45XDkaMH5re1PI8mv1R5q3P0lkDBbZFq9Aq3FTudpN+eKcBcEkunsh8aD6z6LP7pXWMu+hoVjsTLNR00jiiugP6COJa+Ik8gU2wLIYymTr/C/9FMneaKZfalv+Z/kvV7oXAds83RagIwoHCxjqzRsp6RIfJ16kQJI3a75kVU6LX1i5b79huJZk3cfL3lrqAj0f3nbVRubSA0oGSbRIE0cYfhk/iDrTIOEl+3OP6/1NEb6S3kW0L4a5jtk98HKhP+6tBN6dhmfuDkOMGCy/WctUpLuzj1RWsZPFgG38AqVjz/ul0QHmPH9HlFY6gyInbnV3Tj3/8Go3bqSdEgqjIrdUHnvx2TccsyliRNc7y8QluuMvdujJubIab8x44DCwFGHIAmNuVAoFKyoEuLGncS/gGCgk9iP6rRSy9qJKPmsLzzF6CUBgSi9Z+hmdRwlNqTkobx3o4JvYyvswgqi0Jg70GNR0KuRNHhFE0WWQek1DphkKXWqncz7ZTDvGmIL8FuYaJ+WpGMzCJzLc5ufXR0U/sYFnrIeIWKa3ZirHhkinv/xDXRdqh
+ E0op2Z3w
+ HOsQ58UjYO5xoBG1K9npa6J/u8CKP8fRUGExxoVn5aw8kjWENArZijAHb3KAiC3Rc8aNsMPnysM/AKHzW3hGJiLjtrJUtYvqlyqV89hPqOJ2JHhFkMvPGm2O1HFN8py5tkauG1s7oEjf/TzaXT/1M100fvk5UwdDzLCUgZhSs2DDgQD6W0KLfrAG52/CtZ2u+kojp2azqstHPNCFwzbW8ZsUNowfcusPzSuHMg+fYd9FrP0Lxms1/0ita3ZqTlNQXPvz+jQ2z0gZmZIiyuKWCqaUgUzugvrdSu8qHDrt1D9XOJ4ilwDG7wO/JJ2O+J11l43UpNij+bUo1zCpfCoE87a0LpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,102 +101,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 20 Dec 2025 19:16:43 +0800 Li Wang <liwang@redhat.com> wrote:
+On Sat, 20 Dec 2025 06:10:21 +0000 Bing Jiao <bingjiao@google.com> wrote:
 
-> write_to_hugetlbfs currently parses the -s size argument with atoi()
-> into an int. This silently accepts malformed input, cannot report overflow,
-> and can truncate large sizes.
+> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> introduces the cpuset.mems_effective check and applies it to
+> can_demote().
+
+So we'll want
+
+	Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+
+in the changelog.
+
+> However, it does not apply this check in
+> demote_folio_list(), which leads to situations where pages are demoted
+> to nodes that are explicitly excluded from the task's cpuset.mems.
 > 
-> --- Error log ---
->  # uname -r
->  6.12.0-xxx.el10.aarch64+64k
-> 
->  # ls /sys/kernel/mm/hugepages/hugepages-*
->  hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
-> 
->  #./charge_reserved_hugetlb.sh -cgroup-v2
->  # -----------------------------------------
->  ...
->  # nr hugepages = 10
->  # writing cgroup limit: 5368709120
->  # writing reseravation limit: 5368709120
+> To address the issue that demotion targets do not respect
+> cpuset.mem_effective in demote_folio_list(), implement a new function
+> get_demotion_targets(), which returns a preferred demotion target
+> and all allowed (fallback) nodes against mems_effective,
+> and update demote_folio_list() and can_demote() accordingly to
+> use get_demotion_targets().
 
-Can we fix that typo while we're in there?  "reservation".
+7d709f49babc fist appeared in 6.16, so we must decide whether to
+backport this fix into -stable kernels, via a Cc:
+<stable@vger.kernel.org>.
 
->  ...
->  # Writing to this path: /mnt/huge/test
->  # Writing this size: -1610612736        <--------
-> 
-> Switch size to size_t and parse -s using strtoull() with proper validation.
-> Also print the size using %zu.
-> 
-> This makes the test utility more robust and avoids undefined/incorrect
-> behavior with large or invalid -s values.
-> 
-> ...
->
-> --- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> +++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> @@ -68,7 +68,7 @@ int main(int argc, char **argv)
->  	int key = 0;
->  	int *ptr = NULL;
->  	int c = 0;
-> -	int size = 0;
-> +	size_t size = 0;
->  	char path[256] = "";
->  	enum method method = MAX_METHOD;
->  	int want_sleep = 0, private = 0;
-> @@ -86,7 +86,20 @@ int main(int argc, char **argv)
->  	while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
->  		switch (c) {
->  		case 's':
-> -			size = atoi(optarg);
-> +			errno = 0;
-> +			char *end = NULL;
-> +			unsigned long long tmp = strtoull(optarg, &end, 10);
+To make this decision it's best to have a clear understanding of the
+userspace visible impact of the bug.  Putting pages into improper nodes
+is undesirable, but how much does it affect real-world workloads? 
+Please include in the changelog some words about this to help others
+understand why we should backport the fix.
 
-Coding-style nits: we do accept c99-style definitions nowadays but I do
-think our eyes prefer the less surprising "definitions come before
-code" style.  So the above could be
+> Furthermore, update some supporting functions:
+>   - Add a parameter for next_demotion_node() to return a copy of
+>     node_demotion[]->preferred, allowing get_demotion_targets()
+>     to select the next-best node for demotion.
+>   - Change the parameters for cpuset_node_allowed() and
+>     mem_cgroup_node_allowed() from nid to nodemask * to allow
+>     for direct logic-and operations with mems_effective.
 
-			char *end = NULL;
-			unsigned long long tmp = strtoull(optarg, &end, 10);
-
-			errno = 0;
-
-Also, `errno' belongs to libc.  It seems wrong to be altering it from
-within our client code.
-
-> +			if (errno || end == optarg || *end != '\0') {
-> +				errno = EINVAL;
-> +				perror("Invalid -s size");
-> +				exit_usage();
-> +			}
-> +			if (tmp == 0) {
-> +				errno = EINVAL;
-> +				perror("size not found");
-> +				exit_usage();
-> +			}
-> +			size = (size_t)tmp;
->  			break;
-
-I'm not really clear on what problems we're trying to solve here, but
-this all seems like a lot of fuss.  Can we just do
-
-	if (sscanf(optarg, "%zu", &size) != 1)
-
-?
-
->  		case 'p':
->  			strncpy(path, optarg, sizeof(path) - 1);
-> @@ -131,7 +144,7 @@ int main(int argc, char **argv)
->  	}
->  
->  	if (size != 0) {
-> -		printf("Writing this size: %d\n", size);
-> +		printf("Writing this size: %zu\n", size);
->  	} else {
->  		errno = EINVAL;
->  		perror("size not found");
+If we do decide to backport the fix into earlier kernels then it's best
+to keep the patch as small and as simple as possible.  So non-bugfix
+changes such as these are best made via a second followup patch which
+can be merged via the normal -rc staging process.
 
 
