@@ -4,88 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7DCAE6748A
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Dec 2025 23:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF967E668BB
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 00:07:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90F336B0088; Sat, 20 Dec 2025 18:13:06 -0500 (EST)
+	id E16176B0088; Sat, 20 Dec 2025 19:06:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC7B6B0089; Sat, 20 Dec 2025 18:13:06 -0500 (EST)
+	id DC50A6B0089; Sat, 20 Dec 2025 19:06:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CFCF6B008A; Sat, 20 Dec 2025 18:13:06 -0500 (EST)
+	id CA5526B008A; Sat, 20 Dec 2025 19:06:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 67FCB6B0088
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:13:06 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D62BE13B9BB
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:13:05 +0000 (UTC)
-X-FDA: 84241401930.14.AB5575D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 20BC140002
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:13:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BlYuQm38;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B8CA76B0088
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 19:06:59 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DF4A137ADF
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 00:06:59 +0000 (UTC)
+X-FDA: 84241537758.18.F59760A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3CF6420010
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 00:06:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HPseGnIa;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766272384;
+	s=arc-20220608; t=1766275617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcybuaWZP7yNm89K6p9UUOw2lVE0Ypr6+gW+AX8tkj4=;
-	b=Y8SU3hESWDzsH6bnd1tH/twa3nbRv0WVKlrI8HSbQrSOnO+j8FXhHEqaYXp5G9hih0Okyd
-	1gUuHAysTmRV5wi6DvgX98Ypldgfa5kNdyIbffkszGZrQTixh1w6iWPg0zZpzHS5d2wvve
-	TY7c3CWCg6zz1p41DjF//mMUXhUU4hk=
+	bh=Ea71sJcyVvLAfh0ppoeOiLD+SCqKPexRnXP4BzsR+fI=;
+	b=gunHo7JcKq14zeb0hEAM6oeZjMRk8TNbtGCmY8JfOchHXzBdBn70bAkLxiu+y4zkHOhnVO
+	/Pf4l+DjlRCi8L6gL+t3d6xWa6nctte2yJ4nYo3p1V/sSN/ZeHSagFeMHyo/MhFMM16UZJ
+	m9fvRh6A1xAu8lM7Qn5mb8psDbha5qI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BlYuQm38;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766272384; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HPseGnIa;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766275617; a=rsa-sha256;
 	cv=none;
-	b=NMMjf1ArpjOFYrAWhdokzmiTG/NrMoAWCkHVvOFUPj+yc43Yxgqk8Ga+ttlRJk+4e+vmaw
-	jE7qmHCgn89i4O/S6BzUX+ntRiDY6ld2MaizcNMQ3vKi7OmyblhE5V3blTiT7d9Ppr47Xw
-	pOXcfDNFMmXpDXi9PIlH9enj63vym88=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BEC640375;
-	Sat, 20 Dec 2025 23:13:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD70C4CEF5;
-	Sat, 20 Dec 2025 23:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766272382;
-	bh=+7nk84yUjtX0ynkF4hQkbgTB2Rrscujd1NJooTAi6Fk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BlYuQm3812gsBx6WgmIHXDSpCZ/iX8xx22AT56+umZu8ZkqhIZPTwLJwb7V6G5qiD
-	 L+7XZcPOKLjYNCGMq++4T+bFyPwQDPnElMgJ0L5wCsx3P467qtD3E4q1Y7IPUEoQDb
-	 V2GxbT9DwYeI4/RhpO6vZ6yCApk8BAck6+8vMZLQ=
-Date: Sat, 20 Dec 2025 15:13:01 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- linmiaohe@huawei.com, jiaqiyan@google.com, william.roche@oracle.com,
- rientjes@google.com, lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/memory-failure: teach kill_accessing_process to
- accept hugetlb tail page pfn
-Message-Id: <20251220151301.b0ec3c1aa6527b0b1bca1e4c@linux-foundation.org>
-In-Reply-To: <20251219062819.2499399-1-jane.chu@oracle.com>
-References: <20251219062819.2499399-1-jane.chu@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9gcfj4pyyuk1g4i5k3werc6wztuudkui
+	b=DKf0XS2A2xHVlvOSUnGDZKp0Z7YamZc7pKVmFteKaifOZeeXEGoOxCpUqwI4j5whStIfh9
+	jqrQI+ohAuRoMkbpO426ZCWeTtpXglkphr9xHnJEUTY0DoDFzYsIlsfvEdS/mbS8tCQr32
+	tAdL1ADyRW8T/n/7boXPykJmADRPiGE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766275616; x=1797811616;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sOt6CEZpOSyORmbi/kzA8CZ3ShnRxK4EN8upthUlT8w=;
+  b=HPseGnIaSN2T6xhiP30sXW+O21W8AVJ4edOh9haMxUnpBtDxjTlCdyqB
+   bQsCUegYrreML5aO1/syxXsRC3mum8numVT1dKvbE3zZFsKOc+8MyVl6p
+   kkLaMbJo8i9PUuHzhjVqF3w2wfeekIm6vAVuUwDD6KkzrbZXBWwsUM0W6
+   L9AK0cgNpQGy/Jr21MieUKp0DNN9RQ50ehqC70ZzJcbz4rpWGhTbnIyXT
+   YhTETLJQt8PYL7TJ/63ZEhI4N8EfMTl/qqDDPGVQm8RuUY96kWK2WHugz
+   R4FLCIOp+lEf2xmXSq5NSoK/QEjeA0zqAIqCgMd5a18OIwMdS2foQtbe4
+   g==;
+X-CSE-ConnectionGUID: aGxs2ChpQnez6tkdeoqCKw==
+X-CSE-MsgGUID: sFQWLqUyRna6Go+3iN6kIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="72035920"
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="72035920"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 16:06:55 -0800
+X-CSE-ConnectionGUID: uQzW/VJJQIqjaHIxzp2Fmg==
+X-CSE-MsgGUID: JPj19i+eQvy24iR01DTvYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="199099060"
+Received: from igk-lkp-server01.igk.intel.com (HELO 8a0c053bdd2a) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 20 Dec 2025 16:06:50 -0800
+Received: from kbuild by 8a0c053bdd2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vX6yG-000000004qW-0ki6;
+	Sun, 21 Dec 2025 00:06:48 +0000
+Date: Sun, 21 Dec 2025 01:06:34 +0100
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	iommu@lists.linux.dev, linux-mm@kvack.org,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v4] io: add io_pgtable abstraction
+Message-ID: <202512210130.LVNt1EfI-lkp@intel.com>
+References: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: bmreg8w1w9frpk9xgc9g6thhd7fqkhdw
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 20BC140002
-X-HE-Tag: 1766272383-529810
-X-HE-Meta: U2FsdGVkX19Ya8RqgBhE3unsLlLbzY6MeULF+b46iKN3vhi1hHiaotdm1ch9X9Y7jpwWo4w72SSO7UukmXliI6WdnVB3eUSEsD32CWUSzLsZM7fI2e8mMsha/hEGakt+FbE7Od8W6B5FMzCeoarBIQjKy9DxIqXOxA15wVmrV8q/I4Wy1foxfDjItuxuUrpIlU00E2iv6+/d4J063rHjcB3k1wb7FuHf5SIidRLqAXG4RJ8W5ITzp4CSKGTk7PD3QmyZ70swv3ZEIBfTrR7/6XVlSIDSUeiz8E3X/PovWjFWJgb3GmuotuF3IV0GV5hL9wb0nzOTbdM3sYrZaz7m3+UwNt/+0MUEdE0cKOuRH+Ura83cm+T0+N/jTWK5TOrmeDuTVLNyhSRuqNytEs1/++XuZUEm2rhpRxR1P0tudnDpOcLLxgTBOSnzIWBK2JukTqGNcYfhTd6RUIcJoyXnscycbmpSeHoV3DNPPFuYTS8P95+nwDIyrhvPKamxssC0FE3vJ+Szy5k+SSjGxOuWJyUZgjKDfFUwmnZa1QVqua2nZyrj8xGIQOV3UrGPaGRF9FmusPFJz1WwD2rqqYOREO91w1DZ87HmFbSybU/UZjA2sptdeJLJJ74Y8Z0tRr/r0XBM47L57m5T1wF+kzJqYGuiPMkbxSERUy5/NQi8ApINI5BdOl/6vp2oDRW+K0cFtVfB3nmHhvkW9LnOGlN/GB3O8tHkjR9MDY8uTpzcqt+9yB8mQ8z0xbKkZDYBRj9an7NA91syM5xUvfS/AWryxpU/8ahWbpVtRoAYDb/ikPSe6jeC0xNP6cGCPboUuq9OJqZJ30W2+N/3SN7S2dGutE7oldTytlJjnaJVs62WAfVk0iLw2jyGHBdBBHjGZxp4E42Hcq/a4dLMVFbLGdRGIyUsYSzWg1MSi1JUB09kR9K++J4ilY1koM7fOfyQ6fn/TpVoDekzg5IdKnu7CR+
- DN/2EB6h
- SHHzxhs71qauL/eZi2kxpq/v6oikwsd5dxceS/Mk9/ktdLoyGyDd4cgzx9hf52whTAf72VJNFtxrYRcgapF/B+rHM3mKOi6SJqBsEWItI8HLNBIl59rO86GobhVdGupRn5jxKwF3vsJDibYXN8Lws3ycMIBGWailV5UojmcuoqgcgAjbUWBApl1YjBM8XSerjXAS4Gc2YKH2BXjKmrvgT0bTVEQI6ZWywnhlJXM3uuoYMaNi/RPTiJTgcRIyU+BMiYVkjhVdA5M5z8BtIfBjW4CjwwJXa9Efgqygcy7/HklVXMOj5xTKS3jQSXbpShy7ztGol
+X-Rspamd-Queue-Id: 3CF6420010
+X-HE-Tag: 1766275616-498686
+X-HE-Meta: U2FsdGVkX1/YbPfWedGsDtPX2E4r+M5yDfJuDmJ3Ys7pnVtkLUK9Thd62pxRlWiQ9PeuYZ5UFpPq0l3ODHZOSYySAIbw3y197USWcSHe4RboZ9SoSW86wCLUXKm6A+WJf3pnpxbNAT0/kCMjwfLUNNei6VgB24nikz0YQ+Wu99zJfhEIv/JpO7++HkZSJUw+sRIZN/QNUuSU3CgjDMpMwUqlgFOenwTu8Pjq83jyIhSttyfqVEnVvA9oKLHTxybGYOgOWDJInDu9huEtnFiOm9cs9Hk/uVt/Os1nVOkMqKaRkF7Gl9DbBOBfxqvlE244cQlFRMJhmv4RrDL9pyxgrhXczQhf8ECXcUZvrEGLYAD6940zMa2ujzqcLII0xX0F+u5ki2+SG7OcHVo/bChvbGC/jdwitAeDNHe/QXHKEDbXsMWfOD6rGdWnc730e4PJGkTfygVPa26XGm7A8PlYOD9lRaSVpv8CO2KSZ9s0BZ1lOx7PvfKst7eZ26A2Mt6a9Z/oCXQhoAUrRr2Mm4tPlTR2clpdqZ53gYLLQwpbYLjU24NV1z/O6DsHIrGdRmMQa9F/x78Zdo/T7S+ig42AeNzB1uh0pzkz2VOI+Xc+VIoHp49EqLK4oc7jaa2+zz3mFa1nv3gmwxN7Xm4F4KEZhHhfJuO5wWyKf/vpHPeqDZ4OAS4TR0N1z5BdD+M6paCK9L53Y68Q4WO600Rd/KZqsiGJWd75QneXpAqj8+/knNBl0hwo0bbfzwZehZSrOZRN5Or4y2hXgEbt1TRWpWDTz4H2VeJyX8IWpqE727jFs7Ck7kIlWKVNLXBwpJf/L6SQU5ev51yptBxf1inTry0YtF+4pnrj8WgnbBppXXFF1PH+BX7zJnAWEkNqMNKMBYXTdLn0oH8aISiRi0f3t8FH31i9Lt+8wOD8tlhHk4Lbpq1w/JaOQb5THlJXQV1ddxr6NBvqnMfQo9ekD+iuCKb
+ /F4WNu8L
+ UgfDoEkt9rQqNs8n4KQNEwYi9qH5V4Gy3HMgqG3/ZnF7yuhQfvR1kcfCjz6QilrAQfF3mIuxfS85FO35rYJmSkA/BKDUq/AcIQ8X4rlJZcookgYFDhkMTOMYYZbhBRlsOLumMy161KWxtNxSFMIMwMLMJCkQ3fcqZ2jifeABVLlWiaURYYePo4kQtMKD+IUgZp4iVBk2fuOJ/Sul7u4V5PYzv68UtIJ1U+05yQu35UHNMz9N48KxrGItMFSfvVDpcBS675sDxKOZYMpccv62hAa3UGnZsM6qjRQVorjGd4FPFFqxmX458DX2u7fLgVMCBLOrENCi2SMicTFY8xPHPmRGK98FaIIqTNmduggQ7U3O4k+SSx4+YE59ygNaBJF59ckoLQwKiB6iY5Yct9f+cTB9/PKiCMiJx1epKB2whSsFNwipxfkks/HKc3WhcDQwNJgbj4SxUGonoi3fE4cr+I2hywcTalSCy1P86mo7cRiEnITal3Ly58tbdekKzbO9mPPyWvW/f8kau+8xLLxPhmZ4qi3TgUxG3tqs1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,24 +122,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Dec 2025 23:28:19 -0700 Jane Chu <jane.chu@oracle.com> wrote:
+Hi Alice,
 
-> When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-> passed head pfn to kill_accessing_process(), that is not right.
-> The precise pfn of the poisoned page should be used in order to
-> determine the precise vaddr as the SIGBUS payload.
-> 
-> This issue has already been taken care of in the normal path, that is,
-> hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-> correctly in the hugetlb repoisoning case, it's essential to inform
-> VM the precise poisoned page, not the head page.
+kernel test robot noticed the following build warnings:
 
-This conflicts with your "mm/memory-failure: fix missing ->mf_stats
-count in hugetlb poison".
+[auto build test WARNING on 3e7f562e20ee87a25e104ef4fce557d39d62fa85]
 
-Also conflicts a bit with "mm: fixup pfnmap memory failure handling to
-use pgoff" but that one isn't cc:stable, so this patch (which *is*
-cc:stable) takes priority.
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/io-add-io_pgtable-abstraction/20251219-185557
+base:   3e7f562e20ee87a25e104ef4fce557d39d62fa85
+patch link:    https://lore.kernel.org/r/20251219-io-pgtable-v4-1-68aaa7a40380%40google.com
+patch subject: [PATCH v4] io: add io_pgtable abstraction
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20251221/202512210130.LVNt1EfI-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251221/202512210130.LVNt1EfI-lkp@intel.com/reproduce)
 
-Help?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512210130.LVNt1EfI-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: this function has a `#[must_use]` attribute with no message, but returns a type already marked as `#[must_use]`
+   --> rust/kernel/io/pgtable.rs:162:5
+   |
+   162 | /     pub unsafe fn map_pages(
+   163 | |         &self,
+   164 | |         iova: usize,
+   165 | |         paddr: PhysAddr,
+   ...   |
+   169 | |         flags: alloc::Flags,
+   170 | |     ) -> (usize, Result) {
+   | |________________________^
+   |
+   = help: either add some descriptive message or remove the attribute
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#double_must_use
+   = note: `-W clippy::double-must-use` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::double_must_use)]`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
