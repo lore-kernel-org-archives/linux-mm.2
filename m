@@ -4,114 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF3F5E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 13:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 468F9E67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 14:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36A846B008A; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
+	id 24A346B0005; Sun, 21 Dec 2025 09:07:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321D36B008C; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
+	id 1F8356B0089; Sun, 21 Dec 2025 09:07:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B116B0092; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
+	id 0F79E6B008A; Sun, 21 Dec 2025 09:07:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 124DA6B008A
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AFE44160881
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 13:02:49 +0000 (UTC)
-X-FDA: 84243492858.26.D3D20A1
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E9332120019
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 13:02:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aHa4B2ZF;
-	spf=pass (imf29.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F21056B0005
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:07:22 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6574D8B348
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 14:07:22 +0000 (UTC)
+X-FDA: 84243655524.20.941670C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D1C644001A
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 14:07:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gHqp7gjk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766326041; a=rsa-sha256;
+	cv=none;
+	b=bgMcVvlBwErqKV6mssMzAzQjPDhQ8Wj+fBOU1M/TjsJkcS2BhSRQ9zJDQP0g+SCuiWk5Rz
+	R6x2+794UjyK4W4EvRI9zSDgVJyXI6UhUbRCmmv8oF6OOuMWi04aJTKzqr//COYAI2AC3g
+	xHbyeVd/PJCXT14Zf98HqU/TV1Od7kE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gHqp7gjk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766322168;
+	s=arc-20220608; t=1766326041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
-	b=lFO2xz7kQMmXW4oOHfVxIn2lx9T8BkolgG7a4IG0Fado5QvilYaNaidBqhAEBsJZdG/muD
-	9T7cw7oqk8zDhuWnE3NAe0F5KypxVKqNk1wQfppI3qNt0aZ5WoWuknOOmOlIqX5Qx8WKw3
-	l6snN0duS6fIi4uYKvmoydkw2BK5gSU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aHa4B2ZF;
-	spf=pass (imf29.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766322168; a=rsa-sha256;
-	cv=none;
-	b=q+VjxgDYQcmwlqP+vdZWxKTWcEPyDqq+murj0IMIvhvv8myCpPKtbu//Y5nFSY+DpO+lOf
-	MzG49EjdudP/3fjssn8X98pV1Yt3M88XMMnA6sLSkLlIeK2t1fs/C0xwQ4hbqGB2iiUGQw
-	LkqC/bdR2V6G4ntqAvl+OP2pHDZuJSs=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-bf1b402fa3cso3294061a12.3
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 05:02:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766322167; x=1766926967; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
-        b=aHa4B2ZFrC2rbi9Mha5ajkz5Adx7osJnfa1SHWbwnS9KSzYsNXfwQ9z9PrKTiPEmds
-         gQIYLEanJ7pLXWnF+4EuNlInf8cNl1KAB0zUY2LQfFfhF0HUZjDE4C5i2OOdIuFZbKma
-         n8AU/cwa2yy292+hJrHywxMj5IYE50c3mTw1nmQu7DTKNAIE1fNDtUg8gJBzs3jsLj41
-         1JHXf41h+SNkEUEwo4HdzapucqDiMwNv5xu92jnmADqRFUclsqbkbV8mB4s3NpQYp4KB
-         ycldXC/2EnfJGbTw1LlHEqM2E+MAwN0yreJKSoRNI+ZYymIsACEdCye2iICkmAlIEv3g
-         TQYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766322167; x=1766926967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
-        b=vyopEorYmx9oyEJwYyDs7sVv9wtbFKresc+HNihAa2Oh7ROzQOKe2wab84rpng8GZ2
-         x3C28yEMW3KwDfZBq/qqxWdR/vQCXWNnkbizAAyxbUBsn0jumHCY4/WGupAOMnUkijKl
-         Y4sgfh2KzT7mzexR6HxtE8sh5nMGvJxXt/6fG7WSupWEOZTFLyHLPfLqOtiWjeXTgUOU
-         26K0hDKGU/dZ4lHyv/5ubVO4tjt3NTMEQJRQjkDa7640i7qrnk2zYmTC2llG1S/zYPwE
-         wy2zPyuiCU0xsXFEIMkwP/A1HlivIhJdjci+AtcHhcBUHP48h6dsbCf6TcaJvf9dBfkC
-         rv/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWHtLL6Ag6j0/2fBv7K1Wt3/dkCr90jrZPeCqDL8sG4ZfFY2XdjmupSy6IO6rBMAVaGjNjn7L/PMg==@kvack.org
-X-Gm-Message-State: AOJu0YzpA0B86wUU69+9jwLZmBkGZdsawD6IDTnLHtL2R3CsihNPo594
-	WQMLpm2Riiszt3j8LKeov5KSXkNkwsc6U/z2JvHoZxX6DRuQusDN4VUB
-X-Gm-Gg: AY/fxX7nDlY7rACA+WBDVXyoJSW4xZGKTeFgzXnoJzBEf/mSCCFAt/O2IkVQDHVFUZL
-	ayAeIdqgz9uTezzTP94cHq7NdeOqyMDL9nQtNRz57pWEelfBU68z872Iy8ObHAHrJWX1FcSMyI8
-	HUUveJBNewxRfT3HGzkl8tA7qoHDC7IKN7hHaZXLUmofMnySzrrc3exdxGWu3fnRfNrxz5EbRrk
-	T7bwAcUTlm3bQS6/hpvQsgVxDalroW5dXW6ig6XXaYyuc24Ry8g6JSEYMEVkDuLFzMLkGzwdTKF
-	KFBbmTysj0sxJYlHLx1vaaYbuw0aTVTF4Pe268H3ibwPJhI7KQ8O9iaJ6TBfrnhwx8TnjsgT2Dj
-	v8Ve0vt29Bl11QO0UGFgGSvFRrDDmstbUNc0+KBs1z2JdTcHCaDDIVLA38yBOY0ecJoQ6+3ygVr
-	X6
-X-Google-Smtp-Source: AGHT+IE0pzTSaBZW0PqBo1nLMFou749uCZH2R8Sj1acU7EbMWf8ZDkTgJYeOyEMZv1HM4VBoxc7dMg==
-X-Received: by 2002:a05:7022:2093:b0:119:e56c:18ae with SMTP id a92af1059eb24-121722c1f51mr7539579c88.22.1766322166515;
-        Sun, 21 Dec 2025 05:02:46 -0800 (PST)
-Received: from dev.. ([208.184.112.130])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfd95sm31732013c88.1.2025.12.21.05.02.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 05:02:46 -0800 (PST)
-From: Shu Anzai <shu17az@gmail.com>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: shu17az@gmail.com,
-	yanquanmin1@huawei.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and remove redundancy
-Date: Sun, 21 Dec 2025 13:01:14 +0000
-Message-ID: <20251221130114.1483856-1-shu17az@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Up3lzUA+b75W/MTwqu9jDsDOSOxImlh696tTADVHFQc=;
+	b=eQSIrCGKd16tDF3pbGPk9+uUwW0Cea54dxfBszBaw1bt15UW40fQCvxtFEuIQu0VmvADuo
+	8asGa8wV0eer7y1WrHkwefn1NKKjffGCySQxOxZXrF2QTY3KhMSRrUns7lpzQ5oUArykrL
+	jJkKcm8lExT/w4RiPuhC7hc9LsvtbKE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 96C634001A;
+	Sun, 21 Dec 2025 14:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4380C4CEFB;
+	Sun, 21 Dec 2025 14:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766326039;
+	bh=jlEdX7ss9VtYw9IGwQ7RQSOLbQ4LFNrQ1j0ktaihUNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gHqp7gjkWAA3IRhr4XOpB+CAoGi+o5mE50OASMRNr+zINsr1xyhBmPj5knmVXnHNx
+	 AkIhp55AzdFpzMR0XnIP/yTJA110Sufeas1dwO4fgIRJ9qX0e+Ahd1FPDyXmgHXlGs
+	 SbK1SwxU4M+fPxM2DQZOaA3BbhIeebneE0NeqU2so9vB6yZdsRhSMkDdo1kIccw3jA
+	 vU1Oy0jNy1LbrsAbEM3qvoO1kOD/e+tf9GD4xg222UUIQQKvFWYAT2ya+hl2y9O547
+	 ZljF7U8TJpM8hyhdhfw1DZeLF5cB+FO4hS3uyXp7F8L+2C8uuhuIDnjO7iyg7vMmNd
+	 KJx7q3eimBPxg==
+Date: Sun, 21 Dec 2025 15:07:14 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <aUf6xwicMCxL28Yp@devuan>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1765406336.git.alx@kernel.org>
+ <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
+ <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+ <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+ <202512101736.DE24BE89@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: x5c9czakw4c9ksr4qhb8ai7utxpmxrua
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aunnpwbmonbqjh5u"
+Content-Disposition: inline
+In-Reply-To: <202512101736.DE24BE89@keescook>
+X-Rspamd-Queue-Id: D1C644001A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: eysasknifha8ud4z7mok3xi6cghmur6g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9332120019
-X-HE-Tag: 1766322167-359718
-X-HE-Meta: U2FsdGVkX19iLLIGBIzL0R7r+8JSJRfg1vf8/qRKpywCxv4JE/ODZm4tBX1Cuj/WWb+1EE5Ju+UMrQFLa25Q6wnT1FN1nHMl45+ujaImnRDqxv5+EJURhAv8tiB143wOF7w/tdQlJHDZ/yw2N9bLIjMcXBWOohKNmpcL5FFjsbioumtAYJ/phkhGHgGAWIoZGjRg97dyAa2gUdyILtejPhg9btIrDWStk4CCi3sl068BvCfqzxb7GsgQIB2gWq0GO2qWCE2It0IOW1cAWjjTbemhCeoCUoIgWFGcoVDGv4kouSH2KljkcDZ54A/KE2sVea9aCCZKEf5E41CXzjh4uyxs7CM6CX3zFzY8mtrrbasi8MCZ7sA1EqBR7fqt7c0fauTBM8vZw/APCYgsY5SczldNsttVKuzkPEon+Bi7V7gvLbmU4zn2nj4FOOEwVwsF25I8SEYDmKIadNqK+py+fMjUMM9BUx40yleLkClwcLzjrZZD7pJvaKYLzKi8JxGPAj8vBO4hk+dqtodplzxgBwEwTA5nMGz9lL2+EdPdfhxBioTPWlg2rOt1xTiPCypkKABtb41fEIz3xyXDNz8dlp0j3MUSJm8/MysTOAuWvVrWG8/58hB38SnWILM+wOCNyG116HOgMC6+ZdoWIWxnSaPzkM+X6w0FjOQ/cYolUkwD7cFfqEb39Do5aQOfPppRj6BtWpjiQ9AuMnoISsmgJ8jHhkW4BmO8Ebyr7YrkQYaaasDE/W37ASA8OayKw/t00+qqUuwWR/YUOiU9XovBZnpxBaTrjEoceDyFfM8lPqE9nCbNaoafXgqhlGhC8DnKxcrCED4nbi69Xd6SHT3BLQkUXryIGMHzi1iB7qju3upiXxaepmJ+k0KwyWTKO7VqloKfNN8UD7oBgeymv7X6NkmlFVxKhrkRxnyQ28xfnW6si4Qs7qa74bKjn0/hIu347gSR6F8gdFIXgiyLZwt
- dSckl6to
- IPZQGRm4aWm+wEyYY5LaJPatYHliZ8+stnN+eC+yixDXL9qwfYBkUm2EYkLwRPLYLGWULlK0Do7gcmFyPRvxasCpE2ZKW/3c07uhg338bjOPmr/5jmfEhUlS+JycoRKFFHBTMLdVnLfFy3MYQLhwgb+gN9kSAp9Q6iwDoi7i3T/FdnTltfWwlTxGP6OQj1JDk81S528Ky2PMZ/dEb+wClh19W1L5+cQeiQWvdcNlBW1U6iSZcKNMybpPtCMulQ2XpWRqJPc3TLCDxu/LKkVgjdjdssRK7u8tkNjiN7bpVTNEeicxXuSZU4Q0e99G8jKT4XkfmwkDED5TuITLlRraOTUDOR1Y0bnGmjSRu91DpLcE+NdEyJvpiQeMuV5WQ0lejNG3cT4kVs1cssOzcNLWIn9OhU9l++fL+AWaB
+X-HE-Tag: 1766326040-346994
+X-HE-Meta: U2FsdGVkX1/jwlE95pDc6zu4rBQZV6Pd7ebdUxjYFyPqLWD6Bf0KDT9TKTgiNfJOIRCcJj9ZCZ0btZ5DXUQXjkNFl2pL8wII7gf5toZqSRrL4Gr7wA4ao47ZPhECwk/b0aJIu1i+CetZ5YVv4H0wFN5VwmsZ2ibQ1Z18yKxgBoKvQNbgu6TTD/DAp3br2ihKFxqg3Kc99vZoRhaTxh1RZ+1TohyEBgcpTFsJaZ19LId8BlrNuVnK0hcLjN2Z8LfdXgTNa9Gx+hM+40NXLW5KhIi07jIWPla00kiEdTUx0oVdYCKxUiZrMYTF3Yyx3BK+Pjxv5HovHDgW067nm5sEVeLq9vVMUp3oIXXsTZBcq8tV98K0OYhBDQvvky7TZkt8dJ2CP52I35Epm+jP+Fhqizeh8uHMNGx0LjiRmjG82pxSr0jO2WahTYxvZAq2DHLYRkUuFp4q7b9yoKqgNxPqgof9vLvLmwFmg9Pf2+UbH7rPvCBfl9iP71fknWRQujmBOpyK2SJLbyVZS+Nx0WIw23Lped3YRDXq1WldojTNBxqz/M2D7yrzclPPoFVQjZvoGE6JzMFTDCBFnjWJmVBajNH6o3Q3Ubfb2zd8bYe96e5c6Pm7HgnpgpK0vJJd8LTIej7dktct0ukKqEIY4VUlMoAZsimD48dhgHE2lh74c8Cb0GWb1kW8FDAwCTvrNRebZDcsycrnuyDjQqo8TpuEjOWOi+JiUHPJczHv9sItnAceTQuRNylpOkypXmFhNj1kdQ7t+dpsJIyu09wtLwCBiV2gUQX+QhJdgaa+7K1U6uxWpoblVuYxl/p25wDkS/wXRDAoiYOdkjPqV6wM1MY/4ZYXvMMomOnbcRi5I+lBre2AfMBNAsqAZZ2P23u4/TOlbmm0ERX9uF1ZhI4W8Y0YE9tP+lGjU5p98OnDwCa3OE3hCeQwFe2hXx0zhX14hMEvrpMJxfBqURB5GHdqkYq
+ 6bNBIzKt
+ jTSdxH2TjWtTDtVdXYuA+Uv83Kfx4OZ/3L9WS1TKrhJZNmm3N3pFOiE57X/WyxO4xy5UJxLd4iKIiUNUJkk8KHbHrJrKjXpJcMu3/VeeGGpolVJ3Jud4o8EpNTF/fyGddLvyu2xZ+ONHyjis=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,141 +101,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add some missing test scenarios to cover a wider range of cases. Also,
-remove a redundant case in damos_test_commit_quota_goal().
 
-Signed-off-by: Shu Anzai <shu17az@gmail.com>
----
- mm/damon/tests/core-kunit.h | 51 ++++++++++++++++++++++++-------------
- 1 file changed, 33 insertions(+), 18 deletions(-)
+--aunnpwbmonbqjh5u
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <aUf6xwicMCxL28Yp@devuan>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1765406336.git.alx@kernel.org>
+ <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
+ <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+ <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+ <202512101736.DE24BE89@keescook>
+MIME-Version: 1.0
+In-Reply-To: <202512101736.DE24BE89@keescook>
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index f59ae7ee19a0..e9ccc3fb34f9 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
- 	r->nr_accesses_bp = 420000;
- 	r->nr_accesses = 42;
- 	r->last_nr_accesses = 15;
-+	r->age = 10;
- 	damon_add_region(r, t);
- 	damon_split_region_at(t, r, 25);
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
-@@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
- 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
-+	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
- 
- 	damon_free_target(t);
- }
-@@ -190,6 +192,7 @@ static void damon_test_merge_two(struct kunit *test)
- 	}
- 	r->nr_accesses = 10;
- 	r->nr_accesses_bp = 100000;
-+	r->age = 9;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
- 	if (!r2) {
-@@ -198,12 +201,15 @@ static void damon_test_merge_two(struct kunit *test)
- 	}
- 	r2->nr_accesses = 20;
- 	r2->nr_accesses_bp = 200000;
-+	r2->age = 21;
- 	damon_add_region(r2, t);
- 
- 	damon_merge_two_regions(t, r, r2);
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
-+	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, 160000u);
-+	KUNIT_EXPECT_EQ(test, r->age, 17u);
- 
- 	i = 0;
- 	damon_for_each_region(r3, t) {
-@@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
--	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
--	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
--	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
-+	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
-+	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
-+	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
- 
--	unsigned long saddrs[] = {0, 114, 130, 156, 170};
--	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
-+	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
-+	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
- 	int i;
- 
- 	t = damon_new_target();
-@@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
- 	}
- 
- 	damon_merge_regions_of(t, 9, 9999);
--	/* 0-112, 114-130, 130-156, 156-170 */
--	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
--	for (i = 0; i < 5; i++) {
-+	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
-+	for (i = 0; i < 7; i++) {
- 		r = __nth_region_of(t, i);
- 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
-@@ -269,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
-+	unsigned long sa[] = {0, 300, 500};
-+	unsigned long ea[] = {220, 400, 700};
-+	int i;
- 
- 	t = damon_new_target();
- 	if (!t)
-@@ -286,14 +295,19 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	t = damon_new_target();
- 	if (!t)
- 		kunit_skip(test, "second target alloc fail");
--	r = damon_new_region(0, 220);
--	if (!r) {
--		damon_free_target(t);
--		kunit_skip(test, "second region alloc fail");
-+	for (i = 0; i < ARRAY_SIZE(sa); i++) {
-+		r = damon_new_region(sa[i], ea[i]);
-+		if (!r) {
-+			damon_free_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
-+		damon_add_region(r, t);
-+	}
-+	damon_split_regions_of(t, 4, 5);
-+	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
-+	damon_for_each_region(r, t) {
-+		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
- 	}
--	damon_add_region(r, t);
--	damon_split_regions_of(t, 4, 1);
--	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
- 	damon_free_target(t);
- }
- 
-@@ -574,9 +588,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
- 			});
- 	damos_test_commit_quota_goal_for(test, &dst,
- 			&(struct damos_quota_goal) {
--			.metric = DAMOS_QUOTA_USER_INPUT,
--			.target_value = 789,
--			.current_value = 12,
-+			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
-+			.target_value = 234,
-+			.current_value = 345,
-+			.last_psi_total = 567,
- 			});
- }
- 
--- 
-2.43.0
+Hi Kees, Andrew,
 
+On Wed, Dec 10, 2025 at 05:37:13PM -0800, Kees Cook wrote:
+> > > Are there other open-coded instances that could be replaced? This see=
+ms like a great task for a coccinelle script.
+> >=20
+> > There are many, but I wanted to keep them out of this initial patch set,
+> > to make it easy to apply.  When this one is applied, I could work on a
+> > second round that replaces more of them with coccinelle.  This is just
+> > for showing that this is beneficial, and to make sure that you ask for
+> > more.  :)
+> >=20
+> > Also, it's easier if there are few maintainers that would block an
+> > initial patch set.  If restrict the patch set to a few files, I don't
+> > have to deal with many of them.  Once I get used to this, I'll deal with
+> > all of them.
+>=20
+> Sounds good!
+
+Now that the first patch set has been merged, I'm working on a second
+round.
+
+I've written a semantic patch:
+
+	$ cat src/spatch/array_end.sp=20
+	@@
+	expression a;
+	@@
+
+	- a + ARRAY_SIZE(a)
+	+ ARRAY_END(a)
+
+	@@
+	expression a;
+	@@
+
+	- ARRAY_SIZE(a) + a
+	+ ARRAY_END(a)
+
+	@@
+	expression a;
+	@@
+
+	- &a[0] + ARRAY_SIZE(a)
+	+ ARRAY_END(a)
+
+	@@
+	expression a;
+	@@
+
+	- ARRAY_SIZE(a) + &a[0]
+	+ ARRAY_END(a)
+
+	@@
+	expression a;
+	@@
+
+	- &a[ARRAY_SIZE(a)]
+	+ ARRAY_END(a)
+
+Apart from the cases covered by this semantic patch, I've found one case
+which needs manual intervention (I don't know if a semantic patch can
+handle this case):
+
+	diff --git i/fs/proc/base.c w/fs/proc/base.c
+	index c5114e9a0323..e99c8cad49c3 100644
+	--- i/fs/proc/base.c
+	+++ w/fs/proc/base.c
+	@@ -2876,7 +2876,7 @@ static struct dentry *proc_##LSM##_attr_dir_lookup(s=
+truct inode *dir, \
+	 { \
+		return proc_pident_lookup(dir, dentry, \
+					  LSM##_attr_dir_stuff, \
+	-                                 LSM##_attr_dir_stuff + ARRAY_SIZE(LSM##_=
+attr_dir_stuff)); \
+	+                                 ARRAY_END(LSM##_attr_dir_stuff)); \
+	 } \
+	 \
+	 static const struct inode_operations proc_##LSM##_attr_dir_inode_ops =3D =
+{ \
+
+Anyway, I made sure there's only one of these.  There are no similar
+cases in the kernel.
+
+Here's a summary of what the semantic patch finds:
+
+ arch/arm/kernel/hibernate.c                               | 2 +-
+ arch/arm/kernel/reboot.c                                  | 2 +-
+ arch/arm/mach-omap1/clock_data.c                          | 2 +-
+ arch/arm64/kvm/sys_regs.c                                 | 2 +-
+ arch/mips/fw/sni/sniprom.c                                | 2 +-
+ arch/mips/include/asm/sgiarcs.h                           | 2 +-
+ arch/riscv/purgatory/purgatory.c                          | 2 +-
+ arch/s390/purgatory/purgatory.c                           | 2 +-
+ arch/x86/kernel/cpu/hypervisor.c                          | 2 +-
+ arch/x86/purgatory/purgatory.c                            | 2 +-
+ block/bio.c                                               | 2 +-
+ crypto/adiantum.c                                         | 2 +-
+ drivers/base/regmap/regmap-spi-avmm.c                     | 2 +-
+ drivers/cpufreq/sa1110-cpufreq.c                          | 2 +-
+ drivers/firmware/efi/libstub/vsprintf.c                   | 2 +-
+ drivers/gpu/drm/i915/selftests/i915_vma.c                 | 2 +-
+ drivers/gpu/drm/xe/xe_guc_ads.c                           | 2 +-
+ drivers/md/bcache/btree.c                                 | 6 +++---
+ drivers/md/bcache/util.h                                  | 2 +-
+ drivers/md/dm-raid.c                                      | 6 +++---
+ drivers/mtd/devices/mtd_dataflash.c                       | 2 +-
+ drivers/net/ethernet/marvell/mvneta.c                     | 2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c           | 2 +-
+ drivers/net/ethernet/sfc/falcon/nic.c                     | 8 ++++----
+ drivers/net/ethernet/sfc/nic.c                            | 8 ++++----
+ drivers/net/ethernet/sfc/siena/nic.c                      | 8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mei/net.c              | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c         | 3 +--
+ drivers/tty/serial/msm_serial.c                           | 2 +-
+ fs/erofs/zdata.c                                          | 4 ++--
+ fs/proc/base.c                                            | 6 +++---
+ fs/proc/namespaces.c                                      | 2 +-
+ kernel/bpf/log.c                                          | 2 +-
+ lib/crypto/tests/hash-test-template.h                     | 4 ++--
+ mm/kmemleak.c                                             | 2 +-
+ mm/memcontrol-v1.c                                        | 4 ++--
+ net/ipv4/tcp_input.c                                      | 4 ++--
+ tools/bpf/bpftool/tracelog.c                              | 2 +-
+ tools/testing/selftests/bpf/prog_tests/select_reuseport.c | 4 ++--
+ tools/testing/selftests/bpf/prog_tests/sk_lookup.c        | 8 ++++----
+ tools/testing/selftests/bpf/prog_tests/sockmap_listen.c   | 8 ++++----
+ tools/testing/selftests/bpf/prog_tests/sockmap_redir.c    | 8 ++++----
+ 42 files changed, 72 insertions(+), 73 deletions(-)
+
+I applied the semantic patch as
+
+            $ time find * -type f \
+            | grep '\.[ch]$' \
+            | xargs grep -l ARRAY_SIZE \
+            | xargs grep -L '^#define ARRAY_END' \
+            | xargs grep -l \
+		-e '+ *ARRAY_SIZE' \
+		-e 'ARRAY_SIZE(.*) *+' \
+		-e '&.*ARRAY_SIZE' \
+            | xargs spatch --sp-file ~/src/spatch/array_end.sp --in-place;
+
+How should I proceed with this?  Should I send separate patches for each
+subtree?  Or should I just send the semantic patch and let maintainers
+run it?  Or should I senda big patch?
+
+Also, I don't know if all of those files are able to use
+include/linux/array_size.h.  Do tools/ need a separate definition?
+
+
+Have a lovely day!
+Alex
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--aunnpwbmonbqjh5u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmlH/xIACgkQ64mZXMKQ
+wqmWvQ//ZWWq8so/sNRMW71qo2vyQxrd4nLS7/rjS7CXtXQw5FTHU/p3XvJ6S36w
+050CAxDfXwMXJX8KEsmSCacpjSJTBlLjSuLpONrrV6KxvQDvW9KLttmADaPrX6Jc
+A/qwu7qbvBUgaZPrJxmSw5EhfY+EYwDa10nbRcvpHR2mO8F9COjF8hhCzEIUJq8l
+khcOpjbqNQbp8zGjGH+oT8VhmlQqWMn2wobsG5dholavIzciybJ+edCKCAmm1uj7
+8NZOlodce5uH34aPcA+eVpFMXjpIkG7F4Z/pjsHU9MRwVhXkGXF27D2f1Xm/doLK
+MJ+ueTyemJHlqzFjR6rTsaV14S2q7KW6PtxNkNJpozITeaNOAocRHrsx6Uk5TGwa
+EcmT24OEijm4TMqpKJg4ReIwRgtnfIwmG25eE/lj/ljyrosrMTDFGCP7y26RJfnS
+wHvigwb45laEKPeviBI353/XOogjUG6++Y6QSEKyW0EQFXaFQtAHP8KkHISxn/We
+VyDNgoxJOY4Eq4DyC51xXOFHwLBGu42z0JDFLFt96NMXz9HkjR/3qvhu6BPn2BAZ
+pxdodRVLaYV9FKo6ELXWrfc8LSSEHgrI5VlrLQbRtCz9jWdQssr4RvDwPaFN/WRg
+CQOKiyrQau6SJZs2eliW5Zw3ctglGNAdMPgyIEAZkv53wW6CAzQ=
+=+7F0
+-----END PGP SIGNATURE-----
+
+--aunnpwbmonbqjh5u--
 
