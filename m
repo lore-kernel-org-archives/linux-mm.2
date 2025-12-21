@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56414E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D4CD68BD5
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:44:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B96A26B00AB; Sun, 21 Dec 2025 04:40:41 -0500 (EST)
+	id C6DB86B0093; Sun, 21 Dec 2025 04:44:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43C76B00AD; Sun, 21 Dec 2025 04:40:41 -0500 (EST)
+	id C1AD66B0098; Sun, 21 Dec 2025 04:44:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A475B6B00B1; Sun, 21 Dec 2025 04:40:41 -0500 (EST)
+	id AF4086B009B; Sun, 21 Dec 2025 04:44:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 933466B00AB
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:40:41 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B47013B9F0
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:40:41 +0000 (UTC)
-X-FDA: 84242983482.18.EC2462B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 966FA40007
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:40:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hW8kMe6Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766310039; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C22A6B0093
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:44:42 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33CE2136579
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:44:42 +0000 (UTC)
+X-FDA: 84242993604.29.0AA0559
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 00EB7140003
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:44:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XnoS3dln;
+	spf=pass (imf23.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766310280; a=rsa-sha256;
 	cv=none;
-	b=05r0bNaqfDbOgmUmwv26pcJakAU61whIYDJ1d7v61H9JsVqF5nctegLx+1LNcwc3A+PqTq
-	jO4NSSaKu4hBS8b41vvDmFPjiqNIqLVG5V7DbncI6U6oNoxcKX2RfKZHoRA1xOVCWgVugs
-	n/pNQmv954iA1zNFKhbSLh7EUXBp2rw=
+	b=zem6e3PJ6xzmSs251B99ctLa2dW8z+51XEG6T23kscYtwKWNfP71GHIgEnL3E17NZZ5FQX
+	dofq5kiW0GQOMgtag6EhT+phArRy01lQj3+iuiZHDH5G/RP4vVMRt7t0iP5bbBbH1nboPH
+	O/TgQ8fl7ZGmWkJUROfdIwA8yY6cKFM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hW8kMe6Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XnoS3dln;
+	spf=pass (imf23.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766310039;
+	s=arc-20220608; t=1766310280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=10w6n4Sop6yhPg01WeHQS8K6DVLuWo28GS5/ExjqBcc=;
-	b=H4Zvl/iN5+sNUTzzE8ZnIY0m27FGzssFT9Rwr5MukICy4e/1E9QQWGM7RuseDb+q6u3XEu
-	0zmXBDXW9seIQU9Y7rCyMUdkIcmXJeDJK/9OgLjGASfuLfdMt93XY2uDTDs/DVKYvSCCuf
-	msUULieFsqu52nmH8N/2coxSLE7+wAc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC32460052;
-	Sun, 21 Dec 2025 09:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0EBC4CEFB;
-	Sun, 21 Dec 2025 09:40:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766310038;
-	bh=VPOsV3JAwGjMJpXTBHYMu/MU7OLR+Gl9ZYxkeDnSBN4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hW8kMe6YQBHYzNeIpwFxaVfInYVgS3k9pP3Rf996cOZAwGi4ADxEsMRakYDCgKbeh
-	 wlN1av5t/wk6hk4HsWsvEYHEuJr5doFqskwxu/NZ4RUzSfSmW/p47sWQPlTtu/VsQR
-	 avm+kG8hqHBCUPMLK9SBK3kApQ+oVabtUYNsN7dTN4WzXZeUX2LJ/NNiz1YldGGZEi
-	 3CAkNiWTZ1rGcMi1a+DBX3qHnpadYwq/+QBaTXGN2ecxNwKxw5XXDdVrpiPN+obebE
-	 PSBTf+CUw9zakybMsj1nxuUbRYstrws3mV6ceJAMT4r416fFKiIF5O82CJXt9XK6BN
-	 2GvKi8dZUXcIA==
-Message-ID: <34fafda2-9f54-408a-be9f-d54c39b72878@kernel.org>
-Date: Sun, 21 Dec 2025 10:40:33 +0100
+	bh=v6+y9WLSDsSxJtOaxUSqUViYU4g6HBpwAKq4mBGcgzo=;
+	b=Bytv8rUhjkzx/7zcfLMzCihTjiDXG3SA8wn/0Ax2+AjBB6kttsjLYZnCcWpJ01kO+eUWJk
+	hdRRp2dTAATNlkGKRyOP8Ubg0NcCGTiRYw3P3qQlsXqvbrcysc+VT5jTdLi9VUojVQ/+ak
+	agzdQIm1eS5dpiki8rz8YCb7VqWU94o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766310278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v6+y9WLSDsSxJtOaxUSqUViYU4g6HBpwAKq4mBGcgzo=;
+	b=XnoS3dlnICskQQMvBsdqG8zjKIK6on+mIh93vcOxt39s5MFZVs9p6eZSUOzSd+cG7/CNsX
+	OTfVnTeBdrMCboJFENsjNJq72J4N93P2lhESFSXSYbGjfTqrBDVD4aIDX7IqRGikxufh7D
+	yj3osGcPWrRuNeV7EB2k2gJy8Q3iRbk=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-dE7pJANgO8C9aS9oObLjQw-1; Sun, 21 Dec 2025 04:44:36 -0500
+X-MC-Unique: dE7pJANgO8C9aS9oObLjQw-1
+X-Mimecast-MFC-AGG-ID: dE7pJANgO8C9aS9oObLjQw_1766310275
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b99d6bd6cc9so6320048a12.1
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 01:44:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766310275; x=1766915075;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v6+y9WLSDsSxJtOaxUSqUViYU4g6HBpwAKq4mBGcgzo=;
+        b=bbJAlySyGjVW7+x1R53rcoDX9uUyd8+/yU8SSNXcBJHwGECJ3aGZiJmdLjve3PeMwr
+         COoXF3IGxaS1CHPGxXkSWtny7TZ2RexImS8te8CNVybGP3+mpyD8gXOyUr01spYYYHW0
+         1WWBRfunpztoI8f5FIE1qzRNpGH/1SVY0nuk5fVSmjMa6QgnVp/JPmCEZUrLuUw891as
+         M03zYxW/PoZtp8e2/FgTfL/OgmVnkcNRaF9A8ePfaee32P4I56/jAgghl4iv4fWGWU0F
+         r7XuNI+AO7K2iQutQfM4IDAKWEHtIz+wnKbaTpb5Tqnq4SJNT/x5bJgfvWL6pxsbDcAY
+         i8Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCXUyW7TNc30x3DAiWD9jI+7wgHfcYNnEMUYJeqfD56R7hGMfud3t2fx+jmKf2GSTWst8xcl7JVatQ==@kvack.org
+X-Gm-Message-State: AOJu0YyTMkpB3vLvOGvwFoWtAN/e10tOpGGtwYFwdo8uyn4YiOFw9CGa
+	OLbi8d79EL48RiE0b8LSrU61fOiwLldyLzj5QwMtRn5eSuOyXYNL8soSrjDMk0k4gbJjLQdbt0C
+	R+3q2dwn/7oirdDb2zzDnxluFwnbYFgKG2wuv9CQVcf74Ibh0Rc/OwecmX4gdC6/OiiK0f6SYnn
+	DfgO+X+P+rYpMDorFGyEYYy2hiRq4=
+X-Gm-Gg: AY/fxX4DKxAzzHYABcAUTThkN+tfkEUFfBD6gIbxfPxlPSiIPgpJNzo5vqW5i0GvtHN
+	67cdqN6EYvwKxghHNpGVPvp0qmzImmDYciWCMjQqJsRzaPIoc/+m9fOZ/K/0Wdx4rXqKxOCcYkI
+	3GJDgLr6JL1Y4/+S9hENUI1FDYGuhkd5tAKnf4cpgM3Z6exsQiyzo5rTjaqdj+ts2+tn4=
+X-Received: by 2002:a05:7300:cf92:b0:2a4:61a1:c0d5 with SMTP id 5a478bee46e88-2b05ec97dc9mr9020800eec.36.1766310275294;
+        Sun, 21 Dec 2025 01:44:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGL1i6p8N2hSuUv+xL5rM61Q5+a8Vkv7Ev7XAzGkSrg7/P90k3Cd5PYS0PYFknoNJAdnKhv9+PtZSswlmQYASE=
+X-Received: by 2002:a05:7300:cf92:b0:2a4:61a1:c0d5 with SMTP id
+ 5a478bee46e88-2b05ec97dc9mr9020789eec.36.1766310274957; Sun, 21 Dec 2025
+ 01:44:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: bail out do_swap_page() when no PTE table exist
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-mm@kvack.org, hanchuanhua@oppo.com,
- v-songbaohua@oppo.com
-References: <20251216075943.29593-1-richard.weiyang@gmail.com>
- <20251216075943.29593-2-richard.weiyang@gmail.com>
- <4c2027d3-2665-42e0-8cfa-712b1d8f8870@kernel.org>
- <20251220032407.xeszwxus664jp7tq@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251220032407.xeszwxus664jp7tq@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251221085810.3163919-1-liwang@redhat.com> <20251221085810.3163919-4-liwang@redhat.com>
+ <970fa015-9ec8-4903-8e2f-f3e847d550d1@kernel.org>
+In-Reply-To: <970fa015-9ec8-4903-8e2f-f3e847d550d1@kernel.org>
+From: Li Wang <liwang@redhat.com>
+Date: Sun, 21 Dec 2025 17:44:22 +0800
+X-Gm-Features: AQt7F2pHfdiMRMRnZKTZtwZEUfCrHUSow0ksQmNv49Fll4mVQHzB9tXkUYQfG5U
+Message-ID: <CAEemH2f67p=wqGrwYnoVCP1fR82xxwJv1xfbMmFrvNaP7LZJog@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] selftests/mm/charge_reserved_hugetlb: fix
+ hugetlbfs mount size for large hugepages
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, Waiman Long <longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: o-mQsVky4YFjNKCPbXKOMLwWiGDR290NiWkmG17BWLw_1766310275
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 966FA40007
-X-Stat-Signature: fmdgkfhx8hqtdww6hwuhcjwrou1xyo95
-X-HE-Tag: 1766310039-558422
-X-HE-Meta: U2FsdGVkX19vA9aKYaB6XhPmhXavYuLxuzhv+ROu3/Vv4aR7xCp3O7f5JCjZBuM3DF2ttxcJbiE2UT23BMXnzRQgZFnGnYexV6MKMyx2+75kF0WpFFnYHQPWSfjt5SeWLWvSX2L19gqZVP/Z7DcbZFkdI3SgK5YgzWAVLJONptg33mZIlWQNCl0rPxpHQ8e1Gl0vUoejiqE0/U8C2762Y56+bV4Hq91FGvCbHlapXf3dcgAzgkEKUZkNtgvXuETlOBQ7i43gchzDkDSAqzD5HzHT2qyIdh8dhvXcMJbKdNSRrSVQJe1hnk7JlHuWDfMFLi/YC8NcNYgPQ8d5tnP19/Eb9/i+Ih5UNFFIrg29hLICR+GF+6InYASKun3x8qaDCp6lqXS/1AZ/RjU0xkpdeCC81SIjnWurulTtzDyCy7KJV1l9aODqEP3zWwuxxkR2yk1fv5pdZMQTASuyH9uU6DoVnmc8XDsl5ahU5VrowzWMbltrqPsWXjh04LFfz0YmApW53mS6iO5yWvvdyKA69OUGUViff5x4Oa/nOMmcqLVU6LZU0slqcHHaVtvoVoe7huKQyvVhloYmkLA5UQGe8DsRRwimMNzedk+TMSATHYVO81NUrZhWrkehqq3TB9cO7NYRXZ4BZN0CP8Ru4wULbd8nTYsY2kuGXtO2j77DEXsl3UE0dbE6WDBMwb1XIBYwsMAlMoDD2sbG8nMYs9jPQBhZPlhXlkKzQMBSJ/ZdYCtak5vbrJqrc0evbGmqprzgSJzANBBtAfjT+WMAUyoDfhvDARGF+PUPpNVSaONsDrlgIfpL5oPD3VZmMP17+OSXqfAieMyKoI2SveJ7fFPobuY3lR0U+YbQZeK1Z7HTbyhPIOc69/TXoAwCM3ps8Dtdv1/dVoLLL17SvbkgnT3LhiN2+dfPDRuM0KQ2B6r7WyN1xeIOAobDimxEA8BgNKrTMemKkIlV2fxFjI0v92F
- ssmeqDny
- tlW2ZnNX9BL6o9Lh/otnR2U/DmbI7QLV3EUrY3X7q7dYCeS37wEXHH7kegSVka9hjYbUWL2C0tMF7Ei44yifayg9WZ8vqocuE2OBq5xdml+4ZFR2rVrmlcxEWSWuMIA2RWh7v9ceKA+9aRRlUebT7szIC5Wgxdz0xJHGCnWtprI9MPRGcJzlRO2g2yaTNiGSWQOmQULVO08cuy9zmGGKcFSs4jtJ5drUNeqzeZKkr2kxKONjeWAhTDN52RLIqZGR+AH3/r2JTIfcQS2Pmx8DJgEtuog2W+xkdG4wV2o1Tnwckz4VWEuwPUvXItaL4azLFQzVIdkxPDLqsLYLvxmmZcXm7VKVIwMyAGKOyDFbiDm1HrxknNaGNe/KllHeWHYtB9WdXBUjN5xIITLf5HM249cOJ/woY+T6VHE+E/rnEhyeXrVw=
+X-Rspamd-Queue-Id: 00EB7140003
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 4uqmpuub8bzniakrdo1647581987dbn7
+X-HE-Tag: 1766310278-797846
+X-HE-Meta: U2FsdGVkX19r59zEEg2C6PG5RnL2sT83fixpemOJnm8mirbj9bLbA31lxOCkuruQdrpydBhezzwqgKu9k3WO0o8Mx6eJ4Zx9CnaPXYq0MhXGzJsQPn8P2aMokNg92lg/0+4BOqs5ISZkMzIItNJ64N3ludplvEqGc2UN4Znuu7++x+tXfQ10PP2BpYw0HKMRIx4tTKtCcpXsUS+1huDd2ICxc2XDAfp0Czm4B3rH6qpOVBjvsBrA9oYuO9II0oyGIvAyuoZphdy7II8x+88L3ArMk+xcq/mGpG53aRmMh+rQWQw6QUmu1coNh1IrtfokuK1MKy1nlDAr+C2xNnBdNXNAT5x0xk8WBPzTMfNtzKtyL43xpDltrDbuz+tKrCytGKvbOriv1bz02rFyGtgvadB+iJvN0B6Ql2fLQXMk69HGluOp3w9DzbDZX2ak6rvLAzcW0g3a9C7wq/NeFwmVCyLPaNG7fzOUf4kb/HdNqx/OVrFFLaHWWGB4OsxL3zcKdtjFJXda50pwnYi1v4jPzorKkp639Dk1lc207LC6S/DNDcYU1Q1rCeqMZif537o53AOxkElYLAbpqnXDujXfaMgXNbFyFXVy2c0lAoRUWL2vnBH54ERD9ZErdxtKFo/Cu9WDdkuQ2XHu//of/dltP6LOGP5P6XpuCvKDFC+ViWTdlkBEXUjdKxnvNo8RJGftjNJ62dGhtz6qxLK/+fEcO1ZTKT/7U5icdm4lxKPBUF7f1w5cutYchkxYXKs7/cqiQPdnFtbdVnZXpxBdB4YEfQDZ2L6DIyM9yrvXDa19IRu5zJt3HVqWsPe8aPbju9WdorK3KSYm7AlfgOH+d505P5YOB1VfuOE5J87S/fQ4q6GZxjpr1Y56pIQH4t/k1nyCZZg7dsY+VTeb+xVq2hMtVF3D5OwerW27kD9BYV/+7cgUDnB4edGqHE/8fyNz+uz9o+y+fUrcbCupkBmbmZ0
+ PLFAB9GP
+ D9Fw0HXUlnRAeWb7QD7fFig3BkFnajQ8K4r5i/igLS3gBfhcE2jAFG5qJnVfAuCzIEmMpsEl9LXYhGYaakepk622/eoTKfVgQnddBiQBnY79/VpsP49HTdf7+BlnD3ERMw244rWfdm0YwTdsDjd6ez2Fgi/AXGRA08+nBP2Jdq0dqLnEQCDfHH/dgCY8scLclA6qjV5Mjec0g6m25gqBqQaSBwDtH1FEKpTDkLlHQgHCXnY30xMhKGQNP0k0h+5BjLVmpJIxXowRV/gfLF7GptG6vASkk5dO0tEAB4/C7UuSf3R8pvjzZlepqTnNpdWOCmGNpezMk8Oa2OIEs2sFuYiRIld9r1H2hDF/XVQjUGfb4ECyuzrz3mV9iwGvIrJyxscObazeBPrgY3VjRQKavqwjneVif3xKnkjqakdsHCNNTrOtWpFgwPSZVhqX1UShD3r+NGu4SQgM7pg1wV4iZRvy838pR8qDVq4NL2cbOPZ9t1RGT7CZ7ZdAgtah1lRow7cXy9QXIHjlfGmuA70to8sB5hUg8RKmegZNHisImvrd8jhTeXn4lp48MKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,105 +125,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/20/25 04:24, Wei Yang wrote:
-> On Fri, Dec 19, 2025 at 09:42:16AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/16/25 08:59, Wei Yang wrote:
->>> The alloc_swap_folio() function scans the PTE table to determine the
->>> potential size (order) of the folio content to be swapped in.
->>>
->>> Currently, if the call to pte_offset_map_lock() returns NULL, it
->>> indicates that no PTE table exists for that range. Despite this, the
->>> code proceeds to allocate an order-0 folio and continues the swap-in
->>> process. This is unnecessary if the required table is absent.
->>>
->>> This commit modifies the logic to immediately bail out of the swap-in
->>> process when the PTE table is missing (i.e., pte_offset_map_lock()
->>> returns NULL). This ensures we do not attempt to continue swapping when
->>> the page table structure is incomplete or changed, preventing
->>> unnecessary work.
->>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Cc: Chuanhua Han <hanchuanhua@oppo.com>
->>> Cc: Barry Song <v-songbaohua@oppo.com>
->>> ---
->>>    mm/memory.c | 4 +++-
->>>    1 file changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index 2a55edc48a65..1b8ef4f0ea60 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -4566,7 +4566,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->>>    	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
->>>    				  vmf->address & PMD_MASK, &ptl);
->>>    	if (unlikely(!pte))
->>> -		goto fallback;
->>> +		return ERR_PTR(-EAGAIN);
->>>    	/*
->>>    	 * For do_swap_page, find the highest order where the aligned range is
->>> @@ -4709,6 +4709,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>>    		    __swap_count(entry) == 1) {
->>>    			/* skip swapcache */
->>>    			folio = alloc_swap_folio(vmf);
->>> +			if (IS_ERR(folio))
->>> +				goto out;
->>>    			if (folio) {
->>>    				__folio_set_locked(folio);
->>>    				__folio_set_swapbacked(folio);
->>
->> How would we be able to even trigger this?
-> 
-> To be honest, I haven't thought about it. Thanks for the question.
+David Hildenbrand (Red Hat) <david@kernel.org> wrote:
+> On 12/21/25 09:58, Li Wang wrote:
+> > charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with
+> > a fixed size of 256M. On systems with large base hugepages (e.g. 512MB),
+> > this is smaller than a single hugepage, so the hugetlbfs mount ends up
+> > with effectively zero capacity (often visible as size=0 in mount output).
+> >
+> > As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
+> > waiting for progress.
+>
+> I'm curious, what's the history of using "256MB" in the first place (or
+> specifying any size?).
 
-Always ask yourself that question when trying to optimize something :)
+Seems the script initializes it with "256MB" from:
 
-Optimizing out unnecessary work in something that doesn't happen all the 
-frequently is not particularly helpful.
+commit 29750f71a9b4cfae57cdddfbd8ca287eddca5503
+Author: Mina Almasry <almasrymina@google.com>
+Date:   Wed Apr 1 21:11:38 2020 -0700
 
-> 
->>
->> Trigger a swap fault with concurrent MADV_DONTNEED and concurrent page table
->> reclaim.
->>
-> 
-> Let me try to catch up with you.
-> 
->    swap fault is triggered because user is access this range.
+    hugetlb_cgroup: add hugetlb_cgroup reservation tests
 
-And there was a page table with a swap entry.
-
->    MADV_DONTNEED is also triggered by user and means this range is not necessary.
-
-Right, another thread could be zapping that range.
-
-> 
-> So, we don't expect user will do these two contrary behavior at the same time.
-> This is your point, right?
-
-They could. And it's valid. It just likely doesn't make a lot of sense :)
-
-> 
->> Is that really something we should be worrying about?
-
-But for the page table to vanish you'd actually need page table reclaim 
-(as triggered by MADV_DONTNEED) to zap the whole page table.
-
->>
-> 
-> Now I question myself why alloc_anon_folio() need to bail out like this.
-
-Your patch adds more complication by making it valid for 
-alloc_swap_folio() to return an error pointer. I don't like that when 
-there is no evidence that we frequently trigger that.
-
-Also, there is no real difference between not finding a page table 
-(reclaimed) or if the pte changed (as handled by can_swapin_thp()).
-
-In fact, the latter (PTE changed) is even much more likely than a 
-reclaimed page table.
 
 -- 
-Cheers
+Regards,
+Li Wang
 
-David
 
