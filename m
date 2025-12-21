@@ -4,85 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86581E6748C
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81C1BE67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105696B008C; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 22AB86B0089; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9CE6B008A; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 1F7C66B0098; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFB466B0092; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
+	id 00A146B0088; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C2CCC6B008A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1DBE6B0088
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62F45160991
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E770140628
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:48 +0000 (UTC)
-X-FDA: 84245072856.24.05F3300
+X-FDA: 84245072856.28.26DE612
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C9BC140002
+	by imf04.hostedemail.com (Postfix) with ESMTP id CB5444000C
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=cnc5f6qK;
-	spf=pass (imf17.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="khpwm/PN";
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf04.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359786; a=rsa-sha256;
+	cv=none;
+	b=LBtXbtXELm7zGvub+WuHFCMdfXREQTB06RIAF8FMKji+P1/IJoNxYt2WZ6Oo7XPTSNT2M7
+	2UCIySk08JVclECBHWHhH00aXmFbuj7vG5eEwqlQGGB7u9WzL+21a/r4h4BuKZHvvEiIVQ
+	4tpWj6+EKa8UuFMJorRDqIf2f53VHLQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="khpwm/PN";
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf04.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766359786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bggeet/K7f/LykaY9i5CXV4NsffNnOWo1S/CrVN1N6M=;
-	b=0UmW9QGW3c6OVyOjt03IrbWMjnoyYuefHiwivm1p/nkTmeFumau0Lx9TISt86Ls0+rn1Lq
-	yrRr01iO30T51ixbKSnPHdIXef7Q4eHEWBC4ydiv0Y5Os8/RbV9V50lO6CtxwY4ecTac3u
-	3+kHNJY6JJEoxupj3IKVCrkzqchXMeQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=cnc5f6qK;
-	spf=pass (imf17.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359786; a=rsa-sha256;
-	cv=none;
-	b=a9eqfEShlGCaU88RcuTcpPe6QI+SNi1zuIoqdykjp43fB3X5QGGi20Wc2IAMQy766aDgaS
-	TgOf/f7O6rItGrAm+8A2IQ1z/aU3mM3YJmxI77b2lM+1WzevdHW055rUXkG4Rkn1UXQGjl
-	4Ec+WDFGp/aJvJ8kPHugtmdX99+D34g=
+	 in-reply-to:references:dkim-signature;
+	bh=VtYWVH4kEDnjh9odMMaR+dSfiUF4Ruk5wQ7WUcoeW7I=;
+	b=VZ1xqBilAmXy5nzGL1ENYSUiV/IBu5s3mKyeIrkTtQSdb6OB8MAJ56/mVIHC1NflbpEsOZ
+	AM0UXnH7F2FxJvfizYuibZ1Y4R/wO1Xsc650qD4+43q7gCcvOaA10d1vcTdGcIAOiQdsT+
+	GVDZsCoSlSPUXyCT/Z5xcufwgYCrqYo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1766359786;
-	bh=bggeet/K7f/LykaY9i5CXV4NsffNnOWo1S/CrVN1N6M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnc5f6qKjNWTp5CYe3FtMEqXjaEtwaL5KnWMM06i0PVH+WPEPspj9cYDBTvZjbAPl
-	 LzhO4ykoMqjew6uDzSWYAvjT8sxTLGeysoAT8/VuHK8OtbbJhFcglGCLLqg6OM/ZkN
-	 tvdwIJRnC5/3tsUuE7EGMICCVIIMcQ9G/qN7IPcE3YGzNsCiCPLx2qF4E8Udx0p2A+
-	 PweF6eTwZbqfCL1RTbXB3X3iGZMNYbMtwpkC5bWW1IvClcXM2Hm6U9NyHK/jREt4e+
-	 up7IXK3+ZoobM0LaQmmelFCWFxr5h46TnAOOrWVS5lDZTwNHt8mgMKVRphjb1MvLTe
-	 JYWkOBKaZF2aA==
+	bh=VtYWVH4kEDnjh9odMMaR+dSfiUF4Ruk5wQ7WUcoeW7I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=khpwm/PNwhL6sf+XrYApDAWMut8RQoEfVgea31V1L3B1jZO7iMXhepiwEtS4e49xd
+	 4nJ34QCjGmPCUix4SkrAGeMDo3a331aXLfI5GMTpItF8ywOYJlABGW0zOb1yt8OqpM
+	 eqkItYKxQp1d6axCdGx6RNpnMIhEr3I3yN7jMxfjEdQJO4b7YAfTMuH5zX3ALgpULd
+	 1TiadjFlxRj6en8/ClDUef4FT1ikNrDDAK4L4rxKJaadYBbKMhf+wqgGz24Bu7Tq82
+	 92/dWvdRd0RY7Ud6puy6hPzYiz5eD6lwsNwPa4WRrpLh8uGkAeucHKbeQ072cmJ8d+
+	 uGc2UNEF5bfBw==
 Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:6450:b8a1:16cf:5ecf])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYQ1VJHzdCd;
-	Sun, 21 Dec 2025 18:29:46 -0500 (EST)
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYP6sxXzddl;
+	Sun, 21 Dec 2025 18:29:45 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Mark Brown <broonie@kernel.org>,
 	linux-mm@kvack.org
-Subject: [PATCH v1 2/5] mm: Rename cpu_bitmap field to flexible_array
-Date: Sun, 21 Dec 2025 18:29:23 -0500
-Message-Id: <20251221232926.450602-3-mathieu.desnoyers@efficios.com>
+Subject: [PATCH v1 0/5] MM_CID and HPCC mm_struct static init fixes
+Date: Sun, 21 Dec 2025 18:29:21 -0500
+Message-Id: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
-References: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C9BC140002
-X-Stat-Signature: hs6pfunhathdkkf7tb7qbeuxte9sgouo
-X-HE-Tag: 1766359786-220135
-X-HE-Meta: U2FsdGVkX18jleILM54WYQR7g6Qaf2vdsnvnmtVyhSbps4l0FDYcUIv7/QHwSIcn58HeyjOW3gOfjJ5Enm8oyy4OP1w+dMlbjrkbhypKwotXQyzuCS0oi7YBtLeZR7DjCAHfvGkMFs3dvUalYC6+GQkRTwq/IQAuEZy041TGJ/VTIVUj3fLgIv5p2JxVAQs0G3erFfk9VJ3sifIPMCvUYrlpgbtBc6bCjCzPN6QISbdGAuRiiT8pGSD/g8nBP2uvHNjNrEQLTSX3FUkoGf/rQ+pXnhfKC+xciLrIyOucJvKRccukX2v/SkpYp9cOo+TcpxEdJnCIE+FXixIX/LUYm+ZQ/UJOXM/hSx5UBdSdpB9Krt0Fyrb9PJZmsZVkkqgusR/KgwWyQEAPvWN4rnYgPtzCavbinUs5fJcJ+YK200KSIogGHmzGGLwB0rT2wg7uOpogVoBpyBQ4MsXEFa251Bn5w/Zg/Dr3nYtMrAdnH04yL29cClgMhCraDXIsPxnGbGIWTq9I1qupkgo0PjdQoe+9e5REY7mFCPjc+jBhvCgoArRWbte1zMGoLKfSzSU3HPFpnIpSXTZ4gVmL8SLNHuZaBAC1w24DOEQwYDmcV2QuhUge6aErsjeEyewcc/qH8XQqjGVTu7lxdXq9ffypPW6+kCio1eXXrL2hKcp4BC13amrToGnpCOBKGKh3H7J0S/Y2lv6G40ocL/E9n1VthUwV56F786N/uSPb8eCFsJLB7cug0dORLtLQf+d60BO/cz7IV0O+hOQwVBidQ+ScRzY4iMGMVJcSD4a3+OQ/sAA1jUiCDoojvS7Nhn4EZQF6UHN3KdRJ9FzsjfL/KZ47irpbdW1TDd5lqmeTzzQxlW8tuTi7foRICZiDtQ3kVbL2ExayOpGlqHfAlgUQjtzb5PSRBLVcSA+obOm5ur3CDCU4VhnLolwnOVEmgvYUujwW5Qtl3vax2c5OQBoVbO9
- GKaFMuQN
- w7dLoFeJ4LqAItLVNeh6QGpgGUH2une/zzqUQyRadrL/v2JYAUhJ48T2iTaaCTJFkgmvZpkZQl6NqvG+2EfJTQPAFKIOzSYdKq6LdXPMHvqLwFaGQAY89b82bGSX0sZCJ3C0lJXbgb4k0JLICg0aBVc/TpRbXSt9YpjE2dw6oWI2nnAqejFVLH5d+1FWLKdr5TDGEkZz6I7Y2aGdPbVCUcsJv1zlWgn4wXTtaaQw1da0O8pmj+HlzmHtLU9JOYIhlVszkKnU78oeW4yOXsxkcVxEvNpLUP8OwX1FBzqYqy1b8M+8A3N2/eXz8R6RQYLVtyoz8M5V3pb4r2IVlj+bGINqjjCqVR2TxrJhl8RbHAyG8dqDz/TmvoQnmkAQkfUBg0PB7k0cB8VzH0HC9gRmhGbLRZzceKa+QDCW5M9hXywrtzZxHsVYQRC4CPR2gofqcIqvqP2rNyqdZuP1aRNswksXM9tx18zuys5KnOUsUUAKoz5j+hoWQ4LNV7EIpW3SJxg61H0epMg3cq1EVStzhOzENTD8HUT8NrYAThtr2tFKzxAM=
+X-Rspamd-Queue-Id: CB5444000C
+X-Rspamd-Server: rspam10
+X-Stat-Signature: qdj37zotw9oxpdog39zf6otsao9tspkg
+X-HE-Tag: 1766359786-337068
+X-HE-Meta: U2FsdGVkX1+or3JZXD8WNHAp5tYC6QJPX1ydDyrB7BHmncTYMl/kDgnx706MVuuUOWQnJEM5PFHVPvVxmkQ4D0CFOXF1HT/jXjN8It22F1mFXmL/MqzEDtrLxcnDRu9hRLHH5nX1aKuxeAS3uvXRZQuQhbI1y7gY6ECDn9MqA4JyzzyU2TgtMFZ9Bovee+jbpxTNPgozcM4AXPBxEEEtI4n2karLKFQN6FoixUN9Ssc2r7dSdDUfjv/MVOAgZUG2tf7EQxuAq3gUxUUzXpfqLoA/6HifmQ8GM9bWVXWJmuiMOgAI/oEAY1upVEgKfvzL9ePnukQiFh5/jv2NOokD4O++WFCNHZbmHgU+4hocUulaxVRf4FY5tjM5rIVO/c+zPkaexsSCawFbwYghQCXAdoUJ0cWDq1KF8bsZVbsBWe2mDpUJ5n8Alhi3Y2ZxJyiVihWZFLOfRnkhmI2QyM6UxjXhbYfvNygQ2GdCWDVro19xuXtIu4oaaGC9FjotBHdDxrMoU/9LmQIzri1VSOxKAvI1obZjZVnZZIfAD80Lf66c6vHPKEiBLV8NKlkuFzXncbiDUYoyZuBTULYF2ZlW8v6fNJq0XG1FwzkqD4GuMB00DLBIk05tDLMxGIKYtIuu20Z6nBXQ/UoRY/sNvJMoQ5Rb2aZCND2xLvmhbEVoQNsjW5jopnnv4Nd8uiBUU+qakkr4mv/6IekBNrNWoCF9SQEm21zjFkorjPyDhdJzUD78sCLsFYAm44GkVP603g5SiqxuRNOzyEfZMt5+5/ozCF+a2hcv2j9pFTi/aZg/clpV6it22p/VoukSYTyOc6OYABF3TBhQ1egSbNFctFvXxk2PPlMES1l6ydSYNJHWFeQgM4qU+NLAWH4ybL2LvqYkxopP9qDmO37IYzv9O2BUfCmWtlxq/+n327WEhxhn//+BSSRSWAwZi3lXSRQxDj36VaQN4RE5fsFSLaQUXbc
+ X8VRKng7
+ eArpXQxuGhH6YnzomqV1P22nsR7xLdNYIGMcSVjmyOJYJGpOYJcwpLPFw+KM+PUUELwslMY/nao5RYzvzHFJBec9bpJw3ljFjbOQCBCKTG8R0R8nIbtcd7mGDLymdMqjEPQsguV9o6zjXSHDMCGmRxDKIPUbZ6m3mTEYBVJZTOC0b9enMgcA7s0MokfiLXgIrpTmXtRlS6po3uWzemFZvfHChS7aA3VG65eN/U2PJbNzExtW/rfEtA0y4m8IZblZEiDAWMqblT5gMum2vDRa3sNkiKOXyPLyWFjRh24Hm++bYNU6mq+cNzrdFxKhvc0ogdjatEoGURX5LjzXIuwabyQ68VK35t+zxfpugflKrrhz1G4DZAH7SvM3Si6lPUlzcea7I2A/tDrY/WviJ6NxbkidQDFRoENjlEtCwb2GgPvsyiEeVcQKfA7QeGNAp5mSp2nV22uvHd81AqWhnWIWSVHERzk1LuLRNxsdnpP74eysA+0QhakGy6pGsNasAUY1+bcKp9N3gl9Zw78k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,123 +89,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The cpu_bitmap flexible array now contains more than just the
-cpu_bitmap. In preparation for changing the static mm_struct
-definitions to cover for the additional space required, change the
-cpu_bitmap type from "unsigned long" to "char", require an unsigned long
-alignment of the flexible array, and rename the field from "cpu_bitmap"
-to "flexible_array".
+Hi Andrew,
 
-Introduce the MM_STRUCT_FLEXIBLE_ARRAY_INIT macro to statically
-initialize the flexible array. This covers the init_mm and efi_mm
-static definitions.
+Mark Brown reported a regression [1] on linux next due to the
+hierarchical percpu counters (HPCC). You mentioned they were only in
+mm-new (and therefore not pulled into -next) [2], but it looks like they
+got more exposure that we expected. :)
 
-This is a preparation step for fixing the missing mm_cid size for static
-mm_struct definitions.
+This bug hunting got me to fix static initialization issues in both
+MM_CID (for upstream) and HPCC (mm-new). Mark tested my series and
+confirmed that it fixes his issues.
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Please consider the HPCC fixes for mm-new, and the MM_CID fixes for
+upstream.
+
+This series is based on mm-new
+commit 287373d0b6ee ("selftests/mm: fix comment for check_test_requirements")
+
+Thanks,
+
+Mathieu
+
+Link: https://lore.kernel.org/lkml/c8acf650-ef96-4449-ba85-557dedba0ffc@sirena.org.uk/ # [1]
+Link: https://lore.kernel.org/lkml/20251122111336.56b060c86ff6ba41fe76bfd4@linux-foundation.org/ [2]
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Mark Brown <broonie@kernel.org>
 Cc: linux-mm@kvack.org
----
- drivers/firmware/efi/efi.c |  2 +-
- include/linux/mm.h         |  2 +-
- include/linux/mm_types.h   | 13 +++++++++----
- mm/init-mm.c               |  2 +-
- 4 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index a9070d00b833..3f5c2ae50024 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -73,10 +73,10 @@ struct mm_struct efi_mm = {
- 	MMAP_LOCK_INITIALIZER(efi_mm)
- 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
- 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
--	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
- #ifdef CONFIG_SCHED_MM_CID
- 	.mm_cid.lock		= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.mm_cid.lock),
- #endif
-+	.flexible_array		= MM_STRUCT_FLEXIBLE_ARRAY_INIT,
- };
- 
- struct workqueue_struct *efi_rts_wq;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 890dab720f75..8d9e3239d2cc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2853,7 +2853,7 @@ static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct m
- {
- 	unsigned long ptr = (unsigned long)mm;
- 
--	ptr += offsetof(struct mm_struct, cpu_bitmap);
-+	ptr += offsetof(struct mm_struct, flexible_array);
- 	/* Skip cpu_bitmap */
- 	ptr += cpumask_size();
- 	/* Skip mm_cidmask */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a6287d07efb7..1531df8cda52 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1329,7 +1329,7 @@ struct mm_struct {
- 	 * The mm_cpumask needs to be at the end of mm_struct, because it
- 	 * is dynamically sized based on nr_cpu_ids.
- 	 */
--	unsigned long cpu_bitmap[];
-+	char flexible_array[] __aligned(__alignof__(unsigned long));
- };
- 
- /* Copy value to the first system word of mm flags, non-atomically. */
-@@ -1366,19 +1366,24 @@ static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
- 			 MT_FLAGS_USE_RCU)
- extern struct mm_struct init_mm;
- 
-+#define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
-+{								\
-+	[0 ... sizeof(cpumask_t)-1] = 0				\
-+}
-+
- /* Pointer magic because the dynamic array size confuses some compilers. */
- static inline void mm_init_cpumask(struct mm_struct *mm)
- {
- 	unsigned long cpu_bitmap = (unsigned long)mm;
- 
--	cpu_bitmap += offsetof(struct mm_struct, cpu_bitmap);
-+	cpu_bitmap += offsetof(struct mm_struct, flexible_array);
- 	cpumask_clear((struct cpumask *)cpu_bitmap);
- }
- 
- /* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
- static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
- {
--	return (struct cpumask *)&mm->cpu_bitmap;
-+	return (struct cpumask *)&mm->flexible_array;
- }
- 
- #ifdef CONFIG_LRU_GEN
-@@ -1469,7 +1474,7 @@ static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
- {
- 	unsigned long bitmap = (unsigned long)mm;
- 
--	bitmap += offsetof(struct mm_struct, cpu_bitmap);
-+	bitmap += offsetof(struct mm_struct, flexible_array);
- 	/* Skip cpu_bitmap */
- 	bitmap += cpumask_size();
- 	return (struct cpumask *)bitmap;
-diff --git a/mm/init-mm.c b/mm/init-mm.c
-index a514f8ce47e3..c5556bb9d5f0 100644
---- a/mm/init-mm.c
-+++ b/mm/init-mm.c
-@@ -47,7 +47,7 @@ struct mm_struct init_mm = {
- #ifdef CONFIG_SCHED_MM_CID
- 	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
- #endif
--	.cpu_bitmap	= CPU_BITS_NONE,
-+	.flexible_array	= MM_STRUCT_FLEXIBLE_ARRAY_INIT,
- 	INIT_MM_CONTEXT(init_mm)
- };
- 
+Mathieu Desnoyers (5):
+  mm: Add missing static initializer for init_mm::mm_cid.lock
+  mm: Rename cpu_bitmap field to flexible_array
+  mm: Take into account mm_cid size for mm_struct static definitions
+  mm: Take into account hierarchical percpu tree items for static
+    mm_struct definitions
+  tsacct: Skip all kernel threads
+
+ drivers/firmware/efi/efi.c          |  2 +-
+ include/linux/mm.h                  |  2 +-
+ include/linux/mm_types.h            | 18 +++++++---
+ include/linux/percpu_counter_tree.h | 51 +++++++++++++++++++++++++++++
+ kernel/tsacct.c                     |  2 +-
+ mm/init-mm.c                        |  5 ++-
+ 6 files changed, 71 insertions(+), 9 deletions(-)
+
 -- 
 2.39.5
-
 
