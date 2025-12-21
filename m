@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8774CE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 04:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B260E66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 04:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0FBC6B0089; Sat, 20 Dec 2025 23:00:49 -0500 (EST)
+	id 85A386B008A; Sat, 20 Dec 2025 23:00:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5F76B008A; Sat, 20 Dec 2025 23:00:49 -0500 (EST)
+	id 8043E6B008C; Sat, 20 Dec 2025 23:00:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDBF66B008C; Sat, 20 Dec 2025 23:00:49 -0500 (EST)
+	id 73E5F6B0092; Sat, 20 Dec 2025 23:00:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ADDD96B0089
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:00:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5656EBB2AC
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:00:49 +0000 (UTC)
-X-FDA: 84242127018.30.447CF25
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A526B008A
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:00:57 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BE75BB2E4
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:00:57 +0000 (UTC)
+X-FDA: 84242127354.26.E58ED03
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9345214000F
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:00:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XfUd+49C;
-	spf=pass (imf23.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766289647; a=rsa-sha256;
-	cv=none;
-	b=hvgn9EX5SCnX8mNSQxcKVv9bUdbwPFLmSTvTNvc9QmVsl2qE4gUPQTfrLwL7+watN8+fbV
-	qa9fxiQTjKD3zP8oVI0vPHXpDQrdlfDQU7qPn/NSSdV49VijH/+bskc0Qz1t5qAbVOAhvB
-	y/z1BA1QKD7+KVjzKHn5kVCnbQUXbcE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XfUd+49C;
-	spf=pass (imf23.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 45AE8140012
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:00:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i42Kym5c;
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766289647;
+	s=arc-20220608; t=1766289655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Iwiwi0KTXOWWtzFhZ5xpfUZeHt5Hce7t6it8UicZpM=;
-	b=dkP4WV4K6DvsZOUZ2o+jhjJGFQSzPAAYvNsBT+qM+bFDRvjiDyRar7aYYFYAfRDKHTmXvZ
-	KVWttp/8gQ28IOJXii8wFcaYccJEkx8gGEkzSR0JaDm/9Gzi3smaHhtLqlAqi8qsRfsfEE
-	M1S9+gqTS1xOcay9gEKA+uDZQj6I7/w=
+	bh=OuTqlXVm7Xbaoka1UUOwUzXkQyIXMABwtwnWJk5BYmc=;
+	b=kikf5Q1JyBchiV9LtiBrtk7OTD61XLMwXx5Qk9z1qJt4Yt/rPShujLWXMLSjYoSNkZmjKl
+	gAgxjUY6zDeZLmlx4l38ESlakiEfeRkG1+6Wd163YhnsdgpcRk6pVYtOhsxoe6L2FICK6R
+	GzGtsGEX1qvw6Sle9ESvzz32EsYlq6M=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i42Kym5c;
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766289655; a=rsa-sha256;
+	cv=none;
+	b=fwKHEA6p9jFY5dfhRvi1BFXCJ0tt8esPcPnOZQbIKVT/++yMcblJmLX4JZ7DijvGms1ddj
+	NWb7mDepSPrhjpIOFYnOCA4AKXeIOstnUIA27lwAg/Xe+3/vAwURd/97Tsk7+EJBBrL3sN
+	rNjZTwJ+tCzY6KDsDqRWJksKFcLnsj8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766289646;
+	s=mimecast20190719; t=1766289654;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4Iwiwi0KTXOWWtzFhZ5xpfUZeHt5Hce7t6it8UicZpM=;
-	b=XfUd+49CqWcqOgQREdK1w+O6Wl7oQvJH1THOxPZKwAyz8kOH/oc6tTbiK55CG2gQlQY3RO
-	aVrJHbQNVBGqF2RT0eQf9EyfPM6p/U3UnfH5g2zlIgh5/9jDDM5TtQRgzaO3OhsK/VeQRu
-	dI8lWuoD3KIc+5dE6VvCxa/VjHeWETI=
+	bh=OuTqlXVm7Xbaoka1UUOwUzXkQyIXMABwtwnWJk5BYmc=;
+	b=i42Kym5c4I7u4MR1DzW6e4XoXzqGUj/+VYkQZTaP/TryxR9f8sXwQ3lOgADMyTr+g421dq
+	y5P7ap9/HhnBaKDBNaI/KljyOZ8WwnqwexSNavrlZ6XVw5Luza530Su2g4XTGtXKXyg3d/
+	pFvZkfnYaSeEXzluLzDxF/s72GZC7yo=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-451-RWfc8m6_MH2csYwq5VBgKg-1; Sat,
- 20 Dec 2025 23:00:45 -0500
-X-MC-Unique: RWfc8m6_MH2csYwq5VBgKg-1
-X-Mimecast-MFC-AGG-ID: RWfc8m6_MH2csYwq5VBgKg_1766289643
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-EzY6I9wwP4KywXe6B8qxeg-1; Sat,
+ 20 Dec 2025 23:00:51 -0500
+X-MC-Unique: EzY6I9wwP4KywXe6B8qxeg-1
+X-Mimecast-MFC-AGG-ID: EzY6I9wwP4KywXe6B8qxeg_1766289649
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F3AE1956088;
-	Sun, 21 Dec 2025 04:00:43 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6EBFD1956088;
+	Sun, 21 Dec 2025 04:00:49 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 51D1819560B4;
-	Sun, 21 Dec 2025 04:00:36 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA32019560B4;
+	Sun, 21 Dec 2025 04:00:43 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -89,22 +89,23 @@ Cc: linux-kselftest@vger.kernel.org,
 	mhocko@suse.com,
 	chuhu@redhat.com,
 	Luiz Capitulino <luizcap@redhat.com>
-Subject: [PATCH v2 2/5] selftests/mm: allocate 6 hugepages in va_high_addr_switch.sh
-Date: Sun, 21 Dec 2025 12:00:22 +0800
-Message-ID: <20251221040025.3159990-2-chuhu@redhat.com>
-In-Reply-To: <20251221040025.3159990-1-chuhu@redhat.com>
+Subject: [PATCH v2 3/5] selftests/mm: remove arm64 nr_hugepages setup for va_high_addr_switch test
+Date: Sun, 21 Dec 2025 12:00:23 +0800
+Message-ID: <20251221040025.3159990-3-chuhu@redhat.com>
+In-Reply-To: <20251221040025.3159990-2-chuhu@redhat.com>
 References: <20251221040025.3159990-1-chuhu@redhat.com>
+ <20251221040025.3159990-2-chuhu@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: 1fawcktieeb9zd7outkethcys8ym4dcc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9345214000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: g3i39a7hfzfzoyzrhz7moxxp634rbc3y
-X-HE-Tag: 1766289647-248451
-X-HE-Meta: U2FsdGVkX18VjQ9ZdnwPTgRfBfN/73wIMxWqO0l7j82lh3M1F+g+9L87T0MI05radg6cSQQmoVtl8Ec8G9ZSDmAgvwAk7sgKKAbZ2yQoHzSg9+wIZD5iK2FNfNuUXTgCGmNtaBAc+2NeE3gjaFu5ZBpKoSelOiBWiAcv0r7fZH6KiDtRAVoqZehajrRiPxBhi1Nf/O26h4BzulP2kMYu5epNn5ghcmVVk2MvmF4jCcTej+5gpRyCwL0UpNKAk6NOw8NdtdALEr5vlCjk103+6ULzOJU6FnYOjc1se66PWofDxv298yfAxASEwIJjelu6AVtHFR/xao33U8yavUGbqWj3xTS5V+dtxF+NB+5d+L2pXNUAN0oiytlHwgczkCR9fLDNcs6+NPliWxAGYy/xScMp5f9BUG4jMBmJl0qUcqE98IjdQjP1MRm+9t1yzvIO9M/G6LMUhPxsRY25bjyTrmS/O9m0HcC73retUAlI2BEKveFjaJ9nKR2D3ZP6gbMo02v3wQmYlsXjH9HJGsR1JCb6WbEBMN0x8aHLU7EruZLRZNLR9acOmgIt7TTUEB+B5YldOE5z3Nhd88c1yW4Rtc0+cDFNm8dhlkTzgPuIiuVU9Zm4gnxDXzCWXGQL07k4LnFVeZDKIKh4HZtJmcjRoF971TofVZEX/0xJR5VHfftf1vFtkbisTGP80GU6qV/A2bEQFLMAsDqN4jTNJPQSg5SEU7S86iYh8uSBbnBT7J9hrkj8MC8BYw037chsW6/WrbZF0K7yc1ulSX+arSlQ8ZIjbBtCGID16DJh8eXvFsOSknyJD9PydeiMaMWQW2ERJejDj9K4VV8bZd+nb9h2NNsxR550uyljKmZOE0QQqDciKfEH2+Viq0P5HedWReK57QZBlz2yIlZgbpBDWvoqvH/KVj3Crnvbd7EGvnviTdQP0gWrmxOh0LUxeGOgiZoPaStdMcYoT5JXtZw1/BT
- J1DiMOw0
- m+NL/StKwd51T3kadxTPqi2Gt3+0NTo9SjjJNFP4C2iNrEGDWB5x/8+zuyo3o5EqIpQ9HnRm0ErCnIHKirKyohRBCjm2M5U5rYPeYkCJ0JAL/n+O4hdFVt+sot0kAzTFG1pRRvPxcQxQbXfIcvKfe9NH3O5VoDHoSoWTytfuTvVM+1sgalnb1HjpLu64WzKs7l4nTw97n/RTNr+PoFmdDc37cBmn+K40Ya9Z3jP0NKvhBVEsKa/eOKoBRUBHOc7Fq5jNu5xwGzaMZTeV4bwxJRsaPoBOPCyz8GJ4uaW3PJholzbOYUfnNdWpyJ/GtOiDFHOBbPhWg77VmmyKeaDzq3n8t5aBbu4VIq/Vue8AOf2opprkmEXI4cz+CPo8LJCDeAtIi
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 45AE8140012
+X-HE-Tag: 1766289655-855088
+X-HE-Meta: U2FsdGVkX19SusphWvURkcDFIztJlbS3BajwArzqTz1yzK0i6IkL5ulmGj5efJwa4uXqNZxWIp2Q1ty97HYdNAdh8EFgV/ccS+mMJgP9gyqhhfqpaX/qblDFEj4+YykRQELwkDUpz2XNqOtM+HhIcpWKlTyTzlBfy1cMC/jqrk2ONCcqUFD6DgVKUDGYVfFB/nbdfHhicsFDXN64cks9MN5817+2qSUaWyOGtRJtemxwheit//4nc3jyNoKHlSkI7wFBxb3uV8q3USwPkdWrB0afQUlVgA6/rsURgW9lLy2wu0r06FDKCKZfhEGGi76rn6PVWwr7tBzEvZKQB0f+n3ututZfU8LJDIxVNhCBOdy0dnflA2sP+gnWnaK5MpiR7zfk6phEWXWUrAc5v2O9WeLeNPKwtLiLmOTeWhSR5Cdz0LrDORHDkYIFTSLafpIMmTwcA+1+QptykzqBrjCMRQf67lNl4OjVC/9IPJtZdQZb2BrJXRRzQDanUl+LQfEv5xTKEFk2u+BsJ4mDYUS7WyEBMyeFJEbEWCTBthlPkRVmSh4UMZdPjBwWPiUWMPz7r03W4pFZK5gmveFBZMzL2dJhVs796eUVfc6psjmICj1O+RtnoGhpirEjkN8KDC9C5V9mbGTlBQJHXPwxNyEiisBPnUCsXI/GBW2VaHsboxozsqgoW77FQlNgzslQNqIL/qVqpNdEX7Foy7o4Y4YXDPqslFGRavBnIvBsL8y8x/aQ7tPVIOvy3Htd6I4USNkOpZyNCpFlfJUO3EXTcuiE7fnT9vA2dQkNXun9K5j/PR/Iksu6JIzBRn+1gzyY/c82yLXNcdWfp0+seWbPeQH91f3MVaG0pwtssTLoD/SCxbljszFOtn4RezTRb/S6va7Y5A5LRHIgYMK1IVb5J0w3fRYAlxZUc5lk11QpIyGSSB338jfqMRLtnaH6aTc5vAfru8UD8eNzewkFdPClU0c
+ O3FvWjys
+ 88gSz6vDChU7sNXOsPT78jtjOE/vvH0V63WjiYgewUcZdWrzu4H4ZSjIHT607uI2Y6F/6FUN3VvxpkTX3xX/RG02y3yDqqJDlar+qtp0v5CvSLAjfp4srpbIKShLhnLgAkHPSilT8J1sGBPX/B2XGFl95oI642kCQmwkSu3FnsT2pFaakKMACJ4QkoJ8axogMNyKskFOOQ0QAFHvRHn1hGl3/9Gioq55sZ3pXTSO8KHq9mQ+FNTNCDBHuGQawejPmrSwVApNTAeyW2OfSzPzoyyqJFg2PHXQDtVXUlciD+4+ac919Cvt2KzD5m0wo5yyapkWR+a2V3bcYfsHIIt876O0EreCoK2VM1eupqW5DTOYoq3Egb0QGTcxSEZnugATD1+E+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,40 +114,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The va_high_addr_switch test requires 6 hugepages, not 5. If running the
-test directly by: ./va_high_addr_switch.sh, the test will hit a mmap 'FAIL'
-caused by not enough hugepages:
-  ```
-  mmap(addr_switch_hint - hugepagesize, 2*hugepagesize, MAP_HUGETLB): 0x7f330f800000 - OK
-  mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0xffffffffffffffff - FAILED
-  ```
-The failure can't be hit if run the tests by running 'run_vmtests.sh -t
-hugevm' because the nr_hugepages is set to 128 at the beginning of
-run_vmtests.sh and va_high_addr_switch.sh skip the setup of nr_hugepages
-because already enough.
+arm64 and x86_64 has the same nr_hugepages requriement for running the
+va_high_addr_switch test. Since commit d9d957bd7b61 ("selftests/mm: alloc
+hugepages in va_high_addr_switch test"), the setup can be done in
+va_high_addr_switch.sh. So remove the duplicated setup.
 
+Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 CC: Luiz Capitulino <luizcap@redhat.com>
-Fixes: d9d957bd7b61 ("selftests/mm: alloc hugepages in va_high_addr_switch test")
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
- tools/testing/selftests/mm/va_high_addr_switch.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
-index f89fe078a8e6..a0c93d348b11 100755
---- a/tools/testing/selftests/mm/va_high_addr_switch.sh
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
-@@ -111,8 +111,8 @@ setup_nr_hugepages()
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index d9173f2312b7..2dadbfc6e535 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -412,15 +412,7 @@ if [ $VADDR64 -ne 0 ]; then
+ 	fi
  
- check_test_requirements
- save_nr_hugepages
--# 4 keep_mapped pages, and one for tmp usage
--setup_nr_hugepages 5
-+# The HugeTLB tests require 6 pages
-+setup_nr_hugepages 6
- ./va_high_addr_switch --run-hugetlb
- retcode=$?
- restore_nr_hugepages
+ 	# va high address boundary switch test
+-	ARCH_ARM64="arm64"
+-	prev_nr_hugepages=$(cat /proc/sys/vm/nr_hugepages)
+-	if [ "$ARCH" == "$ARCH_ARM64" ]; then
+-		echo 6 > /proc/sys/vm/nr_hugepages
+-	fi
+ 	CATEGORY="hugevm" run_test bash ./va_high_addr_switch.sh
+-	if [ "$ARCH" == "$ARCH_ARM64" ]; then
+-		echo $prev_nr_hugepages > /proc/sys/vm/nr_hugepages
+-	fi
+ fi # VADDR64
+ 
+ # vmalloc stability smoke test
 -- 
 2.49.0
 
