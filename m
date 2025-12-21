@@ -4,110 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B2AEE6748D
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 02:42:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26942E67495
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 03:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EB336B0005; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
+	id 4C2DB6B0005; Sat, 20 Dec 2025 22:25:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 799056B0089; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
+	id 46A2E6B0089; Sat, 20 Dec 2025 22:25:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67A946B008A; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
+	id 34BA06B008A; Sat, 20 Dec 2025 22:25:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 531BC6B0005
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2831137AA9
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:42:57 +0000 (UTC)
-X-FDA: 84241930794.29.9D63F04
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 08C0580002
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:42:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ikBCY1CA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766284976; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 250426B0005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 22:25:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EF7213BA9C
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 03:25:17 +0000 (UTC)
+X-FDA: 84242037474.09.4764122
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id ADC34140003
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 03:25:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WoPffjJ+;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766287515; a=rsa-sha256;
 	cv=none;
-	b=TLIIHaNwJI02QVVeWBI8dJaT3EELNde0DLMx0pOQeiPXcKEOeBrMmDE8oK/LJpDQQEeoBJ
-	aICJ6eCwgDmh7F7jjFsub+Rnha33najpxVgM1SWIsN90PZHPHzbwp3B2kut84Uw3Z2O0OV
-	gPqlm/WdizWt9J64RDA5j6NvnDwUiHI=
+	b=oVokfzTB4SaoyehGKKOeUm8LskicWuflNbA9WLu7JHZKSZDOI40HBRhD0FjhduqGPgSqq1
+	m9RO0Jx+g5dimt/y8dLnw8307+1uW4GU98dmwm+yvPLYlCiywWdkF9kbGCK0w+KkEKxuRH
+	PQCT+o7bq/XSvWF4Eee6J4IHndERx4M=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ikBCY1CA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WoPffjJ+;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766284976;
+	s=arc-20220608; t=1766287515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
-	b=8Aow6AuKcsETE0HfEhB8453LmukkJdGV5kv0TKrYSDrxKiqKFzjiFTZMKC8xvR3M1vLMxj
-	tt5cqb2sPkEqElyrjVEb9colLfbNZo2FvL7a7Rol/PZOKjliczKievtqakl0Kxq463792A
-	7Zb9lCm+YXEB4xC2rWg3vZ1eEXqDdyI=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-641e9422473so2340952d50.2
-        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:42:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766284975; x=1766889775; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
-        b=ikBCY1CAwsvdIYc7A/VHVPgLlPm85w+lxVDv+qMsbF7/8Rz3xqqn0/XPYz7uywc2OZ
-         2RvLQK+wbfPVudoz6hHBM1d0hVti90KG7A+jP6WzI1r0e/WlcC/30pM3RmiSRWVvOWQr
-         6H5WIgcaWcXIH3dZo+YAS11MhevcuxJ33SQtBt2mAN5Af8qPZ6pq0OU53HArUEGxE9xj
-         WOUa3d4PqNt246qwQYwW3wD6n3Ihk4Zs2ep7gYJobDmBJD9p94ZpLynY+WRC0rpcNgsp
-         hB7dTUo6asSnasvUiN5jVjHbUpO+NnHX9RhYR2l6WwuKbtgIGF5LicZ9m0FsBjvlvGAq
-         ctoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766284975; x=1766889775;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
-        b=Jcdm8Z0aT+R+uomwp0hhn1M0c7OFP9XHDtcxRlgHSfqXANrhSUpVxqRv5lOYPCqZ4L
-         1d5JCYkJ7aAYLKa3UHJFJUZyLNh0GFMVQM7ZPrItWRBJe5PHpSw88jxct9Y3ww7DQYX1
-         y0XvEORnSDzIsc7h0wPkGaKgx43UtqLdMcd8SPCRNf54nf3wIP2c9X9q6z3aH4pFJFxM
-         BLYB375P3IVTIiCMy3BOWJOuKfVWbSMxhDhIAfDQ0etURT6Sj+HUcprbX9fYbvAcsXm6
-         sQT6VnT0+tkNj9mdDfbFCokRTn44XrB7bdUneN/BGAVzsz2zXCHm1qQsT3L903iyEy8j
-         Mp5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWpV4tk9Ikd84OxzqLEDrJc+8ePaFCPrnqLEKMwOC0+Hws2DNOavEuZL+GCq5DY8N7bWOlVWH+lkQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw0z6wYn62WyU0KNNiBZn3Ht33quhcCAR/Xm2XUuRfq5acB5zpz
-	SCPRyTLxZE4BGKcLj8ILLcJE4YVFMu1ypgEAJiiro+iISvH9ZyISV5yGPR0q+JuwSmPsKR4gRh3
-	DNbgf6e1pIL4EdMps/eU2DAWmq5ax4GA=
-X-Gm-Gg: AY/fxX5/e/Hfxwe2KkXXSlnibgmXt5Z8gVmaS7yWPLU9MPHGzWpYpDJCRqkrE85fEDB
-	8VWwTNkn2GniVn1NEZnrHBfjKQXNU5DSMv6469SczDs+YD+uTUs3VOgdppl+RbsXhtwNGtLvlqN
-	KOK6FNY0wtrJ6dqGf0Nv4bTxQ1LM/NKDeybJB+whYNBW12+NBTjHyfucePosgk/DRiUawxl3mis
-	iSGGzli1Tx6Klf1HjSgz4Uen32IAncoc55y58ldQqRxJc/2zk13mHGd9E4oaNW9mrewc+8M
-X-Google-Smtp-Source: AGHT+IH+6jj8oWEsdcBAceDbVJFPTAVOMQ1Uqc7/7BwQVG/cqzh4mZc/wn2oR9YZg5gDrUw36Mpl7rId7/1IGwr++Mw=
-X-Received: by 2002:a05:690c:c1b:b0:78c:3076:ddb1 with SMTP id
- 00721157ae682-78fb4096c72mr127542157b3.55.1766284974757; Sat, 20 Dec 2025
- 18:42:54 -0800 (PST)
+	bh=HpOhK118LaDWKm765ndboJZL+xQDVhQwHQhCepJJnh8=;
+	b=RossQ8M7heFoSNCp9KMpAah++iZq6Qd4g9oudC/IHDN2/bpt3yet/B3GeIvx2WnnAhEjsu
+	mkt57FbbAHepdpXmF6eVqgBxD7FPPna1cjXH4XItQNmG6CEoIQbJhL18TRdOmxe11CWBqT
+	riLEE5ACNLB2tk0e6YjpKVSEf5VmCWs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766287515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HpOhK118LaDWKm765ndboJZL+xQDVhQwHQhCepJJnh8=;
+	b=WoPffjJ+21shXlnj1u1H6teMjJPcGgxPbKDkZ0Xap1W4gPVibbIhT07QkRyvjRUxB1R2AU
+	idufRUVppaJ9NauV7JscU6VAeUEuss/s2yntm2qsultAqngFHcXJZzuWPlWxzJq0bl5X6d
+	YYcLFNsyJmDZQEXQTTB0SiTmXaOzeYI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-1PfFEtf5P3CDFsRYVvXxsw-1; Sat,
+ 20 Dec 2025 22:25:09 -0500
+X-MC-Unique: 1PfFEtf5P3CDFsRYVvXxsw-1
+X-Mimecast-MFC-AGG-ID: 1PfFEtf5P3CDFsRYVvXxsw_1766287507
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C216180035A;
+	Sun, 21 Dec 2025 03:25:07 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.12])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B09311955F1A;
+	Sun, 21 Dec 2025 03:24:59 +0000 (UTC)
+Date: Sun, 21 Dec 2025 11:24:52 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH v1 1/3] selftests/mm: fix va_high_addr_switch.sh return
+ value
+Message-ID: <aUdohHjAfaYmjH3a@gmail.com>
+References: <20251207122239.3228920-1-chuhu@redhat.com>
+ <f8d1e504-2009-4bd6-b1b7-c98c1f49374a@redhat.com>
 MIME-Version: 1.0
-References: <2c8dd0de-e650-4a74-b1f7-61ed81c03d26@kylinos.cn> <20251219114633.41156-1-sj@kernel.org>
-In-Reply-To: <20251219114633.41156-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Sun, 21 Dec 2025 11:42:43 +0900
-X-Gm-Features: AQt7F2qA0QBKJ-NgNQCsAIsclgVskRlqTk5U6Nx24EGndjvZ_2ncyEAWOkPiAw8
-Message-ID: <CAHOvCC7=t0iHEC-BQPZcF+KiKcc2tVyxNOLMifZQ=JwH2GwFpw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
-To: SeongJae Park <sj@kernel.org>
-Cc: Enze Li <lienze@kylinos.cn>, akpm@linux-foundation.org, damon@lists.linux.dev, 
-	linux-mm@kvack.org, enze.li@gmx.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 08C0580002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 37a3pdzb7wk75jneoqt71opo9nakc6ui
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8d1e504-2009-4bd6-b1b7-c98c1f49374a@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspam-User: 
-X-HE-Tag: 1766284975-905768
-X-HE-Meta: U2FsdGVkX1/U7bOjzWInzrO5ZXAHJH358pXA5t2C1aovPaJyuorolG934uWjbLkuEy450avxdxCeArYpOC7otoslxrT+iSPWXt5d6JccmIGdyTZFqcJEOUnB0lv1g56blIUiedK3esPV0hSBJDVbFyzEYn8Gj+Uwvwqv/2tRUiATfwXvjZB5HsEeNsl11+x2gFzOC4llandHLts76CHH9DDRzTqiyAsOdnycsH3bSZSPv/9uWN4cy4IRi2tw3V/1SknmTKmdRt3zJ7RyvMVFNpESQFcDIZwyE1/zDRNs9LB71pqifUPO9AA1H8Htblq+8BxgS4kRCaEJtw7IcVcOFPsHPUnDYm8GiDZAzQgzHBGFHATRMxlL1p5nTgb765FGPQa/pjABw6iDyBZNqi7/HJqEKR2vkr4w7SqNQDm5iANqOOOPC88LdhW2XGLjzc8QEviHw7p9oB5k7PpJdejxTg/ryIweITcAUSGMGZN6KlTIODcihWsZKf3I2mTNZrTvtKz+eqGI1iixw3Hl30AnARuJ9rviyx/S/SI+2Nrw5QoyDOMscurJP9o5aaPeVCU8ou9WkTZ+pOTx0eXSlZIBUFYsi+EZGx7PE0DmSlUv3dQOOZMFc/f/FlXUyHQGu3q0s1SB8/kF4Emt8n201H4g1yNPe0m0zGYDCEBGbmQD+cF5lSvuJkC826qJgR+kPsBSfNcxfOVnwdDpns8seXtGT03b99qGCiwJmpbxJGpdUy9j2mBEIQZwIjWxpBqor/KHGtFivRJDhYI4ItZBCkAqI411rrXTiIt6FLxexrt9GdHKIo+ZZKLfXKT5w72uZIsJ2qlgZXV688Yjwa1gUlyTRqkIS/zsxcccpRZI41wB8XdWNfDG2q4LLUmTZB4Ss8B0yZFgXCVgw1Feaueb4HyEEt2hwoswOgaqKdX7W/XWrN1xEwCeRm/HiFgVt8LgFea2b+17vN76KMpR8Dlu63o
- qH+yuBVy
- K/Diq6uI4vVnfSiRsmiJBfcdR1pRjaUlvbr1bo36pC6AmfbptkrXB1jYY0t5sn56L0Y2307mXntgCQ/C3sIZR7Sj6EZabLx6bWZVmvAKzYDyc+XNHDnvHpbdfZnPCR5OjfRJkKvdYEeBST7QEIFCt71qQWNbSOtimZZPx8cLwrjFQ03C0zkrUPjrTxJtIcuwwSayidxch+FoZAM0JdMOPD82DNb2TaNoy8/0XZXEVxluhZGG9HXfvXD/MWszM88R4vsq4KX/P3RCCB6hhQDyPkCeZp7feRcurJ7GIDu7l1MiJ0JQn6AnFX5O/35ipizwS5q4pvKgYUlEvJZy/LZoOO3LP45qXlvOgNRomNaFNgO8BoR9tRucW+TRMew==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ADC34140003
+X-Stat-Signature: fhkjdb3eei73ncxaobcmwcxm4arsr3q3
+X-HE-Tag: 1766287515-876283
+X-HE-Meta: U2FsdGVkX198qdTtkU4eePlPNyneGZVLZPR4jbwQOQCgZ18Yx2co2QcxOy3ScWL6oA96dCtv1UM+guWinhweMLsZ+YLziGeNn8R79LDsXA2G64dIra3o3bLziLt13BDR8e8/4H0+HuB2YujFcP+AhqSLVG42h67hUOGHuJfpBrp/f+68OI5pMGhEI2zrV8dxwxFbXiov59OGfisPAR1Pk3rx1JiWXZbpBKM8nXLZw1YPoF4V9zfwxEzC2Qh1e4I/ZxiL8TwrZ6BiwhBxdNxrKrES0u+8U5ZYxzNsT279vJgMNT78653oGX/1S4LsWrnBZdwuRVYQ6CLmulINKtNOZGQTeOJA863g84eZq0AzcFLCavlYUnRbBvRRNVuGmgJ9/N+DdONVYOxm6LR/veHqS5xxYmuMWFOilBls2nHpATeMgk1bvOkQwKjT4WivwQRtNKXZK5ORVthbpXABSWIfUWsnIlyqNkdbwQbgNrHjg1iaPPTDRBWw9gCIolRiMZjxKoF3jkfuDRHuswQtywcuWtYacAXDASDTXaHe3j1UouZgBEsIt0IcYRH6sfc6GUcAQeFuX4M42WLMxGCWE5rXrpaa0IPqAEHtPs5D2oemAnUupgShvXtD1W/ITYFDZgL4ylHncJxq5aisnSkGvNQhMCBPC0xBkQkQ60m7vfKcTJkAnt0bwpxWc6TlnCv+aWcn6m/k7AyjUv4fCP9bcOTnphT75FfO1qiJ2er2DNM+r2HsLcORFYidFLDmL03XOAq/D7ISJoi2DAAOCTbrLrV4uDul8nN+ClS/tNrfbOmEQaqym8/t7Bk8Xll49V8ge0mEUMNA/h9xuaPjQzV/tcr4oomhyRluFoZkVtjZjI9aCVIHJkGEfq4X65mnhoW82vDSdEu4hXaVmW1EiLWR4Jr+y6neoLyiyzwkXiWM4snXnxqgC53kD/CClY260dHWzrqQy2QxPntz5nt9as69nZl
+ WXOUt/Xf
+ 11a/03TUy3/m3zF8CcJYB9h6s02KMxo3EAzGa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,292 +107,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Dec 2025 at 21:52, SeongJae Park <sj@kernel.org> wrote:
->
-> On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
->
-> > On 2025/12/16 07:16, SeongJae Park wrote:
-> > > Hello Enze,
-> > >
-> > > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> > >
-> > >> This patchset makes DAMON's advanced memory management accessible to=
- a
-> > >> broader range of users through two complementary enhancements.  Firs=
-t,
-> > >> it exports the necessary DAMON core symbols to enable building loada=
-ble
-> > >> kernel modules.  Building on this foundation, it then introduces the
-> > >> 'prdm' module, which extends the concept from the DAMON sample code
-> > >> (prcl.c) into a production-ready, user-friendly tool.
-> > >>
-> > >> The key strength of this module is its out-of-the-box simplicity: by
-> > >> simply specifying the PIDs of target processes and enabling the modu=
-le,
-> > >> users can concurrently monitor memory access patterns across multipl=
-e
-> > >> processes and trigger proactive reclamation automatically.  This
-> > >> significantly lowers the barrier to using DAMON, allowing system
-> > >> administrators and regular users without deep kernel expertise to ea=
-sily
-> > >> apply sophisticated memory optimization.
-> > >
-> > > I agree your points about the problems and the direction for improvin=
-g the
-> > > situation.
-> >
-> > Thank you, SJ!  Glad we are on the same page. :)
-> >
-> > > However, we have a module for such use case, namely DAMON_RECLAIM.
-> > > It was designed for a reason that very same to what you described abo=
-ve.  One
-> > > key difference between DAMON_RECLAIM and prdm is, to my understanding=
-,
-> > > DAMON_RECLAIM works for the physical address space, while prdm works =
-for
-> > > virtual address spaces.
-> >
-> > Yes, I have studied the implementation and architecture of this module
-> > quite thoroughly.  However, there are certain limitations when
-> > considering it for production use.
->
-> To my understanding, DAMON_RECLAIM is being used in multiple real world
-> products.  I understand you are saying there could be limitations for som=
-e
-> different production uses, and I agree.
->
-> > To my knowledge, few would perform
-> > indiscriminate page reclamation across the entire system.  In most
-> > practical scenarios, people prefer to protect critical processes from
-> > being swapped out, while applying page migration and reclamation only t=
-o
-> > less critical or performance-insensitive processes.
->
-> Thank you for kindly explaining above.  I agree such protection of critic=
-al
-> processes could be useful and required.  Nonetheless, to me, it sounds li=
-ke you
-> could also do such protection using DAMOS_FILTER_TYPE_MEMCG.  Actually th=
-e
-> feature was developed for such use cases, and I recently met some people =
-who
-> willing to use DAMON on their products in a way very similar to what you
-> described.  I suggested them to try DAMOS_FILTER_TYPE_MEMCG.  Have you
-> considered using DAMOS_FILTER_TYPE_MEMCG?
->
-> >
-> > As we all know, frequent page migration inevitably introduces some
-> > latency to process response times.  Therefore, the ability to target
-> > large, inactive memory consumers for reclamation addresses a strong,
-> > genuine demand from real production environments.
-> >
-> > > Is the virtual address spaces proactive reclamation is
-> > > what you really need?  If so, could you please further describe your =
-expected
-> > > or planned usage of it?
-> >
-> > Consider the following scenario: a host machine runs three virtual
-> > machines -- Machine A, Machine B, and Machine C.  It is known that
-> > Machine A handles massive traffic, while Machines B and C have
-> > relatively light workloads.  When memory pressure arises, besides
-> > releasing caches, the system can utilize prdm to perform precise page
-> > migration targeting Machines B and C, ensuring memory usage remains
-> > within a safe margin.
-> >
-> > The data below, collected from a test environment, demonstrates the
-> > effectiveness of prdm.  After enabling prdm to monitor the two
-> > lower-activity VMs (2316, 2284), I observed that the DAMON-based prdm
-> > successfully migrated 5.5 GB of pages to the swap partition.
-> >
-> >  PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-> > 2253 qemu  20   0 11.251g 3.822g  32.7m S 4.989 12.28   0:48.75
-> > qemu-system-x86
-> > 2316 qemu  20   0 12.191g 1.524g  34.3m S 5.322 4.893   0:49.05
-> > qemu-system-x86
-> > 2284 qemu  20   0 12.092g 1.184g  32.5m S 5.987 3.803   0:48.10
-> > qemu-system-x86
-> >
-> > root@localhost /s/m/p/parameters# free -h
-> >        total        used        free      shared  buff/cache   availabl=
-e
-> > Mem:    31Gi        12Gi        15Gi       5.5Mi       3.2Gi        18G=
-i
-> > Swap:   31Gi       5.5Gi        25Gi
->
-> Thank you for sharing this nice explanation use case.  I think this all m=
-ake
-> sense.
->
-> >
-> > >
-> > > If the virtual address spaces proactive reclamation is really what yo=
-u need, I
-> > > think extending DAMON_RECLAIM for the purpose might be doable and eve=
-n simpler
-> > > than introducing a new module.  How about doing so?
-> >
-> > Before developing prdm, I had considered implementing the same
-> > functionality based on DAMON_RECLAIM.  However, I gradually realized
-> > this would make DAMON_RECLAIM overly complex and less
-> > user-friendly=E2=80=94especially given its existing module-specific exp=
-orted
-> > interfaces, which could confuse users.  This approach would create
-> > significant barriers to promoting wider DAMON adoption.  Consequently,
-> > building upon the prcl sample became the preferred choice.
->
-> I agree DAMON_RECLAIM already have no small number of parameters, and add=
-ing
-> more may make it look even more complex.  But, users may use only paramet=
-ers
-> that really need to be set for their real use case.
->
-> For example, if we implement virtual address spaces mode in DAMON_RECLAIM=
-, I
-> think we can simply add target_pid parameter that works very same to that=
- of
-> prdm.  If it is unset, DAMON_RECLAIM works in the physical address mode. =
- If it
-> is set, it works in the virtual address mode.  Adding just one more param=
-eter
-> that doesn't break old usage doesn't seem that complex change to me, at l=
-east
-> in terms of the user experience.
->
-> As I mentioned above, yet another example would be using
-> DAMOS_FILTER_TYPE_MEMCG.  For this, we may be able to add a parameter for
-> describing the memcg of critical processes.  Again, adding just one more
-> parameter that doesn't affect old usages doesn't seem too complex changes=
- to
-> me, at least in terms of the user experience.
->
-> Meanwhile, I agree adding a new simpler module could make it easy for new
-> users.  But, I concern if having two modules for DAMON-based reclamation =
-will
-> make users get difficulty at finding the correct one for their usage, sin=
-ce
-> they may now need to compare two modules.
->
-> For the above reasons, I still feel extending DAMON_RECLAIM is a better
-> approach in terms of user experience.
->
-> I'm not saying DAMON_RECLAIM's user interface is perfect.  Especially its
-> documentation may have many rooms to improve.
->
-> And I'm not very sure if the virtual address spaces reclamation is somewh=
-at
-> need to be supported from modules rather than using DAMON sysfs interface=
- or
-> DAMON user-space tool.  I implemented DAMON modules including DAMON_RECLA=
-IM,
-> DAMON_LRU_SORT and DAMON_STAT for users who willing to enable those alway=
-s, and
-> therefore want to avoid runtime controls.  That is, users can use those m=
-odules
-> by modifying the kernel command line options.  My expectation for DAMON m=
-odules
-> may not well documented.  If so, it's my bad.  I will try to recheck the
-> documentation and make that more clearly documented.
->
-> For virtual address spaces reclamation, however, runtime control is essen=
-tial
-> since you don't know the pid of the processes before the runtime.  In the=
- case,
-> I think using DAMON sysfs interface or DAMON user-space tool could be a b=
-etter
-> approach.  Have you considered using those?
->
-> >
-> > >
-> > > And, even more importantly, why it should be a loadable module rather=
- than a
-> > > static module?  Do you have a specific use case that requires it to b=
-e a
-> > > loadable module?
-> >
-> > Yes, loadability is crucial for operational flexibility in practical
-> > production environments.  Beyond some obvious advantages, I would like
-> > to highlight a key scenario: system administrators can load the prdm
-> > module upon detecting memory pressure and unload it immediately after
-> > reclamation is complete, thereby eliminating any overhead during normal
-> > operation.
->
-> I agree always having prdm in kernel is an overhead.  But, I think the
-> overhead is not meaningfully big.  Also, as I mentioned above, my intende=
-d use
-> cases of DAMON modules is for cases that willing to simply always use the
-> modules.  If runtime controls are essential, I think using DAMON sysfs
-> interface or DAMON user-space tool is a better choice.
+On Mon, Dec 08, 2025 at 10:44:45AM -0500, Luiz Capitulino wrote:
+> On 2025-12-07 07:22, Chunyu Hu wrote:
+> > Patch series "Fix va_high_addr_switch.sh test failure - again", v1.
+> > 
+> > There are two issues exist for the  va_high_addr_switch test. One issue is
+> > the test return value is ignored in va_high_addr_switch.sh. The second is
+> > the va_high_addr_switch requires 6 hugepages but it requires 5.
+> > 
+> > Besides that, the nr_hugepages setup in run_vmtests.sh for arm64 can be
+> > done in va_high_addr_switch.sh too.
+> > 
+> > This patch: (of 3)
+> > 
+> > The return value should be return value of va_high_addr_switch, otherwise
+> > a test failure would be silently ignored.
+> > 
+> > Fixes: d9d957bd7b61 ("selftests/mm: alloc hugepages in va_high_addr_switch test")
+> > CC: Luiz Capitulino <luizcap@redhat.com>
+> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> 
+> This fix is good, but there are two additional issues that need fixing
+> (maybe in separate patches):
+> 
+> 1. In main() we do:
+> 
+> """
+>         ret = run_test(testcases, sz_testcases);
+>         if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
+>                 ret = run_test(hugetlb_testcases, sz_hugetlb_testcases);
+> """
+> 
+> The second run_test() overwrites the return code of the first one, so if
+> the first fails and the second one succeeds, the test will report
+> success.
 
-I also think the current DAMON design structure is suitable for DAMON sysfs
-and user-space tools.  DAMON sysfs can run multiple nr_ctxs, so I think it
-would be a good idea to consolidate it into this.  As Enze mentioned, DAMON
-was originally designed as a kernel loadable module, but I was curious as t=
-o
-why it wasn't run that way.  When executing the damon_start(**ctxs,
-nr_ctxs, exclusive)
-function, nr_ctxs=3D1, exclusive=3Dtrue is passed so that modules are curre=
-ntly
-executed only one at a time.  Therefore, there is no point in running
-DAMON
-as a kernel module, since you are not running multiple modules simultaneous=
-ly.
-I'm doing some more research into why we run modules with exclusive=3Dtrue.
-One more thing I would like to add is that I think it would be less
-confusing
-to move lru_sort and reclaim to the samples/damon/ path.  And it would
-be
-a good idea to organize the core sources toward
-mm/damon/modules-common.c source.
+Good catch. I can add a fix for this in v2.
 
->
-> Someone might argue DAMON sysfs interface is unnecessarily big compared t=
-o
-> prdm.  But, I have to ask again in the case.  Does the overhead really
-> meaningfully big for a real world use case?
->
-> > Furthermore, it supports zero-downtime updates, meaning that
-> > improvements targeting prdm can be deployed via a simple module reload,
-> > avoiding costly system reboots.
->
-> So I'm not really convinced at needs of prdm module at the moment.  But I=
- agree
-> your above point is a good example advantage of loadable modules.  Also t=
-here
-> were private requests to support loadable DAMON modules.  No one among th=
-ose
-> were for real production use case, and I understand you are also doing th=
-is
-> work for imaginable use cases, not your real products.  Please correct me=
- if
-> I'm wrong.  But as the request is repeated, if you willing to convert exi=
-sting
-> DAMON modules to support loadable modules build and expose required DAMON
-> functions for that, at least I wouldn't oppose.
->
-> >
-> > Finally, I would like to add that designing prdm with an extremely
-> > simple workflow -- load the module, set the target PIDs, and enable the
-> > switch -- will contribute to the promotion of DAMON, allowing a broader
-> > user base to benefit from the DAMON system.
->
-> That workflow is definitely much easier than directly using DAMON sysfs
-> interface.  But, for the reason we have DAMON user-space tool.  Using it,=
- the
-> workflow can also be as simple as prdm, like below.
->
->    # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0%=
- 0% --damos_age 2m max
+> 
+> 2. The following comment in va_high_addr_switch.sh is wrong in two
+> counts: there's an eligibility check for powerpc64 and the test doesn't
+> reject other architectures as it runs on arm64 as well.
+> 
+> """
+>     # The test supports x86_64 and powerpc64. We currently have no useful
+>     # eligibility check for powerpc64, and the test itself will reject other
+>     # architectures.
+> """
 
-Where can I find the damo source or documentation?
+I can update the comment in v2.
 
-Thanks,
-JaeJoon
+> 
+> For this fix:
+> 
+> Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+> 
+> > ---
+> >   tools/testing/selftests/mm/va_high_addr_switch.sh | 2 ++
+> >   1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
+> > index a7d4b02b21dd..f89fe078a8e6 100755
+> > --- a/tools/testing/selftests/mm/va_high_addr_switch.sh
+> > +++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+> > @@ -114,4 +114,6 @@ save_nr_hugepages
+> >   # 4 keep_mapped pages, and one for tmp usage
+> >   setup_nr_hugepages 5
+> >   ./va_high_addr_switch --run-hugetlb
+> > +retcode=$?
+> >   restore_nr_hugepages
+> > +exit $retcode
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
 
->
->
-> Thanks,
-> SJ
->
-> [...]
->
 
