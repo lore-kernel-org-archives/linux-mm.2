@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81C1BE67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE724E67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22AB86B0089; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 3EFE66B0092; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F7C66B0098; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 321226B0095; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00A146B0088; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
+	id 2288E6B0088; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C1DBE6B0088
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C26246B0089
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E770140628
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65D5E137E44
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:48 +0000 (UTC)
-X-FDA: 84245072856.28.26DE612
+X-FDA: 84245072856.23.1A58EEE
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CB5444000C
+	by imf13.hostedemail.com (Postfix) with ESMTP id E80B02000F
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="khpwm/PN";
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf04.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359786; a=rsa-sha256;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=BDynJwA1;
+	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359787; a=rsa-sha256;
 	cv=none;
-	b=LBtXbtXELm7zGvub+WuHFCMdfXREQTB06RIAF8FMKji+P1/IJoNxYt2WZ6Oo7XPTSNT2M7
-	2UCIySk08JVclECBHWHhH00aXmFbuj7vG5eEwqlQGGB7u9WzL+21a/r4h4BuKZHvvEiIVQ
-	4tpWj6+EKa8UuFMJorRDqIf2f53VHLQ=
+	b=OT2L1TZit5kZrVyPxESY0ivtvQSD9G2KMVbCBxR/XJHSkqvatPGNTJ4p9yrvM4iMyR2giW
+	z9xtStaQJWXqayxl1s2FeSoHeajMxGuZiWNy+PMU/XgT95BLhid9dLwEGrZBJlWSplG3JB
+	YbvaC0drXN1KxDMvxyYP9+zfc/MiEt0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="khpwm/PN";
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf04.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=BDynJwA1;
+	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766359786;
+	s=arc-20220608; t=1766359787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VtYWVH4kEDnjh9odMMaR+dSfiUF4Ruk5wQ7WUcoeW7I=;
-	b=VZ1xqBilAmXy5nzGL1ENYSUiV/IBu5s3mKyeIrkTtQSdb6OB8MAJ56/mVIHC1NflbpEsOZ
-	AM0UXnH7F2FxJvfizYuibZ1Y4R/wO1Xsc650qD4+43q7gCcvOaA10d1vcTdGcIAOiQdsT+
-	GVDZsCoSlSPUXyCT/Z5xcufwgYCrqYo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BwRzldu+F4s2f+1UG2tsdvjihgMmQTawixFjZ+I2lJY=;
+	b=s0H1sU9JepqyrbliGkQd6/LrJ2pSFP4ZzNMsD+wgY8fCW5Py92tK5WArGwoF7NnKUdQAJE
+	O7zVY1dRTAUuB3WTpnnXFNLK2OMid0PXc+kFvoXAlo/jYvXjPKB8fhgpC9B6dMKCHJ/q+S
+	CsYjDpuBz30sD9X/40b71TBA+ebUH1U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1766359786;
-	bh=VtYWVH4kEDnjh9odMMaR+dSfiUF4Ruk5wQ7WUcoeW7I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=khpwm/PNwhL6sf+XrYApDAWMut8RQoEfVgea31V1L3B1jZO7iMXhepiwEtS4e49xd
-	 4nJ34QCjGmPCUix4SkrAGeMDo3a331aXLfI5GMTpItF8ywOYJlABGW0zOb1yt8OqpM
-	 eqkItYKxQp1d6axCdGx6RNpnMIhEr3I3yN7jMxfjEdQJO4b7YAfTMuH5zX3ALgpULd
-	 1TiadjFlxRj6en8/ClDUef4FT1ikNrDDAK4L4rxKJaadYBbKMhf+wqgGz24Bu7Tq82
-	 92/dWvdRd0RY7Ud6puy6hPzYiz5eD6lwsNwPa4WRrpLh8uGkAeucHKbeQ072cmJ8d+
-	 uGc2UNEF5bfBw==
+	bh=BwRzldu+F4s2f+1UG2tsdvjihgMmQTawixFjZ+I2lJY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BDynJwA1o3ZkMUeveOgh/2mXgYNsnF7uNZY8CLwxVzfhteYUMZoapgvSgZ0Kh42Vg
+	 mgTr5QfA/KJ8+E6xtp387SpJ+iazYrgmw89GHzNJ8w6vjRahtEJNI3HHzMYKgVkglE
+	 gJOxN1R2zDSTgte0OaARVZCfKcdAwQYMAF3gkaY7gjiBZHdSE/VAcg1xjztTSuuzen
+	 tIE/eOp9HEujiaosjuoYtZc6a9b1S4chzDKhNHwmWNXWNPwVKKuahiIL/NXW476z1W
+	 0580dy9d++YNzEfeJtwMzM4zVjh3GvKWLiKuK1kd0ncVpBHiKhYl7YzGqL2Gv4RjzH
+	 JDYiy0VryddCg==
 Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:6450:b8a1:16cf:5ecf])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYP6sxXzddl;
-	Sun, 21 Dec 2025 18:29:45 -0500 (EST)
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYQ2Lrjzd8P;
+	Sun, 21 Dec 2025 18:29:46 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Mark Brown <broonie@kernel.org>,
-	linux-mm@kvack.org
-Subject: [PATCH v1 0/5] MM_CID and HPCC mm_struct static init fixes
-Date: Sun, 21 Dec 2025 18:29:21 -0500
-Message-Id: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
+	linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 3/5] mm: Take into account mm_cid size for mm_struct static definitions
+Date: Sun, 21 Dec 2025 18:29:24 -0500
+Message-Id: <20251221232926.450602-4-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
+References: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB5444000C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qdj37zotw9oxpdog39zf6otsao9tspkg
-X-HE-Tag: 1766359786-337068
-X-HE-Meta: U2FsdGVkX1+or3JZXD8WNHAp5tYC6QJPX1ydDyrB7BHmncTYMl/kDgnx706MVuuUOWQnJEM5PFHVPvVxmkQ4D0CFOXF1HT/jXjN8It22F1mFXmL/MqzEDtrLxcnDRu9hRLHH5nX1aKuxeAS3uvXRZQuQhbI1y7gY6ECDn9MqA4JyzzyU2TgtMFZ9Bovee+jbpxTNPgozcM4AXPBxEEEtI4n2karLKFQN6FoixUN9Ssc2r7dSdDUfjv/MVOAgZUG2tf7EQxuAq3gUxUUzXpfqLoA/6HifmQ8GM9bWVXWJmuiMOgAI/oEAY1upVEgKfvzL9ePnukQiFh5/jv2NOokD4O++WFCNHZbmHgU+4hocUulaxVRf4FY5tjM5rIVO/c+zPkaexsSCawFbwYghQCXAdoUJ0cWDq1KF8bsZVbsBWe2mDpUJ5n8Alhi3Y2ZxJyiVihWZFLOfRnkhmI2QyM6UxjXhbYfvNygQ2GdCWDVro19xuXtIu4oaaGC9FjotBHdDxrMoU/9LmQIzri1VSOxKAvI1obZjZVnZZIfAD80Lf66c6vHPKEiBLV8NKlkuFzXncbiDUYoyZuBTULYF2ZlW8v6fNJq0XG1FwzkqD4GuMB00DLBIk05tDLMxGIKYtIuu20Z6nBXQ/UoRY/sNvJMoQ5Rb2aZCND2xLvmhbEVoQNsjW5jopnnv4Nd8uiBUU+qakkr4mv/6IekBNrNWoCF9SQEm21zjFkorjPyDhdJzUD78sCLsFYAm44GkVP603g5SiqxuRNOzyEfZMt5+5/ozCF+a2hcv2j9pFTi/aZg/clpV6it22p/VoukSYTyOc6OYABF3TBhQ1egSbNFctFvXxk2PPlMES1l6ydSYNJHWFeQgM4qU+NLAWH4ybL2LvqYkxopP9qDmO37IYzv9O2BUfCmWtlxq/+n327WEhxhn//+BSSRSWAwZi3lXSRQxDj36VaQN4RE5fsFSLaQUXbc
- X8VRKng7
- eArpXQxuGhH6YnzomqV1P22nsR7xLdNYIGMcSVjmyOJYJGpOYJcwpLPFw+KM+PUUELwslMY/nao5RYzvzHFJBec9bpJw3ljFjbOQCBCKTG8R0R8nIbtcd7mGDLymdMqjEPQsguV9o6zjXSHDMCGmRxDKIPUbZ6m3mTEYBVJZTOC0b9enMgcA7s0MokfiLXgIrpTmXtRlS6po3uWzemFZvfHChS7aA3VG65eN/U2PJbNzExtW/rfEtA0y4m8IZblZEiDAWMqblT5gMum2vDRa3sNkiKOXyPLyWFjRh24Hm++bYNU6mq+cNzrdFxKhvc0ogdjatEoGURX5LjzXIuwabyQ68VK35t+zxfpugflKrrhz1G4DZAH7SvM3Si6lPUlzcea7I2A/tDrY/WviJ6NxbkidQDFRoENjlEtCwb2GgPvsyiEeVcQKfA7QeGNAp5mSp2nV22uvHd81AqWhnWIWSVHERzk1LuLRNxsdnpP74eysA+0QhakGy6pGsNasAUY1+bcKp9N3gl9Zw78k=
+X-Rspamd-Queue-Id: E80B02000F
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ktour1rk9nid4y1zqxe6q6wyduuq6ry3
+X-HE-Tag: 1766359786-269091
+X-HE-Meta: U2FsdGVkX1+LxH3L0yTJUIY6a2HeBzimqFybN2VfAfGS2kihHlstZzyHqatPuo/ehUgn8q//XO601TYmfHOrKnugvIKsKQ5yoVnKrD519IRxdGCH5Yw299qsegM4eVEqwANcXiTDLKyqn4DSj8Mn7VEhwJPhu1agvCOU3iIjxsMnTutPfGgGGiOHROXYKcg8piuWyfy6KlqKoUaHcD3WShm63L8UHxnWpWdzwkLkzQ/PeF5GVaNs5zNG/l8dlbaR5xRS62fU+x+yDnCePKe+6XAINb7q7O/kzZ42/0/qmIrUtt+Lc6QsV2jEhP/O7dafYGKD5yM5QAIH8JKpR6U4in5ez5Vv5EVL1NSZ1PS4fGGCThjnGbkfP0VVYhQ3ckLbWGwg0ahFhPhaYZYvB0cKQQ9UGpCI5fXoe/h1KN5Oy5qChCNzpIlALU56Rz3eL2ReEgxa2+jGHbnF12AO6u2FuDf1dDOJ2TA9ZW1RPe3gOas+VtvFKFPCf/7MAXMgGNNmW+7ajjtHo0dBmHovu55Qrj6FCP+OvAjNWvbDyQOn3zIvHC2CpVAHTRMG9fPdRA3zZ/syQxBQxZysmLhU0+UfdAl0nxz8l87iGmhdzMDPbX87SuXKNKA/yhAWRjMKfwPXs6TfqPA29OetNTDzuwRfQbABeTp7ZQ9wmSKVA7YBcJanIeg7kmNX3t1waIh4cNgAvFFichr1Z7L2uR8RxmhC6aXNK9PBi4txFYC6TMus5UsnLNM+W+/tOdUIhae9I+l6cDh6yBWPHbFeXJU35YrMSO0UR9RSllV0tmL5GZySOeTr50BlPQbWtNtsGJpsC7oHKIqZYwU9jRJSQVJouRamS3l0zn4NsUEClNLYHQhWJdd6C4hYzwtPS2uEwgAmsZ6+4UDsqzxOrO5MDE+whWcOrEoaS2nK+a1TvjdUFNqrZJIUJOTe2jt6xFGHdKlKnKNLsl+xvp9zXwvF3cadDkN
+ QDb1uSLK
+ RhzaKzgNnrmlqIhGrVSm0kZO6tK1HwymBvWYg7Bu/rNbnHG9psMjGJACHJ7Bnk+EQ3vfaIpkYZEcIAh5RdHXlCjpVoJrlPvzroc+G9zebKeM28xXsPrFxg/Z5WoCIPQExKCONDFS4HEpEyX/uInBflCENo28fGN6xRvT1tSzAJ1BsSjfFthqRhAN6LyWn6p5eXZllGtVDJbA/uWtB9ObZ4APxpCwVSQgP8kQazQsWU+9LXxgmrcfFrcGqNbl4zdP7nofPo0knP7Ezwp0kH3NsItCK7qZyEp87QYa39qjmdxezGVIR+I1UFy23OBVp5QmqfWACwWA8s/xgibUaXDeDqYKf2zMVFyyuVh7Wy4kNkuc34GWm6PKa+LtXpQeMDtWPWltP+UcjqkvXSIZilDiWL8MJ9UvmWTqR0MjXAuwZ+XqfI2cLSR9KYNp/b1FCQ8xNDKwFw/H1oCvs2T29jawlllRAmh/lO6qo0MJbmFl5bwCY9h5dzjfgR/zYONdXAtSCWOs9eSsSdaULI80fz4STdEpUv3Fnvu+UoJMxeEngIH7J29g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,49 +93,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+Both init_mm and efi_mm static definitions need to make room for the
+2 mm_cid cpumasks.
 
-Mark Brown reported a regression [1] on linux next due to the
-hierarchical percpu counters (HPCC). You mentioned they were only in
-mm-new (and therefore not pulled into -next) [2], but it looks like they
-got more exposure that we expected. :)
+This fixes possible out-of-bounds accesses to init_mm and efi_mm.
 
-This bug hunting got me to fix static initialization issues in both
-MM_CID (for upstream) and HPCC (mm-new). Mark tested my series and
-confirmed that it fixes his issues.
-
-Please consider the HPCC fixes for mm-new, and the MM_CID fixes for
-upstream.
-
-This series is based on mm-new
-commit 287373d0b6ee ("selftests/mm: fix comment for check_test_requirements")
-
-Thanks,
-
-Mathieu
-
-Link: https://lore.kernel.org/lkml/c8acf650-ef96-4449-ba85-557dedba0ffc@sirena.org.uk/ # [1]
-Link: https://lore.kernel.org/lkml/20251122111336.56b060c86ff6ba41fe76bfd4@linux-foundation.org/ [2]
+Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 Cc: linux-mm@kvack.org
+---
+ include/linux/mm_types.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Mathieu Desnoyers (5):
-  mm: Add missing static initializer for init_mm::mm_cid.lock
-  mm: Rename cpu_bitmap field to flexible_array
-  mm: Take into account mm_cid size for mm_struct static definitions
-  mm: Take into account hierarchical percpu tree items for static
-    mm_struct definitions
-  tsacct: Skip all kernel threads
-
- drivers/firmware/efi/efi.c          |  2 +-
- include/linux/mm.h                  |  2 +-
- include/linux/mm_types.h            | 18 +++++++---
- include/linux/percpu_counter_tree.h | 51 +++++++++++++++++++++++++++++
- kernel/tsacct.c                     |  2 +-
- mm/init-mm.c                        |  5 ++-
- 6 files changed, 71 insertions(+), 9 deletions(-)
-
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1531df8cda52..aefa64db3499 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1368,7 +1368,7 @@ extern struct mm_struct init_mm;
+ 
+ #define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
+ {								\
+-	[0 ... sizeof(cpumask_t)-1] = 0				\
++	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
+ }
+ 
+ /* Pointer magic because the dynamic array size confuses some compilers. */
+@@ -1500,7 +1500,7 @@ static inline int mm_alloc_cid_noprof(struct mm_struct *mm, struct task_struct *
+ 	mm_init_cid(mm, p);
+ 	return 0;
+ }
+-#define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
++# define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
+ 
+ static inline void mm_destroy_cid(struct mm_struct *mm)
+ {
+@@ -1514,6 +1514,8 @@ static inline unsigned int mm_cid_size(void)
+ 	return cpumask_size() + bitmap_size(num_possible_cpus());
+ }
+ 
++/* Use NR_CPUS as worse case for static allocation. */
++# define MM_CID_STATIC_SIZE	(2 * sizeof(cpumask_t))
+ #else /* CONFIG_SCHED_MM_CID */
+ static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
+ static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
+@@ -1522,6 +1524,7 @@ static inline unsigned int mm_cid_size(void)
+ {
+ 	return 0;
+ }
++# define MM_CID_STATIC_SIZE	0
+ #endif /* CONFIG_SCHED_MM_CID */
+ 
+ struct mmu_gather;
 -- 
 2.39.5
+
 
