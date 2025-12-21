@@ -4,99 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F2DE67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 15:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6B3DE67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 15:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9BCF6B0088; Sun, 21 Dec 2025 10:24:31 -0500 (EST)
+	id 0C78E6B0088; Sun, 21 Dec 2025 10:27:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A49A66B0089; Sun, 21 Dec 2025 10:24:31 -0500 (EST)
+	id 0763A6B0089; Sun, 21 Dec 2025 10:27:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955EC6B008A; Sun, 21 Dec 2025 10:24:31 -0500 (EST)
+	id E99026B008A; Sun, 21 Dec 2025 10:27:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 842666B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:24:31 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01FD0BAED1
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:24:30 +0000 (UTC)
-X-FDA: 84243849942.16.E5B710E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3B37BA000B
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:24:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iN2pnvg4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766330669; a=rsa-sha256;
-	cv=none;
-	b=tE1HcDweXVXS3r32xMx++qlDV4ZaKSzjhMOEA7dOoE7/I9VwcCjnOiHTOtLCol5iygEqSg
-	CyJTMrW3znjnV/uPzCO3GkFs8UjoIIp6JJ5rhUhAlO/OfvndAOGJfurWKh0SxphOQFCib1
-	f32ZQ0cxlUcQtG8/kise4U+PSbR6S2M=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iN2pnvg4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D9F4A6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:27:21 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 797AD14087C
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:27:21 +0000 (UTC)
+X-FDA: 84243857082.04.BEB35D5
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 510892000E
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:27:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=d4LBr66A;
+	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766330669;
+	s=arc-20220608; t=1766330839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VHz2A9HXQFl/Z5ORtAEQpI4bJq10w5ge2MyW6KAZYws=;
-	b=Kmlb2+vSPpxbqhYcwYOjETz2/2Qa/kLb2DiShnZue6bf76Jrk9X5c/BtjAz3nnEIDuzTJD
-	MOjtyb8BRnHnxva+vnNnGMxdN6i2ohBzfuP3NupGNaTZe6U9VYC5lfO43v38prB3ycDQTq
-	rxMoCqiU2zXSfdZ0ZeskfKjYIu8qOJ0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766330668; x=1797866668;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=UPW61B3GCwlD6pRjhVbIthd4zHwxGoWsmYq8SGqreEM=;
-  b=iN2pnvg4A/SRMp6kiENZU7YXEuaKOp7riQwZ4dRgsE9E3Hp3X8fOifNt
-   piOWGNiguNKtz4pQmle7na8yiXSi1svbELaLwGOpsmZ9GJW2pOUxUA7bO
-   3VFTX4O794VDwvu4ZySy2XpI6ektmEN057Mu/rlUDEJOvx3FHAoqUQNe+
-   8m3yWai5uwvBPEnoz8+XTTsPWxksS6xm/PUsBBpSkwhPrX1pXAhPK0hq9
-   bBxp4d1ohEY7RMDazc91cSnCbxqDTvRHhsRA4oJiL7Tim2LQLpp41ukWL
-   57cwv/JZY/HiuKQ/+Bcgr5P0wqTJ8CK/bF8IYKKDVGFY0wxQBDSsc8//b
-   g==;
-X-CSE-ConnectionGUID: AwalfB0RTae9V/IS39b6xQ==
-X-CSE-MsgGUID: 5bw1Q/6zQpSnKWHABkiFhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68090341"
-X-IronPort-AV: E=Sophos;i="6.21,166,1763452800"; 
-   d="scan'208";a="68090341"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 07:24:27 -0800
-X-CSE-ConnectionGUID: 1QXVgw98R16pKnFnskNSOQ==
-X-CSE-MsgGUID: A4+GiOkUQ6ijLCK6CX4WFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,166,1763452800"; 
-   d="scan'208";a="199070358"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 21 Dec 2025 07:24:24 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXLIE-000000005mn-0efw;
-	Sun, 21 Dec 2025 15:24:22 +0000
-Date: Sun, 21 Dec 2025 23:23:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xiu Jianfeng <xiujianfeng@huawei.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/hugetlb_cgroup.c:829:44: warning: '%s' directive output may be
- truncated writing up to 1623 bytes into a region of size between 32 and 63
-Message-ID: <202512212332.9lFRbgdS-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jlKsAFeaIV2hMkoHG30hkHGQj8Sy9Pccwd7CmoKW274=;
+	b=8QyTYH60LQtjpOdQbkVxwlromDXV1LAbM20i0jKmYA+kbaB048HDGo3RKrp6k0A0S6o9zR
+	yYDgacLI4KmVuWKpFfrdfWeI8/hNU0sQCmngHCmzWc3gQ61Y/g1M8k6ROLG/i8v1Uk2W8a
+	Ovf/ZE5+/vwWDnLyl3B+MLthIcvzpEA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=d4LBr66A;
+	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766330839; a=rsa-sha256;
+	cv=none;
+	b=VTaqDihQFfa+sbfXx2ocsy59nfCbFLVRklvrCWUEZREgQQi/MD2Uq+fpvOTOJvDoRC2XHq
+	lquV75kJI41gulWQy1uD6RPeMCXrtaYOUoS9wojY5/4kaiPGXyXCkJHl1ckf81jvrt2UWp
+	vU+oIkosjJ8aC2I2/p9vUU0FJ+8XyFc=
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BLFQAQb2906325
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Sun, 21 Dec 2025 07:26:11 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BLFQAQb2906325
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025112201; t=1766330779;
+	bh=jlKsAFeaIV2hMkoHG30hkHGQj8Sy9Pccwd7CmoKW274=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=d4LBr66A/lMYsQQUrfpraHzgjeSyK6794g+KDFvXyLiRZzLUKCZVKw68GdUqnufZZ
+	 +NAvFJ1Tc1JY5HEDmF0egLxtTnk8IAec4qisamrjj52wF9Zyd4QozYprO+iiGUZQJU
+	 c2fm+Em7HTcQi1P/wvEzvyQwP9GZuEEsuyscS4GLVm8IDRc8zdqM36lHHl3R5uLzaZ
+	 l6bZyDuDsP+7ONg1mrdK0BrGIdBfrsgOE07sYDDOHVvHchBTA+qa7DJxFrF2DMYbxm
+	 Nho6yO0DvkfLBbFDJfdtimxRjHn09lg7IcBD3DPpHB3/L17Ujb74vSiGQta0IdSzu5
+	 LQhxq3/8OdW4Q==
+Date: Sun, 21 Dec 2025 07:26:10 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+        Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+CC: Andrew Morton <akpm@linux-foundation.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Michal Simek <monstr@monstr.eu>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+User-Agent: K-9 Mail for Android
+In-Reply-To: <4aecb94f-e283-4720-96e5-1837352c3329@kernel.org>
+References: <20251219161559.556737-1-arnd@kernel.org> <20251219161559.556737-2-arnd@kernel.org> <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com> <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com> <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com> <4aecb94f-e283-4720-96e5-1837352c3329@kernel.org>
+Message-ID: <D1726374-3075-47CF-B2FF-FBAC11BC962C@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B37BA000B
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4rgc478qr5bhbm9x9nkfzb5j4zeq9w74
-X-HE-Tag: 1766330668-879927
-X-HE-Meta: U2FsdGVkX191ZMJ3q1SqS4YF857/6LPisXSIDzt5H1tkRxLlkaabYFexGiZUeorlA/C8entE+ThJAKXqiz2tVRzKN+MUhu3MalE2EdsmKHQ1WQ5Rj3F0yKBn23hIMC9HFlUd/zbFRcAKT/9fKRUq9sPvxex1oUlCP5XxFtzBNEHp5bpsgE9wbLxqCBTG4VhBUoz663deZk+xuIw3VSB3ofTqHexeFbEFPfDK2c+4bKMi7WNeYZ5xm+vF/Ah4nMQF6UX5X8AEeFgbFdYSgB0vfa2IXAx2DM/YCur9hYDJRnaey2NdZa79zbymhnw1MbwyHDMSyCUSXYCWN9CxoTz6CWqpM5WCiCQU1CGGqD8Q8egoxbCVO3r00JmaMcy+fyzJLnnAXAuhdzkQElmpK13EP1C2rq9qg1fP1i8OSTKofS2sff5LSEOXK+6l4XxPi9G9OgST8E+Hv7NB7hK80B/JfXV/28icNuL96BpUDTWbfwwb7Ne0yEkzOpcf2W0KUBdQsn6m/uHECEqlWS+J0/Fz/HTxTiMQ0gtyfHkNTEZpRFp52aDOit1AjWQalID3iJHS3egB9pNMGO9IbLkgZYvTLagaWctDTorSDTXa7OIYs1Yn46tmOjKs+CT0rO+Fgxh0eFfMQmDEJ70k+448+SjYxXMd5dNU3awwn9REj5KLmI4gXjyXfuZqtMqT7PscLKY43fpzvFPLjKlAMJrFJizWZK0rwK99dsuHjBDHdCbI4zEzWBi+IJ7VitNZ+pAOZsRKO2kEJzdiL8yOmTizjGiiAK/7KZu/pEf06T6nEnOJb0477yS/SkCbTsTcFxZDdWJu2rGIH+AMMucTQZu/LATwZBSlL8QJ7zLaegOrz5hLQ4ZPu5TBjdu74lR6FNddU2gs4rvgPpUq0V2loyca7YrE9Onfw6Sm0zZLCemXVfLw0IcqSsIuSsHvCGCWuBDQjx05cwrqsOnz7tqfdflICXP
- 7tDRBVQz
- rE0s1NZ93i0oq6Amw0BmvZ09QmNBIcbzQBSiW42FFL1NA79EavsPi0mnicDKtOgaVWStelcEdvN1csmf31aJiXvWANuGPOsDdn3G3hDNEOkjXHk8dN9eJptAJ8SnAZ9ukdBrsJaSDJ/yB3uy8Ue+5if5bQShDCQjqyhkC5YfFDpqhFs/oM7hrNPwpCt42t1qT3ItuCrkASSlN687yr8YfYYz+ZGbt/0C/K34s8otFTX+Q9Idksj+YAnYZT/EOj5FRtdeQiVfSiRgbIwcFTQ3/kuFw8rW+E2wQHFR5CyyxKHdouo9biAows5ZWGp1azqsHHXqtIFPYPrCUWhYP3u+776L208oyQ3A/8kPm3+ros6jJYEFWn5ZjP19syYGWZErasL4tnkJ01kT88BE4VS+60O1zrg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 510892000E
+X-Stat-Signature: n77h6osgko5c9knguauhj465jwdqy3tz
+X-HE-Tag: 1766330838-358147
+X-HE-Meta: U2FsdGVkX1/qWuWcvssZfv4QDsU/E/wETit4q9C61it2rVp3LD1aXNoqwOELWPGJtTKc6QkKpyY80M9uXZW5sVqnNoB7KG8lpcwHpWVFwM80na3Cgl65cefCkew9E46s8O0LZlI5Jv3IRMiQRCzpLg1MABri09ORuVNylwZ3ZXxh5aiflqY1jmm0kdFxeV4K1TniGMNM5q8x1SiWH30pfT8QcrP42MhI5eaGWyC3/VlZiv/6RyWBgAUarnY3Xs5084TZlh//ulWrtJyN2dZ3k7IuexfM1VX3dKIF9X2+RFMfcJa4eEU13hh7QM77YptJza3Hd+44A3fLqJLauktN3K1VpIK3oElu32N0C0IPb7QU7raLcMzJHz61mGIrcVGGfdE5nPx8XQvytvwVLrNcGhHifpaAZK66Vlw9sFyesro8LeO4MDXTlA3zF1W2situ59t2Xi7/7rx+GqZmb41tGXJwyxnytGcwdyrvuR3mlmGi1R9jK1VDGOCbwN4ZzOqh1JobMH9ZJ/j2dFcP1gBsfmTOJ0VdnXrnhAPxhKnaEkDQXWZwhrXzQbf7VE0qdMhh3TjCaau82t1s09Zvt5gs5zFHcIjB+gs0Ok8ONURM2gbgcUUzJON48WvWIeEJlxURjghaGkqhZ1XahotgArqSfFw5tiiQYa3nv2fX6pHzy6PwDuh4qnVoFH3ZFrvN/aDMzdoYrS8eC14sbBEEbGN62N4vk9LThP4dYObKr2QSX4TMoMVpQI0w0BsP027tCXzNuiRTTgOyZxhXy4p2mAdNL4+D19TbTHvd4AP3btPQrY50Cys6kG76zQu0JvQcJo5Jszrwi2y6sQ9h8oEw27qHVs7olfq5UVbRYzlVx/zTUGwx6NxqJA65H75x2zC+S98Vvh8ETnBqArfgGMbtKJY60DTdnZvt6O9OTDBeIpJ0YwtvrxDyGrSX66k5ra/on5WC9WysHX6yFaKD6zCiIRK
+ 8VkldG+/
+ 5YqRi/P73XdGMPfIePEfX9zWu2xgfISZTu19rbp2stYa8zwM+HR5cgmKz8t2QYDOLVdsAVOqDz9Rm2vYpmHaan0iG3LF++/uGD70D63abmv12Em3ZD9zy/0xiUajuFGdHMOowVmDOqOoTwi6q2ywaZyh6yVNJoJj0cWQLmeUCP6iXc561d7m/Q3IukBkOEAaoY9lL43XrSwN2ynRQ+vfEQFDejoyj7kbYNKhfF1Ka4myCPXLquSW+HERY0b1cxXUkSYCk8rvK+HIRVIo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,73 +116,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Xiu,
+On December 21, 2025 1:30:15 AM PST, "David Hildenbrand (Red Hat)" <david@k=
+ernel=2Eorg> wrote:
+>On 12/19/25 21:52, Dave Hansen wrote:
+>> On 12/19/25 12:20, Arnd Bergmann wrote:
+>>>> For simplicity, I think this can just be:
+>>>>=20
+>>>> -	default VMSPLIT_3G
+>>>> +	default VMSPLIT_2G
+>>>>=20
+>>>> I doubt the 2G vs=2E 2G_OPT matters in very many cases=2E If it does,=
+ folks
+>>>> can just set it in their config manually=2E
+>>>>=20
+>>>> But, in the end, I don't this this matters all that much=2E If you th=
+ink
+>>>> having x86 be consistent with ARM, for example, is more important and
+>>>> ARM really wants this complexity, I can live with it=2E
+>>> Yes, I think we do want the default of VMSPLIT_3G_OPT for
+>>> configs that have neither highmem nor lpae, otherwise the most
+>>> common embedded configs go from 3072 MiB to 1792 MiB of virtual
+>>> addressing, and that is much more likely to cause regressions
+>>> than the 2816 MiB default=2E
+>>>=20
+>>> It would be nice to not need the VMSPLIT_2G default for PAE/LPAE,
+>>> but that seems like a larger change=2E
+>>=20
+>> The only thing we'd "regress" would be someone who is repeatedly
+>> starting from scratch with a defconfig and expecting defconfig to be th=
+e
+>> same all the time=2E I honestly think that's highly unlikely=2E
+>>=20
+>> If folks are upgrading and _actually_ exposed to regressions, they've
+>> got an existing config and won't be hit by these defaults at *all*=2E T=
+hey
+>> won't actually regress=2E
+>>=20
+>> In other words, I think we can be a lot more aggressive about defaults
+>> than with the feature set we support=2E I'd much rather add complexity =
+in
+>> here for solving a real problem, like if we have armies of 32-bit x86
+>> users constantly starting new projects from scratch and using defconfig=
+s=2E
+>>=20
+>> I'd _really_ like to keep the defaults as simple as possible=2E
+>
+>I agree with that=2E In particular in areas where there is the chance tha=
+t we could count the number of people that actually care about that with on=
+e hand (in binary ;) )=2E
+>
 
-FYI, the error/warning still remains.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   9094662f6707d1d4b53d18baba459604e8bb0783
-commit: 47179fe03588caa13a9bae642b058901709ddc55 mm/hugetlb_cgroup: prepare cftypes based on template
-date:   1 year, 6 months ago
-config: s390-randconfig-001-20251220 (https://download.01.org/0day-ci/archive/20251221/202512212332.9lFRbgdS-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251221/202512212332.9lFRbgdS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512212332.9lFRbgdS-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/hugetlb_cgroup.c: In function 'hugetlb_cgroup_file_init':
->> mm/hugetlb_cgroup.c:829:44: warning: '%s' directive output may be truncated writing up to 1623 bytes into a region of size between 32 and 63 [-Wformat-truncation=]
-     829 |   snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-         |                                            ^~
-   mm/hugetlb_cgroup.c:829:3: note: 'snprintf' output between 2 and 1656 bytes into a destination of size 64
-     829 |   snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-         |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/hugetlb_cgroup.c:829:44: warning: '%s' directive output may be truncated writing up to 2087 bytes into a region of size between 32 and 63 [-Wformat-truncation=]
-     829 |   snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-         |                                            ^~
-   mm/hugetlb_cgroup.c:829:3: note: 'snprintf' output between 2 and 2120 bytes into a destination of size 64
-     829 |   snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-         |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +829 mm/hugetlb_cgroup.c
-
-   815	
-   816	static void __init
-   817	hugetlb_cgroup_cfttypes_init(struct hstate *h, struct cftype *cft,
-   818				     struct cftype *tmpl, int tmpl_size)
-   819	{
-   820		char buf[32];
-   821		int i, idx = hstate_index(h);
-   822	
-   823		/* format the size */
-   824		mem_fmt(buf, sizeof(buf), huge_page_size(h));
-   825	
-   826		for (i = 0; i < tmpl_size; cft++, tmpl++, i++) {
-   827			*cft = *tmpl;
-   828			/* rebuild the name */
- > 829			snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-   830			/* rebuild the private */
-   831			cft->private = MEMFILE_PRIVATE(idx, tmpl->private);
-   832			/* rebuild the file_offset */
-   833			if (tmpl->file_offset) {
-   834				unsigned int offset = tmpl->file_offset;
-   835	
-   836				cft->file_offset = MEMFILE_OFFSET0(offset) +
-   837						   MEMFILE_FIELD_SIZE(offset) * idx;
-   838			}
-   839	
-   840			lockdep_register_key(&cft->lockdep_key);
-   841		}
-   842	}
-   843	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So, maximum 31? ;)
 
