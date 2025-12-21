@@ -4,128 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BADE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF3F5E66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 13:02:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C68A6B0005; Sun, 21 Dec 2025 07:56:45 -0500 (EST)
+	id 36A846B008A; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 574786B0089; Sun, 21 Dec 2025 07:56:45 -0500 (EST)
+	id 321D36B008C; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456286B008A; Sun, 21 Dec 2025 07:56:45 -0500 (EST)
+	id 24B116B0092; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 315986B0005
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:56:45 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCDA516086B
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:56:44 +0000 (UTC)
-X-FDA: 84243477528.21.A14982D
-Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 02D6318001A
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:56:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=LDEXtzk8;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 124DA6B008A
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 08:02:50 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AFE44160881
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 13:02:49 +0000 (UTC)
+X-FDA: 84243492858.26.D3D20A1
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E9332120019
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 13:02:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aHa4B2ZF;
+	spf=pass (imf29.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766321803;
+	s=arc-20220608; t=1766322168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=0Ivv8/3ACbIKOnDf+l354pCkgSIU4HYGFindxr8g4Hs=;
-	b=KabIVw98NiG/W/90bqW8VKv6W6HvuIbl5G6mYY3On7FGilmi0JV/xdDrL5nz5uD4UZXqaQ
-	micgFa9icMFyQ8oWloNW4wERbLF7mHC/6otwxNzeLtrGzfYTnL2U6Cg3Igc2Si8slmJPRx
-	Cf0PHq6xHdMFxbpqJqlO0H8WlxPlE2Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766321803; a=rsa-sha256;
-	cv=none;
-	b=5xI0rxxYOGmTN1vgVESCt/R6/4bo0hp4tzp3wAQ+NuZaXxVDilTRgqVbZU6sHCxYU/Cihj
-	2e9r5k8zvdxlrKp/j0i4UDU9R9fCUwO9Zt6wfLAqUPn/EnkBWyRfBx9P8l5mXGM+qrGy+x
-	ACYPqJCCRereuEM+vMj9hY671uhCwsA=
+	bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
+	b=lFO2xz7kQMmXW4oOHfVxIn2lx9T8BkolgG7a4IG0Fado5QvilYaNaidBqhAEBsJZdG/muD
+	9T7cw7oqk8zDhuWnE3NAe0F5KypxVKqNk1wQfppI3qNt0aZ5WoWuknOOmOlIqX5Qx8WKw3
+	l6snN0duS6fIi4uYKvmoydkw2BK5gSU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=LDEXtzk8;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8c0d16bb24dso128887385a.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:56:42 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aHa4B2ZF;
+	spf=pass (imf29.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766322168; a=rsa-sha256;
+	cv=none;
+	b=q+VjxgDYQcmwlqP+vdZWxKTWcEPyDqq+murj0IMIvhvv8myCpPKtbu//Y5nFSY+DpO+lOf
+	MzG49EjdudP/3fjssn8X98pV1Yt3M88XMMnA6sLSkLlIeK2t1fs/C0xwQ4hbqGB2iiUGQw
+	LkqC/bdR2V6G4ntqAvl+OP2pHDZuJSs=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-bf1b402fa3cso3294061a12.3
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 05:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766321802; x=1766926602; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766322167; x=1766926967; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Ivv8/3ACbIKOnDf+l354pCkgSIU4HYGFindxr8g4Hs=;
-        b=LDEXtzk8w/j8VMeahedemnufwbGiKg/VXeznQkV802J+X1x2WtibvoS2mF8xS9301w
-         6REK8KP5nysdJ7ek+3tzES2RONj+DxnGb3gNLrEZDOfpvDAKlZB0j8N2L9odArjMYJqo
-         JM1hJsFFpihnh3q4KUyWmIvvqnNO24sfMY3yACGhD8cDTcxfRr8UzmGBie6IcCYgpXxF
-         Tk2q30k6SQhab077sr2aQeNsPkubCqBTinVvKYyqDuTtyTsfv1FOGzyXWKmCIBf7djzD
-         NvPUFrJ1HjBx5VeJR6ucJ1sUQB+vCueI4edeaywrpSve++ATGujhBPiowH7R/ctgXHdc
-         wraQ==
+        bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
+        b=aHa4B2ZFrC2rbi9Mha5ajkz5Adx7osJnfa1SHWbwnS9KSzYsNXfwQ9z9PrKTiPEmds
+         gQIYLEanJ7pLXWnF+4EuNlInf8cNl1KAB0zUY2LQfFfhF0HUZjDE4C5i2OOdIuFZbKma
+         n8AU/cwa2yy292+hJrHywxMj5IYE50c3mTw1nmQu7DTKNAIE1fNDtUg8gJBzs3jsLj41
+         1JHXf41h+SNkEUEwo4HdzapucqDiMwNv5xu92jnmADqRFUclsqbkbV8mB4s3NpQYp4KB
+         ycldXC/2EnfJGbTw1LlHEqM2E+MAwN0yreJKSoRNI+ZYymIsACEdCye2iICkmAlIEv3g
+         TQYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766321802; x=1766926602;
+        d=1e100.net; s=20230601; t=1766322167; x=1766926967;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0Ivv8/3ACbIKOnDf+l354pCkgSIU4HYGFindxr8g4Hs=;
-        b=R+mUIrA7EFur8fLXwgUGZwdiRz4LQdh8g58tavMRSiev9tXhg9wpaE6k3V1SaU2qXn
-         mDSlS2nOG/adnmVpveUijtQ1fx11c2N//ASFc6cjT9790ZpyD+j08XS7sQAjbq/FpJcR
-         ZJoT3OzRPOuoLttl1KDw5ZvsI7mafKOGvUXioPRoPaukZgU8hL7hCDd0GXY6H+/Tfwao
-         gFfhm5XTx7/9OCFywdKM+mTiIaUvVs6X2Y+ARCKpmQEGML/UWLGY2u9tEelxoSrovh52
-         BcRwB2bv7o/RtdmoDP+3UKb9Ehi/DOC+CkOykVqFYyl7DDrmTGbnzRWFp4GA+iGnzmEX
-         30GQ==
-X-Gm-Message-State: AOJu0YxVq4+A8L07wwMwj2+cQ8db19trtVSW1dGeFTem8nWeHDzbuXLw
-	3Rk90MEtfKbWeQZTeH/g1vaT23ZKt7bGX3/tHtD8V6rD0gnh+Ln2cFJs6otwDPmDfKNRZOGJoH+
-	WRP7vNlQ=
-X-Gm-Gg: AY/fxX4EOXstpuMXS4URTSiuMMLOk2NyiK9B/C8P4Ay4FkRbUmFSvI8ZE0Y6eih9zvr
-	j/WDB1rPITDwuLTVh6I8wp5GvkQbo7RMwdCCgLVpOYJdvYCYI0IEUlW/gBDlkTkHDUMAq2WRx13
-	oQb6U8mTrSlbwsYfJZt296s/YBXwZRw96/ADqePc/wjkKlvjD537ejtIgOYkEBU7TZxuAoFiOuc
-	kDW9Gp6KZpP5i6ZYCL4tg3UyXCZiY44qGftIqD0xxv3R+86+Di8tQxoqarndJT0Plemw8fcGazd
-	1OgH57KMoKT8BER9dUP/M6wCA6MtFFKSsRwEtjeIhvMitHN7d5w7wXm8nP5B94d0Dgv8fwDpVHm
-	Nxikj79JJet/QLksTIx7pWFg06xGSw/tLZ3R+E9SaWLJYfQhXD8Yu6Q+hyBPUI5F0+ndVB5wCjJ
-	dhYCkA3Du+eP0nW+ky7D3Wdf5kMZhD0TZGxrCR9j2vTU3hs6vJmZTpCQkXC6mHHpQrAoeZmnAXt
-	oltJwoFlCMVbA==
-X-Google-Smtp-Source: AGHT+IE0BrkfD+Cy9oYJoP0dF/V6XgbZIAfAJdoj4kHZiMOQbZ89Gxxq8Q27csX/VrtUN9ShpMHINQ==
-X-Received: by 2002:a05:620a:190a:b0:8b2:eea5:32f8 with SMTP id af79cd13be357-8c08f6763bamr1307185985a.34.1766321801715;
-        Sun, 21 Dec 2025 04:56:41 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0968935b5sm619955385a.19.2025.12.21.04.56.40
+        bh=cSY7XOe/WRXINmaJjE9x1cwiIij569xd98uTVI5aS6I=;
+        b=vyopEorYmx9oyEJwYyDs7sVv9wtbFKresc+HNihAa2Oh7ROzQOKe2wab84rpng8GZ2
+         x3C28yEMW3KwDfZBq/qqxWdR/vQCXWNnkbizAAyxbUBsn0jumHCY4/WGupAOMnUkijKl
+         Y4sgfh2KzT7mzexR6HxtE8sh5nMGvJxXt/6fG7WSupWEOZTFLyHLPfLqOtiWjeXTgUOU
+         26K0hDKGU/dZ4lHyv/5ubVO4tjt3NTMEQJRQjkDa7640i7qrnk2zYmTC2llG1S/zYPwE
+         wy2zPyuiCU0xsXFEIMkwP/A1HlivIhJdjci+AtcHhcBUHP48h6dsbCf6TcaJvf9dBfkC
+         rv/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWHtLL6Ag6j0/2fBv7K1Wt3/dkCr90jrZPeCqDL8sG4ZfFY2XdjmupSy6IO6rBMAVaGjNjn7L/PMg==@kvack.org
+X-Gm-Message-State: AOJu0YzpA0B86wUU69+9jwLZmBkGZdsawD6IDTnLHtL2R3CsihNPo594
+	WQMLpm2Riiszt3j8LKeov5KSXkNkwsc6U/z2JvHoZxX6DRuQusDN4VUB
+X-Gm-Gg: AY/fxX7nDlY7rACA+WBDVXyoJSW4xZGKTeFgzXnoJzBEf/mSCCFAt/O2IkVQDHVFUZL
+	ayAeIdqgz9uTezzTP94cHq7NdeOqyMDL9nQtNRz57pWEelfBU68z872Iy8ObHAHrJWX1FcSMyI8
+	HUUveJBNewxRfT3HGzkl8tA7qoHDC7IKN7hHaZXLUmofMnySzrrc3exdxGWu3fnRfNrxz5EbRrk
+	T7bwAcUTlm3bQS6/hpvQsgVxDalroW5dXW6ig6XXaYyuc24Ry8g6JSEYMEVkDuLFzMLkGzwdTKF
+	KFBbmTysj0sxJYlHLx1vaaYbuw0aTVTF4Pe268H3ibwPJhI7KQ8O9iaJ6TBfrnhwx8TnjsgT2Dj
+	v8Ve0vt29Bl11QO0UGFgGSvFRrDDmstbUNc0+KBs1z2JdTcHCaDDIVLA38yBOY0ecJoQ6+3ygVr
+	X6
+X-Google-Smtp-Source: AGHT+IE0pzTSaBZW0PqBo1nLMFou749uCZH2R8Sj1acU7EbMWf8ZDkTgJYeOyEMZv1HM4VBoxc7dMg==
+X-Received: by 2002:a05:7022:2093:b0:119:e56c:18ae with SMTP id a92af1059eb24-121722c1f51mr7539579c88.22.1766322166515;
+        Sun, 21 Dec 2025 05:02:46 -0800 (PST)
+Received: from dev.. ([208.184.112.130])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfd95sm31732013c88.1.2025.12.21.05.02.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 04:56:41 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	kernel-team@meta.com,
-	david@kernel.org,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	muchun.song@linux.dev,
-	hannes@cmpxchg.org,
-	gourry@gourry.net,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@suse.de>,
-	David Rientjes <rientjes@google.com>
-Subject: [PATCH v5] mm, hugetlb: implement movable_gigantic_pages sysctl
-Date: Sun, 21 Dec 2025 07:56:03 -0500
-Message-ID: <20251221125603.2364174-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.52.0
+        Sun, 21 Dec 2025 05:02:46 -0800 (PST)
+From: Shu Anzai <shu17az@gmail.com>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: shu17az@gmail.com,
+	yanquanmin1@huawei.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and remove redundancy
+Date: Sun, 21 Dec 2025 13:01:14 +0000
+Message-ID: <20251221130114.1483856-1-shu17az@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6me9hjhfx1yfe6myn6co596au43ge7mk
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 02D6318001A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: x5c9czakw4c9ksr4qhb8ai7utxpmxrua
 X-Rspam-User: 
-X-HE-Tag: 1766321802-515242
-X-HE-Meta: U2FsdGVkX18ASkv0tX0IcpeZijMSfpk3Wt0/nvK/6MentFeDWRKHN4fb0RiTpUXnY9wKlRDSnfrTmu0cuhjPdQp5mmGltqHrLmkI2SEWLCg71qhmJ6VdKozPNVp6t6Uh3/mWneX8WYPJ5BQOghIaiR0U3aRBDNa7sjgbyWqKFeTdTZXWAMBjI6rm+sRxLngcY35b9g3ABmUqwh3+svdOdddrscuHA02b4aJkARVbQgYe1ELIrgYTirieXlsaqui6Z+IYXee93E6B00J5lzzAVvHvJkmX4L7Huw87wKeS2eYCi115EAindmH29kQcEk4uP3bvFBYjbVx3n5UuY3ey7OfwYZnTzN4Bs6sYVoiQw9Ze2hf4XTzrnq/2JwaGyMJXS93SPe3CBDw82w5KtenDnfJPdgn0+P+jBv4d2HSZuhWDuCNUsjOxo2qg1zXf3EO5uh4R5UNBiL7bU8Nl2+DagFxDG6fPhRRoAqvG/+v3UlnDSwKpgl/1nbQ7odMmw+d2J12vnVJDuFEMETh0nDDLlHqYR2SbQ2YDEz0NsfSBVfnrqkTPzBqFgjrDWsuw7cXUBjjh/syQboTbNxyqCTwe8jIn2R4RLY9UYCJOPlZyUuqxNRoRoGEA5Dca+qWA7sR41Lrtk3sRriGRUpnBZYMhI7WEuwbabQ7ObG4RbfirG5N3IXd1Depr2GVbb2t8QF4zb2BFfWRHGmh/ZwyMaISUcDKQJyiU8LHB1qbCbinSXcgL3zFqZEZB4nEdunLIzty4j1j93M1jd7Pwvid8bKismSoYp2rJbk/XJput7XK8KgGNO0vI2/rPlYfpNhP0GsumhDfbBthuKyqou8LhicVsWVVekXD5HKyLoy2JBOBwu6smlGr3eM4D26Eo0dyVUNNbhYQ0iNClFJ8Wjm5hrVTVJ7SwtT1g8i/yu8VhSU0s/W3Cr2XXUfotQ5KRq860DU0BBAM+6lGQHgbdXQ0ossW
- /+M42Y8K
- 6lp8Qj6CaBes/oRjm9haSl8i030tPYN7aWVWiHCd+yiXWwig1C7y/n7cBi3NXRXN5XADcageyIAGzPISOSYim7IOuaLtLpIQCh710qKkNBtkvLfayC8kmbqTXqq8HNhxZl1t1bZX8JrY1VJWlRjTUNdJFHOqANu30p4VrBtmZiewh85qIt3M3L5svjjLiRTD3rCV2NZYwLJpiMqgP/KeMf7x2k35o0jiYkAvNh4gFe65BfLGJUq7vbm2PqTnBUPPD2NixsDPuMgEuaD1o8GxeOyLG/wPNJjL8Bxq0A6CKXuv1eKrabHxACcKzDdA2+r6CIftj+cDhQKuGRNvJn7hh2SEJ6scTpYWoxa/S8Tjhp1Ql38n3WuPMZmkDX0x1zaqvDrzY0wACoS1ZdyEMK5IBp++taG4HQKOd/yHjtL4XknGZ3UoHihfF8JqrjHtbSrvnPKGNkb7Sb38Fb6ozJemnupmNaXp8Z3OUJpHFgIlteN+BlXWjpftq0VYPhdZvTlLzdB3/nNA8scFFz3zPJTr60N8BNgvqavJUWibXzD2CzahJfA5BJXva5+nu71KXox7hCt6GEWvHjaySAxQiNkkm0U+9vJGO0E5bnyiMpQcbv+2wvmjxgfY8E5yA/+llzv+1rhFH
+X-Rspamd-Queue-Id: E9332120019
+X-HE-Tag: 1766322167-359718
+X-HE-Meta: U2FsdGVkX19iLLIGBIzL0R7r+8JSJRfg1vf8/qRKpywCxv4JE/ODZm4tBX1Cuj/WWb+1EE5Ju+UMrQFLa25Q6wnT1FN1nHMl45+ujaImnRDqxv5+EJURhAv8tiB143wOF7w/tdQlJHDZ/yw2N9bLIjMcXBWOohKNmpcL5FFjsbioumtAYJ/phkhGHgGAWIoZGjRg97dyAa2gUdyILtejPhg9btIrDWStk4CCi3sl068BvCfqzxb7GsgQIB2gWq0GO2qWCE2It0IOW1cAWjjTbemhCeoCUoIgWFGcoVDGv4kouSH2KljkcDZ54A/KE2sVea9aCCZKEf5E41CXzjh4uyxs7CM6CX3zFzY8mtrrbasi8MCZ7sA1EqBR7fqt7c0fauTBM8vZw/APCYgsY5SczldNsttVKuzkPEon+Bi7V7gvLbmU4zn2nj4FOOEwVwsF25I8SEYDmKIadNqK+py+fMjUMM9BUx40yleLkClwcLzjrZZD7pJvaKYLzKi8JxGPAj8vBO4hk+dqtodplzxgBwEwTA5nMGz9lL2+EdPdfhxBioTPWlg2rOt1xTiPCypkKABtb41fEIz3xyXDNz8dlp0j3MUSJm8/MysTOAuWvVrWG8/58hB38SnWILM+wOCNyG116HOgMC6+ZdoWIWxnSaPzkM+X6w0FjOQ/cYolUkwD7cFfqEb39Do5aQOfPppRj6BtWpjiQ9AuMnoISsmgJ8jHhkW4BmO8Ebyr7YrkQYaaasDE/W37ASA8OayKw/t00+qqUuwWR/YUOiU9XovBZnpxBaTrjEoceDyFfM8lPqE9nCbNaoafXgqhlGhC8DnKxcrCED4nbi69Xd6SHT3BLQkUXryIGMHzi1iB7qju3upiXxaepmJ+k0KwyWTKO7VqloKfNN8UD7oBgeymv7X6NkmlFVxKhrkRxnyQ28xfnW6si4Qs7qa74bKjn0/hIu347gSR6F8gdFIXgiyLZwt
+ dSckl6to
+ IPZQGRm4aWm+wEyYY5LaJPatYHliZ8+stnN+eC+yixDXL9qwfYBkUm2EYkLwRPLYLGWULlK0Do7gcmFyPRvxasCpE2ZKW/3c07uhg338bjOPmr/5jmfEhUlS+JycoRKFFHBTMLdVnLfFy3MYQLhwgb+gN9kSAp9Q6iwDoi7i3T/FdnTltfWwlTxGP6OQj1JDk81S528Ky2PMZ/dEb+wClh19W1L5+cQeiQWvdcNlBW1U6iSZcKNMybpPtCMulQ2XpWRqJPc3TLCDxu/LKkVgjdjdssRK7u8tkNjiN7bpVTNEeicxXuSZU4Q0e99G8jKT4XkfmwkDED5TuITLlRraOTUDOR1Y0bnGmjSRu91DpLcE+NdEyJvpiQeMuV5WQ0lejNG3cT4kVs1cssOzcNLWIn9OhU9l++fL+AWaB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,187 +120,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This reintroduces a concept removed by:
-commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
+Add some missing test scenarios to cover a wider range of cases. Also,
+remove a redundant case in damos_test_commit_quota_goal().
 
-This sysctl provides flexibility between ZONE_MOVABLE use cases:
-1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
-
-When ZONE_MOVABLE is used to make huge page allocation more reliable,
-disallowing gigantic pages memory in this region is pointless.  If
-hotplug is not a requirement, we can loosen the restrictions to allow
-1GB gigantic pages in ZONE_MOVABLE.
-
-Since 1GB can be difficult to migrate / has impacts on compaction /
-defragmentation, we don't enable this by default. Notably, 1GB pages
-can only be migrated if another 1GB page is available - so hot-unplug
-will fail if such a page cannot be found.
-
-However, since there are scenarios where gigantic pages are migratable,
-we should allow use of these on movable regions.
-
-When not valid 1GB is available for migration, hot-unplug will retry
-indefinitely (or until interrupted).  For example:
-
-  echo 0 > node0/hugepages/..-1GB/nr_hugepages  # clear node0 1GB pages
-  echo 1 > node1/hugepages/..-1GB/nr_hugepages  # reserve node1 1GB page
-  ./alloc_huge_node1 &    # Allocate a 1GB page on node1
-  ./node1_offline  &      # attempt to offline all node1 memory
-  echo 1 > node0/hugepages/..-1GB/nr_hugepages  # reserve node0 1GB page
-
-In this example, node1_offline will block indefinitely until the final
-step, when a node0 1GB page is made available.
-
-Note: Boot-time CMA is not possible for driver-managed hotplug memory,
-as CMA requires the memory to be registered as SystemRAM at boot time.
-Additionally, 1GB huge pages are not supported by THP.
-
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>
-Suggested-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
+Signed-off-by: Shu Anzai <shu17az@gmail.com>
 ---
-v5: build fixes, clean allconfig build with intel/klp.
-    Sorry about the careless churn Andrew, should be clean now.
+ mm/damon/tests/core-kunit.h | 51 ++++++++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 18 deletions(-)
 
- .../admin-guide/mm/memory-hotplug.rst         | 14 ++++++++--
- Documentation/admin-guide/sysctl/vm.rst       | 28 +++++++++++++++++++
- include/linux/hugetlb.h                       |  3 +-
- mm/hugetlb_sysctl.c                           | 11 ++++++++
- 4 files changed, 53 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-index 33c886f3d198..6581558fd0d7 100644
---- a/Documentation/admin-guide/mm/memory-hotplug.rst
-+++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-@@ -612,8 +612,9 @@ ZONE_MOVABLE, especially when fine-tuning zone ratios:
-   allocations and silently create a zone imbalance, usually triggered by
-   inflation requests from the hypervisor.
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index f59ae7ee19a0..e9ccc3fb34f9 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
+ 	r->nr_accesses_bp = 420000;
+ 	r->nr_accesses = 42;
+ 	r->last_nr_accesses = 15;
++	r->age = 10;
+ 	damon_add_region(r, t);
+ 	damon_split_region_at(t, r, 25);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+@@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
+ 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
++	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
  
--- Gigantic pages are unmovable, resulting in user space consuming a
--  lot of unmovable memory.
-+- Gigantic pages are unmovable when an architecture does not support
-+  huge page migration and/or the ``movable_gigantic_pages`` sysctl is false.
-+  See Documentation/admin-guide/sysctl/vm.rst for more info on this sysctl.
- 
- - Huge pages are unmovable when an architectures does not support huge
-   page migration, resulting in a similar issue as with gigantic pages.
-@@ -672,6 +673,15 @@ block might fail:
- - Concurrent activity that operates on the same physical memory area, such as
-   allocating gigantic pages, can result in temporary offlining failures.
- 
-+- When an admin sets the ``movable_gigantic_pages`` sysctl to true, gigantic
-+  pages are allowed in ZONE_MOVABLE.  This only allows migratable gigantic
-+  pages to be allocated; however, if there are no eligible destination gigantic
-+  pages at offline, the offlining operation will fail.
-+
-+  Users leveraging ``movable_gigantic_pages`` should weigh the value of
-+  ZONE_MOVABLE for increasing the reliability of gigantic page allocation
-+  against the potential loss of hot-unplug reliability.
-+
- - Out of memory when dissolving huge pages, especially when HugeTLB Vmemmap
-   Optimization (HVO) is enabled.
- 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 4d71211fdad8..d2e13413e16e 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -54,6 +54,7 @@ Currently, these files are in /proc/sys/vm:
- - mmap_min_addr
- - mmap_rnd_bits
- - mmap_rnd_compat_bits
-+- movable_gigantic_pages
- - nr_hugepages
- - nr_hugepages_mempolicy
- - nr_overcommit_hugepages
-@@ -624,6 +625,33 @@ This value can be changed after boot using the
- /proc/sys/vm/mmap_rnd_compat_bits tunable
- 
- 
-+movable_gigantic_pages
-+======================
-+
-+This parameter controls whether gigantic pages may be allocated from
-+ZONE_MOVABLE. If set to non-zero, gigantic pages can be allocated
-+from ZONE_MOVABLE. ZONE_MOVABLE memory may be created via the kernel
-+boot parameter `kernelcore` or via memory hotplug as discussed in
-+Documentation/admin-guide/mm/memory-hotplug.rst.
-+
-+Support may depend on specific architecture.
-+
-+Note that using ZONE_MOVABLE gigantic pages make memory hotremove unreliable.
-+
-+Memory hot-remove operations will block indefinitely until the admin reserves
-+sufficient gigantic pages to service migration requests associated with the
-+memory offlining process.  As HugeTLB gigantic page reservation is a manual
-+process (via `nodeN/hugepages/.../nr_hugepages` interfaces) this may not be
-+obvious when just attempting to offline a block of memory.
-+
-+Additionally, as multiple gigantic pages may be reserved on a single block,
-+it may appear that gigantic pages are available for migration when in reality
-+they are in the process of being removed. For example if `memoryN` contains
-+two gigantic pages, one reserved and one allocated, and an admin attempts to
-+offline that block, this operations may hang indefinitely unless another
-+reserved gigantic page is available on another block `memoryM`.
-+
-+
- nr_hugepages
- ============
- 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 019a1c5281e4..5c190b22108e 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -171,6 +171,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 
- struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
- 
-+extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group __read_mostly;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
- 
-@@ -924,7 +925,7 @@ static inline bool hugepage_movable_supported(struct hstate *h)
- 	if (!hugepage_migration_supported(h))
- 		return false;
- 
--	if (hstate_is_gigantic(h))
-+	if (hstate_is_gigantic(h) && !movable_gigantic_pages)
- 		return false;
- 	return true;
+ 	damon_free_target(t);
  }
-diff --git a/mm/hugetlb_sysctl.c b/mm/hugetlb_sysctl.c
-index bd3077150542..e74cf18ad431 100644
---- a/mm/hugetlb_sysctl.c
-+++ b/mm/hugetlb_sysctl.c
-@@ -8,6 +8,8 @@
+@@ -190,6 +192,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	}
+ 	r->nr_accesses = 10;
+ 	r->nr_accesses_bp = 100000;
++	r->age = 9;
+ 	damon_add_region(r, t);
+ 	r2 = damon_new_region(100, 300);
+ 	if (!r2) {
+@@ -198,12 +201,15 @@ static void damon_test_merge_two(struct kunit *test)
+ 	}
+ 	r2->nr_accesses = 20;
+ 	r2->nr_accesses_bp = 200000;
++	r2->age = 21;
+ 	damon_add_region(r2, t);
  
- #include "hugetlb_internal.h"
+ 	damon_merge_two_regions(t, r, r2);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+ 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
++	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, 160000u);
++	KUNIT_EXPECT_EQ(test, r->age, 17u);
  
-+int movable_gigantic_pages;
-+
- #ifdef CONFIG_SYSCTL
- static int proc_hugetlb_doulongvec_minmax(const struct ctl_table *table, int write,
- 					  void *buffer, size_t *length,
-@@ -125,6 +127,15 @@ static const struct ctl_table hugetlb_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= hugetlb_overcommit_handler,
- 	},
-+#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
-+	{
-+		.procname	= "movable_gigantic_pages",
-+		.data		= &movable_gigantic_pages,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec,
-+	},
-+#endif
- };
+ 	i = 0;
+ 	damon_for_each_region(r3, t) {
+@@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+-	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
+-	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
+-	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
++	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
++	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
++	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
  
- void __init hugetlb_sysctl_init(void)
+-	unsigned long saddrs[] = {0, 114, 130, 156, 170};
+-	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
++	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
++	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
+ 	int i;
+ 
+ 	t = damon_new_target();
+@@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
+ 	}
+ 
+ 	damon_merge_regions_of(t, 9, 9999);
+-	/* 0-112, 114-130, 130-156, 156-170 */
+-	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
+-	for (i = 0; i < 5; i++) {
++	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
++	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
++	for (i = 0; i < 7; i++) {
+ 		r = __nth_region_of(t, i);
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+@@ -269,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
++	unsigned long sa[] = {0, 300, 500};
++	unsigned long ea[] = {220, 400, 700};
++	int i;
+ 
+ 	t = damon_new_target();
+ 	if (!t)
+@@ -286,14 +295,19 @@ static void damon_test_split_regions_of(struct kunit *test)
+ 	t = damon_new_target();
+ 	if (!t)
+ 		kunit_skip(test, "second target alloc fail");
+-	r = damon_new_region(0, 220);
+-	if (!r) {
+-		damon_free_target(t);
+-		kunit_skip(test, "second region alloc fail");
++	for (i = 0; i < ARRAY_SIZE(sa); i++) {
++		r = damon_new_region(sa[i], ea[i]);
++		if (!r) {
++			damon_free_target(t);
++			kunit_skip(test, "region alloc fail");
++		}
++		damon_add_region(r, t);
++	}
++	damon_split_regions_of(t, 4, 5);
++	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
++	damon_for_each_region(r, t) {
++		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
+ 	}
+-	damon_add_region(r, t);
+-	damon_split_regions_of(t, 4, 1);
+-	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
+ 	damon_free_target(t);
+ }
+ 
+@@ -574,9 +588,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
+ 			});
+ 	damos_test_commit_quota_goal_for(test, &dst,
+ 			&(struct damos_quota_goal) {
+-			.metric = DAMOS_QUOTA_USER_INPUT,
+-			.target_value = 789,
+-			.current_value = 12,
++			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
++			.target_value = 234,
++			.current_value = 345,
++			.last_psi_total = 567,
+ 			});
+ }
+ 
 -- 
-2.52.0
+2.43.0
 
 
