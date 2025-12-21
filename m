@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE724E67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E4FE67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EFE66B0092; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 56B076B0088; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321226B0095; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 4D50A6B0096; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2288E6B0088; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
+	id 3EDF86B0088; Sun, 21 Dec 2025 18:29:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C26246B0089
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E84466B0096
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:29:48 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65D5E137E44
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 96BE55AC95
 	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:48 +0000 (UTC)
-X-FDA: 84245072856.23.1A58EEE
+X-FDA: 84245072856.18.AA9BFEB
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E80B02000F
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=BDynJwA1;
-	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359787; a=rsa-sha256;
-	cv=none;
-	b=OT2L1TZit5kZrVyPxESY0ivtvQSD9G2KMVbCBxR/XJHSkqvatPGNTJ4p9yrvM4iMyR2giW
-	z9xtStaQJWXqayxl1s2FeSoHeajMxGuZiWNy+PMU/XgT95BLhid9dLwEGrZBJlWSplG3JB
-	YbvaC0drXN1KxDMvxyYP9+zfc/MiEt0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=BDynJwA1;
-	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 36BB1120012
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:29:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=OOTm0N9Q;
+	spf=pass (imf29.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766359787;
@@ -44,47 +34,55 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BwRzldu+F4s2f+1UG2tsdvjihgMmQTawixFjZ+I2lJY=;
-	b=s0H1sU9JepqyrbliGkQd6/LrJ2pSFP4ZzNMsD+wgY8fCW5Py92tK5WArGwoF7NnKUdQAJE
-	O7zVY1dRTAUuB3WTpnnXFNLK2OMid0PXc+kFvoXAlo/jYvXjPKB8fhgpC9B6dMKCHJ/q+S
-	CsYjDpuBz30sD9X/40b71TBA+ebUH1U=
+	bh=v7Y9Jpp91tliTBnX3yTO+/rJorulikI8K3gXOhRJ/5I=;
+	b=xktbCKQZ/f2F9uJvnKn/2uHJjIEVRbtamXECuR+8wmKMnZClzd7Re1jeO1oD6fvEulkeus
+	c2E3b6C18WzUgsF4Uys+JbcJTU4lUcCAp0N+prhhjI2UBhA0uetzASiZQ0UPz5m1ougVBx
+	VF3fyfijsQFtQLwbP4lD5jBrLve6PLc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=OOTm0N9Q;
+	spf=pass (imf29.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766359787; a=rsa-sha256;
+	cv=none;
+	b=cQUwn6b5Pk5JOCCYBI3O0qPa/K7bE66dvyvZy7xl3NJqOdsgx1g8gw6z7xyneIEi+TcyVw
+	nx6tp6EvH35bzXkxVXCyGKDsps1rt3To7+s+ljVswe4UzmxT0Gawsp2FHyAx1yIxh0YjZb
+	17QofiVKfHHU4PE8b2fvYgrrDteRVOI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1766359786;
-	bh=BwRzldu+F4s2f+1UG2tsdvjihgMmQTawixFjZ+I2lJY=;
+	bh=v7Y9Jpp91tliTBnX3yTO+/rJorulikI8K3gXOhRJ/5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDynJwA1o3ZkMUeveOgh/2mXgYNsnF7uNZY8CLwxVzfhteYUMZoapgvSgZ0Kh42Vg
-	 mgTr5QfA/KJ8+E6xtp387SpJ+iazYrgmw89GHzNJ8w6vjRahtEJNI3HHzMYKgVkglE
-	 gJOxN1R2zDSTgte0OaARVZCfKcdAwQYMAF3gkaY7gjiBZHdSE/VAcg1xjztTSuuzen
-	 tIE/eOp9HEujiaosjuoYtZc6a9b1S4chzDKhNHwmWNXWNPwVKKuahiIL/NXW476z1W
-	 0580dy9d++YNzEfeJtwMzM4zVjh3GvKWLiKuK1kd0ncVpBHiKhYl7YzGqL2Gv4RjzH
-	 JDYiy0VryddCg==
+	b=OOTm0N9QKa8v9m4VWiu2o+fqq181KmnELB4psxxqAEB0zXvuFUJZZxE7KUFKys2pd
+	 h/bjuWvBGwIRsw6ca+9e4wPohsv9V7yQdW5dzufgdSzzCH/L0mHE9PVJX6Bpyte10e
+	 713DTDSOs8Np0TN/AkGttfNNpC+v60uU0oD/9mb7uveuup16nvMMhjniwyGtb9df6q
+	 ucdPJDnzKZpBbX+BrdCHdUub5uMr1/uatB1vdpag54wmnalERafvRUVVFHT/q1plez
+	 3T6CsujturCb8OwUzGZbDBqpLClrB3ynH6chxMKkPbXoB61BV4UJIAHcRvrP1+eGPF
+	 aD8rKkZeUpxjg==
 Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:6450:b8a1:16cf:5ecf])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYQ2Lrjzd8P;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dZHYQ3CMRzdCf;
 	Sun, 21 Dec 2025 18:29:46 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Mark Brown <broonie@kernel.org>,
-	linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v1 3/5] mm: Take into account mm_cid size for mm_struct static definitions
-Date: Sun, 21 Dec 2025 18:29:24 -0500
-Message-Id: <20251221232926.450602-4-mathieu.desnoyers@efficios.com>
+	linux-mm@kvack.org
+Subject: [PATCH v1 4/5] mm: Take into account hierarchical percpu tree items for static mm_struct definitions
+Date: Sun, 21 Dec 2025 18:29:25 -0500
+Message-Id: <20251221232926.450602-5-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
 References: <20251221232926.450602-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E80B02000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ktour1rk9nid4y1zqxe6q6wyduuq6ry3
-X-HE-Tag: 1766359786-269091
-X-HE-Meta: U2FsdGVkX1+LxH3L0yTJUIY6a2HeBzimqFybN2VfAfGS2kihHlstZzyHqatPuo/ehUgn8q//XO601TYmfHOrKnugvIKsKQ5yoVnKrD519IRxdGCH5Yw299qsegM4eVEqwANcXiTDLKyqn4DSj8Mn7VEhwJPhu1agvCOU3iIjxsMnTutPfGgGGiOHROXYKcg8piuWyfy6KlqKoUaHcD3WShm63L8UHxnWpWdzwkLkzQ/PeF5GVaNs5zNG/l8dlbaR5xRS62fU+x+yDnCePKe+6XAINb7q7O/kzZ42/0/qmIrUtt+Lc6QsV2jEhP/O7dafYGKD5yM5QAIH8JKpR6U4in5ez5Vv5EVL1NSZ1PS4fGGCThjnGbkfP0VVYhQ3ckLbWGwg0ahFhPhaYZYvB0cKQQ9UGpCI5fXoe/h1KN5Oy5qChCNzpIlALU56Rz3eL2ReEgxa2+jGHbnF12AO6u2FuDf1dDOJ2TA9ZW1RPe3gOas+VtvFKFPCf/7MAXMgGNNmW+7ajjtHo0dBmHovu55Qrj6FCP+OvAjNWvbDyQOn3zIvHC2CpVAHTRMG9fPdRA3zZ/syQxBQxZysmLhU0+UfdAl0nxz8l87iGmhdzMDPbX87SuXKNKA/yhAWRjMKfwPXs6TfqPA29OetNTDzuwRfQbABeTp7ZQ9wmSKVA7YBcJanIeg7kmNX3t1waIh4cNgAvFFichr1Z7L2uR8RxmhC6aXNK9PBi4txFYC6TMus5UsnLNM+W+/tOdUIhae9I+l6cDh6yBWPHbFeXJU35YrMSO0UR9RSllV0tmL5GZySOeTr50BlPQbWtNtsGJpsC7oHKIqZYwU9jRJSQVJouRamS3l0zn4NsUEClNLYHQhWJdd6C4hYzwtPS2uEwgAmsZ6+4UDsqzxOrO5MDE+whWcOrEoaS2nK+a1TvjdUFNqrZJIUJOTe2jt6xFGHdKlKnKNLsl+xvp9zXwvF3cadDkN
- QDb1uSLK
- RhzaKzgNnrmlqIhGrVSm0kZO6tK1HwymBvWYg7Bu/rNbnHG9psMjGJACHJ7Bnk+EQ3vfaIpkYZEcIAh5RdHXlCjpVoJrlPvzroc+G9zebKeM28xXsPrFxg/Z5WoCIPQExKCONDFS4HEpEyX/uInBflCENo28fGN6xRvT1tSzAJ1BsSjfFthqRhAN6LyWn6p5eXZllGtVDJbA/uWtB9ObZ4APxpCwVSQgP8kQazQsWU+9LXxgmrcfFrcGqNbl4zdP7nofPo0knP7Ezwp0kH3NsItCK7qZyEp87QYa39qjmdxezGVIR+I1UFy23OBVp5QmqfWACwWA8s/xgibUaXDeDqYKf2zMVFyyuVh7Wy4kNkuc34GWm6PKa+LtXpQeMDtWPWltP+UcjqkvXSIZilDiWL8MJ9UvmWTqR0MjXAuwZ+XqfI2cLSR9KYNp/b1FCQ8xNDKwFw/H1oCvs2T29jawlllRAmh/lO6qo0MJbmFl5bwCY9h5dzjfgR/zYONdXAtSCWOs9eSsSdaULI80fz4STdEpUv3Fnvu+UoJMxeEngIH7J29g=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 36BB1120012
+X-Stat-Signature: 6crdgjnszor85xe9igdqk9au87ce75i3
+X-HE-Tag: 1766359787-338803
+X-HE-Meta: U2FsdGVkX1/0EzDlW284++PmCLS3kDGQkn3+N7Kli7OZ6XPOkfGCF3tF29fXrLKLgR4TJZpSBvo8ngLeVDjFcKX8/oRcTFf6QU8Z9SpnUHdZuizobkeuJZdtppcV3Kmf9HL06673rRrfAUZTC3zjZ+ApwxydVhCcqi7qIthdFwxRKD0SWzT3+HKFx+Q8UBSoddyH3NZcxefxwTeqNvC8ouaTmS8+q1LkLk6im8hkrII6xnAZajosiH1fKm+mjTVcei5jF58fTqwwZYnS0woakRVlVm5L8kxPesfSD06f716hNSDurfbGp1X5oEiuYi+fXaj3hqQIgiznwFPfjYjwnL/EWp+ke5eMaX9DtnuJ5K4oY3OPNitglB5LM0bTsFYh1D5PxE/1xcoU1+gwM4o5BXM25HLDASoxUZFR42V1c9/sAgH4oraDVoC5lQW0Z1HekOFiQbF266gsYKOru3asV1I7Ej+Het2FDj/t5v4T8ertGcFZ0WM6aqoZ6AxtQQG9WklVNxrr0WPU58+MYCTGF8IZEQDWO+YYzA7pQfw40Of/DINAvS6i/A9oT7XzdbQFzBX2USzRGWnmgFsiuMQIAlxx2uLoXH8rBrG29YNWxY/vxOA+tIPuUJfxosa3AkUhHu2khsPrXZgxts37K3Vcm5nTuzsG+ktTcOU4tCfrwBq56cIzJTroJztVi0RCWY0oQkGzljIW5VvRB4LfDXk9hCNDTPxHO9WXQMP1Rn00kpvyqM6/gOykF+bTO/Tiw4PY5jKPDTY/kcba5BmP5Y4IHt56odvmhuzmcT9W1EwuF+mm9ea0PiiTH7j1qjobmVTyviDLaKhqPGSeiv5JOfPCNOismp8zrDZUwOzqOREg0W4uvZOzxST2bbZoHiJYPFHBc9wV86DFawnxIZzkAbLEFolwCHSWFMHGbQiOc/wuqTPcljsWUtdDbEtzdNfpfygil3J/UquHAbFjxi2qYHB
+ uKRRkVt6
+ ZOzMx+xawnWsZzMgDjZ9S+CgYq35eHQWIPdpD4EYvzSJINn2LDv6YgGPCf5Cnp3CbCLN+6QV1Kn0WWEY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,60 +92,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Both init_mm and efi_mm static definitions need to make room for the
-2 mm_cid cpumasks.
+hierarchical percpu counters items.
 
 This fixes possible out-of-bounds accesses to init_mm and efi_mm.
 
-Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
 Cc: linux-mm@kvack.org
 ---
- include/linux/mm_types.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/mm_types.h            |  6 ++--
+ include/linux/percpu_counter_tree.h | 51 +++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1531df8cda52..aefa64db3499 100644
+index aefa64db3499..234374c46b71 100644
 --- a/include/linux/mm_types.h
 +++ b/include/linux/mm_types.h
-@@ -1368,7 +1368,7 @@ extern struct mm_struct init_mm;
+@@ -1366,9 +1366,9 @@ static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
+ 			 MT_FLAGS_USE_RCU)
+ extern struct mm_struct init_mm;
  
- #define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
- {								\
--	[0 ... sizeof(cpumask_t)-1] = 0				\
-+	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
+-#define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
+-{								\
+-	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
++#define MM_STRUCT_FLEXIBLE_ARRAY_INIT									\
++{													\
++	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE + PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE - 1] = 0	\
  }
  
  /* Pointer magic because the dynamic array size confuses some compilers. */
-@@ -1500,7 +1500,7 @@ static inline int mm_alloc_cid_noprof(struct mm_struct *mm, struct task_struct *
- 	mm_init_cid(mm, p);
- 	return 0;
- }
--#define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
-+# define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
+diff --git a/include/linux/percpu_counter_tree.h b/include/linux/percpu_counter_tree.h
+index 0daf09e08111..2e8b1ce5cd13 100644
+--- a/include/linux/percpu_counter_tree.h
++++ b/include/linux/percpu_counter_tree.h
+@@ -10,6 +10,52 @@
  
- static inline void mm_destroy_cid(struct mm_struct *mm)
- {
-@@ -1514,6 +1514,8 @@ static inline unsigned int mm_cid_size(void)
- 	return cpumask_size() + bitmap_size(num_possible_cpus());
- }
+ #ifdef CONFIG_SMP
  
-+/* Use NR_CPUS as worse case for static allocation. */
-+# define MM_CID_STATIC_SIZE	(2 * sizeof(cpumask_t))
- #else /* CONFIG_SCHED_MM_CID */
- static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
- static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
-@@ -1522,6 +1524,7 @@ static inline unsigned int mm_cid_size(void)
- {
- 	return 0;
- }
-+# define MM_CID_STATIC_SIZE	0
- #endif /* CONFIG_SCHED_MM_CID */
++#if NR_CPUS == (1U << 0)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	0
++#elif NR_CPUS <= (1U << 1)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	1
++#elif NR_CPUS <= (1U << 2)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	3
++#elif NR_CPUS <= (1U << 3)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	7
++#elif NR_CPUS <= (1U << 4)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	7
++#elif NR_CPUS <= (1U << 5)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	11
++#elif NR_CPUS <= (1U << 6)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	21
++#elif NR_CPUS <= (1U << 7)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	21
++#elif NR_CPUS <= (1U << 8)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	37
++#elif NR_CPUS <= (1U << 9)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	73
++#elif NR_CPUS <= (1U << 10)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	149
++#elif NR_CPUS <= (1U << 11)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	293
++#elif NR_CPUS <= (1U << 12)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	585
++#elif NR_CPUS <= (1U << 13)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	1173
++#elif NR_CPUS <= (1U << 14)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	2341
++#elif NR_CPUS <= (1U << 15)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	4681
++#elif NR_CPUS <= (1U << 16)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	4681
++#elif NR_CPUS <= (1U << 17)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	8777
++#elif NR_CPUS <= (1U << 18)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	17481
++#elif NR_CPUS <= (1U << 19)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	34953
++#elif NR_CPUS <= (1U << 20)
++# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	69905
++#else
++# error "Unsupported number of CPUs."
++#endif
++
+ struct percpu_counter_tree_level_item {
+ 	atomic_t count;			/*
+ 					 * Count the number of carry fort this tree item.
+@@ -18,6 +64,9 @@ struct percpu_counter_tree_level_item {
+ 					 */
+ } ____cacheline_aligned_in_smp;
  
- struct mmu_gather;
++#define PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE	\
++	(PERCPU_COUNTER_TREE_STATIC_NR_ITEMS * sizeof(struct percpu_counter_tree_level_item))
++
+ struct percpu_counter_tree {
+ 	/* Fast-path fields. */
+ 	unsigned int __percpu *level0;	/* Pointer to per-CPU split counters (tree level 0). */
+@@ -92,6 +141,8 @@ int percpu_counter_tree_approximate_sum(struct percpu_counter_tree *counter)
+ 
+ #else	/* !CONFIG_SMP */
+ 
++#define PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE	0
++
+ struct percpu_counter_tree_level_item;
+ 
+ struct percpu_counter_tree {
 -- 
 2.39.5
 
