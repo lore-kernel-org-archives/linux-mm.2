@@ -4,127 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6820BE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73ECBE66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B232D6B00CE; Sun, 21 Dec 2025 07:07:59 -0500 (EST)
+	id AE7DB6B00D0; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABA7E6B00CF; Sun, 21 Dec 2025 07:07:59 -0500 (EST)
+	id A96036B00D1; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 992276B00D0; Sun, 21 Dec 2025 07:07:59 -0500 (EST)
+	id 9950A6B00D2; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 854C76B00CE
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:07:59 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2845C607A2
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:07:59 +0000 (UTC)
-X-FDA: 84243354678.02.7F9DFE9
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 592D3140003
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:07:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=vMwsjcOu;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 834116B00D0
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A992137D65
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:19:23 +0000 (UTC)
+X-FDA: 84243383406.26.7CCE933
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 881751A000C
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:19:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkR4deFJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766319561; a=rsa-sha256;
+	cv=none;
+	b=OF2sQkl5sHPasVkKeDbLd9Te2BgBaB2isqSX37649vgJcPhSkp1ZD75uRw12/tBIPk7Pll
+	04ocB6UecNh1Eaua40GBd62o6Mir/q5dqP60LXMaq4VIeSRsAC1XM1vqf6XtFZZGAD4IQn
+	Szv0atoVo0LiH3/DK11vNVYhDXEr50g=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkR4deFJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766318877;
+	s=arc-20220608; t=1766319561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ImyYpBYHczXKmZOJ0nv2yp1b5vTgB4LNV5Y2WhaumNQ=;
-	b=lRCYb21+gVZ0qDHe+PJPd5ucqahWKRQPyeg/fvBxGEUoRHphnPRNxHtUmoaFwMn00ATVVq
-	a6HF5aAjpUAtVs9iJkjyIVWeuAlYiQKX6lgyDdD3tssEJWmEX+vyPpXHpRPqmv774l4VqM
-	eeGzPT/IaRcEbaT4sQlJuvOmczTXrfE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=vMwsjcOu;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766318877; a=rsa-sha256;
-	cv=none;
-	b=qe1CVIqHniBUabeTNuR2MQZkA5tng8fU4y403S+xHBY/F4r/B7evcGz/+lWEJSWJ44Magb
-	bNV60zKOkwQdWq1do87d9szLxKxteEqLL82XTQae841JWo5PEu5Qg11aJE2hgkWJn1aA3j
-	sKnMCbrHLo4AEyRMGvsLRupMs5q1uiY=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-88267973e5cso20780856d6.3
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:07:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766318876; x=1766923676; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ImyYpBYHczXKmZOJ0nv2yp1b5vTgB4LNV5Y2WhaumNQ=;
-        b=vMwsjcOuGnET52lWuZIQJnKnI0z+xNMAUgG8nA946s7irAzv+0TcJYV4sgIBUpww90
-         nPd68HVH+9Pqr7u7F6LpoI7jc+tiKW72FzSp4kMPY1ubYjVt1P/jU3qub7I1LP7bhJRT
-         6EIX9jieK5hm64N0HH3PIIfJJI1Lp7GrtEnXA59gQUP4zoZ6cvVGYRDEBb6M3kP2nVmr
-         exrCDYZUdDpiNBKh4T7jXFrUMBwxrXnw2rW3bXJNtvnF7d88TOoAEvqizqDZmqyVaEJO
-         S2sWS98KwAk9TYsy43W/aA8Nz/CKUmI8HWZxaqI31NNaWfQeNiw0+kDR1uNBKlHu6Jhb
-         URYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766318876; x=1766923676;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ImyYpBYHczXKmZOJ0nv2yp1b5vTgB4LNV5Y2WhaumNQ=;
-        b=CbaG2M4DHeHW4lVYOUBm7vM8IA8hyEQTkHN5zmk3ifbB4tVUHIo5CP72jVHCiJEGPW
-         7x3joQfb1lrVq6TeW0BP6reRRHN5llgypJSatprAmPz04zPBltgk2Cux+JmcC872ntUj
-         I54tK+ZGahwbpapDN92Egtsi/dryFoPwfS7+3TzuXUZDIjdgk0uea6WSU/8Kkf5y3PO9
-         BMW3Zsf0DS5Mox+tm1ElGqoySZnoH5MVPnw0sg9L0dWBFmU57Hzovt/6H5DJ+TqUIPqa
-         8BOyYblJAY4NazKbNhqHf39r0vsMZrcTeCHveD8tpufS93WQr72oRIQE99TLlbK2Kfid
-         +Ujw==
-X-Gm-Message-State: AOJu0YzzczJa1/8sinYLATUr7FKIs1aLBCOwyga+pN8M6kyYBJ+oirw6
-	5KDjPEMwhSprPZDSfch+6KshyjXzw24mMgqvStShK7pJaW2MbA6N2a3zoLd64rC7YBE8BhRE9uk
-	mdqsY
-X-Gm-Gg: AY/fxX4eJCQ782JkGagAvmrCwIKBjehhRBgL5/vrhok3r300HffIzOBib5juUe+bLDa
-	+znCFFO6kDTmTP24ZexbMbBODAABV4zAYty5HsKQR709l9eXS4YifbNboYh5DzC7jWGdIIePhc5
-	1HhlNYbk66Jsu28xXjph5GVbTIANhgCS+Hj784HeMzK2sezfcf5XbpF0L4pfrTRcGOXJlz4NMCX
-	yfQ2fyPpEEeBv/1kvYlpq66Eo31TNF6nEYT5h8bKVPirc41KsBJp+05gw8YNo3pd7Yv0NO6rZ08
-	VlGkyuL+LrwAXJVHDEfhSG846/63ddBpR4wEI5N30v93IFFWtMo4b6hbLFvt2x7I1+r4U4HgS18
-	8WW2cW6Dqo6fngpSXCDfJg4E9IxIA+hnuc0staf6/iozpp3aoql3XYDtpEo3zNP1BRLibbQihHb
-	ASI5754IU2agZd20g9/G246EUnVeioRgUwmRozXBCPx3sw+3WosIScNeC3wqaKUPwytn38FA==
-X-Google-Smtp-Source: AGHT+IFGNtL1aIwg3HtHmwchYyREfgUlw6VeYgEwe39zkib/ur8gNePpkMwSQGbagQRqT8PUrwoLJw==
-X-Received: by 2002:a05:622a:1b29:b0:4ed:8264:91ba with SMTP id d75a77b69052e-4f4abd86bcamr105538801cf.58.1766318876084;
-        Sun, 21 Dec 2025 04:07:56 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0973ee011sm610870285a.38.2025.12.21.04.07.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 04:07:55 -0800 (PST)
-Date: Sun, 21 Dec 2025 07:07:18 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Bing Jiao <bingjiao@google.com>
-Cc: linux-mm@kvack.org, Waiman Long <longman@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+	bh=ltBr3XzB1GrPvRZcKpV7voX0AAOWySj0uwjCYD+lBmY=;
+	b=W9vOL8i7OmQJ0stP7rhmnrce+A350ewEEZXqdVQ3anK73uXgUN8jc+2zlNMDmuBvTpN96m
+	w7rWe6VfzAVa284WJY9IlyZgQ1cxm7PCJehqy/bqZhCn4G9vZddBsVZkQNTbAyop2QURxv
+	v8PdjAG2DYeA33pg4gjiHndkkQZ55e4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A9CA160007;
+	Sun, 21 Dec 2025 12:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6261BC4CEFB;
+	Sun, 21 Dec 2025 12:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766319560;
+	bh=ZeOPwShHRhwYUB1pry9WKHZ3vg3L8IaUwEYKG8XWhQo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XkR4deFJRzYHolHakfbtdIDJtIK9Yk8DEnj/EqcYYdZgFW2I1C4gWIMRhYEV5SKlb
+	 zNNLh8pdxlqTYU8eLvtzQuykfloKYp1KfpB9SWgR6ATsaOlCXkSzolIV4RqxuYbkNu
+	 Qezx9UnTHfcahw/4ucIhdrMlFMdPbBrRUTgqw4qP7l6X2MRvlprvOu6D1F35hO3i7I
+	 gvWhoZ0/htR6bJx7t+Iwr4AoPRZlXmIRhv7uSUibBOmkzDZB8FmpHXChxqlNfMx3DS
+	 8SoqCN11kEmL2lhLaJZPKGoubgNsGbJu+CBNrzIOwiRaqNY0G3olfpPtH8xPiYE17/
+	 SD8VhXCcxIn8Q==
+Date: Sun, 21 Dec 2025 14:19:15 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Hou Tao <houtao@huaweicloud.com>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: respect mems_effective in demote_folio_list()
-Message-ID: <aUfi9gn5HS4u4ShU@gourry-fedora-PF4VCD3F>
-References: <20251220061022.2726028-1-bingjiao@google.com>
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	houtao1@huawei.com
+Subject: Re: [PATCH 00/13] Enable compound page for p2pdma memory
+Message-ID: <20251221121915.GJ13030@unreal>
+References: <20251220040446.274991-1-houtao@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251220061022.2726028-1-bingjiao@google.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: z57xcoaqctg3ejx369ufbeb9tggku9yo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 592D3140003
-X-HE-Tag: 1766318877-982390
-X-HE-Meta: U2FsdGVkX1/uTMheUwmuNHB6l078ZTfXzhCgXVKn+SnkXUcjoOmjIRMSzM3ztVdK1QTKNzOb31/vtFMtQLVmfDvg5wtlbhutLRBw+xvkXtn8kh6ptL27+YiPQ+dtKKggIs/LDaoKJTP55RGSnPkrcnp6e8XBZWKojVdVjHh8RzKwyF+kfSomGjy6GwsJ3mqcvJx90edRfQbyLKoWk62pAWNojKC0GsuqA00ekwFoPJbUtYnx4+iuWIEaIOwZna2vAWjiY84QElQ+a9tQb5/qzI9YolM+kj1+XDwnuQfc6PHR4Tejui3vNZ8pCrirSRlwDQI4x9htwgjNeVABduDr9MtV9H1nvj+PfMnIbPVae3Ww7I9ZuWrlmU0GlWTDdlqUY2iGtBRUNgxn8mRFtS/vrcua+GPuTn6GUtoM+R/Ua6mJZHpcJyfr2sObx01JHa80wCAfn4a8yIdcgP8g6BTaBjY/fMKEwm69LVVwzr+ABUXMLsuJShKG2ApjDpkJIakLu3refHzCLoFO8U1Ug83li3KVSmeb67LDcNaVH+oS7Iz4VHq53yUblkRddQqG9zRQ/NNy9k0PBaIlMJ9KIqxvgzbEpARiwmoZbrGH5qAv4fCvQpdcC343AtlKVTfQ5zSx7WjCryHvFfoGbCeritvp9Nd561vCZJ6N+rkpXh6wzOzRZ7RjKpianMfpJKeJ7lE6RkexixAu0N8y90DeW15pApr1Z3NcAYAGPLmkvYuEgDb70T9gyjeiEeTs8YVp+1ynfympMtAsWSBQvzmB7vcXWHb2WaGEECq3jAhzJex5w7/dFKgVLpadSkWulj8hE1SjvfHl5T1Tcmkegm2pFN8kXQaZvey9cZHyl5Hz/39SHhGB7S8Uuez77/dbjgkV2mDXXj5oS3idUJKKOHf3a5puhBQuR2V0hhvZpv0x0xY6XcT82+QuJ8ZciTQE65kH/ioXNs92QZPnsMNrVCRS0Pi
- 2XalzyJc
- uxQuiSgiRRJrc7A+CDUsa02ZRxfkeaV3DtwSL99+zTUGBdKD7wSFJyNPaH7B3MavS7i1kEnjmhtSg/Ytrh1ylFMHZr+DXJGY0Q92sqV9dDkgLLoN+SF5APjMKZwVV1K37e9OZlBpnFLIEhrWeUEsSlY5hkZXNUEOXujUTmda8QdGMiiNE2VBfaofWV1RbZqbuoeME9ltM8t54YxfYxNguFPCXSfTlMVAjCfTIUgAjwseqINTSKWSkc07zwb4/InihhWLdWA97pU9BLM0rNJSKdNmpQfnkbMYCS9YsfQKwbJ/4D7aJC+rK6h6SONliIJTMSgP4oqmvaQBVakN9Z1iOtJ4eHdexUT0388Kjl+D7nsGJg//qSbgmzXT77g==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 881751A000C
+X-Stat-Signature: hpnxer5mctaiet19b6n666z3doxirryn
+X-HE-Tag: 1766319561-501303
+X-HE-Meta: U2FsdGVkX1/xx9AErUB8v865lQObE8v3TuOx2EL0eUZIRerVhY02AwEbsTiwAqwp+o1KRA+3H+L6+b+xqNz+fLTlbKcSVDKV96oa754qkT5QJ6U3CMBYlZMVhmCD+nl2NODZdfOLSfKMHLRzPWvaShGqVZArEhyz/+NysVcktrEuw975fzLryOFIqU0AbyR5jIHk9dY5duVs5NKyPtmkd8QoLjfzjG0f0y+RfLJ3rQsDMBHeCmzwBPLX0zckwodoy9w9GQ0UOaPcLyWSmc6DILjakNJVCkLu0vmgkJjzCREP96/rPpw/STHo2w9iBbO9EBx99C+2jTLmjw42Xnihqd4k+LFfs3a/H/Wbsv/3yXDMBkRvnucmsv8Z0D3269ZbmJHPnJD6SqPYpaXYt0SMO7x6b6H3eEAiCDoTG/n1rsrKDb0x8pR8gia4p1QYCNkM6gZuxj+Jz1o0gTCNgtS7iysLkOeILUlHWNkrOLKKM/iLC2WqBj+K/1t7DaXyqgDlTVP/IDTpuYYfYPcaMKBxFWlTnOT+iGEZ18Liku+jGq2a45sAoCcUY8ZXfjl490sHTq9XSJG+sYkCCmQs0KEzFMf0Hs/uf7wenjx9n0b4KGAjUWZQ8ceAL266LFlTjy+o6N/6RpBwsT4C6bQYjo2m1BU85hW0dincIcXrg9mpXzPI3Y+5yLUWzvTawefTKk4Tl9T108mCFIqhBOWR9P2Ra71uJ62TfONNYsy7mqIAWgyOXiQcbsu4l32aYUNhiK24bJd8SDFGxmSNdqqWsV3js66+rcNYmh8Yy8yecAicJbNGdUsgkQlThE1sNu43hY22JkUwbIY4g5rmXmXBb9CeHIFbLjk/TRFwnrxIm6z1zOHtyoeqTYmhZT660cVPTxUbxHnT7GR84u7orehkjdOOx866rXpKu1Ye9qt7mbM1axXYbn2J2KzhrEmFQ1CTWLxGJz6A9pyeASHNFygmrLX
+ FrTpvXCf
+ QRV11fIm6v2CJYyfsRVkVC8QcY+Q+lU1i4qu8iTXur/HONMifT3eZshiu6QkDORdqsJfGmx4rVPmrx9b3idRNUJFB78X+GrC+bYtoj9y+ugSZScBPlHtFyJUMS9B2henFi0p+tZwx3gIPzYgaF+FE/9DouCmVz+R4GEuQw5OA79yA8zZt4LycaNaYWDmO0w0VpPBzoKGRqcQ7ZrBIlb+3Arq+540QNyk4wcH2AKcDF6bZuo2hsriOz46h+l9n+GPsEB0E
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,142 +105,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-I think this patch can be done without as many changes as proposed here.
-
-> -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
-> +void mem_cgroup_node_allowed(struct mem_cgroup *memcg, nodemask_t *nodes);
-
-> -static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
-> +static inline void mem_cgroup_node_allowed(struct mem_cgroup *memcg,
-
-> -int next_demotion_node(int node);
-> +int next_demotion_node(int node, nodemask_t *mask);
-
-> -bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
-> +void cpuset_node_allowed(struct cgroup *cgroup, nodemask_t *nodes)
-
-These are some fairly major contract changes, and the names don't make
-much sense as a result.
-
-Would be better to just make something like
-
-/* Filter the given nmask based on cpuset.mems.allowed */
-mem_cgroup_filter_mems_allowed(memg, nmask);
-
-(or some other, better name)
-
-separate of the existing interfaces, and operate on one scratch-mask if
-possible.
-
-> +static int get_demotion_targets(nodemask_t *targets, struct pglist_data *pgdat,
-> +				struct mem_cgroup *memcg)
-> +{
-> +	nodemask_t allowed_mask;
-> +	nodemask_t preferred_mask;
-> +	int preferred_node;
-> +
-> +	if (!pgdat)
-> +		return NUMA_NO_NODE;
-> +
-> +	preferred_node = next_demotion_node(pgdat->node_id, &preferred_mask);
-> +	if (preferred_node == NUMA_NO_NODE)
-> +		return NUMA_NO_NODE;
-> +
-> +	node_get_allowed_targets(pgdat, &allowed_mask);
-> +	mem_cgroup_node_allowed(memcg, &allowed_mask);
-> +	if (nodes_empty(allowed_mask))
-> +		return NUMA_NO_NODE;
-> +
-> +	if (targets)
-> +		nodes_copy(*targets, allowed_mask);
-> +
-> +	do {
-> +		if (node_isset(preferred_node, allowed_mask))
-> +			return preferred_node;
-> +
-> +		nodes_and(preferred_mask, preferred_mask, allowed_mask);
-> +		if (!nodes_empty(preferred_mask))
-> +			return node_random(&preferred_mask);
-> +
-> +		/*
-> +		 * Hop to the next tier of preferred nodes. Even if
-> +		 * preferred_node is not set in allowed_mask, still can use it
-> +		 * to query the nest-best demotion nodes.
-> +		 */
-> +		preferred_node = next_demotion_node(preferred_node,
-> +						    &preferred_mask);
-> +	} while (preferred_node != NUMA_NO_NODE);
-> +
-
-What you're implementing here is effectively a new feature - allowing
-demotion to jump nodes rather than just target the next demotion node.
-
-This is nice, but it should be a separate patch proposal (I think Andrew
-said something as much already) - not as part of a fix.
-
-> +	/*
-> +	 * Should not reach here, as a non-empty allowed_mask ensures
-> +	 * there must have a target node for demotion.
-
-Does it? What if preferred_node is online when calling
-next_demotion_node(), but then is offline when
-node_get_allowed_targets() is called?
-
-
-> +	 * Otherwise, it suggests something wrong in node_demotion[]->preferred,
-> +	 * where the same-tier nodes have different preferred targets.
-> +	 * E.g., if node 0 identifies both nodes 2 and 3 as preferred targets,
-> +	 * but nodes 2 and 3 themselves have different preferred nodes.
-> +	 */
-> +	WARN_ON_ONCE(1);
-> +	return node_random(&allowed_mask);
-
-Just returning a random allowed node seems like an objectively poor
-result and we should just not demote if we reach this condition. It
-likesly means hotplug was happening and node states changed.
-
-> @@ -1041,10 +1090,10 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
->  	if (list_empty(demote_folios))
->  		return 0;
+On Sat, Dec 20, 2025 at 12:04:33PM +0800, Hou Tao wrote:
+> From: Hou Tao <houtao1@huawei.com>
 > 
-> +	target_nid = get_demotion_targets(&allowed_mask, pgdat, memcg);
->  	if (target_nid == NUMA_NO_NODE)
->  		return 0;
-> -
-> -	node_get_allowed_targets(pgdat, &allowed_mask);
+> Hi,
+> 
+> device-dax has already supported compound page. It not only reduces the
+> cost of struct page significantly, it also improve the performance of
+> get_user_pages when 2MB or 1GB page size is used. We are experimenting
+> to use p2p dma to directly transfer the content of NVMe SSD into NPU.
 
-in the immediate fixup patch, it seems more expedient to just add the
-function i described above
+I’ll admit my understanding here is limited, and lately everything tends  
+to look like a DMABUF problem to me. Could you explain why DMABUF support 
+is not being used for this use case?
 
-/* Filter the given nmask based on cpuset.mems.allowed */
-mem_cgroup_filter_mems_allowed(memg, nmask);
+Thanks
 
-and then add that immediate after the node_get_allowed_targets() call.
-
-Then come back around afterwards to add the tier/node-skip functionality
-from above in a separate feature patch.
-
-~Gregory
-
----
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 670fe9fae5ba..1971a8d9475b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1046,6 +1046,11 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
- 
-        node_get_allowed_targets(pgdat, &allowed_mask);
- 
-+       /* Filter based on mems_allowed, fail if the result is empty */
-+       mem_cgroup_filter_nodemask(memcg, &allowed_mask);
-+       if (nodes_empty(allowed_mask))
-+               return 0;
-+
-        /* Demotion ignores all cpuset and mempolicy settings */
-        migrate_pages(demote_folios, alloc_demote_folio, NULL,
-                      (unsigned long)&mtc, MIGRATE_ASYNC, MR_DEMOTION,
-
-
+> The size of NPU HBM is 32GB or larger and there are at most 8 NPUs in
+> the host. When using the base page, the memory overhead is about 4GB for
+> 128GB HBM, and the mapping of 32GB HBM into userspace takes about 0.8
+> second. Considering ZONE_DEVICE memory type has already supported the
+> compound page, enabling the compound page support for p2pdma memory as
+> well. After applying the patch set, when using the 1GB page, the memory
+> overhead is about 2MB and the mmap costs about 0.04 ms.
+> 
+> The main difference between the compound page support of device-dax and
+> p2pdma is that p2pdma inserts the page into user vma during mmap instead
+> of page fault. The main reason is simplicity. The patch set is
+> structured as shown below:
+> 
+> Patch #1~#2: tiny bug fixes for p2pdma
+> Patch #3~#5: add callbacks support in kernfs and sysfs, include
+> pagesize, may_split and get_unmapped_area. These callbacks are necessary
+> for the support of compound page when mmaping sysfs binary file.
+> Patch #6~#7: create compound page for p2pdma memory in the kernel. 
+> Patch #8~#10: support the mapping of compound page in userspace. 
+> Patch #11~#12: support the compound page for NVMe CMB.
+> Patch #13: enable the support for compound page for p2pdma memory.
+> 
+> Please see individual patches for more details. Comments and
+> suggestions are always welcome.
+> 
+> Hou Tao (13):
+>   PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page()
+>     fails
+>   PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+>   kernfs: add support for get_unmapped_area callback
+>   kernfs: add support for may_split and pagesize callbacks
+>   sysfs: support get_unmapped_area callback for binary file
+>   PCI/P2PDMA: add align parameter for pci_p2pdma_add_resource()
+>   PCI/P2PDMA: create compound page for aligned p2pdma memory
+>   mm/huge_memory: add helpers to insert huge page during mmap
+>   PCI/P2PDMA: support get_unmapped_area to return aligned vaddr
+>   PCI/P2PDMA: support compound page in p2pmem_alloc_mmap()
+>   PCI/P2PDMA: add helper pci_p2pdma_max_pagemap_align()
+>   nvme-pci: introduce cmb_devmap_align module parameter
+>   PCI/P2PDMA: enable compound page support for p2pdma memory
+> 
+>  drivers/accel/habanalabs/common/hldio.c |   3 +-
+>  drivers/nvme/host/pci.c                 |  10 +-
+>  drivers/pci/p2pdma.c                    | 140 ++++++++++++++++++++++--
+>  fs/kernfs/file.c                        |  79 +++++++++++++
+>  fs/sysfs/file.c                         |  15 +++
+>  include/linux/huge_mm.h                 |   4 +
+>  include/linux/kernfs.h                  |   3 +
+>  include/linux/pci-p2pdma.h              |  30 ++++-
+>  include/linux/sysfs.h                   |   4 +
+>  mm/huge_memory.c                        |  66 +++++++++++
+>  10 files changed, 339 insertions(+), 15 deletions(-)
+> 
+> -- 
+> 2.29.2
+> 
+> 
 
