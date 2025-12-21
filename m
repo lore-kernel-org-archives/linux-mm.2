@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21758E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E205CD68BD5
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 845CC6B008C; Sun, 21 Dec 2025 04:01:11 -0500 (EST)
+	id 07AE96B00A2; Sun, 21 Dec 2025 04:15:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F42A6B0098; Sun, 21 Dec 2025 04:01:11 -0500 (EST)
+	id F40AA6B00A3; Sun, 21 Dec 2025 04:15:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72AAE6B009F; Sun, 21 Dec 2025 04:01:11 -0500 (EST)
+	id E4CFE6B00A4; Sun, 21 Dec 2025 04:15:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EDEF6B008C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:01:11 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2AB3313BBE3
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:01:11 +0000 (UTC)
-X-FDA: 84242883942.22.7D20AD8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D434C6B00A2
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:15:41 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A9948B7B2
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:15:41 +0000 (UTC)
+X-FDA: 84242920482.28.292D81E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7D818140003
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:01:09 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SPUnUVwX;
+	by imf26.hostedemail.com (Postfix) with ESMTP id C559E140008
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:15:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cv2Fm09G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766307669; a=rsa-sha256;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766308539; a=rsa-sha256;
 	cv=none;
-	b=gia2hLUT36tRh0DL6xF3mloYlHF7B+n4G+GC7BrihX1Kl3VB0XD3GXZlj7H6C2XfWVkN+W
-	XBGHbiVjm6CeMaOwm18VOoHrkls5K4ll1len6jF3cc9cY4Y0hhgT4YZKstdhAJkFag2xMY
-	jWzd34C5qoicl4w/lc98MZJ4826B/Cc=
+	b=P0+T1RwCFFS2RRxVTr/Y6w89NGGrbYLTOn2f73Pd8+OQahpNg3zeOr5ymmF4XEPbjfwVg5
+	9NdMTCje9oR6/NNghcfQTfSKyTVM+v5yE0HxQgcqqmUT2/FW6pYrfisxHjuJzq2YcDVAJf
+	lGMtPTh0Es0/tJQqm7ogeUN4yznb+6U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SPUnUVwX;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cv2Fm09G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766307669;
+	s=arc-20220608; t=1766308539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RuCDAIhPCM4P8cZiLAUFVOOgkURLOFj05HxE+Krbd8o=;
-	b=lojytf1ce1o63/ZWS/gxlx7Rxc/Zca3/Zu7rO4iQ7UpiWGR4e9iPivvCO0HpaM2taYUzpK
-	jWhKQTqear6Awr74p3sl4BYuioAJc+S2pfm6LEm4EZGtCxERTXeg9mrIoYjJ+Lfn5nHGYp
-	Gb4w3JaUi7h9tw5DHGZ5M7YuLT3N6bU=
+	bh=NKGvsEHukKuuyWxl85gwZWxBUvwb6DJfhn7C9pwHrYY=;
+	b=QMG9fm5Dejauj3ujUKfuYIrmxpd2vSUXdeQWPDaPrIpEMWEECH5meaMPedwx4fU07x1+8N
+	oAZxzVP90O5bWGjV3V9Pr9PFFtjY0GBxxpe1zo/ELYri6w5uq8aUwg9SmjlylTbB239Zop
+	YnMQAdq4ooJ7YZ4DdEg2IOtZvYWr0Fs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AF35260052;
-	Sun, 21 Dec 2025 09:01:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B278C4CEFB;
-	Sun, 21 Dec 2025 09:01:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 18E3F60007;
+	Sun, 21 Dec 2025 09:15:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE692C4CEFB;
+	Sun, 21 Dec 2025 09:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766307668;
-	bh=H4zT5BMxyg2XWDEXjZIIYKZGybtJExTbNVzBDE+GsgI=;
+	s=k20201202; t=1766308538;
+	bh=b357hX9Xdp9bwQpTLLwjh3lWhYTvtLb8BnlVRU/osgM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SPUnUVwXeTyFjPn/Zt7TBk1aIPrsWIGwZafaKseveX/KK7wwBjHeJFEslqlIFVcez
-	 K8z3vouojilitnf1ShJsmfRewFa4H9dK+tcyDfb7j3gCv40SgOXkZD2z6/gDBQ6zDo
-	 1LDgnhaj1F+XR8yTjWPSiNkpR9Rd1j46lD33+J+gDSqNpsLmxbVNs26U30WGTVtK53
-	 OYeNRP5VX+RF+ILOqBAbhBaKiZxyOKiHlBeBqMBUdNSYS22YeTj0AKeddbvccafVCj
-	 EN3M6ELK1do2+Hyw60vOixi5yKeWBhboqM/P4mptGT5Lud20vQtkcRsNXXFN2xu0+n
-	 fnIbNR8QqxDwQ==
-Message-ID: <60b8a0da-7f82-41dc-9746-657d89e88b69@kernel.org>
-Date: Sun, 21 Dec 2025 10:01:03 +0100
+	b=Cv2Fm09GF7eALT3WIQbM1x9zuA1ec7ZvrD2y/x19aVuh4erT7QOl97VSGNP5iR95l
+	 T9jB7VOn0ifuVzFaRjZfC5f7B4sqJo/g5CISq9vwCP80Jl+VeWT7AOxoZwDA/Xplry
+	 aDxdUd+YXhRg6Lrhp0tPLba/9ttn5ICGNqeOASjQVzkIHiU7eUAdB27x+55aVvmV3c
+	 7TffflSjiwv/9rgXkOhvNtpyhhwfbJOr4nBc1UIUk1EUmxBtqJ3EDagbI7BAm1qfes
+	 Y9O6f7VPGGFDmTwOUibpJz1Gynudn6/elhIZroI/6GZSAMAy+eI4woYtJJSmbej916
+	 l5HjWQ1+P3DsA==
+Message-ID: <74414ade-63fb-47ff-adda-903949468b88@kernel.org>
+Date: Sun, 21 Dec 2025 10:15:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] selftests/mm/write_to_hugetlbfs: parse -s as
- size_t
+Subject: Re: [PATCH v2 2/3] selftests/mm/charge_reserved_hugetlb.sh: add waits
+ with timeout helper
 To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 Cc: Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>,
  Waiman Long <longman@redhat.com>
 References: <20251221085810.3163919-1-liwang@redhat.com>
- <20251221085810.3163919-2-liwang@redhat.com>
+ <20251221085810.3163919-3-liwang@redhat.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251221085810.3163919-2-liwang@redhat.com>
+In-Reply-To: <20251221085810.3163919-3-liwang@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7D818140003
-X-Stat-Signature: 6ziqdmoi4un1c6njoknqq9b1aynnurcs
 X-Rspam-User: 
-X-HE-Tag: 1766307669-451507
-X-HE-Meta: U2FsdGVkX191VkQd+qjUQ3/Xa/OMUlJ0J8vESVKgwZvy8AM2Zbwad6aQ/EvdDwACtJOe/fjd0B2U5XoUFtuxP7mR2HaYSJUUGThUMl1hdHynPxzbjng74ezaz7K9sTxdjHl7MP6aERvMhfrclKu+E2GOSjAkwD6GJ52GRhp9YOxPf/YMk7FWycGlLHx0BVB89w2UAiU7SsfsmxaqfmggIS3j4OHKoPjZ2e1ah1T0nHUwADpVQmg/nUJEjwwwVA9V03XJ/PhExFFjlhfJXUARmVvXTSjTyL2WR0o4vDIKLIK6Zv5W4z/ZAxzQjg5lnuXs5CK3NDAxMbkTpjxUw8VUgiP5X3EXwvKRGS0ncCrj/QOmueSw1+WznVrUOqa87sdXQRUmM86zIcTtFj2FcK23JYWdMNbo2NxsSYWOYPCrq8Sv8i9sBwzTbpcWCIlmfO1EkucvkcyiwpuPpMuHYbWdn7RcSgtBr9OmCrAu5sycQb0PCTiQxnlIsCIclIUdRYEZbuFaAKJtUtCy14tcj6ZljabKuKMpyNk1ERtIbkdZE23V6f+GnfMDIdJND2UW37vL1NGlLhXJZQi36TcSKHHD6AQGwNXxsqtWPOGf2T3H9Oso4fTvC3XMfJTG38J1SzGYACHAwduEK8hoh1uuuu27ulOK7xAs7VLg2LDizwQeC5uJnmxov1C6F06IPnEW4BxhnBaQflZ2pkV1BptYbwlXYudZKX5CLTBYqJew3aOqdZHrYCHH76Jzi9CYcUnRowej2woH+7+BjXqI/0zlEbw8TitjhDoPiQ7xkIF6bS6/SdjXUsT9fRNI7VV+YoPZGAEeJ4SEvuOyi0iXo+ce4DmkVTWy4IYAniervXbR54dHGwYorNCXdPKt/1TzYZqFnZbUE+hlWiCsf+Yi5VSfMMaiNdyKJ3N6PjrtM5ML9OTWvDkziYir0q+nqWPSetQRinfAlm5RkX967SLyOkuSjmA
- gBp6+AqS
- bjYGe1MSPVOJxPk7QoQnhQ4fmkFXsAeAlju/8ovl2kZj3aIH3XDRnDCT/CZdM7jtNiAAlZUUNJ/FjMFse+appzfZC5cQv9aa8CS/FzGo9TfWQtkW0XcxrqI2j9hhtaC8OiuKK/Mn60CPp2kx4Xdn7FDOiBB9oaeJ9kOKPzvsvZxncAtHkJIbyFJZC/icqrJpoU0+MZeskj0o+gXJAUwCIL3umY2CbO0TAlaFeYXNQYmaFqay9RLuSRtpcK5shW8qdJS6DQPxpklo6C1fDpeJMHjbwQ2MmGNqtQ2yvzdjDVhyigOYIw9dn/Ep5YrokTn3kjpQgArt6Kfm+t1o=
+X-Rspamd-Queue-Id: C559E140008
+X-Rspamd-Server: rspam10
+X-Stat-Signature: y9us591ezgo8sn1nw3safa8ipo4xp1jh
+X-HE-Tag: 1766308539-745630
+X-HE-Meta: U2FsdGVkX1/2hCQ+RNVxJGJx+NiVgeJI8/GfCL4QBj8RPtP2q0OASj815BbokURaD4EGsip6mBwhKNYfyfQ8jMp8h3jlgrEArXGfWQlkh+WXOWSG2M7lgPGC7KOf1UStfTwwGAuYsRpGsHBQ5sMij4Qay+TrBBlZifby5VxsRStO0V/bIc3Iwe0yjpKWWqvAf0yRDUA5/T4OSoBooRWm+STK4ijQf1qit3msNnv7/89p9F5m8avbfd9pKlu5VmgZejTa2380tPl2H1fQvVlW7+iVxtMIZZoS3P+jlpfmJGvR/EA3x2GmjcH4XBzKTHwvvPNcTRCuIboqINkBimTRmDaLLMeGiWaqYxOqOJVWOpJwpjKj8oFDaeau/1gUlMjZPd5Jf3s6zi7Xbqjs1DTyjQJHF6/mWs6UuaCB/nzKHofhN67II3kWX5SIT3+DQpzma4FfsneCRUpfx6KCdHyAibVGEkhRYKCCOXGWpcG8xl0/9x2ZWXkNkQQCbvtBjWFZ5oicPyh1d1DyRFL7mGmT5f0+TYMb4BVoVSh2JZ75G7tSszop+tBbsZ7A5QZBykJBmp74ZMJLoD0McGiZsU1Z6IBqe0OmCeVEPtl1EwpdznQpd9sK3lHukilTKgpMjPUbuD1LME5p6Ru3/PP0V+buIUAK9LwjiY42gjoqUEGHjycjjJkjLsZXlQkZccGJmZitE4oNfLyVhbYf0ongxp5KA4NPQhAnANC2qw36SIgdeIGM4N8UqR4d7uCjMGWE4WnVql1CHA1/0pe1CmRCeUFPk56i+/BR1Pq2PZB5OQy2mtLkjdK7YP2AkONEUnaPKl/s2SUcDwfAeZ37uuZT32yM9bYSwQug4bCo2/v05/kkyyxlgnfeja+F6dacL3Zd6eYV7L+Z1CHVSbIoQVWz4efmHW7/SdLxHBfZouanYTrfq+CN9vtbV4xayZFx8HIT8ZmkeFcYWMm2aSUdCfO7T16
+ P7SFa/m6
+ pLwaG9Y6qiAnD3NiYq6t9NvNVQejaOjWnE8oi83QCxzoUp9xd56i/kEjRNy6VIWIFaE5Hzt8uvYlXusEJEgiv/VnegyCOQmikn8chORyGjndQyZwSMzFEaRhQ605VTrgAhHrAyrL6S2W0UnPjP1iIBrj5ZnaCW+cLNXvjZB62Fs7++5sT7SCCSWRlXDmxtcBu+2+Mzt5A+2FmkwL0FTStNJdSbiASzZ+i7l3WRU53DbFjmviDbjh4DZjz4kzcV+SNaJEeAnTd/af5MQNltG2LBYYdoVCSumYiHuv1JSnHR/w1NDEvukNGb2nPXoGiHydCVXT8+Toz7DzvkFZce7g400bHKQWHPgxQXnee
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,32 +99,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/21/25 09:58, Li Wang wrote:
-> write_to_hugetlbfs currently parses the -s size argument with atoi()
-> into an int. This silently accepts malformed input, cannot report overflow,
-> and can truncate large sizes.
+> The hugetlb cgroup usage wait loops in charge_reserved_hugetlb.sh were
+> unbounded and could hang forever if the expected cgroup file value never
+> appears (e.g. due to bugs, timing issues, or unexpected behavior).
+
+Did you actually hit that in practice? Just wondering.
+
 > 
 > --- Error log ---
->   # uname -r
->   6.12.0-xxx.el10.aarch64+64k
+>    # uname -r
+>    6.12.0-xxx.el10.aarch64+64k
 > 
->   # ls /sys/kernel/mm/hugepages/hugepages-*
->   hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
+>    # ls /sys/kernel/mm/hugepages/hugepages-*
+>    hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
 > 
->   #./charge_reserved_hugetlb.sh -cgroup-v2
->   # -----------------------------------------
->   ...
->   # nr hugepages = 10
->   # writing cgroup limit: 5368709120
->   # writing reseravation limit: 5368709120
->   ...
->   # Writing to this path: /mnt/huge/test
->   # Writing this size: -1610612736        <--------
+>    #./charge_reserved_hugetlb.sh -cgroup-v2
+>    # -----------------------------------------
+>    ...
+>    # nr hugepages = 10
+>    # writing cgroup limit: 5368709120
+>    # writing reseravation limit: 5368709120
+>    ...
+>    # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    # Waiting for hugetlb memory reservation to reach size 2684354560.
+>    # 0
+>    ...
+> 
+> Introduce a small helper, wait_for_file_value(), and use it for:
+>    - waiting for reservation usage to drop to 0,
+>    - waiting for reservation usage to reach a given size,
+>    - waiting for fault usage to reach a given size.
+> 
+> This makes the waits consistent and adds a hard timeout (120 tries with
+> 0.5s sleep) so the test fails instead of stalling indefinitely.
+> 
+> Signed-off-by: Li Wang <liwang@redhat.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> ---
+>   .../selftests/mm/charge_reserved_hugetlb.sh   | 47 ++++++++++---------
+>   1 file changed, 26 insertions(+), 21 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> index e1fe16bcbbe8..249a5776c074 100755
+> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> @@ -100,7 +100,7 @@ function setup_cgroup() {
+>     echo writing cgroup limit: "$cgroup_limit"
+>     echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_limit_file
+>   
+> -  echo writing reseravation limit: "$reservation_limit"
+> +  echo writing reservation limit: "$reservation_limit"
+>     echo "$reservation_limit" > \
+>       $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
+>   
+> @@ -112,41 +112,46 @@ function setup_cgroup() {
+>     fi
+>   }
+>   
+> +function wait_for_file_value() {
+> +  local path="$1"
+> +  local expect="$2"
+> +  local max_tries="120"
+> +
+> +  local i cur
+
+I would just move "cur" into the loop; I don't see a reason to print it 
+on the error path when you printed the value on the last "Waiting" line?
+
+	local cur="$(cat "$path")"
+
+Also, not sure if you really need the "local i" here.
+
+What if the path does not exist, do we want to catch that earlier and 
+bail out instead of letting "cat" fail here?
+
+> +  for ((i=1; i<=max_tries; i++)); do
+> +    cur="$(cat "$path")"
+> +    if [[ "$cur" == "$expect" ]]; then
+> +      return 0
+> +    fi
+> +    echo "Waiting for $path to become '$expect' (current: '$cur') (try $i/$max_tries)"
+> +    sleep 0.5
+
+Any reason we don't go for the more intuitive "wait 1s" - max 60s wait?
+
+> +  done
 
 
-I mean, whoever does that should not expect anything reasonable to 
-happen with these selftests ... so I don't think Fixes: should be added.
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Nothing else jumped at me.
 
 -- 
 Cheers
