@@ -4,99 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1103E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7B7BD68BD5
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 09:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A4F6B00A6; Sun, 21 Dec 2025 04:22:54 -0500 (EST)
+	id 18AB96B00A8; Sun, 21 Dec 2025 04:24:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B9746B00A7; Sun, 21 Dec 2025 04:22:54 -0500 (EST)
+	id 10A8D6B00A9; Sun, 21 Dec 2025 04:24:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA296B00A8; Sun, 21 Dec 2025 04:22:54 -0500 (EST)
+	id 00CA16B00AA; Sun, 21 Dec 2025 04:24:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D4D96B00A6
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:22:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 929F45B334
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:22:53 +0000 (UTC)
-X-FDA: 84242938626.24.96A3476
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E43216B00A8
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:24:18 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97BD6137C76
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:24:18 +0000 (UTC)
+X-FDA: 84242942196.22.DAF3BBA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BD5C21C0006
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:22:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gmwuyHj+;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id F340214000A
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 09:24:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6KpgVf6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766309057; a=rsa-sha256;
+	cv=none;
+	b=0TqyNd2ft3Qr5dcm0hS/c/yazXHuyOQmh1K3FHKp3ueKGiah8xDiCBJ7jP7Q5/6JXStI+F
+	7sJh/SgLI1c50gsfTY1qDGD+1kUmwpvp8Plc2V8nLHcTlguYaPfZmN2ZNRZKiZRG9xez87
+	QFiYhjwMM9/BhCBplf5Qk79JcXWIL/w=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6KpgVf6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766308971;
+	s=arc-20220608; t=1766309057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gpZeZM48gN392hwtrdm+XPYbRwOvOacSCICRceQeC8I=;
-	b=ZnVNqGzuUXP7HOudi3pxa/5dO/B89oIJQUkOu2jzzUP1s9ZVTFJCAGVX+YP1X0NTj32j84
-	xibc5/b21UjoFSoEsb0tIkCZeNBlk1AYWozCgrRPLqlYs0YMoQyo8WEnPai0nb4b1RGLAL
-	SdOZwWT5o4E5QBgFbCBSeR4S/6Hvp0c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gmwuyHj+;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766308971; a=rsa-sha256;
-	cv=none;
-	b=GkQ6m78s02CKEcvWgnSY6xOKeSA8TJooKvf+RN4Nl35DoNLjZWongPSXmz+eE//bPkzCbf
-	9Fs+RjffF8iGWLPua0Jssbm3gYFVMU5E0QYuiLgboBJS5L83Do+WX6k1hJPlSM42UXRSNk
-	x2OuqzDgGDJo919M+Y5VeIhK8MjfC/E=
+	bh=40AzySEFuTplyCO6X8PeDyjzsR9LekCurHo1hfnWFc0=;
+	b=THmVciEwdOPvisXSIc2iIUXM/sHrue7D7nNwT15AatJ7u+P7hUBLGdGt9H0QQ2Jtnqfbbo
+	w4Rk3I/68o3HjLCuguyt9mnMW6+0owK2OspTg6qXU/Fyq4E9cari9NoJF7FQghGweME1K3
+	hjjMZftGMDViznj5rh85hJgl99UiTyg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD09143BE5;
-	Sun, 21 Dec 2025 09:22:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE3EC4CEFB;
-	Sun, 21 Dec 2025 09:22:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0ADF6419CD;
+	Sun, 21 Dec 2025 09:24:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DBDC116B1;
+	Sun, 21 Dec 2025 09:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766308970;
-	bh=1hH+QYmuXmY+esC5aiJxRFWapofDzNwd4JqJjBXFA6g=;
+	s=k20201202; t=1766309055;
+	bh=FE6MAxoF1LdTjoUH1fHFZ697BonNjLX0s2K2Kv4JCys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gmwuyHj+PQbFQQ/ir2/clzoLLRp/DiruHvZT3ZWwJSRoMFFkgT4qAdgrddf19g2lh
-	 XgDW+n2LQQaB2Ri/aFW0Jhsu0kPomMtoPV4kvSWM+L4oQtFaB4YmwwChK0zdQ+T303
-	 Ua0wvmIdpdryQc3lc8k2wuv6ygYDJ04rJ5gsJ2v2Gc8QkhibbD2L9xiUgS88VCiOkO
-	 diJY9OQbc/+hV4SVUPuxLTe1XeZ6SV+femSqq4ROEumdksZQCIH8tEmolsNyJxbwcL
-	 j5qVjtf4ulvdUtKISwElr/mK7wKo0lKT43UVJDfRo6+5qjgssZT83/ralZNBpBTo+I
-	 8ZMXhWEpkJpnQ==
-Message-ID: <655cc605-2ce1-4ccb-8cc0-a0a31a9c89fd@kernel.org>
-Date: Sun, 21 Dec 2025 10:22:44 +0100
+	b=d6KpgVf6jeLEaHeBi1l0tQJ58vP1PpmzA3dDB5YKVJ5VIQaHiOwydb+YAuGxcQXFp
+	 eWCkMTJ8OAilSo0keYxcqx1S4rPDn4hu2utNkrPBHTuZlYPM46N3Pl6NrYtd0tc3Qz
+	 82jM0ZyYFyprMUsfiX42/sXwO5KSrPWC2yqnEWPrqQyeN68QZj18RLo57UIGp+mUnL
+	 6caLPumhfu5R5Jr80sh9No/MI5FF/Pho8TXdAeewDFMyCsL07/m3U3rE1/pLOJ/4NE
+	 +7xpCZsFY0zQVvE/ztZZc9ouMaQqESQmq1ZuVxqNwUP2MPF4vc9+KvWSUTCpqOk8Md
+	 Yj4oF9EZVzCzw==
+Message-ID: <5af0e0ae-0472-45b8-a249-44b4e5239d33@kernel.org>
+Date: Sun, 21 Dec 2025 10:24:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Borislav Petkov <bp@alien8.de>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, x86@kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251221053611.441251-1-sourabhjain@linux.ibm.com>
- <87a4zcml36.ritesh.list@gmail.com>
+Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
+ MADV_COLD/MADV_FREE
+To: Vernon Yang <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-4-yanglincheng@kylinos.cn>
+ <3c75d915-5d7f-4e80-975f-4479393e7139@kernel.org>
+ <tnvhnikpfxyjassrdsnqmpxlem3hnoepwxmp4hysfzqzl3wltw@7utx5hxc52th>
+ <6e8684a5-1f71-4be6-8805-9b047a2bcb78@kernel.org>
+ <20251221021044.2r5fhepiyyhvuo7h@master>
+ <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <87a4zcml36.ritesh.list@gmail.com>
+In-Reply-To: <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: kxppoifdwiga6dtwtdxkyqwjjop78qim
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F340214000A
+X-Stat-Signature: ntnuuddg3rdtcwpqjrirye3rnia1faq6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BD5C21C0006
-X-HE-Tag: 1766308971-468655
-X-HE-Meta: U2FsdGVkX19ge/RQiUF3baMqLFt0rDGgRlGD6TdVETdtc4KXqjDreSChF4CiVubrmdqi9Jp2YjoVUuMguvoemQRYusCpuTDFFkbLav0gQe2nx/V7HLkwTqVRvfFaQBC9ESd3Dv/aPafCsxhBpAk8BxRhbi5eBWxlm4ed+kkNXJQRcEkdnE6UxPpuvtmUzIp+VQQ24KLX8IdHzqyRMjaDWz1WmewAi4VA7OJx8ZUVCZm7qGclxLuJwaSe8bsXwr9vpPr7fvAf+SwnmjsJpmOnCWmQ6gaCpyKwZkvn7Mb6WSNxfK0zKIVcjAsWH/0XaUVNwIDeFLQZMNlfHpWM+4zkVijbgAzSkTBAuvjKZcZo+mvxFfImcJhETL7gnbp7tBjJO7mQfTrPwpiFICPMdXH23AI1gFBiQPPn6abD6ZHFEdhgIwNSa3dyLkkiT/GXUmHrNiD6M2fXKeI32dh61psbzG8VIysxdi5zYqzfoLN4+98kdLgoUU6INZnpRCSGfGzQOwv4kApaXmNQ0kst2uDkFH0omuxlvCAza16bm6muydMBwp2yIAZftjJujR6UGG6l/iPDqU721NwbUfhTKdNjusGqINJH3fVfyaw8SAk4f+mePZDkAQKZgVIXw5beVDz6bOh2MXcnzkV93cefigiizFTOIVunl3fxbMnFhiaocAXVxf6S8L+4I1GFim07iwZc8RwwX7EKlIoBAl4jO5IPEhpl3dvhoo8KPbSxoxqvqhgyJn+jGVx4ByyHjhrdSFsoFADchsAYp4J2d/jK16xajJOthBhzH+9AXfrpfZzFnfGQ1hRtVNMeLZfKhNGuiOXRScnyDJCkxHF2by6MJxEXRz1iVQlcNIeiRb/RqLQXOdIIOFcZjx6+bnL7Mas7jiZ7gyQ/AfzmbfkSbFBcK2lGaoazrxFe7dUTINrkKH/BGYFy4rNNf9sdnPJU7yRAmAexA/4jEW1TUhgWBvBFwiG
- gfSaWW1X
- C/1jHFmsE5tDOKzjIMyE/SGH7/ArqpTgJFQeB7Ds2+yeWoUvR7XFhpKsXXlpiWqSUot1RQkcoJx1bxVFM/Zmu32nwmwJVc+qfHMqLBQdh8v+7K/vkecJxGBzGT9VIPea+MMPCTmEk2O2AyHw0TRYXjog4Vzr6/pfrkDQIobTBvDyZMxDzbmTm+Bfnz9aduJNgEkgd8ofcPdFQGdB+WmJvMBy4WAPO//R1GFhN5EU1zBVe1DCrTI6DV2swC4cZH8VK8YtmqBSKdxX+v9qGmgE+MG/sO+EN1m9VmopFCp7BhIyR6rqNxUo3uvhEBA61nmlvkkcipe3JZWSbDFf/qm1B6XGhIS58Wk+QbWMEMjY0dNE9AKqoUgeyFR5xpUjlrhghaE+grGMvjrNpUBgDeSFhDhbp0/4ZMFbDAdtNtDaP9xfhYn8=
+X-HE-Tag: 1766309056-511194
+X-HE-Meta: U2FsdGVkX19GuKJofTOfQ0jeuAJjZBUJuPMGIsuDy9rK62gSoeVJoJMniYp0aaYthAE0s1NA+Osvu7O9sLudLi8zaw69W8j1S3ioFeH6xaF+zlAcdP33Yu/VJrcQuMT82My3G2piqG2AvQ/3IbRw2zcVnhQUWqYYPWnAVe8cSMbORk8CBmn1mP8ZhlEIWzkkwK/amrKWP5BPjbMjNLZ55MJOL7+lawIKKp0JGMyeb5hCDTmcI+rKsJXhX46WyLPuz5In56DaKi7ziYk8fiaUVIZmGitVxKaNehDxvNxCCQDydvvD1VcuhQbFyFv3MMmblI5DnUU6QYiM8K4KvAUZhZp6rmQLMjmAKMBpCVZin9ElBmfp2WW9FAm44kYFjQdWsV9mMpRUlj5DobxV5EZsaCxNtargacgsvjY4nbSVsiPcOvUdvkGcohfOX8w+L99FAqzRqne1qqx8P+KyVq8X7Gf3W9BRglylxtszC/O5d00QHx7qAd+rEfafzAD4q905wgm3FZuR3PEJY4DTeTYxMjwNkT1cykZF7yW2ZTKSgm0NGpfEbGMLBF7tjBifDr6VFbdPWi5NW5HE6Tjc1xqCSZuKFbvaQfc2k0ZBhF2yw7oXhUTGbNkkoZMnFd8P2JE6iuM0QmXF+vB1ZyOkk54LKcgL/GJhnzl/KDz1YfKsv+336LBOCGuUTmSrLGckPnf0VPHDdYeFO9hS2u2yU5TDy/zwg/57KBzp21c4+Xg5gIrnePezP9NeDA1jNEIbLZFSrrDK8LyfsdyRQ8F5l3od9+/ihpu47wdpHjCyfryHSmk1ZDOra2Bbv9+Za/9eqjOy1wJRL4sBl8PRKjZZ8/UXa2lUjfeXFVqU/99LllafnwpGXROES4hXFcdqNEfCcQFGXocItKE8yYpJomWh4Vo3lDDb7Z8FYbrr482IgswRaEBZmRSqTgKFP7p9cBFgT3ym+2/oulTOOrDtr5IpBvO
+ tITDNtNR
+ XJoD8GBuWY0OTc9iVt3uQpp5rdFZdJy9CWSyijdsKBP9vhpp/KDZK0oP1YYJTM13pYaq9WKppmfcZBGw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,138 +102,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/21/25 06:59, Ritesh Harjani (IBM) wrote:
-> Hi Sourabh,
+On 12/21/25 05:25, Vernon Yang wrote:
+> On Sun, Dec 21, 2025 at 02:10:44AM +0000, Wei Yang wrote:
+>> On Fri, Dec 19, 2025 at 09:58:17AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> On 12/19/25 06:29, Vernon Yang wrote:
+>>>> On Thu, Dec 18, 2025 at 10:31:58AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>> On 12/15/25 10:04, Vernon Yang wrote:
+>>>>>> For example, create three task: hot1 -> cold -> hot2. After all three
+>>>>>> task are created, each allocate memory 128MB. the hot1/hot2 task
+>>>>>> continuously access 128 MB memory, while the cold task only accesses
+>>>>>> its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
+>>>>>> still prioritizes scanning the cold task and only scans the hot2 task
+>>>>>> after completing the scan of the cold task.
+>>>>>>
+>>>>>> So if the user has explicitly informed us via MADV_COLD/FREE that this
+>>>>>> memory is cold or will be freed, it is appropriate for khugepaged to
+>>>>>> scan it only at the latest possible moment, thereby avoiding unnecessary
+>>>>>> scan and collapse operations to reducing CPU wastage.
+>>>>>>
+>>>>>> Here are the performance test results:
+>>>>>> (Throughput bigger is better, other smaller is better)
+>>>>>>
+>>>>>> Testing on x86_64 machine:
+>>>>>>
+>>>>>> | task hot2           | without patch | with patch    |  delta  |
+>>>>>> |---------------------|---------------|---------------|---------|
+>>>>>> | total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
+>>>>>> | cycles per access   |  4.91         |  2.07         | -57.84% |
+>>>>>> | Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
+>>>>>> | dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
+>>>>>>
+>>>>>> Testing on qemu-system-x86_64 -enable-kvm:
+>>>>>>
+>>>>>> | task hot2           | without patch | with patch    |  delta  |
+>>>>>> |---------------------|---------------|---------------|---------|
+>>>>>> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+>>>>>> | cycles per access   |  7.23         |  2.12         | -70.68% |
+>>>>>> | Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
+>>>>>> | dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+>>>>>
+>>>>> Again, I also don't like that because you make assumptions on a full process
+>>>>> based on some part of it's address space.
+>>>>>
+>>>>> E.g., if a library issues a MADV_COLD on some part of the memory the library
+>>>>> manages, why should the remaining part of the process suffer as well?
+>>>>
+>>>> Yes, you make a good point, thanks!
+>>>>
+>>>>> This seems to be an heuristic focused on some specific workloads, no?
+>>>>
+>>>> Right.
+>>>>
+>>>> Could we use the VM_NOHUGEPAGE flag to indicate that this region should
+>>>> not be collapsed, so that khugepaged can simply skip this VMA during
+>>>> scanning? This way, it won't affect the remaining part of the task's
+>>>> memory regions.
+>>>
+>>> I thought we would skip these regions already properly in khugeapged, or
+>>> maybe I misunderstood your question.
+>>>
+>>
+>> I think we should, but seems we didn't do this for anonymous memory during
+>> khugepaged.
+>>
+>> We check the vma with thp_vma_allowable_order() during scan.
+>>
+>>    * For anonymous memory during khugepaged, if we always enable 2M collapse,
+>>      we will scan this vma. Even VM_NOHUGEPAGE is set.
+>>
+>>    * For other cases, it looks good since __thp_vma_allowable_order() will skip
+>>      this vma with vma_thp_disabled().
 > 
-> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+> Hi David, Wei,
 > 
->> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
->> default_hugepagesz) when hugepages are not supported by the
->> architecture.
->>
->> Some architectures may need to disable hugepages based on conditions
->> discovered during kernel boot. The hugepages_supported() helper allows
->> architecture code to advertise whether hugepages are supported.
->>
->> Currently, normal hugepage allocation is guarded by
->> hugepages_supported(), but gigantic hugepages are allocated regardless
->> of this check. This causes problems on powerpc for fadump (firmware-
->> assisted dump).
->>
->> In the fadump (firmware-assisted dump) scenario, a production kernel
->> crash causes the system to boot into a special kernel whose sole
->> purpose is to collect the memory dump and reboot. Features such as
->> hugepages are not required in this environment and should be
->> disabled.
->>
->> For example, when the fadump kernel boots with the following kernel
->> arguments:
->> default_hugepagesz=1GB hugepagesz=1GB hugepages=200
->>
->> Before this patch, the kernel prints the following logs:
->>
->> HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated 58 hugepages.
->> HugeTLB support is disabled!
->> HugeTLB: huge pages not supported, ignoring associated command-line parameters
->> hugetlbfs: disabling because there are no supported hugepage sizes
->>
->> Even though the logs state that HugeTLB support is disabled, gigantic
->> hugepages are still allocated. This causes the fadump kernel to run out
->> of memory during boot.
->>
->> After this patch is applied, the kernel prints the following logs for
->> the same command line:
->>
->> HugeTLB: hugepages unsupported, ignoring default_hugepagesz=1GB cmdline
->> HugeTLB: hugepages unsupported, ignoring hugepagesz=1GB cmdline
->> HugeTLB: hugepages unsupported, ignoring hugepages=200 cmdline
->> HugeTLB support is disabled!
->> hugetlbfs: disabling because there are no supported hugepage sizes
->>
->> To fix the issue, gigantic hugepage allocation should be guarded by
->> hugepages_supported().
->>
->> Previously, two approaches were proposed to bring gigantic hugepage
->> allocation under hugepages_supported():
->>
->> [1] Check hugepages_supported() in the generic code before allocating
->> gigantic hugepages
->> [2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes
->>
->> Approach [2] has two minor issues:
->> 1. It prints misleading logs about invalid hugepage sizes
->> 2. The kernel still processes hugepage kernel arguments unnecessarily
->>
->> To control gigantic hugepage allocation, skip processing hugepage kernel
->> arguments (default_hugepagesz, hugepagesz and hugepages) when
->> hugepages_supported() returns false.
->>
->> Link: https://lore.kernel.org/all/20250121150419.1342794-1-sourabhjain@linux.ibm.com/ [1]
->> Link: https://lore.kernel.org/all/20250128043358.163372-1-sourabhjain@linux.ibm.com/ [2]
->> Fixes: c2833a5bf75b ("hugetlbfs: fix changes to command line processing")
+> The khugepaged has already checked the VM_NOHUGEPAGE flag for anonymous
+> memory during scan, as below:
 > 
+> khugepaged_scan_mm_slot()
+>      thp_vma_allowable_order()
+>          thp_vma_allowable_orders()
+>              __thp_vma_allowable_orders()
+>                  vma_thp_disabled() {
+>                       if (vm_flags & VM_NOHUGEPAGE)
+>                           return true;
+>                  }
 > 
-> I appreciate our proactiveness to respond quickly on mailing list, but I
-> suggest we give enough time to folks before sending the next version
-> please ;).
+> REAL ISSUE: when madvise(MADV_COLD)，not set VM_NOHUGEPAGE flag to vma,
+> so the khugepaged will continue scan this vma.
 > 
-> Your email from last night [1] says that we will use this fixes tag but
-> you haven't even given us 24hrs to respond to that email thread :). Now
-> we've sent this v6, with Acked-by of David and Reviewed-by of mine,
-> which seems like everything was agreed upon, but that isn't the case
-> actually.
+> I set VM_NOHUGEPAGE flag to vma when madvise(MADV_COLD), the test has
+> been successful. I will send it in the next version.
 
-Agreed.
-
-> 
-> My main concern was -
-> A fixes tag means it might get auto backported to stable kernels too,
-
-Not in the MM world -- IIRC. I think there is the agreement, that we 
-decide what should go into stable and what not.
-
-Andrew can correct me if my memory is wrong.
-
-But we can always jump in and say that something should not go to stable 
-trees.
-
-> which means if the fixes tag is incorrect it could even break stable
-> kernels then.
-> 
-> [1]: https://lore.kernel.org/linuxppc-dev/041352df-41ce-4898-8535-d6b7fd74a52b@linux.ibm.com/T/#m6e16738c03b2b2a8d09717f6291e46207033507a
-> 
-> 
-> Anyways,
-> Coming back to the fixes tag. I did mention a bit of a history [2] of
-> whatever I could find while reviewing this patch. I am not sure whether
-> you have looked into the links shared in that email or not. Here [2]:
-> 
-> [2]: https://lore.kernel.org/linuxppc-dev/875xa3ksz9.ritesh.list@gmail.com/
-> 
-> Where I am coming from is.. The current patch is acutally a partial
-> revert of the patch mentioned in the fixes tag. That means if this patch
-> gets applied to the older stable kernels, it would end up bringing the
-> same problem back, which the "Fixes" tagged patch is fixing in the 1st
-> place, isnt' it? See this discussion [3]...
-> 
-> [3]: https://lore.kernel.org/all/b1f04f9f-fa46-c2a0-7693-4a0679d2a1ee@oracle.com/T/#m0eee87b458d93559426b8b0e78dc6ebcd26ad3ae
-> 
-> ... So, IMO - the right fixes tag, if we have to add, it should be the
-> patch which moved the hpage_shift initialization to happen early i.e. in
-> mmu_early_init_devtree. That would be this patch [4]:
-> 
-> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2354ad252b66695be02f4acd18e37bf6264f0464
-> 
-> Now, it's not really that the patch [4] had any issue as such. But it
-> seems like, that the current fix can only be applied after patch [4] is
-> taken.
-> 
-> Do we agree?
-I think we should document all that in the cover letter, an describe 
-that this partial revert is only possible after [4], and that that must 
-be considered when attempting any kind of stable backports.
-
-Thanks for pointing all that out.
+No we must not do that. That's a user-space visible change. :/
 
 -- 
 Cheers
