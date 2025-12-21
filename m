@@ -4,104 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2554AE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343B6E67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:38:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8335A6B00DC; Sun, 21 Dec 2025 07:34:37 -0500 (EST)
+	id 9595D6B00DE; Sun, 21 Dec 2025 07:38:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80A576B00DD; Sun, 21 Dec 2025 07:34:37 -0500 (EST)
+	id 931826B00DF; Sun, 21 Dec 2025 07:38:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 736BF6B00DE; Sun, 21 Dec 2025 07:34:37 -0500 (EST)
+	id 83CBD6B00E0; Sun, 21 Dec 2025 07:38:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 613036B00DC
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:34:37 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 6FAEC6B00DE
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:38:35 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A613602F5
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:34:37 +0000 (UTC)
-X-FDA: 84243421794.11.9202970
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2BB46180003
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:34:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="mzZaLS/C";
-	spf=pass (imf24.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F82116084E
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:38:35 +0000 (UTC)
+X-FDA: 84243431790.11.B62C28D
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 254C01A0015
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:38:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YQcb2oCH;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766320474;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1766320713;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/zDNPMvmJjRrV4GhC7uV9fp37vI0wy5aPj4K2cg4ANI=;
-	b=MEKIYZ9JcgKnOKYe/IxGc0A9a4hVFEr/Ma5OBqcThK+uzBNjHZBXAsy7B678V8/0S2aMSe
-	YEwq73oYkgkQhpiEi6mn8YOGq1bOFci4NVeUeRS+86fJ/q0EC3T0uoQauH2osyBwry6TZT
-	JrLuA57QzvDJjPvX5UrAV4wYKZUCIiQ=
+	bh=vKd1omiKDIcMLE2GVnEeEbOL7CbBL2uJXl9dtv3whtc=;
+	b=POwzgtA8Q6ydAywyPZ+D0nRVukawuEJjyg6eY1zQCgfuK3R3GBarzpkwuNI84e+jY86OZ/
+	P4gsgshGDTCK15rQ45I9igLhGAsrViLhhb8uFUBwhcX97tvdvcXnG6cRT12tgtNJoGwXEn
+	NkihyR1QIAXChS2IvNZnQaOO53G9qeE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="mzZaLS/C";
-	spf=pass (imf24.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YQcb2oCH;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766320474; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766320713; a=rsa-sha256;
 	cv=none;
-	b=h+vcXW7kutK9vfdwKWEVkEaGx9pErR0vrbu1ny57eAEunPPRsLbGircAEfpr4trTT9g5AR
-	Cx2fXLTnz3xVUszScq+xFUwxuq6V/u+tgchJJop0xTCnP3SUCnGDqkvuAA+AJfffrtL8EA
-	AOjdvO/qc7zMGCQzFPPY6lbCgH/62eA=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7aab7623f42so3770463b3a.2
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:34:33 -0800 (PST)
+	b=xQZT5ZUDM9eL7TLR743DT9eNbKk0bRkt7wF4fVKimn0K8FGFjiWHswu+iJfWIOJwUaIduc
+	mrAf8/nm3a4s2qSWvhUgixCEumiNcL6v8O6ocwMZVDVXKwc+cX4ANDKP1t/VLuQKXpTRBX
+	egeRG43qgc50EYJR4Vo4NVxnorCqMf0=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b802d5e9f06so380022366b.1
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:38:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766320473; x=1766925273; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/zDNPMvmJjRrV4GhC7uV9fp37vI0wy5aPj4K2cg4ANI=;
-        b=mzZaLS/CjSdtyHqeAVevAOiAToZY4Uxz0tOb6Wafl4kJ6iII26Ask7BrGxxadTXlrp
-         s32NYNvM0z+GbGHhCegYh1oCKuQmclB0NWFip6OZ0DE9Mfs5olp/vLdJum1TG+8hC8z7
-         1yTceyqP5qVxZraq/0QeSXFIkRoZjV4xZ6c4FCqEkBl/cMrPz7q3tSogM5W+pSjC4WDb
-         raWh0OaoMsXU8BO1xD9gP1x77C3eLomVIhwZZLlGkDNKhoQ85yKKSYL4JTqAcV9KsQTf
-         GRW9RZN8bKV6axiU9hVJDHbyDUpy/PNR+sljUoHIQK92G7WddBHTmFc9dkl1soE3yfSA
-         RwoA==
+        d=gmail.com; s=20230601; t=1766320711; x=1766925511; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vKd1omiKDIcMLE2GVnEeEbOL7CbBL2uJXl9dtv3whtc=;
+        b=YQcb2oCHcICT+zKsUq5Fu//Cq6GcGoTZVck4dJq7McfLuRSA8tbFlxtJxHDhrSZtgU
+         7OQNaWxr7rK33rehGlRK5yg8RA/ajIdbu3pa5q4jkiYUqre9q7LYQtSD36X5c3SH+Uxc
+         c6W8ra/p2PR8yG2omET2Ca1D8E8LX+5FXpGKN6EstWpYOYP/ClNYQu7s8nIWc8zOpqmS
+         QfCUvjIdt0YAHC5ZNEnotIuim16UItr8uknMVjXA7XUHrj96BALnGsqtwg/uJ1TSphtd
+         rNKzr/CiwmsiR5xnn3T501m5Bj3LiLbzgrd2iUGeqKlkk3omk+rJfZNzKvgNhlbeyfyU
+         Eifw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766320473; x=1766925273;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/zDNPMvmJjRrV4GhC7uV9fp37vI0wy5aPj4K2cg4ANI=;
-        b=qgwkXlLy2B7DcatEDRQhM57PcESbNNTYKyRJMIZ3qspJNyD44kXvEKenFwLDgPnrBH
-         UzHcTJ6T54nIEToCzg9gbXOOsgpgLS0E+BnXT7q/9RrzePUye9cLYcPu7LgcE+Ux1fU1
-         WFQe46yHNLoOejMTzRM9qzhrp3R0n0Eh4mSZ2OdonveZyF4KXZVES2cWncfsDXpdFQCP
-         EasFfLC/ApdA1Z0oKS/fFLHYmcFLb8YZNbjZztKGVhyG1LK/CjGAauugOZhXR3XGvZTn
-         ZMMwig5QJM8Z4vsn2a6/0WLnyN94isrzA4FDQlLzMzqvBtHETEwKGuTRDJwIzZVYNjjo
-         kRFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXZo0n/arJWZckwNpJm3Oaj5fLep0ogFF1DO7jHReSobg4RmgykjqirOWxKSsIgIi2qCgdkQcAsw==@kvack.org
-X-Gm-Message-State: AOJu0Yzp8sJbMvgEYzvqTfeX/SawP5pd6kdKApRWvfnoQl9nhP8i/gfo
-	elUVJZI9QkZN5/Y/GCxhq2SiVsgL2BCitZpNS4S+tgM2y7xhMe1ubiM3
-X-Gm-Gg: AY/fxX4gkNdpMNgBuo3DTx02rcuVUyqZbx3VghTeSzf6+YfSHSKYtNmHuTi+TIKZt0o
-	6Ti2a3aa2U9bDWBH4DS3b+kn0UCYkhqBNWAjhaKGNGYq8vNwpwUR92hnJ4WVAvjZ8ace4VQ8XQs
-	8UFouoQ7ectynRA0hAbGdZLwhMg7p1W4JlW8noe4Ew5N3xXdOshO/MKHGsM0rpeAh8zAp/j7oZr
-	+0Ubaltj45rIR4kvQNDFr/arsBI+yDVaQZwi6Pi81LBdOO6TfV/wEK87VSwXE7XXdu2otYuRU0x
-	9ChKIZyWBm2oNUG8LE3j5tRo4uE1iIKtO+PnMqRq8dm2xJ1DnSmKxMfa179VwcAEzqY+ffGE3oQ
-	mljkL3NwApr/L4kgw1wZcnN1mSVLLa1KHn1F8YEMaU4Eve1nkSbnQTrP6QweqixcNUBGrGwX9RJ
-	7G9kqOh9s37rM7GA8qamVYgK1FMQ==
-X-Google-Smtp-Source: AGHT+IHcWTP8wlPrHfGP9TZsfQkT0EOfc7VgchyI0NW2fLjn5Cc4vw2fNSZJ0J9MOz3ixkKzpRgmUw==
-X-Received: by 2002:a05:6a00:4ac4:b0:7e8:4433:8fb1 with SMTP id d2e1a72fcca58-7ff6667c7b0mr6662442b3a.57.1766320472867;
-        Sun, 21 Dec 2025 04:34:32 -0800 (PST)
-Received: from localhost.localdomain ([114.231.217.195])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7a844d5asm7508581b3a.3.2025.12.21.04.34.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 04:34:32 -0800 (PST)
-Date: Sun, 21 Dec 2025 20:34:25 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+        d=1e100.net; s=20230601; t=1766320711; x=1766925511;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vKd1omiKDIcMLE2GVnEeEbOL7CbBL2uJXl9dtv3whtc=;
+        b=AXbIthaA3uObo4XwYv53fKJMbgLbM4BsiJDIlQSWi3N0I2c0mK7AThe1RXpcS4UZpf
+         d8VDkggc/xQwOHlrzzQQXIcGj77+ZgqV5vI6oqWstBp1WJs7I8aW0wDSZW3lEz9VQ+wI
+         zhrIl/pytqIViBrexeZqXp5mplGMTdjd25CQasoKif9yWeh22aZzjlBsPYRbifNHOt/Q
+         QydKKgmBo2bi0POkaukhpw3ciNFckb+WTwycp1Z92S30nLRo5NsPOxKsJ9nrZj+7cTCz
+         4LR38k4UR7noviQc0xMld6xNW6FRmGhSzhIFBc0TYB3BAfZe5C04vYkKQ0nSrB/9K7rQ
+         OzsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOYLWWSNH9olvVPJds5UWNmd6LN4DPeKn44ll9WgMlM7n6HBLrDjaArbGXd3v6fQke1YaZ07wULA==@kvack.org
+X-Gm-Message-State: AOJu0Yw4NaRWLioWjuu9kUal7DDt70/89HgRo3wIlVslSX9W+XGo1By0
+	02qHDgXSUXfxgKPijuxEQOdymDaYP7G36+6er6ER4w0x7CcLQO9PUkqZ
+X-Gm-Gg: AY/fxX4Pk1ESlDzOIpn2G2WoHM9rxLMod+64LQfGRCUsQbZUthCjZjSxeK+Ogo/Njfg
+	EwT86zk0/zfQLEYLwWiX9li6jI5bNBTGfp3w3DhsgaWD+2hC9Liz8uqI4deNFX9UaJELYDN++OE
+	0U7lgAn92JFM3nva5+A7PNQOsD9RnDgyJmdkqQKZJBsWDwVogH6XAaoTwVPl3k6ksLvKa9ncQ8J
+	vOI5527BNuRIaOnLszde1j5K8sS5aEEq6PX9j9FeyBys1HTATtG4Ug80sgIJMyLiivvMsx+BflH
+	LLCb+6KJMyRUFFYNDbHECu0k9XL52APZefYMiV4LvvbC93IpVjZ0XGCTrgyYIoMCY1DPOb1ThNd
+	xCh0o8EZHbJwv2zY1xrjwqWGiHZ6UME6UujYvG8a3O7zChQsDnKT3kHgi/Wb7Ny1UjaIrLZUnJU
+	DQxKVR2DILQQ==
+X-Google-Smtp-Source: AGHT+IEPkBYxKxvMO8vTyzymRyaWpcIIPKSU5dbBhuwDl9GbH/oMHllfQOWCXa+XEUq44H92noLtRA==
+X-Received: by 2002:a17:907:3da8:b0:b7a:1be1:983 with SMTP id a640c23a62f3a-b80372699eemr943322866b.63.1766320711106;
+        Sun, 21 Dec 2025 04:38:31 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ad8577sm762477466b.24.2025.12.21.04.38.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 21 Dec 2025 04:38:30 -0800 (PST)
+Date: Sun, 21 Dec 2025 12:38:30 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Vernon Yang <yanglincheng@kylinos.cn>
 Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
  MADV_COLD/MADV_FREE
-Message-ID: <ck5nkriyqdvy7ftu3xeu6cn4aj3s3cpefbga55vkzblnoywrpi@2sw5oh3saixt>
+Message-ID: <20251221123830.zr2szhudd6pdq7h5@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
  <20251215090419.174418-4-yanglincheng@kylinos.cn>
  <3c75d915-5d7f-4e80-975f-4479393e7139@kernel.org>
@@ -109,20 +113,20 @@ References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
  <6e8684a5-1f71-4be6-8805-9b047a2bcb78@kernel.org>
  <20251221021044.2r5fhepiyyhvuo7h@master>
  <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
- <5af0e0ae-0472-45b8-a249-44b4e5239d33@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5af0e0ae-0472-45b8-a249-44b4e5239d33@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2BB46180003
-X-Stat-Signature: r5tqabrbe7gja8k4of1caku3yftyssho
+In-Reply-To: <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 9tma471bq9811w94iyb5onukbi6zjres
 X-Rspam-User: 
-X-HE-Tag: 1766320474-67594
-X-HE-Meta: U2FsdGVkX198MrZI/CYtsHpTJvvZSNpY9FVM3YF7IdYEslX0cl1KV2OUG8nJvMHvfnsVJSSHCP1E1TD2G9omUh1f/3jw4FamSiDufWi+P6I8ZPkdg+a4lwxC68YmUuVYOCDoYsGLLh09mrgvf8aRWBCzLDo2PYTbnAuL0EPIj1v9AaLEmDoUH8Vf0WN3H9BQcbXzv+y3KymAtvAtT0zri/xVxdvHWQuOQS60LBRvO+FFfRJRHpT2g5fm+L0xJi899AcE4PcCCh1RSbJuO41ZRLBPXYhgsoWaYK0wpPR0gfub1ZiBuc3z6z2Fs2gJKoQr4HT/hZIznU3Rc7231Fy4lkJSeVAmwFx3YDCFwGHZIBGUsHz3cqQs6walmHdJ7K15ospATQBONjnw1FoOXRUHgRNLdjfClSV9EwHFL6wg2sFom0NIWsFwLENckeXPks86OkZBNyC2+Y7I6CO8+Y56Mifw6NuhlRGh6jDv6+VgLU4ejDzZJAfQSjpf2kXge7+Vb822CZzkFfzh8HOCEk4jIuccpwEMvW5iRa/Co+hf2NH+xcPtV0PNjYBGh65E8u5YFYnYNuroYjsDemGXrodOlPDFjgPcyD5HtLqVkwUsymh58CDOAOnWuQykVVRYpH9vgGZhRZHE2p6VKfbCz/m6etXPD/x+bYt8wpHGOCfpIfkJDuei2P+1F0PbTvQkxRoAroYDS2MfrZsm7WbYZ21qVfemgFChh6WrigIh4ENe4HCatxVrcrKjkVeMsn4rWQCGehl/p+aS3u6d9C2CiUWg0nXAp1vNeTEZl3U3dtebEHFCIicmCT6rJLv4DwoNbtQ/1QhuCzd0cYP98HnG2efecpOXaKNDWmx3A/pQGQi/Es9FJOMMBjtMc2Pzd3TnJg9TTQySy7wjsDACVDZm/HSuqpXP4qwnvBDHstqIPB7eGy5l62ddF6YfeC5pHCO0dx9sLrIQi10FDD0T+YCpVYG
- Ryc7Unpz
- KGPCjCk86C50oSbMl4WwsVRjnsXmCJmpbVeF3iTm6oQxmimRoP8yygErk/JILE2vSwGIucSe/WZpjFIJBvIvmH22fH/JYi4W86Nmb2v5rxwKW8EhwVomXb94+JkYV9ZORokyWhj6FQP5VNNvCJTjY4GVqFIRpNSJBTSv8KddOEGcty2w7b2O88qgJvmPwCIyKnJ7PZYQ28h5gOZgzHQXfZDnRUhoeVDEGJrIMYazgNEmh4NtEXnM5qiPV8f7VqQB6aj4gFZ/VHPOFOO11l+aL0hkLql79Z0yfNZkLsJIcDTeR/L2LOMjWw+zmZ/mFbrenalG18FEJjUIQbKU3Ab0pMn3rQqHrEFpcR4stgaYz//YHRA6rD63Ovosp3r+ZktcDJJLw7oasQQbhsWvOcv2yFwusicFm+GVQ4zx5rKBlxGmw63UElSezkUkDd/2jrzumBricTptVE4inyxPH13Uc5pmfNkl6tLtmUInne75zkovhXDDfRmeDc7sAFtxaNib41EQvxfteubaa7S8koNfwTnsbnlS8sM8V7h8FRsNO34/sWaVcyAjN1NZiyTmzdFwRWJRToxspaKCZnEiuoVjGGjyzUj1LAFGyJzNrJst1YRoc+q7oHbDrpd0B9KikYuYy76w95fOjASHOInQ/NetAZDvnERiIpxiEGf3n
+X-Rspamd-Queue-Id: 254C01A0015
+X-HE-Tag: 1766320712-97105
+X-HE-Meta: U2FsdGVkX1+nNQSrCtOBezNPPYODTEWOVzhOQATH6vwxn8RRALZmlkUx0X2sNGvesci3lyDisRDqwsISVUfgatRCxvuiuCTltFqtsSgO4RU1tiR37dL3HZ1VpshHdBU5m+NKv0drj7WB0QGmHM2gWvw1cTxYZqWADsxLSRyCVtQYte17d4Vx5WnLzdH1aO7MkONXq3pL7d1CcF/yzCMNYE240Flw71wBeJ3BhjtrgHXnM2vtN8bSalP0pLq6bz/pfstkcezEuBrpgz2NibgfX6Y0S+HXc2OxyBB+uH5T+3ygebG6f+RF2MaNoJW+Sq0zLJmXInc5xyx99rdFNxTkQcsZxlHd/RBj19bN5cbIA+LLp3jSxc1/D8g6zyorNFVg9qAgeStBQanByLAEeL5lhZoYBOuA1N2ct8SoasJh35Cc0DrzG8wS6DlPL9ODmJI9+2QyiTeoxid0akl7l0VVa9Wm8Hlw2Z8+/bEDxKZZjM4Jh0aEA4HepZU+3CnBJeADAulI0NHKaZNhBNn69XDleJE3EG7wBoSQgoUUnzSTvwJrfMXkT3W8nz36gA4WMkeJNHY+W3Hf2pdl4rR4zbzsmAyDxl2+0MLnmK80qf8pUDQ8TzkmuGAxesUL/7c4ljZg1jgOqgxolTRkPOLLNB+X9QQ9w4s02XzSih2Vyq7d5mEGUlas9G74J7iwLNjF1xMKvPd6nbdJk59B6vvrFbEFPutFZ5fP3Hnw/nED+XhftXs77ditr1q5ItfjnsjQHCf5bP1z0a+0/qrtfA/y8un0MJPxce8vnu/UzMqInZYnELJKEAp4pkCRMsGFuUOrxIL/99RIYW11mZpTlrWfzGFoThpDoXCRAdV+X6TlD0W2Dv2HbBWBamtjEKcZlDuvyPvaS/eKow7RWcphk99RLz3Dmrx4RjWewDjhHQ6/aNDWGbnHstlYPv5nodqm/R4KI/jJN03B2/AXBQ/lTPy1gcK
+ IwrJ6pkN
+ j4aqNF74CI+jCECYuBVKnPvtEpzbxar/ufZ1xA91dl0+2vGnKOWtHzSPOwN3N2s81opnM7X2CiIUplrRkMikplSdeuiXhmTm1cxSnSEN7BpWj656uYZ3fyQz9EF0+nL8BlHxJZrTALHnmPe5Rd3QS2Sg50diq1OhlFxWKPnFtDjB97Wf2sFBwC24knylPlw7uZTqQGrTOdsMVXMXKI23HT/g8oqnx1c7mP3IYF/EaB4x9aSOVov/1ovkSzHFp2f2S3atysz+bwA+oN2xnfy80rxVWw6A6yeNd+uS4lRKYwJxPc+1WjF3mxKKv68c1hOmlGukWmdAt1JLgiqet7NCYZb9nXaiCtq9kJaL8f5q92UPstDoMZD+Xb8rj3zwVKDZ9jAKUxxJ1S6GYYh/yac6w22/hsxLjkOukOQl7IdE4YeaHREV7Zn6ZYilMXznrpVOIQ2HBUxSRZ2wWtryMWQYiLeQluss/zM13DVnEVQxngzKc4jCmaeQ4BwAxKzN0DFnNVnrpAeKTQQyAlSqf6loZ1vW5B40+jvbFhGx/XSTtsdOQ9s42ckPqkEB97FsVSLFC1+N1AgaXjFLcu6aAG48WpIpIKaxROp1JfBZzwtPGF5X3LPnbum6/4AzUCEgXR8dL1QpBXP4bE/MGnBjLlkfegwlhD6nNM4k6fl4we9ny8m94400s1yFfn+qrynCcV3jbMI/yBxtVuMmuTJQaQq5c+MI5nSso2yD/g4aQtrKZPvW1JNTIXoBUU246AcWX8ucYtsd5B6GNvVkjwn9/z5sNKW5wqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,104 +135,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 21, 2025 at 10:24:11AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 12/21/25 05:25, Vernon Yang wrote:
-> > On Sun, Dec 21, 2025 at 02:10:44AM +0000, Wei Yang wrote:
-> > > On Fri, Dec 19, 2025 at 09:58:17AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > > On 12/19/25 06:29, Vernon Yang wrote:
-> > > > > On Thu, Dec 18, 2025 at 10:31:58AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > > > > On 12/15/25 10:04, Vernon Yang wrote:
-> > > > > > > For example, create three task: hot1 -> cold -> hot2. After all three
-> > > > > > > task are created, each allocate memory 128MB. the hot1/hot2 task
-> > > > > > > continuously access 128 MB memory, while the cold task only accesses
-> > > > > > > its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
-> > > > > > > still prioritizes scanning the cold task and only scans the hot2 task
-> > > > > > > after completing the scan of the cold task.
-> > > > > > >
-> > > > > > > So if the user has explicitly informed us via MADV_COLD/FREE that this
-> > > > > > > memory is cold or will be freed, it is appropriate for khugepaged to
-> > > > > > > scan it only at the latest possible moment, thereby avoiding unnecessary
-> > > > > > > scan and collapse operations to reducing CPU wastage.
-> > > > > > >
-> > > > > > > Here are the performance test results:
-> > > > > > > (Throughput bigger is better, other smaller is better)
-> > > > > > >
-> > > > > > > Testing on x86_64 machine:
-> > > > > > >
-> > > > > > > | task hot2           | without patch | with patch    |  delta  |
-> > > > > > > |---------------------|---------------|---------------|---------|
-> > > > > > > | total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
-> > > > > > > | cycles per access   |  4.91         |  2.07         | -57.84% |
-> > > > > > > | Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
-> > > > > > > | dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
-> > > > > > >
-> > > > > > > Testing on qemu-system-x86_64 -enable-kvm:
-> > > > > > >
-> > > > > > > | task hot2           | without patch | with patch    |  delta  |
-> > > > > > > |---------------------|---------------|---------------|---------|
-> > > > > > > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> > > > > > > | cycles per access   |  7.23         |  2.12         | -70.68% |
-> > > > > > > | Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
-> > > > > > > | dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
-> > > > > >
-> > > > > > Again, I also don't like that because you make assumptions on a full process
-> > > > > > based on some part of it's address space.
-> > > > > >
-> > > > > > E.g., if a library issues a MADV_COLD on some part of the memory the library
-> > > > > > manages, why should the remaining part of the process suffer as well?
-> > > > >
-> > > > > Yes, you make a good point, thanks!
-> > > > >
-> > > > > > This seems to be an heuristic focused on some specific workloads, no?
-> > > > >
-> > > > > Right.
-> > > > >
-> > > > > Could we use the VM_NOHUGEPAGE flag to indicate that this region should
-> > > > > not be collapsed, so that khugepaged can simply skip this VMA during
-> > > > > scanning? This way, it won't affect the remaining part of the task's
-> > > > > memory regions.
-> > > >
-> > > > I thought we would skip these regions already properly in khugeapged, or
-> > > > maybe I misunderstood your question.
-> > > >
-> > >
-> > > I think we should, but seems we didn't do this for anonymous memory during
-> > > khugepaged.
-> > >
-> > > We check the vma with thp_vma_allowable_order() during scan.
-> > >
-> > >    * For anonymous memory during khugepaged, if we always enable 2M collapse,
-> > >      we will scan this vma. Even VM_NOHUGEPAGE is set.
-> > >
-> > >    * For other cases, it looks good since __thp_vma_allowable_order() will skip
-> > >      this vma with vma_thp_disabled().
-> >
-> > Hi David, Wei,
-> >
-> > The khugepaged has already checked the VM_NOHUGEPAGE flag for anonymous
-> > memory during scan, as below:
-> >
-> > khugepaged_scan_mm_slot()
-> >      thp_vma_allowable_order()
-> >          thp_vma_allowable_orders()
-> >              __thp_vma_allowable_orders()
-> >                  vma_thp_disabled() {
-> >                       if (vm_flags & VM_NOHUGEPAGE)
-> >                           return true;
-> >                  }
-> >
-> > REAL ISSUE: when madvise(MADV_COLD)，not set VM_NOHUGEPAGE flag to vma,
-> > so the khugepaged will continue scan this vma.
-> >
-> > I set VM_NOHUGEPAGE flag to vma when madvise(MADV_COLD), the test has
-> > been successful. I will send it in the next version.
+On Sun, Dec 21, 2025 at 12:25:44PM +0800, Vernon Yang wrote:
+>On Sun, Dec 21, 2025 at 02:10:44AM +0000, Wei Yang wrote:
+>> On Fri, Dec 19, 2025 at 09:58:17AM +0100, David Hildenbrand (Red Hat) wrote:
+>> >On 12/19/25 06:29, Vernon Yang wrote:
+>> >> On Thu, Dec 18, 2025 at 10:31:58AM +0100, David Hildenbrand (Red Hat) wrote:
+>> >> > On 12/15/25 10:04, Vernon Yang wrote:
+>> >> > > For example, create three task: hot1 -> cold -> hot2. After all three
+>> >> > > task are created, each allocate memory 128MB. the hot1/hot2 task
+>> >> > > continuously access 128 MB memory, while the cold task only accesses
+>> >> > > its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
+>> >> > > still prioritizes scanning the cold task and only scans the hot2 task
+>> >> > > after completing the scan of the cold task.
+>> >> > >
+>> >> > > So if the user has explicitly informed us via MADV_COLD/FREE that this
+>> >> > > memory is cold or will be freed, it is appropriate for khugepaged to
+>> >> > > scan it only at the latest possible moment, thereby avoiding unnecessary
+>> >> > > scan and collapse operations to reducing CPU wastage.
+>> >> > >
+>> >> > > Here are the performance test results:
+>> >> > > (Throughput bigger is better, other smaller is better)
+>> >> > >
+>> >> > > Testing on x86_64 machine:
+>> >> > >
+>> >> > > | task hot2           | without patch | with patch    |  delta  |
+>> >> > > |---------------------|---------------|---------------|---------|
+>> >> > > | total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
+>> >> > > | cycles per access   |  4.91         |  2.07         | -57.84% |
+>> >> > > | Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
+>> >> > > | dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
+>> >> > >
+>> >> > > Testing on qemu-system-x86_64 -enable-kvm:
+>> >> > >
+>> >> > > | task hot2           | without patch | with patch    |  delta  |
+>> >> > > |---------------------|---------------|---------------|---------|
+>> >> > > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+>> >> > > | cycles per access   |  7.23         |  2.12         | -70.68% |
+>> >> > > | Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
+>> >> > > | dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+>> >> >
+>> >> > Again, I also don't like that because you make assumptions on a full process
+>> >> > based on some part of it's address space.
+>> >> >
+>> >> > E.g., if a library issues a MADV_COLD on some part of the memory the library
+>> >> > manages, why should the remaining part of the process suffer as well?
+>> >>
+>> >> Yes, you make a good point, thanks!
+>> >>
+>> >> > This seems to be an heuristic focused on some specific workloads, no?
+>> >>
+>> >> Right.
+>> >>
+>> >> Could we use the VM_NOHUGEPAGE flag to indicate that this region should
+>> >> not be collapsed, so that khugepaged can simply skip this VMA during
+>> >> scanning? This way, it won't affect the remaining part of the task's
+>> >> memory regions.
+>> >
+>> >I thought we would skip these regions already properly in khugeapged, or
+>> >maybe I misunderstood your question.
+>> >
+>>
+>> I think we should, but seems we didn't do this for anonymous memory during
+>> khugepaged.
+>>
+>> We check the vma with thp_vma_allowable_order() during scan.
+>>
+>>   * For anonymous memory during khugepaged, if we always enable 2M collapse,
+>>     we will scan this vma. Even VM_NOHUGEPAGE is set.
+>>
+>>   * For other cases, it looks good since __thp_vma_allowable_order() will skip
+>>     this vma with vma_thp_disabled().
 >
-> No we must not do that. That's a user-space visible change. :/
+>Hi David, Wei,
+>
+>The khugepaged has already checked the VM_NOHUGEPAGE flag for anonymous
+>memory during scan, as below:
+>
+>khugepaged_scan_mm_slot()
+>    thp_vma_allowable_order()
+>        thp_vma_allowable_orders()
 
-David, what good ideas do you have to achieve this goal? let me know
-please, thank!
+Oops, you are right. It only bypass __thp_vma_allowable_order() if orders is
+0.
 
---
-Thanks,
-Vernon
+>            __thp_vma_allowable_orders()
+>                vma_thp_disabled() {
+>                     if (vm_flags & VM_NOHUGEPAGE)
+>                         return true;
+>                }
+>
+>REAL ISSUE: when madvise(MADV_COLD)，not set VM_NOHUGEPAGE flag to vma,
+>so the khugepaged will continue scan this vma.
+>
+>I set VM_NOHUGEPAGE flag to vma when madvise(MADV_COLD), the test has
+>been successful. I will send it in the next version.
+>
+>--
+>Thanks,
+>Vernon
+
+-- 
+Wei Yang
+Help you, Help me
 
