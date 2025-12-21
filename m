@@ -4,130 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0E8E67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 20:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 810D9E66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 20:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F4F26B0005; Sun, 21 Dec 2025 15:30:59 -0500 (EST)
+	id DF0B16B0005; Sun, 21 Dec 2025 15:43:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49BF96B0089; Sun, 21 Dec 2025 15:30:59 -0500 (EST)
+	id D9EEC6B0089; Sun, 21 Dec 2025 15:43:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3705C6B008A; Sun, 21 Dec 2025 15:30:59 -0500 (EST)
+	id C555F6B008A; Sun, 21 Dec 2025 15:43:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 215EF6B0005
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:30:59 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92DB41A097F
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:30:58 +0000 (UTC)
-X-FDA: 84244622196.12.581D185
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8D33814000B
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:30:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fQJ5ZkQf;
-	spf=pass (imf23.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B2ACA6B0005
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:43:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63FD413344
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:43:07 +0000 (UTC)
+X-FDA: 84244652814.23.730A06A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DE0C140005
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:43:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1kgWs9wn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ufetOYAI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ybEydBSI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="JCG4Sk/m";
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766349056;
+	s=arc-20220608; t=1766349785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQHNqpP/7trjjClrcYJjGk8zMRaBkC2YosgJsTkpIiQ=;
-	b=qcsmqol4TEd9hf6ysJpPM8r1cT1PANOWnOFUfpifl76J+l6ZSmD/oTYo4W047g04YDQqF6
-	vuajyI5Zgp8aGUFBCh7x1pU+R+hS1vGzLn6SDQDmtcOTCSFB0HIzj3DYFGaR2Jlr6iLfKS
-	pUXMZzkDLq/0OrRT2nbqnIEHi0iOxQE=
+	bh=boLuaw1unK45fKbpB1XGKzYWrKDHJnzdks4RpU1QtjM=;
+	b=SbT5nYdOv1pNvy+FmxnIKyt1aT65z/IuKRJQuLsgfSEqsGB2Qv59ye4OPuBkaKstBcp8Fw
+	/+CAM+fdaBqT9PPGWil+KrIX2+xtSw/wp0pqwZ62lyJxjUO4P2qECd+ZSi3jQ0m57osuxy
+	xiQ948dNLTyK79DiI/UF+2prPaYes2I=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fQJ5ZkQf;
-	spf=pass (imf23.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766349056; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1kgWs9wn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ufetOYAI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ybEydBSI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="JCG4Sk/m";
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766349785; a=rsa-sha256;
 	cv=none;
-	b=m4N1u/MIhY0X/q4ot8V+aW1El/LlzO/8O8/DqM7UCno+w7s7GR1/cXgPCHrlc8QN3HarS8
-	a91xPxHGeYJHT7/chTQ85aJEkOyK+QQMnJvlnxGQecDM5H7bUau0PFL88kt8V0wE/ZDR+k
-	mUeVDlEvo5IHUYJ+2q7rJeRK1i0NnNg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766349055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=y+eLMKotEgQbibOn++dMQ4Z57RXfzhrZDEtyf2vaY5nQCfMCdrTOParxbFSrkkmbuB8Cww
+	4p2C+NR7ExCYHroVn03P6OgY6USHybmy6WvEEOcCNQhJEJXi1JX1nWppZDuZOFTMSRdiTq
+	sE3wEnKW2P2HoHGF5w1c7b9kw9XLgI4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F152133691;
+	Sun, 21 Dec 2025 20:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766349783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oQHNqpP/7trjjClrcYJjGk8zMRaBkC2YosgJsTkpIiQ=;
-	b=fQJ5ZkQfZkzSeCXTyEyNi2GtfcVLeC/FNDplyYxgF2yvWLf4l8HyfC1IEr1NTOun1TLVBs
-	+eJhrB6NTkRLX+NVQ1HAHHGBRBhb8VhKd6wmPPTjsl4x7cakDwCC68y7kI6ISBghl/7jY1
-	BhMUgJBSOFamcu3iuJnLy6XF1ghCoTI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-145-NfVc4AmIMKSIwwf313PcWQ-1; Sun, 21 Dec 2025 15:30:53 -0500
-X-MC-Unique: NfVc4AmIMKSIwwf313PcWQ-1
-X-Mimecast-MFC-AGG-ID: NfVc4AmIMKSIwwf313PcWQ_1766349053
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b51db8ebd9so1076163385a.2
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:30:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766349053; x=1766953853;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQHNqpP/7trjjClrcYJjGk8zMRaBkC2YosgJsTkpIiQ=;
-        b=pwYCv3GLTZtfQmAxt/qrqsGkGl/CQjN3dX9WIht2/kgMkVqM1bJHm9qPDV5rqHidi4
-         ehPs7PbnAplkUsVVWUb3sVvJm1xGSp1eAUa5HRqy65EKzFD3yzrwJJwcG9ZYNjG4vVWZ
-         oMIza/5lkdJX8hA7hWfwdrwzBWZrFOEUZ4zhL9VCZdp8KSR1SyZTISk50Ch/41KrT9So
-         l8xeG/f3nvTZ5C6iXyMuDvoQhcX+K745cTyj5OiSQTwN34EsEXKfGjzXULG152Z/ucb+
-         AosE289g2rmutcUlIrhzNdTHTo580kakaAEwr4tGmf5g8knle3+GTxAENiG3QUmSgzR8
-         0I3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfX1TwKzSa9fZ7oimgtuJblIBNN3Y4+k/ig+bLoNfIAJIUEYBGJIzkY/uL41NuKSES8g2oHFkLFw==@kvack.org
-X-Gm-Message-State: AOJu0YzyZcBNxFM4aJMx8w8Jl9T1SPPbAMVStvnxe0bSMZeNjXUdMDlG
-	MwqIX+KzHIgfqLKEwVesqRf6dmnIH0rtX3yr+ItImzbgnimV6gcZAVmssOkMmzHvAips4AuMjSu
-	VWAUtNsy2NY7Mq8wPa0EetoHLeHbwHAFaVGeu8NpgeqXBsQ009xeg
-X-Gm-Gg: AY/fxX7Zk1MuohaAakTjIfNLfEqWVDtMc4ykCH6mRiN6/JB3IQF0pxXjH/5Y3iKTufY
-	o8uz3WDjKQpBPylD7GKl3NzYpzuYhhO9O2LdEGWDdyEbwIvgc2dj2tFwTqBipVGzAmbTc05Tnk9
-	jf2OUoLEMvWeduXvkwlH+qQ2M1ZweiTILA9ttiQr5F9JaLsp2FxuUeMLHUu0JD+EjHOEg+JJ69+
-	mzTqdnPd/hkMH64HDMVCBpu5ddgUXjjXUONCQYk9/547F7cTkaTLgkGsx0d1QCqwyLRQYxqJrYM
-	MOc32HnNcv+86Z91D+Qgy1BKo471gt8g0Kb8xgySX80MkDvTmUYVyLeO6Mz0Vtw1t2hw73H3v/n
-	SJ94bzXs8EX3CWVJrIwy01EoVZFuygxhbOSo/WRWtonDG/b2K/R4Mrj35
-X-Received: by 2002:a05:620a:4095:b0:8b2:7679:4d12 with SMTP id af79cd13be357-8c08f66bf33mr1473824885a.26.1766349053167;
-        Sun, 21 Dec 2025 12:30:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG4ZSBwCOROzj1MDk+wseVq5r9oqA/aYULwmmkpJomMHdxkmKpX/uo/s0oZVSGAhDM9U0HtIw==
-X-Received: by 2002:a05:620a:4095:b0:8b2:7679:4d12 with SMTP id af79cd13be357-8c08f66bf33mr1473822185a.26.1766349052724;
-        Sun, 21 Dec 2025 12:30:52 -0800 (PST)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0970f5fcdsm674426985a.29.2025.12.21.12.30.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Dec 2025 12:30:52 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <33d5bdc7-0fde-4a97-aa1a-f8565e196ccd@redhat.com>
-Date: Sun, 21 Dec 2025 15:30:50 -0500
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=boLuaw1unK45fKbpB1XGKzYWrKDHJnzdks4RpU1QtjM=;
+	b=1kgWs9wn2P21osXBHtWKd9GspxmejJnvmgZzf8I7m+rjBRgNvhGfYS0wt62iYjUFy+F+dl
+	ctuOb4b6z9w7HwpUBSWeEw96w4XhuQ2inV+8FZKD42ohE2uI+TmpcHNdf1RrL6a/pxJFny
+	voayzrFS13uLthYP3Z449oNt6f1xfgs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766349783;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=boLuaw1unK45fKbpB1XGKzYWrKDHJnzdks4RpU1QtjM=;
+	b=ufetOYAItjNAy3Wrsia+pQAvvLmixoYRxoYaHlq+DJscQECQV1ZkRb/Zl+xrLxOH4yWH3A
+	IrmJ+LCmb9HiVgBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766349782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=boLuaw1unK45fKbpB1XGKzYWrKDHJnzdks4RpU1QtjM=;
+	b=ybEydBSItQLF+A25xshpwpY7QWAg/3cl/uld7iSYlQuMaIvYYKBiPXyqYlXlo4DjVy1xzP
+	aYw+wc0hl9x7Z+xK7vZwqipqr1sRwEDSKjdMVEG34Bp3dvMJXQnZmnBjnQg7Dnat9MKxxl
+	ZVOlaXQNsnfcu5AW/JdVJj8VxZriO4g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766349782;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=boLuaw1unK45fKbpB1XGKzYWrKDHJnzdks4RpU1QtjM=;
+	b=JCG4Sk/mDvYuZjFF4x+ofg27WtjuCwnydXVZ8r2ArG0JmohYD8QbqIJq/3kWFnz4MxVGBh
+	vX4EiTJxV+Xs+BCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C891413A54;
+	Sun, 21 Dec 2025 20:43:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZvoiMNZbSGnnXAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Sun, 21 Dec 2025 20:43:02 +0000
+Message-ID: <9fcd1188-8ad7-4c7b-afd8-647d97b7aae1@suse.cz>
+Date: Sun, 21 Dec 2025 21:43:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] selftests/mm/charge_reserved_hugetlb.sh: add waits
- with timeout helper
-To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>,
- Shuah Khan <shuah@kernel.org>
-References: <20251221122639.3168038-1-liwang@redhat.com>
- <20251221122639.3168038-4-liwang@redhat.com>
-In-Reply-To: <20251221122639.3168038-4-liwang@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6hMMen48dXktolM3esHw5pABSHgk8AkR9sZPFZYp4oI_1766349053
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH] mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE
+ THP allocations
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz>
+ <20251220141601.e6694f904167bf12fa319a89@linux-foundation.org>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <20251220141601.e6694f904167bf12fa319a89@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: s311duxahh9sxm434iwm3duag51kpuqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D33814000B
-X-HE-Tag: 1766349055-43018
-X-HE-Meta: U2FsdGVkX18cHNgHpv+sr+9fUpGvPdkg649VEMgL/POxuoDzhJfzZEgcUlf0KjDB1T1dpZyp9Q4dIija+82pcHllKNtt9GvlVdsq2VU+klDdtRSGvaj3NZZZr1FuI/sbehzTnvqkXHPhazR7NTlm6LU72tuIYW5LXscei40F3u9vvOxJsPFYjE6/LBJPBfvxQXUB17oWvW27JqYaumAim5e8acNUOlgk3MexAq95oFOU+HUoTQ5t6o/gKnmFjhj8mHr9h4OoQEHM05sqay1lAkUvv6tKBV1449GF8tDZTwrauM+ZuSGpSCN6E6o87N2Mk+kQxngi9W42OtpKAtCjprANtFfI9iW6Z/CK1OlRRJPua7RFKwhuTlJQEUwBMDAdISKwH5gDOiu6OmNNsS+NX69dfQmYlqAEEcF7nIS18MS3PGBPpOXR6PY1DxbRue66XTbaLFKS/b1goxdTchqSicQlLFFdSMETdwfpDGKwvC+Upia4FaiMLxCZrUMe8Qp0gE+3i2KTzDuGfzV+S/t6lHfBxbRQ1hx1DNcwP/eAj0gSqZOS62EVPGuZp+8mSCaJrQZ+68P2xvr9ApgRUDg8ANMAARSXgUvyrNRxnQj/naphSr3efutxYVB/hnauqpfE0q5znPNXPin57PAk3d/wOz5sVo8CUg5gSQir5z8R83W4WcXMpJYyLl9fBUshfHTFhcV23k3UWtPRyOmYnrYxWEci9l+1mggIMAtwiBLwxdH3jVUj4cpKtDoZBR+Q59mXWoVel3WRAxwzfVCr7V09QyBzCdiT4lsmSZqWJ+jTzb7dM+CXXc269tcnvv+ON2wJNz9EQ5/jqFSWM77BXiLiryX4iZuviBM5ANBLd2DnuxjlU9UT2/+HX48I9eiANhRea3RjDh0DgNGACjIzFTPW/hIL6PlvKFwtbfpa++lUfEryyQBtCOBIOfYIiBePYw39QWqu45oYeXXNADD5oQM
- oAYzhWYR
- 6DYNmVIU9g/s0KsgNrBqJNMairUVfKUpY8amEqHeIdgjYsLj0anKpZtas1Vl8OGwTEqqrmLhNgq53tcI06au6SGdL+1Szrd1tcyVyed6yRBRLBywuQ+2BDBx1V9BFi0Wk7cZrQxv94IJda0s0YPEnbQaQC0knEDtHxThc72ZVxU0SmSfh6/Y4rI/zHdKb+l++bFj6uhBRrSX3O8SBWSLczYLlE8YdnygmYppaaGhltiw45Mzr0AjYo6+uPnhPpWUvoa74s+bZYppiqyEXqBmzJpsrdH0vvp1llRbmmJx4FkHkeakr6DNZPVk80j3hgYlFq23EjWApw1HdRW603vqTE+dJlv8gFfvhJO0XlYz/CbUAa1fRW72JlR2wgusFJfJTyxF3gn+yRHlVlZVowyup4iLPix+V747BbyI0hWkpsuucqBWmwRzJ2cfu+fxM5BC7VuI5g7lH+zcfINuZUOZnX4UAQpDk1bBagsbm1Eay4D8i81966gl70n9IqClyfW6e5HYN3wZWX8GX28Qw63r32RrnQKzAWLqv37S7DPD/YT08ZZr/krokwTyKK/vTJGhStwRX11HtOBgu3ws=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DE0C140005
+X-Stat-Signature: ws5sdc5z314h4e865eepa3sn5o1jsx7n
+X-HE-Tag: 1766349784-361321
+X-HE-Meta: U2FsdGVkX1/P0IEqrpXO+SNJsHpoz9nTYyBygEwHgViSzZioXzlwaaNaioJSBgDkVQdl5VmRxsmsWNT/AYwxjmAip/hjf/L7vsU2Ig9ipQ7zpJekgg5itXvsWD9w80GG628p/EnEd5CG42H2WRA9vIaJFoSPOHSlUZXT56Tf5Uqbbx4gbz+RroffgzjBhg0v48oSWUmghbA3v5JV21Qai7eO1vkqg09SbsHW5/1CWxp0XcbTWfZ1uxek+azpbMBznBIh/207ncGU2u9N4dr8va1kpdEhuFQxUJoPJgTqNZlkfPxxcNz4/XGYr1zvyVwbGpC1Cqv2zLlAvTEPoTqv9Y2ahh1hNCyHOsHcbAr3wrf7c+NQiPLNTIbi4zyAfAqfs7zRr/McrXbLdQ4KqS8e4nWo5zXQVOlFACK11hRFYGVkCJ9QQBeuAWV9OaArpaDw/TuBgE2PIjrEzgMfPhuGK4bg5pBA7WQrTU2Ln+4dX6ETdWRMsULrTKMxTD0TDxL/kk0S/2r2yow2SwK3T10UJtdSrTdiUVbh3/hnOwkuq6aSsU+iCFMPKQh6jj4Nv6+Yw/fjdIatXw/Si1ZaBJSqE9ONapzV+z3A1dBi2hnkcjZrR+NJKNmZFVLCmItUOhTZon9k83e4r4BDvH5wc2KQ6WbEtoZV6xqKm04NSYoAjMOIRFONHKL7rzI49U5TodIDgafgXNoissR15M7fFI+VkNT/srE7ABaul1ZQ3/piHylKls3hFCy/+irnTPq/kZOZMN9dndUn/TU1qevIaamzAbqL2K4VXMkkSkUepB1gEAbpnOGtsRpz6rKUN65Ga8S0BW8JXWCFSGEdYFgjY9Ivm2H1gOFyNznoS0V8GsDaT1leFo3no0n7c+/yngMdJ+fI4ZLfbpZULidEMlolsNnXO1v0WNL03crVsO51dAplalgNJWEmnMtHifAjpOpIdIIcjrfM9DWQXVPH992NJwH
+ jo6xYjkt
+ myqDLHN7aflYMDDYSwMAzvJOltiH6f9tQe5p+ntvmnSTfyinoEc5xwuyYZ6WFAEDBrhHQg3TgvQi2JtmPKx9Fk5Qv4w1B+4DXW0VkR2nowvcGkJeeXHUnZTyZEpAImy8WsQiJSA7CBc6O7xMRayOuUegkfFxSAqCpwJRHGwEJ0RlHWpBDFNmMR2E2Iddcy/5MbMvVULJbsH7rFrmdimPjt3ECiJU9ZtgDI3MWmFDDkYF6UkTcTZOwlOYUzZH0m4JDt0fhmiFpeSJ77Vvha5Y6bRd2Ms0buSdHa8BGWYn5niQtzqyhTs3yULhVPj7nsS4uqcdLBWvr4NAlV3pX7xjPGaTBHsSofVAG+EC8oy6gllkpFFUZKm0ARADOKQersCcBq1yD8eJ7dKpjtlyIj8MeYcvn2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,150 +185,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12/20/25 23:16, Andrew Morton wrote:
+> On Fri, 19 Dec 2025 17:31:57 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+> 
+>> Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
+>> local-only and all-node allocations"), THP page fault allocations have
+>> settled on the following scheme (from the commit log):
+>> 
+>> 1. local node only THP allocation with no reclaim, just compaction.
+>> 2. for madvised VMA's or when synchronous compaction is enabled always - THP
+>>    allocation from any node with effort determined by global defrag setting
+>>    and VMA madvise
+>> 3. fallback to base pages on any node
+>> 
+>> Recent customer reports however revealed we have a gap in step 1 above.
+>> What we have seen is excessive reclaim due to THP page faults on a NUMA
+>> node that's close to its high watermark, while other nodes have plenty
+>> of free memory.
+>> 
+>> The problem with step 1 is that it promises no reclaim after the
+>> compaction attempt, however reclaim is only avoided for certain
+>> compaction outcomes (deferred, or skipped due to insufficient free base
+>> pages), and not e.g. when compaction is actually performed but fails (we
+>> did see compact_fail vmstat counter increasing).
+>> 
+>> THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
+>> which is not the intention.
+>> 
+>> Thus add a check for __GFP_THISNODE that corresponds to this exact
+>> situation and prevents continuing with reclaim/compaction once the
+>> initial compaction attempt isn't successful in allocating the page.
+>> 
+>> Note that commit cc638f329ef6 has not introduced this over-reclaim
+>> possibility; it appears to exist in some form since commit 2f0799a0ffc0
+>> ("mm, thp: restore node-local hugepage allocations"). Followup commits
+>> b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction
+>> may not succeed") and cc638f329ef6 have moved in the right direction,
+>> but left the abovementioned gap.
+> 
+> Cool.  What are your thoughts on which kernel version(s) should receive
+> this?
 
-On 12/21/25 7:26 AM, Li Wang wrote:
-> The hugetlb cgroup usage wait loops in charge_reserved_hugetlb.sh were
-> unbounded and could hang forever if the expected cgroup file value never
-> appears (e.g. due to write_to_hugetlbfs in Error mapping).
->
-> --- Error log ---
->    # uname -r
->    6.12.0-xxx.el10.aarch64+64k
->
->    # ls /sys/kernel/mm/hugepages/hugepages-*
->    hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
->
->    #./charge_reserved_hugetlb.sh -cgroup-v2
->    # -----------------------------------------
->    ...
->    # nr hugepages = 10
->    # writing cgroup limit: 5368709120
->    # writing reseravation limit: 5368709120
->    ...
->    # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    ...
->
-> Introduce a small helper, wait_for_file_value(), and use it for:
->    - waiting for reservation usage to drop to 0,
->    - waiting for reservation usage to reach a given size,
->    - waiting for fault usage to reach a given size.
->
-> This makes the waits consistent and adds a hard timeout (60 tries with
-> 1s sleep) so the test fails instead of stalling indefinitely.
->
-> Signed-off-by: Li Wang <liwang@redhat.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> ---
->   .../selftests/mm/charge_reserved_hugetlb.sh   | 51 +++++++++++--------
->   1 file changed, 30 insertions(+), 21 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> index fa6713892d82..447769657634 100755
-> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> @@ -100,7 +100,7 @@ function setup_cgroup() {
->     echo writing cgroup limit: "$cgroup_limit"
->     echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_limit_file
->   
-> -  echo writing reseravation limit: "$reservation_limit"
-> +  echo writing reservation limit: "$reservation_limit"
->     echo "$reservation_limit" > \
->       $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
->   
-> @@ -112,41 +112,50 @@ function setup_cgroup() {
->     fi
->   }
->   
-> +function wait_for_file_value() {
-> +  local path="$1"
-> +  local expect="$2"
-> +  local max_tries=60
-> +
-> +  if [[ ! -r "$path" ]]; then
-> +    echo "ERROR: cannot read '$path', missing or permission denied"
-> +    return 1
-> +  fi
-> +
-> +  for ((i=1; i<=max_tries; i++)); do
-> +    local cur="$(cat "$path")"
-> +    if [[ "$cur" == "$expect" ]]; then
-> +      return 0
-> +    fi
-> +    echo "Waiting for $path to become '$expect' (current: '$cur') (try $i/$max_tries)"
-> +    sleep 1
-> +  done
-> +
-> +  echo "ERROR: timeout waiting for $path to become '$expect'"
-> +  return 1
-> +}
-> +
->   function wait_for_hugetlb_memory_to_get_depleted() {
->     local cgroup="$1"
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-> -  # Wait for hugetlbfs memory to get depleted.
-> -  while [ $(cat $path) != 0 ]; do
-> -    echo Waiting for hugetlb memory to get depleted.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "0"
->   }
->   
->   function wait_for_hugetlb_memory_to_get_reserved() {
->     local cgroup="$1"
->     local size="$2"
-> -
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-> -  # Wait for hugetlbfs memory to get written.
-> -  while [ $(cat $path) != $size ]; do
-> -    echo Waiting for hugetlb memory reservation to reach size $size.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "$size"
->   }
->   
->   function wait_for_hugetlb_memory_to_get_written() {
->     local cgroup="$1"
->     local size="$2"
-> -
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file"
-> -  # Wait for hugetlbfs memory to get written.
-> -  while [ $(cat $path) != $size ]; do
-> -    echo Waiting for hugetlb memory to reach size $size.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "$size"
->   }
->   
->   function write_hugetlbfs_and_get_usage() {
-
-wait_for_file_value() now return 0 onr success and 1 on timeout. 
-However, none of the callers of the wait_for_hugetlb_memory* are 
-checking their return values and acting accordingly. Are we expecting 
-that the test will show failure because the waiting isn't completed or 
-should we explicitly exit with ksft_fail (1) value?
-
-Cheers,
-Longman
-
+We could just cc stable and let Fixes: do the job. Should be safe to backport.
 
