@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4730E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:36:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2307E66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3134B6B008A; Sun, 21 Dec 2025 18:36:42 -0500 (EST)
+	id 181136B0093; Sun, 21 Dec 2025 18:37:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0B56B0093; Sun, 21 Dec 2025 18:36:42 -0500 (EST)
+	id 158926B0098; Sun, 21 Dec 2025 18:37:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CC686B0098; Sun, 21 Dec 2025 18:36:42 -0500 (EST)
+	id 057776B009B; Sun, 21 Dec 2025 18:36:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 09E406B008A
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:36:42 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BCD6213BF15
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:36:41 +0000 (UTC)
-X-FDA: 84245090202.21.FD44CB6
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0B0CAA0007
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:36:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=U5REKOKQ;
-	spf=pass (imf15.hostedemail.com: domain of 3hoRIaQgKCAMelqjmldrjrrjoh.frpolqx0-ppnydfn.ruj@flex--bingjiao.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3hoRIaQgKCAMelqjmldrjrrjoh.frpolqx0-ppnydfn.ruj@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766360200; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E762C6B0093
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:36:59 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E27B5B719
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:36:59 +0000 (UTC)
+X-FDA: 84245090958.18.B471B9E
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C42594000E
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:36:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0nNh41rR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3mIRIaQgKCBUw38143v919916z.x97638FI-775Gvx5.9C1@flex--bingjiao.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3mIRIaQgKCBUw38143v919916z.x97638FI-775Gvx5.9C1@flex--bingjiao.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766360217; a=rsa-sha256;
 	cv=none;
-	b=zyhFBjWY2Dus12djcQCUTsWjADcUXjCXzwhLZzo5YuUxVa2QcwcC7ncFcRGU9Sql7pYyoV
-	xalY9waycWA6BTdGPZIKkJhojijqkDzhn+d662N37JGM10FqyREBYqkaBkQSunc6CwpHur
-	J8JkN0QVEuXcI+Zy2brR8AA/FDlgZUQ=
+	b=4h5B7elpxQQTMkHm/eINHgSnaNj6qO123LiqMlcamziFEv4s1KmdNgNrdU+7E0PO6pV+WU
+	E4ubLqDqMaCLFirjP86fGKKOXX2Pzqgi/6sdu5C1APfDgI4Gj/9RJoQvPCV3Zk+t239E6V
+	70lZqK4HYgO0DVWk0dVJil2b23KfHUs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=U5REKOKQ;
-	spf=pass (imf15.hostedemail.com: domain of 3hoRIaQgKCAMelqjmldrjrrjoh.frpolqx0-ppnydfn.ruj@flex--bingjiao.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3hoRIaQgKCAMelqjmldrjrrjoh.frpolqx0-ppnydfn.ruj@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0nNh41rR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3mIRIaQgKCBUw38143v919916z.x97638FI-775Gvx5.9C1@flex--bingjiao.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3mIRIaQgKCBUw38143v919916z.x97638FI-775Gvx5.9C1@flex--bingjiao.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766360200;
+	s=arc-20220608; t=1766360217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b/ZL/U7sLuVrIZUvVuD6ozi7k6Z6Ly5Yuo8mcDrUYr4=;
-	b=RK8ZxdBBbsgGQfYyUMFPJm93MWALTM3s4l64B+gT+KrgoKKg8JYeWUIZVo2KgLDe8Tfr2U
-	6TJa8OdxLPuRRIWorpa0eO8Jynh9I8oPvCBA5yT/SKGSK+VjvLjU5AnsGoLNZcqg+ALDWW
-	ztHPBZX19X5uifNMbA/LGPW8mQlPN0Y=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34ab8693a2cso9377337a91.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:36:39 -0800 (PST)
+	bh=4GfhhMoWYFTh/aN/kwrLJXHldk5+UtwhObh4bR+INB4=;
+	b=JvWuo17b+cG6/++7nTgUGVG3rUcKty58nchz9Az46Ho1yK/2rl8YrWsqPdUhxIyFEHSxFf
+	o6gVU1VGeqnOIw64juzEfCCVvLjGq47AlmbwYzUIRL+/rFEcFxlfGW4fYiywmPoX/sZ/t+
+	CGPRnUxxmLa1s3WJoYLeTcN25Ofs7WU=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b99763210e5so6945451a12.3
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:36:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766360199; x=1766964999; darn=kvack.org;
+        d=google.com; s=20230601; t=1766360216; x=1766965016; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b/ZL/U7sLuVrIZUvVuD6ozi7k6Z6Ly5Yuo8mcDrUYr4=;
-        b=U5REKOKQGdMB8qHww/nZByR6O+ai9jxy3KVjnkPJTwLZvqBFp3hXTI4X6wmK3E9eEQ
-         VW/s1roQvdcQfMeX4YUsHt04b2wG8PoW5IM1jFNjhImnWW/9iowi48bAOqd0eRFaaMFG
-         m5xhGbslWBMO1MrLZxgsBGGPVwsxoH0Dq6PQNs6T/7pdqoKjZrrDvjr1NJvPItcM4Hf8
-         TIwIZi8GqplqeNrk8NPGlryamFeNzbHiQj0hiS4n7UuuCxbMggtubebBc1MOnMdaxAe0
-         IOZMTrScEDuHh96iDM8kFni7bW2UJNCYQ9iejOMu0/Y17RREE5ZAovhSCMA1NpJuDmGO
-         hKXA==
+        bh=4GfhhMoWYFTh/aN/kwrLJXHldk5+UtwhObh4bR+INB4=;
+        b=0nNh41rR8bvvaY1vBQQyiOvn7Gwr5mI760cidDq1mguV4BxZRJpn2NG9ZYQPgHRd9+
+         6duT6QiVA29Bb0HAlirQnT3q9mQIYUjmd798Q/U2RpjVDAysA/ZGRoAgd5EyZ+1xWD8f
+         6tMKxbsFYjopS8/sU4B6wju5W/qgzWksR2YvbZTSW5Mv33aRWZBHXSduYgKsm26kE4yF
+         I5LSod3HefWqLHmmWOzcgtQ+dB1uHPk2qwZJFF1xj3R+9vJw30KliEpbgv+V6DlH9ZSO
+         v8LhN44fZkNDfdN6Dorfww8fbXatTzSuevQ5VHFiG5OmhZO7JoCszYfAW4VaoaSUioAf
+         7kAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766360199; x=1766964999;
+        d=1e100.net; s=20230601; t=1766360216; x=1766965016;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b/ZL/U7sLuVrIZUvVuD6ozi7k6Z6Ly5Yuo8mcDrUYr4=;
-        b=sRsM2M56vVqa5ZOzTkG2I86HQVa+2Ie+5RvhZW2iWoa9yg/pGtdJpYbChJgEhrQEAr
-         /rf1Iac3YaIcCEE5692d6CIKT0ZjdBDv/ssOAVuM64PLxYEcG12S6D4ofTJBQQjSzxED
-         GiQ0axvtdS65yDh83IFytlfze5DESzjn+UDk8my8q9DqKHqGNo/vLzJHCQEv67qOw7Kr
-         Cu4o0S6n4CDwtXBTbcYPgxUVOZThmzykhcfVEZ2d9cd2zZ2yya81Tu9QAFwMWYdyKht1
-         PD0cPLJ6/IcdLIM25pNMw97gVUr1fITp9PasWbM9Kt4Hr6b3kEGAYKcGd0dUFM4f6vtg
-         8d4w==
-X-Gm-Message-State: AOJu0Yz8vTMW8orqgWsdmzQv0fc9+VRmgBDmqP14t20C+QhLidHwEM/H
-	Yx55o5tkotf9ebuoxsfG65OcfPZpu6ZDIW6LJRjoNK5y0eKaLOtqUsEKhzxM4K/DIdQA1NFCShZ
-	5OW7r0wRKZX4V/pFZcvrKr81OgjNDzMe/rUNUh23D1ZKPgKovwLcWZ3LfAj9Qd5Oz1d7UrYSfJe
-	Oi1yuA7EYFBYDU/v9QIa6fInRtcs6ihSOEQ6VUqlGp6A==
-X-Google-Smtp-Source: AGHT+IFNZ+7Qz1Q6P/PmGGIYsIi2zzA+vh1m/QOlksmFymCij8EksYbFVSEHCVudpiyuUX8ENcyEAn/pbCN7kQ==
-X-Received: from dlkk2.prod.google.com ([2002:a05:7022:6082:b0:121:7c06:d4b5])
+        bh=4GfhhMoWYFTh/aN/kwrLJXHldk5+UtwhObh4bR+INB4=;
+        b=edJDss0L+cCMeI9YMZ0u8ch2HjYPZy2hU8z52I0VMAtGsM6iYcZBROuaN7Q0yAplN/
+         i9uya2o0S6DTX5wpqdRUK5cckkYegKtpJp0uCNExf7KanTjx8ujagef6f01SN++qaiSN
+         aq0ucENrAtDWvqn+S/74IDJ3kRyowiRdTiWW2AhgCDR6IEBDeJEai81qfFRiA9Isn3uD
+         tO5ntbspPaa4D/fvW4ZUMmio4V9LSnKDezMfiwrYjoLxKzMO+uowQHe81oD3sME4zXER
+         b8+ssfQ47E9H0iXPT8+yd8l5ikX7XxXccGLAmbFADEzUXAttDB5Ij/sWeXSzAUY0qtm6
+         drGQ==
+X-Gm-Message-State: AOJu0YzDN1eTEayYikR3DMcofATNGOf4rvb+gF7nQvfXJgR6Nngx6r/V
+	dvHC7Ysf7iP9Y5GCqJuk7fYhQFC6jBvYQySlO8qweEtfJWjmblDRTVLXDYAj9xJTf/8KkHgcgLO
+	DITe+OUM3ABcIzSy3O56raxOng8/PLq3HUoNlR51S0UJIVE4kb2A4Tc7vNbr6feLJl11uvUfuic
+	L8XZ1gtGobGoZge1qe9n+77JMfywGv2W0p7TcKJfgGQQ==
+X-Google-Smtp-Source: AGHT+IEicLxazx7S6uu1698T5FhlbmHzMdzgeAbcuTNEEaAVkEM1v1fpFPWcA/uiQi7D96w3YBVKbgPaJ+Ktsg==
+X-Received: from dyboo7.prod.google.com ([2002:a05:7301:1e87:b0:2ac:36d5:fc65])
  (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:248c:b0:11b:3742:1257 with SMTP id a92af1059eb24-121722f63fdmr13386671c88.34.1766360198470;
- Sun, 21 Dec 2025 15:36:38 -0800 (PST)
-Date: Sun, 21 Dec 2025 23:36:33 +0000
-In-Reply-To: <20251220061022.2726028-1-bingjiao@google.com>
+ 2002:a05:7301:d89:b0:2ac:2263:dcc0 with SMTP id 5a478bee46e88-2b05ec19181mr11168511eec.19.1766360216254;
+ Sun, 21 Dec 2025 15:36:56 -0800 (PST)
+Date: Sun, 21 Dec 2025 23:36:34 +0000
+In-Reply-To: <20251221233635.3761887-1-bingjiao@google.com>
 Mime-Version: 1.0
-References: <20251220061022.2726028-1-bingjiao@google.com>
+References: <20251220061022.2726028-1-bingjiao@google.com> <20251221233635.3761887-1-bingjiao@google.com>
 X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20251221233635.3761887-1-bingjiao@google.com>
-Subject: [PATCH v2 0/2] fix demotion targets checks in reclaim/demotion
+Message-ID: <20251221233635.3761887-2-bingjiao@google.com>
+Subject: [PATCH v2 1/2] mm/vmscan: respect mems_effective in demote_folio_list()
 From: Bing Jiao <bingjiao@google.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
@@ -98,14 +98,14 @@ Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	lorenzo.stoakes@oracle.com, axelrasmussen@google.com, yuanchu@google.com, 
 	weixugc@google.com, cgroups@vger.kernel.org, Bing Jiao <bingjiao@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C42594000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 8u39w8jsp7dg8kw3a3dmj4ri93j3qdgz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B0CAA0007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: h8y9cf3kojchkh19sb1jhpm7m1qccs1e
-X-HE-Tag: 1766360199-773623
-X-HE-Meta: U2FsdGVkX189yDX2g13swoE+gqEuU4qLcvcP+0WdWMSqBqKjYUjV3/TsWR0zlPYwOCLCHVq0ZJVKskh192jMwRu4uUEfEcx0jKiyDr5IOxsbGEbVwbiHPRo5TCGHPyenjM4XCNqOis9ZwrHREt2m2kJQGzd6IvF9+Zf+4N/E13QmXbDTBlUosmk1sxFH2sdn5JXeQIusUh1K3AEAMm1Avfn8Feay/9qoLY6+9PRzAk6BbLhgWMpaNFyP8eBfPYwIgVfz7X15y6xXGZ0wUwOq91CVVzQLZg4JEg6J/HGhK/D+6gJ4KfacJcdQhlHnkeIp/PGXeU7Bz6hPgQ7dwzFKjzxO/KRidspdqryvW887H8mA3hpXS+T35fpRXwEcVN2E94knIn9Biha9Nq7Nsqi2dkLwSOJZ6YkUFo8y2fRI4q3GZBcpErnMnGcMEMB0sqHFbzLmKJJtPrvDLHJjJEe60eZzey/qxzRVdvsx7+XOD4MMrjjdQEnRW0D53RSu+zdKR1zBpleFD8hHRZ+2SR/HEG5ce0W/JNDrX0w/umuVznN9GawB8qMFZQKq8bCcDHIYm1SvH8BynMpvXDcelitUAYLzPLN8pIPCOYtSvLcnFYXwyb9WNH8P2qkh0KZ7X/uuek3iVuP53Szlew65NaBNFlfBU9aT5iwGsFKO+jdZyUW2rPEQSMNKG7ev7xGQ0QaAQtSsdARTkm7zq7dGim/ffA2or58/Ak+0FlNHo1KqORJpBnH3Vgrg9BCQhebT8vHUBjkM/Q2I3N9N+EVTOv30vCIXeWEjGB7SbCPo8eEqe93DV6ZbXaYIfBTQaxgvUwdskTLXdJbSQ2fLuq2dojWYSa56COx80JzgUvHx4nphLJRPeV/+tyf9upmgNbRnG1jGL6Y4/ThAlgNP338IlwM1dsErz4AqEFKN24kBN6EQq3fAk/CF1ozOk8xOtOF2oZH1Yp70INGa+k8Px6YwXaG
- plljx/CV
- 62qqvkrkKN/dFVpky+R1q8TMQr9SIg6WQvO45Q6MWVoD51tkmflNUF+ylBD+WLp8vDXg8i97Dmbm+U8YoZVF95lZNTHPhwCfzyAGI4vq658DcBsS7seynJ0023qGq+ymOxvMBGIXUGxgIjOGHyisUs0tK1RLfyYFb7eccyjvV1d20Zy1CT8Ww5UqusSS6XtlRgI5Z8p5CoIPagpMvvSFAWPDxmMyQ4whPRdqOY33YtapHFm/VT3s/6tvaHt6Iz4zuD/yrzNuU0xywZixiCoXdvXG0N69gdWLOG9X82NnvqKf2QnsM9vM0FeKCwa2Ql+eqinAVD05u1JssyA6HAa8pBWUOZYI8BDHm3/xv82uRF+GX74UvT2RQFp35ahwMTcrUjT6WJpgF+3+FC0sNJSGtJAxLhTHvz30PvF8zXo2pQ6+IhhVr+ixDo9hp0Ro8ZzMI0NCnisWd1t3MTAP4cgXszNEs/NqlZ4m1bkz0UZkhik/OZXy25pHFp13CWbu6k5fCKV58HQ7bKPNWdxuS3jZMvquBW030TQHIRyYc8QJLhjdfNkjTiqER+tfo/DkFvGbjyoGQ
+X-HE-Tag: 1766360217-430256
+X-HE-Meta: U2FsdGVkX1/DEb5HF1kZIEVQFQygTA5NqHKxA66ODjqH7a1Yq7Nfl0i23L+E3rjRWzEs9sIQAt/U2qdkT8a8cn/Rq+ERCUv2BatqwAIHc1r+h8cHwXWxJQQq6PeOiq6gh8XoKhKGoSwEfMq9enAzex7DEMrUYWw2GyW+8iLJS719MNcpCsymsAc6cyK//3Ygnt+Z8M/bGYgkfqI0BtaZEQuJxuYrRwAE830OY2wB4GoBwcVoYxt5bqaS8bDDXVl7PBL7VNarj13c6Ut5B+fjbUGq725u5nmYHbbBDclOOABpQ3+u1V4tdRS+gxkgrzRB3BAMmqnOys4TtAU6nj3BIf6U+PN1ybR85qtgnVvAeG0WM+75kHL574VcSL988mTR9gn8b7lTFNutBenLO7yWyQwwSxnubS0JdhKE42/PhhFOx8HF63annnxi5a1wgKCz9DdTkHr7sd+JHRTGuk/6Vw/35jqtx5VQJHDE55fDwZZ8YJTJBhlGAN23uWEPdwVGL79w6oiHds4hvdCcfCpPApgcJendm17Vvn9Fcxj4avpPYorkCm7anZR9/h1X7RCo+Ol10LTTy2Ip167o1t0pEn+3gMuzl1ur016TEmNch1fEgA09qmotxQZHUQ8cYbbd9/SpLE/vpw7bhEedRYeGk/SY/FCZ6hveXTBfk2pR8DG5VTUjXojg4n3PjeRXRmAO0eINeOfGJ1fMP7Vm6iFjO/IdeI2++H+KveefjQsFpn4nHeYhRatym3sbGcsWpxY4poTzS9BXcDnGG6jxl0X34CV7TdQtzMgAF3XlmhhXq/xHQKZcGxubEbD+4GMfPvRZmnqUXITpOMJwdq+kJcxdfTFIkJfv8PBM3n+tmz93BeyODMpUB0GRvSoBWQmWj+JwdjeP0n615X+c516S3tvMR/0ELVah+vaJyy1NhqXbU4bGtgR4ORr91U/CmXASihtaSAQMQtKSc95SqvEEwct
+ Ge8rZpn+
+ fCcwtP9s9ds1FKcDdrkOGL0OK9oUiCs8Ms8T1OEaAaP8N0vi7snE2K4iiruMmgalfWTRbJfvyfuBHBLXH13SuPC+AZC0HE7Lu5tmFIObZ1rkAvO2FA52AeDtzWS9VyXtSsB+ebsm89vDZqfH4g60CIzmN+p6Esx9HZ02fWY1IwijbgffrwQ/ZDqk+O5MDgdNaalkGyJVw6wb/3Tm/f42F7tqA+keG3zh1JTTi0mg4/jN7YPXUntDFILIUKiuuoimQBSFNiyO7MpoEAsgVcCpp38swjynrAJ0SLWoU+LWemilwa3M9hDuyawoqeWQ3dwwKlOd55H3UWmfgw5NZCgjwfoikvRPYIjumc8JVBV8k2Fj32q+x85IOqqEHmQpbEAoTG+sLSxenpLU1wuQAxSeMnsc98zFCiJadKTe7virEerEduyYq0UiH58APAWIDC/v7INkkNFQhSU/D3uJqFYpbr+5Q69OgFMgZJmdNFWLqVsPJGVnmhRrcfowYMOqpHvr+GAvqrtHzBbeJgWsXnESPDoMITg7X81xO4A0WUb9409UB61XrS+jkH9fppXDPEcfIBPgk/zanZVUVvmjPF/BWCsZcai72L/BVe5ujY41vZK1or93TjdS1/8O1tDkcKpd9kCuxhYQXT5x2/3Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,70 +114,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series addresses two issues in demote_folio_list()
-and can_demote() in reclaim/demotion.
-
 Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
 introduces the cpuset.mems_effective check and applies it to
-can_demote(). However:
+can_demote(). However, it does not apply this check in
+demote_folio_list().
 
-  1. It does not apply this check in demote_folio_list(), which leads
-     to situations where pages are demoted to nodes that are
-     explicitly excluded from the task's cpuset.mems.
+This omission leads to situations where pages are demoted to nodes
+that are explicitly excluded from the task's cpuset.mems.
+The impact is two-fold:
 
-  2. It checks only the nodes in the immediate next demotion hierarchy
-     and does not check all allowed demotion targets in can_demote().
-     This can cause pages to never be demoted if the nodes in the next
-     demotion hierarchy are not set in mems_effective.
+  1. Resource Isolation: This bug breaks resource isolation provided
+     by cpuset.mems. It allows pages to be demoted to nodes that are
+     dedicated to other tasks or are intended for hot-unplugging.
 
-To address these bugs, implement a new function
+  2. Performance Issue: In multi-tier systems, users use cpuset.mems
+     to bind tasks to different performed-far tiers (e.g., avoiding
+     the slowest tiers for latency-sensitive data). This bug can
+     cause unexpected latency spikes if pages are demoted to the
+     farthest nodes.
+
+To address the bug, implement a new function
 mem_cgroup_filter_mems_allowed() to filter out nodes that are not
-set in mems_effective, and update demote_folio_list() and can_demote()
-accordingly.
+set in mems_effective, and update demote_folio_list() to utilize
+this filtering logic. This ensures that demotions target respect
+task's memory placement constraints.
 
-Reproduct Bug 1:
-  Assume a system with 4 nodes, where nodes 0-1 are top-tier and
-  nodes 2-3 are far-tier memory. All nodes have equal capacity.
+Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+---
+ include/linux/cpuset.h     |  6 ++++++
+ include/linux/memcontrol.h |  7 +++++++
+ kernel/cgroup/cpuset.c     | 18 ++++++++++++++++++
+ mm/memcontrol.c            |  6 ++++++
+ mm/vmscan.c                | 13 ++++++++++---
+ 5 files changed, 47 insertions(+), 3 deletions(-)
 
-  Test script to reproduct:
-    echo 1 > /sys/kernel/mm/numa/demotion_enabled
-    mkdir /sys/fs/cgroup/test
-    echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
-    echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
-    echo $$ > /sys/fs/cgroup/test/cgroup.procs
-    swapoff -a
-    # Expectation: Should respect node 0-2 limit.
-    # Observation: Node 3 shows significant allocation (MemFree drops)
-    stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
-
-Reproduct Bug 2:
-  Assume a system with 6 nodes, where nodes 0-2 are top-tier,
-  node 3 is far-tier node, and nodes 4-5 are the farthest-tier nodes.
-  All nodes have equal capacity.
-
-  Test script:
-    echo 1 > /sys/kernel/mm/numa/demotion_enabled
-    mkdir /sys/fs/cgroup/test
-    echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
-    echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
-    echo $$ > /sys/fs/cgroup/test/cgroup.procs
-    swapoff -a
-    # Expectation: Pages are demoted to Nodes 4-5
-    # Observation: No pages are demoted before oom.
-    stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
-
-Bing Jiao (2):
-  mm/vmscan: respect mems_effective in demote_folio_list()
-  mm/vmscan: check all allowed targets in can_demote()
-
- include/linux/cpuset.h     |  6 +++---
- include/linux/memcontrol.h |  6 +++---
- kernel/cgroup/cpuset.c     | 12 +++++-------
- mm/memcontrol.c            |  5 +++--
- mm/vmscan.c                | 27 ++++++++++++++++++---------
- 5 files changed, 32 insertions(+), 24 deletions(-)
-
---
+diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+index a98d3330385c..0e94548e2d24 100644
+--- a/include/linux/cpuset.h
++++ b/include/linux/cpuset.h
+@@ -175,6 +175,7 @@ static inline void set_mems_allowed(nodemask_t nodemask)
+ }
+ 
+ extern bool cpuset_node_allowed(struct cgroup *cgroup, int nid);
++extern void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask);
+ #else /* !CONFIG_CPUSETS */
+ 
+ static inline bool cpusets_enabled(void) { return false; }
+@@ -305,6 +306,11 @@ static inline bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+ {
+ 	return true;
+ }
++
++static inline void cpuset_node_filter_allowed(struct cgroup *cgroup,
++					      nodemask_t *mask)
++{
++}
+ #endif /* !CONFIG_CPUSETS */
+ 
+ #endif /* _LINUX_CPUSET_H */
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index fd400082313a..7cfd71c57caa 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1742,6 +1742,8 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
+ 
+ bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+ 
++void mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg, nodemask_t *mask);
++
+ void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+ 
+ static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+@@ -1816,6 +1818,11 @@ static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+ 	return true;
+ }
+ 
++static inline bool mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg,
++						  nodemask_t *mask)
++{
++}
++
+ static inline void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+ {
+ }
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 6e6eb09b8db6..2925bd6bca91 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -4452,6 +4452,24 @@ bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+ 	return allowed;
+ }
+ 
++void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
++{
++	struct cgroup_subsys_state *css;
++	struct cpuset *cs;
++
++	if (!cpuset_v2())
++		return;
++
++	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
++	if (!css)
++		return;
++
++	/* Follows the same assumption in cpuset_node_allowed() */
++	cs = container_of(css, struct cpuset, css);
++	nodes_and(*mask, *mask, cs->effective_mems);
++	css_put(css);
++}
++
+ /**
+  * cpuset_spread_node() - On which node to begin search for a page
+  * @rotor: round robin rotor
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 75fc22a33b28..f414653867de 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5602,6 +5602,12 @@ bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+ 	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
+ }
+ 
++void mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg, nodemask_t *mask)
++{
++	if (memcg)
++		cpuset_node_filter_allowed(memcg->css.cgroup, mask);
++}
++
+ void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+ {
+ 	if (mem_cgroup_disabled() || !cgroup_subsys_on_dfl(memory_cgrp_subsys))
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 453d654727c1..4d23c491e914 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1018,7 +1018,8 @@ static struct folio *alloc_demote_folio(struct folio *src,
+  * Folios which are not demoted are left on @demote_folios.
+  */
+ static unsigned int demote_folio_list(struct list_head *demote_folios,
+-				     struct pglist_data *pgdat)
++				      struct pglist_data *pgdat,
++				      struct mem_cgroup *memcg)
+ {
+ 	int target_nid = next_demotion_node(pgdat->node_id);
+ 	unsigned int nr_succeeded;
+@@ -1032,7 +1033,6 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+ 		 */
+ 		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+ 			__GFP_NOMEMALLOC | GFP_NOWAIT,
+-		.nid = target_nid,
+ 		.nmask = &allowed_mask,
+ 		.reason = MR_DEMOTION,
+ 	};
+@@ -1044,6 +1044,13 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+ 		return 0;
+ 
+ 	node_get_allowed_targets(pgdat, &allowed_mask);
++	/* Filter the given nmask based on cpuset.mems.allowed */
++	mem_cgroup_filter_mems_allowed(memcg, &allowed_mask);
++	if (nodes_empty(allowed_mask))
++		return 0;
++	if (!node_isset(target_nid, allowed_mask))
++		target_nid = node_random(&allowed_mask);
++	mtc.nid = target_nid;
+ 
+ 	/* Demotion ignores all cpuset and mempolicy settings */
+ 	migrate_pages(demote_folios, alloc_demote_folio, NULL,
+@@ -1565,7 +1572,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 	/* 'folio_list' is always empty here */
+ 
+ 	/* Migrate folios selected for demotion */
+-	nr_demoted = demote_folio_list(&demote_folios, pgdat);
++	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+ 	nr_reclaimed += nr_demoted;
+ 	stat->nr_demoted += nr_demoted;
+ 	/* Folios that could not be demoted are still in @demote_folios */
+-- 
 2.52.0.351.gbe84eed79e-goog
 
 
