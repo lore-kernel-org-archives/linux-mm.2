@@ -4,110 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6B3DE67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 15:27:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9312FE66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 15:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C78E6B0088; Sun, 21 Dec 2025 10:27:22 -0500 (EST)
+	id F09AC6B0088; Sun, 21 Dec 2025 10:49:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0763A6B0089; Sun, 21 Dec 2025 10:27:22 -0500 (EST)
+	id EB85C6B0089; Sun, 21 Dec 2025 10:49:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E99026B008A; Sun, 21 Dec 2025 10:27:21 -0500 (EST)
+	id DB9BD6B008A; Sun, 21 Dec 2025 10:49:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D9F4A6B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:27:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 797AD14087C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:27:21 +0000 (UTC)
-X-FDA: 84243857082.04.BEB35D5
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 510892000E
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:27:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=d4LBr66A;
-	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C97456B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:49:28 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B36FBBB9E
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:49:28 +0000 (UTC)
+X-FDA: 84243912816.09.77BF1B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C26CE14000B
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:49:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EalTEbZh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766332166; a=rsa-sha256;
+	cv=none;
+	b=gZS4PoGEMYgLMxsIb/9Xdr2RjDlq8zTyalxw/50vUS0TRaaU/JT8dfSpZiuFIDJT/W3NRb
+	Mraw11oQ7BKKMORVukdUaVHzcqx4yOXWWsy6KI/AkK/m9+SZZsJwjbo4yAhb6JgaQAj3Uo
+	nBnfUBSipJXOD7pmGWtcFBbYeNRMIuk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EalTEbZh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766330839;
+	s=arc-20220608; t=1766332166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jlKsAFeaIV2hMkoHG30hkHGQj8Sy9Pccwd7CmoKW274=;
-	b=8QyTYH60LQtjpOdQbkVxwlromDXV1LAbM20i0jKmYA+kbaB048HDGo3RKrp6k0A0S6o9zR
-	yYDgacLI4KmVuWKpFfrdfWeI8/hNU0sQCmngHCmzWc3gQ61Y/g1M8k6ROLG/i8v1Uk2W8a
-	Ovf/ZE5+/vwWDnLyl3B+MLthIcvzpEA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025112201 header.b=d4LBr66A;
-	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766330839; a=rsa-sha256;
-	cv=none;
-	b=VTaqDihQFfa+sbfXx2ocsy59nfCbFLVRklvrCWUEZREgQQi/MD2Uq+fpvOTOJvDoRC2XHq
-	lquV75kJI41gulWQy1uD6RPeMCXrtaYOUoS9wojY5/4kaiPGXyXCkJHl1ckf81jvrt2UWp
-	vU+oIkosjJ8aC2I2/p9vUU0FJ+8XyFc=
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5BLFQAQb2906325
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 21 Dec 2025 07:26:11 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5BLFQAQb2906325
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025112201; t=1766330779;
-	bh=jlKsAFeaIV2hMkoHG30hkHGQj8Sy9Pccwd7CmoKW274=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=d4LBr66A/lMYsQQUrfpraHzgjeSyK6794g+KDFvXyLiRZzLUKCZVKw68GdUqnufZZ
-	 +NAvFJ1Tc1JY5HEDmF0egLxtTnk8IAec4qisamrjj52wF9Zyd4QozYprO+iiGUZQJU
-	 c2fm+Em7HTcQi1P/wvEzvyQwP9GZuEEsuyscS4GLVm8IDRc8zdqM36lHHl3R5uLzaZ
-	 l6bZyDuDsP+7ONg1mrdK0BrGIdBfrsgOE07sYDDOHVvHchBTA+qa7DJxFrF2DMYbxm
-	 Nho6yO0DvkfLBbFDJfdtimxRjHn09lg7IcBD3DPpHB3/L17Ujb74vSiGQta0IdSzu5
-	 LQhxq3/8OdW4Q==
-Date: Sun, 21 Dec 2025 07:26:10 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@arndb.de>,
-        Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
-CC: Andrew Morton <akpm@linux-foundation.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Michal Simek <monstr@monstr.eu>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
-User-Agent: K-9 Mail for Android
-In-Reply-To: <4aecb94f-e283-4720-96e5-1837352c3329@kernel.org>
-References: <20251219161559.556737-1-arnd@kernel.org> <20251219161559.556737-2-arnd@kernel.org> <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com> <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com> <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com> <4aecb94f-e283-4720-96e5-1837352c3329@kernel.org>
-Message-ID: <D1726374-3075-47CF-B2FF-FBAC11BC962C@zytor.com>
+	bh=dGvG8mchnhSMPJQpquHaoBQvGzaLpX/CjA5KyHjwBQk=;
+	b=7IzsuS5Kyf5HYeqDYdlP+JGlbOw1FO/J5CXZoevyWk0CvsDL6Dikt+YouFgj+q5WKCpA+b
+	3LzmEWcQMJdf1ALAvCGxfC4TA4VH35on1jcZk/SMYpBUeeb29cam7P/w4DzJOy/CehU+Lt
+	UOf4X9B4HhGwWYDptfT+JGEf/pASa9I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EF44860007;
+	Sun, 21 Dec 2025 15:49:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008C5C4CEFB;
+	Sun, 21 Dec 2025 15:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766332165;
+	bh=p++ab+scdeusI2vZJTjgYwM79xzmVgySoMmqEdRkErw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EalTEbZhrGgrW+WpgUJ7P7k4WQW/3fCqLxM7be1fN7KjZbdOrmrXIU2zNbdexG8AT
+	 X9M0Xx59AFPBGRIBTvEyV/FLah2Fp52ZmYMCHcpORBjJpb19YZxl7tK5qYKxb7BwiE
+	 +WuDtoTYS4sIGkxyiPphIrapYgLBR3bgKpAXHTdJeAUMD8jm0mCOjXNETbAzDOh7Hz
+	 KoutTTWwFMp3JQg8l6XtGa9fP+JX+JF4lu1S77QJ/nn318DCYpWcDLdG4yMf1Np1mT
+	 c+21uigte7TXnEjX3e4IzAyoMEozEmjnHqDj+eiwIl9EOQi37usKkd1oNXPNRBTTK3
+	 1brEb9KuoorRw==
+Message-ID: <a3e218dc-7e98-4254-b051-77ea930c2da0@kernel.org>
+Date: Sun, 21 Dec 2025 16:49:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm, hugetlb: implement movable_gigantic_pages sysctl
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kernel-team@meta.com, osalvador@suse.de, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ muchun.song@linux.dev, hannes@cmpxchg.org, Mel Gorman <mgorman@suse.de>,
+ David Rientjes <rientjes@google.com>
+References: <20251221125603.2364174-1-gourry@gourry.net>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251221125603.2364174-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C26CE14000B
+X-Stat-Signature: uzrqerwuhu9w1e9bgpumaq7ns5g3tizd
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 510892000E
-X-Stat-Signature: n77h6osgko5c9knguauhj465jwdqy3tz
-X-HE-Tag: 1766330838-358147
-X-HE-Meta: U2FsdGVkX1/qWuWcvssZfv4QDsU/E/wETit4q9C61it2rVp3LD1aXNoqwOELWPGJtTKc6QkKpyY80M9uXZW5sVqnNoB7KG8lpcwHpWVFwM80na3Cgl65cefCkew9E46s8O0LZlI5Jv3IRMiQRCzpLg1MABri09ORuVNylwZ3ZXxh5aiflqY1jmm0kdFxeV4K1TniGMNM5q8x1SiWH30pfT8QcrP42MhI5eaGWyC3/VlZiv/6RyWBgAUarnY3Xs5084TZlh//ulWrtJyN2dZ3k7IuexfM1VX3dKIF9X2+RFMfcJa4eEU13hh7QM77YptJza3Hd+44A3fLqJLauktN3K1VpIK3oElu32N0C0IPb7QU7raLcMzJHz61mGIrcVGGfdE5nPx8XQvytvwVLrNcGhHifpaAZK66Vlw9sFyesro8LeO4MDXTlA3zF1W2situ59t2Xi7/7rx+GqZmb41tGXJwyxnytGcwdyrvuR3mlmGi1R9jK1VDGOCbwN4ZzOqh1JobMH9ZJ/j2dFcP1gBsfmTOJ0VdnXrnhAPxhKnaEkDQXWZwhrXzQbf7VE0qdMhh3TjCaau82t1s09Zvt5gs5zFHcIjB+gs0Ok8ONURM2gbgcUUzJON48WvWIeEJlxURjghaGkqhZ1XahotgArqSfFw5tiiQYa3nv2fX6pHzy6PwDuh4qnVoFH3ZFrvN/aDMzdoYrS8eC14sbBEEbGN62N4vk9LThP4dYObKr2QSX4TMoMVpQI0w0BsP027tCXzNuiRTTgOyZxhXy4p2mAdNL4+D19TbTHvd4AP3btPQrY50Cys6kG76zQu0JvQcJo5Jszrwi2y6sQ9h8oEw27qHVs7olfq5UVbRYzlVx/zTUGwx6NxqJA65H75x2zC+S98Vvh8ETnBqArfgGMbtKJY60DTdnZvt6O9OTDBeIpJ0YwtvrxDyGrSX66k5ra/on5WC9WysHX6yFaKD6zCiIRK
- 8VkldG+/
- 5YqRi/P73XdGMPfIePEfX9zWu2xgfISZTu19rbp2stYa8zwM+HR5cgmKz8t2QYDOLVdsAVOqDz9Rm2vYpmHaan0iG3LF++/uGD70D63abmv12Em3ZD9zy/0xiUajuFGdHMOowVmDOqOoTwi6q2ywaZyh6yVNJoJj0cWQLmeUCP6iXc561d7m/Q3IukBkOEAaoY9lL43XrSwN2ynRQ+vfEQFDejoyj7kbYNKhfF1Ka4myCPXLquSW+HERY0b1cxXUkSYCk8rvK+HIRVIo=
+X-HE-Tag: 1766332166-285602
+X-HE-Meta: U2FsdGVkX19mL6aGfLxkidxLBQJj8vBjCkhNFzCh3Mwgv5dQWoryNawlOUJrOT60VGfPE6fN+IsTBAD+je7o1pmZY2Cxd4/i5K45gTc9Pz+1wen7awJ45vWoz6kK4pPXjcDOAFBPSqj6VsFFs4ZYTIRS+AFdtAw85WhiG7velataQsIfbXU4wsemrEdAk4ZMo2QhU2WxG1itPj8xJGjtPHxsKJzMtISMRnxbBmSUTL/2jYuo9cWGj3Ez4PNYR0+M8qWkY1YeZQVcUOWa1kxpG8j+yUg3kWG6/ImX3tUdD2CfCHRnMFdX2Q50HtNPey5vsr1YDzkT/vk9UzIVm7ei+Etixekkf8cmzWURSNw9LYXgXc/8XqKXgSqvVrvOMXkvzDnvjpR8GbPHOPVZCjVoq364eHVlsvkO/VbtGzH4nJB5m6YDCjQDsYo9pgT7r0KIsIQ6NYcQEItV2k0T721p5c6D0hDRDsOlsh3Sf8NdyBnBTQNAiTKmNNuq8WVjiDg5qt0nYJndShHBYLLaxkJoI6JdJBm7+auA7hNv3QbWAc9JDMxG94nTPmiWddBbA63eykaBWjrORYsNBykKb8X9pWIhItPRa6ekwyoOUer803STlhekfatMbGtEFzLGIsNXpomBxw4VNFiQ+F2D6IumtDq7LABAbmcF8SNAT67ZGECIwHmqcYfL3xHExbUF2r1Y7OEf5uQWXN8yrq7rPNq+L727Qiez45Sr0TTSrsj/ghwiQbp4KZ77Phx6y+7jmzBM+8IqsFMhd3S9m8FWizcNxTzF/vxGn4rN/b9USUKtQch9xtf/0PT6JZw+e6S+MPhCzGAW25p9SdqZAXxaSDy+SsYQyeYl4V7+55reQViyrnQWnu8dDBdcdAHlcvmSU8XpUpA3yJeJ7210YvaTYCp2v9v99EzOOVg+1HqHhVAKDUljG73URTNyyppNkWHOEUKooW+gkRtWrmcg19kvBds
+ dppQLiB0
+ fX+Zeb/Gi5dPQ4u1J062oCh92mwTDnVl0nZ796yU/xY4hTNVJ9vYi45oLAkNjUgqa3w4e57HmRHw2JYYEFNLEetVunoleZ497TpZOqDya4bUdJ0bL3lpYNvWeRpoMMfogFUb4ezeN7KXvZPuHX4KITAAYmrf4P2TX9DAIE9ytgWQSW99ox/vXpq/c9fgpP2eF26thAkOVlp8ageGXYnEOcTQErBZ7gxzovWzcJytxk36A7rzKuPVZOMhzRmiUXcBXpayhGpzYLOeytb99P5I/aihclgWbWuPOaSEbktIA0DGqc+MibWzTGziHjsVu+xnvh7NDqGGvayU3s3n3H9Jgp1sTytdxdstiw0XfqkxHjOGVMhs5lhKUgLBx24v2yJO56jkO4lyHdFC3mgwIXxxdIXplBfw9Bxu/nbHjIR7gpSBXtmM48FShHaySP40T2xkq0CQ1QPwOyXx4+1fUdzl7tT4+R1t4rBklhU9bBgA5/THSII6eUfD2C79BqoR9cTlQ5Wybzh/pyVJu817fqqG9XXZy/GELwJgoz53e6OXGRsKKs24=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,55 +98,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On December 21, 2025 1:30:15 AM PST, "David Hildenbrand (Red Hat)" <david@k=
-ernel=2Eorg> wrote:
->On 12/19/25 21:52, Dave Hansen wrote:
->> On 12/19/25 12:20, Arnd Bergmann wrote:
->>>> For simplicity, I think this can just be:
->>>>=20
->>>> -	default VMSPLIT_3G
->>>> +	default VMSPLIT_2G
->>>>=20
->>>> I doubt the 2G vs=2E 2G_OPT matters in very many cases=2E If it does,=
- folks
->>>> can just set it in their config manually=2E
->>>>=20
->>>> But, in the end, I don't this this matters all that much=2E If you th=
-ink
->>>> having x86 be consistent with ARM, for example, is more important and
->>>> ARM really wants this complexity, I can live with it=2E
->>> Yes, I think we do want the default of VMSPLIT_3G_OPT for
->>> configs that have neither highmem nor lpae, otherwise the most
->>> common embedded configs go from 3072 MiB to 1792 MiB of virtual
->>> addressing, and that is much more likely to cause regressions
->>> than the 2816 MiB default=2E
->>>=20
->>> It would be nice to not need the VMSPLIT_2G default for PAE/LPAE,
->>> but that seems like a larger change=2E
->>=20
->> The only thing we'd "regress" would be someone who is repeatedly
->> starting from scratch with a defconfig and expecting defconfig to be th=
-e
->> same all the time=2E I honestly think that's highly unlikely=2E
->>=20
->> If folks are upgrading and _actually_ exposed to regressions, they've
->> got an existing config and won't be hit by these defaults at *all*=2E T=
-hey
->> won't actually regress=2E
->>=20
->> In other words, I think we can be a lot more aggressive about defaults
->> than with the feature set we support=2E I'd much rather add complexity =
-in
->> here for solving a real problem, like if we have armies of 32-bit x86
->> users constantly starting new projects from scratch and using defconfig=
-s=2E
->>=20
->> I'd _really_ like to keep the defaults as simple as possible=2E
->
->I agree with that=2E In particular in areas where there is the chance tha=
-t we could count the number of people that actually care about that with on=
-e hand (in binary ;) )=2E
->
+On 12/21/25 13:56, Gregory Price wrote:
+> This reintroduces a concept removed by:
+> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
+> 
+> This sysctl provides flexibility between ZONE_MOVABLE use cases:
+> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
+> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
+> 
+> When ZONE_MOVABLE is used to make huge page allocation more reliable,
+> disallowing gigantic pages memory in this region is pointless.  If
+> hotplug is not a requirement, we can loosen the restrictions to allow
+> 1GB gigantic pages in ZONE_MOVABLE.
+> 
+> Since 1GB can be difficult to migrate / has impacts on compaction /
+> defragmentation, we don't enable this by default. Notably, 1GB pages
+> can only be migrated if another 1GB page is available - so hot-unplug
+> will fail if such a page cannot be found.
+> 
+> However, since there are scenarios where gigantic pages are migratable,
+> we should allow use of these on movable regions.
+> 
+> When not valid 1GB is available for migration, hot-unplug will retry
+> indefinitely (or until interrupted).  For example:
+> 
+>    echo 0 > node0/hugepages/..-1GB/nr_hugepages  # clear node0 1GB pages
+>    echo 1 > node1/hugepages/..-1GB/nr_hugepages  # reserve node1 1GB page
+>    ./alloc_huge_node1 &    # Allocate a 1GB page on node1
+>    ./node1_offline  &      # attempt to offline all node1 memory
+>    echo 1 > node0/hugepages/..-1GB/nr_hugepages  # reserve node0 1GB page
+> 
+> In this example, node1_offline will block indefinitely until the final
+> step, when a node0 1GB page is made available.
+> 
+> Note: Boot-time CMA is not possible for driver-managed hotplug memory,
+> as CMA requires the memory to be registered as SystemRAM at boot time.
+> Additionally, 1GB huge pages are not supported by THP.
+> 
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Suggested-by: David Rientjes <rientjes@google.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
+> ---
 
-So, maximum 31? ;)
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+
+-- 
+Cheers
+
+David
 
