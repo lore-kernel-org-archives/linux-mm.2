@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D433E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 04:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92330D68BD5
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 04:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3D026B008C; Sat, 20 Dec 2025 23:01:05 -0500 (EST)
+	id 04AA56B0092; Sat, 20 Dec 2025 23:01:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4C36B0092; Sat, 20 Dec 2025 23:01:05 -0500 (EST)
+	id 01F826B0093; Sat, 20 Dec 2025 23:01:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C13D46B0093; Sat, 20 Dec 2025 23:01:05 -0500 (EST)
+	id E6DD06B0095; Sat, 20 Dec 2025 23:01:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD0156B008C
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:01:05 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70F728B428
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:01:05 +0000 (UTC)
-X-FDA: 84242127690.21.E384BE6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D6B136B0092
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 23:01:10 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 672B6160729
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:01:10 +0000 (UTC)
+X-FDA: 84242127900.18.1FF8AAB
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B03A4120015
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:01:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aQiL/5Sd";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766289663; a=rsa-sha256;
-	cv=none;
-	b=oNN2fKIKm6rqiLC4z/D8V5tMAftrUXUCou/o0Ty6NO3hqbym410G/sPrzqUv2s1vzH00zu
-	jFVYeejF/NPC4Yi1GeycXF0lW1a6vAu6u7AwNvBiYe4MsVWUEvCnZGXOuj1qgOhSWMhQoQ
-	bi73/sOH2jfddCB6cOMsrnQQU/uAB9g=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aQiL/5Sd";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+	by imf13.hostedemail.com (Postfix) with ESMTP id A769820010
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 04:01:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bicTWCw3;
+	spf=pass (imf13.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766289663;
+	s=arc-20220608; t=1766289668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9qvWdknSv9E7fxj2/6q8B1lq22rZkxKblz4jOQ4Dio=;
-	b=y0zbuuySKfRokKKMUYqKMDo2Z/GmUZtoJAc9Y6JCjBL++FB4xCNe4+RAs/9QU3KdCo6Jpx
-	IwWbbzaVoLKz8pXeoH3mv7DhltEOz+/TnFc37bowCQmY+12vXVpulQNyv/ydnAUsNz6vdr
-	cREok26012NuL6ZY8y+sUOXYFcUf/eE=
+	bh=c5NL9N/IUDBs7/Z6XlfTuHg0dH+EQZ0MpUNMh8FEJWo=;
+	b=YZIO+B0MeoMiYKEHDK39Q3kDoyW/LaIWSy2ZrOdLKt7V8CMhVFT/3lh49d1yFegn0a7V8C
+	BEaQlCDATuJ4jnBW43Q2zThnaANYgjuaVV51A26ROVaOxVoSrS4GLY2oQUnq9tvcMJis8m
+	87QV+HBtrUQmgJGR+IbbzQWsYp9EBPQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bicTWCw3;
+	spf=pass (imf13.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766289668; a=rsa-sha256;
+	cv=none;
+	b=T0X3acVhT/a1DrJrBHdUL77HJRA9QcC4x06LhfCgpw7V+FDpi/5XVlVIPwTUxDG5p+yGJv
+	GO52G6XDLRPWv2O26WXWLPi6dXD4L4sG4pUfZ/uw0eScs5n0PB4MO/FXqSFJIVMUyR7oh5
+	KzRrmD76ebnh4nz67khQp1hQrEfPxOs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766289663;
+	s=mimecast20190719; t=1766289668;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x9qvWdknSv9E7fxj2/6q8B1lq22rZkxKblz4jOQ4Dio=;
-	b=aQiL/5SdewRYziWjh0Nf2SkWbkSzqBkLKg9tm5QgTv+431iRo76Ewb+BMbh01un3qAiKh7
-	ZsRxgGpsPJa7iEDP3nx5hzy4Yl8FS2sgplbRdQ+Favert5AJoDxx9D42jbKkAkF68cNimx
-	68ySNzpPYSi7Kq7P7Nx5lRzJD3/u2Sc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=c5NL9N/IUDBs7/Z6XlfTuHg0dH+EQZ0MpUNMh8FEJWo=;
+	b=bicTWCw3C5yKH+YR1C5S/1MZfpsGin3qS/NSMhjAftyFqpJzlQRYrN+IPe1ofOpMUmwO+P
+	S2j+pXfG1SNxn/JDEnrpMJZ/wG590pWO+3D1x/ZQqqm93qtKSB8qn4YzaTHGVYVAyMfec0
+	TtJOY/B4c0Tu3cxde2fqiOKtTw7DZ7M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-379-q7VyEp1NPOWdFG_vCIl5JA-1; Sat,
- 20 Dec 2025 23:00:58 -0500
-X-MC-Unique: q7VyEp1NPOWdFG_vCIl5JA-1
-X-Mimecast-MFC-AGG-ID: q7VyEp1NPOWdFG_vCIl5JA_1766289656
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-5wP8BfWWPlORz9ZR1kdH1Q-1; Sat,
+ 20 Dec 2025 23:01:04 -0500
+X-MC-Unique: 5wP8BfWWPlORz9ZR1kdH1Q-1
+X-Mimecast-MFC-AGG-ID: 5wP8BfWWPlORz9ZR1kdH1Q_1766289662
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F17C1800342;
-	Sun, 21 Dec 2025 04:00:56 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 76A311956095;
+	Sun, 21 Dec 2025 04:01:02 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4781319560B4;
-	Sun, 21 Dec 2025 04:00:49 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB04D1953984;
+	Sun, 21 Dec 2025 04:00:56 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -89,24 +89,25 @@ Cc: linux-kselftest@vger.kernel.org,
 	mhocko@suse.com,
 	chuhu@redhat.com,
 	Luiz Capitulino <luizcap@redhat.com>
-Subject: [PATCH v2 4/5] selftests/mm: va_high_addr_switch return fail when either test failed
-Date: Sun, 21 Dec 2025 12:00:24 +0800
-Message-ID: <20251221040025.3159990-4-chuhu@redhat.com>
-In-Reply-To: <20251221040025.3159990-3-chuhu@redhat.com>
+Subject: [PATCH v2 5/5] selftests/mm: fix comment for check_test_requirements
+Date: Sun, 21 Dec 2025 12:00:25 +0800
+Message-ID: <20251221040025.3159990-5-chuhu@redhat.com>
+In-Reply-To: <20251221040025.3159990-4-chuhu@redhat.com>
 References: <20251221040025.3159990-1-chuhu@redhat.com>
  <20251221040025.3159990-2-chuhu@redhat.com>
  <20251221040025.3159990-3-chuhu@redhat.com>
+ <20251221040025.3159990-4-chuhu@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B03A4120015
-X-Stat-Signature: tu7ttqx3r3wiuejbqks7wop9bnsrq815
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A769820010
+X-Stat-Signature: zscqym9f87jywcoise1gzqw679hbsc6c
 X-Rspam-User: 
-X-HE-Tag: 1766289663-233204
-X-HE-Meta: U2FsdGVkX1/oC3legb4iX488x3mpQaUyFwRBizLCr3DDc1KMnG+tGMtAlNpHMDFqD6vXD8uXFbYSHvaE3Pv0HMwNdIS+XGOunCvx1qX7GND7WteXe3ChQL15lXK7a9toKqvwyonI03Y0H/zsBO9ezTSTJek16BejC5RnweWnoYdCCH9QrSBhwzVRBeiB6xuFC1mO4Z0dGDvVC37eLRiMxaLFxqjJbfOhL+QhGpJZgJ5Us5MS7hIK3rWgygLcbc1MNN493BkydPJP7aW2H9qKmm/rHTVpIUZ/6LcYWZzQyE2f+xiPV/JLGVxJkcn1o39Weon9YjbnTbESgJkEHk6Osi0knGFK+feVM2DoYm+JlnKLE7ApqWrPSR91ft1pzq63iGLMKNDgQ8U51VSdP+3Ez7gq5DrhFSr0SCCma32Cwx/rVFkWK9vtxen44m6c+iBxX5tznUiTKeKKZ48a2t2Bn5VoGumbHvNhpu/fhtq+0zFT3Lv5sRYl2BfLAUBH54P3q+87BnMqdO9eFu0b4t/rOsO5DhJSCil5N5XuUB0y8IjA/qGsa79chfFA2cCUDdWjE1TfXSNBrRRV/9CT6j+znPJYtysOkT2q96y1B83ANuwD/c2DGo2wdjFzkZV6S7ISqeFNSCAWFGTBD9SqApWNzNsJ1riHKFu8ihPoWyBTzS+DZE6atSYQZc27LhSu3bHADmEouzycTTfIMQo6trWrFX4mxY0bSxIouVifPs+GUg+YJbG1co0tZCGcYKDcecsU0yjrI8BwvuimtbhoZpF4L+oMgbdlgU+7cC663uNlUNCktks3aMTIAe9yJxH7cIatowD9opCEkOKAIYyZ/ekiH/myXIdYc3C0g4rHfIAMniD6J/BseUOUwwcUB4R0sRI8a/loOl+oKaVo/EDbnNNjLSa8FvWSkfAINK52pLbIw9DPRcJx15o26OXYiFtQXpYIk1V+1ZyQmFe8a8UAx80
- /i1+Eq7G
- G4iioBw6SZtpFPJb8d5HhYgeHUoiq2WmDBKC54oqPR6EkMPj0CedCSMb6HbSVAWHcvUBx2AgJ/EFtDrlzOIWLCDGxvKRRNcTAc/GdA6KKsbn/z9PErpnhYLgbRSm72vUa7nAAPMGYFo2sPVo+y7zs8lOMxY67h0RWI4FSI4xH9LiWDTUDscK2yc6HPgkRFFc+nzMJxlTG/bj15PTQGVo+4SK5zfFvT4/Ym0eMJ+59MppHhS0oUU+FhBLudf4ktAlz9HdKmKuoCRtX8NBmCfj1OmCow4xpitVUuQr5nobhEUQGXnenQpVJEdPkMeDdXExGD0S5ODL/w6HhhRAtt9RbGzGVk/+29syb13idW7konM2AVSVGx0o/iBRCQBi3l40pZWH8
+X-HE-Tag: 1766289668-369906
+X-HE-Meta: U2FsdGVkX19xrKEPHrprWARb04W9B7tem6NF2gIF5IEADQfeSMzB1yznLg7S8xvd8PnlzFn8DT+r3EdFnLM5uLP1GKu3yU0Rto1oB+iF6eh3FjudZAJA2bKs52vKbE+KAgQzyUoVpRdKsxxOF6Rd/f75vTzNlktu7hlRSiR2HLOli/bYgZR6hkOo/9bBK8GZS/erXyjCJn33d4UAZhbFQ8pJIJxV+ElZYM3V2nYyQrBqvKtLfYU6XP0nLt6OdqSclFm3oSpsbxuuNudECWDyMDs0P8OnI9BiOQfEf2rYdyitYMgN/HyHybzlOh1YItCGouke0pbHN3Fhfv6PzE+q0z06BsVnhEjFp/KxKfBDEv4aKB/EOuG1d6n7MleF3x7qse321hPfeOfMjGsQXM+BvILjLQJ0xxaRho3apbWzHVmE1mAmoAroCVmgAySRrFrHQcy6hLE1CDHWmsvOzoi2LuN+4kwSl1T2kgIFH3faa33rhL2dYTZHjLDkKzIbH2SMClQ3hLJ+ls8cux0LpQLQ5LzOA9VXBWNPekYR+/rt9EmttKlUWx/jPlFA5P5gKAXo5/mPvN3osoWCZvfLqD0dyGci2PYrz+Wwz2ogL3vR7sSbRl0JdeIdrVPh1UFZJIhrgmFBR77fou9O81YbsfT6S+OeqrztGZtBoTvmFB7pqRL2XA8Jd1wX/MN2K5/B6WCV9FMdWw81ri3xEAOwc9S1FeMZqzKRB4RUmMxS6FNuUm4ncZz5PsVrrNDD6wHuzFaxVl0/enYpZb84zaZWrFP61AWtL1T8Ca7Kkik5+Peb2lp5R2AndnVbpUpIehPV+VXc3nwOy1IEuy6zCpZ9aM1wwiIWkeCWN2glq3zlOU+kFlLT7nrjxClSBEFJxtJjdwLg88g1sSFyUgs9uCCKACakaSBJCJcs4Wqdb/3I3ARLSOL8+EXM3EFxNEVtxBpr1+emaY7iVIksrCB+ZCLvi0I
+ mWPDQgeq
+ 5kw5nXRYXQISjcHo7ayn/0YPx/hZxI67c8Yg3qv8m8uViUZECy+ibswiS7N6zvJVAcgIhDDF5/yF2rNYTZ+dBmehsCmeVullhYsIPx1GgkxVoASNjnP4zbb5UJgZ9gR+kwOJ2U5d+2xjtfFlEjMpjYZzd5qiBBUJYtO+y9AGkRapaKpXVunjaNNWbHYWASkssvs4NwzV7Sz/AEnSRak0piNs74gsgaHcXp6PdT6635esd3Y9SYFT6pXuxLm9BJHpPmekqsR8f0YGPL1q3aCwr/JxHcx9oToubfrMvZFNAx1P+KtEKoyv1+4f2qxBQf4fFcKZV90BWE/DlVy/25YnsTCeccqY9fXf7SA6ZtwJ6TOt05ZMxgst4BS17rFear718ANKG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,42 +116,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the first test failed, and the hugetlb test passed, the result would
-be pass, but we expect a fail. Fix this issue by returning fail if either
-is not KSFT_PASS.
+The test supports arm64 as well so the comment is incorrect. And there's
+a check for arm64 in va_high_addr_switch.c.
 
 CC: Luiz Capitulino <luizcap@redhat.com>
+Fixes: 983e760bcdb6 ("selftest/mm: va_high_addr_switch: add ppc64 support check")
+Fixes: f556acc2facd ("selftests/mm: skip test for non-LPA2 and non-LVA systems")
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
- tools/testing/selftests/mm/va_high_addr_switch.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/va_high_addr_switch.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-index 02f290a69132..51401e081b20 100644
---- a/tools/testing/selftests/mm/va_high_addr_switch.c
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-@@ -322,7 +322,7 @@ static int supported_arch(void)
+diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
+index a0c93d348b11..9492c2d72634 100755
+--- a/tools/testing/selftests/mm/va_high_addr_switch.sh
++++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+@@ -61,9 +61,9 @@ check_supported_ppc64()
  
- int main(int argc, char **argv)
+ check_test_requirements()
  {
--	int ret;
-+	int ret, hugetlb_ret = KSFT_PASS;
- 
- 	if (!supported_arch())
- 		return KSFT_SKIP;
-@@ -331,6 +331,10 @@ int main(int argc, char **argv)
- 
- 	ret = run_test(testcases, sz_testcases);
- 	if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
--		ret = run_test(hugetlb_testcases, sz_hugetlb_testcases);
--	return ret;
-+		hugetlb_ret = run_test(hugetlb_testcases, sz_hugetlb_testcases);
+-	# The test supports x86_64 and powerpc64. We currently have no useful
+-	# eligibility check for powerpc64, and the test itself will reject other
+-	# architectures.
++	# The test supports x86_64, powerpc64 and arm64. There's check for arm64
++	# in va_high_addr_switch.c. The test itself will reject other architectures.
 +
-+	if (ret == KSFT_PASS && hugetlb_ret == KSFT_PASS)
-+		return KSFT_PASS;
-+	else
-+		return KSFT_FAIL;
- }
+ 	case `uname -m` in
+ 		"x86_64")
+ 			check_supported_x86_64
 -- 
 2.49.0
 
