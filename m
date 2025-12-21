@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73ECBE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3409E67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:24:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE7DB6B00D0; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
+	id E674E6B00D1; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A96036B00D1; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
+	id E154F6B00D3; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9950A6B00D2; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
+	id D145D6B00D4; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 834116B00D0
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:19:23 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A992137D65
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:19:23 +0000 (UTC)
-X-FDA: 84243383406.26.7CCE933
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFCF26B00D1
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72EDB60818
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:24:55 +0000 (UTC)
+X-FDA: 84243397350.15.59C417B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 881751A000C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:19:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkR4deFJ;
+	by imf13.hostedemail.com (Postfix) with ESMTP id C1BDB2000B
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:24:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tYt8izPK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766319561; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766319893; a=rsa-sha256;
 	cv=none;
-	b=OF2sQkl5sHPasVkKeDbLd9Te2BgBaB2isqSX37649vgJcPhSkp1ZD75uRw12/tBIPk7Pll
-	04ocB6UecNh1Eaua40GBd62o6Mir/q5dqP60LXMaq4VIeSRsAC1XM1vqf6XtFZZGAD4IQn
-	Szv0atoVo0LiH3/DK11vNVYhDXEr50g=
+	b=KnL8e84zmse+8wT9To4IhyCmQ3IgK4x1OMTvVGAlIR72m3hzFgOJucSzVOSJepiQG2txfU
+	igIXPXzLTXPcp2pzmLk+UiBawHB4TpxeQe0FDiGrmT145pFBc/3beKIvUrAK6V3L04lMkq
+	oYobxrFi664+G1r/mQHK2cfSqZDT98c=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkR4deFJ;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tYt8izPK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766319561;
+	s=arc-20220608; t=1766319893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ltBr3XzB1GrPvRZcKpV7voX0AAOWySj0uwjCYD+lBmY=;
-	b=W9vOL8i7OmQJ0stP7rhmnrce+A350ewEEZXqdVQ3anK73uXgUN8jc+2zlNMDmuBvTpN96m
-	w7rWe6VfzAVa284WJY9IlyZgQ1cxm7PCJehqy/bqZhCn4G9vZddBsVZkQNTbAyop2QURxv
-	v8PdjAG2DYeA33pg4gjiHndkkQZ55e4=
+	bh=V/ywaBG6EJ5czazSPcs1C2vp/zOcZxPNSXdDvsfO30I=;
+	b=s1DXL6K8KgcOD/qmrN37FEzDTHXoNBbpoac1nWMitkz8y5q37Levv2doPDdrsEQuqVcf1I
+	sCl/kKYJVm1uFy4MnW8sWZebMTlxLUapnacFF/z7aOOY8Q2B5iDEhJ+3/XdZ66dz5W2X2i
+	SDmQckUHKz3F3J8ImB6NSI4fKXbZTn4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9CA160007;
-	Sun, 21 Dec 2025 12:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6261BC4CEFB;
-	Sun, 21 Dec 2025 12:19:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1ACCF60007;
+	Sun, 21 Dec 2025 12:24:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C2FC4CEFB;
+	Sun, 21 Dec 2025 12:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766319560;
-	bh=ZeOPwShHRhwYUB1pry9WKHZ3vg3L8IaUwEYKG8XWhQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XkR4deFJRzYHolHakfbtdIDJtIK9Yk8DEnj/EqcYYdZgFW2I1C4gWIMRhYEV5SKlb
-	 zNNLh8pdxlqTYU8eLvtzQuykfloKYp1KfpB9SWgR6ATsaOlCXkSzolIV4RqxuYbkNu
-	 Qezx9UnTHfcahw/4ucIhdrMlFMdPbBrRUTgqw4qP7l6X2MRvlprvOu6D1F35hO3i7I
-	 gvWhoZ0/htR6bJx7t+Iwr4AoPRZlXmIRhv7uSUibBOmkzDZB8FmpHXChxqlNfMx3DS
-	 8SoqCN11kEmL2lhLaJZPKGoubgNsGbJu+CBNrzIOwiRaqNY0G3olfpPtH8xPiYE17/
-	 SD8VhXCcxIn8Q==
-Date: Sun, 21 Dec 2025 14:19:15 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Hou Tao <houtao@huaweicloud.com>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	houtao1@huawei.com
-Subject: Re: [PATCH 00/13] Enable compound page for p2pdma memory
-Message-ID: <20251221121915.GJ13030@unreal>
-References: <20251220040446.274991-1-houtao@huaweicloud.com>
+	s=k20201202; t=1766319892;
+	bh=IqPxZ/9JKNcdTw/8izbbZYaeUpAAZSbuuFtctc/CLm4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=tYt8izPKSJbk40BHKx3r8/+AfFkFWB6BVc8qn87q5kjCcrluSk3OQJNpTrNlz3pGz
+	 DVTfFdLV89tLr1ezgV+7vLlihUvuA378IKn4JVcIk8Vd2HqmYFraSVp1wXlhwwVUYv
+	 KYmtrINYMvMG8zF0FMzl/iM5xYo3TmTpo1mhf6oe4IhZPB0c7eVXm7tiXMjR1bfC7e
+	 MaBaRiCypuOwQ+QWAvt1jEyroS6nscvKF9dlRxn5hBTP4ley/8SO+EcSeW2SFyAIxQ
+	 d5aCmShGfRuUxPG8OEeb0HMrBTwBc1XxpdDdafel8nJ2UY0Tp31U2apQoG75akVuFD
+	 ZeQRrQZOBQ/Zw==
+Message-ID: <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org>
+Date: Sun, 21 Dec 2025 13:24:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251220040446.274991-1-houtao@huaweicloud.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
+ unsharing PMD tables using mmu_gather
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20251212071019.471146-1-david@kernel.org>
+ <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
+ <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
+ <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
+Content-Language: en-US
+In-Reply-To: <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C1BDB2000B
+X-Stat-Signature: 1fhpbono4do6iyytrxxsx1nfx8wy5a9j
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 881751A000C
-X-Stat-Signature: hpnxer5mctaiet19b6n666z3doxirryn
-X-HE-Tag: 1766319561-501303
-X-HE-Meta: U2FsdGVkX1/xx9AErUB8v865lQObE8v3TuOx2EL0eUZIRerVhY02AwEbsTiwAqwp+o1KRA+3H+L6+b+xqNz+fLTlbKcSVDKV96oa754qkT5QJ6U3CMBYlZMVhmCD+nl2NODZdfOLSfKMHLRzPWvaShGqVZArEhyz/+NysVcktrEuw975fzLryOFIqU0AbyR5jIHk9dY5duVs5NKyPtmkd8QoLjfzjG0f0y+RfLJ3rQsDMBHeCmzwBPLX0zckwodoy9w9GQ0UOaPcLyWSmc6DILjakNJVCkLu0vmgkJjzCREP96/rPpw/STHo2w9iBbO9EBx99C+2jTLmjw42Xnihqd4k+LFfs3a/H/Wbsv/3yXDMBkRvnucmsv8Z0D3269ZbmJHPnJD6SqPYpaXYt0SMO7x6b6H3eEAiCDoTG/n1rsrKDb0x8pR8gia4p1QYCNkM6gZuxj+Jz1o0gTCNgtS7iysLkOeILUlHWNkrOLKKM/iLC2WqBj+K/1t7DaXyqgDlTVP/IDTpuYYfYPcaMKBxFWlTnOT+iGEZ18Liku+jGq2a45sAoCcUY8ZXfjl490sHTq9XSJG+sYkCCmQs0KEzFMf0Hs/uf7wenjx9n0b4KGAjUWZQ8ceAL266LFlTjy+o6N/6RpBwsT4C6bQYjo2m1BU85hW0dincIcXrg9mpXzPI3Y+5yLUWzvTawefTKk4Tl9T108mCFIqhBOWR9P2Ra71uJ62TfONNYsy7mqIAWgyOXiQcbsu4l32aYUNhiK24bJd8SDFGxmSNdqqWsV3js66+rcNYmh8Yy8yecAicJbNGdUsgkQlThE1sNu43hY22JkUwbIY4g5rmXmXBb9CeHIFbLjk/TRFwnrxIm6z1zOHtyoeqTYmhZT660cVPTxUbxHnT7GR84u7orehkjdOOx866rXpKu1Ye9qt7mbM1axXYbn2J2KzhrEmFQ1CTWLxGJz6A9pyeASHNFygmrLX
- FrTpvXCf
- QRV11fIm6v2CJYyfsRVkVC8QcY+Q+lU1i4qu8iTXur/HONMifT3eZshiu6QkDORdqsJfGmx4rVPmrx9b3idRNUJFB78X+GrC+bYtoj9y+ugSZScBPlHtFyJUMS9B2henFi0p+tZwx3gIPzYgaF+FE/9DouCmVz+R4GEuQw5OA79yA8zZt4LycaNaYWDmO0w0VpPBzoKGRqcQ7ZrBIlb+3Arq+540QNyk4wcH2AKcDF6bZuo2hsriOz46h+l9n+GPsEB0E
+X-HE-Tag: 1766319893-891413
+X-HE-Meta: U2FsdGVkX18vrFPoFO4aHIWjcKIjK2lTPj2n0Zj8yqb3GlL5yDLk0CgpBrpf8rsvmWTC5vaKsz9gWtb+6Cx3ukud/vjfXnCZcwBdXLyFIewuciUoopUk4sc2+lp9zxp27NA4XrtmjiMMCi1p8UE1SePW8T58sUoqA9LGUubO8AsNpLZZupkL6j5QB6JipRO1dpXFv+CJrUAXzD3Yy25HG4yLQI5+98M0EXzf7XbDv1fT7HpuBWDSixg6MWO+DShYZ79u3pJh0DxUX/EfiUoTkB82e0pMrYhRoYY4cbBBHoJPXnmxtOzIWWkSgg4KmA0vpvEDAvEN5vfk4ukZUN9xqN7t8IsA+6vlh7+S6fXXZxVdbb8SiiwWL+lyC7q45LdG9g/tXt6dTF09DbhnL1+mo+Lugj5jNzPFgaVKYirDD34tPZsr1VyebjIc8CnzeHx4SHeyDkZcb6Hv9xUdJlfgEbrFunX/GoE9cYIa+aCCbusKMd2Ms+8cAubYe+6w66xEkeGve8Nhk8uY/rtLow32sw6lQsA673KuPscD1k9vUOKPhF64HJljkM+vCKMVCf7qh1WlzxrjHJmY+oZhkRmxvzzFJZppuk1Y+qhe50eg97gbgcc+E4yenZw2Wlo0o9cjiUGQLYOg60LmNeSSvvb3lOmHlKp98ICzK6LYagz5ejoeMeYkykmhOwCxoG94wKUnFeXuRhresyaoiEkpVSB1emB2kK2aqqdnvTkMsml+V6/ftYY10cJmATeFRSVf/0htfE87yVJVa6/3BmCWaO8vGAE9S/NppL8yDq1Ff11/JwpkqSguu4uzkV+KRZHBH1i+D1Fpe0aXsyV48oTwZOqGJmLN2eY8K7c6pS+5nwg/WHODSqAOqE08HR21/0qyAf5vNCP0jHKK4mmqt2Mt3JMgVoS8guxatZ9TELcfKBTonzhznh0eKY4MhbolIwf6KPPtMxwpOR3KebORa+DDVqU
+ /iS4XaSV
+ 3rGqEEciMRuoDanUEK+04o12EO27Eb2ND5Rrswf2Q8vFAIha8xS1MuxJc1h/g4Jh/GuCzrv++hRyv6p8sRaPJ5vctdsYt1Tw+N3Tdlj7uBpqQZDm9j8AVokABlxWHdVWytGuJW+EjDSM3UH8xgHxXjZgMa/i6dFBq6DP/bly7Aa0YJXOlg/ZhMf2rWtCCk3llk/Sh1G3SI1rB1VmSl+pGd1/aAUIk5ZWCo07Qih2LVXfe1LFRTg5xJcgae0XZLUKsZYSUvXPNm2rVVQ88BUaK2PEVCl5931pBui3LorCsMxy7MBHboN1lSck+hzxQpbLjWBKmiNx8Xd72tkcz9xJBdasDmxrwCsQI9an3FEx6z3zDVRyiavbjRDpOoVLEOrfFvhYhzgGBCI21N8EqwuUaAdeUTxUB+KG+FPf6ygOUwqaNoXM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,77 +112,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 20, 2025 at 12:04:33PM +0800, Hou Tao wrote:
-> From: Hou Tao <houtao1@huawei.com>
+On 12/19/25 14:59, David Hildenbrand (Red Hat) wrote:
+> On 12/19/25 14:52, David Hildenbrand (Red Hat) wrote:
+>> On 12/19/25 13:37, Harry Yoo wrote:
+>>> On Fri, Dec 12, 2025 at 08:10:19AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
+>>>> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
+>>>> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
+>>>> tables that it severely regresses some workloads.
+>>>>
+>>>> In particular, when we fork()+exit(), or when we munmap() a large
+>>>> area backed by many shared PMD tables, we perform one IPI broadcast per
+>>>> unshared PMD table.
+>>>>
+>>>
+>>> [...snip...]
+>>>
+>>>> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
+>>>> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
+>>>> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
+>>>> Tested-by: Laurence Oberman <loberman@redhat.com>
+>>>> Cc: <stable@vger.kernel.org>
+>>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>>>> ---
+>>>>     include/asm-generic/tlb.h |  74 ++++++++++++++++++++++-
+>>>>     include/linux/hugetlb.h   |  19 +++---
+>>>>     mm/hugetlb.c              | 121 ++++++++++++++++++++++----------------
+>>>>     mm/mmu_gather.c           |   7 +++
+>>>>     mm/mprotect.c             |   2 +-
+>>>>     mm/rmap.c                 |  25 +++++---
+>>>>     6 files changed, 179 insertions(+), 69 deletions(-)
+>>>>
+>>>> @@ -6522,22 +6511,16 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+>>>>     				pte = huge_pte_clear_uffd_wp(pte);
+>>>>     			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
+>>>>     			pages++;
+>>>> +			tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+>>>>     		}
+>>>>     
+>>>>     next:
+>>>>     		spin_unlock(ptl);
+>>>>     		cond_resched();
+>>>>     	}
+>>>> -	/*
+>>>> -	 * There is nothing protecting a previously-shared page table that we
+>>>> -	 * unshared through huge_pmd_unshare() from getting freed after we
+>>>> -	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
+>>>> -	 * succeeded, flush the range corresponding to the pud.
+>>>> -	 */
+>>>> -	if (shared_pmd)
+>>>> -		flush_hugetlb_tlb_range(vma, range.start, range.end);
+>>>> -	else
+>>>> -		flush_hugetlb_tlb_range(vma, start, end);
+>>>> +
+>>>> +	tlb_flush_mmu_tlbonly(tlb);
+>>>> +	huge_pmd_unshare_flush(tlb, vma);
+>>>
+>>> Shouldn't we teach mmu_gather that it has to call
+>>
+>> I hope not :) In the worst case we could keep the
+>> flush_hugetlb_tlb_range() in the !shared case in. Suboptimal but I am
+>> sick and tired of dealing with this hugetlb mess.
+>>
+>>
+>> Let me CC Ryan and Catalin for the arm64 pieces and Christophe on the
+>> ppc pieces: See [1] where we convert away from some
+>> flush_hugetlb_tlb_range() users to operate on mmu_gather using
+>> * tlb_remove_huge_tlb_entry() for mremap() and mprotect(). Before we
+>>      would only use it in __unmap_hugepage_range().
+>> * tlb_flush_pmd_range() for unsharing of shared PMD tables. We already
+>>      used that in one call path.
 > 
-> Hi,
+> To clarify, powerpc does not select ARCH_WANT_HUGE_PMD_SHARE, so the
+> second change does not apply to ppc.
 > 
-> device-dax has already supported compound page. It not only reduces the
-> cost of struct page significantly, it also improve the performance of
-> get_user_pages when 2MB or 1GB page size is used. We are experimenting
-> to use p2p dma to directly transfer the content of NVMe SSD into NPU.
 
-I’ll admit my understanding here is limited, and lately everything tends  
-to look like a DMABUF problem to me. Could you explain why DMABUF support 
-is not being used for this use case?
+Okay, the existing hugetlb mmu_gather integration is hell on earth.
 
-Thanks
+I *think* to get everything right (work around all the hacks we have) we might have to do a
 
-> The size of NPU HBM is 32GB or larger and there are at most 8 NPUs in
-> the host. When using the base page, the memory overhead is about 4GB for
-> 128GB HBM, and the mapping of 32GB HBM into userspace takes about 0.8
-> second. Considering ZONE_DEVICE memory type has already supported the
-> compound page, enabling the compound page support for p2pdma memory as
-> well. After applying the patch set, when using the 1GB page, the memory
-> overhead is about 2MB and the mmap costs about 0.04 ms.
-> 
-> The main difference between the compound page support of device-dax and
-> p2pdma is that p2pdma inserts the page into user vma during mmap instead
-> of page fault. The main reason is simplicity. The patch set is
-> structured as shown below:
-> 
-> Patch #1~#2: tiny bug fixes for p2pdma
-> Patch #3~#5: add callbacks support in kernfs and sysfs, include
-> pagesize, may_split and get_unmapped_area. These callbacks are necessary
-> for the support of compound page when mmaping sysfs binary file.
-> Patch #6~#7: create compound page for p2pdma memory in the kernel. 
-> Patch #8~#10: support the mapping of compound page in userspace. 
-> Patch #11~#12: support the compound page for NVMe CMB.
-> Patch #13: enable the support for compound page for p2pdma memory.
-> 
-> Please see individual patches for more details. Comments and
-> suggestions are always welcome.
-> 
-> Hou Tao (13):
->   PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page()
->     fails
->   PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
->   kernfs: add support for get_unmapped_area callback
->   kernfs: add support for may_split and pagesize callbacks
->   sysfs: support get_unmapped_area callback for binary file
->   PCI/P2PDMA: add align parameter for pci_p2pdma_add_resource()
->   PCI/P2PDMA: create compound page for aligned p2pdma memory
->   mm/huge_memory: add helpers to insert huge page during mmap
->   PCI/P2PDMA: support get_unmapped_area to return aligned vaddr
->   PCI/P2PDMA: support compound page in p2pmem_alloc_mmap()
->   PCI/P2PDMA: add helper pci_p2pdma_max_pagemap_align()
->   nvme-pci: introduce cmb_devmap_align module parameter
->   PCI/P2PDMA: enable compound page support for p2pdma memory
-> 
->  drivers/accel/habanalabs/common/hldio.c |   3 +-
->  drivers/nvme/host/pci.c                 |  10 +-
->  drivers/pci/p2pdma.c                    | 140 ++++++++++++++++++++++--
->  fs/kernfs/file.c                        |  79 +++++++++++++
->  fs/sysfs/file.c                         |  15 +++
->  include/linux/huge_mm.h                 |   4 +
->  include/linux/kernfs.h                  |   3 +
->  include/linux/pci-p2pdma.h              |  30 ++++-
->  include/linux/sysfs.h                   |   4 +
->  mm/huge_memory.c                        |  66 +++++++++++
->  10 files changed, 339 insertions(+), 15 deletions(-)
-> 
-> -- 
-> 2.29.2
-> 
-> 
+	tlb_change_page_size(tlb, sz);
+	tlb_start_vma(tlb, vma);
+
+before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
+don't immediately call tlb_finish_mmu() already.
+
+tlb_change_page_size() will set page_size accordingly (as required for
+ppc IIUC).
+
+tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
+some very good reason I am sure.
+
+
+So something like the following might do the trick:
+
+ From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Date: Sun, 21 Dec 2025 12:57:43 +0100
+Subject: [PATCH] tmp
+
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+  mm/hugetlb.c | 12 +++++++++++-
+  mm/rmap.c    |  4 ++++
+  2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 7fef0b94b5d1e..14521210181c9 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+  	/* Prevent race with file truncation */
+  	hugetlb_vma_lock_write(vma);
+  	i_mmap_lock_write(mapping);
++
++	tlb_change_page_size(&tlb, sz);
++	tlb_start_vma(&tlb, vma);
+  	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+  		src_pte = hugetlb_walk(vma, old_addr, sz);
+  		if (!src_pte) {
+@@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+  			new_addr |= last_addr_mask;
+  			continue;
+  		}
+-		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+  
+  		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
+  		if (!dst_pte)
+  			break;
+  
+  		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
++		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+  	}
+  
+  	tlb_flush_mmu_tlbonly(&tlb);
+@@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+  
+  	BUG_ON(address >= end);
+  	flush_cache_range(vma, range.start, range.end);
++	tlb_change_page_size(tlb, psize);
++	tlb_start_vma(tlb, vma);
+  
+  	mmu_notifier_invalidate_range_start(&range);
+  	hugetlb_vma_lock_write(vma);
+@@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+  	hugetlb_vma_unlock_write(vma);
+  	mmu_notifier_invalidate_range_end(&range);
+  
++	tlb_end_vma(tlb, vma);
++
+  	return pages > 0 ? (pages << h->order) : pages;
+  }
+  
+@@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+  	} else {
+  		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+  	}
++
++	tlb_change_page_size(&tlb, sz);
++	tlb_start_vma(&tlb, vma);
+  	for (address = start; address < end; address += PUD_SIZE) {
+  		ptep = hugetlb_walk(vma, address, sz);
+  		if (!ptep)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index d6799afe11147..27210bc6fb489 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+  					goto walk_abort;
+  
+  				tlb_gather_mmu(&tlb, mm);
++				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
++				tlb_start_vma(&tlb, vma);
+  				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+  					hugetlb_vma_unlock_write(vma);
+  					huge_pmd_unshare_flush(&tlb, vma);
+@@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+  				}
+  
+  				tlb_gather_mmu(&tlb, mm);
++				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
++				tlb_start_vma(&tlb, vma);
+  				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+  					hugetlb_vma_unlock_write(vma);
+  					huge_pmd_unshare_flush(&tlb, vma);
+-- 
+2.52.0
+
+
+
+But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
+to a later point and only focus on the IPI flushes. Doing only that with mmu_gather
+looks *really* weird, and I don't want to introduce some other mechanism just for that
+batching purpose.
+
+Hm ...
+
+-- 
+Cheers
+
+David
 
