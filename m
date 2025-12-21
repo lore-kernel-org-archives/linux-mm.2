@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 135D5E6748D
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 02:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B2AEE6748D
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 02:42:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B56E6B0005; Sat, 20 Dec 2025 21:35:33 -0500 (EST)
+	id 7EB336B0005; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 562B96B0089; Sat, 20 Dec 2025 21:35:33 -0500 (EST)
+	id 799056B0089; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 444446B008A; Sat, 20 Dec 2025 21:35:33 -0500 (EST)
+	id 67A946B008A; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 317466B0005
-	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 21:35:33 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B48C8137B79
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:35:32 +0000 (UTC)
-X-FDA: 84241912104.27.B174E00
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 51707140005
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:35:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D2YnNy8L;
-	spf=pass (imf09.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 531BC6B0005
+	for <linux-mm@kvack.org>; Sat, 20 Dec 2025 21:42:58 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2831137AA9
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:42:57 +0000 (UTC)
+X-FDA: 84241930794.29.9D63F04
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 08C0580002
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 02:42:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ikBCY1CA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766284976; a=rsa-sha256;
+	cv=none;
+	b=TLIIHaNwJI02QVVeWBI8dJaT3EELNde0DLMx0pOQeiPXcKEOeBrMmDE8oK/LJpDQQEeoBJ
+	aICJ6eCwgDmh7F7jjFsub+Rnha33najpxVgM1SWIsN90PZHPHzbwp3B2kut84Uw3Z2O0OV
+	gPqlm/WdizWt9J64RDA5j6NvnDwUiHI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ikBCY1CA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766284530;
+	s=arc-20220608; t=1766284976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5gQsxdbTqeeMlgNLXWeTs3T6PsiN7QVqODqMSF2qt/w=;
-	b=RceoVPdQTNrAOhJb1ZotkFV/OZ/QviRHrKHlAnXaTogSOKTWos+EpIDi0iDfvdVlWSGE+w
-	hcsAvmNFmJDwmKMrykJqUSJikT9r4KjjqJO+Qn6g5FcCE18iUeqhnxy/sge8whk/lzLyb4
-	YJDCfw40U5HbruTejSw89hase3JzGsM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D2YnNy8L;
-	spf=pass (imf09.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766284530; a=rsa-sha256;
-	cv=none;
-	b=e1RkLz/xF+gwsqTINDS+yYvIII9kgei14yknt4T+COyqJqKb6tNAEhSt6DARVb56aFXrEP
-	vmEzJw7yV6l/n3a3QTJaIltQpyc1V0Vubg9c1iFWkHDw4EEEOQgjseCe4x+hS8FPClyMcJ
-	0Sv188gbsxUt4fL/7xTnca/ho47ZTbE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766284529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5gQsxdbTqeeMlgNLXWeTs3T6PsiN7QVqODqMSF2qt/w=;
-	b=D2YnNy8LDxxUS87sb76smHZjI/1u8ewr2NDw4wdKjgyxZ38Zw6dma9br4eW9/r0NSBOaQx
-	7lbJScDqLSi7aBBeL1R1kv4LCn8oqdeiqRzQ2BQVJoxaK2wuEHaqbgQN8Njf9FbTrnOYJR
-	4KDTfKgvmho/LIgAt6lr2QuKr1/YEY0=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-VTpQ5Ky6NwuSIGNF3gCE5A-1; Sat, 20 Dec 2025 21:35:27 -0500
-X-MC-Unique: VTpQ5Ky6NwuSIGNF3gCE5A-1
-X-Mimecast-MFC-AGG-ID: VTpQ5Ky6NwuSIGNF3gCE5A_1766284527
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b630753cc38so5114242a12.1
-        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:35:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766284526; x=1766889326;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
+	b=8Aow6AuKcsETE0HfEhB8453LmukkJdGV5kv0TKrYSDrxKiqKFzjiFTZMKC8xvR3M1vLMxj
+	tt5cqb2sPkEqElyrjVEb9colLfbNZo2FvL7a7Rol/PZOKjliczKievtqakl0Kxq463792A
+	7Zb9lCm+YXEB4xC2rWg3vZ1eEXqDdyI=
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-641e9422473so2340952d50.2
+        for <linux-mm@kvack.org>; Sat, 20 Dec 2025 18:42:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766284975; x=1766889775; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5gQsxdbTqeeMlgNLXWeTs3T6PsiN7QVqODqMSF2qt/w=;
-        b=R1SUIRTCTLC1nAZLJ38CRKILgH2snDRn8EF3uh9cKiW8dP/+VyBltd0Jmrp626u3mm
-         +2LZmN8+SqbgzViZPOWuGSqEjH/2+7BWvIB3idg3GkBNmSskIo8LoJZ4JpXDlOGAAea7
-         4FVhf2UxTYdCPPSCw/AOP2W7qxaCCZq1TDs/GBtlin/C0I5051dKiPDI1d/VAYXtc6sB
-         uCwn9yQKWvIv12J1c8CdUrLiyzLr26YWknvdqou+vZfoyrBEC/e8INwOqwZhBbwHflB9
-         k11xA8NNAQknFu3UU4hTHDHgUsRpstWQUVTDfUA1Oe2mAuThRk5NwffRlrtyFY1MZUi/
-         V/ig==
-X-Forwarded-Encrypted: i=1; AJvYcCWPCs3FpOfdU7pHoYVLJxTHqCbo52E/j6QdF6MpgXvhXr+mRrof82TAcBIiEjm6te7csBjY/s+5xA==@kvack.org
-X-Gm-Message-State: AOJu0YyJICTW66sH/unuVZu4j2bjGQ9ajutcdKoAaj22BBjHINO/aOFZ
-	Bj2qO0eR1y0XSlf1YfdYD4VUSiPy32dWcQXQiiq2MPaPKWd4KodIVnF8Ly/jNMGhpAy1iFOFeIp
-	Wy0ECkBEwynIn2ryjIxaauIYRIBswKmkHpQDz8XvC8Ok+Sxy+Y6WmQtaxNnJ/+ATPUAF/X7QHZI
-	A3+ysFBtQYLgUTlA8Jrc6C9wXb7aQ=
-X-Gm-Gg: AY/fxX5UneDEscKfG83oClD1YxRqJGFYHDfvVoM5oNbMZmjkthY01PLlqB6uedMDG+T
-	ASWhlAKuQ/ZCJh4/WpTfO+Sx+iZsduwnFkuqvJwdKEn+MkF19wZPsJugiBM7nos3HfSZa9gJm4s
-	lwT+L8LFQCviTeSARwTt0YUi5CXrCFhJ9VI1j5WPNubIP5WOYWHx9ps8aaq6IbOjFr0XU=
-X-Received: by 2002:a05:7301:4d16:b0:2b0:5306:1770 with SMTP id 5a478bee46e88-2b05ec3de81mr6388823eec.22.1766284526603;
-        Sat, 20 Dec 2025 18:35:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHeR4EsbezqFgEtlO04QhomF0cYTX4Y8ONQC2CZdQYoTrheRMgvamu1rUjFi3tWwkJ2xq+w8KIq1PL21XREyuw=
-X-Received: by 2002:a05:7301:4d16:b0:2b0:5306:1770 with SMTP id
- 5a478bee46e88-2b05ec3de81mr6388813eec.22.1766284526145; Sat, 20 Dec 2025
- 18:35:26 -0800 (PST)
+        bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
+        b=ikBCY1CAwsvdIYc7A/VHVPgLlPm85w+lxVDv+qMsbF7/8Rz3xqqn0/XPYz7uywc2OZ
+         2RvLQK+wbfPVudoz6hHBM1d0hVti90KG7A+jP6WzI1r0e/WlcC/30pM3RmiSRWVvOWQr
+         6H5WIgcaWcXIH3dZo+YAS11MhevcuxJ33SQtBt2mAN5Af8qPZ6pq0OU53HArUEGxE9xj
+         WOUa3d4PqNt246qwQYwW3wD6n3Ihk4Zs2ep7gYJobDmBJD9p94ZpLynY+WRC0rpcNgsp
+         hB7dTUo6asSnasvUiN5jVjHbUpO+NnHX9RhYR2l6WwuKbtgIGF5LicZ9m0FsBjvlvGAq
+         ctoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766284975; x=1766889775;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mASPxYKOqc7H+5C/K07231nqEoxZ70HYhMINN1HdRuY=;
+        b=Jcdm8Z0aT+R+uomwp0hhn1M0c7OFP9XHDtcxRlgHSfqXANrhSUpVxqRv5lOYPCqZ4L
+         1d5JCYkJ7aAYLKa3UHJFJUZyLNh0GFMVQM7ZPrItWRBJe5PHpSw88jxct9Y3ww7DQYX1
+         y0XvEORnSDzIsc7h0wPkGaKgx43UtqLdMcd8SPCRNf54nf3wIP2c9X9q6z3aH4pFJFxM
+         BLYB375P3IVTIiCMy3BOWJOuKfVWbSMxhDhIAfDQ0etURT6Sj+HUcprbX9fYbvAcsXm6
+         sQT6VnT0+tkNj9mdDfbFCokRTn44XrB7bdUneN/BGAVzsz2zXCHm1qQsT3L903iyEy8j
+         Mp5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWpV4tk9Ikd84OxzqLEDrJc+8ePaFCPrnqLEKMwOC0+Hws2DNOavEuZL+GCq5DY8N7bWOlVWH+lkQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw0z6wYn62WyU0KNNiBZn3Ht33quhcCAR/Xm2XUuRfq5acB5zpz
+	SCPRyTLxZE4BGKcLj8ILLcJE4YVFMu1ypgEAJiiro+iISvH9ZyISV5yGPR0q+JuwSmPsKR4gRh3
+	DNbgf6e1pIL4EdMps/eU2DAWmq5ax4GA=
+X-Gm-Gg: AY/fxX5/e/Hfxwe2KkXXSlnibgmXt5Z8gVmaS7yWPLU9MPHGzWpYpDJCRqkrE85fEDB
+	8VWwTNkn2GniVn1NEZnrHBfjKQXNU5DSMv6469SczDs+YD+uTUs3VOgdppl+RbsXhtwNGtLvlqN
+	KOK6FNY0wtrJ6dqGf0Nv4bTxQ1LM/NKDeybJB+whYNBW12+NBTjHyfucePosgk/DRiUawxl3mis
+	iSGGzli1Tx6Klf1HjSgz4Uen32IAncoc55y58ldQqRxJc/2zk13mHGd9E4oaNW9mrewc+8M
+X-Google-Smtp-Source: AGHT+IH+6jj8oWEsdcBAceDbVJFPTAVOMQ1Uqc7/7BwQVG/cqzh4mZc/wn2oR9YZg5gDrUw36Mpl7rId7/1IGwr++Mw=
+X-Received: by 2002:a05:690c:c1b:b0:78c:3076:ddb1 with SMTP id
+ 00721157ae682-78fb4096c72mr127542157b3.55.1766284974757; Sat, 20 Dec 2025
+ 18:42:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20251220111645.2246009-1-liwang@redhat.com> <20251220111645.2246009-2-liwang@redhat.com>
- <20251220105811.3516167661cd696f464cc3b0@linux-foundation.org>
-In-Reply-To: <20251220105811.3516167661cd696f464cc3b0@linux-foundation.org>
-From: Li Wang <liwang@redhat.com>
-Date: Sun, 21 Dec 2025 10:35:13 +0800
-X-Gm-Features: AQt7F2qDbPwihelw_YUrtxt3d6alO2f-YhYevZjk-CxfxOlZGK9drdUm7A6lE88
-Message-ID: <CAEemH2fsZAWnzCzv5vSyf-GRxExFaeUR_vYex9KxAtnBw-_b_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] selftests/mm/write_to_hugetlbfs: parse -s with
- strtoull and use size_t
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, Waiman Long <longman@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Sl0ri9-rgPxAPFyTGj2kBVNzRnNLX71TqmyB8E9OcO4_1766284527
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/alternative; boundary="000000000000c0eb4406466d293d"
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ndqz55uxicg984xy5im8k6ygf4e57h4g
+References: <2c8dd0de-e650-4a74-b1f7-61ed81c03d26@kylinos.cn> <20251219114633.41156-1-sj@kernel.org>
+In-Reply-To: <20251219114633.41156-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Sun, 21 Dec 2025 11:42:43 +0900
+X-Gm-Features: AQt7F2qA0QBKJ-NgNQCsAIsclgVskRlqTk5U6Nx24EGndjvZ_2ncyEAWOkPiAw8
+Message-ID: <CAHOvCC7=t0iHEC-BQPZcF+KiKcc2tVyxNOLMifZQ=JwH2GwFpw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
+To: SeongJae Park <sj@kernel.org>
+Cc: Enze Li <lienze@kylinos.cn>, akpm@linux-foundation.org, damon@lists.linux.dev, 
+	linux-mm@kvack.org, enze.li@gmx.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 08C0580002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 37a3pdzb7wk75jneoqt71opo9nakc6ui
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51707140005
-X-HE-Tag: 1766284530-869563
-X-HE-Meta: U2FsdGVkX18K3vspa+MhdjArlH3kRg3ICw9g3EW6X4i/NOq15+bt/LpyL3azFQfM2yJSHWFDN3/rpzK8nvBK4a2CaewIhhsjb7JJQsApyTDl2ELWHm2dmdWKiU6TcWxTZ3dDxW74RUHrGK92Sp6CGs6d9JnBg/FXK6jLKwZiIHgvZ1EvzKSpnjjB8pucYA7ihMvRbpC/eb2t62/00vX68HhLsYKTQ5KuKE9mCFiOLF7yOnhHdtNS3DfEEmocBnmCMtzFlnDvHk+8rgGnsxbBeSSBef9E+ADuPP+hRU857EWf0F/8NwQnAn1S0WOlM8H7xaPbVWf6a9sXWxmXtqG4QnRCuB/+yHT+fvRCiMRmO0jpp3MtLcFkxndhpcbONe3bpA+swc835Cst8myRHKxeVWpxgBxBIOoTmRLIw+wSvl/QfID9EjpskNDOKVtNd8MMg8/fiHx6oDNRkyBAWlDay/tGeLDUotgsaHRsVUp+yzsaA73boqN5HueUx9+xi32yCO9koEKdRbLvHw9oJJ6DIAQ3LuWE5uJMTAB8aVUZRsvhmGlo+0qZBhA9h0ulSs3evF3YNKkbHnxRmc3VrPOkUiISRzs64J0ucTVT/t8+zqkoEiLi35+Wbc7/J6NERZMl7P07pMS6HrQ2cnSF4nY/UnrQ9Tj3dWEqnWAmYs/YRmjmTuDjLslLRMC4qOQ3aGHKPJvkW6CwrlR5OulEWOwpMraPXc3M+8CHtSS0hpLGb1/2gp6Sx2deUxCAt3gusdb15PGvr1o0YZWgnLCzwfoleTDDpkjIyIOjNL4zgyS/HYKL8jw7kppsQmLNaHbTjIVXZh5uhfh78r3INUGPIZhNLVphmUO8mcM32Jw/PNPJgphqONyQgDiZElTOj/3GjnBVeBghMFzExRENbVw+I/JlxqOoOPLHFIq0+ZaGwbygtMTTzBx8gaqWqunBgkLgqaFEHCxOG5FkKhuJUoQx0l1
- 2v8cRTSy
- 9HXB/GOuseD9SmrIt66jCvuM8xBbzUp7ZhwblRUAZUYf8FnrT2oEpHrL/V7aNn9aV/bqn2yNCRCchsFmludsuTvYSvBMJCntxCU1wQ9/gye/7TFh5I0cQDSpnelkkvCXW47PHtf4GsnpiOuKkuPBPKhiXnhuwQRuadqIqE07ZIq6PKPLs1ay5KxLiAQAFOdnzu32QAl+0BuuYxlIPnIShOS+evKMcpAS/Y5PRU9k6wY0zl7V/YLZinB5YX4OopPeqJrpB8dr8I20btMbbw49yX1FnZhs1xYikSN13lErEd1D6iUvrfuok0YNbrh6xG4tnoUbJ/29YrE6VQqgDEAlyeRO2VirQKUc6JgNmQRtwfBrhdHud7HoZlIzilVl/qaLJrzEhqSHCC8CnFnEhXHSlxKAO4gQvlBNZBkAvJjvfn/BoyiVr8jt2P8vIZBjLmLKnbqL4lDeNom81Xxh7fSCMrftTb5uqm/4R9ldBNJWOhJOCgTyW0sda7+es6IPZ1VWCgloWNdsFUzMI5tMv4UBWWaHLmhyK/6Py2JIMIIePDbG082Jcvex8dcmmJfIMpS+YA7CCTHNxot866x/+IBVbmzPLqmmA2SQYiw87yMvRiX2tGg5TbEJ67gDzVM3XXZdJVlheeASXYY69jKK2QW14KvtJKpYDJvETzbCJcGV4jCvV2vs=
+X-HE-Tag: 1766284975-905768
+X-HE-Meta: U2FsdGVkX1/U7bOjzWInzrO5ZXAHJH358pXA5t2C1aovPaJyuorolG934uWjbLkuEy450avxdxCeArYpOC7otoslxrT+iSPWXt5d6JccmIGdyTZFqcJEOUnB0lv1g56blIUiedK3esPV0hSBJDVbFyzEYn8Gj+Uwvwqv/2tRUiATfwXvjZB5HsEeNsl11+x2gFzOC4llandHLts76CHH9DDRzTqiyAsOdnycsH3bSZSPv/9uWN4cy4IRi2tw3V/1SknmTKmdRt3zJ7RyvMVFNpESQFcDIZwyE1/zDRNs9LB71pqifUPO9AA1H8Htblq+8BxgS4kRCaEJtw7IcVcOFPsHPUnDYm8GiDZAzQgzHBGFHATRMxlL1p5nTgb765FGPQa/pjABw6iDyBZNqi7/HJqEKR2vkr4w7SqNQDm5iANqOOOPC88LdhW2XGLjzc8QEviHw7p9oB5k7PpJdejxTg/ryIweITcAUSGMGZN6KlTIODcihWsZKf3I2mTNZrTvtKz+eqGI1iixw3Hl30AnARuJ9rviyx/S/SI+2Nrw5QoyDOMscurJP9o5aaPeVCU8ou9WkTZ+pOTx0eXSlZIBUFYsi+EZGx7PE0DmSlUv3dQOOZMFc/f/FlXUyHQGu3q0s1SB8/kF4Emt8n201H4g1yNPe0m0zGYDCEBGbmQD+cF5lSvuJkC826qJgR+kPsBSfNcxfOVnwdDpns8seXtGT03b99qGCiwJmpbxJGpdUy9j2mBEIQZwIjWxpBqor/KHGtFivRJDhYI4ItZBCkAqI411rrXTiIt6FLxexrt9GdHKIo+ZZKLfXKT5w72uZIsJ2qlgZXV688Yjwa1gUlyTRqkIS/zsxcccpRZI41wB8XdWNfDG2q4LLUmTZB4Ss8B0yZFgXCVgw1Feaueb4HyEEt2hwoswOgaqKdX7W/XWrN1xEwCeRm/HiFgVt8LgFea2b+17vN76KMpR8Dlu63o
+ qH+yuBVy
+ K/Diq6uI4vVnfSiRsmiJBfcdR1pRjaUlvbr1bo36pC6AmfbptkrXB1jYY0t5sn56L0Y2307mXntgCQ/C3sIZR7Sj6EZabLx6bWZVmvAKzYDyc+XNHDnvHpbdfZnPCR5OjfRJkKvdYEeBST7QEIFCt71qQWNbSOtimZZPx8cLwrjFQ03C0zkrUPjrTxJtIcuwwSayidxch+FoZAM0JdMOPD82DNb2TaNoy8/0XZXEVxluhZGG9HXfvXD/MWszM88R4vsq4KX/P3RCCB6hhQDyPkCeZp7feRcurJ7GIDu7l1MiJ0JQn6AnFX5O/35ipizwS5q4pvKgYUlEvJZy/LZoOO3LP45qXlvOgNRomNaFNgO8BoR9tRucW+TRMew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,252 +116,292 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000c0eb4406466d293d
-Content-Type: text/plain; charset="UTF-8"
-
-Andrew Morton <akpm@linux-foundation.org> wrote:
-
->  #./charge_reserved_hugetlb.sh -cgroup-v2
-> >  # -----------------------------------------
-> >  ...
-> >  # nr hugepages = 10
-> >  # writing cgroup limit: 5368709120
-> >  # writing reseravation limit: 5368709120
+On Fri, 19 Dec 2025 at 21:52, SeongJae Park <sj@kernel.org> wrote:
 >
-> Can we fix that typo while we're in there?  "reservation".
+> On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
 >
-
-Good catch, let's fix it in patch 2/3.
-
-
-> >       while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
-> >               switch (c) {
-> >               case 's':
-> > -                     size = atoi(optarg);
-> > +                     errno = 0;
-> > +                     char *end = NULL;
-> > +                     unsigned long long tmp = strtoull(optarg, &end,
-> 10);
+> > On 2025/12/16 07:16, SeongJae Park wrote:
+> > > Hello Enze,
+> > >
+> > > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> > >
+> > >> This patchset makes DAMON's advanced memory management accessible to=
+ a
+> > >> broader range of users through two complementary enhancements.  Firs=
+t,
+> > >> it exports the necessary DAMON core symbols to enable building loada=
+ble
+> > >> kernel modules.  Building on this foundation, it then introduces the
+> > >> 'prdm' module, which extends the concept from the DAMON sample code
+> > >> (prcl.c) into a production-ready, user-friendly tool.
+> > >>
+> > >> The key strength of this module is its out-of-the-box simplicity: by
+> > >> simply specifying the PIDs of target processes and enabling the modu=
+le,
+> > >> users can concurrently monitor memory access patterns across multipl=
+e
+> > >> processes and trigger proactive reclamation automatically.  This
+> > >> significantly lowers the barrier to using DAMON, allowing system
+> > >> administrators and regular users without deep kernel expertise to ea=
+sily
+> > >> apply sophisticated memory optimization.
+> > >
+> > > I agree your points about the problems and the direction for improvin=
+g the
+> > > situation.
+> >
+> > Thank you, SJ!  Glad we are on the same page. :)
+> >
+> > > However, we have a module for such use case, namely DAMON_RECLAIM.
+> > > It was designed for a reason that very same to what you described abo=
+ve.  One
+> > > key difference between DAMON_RECLAIM and prdm is, to my understanding=
+,
+> > > DAMON_RECLAIM works for the physical address space, while prdm works =
+for
+> > > virtual address spaces.
+> >
+> > Yes, I have studied the implementation and architecture of this module
+> > quite thoroughly.  However, there are certain limitations when
+> > considering it for production use.
 >
-> Coding-style nits: we do accept c99-style definitions nowadays but I do
-> think our eyes prefer the less surprising "definitions come before
-> code" style.  So the above could be
+> To my understanding, DAMON_RECLAIM is being used in multiple real world
+> products.  I understand you are saying there could be limitations for som=
+e
+> different production uses, and I agree.
 >
->                         char *end = NULL;
->                         unsigned long long tmp = strtoull(optarg, &end,
-> 10);
+> > To my knowledge, few would perform
+> > indiscriminate page reclamation across the entire system.  In most
+> > practical scenarios, people prefer to protect critical processes from
+> > being swapped out, while applying page migration and reclamation only t=
+o
+> > less critical or performance-insensitive processes.
 >
->                         errno = 0;
+> Thank you for kindly explaining above.  I agree such protection of critic=
+al
+> processes could be useful and required.  Nonetheless, to me, it sounds li=
+ke you
+> could also do such protection using DAMOS_FILTER_TYPE_MEMCG.  Actually th=
+e
+> feature was developed for such use cases, and I recently met some people =
+who
+> willing to use DAMON on their products in a way very similar to what you
+> described.  I suggested them to try DAMOS_FILTER_TYPE_MEMCG.  Have you
+> considered using DAMOS_FILTER_TYPE_MEMCG?
 >
-> Also, `errno' belongs to libc.  It seems wrong to be altering it from
-> within our client code.
+> >
+> > As we all know, frequent page migration inevitably introduces some
+> > latency to process response times.  Therefore, the ability to target
+> > large, inactive memory consumers for reclamation addresses a strong,
+> > genuine demand from real production environments.
+> >
+> > > Is the virtual address spaces proactive reclamation is
+> > > what you really need?  If so, could you please further describe your =
+expected
+> > > or planned usage of it?
+> >
+> > Consider the following scenario: a host machine runs three virtual
+> > machines -- Machine A, Machine B, and Machine C.  It is known that
+> > Machine A handles massive traffic, while Machines B and C have
+> > relatively light workloads.  When memory pressure arises, besides
+> > releasing caches, the system can utilize prdm to perform precise page
+> > migration targeting Machines B and C, ensuring memory usage remains
+> > within a safe margin.
+> >
+> > The data below, collected from a test environment, demonstrates the
+> > effectiveness of prdm.  After enabling prdm to monitor the two
+> > lower-activity VMs (2316, 2284), I observed that the DAMON-based prdm
+> > successfully migrated 5.5 GB of pages to the swap partition.
+> >
+> >  PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+> > 2253 qemu  20   0 11.251g 3.822g  32.7m S 4.989 12.28   0:48.75
+> > qemu-system-x86
+> > 2316 qemu  20   0 12.191g 1.524g  34.3m S 5.322 4.893   0:49.05
+> > qemu-system-x86
+> > 2284 qemu  20   0 12.092g 1.184g  32.5m S 5.987 3.803   0:48.10
+> > qemu-system-x86
+> >
+> > root@localhost /s/m/p/parameters# free -h
+> >        total        used        free      shared  buff/cache   availabl=
+e
+> > Mem:    31Gi        12Gi        15Gi       5.5Mi       3.2Gi        18G=
+i
+> > Swap:   31Gi       5.5Gi        25Gi
 >
+> Thank you for sharing this nice explanation use case.  I think this all m=
+ake
+> sense.
+>
+> >
+> > >
+> > > If the virtual address spaces proactive reclamation is really what yo=
+u need, I
+> > > think extending DAMON_RECLAIM for the purpose might be doable and eve=
+n simpler
+> > > than introducing a new module.  How about doing so?
+> >
+> > Before developing prdm, I had considered implementing the same
+> > functionality based on DAMON_RECLAIM.  However, I gradually realized
+> > this would make DAMON_RECLAIM overly complex and less
+> > user-friendly=E2=80=94especially given its existing module-specific exp=
+orted
+> > interfaces, which could confuse users.  This approach would create
+> > significant barriers to promoting wider DAMON adoption.  Consequently,
+> > building upon the prcl sample became the preferred choice.
+>
+> I agree DAMON_RECLAIM already have no small number of parameters, and add=
+ing
+> more may make it look even more complex.  But, users may use only paramet=
+ers
+> that really need to be set for their real use case.
+>
+> For example, if we implement virtual address spaces mode in DAMON_RECLAIM=
+, I
+> think we can simply add target_pid parameter that works very same to that=
+ of
+> prdm.  If it is unset, DAMON_RECLAIM works in the physical address mode. =
+ If it
+> is set, it works in the virtual address mode.  Adding just one more param=
+eter
+> that doesn't break old usage doesn't seem that complex change to me, at l=
+east
+> in terms of the user experience.
+>
+> As I mentioned above, yet another example would be using
+> DAMOS_FILTER_TYPE_MEMCG.  For this, we may be able to add a parameter for
+> describing the memcg of critical processes.  Again, adding just one more
+> parameter that doesn't affect old usages doesn't seem too complex changes=
+ to
+> me, at least in terms of the user experience.
+>
+> Meanwhile, I agree adding a new simpler module could make it easy for new
+> users.  But, I concern if having two modules for DAMON-based reclamation =
+will
+> make users get difficulty at finding the correct one for their usage, sin=
+ce
+> they may now need to compare two modules.
+>
+> For the above reasons, I still feel extending DAMON_RECLAIM is a better
+> approach in terms of user experience.
+>
+> I'm not saying DAMON_RECLAIM's user interface is perfect.  Especially its
+> documentation may have many rooms to improve.
+>
+> And I'm not very sure if the virtual address spaces reclamation is somewh=
+at
+> need to be supported from modules rather than using DAMON sysfs interface=
+ or
+> DAMON user-space tool.  I implemented DAMON modules including DAMON_RECLA=
+IM,
+> DAMON_LRU_SORT and DAMON_STAT for users who willing to enable those alway=
+s, and
+> therefore want to avoid runtime controls.  That is, users can use those m=
+odules
+> by modifying the kernel command line options.  My expectation for DAMON m=
+odules
+> may not well documented.  If so, it's my bad.  I will try to recheck the
+> documentation and make that more clearly documented.
+>
+> For virtual address spaces reclamation, however, runtime control is essen=
+tial
+> since you don't know the pid of the processes before the runtime.  In the=
+ case,
+> I think using DAMON sysfs interface or DAMON user-space tool could be a b=
+etter
+> approach.  Have you considered using those?
+>
+> >
+> > >
+> > > And, even more importantly, why it should be a loadable module rather=
+ than a
+> > > static module?  Do you have a specific use case that requires it to b=
+e a
+> > > loadable module?
+> >
+> > Yes, loadability is crucial for operational flexibility in practical
+> > production environments.  Beyond some obvious advantages, I would like
+> > to highlight a key scenario: system administrators can load the prdm
+> > module upon detecting memory pressure and unload it immediately after
+> > reclamation is complete, thereby eliminating any overhead during normal
+> > operation.
+>
+> I agree always having prdm in kernel is an overhead.  But, I think the
+> overhead is not meaningfully big.  Also, as I mentioned above, my intende=
+d use
+> cases of DAMON modules is for cases that willing to simply always use the
+> modules.  If runtime controls are essential, I think using DAMON sysfs
+> interface or DAMON user-space tool is a better choice.
 
-Indeed, since I saw 'errono' modified in many places in this test,
-so to avoid other effects, I set it to zero. However, we can abandon
-this method and use sscanf() instead, thanks!
-
+I also think the current DAMON design structure is suitable for DAMON sysfs
+and user-space tools.  DAMON sysfs can run multiple nr_ctxs, so I think it
+would be a good idea to consolidate it into this.  As Enze mentioned, DAMON
+was originally designed as a kernel loadable module, but I was curious as t=
+o
+why it wasn't run that way.  When executing the damon_start(**ctxs,
+nr_ctxs, exclusive)
+function, nr_ctxs=3D1, exclusive=3Dtrue is passed so that modules are curre=
+ntly
+executed only one at a time.  Therefore, there is no point in running
+DAMON
+as a kernel module, since you are not running multiple modules simultaneous=
+ly.
+I'm doing some more research into why we run modules with exclusive=3Dtrue.
+One more thing I would like to add is that I think it would be less
+confusing
+to move lru_sort and reclaim to the samples/damon/ path.  And it would
+be
+a good idea to organize the core sources toward
+mm/damon/modules-common.c source.
 
 >
-> > +                     if (errno || end == optarg || *end != '\0') {
-> > +                             errno = EINVAL;
-> > +                             perror("Invalid -s size");
-> > +                             exit_usage();
-> > +                     }
-> > +                     if (tmp == 0) {
-> > +                             errno = EINVAL;
-> > +                             perror("size not found");
-> > +                             exit_usage();
-> > +                     }
-> > +                     size = (size_t)tmp;
-> >                       break;
+> Someone might argue DAMON sysfs interface is unnecessarily big compared t=
+o
+> prdm.  But, I have to ask again in the case.  Does the overhead really
+> meaningfully big for a real world use case?
 >
-> I'm not really clear on what problems we're trying to solve here, but
-> this all seems like a lot of fuss.  Can we just do
+> > Furthermore, it supports zero-downtime updates, meaning that
+> > improvements targeting prdm can be deployed via a simple module reload,
+> > avoiding costly system reboots.
 >
->         if (sscanf(optarg, "%zu", &size) != 1)
+> So I'm not really convinced at needs of prdm module at the moment.  But I=
+ agree
+> your above point is a good example advantage of loadable modules.  Also t=
+here
+> were private requests to support loadable DAMON modules.  No one among th=
+ose
+> were for real production use case, and I understand you are also doing th=
+is
+> work for imaginable use cases, not your real products.  Please correct me=
+ if
+> I'm wrong.  But as the request is repeated, if you willing to convert exi=
+sting
+> DAMON modules to support loadable modules build and expose required DAMON
+> functions for that, at least I wouldn't oppose.
 >
+> >
+> > Finally, I would like to add that designing prdm with an extremely
+> > simple workflow -- load the module, set the target PIDs, and enable the
+> > switch -- will contribute to the promotion of DAMON, allowing a broader
+> > user base to benefit from the DAMON system.
+>
+> That workflow is definitely much easier than directly using DAMON sysfs
+> interface.  But, for the reason we have DAMON user-space tool.  Using it,=
+ the
+> workflow can also be as simple as prdm, like below.
+>
+>    # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0%=
+ 0% --damos_age 2m max
 
-Yes, I admit I was overthinking the int overflow handling.
-This is nice, so the V2 should be simply like:
+Where can I find the damo source or documentation?
 
---- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-+++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-@@ -68,7 +68,7 @@ int main(int argc, char **argv)
-        int key = 0;
-        int *ptr = NULL;
-        int c = 0;
--       int size = 0;
-+       size_t size = 0;
-        char path[256] = "";
-        enum method method = MAX_METHOD;
-        int want_sleep = 0, private = 0;
-@@ -86,7 +86,10 @@ int main(int argc, char **argv)
-        while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
-                switch (c) {
-                case 's':
--                       size = atoi(optarg);
-+                       if (sscanf(optarg, "%zu", &size) != 1) {
-+                               perror("Invalid -s.");
-+                               exit_usage();
-+                       }
-                        break;
-                case 'p':
-                        strncpy(path, optarg, sizeof(path) - 1);
-@@ -131,7 +134,7 @@ int main(int argc, char **argv)
-        }
+Thanks,
+JaeJoon
 
-        if (size != 0) {
--               printf("Writing this size: %d\n", size);
-+               printf("Writing this size: %zu\n", size);
-        } else {
-                errno = EINVAL;
-                perror("size not found");
-
-
-And, if no more comments on the rest of patchset, I will send v2 later
-today.
-
-
--- 
-Regards,
-Li Wang
-
---000000000000c0eb4406466d293d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_defa=
-ult" style=3D"font-size:small"><br></div></div><div class=3D"gmail_quote"><=
-div dir=3D"ltr" class=3D"gmail_attr">Andrew Morton &lt;<a href=3D"mailto:ak=
-pm@linux-foundation.org" target=3D"_blank">akpm@linux-foundation.org</a>&gt=
-; wrote:</div><div dir=3D"ltr" class=3D"gmail_attr"><br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
-&gt;=C2=A0 #./charge_reserved_hugetlb.sh -cgroup-v2<br>
-&gt;=C2=A0 # -----------------------------------------<br>
-&gt;=C2=A0 ...<br>
-&gt;=C2=A0 # nr hugepages =3D 10<br>
-&gt;=C2=A0 # writing cgroup limit: 5368709120<br>
-&gt;=C2=A0 # writing reseravation limit: 5368709120<br>
-<br>
-Can we fix that typo while we&#39;re in there?=C2=A0 &quot;reservation&quot=
-;.<br></blockquote><div><br></div><div><div class=3D"gmail_default" style=
-=3D"font-size:small">Good catch, let&#39;s fix it in patch 2/3.</div></div>=
-<div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
-0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0while ((c =3D getopt(argc, argv, &quot;s:p:m=
-:owlrn&quot;)) !=3D -1) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0switch (c) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case &#39;s&#39;=
-:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0size =3D atoi(optarg);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0errno =3D 0;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0char *end =3D NULL;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0unsigned long long tmp =3D strtoull(optarg, &amp;end, 10);<br>
-<br>
-Coding-style nits: we do accept c99-style definitions nowadays but I do<br>
-think our eyes prefer the less surprising &quot;definitions come before<br>
-code&quot; style.=C2=A0 So the above could be<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 char *end =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 unsigned long long tmp =3D strtoull(optarg, &amp;end, 10);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 errno =3D 0;<br>
-<br>
-Also, `errno&#39; belongs to libc.=C2=A0 It seems wrong to be altering it f=
-rom<br>
-within our client code.<br></blockquote><div><br></div>Indeed, <span class=
-=3D"gmail_default" style=3D"font-size:small">since=C2=A0</span>I=C2=A0saw &=
-#39;errono&#39; modified in many places in this test,<br>so to avoid other =
-effects, I set it to zero. However, we can abandon<br>this method and use s=
-scanf() instead, thank<span class=3D"gmail_default" style=3D"font-size:smal=
-l">s!</span><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0if (errno || end =3D=3D optarg || *end !=3D &#39;\0&#39;) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0errno =3D EINVAL;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perror(&quot;Invalid -s size&quot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0exit_usage();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0}<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0if (tmp =3D=3D 0) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0errno =3D EINVAL;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perror(&quot;size not found&quot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0exit_usage();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0}<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0size =3D (size_t)tmp;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0break;<br>
-<br>
-I&#39;m not really clear on what problems we&#39;re trying to solve here, b=
-ut<br>
-this all seems like a lot of fuss.=C2=A0 Can we just do<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sscanf(optarg, &quot;%zu&quot;, &amp;size) =
-!=3D 1)<br></blockquote><div><br></div><div><div class=3D"gmail_default" st=
-yle=3D"font-size:small">Yes, I admit I was overthinking the int overflow ha=
-ndling.</div><div class=3D"gmail_default" style=3D"font-size:small">This is=
- nice, so the V2 should be simply like:</div><div class=3D"gmail_default" s=
-tyle=3D"font-size:small"><br></div><div class=3D"gmail_default" style=3D"fo=
-nt-size:small">--- a/tools/testing/selftests/mm/write_to_hugetlbfs.c<br>+++=
- b/tools/testing/selftests/mm/write_to_hugetlbfs.c<br>@@ -68,7 +68,7 @@ int=
- main(int argc, char **argv)<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 int key =3D 0;<=
-br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 int *ptr =3D NULL;<br>=C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 int c =3D 0;<br>- =C2=A0 =C2=A0 =C2=A0 int size =3D 0;<br>+ =C2=A0 =
-=C2=A0 =C2=A0 size_t size =3D 0;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 char path[2=
-56] =3D &quot;&quot;;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 enum method method =3D=
- MAX_METHOD;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 int want_sleep =3D 0, private =
-=3D 0;<br>@@ -86,7 +86,10 @@ int main(int argc, char **argv)<br>=C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 while ((c =3D getopt(argc, argv, &quot;s:p:m:owlrn&quot;)=
-) !=3D -1) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 swi=
-tch (c) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case &=
-#39;s&#39;:<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 size =3D atoi(optarg);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sscanf(optarg, &qu=
-ot;%zu&quot;, &amp;size) !=3D 1) {<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 perro=
-r(&quot;Invalid -s.&quot;);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit_usage()=
-;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 }<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 case &#39;p&#39;:<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 strncpy(path, optarg, size=
-of(path) - 1);<br>@@ -131,7 +134,7 @@ int main(int argc, char **argv)<br>=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>=C2=A0<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (=
-size !=3D 0) {<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 printf=
-(&quot;Writing this size: %d\n&quot;, size);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 printf(&quot;Writing this size: %zu\n&quot;, size)=
-;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 errno =3D EINVAL;<br>=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 perror(&quot;size not found&quot;);</div></=
-div></div><div><br></div><div><br></div><div><div class=3D"gmail_default" s=
-tyle=3D"font-size:small">And, if no more comments on the rest of patchset, =
-I will send v2 later today.</div><br></div><div><br></div><span class=3D"gm=
-ail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signatu=
-re"><div dir=3D"ltr"><div>Regards,<br></div><div>Li Wang</div></div></div><=
-/div>
-</div>
-
---000000000000c0eb4406466d293d--
-
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
+>
 
