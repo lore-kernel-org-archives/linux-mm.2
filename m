@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C7CE66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 19:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 323D6E67482
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 20:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 417226B0005; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
+	id 4291D6B0005; Sun, 21 Dec 2025 15:14:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393056B0089; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
+	id 3D5E16B0089; Sun, 21 Dec 2025 15:14:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 295A26B008A; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
+	id 2B77A6B008A; Sun, 21 Dec 2025 15:14:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 14ED26B0005
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 821C513AA2C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:27:55 +0000 (UTC)
-X-FDA: 84244463310.13.E818FC6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 02DA140008
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOckPfkz;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19EB66B0005
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 15:14:01 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9810360487
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:14:00 +0000 (UTC)
+X-FDA: 84244579440.19.1BA99FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D403E80009
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:13:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kuX/TvQL";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766348039; a=rsa-sha256;
+	cv=none;
+	b=yyUZfu/EfwHicspBPicYpJEbz6Ez3zVuqSntCfmysxX2AAXXHv0YpgH7zPZ5aQ1WbqyBgg
+	a6zkRZt+O5W7gwijwTMynHtlFTtC0RStkDp3mjBuTFPWxdssRvXY+hgCaMfLDn1NEUMwHp
+	nr14GohE+si6u0FABCr5kqGmSXgr3QE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kuX/TvQL";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766345274;
+	s=arc-20220608; t=1766348039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XF5P03+yZ/wmSfIv4NsJchkT6R+hudfbrvRTHo7Ymgo=;
-	b=Fk9usFheeIexw0S6PNQa7VLX3QWFUNwV08d/Cobs4jcH0iholERgfvwzHzo7rVO5SDnt8Y
-	Pbk8e4rkxkap0ier8HL8pkPU09gdX/JV/q3XkXj+XwhyR1qHuJBRTP2JlRgfcStZy4mIBj
-	LOLroQLNJGy3KjNZeyPTYHQ/zvimqZ0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOckPfkz;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766345274; a=rsa-sha256;
-	cv=none;
-	b=aiPjXlIv66lqeOBA+cisR+eXweMe4AhhsfPStuMTAsG4s5jscFZCQuvlvfE8pozUnmCZB/
-	5KxG1HF+EIGIPlU5lXNV99+ei1q82F8huPcf9gbS/8BSAkhsKWEoCKaIz2c5fZqWgwDnxM
-	ixwrKsov/T/vYmrvv0d/poHvThqZrOY=
+	bh=vbm3z4zslDrScAekO/OwXXraHE47l47wQQeDYgnF+FY=;
+	b=J1Q5yIY+WeNoEAd29sPxJ9bwEJzKavbXGiLM4fbNREYOgSlCnTv2EHY2FCywEoTzPDKGDu
+	DSJ3busDjmkpp7/rM393hZXcj33A582VFG5j9O6HHMtN8Eb5F/JImo831j98s1lrlJH4Sx
+	nhLWeRnYEgRfiGFR0nmgLqxIo7aKV34=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A738600C3;
-	Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0983DC4CEFB;
-	Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AC05D432C4;
+	Sun, 21 Dec 2025 20:13:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4ACC4CEFB;
+	Sun, 21 Dec 2025 20:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766345273;
-	bh=7F4TPMVb6bOzlf1ttXAT3unF5sWnabnhKyb4rPY4OUE=;
+	s=k20201202; t=1766348037;
+	bh=L+HwWcueprOkDL5bY7kcoLnxKlOmqZ8wBaIYvEpHcuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOckPfkzVyDWVRPTUlGTXT2Y5N9C+tgKYm06vcUwNmzBNR8STdiHzelZhq4zyio7C
-	 dB01Bh9JO5Z5/IHCtKN2My5ZEsIJB67JdsH5rhqQwlpBCejHkxeIioVOQamYxl5Pce
-	 foeevengrQikpbKOOqbS6Xe9IJkxY7gTabg65Br1rHyrlMyT/XbtTsV/KnkDG6kaXY
-	 /wrFYyzZzAwILKPHZTpIZ1P/GZJbvLQWDlTYGVRzY5owroIzhi2EVSydOqC0ZB/ltR
-	 IBN1ZJM/OVayWl551QQINU9itAVnmCVUc3Z9sTvf0EhCiEJRLr6sdYbcrppgrt3RMF
-	 zQ4l73tmWnypw==
+	b=kuX/TvQLnJs6M4/+yEHXi0Kh1zn/tvDGxyP+FaKLIRHkm/dXlUV6+HMfUlkr5ZBgh
+	 AhYF/edfKH7iXkes8p6TZmi2R+GH/7wLWpyPeDhUKuM/a/f+oI2ferqyox3fz6pTGj
+	 PBiRaO1ROoOYySERM3/+8nFn3wjdhRlPPQkLgLolOcWqWBywEKYZ+qU8jSaQ/0oiqH
+	 VCkvuLgk+BDlRdrDHEIS33hx1m46lCqYi96VWgGK5yh/QACqozxMouZ8hYZLRLbaJR
+	 uuqeYmlgKQV0W72lDPX5DqnEwBwS9ikpbpN9Is1XMb80/FI6c0xIpIcXHo0ss7Sd6+
+	 Y7fKPAcLx3T5A==
 From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
+To: Shu Anzai <shu17az@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Enze Li <lienze@kylinos.cn>,
 	akpm@linux-foundation.org,
+	yanquanmin1@huawei.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
-Date: Sun, 21 Dec 2025 11:27:50 -0800
-Message-ID: <20251221192751.42586-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and remove redundancy
+Date: Sun, 21 Dec 2025 12:13:55 -0800
+Message-ID: <20251221201356.43083-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC4opA5kdX0c3RrUL0g9e95JJb5hr=ZaGS7FGoQ-nxgF3Q@mail.gmail.com>
+In-Reply-To: <20251221130114.1483856-1-shu17az@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 02DA140008
-X-Stat-Signature: 8317emed77e6649rgo6phw31we5mfuob
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D403E80009
+X-Stat-Signature: qzwxajxjnrx9ay7i79m6zag4giy3ctq3
 X-Rspam-User: 
-X-HE-Tag: 1766345273-727764
-X-HE-Meta: U2FsdGVkX18r5SHXcvkgZlAZDl8shPhgCRmNvcZ8uN8kSb+H9G9NVuvp42RdAsTHF8tNMapa6yT41awfCjjlAX47+x2khQjXNBDp/51NZ7oaLQuHwkem3i5fLqNmrAWMRh3rwhy42osI7fiVgXr2XaaGCVkjXbwQZyqdwtvnqaaUoCDae+79T+3RP78+KBr6v1G48kIWa2DqovwBDu+Wxge20kAJLvoxAWYBq/KKn7btL04LVn56a/5iPw4+ocmNTMcVfTigL/h3HFB2WWvcP65WLgGIF2C5H7p8MJRrnNJnZvBmBXpNYna7czdapM1pnMwCD91CCETG8cPmwD5qTPC969d+PLrIj15MB93z2ZqXcmmmXvieu6v+Og03EQLKuE9yKwgr3PL8YgkLiCHqxXnGckVt4PKfG2wz3xTqEPSPlF/ExFMYiSSj0FhfYKESHUsQ5bcbVig/dCmTbo2cFODYpIB5Ehtf/OdFyQWvfr8O3NyXe9xqoo48m3JzTHuxDrXnlyRtflyQAageQK2UqS4OvyxiZxq5ZSPME99uUMCWa0ej9BUgd+AFwTXWwwH0YK7IKr0jc1yNjkFlQKp6caKq0pyJIpYKFNcjGjdjJm1dtF8+dA05hz0vSLyqQdwof/jD3p2A91SnP0xMhXH3WjGsRoSYsd/iaSHd6bJ8nOJoYbjxCvvutor/1mNhVA0e2F96RFS0s2By+nrEP8CUGK0z8rf0A4NqNN0fKHMvZ+CMfk+pFJopGbsa11/XmkROBfKi9wCCxDLxYpvxD89jYO1B/AdKuVLN04mauYKJCXPckVutn9HTw1BY+WslHmy13uoZg+I4LXrpXJW7isznDS1SghSGDDDcxRQYFD2bvlL/SCA6u8tCDHEQ8QaHYEYzqu2Jm6+mNKWZBndX4IhLCYHZEIOvN+VGkAICM/tZYEKffaBjL37krCyf9eulqYiDUW/YpUgrpLoK5MqI7YL
- P9kn/Wqv
- 4uSx9j9U0h7lLwIk2YeLmUqnMFzZD6pb5mwuzn9GS06F9OEl8yMlrfG0ymhcKZDC/RsrWxCh3NEJHn5FkrWTgB8uz0qMoAlduF0XAKRTe82CpbKoyyNWjdMHXvpWmDzCmzjMQbXGJZabzSWBOnVofzxKKNLjIbzRx0b8tBAzWIi7u90GTfNEer3PYLNXkLpEiKclfvcVLLb5qO99X83Ces6Ok8cLiFUN1N4Sb/pZbJvVhYwfSepsbkX4G09BeH15+2LBDlujCB9bI7KGNj2ZN/nC3HA==
+X-HE-Tag: 1766348038-383398
+X-HE-Meta: U2FsdGVkX187VBBUrs4cAYWC4xZ6JYU32adEKTz8e5IAmOHuo/k1NJMkxx9bWslZRLkR/9Sn+WOYTBaQ4apTZ2D/ckIzJsWnxqe26mJqDvvpVa5/vo3iu4VBouoMNiVSX2aNjQMGfhzGj81GgnqN9jA17b13uDMCNaZDW/sCLlfDa7BFfKgBvuGThVRm2f2fwyMoz70tFB8ts7jdqywn4eGexBsssV245HuMD0Dm7sLzxqm7qNubm/d6B0weg1D2TcYvCahOGP9Rg0tcxzRTPVmhTsDHXcODjk8/KBOAtdadQ9pGGPY7EZjkOyrc/AAznqTWZMCyvpw7CpBfC183syJmaTD6sSHL/Fh76NrTQDgPMffRjhqD88NfHQHQocuTke37asGbC4uIq0F4fNputOv5svmhwF8mweYEvYrgf9Yy/I5UxhaJrbXSk91SchRlRYCnKHBvl2k1rbCODUIKATqut9RYMDArIYMDpYJcaxvibahRruLHXZ8O8qKdO1oKeyZifBTzwHrlfhcQuYOywBQNGcubYBIHOYGU+k27ISwReJdBHKNXnHaHiudrKJ29W69kca6e9yDmsm0/9bvPx1W6UlCRih/TfwaGID8WmHyeuLl2ondl6c6B+gmFYrXD12NTDJtXSfNEDQkxQTs7cySb0JqOdPTyR5htwir/4zmyYgrn5wn0ZBK/3m3B/QReMGPovP38fSG537uKF2sux7IV2jdLqduw+o1WvY2KVRyBuWjrOYACKauXJGsF5s6TAudELQumSkbHAWx+BxwpPrejNZRK+/wa+exEdcVNDS/cyDUASFLacIxxKUPng9NOEaJB0Z4w+1TBYhPb9OVIO+1vmfBHFNQFhU/FAGJFnezrhRsbpT11ZE11sJTLv91X89+gfggqW5kNTXgTCNog5GIdtkRYU5tbtSVtC4+0E6kvmd/28tX0Ov6IYIcwFGE0tGSnhb8TxbBU6zo6xAS
+ ZbDRW7Sy
+ zsyQo5ZA5RAHbn3lP4L08be7y2p38W92y63UNGhEoRFQk3n9yITRUcE5SdGNeADVeBj0NsVtYbu55dn2o0bAI3TP3Ng0DtPH5OC9U/ZOnGSJGrBclzG0aAHpVYJO6q/skeqvTuHQdvfHwDtRDfzDWw6Rp/gZOB3O8lJ8NkuEQYOVuy0+mKS9Fzklj1oPqCniyk9MOtohsA8gjkEVKKKr6MEuLMyzcLpjtbh+Jp2NYk2V5GNw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,136 +95,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 21 Dec 2025 20:04:23 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+Hello Shu,
 
-> On Sun, 21 Dec 2025 at 17:12, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Sun, 21 Dec 2025 11:42:43 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> >
-> > > On Fri, 19 Dec 2025 at 21:52, SeongJae Park <sj@kernel.org> wrote:
-> > > >
-> > > > On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> > > >
-> > > > > On 2025/12/16 07:16, SeongJae Park wrote:
-> > > > > > Hello Enze,
-> > > > > >
-> > > > > > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> > [...]
-> > > > If runtime controls are essential, I think using DAMON sysfs
-> > > > interface or DAMON user-space tool is a better choice.
-> > >
-> > > I also think the current DAMON design structure is suitable for DAMON sysfs
-> > > and user-space tools.  DAMON sysfs can run multiple nr_ctxs, so I think it
-> > > would be a good idea to consolidate it into this.  As Enze mentioned, DAMON
-> > > was originally designed as a kernel loadable module,
-> >
-> > I don't recall where Enze mentioned so.  Could you please give me a pointer?
-> 
-> Although Enze did not directly state this, His patch is a loadable module,
-> which implies that it was "designed as a kernel loadable module."
 
-Thanks for clarifying.  I understand you are saying Enze's prdm module is
-designed as a loadable module, while you are not saying about other parts of
-DAMON.
+Thank you for sending this patch :)
+
+On Sun, 21 Dec 2025 13:01:14 +0000 Shu Anzai <shu17az@gmail.com> wrote:
+
+> Add some missing test scenarios to cover a wider range of cases. Also,
+> remove a redundant case in damos_test_commit_quota_goal().
+
+Seems this patch is making more than one change to multiple test cases at once.
+It makes following which change is for what purpose bit difficult for me.  I'd
+suggest splitting this into smaller ones that making changes for each test
+function, and adding more explanation of the changes.  E.g., a patch for
+damon_test_split_at(), another one for damon_test_merge_two(), and so on.  Not
+a strong request, though.
+
+I have two questions below, though.
 
 > 
-> >
-> > And I'm not sure based on what you are saying it was originally designed as a
-> > loadable module.  Maybe you are saying something before DAMON's mainline
-> > landing, but that's quite long ago and my memory management is not good.  Could
-> > you please add more contexts?
-> >
-> > > but I was curious as to
-> > > why it wasn't run that way.
-> >
-> > Maybe I could give you an answer if you could give me the context that I asked
-> > above.
-> >
-> > > When executing the damon_start(**ctxs,
-> > > nr_ctxs, exclusive)
-> > > function, nr_ctxs=1, exclusive=true is passed so that modules are currently
-> > > executed only one at a time.  Therefore, there is no point in running
-> > > DAMON
-> > > as a kernel module, since you are not running multiple modules simultaneously.
-> >
-> > I'm not following your point well.  Could you please elaborate your point?
+> Signed-off-by: Shu Anzai <shu17az@gmail.com>
+> ---
+>  mm/damon/tests/core-kunit.h | 51 ++++++++++++++++++++++++-------------
+>  1 file changed, 33 insertions(+), 18 deletions(-)
 > 
-> So far in my view, I have analyzed DAMON as follows:
-> 
-> DAMON core  <---------> kernel module   <------> damo(user-space)
-> mm/damon/core.c         mm/damon/lru_sort.c
-> mm/damon/vaddr.c        mm/damon/reclaim.c
-> mm/damon/paddr.c        samples/damon/*.c
-> mm/damon/sysfs.c
-> 
-> Above, lru_sort and reclaim are DAMON core characteristics, but they have
-> a kernel module structure because they are executed with module_init().
-> I personally think this is inappropriate.
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index f59ae7ee19a0..e9ccc3fb34f9 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
+>  	r->nr_accesses_bp = 420000;
+>  	r->nr_accesses = 42;
+>  	r->last_nr_accesses = 15;
+> +	r->age = 10;
+>  	damon_add_region(r, t);
+>  	damon_split_region_at(t, r, 25);
+>  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+> @@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
+>  	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
+> +	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
+>  
+>  	damon_free_target(t);
+>  }
 
-Could you please further clarify why you think it is inappropriate?
+I understand that the above change is increasing the coverage of this test to
+also verify the age of splitted region.  Nice.
 
-> Additionally, currently, DAMON is
-> executed only once at a time according to the exclusive=true condition
-> when damon_start() is called.  In this structure, I believe that the meaning
-> of "kernel loadable module"  is non-existent.
+Correct me if I'm misunderstanding the intention of the above diff.
 
-I have to say I still don't get your points.  More elaboration would be nice.
+> @@ -190,6 +192,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	}
+>  	r->nr_accesses = 10;
+>  	r->nr_accesses_bp = 100000;
+> +	r->age = 9;
+>  	damon_add_region(r, t);
+>  	r2 = damon_new_region(100, 300);
+>  	if (!r2) {
+> @@ -198,12 +201,15 @@ static void damon_test_merge_two(struct kunit *test)
+>  	}
+>  	r2->nr_accesses = 20;
+>  	r2->nr_accesses_bp = 200000;
+> +	r2->age = 21;
+>  	damon_add_region(r2, t);
+>  
+>  	damon_merge_two_regions(t, r, r2);
+>  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+>  	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+> +	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, 160000u);
+> +	KUNIT_EXPECT_EQ(test, r->age, 17u);
+>  
+>  	i = 0;
+>  	damon_for_each_region(r3, t) {
 
-> 
-> >
-> > > I'm doing some more research into why we run modules with exclusive=true.
-> >
-> > Hoplefully commit 8b9b0d335a34 ("mm/damon/core: allow non-exclusive DAMON
-> > start/stop") will give you more contexts.
-> >
-> > To summarize again, the intention is to avoid kdamonds interrupting each
-> > other's access checks.  For example, suppose the DAMON context for
-> > DAMON_RECLAIM and another one (could be created by DAMON sysfs interface users
-> > or other DAMON modules, say, DAMON_STAT) are running concurrently.  And if
-> > those pick a same page as access check sampling target, their finding of the
-> > access on the page depend on a race condition.  To avoid such a case, DAMON
-> > modules call damon_start() with exclusive argument set.
-> >
-> > Maybe this is unclearly documented.  I will recheck the documentation and
-> > improve it to make this more clear.  If you find the rooms to improve and have
-> > ideas for the improvements, please feel free to send patches.
-> >
-> > > One more thing I would like to add is that I think it would be less
-> > > confusing
-> > > to move lru_sort and reclaim to the samples/damon/ path.
-> >
-> > No, I don't think so.  Those are for real world products, not for samples.
-> >
-> > > And it would
-> > > be
-> > > a good idea to organize the core sources toward
-> > > mm/damon/modules-common.c source.
-> >
-> > I don't find exactly what kind of reorganization you mean.  But I agree there
-> > could be rooms to improve in terms of the files and code organization.  Any
-> > suggestion is welcome.
-> >
-> > [...]
-> > > > > Finally, I would like to add that designing prdm with an extremely
-> > > > > simple workflow -- load the module, set the target PIDs, and enable the
-> > > > > switch -- will contribute to the promotion of DAMON, allowing a broader
-> > > > > user base to benefit from the DAMON system.
-> > > >
-> > > > That workflow is definitely much easier than directly using DAMON sysfs
-> > > > interface.  But, for the reason we have DAMON user-space tool.  Using it, the
-> > > > workflow can also be as simple as prdm, like below.
-> > > >
-> > > >    # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0% 0% --damos_age 2m max
-> > >
-> > > Where can I find the damo source or documentation?
-> >
-> > You could use https://github.com/damonitor/damo and its README.md file.
-> 
-> Thank you so much for sharing.  I am trying to analyze the related contents
-> in more detail to improve your DAMON.  I'll try to organize it a bit better
-> and send you a patch.
+I understand that the above change is increasing the coverage of this test to
+also verify the age handling of the merge logic.  Looks good!
 
-Looking forward.
+> @@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
+>  {
+>  	struct damon_target *t;
+>  	struct damon_region *r;
+> -	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
+> -	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
+> -	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
+> +	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
+> +	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
+> +	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
+>  
+> -	unsigned long saddrs[] = {0, 114, 130, 156, 170};
+> -	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
+> +	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
+> +	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
+>  	int i;
+>  
+>  	t = damon_new_target();
+> @@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
+>  	}
+>  
+>  	damon_merge_regions_of(t, 9, 9999);
+> -	/* 0-112, 114-130, 130-156, 156-170 */
+> -	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
+> -	for (i = 0; i < 5; i++) {
+> +	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
+> +	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
+> +	for (i = 0; i < 7; i++) {
+>  		r = __nth_region_of(t, i);
+>  		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+>  		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+
+I understand the above change adds two regions on the test input, but I'm not
+following what logic it intends to additionally test.  Could you please
+clarify?
+
+> @@ -269,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
+>  {
+>  	struct damon_target *t;
+>  	struct damon_region *r;
+> +	unsigned long sa[] = {0, 300, 500};
+> +	unsigned long ea[] = {220, 400, 700};
+> +	int i;
+>  
+>  	t = damon_new_target();
+>  	if (!t)
+> @@ -286,14 +295,19 @@ static void damon_test_split_regions_of(struct kunit *test)
+>  	t = damon_new_target();
+>  	if (!t)
+>  		kunit_skip(test, "second target alloc fail");
+> -	r = damon_new_region(0, 220);
+> -	if (!r) {
+> -		damon_free_target(t);
+> -		kunit_skip(test, "second region alloc fail");
+> +	for (i = 0; i < ARRAY_SIZE(sa); i++) {
+> +		r = damon_new_region(sa[i], ea[i]);
+> +		if (!r) {
+> +			damon_free_target(t);
+> +			kunit_skip(test, "region alloc fail");
+> +		}
+> +		damon_add_region(r, t);
+> +	}
+> +	damon_split_regions_of(t, 4, 5);
+> +	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
+> +	damon_for_each_region(r, t) {
+> +		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
+>  	}
+> -	damon_add_region(r, t);
+> -	damon_split_regions_of(t, 4, 1);
+> -	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
+>  	damon_free_target(t);
+>  }
+
+I understand that the above change make the existing test scenario bit more
+complex, and cover the alignment.  Looks good.  But
+damon_test_split_regions_of() aims to cover multiple scenarios.  Your change is
+updating one existing test scenario, so I'm bit concerned at the fact that it
+is removing one test case.  I understand the updated test scenario is including
+the old one, but I think keeping the current test is also ok, as long as the
+maintenace burden is not that high.  So, instead of modifying an existing test
+scenario, how about adding the new test case?
+
+>  
+> @@ -574,9 +588,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
+>  			});
+>  	damos_test_commit_quota_goal_for(test, &dst,
+>  			&(struct damos_quota_goal) {
+> -			.metric = DAMOS_QUOTA_USER_INPUT,
+> -			.target_value = 789,
+> -			.current_value = 12,
+> +			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
+> +			.target_value = 234,
+> +			.current_value = 345,
+> +			.last_psi_total = 567,
+>  			});
+>  }
+
+Thank you for correcting this!
 
 
 Thanks,
