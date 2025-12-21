@@ -4,96 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF5C8D68BD5
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 10:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C90D68BD5
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 11:04:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD55C6B00C2; Sun, 21 Dec 2025 05:43:53 -0500 (EST)
+	id 4E1A26B00C4; Sun, 21 Dec 2025 06:04:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACCD6B00C3; Sun, 21 Dec 2025 05:43:53 -0500 (EST)
+	id 4C22D6B00C5; Sun, 21 Dec 2025 06:04:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE3AE6B00C4; Sun, 21 Dec 2025 05:43:53 -0500 (EST)
+	id 3F8596B00C6; Sun, 21 Dec 2025 06:04:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ADEA66B00C2
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 05:43:53 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AFAA5B344
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:43:53 +0000 (UTC)
-X-FDA: 84243142746.23.91E0338
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 362CC14000E
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 10:43:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CWhqflV4;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C8B26B00C4
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 06:04:38 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D50801333D
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 11:04:37 +0000 (UTC)
+X-FDA: 84243194994.27.3C3B390
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 19AD316000E
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 11:04:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I5J8GwAf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766315076; a=rsa-sha256;
+	cv=none;
+	b=mczB/o8CTnzoJqVDaAtFPS6UY/6sEDiVfe2D0urxS8e6BDQ7vwRLPhMK1LOn6fQRi/AlEn
+	d1gim2u9Mw6Tc1wR+JNbDQcZ2UWjqafBwIi/qpks+TxaOw7iBoyFO/WpGOzCljq+HCYGzE
+	p67m9N+WC/B0xMp4aai9XDfEivnt9Ag=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I5J8GwAf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766313831;
+	s=arc-20220608; t=1766315076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/nJw25aoa6JK8nypoTwLkmJKFtsfe7JaJlTBhslbOk=;
-	b=QMVgEqRzFbyNH79/VF1VisVaJ7h+WP5WrgESdd/NmLFkfo4Q1VbEtMcGASU2ZgMdlSjbWu
-	sMKSLwpdYDFu2AL+p/+3uLcYT5lu91f9sRvNo7affhbHdNXuj50vdg2Au70zlXxFW2iMd6
-	qcwJ/KYoMOrqhpPAhGVedY7169G0bHY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CWhqflV4;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766313831; a=rsa-sha256;
-	cv=none;
-	b=0ufCq7cpZHVlC0aEESfBWOZHf0k/qG9B60vO2tb/KQkdSHTEWdLvgY/oJ8tTirJt1hY76S
-	jMOA5bA2jHRpZ130velu+oKQlFrYwYmKpQmYnE/a83nFypKD76uCm846QcnSFg3YW4MDWt
-	m71Yq4sHrHuryzLTHHTP9Yhw0Ksb2yA=
-Message-ID: <90c1ff67-46fb-4ddd-9bdd-43633f89dda2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766313826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d/nJw25aoa6JK8nypoTwLkmJKFtsfe7JaJlTBhslbOk=;
-	b=CWhqflV4t5sakvP8LVfvQLFJPUtApAiiqmvV0P8zoWeb8DX7MR5Iv59vb1r8AvOQvLi+dk
-	d6wSA9+/L49daP6cNHmR3BWi7PRdBT1dNfmGLkiimtSAJNAgd7gRUFe+4IleLoukOg9bEm
-	gA3HS59ZiYQcyO8QMu/kdTosDXgdahA=
-Date: Sun, 21 Dec 2025 18:43:32 +0800
+	bh=HSwYcxorWh4XDBwCG+RMDN991xiQ2HYSQWjQd/bUtbA=;
+	b=bXySe8uPNCzBWGssAgdo8mCRgFttBxtcVi/SjoK9e1HkwgIbhM30Pn89BPmRJf9lTIfC5F
+	UX2Za73rYxue70owMVNcmSariNo5yM5GA9GOJv88IRRmOjMnsSRt24eJMY0qjP57sCz0Hz
+	TFpaOvhd9lI1G60K2BVLchwtfs6NwFk=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7881b67da53so25242287b3.1
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 03:04:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766315075; x=1766919875; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HSwYcxorWh4XDBwCG+RMDN991xiQ2HYSQWjQd/bUtbA=;
+        b=I5J8GwAfHBT0JQwrGzG40qWFyeMYCSzSaFrD4Cks8kyiFxvBMN+DpR08JdvmLGa+uh
+         r/xz5FX7ZkAXSyjjZmYsOUdbA2twnuN7X6qk4F/tNsBddASkOk4qY7oFCnD4xZESDyPX
+         VnX1addbqFlxkSx0yDhIqtshQ1n3UK6Slvy5eCDfRJKxSVyMxFLdYhOd7dPMm+Kqomar
+         n7mCToHl7qmI39TR5YQgx4aaKajfjqpG80/O3wmN7yc1l3rx14vYyb8VNhqkJQszOVTN
+         eDR24pLp0Ut5cYDxkWfROR8I+2ybpuyO5A/xu9jLfTAwHiKUaS7YU2ekfFvavjEOy8Tg
+         aPSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766315075; x=1766919875;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HSwYcxorWh4XDBwCG+RMDN991xiQ2HYSQWjQd/bUtbA=;
+        b=LmW03tZpACsl9WVjqEqhxjPI8mosb5wHcn4y6JZBqLyXt/oP8J3iZ1jFpPfOEnhLcd
+         eiaVvIq1Ac3yvRZMcVbxkkvUemEWO21cp7XyEBmvymaTLXbkaD+yYdszE7/6fdz9xv9i
+         luiRCEc8nXTaqLKwYZAexaoFux9+ysEMfkZr8gYQ98pAKkX7hO3Ur3kaiJTw6eyj6ikg
+         QJ68d3+VsF9dANCvYQLHUGEx1w1Ii/9VxjUXr/N0WN1fZuexy1bwAxveKrQEn722+vrZ
+         czAwVyEgl8OZ64Ef3H8ESKm3WYT5fXqTiKfEdwtLDSuuU5zFluxr9ehcglsyCT8DdmTV
+         W8xA==
+X-Forwarded-Encrypted: i=1; AJvYcCVg33OpTMuB600PzJphka9QxWZ8jRYK4sq9WEro4WmivdasfW/qZK7agCi3KqAVFMbV/JImLc/hcw==@kvack.org
+X-Gm-Message-State: AOJu0YyJHsDv3HtI89QCHGCHs+zL+DuXQcxvLB2WYGF5WBWJQRxuvKEM
+	fhxLhezVMeVG77rhKZUwKgSAG+s6JMxzQZ6xf5Ey5puj1wCSQ8+3mudDP8FlDPQiGIaqlZFTddE
+	uyuCq4M3GfaRUKucdr9UzE4/uMEVUg2w=
+X-Gm-Gg: AY/fxX7I2Le8Z5LdhI/Vz+5zrakxYtqaMvh9ogd1NUJlJ4OGZF8nx9qjSA9MLFLKXFy
+	Jk68I7sXv2rWTudrPamWyxAO6ZU7r6WshGTF05dwdkp5HIF7sOAcdoS924dTZ3eqJnHO8c2Rx80
+	0HnM3DVaC6eAgeawqnlAkrsoj5XlAPG2D7ixq4kyF5d6bLsfhKmE3PMTZU7wmZKO0ijzL5u4LLT
+	dSoskjcJfRUkIK/OzGhUHy1+jHklIoh+Ly//YVRT/TWe4E8bXTgvnbRLI3JCgpmzftStpm1Gy8r
+	MKupsXs=
+X-Google-Smtp-Source: AGHT+IG2Toq9qnzszzjdL+98B2Dr0jFCu0YHg3Tjd/aDjfzvUu0GkQ62iWiS7373LlpJYGVJK3BGOt9VJWAkIY+a6BQ=
+X-Received: by 2002:a05:690c:c4f6:b0:786:5212:4a7b with SMTP id
+ 00721157ae682-78fb4084d8dmr69652507b3.58.1766315075027; Sun, 21 Dec 2025
+ 03:04:35 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [PATCH RFC 3/3] mm/khugepaged: skip redundant IPI in
- collapse_huge_page()
-Content-Language: en-US
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-References: <20251213080038.10917-1-lance.yang@linux.dev>
- <20251213080038.10917-4-lance.yang@linux.dev>
- <948d425a-2d6e-4439-a280-0ca9e7521b13@kernel.org>
- <6fdf89ee-3f6a-420f-b4d6-b03e3e2c8c9b@linux.dev>
- <6dcfeb2a-dba6-4de9-ac1b-39312c6bbcb6@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <6dcfeb2a-dba6-4de9-ac1b-39312c6bbcb6@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <CAHOvCC7=t0iHEC-BQPZcF+KiKcc2tVyxNOLMifZQ=JwH2GwFpw@mail.gmail.com>
+ <20251221081227.42071-1-sj@kernel.org>
+In-Reply-To: <20251221081227.42071-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Sun, 21 Dec 2025 20:04:23 +0900
+X-Gm-Features: AQt7F2oEjHHI5p4OWYHfOqEy5bd0bgpAsDaewTxzhRqzUDMezd9tbvBE7MH7ytE
+Message-ID: <CAHOvCC4opA5kdX0c3RrUL0g9e95JJb5hr=ZaGS7FGoQ-nxgF3Q@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
+To: SeongJae Park <sj@kernel.org>
+Cc: Enze Li <lienze@kylinos.cn>, akpm@linux-foundation.org, damon@lists.linux.dev, 
+	linux-mm@kvack.org, enze.li@gmx.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 362CC14000E
-X-Stat-Signature: r1b6se1m5j9bbx18x777n5tge9g9hfx3
-X-HE-Tag: 1766313830-871016
-X-HE-Meta: U2FsdGVkX18/PEUaFb7ORSQIOXfFW8gF8OqdfJr0aFEMVfraBw5oOGt919L2a2pDO6onQviyVT9RcOBADsoz9XOW3xRDz4sHDgWFehNE75kjmnTjKosiq096mpQ6BJfNR/wHuKvHfIUWC2S7+Kn0cxN2ZWeRTmpHACD8i5KuK9p+m5qONrtr5TyH8ET46Y9Iy/rqixcIKa+gSXLMRD8BjdZb3KgaE2R7m1wz21jFs8DHzLIlF02xKOkm5keVePuvov0iVF5D25UxaKhLVjeCwXGtRyqRsva8gwWh5t6oAgdWNEIGgF2FOVmtSEfXD0XSQ/A1qdWzrvTY1ANZalFy3V9FeFd+rmLXjQAO0cDfgDGE8PrGcUtmt61X+2sGizmQIaNe/GIvIorrBqiocTMTmgUgIuUSkmQju6ktM/nLpvX1SsooN4NE2xvR3uxCAhBKQ4xkQZW521MEYe18CZGewjakWl6dtkbsmh+QFQBWY5sWQKdLTuEC0AhUUeJ2t5F0jG9syRMgbPympcVdeAw+gUSZCw8qgQ3A3q+EZrsYpVCL8Oak/qcgfIZw80vGK1/p8wQ7/F+mfps/vHGSZT68qu6f6P4BXwekCTKwuie9ZWVuEzq3p951/mAHKTKxjusWqgjtVyAUhNjYJBVDkhOe2wamxVnqp4vkEAzYaHgRpeI+4spB5Jl3zWGt7rfHyBlUKmOiqtDlGoT96Xy5XXkrMCEhCGUSdG5AgX1PFaEmsJeRNoJLSUsvktRTr3/8/jTmqxIW0dB48S8VBBFuL4OP1G84s2Al+Ph/qrhxvTN0GBr6htDOFnshApmSj1xfBi3KSj+k+ObCd/uqgFKzDcXBN6iqyt235VmiFqbqzjS2LEqHEzFrN0Ps5a9ldqJxP0vt5C5YmzBPq/wDdrhkSrJ+4c7SEBeQ19k8sH8oSeHejAN4K5qdyQIxs6JN6DYbxgdYdNL+Y0Cr/V/AXb/kCI7
- l2DpCv1H
- T6SSisNftbrqViAdp32BJDspOC+NAxaHI6tLU8CL9wIuSayBkDyPnKv76KLLJsRBS0VZ7ble3I5nb5LYyjSCaD0xtPr5Pmf38TAKQesKCcMCZ9R4OmCYMKF7rpzY0Tk+e5kcGm7tUs+kJvSopTbBpxXMYMqaJD86HpVJMBdZaAXQioPEGqAQxywb5Yel+eujf/QwQju1PCLF/GSHDUGIx7H8Ndo8esr7jm8edkhCLSOU5OXlaAZDP9KhaslAFvhFlw81a5pcJnSmm4z9DCHKr7EEAiejXQ9XNKp4EkyE1x98x74b6djRu9ZuhtA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 19AD316000E
+X-Stat-Signature: dgjo7gczrq91h4w19kj9ufk977ipojqy
+X-HE-Tag: 1766315075-14372
+X-HE-Meta: U2FsdGVkX1+k/f/jCyIM6F95d1iYkRezXYnnbEJk6ftpK+7DTKB/BOsf1slr6aTiEaOBkAzpF7YpHpZYQqg9fvIQ+7YT3w8yfvDEQBiy83/k/bvJ0Tysi21YA5zEfc8Z/poGdt6Ttgs5owL1CTkSI/dRbrfNqd/46t2jbmOMELwmTUTfwpWRuC8+v9B7lwmm+sdSx9eAPppr32Bds0x+ufLog0DBd8S7SXEdqugXTeubPj4imPMywdjodI7+4u1R2FeIRHspzC+L/svGmFkcxsOCGzTWGckH5KCyfGO5th1I4zBvUZ+yaoHe4xrdImfdSumUzhR8ITGYUB8WxT/TYiuqm4lARusNnKuNFIDA5hmjqLEhCC9o3HO3Gq7fwfKI568ecSMrToLbQZGGJgvdPSbu7FoDfX6Wj7ynJutTwWmOaYgTEsE13bpunTAoei0zrqXIK3KMihhmb/AIuDytnF2cYGf5Dd+UuIpfiJvw+JkiB4KaEXnqZvgbB7qB91MyH15kQZehUvSj9OGkFjc7hzfqM1Y4MWL+lWHfMownxliAsQbncUv+1NEyv983BknzgEiQaYVSDuCCoPqDrA42S1CGQIDSe3dKilcJZlBrIxCq6hdkOgFpBaawcSarylpBZSVNn5I9gOUOLDuQ4bpqpSwRfz/ORs65REKrV2y4LAx1sMsruXMgb3/GcHhvWiijfcdPggLozdycym6alG/to2YecEcKvYRm3DYLl+jmO7r7dr4fbYW7WLU1XtoXsse0Le2Ze0rbio/e2RIGhDgRdbtvRjY0Q8kH9wji8rDGcGAWDb15dgZZpb5o2dGDcpfTGL2g3uKvsLygSaeIP2CZGabyBHRfb4Z6/3Ydh7MVZu+BPDFwwSelQZtE7YyJFZNSx2ipaS1lFJn79mfElqDTm/Kvg6LFdPFwXXKDKKxDFOHDwk8DPePV/7t5STCuQVcccF2XeGaJua5ZXdfTeJj
+ fnTMBNd4
+ Na5RcCdEctbomk0xzBhXs57KMAlz0Zv4W7V8AXunGBstz41XlQbxNibl5Nf29v17z3Id5Zp6Jn1TQmoSGAI4K2ZNmU/B/an39MGBcEBYIlJWDIVWNy+nB0igZO1o5kITaXnEj6XQlOT4lV4gGAYDA0y8MOCBrfKqtjxOFo1eRkyiYGyIddS1RGKGQGTrq6ABwC6fcRQLIosXb8M0PXrMTFpcmT9A7Uww+OgypONTqZ/0Tnh6eub0rUty0YHtBoHLb+5ibb6+fZsZAzjP8xb43aqNKAOJsR0rPKWTo/CkD+fCkCQIvb/9W6yPBzjqbrQUm23blR4MtPPtDwjQTP1N+ycQKunv0XQ5OTVwneGx6yvqeunqYrM0wSxjexZwhHGIN+lau5Atl+MdZ81AUn0gkI499Qmd9rnzo6XBYJQlHI5aTXiY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,155 +115,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 21 Dec 2025 at 17:12, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Sun, 21 Dec 2025 11:42:43 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Fri, 19 Dec 2025 at 21:52, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> > >
+> > > > On 2025/12/16 07:16, SeongJae Park wrote:
+> > > > > Hello Enze,
+> > > > >
+> > > > > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> [...]
+> > > If runtime controls are essential, I think using DAMON sysfs
+> > > interface or DAMON user-space tool is a better choice.
+> >
+> > I also think the current DAMON design structure is suitable for DAMON sysfs
+> > and user-space tools.  DAMON sysfs can run multiple nr_ctxs, so I think it
+> > would be a good idea to consolidate it into this.  As Enze mentioned, DAMON
+> > was originally designed as a kernel loadable module,
+>
+> I don't recall where Enze mentioned so.  Could you please give me a pointer?
 
+Although Enze did not directly state this, His patch is a loadable module,
+which implies that it was "designed as a kernel loadable module."
 
-On 2025/12/19 16:25, David Hildenbrand (Red Hat) wrote:
-> On 12/18/25 15:35, Lance Yang wrote:
->>
->>
->> On 2025/12/18 21:13, David Hildenbrand (Red Hat) wrote:
->>> On 12/13/25 09:00, Lance Yang wrote:
->>>> From: Lance Yang <lance.yang@linux.dev>
->>>>
->>>> Similar to the hugetlb PMD unsharing optimization, skip the second IPI
->>>> in collapse_huge_page() when the TLB flush already provides necessary
->>>> synchronization.
->>>>
->>>> Before commit a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
->>>> unconditional"), bare metal x86 didn't enable 
->>>> MMU_GATHER_RCU_TABLE_FREE.
->>>> In that configuration, tlb_remove_table_sync_one() was a NOP. GUP-fast
->>>> synchronization relied on IRQ disabling, which blocks TLB flush IPIs.
->>>>
->>>> When Rik made MMU_GATHER_RCU_TABLE_FREE unconditional to support AMD's
->>>> INVLPGB, all x86 systems started sending the second IPI. However, on
->>>> native x86 this is redundant:
->>>>
->>>>     - pmdp_collapse_flush() calls flush_tlb_range(), sending IPIs to 
->>>> all
->>>>       CPUs to invalidate TLB entries
->>>>
->>>>     - GUP-fast runs with IRQs disabled, so when the flush IPI 
->>>> completes,
->>>>       any concurrent GUP-fast must have finished
->>>>
->>>>     - tlb_remove_table_sync_one() provides no additional 
->>>> synchronization
->>>>
->>>> On x86, skip the second IPI when running native (without paravirt) and
->>>> without INVLPGB. For paravirt with non-native flush_tlb_multi and for
->>>> INVLPGB, conservatively keep both IPIs.
->>>>
->>>> Use tlb_table_flush_implies_ipi_broadcast(), consistent with the 
->>>> hugetlb
->>>> optimization.
->>>>
->>>> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>>> ---
->>>>    mm/khugepaged.c | 7 ++++++-
->>>>    1 file changed, 6 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index 97d1b2824386..06ea793a8190 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -1178,7 +1178,12 @@ static int collapse_huge_page(struct mm_struct
->>>> *mm, unsigned long address,
->>>>        _pmd = pmdp_collapse_flush(vma, address, pmd);
->>>>        spin_unlock(pmd_ptl);
->>>>        mmu_notifier_invalidate_range_end(&range);
->>>> -    tlb_remove_table_sync_one();
->>>> +    /*
->>>> +     * Skip the second IPI if the TLB flush above already synchronized
->>>> +     * with concurrent GUP-fast via broadcast IPIs.
->>>> +     */
->>>> +    if (!tlb_table_flush_implies_ipi_broadcast())
->>>> +        tlb_remove_table_sync_one();
->>>
->>> We end up calling
->>>
->>>       flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
->>>
->>>       -> flush_tlb_mm_range(freed_tables = true)
->>>
->>>       -> flush_tlb_multi(mm_cpumask(mm), info);
->>>
->>> So freed_tables=true and we should be doing the right thing.
->>
->> Yep ;)
->>
->>> BTW, I was wondering whether we should embed that
->>> tlb_table_flush_implies_ipi_broadcast() check in
->>> tlb_remove_table_sync_one() instead.
->>> It then relies on the caller to do the right thing (flush with
->>> freed_tables=true or unshared_tables = true).
->>>
->>> Thoughts?
->>
->> Good point! Let me check the other callers to ensure they
->> are all preceded by a flush with freed_tables=true (or unshared_tables).
->>
->> Will get back to you with what I find :)
-> 
-> The use case in tlb_table_flush() is a bit confusing. But I would assume 
-> that we have a TLB flush with remove_tables=true beforehand. Otherwise 
-> we cannot possibly free the page table.
+>
+> And I'm not sure based on what you are saying it was originally designed as a
+> loadable module.  Maybe you are saying something before DAMON's mainline
+> landing, but that's quite long ago and my memory management is not good.  Could
+> you please add more contexts?
+>
+> > but I was curious as to
+> > why it wasn't run that way.
+>
+> Maybe I could give you an answer if you could give me the context that I asked
+> above.
+>
+> > When executing the damon_start(**ctxs,
+> > nr_ctxs, exclusive)
+> > function, nr_ctxs=1, exclusive=true is passed so that modules are currently
+> > executed only one at a time.  Therefore, there is no point in running
+> > DAMON
+> > as a kernel module, since you are not running multiple modules simultaneously.
+>
+> I'm not following your point well.  Could you please elaborate your point?
 
-Right! I assume you meant freed_tables=true (not remove_tables) ;)
+So far in my view, I have analyzed DAMON as follows:
 
-Verified all callers have proper TLB flushes *beforehand*:
+DAMON core  <---------> kernel module   <------> damo(user-space)
+mm/damon/core.c         mm/damon/lru_sort.c
+mm/damon/vaddr.c        mm/damon/reclaim.c
+mm/damon/paddr.c        samples/damon/*.c
+mm/damon/sysfs.c
 
--> 1. mm/khugepaged.c:1188 (collapse_huge_page)
+Above, lru_sort and reclaim are DAMON core characteristics, but they have
+a kernel module structure because they are executed with module_init().
+I personally think this is inappropriate.  Additionally, currently, DAMON is
+executed only once at a time according to the exclusive=true condition
+when damon_start() is called.  In this structure, I believe that the meaning
+of "kernel loadable module"  is non-existent.
 
-	pmdp_collapse_flush(vma, address, pmd)
-	-> flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE)
-		-> flush_tlb_mm_range(mm, ..., freed_tables = true)
-			-> flush_tlb_multi(mm_cpumask(mm), info)
+>
+> > I'm doing some more research into why we run modules with exclusive=true.
+>
+> Hoplefully commit 8b9b0d335a34 ("mm/damon/core: allow non-exclusive DAMON
+> start/stop") will give you more contexts.
+>
+> To summarize again, the intention is to avoid kdamonds interrupting each
+> other's access checks.  For example, suppose the DAMON context for
+> DAMON_RECLAIM and another one (could be created by DAMON sysfs interface users
+> or other DAMON modules, say, DAMON_STAT) are running concurrently.  And if
+> those pick a same page as access check sampling target, their finding of the
+> access on the page depend on a race condition.  To avoid such a case, DAMON
+> modules call damon_start() with exclusive argument set.
+>
+> Maybe this is unclearly documented.  I will recheck the documentation and
+> improve it to make this more clear.  If you find the rooms to improve and have
+> ideas for the improvements, please feel free to send patches.
+>
+> > One more thing I would like to add is that I think it would be less
+> > confusing
+> > to move lru_sort and reclaim to the samples/damon/ path.
+>
+> No, I don't think so.  Those are for real world products, not for samples.
+>
+> > And it would
+> > be
+> > a good idea to organize the core sources toward
+> > mm/damon/modules-common.c source.
+>
+> I don't find exactly what kind of reorganization you mean.  But I agree there
+> could be rooms to improve in terms of the files and code organization.  Any
+> suggestion is welcome.
+>
+> [...]
+> > > > Finally, I would like to add that designing prdm with an extremely
+> > > > simple workflow -- load the module, set the target PIDs, and enable the
+> > > > switch -- will contribute to the promotion of DAMON, allowing a broader
+> > > > user base to benefit from the DAMON system.
+> > >
+> > > That workflow is definitely much easier than directly using DAMON sysfs
+> > > interface.  But, for the reason we have DAMON user-space tool.  Using it, the
+> > > workflow can also be as simple as prdm, like below.
+> > >
+> > >    # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0% 0% --damos_age 2m max
+> >
+> > Where can I find the damo source or documentation?
+>
+> You could use https://github.com/damonitor/damo and its README.md file.
 
-So freed_tables=true and we should be doing the right thing :)
+Thank you so much for sharing.  I am trying to analyze the related contents
+in more detail to improve your DAMON.  I'll try to organize it a bit better
+and send you a patch.
 
--> 2. include/asm-generic/tlb.h:861 (tlb_flush_unshared_tables)
+Thanks,
+JaeJoon
 
-	tlb_flush_mmu_tlbonly(tlb)
-	-> tlb_flush(tlb)
-		-> flush_tlb_mm_range(mm, ..., unshared_tables = true)
-			-> flush_tlb_multi(mm_cpumask(mm), info)
-
-unshared_tables=true (equivalent to freed_tables for sending IPIs).
-
--> 3. mm/mmu_gather.c:341 (__tlb_remove_table_one)
-
-When we can't allocate a batch page in tlb_remove_table(), we do:
-
-	tlb_table_invalidate(tlb)
-	-> tlb_flush_mmu_tlbonly(tlb)
-		-> flush_tlb_mm_range(mm, ..., freed_tables = true)
-			-> flush_tlb_multi(mm_cpumask(mm), info)
-
-	Then:
-	tlb_remove_table_one(table)
-	-> __tlb_remove_table_one(table) // if !CONFIG_PT_RECLAIM
-		-> tlb_remove_table_sync_one()
-
-freed_tables=true, and this should work too.
-
-Why is tlb->freed_tables guaranteed? Because callers like pte_free_tlb()
-(via free_pte_range) set freed_tables=true before calling __pte_free_tlb(),
-which then calls tlb_remove_table(). As you mentioned, we cannot free page
-tables without freed_tables=true.
-
-Note that tlb_remove_table_sync_one() was a NOP on bare metal x86
-(CONFIG_MMU_GATHER_RCU_TABLE_FREE=n) before commit a37259732a7d.
-
--> 4-5. mm/khugepaged.c:1683,1819 (pmdp_get_lockless_sync macro)
-
-Same as #1.
-
-So all callers satisfy the requirement! Will embed the check in v2.
-
-Hopefully I didn't miss any callers ;)
-
-Cheers,
-Lance
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
