@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539D7E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 18:57:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C7CE66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 19:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B46426B0005; Sun, 21 Dec 2025 13:57:13 -0500 (EST)
+	id 417226B0005; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEE756B0089; Sun, 21 Dec 2025 13:57:13 -0500 (EST)
+	id 393056B0089; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E326B008A; Sun, 21 Dec 2025 13:57:13 -0500 (EST)
+	id 295A26B008A; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92ADC6B0005
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 13:57:13 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4108416094C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:57:13 +0000 (UTC)
-X-FDA: 84244385946.27.4AEF986
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 86F69180008
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:57:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g+GTEdc1;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766343431; a=rsa-sha256;
-	cv=none;
-	b=Nv84im9011rpmeqtyoF7pi2DPT2ZaEsMUHMmJ+ZD/j0o3T3woBPYuP1So7mn6JxlOOnxUp
-	cWl+l99d5Amp4sXcvc+31qX1VVlIXgl+AJhWk6oRD94hx4L3NjUUITpBH4R8kb4x6xTbWm
-	qOSeP7G6XxQJcSnV8b+5DoKKAzHAkD8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g+GTEdc1;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14ED26B0005
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 14:27:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 821C513AA2C
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:27:55 +0000 (UTC)
+X-FDA: 84244463310.13.E818FC6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 02DA140008
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOckPfkz;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766343431;
+	s=arc-20220608; t=1766345274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNDsXY2EKpSGnUV4V1LdbUHoPfl1d6gEaa1EKGD594E=;
-	b=DDPNyL7VIQ5hN8SipPCIvk3EqVQOFRfy1s873WATwH15zuKsaBE161Fa2CKP5hbrJHBVr0
-	uHMCoUJtZxjPytIdzPRSPPBlHrjiwSCn4SOVmcUlSTXlszTn4ZGnClwCHH2OM3ynr+77jx
-	E3EkimwU6pcWjvaW4xaheiAyHEH12tw=
+	bh=XF5P03+yZ/wmSfIv4NsJchkT6R+hudfbrvRTHo7Ymgo=;
+	b=Fk9usFheeIexw0S6PNQa7VLX3QWFUNwV08d/Cobs4jcH0iholERgfvwzHzo7rVO5SDnt8Y
+	Pbk8e4rkxkap0ier8HL8pkPU09gdX/JV/q3XkXj+XwhyR1qHuJBRTP2JlRgfcStZy4mIBj
+	LOLroQLNJGy3KjNZeyPTYHQ/zvimqZ0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TOckPfkz;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766345274; a=rsa-sha256;
+	cv=none;
+	b=aiPjXlIv66lqeOBA+cisR+eXweMe4AhhsfPStuMTAsG4s5jscFZCQuvlvfE8pozUnmCZB/
+	5KxG1HF+EIGIPlU5lXNV99+ei1q82F8huPcf9gbS/8BSAkhsKWEoCKaIz2c5fZqWgwDnxM
+	ixwrKsov/T/vYmrvv0d/poHvThqZrOY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68ABA43344;
-	Sun, 21 Dec 2025 18:57:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CD1C4CEFB;
-	Sun, 21 Dec 2025 18:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766343430;
-	bh=hGQHHnPP2FAXKrHAOJzdAxZu07/LllOij9yDLMsdGM8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g+GTEdc1y/9lf6gj0ixFdSdxktQF8rWsMKHsoSn6bcMfeHOG2y7LU0Y019TXF927J
-	 kY4014nBSvXnSsvNdhZRS8fsy4JQyXJ7AwiD/cyD2cEQ1pMQSi55tztfyYpZFtdKYe
-	 trjqvcQID3OtOjPEMBo0aOTBuLmzUPHXUAlHAeG8=
-Date: Sun, 21 Dec 2025 10:57:09 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, Luiz Capitulino
- <luizcap@redhat.com>
-Subject: Re: [PATCH v2 1/5] selftests/mm: fix va_high_addr_switch.sh return
- value
-Message-Id: <20251221105709.d2e44cf1bb05bd9669e76d0c@linux-foundation.org>
-In-Reply-To: <20251221040025.3159990-1-chuhu@redhat.com>
-References: <20251221040025.3159990-1-chuhu@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 7A738600C3;
+	Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0983DC4CEFB;
+	Sun, 21 Dec 2025 19:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766345273;
+	bh=7F4TPMVb6bOzlf1ttXAT3unF5sWnabnhKyb4rPY4OUE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TOckPfkzVyDWVRPTUlGTXT2Y5N9C+tgKYm06vcUwNmzBNR8STdiHzelZhq4zyio7C
+	 dB01Bh9JO5Z5/IHCtKN2My5ZEsIJB67JdsH5rhqQwlpBCejHkxeIioVOQamYxl5Pce
+	 foeevengrQikpbKOOqbS6Xe9IJkxY7gTabg65Br1rHyrlMyT/XbtTsV/KnkDG6kaXY
+	 /wrFYyzZzAwILKPHZTpIZ1P/GZJbvLQWDlTYGVRzY5owroIzhi2EVSydOqC0ZB/ltR
+	 IBN1ZJM/OVayWl551QQINU9itAVnmCVUc3Z9sTvf0EhCiEJRLr6sdYbcrppgrt3RMF
+	 zQ4l73tmWnypw==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Enze Li <lienze@kylinos.cn>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
+Date: Sun, 21 Dec 2025 11:27:50 -0800
+Message-ID: <20251221192751.42586-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAHOvCC4opA5kdX0c3RrUL0g9e95JJb5hr=ZaGS7FGoQ-nxgF3Q@mail.gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 02DA140008
+X-Stat-Signature: 8317emed77e6649rgo6phw31we5mfuob
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 86F69180008
-X-Stat-Signature: e1awzp1i1xfdjwfu1ej41kgigxdcdu8g
-X-HE-Tag: 1766343431-328755
-X-HE-Meta: U2FsdGVkX18OUAftXGCG9HqD0ph+uNzeMACUH6akNvJ36wEnDDo8vu8SaddvDWHgYjuMIpZHpnrQWwfTBXnIPYOCObz4rZMQc4Ghvr6uZIwPk4RlHylAaUL6yFELhcwnn37I4yEyHSp8msnwlZm0PBuW/qOVpK+XBkdAkQLlDHwk3PIgmVCIO52r/T1bcMBHz0OiPM0jLc3CV67N3sCaJoUaRjj1IV5vB92HCE7UhC6oJSqhrpd4v4cM/LfSUVIMIQeDE75/zsLoLWYDaKKE1cbrrsJFRspbwZwolQp0PtqASdBOZAittpmGUrUBcjb7cC2rleplyV3rR7YnjWgowIrCzHtV5jy8aw1vAoNoOTIkQfDZ57Yep3sM0Q7kFAGY+AS/dgFGm6R/qnRuNcmt0CKJHy4WO5fM3n8OMAJAEAVyRP6h2Uf43AQmyZB+CIMnpRDznbXqoFQsVzZUnKcqk4pCK2OpoObrGZH6n1CN7+uVfPzJiP3mtcddFlGY6qyrKcJ3ZHCWMzsDY7pxw2yX+VkOOteZe6nVG6DApiGFZqPGBohS8OVPMKEtICoiWFe+Yja6iWu66mfj9ODWgJmHA12EPf41VGLftirArKS8xUD+eMzic2f9bQyxBGPnWBoZSsbHICmQ8DyrphbSd3k5gyLNC9UiQsezmvhJ3L/aegeG9gWz6CkuEznm23qwVTrNdF7wuGh2NSa4bGukUug6Mpk/1G+G0rmo7wQB7iGXukAYav6ya1Hj4oU8y1PLhrmb2ii17Bgp1Q5F8f1TKsIMGc3WmnltDmYfhvt99y+XC7b8ATGzq9hLgIREiCw6dkrkZDoF5ur2L6Q7HiQ6cU26l5wUIebaJyfBQx54rkEjnLLmxaBxyA8I05f16M+BJZdurC1kwOPtrn8jjjV42kKiY0MPdOD0CHX7Gz2sUsMI70FlzwuP9//cKi1oVehes9Lvgy/glTpYj1MpwltWOey
- r69YMDNX
- hpggecbW1WMREZOd128ePbbYgrg+bokV/mKsv3aGVjIE0pfyyOVshK+dXJvTfyJ087Eg0hobmJcsOPwWxEI8LDw0PXLqBltx/QcVr3Mxf+dDHNJOEbQbbVOO1TzKQIIOLZiSHBEXc/3iwGqVL1ZzZcJGSByjqullRofW4lTIhIHyqboV6X005h545Ld/8mui9gDU0U0rBPmmW/hc8os5KtFIrWEGhJyxiB129hptS7lcAlwuxX5sQ4FvZSeCuIX49+tfTNhfcTrjHisx4hWj3pJnU6+3DTlTwLHydA9xnL6zdZ8M0VBKZIL9gRTjjaHYb8vGYu0cYWx3TVzlZZQvEVqWJbSAUeU/kmjf7AKlOGAWmCFA1hR/Tuc+9VmLwFHEPRj1T
+X-HE-Tag: 1766345273-727764
+X-HE-Meta: U2FsdGVkX18r5SHXcvkgZlAZDl8shPhgCRmNvcZ8uN8kSb+H9G9NVuvp42RdAsTHF8tNMapa6yT41awfCjjlAX47+x2khQjXNBDp/51NZ7oaLQuHwkem3i5fLqNmrAWMRh3rwhy42osI7fiVgXr2XaaGCVkjXbwQZyqdwtvnqaaUoCDae+79T+3RP78+KBr6v1G48kIWa2DqovwBDu+Wxge20kAJLvoxAWYBq/KKn7btL04LVn56a/5iPw4+ocmNTMcVfTigL/h3HFB2WWvcP65WLgGIF2C5H7p8MJRrnNJnZvBmBXpNYna7czdapM1pnMwCD91CCETG8cPmwD5qTPC969d+PLrIj15MB93z2ZqXcmmmXvieu6v+Og03EQLKuE9yKwgr3PL8YgkLiCHqxXnGckVt4PKfG2wz3xTqEPSPlF/ExFMYiSSj0FhfYKESHUsQ5bcbVig/dCmTbo2cFODYpIB5Ehtf/OdFyQWvfr8O3NyXe9xqoo48m3JzTHuxDrXnlyRtflyQAageQK2UqS4OvyxiZxq5ZSPME99uUMCWa0ej9BUgd+AFwTXWwwH0YK7IKr0jc1yNjkFlQKp6caKq0pyJIpYKFNcjGjdjJm1dtF8+dA05hz0vSLyqQdwof/jD3p2A91SnP0xMhXH3WjGsRoSYsd/iaSHd6bJ8nOJoYbjxCvvutor/1mNhVA0e2F96RFS0s2By+nrEP8CUGK0z8rf0A4NqNN0fKHMvZ+CMfk+pFJopGbsa11/XmkROBfKi9wCCxDLxYpvxD89jYO1B/AdKuVLN04mauYKJCXPckVutn9HTw1BY+WslHmy13uoZg+I4LXrpXJW7isznDS1SghSGDDDcxRQYFD2bvlL/SCA6u8tCDHEQ8QaHYEYzqu2Jm6+mNKWZBndX4IhLCYHZEIOvN+VGkAICM/tZYEKffaBjL37krCyf9eulqYiDUW/YpUgrpLoK5MqI7YL
+ P9kn/Wqv
+ 4uSx9j9U0h7lLwIk2YeLmUqnMFzZD6pb5mwuzn9GS06F9OEl8yMlrfG0ymhcKZDC/RsrWxCh3NEJHn5FkrWTgB8uz0qMoAlduF0XAKRTe82CpbKoyyNWjdMHXvpWmDzCmzjMQbXGJZabzSWBOnVofzxKKNLjIbzRx0b8tBAzWIi7u90GTfNEer3PYLNXkLpEiKclfvcVLLb5qO99X83Ces6Ok8cLiFUN1N4Sb/pZbJvVhYwfSepsbkX4G09BeH15+2LBDlujCB9bI7KGNj2ZN/nC3HA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,58 +95,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 21 Dec 2025 12:00:21 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
+On Sun, 21 Dec 2025 20:04:23 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 
-> Patch series "Fix va_high_addr_switch.sh test failure - again", v2.
+> On Sun, 21 Dec 2025 at 17:12, SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Sun, 21 Dec 2025 11:42:43 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> >
+> > > On Fri, 19 Dec 2025 at 21:52, SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> > > >
+> > > > > On 2025/12/16 07:16, SeongJae Park wrote:
+> > > > > > Hello Enze,
+> > > > > >
+> > > > > > On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> > [...]
+> > > > If runtime controls are essential, I think using DAMON sysfs
+> > > > interface or DAMON user-space tool is a better choice.
+> > >
+> > > I also think the current DAMON design structure is suitable for DAMON sysfs
+> > > and user-space tools.  DAMON sysfs can run multiple nr_ctxs, so I think it
+> > > would be a good idea to consolidate it into this.  As Enze mentioned, DAMON
+> > > was originally designed as a kernel loadable module,
+> >
+> > I don't recall where Enze mentioned so.  Could you please give me a pointer?
 > 
-> The series address several issues exist for the va_high_addr_switch test:
-> 1) the test return value is ignored in va_high_addr_switch.sh.
-> 2) the va_high_addr_switch test requires 6 hugepages not 5.
-> 3) the reurn value of the first test in va_high_addr_switch.c can be
->    overridden by the second test.
-> 4) the nr_hugepages setup in run_vmtests.sh for arm64 can be done in
->    va_high_addr_switch.sh too.
-> 5) update a comment for check_test_requirements.
+> Although Enze did not directly state this, His patch is a loadable module,
+> which implies that it was "designed as a kernel loadable module."
+
+Thanks for clarifying.  I understand you are saying Enze's prdm module is
+designed as a loadable module, while you are not saying about other parts of
+DAMON.
+
 > 
-> Changes in v2:
->  - shorten the comment in for hugepages setup in v1
->  - add a new patch to fix the return value overridden issue in
->    va_high_addr_switch.c
->  - fix a code comment for check_test_requirements.
->  - update the series summary in patch 1
->  - add reviewed-by from Luiz Capitulino on patch 1 and patch 3
-
-The "Changes in v2" material is best placed below the "---" separator -
-I prefer not to capture such short-term development-time info within
-the permanent kernel record.
-
-> This patch: (of 5)
+> >
+> > And I'm not sure based on what you are saying it was originally designed as a
+> > loadable module.  Maybe you are saying something before DAMON's mainline
+> > landing, but that's quite long ago and my memory management is not good.  Could
+> > you please add more contexts?
+> >
+> > > but I was curious as to
+> > > why it wasn't run that way.
+> >
+> > Maybe I could give you an answer if you could give me the context that I asked
+> > above.
+> >
+> > > When executing the damon_start(**ctxs,
+> > > nr_ctxs, exclusive)
+> > > function, nr_ctxs=1, exclusive=true is passed so that modules are currently
+> > > executed only one at a time.  Therefore, there is no point in running
+> > > DAMON
+> > > as a kernel module, since you are not running multiple modules simultaneously.
+> >
+> > I'm not following your point well.  Could you please elaborate your point?
 > 
-> The return value should be return value of va_high_addr_switch, otherwise
-> a test failure would be silently ignored.
+> So far in my view, I have analyzed DAMON as follows:
 > 
-> Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
-> Fixes: d9d957bd7b61 ("selftests/mm: alloc hugepages in va_high_addr_switch test")
-> CC: Luiz Capitulino <luizcap@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> DAMON core  <---------> kernel module   <------> damo(user-space)
+> mm/damon/core.c         mm/damon/lru_sort.c
+> mm/damon/vaddr.c        mm/damon/reclaim.c
+> mm/damon/paddr.c        samples/damon/*.c
+> mm/damon/sysfs.c
 > 
-> ...
->
-> According to the doc below, I don't add the cover letter, not sure if cover
-> letter is preferred, and if that's the case, the doc need an update.
+> Above, lru_sort and reclaim are DAMON core characteristics, but they have
+> a kernel module structure because they are executed with module_init().
+> I personally think this is inappropriate.
 
-Funnily enough, your series was in the exact format which I use when
-committing patch series.  Usually people put the cover letter in a
-separate [0/N] email and I move that into the [1/N] patch's changelog,
-as you've done here.
+Could you please further clarify why you think it is inappropriate?
 
-> https://www.ozlabs.org/~akpm/stuff/tpp.txt
+> Additionally, currently, DAMON is
+> executed only once at a time according to the exclusive=true condition
+> when damon_start() is called.  In this structure, I believe that the meaning
+> of "kernel loadable module"  is non-existent.
 
-God does that still exist?  Pretty soon it will be able to legally
-drink in bars.
+I have to say I still don't get your points.  More elaboration would be nice.
 
-I think its content got absorbed into a Documentation/ file a long time
-ago!
+> 
+> >
+> > > I'm doing some more research into why we run modules with exclusive=true.
+> >
+> > Hoplefully commit 8b9b0d335a34 ("mm/damon/core: allow non-exclusive DAMON
+> > start/stop") will give you more contexts.
+> >
+> > To summarize again, the intention is to avoid kdamonds interrupting each
+> > other's access checks.  For example, suppose the DAMON context for
+> > DAMON_RECLAIM and another one (could be created by DAMON sysfs interface users
+> > or other DAMON modules, say, DAMON_STAT) are running concurrently.  And if
+> > those pick a same page as access check sampling target, their finding of the
+> > access on the page depend on a race condition.  To avoid such a case, DAMON
+> > modules call damon_start() with exclusive argument set.
+> >
+> > Maybe this is unclearly documented.  I will recheck the documentation and
+> > improve it to make this more clear.  If you find the rooms to improve and have
+> > ideas for the improvements, please feel free to send patches.
+> >
+> > > One more thing I would like to add is that I think it would be less
+> > > confusing
+> > > to move lru_sort and reclaim to the samples/damon/ path.
+> >
+> > No, I don't think so.  Those are for real world products, not for samples.
+> >
+> > > And it would
+> > > be
+> > > a good idea to organize the core sources toward
+> > > mm/damon/modules-common.c source.
+> >
+> > I don't find exactly what kind of reorganization you mean.  But I agree there
+> > could be rooms to improve in terms of the files and code organization.  Any
+> > suggestion is welcome.
+> >
+> > [...]
+> > > > > Finally, I would like to add that designing prdm with an extremely
+> > > > > simple workflow -- load the module, set the target PIDs, and enable the
+> > > > > switch -- will contribute to the promotion of DAMON, allowing a broader
+> > > > > user base to benefit from the DAMON system.
+> > > >
+> > > > That workflow is definitely much easier than directly using DAMON sysfs
+> > > > interface.  But, for the reason we have DAMON user-space tool.  Using it, the
+> > > > workflow can also be as simple as prdm, like below.
+> > > >
+> > > >    # damo start $TARGET_PID --damos_action pageout --damos_access_rate 0% 0% --damos_age 2m max
+> > >
+> > > Where can I find the damo source or documentation?
+> >
+> > You could use https://github.com/damonitor/damo and its README.md file.
+> 
+> Thank you so much for sharing.  I am trying to analyze the related contents
+> in more detail to improve your DAMON.  I'll try to organize it a bit better
+> and send you a patch.
+
+Looking forward.
 
 
+Thanks,
+SJ
+
+[...]
 
