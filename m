@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3409E67482
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50878E66886
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 12:26:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E674E6B00D1; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
+	id 826C86B00D4; Sun, 21 Dec 2025 07:26:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E154F6B00D3; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
+	id 7D45A6B00D5; Sun, 21 Dec 2025 07:26:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D145D6B00D4; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
+	id 6D3DC6B00D6; Sun, 21 Dec 2025 07:26:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFCF26B00D1
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:24:55 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72EDB60818
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:24:55 +0000 (UTC)
-X-FDA: 84243397350.15.59C417B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C1BDB2000B
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:24:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tYt8izPK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766319893; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A4D06B00D4
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 07:26:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E8BD137D60
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:26:55 +0000 (UTC)
+X-FDA: 84243402390.02.93C05C4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 648311A0003
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 12:26:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IztVDtGJ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766320013; a=rsa-sha256;
 	cv=none;
-	b=KnL8e84zmse+8wT9To4IhyCmQ3IgK4x1OMTvVGAlIR72m3hzFgOJucSzVOSJepiQG2txfU
-	igIXPXzLTXPcp2pzmLk+UiBawHB4TpxeQe0FDiGrmT145pFBc/3beKIvUrAK6V3L04lMkq
-	oYobxrFi664+G1r/mQHK2cfSqZDT98c=
+	b=srENG4EU08NwUtfwjB0G/RmdIY4KWiS2lAR6CVULppqgqLruQJovxh3OlYb/2WS+lOAHo/
+	EC81aSzQ2dtU287olg4eN2hkmCW7AOQg7gtKI+Ba4WFCk1cIbnk0lg2Ty61fLAn21Chw8H
+	NO4LkjAMsS/UlzKQw2fHizM53fGgIBw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tYt8izPK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IztVDtGJ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766319893;
+	s=arc-20220608; t=1766320013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/ywaBG6EJ5czazSPcs1C2vp/zOcZxPNSXdDvsfO30I=;
-	b=s1DXL6K8KgcOD/qmrN37FEzDTHXoNBbpoac1nWMitkz8y5q37Levv2doPDdrsEQuqVcf1I
-	sCl/kKYJVm1uFy4MnW8sWZebMTlxLUapnacFF/z7aOOY8Q2B5iDEhJ+3/XdZ66dz5W2X2i
-	SDmQckUHKz3F3J8ImB6NSI4fKXbZTn4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1ACCF60007;
-	Sun, 21 Dec 2025 12:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C2FC4CEFB;
-	Sun, 21 Dec 2025 12:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766319892;
-	bh=IqPxZ/9JKNcdTw/8izbbZYaeUpAAZSbuuFtctc/CLm4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tYt8izPKSJbk40BHKx3r8/+AfFkFWB6BVc8qn87q5kjCcrluSk3OQJNpTrNlz3pGz
-	 DVTfFdLV89tLr1ezgV+7vLlihUvuA378IKn4JVcIk8Vd2HqmYFraSVp1wXlhwwVUYv
-	 KYmtrINYMvMG8zF0FMzl/iM5xYo3TmTpo1mhf6oe4IhZPB0c7eVXm7tiXMjR1bfC7e
-	 MaBaRiCypuOwQ+QWAvt1jEyroS6nscvKF9dlRxn5hBTP4ley/8SO+EcSeW2SFyAIxQ
-	 d5aCmShGfRuUxPG8OEeb0HMrBTwBc1XxpdDdafel8nJ2UY0Tp31U2apQoG75akVuFD
-	 ZeQRrQZOBQ/Zw==
-Message-ID: <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org>
-Date: Sun, 21 Dec 2025 13:24:44 +0100
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wR6RJvO5q829q98KcHX2afv2FHKgdC2z2h5jm0IRqMc=;
+	b=sdhe8ZN+EAOm8byBM7hlNCWKp6iVhT7IZCJraeZ0QODO1xgPfcdOxQgf7bUBFd86NsGp15
+	jy2cQdezd2p39mR6RdAm5d/kECLebXWzbJ9aNfkVjaStdyoWuZhnt+p1B+f2y5qCUpFsIe
+	shsKOoUsQhHTBWctuvEnwpascY9Gpho=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766320012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wR6RJvO5q829q98KcHX2afv2FHKgdC2z2h5jm0IRqMc=;
+	b=IztVDtGJDIEkOAgT9CbD+E2zx06F5JlC+hkptsqDSOR7UU1iX6FXum8aC3jGCiHBC5XYjl
+	OXkGV56x5ggG7FEsnTVB4sUXlmFggQ2ZE3s61ebkxaXPrE8hp2zjNEXFefPj76R5lVQRL+
+	STqC8sjjx74Mp4goJeZ01z48L9L3ECs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-s3nKjBC4P-a7eJnzjnbJqQ-1; Sun,
+ 21 Dec 2025 07:26:48 -0500
+X-MC-Unique: s3nKjBC4P-a7eJnzjnbJqQ-1
+X-Mimecast-MFC-AGG-ID: s3nKjBC4P-a7eJnzjnbJqQ_1766320007
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F11461956080;
+	Sun, 21 Dec 2025 12:26:46 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD36D19560B4;
+	Sun, 21 Dec 2025 12:26:44 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] selftests/mm: hugetlb cgroup charging: robustness fixes
+Date: Sun, 21 Dec 2025 20:26:36 +0800
+Message-ID: <20251221122639.3168038-1-liwang@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
- <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
- <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
-Content-Language: en-US
-In-Reply-To: <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C1BDB2000B
-X-Stat-Signature: 1fhpbono4do6iyytrxxsx1nfx8wy5a9j
+X-Rspamd-Queue-Id: 648311A0003
+X-Stat-Signature: b114ahpg7dd6ibcaokpq89x7zribn1gt
 X-Rspam-User: 
-X-HE-Tag: 1766319893-891413
-X-HE-Meta: U2FsdGVkX18vrFPoFO4aHIWjcKIjK2lTPj2n0Zj8yqb3GlL5yDLk0CgpBrpf8rsvmWTC5vaKsz9gWtb+6Cx3ukud/vjfXnCZcwBdXLyFIewuciUoopUk4sc2+lp9zxp27NA4XrtmjiMMCi1p8UE1SePW8T58sUoqA9LGUubO8AsNpLZZupkL6j5QB6JipRO1dpXFv+CJrUAXzD3Yy25HG4yLQI5+98M0EXzf7XbDv1fT7HpuBWDSixg6MWO+DShYZ79u3pJh0DxUX/EfiUoTkB82e0pMrYhRoYY4cbBBHoJPXnmxtOzIWWkSgg4KmA0vpvEDAvEN5vfk4ukZUN9xqN7t8IsA+6vlh7+S6fXXZxVdbb8SiiwWL+lyC7q45LdG9g/tXt6dTF09DbhnL1+mo+Lugj5jNzPFgaVKYirDD34tPZsr1VyebjIc8CnzeHx4SHeyDkZcb6Hv9xUdJlfgEbrFunX/GoE9cYIa+aCCbusKMd2Ms+8cAubYe+6w66xEkeGve8Nhk8uY/rtLow32sw6lQsA673KuPscD1k9vUOKPhF64HJljkM+vCKMVCf7qh1WlzxrjHJmY+oZhkRmxvzzFJZppuk1Y+qhe50eg97gbgcc+E4yenZw2Wlo0o9cjiUGQLYOg60LmNeSSvvb3lOmHlKp98ICzK6LYagz5ejoeMeYkykmhOwCxoG94wKUnFeXuRhresyaoiEkpVSB1emB2kK2aqqdnvTkMsml+V6/ftYY10cJmATeFRSVf/0htfE87yVJVa6/3BmCWaO8vGAE9S/NppL8yDq1Ff11/JwpkqSguu4uzkV+KRZHBH1i+D1Fpe0aXsyV48oTwZOqGJmLN2eY8K7c6pS+5nwg/WHODSqAOqE08HR21/0qyAf5vNCP0jHKK4mmqt2Mt3JMgVoS8guxatZ9TELcfKBTonzhznh0eKY4MhbolIwf6KPPtMxwpOR3KebORa+DDVqU
- /iS4XaSV
- 3rGqEEciMRuoDanUEK+04o12EO27Eb2ND5Rrswf2Q8vFAIha8xS1MuxJc1h/g4Jh/GuCzrv++hRyv6p8sRaPJ5vctdsYt1Tw+N3Tdlj7uBpqQZDm9j8AVokABlxWHdVWytGuJW+EjDSM3UH8xgHxXjZgMa/i6dFBq6DP/bly7Aa0YJXOlg/ZhMf2rWtCCk3llk/Sh1G3SI1rB1VmSl+pGd1/aAUIk5ZWCo07Qih2LVXfe1LFRTg5xJcgae0XZLUKsZYSUvXPNm2rVVQ88BUaK2PEVCl5931pBui3LorCsMxy7MBHboN1lSck+hzxQpbLjWBKmiNx8Xd72tkcz9xJBdasDmxrwCsQI9an3FEx6z3zDVRyiavbjRDpOoVLEOrfFvhYhzgGBCI21N8EqwuUaAdeUTxUB+KG+FPf6ygOUwqaNoXM=
+X-HE-Tag: 1766320013-985236
+X-HE-Meta: U2FsdGVkX19PMyuUulCj3dzGTdPKZLN7vKLsQqmKWpCVitzzaYY2mplWUjT3WW5xlL9nzwToNT2RLjZBqm6PDFVgw+dK9nyXFwgbAAVTWRyUNmV4cjCzFS4oDpEB+sxfj60RTkVYXs+UR3jShfOAF2Aj79kpKWJLnLY3/RF8cYrVP6OEOOWKmVGfUaxQa37iNhy7E1amQmlm6xhf+W2nA2sPWdHWviXLxqfGzjUM6kKyh3dGckVxEeXGlcpYZF1ZKstEB+RHQk7rViLgts2gvvcUtz2MpguEPY6eYGd7WwP5/OxQd8sgiuhSV+HPDCcCEdItwcPTzihbYWW5cepA9Ef6trXsMI/ZYUbF3xSSCv7EsBPHKfjReCBLSW/pmhhV30mMtwKjw7vp7YVBhZHf7qL8Y1KXa5ZeOkhPRbnPtVnitgVphUaD+romG418vZrhJzMIlxX1Paj1HQbne8vNCAnXBc2Dg9w5XIRpcbTOTBD1FvYfzf96fXkwiPGfWWVmUWg0MwczXEjvuSRt/FjrGsbizFTNZ3FvEKpSAgvSvVjDW12j9E81ydoRggOmyULk4l3HCuEjtSKym4aiIzEQx044f5qJ8Q/zTYsuaS/8MTf6FJcsA5X45mcmSfEfZpVNdq0LiUigen/CIrwkVaGz0XFN3pDDVJytFwxL0fltk0OY3EcpNar+x4MC/0RKclEl6n43KnAvoxi+5iCGovKB3VP+XF9gK+AAj4j8mvK73Hr5bIF0gwc0FDQQYssSDq76Ko32j7SXI9Sac8S0V/LgPGb5i14Kn3nKL6JFxF2vOVROMRBjUyxenVf/kQvgmaj/4XnIklfCHnrejnO1i0CI0XALepbst98ZPiTKWgjBANBJKiR7LreqP8JTCFJ0cQ7JXdjKaMX3RfoCgBvFVN/Fjbe1+9BV50b8TZTqLeSGKGWtn2YpFP/KIDbhe5rTVIID1CcU9DoBYrv8ToX5+FX
+ e2+acZAR
+ agSRrC85CsH0DQDm7dcW8J+sJBFaWZ/IqtMRfL6hq+g52ZNJkAB2KQ8h0jQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,204 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 14:59, David Hildenbrand (Red Hat) wrote:
-> On 12/19/25 14:52, David Hildenbrand (Red Hat) wrote:
->> On 12/19/25 13:37, Harry Yoo wrote:
->>> On Fri, Dec 12, 2025 at 08:10:19AM +0100, David Hildenbrand (Red Hat) wrote:
->>>> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
->>>> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
->>>> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
->>>> tables that it severely regresses some workloads.
->>>>
->>>> In particular, when we fork()+exit(), or when we munmap() a large
->>>> area backed by many shared PMD tables, we perform one IPI broadcast per
->>>> unshared PMD table.
->>>>
->>>
->>> [...snip...]
->>>
->>>> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
->>>> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
->>>> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
->>>> Tested-by: Laurence Oberman <loberman@redhat.com>
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>>> ---
->>>>     include/asm-generic/tlb.h |  74 ++++++++++++++++++++++-
->>>>     include/linux/hugetlb.h   |  19 +++---
->>>>     mm/hugetlb.c              | 121 ++++++++++++++++++++++----------------
->>>>     mm/mmu_gather.c           |   7 +++
->>>>     mm/mprotect.c             |   2 +-
->>>>     mm/rmap.c                 |  25 +++++---
->>>>     6 files changed, 179 insertions(+), 69 deletions(-)
->>>>
->>>> @@ -6522,22 +6511,16 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->>>>     				pte = huge_pte_clear_uffd_wp(pte);
->>>>     			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
->>>>     			pages++;
->>>> +			tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
->>>>     		}
->>>>     
->>>>     next:
->>>>     		spin_unlock(ptl);
->>>>     		cond_resched();
->>>>     	}
->>>> -	/*
->>>> -	 * There is nothing protecting a previously-shared page table that we
->>>> -	 * unshared through huge_pmd_unshare() from getting freed after we
->>>> -	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
->>>> -	 * succeeded, flush the range corresponding to the pud.
->>>> -	 */
->>>> -	if (shared_pmd)
->>>> -		flush_hugetlb_tlb_range(vma, range.start, range.end);
->>>> -	else
->>>> -		flush_hugetlb_tlb_range(vma, start, end);
->>>> +
->>>> +	tlb_flush_mmu_tlbonly(tlb);
->>>> +	huge_pmd_unshare_flush(tlb, vma);
->>>
->>> Shouldn't we teach mmu_gather that it has to call
->>
->> I hope not :) In the worst case we could keep the
->> flush_hugetlb_tlb_range() in the !shared case in. Suboptimal but I am
->> sick and tired of dealing with this hugetlb mess.
->>
->>
->> Let me CC Ryan and Catalin for the arm64 pieces and Christophe on the
->> ppc pieces: See [1] where we convert away from some
->> flush_hugetlb_tlb_range() users to operate on mmu_gather using
->> * tlb_remove_huge_tlb_entry() for mremap() and mprotect(). Before we
->>      would only use it in __unmap_hugepage_range().
->> * tlb_flush_pmd_range() for unsharing of shared PMD tables. We already
->>      used that in one call path.
-> 
-> To clarify, powerpc does not select ARCH_WANT_HUGE_PMD_SHARE, so the
-> second change does not apply to ppc.
-> 
+Changes in v3:
+  - 1/3: no changes.
+  - 2/3: reorder with 3/3, and drop the 'size=' mount args.
+  - 3/3: add $path check, improve varible declaration, sleep 1s for 60 tryies.
 
-Okay, the existing hugetlb mmu_gather integration is hell on earth.
+Changes in v2:
+  - 1/3: Parse -s using sscanf("%zu", ...) instead of strtoull().
+  - 2/3: Fix typo in charge_reserved_hugetlb.sh ("reseravation" -> "reservation").
+  - 3/3: No changes.
 
-I *think* to get everything right (work around all the hacks we have) we might have to do a
+This series fixes a few issues in the hugetlb cgroup charging selftests
+(write_to_hugetlbfs.c + charge_reserved_hugetlb.sh) that show up on systems
+with large hugepages (e.g. 512MB) and when failures cause the test to wait
+indefinitely.
 
-	tlb_change_page_size(tlb, sz);
-	tlb_start_vma(tlb, vma);
+On an aarch64 64k page kernel with 512MB hugepages, the test consistently
+fails in write_to_hugetlbfs with ENOMEM and then hangs waiting for the
+expected usage values. The root cause is that charge_reserved_hugetlb.sh
+mounts hugetlbfs with a fixed size=256M, which is smaller than a single
+hugepage, resulting in a mount with size=0 capacity.
 
-before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
-don't immediately call tlb_finish_mmu() already.
+In addition, write_to_hugetlbfs previously parsed -s via atoi() into an
+int, which can overflow and print negative sizes.
 
-tlb_change_page_size() will set page_size accordingly (as required for
-ppc IIUC).
+Reproducer / environment:
+  - Kernel: 6.12.0-xxx.el10.aarch64+64k
+  - Hugepagesize: 524288 kB (512MB)
+  - ./charge_reserved_hugetlb.sh -cgroup-v2
+  - Observed mount: pagesize=512M,size=0 before this series
 
-tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
-some very good reason I am sure.
+After applying the series, the test completes successfully on the above setup.
 
+Li Wang (3):
+  selftests/mm/write_to_hugetlbfs: parse -s as size_t
+  selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs
+  selftests/mm/charge_reserved_hugetlb.sh: add waits with timeout helper
 
-So something like the following might do the trick:
-
- From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Sun, 21 Dec 2025 12:57:43 +0100
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
-  mm/hugetlb.c | 12 +++++++++++-
-  mm/rmap.c    |  4 ++++
-  2 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 7fef0b94b5d1e..14521210181c9 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
-  	/* Prevent race with file truncation */
-  	hugetlb_vma_lock_write(vma);
-  	i_mmap_lock_write(mapping);
-+
-+	tlb_change_page_size(&tlb, sz);
-+	tlb_start_vma(&tlb, vma);
-  	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
-  		src_pte = hugetlb_walk(vma, old_addr, sz);
-  		if (!src_pte) {
-@@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
-  			new_addr |= last_addr_mask;
-  			continue;
-  		}
--		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
-  
-  		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
-  		if (!dst_pte)
-  			break;
-  
-  		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
-+		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
-  	}
-  
-  	tlb_flush_mmu_tlbonly(&tlb);
-@@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
-  
-  	BUG_ON(address >= end);
-  	flush_cache_range(vma, range.start, range.end);
-+	tlb_change_page_size(tlb, psize);
-+	tlb_start_vma(tlb, vma);
-  
-  	mmu_notifier_invalidate_range_start(&range);
-  	hugetlb_vma_lock_write(vma);
-@@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
-  	hugetlb_vma_unlock_write(vma);
-  	mmu_notifier_invalidate_range_end(&range);
-  
-+	tlb_end_vma(tlb, vma);
-+
-  	return pages > 0 ? (pages << h->order) : pages;
-  }
-  
-@@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-  	} else {
-  		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-  	}
-+
-+	tlb_change_page_size(&tlb, sz);
-+	tlb_start_vma(&tlb, vma);
-  	for (address = start; address < end; address += PUD_SIZE) {
-  		ptep = hugetlb_walk(vma, address, sz);
-  		if (!ptep)
-diff --git a/mm/rmap.c b/mm/rmap.c
-index d6799afe11147..27210bc6fb489 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-  					goto walk_abort;
-  
-  				tlb_gather_mmu(&tlb, mm);
-+				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
-+				tlb_start_vma(&tlb, vma);
-  				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-  					hugetlb_vma_unlock_write(vma);
-  					huge_pmd_unshare_flush(&tlb, vma);
-@@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-  				}
-  
-  				tlb_gather_mmu(&tlb, mm);
-+				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
-+				tlb_start_vma(&tlb, vma);
-  				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-  					hugetlb_vma_unlock_write(vma);
-  					huge_pmd_unshare_flush(&tlb, vma);
--- 
-2.52.0
-
-
-
-But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
-to a later point and only focus on the IPI flushes. Doing only that with mmu_gather
-looks *really* weird, and I don't want to introduce some other mechanism just for that
-batching purpose.
-
-Hm ...
+ .../selftests/mm/charge_reserved_hugetlb.sh   | 55 +++++++++++--------
+ .../testing/selftests/mm/write_to_hugetlbfs.c |  9 ++-
+ 2 files changed, 38 insertions(+), 26 deletions(-)
 
 -- 
-Cheers
+2.49.0
 
-David
 
