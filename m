@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D18EE66886
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C6F7E66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866CA6B0088; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
+	id 08AB46B0089; Sun, 21 Dec 2025 19:49:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F3CE6B0089; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
+	id 037B06B008A; Sun, 21 Dec 2025 19:49:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E3146B008A; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
+	id E79096B008C; Sun, 21 Dec 2025 19:49:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 584E36B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9C091A09AB
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:18 +0000 (UTC)
-X-FDA: 84245273196.06.8902A12
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 45AF11A0003
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDcw2ltD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364557; a=rsa-sha256;
-	cv=none;
-	b=w+jRH29zvOKx1tONNCEpQBwln218UENdrDKivb/FVgFBaktJOvWV4dIAdf4SMjgtUM+0Am
-	43k48Q857Ggko5ziIF8ZEgzomi3/a2pmPKyUDQdOkF5ZMk9OOUb2O1a4Yu3b3ixn0J7vLc
-	ozYcwXF6E+LVrahkR6SMiKci0bHxF70=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDcw2ltD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D56B66B0089
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:49:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62593138022
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:23 +0000 (UTC)
+X-FDA: 84245273406.04.CEA7E57
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7F20B20011
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M2YV9/F3";
+	spf=pass (imf13.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766364557;
+	s=arc-20220608; t=1766364561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
-	b=36D3Gpd5vGutZbYi1mnn9f8cKi19XurdwYIdAXLcVV4JNQdJci9o86wK8pG4B1Cop223qc
-	+EPH7XZ02je8Us3A0FuS1TMJZtnQm9bY6lTkczVGgDTtp/tfd5TZ8M1467YY64pSacCUML
-	4LyHtLLcNTTROAGIysY5DiMtuHpLUKo=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34b75f7a134so2599607a91.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:49:16 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=10vzVgMW/SIAVZiREFQWpaxB2zwT+8w8TEXAc8bNZjs=;
+	b=PKhuUU7yVUygZ5A3OLvHELI15yVoIuPalWqDV5de2v7UzPHlVKci2Gt3HTYXHkK4IPDKKl
+	wYk0OdXLJ+XxqzEzDSXYRYxTM+HWtk7MrrSbHEPWvybUAEgZXujhdS2QBOGZDf0WsBTHVb
+	fOjxWbjwc9DPKHLmumWjEcwhNoFnkk0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M2YV9/F3";
+	spf=pass (imf13.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364561; a=rsa-sha256;
+	cv=none;
+	b=ruV5smCZm6AO7AS6JrgJGOOZif1vFTwqNXnPxveZNTx3nOlssS2KwJS1Q/J5i0NU2VUzQg
+	AutkYPiCWcdBnwt0z3VU4EOLvG1/3y0pxH3LlB2DkQa34RLm2AeU1xHSculRNLSJU2f0Z1
+	k8M9cfTYPVDFfvpUKvzUvpaQuJWDxPk=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bfb84c2fe5eso1520558a12.1
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:49:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766364556; x=1766969356; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
-        b=CDcw2ltD5HgIqqL8GBNnrQa4PexrFLkzOmOdXZk3ij4NDgJDCwrZPY9WOuhUIkDFvg
-         El8fB3w+lEDGY2jIKTjeYtbcMwBaDmIfb01WKlwkrhcEVnI1El2IyFOjkCXRGt7egD2v
-         r4c66eltDn/WcbVUeIFVyckExK3BVMtremqRDAhc5O63yNZUn7Nze1QQU+kARDk6/6Vq
-         w7R/UAvT9IU2J8PnSq1nxR+3PtlyN9tdQymBkJiyI4vz0lmI5gdI+qb9Bn6NS6iewmgd
-         hCwrRkx7YXgAxY9iPqhNpJo7TuC19gCLsaH7k5odio8aS8cprdcH57L5ExIUecR9gPDL
-         BaXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766364556; x=1766969356;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766364560; x=1766969360; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
-        b=Ywue9koUPCFzayFfFnH9L3bm5rCD8pElHDv7oJX8HNfBdwxux0eXmPaDJ6cJY+wDtP
-         o2pryQlVJImH52z1VLYQ+JyMoYl4zLC0jnULuq/zPbFJRJ/qE0KRK6m6y13uMQKMeg4M
-         A08gr2IsJzcIsW8tyM8lVBPbHa6FKcnodja3VIynhmS/W+LLeloIkniYE029nalDGhke
-         av0JmurUPQSW3yXSh4ee5hl96KkOwFHBrDgkt4Srr9JqRoiu5sZ+Aw4YTGpdSMcHcjop
-         5FvcXFrZ9DADRSbFES3PjuJVgsZLXMHQceTcKjZIA/v6560Z0zdAZnBO6VT20MQuYLkF
-         hfEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnB15/OxiSvxq2AM01KbRtPbwHMDfHgJnrmHnXCpF0IZSpR+nYM6iiCot/o81Xf3cE0Ex9mKy63Q==@kvack.org
-X-Gm-Message-State: AOJu0YzIDKaii9l3jMfp/ohQwSlNKwu/Lww3sI+qo2wdXVhZc/YxUkPV
-	8udSHHM7WI+9p1R8zE+VRgz6KIVnzMh3JbmZEZvLp6guiN/jRW9oq/LM
-X-Gm-Gg: AY/fxX7owbTiZJprVTWsuVkqWlrR81BSDVxEqLtKseCZpxVK8jVZI40KB1xgNFCAUMd
-	KhmjBo2fdXsLCq30S2OZRUmKUzyKEd3mOri2aZdKIOy13aHmIzlQrcOWQi9330mB1QL/FVMK2q2
-	45WEDdRvLaoKqweb+DUethZt/kvTuqszo1ZB+Ew9e3dSMV1JFw+FfYZlLbEPqOk2H0WTxu3oPRV
-	8PjPLsT4n5VoAKkbx27iwCxnKjKC4QmOPTezg4pQtm6c71kRO8xNW8tr7hZR65yYAIAg9Bqb1hM
-	peMmrmfa6xG4UYKgQYQoz2J8GIdnD8pUjlpUUvafLn/yNEX5aK/8WqxnseOGR+xYWBJRdBGN0ph
-	KoSLD1a7lx57DQVKJL+oTL0ccGxMH8ZCB3nJZMJHm492NPaQ/X2848BY6JIBDMciNIbcoTzFnh+
-	y9X6PA/GBsRsuxrKog+tLHm8zYng==
-X-Google-Smtp-Source: AGHT+IGweoLET5YnyZ2EKzJERfarS6dgnQ6cYugjO07yPKpn2IvtkOU/1jaFMgk4W8d4nO0djWxJzA==
-X-Received: by 2002:a17:90b:51c8:b0:340:bb64:c5e with SMTP id 98e67ed59e1d1-34e9212a206mr8487470a91.14.1766364555876;
-        Sun, 21 Dec 2025 16:49:15 -0800 (PST)
+        bh=10vzVgMW/SIAVZiREFQWpaxB2zwT+8w8TEXAc8bNZjs=;
+        b=M2YV9/F372Qtled7YHunuhTAUak/8XNAlx7pqOhyfVot6ao7IqaUGb57++Q68F17Uv
+         uROL8tf7l5xdWrYDjFOb4h9G1jNP7Nk+IK4X9vBUEyVB/QieQL8XOpdKbUWgHmKcajh4
+         l8Lbc9LlK2P9dT3okuvYMhTjkZm1lpQxQn5daCyA72x88lGwvD8aKQleHObk3mPahGRr
+         R8v2OLgL+ajjgVIGeYTU7fwPk0cWEymBEKacnlxYtyj4G1gEqKvLg39NyWfNrub7v+Uq
+         NKsdO36PanFLZIy42ICIj+0iQfoIDVgf3tw/Q8HK1Da5VRmZyX3WFFvoyGdUMn8ptvSB
+         ep1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766364560; x=1766969360;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=10vzVgMW/SIAVZiREFQWpaxB2zwT+8w8TEXAc8bNZjs=;
+        b=uJGQpvIMC+AErG4iRTjUbzLFMH1VHw/XmDEh2FjwlxAloBgE88KOieRbprS2BvBUco
+         G9fCwjcVa5nnlCX4w0WqFEwSStjhQY+yhjVavSsW0IK3sLGa0FBURQs7DH8IYZchjPDt
+         nWXs/ZIbAdgNTyKyU3sKErl5pdP5IWjGdDxiaWDWK/Ha7HK31pfmRogdFKn39Gf6dtfz
+         Z5gsx4J0K2sMOIZKMPfUG5kFMVKGc8FsOu4DTIrVrlp/g68kvgCA9vG28IRBc2+vH1PK
+         P2+hZNyk48EyFSbI7a49firtvOU7oWvVk2et98Y4j16MHSvcPTNwcywKrsJKRZ7DQAmE
+         /XUg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4ktZ+c4WA6s8jjvvXFXdiUq2CBruzZWXycqJdRljiGrh32HcM2DnQX4l0V5afNqoYGdzURwk+oA==@kvack.org
+X-Gm-Message-State: AOJu0Yz17x9oayXYoQ/GZrKbnAgm4eXm5zjUNyoMjUP+wcNAWFEot4Xv
+	92ul7hORoGUgsuj7RxyvmXNpi29PpcNqTq/y+V7TJmFwZcMI2rxDqf+x
+X-Gm-Gg: AY/fxX6yjZ8PxcZxDhR21OnAhThPUloShjCheHIRaPchaaPB0IF3WD4LHCZLxabQD0m
+	3FnrSmhQJe+LW1+fGS9FwtvJzUQlk6GAskAvyZEDNGpYMMEe9/W41UzwLnR6Jw0o03tPLPchaIL
+	dW30E1fYjNysa6jfwQL2/DnODA5jTWg21ItNfJ3f2CWFBPEJXc1wgOMGTPTnLWqLHpDeh0uZhXB
+	emsudFQinDXjtQ+ite9i4f3gJPrU/+ft24Rh2Q4KQ0kmD8o++sNrJeqHX1VBKXy7HOO60PAOzFH
+	tqjwuM8aeoyjvFKrqDAY/FhKmP7K4TMlD7RleehuLiFw+3cAYjawoR0lNO0qwDHFzWX33jxftWW
+	vFkNKWvJlQY9VAVd9AgYgd1eyLZp7m7KABfx8jknz1zk1a8Wr7v7Qk2QunO63XzsDqBIiKCLwmk
+	JU58KdEghhgKujZfKv0B2pfR0soQ==
+X-Google-Smtp-Source: AGHT+IGJcxUPthsfQvfgIvDDUW9++z5bU5TtJMiOACtXv5gVSZp4E6tKXbai45W4KorvPXSKizQXDQ==
+X-Received: by 2002:a17:90b:3c4d:b0:340:6b6f:4bbf with SMTP id 98e67ed59e1d1-34e71e6a525mr11996986a91.18.1766364560272;
+        Sun, 21 Dec 2025 16:49:20 -0800 (PST)
 Received: from localhost.localdomain ([240f:34:212d:1:df7d:b611:ffaf:6d45])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e79620bd3sm7461832a12.4.2025.12.21.16.49.11
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e79620bd3sm7461832a12.4.2025.12.21.16.49.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 16:49:15 -0800 (PST)
+        Sun, 21 Dec 2025 16:49:19 -0800 (PST)
 From: Akinobu Mita <akinobu.mita@gmail.com>
 To: akinobu.mita@gmail.com
 Cc: linux-cxl@vger.kernel.org,
@@ -109,20 +110,22 @@ Cc: linux-cxl@vger.kernel.org,
 	vbabka@suse.cz,
 	rppt@kernel.org,
 	surenb@google.com
-Subject: [PATCH v2 0/3] mm: fix oom-killer not being invoked when demotion is enabled
-Date: Mon, 22 Dec 2025 09:48:31 +0900
-Message-ID: <20251222004834.10539-1-akinobu.mita@gmail.com>
+Subject: [PATCH v2 1/3] mm: memory-tiers, numa_emu: enable to create memory tiers using fake numa nodes
+Date: Mon, 22 Dec 2025 09:48:32 +0900
+Message-ID: <20251222004834.10539-2-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251222004834.10539-1-akinobu.mita@gmail.com>
+References: <20251222004834.10539-1-akinobu.mita@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 45AF11A0003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 17zzz7sn851w7bnajx6d8wfa7my95ipm
+X-Stat-Signature: 3ud4gig9gdpk1fgyqmkcijhay9eykqzg
 X-Rspam-User: 
-X-HE-Tag: 1766364557-836204
-X-HE-Meta: U2FsdGVkX1++bHkOKpeuiQ7EU8e7Kv38mGfgT8f+knFgtYkg/3aYZf/5iAT/Q7N6f1krpQ5MCt8i1TxkttmAgmjlWH5d7jqE0ECL79c2k1hLpeGjjxJ/L12fb0HVKbnDviyvVvPBv2saJ6lCB0VvHcQe4LDM1/KCfsj0BOcgttuo2KFVINCSV/FrbL6EGVnG9UIO4nw8hh6zW94Mu96gGAw6vkK0cUWqSUFviF53vJyGp6B1h4Tzwe+l3LfKN2jCVhuKX+6AQOA2I35OyWccqkiVp8CBFlRMLA5EcrvrtwKMCQ9SEGzxfvu7TUmJWfFzH7EwAMWBwa0ZivpvyMmnRQ/K1611r6YGvtmB3R7If5z7iP1BXA+5X8lnP8AkOUYXYeYjgldL0CLRzk37r8GoPvZDeUS7Lu55dTR8ZHP6c6JmLbS+7HDFz9Mzu/l1fjopmk9zB6QwB+mqJ/W1Qo6dUihfdb4Er5iKD9ZY0SjEn80lLMpJaTJnebSgVq9CNlshKYmWzezQLNkoH1w5JKOh9L2tQEBmu5AfF0EVCyvGt5mY1c+xeRp+4gSxy0vDU9G1pMYcaoRtEoWOBwzLU91t0tvVU3x1FEgfmXFgB9FFWUWpYMowZKPUUEpZ9eiCBtt/dwIvKJCETaMJpGMV/SYFQybBEDwLdfzhMGjkoO76HnF5BFGjOv3V+YP0Q1zzRC5Ew+rP/ALYIixtjIVeBFHd8n+v2HItEvJhbsdNT8rbbms0Rg9DB9S0YPLAm+EEvQTvfViD0Ilq6hHv79eIrjkp8MYLxMJN081H4ybAyuI6wW30UfBowQtmejN2KT5PlJQnaE1L/nyZcI2ODKlMmyJ24/rz+331mWrl5Dik1Asb3lgitgnZIKsuyfKV5IzwXYusy5KmLgFyN98e5Bu9eom1Wxm9vJvnRe7UYcqtrDeNfLo85bKkv5e4atD6eNLqMY3zP9hcIQG0/q3qndKoSSy
- lkjfpRZt
- JXz3IEBP5vqLSuTW9H3FGAGS+RVy/d7HXNzNZgZxqJtOXkxJSCgPpjGmJG7N5hIa9Db9MgotCaR5eacHwDZFXYOhlPxveG6sAm/jwzVaA9zs4bx6tFVlvtWfzSRrh8UUKdgElnaPj8QGLIq0lDNxvxGnPdzou+URyyqNF
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7F20B20011
+X-HE-Tag: 1766364561-421009
+X-HE-Meta: U2FsdGVkX1+7tbOO9VZ8FDhHNDy27qAxkr5RuOjQXQgBshbCgT7Zk+ae3nR8N3LC3N/YN/k2tq2FyPb0HOTGFILmNNwh7tHd5/xzUt8jkwGXmQGqy8zGHhwE+fkX00Ct32X4h8le5y/G/UbawnHUQaN/4qNcWr7zIcZq6ER1PEd4BjH74QEY/Sx4VD3ce10JQJYBeDcvPFIKAV7HLm5Vx8sIa7XsFWjII8gEFLJdTJXeFMDPcaRVhtG7jipwSN3WMvzTd5U7KIorvF1ffxqbxw0Ulu4ol0htVRdZRzLiQ0Z2OAH5z9hjDnMVK4icfkGElbwA4evE4tq7hbGTgtNCbeDlnD5iPiX8uhylYWzklBj9r2SPQnC2GsHaqzrZ+hWGOAza5/uadJhB/DtyCgBXMFjz21KHNFj2s8PZPOXCz/wM+sLtH+ov+GsjWbdg9QlDlcwOYT3wQtH+1Jq5OEtH31M7Eyd7SNXO0GWI539eu29+WRpEw9ZgsJW7t6otuka/9aQaMLU6aX5AXtqF4xSYbXbCV3IE+D0kMQ7eJ9SgWpxaQxp/RIMwGRNhBwv6V9aFx0yHwEa8FRa0CNBAF/4TozexFWvATUiBIkttcarg/E5QOjAGEtgrqemVGPVwh4Dfdn4zyUctDQAOsYQ7WUQrkf45e9VUdFzo95FPyyI1nrJ3DR1MKEY9HFSKHQr+lUag/WUrThGOmw0u0g26ZUGT3Zd1CvLVNMFA5WYuzT9NIP3wG6fr0IJLuVnA/4TpsQCO6CXqdqjwRyTsUcyWmuKFouYAy6zLQ9S5zTPOq1ayTjEg2FNNAT7CEfoRm6TTSlGb/jGLXFhSkIKBWMcRfNCii+dMqfbeLmYMLPBSe3VqnvQ96sw7WpD2kagOEwdPsLRqvc95/JgF6CFKGdYdK+I/agcKamhee2jMhKNKf9UFExq2KCN184mXw36y4EGvTg415R8ovg79L5HvehI40fy
+ PU2AHOcp
+ 3RUs5/Ha4IEMvqY9ioGXl8srUn57tIM4FwURtwswhXMnjBzCU3Bg3iq8ukny/sK5IeMdDc3sW7Mboos2RXUAYm5akeY5Exj6g7M7Pltk6pusewoQU8M2/d1dNKMUcmj7ce1a9YW/gPJrbeclrRCoTtPo9de/4zdIzWI7obYTz8kJiuGlv+BQlM/juwRlM6saEzjTp4Lt2n95NFcCXOPTqSJ0WuRW+nl7rtTjt/PuECK4VoDWx13Ig8IriPGYdIF/no6wYEJhCiU6aQ7Sgv9EXHE/wvFcc1fDkb9K55RJAfXwIVkNPhQXJ6p1hwGQblwAJcmBDg0VAYbXrZfvC/xsf097zC/sUj2QbKvbVvEsO2Y2jlPh7h0OF7DlFi1vy8J4tb8J7OuY3ajWjXqqQTFk5Fw+yhPJD6X80XD/fZVBi1d+BgjIA1LBEylSudv7pj2yUMaz90hvk7kGzKvnmFG5I01g1mFDe26udsUdtjHcb9cx9fgIc8pEib57Fv/SyGPHqaDBEr0u7Ue/lG7S67/1MIaqUr4//gVCiIaovYDobDNr63BZXufQ1k02APq4b74DAFk/D9w8g3BK2lHTZDHoRc50a8NFSgYOv0GMWQQ2q0Wab0LAJX0TUPX9Z9om07AoNt2XjxZs815EuRCA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,38 +134,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On systems with multiple memory-tiers consisting of DRAM and CXL memory,
-the OOM killer is not invoked properly.
+This makes it possible to create memory tiers using fake numa nodes
+generated by numa emulation.
 
-This patchset includes a fix for the issue and an enhancement that makes
-the issue reproducible with numa emulation.
+The "numa_emulation.adistance=" kernel cmdline option allows you to set
+the abstract distance for each NUMA node.
 
+For example, you can create two fake nodes, each in a different memory
+tier by booting with "numa=fake=2 numa_emulation.adistance=576,704".
+Here, the abstract distances of node0 and node1 are set to 576 and 706,
+respectively.
+
+Each memory tier covers an abstract distance chunk size of 128. Thus,
+nodes with abstract distances between 512 and 639 are classified into the
+same memory tier, and nodes with abstract distances between 640 and 767
+are classified into the next slower memory tier.
+
+The abstract distance of fake nodes not specified in the parameter will
+be the default DRAM abstract distance of 576.
+
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+---
 v2:
 - fix the explanation about cmdline parameter in the commit log
-- add document for NUMA emulation
-- describe reproducibility with !mglru in the commit log
-- removed unnecessary consideration for scan control when checking demotion_nid watermarks
 
-v1:
-- https://lore.kernel.org/linux-mm/20251208094028.214949-1-akinobu.mita@gmail.com/T/
+ mm/numa_emulation.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-original report:
-- https://lore.kernel.org/lkml/20251022135735.246203-1-akinobu.mita@gmail.com/T
-
-Akinobu Mita (3):
-  mm: memory-tiers, numa_emu: enable to create memory tiers using fake
-    numa nodes
-  mm: numa_emu: add document for NUMA emulation
-  mm/vmscan: don't demote if there is not enough free memory in the
-    lower memory tier
-
- Documentation/mm/index.rst          |  1 +
- Documentation/mm/numa_emulation.rst | 30 +++++++++++++++++++++++++++++
- mm/numa_emulation.c                 | 26 +++++++++++++++++++++++++
- mm/vmscan.c                         | 13 ++++++++++++-
- 4 files changed, 69 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/mm/numa_emulation.rst
-
+diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+index 703c8fa05048..a4266da21344 100644
+--- a/mm/numa_emulation.c
++++ b/mm/numa_emulation.c
+@@ -6,6 +6,9 @@
+ #include <linux/errno.h>
+ #include <linux/topology.h>
+ #include <linux/memblock.h>
++#include <linux/memory-tiers.h>
++#include <linux/module.h>
++#include <linux/node.h>
+ #include <linux/numa_memblks.h>
+ #include <asm/numa.h>
+ #include <acpi/acpi_numa.h>
+@@ -344,6 +347,27 @@ static int __init setup_emu2phys_nid(int *dfl_phys_nid)
+ 	return max_emu_nid;
+ }
+ 
++static int adistance[MAX_NUMNODES];
++module_param_array(adistance, int, NULL, 0400);
++MODULE_PARM_DESC(adistance, "Abstract distance values for each NUMA node");
++
++static int emu_calculate_adistance(struct notifier_block *self,
++				unsigned long nid, void *data)
++{
++	if (adistance[nid]) {
++		int *adist = data;
++
++		*adist = adistance[nid];
++		return NOTIFY_STOP;
++	}
++	return NOTIFY_OK;
++}
++
++static struct notifier_block emu_adist_nb = {
++	.notifier_call = emu_calculate_adistance,
++	.priority = INT_MIN,
++};
++
+ /**
+  * numa_emulation - Emulate NUMA nodes
+  * @numa_meminfo: NUMA configuration to massage
+@@ -532,6 +556,8 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ 		}
+ 	}
+ 
++	register_mt_adistance_algorithm(&emu_adist_nb);
++
+ 	/* free the copied physical distance table */
+ 	memblock_free(phys_dist, phys_size);
+ 	return;
 -- 
 2.43.0
 
