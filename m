@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71384E677F6
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F69E67495
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 17:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B62CC6B0089; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
+	id 1CF9C6B0088; Mon, 22 Dec 2025 12:04:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B23A56B008A; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
+	id 1A7356B0089; Mon, 22 Dec 2025 12:04:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A333C6B008C; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
+	id 0D3A26B008A; Mon, 22 Dec 2025 12:04:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BC46B0089
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 321821370A4
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:22 +0000 (UTC)
-X-FDA: 84247695084.15.C7A2E0C
+	by kanga.kvack.org (Postfix) with ESMTP id F1C856B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 12:04:31 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BAADCC02BC
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:04:31 +0000 (UTC)
+X-FDA: 84247730742.19.26E144F
 Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 392D2100008
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=qWc9bzQ+;
-	spf=pass (imf14.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6F72210001D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:04:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=Z8RW9LHX;
+	dmarc=pass (policy=quarantine) header.from=deltatee.com;
+	spf=pass (imf05.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766423069; a=rsa-sha256;
+	cv=none;
+	b=aWYv5ZqoT6vgxsZGSD5efugwIxufnqrnjnAQYb+7xzaqqZhuGdAe64K1x+fxFZDlSCU2zu
+	8ZH+CGeHEOfaDL21mL0sjCH20JH3+xsI7q1WxlonzGFpXLDUZh2sY+TD7AYM8BQx4vo4l6
+	CI77DopRA6I/Ao6swfGSCo1RbS1aTSU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=Z8RW9LHX;
+	dmarc=pass (policy=quarantine) header.from=deltatee.com;
+	spf=pass (imf05.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766422220;
+	s=arc-20220608; t=1766423069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t8GQsgEnNEdrFwBBtAuZn0Q9GIr1eN47gP4XtMI9muc=;
-	b=KDHc1/M/sqW7c5M5UNlRmF9bv1qZNQhh+0rGmFGDD6UpY+XQ/NBzUzZ6qTLMdM/5+uJxYx
-	Re7Adtj9lfThzzzLbGCMyvGBFuWgn2OkzVOM6W52aWWLWRH1xVh/Ic4MJngv7jEMD79QWB
-	8yhqYCuiaIwXFJg2y7v0gE12kDic324=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=qWc9bzQ+;
-	spf=pass (imf14.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766422220; a=rsa-sha256;
-	cv=none;
-	b=a6R1SuJ/siUQRxpk9AMhN+QAl4yXc/W1MTuGyCOpe9L84Pi8mWSoTRBG8wa8WlyIT+7O/A
-	OdM/en13oIaWVIvq3RYZ+DL/aIUN+eFN1w2t72vHIEulIL4ZusW5EXW7KCfHuLgsHCPTXB
-	uDWSjmhafOt6I5v3SmQY6bGuG5W41GQ=
+	bh=UhEdYDLpAvxS3FC6ZENa/gvzH1E2CyhCMJEO+Kd10VA=;
+	b=yU9wy1oOlk9BxsG94X3gGFxyPHfOiDAmLDCHZNrt3Xg0iuMo1WoCF6wi4/1jrAlPDFXE4t
+	UuZuBK6LkMjiI7afcwNE4cm0QpABFBUsUXlDuJXjAy70Bs7me3weh+U/Mi3cZ1wKOqtltc
+	UAL+eqaebgA2REGt/vJzTkZn30Uipn4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
 	MIME-Version:Date:Message-ID:content-disposition;
-	bh=t8GQsgEnNEdrFwBBtAuZn0Q9GIr1eN47gP4XtMI9muc=; b=qWc9bzQ+KWzrrDDEfmRCfKMy+q
-	BpQQ82uAdGJVYXBD4KbGvK6kg/vNGd4ro2s3ZAI08XZMZmPOKf73pPfo8VjP/fLk6D6ZYFADioP3P
-	GhiuFn2SS6ykpv7UgUvLbr5nUfYtfCetjQsvpQX44xh6MOMuFgnEgw6iQT1oXEAQFU9Qw5jf+F/Iw
-	BXqB+iX4HfwVfIH5wkARC9vO9NKsItHqonsl3W8aK0PiHf+oE92O/7LLApq+cSgM045iM+LHzVQwI
-	q7KHwMC32e1xDGMn9M5r8AELIYedCjq6alJDW5jr7ILlAmaD/C8LTLwE5FIKbnMcKdxmI5Kimu8P1
-	V7mFoPvw==;
+	bh=UhEdYDLpAvxS3FC6ZENa/gvzH1E2CyhCMJEO+Kd10VA=; b=Z8RW9LHXz3jTEXW9CLMsrh9IU4
+	L2CbiFl6A0PCVnrkPJGCRBSosZD2qPXxEA/95JHxyPYkBZLwjg2XYOMPfLvxe3HFAsJdnV3do7YpB
+	/cxaiCMuRMNy3uU4JX7Z/PT9n9mH8nWhSImLNeM8+6Dbb1+ydFsuBp/V0+B7poTx9tXF3XwQ3rEyF
+	XsPAPTy8qkc4hxELW92MXPQNxnIJqeupxf6EyiRBHMGG/+vYl9m8pcFWHAsCtDglAH4lcWW02m8SA
+	3O4a2K1yKGiuzaKL7C7raxEjbjGKaDdhIIFAaCaGRumg9i8t4ZTDW/P16HPVwA+5MRlZnir7/OUeZ
+	OBVdU8aQ==;
 Received: from guinness.priv.deltatee.com ([172.16.1.162])
 	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.98.2)
 	(envelope-from <logang@deltatee.com>)
-	id 1vXj6w-00000008Jb7-2atl;
-	Mon, 22 Dec 2025 09:50:19 -0700
-Message-ID: <4a91cfe7-75f5-49a4-89a4-fd6717e7e9d2@deltatee.com>
-Date: Mon, 22 Dec 2025 09:50:18 -0700
+	id 1vXjKd-00000008JyE-3VcS;
+	Mon, 22 Dec 2025 10:04:28 -0700
+Message-ID: <07a785e5-5d2e-4c81-a834-1237c79fdd51@deltatee.com>
+Date: Mon, 22 Dec 2025 10:04:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org
@@ -81,27 +81,27 @@ Cc: linux-pci@vger.kernel.org, linux-mm@kvack.org,
  Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
  houtao1@huawei.com
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
- <20251220040446.274991-3-houtao@huaweicloud.com>
+ <20251220040446.274991-11-houtao@huaweicloud.com>
 Content-Language: en-CA
 From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20251220040446.274991-3-houtao@huaweicloud.com>
+In-Reply-To: <20251220040446.274991-11-houtao@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 172.16.1.162
 X-SA-Exim-Rcpt-To: houtao@huaweicloud.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-mm@kvack.org, linux-nvme@lists.infradead.org, bhelgaas@google.com, apopple@nvidia.com, leonro@nvidia.com, gregkh@linuxfoundation.org, tj@kernel.org, rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me, houtao1@huawei.com
 X-SA-Exim-Mail-From: logang@deltatee.com
-Subject: Re: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in
+Subject: Re: [PATCH 10/13] PCI/P2PDMA: support compound page in
  p2pmem_alloc_mmap()
 X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
 X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 392D2100008
-X-Stat-Signature: 1ku391u87q4hhhtgs8scyk68wz6ueeh9
 X-Rspam-User: 
-X-HE-Tag: 1766422219-520365
-X-HE-Meta: U2FsdGVkX1+1Uvpqq9USnVrHoI6GmkHQ2Tge62LTt/bAnw+GNPZyCoP/eVsEhAix61VrippBkY533vGmiHIGdv/N1B2Reljpz9PM7/bW+S4uOd++yMROKkf2xEUYyVf+MUbIL7LUS/eYOgLWNoYAoyetEdGYGOP0IOawgbz4izGFA318wz5ac5guTzxdVr+SqRKohFI771/WpKLvcfO8Wkut3kehbm4/FMBLCr1g57rIHZSU9cJQ6aQvNRxq0r7n/UkXnSRP4mDXWjq9OObjy8VNTUjz+logtzPJMYIoxfFDuPmwgbjaSS39Wq5lV04Qqm+8FA0IaksX870BKkIwXTMyG5zP7bw6MTGHN0gx5X4UWtzCSb/8aD16aWbn6mpZAHyFbBPQldsx/9kA0NZ5gJ43D8J5IgLvE+TcN7RJN8uAAcWlpY7oGwfJCT7uvp9Y/CY/C3u27EVVAxySzl31NkbdhUG+dC2EjDOjL8LaaYkzJ9kRvRUwT0UDys84OEPsj2VA5Q4n97Yar53kyIHA4OHhAIpvmLPmr0+cVGOGR1g72aSMLeTFTYIiFbDPs/U3KPFlds6q6lFeQHmEb0c6T0+ybn9wJ4RP5u8habAZ7uZWzWQcwBokFxC36lwEaS9K8fZkJZg3V1fDTYUg6X9dbPZnvwUPLjrsT1KRo7v1h2EIuynrOjLHlz39WJuy+4zq+S/lLYVlUYmH+l3YxovMJ+r2AQl71/66DRc1dYmGyNMCZUHjFIlKHCh4ymwDUmrk+eCIYH7dv/VrWO06Rn0cqOFDZEHN+XiwIDpL5gb8BS9619jdyRwk70u7uxdBRL1LNH+F/8MHAeWP2C6UCKHj9BLCMMlWtKtzLZhUxQC0MDx5CJD/Ty+FFYXW5d9HcyEA9aCzD0lpELM1fBnVqQwwBDFLvwbqdo+DSlXPCz+nPycyKxdpucNj9sBjDXMSG+EfpvU2hfg2JV6uFpRs/S3
- 1sqzlrik
- hlG34lZQ7z/bX/zX6YREV4deHYCXccQqFPEaQNEcktBRMKzjFyA9m7ct+Slyot8xTXKPl88SpxzNsAp7odu5yv4KK51kSHc/uVeyW7/eJ+vJN0wuo0iJJklm8wd55FOXyWfDQGAoaPY589BKQnET/BOwviWZ0hK/dPbVX/mreMCPXOy3DL+5emDZ6YjOmzlGvHQNM9H/TojkWBnS/69AEXjsrssYuKqM7/ma7NiKLgEdb8sprfC+uLK7D+rvXKzZcYFqACIP7ZcrpkKl+jzRHlspBG/YQNYbVo6jnxR691JKCf9BGRcgnhEWyyLJn04WvWe6fMuLB5eLsPYIAAOnWFdl6f9lRvfZP5lAznMQhBSYpts8ULVosDn+7oxI3It6fl4ir5L8s9lo8vI4DiL4MEn0heco9yXCCFJGqGusc2+fyOL3TVR8Z4YPdIg==
+X-Rspamd-Queue-Id: 6F72210001D
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 1ghxh87jzro4p4o8mkpu6bwm7ekf7rsg
+X-HE-Tag: 1766423069-563242
+X-HE-Meta: U2FsdGVkX1/2iDQWd02ecOK9txZ2M5CE8mT/hIQVTvAoX9q7Z05mYm7HG5tOGDOcgj2rhCGtNN7kLo8+24eC0/a2vMWxV6dMnnzUUWUaXlYUEbwe14ujni3/zG9pQ0PwAQpy/0ZBEwAoHnPjP5u7V6HVs4X9kkyZzajJJhvbRfCCQK3Zqt4cvmvB+gvEl6drzAa3dBxlG5Tsz+V94mr8g32WRFU1JPpThjCs2Eqrs1BYaV276Q+MuG3YeNRlIDm2ncQj5UZ0qAY2vWY+FXF1Vg+ocpK/K1dYHJDkcAto7WxzVFIeMZx2SiAWTanDGtzZZLMzmqU7QxklGk05vpyJGdYgU2Hh9mTxJQqukqT38yzKsxk/xMSk+fgAaIu+5/BHQT1lcsZafqtvZNoPzYzpC2XagiL3MytBe4zZWzF46hCYzZtuVa37VzJmt6UsA/8nnOXzM5PEAzafnaBYDCwOGMYMF5UVjiGS+555h9Di6+MQQc5gXabAmdVnjApNCoUCcmlSChySEqPGPEkw1gDYYZ5a71arjdxHaPkub8/DblN8Xcw4FWLNFf0ScLs9uZuKIyZC/5eGlUKSgjSoqBiFTU1+cn75c64CSyPer+Il0otCr/bhZzmi9mhh/RcPpPTObxAr9B+1c6ur4lJ57WFbIYoLkKZnQ2ee7pMvL9VQi2+ipTybJhlgoYEgM5kzw4g26XYzttP2/S/iVcgi30Xpnv6Qbs4vYQ82pd4mAI+6cABPjpm3BgpV/6CFvzAgq4nUTrSOkJvNyRaMBppzgH79GmnhSKUYcA7GwyqqxcqnRvYQISnUlg5TIrca+FyY7tUVfjptw3ruWnEOURDFk5epgMP2KpRzHtX52XkqztNX6LPlbKgqF6x8TnpxgdiUWIGV+MMPsNdmdEJbwsRCvJXYMSM/Geex6aWFKCoWcaKtJ/6sHa1fXhpxFCBGF3Lzvan/49m/A97l8klajBw45NK
+ o7It4kSm
+ ywRRt2Ew10uicMRRJg/3E0p8/vlapegy5AdqcopESm4VyeXmEheVO6DA+BvKbCMsY3h4sOyMsfP1xurg1dOUTuW76v0GBB1Iyf8zUz7IcQytCjPLc0UKPddjy6mR7wDCkrKEt5u2vrO8bL0XrBlqTiDU44A1dVizAL+DRyfmvaZJamdN1NG1jtmorNWEkM938zLANQwOj1L3SiIbCIn7aoE7e42fOqoaGN5ykfpmnz+cfMfWzUaiqzImASyBuAirvqYu74YTxpm0Ci5ATB7AxJwnzxwVbSZsw53T6LWuGbKwCBX1cJbiAvpF2izAuTSy27k2wEAug5P+2m9UDPE/q1laZp/8FNb6f4v9+mUxOlMka1LKvPwJmGQo2eg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,30 +115,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025-12-19 21:04, Hou Tao wrote:
 > From: Hou Tao <houtao1@huawei.com>
 > 
-> Commit b7e282378773 has already changed the initial page refcount of
-> p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
-> "VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
-> refcount should not be zero and the following will be reported when
-> CONFIG_DEBUG_VM is enabled:
+> P2PDMA memory has already supported compound page and the helpers which
+> support inserting compound page into vma is also ready, therefore, add
+> support for compound page in p2pmem_alloc_mmap() as well. It will reduce
+> the overhead of mmap() and get_user_pages() a lot when compound page is
+> enabled for p2pdma memory.
 > 
->  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
->  flags: 0x20000000002000(reserved|node=0|zone=4)
->  raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
->  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
->  page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
->  ------------[ cut here ]------------
->  WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
+> The use of vm_private_data to save the alignment of p2pdma memory needs
+> explanation. The normal way to get the alignment is through pci_dev. It
+> can be achieved by either invoking kernfs_of() and sysfs_file_kobj() or
+> defining a new struct kernfs_vm_ops to pass the kobject to the
+> may_split() and ->pagesize() callbacks. The former approach depends too
+> much on kernfs implementation details, and the latter would lead to
+> excessive churn. Therefore, choose the simpler way of saving alignment
+> in vm_private_data instead.
 > 
-> Fix by using "page_ref_count(page)" as the assertion condition.
-> 
-> Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
 > Signed-off-by: Hou Tao <houtao1@huawei.com>
+> ---
+>  drivers/pci/p2pdma.c | 48 ++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 44 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index e97f5da73458..4a133219ac43 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+> @@ -128,6 +128,25 @@ static unsigned long p2pmem_get_unmapped_area(struct file *filp, struct kobject
+>  	return mm_get_unmapped_area(filp, uaddr, len, pgoff, flags);
+>  }
+>  
+> +static int p2pmem_may_split(struct vm_area_struct *vma, unsigned long addr)
+> +{
+> +	size_t align = (uintptr_t)vma->vm_private_data;
+> +
+> +	if (!IS_ALIGNED(addr, align))
+> +		return -EINVAL;
+> +	return 0;
+> +}
+> +
+> +static unsigned long p2pmem_pagesize(struct vm_area_struct *vma)
+> +{
+> +	return (uintptr_t)vma->vm_private_data;
+> +}
+> +
+> +static const struct vm_operations_struct p2pmem_vm_ops = {
+> +	.may_split = p2pmem_may_split,
+> +	.pagesize = p2pmem_pagesize,
+> +};
+> +
+>  static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		const struct bin_attribute *attr, struct vm_area_struct *vma)
+>  {
+> @@ -136,6 +155,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  	struct pci_p2pdma *p2pdma;
+>  	struct percpu_ref *ref;
+>  	unsigned long vaddr;
+> +	size_t align;
+>  	void *kaddr;
+>  	int ret;
+>  
+> @@ -161,6 +181,16 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		goto out;
+>  	}
+>  
+> +	align = p2pdma->align;
+> +	if (vma->vm_start & (align - 1) || vma->vm_end & (align - 1)) {
+> +		pci_info_ratelimited(pdev,
+> +				     "%s: unaligned vma (%#lx~%#lx, %#lx)\n",
+> +				     current->comm, vma->vm_start, vma->vm_end,
+> +				     align);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
 
-Thanks for the fix
+I'm a bit confused by some aspects of these changes. Why does the
+alignment become a property of the PCI device? It appears that if the
+CPU supports different sized huge pages then the size and alignment
+restrictions on P2PDMA memory become greater. So if someone is only
+allocating a few KB these changes will break their code and refuse to
+allocate single pages.
 
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+I would have expected this code to allocate an appropriately aligned
+block of the p2p memory based on the requirements of the current
+mapping, not based on alignment requirements established when the device
+is probed.
 
 Logan
+
 
 
 
