@@ -4,206 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FD5D68BD5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 02:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A979E66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 02:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED6C6B0088; Sun, 21 Dec 2025 21:30:35 -0500 (EST)
+	id C291F6B0088; Sun, 21 Dec 2025 21:38:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291076B0089; Sun, 21 Dec 2025 21:30:35 -0500 (EST)
+	id BD6BF6B0089; Sun, 21 Dec 2025 21:38:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149596B008A; Sun, 21 Dec 2025 21:30:35 -0500 (EST)
+	id ABAC76B008A; Sun, 21 Dec 2025 21:38:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D056B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 21:30:34 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 97C5D6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 21:38:38 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D3828BB20
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:30:34 +0000 (UTC)
-X-FDA: 84245528388.20.15ABB29
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010045.outbound.protection.outlook.com [52.101.85.45])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 55FC51A0015
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:30:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tesZ7u8b;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766370632; a=rsa-sha256;
-	cv=pass;
-	b=EPl5R4i1fj9XSTzGXLw7gILLGixm1aXGmxSRVKJ43SY1OAsroVGkE+pACogruOfLHqeYl9
-	w0qheP2tEw8U/T0+eNo3h+mMenLH06cdMsh1ovqIgwXV7UyLANmxAmwXXdZlubZukykPVZ
-	+jBlv1Aa0Lae+gefimI2qfHKlks4jno=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tesZ7u8b;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766370632;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F05260D2C
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:38:38 +0000 (UTC)
+X-FDA: 84245548716.20.16B908F
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 82FA0140012
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:38:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766371116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G10bK4TrRbNOoRLAaJ1ZzHPFoT71RC2LwEZuHoJICLs=;
-	b=nInBR2YJDqSD7OcYX+Zj8P76yOnIOQYqNdtsMjyN7n8KYGq1scj3AB6Oi08PgZFzxpPiaz
-	wPJQls4IvpwvFOuCjrKLO/38hdPaSMfrS3zAelWv3ZWyx+vZTh2PIlL0Uu2szW9W736s71
-	FSq3kYFfVspXKsogOkUj/UjVKTMGv6U=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wBmU1aFqAdgT/iLnxXY85MF6csb6Eot0+nR/ergEcaUmrlD2sBryLbefwMcaOSlu0Cf6cosYBacTBxT7Ly6CGT7HtItYAh36Yw+lfF6Coi5HyoO4JKBwSsVKHR974Os5o2SsCNFNOQ5rtCD9+A8JKGd+7v3DOqCSq/PYpjVh8wZHNrJ6pHbozUBoO6PlefBpfvulxuAoWg2chuehXC6OF68EjzomQM7oLnGG4TOX/R7RhoQ8WJHWRUVguIlSiDb1UQ2C77zwkyrHfL3ZLoFXBuzbkand97X19akt44HFptX2tjee2FuhpmmCt9fS/pcIuiLSwZzVMJqspSdzXQH6Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G10bK4TrRbNOoRLAaJ1ZzHPFoT71RC2LwEZuHoJICLs=;
- b=cFX+MIRTOVDnTrAv7C5HJ1I+wJPTmjZA4oVEtLQ1Iyrdjxh4Ra0QFOfNVO/yg/X+s2KpQnh/4ys+O69+9FinDIrRdkVXg/GDdaWzZU6ZQ2qwaG6dcMyOfxeK231poE+u2vRbLnUHVJJjyr/YS7e0W3fZh2GHvoEqJEriD73k+FoMzIPpxgFahFVN0IZ99aikrUui/prfm1MAH50gWWLcMu+Ce0IFSUE3nn43Ldvzvy/J9vHXrbyD30Hyj4eB3JRTMAcuPUffuR84/y3y7LTlsFDew6Vgy0m6eE/lssmycbBc23K1VDq7yHBCE7dGfyg2BlkiBr5SntVcf1+EvzXupA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G10bK4TrRbNOoRLAaJ1ZzHPFoT71RC2LwEZuHoJICLs=;
- b=tesZ7u8b019g80+q7Pmnf8FZ2VlJ/gAC04QzOpgWZh2ffgEvB+SccDp9o1KIwnw7uNpU/TCfyHX2xl1rUbd8KXmnidMKN67SBG/45/+cZvuQ0vtdvlp799CqHWEB6k/y5ujAAMOO39btc02tvtR9lmpymGVZqBoVNdrtUgAQNu0DUAz5w8Sjcq3EIzMXqs2LNbhQRLs7+si8of1WaHxuMBzhKremLayxZn+yb3yZTsRejRvV7t9+/vzPl0/IMdmK7jSKrBM+fXXFDEszNhl5+fuavDiJ3Tg2XGmpa8JeU7MtQDItgfE1JYIFUch6P1iVkl9Y9jCMUlQr4qVmc2TsKQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB8457.namprd12.prod.outlook.com (2603:10b6:610:154::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Mon, 22 Dec
- 2025 02:30:26 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 02:30:26 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- sidhartha.kumar@oracle.com, jane.chu@oracle.com,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>,
- David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH v4 5/6] mm: cma: add cma_alloc_frozen{_compound}()
-Date: Sun, 21 Dec 2025 21:30:24 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <FB368603-C871-48A4-951D-B8B605DC4583@nvidia.com>
-In-Reply-To: <3627fca8-4133-40b5-9883-5163dcbc91aa@huawei.com>
-References: <20251216114844.2126250-1-wangkefeng.wang@huawei.com>
- <20251216114844.2126250-6-wangkefeng.wang@huawei.com>
- <4B10600F-A837-4FCA-808D-6F8637B073F7@nvidia.com>
- <0eb081b8-3982-48aa-a9ba-9cdde702b4df@huawei.com>
- <A276ED1B-89C8-45A0-8DA9-9D5CA1D8E2FF@nvidia.com>
- <6e7df7a8-aaf4-4960-82be-dea118c5955c@huawei.com>
- <0168824D-37E8-4E22-AAF5-43DDB38F0FED@nvidia.com>
- <3627fca8-4133-40b5-9883-5163dcbc91aa@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR10CA0029.namprd10.prod.outlook.com
- (2603:10b6:208:120::42) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=t3raz3t45aN/hMLgh3K6EXT+aYHj6ZgGzst0rmbnogU=;
+	b=tv2EvuHQsdy5ey+nudR+g+lAs8qjrceGPrxpQv3hGp6nK96MheMSmQ7SSnjr7nzsneLh5r
+	1X+moMpNYyJ/oMg2svtYuIHT1joGhDxnnQFUidN6JGadm/nBHI3pAbztvxFoc+D8UMUGJe
+	IfEu88x9ICDGjTE1VvWFfBW0COolJDM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766371116; a=rsa-sha256;
+	cv=none;
+	b=q3b/Zo/HWmWPRA4XepHSTa/vE+MGNE/RxjoRIAJJhAicpy0MT0F4jZ/l7883ZBdOKF5V98
+	6S25CRmf+EppUuAbqv8CvMnBlyxhbRHXA11xFMQvU/hmyFKm9sc+1vug9/UizPDmXTgZ0V
+	sopmPqExslyPytZmbdSan40a7WZz/60=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dZMkr5187zKHMKl
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:38:12 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id C8C2940562
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:38:28 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAHtvYjr0hpMQkqBA--.13440S2;
+	Mon, 22 Dec 2025 10:38:28 +0800 (CST)
+Message-ID: <6a7f78fe-0d46-4901-b4f0-977472e29859@huaweicloud.com>
+Date: Mon, 22 Dec 2025 10:38:27 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB8457:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f2aaa1f-7058-4e25-9073-08de41021123
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U205bXpPRmZlTm5qUkphc21uZ1R6ZksyQUUzZ2JYSXQwQ1FWTFZaNDI5VkRv?=
- =?utf-8?B?amRmRm0xenB3b2VKS0NBalkwd2J0SlFOL3VyYmRUYmpmRXZXdEk1azVac2U0?=
- =?utf-8?B?aENYVUFDN2M0Ni81TEJrVzhIc3hETGZRSmptZXFDZ3oySlJselorVUlEU1pZ?=
- =?utf-8?B?YUZXbUFtRGQyZ2hjU1dIRUxwN0IvMTQ1amJpWVdpeVc4cTFPemkxTjNmelk4?=
- =?utf-8?B?c1NYQlF2MUZoN3V4OFJWRTFGUGFhTVNzbkdWMkhMd0pPNDlFUENtK3JNQTJS?=
- =?utf-8?B?NE5iTW5tYWQ1a0o1cDl5SGNaakx2YjFud3kxeWtDdWcweDlhNnBiejJMYzMv?=
- =?utf-8?B?V1ozNEZBZGs1bDJ6WWkybEJRMnpsZzdpbndTZlZ2OTNEUExiQXdDVEdHVWg5?=
- =?utf-8?B?NFQzcW1PMUFEVTRrdUxuZW9BSUJmeW1nZ1dtZ3duWEVUS09pRmZKdWNJYU5j?=
- =?utf-8?B?dU1sVHJpSi9udHRNb2Q5OVFzd3h2L29mUkRvZXprUjVOWjF0YlBSbzc4ZDNB?=
- =?utf-8?B?a1dtSEdGZlJuUFdRNi9WaGFNVjMvcjRzRFhGUmY3NWxRWlNuVjhUcy9ES0E5?=
- =?utf-8?B?QzhmaWlXMnBVWTJXOTN1K2VTRXk1UUdKTTNUYnpGbWRNaFllT00ybnFteFI4?=
- =?utf-8?B?RU01TE5SK0VGZEs0U2QvVUQ2MjFCNDlmdEtjZmNlLzkrQUVydjB5TmVjSmlM?=
- =?utf-8?B?RUhPVis1SzJ2U1k5WkRVUGlZVFhTN3JTV25NbnUyMlRnOTZoK2ZpVzlDZHVH?=
- =?utf-8?B?enhnYUpHVStXNkZYVXF3SVNEU2hpbFU4Sjg1RjVsZXlSSTJ4ejF1NnoyTFh4?=
- =?utf-8?B?anhoMkh4b3dqUE9XdUpVT294Wnh3R0dBL1VNeTl0TURCZ0VOTDl4UFYra0Z0?=
- =?utf-8?B?WlRNNWozSzJMZkRYa0ZiMDFtMTMwK0ZFUVh0Y2RPZjFLbWdmeUkwRTRGc1FI?=
- =?utf-8?B?YTlDT2dIWlpxMXVvRDRnV2txRzhIek1uTlVDWWlKUmU1dzJQUmxmUlNBaGlD?=
- =?utf-8?B?T0JmZlg0VXRhVHQxeVFJL1cxbGIzdFh2cTRCOVdFdG1McXhXY0xKeGJyNG4z?=
- =?utf-8?B?dkpwb0VJZ2JZK3RBblhKMmsvN1M4d0NNZUd3dEdVTGRURkF3cnVrWFh1S1Rj?=
- =?utf-8?B?NmxQMmQvbDhYNUphTDdsc05yanhxdU8zTXdQVnhmUU8xd1ZRenV2TitTY1Nk?=
- =?utf-8?B?YllsWU1GMnFPMjB2Z1NhV20rdFpSWGZuZ0prUUwyMXUycEl3d1hSOWhIVnE3?=
- =?utf-8?B?VVoyODA5d2tmMDA2SzlYWkNlYUc2MjFXYUVPbmNnbDNIc0N2UkNlNUFqQjlU?=
- =?utf-8?B?VzZDU1BRN2VNeDZZNlVKTFVjRVFSVGtGN2VSQno4Ylh5d3haMi8vb09lUm1M?=
- =?utf-8?B?MndKOEJHSzdCanNldk1tN2JzYUd6Vkp2aUZva3Q1dGV1eTRGZWprUDY0b2Rx?=
- =?utf-8?B?MVZ1amJPLzFia0hxd0p6ODNDeGFJMlJlSTJnMkxLckJ6UjVVa0pMNCtzYU1x?=
- =?utf-8?B?Um81cHB4ZDBHYmNEeG9LQTNwWFg2eFJVVVBSOWY5RFNpcU9RandQUFN4aS9j?=
- =?utf-8?B?S0FjL1NEdk12KzlhbHpFUjdhSy9wbEoxMHNIWTVPOTVHTEgrMXAvbnFYbFNx?=
- =?utf-8?B?TEZJcWJOeitpRVh3d2h1S28zT0Myb2tzdFZLLzBRQWV0VEV1Yys1NWFvRjF4?=
- =?utf-8?B?bFJibmt3bUJnSFlTS3QvV2sycHRZa3FvdzJtZjZWSUpaYVpwZURkV0hoWG9p?=
- =?utf-8?B?RzRPTHJWM2RDbFhPbWhrdEFaSmg2UHZoeVhnZ1JDajEyV0M1TmpGS2M1YWZh?=
- =?utf-8?B?TjRnQjFZNlAzdmJJM09kdVcxSkEzSlRlN2dRM2xNZ01NNmplb2tzYTdOUmRH?=
- =?utf-8?B?R29LMmpiY1hFK200Mm5qRDE1RlE3b3FXcHJaZE5EeThpT0l2OVZseElGblUy?=
- =?utf-8?Q?kHgOEQY31iB8DmgRdMj3OOafCG17Ax8j?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ajlqcU1xU0ZaRHpKclBoaURHV2NpZHhRKy9GVUdCRU11Z1hYTFJMa1JMQ0Vr?=
- =?utf-8?B?OGJWR3dPRE82azFRNC93cVdhRWtCUnJjUmllWnFhM1A1OTBNSGVrbTBtbXdt?=
- =?utf-8?B?R0VRWncyQlZ3V0NOOVRuWUhqT1NacExYeGxUS0RmTzZzZEZDNVZDVjllTTJU?=
- =?utf-8?B?bDcwajZPT2hsSjRITXQzcWZIbUVsUFB6MTJJRGJoazZIVXV2OXRjUkdDcGNh?=
- =?utf-8?B?c3l4L3ZqOG1RUkNlWEtValdVcTk4Q0VJczlrK2EzUjRadFNyYkVwdmxPaENW?=
- =?utf-8?B?U0paM0tHWEtod3pscURDT0d2S0doQzl1ZzNrYjFMVHFNV3ZwRVVZZ0h2VEdx?=
- =?utf-8?B?Y1FweUFQOHNiQ0JHMHBYNEpMV3BHK1RSYUttMVEyTnN2NEk4QlVlYkVOM0M0?=
- =?utf-8?B?bU00b1hSMkRMTGRUclI0RHQ2a2VwVThwWDJKRmg1dDFGWW51anNPTkZ3Mkhj?=
- =?utf-8?B?YmZLRnBUaHlERDdUY1VCM0VpQW1GZ21uaDU4Y3hRalhvMnhyTHJyb1lXbTlD?=
- =?utf-8?B?c04rVm5aNWRDV0p6eVlvK2dKYUJQVlFaRDBOUDNCRWZrdVFLMENuRzBDWkpS?=
- =?utf-8?B?T291bll1ZEhpQ0dJNm9mdDZPMVZhcUJKTkJYUWhLTWdxVDhpRGhjME53bHpB?=
- =?utf-8?B?UGp2NVJHVnRaaFR1RkJmRndlalFuK2hEZ2pyT2RnMHhlSkRSajRMQ2ozQTJo?=
- =?utf-8?B?cEhDSGYzZGk4NWh2S3M3ejVBTGliL2paNlU5OGRqNkVvTG5CNUcxY2dVQVc4?=
- =?utf-8?B?MndlL1U1S3dSY1hUQlhXbmE3WGk0ajZiV3FUNVVLSkNSdXpRY1JGZUpEVnB5?=
- =?utf-8?B?cnJhVFBzd0R6SFJMclRCZ0U0aHNiTmZXNDhXLyt6bS9RSEtkM1VMQklyZTNi?=
- =?utf-8?B?SFNFdUpHREY3UFg3c3lnSTRNYytZbHp4dkViOTc4emdWQ1B5cENDbmUxTkpn?=
- =?utf-8?B?Z2FRbC9NaFRVd25aS2xrLzdhdTAvcHFGcHV0MldzdFpZT2RIRVA4OGJxc2RH?=
- =?utf-8?B?M2ozWldJd0VQbXlobVRnWXR3SUN3aG1BWnBCRmtpNU9Eb3Q4cHE4TWd5ZGtX?=
- =?utf-8?B?NXMrcEJkZnpPcUdFZEt2bk9ubzQwWG5DaDJ3a1JiOUNHM25Gc0E3ZWxRSWhh?=
- =?utf-8?B?cEFsZmFHaEpWMGs5bXdMV0ZFUlBrdjNHV25TT0VtT3JCR25keU1XSDFLL2Fo?=
- =?utf-8?B?VlE4bFcrZWRqR3ZPeUwwMVZsdW5hZU8vRzNnVFZsSWpDRU9IWDVkdGZhVnpX?=
- =?utf-8?B?TTVmbTRUMFNXRlNmQ1ZkSE9ObXlDbzhseklkT3YrTkZRUjNZb05XVHhQbkRP?=
- =?utf-8?B?SW9VbGZHZXBBZUorQ25aOW5ad2lOVDZ2Tlg0MXAwb04vTHdvd0hkUFVJQzQ2?=
- =?utf-8?B?emFQRE9FN3VZNHFhVXNnV1NpUGdublJYV3dZZkZ5UlREcUNTV2xvTlFIVG1k?=
- =?utf-8?B?L1hHQW05d0JubWs5UFFZRG5sT1VBVHR2Yi9IalRVWmduK1lPWFczYmxMZEtJ?=
- =?utf-8?B?Q1lSc1R5R1lzcDRrcE0yK29qR1loWkFPS3Z0SHZHLzNmRnJHVitDcFVIOTIy?=
- =?utf-8?B?L1FUOXN1bXA2VERPb2lrcUdNL0t3RllMZ0dJMnQycUZHVFo3ZGk3YmdRdjlq?=
- =?utf-8?B?Z0lOWGpwbXl3Uy9zODlNbHlKdnN4MzFBLzZpWldhQkVFRkVCd05nL21GbUg4?=
- =?utf-8?B?a0JZdUoybHZTZHJWZ0ZoUmVkbENEVGQwVDFzS2J6U0NXcXZzVktXenIrUEdH?=
- =?utf-8?B?MENTZFVlUm12VGg5MGFWVkVMZ2dlcVN6enp6bzB1cnBjY0I0WlE2RFc0d3dw?=
- =?utf-8?B?UWQwaDJBbEhSMlQ2NHo0L0x5Zml3Vlg1Sy95UjNZSWN4RUxaL2JnL0Jqd1Vk?=
- =?utf-8?B?YUR5Yy9kdFhPSCtVbEFRRHNuV3g3bngyT0ZXNHJHYlZVOXV4MjhIb0RvWHZl?=
- =?utf-8?B?MlBmc0hYeTh0N0swSGxsT01VeTFaK0piM3NTbnc3OGVwNlVGRUUzbXJ4TllE?=
- =?utf-8?B?bDBtTTBrTDZMckZNRWhzQXBKMUtCNFdxTDZBQVplTS9uejhaZVJ5VHJiak5J?=
- =?utf-8?B?b2xjY3lnQUlSa3QzM0ZSR05XQkFCeDkwMndUd3BRZFE5UFluNDFzYU84Vk1V?=
- =?utf-8?B?NHlzV0FzYVRtQlZIUDQ1eVN3VVJ4V2RyT3MrYXhJK0NkcjhWZDFqYUxwZ0th?=
- =?utf-8?B?SEdGSVNPOTJ3Y2lFWjJNWk5CajRyN1BBaDZtVDYyZHh5bmg1WU5mYzhqWmUr?=
- =?utf-8?B?MUVLSlppZXdhOWVaQnZSelQyeXgrSE94bXFlNkdRUVVmZWpjcmFxQVlBUE1X?=
- =?utf-8?Q?ofNwvfsewh9kydz87U?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f2aaa1f-7058-4e25-9073-08de41021123
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 02:30:26.7616
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pf1Ns2HwUmdX99Md+eij0gKgaKJlmSNAcwXr225SZV4PPgP/vWdoB1dCeLf/cQIG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8457
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 55FC51A0015
-X-Stat-Signature: cxferr6d4an84ihucgyuadi83zgmt4yd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/vmscan: respect mems_effective in
+ demote_folio_list()
+To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ akpm@linux-foundation.org, gourry@gourry.net, longman@redhat.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org,
+ mkoutny@suse.com, david@kernel.org, zhengqi.arch@bytedance.com,
+ lorenzo.stoakes@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, cgroups@vger.kernel.org
+References: <20251220061022.2726028-1-bingjiao@google.com>
+ <20251221233635.3761887-1-bingjiao@google.com>
+ <20251221233635.3761887-2-bingjiao@google.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251221233635.3761887-2-bingjiao@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAHtvYjr0hpMQkqBA--.13440S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xr4rGF45trykuF1fGFW8tFb_yoW3XFW8pF
+	4kG3WFkr4rAF17W39aya4q9a4Svw1kXa15AryxWr97AF9IqF1UZF1DGwnxJFWUAF95ur12
+	qFnxAw48W3yDtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: nfzwzfr8gjwhcniim3kujpxsa3m1x693
 X-Rspam-User: 
-X-HE-Tag: 1766370630-45402
-X-HE-Meta: U2FsdGVkX1/FFrYwV8UHDUkdWFkV37SFXtlny2VL6DcEzDtKXTHY1n6/Spogns4B+pS3sqwqklmjb8NEiUnVR1OLBjBUy+G2QBtlcHjq1Kj8DG0FmgXZP7tDtBXNTd7LpHqVwEeOhN8jzBus83bvgjTiMd/KMhHk5G+1P+mpRMFuMWnm4RTmDC7bKkBCsYOjbsw8TyPn97Tf1PL5e56BHj8/8IoAFEvswqprVHvXKLjp3OCm89PT3DfMWA+1X57Zi8K3x/bNzBSHHgTrGHwy/KMFFCj36pDpXFYJizXIIW9q8zL7IBad5y2iOlsEmXvT6jrUAD2RgJvcvuaYBWMP/jkYrfwTXPnJX+nf+6eWQLAcWz+7GPMUNnAT2B+OHb4GbTtZS6d2yKAP2L67dRD+onbhdtpqWs8ZEnLSp8Acec1ybdCBpk2+KLQtx9TD9rJmdQNhvE2qgrlkKJteb8VD6eExpyzEqjlBbgPoiOx3CQJS03gCiL7JbEsBTYFIFfSKQgFOMqO4pIOu/vEGT5d3qKX0pzqtwwO/kb1DyC21Mik3pRBWNPRvkijeyYPyYMw5fWuWRbxc5A8zQtfUvO2GTuY7NoSumL9oj+a+azvzbbPGniJRrIHcTZWsT2+d3tqaGCor6uqwIMXoGmdi8bErwSsJHhuC7BYlcISI29EDfx8tXcb5Hv6Et/sWDnpQpdqHlZLJXGQWzStvAkUezY9d9kgGsv3/vdht0M6bTvLUOxSAJQ7zV6N0rpTlXRhwlW36stutphhiyj8xZ003mIK+V7tkYE+N10xFm7CVPx4IEksZHs2ddY3veLgcwHZqJRO62e+SCn0s/ksTT6iUDlrlLkxUDKuL6yc6K47w6tG1RgieCvZgDT4HZsujVw/h9DgNw6zg+Ltl+bOG+SzhGI0tdxN3hZ7QwS/SDlFuuysz3fxish/z060LtwJ7CCkiomNzY8EPZ9tmons=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 82FA0140012
+X-HE-Tag: 1766371113-538946
+X-HE-Meta: U2FsdGVkX19EHKkTk4jgWsZx2gf2rL1VbIFnY9v4E9kjb+PqQQWEiD7fsYl6I+kSX7MEwsS25iPeGjiG8Pb20vHOKv7IBKtkcUnAULE92CHkCXx41RL6vqe9H7DmBAk2y2SS/wI56Gay6nloPSIomwPrHfMt2dsZdVFqOjQGMuAtUFex7YUI5K/9vKZRmZU/YNiBLpaOhi0O8L9BIt4K3Npea5gN2TJs5PP/Tdll3C7mBVR5VIFYv236IA+QPClBZ4ZkAvpmmOvOaxal3liAtBtKGUld9YwCFBNWCa+qGS95gTINz+wRLFk+Gzqw20VZq3IRZ1Q5nEqZID69DIzW0Vvzst8yN1UUL6hAL6rYLPTsPZktpps+9b22W46wOg4O2kB96Xp8W1nLc3UvRKXfVPfeaRlx1Alu0ykxLTtC95qtygLMIPBk7EgoqIeGAqMajEEQweQa4CEapDqLJUfJl3LFI7ARWmOFeHYrKRuohvfjTJ8orSZLB4FPWShD2Mmf9b1tvLMg+nGFuFdLMG4YT0WQLLLa8JfjGeBk+CR/QEYBwW6XA5s5IHKgdybmzFjbPlHVbR90Y+3/CY2rF1zQKGPHKHV5SHt+GP0Mo6WNoirSY/QezckLS4rnDS17/D2MYdVk2xnJQP28ACeJp+dCm8HPMKdhQHKyIRGYGXnYSsK7+p9BKEOfL7XfazygG+oO2wjmAnh08sC3t7ERsQAxLx5NdvSA4nqqPyHqTbTalGHZj4MgKVzRIA7TZHPwGO8InN9UMXJ3gt3cxMc00wAJLvCwx2CRtsUBJ+k9lI4krxgm4Qk4dhP4If2kVfXzLj3E4HxQLZEDcAPL1u1yoVvpQF78QUnAdyXFbTGkT0leF+t5YiZbr9B1WAr8wd7puJwBIVHZ44MVFUjXmz/iS7duxaCJXHl/Re5gJbvkivGfQ+Jd3o0sJEkREJcMhjpf8yAFdKslidAobL7EXP0GDN0
+ IL3tfbKc
+ AyKhwS3+hWBrd10Kwj20x5OgEsWuYAvHLsXd8WjDQFb5iGqZC7ziaJHi6ckOYtiABX0fssqgWtZeRcZbUqF+gKxcY6Pj8tXUz7MX8W/+FGrvuJJSYdxdrHAAUkTrFYPRubvuwIb6aPI7KlQGOWqWFeuTfoaOOPPWsvQJt0SoUh63DdI9b0kkgEh3UIC3zI4C0iOcyR5ft+fxPblXmhZEFe2HeKylSVbcLp3dM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -212,164 +112,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Dec 2025, at 23:09, Kefeng Wang wrote:
 
-> On 2025/12/18 23:52, Zi Yan wrote:
->> On 18 Dec 2025, at 7:54, Kefeng Wang wrote:
->>
->>> On 2025/12/18 3:38, Zi Yan wrote:
->>>> On 17 Dec 2025, at 3:02, Kefeng Wang wrote:
->>>>
->>>>> On 2025/12/17 2:40, Zi Yan wrote:
->>>>>> On 16 Dec 2025, at 6:48, Kefeng Wang wrote:
->>>>>>
->>>>>>> Introduce cma_alloc_frozen{_compound}() helper to alloc pages witho=
-ut
->>>>>>> incrementing their refcount, then convert hugetlb cma to use the
->>>>>>> cma_alloc_frozen_compound() and cma_release_frozen() and remove the
->>>>>>> unused cma_{alloc,free}_folio(), also move the cma_validate_zones()
->>>>>>> into mm/internal.h since no outside user.
->>>>>>>
->>>>>>> The set_pages_refcounted() is only called to set non-compound pages
->>>>>>> after above changes, so remove the processing about PageHead.
->>>>>>>
->>>>>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->>>>>>> ---
->>>>>>>     include/linux/cma.h | 26 ++++++------------------
->>>>>>>     mm/cma.c            | 48 +++++++++++++++++++++++++-------------=
--------
->>>>>>>     mm/hugetlb_cma.c    | 24 +++++++++++++----------
->>>>>>>     mm/internal.h       | 10 +++++-----
->>>>>>>     4 files changed, 52 insertions(+), 56 deletions(-)
->>>>>>>
->>>>>
->>>>> ...
->>>>>
->>>>>>>     static bool __cma_release(struct cma *cma, const struct page *p=
-ages,
->>>>>>> -			  unsigned long count, bool compound)
->>>>>>> +			  unsigned long count, bool frozen)
->>>>>>>     {
->>>>>>>     	unsigned long pfn, end;
->>>>>>>     	int r;
->>>>>>> @@ -974,8 +982,8 @@ static bool __cma_release(struct cma *cma, cons=
-t struct page *pages,
->>>>>>>     		return false;
->>>>>>>     	}
->>>>>>>
->>>>>>> -	if (compound)
->>>>>>> -		__free_pages((struct page *)pages, compound_order(pages));
->>>>>>> +	if (frozen)
->>>>>>> +		free_contig_frozen_range(pfn, count);
->>>>>>>     	else
->>>>>>>     		free_contig_range(pfn, count);
->>>>>>
->>>>>> Can we get rid of free_contig_range() branch by making cma_release()=
- put
->>>>>> each page=E2=80=99s refcount? Then, __cma_relase() becomes cma_relea=
-se_frozen()
->>>>>> and the release pattern matches allocation pattern:
->>>>>> 1. cma_alloc() calls cma_alloc_frozen() and manipulates page refcoun=
-t.
->>>>>> 2. cma_release() manipulates page refcount and calls cma_release_fro=
-zen().
->>>>>>
->>>>>
->>>>> Have considered similar things before, but we need manipulates page
->>>>> refcount only find the correct cma memrange from cma/pages, it seems
->>>>> that no big improvement, any more comments?
->>>>>
->>>>> 1) for cma_release:
->>>>>      a. cma find memrange
->>>>>      b. manipulates page refcount when cmr found
->>>>>      c. free page and release cma resource
->>>>> 2) for cma_release_frozen
->>>>>      a. cma find memrange
->>>>>      b. free page and release cma resource whne cmr found
->>>>
->>>> Right, I think it makes code simpler.
->>>>
->>>> Basically add a helper function:
->>>> struct cma_memrange* find_cma_memrange(struct cma *cma,
->>>> 		const struct page *pages, unsigned long count);
->>>>
->>>> Then
->>>>
->>>> __cma_release_frozen()
->>>> {
->>>> 	free_contig_frozen_range(pfn, count);
->>>> 	cma_clear_bitmap(cma, cmr, pfn, count);
->>>> 	cma_sysfs_account_release_pages(cma, count);
->>>> 	trace_cma_release(cma->name, pfn, pages, count);
->>>> }
->>>>
->>>>
->>>> cma_release()
->>>> {
->>>> 	cmr =3D find_cma_memrange();
->>>>
->>>> 	if (!cmr)
->>>> 		return false;
->>>> =09
->>>> 	for (; count--; pages++)
->>>> 		VM_WARN_ON(!put_page_testzero(pages);
->>>>
->>>> 	__cma_release_frozen();
->>>> }
->>>>
->>>> cma_release_frozen()
->>>> {
->>>> 	cmr =3D find_cma_memrange();
->>>>
->>>> 	if (!cmr)
->>>> 		return false;
->>>>
->>>> 	__cma_release_frozen();
->>>>
->>>> }
->>>>
->>>> Let me know your thoughts.
->>>
->>> Yes, this is exactly what I described above that needs to be done, but =
-I
->>> think it will add more codes :)
->>>
->>> Our goal is that convert all cma_{alloc,release} caller to
->>> cma_frozen_{alloc,release}, and complete remove free_contig_range in cm=
-a, Maybe no changes? But if you prefer above way, I can also update
->>> it.
->>
->> If the goal is to replace all cma_{alloc,release}() calls with the froze=
-n version,
->> there is no need to make the change as I suggested. Are you planning to =
-send
->> another patchset to do the replacement after this one?
->
-> There are few callers, the following can be straightforwardly converted
-> to a frozen version.
->
->   mm/cma_debug.c
->   drivers/dma-buf/heaps/cma_heap.c
->   drivers/s390/char/vmcp.c
->   arch/powerpc/kvm/book3s_hv_builtin.c
->
-> For the DMA part, we suppose there is no driver using the page refcount, =
-as too many drivers are involved, maybe there is a very special usage in th=
-e driver=EF=BC=8CI can't be sure.
->
->   kernel/dma/contiguous.c
 
-Even if drivers are not using page refcount, these allocated cma pages shou=
-ld
-be still have a elevated refcount to indicate they are in use, right? So
-cma_alloc() and cma_release() can be converted to frozen + refcount manipul=
-ation,
-right? I am not sure letting drivers use froze pages directly is the right =
-move.
-Frozen pages should only be changed by the one freezes the pages and no one=
- else
-should touch it.
+On 2025/12/22 7:36, Bing Jiao wrote:
+> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> introduces the cpuset.mems_effective check and applies it to
+> can_demote(). However, it does not apply this check in
+> demote_folio_list().
+> 
+> This omission leads to situations where pages are demoted to nodes
+> that are explicitly excluded from the task's cpuset.mems.
+> The impact is two-fold:
+> 
+>   1. Resource Isolation: This bug breaks resource isolation provided
+>      by cpuset.mems. It allows pages to be demoted to nodes that are
+>      dedicated to other tasks or are intended for hot-unplugging.
+> 
+>   2. Performance Issue: In multi-tier systems, users use cpuset.mems
+>      to bind tasks to different performed-far tiers (e.g., avoiding
+>      the slowest tiers for latency-sensitive data). This bug can
+>      cause unexpected latency spikes if pages are demoted to the
+>      farthest nodes.
+> 
+> To address the bug, implement a new function
+> mem_cgroup_filter_mems_allowed() to filter out nodes that are not
+> set in mems_effective, and update demote_folio_list() to utilize
+> this filtering logic. This ensures that demotions target respect
+> task's memory placement constraints.
+> 
+> Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
+> ---
+>  include/linux/cpuset.h     |  6 ++++++
+>  include/linux/memcontrol.h |  7 +++++++
+>  kernel/cgroup/cpuset.c     | 18 ++++++++++++++++++
+>  mm/memcontrol.c            |  6 ++++++
+>  mm/vmscan.c                | 13 ++++++++++---
+>  5 files changed, 47 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+> index a98d3330385c..0e94548e2d24 100644
+> --- a/include/linux/cpuset.h
+> +++ b/include/linux/cpuset.h
+> @@ -175,6 +175,7 @@ static inline void set_mems_allowed(nodemask_t nodemask)
+>  }
+>  
+>  extern bool cpuset_node_allowed(struct cgroup *cgroup, int nid);
+> +extern void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask);
+>  #else /* !CONFIG_CPUSETS */
+>  
+>  static inline bool cpusets_enabled(void) { return false; }
+> @@ -305,6 +306,11 @@ static inline bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+>  {
+>  	return true;
+>  }
+> +
+> +static inline void cpuset_node_filter_allowed(struct cgroup *cgroup,
+> +					      nodemask_t *mask)
+> +{
+> +}
+>  #endif /* !CONFIG_CPUSETS */
+>  
+>  #endif /* _LINUX_CPUSET_H */
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index fd400082313a..7cfd71c57caa 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1742,6 +1742,8 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
+>  
+>  bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+>  
+> +void mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg, nodemask_t *mask);
+> +
+>  void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+>  
+>  static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+> @@ -1816,6 +1818,11 @@ static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+>  	return true;
+>  }
+>  
+> +static inline bool mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg,
+> +						  nodemask_t *mask)
+> +{
+> +}
+> +
+>  static inline void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+>  {
+>  }
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 6e6eb09b8db6..2925bd6bca91 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -4452,6 +4452,24 @@ bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+>  	return allowed;
+>  }
+>  
+> +void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
+> +{
+> +	struct cgroup_subsys_state *css;
+> +	struct cpuset *cs;
+> +
+> +	if (!cpuset_v2())
+> +		return;
+> +
+> +	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
+> +	if (!css)
+> +		return;
+> +
+> +	/* Follows the same assumption in cpuset_node_allowed() */
+> +	cs = container_of(css, struct cpuset, css);
+> +	nodes_and(*mask, *mask, cs->effective_mems);
+> +	css_put(css);
+> +}
+> +
 
-Best Regards,
-Yan, Zi
+The functions cpuset_node_filter_allowed and cpuset_node_allowed are similar. We should create a
+helper function to obtain cs->effective_mems, which can then be used by both
+cpuset_node_filter_allowed and cpuset_node_allowed.
+
+For example:
+
+nodemask_t *mask cpuset_get_mem_allowed(struct cgroup *cgroup)
+{
+}
+
+bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+{
+e_mask = cpuset_node_allowed(cgroup);
+return allowed = node_isset(nid, mask);
+}
+
+void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t mask)
+{
+e_mask = cpuset_node_allowed(cgroup);
+nodes_and(mask, *mask, e_mask);
+}
+
+Previously, I did not think we should distinguish between cgroup v1 and v2 here. This should be a
+common function; at least based on its name, it should not be solely for v2.
+
+>  /**
+>   * cpuset_spread_node() - On which node to begin search for a page
+>   * @rotor: round robin rotor
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 75fc22a33b28..f414653867de 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5602,6 +5602,12 @@ bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+>  	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
+>  }
+>  
+> +void mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg, nodemask_t *mask)
+> +{
+> +	if (memcg)
+> +		cpuset_node_filter_allowed(memcg->css.cgroup, mask);
+> +}
+> +
+>  void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+>  {
+>  	if (mem_cgroup_disabled() || !cgroup_subsys_on_dfl(memory_cgrp_subsys))
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 453d654727c1..4d23c491e914 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1018,7 +1018,8 @@ static struct folio *alloc_demote_folio(struct folio *src,
+>   * Folios which are not demoted are left on @demote_folios.
+>   */
+>  static unsigned int demote_folio_list(struct list_head *demote_folios,
+> -				     struct pglist_data *pgdat)
+> +				      struct pglist_data *pgdat,
+> +				      struct mem_cgroup *memcg)
+>  {
+>  	int target_nid = next_demotion_node(pgdat->node_id);
+>  	unsigned int nr_succeeded;
+> @@ -1032,7 +1033,6 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+>  		 */
+>  		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+>  			__GFP_NOMEMALLOC | GFP_NOWAIT,
+> -		.nid = target_nid,
+>  		.nmask = &allowed_mask,
+>  		.reason = MR_DEMOTION,
+>  	};
+> @@ -1044,6 +1044,13 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+>  		return 0;
+>  
+>  	node_get_allowed_targets(pgdat, &allowed_mask);
+> +	/* Filter the given nmask based on cpuset.mems.allowed */
+> +	mem_cgroup_filter_mems_allowed(memcg, &allowed_mask);
+> +	if (nodes_empty(allowed_mask))
+> +		return 0;
+> +	if (!node_isset(target_nid, allowed_mask))
+> +		target_nid = node_random(&allowed_mask);
+> +	mtc.nid = target_nid;
+>  
+>  	/* Demotion ignores all cpuset and mempolicy settings */
+>  	migrate_pages(demote_folios, alloc_demote_folio, NULL,
+> @@ -1565,7 +1572,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  	/* 'folio_list' is always empty here */
+>  
+>  	/* Migrate folios selected for demotion */
+> -	nr_demoted = demote_folio_list(&demote_folios, pgdat);
+> +	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+>  	nr_reclaimed += nr_demoted;
+>  	stat->nr_demoted += nr_demoted;
+>  	/* Folios that could not be demoted are still in @demote_folios */
+
+-- 
+Best regards,
+Ridong
+
 
