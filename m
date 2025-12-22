@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 768B4E66886
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E4BD68BD5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:52:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8B8D6B0096; Sun, 21 Dec 2025 19:50:01 -0500 (EST)
+	id 827466B0098; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D629F6B0098; Sun, 21 Dec 2025 19:50:01 -0500 (EST)
+	id 7AB776B009B; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61836B0099; Sun, 21 Dec 2025 19:50:01 -0500 (EST)
+	id 6B73D6B009D; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B1B976B0096
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:50:01 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4723F14097E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:50:01 +0000 (UTC)
-X-FDA: 84245275002.16.CA09B9A
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 42A9E20002
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aN25Td3I;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364599; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 57F196B0098
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 158D98B8A4
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:52:10 +0000 (UTC)
+X-FDA: 84245280420.25.B1E1A23
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2AF9F4000A
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:52:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dSw3MCn4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364728; a=rsa-sha256;
 	cv=none;
-	b=kl/EFffIpNGfhmV0WIxs1LwaS9JLU/qCnsYd9/ep5N4tJbcxXr1Q8OVtoFAy4qzIYrCJtq
-	3/qkCNliz6hR8OE63nZPYtisrE2mFYtJuyrXRL7ccrU3AWb9cUFgMYaEMiT3/ri2r+UmGc
-	apnQOUg/R1JIY6s+AuOszRHF9feR8ZM=
+	b=3jdZXYIHGQHvntbS87Gf/TtUxb4dwI1KCkP6Camp17XkXGQLQnj1mx49qgo+8ZwGTIrZyI
+	QS2LtRYLeeCOcHflyUdZids7zTtUaaRdzd9S1SBx8oaDXg9OgL9dEjLGpo8RYo7Aw/ekRa
+	9YhRoFtleOKWG39o3HvadRqSC8AKKbQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aN25Td3I;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dSw3MCn4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766364599;
+	s=arc-20220608; t=1766364728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TvznF6HkFTNiIhI7+tVTU2N5AFcUAe/pj6zJRL8S6bo=;
-	b=7ms9uCWxQmxnosYIcEm58zHykRBOdRFU86t8fDl2zqA4gNu3Ub0/x61cwIHwWaAuQL80/N
-	MmMUyyHQDEXnGjVs7CUeCRJL8CynfXZ11NdrUDUJ7mRWEIZ59LagqG6s9DymFbJtNZd5e7
-	Kosa6xnyJX2ltdG0IRSzW8H2ftFfhSk=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so1698174f8f.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:49:58 -0800 (PST)
+	bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
+	b=zsEfgP5OX04Xp8srL4HBVgj2Fz6WDaUG7cTz7/roF1fYVuqK8b7CSKJrt4TTHvMb0/Ct1l
+	nJht+18q794p7Y4FoW3HfgTG5G6OVDc5wqSkZdBJIoqffIeYszkyG7FYZBR8+rI/JmoYDs
+	fcxiGdeSWkG0+GTvYNaUs14DqMeyvQU=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so19466505e9.3
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:52:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766364598; x=1766969398; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766364726; x=1766969526; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TvznF6HkFTNiIhI7+tVTU2N5AFcUAe/pj6zJRL8S6bo=;
-        b=aN25Td3Io3Anp7RJIBwqOFwAOcZEK9rUpXevej96+MA7+IvG662mmjxHGvDE/Nt/Gl
-         oCr3wiAkgjb7dZiX5m9Bjq4ZrZkW0ICXSTf6EyJZR/36PsKpZD++Wjm3G+CZJOkE397o
-         FDUp+hMEwznC+XwfI0x4hCP1r+0rt0VlFiiGhFzgWRmDBoFGK/BGXoQqYdKoo+NrQxX8
-         /8XJ8NcBIceRKYwxJiVzl80agg9j1/5NJGoENavOfNvpWSFAEAYyz0155A5PqFVjURIy
-         W2l2Rh3a9SteXZIG+DHUMJTx97rQCrMN8l+VyculEce8uF7rciJgdxD6K91F2aOem9yX
-         LfuQ==
+        bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
+        b=dSw3MCn4AXaa16AYgDwkFtHQFOJy/ANPWpO5gYV9eiwCSF/rikwDx5cvSeugmOu6Wa
+         bm89vLg8CURYrXPyEeP+CStrwqJilrGMMp2cE0YdpGjgFSeRhOpxWTt9uKdibKTqk4Bh
+         CzKIGGEushCLzwsrFNuy/AfGCWMlHYsRqWjRxx7YFzoz/uDNpmCDByjCG+bzWskLadIg
+         7+lkci5zvmIbOd8Adex0p2z7DtneXlNBjlwKrUWeFQILOlDlcwaK6mWTEr0DcAorzKYF
+         D/Lt7BjahSwldAb9EGS/GWVbyO5pcdtidsDAvnaVvOLGwAQHy3tFyEMuTpFxl06S0OIU
+         fM8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766364598; x=1766969398;
+        d=1e100.net; s=20230601; t=1766364726; x=1766969526;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TvznF6HkFTNiIhI7+tVTU2N5AFcUAe/pj6zJRL8S6bo=;
-        b=k/aNCdHs0/8Hq1pXgs0eZdwnFULhw/nKzKkN4bGdCH9NIBYn/TULff4V1Qkc+6X1Uh
-         0iuQAA/2XDolAx0ze7tMQnIl0WlIGcSiDWSBXFJTjFqlHZBkd1LAzS3bspx2BXYnsGnm
-         Sjk4r9RDT9sRVDt0KLB+5IhyoXvcgsvu/ROqPgV7xiipINVyGBHZrHlqIIPHraPQeejf
-         X0zDKDd0PMxdIeOEdC6hTJ/BxEoJ9dYK82DMoFu/rYSTwMLMtr9scXj3HXCZAzvmu/rx
-         KRwskSVoC+uzaKFtG+OtRBIl+BwvrUhUt06QOr4y5eOg6MEYSQdSDJctkVhoOL9GmHvH
-         UJ0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTL6N1Jh8wD6913Q9NiXxf99yu+FPNYGGRbSIh43rtjIgZkXR7S1rOTMGnjlXH2GOYGnlNHhIHww==@kvack.org
-X-Gm-Message-State: AOJu0YysM4tGRWxw7VU4GXCd4KZsHoGund1vngcFYj4HgDd6V6fsh6HI
-	Uy8FV6exViQ4iaZ71Pls7r/3KzTEx7KCsAkEy+jtrAq6PzXqbvhJRBH4arPYW2y9XjP2ey7sKVQ
-	bwNjNtXOZGYtwyJWfBFjamoRSX7F2PV0=
-X-Gm-Gg: AY/fxX633AJu67o1KYhr8x7ppIw4UFB9OCfCBQBExvxVxV1wshyWQynCihXO21OzT2K
-	VLvW23ZP/qtzpx9cwcuEULbhh5uLCbkbI6vOt9GbTB4xCEWFMMeSSU7T13kB3jxa/IH6vPSln75
-	JXL8cMHucAZpc5Omd8BK5m9gnHCYtJXlgboRggyBfFlN7He91hypXg19Kj5KyQt7WM4W6w07Fnl
-	z24AKxaoKMNc4ivnKjlnDysRCygHDdIcBluaO0cjP4hgNOPZdbf4gOKRx0ghPU2t7fiQ01s
-X-Google-Smtp-Source: AGHT+IFLLpsgIg3SMML8wyV0yyIqH9wAeaX6ob4SNQKIJd/JePJVNtDM+7GlyvTtPFOIiSc8UyCFSuUqjpROnExh3eE=
-X-Received: by 2002:a05:6000:2305:b0:431:316:920a with SMTP id
- ffacd0b85a97d-4324e4c1519mr9448273f8f.8.1766364597604; Sun, 21 Dec 2025
- 16:49:57 -0800 (PST)
+        bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
+        b=A8TvEtrYhoMkoR+G4sKLIgm4fP5/Qh6ZySARQ4nyxYT/SxgKUS27KjtO5CLn/pp0b7
+         2Loj0XeVI+8OUepH5e2TS8MOb1DUDKbxQhWCMXqc9mn4APs1yKF3ZIYWdkfkMqJUE4RT
+         TDQkJnBYWS2maYOgfxjIfLUYjUvjqKRwdv31sS0ozuNR1tPqp8cYxjGd67aginu7MSHH
+         YXT6HFqm38LigwJWk0+tz3cq5IS+NVB+uSpyfQS9req394ny0zr/kxlcQUd0LF7TEvaN
+         WnQ4mpW3ypK6XqjALYIg/S+np7Zy0nU9EvUS6dnv503HaXOq2qTKv/Axq3MgWj5dmqsp
+         gksw==
+X-Forwarded-Encrypted: i=1; AJvYcCVO9SOOpZlqBCcf1f6+peeyl9UhcVb6x8taLXtD/tTo8ODFk7bCD687S7jrP5YYl3KKn4hdmqO23g==@kvack.org
+X-Gm-Message-State: AOJu0YwYR7X0ud1BTWWosQ/ZzI6/5c5O8st5cYKXb/53ayfOhICUqFhQ
+	w7lCWD1qRnJusWNZMH8P7dBWn7LEIE8vCJeK9QCSNOSDnVzjYIQKnpTZL081d85ruebsFJ6RjC2
+	diSACy9T/AVjejP2l9wvbhzDxlsSeTP4=
+X-Gm-Gg: AY/fxX5IHAkCgjoCDV3f2BU9CpNk3FtlkvkTMHqbxs0B0dgfKmeUA6PKKEwFD2FnV52
+	HteDDb5A02YC/MzU/f6yvRpKqD14NgtN6BFlUXyRCpZf3v6LGkUVwN8VdN4lFes43ZeYKoJssjk
+	YWyHwWjMPhUHPwSdOv+jGqryBj7rL4yxVDe1HGueF25GQB+2+DmOToc1Kav3EJzzFdi4st8zNbQ
+	xE5rXrPxfmuBabvW0x6taHYH16wvcdzZ2YPwlN3NS858MVy/kXBqSUMUyekociHjJDHkOAKD/+M
+	9assYOU=
+X-Google-Smtp-Source: AGHT+IHA16aQRMS4Hem/AC74vdS4Ff7LKIP4VMbmo8FPVAYBL8Mw/QHeO5wccSM02ZpEMBGqze5bFexvMNsLQRlPNA4=
+X-Received: by 2002:a5d:6b04:0:b0:432:586f:2ab9 with SMTP id
+ ffacd0b85a97d-432586f2d34mr5077050f8f.5.1766364726514; Sun, 21 Dec 2025
+ 16:52:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20251220041250.372179-1-roman.gushchin@linux.dev> <20251220041250.372179-6-roman.gushchin@linux.dev>
-In-Reply-To: <20251220041250.372179-6-roman.gushchin@linux.dev>
+References: <20251220041250.372179-1-roman.gushchin@linux.dev>
+ <20251220041250.372179-6-roman.gushchin@linux.dev> <CAADnVQJo3HspB9-_R5yWKWLdExDmFayDpNZ4JnoBpCw6aRNTrA@mail.gmail.com>
+In-Reply-To: <CAADnVQJo3HspB9-_R5yWKWLdExDmFayDpNZ4JnoBpCw6aRNTrA@mail.gmail.com>
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 21 Dec 2025 16:49:46 -0800
-X-Gm-Features: AQt7F2pVDUwMoKC5RqsFan_45pu3L1tkLo-R88ZJb38eQ6Ir4uJa8xcwJuj8ZPc
-Message-ID: <CAADnVQJo3HspB9-_R5yWKWLdExDmFayDpNZ4JnoBpCw6aRNTrA@mail.gmail.com>
+Date: Sun, 21 Dec 2025 16:51:55 -0800
+X-Gm-Features: AQt7F2oaz8HCkylGYSDrvse4JsGkKsP4asJjXaU4aAhPWzWneVtyudJr_jhxED4
+Message-ID: <CAADnVQLfrUxh6vLz4S0otPppHTNx6Dno_bfsTgt=67e=mKoeHQ@mail.gmail.com>
 Subject: Re: [PATCH bpf-next v2 5/7] mm: introduce BPF kfunc to access memory events
 To: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
@@ -103,14 +105,14 @@ Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
 	Johannes Weiner <hannes@cmpxchg.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2AF9F4000A
+X-Stat-Signature: mu31bm35986dg1zxwukyt8phcu44a6kf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42A9E20002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: pzb83zhdsnpohjz4j18sr4arhq6paknk
-X-HE-Tag: 1766364599-131353
-X-HE-Meta: U2FsdGVkX19XOK5wEgoCd9JpOteKoebwm4hhutM4Lng0Jb5fTEbtMVKowdaWX3sia6py6s0ENlUDPi779YhiLWSpsguR53UvQv4S7k6ihuvCYXS4sXDJeJWVfu6ANEWk6Z9rS53lcouzeMADDv/LEMIT+dwmD8delBxjFdBmAzaFwKTtoRrbQL29CjSwiEvHCwgo1yiiE6IWuOOarqAyRIHJnudiN9LtXjxBxb6OjhLF3eTGcZ+hFaqydDqhxYAhb4wX5ulKA0otPF5IgRf7jKGdRlAQx2QrEdAIMXa5AIEa7wDa05ctftpiu5UqUweBIY9+22E5V7hq8mVai5W1c4MBiBFcvag8040W6+wQKuxbdQB95ipOFJ5oyGmPmpygxa8izgw7BZIfqbi/SL75536+NYDVSm0AfYZ4pamYTR6yuQbafGhPnjHJrsHYPgRRsPZ6NTENHk+nMaK7oVnnx1Q9gLrXQLQkPS02j4RlbodyCH8hHlYDzVubj18xBxcHJAOqXC6idArpG/Znl4Y0gfcN9tIH6Qj91KFggYK16z0OTAE7lBng2IcPnEda7JrTeFf81TkwjF9djtDTq6rnfXPRwgCn3Esk+0ng6TGLF6Zv1wGyXyRKwoJAjEkk2Mg71UjzlZ2XHE8M0mxcOet6FWWEj1jH9xA6hdyJZFH6hHf6h5YSVze/RWwfwXs8fQXjtsbbg1PLglqZnKOudADzUbQJh6j2uYVk5Z87P8E7G8e2xlOWZDF+QArAcDXWOEVe+SM6Ye+yzIfPjmyxWgvlAxg0VEPs3pQzJB+bs7hHyGI5avdsFYVECcQv6CnCgaL78jsQ+zAR1tA8GK+QLht+ABbUt3f3xTLbjP8quSQBUDrVZ1Mb2xxefc1e2ksSsVS1AISpOf4Rin7lqD0M0NyG9UP5pskzpclh4XlwiZTSLIHQXNM23slDlodww1nwINUi6Q9dY+xJtGglUgEtGM9
- dXPtcqDF
- U5yHxqG+zKj1/XpBN2WavY3VrECuj0uQMMbXHYtcD7sQBdjwZk5VlPBZ2gCOGRLjIAZQlSmpoOUvf0XOurcQ8JCt9LDS92L7uoDkNQ4dXtwedwpvdo1qGWbMvGvnRMUius9YGO4iFt8YAZW26qsCdLHZpNpSPVt82mL5BvOlBT+mJ9U4AnHpHbZy4YLYsKDMbZYNWOEu/pfrnSZqSLHFtNdSJGxspVdZYp8x6ItWeYPvW8wb8f/F21ER2CL3Eg3OFprytSHz7e9KMl1oX0Q15/odNLBOyFtdA4JSfejzGBnwnHL/hifnCOIs3d1odlxxR7uFLRMkfDfUC46I6juctkD/uN0D7f0BGDJrHIua0MNohR/QFefpYhVeKOdVUllAUaaCoJBVqedctz4Qa1AoJpYfBkGtZM9rpBO4cbXMeB04sST7CMFl5ukz6s6c0xciT3Gzj
+X-HE-Tag: 1766364727-282478
+X-HE-Meta: U2FsdGVkX1+7psW2mb1jzP21q8+tyMR6A5GLJFFpEnXx7mK16mrxMSykkSxc4Rz+FvF5fx5/Qx5hYsH5Q5Ia8FC4JJNSZox1vTn7nv/phW90zypGOV96VPgchMyCFO1hTvypjsx0m2EDoq5Q2efMSgI6PkoOYT9kn9H+r4EVXjJ9nR7oJdGIGbH97xORJlyz9msqz2/OtdP7OruZE0ycyu6l8eMkhKYw/LrYE0BFjP66zOTIoX+cqraw8hKxanzUuFFS7NGTADVZ+PRxByQlQChyXMUQ4+m/vH1sev4vHnnfAhCFmzZhLPdv9kDoNwOXfuUeZtI11B5ly+/4CWRsiMkdU3ppfVd23s1GbRt7D4eFWs3Iw8b7HY9vfC+JT61EZUNe5pY6ubgPNh+xAp7JLfFjT4c40HX/sTXg34KoJtFCC8kVwV9hir926ijcFgOcESc0cpMTytpIxTBnB5ucJ9BFyjAe0e2D4rURer7syAhMEc1UsZ0bhwzmKdLhJgkYJfOwEpxGRIban14IoBLXGggm5GKL3k402lGr41Cmh5jPufQdRCg3cOEZ1toXuxBpMCc17nvH85L10q/MAN6SSotoT4LIU9fuXEqv4vnP503FnbQ8Nbut0kRFdNDqsnHUWFu0vDsTpDPd6yIZNOJwqPH4JCf17vLbIv+SWUGBNDKdUrV90X4nSTSC60TDxpqCzfLdKnFJ1aVvEay1R5GO/1/B5Ustt8umKdznS36a8u5qjsfsH+/Pxo1J7V7+6YxElCqL7L8relmLMgbzJzPNRPj7PqyXLInAi4u/pxkWRMUaN/pneW/1NoeNuaqY2Y3Qk5JdcYJXaVngg3KCvg2MqIYo/3I2UnfQrx1vKvHiPImBSgQ66xVjLg5TGzNvj2ctUUcCdEACnCFrSFlbNNyz+WPMw3Yw4YEHMvv2vDjKOEmb5VTXCkFdRBIF4KVGBNTibNgu/+MvzUHthbHL1Oa
+ /CL43v6T
+ YSftMccSaV85bXMrg4NQSecUI5scRlHq4ooix3LHqM6asSa2XydHd8/kUi38GAr7I+9u2vJ9bfbfgngPZg/kiEvd4vw7+Hqp+OuY8DH6NKznJyfkVhGXFcOwRiAK+bWxcZUbbGX5cfn2YEG2XGqGp18pmggAbqG7Gc5btPdCdBWHI4PNW9RtgBZtFBh0tT4fRYzo95F3+/mPyrUqTGqWonMSLR7K/ug9uN/IuSM3VMVy36/8ArbhQxKe5Re3ZExemof81V41jdKhSzHM5zlOKJXMydjrSOQztSnEmY1+eW1o7svB8HLdY+EAGDNbVY2GLhOmm4RtcZvicCSpZMlx5E4Dpit3Cv4OH3515Vin4AzbuOdW9Tam4EYDfpx09zjQmrAEFty+JBsbaaa/02LodDAMbGnhiIxtKuUI4ANi9B7Y3z0RG5Q1DAngryPFq55Dege+RARW/+DioUeZ4gNeCIxLmRWa+OXWj2eMywG19ne17/7JuvXtdUjnW4bSX3SRDmX/StODGxtcNKgwnR7iOjC46hQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,53 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 6:13=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
+On Sun, Dec 21, 2025 at 2:49=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
 >
-> From: JP Kobryn <inwardvessel@gmail.com>
+> On Fri, Dec 19, 2025 at 6:13=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
+nux.dev> wrote:
+> >
+> > From: JP Kobryn <inwardvessel@gmail.com>
+> >
+> > Introduce BPF kfunc to access memory events, e.g.:
+> > MEMCG_LOW, MEMCG_MAX, MEMCG_OOM, MEMCG_OOM_KILL etc.
+> >
+> > Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
+> >  mm/bpf_memcontrol.c | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> >
+> > diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> > index d84fe6f3ed43..858eb43766ce 100644
+> > --- a/mm/bpf_memcontrol.c
+> > +++ b/mm/bpf_memcontrol.c
+> > @@ -103,6 +103,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(str=
+uct mem_cgroup *memcg)
+> >         return mem_cgroup_usage(memcg, false) * PAGE_SIZE;
+> >  }
+> >
+> > +/**
+> > + * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event va=
+lue
+> > + * @memcg: memory cgroup
+> > + * @event: memory event id
+> > + *
+> > + * Returns current memory event count.
+> > + */
+> > +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgro=
+up *memcg,
+> > +                                               enum memcg_memory_event=
+ event)
+> > +{
+> > +       if (event >=3D MEMCG_NR_MEMORY_EVENTS)
+> > +               return (unsigned long)-1;
+> > +
+> > +       return atomic_long_read(&memcg->memory_events[event]);
+> > +}
 >
-> Introduce BPF kfunc to access memory events, e.g.:
-> MEMCG_LOW, MEMCG_MAX, MEMCG_OOM, MEMCG_OOM_KILL etc.
->
-> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
->  mm/bpf_memcontrol.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index d84fe6f3ed43..858eb43766ce 100644
-> --- a/mm/bpf_memcontrol.c
-> +++ b/mm/bpf_memcontrol.c
-> @@ -103,6 +103,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struc=
-t mem_cgroup *memcg)
->         return mem_cgroup_usage(memcg, false) * PAGE_SIZE;
->  }
->
-> +/**
-> + * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event valu=
-e
-> + * @memcg: memory cgroup
-> + * @event: memory event id
-> + *
-> + * Returns current memory event count.
-> + */
-> +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup=
- *memcg,
-> +                                               enum memcg_memory_event e=
-vent)
-> +{
-> +       if (event >=3D MEMCG_NR_MEMORY_EVENTS)
-> +               return (unsigned long)-1;
-> +
-> +       return atomic_long_read(&memcg->memory_events[event]);
-> +}
+> Why is patch 5 not squashed with patch 4?
+> I'd think placing bpf_mem_cgroup_memory_events()
+> right next to bpf_mem_cgroup_vm_events() in the same patch
+> will make the difference more clear.
+> For non-mm people the names are very close and on the first glance
+> it looks like a duplicate.
 
-Why is patch 5 not squashed with patch 4?
-I'd think placing bpf_mem_cgroup_memory_events()
-right next to bpf_mem_cgroup_vm_events() in the same patch
-will make the difference more clear.
-For non-mm people the names are very close and on the first glance
-it looks like a duplicate.
+Also see a bunch of kdoc warnings flagged by CI.
 
