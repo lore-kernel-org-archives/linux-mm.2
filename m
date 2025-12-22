@@ -4,104 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07670E674B8
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 14:53:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F6BE674BE
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 14:56:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C9806B008A; Mon, 22 Dec 2025 09:53:33 -0500 (EST)
+	id E58AB6B0005; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 680166B008C; Mon, 22 Dec 2025 09:53:33 -0500 (EST)
+	id DDC686B0089; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59FD06B0092; Mon, 22 Dec 2025 09:53:33 -0500 (EST)
+	id CDEB36B008A; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BA956B008A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:53:33 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E12B6B6A42
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:53:32 +0000 (UTC)
-X-FDA: 84247400664.17.1A3F504
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3728340007
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:53:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=zx2c4.com header.s=20210105 header.b=SZjCoDiq;
-	dmarc=pass (policy=quarantine) header.from=zx2c4.com;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=JxEM=64=zx2c4.com=Jason@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=JxEM=64=zx2c4.com=Jason@kernel.org"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415210; a=rsa-sha256;
-	cv=none;
-	b=eJgbX5oGPVFY2qM3YUo6c48M+oFJzB8NsB/lhKDrNr5aYKCB41lXdI8oiRCD4uuMzVrq57
-	4brjT09MUNBDfVHTEWAr4iS1WqX2tdzXrSxxC0pqHvqdF5vN8sp/TemFpiWgUD+X3RRV2a
-	uZXz0yRlODHI2aDqCUPU6K2zxFb0FN0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=zx2c4.com header.s=20210105 header.b=SZjCoDiq;
-	dmarc=pass (policy=quarantine) header.from=zx2c4.com;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=JxEM=64=zx2c4.com=Jason@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=JxEM=64=zx2c4.com=Jason@kernel.org"
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BD4CA6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86196877DE
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:56:07 +0000 (UTC)
+X-FDA: 84247407174.03.60F86AF
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B75A940009
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:56:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mR0ZYIay;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766415210;
+	s=arc-20220608; t=1766415365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T9lSiBEy5UB1MaNtZHcgE0XwHOzo0d/saNHBe5IPouw=;
-	b=JObbNSLKqAq9IJv/SKeQPDYOYxjVuXe3bQfHSo2EjUoXF9tBAUKTMbbk4iicf40S2KkXXB
-	DszXRRrFLbFsH0wQEaFjObWdo73KrSKN0VxqO5NfpApscHEoqn8aNHq7DLnnL5HtmfzS+0
-	ifG7ByTSV0yTVwamR5Dz1TGG2CdpAoo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3BEFB4178E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68C7C113D0
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1766415205;
+	bh=ug6CF6jCTPeVAFS2QI1pQi+kiqg4TBi7NpuKWEmGN1A=;
+	b=W7qbfG8vVv19N8SiRkJRLeP8Xb5AbFlzT3cE74FNaN73TZipvgal8emJx51xGhPXa6F4qx
+	Z311XNTW+kgD0iDLu1A0mF2R4oARGLA9KBYPAdPQB/2xAUs6H+gubj786z64MWp9tQH9Qm
+	v2eKEhoX3hwU0Q07s2I4fhXRkwKLjdE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mR0ZYIay;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415365; a=rsa-sha256;
+	cv=none;
+	b=r7kj9HSEdWAdlR52xmdn8mp/LJBHC7pgYf6DV27nXKO3tScxxz4MKfyAnrIIVYx1augziW
+	JV8wQPGkyUp1YXEko2AWsihlkzXaltHcIuiXF9dFji0/tqg4zRbTLsqksEBefEZHGHUoc3
+	LrI9bSV94h4uDOPK6Z7OYGL4dkEGwtE=
+Content-Type: text/plain; charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766415363;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T9lSiBEy5UB1MaNtZHcgE0XwHOzo0d/saNHBe5IPouw=;
-	b=SZjCoDiqZhXbVAcMdO5HGgMDDeQ1TDqi24TX3HnDJ3T+Di/Pvp1kfxhhuup9lMrSURA6n9
-	eDzJ1Ul4uHn+E0rO514Xo/tTARL6TrBcE6ps5gnACh/cfRhay6DRWdwDmxqpB3LWwTplYv
-	3mrX2NbQ/IIASxsR7V7KEaS7qFAhwSc=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 23b24ffc (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <linux-mm@kvack.org>;
-	Mon, 22 Dec 2025 14:53:25 +0000 (UTC)
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-450063be247so1730073b6e.2
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:53:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUMrA+MjqQbuu4NiGMF6KF9HgNiEZud9IvGVLTn0DoFuf8ANO922ZgI56ZuCN2qBG/KRC0BWWw0Lg==@kvack.org
-X-Gm-Message-State: AOJu0Yz91s2K7826BF2AocjptVk2PS6scJ9ApiSzUm9AflX8HejqQth7
-	+0J6o+ZyDg2W6geF+bOMKZmu+uJfofEgBP5hsWHpeii9nMmFEF3Z5aBoYT55M6WMJjVLOnweQNb
-	7esw7KotIPMW7euhSanBJZbiEOZIetWE=
-X-Google-Smtp-Source: AGHT+IFTf2XKWBRY63AeXvVokgJ+ixlCXnNao1q68M88Rc2Dj1xw+5JkGcVC5O5axXCpWJHRwm3Wo8JNrRzcDU7JokA=
-X-Received: by 2002:a05:6808:444c:b0:450:275c:8803 with SMTP id
- 5614622812f47-457b208d257mr4977048b6e.28.1766415203846; Mon, 22 Dec 2025
- 06:53:23 -0800 (PST)
-MIME-Version: 1.0
-References: <20251222144646.1426256-1-vkuznets@redhat.com>
-In-Reply-To: <20251222144646.1426256-1-vkuznets@redhat.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Mon, 22 Dec 2025 15:53:14 +0100
-X-Gmail-Original-Message-ID: <CAHmME9o1oJXjt4=5qqGDdBbiK75dvea_e=Z4ceStmk=Z5AYgjQ@mail.gmail.com>
-X-Gm-Features: AQt7F2pMAqGmvIaa01CtlxkkuAmrjURhKxCm1srntPWQEULez3FFB8tJCeMRdu0
-Message-ID: <CAHmME9o1oJXjt4=5qqGDdBbiK75dvea_e=Z4ceStmk=Z5AYgjQ@mail.gmail.com>
-Subject: Re: [PATCH] vmgenid: Remap memory as decrypted
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: "Theodore Ts'o" <tytso@mit.edu>, Ingo Molnar <mingo@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Pradipta Banerjee <prbanerj@redhat.com>, Frank Liang <xiliang@redhat.com>, 
-	Alexander Graf <graf@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
+	bh=ug6CF6jCTPeVAFS2QI1pQi+kiqg4TBi7NpuKWEmGN1A=;
+	b=mR0ZYIay0khLE3eWzfTfMrMUBSfzPivyFLCYkJg7umNNHmi1J+CWjiGZd5hgbuhCY4VByv
+	bwPiRmnU/E9MGfwey8vGWPmFmFp+7HIigwWdGxEs7jK1Ehu7BWDxBLRxU3ii55jZXrk4TD
+	3rMA+8byHGekh6B28hIX+XG4QKisfRY=
 Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+Date: Mon, 22 Dec 2025 22:55:16 +0800
+Message-Id: <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>
+In-Reply-To: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+To: David Hildenbrand <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B75A940009
+X-Stat-Signature: nukkq1588jfzs4x84rc6t45pz8fk4its
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3728340007
-X-Rspamd-Server: rspam10
-X-Stat-Signature: wbcgeja8b3ubc3t1yg1z61a3osu858sp
-X-HE-Tag: 1766415209-680099
-X-HE-Meta: U2FsdGVkX1/rxDtdRcQvjtpZ68pmg6d8q2/nCx2ncIAuZKBOcY8HhCk+SW/XDOEZPOhO9OWXSi70ZDfjN34Iab5Er8WJliHo1WIVcAVkah0F4Lf7D/cP6P272YUX2l/tvOgcMR8nifYqTf70qZ9Vg8eoV8YzSltdpHHEjCo5jZVc+cwLnPjz8+defuAWpp9vkBnykj80PWtCyjKmAex5QojSJUolhQKq1g6lEPXrMWGIwlbUJYp7YlEjUvvfPEw/HJbaROBmROLpGxr1H6fp8aXGE9X8vSMaTvLiyBVWtXPl/dCDHXOA+cT1HEeA5DeZUL4nVawddlynwgPlZ8ozzsE+V3WOMLC3pFzCauuLHc+VlMJPO2gWFeTOzUFPWtxrACyB8E4toRqqmQaDq5r9vnSTWXvxZQ6TtTkKN/NZWRzcPFT/X1rm3YQ31Z8sAO3lZgFG+xtFUB9mGNXhRyqxt/HFDWrZdhxXkrnwtIwNhYNekmoSMGaEE/LbrgScGXOVbs4elRX5IQOoTgU4aSKnMvemftiU3F6IIDx5Phbsf6ttgj7Fx02oLSf27ChHKbpMox9g+tnjY3h2vGRtoJtXzqlt+jOo0G9+gZj+SD0kgLnsm7tQhL9sdhhT2J9VNCjO85JCilCZEzPU2tvFoI7i1X77MsCrnAUa/F+/2jCKL9W+zi+4aXBlpaj4UupBnrTFFLG7/dbcgxr1xsC4mHtc6B4hGxJJEjkr6domdXKF0NtMVER+6PDZ0rt/lxMfiHT/kx8slPp0fjL8eC6LuLK4hVA38KXiWU1lw7rQyGBh91A+nr/14gXcBYUEu6o9RHU0fW6xaOqsvllWl0z2O5HnTwgp2LmgV/KwHPV7HrsA2dYF73S8Q8F3/8Nj7XGQGxJSI5ve6oq2vCADsvQcZDtpTbfhafvCtJmWxAbJAAbSqBNGxXR0p6pRI4+Kb7kroC/YOokMnWYIR+uBOv3BoXC
- rNjIcJfq
- zMwaIAIQGBzh/3MhPE7+YRGNHI/0tRzqvr1nGCAGFOtBEhOh6Kx2828JsnHY01TYADb+A/xiJ6wgFlVYHP9aOymuTu2JjH7xafamljM8FK1OIp+ytt86gAoUwnR0N78jAdPPTrn6KdYq/+Pc+b1vl2w4Lx/RZiuMPxF3fo3qQVNIFFwRM2iUkU/fLoScyHCbNSJOEtAZnDwLru+CqWsZIp8B4qBCktk5rKZl2lNOyC6iG/7FYTeBx0LJmX3HEiwfAJz9Cr+hRBUXw3XCZOfXUPvVhn/kTETtmcOztI1L9Du0oMlFhKNKB2GFUasH9I0g+2iEe0cmuDzU3bF1AAjRdYPWWLZ1FNiDB9yGmytqOd959cs+P+jpOGtPC2VtdAPHAni3NizRCsuHvtdYaYJxDVglRk3K45bnNaH4mL5cXMjPMerr3Pu5m/Tn8OH/fY++lWdHM66h4hTbKqo3FoMrWKz8sK4z4jNde1g5Pex2LG9MOZy2voX/UebyHTQ==
+X-HE-Tag: 1766415365-282829
+X-HE-Meta: U2FsdGVkX18mR6Q/tor2WxeulSCvliSEXEAwhMwmFTAXIsFn+kzfOIXWtcdFFDICsfPwtcWK0WM3d0W/w4Z0pZgpoadTEMrb8UYL5QQwmMyxKC3RyYqpyz8simQtP8bXxyc7DqyBF4BkgL/WjBwLOYZsyJshZpN8pLLkuw8l6vYpGBNGDbd37mu+dYW/KDPcMXI86nWm2hRqqmNRvcWkdOvOb4aUBCB1h0hczuCBZIz5n1FEKdH8aupQyXgQheK9GRuaTB8fPCweocQX25YcF/v3FCJimqt1PVQqF8NJj6QfREvt0HCqoFAvIuh9cr+OuHyc3X5hNyHwMuVCckkZMQrzTY7VbYvsD6shh7HPoX4sHvySN6UxVf52tjQByQvFK6WnG+yqqmF2IJSUvGbbGAonS+Aoj0A5JazqSK3FiMc4+gBunTa1RgBqVRNT07f9xSxl3rVRxG34CVLZMZnNAc1sPb+oW/aPAtJ+1NBe2P4QH2Mps7Ajfp4ZgzbBCHsI8kmfGN4ZaedMnKhLv6zQx+dw8DRT1j08IHSkmbsgvO55uWbBKY33nqlY+x/Hr2W+eWzJ8shMMJTRlB0bO+5qnVqOu39MKINf/FPXy9vqFRbxMAb1QzeZbtsumf7/5Tm9waCsLoZBZnMxWJzcwLtFSrEmf2DaDbh+qoPCxPEFAEIcvfZ6xD2+F0nujZU/SFg/EGCSLAqJFKU65nv5CBRjgIXiV6BbHmWq3qf8Fp41LKRfyOxOiwQPM3nW1UIaoxHwNEYxr5UAQVZhNOl5bGuppN4t1nrB69ovJqz+czHiB4l1K6WDm4Fb2akyB+7dCfpWpofk0uOa3zuLU9wTqPgygqyTWMjG9Kp4g5qKNju6d+gCZr798BQGh0+joFUmJrlBa9loH+3Q4TU9lIuJsuUw5TQOsdyWO9XHm9xVdZ1cIpigpU4excOQyFrCjKbiuzilMDbY9aBDZw1GHVyVanr
+ zUBw/KFa
+ k7fsazwjF1P7C2h5g0aJZroIXuU9y7U68nuHFTpA3zy1svQ3O/9myCL912P6n6GJyklvRnoxO1pTfTZzaohJWzF4o69dBdpoeAgSuL8OM3X+xQhCxvz4r4YEeVuEv52JiQ+iTezOpNef4xyc25THEBg97wyWAEqCjt5bx1Ik261CTs+VY2XLkAez82vs0q07aWFdQo2BFu1OXk2xXGmPXiM7HB0fHrbQmn+i5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,23 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vitaly,
 
-On Mon, Dec 22, 2025 at 3:46=E2=80=AFPM Vitaly Kuznetsov <vkuznets@redhat.c=
-om> wrote:
-> -       virt_addr =3D devm_memremap(&device->dev, phys_addr, VMGENID_SIZE=
-, MEMREMAP_WB);
-> +       virt_addr =3D devm_memremap(&device->dev, phys_addr, VMGENID_SIZE=
-,
-> +                                 MEMREMAP_WB | MEMREMAP_DEC);
 
-Thanks for this patch. I still need to do a bit of my own testing with
-it, but I've preliminarily applied it to the random.git tree:
-https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=
-=3D9476583268980ce64ed75f124768fe3bff6fff4c
+> On Dec 22, 2025, at 22:18, David Hildenbrand (Red Hat) <david@kernel.org> w=
+rote:
+>=20
+> =EF=BB=BFOn 12/22/25 15:02, Kiryl Shutsemau wrote:
+>>> On Mon, Dec 22, 2025 at 04:34:40PM +0800, Muchun Song wrote:
+>>>=20
+>>>=20
+>>> On 2025/12/18 23:09, Kiryl Shutsemau wrote:
+>>>> The upcoming changes in compound_head() require memmap to be naturally
+>>>> aligned to the maximum folio size.
+>>>>=20
+>>>> Add a warning if it is not.
+>>>>=20
+>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
+>>>> kernel is still likely to be functional if this strict check fails.
+>>>=20
+>>> Different architectures default to 2 MB alignment (mainly to
+>>> enable huge mappings), which only accommodates folios up to
+>>> 128 MB. Yet 1 GB huge pages are still fairly common, so
+>>> validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
+>>> miss the most frequent case.
+>> I don't follow. 16 GB check is more strict that anything smaller.
+>> How can it miss the most frequent case?
+>>> I=E2=80=99m concerned that this might plant a hidden time bomb: it
+>>> could detonate at any moment in later code, silently triggering
+>>> memory corruption or similar failures. Therefore, I don=E2=80=99t
+>>> think a WARNING is a good choice.
+>> We can upgrade it BUG_ON(), but I want to understand your logic here
+>> first.
+>=20
+> Definitely no BUG_ON(). I would assume this is something we would find ear=
+ly during testing, so even a VM_WARN_ON_ONCE() should be good enough?
+>=20
+> This smells like a possible problem, though, as soon as some architecture w=
+ants to increase the folio size. What would be the expected step to ensure t=
+he alignment is done properly?
+>=20
+> But OTOH, as I raised Willy's work will make all of that here obsolete eit=
+her way, so maybe not worth worrying about that case too much,
 
-Should this patch CC stable@, by the way?
+Hi David,
 
-Regards,
-Jason
+I hope you're doing well. I must admit I have limited knowledge of Willy's w=
+ork, and I was wondering if you might be kind enough to share any publicly a=
+vailable links where I could learn more about the future direction of this p=
+roject. I would be truly grateful for your guidance.
+Thank you very much in advance.
+
+Best regards,
+
+>=20
+> --
+> Cheers
+>=20
+> David
 
