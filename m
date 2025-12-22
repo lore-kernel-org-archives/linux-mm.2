@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87354E674B5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 15:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B19E674B5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 15:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9C746B0005; Mon, 22 Dec 2025 10:21:57 -0500 (EST)
+	id C1D136B0005; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E49AF6B0089; Mon, 22 Dec 2025 10:21:57 -0500 (EST)
+	id BCAB16B0089; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D770A6B008A; Mon, 22 Dec 2025 10:21:57 -0500 (EST)
+	id AABEB6B008A; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C2FF46B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:21:57 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56106139911
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:21:57 +0000 (UTC)
-X-FDA: 84247472274.07.AB9B5C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BD55980013
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:21:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpuhZYnD;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7286B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52D78B70B3
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:37 +0000 (UTC)
+X-FDA: 84247478994.18.2EA93EF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B6EAC180010
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1Q/QdOF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766417075; a=rsa-sha256;
+	cv=none;
+	b=cS80tUnic7ta0nAdmiVoEkOoLcx0rHA4XbRELVo3dTmVHcHfjqfrCCz1LP2AV/2yasBj4K
+	RokygQLnb61Z60UtMvCnox4Y4jxOm6vFECzVJ9904Hx66SIfGALoK/kWVmq73zj+4F66Bj
+	tqGPT1lhiRwT8LamJsLozVt1exeGq28=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1Q/QdOF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766416915;
+	s=arc-20220608; t=1766417075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZXzYiTcJNpvEqcK3xLIXTMMk9jnymOhtNiM9uwN4gms=;
-	b=ZuPaUy3t7evPt3aY+FqO5XhyZHbWzhT1pv5akYHmpfX1Tp8tyG7PeyOKP0VGKNl/YPg+Ub
-	hRNdt+EyKXg/M7+MdFvYO+88rSkR7wvhClrWa/Lj3695WHpRxsr7teNFPIJSk1G2LLUlpT
-	8x7sO8OUDL6gVRiDBu84fuipE/m5JcI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpuhZYnD;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766416915; a=rsa-sha256;
-	cv=none;
-	b=defaLe+xijKk32fprGKa3s/XonZDTJti/yiNL2MCzZ255kBPjeMkVhKlSKInGzPCKblPBU
-	vJ42Gzd4IvHehvgtzHg/feKOmzlm8uf1xZjAd9dWPqkhBra9BNUeJy4h45PYg1nEntNd8u
-	Dje9q8DBrGRhjN7GRzzaKJxaf71DiQQ=
+	bh=TaX98UT+oDYMyPw9Ns1C3ixEbU9xHURLubadIQB4c3A=;
+	b=rZoGp4n6SSO8sPJbhlTqzptTDUK0LHkKy9cj4oYUZsaLELVtNgoVKpaPW4AMzr7foeVO8l
+	MVvqwU2Kobx6+Sj1eQBx3IFDU3tNLKkTMJ5fI7rkCtv045SCymoGt5JemBwulc/wi+bJBI
+	mt25LZD8bCF0PK7swL884Lk8Suvqzkg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABFC943C12;
-	Mon, 22 Dec 2025 15:21:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70806C4CEF1;
-	Mon, 22 Dec 2025 15:21:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 104CB6014C;
+	Mon, 22 Dec 2025 15:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D1BC4CEF1;
+	Mon, 22 Dec 2025 15:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766416914;
-	bh=p/o1StfdPmpdCYRBTasptwpEFdmjcQVICrxmpQdm+aE=;
+	s=k20201202; t=1766417074;
+	bh=3/Yn5ySh52i/4QJb8bgsJpI/+2imGHs99ervgv9OcJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpuhZYnDquRSj38GLzsReaiVJaQU5IHBeW1iG+A8TOdjqph8Dwu9NvK1fQ5pnI3oe
-	 OSOZ/p97KA2vAR7qrL5+C08f4vq0gHhPT2LkeR5ESbsu+u8KsSH0k9nkMnLmyUTGmT
-	 vqGnS5TzSXdX7RueTaoOzvh1Maoeh2YF5xsKym3Bqnzfw+lgN+GKrHhtF9HQO+DuMO
-	 FQzIVom4s/arxMqXwGaTGw96EnhKPsrm/CgTSkbQnJC4x1GQsnAomBLU+eN9JLDkLK
-	 hvcSCu5WuFEeZsPh60Y2qI3N8INFJ+4tGDMaAqAYIkW5urkyEK77zs//M9x+VapWBt
-	 8dQImec/7NKSw==
+	b=f1Q/QdOFS/TkKJ/WE/Xchi4hsGXQb53TMNdXsQYdVeH8kxidKc5XZEjB1ryY6tOqA
+	 qF9xZcAAUnLYWQkgYVEIbd51DTH63KYTjOJXJgv5gF1+0NLPIn+jjbpsRmn7d2ibcQ
+	 UklKIuKF3uO+MvV82Pj4PGzqEPKhItn1DTO7nk6GGcT7raMY7EsERWWiO9F+dkWrEp
+	 /4m9fN3/hxgKICZhk6eMwjDwjv8qAY8bw4lQhITGISrq5q1v8cuWO1db2Ekq8XqMBU
+	 WsTZVAL5wNsM0/DYzTO8g5y2jdPNaJZJOLSU7HJFoDd3y9SQGw8ElGGtVR+kq+V9hQ
+	 GhtIzMpZNq7GA==
 From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
+To: Shu Anzai <shu17az@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	akpm@linux-foundation.org,
+	yanquanmin1@huawei.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH 0/2] mm/damon: export symbols and introduce prdm module
-Date: Mon, 22 Dec 2025 07:21:45 -0800
-Message-ID: <20251222152147.87398-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and remove redundancy
+Date: Mon, 22 Dec 2025 07:24:27 -0800
+Message-ID: <20251222152427.87516-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <638d4c03-f7c1-4ba9-801f-18c860960eeb@kylinos.cn>
+In-Reply-To: <a98e23a1-5be3-4c2a-a65a-c33853683674@gmail.com>
 References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: knnowxxkq9eiycab4mc5dwnh9597t864
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BD55980013
-X-HE-Tag: 1766416915-345666
-X-HE-Meta: U2FsdGVkX1/cChUoAral1zJklKu2/KGJhSs3C7p82BbWmmeQkFMfbEbp5QReA65AiZIQkAigeIIuKqRNcQ4btQdSqWN3g5ZjI3JsrxGZn1Flr9V1C0silQTj7WTw9Dxr6S0C6HMkn8XQvvAU41HWKcgOqiMf3cj7u7XI6mL9buRx1YN6qOTJgnvofKXmsrkI+jsX8FB8qpIux/AwzqUvdvwyT8NX2DuBbL1ppjMi9s5Hs2VEhc4tQzS0eNJPQPXmz3lK8wP2YBwaHHloJ4d+nxzecHkSKGllnMw/QyHlC1KczMyWFfAjlY2zfgwPyKc925e7GAGLpqMdeBeUnzxiS2sNst8WyEV22un5PgUqJ+n52FlqRmV4M58hE8d/BLhBf5NHwliV+UADZ5vElzzZbOhGg6FCEbgLxzL32E5hZRoZ3vGMueCo1Mdf2lCVpYN5I8mXsNqojiYj2jWL/IlquFk6GPw3oOMuhl3/9tld6dSRz09gCcrSiIvJvonL+q/rg87QJpNXN8/YOUVsf+a7xYMOob4KhPQc/A7x+2/NqzzasIOoQhaZAbasOrz96veYVG1Ul4QtOP+l4TpmAfDeZC8M3sCSoPbDdZAmii5PjGUSLpDSbklerI9vPx3CytL26ptfIeC6YZGi3Ic/5JrRFtus1I36lu08NkBzP4LMgGUa1D+eJwLQaootnSbsKdgO6nzjjB9tKeoNsaFoHLlzHJRjPyUJqmKXW8c2MT2oaZGEHv9V+KhgGGHf9XwtO3IBYmHHirDXIz5qSdiLCcxmx3lYusJBt0tvv/M8qxlW5SZKDBUCMft2k0vKC7nFnGiyOM094AFNHtt+O8BfmapEeBijHdIoXAStVa+B3gOlIzPf2o8Kvlp5rDsLEiApKWkKX/CCN80pls8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B6EAC180010
+X-Stat-Signature: 3szhw4z8hmw3setgw5t3fuj4cah3h86q
+X-HE-Tag: 1766417075-731269
+X-HE-Meta: U2FsdGVkX18rWrOR4cuBOiqov2GM4+GuWiS/XQau81eaA4bYtD+Z8whtSyG1pra2XFgkodBsdR1mzpfTfdRhkvBrjEZDWPe0AA3werSebs+fFqumNdd69DrtfG2Y3oQwArasbRIg0dTMeVu3DxyTIGOayuqaDYfKogKhohE2hjIEaNrh7GsTNbtrdG4ST3eLGEWaOtXyxwL6MqTZ9BcJJdsmI7i66V9JdiXzjU8T7e+X82P9t8fJE8RVzq1MTnrnjfwQNucCvylRQ+MAE/DAttQERenS7uH9XlZ7sdypHSTqlaAiExcatg5Y/IZtbkeO12rUqOod/7RgHSb2+W6JqskFKCPW51Mi+dARBpLcVx6TvU0GgSN3npW7xIMRWPQuRWBsz+a5vlPFUGxQBHjN5h0scLGbT6uorJiMYxLesuCUGLpNGLDpVm6V//9uxT4gConH1ZTddXpSSdRnXrwOVVctM3U1LtD7G4DyO6E2d1SsBCPYFbC2O8Bv6gk5+hQIawyzOiqcJxn5OExk8fOyu0zFrLPjqa1gp+lMHNp+qwgTcW9BKijbMxyQV2F3sNwrmROeU5X9Qa2AWH9xCREE/HSPs/AcekOI5M2uvR/17UmUUx8pIOuT8NImylKdiWKFHp1dgjlDuYm3eQ+W75hzdzbBzVLQr85XMLxvkMo/erEhtkKemIGsOg3huJzv04NLHvP4nLH7MrEkK6bXQXhNJxF8VggpC6dVZhWBUe57AUdmOYEWit5w918IRon9GfnkCPVOQvZh1OO3Lk93pShd8wBvLBlZ5Sg6wLRVlGyu4XxazcOfmz97eJYYbd0KScBvDirgag4WjZ70heNN4v8JoBtTGPKzVHiPwZMVizwGzABEj5l0d7o7tcvF4NQ9Kz80kvI6rFcJLqt52jdXWmzu3cqr/jh0srVeENnCfsfyqqGOcNttLB6fvQvXV/bMKsjAXOY3YhvkeQ5xfz00iHh
+ iaO2KDJe
+ 7O8xAKX23tcmMoXmHG19bg039xWtOpWNpbaBaQIKStq9TreCks8TM1UlSIWiyCm4y78brAIlpdfWR13I1DgOgqZyuhUN+kK78TkPdUAMhWPiSv4G2YkFscCh94cbge040HuLFNfjtKOpm7RCOn4GpDb+groJpMW3ZMqkUazUtxQgBqshmfhny0i6SyW1W93rmADPy+qXTte7NsYGsz7M9wkOvUyJHE2lkFMbmjmg0j/iDb8Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,137 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Dec 2025 15:08:01 +0800 Enze Li <lienze@kylinos.cn> wrote:
+On Mon, 22 Dec 2025 03:33:52 -0800 Shu Anzai <shu17az@gmail.com> wrote:
 
-> Hi SJ,
+> Hello SJ,
 > 
-> I appreciate you taking the time to provide such a detailed reply.  I
-> have a few more questions.  Please see below.
+> Thank you for reviewing my patch! My responses are below.
 > 
-> On 12/19/25 7:46 PM, SeongJae Park wrote:
-> > On Thu, 18 Dec 2025 21:46:37 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> > 
-> >> On 2025/12/16 07:16, SeongJae Park wrote:
-> >>> Hello Enze,
-> >>>
-> >>> On Mon, 15 Dec 2025 22:20:55 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> >>>
-> >>>> This patchset makes DAMON's advanced memory management accessible to a
-> >>>> broader range of users through two complementary enhancements.  First,
-> >>>> it exports the necessary DAMON core symbols to enable building loadable
-> >>>> kernel modules.  Building on this foundation, it then introduces the
-> >>>> 'prdm' module, which extends the concept from the DAMON sample code
-> >>>> (prcl.c) into a production-ready, user-friendly tool.
-> >>>>
-> >>>> The key strength of this module is its out-of-the-box simplicity: by
-> >>>> simply specifying the PIDs of target processes and enabling the module,
-> >>>> users can concurrently monitor memory access patterns across multiple
-> >>>> processes and trigger proactive reclamation automatically.  This
-> >>>> significantly lowers the barrier to using DAMON, allowing system
-> >>>> administrators and regular users without deep kernel expertise to easily
-> >>>> apply sophisticated memory optimization.
-> >>>
+> On 2025/12/21 12:13, SeongJae Park wrote:
+> > Hello Shu,
+> >
+> >
+> > Thank you for sending this patch :)
+> >
+> > On Sun, 21 Dec 2025 13:01:14 +0000 Shu Anzai <shu17az@gmail.com> wrote:
+> >
+> >> Add some missing test scenarios to cover a wider range of cases. Also,
+> >> remove a redundant case in damos_test_commit_quota_goal().
+> > Seems this patch is making more than one change to multiple test cases at once.
+> > It makes following which change is for what purpose bit difficult for me.  I'd
+> > suggest splitting this into smaller ones that making changes for each test
+> > function, and adding more explanation of the changes.  E.g., a patch for
+> > damon_test_split_at(), another one for damon_test_merge_two(), and so on.  Not
+> > a strong request, though.
+> >
+> > I have two questions below, though.
 > 
-> <...>
-> 
-> >>
-> >> Before developing prdm, I had considered implementing the same
-> >> functionality based on DAMON_RECLAIM.  However, I gradually realized
-> >> this would make DAMON_RECLAIM overly complex and less
-> >> user-friendly—especially given its existing module-specific exported
-> >> interfaces, which could confuse users.  This approach would create
-> >> significant barriers to promoting wider DAMON adoption.  Consequently,
-> >> building upon the prcl sample became the preferred choice.
-> > 
-> > I agree DAMON_RECLAIM already have no small number of parameters, and adding
-> > more may make it look even more complex.  But, users may use only parameters
-> > that really need to be set for their real use case.
-> > 
-> > For example, if we implement virtual address spaces mode in DAMON_RECLAIM, I
-> > think we can simply add target_pid parameter that works very same to that of
-> > prdm.  If it is unset, DAMON_RECLAIM works in the physical address mode.  If it
-> > is set, it works in the virtual address mode.  Adding just one more parameter
-> > that doesn't break old usage doesn't seem that complex change to me, at least
-> > in terms of the user experience.
-> 
-> This should be viable, though it will take a moderate amount of extra
-> time to develop.
-> 
-> > 
-> > As I mentioned above, yet another example would be using
-> > DAMOS_FILTER_TYPE_MEMCG.  For this, we may be able to add a parameter for
-> > describing the memcg of critical processes.  Again, adding just one more
-> > parameter that doesn't affect old usages doesn't seem too complex changes to
-> > me, at least in terms of the user experience.
-> > 
-> > Meanwhile, I agree adding a new simpler module could make it easy for new
-> > users.  But, I concern if having two modules for DAMON-based reclamation will
-> > make users get difficulty at finding the correct one for their usage, since
-> > they may now need to compare two modules.
-> 
-> Indeed, you're right.  From an architectural perspective, having two
-> modules forces users to spend time distinguishing between them, which
-> can cause confusion.
-> 
-> <...>
-> 
-> >>>
-> >>> And, even more importantly, why it should be a loadable module rather than a
-> >>> static module?  Do you have a specific use case that requires it to be a
-> >>> loadable module?
-> >>
-> >> Yes, loadability is crucial for operational flexibility in practical
-> >> production environments.  Beyond some obvious advantages, I would like
-> >> to highlight a key scenario: system administrators can load the prdm
-> >> module upon detecting memory pressure and unload it immediately after
-> >> reclamation is complete, thereby eliminating any overhead during normal
-> >> operation.
-> > 
-> > I agree always having prdm in kernel is an overhead.  But, I think the
-> > overhead is not meaningfully big.  Also, as I mentioned above, my intended use
-> > cases of DAMON modules is for cases that willing to simply always use the
-> > modules.  If runtime controls are essential, I think using DAMON sysfs
-> > interface or DAMON user-space tool is a better choice.
-> 
-> The prdm was developed based on samples/damon/prcl.c.  Would it be an
-> acceptable modification to port the multi-process support feature to
-> prcl?  Does that make sense to you?
+> I see. I will split this and send v2 later. Let me first explain the 
+> changes in detail.
 
-Yes, that makes sense.
+Looking forward to the v2! :)
 
-Please note that the purpose of sample modules is not to be used in the real
-world products, but just explaining people how DAMON API can be used.  In this
-case, I think multi-process support feature can let people better understand
-how they can use DAMON for multiple processes, so I think that's good to add.
-
+[...]
+> >> @@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
+> >>   {
+> >>   	struct damon_target *t;
+> >>   	struct damon_region *r;
+> >> -	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
+> >> -	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
+> >> -	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
+> >> +	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
+> >> +	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
+> >> +	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
+> >>   
+> >> -	unsigned long saddrs[] = {0, 114, 130, 156, 170};
+> >> -	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
+> >> +	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
+> >> +	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
+> >>   	int i;
+> >>   
+> >>   	t = damon_new_target();
+> >> @@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
+> >>   	}
+> >>   
+> >>   	damon_merge_regions_of(t, 9, 9999);
+> >> -	/* 0-112, 114-130, 130-156, 156-170 */
+> >> -	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
+> >> -	for (i = 0; i < 5; i++) {
+> >> +	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
+> >> +	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
+> >> +	for (i = 0; i < 7; i++) {
+> >>   		r = __nth_region_of(t, i);
+> >>   		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+> >>   		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+> > I understand the above change adds two regions on the test input, but I'm not
+> > following what logic it intends to additionally test.  Could you please
+> > clarify?
 > 
-> > 
-> > Someone might argue DAMON sysfs interface is unnecessarily big compared to
-> > prdm.  But, I have to ask again in the case.  Does the overhead really
-> > meaningfully big for a real world use case?
-> > 
-> >> Furthermore, it supports zero-downtime updates, meaning that
-> >> improvements targeting prdm can be deployed via a simple module reload,
-> >> avoiding costly system reboots.
-> > 
-> > So I'm not really convinced at needs of prdm module at the moment.  But I agree
-> > your above point is a good example advantage of loadable modules.  Also there
-> > were private requests to support loadable DAMON modules.  No one among those
-> > were for real production use case, and I understand you are also doing this
-> > work for imaginable use cases, not your real products.  Please correct me if
-> > I'm wrong.  But as the request is repeated, if you willing to convert existing
-> > DAMON modules to support loadable modules build and expose required DAMON
-> > functions for that, at least I wouldn't oppose.
-> 
-> Thank you for your feedback.  I would like to try it out.
+> Both cases were intended to verify that damon_merge_two_regions() is 
+> called properly in damon_merge_regions_of().
+> The first one was intended to ensure that non-adjacent regions (170-230, 
+> 235-240) are not merged even if their nr_accesses difference is within 
+> the threshold. However, on second thought, I realized this is redundant 
+> since it is natural for non-adjacent regions not to be merged.
+> The second one is to verify that two adjacent regions (235-240, 
+> 240-10235) are not merged if the resulting region would exceed the size 
+> limit.
 
-Looking forward!
-
-Please note that there could be objection from others, though.  In the case,
-unless you have real world usage of loadable DAMON modules, I may have to agree
-to the others' concerns, like I had to do so [1] last time.
-
-[1] https://lore.kernel.org/damon/20231205172307.2310-1-sj@kernel.org/
+Makes sense, please add the details to the second version.
 
 
 Thanks,
