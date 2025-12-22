@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E0A8E6B257
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D17E6ADF9
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:18:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73EFE6B0005; Mon, 22 Dec 2025 17:12:48 -0500 (EST)
+	id BC8CB6B0005; Mon, 22 Dec 2025 17:18:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EC966B0089; Mon, 22 Dec 2025 17:12:48 -0500 (EST)
+	id B6CFB6B0089; Mon, 22 Dec 2025 17:18:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F8B86B008A; Mon, 22 Dec 2025 17:12:48 -0500 (EST)
+	id A82DE6B008A; Mon, 22 Dec 2025 17:18:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 50C726B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:12:48 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E98D2B8B78
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:12:47 +0000 (UTC)
-X-FDA: 84248507574.28.61F77F0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 20BEE20010
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:12:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mR5RyS9C;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 967B16B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:18:06 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E77A7C0604
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:05 +0000 (UTC)
+X-FDA: 84248520930.15.8ECD9B8
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F02AB180009
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Y2Gmn3ya;
+	spf=pass (imf06.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766441566;
+	s=arc-20220608; t=1766441884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xHAzWrLppnd1qY7HWbrjONaXT11vwpbQpr85CaG0W+c=;
-	b=LeyLoSXw141KihoKuvyRI94/Nu80kLi6sQlQv4bwTJPrXhnVHdOxVGIuQv4DP1H9Xm2ibm
-	f+sPoXbef/zpXwgHAxqdY+6CDYhS4fMvHZ5eOKqtuK1GaMAKrAQ4XweTRMQwrBcfsFDzFz
-	vPfT8ExD+Wz8E8jlOKNTKnVIALGETPc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vsKpZybnVUvHz7hRUHCLmAtPAg5RYYwFpvXRG+uP0Po=;
+	b=Xl7ZrzqSyqDwbVW/MOy+L+zXuP4PnwpHQDUGZZ61TjOoWS8cq1QdYTapUenBtBqfehPdpo
+	AQiIH7uw67QC5/u5jo08I9LGKQAnbntffdye3epXsZPRUZptqgwyD2zquTbhK7D6wl8eQd
+	uYQji5SGm3dAB2rt/OEZuPUl/9iX4Gw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mR5RyS9C;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441566; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Y2Gmn3ya;
+	spf=pass (imf06.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441884; a=rsa-sha256;
 	cv=none;
-	b=2iu0tj0IY/Z/qjes0vffeq795pagcS+ZxKgtoxc55GQONwJY246YzToZbLKLiZX4IAHOZw
-	+i0siFAUzuz+pBiPU5s9dj8NxI43GKRa70InGe69i6gjlFHZWui4jNcoHAKi8byIABp/Jw
-	a2V54nh86yyS3mwgCv/5CzVWWuWsDRQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xHAzWrLppnd1qY7HWbrjONaXT11vwpbQpr85CaG0W+c=; b=mR5RyS9CCuNYAjuw7S/j2YJ+ob
-	UQQQ6Ff6Px910GxRsdifWZqCxJo/Cb1ngYGnxJLGnIoTf/G3s9Sqiqlr9cDCCPLoyoVcq+2Ccojh/
-	Zw/Mu53dp7bpw1Rj6Bn2q9eiyNNjEBqieE8Z8Z/yeLFIenlsaecMAmZt3g2UkC2LVQ+3ib087V50u
-	pyy8ICCrhp5T42J2InjhaCKBKnzRbKnN2L0+gx2/xEcVUncdygPWpJ0ER5bMkfWb22i44dQkOsIBD
-	BPnetJx32TNIIV3EE/yqejjcdjWnwbTo2dAVibctdGwNFuNg21fnpIkKltY+MFm94DD+mb5F7qd6N
-	pf+WCslw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vXo8n-0000000CFGM-0cch;
-	Mon, 22 Dec 2025 22:12:33 +0000
-Date: Mon, 22 Dec 2025 22:12:32 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com,
-	ziy@nvidia.com, harry.yoo@oracle.com, nao.horiguchi@gmail.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	william.roche@oracle.com, tony.luck@intel.com,
-	wangkefeng.wang@huawei.com, jane.chu@oracle.com,
-	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev,
-	rientjes@google.com, duenwen@google.com, jthoughton@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com
-Subject: Re: [PATCH v2 3/3] mm/memory-failure: simplify __page_handle_poison
-Message-ID: <aUnCUNjiBOp05kVD@casper.infradead.org>
-References: <20251219183346.3627510-1-jiaqiyan@google.com>
- <20251219183346.3627510-4-jiaqiyan@google.com>
+	b=fl+IO5h+/V3XtdowMJCOrNvcTVXPLbQI94n7wMgyyU4J31P4TwulWo5QT/SIckKeeL9ZCf
+	FGyxZenTFhgBxwdjpXwHkKIMF+90r/3jtIQt17BvZ1K0+2YhOdJw2XULE1cIUnPI0QvFXW
+	HfDlrEx1kOkV+LDvtyv3dPw1W9pwM9o=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766441881;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vsKpZybnVUvHz7hRUHCLmAtPAg5RYYwFpvXRG+uP0Po=;
+	b=Y2Gmn3yaC40doAZ2YzgTJWK4Mk9JL7G8CzvInTpsFB2aqOmm1KsS/tqmTVGecBk8Bff1P/
+	5n8hPp7s42NdiGMj8CjJwdsgmwJfA4m70E5g7xBd5DqoclmMy3aPxSMO6DL7UBg/Opkfp4
+	QxnhCaTKiuiOojudbnzJTYAH/u+nrSw=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: JP Kobryn <inwardvessel@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v3 0/6] mm: bpf kfuncs to access memcg data
+Date: Mon, 22 Dec 2025 14:17:48 -0800
+Message-ID: <20251222221754.186191-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219183346.3627510-4-jiaqiyan@google.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 55zc1ishak8so3oirzwmxm3exedywhbf
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F02AB180009
+X-Stat-Signature: mii88faugbcfj73dh3ondfski1xra9qr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20BEE20010
-X-HE-Tag: 1766441564-121320
-X-HE-Meta: U2FsdGVkX18rRYoQbgJFDSPEVAstmZcnM8y0r2Yfx0t/SHkjwx4cn3ZXUDugni2y97V7STSwnSj4S9+cEX7tah0yVG64QilgVNVO4WhvC7jkHM1Y06TPioM5/4Y1fNgajRb4gS1bNlVOLQIETB7Vk2aJewrkv2NfQnXmGf8Lcg+mJ8+cI+pz2NOEZI5dkggOWTxL8pQcwiphWOBzGpkTfdCA4s9ZHRFvb5nsAMsXAa9WNJQnqg8lFWxKauhdHoQLWCwE2BO2dnRvKys5D4bCQr9E1nYTaS9GRB/aJCogty3/cikOvWyocoa1yMJyO3TzcEcKvVdQknJSPoBmvkZ/mUYxnXgj/2kRNOSjIk/CDdSjvUcae1uDXDuu0NkQdnbc9CRvtKrffD3qeEkNp6YuW7vypdxhlZbBzZGLLpSQiJi4pCDkZwTsPCmaOHWFuO7MVbD49fSkXiPuTT56IjSVwhyNsuGZXi/83/p2MydYWQpp0n6Pc2vATq2ZTJxQCW5ko2QguZPp0c0COahfyixmf7iq5CkxRvdVmWWJ930SW/PnWh19oF4fk9ajKILP5UeeWiocCn/qqh0ZiK7o/k1xKrkJE4/pBbMZdVm8sZ8YuWGeDR7p9uLnjJxu64ybtEF3MhBn0OZX5wmbKYm1eXqNE0dm8Zibhg9IFkR5q+rMFqvct1VdjiZV93xuagSelYjslCiU+8sPJTOMCwCemS0xFI1ItGU9eJ+ONjmQ760LSSZyvRCh02HXVCKXhz3WULk2xKAYxPd4K9ZLbDio8TSVvR73dB/sDhc4sW46LZKrQnFMWhJojZ3L0x/9XjNSH4qa/u+SZ5guCxxExbRV0kGzHJfKz/P+OGgGJj9VOFIJv5QyD6j6mxnL5vYoT7vZiGOgZc73cbZbHbbE1UmI1doFVzwXBi/ZEpeHj2GelloDqcoqAlCxtjxVM0RAU7m9Ww/tR5zS6mEsf5TqrTNbcMD
- P8DtiQfc
- V+GaFGY1yC5VY3QJhjcXPpj6m37Trr2icGoD27nR/lHf2O+YFkGuREnyMgynML1HBuLlTTomESdsrO1rebhdSXyBDlHTc7D8/4+DBbiP91Mpo+U+lA2vYD/gXa3QDZBd6DzdrJjmeDgR/bvyo9ponBmae1m/9wDCznmbzkhUC3Lot54hKRiF56B4kaIcZ1wnxxcSKlsVM6TFzEsIe4OaWu0RIvaEI2Sb0oG7TUZQd7eIbMh4FDSOzQUu3ua6Y7bAZWpCeMEmEqkXqa/5XBA01zla4ZyPXvzpENDhXyFI/9L+lyNHdEGuH3X7CPUjVLNLaD2pYuRGpNIeDckmTjNcfWDwAx0z9ouhQi1LilDeZ+MYcgb+ij+BtL53B6A==
+X-HE-Tag: 1766441883-751472
+X-HE-Meta: U2FsdGVkX1/KIsfdqAmg8sIwJadq9GTj5jcntSg9NS5qQRGoLVxeOUiyTWZ+Kvor9BaOH9ObTUc0W6RXa8gDEeXkjZHuv7eKMH+xAzOG4ij7qqyvv3KzUIG+TcP849xPepZ9P8N7bt/iuXxFIuGOLTHX21UjXkv7Lo3AMCHZ6JSMgh+sYqvKZBSzfuZX0AlhSVxFkdjlGzX9ZmwgB2Z07nlWWUQd5Obbt4UQ11l84awTbGjZ2zO2SrO41VTDRzJkDgyCfAxhRXbMP8gLZY7G+Vl1+acveN8rFejWYAqDQv1DkVm+dkKfVvfcd/fMiOpvPAu0B9BRrBEJbprz0n/SF0+SZZNWEVmfQV+4+Pmrp9xP+Ge7ejLrQxrFFfwusnwhJuJ3Aj7dvjPba0TIl+T6exwA/+zXPF0nk1G3UTfzL3gCmX8Z1ivGSdWXtBs7scV70weEEixrlRiOaxhTdJSzBg/XbqPatNllQNJ/K7WG2eK/HEsjkmnW3g6NR2HSDTIm4FyJOGO69M4WMUPSgdOyqOAxu3DNjUNQBD51GcWFJcmY2+7FcDfR6mFQPQquZoLGnxq2V0A6qRqOfZZh992wYSNqbXn9et5iUWKD29fKCQiw/yT4Cv42wreUL3+k3PDXEnXK3u/gg8VHE4fPVl3mF7vlwghKHua7Y5wNa3ajCdnWNeb50IGz9vPr54LzFpqwyBG/V2fBeCFqZuNUl6qI43gCf6+CjvGInDwz3NDjogMrCvVbAB3ZE3rPb7SS8ByOBtxN8BgaPKW0DkJYW7OpFyC0p5vmRbR3NZ/rnYVbEJZFfMw2wALFrr18d+a/Jw0BZglsX8oAAYKkS3+rM7B0uhNx3NuQNpWTyHSuLdFGsqw1Bt7qQlYuIrVF3gWCG1jtssBwa7CpZLErHJanLKVLgV8MW76yhjVg57tRPH4nJIqAxPRoCSTyWMUfjEJctxFGII/2bMIA2mG3eLgmYhr
+ e/TcYbv2
+ ma/+WBYz7lv5KDIdc5K4S5Vm461LyohY8ljud9aGjxexEX51I6Y1jPvJ1uzcuYWt4CC1z7sJDPD7S1rUpd2m2rDQJ1jHlYIgjl+v+Fnr6Hlr5F6ga/+z44BAQn2kEXxxJcQ7izQniIcUI/KPwU+XAn5/M/tmxwgYvMlNMqPIaf1eoeHOIanJoT4l42z2yZ8kXdxSoZ8T166KVqlCUvs9PYJiKMXV8n2dJuXok
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,12 +91,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 06:33:46PM +0000, Jiaqi Yan wrote:
-> Now that no HWPoison page will be given away to buddy allocator
-> at the end of dissolve_free_hugetlb_folio, there is no need to
-> drain_all_pages and take_page_off_buddy anymore, so remove them.
+Introduce kfuncs to simplify the access to the memcg data.
+These kfuncs can be used to accelerate monitoring use cases and
+for implementing custom OOM policies once BPF OOM is landed.
 
-What if we discover a hardware error in a page which is currently
-in the buddy system?  Why don't we need to remove that page from the
-buddy system?
+This patchset was separated out from the BPF OOM patchset to simplify
+the logistics and accelerate the landing of the part which is useful
+by itself. No functional changes since BPF OOM v2.
+
+v3:
+  - dropped redundant kfuncs flags (by Alexei)
+  - fixed kdocs warnings (by Alexei)
+  - merged memcg stats access patches into one (by Alexei)
+  - restored root memcg usage reporting, added a comment
+  - added checks for enum boundaries
+  - added Shakeel and JP as co-maintainers (by Shakeel)
+
+v2:
+  - added mem_cgroup_disabled() checks (by Shakeel B.)
+  - added special handling of the root memcg in bpf_mem_cgroup_usage()
+  (by Shakeel B.)
+  - minor fixes in the kselftest (by Shakeel B.)
+  - added a MAINTAINERS entry (by Shakeel B.)
+
+v1:
+  https://lore.kernel.org/bpf/87ike29s5r.fsf@linux.dev/T/#t
+
+
+JP Kobryn (1):
+  bpf: selftests: selftests for memcg stat kfuncs
+
+Roman Gushchin (5):
+  mm: declare memcg_page_state_output() in memcontrol.h
+  mm: introduce BPF kfuncs to deal with memcg pointers
+  mm: introduce bpf_get_root_mem_cgroup() BPF kfunc
+  mm: introduce BPF kfuncs to access memcg statistics and events
+  MAINTAINERS: add an entry for MM BPF extensions
+
+ MAINTAINERS                                   |   9 +
+ include/linux/memcontrol.h                    |  20 ++
+ mm/Makefile                                   |   3 +
+ mm/bpf_memcontrol.c                           | 193 +++++++++++++++
+ mm/memcontrol-v1.h                            |   1 -
+ mm/memcontrol.c                               |  10 +
+ .../testing/selftests/bpf/cgroup_iter_memcg.h |  18 ++
+ .../bpf/prog_tests/cgroup_iter_memcg.c        | 223 ++++++++++++++++++
+ .../selftests/bpf/progs/cgroup_iter_memcg.c   |  39 +++
+ 9 files changed, 515 insertions(+), 1 deletion(-)
+ create mode 100644 mm/bpf_memcontrol.c
+ create mode 100644 tools/testing/selftests/bpf/cgroup_iter_memcg.h
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+ create mode 100644 tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+
+-- 
+2.52.0
+
 
