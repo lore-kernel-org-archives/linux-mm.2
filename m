@@ -4,114 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92906D711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA302D711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:43:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035A26B0088; Sun, 21 Dec 2025 22:42:13 -0500 (EST)
+	id 5D2EB6B0089; Sun, 21 Dec 2025 22:43:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F264F6B0089; Sun, 21 Dec 2025 22:42:12 -0500 (EST)
+	id 5B49D6B008A; Sun, 21 Dec 2025 22:43:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E326E6B008A; Sun, 21 Dec 2025 22:42:12 -0500 (EST)
+	id 4B7076B008C; Sun, 21 Dec 2025 22:43:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF75E6B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:42:12 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 77D668B91D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:42:12 +0000 (UTC)
-X-FDA: 84245708904.27.8566207
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 71037A000C
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:42:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eauXRlRI;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B4A6B0089
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:43:02 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DFBF260BDC
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:43:01 +0000 (UTC)
+X-FDA: 84245710962.25.21F5331
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0924840009
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:42:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hVmiX6uT;
+	spf=pass (imf11.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766374930;
+	s=arc-20220608; t=1766374980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hCa5J6nrIt8TzRBn2bC3Wx/bNx4m7hYE101pdrt0GvI=;
-	b=Q5AIQtHqFIJY8D6gbdQ/aUIYUgqnPO/Aax9S/ulRxlVX3qHejs2hisCfbZ2SDRqiObbvtD
-	AgAp5rsz40tVgjsiYClG91AtruROK6P+vWU13obfHzE/py4Mos5ofd7czi39oHpxMs8/4W
-	6q6uLyhohzXGPh5xxTOJ1W4lzkqf8AY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766374930; a=rsa-sha256;
-	cv=none;
-	b=4aEw+LepX5bmt9eKaEYmnJSoj33CRWtduEG+FSBluQFqDeW+wE1q9Q6AobrSLATZKTgkUT
-	KlymjSuWdvT3GhiaLt8Zxz+Tpor/qJIJytV7RrcpuqsDwtlQf9FtB445WpTXLNTaptZZNM
-	MRTSfL/eVETN/ls4jwcPZT67l9Z5C9c=
+	bh=bz1xuPsgdNZC4b636x1LrK4fMi9S/EGh27EdWq41RBA=;
+	b=xDWWRJTAoW2qHAF52b9YFKnwr8eXGcrXmXQVdEmLCh5+OEbUMFKVCOHGBin25V39jmK3PU
+	d7hALE01fExnhsN6OgmJftZajZSmNyLhAVhhQiQiTz1RnN4P38WeelCkOeGw9rpTGAs/wJ
+	E+kiFWz/ErWooaG1ObWrpt4nGF4jAJk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eauXRlRI;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766374929;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hVmiX6uT;
+	spf=pass (imf11.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766374980; a=rsa-sha256;
+	cv=none;
+	b=h9D7iWaaBzC0hcwZZUuDU6VqewZehrEg2KaiuziLFPvTWdpKcDylMqklb9AAhSXPjVJ5Y6
+	/GpJ7XtPbQvJR/rRsZP/BwX0Y+6EfVSQWS/BdxkDDY5R4l9XL2EpW4F/y/40dBhO+Rgwdd
+	wF3zVereVPI6rFX+01CmaxIxGdoqGQ0=
+Message-ID: <c998d9ef-5538-4ad2-9a95-a20ef299ce55@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766374973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hCa5J6nrIt8TzRBn2bC3Wx/bNx4m7hYE101pdrt0GvI=;
-	b=eauXRlRIXcLkb2DhzLjnmZBJViSpwXq5SSSRLFce/sbifgnGqqv8xJtDTkIm14viKoz7MC
-	/CGfvDZ/ipGrhihQZSBZWNvCBX18ely/RjzMMfcxK293QCffQTNHiAi0Q4gTkBZWpK8E8E
-	KZYFSznD8y5zAS4XsBrHwauvsDJ8dEA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-ChcZXYkiN7O8limJST5bAQ-1; Sun,
- 21 Dec 2025 22:42:06 -0500
-X-MC-Unique: ChcZXYkiN7O8limJST5bAQ-1
-X-Mimecast-MFC-AGG-ID: ChcZXYkiN7O8limJST5bAQ_1766374924
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2152195608D;
-	Mon, 22 Dec 2025 03:42:02 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.76])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2FD561800664;
-	Mon, 22 Dec 2025 03:41:58 +0000 (UTC)
-Date: Mon, 22 Dec 2025 11:41:55 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 15/19] mm, swap: add folio to swap cache directly on
- allocation
-Message-ID: <aUi+A1xjbcUh54wi@MiWiFi-R3L-srv>
-References: <20251220-swap-table-p2-v5-0-8862a265a033@tencent.com>
- <20251220-swap-table-p2-v5-15-8862a265a033@tencent.com>
- <aUYiLiGJPt/kAy3I@MiWiFi-R3L-srv>
- <CAMgjq7DG-LghGSs_jANXbFqqRFEt_BeCv5gJV7wcTzVEy+N5yQ@mail.gmail.com>
+	bh=bz1xuPsgdNZC4b636x1LrK4fMi9S/EGh27EdWq41RBA=;
+	b=hVmiX6uTnWbBzcdQMwstWbBHDPWFlAHlSeClZfctafz8wzOcVHzyKB8XX1SNWtyuAQP6kv
+	TuQWLWUGs84KFl8rDmsFxUq27C45eAxgWZGQm3bHTLBNKiLJJqEAwM6hh4jpBBslKOnFtW
+	KCrikMCmmHQwn2YykjCeCfScSa6UH14=
+Date: Mon, 22 Dec 2025 11:42:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7DG-LghGSs_jANXbFqqRFEt_BeCv5gJV7wcTzVEy+N5yQ@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Stat-Signature: gwkpwt5ci1krxhtf9hfwzuzif34pxoid
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 71037A000C
+Subject: Re: [PATCH v2 13/28] mm: migrate: prevent memory cgroup release in
+ folio_migrate_mapping()
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+ apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <1554459c705a46324b83799ede617b670b9e22fb.1765956025.git.zhengqi.arch@bytedance.com>
+ <3a6ab69e-a2cc-4c61-9de1-9b0958c72dda@kernel.org>
+ <aUQPB0cUP9PXnrqh@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aUQPB0cUP9PXnrqh@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766374930-300789
-X-HE-Meta: U2FsdGVkX18Z/oC0onnEfvDtLEN4F40sx63Nux37skNtBlUmHBtEp4Ms6VjU5VvQbD+H7vxVaHU25L7WR5u0NlldDKWMivrVk7vCDbPQTv1QrpL7HRB/w5gBP09Flxopti+Xecr4AjnwfGabZ1l76XGlhwztIiCCKnJJlHuFYjxiRD7hsdotd8JFuD8T+mC9tNUCGB7TqS2qcPF2FMrwm0rbgRp+4Dpm44NEoR9UpmqJuqz+/hyMSgIXwSjqxCpf5154bbGPqbwJcFLpmsjxmDb6g74piksXcnm4AmFpej+oBDALdT9W/T76/tPfzlaP8V1DQ1MX+/EGmZVXJ+m2WB27ZiRBu6YqDK+minvbrGlSu+0o9fU1xBgSIgq0Fx5Abr3D2oscfONV+jJF5rEXgZhqjcbELVujbAL5znkQC3vb7ufs/uwbpB8fVLjQ46bvHKTXyX0F7Kg6H7rLgvRZUUwMZxMceAnUpqracOzgTLY8idYhKsVObCmTWu5dbIPWnv4vFJwPmegeVnpM6eIasQZ8sAnCC6PBXvdWJLhzScQTDzIwv/vNLpi3UTZRCLvHxnlUGyzPIC49KKqQ/gKTIE4EUieCpkOhBpwKw/FTPl/Hxm08F6N0Y6QvGQnLXYJOB6KT5bzPWYAuI5SG0EA4ss2X6t4o55c8DriH0HYmy1Q0zUJd4EeI1gd2DJb8OYMvWZ56oOc6eG9V4hm890IJApF+RsoHkM8s6ACY4EFLecdJQBKN+oubSdyFkwLukv6nVXdhdhjldkIpf8tJJQnpsSeoEzzYKdf5Q/WBMYa6EWk0x+kDhmWRCTh/zFPrnk3BJk6/HPTOWDMZ9F6g7OYQdXqfDTZbd+qkR9/GodT9DdJ4I26McdhiYJdTr0eU1vhAiZjBbQ9VUSRDM074sfnk9is0qKsY1rfhaorrTz7PhAwOK+3u0elil1xKSuDhZU+RRgXQqCrTHq2+X7gWx70
- 9z4Tf/p8
- /9chTYELysYpXgLDDkXWZFetiQalRQQT7TnVc28I5kmAtoCYH5RarEp9Yifgl3xXKr2XFdbglsG4fXI7gZgk/NSMPHpqeR0oTyX8ACXUjf04xYnyAdLAig0by4hBU2IB5qMeS8XYmJUjavSPRO8LUeJ0zoIU5eMy+5HsfMv8jp/NGUVNQcOjMvY11rUs/YZ7+LpqHfJkF3mi3kVSvKdsr5zMemiLyY0pA4SJlCr9bbUKB0FQMDLIj6E59mg5RMNDiNyaStUC8SgpDO/pmVk1FZmPMfKXhUJfAWYuWmAGXxiiNvahdj/6SaLydPcgygVVvGPXRz9QaKNgVgYabMVuFfDouLX70cudkKqr6o+BYUz0kgfotctcd4qgKUmL76XCFI23/wVBCcm+RDygLQlwBvBy/+TX/GQe3VpKyspEoEQJ2ziosM+OS6xrcm2Vr+ab08yJMY1X6oHgzF6GvmU1FixcRxFWouTVUiwBR
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0924840009
+X-Stat-Signature: nq15kscozjuikbgt7ro86cpoayt1shs5
+X-HE-Tag: 1766374979-796932
+X-HE-Meta: U2FsdGVkX18wI4wQY3Ztz2lTDRGKeewCNM9Z3MB9Jc4vdaoDlNTOd/5B0qPBInlxbNYL/RwoOUifCtpGTVlMEDoSHICV3dbZclUfrcSSk4UA93gOAwm1Qk4vdtqZdDRuFJltAIma7XQwxjgcZpdpMzjjpaD7jF57qc3v4jRt9SbELAycbn88ta+DK3BuShU0iJ2OB0llHIFE2s0yuJX6+/+kFn58fqECEG5N3pdcjfXrBLsKmyqwno7fmf/x9MqMWFaK3xYyT33X9P/UaBrQ26vpOoQyUT7wa71s7x8doksCAc4sAsioWwZs3/0vgQ9Y77IhT8MN48rkLJ9NbWwyL4OpOQhF27PWPUotnLegXsaH/YlHpDWLiIUymeM0qMEZayFH7bbIEX7kEnIMC/gm7DMtSMklRPRPzny/lbH7t3mx6+pzMpzbprrC1gHtcRibuzu+f7wlfYKDyXyZSWxmh1HjX/8Vfbv26nY4mHDS/PhHUIaG1xA7fz06jjK0BKEDhftpLmXT8wRwr+7LpzllaRephlimP0OvOcSKjnislLVGeZoyRHKo+1ifBLJDt65JXYAgoURHs4pe6Y2++hEpD+JhyH19ombeWdPVScKLxJIOENZPH03uqffmdXsjTkhcCyIC3amZ+r5U7LCAQNsKlSU6X4BCmZ60GiOR6+XZD2mGa1zYEEgZ5y1YTziuuKHvb0FudqAd2v4bq+oblj96e8Je5IYa9Rvol16cizJdN8FjDx8PfWZ1NBLEu0VQ7TRxKvSjH+Pp3DYqm9wLDLv6CL0Z4RpIYDZV28bNtOuikpAsvwSPd+5A4vaLBA5XT2IZg9+QeSkw0LnSBFtX9fXZQAh4NOEgmcYs4a2EZ3axyTKNa7jw6NmdRxTXXP1JZK8xvWj3chHi8Ux6qs0WSm0PMvrqWpKrHT2HfKdAABd8rW4JIbd129Izl9uB5jzeEELpXxC2xU6b38nB6raTG0B
+ NzYuyq4Z
+ n/Tri9kTQWA8u7y9+lHzZKnIgS2OgQfyHGbovzbMaHMYzCxVS59VHjV0afGcVvgmQeHGYIxzLDSeRjJmVil8ECdaGSLyrpnQsB62eVgpUQVf1NAvLZM1nOi/S+EasLetqdhMi7QKUydZhnfB3O0MdpnZopd7GOe6mlHBmKC8Kol3545k/sWM3OeDbzZvUNOpMZwpPYl2Rhv+8LIKNTNEnzHppAXddjvy/rECMK0NL/GfytCiy+EdgRzuorH9hiantf5ojG0sq1lgdluftQAtMBGwFxS2y030ahyBugCvpCmCM1Ig=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,79 +101,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/22/25 at 10:42am, Kairui Song wrote:
-> On Sat, Dec 20, 2025 at 12:12 PM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 12/20/25 at 03:43am, Kairui Song wrote:
-> > > From: Kairui Song <kasong@tencent.com>
-...snip...
-> > > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > > index 327c051d7cd0..29fa8d313a79 100644
-> > > --- a/mm/swap_state.c
-> > > +++ b/mm/swap_state.c
-> > > @@ -122,35 +122,56 @@ void *swap_cache_get_shadow(swp_entry_t entry)
-> > >       return NULL;
-> > >  }
-> > >
-> > > +void __swap_cache_add_folio(struct swap_cluster_info *ci,
-> > > +                         struct folio *folio, swp_entry_t entry)
-> > > +{
-> > > +     unsigned long new_tb;
-> > > +     unsigned int ci_start, ci_off, ci_end;
-> > > +     unsigned long nr_pages = folio_nr_pages(folio);
-> > > +
-> > > +     VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> > > +     VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
-> > > +     VM_WARN_ON_ONCE_FOLIO(!folio_test_swapbacked(folio), folio);
-> > > +
-> > > +     new_tb = folio_to_swp_tb(folio);
-> > > +     ci_start = swp_cluster_offset(entry);
-> > > +     ci_off = ci_start;
-> > > +     ci_end = ci_start + nr_pages;
-> > > +     do {
-> > > +             VM_WARN_ON_ONCE(swp_tb_is_folio(__swap_table_get(ci, ci_off)));
-> > > +             __swap_table_set(ci, ci_off, new_tb);
-> > > +     } while (++ci_off < ci_end);
-> > > +
-> > > +     folio_ref_add(folio, nr_pages);
-> > > +     folio_set_swapcache(folio);
-> > > +     folio->swap = entry;
-> > > +
-> > > +     node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-> > > +     lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-> > > +}
-> > > +
-> > >  /**
-> > >   * swap_cache_add_folio - Add a folio into the swap cache.
-> >
-> > With my understanding, __swap_cache_add_folio() is the pure
-> > functionality of adding a folio into swap cache. While
-> 
-> Hi Baoquan, thanks for the review and suggestion!
-> 
-> > swap_cache_add_folio() is specifically adding a folio into swap cache
-> > during swap in path. Not sure if we can rename them to reflect this
-> > clearer. At least from the functiona name and below kernel doc we can't
-> > feel that. Maybe:
-> > __swap_cache_add_folio() -> swap_cache_add_folio()
-> 
-> The `__` prefix should stay, I think. This function requires the
-> caller to lock the swap cluster.
-> 
-> > swap_cache_add_folio() -> swap_cache_add_swapin_folio()
-> 
-> Indeed, my plan is that `swap_cache_add_folio` will be gone soon, we
-> should always call `swap_cache_alloc_folio` instead to do the swap
-> folio allocation in a unified way, and just remove this.
-> 
-> Currently we can't do that because shmem and anon have different
-> routines for swapin folio allocation. Having a unified
-> `swap_cache_alloc_folio` will provide better swapin fallout control
-> and cleaner cgroup charging to avoid thrashing, etc.
-> 
-> Also this helper is currently inexplicitly used by zswap writeback
-> too, so adding the swapin keyword seems not accurate.
 
-OK, sounds good to me. Thanks for detailed explanation.
+
+On 12/18/25 10:26 PM, Johannes Weiner wrote:
+> On Thu, Dec 18, 2025 at 10:09:21AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 12/17/25 08:27, Qi Zheng wrote:
+>>> From: Muchun Song <songmuchun@bytedance.com>
+>>>
+>>> In the near future, a folio will no longer pin its corresponding
+>>> memory cgroup. To ensure safety, it will only be appropriate to
+>>> hold the rcu read lock or acquire a reference to the memory cgroup
+>>> returned by folio_memcg(), thereby preventing it from being released.
+>>>
+>>> In the current patch, the rcu read lock is employed to safeguard
+>>> against the release of the memory cgroup in folio_migrate_mapping().
+>>
+>> We usually avoid talking about "patches".
+>>
+>> In __folio_migrate_mapping(), the rcu read lock ...
+>>
+>>>
+>>> This serves as a preparatory measure for the reparenting of the
+>>> LRU pages.
+>>>
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>>> ---
+>>>    mm/migrate.c | 2 ++
+>>>    1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index 5169f9717f606..8bcd588c083ca 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -671,6 +671,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>>>    		struct lruvec *old_lruvec, *new_lruvec;
+>>>    		struct mem_cgroup *memcg;
+>>>    
+>>> +		rcu_read_lock();
+>>>    		memcg = folio_memcg(folio);
+>>
+>> In general, LGTM
+>>
+>> I wonder, though, whether we should embed that in the ABI.
+>>
+>> Like "lock RCU and get the memcg" in one operation, to the "return memcg
+>> and unock rcu" in another operation.
+>>
+>> Something like "start / end" semantics.
+> 
+> The advantage of open-coding this particular one is that 1)
+> rcu_read_lock() is something the caller could already be
+> holding/using, implicitly or explicitly; and 2) it's immediately
+> obvious that this is an atomic section (which was already useful in
+> spotting a bug in the workingset patch of this series).
+> 
+> "start/end" terminology hides this. "lock" we can't use because it
+> would suggest binding stability. The only other idea I'd have would be
+> to spell it all out:
+> 
+> memcg = folio_memcg_rcu_read_lock(folio);
+> stuff(memcg);
+> otherstuff();
+> rcu_read_unlock();
+> 
+> But that might not be worth it. Maybe somebody can think of a better
+> name. But I'd be hesitant to trade off the obviousness of what's going
+> on given how simple the locking + access scheme is.
+
+Agree. I also prefer to keep the open-coding method for now, and if a
+better helper is available later, a cleanup patch can be added to
+accomplish this.
+
+Thanks,
+Qi
+
+
 
 
