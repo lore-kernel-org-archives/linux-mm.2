@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D4ED711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 023B1D711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:03:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD7026B0088; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
+	id 93CFA6B0088; Mon, 22 Dec 2025 01:03:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5A3B6B0089; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
+	id 8EAB46B0089; Mon, 22 Dec 2025 01:03:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B66806B008A; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
+	id 7CD5B6B008A; Mon, 22 Dec 2025 01:03:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A473D6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55431BC640
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:00:57 +0000 (UTC)
-X-FDA: 84246058554.14.F0080B7
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8E64540016
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:00:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vCJCZ7o8;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E45B6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:03:49 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E389660C63
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:03:48 +0000 (UTC)
+X-FDA: 84246065736.09.188C09E
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 19BBE140007
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:03:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z3Q+8HPc;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766383427; a=rsa-sha256;
+	cv=none;
+	b=YWIYLePmiqYXj/3JaOj/gKODxHq8f3myImp7pQoX6hWNQcYyiDhFkZcBv4DYVq+bpmlMM5
+	HRMcu8V/mH559jiM184hKKAxU9cFtxRfEztl4cPbuZtUj0/wsSJn6FZPxHWn84v73eENds
+	HZHQw++0/8irvHluvs7WA8oKhDqM2oo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z3Q+8HPc;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766383255;
+	s=arc-20220608; t=1766383427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0YnoYetntYAKPTmqMpJsArUchXzDuI0E7C6KJhIP8qU=;
-	b=lHDyclf+a+fB7cS9F8mUFROx6XlfsUd7yf8wjdx7DBsviINL2/h8o4BnQjnx9Sw9suT5xq
-	w+96iQOSlDP5U0HpbjlvNcPMzNi+HXAfIuxiGDbzX0J+8xKsiHXcfgpwmclKukht+vZb/+
-	jH/OYrhSFni5Mst8+ZPVKltmqdFMthw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766383255; a=rsa-sha256;
-	cv=none;
-	b=kt5uPhA2a64t3Bork/Co9daqONC6+UIQGE+mcOgDaxLnozcSvVWRbrbgqzXlN5W17bfBZC
-	72dP4xwsPkMWS3VHmFcssM0yWQaIlKPV8mpD5vu6EiHBjaL9JUoes1Vu6eEIjfa+XMDxlQ
-	9Nt5lGC8vQmMZ2sU9JczBFofM+Ko8aE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vCJCZ7o8;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=cdbF9OBo6i2zx9TZjagXwoBgfeB1DZlPblGdya54H4Q=;
+	b=kUxmjV2xcSZbN2YzNvoFFYrunnK8APRPfiboLRwZCN7LKADWMao/8vgUK8ikaIuWk6r0Pn
+	IOLfThle1Y94ArSWeyNJZElqUw2WmdF0ljPHEiDFiwnVHJHarqGBdSKe/U78fWAVtjmnhf
+	ST2Fjms6jQ7CNCu7rbZzPQyn5mfp3do=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766383253;
+	t=1766383425;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0YnoYetntYAKPTmqMpJsArUchXzDuI0E7C6KJhIP8qU=;
-	b=vCJCZ7o8DllOX7DhHQAOSMjpud6aq+CN2IihG311TfQhv+av3UubulNaD4JSFsSEdBcOGh
-	k6nDd5vsE24k8HuNJMnH2bXYy5zpCtpbg1nq0o9pDRlpJWTM4CW5OBrhkChuZpY23svjWc
-	C2qAK0G5/0NANd9hQtXBveEyohdXQb8=
+	bh=cdbF9OBo6i2zx9TZjagXwoBgfeB1DZlPblGdya54H4Q=;
+	b=Z3Q+8HPcxJK1YcFgpkyBcRtK+6lyq/q3U+WEyqNwoZcE0oH9m9xx3fLpyG+cxISRpUOQli
+	9rp3Az5AergCmoG4irGDKUw2UWCmzGpDz8sRIPSqfCdt4TSYbdmfhUXNUet4GVz6fW0cs3
+	1jICIuujI7tUAMl5/8h/Yq37mKoqO4U=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCHv2 11/14] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+Subject: Re: [PATCHv2 12/14] mm/hugetlb: Remove hugetlb_optimize_vmemmap_key
+ static key
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251218150949.721480-12-kas@kernel.org>
-Date: Mon, 22 Dec 2025 14:00:09 +0800
+In-Reply-To: <20251218150949.721480-13-kas@kernel.org>
+Date: Mon, 22 Dec 2025 14:03:01 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>,
  Matthew Wilcox <willy@infradead.org>,
@@ -86,19 +87,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <48BA4DA6-DE9D-4F07-B347-19D2F68B357A@linux.dev>
+Message-Id: <F44CAEAF-B834-44D0-9BD6-26AFA7FA75F6@linux.dev>
 References: <20251218150949.721480-1-kas@kernel.org>
- <20251218150949.721480-12-kas@kernel.org>
+ <20251218150949.721480-13-kas@kernel.org>
 To: Kiryl Shutsemau <kas@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: d7iff5cufibmor5qbujd6h99xps4y4am
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8E64540016
 X-Rspam-User: 
-X-HE-Tag: 1766383255-927578
-X-HE-Meta: U2FsdGVkX18F+IUzWYr4C06osi7UfN9elr59suRambl1r6VDX6AWhbr0tx45dQAHuZ0trkIiWRUA6GcMJIWiFhrZUWM13W+hm5z1Rv4tn4CzzthdpybMRb2Z8ojvgDOQ6fyiCr0R5djHy9qqvfenJu+M7bdt1fmdCoAYvUzgqv1Mss5Ffsqhnc9IG//uYZaLB3k+aoJCsJ+X5tQVnWcFbmysQTA8Dw6U18nmebqmdp48mxg2Mkw75QJKlf0DV959eQBxlPM5TuyJsYvgxtRskjsOCB1v5RnJppmL0WD/c/nGYj1qYMJYcZRGPQvKFIE9Ogksus0lPy/OpDwrmuga8V8KuRdju6tDq2VpsTokWXWPjcvSViNT94vVfZ98w0Iwsy+nnFAGpuO+wxU5jmqYGVUsovqA1945oXbjPwtOpHsydsjUbbBfeSdsbmwrPtWKTZybJXxTbHGgJBJuVOEm0/bGkedg/JX+1TtPW0/iHfr1kuG2sBsKnExacWwH6CuKJTsi+fNgQDb77TbDOnV80jTWS5pGXaZD7NgAn4aY+SOyXABBxk3v+NCC039UhkFZ9kmDLiA8s3TwLDSF2U1CFbvh5BXP+lZYeALxNNxki6pt2LgSi9TtNYI6VsHwFxGcahT7dvSycI3d2qpGJqZD1QuqyaR/5esKfJFvujpGLSn7XvjcmUnsvN0fsr89tre67YqN8eJGHqHAPBcovTaUdsjos9GR7if9UEHvANN99f2ivljtkJ6mjc18Ed+mmqcXwx1sqXB773F7GmWR26s1docuwaq4RmSe/0yu7EzqSSbkjHcxcNCX27vX0tUS0EpI3iQt+ruQ/r+qgz/Xo+wWzTg9dwHacKMtFrq8oPDlWtrNSWFOaAXDqrdt6ujS7vyTZg4rN6G9iJT3Bt+tCw0V8OjwfL8Msad1mCOZ0OgYYbnPVIlbQKDX4X3KYzl7VfC01jBy0/l9mEd3b8yz848
- hIMmhV6h
- JGjIP6bY/SDwJe48sPXf9WhwJjETUVCBw3TbO5Gpy3y6eaZ6V+WA0Z66fW4ATLlfNhDowKv7kwAX1DdEVx5bMPmQimkY0dRt0IraiRccXOrQMGGk1hIDKQN1ea5D5ktu8UymPSDEAQZ1396o9vMW3eXuFIGLqxCkeXl/wvt97mh+igxjDsk7CFWjcUF/nyNdrpzmbZOSMBZs55XptOvJHZTrKhesK1sFgjuiUAIPFynTZV+9MohzSCH+Mn8kbTUEap+DaEJd3E9BevCl//4h+/9JXLr5KvvBVrtBdHJ6XCngM21wTnVbWtu6ZRQ==
+X-Rspamd-Queue-Id: 19BBE140007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 89mc9ytuaiey5a6ti4ikaw17k1kghf86
+X-HE-Tag: 1766383426-429960
+X-HE-Meta: U2FsdGVkX18z64kMDKhxJLN/lR+K9cks6aFTy/QVifZSEjQan0VFZOPTHihfY9YGr88i14OfZBsa5avDlIF3msbwyz5frzBH4gwx9+desgl38QOC4DHvaj0H/IQ7v6vCu7dij0SSHi7M2WTxhS6X7+1NHAHpPt2MzoHBvSB8FxYRcV0xiXoBylv1HuUqldjp+nwqhRzv9gcX+YyiYnp5ns+dxPNegmNFFAjhnPrr3EOOJaLJF5QWRzkwPhxi9R4rsoyS0V+X+I/depKkMco2wLtPkvyYn3Ee1NiE3i3oLTik8Z8YpKTfcE8FYvDwvL2gIKdZwDZ36udXnOYG8IugblI/WA6Ra4wtSudskNjkemwMTP2Qwoav9qC9IIS8iAutY2wjMSX1SA4+Q8Wf+0kf/qEdNArthmRweo/0CCXiN/KM7T00rUALoBQ6syfJSUpjXIv4h47fefcXyyrZp72vhYxy39tjpnCrm2hBQ/ocvEo+8ppkd7DW/yc4Snnsm9Ws0RZnL21Rw5A/J8DFQeJxe8OnyxcCbaYR3pl4aLE8PqICc6ce+WZdYSOfM51jdpOygZYgWsVLZH5NH2ml6V1Mg+2X0daoHbVDq0ghLYRf+pTc8xWF7Fi4p4UWCGNgwwX28bG9qRppoc9ri8WGyc+y3r4D06Bf8XZkm1ZwUFcViXElLGQBbiUlfQfylVFoiP5x/QqXloodmDPK2F417eC/etZ0FdC/z8cLj34eiiUHFud0JHgDK/mTQsaueRhVQZxJJk36wqEuBrqJxy39m8ZXehuJAVX1tv9V9sC59KZPow52/IqimVefkwjEFLyn1wRgXDX0eQ0sBVbV5Mns57dDzLSmMNI2dyVV4UKvrlDBpGUdmyUhF31M4W8Ow7fDAe2APqmI4l0Wmbceko0CMexoXNVA7FkP/pWHhbcgPvkIWyajase3BZXS1rDnpTF8K5zABTujMsgfCgRGWTLS4jS
+ gACSAmgB
+ PLzoar+6YjbQONNia6b+7f1g5qTE7VHiSge59+noYpafQeNFb+isfZPGlJZPWnOvlJJqqNYQoL5apXmaIHParAZjqT+ubHPd03WFaLWSluw7/BZuKTe1/hyQw//O80mqGkzNhETGoeZtqz6V2QZqA99GuvM6xZSEBcAi2BKf7/8qd6J7ogh1/sZLjVFYxAFiLI6LjS08fvU4vO7OZNaMryEz7U2MYDNpwkxGbZyWsw7DHjxSLvLEgXFu4EK8nRKzlu9D7O1qH5iCPrDyNfFoGoWGv2HvwekWVqVY0mUYyzHCv+PH8iuvq1iiQKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,16 +112,13 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > On Dec 18, 2025, at 23:09, Kiryl Shutsemau <kas@kernel.org> wrote:
 > 
-> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
-> prevent a race between HVO remapping and page_ref_add_unless(). The
-> race could occur when a speculative PFN walker tried to modify the
-> refcount on a struct page that was in the process of being remapped
-> to a fake head.
+> The hugetlb_optimize_vmemmap_key static key was used to guard fake head
+> detection in compound_head() and related functions. It allowed skipping
+> the fake head checks entirely when HVO was not in use.
 > 
-> With fake heads eliminated, page_ref_add_unless() no longer needs RCU
-> protection.
-> 
-> Remove the flag and synchronize_rcu() calls.
+> With fake heads eliminated and the detection code removed, the static
+> key serves no purpose. Remove its definition and all increment/decrement
+> calls.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
