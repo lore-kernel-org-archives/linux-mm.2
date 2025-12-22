@@ -4,109 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D587E6B25B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 21:57:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E981E6B25B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:06:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6233D6B0005; Mon, 22 Dec 2025 16:57:21 -0500 (EST)
+	id CE9F96B0005; Mon, 22 Dec 2025 17:06:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A66E6B0089; Mon, 22 Dec 2025 16:57:21 -0500 (EST)
+	id CB9FB6B0089; Mon, 22 Dec 2025 17:06:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2B46B008A; Mon, 22 Dec 2025 16:57:21 -0500 (EST)
+	id B74DA6B008A; Mon, 22 Dec 2025 17:06:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 375676B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:57:21 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD7BC58BAC
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:57:20 +0000 (UTC)
-X-FDA: 84248468640.06.2CC686D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 15C0A8000F
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:57:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DVLYAnZN;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766440638; a=rsa-sha256;
-	cv=none;
-	b=UoL98xk/9COEl2x+WWdkUluaa/wL8MbyVUK5Sn66gbMJwztNm/Jl8wsKOXZrEqTLHRHnkC
-	vY5y0rdesFAeT8dl9aiYCQauCNywMb9WKbj3gqdd+xwS4Bu3zUf1A62TQ4Qm+eGU/S4SKA
-	k67kr37Jkz/aw2ChHt94rC0kALNz0Hw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DVLYAnZN;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766440638;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A655A6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:06:39 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3748F8ABDB
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:06:39 +0000 (UTC)
+X-FDA: 84248492118.09.46EB51E
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2406E1C0012
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:06:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=sykHpx47;
+	spf=pass (imf20.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766441197; a=rsa-sha256;
+	cv=pass;
+	b=DZG9dzRu/DFO80mr+7jaoCDFmWGUaPBYhXxSL30AfmY9j5tEwUd6JX4+SycdjoR2AC508q
+	waSxm6xRoM6MirRbU3fCWmZ+5NFOKv1DtVxbXT3CMW1lkE+R/ayR5qQZ0wIxOxjD8VCo4S
+	OG3vEdMwkM5UfFBQ1q611AVFPVx8fVc=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=sykHpx47;
+	spf=pass (imf20.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766441197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jo7IoADobymOeYpH/0L2DXKEQzFVZlb1xBxH3xwIsKQ=;
-	b=c5Qt1VIb9Ljs6gxAF6gDfvgxb31ysWqK0eszSBZ11pqjZPzby0F37p+mKv+VumCnnrrgly
-	lEOl05tEAmkx7lHOsLUW56Ac4cibG8K4Uj4awZzNa2RV4CCkFxOlvHxAbhlAtAuGk5wqtM
-	IKC1D1NFgYyUDvPUW3s17nMwxFMt1Ww=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766440638; x=1797976638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nb8viLRr97SzZ6mQSi19rbQ0/XocCdbDMzlJw7HgULg=;
-  b=DVLYAnZNMaRgDxM6PwR87Eflhdgs3ffTTNhOaekyR2fyiG269R+p3HBG
-   R+5cljUkoY9TvzQDQUvO9AcwbKGmxJmYW6MK/GW/j2TttG17xQdbEQ/Wz
-   H8aje+iAUm8qPWzZfuwGeWGME4VvarH4iIl8ERQeGVxohFsZBIYX2qKDE
-   r4QJtZ7/T+tAw8AeMjoKxC91iwe8vQEz1B+as9oOdXsmVjLBKkuUCZ/PY
-   SkTHdRnYTL4MVLkJq60IWu6tny668+ImX1qjaZc1tahngmJmO9/7wa3At
-   ITNZViEckl+MhAf+XXzi0Zn9ODYSkBKDpy9bWOHmlkKFxXeCuYmmtF9hk
-   g==;
-X-CSE-ConnectionGUID: TCc7Odf4ScObmD28QSaMMg==
-X-CSE-MsgGUID: pCpeVa5wR+aa/h6lIhjA7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="79016454"
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="79016454"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 13:57:16 -0800
-X-CSE-ConnectionGUID: HjkeyhQ7RLuj5IQH3bhLXA==
-X-CSE-MsgGUID: FYaVCt9SSeGIuO2CLx9ESQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="223101414"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 22 Dec 2025 13:57:11 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXnts-000000001A9-3mPE;
-	Mon, 22 Dec 2025 21:57:08 +0000
-Date: Tue, 23 Dec 2025 05:56:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	akpm@linux-foundation.org, gourry@gourry.net, longman@redhat.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org,
-	mkoutny@suse.com, david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org,
-	Bing Jiao <bingjiao@google.com>
-Subject: Re: [PATCH v2 1/2] mm/vmscan: respect mems_effective in
- demote_folio_list()
-Message-ID: <202512230553.LuiUveL3-lkp@intel.com>
-References: <20251221233635.3761887-2-bingjiao@google.com>
+	bh=OfiiUBxHODIfiFAu/omMDMpEQbjjQ/pM2woKEhucF8s=;
+	b=WRnq32qzaVnx2AElVRjuza8NqNI3RfXB6TpYsGqBefd5XIR5rxK/3JOKlt77vZzpPIa/c9
+	u0ty+wJRx8wS8IxnLboNnuySrvgoEx6KyCC7jRD/P+DD3BORA4REjyGiQPgN9YDoHYMOHL
+	nG542HFZmcVlDeGatrn/+Rg/bpz9MP0=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so243175e9.1
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:06:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1766441195; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Cvqd+uRWKwlLQb8Di54AVJMWetQfqhE7QJ9ekijh/w3HtaJ187jZaCYgoSuaXjJMzO
+         Ly7e1Im5Fc9mCJ6Pmdf4Fo9w8wlqMa/nqMY0ISrlVeprA6bdLYLW2adA1MQSSSHxR1Vi
+         HZbBiRuoCiPD903CoV7G0QxRsUUGqNyyXt3yRGjFAd3+Qqhe4zUVpER/HU278FhL3IhX
+         FH9ObVIsqeRfyh/J+he9WxSJJueXZAazinhcciTlLNLq0lLJ/BiZzigNaKL5DFYtPDbF
+         zBue3GqTKgU+MHMuvo7ZG3D+5z7Od24t1hh1sTknLWISBgigZpRvbM47A/sWiNLZAIaT
+         07vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OfiiUBxHODIfiFAu/omMDMpEQbjjQ/pM2woKEhucF8s=;
+        fh=JKI4Zk4ju617q80zilUc6cPRnPw/5Vclq1bEs8ks/8A=;
+        b=Axr5oDOqRQZR1j/wzWSYeLpO5fm/NIHSEojcT0iNkMpZ+RXwhSf0zVT4LhdBr1ipLd
+         +/GuDrEFyZFvi+JblZQ910clnl93lVIqZQGQW3riG8rFyxtsF25fJH0CDsvmSeakrEMc
+         gFIMpcKGJs6pMbucB9b24dOGvrzgibVw3GZrTLce4CGfW+88y3lDCIw/IrMW33Yie4L+
+         kJrR/47pEOWAL3ZWpmfbI4tATRuDEMsiMFVb9aIqI79NXtY+c4KEdLI0peFHw8y/0yMY
+         +1meHDLrzu2WB7zleDi86FxfqoFBNpKizwDbm0/arqnZNbcZbv67JYfGRsuv2glSncTt
+         Ns2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766441195; x=1767045995; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OfiiUBxHODIfiFAu/omMDMpEQbjjQ/pM2woKEhucF8s=;
+        b=sykHpx47/VEcAer/ZGZUugAkX2ktcRZM8ev89nOQa0Rs0u2PeH1KAXmY83T/6ewtXi
+         WQg67Wq/DbY7hFg/jZdVCAjyfLf6D2SG+U4hOp7QAciz4EBjh/j5tQK6bLdmuNntmQsa
+         QP8PA+88p/Bo9WzVH97y0xCIX7TbmlKTvtuA0EPn7DWVCVmSYhMlXrCl5NFzM/h8lHrJ
+         lp491JViGn3zxTc0/S9Hem2eic2J8guQ9L29izXwT0IiM2iLWGGHrNzM9u4p5qyn+soR
+         jkuwMVDuSFTaUL1zMPHD7wxBhevLDljHmP2stfAZJc6yxx9YIfs0D/IQtMxOkrNfaVph
+         Qa/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766441195; x=1767045995;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OfiiUBxHODIfiFAu/omMDMpEQbjjQ/pM2woKEhucF8s=;
+        b=YiNO+jyzyCYIuwj/S63w6pjue+LDGUjTbZ8AKHpSjIZ2OrpvNIun06MUDAvXoNbdFR
+         VuN0h7g7kM9UjrUTGOlrWBTwsmPp9RLfYz9QfYim6iFMDRSU8DtvVUcGRt/Situ4ylVW
+         HSZB0K+KtBp6rrNNH8B/pJZ83W4G64JP8BJ+u7iW7w/r/oXZ9UiBNuDL15Q/ZGbDe2z0
+         V7Y8u943i1ghPuJb2DHHf/WQ/xwyGdSvGxRBS9EYTvyHBtNd2fXBOx4gQ5vShZ8I08nb
+         RQU0OgDmc6RuTWWXwX/HKPHn+yt49e+SKnzAU7BxMrfPB4DYyA1RAeJ4/mvJakjdmhsL
+         a4fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUrE0D10zZkH51ktzlc2JJTm7aBrbabltyRCkKJ635nF17KtPE3pb9U6wDoZ55/30XCKH58J2IhHw==@kvack.org
+X-Gm-Message-State: AOJu0YzlTuxubpFVW2oYIbPASQiBxZ2yFTDHbYTg7se4zVOO8S7bDKlO
+	EzywOdQ6idmtdh4jPmBYH2uxZa1iejzEgMBN+uxURNmm1sbeaJSh1FfOQzUZ1MNGGd9NCOAf0XV
+	q1uAkVGdKkAJqdfaX13mXQW0LeCYj4FuayYPkMcyb
+X-Gm-Gg: AY/fxX6wX8qciorasCrAR9mefGPYT5ONF8eeSD1uCIWnzr6KiWdw/FY39oISsZTZJqG
+	ML4GGPOcbA8nTWEzpnctjwHsxJb1lSSlmxx7tzxzYOX3Bvc6RULHjM7HB7PfnSJN+/V3283TmOU
+	XXHZ9hl9QuOPbygz+tazcDtxtU/qINDrR1436eu8AtT8yq+0rQi8lRDxIGK9cpU5ROk6n4hH8fN
+	qUs7jDS6cq3oz/AbuJpa3WLf2UmULQZDDtCbOFInFh50+Oe3FoIvLyyNL0ig8+kEi5wHUyDLbLt
+	ty4Whqe4Uz6buE0xg0RLWR0KRA==
+X-Google-Smtp-Source: AGHT+IG05ffXZWoU38Q6y7vtEIY6XB2qFmMV15Q4qFB6H0ckZwZp+YJcjkjUlt+tgsAXAXdrW9Bnte4pkn97IRTOikc=
+X-Received: by 2002:a05:600d:10:b0:477:95a8:2565 with SMTP id
+ 5b1f17b1804b1-47d22249c3bmr1872065e9.16.1766441195119; Mon, 22 Dec 2025
+ 14:06:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251221233635.3761887-2-bingjiao@google.com>
+References: <20251219183346.3627510-1-jiaqiyan@google.com>
+In-Reply-To: <20251219183346.3627510-1-jiaqiyan@google.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Mon, 22 Dec 2025 14:06:23 -0800
+X-Gm-Features: AQt7F2pFQFw-1QvlKZmn-HhQidNRfDhVja2Md4Rwvb8cHh3NFVoNYU0yQxVjmHM
+Message-ID: <CACw3F501wCmc4G+69pmkkONTxUNJHeuo+7JqHhQ2W-L9vQ474A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Only free healthy pages in high-order HWPoison folio
+To: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com, 
+	ziy@nvidia.com, harry.yoo@oracle.com, willy@infradead.org
+Cc: nao.horiguchi@gmail.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	william.roche@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
+	muchun.song@linux.dev, rientjes@google.com, duenwen@google.com, 
+	jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15C0A8000F
+X-Rspamd-Queue-Id: 2406E1C0012
 X-Rspamd-Server: rspam04
-X-Stat-Signature: z7tds9pkwtze63z75i1f1pw95oyq1cth
-X-HE-Tag: 1766440637-362408
-X-HE-Meta: U2FsdGVkX198KGtzeMqZacFiQMPyjdXS0Qeq4PxIsyvtu03mp/TEX5e/EQR97DmHMRvk8PoqI3Wzcp4F0wlWWQPXRw1BBvvftbBHfWlvd3C8AouZh0/2NtRSJThgs3PSsIEdxDh6ba0QgBKflycQ7UEClAtTUY0MCDekeLiwtIqQmi0+71D/OnJ2jlM6OdLqwZ7LlHu6u5z+DiGKFBiR+0AEL1ZGbc9d23+pdfMHbIffbWDjhWl5D5IqqoAfA6czcceZ+a7kOfnKA2hPUHxdK9mnWAXMbarlxuzOrcLb/Bn+scr4cRTwPWXBheawdUcXSu6SLVnMU/wE8x6dsUgRh0IynELW42IDDTjDqpBHwwtvghTTW6VX5mPIDA7Ltfe0x7kGVxYf/PazmybS3N7TbVVawyDMkvhkL4ysh0mAXpCOMQrqW+refVqqq1flsp45QWG1GxnrVJmCnp/dPA3luaWC6nHB31BEPQPB8nCsXrRV/qwd75ty2GSsRctmAE9E5kzO2V4XyslvAgMKP1M7tbX1FAfgx6fLB4mEBPoW7WMhcO3jlnmBb5nL4cWLb4bU2mYy7TmlZtQ95dOxrT1G+ZAKYQ5YIXSd1tUKxbYjassAP/BUtTA1fQ+eixjI0lLXLh+Fphso1g+RYwCNcDZofix6ebrLRvY2juPfr4TbNMeqgfH6X9MLfksb/Jj4czHbXC0cNHLoYmeGQzNwODGZoK3lhOXN/YeSKe6bURejh1oqlxsgk6uEkVqNgrj4Ol7N+w9XzOyr73KpSDgt9pCe1Xd2oVmhri+37shWLDTNwrlxf5JvpPHCa6u4c7gCy/IRk7vgQuQoqLGiWTHkDTfUy8k+jlldLQcEzDiN4IQKATJ5StQhE026zzdt6Z8N4ahGMi0KTp9PjDQrtfXAYEO6NnaIS4jvFS/R6W5oijMv/y1EnRrl4J37XUbKdWREZpYV0aULpDd5OP6u2oFQ5TH
- GnJ/cY+F
- T8hOLs476aS9I/yrI65T9UZ5WBUHCCvT7U9TKo6YEUYLsEpNhv8LhH9GtdTzntLFzBZQ9rdDq8eQTQ+UgRMRDaXxXR9qVlNwXv6bHpYTuLY9t9n6sgU3o5OyHrsMa1wLCZBLtYlvA53b8KHVquF65qnUPMdECvNV4sxwaxJn0dtFMXXLNPrc2L937x2eusWagKU0WtwcBzkmHDOTdzC9Hei4gHthV1bDQChtF2rzGfJRkd35BEUgSj5+ITZlUeygIvLEuLtbfs3VybMLVHd7oHd2Tz7MVkpURQR8iXRrwEMSnGLS7OKJtPItCYYZxEUsxg2XU9QqKj39yBCwxEA+AFOKkoArhCSwzawZE+fmbpqCJ/lZdfRPBfqhF2RsRLz1e+SA09F8FQ8VDBzSUPWoKpa8dN+0g+WnO4X9QZ67Hw0TNsbBfyhRzzVXvzYMnkOzPcQUebMTwM6EyHT0=
+X-Stat-Signature: y3rr7p34yjd7f6bbwx79dbz4tjrsrtcm
+X-HE-Tag: 1766441196-88953
+X-HE-Meta: U2FsdGVkX1+cu/xvNV1rYZ3c1+9HElg0KsaHivL3dMnS372MwilwA94HC0nueiJLb4IamVT7O2EY0+WN4Z7GNToCbQ3ekrstOIVkRaIKIaswDNXiUMkuZ1wGgbbIAWXhCPHDGAiJiu7sl7DMFOQ2mXbnpx1h7JHrIcF4HrmF+dZTaE2psg/vQxxz5EFz104nbJPeguSsNvl1T5DY6QiHzHB6xYuWP1oaCW+RNKew02N/pxROqzIlrWntKBaGMqNrhF3uyKHVn22bbqArVWquK1PBiU+h1oOqhPFc0+Zx0DDedTAIj6K1InuywQjVHeIOTY4T3kVJUF1HeOtIrTMNKBWshtl5d5+fZy5lKvnhpUXFac8et6/gVW+xN69TAU5lyo8ejozFQ6OazE5SZP0M7dtFhgr9aWQMDKZfKyrtSKtdAKZqLs9PgurQCLVWbhp3BSbigU7wK48p5gffZnBTmmE/3jgGpMggFG/8lNg8Wt5cXIAmnGOPDGRAzQB2gCQoatBoHBHMAZCNqKbIZA2Yi3sQuSZ8BrheL4hWGpuXvzJ1HuWoPsNwOFa97+aSZ9DWWRb6CMGb6RLY99Huik0b3CjaqZ+F4fyRbjnTvtOhwIonKVWzOHLfGC6yLNnc2dgKXBbjtrC9TfM1wWe5XyE3OvFPpEM7oEjrK9a3pq9YFzpQ8tLteWWljKfG8NVLL4b+UlJw8/R7bOfkEPTGwoDWLEdP94MghsKpjsQ3HyTfuV1v8dM/o/3F+Nz69RaxvTI1AfTHAqSGBawPsyUbtfrCLGfwAKnT/WTB1QExNe24PbskgoCQeWmfp+W7dsXCsBzSKmTQqCGp9TfKBd0Q81keeYBXmtsR5pPzU+HbXAxujdiaYJFBMFJXCQJDg25J9fncxnnWJWdzF5vgddPJuVc+zxBrDxlScFknbK88MojzKa3jDjN0d2no5MwAZ2hE+3txfc/GumuXgzsn9MxnJEL
+ zcqaOqYV
+ r+xbUEblzi7/Q15ReHap25+aIOZnE4L1JbC+1nQEo/3nsH2Ov8pSKofdNLAui/7tU01zD11hCYZvn+liBg/9BZmQbxPOnTLvvMnc2xB8DVx/+TiuMjHNJ8hgHGYYbcMMZwXfm34EpNKd1SqeJViDDKKUfLsv8MWfKZFGRQ4XnMeOZQUK0ydp6ZEWnArHlMEwDXTh8rIxJst0uygKJphCauJDnXo4G/Et7D8vHG8kg7L4VsK3lxoAJbBU5qrT9Q7m1EqRNjEenHUcRSAWiAJv4EpGZWHHnXmLh1yBtQtLhyBbpQHmTpPCy5oo9D77ppp7+rBsp05GojWZMyYEsH6/roSzJDh8lY/oYX6BxTlCf/GBTw3zwijfVTtNjZNf2XIVnEGNLDtgPUttROwMLft0xnXskvBL7QoRqiFoAJ87lx0hEPNyPrnIqRRzRcdLmDtb4+fr+3pa62TFwdVC3/hKoGzXfsStaUR6GUJMIR/XHiTUAVzx1xlxau06PCszzoIjUNBhiXSPOK4pU0LuGLiOnt389Sw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,80 +146,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bing,
+On Fri, Dec 19, 2025 at 10:33=E2=80=AFAM Jiaqi Yan <jiaqiyan@google.com> wr=
+ote:
+>
+> At the end of dissolve_free_hugetlb_folio that a free HugeTLB
+> folio becomes non-HugeTLB, it is released to buddy allocator
+> as a high-order folio, e.g. a folio that contains 262144 pages
+> if the folio was a 1G HugeTLB hugepage.
+>
+> This is problematic if the HugeTLB hugepage contained HWPoison
+> subpages. In that case, since buddy allocator does not check
+> HWPoison for non-zero-order folio, the raw HWPoison page can
+> be given out with its buddy page and be re-used by either
+> kernel or userspace.
+>
+> Memory failure recovery (MFR) in kernel does attempt to take
+> raw HWPoison page off buddy allocator after
+> dissolve_free_hugetlb_folio. However, there is always a time
+> window between dissolve_free_hugetlb_folio frees a HWPoison
+> high-order folio to buddy allocator and MFR takes HWPoison
+> raw page off buddy allocator.
+>
+> One obvious way to avoid this problem is to add page sanity
+> checks in page allocate or free path. However, it is against
+> the past efforts to reduce sanity check overhead [1,2,3].
+>
+> Introduce free_has_hwpoison_pages to only free the healthy
+> pages and excludes the HWPoison ones in the high-order folio.
+> The idea is to iterate through the sub-pages of the folio to
+> identify contiguous ranges of healthy pages. Instead of freeing
+> pages one by one, decompose healthy ranges into the largest
+> possible blocks. Each block meets the requirements to be freed
+> to buddy allocator by calling __free_frozen_pages directly.
+>
+> free_has_hwpoison_pages has linear time complexity O(N) wrt the
+> number of pages in the folio. While the power-of-two decomposition
+> ensures that the number of calls to the buddy allocator is
+> logarithmic for each contiguous healthy range, the mandatory
+> linear scan of pages to identify PageHWPoison defines the
+> overall time complexity.
+>
+> I tested with some test-only code [4] and hugetlb-mfr [5], by
+> checking the status of pcplist and freelist immediately after
+> dissolve_free_hugetlb_folio a free hugetlb page that contains
+> 3 HWPoison raw pages:
+>
+> * HWPoison pages are excluded by free_has_hwpoison_pages.
+>
+> * Some healthy pages can be in zone->per_cpu_pageset (pcplist)
+>   because pcp_count is not high enough.
+>
+> * Many healthy pages are already in some order's
+>   zone->free_area[order].free_list (freelist).
+>
+> * In rare cases, some healthy pages are in neither pcplist
+>   nor freelist. My best guest is they are allocated before
+>   the test checks.
 
-kernel test robot noticed the following build warnings:
+Sorry, just realized changelog is missing. Appending it here:
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on tj-cgroup/for-next linus/master v6.19-rc2 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Changelog
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bing-Jiao/mm-vmscan-respect-mems_effective-in-demote_folio_list/20251222-074143
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251221233635.3761887-2-bingjiao%40google.com
-patch subject: [PATCH v2 1/2] mm/vmscan: respect mems_effective in demote_folio_list()
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251223/202512230553.LuiUveL3-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 185f5fd5ce4c65116ca8cf6df467a682ef090499)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512230553.LuiUveL3-lkp@intel.com/reproduce)
+v1 [6] =3D> v2:
+- Total reimplementation based on discussions with Mathew Wilcox,
+  Harry Hoo, Zi Yan etc.
+- hugetlb_free_hwpoison_folio =3D> free_has_hwpoison_pages.
+- Utilize has_hwpoisoned flag to tell buddy allocator a high-order
+  folio contains HWPoison.
+- Simplify __page_handle_poison given that HWPoison page
+  won't be freed within the high-order folio.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512230553.LuiUveL3-lkp@intel.com/
+>
+> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mg=
+orman@techsingularity.net/
+> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mg=
+orman@techsingularity.net/
+> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> [4] https://drive.google.com/file/d/1CzJn1Cc4wCCm183Y77h244fyZIkTLzCt/vie=
+w?usp=3Dsharing
+> [5] https://lore.kernel.org/linux-mm/20251116013223.1557158-3-jiaqiyan@go=
+ogle.com
 
-All warnings (new ones prefixed by >>):
+[6] https://lore.kernel.org/linux-mm/20251116014721.1561456-1-jiaqiyan@goog=
+le.com
 
-   In file included from kernel/sched/rq-offsets.c:5:
-   In file included from kernel/sched/sched.h:61:
-   In file included from include/linux/syscalls_api.h:1:
-   In file included from include/linux/syscalls.h:96:
-   In file included from include/trace/syscall.h:7:
-   In file included from include/linux/trace_events.h:10:
-   In file included from include/linux/perf_event.h:53:
-   In file included from include/linux/security.h:35:
-   In file included from include/linux/bpf.h:32:
->> include/linux/memcontrol.h:1824:1: warning: non-void function does not return a value [-Wreturn-type]
-    1824 | }
-         | ^
-   1 warning generated.
---
-   In file included from arch/arm/kernel/signal.c:12:
-   In file included from include/linux/resume_user_mode.h:8:
->> include/linux/memcontrol.h:1824:1: warning: non-void function does not return a value [-Wreturn-type]
-    1824 | }
-         | ^
-   arch/arm/kernel/signal.c:143:15: warning: variable 'aux' set but not used [-Wunused-but-set-variable]
-     143 |         char __user *aux;
-         |                      ^
-   2 warnings generated.
---
-   In file included from kernel/sched/rq-offsets.c:5:
-   In file included from kernel/sched/sched.h:61:
-   In file included from include/linux/syscalls_api.h:1:
-   In file included from include/linux/syscalls.h:96:
-   In file included from include/trace/syscall.h:7:
-   In file included from include/linux/trace_events.h:10:
-   In file included from include/linux/perf_event.h:53:
-   In file included from include/linux/security.h:35:
-   In file included from include/linux/bpf.h:32:
->> include/linux/memcontrol.h:1824:1: warning: non-void function does not return a value [-Wreturn-type]
-    1824 | }
-         | ^
-   1 warning generated.
-
-
-vim +1824 include/linux/memcontrol.h
-
-  1820	
-  1821	static inline bool mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg,
-  1822							  nodemask_t *mask)
-  1823	{
-> 1824	}
-  1825	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> Jiaqi Yan (3):
+>   mm/memory-failure: set has_hwpoisoned flags on HugeTLB folio
+>   mm/page_alloc: only free healthy pages in high-order HWPoison folio
+>   mm/memory-failure: simplify __page_handle_poison
+>
+>  include/linux/page-flags.h |   2 +-
+>  mm/memory-failure.c        |  32 +++---------
+>  mm/page_alloc.c            | 101 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 108 insertions(+), 27 deletions(-)
+>
+> --
+> 2.52.0.322.g1dd061c0dc-goog
+>
 
