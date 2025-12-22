@@ -4,114 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3E6E66886
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D18EE66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5496B0088; Sun, 21 Dec 2025 19:39:58 -0500 (EST)
+	id 866CA6B0088; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0595D6B0089; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
+	id 7F3CE6B0089; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7CD46B008A; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
+	id 6E3146B008A; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D34676B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40A7DBBEA3
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:39:57 +0000 (UTC)
-X-FDA: 84245249634.30.B1DE120
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 579BBC000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:39:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ghTDwtNL;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 584E36B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:49:19 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9C091A09AB
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:18 +0000 (UTC)
+X-FDA: 84245273196.06.8902A12
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 45AF11A0003
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:49:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDcw2ltD;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766363995; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364557; a=rsa-sha256;
 	cv=none;
-	b=w3/lg84YBmhCMYnb4oZDVY22gCx3X2DYaAZo/dKHMC/mRucHfcXyv/ReOufk3gO3Ef0hjM
-	OBcX0ilkQYFj51Gtb3tEBehP1BSEQgYhJk02i+ML1htJccCDiQGyNjhhW+rjKG9n00+v8Q
-	4pGgJHtGmOq7vxMN58fENpnTUuVwS5c=
+	b=w+jRH29zvOKx1tONNCEpQBwln218UENdrDKivb/FVgFBaktJOvWV4dIAdf4SMjgtUM+0Am
+	43k48Q857Ggko5ziIF8ZEgzomi3/a2pmPKyUDQdOkF5ZMk9OOUb2O1a4Yu3b3ixn0J7vLc
+	ozYcwXF6E+LVrahkR6SMiKci0bHxF70=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ghTDwtNL;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDcw2ltD;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766363995;
+	s=arc-20220608; t=1766364557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
-	b=18AxScZBwps/eVixFI4LdUlCkg+/xLX5doBhxI/dH7i2oHuRM8L9lDI4eeslNkU5Oz/aft
-	xyVaDRHml1qoIcBP0I9JpVzrcc1D8STzcZjdBW2SccS5gWakLU2e8wvARad3GRUiZ768Cl
-	VZFiqJbl5imA6/yLoLmJqlHTirocJ8I=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb3801f7eso1801475f8f.3
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:39:55 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
+	b=36D3Gpd5vGutZbYi1mnn9f8cKi19XurdwYIdAXLcVV4JNQdJci9o86wK8pG4B1Cop223qc
+	+EPH7XZ02je8Us3A0FuS1TMJZtnQm9bY6lTkczVGgDTtp/tfd5TZ8M1467YY64pSacCUML
+	4LyHtLLcNTTROAGIysY5DiMtuHpLUKo=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34b75f7a134so2599607a91.0
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:49:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766363994; x=1766968794; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
-        b=ghTDwtNL6weVjRDZ5ZYwopwsReikT78SowLR+MI7eSwJW6qkp+vn/XUI5z1eDhhPYX
-         UF6Cp/PEzmDn8p09ML9zPCwX7nCCAAIsJpjBCy5J+tKxhwMPWZhMEJNU856VgqA2oYHa
-         s7TWUjlQ4gFxL5Gr7x4Pix21Ou6Bu5a/dB3rnYDXPz7p3ouEUy2s2UPoYtO1kN+ZfLLU
-         s6zBJBK+pEM9FPJSenNHFR4U8Ns7a84nqXGcrda9F8iBuGP375aBeIabOk+oUlixKF79
-         w/k618sTESb+V16D33DmFYnR1iIIaEFkZOwo/qy4zRndNsswN+4tgX87TPp0+yubUuS2
-         IVOw==
+        d=gmail.com; s=20230601; t=1766364556; x=1766969356; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
+        b=CDcw2ltD5HgIqqL8GBNnrQa4PexrFLkzOmOdXZk3ij4NDgJDCwrZPY9WOuhUIkDFvg
+         El8fB3w+lEDGY2jIKTjeYtbcMwBaDmIfb01WKlwkrhcEVnI1El2IyFOjkCXRGt7egD2v
+         r4c66eltDn/WcbVUeIFVyckExK3BVMtremqRDAhc5O63yNZUn7Nze1QQU+kARDk6/6Vq
+         w7R/UAvT9IU2J8PnSq1nxR+3PtlyN9tdQymBkJiyI4vz0lmI5gdI+qb9Bn6NS6iewmgd
+         hCwrRkx7YXgAxY9iPqhNpJo7TuC19gCLsaH7k5odio8aS8cprdcH57L5ExIUecR9gPDL
+         BaXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766363994; x=1766968794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
-        b=griHgk8IVoNWlJUayZY5ugb8kKxzghzKxCtgEg9hiN49nxEV5mRLo6kwwkfComPm1r
-         yab+0IWxr9cQmBbErI7Lw1txSYShsR7GaOi97llLnwYLmtOT696FkBdgrUnoEIqwMm7S
-         6oWJvfGKXk6FcMAcz/Urs9GQLO3JzeCPGb0hMcITCfz418kUmdWfYGOdf7ehxnxEs42M
-         GIKKpIcIdG6MXdng7nt1CBvydw/54ZZIsddxZIJvu2PdSnzh7Phox/n92TKjDVVnUX/m
-         J+CzpqW0C/wn1F9KL/lWwLVVUlXFL1Og52si1DTHuW+bdTy4eCpI18mD+ArNEBBtGR0Y
-         JJMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9cqJK2n16TPJUwUlC5NlV95PDLUwNf0r+x/WOjf4IICLd3ULUMF79q9MoFb7BMhdbUOW6JYIuMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yys+HUj/bNg/YIAwwOlLPAi7KzW5u5LqLsxizuLMraj5HVPskad
-	Q3tgUu4mBO1t2nmM3kSKLU25uFwj3vtYd5osP44Q3Kkpxl/wepAe3Vst1I6QR/+6QdYrLJvp7ju
-	r5LE7KOmIA+Cf0sqTs1Ru6IMel6/d7/Y=
-X-Gm-Gg: AY/fxX7ENd/E1vDqkcr95zsJC5wsmj0Fh10OIkZIbY3bs51kJ6wOdA6ho362T5P1yoN
-	79zfoGBSch4m+ljXfiT0jBqV5kpdmD8E/5LdjFsbqFlt87JGvaq4HccWPhUX4vXgGTHCr0uJ0XI
-	FaMWrBcEq+N7IWYOSFu3B8lYPrTfll6a+uEDlUOsAbO8JAeXrfFUwiXsiO/8AjNlFx89mmYDw0u
-	5Bkh2aRhvEZAz5SBf9j+YMiGUFC5QYWrEasmDIvp9SFGOHe9mrhwmFH55uXC+cS0vs9OTTT
-X-Google-Smtp-Source: AGHT+IGkS9dOdEhg5+dCkmUmeaWzy4PZ0nHJDOAvsq+qfntVAU3c0jXqwzhWWTxM0175xdfDO/eCyt7iUEHIffnxA0A=
-X-Received: by 2002:a05:6000:2089:b0:431:9b2:61c0 with SMTP id
- ffacd0b85a97d-4324e4c92b0mr10844629f8f.24.1766363993525; Sun, 21 Dec 2025
- 16:39:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766364556; x=1766969356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/vB6kAvgJ/UHgjs8UorfX5aUFI87Lf5p0yAYqtg4bPI=;
+        b=Ywue9koUPCFzayFfFnH9L3bm5rCD8pElHDv7oJX8HNfBdwxux0eXmPaDJ6cJY+wDtP
+         o2pryQlVJImH52z1VLYQ+JyMoYl4zLC0jnULuq/zPbFJRJ/qE0KRK6m6y13uMQKMeg4M
+         A08gr2IsJzcIsW8tyM8lVBPbHa6FKcnodja3VIynhmS/W+LLeloIkniYE029nalDGhke
+         av0JmurUPQSW3yXSh4ee5hl96KkOwFHBrDgkt4Srr9JqRoiu5sZ+Aw4YTGpdSMcHcjop
+         5FvcXFrZ9DADRSbFES3PjuJVgsZLXMHQceTcKjZIA/v6560Z0zdAZnBO6VT20MQuYLkF
+         hfEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnB15/OxiSvxq2AM01KbRtPbwHMDfHgJnrmHnXCpF0IZSpR+nYM6iiCot/o81Xf3cE0Ex9mKy63Q==@kvack.org
+X-Gm-Message-State: AOJu0YzIDKaii9l3jMfp/ohQwSlNKwu/Lww3sI+qo2wdXVhZc/YxUkPV
+	8udSHHM7WI+9p1R8zE+VRgz6KIVnzMh3JbmZEZvLp6guiN/jRW9oq/LM
+X-Gm-Gg: AY/fxX7owbTiZJprVTWsuVkqWlrR81BSDVxEqLtKseCZpxVK8jVZI40KB1xgNFCAUMd
+	KhmjBo2fdXsLCq30S2OZRUmKUzyKEd3mOri2aZdKIOy13aHmIzlQrcOWQi9330mB1QL/FVMK2q2
+	45WEDdRvLaoKqweb+DUethZt/kvTuqszo1ZB+Ew9e3dSMV1JFw+FfYZlLbEPqOk2H0WTxu3oPRV
+	8PjPLsT4n5VoAKkbx27iwCxnKjKC4QmOPTezg4pQtm6c71kRO8xNW8tr7hZR65yYAIAg9Bqb1hM
+	peMmrmfa6xG4UYKgQYQoz2J8GIdnD8pUjlpUUvafLn/yNEX5aK/8WqxnseOGR+xYWBJRdBGN0ph
+	KoSLD1a7lx57DQVKJL+oTL0ccGxMH8ZCB3nJZMJHm492NPaQ/X2848BY6JIBDMciNIbcoTzFnh+
+	y9X6PA/GBsRsuxrKog+tLHm8zYng==
+X-Google-Smtp-Source: AGHT+IGweoLET5YnyZ2EKzJERfarS6dgnQ6cYugjO07yPKpn2IvtkOU/1jaFMgk4W8d4nO0djWxJzA==
+X-Received: by 2002:a17:90b:51c8:b0:340:bb64:c5e with SMTP id 98e67ed59e1d1-34e9212a206mr8487470a91.14.1766364555876;
+        Sun, 21 Dec 2025 16:49:15 -0800 (PST)
+Received: from localhost.localdomain ([240f:34:212d:1:df7d:b611:ffaf:6d45])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e79620bd3sm7461832a12.4.2025.12.21.16.49.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Dec 2025 16:49:15 -0800 (PST)
+From: Akinobu Mita <akinobu.mita@gmail.com>
+To: akinobu.mita@gmail.com
+Cc: linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com
+Subject: [PATCH v2 0/3] mm: fix oom-killer not being invoked when demotion is enabled
+Date: Mon, 22 Dec 2025 09:48:31 +0900
+Message-ID: <20251222004834.10539-1-akinobu.mita@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251220041250.372179-1-roman.gushchin@linux.dev> <20251220041250.372179-3-roman.gushchin@linux.dev>
-In-Reply-To: <20251220041250.372179-3-roman.gushchin@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 21 Dec 2025 16:39:42 -0800
-X-Gm-Features: AQt7F2oyBrROwRVLxqymS_B6UpKn5g9mpaj4yyV5pWKX0A3abRXIXQm-DHsTaoE
-Message-ID: <CAADnVQ+T2_=F-885FtYZ1K8+UBfxmanExrfA+-0v4UdFVhmeDw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 2/7] mm: introduce BPF kfuncs to deal with
- memcg pointers
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 579BBC000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 45AF11A0003
 X-Rspamd-Server: rspam03
-X-Stat-Signature: xicqf3gjk67nqi5rrik7qa5rkmdnumi4
+X-Stat-Signature: 17zzz7sn851w7bnajx6d8wfa7my95ipm
 X-Rspam-User: 
-X-HE-Tag: 1766363995-903941
-X-HE-Meta: U2FsdGVkX1/s8J47YRwQ9/rvRDOTK6bRfUMw4ayYaxTmbL/mwF0U5xxRrbz+1p3VdJj0Fd6jSsXvajyCBU+2XMqIjIuoogxMxN9/qTtOrynAhEdPqN67lONzl/COE4zAmaFnrn+BcM4+yQKpkz2gnK+uy8ybmDqA4LD4rK/Roz6DbLaSWv92D5BzGVFLU0nejXEJR6pJ7Q+RnyRFqU9Hq1AP37tLoSnQN2gm/6l9d1/TFrNpC3FkP7fTjnWNsGTNh6jL8GcPJSWZKNCyEWTagkmsy2SBaNaRUJ76OWr3okz66KF7vro2y1gdqXAeNz/MEca5BTTu+f6dauEAGnVLcluPwOqabSNEOxHBq6XBZUxZww38FKvs8VTV8j0ai1TZ8d5pOwgfqY+Wyj+GjHiNjlLMkzGKP2Mh/cNtpiOfrE5oii4Py3p0fTBreqOCVFCtznkO1JiBhwyFhXFtRbVOh6nWOd870wf+U38xkYQetgoHCuqA0Y2HO2xx/hLEDkcg27loMPnDfRHXXGd0ImOS6F9DzgrXQ2nSququ5ubAoxUQGHr4y46pods4lsfGyVKzwRD/X7ccBuY6TB/QVX2WZizrtFtQXto2tGZp0NWDGRcJCD5o4u0l6T3Wivpu1U7ySKI7T0VPawQgijK6SWp0HLNEDEXAMdiVw4ldN9Mi2qm/I0IE6e/E4oFJNzopHbDqYJjLHWRV+8F9VQ7Cs9P5PO2QWLYcuRKfg3YiXGSv3som4Hf1JlxVvTMTKnAqY/LvIPfQdhzw/qLAmOvoBZZx0K82dEigKynbOiXw1jbq/MxBgyhNTx7pfjlO61mZ+6d5AKvyKamDEEJ7KFG8wMkwLL6MQ5eQ+v5VmCRMScBWIEelk0XfjRPjVdYqq4J6DdLYR+FXv7oMLz+IFoV0N9SjjYaJcrXNbzbRwVSAc9S0ENlOv82W4gjBktNlx1IwRnfpusuPfMuqb6AX4BfOOd6
- SmZmgF5w
- 2sRBuIDWTm2FskTW+iIONr0gieTASEQ99i932n1iNvHmnwdznn1Q+u5nEeYsjdxH4prC4X+vU+NHw9W76ip64BcOQdgt57qmlVW2JN+o2EV4Uq6NmOQA6cNDNeBhpAAr7bvdNwop66OIUhHeqg2ZuYhgry3n0nSlzgJftTH9453yNVwkIzjBmjZMUnr+MnEJNkt6f/XJjiSazq1f++o1Uc3yklDmEgzr8CxsuvPIeP7fH/sgxZEbWf0SIeRzUQabQOuVUQJtR3OITOo2CdrPdG5+M7iLvs7FB1czN2uvkGTLh0+7KrlJ//Lk0ExGSyK2l8dPgtXmueYXRqAhyAKimMNVR5g91i/IXDC6U4xOOigE7jMrunRglKLfydxrOi5u98mvj
+X-HE-Tag: 1766364557-836204
+X-HE-Meta: U2FsdGVkX1++bHkOKpeuiQ7EU8e7Kv38mGfgT8f+knFgtYkg/3aYZf/5iAT/Q7N6f1krpQ5MCt8i1TxkttmAgmjlWH5d7jqE0ECL79c2k1hLpeGjjxJ/L12fb0HVKbnDviyvVvPBv2saJ6lCB0VvHcQe4LDM1/KCfsj0BOcgttuo2KFVINCSV/FrbL6EGVnG9UIO4nw8hh6zW94Mu96gGAw6vkK0cUWqSUFviF53vJyGp6B1h4Tzwe+l3LfKN2jCVhuKX+6AQOA2I35OyWccqkiVp8CBFlRMLA5EcrvrtwKMCQ9SEGzxfvu7TUmJWfFzH7EwAMWBwa0ZivpvyMmnRQ/K1611r6YGvtmB3R7If5z7iP1BXA+5X8lnP8AkOUYXYeYjgldL0CLRzk37r8GoPvZDeUS7Lu55dTR8ZHP6c6JmLbS+7HDFz9Mzu/l1fjopmk9zB6QwB+mqJ/W1Qo6dUihfdb4Er5iKD9ZY0SjEn80lLMpJaTJnebSgVq9CNlshKYmWzezQLNkoH1w5JKOh9L2tQEBmu5AfF0EVCyvGt5mY1c+xeRp+4gSxy0vDU9G1pMYcaoRtEoWOBwzLU91t0tvVU3x1FEgfmXFgB9FFWUWpYMowZKPUUEpZ9eiCBtt/dwIvKJCETaMJpGMV/SYFQybBEDwLdfzhMGjkoO76HnF5BFGjOv3V+YP0Q1zzRC5Ew+rP/ALYIixtjIVeBFHd8n+v2HItEvJhbsdNT8rbbms0Rg9DB9S0YPLAm+EEvQTvfViD0Ilq6hHv79eIrjkp8MYLxMJN081H4ybAyuI6wW30UfBowQtmejN2KT5PlJQnaE1L/nyZcI2ODKlMmyJ24/rz+331mWrl5Dik1Asb3lgitgnZIKsuyfKV5IzwXYusy5KmLgFyN98e5Bu9eom1Wxm9vJvnRe7UYcqtrDeNfLo85bKkv5e4atD6eNLqMY3zP9hcIQG0/q3qndKoSSy
+ lkjfpRZt
+ JXz3IEBP5vqLSuTW9H3FGAGS+RVy/d7HXNzNZgZxqJtOXkxJSCgPpjGmJG7N5hIa9Db9MgotCaR5eacHwDZFXYOhlPxveG6sAm/jwzVaA9zs4bx6tFVlvtWfzSRrh8UUKdgElnaPj8QGLIq0lDNxvxGnPdzou+URyyqNF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,129 +131,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 6:13=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
->
-> To effectively operate with memory cgroups in BPF there is a need
-> to convert css pointers to memcg pointers. A simple container_of
-> cast which is used in the kernel code can't be used in BPF because
-> from the verifier's point of view that's a out-of-bounds memory access.
->
-> Introduce helper get/put kfuncs which can be used to get
-> a refcounted memcg pointer from the css pointer:
->   - bpf_get_mem_cgroup,
->   - bpf_put_mem_cgroup.
->
-> bpf_get_mem_cgroup() can take both memcg's css and the corresponding
-> cgroup's "self" css. It allows it to be used with the existing cgroup
-> iterator which iterates over cgroup tree, not memcg tree.
->
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  mm/Makefile         |  3 ++
->  mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 91 insertions(+)
->  create mode 100644 mm/bpf_memcontrol.c
->
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 9175f8cc6565..79c39a98ff83 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -106,6 +106,9 @@ obj-$(CONFIG_MEMCG) +=3D memcontrol.o vmpressure.o
->  ifdef CONFIG_SWAP
->  obj-$(CONFIG_MEMCG) +=3D swap_cgroup.o
->  endif
-> +ifdef CONFIG_BPF_SYSCALL
-> +obj-$(CONFIG_MEMCG) +=3D bpf_memcontrol.o
-> +endif
->  obj-$(CONFIG_CGROUP_HUGETLB) +=3D hugetlb_cgroup.o
->  obj-$(CONFIG_GUP_TEST) +=3D gup_test.o
->  obj-$(CONFIG_DMAPOOL_TEST) +=3D dmapool_test.o
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> new file mode 100644
-> index 000000000000..03d435fc4f10
-> --- /dev/null
-> +++ b/mm/bpf_memcontrol.c
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Memory Controller-related BPF kfuncs and auxiliary code
-> + *
-> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
-> + */
-> +
-> +#include <linux/memcontrol.h>
-> +#include <linux/bpf.h>
-> +
-> +__bpf_kfunc_start_defs();
-> +
-> +/**
-> + * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-> + * @css: pointer to the css structure
-> + *
-> + * Returns a pointer to a mem_cgroup structure after bumping
-> + * the corresponding css's reference counter.
-> + *
-> + * It's fine to pass a css which belongs to any cgroup controller,
-> + * e.g. unified hierarchy's main css.
-> + *
-> + * Implements KF_ACQUIRE semantics.
-> + */
-> +__bpf_kfunc struct mem_cgroup *
-> +bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
-> +{
-> +       struct mem_cgroup *memcg =3D NULL;
-> +       bool rcu_unlock =3D false;
-> +
-> +       if (mem_cgroup_disabled() || !root_mem_cgroup)
-> +               return NULL;
-> +
-> +       if (root_mem_cgroup->css.ss !=3D css->ss) {
-> +               struct cgroup *cgroup =3D css->cgroup;
-> +               int ssid =3D root_mem_cgroup->css.ss->id;
-> +
-> +               rcu_read_lock();
-> +               rcu_unlock =3D true;
-> +               css =3D rcu_dereference_raw(cgroup->subsys[ssid]);
-> +       }
-> +
-> +       if (css && css_tryget(css))
-> +               memcg =3D container_of(css, struct mem_cgroup, css);
-> +
-> +       if (rcu_unlock)
-> +               rcu_read_unlock();
-> +
-> +       return memcg;
-> +}
-> +
-> +/**
-> + * bpf_put_mem_cgroup - Put a reference to a memory cgroup
-> + * @memcg: memory cgroup to release
-> + *
-> + * Releases a previously acquired memcg reference.
-> + * Implements KF_RELEASE semantics.
-> + */
-> +__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-> +{
-> +       css_put(&memcg->css);
-> +}
-> +
-> +__bpf_kfunc_end_defs();
-> +
-> +BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_TRUSTED_ARGS | KF_ACQUIRE | KF=
-_RET_NULL | KF_RCU)
-> +BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_TRUSTED_ARGS | KF_RELEASE)
+On systems with multiple memory-tiers consisting of DRAM and CXL memory,
+the OOM killer is not invoked properly.
 
-This is an unusual combination of flags.
-KF_RCU is a weaker KF_TRUSTED_ARGS, so just use KF_RCU.
-We have an odd selftest kmod that specifies both,
-but it's unnecessary there as well.
-Just KF_ACQUIRE | KF_RET_NULL | KF_RCU will do.
+This patchset includes a fix for the issue and an enhancement that makes
+the issue reproducible with numa emulation.
 
-Similarly KF_RELEASE implies KF_TRUSTED_ARGS.
-That's even documented Documentation/bpf/kfuncs.rst,
-so just use KF_RELEASE for bpf_put_mem_cgroup.
+v2:
+- fix the explanation about cmdline parameter in the commit log
+- add document for NUMA emulation
+- describe reproducibility with !mglru in the commit log
+- removed unnecessary consideration for scan control when checking demotion_nid watermarks
 
-pw-bot: cr
+v1:
+- https://lore.kernel.org/linux-mm/20251208094028.214949-1-akinobu.mita@gmail.com/T/
+
+original report:
+- https://lore.kernel.org/lkml/20251022135735.246203-1-akinobu.mita@gmail.com/T
+
+Akinobu Mita (3):
+  mm: memory-tiers, numa_emu: enable to create memory tiers using fake
+    numa nodes
+  mm: numa_emu: add document for NUMA emulation
+  mm/vmscan: don't demote if there is not enough free memory in the
+    lower memory tier
+
+ Documentation/mm/index.rst          |  1 +
+ Documentation/mm/numa_emulation.rst | 30 +++++++++++++++++++++++++++++
+ mm/numa_emulation.c                 | 26 +++++++++++++++++++++++++
+ mm/vmscan.c                         | 13 ++++++++++++-
+ 4 files changed, 69 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/mm/numa_emulation.rst
+
+-- 
+2.43.0
+
 
