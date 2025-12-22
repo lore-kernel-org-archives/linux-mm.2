@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 310EEE6B257
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20017E6B257
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:18:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 986BE6B0092; Mon, 22 Dec 2025 17:18:18 -0500 (EST)
+	id 861806B0093; Mon, 22 Dec 2025 17:18:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 906696B0093; Mon, 22 Dec 2025 17:18:18 -0500 (EST)
+	id 82BED6B0095; Mon, 22 Dec 2025 17:18:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 816046B0095; Mon, 22 Dec 2025 17:18:18 -0500 (EST)
+	id 724BB6B0096; Mon, 22 Dec 2025 17:18:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F8476B0092
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:18:18 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23DD41331D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:18 +0000 (UTC)
-X-FDA: 84248521476.07.AC71E6F
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 652FA18001D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TQb8M73Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441896; a=rsa-sha256;
-	cv=none;
-	b=vuRqL/IfHm1T1L3zi5iTpYzzD95gnNLNtesPMYDJMkzaS+PiRsyv7kjs2UNf+EY5u1f1jp
-	WMTvSGU1tObVq9S8lGKHu/zWQ1PslQ9n1yzw7z81d6Bhp3Gx5SU2aZwZPM5fpN5Fb0V+Av
-	rzkQrYuMVdJG0harm+g04QWB3WsLgZw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TQb8M73Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A5C46B0093
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:18:21 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04D27B8F26
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:20 +0000 (UTC)
+X-FDA: 84248521602.12.9850F39
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4AE3B8000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sAWfyUsl;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766441896;
+	s=arc-20220608; t=1766441899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZFZCyv+vpTD0CioVmAVVvbbZifAeeGjjT3wMREI9II=;
-	b=Ci01ffppdT9bDkzYM14KRc6knqJOvXg1ebNBX9Y1DtcrCm+tN6xp4nYuCZryY/A8ABA4PR
-	R5Dn9LUflNoS3LaNoGrGj5h6BhjFjAntQvI998Wu91L0CXPBe9SblQYqyp/rXQ7ViORdYe
-	Cjqnvitpc/0vX8fro90EUzxt1vFfqG0=
+	bh=vhodCvlUH01bxPc6ycp94CEw/XXgCCRJXP2B6/C4Ca4=;
+	b=Atl3sP+NtZqqAwO1xxwL0xu4x2ZUCteIS6YBtNzVulIGMeSz/R6KrPTmuEPM4Jf0l/NZdT
+	+jJtBkUD6P8h5ninCcCtPpP3oFU9IZwfLcZklSj7gkDvzsg8gXLDgvn3PuFVdcZaNyspnE
+	eejTC8hnJCyev4NbX9sqJHd3q2RMSVc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sAWfyUsl;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441899; a=rsa-sha256;
+	cv=none;
+	b=v5E1r9t7L6E7Ypm/OXdhRoM9Uf3qumyTndLUTJw2Te+aXYp6jAnu+b4jEUuB5GJxYROdpZ
+	pN7fJImoJd/6JMK9N3QxP0gRiNhc6M/iZz6HBqMlFXVZ7kx+2r2oH0319m6C4+K6cBQyET
+	oR8e2mcmvGMA1/U6KbjhZ7S69HlxQXQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766441894;
+	t=1766441897;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QZFZCyv+vpTD0CioVmAVVvbbZifAeeGjjT3wMREI9II=;
-	b=TQb8M73QlVT9CWmyBzYH4viiXWskbsz1VogGfbuoF5IeUDiWSn9xYuqt1k/NjILeOWtxiN
-	kwQ5CF2wzTItH8voOagOJNmMQXYAsOThVktbO+owqPQV59rHGstWZHDTh1Ue3SFhX9hyXP
-	Rv35ggYTlybq5QBMCm/mQvqLboyr2NM=
+	bh=vhodCvlUH01bxPc6ycp94CEw/XXgCCRJXP2B6/C4Ca4=;
+	b=sAWfyUslFlRiKvtPzfMwLdh4OatyD5mqyZ7RGEFWZrFFPMvuldmk1xMNaOlxuR28TIux71
+	GT4yfaUDamRz0wxWLFLFzcBx9I4p4TvB8v49mOgHt9Ok405fja+K4W2BJ+g2SVZld4JOe8
+	+dwigxyxf+k+d0hmFXKd81fH0U5TAVI=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: bpf@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -70,22 +70,22 @@ Cc: JP Kobryn <inwardvessel@gmail.com>,
 	Michal Hocko <mhocko@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH bpf-next v3 4/6] mm: introduce BPF kfuncs to access memcg statistics and events
-Date: Mon, 22 Dec 2025 14:17:52 -0800
-Message-ID: <20251222221754.186191-5-roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v3 5/6] bpf: selftests: selftests for memcg stat kfuncs
+Date: Mon, 22 Dec 2025 14:17:53 -0800
+Message-ID: <20251222221754.186191-6-roman.gushchin@linux.dev>
 In-Reply-To: <20251222221754.186191-1-roman.gushchin@linux.dev>
 References: <20251222221754.186191-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 652FA18001D
-X-Stat-Signature: jtythtr68n3u3e8ewrs64pjwz5z41s1r
+X-Stat-Signature: gn6cp7i7g5zte51nwxrbxp8fouc7rm5a
 X-Rspam-User: 
-X-HE-Tag: 1766441896-577404
-X-HE-Meta: U2FsdGVkX1+hYXxN2BXS0N8h+rUDXZ7eANggN0J6cH2iQ1FHlYrttMQseCkE0BaIwaSwCubHf27FUjg8UZL3L5XzWWAxTJMX8BOvREA+tuQfKEoocfoOC+asLd/5wvHABZQm0Elc/H2Di00aa6/0/yVC0xD0I74VIwQfItgUKNAOlX3LUwZSN6r4Irzps1G6F6t97sE2wj/1XNx2jXWCSYrth6CvLD0BCOr7L2b+7g4Ly83h5b33DS2gs9p+gZiXYcg3IzEWIcArL3A8kNlIESd+MW3BQTjkJ+bhql6x8YJXjXNBhG7QdsQ7h2TX0aQ0/I2mm2DqBpFdf3wpm4xSUbfMAgiDqiJC9JI9KYydrgBS8bND1vxHeg4D5cpGKil3fyG9TlqltcVDoUhUviBi5wCN9J8xewsuAvckiPQq8HCRpblIdqXB785o2eZ5ulSXAHhEoZGbIpmHyzloj5C3DdEDA1RKbfQxiarn08+ve/+sEiHMhgSKYaHM0xk0U/GlputHUj/goBs5XzIMTnUUGsJbH6CnDZWClt4sopRjIaeAJ0QXNu1MPkedwGJHyVeRX3pR0lm+gLBKIcrDN0ecl4RLJrh7NxYBW+2Dm2HtTR+Y+XXfl1PtYMJsVNR5cbha/AYfqJ2hhw3iBR5/RHCVrn6T+D7JLZ4ExChDCizWWiFV6lFibgiZsM/uDZKnqcxEoE6PIRqfBZLNKi99CN0RyChVGrFn2JwhfiJ2185fdcRUuQ1wWBsE5s7z80ZV3Hh7spYyZFSJNYzG5Y4u8us25j3WZuqzRxeSaC2J8L5CNc+5L14Jdf11U8aPfFS8RmRtWKcVT98hKmB9v0YEOrNXEho8Q+s1fan2iwD1iJXdlRlxo8I49A2eRrcDvfCbERkE9NSLgyc1L/n2eed7s2vTGZjhXTyDNFMRU8lr80gO4q/wYH4Qi5v0X1AmdgEQmCGNG/2xrtLgF0wIV4f/fxO
- 3oI1njeX
- ZZvYm3BF/NU3OoGxR02nk+yus6mjvCcCOuxjy0TI/AEnF3OvxF0k82SIyrBFx6QVmfRXH+N3lJCvX2oZfmFUgZUiYNu0nLBRI7unjvOEpQViS/66YV3MyhwaJ+uQPH4bN0wZhaxxEITr4UTtvwi6DRXxfS0FVRJyYKsBpFGMxmLToEZm5qhwyqKyhpeb3L8GJ06GPemvRYp+CJpUlNAqQ8T3Qdp7oSwWeR7Ph
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4AE3B8000B
+X-HE-Tag: 1766441899-943809
+X-HE-Meta: U2FsdGVkX1/XCVUw7PhhS2qo6SphsXRErMD5BPnkD1KnvbDeUM+f2A+ZahhZF3CIO25sPrhIfwJfESyGb0AGPjcrQTwdSIdeAvnNwvN1MrxE22TZ+M1xqYE0RTUEwI2IDsLhYNDVoGSnKtWNCfEmvRaODhdU0FZChd+PgE7SLV0aOE5EmOtL102dEwQHWXO0zpDROZa/jh5W6lJunRh68rHwtMnZ9A6GZmOwmzud/MFFQr7qXGWzMMiJwtuaKOOPrdHSAID4HRo35oVwrmPj9GkjK55giLRQytGcMz/o1viMR6m4Q81+Y9CohQokuCRelroFrWHAQzZtPbS3+NnswRgZsnObyboNPbn2za8Jgihz1tswm6XABtLg241667e3RVGJEz962LI+DUERQCw83QbR2Ev4xrcAXhCZGq1Kyqpij+DyJVAU9VLDehfECtqAxxBgkKeeHvWPsIgveHkwHsvpmH2qygieEgeozKjahzFtqlbP5MeIeOaR9zaw3llDvyFAwnEj4SeYC6rpOTzvfukbvDobuaAo3mxGzu9yhXZaKnXFJfpqsZchEK0ha2RwN7//IIAQcjgoohzqjPtxuRSNX3156e02aW9Q1vNOOiyxf967czMPN9+qc8GuZMxUT263FLGvcJz8FAd1quX5/RQDkVK4669h+IG/1Z/Jkk+aDHdlyh3f1b+pVukj7IxlnXTnHIftDaO5MbJf+YYJySFhUiIzMImcejDNNnAl1Q7vo2mOQCZe5SJsWS6m6xUP2jFdzHV9d9aD27OVI19zJllJR5tkLCAt4D4JnyHFzx/xOVAUjSZS+fK0LaogOMANzvLvaNSMg13Y5UPzVRqluj92rSg5Ct5B8iTFRjwPbz0tQwsX810U+jZrYeXA8Vx3KCIebT0ByWqY/QeQbETAWqKp8lrTpUzBMa3mlLj8enRMLVO4bEJKrVm0bUaLnBk1nzMVLuUGL+JQLFnAZ33
+ CsNIyyrs
+ pZ5p8H20zZ5YhOT7DCccI0SFa+Pb+lf5L5ljw2PXsJRq/q7TlPVFBeDgJfHkOvmLVqKx54iZW1fDNsNzNtLMeBiCvliRa4aPWhXWzAfud5IPdjsZxKxQlPVskE19YhaCjlCeY0BqGftYbApk1sRYzFHhvEM2oiF4pocTpR+VicxwVQ8+yBSJOqigjrR0zx8Er6k3Rzl4v1kSNVRYoA3DAUkkFBefe6zaAFNBM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,245 +94,327 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce BPF kfuncs to conveniently access memcg data:
-  - bpf_mem_cgroup_vm_events(),
-  - bpf_mem_cgroup_memory_events(),
-  - bpf_mem_cgroup_usage(),
-  - bpf_mem_cgroup_page_state(),
-  - bpf_mem_cgroup_flush_stats().
+From: JP Kobryn <inwardvessel@gmail.com>
 
-These functions are useful for implementing BPF OOM policies, but
-also can be used to accelerate access to the memcg data. Reading
-it through cgroupfs is much more expensive, roughly 5x, mostly
-because of the need to convert the data into the text and back.
+Add test coverage for the kfuncs that fetch memcg stats. Using some common
+stats, test scenarios ensuring that the given stat increases by some
+arbitrary amount. The stats selected cover the three categories represented
+by the enums: node_stat_item, memcg_stat_item, vm_event_item.
 
-JP Kobryn:
-An experiment was setup to compare the performance of a program that
-uses the traditional method of reading memory.stat vs a program using
-the new kfuncs. The control program opens up the root memory.stat file
-and for 1M iterations reads, converts the string values to numeric data,
-then seeks back to the beginning. The experimental program sets up the
-requisite libbpf objects and for 1M iterations invokes a bpf program
-which uses the kfuncs to fetch all available stats for node_stat_item,
-memcg_stat_item, and vm_event_item types.
+Since only a subset of all stats are queried, use a static struct made up
+of fields for each stat. Write to the struct with the fetched values when
+the bpf program is invoked and read the fields in the user mode program for
+verification.
 
-The results showed a significant perf benefit on the experimental side,
-outperforming the control side by a margin of 93%. In kernel mode,
-elapsed time was reduced by 80%, while in user mode, over 99% of time
-was saved.
-
-control: elapsed time
-real    0m38.318s
-user    0m25.131s
-sys     0m13.070s
-
-experiment: elapsed time
-real    0m2.789s
-user    0m0.187s
-sys     0m2.512s
-
-control: perf data
-33.43% a.out libc.so.6         [.] __vfscanf_internal
- 6.88% a.out [kernel.kallsyms] [k] vsnprintf
- 6.33% a.out libc.so.6         [.] _IO_fgets
- 5.51% a.out [kernel.kallsyms] [k] format_decode
- 4.31% a.out libc.so.6         [.] __GI_____strtoull_l_internal
- 3.78% a.out [kernel.kallsyms] [k] string
- 3.53% a.out [kernel.kallsyms] [k] number
- 2.71% a.out libc.so.6         [.] _IO_sputbackc
- 2.41% a.out [kernel.kallsyms] [k] strlen
- 1.98% a.out a.out             [.] main
- 1.70% a.out libc.so.6         [.] _IO_getline_info
- 1.51% a.out libc.so.6         [.] __isoc99_sscanf
- 1.47% a.out [kernel.kallsyms] [k] memory_stat_format
- 1.47% a.out [kernel.kallsyms] [k] memcpy_orig
- 1.41% a.out [kernel.kallsyms] [k] seq_buf_printf
-
-experiment: perf data
-10.55% memcgstat bpf_prog_..._query [k] bpf_prog_16aab2f19fa982a7_query
- 6.90% memcgstat [kernel.kallsyms]  [k] memcg_page_state_output
- 3.55% memcgstat [kernel.kallsyms]  [k] _raw_spin_lock
- 3.12% memcgstat [kernel.kallsyms]  [k] memcg_events
- 2.87% memcgstat [kernel.kallsyms]  [k] __memcg_slab_post_alloc_hook
- 2.73% memcgstat [kernel.kallsyms]  [k] kmem_cache_free
- 2.70% memcgstat [kernel.kallsyms]  [k] entry_SYSRETQ_unsafe_stack
- 2.25% memcgstat [kernel.kallsyms]  [k] __memcg_slab_free_hook
- 2.06% memcgstat [kernel.kallsyms]  [k] get_page_from_freelist
-
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Co-developed-by: JP Kobryn <inwardvessel@gmail.com>
 Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- include/linux/memcontrol.h | 14 +++++++
- mm/bpf_memcontrol.c        | 85 ++++++++++++++++++++++++++++++++++++++
- mm/memcontrol.c            | 10 +++++
- 3 files changed, 109 insertions(+)
+ .../testing/selftests/bpf/cgroup_iter_memcg.h |  18 ++
+ .../bpf/prog_tests/cgroup_iter_memcg.c        | 223 ++++++++++++++++++
+ .../selftests/bpf/progs/cgroup_iter_memcg.c   |  39 +++
+ 3 files changed, 280 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/cgroup_iter_memcg.h
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+ create mode 100644 tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 7bef427d5a82..6a5d65487b70 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -949,8 +949,12 @@ static inline void mod_memcg_page_state(struct page *page,
- 	rcu_read_unlock();
- }
- 
-+unsigned long memcg_events(struct mem_cgroup *memcg, int event);
-+unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
- unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
- unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
-+bool memcg_stat_item_valid(int idx);
-+bool memcg_vm_event_item_valid(enum vm_event_item idx);
- unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
- unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 				      enum node_stat_item idx);
-@@ -1379,6 +1383,16 @@ static inline unsigned long memcg_page_state_output(struct mem_cgroup *memcg, in
- 	return 0;
- }
- 
-+static inline bool memcg_stat_item_valid(int idx)
+diff --git a/tools/testing/selftests/bpf/cgroup_iter_memcg.h b/tools/testing/selftests/bpf/cgroup_iter_memcg.h
+new file mode 100644
+index 000000000000..3f59b127943b
+--- /dev/null
++++ b/tools/testing/selftests/bpf/cgroup_iter_memcg.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
++#ifndef __CGROUP_ITER_MEMCG_H
++#define __CGROUP_ITER_MEMCG_H
++
++struct memcg_query {
++	/* some node_stat_item's */
++	unsigned long nr_anon_mapped;
++	unsigned long nr_shmem;
++	unsigned long nr_file_pages;
++	unsigned long nr_file_mapped;
++	/* some memcg_stat_item */
++	unsigned long memcg_kmem;
++	/* some vm_event_item */
++	unsigned long pgfault;
++};
++
++#endif /* __CGROUP_ITER_MEMCG_H */
+diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+new file mode 100644
+index 000000000000..a5afd16705f0
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+@@ -0,0 +1,223 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
++#include <test_progs.h>
++#include <bpf/libbpf.h>
++#include <bpf/btf.h>
++#include <fcntl.h>
++#include <sys/mman.h>
++#include <unistd.h>
++#include "cgroup_helpers.h"
++#include "cgroup_iter_memcg.h"
++#include "cgroup_iter_memcg.skel.h"
++
++static int read_stats(struct bpf_link *link)
 +{
-+	return false;
++	int fd, ret = 0;
++	ssize_t bytes;
++
++	fd = bpf_iter_create(bpf_link__fd(link));
++	if (!ASSERT_OK_FD(fd, "bpf_iter_create"))
++		return 1;
++
++	/*
++	 * Invoke iter program by reading from its fd. We're not expecting any
++	 * data to be written by the bpf program so the result should be zero.
++	 * Results will be read directly through the custom data section
++	 * accessible through skel->data_query.memcg_query.
++	 */
++	bytes = read(fd, NULL, 0);
++	if (!ASSERT_EQ(bytes, 0, "read fd"))
++		ret = 1;
++
++	close(fd);
++	return ret;
 +}
 +
-+static inline bool memcg_vm_event_item_valid(enum vm_event_item idx)
++static void test_anon(struct bpf_link *link, struct memcg_query *memcg_query)
 +{
-+	return false;
++	void *map;
++	size_t len;
++
++	len = sysconf(_SC_PAGESIZE) * 1024;
++
++	/*
++	 * Increase memcg anon usage by mapping and writing
++	 * to a new anon region.
++	 */
++	map = mmap(NULL, len, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap anon"))
++		return;
++
++	memset(map, 1, len);
++
++	if (!ASSERT_OK(read_stats(link), "read stats"))
++		goto cleanup;
++
++	ASSERT_GT(memcg_query->nr_anon_mapped, 0, "final anon mapped val");
++
++cleanup:
++	munmap(map, len);
 +}
 +
- static inline unsigned long lruvec_page_state(struct lruvec *lruvec,
- 					      enum node_stat_item idx)
- {
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 187919eb2fe2..d248162872d3 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -80,6 +80,85 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
- 	css_put(&memcg->css);
- }
- 
-+/**
-+ * bpf_mem_cgroup_vm_events - Read memory cgroup's vm event counter
-+ * @memcg: memory cgroup
-+ * @event: event id
-+ *
-+ * Allows to read memory cgroup event counters.
-+ *
-+ * Return: The current value of the corresponding events counter.
-+ */
-+__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
-+						   enum vm_event_item event)
++static void test_file(struct bpf_link *link, struct memcg_query *memcg_query)
 +{
-+	if (event >= NR_VM_EVENT_ITEMS || !memcg_vm_event_item_valid(event))
-+		return (unsigned long)-1;
++	void *map;
++	size_t len;
++	char *path;
++	int fd;
 +
-+	return memcg_events(memcg, event);
++	len = sysconf(_SC_PAGESIZE) * 1024;
++	path = "/tmp/test_cgroup_iter_memcg";
++
++	/*
++	 * Increase memcg file usage by creating and writing
++	 * to a mapped file.
++	 */
++	fd = open(path, O_CREAT | O_RDWR, 0644);
++	if (!ASSERT_OK_FD(fd, "open fd"))
++		return;
++	if (!ASSERT_OK(ftruncate(fd, len), "ftruncate"))
++		goto cleanup_fd;
++
++	map = mmap(NULL, len, PROT_WRITE, MAP_SHARED, fd, 0);
++	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap file"))
++		goto cleanup_fd;
++
++	memset(map, 1, len);
++
++	if (!ASSERT_OK(read_stats(link), "read stats"))
++		goto cleanup_map;
++
++	ASSERT_GT(memcg_query->nr_file_pages, 0, "final file value");
++	ASSERT_GT(memcg_query->nr_file_mapped, 0, "final file mapped value");
++
++cleanup_map:
++	munmap(map, len);
++cleanup_fd:
++	close(fd);
++	unlink(path);
 +}
 +
-+/**
-+ * bpf_mem_cgroup_usage - Read memory cgroup's usage
-+ * @memcg: memory cgroup
-+ *
-+ * Please, note that the root memory cgroup it special and is exempt
-+ * from the memory accounting. The returned value is a sum of sub-cgroup's
-+ * usages and it not reflecting the size of the root memory cgroup itself.
-+ * If you need to get an approximation, you can use root level statistics:
-+ * e.g. NR_FILE_PAGES + NR_ANON_MAPPED.
-+ *
-+ * Return: The current memory cgroup size in bytes.
-+ */
-+__bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
++static void test_shmem(struct bpf_link *link, struct memcg_query *memcg_query)
 +{
-+	return page_counter_read(&memcg->memory) * PAGE_SIZE;
++	size_t len;
++	int fd;
++
++	len = sysconf(_SC_PAGESIZE) * 1024;
++
++	/*
++	 * Increase memcg shmem usage by creating and writing
++	 * to a shmem object.
++	 */
++	fd = shm_open("/tmp_shmem", O_CREAT | O_RDWR, 0644);
++	if (!ASSERT_OK_FD(fd, "shm_open"))
++		return;
++
++	if (!ASSERT_OK(fallocate(fd, 0, 0, len), "fallocate"))
++		goto cleanup;
++
++	if (!ASSERT_OK(read_stats(link), "read stats"))
++		goto cleanup;
++
++	ASSERT_GT(memcg_query->nr_shmem, 0, "final shmem value");
++
++cleanup:
++	close(fd);
++	shm_unlink("/tmp_shmem");
 +}
 +
-+/**
-+ * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event value
-+ * @memcg: memory cgroup
-+ * @event: memory event id
-+ *
-+ * Return: The current value of the memory event counter.
-+ */
-+__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
-+						       enum memcg_memory_event event)
++#define NR_PIPES 64
++static void test_kmem(struct bpf_link *link, struct memcg_query *memcg_query)
 +{
-+	if (event >= MEMCG_NR_MEMORY_EVENTS)
-+		return (unsigned long)-1;
++	int fds[NR_PIPES][2], i;
 +
-+	return atomic_long_read(&memcg->memory_events[event]);
++	/*
++	 * Increase kmem value by creating pipes which will allocate some
++	 * kernel buffers.
++	 */
++	for (i = 0; i < NR_PIPES; i++) {
++		if (!ASSERT_OK(pipe(fds[i]), "pipe"))
++			goto cleanup;
++	}
++
++	if (!ASSERT_OK(read_stats(link), "read stats"))
++		goto cleanup;
++
++	ASSERT_GT(memcg_query->memcg_kmem, 0, "kmem value");
++
++cleanup:
++	for (i = i - 1; i >= 0; i--) {
++		close(fds[i][0]);
++		close(fds[i][1]);
++	}
 +}
 +
-+/**
-+ * bpf_mem_cgroup_page_state - Read memory cgroup's page state counter
-+ * @memcg: memory cgroup
-+ * @idx: counter idx
-+ *
-+ * Allows to read memory cgroup statistics. The output is in bytes.
-+ *
-+ * Return: The value of the page state counter in bytes.
-+ */
-+__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
++static void test_pgfault(struct bpf_link *link, struct memcg_query *memcg_query)
 +{
-+	if (idx < 0 || idx >= MEMCG_NR_STAT || !memcg_stat_item_valid(idx))
-+		return (unsigned long)-1;
++	void *map;
++	size_t len;
 +
-+	return memcg_page_state_output(memcg, idx);
++	len = sysconf(_SC_PAGESIZE) * 1024;
++
++	/* Create region to use for triggering a page fault. */
++	map = mmap(NULL, len, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap anon"))
++		return;
++
++	/* Trigger page fault. */
++	memset(map, 1, len);
++
++	if (!ASSERT_OK(read_stats(link), "read stats"))
++		goto cleanup;
++
++	ASSERT_GT(memcg_query->pgfault, 0, "final pgfault val");
++
++cleanup:
++	munmap(map, len);
 +}
 +
-+/**
-+ * bpf_mem_cgroup_flush_stats - Flush memory cgroup's statistics
-+ * @memcg: memory cgroup
-+ *
-+ * Propagate memory cgroup's statistics up the cgroup tree.
-+ */
-+__bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
++void test_cgroup_iter_memcg(void)
 +{
-+	mem_cgroup_flush_stats(memcg);
++	char *cgroup_rel_path = "/cgroup_iter_memcg_test";
++	struct cgroup_iter_memcg *skel;
++	struct bpf_link *link;
++	int cgroup_fd;
++
++	cgroup_fd = cgroup_setup_and_join(cgroup_rel_path);
++	if (!ASSERT_OK_FD(cgroup_fd, "cgroup_setup_and_join"))
++		return;
++
++	skel = cgroup_iter_memcg__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "cgroup_iter_memcg__open_and_load"))
++		goto cleanup_cgroup_fd;
++
++	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
++	union bpf_iter_link_info linfo = {
++		.cgroup.cgroup_fd = cgroup_fd,
++		.cgroup.order = BPF_CGROUP_ITER_SELF_ONLY,
++	};
++	opts.link_info = &linfo;
++	opts.link_info_len = sizeof(linfo);
++
++	link = bpf_program__attach_iter(skel->progs.cgroup_memcg_query, &opts);
++	if (!ASSERT_OK_PTR(link, "bpf_program__attach_iter"))
++		goto cleanup_skel;
++
++	if (test__start_subtest("cgroup_iter_memcg__anon"))
++		test_anon(link, &skel->data_query->memcg_query);
++	if (test__start_subtest("cgroup_iter_memcg__shmem"))
++		test_shmem(link, &skel->data_query->memcg_query);
++	if (test__start_subtest("cgroup_iter_memcg__file"))
++		test_file(link, &skel->data_query->memcg_query);
++	if (test__start_subtest("cgroup_iter_memcg__kmem"))
++		test_kmem(link, &skel->data_query->memcg_query);
++	if (test__start_subtest("cgroup_iter_memcg__pgfault"))
++		test_pgfault(link, &skel->data_query->memcg_query);
++
++	bpf_link__destroy(link);
++cleanup_skel:
++	cgroup_iter_memcg__destroy(skel);
++cleanup_cgroup_fd:
++	close(cgroup_fd);
++	cleanup_cgroup_environment();
 +}
+diff --git a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+new file mode 100644
+index 000000000000..59fb70a3cc50
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+@@ -0,0 +1,39 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
++#include <vmlinux.h>
++#include <bpf/bpf_core_read.h>
++#include "cgroup_iter_memcg.h"
 +
- __bpf_kfunc_end_defs();
- 
- BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-@@ -87,6 +166,12 @@ BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
- BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
- BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
- 
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_vm_events, KF_TRUSTED_ARGS)
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_memory_events, KF_TRUSTED_ARGS)
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_usage, KF_TRUSTED_ARGS)
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state, KF_TRUSTED_ARGS)
-+BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_TRUSTED_ARGS | KF_SLEEPABLE)
++char _license[] SEC("license") = "GPL";
 +
- BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
- 
- static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index be810c1fbfc3..188a4df8d7ab 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -663,6 +663,11 @@ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx)
- 	return x;
- }
- 
-+bool memcg_stat_item_valid(int idx)
++/* The latest values read are stored here. */
++struct memcg_query memcg_query SEC(".data.query");
++
++SEC("iter.s/cgroup")
++int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
 +{
-+	return !BAD_STAT_IDX(memcg_stats_index(idx));
-+}
++	struct cgroup *cgrp = ctx->cgroup;
++	struct cgroup_subsys_state *css;
++	struct mem_cgroup *memcg;
 +
- static int memcg_page_state_unit(int item);
- 
- /*
-@@ -860,6 +865,11 @@ unsigned long memcg_events(struct mem_cgroup *memcg, int event)
- 	return READ_ONCE(memcg->vmstats->events[i]);
- }
- 
-+bool memcg_vm_event_item_valid(enum vm_event_item idx)
-+{
-+	return !BAD_STAT_IDX(memcg_events_index(idx));
-+}
++	if (!cgrp)
++		return 1;
 +
- #ifdef CONFIG_MEMCG_V1
- unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
- {
++	css = &cgrp->self;
++	memcg = bpf_get_mem_cgroup(css);
++	if (!memcg)
++		return 1;
++
++	bpf_mem_cgroup_flush_stats(memcg);
++
++	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED);
++	memcg_query.nr_shmem = bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
++	memcg_query.nr_file_pages = bpf_mem_cgroup_page_state(memcg, NR_FILE_PAGES);
++	memcg_query.nr_file_mapped = bpf_mem_cgroup_page_state(memcg, NR_FILE_MAPPED);
++	memcg_query.memcg_kmem = bpf_mem_cgroup_page_state(memcg, MEMCG_KMEM);
++	memcg_query.pgfault = bpf_mem_cgroup_vm_events(memcg, PGFAULT);
++
++	bpf_put_mem_cgroup(memcg);
++
++	return 0;
++}
 -- 
 2.52.0
 
