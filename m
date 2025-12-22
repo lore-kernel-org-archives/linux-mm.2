@@ -4,88 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64918E677ED
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BF6E677ED
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C79A06B0088; Mon, 22 Dec 2025 11:03:59 -0500 (EST)
+	id F21126B0088; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C51056B0089; Mon, 22 Dec 2025 11:03:59 -0500 (EST)
+	id EA4556B0089; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B50BF6B008A; Mon, 22 Dec 2025 11:03:59 -0500 (EST)
+	id D4E876B008A; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1A526B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:03:59 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 568EB139FF6
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:03:59 +0000 (UTC)
-X-FDA: 84247578198.19.9E914B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BA545C0017
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:03:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y3C8rcsN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766419437; a=rsa-sha256;
-	cv=none;
-	b=3U3jdBGd4Ty1xxgkJbiUb0SiXsgm7QE0WnnChCoHNfoYH9YMDrtV77bgypn+9L/2xrDuet
-	JeWasPceGlIwqSLTMYiEOrjLD/StvdMRnnCZ6D7fFmW276YlIPleZxv4WKAC7o8y6j0FkV
-	WVV9fpSzalBmsldDIcVwPJO46ZYEDTw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y3C8rcsN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C32116B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9664916025D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:11:19 +0000 (UTC)
+X-FDA: 84247596678.15.486666D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1B7178000C
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:11:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tqoxDoaC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lot4pniX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zTarqlek;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GkX85H+l;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766419437;
+	s=arc-20220608; t=1766419877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XBrGNJbf+1/790dJpv4JTnMT0Es8hx4Z71VPlAy9J1E=;
-	b=36l6vE06RyBRUw1UTWE/CrLr3K8GKorkGNGOCkrAwjhmhGv1ol7vc3TkpNnQ77OSzLzx+y
-	qs3p4RWpGN7yHWBjaRVbilzADZd7KflO0YHvoODXIMePgsop/usjHkxNv34J0sG7GF0/J3
-	3A0bRqwYC1XH+ZhuLKntxShat47bbjM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2EDF60151;
-	Mon, 22 Dec 2025 16:03:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7493C116C6;
-	Mon, 22 Dec 2025 16:03:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766419436;
-	bh=9E0AkRoTHDM9XLALHPyae80PIArrlbd3vLJQBT5gFuA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Y3C8rcsNp2jiaxiFMf+tsdv9F57FjwOITbbmK158PhvN1oXkQ4SPKTEsGB5oeEQaq
-	 O83uSR2R0gCP4h/fJB6q8c5ALwTYDTkg7lVxm42oPObUzWBFHgI64BtIiCyz2+TTaN
-	 zzZhrorTQ5r6hD4BHAibtHbxWizGut2JaQ7D5XRrBu7hksIZVR4q/K5gctDRTVhZ+Y
-	 g8wszBRB+rpCvLqhOwtbWELsfW+mD7xp1UZ6Fra3y6UgKQLP6KZuhRNGSX02Yc1RTm
-	 r7KTKcxWr+qVVt16yBQwLKoKPbS/ngA7k+VxiMwJJl8Rd/YLpIqC07USONMFm/Lccl
-	 LsAFXc76bMdLA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org,  rppt@kernel.org,  graf@amazon.com,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  pratyush@kernel.org,
-  ricardo.neri-calderon@linux.intel.com
-Subject: Re: [PATCH v3] kho: validate preserved memory map during population
-In-Reply-To: <20251219071209.3696755-1-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 19 Dec 2025 02:12:09 -0500")
-References: <20251219071209.3696755-1-pasha.tatashin@soleen.com>
-Date: Mon, 22 Dec 2025 17:03:50 +0100
-Message-ID: <867buecxll.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
+	b=VSXWNDX8MNmaYR0psps5QO2Eb1ygp0eIEfz1XQjSjPR+8zF2fezoUsaRoMvcxW4ki7bICa
+	0IpAJ0byqhuDvVd0K+ZAMumSI/AKrqYc6BpVr3fDRmTaSl5s8LC5dBfp6cH0R0u3cE09mR
+	dhyU7DMBxDyGg2x2SkFAWiwtq9GN/1U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766419877; a=rsa-sha256;
+	cv=none;
+	b=xgW8gfZ8GsEv7QVu5royN51zrGWUEycc0ru63psPQuD6vVECWsmCWOAh5gHomlq5BswfPH
+	j3MvktryXCzbhOCb2jVJjD9y1bT/+w1jYTya9KGUFJnEFIVAI+kA+zNeWLuLEfFqH96Axj
+	0xLc04yBPzT1pVc/mZ+PX52rV6i504I=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tqoxDoaC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lot4pniX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zTarqlek;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GkX85H+l;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 259935BCDA;
+	Mon, 22 Dec 2025 16:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766419875; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
+	b=tqoxDoaCPc0AcEMn8QE74YblxKt9/oimhQ/BHAoTpP1C99doouK9n+IyOegyLASbV3qjic
+	Qqgy1AJMctRb5iCqXWWKMmAVSyI4CZwqX4G2+VAcrJluoM1wDwRgRDmHtixSejVfqm62h8
+	aUI3OqUzAvXUiP1wVEUEHFNHrznOW+o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766419875;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
+	b=Lot4pniXzhejp6mYqaooYLLzLxgZEPH5ZmJiRJABivVIoavxBPSRycSKChtinWIiIV99mI
+	CVf6R2LieI5wsEBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766419874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
+	b=zTarqlekhFb2QnZCpQJSi7bSo8COvZ6VOBOFx3svvXRaGYKEsxuTgzcgwB8V3y+A3hFB2o
+	dUA1XDuP5/DJwKAjwCEP4/VWaMu0+NIQd1J/QohOpGGyrvTIrV6Daqmcuhk3K5+2TVpqHp
+	vd0S0VE2ybBqEYbCOAvPtOLXKnUdEb8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766419874;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
+	b=GkX85H+luA75Q/QWZBgVSB9T0h/0H7IeLCqBIt992Km9Iaezk7kxHP4+O0lQ+3R54bb5A5
+	B3W6CGw8T6GPtYAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 075213EA63;
+	Mon, 22 Dec 2025 16:11:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id I6J/AaJtSWnDFAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 22 Dec 2025 16:11:14 +0000
+Message-ID: <5a1721bc-e7e8-40e8-b2b9-c071d18a0112@suse.cz>
+Date: Mon, 22 Dec 2025 17:11:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linus:master] [mm/vmalloc] a061578043:
+ BUG:spinlock_trylock_failure_on_UP_on_CPU
+To: Matthew Wilcox <willy@infradead.org>,
+ kernel test robot <oliver.sang@intel.com>
+Cc: Vishal Moola <vishal.moola@gmail.com>, oe-lkp@lists.linux.dev,
+ lkp@intel.com, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ Mel Gorman <mgorman@techsingularity.net>
+References: <202512101320.e2f2dd6f-lkp@intel.com>
+ <aUW05pyc9nZkvY-1@casper.infradead.org>
+ <aUXhy1Jyv7_GccIp@casper.infradead.org>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aUXhy1Jyv7_GccIp@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9wnj9cxk33i6btrron3ocejzjf9fzq7h
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B7178000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BA545C0017
-X-Stat-Signature: 5w7n4m7cinorsmyt964cktc7qffwgtxy
-X-HE-Tag: 1766419437-614713
-X-HE-Meta: U2FsdGVkX19TLoFPtl36it+zdaqZ6irJ5rKRZMGHfAXbReUuBmKAL/EDWZHx+CdoeEelciebbluFrfuo37dqKm6oK7BV2FmZZjoX4uM79SWuq08hHmjb/yDryozPS4AMMhbCxRnJqAtc/AI0IP77sl+q3a9btqimRch1PUxVWAcVH4VoKCjmLgHR39DGNY7i46jGr2/WOa9HqpzmWnPaQqaH/SSIThEXgulU3RrKSp8UaYMCj9zKnJNwqiCQ2OcYN3nCdFXezEcztUzIUSeSuZifpeL7PEOKv616cFII2T8JszSWBry/Bf66BPSkAb+p8kzGSzjsII/l7Ni8PHsdlG2vyimhv1sGceqXMoNteqdc4oew6DuDnWQo+SmGKFoonWwB3+J+Sprv+yb8jBYEvokbwlS7z8VZCakgzLtUiMx5kmoPd7tDtvUczk4/nc5AWrpg7mXxcMyEUIhAEbbOYpnUDchPfPdDcQqNRLyE2clTsTMJ/lTMr5kVJuXvadsLMymAxRbksy+c/VO/IkLcFT+ylGzcldSsh1YqIvPIjJLo1+v+njcII1xWhhznp3UsjBuABD7dnwHkPdlDetWRHIwXKpcZHbe8hj1DR1VyDJBTNR2iIpz1p53N+j34OQQxFgQmllaPiVeT08NOxMBgwnLIUhv80HKUQ0tuu99m9xAupZpcbD0wkpLNoQj2ZYDggS/HReVkzXWNqPLJn8HehTmMbUuuM6RXAGP3uKlvSQzAv22X0t21VD3EsZulvgvUIyE7XNQF6cNC/4ea+uElFLdNcaRZ1qieXnpiO8xdEvC1gl/4JzqneSQKVVu8BIaYrmZsZ7kzaMnnyatDpLapILsjIpyPqC9e6OMnHRa83yK8Y5AVtFP/+SQl4S4YLeUgAvBpvlZj3rNnFchQK3pg2W8NYKwDWQWpYx1TCeEE7y2O4ZmvB1EmnDlkuBADRABYZB/MTYPy9MX18Zu72y+
- u4LmT98l
- ErBfD/nT9GniOInrysGVUbkX+KXayyPd/gj9Zclh67r1hF1mEJMaakVhOSoM37DF+fEk7uQqSPEZhVINxPj6Gbeg+jtEVJpI/pqNj85IK2e9gZ68cfHgt5EO11pbGna6uZNJUL11cTZwaSChnjQc7Gjp760UlKDN0g+SAtFRIuDV3Wvr/k62FMIE7A6hus2y5Z2e8rM/4e5rcq9chYBqnWnQYQLJD5Iy+kjpHsgJOtbT7Ai9QJqBtRWyNuvM7WaeoqaGk4srqhZbwTy8Xt5O6uLWunA==
+X-HE-Tag: 1766419876-346745
+X-HE-Meta: U2FsdGVkX18QeoilYSIIhub3QavBvuclR2xIka7JNniZxWXrD67DYizENgqZhepwU9uVZtU4Z/Ko2iXNXlTxNiyO2tLpy3KZFjp7d86FlBiV56ajIc4+fLEugLo0tBvOJvPZPIFsoXCiqo9ObUNvh20NBsHSrteOFjSu2461jvfXIRdYSVDW3aaLY8W3+lsHMUWDrzqjAtB1ctx9jBMmdxd49FmQy+5oyOV1KQ4saR3+q4enR3ybgOWMyaaw4InZXaotcEeKFaLbXhFgaPhjY9tVNuBjsBmgU7vALFFLY5MKUKHpSQGKo2WcbbDjsv4tHUjzUO/29GSX0qnKSZx/u3x/23eW9n5IctQaNv4aDaivQSUOawWFIl37Q+btl1j68ncqNxZ/G3GP+sWP7nAcazHd11o8/GFsLCEzkptQlA/4A+VF+LHXWgbws9hHIf1dQLTreDqum2LVp9T4LW/AUEGPYEgjX52X/F5yKfCivMkI42c6Cj2kJ2f5yfzkyTBdpPMtItWbrRgPkaqBnKzOaeLP9cBLezsr9le4cmCy7JwIv/v1vcgx55WJyLX+euO9Ji+ohilNha2MLDJMS0g6/EUUoIKIiwbAV0xn5TKV8MNtJNII1PoltuZomrZjAOdsCDznVyEaOpZbVqFlemcuTLPbThPXavlO3HVabodYfUaPL146v6V8xN5ppxvZoJt4Ux2p5MWk4WfvgEnMVN5QX23gWeOtszEdR5RHP2w+ARCdVgwAbK0JRwsqa2HFwXwCWWoMqcjdaCF0WuNzBwx4uvv39uf2WTg7fuonmmN/g/TGyPebm+SzYjYcL7XaeZPkKqV+1w7ATrglaIJCwqbe1qFzb3DhVMIUUbiwFGbCAgIYwQZo+Bb18+FJrK8qS9tUnb+n6JqO1a6HG+Fk262bzrq15o7Xo/VMk/mp2CYN4tuQ/w3DJn9uZygKuqCpl/D7xN0Bg8SlD0rgVrEPynd
+ XbTTG6Ji
+ JQ6Dz5SVgk9Ud6DGbGG/9MPFBii3iQ5if0XbQ8PHov+OXV+mKsIfubAQ+Pt3uKkJgehuPJjB1hvH+pu4/R0UMHcuF3XJb0V11iASqtCIbT4ANy13H2HALUrkqsfoGpqjhn9kFKCpkUHB7kgtMym1ApPPrbFKUcDrbVkMFVTl7+FZ5zHcAAOTPkY07e9w2WL1IbQYXfpx83U+tuWC6oqxtFE6uaPE8eOAWyvraLROk02vkl3m/YomfyJacWF1iLMDjnimU6XipP7xJlb/TwsN3Jbc5T6427CMOZJL3CdlNa6J13qzLaamxBRctbGUHvu29PlA4YVkiPFpyoqyNUyiMnUKu1DGOvriYoa3V5x/NMi75EvsVTqJ+anLvT1PK73ohs1AAgxl2cuOBznL91bmBE7FnoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,168 +183,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19 2025, Pasha Tatashin wrote:
+On 12/20/25 00:37, Matthew Wilcox wrote:
+> On Fri, Dec 19, 2025 at 08:26:14PM +0000, Matthew Wilcox wrote:
+>> Now, as I recall, we are very much doing this on purpose.  We decided
+>> not to disable interrupts at this point for improved interrupt
+>> latency, accepting the possibility that we'd occasionally fail
+>> the trylock.  Except on UP that's now an assertion failure.
 
-> If the previous kernel enabled KHO but did not call kho_finalize()
-> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-> the 'preserved-memory-map' property in the FDT remains empty/zero.
->
-> Previously, kho_populate() would succeed regardless of the memory map's
-> state, reserving the incoming scratch regions in memblock. However,
-> kho_memory_init() would later fail to deserialize the empty map. By that
-> time, the scratch regions were already registered, leading to partial
-> initialization and subsequent list corruption (double-free) during
-> kho_init().
+IIRC the primary motivation wasn't irq latency, it was to avoid IPIs for
+remote drains. So the drain_pages_zone() can be in fact locking pcp of
+another cpu, and any local operations on that cpu are then supposed to fail
+their trylock (should be relatively rare). Disabling irqs would then make no
+sense for protecting other cpu.
 
-Nit: I am guessing the double-free is the scratch regions being freed
-twice? Can you please write that out explicitly?
+> This is stupid and wrong.  If we have CONFIG_SMP=n and
+> CONFIG_DEBUG_SPINLOCK=n, then trylock always succeeds.  And we'll end
+> up corrupting the data structure protected by the lock.  So the warning
+> is real, and we need to fix this.
 
->
-> Move the validation of the preserved memory map earlier into
-> kho_populate(). If the memory map is empty/NULL:
-> 1. Abort kho_populate() immediately with -ENOENT.
-> 2. Do not register or reserve the incoming scratch memory, allowing the new
->    kernel to reclaim those pages as standard free memory.
-> 3. Leave the global 'kho_in' state uninitialized.
->
-> Consequently, kho_memory_init() sees no active KHO context
-> (kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
-> allocating fresh scratch memory as if it were a standard cold boot.
->
-> Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
-> Reported-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-> Changes v3:
-> - Addressed review comments, and added review-by from Mike
->
->  kernel/liveupdate/kexec_handover.c | 39 ++++++++++++++++--------------
->  1 file changed, 21 insertions(+), 18 deletions(-)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9dc51fab604f..2d9ce33c63dc 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
->  	}
->  }
->  
-> -/* Return true if memory was deserizlied */
-> -static bool __init kho_mem_deserialize(const void *fdt)
-> +/* Returns physical address of the preserved memory map from FDT */
-> +static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
->  {
-> -	struct khoser_mem_chunk *chunk;
->  	const void *mem_ptr;
-> -	u64 mem;
->  	int len;
->  
->  	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
->  	if (!mem_ptr || len != sizeof(u64)) {
->  		pr_err("failed to get preserved memory bitmaps\n");
-> -		return false;
-> +		return 0;
->  	}
->  
-> -	mem = get_unaligned((const u64 *)mem_ptr);
-> -	chunk = mem ? phys_to_virt(mem) : NULL;
-> -
-> -	/* No preserved physical pages were passed, no deserialization */
-> -	if (!chunk)
-> -		return false;
-> +	return get_unaligned((const u64 *)mem_ptr);
-> +}
->  
-> +static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
-> +{
->  	while (chunk) {
->  		unsigned int i;
->  
-> @@ -489,8 +485,6 @@ static bool __init kho_mem_deserialize(const void *fdt)
->  					   &chunk->bitmaps[i]);
->  		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
->  	}
-> -
-> -	return true;
->  }
->  
->  /*
-> @@ -1253,6 +1247,7 @@ bool kho_finalized(void)
->  struct kho_in {
->  	phys_addr_t fdt_phys;
->  	phys_addr_t scratch_phys;
-> +	phys_addr_t mem_map_phys;
->  	struct kho_debugfs dbg;
->  };
->  
-> @@ -1434,12 +1429,10 @@ static void __init kho_release_scratch(void)
->  
->  void __init kho_memory_init(void)
->  {
-> -	if (kho_in.scratch_phys) {
-> +	if (kho_in.mem_map_phys) {
->  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
->  		kho_release_scratch();
-> -
-> -		if (!kho_mem_deserialize(kho_get_fdt()))
-> -			kho_in.fdt_phys = 0;
-> +		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
->  	} else {
->  		kho_reserve_scratch();
->  	}
-> @@ -1448,8 +1441,9 @@ void __init kho_memory_init(void)
->  void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  			 phys_addr_t scratch_phys, u64 scratch_len)
->  {
-> -	void *fdt = NULL;
->  	struct kho_scratch *scratch = NULL;
-> +	phys_addr_t mem_map_phys;
-> +	void *fdt = NULL;
->  	int err = 0;
->  	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
->  
-> @@ -1475,6 +1469,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  		goto out;
->  	}
->  
-> +	mem_map_phys = kho_get_mem_map_phys(fdt);
-> +	if (!mem_map_phys) {
-> +		pr_warn("setup: handover FDT (0x%llx) present but no preserved memory found\n",
-> +			fdt_phys);
+That seems to be true and we should probably be doing spin_lock_irqsave() on
+UP instead of spin_lock() in drain_pages_zone() and several other places.
+Ideally via some wrappers like we have for the trylock operations that also
+do some UP-specific stuff - pcp_spin_trylock() and pcp_spin_trylock().
 
-Enabling KHO but not using it is a perfectly normal use case. This
-should not be a warning. I don't think we should print anything here
-TBH.
+> With my distro hat on, I do not give two hoots.  We don't ship a nosmp
+> kernel.  I suspect all other distros (except maybe something targetting
+> m68k?) are in the same boat.
 
-> +		err = -ENOENT;
-> +		goto out;
-> +	}
-> +
->  	scratch = early_memremap(scratch_phys, scratch_len);
->  	if (!scratch) {
->  		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
-> @@ -1515,6 +1517,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  
->  	kho_in.fdt_phys = fdt_phys;
->  	kho_in.scratch_phys = scratch_phys;
-> +	kho_in.mem_map_phys = mem_map_phys;
+Yeah seems the problem was introduced at 6.2 with commit 574907741599
+("mm/page_alloc: leave IRQs enabled for per-cpu page allocations") or
+something around that.
 
-Nit: not a fan of duplicating information. This is already contained in
-the FDT. Perhaps make kho_memory_init() also call
-kho_get_mem_map_phys()? And while at it, perhaps make it
-kho_get_mem_map() and the return type struct khoser_mem_chunk * ?
+I'm off until Jan 5th so won't be developing a fix until then, but agree it
+doesn't seem that urgent now.
 
-No strong opinion, so fine either way, but I do think it is cleaner.
-
->  	kho_scratch_cnt = scratch_cnt;
->  	pr_info("found kexec handover data.\n");
->  
->
-> base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
-
--- 
-Regards,
-Pratyush Yadav
 
