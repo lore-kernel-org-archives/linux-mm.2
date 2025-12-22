@@ -4,88 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A449E6ADF9
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD21E6B257
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:19:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DB936B0095; Mon, 22 Dec 2025 17:18:25 -0500 (EST)
+	id 27A566B009E; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 671B36B0096; Mon, 22 Dec 2025 17:18:25 -0500 (EST)
+	id 21A646B009F; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 560936B0098; Mon, 22 Dec 2025 17:18:25 -0500 (EST)
+	id 127A06B00A0; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4400C6B0095
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:18:25 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05AB258CA9
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:25 +0000 (UTC)
-X-FDA: 84248521770.07.1A5B6A9
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 541E4C0011
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:18:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VakcHsBK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441903; a=rsa-sha256;
-	cv=none;
-	b=WSv12LGwLvXSbxfL91+w4N2IXWK5A1zZvd3qhR4Rvs0FfLwmvyLHEtZzqdhUfoJ9dA64mP
-	/LZxSw25ZT+MhLXH3aWy7Py1DixtmL5DUzZdC5RZhY/+BoFkowukNMvJ6QGw2Q4jTg6o1/
-	gghtRR9JuRQSI4OMy5zKtKBY92cd/U0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VakcHsBK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F404F6B009E
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:19:21 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4B48132AB
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:19:21 +0000 (UTC)
+X-FDA: 84248524122.06.1F73218
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 233A3C000C
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:19:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="nafX/XMc";
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766441903;
+	s=arc-20220608; t=1766441959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdqb/JrWPy4gNeCuNrTpT2xWXxvnkmMMxVP8Vk0ZQYs=;
-	b=t28//LnBEaI5RX3ZYP7FS2pNnVFnW/tjLDXfeuXHyRQ2F+nTBSzKPLbtDWbScLCVOoJv5s
-	m3+e/Dp5061lH1mDThxXI94dc3SLkfrM2dk/fLIlWQMmmw08h72dEh+jam5MOiQw5MnNPC
-	4WvLTcQPLjpwDGROyy+G+IoCthN31l8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766441902;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdqb/JrWPy4gNeCuNrTpT2xWXxvnkmMMxVP8Vk0ZQYs=;
-	b=VakcHsBKcYRmNqnVH3KJ1pOq7DuE9CHVpf4ylwyvS0U+2MwCFrJqNoSEYASXIbu/6aZmwu
-	2fm80umV+WHHyj2J1NBAw3E6586sEVv9T1ANQfodPg3/6UPY0R8ne8gxwTsJPhdDNwJ3HB
-	yV5rmEV7WfIrt2IMbnKyPuAHvoIA7FE=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: JP Kobryn <inwardvessel@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH bpf-next v3 6/6] MAINTAINERS: add an entry for MM BPF extensions
-Date: Mon, 22 Dec 2025 14:17:54 -0800
-Message-ID: <20251222221754.186191-7-roman.gushchin@linux.dev>
-In-Reply-To: <20251222221754.186191-1-roman.gushchin@linux.dev>
-References: <20251222221754.186191-1-roman.gushchin@linux.dev>
+	bh=N+XC5YT5cdsj1nRAWBzUZkuED3ebpY8hPxGLJsyURVA=;
+	b=NFUb/BrFVhQOpMR7AymTRiA5ywT8YZqKQEpaUCdzVYFKJl6WER/ZNsXkescuuiFvHppgiU
+	DURbHZafYETv6U62fWAfB6rXLWWnz/TkjEYPFcdbjuD1TbE8zSF4MKehm6QcD8jKmf5hg4
+	JfB4x7T3ZYmkKiMnmHRVumLCjh4wfyI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="nafX/XMc";
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441959; a=rsa-sha256;
+	cv=none;
+	b=GAevG/RDWlwqMeWZLTxRATpOhKdPRsNn3zmmpbje+c+x4XxSe1oZUiYQwBqXc/aLh4mkFb
+	GrQDdI1Ly/MpxfS4hvqRubcl8i5w7XQSk8V9yF7JrLthxfZLFTkT74IRm85ev93qMiDOfq
+	zkksuLEa/KIC4Y/O0E+8PoROV3HE1Ko=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766441959; x=1797977959;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dQ/s5g4Ian6ioHx/lf1wibw3buSKQJjac3nIOVr/Irw=;
+  b=nafX/XMcjWTZvpx12UIJdqTTiBF0JJsyOYtxXYtTzBAQHzQayhn0xnHW
+   +7fwn6qbiRm+U45j2tO4nxsYywU8v/jwsB4Vq8wSN8gz7tnPdUbVfqLt+
+   GZ7glPH7ClJln6VTH+9+uDwZlrJ1k2HXVIUodoRzJSxFDjXnF4J+6+2ir
+   Vt/imhwLO4CNHpceoi4oiomj6PdFl/xAY6IliXqgbkuzI23t0+WZKJdUl
+   8IMEJ9wyQm6t28PtHYUmKxDRsR0dkxU2PDSmxNmo9iyR4FeeJLmjfU1vp
+   mWNhz4OZs+D2kNOgBexw++yF/iLQf2PjXCZXYEsAE8YmcoBcrIZDGwCRm
+   w==;
+X-CSE-ConnectionGUID: 9o/iWeTNQ+evFmAS1lep7g==
+X-CSE-MsgGUID: QfuWQJdHRyqlHMaHUdX3WQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="79017622"
+X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
+   d="scan'208";a="79017622"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 14:19:17 -0800
+X-CSE-ConnectionGUID: 8ZdtjugMTpaUyreTt9B8MA==
+X-CSE-MsgGUID: w98j602qRNi2vVHfzDgBYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
+   d="scan'208";a="230287947"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 22 Dec 2025 14:19:13 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXoFC-000000001Ap-13Vn;
+	Mon, 22 Dec 2025 22:19:10 +0000
+Date: Tue, 23 Dec 2025 06:18:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, akpm@linux-foundation.org,
+	gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org,
+	Bing Jiao <bingjiao@google.com>
+Subject: Re: [PATCH v2 1/2] mm/vmscan: respect mems_effective in
+ demote_folio_list()
+Message-ID: <202512230655.QvO6dmjt-lkp@intel.com>
+References: <20251221233635.3761887-2-bingjiao@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 541E4C0011
-X-Stat-Signature: 814mfn57awayx6i8t1thmhjpwdbic3z6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251221233635.3761887-2-bingjiao@google.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ry9w9ttwamu6amcubsd3434zucz7ygzm
 X-Rspam-User: 
-X-HE-Tag: 1766441903-128683
-X-HE-Meta: U2FsdGVkX1/xqSiNPUIifR38q8edvBl8tJG9MER/lDgf+wGTo/LtKPWX1ro2OiIQtsim/ixJ80xKhffaV/wMqlfpbhKGQ/xWNUuOtBy1LViTyZlZhbk67WjDzGPwBQzuJlrF1BUSH0Baz9mvn5H5K89T4RYq/UxmqB9QlLq8ui+FZVNJI4B4rbuNXeA4Cv29wJk3lr2evzExlVcoGdLs4lhS38dKXmROipw4hivrz9m0M1/Y+cDcBv8c8t0IeXPjajsMzQl+/3LIFwfTQWb0D2H58kSLo38x1Jngv7KWlaQaaq7t4vZuY4ls1KdQ5RzctKkm7dDGFw2JMcaZkjCjGumSs00Ra/IMmEd/pIhI1vXFCh+lBWuKapH5J5K5gLyNtL/BjLXZNKyOVkXKOupB7CY6ODr0YtHrMe2QctoDn/fLDXot4Rsep3fyj2/hnyVRUqbh39R0S5FmqsJtMwUyULsJUb2j16LVLbDGZp5FSSvifnnxGZhb6Qiai644yq2nPOT1yhOcVxz2w9NnWHza2n5YKSCG6dmC/ce5ZJT+x6f53G1BwiLLW4xp3n0iSMDlqo0Fj+qbgQz7ARXuxloFxOtHQdC0VStaeblS9drizsrFkeqQ/1ajaSPPIbUM1OdPjbG6wKiXVMG6ostaFeXwSrtZ919GeqtPeevIlEfhap6+UJCRKXVASgslgnx8ASwGYJt2kjMVJnbsa4XcVMv31usnqvdhBG5uFdL9RoPE/ViyNuutd2ESJR8kw/XEOm+ReXIm7cKGHxPNk76v3kFjDBR1udDU7dfSXoqeQOfascZWu4sztK0hYq+oWgl+JLjBqsl1k6t6QPfdRqgSajKt604K6Ar3jKuMezVPCkc1pVKeaAq+G0fyuEzz5mK1qbWAATqjWc+SEvPYZIls+0d6+L0P4mpHe29hovYupW629ChlynEJGJq+P0aV0/EdcsMmK3wMfKlmD3sa15GhTlZ
- Y9gOPW4w
- xeb1HeusnUmbnklvsL1zTZEX/VO4eoEMzdGqIZgu4Xjd8LSCGnu/TaGNnN2PzUGA3eUm+Qoz99j340S4umt/1VOLUjK9ZjxYWIBafMXjzA9wdwncrMT+xnXkFYjvUq0Y5ISOmKo2wjR0/0vxCpWdCQ1S32dMhQG+otH2hJoGr4Hbm2Hqp9/M8UORZ3fLelp4JGzINbAqLniyY5CxZbQSXff/hPUC8N3Uuteb17f51GjEXoIyR+zjNUp5lkK//+sCQEPTxGBhh1850BT4RxrTf5Cpvjw9fELTvpBBCc/zg7gPOdBu3ipS3WwNsIw==
+X-Rspamd-Queue-Id: 233A3C000C
+X-HE-Tag: 1766441958-199363
+X-HE-Meta: U2FsdGVkX18kSA7lVSmTLkmumISYThz7VV/0Lww3Vsa9VLfCdJPjSn6s6AXKO8ItTVNqUwSbiQOJ46ntqw+gK5uepG+N0peKKFKKSV26BpAZ10Xe9YMFdYSzyiut/4GBxiOX7n2cjT1rehfWSlDQvzeW+5w3VEhTTDrWArloF3p7nVIcI0xJi+6RpMwB/atKLUL04yWTNuhaKrw5k2EsM31D4AX3ZWSeQOu9BhVKVGzQNh/VRTldGMEM4pf4UljCKJN6TuwZGlktGK3+rG4NFJ7OLQ8e87o/xPp8WypWs4epWnB8nXK2Senkd7FvOYSsk9in4WkTSRSLzT+dfbj/9i2fmlX4h7dcKDBPbh4inU98xsxyMe74qfyN8b+odF3H68YILSA8+7Teq9W1iDe7Uf/hTrvGxYEdlPztOE87ByYwvz4JFQ1i62VX0wNY1TjolNv153YOfvoDPipPHuGGF5q9K9WUUo68hmftSTq8PAoaX4CZnrmI++RCTO2AMxY03XLp38nW9aCH39XRluDonxrmLexjMZ+5drjkrhLO1h4wKo49WGdiJujVdZP30JB1u46MhJ3xpSUaDrXxA9/dy4/yLgsSyUthUiezgKoAkv1/5cjXu41bQB2VLmT1s7pTnAoy3dSV0ocMh24ezYK/6OgRyV+moqUDXgjrEmtoQ+PbhprpGxDGuQFuOQXJCAST07gQMCyoBho/iFBaa/GNeO4PvVnl/QbWP8pjQtsq2pglYQGxKndt4X1x9/eFr2r3XtW8cDJCF6gVzdwMjqva961WTO16YQMqLQJxBAgBNlSyZ69pAplasdzWMl2caE3tyzlOtXNmyPUA6jRcw1wUS88fUT8Cgh9TcTgPcZkB7xRFqY+Ia8Aze/lDbNiAsqshTKiZ2yNB2/qVoWWIGci6wtdoU23ecl+b0ZE14qsfWfictWOM8NpP9B6I5YnwH8GI7FscHy/w+wqIynROfop
+ SDExZp3R
+ VU77XF80ovwZ0JfNf2ltyLZ+aeoSEG0xD6b8dv50CfptjZvg5Jaw16THO6NGF9PV0LSmDhDFAmr+m216xyawwtTVxjECdlF43RafMJjbyW8MY0hriLHGepO/To3Ln31cmNjlbXqyJXWkdKO6sNPes0nb0EM5z15yRSyB2nKehzaw55zxVFv8IRNASPtX0Dq+jM80hIP47ecJJDm/rLf9YRUk4SfMuKPv4kGp/1K60WwWIbTVqyH/iS5F941YFB/0/SP/RyoCU/2kEaZ0Y36mp+C3lAHtA/mXSXFrPcHI3AY4vcOgLmOHicHcg4xdfgfIWl7gRNO+WtfalrWsVm4uLkdpwYIMtCMriieI9RoyqXxeYuh+Mpmo9rNhc/ChQBQQvFJozQgJA6sH/8gscfMypGHcAQG7o7VDX93ALzE0PUC7ZD0MtxEb9RkMiZy2Yoov0rQrft0/6j+5cb08=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,35 +115,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's create a separate entry for MM BPF extensions: these patches
-often require an attention from both bpf and mm communities.
+Hi Bing,
 
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e7027fba97db..70c2b73b3941 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4799,6 +4799,15 @@ L:	bpf@vger.kernel.org
- S:	Maintained
- F:	tools/lib/bpf/
- 
-+BPF [MEMORY MANAGEMENT EXTENSIONS]
-+M:	Roman Gushchin <roman.gushchin@linux.dev>
-+M:	JP Kobryn <inwardvessel@gmail.com>
-+M:	Shakeel Butt <shakeel.butt@linux.dev>
-+L:	bpf@vger.kernel.org
-+L:	linux-mm@kvack.org
-+S:	Maintained
-+F:	mm/bpf_memcontrol.c
-+
- BPF [MISC]
- L:	bpf@vger.kernel.org
- S:	Odd Fixes
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on tj-cgroup/for-next linus/master v6.19-rc2 next-20251219]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bing-Jiao/mm-vmscan-respect-mems_effective-in-demote_folio_list/20251222-074143
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251221233635.3761887-2-bingjiao%40google.com
+patch subject: [PATCH v2 1/2] mm/vmscan: respect mems_effective in demote_folio_list()
+config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20251223/202512230655.QvO6dmjt-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512230655.QvO6dmjt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512230655.QvO6dmjt-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/bpf.h:32,
+                    from include/linux/security.h:35,
+                    from include/linux/perf_event.h:53,
+                    from include/linux/trace_events.h:10,
+                    from include/trace/syscall.h:7,
+                    from include/linux/syscalls.h:96,
+                    from include/linux/syscalls_api.h:1,
+                    from kernel/sched/sched.h:61,
+                    from kernel/sched/rq-offsets.c:5:
+   include/linux/memcontrol.h: In function 'mem_cgroup_filter_mems_allowed':
+>> include/linux/memcontrol.h:1824:1: warning: no return statement in function returning non-void [-Wreturn-type]
+    1824 | }
+         | ^
+--
+   In file included from include/linux/bpf.h:32,
+                    from include/linux/security.h:35,
+                    from include/linux/perf_event.h:53,
+                    from include/linux/trace_events.h:10,
+                    from include/trace/syscall.h:7,
+                    from include/linux/syscalls.h:96,
+                    from include/linux/syscalls_api.h:1,
+                    from kernel/sched/sched.h:61,
+                    from kernel/sched/rq-offsets.c:5:
+   include/linux/memcontrol.h: In function 'mem_cgroup_filter_mems_allowed':
+>> include/linux/memcontrol.h:1824:1: warning: no return statement in function returning non-void [-Wreturn-type]
+    1824 | }
+         | ^
+
+
+vim +1824 include/linux/memcontrol.h
+
+  1820	
+  1821	static inline bool mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg,
+  1822							  nodemask_t *mask)
+  1823	{
+> 1824	}
+  1825	
+
 -- 
-2.52.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
