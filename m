@@ -4,95 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5A7E6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 07:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1216AD711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 07:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED1206B0088; Mon, 22 Dec 2025 02:25:03 -0500 (EST)
+	id 63ACE6B0088; Mon, 22 Dec 2025 02:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E839D6B0089; Mon, 22 Dec 2025 02:25:03 -0500 (EST)
+	id 5E8386B0089; Mon, 22 Dec 2025 02:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7DD16B008A; Mon, 22 Dec 2025 02:25:03 -0500 (EST)
+	id 4EA9D6B008A; Mon, 22 Dec 2025 02:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4EF6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:25:03 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CDC014053A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 07:25:03 +0000 (UTC)
-X-FDA: 84246270486.02.D32A3B5
+	by kanga.kvack.org (Postfix) with ESMTP id 3ADC16B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 02:27:36 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDAE960C80
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 07:27:35 +0000 (UTC)
+X-FDA: 84246276870.30.9C7B88A
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1CA8C180009
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 07:24:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of xiujianfeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=xiujianfeng@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766388301; a=rsa-sha256;
+	by imf11.hostedemail.com (Postfix) with ESMTP id B9AB340009
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 07:27:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766388454; a=rsa-sha256;
 	cv=none;
-	b=5WmppVqJZhBWPwFT9OjsEZGagB9FuX83l9/5lezt18rLghY+FKR1bLAhst0MqJv3cMhpIT
-	jfF8++AqHg7HGhPNM97ypolWogJz2Mki5AVeKe4onEH4dGJA5en+LR6bmcRqfIW/pXxfUe
-	BBoawNhJ4rkdlludTHpcS6fP7qOJ6KE=
+	b=PM1IF2nm9ovBZE3tBcrsOhb+EQcz5tXSiQjo0VVTKKv5agviWeYnWtKjuxR152IgA+bmR0
+	+AHpsJXLXDvabAi/2KUIhqdceK7aBHVj97go8XE3waFbzYdrSI+kUXkbXx/BRzKgdc3SlH
+	WeiKrLPvYJive6++1W9xWOvU8/fvt7E=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of xiujianfeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=xiujianfeng@huaweicloud.com
+	spf=pass (imf11.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766388301;
+	s=arc-20220608; t=1766388454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=RF1hpiBR4PGZiUEANb3TTkM+5btqs8x8KSIX7bhax7M=;
-	b=srCpmf6LKIXJprsvOZCEVqH0fssOByu4nEiavYakxzeW3HpEXAChn47nNW15rbGIany6QI
-	iQCvDP0wXc0YMjPPtJIImfgjTjVSXDHyrK/asl0xsgq0IYn+OE3t04U9HuPtvMGRistmeQ
-	dVMQ1KLMhmixctVYSBJZlf1DOKR8r2I=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dZV5K3PnrzKHMP3
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:37 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id DD4304056C
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:53 +0800 (CST)
-Received: from huaweicloud.com (unknown [7.192.34.199])
-	by APP3 (Coremail) with SMTP id _Ch0CgB3xBJF8khpgVQpBA--.51780S2;
-	Mon, 22 Dec 2025 15:24:53 +0800 (CST)
-From: Xiu Jianfeng <xiujianfeng@huaweicloud.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH -next] mm/hugetlb_cgroup: fix -Wformat-truncation warning
-Date: Mon, 22 Dec 2025 07:23:59 +0000
-Message-ID: <20251222072359.3626182-1-xiujianfeng@huaweicloud.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6vx4Fj0UvWETlmXfhwdyaqNWdehOmtDY+TnF8sdMtFo=;
+	b=zpQl6DJGFF8jto4QYDf7uHrq+vDGs4A7LihsjLmnTvZ0+npatqMbQ5qfYEPP8HY9NLyLOS
+	IwUc2qlfXT9hI4VcHqQoy2zi7omdUDsPmG4AiuW0bLNxASBhZwO3PzUjmr/CSrmGxntGYf
+	9Nu5pskKOsTrALBGL9M+8mDfMqgs2pM=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dZV8K58X2zKHMPN
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:27:13 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 25F4640574
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:27:30 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgBH9vbe8khpLNxBBA--.13985S2;
+	Mon, 22 Dec 2025 15:27:28 +0800 (CST)
+Message-ID: <702b6c0b-5e65-4f55-9a2f-4d07c3a84e39@huaweicloud.com>
+Date: Mon, 22 Dec 2025 15:27:26 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next 1/5] mm/mglru: use mem_cgroup_iter for global
+ reclaim
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, lujialin4@huawei.com, zhongjinji@honor.com
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+ <20251209012557.1949239-2-chenridong@huaweicloud.com>
+ <gkudpvytcc3aa5yjaigwtkyyyglmvnnqngrexfuqiv2mzxj5cn@e7rezszexd7l>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <gkudpvytcc3aa5yjaigwtkyyyglmvnnqngrexfuqiv2mzxj5cn@e7rezszexd7l>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgB3xBJF8khpgVQpBA--.51780S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JFW5uFyxJF4rGw17tw1DWrg_yoWkuFbE9F
-	1Uta40vr4rX3W2ywn0yrn8tayqkw1rJr95C3yfC3srJF9xKa409wn7Wr1a9F4fGF4jgFy7
-	u3ya9w48trnFqjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbcAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK6IIF
-	6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUctC7UUUUU
-X-CM-SenderInfo: x0lxyxpdqiv03j6k3tpzhluzxrxghudrp/
-X-Rspamd-Queue-Id: 1CA8C180009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hz9dpcox71qbt95ueoim7muy46zqk8ix
+X-CM-TRANSID:gCh0CgBH9vbe8khpLNxBBA--.13985S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3XF1kGrW7JF4DXrWrZFy8AFb_yoWxZw4kpF
+	Z3Ja1akr4rJFyagr1SqF4q9a4Fyw48Jr43Jr1xt3WfArnxtryrKr42kr18uFyDCrWrur1x
+	JFyYyw1DWayjvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B9AB340009
+X-Stat-Signature: wwufgcoehtw1cy338yppeiyhzrq689rx
 X-Rspam-User: 
-X-HE-Tag: 1766388298-185085
-X-HE-Meta: U2FsdGVkX18qQlIGuFryTueEZd2BZazDnRpFY3ZP1J52fsXD6evTUFvMOTXz2ebd7IirbiSlY3OxAGiPEyDNTqQwYeKMJywwLbBHnqSxNTjSCl+DmKgx9Na1bzmH4qIlSCoM+G8HMl+62sjmzs/xT7fCpxlX1FQn7rTZ3fBPo3xCREPW/VjBSO7lW85whZZVWmQ/cKuIQJFIYgfdRFQ2N47phnsj4JbB4GEbj3B5CCdzf2MZ8EvYIfDDZiWK0pdeXREI1d5xbOg3M3Dbabeb+EYSs9y960tFlRhOOhxDKWyR4mlhDN7uOP7jB05colsTI0VHnx5DwxXl4hivoKV0GfLnXk7L+6R5EzwgWksEcBh2ZwI2luog+Vz5PsA1SNWcPd8oRX/sAQSauz5z7NFSNYkrRqimf4rckZ4vujZRwKMwUaKLzf15tz/fVWUOPS52iYA5OVZ1sR2396KGR+J4RGTctT4SKO7LJk8UDnTTkSRASavKV/HLa9CraWBySaq9D1jnGnCyg9ATq/p3n7PuFtfH2gX1zS8J2K1G0hZjHNtvt9N1gZSHYoQh3wgQni/qiQDa/6EizxF4vnVxNz/fS38LvzEE7g3pOmmDTHF1Ag+3X6/eYkuz993Ut6randDg3nky28TIScklV/LbqGl+dcz5YocNI0h2rLruD9nBWpepuTGOTQycuCDLCW3dZn/pQ4yj7AoaH645nVh5nxVp3co+q0+qqqc0vTOTYj8KidA4Eye/MUZwLujA6Rm1TUVOJrSwrOf/k0MAm+Ob+VsNQsN/lfj0ld/9I57ucx6kj5ne+OMR+o4H5lgSj3VRpudrE9SYy0Va4Pl5boK08NCq8lYXhAjZZrlCpBlyzfGdi2CR32Quhlpz9D3Nl5ZUy14EcTgopNbar70PmObZX43nsn9P0tzKJXHfbfm5KTHM+ZAnd6JMubxTXL27CHBGTCBb0OUlJ513LkIABUJVoK9
- T7XijA8Q
- iIkvwB/JkYAbXXRpnmM3Vz8fa1VMddlW9FT3I4Rx51Pd3+9Ks9C3c1BA3jhNHWowVO50dnM0rpY9pD984zWoaeawcPatThdktEfHDpstgdmbgREyi1Lxi/owtKccxU0FRmz9MON1n+8uSUMSN3ETTHgM2A7KoLNO5Vb9Su8FYl2vVvWOFrZqAaxvo3Lty4eFU24RbGwdETnRFTjCOkqpJJ6BdAYKZepE7+Dwo
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-HE-Tag: 1766388452-58633
+X-HE-Meta: U2FsdGVkX1+gkwzOVZh/qyfN6xSzp8rRK6+0k2g6WzcL5t+oXteOitkAWFfocH2maf4l95oVDOR8sOPBk96Gzn9K3sqT8Bubd6bgj+rVimZXmUuNbPqP7On+pbusbyNV823m3niWOw8IHnN5TXyVZMtBdPZFjXwpNWQBvlTHjZSgPtFurltwvO113zk4cn1Rk7Zci0I7xqkcD3WC60KDaBFHq3dP7btqwkgkPyTepNO6W5JmUBc4LN22UAs0UQ2gJxkJ8J1N7n/iTKfdg972K0oFiodnFINScjD6S+ImpfjVq81HckECY0KddPN5TLS8yZ80Nlg6WBZAEfEntqhD66YxX+7PCfAQ8zztKr7ZjbmvfUP+eYFZxh0ziS8RavyeFPBG4yjvWbkOQDBaS5B6los2dMvKNoS5U0Dh15KQQEe/EU9qfk0XRQICI7rdaFU5bBRniPa0RMqWh98OG7pJuvkODpiMqf5c2aiAP8bZR/tIsBOcCKf6zBL5rq+AG4iFnsT9I8vSerMKkL7LppnBzlkqu0Njn/LZu/EndxKSjQ8uFWJG+WH0tRLWZ2NhMsjNPuuVboJGn6l+aQFQSUyL8a0FnhnpPdhzZcLZm9u2I3Op/6AzvUgP7QIA6sArPQj7pJKrXKljl8m0fyr9x2RkmJojtHrgrTJnjhyD89oLs7qrnxo5XCb1sV11qOJQyYRwloHehZ0i6wicaluspnCQ+k358orYThYjh47OwEyzfRNclsEAF2QRsfDuff5qrGF4ESobQsXR/EPxIcf6qe9zfJH3NMF05e3KF+H5aSnMD3ykNE4u7+3iTvrCq7VsLTDnm+CB+s8h9XAzYhnCu3bg63huOcop2eR3XSAHU2fk+pO6DTTvpNd7aBuSfeIJ3FM0yx9ZCShFQXfMPxCdhDwbbR1kbDVBNUK6Bmy0OuNGrZKofoJBzsBgCMPYGP15uEFMRvcPi2tiEfJA6ft3toE
+ WgSFCa04
+ PflbUGRL6ARZRzFRrUjtRNvJiE03E3Wr6rC7vcre4dorZtWpOqTCcCQ4Nfas71q6AoULlK4MMijhYmBetfYp9+apF/JSeBWiMxw4gC3Jm8OGWoNNtxCDja3XpirLqjbDZK3a7v7zLkDMPsmwnGb7/72frfTPkHjlam6pl7igBJb7pUEq3OGDdSzKVQZqFSrjb7KQ2+VZanK4HsYSDju0fnTH0foEF0a3chNiioXrt0aa9qbJLWSUN0uvztPzISstst+O+KyjpGfroiMMGcun5QpJ23D6zAmTLINKKuuS6sn9STtdfTxe6ArFFMZRTymqUsVs6okX4WSb+yoqAFhELhuc9xaM38vhhT1KQdjS6jS1f6woGqM6esPVZ+TfEu33SHDdg
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,34 +112,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-A false-positive compile warnings with -Wformat-trucation was introduced
-by commit 47179fe03588 ("mm/hugetlb_cgroup: prepare cftypes based
-on template") on arch s390. Suppress it by replacing snprintf() with
-scnprintf().
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512212332.9lFRbgdS-lkp@intel.com/
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
----
- mm/hugetlb_cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 2025/12/22 11:12, Shakeel Butt wrote:
+> On Tue, Dec 09, 2025 at 01:25:53AM +0000, Chen Ridong wrote:
+>> From: Chen Ridong <chenridong@huawei.com>
+>>
+>> The memcg LRU was originally introduced for global reclaim to enhance
+>> scalability. However, its implementation complexity has led to performance
+>> regressions when dealing with a large number of memory cgroups [1].
+>>
+>> As suggested by Johannes [1], this patch adopts mem_cgroup_iter with
+>> cookie-based iteration for global reclaim, aligning with the approach
+>> already used in shrink_node_memcgs. This simplification removes the
+>> dedicated memcg LRU tracking while maintaining the core functionality.
+>>
+>> It performed a stress test based on Yu Zhao's methodology [2] on a
+>> 1 TB, 4-node NUMA system. The results are summarized below:
+>>
+>> 	pgsteal:
+>> 						memcg LRU    memcg iter
+>> 	stddev(pgsteal) / mean(pgsteal)		106.03%		93.20%
+>> 	sum(pgsteal) / sum(requested)		98.10%		99.28%
+>>
+>> 	workingset_refault_anon:
+>> 						memcg LRU    memcg iter
+>> 	stddev(refault) / mean(refault)		193.97%		134.67%
+>> 	sum(refault)				1963229		2027567
+>>
+>> The new implementation shows a clear fairness improvement, reducing the
+>> standard deviation relative to the mean by 12.8 percentage points. The
+>> pgsteal ratio is also closer to 100%. Refault counts increased by 3.2%
+>> (from 1,963,229 to 2,027,567).
+>>
+>> The primary benefits of this change are:
+>> 1. Simplified codebase by removing custom memcg LRU infrastructure
+>> 2. Improved fairness in memory reclaim across multiple cgroups
+>> 3. Better performance when creating many memory cgroups
+>>
+>> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
+>> [2] https://lore.kernel.org/r/20221222041905.2431096-7-yuzhao@google.com
+>> Suggested-by: Johannes Weiner <hannes@cmxpchg.org>
+>> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+>> Acked-by: Johannes Weiner <hannes@cmxpchg.org>
+>> ---
+>>  mm/vmscan.c | 117 ++++++++++++++++------------------------------------
+>>  1 file changed, 36 insertions(+), 81 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index fddd168a9737..70b0e7e5393c 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -4895,27 +4895,14 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>>  	return nr_to_scan < 0;
+>>  }
+>>  
+>> -static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>>  {
+>> -	bool success;
+>>  	unsigned long scanned = sc->nr_scanned;
+>>  	unsigned long reclaimed = sc->nr_reclaimed;
+>> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>>  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>>  
+>> -	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
+>> -	if (mem_cgroup_below_min(NULL, memcg))
+>> -		return MEMCG_LRU_YOUNG;
+>> -
+>> -	if (mem_cgroup_below_low(NULL, memcg)) {
+>> -		/* see the comment on MEMCG_NR_GENS */
+>> -		if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL)
+>> -			return MEMCG_LRU_TAIL;
+>> -
+>> -		memcg_memory_event(memcg, MEMCG_LOW);
+>> -	}
+>> -
+>> -	success = try_to_shrink_lruvec(lruvec, sc);
+>> +	try_to_shrink_lruvec(lruvec, sc);
+>>  
+>>  	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+>>  
+>> @@ -4924,86 +4911,55 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>>  			   sc->nr_reclaimed - reclaimed);
+>>  
+>>  	flush_reclaim_state(sc);
+>> -
+>> -	if (success && mem_cgroup_online(memcg))
+>> -		return MEMCG_LRU_YOUNG;
+>> -
+>> -	if (!success && lruvec_is_sizable(lruvec, sc))
+>> -		return 0;
+>> -
+>> -	/* one retry if offlined or too small */
+>> -	return READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL ?
+>> -	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
+>>  }
+>>  
+>>  static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+>>  {
+>> -	int op;
+>> -	int gen;
+>> -	int bin;
+>> -	int first_bin;
+>> -	struct lruvec *lruvec;
+>> -	struct lru_gen_folio *lrugen;
+>> +	struct mem_cgroup *target = sc->target_mem_cgroup;
+>> +	struct mem_cgroup_reclaim_cookie reclaim = {
+>> +		.pgdat = pgdat,
+>> +	};
+>> +	struct mem_cgroup_reclaim_cookie *cookie = &reclaim;
+> 
+> Please keep the naming same as shrink_node_memcgs i.e. use 'partial'
+> here.
+> 
 
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 58e895f3899a..7144d7d555eb 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -822,7 +822,7 @@ hugetlb_cgroup_cfttypes_init(struct hstate *h, struct cftype *cft,
- 	for (i = 0; i < tmpl_size; cft++, tmpl++, i++) {
- 		*cft = *tmpl;
- 		/* rebuild the name */
--		snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
-+		scnprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
- 		/* rebuild the private */
- 		cft->private = MEMFILE_PRIVATE(idx, tmpl->private);
- 		/* rebuild the file_offset */
+Thank you, will update.
+
+>>  	struct mem_cgroup *memcg;
+>> -	struct hlist_nulls_node *pos;
+>>  
+>> -	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
+>> -	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
+>> -restart:
+>> -	op = 0;
+>> -	memcg = NULL;
+>> -
+>> -	rcu_read_lock();
+>> +	if (current_is_kswapd() || sc->memcg_full_walk)
+>> +		cookie = NULL;
+>>  
+>> -	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
+>> -		if (op) {
+>> -			lru_gen_rotate_memcg(lruvec, op);
+>> -			op = 0;
+>> -		}
+>> +	memcg = mem_cgroup_iter(target, NULL, cookie);
+>> +	while (memcg) {
+> 
+> Please use the do-while loop same as shrink_node_memcgs and then change
+> the goto next below to continue similar to shrink_node_memcgs.
+> 
+
+Will update.
+
+>> +		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+>>  
+>> -		mem_cgroup_put(memcg);
+>> -		memcg = NULL;
+>> +		cond_resched();
+>>  
+>> -		if (gen != READ_ONCE(lrugen->gen))
+>> -			continue;
+>> +		mem_cgroup_calculate_protection(target, memcg);
+>>  
+>> -		lruvec = container_of(lrugen, struct lruvec, lrugen);
+>> -		memcg = lruvec_memcg(lruvec);
+>> +		if (mem_cgroup_below_min(target, memcg))
+>> +			goto next;
+>>  
+>> -		if (!mem_cgroup_tryget(memcg)) {
+>> -			lru_gen_release_memcg(memcg);
+>> -			memcg = NULL;
+>> -			continue;
+>> +		if (mem_cgroup_below_low(target, memcg)) {
+>> +			if (!sc->memcg_low_reclaim) {
+>> +				sc->memcg_low_skipped = 1;
+>> +				goto next;
+>> +			}
+>> +			memcg_memory_event(memcg, MEMCG_LOW);
+>>  		}
+>>  
+>> -		rcu_read_unlock();
+>> +		shrink_one(lruvec, sc);
+>>  
+>> -		op = shrink_one(lruvec, sc);
+>> -
+>> -		rcu_read_lock();
+>> -
+>> -		if (should_abort_scan(lruvec, sc))
+>> +		if (should_abort_scan(lruvec, sc)) {
+>> +			if (cookie)
+>> +				mem_cgroup_iter_break(target, memcg);
+>>  			break;
+> 
+> This seems buggy as we may break the loop without calling
+> mem_cgroup_iter_break(). I think for kswapd the cookie will be NULL and
+> if should_abort_scan() returns true, we will break the loop without
+> calling mem_cgroup_iter_break() and will leak a reference to memcg.
+> 
+
+Thank you for catching that—my mistake.
+
+This also brings up another point: In kswapd, the traditional LRU iterates through all memcgs, but
+stops for the generational LRU (GENLRU) when should_abort_scan is met (i.e., enough pages are
+reclaimed or the watermark is satisfied). Shouldn't both behave consistently?
+
+Perhaps we should add should_abort_scan(lruvec, sc) in shrink_node_memcgs for the traditional LRU as
+well?
+
 -- 
-2.43.0
+Best regards,
+Ridong
 
 
