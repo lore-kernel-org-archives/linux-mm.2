@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C402E674B1
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 13:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C369E674A9
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 13:45:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1CFD6B0088; Mon, 22 Dec 2025 08:36:26 -0500 (EST)
+	id D654E6B0088; Mon, 22 Dec 2025 08:45:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC4336B0089; Mon, 22 Dec 2025 08:36:26 -0500 (EST)
+	id D458E6B0089; Mon, 22 Dec 2025 08:45:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA7106B008A; Mon, 22 Dec 2025 08:36:26 -0500 (EST)
+	id C68596B008A; Mon, 22 Dec 2025 08:45:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BA7C06B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:36:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A23841297D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 13:36:25 +0000 (UTC)
-X-FDA: 84247206330.11.AD3DCC2
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B4762C0013
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 13:36:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ADLMqb7p;
-	spf=pass (imf28.hostedemail.com: domain of grovesaustin@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=grovesaustin@gmail.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766410583;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5H7iZ45FrF2tS4o+Y42wdgxFFcoGprkixQX9HHYUyv4=;
-	b=KPn9Y8QLUlMOYHoS/yGwgBUGynYganl3IJmH6Zvy1nVtZNHK8HGw2qFeVrIdRYr8TFDpJ5
-	svyTdRlhzeUfAYdzJzjSNJx0SmLkhJQH0IlXSWza/OZ5aPfJQl99sitqh7vJH09wI/kUC2
-	ABwmplmu1ENmhYAiL2b4VLkOQhJKvdU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766410583; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B79866B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:45:38 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5066E86D8F
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 13:45:38 +0000 (UTC)
+X-FDA: 84247229556.07.B7A7100
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9845C80009
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 13:45:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwGLfGwf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766411136; a=rsa-sha256;
 	cv=none;
-	b=RgRVWof61ZDT6JkZiTnXX/kEkYjFA/uHJsOw1Puv1dydzk42I8x+9UGGoU2bG3FybUX1Qk
-	Wwi+q7ZHFqAhrntLXu7CwufN62d7eoecCS7VFdnAAL+uS6In4oXHYb3wuLPXqOOjC+FO+c
-	RwfqfUaJ4gmETEDONpodLCmobeelwBM=
+	b=MCIPGoZO28mSSM2GPqsBwiRo3DNN8paajo/qVFbHt0xzZSDn11H1zynCDOYrRybpPaVhIa
+	mCyUrXuBpqMP6TnAp4VQgX9uGPTDyDBHztwxDCj0OGRuxNq+02UXoMg2UTPcSMQ7zJwc2R
+	YQK6hcFApp/B9viS3yPycBh31cxSHnE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ADLMqb7p;
-	spf=pass (imf28.hostedemail.com: domain of grovesaustin@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=grovesaustin@gmail.com;
-	dmarc=none
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-450c6f5ff81so2333177b6e.0
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:36:23 -0800 (PST)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwGLfGwf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766411136;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=5niD6qFIutyDUO0yqrRE36IYEi5/CdeQZgzBBwe5Jvs=;
+	b=oJsBpHukaf+TtZgUVcGca6PN8SwzLXPzf6T++pUiQvwrxtnySos3zfFt8fp1IDFdbg7PCw
+	C6/Uw5dvQbETs17twAbhXsnc1sSChsHC33/jHDfMqteS8BR6EQJh3W03MPeIuT9zfPaVdn
+	Ybd8KsWXMtV+C1mYjyDm1v1HtrHwZV0=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64b81ec3701so5697655a12.1
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:45:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766410583; x=1767015383; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5H7iZ45FrF2tS4o+Y42wdgxFFcoGprkixQX9HHYUyv4=;
-        b=ADLMqb7puffNFP+DiN6Ev0ucsjXdWBRMi2D/F+TwLA01LwuYQDWQ7dC95gpx3HHGlM
-         3yKxTkEls58cXj74yCf7Q7NV4WGTIRMi6+FCKtwRZhxrnh/WPfZ0BFMYLipG4nyEiafe
-         QpWzKATe7J/Z2a+9nkb+O7U5v9OG1C2bM9Dz4z+CHdVlr0J4dr1tnONy0htP7Q/FOf58
-         xh8Vy7Vpek70AZvyqQFKcbxz6w4b4zhAM952SUYoOVYkkyc/92LI54pDWawIuazgH9AS
-         bxfyh0Pc0g+ljtKqXrD6HD5eCI+0wEWpFwUOAesKQuD8VUuzkSLqds9cz/x32mTOJCDh
-         UaxA==
+        d=gmail.com; s=20230601; t=1766411135; x=1767015935; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5niD6qFIutyDUO0yqrRE36IYEi5/CdeQZgzBBwe5Jvs=;
+        b=XwGLfGwf4XADwwGXLoxlPQ6JG99Modtc6HLb0Bn/m6oBkDQGCs6czdsqR9ZfkWPIum
+         p6hspMW9MhulSaK6cNvr5CTCYRFhOJtVSJwuY67z5hVlS1aiCXNtcMefljiPammeD86u
+         LrYmBq79gnFRdSv/XdTaKbqsWwqEdFH7TC9e9582RZkxPgfd4CdO2d1phMfAjbET3QMv
+         CnXtHCI94UcQ2IRikXiwn+mbEwQ7AViYbzSchIBGl7kYvrOcpJbeTKM+OjYLuRwCYbY0
+         oy61T+1mknhmMt0oRRu26WboFWa8x3rYfTql/XdCJs0azK7h+06roEzim+c5Y2lCJrGw
+         mvMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766410583; x=1767015383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5H7iZ45FrF2tS4o+Y42wdgxFFcoGprkixQX9HHYUyv4=;
-        b=QirmkAwO/k7+1X4fIYdB3Q8vSfUkUKwV4FKXYwk7EdFEQCEMsc1x5hNS+Vqk2RvCov
-         ELFv3q0mglRFPXloOR5h8J2g0JXXL5Tc7+M3G1hBTl/XNlseOfqg15kcI4X2p12jbvsR
-         T4C3AwjstLpS9vXPHTy6k5f8rZnOIzH5XX0XKAyi/aTajTDwaGJddZjL0YDq9KHlLs9x
-         zufGyTgDgZ5y/INN17VVxUyA/lVKTY1ZhYemjzT+sVWWntrkJZnYmjqXKXHdni0UwpyX
-         YEu62tzCyikRV3HdEfozojBFraAZm5EDCdd34cz/pdkMcFx0oP84NwkGY2kMdqqGbCN9
-         9gNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWgAMLIXndtABuiBBjqfe6sVmCJaj1qZDgAIFB4y7FCzSFxgJoRzLQWd4GgBNFYOPThnyR84QE3jw==@kvack.org
-X-Gm-Message-State: AOJu0YxlP98NGtC/H7XCQjJuFCe2JWcPkhe6mGJVI94ywSCzf8ZLzDhw
-	gXOqJeNutyEHbIryvBes1aorBwMZBdTINDPiydoMflEfj3uh20MkqkBR
-X-Gm-Gg: AY/fxX68xGxPgp09hRgFp/PVnnXVOBE1CMgcVTNMaryLt4b8WxylSEPvBNxzSwkYdyG
-	OY8DBvFfh4UBEwQZv9sRJqw39x1EfpNCmXYxHkM27f4qo32EoQ8KX8lMyvd54kOF9Y2VZzLpl6q
-	eb+oK6dUseTEIPAeYr+aodddh1NBBffoPfPthdWGBUB/Kq5rM4O6KBvh/xWhDcPOma4HfT3eeTf
-	2vbvSt47/5ulkOEG4/sNJ13VPXvEzkYy0aheeU0M6KI4JHpGw+aU0LmwptYO+LggzpkVMkYFx3v
-	e8iwtudKV2s83toL8bJCylw0q8dkz98o0agvxV682yx1esdlLr+QIBgUVYEQeqtpiMRLvr0ojcF
-	Cxf052p8EiRZysLipG+/2wzAgqrlqaTn3zRyBnP2tbVJOWeTgcLDcg83Ti0Ux5xMFGbKzJ5nvrP
-	KjqOcwdcDnoF8DBS4lM0cDNrowYsyJMw==
-X-Google-Smtp-Source: AGHT+IFMAbxBTC55OcMj8bbxTyNSgdWaomaWM/ZZNGC1HLFwksIkDaaw+0SMTuleI3W7IPjVWcJ9Lg==
-X-Received: by 2002:a05:6808:3a17:b0:450:bef1:f4e0 with SMTP id 5614622812f47-457a28b3decmr6717499b6e.15.1766410582575;
-        Mon, 22 Dec 2025 05:36:22 -0800 (PST)
-Received: from groves.net ([2603:8080:1500:3d89:d4a5:e713:bd35:50d2])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3fdaa4e0d18sm6318415fac.0.2025.12.22.05.36.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 05:36:22 -0800 (PST)
-Date: Mon, 22 Dec 2025 07:36:20 -0600
-From: John Groves <John@groves.net>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-cxl@vger.kernel.org, David Hildenbrand <david@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH] MAINTAINERS: Notify the "Device Memory" community of
- memory hotplug changes
-Message-ID: <iugopjdd5u32zgzrpohhswmk3dcebkpgntkz4afuqjrjkdfpil@lyrdle4hghpc>
-References: <20251220000327.3502994-1-dan.j.williams@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251220000327.3502994-1-dan.j.williams@intel.com>
-X-Stat-Signature: zrcsj8iwbnus3zsdc66e8fndtit1f4kd
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B4762C0013
+        d=1e100.net; s=20230601; t=1766411135; x=1767015935;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5niD6qFIutyDUO0yqrRE36IYEi5/CdeQZgzBBwe5Jvs=;
+        b=UMyx1oNiyMmXQbWbDC3MU0ndxaJ6RE0+w12A1fJplPhtOea7szDkDXMCN34+qivndT
+         SWYJz+dXVfNGKzfJmqicyOHSRs7X/4Wwp8f1LoWPYB4l0YYhTfzswZEsf/urFKTgieHk
+         KT1gP/H75SJn1YKAGBDzw5iB8KMp48WDwbRxS612Psn4CLsF7xvPnJHiEEL06GzT/XFu
+         juQBWSiYuDt/nljVi67AMbqxpqobwt6mbz0dwZf4EKwPyr13TueEZ9MV2h89eF52u1co
+         vcUPx7ylHB8xgpoq7ThU/SXfrJxW3TLVsI4QSyPoGC3go7ByUoY1uE/SBu+LCxNcMGzw
+         se4A==
+X-Gm-Message-State: AOJu0YyKA9ZYXOy4nIV+tsS+zBxfMNhe7foS5v8TwMjrnTH51/y1P3J6
+	qPkpgcF9cTdCnbfJnk93/EUkF4Q/Fw9aPrBDPutrFeWy2JIkk1d+puZB
+X-Gm-Gg: AY/fxX7GRoIlGkSEXOy0qQSRUcRUyd9D1dm0pClcPo/bPSjhEdZI+Zm6OBCpOfUQzVq
+	2NV78yWZcOJFqPJTBKcMOCxkqQr74a5rzeqcEqKqbI19onbMEddv+mEYNLabXuSBRDv90yrVAQR
+	r+jg3jXWvXCMIGr5HbAAdoxUf95ztk1CUeQCWaOlEqWhVvjViGaHySmmTqMrvB+DjRikPS3SQW5
+	8MzNpA84jvjXgbzXPyKGDfC34Kbq/drTfIvjNEhxGQyf3SQws/BlnaPE3k1+C0gsBYwwb+ZZgb+
+	2WE2LxNil086WKFxwNLoMwY84ro+GmMpgE/kq/fDap64K+uI0m8Oh+Cb3oBHlArkpew6MERq4Fq
+	rA/okYs8h1xK+kz+THjJQRR2Gh69D/9OUQhSB2aYiGgD0t9479vgs5q2XT2YfRffF3DiPv9MHLo
+	DBNdpVhHnT3mYB4iwaSNdL
+X-Google-Smtp-Source: AGHT+IEsaUg8H6NF7rDmdQwZqz10emrGplIh0mmXW2EVMfp0t5I8wKIO3A08IB3/XrzYx+IQjB7ikQ==
+X-Received: by 2002:a17:907:e109:b0:b80:3846:d46 with SMTP id a640c23a62f3a-b80384610eamr908277466b.20.1766411134143;
+        Mon, 22 Dec 2025 05:45:34 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ae2d5dsm1110039766b.27.2025.12.22.05.45.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 22 Dec 2025 05:45:33 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v3] mm/huge_memory: simplify page tracking in remap_page() during folio split
+Date: Mon, 22 Dec 2025 13:45:31 +0000
+Message-Id: <20251222134531.20968-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-Rspam-User: 
-X-HE-Tag: 1766410583-520630
-X-HE-Meta: U2FsdGVkX1+T1gWLTLcFEf57hMh114P8ZLzBANRXC6MywjuMmAGoSU0v+Z60yN/ihHrPotKIcu4isYfyaVzIX9cfy3WShr/n0ZeH9bY+AfKDlXj3tcjCA7Zy9kyxpHIezCbVW9K19OCdzstHbUOriHt+ABCAdG+T+Udk/9bivM9KDPrAitv7aJjiDm7DTYtfC+DtgqKMRPuig27L2XlVzdc6tI8iAFaKdDXs7SfxJWp6VGqy2goW7JqDT+6+ZXb0E7dUUibtpdfSq2HjsDPmL9D+JLFMkTSRYZ07Qq1NapcrRC0lmcLpBOAYcc5yCtILMGOZ+tMRqFZeXyMXysc9t04/rOYO1wr0GFwX11hGM9gjNkVwZYiiekCpe9YThDxT3wL90uotZ7N1ZsXAvJAPzdqm9aOtKr3e1E+nFdHZmyNQn7nx5tCWQuCwOU9KMbvQFpIxyxRXuDswXlC5jsqCF7A/tErmbTejoBIx8CnKoc6nVhx4WsYfjmRrtxikpF/DAKUndWc03xwKDQyW96k/JoTH7fJCQ7SJHNCQKiad2ryA66JurNPV2zHkGiuowwN+L+26q4IOgu/6KWTnrOKEMDZTM/KyLvzOsgh7MMGJXPA3N9iZ26X3bPF0KUF27RX3tX7ZAtf743tB2TWaFSCNUbppyH7umxUSAZhJ19ys601rzUq4iBc8ln/vqUuia6dMeoIkgpiKn0f8JvZer5nAa0dFl6PfyUQFAwuk3vNDlJfB0Fo1xA0iggxn7OZOiQhtsxQBZdiXQyUPLXnjZPgf/tREB1c0vj7NnWzMtPwvvoAn6oAiPnLe/yx+bIyREgTMVtYPekp2eMCLk/EfLlgKuUmw9DLbKRJg1BtTggeZEJ9F8vZwVVBQyQNCqywZUooNOw+6nkh6GPYJZpRbb0qXUVplCkxAx03HqGXtIf4dtl8/JAX7iSxFXmC/5qcnMnkVM2M+1mSo6dPMttuCYtF
- dAGIz/dP
- B6jD9/T1L1gdDtekojHgTiLrhjt/RyBZdszCoWNwXIQGo9G13eWN0XSm93Du60PAt5sDQIJn0IeeVJm1nD5W8zgr+50pX/e8VPCbwrZkhLiOSfdDEZV7NhmMeVR+oZV8kyfkORhYeGLN9hjYF+nxitc0DdmZrYq5SC9d0ks30SGnujmIKCmJ1QHSBFxIH1pVV4Ectht6i/ANKuyCER4i4zOdlC/4QF8PB+V41E9aiz5VnjpOR+jKq9NtC8fHb4L/6MfLJxavEFHwV7I6w2w18oZ2S91nH2RlifDwpVC2Ql4kbwrWVMZmeMKK9waq1whxCk3xFfgDLsQA7GA0QfXRR34FvIeZE+Gv4S6VoiSPD6ekYlprXrKs1ACeHdqyz6KP45RevXGaAb0ZrDFTQ4ZfoTfK/j+/EPTAStTGyThAW5YvkEv9GT6GhjMjJSWI0mVHJ4ZpSchXxW12EFZaJ5OsYrqNzRDMcDUQglNn5DgfIe2we5uWNSjgijQnlUiMcsZr5z8B4I+1wS7kTOHAt3R0VLQaYhQDA1KV+igatpoEbwdsNA8DOUGFjr5nbJh1FVO/kQ99d+QxHO9lMMcoICLJ4/LnGJuv2uQ+5Ke26bNuPbnyXIZROYHhlJvO5TSB5NxXRvnhCF5FE8StRFldoGni+HDLIL/Z1azinSdlZUqya7TLDVFJww/wccAs/NUmPMh6+xnf9tAko5kZ30oHXlmJPXXi/XJHR8yxwQbCgCQZhwDVgShs2xqc2qFihPA==
+X-Rspamd-Queue-Id: 9845C80009
+X-Rspamd-Server: rspam10
+X-Stat-Signature: ngsqrcisgzxqog5bcx1oh4x48pojawus
+X-HE-Tag: 1766411136-716974
+X-HE-Meta: U2FsdGVkX18jvfwK3QNEezvNpVFxf77nlDU4t7rsijDeAgkaFShoOJylO/ZLxi2FxtFb61D/1aXYklRhsOI6hDKJF+/9KsupziiUyJBvQL4cJwRI/wskOi2VpLy4TwnIVYNiHh0e01TRhajZjKqFDWNs35hv+vIYBm/mK01B3lOOmqtvCx4lN7Ryo2uG222mtRibZfNe7oM3n4tJX9hdAbWdKU2FZyN3qTXBQJ/hhF7W3RucVmdUSQ2uE2BhpGpQxIgaG/9STNyu4aXMvc+Uqg+4k/trD142idIBPNIm9CRA7ERpvEAA0B9ydnTNsxHrqpy3vWDmDk4U4GdbZZVB79lWpYlFry8SXYKcnetQtcDJM4h5KfJNoHq6LOjg96nMC4jaS4LbBZMJSehRMYmX1Nw3ryZbhT60v4+0lm3wrjaGef4jnDMtrPP45X1kPT7KZM/eG2wjIMiOvrD0JG5LpGAnb0MIpft/w/lsbVs5XMczA0G8uwt/HxLf/MHAF2pHXQNMn0G1sja9StRWfw6nzIk+c5ayS6zhCVL3gabyX5pD4/DwLsdvAh3NKt4yLuWlNwR/qNyYxBdNHcX3fQxT9rsViIdRcFvS/86NUB1XJp4Bnvc/2vsvGLlVThKfq+BvvGWeCx0bbIVg3f/6hIUdGCGhOw4iyUeZA0doR1Rf+naePhiK1QrJA1AU25xa1f5NBRZJBh/Ef3lQLaIxYywGww0bBsuaMVwQFt82avUCFek420IFGRDDtiJeFYdTOYElE5aUrlCtMdiDW5vMeMEBsf4f+zsArRxP9AnLWFtF1VFcFhbYNuIpRD+Fsf6hNWiECEZOLAyTu5QpQq1GeXp7aabs6cpM39ZmEWD5rpbzwrib4vg4ztRoBSUUiiqN8kER24Dr5LllPmmp78yaGH6CPEnPzdRNh93I4bWs5ena7onJyIp8zJXbkGzOlyYKuqBI2nPvbfvmWB9NEHNwsTM
+ Zx9pgaIB
+ KXYSEW8ruxSLoTw4EXaqyyxdonfBOUG7hP0r99a78KZ/FAYt3cAM5LsjTGypQDai4YLuLCdhXe5sPhwF6cm+gsgOBv4n/wx81whGCjMxRkeRrvHtx1BuStSWOdW3/lXtt9wMVDpRxLiizWz6Eu0vpT2MIv+R4Rb29WtCUjijH4SkuV1Dy0jTN2c3IupzGKKJXXODx2MNbkJ8mfQmkQCRo1ryMvJhrzGgi+WTJx+glrpp8cykjXlfjHlxydMSeUy5NdwQB3njy+UWxy88SeWzZiWDLsgT9zGpe5ou6dWlQyTxTO69SeprPH255/faQCHOGZWdnfCnd9gwD2EC53SYvtpj2EzYw3bSjxCap69SP2Uk5hL50+VULuu67R3L2qkoF5GQ3iGNVpoUKOptV3vPOag56nndPZ4P+1W+f/e9scA5vXPT6854jSpKhebAStgHi3NHWredKkSxYl+MpiTpwmNyB74BG97pH0kmA7r4BHFqnBSjgDVR6KoSFR4QBUMXBEykrClAuRweQAoRuZbd4aqB8NmVP87sgkiSepvGLjVi9AIY8fhpu58siKLJjRWcEv73hXrCqIcYYuDz4wkktk3+w1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,46 +121,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/12/19 04:03PM, Dan Williams wrote:
-> The recent episode of a warning regression in memremap_pages() [1]
-> highlights that relevant updates are being missed by folks that care about
-> core ZONE_DEVICE changes. Yes, CXL folks should pay more attention to
-> linux-mm@, but it also would not hurt to copy linux-cxl@, where most Device
-> Memory folks hang out, on memory hotplug changes by default.
-> 
-> Link: http://lore.kernel.org/20251219123717.39330-1-john@groves.net [1]
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Davidlohr Bueso <dave@stgolabs.net>
-> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Alison Schofield <alison.schofield@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: John Groves <John@Groves.net>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5b11839cba9d..076322fe91de 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16426,6 +16426,7 @@ MEMORY HOT(UN)PLUG
->  M:	David Hildenbrand <david@kernel.org>
->  M:	Oscar Salvador <osalvador@suse.de>
->  L:	linux-mm@kvack.org
-> +L:	linux-cxl@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/admin-guide/mm/memory-hotplug.rst
->  F:	Documentation/core-api/memory-hotplug.rst
-> 
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> -- 
-> 2.51.1
-> 
+After splitting a large folio, the resulting anonymous folios must be
+remapped.
 
-Acked-by: John Groves <John@Groves.net>
+Currently, the code tracks progress by recording the number of processed
+pages in an index variable (e.g., @i) and comparing it against the
+total. This commit simplifies the logic by directly subtracting the
+processed pages from the remaining count. This approach is more
+straightforward and reduces the number of local variables.
+
+Additionally, this commit renames the variable nr to nr_pages to improve
+code readability and self-documentation.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+
+---
+v3: still use nr to count pages but subtract it directly
+v2: move folio assignment in loop
+---
+ mm/huge_memory.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..d51aff0b7838 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3423,17 +3423,15 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+ 	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
+ }
+ 
+-static void remap_page(struct folio *folio, unsigned long nr, int flags)
++static void remap_page(struct folio *folio, unsigned long nr_pages, int flags)
+ {
+-	int i = 0;
+-
+ 	/* If unmap_folio() uses try_to_migrate() on file, remove this check */
+ 	if (!folio_test_anon(folio))
+ 		return;
+ 	for (;;) {
+ 		remove_migration_ptes(folio, folio, RMP_LOCKED | flags);
+-		i += folio_nr_pages(folio);
+-		if (i >= nr)
++		nr_pages -= folio_nr_pages(folio);
++		if (!nr_pages)
+ 			break;
+ 		folio = folio_next(folio);
+ 	}
+-- 
+2.34.1
 
 
