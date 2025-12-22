@@ -4,141 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4594E6781B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 23:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2747E6B25B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 23:21:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0778A6B0005; Mon, 22 Dec 2025 18:13:18 -0500 (EST)
+	id 108196B0005; Mon, 22 Dec 2025 18:21:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02EE96B0089; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
+	id 0DCF66B0089; Mon, 22 Dec 2025 18:21:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7D196B008A; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
+	id 01C326B008A; Mon, 22 Dec 2025 18:21:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D48316B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67181B9275
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:13:17 +0000 (UTC)
-X-FDA: 84248660034.10.B0F5827
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4145410000A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:13:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N4DcZn8w;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766445195; a=rsa-sha256;
-	cv=pass;
-	b=a238UZULQNbZJ8mPnM/cN/fEPD5mUqxYFWWAqghnBWmIw8ac6y9vOJwpiXzURJRt6Go9io
-	gRQ1mAD9O6XFchqYr7NjLPaE+YuHAtpqPQz5tv8Rk3TRpJFroE2/m3+lA50bDeRi6208O9
-	o0uj4OjyT4ddjdTpDNBP4INkW+/Jyqs=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N4DcZn8w;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766445195;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E42936B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:21:24 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 866091603D8
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:21:24 +0000 (UTC)
+X-FDA: 84248680488.11.5F9A932
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DE1E0A0007
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:21:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aXe7FVYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766445683; a=rsa-sha256;
+	cv=none;
+	b=lBxZX8XFmlBHNt+XcnjjFfwhfdIkifwL3KwJHhWfbaLjZW9IfctFWv5AMcG+B3k+P9rqIX
+	GONTuPQXrF1Jx0K0D81h3si36HIiWek1VknO4mn6cMWV9jqEPNmjXpF1Eb7u9tBxdfGaKN
+	dSzuLyeJSDYiOVTHx9zXNSulg6fHZNk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aXe7FVYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766445683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
-	b=w5aRiQ3s0vQ9x/liIZiPvU8VeFj06YzmrZZ5K9STscLZwnefUohM+yGBu81bnfkN403hgf
-	THuSxs1npJFFvcs9RIxKtygm5nWNSneq2Mw6wVeNC5fZTcwWR52caZfiuU7wlYRNUUBSWi
-	YoSrdG1I4FmVAl6xQvLo4BrU56kKDiw=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso211495e9.0
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:13:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1766445194; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LDNyesIXs6QCatu+pLnNJeU5Qfpi1GPdixU2u6pThi7tjbOO4B+yrG4GJVePYfd9NG
-         L2eeq7OW7Vl6bUOX8uS4CphiC0k0CY00f3AvbcSD+MIeApT/C3v+p1s6nwyifTq3ir1y
-         dOboGZLY6HIqgEsQxSvd5gKEFvV0Fi/dVCxP7A+7YitrOsEQeD8SbXlpHm+omzbgl8y4
-         pLh2KNFjODa3YwHegFdF9fGQRtZDf4YjgkyCnERpPxc36Jt+aVRyLGga9atBc8+JtzKR
-         qNgtvauhTOAzWjaKko0yf7TRNe6obrYAv4Y1aQ6umal8nlwGWDKFDUZ6x/PjcKHbOezB
-         oNkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
-        fh=aawWypLgrsTQOiM55Fx71arAT4B2nKE02m7im1f08QY=;
-        b=Kb7T2WQk17fGEb1q9xk8PCgw8ckj+3WdrCx0lmTAjkDn7PEjnPrLLNYGTvZWhISEqV
-         BYt65/4aBozOS0Q//GjokuSdebVzWKiTU/Yvu4e1qHqsxAUstaQqu3BbuXQpGDbJUCre
-         /PjN8d0kVapeCmyzhvwK0SkACN//y3ssBj8YzEDpdGlDEJt+hwKzlCxhCMf0GaBkE3Uq
-         a2VMi4o+uCFlG6Ihs3OJe9/RBjTUlT/n9p3YdP8IUlHt7DOdqrwmmcffuhWI33CwkDs7
-         nstTqJtoczcn2RtfbZ+n5mWxncXzOlzrIjokkIXQ0uu+4eTYyCr2SYiE4WISnDUN+zgo
-         PE4g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766445194; x=1767049994; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
-        b=N4DcZn8wv7w9RwXY0PBUS5GM/W5C7POFiSiZjK3USg4hW6ely0bQQ3wpcJoP41hXUF
-         6DYo25gZSyXGXlXEVz/HZ71e2EaWSCuelinykOTn85DF84Rp0N9hEqi26wphQK8Rnwka
-         97PG41MEh6FDlzWo/k5/FehujqQpvGdxmnDRYtE7upNqR0Kdvvo2OVFPQ1s6J+J1Mdmn
-         yva8Xc6qe1wP38T4uGIXxXPR8nsbb6uoxtBDkISTXPDdyB0UrSBcgdgQyYarUtVduxfh
-         txrTnXfyMYUqsYwvSLRtySeThcaF7Y6ipizk3LqCnIRTNEr3Uskar7hxY7U2TnKAirAr
-         XPMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766445194; x=1767049994;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
-        b=W3Sg9R3arUrbUCwLcKAZgUNAQ+jDDYQYuST9I4bwQTOAQ+PLt/+AlXxh1TT8K+YGmP
-         2LCleTKDKPCYPiDmf5fjr5NSQ5nWf1ZaHYFw86yunVqwC+LY4Yg6lsxdRxTWnQksIz1U
-         vQBCKvyzi8yXc+PbQzR5SQoXh8Jihpnd9TSaEpE06wNDMaDamCyzHBEBHPxG1jxoM4KL
-         bJ5Mlwh73qmihIzboSgBxHgTdjGKPoQ3S5Qh7bj0lsC1cZKizLKRVOKoUloHi2HjMSxM
-         NJd2GdPSl5Sa6QoHgX0aPRQGioJIUz3BQcj+YT1/RbEAuGosAnd+sMOpZE5bVQnpojwl
-         JupQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWswRme2pb63pDeLZ+RWLlcP3j7Ay09927b/wjeURmXHHDP2k5ft2PYNXPsnD9sX4qeAffCsoio0A==@kvack.org
-X-Gm-Message-State: AOJu0Yzb+e7eJ0oZWYGxQ9qy+bI3OZCPvg6aYyP5yof4+PIcimEsuggp
-	OALlqa4gBb+woDJb3tJ0zeH4TZkKLW6/M0VIGsEpMvc9Nxtnj3vqwKJpfKMnlst06/+Aj1wn3Cw
-	GeGEwZp8Z6rbFKvqQpOSSuNQg7ixeRxVajaVk7Lu5
-X-Gm-Gg: AY/fxX43oB5XVSenhTO/5ZyT1q0YVWk1ZPAIhQMokc1oYP+385RJ4iqjrPFLdMvj+gE
-	4V8LcqXKa87CweEtlKMGYEXN1yH9i8L3gmZeH1ftmB1Gi6lYzMFVREcWpgdK5ZkcjVaGUt384Qs
-	6Q528EUDedSjPBD+ilifgo3VN75plL4g8YHtyxyLurJAN/9RT7mUJ0197oP00lC5pa3NrrLACGd
-	gtTTf5kp3inhfovfTOSRxTltjYcZkwkwSm/vRhyWhYm1UqCt8VUpzu18PEK75qRMtMxaCoCSPZW
-	evPNmyHcMbfDefY5NTR3cnFh1A==
-X-Google-Smtp-Source: AGHT+IFGkduj7pH8W1zUazH20M0j3IBfzkdlTK/FmiMb9xK4c/lYliUVcovrVAkpHgDjUzWBthuuXRctt88+BX0beSY=
-X-Received: by 2002:a7b:cd85:0:b0:477:86fd:fb1b with SMTP id
- 5b1f17b1804b1-47d2321463cmr1500555e9.11.1766445193456; Mon, 22 Dec 2025
- 15:13:13 -0800 (PST)
+	bh=0oF4mNRX4+646eKhm1rwVF7uE6pVow1It0I4U/zy8SA=;
+	b=3uC6MSXOXrcedMIj7yqText+SX+6n9+LvU8gsbbSu3YLLirbik/Urvwt9qQSUzPVpIA7m2
+	wUufw3gZhy7Tx+nGMrNsOJIOW07kuwqaVUjKMa/OSHHIZuUnlS3MWCo24bfVwuZHk03PXG
+	e2J3hTP+0oWXMev8KUVMyH2fgLVt34E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA12C41815;
+	Mon, 22 Dec 2025 23:21:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF51C4CEF1;
+	Mon, 22 Dec 2025 23:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766445681;
+	bh=AfPLPIAPUMIERCMsImUahHDBvM54AwOISAeBvFuxmYM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aXe7FVYi6NfpMW5sS7HfATIJ9ci/IdbSAeMbUgTyPiLlOwgzfELHJpwNg4uiHnEm0
+	 Wp2Fh9zx8shAA/MJYRg5Vys+6xmjDk9ujklAUD1zNOIGmeGOSOfk7iL4GSAzowhLZu
+	 HzNj1LuQjhAN+dKsdVlRfk6y4IgeI/8ZJB484GVBzlZdCD2fT3PNB3WdErxpcwvnDB
+	 hBzVWU8YIM4h90x1rwc168ceMXao6MmkeWWyVOwvA62HR7YWOoPC7nYIdthQ+hzmUt
+	 Qhhnqkzzd9WNiO9VQptVmyw6PZM/zNyDP4C0QXvjbZ0Hg6IslepgKVV8MnwBIm9ToZ
+	 TZoYTuCM+dWiQ==
+Date: Mon, 22 Dec 2025 15:21:21 -0800
+From: Kees Cook <kees@kernel.org>
+To: Alejandro Colomar <alx@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Christopher Bazley <chris.bazley.wg14@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <202512221517.E1B039879E@keescook>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1765406336.git.alx@kernel.org>
+ <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
+ <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+ <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+ <202512101736.DE24BE89@keescook>
+ <aUf6xwicMCxL28Yp@devuan>
 MIME-Version: 1.0
-References: <20251219183346.3627510-1-jiaqiyan@google.com> <20251219183346.3627510-4-jiaqiyan@google.com>
- <aUnCUNjiBOp05kVD@casper.infradead.org>
-In-Reply-To: <aUnCUNjiBOp05kVD@casper.infradead.org>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Mon, 22 Dec 2025 15:13:00 -0800
-X-Gm-Features: AQt7F2qeD0yp8uj2mESCumPqHXgiW1WK8km67ALQU8AEDyS5w0Owye5RFzl0tRQ
-Message-ID: <CACw3F50ZKCGaQrOEgoH6g8YCcK7Fs=tEiywZhqUzqkkeV_SsVg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mm/memory-failure: simplify __page_handle_poison
-To: Matthew Wilcox <willy@infradead.org>
-Cc: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com, 
-	ziy@nvidia.com, harry.yoo@oracle.com, nao.horiguchi@gmail.com, 
-	david@redhat.com, lorenzo.stoakes@oracle.com, william.roche@oracle.com, 
-	tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
-	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev, 
-	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4145410000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUf6xwicMCxL28Yp@devuan>
+X-Rspamd-Queue-Id: DE1E0A0007
 X-Rspamd-Server: rspam03
-X-Stat-Signature: z96urke1shrk18s4wtmbc6mxohzupdah
+X-Stat-Signature: uyf86pn43jbg1ioxcsttr9ogukfg5ugo
 X-Rspam-User: 
-X-HE-Tag: 1766445195-193226
-X-HE-Meta: U2FsdGVkX18/xJESpSVLUBScWgmez9A1NzxeMA/V5a7prTJUg+ws5O9y24vKSdGlWeFzUlK95hSlqV+wN8w8nEH4Vt9i3v2Q9UMBlq5AwDoI436wl8oZtgc3GNRJTNswJuqWsM0VIKu+mGzduw+BdsojgrY7OEnyCijlM+yJBlC0Ew7VAQ+CYXgu202MFJL38Gt8VtM9wQVwyIyg3X9mAH3/94P0X+fKfgXpolI1GO6rlrIdEz+XNdkvyxiM30jR104Y9oIfRvvIqr+9VipAuDlNXww1xfj74/NiWQWLZwih7I8abK0MyIEnASrHsHSIqNVQboFm81E60Air9PbcP4p/1qOCCPZEqu+WeGOX2GXGKDF2ZZ+OAHYvPKeuBoCn8Y8xvAT4nAS6akgkUGkSYAgZ2/04YY99FOexIzT8PTbS5cbNwt3ODLOKnGq0AhSrYNl8V5j36Q9n9BfBFniOzfgMxw8i+78E6FQWJDDCUeLpJrJP10P/R/4RMuOMZ2dv+wKuEPXvau9A83QyB2laNTwSaeZ5URVY1NDc7hnb2qwHI/6hGZCGqt1qsFlQpdX80ysVQ83+EYg23vZ/4x6RKLV45KvvD10HwQRk4uRB0c7AjaBAWzqNcOFvANrvp7yNbi/ygHmb6+Xt4nK2HU7vjYXQc/u6jKl5o7Jpwuy0hTODNKJAMLV7g6FgRsC60NCHJ/80kx2553SXWFm3UfO8Y8+2/jbpDUq1tvgm9eN6juJ+F5zmwDrNrFWnSIluB/BY6wvpdffKNZl0s701tLv0dAwj/ViwBSw6sOzB0hrU071UnpFKGQvX3NgWpjaYLR5dM/5039it+vL1oyJEyhOwZxoJ3k3xlSuE8kiaG6ZhB+PEVxtRvrh/en//qBSk2ekD6Q7g2sTVAGzMDDfa9FA2tHZHTCcX5cBjbzP/LQWDUJ1kode3FsUbF6tGPj36AlVpPEgvWXA6si/K53jybQk
- TIurMlhZ
- jpB6A/ZQ63Vk4GAEj9rknUacTbAZtd8Dn8gmn73n4u78eOSdjVUbL6CiTUwYQtMBQyOX3ea5piIzJ6IeHx+vx+WJKP1qaRRs0Dx8F
+X-HE-Tag: 1766445682-410093
+X-HE-Meta: U2FsdGVkX1/cfdEeaMv3z19L1Ut8gM9gUZGr4etbi2k97lOwUKiPRx+e1DUMbNAdkh2CfH65VRBfQsGiw1yIk56t/zonygjPLyk5Ka2zd+oJxgqTDUo+s8hlKEO66e6qYMg1l9j6h5upQGTWnFwX1HSEPMH2n3xu5R2ywMcWflsXdZUPPgGIsLCC8svYyuqelP2x7o5HfMGMnv1wHDVa25Tv3C9o+3c/gG5WgKca5Vg79AJj3RrIqqSg8lb76eAMA8eHLU/DPbr4BCllrrwRkk1ZRj+fImKhmY/6Ba8/E2K0ZqwIvdNnP/Rf6IqzhW9DTGR6X68Ui1VWnl5akzXZcBD+soPGsseU2NCmdcYuGmYyaXV6p172GJ5Ur0lTtkMCimTic+XBE58LenNOL00fqoK+r0oEwfARsEpUNlAcWH3822z3NoNMzIy9YFzj1GBVAC62qWlFY15iopK42FXdPnsV5M1V4C2Rmlh8DKZmQ9lFPXea3di1/G4qMEC1ecVyuDcv6TYWa4Xq68AgF6r+r6VLkRG6KUv1egiUGmV+FfAWBVlanepSZooarIlowf+9qtDpuByI7izgy9ONFjbK6onWVdfc724C4RlBRABPlUrdaUJzfXJAvoNQKfeqaJtJGM3gG9swWFkOqAJrBF4Ft/IRR00g0YZT2eIDCvBxmUckrBG09lnOH84KVrB64gBvn7aJdr1Uen4rAE32xew4VOJQq/Zjnd6hpukQIGTS96qt/ZpRojDufEsa9eoqT48VJpHnEjFZMZh2fUpgXNvDeoh8+unc1/jSlx/Ho+/5fpvl7U+50dVZ6SzFQ1thZj7YXGEjpQQ59ObhPk551PiPRv+NZJLJpBDHsieAZAHOLR4j94p5rE+S315Lg1lWofvhpnE9AHfSOMcOERnmu7suILDJQtSddHsJroXAVrngGtmLijQzSum27756keLkyOekkzAwGvzcexNY5w6PsD+
+ vDEij07U
+ np5+4n163njD2DkRyLAJI9oj4goq5+Ba+IYOM95wbDY9XAQvWD1NlTVvJyDl7Io02bG7M7szxsxT70COhtunaANd0WBhYezZB9ZvDq7dOY+wAwYBLaZzye+Swa+vep7MfpVVdTbPcFQptZR9wDzSdlwn/HWWSlOufX2gwZjVImiGXGitJcMfZ/jAoF8iQRcJb7gV5PRBJtqHsBOPZMD1f6WKxmLODRoIVekzcYK2PUfa6sylLTTwymvgx0xVo2Y7ui+xf/kwabcRAk6G2tYViadpMB3sc5o1nHwWi3ZKWlSSlCSdKaYADlW9+ZEgNzSTxnVIdbu0zqb21taRSrKhJ7Ndlg5OMabMyu0M/XneAspcNbKKkvQLRYk8blS+acEvQgNiYTQsnywhA7BBKF7JZB7l/SoiqKSR1/pPNnFr481/F0zg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,27 +105,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 2:12=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Fri, Dec 19, 2025 at 06:33:46PM +0000, Jiaqi Yan wrote:
-> > Now that no HWPoison page will be given away to buddy allocator
-> > at the end of dissolve_free_hugetlb_folio, there is no need to
-> > drain_all_pages and take_page_off_buddy anymore, so remove them.
->
-> What if we discover a hardware error in a page which is currently
-> in the buddy system?  Why don't we need to remove that page from the
-> buddy system?
+On Sun, Dec 21, 2025 at 03:07:14PM +0100, Alejandro Colomar wrote:
+> Hi Kees, Andrew,
+> 
+> On Wed, Dec 10, 2025 at 05:37:13PM -0800, Kees Cook wrote:
+> > > > Are there other open-coded instances that could be replaced? This seems like a great task for a coccinelle script.
+> > > 
+> > > There are many, but I wanted to keep them out of this initial patch set,
+> > > to make it easy to apply.  When this one is applied, I could work on a
+> > > second round that replaces more of them with coccinelle.  This is just
+> > > for showing that this is beneficial, and to make sure that you ask for
+> > > more.  :)
+> > > 
+> > > Also, it's easier if there are few maintainers that would block an
+> > > initial patch set.  If restrict the patch set to a few files, I don't
+> > > have to deal with many of them.  Once I get used to this, I'll deal with
+> > > all of them.
+> > 
+> > Sounds good!
+> 
+> Now that the first patch set has been merged, I'm working on a second
+> round.
+> 
+> I've written a semantic patch:
+> 
+> 	$ cat src/spatch/array_end.sp 
+> 	@@
+> 	expression a;
+> 	@@
+> 
+> 	- a + ARRAY_SIZE(a)
+> 	+ ARRAY_END(a)
+> 
+> 	@@
+> 	expression a;
+> 	@@
+> 
+> 	- ARRAY_SIZE(a) + a
+> 	+ ARRAY_END(a)
 
-Thanks for your comment.
+I think you can add parens which will be silently removed but gain you
+the commutative behavior:
 
-memory_failure() explicitly handles is_free_buddy_page() case and is
-removing from buddy allocator with take_page_off_buddy() directly.
+@@
+expression a;
+@@
 
-However, when soft_offline_page() handles free page with
-page_handle_poison(), removing from buddy allocator is missing with
-this patch.
+- (ARRAY_SIZE(a) + a)
++ ARRAY_END(a)
 
-I will fix this in v3. One way is to split hugepage_or_freepage and
-only take_page_off_buddy() for non-huge free page.
+I *think* that'll cover "a + ARRAY_SIZE(a)" too.
+
+Anyway, looks good! You could send it directly to Linus at the end of
+the next rc1, and he may take it. If not, you'll want to split the patch
+up and send to subsystems after ARRAY_END is in Linus's tree. I use this
+tool to split a large single patch into per-subsystem patches:
+https://github.com/kees/kernel-tools/blob/trunk/split-on-maintainer
+
+-- 
+Kees Cook
 
