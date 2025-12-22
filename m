@@ -4,107 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C6DCE6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 10:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8EBE6748D
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 10:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75B696B0088; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
+	id 169F66B0088; Mon, 22 Dec 2025 05:20:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7100F6B0089; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
+	id 118B36B0089; Mon, 22 Dec 2025 05:20:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EB026B008A; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
+	id 0236C6B008A; Mon, 22 Dec 2025 05:20:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D6AA6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 199A7C149A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:10:42 +0000 (UTC)
-X-FDA: 84246687924.03.BBFE1B2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 395AEC000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:10:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glwFxBeJ;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766398240; a=rsa-sha256;
-	cv=none;
-	b=f4InOkvnAMyBjh1/e7n1xqUuQwa4XJuivQQM3iJ/Sl+Lpru1Uoq1YLF5b56U8H5fiH3ySI
-	DvZ+C76j0UM/IQB/6Iw7Vdu431tJa79h+toLXOM8D6ZtJ7XCp0n6FGpNmkeyjnlditYgFZ
-	845GrJqNylSXwgWHn96vv0tNsir2vw0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glwFxBeJ;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E46836B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:20:11 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9479EB9CF0
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:20:11 +0000 (UTC)
+X-FDA: 84246711822.10.FEE867D
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B5E2B4000D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:20:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=YExNtzNp;
+	spf=pass (imf12.hostedemail.com: domain of alok.rathore@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=alok.rathore@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766398240;
+	s=arc-20220608; t=1766398809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1L2+dMs6XM8R9PBN3KFS9SU6ZPxzdqK4PvbofUALcIw=;
-	b=E7W7acn8BsRPYgutwHTev1a8PpihvjXYCZvok2ZEPRU9h4JnP/R62FAv/JCukFCeLoeVtt
-	pD2FBEmq7CE8/zULyWqoAgBDEoTLXOJwrwfNXgZzweWc7W1rQ/8ohp2UT8CzbuianTnbqH
-	hiCGIoggYyUjGpN9JT5LCPvQHpN1MFs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14A8A41B70;
-	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1F7C116D0;
-	Mon, 22 Dec 2025 10:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766398238;
-	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=glwFxBeJHfy/Hxw8E0IhkNQF2D75sUaWPBU97dBGqQz6RmNddi4AuNDGVRXl11MW5
-	 /2XRcRjtcuW+PNO3XYgXDly/+1nqW71Z8wNkiivCJ3Jg7vi/qaEUg8J4toGx7nqkkz
-	 RC2z+fWsSeanfTQwGH23Y6Vf5tNpm4TWdbplzUT0YtbQ8eTMrchSyhXYxYhA/YeQFZ
-	 OPRiIuCw/OtPCmBpFpOqhk6zayMlQB8WgR7rXpsqEZFJyUY/Z+c80MqXHtj/CR8vcF
-	 w1ay/Q/COiczt1kmwNYCUFJSSQcNJyIAUj3oSuM1C7TYwA6NT4ooYHb4wIaUUIsZFD
-	 XSI866D9bbWPg==
-Message-ID: <c66cb4e4-820e-419a-ae9f-efd2c15aa570@kernel.org>
-Date: Mon, 22 Dec 2025 11:10:32 +0100
+	bh=iFw/FFLjXpV1aTmhrvnbspHZO+4aypiGinSWzi3VTcs=;
+	b=DLv/5Nuo/Fc7ohf+j8Ml/u99aOeh25JfNu6be/28kr1T0VpzC2nUG3j4Bx1GpQkapGwus1
+	A5bXsxYs9ZB+Dd93ysGUxbJEiyu1Cqdd1lZZ1A3g/AtRixMGvsenrzeMLAKrkpSvBgZLBn
+	Kwepa+DxtPoq980Jrk+suuD2bR036Ss=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=YExNtzNp;
+	spf=pass (imf12.hostedemail.com: domain of alok.rathore@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=alok.rathore@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766398809; a=rsa-sha256;
+	cv=none;
+	b=CCXNWxuvfmJDwE8GwTqhF7whYL8NJ/QOhfa/jf0jWdY3OefHaBV7VIPEAbfjM/dO6qtE8T
+	70IKrM0inHBixbuothmXULQc3LWuuxcz9qd50DvIIGZ/qdf4DYcd9sClxgXyG+QhjknCJO
+	erhdRE0k4gJPlnoQEYbAnEQ5jMt8Vrc=
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251222102003epoutp02d8a8b9eff3f11d5f89eb34b1b51cfe25~Dglp2gC2M1164811648epoutp02t;
+	Mon, 22 Dec 2025 10:20:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251222102003epoutp02d8a8b9eff3f11d5f89eb34b1b51cfe25~Dglp2gC2M1164811648epoutp02t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1766398803;
+	bh=iFw/FFLjXpV1aTmhrvnbspHZO+4aypiGinSWzi3VTcs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YExNtzNpgb/ZELsmpjZ4Hi6x3CSEc07tIGOAXLYh29W4XliI7lkrG/ux51Hn9w31P
+	 ePoid/2NPDg0bVKtap3ZOsehSU+7T+ZUORs1hX3BM3/I7Uo888wJe738hgk5ruOtwE
+	 pDL5lefA6mhdu0HzODT05t9Ps+WLfGlH61ZIIP1g=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20251222102003epcas5p444e057d306fc02ab41075b4458f8710f~Dglpioc2e2320923209epcas5p4G;
+	Mon, 22 Dec 2025 10:20:03 +0000 (GMT)
+Received: from epcpadp1new (unknown [182.195.40.141]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4dZYzl3pN5z6B9m5; Mon, 22 Dec
+	2025 10:20:03 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20251222101745epcas5p43ca3a6a59efe996cd62769e8d57bb81d~Dgjo6EToi2922429224epcas5p4k;
+	Mon, 22 Dec 2025 10:17:45 +0000 (GMT)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251222101734epsmtip2a9293df1d5ea6e02bbc8d3cc0a8321db~DgjfEfHIV1164911649epsmtip2a;
+	Mon, 22 Dec 2025 10:17:34 +0000 (GMT)
+Date: Mon, 22 Dec 2025 15:47:21 +0530
+From: Alok Rathore <alok.rathore@samsung.com>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+	sj@kernel.org, weixugc@google.com, willy@infradead.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, shivankg@amd.com, alokrathore20@gmail.com,
+	gost.dev@samsung.com, cpgs@samsung.com
+Subject: Re: [RFC PATCH v4 3/9] mm: Hot page tracking and promotion
+Message-ID: <158453976.61766398803526.JavaMail.epsvc@epcpadp1new>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
- <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
- <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
- <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org> <aUioS4dkTrKgsHGP@hyeyoo>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aUioS4dkTrKgsHGP@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20251206101423.5004-4-bharata@amd.com>
+X-CMS-MailID: 20251222101745epcas5p43ca3a6a59efe996cd62769e8d57bb81d
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----Rvty6Ov.E7w8fqTiecbGSIlWaDZOz3Joz9WFZpHBwcJNCC2Q=_9fec5_"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20251222101745epcas5p43ca3a6a59efe996cd62769e8d57bb81d
+References: <20251206101423.5004-1-bharata@amd.com>
+	<20251206101423.5004-4-bharata@amd.com>
+	<CGME20251222101745epcas5p43ca3a6a59efe996cd62769e8d57bb81d@epcas5p4.samsung.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B5E2B4000D
+X-Stat-Signature: 54zzxfq1icgbpwxbpimkygwk6jwxaiph
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 395AEC000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: se6scqcki6ozwpjg3w3pg6meq7eff5pu
-X-HE-Tag: 1766398240-920861
-X-HE-Meta: U2FsdGVkX1/H3b5s/5uNvSRngFmB57pYrCeJRHfKXTs4Ri9npgLfFqDWXxGlRRjUwqUHffbMl+LgzsxVgwC8fS7nPXMUvDMNeVoqzdO6XA9SOAjHK+NritFO4raZTG9K17C1hxHZINafO/sIg3YpSb4Gh60kUaJp7+QU3gT7XFStmvaGoVfyoZaZT/OGDnMqTVuGVjqxkO0BSBo6TlENCY3VccycC99ttkZWlMA3pVNt6JeNktgjJ2J9nXBUX9Bwj+7DQOCQYBRniDLWXyMEWenVC1WaRuwJZpbFpWGJtYySqIyrFip9ipISzO1yVCwuzfO8sjpmPVvzk8fgh5dkz3jVPVxgAlWL+sJZ0uUx1FxBf32bE4ngW+E+CWxnXh+zj8VrX5W4iuEVJUnuvSb8WtXm1Yy1VnjAnZJsWTZPAD3q0dvTSvqtMbxFn5DzJUvlxVS9x4EsqHlVGxO9wf1957TUMUjOA7fUbOjOMg0QPyd7mWC+nwgBEXZsa3GWLO+wySzwEpphg+f+yqyOCNcZbfpCuRzHhF0qZsPjtbqV/jYTmD+60V1RqNmZfSSKNZbRIwOCyApQuEk22ZfKegzL/X36F+4z/H2CO7G6kj7YhNGkFiFF8kK9KUsu/0OxaX4ILITpytIfb+prqzH4pRhjIWe+7AK6JVw5c1F+Qt3cPaMUHhOSx0ED6LVJDS7YyTZZV0MTYGSJMtVUwdds9lie++XWr143HEaj34dwdtI9Cekh2LFgw8u2y/Ums6e4rA9xMLc48JoMfDKsAJEAHB6zwhVG8/y2YZAw1iwrRXO5FG14AMmYAAOF/c1zF/n81WR1quEGYiX+qJ31Wn4PeB4ZkY09Wu9f5DOYifqsc4BUX84W5ioTdfUFcg49Oqhks6jr6VGQAoFWWhggbsOwE7LWSuGw/KUJM28ILG0gxKABl5ypZI7EFJNGK3muVWLCVkqTb5hrhcJ/0RqesCh3cV/
- 6KNT3Hil
- tVMISerSdXfH4MQ+p6BF1HNu2QYx/SpLxFce8t8sxIBpzl/vnuoaoSZPC3dCh5OpXUDKHQJhYJVg8pQbg/3HcM+Ks/G1xeS+InGYSu8tt41SjXltU5gfGcOlBhS/g0Z9uvwwbXw2EMjxIxzP2QHcHkDv/9PFpapha9T/3Ou2YmzqWyoMRgAmarA/8h/wB8KZ+Z9BYhMK2ztUZPG+Zt7Nc8M+UBx8FPbxTedrNKn18ReUjMBujXyj2dOCLXPuuJ4hIH8epw1F3N4qUA3Mq6EliJ0su7NoMugTQTmbDHPg4URmJPZgKI/e82X7NWwx6GFpgeWqly3UC/ZXYsQMz19WenGrl9/IaB/C2p6stOukw0jHgd0pkguhUjgmE0BjPlU2TcroXt62gLemV/Xf4jZRcouxMqg==
+X-HE-Tag: 1766398807-548145
+X-HE-Meta: U2FsdGVkX185ogvU9LuaHTPCBTLm4CWSdZQwa/L3tcrSZAKywYfpKnG1hqZCKoHhCFx6jsURp9kt6/qGAA6xpWiEYj10qG0foVNR5qKJT8PYa4vrgBiGdo7KXFKjE5mGEiVxxmgEX0HInPnHacLUmIAlrALAh/TOmNlMEbfIoYaeOG0rvkEqXkv/zljU24D5L5J/BePudqYGUGk7Z39o7DKzCOUfC0nXrTGT8qCCMUmFuO61tWxGZxY0vAKW2lwIgEqruZX84AW5cKSjTilT+KFZkt9z9Aug4RGfl15G0qLVzu5w3NzHQDiDi+zsfeanE/nb8M1vW+aOVeM1SluC1q+owGwdA6vUFhU9uPnaD+56kky64id9XrQTuscX2EJprhpsscKrR2V7AlMhYmRiGlpFwYO+VRc12d9zgtXjyVGK7j+VeDuzpsngQH3+EBT8Xm3arG1zZ1r9p4zwfFNvwYDHYc61VPucHqn8EXWUQHr4jV8qIS3qdkVmeBX3oZRmsHOvcwp8nKnC0kfd89e+HU6L1vLS8KIajEeag/nKUYSfoEpweir+2xo4Jc9KAS4AoL5kXiQznaNwRS19pfkYkIvwZkYCnGDEqBTNzMT8pDCBqIANvevqDJoWJ5Z9aYMyNu9Uci1IC+FXpSLwIVqYD9Ei8IO8s8haNcXX8+vhD8Ic48j7kjjstTKve+3SXe5FiQL+iuStixa+9/71oqYS9s9O844P7Ge3xsSCIuGv5M55FFXFt+LpRvKpPGXdY0tFyFsApk2oGesKd+Q7DnQvDccv/NEkl/jdProWX9M6bXvO+gZ2dVm2Hr8uP4oKwzyH+Ets0MEdrcFmNTWzq+tCcbNyHOM2qwuLBfKqwJitamQxuVyf7KSS0ESsLVXDtWx109Ltz/Dl2s/HZmdtQQQhOymGUAu08ehcCIphJutBJCII0F6zAwqzaK+bnp+X8OM4ihWE5Urcy0wT6sq1whC
+ d2lGe08H
+ oOeVvnAtXyJ43EKF0lpP6/Sf6MhG45u36pNx/zuhWs+qjk/x17BuGhhSjv+xTzcmNMfqxbgbE9jS+b9NTG93LOoIX5P6TwSUCN0W5QdNRbh12i1VXx0r+tJQQjrgZT+ZfJFWTWQjXIU9n7tb1MbSwkloPv4mIdguRjgwdRfEBJmIl7gPDF5Rh2DrhXpfVI4mptuvGgLDmVUAEy8U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,148 +119,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Okay, the existing hugetlb mmu_gather integration is hell on earth.
->>
->> I *think* to get everything right (work around all the hacks we have) we might have to do a
->>
->> 	tlb_change_page_size(tlb, sz);
->> 	tlb_start_vma(tlb, vma);
->>
->> before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
->> don't immediately call tlb_finish_mmu() already.
-> 
-> Good point, indeed!
-> 
->> tlb_change_page_size() will set page_size accordingly (as required for
->> ppc IIUC).
-> 
-> Right. PPC wants to flush TLB when the page size changes.
-> 
->> tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
->> some very good reason I am sure.
-> 
-> :)
-> 
->> So something like the following might do the trick:
->>
->>  From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
->> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
->> Date: Sun, 21 Dec 2025 12:57:43 +0100
->> Subject: [PATCH] tmp
->>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> ---
->>   mm/hugetlb.c | 12 +++++++++++-
->>   mm/rmap.c    |  4 ++++
->>   2 files changed, 15 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 7fef0b94b5d1e..14521210181c9 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	/* Prevent race with file truncation */
->>   	hugetlb_vma_lock_write(vma);
->>   	i_mmap_lock_write(mapping);
->> +
->> +	tlb_change_page_size(&tlb, sz);
->> +	tlb_start_vma(&tlb, vma);
->>   	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
->>   		src_pte = hugetlb_walk(vma, old_addr, sz);
->>   		if (!src_pte) {
->> @@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   			new_addr |= last_addr_mask;
->>   			continue;
->>   		}
->> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->>   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
->>   		if (!dst_pte)
->>   			break;
->>   		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
->> +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->>   	}
->>   	tlb_flush_mmu_tlbonly(&tlb);
->> @@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
->>   	BUG_ON(address >= end);
->>   	flush_cache_range(vma, range.start, range.end);
->> +	tlb_change_page_size(tlb, psize);
->> +	tlb_start_vma(tlb, vma);
->>   	mmu_notifier_invalidate_range_start(&range);
->>   	hugetlb_vma_lock_write(vma);
->> @@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
->>   	hugetlb_vma_unlock_write(vma);
->>   	mmu_notifier_invalidate_range_end(&range);
->> +	tlb_end_vma(tlb, vma);
->> +
->>   	return pages > 0 ? (pages << h->order) : pages;
->>   }
->> @@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->>   	} else {
->>   		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->>   	}
->> +
->> +	tlb_change_page_size(&tlb, sz);
->> +	tlb_start_vma(&tlb, vma);
->>   	for (address = start; address < end; address += PUD_SIZE) {
->>   		ptep = hugetlb_walk(vma, address, sz);
->>   		if (!ptep)
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index d6799afe11147..27210bc6fb489 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>   					goto walk_abort;
->>   				tlb_gather_mmu(&tlb, mm);
->> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
->> +				tlb_start_vma(&tlb, vma);
->>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
->>   					hugetlb_vma_unlock_write(vma);
->>   					huge_pmd_unshare_flush(&tlb, vma);
->> @@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>   				}
->>   				tlb_gather_mmu(&tlb, mm);
->> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
->> +				tlb_start_vma(&tlb, vma);
->>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
->>   					hugetlb_vma_unlock_write(vma);
->>   					huge_pmd_unshare_flush(&tlb, vma);
->> -- 
->> 2.52.0
->>
->>
->>
->> But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
->> to a later point and only focus on the IPI flushes.
-> 
-> You mean defer TLB flushing to which point? For unmapping or
-> changing permission of VMAs, flushing at VMA boundary already makes sense?
+------Rvty6Ov.E7w8fqTiecbGSIlWaDZOz3Joz9WFZpHBwcJNCC2Q=_9fec5_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-Defer converting to mmu_gather to a later patch set :)
+On 06/12/25 03:44PM, Bharata B Rao wrote:
+>This introduces a sub-system for collecting memory access
+>information from different sources. It maintains the hotness
+>information based on the access history and time of access.
+>
+>Additionally, it provides per-lowertier-node kernel threads
+>(named kmigrated) that periodically promote the pages that
+>are eligible for promotion.
+>
+>Sub-systems that generate hot page access info can report that
+>using this API:
+>
+>int pghot_record_access(unsigned long pfn, int nid, int src,
+>                        unsigned long time)
+>
+>@pfn: The PFN of the memory accessed
+>@nid: The accessing NUMA node ID
+>@src: The temperature source (sub-system) that generated the
+>      access info
+>@time: The access time in jiffies
+>
+>Some temperature sources may not provide the nid from which
+>the page was accessed. This is true for sources that use
+>page table scanning for PTE Accessed bit. For such sources,
+>the default toptier node to which such pages should be promoted
+>is hard coded.
+>
+>The hotness information is stored for every page of lower
+>tier memory in an unsigned long variable that is part of
+>mem_section data structure.
+>
+>kmigrated is a per-lowertier-node kernel thread that migrates
+>the folios marked for migration in batches. Each kmigrated
+>thread walks the PFN range spanning its node and checks
+>for potential migration candidates.
+>
+>A bunch of tunables for enabling different hotness sources,
+>setting target_nid, frequency threshold are provided in debugfs.
+>
+>Signed-off-by: Bharata B Rao <bharata@amd.com>
 
-I gave it a try yesterday, but it's also a bit ugly.
+<snip>
 
-In the code above, primarily the rmap change is nasty.
+>+++ b/include/linux/pghot.h
+>@@ -0,0 +1,71 @@
+>+/* SPDX-License-Identifier: GPL-2.0 */
+>+#ifndef _LINUX_PGHOT_H
+>+#define _LINUX_PGHOT_H
+>+
+>+/* Page hotness temperature sources */
+>+enum pghot_src {
+>+	PGHOT_HW_HINTS,
+>+	PGHOT_PGTABLE_SCAN,
+>+	PGHOT_HINT_FAULT,
+>+};
+>+
+>+#ifdef CONFIG_PGHOT
+>+/*
+>+ * Bit positions to enable individual sources in pghot/records_enabled
+>+ * of debugfs.
+>+ */
+>+enum pghot_src_enabed {
+>+	PGHOT_HWHINTS_BIT	= 0,
+>+	PGHOT_PGTSCAN_BIT,
+>+	PGHOT_HINTFAULT_BIT,
+>+	PGHOT_MAX_BIT
+>+};
+>+
+>+#define PGHOT_HWHINTS_ENABLED	BIT(PGHOT_HWHINTS_BIT)
+>+#define PGHOT_PGTSCAN_ENABLED	BIT(PGHOT_PGTSCAN_BIT)
+>+#define PGHOT_HINTFAULT_ENABLED	BIT(PGHOT_HINTFAULT_BIT)
+>+#define PGHOT_SRC_ENABLED_MASK	GENMASK(PGHOT_MAX_BIT - 1, 0)
+>+
+>+#define PGHOT_DEFAULT_FREQ_WINDOW	(5 * MSEC_PER_SEC)
+>+#define PGHOT_DEFAULT_FREQ_THRESHOLD	2
+>+
+>+#define KMIGRATED_DEFAULT_SLEEP_MS	100
+>+#define KMIGRATED_DEFAULT_BATCH_NR	512
+>+
+>+#define PGHOT_DEFAULT_NODE	0
+>+
+>+/*
+>+ * Bits 0-31 are used to store nid, frequency and time.
+>+ * Bits 32-62 are unused now.
+>+ * Bit 63 is used to indicate the page is ready for migration.
+>+ */
+>+#define PGHOT_MIGRATE_READY	63
+>+
+>+#define PGHOT_NID_WIDTH		10
+>+#define PGHOT_FREQ_WIDTH	3
+>+/* time is stored in 19 bits which can represent up to 8.73s with HZ=1000 */
 
-> 
-> Or if you meant batching TLB flushes in try_to_{migrate,unmap}_one()...
-> 
-> /me starts wondering...
-> 
-> "Hmm... for RMAP, we already have TLB flush batching
->   via struct tlbflush_unmap_batch. Why not use this framework
->   when unmapping shared hugetlb pages as well?"
+If we consider HZ = 1000 then using 19 bit time is coming 8.73 mins. I think by mistake you commented as 8.73 secs.
 
-Hm, also not what we really want in most cases. I don't think we should 
-be using that outside of rmap.c (and I have the gut feeling that we 
-should maybe make use of mmu_gather in there instead at some point).
+Suggetion:
+If we are targeting to promote page in ~8 secs then 13 bits would be enough, that way we can handle hotness using 32 bits per pfn insead of 64 bits.
 
-Let me try a bit to see if I can clean the code here up, or if I just 
-add a temporary custom batching data structure.
+#define PGHOT_MIGRATE_READY	31
+#define PGHOT_NID_WIDTH		10
+#define PGHOT_FREQ_WIDTH	3
+/* time is stored in 13 bits which can represent up to 8.19s with HZ=1000 */
+#define PGHOT_TIME_WIDTH	13
 
-Thanks for bringing this up!
+>+#define PGHOT_TIME_WIDTH	19
+>+
+>+#define PGHOT_NID_SHIFT		0
+>+#define PGHOT_FREQ_SHIFT	(PGHOT_NID_SHIFT + PGHOT_NID_WIDTH)
+>+#define PGHOT_TIME_SHIFT	(PGHOT_FREQ_SHIFT + PGHOT_FREQ_WIDTH)
+>+
+>+#define PGHOT_NID_MASK		((1UL << PGHOT_NID_SHIFT) - 1)
+>+#define PGHOT_FREQ_MASK		((1UL << PGHOT_FREQ_SHIFT) - 1)
+>+#define PGHOT_TIME_MASK		((1UL << PGHOT_TIME_SHIFT) - 1)
 
--- 
-Cheers
+Mask generation of freq, nid and time seems not correct. It should be
+  
+#define PGHOT_NID_MASK         ((1UL << PGHOT_NID_WIDTH) - 1)
+#define PGHOT_FREQ_MASK        ((1UL << PGHOT_FREQ_WIDTH) - 1)
+#define PGHOT_TIME_MASK        ((1UL << PGHOT_TIME_WIDTH) - 1)
 
-David
+Can you please have a look?
+
+
+Regards,
+Alok Rathore
+
+------Rvty6Ov.E7w8fqTiecbGSIlWaDZOz3Joz9WFZpHBwcJNCC2Q=_9fec5_
+Content-Type: text/plain; charset="utf-8"
+
+
+------Rvty6Ov.E7w8fqTiecbGSIlWaDZOz3Joz9WFZpHBwcJNCC2Q=_9fec5_--
+
 
