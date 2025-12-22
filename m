@@ -4,89 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B19E674B5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 15:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EC12E677EA
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 15:34:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1D136B0005; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
+	id ECD536B0005; Mon, 22 Dec 2025 10:34:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCAB16B0089; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
+	id E7A946B0089; Mon, 22 Dec 2025 10:34:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABEB6B008A; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
+	id D7CE36B008A; Mon, 22 Dec 2025 10:34:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B7286B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:24:37 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52D78B70B3
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:37 +0000 (UTC)
-X-FDA: 84247478994.18.2EA93EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B6EAC180010
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:24:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1Q/QdOF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766417075; a=rsa-sha256;
-	cv=none;
-	b=cS80tUnic7ta0nAdmiVoEkOoLcx0rHA4XbRELVo3dTmVHcHfjqfrCCz1LP2AV/2yasBj4K
-	RokygQLnb61Z60UtMvCnox4Y4jxOm6vFECzVJ9904Hx66SIfGALoK/kWVmq73zj+4F66Bj
-	tqGPT1lhiRwT8LamJsLozVt1exeGq28=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1Q/QdOF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C38996B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:34:03 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7056988BC5
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:34:03 +0000 (UTC)
+X-FDA: 84247502766.14.F4049FB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 949881C000A
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:34:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrDj17wm;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766417075;
+	s=arc-20220608; t=1766417641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TaX98UT+oDYMyPw9Ns1C3ixEbU9xHURLubadIQB4c3A=;
-	b=rZoGp4n6SSO8sPJbhlTqzptTDUK0LHkKy9cj4oYUZsaLELVtNgoVKpaPW4AMzr7foeVO8l
-	MVvqwU2Kobx6+Sj1eQBx3IFDU3tNLKkTMJ5fI7rkCtv045SCymoGt5JemBwulc/wi+bJBI
-	mt25LZD8bCF0PK7swL884Lk8Suvqzkg=
+	bh=xol217Co56ag81VF5MHRvQYoROn7jopXXGSlBbVTHhQ=;
+	b=mNPJgkLwAAFPPB5D0oif1zGm/BXGF3OsHcpY4wzrXu+/3vlIBP+5dqeT/XxtDyoe32ZAxu
+	UZsapowrfeFmT0lFLVFCeBjWQyZsmN7KoY8AwvR6FXFrOCe5NoM8DO8nnwMQEIwQ4Ggs09
+	p0Rj2eVJRX5y8OXmtEyRHqozfUr/eNw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrDj17wm;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766417641; a=rsa-sha256;
+	cv=none;
+	b=333sfnVU0/GFWTwsOWLa+8hGF1HG8z9LTuVBqVP1tftRXtF132BJ2aoyxEfkLZTXM3M/it
+	QE6ZusYEo5AY+75iy5tziLRgl0WLk1vJwpZ8KePCzQ0WgWxMzttyBe48k0dPbDRmTkqSMc
+	y+o502UD07oPgW1GY+iK2jVpeJSBins=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 104CB6014C;
-	Mon, 22 Dec 2025 15:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D1BC4CEF1;
-	Mon, 22 Dec 2025 15:24:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 679C8419F6;
+	Mon, 22 Dec 2025 15:34:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8DEC4CEF1;
+	Mon, 22 Dec 2025 15:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766417074;
-	bh=3/Yn5ySh52i/4QJb8bgsJpI/+2imGHs99ervgv9OcJY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1Q/QdOFS/TkKJ/WE/Xchi4hsGXQb53TMNdXsQYdVeH8kxidKc5XZEjB1ryY6tOqA
-	 qF9xZcAAUnLYWQkgYVEIbd51DTH63KYTjOJXJgv5gF1+0NLPIn+jjbpsRmn7d2ibcQ
-	 UklKIuKF3uO+MvV82Pj4PGzqEPKhItn1DTO7nk6GGcT7raMY7EsERWWiO9F+dkWrEp
-	 /4m9fN3/hxgKICZhk6eMwjDwjv8qAY8bw4lQhITGISrq5q1v8cuWO1db2Ekq8XqMBU
-	 WsTZVAL5wNsM0/DYzTO8g5y2jdPNaJZJOLSU7HJFoDd3y9SQGw8ElGGtVR+kq+V9hQ
-	 GhtIzMpZNq7GA==
-From: SeongJae Park <sj@kernel.org>
-To: Shu Anzai <shu17az@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	yanquanmin1@huawei.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and remove redundancy
-Date: Mon, 22 Dec 2025 07:24:27 -0800
-Message-ID: <20251222152427.87516-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <a98e23a1-5be3-4c2a-a65a-c33853683674@gmail.com>
-References: 
+	s=k20201202; t=1766417640;
+	bh=n3hXQxXElFRU5pq8HpCn5TZiWmvSa3ILDsLsLX0GpK8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BrDj17wm8KyH6Yy5TyHwiSjKNrwVmN6lVXTLojFPl8mt0y88NuDv44OZw5ZAwo1c3
+	 iQE5XWXo1hKW3l/sFSCIsth+VT2YIJl+CcYGHDkaloZMci50o06F96mhI52gBxf0DO
+	 SRVRu79umAfq+gzZ/dHZkppdaMuZdRQYDFg3Q49jKocFxy1ldBrfQqiB4mZtebRrZI
+	 NiZmAZzpKbY/1b1oWMhYUIoWBB7Ox60if77yxHLFyAdo/gHCNjpv+MbpSCkWXTgOvc
+	 4tBplfV48Cw63cd6VC3t54yeO3R/ljcWXIo0ILxMahYJbeaiNBSXnztDPmmlEKcbVZ
+	 OVfdagKYnJA3w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Evangelos Petrongonas <epetron@amazon.de>,  Alexander Graf
+ <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Jason Miu
+ <jasonmiu@google.com>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+In-Reply-To: <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+	(Pasha Tatashin's message of "Sat, 20 Dec 2025 09:49:44 -0500")
+References: <20251216084913.86342-1-epetron@amazon.de>
+	<aUFJH9xzJXYOt_X8@kernel.org>
+	<CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+	<aUF4fsWwD9BswkFh@kernel.org>
+	<CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+	<aUUYprAotKYMiEs0@kernel.org>
+	<CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+	<861pkpkffh.fsf@kernel.org>
+	<CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+Date: Tue, 23 Dec 2025 00:33:54 +0900
+Message-ID: <86jyyecyzh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B6EAC180010
-X-Stat-Signature: 3szhw4z8hmw3setgw5t3fuj4cah3h86q
-X-HE-Tag: 1766417075-731269
-X-HE-Meta: U2FsdGVkX18rWrOR4cuBOiqov2GM4+GuWiS/XQau81eaA4bYtD+Z8whtSyG1pra2XFgkodBsdR1mzpfTfdRhkvBrjEZDWPe0AA3werSebs+fFqumNdd69DrtfG2Y3oQwArasbRIg0dTMeVu3DxyTIGOayuqaDYfKogKhohE2hjIEaNrh7GsTNbtrdG4ST3eLGEWaOtXyxwL6MqTZ9BcJJdsmI7i66V9JdiXzjU8T7e+X82P9t8fJE8RVzq1MTnrnjfwQNucCvylRQ+MAE/DAttQERenS7uH9XlZ7sdypHSTqlaAiExcatg5Y/IZtbkeO12rUqOod/7RgHSb2+W6JqskFKCPW51Mi+dARBpLcVx6TvU0GgSN3npW7xIMRWPQuRWBsz+a5vlPFUGxQBHjN5h0scLGbT6uorJiMYxLesuCUGLpNGLDpVm6V//9uxT4gConH1ZTddXpSSdRnXrwOVVctM3U1LtD7G4DyO6E2d1SsBCPYFbC2O8Bv6gk5+hQIawyzOiqcJxn5OExk8fOyu0zFrLPjqa1gp+lMHNp+qwgTcW9BKijbMxyQV2F3sNwrmROeU5X9Qa2AWH9xCREE/HSPs/AcekOI5M2uvR/17UmUUx8pIOuT8NImylKdiWKFHp1dgjlDuYm3eQ+W75hzdzbBzVLQr85XMLxvkMo/erEhtkKemIGsOg3huJzv04NLHvP4nLH7MrEkK6bXQXhNJxF8VggpC6dVZhWBUe57AUdmOYEWit5w918IRon9GfnkCPVOQvZh1OO3Lk93pShd8wBvLBlZ5Sg6wLRVlGyu4XxazcOfmz97eJYYbd0KScBvDirgag4WjZ70heNN4v8JoBtTGPKzVHiPwZMVizwGzABEj5l0d7o7tcvF4NQ9Kz80kvI6rFcJLqt52jdXWmzu3cqr/jh0srVeENnCfsfyqqGOcNttLB6fvQvXV/bMKsjAXOY3YhvkeQ5xfz00iHh
- iaO2KDJe
- 7O8xAKX23tcmMoXmHG19bg039xWtOpWNpbaBaQIKStq9TreCks8TM1UlSIWiyCm4y78brAIlpdfWR13I1DgOgqZyuhUN+kK78TkPdUAMhWPiSv4G2YkFscCh94cbge040HuLFNfjtKOpm7RCOn4GpDb+groJpMW3ZMqkUazUtxQgBqshmfhny0i6SyW1W93rmADPy+qXTte7NsYGsz7M9wkOvUyJHE2lkFMbmjmg0j/iDb8Q=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 949881C000A
+X-Stat-Signature: wqp6uya54tcfz664somdy8wpucm7kp4e
+X-HE-Tag: 1766417641-823278
+X-HE-Meta: U2FsdGVkX18wyVK8jYiIiR4MWft27W768MfWbBsmzBdv61/Cmr2NI8qVdirTO/j5g0UXKKZXnDvAj3Cqac+8FhVSgDafvA1+UdM5OyeksDTaMw+yssjfJu90cw3bWaVkYdOAzYrxIPit95b6uciDpSMBDWvELB2hAr8HMYNTNtv/HlTi20tWwVljN3vBZEIxlqtOUgGaydGQmObK8Op9p+SAYGgQsCIKd8saYIHhpWq1/uTGZFIgmi7ZI0L0cC0yncDIx5FpDKgoiQN3TJhF4J/fTMDJmhMPuhYe+Wk1p2LfhR4MVrl6W2Pxh5giYGXZORGcjJR+2cRZgMLrv3AxiRlrGTyVSygntSeO8AVpMiL6DZ8RjW2tM/eU7TwEY/I4C+q+WHeO70iLx9CdR2amHxngyMyQFREXpPEA4SVsEoBq799UBdfh0S168zHghbZeORLKMphv08hP96tap2HlYmkbkGdYt0trMxaXtvkCffOmn5rMoM15TXllYARBel4zTRGbu2Ih037cepvh9JgBG+wXtJie9YM9TlAsYJM/fyypDtLw0Se63ISDc5Nc7+mLullBrKOb8jOTFgoGYomXqfiFzAHA3TtMFXLFe5DWKxy27w/X1dHqy1IC5XMM0Jh7KcDcJDTApv+d8BXPfbqINQzeZZ4kxdsLjlji+FZx3P/uzskz+Js+oqIZqBpl+Qzr4KKD73s7J1zdE9VSeT/FAI8VJ3RTobBspF8t+0Mmk+ECURMZuZUK+rLLdwKpC9OzLt2OEYz0vWmXhHZK+UCO5wZKwvjop/MDlamAOcZUXI+TC9t3gUyNkQk4vGEWzN+jN98DkUwJcu19EVQXeMegy03SYXfJU394DzZd3/YH/25tdLYZBtNyu0lgI+9/LxY6NIQGQgt0rjtRaZQa2rm0h5xvfc3J2nj7ATsJ9y9MjUW1rOSrdqk23dRDtMKY+wRrdSLJFPciqq4X5Nh22HP
+ ohashQBh
+ 15kdegZnIcEPq+jTec09JWmnb39QC3Gux7FvSpKhsfPIBLQLzLPXbXTrDq/yIUoqKycIe+E+GV1GbP090DozThV1kG2GcNHMcR7lR2ATG9YF+t5EEWxMU+Vu8L6JPs8ZbhRv2d6FThCz+RzPwgPllH5wdnFGnG4gKA3G3bRsmXmVdWE8nF76BswxADM9XPwiNaZ6HVd/osc/S2xWCI6Ib0iZl3oAfDVB04QkA+pm3HTUdjiR4X80bWMcbaQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,87 +106,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Dec 2025 03:33:52 -0800 Shu Anzai <shu17az@gmail.com> wrote:
+On Sat, Dec 20 2025, Pasha Tatashin wrote:
 
-> Hello SJ,
-> 
-> Thank you for reviewing my patch! My responses are below.
-> 
-> On 2025/12/21 12:13, SeongJae Park wrote:
-> > Hello Shu,
-> >
-> >
-> > Thank you for sending this patch :)
-> >
-> > On Sun, 21 Dec 2025 13:01:14 +0000 Shu Anzai <shu17az@gmail.com> wrote:
-> >
-> >> Add some missing test scenarios to cover a wider range of cases. Also,
-> >> remove a redundant case in damos_test_commit_quota_goal().
-> > Seems this patch is making more than one change to multiple test cases at once.
-> > It makes following which change is for what purpose bit difficult for me.  I'd
-> > suggest splitting this into smaller ones that making changes for each test
-> > function, and adding more explanation of the changes.  E.g., a patch for
-> > damon_test_split_at(), another one for damon_test_merge_two(), and so on.  Not
-> > a strong request, though.
-> >
-> > I have two questions below, though.
-> 
-> I see. I will split this and send v2 later. Let me first explain the 
-> changes in detail.
-
-Looking forward to the v2! :)
-
+> On Fri, Dec 19, 2025 at 10:20=E2=80=AFPM Pratyush Yadav <pratyush@kernel.=
+org> wrote:
+>>
+>> On Fri, Dec 19 2025, Pasha Tatashin wrote:
 [...]
-> >> @@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
-> >>   {
-> >>   	struct damon_target *t;
-> >>   	struct damon_region *r;
-> >> -	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
-> >> -	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
-> >> -	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
-> >> +	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
-> >> +	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
-> >> +	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
-> >>   
-> >> -	unsigned long saddrs[] = {0, 114, 130, 156, 170};
-> >> -	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
-> >> +	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
-> >> +	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
-> >>   	int i;
-> >>   
-> >>   	t = damon_new_target();
-> >> @@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
-> >>   	}
-> >>   
-> >>   	damon_merge_regions_of(t, 9, 9999);
-> >> -	/* 0-112, 114-130, 130-156, 156-170 */
-> >> -	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
-> >> -	for (i = 0; i < 5; i++) {
-> >> +	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
-> >> +	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
-> >> +	for (i = 0; i < 7; i++) {
-> >>   		r = __nth_region_of(t, i);
-> >>   		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
-> >>   		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
-> > I understand the above change adds two regions on the test input, but I'm not
-> > following what logic it intends to additionally test.  Could you please
-> > clarify?
-> 
-> Both cases were intended to verify that damon_merge_two_regions() is 
-> called properly in damon_merge_regions_of().
-> The first one was intended to ensure that non-adjacent regions (170-230, 
-> 235-240) are not merged even if their nr_accesses difference is within 
-> the threshold. However, on second thought, I realized this is redundant 
-> since it is natural for non-adjacent regions not to be merged.
-> The second one is to verify that two adjacent regions (235-240, 
-> 240-10235) are not merged if the resulting region would exceed the size 
-> limit.
+>> > Let's do the lazy tail initialization that I proposed to you in a
+>> > chat: we initialize only the head struct page during
+>> > deserialize_bitmap(). Since this happens while memblock is still
+>> > active, we can safely use early_pfn_to_nid() to set the nid in the
+>> > head page's flags, and also preserve order as we do today.
+>> >
+>> > Then, we can defer the initialization of all tail pages to
+>> > kho_restore_folio(). At that stage, we no longer need memblock or
+>> > early_pfn_to_nid(); we can simply inherit the nid from the head page
+>> > using page_to_nid(head).
+>>
+>> Does that assumption always hold? Does every contiguous chunk of memory
+>> always have to be in the same node? For folios it would hold, but what
+>> about kho_preserve_pages()?
+>
+> NUMA node boundaries are SECTION_SIZE aligned. Since SECTION_SIZE is
+> larger than MAX_PAGE_ORDER it is mathematically impossible for a
+> single chunk to span multiple nodes.
 
-Makes sense, please add the details to the second version.
+For folios, yes. The whole folio should only be in a single node. But we
+also have kho_preserve_pages() (formerly kho_preserve_phys()) which can
+be used to preserve an arbitrary size of memory and _that_ doesn't have
+to be in the same section. And if the memory is properly aligned, then
+it will end up being just one higher-order preservation in KHO.
 
+>
+>> > This approach seems to give us the best of both worlds: It avoids the
+>> > memblock dependency during restoration. It keeps the serial work in
+>> > deserialize_bitmap() to a minimum (O(1)O(1) per region). It allows the
+>> > heavy lifting of tail page initialization to be done later in the boot
+>> > process, potentially in parallel, as you suggested.
+>>
+>> Here's another idea I have been thinking about, but never dug deep
+>> enough to figure out if it actually works.
+>>
+>> __init_page_from_nid() loops through all the zones for the node to find
+>> the zone id for the page. We can flip it the other way round and loop
+>> through all zones (on all nodes) to find out if the PFN spans that zone.
+>> Once we find the zone, we can directly call __init_single_page() on it.
+>> If a contiguous chunk of preserved memory lands in one zone, we can
+>> batch the init to save some time.
+>>
+>> Something like the below (completely untested):
+>>
+>>
+>>         static void kho_init_page(struct page *page)
+>>         {
+>>                 unsigned long pfn =3D page_to_pfn(page);
+>>                 struct zone *zone;
+>>
+>>                 for_each_zone(zone) {
+>>                         if (zone_spans_pfn(zone, pfn))
+>>                                 break;
+>>                 }
+>>
+>>                 __init_single_page(page, pfn, zone_idx(zone), zone_to_ni=
+d(zone));
+>>         }
+>>
+>> It doesn't do the batching I mentioned, but I think it at least gets the
+>> point across. And I think even this simple version would be a good first
+>> step.
+>>
+>> This lets us initialize the page from kho_restore_folio() without having
+>> to rely of memblock being alive, and saves us from doing work during
+>> early boot. We should only have a handful of zones and nodes in
+>> practice, so I think it should perform fairly well too.
+>>
+>> We would of course need to see how it performs in practice. If it works,
+>> I think it would be cleaner and simpler than splitting the
+>> initialization into two separate parts.
+>
+> I think your idea is clever and would work. However, consider the
+> cache efficiency: in deserialize_bitmap(), we must write to the head
+> struct page anyway to preserve the order. Since we are already
+> bringing that 64-byte cacheline in and dirtying it, and since memblock
+> is available and fast at this stage, it makes sense to fully
+> initialize the head page right then.
 
-Thanks,
-SJ
+You will also bring in the cache line and dirty it during
+kho_restore_folio() since you need to write the page refcounts. So I
+don't think the cache efficiency makes any difference between either
+approach.
 
-[...]
+> If we do that, we get the nid for "free" (cache-wise) and we avoid the
+> overhead of iterating zones during the restore phase. We can then
+> simply inherit the nid from the head page when initializing the tail
+> pages later.
+
+To get the nid, you would need to call early_pfn_to_nid(). This takes a
+spinlock and searches through all memblock memory regions. I don't think
+it is too expensive, but it isn't free either. And all this would be
+done serially. With the zone search, you at least have some room for
+concurrency.
+
+I think either approach only makes a difference when we have a large
+number of low-order preservations. If we have a handful of high-order
+preservations, I suppose the overhead of nid search would be negligible.
+
+Long term, I think we should hook this into page_alloc_init_late() so
+that all the KHO pages also get initalized along with all the other
+pages. This will result in better integration of KHO with rest of MM
+init, and also have more consistent page restore performance.
+
+Jason's radix tree patches will make that a bit easier to do I think.
+The zone search will scale better I reckon.
+
+--=20
+Regards,
+Pratyush Yadav
 
