@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04BD5E677F4
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71384E677F6
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D7DC6B0088; Mon, 22 Dec 2025 11:50:08 -0500 (EST)
+	id B62CC6B0089; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15BC56B0089; Mon, 22 Dec 2025 11:50:08 -0500 (EST)
+	id B23A56B008A; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 067146B008A; Mon, 22 Dec 2025 11:50:07 -0500 (EST)
+	id A333C6B008C; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E3EDA6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:50:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67F1914027E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:07 +0000 (UTC)
-X-FDA: 84247694454.17.5A48F57
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 92BC46B0089
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:50:22 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 321821370A4
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:22 +0000 (UTC)
+X-FDA: 84247695084.15.C7A2E0C
 Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 353A01C0012
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=ee8WmXun;
-	spf=pass (imf18.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 392D2100008
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:50:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=qWc9bzQ+;
+	spf=pass (imf14.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
 	dmarc=pass (policy=quarantine) header.from=deltatee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766422205;
+	s=arc-20220608; t=1766422220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kg190DLkPKaiJohQI6jqmDPUrKa96yp2xevLyMH3St0=;
-	b=LkArhQIxn4RHrXH+s8cY+5AGXY9k2OFAczr7fF7D03HrBqSJktHXCyf1gqopIXh1Z7W65E
-	NZJ49fDRzKpAuPw8vNSxa28OnBQtdC0Jsjndq6Vz0jFHfcm7ae+PVlArLpNmObn719pllO
-	XMJzUwXbi5Sykl6BxETbbc+LgPtFqwU=
+	bh=t8GQsgEnNEdrFwBBtAuZn0Q9GIr1eN47gP4XtMI9muc=;
+	b=KDHc1/M/sqW7c5M5UNlRmF9bv1qZNQhh+0rGmFGDD6UpY+XQ/NBzUzZ6qTLMdM/5+uJxYx
+	Re7Adtj9lfThzzzLbGCMyvGBFuWgn2OkzVOM6W52aWWLWRH1xVh/Ic4MJngv7jEMD79QWB
+	8yhqYCuiaIwXFJg2y7v0gE12kDic324=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=ee8WmXun;
-	spf=pass (imf18.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=qWc9bzQ+;
+	spf=pass (imf14.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
 	dmarc=pass (policy=quarantine) header.from=deltatee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766422205; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766422220; a=rsa-sha256;
 	cv=none;
-	b=QA2u0pd+g+rdQtMaGTkycp4X6S7zyZKUoz1cJLWabxTu0GWfnaY3f9CpSkzreuzWNdKrk0
-	GitjsM/z4GJt8xmZWT9da+QlWGKSSToK+pTJ5Le9d4JRto2x+qa4NYBqMMzk/R2IqxQ6uH
-	EABcIQEdbqkdF4h1Dd4FwArFhwn1n+M=
+	b=a6R1SuJ/siUQRxpk9AMhN+QAl4yXc/W1MTuGyCOpe9L84Pi8mWSoTRBG8wa8WlyIT+7O/A
+	OdM/en13oIaWVIvq3RYZ+DL/aIUN+eFN1w2t72vHIEulIL4ZusW5EXW7KCfHuLgsHCPTXB
+	uDWSjmhafOt6I5v3SmQY6bGuG5W41GQ=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
 	MIME-Version:Date:Message-ID:content-disposition;
-	bh=Kg190DLkPKaiJohQI6jqmDPUrKa96yp2xevLyMH3St0=; b=ee8WmXunPJLOsQa4E7AD0Qn0/W
-	CJseKOSYhTHpdSF3EIwXXjV0QzPZFAOy9hUJChrTEzpfA7nmQ9UeMhrgoJmyyOnkjwB7IRUVLyobP
-	zO5/D77jRsl6BgVBDnzdECyg7Gfr1rcES7bXQAIEOHiG0zUJZTPhAQatgzPN0ZvO5VBglFlXHZh5E
-	zP/wqKqGoD7/BLOf5J4trN1m/sRkvSkoAbe4rHTGFj8bmGM0n30zAHBo+GEpIE+zDYGUOBx49vEXW
-	2QPhSmMNSQIReNrNkFDZtzuh2uEXXd+/+JNvdyCTrs2ol95Nt0H/hs+5EkslWz28fs3K52AdQtVdH
-	FXi0e4UA==;
+	bh=t8GQsgEnNEdrFwBBtAuZn0Q9GIr1eN47gP4XtMI9muc=; b=qWc9bzQ+KWzrrDDEfmRCfKMy+q
+	BpQQ82uAdGJVYXBD4KbGvK6kg/vNGd4ro2s3ZAI08XZMZmPOKf73pPfo8VjP/fLk6D6ZYFADioP3P
+	GhiuFn2SS6ykpv7UgUvLbr5nUfYtfCetjQsvpQX44xh6MOMuFgnEgw6iQT1oXEAQFU9Qw5jf+F/Iw
+	BXqB+iX4HfwVfIH5wkARC9vO9NKsItHqonsl3W8aK0PiHf+oE92O/7LLApq+cSgM045iM+LHzVQwI
+	q7KHwMC32e1xDGMn9M5r8AELIYedCjq6alJDW5jr7ILlAmaD/C8LTLwE5FIKbnMcKdxmI5Kimu8P1
+	V7mFoPvw==;
 Received: from guinness.priv.deltatee.com ([172.16.1.162])
 	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.98.2)
 	(envelope-from <logang@deltatee.com>)
-	id 1vXj6h-00000008Jae-1nLB;
-	Mon, 22 Dec 2025 09:50:03 -0700
-Message-ID: <7ee29764-487a-4b23-8580-a9f45d73e088@deltatee.com>
-Date: Mon, 22 Dec 2025 09:49:41 -0700
+	id 1vXj6w-00000008Jb7-2atl;
+	Mon, 22 Dec 2025 09:50:19 -0700
+Message-ID: <4a91cfe7-75f5-49a4-89a4-fd6717e7e9d2@deltatee.com>
+Date: Mon, 22 Dec 2025 09:50:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org
@@ -81,27 +81,27 @@ Cc: linux-pci@vger.kernel.org, linux-mm@kvack.org,
  Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
  houtao1@huawei.com
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
- <20251220040446.274991-2-houtao@huaweicloud.com>
+ <20251220040446.274991-3-houtao@huaweicloud.com>
 Content-Language: en-CA
 From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20251220040446.274991-2-houtao@huaweicloud.com>
+In-Reply-To: <20251220040446.274991-3-houtao@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 172.16.1.162
 X-SA-Exim-Rcpt-To: houtao@huaweicloud.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-mm@kvack.org, linux-nvme@lists.infradead.org, bhelgaas@google.com, apopple@nvidia.com, leonro@nvidia.com, gregkh@linuxfoundation.org, tj@kernel.org, rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me, houtao1@huawei.com
 X-SA-Exim-Mail-From: logang@deltatee.com
-Subject: Re: [PATCH 01/13] PCI/P2PDMA: Release the per-cpu ref of pgmap when
- vm_insert_page() fails
+Subject: Re: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in
+ p2pmem_alloc_mmap()
 X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
 X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 353A01C0012
-X-Stat-Signature: 4b1qcybsbi3a1pkph4eh7ftkreiqx3dx
+X-Rspamd-Queue-Id: 392D2100008
+X-Stat-Signature: 1ku391u87q4hhhtgs8scyk68wz6ueeh9
 X-Rspam-User: 
-X-HE-Tag: 1766422204-923917
-X-HE-Meta: U2FsdGVkX1/G5pReaSCla83Eum8fU02sIU7pUu1dSWBkmd88UWQXYxEZ5cUt1snPmSVUtRR9rLdkM5U1iUb+qypdMSPlBxBqmsQtrgxbR7hIGay5zhb3PnlenOrSct6eYz1RL0qHIOnjDyi1zI636xKD+cxHEGeU2cyaEjDmU7PbGqnPrLSY/Tafu6DTTPBG14TG7pqoqvPGInZVU8LNlvkrURDxKWLq+La105yzAbC0mGVB/kmxrbagY9T+DiP/bR18KT945rw3J3IwyoNPtje6R3Obdi2lTLAAjwKi1bU0pdfKUWTcrl4reHyTcYqKBRekJ8Y4TR8cB60rOVIoLPup+33kl1bmJD/QdwAN86Ki/P7cGqvK0ae0L6kczdwd7n2PHu6soLZlRsHy8yMpNUvElTKHEaJzH8ppjmOAuSb+bO1OTPRDELPRvIov6Tgy6h1crtAbGZ4Oqu2vI23kLD4qmuwpywXywRf1lyaQt8Q/WRiom6XWpOkJP458OM2yVHDWsZQbGUnVh2KlADLA3OHLXNV9ZX2sRtat2JEQFS1CwLQS7QNRxNeDWae8BHGcdkFO6t+1+8zlsz6Dax0JFrjiTU4wE4M9PZEgCdpxcj3IP4TBbkFn0t8uaBMB6QK0tLbi2Cxuxo1u8ipj2EdLG64gjbb/dD5CEQtHYi0PId42Mw6XVLrG5XGtpA+Oi0WZWLAs6pla2w/ASjVTns5hsQSioEjk2HnOnK4+AuGS+UhlOIcjDE9Ln9er0Qvvu2pbLa7bDAxveDgm3HBHIqcrJb13oS2voHun5jOL9ULwPYDT8WEfvMVd6rrPYGykslI+chEEHFzpDTd4cl0pF7/aY81YGcqK1HuLXFd4Tg5mjq1MEdap1puKmT7zLZ26P7EeuU/lmaCkw8lhIRhmwFHFvuTlHPLbWp/elpz6sNlpvV+ZrPUTZ4CkwffyHYD3386DgDrkouX4HwZBXoaG4XX
- rJA+BqLn
- O2CYcn1EFro+HOHXpekH9S77ATH502J1pTWVzszF4U4nhTOPzqgRufhryPk4oZu6D91vkfZtIkrYAmL7VrOVLUXKFT9B+buxz+LsCve3LiM4HdYxfww/lLiWPlDR3v+4bZjHdEKV2ktgUe3DxxFrygk5yg9N0X+MVGC8B11WUVLu8oL9lq17HaVrFkX25refys/EwlQfjnZspFQ4kJP1jd89oZ8cMV+QKcUmnI3R82C9qOQnecObxWZf/lSZpHNHA7KJPi2Y08YPjEVHotVOxuhFJm2mULI1zAEZcN3X0LYqlGNZvWypDUX1TKv/cTK8BQfAGhhR37LbeJ3y8OAsYRGfgcTp4a2amDFRweBlA16Twxvj9i20iacZ6BlOKjYT6+O/BSV4y1PW0d2m0+OtJ76hf+ZMv2TRgdBSI4e11zLTrMC1ee8+fWBrD6A==
+X-HE-Tag: 1766422219-520365
+X-HE-Meta: U2FsdGVkX1+1Uvpqq9USnVrHoI6GmkHQ2Tge62LTt/bAnw+GNPZyCoP/eVsEhAix61VrippBkY533vGmiHIGdv/N1B2Reljpz9PM7/bW+S4uOd++yMROKkf2xEUYyVf+MUbIL7LUS/eYOgLWNoYAoyetEdGYGOP0IOawgbz4izGFA318wz5ac5guTzxdVr+SqRKohFI771/WpKLvcfO8Wkut3kehbm4/FMBLCr1g57rIHZSU9cJQ6aQvNRxq0r7n/UkXnSRP4mDXWjq9OObjy8VNTUjz+logtzPJMYIoxfFDuPmwgbjaSS39Wq5lV04Qqm+8FA0IaksX870BKkIwXTMyG5zP7bw6MTGHN0gx5X4UWtzCSb/8aD16aWbn6mpZAHyFbBPQldsx/9kA0NZ5gJ43D8J5IgLvE+TcN7RJN8uAAcWlpY7oGwfJCT7uvp9Y/CY/C3u27EVVAxySzl31NkbdhUG+dC2EjDOjL8LaaYkzJ9kRvRUwT0UDys84OEPsj2VA5Q4n97Yar53kyIHA4OHhAIpvmLPmr0+cVGOGR1g72aSMLeTFTYIiFbDPs/U3KPFlds6q6lFeQHmEb0c6T0+ybn9wJ4RP5u8habAZ7uZWzWQcwBokFxC36lwEaS9K8fZkJZg3V1fDTYUg6X9dbPZnvwUPLjrsT1KRo7v1h2EIuynrOjLHlz39WJuy+4zq+S/lLYVlUYmH+l3YxovMJ+r2AQl71/66DRc1dYmGyNMCZUHjFIlKHCh4ymwDUmrk+eCIYH7dv/VrWO06Rn0cqOFDZEHN+XiwIDpL5gb8BS9619jdyRwk70u7uxdBRL1LNH+F/8MHAeWP2C6UCKHj9BLCMMlWtKtzLZhUxQC0MDx5CJD/Ty+FFYXW5d9HcyEA9aCzD0lpELM1fBnVqQwwBDFLvwbqdo+DSlXPCz+nPycyKxdpucNj9sBjDXMSG+EfpvU2hfg2JV6uFpRs/S3
+ 1sqzlrik
+ hlG34lZQ7z/bX/zX6YREV4deHYCXccQqFPEaQNEcktBRMKzjFyA9m7ct+Slyot8xTXKPl88SpxzNsAp7odu5yv4KK51kSHc/uVeyW7/eJ+vJN0wuo0iJJklm8wd55FOXyWfDQGAoaPY589BKQnET/BOwviWZ0hK/dPbVX/mreMCPXOy3DL+5emDZ6YjOmzlGvHQNM9H/TojkWBnS/69AEXjsrssYuKqM7/ma7NiKLgEdb8sprfC+uLK7D+rvXKzZcYFqACIP7ZcrpkKl+jzRHlspBG/YQNYbVo6jnxR691JKCf9BGRcgnhEWyyLJn04WvWe6fMuLB5eLsPYIAAOnWFdl6f9lRvfZP5lAznMQhBSYpts8ULVosDn+7oxI3It6fl4ir5L8s9lo8vI4DiL4MEn0heco9yXCCFJGqGusc2+fyOL3TVR8Z4YPdIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,19 +115,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025-12-19 21:04, Hou Tao wrote:
 > From: Hou Tao <houtao1@huawei.com>
 > 
-> When vm_insert_page() fails in p2pmem_alloc_mmap(), p2pmem_alloc_mmap()
-> doesn't invoke percpu_ref_put() to free the per-cpu ref of pgmap
-> acquired after gen_pool_alloc_owner(), and memunmap_pages() will hang
-> forever when trying to remove the PCIe device.
+> Commit b7e282378773 has already changed the initial page refcount of
+> p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
+> "VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
+> refcount should not be zero and the following will be reported when
+> CONFIG_DEBUG_VM is enabled:
 > 
-> Fix it by adding the missed percpu_ref_put().
+>  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
+>  flags: 0x20000000002000(reserved|node=0|zone=4)
+>  raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
+>  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+>  page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
+>  ------------[ cut here ]------------
+>  WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
 > 
-> Fixes: 7e9c7ef83d78 ("PCI/P2PDMA: Allow userspace VMA allocations through sysfs")
+> Fix by using "page_ref_count(page)" as the assertion condition.
+> 
+> Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
 > Signed-off-by: Hou Tao <houtao1@huawei.com>
-Nice catch, thanks:
+
+Thanks for the fix
 
 Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 
-
 Logan
+
+
 
