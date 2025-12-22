@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9907DE674B9
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 19:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7473E674B9
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 19:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B1AF6B0088; Mon, 22 Dec 2025 14:36:25 -0500 (EST)
+	id 0DC916B0088; Mon, 22 Dec 2025 14:37:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03EBE6B0089; Mon, 22 Dec 2025 14:36:24 -0500 (EST)
+	id 093456B0089; Mon, 22 Dec 2025 14:37:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84306B008A; Mon, 22 Dec 2025 14:36:24 -0500 (EST)
+	id ED8B36B008A; Mon, 22 Dec 2025 14:37:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D83CD6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:36:24 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F7E313786D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:36:24 +0000 (UTC)
-X-FDA: 84248113488.15.A479EEB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1AC0480008
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:36:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MooInMLg;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766432182; a=rsa-sha256;
-	cv=none;
-	b=5NG0GQlzcXTIrXHNWfWwzdGNga6z+2HOTPs7iFa4jn+6wG5f+64fOfkk8W0IzF8V80heei
-	UpqVOVRO0Z/bhaXRa52vSp+tzvwMcfmBA8LHLC2hyXDJEjdgROhKBlPaGoUMIIX0sMFkin
-	ysOaTBOjKeckf4l65e+5M1AojEZJvKU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MooInMLg;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E09426B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:37:39 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C243586E0
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:37:39 +0000 (UTC)
+X-FDA: 84248116638.25.E44D0C1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F08AC1C0003
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:37:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="W+Lk/2rO";
+	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766432182;
+	s=arc-20220608; t=1766432257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWFglRNrhHIkSED0pY4mFYnNdUnj8iod8G1skdCiVi0=;
-	b=CUMJiAd0/m4UNpmo3B5VWb4zGrosLSezGGNiczVrdVA3M3FtmKsMWtcoBs5rsWuGoxSslw
-	OVxFlCpeBtWgcMXd2o3Q22xmVkc4fopZTzxk7M6/GtLEBaBjCKh/w01kKR4CWg01Mcj1XZ
-	+Gp6OCbNpSy+cltTf/DU/wI6UjJPkd4=
+	bh=3XktKFfQ8uJsVluMD3VHEpq7VzmUmMEGAbNz9VTvAGk=;
+	b=ezTIP5m4FzVN3FbqiSt3nX+uvY2x2bkgVDxUH9XKcp389sQC7Rt1zxSlkL8RONEFa83G7x
+	DxOrPm0w/fe0d5fH7SG7EMash8xzSPr7WORUYwA6ZeFmVXot4Ubigo+L01c9r+7EiO/41X
+	sluW8fx18UQHwnivMwAB/XT0HnRbD/A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="W+Lk/2rO";
+	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766432257; a=rsa-sha256;
+	cv=none;
+	b=Vlw45Pj6AYJMo4t/S5sl2n1113QIYkHAZfy96DgSHZUkTS2h5r8G2fWaQ0oNjfWRHfutis
+	zmOvVJ9weD4iuIJ74zTHWEbO/mDR5YTeiGOa1vzxaMM+xJOxROlrsga26DLiArwgj+Mip8
+	T2nyhjIU7a0Qv5S6gMOlPfLg4SbPuqE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766432181;
+	s=mimecast20190719; t=1766432256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZWFglRNrhHIkSED0pY4mFYnNdUnj8iod8G1skdCiVi0=;
-	b=MooInMLgW7ystPQma5yiCtVBsxjCYLlwBbHJsWZR+NCbTbze0pHuH54yxzEjheC6Yai05k
-	VoudBeUmzKZr+TVVrvYkJdqj62A4lcod/iod65SGMqxQrsnMgwmACVP3xqqcp533WAijR8
-	DDfPjrjm+LdjvPDrg29YuCjsFKLj3CE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3XktKFfQ8uJsVluMD3VHEpq7VzmUmMEGAbNz9VTvAGk=;
+	b=W+Lk/2rOjaOaZyage59n9KY8t74PNIBP+0i4bT/cqHxTMJFLfYwMqk/3EcroCDC+eIHIWj
+	labqSuo1CG4JUfcz3S81GG7npjhluGO4AG7I4yB5SlLn4s6LYScefgVBonsjaGMVtmO8xo
+	dN0JfRabWgkKoozWuZIAdPgaqm/Ebko=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-pURET3D2O3WtFe5onHRl9g-1; Mon, 22 Dec 2025 14:36:20 -0500
-X-MC-Unique: pURET3D2O3WtFe5onHRl9g-1
-X-Mimecast-MFC-AGG-ID: pURET3D2O3WtFe5onHRl9g_1766432180
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ee0c1d1b36so116992251cf.0
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:36:20 -0800 (PST)
+ us-mta-683-0VsuJcTjMh-aCK43NSssUg-1; Mon, 22 Dec 2025 14:37:31 -0500
+X-MC-Unique: 0VsuJcTjMh-aCK43NSssUg-1
+X-Mimecast-MFC-AGG-ID: 0VsuJcTjMh-aCK43NSssUg_1766432251
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-88a2ea47fa5so117089716d6.0
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:37:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766432180; x=1767036980;
+        d=1e100.net; s=20230601; t=1766432251; x=1767037051;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZWFglRNrhHIkSED0pY4mFYnNdUnj8iod8G1skdCiVi0=;
-        b=SuGcuhqpB0CgN/72dHbOoFJA0264ie368ihoghtTOERVP0cvhqtnK4D+0d7nJbUncP
-         7YRvDxaECRxajr1QIP6ugIL/5QdCCD9dz35J+HWRZPiEjpBpH3IBI+8TAJVwxxuElYZZ
-         OsuOzJR2kSq0t7WKYWkjVbIqVqf3EYob0NviKe1eMjGhqPRNAHQFF/EnvOnMPgbN2jSO
-         LbxpZXLZ6euxC7spkUaGL1RGiJODMgKs0kWqXSzKS6tdbxyJg4ua5qfoWEN7jy60tRNn
-         lwMdPB0qNscYfPvHe55lXVGOvsUAQZFiBwFWMVMNZLy8juuemCxVvFWCiZDdHCb7UG6v
-         sU2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWrjgGzuT2qb5/xD0XlVxAvKoSy6u2iVaZYQ1KQVFYErTjxK7TN3xuazFCeIvEBxkIsrp1xsvtvSw==@kvack.org
-X-Gm-Message-State: AOJu0YxlG529ceSJaOh7brLE+6N142nQm2lXTOCbn8iVFKNs1M3YYyCF
-	FcUREZOUWTAKdOigqjNtU7ULWgkeC2Cn1MA0lKoA87JskUYy27sR8VyOSxu/ZZ+V0LDgaC+BpK2
-	9qJqJun/rEgLzy2dtpZgufbzKR16pNcuSBnWZsvCUztuUdOonx6x8
-X-Gm-Gg: AY/fxX5Eb4Wk0IqGNHHzS9REEW1GhxYh59sPid87F5wEcjpu7cAuNJ1v+m7s5H1WXYS
-	4BbEZ+IMLpcZSu29rM7jgTO0j/YvA4WYnOQ50AGIWo53F1NlHFmgcgem4RMMduQlq7rXenBnMVk
-	gfciSM+IuI+vxzaCuNP/vl1r8WpN2lagU0upWo9E1jq7YNQKp314BWRGWN8s8fk2W+hW1nVGva4
-	BxViwrH7K1V2IwlAH6MLNQHAKMh8CH2OHETy5G6xr0Ts/zhsg9bfgKUPjwEAcHyc01FzbltMNgq
-	fh5/eXFJmyWLre889/RqoA7IWVM4onVmvV18l2UP87lxVu+oWZCi4eZY6WArFO+KCuGqEJ3aUrB
-	Wr+/kj3M3Qvo4voDkCaiSOXDfZSj1S0TMAdrWmXF3jRcJ1aSjUSQ/MF5ns5TzvL2sC6e1bWdEAw
-	==
-X-Received: by 2002:ac8:594e:0:b0:4ee:ce3:6c9c with SMTP id d75a77b69052e-4f4aac5d23bmr164621791cf.2.1766432179676;
-        Mon, 22 Dec 2025 11:36:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEDk3FjtineRhvc1jPppKJR8ZeFRYgYn64r+f+ezu6FGdQbbfW4MbqUOXuDnwzesgGVYYYTRg==
-X-Received: by 2002:ac8:594e:0:b0:4ee:ce3:6c9c with SMTP id d75a77b69052e-4f4aac5d23bmr164621571cf.2.1766432179295;
-        Mon, 22 Dec 2025 11:36:19 -0800 (PST)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-48-76-65-77-217.dsl.bell.ca. [76.65.77.217])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4b1302d44sm79789771cf.29.2025.12.22.11.36.18
+        bh=3XktKFfQ8uJsVluMD3VHEpq7VzmUmMEGAbNz9VTvAGk=;
+        b=VuD3BKTqQUNh0nQgcwF3a/L9tjzqjw4NLZUEnMOkyfHb4HSphpOeDxPsQf1BlVnvZX
+         vTqhl47x3CtK7UV2CDAgplGM3HnAx3ZKOFoOm/dMYOKr/SjpPQag8L0TIss2jqaxXKz5
+         sg6wnOeXyeINU7svXiVCYkHObYw1qRq9uCRZF7EgzogM9w47WR52X+ck1k26Yhjjxj8K
+         /Hm60DDLx03u4s+JwdmgEb/h8TQsgYhLBuAK5/Vr17K6hhsnWlYMMO5O26HQhS1x7ns7
+         +3PtbnRcs1v8qUtBV+kS3uBrj0yIDZnN44AZFrthHEgJwiH5VfZ6FLs3k4Umv55k2rXK
+         1UKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpOovlm1zDZIJsksTqW6gCzEuaZncXha6Hc7EYHYN6McfNqaCu2ve+zoEB6JV0vFKRJUXciRVhSA==@kvack.org
+X-Gm-Message-State: AOJu0YyZIACIMlQkLaybRShKLQbTqJeOM4Kd/D1JlnrZQNGV0zSSZPS3
+	QDbKERHT4s5y4ZcnBKwTEYcrDgD112LIXjdHMWN7/EhK/nRiNc/UyqoOI4td2BeW9EJ2ODUDegq
+	GemnCb5rUWZNH5JbI/cG5DwRdDgbalrXEdIOQsB9vwDOYZDfqM1hn
+X-Gm-Gg: AY/fxX6d999ebcDh5/8xnKnkeR8ioDoQAjMLoA6js5K82KE6aVJgMUm9As9bYiwSRL+
+	FrtW+J5+U31uw6eYI1yRt556Z6Odh2kPwIDc3gxyuuZvF2s8HrU8XC2MpuOaRSPUs3nb05NUvwK
+	3BghBZo2BI2te2VGvMEq6kOQDZRw4CfujdMDbj73Qbgy/LGhAMwA9LB9FXHFMluMFdR7XKczvgh
+	k6oX671/2MDcuUZtxEdDEuqQ2YIJcM2jaiCcnhxGzvh301aXrcCc6GY4JUvmwf86fs65e3fB43c
+	yQZg/mhNWHVzqJFSBeJ4CBr/mmipotTapSEldnffFjvTz9GDuTb8F8OuHCeh+m0HeFmckXp9wMy
+	KFNt/83cI5yQ=
+X-Received: by 2002:a05:6214:1cc5:b0:888:6227:3e77 with SMTP id 6a1803df08f44-88c5001ff71mr280547086d6.4.1766432251298;
+        Mon, 22 Dec 2025 11:37:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRXC9/ZSKqrXplj4ZTnSkhC+GYjSHWSB/3j0UjZR2/CilRiGnbj5SN9Coz7NzYDjkORfBbzA==
+X-Received: by 2002:a05:6214:1cc5:b0:888:6227:3e77 with SMTP id 6a1803df08f44-88c5001ff71mr280546756d6.4.1766432250935;
+        Mon, 22 Dec 2025 11:37:30 -0800 (PST)
+Received: from [192.168.2.110] ([76.65.77.217])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623ffd2sm88370666d6.9.2025.12.22.11.37.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 11:36:19 -0800 (PST)
-Message-ID: <469acbcf-22f2-4774-8cf3-7f68c7095c0a@redhat.com>
-Date: Mon, 22 Dec 2025 14:36:18 -0500
+        Mon, 22 Dec 2025 11:37:30 -0800 (PST)
+Message-ID: <cc3c5224-e012-426b-a66d-d4c7bd945bcf@redhat.com>
+Date: Mon, 22 Dec 2025 14:37:19 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] selftests/mm: va_high_addr_switch return fail when
- either test failed
+Subject: Re: [PATCH v2 5/5] selftests/mm: fix comment for
+ check_test_requirements
 To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
  david@kernel.org, shuah@kernel.org, linux-mm@kvack.org
 Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -115,22 +114,23 @@ References: <20251221040025.3159990-1-chuhu@redhat.com>
  <20251221040025.3159990-2-chuhu@redhat.com>
  <20251221040025.3159990-3-chuhu@redhat.com>
  <20251221040025.3159990-4-chuhu@redhat.com>
+ <20251221040025.3159990-5-chuhu@redhat.com>
 From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20251221040025.3159990-4-chuhu@redhat.com>
+In-Reply-To: <20251221040025.3159990-5-chuhu@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SFFdSZmvl5Dsh5OTxeQThYNOEOc9Z89_oDkc4HUbSgc_1766432180
+X-Mimecast-MFC-PROC-ID: H7pjF1fJArYpb0jT4eJVgH-pFvUnfNQZMhZECH1lmU8_1766432251
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, en-CA
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1AC0480008
-X-Stat-Signature: hqw999c1uh17zi14oseiprrts35d9t6w
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F08AC1C0003
+X-Stat-Signature: cjkwthk9xcyz7mrhc446dqe6tpdesmoy
 X-Rspam-User: 
-X-HE-Tag: 1766432181-427861
-X-HE-Meta: U2FsdGVkX19FX1xu6S5a3aS8Tw1Cik5cBhiNLk40jip2ljieL69+vsNG97mrcVd+PWoJxToQCb6pBtVC6ze/FfFAmwZLu8oYl5SlVz+lzzc+HeuY8ZRCz95tMQyISc5CDjo8LP9TZbi7MkXs4RbNXrPSHagOkHZrf+RRmCgZiZY+KqReFKjXX0zX+oYRgP6afIVXp+hnFgJZWYIRJ10GDjYJQ9ny/BVBVVNR+m5919OhcxK4reDSQc3zX6uk9fmoYEaC+XsWYBHrIT3KdXhV2va3RqGrTBJqjyr7DJZK0P+C5hw2P93WXv1Q9q1KcWDmQFoNLLtE48gbazTZJyWdiWmjaND3qKTqaAS/LAWoWZoxTApNASuf/0DaQIJeQ1Jc2+sgSbriPioDJKKsBP5w456BUSpYDJwEWGYAUkX+dxdIwrItWb79PCCPmPaiiS7sJ0WXfI+nIjzngHr+nMLvGOnz5XYT1htCa9b6qYsO7I7zd+pvrV9U5mFrSgDeDO9/JTuDarSz1CuNeJ8yr7Vt9eCbOzV+ViLh2b9SxxhwKvNHyDBBeOL1/TnfGsIQdhlcAHchCNJbHDbIDOIRqgxcSBgy68A1D4t1vxlayxevLVNBiez4klj86soKMYVB6YbVHyUXArV9LOT4/SIhfdgDdeXMKgftXoJbuTfXKZRkdl+ihNcAwwqZ1979eeIOryDYXgmh5v7hlpwcea3BZgLGpvGXQCdKBhOzkdLj6OgUmAI9e4j68dNWEeoxiIcF81EJhM/+gqM5VKEktyuYAx783w78ONvda//12qW1Ku21dmE08Rv9TBOXuEJICWr7T/+eLEdROIhYi4Ff/pM8Vnl9g8ySFn9w3ErZxXJk4TvxsulPt06M6d3iQvE2xqUgSgdy9UgRTufUM6fGGDTASYlmJnD2riDmHArqUTuHxzINF9VDk6dtg9u9yBHLH/MrOzEfNjNyUYee2cFt52zhGuD
- Zel8kmyc
- 0I5+Bcq08jSPjTFBpNhvqPb9X4v7y1JFYyvvQP7Y3YC+eEmqkXluQFMlhYuptvDcrghGTqg6MtgXTKyuesYEB60YfMdJSetXI416gRTW9TLz9GD+sqI2Sk5pKjWxJSJU6Vr1te4Ou7iIoaG0qMwg0VtvB5d8TwKhQ+lAWgnvwV7Wj87eEYdM9seSvug//OZlmGlzwTlPIsio15lX0Yz2dAuRbs648vZBNTwAsqxa48s2hF49B7tiJx2BmwS85hse5/wWw2KiU9+JeCyBog7TH9JNfhSAunvmrUd/EhbwsDk4DeDJnxQ9HolXCZDvIMm2szsIgZLv+Xvv5qLzCOfZGsfuryA1fnLC5a1Af3WQKKdh4zO0qX8GRehC1wG7EMAgnhFsOmPVa2ytGe5qzhUprodsRF8t11ORyhQC1L3n+cVNdZH1U+RU0oAKZ0BGDxQPDOQq/7nqRl06hI68BgDFLPVbsSJ6qdN3i4zHyEjYEx56UfSX/A15Lal0/F6VTOsqCMduFib1ji8s6C3rU39grA8RkvJ6HIeXnMI7CtF73yR6kRBU=
+X-HE-Tag: 1766432256-91710
+X-HE-Meta: U2FsdGVkX1/oyosXK03VlnL0XA5YG37EQJpVfFIRw1eVgBmVIX7bQ+34DyVFaw7+3G+fvl1PjbF/DbwCx6HvIRHGQTnxk6sBkYc5Fz+FJWEf03KUnUcfA1xZt6E3VKIoAJY/wuRriLaqn0bhQShvqrA4/lt1bI6LoJd364vVs1Q1r1BNi5ksDxaW2/kFmZjguSKhM6urPSX6lnW6cgXC2l/ioZAmayBn8qFtWgA0Rp6l491c4J9ztyxVXNOc79ecy2zFc+wQP46VWaDXK+otLDjvhZzVsc7/gj6Dvp2AhomU2PZ0VT022BasAFGLcIBphvMBi4BAERmlZQybV1nzgREG4HCXnx4layN9ZMimxAdwp4dd9hhGT1bmdHd0CcjjzGMggNXb+9sspVFyKBf2ASuVZzm59kHoX72/T90zSiKgbfQu95wjW/1CsCa8OFasO6EOKi4P3nLE8bcS+uz4K7Dx1HDblbOwg9QNcl0cJCdmvtY8SWmQEH5oYmP3baTEuYh+WLtaU3wbuw+Kxmi5s6tHQc8tZWqHYOU0Zl3ULalS0PxjcIvzU9hjodUuEfN0AkUnD6naQThVZdnbhysY54rWscJBFIfJaOBN02qjhxV7VvFWhfrPWHFUBL+mj4mLZM+Uw9pZH0/DV9OeI3TRhBTRD2gxrN+cwrl6IdSmzPEypRNPmTHViIZ+Y1ZDFQdNCuFNxhtT8qEztQuYOs11ttYdAkIlNLn6ztroJs4qZsY8/3hTcK536A25DoutNkX+UUZ3rsh6M/3lkwprzNrQM0V95mvB5qNA4S46UIJvF8OLTt/uLDvhDjGcDEG3/NQiwHKCYB3I1IpckZTQltC4iLm0cTAUowfmOWT0dJzlmFQxCsnK+0HA2fKaQmW3xbhMqdTGT5nMlnP4lZVi8d/vlwHcGLZmpXDn54OIGrodDmqNrr1/ZI4obvS+4T4ksdj9dy7PgT/Fn4bMyB9pBpC
+ W4rLvAva
+ f/t7bJXhFvZrIUMQ7aXrDbLwzgrosubiqEz7SXRuTTalmysy4fZbsawZODaFJL5EibUNjrRL7X0tqENyPZdNWs+U7+Cx3MmZTdSqhzbbN1IOLADUfarKBgIMnwlH+1C/D8S0GBLmQI/5fWm7yb1yNoeF6WpUnSEe91pMnj6Zkz01XmgT7G9uXQ4ALWH+j9WuM1TnsaMZtEh+5yFdS0s4jOrqAjIiqJdjufTmVgyua8DAPz7lzpWChQ0GgFYwyeXOUkr+NtACgbovGGsg2ccWhBS65UVH55zm+eZfBqnC+yGtO24ZGqd4C5Mv5iOguxIvpKclIOYjkGbcZ2hosWRbnWzgY3edYatzCGC06hUNVcq3yhL7gVfzadhflMV0zie+MOOYjVsqoxLKgiz6Fc7D/aATW8WDbf59o43WdfT96mXM8DqtDs/2Tfb3Rr9d5xTqNt/H/CFUwkCEzvb74KgIKa9+Z9I7S7plQyuvx+IZ8FBQ8OhpgVRiosJMWj4ZYmt6cfkOA+BdqB36qD/HnNDKY8GpvyobuDXfPFuf+J8wUBaFQtsg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,50 +140,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2025-12-20 23:00, Chunyu Hu wrote:
-> When the first test failed, and the hugetlb test passed, the result would
-> be pass, but we expect a fail. Fix this issue by returning fail if either
-> is not KSFT_PASS.
+> The test supports arm64 as well so the comment is incorrect. And there's
+> a check for arm64 in va_high_addr_switch.c.
 > 
 > CC: Luiz Capitulino <luizcap@redhat.com>
+> Fixes: 983e760bcdb6 ("selftest/mm: va_high_addr_switch: add ppc64 support check")
+> Fixes: f556acc2facd ("selftests/mm: skip test for non-LPA2 and non-LVA systems")
 > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> ---
->   tools/testing/selftests/mm/va_high_addr_switch.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-> index 02f290a69132..51401e081b20 100644
-> --- a/tools/testing/selftests/mm/va_high_addr_switch.c
-> +++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-> @@ -322,7 +322,7 @@ static int supported_arch(void)
->   
->   int main(int argc, char **argv)
->   {
-> -	int ret;
-> +	int ret, hugetlb_ret = KSFT_PASS;
->   
->   	if (!supported_arch())
->   		return KSFT_SKIP;
-> @@ -331,6 +331,10 @@ int main(int argc, char **argv)
->   
->   	ret = run_test(testcases, sz_testcases);
->   	if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
-> -		ret = run_test(hugetlb_testcases, sz_hugetlb_testcases);
-
-Maybe you could just have used:
-
-		ret |= run_test(hugetlb_testcases, sz_hugetlb_testcases);
-
-But anyways, as this is just testing code:
 
 Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 
-> -	return ret;
-> +		hugetlb_ret = run_test(hugetlb_testcases, sz_hugetlb_testcases);
+> ---
+>   tools/testing/selftests/mm/va_high_addr_switch.sh | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
+> index a0c93d348b11..9492c2d72634 100755
+> --- a/tools/testing/selftests/mm/va_high_addr_switch.sh
+> +++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+> @@ -61,9 +61,9 @@ check_supported_ppc64()
+>   
+>   check_test_requirements()
+>   {
+> -	# The test supports x86_64 and powerpc64. We currently have no useful
+> -	# eligibility check for powerpc64, and the test itself will reject other
+> -	# architectures.
+> +	# The test supports x86_64, powerpc64 and arm64. There's check for arm64
+> +	# in va_high_addr_switch.c. The test itself will reject other architectures.
 > +
-> +	if (ret == KSFT_PASS && hugetlb_ret == KSFT_PASS)
-> +		return KSFT_PASS;
-> +	else
-> +		return KSFT_FAIL;
->   }
+>   	case `uname -m` in
+>   		"x86_64")
+>   			check_supported_x86_64
 
 
