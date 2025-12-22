@@ -4,122 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A140CE66886
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7762E66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 01:46:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10DCF6B008C; Sun, 21 Dec 2025 19:56:20 -0500 (EST)
+	id AC0006B0088; Sun, 21 Dec 2025 20:46:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BB3E6B0098; Sun, 21 Dec 2025 19:56:20 -0500 (EST)
+	id A6D3A6B0089; Sun, 21 Dec 2025 20:46:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0ADA6B009B; Sun, 21 Dec 2025 19:56:19 -0500 (EST)
+	id 9A30D6B008A; Sun, 21 Dec 2025 20:46:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DEB7F6B008C
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:56:19 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95D6B13BF33
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:56:19 +0000 (UTC)
-X-FDA: 84245290878.06.05537AE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 31AE0180003
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:56:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZplUHLtO;
-	spf=pass (imf24.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364977; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 84BF16B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 20:46:02 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 29D508B932
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:46:02 +0000 (UTC)
+X-FDA: 84245416164.10.E70B2F6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AA519140004
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:45:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IgvVRb8D;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766367960; a=rsa-sha256;
 	cv=none;
-	b=oqHgEmrmQVrzWzNnQEYEfYHURmgK1ilGlsKIgY4m7A5efVi5caZd2/SXZDiXILHyR7d2s0
-	/WrkTNGN/l1cjHl1a6Vb3gIokeiveoCsnrKHFBbObDer4U92gkQ/ITXrIIRMQ3knaWzTvL
-	ux9FOh+gCLZ3NYi7t6i4eN6GYUxZRF4=
+	b=LMJ8VpISfpNZZ3rlMpvrHA9562aNaOxVQ/lGWcDlSckizoHUidViuDGy7k/+WWFlJyMWZu
+	+TO442WV4LeYqGqrv/AxnKRJONhITy3Nfz0nAK/USL2RPC1MyA2E8bgVKBrab6xOt17Va7
+	IAAPGDf+ysDd/zsFDDtlsf15Jn9bW0c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZplUHLtO;
-	spf=pass (imf24.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IgvVRb8D;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766364977;
+	s=arc-20220608; t=1766367960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
-	b=uaF8dNC0lqG0gKbIAjUQiINPN4VuZrMxsJuD+4cfC+GQknjg3+6Be+UN+3iLeCGAUmnC3T
-	EwE12yB41XGs316ZBN9ZpwChsfiYNX6jpBSuG+k3vULKh+OQDBp//4FY7KP8pFGvzLVhtC
-	tdHtMp0IrWbEqhH09HMCZ1QCH2F0L2A=
+	bh=nJB6Sat/52s/CNMT9yMvWPSE3c7rlJLhlxQ8uvw9rx8=;
+	b=J7MHLWGbSd97pEgOCVjivhYl/bf9+iUkSHk8ThE7xfCD/AcwRWraqP9znc5DWKKUamtkhe
+	sYne7YdgEM9Mqq+r9WJc6NUgb2pN9uHxxH9KKD9YVeIGQFDsAywo+3q0R4XQanbvu3XiDW
+	q3R/cTOWtsVt81wz5k4CyupwKJ+TTGc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766364976;
+	s=mimecast20190719; t=1766367958;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
-	b=ZplUHLtOqNNDaUIAHbuAzTvd/p9PPiJmtwW+J3gMDt0UALkMeo8vymbHYwqAK73sXVdw2Z
-	tevkHerQDnRs8FTb2XrOqNL0E1qX82kKz2VCSX84UtOWgRlRKY88qjJy7x8WOCrOdlrVkp
-	LcjbHQC5QRY9FAb9Xw/N47CLFZP77Xk=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nJB6Sat/52s/CNMT9yMvWPSE3c7rlJLhlxQ8uvw9rx8=;
+	b=IgvVRb8D+J01hLrSz4LYziJvlHQIlxE7scYwrkH1xKhS/blDHuHEOh80CVMZKkBxgbODpF
+	E7vBh0ogq7CPPGkGtAAsV0ud+kF2jvVEURIDLDjCUOWyTZAsdrK2zj3gahOMR8CNtWJ73s
+	KtuTV6UqY9ooipcdXj9fezrsy9UbfFc=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-0hAJbS5gPyCRj7vrQb9-mQ-1; Sun, 21 Dec 2025 19:56:15 -0500
-X-MC-Unique: 0hAJbS5gPyCRj7vrQb9-mQ-1
-X-Mimecast-MFC-AGG-ID: 0hAJbS5gPyCRj7vrQb9-mQ_1766364974
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b99763210e5so7034250a12.3
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:56:14 -0800 (PST)
+ us-mta-685-BcE8RSWROausw_AeEuAKsw-1; Sun, 21 Dec 2025 20:45:55 -0500
+X-MC-Unique: BcE8RSWROausw_AeEuAKsw-1
+X-Mimecast-MFC-AGG-ID: BcE8RSWROausw_AeEuAKsw_1766367954
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ba265ee0e34so3578538a12.2
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 17:45:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766364974; x=1766969774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
-        b=iWgPmDAWUEPm3ehH1dxggUfsQFgkdAi68QUs4RyhLlns55z/hAoceX6mjQTgARCCTL
-         OEQXb561h0DPJlOTGVan8qL4rYprIwcpLVdhe8gD/oHntGImySk+RR1saCWH7sy7iFET
-         wPYnoDM7urpv9f7qK98ZnhPscgB3xfZZsqdItIrTFQZNRaeuKBVQeKdWqgblFTZgi3rC
-         +3fOhneSshqg5WBJ+1pno/Uryn/bC5m4d5hAbWuK8O6fAGFup+5COGuBObVgx87WRu6M
-         yTEqX4iyGcp4ZZuqW31q80C0K7Rm2EBrSGRnoc8FHEk2PwSI2ztDLUeq3wwKAVWN3krg
-         k70A==
-X-Forwarded-Encrypted: i=1; AJvYcCWwN6y3wac7X9gzCXW2VyiUygr8wlECdUVzIHhnMiT3q8Ov4cfS8td+hrcP+1GRUkXSmVV7KZdt1Q==@kvack.org
-X-Gm-Message-State: AOJu0YzeScNuEKZlOCcNzBjWoS2E8L7EBwgMITLRrCvRtE14SBqNR0Yk
-	Z1o42AnbCYNwy7McbBm9IfpVsq/uiTME4c/mZlJfYIbTY4pzGpytkVRZhJYrOSgiMJ4w2p5K6tx
-	YXPtgms+YO1ssT1E/eVHUipQqsTugJ+ZWkWvkcQDwPVkhoYsUHgxWWZ868rLgmcnJUF2EsaDQqp
-	tjTHn7NtB57/Lnc2NeZw40DPcekQA=
-X-Gm-Gg: AY/fxX7P76GRfKtjgAU5c29bA8K6Q6DDYYcDq+EFcONRRTfyC42xibh0f5nAEBN0f8O
-	mcc7xf5KFd5xQkeZwE2IbZtdwWFTDal8T812szeSFWNkqTlCF57rlZZqvm1WmQTeF3o3btXEoSf
-	jQROlHQVq1DyizrVtTM9h2pK80qJ3dQLPqP/8gkvexxSZbD0QrEthbdFIoifJ9MmiQblI=
-X-Received: by 2002:a05:7301:fc12:b0:2ae:5fb4:c5f1 with SMTP id 5a478bee46e88-2b05ec8580fmr8756380eec.22.1766364973906;
-        Sun, 21 Dec 2025 16:56:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0029GFn24iMMCw3XfWWVMPRTwXTkFaymfwbymZKK/ZbqfRE+pohNx1p4BX0tdPi90xo3sUbGz84BHevp2vwo=
-X-Received: by 2002:a05:7301:fc12:b0:2ae:5fb4:c5f1 with SMTP id
- 5a478bee46e88-2b05ec8580fmr8756369eec.22.1766364973450; Sun, 21 Dec 2025
- 16:56:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766367954; x=1766972754;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nJB6Sat/52s/CNMT9yMvWPSE3c7rlJLhlxQ8uvw9rx8=;
+        b=TA/86SXC4ZM7UPUfhAzphTeIrwAFXnHrJz+CaHiNfn20aZMO2Yw1YvjrViAvAkzTeR
+         EjdoqTuZbNKgjBxfse56xHonkVj7pXXQdkN0tEKWuTX8RN3As98JvsabVjGjj2xFHKsR
+         7CsgFGOBLT6Xi/O+1K9OKz6w159p8QK8GOOsQkwR9jewuJohj1AjqT93rheKT+GXD5Pg
+         h3t2ep79eou8ka96C3+65pBVscPiX+KDrzgHkn3s9REnEZQvl0xvLLzX+JhOyh2vZKjo
+         R83zMe69CHqmEPum6m62L3gD7iNkZ7ym7qRWGfaNWnHhvxAI3n/JnUg3myt5V0VYYVfa
+         mWjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkqrGg968Tg0+flPHukocs3y5IvrJ821Cc7Av6oF9/LfcxqO4qm0nilf+Kcx+kA0rcvZlnSiIPVw==@kvack.org
+X-Gm-Message-State: AOJu0YyCKNtOboW8/pg690oepT97SVkr6DldquuN4H3RZs5kwaFEGIQ6
+	6mfzq4wb3ERTTsESRvqObzQDVTdqX+97GA1QeOkEt/TG5wiPctso0WFXn5YPJhzNd6G0A4nKZm6
+	tG8r+2pPw5YKOLcTGIm4S8JAEePF6O/SxK5GbpXJcoa0KwdKOBAFbqfWypa0hUC4KKaVhyVWJWk
+	k0anXDLMMVnntU4HIhhfDvK86U2sw=
+X-Gm-Gg: AY/fxX4iqF5I6NAkcvuPSGJe7mCfK8ehihQoQ6CVx3tnu8Dt5kGbqYDFEG7JlRuIUJK
+	EDcooHQZSFmlS6q7HLMIVh3/kWVQyHCIZKpHwl35XWa9THvwrHhHKoW0bC1iNk3VgEIZpx2IJuG
+	8tnGR6FAHcg35AlPR5etXTxrNfrruewjOdVqhhP8JbGhZtD7KPxG/xjlBCUrAdJhD5AHU=
+X-Received: by 2002:a05:7301:508a:b0:2af:7429:e53d with SMTP id 5a478bee46e88-2b05ebf88e5mr5345519eec.10.1766367954083;
+        Sun, 21 Dec 2025 17:45:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCBWqVsapONNRea9BKHJV2jQFdLFXvNDn5VCkIegnUhkljoDAAO5m9Ok/mlEnNrihMaJ3hNHw9Ky3TbfJ6MN4=
+X-Received: by 2002:a05:7301:508a:b0:2af:7429:e53d with SMTP id
+ 5a478bee46e88-2b05ebf88e5mr5345502eec.10.1766367953670; Sun, 21 Dec 2025
+ 17:45:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20251221122639.3168038-1-liwang@redhat.com> <20251221122639.3168038-4-liwang@redhat.com>
- <33d5bdc7-0fde-4a97-aa1a-f8565e196ccd@redhat.com>
-In-Reply-To: <33d5bdc7-0fde-4a97-aa1a-f8565e196ccd@redhat.com>
+References: <20251221122639.3168038-1-liwang@redhat.com> <20251221122639.3168038-2-liwang@redhat.com>
+ <20251221221052.3b769fc2@pumpkin>
+In-Reply-To: <20251221221052.3b769fc2@pumpkin>
 From: Li Wang <liwang@redhat.com>
-Date: Mon, 22 Dec 2025 08:56:01 +0800
-X-Gm-Features: AQt7F2o8rt4dEdkF8DAco4IG4TTUWxg7AyWZZTuM29XF18apL6ox-9F2z5tlIYs
-Message-ID: <CAEemH2ehOUyDqHhn5+Mu2B31dCpOhDv6AL7sEFU5Vt7nSST=Tw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] selftests/mm/charge_reserved_hugetlb.sh: add waits
- with timeout helper
-To: Waiman Long <llong@redhat.com>
+Date: Mon, 22 Dec 2025 09:45:41 +0800
+X-Gm-Features: AQt7F2q3Gord7vebrD32dnNAsR5HLmi3eY2E6lC71d3Zho6nx9lidqAeoSL3tfY
+Message-ID: <CAEemH2f40t+4SsjL3Y=8Gid-CBMtf3eL1egsPKT1J_7LDbdWPQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] selftests/mm/write_to_hugetlbfs: parse -s as size_t
+To: David Laight <david.laight.linux@gmail.com>
 Cc: akpm@linux-foundation.org, linux-kselftest@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>
+	David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Waiman Long <longman@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5x5uxCSxwo4lbmh5Aeuh0Fx4HsyJ7qw6bZupQRReUZQ_1766364974
+X-Mimecast-MFC-PROC-ID: 3zF5xufeZ5QUyOMTFOFhQ4LtRJQZ8ja1vU4VVt9D6r0_1766367954
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative; boundary="0000000000006beb3e06468096ae"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31AE0180003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 8hh6mbwmzqfn6bz6mwntdeod46f4t1hy
-X-HE-Tag: 1766364977-101987
-X-HE-Meta: U2FsdGVkX19G1X+zbdMpqF988mS7SkxqU3rxwQ21e6Y8h6UheEBozd4WoTyTzPCwwRTdAYgg93NoIH69O1x5fynGVgOc3uL5tmtC7DkO44cam76Q0HSlyxkmXClqa6E1diwSlGodyTxaXpHsXvPwtlb+qGZhwbGlPYaoSPIbhmC1YkCUPxyR+yNi6lod1fsEYNlhsK30n76nxWdpLhdgNw7KbL8OBdcrZQ43ByJeKegO0XWZ2/SJA/QCTAOhvvAthsTlKOVsv9SobVp3UzcLLmDSIOVearuIlHJ3dcToN4gMfPQ6C82/2SDHqi3NyKYXxYorCwaG53EMi+niiximdbkEjTszvZZhKmUKeoQysHWPzwxj4B6Scg4a/GnNn+vaK7qvmVnQBl6DIKFeLvPY4b350ga9YAGTO7sE8YfapvDI7hN4Ss1JO91KBhvJaIThstVK+fkGEC5kQGhnpQFNUEJQHWO+hL6N5TRILKEczkKmzErSik8kl5PN56dhO1fWPPZRPIQ10x2JYM56j5TXztwphRaKMKC/ei5337/xydxPeAfreHGEi2sH7V9XhjLLtF/mwflk3ko66U9WT63CqMPRzzRrI607QUzphaDfPWEMav6SC22lv9+GLAs+k/BJaW9Jegifay5TR+OQuEVJAjqgy5HQAh5aDd2EVu3WwCGwJzasRpNcr5CecHJZJ7EynUmf0jxESU0Zbgj9WonaV5j9uwJ+ptwunn41/nzgIJ8SDw5dzoL5ATBhMq84ZSNF2sRPp8bTxfhYlpTb/gMXF5QYwdFBeJSadEntIz1asw32NVjSfjYv2HeJn+NU5aqIurACrRBRXQmjj83mTfJMmSVdKxK9ErtndRYtuU89H0ZJ6O+z+42itRwGKfUvrLVpQrfd2ct59ev3xZVrakFaC6t/XIPXMB7jKYWAli3w7YQuM7auZR4ZDi3xZsA8rQJgYqb3I8lNa6g+AjggObf
- f36QttoQ
- +4TQH2w2vz2X8NiV6+x1dBs1FaIyj5KGbp0DLZnJQhEG/clZdzBdITyo0cTHFF+vuwm8dZO2lXD4pH7T5SenWtISHIAfVDY/qDGkMdwM5UT0WAceotAS1hOJuS9wKR6gftLX5oxeJyXjAV7ox6dYm4Zn9I+v0gpYlbMwjdkT78IE5Kzp8VWhD9TlHre7en7x/F6ezk9KU1GNfZboWFN4kh1nGrqBqyfn4fZWt/yHKhbR5zTKf56d3/DeY3UMVWgcM41fRUVNBJMEwvDZUMrAZjwla2wP2v0toBDT2oQqe4LZWqlL4GmULx9oaNs380e5xmj4fV3dqZrnPgljx6xPFzCxe99KvwXfa8+7mMvPvDx5HYkO6uPri6BNO4QW2Sc9QNMOC5va3PV5LK3yKoucPIPxUvCQKpshx9Gudgw+GTUTnbWTiKhGY26yjwb1gkmnuEiaEBvrXM23mgM0pvJpzAwA1ASacB/SxE09rVrmIvgN41lDsbJASx2butyURbZVgn+r4eY7vM8Swk5ecbQMEQ1vqKsXi6HuaGxfD10YT5IgtFssJ3OQDMx1YWA==
+X-Rspamd-Queue-Id: AA519140004
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 78x6mqkxdm1rti1kr3sx5b7yskujf6sz
+X-HE-Tag: 1766367959-721366
+X-HE-Meta: U2FsdGVkX190/ikb5PX/MFKe27/1ED0c3nh8EVA1KCHHQgpP5K5nyqOegsC3YngEnDfoJijuGZdWrRRHANoMXFGaBCO+rrMEUOYhwN9wJ2ZD22Ble7aLCHkYg9JAxIvQKCqnKBQn5qcpBFslbsSaEixsSz5I46lJrzNb1+7BVJiWOP7ztbhKlspLZ6sBgBElR7vuoyaT8EzPYR2Kj0R8hRLks8DJfkoulP7QUNgHd2uXzEgB22vPDdKnJ3GR8FB5D4DleS5oNf1NQlDVDKJlp20DCjpAtQPbWc0nFWeBgOs/Tpz9eIZ+dXfzhG4YXByORPmPHhCWwlmSa6tIAiA7Gn64X6E4a8kdZLJmkP3afGQo2HQMx5cf4U4CzftiOxExXPx9rptBPWdMjTTa0/MPwFqXEBd1oWrPdrC0ukbhUFiFuvMXhXlig0v05pnfQvQtQKQl3ZZomhbzemhYwy1iw/E3vZiFzwLslLp5UB+o4dHU15iyb5jYsXTJ/89qirl5RQY9kG7BN4SsG0ROsKNeUfC/A8Qo0iaRX527SGGa31YobZ8uYbt8fj+eALsSvO052nCoYEU3vqwmGsAIi+R9yJ5UqGDxniOvs/sAxt/zpYV6mX/qbnAQvsZ8nV9eXIDDFElx8s+3ddlAiIkXvk+L7LEdk+RwkZZTCNIEnRG2PA0CZlhzFqmA92qye0tM/stXg7CD6vZ4FQjo7jkSAS65ztrCrfjuoXnl8mJfvAcvSiB59R1oPUo7umyImQG2wrz6ThYM6uARGX8RhxtyLOKl7jdF6DBqtWcgvw5FSTi95BnlIn+wajw7DP094QbrMTj0Q0Vf1vjU+QqTCVww+Bk1bvpc+AaYwmnJKaflYuPSqFYx+i92HpmpOLeBXg42g6P4/2bLXK4nSegHx/nUjZ0/2ZjY3Ftqsn2oWhzDw7Tgq3ec01Jo+1RBUfMLLww++u/e7DS3o5nZETSSwr7+LgI
+ y3NJSl+9
+ ABq41H2jzmpGAwhA5bHVRoKRibIyeJz5uEZLotR1nZbGzQJayNzaNFKEN4pVrkCZeT6HGVDic4NxWV/HJ4BaOhkm8gCOeDacRlxrt0EqUzuOqbSeZ33GGYBdUan8LqAUA13yEUd4VUYBaUWeYF7bpgQ5TlgTa3KxCcGaVBoQ/P0Kc0wSZiLYsm1R5aA+JaKrxobtbnIQVwKXNdh5XeSEW9Yrfo+H0tBdGJMw7Fr7sxcMYPPxNObS6pbXG1hBeMuJ6W260HW/UU/8RvCxNxvTxxIrR72gmTHHCSqIUB29OtEwl4bWfK4svkBeq0MDm3GHETdtYc248Be9KowqCtLLw9mRUrrfiQ9OayHY3j+JnxDmjz8Th3UqojyMsKRc4RJUhDuH4P/z9RQHrc58fhqe7nSBm+NHo/WKcYBMeL6CSFDB72kIx0festKHPbGKy6IxIOzQPAuN45yJHZ618kXdP7yHSan2fgWOCffldrn6NOT9BK25mrW1XZ9C4uo+ZtobvD9Y48P748t/+q66COD9rPDMIIkegfaR3B0kVWKuoEkKXfULJo3+PZARuADF38S9pnbeqJ1IqjjlT4vuC2G74ZUxJXdieNMRfzIsX/IEWwVuaEvVdX3kihsVwiy8MdsmnycFIDtgcAalWnwcRY1b/KbAP1APcy1qpCewI/vULQly42vrpan4dPowsJ7oYkPtGmuHeKY43TyCl9C+wZEGmDwG1lKs3ZE2Qsp8+zVrbcFekDZr36o5eEKXIyntYrRt33RS857AJMa+tbhJ94xzRccDE4IXg95HpisFIPMjNk3RBDmo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,214 +125,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 4:30=E2=80=AFAM Waiman Long <llong@redhat.com> wrot=
-e:
+--0000000000006beb3e06468096ae
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Dec 22, 2025 at 6:11=E2=80=AFAM David Laight <david.laight.linux@gm=
+ail.com>
+wrote:
+
+> On Sun, 21 Dec 2025 20:26:37 +0800
+> Li Wang <liwang@redhat.com> wrote:
 >
+> > write_to_hugetlbfs currently parses the -s size argument with atoi()
+> > into an int. This silently accepts malformed input, cannot report
+> overflow,
+> > and can truncate large sizes.
 >
-> On 12/21/25 7:26 AM, Li Wang wrote:
-> > The hugetlb cgroup usage wait loops in charge_reserved_hugetlb.sh were
-> > unbounded and could hang forever if the expected cgroup file value neve=
-r
-> > appears (e.g. due to write_to_hugetlbfs in Error mapping).
-> >
-> > --- Error log ---
-> >    # uname -r
-> >    6.12.0-xxx.el10.aarch64+64k
-> >
-> >    # ls /sys/kernel/mm/hugepages/hugepages-*
-> >    hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
-> >
-> >    #./charge_reserved_hugetlb.sh -cgroup-v2
-> >    # -----------------------------------------
-> >    ...
-> >    # nr hugepages =3D 10
-> >    # writing cgroup limit: 5368709120
-> >    # writing reseravation limit: 5368709120
-> >    ...
-> >    # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
-> >    # 0
-> >    ...
-> >
-> > Introduce a small helper, wait_for_file_value(), and use it for:
-> >    - waiting for reservation usage to drop to 0,
-> >    - waiting for reservation usage to reach a given size,
-> >    - waiting for fault usage to reach a given size.
-> >
-> > This makes the waits consistent and adds a hard timeout (60 tries with
-> > 1s sleep) so the test fails instead of stalling indefinitely.
-> >
-> > Signed-off-by: Li Wang <liwang@redhat.com>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Mark Brown <broonie@kernel.org>
-> > Cc: Shuah Khan <shuah@kernel.org>
-> > Cc: Waiman Long <longman@redhat.com>
-> > ---
-> >   .../selftests/mm/charge_reserved_hugetlb.sh   | 51 +++++++++++-------=
--
-> >   1 file changed, 30 insertions(+), 21 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/to=
-ols/testing/selftests/mm/charge_reserved_hugetlb.sh
-> > index fa6713892d82..447769657634 100755
-> > --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> > +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> > @@ -100,7 +100,7 @@ function setup_cgroup() {
-> >     echo writing cgroup limit: "$cgroup_limit"
-> >     echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_lim=
-it_file
-> >
-> > -  echo writing reseravation limit: "$reservation_limit"
-> > +  echo writing reservation limit: "$reservation_limit"
-> >     echo "$reservation_limit" > \
-> >       $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
-> >
-> > @@ -112,41 +112,50 @@ function setup_cgroup() {
-> >     fi
-> >   }
-> >
-> > +function wait_for_file_value() {
-> > +  local path=3D"$1"
-> > +  local expect=3D"$2"
-> > +  local max_tries=3D60
-> > +
-> > +  if [[ ! -r "$path" ]]; then
-> > +    echo "ERROR: cannot read '$path', missing or permission denied"
-> > +    return 1
-> > +  fi
-> > +
-> > +  for ((i=3D1; i<=3Dmax_tries; i++)); do
-> > +    local cur=3D"$(cat "$path")"
-> > +    if [[ "$cur" =3D=3D "$expect" ]]; then
-> > +      return 0
-> > +    fi
-> > +    echo "Waiting for $path to become '$expect' (current: '$cur') (try=
- $i/$max_tries)"
-> > +    sleep 1
-> > +  done
-> > +
-> > +  echo "ERROR: timeout waiting for $path to become '$expect'"
-> > +  return 1
-> > +}
-> > +
-> >   function wait_for_hugetlb_memory_to_get_depleted() {
-> >     local cgroup=3D"$1"
-> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usa=
-ge_file"
-> > -  # Wait for hugetlbfs memory to get depleted.
-> > -  while [ $(cat $path) !=3D 0 ]; do
-> > -    echo Waiting for hugetlb memory to get depleted.
-> > -    cat $path
-> > -    sleep 0.5
-> > -  done
-> > +
-> > +  wait_for_file_value "$path" "0"
-> >   }
-> >
-> >   function wait_for_hugetlb_memory_to_get_reserved() {
-> >     local cgroup=3D"$1"
-> >     local size=3D"$2"
-> > -
-> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usa=
-ge_file"
-> > -  # Wait for hugetlbfs memory to get written.
-> > -  while [ $(cat $path) !=3D $size ]; do
-> > -    echo Waiting for hugetlb memory reservation to reach size $size.
-> > -    cat $path
-> > -    sleep 0.5
-> > -  done
-> > +
-> > +  wait_for_file_value "$path" "$size"
-> >   }
-> >
-> >   function wait_for_hugetlb_memory_to_get_written() {
-> >     local cgroup=3D"$1"
-> >     local size=3D"$2"
-> > -
-> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_fil=
-e"
-> > -  # Wait for hugetlbfs memory to get written.
-> > -  while [ $(cat $path) !=3D $size ]; do
-> > -    echo Waiting for hugetlb memory to reach size $size.
-> > -    cat $path
-> > -    sleep 0.5
-> > -  done
-> > +
-> > +  wait_for_file_value "$path" "$size"
-> >   }
-> >
-> >   function write_hugetlbfs_and_get_usage() {
+> And sscanf() will just ignore invalid trailing characters.
+> Probably much the same as atoi() apart from a leading '-'.
 >
-> wait_for_file_value() now return 0 onr success and 1 on timeout.
-> However, none of the callers of the wait_for_hugetlb_memory* are
-> checking their return values and acting accordingly. Are we expecting
-> that the test will show failure because the waiting isn't completed or
-> should we explicitly exit with ksft_fail (1) value?
+> Maybe you could use "%zu%c" and check the count is 1 - but I bet
+> some static checker won't like that.
+>
 
-Hmm, it seems the test shouldn't exit too early.
+Yes, that would be stronger, since it would reject trailing garbage.
+But for a selftest this is probably sufficient: switching to size_t and
+parsing with "%zu" already avoids the int truncation issue.
 
-As the wait_for_hugetlb_memory* is only trying 60s to examine the file
-value, if timeouted, we still need to keep going because the test requires
-CLEANUP work and exit/report from there.
+@Andrew Morton <akpm@linux-foundation.org>,
 
-The key point of each subtest is to save the '$write_result' value and
-examine it
-which controls the whole test to exit.
-
-e.g.
-
-This is an intentional error test:
-
-# ./charge_reserved_hugetlb.sh -cgroup-v2
-CLEANUP DONE
-...
-Writing to this path: /mnt/huge/test
-Writing this size: 2684354560
-Not populating.
-Not writing to memory.
-Using method=3D0
-Shared mapping.
-RESERVE mapping.
-Allocating using HUGETLBFS.
-write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
-to become '2684354560' (current: '0') (try 1/60)
-Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
-to become '2684354560' (current: '0') (try 2/60)
-Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
-to become '2684354560' (current: '0') (try 3/60)
-Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
-to become '2684354560' (current: '0') (try 4/60)
-...
-Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
-to become '2684354560' (current: '0') (try 60/60)
-ERROR: timeout waiting for
-/sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current to
-become '2684354560'
-After write:
-hugetlb_usage=3D0
-reserved_usage=3D0
-0
-0
-Memory charged to hugtlb=3D0
-Memory charged to reservation=3D0
-expected (2684354560) !=3D actual (0): Reserved memory not charged to
-reservation usage.
-CLEANUP DONE
+Hi Andrew, I noticed you have addedthe patches to your mm-new branch,
+Let me know if you prefer the "%zu%c" enhancement in a new version.
 
 
 --=20
 Regards,
 Li Wang
+
+--0000000000006beb3e06468096ae
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-size:small"><br></div></div><br><div class=3D"gmail_quote gmail_quote_con=
+tainer"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Dec 22, 2025 at 6:11=
+=E2=80=AFAM David Laight &lt;<a href=3D"mailto:david.laight.linux@gmail.com=
+">david.laight.linux@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D=
+"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
+04,204,204);padding-left:1ex">On Sun, 21 Dec 2025 20:26:37 +0800<br>
+Li Wang &lt;<a href=3D"mailto:liwang@redhat.com" target=3D"_blank">liwang@r=
+edhat.com</a>&gt; wrote:<br>
+<br>
+&gt; write_to_hugetlbfs currently parses the -s size argument with atoi()<b=
+r>
+&gt; into an int. This silently accepts malformed input, cannot report over=
+flow,<br>
+&gt; and can truncate large sizes.<br>
+<br>
+And sscanf() will just ignore invalid trailing characters.<br>
+Probably much the same as atoi() apart from a leading &#39;-&#39;.<br>
+<br>
+Maybe you could use &quot;%zu%c&quot; and check the count is 1 - but I bet<=
+br>
+some static checker won&#39;t like that.<br></blockquote><div><br></div>Yes=
+, that would be stronger, since it would reject trailing garbage.<br>But fo=
+r a selftest this is probably sufficient: switching to size_t and</div><div=
+ class=3D"gmail_quote gmail_quote_container">parsing with &quot;%zu&quot; a=
+lready avoids the int truncation issue<span class=3D"gmail_default" style=
+=3D"font-size:small">.</span><div><span class=3D"gmail_default" style=3D"fo=
+nt-size:small"><br></span></div><div><span class=3D"gmail_default" style=3D=
+"font-size:small"><a class=3D"gmail_plusreply" id=3D"plusReplyChip-4" href=
+=3D"mailto:akpm@linux-foundation.org" tabindex=3D"-1">@Andrew Morton</a>,=
+=C2=A0</span></div><div><span class=3D"gmail_default" style=3D"font-size:sm=
+all"><br></span></div><div><span class=3D"gmail_default" style=3D"font-size=
+:small">Hi Andrew, I noticed you have add</span>ed<span class=3D"gmail_defa=
+ult" style=3D"font-size:small"></span>t<span class=3D"gmail_default" style=
+=3D"font-size:small">he patches</span> to<span class=3D"gmail_default" styl=
+e=3D"font-size:small"> your</span> mm-new branch<span class=3D"gmail_defaul=
+t" style=3D"font-size:small">,</span></div><div><span class=3D"gmail_defaul=
+t" style=3D"font-size:small">Let me know if you prefer the=C2=A0</span>&quo=
+t;%zu%c&quot;=C2=A0<span class=3D"gmail_default" style=3D"font-size:small">=
+enhancement in a new version.</span></div><div><span class=3D"gmail_default=
+" style=3D"font-size:small"><br></span></div></div><div><br></div><span cla=
+ss=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail=
+_signature"><div dir=3D"ltr"><div>Regards,<br></div><div>Li Wang</div></div=
+></div></div>
+
+--0000000000006beb3e06468096ae--
 
 
