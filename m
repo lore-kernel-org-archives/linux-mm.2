@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954A6E6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 10:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C6DCE6748D
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 10:10:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 054AB6B0088; Mon, 22 Dec 2025 05:06:10 -0500 (EST)
+	id 75B696B0088; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002D36B0089; Mon, 22 Dec 2025 05:06:09 -0500 (EST)
+	id 7100F6B0089; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E50A56B008A; Mon, 22 Dec 2025 05:06:09 -0500 (EST)
+	id 5EB026B008A; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2C756B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:06:09 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87678BCA3F
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:06:09 +0000 (UTC)
-X-FDA: 84246676458.26.8864ED4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F3B2F8000C
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:06:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HI38sG+t;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766397968; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 4D6AA6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:10:42 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 199A7C149A
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:10:42 +0000 (UTC)
+X-FDA: 84246687924.03.BBFE1B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 395AEC000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:10:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glwFxBeJ;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766398240; a=rsa-sha256;
 	cv=none;
-	b=FrkuGhdmfz2Wu9Lloq6Ch1ljzCBjtJjI+gmIUsQeJKffnbpXaPrlLOvX7mwDcOfnCgdIDO
-	+1iE3u684uHm11qD/kYsaTZzzWUNve57B3jm/jzNEgOXfq67qK01Je7m5s+Brkr3/qbTFy
-	PT7ENhv7gWEEtDpufX37cTiM9lQOWAU=
+	b=f4InOkvnAMyBjh1/e7n1xqUuQwa4XJuivQQM3iJ/Sl+Lpru1Uoq1YLF5b56U8H5fiH3ySI
+	DvZ+C76j0UM/IQB/6Iw7Vdu431tJa79h+toLXOM8D6ZtJ7XCp0n6FGpNmkeyjnlditYgFZ
+	845GrJqNylSXwgWHn96vv0tNsir2vw0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HI38sG+t;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glwFxBeJ;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766397968;
+	s=arc-20220608; t=1766398240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+/Y1yOgR5PiAtmIgGX9L/SmSrrnAg227KwJhJozi1Tk=;
-	b=ZoUKu7t5xQlg4krSIg5dUx1R801yooT/+XD0kTUYHtnEfHwAp4l/0lkRzft9xG1m0xTPrA
-	Cd5sTFGtVQR/FmKG4+nRdDXDhGXGB5sMxBxck3fqWgzjJTb+9WLR/8yiDl0W+g768MQBb7
-	lvHYDaeRWBYKdm8KvLcrOxS/zcP0huM=
+	bh=1L2+dMs6XM8R9PBN3KFS9SU6ZPxzdqK4PvbofUALcIw=;
+	b=E7W7acn8BsRPYgutwHTev1a8PpihvjXYCZvok2ZEPRU9h4JnP/R62FAv/JCukFCeLoeVtt
+	pD2FBEmq7CE8/zULyWqoAgBDEoTLXOJwrwfNXgZzweWc7W1rQ/8ohp2UT8CzbuianTnbqH
+	hiCGIoggYyUjGpN9JT5LCPvQHpN1MFs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D2266013B;
-	Mon, 22 Dec 2025 10:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0FFC4CEF1;
-	Mon, 22 Dec 2025 10:06:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 14A8A41B70;
+	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1F7C116D0;
+	Mon, 22 Dec 2025 10:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766397966;
-	bh=eebHz6ssj2w0wto0mRjf/UfvVDz8o6LFYZj+RkpDE+g=;
+	s=k20201202; t=1766398238;
+	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HI38sG+tzHdHXWzV6JAYYcfwtG+HOZkEHEjLyqrsyxBrVqaXpBRvG0CIYBJU7rxBj
-	 x63MmyJVvgzTXJrCkyxA033xaJESAh2jcupf620fhkrUCtYyUBYki0zkU2TCMFsmH4
-	 ki15M8L7sM6oTZcbyRPAy/wDYnEG0ysR0TTpoS6E2hqy4unWVWIat17Fs+z8VNmpGa
-	 ErOTaC7ruAPX0RjkyDrTeg1SjEyGW717rpv6ZChAplSxtvq47OFI2vh2Lrt0fZoLVP
-	 T8vm1shliwcWwZJ7M7m6D3vyILr9dV4zC+e1hpXiPqRMp6L0HwuzSiol883B9U+5qZ
-	 yVqptsfWnpUog==
-Message-ID: <233fb781-49fb-4a45-aa5a-d2815018272d@kernel.org>
-Date: Mon, 22 Dec 2025 11:06:03 +0100
+	b=glwFxBeJHfy/Hxw8E0IhkNQF2D75sUaWPBU97dBGqQz6RmNddi4AuNDGVRXl11MW5
+	 /2XRcRjtcuW+PNO3XYgXDly/+1nqW71Z8wNkiivCJ3Jg7vi/qaEUg8J4toGx7nqkkz
+	 RC2z+fWsSeanfTQwGH23Y6Vf5tNpm4TWdbplzUT0YtbQ8eTMrchSyhXYxYhA/YeQFZ
+	 OPRiIuCw/OtPCmBpFpOqhk6zayMlQB8WgR7rXpsqEZFJyUY/Z+c80MqXHtj/CR8vcF
+	 w1ay/Q/COiczt1kmwNYCUFJSSQcNJyIAUj3oSuM1C7TYwA6NT4ooYHb4wIaUUIsZFD
+	 XSI866D9bbWPg==
+Message-ID: <c66cb4e4-820e-419a-ae9f-efd2c15aa570@kernel.org>
+Date: Mon, 22 Dec 2025 11:10:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] selftests/mm/charge_reserved_hugetlb.sh: add waits
- with timeout helper
-To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Waiman Long <longman@redhat.com>
-References: <20251221122639.3168038-1-liwang@redhat.com>
- <20251221122639.3168038-4-liwang@redhat.com>
+Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
+ unsharing PMD tables using mmu_gather
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20251212071019.471146-1-david@kernel.org>
+ <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
+ <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
+ <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
+ <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org> <aUioS4dkTrKgsHGP@hyeyoo>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251221122639.3168038-4-liwang@redhat.com>
+In-Reply-To: <aUioS4dkTrKgsHGP@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F3B2F8000C
-X-Stat-Signature: jnwfkpruco9quh5xb3eb36rohah1zce1
-X-HE-Tag: 1766397967-43942
-X-HE-Meta: U2FsdGVkX19yBAALvYw/EUkjnD3zvhdYlPnN6v87PV0vH7fF2/rhflayUSx8C9lWdlUkcTT5pVBTefJxJAzRv1KI1R2c6OMLUySrBzAOKYvB/LYtuVxaCCMe3q7sQsOrAqrZYcEfb6lWJPSMpvVVfNZvk6Kzs81mxYhtHTE6kVdOIFgkXYODRsggrSy3gYhJ9NfPOYrSGbzXPIiooDSE4r8vHeh5PDipnQBNDrGdHwJaPq5d2c5SNB4yIlGwcNjWLS6zAuLLkktZlsxUT2Z8/mQwqTWZk3Fr64o+6Y4hjDYg7fUKyOvgTqcaXfy2H9CcpA2nhFVMwp6mn70BW1+SiXsEmilOVfgspbM8vM6I0Z3jCBpRSSQy0jW1AyjmNzDx/NXw7+6M/ARWGLGNcbmudgfnVv33bZij6OXQos/zpu9Y72svvWIHsGWLlTlzJp5lGWNiG/WDdUj5vDu8njorna1jR1tBoqwHODXhw7LIyJEiq9WMbQzrMqtbj/FCh+MKQWlqABeCYZgtoWfE526PuIGSxIznyikZ6BqXJc+wpgH3I+UsNDy1YsApPEQWEAqqZcJfe+Ad718xvrtakY0rl9UMNZ8RxE0ZsQUnOBNxVFasXMLorbapdfTmojYK/BL7FMFap3siJwe7+zorrpzZ7UILsFxtI2DEbBdqnwR/dUoEqAIB8H4LOuEZpH80BgpK/mHv42WhUHr4+8d92kdIgBovdEd2NFCKtnLCAVFCP+QhrHRBR3lIkdHIw8i8uqGsrD29UT6qugAPPgH11pig+Lnx+0h+3Zb8jkEmb3+yCX4xXM1CFiXFbNGCXKD4ZJEEa2VCfYa8Fh8m8DDkvhgc9iXt6mkamYHlFzxh8ZtUKjMP0Tl3zPweWcz16QTZyGIBvdflsIIfowHzUY4VwXdmEFHvfEeFFrsQbRXHMk5Rc7+kIR8roKAusaoh/YtPYx8ZhDZUHUaNlYQK5ctJgfU
- Nd9pBO+X
- Y6IKc
+X-Rspamd-Queue-Id: 395AEC000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: se6scqcki6ozwpjg3w3pg6meq7eff5pu
+X-HE-Tag: 1766398240-920861
+X-HE-Meta: U2FsdGVkX1/H3b5s/5uNvSRngFmB57pYrCeJRHfKXTs4Ri9npgLfFqDWXxGlRRjUwqUHffbMl+LgzsxVgwC8fS7nPXMUvDMNeVoqzdO6XA9SOAjHK+NritFO4raZTG9K17C1hxHZINafO/sIg3YpSb4Gh60kUaJp7+QU3gT7XFStmvaGoVfyoZaZT/OGDnMqTVuGVjqxkO0BSBo6TlENCY3VccycC99ttkZWlMA3pVNt6JeNktgjJ2J9nXBUX9Bwj+7DQOCQYBRniDLWXyMEWenVC1WaRuwJZpbFpWGJtYySqIyrFip9ipISzO1yVCwuzfO8sjpmPVvzk8fgh5dkz3jVPVxgAlWL+sJZ0uUx1FxBf32bE4ngW+E+CWxnXh+zj8VrX5W4iuEVJUnuvSb8WtXm1Yy1VnjAnZJsWTZPAD3q0dvTSvqtMbxFn5DzJUvlxVS9x4EsqHlVGxO9wf1957TUMUjOA7fUbOjOMg0QPyd7mWC+nwgBEXZsa3GWLO+wySzwEpphg+f+yqyOCNcZbfpCuRzHhF0qZsPjtbqV/jYTmD+60V1RqNmZfSSKNZbRIwOCyApQuEk22ZfKegzL/X36F+4z/H2CO7G6kj7YhNGkFiFF8kK9KUsu/0OxaX4ILITpytIfb+prqzH4pRhjIWe+7AK6JVw5c1F+Qt3cPaMUHhOSx0ED6LVJDS7YyTZZV0MTYGSJMtVUwdds9lie++XWr143HEaj34dwdtI9Cekh2LFgw8u2y/Ums6e4rA9xMLc48JoMfDKsAJEAHB6zwhVG8/y2YZAw1iwrRXO5FG14AMmYAAOF/c1zF/n81WR1quEGYiX+qJ31Wn4PeB4ZkY09Wu9f5DOYifqsc4BUX84W5ioTdfUFcg49Oqhks6jr6VGQAoFWWhggbsOwE7LWSuGw/KUJM28ILG0gxKABl5ypZI7EFJNGK3muVWLCVkqTb5hrhcJ/0RqesCh3cV/
+ 6KNT3Hil
+ tVMISerSdXfH4MQ+p6BF1HNu2QYx/SpLxFce8t8sxIBpzl/vnuoaoSZPC3dCh5OpXUDKHQJhYJVg8pQbg/3HcM+Ks/G1xeS+InGYSu8tt41SjXltU5gfGcOlBhS/g0Z9uvwwbXw2EMjxIxzP2QHcHkDv/9PFpapha9T/3Ou2YmzqWyoMRgAmarA/8h/wB8KZ+Z9BYhMK2ztUZPG+Zt7Nc8M+UBx8FPbxTedrNKn18ReUjMBujXyj2dOCLXPuuJ4hIH8epw1F3N4qUA3Mq6EliJ0su7NoMugTQTmbDHPg4URmJPZgKI/e82X7NWwx6GFpgeWqly3UC/ZXYsQMz19WenGrl9/IaB/C2p6stOukw0jHgd0pkguhUjgmE0BjPlU2TcroXt62gLemV/Xf4jZRcouxMqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,148 +113,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/21/25 13:26, Li Wang wrote:
-> The hugetlb cgroup usage wait loops in charge_reserved_hugetlb.sh were
-> unbounded and could hang forever if the expected cgroup file value never
-> appears (e.g. due to write_to_hugetlbfs in Error mapping).
+>> Okay, the existing hugetlb mmu_gather integration is hell on earth.
+>>
+>> I *think* to get everything right (work around all the hacks we have) we might have to do a
+>>
+>> 	tlb_change_page_size(tlb, sz);
+>> 	tlb_start_vma(tlb, vma);
+>>
+>> before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
+>> don't immediately call tlb_finish_mmu() already.
 > 
-> --- Error log ---
->    # uname -r
->    6.12.0-xxx.el10.aarch64+64k
+> Good point, indeed!
 > 
->    # ls /sys/kernel/mm/hugepages/hugepages-*
->    hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
+>> tlb_change_page_size() will set page_size accordingly (as required for
+>> ppc IIUC).
 > 
->    #./charge_reserved_hugetlb.sh -cgroup-v2
->    # -----------------------------------------
->    ...
->    # nr hugepages = 10
->    # writing cgroup limit: 5368709120
->    # writing reseravation limit: 5368709120
->    ...
->    # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    # Waiting for hugetlb memory reservation to reach size 2684354560.
->    # 0
->    ...
+> Right. PPC wants to flush TLB when the page size changes.
 > 
-> Introduce a small helper, wait_for_file_value(), and use it for:
->    - waiting for reservation usage to drop to 0,
->    - waiting for reservation usage to reach a given size,
->    - waiting for fault usage to reach a given size.
+>> tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
+>> some very good reason I am sure.
 > 
-> This makes the waits consistent and adds a hard timeout (60 tries with
-> 1s sleep) so the test fails instead of stalling indefinitely.
+> :)
 > 
-> Signed-off-by: Li Wang <liwang@redhat.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> ---
->   .../selftests/mm/charge_reserved_hugetlb.sh   | 51 +++++++++++--------
->   1 file changed, 30 insertions(+), 21 deletions(-)
+>> So something like the following might do the trick:
+>>
+>>  From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
+>> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>> Date: Sun, 21 Dec 2025 12:57:43 +0100
+>> Subject: [PATCH] tmp
+>>
+>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> ---
+>>   mm/hugetlb.c | 12 +++++++++++-
+>>   mm/rmap.c    |  4 ++++
+>>   2 files changed, 15 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 7fef0b94b5d1e..14521210181c9 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   	/* Prevent race with file truncation */
+>>   	hugetlb_vma_lock_write(vma);
+>>   	i_mmap_lock_write(mapping);
+>> +
+>> +	tlb_change_page_size(&tlb, sz);
+>> +	tlb_start_vma(&tlb, vma);
+>>   	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+>>   		src_pte = hugetlb_walk(vma, old_addr, sz);
+>>   		if (!src_pte) {
+>> @@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   			new_addr |= last_addr_mask;
+>>   			continue;
+>>   		}
+>> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+>>   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
+>>   		if (!dst_pte)
+>>   			break;
+>>   		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+>> +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+>>   	}
+>>   	tlb_flush_mmu_tlbonly(&tlb);
+>> @@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+>>   	BUG_ON(address >= end);
+>>   	flush_cache_range(vma, range.start, range.end);
+>> +	tlb_change_page_size(tlb, psize);
+>> +	tlb_start_vma(tlb, vma);
+>>   	mmu_notifier_invalidate_range_start(&range);
+>>   	hugetlb_vma_lock_write(vma);
+>> @@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+>>   	hugetlb_vma_unlock_write(vma);
+>>   	mmu_notifier_invalidate_range_end(&range);
+>> +	tlb_end_vma(tlb, vma);
+>> +
+>>   	return pages > 0 ? (pages << h->order) : pages;
+>>   }
+>> @@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+>>   	} else {
+>>   		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>>   	}
+>> +
+>> +	tlb_change_page_size(&tlb, sz);
+>> +	tlb_start_vma(&tlb, vma);
+>>   	for (address = start; address < end; address += PUD_SIZE) {
+>>   		ptep = hugetlb_walk(vma, address, sz);
+>>   		if (!ptep)
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index d6799afe11147..27210bc6fb489 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>   					goto walk_abort;
+>>   				tlb_gather_mmu(&tlb, mm);
+>> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
+>> +				tlb_start_vma(&tlb, vma);
+>>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+>>   					hugetlb_vma_unlock_write(vma);
+>>   					huge_pmd_unshare_flush(&tlb, vma);
+>> @@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>   				}
+>>   				tlb_gather_mmu(&tlb, mm);
+>> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
+>> +				tlb_start_vma(&tlb, vma);
+>>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+>>   					hugetlb_vma_unlock_write(vma);
+>>   					huge_pmd_unshare_flush(&tlb, vma);
+>> -- 
+>> 2.52.0
+>>
+>>
+>>
+>> But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
+>> to a later point and only focus on the IPI flushes.
 > 
-> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> index fa6713892d82..447769657634 100755
-> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> @@ -100,7 +100,7 @@ function setup_cgroup() {
->     echo writing cgroup limit: "$cgroup_limit"
->     echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_limit_file
->   
-> -  echo writing reseravation limit: "$reservation_limit"
-> +  echo writing reservation limit: "$reservation_limit"
->     echo "$reservation_limit" > \
->       $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
->   
-> @@ -112,41 +112,50 @@ function setup_cgroup() {
->     fi
->   }
->   
-> +function wait_for_file_value() {
-> +  local path="$1"
-> +  local expect="$2"
-> +  local max_tries=60
-> +
-> +  if [[ ! -r "$path" ]]; then
-> +    echo "ERROR: cannot read '$path', missing or permission denied"
-> +    return 1
-> +  fi
-> +
-> +  for ((i=1; i<=max_tries; i++)); do
-> +    local cur="$(cat "$path")"
-> +    if [[ "$cur" == "$expect" ]]; then
-> +      return 0
-> +    fi
-> +    echo "Waiting for $path to become '$expect' (current: '$cur') (try $i/$max_tries)"
-> +    sleep 1
-> +  done
-> +
-> +  echo "ERROR: timeout waiting for $path to become '$expect'"
-> +  return 1
-> +}
-> +
->   function wait_for_hugetlb_memory_to_get_depleted() {
->     local cgroup="$1"
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-> -  # Wait for hugetlbfs memory to get depleted.
-> -  while [ $(cat $path) != 0 ]; do
-> -    echo Waiting for hugetlb memory to get depleted.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "0"
->   }
->   
->   function wait_for_hugetlb_memory_to_get_reserved() {
->     local cgroup="$1"
->     local size="$2"
-> -
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-> -  # Wait for hugetlbfs memory to get written.
-> -  while [ $(cat $path) != $size ]; do
-> -    echo Waiting for hugetlb memory reservation to reach size $size.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "$size"
->   }
->   
->   function wait_for_hugetlb_memory_to_get_written() {
->     local cgroup="$1"
->     local size="$2"
-> -
->     local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file"
-> -  # Wait for hugetlbfs memory to get written.
-> -  while [ $(cat $path) != $size ]; do
-> -    echo Waiting for hugetlb memory to reach size $size.
-> -    cat $path
-> -    sleep 0.5
-> -  done
-> +
-> +  wait_for_file_value "$path" "$size"
->   }
->   
->   function write_hugetlbfs_and_get_usage() {
+> You mean defer TLB flushing to which point? For unmapping or
+> changing permission of VMAs, flushing at VMA boundary already makes sense?
 
-It would indeed be cleaner to propagate the error and make it clearer 
-how we then cleanly abort the test.
+Defer converting to mmu_gather to a later patch set :)
 
-But if it keeps working for the time beiing, fine with me
+I gave it a try yesterday, but it's also a bit ugly.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+In the code above, primarily the rmap change is nasty.
+
+> 
+> Or if you meant batching TLB flushes in try_to_{migrate,unmap}_one()...
+> 
+> /me starts wondering...
+> 
+> "Hmm... for RMAP, we already have TLB flush batching
+>   via struct tlbflush_unmap_batch. Why not use this framework
+>   when unmapping shared hugetlb pages as well?"
+
+Hm, also not what we really want in most cases. I don't think we should 
+be using that outside of rmap.c (and I have the gut feeling that we 
+should maybe make use of mmu_gather in there instead at some point).
+
+Let me try a bit to see if I can clean the code here up, or if I just 
+add a temporary custom batching data structure.
+
+Thanks for bringing this up!
 
 -- 
 Cheers
