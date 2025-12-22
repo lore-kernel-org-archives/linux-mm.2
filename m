@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4533DD68BD5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:25:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63804D68BD5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB26F6B0088; Sun, 21 Dec 2025 22:25:15 -0500 (EST)
+	id DC1046B0088; Sun, 21 Dec 2025 22:34:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60106B0089; Sun, 21 Dec 2025 22:25:15 -0500 (EST)
+	id D613D6B0089; Sun, 21 Dec 2025 22:34:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96C936B008A; Sun, 21 Dec 2025 22:25:15 -0500 (EST)
+	id C46D86B008A; Sun, 21 Dec 2025 22:34:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8184D6B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:25:15 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 222935B92D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:25:15 +0000 (UTC)
-X-FDA: 84245666190.15.6BBD25E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B6D116B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:34:11 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6DD401A09F0
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:34:11 +0000 (UTC)
+X-FDA: 84245688702.11.73B1B18
 Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 53373A000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:25:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Sdi7U+P7;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9AFC2180004
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:34:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VMFlsarU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766374449; a=rsa-sha256;
+	cv=none;
+	b=chlGv9zOPvo7ny6XBk+6OnBpqsHkH9FfDFsTJaI/BamcIUoj+VTTRu4Xk3xxJGF6kQc3UK
+	5HyY5+lq7CvC3Ne0Ske5CLQ9fXUYGZQRV0/FyclIsf7tL7XMp//hdRUzrwOxSo2ANF75CG
+	Wu1Zc/BNAhHNDvJU2K5DPaz38QK8Ur4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VMFlsarU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766373913;
+	s=arc-20220608; t=1766374449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b0q4BK1/oVFhcJwzFlC5ht870mAKf8HPK6uMRHcO9Sw=;
-	b=FFx4v6g5s6z+X9w3Ac4hOmy3kFxvXiS+k7gz3pyJRjPQBcQswW5jYzyV1DxGYdGNA2yfC/
-	4svBO2R1l29kGPDh0hrqWvq3tGfNbw6swVOn5KzeTF359MkiUWXkbM4BSHaUefnnqgMkcP
-	CBTB2lVoOkg9Hs6dA47UzFHMtvefySI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Sdi7U+P7;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766373913; a=rsa-sha256;
-	cv=none;
-	b=ocMCUm89flWUokXEgzmy59AteTazhTF7ujAXxBspz5M5oOJelovTldeVMn+pjEiaBFZ4O+
-	zFAEY8/GiiChX01KQ1z6/4LIdIaV9G04ysEjCjxM9yBxk0E0UvMzZhr1tdRqjk8w//nyOh
-	8KMfqdFAmTjqSJ6XHcpcmJWP3Fd0sg4=
-Date: Sun, 21 Dec 2025 19:24:57 -0800
+	bh=qGqa+G9yooe1hEmvBfRcJmjA7QA8SkNJctdApIJNl98=;
+	b=lhJ5ijTFfWQeGPqabYdUcQUxiIjMoesbQCZKsROH1oSLR3P0eglKp8nbcXfwtH7bRSK7UR
+	iH34QBiYiREj2ob4z+FLfsnm9yy1UnN7fEpf91XN7d5zMgcRtqanU7Lu1LbuidGcgswgsg
+	KZJrt4e9Mc28Jzh5ovNFJJKB9s400as=
+Message-ID: <75f31ec7-1605-4f50-9adb-6d84e9e81101@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766373906;
+	t=1766374443;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0q4BK1/oVFhcJwzFlC5ht870mAKf8HPK6uMRHcO9Sw=;
-	b=Sdi7U+P7Md9MMdxEhS9bY644UrWGJOemPmiAhz09WAvxljkfCRmUjyFOOs4VreUHeK52Vh
-	SNBV2yIPsXL/iVv56ShDHATEYCKpkwEUFEgEBkqnfsbl7jpLS0CG/ivFbn9k+eVvqD8lg6
-	6xQVyC40N7IsI4mFWm8Mc3/JO7HJKPA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, zhengqi.arch@bytedance.com, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	lujialin4@huawei.com, zhongjinji@honor.com
-Subject: Re: [PATCH -next 2/5] mm/mglru: remove memcg lru
-Message-ID: <ytbajfyzgazpgx7qftafyt2ar6xzpxiarkdih4p2xiihovxci4@ugdmji5uboih>
-References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
- <20251209012557.1949239-3-chenridong@huaweicloud.com>
+	bh=qGqa+G9yooe1hEmvBfRcJmjA7QA8SkNJctdApIJNl98=;
+	b=VMFlsarUjmbbIJb0UCStjyxyJrACCyd77zr3JpIq+0OrxRPujQeEJ28zq7ZaQcUjjSRK+m
+	45woNINIu2xTjOA9jAQGZrhluNaExT/eu5KnzscPJgAt2nP00wenDmKJuQiyJw2LbGvIUu
+	PXSVuQFB4EVTsQET3xVVnLZC6boeT7A=
+Date: Mon, 22 Dec 2025 11:33:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209012557.1949239-3-chenridong@huaweicloud.com>
+Subject: Re: [PATCH v2 17/28] mm: thp: prevent memory cgroup release in
+ folio_split_queue_lock{_irqsave}()
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+ apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <4cb81ea06298a3b41873b7086bfc68f64b2ba8be.1765956025.git.zhengqi.arch@bytedance.com>
+ <aUMuRfPVxkfccdmp@cmpxchg.org>
+ <ejywj2fho37z4zdtgvryxzsztgtdrfop4ekenee4fewholyugq@xrbvtg5ui3ty>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <ejywj2fho37z4zdtgvryxzsztgtdrfop4ekenee4fewholyugq@xrbvtg5ui3ty>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 53373A000B
-X-Stat-Signature: eq7b9u9cqpy7opk76kf6enq4g8fiynm5
 X-Rspam-User: 
-X-HE-Tag: 1766373913-46000
-X-HE-Meta: U2FsdGVkX18b2BfrvZB1QZlExyHACh6PrBoTgqyeAh5FcpFVXF5y+jCGPbdJpmQn4Wzg7GRMi5ZLAhsqHt9gPmH1WxvtMh9+0e4zghwc01PwkbeRO/tVWd152NzTwD7uoXBTZsk0A82wqQal19doXGo7bBMdJ2woTRV1nOMiWLKeg10dydg6GhFZ2jEY2/0LanoJTTo4qAe/zpLUwovV6G+g2J5KQcrDNnRZf7Ws5yW8tAuAB/hgS3aJd3Agz0sILTwarSjLGaNxaVN4+bsuielI3TyX/0m0NuzXh3UdUcTSKp5hNp6iGvYovO31o12CoDNKnyNSgsF5cp83ZOxx2fJ9mbjXCxEAzY5LovaOc0vlDHhLnO4YIsFz5wCDj9VNTDWBLe4ASSiX/10OUx0+Re0ccwiCpSoIY3KEZt1MSINEQEhmjRp44HdcVfVOWZRVBswi03oh7qf4w4zK9VxfUU/7JANMASmV3ILYfUfwu4iiEVhDPmgVvenTA7VQIXUPYlX1JTEEDP2odp0VX+kvU5fs2HXdCP7ba+WmQCuOE8MOB9ALKLjOpuKnu+MjJytIrJAL4dOdTpzSndt3dVYMjRNQMwR6eOPwXlvvKfN2gYR0bZe2sxerPKviCseyBy86BTyC0fSryrQDpH6my8covt8qW0JgttJ996EwnyrNLbYS1U03nLTu8BJqG+W/Hi9QvQw8v6A/MqMBywaTiGvhY7XdFw5eEu0FkFMAQSMpMxiEfmkOQe6LvDybVJYEVN3tC6843LgBC1CNosVIFPOa1VaLJmmSoLMCbWaKdxv7VOnIw2JDKy65St8NPlT94plB46Sse2R7VUQAxYoLULGRBddm8GFss8T0+8gR80nlhWqoNGVvA8dnuPlpvpEv0E/kP4aGXKxswBgO6YHuHhTFVDrnsgDMdLDs/RNKMwPQ/M9GL7KvqT7ZIa4kF+MWVTZzYpmzGYqM2HFpXHZwySu
- SwZ3ce1Y
- Ii8yoPReIzwsH9sh537TfTA8dGIBjeaPyYq9t/OHzCm8zL71BNDn5fhIey+rt9oNk12ebzqGfzca0OgPa/QLjlYvwpdqs1vgmCi/hfp9mAQXq5Gr1slhfdBtCWEVB5jCH6nDjF4D08ogzAS6u/But+oBvGnmMs1Z7mrh1FYKNoE9FUw8hyGSUGwosAvW0h1uyN2SArHWZ7mW3zHV7Ke6HeW9QoaPGmrnnrQgMrYsoO1U7iAULH8g2S9mDRo7CpFRA6btNZ5PZYcChWnz9UanqsKk4d3KQRo+Te4Ms
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9AFC2180004
+X-Stat-Signature: r9gg15g4a41ks99uyeywekni8fmsqytz
+X-HE-Tag: 1766374449-964316
+X-HE-Meta: U2FsdGVkX19UvgMzl2i6RfZ7jv8wq4YknXtnlzn4scf+zOs+6vZdL5LP3WaoJQeulTlWGcbXaSEEQerYFjm8mVLfUBfU4+gxQsUJ0ifvyFqNZy5FpkZh9VoAbaFHqOoUn72TDUq2DNSrrMogHiEJkLr0WEPVI0vxh7yHQ4ZnicP1+ePR3jbap7OXo0241duGb871sohmA/brvye2hinYY5g656FF0igcAmzWakZ77VZPHANtOpPUtzxe/wZKAEk/XBswxDrcmmvGDBN9xJWwy9Q1GAwLsxiaqL2ECxjU5yXfFxLO9Xre3yvm2QLIenB33PRcEd8cXlqV1VVh38xevoJSKYwLFvE5a1bwhBUIQeKOchPyy4K6r35UGeMJrNGg7dCkZ5BRvCAIlOoN6hVHA1fZETRbv4R0Ea3ZBD4Nn7PJ3uYrjai25HLxqlR3C9hThQZiDn/hnbg+T7GGV83VRAmX0m2UGAb3sbSzLPITlwlr2ISyLfrom3IIxQYORH6ozuQcKTeQUP1Q7Ntp2iFX0vu3p2Ynbeh9PidAhm/lUk0MXg7dIqxfvx3WT/mZ7UuhGB4EajYH8NBt/95BVDZ/wIsbKqspPzOYCDbZFiWUI+6zMXQ75UI314a1skV1mIMBl0HdvvAg+gZFzgwjUSIotBIto1oLQXgRCyh9W7IuW2Xu8WBSKQDW8gyeqiUWLIvNQ49f++lMryeIGkBJrGe+wtFdfitH+CE+D9XITCSFb2FCGPG0Fe+F8Gy5dEp3+UI8/a70TDEltVClk7Y8xzmWj+3QkIw7GjrJDe+895998Au8hfmgwqMucGK9b10e+GjCgb008Lo94cAVc0vZMNZyGAdmXLTIJaUdx9OrbrU1d36QE1bXOJDun+wDhrcfsVoDObw7n7dZ9qVGoq+lbJqhukcLo8voP/lxbVUIkx6lRPzVliLFVxSmNrVvP7V7WF2ZM9gfxFpN0UBNZkrPxUR
+ mVMGXTRu
+ l8Qn0y/ro/jTv2xrQwOKmuj83J6kTLiy+0Eb6k8eZrP1O6JneYbcXYMibfQ0IIHE4qcMDA7j/+0QHWTy33OEW65in1UISR4m/aDjnvcQ1yLumYYsbbpogwVyVpPnLX4ztTn845SM2RvgyUM1NN5SlGN1PnIIrR97nSaAUbLQzMVGUTOZ1hDWwTMTNZnPRd5rkAk303OWvDWoiB4X9jNGIDDUOwLYdwWDpuXZvtKPbN4SHJgN27JmWXBUemHk1Nlkz75/MeYKRWFwzM8U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,15 +101,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 09, 2025 at 01:25:54AM +0000, Chen Ridong wrote:
-> From: Chen Ridong <chenridong@huawei.com>
-> 
-> Now that the previous patch has switched global reclaim to use
-> mem_cgroup_iter, the specialized memcg LRU infrastructure is no longer
-> needed. This patch removes all related code:
-> 
-> Signed-off-by: Chen Ridong <chenridong@huawei.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+On 12/20/25 9:11 AM, Shakeel Butt wrote:
+> On Wed, Dec 17, 2025 at 05:27:17PM -0500, Johannes Weiner wrote:
+>> On Wed, Dec 17, 2025 at 03:27:41PM +0800, Qi Zheng wrote:
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>
+>>> In the near future, a folio will no longer pin its corresponding memory
+>>> cgroup. To ensure safety, it will only be appropriate to hold the rcu read
+>>> lock or acquire a reference to the memory cgroup returned by
+>>> folio_memcg(), thereby preventing it from being released.
+>>>
+>>> In the current patch, the rcu read lock is employed to safeguard against
+>>> the release of the memory cgroup in folio_split_queue_lock{_irqsave}().
+>>>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>>> ---
+>>>   mm/huge_memory.c | 16 ++++++++++++++--
+>>>   1 file changed, 14 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 12b46215b30c1..b9e6855ec0b6a 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -1154,13 +1154,25 @@ split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags
+>>>   
+>>>   static struct deferred_split *folio_split_queue_lock(struct folio *folio)
+>>>   {
+>>> -	return split_queue_lock(folio_nid(folio), folio_memcg(folio));
+>>> +	struct deferred_split *queue;
+>>> +
+>>> +	rcu_read_lock();
+>>> +	queue = split_queue_lock(folio_nid(folio), folio_memcg(folio));
+>>> +	rcu_read_unlock();
+>>
+>> Ah, the memcg destruction path is acquiring the split queue lock for
+>> reparenting. Once you have it locked, it's safe to drop the rcu lock.
+> 
+> Qi, please add the above explanation in a comment and with that:
+
+OK, will do.
+
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Thanks!
+
+
 
