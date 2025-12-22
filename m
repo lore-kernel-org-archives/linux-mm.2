@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0783E6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 08:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890CAE6748D
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 08:35:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 045F16B0088; Mon, 22 Dec 2025 03:29:06 -0500 (EST)
+	id CDA0B6B0088; Mon, 22 Dec 2025 03:35:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0AA66B0089; Mon, 22 Dec 2025 03:29:05 -0500 (EST)
+	id C87C36B0089; Mon, 22 Dec 2025 03:35:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC25D6B008A; Mon, 22 Dec 2025 03:29:05 -0500 (EST)
+	id B69F46B008A; Mon, 22 Dec 2025 03:35:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CA61D6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:29:05 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67AF5BC828
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:29:05 +0000 (UTC)
-X-FDA: 84246431850.30.0091E69
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5D7DB40005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:28:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4C036B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:35:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3956E1396D6
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:35:01 +0000 (UTC)
+X-FDA: 84246446802.06.93F14D6
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 52101180012
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 08:34:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jDn+ac/N";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766392499; a=rsa-sha256;
+	cv=none;
+	b=v5KBcxADHy4+Svd9g/ZhPVDNOqNNQSAPaG1A84Zk4zNTCAH62Rr+qKNiMBuJOOgv05Hym5
+	XtfwA8tAIL9IEQJiXewaJ3xYJ7BoEBsTotHVRcH4jZLrFLi7Jzebbq3R2ecE7C6HbPO0N6
+	cj77VCp0d1EXTWkgW2xRjfZ+a7OW+lU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jDn+ac/N";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766392143;
+	s=arc-20220608; t=1766392499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5PRh51T16nCJuabLwN7Opr84pXwH4nCR12V2Dg0ZqfY=;
+	b=S/0YAZeJcg6yOhcCs2o9TSyMg2ip6DuafxZcABlFrhmeQ2lv/xaQeOLE+GCyx1OjkmUXmv
+	9G+90rsAlWz+z8PBKBrGLu4dUxUSwW+wQ4fJbCOBWdKU7Qjs7ffZjFncZSsGmCByaQ/YUu
+	R+QT+sXkbq00rgEXsI6lc9LBhIMkVHw=
+Message-ID: <430d554c-840f-4813-b715-5191d74571a0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766392492;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0TfbXSi2AXLImC/IbPoInvGeC2fmV5CnvJlw4u1NME=;
-	b=l/RxaN5j8kMjCRq6gMNyFHNESR/RgAJLkabanUz1IDHhptALMIIQ7I0sXT36Ji6ltVh15P
-	XYw0MZEO4H4ZmQLZhMV2vKFwRBrK/bwxGkSFRRLq8ddA5zS1AolaBednBsT939AvDierkC
-	h2HD4Kx9bheRavmT2YVSHVdHJjGkIF8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766392143; a=rsa-sha256;
-	cv=none;
-	b=vQtroh7syIXx2cLyeno8wulIeTmhDz/EQ5rVLlaf7nYl1iMSDONCurhN8ifn0/GgnpTglg
-	utj7PZe+PUkW/JiwiFkb2+81C81fZNcau9zaBK+42FWrFKUD0RX+vlRRtnSQhBsXD+mPl/
-	EIhcVNb/VlDwLg6iPu8Qf9IJ5bs0gtQ=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dZWVn6hNxzYQtns
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:28:17 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E753F4056B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:28:52 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgA3l_dDAUlp1vdGBA--.55773S2;
-	Mon, 22 Dec 2025 16:28:52 +0800 (CST)
-Message-ID: <2906e2b7-cc89-4d1b-893a-c20e4f100f97@huaweicloud.com>
-Date: Mon, 22 Dec 2025 16:28:51 +0800
+	bh=5PRh51T16nCJuabLwN7Opr84pXwH4nCR12V2Dg0ZqfY=;
+	b=jDn+ac/Nr+VRGnnw5XTkr1JE4nLu78ku2s6wnDFuQAYHlvBnlSw8vDc4Y7yOIG4MRhjjC9
+	+GGKlxU1W4OSt3feZKSYrOi0ZjJqNFJIpTOFsmC+k2KGLfCkjou1xH9z6Dogp6OuvjzSi1
+	pmzmYW9QCsQ1ptZJaBi4BI4wZJNouYU=
+Date: Mon, 22 Dec 2025 16:34:40 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/vmscan: check all allowed targets in
- can_demote()
-To: Bing Jiao <bingjiao@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- akpm@linux-foundation.org, gourry@gourry.net, longman@redhat.com,
- hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org,
- mkoutny@suse.com, david@kernel.org, zhengqi.arch@bytedance.com,
- lorenzo.stoakes@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, cgroups@vger.kernel.org
-References: <20251220061022.2726028-1-bingjiao@google.com>
- <20251221233635.3761887-1-bingjiao@google.com>
- <20251221233635.3761887-3-bingjiao@google.com>
- <d5df710a-e0e1-4254-b58f-60ddc5adcbd5@huaweicloud.com>
- <aUjgt4EdBv4UyrTM@google.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <aUjgt4EdBv4UyrTM@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgA3l_dDAUlp1vdGBA--.55773S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1kAFykGF1kXw1kuFW7Jwb_yoW8Zr4fpF
-	1UCF12ya1kXr1fCws2v340v34Fvw18JF4UJF1rJFn3Cr9IyF1xAFn8ta1YgFyrWF1fur10
-	qayYkw4xua4DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jIksgUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+References: <20251218150949.721480-1-kas@kernel.org>
+ <20251218150949.721480-3-kas@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20251218150949.721480-3-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 52101180012
+X-Stat-Signature: u13gh3h687tbd4z3kft6wriwuc5soewh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5D7DB40005
-X-Stat-Signature: u8596zmw3x9gxu6rdmc119xacoq8x43b
-X-HE-Tag: 1766392137-249571
-X-HE-Meta: U2FsdGVkX19p3NbYyzzjd7LhcDPoLzztVSJ7mEtKpVt8Qyx+UjbJZ0iJFBy5Uezk0v+0VqCxnPJRPTIdfSjWPtNcV6Rmt27rQy8MHyv1sjaq5vzw4NMr/FjuwXbz2wsZTfNOB/f49QMYmdEBIT3SYJW/cOCgqhqNOxjlgVuvqnHKBt3IKXdcbHnrUhXvUi+73sw7Ll1edgP/FSEnDu/ra2/VEYbZlEqakXFpz2sUMw7UhPOnf7iwLSdvGYTMtMtvE9CuUYJis/klplNqxHnKWcvzEyoIP/1fbezn6Iw+PBy+4RbzUOTlbeZrSezdfjs74quyTAYsGDyFH6daQH24nN2b12H9sySPp7eNfIN+pyXoOuModiO1N2HXf12GP3teH3vVEDG6qmzsqYWdS3sE80jeC5p2LqO1AKA1x3qhtlVOFlfrfxjdClXZZ68W5hmDO1IBzYhtxJwmA8uNlXvmHYp2kVLZelxnclVwsfp88l8HHGkgzNrf4+0VvWA/2flDFaBLITPgQQTC/hNhsgahcJbMPxwIT6u8zKriMiWQ1PiiTXMA4hhUH2oHTiY0wWeM/PjwdXdarw89/U7yhWy3Tpq2mSTvPvWtIUmuRsdTUq1qmpNjHZAVNgFJG0/6jouqkpZWcFnT7RhPY/hl39Yi8izHI5ywQvlR4rjahfEoa6NGkjjZ6QfmmMAmkqnHWCjygL4rG+qt9T8a4Zx693C6WM59jOQUvfhe2mN7KRIPJj8Q38cE9uo5Hs25dSDxtAy/RltohsYaxbvug3YAXcr6gKLCqe5ciIJCHBXWJVsb7pfKijonNjjz+JuBY/W768i7PT+IhsAwaVVNVKIpM8v8uJZ4/+AJXyPmfLuetP1MEXDspbRlTxB7gIE8VvJsuQlhjaChjRaQ/Q3F+fHosu+e4Qr5EF8GvmkPupvJnWWixaWNplEEhej3tXUBqc0qwX6OwAvEjoJA+s2O8PlRFOZ
- Yx02pI7X
- q0zD/sAojywzWGJac4OQW6bl+netsQ4AFhqrXodjLAlrovFFEreO3FliGQuzg+hpcCPvH/cQokBrmgeVlFQpqO7iwsOitxJCTCls8WgwrZEA0YgWN4M7bfO2hLsViF2et7yFvcL9RggdPXotdoEBTHMbxVO5Thr3b+fPKSOXc6D7OHN0=
+X-HE-Tag: 1766392499-678889
+X-HE-Meta: U2FsdGVkX18zX9k+qVEMDt93xTyfPtqJmZx8TB0MUrT8FP2SNDgdcmjgUSvmeOtzekISL+zGUHM4HL8DrzI72GAM4+8V0Tt7Yqyd/v57NqIig8/mlutDh1QTUj54C6WhWmovBpXENZbWbq1J9X88rlVfO7DLa6Qo35zajCT/8wYlQfG30RQgjibiRrLKXXMFn9GdchP95b44AB7nf1jgc83GevCMbP2lhZzWlEekEgxmMpP1IrclqVSkm2kA6c1MfUS9HFWs55W1m2kA/uomqs/lv06Hq/EU7mp181ZydfIsmmmfUxbDEa16VGB7gkFVIIi5KhMRF3+OL9wBz2LtzRevStQ7OJDFd3pHOvmbswVj0w4vB+fNMohohXjegez0sxKM/aBzsk5gLA+JgGqGGt4CDy8ND2WmOunryBXhjO/6LtBWrbMGYMC68IWYE+d2AI82EQ2ZzQ+IGVTVcPJtmmq2Gdwlcpu3snjkip16sQBZXLXc9t+1ihkMWSUCuirnHTNrYzjdqywzoraw36gi0fclbB0S6VOOg6UfRSqyBEOIHjjvif9tCIjG1r/2XEZ2qM4duO4ixN9e1Euid0y/9PWjMtnuLw+4ZzVvhyvIoBp5LXNetubhg/QXTg+xku9X+R+itE4XGkI6aQxSjTFObtXlfLVv7nttZbPjztlsQudhiesB31+rPUjpulMZ6o4OBVa3+xlROiV/yJ2M63fb6JHSIQ9xXQVOS4uIXAZwnN8Ry4y+ME8FUC4CKY1Aev2DzBP208SwPGCgavZ4KNy0f+L1KMdUzwlvbXQyu+qMyndQ9KmluH9d1uQG5Ve0kEjZr/s9U7V9dkSaUzDs+pXUf76Qs0BR6/ly/qCYNO3i+W8woV0hd6UmQoCxqSFetKb/+Y1eFiTc3vmGJrsVmj6kfOqIg4FIKwA1U2VCcODdLgMITLnFXdRD3YKi5rK2ynaqyMyJfhpmJCRZtm4KKlT
+ oVYTHSkK
+ W2e4xhugq3mQc3lPnfoJ9vNj7yVO5bS800iz2Ri3FypkPLzlHwiJc1yliU4flAwcBDbywvX3Cka1lu2V9CzOt6XbR8VWK4vYTZSSGsLig82cPtVQP7aGaN2usKfsEIWdJNdF4qQaRgIddU93FO+3DAfyjXQoe6mAvoqUQa77VznPQNF4cfyLITqfutsmQmXoL2wFTWmplptw0DO5g7t/g6NtkFxzgLcJ4Cwzks8WyWW3W2WIH7EbCZtAKe1Q/GxLkfqchnD272Ht3nTdoDKAiLiWIZapibDhV2GHMT1Bj3Nh3L/A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,60 +99,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/12/22 14:09, Bing Jiao wrote:
-> On Mon, Dec 22, 2025 at 10:51:49AM +0800, Chen Ridong wrote:
->>
->>
->> On 2025/12/22 7:36, Bing Jiao wrote:
->>> -void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
->>> -{
->>> -	struct cgroup_subsys_state *css;
->>> -	struct cpuset *cs;
->>> -
->>> -	if (!cpuset_v2())
->>> -		return;
->>> -
->>> -	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
->>> -	if (!css)
->>> -		return;
->>> -
->>> -	/* Follows the same assumption in cpuset_node_allowed() */
->>> -	cs = container_of(css, struct cpuset, css);
->>>  	nodes_and(*mask, *mask, cs->effective_mems);
->>>  	css_put(css);
->>>  }
->>
->> Oh, I see you merged these two functions here.
->>
->> However, I think cpuset_get_mem_allowed would be more versatile in general use.
->>
->> You can then check whether the returned nodemask intersects with your target mask. In the future,
->> there may be scenarios where users simply want to retrieve the effective masks directly.
->>
-> 
-> Hi Ridong, thank you for the suggestions.
-> 
-> I agree that returning a nodemask would provide greater versatility.
-> 
-> I think cpuset_get_mem_allowed_relax() would be a better name,
-> since we do not need the locking and online mem guarantees
-> compared to an similar function cpuset_mems_allowed().
-> 
+On 2025/12/18 23:09, Kiryl Shutsemau wrote:
+> The upcoming changes in compound_head() require memmap to be naturally
+> aligned to the maximum folio size.
+>
+> Add a warning if it is not.
+>
+> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
+> kernel is still likely to be functional if this strict check fails.
 
-I think the key difference between cpuset_mems_allowed and the helper you intend to implement lies
-not in locking or online memory guarantees, but in the input parameter: you want to retrieve
-cpuset->effective_mems for a cgroup from another subsystem.
+Different architectures default to 2 MB alignment (mainly to
+enable huge mappings), which only accommodates folios up to
+128 MB. Yet 1 GB huge pages are still fairly common, so
+validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
+miss the most frequent case.
 
-The cs->effective_mems should typically only include online nodes, except during brief transitional
-periods such as hotplug operations. Similarly, node migration logic also requires online nodes.
+I’m concerned that this might plant a hidden time bomb: it
+could detonate at any moment in later code, silently triggering
+memory corruption or similar failures. Therefore, I don’t
+think a WARNING is a good choice.
 
-Therefore, cpuset_get_mem_allowed seems acceptable to me.
-
-Additionally, you may consider calling guarantee_online_mems inside your new helper to ensure
-consistency.
-
--- 
-Best regards,
-Ridong
+>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
+>   include/linux/mmzone.h | 1 +
+>   mm/sparse.c            | 3 +++
+>   2 files changed, 4 insertions(+)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 6cfede39570a..9f44dc760cdc 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -91,6 +91,7 @@
+>   #endif
+>   
+>   #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+> +#define MAX_FOLIO_SIZE		(PAGE_SIZE << MAX_FOLIO_ORDER)
+>   
+>   enum migratetype {
+>   	MIGRATE_UNMOVABLE,
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 17c50a6415c2..c5810ff7c6f7 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -600,6 +600,9 @@ void __init sparse_init(void)
+>   	BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>   	memblocks_present();
+>   
+> +	WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
+> +			    MAX_FOLIO_SIZE / sizeof(struct page)));
+> +
+>   	pnum_begin = first_present_section_nr();
+>   	nid_begin = sparse_early_nid(__nr_to_section(pnum_begin));
+>   
 
 
