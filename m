@@ -4,118 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9705EE6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 11:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C79E6749B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 11:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 778C66B0088; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
+	id C0D846B0088; Mon, 22 Dec 2025 06:47:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F58B6B0089; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
+	id BBB1C6B0089; Mon, 22 Dec 2025 06:47:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D7836B008A; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
+	id A9C926B008A; Mon, 22 Dec 2025 06:47:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 49BFC6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B791213C093
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:33:56 +0000 (UTC)
-X-FDA: 84246897672.20.7C953DC
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DB138180005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:33:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lc516zNp;
-	spf=pass (imf24.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9823A6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:47:58 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49048BCDCC
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:47:58 +0000 (UTC)
+X-FDA: 84246933036.18.0A1964F
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3BD96140017
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:47:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UOg4tbNx;
+	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766403234;
+	s=arc-20220608; t=1766404076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
-	b=Cc37hq5U0RPQEBzTr9+MlyWlLxdVKcnR23iE7Nk1fCKSJAr1W9lQGPfJM5NyaBAiO3Qh/J
-	UckWJ1SJVcyWKARRohCmgefpMwTSlpwEwR5pIERywPotdNXWcQiogMpg92JedaZM0CnBlX
-	JwNOj5RNYhk6KI0hJNAviRvwEoKlNkA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766403234; a=rsa-sha256;
-	cv=none;
-	b=Qw5AUTvAyqdCIZb0oWynsYjzja7SMfcjY3k6MXwrlT3V+0tindIOUhVAH2v3iWPdump2P6
-	EFdFSrQsej+vkNx1ZZdDTiA0tArvxQfYZQHqOWg0jDz7gG7StPzPSb0WbFMZlMY5YjJI+y
-	s4uLzuIv5zEQYXQXJuy7DjOOzq4QBuc=
+	bh=/foXhPAufi6uRtrLX7dAC2wGmj4Wzh3PyX8slXMF67w=;
+	b=vOxO0K73cv2i9lCNvmycdA4K/u8EE6E4tIQRcFrHR6DfQuKGRxjhQnYjxRqVtSYE1Ik5rS
+	9sbhddPHwPucMnxIkSY384utX47jvHmwzjKXlLIsolJEsoLbjVurvAqfRa66NtIlaJcGT9
+	0IMf3o3EHVBaXhsGzOR60q4ko8KVt0A=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lc516zNp;
-	spf=pass (imf24.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UOg4tbNx;
+	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bc29d64b39dso2057346a12.3
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:33:54 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766404076; a=rsa-sha256;
+	cv=none;
+	b=Lk0E8ULKr/165y1tKkURHOTf6jsdov0GHjUoIygFuiXru3icu6QU5+JXjCzm9d2tfaMDCA
+	cqcH9j+5HBuNslcWduYorBTcxiXyd6ANDhcomxZDTkPxzenNtwr7QBIk50jBdUQxLflHKA
+	XTjIxzI1zZWeWucnAHe70ReS5k4Z5W4=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-594285c6509so4167919e87.0
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:47:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766403234; x=1767008034; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
-        b=Lc516zNp+W7fdLXZxIPV2Ak5PdDIAywii4JrhBiYtgXUS9vCH72hQ4pSgkEiganyV0
-         kqMgK0N/oDAQ61JikgyMPfjccQwecGFPpisRriUdULmDCVFuZ7y439mDdz81xKKzXsrI
-         5McfrF7mzJbRu37gPUjrFLyJI7g9ldGJaEepmI/yFPQ4fQBKb12jgTdOu63MEy0bWjjj
-         lRUQicNpLTP2LoLdedUdLj7RpKUcAj4Lsrn2OcGW5e+x0zPeRL50eJyC6T+onNVy53ho
-         gVvNWSmLW+kGN+L2I131LjDzna+P/n23pCW6wFUE8TRyvEv/wSezvzF4MV/2mewpZRpA
-         n01A==
+        d=gmail.com; s=20230601; t=1766404074; x=1767008874; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/foXhPAufi6uRtrLX7dAC2wGmj4Wzh3PyX8slXMF67w=;
+        b=UOg4tbNxeXQy9TiRhvFdAhhZqGSaVtfBKJ6sub2wnpiXvhtuvV4w4teRBbwrsO16l0
+         VZ1EUnOrzb2+GbclvmFh1NB0b4T/23jG8D9ApY1KzBvMXx+kA4q0PQwS4tD0eIImcjdv
+         NUkNNfbLd1dbCzCXBK/KdNcERrdYnbmMAm+kmsBhfU9AqHqm63DS9bABYpKzS1RNE4BI
+         XCFkgpzGAoyk+UyQaSpBFv4fZN9ufS+OpMXcgyPdZSrF6fYXKegVTpBGk/mupVFfSrx4
+         MCUW0GcfWQMDG4nAY3ZjucV1TOU/34KxEH52Of1nIAkRQ27E2AWbUFqxNsgT1yS8sqoW
+         v8nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766403234; x=1767008034;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
-        b=Rb0RwvYnHAjfEFvsRcM+rh+bq9Q0YNgo1cntYeBK34Yg04v6KABS4kDQZNPlUL6bXL
-         5dvjr9qsiUv27qn4UP7eUyINmybpkycaV9eIvMKoZ218OkZkVp0CpqUGzFxLJQHMpB4A
-         WHszlpChgJTIttATBxmr4EmS8h2ayoRUbv2bDcHEdsR8ypOHkmdf95in318ayKuxqNxK
-         lC7KOTtOGb33Bj5a9tHS0NSz+QIrpnVIUD2ctK9mC2/hemofZCiPkoOQEIHjjKIJNHX3
-         t7mOkqNWEJoSs81TW79kmocEkj0znac2cfbUMaQagCquLtFJWGfr53J8CNT8nZk4Ku1K
-         KuFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRmYuurXNYgitH+f49/v6rYMldVDMUQJeh/uCMJiozrw4WWypX/ry+1SaJYPu2FAtf0KnCMmhIZQ==@kvack.org
-X-Gm-Message-State: AOJu0Yye9m/8yz3IUWDmSHnmLm6svdznVNb4aMXlQa+y/UeMdHN0q7jV
-	dwRUaOSMj5W4vdQD4LLJEL3iz212j+0YhcgDUYos8EsdzVg/4YahQOch
-X-Gm-Gg: AY/fxX6vlm6XO7FuQxzdhbmgIJmZyxWOBxtEvo7d4UP/D+K7XwI6gup5m6Zss4x3RcL
-	EoeSav8G+9KdROWW4FqApcbIzXcsw2PXExDDTiQLVbMen5uNg5IVOmuwg8sQhHCzqWWb0joC6ZJ
-	QwDTMslmYN1cUy3l3Ho8xnhz6FTw8w4GtGFOxmJHdYRXa8LVelwuKarJeUYMVOaHip+laMkENdQ
-	pz58lA3ZaEnW0+lPuwSTaFGTEfEfCnR/LwimQBvtWSnjkD2/O4cPVRq4cuuLi5vuUSHnsMiutT2
-	lzbjBCDs18JlCQnaI8im5Rlts+3/WYmKqZNMopWv8HeIiF08q2KJrpslaIOffwtsT+mntffqBSd
-	8LdBIi1SRdlb2OXjCqpcOxQ7XzWdDNaJoHdDZGHfVdJphQZ5hCEFWzZ3YJMQZIpPfz/U2Mv+XqP
-	W0/elJDx7UBfu/AA==
-X-Google-Smtp-Source: AGHT+IF9z5OMf2RZbV65D44H9QFHtRDW2pkTFrUb5U1bgAOg1PPjFbvfwWh5UVEkpb/ShGV7F0BvFg==
-X-Received: by 2002:a05:7301:508e:b0:2ae:51cb:7a98 with SMTP id 5a478bee46e88-2b05ec6d51dmr6586243eec.33.1766403233498;
-        Mon, 22 Dec 2025 03:33:53 -0800 (PST)
-Received: from [172.26.241.102] ([131.179.95.234])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ffd5f86sm23562684eec.5.2025.12.22.03.33.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 03:33:53 -0800 (PST)
-Message-ID: <a98e23a1-5be3-4c2a-a65a-c33853683674@gmail.com>
-Date: Mon, 22 Dec 2025 03:33:52 -0800
+        d=1e100.net; s=20230601; t=1766404074; x=1767008874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/foXhPAufi6uRtrLX7dAC2wGmj4Wzh3PyX8slXMF67w=;
+        b=iIQT7zVEzByERF5vBXrFGNSyrvHxLwDSgNwGG08hCS3NbcfXT3zciSxhrlZ1vofkgq
+         YwOhZsT234/lap1GU4zHbv64BvenbJhY+OdGMPnx+qXO/eMiott7XbeEZhtw7gjT8Q9l
+         c4rg1rxdsEbjbjpodSlZUysyOsE8OxlGW2JazjCHycAgPtzroIvSq/Ts/mt0UgOwl6Jh
+         uZj51COyUJGUPWtALoR7q9mFuJQdGpGeJieK/vLwpLqol+vdNFDPJ/XVa+Cjv6NiSFcj
+         CCTCZvWq4TnRWP2Twe7dia0Tw8nPHEosBE6iB6VGzVlx4djbSvGVdmN3xCIU9dUDTH4q
+         vmCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaYin25k4B6RVLaA9VnPeil4txzwwli+h7wHw/zzDwH2hntVT3Edz2hvweSpxdVUB0FFDcn5C+mw==@kvack.org
+X-Gm-Message-State: AOJu0YydqVqBKmLaGaTbcxsmG/GOus2Dx3Pqet12scZdwcxlLuXc7gFX
+	gwXscFm99XfN/oCPenottlSiGa+C5JgY2OLwAU+gsZnFXxBKJVQ2YY71
+X-Gm-Gg: AY/fxX48x7TYl0cCAxvZBgE4Vwe/SSVCCuIUAbQJDrpmhAcRtS3z/rDYIRog+BBBcY+
+	JLVJPAeW7SpmJafT1YQpB2aoD2iV552XbVejTlMQ430SAtzaHOPZ6qwlA2bp5NyCtYBHWpSShxB
+	O66/2dheuINTqxt7Iui39BAq99dPanx0/HvMzVZ5jcrq+l/6jxjpCyardzE++g17U6/grDz24bM
+	gj7XdCyj/qzL7SkXJuRB4CE+wJiDJCqgkU96aKKRDGwvWY5lsoSnf86E5WDTtrwLKJBUeHeENqS
+	b/a3+fe+7vHbDrLyIJlhStKCAQmWzUQ3JY+5psZZ/i7FaFtRDNoqcN27zOptTegs7YeP90majn1
+	+9hzvyBlHhGCXJt6B+zRjFROGGRLRtng3Mx1aONVjWmPJsFybBn3D
+X-Google-Smtp-Source: AGHT+IEsiLInHUpO0B9wn6rIRScWVJqdnac8pFBEVqqQC42l41Q+lmgzVoCpWhWhGmaRmpj1YynoXQ==
+X-Received: by 2002:a05:6512:2388:b0:595:7e8e:3bc4 with SMTP id 2adb3069b0e04-59a17d5a4f1mr3593333e87.42.1766404073974;
+        Mon, 22 Dec 2025 03:47:53 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d5eccsm3157947e87.14.2025.12.22.03.47.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Dec 2025 03:47:53 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 22 Dec 2025 12:47:51 +0100
+To: Dev Jain <dev.jain@arm.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
+	akpm@linux-foundation.org, tytso@mit.edu, adilger.kernel@dilger.ca,
+	cem@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+	shijie@os.amperecomputing.com, yang@os.amperecomputing.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, npiggin@gmail.com, willy@infradead.org,
+	david@kernel.org, ziy@nvidia.com
+Subject: Re: [RESEND RFC PATCH 1/2] mm/vmalloc: Do not align size to huge size
+Message-ID: <aUkv51yk8lgzW9jv@milan>
+References: <20251212042701.71993-1-dev.jain@arm.com>
+ <20251212042701.71993-2-dev.jain@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and
- remove redundancy
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, yanquanmin1@huawei.com, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251221201356.43083-1-sj@kernel.org>
-Content-Language: en-US
-From: Shu Anzai <shu17az@gmail.com>
-In-Reply-To: <20251221201356.43083-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 613bc9kccnf6ds6tbhjr1wuz93cuicf7
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB138180005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212042701.71993-2-dev.jain@arm.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3BD96140017
+X-Stat-Signature: ytiier1as698gnrxy4g93bhsfxcfgshi
 X-Rspam-User: 
-X-HE-Tag: 1766403234-978140
-X-HE-Meta: U2FsdGVkX1/ChZ5ru053uxiJFP2lci5ZzWIGzH4Jix9zg3g7pbWyCE4sRpSFz3gdglKydUwsxf7BR9c7ekfjfxmujcRCbOR8GyHRVuNsHKzr0YJ8KSMBDH/XLb/XU+Y3NVu8wKRboP2/9lyGW03OZwWoYp9F4l57q2wyB27IHPoZbImIck7rSPvfpLdxtV3lGMUSCX4kvLGOJ83+DlmKcgstwBRESh/2A4T/F5jSmwKLbgSp+kscjUC/lPDogiSi8HuHt3rWIKwAH6PCC72VOptYTWRMVJqtTnd24+rS+SKJbtizmtInN4svgWuWt+fA2QiVYgNzYcdvmM0kvh/65Yj2UfINc5vr14JFUulovHo84Eg9oV/uNhE4DdHjE+GMzhIfP6SbAFcWAOavZBoh+5MtmolOgz1L/Aw5UDZC6jjqOvcVG6x477s+0xWGwC4MK35xww52i1fLQgdGLRJGSspOjrbF5PSc6jOyVi2+aUU/Xa3BjKGAGz5ghPcqAfTFJxllokm5R9CfweRFvittIVR0vXH8oZ14buCxYn9VMXmcnH7F894eCeVTsv5/smRD6Oy3fMkhhvxyyfDr4ZCzZgIisdPkn/ZMJLIIxc4c8okD+sqLwHP/v0jRB2hywbh34PKUsnSTIgTS8Mr5RtVGy9rpJ4Mz0xNvhV8tPqqND9lCv/cpST7T9/+6L1bbyqa5ev0NHV4uEb6G0ePVXkRapHI3HII0eG3d7/JQkwYm/wafdPVAph7ocVu5ts7HW3gDRftC1Kt1OpRn9Qe1yNOM/2AfG2CEIDavK+BYpmtevJ+meLcf7dsfJL+1yxk8J/mFmqLhB+ws15bP05Qko3wUIGjDpR4V7n5NCwgSIia62swuXk0Hy+PC03UC15BBSbB9xBrNzqBCPUOliEgRt+7Mriqozex7GdBkVCGLQoKxsutf9Ng5mcN3NGfhIQtPrpSzO838WQm7Tdsu2hLq5cA
- y/mJlJ8U
- zyDrXG8PZDS76by13ewi0oe8BURnMj2m++MrPgrINlMphQva1DA7VLjEzeg==
+X-HE-Tag: 1766404075-158399
+X-HE-Meta: U2FsdGVkX19tLO1v3eBsahFZkT+fjJxzUR/gmuFgLQf2CRTKZAHewPXyBmseJWBEm07xr0OxQeN/D+P5h/JSN6oWKgLZn5B7pixu9aV+M8IpKExO66Eebf6IASgmPVos5VEMXMCNTXcAc1khXQyjuSDVU+yCFqO46gUtGwCBhabBaeAAi0VzRt7OfsAbakUPJ+hP0aYBJJKRYfXGOomWOsoKqYEXGhstKlUeduPf7Ey4FqgWS/43rcf+5LMAr+ZaacO73odeFcmufFkLdVwBwGncY7eCzTTcKGxCGYosPbZ/8yZrIIiGYWmIYO4HYMtTGM5XYsD9CehF2Oxd3rjFQCmAMC8+GK6mzi0B3sW7d4HJWSe6Net7jEobUBIXTFwCo7XX0AM9BnAn7601KhSELa3rRzirc2OGU4UJdrqui/mOHUKTSIwxJ6P7V1s5ZRyTcxhU6CM/IjYjjhTxNj61uQsLeNnNv/7mnDFdnQR/MPhthCc/xVjSv961wJpxnm5uI1+JyGyl/Kxu8YGH4fCXKTNLNU0Fn5p5+nT7OcoQkfMi4LOENl6+YBIu70pv/cerWYNtmTCgRqClCGdZbXkYzticRDWDgahzFGTCXIY1Pz2HsVT3JhxGWnL3H51QldPf0TgQsB/rATZERxym2MMgJNHzH7wKEJPtexdzsv/Eh4VG9hT65LtMM+cz4f/rjurkwXKD/lITXfaoB0nsrQ1HbYivgvQFTnpupDQWL01Q8FbrtYQiN8p7DcNZhzI28nxqO34l3V7tmd9cWq0r2Li6/fULkEmNWZ4+tVzThdWurt3FKj4emTOyaut3NlsBAHp4RKIhyU3gYiSYXiW/VbOQlskfSyx/LBOfr1KuqNJ2U2CLCdiC5+3NuDHlioM85E+JdyVRDtGWaH+2bXZjvld7JlU3Hx4SWiz9Ox0GBPx5FCejvxkrD8MxQv5YJNsWyUAO3AxYvFZkYVyhlPWaxA4
+ pAqVLcHO
+ eIOND00iFomSCKKZdyZENQfgc31Tyv7G0fIP3vUKuuRV+0dOQndcsLY8riC37ip77WZBnotFaGHS9Wo02HrgqegjHr5CB/fHGZMa5mvJdO035MtLWwrwAuIk1ZqyTHAH1eDwVgwa8+EcDO/OW0DlqsRVMtWzExUZuZoMJyv2ye5rE3oC1OS79qT+ZwjK7Vz1zhI52k31LUioZe5OAKe/xdae7F81AdAv/mad7MyuQ5Rq4lZsrt1iLUlK09QlPVBCUiwJpIDewj2gIAjORj4DO0EjwfjzXq9dI+XQ2VTAG99sZXCI1EnkyXOFNog9CrznO8y3iN3zzANEbZ6slsKdttEvoffSh6ZoBD0zOaVA7j6oohHpz7U7ik/t2Bv3uvpis8dlpMDSMe+KMkMg+kwJBQhOZAJEsI+kjAnhecRYsThj80+VHqz/HmpErwL4hBK6N+JeV+yk3jwCy1ojVb2pmcIIOfyEjKB19fAth4I1cYSmpupoZs2iKwuW9Q40U6i9+bJkdwj9fGKzkoktafmtPqUAMKKnqflp/TMOY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,213 +124,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello SJ,
+On Fri, Dec 12, 2025 at 09:57:00AM +0530, Dev Jain wrote:
+> vmalloc() consists of the following:
+> 
+> (1) find empty space in the vmalloc space -> (2) get physical pages from
+> the buddy system -> (3) map the pages into the pagetable.
+> 
+> It turns out that the cost of (1) and (3) is pretty insignificant. Hence,
+> the cost of vmalloc becomes highly sensitive to physical memory allocation
+> time.
+> 
+> Currently, if we decide to use huge mappings, apart from aligning the start
+> of the target vm_struct region to the huge-alignment, we also align the
+> size. This does not seem to produce any benefit (apart from simplification
+> of the code), and there is a clear disadvantage - as mentioned above, the
+> main cost of vmalloc comes from its interaction with the buddy system, and
+> thus requesting more memory than was requested by the caller is suboptimal
+> and unnecessary.
+> 
+> This change is also motivated due to the next patch ("arm64/mm: Enable
+> vmalloc-huge by default"). Suppose that some user of vmalloc maps 17 pages,
+> uses that mapping for an extremely short time, and vfree's it. That patch,
+> without this patch, on arm64 will ultimately map 16 * 2 = 32 pages in a
+> contiguous way. Since the mapping is used for a very short time, it is
+> likely that the extra cost of mapping 15 pages defeats any benefit from
+> reduced TLB pressure, and regresses that code path. 
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/vmalloc.c | 38 ++++++++++++++++++++++++++++++--------
+>  1 file changed, 30 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index ecbac900c35f..389225a6f7ef 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -654,7 +654,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>  {
+> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+> +	unsigned int i, step, nr = (end - addr) >> PAGE_SHIFT;
+>  
+>  	WARN_ON(page_shift < PAGE_SHIFT);
+>  
+> @@ -662,7 +662,8 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  			page_shift == PAGE_SHIFT)
+>  		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+>  
+> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+> +	step = 1U << (page_shift - PAGE_SHIFT);
+> +	for (i = 0; i < ALIGN_DOWN(nr, step); i += step) {
+>  		int err;
+>  
+>  		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+> @@ -673,8 +674,9 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  
+>  		addr += 1UL << page_shift;
+>  	}
+> -
+> -	return 0;
+> +	if (IS_ALIGNED(nr, step))
+> +		return 0;
+> +	return vmap_small_pages_range_noflush(addr, end, prot, pages + i);
+>  }
+>  
+Can we improve the readability?
 
-Thank you for reviewing my patch! My responses are below.
+<snip>
+index 25a4178188ee..14ca019b57af 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -655,6 +655,8 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+                pgprot_t prot, struct page **pages, unsigned int page_shift)
+ {
+        unsigned int i, step, nr = (end - addr) >> PAGE_SHIFT;
++       unsigned int nr_aligned;
++       unsigned long chunk_size;
 
-On 2025/12/21 12:13, SeongJae Park wrote:
-> Hello Shu,
->
->
-> Thank you for sending this patch :)
->
-> On Sun, 21 Dec 2025 13:01:14 +0000 Shu Anzai <shu17az@gmail.com> wrote:
->
->> Add some missing test scenarios to cover a wider range of cases. Also,
->> remove a redundant case in damos_test_commit_quota_goal().
-> Seems this patch is making more than one change to multiple test cases at once.
-> It makes following which change is for what purpose bit difficult for me.  I'd
-> suggest splitting this into smaller ones that making changes for each test
-> function, and adding more explanation of the changes.  E.g., a patch for
-> damon_test_split_at(), another one for damon_test_merge_two(), and so on.  Not
-> a strong request, though.
->
-> I have two questions below, though.
+        WARN_ON(page_shift < PAGE_SHIFT);
 
-I see. I will split this and send v2 later. Let me first explain the 
-changes in detail.
+@@ -662,20 +664,24 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+                        page_shift == PAGE_SHIFT)
+                return vmap_small_pages_range_noflush(addr, end, prot, pages);
 
+-       step = 1U << (page_shift - PAGE_SHIFT);
+-       for (i = 0; i < ALIGN_DOWN(nr, step); i += step) {
+-               int err;
++       step = 1U << (page_shift - PAGE_SHIFT); /* small pages per huge chunk. */
++       nr_aligned = ALIGN_DOWN(nr, step);
++       chunk_size = 1UL << page_shift;
+
+-               err = vmap_range_noflush(addr, addr + (1UL << page_shift),
++       for (i = 0; i < nr_aligned; i += step) {
++               int err = vmap_range_noflush(addr, addr + chunk_size,
+                                        page_to_phys(pages[i]), prot,
+                                        page_shift);
+                if (err)
+                        return err;
+
+-               addr += 1UL << page_shift;
++               addr += chunk_size;
+        }
+-       if (IS_ALIGNED(nr, step))
++
++       if (i == nr)
+                return 0;
++
++       /* Map the tail using small pages. */
+        return vmap_small_pages_range_noflush(addr, end, prot, pages + i);
+ }
+<snip>
+
+
+>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+> @@ -3197,7 +3199,7 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
+>  	unsigned long requested_size = size;
+>  
+>  	BUG_ON(in_interrupt());
+> -	size = ALIGN(size, 1ul << shift);
+> +	size = PAGE_ALIGN(size);
+>  	if (unlikely(!size))
+>  		return NULL;
+>  
+> @@ -3353,7 +3355,7 @@ static void vm_reset_perms(struct vm_struct *area)
+>  	 * Find the start and end range of the direct mappings to make sure that
+>  	 * the vm_unmap_aliases() flush includes the direct map.
+>  	 */
+> -	for (i = 0; i < area->nr_pages; i += 1U << page_order) {
+> +	for (i = 0; i < ALIGN_DOWN(area->nr_pages, 1U << page_order); i += (1U << page_order)) {
 >
->> Signed-off-by: Shu Anzai <shu17az@gmail.com>
->> ---
->>   mm/damon/tests/core-kunit.h | 51 ++++++++++++++++++++++++-------------
->>   1 file changed, 33 insertions(+), 18 deletions(-)
->>
->> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
->> index f59ae7ee19a0..e9ccc3fb34f9 100644
->> --- a/mm/damon/tests/core-kunit.h
->> +++ b/mm/damon/tests/core-kunit.h
->> @@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
->>   	r->nr_accesses_bp = 420000;
->>   	r->nr_accesses = 42;
->>   	r->last_nr_accesses = 15;
->> +	r->age = 10;
->>   	damon_add_region(r, t);
->>   	damon_split_region_at(t, r, 25);
->>   	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
->> @@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
->>   	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
->>   	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
->>   	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
->> +	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
->>   
->>   	damon_free_target(t);
->>   }
-> I understand that the above change is increasing the coverage of this test to
-> also verify the age of splitted region.  Nice.
+nr_blocks?
+
+>  		unsigned long addr = (unsigned long)page_address(area->pages[i]);
+>  
+>  		if (addr) {
+> @@ -3365,6 +3367,18 @@ static void vm_reset_perms(struct vm_struct *area)
+>  			flush_dmap = 1;
+>  		}
+>  	}
+> +	for (; i < area->nr_pages; ++i) {
+> +		unsigned long addr = (unsigned long)page_address(area->pages[i]);
+> +
+> +		if (addr) {
+> +			unsigned long page_size;
+> +
+> +			page_size = PAGE_SIZE;
+> +			start = min(addr, start);
+> +			end = max(addr + page_size, end);
+> +			flush_dmap = 1;
+> +		}
+> +	}
+>  
+>  	/*
+>  	 * Set direct map to something invalid so that it won't be cached if
+> @@ -3673,6 +3687,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  	 * more permissive.
+>  	 */
+>  	if (!order) {
+> +single_page:
+>  		while (nr_allocated < nr_pages) {
+>  			unsigned int nr, nr_pages_request;
+>  
+> @@ -3704,13 +3719,18 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			 * If zero or pages were obtained partly,
+>  			 * fallback to a single page allocator.
+>  			 */
+> -			if (nr != nr_pages_request)
+> +			if (nr != nr_pages_request) {
+> +				order = 0;
+>  				break;
+> +			}
+>  		}
+>  	}
+>  
+>  	/* High-order pages or fallback path if "bulk" fails. */
+>  	while (nr_allocated < nr_pages) {
+> +		if (nr_pages - nr_allocated < (1UL << order)) {
+> +			goto single_page;
+> +		}
+>  		if (!(gfp & __GFP_NOFAIL) && fatal_signal_pending(current))
+>  			break;
 >
-> Correct me if I'm misunderstanding the intention of the above diff.
+Yes, it requires more attention. That "goto single_page" should be
+eliminated, IMO. We should not jump between blocks, logically the
+single_page belongs to "order-0 alloc path".
 
-Yes, that is correct.
+Probably it requires more refactoring to simplify it.
 
+>  
+> @@ -5179,7 +5199,9 @@ static void show_numa_info(struct seq_file *m, struct vm_struct *v,
+>  
+>  	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
+>  
+> -	for (nr = 0; nr < v->nr_pages; nr += step)
+> +	for (nr = 0; nr < ALIGN_DOWN(v->nr_pages, step); nr += step)
+> +		counters[page_to_nid(v->pages[nr])] += step;
+> +	for (; nr < v->nr_pages; ++nr)
+>  		counters[page_to_nid(v->pages[nr])] += step;
 >
->> @@ -190,6 +192,7 @@ static void damon_test_merge_two(struct kunit *test)
->>   	}
->>   	r->nr_accesses = 10;
->>   	r->nr_accesses_bp = 100000;
->> +	r->age = 9;
->>   	damon_add_region(r, t);
->>   	r2 = damon_new_region(100, 300);
->>   	if (!r2) {
->> @@ -198,12 +201,15 @@ static void damon_test_merge_two(struct kunit *test)
->>   	}
->>   	r2->nr_accesses = 20;
->>   	r2->nr_accesses_bp = 200000;
->> +	r2->age = 21;
->>   	damon_add_region(r2, t);
->>   
->>   	damon_merge_two_regions(t, r, r2);
->>   	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
->>   	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
->>   	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
->> +	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, 160000u);
->> +	KUNIT_EXPECT_EQ(test, r->age, 17u);
->>   
->>   	i = 0;
->>   	damon_for_each_region(r3, t) {
-> I understand that the above change is increasing the coverage of this test to
-> also verify the age handling of the merge logic.  Looks good!
+Can we fit it into one loop? Last tail loop continuous adding step?
 
-Exactly.
-
->
->> @@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
->>   {
->>   	struct damon_target *t;
->>   	struct damon_region *r;
->> -	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
->> -	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
->> -	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
->> +	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
->> +	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
->> +	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
->>   
->> -	unsigned long saddrs[] = {0, 114, 130, 156, 170};
->> -	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
->> +	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
->> +	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
->>   	int i;
->>   
->>   	t = damon_new_target();
->> @@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
->>   	}
->>   
->>   	damon_merge_regions_of(t, 9, 9999);
->> -	/* 0-112, 114-130, 130-156, 156-170 */
->> -	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
->> -	for (i = 0; i < 5; i++) {
->> +	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
->> +	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
->> +	for (i = 0; i < 7; i++) {
->>   		r = __nth_region_of(t, i);
->>   		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
->>   		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
-> I understand the above change adds two regions on the test input, but I'm not
-> following what logic it intends to additionally test.  Could you please
-> clarify?
-
-Both cases were intended to verify that damon_merge_two_regions() is 
-called properly in damon_merge_regions_of().
-The first one was intended to ensure that non-adjacent regions (170-230, 
-235-240) are not merged even if their nr_accesses difference is within 
-the threshold. However, on second thought, I realized this is redundant 
-since it is natural for non-adjacent regions not to be merged.
-The second one is to verify that two adjacent regions (235-240, 
-240-10235) are not merged if the resulting region would exceed the size 
-limit.
-
->
->> @@ -269,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
->>   {
->>   	struct damon_target *t;
->>   	struct damon_region *r;
->> +	unsigned long sa[] = {0, 300, 500};
->> +	unsigned long ea[] = {220, 400, 700};
->> +	int i;
->>   
->>   	t = damon_new_target();
->>   	if (!t)
->> @@ -286,14 +295,19 @@ static void damon_test_split_regions_of(struct kunit *test)
->>   	t = damon_new_target();
->>   	if (!t)
->>   		kunit_skip(test, "second target alloc fail");
->> -	r = damon_new_region(0, 220);
->> -	if (!r) {
->> -		damon_free_target(t);
->> -		kunit_skip(test, "second region alloc fail");
->> +	for (i = 0; i < ARRAY_SIZE(sa); i++) {
->> +		r = damon_new_region(sa[i], ea[i]);
->> +		if (!r) {
->> +			damon_free_target(t);
->> +			kunit_skip(test, "region alloc fail");
->> +		}
->> +		damon_add_region(r, t);
->> +	}
->> +	damon_split_regions_of(t, 4, 5);
->> +	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
->> +	damon_for_each_region(r, t) {
->> +		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
->>   	}
->> -	damon_add_region(r, t);
->> -	damon_split_regions_of(t, 4, 1);
->> -	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
->>   	damon_free_target(t);
->>   }
-> I understand that the above change make the existing test scenario bit more
-> complex, and cover the alignment.  Looks good.  But
-> damon_test_split_regions_of() aims to cover multiple scenarios.  Your change is
-> updating one existing test scenario, so I'm bit concerned at the fact that it
-> is removing one test case.  I understand the updated test scenario is including
-> the old one, but I think keeping the current test is also ok, as long as the
-> maintenace burden is not that high.  So, instead of modifying an existing test
-> scenario, how about adding the new test case?
-
-I agree. I will restore the test case I removed and add the new one 
-instead.
-
->
->>   
->> @@ -574,9 +588,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
->>   			});
->>   	damos_test_commit_quota_goal_for(test, &dst,
->>   			&(struct damos_quota_goal) {
->> -			.metric = DAMOS_QUOTA_USER_INPUT,
->> -			.target_value = 789,
->> -			.current_value = 12,
->> +			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
->> +			.target_value = 234,
->> +			.current_value = 345,
->> +			.last_psi_total = 567,
->>   			});
->>   }
-> Thank you for correcting this!
->
->
-> Thanks,
-> SJ
->
-> [...]
-
-Best,
-Shu
+--
+Uladzislau Rezki
 
