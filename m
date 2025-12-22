@@ -4,157 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C79BCD711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 05:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D4ED711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D2E26B008A; Mon, 22 Dec 2025 00:58:16 -0500 (EST)
+	id CD7026B0088; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AAE26B008C; Mon, 22 Dec 2025 00:58:16 -0500 (EST)
+	id C5A3B6B0089; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ADB76B0092; Mon, 22 Dec 2025 00:58:16 -0500 (EST)
+	id B66806B008A; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B7576B008A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:58:16 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C90F013BFB3
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:58:15 +0000 (UTC)
-X-FDA: 84246051750.27.8EC9C9E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6566020011
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 05:58:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cWL4iAVT;
-	spf=pass (imf03.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A473D6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:00:57 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55431BC640
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:00:57 +0000 (UTC)
+X-FDA: 84246058554.14.F0080B7
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8E64540016
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:00:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vCJCZ7o8;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766383093;
+	s=arc-20220608; t=1766383255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X5EzYw+0qS6x7IrbJAsEhyBmKheOYvSaiiPnOy2Yisc=;
-	b=Da3+0ETRFR2gyIIL3qDcHC1P4NeXXCNmltqFH/7VnAvl9mmk/gtnTpJuGH/H0B4/4URdNo
-	sxuujxD6TmTkK6kWdC5lAK5t38U0vuq9T45v6MEC94Tb8pgtBfrwrXpGCP78gyZ4v6CUd2
-	OGeEmOhQzYAtadvvOaw8FyCxkGzMpm0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cWL4iAVT;
-	spf=pass (imf03.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766383093; a=rsa-sha256;
+	bh=0YnoYetntYAKPTmqMpJsArUchXzDuI0E7C6KJhIP8qU=;
+	b=lHDyclf+a+fB7cS9F8mUFROx6XlfsUd7yf8wjdx7DBsviINL2/h8o4BnQjnx9Sw9suT5xq
+	w+96iQOSlDP5U0HpbjlvNcPMzNi+HXAfIuxiGDbzX0J+8xKsiHXcfgpwmclKukht+vZb/+
+	jH/OYrhSFni5Mst8+ZPVKltmqdFMthw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766383255; a=rsa-sha256;
 	cv=none;
-	b=i7KiBee/V/0UElUeeZpdhZF6ei+05KKMbzEWNrdqIcWY+gHNGcR2ZwM6Yl2URKcv/uuQ1i
-	lm1QYlt9gN5VvhjxXG74LUooiRIIPGKm2k6K3FIJMpL916sPZlLs62qP223/6fpQxgtHrQ
-	Zts4nbERf5U9NQpPKq5QjSvW3NMeMOE=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BLMhAvZ015053;
-	Mon, 22 Dec 2025 05:57:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=X5EzYw
-	+0qS6x7IrbJAsEhyBmKheOYvSaiiPnOy2Yisc=; b=cWL4iAVTUeG+ss+exyWDmA
-	jq1KKOYYvyzpMuLMuIP52jZXxEB+i2/nFwWl2aqwXGPcKuT5lrYrshqrVZ7UiKEc
-	2pMrlDC0iCfzng+RqQ+BQBMl4Muv/w+2xK6/5Zmdyj9d9Zv7VAiePHkWEz+5Zf1r
-	ExZilm2QakhmCC7YUerpE9rikXFyzHPYjsb3tjaQiFpxBPsT6cGwJd2vhzQnHyaX
-	RK/U0LeWaRiFrM8WVvQ1iJ+txWE4ZMRPl8PQK1rcCeUU75YDWOqJ7aHYDrbLkHqA
-	HaKMjOLoqT7wsIZF8YQwZGC2v0JWLFxpZatC3QUQuvDEaU42T3ZR73t8oKUR9TzQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5ketp63e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 05:57:45 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BM5vbec022706;
-	Mon, 22 Dec 2025 05:57:45 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5ketp637-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 05:57:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BM4BkcY001099;
-	Mon, 22 Dec 2025 05:57:44 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b664s4ngg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 05:57:44 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BM5vc8m50397562
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 05:57:38 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 129FC20043;
-	Mon, 22 Dec 2025 05:57:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC49620040;
-	Mon, 22 Dec 2025 05:57:33 +0000 (GMT)
-Received: from [9.124.208.188] (unknown [9.124.208.188])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 22 Dec 2025 05:57:33 +0000 (GMT)
-Message-ID: <16fef7a5-6853-4a6f-8d27-e005fa351eb7@linux.ibm.com>
-Date: Mon, 22 Dec 2025 11:27:32 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Borislav Petkov <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20251221053611.441251-1-sourabhjain@linux.ibm.com>
- <87a4zcml36.ritesh.list@gmail.com>
- <655cc605-2ce1-4ccb-8cc0-a0a31a9c89fd@kernel.org>
- <87fr93ky5i.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <87fr93ky5i.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	b=kt5uPhA2a64t3Bork/Co9daqONC6+UIQGE+mcOgDaxLnozcSvVWRbrbgqzXlN5W17bfBZC
+	72dP4xwsPkMWS3VHmFcssM0yWQaIlKPV8mpD5vu6EiHBjaL9JUoes1Vu6eEIjfa+XMDxlQ
+	9Nt5lGC8vQmMZ2sU9JczBFofM+Ko8aE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vCJCZ7o8;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766383253;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0YnoYetntYAKPTmqMpJsArUchXzDuI0E7C6KJhIP8qU=;
+	b=vCJCZ7o8DllOX7DhHQAOSMjpud6aq+CN2IihG311TfQhv+av3UubulNaD4JSFsSEdBcOGh
+	k6nDd5vsE24k8HuNJMnH2bXYy5zpCtpbg1nq0o9pDRlpJWTM4CW5OBrhkChuZpY23svjWc
+	C2qAK0G5/0NANd9hQtXBveEyohdXQb8=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCHv2 11/14] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20251218150949.721480-12-kas@kernel.org>
+Date: Mon, 22 Dec 2025 14:00:09 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HO9Y3xTMJbvw0LSrOOB0LjX7yn-FHs35
-X-Authority-Analysis: v=2.4 cv=Qdxrf8bv c=1 sm=1 tr=0 ts=6948ddd9 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=L2GzoeH3I7b4KdntMNgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 9hic2OIlQ0QN3dNT0_DvKxFRKKtPor_n
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDA1MCBTYWx0ZWRfXx8qB1vId+1x7
- WH+r8WETKkHWnVlj5bSDn+RRQbheu8D+YozSZTmQKwmrjFw76JydBoKwfMEnznwRLC8VZsqpMmF
- JrIFwmXM4HYSApxOkQsp8Sa4PXCgxgdk4M9LmuzDtuT6eso3k5Zyr9Po0TKilPVlNAkWKc4mDxt
- s38D3+6/KI1g3ppSW6jCBeOP4WGzKWHSWOjxSZ1ulIB3pmhciF6IzgCtYBR0lA+4jjS5HZAdHoi
- PJzKZkaf2yC3Hc22u+yyjbH/2jfyowsSQys6UrvqFL+nUT0ksKtGCdHSg2bdxv+kAWaDjvMrGSg
- afs4DZ4ft8OZRZC72sIg6tVq0vIab+Pu+8RWF6/iwA7tGIekzrvl66XqgKlWG+/c0+tDqqOCq+0
- CuT3KaT27TXnbbej7xlc2ZEkDq6rB0Bpc2RXeqkCD1zWNDURuE5sSlLgU0mhPvquLuVDXDh5/fd
- fTtWNz5S/Yd1xpQGjOg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015
- priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512220050
+Message-Id: <48BA4DA6-DE9D-4F07-B347-19D2F68B357A@linux.dev>
+References: <20251218150949.721480-1-kas@kernel.org>
+ <20251218150949.721480-12-kas@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: d7iff5cufibmor5qbujd6h99xps4y4am
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8E64540016
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6566020011
-X-Stat-Signature: 6zakhkbzihpuf9rdf6794fibjkmb9q6i
-X-HE-Tag: 1766383093-544302
-X-HE-Meta: U2FsdGVkX1+hwGwMWiSQFnc+4omIr6nQQ0IrCsZwjWE5ueIsIa8gQ85ZOA9lQORpC6wq5pR5ONYe07JtMSi53bcl5pItLp1VY5CJVM0hLnvS0Wzka5FZH7ALNKWiWgsuftYbquEA4/yqRamnmXhB+TCAxlzQs/P+rKy0TwWgF7tI8cPdiINSBL0YAlvVShQPntmz8MW97hoisvu9oi0smWPxv6SVs3mRviZqu98cOdZhkekueYnZPVfthFy74nK71QsG5D/ryHhSVrRhOP04yMBlexjGC/+PzLX/p5RRKCz4/y0+rRSsuKrUr/5JKYQxF5lrdpo3tHdKEln/bbfBAxBZsOBfjkYn7eTQx54XrfRMsJN+FVboqoRAGoQX3YdqMYh8nw1H6MCE0eauKIGEyPs8Kww18m2yyaKDiZX6h5LSGpU5pspB3m+LXcBzqRLn1pqcLwBU1dIaZ1fQZYQGgqznpRC59yCVG/CbJn9DkNmb7ZaZ/dh81wrjyw2RPKba4L6Gj4uwMhT59WKOlYSUKE3xpEDFAuZVYT4eXt44IELaADL36fkFTp2vCI8m9+meLYQhZ/2XhQfIjWx0GdmZrF04rx8eHTrdw/zR7l0Xokqd5QSgXbbMdQTQagwjgisN6gsQybYM8Ab5HiMRNCc3z7L+MsvI/yaOxoCFofZIr4OYaWIRtvmuie8hLVGU1pDo2FfdUYrYVgtn7AQYZKT+O3FQaf37qmnb+KDFrF+9AxKA6xBoCnjgeWXmmHmWh15vg5PsODrDQze3nZLpD3QwOnHD07NlW5ak9hpU3GDAoVbyDy87k4pITA6fnzTNg+1UglIzo5NjPP3HnrZ1DGm20o5ib16xfPT6G+KIyrUFtzrRL2htAYB0Fa35JZwIQ15nRqDV+SI+0TTTfXDoYefPklwkFXpJ6onv9Wa+rDDx1nw+2okAR3RU8xA2tLBtMLe3QMsZjSLIqa2Kwo9zp5Y
- lztEJopp
- zNA6cc0A3h50/pg/TMWuJGFF/xfLmYMLmcZYdhqK9nb2g4HO0nRQXNa9nT5nAClOv4ET0xMfsGsEFEcaSuFz6TwxM7zYZDxQ4Uqsz5JrVfg4vKp9eJ9t8YiGaUrAQ1yx1/9toSTDZRcsAp81SpWIdOIXmCpA4DHLhyQVewcM9kdSPmu4H/q3o7PWROKqW/Sv/WWRTR6YnIf2oe73jJq4p72WIHcm8uml1WHlnRmBN/kLUAaqpPn6MbWv9nkriapmFlrRrFd0g+/esGv6bPJdPoh/Gb6vRI60QlFYoAEK0pdln7cB0FGlxnO9fOYSY+qcx45PmeEIIqz8U2Q8vs1FO2f/UT6/eYBKh8dh2BRNxXxIAyGsV+Mn+AGrgZZ6RAcWQN3ON7ORT0OZgfLQH8mQP4KUbpBs3ruJwWQAK6Zl3mjzyKCnPG+9maRz/OYW0yE+zG9h+mRYytZdAN05nSgCz1+0uJw==
+X-HE-Tag: 1766383255-927578
+X-HE-Meta: U2FsdGVkX18F+IUzWYr4C06osi7UfN9elr59suRambl1r6VDX6AWhbr0tx45dQAHuZ0trkIiWRUA6GcMJIWiFhrZUWM13W+hm5z1Rv4tn4CzzthdpybMRb2Z8ojvgDOQ6fyiCr0R5djHy9qqvfenJu+M7bdt1fmdCoAYvUzgqv1Mss5Ffsqhnc9IG//uYZaLB3k+aoJCsJ+X5tQVnWcFbmysQTA8Dw6U18nmebqmdp48mxg2Mkw75QJKlf0DV959eQBxlPM5TuyJsYvgxtRskjsOCB1v5RnJppmL0WD/c/nGYj1qYMJYcZRGPQvKFIE9Ogksus0lPy/OpDwrmuga8V8KuRdju6tDq2VpsTokWXWPjcvSViNT94vVfZ98w0Iwsy+nnFAGpuO+wxU5jmqYGVUsovqA1945oXbjPwtOpHsydsjUbbBfeSdsbmwrPtWKTZybJXxTbHGgJBJuVOEm0/bGkedg/JX+1TtPW0/iHfr1kuG2sBsKnExacWwH6CuKJTsi+fNgQDb77TbDOnV80jTWS5pGXaZD7NgAn4aY+SOyXABBxk3v+NCC039UhkFZ9kmDLiA8s3TwLDSF2U1CFbvh5BXP+lZYeALxNNxki6pt2LgSi9TtNYI6VsHwFxGcahT7dvSycI3d2qpGJqZD1QuqyaR/5esKfJFvujpGLSn7XvjcmUnsvN0fsr89tre67YqN8eJGHqHAPBcovTaUdsjos9GR7if9UEHvANN99f2ivljtkJ6mjc18Ed+mmqcXwx1sqXB773F7GmWR26s1docuwaq4RmSe/0yu7EzqSSbkjHcxcNCX27vX0tUS0EpI3iQt+ruQ/r+qgz/Xo+wWzTg9dwHacKMtFrq8oPDlWtrNSWFOaAXDqrdt6ujS7vyTZg4rN6G9iJT3Bt+tCw0V8OjwfL8Msad1mCOZ0OgYYbnPVIlbQKDX4X3KYzl7VfC01jBy0/l9mEd3b8yz848
+ hIMmhV6h
+ JGjIP6bY/SDwJe48sPXf9WhwJjETUVCBw3TbO5Gpy3y6eaZ6V+WA0Z66fW4ATLlfNhDowKv7kwAX1DdEVx5bMPmQimkY0dRt0IraiRccXOrQMGGk1hIDKQN1ea5D5ktu8UymPSDEAQZ1396o9vMW3eXuFIGLqxCkeXl/wvt97mh+igxjDsk7CFWjcUF/nyNdrpzmbZOSMBZs55XptOvJHZTrKhesK1sFgjuiUAIPFynTZV+9MohzSCH+Mn8kbTUEap+DaEJd3E9BevCl//4h+/9JXLr5KvvBVrtBdHJ6XCngM21wTnVbWtu6ZRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -165,53 +109,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 22/12/25 08:42, Ritesh Harjani (IBM) wrote:
-> "David Hildenbrand (Red Hat)" <david@kernel.org> writes:
->
->>> Coming back to the fixes tag. I did mention a bit of a history [2] of
->>> whatever I could find while reviewing this patch. I am not sure whether
->>> you have looked into the links shared in that email or not. Here [2]:
->>>
->>> [2]: https://lore.kernel.org/linuxppc-dev/875xa3ksz9.ritesh.list@gmail.com/
->>>
->>> Where I am coming from is.. The current patch is acutally a partial
->>> revert of the patch mentioned in the fixes tag. That means if this patch
->>> gets applied to the older stable kernels, it would end up bringing the
->>> same problem back, which the "Fixes" tagged patch is fixing in the 1st
->>> place, isnt' it? See this discussion [3]...
->>>
->>> [3]: https://lore.kernel.org/all/b1f04f9f-fa46-c2a0-7693-4a0679d2a1ee@oracle.com/T/#m0eee87b458d93559426b8b0e78dc6ebcd26ad3ae
->>>
->>> ... So, IMO - the right fixes tag, if we have to add, it should be the
->>> patch which moved the hpage_shift initialization to happen early i.e. in
->>> mmu_early_init_devtree. That would be this patch [4]:
->>>
->>> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2354ad252b66695be02f4acd18e37bf6264f0464
->>>
->>> Now, it's not really that the patch [4] had any issue as such. But it
->>> seems like, that the current fix can only be applied after patch [4] is
->>> taken.
->>>
->>> Do we agree?
->> I think we should document all that in the cover letter, an describe
->> that this partial revert is only possible after [4],
-> Yes, I agree. Let's add the above details in the commit msg.
->
->> and that that must
->> be considered when attempting any kind of stable backports.
-> Sure. I would prefer if we change the Fixes tag to the one which I
-> pointed in above [4] (with explaination in the commit msg). However I am
-> still ok if we would like to retain the existing fixes tag and show [4]
-> as a dependency.
+> On Dec 18, 2025, at 23:09, Kiryl Shutsemau <kas@kernel.org> wrote:
+> 
+> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
+> prevent a race between HVO remapping and page_ref_add_unless(). The
+> race could occur when a speculative PFN walker tried to modify the
+> refcount on a struct page that was in the process of being remapped
+> to a fake head.
+> 
+> With fake heads eliminated, page_ref_add_unless() no longer needs RCU
+> protection.
+> 
+> Remove the flag and synchronize_rcu() calls.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-I think we should keep the current Fixes tag with an explanation for 
-dependency
-on [1] in the commit message.
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
-Would anyone have a different view?
+Thanks.
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2354ad252b66695be02f4acd18e37bf6264f0464
-
-- Sourabh Jain
 
