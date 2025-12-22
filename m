@@ -4,106 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53173E66886
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Dec 2025 23:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3E6E66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A397C6B0088; Sun, 21 Dec 2025 18:42:30 -0500 (EST)
+	id 0D5496B0088; Sun, 21 Dec 2025 19:39:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BCD76B0089; Sun, 21 Dec 2025 18:42:30 -0500 (EST)
+	id 0595D6B0089; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9306B008A; Sun, 21 Dec 2025 18:42:30 -0500 (EST)
+	id E7CD46B008A; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 795326B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 18:42:30 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A1021A0989
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:42:30 +0000 (UTC)
-X-FDA: 84245104860.19.1C97EDF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 64FBA4000B
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:42:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zsk4KVzh;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D34676B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:39:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40A7DBBEA3
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:39:57 +0000 (UTC)
+X-FDA: 84245249634.30.B1DE120
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 579BBC000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:39:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ghTDwtNL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766363995; a=rsa-sha256;
+	cv=none;
+	b=w3/lg84YBmhCMYnb4oZDVY22gCx3X2DYaAZo/dKHMC/mRucHfcXyv/ReOufk3gO3Ef0hjM
+	OBcX0ilkQYFj51Gtb3tEBehP1BSEQgYhJk02i+ML1htJccCDiQGyNjhhW+rjKG9n00+v8Q
+	4pGgJHtGmOq7vxMN58fENpnTUuVwS5c=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ghTDwtNL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766360548;
+	s=arc-20220608; t=1766363995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXV/4YXkIuBowvca7hFWsL0aDHJ+pblILf22L+sGA+M=;
-	b=GOMzg3CLnrVTOOdTUOHrHk7JYR+oGGmbCDMenNRoZ3DzDK2GVWI+U5v31GP49D89L+KUT1
-	lz4dEiOb+4cdNok4r5B1vRLtZ2IgKIovneGHrPKN60lonvR63zXH8UzU2UcjZ4ccA3sNcH
-	T48gx0Cr/DFAZhx4p/fvfeFjvNi4U9c=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zsk4KVzh;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766360548; a=rsa-sha256;
-	cv=none;
-	b=QpVvt4Mkm1EKLbdmx15/NjS175drF/Q506w+do4ychjMMtdQifQ1lL7PcA8bIyLCMytnLm
-	QwG+o1jlF7SRXW8chJNHdM/hUNgmCSLUojmiSsumFv/ymldRHaFoGg47T4AfyBDZ/wqBfi
-	hCAENtOMGnB6GtNxDManHMh75XTtzpM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766360547; x=1797896547;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gGxGbnasspaVRRI7by5dOPE84jKe4QonzMZG00rj0ik=;
-  b=Zsk4KVzhrJ22uKxgGB/U5pz3GMpTZex1My9Q97G7t3LtM6RvmV9zEOzP
-   vA9OCY8DBnELCdDPJIAU2581jjlKCiJQNfGze1UUygLJE4SUmzks7hFqh
-   ZoFbR0z+YfpIJmFAsuQnHfHiKjEpcg67YLU3SNALyYtmZ8CNOXtWWhaNM
-   V8ChzBsATtQU4zIMCFQHHViO6FpocBqZwlDytHJudHAyBnjTNkMx2kpjL
-   3DPI2L2AahvTWcKUz/TnDbKOGVzq666ofnYKsZuwSEpbdngHdfqluXi8T
-   A0kO/jpTIhAWS91m4xwmz1HLdk7/+Y0rynuifzrLnKcyXYcZGomhl3BWQ
-   A==;
-X-CSE-ConnectionGUID: GFoHkqYZTgaXi/gL+NHq9g==
-X-CSE-MsgGUID: lcc7N9S/RGSlZlkgjC9FCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="79588026"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="79588026"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 15:42:26 -0800
-X-CSE-ConnectionGUID: r93/8ivDRxKA/B+8tTPRGA==
-X-CSE-MsgGUID: 0Kw/AbA4S4SkWxcQYJvWJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="199403859"
-Received: from lkp-server01.sh.intel.com (HELO 0713df988ca2) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 21 Dec 2025 15:42:24 -0800
-Received: from kbuild by 0713df988ca2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXT49-000000000It-2tdX;
-	Sun, 21 Dec 2025 23:42:21 +0000
-Date: Mon, 22 Dec 2025 07:42:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: Re: [PATCH] powerpc/mm: export symbols for lazy_mmu_mode KUnit tests
-Message-ID: <202512220735.UL4ukFLo-lkp@intel.com>
-References: <20251217163812.2633648-1-kevin.brodsky@arm.com>
+	bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
+	b=18AxScZBwps/eVixFI4LdUlCkg+/xLX5doBhxI/dH7i2oHuRM8L9lDI4eeslNkU5Oz/aft
+	xyVaDRHml1qoIcBP0I9JpVzrcc1D8STzcZjdBW2SccS5gWakLU2e8wvARad3GRUiZ768Cl
+	VZFiqJbl5imA6/yLoLmJqlHTirocJ8I=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb3801f7eso1801475f8f.3
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:39:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766363994; x=1766968794; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
+        b=ghTDwtNL6weVjRDZ5ZYwopwsReikT78SowLR+MI7eSwJW6qkp+vn/XUI5z1eDhhPYX
+         UF6Cp/PEzmDn8p09ML9zPCwX7nCCAAIsJpjBCy5J+tKxhwMPWZhMEJNU856VgqA2oYHa
+         s7TWUjlQ4gFxL5Gr7x4Pix21Ou6Bu5a/dB3rnYDXPz7p3ouEUy2s2UPoYtO1kN+ZfLLU
+         s6zBJBK+pEM9FPJSenNHFR4U8Ns7a84nqXGcrda9F8iBuGP375aBeIabOk+oUlixKF79
+         w/k618sTESb+V16D33DmFYnR1iIIaEFkZOwo/qy4zRndNsswN+4tgX87TPp0+yubUuS2
+         IVOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766363994; x=1766968794;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c/H19Q6tBd0UoTOXIGQ7f4tfksWDWCO13hxwp5+fi/A=;
+        b=griHgk8IVoNWlJUayZY5ugb8kKxzghzKxCtgEg9hiN49nxEV5mRLo6kwwkfComPm1r
+         yab+0IWxr9cQmBbErI7Lw1txSYShsR7GaOi97llLnwYLmtOT696FkBdgrUnoEIqwMm7S
+         6oWJvfGKXk6FcMAcz/Urs9GQLO3JzeCPGb0hMcITCfz418kUmdWfYGOdf7ehxnxEs42M
+         GIKKpIcIdG6MXdng7nt1CBvydw/54ZZIsddxZIJvu2PdSnzh7Phox/n92TKjDVVnUX/m
+         J+CzpqW0C/wn1F9KL/lWwLVVUlXFL1Og52si1DTHuW+bdTy4eCpI18mD+ArNEBBtGR0Y
+         JJMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9cqJK2n16TPJUwUlC5NlV95PDLUwNf0r+x/WOjf4IICLd3ULUMF79q9MoFb7BMhdbUOW6JYIuMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yys+HUj/bNg/YIAwwOlLPAi7KzW5u5LqLsxizuLMraj5HVPskad
+	Q3tgUu4mBO1t2nmM3kSKLU25uFwj3vtYd5osP44Q3Kkpxl/wepAe3Vst1I6QR/+6QdYrLJvp7ju
+	r5LE7KOmIA+Cf0sqTs1Ru6IMel6/d7/Y=
+X-Gm-Gg: AY/fxX7ENd/E1vDqkcr95zsJC5wsmj0Fh10OIkZIbY3bs51kJ6wOdA6ho362T5P1yoN
+	79zfoGBSch4m+ljXfiT0jBqV5kpdmD8E/5LdjFsbqFlt87JGvaq4HccWPhUX4vXgGTHCr0uJ0XI
+	FaMWrBcEq+N7IWYOSFu3B8lYPrTfll6a+uEDlUOsAbO8JAeXrfFUwiXsiO/8AjNlFx89mmYDw0u
+	5Bkh2aRhvEZAz5SBf9j+YMiGUFC5QYWrEasmDIvp9SFGOHe9mrhwmFH55uXC+cS0vs9OTTT
+X-Google-Smtp-Source: AGHT+IGkS9dOdEhg5+dCkmUmeaWzy4PZ0nHJDOAvsq+qfntVAU3c0jXqwzhWWTxM0175xdfDO/eCyt7iUEHIffnxA0A=
+X-Received: by 2002:a05:6000:2089:b0:431:9b2:61c0 with SMTP id
+ ffacd0b85a97d-4324e4c92b0mr10844629f8f.24.1766363993525; Sun, 21 Dec 2025
+ 16:39:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217163812.2633648-1-kevin.brodsky@arm.com>
-X-Stat-Signature: zaad4arxekom97og78wrfme75wknt99h
+References: <20251220041250.372179-1-roman.gushchin@linux.dev> <20251220041250.372179-3-roman.gushchin@linux.dev>
+In-Reply-To: <20251220041250.372179-3-roman.gushchin@linux.dev>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Sun, 21 Dec 2025 16:39:42 -0800
+X-Gm-Features: AQt7F2oyBrROwRVLxqymS_B6UpKn5g9mpaj4yyV5pWKX0A3abRXIXQm-DHsTaoE
+Message-ID: <CAADnVQ+T2_=F-885FtYZ1K8+UBfxmanExrfA+-0v4UdFVhmeDw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 2/7] mm: introduce BPF kfuncs to deal with
+ memcg pointers
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 579BBC000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xicqf3gjk67nqi5rrik7qa5rkmdnumi4
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64FBA4000B
-X-HE-Tag: 1766360547-696874
-X-HE-Meta: U2FsdGVkX1/rOHUAzrMT6TDQXBmL0WvKAQBQWDQTJntJBjA03i4qD3i5SI4kpFuDtTUBK0WdyqBmybyA1EF0rkAbvP3DbtDw5Hn3tsFElmcyWCba5Zcwj9IegyrZKG4l9hc/uKRkpSsjO8OiZonNFCiG82mbEFGO5di/vO1c2NSQeNj4kePQSMsv/PmKWLroZUS0WwFhe0SaZO5HMCEh9lxHRZfhN8WITRG65tvRjzgvYIvWj4kLGML0mjCoYvCr7g7HbwenqZkdIrjCLARwkNEwwxSpVrgKrb12+ndnNW3+3DPU+jMzQVbbFksyZ6/fc6/zHA5Ly+JqXkCGrZsCmzAU7fDu6VSJrj/Jv8PFQE6jaDAI3eZv0nEccuMLjVc1KVFvt4twxHwznA5SXPedXIfOYnJe6rgX0vYVsyzbIcyQk+xNXHOOMYxwPAO7iQiOVkkudF9zpluiVTKN6UfbpdMXGa0CL5DhXGv28SeK8T7JzIwqw7F+Kw4kpsPlgENIUAXPo2RUtRFOLqfL3fFoKgDlsQ9RLuUdc1bCjKpkp69wjBY6J96Aa4ES8d2Ze6xM5czUhHEnoELXAvSvK+LAk5FJ88kD8ZSbCIGWY1NDgpF48cF+Lt4T25j0lOLh/OFdaVpAprzO3ZeKeEQemo5HXwnYtO2v0Of1Nhn/VRQ2zBpsY6t8Bxg2igFAVnYcyMLQOdpj0+m5mg6wHZZYuI+FzPEITnhwEs5j5FdQcmXgtC6PdILvKSOHAfOP4jzaiD+hDyf5I4p3ePad6Ji/hMqYgbG1I4F8D3gbFaLF6GyAf5FnGxTbwcywG0M2je7/4GLsm1Kfldm+fA2dLOXsYNWNfXzSYNfl4eanCR4dQNX+JsBcJujbd6nFzG2FQz8bQ1kwpl+d1zu288bd1drlOYAHpxlxqo9PG3aO+OllpFZywEeLyhc7nEjZnKM/U0XfbuTh/Ar7Fj6gVGAY1jl8hsz
- 2mMoC288
- igLzxG3MiWic/bkuYDu8DhJiO1wlPPE2wmJRz8VHXRsNC6vsboKeHNuL/F+oJU14vimkq6s//3j9z0oc9B3FhNYKJvPwfrp398foKUE73MuWgU6HJQcHxsecL2/ZbLbe3qUH7uUIZGoEv5I0ERTRdCTRyEIgtvHpUxLSAcCcnKgvlcncq5dr3ISkEeYRYOlcdE8UFNWcbD7sMx7I01NQ5lLsAZ9Z56oCllhqWhkX2a5cUGgpEDeDb7qzgiHiIdcio8kg1KjP8fcPu3oLUw6KTio/q1XaGvra7iqYoHmUP0tvi0zWlZzsv616hTtGgZeJKacZJTlYwUHArOl69zL9A83hxYOBjNGmt1zoTpNgoEFK9Til/F0VHiB157iQS9KWOooaCJqnL2eglKjMaHSjT0AOYmnEzK9VwD2fUtnymoqiI58vGf1WtBZ/Yik/kBMLB3jVJjugguwPOfSGQOqTLSympAN7+lUsgLtBDUu7MJHoGTQAnEDSTdUSEqQp3ad88+qnI
+X-HE-Tag: 1766363995-903941
+X-HE-Meta: U2FsdGVkX1/s8J47YRwQ9/rvRDOTK6bRfUMw4ayYaxTmbL/mwF0U5xxRrbz+1p3VdJj0Fd6jSsXvajyCBU+2XMqIjIuoogxMxN9/qTtOrynAhEdPqN67lONzl/COE4zAmaFnrn+BcM4+yQKpkz2gnK+uy8ybmDqA4LD4rK/Roz6DbLaSWv92D5BzGVFLU0nejXEJR6pJ7Q+RnyRFqU9Hq1AP37tLoSnQN2gm/6l9d1/TFrNpC3FkP7fTjnWNsGTNh6jL8GcPJSWZKNCyEWTagkmsy2SBaNaRUJ76OWr3okz66KF7vro2y1gdqXAeNz/MEca5BTTu+f6dauEAGnVLcluPwOqabSNEOxHBq6XBZUxZww38FKvs8VTV8j0ai1TZ8d5pOwgfqY+Wyj+GjHiNjlLMkzGKP2Mh/cNtpiOfrE5oii4Py3p0fTBreqOCVFCtznkO1JiBhwyFhXFtRbVOh6nWOd870wf+U38xkYQetgoHCuqA0Y2HO2xx/hLEDkcg27loMPnDfRHXXGd0ImOS6F9DzgrXQ2nSququ5ubAoxUQGHr4y46pods4lsfGyVKzwRD/X7ccBuY6TB/QVX2WZizrtFtQXto2tGZp0NWDGRcJCD5o4u0l6T3Wivpu1U7ySKI7T0VPawQgijK6SWp0HLNEDEXAMdiVw4ldN9Mi2qm/I0IE6e/E4oFJNzopHbDqYJjLHWRV+8F9VQ7Cs9P5PO2QWLYcuRKfg3YiXGSv3som4Hf1JlxVvTMTKnAqY/LvIPfQdhzw/qLAmOvoBZZx0K82dEigKynbOiXw1jbq/MxBgyhNTx7pfjlO61mZ+6d5AKvyKamDEEJ7KFG8wMkwLL6MQ5eQ+v5VmCRMScBWIEelk0XfjRPjVdYqq4J6DdLYR+FXv7oMLz+IFoV0N9SjjYaJcrXNbzbRwVSAc9S0ENlOv82W4gjBktNlx1IwRnfpusuPfMuqb6AX4BfOOd6
+ SmZmgF5w
+ 2sRBuIDWTm2FskTW+iIONr0gieTASEQ99i932n1iNvHmnwdznn1Q+u5nEeYsjdxH4prC4X+vU+NHw9W76ip64BcOQdgt57qmlVW2JN+o2EV4Uq6NmOQA6cNDNeBhpAAr7bvdNwop66OIUhHeqg2ZuYhgry3n0nSlzgJftTH9453yNVwkIzjBmjZMUnr+MnEJNkt6f/XJjiSazq1f++o1Uc3yklDmEgzr8CxsuvPIeP7fH/sgxZEbWf0SIeRzUQabQOuVUQJtR3OITOo2CdrPdG5+M7iLvs7FB1czN2uvkGTLh0+7KrlJ//Lk0ExGSyK2l8dPgtXmueYXRqAhyAKimMNVR5g91i/IXDC6U4xOOigE7jMrunRglKLfydxrOi5u98mvj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,47 +120,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kevin,
+On Fri, Dec 19, 2025 at 6:13=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+>
+> To effectively operate with memory cgroups in BPF there is a need
+> to convert css pointers to memcg pointers. A simple container_of
+> cast which is used in the kernel code can't be used in BPF because
+> from the verifier's point of view that's a out-of-bounds memory access.
+>
+> Introduce helper get/put kfuncs which can be used to get
+> a refcounted memcg pointer from the css pointer:
+>   - bpf_get_mem_cgroup,
+>   - bpf_put_mem_cgroup.
+>
+> bpf_get_mem_cgroup() can take both memcg's css and the corresponding
+> cgroup's "self" css. It allows it to be used with the existing cgroup
+> iterator which iterates over cgroup tree, not memcg tree.
+>
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> ---
+>  mm/Makefile         |  3 ++
+>  mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 91 insertions(+)
+>  create mode 100644 mm/bpf_memcontrol.c
+>
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 9175f8cc6565..79c39a98ff83 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -106,6 +106,9 @@ obj-$(CONFIG_MEMCG) +=3D memcontrol.o vmpressure.o
+>  ifdef CONFIG_SWAP
+>  obj-$(CONFIG_MEMCG) +=3D swap_cgroup.o
+>  endif
+> +ifdef CONFIG_BPF_SYSCALL
+> +obj-$(CONFIG_MEMCG) +=3D bpf_memcontrol.o
+> +endif
+>  obj-$(CONFIG_CGROUP_HUGETLB) +=3D hugetlb_cgroup.o
+>  obj-$(CONFIG_GUP_TEST) +=3D gup_test.o
+>  obj-$(CONFIG_DMAPOOL_TEST) +=3D dmapool_test.o
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> new file mode 100644
+> index 000000000000..03d435fc4f10
+> --- /dev/null
+> +++ b/mm/bpf_memcontrol.c
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Memory Controller-related BPF kfuncs and auxiliary code
+> + *
+> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
+> + */
+> +
+> +#include <linux/memcontrol.h>
+> +#include <linux/bpf.h>
+> +
+> +__bpf_kfunc_start_defs();
+> +
+> +/**
+> + * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+> + * @css: pointer to the css structure
+> + *
+> + * Returns a pointer to a mem_cgroup structure after bumping
+> + * the corresponding css's reference counter.
+> + *
+> + * It's fine to pass a css which belongs to any cgroup controller,
+> + * e.g. unified hierarchy's main css.
+> + *
+> + * Implements KF_ACQUIRE semantics.
+> + */
+> +__bpf_kfunc struct mem_cgroup *
+> +bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
+> +{
+> +       struct mem_cgroup *memcg =3D NULL;
+> +       bool rcu_unlock =3D false;
+> +
+> +       if (mem_cgroup_disabled() || !root_mem_cgroup)
+> +               return NULL;
+> +
+> +       if (root_mem_cgroup->css.ss !=3D css->ss) {
+> +               struct cgroup *cgroup =3D css->cgroup;
+> +               int ssid =3D root_mem_cgroup->css.ss->id;
+> +
+> +               rcu_read_lock();
+> +               rcu_unlock =3D true;
+> +               css =3D rcu_dereference_raw(cgroup->subsys[ssid]);
+> +       }
+> +
+> +       if (css && css_tryget(css))
+> +               memcg =3D container_of(css, struct mem_cgroup, css);
+> +
+> +       if (rcu_unlock)
+> +               rcu_read_unlock();
+> +
+> +       return memcg;
+> +}
+> +
+> +/**
+> + * bpf_put_mem_cgroup - Put a reference to a memory cgroup
+> + * @memcg: memory cgroup to release
+> + *
+> + * Releases a previously acquired memcg reference.
+> + * Implements KF_RELEASE semantics.
+> + */
+> +__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+> +{
+> +       css_put(&memcg->css);
+> +}
+> +
+> +__bpf_kfunc_end_defs();
+> +
+> +BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> +BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_TRUSTED_ARGS | KF_ACQUIRE | KF=
+_RET_NULL | KF_RCU)
+> +BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_TRUSTED_ARGS | KF_RELEASE)
 
-kernel test robot noticed the following build warnings:
+This is an unusual combination of flags.
+KF_RCU is a weaker KF_TRUSTED_ARGS, so just use KF_RCU.
+We have an odd selftest kmod that specifies both,
+but it's unnecessary there as well.
+Just KF_ACQUIRE | KF_RET_NULL | KF_RCU will do.
 
+Similarly KF_RELEASE implies KF_TRUSTED_ARGS.
+That's even documented Documentation/bpf/kfuncs.rst,
+so just use KF_RELEASE for bpf_put_mem_cgroup.
 
-
-url:    https://github.com/intel-lab-lkp/linux/commits/UPDATE-20251218-003955/Kevin-Brodsky/powerpc-64s-Do-not-re-activate-batched-TLB-flush/20251215-230757
-base:   the 14th patch of https://lore.kernel.org/r/20251215150323.2218608-15-kevin.brodsky%40arm.com
-patch link:    https://lore.kernel.org/r/20251217163812.2633648-1-kevin.brodsky%40arm.com
-patch subject: [PATCH] powerpc/mm: export symbols for lazy_mmu_mode KUnit tests
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20251222/202512220735.UL4ukFLo-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512220735.UL4ukFLo-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512220735.UL4ukFLo-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> arch/powerpc/mm/book3s64/hash_tlb.c:33:1: warning: data definition has no type or storage class
-      33 | EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
-         | ^~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: type defaults to 'int' in declaration of 'EXPORT_SYMBOL_IF_KUNIT' [-Wimplicit-int]
-   arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
-   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: warning: data definition has no type or storage class
-     158 | EXPORT_SYMBOL_IF_KUNIT(__flush_tlb_pending); /* For lazy_mmu_mode KUnit tests */
-         | ^~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: type defaults to 'int' in declaration of 'EXPORT_SYMBOL_IF_KUNIT' [-Wimplicit-int]
-   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
-
-
-vim +33 arch/powerpc/mm/book3s64/hash_tlb.c
-
-    31	
-    32	DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
-  > 33	EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
-    34	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+pw-bot: cr
 
