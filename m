@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD21E6B257
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:19:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 691A6E6ADF9
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:24:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27A566B009E; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
+	id CF62D6B009D; Mon, 22 Dec 2025 17:24:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21A646B009F; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
+	id CA4266B009F; Mon, 22 Dec 2025 17:24:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 127A06B00A0; Mon, 22 Dec 2025 17:19:22 -0500 (EST)
+	id BD0896B00A0; Mon, 22 Dec 2025 17:24:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F404F6B009E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:19:21 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4B48132AB
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:19:21 +0000 (UTC)
-X-FDA: 84248524122.06.1F73218
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 233A3C000C
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:19:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="nafX/XMc";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id AF3446B009D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:24:14 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6458CB8B51
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:24:14 +0000 (UTC)
+X-FDA: 84248536428.29.E826AAF
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 81F49180008
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:24:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SP2Il+Mb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766442252; a=rsa-sha256;
+	cv=none;
+	b=KPu/hI1xxL15F+hNbvmsguZI6tvLVITCDnt9Hbzjbr7kaIAsskJRH/sO1CJSqS6pU53a+6
+	WimjEwEUcpQyMvR1TyG+Vtd4029rg72mwocbXQwhWSrnPT5FyYO3cTQPG5gSaphrHc9K1i
+	Lmr7H018RBORxP/IXpDyqE0DrbKzius=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SP2Il+Mb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766441959;
+	s=arc-20220608; t=1766442252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N+XC5YT5cdsj1nRAWBzUZkuED3ebpY8hPxGLJsyURVA=;
-	b=NFUb/BrFVhQOpMR7AymTRiA5ywT8YZqKQEpaUCdzVYFKJl6WER/ZNsXkescuuiFvHppgiU
-	DURbHZafYETv6U62fWAfB6rXLWWnz/TkjEYPFcdbjuD1TbE8zSF4MKehm6QcD8jKmf5hg4
-	JfB4x7T3ZYmkKiMnmHRVumLCjh4wfyI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="nafX/XMc";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766441959; a=rsa-sha256;
-	cv=none;
-	b=GAevG/RDWlwqMeWZLTxRATpOhKdPRsNn3zmmpbje+c+x4XxSe1oZUiYQwBqXc/aLh4mkFb
-	GrQDdI1Ly/MpxfS4hvqRubcl8i5w7XQSk8V9yF7JrLthxfZLFTkT74IRm85ev93qMiDOfq
-	zkksuLEa/KIC4Y/O0E+8PoROV3HE1Ko=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766441959; x=1797977959;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dQ/s5g4Ian6ioHx/lf1wibw3buSKQJjac3nIOVr/Irw=;
-  b=nafX/XMcjWTZvpx12UIJdqTTiBF0JJsyOYtxXYtTzBAQHzQayhn0xnHW
-   +7fwn6qbiRm+U45j2tO4nxsYywU8v/jwsB4Vq8wSN8gz7tnPdUbVfqLt+
-   GZ7glPH7ClJln6VTH+9+uDwZlrJ1k2HXVIUodoRzJSxFDjXnF4J+6+2ir
-   Vt/imhwLO4CNHpceoi4oiomj6PdFl/xAY6IliXqgbkuzI23t0+WZKJdUl
-   8IMEJ9wyQm6t28PtHYUmKxDRsR0dkxU2PDSmxNmo9iyR4FeeJLmjfU1vp
-   mWNhz4OZs+D2kNOgBexw++yF/iLQf2PjXCZXYEsAE8YmcoBcrIZDGwCRm
-   w==;
-X-CSE-ConnectionGUID: 9o/iWeTNQ+evFmAS1lep7g==
-X-CSE-MsgGUID: QfuWQJdHRyqlHMaHUdX3WQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="79017622"
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="79017622"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 14:19:17 -0800
-X-CSE-ConnectionGUID: 8ZdtjugMTpaUyreTt9B8MA==
-X-CSE-MsgGUID: w98j602qRNi2vVHfzDgBYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="230287947"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 22 Dec 2025 14:19:13 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXoFC-000000001Ap-13Vn;
-	Mon, 22 Dec 2025 22:19:10 +0000
-Date: Tue, 23 Dec 2025 06:18:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, akpm@linux-foundation.org,
-	gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org,
-	Bing Jiao <bingjiao@google.com>
-Subject: Re: [PATCH v2 1/2] mm/vmscan: respect mems_effective in
- demote_folio_list()
-Message-ID: <202512230655.QvO6dmjt-lkp@intel.com>
-References: <20251221233635.3761887-2-bingjiao@google.com>
+	bh=sJ5Rz7oks9BsiGW+7NF3TEgOyoDBKE6fPRGPHx1O1TY=;
+	b=CTYkaDKGK8N4gU7AQt0TFnafdCACMIY1FwmQMIk/KT1VxlWZ1qe/IwwGcB4DZaIDO/u5nk
+	mGkQdLB2/ucelB5fBGVPFivNGtP84R9ts9gyGHrp4DOS2FcuQJ/MmjKgcGCkp1sqjyAy/I
+	JKV6rlj/MCQ0c0MObfVQzmuVSVuYmoE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766442250;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sJ5Rz7oks9BsiGW+7NF3TEgOyoDBKE6fPRGPHx1O1TY=;
+	b=SP2Il+Mbb70Adf+Z5FyVVrTiglt2NEwPGCTriW/yeE63WhdsAFfs3dsnS6tzKSB+rR1w7C
+	6QGbctyDfdEHLjbcp2ZFm4KaG309gb0sK884rQvEXGeHbRwI91iGdiZ7TsgXhAo8b0ek8q
+	HSZMBZm2gA+JPqcu4x+j5E/T5qI8N+I=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Chris Mason <clm@meta.com>
+Cc: bot+bpf-ci@kernel.org,  bpf@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  inwardvessel@gmail.com,  ast@kernel.org,
+  daniel@iogearbox.net,  shakeel.butt@linux.dev,  mhocko@kernel.org,
+  hannes@cmpxchg.org,  andrii@kernel.org,  martin.lau@kernel.org,
+  eddyz87@gmail.com,  yonghong.song@linux.dev,  ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next v2 5/7] mm: introduce BPF kfunc to access
+ memory events
+In-Reply-To: <93dbca4e-bd58-4b9a-a3c6-595810727121@meta.com> (Chris Mason's
+	message of "Sat, 20 Dec 2025 14:59:56 -0500")
+References: <20251220041250.372179-6-roman.gushchin@linux.dev>
+	<8f23848b8ac657b4b4a2da04da242039c59e9ad9826a8d5fa0f5aee55acfecc9@mail.kernel.org>
+	<87a4zdepdh.fsf@linux.dev>
+	<dfc73fd6-9e5f-4b62-ac3f-7c9a327dd7fc@meta.com>
+	<87zf7d6ll1.fsf@linux.dev>
+	<93dbca4e-bd58-4b9a-a3c6-595810727121@meta.com>
+Date: Mon, 22 Dec 2025 14:23:59 -0800
+Message-ID: <87pl862m0w.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251221233635.3761887-2-bingjiao@google.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ry9w9ttwamu6amcubsd3434zucz7ygzm
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 81F49180008
+X-Stat-Signature: tzbqfetumwgbc1xebyjm8ggihnbc5d73
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 233A3C000C
-X-HE-Tag: 1766441958-199363
-X-HE-Meta: U2FsdGVkX18kSA7lVSmTLkmumISYThz7VV/0Lww3Vsa9VLfCdJPjSn6s6AXKO8ItTVNqUwSbiQOJ46ntqw+gK5uepG+N0peKKFKKSV26BpAZ10Xe9YMFdYSzyiut/4GBxiOX7n2cjT1rehfWSlDQvzeW+5w3VEhTTDrWArloF3p7nVIcI0xJi+6RpMwB/atKLUL04yWTNuhaKrw5k2EsM31D4AX3ZWSeQOu9BhVKVGzQNh/VRTldGMEM4pf4UljCKJN6TuwZGlktGK3+rG4NFJ7OLQ8e87o/xPp8WypWs4epWnB8nXK2Senkd7FvOYSsk9in4WkTSRSLzT+dfbj/9i2fmlX4h7dcKDBPbh4inU98xsxyMe74qfyN8b+odF3H68YILSA8+7Teq9W1iDe7Uf/hTrvGxYEdlPztOE87ByYwvz4JFQ1i62VX0wNY1TjolNv153YOfvoDPipPHuGGF5q9K9WUUo68hmftSTq8PAoaX4CZnrmI++RCTO2AMxY03XLp38nW9aCH39XRluDonxrmLexjMZ+5drjkrhLO1h4wKo49WGdiJujVdZP30JB1u46MhJ3xpSUaDrXxA9/dy4/yLgsSyUthUiezgKoAkv1/5cjXu41bQB2VLmT1s7pTnAoy3dSV0ocMh24ezYK/6OgRyV+moqUDXgjrEmtoQ+PbhprpGxDGuQFuOQXJCAST07gQMCyoBho/iFBaa/GNeO4PvVnl/QbWP8pjQtsq2pglYQGxKndt4X1x9/eFr2r3XtW8cDJCF6gVzdwMjqva961WTO16YQMqLQJxBAgBNlSyZ69pAplasdzWMl2caE3tyzlOtXNmyPUA6jRcw1wUS88fUT8Cgh9TcTgPcZkB7xRFqY+Ia8Aze/lDbNiAsqshTKiZ2yNB2/qVoWWIGci6wtdoU23ecl+b0ZE14qsfWfictWOM8NpP9B6I5YnwH8GI7FscHy/w+wqIynROfop
- SDExZp3R
- VU77XF80ovwZ0JfNf2ltyLZ+aeoSEG0xD6b8dv50CfptjZvg5Jaw16THO6NGF9PV0LSmDhDFAmr+m216xyawwtTVxjECdlF43RafMJjbyW8MY0hriLHGepO/To3Ln31cmNjlbXqyJXWkdKO6sNPes0nb0EM5z15yRSyB2nKehzaw55zxVFv8IRNASPtX0Dq+jM80hIP47ecJJDm/rLf9YRUk4SfMuKPv4kGp/1K60WwWIbTVqyH/iS5F941YFB/0/SP/RyoCU/2kEaZ0Y36mp+C3lAHtA/mXSXFrPcHI3AY4vcOgLmOHicHcg4xdfgfIWl7gRNO+WtfalrWsVm4uLkdpwYIMtCMriieI9RoyqXxeYuh+Mpmo9rNhc/ChQBQQvFJozQgJA6sH/8gscfMypGHcAQG7o7VDX93ALzE0PUC7ZD0MtxEb9RkMiZy2Yoov0rQrft0/6j+5cb08=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766442252-623436
+X-HE-Meta: U2FsdGVkX1+jhxVErfHeEZWjcm3wTDbZe5RmI/OiY7cWhVl/bLwI6NbSFgmMfkwhd/ltX9RJtfoR4KfXu6nPZ9sfCFiEVYhRl8udaYQndezD8uXF0BG3lsAx/IaB+snDOzYPQFr1cRwibuW6yGA+x/gGBU+LqMq6hM3Bi3EZmfpFj4+k55sRlquORh27MoRD2dI1gcz40sTogWEKxX5FR+E/kDTG9QAbzNXNjpPPCpLqOZd0uBGb0SUicARxorlcOY0JzaRtpAydeFp1P9vPs3Z66z2Hamtc7hb4QSWWGimQRzypZcbvR6vkXBa4t/Onumd5MTRUD127GDGYzw7gGbqzFtlaGOZxELSLJzsB10hVIVIug6fDRHUCsC0Mrric4ps41ETPC8wqkYpBWcLMkhK07YTZhyjOeTQct5FzERTeGC91XGtywUzaVbF5zQAZYlcpl9DVB81+z8OaBOlLsLbfLeZDhfDPWvfdYkFBJuM2kykEpiwSB0WjQD1wwekrL6lliO9c2JB2Vd1Z583qLXBsZ1uIO50fZqgWL3bvFt7JwfG3O4LsE2lWSootXAkenK6EfPEqxI2xTkma7ueIiTg4uYno/51ryNCyp/YHDqClRew4bXozFAeKuN4Ig1QnfCpa7oDPpDjcIZaoKR6d/k5t8zkqkkzLQlff0GMtPCcbZ3PL0QhI3f1PTOIlVEY0to58/x+zNCKd3lbu6w+BIOf9jSclTjs9R62WNs3UFbo4KHd8HoCztc5RbUuSGlEN5ylA8lFGvmX2dgGR6bzyhus2HUFivJ9mV5hjO8su3wlb2uhcK8PBdm24jBbblCtkTU/P4t9TrYKh2Y2mNBhFIL7dzgoeFEAtsJfjeH3MR1GLX8V1tneJ07c9YjnAzQliBTGyco45CIXe+M4WUaqoX3GgcJ3ym/GkWuk8Kut7u9J0cB8AmePQ6HjfSfyUhLbQkJycDQhXfit/lWh94G9
+ CusGVd5t
+ B6UQ5t1nRVCNR9iI4M/EinM0MhGoFnQQ8h3XlkBEm33eg5CbqP2z2EPEjdAqho5rUwPaUh1b5i63fSgQ6cij3ZHi4cuw06jXs50MPjF78XjPgnnZ9SDFxiaaOXugp3iPwPfzUkqfoZvLd/ZMAh284ZjyDXhdNBIIRo9JMnGYAESG2iMLUvL99gZ329rAOn8eNIan+OTfDDV55DINbMEsX15xsYPfVQ+dZmwHhOUdZ3M4FNrxFI/lbJ9NQSGRxn00ir9SH8fNjP2zAff5aJtZXR/7DewwOkqOmVbJn9btreVBjbHigXiosW7R1ppcKuFji3M4uOXd2fxat5fD1DP259k5EA22bN0fA56QD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,70 +96,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bing,
+Chris Mason <clm@meta.com> writes:
 
-kernel test robot noticed the following build warnings:
+> On 12/20/25 1:43 PM, Roman Gushchin wrote:
+>> Chris Mason <clm@meta.com> writes:
+>> 
+>>> On 12/19/25 11:41 PM, Roman Gushchin wrote:
+>>>> bot+bpf-ci@kernel.org writes:
+>>>>
+>>>>>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>>>>>> index d84fe6f3ed43..858eb43766ce 100644
+>>>>>> --- a/mm/bpf_memcontrol.c
+>>>>>> +++ b/mm/bpf_memcontrol.c
+>>>>>> @@ -103,6 +103,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
+>>>>>>  	return mem_cgroup_usage(memcg, false) * PAGE_SIZE;
+>>>>>>  }
+>>>>>>
+>>>>>> +/**
+>>>>>> + * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event value
+>>>>>> + * @memcg: memory cgroup
+>>>>>> + * @event: memory event id
+>>>>>> + *
+>>>>>> + * Returns current memory event count.
+>>>>>> + */
+>>>>>> +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
+>>>>>> +						enum memcg_memory_event event)
+>>>>>> +{
+>>>>>> +	if (event >= MEMCG_NR_MEMORY_EVENTS)
+>>>>>> +		return (unsigned long)-1;
+>>>>>
+>>>>> Should this also check for negative values?  The enum type is typically
+>>>>> signed, so a BPF program passing a negative event value would pass this
+>>>>> check but cause an out-of-bounds read from memcg->memory_events[].
+>>>>>
+>>>>> The similar bpf_mem_cgroup_page_state() in this same file uses:
+>>>>>
+>>>>>     if (idx < 0 || idx >= MEMCG_NR_STAT)
+>>>>>
+>>>>> which checks both bounds.  Could the check here be changed to:
+>>>>>
+>>>>>     if (event < 0 || event >= MEMCG_NR_MEMORY_EVENTS)
+>>>>>
+>>>>> to match that pattern?
+>>>>
+>>>> No, the bpf verifier enforces event > 0.
+>>>> It's a false positive.
+>>>
+>>> I'll add some words here to the bpf prompts, thanks Roman.
+>> 
+>> I'll try to play with it too, hopefully we can fix it.
+>> 
+>
+> https://github.com/masoncl/review-prompts/commit/fcc3bf704798f6be64cbb2e28b05a5c91eee9c7b
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on tj-cgroup/for-next linus/master v6.19-rc2 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hi Chris!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bing-Jiao/mm-vmscan-respect-mems_effective-in-demote_folio_list/20251222-074143
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251221233635.3761887-2-bingjiao%40google.com
-patch subject: [PATCH v2 1/2] mm/vmscan: respect mems_effective in demote_folio_list()
-config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20251223/202512230655.QvO6dmjt-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512230655.QvO6dmjt-lkp@intel.com/reproduce)
+I'm sorry, apparently I was dead wrong and overestimated the bpf
+verifier  (and ai was correct, lol). Somebody told me that enums
+are fully covered as a feedback to an earlier version and I didn't
+check.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512230655.QvO6dmjt-lkp@intel.com/
+In reality the verifier doesn't guarantee the correctness of the value
+passed as an enum, only that it's a u32. So we need to check the value.
+I've added necessarily checks in v3 of my patchset. It passes the local
+ai review without your latest change. Please, revert it.
 
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/bpf.h:32,
-                    from include/linux/security.h:35,
-                    from include/linux/perf_event.h:53,
-                    from include/linux/trace_events.h:10,
-                    from include/trace/syscall.h:7,
-                    from include/linux/syscalls.h:96,
-                    from include/linux/syscalls_api.h:1,
-                    from kernel/sched/sched.h:61,
-                    from kernel/sched/rq-offsets.c:5:
-   include/linux/memcontrol.h: In function 'mem_cgroup_filter_mems_allowed':
->> include/linux/memcontrol.h:1824:1: warning: no return statement in function returning non-void [-Wreturn-type]
-    1824 | }
-         | ^
---
-   In file included from include/linux/bpf.h:32,
-                    from include/linux/security.h:35,
-                    from include/linux/perf_event.h:53,
-                    from include/linux/trace_events.h:10,
-                    from include/trace/syscall.h:7,
-                    from include/linux/syscalls.h:96,
-                    from include/linux/syscalls_api.h:1,
-                    from kernel/sched/sched.h:61,
-                    from kernel/sched/rq-offsets.c:5:
-   include/linux/memcontrol.h: In function 'mem_cgroup_filter_mems_allowed':
->> include/linux/memcontrol.h:1824:1: warning: no return statement in function returning non-void [-Wreturn-type]
-    1824 | }
-         | ^
-
-
-vim +1824 include/linux/memcontrol.h
-
-  1820	
-  1821	static inline bool mem_cgroup_filter_mems_allowed(struct mem_cgroup *memcg,
-  1822							  nodemask_t *mask)
-  1823	{
-> 1824	}
-  1825	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks and sorry for the hassle
 
