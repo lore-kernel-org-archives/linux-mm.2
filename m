@@ -4,98 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF57D711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 04:10:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAB1BD711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 04:32:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3B3A6B0088; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
+	id 3B1C36B0088; Sun, 21 Dec 2025 23:32:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E8B26B0089; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
+	id 35F796B0089; Sun, 21 Dec 2025 23:32:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4C06B008A; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
+	id 26BAF6B008A; Sun, 21 Dec 2025 23:32:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AF7E6B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B34C1A014E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:10:03 +0000 (UTC)
-X-FDA: 84245779086.16.84A5001
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A28D6100006
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:10:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=F4WkAHL7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766376601; a=rsa-sha256;
-	cv=none;
-	b=hwGNmg3kphP4kV6L+ha4gls9CZ1U0TekhZldl3mP3iT4rGO6kdQuTmHlLTFAgo+t7OUL/K
-	oTvJZVbYEPp5dFsYJJVwHkq5T7MPN/Y0HaxpwZhHf8Y7NokBrQ6xelsAJC2pCymyRbOApX
-	TS7BLvEVCirxjRHhoyB+mHMT6wt+yFg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=F4WkAHL7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12BB86B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:32:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9E6E137F3F
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:32:36 +0000 (UTC)
+X-FDA: 84245835912.09.047F08A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DB89CA0007
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:32:34 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="NtV/wIyl";
+	spf=pass (imf15.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766376601;
+	s=arc-20220608; t=1766377955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IXh4SQUPnBYJoVrEOWmvfYguM/NpT84qvQ97p6ngaQw=;
-	b=gH9PrIK5MTeHK0H0Ato22TX/RideiaiRVY/1+Pg+8voMAAL9hUW5hZZioRmNdZs2nZut2c
-	kssxPlDnXQY/1n2YTckd0yWWFZu3Mwdt4mooHD7hBl6UdS2IUhN3SXI+se/mCeipObxRhD
-	cLD5BwuKk4WIKXeyktSEhVbegXhQxiA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766376600; x=1797912600;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LbrlxqxtpWT8zxLBiWESgjycvjMqX+WEniDgPiHWy5s=;
-  b=F4WkAHL7TSr+Q/5G6Qpl+lodT54+MLWdg/JRgVL0WY7qI8QFcLJ2NQDV
-   ptl6htNSZQs0bXd0zMjIUslpZ+gYQUHLY5LGAtKJtJF5l8KunMep/uZEw
-   GbY3s04b/UOkmsbnK/xP7iTcz6uB+tzZjPwK77LFEVextiQw49bkl16Ti
-   vEq8bt6bWOBVq4afHjrYXbNxqbqUAMYQ3lsFK3wjuk9vzrUaXT5Ihmqla
-   Q+Yemo8K9rUFoEZcCWGH3DDkSBHLuMYwDPgBAgtFoVYARaGa1HanZFG5c
-   VL4+pp5/xF9bRsWQOqrrKrDqqAL2n0vSTvRSBxOJPB+oDJzqkFpP5lnF7
-   A==;
-X-CSE-ConnectionGUID: 6eseqriuR16ZrzfwREh5jw==
-X-CSE-MsgGUID: VDxu0eboSvGku6e77Gsg+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68212848"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="68212848"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 20:09:59 -0800
-X-CSE-ConnectionGUID: K4WBsvVWRLS0ZGpOY/N/3A==
-X-CSE-MsgGUID: OKGrv+sXRmqZfA0okPFGGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="230442847"
-Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
-  by fmviesa001.fm.intel.com with ESMTP; 21 Dec 2025 20:09:57 -0800
-From: Yuan Liu <yuan1.liu@intel.com>
-To: baolu.lu@linux.intel.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	rppt@kernel.org
-Cc: linux-mm@kvack.org,
-	yuan1.liu@intel.com
-Subject: [PATCH] mm: fix huge page table not free after memory unplug
-Date: Sun, 21 Dec 2025 23:11:17 -0500
-Message-ID: <20251222041117.44865-1-yuan1.liu@intel.com>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XOXaiRxr3cPmAHLihU3EDtTfZSpwuqBxKeRVKpiPhxM=;
+	b=W47plQTz/VlEZXTjeNugmbRUax8JxlJGXvYAGwFTB4ixsIWx+WpRIl9LJ/2spS24N54noK
+	l3LzifTWnSJkBCWnkCoWrGqtvytkXhqbMqmFNTCk32PBvWSbSIs7cUzv+g724ABHd0WnN7
+	FtoGszwJhqGOta8//ita1Bd5Z+M/scU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="NtV/wIyl";
+	spf=pass (imf15.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766377955; a=rsa-sha256;
+	cv=none;
+	b=fBYpu/cikC4L0cL0iNkpO5Q3FWXwU/VVre5gLLfcD6WZY5jP5s5azGuNe+tm+LghsTs8t6
+	yI8cskUILi+AatSg2Zx+c4R4HUa7ytn6gOh1VlsSu8H+DIcS+xPhL5yLY/WEugl70l6Wge
+	ivjoE+U+ix28jMRkt1YYJLXwC3Itvug=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766377954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XOXaiRxr3cPmAHLihU3EDtTfZSpwuqBxKeRVKpiPhxM=;
+	b=NtV/wIyl0yNRuuTGZx7tBH3CdL+h5ro3o0kLCeiM9ughXSsj1sWED1g6XppsrniqzZX7tT
+	NfOwl5MA/pifF0Cofz09kULRVsEmpam5MspAfOEDXTy/t9aMV8QrTyQSyYqvNPGX3aPPaW
+	CvOL2YWzoCo79bQk/0HuhxSyrDdQQJQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-354-lYN5b-iWMHKdX4Gz4te0mA-1; Sun,
+ 21 Dec 2025 23:32:32 -0500
+X-MC-Unique: lYN5b-iWMHKdX4Gz4te0mA-1
+X-Mimecast-MFC-AGG-ID: lYN5b-iWMHKdX4Gz4te0mA_1766377950
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9105C19560B2;
+	Mon, 22 Dec 2025 04:32:29 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.121])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8336019560B2;
+	Mon, 22 Dec 2025 04:32:21 +0000 (UTC)
+Date: Mon, 22 Dec 2025 12:32:16 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	Luiz Capitulino <luizcap@redhat.com>
+Subject: Re: [PATCH v2 1/5] selftests/mm: fix va_high_addr_switch.sh return
+ value
+Message-ID: <aUjJ0OKZajNNoQok@gmail.com>
+References: <20251221040025.3159990-1-chuhu@redhat.com>
+ <20251221105709.d2e44cf1bb05bd9669e76d0c@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A28D6100006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ptoixyzy43dsizwajr16miak8jnoammp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251221105709.d2e44cf1bb05bd9669e76d0c@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: uaor4dzngaic8o58rk11zfxa97b3zk1u
 X-Rspam-User: 
-X-HE-Tag: 1766376600-467189
-X-HE-Meta: U2FsdGVkX1/aHgQF28cZmpdmZWJq7yCGHGoyV6FZicFNtzqaf1vIOqIkH2d8jlS1AJoBuSI/IWD+zrKO8DdTEjBO3ZPoo5dCaUuRVP21u7rvhjaJdn/3HDYEQTb5lwjFRS3GdWEr/Em7Dpcq0v9Q+oFPzg+JRGwVCfDPAfXaCFYQLo9U/Qp5gDRIjmka9tpu7P3xuxsGiqgbKL5nl3LHdlv9BFkeVKHRDYPcT05yq5mofNmhZlgUcF9HGzQ99ogSKSfUoyelFAlB3hCsjmxmGRhNJwzh6mNKHVbKr+nWbUPNAr5ptIZgyqQzhJdPt3MKZYQsipU1pT4NtLgkhF7lzHt1xz8+V5mDP/cDuZ57C6J+J3PJj1O8vtQlabgMyiWQI1vyF+FjtYrA6otPvkjJOsr4X2uwA6AUwcj+BG0ONCVjXHS0sufPxv9eS3wZnnQK2gWcnjvT3PwDWNIsX9OedqAPGCJmq9eEp/5ou0oGk9+ct2k380bPWjpGjQp/WgrTMM+xi1NzfimDXc9C+8HGsNsTST9xjs812PFRItZSiaIRBM1LqYPqd3efo/4tKExaeJXfXbq77SEOb/LWI63jsHdzWv9wsuUEo6uP3BjQiuvpv69U4elVpsB0oRMMAD02ZQHM4HNu/YIcgsMgPXyzB/wVvYg/2zyRtFDWi+9nk+bIdHtEdMHd/YFCuGS68Zgoqbxzo0yMw6wi/LoFgLgCSHqkTWNEPSq67QweY4u1QYqwqLf7NFOkDcSxs7Otmfaum1xfvLiMQ/b6yyAJKO0NjtIKp8qZh4qrhDJ3mDSicDTl2bRNREvv6dwTOLdDbxN5g+qSFcH7C3zi2StvtDi5NJlceqfcCs9BhgPAHDkB2Pde+Qu8Aahl50xzmInKc+dFu/jjwKkNMb2TWP0Z/7GoqEpPwM7dyMYnBCofvuV/kythMQluitkQH+dywt8IIPi4NUQFHXEMgCOu+CO+93s
- mtvqcMBn
- 7659x6nH9OBaWAeYHnyP1KMxcYMxt872sBo4UGlJZrBeQoMtka7bJvqJ4Wv9HcLXzgZhaUt/41T92UDdaS8KDu7aXBOOrICdKfBFlAMWL60YOKg72w5wTzU7uFgPnSxActr3Re5zbWDutw/ofTa1IcydkCH8h+AWaPN6EHFymWHMETbw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DB89CA0007
+X-HE-Tag: 1766377954-381611
+X-HE-Meta: U2FsdGVkX1+a6jvUGrymXT5j2va8gB6OvH0H5p8+nUQZNUsiYQ44jbduEJpWczGiGSWPs5HG2Hzvbvuolp9/HSqBpXTe43p9sNJvIeiz5R1MgxGfr4aCuPhDcaPD+Jw4QtoDxmd1yg5pFwALsGf6XxnM7c22vHd3z8IXxw2j/8RQA/LDuy3wSOaokCRZsg8TF1BJKOPThipxfse5rTx/NfWwU3K4j/KBrFUND537v2YucEfNpoD5WBm8RA3uxpQBCrMYsk574bNrpDHoENLJzd67B4Gu9oTrWk525amK8OLoxpQSamb5bokCw00MZf69WM4n6ATKy3QXzJ1nN4GcMTXmf3MJTHuea1Wx+nVZy5gkezSvu9mkhQKYrHBif5Vdb9kedGYjizjIUoWkE2ySsFkm2ONd1C0AevTW5bZTsT+8s1nxpI0O7ESsREEBZpYTlrZ/NR2mjnGEXr/R7bs3TMyeK1I1NHEc87wGOado836V1PNTVfzBltnx0L/sYys0d0a5c9sEi5C8SPXx/e4pBKhE0N0WI4UE5dQDpaWElnOKFPme+Jqt93YLRY+EhAD0aGIUdw6YNT7bdnt604Pb0XmvAdyyosEPk1d5xfY7H3ZH6kQWHXQizKWRbU/Q0G1eOcFLKXNPm6XYZ2ny2G6ZNwIieMi2RYDQJo0tYf0p1QXVGQ3pFFgmbRJ8jZECGLz3bZXj3vxjrWnJ7zpIDTfUCni/JsH8O4xh0nJGbdDNstLJY8mChP9j2cGrS5wZm88YYkEIuWL+8yb06CiLiz95tJpTumc3TDMKQDpq4WBeJTlhBsnc/WKEbMUnDELA6A+zzTYniDhg/oJ7hX91QysNnl1f3vGBl1Xnp6ISP3iHq8iuJXiEJQ+8vRFccAcQuPTrnHhMxQx65s2rpfnPGDFN0/DZ4yERPkiQZKt9HaWzOgx5/JEPO0hrLBbC+6AjruyvpZU2aVtYnQgwOeMOZFK
+ YOBoKx7c
+ u+UXEDJ9iO/RYHtagwvDuRr4D76LNIIilVa2KFtsC2RI7cBnEBJzSwcfzKhz40xqBUhbafoD/ZEZhB1C2EAje90YfQu11amStXfRxaj4iKNKBXAevqdg0WqdZMfZmY3gk7psSwIq7GjE+E/Ie6zUvFQ/cR8+GwvgskVAt4F7ClbKIp4Wc/GHpjsurnKs46lEqJeKIprPRYYu80d2PUFP8dQxAsWI0f1z7PFAurC0huuiy3RE+/XY8libmizzkW66/rwwmfzM6R9m2W0pcW+ncKSU/CcCW129k+RgCiYSHPNigHxECG7yf5mOBcaIHN1oQbT1zoIJPYEiPegapoqmFrWAAYEihUyOFT8RlhbxbYKN+u3gJTSiUryHQAYerRZJmCcw7KJhyOUrouRRLJ5xMHxZvMu16H/rue/fB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,65 +107,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-newly plugged memory is marked as prot_sethuge via phys_pmd_init
-without setting PG_head. During memory unplug, free_hugepage_table
-frees the page table as 2M, but pagetable_free handles it as 4K.
+On Sun, Dec 21, 2025 at 10:57:09AM -0800, Andrew Morton wrote:
+> On Sun, 21 Dec 2025 12:00:21 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
+> 
+> > Patch series "Fix va_high_addr_switch.sh test failure - again", v2.
+> > 
+> > The series address several issues exist for the va_high_addr_switch test:
+> > 1) the test return value is ignored in va_high_addr_switch.sh.
+> > 2) the va_high_addr_switch test requires 6 hugepages not 5.
+> > 3) the reurn value of the first test in va_high_addr_switch.c can be
+> >    overridden by the second test.
+> > 4) the nr_hugepages setup in run_vmtests.sh for arm64 can be done in
+> >    va_high_addr_switch.sh too.
+> > 5) update a comment for check_test_requirements.
+> > 
+> > Changes in v2:
+> >  - shorten the comment in for hugepages setup in v1
+> >  - add a new patch to fix the return value overridden issue in
+> >    va_high_addr_switch.c
+> >  - fix a code comment for check_test_requirements.
+> >  - update the series summary in patch 1
+> >  - add reviewed-by from Luiz Capitulino on patch 1 and patch 3
+> 
+> The "Changes in v2" material is best placed below the "---" separator -
+> I prefer not to capture such short-term development-time info within
+> the permanent kernel record.
 
-The following test case of memory unplug for a VM [1], tested in
-the environment [2], show that results.
+That makes sense.
 
-+-----------------------+------+------+
-|Check System Memory    |Plug  |Unplug|
-|via free -h            |256GB |256GB |
-+-----------------------+------+------+
-| Free 4K page table    |257GB |5.6GB |
-+-----------------------+------+------+
-| Free 2M page table    |257GB |1.7GB |
-+-----------------------+------+------+
+> 
+> > This patch: (of 5)
+> > 
+> > The return value should be return value of va_high_addr_switch, otherwise
+> > a test failure would be silently ignored.
+> > 
+> > Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+> > Fixes: d9d957bd7b61 ("selftests/mm: alloc hugepages in va_high_addr_switch test")
+> > CC: Luiz Capitulino <luizcap@redhat.com>
+> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> > 
+> > ...
+> >
+> > According to the doc below, I don't add the cover letter, not sure if cover
+> > letter is preferred, and if that's the case, the doc need an update.
+> 
+> Funnily enough, your series was in the exact format which I use when
+> committing patch series.  Usually people put the cover letter in a
+> separate [0/N] email and I move that into the [1/N] patch's changelog,
+> as you've done here.
 
-[1] Qemu commands to unhotplug 256G memory for a VM:
-    object_add memory-backend-ram,id=hotmem0,size=256G,share=on
-    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
-    qom-set vmem1 requested-size 256G (Plug Memory)
-    qom-set vmem1 requested-size 0G (Unplug Memory)
+yes, I see cover-letter is the actualy way people is using and looks
+like I did some of your work putting that cover letter into the first
+patch. I think I'll add cover-letter in the future.
 
-[2] Hardware     : Intel Icelake server
-    Guest Kernel : v6.19-rc1
-    Qemu         : v9.0.0
 
-Launch VM:
-    qemu-system-x86_64 -accel kvm -cpu host \
-    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
-    -drive file=./seed.img,format=raw,if=virtio \
-    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
-    -m 2G,slots=10,maxmem=2052472M \
-    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
-    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
-    -nographic -machine q35 \
-    -nic user,hostfwd=tcp::3000-:22
+> 
+> > https://www.ozlabs.org/~akpm/stuff/tpp.txt
+> 
+> God does that still exist?  Pretty soon it will be able to legally
+> drink in bars.
+> 
+> I think its content got absorbed into a Documentation/ file a long time
+> ago!
 
-   Guest kernel auto-onlines newly added memory blocks:
-   echo online > /sys/devices/system/memory/auto_online_blocks
+I happened to open it before I submitting my patch, and wanted to know 
+what would happen if I follow that. And it looks like cover letter has
+become the actual convention.
 
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
----
- arch/x86/mm/init_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 9983017ecbe0..1044aafd5d94 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1028,7 +1028,7 @@ static void __meminit free_pagetable(struct page *page, int order)
- 		free_reserved_pages(page, nr_pages);
- #endif
- 	} else {
--		pagetable_free(page_ptdesc(page));
-+		__free_pages(page, order);
- 	}
- }
- 
--- 
-2.47.3
+> 
+> 
 
 
