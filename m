@@ -4,177 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BF6E677ED
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01241E677EA
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 16:24:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F21126B0088; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
+	id 341FC6B0088; Mon, 22 Dec 2025 11:24:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4556B0089; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
+	id 2F98B6B0089; Mon, 22 Dec 2025 11:24:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4E876B008A; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
+	id 24C976B008A; Mon, 22 Dec 2025 11:24:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C32116B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:11:19 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9664916025D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:11:19 +0000 (UTC)
-X-FDA: 84247596678.15.486666D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1B7178000C
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:11:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tqoxDoaC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lot4pniX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zTarqlek;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GkX85H+l;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 126946B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:24:17 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4C7813A249
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:24:16 +0000 (UTC)
+X-FDA: 84247629312.03.364B73D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 081F31A001D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:24:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i48/qyaH";
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766419877;
+	s=arc-20220608; t=1766420655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
-	b=VSXWNDX8MNmaYR0psps5QO2Eb1ygp0eIEfz1XQjSjPR+8zF2fezoUsaRoMvcxW4ki7bICa
-	0IpAJ0byqhuDvVd0K+ZAMumSI/AKrqYc6BpVr3fDRmTaSl5s8LC5dBfp6cH0R0u3cE09mR
-	dhyU7DMBxDyGg2x2SkFAWiwtq9GN/1U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766419877; a=rsa-sha256;
-	cv=none;
-	b=xgW8gfZ8GsEv7QVu5royN51zrGWUEycc0ru63psPQuD6vVECWsmCWOAh5gHomlq5BswfPH
-	j3MvktryXCzbhOCb2jVJjD9y1bT/+w1jYTya9KGUFJnEFIVAI+kA+zNeWLuLEfFqH96Axj
-	0xLc04yBPzT1pVc/mZ+PX52rV6i504I=
+	bh=j/JDjTyJFVUo7vfeacCyOxZOxyDerTlslTj9N9ct22Q=;
+	b=y7HA8gTlaPjND83V6ml3nJnT4epk2/nukkgt2qHgJ4gwY16Xx4ysLsTrqyhiPA4Bvzrf26
+	4J24Rargp0f98aDJvsSAlof+WHy7Yji0uf70UjYUGK/Kz0reTlcxTSIlG/PL9J9sRVA+Vt
+	Z0kXE00P0T9GId37O60eR1r6VUygPvM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tqoxDoaC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lot4pniX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zTarqlek;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GkX85H+l;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 259935BCDA;
-	Mon, 22 Dec 2025 16:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766419875; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
-	b=tqoxDoaCPc0AcEMn8QE74YblxKt9/oimhQ/BHAoTpP1C99doouK9n+IyOegyLASbV3qjic
-	Qqgy1AJMctRb5iCqXWWKMmAVSyI4CZwqX4G2+VAcrJluoM1wDwRgRDmHtixSejVfqm62h8
-	aUI3OqUzAvXUiP1wVEUEHFNHrznOW+o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766419875;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
-	b=Lot4pniXzhejp6mYqaooYLLzLxgZEPH5ZmJiRJABivVIoavxBPSRycSKChtinWIiIV99mI
-	CVf6R2LieI5wsEBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766419874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
-	b=zTarqlekhFb2QnZCpQJSi7bSo8COvZ6VOBOFx3svvXRaGYKEsxuTgzcgwB8V3y+A3hFB2o
-	dUA1XDuP5/DJwKAjwCEP4/VWaMu0+NIQd1J/QohOpGGyrvTIrV6Daqmcuhk3K5+2TVpqHp
-	vd0S0VE2ybBqEYbCOAvPtOLXKnUdEb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766419874;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AKhTDzTzmD5iKvmoTGnpWCFjsyMXUoyPigq7m7JqQmY=;
-	b=GkX85H+luA75Q/QWZBgVSB9T0h/0H7IeLCqBIt992Km9Iaezk7kxHP4+O0lQ+3R54bb5A5
-	B3W6CGw8T6GPtYAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 075213EA63;
-	Mon, 22 Dec 2025 16:11:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id I6J/AaJtSWnDFAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 22 Dec 2025 16:11:14 +0000
-Message-ID: <5a1721bc-e7e8-40e8-b2b9-c071d18a0112@suse.cz>
-Date: Mon, 22 Dec 2025 17:11:13 +0100
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i48/qyaH";
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766420655; a=rsa-sha256;
+	cv=none;
+	b=QkQtTY0FCPKzmNCgbF6GdDRZd7UMa+kq9O+xehJPsx9GP+UwK2sWJcQyXAly/oCJCxTU+C
+	nCkL0T49AerblRALnK+iJ9/KRYX5d+WD8jdawBnl89htjfN577ZdKrid4HRYfvbd3FNpIL
+	B743z/m/vA0v2h7mr7pQ9kFZEJD+U4c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 69F436014C;
+	Mon, 22 Dec 2025 16:24:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB14EC4CEF1;
+	Mon, 22 Dec 2025 16:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766420654;
+	bh=Bho3Ephj/9Cu96QbuGoz94Bq/j6VeyHgvvqBBYHo8T8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=i48/qyaHpO3sQRwas4fTznSqsEt2K7OlmhRVXNV5Fw6tW3bXOJ1e0vqBhOsb46hJI
+	 yrmjZfUquyFJN/Ql2caT5qoUTjFhgd2XaVVNB//7DoSKLW35DNB/KKVtTlxk3S/cug
+	 GZHKr9n/0jv35PnSXraG/hBWPjnOgM6PBn2TkNz4rtxMr0/gEPJw7Q9kVI+M3Qq7X2
+	 WCHBGaQOUt+J0qtHbQNPbBAdwUGKXWrnmBVI8PPzdt0q05sZG/jdCnlewxBXsIMKSO
+	 S2JEmnmQW+eozWBsgRIbg9qFTgOpOKJA9L8N7+bVDSpivhjp0MrBZPyVc16+GzdMRj
+	 mIgv8dxfOOu5g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Evangelos Petrongonas <epetron@amazon.de>,  Alexander Graf
+ <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Jason Miu
+ <jasonmiu@google.com>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+In-Reply-To: <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+	(Pasha Tatashin's message of "Mon, 22 Dec 2025 10:55:34 -0500")
+References: <20251216084913.86342-1-epetron@amazon.de>
+	<aUFJH9xzJXYOt_X8@kernel.org>
+	<CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+	<aUF4fsWwD9BswkFh@kernel.org>
+	<CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+	<aUUYprAotKYMiEs0@kernel.org>
+	<CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+	<861pkpkffh.fsf@kernel.org>
+	<CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+	<86jyyecyzh.fsf@kernel.org>
+	<CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+Date: Mon, 22 Dec 2025 17:24:07 +0100
+Message-ID: <863452cwns.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linus:master] [mm/vmalloc] a061578043:
- BUG:spinlock_trylock_failure_on_UP_on_CPU
-To: Matthew Wilcox <willy@infradead.org>,
- kernel test robot <oliver.sang@intel.com>
-Cc: Vishal Moola <vishal.moola@gmail.com>, oe-lkp@lists.linux.dev,
- lkp@intel.com, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- Mel Gorman <mgorman@techsingularity.net>
-References: <202512101320.e2f2dd6f-lkp@intel.com>
- <aUW05pyc9nZkvY-1@casper.infradead.org>
- <aUXhy1Jyv7_GccIp@casper.infradead.org>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aUXhy1Jyv7_GccIp@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9wnj9cxk33i6btrron3ocejzjf9fzq7h
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1B7178000C
+Content-Type: text/plain
+X-Stat-Signature: 5zdipkzeodyum8t6i3wn1jokopyh6oo7
 X-Rspam-User: 
-X-HE-Tag: 1766419876-346745
-X-HE-Meta: U2FsdGVkX18QeoilYSIIhub3QavBvuclR2xIka7JNniZxWXrD67DYizENgqZhepwU9uVZtU4Z/Ko2iXNXlTxNiyO2tLpy3KZFjp7d86FlBiV56ajIc4+fLEugLo0tBvOJvPZPIFsoXCiqo9ObUNvh20NBsHSrteOFjSu2461jvfXIRdYSVDW3aaLY8W3+lsHMUWDrzqjAtB1ctx9jBMmdxd49FmQy+5oyOV1KQ4saR3+q4enR3ybgOWMyaaw4InZXaotcEeKFaLbXhFgaPhjY9tVNuBjsBmgU7vALFFLY5MKUKHpSQGKo2WcbbDjsv4tHUjzUO/29GSX0qnKSZx/u3x/23eW9n5IctQaNv4aDaivQSUOawWFIl37Q+btl1j68ncqNxZ/G3GP+sWP7nAcazHd11o8/GFsLCEzkptQlA/4A+VF+LHXWgbws9hHIf1dQLTreDqum2LVp9T4LW/AUEGPYEgjX52X/F5yKfCivMkI42c6Cj2kJ2f5yfzkyTBdpPMtItWbrRgPkaqBnKzOaeLP9cBLezsr9le4cmCy7JwIv/v1vcgx55WJyLX+euO9Ji+ohilNha2MLDJMS0g6/EUUoIKIiwbAV0xn5TKV8MNtJNII1PoltuZomrZjAOdsCDznVyEaOpZbVqFlemcuTLPbThPXavlO3HVabodYfUaPL146v6V8xN5ppxvZoJt4Ux2p5MWk4WfvgEnMVN5QX23gWeOtszEdR5RHP2w+ARCdVgwAbK0JRwsqa2HFwXwCWWoMqcjdaCF0WuNzBwx4uvv39uf2WTg7fuonmmN/g/TGyPebm+SzYjYcL7XaeZPkKqV+1w7ATrglaIJCwqbe1qFzb3DhVMIUUbiwFGbCAgIYwQZo+Bb18+FJrK8qS9tUnb+n6JqO1a6HG+Fk262bzrq15o7Xo/VMk/mp2CYN4tuQ/w3DJn9uZygKuqCpl/D7xN0Bg8SlD0rgVrEPynd
- XbTTG6Ji
- JQ6Dz5SVgk9Ud6DGbGG/9MPFBii3iQ5if0XbQ8PHov+OXV+mKsIfubAQ+Pt3uKkJgehuPJjB1hvH+pu4/R0UMHcuF3XJb0V11iASqtCIbT4ANy13H2HALUrkqsfoGpqjhn9kFKCpkUHB7kgtMym1ApPPrbFKUcDrbVkMFVTl7+FZ5zHcAAOTPkY07e9w2WL1IbQYXfpx83U+tuWC6oqxtFE6uaPE8eOAWyvraLROk02vkl3m/YomfyJacWF1iLMDjnimU6XipP7xJlb/TwsN3Jbc5T6427CMOZJL3CdlNa6J13qzLaamxBRctbGUHvu29PlA4YVkiPFpyoqyNUyiMnUKu1DGOvriYoa3V5x/NMi75EvsVTqJ+anLvT1PK73ohs1AAgxl2cuOBznL91bmBE7FnoA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 081F31A001D
+X-HE-Tag: 1766420654-30471
+X-HE-Meta: U2FsdGVkX1/QMSWIRYNxukBCq3FJny8s6zCVym6ChvGjb6Qoh9z21kqyedWyn7arRljUfg+uTtfJlbnUmsrzr4pe7Kr4InATDKxYvGSfSeoUsxxoli49f90NS9i2PcB8Xcocv23MV+783JrA+xNKXb6ltvLprAZXbmLFGcnOlh8y4ZgdY140ME8qCB6YV4PhbFliAF+aCa5AiE/+LIXdGK0cB+SDozL7aQWVwKbVMzHVX75z4qtkgoC86Y0jWTD0LnA1r/1cJ3BURYUCQEX6JWApzd42hFnyftG8/gbS/Ksi0vsWtuSHER3m+zd4Q5nn1c/Q7mWL0mEc8yASZR7qmBMz8yDg06miidQTl8cPrhL/3Tf3VZ6uY4jBu85/DmhzrgoUKs+OQfswivF2SNlbDEJtK8g5ZWzkY9SGDEMzuZBQ/i4nnqsqhxUApwz6xzRO6631u7d9UrAqgiqVTAmi6KHjplO10MYJ8ry9SIorcn5CVfKdMjBcDwVO3xV1igkbwz4OmJKJBU+M5zsgNpGPkbTvaFaAqAMEI9cOMN+gt8N+h7ZAQt30Ct2PNu0AwinNlmLaHFmXMw7NPA2t60TrlaJNZSJgxDTGjMHG03p73IQxTNrCE8MGM7JkgBXm3azdmY+jGCSG+Yu4dm54qWwu/CCf3fOcG9/s6F2YFmFByCGm2ssj+tSr/h4uofXfodXxa76Ayj9CGtqjOo+zUiBMRZu8jVgZO2uDfxTPNbKMcgBQSQzdHNCFTzSlqEHE5YBojQEr3RxGBB8bwygDDgMyrZ7a83YztZkrKs/6zGG0Xiw9VmSy3c31FBSy/FMR3z4iiYS3+A2hvsApIpXSpytmdf7g3tu+AF3tcZywXSX5EuLWDuTpHx3yJB9DiZCDD2wYO2X8RfXIIFR4KbrzO6YW7tsjICnREXZlPq5sI0kmYnzEeoDRyiCj9IGXrXvU7Co2Bk/0JXLIshagQ9+C/h7
+ fDk3RBum
+ DVtImdh9+LO5KpQYWmmppILYPoB8Uc9QQgUXpEH2yB5A2p0SREis55dUR2ohFrv49UBrcrJ9iDjfzbf4IZnnwnLoXiIRK9x+C9xpdFusAL+n5402yQCaBKnIcEHwNUBYvsD31UNpU4QJkCPQLdvY39VIypvLa9rolITH2siuckBicdkoRiAwwbtsb8xZlqJWtrXGr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,38 +106,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/20/25 00:37, Matthew Wilcox wrote:
-> On Fri, Dec 19, 2025 at 08:26:14PM +0000, Matthew Wilcox wrote:
->> Now, as I recall, we are very much doing this on purpose.  We decided
->> not to disable interrupts at this point for improved interrupt
->> latency, accepting the possibility that we'd occasionally fail
->> the trylock.  Except on UP that's now an assertion failure.
+On Mon, Dec 22 2025, Pasha Tatashin wrote:
 
-IIRC the primary motivation wasn't irq latency, it was to avoid IPIs for
-remote drains. So the drain_pages_zone() can be in fact locking pcp of
-another cpu, and any local operations on that cpu are then supposed to fail
-their trylock (should be relatively rare). Disabling irqs would then make no
-sense for protecting other cpu.
+>> > NUMA node boundaries are SECTION_SIZE aligned. Since SECTION_SIZE is
+>> > larger than MAX_PAGE_ORDER it is mathematically impossible for a
+>> > single chunk to span multiple nodes.
+>>
+>> For folios, yes. The whole folio should only be in a single node. But we
+>> also have kho_preserve_pages() (formerly kho_preserve_phys()) which can
+>> be used to preserve an arbitrary size of memory and _that_ doesn't have
+>> to be in the same section. And if the memory is properly aligned, then
+>> it will end up being just one higher-order preservation in KHO.
+>
+> Both restore pages and folios we use: kho_restore_page() which has the
+> following:
+>
+> /*
+> * deserialize_bitmap() only sets the magic on the head page. This magic
+> * check also implicitly makes sure phys is order-aligned since for
+> * non-order-aligned phys addresses, magic will never be set.
+> */
+> if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER))
+> return NULL;
 
-> This is stupid and wrong.  If we have CONFIG_SMP=n and
-> CONFIG_DEBUG_SPINLOCK=n, then trylock always succeeds.  And we'll end
-> up corrupting the data structure protected by the lock.  So the warning
-> is real, and we need to fix this.
+See my patch that drops this restriction:
+https://lore.kernel.org/linux-mm/20251206230222.853493-2-pratyush@kernel.org/
 
-That seems to be true and we should probably be doing spin_lock_irqsave() on
-UP instead of spin_lock() in drain_pages_zone() and several other places.
-Ideally via some wrappers like we have for the trylock operations that also
-do some UP-specific stuff - pcp_spin_trylock() and pcp_spin_trylock().
+I think it was wrong to add it in the first place.
 
-> With my distro hat on, I do not give two hoots.  We don't ship a nosmp
-> kernel.  I suspect all other distros (except maybe something targetting
-> m68k?) are in the same boat.
+>
+> My understanding the head page can never be more than MAX_PAGE_ORDER
+> hence why I am saying it will be less than SECTION_SIZE. With HugeTLB
+> the order can be more than MAX_PAGE_ORDER, but in that case it still
+> has to be within a single NID, since a huge page cannot be split
+> across multiple nodes.
 
-Yeah seems the problem was introduced at 6.2 with commit 574907741599
-("mm/page_alloc: leave IRQs enabled for per-cpu page allocations") or
-something around that.
+For a "proper" page/folio, that either comes from the page allocator or
+from HugeTLB, you are right. But see again how kho_preserve_pages()
+works:
 
-I'm off until Jan 5th so won't be developing a fix until then, but agree it
-doesn't seem that urgent now.
+	while (pfn < end_pfn) {
+		const unsigned int order =
+			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+	
+		err = __kho_preserve_order(track, pfn, order);
+		[...]
 
+It combines contiguous order-aligned pages into one KHO preservation.
+
+So say I have two nodes, each 64G. If I call kho_preserve_pages() for
+62G to 66G, I will get _one_ 4G preservation at 62G. kho_restore_page()
+will split it into 0-order pages on restore.
+
+>
+>> >> > This approach seems to give us the best of both worlds: It avoids the
+>> >> > memblock dependency during restoration. It keeps the serial work in
+>> >> > deserialize_bitmap() to a minimum (O(1)O(1) per region). It allows the
+>> >> > heavy lifting of tail page initialization to be done later in the boot
+>> >> > process, potentially in parallel, as you suggested.
+>> >>
+>> >> Here's another idea I have been thinking about, but never dug deep
+>> >> enough to figure out if it actually works.
+>> >>
+>> >> __init_page_from_nid() loops through all the zones for the node to find
+>> >> the zone id for the page. We can flip it the other way round and loop
+>> >> through all zones (on all nodes) to find out if the PFN spans that zone.
+>> >> Once we find the zone, we can directly call __init_single_page() on it.
+>> >> If a contiguous chunk of preserved memory lands in one zone, we can
+>> >> batch the init to save some time.
+>> >>
+>> >> Something like the below (completely untested):
+>> >>
+>> >>
+>> >>         static void kho_init_page(struct page *page)
+>> >>         {
+>> >>                 unsigned long pfn = page_to_pfn(page);
+>> >>                 struct zone *zone;
+>> >>
+>> >>                 for_each_zone(zone) {
+>> >>                         if (zone_spans_pfn(zone, pfn))
+>> >>                                 break;
+>> >>                 }
+>> >>
+>> >>                 __init_single_page(page, pfn, zone_idx(zone), zone_to_nid(zone));
+>> >>         }
+>> >>
+>> >> It doesn't do the batching I mentioned, but I think it at least gets the
+>> >> point across. And I think even this simple version would be a good first
+>> >> step.
+>> >>
+>> >> This lets us initialize the page from kho_restore_folio() without having
+>> >> to rely of memblock being alive, and saves us from doing work during
+>> >> early boot. We should only have a handful of zones and nodes in
+>> >> practice, so I think it should perform fairly well too.
+>> >>
+>> >> We would of course need to see how it performs in practice. If it works,
+>> >> I think it would be cleaner and simpler than splitting the
+>> >> initialization into two separate parts.
+>> >
+>> > I think your idea is clever and would work. However, consider the
+>> > cache efficiency: in deserialize_bitmap(), we must write to the head
+>> > struct page anyway to preserve the order. Since we are already
+>> > bringing that 64-byte cacheline in and dirtying it, and since memblock
+>> > is available and fast at this stage, it makes sense to fully
+>> > initialize the head page right then.
+>>
+>> You will also bring in the cache line and dirty it during
+>> kho_restore_folio() since you need to write the page refcounts. So I
+>> don't think the cache efficiency makes any difference between either
+>> approach.
+>>
+>> > If we do that, we get the nid for "free" (cache-wise) and we avoid the
+>> > overhead of iterating zones during the restore phase. We can then
+>> > simply inherit the nid from the head page when initializing the tail
+>> > pages later.
+>>
+>> To get the nid, you would need to call early_pfn_to_nid(). This takes a
+>> spinlock and searches through all memblock memory regions. I don't think
+>> it is too expensive, but it isn't free either. And all this would be
+>> done serially. With the zone search, you at least have some room for
+>> concurrency.
+>>
+>> I think either approach only makes a difference when we have a large
+>> number of low-order preservations. If we have a handful of high-order
+>> preservations, I suppose the overhead of nid search would be negligible.
+>
+> We should be targeting a situation where the vast majority of the
+> preserved memory is HugeTLB, but I am still worried about lower order
+> preservation efficiency for IOMMU page tables, etc.
+
+Yep. Plus we might get VMMs stashing some of their state in a memfd too.
+
+>
+>> Long term, I think we should hook this into page_alloc_init_late() so
+>> that all the KHO pages also get initalized along with all the other
+>> pages. This will result in better integration of KHO with rest of MM
+>> init, and also have more consistent page restore performance.
+>
+> But we keep KHO as reserved memory, and hooking it up into
+> page_alloc_init_late() would make it very different, since that memory
+> is part of the buddy allocator memory...
+
+The idea I have is to have a separate call in page_alloc_init_late()
+that initalizes KHO pages. It would traverse the radix tree (probably in
+parallel by distributing the address space across multiple threads?) and
+initialize all the pages. Then kho_restore_page() would only have to
+double-check the magic and it can directly return the page.
+
+Radix tree makes parallelism easier than the linked lists we have now.
+
+>
+>> Jason's radix tree patches will make that a bit easier to do I think.
+>> The zone search will scale better I reckon.
+>
+> It could, perhaps early in boot we should reserve the radix tree, and
+> use it as a source of truth look-ups later in boot?
+
+Yep. I think the radix tree should mark its own pages as preserved too
+so they stick around later in boot.
+
+-- 
+Regards,
+Pratyush Yadav
 
