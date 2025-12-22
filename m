@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3CBE67810
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 19:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0631E67810
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 19:15:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BEE66B0088; Mon, 22 Dec 2025 14:08:18 -0500 (EST)
+	id 21A256B0088; Mon, 22 Dec 2025 14:15:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76CE66B0089; Mon, 22 Dec 2025 14:08:18 -0500 (EST)
+	id 1C7BA6B0089; Mon, 22 Dec 2025 14:15:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66EE16B008A; Mon, 22 Dec 2025 14:08:18 -0500 (EST)
+	id 0CAAB6B008A; Mon, 22 Dec 2025 14:15:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 59AA76B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:08:18 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08D691A036D
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:08:18 +0000 (UTC)
-X-FDA: 84248042676.05.333BB1A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F23F26B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:15:34 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4CEB160347
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:15:34 +0000 (UTC)
+X-FDA: 84248060988.18.AA467BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 27A5216000E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:08:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EKF5GeOi;
+	by imf10.hostedemail.com (Postfix) with ESMTP id E8A18C0007
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:15:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CaW6hLls;
 	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766430496; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766430933; a=rsa-sha256;
 	cv=none;
-	b=Xi+OvWNAapiRUEsglFJGwrVutoWj3SvAedmY4uASIJ5xUpm+V+vk6O1g8VoCMMVViawh1n
-	8rDZAwqaapOhOGBjACaEcGJKM4mM1mFtSZLxLN4hRUoUCFD3uZhjqSExlU+AG+CgKiTKTD
-	B7XnUo+pSDUNHa/7AyTl18E9TEfYsIk=
+	b=Lsl827OcCl18b8cVKTkzNAOd1nqzTXQZ1OwPVI/k9D2B7QVqmfs/vgEaF0ShgkhIf97zJi
+	yK2pOGLF5q6lBdXSMFJ9A0J4Nw1O9BVNeP75HEI76qTa7ucNIPqd6liKqcwye0U/cqQe4u
+	wOOLn++scd7R0kFoJ7YCtLHN00z+z4w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EKF5GeOi;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CaW6hLls;
 	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766430496;
+	s=arc-20220608; t=1766430933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJOaEz/o3yvfzAc2gn3cjkik0dBBtnrFlxwATeRuDAE=;
-	b=EbHFDsov1q0pLehS9CY2+/eRHvWWNR36NsVKLZLgjhZouAMpkCaN+1N4PdwHihecFfzGze
-	gEDkw8LdH213LupJc9BTV8yRw9tBG++bYXxOfKN5Cfll4VVeLy+/3gL9aIZYbSA6PxJMvI
-	AzDIPAIe3+Kn7IYmsJegEziRnRTB7GQ=
+	bh=h8z2vRqNsWUXajhMi60nTt2nAfjbGnbvIaw3si/YqlA=;
+	b=x8hANLSylfmkLdFSwgx0DUKxcL0nlu4fKToDgdiSBuaHQtzC0qIWVrmSh3Sf7FrOLcOtx2
+	oK2DddYogDl+5LlfKES2zprfadwbqQPwgqvTp6oI3JOM89wPmBNCJmO5pm/YAZt9K7VvCg
+	C6lDc+8BgtYVNP5As+NSfFQLU60rk5Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D52A440904;
-	Mon, 22 Dec 2025 19:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7175BC116D0;
-	Mon, 22 Dec 2025 19:08:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C906A40497;
+	Mon, 22 Dec 2025 19:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5966CC4CEF1;
+	Mon, 22 Dec 2025 19:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766430494;
-	bh=Gb3RFjZQ8t7BxcEou9Uz2XwHSIj5SHa5Q1InugjLUv0=;
+	s=korg; t=1766430931;
+	bh=ZRlCmMLr4Nbla5Ea1HsL7EGP9Zb5RozaswG2lrCEFmQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EKF5GeOipp3kX1ozPFWa/ZETbsBmwbuwImUk8D5rw/92gNYdOt4YBhUQYWUr28bkf
-	 92VCN8JLfCUAJ91oeio9y0OZ1zeFAPzZrmGDMd+5IeHEL06aC+LQ10gN2hcGFlIgUD
-	 8ch3Q5tHsypgAmEIW1DGN5mecl40tPIQ1Re+k0bM=
-Date: Mon, 22 Dec 2025 11:08:13 -0800
+	b=CaW6hLlsgJSiN6lRCXIeAo3h2E/EWeCOVZqZER8LumIarNglhFPCl8ezChq+pHfJ3
+	 F5T401ixji8FJV3WCU9lhy0dqpkBxPUU6PD6YojWnjVxqxzKD8tGlukAqQho/cjU8N
+	 4yJigNRMkRlzEimnWG8J+nRFQVtbeSHgTWcorERg=
+Date: Mon, 22 Dec 2025 11:15:30 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Li Wang <liwang@redhat.com>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Mark Brown
- <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, Waiman Long
- <longman@redhat.com>
-Subject: Re: [PATCH v3 2/3] selftests/mm/charge_reserved_hugetlb: drop mount
- size for hugetlbfs
-Message-Id: <20251222110813.3d353b8c49b628e4997263e4@linux-foundation.org>
-In-Reply-To: <53e302a7-1c78-4b76-87e8-1cc10c76535d@kernel.org>
-References: <20251221122639.3168038-1-liwang@redhat.com>
-	<20251221122639.3168038-3-liwang@redhat.com>
-	<53e302a7-1c78-4b76-87e8-1cc10c76535d@kernel.org>
+To: Xiu Jianfeng <xiujianfeng@huaweicloud.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] mm/hugetlb_cgroup: fix -Wformat-truncation
+ warning
+Message-Id: <20251222111530.c285692e5872035d6ee68264@linux-foundation.org>
+In-Reply-To: <20251222072359.3626182-1-xiujianfeng@huaweicloud.com>
+References: <20251222072359.3626182-1-xiujianfeng@huaweicloud.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 27A5216000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3s8aynxnaqgefom8f66euh36sggidstc
+X-Rspamd-Queue-Id: E8A18C0007
+X-Stat-Signature: eqckphzsay69bxuewypu4qx6fng5md89
 X-Rspam-User: 
-X-HE-Tag: 1766430495-44875
-X-HE-Meta: U2FsdGVkX19U/f3Klg9f7dIgOrBV+qdVN77fVW6uLMQTiapcDrkxp6IDsgylaGZYy4qTA1Iui5TTRuIeH8vjXmCz1X2jtkBB7TKGewHmKeBQIRRGLlsiVrBWq3SpxYgxERBQXTwPZKuEbovhSla3oJnUC/3nfHpXJP5eWMQLGH6WboNis1DAcbQbkYWElD2SKLZT2yesSpH/ungrdzRf2QcshcqyDiJadMHooasoPTMeOCXraa2grEpFyCNMVWYfs2hTK0BqxMiRKqFc+NV9dYRCM9IZzqTxailsezUPAp1KXRS2aftp3fmCOHfY8FBFaX4gMDUJSicJ9rd6q/Y69qyz0zquRmDkkBeihoH+rOzTGPfoG6R1c/tU45ZbpOj+pkAzoGC3+wTLw1b7qMAIkuZzVNkE6IRwHeZ0mnnnkM95f9tio2zhGWDkhyUGNUE/W4QRm6SbrY32NFsLSwcfvyEFlCqBUek6dIa464FoU8gP9bNu6yk5LJxmZyfe/Z730Iow79C86BGCaF1poNHQvwdFxp/LC6e4Hs5KAhHnHiGg7dVBCaKC8xxTrg7F/kMtutXySfgwfAn9592KDG2SaJjNVf1lJPUt2BCeJAZo4CO0ayEMYSDBb0IbyRCgS4xJUEfK33G/JMPoIrazSza25nroa9MS4qZjPeGLRF+M5t2B2dgxnEC6mMGAtVZAgfW+WW+2yLY7t2khaSQzU5KFPr8pCTmxE0Tw9iBoQbvc6a9/BjZBsc4cSTwL5I7t4itwCqMxe729HrBie22fQmCe9caVpnX5JYXxhKT4zmM0Au+AWdGw9YDun3HeaDPmZu1tpf1sAp31qRkQzI5ovqxuXJ9oz0GnZ6083xo+0EGVE3hsq7H3VSP69eR8ig1EmDIqnxCeCBmmFo4/Z8vSA4WsG8HJRbxmhoqQ1vAk15geudjA7k6I8yTkz6NSecs6GZY9zONf3qCh4UYzl2ZyzcB
- rr1W8/p8
- p87IFAvafav2HPWhhFy3cPSBhCaaI9oeuBRIsvm8LlBq3XZFYrU4wZjZ5qD0OjtCqy/F0pEOHSTYWaAXeUU1QfWl5R7CCu7XMMndqHsYSvqdH4uyqqfjfw8j72m0HWj2JdkDkYW5KYZ8n+hK4va0ba979zDf1a5TjMFoHzQcuDPgCI4zfhGERe60eUDldL1HjRoirDeWHa0+AMkomWqwdxYGPKMyBAvV6TZCTZEGPFfMWPSO8yJ99AQtetCSUyArQXkRNDFcIv2NPbtoUtRoUZzZFKzfXlk99GoLqEoQ/FkLiq5cUl5J3+nwmUaZPVJ5GrP0VAdbfQ8cfcESsjWEVEO76JQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766430932-264368
+X-HE-Meta: U2FsdGVkX19r2JvQS5R+AxJoX12+dekGaF5vRCM9efgvtljLX71K9qVHCw+tx7aP6MiTuOrt3FPhCRkCw73DeZQq30wItVWYMwijNYEdsc8k2UjEdjSgxoLUKqH0qaEipXehxOr8Hh8fclSzg1q/K5GpAmRQ8u9j6EKLoO4K6NBU2epW0tWt5hy0LCEBpgvOjgQRPP1Bw5J4r6E7+Vyv8ojaHVhVg4vjjUI9Af8K9/u6euFPBXagoI2hcM813x0/lJnnh9aNpHSTXJmOg52U9XkReBdsIn73qzMhpUwOuZPXFPE5X7fWfJ/Q+BIOXTYodVnBosSGgeJy7kUy1x6Tw7SOYHJ0lO6mBfcVBA/Qmqlo3i1c/OoQkMZLP89N8UQGp4FceCFo4FBAwCW+2fBZGvIFgDla+eV56A5b6SYSidwCRkn2WBWqyf6c/cG+512BP7yMf+xNU80uuWIqM+8gCYBJ7AXmws9qpGRQnLuLcOFYA/9AjsKiPQiJWhaiiV5vL2psbp1ihRaJPbq1ofofO6WsCqCjd/1y3mAlMs/Ckt9tdTp+0pS0I1/jg9FEJDHltBZm9eXbvnB/jZfImeqLS3hdnZOzJ2gOKKA/T/m24yKdXtCA30ocYrtnHS8B5Ld6o9q5eyOEno8BjzhqXSyJ3q7yTPt2eETWGTT+dyoY1d0m+Mv/JMnkDYeIlTCtBI+hELbf7BAjlw9cBN6oyvEwz0lv+oeTrbF6e1whox3opssukNevrxIkzjBE9aVC1z2yGNmiHqfh4MSFHwxuDZ735+Z8GmDtn0IWuwNcnYSHFnaapujhfcNFM0soNKklD3Cy1/KmJDUNkbBlfXqIdd0gbLvB9K1YrRqPe86VE/W5+yTcN274pNMCrmF3+GZrklncdNWO/xNHfOaRClVHP9pTG0oD7ZTBw9/xuE5+e50ICqMSm39fZiuEAkfK+VDVyXl5SG02DhbNCHk8gHkJbld
+ 8BTV7NJ9
+ o/9K7f3Ud9caFRg+nXI63sEm0TmxghA8wOJft55dbll+CNpd0N4HfVoni+FSVn8IFzWMW1qMeHF7IuaZCgFORxp7JIXyQHJsTIxZbf0cFZ6N/9PGQmagCLmO5CGLCBhkN3G0Ue5/Zq+3spHidLm9T912ijnwSTDzubt91HOeNdL3iYIJ8jEtBdjmSJbGVtaQHEle+4e0fqamAFxKvx63A4qrJuSIA+cG8Mg5ryfr0dNZ1EUdDVRFa04ir0jdtmYOXnM4Xdq+4T/RoC4Tuon9zG7D7YIyljKACtf0oxBgSAEWuFg36o9A+WaID+s4vSsLMIXtxTVfARQXD5Ow2/YNuFWazIDxDhlnNJ187BVZ3YDHrtUwW3mzFlqVXZZb9r/lhUbdzZqY5ipHGaZHSZvDwF35Wh9K9sYzilqUos3N03tXqWvYpSr4BCU18500xdjZsEIXT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,12 +91,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Dec 2025 11:01:17 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+On Mon, 22 Dec 2025 07:23:59 +0000 Xiu Jianfeng <xiujianfeng@huaweicloud.com> wrote:
 
-> > Fixes: 29750f71a9 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-> 
-> Likely Andrew should add a CC of stable
-> 
+> A false-positive compile warnings with -Wformat-trucation was introduced
+> by commit 47179fe03588 ("mm/hugetlb_cgroup: prepare cftypes based
+> on template") on arch s390. Suppress it by replacing snprintf() with
+> scnprintf().
 
-yep, thanks.
+Thanks.
+
+Let's quote that error message in the changelog and include the Fixes:.
+
+
+
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
+Subject: mm/hugetlb_cgroup: fix -Wformat-truncation warning
+Date: Mon, 22 Dec 2025 07:23:59 +0000
+
+A false-positive compile warnings with -Wformat-trucation was introduced
+by commit 47179fe03588 ("mm/hugetlb_cgroup: prepare cftypes based on
+template") on arch s390.  Suppress it by replacing snprintf() with
+scnprintf().
+
+mm/hugetlb_cgroup.c: In function 'hugetlb_cgroup_file_init':
+mm/hugetlb_cgroup.c:829:44: warning: '%s' directive output may be truncated writing up to 1623 bytes into a region of size between 32 and 63 [-Wformat-truncation=]
+  829 |   snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
+      |                                            ^~
+
+Link: https://lkml.kernel.org/r/20251222072359.3626182-1-xiujianfeng@huaweicloud.com
+Fixes: 47179fe03588 ("mm/hugetlb_cgroup: prepare cftypes based on template")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512212332.9lFRbgdS-lkp@intel.com/
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb_cgroup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/hugetlb_cgroup.c~mm-hugetlb_cgroup-fix-wformat-truncation-warning
++++ a/mm/hugetlb_cgroup.c
+@@ -822,7 +822,7 @@ hugetlb_cgroup_cfttypes_init(struct hsta
+ 	for (i = 0; i < tmpl_size; cft++, tmpl++, i++) {
+ 		*cft = *tmpl;
+ 		/* rebuild the name */
+-		snprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
++		scnprintf(cft->name, MAX_CFTYPE_NAME, "%s.%s", buf, tmpl->name);
+ 		/* rebuild the private */
+ 		cft->private = MEMFILE_PRIVATE(idx, tmpl->private);
+ 		/* rebuild the file_offset */
+_
+
 
