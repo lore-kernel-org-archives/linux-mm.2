@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5322D711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 04:02:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF57D711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 04:10:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102F06B0089; Sun, 21 Dec 2025 23:02:29 -0500 (EST)
+	id A3B3A6B0088; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1686B008A; Sun, 21 Dec 2025 23:02:29 -0500 (EST)
+	id 9E8B26B0089; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F203E6B008C; Sun, 21 Dec 2025 23:02:28 -0500 (EST)
+	id 8F4C06B008A; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E2C676B0089
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:02:28 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABFA01607AF
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:02:28 +0000 (UTC)
-X-FDA: 84245759976.04.B4B1F48
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E8A6E140004
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:02:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V6/uE91c";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766376147; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AF7E6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 23:10:03 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B34C1A014E
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:10:03 +0000 (UTC)
+X-FDA: 84245779086.16.84A5001
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A28D6100006
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:10:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F4WkAHL7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766376601; a=rsa-sha256;
 	cv=none;
-	b=AbdAGb9gYwtU7C0PIgGLFUwgXkn+I3Qg2x0X4xGCI7qjuyRDcHcgbKEFrLRUSozXrZXitZ
-	k71EOfdHHg2/4N6PbyVdtvvl72g+oXL2jfZvUqZsE2CoJVFXy7IT7sZZFECXsp5qJDbYK/
-	ftCpHvA9PwEOj6Wf7ApzfZlOjGeqQ9Y=
+	b=hwGNmg3kphP4kV6L+ha4gls9CZ1U0TekhZldl3mP3iT4rGO6kdQuTmHlLTFAgo+t7OUL/K
+	oTvJZVbYEPp5dFsYJJVwHkq5T7MPN/Y0HaxpwZhHf8Y7NokBrQ6xelsAJC2pCymyRbOApX
+	TS7BLvEVCirxjRHhoyB+mHMT6wt+yFg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V6/uE91c";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F4WkAHL7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766376147;
+	s=arc-20220608; t=1766376601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E8FBk6lNZ9dRAmbI0dX/dkHT+ceGlZUbr6C5gAhuy3k=;
-	b=qAYNjCsysa4N9aE4pdPTViOmxU7i4ecKoGcVS5a+4egpzYqLwTaCj+LmSONF7xYHcldQWz
-	c88/g2xPYFkjBFGEap78zg8Y3WjQqb/Zz/hg58GQsBr00Cv1bETLxX3orCKWKd0rUcCLmE
-	wduSiJ0hMAgC1QV7QaYemCBgoVXvfoE=
-Message-ID: <59867ffa-7e5d-442f-8e8e-79d5512e03c1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766376139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E8FBk6lNZ9dRAmbI0dX/dkHT+ceGlZUbr6C5gAhuy3k=;
-	b=V6/uE91cWY683In/e2wrMi2y7uYHTGMMTqM5DDPH8wgIwEsn0MWLF49vXKTFwmbN/vX4VP
-	vh6AkuxI9K0XZy+np0SqpvJzBANodlUdtPWSfsqXrpMFNdXnexFC9B1Vc+fyhE9Is5DBUT
-	AjEW6lareQy166USAQATDXjHm/cvKHg=
-Date: Mon, 22 Dec 2025 12:02:11 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IXh4SQUPnBYJoVrEOWmvfYguM/NpT84qvQ97p6ngaQw=;
+	b=gH9PrIK5MTeHK0H0Ato22TX/RideiaiRVY/1+Pg+8voMAAL9hUW5hZZioRmNdZs2nZut2c
+	kssxPlDnXQY/1n2YTckd0yWWFZu3Mwdt4mooHD7hBl6UdS2IUhN3SXI+se/mCeipObxRhD
+	cLD5BwuKk4WIKXeyktSEhVbegXhQxiA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766376600; x=1797912600;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LbrlxqxtpWT8zxLBiWESgjycvjMqX+WEniDgPiHWy5s=;
+  b=F4WkAHL7TSr+Q/5G6Qpl+lodT54+MLWdg/JRgVL0WY7qI8QFcLJ2NQDV
+   ptl6htNSZQs0bXd0zMjIUslpZ+gYQUHLY5LGAtKJtJF5l8KunMep/uZEw
+   GbY3s04b/UOkmsbnK/xP7iTcz6uB+tzZjPwK77LFEVextiQw49bkl16Ti
+   vEq8bt6bWOBVq4afHjrYXbNxqbqUAMYQ3lsFK3wjuk9vzrUaXT5Ihmqla
+   Q+Yemo8K9rUFoEZcCWGH3DDkSBHLuMYwDPgBAgtFoVYARaGa1HanZFG5c
+   VL4+pp5/xF9bRsWQOqrrKrDqqAL2n0vSTvRSBxOJPB+oDJzqkFpP5lnF7
+   A==;
+X-CSE-ConnectionGUID: 6eseqriuR16ZrzfwREh5jw==
+X-CSE-MsgGUID: VDxu0eboSvGku6e77Gsg+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68212848"
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="68212848"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 20:09:59 -0800
+X-CSE-ConnectionGUID: K4WBsvVWRLS0ZGpOY/N/3A==
+X-CSE-MsgGUID: OKGrv+sXRmqZfA0okPFGGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="230442847"
+Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
+  by fmviesa001.fm.intel.com with ESMTP; 21 Dec 2025 20:09:57 -0800
+From: Yuan Liu <yuan1.liu@intel.com>
+To: baolu.lu@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	rppt@kernel.org
+Cc: linux-mm@kvack.org,
+	yuan1.liu@intel.com
+Subject: [PATCH] mm: fix huge page table not free after memory unplug
+Date: Sun, 21 Dec 2025 23:11:17 -0500
+Message-ID: <20251222041117.44865-1-yuan1.liu@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 15/28] mm: memcontrol: prevent memory cgroup release in
- mem_cgroup_swap_full()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <4dd1fb48ef4367e0932dbe7265d876bd95880808.1765956025.git.zhengqi.arch@bytedance.com>
- <hvta76slujbvyb4av4cgipcevd7jctjrq2tmyw2pwpynfpjytg@ihr3aqp2brzq>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <hvta76slujbvyb4av4cgipcevd7jctjrq2tmyw2pwpynfpjytg@ihr3aqp2brzq>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E8A6E140004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A28D6100006
 X-Rspamd-Server: rspam03
-X-Stat-Signature: kzigfcrw15cgurouicqx5ope6o9uf14a
+X-Stat-Signature: ptoixyzy43dsizwajr16miak8jnoammp
 X-Rspam-User: 
-X-HE-Tag: 1766376146-630563
-X-HE-Meta: U2FsdGVkX1/mZFgZKONhWQGq/g5LNzXDtVa+wA+ZxVL3vOhGIsWQ3+b9QNCBb4Yl5PygkKTLAl/jXKzt37ONLQ5EAiOyfERctYpM6D4QkF0yqFUdwP1SB0AGibBgFrpi8k0lGTOr0bTEicLNUS2YcaaVsef44UmkmfSYM3ERtRMj8vVKpDu/zS08D8KJlh36Af6U71gWjlO/DpkQ5BUeb9Q52DMGScj1AHdTLfHg+aS3q2gA6a6ZbqwvCZneCbe8a9lz7pbmN3hrislMkRt5l+c+EeIVXTUhTnd4JmmIH1juN5sPm0w4VHrYH5jeXdWh9CbB2G061VY+i0RhtCHU0dMZbUUMArHhUd8uZ+Urv7obSVwTYbCNJTvz3al7tEtUBfiPK6m3FNBTeUjqAhJinAl3XGpAGFuQ+pZxEJI15/IfL9rkOnLLKFQrvJSX/fu5HeU4bEFecqw/qnhYSUMKXDBLxbVlRWOol7ByBulqkpTqbyGEWhEUfRn0lznEuaJX9Zz7wf+xqL/QPaC1hGXj/c0eNV+6eNzXd2/8pwEeT+/rlyDsNz1Q+LRHXaNMvzk/MKEIb7gR2nd5+7+qrjOLYjMFbHYxSEo6YIlQPfcDeUmBJBkAfBpc8TIylTuIBywmiYCo3wD21ttP0EVtcvvQykZf2MXM5PWQM46aC2kyEWdOSwbUr1b8WF6Qmfo2ViTRH74z4g5E04pcbE+lvRx3QpUdqHvorNYd6iMFs7BMhkmj4bt0gVB/y42lSC+TuKnZlef9swqigYGfVk73/9TvRNUOTs07z+WpfjGZ+su93KT53aEj78pCkEvMnpvsPXt55bavF81wKJXjpTu1x/pXxI9qB+sAur0ZSgC+WljaVTH181Qj+uZx1dTAdDBA3N4Zdx0nJTufHke0KjLA/i2KxFueGyxdUmrqbox6CId8tooXtsUX1e5wlWh8ZqiFJ2JIiWJjazUqj4ExEWx6Gyr
- y+xW8dIG
- GxEwAnZkJAfvJoys0TH7ou6sIqza5kz1yZJOvpWT3NxP7J/XoI5ISwKBq7x8jDbxs6IQ/Y66Qnma2lJUPE+uysPBbR1qmQIGwXehsCYpwlIrzYq9JapfNieyD38E8/9FoqVcITtkSXmxkHAn+3cTbem6VPjdO9YU0dFJSlrkFKkrDrbGpSgCcd2MFFOO5fexCqfUOkkY4UCvm55IWW/J+PWEmvnEPaGXCx+kEu9n0ZHcKMw7MDX6VEtJzVNJzxG1o7m3xD/GKIuYZff0OkmPZj34S43aBzgzFhikQZUQLzxLLDkqln2Tqgl6mwg==
+X-HE-Tag: 1766376600-467189
+X-HE-Meta: U2FsdGVkX1/aHgQF28cZmpdmZWJq7yCGHGoyV6FZicFNtzqaf1vIOqIkH2d8jlS1AJoBuSI/IWD+zrKO8DdTEjBO3ZPoo5dCaUuRVP21u7rvhjaJdn/3HDYEQTb5lwjFRS3GdWEr/Em7Dpcq0v9Q+oFPzg+JRGwVCfDPAfXaCFYQLo9U/Qp5gDRIjmka9tpu7P3xuxsGiqgbKL5nl3LHdlv9BFkeVKHRDYPcT05yq5mofNmhZlgUcF9HGzQ99ogSKSfUoyelFAlB3hCsjmxmGRhNJwzh6mNKHVbKr+nWbUPNAr5ptIZgyqQzhJdPt3MKZYQsipU1pT4NtLgkhF7lzHt1xz8+V5mDP/cDuZ57C6J+J3PJj1O8vtQlabgMyiWQI1vyF+FjtYrA6otPvkjJOsr4X2uwA6AUwcj+BG0ONCVjXHS0sufPxv9eS3wZnnQK2gWcnjvT3PwDWNIsX9OedqAPGCJmq9eEp/5ou0oGk9+ct2k380bPWjpGjQp/WgrTMM+xi1NzfimDXc9C+8HGsNsTST9xjs812PFRItZSiaIRBM1LqYPqd3efo/4tKExaeJXfXbq77SEOb/LWI63jsHdzWv9wsuUEo6uP3BjQiuvpv69U4elVpsB0oRMMAD02ZQHM4HNu/YIcgsMgPXyzB/wVvYg/2zyRtFDWi+9nk+bIdHtEdMHd/YFCuGS68Zgoqbxzo0yMw6wi/LoFgLgCSHqkTWNEPSq67QweY4u1QYqwqLf7NFOkDcSxs7Otmfaum1xfvLiMQ/b6yyAJKO0NjtIKp8qZh4qrhDJ3mDSicDTl2bRNREvv6dwTOLdDbxN5g+qSFcH7C3zi2StvtDi5NJlceqfcCs9BhgPAHDkB2Pde+Qu8Aahl50xzmInKc+dFu/jjwKkNMb2TWP0Z/7GoqEpPwM7dyMYnBCofvuV/kythMQluitkQH+dywt8IIPi4NUQFHXEMgCOu+CO+93s
+ mtvqcMBn
+ 7659x6nH9OBaWAeYHnyP1KMxcYMxt872sBo4UGlJZrBeQoMtka7bJvqJ4Wv9HcLXzgZhaUt/41T92UDdaS8KDu7aXBOOrICdKfBFlAMWL60YOKg72w5wTzU7uFgPnSxActr3Re5zbWDutw/ofTa1IcydkCH8h+AWaPN6EHFymWHMETbw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,107 +104,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+newly plugged memory is marked as prot_sethuge via phys_pmd_init
+without setting PG_head. During memory unplug, free_hugepage_table
+frees the page table as 2M, but pagetable_free handles it as 4K.
 
+The following test case of memory unplug for a VM [1], tested in
+the environment [2], show that results.
 
-On 12/20/25 9:05 AM, Shakeel Butt wrote:
-> On Wed, Dec 17, 2025 at 03:27:39PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> In the near future, a folio will no longer pin its corresponding
->> memory cgroup. To ensure safety, it will only be appropriate to
->> hold the rcu read lock or acquire a reference to the memory cgroup
->> returned by folio_memcg(), thereby preventing it from being released.
->>
->> In the current patch, the rcu read lock is employed to safeguard
->> against the release of the memory cgroup in mem_cgroup_swap_full().
->>
->> This serves as a preparatory measure for the reparenting of the
->> LRU pages.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->> ---
->>   mm/memcontrol.c | 10 +++++++---
->>   1 file changed, 7 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 131f940c03fa0..f2c891c1f49d5 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -5267,17 +5267,21 @@ bool mem_cgroup_swap_full(struct folio *folio)
->>   	if (do_memsw_account())
->>   		return false;
->>   
->> -	memcg = folio_memcg(folio);
->> -	if (!memcg)
->> +	if (!folio_memcg_charged(folio))
->>   		return false;
->>   
->> +	rcu_read_lock();
->> +	memcg = folio_memcg(folio);
->>   	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
->>   		unsigned long usage = page_counter_read(&memcg->swap);
->>   
->>   		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
->> -		    usage * 2 >= READ_ONCE(memcg->swap.max))
->> +		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
->> +			rcu_read_unlock();
->>   			return true;
->> +		}
->>   	}
->> +	rcu_read_unlock();
->>   
->>   	return false;
->>   }
-> 
-> How about the following?
-> 
-> 
->   bool mem_cgroup_swap_full(struct folio *folio)
->   {
->   	struct mem_cgroup *memcg;
-> +	bool ret = false;
->   
->   	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
->   
->   	if (vm_swap_full())
->   		return true;
-> -	if (do_memsw_account())
-> -		return false;
->   
-> -	if (!folio_memcg_charged(folio))
-> -		return false;
-> +	if (do_memsw_account() || !folio_memcg_charged(folio))
-> +		return ret;
->   
->   	rcu_read_lock();
->   	memcg = folio_memcg(folio);
-> @@ -5277,13 +5276,13 @@ bool mem_cgroup_swap_full(struct folio *folio)
->   
->   		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
->   		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
-> -			rcu_read_unlock();
-> -			return true;
-> +			ret = true;
-> +			break;
->   		}
->   	}
->   	rcu_read_unlock();
->   
-> -	return false;
-> +	return ret;
->   }
++-----------------------+------+------+
+|Check System Memory    |Plug  |Unplug|
+|via free -h            |256GB |256GB |
++-----------------------+------+------+
+| Free 4K page table    |257GB |5.6GB |
++-----------------------+------+------+
+| Free 2M page table    |257GB |1.7GB |
++-----------------------+------+------+
 
-LGTM, will do.
+[1] Qemu commands to unhotplug 256G memory for a VM:
+    object_add memory-backend-ram,id=hotmem0,size=256G,share=on
+    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+    qom-set vmem1 requested-size 256G (Plug Memory)
+    qom-set vmem1 requested-size 0G (Unplug Memory)
 
->   
-> 
-> Anyways LGTM.
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+[2] Hardware     : Intel Icelake server
+    Guest Kernel : v6.19-rc1
+    Qemu         : v9.0.0
 
-Thanks!
+Launch VM:
+    qemu-system-x86_64 -accel kvm -cpu host \
+    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+    -drive file=./seed.img,format=raw,if=virtio \
+    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+    -m 2G,slots=10,maxmem=2052472M \
+    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+    -nographic -machine q35 \
+    -nic user,hostfwd=tcp::3000-:22
 
+   Guest kernel auto-onlines newly added memory blocks:
+   echo online > /sys/devices/system/memory/auto_online_blocks
+
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+---
+ arch/x86/mm/init_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 9983017ecbe0..1044aafd5d94 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1028,7 +1028,7 @@ static void __meminit free_pagetable(struct page *page, int order)
+ 		free_reserved_pages(page, nr_pages);
+ #endif
+ 	} else {
+-		pagetable_free(page_ptdesc(page));
++		__free_pages(page, order);
+ 	}
+ }
+ 
+-- 
+2.47.3
 
 
