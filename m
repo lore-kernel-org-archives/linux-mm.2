@@ -4,115 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E4BD68BD5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A140CE66886
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 00:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 827466B0098; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
+	id 10DCF6B008C; Sun, 21 Dec 2025 19:56:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AB776B009B; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
+	id 0BB3E6B0098; Sun, 21 Dec 2025 19:56:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B73D6B009D; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
+	id F0ADA6B009B; Sun, 21 Dec 2025 19:56:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 57F196B0098
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:52:10 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 158D98B8A4
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:52:10 +0000 (UTC)
-X-FDA: 84245280420.25.B1E1A23
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2AF9F4000A
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:52:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dSw3MCn4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364728; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DEB7F6B008C
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 19:56:19 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95D6B13BF33
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:56:19 +0000 (UTC)
+X-FDA: 84245290878.06.05537AE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 31AE0180003
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 00:56:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZplUHLtO;
+	spf=pass (imf24.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766364977; a=rsa-sha256;
 	cv=none;
-	b=3jdZXYIHGQHvntbS87Gf/TtUxb4dwI1KCkP6Camp17XkXGQLQnj1mx49qgo+8ZwGTIrZyI
-	QS2LtRYLeeCOcHflyUdZids7zTtUaaRdzd9S1SBx8oaDXg9OgL9dEjLGpo8RYo7Aw/ekRa
-	9YhRoFtleOKWG39o3HvadRqSC8AKKbQ=
+	b=oqHgEmrmQVrzWzNnQEYEfYHURmgK1ilGlsKIgY4m7A5efVi5caZd2/SXZDiXILHyR7d2s0
+	/WrkTNGN/l1cjHl1a6Vb3gIokeiveoCsnrKHFBbObDer4U92gkQ/ITXrIIRMQ3knaWzTvL
+	ux9FOh+gCLZ3NYi7t6i4eN6GYUxZRF4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dSw3MCn4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZplUHLtO;
+	spf=pass (imf24.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766364728;
+	s=arc-20220608; t=1766364977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
-	b=zsEfgP5OX04Xp8srL4HBVgj2Fz6WDaUG7cTz7/roF1fYVuqK8b7CSKJrt4TTHvMb0/Ct1l
-	nJht+18q794p7Y4FoW3HfgTG5G6OVDc5wqSkZdBJIoqffIeYszkyG7FYZBR8+rI/JmoYDs
-	fcxiGdeSWkG0+GTvYNaUs14DqMeyvQU=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so19466505e9.3
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:52:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766364726; x=1766969526; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
-        b=dSw3MCn4AXaa16AYgDwkFtHQFOJy/ANPWpO5gYV9eiwCSF/rikwDx5cvSeugmOu6Wa
-         bm89vLg8CURYrXPyEeP+CStrwqJilrGMMp2cE0YdpGjgFSeRhOpxWTt9uKdibKTqk4Bh
-         CzKIGGEushCLzwsrFNuy/AfGCWMlHYsRqWjRxx7YFzoz/uDNpmCDByjCG+bzWskLadIg
-         7+lkci5zvmIbOd8Adex0p2z7DtneXlNBjlwKrUWeFQILOlDlcwaK6mWTEr0DcAorzKYF
-         D/Lt7BjahSwldAb9EGS/GWVbyO5pcdtidsDAvnaVvOLGwAQHy3tFyEMuTpFxl06S0OIU
-         fM8w==
+	bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
+	b=uaF8dNC0lqG0gKbIAjUQiINPN4VuZrMxsJuD+4cfC+GQknjg3+6Be+UN+3iLeCGAUmnC3T
+	EwE12yB41XGs316ZBN9ZpwChsfiYNX6jpBSuG+k3vULKh+OQDBp//4FY7KP8pFGvzLVhtC
+	tdHtMp0IrWbEqhH09HMCZ1QCH2F0L2A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766364976;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
+	b=ZplUHLtOqNNDaUIAHbuAzTvd/p9PPiJmtwW+J3gMDt0UALkMeo8vymbHYwqAK73sXVdw2Z
+	tevkHerQDnRs8FTb2XrOqNL0E1qX82kKz2VCSX84UtOWgRlRKY88qjJy7x8WOCrOdlrVkp
+	LcjbHQC5QRY9FAb9Xw/N47CLFZP77Xk=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-0hAJbS5gPyCRj7vrQb9-mQ-1; Sun, 21 Dec 2025 19:56:15 -0500
+X-MC-Unique: 0hAJbS5gPyCRj7vrQb9-mQ-1
+X-Mimecast-MFC-AGG-ID: 0hAJbS5gPyCRj7vrQb9-mQ_1766364974
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b99763210e5so7034250a12.3
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 16:56:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766364726; x=1766969526;
+        d=1e100.net; s=20230601; t=1766364974; x=1766969774;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Sgxw54yt9GSPY/wJxGqE9fcBAoHDCIdYJf5fPQafeGk=;
-        b=A8TvEtrYhoMkoR+G4sKLIgm4fP5/Qh6ZySARQ4nyxYT/SxgKUS27KjtO5CLn/pp0b7
-         2Loj0XeVI+8OUepH5e2TS8MOb1DUDKbxQhWCMXqc9mn4APs1yKF3ZIYWdkfkMqJUE4RT
-         TDQkJnBYWS2maYOgfxjIfLUYjUvjqKRwdv31sS0ozuNR1tPqp8cYxjGd67aginu7MSHH
-         YXT6HFqm38LigwJWk0+tz3cq5IS+NVB+uSpyfQS9req394ny0zr/kxlcQUd0LF7TEvaN
-         WnQ4mpW3ypK6XqjALYIg/S+np7Zy0nU9EvUS6dnv503HaXOq2qTKv/Axq3MgWj5dmqsp
-         gksw==
-X-Forwarded-Encrypted: i=1; AJvYcCVO9SOOpZlqBCcf1f6+peeyl9UhcVb6x8taLXtD/tTo8ODFk7bCD687S7jrP5YYl3KKn4hdmqO23g==@kvack.org
-X-Gm-Message-State: AOJu0YwYR7X0ud1BTWWosQ/ZzI6/5c5O8st5cYKXb/53ayfOhICUqFhQ
-	w7lCWD1qRnJusWNZMH8P7dBWn7LEIE8vCJeK9QCSNOSDnVzjYIQKnpTZL081d85ruebsFJ6RjC2
-	diSACy9T/AVjejP2l9wvbhzDxlsSeTP4=
-X-Gm-Gg: AY/fxX5IHAkCgjoCDV3f2BU9CpNk3FtlkvkTMHqbxs0B0dgfKmeUA6PKKEwFD2FnV52
-	HteDDb5A02YC/MzU/f6yvRpKqD14NgtN6BFlUXyRCpZf3v6LGkUVwN8VdN4lFes43ZeYKoJssjk
-	YWyHwWjMPhUHPwSdOv+jGqryBj7rL4yxVDe1HGueF25GQB+2+DmOToc1Kav3EJzzFdi4st8zNbQ
-	xE5rXrPxfmuBabvW0x6taHYH16wvcdzZ2YPwlN3NS858MVy/kXBqSUMUyekociHjJDHkOAKD/+M
-	9assYOU=
-X-Google-Smtp-Source: AGHT+IHA16aQRMS4Hem/AC74vdS4Ff7LKIP4VMbmo8FPVAYBL8Mw/QHeO5wccSM02ZpEMBGqze5bFexvMNsLQRlPNA4=
-X-Received: by 2002:a5d:6b04:0:b0:432:586f:2ab9 with SMTP id
- ffacd0b85a97d-432586f2d34mr5077050f8f.5.1766364726514; Sun, 21 Dec 2025
- 16:52:06 -0800 (PST)
+        bh=/NMCIq06x6X5N8QIPqgKY8o8XY7IL1HTrfa4Xt9yLJw=;
+        b=iWgPmDAWUEPm3ehH1dxggUfsQFgkdAi68QUs4RyhLlns55z/hAoceX6mjQTgARCCTL
+         OEQXb561h0DPJlOTGVan8qL4rYprIwcpLVdhe8gD/oHntGImySk+RR1saCWH7sy7iFET
+         wPYnoDM7urpv9f7qK98ZnhPscgB3xfZZsqdItIrTFQZNRaeuKBVQeKdWqgblFTZgi3rC
+         +3fOhneSshqg5WBJ+1pno/Uryn/bC5m4d5hAbWuK8O6fAGFup+5COGuBObVgx87WRu6M
+         yTEqX4iyGcp4ZZuqW31q80C0K7Rm2EBrSGRnoc8FHEk2PwSI2ztDLUeq3wwKAVWN3krg
+         k70A==
+X-Forwarded-Encrypted: i=1; AJvYcCWwN6y3wac7X9gzCXW2VyiUygr8wlECdUVzIHhnMiT3q8Ov4cfS8td+hrcP+1GRUkXSmVV7KZdt1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzeScNuEKZlOCcNzBjWoS2E8L7EBwgMITLRrCvRtE14SBqNR0Yk
+	Z1o42AnbCYNwy7McbBm9IfpVsq/uiTME4c/mZlJfYIbTY4pzGpytkVRZhJYrOSgiMJ4w2p5K6tx
+	YXPtgms+YO1ssT1E/eVHUipQqsTugJ+ZWkWvkcQDwPVkhoYsUHgxWWZ868rLgmcnJUF2EsaDQqp
+	tjTHn7NtB57/Lnc2NeZw40DPcekQA=
+X-Gm-Gg: AY/fxX7P76GRfKtjgAU5c29bA8K6Q6DDYYcDq+EFcONRRTfyC42xibh0f5nAEBN0f8O
+	mcc7xf5KFd5xQkeZwE2IbZtdwWFTDal8T812szeSFWNkqTlCF57rlZZqvm1WmQTeF3o3btXEoSf
+	jQROlHQVq1DyizrVtTM9h2pK80qJ3dQLPqP/8gkvexxSZbD0QrEthbdFIoifJ9MmiQblI=
+X-Received: by 2002:a05:7301:fc12:b0:2ae:5fb4:c5f1 with SMTP id 5a478bee46e88-2b05ec8580fmr8756380eec.22.1766364973906;
+        Sun, 21 Dec 2025 16:56:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0029GFn24iMMCw3XfWWVMPRTwXTkFaymfwbymZKK/ZbqfRE+pohNx1p4BX0tdPi90xo3sUbGz84BHevp2vwo=
+X-Received: by 2002:a05:7301:fc12:b0:2ae:5fb4:c5f1 with SMTP id
+ 5a478bee46e88-2b05ec8580fmr8756369eec.22.1766364973450; Sun, 21 Dec 2025
+ 16:56:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20251220041250.372179-1-roman.gushchin@linux.dev>
- <20251220041250.372179-6-roman.gushchin@linux.dev> <CAADnVQJo3HspB9-_R5yWKWLdExDmFayDpNZ4JnoBpCw6aRNTrA@mail.gmail.com>
-In-Reply-To: <CAADnVQJo3HspB9-_R5yWKWLdExDmFayDpNZ4JnoBpCw6aRNTrA@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 21 Dec 2025 16:51:55 -0800
-X-Gm-Features: AQt7F2oaz8HCkylGYSDrvse4JsGkKsP4asJjXaU4aAhPWzWneVtyudJr_jhxED4
-Message-ID: <CAADnVQLfrUxh6vLz4S0otPppHTNx6Dno_bfsTgt=67e=mKoeHQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 5/7] mm: introduce BPF kfunc to access memory events
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
+References: <20251221122639.3168038-1-liwang@redhat.com> <20251221122639.3168038-4-liwang@redhat.com>
+ <33d5bdc7-0fde-4a97-aa1a-f8565e196ccd@redhat.com>
+In-Reply-To: <33d5bdc7-0fde-4a97-aa1a-f8565e196ccd@redhat.com>
+From: Li Wang <liwang@redhat.com>
+Date: Mon, 22 Dec 2025 08:56:01 +0800
+X-Gm-Features: AQt7F2o8rt4dEdkF8DAco4IG4TTUWxg7AyWZZTuM29XF18apL6ox-9F2z5tlIYs
+Message-ID: <CAEemH2ehOUyDqHhn5+Mu2B31dCpOhDv6AL7sEFU5Vt7nSST=Tw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] selftests/mm/charge_reserved_hugetlb.sh: add waits
+ with timeout helper
+To: Waiman Long <llong@redhat.com>
+Cc: akpm@linux-foundation.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5x5uxCSxwo4lbmh5Aeuh0Fx4HsyJ7qw6bZupQRReUZQ_1766364974
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2AF9F4000A
-X-Stat-Signature: mu31bm35986dg1zxwukyt8phcu44a6kf
 X-Rspam-User: 
-X-HE-Tag: 1766364727-282478
-X-HE-Meta: U2FsdGVkX1+7psW2mb1jzP21q8+tyMR6A5GLJFFpEnXx7mK16mrxMSykkSxc4Rz+FvF5fx5/Qx5hYsH5Q5Ia8FC4JJNSZox1vTn7nv/phW90zypGOV96VPgchMyCFO1hTvypjsx0m2EDoq5Q2efMSgI6PkoOYT9kn9H+r4EVXjJ9nR7oJdGIGbH97xORJlyz9msqz2/OtdP7OruZE0ycyu6l8eMkhKYw/LrYE0BFjP66zOTIoX+cqraw8hKxanzUuFFS7NGTADVZ+PRxByQlQChyXMUQ4+m/vH1sev4vHnnfAhCFmzZhLPdv9kDoNwOXfuUeZtI11B5ly+/4CWRsiMkdU3ppfVd23s1GbRt7D4eFWs3Iw8b7HY9vfC+JT61EZUNe5pY6ubgPNh+xAp7JLfFjT4c40HX/sTXg34KoJtFCC8kVwV9hir926ijcFgOcESc0cpMTytpIxTBnB5ucJ9BFyjAe0e2D4rURer7syAhMEc1UsZ0bhwzmKdLhJgkYJfOwEpxGRIban14IoBLXGggm5GKL3k402lGr41Cmh5jPufQdRCg3cOEZ1toXuxBpMCc17nvH85L10q/MAN6SSotoT4LIU9fuXEqv4vnP503FnbQ8Nbut0kRFdNDqsnHUWFu0vDsTpDPd6yIZNOJwqPH4JCf17vLbIv+SWUGBNDKdUrV90X4nSTSC60TDxpqCzfLdKnFJ1aVvEay1R5GO/1/B5Ustt8umKdznS36a8u5qjsfsH+/Pxo1J7V7+6YxElCqL7L8relmLMgbzJzPNRPj7PqyXLInAi4u/pxkWRMUaN/pneW/1NoeNuaqY2Y3Qk5JdcYJXaVngg3KCvg2MqIYo/3I2UnfQrx1vKvHiPImBSgQ66xVjLg5TGzNvj2ctUUcCdEACnCFrSFlbNNyz+WPMw3Yw4YEHMvv2vDjKOEmb5VTXCkFdRBIF4KVGBNTibNgu/+MvzUHthbHL1Oa
- /CL43v6T
- YSftMccSaV85bXMrg4NQSecUI5scRlHq4ooix3LHqM6asSa2XydHd8/kUi38GAr7I+9u2vJ9bfbfgngPZg/kiEvd4vw7+Hqp+OuY8DH6NKznJyfkVhGXFcOwRiAK+bWxcZUbbGX5cfn2YEG2XGqGp18pmggAbqG7Gc5btPdCdBWHI4PNW9RtgBZtFBh0tT4fRYzo95F3+/mPyrUqTGqWonMSLR7K/ug9uN/IuSM3VMVy36/8ArbhQxKe5Re3ZExemof81V41jdKhSzHM5zlOKJXMydjrSOQztSnEmY1+eW1o7svB8HLdY+EAGDNbVY2GLhOmm4RtcZvicCSpZMlx5E4Dpit3Cv4OH3515Vin4AzbuOdW9Tam4EYDfpx09zjQmrAEFty+JBsbaaa/02LodDAMbGnhiIxtKuUI4ANi9B7Y3z0RG5Q1DAngryPFq55Dege+RARW/+DioUeZ4gNeCIxLmRWa+OXWj2eMywG19ne17/7JuvXtdUjnW4bSX3SRDmX/StODGxtcNKgwnR7iOjC46hQ==
+X-Rspamd-Queue-Id: 31AE0180003
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 8hh6mbwmzqfn6bz6mwntdeod46f4t1hy
+X-HE-Tag: 1766364977-101987
+X-HE-Meta: U2FsdGVkX19G1X+zbdMpqF988mS7SkxqU3rxwQ21e6Y8h6UheEBozd4WoTyTzPCwwRTdAYgg93NoIH69O1x5fynGVgOc3uL5tmtC7DkO44cam76Q0HSlyxkmXClqa6E1diwSlGodyTxaXpHsXvPwtlb+qGZhwbGlPYaoSPIbhmC1YkCUPxyR+yNi6lod1fsEYNlhsK30n76nxWdpLhdgNw7KbL8OBdcrZQ43ByJeKegO0XWZ2/SJA/QCTAOhvvAthsTlKOVsv9SobVp3UzcLLmDSIOVearuIlHJ3dcToN4gMfPQ6C82/2SDHqi3NyKYXxYorCwaG53EMi+niiximdbkEjTszvZZhKmUKeoQysHWPzwxj4B6Scg4a/GnNn+vaK7qvmVnQBl6DIKFeLvPY4b350ga9YAGTO7sE8YfapvDI7hN4Ss1JO91KBhvJaIThstVK+fkGEC5kQGhnpQFNUEJQHWO+hL6N5TRILKEczkKmzErSik8kl5PN56dhO1fWPPZRPIQ10x2JYM56j5TXztwphRaKMKC/ei5337/xydxPeAfreHGEi2sH7V9XhjLLtF/mwflk3ko66U9WT63CqMPRzzRrI607QUzphaDfPWEMav6SC22lv9+GLAs+k/BJaW9Jegifay5TR+OQuEVJAjqgy5HQAh5aDd2EVu3WwCGwJzasRpNcr5CecHJZJ7EynUmf0jxESU0Zbgj9WonaV5j9uwJ+ptwunn41/nzgIJ8SDw5dzoL5ATBhMq84ZSNF2sRPp8bTxfhYlpTb/gMXF5QYwdFBeJSadEntIz1asw32NVjSfjYv2HeJn+NU5aqIurACrRBRXQmjj83mTfJMmSVdKxK9ErtndRYtuU89H0ZJ6O+z+42itRwGKfUvrLVpQrfd2ct59ev3xZVrakFaC6t/XIPXMB7jKYWAli3w7YQuM7auZR4ZDi3xZsA8rQJgYqb3I8lNa6g+AjggObf
+ f36QttoQ
+ +4TQH2w2vz2X8NiV6+x1dBs1FaIyj5KGbp0DLZnJQhEG/clZdzBdITyo0cTHFF+vuwm8dZO2lXD4pH7T5SenWtISHIAfVDY/qDGkMdwM5UT0WAceotAS1hOJuS9wKR6gftLX5oxeJyXjAV7ox6dYm4Zn9I+v0gpYlbMwjdkT78IE5Kzp8VWhD9TlHre7en7x/F6ezk9KU1GNfZboWFN4kh1nGrqBqyfn4fZWt/yHKhbR5zTKf56d3/DeY3UMVWgcM41fRUVNBJMEwvDZUMrAZjwla2wP2v0toBDT2oQqe4LZWqlL4GmULx9oaNs380e5xmj4fV3dqZrnPgljx6xPFzCxe99KvwXfa8+7mMvPvDx5HYkO6uPri6BNO4QW2Sc9QNMOC5va3PV5LK3yKoucPIPxUvCQKpshx9Gudgw+GTUTnbWTiKhGY26yjwb1gkmnuEiaEBvrXM23mgM0pvJpzAwA1ASacB/SxE09rVrmIvgN41lDsbJASx2butyURbZVgn+r4eY7vM8Swk5ecbQMEQ1vqKsXi6HuaGxfD10YT5IgtFssJ3OQDMx1YWA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,58 +128,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 21, 2025 at 2:49=E2=80=AFPM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
+On Mon, Dec 22, 2025 at 4:30=E2=80=AFAM Waiman Long <llong@redhat.com> wrot=
+e:
 >
-> On Fri, Dec 19, 2025 at 6:13=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
-nux.dev> wrote:
+>
+> On 12/21/25 7:26 AM, Li Wang wrote:
+> > The hugetlb cgroup usage wait loops in charge_reserved_hugetlb.sh were
+> > unbounded and could hang forever if the expected cgroup file value neve=
+r
+> > appears (e.g. due to write_to_hugetlbfs in Error mapping).
 > >
-> > From: JP Kobryn <inwardvessel@gmail.com>
+> > --- Error log ---
+> >    # uname -r
+> >    6.12.0-xxx.el10.aarch64+64k
 > >
-> > Introduce BPF kfunc to access memory events, e.g.:
-> > MEMCG_LOW, MEMCG_MAX, MEMCG_OOM, MEMCG_OOM_KILL etc.
+> >    # ls /sys/kernel/mm/hugepages/hugepages-*
+> >    hugepages-16777216kB/  hugepages-2048kB/  hugepages-524288kB/
 > >
-> > Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >    #./charge_reserved_hugetlb.sh -cgroup-v2
+> >    # -----------------------------------------
+> >    ...
+> >    # nr hugepages =3D 10
+> >    # writing cgroup limit: 5368709120
+> >    # writing reseravation limit: 5368709120
+> >    ...
+> >    # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    # Waiting for hugetlb memory reservation to reach size 2684354560.
+> >    # 0
+> >    ...
+> >
+> > Introduce a small helper, wait_for_file_value(), and use it for:
+> >    - waiting for reservation usage to drop to 0,
+> >    - waiting for reservation usage to reach a given size,
+> >    - waiting for fault usage to reach a given size.
+> >
+> > This makes the waits consistent and adds a hard timeout (60 tries with
+> > 1s sleep) so the test fails instead of stalling indefinitely.
+> >
+> > Signed-off-by: Li Wang <liwang@redhat.com>
+> > Cc: David Hildenbrand <david@kernel.org>
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Shuah Khan <shuah@kernel.org>
+> > Cc: Waiman Long <longman@redhat.com>
 > > ---
-> >  mm/bpf_memcontrol.c | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
+> >   .../selftests/mm/charge_reserved_hugetlb.sh   | 51 +++++++++++-------=
+-
+> >   1 file changed, 30 insertions(+), 21 deletions(-)
 > >
-> > diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> > index d84fe6f3ed43..858eb43766ce 100644
-> > --- a/mm/bpf_memcontrol.c
-> > +++ b/mm/bpf_memcontrol.c
-> > @@ -103,6 +103,22 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(str=
-uct mem_cgroup *memcg)
-> >         return mem_cgroup_usage(memcg, false) * PAGE_SIZE;
-> >  }
+> > diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/to=
+ols/testing/selftests/mm/charge_reserved_hugetlb.sh
+> > index fa6713892d82..447769657634 100755
+> > --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> > +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> > @@ -100,7 +100,7 @@ function setup_cgroup() {
+> >     echo writing cgroup limit: "$cgroup_limit"
+> >     echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_lim=
+it_file
 > >
-> > +/**
-> > + * bpf_mem_cgroup_memory_events - Read memory cgroup's memory event va=
-lue
-> > + * @memcg: memory cgroup
-> > + * @event: memory event id
-> > + *
-> > + * Returns current memory event count.
-> > + */
-> > +__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgro=
-up *memcg,
-> > +                                               enum memcg_memory_event=
- event)
-> > +{
-> > +       if (event >=3D MEMCG_NR_MEMORY_EVENTS)
-> > +               return (unsigned long)-1;
+> > -  echo writing reseravation limit: "$reservation_limit"
+> > +  echo writing reservation limit: "$reservation_limit"
+> >     echo "$reservation_limit" > \
+> >       $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
+> >
+> > @@ -112,41 +112,50 @@ function setup_cgroup() {
+> >     fi
+> >   }
+> >
+> > +function wait_for_file_value() {
+> > +  local path=3D"$1"
+> > +  local expect=3D"$2"
+> > +  local max_tries=3D60
 > > +
-> > +       return atomic_long_read(&memcg->memory_events[event]);
+> > +  if [[ ! -r "$path" ]]; then
+> > +    echo "ERROR: cannot read '$path', missing or permission denied"
+> > +    return 1
+> > +  fi
+> > +
+> > +  for ((i=3D1; i<=3Dmax_tries; i++)); do
+> > +    local cur=3D"$(cat "$path")"
+> > +    if [[ "$cur" =3D=3D "$expect" ]]; then
+> > +      return 0
+> > +    fi
+> > +    echo "Waiting for $path to become '$expect' (current: '$cur') (try=
+ $i/$max_tries)"
+> > +    sleep 1
+> > +  done
+> > +
+> > +  echo "ERROR: timeout waiting for $path to become '$expect'"
+> > +  return 1
 > > +}
+> > +
+> >   function wait_for_hugetlb_memory_to_get_depleted() {
+> >     local cgroup=3D"$1"
+> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usa=
+ge_file"
+> > -  # Wait for hugetlbfs memory to get depleted.
+> > -  while [ $(cat $path) !=3D 0 ]; do
+> > -    echo Waiting for hugetlb memory to get depleted.
+> > -    cat $path
+> > -    sleep 0.5
+> > -  done
+> > +
+> > +  wait_for_file_value "$path" "0"
+> >   }
+> >
+> >   function wait_for_hugetlb_memory_to_get_reserved() {
+> >     local cgroup=3D"$1"
+> >     local size=3D"$2"
+> > -
+> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usa=
+ge_file"
+> > -  # Wait for hugetlbfs memory to get written.
+> > -  while [ $(cat $path) !=3D $size ]; do
+> > -    echo Waiting for hugetlb memory reservation to reach size $size.
+> > -    cat $path
+> > -    sleep 0.5
+> > -  done
+> > +
+> > +  wait_for_file_value "$path" "$size"
+> >   }
+> >
+> >   function wait_for_hugetlb_memory_to_get_written() {
+> >     local cgroup=3D"$1"
+> >     local size=3D"$2"
+> > -
+> >     local path=3D"$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_fil=
+e"
+> > -  # Wait for hugetlbfs memory to get written.
+> > -  while [ $(cat $path) !=3D $size ]; do
+> > -    echo Waiting for hugetlb memory to reach size $size.
+> > -    cat $path
+> > -    sleep 0.5
+> > -  done
+> > +
+> > +  wait_for_file_value "$path" "$size"
+> >   }
+> >
+> >   function write_hugetlbfs_and_get_usage() {
 >
-> Why is patch 5 not squashed with patch 4?
-> I'd think placing bpf_mem_cgroup_memory_events()
-> right next to bpf_mem_cgroup_vm_events() in the same patch
-> will make the difference more clear.
-> For non-mm people the names are very close and on the first glance
-> it looks like a duplicate.
+> wait_for_file_value() now return 0 onr success and 1 on timeout.
+> However, none of the callers of the wait_for_hugetlb_memory* are
+> checking their return values and acting accordingly. Are we expecting
+> that the test will show failure because the waiting isn't completed or
+> should we explicitly exit with ksft_fail (1) value?
 
-Also see a bunch of kdoc warnings flagged by CI.
+Hmm, it seems the test shouldn't exit too early.
+
+As the wait_for_hugetlb_memory* is only trying 60s to examine the file
+value, if timeouted, we still need to keep going because the test requires
+CLEANUP work and exit/report from there.
+
+The key point of each subtest is to save the '$write_result' value and
+examine it
+which controls the whole test to exit.
+
+e.g.
+
+This is an intentional error test:
+
+# ./charge_reserved_hugetlb.sh -cgroup-v2
+CLEANUP DONE
+...
+Writing to this path: /mnt/huge/test
+Writing this size: 2684354560
+Not populating.
+Not writing to memory.
+Using method=3D0
+Shared mapping.
+RESERVE mapping.
+Allocating using HUGETLBFS.
+write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
+to become '2684354560' (current: '0') (try 1/60)
+Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
+to become '2684354560' (current: '0') (try 2/60)
+Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
+to become '2684354560' (current: '0') (try 3/60)
+Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
+to become '2684354560' (current: '0') (try 4/60)
+...
+Waiting for /sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current
+to become '2684354560' (current: '0') (try 60/60)
+ERROR: timeout waiting for
+/sys/fs/cgroup/hugetlb_cgroup_test/hugetlb.512MB.rsvd.current to
+become '2684354560'
+After write:
+hugetlb_usage=3D0
+reserved_usage=3D0
+0
+0
+Memory charged to hugtlb=3D0
+Memory charged to reservation=3D0
+expected (2684354560) !=3D actual (0): Reserved memory not charged to
+reservation usage.
+CLEANUP DONE
+
+
+--=20
+Regards,
+Li Wang
+
 
