@@ -4,121 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C69E6748D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:10:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B30D711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:16:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A821D6B0088; Mon, 22 Dec 2025 01:10:08 -0500 (EST)
+	id 701A66B0088; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A05526B0089; Mon, 22 Dec 2025 01:10:08 -0500 (EST)
+	id 6AF806B0089; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E75F6B008A; Mon, 22 Dec 2025 01:10:08 -0500 (EST)
+	id 591636B008A; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC516B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:10:08 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 176B460D45
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:10:08 +0000 (UTC)
-X-FDA: 84246081696.19.9284084
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 48096180008
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:10:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WnEsrUBU;
-	spf=pass (imf16.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 47CD46B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 015411A0A31
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:16:19 +0000 (UTC)
+X-FDA: 84246097320.13.BBB445A
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2E510C000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:16:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4NIKJlWr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bingjiao@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766384178; a=rsa-sha256;
+	cv=none;
+	b=rlSLkcjH7IX+M1yTlyf+miFAFQGyJzaUL2+/4kCySlFD3xVoZJjOINSWz83v5Brj0G92Hk
+	/wkC93yAXuEuGxILdBxF2RrurkVQg7ngfZn8og80JobqO1srhmjwvXhR8CMx4/EGg2IBf0
+	R4qqWAa108sMCv5BqDgASdopzClqa5w=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4NIKJlWr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bingjiao@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766383806;
+	s=arc-20220608; t=1766384178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4d4yIf4cTLhpX8RECsjI9Ii+PJ5wkNjuQ9k20d0TZc4=;
-	b=DIEl6Q2OF6wGVxtinWDJT1fmibABWcP6RRUdUc6X2KRaWYga7eQQQ+svM/iaOIuHvJ9l1+
-	CDGo51aRWHnE5BEVqewchcXSjRgN1reQulZroQbcJqckpj2gD4I9e2sRsLkZrYjfOLwz8B
-	vJcW+sxxwgzrxYzMzXpgBl9n8Dbx74I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766383806; a=rsa-sha256;
-	cv=none;
-	b=xAzMJaX0PLS3vMB8dWT6m7zgm1wLEwNqKR24LN3J1DCd0z5uRtMlrnC2gMrWYrLTAH7lfm
-	jFd9HdOLd4y5oD4NNvHBJ8lWHo3s+Mo8eOYotWtIIfpT1QjR3L0Qe9rs09LqKo3GE111YQ
-	fKlJp5q6+w9TpmJHFv3hg0QDRVMxUsE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WnEsrUBU;
-	spf=pass (imf16.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a1462573caso461605ad.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:10:06 -0800 (PST)
+	bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
+	b=WAjot1bxQX1eZOL0u6ALHbRM+w+tsSPnAx1jIldeO7+nu84wUAPlx+vZftUz7psuHmK+Fo
+	0df5KWHFwbJQPS6RefXED9M2x8SMn1DVSPUYT6C6iZZ4C/jJF7ikv8E9KRzYag6jbkYpVn
+	rAJEYiaoL4PwZHjuFHrsepkLX/XI3fk=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a1462573caso462145ad.0
+        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766383805; x=1766988605; darn=kvack.org;
+        d=google.com; s=20230601; t=1766384177; x=1766988977; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4d4yIf4cTLhpX8RECsjI9Ii+PJ5wkNjuQ9k20d0TZc4=;
-        b=WnEsrUBU5RcfOugUx990K0Csaqz6AqRT7WRXpvyOUyVq7TPR1jgRmB5TK89xQ0xwVN
-         thmoXL8w2y2EEzbnyQVZ4lQHXhhFXfa6wVfp12gDeY17N/TDclVLIdOQxBugWl8kJ1oo
-         kj1ycTRriXAv6Y1IQWGomml+MmU04aeSqqe3UcLdRVhvB82VmxjeRS3V5JA9O+MGsqcZ
-         Z2RUgIGP/anJ9OYIX44iQ+VTiA4Zne13lfDqWLk6y5AfFGg9VW1bvQQedL7iDi4WDqwp
-         1GSM61MSMKQ8hy9KgRvFjEjfmPu7UGmKPa/kt1c+LF0ja7i40wOrvLz9DFYiVhDqGixU
-         yy0Q==
+        bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
+        b=4NIKJlWrDJunyE5aE3Tub3SZE6YrbTF6ePL+kk9Ol9RsCTu/e8t+sL3VKYhj9tE8VC
+         ljG9Vsseb2ehU8ltdYkbPGo1+y3EcTNeLgYAnhpfsKUUiSefztvCeYRiEWTciYlor1ll
+         jrDeCBuwHmxdmJe9qWeXBpc3dyWWsq7u0V9EcvpyGCPm6BsASGWAxQVMM4rZ/bkiMak/
+         Kh0V0jrVCiIx1gzeubkib3RVhwN+0hJL5eDAyJiZ+egrQJlCS9W7E8je8KHfPxFYVNkE
+         huPFW1245Zrl4zE81z+hmJB6vGsu2TfSexNnUUbeH97Y1Br2N/N0m4+OxyIYWEKYQ0KS
+         VDTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766383805; x=1766988605;
+        d=1e100.net; s=20230601; t=1766384177; x=1766988977;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4d4yIf4cTLhpX8RECsjI9Ii+PJ5wkNjuQ9k20d0TZc4=;
-        b=AHsi4RgN2ItiLhpWm5wRNb5WOmQxQa7DEDcLSY0kCLQJRzw2FCKHDtC+tHL5IKpf8+
-         SnOFQDVyPuk/knCtg9YXR1uRboTCpB/VDG9fS5fiQnELpKvx6+Jk5+DQrevA1mX0yZjQ
-         V7EE7gi8kNhK5Y36AAxF+a8rnNDGDrmpUgu0eXxQqwH1O+DBOoYxaE7eSXU9VxrmAiWS
-         UWTaYy6lGPB0V1AmnS0hk37AZhmBMdXM0xq8Y2ly426+DWvYSjWhP32nTgOs91izeuxk
-         q2m9C1kGtZZmheo6yJqphr+B/c3IOMeZoRo0L/BmewSQszammLn7mxtJoZ1Ka9OWZX8x
-         jLNA==
-X-Gm-Message-State: AOJu0Yzcwqstd2K5JGYCRxNxsBKa2LqrUswe5izMgzW+qQ6CPUuvpvT7
-	R6JoN4V6xmot26rEa+K8teRQM+3xRE2tCLA8JfWeSLTx3B+mKsjakmYYsBf/Q4T4JA==
-X-Gm-Gg: AY/fxX55TlFgBfmuu43LerRbrXIiuGMTi1uYieh25Aqbiwq3JNgK2YI7/rhJhNUyjmA
-	CBJ9cXrgMMMjy5p9/TCNcwnH5wARKkhTZIEAkUoz3f+XQiaGJIkKpZvaip3a4UcwNUQPgbE40hd
-	3LMRizkInTZ8zotsM+9yQNEormPNDY1qzZwVAjfgHxqfeaR/6kymsdA0ERK2YFXesktRV4RFvr1
-	Loj8e200J83v10WWs7Br8OpoeO8rvXI6Vhp8l8DT/Sr1ekm6wG7VsaHixeovoceeTjC17J/K7yG
-	oMnjQDj+GaY1/ngxxhFcmWpz7hwuI46Yhr3rmLGdJD5+yArG3qnrUyH4Ntdu7A4rk5uKaAFZdeb
-	ege7IfwKxZkwH6LZBNh1K0zTIqM4FF6w3EbBR6sevIGEsVGZQWKvfjE/Q3xiXWKtViycoYEEx3Y
-	mFs+OExqrNCXZ9HiPRAAxk/Gutyc2lxnT5OUsg3OXI8IcmpZQeLo6i
-X-Google-Smtp-Source: AGHT+IGJHMHvQ2BiL8kGi+L1NEiyq9evaHsD0bUwM82dYISq+7N3XOj+vRLmNpWXWMhfzBHm5bRjRg==
-X-Received: by 2002:a17:902:e788:b0:2a0:7fac:c031 with SMTP id d9443c01a7336-2a311806e37mr2693085ad.14.1766383804712;
-        Sun, 21 Dec 2025 22:10:04 -0800 (PST)
+        bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
+        b=QBDl8uv0VjXjfudAHPA+drhXMBcUP2es7RgTNvakKDH1eU3IAJgYVb1le8Wpu10qim
+         cNxV8ozweYsIlJEV7ZN1KJwJfqg5YanjUKh7NJL0zJsIozpNIUUO3eayEjN7N2jPH04b
+         D1rffm8ajirMiGIF+VenRDnvGC0WVM4eDbFL7JMpbZZnGysoz9VonLqqgZn9/oTbxvst
+         xrA4NR8sEqYXOaVz7rWtc/Q9SstKvdg4OgL9DNppPPuqnNC/coAqbUQse5Qwq8j8yfHG
+         MNuET//MitC+deYGE6N2D6Gvwi91MwGSXkOYJ2zEnVDSyGmWu+qiCZ9NiNFnEjZUBgQP
+         hDxA==
+X-Gm-Message-State: AOJu0Yzxn8Evtga0PZVnUlDXjq2WfG/MpRX810UUrQ2P/NSmx1bTI9Gb
+	RmLB5LqkMXWW3F83XyOhSf2SJKwDyKXHqSPhEHmgEutAPNn8EuuhwmA9+F6VJI7tOw==
+X-Gm-Gg: AY/fxX600V2PWyZ0OyU+Uiv2qI1DwkB1ycE2Syj/2fiUgFhP+Y++Y6O/gsRZN5xRHii
+	OlBwWFvHUtL09mCyjOeQq9WPDymfypLxjzp/l+2N2ZqT6R7jTtWPY0lbTvUBnj0b6Es56Cxc+8R
+	dHvK3IoL6dZ/uejj3yoVkWI5hlGCxZY6oE8AUUpSJvMUCnFqFzS9/9iZNXWOudL/9y4G2pL7/18
+	e33VSORGqC893c96O78uVlJuoPysXOw3Iduzxk8ZMH8VXCCr7Ewg52rUQ/6kU4qtRVlOll7hZ+X
+	g//QBWp9L6SbgS9WFUuMzR65QHFzy7Fclg0/jPY0jHjFDIoOwlrl/6ixBzgDEJtKkay2JmI/YXk
+	82YzayO03ryJn8NLw2nS/fggG4Qy3RgNKWWMxilHolsGqtCstD7DQXJKJqeXFEDpNWpmVksKzR7
+	DiZty1I7KKS+jrBEnbiwhQrdlOvKfuzixMCmzpR6YRWv2D4UtmaIXy
+X-Google-Smtp-Source: AGHT+IHOweUx0BGgzRR3Uc5xIVtiHnSb9Bezh6rOocQ9AsReM27o8TisrBOm2xsLcgOS2vYsn/Ffgg==
+X-Received: by 2002:a17:902:ef47:b0:2a1:3cdc:7720 with SMTP id d9443c01a7336-2a3142e92d0mr2719085ad.21.1766384176711;
+        Sun, 21 Dec 2025 22:16:16 -0800 (PST)
 Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f30bsm9091090b3a.48.2025.12.21.22.10.03
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f258sm9029528b3a.47.2025.12.21.22.16.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 22:10:04 -0800 (PST)
-Date: Mon, 22 Dec 2025 06:09:59 +0000
+        Sun, 21 Dec 2025 22:16:16 -0800 (PST)
+Date: Mon, 22 Dec 2025 06:16:10 +0000
 From: Bing Jiao <bingjiao@google.com>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, akpm@linux-foundation.org,
-	gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm/vmscan: check all allowed targets in
- can_demote()
-Message-ID: <aUjgt4EdBv4UyrTM@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, gourry@gourry.net, Waiman Long <longman@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	 Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: respect mems_effective in demote_folio_list()
+Message-ID: <aUjiKmlLEitn2oHU@google.com>
 References: <20251220061022.2726028-1-bingjiao@google.com>
- <20251221233635.3761887-1-bingjiao@google.com>
- <20251221233635.3761887-3-bingjiao@google.com>
- <d5df710a-e0e1-4254-b58f-60ddc5adcbd5@huaweicloud.com>
+ <20251220112044.ee858d2160f819e181598ce1@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d5df710a-e0e1-4254-b58f-60ddc5adcbd5@huaweicloud.com>
-X-Stat-Signature: dqbrrzt6gy7t51ouxptm4dnjwtdniwue
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 48096180008
+In-Reply-To: <20251220112044.ee858d2160f819e181598ce1@linux-foundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1766383806-132279
-X-HE-Meta: U2FsdGVkX1/tue0lvsNnpKosTU3bhP5GgqlEfQmEcfKJsKP0YHdNEvp2ZdaRFi7t2htknN/A3ELycWRafKJruLN2Xwfpka+crmJUNX6YRr8gg+b7ztjK+WdyZTCuQDGr0LOvr4Q5DDLA4tzrf/LEXreqyoa0uWjJ8T8afzDpBXDSQw8u2JwNWSGlh19FKiiIMic4z2+cTG8aRB00fFzK2z5BT5IXZgqFoElMNq2mralgNrf0Hpb8IwUMa6Js4Py6g/poXl835zgo6iWFfkylA8s0pCN/DDfPhzN9jkUJqT8bujUH8loFSzp6LQ7XWMUr764NxvCRXTKUYJIWsIl40jyrMGTKYU2qHn2YbOZqa76hUq+vwhWI4SocIlWnrlJTYkCb6XD9f5AXdAQkZiTlRaPSi5VBNo/9/xQ3MbhyqvjNcgOvKGzeDI7WjhHxsvmUIBTfyj+FOJ4EPw+j9G5MUHRzCk4nD8DhoQaRSeSfKFql58pJ4VJRN8dmAYPnbnKl5LchADYRVwlRrqfXamUt6BvBtMGwTbDo9jHUV0tHmxuzLIhpyWCaUk5eW8h8vGjfdClUFpl19w2OPW/imUD+ORD+xlR03geD+8LTo1e7cPPS0aIq9wDnbvf6mS9+BjSzx0xgiQj13mckA8B19XrdUXpC76AuWZaGi4Runsq4QSierau/zuafeoUs8VlP4SCte0f/AcqcxiSN5jkmblGEgmGHl0nlgKDmy4sAWumw0OWW+LeuTAlXt4/4pyuIqCZwre6ABAboBlDYWFWSIs1ukWdOInajO04rDRgh5ymluqa/q3kJkmBe6a0ZyCb6v3PW9i50H2kaX1qrbB3XlLLYuYEthLWDCPFHbIy9BqrcX1BQvhdiK5l6TxReVW4u9t75OAD5If9DGONUFCc56YwmDMW5yN9VddkcspGLTaRUj99tRdwHUmBvm/q+Xxq86zEhLc4WtVL0bDO84GO4evW
- kBUqKgmq
- ZsHK+E5dJ9K3/1xlVPeQ++h3uVfyELmp9lrOx7ZjGwqE+I+Qi6CKXpznfE2ZoRqF+Tt0V3h2Gt45Zh5Up9QBS7q8h/+qHaEssNyufvxlJGJi9Ly1B0dejQFrWyGJzi+WqKxY+Y0f2Job22RZewG4fvB7mdCuSrLhUGJCloVdGCgERNkgqyZpcmxifcgrp8eITfk0CNbJBIoe6j+1V3+czBqB+GQP0D+ikls9L3GCkLVBAywX3xVOiuxN01GByJ6mLrrcdGhBYddBC8zBu1y6O37L6amlTXfhEDYNUnBcrjQLMaqZ7an/uzeK05z+2k4JYnwhQskzyRIriXSWtPWksFEv3YxnGksa31mwAXdOLaD1dY227q845fDQVQ6pMrqtgbNsVAT1vLlii/mEPtXJFkcWs1g==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2E510C000B
+X-Stat-Signature: nq3on3hnq1is7nrgyrtigmkeojkihfjd
+X-HE-Tag: 1766384177-460461
+X-HE-Meta: U2FsdGVkX19W7KizMfKHSd+3KAh0hkTrZh8cP7tUdno1oSlsS0RvSoerqWZ8gwVJcj85aFhh+IlVUmnU0rjwdb+4HX8aEZ8PbA/hSQDkuKHanTomFvodSKcl/10IXVUee/8khulPEHg7Fk32Uab2DqFcP8d4pG2zHs7N/w1pZpfKrULVjm88RKD6P9DvERXOCMoKThNPUmSVOJtRQxpxxuwwXJyPwrxN1ek5pDAZwcXvLQmeClulF37lExme4D2mQhH0pSfgRICkq1/yytez79jTKgj9UZcEBapwEsniltlwnezTRPHiOjGKNja3lXd7BblJqM0BRYU35cvqVNkiSCCr74h1zUb8BrngJrTkZGKM8fZi/+Io6URd2gSnibx9Q7+YuQ1QlI2eXqTWURGGAOQLAzBibzj45AYeVMjRFi5UInde92ZWeWt8sefmoY+tCKE4JyutOHVzOgeERRbWCPsQ6dt1bEyBZ+Jj3MrbCKjYqZ66opHk4ntypmeEjyqLmEnRMPivqPJqFNANqNzpG2f27R3yDfVxtCacUlaWADlRMV0hCeKuM3LczJ1e3gxqEWIsOA1hOw4bSpKU6DdZRI9zTwkPRnd9qJTI5odJRzh8vPBLNsvz5YtIugkuO1yzpsgfg+odqKInS+ewQHKoABRfnmWgID112P2QHeotixaeuxGgAVOQ0feIZdwNSb5hlPOojSv17W8EH+U6pWxxyQj/KmcoC4EelX8fqaRMM6ieN0uEygQrPJvbt1p3mO4Ei4gTCexnijvyKwpoxwAYqhDMqUv9N9hgojdKcR5XM8WhAEbPeLKW9rCVWe2jr8e0ph1gEfGSFapBsvrP/GKM4MJNPNL2ZU1flju2mjyd/otntVnTMqKDYrWcs0OnszL2zWS31fR3xy3SiP7n0j99uYgKoCYSqE6mgZlHa8ynMdb+tywEUFQWTnz47uk07G76HwwEDmutIZ2Y+CS2M8X
+ bX/dzjF5
+ AhJ9ypSKfezSszpfgvvoJZ4lMfDqoz+QG/3ksJmRsSVn508Gr2I14Nv0sJolwJNNUGd13H7Ht7TF0outXDOZW+B+Op01T8Zc4S8HU5EGkXJM1KIgUfy4TLsozbYURhtiJAOGNdEVBfYlc33YGx82JlWQY7xEl7Ib3Opc5QKkRXPzqDTqzs0kxJmAfnPe9lj8at0Wtwlaay40oEys97C5WCWCLak/nmkwk0eftFxywPAJzUFz8RTmlqn79LO5LGAYpace0Dl0kG5IFL9yffHd6Zfaqf4UqPeRzoqeMGQsIlLhCzsExi3Ln1yx9rgLvm4j1X7MeZvn7qVaYr6Q5q3c7fQhUQJbvHFQm3n9rYipnMO+PkgkL2jWb8DVOMjqtPUCvV9U2xAjWUUjOqp6gHyGAZPo4X2Rh2BmtCVR/pFugdryUOV4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,43 +132,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 10:51:49AM +0800, Chen Ridong wrote:
+On Sat, Dec 20, 2025 at 11:20:44AM -0800, Andrew Morton wrote:
+> On Sat, 20 Dec 2025 06:10:21 +0000 Bing Jiao <bingjiao@google.com> wrote:
 >
+> > Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> > introduces the cpuset.mems_effective check and applies it to
+> > can_demote().
 >
-> On 2025/12/22 7:36, Bing Jiao wrote:
-> > -void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
-> > -{
-> > -	struct cgroup_subsys_state *css;
-> > -	struct cpuset *cs;
-> > -
-> > -	if (!cpuset_v2())
-> > -		return;
-> > -
-> > -	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
-> > -	if (!css)
-> > -		return;
-> > -
-> > -	/* Follows the same assumption in cpuset_node_allowed() */
-> > -	cs = container_of(css, struct cpuset, css);
-> >  	nodes_and(*mask, *mask, cs->effective_mems);
-> >  	css_put(css);
-> >  }
+> So we'll want
 >
-> Oh, I see you merged these two functions here.
+> 	Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
 >
-> However, I think cpuset_get_mem_allowed would be more versatile in general use.
+> in the changelog.
 >
-> You can then check whether the returned nodemask intersects with your target mask. In the future,
-> there may be scenarios where users simply want to retrieve the effective masks directly.
+> > However, it does not apply this check in
+> > demote_folio_list(), which leads to situations where pages are demoted
+> > to nodes that are explicitly excluded from the task's cpuset.mems.
+> >
+> > To address the issue that demotion targets do not respect
+> > cpuset.mem_effective in demote_folio_list(), implement a new function
+> > get_demotion_targets(), which returns a preferred demotion target
+> > and all allowed (fallback) nodes against mems_effective,
+> > and update demote_folio_list() and can_demote() accordingly to
+> > use get_demotion_targets().
 >
+> 7d709f49babc fist appeared in 6.16, so we must decide whether to
+> backport this fix into -stable kernels, via a Cc:
+> <stable@vger.kernel.org>.
+>
+> To make this decision it's best to have a clear understanding of the
+> userspace visible impact of the bug.  Putting pages into improper nodes
+> is undesirable, but how much does it affect real-world workloads?
+> Please include in the changelog some words about this to help others
+> understand why we should backport the fix.
+>
+> > Furthermore, update some supporting functions:
+> >   - Add a parameter for next_demotion_node() to return a copy of
+> >     node_demotion[]->preferred, allowing get_demotion_targets()
+> >     to select the next-best node for demotion.
+> >   - Change the parameters for cpuset_node_allowed() and
+> >     mem_cgroup_node_allowed() from nid to nodemask * to allow
+> >     for direct logic-and operations with mems_effective.
+>
+> If we do decide to backport the fix into earlier kernels then it's best
+> to keep the patch as small and as simple as possible.  So non-bugfix
+> changes such as these are best made via a second followup patch which
+> can be merged via the normal -rc staging process.
+>
+Hi Andrew, thank you for the review and suggestions.
 
-Hi Ridong, thank you for the suggestions.
-
-I agree that returning a nodemask would provide greater versatility.
-
-I think cpuset_get_mem_allowed_relax() would be a better name,
-since we do not need the locking and online mem guarantees
-compared to an similar function cpuset_mems_allowed().
+I hvae sent a patch v2 for the backport. However, I forgot to add
+the CC:stable line. I will fix it in v3.
 
 Best,
 Bing
