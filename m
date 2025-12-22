@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F19D711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 09:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5643DD711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 09:46:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF87D6B0088; Mon, 22 Dec 2025 04:16:38 -0500 (EST)
+	id 87B296B0088; Mon, 22 Dec 2025 04:46:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7DEA6B0089; Mon, 22 Dec 2025 04:16:38 -0500 (EST)
+	id 7FEBB6B0089; Mon, 22 Dec 2025 04:46:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7B116B008A; Mon, 22 Dec 2025 04:16:38 -0500 (EST)
+	id 70B166B008A; Mon, 22 Dec 2025 04:46:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3A086B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:16:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B88360E07
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:16:38 +0000 (UTC)
-X-FDA: 84246551676.27.1171A06
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 86AAA180002
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:16:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf16.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766394996; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7B36B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 04:46:06 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC875BC9CD
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:46:05 +0000 (UTC)
+X-FDA: 84246625890.21.DDC928D
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CD5B0140003
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:46:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dxJMTQnW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766396764; a=rsa-sha256;
 	cv=none;
-	b=OizBp2azTzBviZwARkuINxz/B8QaOnfXNwlRTh926nnT7BUZJ49BT38oxmXt7aUkt/L1xc
-	QVc7lcE/qb+DgBTKVnvQCfM/Z2NMR4BFt7OFZTV8bHyQ2ZfsOFLPqIkhOzGjiL47dSf7Ki
-	s0oFyWzxt8AjPjZ8P31keY/NyonCc5k=
+	b=CVpZH0h/TQQHbAt5RKk0LHUtc3fOSfHsSbfxOhDrwG/GdKDjvc1xZn5KkrvaMgD7Cw478r
+	8+5f4a18T5zP+Mcwd333gthh30eoX37wrKKS/jaMxiDOJelbbZGpbm+EUHF7VIsuq28MVW
+	YHeaba9g4b9XStpYwqAf+4JR+bGeSpo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf16.hostedemail.com: domain of yuanlinyu@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=yuanlinyu@honor.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dxJMTQnW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766394996;
+	s=arc-20220608; t=1766396764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mqQh9yIE/F3IAbsBdjlJzFZuXWEyXPgfG9BSwkSSIh0=;
+	b=OOLeckyBL/MUUwYae2Hib/wUPdCyaAPLXTKKvhEcky/EH1jlD41ExNW555wBonbZtqVWbs
+	YEm38/Uu6+H3t2e9wtP6RchIZ6QijqbNi/ssbc3lh/IqlAc0tBpFoJp9BLZOvUjQ2KVXdV
+	VMcQ898i6o7GebYfc218lazstk+Zhyo=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766396761;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n8yoF26tQkodqYh0wMoOhivOAO11RUhpUb9ohKB9TwI=;
-	b=5pbMEPiMxGtfqslh7qbgVBwfx+G9V+Ssz7wiljI3O/q4OgGPrjAtpUAF21rxS5MIWcKLJ3
-	llstVXL/GvKGkSR88E9vHaBUsZk+JO2gFxrj1PaBHyGULdBzLitFceu0q4PQnVPFlkk4IA
-	SA6LMBlli2b9h0pEaqYfb2uPXEY5A/k=
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dZXWL0TzYzYkyXB;
-	Mon, 22 Dec 2025 17:13:50 +0800 (CST)
-Received: from w020.hihonor.com (10.68.31.183) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Mon, 22 Dec
- 2025 17:16:29 +0800
-Received: from w025.hihonor.com (10.68.28.69) by w020.hihonor.com
- (10.68.31.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Mon, 22 Dec
- 2025 17:16:29 +0800
-Received: from w025.hihonor.com ([fe80::5a3b:9b85:bbde:73b9]) by
- w025.hihonor.com ([fe80::5a3b:9b85:bbde:73b9%14]) with mapi id
- 15.02.2562.027; Mon, 22 Dec 2025 17:16:29 +0800
-From: yuanlinyu <yuanlinyu@honor.com>
-To: Enze Li <lienze@kylinos.cn>, Huacai Chen <chenhuacai@kernel.org>
-CC: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, WANG Xuerui <kernel@xen0n.name>,
-	"kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "enze.li@gmx.com" <enze.li@gmx.com>
-Subject: RE: [PATCH v2 1/2] LoongArch: kfence: avoid use
- CONFIG_KFENCE_NUM_OBJECTS
-Thread-Topic: [PATCH v2 1/2] LoongArch: kfence: avoid use
- CONFIG_KFENCE_NUM_OBJECTS
-Thread-Index: AQHcb+kJ0Mrpi/YLLUuMpTbvJeaADrUntCKAgAHNJgCAA+WFIA==
-Date: Mon, 22 Dec 2025 09:16:29 +0000
-Message-ID: <ab69f5a942824394af6010f75a06c5f7@honor.com>
-References: <20251218063916.1433615-1-yuanlinyu@honor.com>
- <20251218063916.1433615-2-yuanlinyu@honor.com>
- <CAAhV-H5n_3Ndk5yRm=S-9WktD9xivVF8-JLaycV8JB-pVuybbA@mail.gmail.com>
- <b2e84054-bf3b-4a1a-b946-bd024f341512@kylinos.cn>
-In-Reply-To: <b2e84054-bf3b-4a1a-b946-bd024f341512@kylinos.cn>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.165.1.160]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+	bh=mqQh9yIE/F3IAbsBdjlJzFZuXWEyXPgfG9BSwkSSIh0=;
+	b=dxJMTQnWy7525VqqYqZfh9xjZ4zZlAeWpYhDHKN9ylu3y9DAi5fc46LkZOVobA3GPKOn7e
+	yV6hiRozKtFavTcAUk6jWMRebaMfnHGH5nJ3vkAU+8Rk/ROojwjuUideiyTwKXGfpIiT9b
+	CFt/EGJVEcJBZ4jassS2xC96d8BWCAM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCHv2 06/14] mm: Rework compound_head() for power-of-2
+ sizeof(struct page)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <34BED0AB-22AF-4107-84FB-543D11BCA136@linux.dev>
+Date: Mon, 22 Dec 2025 17:45:16 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <78326B0A-7845-4D80-8BAE-C2191030F8BC@linux.dev>
+References: <20251218150949.721480-1-kas@kernel.org>
+ <20251218150949.721480-7-kas@kernel.org>
+ <34BED0AB-22AF-4107-84FB-543D11BCA136@linux.dev>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 86AAA180002
-X-Stat-Signature: 3ma5bc4aj5q1q1ojcufu74nere4jouaj
+X-Rspamd-Queue-Id: CD5B0140003
+X-Stat-Signature: 6thh8d3kibt94p1u1c89koya7ouo6pf1
 X-Rspam-User: 
-X-HE-Tag: 1766394994-125003
-X-HE-Meta: U2FsdGVkX18tnot6kPq5tPfRTp0zGBWXcBK1HKmeI6TgT09whaiJgz21V/k4IUF4ZWAdPr4yGuVFw8r9zsvqwkwhh8IkqNSzzKOywelXwJXRdpPFAL4/ZDHLyqd8haQMpjq0BCi2YR82TP8gyQEK7+seA4MdCikGoecOsdeWp5LRGVfYYG7KJn9Y8DCN6Pc6+urWMo7DLNZH3V3oVQchSGXOfbZsoqrby/cGaPMfOSU3zpSTpG5mY3oW1nuaqap7CCzEoXe7tceSZoNpYkZ4z3YPC0pGhiOWEmeqGCTTbWlikez8gyuleRrGV2PJ+0KUoKkRScNhshJjNksB7NtVGlUNoHW4+FxDDzsMEQYyX3LlXKOZA9JAsxumjg1Yhlyjy6GUxxsTrusbxVU7jV+wbBkH2h71RUXQhHpegEGLeN4H6O94vapcFsI5spkKEIZ6k5yb0W5Jl7NwSrzJyu04npVWrrKBQyeyXFIvlC9tWRNP4ak1LuTtWYCIOVxFbDyluQI41pqNCBC73aR/UjbgiQ243pGzBebzXfg0LVGiV3atzhw2m6UvlAh4L+MeUISHOgei3BrynNkn9vxGaTONBaeve9bFpzwA31lAzQ6tFyFlu9syMFGtkGGSF/eb8ZEVXXLez5IWtkYEg/AMTOu4RpAFMxI9LEhlmGHs7lnpZCHKAZCbLgIa4tZvFUGKt1u1jZVUs2VIXyfRBxgVk4iufG1K/MU0OeeJaFMww8FaaN8vbejiWU/PG2uUEEEwce+Y+kcYXhTs1Bw5Dl+oQ4BjPT4yl8q6bYZjSQVV0rX8Q8XJ26Q6z07RYG07D7TPE+53w1w8zRexUXHi/j0NMrla1wMIPhSLTtaRAcmRUZmA5Yj+L93TN1LrQlUnAvMsTIv/rXdFoXltuuftnQvY+ABRJs5mUh7g/yAry1s1W1j/D4serPTIy6VJwCK//7t2Tx76526t+aZ/q7AXdVhE+rE
- 8pXdr6Um
- qcHJ17nywl5GPgEBlndkk3rHFr/RCbBZsaRbg5SSwYUiFV8oeH2JHBv0fLD3KitIiLxKRmFZsG7pw6yiN7f9PXxwC3j+iDn8vz5VikH/45lZ1lepSTJRboVWGkJFliGhoBWfw3R0RfkPAhL6TrAYprgq3FU2Id40ZimKVcpbV77K6pAhdcOKg3cXAEztCMFE4/TnG4ZirrdfMiKaS+0WZ/tbxmxSORgxYW83L6TZMn2bmBHr+sPQFD3Xgd+ewwAMFa/Splqxu/1qfKZxNG4KckOB7WRskfHR0vaYPlOQi66xO7wHhCWrtm5Qr8uL0xtJRUK/CUE1mn6gyFi1nfZ+xQ/j1fUxXSMQ3iVUkgz7YnTYyH9FLWIMWX890yoOqsi8AXgdiJRkWw8VUJyrwRbDNH3zgOyURIRw9R5I2VfLYdTMnCSZYb4FxbVoEmBv7IhxFrkVqrgIVkw+0ySVyFr+FRFq0diJ3OmEwp8yhGVM0sKm76I2FKqhN+BLVU1by7zJYDy9lz0KHhQxYSqQvnWqM/K3BmCgSkkczbjGORD0SPH3jgISzXCb3+XgtRJqeQdetcPas5xY703iv6ljYNMi+P+97hdDdjoLR6BRM7YZSE8+wN1vOHl1+2ZLVkLxF3sI6ZjNJoWyNBkoNGSHVg8yoDPRAx6vzqETO9tAa6WrAJnEBzdCs9ceAbD59w9daKMVQmEA3
+X-HE-Tag: 1766396763-286638
+X-HE-Meta: U2FsdGVkX1/ni1qOuGZd9FYg0fk1F5Da5hoK1NirmnGyBsH9Mss4i39tpz41k12RRUjGlFYzlO4u9RarhYB4ED7QdMqFyPw4UjBkcB43vXyH2OaNfDUEDEXVqR/0acQcSC2/Taz2lMFnL8n/Lyjh9x4+U38mmsEJ5l+V16H68Q239YdQywM2Ftu84RvndPHohqVl6KI3iuVpzyTuq5Rk+4ItPWkrMexyrRR+A0RDKG+TLGA6UoVas2lkmgUBg7X6CiE0Lr7vdVspI4jrL9uhJXYFvFvR4eeSDOpcnJTIXnQheO67HcWJkr7Q4yYqxbS6/KaQR63kNhkQL1qYXupdlZVBuGr3xLtOBNM3Bxk3wxrSPYj4GOByf6dGJsREyj84TSb34Uf+qWQhQMpFrvn6Lll6xYf6MtO+vFkd5BDfzZ6qP5mk9qBqyXBOmLf7h82Ftli/LqZX/Lx3I19H1qEl98v1Fodn7FefHhTRznxBuC5DIrdRwcqS72WFXyiDg2LtzLpZZInWcrikgzKFoj2r43W8hdJzDeYbqDBw1MxlHiN6VQbi/e3XfJaftbcyychfNkZiAC0S+ibVKcO2oieEB+5IGphLm13kGrb3Q5m7SzwUGFSGcf8OMGuw4VsnC2dc7NYAhqVsB/AIESgASN2xapCNaTny8aOngkKs0v2iMf+GvYHyu/0JIgUC6FN6sNHjvXxZC+aLjPUBaR4i+NSmvINA0e0ZUcstq0olVCzqFPeGpMNXiWIV5p+t52OlnJzp+1escXm6V4GOt7hZYgqJaW/YAzLEZLdf0nWdzaUzdnvPO9/HY+WO3kxZTISLZuAHI9v7E/Z4KZZ/UV7j20JYePmRiWJQJZAObwll5oHEGhR4wDjHLwIZU6Dewe1FVsibFT19pep1XfPWC58RrcmK5lyNmNAKmm3n6n9aWPdhane8cfcBfV8dZI/7P5qshIz4Lf/KoiUBh36r+JD8q8d
+ YZ2byZjA
+ MAoIJYPNKV8LEwkcKRUlkOZalhWKDMK/Y5Goe50g31fA558XmigFLJ/VK2IpUNFosy08mvDmQWf8F+U970Bpd+rrgq6yu0AhYnE2awOjMREtww8lwj1vtRA2zJ2PROMaHz7spb11OhwcnP6/5D/t0mBe0c2I28c3B5iaSD11Vs/6YtLgwKzoZIqrfRpziGjpXsmmMheEevNlaCx716+wk40ctrmbH2rNohvDXxsbXeYhYt5mJahaKDWCnR+9ucj07WK4Svp57GTSxnx/sKJ/FeT5bPi7Ax4ZJ0hBYAgov0yA5G28F0rzMHZVbYg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,128 +109,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBGcm9tOiBFbnplIExpIDxsaWVuemVAa3lsaW5vcy5jbj4NCj4gU2VudDogU2F0dXJkYXksIERl
-Y2VtYmVyIDIwLCAyMDI1IDE6NDQgUE0NCj4gVG86IEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGtl
-cm5lbC5vcmc+OyB5dWFubGlueXUgPHl1YW5saW55dUBob25vci5jb20+DQo+IENjOiBBbGV4YW5k
-ZXIgUG90YXBlbmtvIDxnbGlkZXJAZ29vZ2xlLmNvbT47IE1hcmNvIEVsdmVyDQo+IDxlbHZlckBn
-b29nbGUuY29tPjsgRG1pdHJ5IFZ5dWtvdiA8ZHZ5dWtvdkBnb29nbGUuY29tPjsgQW5kcmV3IE1v
-cnRvbg0KPiA8YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZz47IFdBTkcgWHVlcnVpIDxrZXJuZWxA
-eGVuMG4ubmFtZT47DQo+IGthc2FuLWRldkBnb29nbGVncm91cHMuY29tOyBsaW51eC1tbUBrdmFj
-ay5vcmc7IGxvb25nYXJjaEBsaXN0cy5saW51eC5kZXY7DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc7IGVuemUubGlAZ214LmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDEvMl0g
-TG9vbmdBcmNoOiBrZmVuY2U6IGF2b2lkIHVzZQ0KPiBDT05GSUdfS0ZFTkNFX05VTV9PQkpFQ1RT
-DQo+IA0KPiBPbiAyMDI1LzEyLzE5IDEwOjEzLCBIdWFjYWkgQ2hlbiB3cm90ZToNCj4gPiBIaSwg
-RW56ZSwNCj4gPg0KPiA+IE9uIFRodSwgRGVjIDE4LCAyMDI1IGF0IDI6MznigK9QTSB5dWFuIGxp
-bnl1IDx5dWFubGlueXVAaG9ub3IuY29tPiB3cm90ZToNCj4gPj4NCj4gPj4gdXNlIGNvbW1vbiBr
-ZmVuY2UgbWFjcm8gS0ZFTkNFX1BPT0xfU0laRSBmb3IgS0ZFTkNFX0FSRUFfU0laRQ0KPiA+PiBk
-ZWZpbml0aW9uDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IHl1YW4gbGlueXUgPHl1YW5saW55
-dUBob25vci5jb20+DQo+ID4+IC0tLQ0KPiA+PiAgYXJjaC9sb29uZ2FyY2gvaW5jbHVkZS9hc20v
-cGd0YWJsZS5oIHwgMyArKy0NCj4gPj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyks
-IDEgZGVsZXRpb24oLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdpdCBhL2FyY2gvbG9vbmdhcmNoL2lu
-Y2x1ZGUvYXNtL3BndGFibGUuaA0KPiA+PiBiL2FyY2gvbG9vbmdhcmNoL2luY2x1ZGUvYXNtL3Bn
-dGFibGUuaA0KPiA+PiBpbmRleCBmNDFhNjQ4YTNkOWUuLmU5OTY2YzlmODQ0ZiAxMDA2NDQNCj4g
-Pj4gLS0tIGEvYXJjaC9sb29uZ2FyY2gvaW5jbHVkZS9hc20vcGd0YWJsZS5oDQo+ID4+ICsrKyBi
-L2FyY2gvbG9vbmdhcmNoL2luY2x1ZGUvYXNtL3BndGFibGUuaA0KPiA+PiBAQCAtMTAsNiArMTAs
-NyBAQA0KPiA+PiAgI2RlZmluZSBfQVNNX1BHVEFCTEVfSA0KPiA+Pg0KPiA+PiAgI2luY2x1ZGUg
-PGxpbnV4L2NvbXBpbGVyLmg+DQo+ID4+ICsjaW5jbHVkZSA8bGludXgva2ZlbmNlLmg+DQo+ID4+
-ICAjaW5jbHVkZSA8YXNtL2FkZHJzcGFjZS5oPg0KPiA+PiAgI2luY2x1ZGUgPGFzbS9hc20uaD4N
-Cj4gPj4gICNpbmNsdWRlIDxhc20vcGFnZS5oPg0KPiA+PiBAQCAtOTYsNyArOTcsNyBAQCBleHRl
-cm4gdW5zaWduZWQgbG9uZyBlbXB0eV96ZXJvX3BhZ2VbUEFHRV9TSVpFIC8NCj4gc2l6ZW9mKHVu
-c2lnbmVkIGxvbmcpXTsNCj4gPj4gICNkZWZpbmUgTU9EVUxFU19FTkQgICAgKE1PRFVMRVNfVkFE
-RFIgKyBTWl8yNTZNKQ0KPiA+Pg0KPiA+PiAgI2lmZGVmIENPTkZJR19LRkVOQ0UNCj4gPj4gLSNk
-ZWZpbmUgS0ZFTkNFX0FSRUFfU0laRSAgICAgICAoKChDT05GSUdfS0ZFTkNFX05VTV9PQkpFQ1RT
-ICsgMSkNCj4gKiAyICsgMikgKiBQQUdFX1NJWkUpDQo+ID4+ICsjZGVmaW5lIEtGRU5DRV9BUkVB
-X1NJWkUgICAgICAgKEtGRU5DRV9QT09MX1NJWkUgKyAoMiAqDQo+IFBBR0VfU0laRSkpDQo+ID4g
-Q2FuIHlvdSByZW1lbWJlciB3aHkgeW91IGRpZG4ndCB1c2UgS0ZFTkNFX1BPT0xfU0laRSBhdCB0
-aGUgZmlyc3QgcGxhY2U/DQo+IA0KPiBJIGRvbid0IHJlY2FsbCB0aGUgZXhhY3QgcmVhc29uIG9m
-ZiB0aGUgdG9wIG9mIG15IGhlYWQsIGJ1dCBJIGJlbGlldmUgaXQgd2FzIGR1ZSB0bw0KPiBjb21w
-bGV4IGRlcGVuZGVuY3kgaXNzdWVzIHdpdGggdGhlIGhlYWRlciBmaWxlcyB3aGVyZSBLRkVOQ0Vf
-UE9PTF9TSVpFIGlzDQo+IGRlZmluZWQuICBUbyBhdm9pZCB0aG9zZSBjb21wbGljYXRpb25zLCB3
-ZSBsaWtlbHkgb3B0ZWQgdG8gdXNlDQo+IEtGRU5DRV9OVU1fT0JKRUNUUyBkaXJlY3RseS4NCj4g
-DQo+IEkgY2hlY2tlZCBvdXQgdGhlIGNvZGUgYXQgY29tbWl0DQo+ICg2YWQzZGY1NmJiMTk5MTM0
-ODAwOTMzZGYyYWZjZDdkZjNiMDNlZjMzICJMb29uZ0FyY2g6IEFkZCBLRkVOQ0UNCj4gKEtlcm5l
-bA0KPiBFbGVjdHJpYy1GZW5jZSkgc3VwcG9ydCIpIGFuZCBlbmNvdW50ZXJlZCB0aGUgZm9sbG93
-aW5nIGVycm9ycyB3aGVuIGNvbXBpbGluZw0KPiB3aXRoIHRoaXMgcGF0Y2ggYXBwbGllZC4NCj4g
-DQo+IDg8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tDQo+ICAgQ0MgICAgICBhcmNoL2xvb25nYXJjaC9rZXJuZWwvYXNtLW9mZnNldHMucw0KPiBJ
-biBmaWxlIGluY2x1ZGVkIGZyb20gLi9hcmNoL2xvb25nYXJjaC9pbmNsdWRlL2FzbS9wZ3RhYmxl
-Lmg6MTMsDQo+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvbGludXgvcGd0YWJsZS5o
-OjYsDQo+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvbGludXgvbW0uaDoyOSwNCj4g
-ICAgICAgICAgICAgICAgICBmcm9tIGFyY2gvbG9vbmdhcmNoL2tlcm5lbC9hc20tb2Zmc2V0cy5j
-Ojk6DQo+IC4vaW5jbHVkZS9saW51eC9rZmVuY2UuaDo5MzozNTogd2FybmluZzogJ3N0cnVjdCBr
-bWVtX2NhY2hlJyBkZWNsYXJlZCBpbnNpZGUNCj4gcGFyYW1ldGVyIGxpc3Qgd2lsbCBuIG90IGJl
-IHZpc2libGUgb3V0c2lkZSBvZiB0aGlzIGRlZmluaXRpb24gb3IgZGVjbGFyYXRpb24NCj4gICAg
-OTMgfCB2b2lkIGtmZW5jZV9zaHV0ZG93bl9jYWNoZShzdHJ1Y3Qga21lbV9jYWNoZSAqcyk7DQo+
-ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn4NCj4g
-Li9pbmNsdWRlL2xpbnV4L2tmZW5jZS5oOjk5OjI5OiB3YXJuaW5nOiAnc3RydWN0IGttZW1fY2Fj
-aGUnIGRlY2xhcmVkIGluc2lkZQ0KPiBwYXJhbWV0ZXIgbGlzdCB3aWxsIG4gb3QgYmUgdmlzaWJs
-ZSBvdXRzaWRlIG9mIHRoaXMgZGVmaW5pdGlvbiBvciBkZWNsYXJhdGlvbg0KPiAgICA5OSB8IHZv
-aWQgKl9fa2ZlbmNlX2FsbG9jKHN0cnVjdCBrbWVtX2NhY2hlICpzLCBzaXplX3Qgc2l6ZSwgZ2Zw
-X3QgZmxhZ3MpOw0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+
-fn5+DQo+IC4vaW5jbHVkZS9saW51eC9rZmVuY2UuaDoxMTc6NTA6IHdhcm5pbmc6ICdzdHJ1Y3Qg
-a21lbV9jYWNoZScgZGVjbGFyZWQgaW5zaWRlDQo+IHBhcmFtZXRlciBsaXN0IHdpbGwgbm90IGJl
-IHZpc2libGUgb3V0c2lkZSBvZiB0aGlzIGRlZmluaXRpb24gb3IgZGVjbGFyYXRpb24NCj4gICAx
-MTcgfCBzdGF0aWMgX19hbHdheXNfaW5saW5lIHZvaWQgKmtmZW5jZV9hbGxvYyhzdHJ1Y3Qga21l
-bV9jYWNoZSAqcywgc2l6ZV90DQo+IHNpemUsIGdmcF90IGZsYWdzKQ0KPiAgICAgICB8DQo+IF5+
-fn5+fn5+fn4NCj4gLi9pbmNsdWRlL2xpbnV4L2tmZW5jZS5oOiBJbiBmdW5jdGlvbiAna2ZlbmNl
-X2FsbG9jJzoNCj4gLi9pbmNsdWRlL2xpbnV4L2tmZW5jZS5oOjEyODozMTogZXJyb3I6IHBhc3Np
-bmcgYXJndW1lbnQgMSBvZiAnX19rZmVuY2VfYWxsb2MnDQo+IGZyb20gaW5jb21wYXRpYmxlIHAg
-b2ludGVyIHR5cGUgWy1XaW5jb21wYXRpYmxlLXBvaW50ZXItdHlwZXNdDQo+ICAgMTI4IHwgICAg
-ICAgICByZXR1cm4gX19rZmVuY2VfYWxsb2Mocywgc2l6ZSwgZmxhZ3MpOw0KPiAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4NCj4gICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8DQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-c3RydWN0IGttZW1fY2FjaGUgKg0KPiAuL2luY2x1ZGUvbGludXgva2ZlbmNlLmg6OTk6NDE6IG5v
-dGU6IGV4cGVjdGVkICdzdHJ1Y3Qga21lbV9jYWNoZSAqJyBidXQNCj4gYXJndW1lbnQgaXMgb2Yg
-dHlwZSAnc3RydSBjdCBrbWVtX2NhY2hlIConDQo+ICAgIDk5IHwgdm9pZCAqX19rZmVuY2VfYWxs
-b2Moc3RydWN0IGttZW1fY2FjaGUgKnMsIHNpemVfdCBzaXplLCBnZnBfdCBmbGFncyk7DQo+ICAg
-ICAgIHwgICAgICAgICAgICAgICAgICAgICAgfn5+fn5+fn5+fn5+fn5+fn5+fl4NCj4gLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tPjgNCj4gDQo+
-IFNpbWlsYXJseSwgYWZ0ZXIgYXBwbHlpbmcgdGhpcyBwYXRjaCB0byB0aGUgbGF0ZXN0IGNvZGUN
-Cj4gKGRkOWIwMDRiN2ZmMzI4OWZiN2JhZTM1MTMwYzBhNWMwNTM3MjY2YWYgIk1lcmdlIHRhZyAn
-dHJhY2UtdjYuMTktcmMxJyIpDQo+IGZyb20gdGhlIG1hc3RlciBicmFuY2ggb2YgdGhlIExpbnV4
-IHJlcG9zaXRvcnkgYW5kIGVuYWJsaW5nIEtGRU5DRSwgSQ0KPiBlbmNvdW50ZXJlZCB0aGUgZm9s
-bG93aW5nIGNvbXBpbGF0aW9uIGVycm9ycy4NCj4gDQo+IDg8LS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ICAgQ0MgICAgICBhcmNoL2xvb25n
-YXJjaC9rZXJuZWwvYXNtLW9mZnNldHMucw0KPiBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi9hcmNo
-L2xvb25nYXJjaC9pbmNsdWRlL2FzbS9wZ3RhYmxlLmg6MTMsDQo+ICAgICAgICAgICAgICAgICAg
-ZnJvbSAuL2luY2x1ZGUvbGludXgvcGd0YWJsZS5oOjYsDQo+ICAgICAgICAgICAgICAgICAgZnJv
-bSAuL2luY2x1ZGUvbGludXgvbW0uaDozMSwNCj4gICAgICAgICAgICAgICAgICBmcm9tIGFyY2gv
-bG9vbmdhcmNoL2tlcm5lbC9hc20tb2Zmc2V0cy5jOjExOg0KPiAuL2luY2x1ZGUvbGludXgva2Zl
-bmNlLmg6OTc6MzU6IHdhcm5pbmc6ICdzdHJ1Y3Qga21lbV9jYWNoZScgZGVjbGFyZWQgaW5zaWRl
-DQo+IHBhcmFtZXRlciBsaXN0IHdpbGwgbiBvdCBiZSB2aXNpYmxlIG91dHNpZGUgb2YgdGhpcyBk
-ZWZpbml0aW9uIG9yIGRlY2xhcmF0aW9uDQo+ICAgIDk3IHwgdm9pZCBrZmVuY2Vfc2h1dGRvd25f
-Y2FjaGUoc3RydWN0IGttZW1fY2FjaGUgKnMpOw0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBefn5+fn5+fn5+DQo+IC4vaW5jbHVkZS9saW51eC9rZmVuY2UuaDox
-MDM6Mjk6IHdhcm5pbmc6ICdzdHJ1Y3Qga21lbV9jYWNoZScgZGVjbGFyZWQgaW5zaWRlDQo+IHBh
-cmFtZXRlciBsaXN0IHdpbGwgbm90IGJlIHZpc2libGUgb3V0c2lkZSBvZiB0aGlzIGRlZmluaXRp
-b24gb3IgZGVjbGFyYXRpb24NCj4gICAxMDMgfCB2b2lkICpfX2tmZW5jZV9hbGxvYyhzdHJ1Y3Qg
-a21lbV9jYWNoZSAqcywgc2l6ZV90IHNpemUsIGdmcF90IGZsYWdzKTsNCj4gICAgICAgfCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fg0KPiAuL2luY2x1ZGUvbGludXgva2Zl
-bmNlLmg6MTIxOjUwOiB3YXJuaW5nOiAnc3RydWN0IGttZW1fY2FjaGUnIGRlY2xhcmVkIGluc2lk
-ZQ0KPiBwYXJhbWV0ZXIgbGlzdCB3aWxsIG5vdCBiZSB2aXNpYmxlIG91dHNpZGUgb2YgdGhpcyBk
-ZWZpbml0aW9uIG9yIGRlY2xhcmF0aW9uDQo+ICAgMTIxIHwgc3RhdGljIF9fYWx3YXlzX2lubGlu
-ZSB2b2lkICprZmVuY2VfYWxsb2Moc3RydWN0IGttZW1fY2FjaGUgKnMsIHNpemVfdA0KPiBzaXpl
-LCBnZnBfdCBmbGFncykNCj4gICAgICAgfA0KPiBefn5+fn5+fn5+DQo+IC4vaW5jbHVkZS9saW51
-eC9rZmVuY2UuaDogSW4gZnVuY3Rpb24gJ2tmZW5jZV9hbGxvYyc6DQo+IC4vaW5jbHVkZS9saW51
-eC9rZmVuY2UuaDoxMzI6MzE6IGVycm9yOiBwYXNzaW5nIGFyZ3VtZW50IDEgb2YgJ19fa2ZlbmNl
-X2FsbG9jJw0KPiBmcm9tIGluY29tcGF0aWJsZSBwIG9pbnRlciB0eXBlIFstV2luY29tcGF0aWJs
-ZS1wb2ludGVyLXR5cGVzXQ0KPiAgIDEzMiB8ICAgICAgICAgcmV0dXJuIF9fa2ZlbmNlX2FsbG9j
-KHMsIHNpemUsIGZsYWdzKTsNCj4gICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBeDQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfA0KPiAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBrbWVtX2NhY2hlICoNCj4gLi9p
-bmNsdWRlL2xpbnV4L2tmZW5jZS5oOjEwMzo0MTogbm90ZTogZXhwZWN0ZWQgJ3N0cnVjdCBrbWVt
-X2NhY2hlIConDQo+IGJ1dCBhcmd1bWVudCBpcyBvZiB0eXBlICdzdHINCj4gdWN0IGttZW1fY2Fj
-aGUgKicNCj4gICAxMDMgfCB2b2lkICpfX2tmZW5jZV9hbGxvYyhzdHJ1Y3Qga21lbV9jYWNoZSAq
-cywgc2l6ZV90IHNpemUsIGdmcF90IGZsYWdzKTsNCj4gICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICB+fn5+fn5+fn5+fn5+fn5+fn5+Xg0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0+OA0KPiANCj4gU28sIHRoaXMgcGF0Y2ggY3VycmVu
-dGx5IHJ1bnMgaW50byBjb21waWxhdGlvbiBpc3N1ZXMuICBsaW55dSBwcm9iYWJseSBkaWRuJ3Qg
-aGF2ZQ0KPiBLRkVOQ0UgZW5hYmxlZCB3aGVuIGNvbXBpbGluZyBsb2NhbGx5LCB3aGljaCBpcyB3
-aHkgdGhpcyBlcnJvciB3YXMgbWlzc2VkLg0KPiBZb3UgY2FuIGVuYWJsZSBpdCBhcyBmb2xsb3dz
-Og0KPiANCj4gICBLZXJuZWwgaGFja2luZw0KPiAgICAgTWVtb3J5IERlYnVnZ2luZw0KPiAgICAg
-ICBbKl0gS0ZFTkNFOiBsb3ctb3ZlcmhlYWQgc2FtcGxpbmctYmFzZWQgbWVtb3J5IHNhZmV0eQ0K
-DQpIaSBFbnplLA0KDQpTb3JyeSBvbmx5IHRlc3Qgb24gYXJtNjQuDQoNCkNvdWxkIHlvdSBoZWxw
-IGZpeCB0aGUgY29tcGlsZSBpc3N1ZSBhbmQgcHJvdmlkZSBhIGNvcnJlY3QgY2hhbmdlID8NCg0K
-T3IgSSBuZWVkIHNvbWV0aW1lIHRvIHJlc29sdmUgdGhlIGlzc3VlLg0KDQo+IA0KPiBUaGFua3Ms
-DQo+IEVuemUNCj4gDQo+IDwuLi4+DQo=
+
+
+> On Dec 22, 2025, at 15:57, Muchun Song <muchun.song@linux.dev> wrote:
+>=20
+>=20
+>=20
+>> On Dec 18, 2025, at 23:09, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>=20
+>> For tail pages, the kernel uses the 'compound_info' field to get to =
+the
+>> head page. The bit 0 of the field indicates whether the page is a
+>> tail page, and if set, the remaining bits represent a pointer to the
+>> head page.
+>>=20
+>> For cases when size of struct page is power-of-2, change the encoding =
+of
+>> compound_info to store a mask that can be applied to the virtual =
+address
+>> of the tail page in order to access the head page. It is possible
+>> because struct page of the head page is naturally aligned with =
+regards
+>> to order of the page.
+>>=20
+>> The significant impact of this modification is that all tail pages of
+>> the same order will now have identical 'compound_info', regardless of
+>> the compound page they are associated with. This paves the way for
+>> eliminating fake heads.
+>>=20
+>> The HugeTLB Vmemmap Optimization (HVO) creates fake heads and it is =
+only
+>> applied when the sizeof(struct page) is power-of-2. Having identical
+>> tail pages allows the same page to be mapped into the vmemmap of all
+>> pages, maintaining memory savings without fake heads.
+>>=20
+>> If sizeof(struct page) is not power-of-2, there is no functional
+>> changes.
+>>=20
+>=20
+> Forgot to mention, I believe I stated in the previous version that =
+this
+> mechanism only applies when CONFIG_SPARSEMEM_VMEMMAP is configured.
+> Therefore, you need to wrap the entire mechanism within =
+CONFIG_SPARSEMEM_VMEMMAP.
+> For other configurations, it's difficult to guarantee alignment to a =
+very
+> large size (for example, in the case of CONFIG_SPARSEMEM && =
+!CONFIG_SPARSEMEM_VMEMMAP,
+> vmemmap allocation uses kvmalloc, which only guarantees PAGE_SIZE =
+alignment
+> for the returned address).
+
+I found that we can call kvmalloc_node_align inside =
+populate_section_memmap (for
+memory hotplug case), so that we can specify the alignment parameter as =
+the
+input size. Then, this mechanism can applied for CONFIG_SPARSEMEM &&
+!CONFIG_SPARSEMEM_VMEMMAP.
+
+For CONFIG_FLATMEM, we also need similar approach to specify the correct =
+alignment
+in alloc_node_mem_map().
+
+Thanks.
+
+
 
