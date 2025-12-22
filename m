@@ -4,126 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B30D711D5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F801D711D5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 06:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 701A66B0088; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
+	id F114E6B0088; Mon, 22 Dec 2025 01:20:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AF806B0089; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
+	id EF3086B0089; Mon, 22 Dec 2025 01:20:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 591636B008A; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
+	id E29BD6B008A; Mon, 22 Dec 2025 01:20:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 47CD46B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:16:20 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 015411A0A31
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:16:19 +0000 (UTC)
-X-FDA: 84246097320.13.BBB445A
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2E510C000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:16:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4NIKJlWr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bingjiao@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766384178; a=rsa-sha256;
-	cv=none;
-	b=rlSLkcjH7IX+M1yTlyf+miFAFQGyJzaUL2+/4kCySlFD3xVoZJjOINSWz83v5Brj0G92Hk
-	/wkC93yAXuEuGxILdBxF2RrurkVQg7ngfZn8og80JobqO1srhmjwvXhR8CMx4/EGg2IBf0
-	R4qqWAa108sMCv5BqDgASdopzClqa5w=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4NIKJlWr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=bingjiao@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D26AB6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 01:20:48 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7030C60D4D
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:20:48 +0000 (UTC)
+X-FDA: 84246108576.10.6941BA1
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 28AE4140006
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:20:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=a6I57w+F;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766384178;
+	s=arc-20220608; t=1766384446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
-	b=WAjot1bxQX1eZOL0u6ALHbRM+w+tsSPnAx1jIldeO7+nu84wUAPlx+vZftUz7psuHmK+Fo
-	0df5KWHFwbJQPS6RefXED9M2x8SMn1DVSPUYT6C6iZZ4C/jJF7ikv8E9KRzYag6jbkYpVn
-	rAJEYiaoL4PwZHjuFHrsepkLX/XI3fk=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a1462573caso462145ad.0
-        for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:16:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766384177; x=1766988977; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
-        b=4NIKJlWrDJunyE5aE3Tub3SZE6YrbTF6ePL+kk9Ol9RsCTu/e8t+sL3VKYhj9tE8VC
-         ljG9Vsseb2ehU8ltdYkbPGo1+y3EcTNeLgYAnhpfsKUUiSefztvCeYRiEWTciYlor1ll
-         jrDeCBuwHmxdmJe9qWeXBpc3dyWWsq7u0V9EcvpyGCPm6BsASGWAxQVMM4rZ/bkiMak/
-         Kh0V0jrVCiIx1gzeubkib3RVhwN+0hJL5eDAyJiZ+egrQJlCS9W7E8je8KHfPxFYVNkE
-         huPFW1245Zrl4zE81z+hmJB6vGsu2TfSexNnUUbeH97Y1Br2N/N0m4+OxyIYWEKYQ0KS
-         VDTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766384177; x=1766988977;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sKlYwDKHeLnktmF0WJtLvL/mlQQWgFKsDt5lGymxEgs=;
-        b=QBDl8uv0VjXjfudAHPA+drhXMBcUP2es7RgTNvakKDH1eU3IAJgYVb1le8Wpu10qim
-         cNxV8ozweYsIlJEV7ZN1KJwJfqg5YanjUKh7NJL0zJsIozpNIUUO3eayEjN7N2jPH04b
-         D1rffm8ajirMiGIF+VenRDnvGC0WVM4eDbFL7JMpbZZnGysoz9VonLqqgZn9/oTbxvst
-         xrA4NR8sEqYXOaVz7rWtc/Q9SstKvdg4OgL9DNppPPuqnNC/coAqbUQse5Qwq8j8yfHG
-         MNuET//MitC+deYGE6N2D6Gvwi91MwGSXkOYJ2zEnVDSyGmWu+qiCZ9NiNFnEjZUBgQP
-         hDxA==
-X-Gm-Message-State: AOJu0Yzxn8Evtga0PZVnUlDXjq2WfG/MpRX810UUrQ2P/NSmx1bTI9Gb
-	RmLB5LqkMXWW3F83XyOhSf2SJKwDyKXHqSPhEHmgEutAPNn8EuuhwmA9+F6VJI7tOw==
-X-Gm-Gg: AY/fxX600V2PWyZ0OyU+Uiv2qI1DwkB1ycE2Syj/2fiUgFhP+Y++Y6O/gsRZN5xRHii
-	OlBwWFvHUtL09mCyjOeQq9WPDymfypLxjzp/l+2N2ZqT6R7jTtWPY0lbTvUBnj0b6Es56Cxc+8R
-	dHvK3IoL6dZ/uejj3yoVkWI5hlGCxZY6oE8AUUpSJvMUCnFqFzS9/9iZNXWOudL/9y4G2pL7/18
-	e33VSORGqC893c96O78uVlJuoPysXOw3Iduzxk8ZMH8VXCCr7Ewg52rUQ/6kU4qtRVlOll7hZ+X
-	g//QBWp9L6SbgS9WFUuMzR65QHFzy7Fclg0/jPY0jHjFDIoOwlrl/6ixBzgDEJtKkay2JmI/YXk
-	82YzayO03ryJn8NLw2nS/fggG4Qy3RgNKWWMxilHolsGqtCstD7DQXJKJqeXFEDpNWpmVksKzR7
-	DiZty1I7KKS+jrBEnbiwhQrdlOvKfuzixMCmzpR6YRWv2D4UtmaIXy
-X-Google-Smtp-Source: AGHT+IHOweUx0BGgzRR3Uc5xIVtiHnSb9Bezh6rOocQ9AsReM27o8TisrBOm2xsLcgOS2vYsn/Ffgg==
-X-Received: by 2002:a17:902:ef47:b0:2a1:3cdc:7720 with SMTP id d9443c01a7336-2a3142e92d0mr2719085ad.21.1766384176711;
-        Sun, 21 Dec 2025 22:16:16 -0800 (PST)
-Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f258sm9029528b3a.47.2025.12.21.22.16.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 22:16:16 -0800 (PST)
-Date: Mon, 22 Dec 2025 06:16:10 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, gourry@gourry.net, Waiman Long <longman@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	 Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: respect mems_effective in demote_folio_list()
-Message-ID: <aUjiKmlLEitn2oHU@google.com>
-References: <20251220061022.2726028-1-bingjiao@google.com>
- <20251220112044.ee858d2160f819e181598ce1@linux-foundation.org>
+	bh=bBPeX7Ar3KjJmWOrZ53sv9OHVYJGt7MLMRb+n3qIAxw=;
+	b=g27LxLOLnKvIGSQsRcjyIJmtjZclj7Er5dCRY5XD0ztXNgng+HmCGItgcPc4eIICUfqIdb
+	68irdgt4E5goipSWTWgyi+XyKDqkP6d4ZiWNEu4tPDx+aFG9mPhBx9KwKECOg4bXhQWBt8
+	+zMYkWqCAtvTmVFyKEgfxFGTu3dEkg8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=a6I57w+F;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766384446; a=rsa-sha256;
+	cv=none;
+	b=1f/U8PHMuAH3oFw56NsoghNX554qTUmTGSxrGZGL0ODfeEtVEaVo1BLrKDUnMh61LfRV66
+	bgmEvLy1n6uxhsoScNHPVI89eIB6aSEk5dGvDnxTdcwO1tne9sKjl7mpMqPZw7iuWdi0Dq
+	jieCp2U6fSnJpomAFhnaRl0Tj9T99zE=
+Message-ID: <98887861-b9d4-40a1-8c8a-6a417ba475f7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766384441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bBPeX7Ar3KjJmWOrZ53sv9OHVYJGt7MLMRb+n3qIAxw=;
+	b=a6I57w+FpP1LTOnUo2hCbyON/oVPN47hQcGpaxVB2QMqNiv/wBM/t3XB9JGsvt3woOsSO0
+	lCPQqEVfBvX2io1cpp8BxAwI68EZXLYCf5FNenyHhw2XuZIXrJ2god8unCv56ZNQlXwIdX
+	6bbT6YxxsILb3rx4thOEq1vwxVEVfo0=
+Date: Mon, 22 Dec 2025 14:20:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251220112044.ee858d2160f819e181598ce1@linux-foundation.org>
+Subject: Re: [PATCHv2 14/14] hugetlb: Update vmemmap_dedup.rst
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+References: <20251218150949.721480-1-kas@kernel.org>
+ <20251218150949.721480-15-kas@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20251218150949.721480-15-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2E510C000B
-X-Stat-Signature: nq3on3hnq1is7nrgyrtigmkeojkihfjd
-X-HE-Tag: 1766384177-460461
-X-HE-Meta: U2FsdGVkX19W7KizMfKHSd+3KAh0hkTrZh8cP7tUdno1oSlsS0RvSoerqWZ8gwVJcj85aFhh+IlVUmnU0rjwdb+4HX8aEZ8PbA/hSQDkuKHanTomFvodSKcl/10IXVUee/8khulPEHg7Fk32Uab2DqFcP8d4pG2zHs7N/w1pZpfKrULVjm88RKD6P9DvERXOCMoKThNPUmSVOJtRQxpxxuwwXJyPwrxN1ek5pDAZwcXvLQmeClulF37lExme4D2mQhH0pSfgRICkq1/yytez79jTKgj9UZcEBapwEsniltlwnezTRPHiOjGKNja3lXd7BblJqM0BRYU35cvqVNkiSCCr74h1zUb8BrngJrTkZGKM8fZi/+Io6URd2gSnibx9Q7+YuQ1QlI2eXqTWURGGAOQLAzBibzj45AYeVMjRFi5UInde92ZWeWt8sefmoY+tCKE4JyutOHVzOgeERRbWCPsQ6dt1bEyBZ+Jj3MrbCKjYqZ66opHk4ntypmeEjyqLmEnRMPivqPJqFNANqNzpG2f27R3yDfVxtCacUlaWADlRMV0hCeKuM3LczJ1e3gxqEWIsOA1hOw4bSpKU6DdZRI9zTwkPRnd9qJTI5odJRzh8vPBLNsvz5YtIugkuO1yzpsgfg+odqKInS+ewQHKoABRfnmWgID112P2QHeotixaeuxGgAVOQ0feIZdwNSb5hlPOojSv17W8EH+U6pWxxyQj/KmcoC4EelX8fqaRMM6ieN0uEygQrPJvbt1p3mO4Ei4gTCexnijvyKwpoxwAYqhDMqUv9N9hgojdKcR5XM8WhAEbPeLKW9rCVWe2jr8e0ph1gEfGSFapBsvrP/GKM4MJNPNL2ZU1flju2mjyd/otntVnTMqKDYrWcs0OnszL2zWS31fR3xy3SiP7n0j99uYgKoCYSqE6mgZlHa8ynMdb+tywEUFQWTnz47uk07G76HwwEDmutIZ2Y+CS2M8X
- bX/dzjF5
- AhJ9ypSKfezSszpfgvvoJZ4lMfDqoz+QG/3ksJmRsSVn508Gr2I14Nv0sJolwJNNUGd13H7Ht7TF0outXDOZW+B+Op01T8Zc4S8HU5EGkXJM1KIgUfy4TLsozbYURhtiJAOGNdEVBfYlc33YGx82JlWQY7xEl7Ib3Opc5QKkRXPzqDTqzs0kxJmAfnPe9lj8at0Wtwlaay40oEys97C5WCWCLak/nmkwk0eftFxywPAJzUFz8RTmlqn79LO5LGAYpace0Dl0kG5IFL9yffHd6Zfaqf4UqPeRzoqeMGQsIlLhCzsExi3Ln1yx9rgLvm4j1X7MeZvn7qVaYr6Q5q3c7fQhUQJbvHFQm3n9rYipnMO+PkgkL2jWb8DVOMjqtPUCvV9U2xAjWUUjOqp6gHyGAZPo4X2Rh2BmtCVR/pFugdryUOV4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 28AE4140006
+X-Stat-Signature: 6uzupy9a1o6jax46jtsmucpry68uyjmj
+X-HE-Tag: 1766384444-852072
+X-HE-Meta: U2FsdGVkX183olsvGYF0Nu+9NmLGpOoguTlzBd2K616KV9w83tckaMwz7zk9GZ4Ed2CkYMRywNqQCUJo0BqrQhqB6FRTdwvmwtVCNEhfVq60lZzq4/n0INtbiTRaTDURDbt9NQ+IDACf4K8OAB6SaNHuNhSWCWuZTCNjhdKiGPWQs5BZ4jdWlyX8xXkMYweV5pzYqjHpYz45T/nZLQjmKxWAtWImq0w/169vhDIONhIMJ83SMhvdaNjHD9MMDZU1tWCv9hVlEog4aNdhMmkAb86jjBcdR3ev/EQQMIOwy8qxK+PYPFGN4LxipEXIKa8qGEUBgrWN9xAGYoki6B3hsWlJXzco+iwEnv+/oaTmwXi+8aF2VOFX2n3K85K8cOkmyMcbIlNZ224i/SDwjeC6Cm2xt6JXaatv3b++JFG4D39wMH+qmYZ6xDPSnLli6zA8mp5/hF17LD9wR0U272UimsqbP+l2pXEsXqmD2jt7gVI+XclK0bJnheCCfCQh70+ELR+KoMkmEQqkE3uTM4ll+pZ4/yzl/FVeTNLakX7JlXYjjkiCY/cnv163ZZBUPLhOoFx/JsazEVTDe8n05z7GrsC6sY/JdMyssfOpQvvw7aKn7V8PxEPv78MzCZWXEyl5Gvp7cbE2u3XHcHr8inojTCAgJBuxb3c7Zv3ikmTuyMaZ3K4KrdlcrcyPOExYTsM8IARROpp61OK3StKET20cP2ma77Ax//SZ8s0MpjZTQl3KVWTWquiCM2cBDE0gtNZIVKubozdQ4iLcI49LSXZ2Ibhc7BuovyMRDJlcbbdOdkGtLyR1SqXjEbTkxj1db2Z+yS/HmdR2iLDSZJSti+AqTbW7ABeRBzmc7FYWPnMD4Sjgl8Z+EY2BNCQOzx9ZcTVxjqx/Ypbv4TqmbJcjwgyvEo6Uqq45PorF5Qf6DzW7oOkkmMTnioQW7zdQrZmbz0+qE4rN8Sk+02VYj0MIHrT
+ lxE2A7nX
+ RMf2vFEahjCoYooMizQ5cIaGpA9mYwTH2GBTrv3Ihp2+YLstx/XMIl/DZ9Jr17ReabgCsBGqWk+kuSAwTkSWev1itReJYKhBhDPalx1KEopbLEFCunucr6KQxhztiSsFKn51rFVilHY+cW0vxF69/dKRWY/aOF6gr5hrZHG1uY3HcrPrha7d+6CrtHzo/xZr+HHi+Xk3qtUuLma00iOdY/dMR4zV9STIi89k4Qu7Ex6zIHTXc8o5QGI6VUOLw7jqEvOfVjLg73bV+y+k3YUhgVif5a/RtMEkl/OJp4NwHpBemtgZD9F+zSrr8gw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,58 +97,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 20, 2025 at 11:20:44AM -0800, Andrew Morton wrote:
-> On Sat, 20 Dec 2025 06:10:21 +0000 Bing Jiao <bingjiao@google.com> wrote:
->
-> > Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
-> > introduces the cpuset.mems_effective check and applies it to
-> > can_demote().
->
-> So we'll want
->
-> 	Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
->
-> in the changelog.
->
-> > However, it does not apply this check in
-> > demote_folio_list(), which leads to situations where pages are demoted
-> > to nodes that are explicitly excluded from the task's cpuset.mems.
-> >
-> > To address the issue that demotion targets do not respect
-> > cpuset.mem_effective in demote_folio_list(), implement a new function
-> > get_demotion_targets(), which returns a preferred demotion target
-> > and all allowed (fallback) nodes against mems_effective,
-> > and update demote_folio_list() and can_demote() accordingly to
-> > use get_demotion_targets().
->
-> 7d709f49babc fist appeared in 6.16, so we must decide whether to
-> backport this fix into -stable kernels, via a Cc:
-> <stable@vger.kernel.org>.
->
-> To make this decision it's best to have a clear understanding of the
-> userspace visible impact of the bug.  Putting pages into improper nodes
-> is undesirable, but how much does it affect real-world workloads?
-> Please include in the changelog some words about this to help others
-> understand why we should backport the fix.
->
-> > Furthermore, update some supporting functions:
-> >   - Add a parameter for next_demotion_node() to return a copy of
-> >     node_demotion[]->preferred, allowing get_demotion_targets()
-> >     to select the next-best node for demotion.
-> >   - Change the parameters for cpuset_node_allowed() and
-> >     mem_cgroup_node_allowed() from nid to nodemask * to allow
-> >     for direct logic-and operations with mems_effective.
->
-> If we do decide to backport the fix into earlier kernels then it's best
-> to keep the patch as small and as simple as possible.  So non-bugfix
-> changes such as these are best made via a second followup patch which
-> can be merged via the normal -rc staging process.
->
-Hi Andrew, thank you for the review and suggestions.
 
-I hvae sent a patch v2 for the backport. However, I forgot to add
-the CC:stable line. I will fix it in v3.
 
-Best,
-Bing
+On 2025/12/18 23:09, Kiryl Shutsemau wrote:
+> Update the documentation regarding vmemmap optimization for hugetlb to
+> reflect the changes in how the kernel maps the tail pages.
+>
+> Fake heads no longer exist. Remove their description.
+>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
+>   Documentation/mm/vmemmap_dedup.rst | 60 +++++++++++++-----------------
+>   1 file changed, 26 insertions(+), 34 deletions(-)
+>
+> diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
+> index 1863d88d2dcb..a0c4c79d6922 100644
+> --- a/Documentation/mm/vmemmap_dedup.rst
+> +++ b/Documentation/mm/vmemmap_dedup.rst
+> @@ -124,33 +124,35 @@ Here is how things look before optimization::
+>    |           |
+>    +-----------+
+>   
+> -The value of page->compound_info is the same for all tail pages. The first
+> -page of ``struct page`` (page 0) associated with the HugeTLB page contains the 4
+> -``struct page`` necessary to describe the HugeTLB. The only use of the remaining
+> -pages of ``struct page`` (page 1 to page 7) is to point to page->compound_info.
+> -Therefore, we can remap pages 1 to 7 to page 0. Only 1 page of ``struct page``
+> -will be used for each HugeTLB page. This will allow us to free the remaining
+> -7 pages to the buddy allocator.
+> +The first page of ``struct page`` (page 0) associated with the HugeTLB page
+> +contains the 4 ``struct page`` necessary to describe the HugeTLB. The remaining
+> +pages of ``struct page`` (page 1 to page 7) are tail pages.
+> +
+> +The optimization is only applied when the size of the struct page is a power-of-2
+> +In this case, all tail pages of the same order are identical. See
+> +compound_head(). This allows us to remap the tail pages of the vmemmap to a
+> +shared, read-only page. The head page is also remapped to a new page. This
+> +allows the original vmemmap pages to be freed.
+
+Replacing the head page is nice-to-have, so I think the details of
+it should not mentioned here.
+
+>   
+>   Here is how things look after remapping::
+>   
+> -    HugeTLB                  struct pages(8 pages)         page frame(8 pages)
+> - +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
+> - |           |                     |     0     | -------------> |     0     |
+> - |           |                     +-----------+                +-----------+
+> - |           |                     |     1     | ---------------^ ^ ^ ^ ^ ^ ^
+> - |           |                     +-----------+                  | | | | | |
+> - |           |                     |     2     | -----------------+ | | | | |
+> - |           |                     +-----------+                    | | | | |
+> - |           |                     |     3     | -------------------+ | | | |
+> - |           |                     +-----------+                      | | | |
+> - |           |                     |     4     | ---------------------+ | | |
+> - |    PMD    |                     +-----------+                        | | |
+> - |   level   |                     |     5     | -----------------------+ | |
+> - |  mapping  |                     +-----------+                          | |
+> - |           |                     |     6     | -------------------------+ |
+> - |           |                     +-----------+                            |
+> - |           |                     |     7     | ---------------------------+
+> +    HugeTLB                  struct pages(8 pages)                 page frame
+> + +-----------+ ---virt_to_page---> +-----------+   mapping to   +----------------+
+> + |           |                     |     0     | -------------> |       0        |
+> + |           |                     +-----------+                +----------------+
+> + |           |                     |     1     | ------┐
+> + |           |                     +-----------+       |
+> + |           |                     |     2     | ------┼        +----------------+
+> + |           |                     +-----------+       |        | vmemmap_tail   |
+> + |           |                     |     3     | ------┼------> | shared for the |
+> + |           |                     +-----------+       |        | struct hstate  |
+
+I suggest using the following wording (since struct hstate and vmemmap_tail
+are somewhat code-level implementation details).
+
+     A single, per-node page frame shared among all hugepages of the 
+same size
+
+Thanks.
+> + |           |                     |     4     | ------┼        +----------------+
+> + |           |                     +-----------+       |
+> + |           |                     |     5     | ------┼
+> + |    PMD    |                     +-----------+       |
+> + |   level   |                     |     6     | ------┼
+> + |  mapping  |                     +-----------+       |
+> + |           |                     |     7     | ------┘
+>    |           |                     +-----------+
+>    |           |
+>    |           |
+> @@ -172,16 +174,6 @@ The contiguous bit is used to increase the mapping size at the pmd and pte
+>   (last) level. So this type of HugeTLB page can be optimized only when its
+>   size of the ``struct page`` structs is greater than **1** page.
+>   
+> -Notice: The head vmemmap page is not freed to the buddy allocator and all
+> -tail vmemmap pages are mapped to the head vmemmap page frame. So we can see
+> -more than one ``struct page`` struct with ``PG_head`` (e.g. 8 per 2 MB HugeTLB
+> -page) associated with each HugeTLB page. The ``compound_head()`` can handle
+> -this correctly. There is only **one** head ``struct page``, the tail
+> -``struct page`` with ``PG_head`` are fake head ``struct page``.  We need an
+> -approach to distinguish between those two different types of ``struct page`` so
+> -that ``compound_head()`` can return the real head ``struct page`` when the
+> -parameter is the tail ``struct page`` but with ``PG_head``.
+> -
+>   Device DAX
+>   ==========
+>   
+
 
