@@ -4,257 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A91EE67482
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 11:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9705EE6748D
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 11:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 862736B0093; Mon, 22 Dec 2025 06:14:38 -0500 (EST)
+	id 778C66B0088; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83A4C6B0095; Mon, 22 Dec 2025 06:14:38 -0500 (EST)
+	id 6F58B6B0089; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 711FC6B0098; Mon, 22 Dec 2025 06:14:38 -0500 (EST)
+	id 5D7836B008A; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 607D46B0093
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:14:38 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 49BFC6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 06:33:57 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18D695C493
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:14:38 +0000 (UTC)
-X-FDA: 84246849036.20.A0F85D7
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A3B941C0009
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:14:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fXoOh5Ds;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=apc5W272;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766402074; a=rsa-sha256;
-	cv=pass;
-	b=PVfGYvdwDVpfr0sSbFcqMxi2/gwdCD44MGTy/ypVuNwlmVvC749R0ZUuL9XMud9cWq56wS
-	37LHLm4k74SGNBWrKSNpPhVSy53RbI2A5/hpe1bAhut8sLY7FN0gdZCKqPygwF743GUNlf
-	m0Xf2qg12zM17an0+Yo/Ai2oKz9IDBo=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fXoOh5Ds;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=apc5W272;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766402074;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B791213C093
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:33:56 +0000 (UTC)
+X-FDA: 84246897672.20.7C953DC
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DB138180005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 11:33:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lc516zNp;
+	spf=pass (imf24.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766403234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B0Lc1Bi2XhST3pQ1OP1OSVQzloYEVrkm2JIZKzyUNr8=;
-	b=hRcMP65wN6mJmGYbUOewPYmVlLTCjE+bpqLsF0gnbB2v2tEd3qJvEFAL3GlqXlfpURExcq
-	cdLhez9AeKCBAx9FIu1sAukvL+YDe9XjwR6BAb0Fs/baGJUjcGKhkDSNXyJcoVy52Rh1Q6
-	KuLAKhNKviqX2zC761mxilvoUK/Ok8c=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMBBkHb2130708;
-	Mon, 22 Dec 2025 11:14:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=B0Lc1Bi2XhST3pQ1OP1OSVQzloYEVrkm2JIZKzyUNr8=; b=
-	fXoOh5DsurV1fM9SXNXdfbXeX5dPgFpYHDUwBtmdYvhp9x4ZSBECfW9IdfrW6d6m
-	PETSdBS9ZH0W8RYJCd5vxsRywF9RnaFb6q90PAItSrP6QjVgEhjCdqvysFffXyBl
-	25l/UiK/CcXOXPUsh9J0LuabRItFvZZfvva8WNsTASP9exHLUEYP7mK0/nW9wLLg
-	WJ1oEF7ND8zk/Dvxg6CMZrzRVFkf19na+KquttvgaNDlo1g0W8fDDKHKNlZ5M7XV
-	r00dvMblNJTrNFzG0whS5BTDvUpRm1pCRi41ixczKwlETob3Dm51v5LM/b0Gm5l+
-	FnzUKMkGcoFe3eU9VcWpLw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b74w8002q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 11:14:25 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMAJjoW032680;
-	Mon, 22 Dec 2025 11:14:24 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012057.outbound.protection.outlook.com [52.101.53.57])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b5j876p0y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 11:14:24 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pg9BcXcyG1ADXDt0BX9TQQgETNJHh9kWEIqUdDgNCEV5hSLIep4kzPJMvx3vS0hPgWdyg54soyNI6gux/WUYDCfmX+tCk4CED+I6BC4ebutUfNF8aQS7pU+kvfl7Ogs77hZGrmUnkuD5hvs1qlGfkYhnpQsTmiln3mvyDbLCPHhzay5f8Bks3wyeMj6QFcgMUKN/VourhMCCn+dyol2FXdBMUYZmALWRo3rMw0fQJr6OCN/q254B7izbm/1QgkBbZpxDg2ySjnYZqL0IDsVXYoAqZ0ZM3dEIbUlTJauZvOuq7tSAJJtV0hSwerJGvT491swhrvbZZq5CDAEGDWlIuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B0Lc1Bi2XhST3pQ1OP1OSVQzloYEVrkm2JIZKzyUNr8=;
- b=T5dyvKHo/jWbJ7egsBqFzf3TnYUOyzbX81pb6jQcqRlf/2BaXawk8/kSc0Dq9LEFlr+g0GSnrRHlniUSqS4ZfOXNq833q/dDoiQfm1OfPZRHJZqDqZ7M0m9alTITIsFmmrs449GG4HTJxUT3i3hpJCFnoEVFU4f+0HZ+wmAXhqTSm1J4jSzNni5DJjUrriqGFFPXxdXazvHpcCHdDbb9Krr5EhWqDOtBDOtNDytzaS/G+Y/xM7EydmJd68NlIOIcXwsw7gW99GDTrTJEosC1jgdnDxHheQqVRLdJAWFjqrAYkWPt3Qno2/YdlM2LRS0wJ7W/VZ3L304IYu1t4qw1Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
+	b=Cc37hq5U0RPQEBzTr9+MlyWlLxdVKcnR23iE7Nk1fCKSJAr1W9lQGPfJM5NyaBAiO3Qh/J
+	UckWJ1SJVcyWKARRohCmgefpMwTSlpwEwR5pIERywPotdNXWcQiogMpg92JedaZM0CnBlX
+	JwNOj5RNYhk6KI0hJNAviRvwEoKlNkA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766403234; a=rsa-sha256;
+	cv=none;
+	b=Qw5AUTvAyqdCIZb0oWynsYjzja7SMfcjY3k6MXwrlT3V+0tindIOUhVAH2v3iWPdump2P6
+	EFdFSrQsej+vkNx1ZZdDTiA0tArvxQfYZQHqOWg0jDz7gG7StPzPSb0WbFMZlMY5YjJI+y
+	s4uLzuIv5zEQYXQXJuy7DjOOzq4QBuc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lc516zNp;
+	spf=pass (imf24.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bc29d64b39dso2057346a12.3
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:33:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B0Lc1Bi2XhST3pQ1OP1OSVQzloYEVrkm2JIZKzyUNr8=;
- b=apc5W272xbDPOTKsoA1yWUYRl4cp9fDgCipJTwHydoNo8diKW2Ta5na2EaLnL0T1RflQGqVyFnw1xp+hq9tC28jwudhOi6e6YAfkwsEnffWrpcq142k+2STUY2JU/yg06DOGBlcxx4X88CvogFZb7Q9wy2FFk7xhOYdYXysNz1s=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH0PR10MB4741.namprd10.prod.outlook.com (2603:10b6:510:3d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Mon, 22 Dec
- 2025 11:14:09 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 11:14:09 +0000
-Date: Mon, 22 Dec 2025 20:14:01 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com,
-        cl@linux.com, dvyukov@google.com, glider@google.com,
-        hannes@cmpxchg.org, linux-mm@kvack.org, mhocko@kernel.org,
-        muchun.song@linux.dev, rientjes@google.com, roman.gushchin@linux.dev,
-        ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
-        vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu,
-        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V3 7/7] mm/slab: place slabobj_ext metadata in unused
- space within s->size
-Message-ID: <aUkn-SV9QjicEudm@hyeyoo>
-References: <20251027122847.320924-1-harry.yoo@oracle.com>
- <20251027122847.320924-8-harry.yoo@oracle.com>
- <CAJuCfpHNhes_csqvm9-Z2f-C6XWuyRuXpchNtXwTSXxTpARZSg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpHNhes_csqvm9-Z2f-C6XWuyRuXpchNtXwTSXxTpARZSg@mail.gmail.com>
-X-ClientProxiedBy: SEWP216CA0111.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2bb::11) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=gmail.com; s=20230601; t=1766403234; x=1767008034; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
+        b=Lc516zNp+W7fdLXZxIPV2Ak5PdDIAywii4JrhBiYtgXUS9vCH72hQ4pSgkEiganyV0
+         kqMgK0N/oDAQ61JikgyMPfjccQwecGFPpisRriUdULmDCVFuZ7y439mDdz81xKKzXsrI
+         5McfrF7mzJbRu37gPUjrFLyJI7g9ldGJaEepmI/yFPQ4fQBKb12jgTdOu63MEy0bWjjj
+         lRUQicNpLTP2LoLdedUdLj7RpKUcAj4Lsrn2OcGW5e+x0zPeRL50eJyC6T+onNVy53ho
+         gVvNWSmLW+kGN+L2I131LjDzna+P/n23pCW6wFUE8TRyvEv/wSezvzF4MV/2mewpZRpA
+         n01A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766403234; x=1767008034;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1AF1yX4GwtQvvuuOJCmg3PfUFD/RGUm+qcyOoMqIjVw=;
+        b=Rb0RwvYnHAjfEFvsRcM+rh+bq9Q0YNgo1cntYeBK34Yg04v6KABS4kDQZNPlUL6bXL
+         5dvjr9qsiUv27qn4UP7eUyINmybpkycaV9eIvMKoZ218OkZkVp0CpqUGzFxLJQHMpB4A
+         WHszlpChgJTIttATBxmr4EmS8h2ayoRUbv2bDcHEdsR8ypOHkmdf95in318ayKuxqNxK
+         lC7KOTtOGb33Bj5a9tHS0NSz+QIrpnVIUD2ctK9mC2/hemofZCiPkoOQEIHjjKIJNHX3
+         t7mOkqNWEJoSs81TW79kmocEkj0znac2cfbUMaQagCquLtFJWGfr53J8CNT8nZk4Ku1K
+         KuFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRmYuurXNYgitH+f49/v6rYMldVDMUQJeh/uCMJiozrw4WWypX/ry+1SaJYPu2FAtf0KnCMmhIZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yye9m/8yz3IUWDmSHnmLm6svdznVNb4aMXlQa+y/UeMdHN0q7jV
+	dwRUaOSMj5W4vdQD4LLJEL3iz212j+0YhcgDUYos8EsdzVg/4YahQOch
+X-Gm-Gg: AY/fxX6vlm6XO7FuQxzdhbmgIJmZyxWOBxtEvo7d4UP/D+K7XwI6gup5m6Zss4x3RcL
+	EoeSav8G+9KdROWW4FqApcbIzXcsw2PXExDDTiQLVbMen5uNg5IVOmuwg8sQhHCzqWWb0joC6ZJ
+	QwDTMslmYN1cUy3l3Ho8xnhz6FTw8w4GtGFOxmJHdYRXa8LVelwuKarJeUYMVOaHip+laMkENdQ
+	pz58lA3ZaEnW0+lPuwSTaFGTEfEfCnR/LwimQBvtWSnjkD2/O4cPVRq4cuuLi5vuUSHnsMiutT2
+	lzbjBCDs18JlCQnaI8im5Rlts+3/WYmKqZNMopWv8HeIiF08q2KJrpslaIOffwtsT+mntffqBSd
+	8LdBIi1SRdlb2OXjCqpcOxQ7XzWdDNaJoHdDZGHfVdJphQZ5hCEFWzZ3YJMQZIpPfz/U2Mv+XqP
+	W0/elJDx7UBfu/AA==
+X-Google-Smtp-Source: AGHT+IF9z5OMf2RZbV65D44H9QFHtRDW2pkTFrUb5U1bgAOg1PPjFbvfwWh5UVEkpb/ShGV7F0BvFg==
+X-Received: by 2002:a05:7301:508e:b0:2ae:51cb:7a98 with SMTP id 5a478bee46e88-2b05ec6d51dmr6586243eec.33.1766403233498;
+        Mon, 22 Dec 2025 03:33:53 -0800 (PST)
+Received: from [172.26.241.102] ([131.179.95.234])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ffd5f86sm23562684eec.5.2025.12.22.03.33.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Dec 2025 03:33:53 -0800 (PST)
+Message-ID: <a98e23a1-5be3-4c2a-a65a-c33853683674@gmail.com>
+Date: Mon, 22 Dec 2025 03:33:52 -0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH0PR10MB4741:EE_
-X-MS-Office365-Filtering-Correlation-Id: 085a7dae-4edf-4059-400a-08de414b3a8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RVAzZEZkcklDVUUrOFN6K21UMWJDdC9tVy91TEhRQnVzV0xtbW9RcHFjUHFm?=
- =?utf-8?B?dVRrVUpBNTFLaDdKQWcxUnR3aU0zTmRqMDd2SURDdnBOeEN6WXdNWHJlZDcy?=
- =?utf-8?B?ekpqODErR3d4UjhtRFhqRFdYN0U2bGNVMG40UXhVZ2dSUEZnWE13OGdMcXRO?=
- =?utf-8?B?MU42M2ttL1NrZzF5dVEvdVZWM0VDenMxMEM2TlczTzlPeTZOSmxlUFMwRVRq?=
- =?utf-8?B?Ui8vWjhLT1Y0WDl1dHVRT2cySVNkbVUyTlNoZmhSZ3BxWUg4Wlh1N2ZiUkY3?=
- =?utf-8?B?TElDbzJ4OGxibjVNM0owOHNiaEN4U0h3Q05Jc1U3UzVHQ0ZySmgyeXUwUVpj?=
- =?utf-8?B?RVZmSTZ0SExEZ1Z0TGZkMjRESjNjemJnWFhjTURhTFlQaHZGNHpSMk1WbVEr?=
- =?utf-8?B?MmpJcGNxRzF1REJxN1FBWmt1Rk9OK1ZnUGhsK1pkSTBkbXFBcnFMdm5jOWpW?=
- =?utf-8?B?cDgwMU4yT1hxRnk0QVFML21ZZWZNTHJaMnpxQUxqRlFCQUl3enBWWk9mSExD?=
- =?utf-8?B?ZmowNHJKWEZHdm9iMWtaQmZNVS93anB3SjNGSm1GbG1EK2UyL2gyc2lJeCtp?=
- =?utf-8?B?UFRCZ3VzS1FwY2MrR25meUlpNjJTcGNrWU1qR0s3S0tIMUlJc2dYMFJsckRL?=
- =?utf-8?B?SmRmN0tiY3V6a3Y5U0lGbnlMbG4vZTJwK3hBRDZ1b2gwUnBtUnNhSHNXYUJv?=
- =?utf-8?B?d3dmMWg0WXlqZ0k1bWRYa2RhTC9lbEZwc3phT2d0b0FYVmc0U0gxQXNTQzRs?=
- =?utf-8?B?WGdIM1NVQlFOZE1uMG5aSUpiT0FZYmNpRXROV21nNGQ4QVlrdndrY0svcW9E?=
- =?utf-8?B?anltL3dEbG5Ra1FTMnRZZWdRTldjWUpYcVVNSDN6cW8zTXJBR2k5ZTRQZlBm?=
- =?utf-8?B?WnZqN3hCd05FOFljUzlDNG5PMFhDRUJvZFliNUxhZ3RaRG5IK21LMDEyRHd1?=
- =?utf-8?B?YUZxcUFGV2RYcEhibUlYYVMxdTQvNjZvekJGa2FrZ0cwbTMxL0J2cEFsREw2?=
- =?utf-8?B?ZEZ5WDFBTXFYZ1pyODZIMGpXQUVzZnZKVEFzZnBYUEM5MGxvTFhONXRBeG4r?=
- =?utf-8?B?RFBmaW1NbjVBc1NxY1h2VnErOUhWYndzL0k1OWJRVFE4QkJicVpvbUJ4c2wr?=
- =?utf-8?B?SXlkSlRMc0NiRitOVmJtTHhoeTc1ZVk0eXgrRCtmSC9wc3FiQzB6UVpRRDIv?=
- =?utf-8?B?U0JVMTc0c0Z5RURUd1JJWTF2a2xkcENBQlZNQXVwVm4wRHZyejlSeExGWVU2?=
- =?utf-8?B?dHlSQ3JtelBSWnBhaTVNK2dqa21iQnVUTVUrOVRwYjZWUjh6TWFJVnNPZUYr?=
- =?utf-8?B?TG5CSldJVXRaWTFIZXdJdjNaVkFBSlRHRFhERitFbnFPelhMaW9TdnZWTW83?=
- =?utf-8?B?bjVrdW45L2x3aUlMSXFocVpJMlUzVUV6WXdNdzEwYjRCUmc5R0JybHphZlF5?=
- =?utf-8?B?UmJpYnZnd2JYampkRmlSTWNuNFkzSGp6OFd4eVNnR2FzV201MHRMQ1N1bUR5?=
- =?utf-8?B?NWZ5Yy9nRTc0L0xkWmdDY0xRbVFSM3pnTmRnWjMxYXVRUytaVmNMTDFvN1pj?=
- =?utf-8?B?VzZQWG9WcjB1Q3A1WGM1ZkR3ay9XcVAxRUE2Tnp6eVphSjR1aG5HRGovUkdY?=
- =?utf-8?B?R0FSOE85VDF6YUIyMVVkaE1LaGdScHpqYitGRHRxazN3OUtjaEFMNmNrVmF4?=
- =?utf-8?B?elFIS296UGU0dGJockZSUXJPQ3FROXM0N013ZHpETWhZQUNIMFFQWlBTbnZ3?=
- =?utf-8?B?OUQ4M3V3dm90ekNwdGI1U2NmU0U0SDYrSTVPSlpIQWszYkg3bVMwc2FNT3hh?=
- =?utf-8?B?VjJWOTlJUnc0ZGRpRTFKS3hMUnRSOUN5cVNLdjJzckgwN0phbXlneVJNT0Yw?=
- =?utf-8?B?b3NMTW4vU0xNZHhSQi91SDJvVzFzUG9GRHkvU1AwVVZqWjc2VlA3eVhmajlS?=
- =?utf-8?Q?6nrbsZG9BwBSREa0EaE96a5mfueb9sFV?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzZPbVFwSENvaEZaYXlaeVc2ZnRHZXQyZWhKOVdvNXhwNFh4ckRYWm01MHAw?=
- =?utf-8?B?TGNSUUJMZjVINWR4bmY5SEVFUWVZVzFHNjAvUndPb01uODRQeWcrNmFJSmZI?=
- =?utf-8?B?STFRbTlTSHJSTXh3TEhWN1BOQThrRXA5ZDdDUmRSNGZUVXBDL3F4dGFmVC9H?=
- =?utf-8?B?WXdqLzNvaC9IMTZzN2pOWmlzbG92SFE5cHp5U1hTUmlEZ0lFcnd0UVFXVURz?=
- =?utf-8?B?RklwUFI4eDhsN0c3eHc1bmUySDFzUGkyZkdqL3BvMGVock42MkFCM2xMUlRT?=
- =?utf-8?B?RGp5R0cvcTBaTml1OE43RlptbldsNURDQjBNNWtZN01tNk8xV3ZvYmVGUnV4?=
- =?utf-8?B?WVFnMisxeGRUOGxuTS9qb28wQytrdi9Rb3ExV204cEZ2VzZ3Szd2eDdwaEFu?=
- =?utf-8?B?YVg0d2pZSlExVERmcWJ2MkZ1RlcybGJqdFBha0ZlS2Zxc1EvQUdXYlhBQzkv?=
- =?utf-8?B?aHBPL2YzdDdYTmxZZDRlMWFlQnBnUG1BV0xlZzNQY2dFaGo5dmIrWUJnMGNG?=
- =?utf-8?B?ZWFvRXR2OWpRdjNSN1FCRHZKNDFucGlzQUppbG11MnVlZ25zNW5IaVFpVW1F?=
- =?utf-8?B?alpQRktNVkFtMFYxRHB6RVVsa2QrWnpHVVZiWWIyY3hPc2hRS29kSFhISi9h?=
- =?utf-8?B?QXJISjUyUXByenNna0RRNm9FbndvYzNVOWlBc1JOcVNYRGduZlEwc2dHZlQv?=
- =?utf-8?B?Wjc5Q3FnTThiLzJxK2FLeDBKbmR2ZEliZWNvRHNYMVB3OVdNM3V6eXhESWJu?=
- =?utf-8?B?czN6MmgwclV0V05OdWxSbUJDeG5ya1NZT3Y1VEwxTWFmWEJWSU5jUGZRREtE?=
- =?utf-8?B?dVE3dDAreVpmcUdPdjZVOFZzOE4rQTBmdGZ5QlhVeDE4ZEtoWjBnVEpWTkRM?=
- =?utf-8?B?WFhYblpUMlY3aHg0SjJNVm1ZTW52dUVHb3NhL012c1NzWkVieWhpd2xpeEFs?=
- =?utf-8?B?M3NZSWRaYnpoNVVGYjZhdTB3WlcyZ1lhZjJSWTczYnF5MHk2Y09NRnJMUGpn?=
- =?utf-8?B?aEFoMkVwQ3EvUkRydis5SHpUV1JvbTMzNjdHbEF1dU8zaDRwenR0bEEybE4y?=
- =?utf-8?B?TDN3ZzBLL2VRc1M5ZWZZNWVjL1ZJdytuVWxZNEcyODVYUkVobmhYcTNXQldv?=
- =?utf-8?B?eDBrcGZxVnF1NnFjTXRMQ1FjV1YzdThMaXVKWDdQQkZhWHVtc1N4bHJ3Tm8r?=
- =?utf-8?B?enFlMlFkcjQ5RUJqRzIxR2dzUDhnTW1KdDhrVWQrUUZ0b2plaUw5Y29FcGpT?=
- =?utf-8?B?RWQ1djIySzczRTQzZlptVDF6dk5QNHprV2VFTjlBTHJmeWhqUldVUUJDWEdM?=
- =?utf-8?B?WlJiejZhTzBaUUpTbkxSWmd0aGpjdE1sMmJyU1Z0SVFZRXBGb1FZL1kxeUh1?=
- =?utf-8?B?cDBIQ09YV2ZqU1l0VDk0dU5aWGhBUlRVb2ZVNy91ZDhvWHZtdkJIcTh2YUhh?=
- =?utf-8?B?WWxvbndYbDNGS1BYajNWbGM2anlFK1c4Z0pDRnlHekJveHc5N2huYmRST0wy?=
- =?utf-8?B?MCtVc2ZZTFRDVlZmNVV1bXhsYXlZOG9rNFZxUmNZdkZIYnhxNDlwbjhpL3Nq?=
- =?utf-8?B?c0NyK09pYzJudy9VVk9JbkNEQ0RsMy9uakUyblhVUFF2ODJ3VXQ1RHBodklC?=
- =?utf-8?B?MGVWL25ybXBFYmdWUW8yTUFMRlhXYnNldmptSVd0WkEvdzlKWmV2MDhES1Yy?=
- =?utf-8?B?aE9UN05GMzZSSnhabCtiUW9OcXA3SGpmd0RGd1dnQm43dzRDR2J3OUxTckJY?=
- =?utf-8?B?T2cwbW16bmtxQm9YUXJVdzMxOHVDbmVUQ24zYjBFbklHcHRJK2FacCtNWTVZ?=
- =?utf-8?B?cTRSSlpJaGU0djFoQktwQkVhTThDc2FSMXU4TmhXZWthZjIyRUErMk9LelFQ?=
- =?utf-8?B?SUVVTU55b080YmwvUmVtcTkzd2dSQXBEclluZTRDOTVWWGxtZ2tMSGcwOGZJ?=
- =?utf-8?B?R1dOWEJvbjU2bjdpYStHanZnL2VNcVpIVloyNWJIaXhSaTRJYm0rZ0lxK29K?=
- =?utf-8?B?KzJaaG9iT3V0dTVIb3U1NEpJc1JkaWl6SUVGR2d6RE15eHRHM3l3eTd5ai9x?=
- =?utf-8?B?R2Vta1o5MnpRMjU4QzFuS3ZXdmFwSTYwVm55VW11UUpxamlITzZPZ1ZDQ1NW?=
- =?utf-8?B?Mm8ybWhJU2sraVhsdU10WHVUUmsvK01MNURJR1NzTFlQc1g0czB2Qm5Kd0V5?=
- =?utf-8?B?TXV3MWhPNitoVU1FcS91ZnNwOHVNTFhxZ0VRMjQ3Q3hmSWpPMC9qTzRsQ2c4?=
- =?utf-8?B?WGJyeGNlZVh6ajVCZG5Ha2orRXIzZDdKbVZPMVJXQXNYbTE4MmhueTFOeUdp?=
- =?utf-8?B?Ym4xMDNYQlRpSncrdXkvUnZyWE9CNXJpVTAxSVM5K3k2aFZqTERDZz09?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	7WFzdpBA92zHIRFBpQegTvfxSoHNMfe/UBpB96aCf/h7t6ilx7eDVD1eNlkvVweH7nsruR9l30BdW3G/Z9YWz/1miHtTAPRtdJdcJtwK8+ozi5PXbs44jxrKCz4nqiKtdkpShxAHFemm85VmA3wVaJrHY9oxbfLSj7n2VoZre4l+E22SRA6fhonIh2yghRjt3ppTSgh9y8fGZPCGlcixtd5Wu5avfxtelWrx00pU9as7BtQXWVqil5L3pKvjO+abDVxZ1iFm7c5Fj3OrINZC91/fOzfKikgsNcEIPMkvGQV4Kii6Bq91zC+qJcNRx41+cvwHLUT4eCCF92wCGcK4pIUFUpUmO0dDCnn9rp6XcjRA0bgj688sxF1Dpzr1jIwu1awWxM5fYZ9LxKXdUfONZ21X5eoNHj8/pG2im+56/mCn568vqD4Z1dhbinV2JVs5FkaLzeeLpdy1rj+Czay19UufFQLdvKhIE57v/lDRqh9Eq7OLuftV6zLf/wliRlmIithbgPvP2xCUw8W2msB3vpcedISQZiQYxtM7KDmyjV35AJg5hEE4GmjLe9BPmfh1JP8sAXUrovrZrad6BfbYgLc5oBiqF3yuB5CGQNSBUt0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 085a7dae-4edf-4059-400a-08de414b3a8c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 11:14:09.5436
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k1bznQlPMfvLcMjMhnR6ubjVABuv/e4TVubgnNuLI2X5c8M/198xwd9cFYb5F8slG8y8Ch9jyHU1H0KPu18d5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4741
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2512220102
-X-Proofpoint-GUID: PlQjwdpnuz-U1EdBqG5bxEEzVgjy-2LV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDEwMiBTYWx0ZWRfXy5YdAIio9aDG
- BDrhz6mxxV+ora1JeS9AMDOl1OY83aNPJ6dff3elqPNhZLBeKPnlS8SCkdKv430hNdU3XXmNnvp
- oEhv5MdzF+jUpsXJGG9kx/RgJIvqRqSqLSZAw/iOZVxbWhHUuCOuHvGhDxLYS98c006TA3r7A8t
- 1LJbCgHgm3/MGfJghbPFWv5HwKP/vEWK6g0925B2u35YhSr4Cs0NZOnTzbTYqXV0IVAKMwxTnob
- uLnUyknFz7IeRXjrZpoB3sWVARSKpUI6OKIOuSeP7q+5SAkhj40A6lun3n5Du736+6gKuPvsMEf
- 0aH7xTWX+YjPzveRu2/DUWsjPHV0iki4pWQ8PB4Ip/zLDR6LbNG2z9zt2kjKilvLmPlDq943EUP
- N6qm6DPlzJAjtPepBIzlp3aV++TtoziEAhuHAlIf2YKzH8ojnbHJIbfxRMT9aPKYnp/Ug7BWRmc
- PaJfCTOgX4atoEwoTGg==
-X-Proofpoint-ORIG-GUID: PlQjwdpnuz-U1EdBqG5bxEEzVgjy-2LV
-X-Authority-Analysis: v=2.4 cv=YLSSCBGx c=1 sm=1 tr=0 ts=69492811 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=C5My4TV7-s9L-27-N7wA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A3B941C0009
-X-Stat-Signature: nqhcq86kxf75dmqo3zdyidrjniacxjb8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon/tests/core-kunit: extend test scenarios and
+ remove redundancy
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, yanquanmin1@huawei.com, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251221201356.43083-1-sj@kernel.org>
+Content-Language: en-US
+From: Shu Anzai <shu17az@gmail.com>
+In-Reply-To: <20251221201356.43083-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 613bc9kccnf6ds6tbhjr1wuz93cuicf7
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DB138180005
 X-Rspam-User: 
-X-HE-Tag: 1766402074-936320
-X-HE-Meta: U2FsdGVkX18pIvcHmJ48OW7UrNuQZ3ar5LvN5SG5/7nWbAU1Tmpva9kBF0ZKQO3ihw8rf5E6I2NRM6BMYAMyuljaAY2nve0VON7RH6Btlcb+1kwKK0QGEE2tY+8iB/OeGXtxH+f765OtwGa9M6KFCVxJvRtGEYA6G1uqdwPHTLsIJvWJxGAhFhXmJ7mS8eEcr9jdQ5y7q7ykjkLIQSTwh2GeLbEuExXnflu+6PbC0yw/dPOlIqlw/elBmkIrIPCCifgIgsxs3RVKyPbUNGyUeXJJ0rlK3AmZ8F8rzX4Wd/1YDaxVBVOAjg69K4c1+iwQrFHMD8sU7HRnOeTimoZHkuY/vNVBD04jACcqQDfOy5GtIS20BLLukzo4YoMZfAdcMf7SpS7qVA1tCTFV44t3GeJNGtjHZGQWJNJJkRTb41QBpyflzkkekKLiKLNm8QyLsRuUdUbTh8BNMNwkap63tolyymc2/y6aZpNoVt9fxwPJT/5Uu2kcJ/M01HQSJXqabQy2dkYrZKYIdIWUlwqFe6OfBv7aqTTfa5/7PZgUeTxOWE55icryv13JYD9qfhNvW0A5xHI2kW1bElE2PX5zBR4QNOEN2A3B5+NNPWGLl6oILZV8PTzca2noR3MkR/JKJvl/+5NIj1N3Jdcp62Mh5Tcsb0q6ChCja7OBOyr1s+ioKo3VVTqWA00wGZO04PkolHs57jNQ99FJ+Y3n6O8PxU73Q3sTtdiUONOxxozIsL+LosR9mHj0BHNTqIpaWIfZvtcA0LwYLjqJyh8CzJINld2gurNy9ac9fWckHUeqNa8QsnOR2ssEnU3IIRWQ8uiV35qj512Wsn7QyClZDATdh/yRMBDv91UMyYwCjdKgAU3+J5Cm5/vCBEudavy1z3mQjEodgKMRro27Zb86njcafaEC7WnDBR/SBA0A15RXYdJLldq1s7tFD44aW7pdJv4XqIaGBc7gMGNrPZGz8kJ
- KATKobaR
- BRNc4Qb80ddleL90JzqVbLi7wtEMTB3PHEy+41guGpVnZA5Zj19Bt3pSDRp7p6MPE0LidVCz97hLV6yDYE3pKhROGG6hJCvsYHCbCIN7wwo0vXzhv/xW/4lnzGRZ+LeH0kcaqpbzJmLM9ntkXjgBiw8Xlehu/+tOzUm4uQGYcnAkAZk6Kk+TkonLlUsfPfTMyBfwDH1Hl9KQmp5ASw6ThDToOh4Jl/+I0kFXFSiOepKNHenm9i5uErW3nRmL/I7Uc/OnW4l/g4WK9rB8/MSajM5rYitw5sIKzO1CGRtEf2npOD4bB812Nqs8D8niWAdi++Mpe3hGVrzVwrsQ4tssEutxN1PUoFNz7lwLJyb+RZS7VQpWt3J9iRCt/0mjHlZjvhDWcD5dHwW5OFX8q1IRAVrKrHb3WrQW2ozX2C62/CiGh7dWKfcJscyzciDaixtuD1fHZ9UY3f/FffNsyYb/lguPqi3l9Hg7VGigpnUhKUXhCabAApBrCCPxzkI7eiL48bHXmGXaki3y7kgLr62ndabG0LcDcB/f0bP7Bk0qqQgIKHJT9MLSlk85L1qoz5R5Sc6ATDAQEZJWKZYQQuwdw21BTht3MQaV8SfeXpIgoeXDPc1xDj+kC8R5Hh6IN9scGY2WiB6RDXURR5+OsM52IxM30KVO/y34SFl7Ps+okNCVWr1SypysknJCH+F/nL/LNqg9UcPLFneiPni+K12ee2GxiLxn2yrRVPLHJWTXzJvTduXASE5sC7Dua44iTmoSmpBloEHPUXHcUuu74ZTlb4hDmz7h6Wk/OEsGdoe1ufNo+X/jGsZ4sO09hbpu9F8evPGQ8d8PJXFaLlko=
+X-HE-Tag: 1766403234-978140
+X-HE-Meta: U2FsdGVkX1/ChZ5ru053uxiJFP2lci5ZzWIGzH4Jix9zg3g7pbWyCE4sRpSFz3gdglKydUwsxf7BR9c7ekfjfxmujcRCbOR8GyHRVuNsHKzr0YJ8KSMBDH/XLb/XU+Y3NVu8wKRboP2/9lyGW03OZwWoYp9F4l57q2wyB27IHPoZbImIck7rSPvfpLdxtV3lGMUSCX4kvLGOJ83+DlmKcgstwBRESh/2A4T/F5jSmwKLbgSp+kscjUC/lPDogiSi8HuHt3rWIKwAH6PCC72VOptYTWRMVJqtTnd24+rS+SKJbtizmtInN4svgWuWt+fA2QiVYgNzYcdvmM0kvh/65Yj2UfINc5vr14JFUulovHo84Eg9oV/uNhE4DdHjE+GMzhIfP6SbAFcWAOavZBoh+5MtmolOgz1L/Aw5UDZC6jjqOvcVG6x477s+0xWGwC4MK35xww52i1fLQgdGLRJGSspOjrbF5PSc6jOyVi2+aUU/Xa3BjKGAGz5ghPcqAfTFJxllokm5R9CfweRFvittIVR0vXH8oZ14buCxYn9VMXmcnH7F894eCeVTsv5/smRD6Oy3fMkhhvxyyfDr4ZCzZgIisdPkn/ZMJLIIxc4c8okD+sqLwHP/v0jRB2hywbh34PKUsnSTIgTS8Mr5RtVGy9rpJ4Mz0xNvhV8tPqqND9lCv/cpST7T9/+6L1bbyqa5ev0NHV4uEb6G0ePVXkRapHI3HII0eG3d7/JQkwYm/wafdPVAph7ocVu5ts7HW3gDRftC1Kt1OpRn9Qe1yNOM/2AfG2CEIDavK+BYpmtevJ+meLcf7dsfJL+1yxk8J/mFmqLhB+ws15bP05Qko3wUIGjDpR4V7n5NCwgSIia62swuXk0Hy+PC03UC15BBSbB9xBrNzqBCPUOliEgRt+7Mriqozex7GdBkVCGLQoKxsutf9Ng5mcN3NGfhIQtPrpSzO838WQm7Tdsu2hLq5cA
+ y/mJlJ8U
+ zyDrXG8PZDS76by13ewi0oe8BURnMj2m++MrPgrINlMphQva1DA7VLjEzeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -263,71 +124,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 08:19:59PM -0700, Suren Baghdasaryan wrote:
-> On Mon, Oct 27, 2025 at 5:29 AM Harry Yoo <harry.yoo@oracle.com> wrote:
-> >
-> > When a cache has high s->align value and s->object_size is not aligned
-> > to it, each object ends up with some unused space because of alignment.
-> > If this wasted space is big enough, we can use it to store the
-> > slabobj_ext metadata instead of wasting it.
-> >
-> > On my system, this happens with caches like kmem_cache, mm_struct, pid,
-> > task_struct, sighand_cache, xfs_inode, and others.
-> >
-> > To place the slabobj_ext metadata within each object, the existing
-> > slab_obj_ext() logic can still be used by setting:
-> >
-> >   - slab->obj_exts = slab_address(slab) + s->red_left_zone +
-> >                      (slabobj_ext offset)
-> >   - stride = s->size
-> >
-> > slab_obj_ext() doesn't need know where the metadata is stored,
-> > so this method works without adding extra overhead to slab_obj_ext().
-> >
-> > A good example benefiting from this optimization is xfs_inode
-> > (object_size: 992, align: 64). To measure memory savings, 2 millions of
-> > files were created on XFS.
-> >
-> > [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
-> >
-> > Before patch (creating 2M directories on xfs):
-> >   Slab:            6693844 kB
-> >   SReclaimable:    6016332 kB
-> >   SUnreclaim:       677512 kB
-> >
-> > After patch (creating 2M directories on xfs):
-> >   Slab:            6697572 kB
-> >   SReclaimable:    6034744 kB
-> >   SUnreclaim:       662828 kB (-14.3 MiB)
-> >
-> > Enjoy the memory savings!
-> >
-> > Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> > @@ -2250,7 +2293,8 @@ static inline void free_slab_obj_exts(struct slab *slab)
-> >         if (!obj_exts)
-> >                 return;
-> >
-> > -       if (obj_exts_in_slab(slab->slab_cache, slab)) {
-> > +       if (obj_exts_in_slab(slab->slab_cache, slab) ||
-> > +                       obj_exts_in_object(slab->slab_cache)) {
-> 
+Hello SJ,
 
-Hi Suren, thanks for the comment.
-I should have replied earlier, sorry.
- 
-> I think you need a check for obj_exts_in_object() inside
-> alloc_slab_obj_exts() to avoid allocating the vector.
+Thank you for reviewing my patch! My responses are below.
 
-But slab_obj_exts() check before alloc_slab_obj_exts() should have
-returned nonzero if obj_exts_in_object() returns true?
+On 2025/12/21 12:13, SeongJae Park wrote:
+> Hello Shu,
+>
+>
+> Thank you for sending this patch :)
+>
+> On Sun, 21 Dec 2025 13:01:14 +0000 Shu Anzai <shu17az@gmail.com> wrote:
+>
+>> Add some missing test scenarios to cover a wider range of cases. Also,
+>> remove a redundant case in damos_test_commit_quota_goal().
+> Seems this patch is making more than one change to multiple test cases at once.
+> It makes following which change is for what purpose bit difficult for me.  I'd
+> suggest splitting this into smaller ones that making changes for each test
+> function, and adding more explanation of the changes.  E.g., a patch for
+> damon_test_split_at(), another one for damon_test_merge_two(), and so on.  Not
+> a strong request, though.
+>
+> I have two questions below, though.
 
-> >                 slab->obj_exts = 0;
-> >                 return;
-> >         }
+I see. I will split this and send v2 later. Let me first explain the 
+changes in detail.
 
--- 
-Cheers,
-Harry / Hyeonggon
+>
+>> Signed-off-by: Shu Anzai <shu17az@gmail.com>
+>> ---
+>>   mm/damon/tests/core-kunit.h | 51 ++++++++++++++++++++++++-------------
+>>   1 file changed, 33 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+>> index f59ae7ee19a0..e9ccc3fb34f9 100644
+>> --- a/mm/damon/tests/core-kunit.h
+>> +++ b/mm/damon/tests/core-kunit.h
+>> @@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
+>>   	r->nr_accesses_bp = 420000;
+>>   	r->nr_accesses = 42;
+>>   	r->last_nr_accesses = 15;
+>> +	r->age = 10;
+>>   	damon_add_region(r, t);
+>>   	damon_split_region_at(t, r, 25);
+>>   	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+>> @@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
+>>   	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
+>>   	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
+>>   	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
+>> +	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
+>>   
+>>   	damon_free_target(t);
+>>   }
+> I understand that the above change is increasing the coverage of this test to
+> also verify the age of splitted region.  Nice.
+>
+> Correct me if I'm misunderstanding the intention of the above diff.
+
+Yes, that is correct.
+
+>
+>> @@ -190,6 +192,7 @@ static void damon_test_merge_two(struct kunit *test)
+>>   	}
+>>   	r->nr_accesses = 10;
+>>   	r->nr_accesses_bp = 100000;
+>> +	r->age = 9;
+>>   	damon_add_region(r, t);
+>>   	r2 = damon_new_region(100, 300);
+>>   	if (!r2) {
+>> @@ -198,12 +201,15 @@ static void damon_test_merge_two(struct kunit *test)
+>>   	}
+>>   	r2->nr_accesses = 20;
+>>   	r2->nr_accesses_bp = 200000;
+>> +	r2->age = 21;
+>>   	damon_add_region(r2, t);
+>>   
+>>   	damon_merge_two_regions(t, r, r2);
+>>   	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+>>   	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+>>   	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+>> +	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, 160000u);
+>> +	KUNIT_EXPECT_EQ(test, r->age, 17u);
+>>   
+>>   	i = 0;
+>>   	damon_for_each_region(r3, t) {
+> I understand that the above change is increasing the coverage of this test to
+> also verify the age handling of the merge logic.  Looks good!
+
+Exactly.
+
+>
+>> @@ -232,12 +238,12 @@ static void damon_test_merge_regions_of(struct kunit *test)
+>>   {
+>>   	struct damon_target *t;
+>>   	struct damon_region *r;
+>> -	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184};
+>> -	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230};
+>> -	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2};
+>> +	unsigned long sa[] = {0, 100, 114, 122, 130, 156, 170, 184, 235, 240};
+>> +	unsigned long ea[] = {100, 112, 122, 130, 156, 170, 184, 230, 240, 10235};
+>> +	unsigned int nrs[] = {0, 0, 10, 10, 20, 30, 1, 2, 5, 5};
+>>   
+>> -	unsigned long saddrs[] = {0, 114, 130, 156, 170};
+>> -	unsigned long eaddrs[] = {112, 130, 156, 170, 230};
+>> +	unsigned long saddrs[] = {0, 114, 130, 156, 170, 235, 240};
+>> +	unsigned long eaddrs[] = {112, 130, 156, 170, 230, 240, 10235};
+>>   	int i;
+>>   
+>>   	t = damon_new_target();
+>> @@ -255,9 +261,9 @@ static void damon_test_merge_regions_of(struct kunit *test)
+>>   	}
+>>   
+>>   	damon_merge_regions_of(t, 9, 9999);
+>> -	/* 0-112, 114-130, 130-156, 156-170 */
+>> -	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 5u);
+>> -	for (i = 0; i < 5; i++) {
+>> +	/* 0-112, 114-130, 130-156, 156-170, 170-230, 235-240, 240-10235 */
+>> +	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 7u);
+>> +	for (i = 0; i < 7; i++) {
+>>   		r = __nth_region_of(t, i);
+>>   		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+>>   		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+> I understand the above change adds two regions on the test input, but I'm not
+> following what logic it intends to additionally test.  Could you please
+> clarify?
+
+Both cases were intended to verify that damon_merge_two_regions() is 
+called properly in damon_merge_regions_of().
+The first one was intended to ensure that non-adjacent regions (170-230, 
+235-240) are not merged even if their nr_accesses difference is within 
+the threshold. However, on second thought, I realized this is redundant 
+since it is natural for non-adjacent regions not to be merged.
+The second one is to verify that two adjacent regions (235-240, 
+240-10235) are not merged if the resulting region would exceed the size 
+limit.
+
+>
+>> @@ -269,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
+>>   {
+>>   	struct damon_target *t;
+>>   	struct damon_region *r;
+>> +	unsigned long sa[] = {0, 300, 500};
+>> +	unsigned long ea[] = {220, 400, 700};
+>> +	int i;
+>>   
+>>   	t = damon_new_target();
+>>   	if (!t)
+>> @@ -286,14 +295,19 @@ static void damon_test_split_regions_of(struct kunit *test)
+>>   	t = damon_new_target();
+>>   	if (!t)
+>>   		kunit_skip(test, "second target alloc fail");
+>> -	r = damon_new_region(0, 220);
+>> -	if (!r) {
+>> -		damon_free_target(t);
+>> -		kunit_skip(test, "second region alloc fail");
+>> +	for (i = 0; i < ARRAY_SIZE(sa); i++) {
+>> +		r = damon_new_region(sa[i], ea[i]);
+>> +		if (!r) {
+>> +			damon_free_target(t);
+>> +			kunit_skip(test, "region alloc fail");
+>> +		}
+>> +		damon_add_region(r, t);
+>> +	}
+>> +	damon_split_regions_of(t, 4, 5);
+>> +	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
+>> +	damon_for_each_region(r, t) {
+>> +		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
+>>   	}
+>> -	damon_add_region(r, t);
+>> -	damon_split_regions_of(t, 4, 1);
+>> -	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
+>>   	damon_free_target(t);
+>>   }
+> I understand that the above change make the existing test scenario bit more
+> complex, and cover the alignment.  Looks good.  But
+> damon_test_split_regions_of() aims to cover multiple scenarios.  Your change is
+> updating one existing test scenario, so I'm bit concerned at the fact that it
+> is removing one test case.  I understand the updated test scenario is including
+> the old one, but I think keeping the current test is also ok, as long as the
+> maintenace burden is not that high.  So, instead of modifying an existing test
+> scenario, how about adding the new test case?
+
+I agree. I will restore the test case I removed and add the new one 
+instead.
+
+>
+>>   
+>> @@ -574,9 +588,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
+>>   			});
+>>   	damos_test_commit_quota_goal_for(test, &dst,
+>>   			&(struct damos_quota_goal) {
+>> -			.metric = DAMOS_QUOTA_USER_INPUT,
+>> -			.target_value = 789,
+>> -			.current_value = 12,
+>> +			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
+>> +			.target_value = 234,
+>> +			.current_value = 345,
+>> +			.last_psi_total = 567,
+>>   			});
+>>   }
+> Thank you for correcting this!
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
+
+Best,
+Shu
 
