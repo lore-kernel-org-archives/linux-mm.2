@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F6BE674BE
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 14:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4A9E674BD
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 14:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58AB6B0005; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
+	id F41316B0005; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDC686B0089; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
+	id F0C286B008A; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDEB36B008A; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
+	id E34DE6B008C; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4CA6B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:56:07 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86196877DE
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:56:07 +0000 (UTC)
-X-FDA: 84247407174.03.60F86AF
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B75A940009
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:56:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mR0ZYIay;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2CDE6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 811781A01FE
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:58:56 +0000 (UTC)
+X-FDA: 84247414272.30.E5292DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C474B1C000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:58:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sf8cvv97;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766415365;
+	s=arc-20220608; t=1766415534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ug6CF6jCTPeVAFS2QI1pQi+kiqg4TBi7NpuKWEmGN1A=;
-	b=W7qbfG8vVv19N8SiRkJRLeP8Xb5AbFlzT3cE74FNaN73TZipvgal8emJx51xGhPXa6F4qx
-	Z311XNTW+kgD0iDLu1A0mF2R4oARGLA9KBYPAdPQB/2xAUs6H+gubj786z64MWp9tQH9Qm
-	v2eKEhoX3hwU0Q07s2I4fhXRkwKLjdE=
+	bh=RI6wkzq9art1PUr+oZHEIShCAnFL/nfJWig5oY9a9H4=;
+	b=GkGvuU34rlLwyvVIZnTGSF8lN7dTqokCCSAJygjB6zRHOiLrrC/SSk94mG047XVkka8oqT
+	GTA4bn+MeXrK8xb/9QMXBvBH8+HKy8Ikjk5AcDjMU7tmJmAAfrLjRLmoTPq42B8cMjtJjW
+	Mx2rponQu+8YEYdi05t35v3yNtztpHw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mR0ZYIay;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415365; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sf8cvv97;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415535; a=rsa-sha256;
 	cv=none;
-	b=r7kj9HSEdWAdlR52xmdn8mp/LJBHC7pgYf6DV27nXKO3tScxxz4MKfyAnrIIVYx1augziW
-	JV8wQPGkyUp1YXEko2AWsihlkzXaltHcIuiXF9dFji0/tqg4zRbTLsqksEBefEZHGHUoc3
-	LrI9bSV94h4uDOPK6Z7OYGL4dkEGwtE=
-Content-Type: text/plain; charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766415363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ug6CF6jCTPeVAFS2QI1pQi+kiqg4TBi7NpuKWEmGN1A=;
-	b=mR0ZYIay0khLE3eWzfTfMrMUBSfzPivyFLCYkJg7umNNHmi1J+CWjiGZd5hgbuhCY4VByv
-	bwPiRmnU/E9MGfwey8vGWPmFmFp+7HIigwWdGxEs7jK1Ehu7BWDxBLRxU3ii55jZXrk4TD
-	3rMA+8byHGekh6B28hIX+XG4QKisfRY=
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
-Date: Mon, 22 Dec 2025 22:55:16 +0800
-Message-Id: <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
-References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>
-In-Reply-To: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
-To: David Hildenbrand <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B75A940009
-X-Stat-Signature: nukkq1588jfzs4x84rc6t45pz8fk4its
+	b=TFRQ0fVYAo+t94G67sVUsSeF2MEN+RApiaCZXsj+8Q1RfdQdVrW7azmU3B3CyUYunNI14i
+	weXAVY0c1FyUtTUqib2tydVvaMf3t1PDmUn6CelxiWVGuGShR0Zpd7w7rVR0SgptLMDZZ5
+	l53Nz8yJX6SGRbmtYQbQFjBN0dRdVgE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E756740684;
+	Mon, 22 Dec 2025 14:58:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BA5C4CEF1;
+	Mon, 22 Dec 2025 14:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766415533;
+	bh=b4wwckHCSEHA9/WsH/82v8iyuGooOfYc2si289h0qdk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Sf8cvv973Ocy86SIfrhCawHgAShUAwMSVQXJmWzuodPbT41k1EQD8ytVx625GsbjA
+	 SW8CeuEhVcF9igA8P6YYwwKKILnQ4wtjZ9NJUZC8GVOJy1YFzowIKCHG9Wpke6Cd3p
+	 4hlh6ZLKMflh9K4G4Fn2woo7rNi6d3jEcqdrNbRMhKV4lClYGgNb/eEA1oF9C9q53H
+	 PjiLu8ZRc9IoV32IPqFBobyygCnl0aDln4g75qhv3K1GZNkghCwfXPs4qohTcHGSXW
+	 Mqh2ghyKhw/orybk4h09OSXMzd0E0OMiPtbla5X7ljWCIHF1WJ1K2PrewNZlPqPMoN
+	 ptWtwVifEgDeQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
+  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
+ Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
+ <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
+ <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
+ Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
+  Vipin Sharma <vipinsh@google.com>,  Zhu Yanjun <yanjun.zhu@linux.dev>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-doc@vger.kernel.org,  kexec@lists.infradead.org
+Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
+ early boot
+In-Reply-To: <CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
+	(Pasha Tatashin's message of "Sat, 20 Dec 2025 10:11:34 -0500")
+References: <20251206230222.853493-1-pratyush@kernel.org>
+	<20251206230222.853493-5-pratyush@kernel.org>
+	<CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
+	<86wm2hj0ky.fsf@kernel.org>
+	<CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
+Date: Mon, 22 Dec 2025 23:58:43 +0900
+Message-ID: <86o6nqd0m4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Stat-Signature: x477co7zyjo98qrzh8k8f57sn5u8gi9t
 X-Rspam-User: 
-X-HE-Tag: 1766415365-282829
-X-HE-Meta: U2FsdGVkX18mR6Q/tor2WxeulSCvliSEXEAwhMwmFTAXIsFn+kzfOIXWtcdFFDICsfPwtcWK0WM3d0W/w4Z0pZgpoadTEMrb8UYL5QQwmMyxKC3RyYqpyz8simQtP8bXxyc7DqyBF4BkgL/WjBwLOYZsyJshZpN8pLLkuw8l6vYpGBNGDbd37mu+dYW/KDPcMXI86nWm2hRqqmNRvcWkdOvOb4aUBCB1h0hczuCBZIz5n1FEKdH8aupQyXgQheK9GRuaTB8fPCweocQX25YcF/v3FCJimqt1PVQqF8NJj6QfREvt0HCqoFAvIuh9cr+OuHyc3X5hNyHwMuVCckkZMQrzTY7VbYvsD6shh7HPoX4sHvySN6UxVf52tjQByQvFK6WnG+yqqmF2IJSUvGbbGAonS+Aoj0A5JazqSK3FiMc4+gBunTa1RgBqVRNT07f9xSxl3rVRxG34CVLZMZnNAc1sPb+oW/aPAtJ+1NBe2P4QH2Mps7Ajfp4ZgzbBCHsI8kmfGN4ZaedMnKhLv6zQx+dw8DRT1j08IHSkmbsgvO55uWbBKY33nqlY+x/Hr2W+eWzJ8shMMJTRlB0bO+5qnVqOu39MKINf/FPXy9vqFRbxMAb1QzeZbtsumf7/5Tm9waCsLoZBZnMxWJzcwLtFSrEmf2DaDbh+qoPCxPEFAEIcvfZ6xD2+F0nujZU/SFg/EGCSLAqJFKU65nv5CBRjgIXiV6BbHmWq3qf8Fp41LKRfyOxOiwQPM3nW1UIaoxHwNEYxr5UAQVZhNOl5bGuppN4t1nrB69ovJqz+czHiB4l1K6WDm4Fb2akyB+7dCfpWpofk0uOa3zuLU9wTqPgygqyTWMjG9Kp4g5qKNju6d+gCZr798BQGh0+joFUmJrlBa9loH+3Q4TU9lIuJsuUw5TQOsdyWO9XHm9xVdZ1cIpigpU4excOQyFrCjKbiuzilMDbY9aBDZw1GHVyVanr
- zUBw/KFa
- k7fsazwjF1P7C2h5g0aJZroIXuU9y7U68nuHFTpA3zy1svQ3O/9myCL912P6n6GJyklvRnoxO1pTfTZzaohJWzF4o69dBdpoeAgSuL8OM3X+xQhCxvz4r4YEeVuEv52JiQ+iTezOpNef4xyc25THEBg97wyWAEqCjt5bx1Ik261CTs+VY2XLkAez82vs0q07aWFdQo2BFu1OXk2xXGmPXiM7HB0fHrbQmn+i5
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C474B1C000B
+X-HE-Tag: 1766415534-542529
+X-HE-Meta: U2FsdGVkX1/QofVMjBkGlS3yocsxOvRJBBnpxetUa3Hu8bCabLhdH5kn0loEj1CkkpLIkRkdhZ0IeBClflGmNjcDZmRPS+uHNuPi8yrojFDnCCLN6HrcgCqK99j0DgAnshXr0y+BxV0FKkypEQZ+PnT6/dpP9GWRumxx4YPPTvZKdlZXYneFIHgMFPAUU/5J7zPhocb5fKkouktKNeT5wTwm2Z21Ojupd04vWNFsVCww/HOmwkCzfZKF7EaWnHUZCSAlGEU1B3qwpeJ2eDS2cCJmI/BQdogQiQ2odjO7eGFSoIKHITH2QaQPlEnkppQEWUqSkWx2U8M+c9MkGLnN7h6VLbacrj8WQvy8Rcs6pdm68dlt4gtZB8byzFsT+herj7plFiZd5o+bjjeqSR/7Hh+bcAg2cFf7i6LfcfLn/2O9tjFbaSJ2effcFL7yhAtdy3i5zAOOY2fyERzLG3MQkDd88mKZLRciCt9OxXpsNPi8Um3T6pSdEMIAjZoxMGeK5sQjdB+AHg7FaXayxAVM+NW/b3vJ6/ljL1MqnfLlVOxWhKD1Ct7Ky1LG8Pl1ExMH3TNFLThrATPIgpWanlImRXUfKKo9D/SOUi8euzGotiGM6rAEcwcPSojf54pKB2k0cPyjFFxN2sJV2+v2WcsLeubqqbiFtHRkmr5bqeYKkgzuLJiNj7Iq/w6gVyGlfAWdA//PGgM0c+KGGjjQdCGOfwyOv8qCqRVH+dQvHMe7KKmDlEEKSs2g0aviW6JeMNU0qOtCUldRGv7ur7GRC4+ff3uyS+9QwZQIeVL/WcZvDvMoEqafI7/ov5bk8lLR5QcFRrktttj9KhiIxI7+EQlNBdEzOIwz7jwPU3gHO/BxhGRGfMttiGkrLXmxg+SCunLp3OyWV5LWFRGTMoVVtznd7nYYcKVJhIykv91/hGDuW+3zZqTKo2Asroo+0LajvHq5ks+oteqJn/AOIGLxHhG
+ xoilRAoW
+ VCFP3DAq9zv1MdLbb0d3MSsKe7FBnKKpn3b/htWT+jigr1Gfp/odKbtck06uClr/D2v23p58YlsBfue1iN/ODJxG0+Mq+n9TYET1ejeT77jzTKg90Mi340OnY0DjXe14eMHj1uVzrhy+2qLUK39JObiGaNWdbUF8hWPLm5LUAyPqjn5E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,61 +110,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Dec 20 2025, Pasha Tatashin wrote:
 
+>> > [Follow-up from LPC discussion]
+>> >
+>> > This patch is not needed, you can use liveupdate_flb_get_incoming()
+>> > directly in early boot. The main concern is that we take mutex in that
+>> > function, but that I think is safe. The might_sleep() has the proper
+>> > handling to be called early in boot, it has "system_state ==
+>> > SYSTEM_BOOTING" check to silence warning during boot.
+>>
+>> Right. I will give it a try. For hugetlb, this works fine since it
+>> doesn't really need to do much in FLB retrieve anyway, it just needs to
+>> parse some data structures.
+>>
+>> If other subsystems end up needing a two-part retrieve, one in early
+>> boot and one later, then I think it would be a good idea to model that
+>> properly instead of leaving it up to the subsystem to manage it.
+>>
+>> Anyway, that isn't a real problem today so let's look at it when it does
+>> show up.
+>
+> FLB has exactly one .retrieve() lifecycle event. Once called, the data
+> is considered fully available and cached in private->incoming.obj.
+>
+> If a subsystem has a requirement where it needs a specific state
+> available very early and other state available much later, the clean
+> solution is simply to register two separate FLBs.
 
-> On Dec 22, 2025, at 22:18, David Hildenbrand (Red Hat) <david@kernel.org> w=
-rote:
->=20
-> =EF=BB=BFOn 12/22/25 15:02, Kiryl Shutsemau wrote:
->>> On Mon, Dec 22, 2025 at 04:34:40PM +0800, Muchun Song wrote:
->>>=20
->>>=20
->>> On 2025/12/18 23:09, Kiryl Shutsemau wrote:
->>>> The upcoming changes in compound_head() require memmap to be naturally
->>>> aligned to the maximum folio size.
->>>>=20
->>>> Add a warning if it is not.
->>>>=20
->>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
->>>> kernel is still likely to be functional if this strict check fails.
->>>=20
->>> Different architectures default to 2 MB alignment (mainly to
->>> enable huge mappings), which only accommodates folios up to
->>> 128 MB. Yet 1 GB huge pages are still fairly common, so
->>> validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
->>> miss the most frequent case.
->> I don't follow. 16 GB check is more strict that anything smaller.
->> How can it miss the most frequent case?
->>> I=E2=80=99m concerned that this might plant a hidden time bomb: it
->>> could detonate at any moment in later code, silently triggering
->>> memory corruption or similar failures. Therefore, I don=E2=80=99t
->>> think a WARNING is a good choice.
->> We can upgrade it BUG_ON(), but I want to understand your logic here
->> first.
->=20
-> Definitely no BUG_ON(). I would assume this is something we would find ear=
-ly during testing, so even a VM_WARN_ON_ONCE() should be good enough?
->=20
-> This smells like a possible problem, though, as soon as some architecture w=
-ants to increase the folio size. What would be the expected step to ensure t=
-he alignment is done properly?
->=20
-> But OTOH, as I raised Willy's work will make all of that here obsolete eit=
-her way, so maybe not worth worrying about that case too much,
+Hmm, that can work too. Anyway, let's figure that out when there is a
+real use case. For now, the current FLB design works fine.
 
-Hi David,
-
-I hope you're doing well. I must admit I have limited knowledge of Willy's w=
-ork, and I was wondering if you might be kind enough to share any publicly a=
-vailable links where I could learn more about the future direction of this p=
-roject. I would be truly grateful for your guidance.
-Thank you very much in advance.
-
-Best regards,
-
->=20
-> --
-> Cheers
->=20
-> David
+-- 
+Regards,
+Pratyush Yadav
 
