@@ -4,104 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4A9E674BD
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 14:58:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9ECE674B5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 15:00:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F41316B0005; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
+	id A92F76B0005; Mon, 22 Dec 2025 10:00:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0C286B008A; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
+	id A412D6B0089; Mon, 22 Dec 2025 10:00:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34DE6B008C; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
+	id 977336B008A; Mon, 22 Dec 2025 10:00:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D2CDE6B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 09:58:56 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 811781A01FE
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:58:56 +0000 (UTC)
-X-FDA: 84247414272.30.E5292DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C474B1C000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 14:58:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sf8cvv97;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 803196B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 10:00:37 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0552B1401E8
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:00:36 +0000 (UTC)
+X-FDA: 84247418514.03.505A742
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2BF8540024
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:00:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hTurnvBF;
+	spf=pass (imf12.hostedemail.com: domain of 3EV1JaQUKCEIipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3EV1JaQUKCEIipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766415534;
+	s=arc-20220608; t=1766415635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RI6wkzq9art1PUr+oZHEIShCAnFL/nfJWig5oY9a9H4=;
-	b=GkGvuU34rlLwyvVIZnTGSF8lN7dTqokCCSAJygjB6zRHOiLrrC/SSk94mG047XVkka8oqT
-	GTA4bn+MeXrK8xb/9QMXBvBH8+HKy8Ikjk5AcDjMU7tmJmAAfrLjRLmoTPq42B8cMjtJjW
-	Mx2rponQu+8YEYdi05t35v3yNtztpHw=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SLecpNCzVXawwP8cx0xrGTVH2kk35JOIvedfHtD8OOw=;
+	b=Ell6ddgLk7JSMI6DaLQCMkGCoPT9N+EGBo/J1Q6FtdJqC/X0qk1iUQDy7ngkMrX1GSGboH
+	Pk06rs4+Q6SxAbxHamCqNwIW1N5XZpPqjrAv/jWPSvLnEaXd8TsXttuqEu9n9nU6oxQVFp
+	bwAMubFjOQPcGtsnc08e4JFz3KdwdEE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sf8cvv97;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415535; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hTurnvBF;
+	spf=pass (imf12.hostedemail.com: domain of 3EV1JaQUKCEIipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3EV1JaQUKCEIipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766415635; a=rsa-sha256;
 	cv=none;
-	b=TFRQ0fVYAo+t94G67sVUsSeF2MEN+RApiaCZXsj+8Q1RfdQdVrW7azmU3B3CyUYunNI14i
-	weXAVY0c1FyUtTUqib2tydVvaMf3t1PDmUn6CelxiWVGuGShR0Zpd7w7rVR0SgptLMDZZ5
-	l53Nz8yJX6SGRbmtYQbQFjBN0dRdVgE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E756740684;
-	Mon, 22 Dec 2025 14:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BA5C4CEF1;
-	Mon, 22 Dec 2025 14:58:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766415533;
-	bh=b4wwckHCSEHA9/WsH/82v8iyuGooOfYc2si289h0qdk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Sf8cvv973Ocy86SIfrhCawHgAShUAwMSVQXJmWzuodPbT41k1EQD8ytVx625GsbjA
-	 SW8CeuEhVcF9igA8P6YYwwKKILnQ4wtjZ9NJUZC8GVOJy1YFzowIKCHG9Wpke6Cd3p
-	 4hlh6ZLKMflh9K4G4Fn2woo7rNi6d3jEcqdrNbRMhKV4lClYGgNb/eEA1oF9C9q53H
-	 PjiLu8ZRc9IoV32IPqFBobyygCnl0aDln4g75qhv3K1GZNkghCwfXPs4qohTcHGSXW
-	 Mqh2ghyKhw/orybk4h09OSXMzd0E0OMiPtbla5X7ljWCIHF1WJ1K2PrewNZlPqPMoN
-	 ptWtwVifEgDeQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam
- R. Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
-  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
-  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
-  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
- Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
- <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
- <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
- <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
- Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
-  Vipin Sharma <vipinsh@google.com>,  Zhu Yanjun <yanjun.zhu@linux.dev>,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  linux-doc@vger.kernel.org,  kexec@lists.infradead.org
-Subject: Re: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in
- early boot
-In-Reply-To: <CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
-	(Pasha Tatashin's message of "Sat, 20 Dec 2025 10:11:34 -0500")
-References: <20251206230222.853493-1-pratyush@kernel.org>
-	<20251206230222.853493-5-pratyush@kernel.org>
-	<CA+CK2bAV1y_LySjyj-wcn1cdSuVBdC+r+zQL7AQTY64nk3OxuQ@mail.gmail.com>
-	<86wm2hj0ky.fsf@kernel.org>
-	<CA+CK2bDWF6pbNQRkJFa+WcD1pwUOr3yQdrRUs-mgLWu5ght+7A@mail.gmail.com>
-Date: Mon, 22 Dec 2025 23:58:43 +0900
-Message-ID: <86o6nqd0m4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: x477co7zyjo98qrzh8k8f57sn5u8gi9t
+	b=6jnr9Io4HaPSNA0cKujw9b3vUqzhSIrvotP/yJWNtsw9kWKI8EIFajEGdfq6Gj77If+/Pu
+	YD7olJ+xDCRqm35btVhntzfzUp1MnhkifWmViSUZET0IdlSjavupBjq6VFpPCTa4EhZ2sE
+	iT4ZN0RrdwJ8fwasByyi/73y3o+z/BU=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779b3749a8so29729225e9.1
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 07:00:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766415633; x=1767020433; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SLecpNCzVXawwP8cx0xrGTVH2kk35JOIvedfHtD8OOw=;
+        b=hTurnvBFeNQgQmpmaazZNF7AjLsiOfpkGog7NZpVblQS2cgZY5a5yD3vKmtr50R8Lc
+         ZYAiP40SXamy0A4437QkCgrRbTlFjmfSJAhgUsaiE5n27JUYdUMHrYv9l+xe/QQ9QmRh
+         5YESv6mjHTHTGsXzbfZ5tn0JxugQjC1xquXS/tgYTMhsbCiofCfx2XSwIS6BCXlDt0pd
+         FHIFzlh60tayP8iFFK3ojXNytQdKzrGNMfChorGMmU82PQdAKK8VT7jQ0oJXiTaC2Lre
+         0U1xVlMxczmZGNTidZffpiCYpXM1g1iDs8niZDx5hiDtu5ullqt0WGhMngCdwoUBWt8L
+         eJeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766415633; x=1767020433;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SLecpNCzVXawwP8cx0xrGTVH2kk35JOIvedfHtD8OOw=;
+        b=nujkyOrJr/NgJ9I++XpGcNTnFqqvcUayT6XQMG2gWzDWoi188nOzns8Ts1a1QFTcDO
+         y+IVrWw5LNlHyL8OAyz86V9VnVPOiHswGAcMd8knqIBcinVUk+YIbkYuBa432MKmSRrQ
+         iUuDPhY5GXCeK9ta+WzfdwCrbdfJLRLMSZh4v6IHGbLmbjnn+5Ibs5yjxJGsSXKLRyad
+         byNyR22OLv5ylQBSayqqBaS1KPX37Ohlqapzpdus+E2QSdTpwE3IYBKDbBr49rY1262W
+         ofj8cmhr529mTJh/ztCW+QMZyzNDRzLT0Q6K46e4uR4A7trZxPDPm6EVbcxhceEA35f4
+         xCDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWyb6HZ7P1cmI0i0ktVqIeKbOXV2bjggoJbyFoFleBYuXE/+tj8QDka71okf8WthEJIp1tU5gqqQw==@kvack.org
+X-Gm-Message-State: AOJu0YzLPbwRolSyhN54NdNW8vYDHoHe7ZTwBnrUxAlhr+xgfTky+mXl
+	v7VxhC3douxDj4V292tTN2/ZtDDmbp8otU2zWIdcFwJDMRyHY/NwiVTCwwvleNmYzGqMnnBMFf9
+	zuQ==
+X-Google-Smtp-Source: AGHT+IGrVe5BwxTN1xBcqifymYkOlLo7MfVSee5M8PugpQUe7fIfSUpxJR3UYaitoT+KLjV38czMFVaTBA==
+X-Received: from wmco23.prod.google.com ([2002:a05:600c:a317:b0:477:93dd:bbb1])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:46c4:b0:477:7bd2:693f
+ with SMTP id 5b1f17b1804b1-47d1953b80bmr128913385e9.6.1766415633343; Mon, 22
+ Dec 2025 07:00:33 -0800 (PST)
+Date: Mon, 22 Dec 2025 16:00:06 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
+Message-ID: <20251222150018.1349672-1-elver@google.com>
+Subject: [PATCH] docs: kernel-parameters: add kfence parameters
+From: Marco Elver <elver@google.com>
+To: elver@google.com, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ge7z4pz3tqruax66e1nf4wioqxqgh3pm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C474B1C000B
-X-HE-Tag: 1766415534-542529
-X-HE-Meta: U2FsdGVkX1/QofVMjBkGlS3yocsxOvRJBBnpxetUa3Hu8bCabLhdH5kn0loEj1CkkpLIkRkdhZ0IeBClflGmNjcDZmRPS+uHNuPi8yrojFDnCCLN6HrcgCqK99j0DgAnshXr0y+BxV0FKkypEQZ+PnT6/dpP9GWRumxx4YPPTvZKdlZXYneFIHgMFPAUU/5J7zPhocb5fKkouktKNeT5wTwm2Z21Ojupd04vWNFsVCww/HOmwkCzfZKF7EaWnHUZCSAlGEU1B3qwpeJ2eDS2cCJmI/BQdogQiQ2odjO7eGFSoIKHITH2QaQPlEnkppQEWUqSkWx2U8M+c9MkGLnN7h6VLbacrj8WQvy8Rcs6pdm68dlt4gtZB8byzFsT+herj7plFiZd5o+bjjeqSR/7Hh+bcAg2cFf7i6LfcfLn/2O9tjFbaSJ2effcFL7yhAtdy3i5zAOOY2fyERzLG3MQkDd88mKZLRciCt9OxXpsNPi8Um3T6pSdEMIAjZoxMGeK5sQjdB+AHg7FaXayxAVM+NW/b3vJ6/ljL1MqnfLlVOxWhKD1Ct7Ky1LG8Pl1ExMH3TNFLThrATPIgpWanlImRXUfKKo9D/SOUi8euzGotiGM6rAEcwcPSojf54pKB2k0cPyjFFxN2sJV2+v2WcsLeubqqbiFtHRkmr5bqeYKkgzuLJiNj7Iq/w6gVyGlfAWdA//PGgM0c+KGGjjQdCGOfwyOv8qCqRVH+dQvHMe7KKmDlEEKSs2g0aviW6JeMNU0qOtCUldRGv7ur7GRC4+ff3uyS+9QwZQIeVL/WcZvDvMoEqafI7/ov5bk8lLR5QcFRrktttj9KhiIxI7+EQlNBdEzOIwz7jwPU3gHO/BxhGRGfMttiGkrLXmxg+SCunLp3OyWV5LWFRGTMoVVtznd7nYYcKVJhIykv91/hGDuW+3zZqTKo2Asroo+0LajvHq5ks+oteqJn/AOIGLxHhG
- xoilRAoW
- VCFP3DAq9zv1MdLbb0d3MSsKe7FBnKKpn3b/htWT+jigr1Gfp/odKbtck06uClr/D2v23p58YlsBfue1iN/ODJxG0+Mq+n9TYET1ejeT77jzTKg90Mi340OnY0DjXe14eMHj1uVzrhy+2qLUK39JObiGaNWdbUF8hWPLm5LUAyPqjn5E=
+X-Rspamd-Queue-Id: 2BF8540024
+X-HE-Tag: 1766415634-208827
+X-HE-Meta: U2FsdGVkX1/o2z1yMhRJHgLFeFk8AbklnubQDsc1YZIQSozVyQxXcDl+FFcncoCYdPiSG1FB2NHIJapGchiRDU4x2PT3XAxCjQZJdtk7NaFvjCirKSttQkSFUB2crweuqGrBjhLItgGw9qHWsnvqwzkK4MwVgbLaeTApykl2y8qJ3klgdJ6MJXY8mpfh5JIA6GDA8Ll2DVIctdDXSRGSS6ZLljNDUp3Z+sEb4QvVu25+gGZq5BN7qjCYcyHrZlOhLUpXHyLohQuaCKbpbJddvy4od3+yF5e6D/vrrfNj0S++1csf5Zj/0Blgs34Rm1+XzlW6cSklbZ/6IVAg0s+UlDInIp1tazwlecsV3xHHDizPz+7rq6BB5CNw/b+olmqiAbE6ziHUf8DDPASb3aQbt1krKr3j2lU85FHp9MupVjPFy/nK6qZR+pbUrwLg1tw992DtuBc1p1QpkC0/TwB1a0iEWJav1uNnSJ7LUVNhPX5qaB2m0YGtT+AhdXlSJDpO3iKu7qcwOXk9Z9UN0oicHDrU+9gcDV3/pUiBnCS2ESSi6tEbU/1wSPdk42SSy1S9e1fp2IYKNEgLeW3s/sgX/l7PRMp10Qz89K5o99XlFvJ8aZpNZ1CYejt9otou165Ea2+VkLhVkerJdc7Uqt0F4g5AJZGO3z6GqL/f0dWeZaImGGwmHEME2j/qanpdv374wtRoc+ebCchdwSHZw8x3RjoC9MJsN6Q+nUmpXRzm/OENYHBpwYpQ9uyos4UdsNCnqogMJVhWyerSzNQPMfAyAb93rJWUPiw8m5F12Tbrvkh7WuUgZ6Rm+93xrO7B4eQIgmzTL8DbyVQUUpGUi4wbR1N+q7xJozbPfX+UxM+BMWWkzda3JIDbje7ytfmRFGgsTIcZywBcPKRuECGDWfPCPxOvvQwQ6r3joTK/rKT7E6ioumbstyEk9EbujYdInBpd3ErnOXGqVaFJmCvTJif
+ GckRpj1T
+ YEl2rqdu4rp5ddgyf1yo9CHqU/LiyNfKbqu8Y2OldzO/1fbwR+ypa43cpr/AojzWDdXorBxeaBmVzsDfWhqODpAUMIARJwSk87QrLYTczo3gRTUMCsIimhjkXPpzYrS0Ln/F4KasKF44/nPqqcvtax4V+cRIW55g2nfQdmqHTlGFpgQ9UiZ1I6c40UTH/1MLjN5EP9GkkxN/KQ8Vb3zzpdH3IXvOhi4yXx5wpQywVeTrJEcCzy3HAik+5XByTFygom6IZizLaJftRh7bY2nwdRHCJdYkG1+n73+AlxEZI8KtLHARMKLsrGYbq/r6n7WhUgqtV/Fh5rJiJUOSRP1MK9RIgN3f1yovNic/BtxbAOtxoZ1vkV6Akx1/qLKxQRrJVr2tjxkACyqEX8Kp9/5bAvDpKRjaV8rdS5xdn+zDhxBh6iC2zR2Fa20OP5P1o2SkgxrODMZFegiHvide5xFdZB4CnEQU/waaY+daclpDZu9HEBxE/xt3gU2GNdRkLuj9AQMoQYrlsD4B2SkD38sG4a1b5YU4VSv8b1bY3pAo3SphBj9Qhod0UMX70Y3SVQvP8KBHL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,38 +107,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 20 2025, Pasha Tatashin wrote:
+Add a brief summary for KFENCE's kernel command-line parameters in
+admin-guide/kernel-parameters.
 
->> > [Follow-up from LPC discussion]
->> >
->> > This patch is not needed, you can use liveupdate_flb_get_incoming()
->> > directly in early boot. The main concern is that we take mutex in that
->> > function, but that I think is safe. The might_sleep() has the proper
->> > handling to be called early in boot, it has "system_state ==
->> > SYSTEM_BOOTING" check to silence warning during boot.
->>
->> Right. I will give it a try. For hugetlb, this works fine since it
->> doesn't really need to do much in FLB retrieve anyway, it just needs to
->> parse some data structures.
->>
->> If other subsystems end up needing a two-part retrieve, one in early
->> boot and one later, then I think it would be a good idea to model that
->> properly instead of leaving it up to the subsystem to manage it.
->>
->> Anyway, that isn't a real problem today so let's look at it when it does
->> show up.
->
-> FLB has exactly one .retrieve() lifecycle event. Once called, the data
-> is considered fully available and cached in private->incoming.obj.
->
-> If a subsystem has a requirement where it needs a specific state
-> available very early and other state available much later, the clean
-> solution is simply to register two separate FLBs.
+Signed-off-by: Marco Elver <elver@google.com>
+---
+ .../admin-guide/kernel-parameters.txt         | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-Hmm, that can work too. Anyway, let's figure that out when there is a
-real use case. For now, the current FLB design works fine.
-
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index a8d0afde7f85..1058f2a6d6a8 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2917,6 +2917,41 @@ Kernel parameters
+ 			for Movable pages.  "nn[KMGTPE]", "nn%", and "mirror"
+ 			are exclusive, so you cannot specify multiple forms.
+ 
++	kfence.burst=	[MM,KFENCE] The number of additional successive
++			allocations to be attempted through KFENCE for each
++			sample interval.
++			Format: <unsigned integer>
++			Default: 0
++
++	kfence.check_on_panic=
++			[MM,KFENCE] Whether to check all KFENCE-managed objects'
++			canaries on panic.
++			Format: <bool>
++			Default: false
++
++	kfence.deferrable=
++			[MM,KFENCE] Whether to use a deferrable timer to trigger
++			allocations. This avoids forcing CPU wake-ups if the
++			system is idle, at the risk of a less predictable
++			sample interval.
++			Format: <bool>
++			Default: CONFIG_KFENCE_DEFERRABLE
++
++	kfence.sample_interval=
++			[MM,KFENCE] KFENCE's sample interval in milliseconds.
++			Format: <unsigned integer>
++			 0 - Disable KFENCE.
++			>0 - Enabled KFENCE with given sample interval.
++			Default: CONFIG_KFENCE_SAMPLE_INTERVAL
++
++	kfence.skip_covered_thresh=
++			[MM,KFENCE] If pool utilization reaches this threshold
++			(pool usage%), KFENCE limits currently covered
++			allocations of the same source from further filling
++			up the pool.
++			Format: <unsigned integer>
++			Default: 75
++
+ 	kgdbdbgp=	[KGDB,HW,EARLY] kgdb over EHCI usb debug port.
+ 			Format: <Controller#>[,poll interval]
+ 			The controller # is the number of the ehci usb debug
 -- 
-Regards,
-Pratyush Yadav
+2.52.0.322.g1dd061c0dc-goog
 
