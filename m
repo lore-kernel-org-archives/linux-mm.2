@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE72DD68BD5
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5120D68BD5
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 03:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43B586B0088; Sun, 21 Dec 2025 22:08:25 -0500 (EST)
+	id 0F2AD6B0088; Sun, 21 Dec 2025 22:12:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5796B008A; Sun, 21 Dec 2025 22:08:25 -0500 (EST)
+	id 0A0B16B0089; Sun, 21 Dec 2025 22:12:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FAB86B008C; Sun, 21 Dec 2025 22:08:25 -0500 (EST)
+	id EE1E26B008A; Sun, 21 Dec 2025 22:12:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CC826B0088
-	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:08:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC0F61A09F1
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:08:24 +0000 (UTC)
-X-FDA: 84245623728.22.671FAD1
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 094E818000B
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:08:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vkbKgYK6;
-	spf=pass (imf06.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id DBFAB6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Dec 2025 22:12:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9C791409CA
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:12:18 +0000 (UTC)
+X-FDA: 84245633556.07.492D2BC
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D7BD7140012
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 03:12:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LLXTjyXj;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766372902;
+	s=arc-20220608; t=1766373137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAtcsFclq4XbbiDB67SzXvz6gDgLwNXWJVv0Anqspv8=;
-	b=b6YwjifQyd6BbkV7n+PItbIvTMjPJFRfufozZNZC6vwjI3OYF+be+34RGcHrOhstjaNXpP
-	rjE6is5q50Ql3NGvpHvnMd6v715cTO1A38hSBe6SuMWufHHJszNNL9TfdBmrhgD3cj0cOV
-	IB5oAErHtP+tmKY1sdM7IAfHRkQkYks=
+	bh=lhDz9De+0KQKYXwyi7fXsZXUS+UyFkHbIg9lL8okLng=;
+	b=IsrhcDUEEpmLH8Rg2p8csUvQcSbieNuBerJJ2ez0DclAvkSa+zxzckqxztF5QHocepFutJ
+	8GiRSX+xxjpsz+M+KmQfuJlyiZJy3qlzNiaM5EG4oYSvXsOBPAutxwYGDitgvDJxygUm1K
+	m7xjLliSBz5G2dyN/a+TwHaBZ/P+4iM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vkbKgYK6;
-	spf=pass (imf06.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766372902; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LLXTjyXj;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766373137; a=rsa-sha256;
 	cv=none;
-	b=x6y1Y8/yeVxCQSwjuVnGxNxJH5DFKs5La+YVtjRnushyBPiOQoDse2DPW56d7ab+RuFw/I
-	ZZJ+obOy5TSJQZF6kiHTE9xyytoogbqogLWhDW3TI9hZP0VNmkQglXNDTFyEhuD9Zp2c6F
-	4xMDwmmzjsX9PlQ+M5NrAZ8V/1GbLjg=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YAtcsFclq4XbbiDB67SzXvz6gDgLwNXWJVv0Anqspv8=;
-	b=vkbKgYK60ruqF4U5mf01kZydopn2LRnEQI6R+SSDVzfj+svFpMifDb38+biVY+98G22ItBIi0
-	mdtMEOHoKmSCocuR45YW7SoquJnmUVnZrtQYo8swTeIb3zW5X5LCktCEDoDPR7O1qTeXlOkFd7+
-	W7aNsb306Cstb7F1tB9kvgU=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dZNM30n0DznTXZ;
-	Mon, 22 Dec 2025 11:06:07 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id CD56A40539;
-	Mon, 22 Dec 2025 11:08:17 +0800 (CST)
-Received: from [10.174.179.179] (10.174.179.179) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 22 Dec 2025 11:08:16 +0800
-Message-ID: <68bffc9a-f067-4e67-87ee-9fea769950d5@huawei.com>
-Date: Mon, 22 Dec 2025 11:08:16 +0800
+	b=XWsPW98dDGSxkajurxwVriUlkU2HIlHHVC15B6UYSgkbJ8mtdtJmpP9y9fvf67UL5rHeWN
+	AmcfY2gmv/RvpgH/VOj4S4cK/jTCxGyjfZS71OqtX5lSubEbyC/AX4xSajNUabwLwYswst
+	myfiTa9Jgg7vaHzeSjgTpqXG0UQPzV4=
+Date: Sun, 21 Dec 2025 19:12:01 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766373133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lhDz9De+0KQKYXwyi7fXsZXUS+UyFkHbIg9lL8okLng=;
+	b=LLXTjyXj4sjKaSd7i+xSAkBw/Egc4X73CMw9V0L1nvh4msC2Wo73V2CTmMnyFZ6OV4btxo
+	fGnwKNSKQDavxwzVJ0cZAwHrzN+Rppl+CgK3m8F3QniAgBfr2K3jzqizcuiYBDRUx9b9ql
+	rMlMj7XO0cSjsvw3e70ahe02CtnyJxs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, zhengqi.arch@bytedance.com, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	lujialin4@huawei.com, zhongjinji@honor.com
+Subject: Re: [PATCH -next 1/5] mm/mglru: use mem_cgroup_iter for global
+ reclaim
+Message-ID: <gkudpvytcc3aa5yjaigwtkyyyglmvnnqngrexfuqiv2mzxj5cn@e7rezszexd7l>
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+ <20251209012557.1949239-2-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempolicy: fix mpol_rebind_nodemask() for
- MPOL_F_NUMA_BALANCING
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>,
-	<matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
-	<byungchul@sk.com>, <gourry@gourry.net>, <apopple@nvidia.com>,
-	<mgorman@suse.de>, <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>
-References: <20251213082911.1509735-1-tujinjiang@huawei.com>
- <87pl889uvg.fsf@DESKTOP-5N7EMDA>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <87pl889uvg.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.179]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 094E818000B
-X-Stat-Signature: 7dn1dujdtmsty46ruxeqipfbpfznrfn8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209012557.1949239-2-chenridong@huaweicloud.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766372901-630865
-X-HE-Meta: U2FsdGVkX19wATkujuY3QPEsqSvlhUyZn8t9hCaqPv95kP/eWI9d55YnwZX02lVsqjNs2BeZGwOvxI4MyrH8F2psjp+jSNYW0BQFjSpBn3R12Wx4IHyEdh6tWiet244VxVAHYRVLA4rOKWGvWEAOcK2fi5EZ3E9uOtbJRbrmXf38N7RbL1BAH3trD7UngEaBCUycYR9WYlop+BDNrejsJyyche/K9lTpOFo9Q+iJdy0lmaYvI5ZFUxDmo5JA5ILoSrfyfK/Og13vFBwRpQVbi5PPaWy4BO1WthKq89C98JSR2jVp1N1GdPUqWaTxoF5nkNCQKcnybTqZyPcDuf9FrjGeedWkg5U/+L09CDvR2pJieWsfHDfKi9V08of2AIifI+YrwlZMfzDkJrJrt8azGNcwLo39gxQmRSEyD05jwN1i2krYtmFCm9limenv9JrItKx5GmoFm193Yf6qiNosTE/NRcs/zYjNCYOP97k2gRfxTb5zDhwH6dCsfWC6bBhfX7C0lyQnmki1vkqprkMYa8jhoIWCFGqTC77VIPQnDJQBaz9ivi7wht1GRXP8IPF7rd+JFEGHt3hlNIX6RUUzRA318Qc5l7LRuhSy0gilfN3c2xxoJ6XLN1TW7AFP+WqSfOXB761Ec3OIZSnDKQQ1BpRWhCjL0SpPl1H6g1Avl21/ncWisQlTLhGhyfIZo5fpiIHSpEK+UtZR2fueH23CKcVUox6118GygMKJKu7Hc6WC+bVfJ/N6QVGy8Y7XUiSe0H7gSIYXzJvkproTNJ0LXIUVfGEuC7RRWvP6lL8Up9f0G6/xwmU3d12qYdTRnZnJ7TEq6GZGLRRCl42xn8ROT1xMaBKTlQA92fWpOg/mDuyfL/se+/ISNxtHlCKIqhDfaerXQ3GaUays3gwNYOar+0ATAvw/8Ba4WLMCJnKTEN1lL8DAg2g7ItAhiJcC3BCnLpVg8EWVLutbXJafpKK
- xJj3RHvS
- eErjPXEAfXB9nKrhA5GXDITOu8M6apQVinNwZsHQinwd3e+88cnntcXxphZ9ot4TVL+OASz4QfkH5Z9EQKZM/m3EUlCUFIJqKvWA5REmoCabUqcPF+XZP9KNhFUhpwHGlB1Cx/XmOYhiJ7IbAsVq5ksqsGc12s1Ygrk3pdreJqZII3JM4L/43LqiBOXlGyM+qtklNueQZ6KXv8LwHQ5F64fQd4+JPk/+YR/PMVkBMUWe5TjPDb5vhBXe/n63PZIEaiOu5zN16uSOXOyZu/cqvbTh8+3bbeeytdCkVJbO/62KiLORQNI4ujse1mwm8Eys/lSvjFPK8iE2LGX6bfw2IgjKtk8WKoKtG3QDMISrNzPJhO68u0PfbuQPITmCAIalMsJFDD5a38glSbb04ziNxWjUN+JzLIpEstO4+oJz+NPl2AfIe/0XiZcNOAi6JeF8CWkFzTPuZvpAWbE1KDDF9YYNwxcpD8810CfAFbRxBef34Etg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D7BD7140012
+X-Stat-Signature: qzkgupkg7mugnddwuspw5pcihxki1pti
+X-HE-Tag: 1766373136-227440
+X-HE-Meta: U2FsdGVkX19Ylu18c1pOxWMfKhwiZ2O6tB3ufBe+e9KuHp2cZ9ywXt2dZ+MMfRvOjHfA0s1YanLuaVjRtJUoprcZUpbkg5G4Ps+TCOzmEW0Ct2WOHJD829f9On7iqWzkE8Br3Jz6yN+pwP+ThCSSkcyK7DDg0CaMhfDxW63sExGZZayDU/uvf49FlGELaYhnsrdgEoWLZ8pl30dIJR9UZqboNtAD7bhjR86AOxk2MbJM8ujMKb1RRNDErQgdnzYIg1a22dyyhCMIMQMnp7j9pBZ/6j4VFtBTdO72BBT46nm1UHWWrYAZ/QZDEl5wQ1kYnJE1yaFfKWqBFe8b0bKZTfEtxHL6MDn5pVPXCoBVWau/3IvxG1NuvUVUDd4ZSNiVPvy7gXK7HcPheVCsaBz/jk5WflFElvGp9deycGWuSfSaQF2HD+wDhW+RAHMY3hAGkZKsjZDk+TYh+UQD6tywN3YsIiLS7O9dVp4RFm/WtkWDjrnXhyHn3jZRZfHvwKU4U8u/aHFWvdx12lX8LfEg4Pf14Y9HKWvdPJuoMSxbepYFUoPT5iGbCfmwTkn2ANi+qbcv/Gzza3EAluSBnLiiAloRv2TGFw7diBxOgPKzSBW6CJV2TbYexn/wg5HkQaRon3TYoeGe1ofJYwY9v0l6W1OJ4+NGF7yVZhQ2oKDR4yhLrE5/w3sQSHEa+tWUnlodZH/EohSrvmOoGH9PcRVkoGjRhAJ6M9AJ8ePxui8uPSsYezv1tofon4G4w/MkrjlldqwMp6pnok5twI0mYOo8fdn33pkg7DaUbehmVcuU56/WCKDjVm5uS6oXKhiJKudEgJ0hwM0GacpibUrsnDnPoe7rjHERLvjcG9mlqW5Em0DQM7Qp5lc7JXMBjD5RsZr3UAgFdNwKMsq/zHNhWJpwKEu2FycOkpfIPmTDVskazDc5RnuxlvhR/nhyd6E+IP9VlKZhSF6WrEYSqLAfY2y
+ Neu1h/V3
+ 3LHfK4GnSVK6PAznl7WHdw4ekf+GR3V0Qo3ovn/UcH5nmd+zvr8t+/OWgRiT1lE7JKDJcttK/uENGOpAGGP29JtaiBdANgiNNBv2N6qFdzT9SoLOJXlbRs49nPCYPznXd61H345jU2FS3qVB1ZGTYeFXP+PXyfGfdjq9Soc9aND3li2NuuJEpm73n4N2IqOU+PV6L7gtx4EHgpMhz2lp/K14aN8V4IckyMFLz/y30Y5iKg3Yv0MzWK09dOY3PWiGAcS+g93IQJZkQmrnqHHF7LRHyaSYpQPqai/anjWkfqvuc3pJPRrVoOFglJU2f468W13xxe+EIR61yLl8Y4IQlaSMduiiO/kpLqewnrmslpiH20qUrZpzKjkFbhxiNqtekyouWMVNXcLF+o7/03AcggSavVoDzPb+2FLpn+0sy95UaJ/CNiugHEPYu2eJASMGAHbUS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,80 +94,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2025/12/21 15:06, Huang, Ying 写道:
-> Hi, Jinjiang,
->
-> Jinjiang Tu <tujinjiang@huawei.com> writes:
->
->> When mempolicy is rebound due to the process moves to a different cpuset
->> context, or the set of nodes allowed by current cpuset context changes,
->> mpol_rebind_nodemask() remaps the nodemask according to the old and new
->> cpuset_mems_allowed by default. So, use mempolicy.w.cpuset_mems_allowed
->> to store the old nodemask allowed by cpuset.
->>
->> MPOL_F_STATIC_NODES suppresses the node remap and intersects the user's
->> passed nodemask and nodes allowed by new cpuset context.
->> For MPOL_F_RELATIVE_NODES, the user's passed nodemask means node IDs that
->> are relative to the set of node IDs allowed by the process's current
->> cpuset. So, use mempolicy.w.user_nodemask to store the user's passed
->> nodemask.
->>
->> commit bda420b98505 ("numa balancing: migrate on fault among multiple
->> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA balancing
->> for MPOL_BIND, the behaviour of rebinding should be same with default
->> befaviour. However, mpol_store_user_nodemask() returns true for
->> MPOL_F_NUMA_BALANCING, leading to mempolicy.w.cpuset_mems_allowed stores
->> the user's passed nodemask instead of cpuset_current_mems_allowed, and
->> mpol_rebind_nodemask() remaps wrongly.
-> Good catch!  Thanks for fixing this.
->
->> Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> ---
->>   include/uapi/linux/mempolicy.h | 6 ++++++
->>   mm/mempolicy.c                 | 2 +-
->>   2 files changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
->> index 8fbbe613611a..1802b6c89603 100644
->> --- a/include/uapi/linux/mempolicy.h
->> +++ b/include/uapi/linux/mempolicy.h
->> @@ -39,6 +39,12 @@ enum {
->>   #define MPOL_MODE_FLAGS							\
->>   	(MPOL_F_STATIC_NODES | MPOL_F_RELATIVE_NODES | MPOL_F_NUMA_BALANCING)
->>   
->> +/*
->> + * MPOL_USER_NODEMASK_FLAGS is used to determine if nodemask passed by
->> + * users should be used in mpol_rebind_nodemask().
->> + */
-> This sounds a little internal in a user API header file.  How about
-> something like below.
-
-Thanks, I have updated it in v2.
-
->
-> /* Whether is a nodemask specified by user */
->
->> +#define MPOL_USER_NODEMASK_FLAGS (MPOL_F_STATIC_NODES | MPOL_F_RELATIVE_NODES)
->> +
->>   /* Flags for get_mempolicy */
->>   #define MPOL_F_NODE	(1<<0)	/* return next IL mode instead of node mask */
->>   #define MPOL_F_ADDR	(1<<1)	/* look up vma using address */
->> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
->> index 68a98ba57882..76da50425712 100644
->> --- a/mm/mempolicy.c
->> +++ b/mm/mempolicy.c
->> @@ -365,7 +365,7 @@ static const struct mempolicy_operations {
->>   
->>   static inline int mpol_store_user_nodemask(const struct mempolicy *pol)
->>   {
->> -	return pol->flags & MPOL_MODE_FLAGS;
->> +	return pol->flags & MPOL_USER_NODEMASK_FLAGS;
->>   }
->>   
->>   static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+On Tue, Dec 09, 2025 at 01:25:53AM +0000, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
+> 
+> The memcg LRU was originally introduced for global reclaim to enhance
+> scalability. However, its implementation complexity has led to performance
+> regressions when dealing with a large number of memory cgroups [1].
+> 
+> As suggested by Johannes [1], this patch adopts mem_cgroup_iter with
+> cookie-based iteration for global reclaim, aligning with the approach
+> already used in shrink_node_memcgs. This simplification removes the
+> dedicated memcg LRU tracking while maintaining the core functionality.
+> 
+> It performed a stress test based on Yu Zhao's methodology [2] on a
+> 1 TB, 4-node NUMA system. The results are summarized below:
+> 
+> 	pgsteal:
+> 						memcg LRU    memcg iter
+> 	stddev(pgsteal) / mean(pgsteal)		106.03%		93.20%
+> 	sum(pgsteal) / sum(requested)		98.10%		99.28%
+> 
+> 	workingset_refault_anon:
+> 						memcg LRU    memcg iter
+> 	stddev(refault) / mean(refault)		193.97%		134.67%
+> 	sum(refault)				1963229		2027567
+> 
+> The new implementation shows a clear fairness improvement, reducing the
+> standard deviation relative to the mean by 12.8 percentage points. The
+> pgsteal ratio is also closer to 100%. Refault counts increased by 3.2%
+> (from 1,963,229 to 2,027,567).
+> 
+> The primary benefits of this change are:
+> 1. Simplified codebase by removing custom memcg LRU infrastructure
+> 2. Improved fairness in memory reclaim across multiple cgroups
+> 3. Better performance when creating many memory cgroups
+> 
+> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
+> [2] https://lore.kernel.org/r/20221222041905.2431096-7-yuzhao@google.com
+> Suggested-by: Johannes Weiner <hannes@cmxpchg.org>
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> Acked-by: Johannes Weiner <hannes@cmxpchg.org>
 > ---
-> Best Regards,
-> Huang, Ying
+>  mm/vmscan.c | 117 ++++++++++++++++------------------------------------
+>  1 file changed, 36 insertions(+), 81 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index fddd168a9737..70b0e7e5393c 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4895,27 +4895,14 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  	return nr_to_scan < 0;
+>  }
+>  
+> -static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>  {
+> -	bool success;
+>  	unsigned long scanned = sc->nr_scanned;
+>  	unsigned long reclaimed = sc->nr_reclaimed;
+> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>  
+> -	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
+> -	if (mem_cgroup_below_min(NULL, memcg))
+> -		return MEMCG_LRU_YOUNG;
+> -
+> -	if (mem_cgroup_below_low(NULL, memcg)) {
+> -		/* see the comment on MEMCG_NR_GENS */
+> -		if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL)
+> -			return MEMCG_LRU_TAIL;
+> -
+> -		memcg_memory_event(memcg, MEMCG_LOW);
+> -	}
+> -
+> -	success = try_to_shrink_lruvec(lruvec, sc);
+> +	try_to_shrink_lruvec(lruvec, sc);
+>  
+>  	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+>  
+> @@ -4924,86 +4911,55 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>  			   sc->nr_reclaimed - reclaimed);
+>  
+>  	flush_reclaim_state(sc);
+> -
+> -	if (success && mem_cgroup_online(memcg))
+> -		return MEMCG_LRU_YOUNG;
+> -
+> -	if (!success && lruvec_is_sizable(lruvec, sc))
+> -		return 0;
+> -
+> -	/* one retry if offlined or too small */
+> -	return READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL ?
+> -	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
+>  }
+>  
+>  static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+>  {
+> -	int op;
+> -	int gen;
+> -	int bin;
+> -	int first_bin;
+> -	struct lruvec *lruvec;
+> -	struct lru_gen_folio *lrugen;
+> +	struct mem_cgroup *target = sc->target_mem_cgroup;
+> +	struct mem_cgroup_reclaim_cookie reclaim = {
+> +		.pgdat = pgdat,
+> +	};
+> +	struct mem_cgroup_reclaim_cookie *cookie = &reclaim;
+
+Please keep the naming same as shrink_node_memcgs i.e. use 'partial'
+here.
+
+>  	struct mem_cgroup *memcg;
+> -	struct hlist_nulls_node *pos;
+>  
+> -	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
+> -	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
+> -restart:
+> -	op = 0;
+> -	memcg = NULL;
+> -
+> -	rcu_read_lock();
+> +	if (current_is_kswapd() || sc->memcg_full_walk)
+> +		cookie = NULL;
+>  
+> -	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
+> -		if (op) {
+> -			lru_gen_rotate_memcg(lruvec, op);
+> -			op = 0;
+> -		}
+> +	memcg = mem_cgroup_iter(target, NULL, cookie);
+> +	while (memcg) {
+
+Please use the do-while loop same as shrink_node_memcgs and then change
+the goto next below to continue similar to shrink_node_memcgs.
+
+> +		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+>  
+> -		mem_cgroup_put(memcg);
+> -		memcg = NULL;
+> +		cond_resched();
+>  
+> -		if (gen != READ_ONCE(lrugen->gen))
+> -			continue;
+> +		mem_cgroup_calculate_protection(target, memcg);
+>  
+> -		lruvec = container_of(lrugen, struct lruvec, lrugen);
+> -		memcg = lruvec_memcg(lruvec);
+> +		if (mem_cgroup_below_min(target, memcg))
+> +			goto next;
+>  
+> -		if (!mem_cgroup_tryget(memcg)) {
+> -			lru_gen_release_memcg(memcg);
+> -			memcg = NULL;
+> -			continue;
+> +		if (mem_cgroup_below_low(target, memcg)) {
+> +			if (!sc->memcg_low_reclaim) {
+> +				sc->memcg_low_skipped = 1;
+> +				goto next;
+> +			}
+> +			memcg_memory_event(memcg, MEMCG_LOW);
+>  		}
+>  
+> -		rcu_read_unlock();
+> +		shrink_one(lruvec, sc);
+>  
+> -		op = shrink_one(lruvec, sc);
+> -
+> -		rcu_read_lock();
+> -
+> -		if (should_abort_scan(lruvec, sc))
+> +		if (should_abort_scan(lruvec, sc)) {
+> +			if (cookie)
+> +				mem_cgroup_iter_break(target, memcg);
+>  			break;
+
+This seems buggy as we may break the loop without calling
+mem_cgroup_iter_break(). I think for kswapd the cookie will be NULL and
+if should_abort_scan() returns true, we will break the loop without
+calling mem_cgroup_iter_break() and will leak a reference to memcg.
+
 
