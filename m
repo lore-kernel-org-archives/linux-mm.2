@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC7AFE6ADF9
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 20:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAEE0E6ADFE
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 21:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 393546B0005; Mon, 22 Dec 2025 15:59:36 -0500 (EST)
+	id 0B09F6B0005; Mon, 22 Dec 2025 16:15:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35D396B0089; Mon, 22 Dec 2025 15:59:36 -0500 (EST)
+	id 05EB16B0089; Mon, 22 Dec 2025 16:15:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 294A66B008A; Mon, 22 Dec 2025 15:59:36 -0500 (EST)
+	id EAC5A6B008A; Mon, 22 Dec 2025 16:15:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 180936B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:59:36 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C12E61325E
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:59:35 +0000 (UTC)
-X-FDA: 84248323110.20.027C398
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 144A5120011
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:59:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nZJflpUs;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DAEFE6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 16:15:20 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3B33140388
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:15:17 +0000 (UTC)
+X-FDA: 84248362674.14.5A56EB3
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B0FF84000B
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:15:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WE8nga14;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766437174;
+	s=arc-20220608; t=1766438116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mZ/UtThSWtPu4Oy8X58uMB22wy61L0gvY9PyQceVLTU=;
-	b=VRqPA8IWWeuQkO5e/m/bQTeZEo8JNTjA1Xc0aiesXYCg1p7Fot46dDXFGix0wCzZ6X6dnS
-	lGVx35H4Mryx6dmQHUR5zSptz1+AEnmVSfOq980Atwg6oNcIjwU3IPhMftkp/aErIGvr4L
-	fupKkzO/ADjRE1I5qn7hfCOd5FNvtQk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766437174; a=rsa-sha256;
-	cv=none;
-	b=8gkI8LsFOSFJSUlOsln1zPtNJQ5YDO1v1JFWg4SwrXEVq+4M8TXMaHZFp0T2+n7Z87kj5q
-	OBBc7uP771weMkludMIuVO0s/KVhwN1ZIvZjcP3XDDbhxR1ns68rB0pUEhQBeJSDDT/J4s
-	D/hzWk16NZpCD9+xu1WB4WLlG+JHv4U=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ATsIATBoJeVgCe1Tzh5PiqnUB5qkUlOyxITDdU158Pk=;
+	b=ZWYUdzH8ZCdzNXx/1XIdI5O0VmkRooER5s97cDgs8AEx0CJ39honuBtZTlt5BNr0N/oAuM
+	IZ+U5WTSyAnppYHU2e3Tz4u4JwZh+GZ5JvMj56CJRqZg4aC1gHO6MWB3aHJEOwBj5vMw6i
+	Hmhb+VD7IJUS265/0s5wb5GBCPRMxL8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nZJflpUs;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WE8nga14;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766438116; a=rsa-sha256;
+	cv=none;
+	b=3ku0kiC4UyETj5RMTPYReCuAboOlDu0Xah20KV9hldBJAE8FdGHDau5gJdut6UZxzQsvnU
+	/24tTgIcaxZGk/6ITQPkYx6nFfVi/G/jfM7HyJXPYZhoWtJtHhd/5SU4J/9kNMaCliFWTB
+	I877KF4QVPvMD2Th06RQRwHj2POuZNw=
+Date: Mon, 22 Dec 2025 13:15:05 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766437166;
+	t=1766438113;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mZ/UtThSWtPu4Oy8X58uMB22wy61L0gvY9PyQceVLTU=;
-	b=nZJflpUsEdvMGyI7nb87aSCrQNiiKJayQuZfosbzlkuNU26egktK+1mOkpm5W8jBaedN5p
-	SgVxLaZHZTNPGYMxoXL5rfR/0lFkBVZYkoct5EWYXyt0vb6a4NwF8xZnD7ZSgyt7SvkBOq
-	KFA2NzPlh3c/fN8xZlPev1flXkvW/pk=
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ATsIATBoJeVgCe1Tzh5PiqnUB5qkUlOyxITDdU158Pk=;
+	b=WE8nga14GpM8tvT93TdK/ER3FepFBXX8xOYtIhzuAqC9PIoF1t+3bZLkDE03HqIiLIlXWf
+	JJ+lJQFsNTLbsBS2HE+P0b22fyMDYypMmUE9vxqXpDwXpsTQDxB7Lhm0F3goFmcyq7DhFN
+	HvLaAqtaxltcM3z3ZQN+nSuMA0YeF+g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>
-Cc: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH bpf v3] lib/buildid: use __kernel_read() for sleepable context
-Date: Mon, 22 Dec 2025 12:58:59 -0800
-Message-ID: <20251222205859.3968077-1-shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+Message-ID: <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251222122022.254268-1-jiayuan.chen@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: zdjx8a8o5cz4iejqbj4ke7jf16bjyqkc
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 144A5120011
+X-Stat-Signature: 69fuak85e3jeqq1w5ar3d51end6y6ctm
 X-Rspam-User: 
-X-HE-Tag: 1766437173-358794
-X-HE-Meta: U2FsdGVkX19F0WNI21hEwLzncx8GM0FWr9jJvIGFgMgbCVpQtGrCg1oPUtqadA0W1IgEgZazIG5qmqvyAhG3oWGkUEn1oSWL6rUCccwo7yS8vQ1sDEMSMcAlQjcwmR1jq2mZXeJIrfy0Hqh7OiArljwAx49ikSDiWfch1ZJhdXaPsefkKO9WDfrQ7iTDVYWra2wVm5V1dxLWlKAYhsd7/aOzyL0VAuG4awk/NyfS64wPCNheN/T8yY9Oy3m5ym6vCNJwHa1Ylu/F6p7huMrvsckl25rjzVb/ZLw9lsq9ZDfLSqNOxZwM8PMMqp8trTF122oZUk+MFRCARJQo6SU0Kqb4H+0flIyndVWk/iXJWTxDowmh8bGVWdwcBZ5TiKJXM7Q6Gz/F5H+GzUMy77ArSSXoLFPFxKuXqYiU+risLCS1sPP1DUXvxGf7K76YmxUlrRg4sOSA8tR0e0VxdnwPJn1SEv0sq4GX5eUV55idkCO8TnsHx30T0cxJByb58temtpBZDJXHPJxD5E84i0q6gLxAjoncSXg5SXy+Ffuf0/3Fvq9H6lEE0XUkNX93pRN9pIdSw0JPvg0HWgZ2l9MHNyQClGbSPsdHrvyappLtkD4ciegImxER6nHw1JDzfBPR7v5dSom94aYfdJxoqauL9QVMf2Lks++O3hcgCpjI8Di3VNqHXxW5GA6jt/WzFBq5O0trxwoHaR/WStnxG6t89RQj09ADWMPjLtCfPSKH1m1F+WUWa+KzFL8ILM2jhL8iLlu+QFs57gIAs6/UKSdQhwa2Vze44Nje6tL/+Xq7IziHKtCJlksX5ldZyBlDtsAHMhbfcXJUbaMewAyf7zy1NSo/C2koxo87rg/xjBOogSaG3Hha2R84ELIeFZGAYEeHvTNVA+C953h1r25SOkHOxbO/YPCOTOe7gX0WNiAx6sZVVh0Uz4oqIh2hWAJZOwh+MCa5n7+vL7UY43itGkZ
- 4MCGD+bH
- m67Mz+N7HjgItnXL82p6U51e7mSGNUOflq1OMrk1EidywMT6EHeeSPF4EIRfirn4d06iG8TFHDQbB6MPeauOADZr4NuvUUzKc5jSBXN0kyC9gUOhdAT4y5R48htF68XOVZZG1HKIGk8iVyBothBpJLXEdqerysBwT+g1/DkNJ/tr/N0ti/Dkm718WSc/oGBhoXT5OOTwvz18NdEmYx9XxlVR/tBDFlNHEDAChNlymvsWCDr+962Q9THLa/Kbi0Ikb/e+uMYFNAhX95DgTFdk8MNuSJuore7nr7xHFOn8/ksx6rdIFe/PeBbvvBSB6Iv1DEJffYk+q4EeDc/6U0hSbxwueqhpGRdnubz0/QNgu2THLHGCcSK/Zh2kkh7m28D4JqwUxmnU89ZGqrAjB3x3wAt8Swmcgl5/pUnHX1e3iWZXwyjPVtnuJmKvxzz8sXuFEihnU7wRa07hOo7xSvn0VPaQkng==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B0FF84000B
+X-HE-Tag: 1766438115-905857
+X-HE-Meta: U2FsdGVkX1/v+kwzWGRWkr4Otviq+YH3Htqqfuk0MULepLuhAB4Hc6znPXLMuYU5Aiq8evT79uKBv68McItErkMLnNuJ3XyEGCYfr3KLv0ar8RFBKbdnUHsxpz5lP+mF03GF5n0OpXYUAIUxlEXTesheN9qhUbd/smKFVd4tKJ+esYNER/mEysi0MM5vOEqzxbHdxhQniU5uYQbgQpjdDGdz9eAEBMWDxf+03bgt3uL13L5XA3tjUnm/5RA7EqXXuoAs2w9j4QGlkpXFH/vhUi6ydA0A0Wb9fMsAsfMdaDureH0rDWNm9jxSN6lcBbEpkRQzYTZvr1s8bZkM9Ajp/4/UQ37fKB9nk19J6C+21/0myei8YV19/Erz/s3WA7ZHG/XAQrwylhNY7zFScfTP9kmyDA4BsmDGKvcIRwfypEXU5cqY1mQjPuMN46Qr2ru/ergGyyhpPpxTEy+b3xXGCy/gBSN1wAyvOVavcvjNVkzWK3Lf/kQpoFcHevPImapzvAJ0kA3JskmxY6j2i0J/uW5GLHD3EKSAuc+jkYXL7d7MCpH6dJgaofX4oBbJb51v8aRL+kV7560oEQ0Ek843aHCE41N64wz215ShQ/gmVZb2B5xGLQqNCWUUOnJNBi7awFN2sGNRX4gYsWa9xIh4Hh7j9SPLS/cmGXz7SKgegHKISdqLi6zPlXmVm9sjT/jpeTzgI+rZw0tKEJaPkc3NWOmz4b+Q+lBSCOUebcEgzR2LSSeF3gStG+kpDqHQPurfrUnvI2TIUiS/47KnRk93ybYpNYAd7/s3Irf6UxIocFp0pF7AQezWHpHVgbInsp/O3mq2+Y8y5MNBRMy2b2hX6ntUfZRkwcHg6xoZYlrWrM2iyOUzEXASM7BrQai10bizJFAI5L2GQ9p/AKUbct4Z8EEapfYJ0ETDnUBQGDC+98io6+KvmBXzIIYTRQMjOyvPloRKJvC09WBfjJDdx0Y
+ skuDAlWY
+ +uxREAtrRhOYYRd5p1bjfyIPU1+oE5iyJSipoKm71UaxwT0oaSCKDjFFTD7h4GWb4JYJcKVHzoGZgQnnyNbuvE6ZRuHdyuvIlSBpFXcMJGnkeo88eBJHdvsRgjgLsdCrH/NX8YIn7akosbdVSZMCRAx0Dn+NcUnLn9WXS+TWEFCUzblOAuvr7Gbpgz8DQW9TkTWHHkmLYlRI68t0QVfV1g2iOFZNoMN+/W6o7tXSMzid5M3AoEnkyUg8hNdohtbc6u9KeQjerCGQWzo5D+3+UCkyuo9aEqpLSahFDetPTCgWIqWS+iGAjRSszD40fgnLulxG4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,99 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For the sleepable context, convert freader to use __kernel_read()
-instead of direct page cache access via read_cache_folio(). This
-simplifies the faultable code path by using the standard kernel file
-reading interface which handles all the complexity of reading file data.
+On Mon, Dec 22, 2025 at 08:20:21PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> When kswapd fails to reclaim memory, kswapd_failures is incremented.
+> Once it reaches MAX_RECLAIM_RETRIES, kswapd stops running to avoid
+> futile reclaim attempts. However, any successful direct reclaim
+> unconditionally resets kswapd_failures to 0, which can cause problems.
+> 
+> We observed an issue in production on a multi-NUMA system where a
+> process allocated large amounts of anonymous pages on a single NUMA
+> node, causing its watermark to drop below high and evicting most file
+> pages:
+> 
+> $ numastat -m
+> Per-node system memory usage (in MBs):
+>                           Node 0          Node 1           Total
+>                  --------------- --------------- ---------------
+> MemTotal               128222.19       127983.91       256206.11
+> MemFree                  1414.48         1432.80         2847.29
+> MemUsed                126807.71       126551.11       252358.82
+> SwapCached                  0.00            0.00            0.00
+> Active                  29017.91        25554.57        54572.48
+> Inactive                92749.06        95377.00       188126.06
+> Active(anon)            28998.96        23356.47        52355.43
+> Inactive(anon)          92685.27        87466.11       180151.39
+> Active(file)               18.95         2198.10         2217.05
+> Inactive(file)             63.79         7910.89         7974.68
+> 
+> With swap disabled, only file pages can be reclaimed. When kswapd is
+> woken (e.g., via wake_all_kswapds()), it runs continuously but cannot
+> raise free memory above the high watermark since reclaimable file pages
+> are insufficient. Normally, kswapd would eventually stop after
+> kswapd_failures reaches MAX_RECLAIM_RETRIES.
+> 
+> However, pods on this machine have memory.high set in their cgroup.
+> Business processes continuously trigger the high limit, causing frequent
+> direct reclaim that keeps resetting kswapd_failures to 0. This prevents
+> kswapd from ever stopping.
+> 
+> The result is that kswapd runs endlessly, repeatedly evicting the few
+> remaining file pages which are actually hot. These pages constantly
+> refault, generating sustained heavy IO READ pressure.
 
-At the moment we are not changing the code for non-sleepable context
-which uses filemap_get_folio() and only succeeds if the target folios
-are already in memory and up-to-date. The reason is to keep the patch
-simple and easier to backport to stable kernels.
+I don't think kswapd is an issue here. The system is out of memory and
+most of the memory is unreclaimable. Either change the workload to use
+less memory or enable swap (or zswap) to have more reclaimable memory.
 
-Syzbot repro does not crash the kernel anymore and the selftests run
-successfully.
-
-In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
-non-sleepable contexts. In addition, I would like to replace the
-secretmem check with a more generic approach and will add fstest for the
-buildid code.
-
-Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
-Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
-Changes since v2:
-- Single call to __kernel_read instead of looping (Matthew Wilcox).
-
-Changes since v1:
-- Fix handling of buf in freader_fetch_sync as pointed out by Andrii.
-
- lib/buildid.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
-
-diff --git a/lib/buildid.c b/lib/buildid.c
-index aaf61dfc0919..818331051afe 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/fs.h>
- #include <linux/secretmem.h>
- 
- #define BUILD_ID 3
-@@ -46,20 +47,9 @@ static int freader_get_folio(struct freader *r, loff_t file_off)
- 
- 	freader_put_folio(r);
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping))
--		return -EFAULT;
--
-+	/* only use page cache lookup - fail if not already cached */
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
- 
--	/* if sleeping is allowed, wait for the page, if necessary */
--	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
--		filemap_invalidate_lock_shared(r->file->f_mapping);
--		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
--					    NULL, r->file);
--		filemap_invalidate_unlock_shared(r->file->f_mapping);
--	}
--
- 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
- 		if (!IS_ERR(r->folio))
- 			folio_put(r->folio);
-@@ -97,6 +87,24 @@ const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
- 		return r->data + file_off;
- 	}
- 
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (secretmem_mapping(r->file->f_mapping)) {
-+		r->err = -EFAULT;
-+		return NULL;
-+	}
-+
-+	/* use __kernel_read() for sleepable context */
-+	if (r->may_fault) {
-+		ssize_t ret;
-+
-+		ret = __kernel_read(r->file, r->buf, sz, &file_off);
-+		if (ret != sz) {
-+			r->err = (ret < 0) ? ret : -EIO;
-+			return NULL;
-+		}
-+		return r->buf;
-+	}
-+
- 	/* fetch or reuse folio for given file offset */
- 	r->err = freader_get_folio(r, file_off);
- 	if (r->err)
--- 
-2.47.3
+Other than that we can discuss memcg reclaim resetting the kswapd
+failure count should be changed or not but that is a separate
+discussion.
 
 
