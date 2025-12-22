@@ -4,92 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCC3FE6B25D
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 22:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4594E6781B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Dec 2025 23:13:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C039C6B0005; Mon, 22 Dec 2025 17:57:27 -0500 (EST)
+	id 0778A6B0005; Mon, 22 Dec 2025 18:13:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87596B0089; Mon, 22 Dec 2025 17:57:27 -0500 (EST)
+	id 02EE96B0089; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A86506B008A; Mon, 22 Dec 2025 17:57:27 -0500 (EST)
+	id E7D196B008A; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 977496B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:57:27 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 340198ACD0
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:57:27 +0000 (UTC)
-X-FDA: 84248620134.26.61C0ACC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A4FFE40006
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 22:57:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q4rIU9G7;
-	spf=pass (imf01.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766444245; a=rsa-sha256;
-	cv=none;
-	b=HoPEGTek7R/t3kmGEndNmCcAEwfiJR3U28TYUz6+lOkyRnrWbDwqgQSzam8iyG+412/UNe
-	HClKpdSx10gNcmad23wemgt7Z7GNo53vr+xV7i2sB79GFjhAkejf8B3KzJQUHlt7BYXE8r
-	n9cibxrxdmR2hCigRhJ7hgRA1PC0+u8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q4rIU9G7;
-	spf=pass (imf01.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766444245;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D48316B0005
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:13:17 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67181B9275
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:13:17 +0000 (UTC)
+X-FDA: 84248660034.10.B0F5827
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4145410000A
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 23:13:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=N4DcZn8w;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766445195; a=rsa-sha256;
+	cv=pass;
+	b=a238UZULQNbZJ8mPnM/cN/fEPD5mUqxYFWWAqghnBWmIw8ac6y9vOJwpiXzURJRt6Go9io
+	gRQ1mAD9O6XFchqYr7NjLPaE+YuHAtpqPQz5tv8Rk3TRpJFroE2/m3+lA50bDeRi6208O9
+	o0uj4OjyT4ddjdTpDNBP4INkW+/Jyqs=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=N4DcZn8w;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766445195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NguvnFRuBJy3/mLBavaMslHp+ivpjY2fLVCtF5mOGQo=;
-	b=3EUvLj4MucL9oxvpB4TMPZOp2E2uR26yeMTi5DlVTwY2G6LJ3f1jVLErfE4rRWIzpQEzpE
-	KvErUSRkYqgsmCuXM3j6vFIMkbns4REHL+AhNwCpJ+nYrm4MPMDcXyUXrMhRsx9OjqKCTo
-	OVybsaRc+h4GJz/UYZl5WmDIihUH1FE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E93BF60172;
-	Mon, 22 Dec 2025 22:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662BAC19421;
-	Mon, 22 Dec 2025 22:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766444244;
-	bh=0a17z+b1KhA8Lz1K0fL/UR9O/H21Il19WH7GUt6FYfg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4rIU9G7TCnzvjlDY+CL+7shqH9WYX0LAtIesk0t5K6XUeB27bU3gaLmOhGELTWDS
-	 5DIy5uoy7AmVtrvDUZQ7/culeKy1ML3+tOQzKDxT0Qf8A22EmEYlgpzntlN2cr+8/V
-	 PnUuD0Rb/2RMa6iphu8gsVpaFfsjt8ouWFA6KvczMaxQnUVAIC/3a4mlLs+D7kyLDh
-	 ZA5QVlzfvK9lsi5lvDRm1tXziGmoJgoTuW4iG18ryBkFnp1PohFaDyV5S6qDCZtvQU
-	 EwZLzfCVFIp6OFXsGgHNrZWgYa+vPFJdjWKrWcT93k+HXldZlL2Pask5lf7nUCi1Wo
-	 BPbbYED/wr+LA==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 09/11] tools headers: Sync linux/gfp_types.h with kernel sources
-Date: Mon, 22 Dec 2025 14:57:14 -0800
-Message-ID: <20251222225716.3565649-9-namhyung@kernel.org>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-In-Reply-To: <20251222225716.3565649-1-namhyung@kernel.org>
-References: <20251222225716.3565649-1-namhyung@kernel.org>
+	bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
+	b=w5aRiQ3s0vQ9x/liIZiPvU8VeFj06YzmrZZ5K9STscLZwnefUohM+yGBu81bnfkN403hgf
+	THuSxs1npJFFvcs9RIxKtygm5nWNSneq2Mw6wVeNC5fZTcwWR52caZfiuU7wlYRNUUBSWi
+	YoSrdG1I4FmVAl6xQvLo4BrU56kKDiw=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso211495e9.0
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 15:13:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1766445194; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LDNyesIXs6QCatu+pLnNJeU5Qfpi1GPdixU2u6pThi7tjbOO4B+yrG4GJVePYfd9NG
+         L2eeq7OW7Vl6bUOX8uS4CphiC0k0CY00f3AvbcSD+MIeApT/C3v+p1s6nwyifTq3ir1y
+         dOboGZLY6HIqgEsQxSvd5gKEFvV0Fi/dVCxP7A+7YitrOsEQeD8SbXlpHm+omzbgl8y4
+         pLh2KNFjODa3YwHegFdF9fGQRtZDf4YjgkyCnERpPxc36Jt+aVRyLGga9atBc8+JtzKR
+         qNgtvauhTOAzWjaKko0yf7TRNe6obrYAv4Y1aQ6umal8nlwGWDKFDUZ6x/PjcKHbOezB
+         oNkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
+        fh=aawWypLgrsTQOiM55Fx71arAT4B2nKE02m7im1f08QY=;
+        b=Kb7T2WQk17fGEb1q9xk8PCgw8ckj+3WdrCx0lmTAjkDn7PEjnPrLLNYGTvZWhISEqV
+         BYt65/4aBozOS0Q//GjokuSdebVzWKiTU/Yvu4e1qHqsxAUstaQqu3BbuXQpGDbJUCre
+         /PjN8d0kVapeCmyzhvwK0SkACN//y3ssBj8YzEDpdGlDEJt+hwKzlCxhCMf0GaBkE3Uq
+         a2VMi4o+uCFlG6Ihs3OJe9/RBjTUlT/n9p3YdP8IUlHt7DOdqrwmmcffuhWI33CwkDs7
+         nstTqJtoczcn2RtfbZ+n5mWxncXzOlzrIjokkIXQ0uu+4eTYyCr2SYiE4WISnDUN+zgo
+         PE4g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766445194; x=1767049994; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
+        b=N4DcZn8wv7w9RwXY0PBUS5GM/W5C7POFiSiZjK3USg4hW6ely0bQQ3wpcJoP41hXUF
+         6DYo25gZSyXGXlXEVz/HZ71e2EaWSCuelinykOTn85DF84Rp0N9hEqi26wphQK8Rnwka
+         97PG41MEh6FDlzWo/k5/FehujqQpvGdxmnDRYtE7upNqR0Kdvvo2OVFPQ1s6J+J1Mdmn
+         yva8Xc6qe1wP38T4uGIXxXPR8nsbb6uoxtBDkISTXPDdyB0UrSBcgdgQyYarUtVduxfh
+         txrTnXfyMYUqsYwvSLRtySeThcaF7Y6ipizk3LqCnIRTNEr3Uskar7hxY7U2TnKAirAr
+         XPMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766445194; x=1767049994;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YJTLzTRHdupLLvRcx3mcA98H9ANSIboGE+S4pWyKNSk=;
+        b=W3Sg9R3arUrbUCwLcKAZgUNAQ+jDDYQYuST9I4bwQTOAQ+PLt/+AlXxh1TT8K+YGmP
+         2LCleTKDKPCYPiDmf5fjr5NSQ5nWf1ZaHYFw86yunVqwC+LY4Yg6lsxdRxTWnQksIz1U
+         vQBCKvyzi8yXc+PbQzR5SQoXh8Jihpnd9TSaEpE06wNDMaDamCyzHBEBHPxG1jxoM4KL
+         bJ5Mlwh73qmihIzboSgBxHgTdjGKPoQ3S5Qh7bj0lsC1cZKizLKRVOKoUloHi2HjMSxM
+         NJd2GdPSl5Sa6QoHgX0aPRQGioJIUz3BQcj+YT1/RbEAuGosAnd+sMOpZE5bVQnpojwl
+         JupQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWswRme2pb63pDeLZ+RWLlcP3j7Ay09927b/wjeURmXHHDP2k5ft2PYNXPsnD9sX4qeAffCsoio0A==@kvack.org
+X-Gm-Message-State: AOJu0Yzb+e7eJ0oZWYGxQ9qy+bI3OZCPvg6aYyP5yof4+PIcimEsuggp
+	OALlqa4gBb+woDJb3tJ0zeH4TZkKLW6/M0VIGsEpMvc9Nxtnj3vqwKJpfKMnlst06/+Aj1wn3Cw
+	GeGEwZp8Z6rbFKvqQpOSSuNQg7ixeRxVajaVk7Lu5
+X-Gm-Gg: AY/fxX43oB5XVSenhTO/5ZyT1q0YVWk1ZPAIhQMokc1oYP+385RJ4iqjrPFLdMvj+gE
+	4V8LcqXKa87CweEtlKMGYEXN1yH9i8L3gmZeH1ftmB1Gi6lYzMFVREcWpgdK5ZkcjVaGUt384Qs
+	6Q528EUDedSjPBD+ilifgo3VN75plL4g8YHtyxyLurJAN/9RT7mUJ0197oP00lC5pa3NrrLACGd
+	gtTTf5kp3inhfovfTOSRxTltjYcZkwkwSm/vRhyWhYm1UqCt8VUpzu18PEK75qRMtMxaCoCSPZW
+	evPNmyHcMbfDefY5NTR3cnFh1A==
+X-Google-Smtp-Source: AGHT+IFGkduj7pH8W1zUazH20M0j3IBfzkdlTK/FmiMb9xK4c/lYliUVcovrVAkpHgDjUzWBthuuXRctt88+BX0beSY=
+X-Received: by 2002:a7b:cd85:0:b0:477:86fd:fb1b with SMTP id
+ 5b1f17b1804b1-47d2321463cmr1500555e9.11.1766445193456; Mon, 22 Dec 2025
+ 15:13:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251219183346.3627510-1-jiaqiyan@google.com> <20251219183346.3627510-4-jiaqiyan@google.com>
+ <aUnCUNjiBOp05kVD@casper.infradead.org>
+In-Reply-To: <aUnCUNjiBOp05kVD@casper.infradead.org>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Mon, 22 Dec 2025 15:13:00 -0800
+X-Gm-Features: AQt7F2qeD0yp8uj2mESCumPqHXgiW1WK8km67ALQU8AEDyS5w0Owye5RFzl0tRQ
+Message-ID: <CACw3F50ZKCGaQrOEgoH6g8YCcK7Fs=tEiywZhqUzqkkeV_SsVg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm/memory-failure: simplify __page_handle_poison
+To: Matthew Wilcox <willy@infradead.org>
+Cc: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com, 
+	ziy@nvidia.com, harry.yoo@oracle.com, nao.horiguchi@gmail.com, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, william.roche@oracle.com, 
+	tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
+	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4145410000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: z96urke1shrk18s4wtmbc6mxohzupdah
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A4FFE40006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 6jgyfc6yk39idm8cnnwwstge1o99mnd7
-X-HE-Tag: 1766444245-95744
-X-HE-Meta: U2FsdGVkX19nxwTD9vs8Kb2lOMWxp9da8n07nq/o64qxeX9UZD52w2vN52PmSGMoGFOE7Srm/9WsP9U3dBtoOry40f5rM2WnJa8LNJQzIq+q1wK+hlcw50ees92MtQNLtAXCP75Zn+xb7n3eOLe1YwYiY1asYpZJW6Rw0WjoN3M2NprmCT6I6u/95kIld2OqOCAQZ8oE1dH93G//UX/zi3eQTRwLDQ8IZ5OfwH/mhDA5niWr4q9D66w5XuCC7/Ob39kVgMAQmG6NsBdxlaN8m17bp73b0O9R+CT/RtHuKxMckaNb2cUe7JofDxvggHbrgqPOrMEs8MrF3s6cLmhWEKVoe/NUygAHhswG/QAWUYNxknGnC5xLQs1xEzAHSQzIWH7/1bRjXO+hqZii1mnYDcNzV/NpkgGuxgXXo+gh5dQ3TmNSNyRX8gHxWft+dLCZPQJMPIK7oV0DI+YBulRRly1qytIAtPhsdhDEbuSju6ahOB6dVpqmZ4u+ovOyWvfbwfPaGXM8cUuWIb3ao9d8lHKhQM6MASIDfUwESMGvWrK4aPWj7mgLLrlmP6wVzkyoKyBtHh5rUZwhNbJ1h5C7r6gU7JmQE6FiqEfCSISUbWqtoN1bSkGDUXN4Txsocdv/u3TTJjInyUKw68bhGFWlGu52GEYoJUrst1gbad3/XtnLJEvu/De5gEf9Mz21IBOyioGHsX72DWhHtXF3Fpiac9TRr0RLUxQ7n0JQnQbcEF7UVPwQRr+AKvCrzNheIUOH3QNitE56M21lay+T8Mzq40FRG4IS3nXy3E68JJ2eq8EX3UR+ReZJWJGAKd1Tfj1+YNAtqRi0AUNFi3ECQUN0Yq4Oj5j+5Dfixo1ui7J1SSlabahMFgZcBGOrwkYyTg3wyRL4FPF9GQ7D7zhFs8xaLattXwmVQpsHjtXMil2T3wJ7dDtEbA5j+jSHOzrx5SAzOHnbc++XUuHI72zBhCn
- UppLS7Uq
- xj5+pOhvLrJJ9ruoB38GspPxtfNKZJOnp2SwKwcDFJa2EAPC0FW0xjATi+9acWHOaiMKSsqd7jjHf2HONENOKdF60e5gKRTz2pCBwaMw+k/YJ+OLaCJuqhswJ+csaXwtJoP41810+vfPo8+bdlGWu5G6lsfRd9dZMYnxvFij0Z2EryWC92+KEB+HHMKoPVGpkq3yn8SPCzlOYFtu4AO6poh5wWHBW0S6YNAC3nwovQH4D0cUgSVhyzzBjkrtm8912REvT4UeAzVs+dwnX1bMyL9u94i0m7RetlhvoCXmCENg/T+0TtA16xvbdRGe/8b04T830nXMrufywpefaL0iG87bS0fF2x6phgm8RM4Zd9fxiLSDQ5VkyepFPvQ==
+X-HE-Tag: 1766445195-193226
+X-HE-Meta: U2FsdGVkX18/xJESpSVLUBScWgmez9A1NzxeMA/V5a7prTJUg+ws5O9y24vKSdGlWeFzUlK95hSlqV+wN8w8nEH4Vt9i3v2Q9UMBlq5AwDoI436wl8oZtgc3GNRJTNswJuqWsM0VIKu+mGzduw+BdsojgrY7OEnyCijlM+yJBlC0Ew7VAQ+CYXgu202MFJL38Gt8VtM9wQVwyIyg3X9mAH3/94P0X+fKfgXpolI1GO6rlrIdEz+XNdkvyxiM30jR104Y9oIfRvvIqr+9VipAuDlNXww1xfj74/NiWQWLZwih7I8abK0MyIEnASrHsHSIqNVQboFm81E60Air9PbcP4p/1qOCCPZEqu+WeGOX2GXGKDF2ZZ+OAHYvPKeuBoCn8Y8xvAT4nAS6akgkUGkSYAgZ2/04YY99FOexIzT8PTbS5cbNwt3ODLOKnGq0AhSrYNl8V5j36Q9n9BfBFniOzfgMxw8i+78E6FQWJDDCUeLpJrJP10P/R/4RMuOMZ2dv+wKuEPXvau9A83QyB2laNTwSaeZ5URVY1NDc7hnb2qwHI/6hGZCGqt1qsFlQpdX80ysVQ83+EYg23vZ/4x6RKLV45KvvD10HwQRk4uRB0c7AjaBAWzqNcOFvANrvp7yNbi/ygHmb6+Xt4nK2HU7vjYXQc/u6jKl5o7Jpwuy0hTODNKJAMLV7g6FgRsC60NCHJ/80kx2553SXWFm3UfO8Y8+2/jbpDUq1tvgm9eN6juJ+F5zmwDrNrFWnSIluB/BY6wvpdffKNZl0s701tLv0dAwj/ViwBSw6sOzB0hrU071UnpFKGQvX3NgWpjaYLR5dM/5039it+vL1oyJEyhOwZxoJ3k3xlSuE8kiaG6ZhB+PEVxtRvrh/en//qBSk2ekD6Q7g2sTVAGzMDDfa9FA2tHZHTCcX5cBjbzP/LQWDUJ1kode3FsUbF6tGPj36AlVpPEgvWXA6si/K53jybQk
+ TIurMlhZ
+ jpB6A/ZQ63Vk4GAEj9rknUacTbAZtd8Dn8gmn73n4u78eOSdjVUbL6CiTUwYQtMBQyOX3ea5piIzJ6IeHx+vx+WJKP1qaRRs0Dx8F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,51 +147,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To pick up changes from:
+On Mon, Dec 22, 2025 at 2:12=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Fri, Dec 19, 2025 at 06:33:46PM +0000, Jiaqi Yan wrote:
+> > Now that no HWPoison page will be given away to buddy allocator
+> > at the end of dissolve_free_hugetlb_folio, there is no need to
+> > drain_all_pages and take_page_off_buddy anymore, so remove them.
+>
+> What if we discover a hardware error in a page which is currently
+> in the buddy system?  Why don't we need to remove that page from the
+> buddy system?
 
-  4c0a17e28340e458 ("slab: prevent recursive kmalloc() in alloc_empty_sheaf()")
+Thanks for your comment.
 
-This would be used to handle GFP masks in the perf code and address these
-tools/perf build warnings:
+memory_failure() explicitly handles is_free_buddy_page() case and is
+removing from buddy allocator with take_page_off_buddy() directly.
 
-  Warning: Kernel ABI header differences:
-    diff -u tools/include/linux/gfp_types.h include/linux/gfp_types.h
+However, when soft_offline_page() handles free page with
+page_handle_poison(), removing from buddy allocator is missing with
+this patch.
 
-Please see tools/include/README.kernel-copies.
-
-Cc: linux-mm@kvack.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/include/linux/gfp_types.h | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/tools/include/linux/gfp_types.h b/tools/include/linux/gfp_types.h
-index 65db9349f9053c70..3de43b12209ee79f 100644
---- a/tools/include/linux/gfp_types.h
-+++ b/tools/include/linux/gfp_types.h
-@@ -55,9 +55,7 @@ enum {
- #ifdef CONFIG_LOCKDEP
- 	___GFP_NOLOCKDEP_BIT,
- #endif
--#ifdef CONFIG_SLAB_OBJ_EXT
- 	___GFP_NO_OBJ_EXT_BIT,
--#endif
- 	___GFP_LAST_BIT
- };
- 
-@@ -98,11 +96,7 @@ enum {
- #else
- #define ___GFP_NOLOCKDEP	0
- #endif
--#ifdef CONFIG_SLAB_OBJ_EXT
- #define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
--#else
--#define ___GFP_NO_OBJ_EXT       0
--#endif
- 
- /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
--- 
-2.52.0.351.gbe84eed79e-goog
-
+I will fix this in v3. One way is to split hugepage_or_freepage and
+only take_page_off_buddy() for non-huge free page.
 
