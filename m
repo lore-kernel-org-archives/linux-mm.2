@@ -4,109 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA07E6B26B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C481E6B26A
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:01:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3B086B0088; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
+	id CF0A86B0089; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7DA6B0089; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
+	id CA7B86B008A; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF4AB6B008A; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
+	id BDE446B008C; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3776B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A6E1C08E4
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:00:59 +0000 (UTC)
-X-FDA: 84248931438.12.9CD29B7
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5370CC0004
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:00:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766451657; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AE5AC6B0089
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FC32B8C9B
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:01:08 +0000 (UTC)
+X-FDA: 84248931816.24.33E6A17
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C11CF40015
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:01:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKXOod1D;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766451666; a=rsa-sha256;
 	cv=none;
-	b=XRgrfP5bzgMmYJ2w+4Ttoi6gFFMjWOlSbNC7cgeg7mEGESioKHVB2dLr/Sy7QhxYqJc392
-	YVHZ+jVJcQt2LB71/f56/SVTFX8BjtoGd1aEURqyrUGnTy5UMmPbkk4ItsCL9ax4KVbEWo
-	iLvG9BsBBV66tEMzdaQEmgdGP74/NDM=
+	b=a1pOW/+pNyPsKGClvPFznhd1be62t+Yd2XJicpH1fiqCdPVNptJDtfoYbxpqtP6q/dUDcm
+	4Enl3NpCukFmDADCkNxLk5lmAPqepYQ++dRzsRTz3GfGY4NIyt+PkV63oGwvQuEO9uSJK8
+	pNijb7ahswfWh5gWvG2hCcJ3UMfIY2U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKXOod1D;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766451657;
+	s=arc-20220608; t=1766451666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fIOF/yeujThf0GlPbWdXphuM+F15C/kDhTZvUX3cLSQ=;
-	b=v1YYtvrrRBrYG9vf5dijbLzqxCXFXzJ1esUJ3qtzyhyiJYmdcyq+RUiyo2/VEHQ0vNRJgB
-	wRyUBZwOHX0jVDQsEXm0h75Sw1vQvly6hpIEQzAczgqNUE//A0RLQxHmERAa11LPpjiSse
-	1Q1Nhyn5EgKtE3LRqQiA6JlQjI5NY/g=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dZxWJ73d9zYQtfr
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:00:12 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 25FEF40576
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:00:49 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgBH9va_6Ulp6keYBA--.39397S2;
-	Tue, 23 Dec 2025 09:00:48 +0800 (CST)
-Message-ID: <135f565e-b660-4773-8f98-fcbef9772f42@huaweicloud.com>
-Date: Tue, 23 Dec 2025 09:00:47 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hz6vuN2+tW7bppaPMqpZ3TNFSuQST5OiJd8i0ajQHc4=;
+	b=olrYpYX3rIjdcMVWRYkYTK8/999VlAjawpxbjljiwZivvVXD3IfCBoJiEGntjdNQCV1CE6
+	4C543yHfLZVfDQdgkoqNy0lXTFyD+vfmhksVqLQx2uX5Cib3zGSln7WyHzwIzahX9KqhPg
+	vp4hNpggKSbjazwjXBj19vRDosXdI7g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35D1960136;
+	Tue, 23 Dec 2025 01:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDFCC4CEF1;
+	Tue, 23 Dec 2025 01:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766451665;
+	bh=2r+Tiz3V4y6CTzvUEe64MBbKMKKAXzykFnfKZv8E7bU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sKXOod1DQEHksmNbUU5BF4sr8bUpQw3a+YSB2GU0WjWrW3HIhEgiDp3Oq1DR58s5S
+	 cs4UZRVxczFzSlo8zgvKRTqCrsQtqHhVPiRai5Oz4buLWLAUtU34SHqm9yf+siwz3m
+	 zff6KSKY9nicwx2gbDNIojIMkGO8ZwYqo+3VSQKzUyLlI4HWm9Jr1cqsNEgFxSnfNN
+	 1z1NVfEahqwNpgioukKAYpYihS/Nx9GrUpLfwPPBi6mHLRK3jYAoOzSK+BUT7bYNW2
+	 +OiAqZqAwXSXlSVJ2lBGOSb63o3Hrp3AG1eoxPy7NHxx/fq95X9llbYWk33NmJ9yGO
+	 UaKFaZPzKXttA==
+From: SeongJae Park <sj@kernel.org>
+To: Namhyung Kim <namhyung@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-perf-users@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 09/11] tools headers: Sync linux/gfp_types.h with kernel sources
+Date: Mon, 22 Dec 2025 17:00:57 -0800
+Message-ID: <20251223010057.4135-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251222225716.3565649-9-namhyung@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen and
- non-lrugen
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- corbet@lwn.net, roman.gushchin@linux.dev, muchun.song@linux.dev,
- zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
- zhongjinji@honor.com
-References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
- <20251209012557.1949239-4-chenridong@huaweicloud.com>
- <20251215211357.GF905277@cmpxchg.org>
- <6c69c4d9-f154-4ad3-93c8-907fa4f98b27@huaweicloud.com>
- <7kwk3bkvhvflsyxgljnxzvrxco2u2rxjcdwqooeboyrkf2oxjj@2nywxl2sc6g5>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <7kwk3bkvhvflsyxgljnxzvrxco2u2rxjcdwqooeboyrkf2oxjj@2nywxl2sc6g5>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgBH9va_6Ulp6keYBA--.39397S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AF1DGw43Kry5KrW7tF1DJrb_yoW7trWrpa
-	9xJFyjyayrZrnIgr9aqF4jg3sIvw48Jr1IqryDWw1rCFnaqFyrKF17CrWUuFy8ZrWF9r17
-	Jry7Xw17W3yFvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C11CF40015
+X-Rspamd-Server: rspam03
+X-Stat-Signature: c35okok6tp3abcxfsh8kasyj8gabueye
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5370CC0004
-X-Stat-Signature: ba1uhy6kp3rsqb4qtoncc9tgdwg3enme
-X-HE-Tag: 1766451652-350013
-X-HE-Meta: U2FsdGVkX18Y3KxDTtSKcaD52yM7Xo7211V9A9Rb+2lyVX3j0TPPmppFD7Sy3Ih2T+gwuXdd6tiUCpAWDPaH0Zo+o9JumKYHkZHk/l5nLQieKEzFwpGf/P06VoEOE7NuRf3vbCqY2ZuAO8f38Up+BSEU2HzRNCmy708Kbc8AhITWcuT2Sunw29Rz38OJ40N7QiiiRYjgNoFHxycDI/AhqQ6GspSdv5nnpEx2I7Ps+Qvf2SibSB1OU1VtIh/DTTrTGC+iNQfeYI1MCynORLNTGarlVntVPw4ZqYSqboVcdpHQzMdX95BamMoQruVdXYtxq9jE5SeNbeePElbYWzRIPPJR0fRmrtiB9IoWdpefjBWZiIDA2EmIO3krNTcCUNfK6BmOy+vonIciUxcctilkX995WtMjw7h/EPX9hK+p+2jKir8h2GklTJC0R7fy+9bAJyIyq9F4FuAEAUb/wld05HqIs3aKkcpjRNIgA9dL6Q+0twY5ZiZ+z7g3MIh43Nk32Lb/oRLLpjd8TPwshUImyOnE1S4lVIC5FBTmc5jV93EdcZ+KN9LvJpXjCb+B1ivQONK1xdQuXD8N3ZKqp7ycOrXJ3LqvWPhOyU3VYuvkFuUbRy0Q/qYzCeYFojuF8HO6FnuK4Um5CPiRf3SwjdBCiClUK8OE+99ORQ5YQKgpDKmtXWGaQEkGGN7S6NStoIpFC/nghfBK5aeHz1yyTnRUXQ/4L+ncl46XmxavCqH41myXdtOTNOqNjHVQOZwHqQvjiO7oM1dRmdkId0yhXJoJ9zRO3H93vKunW4mxrkCayhtibRFaac30FcZrHsyY+/4iF106R7EqnF61boSlIDgZ6eG7fF5FIqp6FCRoL4K+5wzQubd+78V2N6qTOpjunOcLqdcvnE6bdIgZYZ0iBvUc+Sz61SmMGFDbMhYYt302W2BmYiNGxY4D/1BcDP7zgJRyqvvRBUzm5CUHLV31+Y1
- b56xv5FB
- vDI/WNOSSXH6hkJOeG2TSkAQAgnN0lFb992GHQdJ2Hzqoz16x84bf6z9nlxxJB6hC6iDON2TBmnBMghANmHCGpyiQ7HaQN2a/iGE/S+c7ln25am2prYe3H7trghF4kuma37nbBmiIQz55Pz/meGEYaI6KQlTIEfAmLWJfje9dcqq4w1+bgZJOdiRHYppNhpLEGE28
+X-HE-Tag: 1766451666-776605
+X-HE-Meta: U2FsdGVkX19IMoARVrbehQjJK5tq8jrQCCRCr15k1Pl2fTOAB4wa6XHwMNNB0rivODyhRzNiEf177tf0buC5uunHhBpQnDlBM0GZ4EUJbBFN9hDSnVWs4zY1GGKGwbvqS4Kl4z56FKn18eTfsKdSljoiMHECXw5o76LbD/suGCQAj0ArANx9/IyT1h8H3XWHfZGzLdGtMeod6XkvR5/dYwkNf6dqStoQO1xf4aNrhgEtJMj2R6RW2p7nqff6OWLNc1bHcyO0W6qA3X+VBKDazoZH82RC7UTTqOkay6gzneuAnQTSetvG8B0S3/w2ITSQUlzZLJOntps6KMeNNvAHI9B6CcgUB+bKTcv4zbuKo8xcpO4Oaq90dhE00WqdvOFdiaxfy2bCVwnN+u0HpdkVNF6W8pQHQy4oNLL3NO2s4bPQ3FvJWpg1tfbpKLZJ4y6t7q+Uj0t6b8bPw2B9Y6NLpJHKrGVHOEQpe3I9iFdXkYHklckhU+/mRJZLKLo+c9wQEIOQ9LqfY08xN9MG0rDy6cDpM5bWcg+AnDdlzNTyys/LXaCdlnhZ1u2a8JylUCTFSo40LeNxbtHDIS5+31svJVjyk0JhqwaL5Q2McAId29oUSqoXWgR9R8kT2qrViWsyW59pwEDN0GRoCDttpz0sSFqfUInxxtiScQPvN2A52d65mtJNWxwKUIx3KUh+h1P5kQ6goJ0tsdG+hsI5e5gCrXaj/IW/xB3yKIUqaueeqp4VMeBxbYL4hm/7lxsWZjlHCCbEizHUl3r3l+xjmwtk6TQELm10N7Eav36Rb0F+L6KpwiaIA52rxOceyULS7L7XR4lcAEsGB8a+7BlcJcD1KgSu/CTcg3Wa+EXYx591IC7rWji5Pg/Tm2d/uuzi2Knr5gwIOk+VAiumBcxomPd+n5JMOVC14UUc9fXEhjmmXiB/K2qOxOBKSb0Y6Js/EtwI/MgjtroCY4pWWa2G4QY
+ jAfsCuWA
+ wEM/OFsqhjnBZ929Y8cwGSRsB5xoMO9+eNakIznQfdVSKTl8YMQ88AuTZmhqcJg+KQ+BtQ5MIAKaDsE42QkioDxfzGAPhf/T3k6dVJJc/m56Uskh5EU6L6yNaYKpXf6kM+Ib6RG2FXu+ARR7kUBcfaZFAxDKSGx4eUmiKaFbJkBu2WIrNrLk4SUxb/U3LITi16wR3K61E3i2R8w+e+GYGJ58gFguBLtBVL41U3ty4AsWgu8LPpLZiSBc61g6ebOXUKPp1wtFJiUNre4E/UZmNpy9//RTndmmvrgigcZFdUGxyLMKSpCkXsKu9PXpILPDxfBzMb61Fqj8hnLWL8KU8KGRo7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,174 +100,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 22 Dec 2025 14:57:14 -0800 Namhyung Kim <namhyung@kernel.org> wrote:
 
-
-On 2025/12/23 5:36, Shakeel Butt wrote:
-> On Tue, Dec 16, 2025 at 09:14:45AM +0800, Chen Ridong wrote:
->>
->>
->> On 2025/12/16 5:13, Johannes Weiner wrote:
->>> On Tue, Dec 09, 2025 at 01:25:55AM +0000, Chen Ridong wrote:
->>>> From: Chen Ridong <chenridong@huawei.com>
->>>>
->>>> Currently, flush_reclaim_state is placed differently between
->>>> shrink_node_memcgs and shrink_many. shrink_many (only used for gen-LRU)
->>>> calls it after each lruvec is shrunk, while shrink_node_memcgs calls it
->>>> only after all lruvecs have been shrunk.
->>>>
->>>> This patch moves flush_reclaim_state into shrink_node_memcgs and calls it
->>>> after each lruvec. This unifies the behavior and is reasonable because:
->>>>
->>>> 1. flush_reclaim_state adds current->reclaim_state->reclaimed to
->>>>    sc->nr_reclaimed.
->>>> 2. For non-MGLRU root reclaim, this can help stop the iteration earlier
->>>>    when nr_to_reclaim is reached.
->>>> 3. For non-root reclaim, the effect is negligible since flush_reclaim_state
->>>>    does nothing in that case.
->>>>
->>>> After moving flush_reclaim_state into shrink_node_memcgs, shrink_one can be
->>>> extended to support both lrugen and non-lrugen paths. It will call
->>>> try_to_shrink_lruvec for lrugen root reclaim and shrink_lruvec otherwise.
->>>>
->>>> Signed-off-by: Chen Ridong <chenridong@huawei.com>
->>>> ---
->>>>  mm/vmscan.c | 57 +++++++++++++++++++++--------------------------------
->>>>  1 file changed, 23 insertions(+), 34 deletions(-)
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 584f41eb4c14..795f5ebd9341 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -4758,23 +4758,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->>>>  	return nr_to_scan < 0;
->>>>  }
->>>>  
->>>> -static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
->>>> -{
->>>> -	unsigned long scanned = sc->nr_scanned;
->>>> -	unsigned long reclaimed = sc->nr_reclaimed;
->>>> -	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>> -
->>>> -	try_to_shrink_lruvec(lruvec, sc);
->>>> -
->>>> -	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
->>>> -
->>>> -	if (!sc->proactive)
->>>> -		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
->>>> -			   sc->nr_reclaimed - reclaimed);
->>>> -
->>>> -	flush_reclaim_state(sc);
->>>> -}
->>>> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc);
->>>>  
->>>>  static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
->>>>  {
->>>> @@ -5760,6 +5744,27 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
->>>>  	return inactive_lru_pages > pages_for_compaction;
->>>>  }
->>>>  
->>>> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
->>>> +{
->>>> +	unsigned long scanned = sc->nr_scanned;
->>>> +	unsigned long reclaimed = sc->nr_reclaimed;
->>>> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>> +
->>>> +	if (lru_gen_enabled() && root_reclaim(sc))
->>>> +		try_to_shrink_lruvec(lruvec, sc);
->>>> +	else
->>>> +		shrink_lruvec(lruvec, sc);
->>>
->>
->> Hi Johannes, thank you for your reply.
->>
->>> Yikes. So we end up with:
->>>
->>> shrink_node_memcgs()
->>>   shrink_one()
->>>     if lru_gen_enabled && root_reclaim(sc)
->>>       try_to_shrink_lruvec(lruvec, sc)
->>>     else
->>>       shrink_lruvec()
->>>         if lru_gen_enabled && !root_reclaim(sc)
->>>           lru_gen_shrink_lruvec(lruvec, sc)
->>>             try_to_shrink_lruvec()
->>>
->>> I think it's doing too much at once. Can you get it into the following
->>> shape:
->>>
->>
->> You're absolutely right. This refactoring is indeed what patch 5/5 implements.
->>
->> With patch 5/5 applied, the flow becomes:
->>
->> shrink_node_memcgs()
->>     shrink_one()
->>         if lru_gen_enabled
->> 	    lru_gen_shrink_lruvec  --> symmetric with else shrink_lruvec()
->> 		if (root_reclaim(sc))  --> handle root reclaim.
->> 		    try_to_shrink_lruvec()
->> 		else
->> 		    ...
->> 		    try_to_shrink_lruvec()
->> 	else
->> 	    shrink_lruvec()
->>
->> This matches the structure you described.
->>
->> One note: shrink_one() is also called from lru_gen_shrink_node() when memcg is disabled, so I
->> believe it makes sense to keep this helper.
+> To pick up changes from:
 > 
-> I think we don't need shrink_one as it can be inlined to its callers and
-> also shrink_node_memcgs() already handles mem_cgroup_disabled() case, so
-> lru_gen_shrink_node() should not need shrink_one for such case.
+>   4c0a17e28340e458 ("slab: prevent recursive kmalloc() in alloc_empty_sheaf()")
 > 
-I think you mean:
-
-shrink_node
-    lru_gen_shrink_node
-    // We do not need to handle memcg-disabled case here,
-    // because shrink_node_memcgs can already handle it.
-	shrink_node_memcgs
-	    for each memcg:
-	        if lru_gen_enabled:
-		    lru_gen_shrink_lruvec()
-		else
-		    shrink_lruvec()
-	    shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
-	    if (!sc->proactive)
-		vmpressure(...)
-	    flush_reclaim_state(sc);
-
-With this structure, both shrink_many and shrink_one are no longer needed. That looks much cleaner.
-I will update it accordingly.
-
-Thank you very much.
-
->>
->>> shrink_node_memcgs()
->>>   for each memcg:
->>>     if lru_gen_enabled:
->>>       lru_gen_shrink_lruvec()
->>>     else
->>>       shrink_lruvec()
->>>
+> This would be used to handle GFP masks in the perf code and address these
+> tools/perf build warnings:
 > 
-> I actually like what Johannes has requested above but if that is not
-> possible without changing some behavior then let's aim to do as much as
-> possible in this series while keeping the same behavior. In a followup
-> we can try to combine the behavior part.
+>   Warning: Kernel ABI header differences:
+>     diff -u tools/include/linux/gfp_types.h include/linux/gfp_types.h
 > 
->>
->> Regarding the patch split, I currently kept patch 3/5 and 5/5 separate to make the changes clearer
->> in each step. Would you prefer that I merge patch 3/5 with patch 5/5, so the full refactoring
->> appears in one patch?
->>
->> Looking forward to your guidance.
+> Please see tools/include/README.kernel-copies.
 
--- 
-Best regards,
-Ridong
+Nit.  I don't find the file on linux-next tree.  Do you mean
+tools/include/uapi/README [1]?
 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/tools/include/uapi/README
+
+> 
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+
+Other than the above trivial nit,
+
+Acked-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
