@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AB8E6B26D
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FB02E6B26B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:11:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116086B0088; Mon, 22 Dec 2025 21:09:44 -0500 (EST)
+	id B5FA76B0088; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C4666B0089; Mon, 22 Dec 2025 21:09:44 -0500 (EST)
+	id AE31F6B0089; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05156B008A; Mon, 22 Dec 2025 21:09:43 -0500 (EST)
+	id 9EF8B6B008A; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7546B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:09:43 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F344160437
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:09:43 +0000 (UTC)
-X-FDA: 84249104646.05.F39A2F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 00D3C40006
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:09:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="zf+UFP9/";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766455782; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FFF76B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41B65140464
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:11:34 +0000 (UTC)
+X-FDA: 84249109308.04.1ECBC8D
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 539BB40005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:11:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Le/J8Wcs";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766455892; a=rsa-sha256;
 	cv=none;
-	b=Ki5QFgcBmAuYvVdh46gvQk+9K3EYdXjHFxmcF/32F04zm/VxIWLy8oQPk8tuGm75dd4+Gb
-	oGJgYJ9X1DXeSYW4bne4TrtOcSlnNtMfPcl5MvFgSXV1YJrh37lCzdUnW+KFae5LQS1Wn0
-	D/5XENktVdWts+V6ms22rs85rj19iKQ=
+	b=ENdilYpDkZPWLiCw8Vg51ldPrwdBpUgLL7n4utRBznAwXcoyg8lBswFFDuMrhvHp6fZBeV
+	fAgK1eFUBJHXHWTyb33Lk0nQ8a5V0njb3rH1gdt3HHmD7awiRoNMmmO/IfEgerndkjxUe4
+	6xNp/Awe4lrQKposPXKX1TcliSFN8Qk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="zf+UFP9/";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Le/J8Wcs";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766455782;
+	s=arc-20220608; t=1766455892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hjOohyygVGSf2xYGgD42/FW4oPN+tx6taP6zHqBbQxw=;
-	b=jncdsrC71dM3iBizZ8IFJL4RLYkza5lSeeAP5U1gBSLqaSDvEWmZImqcMeqIeRh8m2QoY9
-	yKvZq9ENksiyCqjL1ARJa8p6YJupxvA/7ZP1fClwlKYTFm7FFuaDI/OcTrICNl8BiDLctV
-	v4uyWtphVGDuFu5mKH9uxwzGDEg/lq8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F86460136;
-	Tue, 23 Dec 2025 02:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E14C4CEF1;
-	Tue, 23 Dec 2025 02:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766455781;
-	bh=AQLfanbb9dQEk3fOTNLXdF1OqxqK87zVLhLJu0c2XjY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=zf+UFP9/Jahlxv6KaIZNZCZejhI0pnpghKxyZOksaJK5Ymp1yj4EZ3LFwIMQIvKkF
-	 gq9Fam19sHL2Z6Ro1Z5Gpkn5RR2uSrPCgFHAmVQWDeGAR3RWK/zMDuBmv9a0iZFRrM
-	 26jK1Y9vtz9qTTmT4Sb7VOxWuYtzKCgrTiqFR8jc=
-Date: Mon, 22 Dec 2025 18:09:40 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-doc@vger.kernel.org
-Subject: Re: [akpm-mm:mm-new 98/101] htmldocs:
- Documentation/admin-guide/laptops/index.rst:7: WARNING: toctree contains
- reference to nonexisting document 'admin-guide/laptops/laptop-mode'
- [toc.not_readable]
-Message-Id: <20251222180940.ba15b0280510ff101e8c67fc@linux-foundation.org>
-In-Reply-To: <202512212211.GvfwAGPP-lkp@intel.com>
-References: <202512212211.GvfwAGPP-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 00D3C40006
-X-Stat-Signature: p6ps7d74tsatrhq6qzktw1aouqwxxmaf
+	bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
+	b=xrFsQK7Gs0PLxKWH29dCqz7X23i1sCsI4J1lfFfeQWz07b4tTMphpY1mZmEPTm1TYYYbgh
+	5xF/qau/SSu2VLyCmiRKHwc/WPSynzy0z2ZEoOadYEnOUbLq1kkjlRM7UDbeCBae3vaXL+
+	+Fjc+9OKhtesqmHNi6QMEYLAkuqDS34=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fed090e5fso2127796f8f.1
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:11:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766455891; x=1767060691; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
+        b=Le/J8Wcsz8oE6I7sYplqLIrhwPA5z0++Wmt/R4PdSj8D9Zk5EmipNIatzX0ekpu2P6
+         I89deBNAkRoGJ8Kujk3z0OKy1tMiUIAuzqbFoR7tnr4A5wx7vsZLyRDIAI9JjOfjWew9
+         V/L6OWVKHOheDcUedcKr8QqOKh8ho2M4UUH0gOAZymLgg2wqy/4k/FPaDpkDl/9rG2re
+         YmWkNC9u4C71jFjGWXpa4BmJZiRMyceTC4qMcJcN/yC5L+brBOBW6FEarbWypjCQtfb8
+         vBXblenl+kZzbW4K3qS5Jl86xM38S2isCcdFOeHOoaJtGxnEHVc1PdJaHNBTgDyFmBJF
+         dC8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766455891; x=1767060691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
+        b=gY9alROyl4W7862KJHEspPIOJRGjzbabWPzBH9M6Dy9MEcJbCLSh8DSTfJASIDvnLE
+         U67nfeziToqogMfhzmow32dEfwRnSESDurVO9FMycifV8I33MXHnK47b9XcK0tAdIRyb
+         EU5mZoJLs0Uvi8z/kHvvQXuqHh8fDLDlJGSiZ42SI7c6WcJnnEoY+q1GcGipFJ/XTQTl
+         sx+chZgA6SV251KlPIRv5I4k2cFvcff5tFz/jTzexW/0+bC/nplae/sqcP+IoGD3LTre
+         0fKM6tqphd2AOTlIKvABASKg6qRQ1OkE7rpq1WoV/E8nB+sj9LcHwExmTxNLE4VfbeKU
+         38Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrvRfMRl4cXNFhhKSgj3KWeQtI8kZ8oY8kKZZS5Zdgmij4S4r5bIIaTkBRWAE4cEbokXpociJEyw==@kvack.org
+X-Gm-Message-State: AOJu0YyF4Wz0sETGDAorNF54lmIX8NTMtiFOGLRlyfsSoEeDDRrQopIo
+	dwPgFPXVaCpwrbIUYIiV6lL2nvVWmR36duGQ3WfhI37cz/0tDdNErDQhQABX/QxkJeSVSyjFJyW
+	WPYyb2PqbAVwKgNxt4kiJAEm0sR5/zCg=
+X-Gm-Gg: AY/fxX7e6wFnrxqMiDhwCexjvlCvCUxvRukeNvjNBQmmAoRB4qgI7M1ya767oyH+w4s
+	RXdvf+TeU/w1SLtkhhHcfKkMiTjxW88iqC7ePLy+p+s1E5ojh/2Rat0CKreHp4yWGQ5YGUXb4X4
+	wMZeIGaQ7+6Hs/Wai/TS5zrJVUGILAEkfLblWL4rvXa6F/TK3SbAurxwSYjFXOg6LuQAt2MhfBw
+	Ty79le8aESMlVBuChLQ2bbke4oZ/Wtw1151739Ulnlo1H0MF4wgjDkL2S+ZRrFjO2VYoJmP
+X-Google-Smtp-Source: AGHT+IF8BfcA5cvU+pxFPwDxmKTdBV/w13ESm1DnzKFgnWkd7KrlYrVdHx+Jn0QifxMjszHNpoYKpr1/f0zvUzcoB7w=
+X-Received: by 2002:a5d:588c:0:b0:430:ff81:295d with SMTP id
+ ffacd0b85a97d-4324e4f9350mr14068995f8f.41.1766455890563; Mon, 22 Dec 2025
+ 18:11:30 -0800 (PST)
+MIME-Version: 1.0
+References: <20251222221754.186191-1-roman.gushchin@linux.dev> <20251222221754.186191-5-roman.gushchin@linux.dev>
+In-Reply-To: <20251222221754.186191-5-roman.gushchin@linux.dev>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 22 Dec 2025 16:11:19 -1000
+X-Gm-Features: AQt7F2oG8qKh_LrIImutrfPDVfsQ-CzA11AhccPedSQPp8mFoIFiyOb3CeObrO4
+Message-ID: <CAADnVQJ_WLMRXYV5p4Lk2+nxdC01iAaKQhYecMjx4rXdBeXjNw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 4/6] mm: introduce BPF kfuncs to access memcg
+ statistics and events
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 539BB40005
+X-Stat-Signature: woy8zxr1r3xudxijwfuoj9c9orr6ewjh
 X-Rspam-User: 
-X-HE-Tag: 1766455781-584680
-X-HE-Meta: U2FsdGVkX19oCRguN6X3UGUfw0QIXSzudhucLgxb3MAyWcpiN2XqwoqYHJHNXg2GLL6Oy1lATqxjGdRYTBf7E6d9DsyETHp2kx7pwe9VsQRZCYEDDRIY0UD61faK9YIe6dEtGEeH1ygVKbUxkHJR8Mku+vCnwyKSpHgH3ydL0YLNcctKSM8gDTY8mHWXWPGHbi04qVgOwQrWZP1FpOI2yba515QUeWCd6hk8o/sYdHVp7NiLe/q0cv2FifEwq3cJ+hsfqnUlNUKvKyoqPo85UOfbxDSjhSFNlq5s+vcnIZZuvchqAQL/14Znu6lVuY4Dx0SiAiVn4dDXyklY2JuOQR+flwPf68YKaxZEV56ucJF4ixT0LbQhIfNNonoIzMwpzr0TZHe29zT3SMiaQGAx9Aq+tY7+WAbRM7UCIHet8pDdcdqY6ZRJvG2W8AlxKgVm8xjIIrQSWSnvoHwNLSs1beTQZovrtBeBEAU3hTGtIWSGHiKA7uF9fPGOcObLxwUmqFCrSOBwj0Rd6NtYjpgOp4aS9XDC1w3Q6tQpLFr7EPv1dbMdnsEcxcmt1QWgpjLExOTVVcegdMLUogOrsVCWKsv96TYfozOHhnGSuCk80wyI9pEJwhaqVvXrRTgox9spzdMqp5CW0lJvGVKzQVEX6dzRmwFnseZTo5YwoMc3mVbK/EUt9rU0Gkni+6Fq9Kzj6hrU4qmbC3r+g2zdsoiq4y6PTghQg6V/J4XDaOuXp7KgG9OSh/ixy5fnWwkMOAy9V1jeWFPAe9uSFhsuspGKizLt05qtp7Uou5psRJy1vZS+xK9BNBZc/94603Lq5oSHzEBGSBiiS76Ak66EMa57wfffFvU20D0bj6MkhwU2Gi+7pFe8/CElpodcwOw8HBEtHF3E6Aed2A8wo8g7b4CKpHs7RwgqNncWEMraTHDILZxnp8n6YA1A8xnXNn6ZQyajhc25Yh6mmHrJsC9+NHE
- oq9uVVOY
- bJZYlJKSGq1p8wQKpmH4B6WUCei9vHpHjPcrUVXM5gNFYADvqEKnQfLAYMIGpWk2KRorO0kOpmEoxg2KbI7xiy4DNrGNg+NhUoAtCGSxrNQZbOKXTn8Eloww4DELgkWbBnbbo0rSXSUDfOkLcJb1fHMNUqAAY4XQ7xGWjf7p4kDJdp5EvICI8W6DMkh58RKE/516tcA7IzkD1e229cQ4tU5JNtnvZzxWZmE3zdrdX3z0cDKNzHmDYn2jACiEpToWNdkPUwicGGzLvUa71CuL+We0cW27EEOcze6tYpF0+bAouTAVYYB7C9tLkPMeO13X9mK6KST0ElFsxjRFk5NOw34cXWU4JOM5W46u/DNMy7pHGOIM9ngU9wsYh0PvBnaYvwHMCDLsClIN3SseZIpbQbv/Frg==
+X-HE-Tag: 1766455892-914414
+X-HE-Meta: U2FsdGVkX1/WMD4fThebqj7nqziPmCod7ZZiFOuDXnTZRPp2E1sXzJQv4aokvIs8+FnwTjAIN0PQf+npdyiVW862mPLqwnC+nDt8xveV7SFehLeZ9WVAjnNHcwSMduVEQpuRZ5Jf5Hs+IakWbojAfWqWOf8+C4cmfigbjXlVUsNBSKG7yQhrzuOgjggVUKyI0x9bj+uUV8C+HrZBo1u1scm/NFJ5beOrfq2fEbPRUn+CSm/1vGE40i4yyDodqDoWWMsnoKIGAlUCM+k6wNZQQy6rWLH+Avln6FT/Oozx9g5rHFVFJmn9afr+kcID/0ZwbcK/ealePf//qlWin46dStn5E45EGdHiEANi5dk4VH0z4Q/FC1ayDfi6FNgb6fA8EN4QxG3Sc0UWflLcOijtmrvm20sxkQJAJy/lEMc61Av2N1+TgazchYo7Vr8/aaZk7r+syUIkj7Igrovyq4T8CpFsjSVtpt+2Tiq1NijwvGUfsupv9IdnVSb0AZDai+GKOEDnIm3OGOsocAR4ooG7xr3FXDCh1PDVi0zA/E3SOxwLiEB95CAgIu6FktZ857614uIkQR7dc/g2RFIGhEl5t71mkv7ulANmcjfxfyCh9jtPz3WpEmkWaZFbg7/QAVFTW9Ce9LIIDC5gtjJuhsGZ3vD+AlFOTFxegtmjC0ExMoqdG01bkz7IgoDGEtx9zbKXbPwj5cRHlf5bKu/rpW+N9qQttRRa0K3ovuRCyL9JKlWMj6HROmV0wa32nmwsJnByxDFC8Pqx0+AuAclCMEXg9Uv3jWcEsLZV/dV57PVAp17NSoNtjotvjDkSCYUwebZItXr/JoGP1tFE5UeCLZZa7aB+SSjgzo1XoGudZY5ctHGGyR8XzHvrBW6nkqs2Y/PhA9V+utTN6OoZNj34cD6qPMgRJAQMwFgwITGAr09p5+MBEZemK8nTjDPYM0C0FbVZvGtrfIvYHlc08fPiLz3
+ t02fdtjl
+ KiEbQHkgfY00aF52SddM9suySq5EdDX3kstBFQCxeuME00X9gGe6zBH7XG8QyUiHDLNUzgBGtJSHbIpMtTvT7giA/WeLvmXWUhOqVxwi51twd0maFcyLStGVtINSh4KoHjdRedMWsG539aawnu4suX8ydg+BL19IiolpZt1RpV/siYf4prTfDoWi/hHwmFbHEDr1NdPW6HOF6sljiOc7EkuRNq36iVeiFwntXTOeLBiy2lDKzFjaTmK3mEDhOi64gog96t3N+wsr7MyuwCRbplEiZWt1IqLnwBcuCSn4WrTQhDsLAWoQyKApVWHjMEca9sE/U83R7yISyR/AAFrZCU6T3x1Lz5LJ+g4JuBeV3utTAWkc8tAAZQOLNpBKGZIG0o8lUwBE8AqWTcnyIa5DpMC3YQFvS/4HAW5PY5oE7OObeXK4eGvZCqoSTYQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,44 +120,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 21 Dec 2025 22:49:44 +0100 kernel test robot <lkp@intel.com> wrote:
+On Mon, Dec 22, 2025 at 12:18=E2=80=AFPM Roman Gushchin
+<roman.gushchin@linux.dev> wrote:
+>
+> +       if (idx < 0 || idx >=3D MEMCG_NR_STAT || !memcg_stat_item_valid(i=
+dx))
+> +               return (unsigned long)-1;
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   287373d0b6ee3872d95edfd1921fb2f18535d6cd
-> commit: 7cc91bf52584387445d654cde466ba5cb1235757 [98/101] mm/block/fs: remove laptop_mode
-> reproduce: (https://download.01.org/0day-ci/archive/20251221/202512212211.GvfwAGPP-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512212211.GvfwAGPP-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    WARNING: No kernel-doc for file ./include/linux/pci.h
->    ERROR: Cannot find file ./include/linux/mod_devicetable.h
->    WARNING: No kernel-doc for file ./include/linux/mod_devicetable.h
->    ERROR: Cannot find file ./include/linux/bootconfig.h
->    WARNING: No kernel-doc for file ./include/linux/bootconfig.h
-> >> Documentation/admin-guide/laptops/index.rst:7: WARNING: toctree contains reference to nonexisting document 'admin-guide/laptops/laptop-mode' [toc.not_readable]
->    ERROR: Cannot find file ./include/linux/pstore_zone.h
->    ERROR: Cannot find file ./include/linux/pstore_zone.h
->    WARNING: No kernel-doc for file ./include/linux/pstore_zone.h
->    ERROR: Cannot find file ./include/linux/pstore_blk.h
->    ERROR: Cannot find file ./include/linux/pstore_blk.h
+memcg_stat_item_valid() and memcg_stat_item_valid()
+helpers introduced specifically to be used in these kfuncs,
+so I feel it's cleaner to do all idx checking within them
+instead of splitting the checks like this.
+Then it will be easier to see that
+memcg_stat_item_valid(idx) access is in bounds when idx < MEMCG_NR_STAT
 
-Seems solvable.
-
---- a/Documentation/admin-guide/laptops/index.rst~mm-block-fs-remove-laptop_mode-fix
-+++ a/Documentation/admin-guide/laptops/index.rst
-@@ -10,7 +10,6 @@ Laptop Drivers
-    alienware-wmi
-    asus-laptop
-    disk-shock-protection
--   laptop-mode
-    lg-laptop
-    samsung-galaxybook
-    sony-laptop
-_
-
+Also I'd do one check like (u32)idx >=3D MEMCG_NR_STAT
+and drop idx < 0 part. Compiler is probably smart enough to
+optimize this way itself, but I'd still do one check.
 
