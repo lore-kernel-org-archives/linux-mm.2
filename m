@@ -4,92 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86E6E6B25C
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 05:23:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 868F7E6B25C
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 05:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 191C16B0005; Tue, 23 Dec 2025 00:23:21 -0500 (EST)
+	id D5C496B0005; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 163C06B0089; Tue, 23 Dec 2025 00:23:21 -0500 (EST)
+	id CDFE86B0089; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0455F6B008A; Tue, 23 Dec 2025 00:23:20 -0500 (EST)
+	id BC1576B008A; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E65176B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:23:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98F116039C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:23:20 +0000 (UTC)
-X-FDA: 84249592560.14.D20918E
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	by imf07.hostedemail.com (Postfix) with ESMTP id ED24240008
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:23:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 3RSdKaQkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3RSdKaQkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766467399;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=MUUzU2h/tbsdYlnI1rIO3W8VfaBD879P7b/jFRPk4BI=;
-	b=XZ6dV/ui23z0tICQfwEpEsoWe97GGBKapJRQQM6J/BbcTvyeoEHx8gdIqx9/t/J9Txfo6B
-	/jCxVxeOA8TiMz3+/ywHvhCtolHUFq7iHKMeCeYY1c+pwH2w0fgsPfjmzArteuXhfhtGp8
-	DeryL44xrkpU+v6oOJBZT4Kxt8B7VN8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766467399; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC696B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29AE5B9AE6
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:30:08 +0000 (UTC)
+X-FDA: 84249609696.18.8EE9742
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 31B15C0002
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:30:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=icCfVVNi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766467806; a=rsa-sha256;
 	cv=none;
-	b=FrmW6cVuKr40TTcG8VZhF8/umNnEiFhQbbN4MZ9jl1oCIYzcpdQna2wdAjR0cBdxDAXyuz
-	iUmCKAy27RV4Ccf9/VL0nTSzO1Op76nFkhVcAjHzy3xMPqE9B3CIdX9vqGOJm0gsv47CQM
-	X8hiWB9k4xB0Sf4OHz0s4MFG655kMMI=
+	b=JZ/R3+5kgS+Ed1TFxogmdf0bqH9R5dpaAX1tpb6b3R8GUuGQZJd6M0uuF1IcHcpcALkXS/
+	MZMp5EOBsVqzwrGpv43nVruU7vmK7STfzhwUtTpDvgm8nJ3vcSE4NJz1OwMUx6FvxmEOK8
+	tVqCWMsSXl6zA49ec4FE8I0itPv6eOM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 3RSdKaQkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3RSdKaQkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-65b37e173faso7127683eaf.0
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:23:18 -0800 (PST)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=icCfVVNi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766467806;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
+	b=OfJoxO0fMN/LEU/tG5aqyxQiQR3sT298H0TorqB9l45KEQ6tkSYxcfhgUeKLSyajE1Wz2y
+	Xul/z197kSPCkyyZU66pvFVls40ICBjfgDOTO1K11TL/4bjOOlHB5lefcM6lQAUrNZO5ks
+	HEc8XRy/ZF92Z2jx1UGh39ij+NTQdqE=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-596ba07504dso4207240e87.1
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:30:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766467804; x=1767072604; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
+        b=icCfVVNiR/OniycMGvcULw4gaf7k2Pr8jCLswnk0FAMBwSOCmMFgEOBvIlFP09YIn2
+         RzCrPbMjDFzd4AWPaLsoW6RTXI6GUEhs7jE+RqZs2xxKnnXHDAZPgmqLUHop34rqDCwI
+         MUJ4SZSs32tRnaeDssTdtH4TuPUjvRlGRqzIQ4hTGhyXV4JKN/AJRwXUQA1KXz6Zewp7
+         /HtKU6vqxIbCZcdtG7+TE1urtpVQRogAoHom7d2J4noHICBceKqq+pBWCusO5pKGnoIu
+         1euuBhS4fWh8xtZ7GQbP/74K7xr8riKb8GnfF/uPW1nI3UgtG7J/Cp3ffqBFW57VE9tb
+         qLGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766467398; x=1767072198;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MUUzU2h/tbsdYlnI1rIO3W8VfaBD879P7b/jFRPk4BI=;
-        b=r/aL7aEq9mknDc4C75KvsYKc4uD6+HwqvjBeWc0q7j3GJxprYbyDk9Ty8CunyAgirl
-         vFs4BPeU+5gXtM1ID9AzzGU4sB+JIYiRb078XrVG1vihJlxwHDpPsjGQ2cFtIw15pYLA
-         dFHgZk820drXPtRHnADVbXi1Gb4P/FYc+3h/2FuIfYpV/B4ZfcasQeQ5XTLOH5N/0vCM
-         BaTOvlwzkmloyPZyOY7jvrlQ4tBFixbfGzhBn8LvUf0TfwXTdttxngZeuQ5uOf0EvmFV
-         PWHaUldWtvMvS9ue1INl2WEwRDbTMjS+lojoCS4eOiy4F2FjJDWP8AWW6FMqnAPPwdGK
-         bKcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmvbEWHvNYN30NNR6720tkMOmCsdDc5JZvsk4h8PtytpMjn3P38BRgpqYA4nFxFBlvb/YtSURAgA==@kvack.org
-X-Gm-Message-State: AOJu0Yzq8Dld6YorGJ5jOfNc9DaQOHYgLzVMUX8FTlFlImiMU5O6ntx+
-	80sUs46dEOhIujycD7j0YYMIwt+Dgzfc+WL0Not/w7ELqo2agaxC+rC0prYmY4K31WWEtp2BPcZ
-	dyjHFlNTO8l56ZB/GzULWX+57n/tDGGIfw+lv0safgvWBvnKWUF1tyYkl0tc=
-X-Google-Smtp-Source: AGHT+IGTYzvj5tLeyt1xU+NtqrkYNsd/x7u2BcYtYmYxUBNqpvzTWKLyngY2uODw8mntI9RSWy0DDfb8m4X2KJUI4VIKi086YP9o
+        d=1e100.net; s=20230601; t=1766467804; x=1767072604;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
+        b=JE5142YoJsZ1GuZUBfVD/rErh+Ur6taClnqUMjE4R9nw4mw8hvFul6bugYaRtY6PpM
+         LQCz8kDgmJtrFDixRQWeT4Ggg0W4OV9RVXM3y7VQXe1CjXmPI9gPkggUFhIJYAX0pErO
+         0kRNFEC7OVHPJM16o7q/rr6dm3U36l84nRUW43yvd8qVsfB8H5WrRDq90mInparRv7JR
+         Ukuy37a44X2TDWGLg2Mh1FZo8Qj+qk/Cn9Nto5Mk+SM4cRS62Oa/QyxU6wO/uayWh4O6
+         2bUpzyEYtnfW/H7BSLpArMbFikV7uViGIvuz+/2trhRmPSTLDLrF4igw0iK0JzT8/zzV
+         6otg==
+X-Forwarded-Encrypted: i=1; AJvYcCXincdukSumgD6fPNNcPBrupVH149A7BLO2J7qi3yXR/Lz3+Ar8YdXaNchxuX5tlghJOl8d+dBuxA==@kvack.org
+X-Gm-Message-State: AOJu0Yw8Ss1PGvRh4JQGjIi+mTyAj3QtSsGnZK1ByHuSmAPgQ2G7kl8D
+	UPpYasWfT6XIqbgEXzM80Kb8picA5GB1kqR/NoaH2r/Ly/3qxq3QrXW/
+X-Gm-Gg: AY/fxX7k14QjYT6KKancEmvXM7sjM72ugV5xNHHcLRQWOSXMyJHfrbZDRwcxH2uDJzz
+	tKok6lLSakKsCVgJ7Uu3dclGHCWwrE7kNzTQXAX7HkIxzywsu6k213JeqOK6y3dKSWqAU7oSE44
+	8DL9Zqn15+GdnbJEJHFklQTzwUHz8YyX+2DE1EzlXFJKo78/3giyf6BQWKYa7dWNaINgGTBDwcm
+	P86DBYaAcJUspaa74KwY3xMyZCLCl9e8oQY3yaG7xx+pJWuOlLpGByR251VInBjHE0Q6hrSf/m3
+	40Su128MXJmTvtptEKSsETB7oe4zGF7ehFQkm+99Sm0Gt1zuOVpjnwnb0ypLNGoptOQcujSs1+Q
+	bNzbZPyc4hAL7EZzSpF9hPnWvJFFn2DmQ9lHsMXL0ZXu7ItXohIJbkwmKMZXlmbFutFpRwNolPJ
+	69rLzG1iAY
+X-Google-Smtp-Source: AGHT+IFBJ4czf5dy7NoHG6Z5fLR0sF8QwzLoI7Shb3fIF5XKnuFbQtFm8MSKsqZe2birAQ3bGk4BUg==
+X-Received: by 2002:a05:6512:3a85:b0:598:8f90:eff5 with SMTP id 2adb3069b0e04-59a17df6969mr4474213e87.53.1766467803957;
+        Mon, 22 Dec 2025 21:30:03 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a18618ce8sm3818747e87.54.2025.12.22.21.30.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Dec 2025 21:30:02 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: gmazyland@gmail.com
+Cc: Dell.Client.Kernel@dell.com,
+	dm-devel@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-lvm@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	lvm-devel@lists.linux.dev,
+	mpatocka@redhat.com,
+	pavel@ucw.cz,
+	rafael@kernel.org
+Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
+Date: Tue, 23 Dec 2025 08:29:52 +0300
+Message-ID: <20251223052952.2623971-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
+References: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1ca9:b0:65d:79a:cf00 with SMTP id
- 006d021491bc7-65d0eb2a0e0mr6563272eaf.79.1766467397975; Mon, 22 Dec 2025
- 21:23:17 -0800 (PST)
-Date: Mon, 22 Dec 2025 21:23:17 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <694a2745.050a0220.19928e.0017.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in folio_remove_rmap_ptes
-From: syzbot <syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: mco977pbxbtixic1q6xfhu31ta7qwxds
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ED24240008
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 31B15C0002
+X-Stat-Signature: qzoz8y5ocnpbdxdy6jkf1b486spfsj4c
 X-Rspam-User: 
-X-HE-Tag: 1766467398-24725
-X-HE-Meta: U2FsdGVkX18nFOVX5blRIoxXGb5NASOy/VrOerhjSFBgBJ1U+cGwo9MuFaVNM5HPYwLBz/qBV2Bzx7IFKwkpfZxUUTp4sGiw9XMTpCUzDpxnIkFS5aP9eos30BM8nPuaW4xw7FjJr5/TkXIzNe88Pg3UAf42Ep7owosgMnNKS1KPmfnGmx26HbE7kSheCbleTk1EOEG/kZeZs1eOJd0tsmlxOFwtmblt7rhIL/PRNXarN5rVq4//xrZgU53qVJsQmx7MFw9wvvNvJ0t24mk78W0fq5QBmAI+ITRdhkzsHVCqx0jopmJQEv+hpIC8dVAbRvu1ENTz9uEwGpZ9HV54Z/SJA4zMwhIkJCfvdy+VYSgqxklDvp93zpIWIMGKoDbSp7FjLAp4NjWAIM3fYGXdM/6oitLlv5659AZMBK6t7z9ZlBe6eFKgKlqHvSG/l/RSR+FDMNVyzyDnpKSofEDavgESmaWhpLeO0Supi8xfDVcrPkD64evH4TnUu2GY8EiAayAgHxc3mEIpJ8C7mQmGBrTwEJYyUUttXWbLoB7zOwa5enuCeNEZ8fjYQffUFQgXTCvRLH5ePh7Mcho8rVZLoVTQl+zjko4QGJDUInbHMUAL/yPvTv3QZaGhd4HQpbq3X6xKskxllSK9nL2OAUYeqnHuzmdPngJZA/6rhM1QSMMgNajFlgohnfBoFY6Er/J68pbOG3cX2fVi/rgIwAAWRf4z/5xe91z2ZE1mTg2X8dG2y0R5FvXrcCAfbBgPKL3A/nScDUKH3pvyEHj+c53HIJcZ4H6LcELE31E5nViAxrJECURRh7LOGMyC2cLw2rOhuOqT/ssPCtftYDiee7cJEplxCCf4XflzTerosrouiaW/8oYgViivjkjFA0Me+VswH/xoLtoIwDuWDBqY4rL6m4a0T4xpoY0ux2BBP6V9yK8W3CreTLR/Ygc1kG7hkEFIPEX6QEo2DoSwULoGLSY
- qP+ujtHq
- x0hJp3kA0oM/AkN2eNT10fBV/WQwri94fC+k3QLwXhaSTeZbZXsGRZdMCA6YWqpFni63KTuI0MZhSBMYV+1kZ8TiZ84w1W48orwfFKsnDVI4cL1L/1BmDcblYuXRVWCx6kyjNuJocPKQwBCX5bohqKuEI6YrmDTyuOImpcpvOjAhMS8KJIyYxc9JqUD6DCfLbHjpi/WSVzuVS0SpHOXjW8y8cY/BiSAK4QKDCMyWJWPsdLvQp3Q/nqt8Dqb2TZdwHca/lzjpX2VTVEGQ6S0VwBDuwy0j6Y05O1+ebcAGleZsSI3poQkq/nvwIMDm87bfEVPUcTrZCS4eKWFr1gyzYDie4KfIfokTU9tGp7TH+ljVwRbZfAD7v61K+Sutuig9F3OgJlGwq6sv128a70ufhivfmcxNN6AHtU27rTtXzNkQvAXD3tS+vDyj0osLpq9SPEFl+/LI3Mhx5/etLPCRgxpO4947CF6a4KkGPjFyRubIFmHR11YUBhRutxt/4wdr0v2UpeZ6ovdnfoukvGvdK82uTDCYGugJsF1Pf31htQrPahNb2QueI11zvPllHuEDYawfekbS8DNNFm/h3mjO9zXN7OV1+74AkMzYzXoD1k0Kw3mJiVvKSgfu4JmlyBmSp82nPRKqAIlRUgCVHTslL8x46HWhfejWE57jdxxz/1i1l3/mTaUTLhA4+banzvpU0XGTUsOWnJc9XNuLFki/JT0MeqmzypOUyhCPJNu93c2zbZh7h9TntV051a5pL/OUEfkYrDxM10/lLpIvHbqO8wj5n9S/5sveqj9PB8NN00yHjhPx3x5Y6hx14J3BCDFW6nWQWs9KeWLDUzurZicuR6TgLxYU+hbf0HxLu3ZFrQknJuRNGgUtL9r7/qVy4qBd988r9jXK16O9rpAAMJzRWP78wAJiYXZ0TT+6XF/Dkwk9asPlmCZcyIng2mde0+GWqzpTQzClzF3rk0mCnZpqc8h6t9LYI
- wJL4GcCS
- GNxVziAYYBVhdPOJMbCq/Iz3Soa8MgN9+EKzGX+d9lr1A/i1ggzbJBal/FSxHrY/FG4UkybYUFwULcjcVTBVbzspjPF7Xt7AywUU/7crMEN2A0vb7hB/oQoJXf/Mm/1X3weVHrFIVtfR05SRXguXi29KYvLxyvTgOKGLiabIcmiBQrY6BtHiizeKfaGYD5HAVE5a/7IK+nwgJ0Qlm8xe5hg+HcIVbJttCkhNHZPiIuwdkRKTwg7g0NXr2aUivQeQehSzuLxKISeRvXhqrmx+l9rtVvfbDi2GSaWoxfpGL8E1ctmrMy35AmbJ/HKOxaKIVGV+CMXR9NBP2sbUdA9YFdlAIjW/V7St0NKbYcQbtusFHnetn1fg09ytnXABwkUFfCy4rXZIq6S+F1Jt8aeD5JFC5EUcqTKpLFLYEDrcrzs1ssGYFLxekiyPf4ZuHY3eKcC1kfx+4XTwDCC05ysEFLz4eMvZ8r63
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766467805-838714
+X-HE-Meta: U2FsdGVkX1+/CquFlHTTpNEXtlvw6Y8IVfk7sJEULcSbPTrZQ/Aiv7vaaA3PvBWz5LSYAfk2cb/Ls14pvZ75WZQN18+B/fNKr2nqsIItlhnn6d1LJlktFcqv4/UShHaSjdQwmYRb+WzORvTy+S6QuTpsp0GSEPIumqTWJGO6M5txz1yd4ynr+kHxcXskb7h1dq56/fOpphsh8KeDeBK2sxRMha7TTPCKoobl4y7ptw56lCLRMnrfv/cXPCgixOjoZ74KE2UOmzHDHgKNaMZsgwkShNkringa0UhCnbm50FJeSWjfbjm/kFS1P1k/G9t5T+Pm0fDCmY5iTpk+RHrcdLtzsSk98UKeNMYC43sSOM1WzQRKYqYPKM+rc9tDlJIXWeTFU1VpLbxRK4jEPbFq9e3UQmDIMN4QeqnTFgiT+s+XszbB8kxi+c6u6jgZXVjW95xUO3ETrpx4Cgm5DHj/xtAsN2fhxnqbzOi1HIw6sqwWbkNE4P09+iBIRtj0Oq8W2clRVWGpRjlLGHiEGvRlQJl8WA8HxLxJCjnQ+bpNopDeYjrPABlD8C8f7Xg02Rtzj1fT/ZvUlJUM/8rHklQ1+SpO2BdwUlp42kor42op1f7Dq/KFMem0D+glMjcS1XceRT7vvOQkcU4yySKcLbR6sVylFZdp5tniFNraYewIISlRMPl5lg+Qud1B/RfE5By9CezgdSpx8c/bp4RafmlF191hRP7hGkDqJng/d6ZUlePNgxVlWzWivCdZ1WdQIoSatIWsx7vkJRfgm3d1iEElJEYv+IITGfiNbW9HEMfTCo2eCYmlPIOHlSm/N/ldPsWIvdyrtw6p7wxmDNAXlM09nDRDKV04LhCzz0cDfk3OM9OqvYGNxNRNHjesQDDK9yYU7HkQjZ3umk6tmeQ/9O4zUPH4V7611lqgZm22hCpkzFKvtIBgJv5qV76kG8luCmOA87OfmcKwTechK9BnZ0K
+ KvJGj4xg
+ gCsqc50g8ZIfORLSWTt4gjk1Buq1XLSU3Pt5P8Ee7KekKk8Lp3f/PiglXexhQncTEjqx+c+udzZEnY2OPXnC236IrFREstykpLiysV/wS0ikYGOJhYL2w/YfOQ2Ad+Dlj88JbNzcj7cwDlOgIOFx1dOqp+RkEYoSNAtRQ0Tlr76WqHmlieE0y6/YYNcU6tQuFR1SQYX6ST9Rvj5VNnZ6+XFfoNEC/J5Izvb5L3moPJck/DELF8gNxoEY+sHdPAL6VYbQdSzijx4BUV35SIBo/5/eTqS17nZsnpFynkwvFGbzn4wrrHK+gQabRKPjhevJ8zboIDDmPmhKbI45Oafqxt8KJJE1qigBqesYWmIjFOWYwD7ujQ76pOTbCDUe+6QfA5OZPfZD4ZuqUlhojuzkwJoa6s+0EG6Zq2+93/XQq4jeDVuI0TsOpiTiwgaH5ZKdlVimZzXKsGKBgCxVCESJABAlF1ciJ56OHsUiFcY9B8RfjAjydhFRtIhMi80y/GCEqgGoHIgtU2AO4mCh4qBpK/48YLG7zf1IVdNwu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,109 +130,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Milan Broz <gmazyland@gmail.com>:
+> Anyway, my understanding is that all device-mapper targets use mempools,
+> which should ensure that they can process even under memory pressure.
 
-syzbot found the following issue on:
+I used journal mode so far, but, as well as I understand, direct mode is
+okay for my use case.
 
-HEAD commit:    9094662f6707 Merge tag 'ata-6.19-rc2' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1411f77c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a11e0f726bfb6765
-dashboard link: https://syzkaller.appspot.com/bug?extid=b165fc2e11771c66d8ba
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11998b1a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=128cdb1a580000
+Okay, I spent some time carefully reading dm-integrity source code.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9094662f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/5bec9d32a91c/vmlinux-9094662f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3df82e1a3cec/bzImage-9094662f.xz
+I have read v6.12.48, because this is kernel I use.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+And I conclude that dm-integrity code never allocate (not even from mempool)...
+...in main code paths (as opposed to initialization code paths)...
+...in direct ('D') mode...
+...if I/O doesn't fail and checksums match.
 
- handle_mm_fault+0x3fe/0xad0 mm/memory.c:6580
- do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x64/0xc0 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-------------[ cut here ]------------
-WARNING: ./include/linux/rmap.h:462 at __folio_rmap_sanity_checks include/linux/rmap.h:462 [inline], CPU#1: syz.0.18/6090
-WARNING: ./include/linux/rmap.h:462 at __folio_remove_rmap mm/rmap.c:1663 [inline], CPU#1: syz.0.18/6090
-WARNING: ./include/linux/rmap.h:462 at folio_remove_rmap_ptes+0xc27/0xfb0 mm/rmap.c:1779, CPU#1: syz.0.18/6090
-Modules linked in:
-CPU: 1 UID: 0 PID: 6090 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__folio_rmap_sanity_checks include/linux/rmap.h:462 [inline]
-RIP: 0010:__folio_remove_rmap mm/rmap.c:1663 [inline]
-RIP: 0010:folio_remove_rmap_ptes+0xc27/0xfb0 mm/rmap.c:1779
-Code: 00 e9 49 f4 ff ff e8 a8 35 aa ff e8 c3 55 17 ff e9 98 fc ff ff e8 99 35 aa ff 48 c7 c6 80 b7 9c 8b 4c 89 e7 e8 8a 12 f5 ff 90 <0f> 0b 90 e9 5a f6 ff ff e8 7c 35 aa ff 48 8b 54 24 10 48 b8 00 00
-RSP: 0018:ffffc90003f5f260 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffea0001417f80 RCX: ffffc90003f5f144
-RDX: ffff88803368c980 RSI: ffffffff8214b106 RDI: ffff88803368ce04
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: ffff88803368d4b0 R12: ffffea0001417f80
-R13: ffff888030c90500 R14: 0000000000000000 R15: ffff888012660660
-FS:  00007f98fd3fe6c0(0000) GS:ffff8880d69f5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f98fd3ddd58 CR3: 000000003661c000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- zap_present_folio_ptes mm/memory.c:1650 [inline]
- zap_present_ptes mm/memory.c:1708 [inline]
- do_zap_pte_range mm/memory.c:1810 [inline]
- zap_pte_range mm/memory.c:1854 [inline]
- zap_pmd_range mm/memory.c:1946 [inline]
- zap_pud_range mm/memory.c:1975 [inline]
- zap_p4d_range mm/memory.c:1996 [inline]
- unmap_page_range+0x1b7d/0x43c0 mm/memory.c:2017
- unmap_single_vma+0x153/0x240 mm/memory.c:2059
- unmap_vmas+0x218/0x470 mm/memory.c:2101
- vms_clear_ptes+0x419/0x790 mm/vma.c:1231
- vms_complete_munmap_vmas+0x1ca/0x970 mm/vma.c:1280
- do_vmi_align_munmap+0x446/0x7e0 mm/vma.c:1539
- do_vmi_munmap+0x204/0x3e0 mm/vma.c:1587
- do_munmap+0xb6/0xf0 mm/mmap.c:1065
- mremap_to+0x236/0x450 mm/mremap.c:1378
- remap_move mm/mremap.c:1890 [inline]
- do_mremap+0x13a8/0x2020 mm/mremap.c:1933
- __do_sys_mremap+0x119/0x170 mm/mremap.c:1997
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f98fdd8f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f98fd3fe038 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
-RAX: ffffffffffffffda RBX: 00007f98fdfe5fa0 RCX: 00007f98fdd8f7c9
-RDX: 0000000000004000 RSI: 0000000000004000 RDI: 0000200000ffc000
-RBP: 00007f98fde13f91 R08: 0000200000002000 R09: 0000000000000000
-R10: 0000000000000007 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f98fdfe6038 R14: 00007f98fdfe5fa0 R15: 00007ffd69c60518
- </TASK>
+(As I said in previous letter, mempools are bad, too, as well as I understand.)
 
+I found exactly one place, where we seem to allocate in main code path:
+https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1789
+(i. e. these two kmalloc's).
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+But I think this okay, because:
+- we pass GFP_NOIO, so, as well as I understand, this should not lead to
+recursion
+- we pass __GFP_NORETRY, so, as well as I understand, we will not block in
+this kmalloc for too much time
+- we gracefully handle possible failure
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Other strange place I found is this:
+https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1704 .
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+But I think this is okay, because:
+- integrity_recheck is only ever called from here:
+https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1857
+- that integrity_recheck call is only ever happens if dm_integrity_rw_tag failed
+- as well as I understand, dm_integrity_rw_tag can only fail if we got actual
+I/O error or checksum mismatch
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+So, this mempool_alloc call is okay for my use case.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+So: in 'D' mode everything should be okay for my use case.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Another note: I used very stupid way to search functions, which allocate:
+if function has "alloc" in its name, then I consider it allocating. :)
 
-If you want to undo deduplication, reply with:
-#syz undup
+And final note: there is an elephant in a room: bufio.
+
+As well as I understand, when pages are swapped in my use case, they first
+will get to dm-integrity bufio cache, and only after that, they will
+actually hit disk.
+
+This, of course, defeats whole purpose of swap.
+
+And possibly can lead to deadlocks.
+
+Is there a way to disable bufio?
+
+Or maybe bufio is used for checksums and metadata only?
+
+-- 
+Askar Safin
 
