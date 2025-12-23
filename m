@@ -4,113 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E7DE6FE29
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 20:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDEFCE6F086
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 20:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5A3D6B00A0; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
+	id A965A6B0005; Tue, 23 Dec 2025 15:50:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B068E6B00A1; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
+	id A442C6B0089; Tue, 23 Dec 2025 15:50:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A091C6B00A2; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
+	id 942C26B008A; Tue, 23 Dec 2025 15:50:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0066B00A0
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F44C160453
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:15:14 +0000 (UTC)
-X-FDA: 84251840148.23.9351E53
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 54F67C0010
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:15:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cvrXafcv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766520912; a=rsa-sha256;
-	cv=none;
-	b=4XZHbuSHm4MQcgTxQ17VbC17IPuZjq71dNRJ7krJYGNofkK2EHPU+dYG+kdBaCzk0Lv4qT
-	5OfkL8IB73ddMY5p+NoeWdgrUsnTyMWmpAX7j/QQBleMzEkQNwYw98LtRYv9+SN5BQIgcH
-	N2pP4MAnGNIorRG9dTi5s1cYFSvwpik=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cvrXafcv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 81A956B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:50:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C73C413B09E
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:50:57 +0000 (UTC)
+X-FDA: 84251930154.05.33F1223
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4C3DB20002
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:50:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q/yCeJNk";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766520912;
+	s=arc-20220608; t=1766523056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
-	b=Mh4rvceF8Th3bOuioIyshqtS0RBxu0p0cYQpV7a6VDY43/q6XL0sb1LtygI/yt+sapPB4j
-	gV/ijTOOFmr/qQr76fRV1G87NV8OBwGNbidJj21738VIZdHTaN3276rmsH2sxsEu6pStrt
-	Mfmg93r9KC5VVjPwGzbHQK4mK+mswF0=
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6467bed0d2fso2547732d50.0
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:15:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766520911; x=1767125711; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
-        b=cvrXafcvpKtKsIYeeowgIwb/ymaHmYNqPtkOET5TRF6WlMDe3b1R1wi8vBI/p3MKFb
-         4Wib55aqp/RcxFvRYwCESl1yp8dOq+2S9mwS+MO1cK8Rp+x2x9rPDxCw+VfUHjSrrr3d
-         6JnhT6qg0guH9520BpznxI11tMENNe3f0xM3JwLKXXn0SXPxumtuCWy8Amd9IsBwV5N+
-         uuDVVS/t4xJu6WQRTBNckZ6Y74KWRgfrY/7QhR6HEEL3jLhhVvoFq7RiAzCXaZY+JuFV
-         L79Z99bBWlio6zZ+FXqacTq8jhLb2CFx39g2a7I1ANEn+4clPXSlNIQsAntwz5v/MZ3P
-         zKNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766520911; x=1767125711;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
-        b=UIcOrxddowbitvL5efcGHak2ewNDalrFcQUFJLxEjWUV29yL5KX5Kwb1KZcds+lgIY
-         /ooIXFYKGj5pDG5hkrn+NQ97ugaAwQH8pYJeq+XYlQB+qoxf3MQaHxKJy8OfddGSB4mg
-         kVH/xFUphAOuTb9vYUyC0VjhAnIXKGsx0hl2ul4QDMS+Pd3KBzj+xQUfDX4JBP+Wiiow
-         ZWMGdpBrkhwCgs4WyVjJyDSKCp+3DzyC/NWeC7LRoZbF9NSVrapbFP/RNRtQru6EG4Bm
-         TAxwr5d5LLJ4Mtz0Iol1wjB/u9sux+d0rdLYvKpnqOSFejDi9zNTyr948Qwh8GOxJli0
-         xVeA==
-X-Forwarded-Encrypted: i=1; AJvYcCWddym4kuQrAmqgyGT1y4qX49G8H8zTPL5DiXwfQbWSYbXKY6sdZHECBFSvMySJtrdqEE6CnNIHAQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyuq0+HH/HOPVp/akh9Fx5XcLKh0c5x+ozooyaU9hXmKn/nOm3Y
-	QE8R4In+piVkESME6ONVR1bD6GAAnRBmyuxFlTuoUaJJgJwtlZWn9tbtNbsJbEwP498=
-X-Gm-Gg: AY/fxX5ztdrnnzQ8xWwMYRa+p3EjlFkZbne1rpfQQAXsJ82gnFenVE+OTbzt00wAY6w
-	jjaZdkTjgZ+5HuUAGzGcWuWAkvf936aK7/RqQL8k/FCkmLIDoH4fSFZJOfmLTG4+MOYdglUga0A
-	uZtRkeJDuEiCZTaO1Rk03WJV1sxRIlaFWKNXwVEejKVQ4GAgGtOSmrF6MjutpoIvTLc/7wv7XUb
-	L73+pIPXMOYvWRl5LhKINBSvwrBkiPZhIfq1rHHNwcvXx6J+48LnhH8rC+oVJ4pJ68Cxwf0R0zR
-	kyRlreLuAWbTRFgs6d28Rthxdglm8EPjn5EnbaoofJb78YO5cW5KdTk+UjmvA81+FHk3xab2wEh
-	UJ44lillWmnfPoLVveRGdV+3TNlQk+eFvi+4tN83grPO8nuPiv7izWLjthSo9mT/PX9P6yR6vCk
-	Hasq1hJeUFnJ9OEly7w8rtGpvL26n01JS+BAuuLVCD8G7CTxPQV2kfU6ORIRWxbgTtey/XNvfOg
-	md3AnSzGbdnfjfDe+DgtK4hyFnmcU8vpemM0w==
-X-Google-Smtp-Source: AGHT+IE9hkWfg/wdg+y79EHOSLumqYhte+VdlGUYNiXwnb13zkCzLpIQx0sZj2VsFDL0IjdRdTFEQA==
-X-Received: by 2002:a05:690e:130d:b0:63f:bf9d:e530 with SMTP id 956f58d0204a3-6466a86bd2emr13280316d50.29.1766520911203;
-        Tue, 23 Dec 2025 12:15:11 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb44f0d57sm57949307b3.31.2025.12.23.12.15.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 12:15:10 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	linux-kernel@vger.kernel.org,
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vAZ3gYg73FG+tcs0YaSRZAMdGepo+xXMwgP8jqqEJao=;
+	b=Nx3don8deQDphkj4sGY/v5rGtqHRuRHZ+QE4qGPTmk0NDxtjK1jopDxL9eM9YRz41Yes0d
+	NHbzPJzEdxtL3ykuWntUI0LqlYxwVM8Z2546ulyvUlFcA0hMI9DjUfERsuLXWDqf2W6APN
+	SSqpU7JRvcm1sVPrLN40ikD1XA1MjOU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766523056; a=rsa-sha256;
+	cv=none;
+	b=aAMa6ujgIb5F/HqkdfB4RYt6L1ZLDzwa2949DMLFwrrkcGNKsQdSLnJTE6fKIuIxVWkVp2
+	lgyOwkohkmC6sKEPVXjuHQobCN9yi+CU6u/Sc8nu+tajJXKiGu/jl6bjSZQlGCDPMLzV3e
+	kZTT87oJVSV8VRamRZOQ2bRakAM9vKY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q/yCeJNk";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4406C60123;
+	Tue, 23 Dec 2025 20:50:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F60DC113D0;
+	Tue, 23 Dec 2025 20:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766523054;
+	bh=trDSBTaA6WTrHmc9KKJcMvZl6ePTGpic7B6VeAAp59I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Q/yCeJNkMbsOr6ih8Ct52pGmKB3UNVAXspjyUHpkYkQYhmv/wN/vQqUO8B4aSVb43
+	 lt4I+mitTdqcYGg20h5Pip1pBa04LihhstYsrW1UM4yUmJQJ9CnwEyADdkPOJ2/V3H
+	 my76A0uDLn9HTkHIU/TX900oHCMUfofNYOF0E25WSqCOGrSR6CuTJgR9bhG8l1ETNU
+	 hRJD1PIKka/M/a065jPYoCDNzUBcGVNPt7bji9JeljOrdPC8okMOZdVyARn9zRN4zV
+	 xqv4o6EIaUaTqr2QODVqnH37YcRYFYC5YDMfa7OGzR41w/ax/vCctSIJD9XCIcjy7T
+	 W/jfF7R/I59Ag==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
-	pratyush@kernel.org
-Subject: [PATCH v1] liveupdate: separate memfd support into LIVEUPDATE_MEMFD
-Date: Tue, 23 Dec 2025 15:15:06 -0500
-Message-ID: <20251223201506.2334991-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>
+Subject: [PATCH v3 0/3] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
+Date: Tue, 23 Dec 2025 21:50:43 +0100
+Message-ID: <20251223205046.565162-1-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7ptdon31oam333fmpdcqz46cpnp4a9m6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4C3DB20002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54F67C0010
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4nfjr5k4ikangrbemtehgadgrwmmofmg
-X-HE-Tag: 1766520912-263923
-X-HE-Meta: U2FsdGVkX1988tv/W3HvedJg6frwdM/hhu7uBAS77Fz/NioUeKdcK/3jlpRpSCxk7yjIMGKsWUTCno0SuSZqMSYjMPEJkMYrYgMlP5nFSxCa5A0+MeBm9Y3Srs0JMfzLP4H8MC61QMSDjVcAgKkc1oBZFmIeCB0PWBnY/3sUh39byYt5bqFToNDK8Ptem0epM8ybhQyPc7zYg85Zt22IMnC8hkt16ytmV8SE2MVPLTRjW7iYWY9eERUtk/YIXzouKRf0Lu/Wp3ZVr4TSIHiW0cDsJ362Rlca1A+ztirCAC+CqGx394gOcMbagfyDxKy3qG+dCrK5MVN/OlU+LNWPImpnHxebK+NtepACqdYdsatfAiw+5o10KMv0qG+u7D1NiN7P4ufLIXBazyOYl9/UmmopJGvZiTE2UKrGxxCjGYvJeC8+qTrZ4vTn0jWnaXi1sP/K0M5adBxsHttMMLvmbXTR5jz6dWOXba9HSh54ciLlMLoWeGb8yHNDY6ms0J91tAF5v7Qntebr2aNl3289jSg6F+HihFnKOJtbZszW6Zewnw/vs6KI1W+Z9p1YXBiX7w6WduK+OEFhvjn+Z786fcdxdPv4qeOQASDcoohQ38e0o9ilSwRzOcychS7SJcnzJAOmCMTEEN3RGvMbTI/NXOTJSoxF0OTo9Am/odJvM88J0UevR6OilJCrfY7qcrFSdahL6rrSzncQORQhL1BE5jd+cWEmZxQBli/JPuzvHao7YdGSs8TsLub1kP74tve/RxdO3HGS4PhX7Rne7gx/I/NuCZTFzHI1XUtToxiGF9p/1HIcYLkl+1ZKs++z2IcO1qXOvcoM6XqETGrsXGbzNh3xTYKDmlWkFoMy/CkaLBkqwAwTEvFH9z+nzM5U5E9J41I+6QrkdPixWnG5Pl4s0ELISfSjG7ABEg1XNKe9urklmgiZLrHKZyKBylzoFNu5WkHUk1+eFA8HKbeuGnH
- 14b6BN32
- xAfYFqwqKtmEej88GKQ1YD7AdITmwJKceV5XFDmK+FNUYLRB3udF1cP+CrLwyswP6twdDdGFhgeXfT7CyBiOVdfDbg2SsaT1GK7cnyywafbOsuzQ7HlHEW54B2APTq+B9H65XQKKj9efajOZzYtmjD8hLbh3eAfOHqrIqptzv5TuyHsTGBykYNnF5nWnOb51NS1nvjDi9vpQ9l2T+5NlNXcXbigAaSIuBZNu1egXPsP5zFRMfHDlQh1AE+CguYLf6fNFeIG1CMUYZ4UMVzY+1uXrC3KinloxKdXQCRSN3kQ3oHUx6VdWZcz59N/BJSnHi2SkpR218BZVsETIuEYsMOtgQMrfPGizt8wU0MzvgtBJnGU9ZjcLT6D6k1g==
+X-HE-Tag: 1766523056-336109
+X-HE-Meta: U2FsdGVkX183eYN1gA42FLJM12C9/llh7cDeQmcvjbWRYUSEIazdrGkuAH3k/OYWh4db5h0/4/ZsxgqPVwAtWQ3sUXVfxasLLo2p2sHD3LjXAq+AN5v1s+t9gI1fLucxC382yoORV3FnNdHOj57ZJnI4m1GKYybc6WYm0Bn7BaJWX9Bjr7CU/1a6RUZ3YsSuROQ8dFO/do5VV59Igvi7CteIawDgh38l6x1jbY15x37sYTxtWnkYYp20m+sjMwHEZN/5c+oR8SCRQ0Dl8UA0olI38M280s1jBQD2KAHUb64cF7yswLUszL1VetrdEcsY06T/3bmpyIn5nDEATv02eR5bpMk2AE3/nFwzbuCyE8WmR1267aPQt8F5rWG8SiLjnXn4KqRjFe5JazCCX5fLmhMoXzHgZCgXTY5oOhPVMvqlRZ52s6bq6hN5L/xteSB7TxPb+F17jCAJD6FgOv8yhoW86spX9m3ly11/iNRe8qwrLxWN1Mgca585gq2HHiifs+7lbMIskVc/RJMQxdvIvSpP11yuH+XKEmyfsiJZ177JePvooW0NDY+l9uLa3WSKf5AJV3CY+oWlejoGVX2prm8bfn0l1cS5I3W2b2nxPg4rjLnd/XgEy3vIDUAvW3/13hWVaEXRdH0oOGQ/01kABKSPAIMZwO+fd868/8nl5IBdnbI4m2PQIfDpG3NO0BpPT5VWYiLg9R+WKWYRD8ugsr/myXvqZboM3SebxmbeTKFPTPkHh/hYKBqqRlawMioEYRGDincEc8/AMUQgFZUb4wTDtjoFBTvq6HmXe/0cXYmJPiMZ/hm1mwHCkFmg/y/AVWNmVOPvJChp9NJBxORVqf9/djXj33l8fEXQH8sCCohDErE98lbW60SINVOs38z5/6pg8Vn1PlCy7K6gC8KUS4RHbtShznZ0bn+HHCD+HVi4GwP8oOG299v0AxCy+lmOFNa8HyHlYnm9O86L4uy
+ 9PWh6uxf
+ Z/KpEBokVR6KNkREE1uD32OYgdlTGpGXOnAO+eZkmI1JTqe2WtGV8zgBAcD3d3PiRM84AEDAcmdUjTp3WVnk2OqlHY4D/tmqQ0Gz4R+WKhLCIxR1BkTC5olH1Fmy+KRr/lirE5Oq82vyJWFdR9pncCCQFAN4jhKuvnQwXKEUsGX6EnmlK55u00t7rh1Oa2V1hDnJA9Vb2E40dvBbD4XCH6iI1HgDJKQJEiDURfHlOLRU1D6YqibQm8cwvxA78i0EdiH6Ql1exOWmkPaIPsM+Vr4anKBwC68cBNK4+En/hKKOIOoYJxyQP75OUb2nW8GVM6ImvP/f4+EhUtMr/UvYHsDcfwT+IguspmX9fjlyZjENhjUzYfNkcdzuAvuKLeoy7+wt5Do7GiN2vZ0o+NIpwmKQiklmeaLhdAd4S7mv3m3XdMTpQk2OlQCEKeercGtUebqNUh4Gp9w0IsY9lxoLtCsx6GEc85Gvbwf/mXuq5X5Hc+GS53ROOhmjBMNhfzhyspiwDHIUqP66+BC1AIHKj7n2SYEO83s3HKHskhRhjrF70N3xZUZXofdb9GI0DUKv4tqZvP6hwatBZYeDgheH61zaNsyhfYE94niHAEuUaAWfsIdRvfRFifiQDkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,73 +108,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Decouple memfd preservation support from the core Live Update
-Orchestrator configuration.
+One functional fix, one performance regression fix, and two related
+comment fixes.
 
-Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
-CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
-Update may be used for purposes that do not require memfd-backed memory
-preservation.
+I cleaned up my prototype I recently shared [1] for the performance fix,
+deferring most of the cleanups I had in the prototype to a later point.
+While doing that I identified the other things.
 
-Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
-SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
-them, allowing the base LIVEUPDATE option to be selected independently
-of shared memory support.
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- kernel/liveupdate/Kconfig | 16 +++++++++++++++-
- mm/Makefile               |  2 +-
- 2 files changed, 16 insertions(+), 2 deletions(-)
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
 
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index d2aeaf13c3ac..9a1a8cdcf16c 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
- config LIVEUPDATE
- 	bool "Live Update Orchestrator"
- 	depends on KEXEC_HANDOVER
--	depends on SHMEM
- 	help
- 	  Enable the Live Update Orchestrator. Live Update is a mechanism,
- 	  typically based on kexec, that allows the kernel to be updated
-@@ -73,4 +72,19 @@ config LIVEUPDATE
- 
- 	  If unsure, say N.
- 
-+config LIVEUPDATE_MEMFD
-+	bool "Live update support for memfd"
-+	depends on LIVEUPDATE
-+	depends on MEMFD_CREATE
-+	depends on SHMEM
-+	help
-+	  Enable live update support for memfd regions. This allows preserving
-+	  memfd-backed memory across kernel live updates.
-+
-+	  This can be used to back VM memory with memfds, allowing the guest
-+	  memory to persist, or for other user workloads needing to preserve
-+	  pages.
-+
-+	  If unsure, say N.
-+
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 9175f8cc6565..798f04233d71 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
- obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
- obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
- obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
--obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
-+obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
- obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
- obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
- ifdef CONFIG_SWAP
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
 
-base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+I added as much comments + description that I possibly could, and I am
+hoping for review from Jann.
+
+There are plenty of cleanups in the future to be had + one reasonable
+optimization on x86. But that's all out of scope for this series.
+
+Compile tested on plenty of architectures.
+
+Runtime tested, with a focus on fixing the performance regression using
+the original reproducer [2] on x86.
+
+[1] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+[2] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+
+--
+
+v2 -> v3:
+* Rebased to 6.19-rc2 and retested on x86
+* Changes on last patch:
+ * Introduce and use tlb_gather_mmu_vma() for properly setting up mmu_gather
+   for hugetlb -- thanks to Harry for pointing me once again at the nasty
+   hugetlb integration in mmu_gather
+ * Move tlb_remove_huge_tlb_entry() after move_huge_pte()
+ * For consistency, always call tlb_gather_mmu_vma() after
+   flush_cache_range()
+ * Don't pass mmu_gather to hugetlb_change_protection(), simply use
+   a local one for now. (avoids messing with tlb_start_vma() /
+   tlb_start_end())
+ * Dropped Lorenzo's RB due to the changes
+
+v1 -> v2:
+* Picked RB's/ACK's, hopefully I didn't miss any
+* Added the initialization of fully_unshared_tables in __tlb_gather_mmu()
+  (Thanks Nadav!)
+* Refined some comments based on Lorenzo's feedback.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Uschakow, Stanislav" <suschako@amazon.de>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+
+David Hildenbrand (Red Hat) (3):
+  mm/hugetlb: fix two comments related to huge_pmd_unshare()
+  mm/rmap: fix two comments related to huge_pmd_unshare()
+  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+    using mmu_gather
+
+ include/asm-generic/tlb.h |  77 +++++++++++++++++++++-
+ include/linux/hugetlb.h   |  15 +++--
+ include/linux/mm_types.h  |   1 +
+ mm/hugetlb.c              | 131 +++++++++++++++++++++-----------------
+ mm/mmu_gather.c           |  33 ++++++++++
+ mm/rmap.c                 |  45 ++++++-------
+ 6 files changed, 212 insertions(+), 90 deletions(-)
+
 -- 
-2.52.0.351.gbe84eed79e-goog
+2.52.0
 
 
