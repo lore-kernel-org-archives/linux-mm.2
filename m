@@ -4,95 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27D2E6B26E
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF63E6B26E
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:41:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5816B0088; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
+	id 074B66B0088; Mon, 22 Dec 2025 21:41:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A6F36B0089; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
+	id 021F06B0089; Mon, 22 Dec 2025 21:41:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D4696B008A; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
+	id E70316B008A; Mon, 22 Dec 2025 21:41:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EED766B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:30:59 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F9C3137CBF
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:30:59 +0000 (UTC)
-X-FDA: 84249158238.29.2DA6D3A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DC473C0007
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:30:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1QL8f41R;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D318F6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:41:42 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 329231A0436
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:41:42 +0000 (UTC)
+X-FDA: 84249185244.15.0769079
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C9E061C000F
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:41:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XxNb50V8;
+	spf=pass (imf20.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766457058;
+	s=arc-20220608; t=1766457700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Mu9nbMnGhSASaY3bN8+eYi3nCdJ0EK5/7Jtn21L86E=;
-	b=sW8jWpG2/sYCEE25YZRjhVnXAHurFXZ+t3tDZ6NmKvCGhxfEAuFGTq9KE8GvYJ480rKgBv
-	5/A/2n75Rzgrw+gau6e38zxadUCXpQWNj8N48D9nvdYi9lK2qSLyPsCD7vD1QYhQFKn75q
-	Bt9jQe+42NzWEFcsYInXOew/FO+4iA0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766457058; a=rsa-sha256;
-	cv=none;
-	b=fWIUL5QvFnatOC8GHErjQLceZbEia5EbcmV9jkWoGIH8h1/bw5fkcCt1x7zK0kMbSTtT19
-	EKl7hKDBpEKAwfJhQNqZ7bD+D19wqJ+zZm4685jTWbERa4qDlUnf/UOgOAe4ywnkHCnlkY
-	//joJvYnToHn9gs5GOPBi6QPtesNDpI=
+	bh=X76OLfq9JWE8CxaMPmo7L22pFIXt692o1JOaTWhrH84=;
+	b=GPJU3xGrza/M26tGtyEYbB/zCeLui3LKVZeKY72zTSko84vac2a0ZJZ5PIhHnzzhvX7zkZ
+	vzSzfirkn6RhvZrVrpqWulm5DkemF6yweS4QFCN0xN4h+k7x4WDuXsAehgUyvTP7ln2qx5
+	KErlM7PWYUQmmqhF76YSouUz4WcsU4s=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1QL8f41R;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 72C3940711;
-	Tue, 23 Dec 2025 02:30:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23ABC4CEF1;
-	Tue, 23 Dec 2025 02:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766457056;
-	bh=EGu5F46cvREoMWotC8TtqKlUedKHHiCD44Ca991/ZQg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=1QL8f41Rcexjp5HR46WOg9kxNLNocZNvvEbYU/Auokx8zqa8xA3O5RiDLBnxGF9E4
-	 y/C4Lqpm2r02rxa6co5a+BWXUIOB+8WAgimhq2VUTMXekY8F7nwfHvPj/swOESZT8s
-	 NHNWrvdZfY2vDa1FW8ZegBx08PWoBohUIHQY3dNI=
-Date: Mon, 22 Dec 2025 18:30:55 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, "Ritesh Harjani (IBM)"
- <ritesh.list@gmail.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Borislav
- Petkov <bp@alien8.de>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
- <osalvador@suse.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik
- <gor@linux.ibm.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, x86@kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Sasha Levin
- <sashal@kernel.org>
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-Message-Id: <20251222183055.88c3cc1f0705c1dc29c7f011@linux-foundation.org>
-In-Reply-To: <20251223013045.4579-1-sj@kernel.org>
-References: <20251221104907.032abf56c67f3e50c9c94e31@linux-foundation.org>
-	<20251223013045.4579-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 77dnftg581461zckbgm3bmexo36a5bro
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DC473C0007
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XxNb50V8;
+	spf=pass (imf20.hostedemail.com: domain of liwan@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwan@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766457700; a=rsa-sha256;
+	cv=none;
+	b=NCVjPJasN5C4DYex83EqpTK2GNadV9P+sBLHUBREqqbjZiCtXnXaUyBIZPFj5dp+uKGIAo
+	VWRUAAyN4zdhbdTgJ6Jh0NyLkwDbc6UuLLotCEhHRDW/n4VRFZXHE8PJtAO+WnHEqXprcO
+	j7o+UJQKQHYLNJYmB1RiUqhk0DM51Uw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766457699;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X76OLfq9JWE8CxaMPmo7L22pFIXt692o1JOaTWhrH84=;
+	b=XxNb50V8HhjGE5gJcRZuYlMpq+q6vhDuz28khsXLGAxrZs1nqguO1ahUH9JX4lOjBmp8O0
+	ItFvCl9SxRGZ3a+FmN8QZtk8GQEk/qFztPpGEu574QIGEvKABG5A1eW6mMGSbXtPlUtNt6
+	5SWpqjMBtFm5mlW2E+Z3tbkxm5mcJuE=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-N3yOWPrbMnSpKKq-OKLltA-1; Mon, 22 Dec 2025 21:41:35 -0500
+X-MC-Unique: N3yOWPrbMnSpKKq-OKLltA-1
+X-Mimecast-MFC-AGG-ID: N3yOWPrbMnSpKKq-OKLltA_1766457695
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-bdced916ad0so8096498a12.0
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:41:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766457694; x=1767062494;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X76OLfq9JWE8CxaMPmo7L22pFIXt692o1JOaTWhrH84=;
+        b=bZZaGR56zYiU3rRPWtq9KKULayJX3ql1/SlHyk0EjqZJ0fNf+DkIukJWnEAzVNYaXb
+         cUZ+L1kjHzqgr2PelpGpJGZU4VxyvE8Qh+xfTQhZCmeS0NVcDjwDm7i4Dvj0vrIvk2vU
+         3Qbuv/CLUi5514MMWa4M9zcb4Tz6FEowD7d2KBlf1VIlayq/yUeX/Yx7/OPPLgNtdjJm
+         al8KtIKKEwxPv/uQ/Xv9eUaSmvv5zNxxF1j5Q/Np5h9KujGh0IVaoWWbbqlgxZokdoE/
+         rTHUmLDV3kUIo1Ux9lEIAu67wRPYOwF46WWK2eJOaCw9IITB8oHLEOClla+s9zFZKO0a
+         OWXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUL6CNd83ZOxNK+dIebShZDt95eWeZaNmpWyXBhWRB8yFZc49OBiQ87/8Mw7NX0IijWHmhZFq+zg==@kvack.org
+X-Gm-Message-State: AOJu0YynHeeYylOmZMNSaC4hQDrvpc257H+dZrFOaTpJlTNyjsIi5zEP
+	8SQG/r4/ho2aAA34Mdo4Ngy+ziwiXwlo9XSWQocZFFXGvd/FA4u4ZB9NUrueogm+4TpGdLB6vjt
+	r9FTZTXYxuViQ2945saorrD3HFm67JuMVDcGskNLpoyR1FMo0xKO9vVFY9nbZ7MSO609lUmDjUF
+	d/3V2kAshto29++rNCLHc5676Qda0=
+X-Gm-Gg: AY/fxX6H2eE2LwQYcg8JHg0LvKMZxYCC7M4HMFTBDUXq4zSjyGJpVX6QiaSUoR32bCD
+	fzD7JbsgyVyVDVXapx7Z+znFod7ybMHKEVuxXStSjuNaQvxO1xs4YYEg9+2peNdseKlmY1gvKw9
+	18wkEDlhqw7s9R6s1YO6SZ+K26SG5DBgIAu09mUAU8ljbO+tr6j06Axa/jcTPsDR6rEZk=
+X-Received: by 2002:a05:7300:de4b:b0:2a4:3593:6453 with SMTP id 5a478bee46e88-2b05ebd8d92mr9946619eec.3.1766457694563;
+        Mon, 22 Dec 2025 18:41:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGpUovhZE5pBphm6qlEdgCz7WwEpmZEiTUnA6F9yN+mMZoFbFB7iUAcmRN4ioegFjm3mJuEAs51apuu9znPHw0=
+X-Received: by 2002:a05:7300:de4b:b0:2a4:3593:6453 with SMTP id
+ 5a478bee46e88-2b05ebd8d92mr9946600eec.3.1766457694139; Mon, 22 Dec 2025
+ 18:41:34 -0800 (PST)
+MIME-Version: 1.0
+References: <20251221122639.3168038-1-liwang@redhat.com> <20251221122639.3168038-2-liwang@redhat.com>
+ <20251221221052.3b769fc2@pumpkin> <CAEemH2f40t+4SsjL3Y=8Gid-CBMtf3eL1egsPKT1J_7LDbdWPQ@mail.gmail.com>
+ <20251222094828.2783d9e5@pumpkin> <CAEemH2fsAmhAkGAQb9rtD2WLUc7QMb9Q5dusG3S8LsJbNKsO_Q@mail.gmail.com>
+ <20251222180509.b12684e112195ac3f7ee9389@linux-foundation.org>
+In-Reply-To: <20251222180509.b12684e112195ac3f7ee9389@linux-foundation.org>
+From: Li Wang <liwang@redhat.com>
+Date: Tue, 23 Dec 2025 10:41:22 +0800
+X-Gm-Features: AQt7F2qOIZm0BvL9DLtEgZtZpeJWcVubMomV_2ll-92wfg8FBEaptjEpncVydpM
+Message-ID: <CAEemH2dZ3DxDPWuV1Uze213CqoFHec9kK+MeteigGANYTUzbqA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] selftests/mm/write_to_hugetlbfs: parse -s as size_t
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Laight <david.laight.linux@gmail.com>, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Waiman Long <longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: j2O0jQhay67BkS-Hzf_jZdzJmQtYpZ1mhrhmG_8-q_g_1766457695
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Stat-Signature: yrc3eso5a54w9yqcd4jm9xiropbamo8d
 X-Rspam-User: 
-X-HE-Tag: 1766457057-441451
-X-HE-Meta: U2FsdGVkX1+a3bJL/m3Hvx0gyRnV3hRrms/RGIT63mlClhJkMCpaD6UsSweXK96a8lCMoISYsSczBAMZCQmIx4F9M2R/Y1ipUanrScl5bSZ43irmMgTfcII27t1hkz2ZB1T+R8VUvnrDsjMX9wOgyZJ6BPNpR47v2kTGXCr+CTZzo2dXo1f23tK4CQrp52hMbjc74u+jECIMdwCv78GcVsWkNs/wJHcS9s50SAZ8hVnjSwEKEChXJBpopQNFkumvMSiiDx+ZZjwYyndTTvYbwOVr/IphfBNDf6ufhVfRvM/D+LlqDYUOF566iaNTJmccTc5+20eCN8snVzybG9AEzIuMkg1NzrTmCLFMZmwQ9ctj0X8rZmojM7ZFotLTMAEXqaHC25LjLww0krmF1Qy7CQ8sPmZKF5An4P7wUIJR0X/9VO8H489d9P3ZGvSEoGrcd3Ntl7UgBEa9VQk9Nmx6tzWPhzEwg6iYdTftb/3Uz3zhEkD/xbKDDnR432K1KQOYfaCSDo34681HlNXhouXsGbuggUnNo8AvThpmbtDIK8H7Py1Xc19WYRCgX8WLwLD2kVqS8bgqyVUutJTGZhfvJ4ADXyjC1Lc9WyBkAyVXq+TUemLU3Iiau8HyGaf5CHwaJerHzc+F+zwhAASUFE5V3KEm7N73xuwMMpWZ9h1T5iK8WheIeYHvQY1/cmiYwmhry1z0/hzuFIn5pHis3AJHZGcPsuRDLgtnmB3219zhLWcdztr/KAXrNCK5dhOrAjxFcuEtFq/+fOaroLOKLFxEntBqPeAUZZ3tld26OrgRU1HjJ2UTMRRYKqvLQ/Hg0eLzCniAQMTFJkwUUtvqZAdXp0uom+/eTbM0qoLHbuxgm5CaYLdhafcJLPFrebiAsNcFAYKz6fRPVJ+W4iDY30hWfUavQmLhV8iAUU2EnaHWpt+ruRmENHoodZB907ypHgO+ZJqMdSO1lDm80vFeBfA
- ZCysfFLW
- F3beTgzEhfND63unGr2BrVBQkaeoOYJ4jHA9R3xaSoO3JeSfbJloDvFYS9xbgFShdrBtkIVZOaxIFA7gBnm5E89oPy1PrRQOWZ1jBnZVq+UlfbOupn/qCsdCRq6bnW5woabheW4pVJkuH/nz5maIOcIUWeEeZUouHVId0vRnhTWOoFfOQk+5Ph0Spa8C4ZjDP8/K/M7ohvQRduBtfPP8N6uy9pUOu9I8EKOcBQyERlPYTGrQz4r49d1MifK1eYTOs4NBxIwYbWL9vB2HzJciIn9a9XhwyN5P0iiqbC6CbamqEt4R/26JbJPgjEOslSRmYBBO7vpKY4xtsbRKgBnvzabyeiBO3h23G6Wvc7x9ZyfzVjoLMuQUWJQit8l8Nzke2ZL5qbQQ7O54bJ9Bs8dQ+F6/dGA==
+X-Rspamd-Queue-Id: C9E061C000F
+X-HE-Tag: 1766457699-678599
+X-HE-Meta: U2FsdGVkX194OnZzjQNOPldVj9mOYXW2J2o2gljOBoTON8rplZz+U7IFslEcfxZkTeV8e7mADmvRI9SQ2Ijt49PA0au7+TD0y8YqxzNWemGuFIQayY/Oef+79gGcvyfAaE2BLY3U55ZvNPO/WaerGS+cWkhOjk2Fwkzw3H8tC4VuqtK510kziYUFhUEeop2M7ttjPzY2gtdPLHmi8zOXu2Tr+hG6GFu1S0S9iIl7Jl0JisBvgf8neFMZx+Jbc+igQFR9nGJXPfXgIL57j3jMq6SrmaqT7H97PEqtHpgMCyb+iSuGdM5s+grt2Qr1z6aqCur4HUQLKFInagYYlA0K+6vcBH6elSVwiiRcgYt8t4gEddylsg516KUK6kvTU/HCEImq5SQBiJWh7jfOQ5EmsseN1qo2tLpOznABnx8tQH1FIh518R1TsP4B8jZVEgs4NqX9TWYW8lFg4sUDtb933YtgEY0YWZZ52PVB+CaLMHUq2s7dZ8xSI9/wMm62Zlvit13baaJEdohWW7QGl/vK2BMu6B31E6zvNGNGpCR38mW4IFX5mSdn4Olxl8PEFguDZkNZlkmK4y+LcNULo8GJ5td03dmGuWULICEJrjqKCq//HFpkKkNroq3VDfSglceechSAFP4y7qwxna3B77j2C+W76JYn3HBNNkisBBdOp6/4brMersIEBoXygUnfqxpGwi3C4yYfmVCA4kiDeBm2RMDyRT8pGAZA1JKRsXPxa/jRkb7F/yoAPT7atIqvjtTaV540RtSuv/SslsY9m5cmwAsqhTtnISfzi+gPYcirpY5RaGhnO7I0IsqVB3xiEZBn1+HjfMuVKPBx7praRarcqKDwq89IoQxLdkYWKjBBlHFLxKNxTapoRC0vHEKyboCW36fyvjlZhXqPB8Xr9U3MHGXbvqayMujSmY6vEiF4wUONIrH45t6OUSgTLlcUjTgJ+YV8UhLeiVDpyhN5ClA
+ LDOep6vb
+ er2zWclssIUfS0fZXfr6eO/ZpO+h79fPQC3CCA0klHRywpLaIdCIcOGSOXedPtfaP8Vg5abZy0RoDtG1hFLpT9F7ZVNkf8mw36uZWI1Ty8FiIqZJUbkYhhrVu3FIelTMU93o9L4DRp7wxBJXFSWh1/ORbfskPu2LHJxPHzyJqUtwXFtFK5SfMrDMcfhFyqDYjX1k0X8lqFsDru2RFYuaGQPpPXuIrINtCKZWKDTwPpCjvPwJIwBNpo5hj5qWdK47PRc6k9NR2/TeH396u/MwPwOPilK9suf2lXC8W4gyBvJ8v9OqqqrPdPqAtehvz2Kw/Cb6xP/gak9mg1dmRTwFDerXJ74fKYmTErdGTSLqXK1AXzYikvYUM6iPRq4DHfz8H+pFt3pSRq7fueHVlbCsAmW/jLYx0gxbyAC/Oo2zyAWkcIfjMyTKYVxkzu8A4KkHJiHumKTC6MbBZegiuHKixDbeZZ9Pt5dHufe/6/6ahSJG+mlsFXwGUoTyGKA3kt9FS4vzsfsKTiNwL4CXiO4K7UI30bjIq1WMYtwz+2etHXke+GekH2WNqL83znynlEqhjwbZNo8qmBWhRUPn2kzj/OizvX4Wtg51gQiIrJWVSwuMEwiiKjRsNN7lUjjSQxpBHF7vgB2k6Wwr2RXg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,43 +127,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Dec 2025 17:30:44 -0800 SeongJae Park <sj@kernel.org> wrote:
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Sun, 21 Dec 2025 10:49:07 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Sun, 21 Dec 2025 10:22:44 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
-> > 
-> > > > 
-> > > > My main concern was -
-> > > > A fixes tag means it might get auto backported to stable kernels too,
-> > > 
-> > > Not in the MM world -- IIRC. I think there is the agreement, that we 
-> > > decide what should go into stable and what not.
-> > > 
-> > > Andrew can correct me if my memory is wrong.
-> > 
-> > Yes, -stable maintainers have been asked to only backport patches where
-> > the MM developers asked for that, with cc:stable.  There may be
-> > slipups, but as far as I know this is working.
-> > 
-> > I don't actually know how they determine which patches need this
-> > special treatment.  Pathname?  Signed-off-by:akpm?
-> 
-> I guess it is pathname, based on ignore_list file [1] of stable-queue repo.
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list#n16
-> 
+> > > It is best to use strtoul() and check the 'end' character is '\0'.
+> >
+> > Hmm, that sounds like we need to go back to the patch V1 [1] method.
+> > But I am not sure, @Andrew Morton, do you think so?
+> >
+> > --- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
+> > +++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
+> > @@ -86,10 +86,17 @@ int main(int argc, char **argv)
+> >         while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
+> >                 switch (c) {
+> >                 case 's':
+> > -                       if (sscanf(optarg, "%zu", &size) != 1) {
+> > -                               perror("Invalid -s.");
+> > +                       char *end = NULL;
+> > +                       unsigned long tmp = strtoul(optarg, &end, 10);
+> > +                       if (errno || end == optarg || *end != '\0') {
+> > +                               perror("Invalid -s size");
+> >                                 exit_usage();
+> >                         }
+> > +                       if (tmp == 0) {
+> > +                               perror("size not found");
+> > +                               exit_usage();
+> > +                       }
+> > +                       size = (size_t)tmp;
+> >                         break;
+> >                 case 'p':
+>
+> Geeze guys, it's just a selftest.
+>
+> hp2:/usr/src/linux-6.19-rc1> grep -r scanf tools/testing/selftests | wc -l
+> 177
+>
+> if your command line breaks the selftest, fix your command line?
 
-Oh, that's a bit sad.
+Yes, I am ok with sscanf() :-).
 
-- other trees sometimes mess with mm/ and they probably aren't aware
-  that they need an explicit cc:stable.
+In fact, write_to hugetlbfs currently only accepts arguments from
+charge_reserved_hugetlb.sh, and the way the '-s' is used is not
+very diverse.
 
-- misses drivers/block/zram and probably various other things that
-  the MM team maintains.
-
-Oh well, I guess simple mm/* coverage is good enough.  But I do worry a
-little that useful fixes coming into mm/ via other trees without
-cc:stable will get missed.
+--
+Regards,
+Li Wang
 
 
