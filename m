@@ -4,120 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E74E748E6
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 21:38:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3355BE748EE
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 21:40:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF2FB6B0089; Tue, 23 Dec 2025 16:38:17 -0500 (EST)
+	id 990E56B0005; Tue, 23 Dec 2025 16:40:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC65D6B008A; Tue, 23 Dec 2025 16:38:17 -0500 (EST)
+	id 93E8C6B0089; Tue, 23 Dec 2025 16:40:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EB666B008C; Tue, 23 Dec 2025 16:38:17 -0500 (EST)
+	id 816756B008A; Tue, 23 Dec 2025 16:40:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FF156B0089
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 16:38:17 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F16613B20C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:38:17 +0000 (UTC)
-X-FDA: 84252049434.16.4D12A1E
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 30D9C4000B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:38:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BoWdjj9g;
-	spf=pass (imf17.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F58F6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 16:40:48 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 07B381A04F3
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:40:48 +0000 (UTC)
+X-FDA: 84252055776.04.6D6B6DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 781C9120015
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:40:46 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDkGPeqQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766525895;
+	s=arc-20220608; t=1766526046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4UlY53rg0qpE7qUCOTeby0OH8dUG8TIZCeZtME6Mjs=;
-	b=rSGYoDmwAuepDxXo5oTrt3g2a9vl7/wtSuON7mf30/usL2Q+KJlgx94Hsme2jsHcAoQzl9
-	EVSjq/mLewRm8FI75TKAMcqJ7GxDHGP40YzoG5veSvfg0ZXFOV0OCVr04NfTQE2yGfHzXy
-	UKdHawQJer0m6+cZHTn0UK9LbNFiTIg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9UQSTnAQmdo2rBSn0p2XTDDlxcVKLf9lYvxzUG9tYaw=;
+	b=jILUWK+tJ1OujIjlqpfmc4w1zXptfs8Rw4BMPj4zKRhuGHDC8DPMHLMARe56Ax3dBVISkv
+	WE3qM6lqtKrY5EFJcxthFlKclJfoiBQVQE4dajBit4tSjj/DfpSJ27Wx3zabxwXp+A77/C
+	DEzLdQCiULBI1cfVTn8G1ONUkgk3aiE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BoWdjj9g;
-	spf=pass (imf17.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766525895; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YDkGPeqQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766526046; a=rsa-sha256;
 	cv=none;
-	b=Zde5TeuYUty3gKifRcnMAf/8CE/7LGNZ+OvU9iehudNxdgY/SLH9GRobjfQrkzTuNk6ka2
-	byPkmOkZGYkQd42S/kqZSlZOSyUXY7vzp2mJAekqAdjjTEqL0OfS+AqPqLl+K2tbkDWOLV
-	8b0cAyN8WadnZRu52a5VDPztkFqS+EI=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f02651fccso792015ad.0
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766525894; x=1767130694; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4UlY53rg0qpE7qUCOTeby0OH8dUG8TIZCeZtME6Mjs=;
-        b=BoWdjj9gOKUTxRV4+im8/zHbnS8FVo8+PjOy1sVJdxTzV4MSBkb8Yp3q+uANjFi+Fi
-         0xzn8MraJ78tRhiEkeAf86fU4OUvRWBnl92wChbQECNutYR6QkjteUryLpST+ylzKjXq
-         n5gKvFiUqwwNU2O5riEM96lO2x4b6OLsx2fCydzuev3gO3cxbbhqoZCusqK98RX0lro3
-         mvldut6S2SZTowmTG+brJfz9sKfRtRQ0n5J3T3tQ+l/jETdBe9jt/FJDbrn5z2B21Hql
-         9TFI7qjx9/TF2SxODeLx3xxIJrwPJkrOiwgSZ75LLEFNGQp/hnHK12fTCyTWnjwN7k5u
-         ewig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766525894; x=1767130694;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4UlY53rg0qpE7qUCOTeby0OH8dUG8TIZCeZtME6Mjs=;
-        b=AVnNz2Fjen57Q2K2kpAmE1IFdtPV3VdKTh4hq93OIi/R0JEh5+8sImTiR4ruKJ851g
-         rQt2L9Mwq+akSAP3gR3SC8dt/tJG9DjXGpOCfqhwRcd8xUK69Fpx+RLiFySK5gXfL0eC
-         4t/0RsITMJjijV2nJJNDWMMefzXxvczNL83OSc/SWwlNrbpML0ht9hD6rmgAQ+r0CfRL
-         4+V+xqjnxdC8Ex8tC8QXaUJZiAwg6Glx4aFKjIvICBpr/iPezrQ/tMElIUw5+vJPirRf
-         ZuKlVomllZvnSit9geWRBjGJQZOmLrsYznqNp83rVfT820d44vBA576db5WE34xTDRSM
-         k+PA==
-X-Gm-Message-State: AOJu0YzoaeJkA4zcFJaXDNluJcJViLLwd5Q0awMYIMAm8X7aNdEHtTGK
-	v/fVPEm8vjByZM8kcxsar2duWLrmbCIA/UxWC7AxnrvhimS+hYPkJrvBEb1FyRPL4AmtFhFR0eD
-	+7oDoOQ==
-X-Gm-Gg: AY/fxX7BtzaDCvijsEm5VBRAchcakgxyQtwsOYhtxkVgMtoMNEXw3EsYnQPiW0h0LEc
-	GpzX3c7+S933IhWwYZC+fkCzZxVTQFGKBMyqNzPMpKljqSlIPXTc/dWTAb3K+K8z3/B0y1Jc5oZ
-	fKLu1C5GVI30N0T2ilzqsYydfNroab0AIlgXzar3r+xUKJazGEYnf/UPwDhU19Vq5O04Jok0Qst
-	Gqhtl/ucZEcf+I45D3BWp3v/EHgEzKCtLg2a3CwaPXFgAJcQPEJMyywUUJ7L5VuG4OZmchq5Wt9
-	VTmIjJYQec889kdpSHKAVYSCZbuHFkkFIjbqXL/lxtfOfVrWJNsaOfIDxSTHXAwllwdZp+f7d4/
-	L8VelgDW1YtR24sjIR//XKp/fd6TlhQfLCRPTgNXzwasdVv7Ppo+sw/73YmrUeRMzTZGX6pn3rM
-	ex9afp1zc3cDx0SLiMl8yKw3bW4L30LT0ks7OIVpwN5PxOcKKZVsGN
-X-Google-Smtp-Source: AGHT+IGs52EWQM2FUMzO5YyNfnbgcTLrszUf1ftByMtYiGKp+ZRXjSGr4Y7SBZ44TSjuWIdc+/wPVg==
-X-Received: by 2002:a17:903:380e:b0:2a0:89b0:71d7 with SMTP id d9443c01a7336-2a353a52bf9mr268415ad.13.1766525893282;
-        Tue, 23 Dec 2025 13:38:13 -0800 (PST)
-Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c66465sm137827105ad.15.2025.12.23.13.38.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 13:38:12 -0800 (PST)
-Date: Tue, 23 Dec 2025 21:38:07 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3] mm/vmscan: fix demotion targets checks in
- reclaim/demotion
-Message-ID: <aUsLv7LAgqGlhTjW@google.com>
-References: <20251221233635.3761887-1-bingjiao@google.com>
- <20251223212032.665731-1-bingjiao@google.com>
+	b=2lFXBdE7RwK0OKq45GZUwPYdd8Zk1kneQ63ncND3VFvAnc8E/JbDqBox+byatFockup3qt
+	AHDwLeQwm+dgPrXheu/D/PHULr3hHY6VHstHYCI3kP4Kej8tXb0MOZ5wxDLqZ3TFGGQBAr
+	ucHQTr8RW6eaJU9HgZneJ9RJA9nbMP8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 521A940673;
+	Tue, 23 Dec 2025 21:40:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E280EC113D0;
+	Tue, 23 Dec 2025 21:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766526045;
+	bh=OSmgCow6kpvrFchY2IvhiYI8wg7ZEpAnIjGaVk8vaSA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YDkGPeqQ/HlBu48bnfJVAqJWIOhh1xtYRDvtMD3ckc9CXs/YHVJDi8doMYiA4At0L
+	 WvZui8n5NHT24lLTdnzpkmgmcf1vnVI4s21PG+s9Hg6GRdqYV6dz+c/eVplyrCPpat
+	 AYklgbnX7QcU3BlzwR2VoXp+uh1twbYfTQpJ3Jvh94rM1xMe3SUVknHqLQTiDcK+XB
+	 VbnLRuLHKL+Sa8mERhjgSI/RMe5PZOzIT+A+FkmUQ2vXysse0jE6NIFGmn9Zc3ETTN
+	 O8oNMtMvByO5P84Z/6JFXWilEWJW5fDni+3on97DCSd89b08+tLMrXZexIVKZ4Fx/d
+	 /XPGn6gukFpiw==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>
+Subject: [PATCH RESEND v3 0/4] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
+Date: Tue, 23 Dec 2025 22:40:33 +0100
+Message-ID: <20251223214037.580860-1-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223212032.665731-1-bingjiao@google.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 781C9120015
+X-Stat-Signature: e4c4ws3hm4m1wadn77xxsdcyp8qnmm5b
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 30D9C4000B
-X-Stat-Signature: 8wknfn89ofttynegy93nogsib73j5d5c
-X-HE-Tag: 1766525894-205326
-X-HE-Meta: U2FsdGVkX19zo8VeOMvqjyBLZXsiSA9Ch+YMdyIS5XMPl1JORT7GIVxVh+Cbs+sxehL9JPIAU4lQcf3Gnp6UNJsaRAoolb4PTgACZclMIOhto+1d8HmnbkvKDALDeDthrNFTaucxsF0jfzRTIMjwl2FW4a/u14extgx06tlaKC8qzD1yW+MabLxpsGC/HS9ptJSSzTRHGqRfLecoQ7QvrRC6jw5YkmyfCn9sppjVhApQdzyg/INXgs2FHOKwPJsqSu01wogsdu3pQgvqqAlT7myIC/fU2nB481dA+eQute9oZQoKXW4+ZN1UAXTB87GXWhsOFNPpq276zRWRilwLPsXozYmRg4hXCg1sXdRY7AV4zodx/zjsZijQUaqprc7iR/urBz/w2btaxMEUmu6bAkL+B3YPw8AzMZlTUkgxXZvlKMzKm4bm0Ma2qzDjU6Y7EkcUzwNkjQ+OpsZPEh7k5Nlusb+jgWiFTyAZLgqE4EyAtaCuQmbGuJjGtijfYjyn0qAg4sJXGqaVsBIF7dItR52DhKl/5EmN+y+6S3krONYUvyLU5A6pdXtrt6flVMh/ukLzDtS2xAoIcEfEJYzjn8+WorJkS4mVGDpNBWJ74x4ByRQ2r7E0ba50OiTUsSRfbLX90cpWfuWC7l+/Vcj39V/vQl0nQI+H3kM60LhxbsZjyR8qnuEC+wVIl27DG7tI1AUoUYGIgN/s182svLWdutRKeSjuJctIgYk7F0dOgH9QnIW9DRcU7fB1kbSbVQLa7Q9B8YVypcHLYyOps+4sDIaqB66qo9Q/2YQViTCpjwOYZGdPghjov3JSoV/2yz8cnoHi7IZyZw5idvr1bnXq62uUR/IqNYvVmS+pksBpf+NFqnJmvzGz/OZH3C3G9lBgS7NYqttGol/Y2KDChKK0ZPdWv01VYq2e1ilVZbfxnMlGDkClRd5W1Ioqk5jLse8w43O5aCQ2ZIsgTKqc82Y
- yLe++2xZ
- mGLh/gnzj5DLLh5EU7oQjyYgxKazHYH/nR5EKvRy7uDAtN0EZHtVappKSdwrYPlROakhsOYNnMDIFXvC2Zy/BnzSEHQIX1bmlLgR/uapXM/c+YRIRE0Q3y9eQc1Kz3QHiqTFwFqX2156Rluwq5KHRBlJNGirn0DBCp+hDExFwV4HHfOP3HcPOiOYxaJmBq8ykgL6OsVwzX1u3EshA9Ii6J7v0/Mjw/J47UuKpcyTDj54HCjk3B1MWl6rITITNEnvd/a30cnSqXWM5fKU1D0KtN8PqAk9phE67p3Iw5FT64pNOS9LvMM2NwN38UXpdoS2Zel9k2qWJuHDq/G7Va1EcUFj/Vcm72/E3evho9QtgjBvTGbc=
+X-HE-Tag: 1766526046-26559
+X-HE-Meta: U2FsdGVkX18hdZffUA53k90GlvKrbfTA8kwRBRPlQekGw8Kw6mLIhYetZnvjwGg21DcvyfIeZ9IpmHuKK8RblEqsav08+O1vnqg/CgfTay2P26g2ZvtNgyZ1UjwN0OgAabTChAWjEutX227QO3CWp7A4pvdhuwDzq03SHR6qpSb24yzjjSdt4JT/OMF9jE6S7o1tKyCyvAmLPHlYp79G+AdqrcOPedYk22EwERZzMpkV0PQJzw6jqWNdvA+MqjMP8UvkRu19E0RE0fmlJDtw0zpX9W89VEco71wxJAPV07xuA3VEi3TkY67qYhrv+vUzgi+MoYv/9qMcgB23CcKOEAje1Jquy9rH5ejsP06hfN/Cn2ooACp/YE7K5x2DkFHjyYJy3JrbbSHdfT4Q5EjSlUsumy8RwVp7Xdb+y4quSjGx+W6sZ1uljvp8ws2zTOlGzvyj/vGJPIw/UR2iUXVyl7RYruNeUn5Cip62ACC5YvZQO1EGvq2fuXlyF1sY04LR6h7WrJyu19ZUtf+CNNQrisIFOvApWGbtP2gm8V7mcT5gPco9iPzc3dG23MwfykA4Jwi2j3a734NajHupH64VshYnUXAqLeXL8GzDsguWd2p7Lf20/TJNUw2PC3mxy4jXn+BZpxl+MJMavZ79TkLio1rKDubIaolgYRepZYhIn+ZQmwTHVBCav2ex6KPqpyasbeF+Rr3kz8JoMX+jPnMbimd+Wh94fvleTWDZfP0TmlJQOyL22S1lbHp+ajP7aJeDCs9iytSv1A+HXuZqvaj2Qf7rWoN/y61LJW3ACpV0dbtFnMjX96uyAjg7e9WFqi5SzRiDN3IN8+ClkJsODZi3PBDNa2DtaemGc7Lb09Ysf5u7KoX8qnJrGJ0+6RsTSm6h1MbahrAjWzZhEWoXz7PpwIfeGoBf/yL8U2NsJm+3wJSrAKz8CjTjwLGXzRmFKSeWIcZRh5vUDZJ3jJFJGWL
+ 3uabliJd
+ YZtHr+xrtbQj1DxE26vTj/JJs+ArsrSr8VPa4SwSjdTul/+A6o7W9EZYnabUdbyGP5VrPrg2tB0Gq+Tc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,16 +108,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 09:19:59PM +0000, Bing Jiao wrote:
-> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
-> demotion target checks in reclaim/demotion.
->
+One functional fix, one performance regression fix, and two related
+comment fixes.
 
-Considering these bugs are introduced from one commit, I think
-it is better to fix it in one patch rather than split it.
+I cleaned up my prototype I recently shared [1] for the performance fix,
+deferring most of the cleanups I had in the prototype to a later point.
+While doing that I identified the other things.
 
-v3: Rename cpuset_node_allowed() as cpuset_node_get_allowed() to
-    return effective_mems directly, providing better versatility
-    (thanks Ridong for the suggestion).
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
+
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
+
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
+
+I added as much comments + description that I possibly could, and I am
+hoping for review from Jann.
+
+There are plenty of cleanups in the future to be had + one reasonable
+optimization on x86. But that's all out of scope for this series.
+
+Compile tested on plenty of architectures.
+
+Runtime tested, with a focus on fixing the performance regression using
+the original reproducer [2] on x86.
+
+[1] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+[2] https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+
+--
+
+v2 -> v3:
+* Rebased to 6.19-rc2 and retested on x86
+* Changes on last patch:
+ * Introduce and use tlb_gather_mmu_vma() for properly setting up mmu_gather
+   for hugetlb -- thanks to Harry for pointing me once again at the nasty
+   hugetlb integration in mmu_gather
+ * Move tlb_remove_huge_tlb_entry() after move_huge_pte()
+ * For consistency, always call tlb_gather_mmu_vma() after
+   flush_cache_range()
+ * Don't pass mmu_gather to hugetlb_change_protection(), simply use
+   a local one for now. (avoids messing with tlb_start_vma() /
+   tlb_start_end())
+ * Dropped Lorenzo's RB due to the changes
+
+v1 -> v2:
+* Picked RB's/ACK's, hopefully I didn't miss any
+* Added the initialization of fully_unshared_tables in __tlb_gather_mmu()
+  (Thanks Nadav!)
+* Refined some comments based on Lorenzo's feedback.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Uschakow, Stanislav" <suschako@amazon.de>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+
+David Hildenbrand (Red Hat) (4):
+  mm/hugetlb: fix hugetlb_pmd_shared()
+  mm/hugetlb: fix two comments related to huge_pmd_unshare()
+  mm/rmap: fix two comments related to huge_pmd_unshare()
+  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+    using mmu_gather
+
+ include/asm-generic/tlb.h |  77 +++++++++++++++++++++-
+ include/linux/hugetlb.h   |  17 +++--
+ include/linux/mm_types.h  |   1 +
+ mm/hugetlb.c              | 131 +++++++++++++++++++++-----------------
+ mm/mmu_gather.c           |  33 ++++++++++
+ mm/rmap.c                 |  45 ++++++-------
+ 6 files changed, 213 insertions(+), 91 deletions(-)
+
+
+base-commit: b927546677c876e26eba308550207c2ddf812a43
+-- 
+2.52.0
 
 
