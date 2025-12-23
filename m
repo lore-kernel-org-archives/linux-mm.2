@@ -4,85 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C43F3E6F086
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 20:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E7DE6FE29
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 20:15:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DEF36B008C; Tue, 23 Dec 2025 15:05:03 -0500 (EST)
+	id B5A3D6B00A0; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25F2E6B0092; Tue, 23 Dec 2025 15:05:03 -0500 (EST)
+	id B068E6B00A1; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18BB76B0093; Tue, 23 Dec 2025 15:05:03 -0500 (EST)
+	id A091C6B00A2; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 075406B008C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:05:03 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA407B9DF2
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:05:02 +0000 (UTC)
-X-FDA: 84251814444.28.874E190
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DB391140012
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:05:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H8hdM5zn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766520301; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0066B00A0
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:15:14 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F44C160453
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:15:14 +0000 (UTC)
+X-FDA: 84251840148.23.9351E53
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 54F67C0010
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:15:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=cvrXafcv;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766520912; a=rsa-sha256;
 	cv=none;
-	b=TuA6Le4nyW7edrzXY4xFumalQsOH9W5Bi3lfqRT/Y8bO5S5QVpo2LKr0pDTknv8M8lTpQg
-	ZvqjTaYNVN2xenww3OGFoimU9/Jy1aHhIPJ7m3c/6FDyvwEzYtZMqFTPlGmXIkExmphspt
-	1vF/LF+WYO1H0Usy/eEUlPb4vpzaJ7s=
+	b=4XZHbuSHm4MQcgTxQ17VbC17IPuZjq71dNRJ7krJYGNofkK2EHPU+dYG+kdBaCzk0Lv4qT
+	5OfkL8IB73ddMY5p+NoeWdgrUsnTyMWmpAX7j/QQBleMzEkQNwYw98LtRYv9+SN5BQIgcH
+	N2pP4MAnGNIorRG9dTi5s1cYFSvwpik=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H8hdM5zn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=cvrXafcv;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766520301;
+	s=arc-20220608; t=1766520912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XWy6KVFFtQzzOr3HVKvKmn30n6ao395KkA0IdN+gNgE=;
-	b=E2eidRV3VHr800wF2hzonuXPUSH2bV104ScA/Ly97CnVaXsNcym3xhYfFIv4kJbAUcvssl
-	pttzGUZSaC5ZTQG5oA64OuRMwRzJEnEZ9VNobCHNdnYZgwAH5YaJ4TW3M+A+79eYw3oqlS
-	2qLpurmLOx7rzrUQcc2oZginBUTui60=
-Date: Tue, 23 Dec 2025 20:04:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766520298;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XWy6KVFFtQzzOr3HVKvKmn30n6ao395KkA0IdN+gNgE=;
-	b=H8hdM5znIHB9z3/IcnRHFtpOqqYGyvzJMcGxT51E0qpc2M88/4ZqgwZc5pI73reEslN3ix
-	cUte1YD5GZd1KEXloFanUZ14kzGYSb0Qv1cPOGZRIcRlAQRAh6nvz7mPjmbfU3pDNQtDGC
-	2ANBqVfaxxXnsbHdt0HT0XpeaqiMCP4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
-Message-ID: <5dsb6q2r4xsi24kk5gcnckljuvgvvp6nwifwvc4wuho5hsifeg@5ukg2dq6ini5>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
+	b=Mh4rvceF8Th3bOuioIyshqtS0RBxu0p0cYQpV7a6VDY43/q6XL0sb1LtygI/yt+sapPB4j
+	gV/ijTOOFmr/qQr76fRV1G87NV8OBwGNbidJj21738VIZdHTaN3276rmsH2sxsEu6pStrt
+	Mfmg93r9KC5VVjPwGzbHQK4mK+mswF0=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6467bed0d2fso2547732d50.0
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:15:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766520911; x=1767125711; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
+        b=cvrXafcvpKtKsIYeeowgIwb/ymaHmYNqPtkOET5TRF6WlMDe3b1R1wi8vBI/p3MKFb
+         4Wib55aqp/RcxFvRYwCESl1yp8dOq+2S9mwS+MO1cK8Rp+x2x9rPDxCw+VfUHjSrrr3d
+         6JnhT6qg0guH9520BpznxI11tMENNe3f0xM3JwLKXXn0SXPxumtuCWy8Amd9IsBwV5N+
+         uuDVVS/t4xJu6WQRTBNckZ6Y74KWRgfrY/7QhR6HEEL3jLhhVvoFq7RiAzCXaZY+JuFV
+         L79Z99bBWlio6zZ+FXqacTq8jhLb2CFx39g2a7I1ANEn+4clPXSlNIQsAntwz5v/MZ3P
+         zKNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766520911; x=1767125711;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VlLs7P9pgO4eKILsAhoNSySRcyvhRmXbFz4fdi2tBV4=;
+        b=UIcOrxddowbitvL5efcGHak2ewNDalrFcQUFJLxEjWUV29yL5KX5Kwb1KZcds+lgIY
+         /ooIXFYKGj5pDG5hkrn+NQ97ugaAwQH8pYJeq+XYlQB+qoxf3MQaHxKJy8OfddGSB4mg
+         kVH/xFUphAOuTb9vYUyC0VjhAnIXKGsx0hl2ul4QDMS+Pd3KBzj+xQUfDX4JBP+Wiiow
+         ZWMGdpBrkhwCgs4WyVjJyDSKCp+3DzyC/NWeC7LRoZbF9NSVrapbFP/RNRtQru6EG4Bm
+         TAxwr5d5LLJ4Mtz0Iol1wjB/u9sux+d0rdLYvKpnqOSFejDi9zNTyr948Qwh8GOxJli0
+         xVeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWddym4kuQrAmqgyGT1y4qX49G8H8zTPL5DiXwfQbWSYbXKY6sdZHECBFSvMySJtrdqEE6CnNIHAQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyuq0+HH/HOPVp/akh9Fx5XcLKh0c5x+ozooyaU9hXmKn/nOm3Y
+	QE8R4In+piVkESME6ONVR1bD6GAAnRBmyuxFlTuoUaJJgJwtlZWn9tbtNbsJbEwP498=
+X-Gm-Gg: AY/fxX5ztdrnnzQ8xWwMYRa+p3EjlFkZbne1rpfQQAXsJ82gnFenVE+OTbzt00wAY6w
+	jjaZdkTjgZ+5HuUAGzGcWuWAkvf936aK7/RqQL8k/FCkmLIDoH4fSFZJOfmLTG4+MOYdglUga0A
+	uZtRkeJDuEiCZTaO1Rk03WJV1sxRIlaFWKNXwVEejKVQ4GAgGtOSmrF6MjutpoIvTLc/7wv7XUb
+	L73+pIPXMOYvWRl5LhKINBSvwrBkiPZhIfq1rHHNwcvXx6J+48LnhH8rC+oVJ4pJ68Cxwf0R0zR
+	kyRlreLuAWbTRFgs6d28Rthxdglm8EPjn5EnbaoofJb78YO5cW5KdTk+UjmvA81+FHk3xab2wEh
+	UJ44lillWmnfPoLVveRGdV+3TNlQk+eFvi+4tN83grPO8nuPiv7izWLjthSo9mT/PX9P6yR6vCk
+	Hasq1hJeUFnJ9OEly7w8rtGpvL26n01JS+BAuuLVCD8G7CTxPQV2kfU6ORIRWxbgTtey/XNvfOg
+	md3AnSzGbdnfjfDe+DgtK4hyFnmcU8vpemM0w==
+X-Google-Smtp-Source: AGHT+IE9hkWfg/wdg+y79EHOSLumqYhte+VdlGUYNiXwnb13zkCzLpIQx0sZj2VsFDL0IjdRdTFEQA==
+X-Received: by 2002:a05:690e:130d:b0:63f:bf9d:e530 with SMTP id 956f58d0204a3-6466a86bd2emr13280316d50.29.1766520911203;
+        Tue, 23 Dec 2025 12:15:11 -0800 (PST)
+Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb44f0d57sm57949307b3.31.2025.12.23.12.15.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Dec 2025 12:15:10 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	pratyush@kernel.org
+Subject: [PATCH v1] liveupdate: separate memfd support into LIVEUPDATE_MEMFD
+Date: Tue, 23 Dec 2025 15:15:06 -0500
+Message-ID: <20251223201506.2334991-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1765956025.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DB391140012
-X-Stat-Signature: cjmd7e9bea5sdhts6jo1e6xpm48p4upf
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766520300-573923
-X-HE-Meta: U2FsdGVkX1/cY8mmVbkVzegSO85X/kKa4im8FrUGjslbsgVwWOBVKR0hotI9ou58eQotapLwomW+CEXN+0+ddZRs8l68yxCjTqHL3gO8JnKzt00b71TF0FyFsNlSLRkExrwRybyupgeFTXPKS1a5/L6zEMuf7+hNXwI5+Eo13VYINWPsFvQ7Y5mvtBiEuT9ETHXBHNkQi9A6V2ljdgIiKU/oF5FSwDSymq18BP2a4IaDevofvBR+9fbcM2oUpyUy2JEgOE9tGS5eKjjOXCpAV5PTSZI2id5weZvjFXbkhVCCraOCO23bL6iBGxqV73eHuqU3PK1s5U0229um3CBQP6WAAndFFIP3pLHqiSIkZGRTsf6Zksat7sSm0JcfGCTGoUM8yRyO06ByQc2krdHUuiN/t/HbkFLKfQFTI7wyAz6XG7YjHYFvZsJR01Xa9aU0MJN7MxRrKAe9CxFKpP4qV7cLlO+ZwgL3rWCMiCutIPvAiNq825W1r1tltJSEY1SeCVhxAZJXorlZBKmT9dMdviHJgrNpBlIob6ro/KOIL7dFcB8QWPbUJYsQZsMDQMAn1bw9mVyme6+MEgfYqflLQUYsCz6qEeq+CR5w5ckYaAJseP0Jb3N9ygofnZBMNjYW1uKSEnaDsey2tNuB3KX/pRTdbGqBZ9Wyd/bYfMzj2LR+V3/wvl5hM7BiFwd1KMKFcdNFM8fMucVSrrkOltZUqAfSNX/Rm4/vBUsxjxGlgGLU9nxAF8gpdSpVuuwf+io0aJvRgpKaHwkUsJBX0zu1qBY1aRGwugWAStMYb8Xz2tofOsfm5WUCMPrNAp7c0sazZssus7kPVcI=
+X-Rspamd-Queue-Id: 54F67C0010
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4nfjr5k4ikangrbemtehgadgrwmmofmg
+X-HE-Tag: 1766520912-263923
+X-HE-Meta: U2FsdGVkX1988tv/W3HvedJg6frwdM/hhu7uBAS77Fz/NioUeKdcK/3jlpRpSCxk7yjIMGKsWUTCno0SuSZqMSYjMPEJkMYrYgMlP5nFSxCa5A0+MeBm9Y3Srs0JMfzLP4H8MC61QMSDjVcAgKkc1oBZFmIeCB0PWBnY/3sUh39byYt5bqFToNDK8Ptem0epM8ybhQyPc7zYg85Zt22IMnC8hkt16ytmV8SE2MVPLTRjW7iYWY9eERUtk/YIXzouKRf0Lu/Wp3ZVr4TSIHiW0cDsJ362Rlca1A+ztirCAC+CqGx394gOcMbagfyDxKy3qG+dCrK5MVN/OlU+LNWPImpnHxebK+NtepACqdYdsatfAiw+5o10KMv0qG+u7D1NiN7P4ufLIXBazyOYl9/UmmopJGvZiTE2UKrGxxCjGYvJeC8+qTrZ4vTn0jWnaXi1sP/K0M5adBxsHttMMLvmbXTR5jz6dWOXba9HSh54ciLlMLoWeGb8yHNDY6ms0J91tAF5v7Qntebr2aNl3289jSg6F+HihFnKOJtbZszW6Zewnw/vs6KI1W+Z9p1YXBiX7w6WduK+OEFhvjn+Z786fcdxdPv4qeOQASDcoohQ38e0o9ilSwRzOcychS7SJcnzJAOmCMTEEN3RGvMbTI/NXOTJSoxF0OTo9Am/odJvM88J0UevR6OilJCrfY7qcrFSdahL6rrSzncQORQhL1BE5jd+cWEmZxQBli/JPuzvHao7YdGSs8TsLub1kP74tve/RxdO3HGS4PhX7Rne7gx/I/NuCZTFzHI1XUtToxiGF9p/1HIcYLkl+1ZKs++z2IcO1qXOvcoM6XqETGrsXGbzNh3xTYKDmlWkFoMy/CkaLBkqwAwTEvFH9z+nzM5U5E9J41I+6QrkdPixWnG5Pl4s0ELISfSjG7ABEg1XNKe9urklmgiZLrHKZyKBylzoFNu5WkHUk1+eFA8HKbeuGnH
+ 14b6BN32
+ xAfYFqwqKtmEej88GKQ1YD7AdITmwJKceV5XFDmK+FNUYLRB3udF1cP+CrLwyswP6twdDdGFhgeXfT7CyBiOVdfDbg2SsaT1GK7cnyywafbOsuzQ7HlHEW54B2APTq+B9H65XQKKj9efajOZzYtmjD8hLbh3eAfOHqrIqptzv5TuyHsTGBykYNnF5nWnOb51NS1nvjDi9vpQ9l2T+5NlNXcXbigAaSIuBZNu1egXPsP5zFRMfHDlQh1AE+CguYLf6fNFeIG1CMUYZ4UMVzY+1uXrC3KinloxKdXQCRSN3kQ3oHUx6VdWZcz59N/BJSnHi2SkpR218BZVsETIuEYsMOtgQMrfPGizt8wU0MzvgtBJnGU9ZjcLT6D6k1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,261 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 03:27:24PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Changes in v2:
->  - add [PATCH v2 04/28] and remove local_irq_disable() in evict_folios()
->    (pointed by Harry Yoo)
->  - recheck objcg in [PATCH v2 07/28] (pointed by Harry Yoo)
->  - modify the commit message in [PATCH v2 12/28] and [PATCH v2 21/28]
->    (pointed by Harry Yoo)
->  - use rcu lock to protect mm_state in [PATCH v2 14/28] (pointed by Harry Yoo)
->  - fix bad unlock balance warning in [PATCH v2 23/28]
->  - change nr_pages type to long in [PATCH v2 25/28] (pointed by Harry Yoo)
->  - incease mm_state->seq during reparenting to make mm walker work properly in
->    [PATCH v2 25/28] (pointed by Harry Yoo)
->  - add [PATCH v2 18/28] to fix WARNING in folio_memcg() (pointed by Harry Yoo)
->  - collect Reviewed-bys
->  - rebase onto the next-20251216
-> 
-> Changes in v1:
->  - drop [PATCH RFC 02/28]
->  - drop THP split queue related part, which has been merged as a separate
->    patchset[2]
->  - prevent memory cgroup release in folio_split_queue_lock{_irqsave}() in
->    [PATCH v1 16/26]
->  - Separate the reparenting function of traditional LRU folios to [PATCH v1 22/26]
->  - adapted to the MGLRU scenarios in [PATCH v1 23/26]
->  - refactor memcg_reparent_objcgs() in [PATCH v1 24/26]
->  - collect Acked-bys and Reviewed-bys
->  - rebase onto the next-20251028
-> 
-> Hi all,
-> 
-> Introduction
-> ============
-> 
-> This patchset is intended to transfer the LRU pages to the object cgroup
-> without holding a reference to the original memory cgroup in order to
-> address the issue of the dying memory cgroup. A consensus has already been
-> reached regarding this approach recently [1].
-> 
-> Background
-> ==========
-> 
-> The issue of a dying memory cgroup refers to a situation where a memory
-> cgroup is no longer being used by users, but memory (the metadata
-> associated with memory cgroups) remains allocated to it. This situation
-> may potentially result in memory leaks or inefficiencies in memory
-> reclamation and has persisted as an issue for several years. Any memory
-> allocation that endures longer than the lifespan (from the users'
-> perspective) of a memory cgroup can lead to the issue of dying memory
-> cgroup. We have exerted greater efforts to tackle this problem by
-> introducing the infrastructure of object cgroup [2].
-> 
-> Presently, numerous types of objects (slab objects, non-slab kernel
-> allocations, per-CPU objects) are charged to the object cgroup without
-> holding a reference to the original memory cgroup. The final allocations
-> for LRU pages (anonymous pages and file pages) are charged at allocation
-> time and continues to hold a reference to the original memory cgroup
-> until reclaimed.
-> 
-> File pages are more complex than anonymous pages as they can be shared
-> among different memory cgroups and may persist beyond the lifespan of
-> the memory cgroup. The long-term pinning of file pages to memory cgroups
-> is a widespread issue that causes recurring problems in practical
-> scenarios [3]. File pages remain unreclaimed for extended periods.
-> Additionally, they are accessed by successive instances (second, third,
-> fourth, etc.) of the same job, which is restarted into a new cgroup each
-> time. As a result, unreclaimable dying memory cgroups accumulate,
-> leading to memory wastage and significantly reducing the efficiency
-> of page reclamation.
-> 
-> Fundamentals
-> ============
-> 
-> A folio will no longer pin its corresponding memory cgroup. It is necessary
-> to ensure that the memory cgroup or the lruvec associated with the memory
-> cgroup is not released when a user obtains a pointer to the memory cgroup
-> or lruvec returned by folio_memcg() or folio_lruvec(). Users are required
-> to hold the RCU read lock or acquire a reference to the memory cgroup
-> associated with the folio to prevent its release if they are not concerned
-> about the binding stability between the folio and its corresponding memory
-> cgroup. However, some users of folio_lruvec() (i.e., the lruvec lock)
-> desire a stable binding between the folio and its corresponding memory
-> cgroup. An approach is needed to ensure the stability of the binding while
-> the lruvec lock is held, and to detect the situation of holding the
-> incorrect lruvec lock when there is a race condition during memory cgroup
-> reparenting. The following four steps are taken to achieve these goals.
-> 
-> 1. The first step  to be taken is to identify all users of both functions
->    (folio_memcg() and folio_lruvec()) who are not concerned about binding
->    stability and implement appropriate measures (such as holding a RCU read
->    lock or temporarily obtaining a reference to the memory cgroup for a
->    brief period) to prevent the release of the memory cgroup.
-> 
-> 2. Secondly, the following refactoring of folio_lruvec_lock() demonstrates
->    how to ensure the binding stability from the user's perspective of
->    folio_lruvec().
-> 
->    struct lruvec *folio_lruvec_lock(struct folio *folio)
->    {
->            struct lruvec *lruvec;
-> 
->            rcu_read_lock();
->    retry:
->            lruvec = folio_lruvec(folio);
->            spin_lock(&lruvec->lru_lock);
->            if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
->                    spin_unlock(&lruvec->lru_lock);
->                    goto retry;
->            }
-> 
->            return lruvec;
->    }
-> 
->    From the perspective of memory cgroup removal, the entire reparenting
->    process (altering the binding relationship between folio and its memory
->    cgroup and moving the LRU lists to its parental memory cgroup) should be
->    carried out under both the lruvec lock of the memory cgroup being removed
->    and the lruvec lock of its parent.
-> 
-> 3. Finally, transfer the LRU pages to the object cgroup without holding a
->    reference to the original memory cgroup.
+Decouple memfd preservation support from the core Live Update
+Orchestrator configuration.
 
-I think there might be a problem with non-hierarchical stats on cgroup
-v1, I brought it up previously [*]. I am not sure if this was addressed
-but I couldn't immediately find anything.
+Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
+CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
+Update may be used for purposes that do not require memfd-backed memory
+preservation.
 
-In short, if memory is charged to a dying cgroup at the time of
-reparenting, when the memory gets uncharged the stats updates will occur
-at the parent. This will update both hierarchical and non-hierarchical
-stats of the parent, which would corrupt the parent's non-hierarchical
-stats (because those counters were never incremented when the memory was
-charged).
+Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
+SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
+them, allowing the base LIVEUPDATE option to be selected independently
+of shared memory support.
 
-I didn't track down which stats are affected by this, but off the top of
-my head I think all stats tracking anon, file, etc.
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ kernel/liveupdate/Kconfig | 16 +++++++++++++++-
+ mm/Makefile               |  2 +-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-The obvious solution is to flush and reparent the stats of a dying memcg
-during reparenting, but I don't think this entirely fixes the problem
-because the dying memcg stats can still be updated after its reparenting
-(e.g. if a ref to the memcg has been held since before reparenting).
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index d2aeaf13c3ac..9a1a8cdcf16c 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
+ config LIVEUPDATE
+ 	bool "Live Update Orchestrator"
+ 	depends on KEXEC_HANDOVER
+-	depends on SHMEM
+ 	help
+ 	  Enable the Live Update Orchestrator. Live Update is a mechanism,
+ 	  typically based on kexec, that allows the kernel to be updated
+@@ -73,4 +72,19 @@ config LIVEUPDATE
+ 
+ 	  If unsure, say N.
+ 
++config LIVEUPDATE_MEMFD
++	bool "Live update support for memfd"
++	depends on LIVEUPDATE
++	depends on MEMFD_CREATE
++	depends on SHMEM
++	help
++	  Enable live update support for memfd regions. This allows preserving
++	  memfd-backed memory across kernel live updates.
++
++	  This can be used to back VM memory with memfds, allowing the guest
++	  memory to persist, or for other user workloads needing to preserve
++	  pages.
++
++	  If unsure, say N.
++
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index 9175f8cc6565..798f04233d71 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
+ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+ obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+ obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+-obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
++obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+ obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+ obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+ ifdef CONFIG_SWAP
 
-AFAICT, the stats of the dying memcg are only stable at release time,
-but reparenting the stats at that point means that we have a potentially
-large window (between reparenting and release) where the parent
-non-hierarchical stats will be wrong and could even underflow.
+base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+-- 
+2.52.0.351.gbe84eed79e-goog
 
-[*]https://lore.kernel.org/all/CAJD7tkazvC+kZgGaV3idapQp-zPFaWBxoHwnrqTFoodHZGQcPA@mail.gmail.com/
-
-> 
-> Effect
-> ======
-> 
-> Finally, it can be observed that the quantity of dying memory cgroups will
-> not experience a significant increase if the following test script is
-> executed to reproduce the issue.
-> 
-> ```bash
-> #!/bin/bash
-> 
-> # Create a temporary file 'temp' filled with zero bytes
-> dd if=/dev/zero of=temp bs=4096 count=1
-> 
-> # Display memory-cgroup info from /proc/cgroups
-> cat /proc/cgroups | grep memory
-> 
-> for i in {0..2000}
-> do
->     mkdir /sys/fs/cgroup/memory/test$i
->     echo $$ > /sys/fs/cgroup/memory/test$i/cgroup.procs
-> 
->     # Append 'temp' file content to 'log'
->     cat temp >> log
-> 
->     echo $$ > /sys/fs/cgroup/memory/cgroup.procs
-> 
->     # Potentially create a dying memory cgroup
->     rmdir /sys/fs/cgroup/memory/test$i
-> done
-> 
-> # Display memory-cgroup info after test
-> cat /proc/cgroups | grep memory
-> 
-> rm -f temp log
-> ```
-> 
-> Comments and suggestions are welcome!
-> 
-> Thanks,
-> Qi
-> 
-> [1].https://lore.kernel.org/linux-mm/Z6OkXXYDorPrBvEQ@hm-sls2/
-> [2].https://lwn.net/Articles/895431/
-> [3].https://github.com/systemd/systemd/pull/36827
-> 
-> Muchun Song (22):
->   mm: memcontrol: remove dead code of checking parent memory cgroup
->   mm: workingset: use folio_lruvec() in workingset_refault()
->   mm: rename unlock_page_lruvec_irq and its variants
->   mm: vmscan: refactor move_folios_to_lru()
->   mm: memcontrol: allocate object cgroup for non-kmem case
->   mm: memcontrol: return root object cgroup for root memory cgroup
->   mm: memcontrol: prevent memory cgroup release in
->     get_mem_cgroup_from_folio()
->   buffer: prevent memory cgroup release in folio_alloc_buffers()
->   writeback: prevent memory cgroup release in writeback module
->   mm: memcontrol: prevent memory cgroup release in
->     count_memcg_folio_events()
->   mm: page_io: prevent memory cgroup release in page_io module
->   mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
->   mm: mglru: prevent memory cgroup release in mglru
->   mm: memcontrol: prevent memory cgroup release in
->     mem_cgroup_swap_full()
->   mm: workingset: prevent memory cgroup release in lru_gen_eviction()
->   mm: workingset: prevent lruvec release in workingset_refault()
->   mm: zswap: prevent lruvec release in zswap_folio_swapin()
->   mm: swap: prevent lruvec release in lru_gen_clear_refs()
->   mm: workingset: prevent lruvec release in workingset_activation()
->   mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
->   mm: memcontrol: eliminate the problem of dying memory cgroup for LRU
->     folios
->   mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
-> 
-> Qi Zheng (6):
->   mm: vmscan: prepare for the refactoring the move_folios_to_lru()
->   mm: thp: prevent memory cgroup release in
->     folio_split_queue_lock{_irqsave}()
->   mm: zswap: prevent memory cgroup release in zswap_compress()
->   mm: vmscan: prepare for reparenting traditional LRU folios
->   mm: vmscan: prepare for reparenting MGLRU folios
->   mm: memcontrol: refactor memcg_reparent_objcgs()
-> 
->  fs/buffer.c                      |   4 +-
->  fs/fs-writeback.c                |  22 +-
->  include/linux/memcontrol.h       | 159 ++++++------
->  include/linux/mm_inline.h        |   6 +
->  include/linux/mmzone.h           |  20 ++
->  include/trace/events/writeback.h |   3 +
->  mm/compaction.c                  |  43 +++-
->  mm/huge_memory.c                 |  18 +-
->  mm/memcontrol-v1.c               |  15 +-
->  mm/memcontrol.c                  | 405 ++++++++++++++++++-------------
->  mm/migrate.c                     |   2 +
->  mm/mlock.c                       |   2 +-
->  mm/page_io.c                     |   8 +-
->  mm/percpu.c                      |   2 +-
->  mm/shrinker.c                    |   6 +-
->  mm/swap.c                        |  20 +-
->  mm/vmscan.c                      | 267 ++++++++++++++++----
->  mm/workingset.c                  |  26 +-
->  mm/zswap.c                       |   5 +
->  19 files changed, 677 insertions(+), 356 deletions(-)
-> 
-> -- 
-> 2.20.1
-> 
-> 
 
