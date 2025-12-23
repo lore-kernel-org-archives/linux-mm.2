@@ -4,116 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D903AE6F093
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 14:01:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3C2E6F093
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 14:10:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA20D6B0005; Tue, 23 Dec 2025 09:01:49 -0500 (EST)
+	id E19CB6B0005; Tue, 23 Dec 2025 09:10:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79D86B0089; Tue, 23 Dec 2025 09:01:49 -0500 (EST)
+	id DC7F06B0089; Tue, 23 Dec 2025 09:10:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97C806B008A; Tue, 23 Dec 2025 09:01:49 -0500 (EST)
+	id C70DF6B008A; Tue, 23 Dec 2025 09:10:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 889BB6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:01:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 568B913A7BB
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:01:49 +0000 (UTC)
-X-FDA: 84250899138.30.65CBD5E
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AF88918002C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:01:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BZFA9s4w;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766498507; a=rsa-sha256;
-	cv=none;
-	b=umJPGmu5c1RugVYTNotkAuRAGPzsAdEmPQ4d6ao7KXgzxRUy+gxrNYW9N1Yesmah/rWgPE
-	/EejKoWUHkmxwC7zyTqZPWH8Zc7Z3Vhcc3USbJkJAy/Oy9aVFkHRUvyGFzIatXjprdhUHq
-	swKykmBywU9GGgllTPEVHRBZJ+K40Wk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BZFA9s4w;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766498507;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B4F546B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:10:14 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4321F137E01
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:10:14 +0000 (UTC)
+X-FDA: 84250920348.13.F928445
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E8A5A8000F
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:10:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=UAgAQ5P6;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=8452f37af4=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=8452f37af4=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766499011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vshIKu39IbphKk1hyt1uS5BaulPgmjMjuk5AnSSvw9w=;
-	b=e0mjS+yCxHMMUIZmDdk2q74rO5Fpi3q+pJXIc0DEd8CWXn2Tj64DVUC5aEk4tP+f8NHM+B
-	KGQiazhz2GgGzrBR4IndfYyDJ7qfzVS48gVlXD4NLDVXWzC6B+ib5Z4EAJZ6Yg5j0DwRLH
-	1dDjWi4sw8yg8noFGBmZmGbXpoyG24c=
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64471fcdef0so4023399d50.1
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 06:01:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766498506; x=1767103306; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vshIKu39IbphKk1hyt1uS5BaulPgmjMjuk5AnSSvw9w=;
-        b=BZFA9s4we5LZoSa8+/Lt0mRt50CHAtgptjIwp//fZFpTl7szAlBqPVQJRQlph84URO
-         jbcvdqnKI6zAUwMddaFYLBG8gDRqEPl1pFeYsFEul0L3m9aOk27M0h7LWLfAacrW/i/H
-         ydlcep9kC6q4uxZd5/Y983Vby9Ni91Gjn39IBBJbVDWsc+QNlIgNkzhjdP97Q3loyqh1
-         Xw/yZnLgWON9UpEscUNzcXCtF2vmvYPNfe9VQxg+RLKqC3a6f/X2e06SJChWX7GY7GH7
-         0n+JXaZzsiPbKJscDlBCba/2k5JA4/MojPt+z/w3gYfeanEPu6c1edKueKsQs6+8Q2na
-         Xwxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766498506; x=1767103306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vshIKu39IbphKk1hyt1uS5BaulPgmjMjuk5AnSSvw9w=;
-        b=Wte9b2XMpDwO8UTYvXpJPA/DEbdCxVk+GNcm3MN55DaiY9bc6We4Y6fbkwzc95HsC4
-         6ZNMgv2rABqX7LpF0UbHB7+TK+jhDtx2R/49NsTjh3EGeRPlYciJWpiuym1Io0YJttjT
-         2AlpPy7ljEC3Zl1/RJ7K8R0JI11ZiV/DCwSLhFUFyO2ekFtGpnuieJ54d1CxKFJwvV+m
-         TsMwp0ANzreY0m5yi2cQbJbfL5RtXTindYLL1FJ/zPMyzhJkt43GT47BlIswMbKcV5aq
-         eAFCCXyZ10/7ICmmTnuCzU1mcFZKsu4+7ReHjQduk5WzstGlAzw8q57h3VcuJqI9L+pT
-         4xOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ4hrs6tGBMSy1iYKhyOc16czg+gGTPAm6sattoKsVyo3oBmjZZSZQvErCbx15qpZVJS0sk+Fslw==@kvack.org
-X-Gm-Message-State: AOJu0YxVF6p1JYFyxsTYiv27fP3Htx/tM73L8lmY+8M+XHZckt3MRjCz
-	0XUd1n+djgpkvdLJRbdAK+EnAidvZoR5vdkKjG+9PmrdbE32puiIrC5gtJjPsrVA1KI=
-X-Gm-Gg: AY/fxX4MqSIpowkJuD3HSAN2SJSUEMcdWLZwk/ClW7RyNmrVa0iTrLSf9uMGPeoCtvo
-	OZ6ajXq5lCNjGPuDIiyr17oj63Z5wq9Kvu81HRphnNXIHKsdv/tJndKCYaSNH+LlkABNr3RQOSP
-	6RL4AIJd6yVowHIxrJ9G4F8DjiYVAHcfsvNLIW8H/LDC8lzc760iA69g4SnCuvE1X39xE7qyA4h
-	Z+CN/QiDXCyluQyJ3x40237+3+5R6pSO6LgZhZ5qfJ1fdFt9qzgqiywr2RdJz0HtbNEZZv0r+C/
-	3HfUH6PnpknRVBoZnlUb2VujS9Vt4e3DCU9eMg/+LmO5V8q7D2sSE+59J4emZePw6eSyORmWzl6
-	+PAIUqltILxIdow5k+S9sHEyqLkokrXRCrklfNMtu7dSNEEMt136iYYOgxD50VT162bT8UfhyLP
-	uxeB2nTnI3ZWo1jH71LuMo4tl4zJPiOTZ+w1KUP8hkGujXa9zOLLCfpf6sTzI6ozY8da9d6WcCb
-	ESu9emcVPJO9caTLYrNTTY2ZUBYhdlMTF8tbw==
-X-Google-Smtp-Source: AGHT+IH5CPaJf1hFF18a7CLmrmSafeqmgYVCXu6LIDTysGZNKbl/h5bcqgxuwkcD9gwaFkH2YgNd4A==
-X-Received: by 2002:a05:690c:4b88:b0:78c:6664:3104 with SMTP id 00721157ae682-78fb3f05364mr244887467b3.5.1766498506252;
-        Tue, 23 Dec 2025 06:01:46 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ffebd2690sm1244367b3.15.2025.12.23.06.01.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 06:01:45 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	graf@amazon.com,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	pratyush@kernel.org,
-	ricardo.neri-calderon@linux.intel.com
-Subject: [PATCH v4] kho: validate preserved memory map during population
-Date: Tue, 23 Dec 2025 09:01:40 -0500
-Message-ID: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2uQn5Tt0uLDuof1ujSYBSm68EC1Jn0Nac+ybd/g4Cb0=;
+	b=M3S4oMBTxbH6Qdwt0WNMZNKLQM4IQIRlAcgIk1OBISN83SPhLJLhUSnAe7qUEAmaWHDysr
+	IkcJL+Vr8oS3GlsmTqy5YEAAIIpqNf7rBCrUrlAMYNHjIgmTcY3kKcjvT9tvp/QoF1gGMw
+	8KBUYJYCx8n2gzvsdkEtseRcQf+cL1Y=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=UAgAQ5P6;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=8452f37af4=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=8452f37af4=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766499011; a=rsa-sha256;
+	cv=pass;
+	b=ILaEY6fZNjciHzou44rs7vQOUJpMfEio9kTr9lzZF4hQco/94kXg1Ey/YCxScXUqDXQyEZ
+	fq05NoVSr84uHJqLEb/yLBLTYv4pDOxQonfFQKWk9fldKCXiplVweaYfNwBHVmy8IFndGn
+	Bet+VrWfk/3qpgXeDGAe1QRoAbD1gzI=
+Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BNDtjHO358964;
+	Tue, 23 Dec 2025 06:09:54 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=2uQn5Tt0uLDuof1ujSYBSm68EC1Jn0Nac+ybd/g4Cb0=; b=UAgAQ5P6BCua
+	Ht6+ql5Wz1BqAJlgKv5iy8V8YKp7PHLFwqroG/f+Txc2qwbnYJ8rk1pAUqIWsPaH
+	i8gjZDKV8moAm/RMssOKjwvZIMjj8tkhTOgBbQi1z5WzXAEBRermgV7l7qNbQQEO
+	MoqtL45uCnE9nAY0qka5eya7UTOO3BVYbJyetYLgbwPxMlPgUDeJh7k1BG3dNASo
+	oW7+ukl+Yo90j0vBvBZcPOqdAawbPjUsHz2iG1y4N+ho9LZzJG2zbx+x5lgYSWnX
+	fKMM8A1+/l1wzJQK4vc5ykmet4Xt8ZfcEzZqAnhpGXk89ZVqi0I86cfSR1P7xmFK
+	zu7SnUNWKQ==
+Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010061.outbound.protection.outlook.com [40.93.198.61])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4b7vd50363-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 23 Dec 2025 06:09:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ai+YkIFVA7cAkwQWycLmvgEr2zX1dXhRIKjg8gWTD10pbkodKUo/SvVhq8Z+zOB8GtszMadd2y7wwvXjsgvGRHUbJ+a0MUTHoSk3VtRwClcp+lERY+FMnzG/Zyu8t5lS0tMG4fn7SoYrCEclqIeFZrGUkQA4/hgMHVYlSyQskdrCA4eW5gTj5i2Nk0F1F3oB/qThUsD5CKJOEmP1KieLPqfYK6ovangId+iDzIroVHUpmyIgr86feX4kUc7Ru4lWmN9NKYpsCk5PFyKVMJzx550kiCwybOmm8/Jp3wYPmi6pIi5e+qdjbgwzWLfPnMad/DKErFLEwn33Japj+ZfsGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2uQn5Tt0uLDuof1ujSYBSm68EC1Jn0Nac+ybd/g4Cb0=;
+ b=J8xdA9h1y9QktBVRWLZs017853MnEEgnnKgh8kJUYHeg0FkVsqhH3Q+XRPxWMbzRbPINbZ95bL9UCsTBh2ZENGIfGyTVZKoxlGq/73Aj5gvJkRTGJMPrFLyS4Ncoikbjkkfg1Kg/eAr4Zwohkd2rIsqTj6pEbxzCqappvP3lcy9C3Te3rTTXI2HSoP9ExbrokuGx9CJehJBhVDuqAo5PsnNdhiKsbFi5EBWbTgfUxvPQm2ae7LGUriXUHw5mPv2nUXQe7LiyUQcQTk+ymATm3YEQyI0ULX6efVJC4Qgn86GsjkJBzfswdrasYHb0vAB/9KdX49ZRMQvBgRnS/wZm9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
+ dkim=pass header.d=meta.com; arc=none
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
+ by DM4PR15MB5613.namprd15.prod.outlook.com (2603:10b6:8:10a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.11; Tue, 23 Dec
+ 2025 14:09:52 +0000
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e]) by LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e%5]) with mapi id 15.20.9434.009; Tue, 23 Dec 2025
+ 14:09:52 +0000
+Message-ID: <23c71e42-7da8-42ed-a93b-0d81dca99f3e@meta.com>
+Date: Tue, 23 Dec 2025 09:09:35 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v2 5/7] mm: introduce BPF kfunc to access memory
+ events
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bot+bpf-ci@kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, inwardvessel@gmail.com, ast@kernel.org,
+        daniel@iogearbox.net, shakeel.butt@linux.dev, mhocko@kernel.org,
+        hannes@cmpxchg.org, andrii@kernel.org, martin.lau@kernel.org,
+        eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
+References: <20251220041250.372179-6-roman.gushchin@linux.dev>
+ <8f23848b8ac657b4b4a2da04da242039c59e9ad9826a8d5fa0f5aee55acfecc9@mail.kernel.org>
+ <87a4zdepdh.fsf@linux.dev> <dfc73fd6-9e5f-4b62-ac3f-7c9a327dd7fc@meta.com>
+ <87zf7d6ll1.fsf@linux.dev> <93dbca4e-bd58-4b9a-a3c6-595810727121@meta.com>
+ <87pl862m0w.fsf@linux.dev>
+Content-Language: en-US
+From: Chris Mason <clm@meta.com>
+In-Reply-To: <87pl862m0w.fsf@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BLAPR05CA0016.namprd05.prod.outlook.com
+ (2603:10b6:208:36e::22) To LV3PR15MB6455.namprd15.prod.outlook.com
+ (2603:10b6:408:1ad::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB5613:EE_
+X-MS-Office365-Filtering-Correlation-Id: abefee20-8e57-4556-5834-08de422cf0ba
+X-FB-Source: Internal
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RlJQUVBKSnJWWUlQMmo4L204Y2tLajRCb1JRK0tQN2ppNUNueGtWWHVQV0hy?=
+ =?utf-8?B?TkJ5dm5TWE9RV1pjRytWMnV2WGFpb2RJR2NDeWVndDhyeXVJQUtqd214c09v?=
+ =?utf-8?B?QWk1Y3J3NTVTdUZ4L3Q1bTRQQzhUZkhUQjFZeU03bnJURncvN094VEFPRllM?=
+ =?utf-8?B?QmNYdW14aVN6NGwrdjIyTHMzS2hPRzhwbE1mNUNBVFJ6TGc0bnFQTGpudWNU?=
+ =?utf-8?B?ZjcwaXFsZGg1VFB0MWZNZW1kTVJGUEM2Z3U3a3JCWHVpcG5QQlp3K2s1TEh1?=
+ =?utf-8?B?bW90L3crWC94VXAxV0Y1dzlGQ1ZZNENUMGhMU2ZYcnJoRUViRGVuZDJkN2RI?=
+ =?utf-8?B?Y3ZzUGIvWXBqb010T1BJMkRpTE5BSkZVOGQxVXQyT24rcmhKNTJFMG9NdHRS?=
+ =?utf-8?B?Z3ZtWkRjNVFIQTFvZjY2a2s2Qkt2d2tJNkl0Sm1YNFZrbWR4M0duRXBIbFQy?=
+ =?utf-8?B?R3FZYmpSakpkRnJpQkNWQ3lWMUVJazhaM1RYY25CelpHNi85U2o3ODZWUDVn?=
+ =?utf-8?B?Zm85RlZVcWJBc1lSVjBpYmozRXMxeEhrd0xoVGtvYUllMHU3Z1VUdVoxVStn?=
+ =?utf-8?B?cjFCZW8rUEExeGpRVURxd25xOGZjLzQvUTBnZEtWcTkraVlyeHV3UEkvSnA0?=
+ =?utf-8?B?dVcyeitVSGFwWi94Slh5akFZNHJrczlRU3NMWU5SK3g1SjlhTkVEaVFrOGo1?=
+ =?utf-8?B?bFNiMmdZamVoU0ZvL0JUT3lXZUkwTEtnbVRvSTY5WE9QNUVsSGx4aXlGeDRK?=
+ =?utf-8?B?dW5FV1FrdWJmdFVuQkVhamNyRWF4bTZrU3NvMm9jNjdkNFgyNjh1aUtheHBr?=
+ =?utf-8?B?c3pMRStybUJCSkFHbFMxQzBMS1lNSXdMU2Z6NzBkNGNjMjFTSzkyMW10SEpB?=
+ =?utf-8?B?cHN0b0krUlFLNE9WbTVXam50bDJGSmhFc2hMUktaWjJsWkZ4U1RHdElCdTAx?=
+ =?utf-8?B?Nm5VcHl5TitMaFRCQ1ZDRG1kaTFGSXJpYkc4U3ZPRU9LTkhyTDhVSjNtcHc4?=
+ =?utf-8?B?aHg1YlorNTdmdFZURXdhWnVvcWRvZHlTdEliQ0VaUHBYVHIvNE5VMmIrZVpL?=
+ =?utf-8?B?NFVTQWJCYWhZczJtb3pjR0VNMDY2UG11anU5K1JzOVVuQWVkV3d1THBmSGVu?=
+ =?utf-8?B?S2d1eXRLbXI2V3B6MTlPc1ZLOGd4dWtZNEU4RGIrN2RQU3hrbC9iVWhaM0Fm?=
+ =?utf-8?B?M3dSaUpHM21aa0JIeFlJdXlOQ2JNQ2ZqNFA1TXZIcVgvdU9keGlraHMwTDN0?=
+ =?utf-8?B?QlRacHJWY21hYkFqbFQ5VFV2UVBXbUdYb3FFUUI5REdRMXlKRVNZUXdpNnE2?=
+ =?utf-8?B?c3Y3cDdqZDB3Z3dyWFB1N0VQd0Zad3pNK2pYVENvWEZ6QmtGaVNCbGkweEUr?=
+ =?utf-8?B?YmM5UkRuanNhMHMrbjd4WDdZbHkzRWxubW0wVmxJdTk1S3VoQTg4djlsYlR6?=
+ =?utf-8?B?Z2lPNUdVR0E1N2d0c3ZFcUdZYXlZK0ROTFNXT0lvYW5zZmI4T2F1MDFONzNs?=
+ =?utf-8?B?anFPa1dNbTM3SDkwaTVvTThzQ0dES1V2OCszR0dvL0JyRUNLVnpLampDKzNY?=
+ =?utf-8?B?eXFFZnQ1UzVIOWlwTzlyR2UrQUpEU3l5aHVhcUtDQVdnVmRGbjRlci9QUHhn?=
+ =?utf-8?B?MHlyL1ZDS2x1TnJzTXJKTFJYMCs5b0FzRm9nUUxTMldGZjFEcWpTYVdlTUJB?=
+ =?utf-8?B?WHpTRE9JeE9IVldHMmJSUFJ0K2tucjhQNzlLU0tUL1AySjBCc0kyaitYQ1c0?=
+ =?utf-8?B?aDQxenBBRDR0RlNqQ0FFWlJBSlBKOURqVjVyQ1hTWjgrbUsxQkRjUDhiVm9q?=
+ =?utf-8?B?ZWRBTi9TNC9LNzRhc042aDZ6ZVd2ZDM1RnJxLzNFWlpUN0tjWVZsMzdlVDhY?=
+ =?utf-8?B?cWRzNjBBRWdocFY0Zi93UWNRSnBKMUtUQjlQZVNnaEh4VTJkRVQzUzEyemdl?=
+ =?utf-8?B?VnQ5NVkrbHc2SFlPVVVTc1RIMzAvL2ZHZmVmSDExRHZtUEhlN1RFZ0xrL2Y0?=
+ =?utf-8?B?dkVkODFLZXVnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OW9iUWUwSTdCL0tlbWV6cGhjUVRFQks5TGQ5RlgyVWFGVzRBTUFjYUdwM09J?=
+ =?utf-8?B?R2FQYXhqWEdxdHg1M0hyZitYUGlGU2F2RmMvb1VkaUcrWUFTa0NQc1NlR1pO?=
+ =?utf-8?B?YTJFWVFiNWZ5emo1VjYrNnBPWWdjQzZ4RUN0dlFqN0FpWTJZZG0yYWZzVEo3?=
+ =?utf-8?B?d1pHSzRvOGdZL1hrQktUZk1FZkRGTGFYdFhDdXFKWk1qTGVHeUhRSWNya1ZB?=
+ =?utf-8?B?Smt5aVdIMjJUT2Z1U0lxOFZlam01M0FybTJsYWlZakNaQit3OWd4d0JOZGs4?=
+ =?utf-8?B?SzVhSFY2MzZhNWpXM3dINVdGbjJmVUNoYXZzRFRkWDJmcWcyOEU3MkdJaC9v?=
+ =?utf-8?B?a0sreXBQckRtOU15QVQ0S2ZYYXFhMmZKcm5ZVHBlR1piUzRDU3FHYVdRcHdY?=
+ =?utf-8?B?Zk9LZ2NMK0MvdlJqTlNteWZNYWdCZDhFM1FQVWlNbDZPdUJRdUk1VWRxNExL?=
+ =?utf-8?B?M25OOXNuMFRWcndzOHBxNFBmQ050b2hoTmEyOTRxQXA1VDdZbUZsYVFyYTRl?=
+ =?utf-8?B?cnVtMStsS0NySmR5L1dubzl1OVhiWFRBNDNqRXIrTGpKY0F1enV1ZUZmRXd0?=
+ =?utf-8?B?d2VkK1EweGlacVcvdHNFV245RkJ5dXpkWHNwS0wvdDlZVnRYYllVV1ZacnhV?=
+ =?utf-8?B?YXZKY0E1RjBUeWFLRFpHM2ExRFY3ZjdpZFhrSXdLWVBqVS9RSmdpeHI3amEy?=
+ =?utf-8?B?eS9GVnBRUHBReUIxSEhIaE9EZ2FmYkVaNFVCaDdUS0xPVkpCcTh4aVZDTko0?=
+ =?utf-8?B?aHRWcFBtL0xOTjBUU0pWbXZOcFVOWXlnd3Jla1R4M0dkOXdzdXQrWVdIOFpN?=
+ =?utf-8?B?NFB1eHBHYWZLeStUVHJwZ3d6YTNyKzNUcytQc0FqSE9sWEdsME5HenhjbnE3?=
+ =?utf-8?B?ZGhPOGw5emw0dEpEaHlMSnBaYnJjL0ZVQ0dDWFJvNkRpZUJSa0lqcVFHQ04r?=
+ =?utf-8?B?Z1BJdDBtdmFGTjJON0ZUWkdBMXR6SXJHNnA2STRoUnkrc0J3SGVjcW1tdTBQ?=
+ =?utf-8?B?QU9naGxRTzYwaFdOb0lpa3packpQeXZycnpWZnp5RDNDeWYzUzMxTUgvRVJJ?=
+ =?utf-8?B?VjlnZjZnaFJoN0dkNFUvTnY5NkRtSjVyL3M5RVRLVDVIdy81S2VYb3Z0SE9u?=
+ =?utf-8?B?VzhrZk5mcEVzVUt5RzFPcDB2dG5ZTEpRek4rdS9FTzU0TVc2eGQ2aU5sWmhP?=
+ =?utf-8?B?a1c2L0NUcUdQblpMWjB2akN4TmdvKzNhRVRrS09rUFNvNnlNTml2VmY0UnVi?=
+ =?utf-8?B?bTBEMkorTE9xUVVBY2c2SUJ0dTdlUWR6UjhoM0FGVGNlOFVuSEdnbytuK3FX?=
+ =?utf-8?B?S3l6Qk9xb01FMTN5RTJqcFpjSkVhWENsVjFwMEFGc0kwbXdaWDhaNklIVVNJ?=
+ =?utf-8?B?Z2ZtMUtLZkZ4alNLS0E4Q3B2Vys2a0lXQVFKREhCMEhsRXQ3QVBnc1c3d1Vq?=
+ =?utf-8?B?Y2NWTENDMHpGNWNRRXJ3aC9Sa0NoeWozZms4ODFNc09KMXpnQjBaanN4RC9l?=
+ =?utf-8?B?bFFzTmdpRm5KeXR2cFVZMktPZE8vMGVlMTFnYmY5cHd4Z3JFTFhNOGd1ZlJR?=
+ =?utf-8?B?djd3T0FMeEhsT01MZ3AvRFFucG9tODhvczd1eG9tYktxUTdtNm11d2R1UlhJ?=
+ =?utf-8?B?eUx6djRNb2ptNFdKcXFLenB5R0I1SW16QlRtcVhrN2VWL2hWeUhBcllWRml2?=
+ =?utf-8?B?NVRVTzBleW13ZktDd3k4ZlNZWHRaZk0raHVZeTVvd093cklUMUFGYTlZcENW?=
+ =?utf-8?B?cVZTTmZTSkVIL3Uzd0FnblQ2OFp1ZkZjWGdvV0twbXJRcnBVcW1aMEpFOUNr?=
+ =?utf-8?B?Q0Z3L0ZUK3lyK1JySk55S3RORXlRd3RETFFtN2Jmemc0UlptK1RjN1BFT0da?=
+ =?utf-8?B?OFdDaVRLOHU3aUUvKzgrK0NXN1p4MTFrWXB6aDNPb1lPcVlkcE9RSWRjYnBC?=
+ =?utf-8?B?a1dIU2MrWlp5a200Y3J3TlJ1ZWVEeUg2cFMvSUJFWG43TU0rSmlmcGNaVWl2?=
+ =?utf-8?B?S1RPQUEyZ1gvOUx5NWNwcU0zQytmWWMwQWRmYnZRb2pqZ21tQUUxdlczK0tx?=
+ =?utf-8?B?bXdJR0xqblFHT2F0VWVrME1zTkptc1NIaitXVTRaSEpQUm1DZUpKZ1JGcG9K?=
+ =?utf-8?B?Q1dvYnMyc0drKzRwZHZUOFhZc3FHZmh2YlV3cU5telFXRmwyNnczWDY3Zy8r?=
+ =?utf-8?B?enZwWFhkWW9keEhwSHBPYmRudUlmaUF0L3F6MzdOUkU0b20xK3dNLy9EYWla?=
+ =?utf-8?B?L0J3TzZROWpHaUFYOXZTeGJYVUtoVllQdnlxWnlXYjZIY1ZqMjMzSnU0cW44?=
+ =?utf-8?Q?oWFnZPU6M6Z8QRFU/i?=
+X-OriginatorOrg: meta.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abefee20-8e57-4556-5834-08de422cf0ba
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 14:09:52.0462
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E+bTygbqZH62641ov9TbhQbDQTd3+43MFP1p/HAt6BconaU0A1JjexD2RjyqsjeC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB5613
+X-Proofpoint-GUID: e1DiOYzjfWfpLSqfQlddve78a32XSsmL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDExNiBTYWx0ZWRfX1NU9n9Kjo7Un
+ 2bq0iZOYTvH+a44lECAKeAmD3QmnhhaDrwBIzGjOQSswvlMUO76PYGo4xh/QuYwD0mLmoVrUJyK
+ SqWb25ZCAqMsRnOnAsjgQSseIQTD1dp3qRqOWbgtH8j3GyqYIMMdu05FL0bNOG92EKxR3xZEUlj
+ p7Mhh0ZUEQ/ZN/Iw7+RzYdP3lfFT9moj3wdes9qTdFxoxkDm0R66weNU8IbPm3vCncvLwZyz+em
+ 2pl/H+rz0P+37f7Nvo658aDL9Ho8A4qtvasuIbLFVpIZoJPwLKabWD3y4NjnilUv8UTlCONc5U2
+ XEO5cKFW1TNB1xp0CakPQ70x8wg50tYlitOgPTkHi6F1rbFMkY6p5VeabP5koHuQjT3hUFJxeML
+ VKAcnHBFFXfYdAsoHwYA40ud0aelXTHiRp5xgzqYwEiJj2u83nDGJ2q57CY4Sl/rPEVB2Guj+dn
+ 5mjrzYzWBZXhCH4foEw==
+X-Proofpoint-ORIG-GUID: e1DiOYzjfWfpLSqfQlddve78a32XSsmL
+X-Authority-Analysis: v=2.4 cv=QL5lhwLL c=1 sm=1 tr=0 ts=694aa2b1 cx=c_pps
+ a=tFiMKzbuKqM0PzijJMXBtQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VabnemYjAAAA:8
+ a=yAGl06ve_2EzpbbmiqoA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-23_03,2025-12-22_01,2025-10-01_01
+X-Stat-Signature: f6jpiqsesujz3g7tnn91zb6qzjz8rb3k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF88918002C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: n4i53ewfoo8j8gtswhk97gnypb7p8b91
-X-HE-Tag: 1766498507-825646
-X-HE-Meta: U2FsdGVkX1/3A6Hy0otWMhL++xJNftTOPfwe2rE45J4deDBimIFLQSye+DRnB1izwVpi5mZKuTZHlAgnpPTJy6ov2SEtv9NlB4rD78rJjJa9HVJfDqqawxRap5q8YnG58Q/WTB3bmErCTPa8/eQ3GA0sHtiG4crTjY+8vsCt7+PxCZtNjodILNvvYSOW7uXR/x0HVtgBIiqXywvSiH+gOE/nwMur+yKRXCqmV83XWxGlycs0qgbAA1VGypjrYSvwoA19wZ/u7c5hWPoXwzvVc/ITM+qCMJIDoJUBABAe3unTdKKrMhX46lgaBUE/O/nguNnV0vZi+y9eAzb+TiQdi4roO0mCswmXQgTcxesJKogoJlHSHCpC6Gst0xnGBWc2UbOQhtLmXm/LXm7G93DCuMEY/VDHDgzYQFrED+NH5u2A3hoIy5CEqpZGGbXOa/YIbjoJE7z/U3S5IZAt/hnrLavFuZ29ekJ3OGpALwIGjPPFC7cTjI4RC6fe/QYxtR1V1zELt1/Ab4F4CRY2ku9vxk9wasm5HY7FTH27lc40tts35VqxyMfIOLme+PhL8BTv7xIdknFwbFJLdMbFa2u2wX51ywc4ZHCSI1BRrqPZBaNAZbQ9viPvBp5XTlhhsDCEiTzedu3tp6Ey+lhAAU4NQFY9CVMSWTSDxUC+Q4dmqvWyKqZ08UDOGG0MA24D64DDpWmik/bVOS38ECZSa6s42ID9T/hLMnCZ1Eqkc3zaNuYc2UaV9HPfELW9VlL1GFPy2ZZc73LcPdXd301WJp8oIrlQ9TItxRuECzYcPymOx8sc2GBqD7Xf9gvcWyv7TTi4J3SxhSQEO55m/v38hEjRmw53wLIZjYYJbCSLEaK39DZ4pd1B6zgoSNbY5uKEiZgByMYGp5PxjyH+dCKVTWWt4BIQyz0HnJniGjtpuwqINWS6rKwi+5ZPIcqJtswxaKn3IlUgB3dWYe8DQKBes0O
- tYGBluFw
- NJ0OwNpjvOeWeqZg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E8A5A8000F
+X-HE-Tag: 1766499010-328878
+X-HE-Meta: U2FsdGVkX1+n5I0mraR9t/mH7EdgMTo8f/nnT1F88mPBmF66zuUyYfxu2KppD7tUEekWGki0vT5l1RnHEoe1YQu4LbLls01k7NXiomshBbv167X8/wmWN8+W68ZGwNw5rxIGfZ61yZmoqitMqsPR2vXdC0rNbqZlB5c+4+ffhXRJp4131aE1lDiyi79glhFELsMquRH9uVHi9+d5qfO8pk+JBiJnqwrKOOM4e5l915pSKbAVTw19KYuUAQO+UjuTl7dPPpjm1tjqIxr7IFbvPEt19pVLzkqSOD7a7pqwmTOnQQakFLFLDESOMPg83vgZR7BXFrd5AMLczKLbLeJfCNAHtlLug5kL8Qb3pOhGaLNi1qob1EvrXz/nitks78rXQYXH69PRT6RfSXynPWEv4udDWHqcK3PTOnutL4qmv1JWu6BmYpdrBJoph1z1kJ+F1e71sHqvYlATjtqvIuSpXcdk5burXs9nUuANShodQ662va6gaXReVANeEtxJxtqoULVvvFsF3hQ/K6bqkncODAmSC4U1P+OUwuo0cXzxFS3lxSQzKx1/xwfoYM3XBzg10jxIvROdvsJqwu0cokm2RwXd9/jTuXUEMgieHe9zNLF9BuzgeYVmuJn84sMFTw8VvanpFWclNHddmJ94bxq03DXkogRl9mFeccb+jYJ4in54RRFlikIzwshu7WInE5dqtJfej8/afdV5SLrUrvyzouNv31Yhz8S+y5RU64PUASKPWKMXXUfBSXJ7UOZFg164b+QgqDouGvxKMqynyU5xNZ3n+pWsQnTTe7tZLAVbUyXdPhi3RVMJ38K96Ru1vKqE5vpaTwVCSMU2pX+AUdcPhd9MSqF+mz9BAKYz5mqa78RJVJ/xuecQlKrGFycw0tHjD7LMF0mnDdA1KuHwjdgfRPSFwUeSU3W092md9rxSAZtR4nq6loKFVeB27TLW4HbS/OGcFBEsPx9u5mN1/kH
+ 5vt/Mbi8
+ 3e4/Ty8AUPaetIvUwRfvbJGGOa+1vzC5/PAUXYpDdWKUHFHv2LmJuA4r/Xv1gG8BlUolJmqgZYX6TRLQVs9uesWWJp6JTKNBNtAj4qaZhbcwCoWVi0a2xGaFDB2kok3c3z/B70II6fGsQIgdUskToXO+b9Xt7g2GBdu4X5ingwzNouf6w73pB6bRQqeI6dNENWvimiH62B+HPTktKMQBR/RPUWhJgWlZ3YbkJGfgXfBmUaeR4Q2VNvXOKOrP8EwJMjbX/Jd7OAofYdmuQGjVrElCH/P3wyv8QmVjYFKVnnIg3YUhUF0rj7g2FAKU5/4xKfI/8J2sGXVtTuUGRXPrUFoYIyPLLj8+dUFf2fqYbBhhBQ5kA8oFvKqfjmxwyK1r9MW2joFUyBk52oZN/Q5dzhXA2lqiVDxcCchoofNC3SYgcHwtNY34Gkuml9uG22ELmOhoT0pl2s3HxpXqEmHR6TsnyBsc1yWbSOU7CVMy2JsIMZgHWNSP9b7g0y2G5vnvFvbULYNYDY5CAnpjlbhk4jb2NmxlZBmyDE1jCcJD9e0RV20dKWTZj/KMky+A4rdc6UiTIp39fOmYcOsne4rdTnGCY4tCi3vYlNp0Yh6kQqLcIvXc5iAOYa7qnu5RohNEWAwh+NFAJBXCZlA9QqpshsV6wAo+K2rby9Z1gSORk+YneKbL53yZGWIc9SWNUQDTkjQHx82ph7ZtOrW/4IAX4VfgxCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,148 +243,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the previous kernel enabled KHO but did not call kho_finalize()
-(e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-the 'preserved-memory-map' property in the FDT remains empty/zero.
+On 12/22/25 5:23 PM, Roman Gushchin wrote:
+> Chris Mason <clm@meta.com> writes:
+> 
+>> On 12/20/25 1:43 PM, Roman Gushchin wrote:
+>>>>> No, the bpf verifier enforces event > 0.
+>>>>> It's a false positive.
+>>>>
+>>>> I'll add some words here to the bpf prompts, thanks Roman.
+>>>
+>>> I'll try to play with it too, hopefully we can fix it.
+>>>
+>>
+>> https://github.com/masoncl/review-prompts/commit/fcc3bf704798f6be64cbb2e28b05a5c91eee9c7b 
+> 
+> Hi Chris!
+> 
+> I'm sorry, apparently I was dead wrong and overestimated the bpf
+> verifier  (and ai was correct, lol). Somebody told me that enums
+> are fully covered as a feedback to an earlier version and I didn't
+> check.
+> 
+> In reality the verifier doesn't guarantee the correctness of the value
+> passed as an enum, only that it's a u32. So we need to check the value.
+> I've added necessarily checks in v3 of my patchset. It passes the local
+> ai review without your latest change. Please, revert it.
+> 
+> Thanks and sorry for the hassle
 
-Previously, kho_populate() would succeed regardless of the memory map's
-state, reserving the incoming scratch regions in memblock. However,
-kho_memory_init() would later fail to deserialize the empty map. By that
-time, the scratch regions were already registered, leading to partial
-initialization and subsequent list corruption (freeing scratch area
-twice) during kho_init().
+Thanks Roman, I adjusted the prompt changes and looked harder for proof
+of exactly what checks are done.
 
-Move the validation of the preserved memory map earlier into
-kho_populate(). If the memory map is empty/NULL:
-1. Abort kho_populate() immediately with -ENOENT.
-2. Do not register or reserve the incoming scratch memory, allowing the new
-   kernel to reclaim those pages as standard free memory.
-3. Leave the global 'kho_in' state uninitialized.
-
-Consequently, kho_memory_init() sees no active KHO context
-(kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
-allocating fresh scratch memory as if it were a standard cold boot.
-
-Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
-Reported-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-Changes v4:
-- Addressed Tested-by
-- Addressed review comments from Pratyush.
-
- kernel/liveupdate/kexec_handover.c | 37 +++++++++++++++---------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 9dc51fab604f..d4482b6e3cae 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
- 	}
- }
- 
--/* Return true if memory was deserizlied */
--static bool __init kho_mem_deserialize(const void *fdt)
-+/* Returns physical address of the preserved memory map from FDT */
-+static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
- {
--	struct khoser_mem_chunk *chunk;
- 	const void *mem_ptr;
--	u64 mem;
- 	int len;
- 
- 	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
- 	if (!mem_ptr || len != sizeof(u64)) {
- 		pr_err("failed to get preserved memory bitmaps\n");
--		return false;
-+		return 0;
- 	}
- 
--	mem = get_unaligned((const u64 *)mem_ptr);
--	chunk = mem ? phys_to_virt(mem) : NULL;
--
--	/* No preserved physical pages were passed, no deserialization */
--	if (!chunk)
--		return false;
-+	return get_unaligned((const u64 *)mem_ptr);
-+}
- 
-+static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
-+{
- 	while (chunk) {
- 		unsigned int i;
- 
-@@ -489,8 +485,6 @@ static bool __init kho_mem_deserialize(const void *fdt)
- 					   &chunk->bitmaps[i]);
- 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
- 	}
--
--	return true;
- }
- 
- /*
-@@ -1253,6 +1247,7 @@ bool kho_finalized(void)
- struct kho_in {
- 	phys_addr_t fdt_phys;
- 	phys_addr_t scratch_phys;
-+	phys_addr_t mem_map_phys;
- 	struct kho_debugfs dbg;
- };
- 
-@@ -1434,12 +1429,10 @@ static void __init kho_release_scratch(void)
- 
- void __init kho_memory_init(void)
- {
--	if (kho_in.scratch_phys) {
-+	if (kho_in.mem_map_phys) {
- 		kho_scratch = phys_to_virt(kho_in.scratch_phys);
- 		kho_release_scratch();
--
--		if (!kho_mem_deserialize(kho_get_fdt()))
--			kho_in.fdt_phys = 0;
-+		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
- 	} else {
- 		kho_reserve_scratch();
- 	}
-@@ -1448,8 +1441,9 @@ void __init kho_memory_init(void)
- void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 			 phys_addr_t scratch_phys, u64 scratch_len)
- {
--	void *fdt = NULL;
- 	struct kho_scratch *scratch = NULL;
-+	phys_addr_t mem_map_phys;
-+	void *fdt = NULL;
- 	int err = 0;
- 	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
- 
-@@ -1475,6 +1469,12 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 		goto out;
- 	}
- 
-+	mem_map_phys = kho_get_mem_map_phys(fdt);
-+	if (!mem_map_phys) {
-+		err = -ENOENT;
-+		goto out;
-+	}
-+
- 	scratch = early_memremap(scratch_phys, scratch_len);
- 	if (!scratch) {
- 		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
-@@ -1515,6 +1515,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 
- 	kho_in.fdt_phys = fdt_phys;
- 	kho_in.scratch_phys = scratch_phys;
-+	kho_in.mem_map_phys = mem_map_phys;
- 	kho_scratch_cnt = scratch_cnt;
- 	pr_info("found kexec handover data.\n");
- 
-
-base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
--- 
-2.52.0.351.gbe84eed79e-goog
-
+-chris
 
