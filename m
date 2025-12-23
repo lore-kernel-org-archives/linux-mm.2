@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D624E6F072
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 08:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B178E6F06C
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:13:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21D56B0005; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
+	id 419166B0005; Tue, 23 Dec 2025 04:13:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA5796B0089; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
+	id 3C74F6B0089; Tue, 23 Dec 2025 04:13:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB1776B008A; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
+	id 2D2686B008A; Tue, 23 Dec 2025 04:13:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B32396B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AE91160538
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:50:34 +0000 (UTC)
-X-FDA: 84250114788.10.CCEEFC9
+	by kanga.kvack.org (Postfix) with ESMTP id 1AB356B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:13:12 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF7EF60490
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:13:11 +0000 (UTC)
+X-FDA: 84250171782.25.0A0C14E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 89C7140003
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:50:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPEr2aSL;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id F1CDA4000D
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:13:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BFqHRM+3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766481190; a=rsa-sha256;
+	cv=none;
+	b=pEnF1V6IJtQ8bCUr01gzsyEPX9daXkSzaFaPaRBxzySe/Gf6WGNNCez5CASWUlljtZLyhk
+	g/1J71bOaEvWpFyBFMO2EzgBTZFxLhCGycVrQE7fimv00YnEtuPbLILfSL4ykex4F/ueVG
+	3em6mH9BnM8Rt4lM9GAZJbEoZHi4Zkk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BFqHRM+3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766479832;
+	s=arc-20220608; t=1766481190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vfrLkfn8KuTjwSTBMR/lPABFifbXFDGjujEi+D5oh/0=;
-	b=rtRsjinh3LglFagVlXMfd04xqNiwEfgJcf0Qr43sy5P/ms2g/+fX5jICQjzTSf8VrBFudQ
-	sQfW34A3XTLAFgOBqKb0RbSVWC4Gn1rQNpwX/FXYNNQpl1UbsHIY2PBeLBn0PbbCuX9emh
-	oPTJRpo2AZOoyUKDXGaRzamhlsw+dBU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPEr2aSL;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766479832; a=rsa-sha256;
-	cv=none;
-	b=1Xvf/nhbGDYEHSJ9iSJRLJhDJfgnJQVoc9USu3n4GIJs/U/wUFhZp1PbII8ALwXzzzPDlV
-	0dzrBvwSmRtyWOS4Tc9lEFG7GDjxWwBLKK2obIi11KQ7Srlnzj1zMXOpd5qrpdcr9CreRZ
-	jUO3girBlEcv2kEWLCXew/ESu/sIVn4=
+	bh=HCWPuKeNzrHX1giKMjTKtEMh+xtmKpvckx2WdGrHub0=;
+	b=bDJ+sUnhbWctxBpsZcndBJcaN48edCT2ly7ELmB+n+roTu+KrZnDsLktSdyOMNE7wa0iix
+	ltYxjW3D+mvyr+w7db05eBLxDWhmdflRZvz6NErSL9IIxU4kYOtytfs0wv/LCka/CZozjc
+	zW3ILDAOIsEXSBx6QHTxt/VRQjrMUp0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 724FA43DFF;
-	Tue, 23 Dec 2025 08:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4FDC113D0;
-	Tue, 23 Dec 2025 08:50:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EA88F43EEC;
+	Tue, 23 Dec 2025 09:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B4AC116B1;
+	Tue, 23 Dec 2025 09:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766479831;
-	bh=D9p4aDnkMp3xBLSj20cZVuhUlzR174rG+fno549cX1E=;
+	s=k20201202; t=1766481188;
+	bh=L+jctpl8CY/Z02R3KgkzKjrbQKw1ezIptg6y1ooTjxk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VPEr2aSLQ0B5IvUkEwGnIN50DkddlnZkOls9Lg8LAdeR5yqixmwJjyZR3nVT8kSHZ
-	 yccXBUwblTQpBXAqCsrn5N/VsNmomFTVWL4SyoqDmn+bgCnNuwvwPZjScnCf2+RNXi
-	 BuPWAbDvHJPHG7PiNW0jgcDiGH3cra3+cdb3WjPChCx0sGS+7+7vmDsot5sgAKGZnd
-	 zD8fLoReZj0cY1JzIll8pj9mtYSBC8bF84i/Mb7rENIKIDtw9j4pYjM0bCJOJIUPl0
-	 tEw248ret7R96jK/PXGgkV6UxtNWzpze9V5cSWZboHYJalhEEEQHBKxZe2q7hkR8VO
-	 pJKzn6O60YQ6A==
-Message-ID: <d9e09523-2b61-4280-876e-95be787258f5@kernel.org>
-Date: Tue, 23 Dec 2025 09:50:23 +0100
+	b=BFqHRM+3GiKOoc+GhwMOq7LMBM8VqNTuJ4N/Bdlz8FfL8fyfvXJsEnjqxbbIse5wR
+	 kenOtswGDIm6gAuikCico9w59FwPIejyy6tj6/ragC/1zcNH5T707l/TPcFkDW1XpB
+	 jn6IncOKwQh5t1D7J7CfuX6F5ntk4RYRfFimak0yNkzCAt7BoPCxnNLEa0CNPrxxZ7
+	 GP2Q6mLSKqJ5uIeZBwy7Zqas4Y+FKATL1gWJWlOBGvajsXsBcWwMuPWN61i+r8P1hj
+	 kRNDZhSiMcy1gJFfwZ24MvMwLmjPTO+RG96lc6nYx3Wn+pvWujSRcZaiDKr9MA571i
+	 hs5cM9IwTLxeQ==
+Message-ID: <12032402-b541-4776-a716-c93f16ec7eca@kernel.org>
+Date: Tue, 23 Dec 2025 10:13:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/memory-failure: fix missing ->mf_stats count in
- hugetlb poison
+Subject: Re: [PATCH v3 2/2] mm/memory-failure: teach kill_accessing_process to
+ accept hugetlb tail page pfn
 To: Jane Chu <jane.chu@oracle.com>, linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
  osalvador@suse.de, linmiaohe@huawei.com, jiaqiyan@google.com,
@@ -77,19 +77,20 @@ Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
  lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
  surenb@google.com, mhocko@suse.com, willy@infradead.org
 References: <20251223012113.370674-1-jane.chu@oracle.com>
+ <20251223012113.370674-2-jane.chu@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251223012113.370674-1-jane.chu@oracle.com>
+In-Reply-To: <20251223012113.370674-2-jane.chu@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8aiyim4zo4xqitsnaumg4y5r8yffu1xq
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F1CDA4000D
+X-Stat-Signature: 3gogewkkboue4kmwex86yqdrzjoor5hx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 89C7140003
-X-HE-Tag: 1766479832-810753
-X-HE-Meta: U2FsdGVkX19Jt/lSXpB7oKA2wMJec4+VC2ihNjdKvYR7mWTf0mBNp6Vct6DbB9y/Goxaaool8mIFYi965d+sBk/5kk5uUAHfR4hA6uxEp43vhdvxK+Lj2s4APKFEBj9ZQcf/RfgdVXu7FVimD9bZz0/LlCumjfzU4VwWT1QuHmZXxsoedBnBrStUNkVhiBygjXjMDwOphvG6mm1WKCrDAqmaSUVaE5swwvrVr9mYNebzkzcJRjPCc/SHiRq7+y8n9yNwHw2NppvRP6+3v2bLuR2eiY/KY7nf1zLrCoHNTgc7I4Jrzgm+BrbB+Xdl3um2wIlwMbcH8Y+HBcNdrtBJHkUr1hfNSb+5nBLVPNUhpPAYqAcDA8fl4ZA/ELp1OxZMn9FRHoI3hXMyf16CZwC1uat9hsGnTNkFd8QFjxQfSzHAq9RLDPc5jPlP8UhOMuRX8JFKqC+tgZAu5p++XOkRpVFG4d2Sdfq3RDsP880xG0aPBLCaEnPuZA3FyAetW9XFCTCb7r4/wClQfkRRvkdpeUuYmzUcd5V742RpJbkgmXD3j+RWa8YTuKJyQhpMTfBDaJAV2gWJyRXrxzXjzrIVQR7PSgu6pJmL/19P3zh8gbvTUolp6Uj9YPl1Zop+wLGiRFoT4GSCXpkfKlXMI4AHbfV/tIy8XZM34NFQplkELctbmhRG6lE6SJe53xt6TZ8tL4FmCgGnTDnNV7dSSUwi73EZr3kCIA/BYCEriJYhE6UogKcL2AdEuyd+XCRjKUeS/w78kvduJgWI8M5Ilh6SMucnqDx0cDcO0cz+L1ijPw8adTdR92LjYR1Td66n2yLIh3YZl/ysg1W9uIAaQGyxZ2EiN2Yu96kmCMSxBLW/5L6UhXOfloycxQ18YfmCohk+d/wBXNDRNUbfNgnOSWvpEnkV79+rFK6YHoQ42bvUvaS55dxx+swteckUPlDAVBO8sS0Imm8ffhXdJuPVcmE
- p6+Kwgap
- hmLMQZ08NHKLzMUD+YogJOg1Q87BYcIVgLcjicnoYnHFD8Kq9w9QuX0RzSXAcn3XDKAy4qXjkWS1URuHPk/D/uix9IoCu/qH0dVzTM+VJrvyqOnRrsdHsClSub9oOsZFcqM9FuzIs9SaOBluUYQ1/0vkYvD8qvGuZHf4qRsALXNEWAZUn0N3iS41X7n1596sJon5hIG0FxRdykNqPmbg5XY6yJtjYSkNL1L0SqRlx0xfAQNYkTAKvQhgi17u2GJyYo5czepl2o/dLTNS/3ahyhwf6ZP/DgRN+/4wLI0PWYf7WOkbsht/WkQDO6ohqfRQaBmVQ3bOtL+8zMRnTnUjnQNC6IuhIcSVrAp4V
+X-HE-Tag: 1766481189-192241
+X-HE-Meta: U2FsdGVkX19tjfZM5IrrW4k2vwF4oCeLD0Kqm58cts21X6tbW9PZ6mzO67T7n8SHdw4uOo6ivq9MzCwdOWH/KeoYls81HL9D7vpxtFZOFt616lBIfKoyiBsWmW/9+tkU95Xn5obMbVCKPqlP0Vw13vaUn+FM5SqYt0/oP28XxmY/AdosNYpES2SPo0bWka97aQDcd1TtgIKwxdIN3akGKEQAYRupcdPoBDv//XfAFJTcUARMug3oynga7hPxkS+6vMEWil1snEqtda9DB+rpZxxtRn6SI5RPHTSrAlYdOmcmL7FNEhHYmEOYWOuW6yt/eG7hxLjSUntRgqjbKWg7E0VTvezCftdCscff2GLKqLzqjFcR26TzDC9bjAkPniJ/deMaLxyYp/Wh4bu2KeztIK2eHAMF5qnVIt8Mbib+rGhn8rb8nKi5YJ/ZGiwkXp2AfkcKKihI/veKXWzYiboTGWq2k45wlvbsZvaSjwAiAqInGFwGDP8r1t4RV9YIupqoP1+kmLdVTkEgd+HCrQOMl60XeA9Qb7ARLjxYxqpWoklRFA64pArG1vgyCuSb8ewXejkHOsKCDfr97INRR9HGPucEygBhFLHTnhzJWyZl011hO3m0LaOGD6/is/Lwba6XvPQ1RlVuDaODUibk32KiWQ0Jkx5hkg+ZmeJ1w9EIGF10kDO10dLj5m/teOZLsZ0ET9o54OfRLhLK5zseFgQ/MgF9kSCruSjdWLu670D4INk2SBiWlTu56bB/Saqe3rOvSLKFOzui74+o8ENppOjnTIkRegRXaFBMSVdhzG9tBlgSJv6bpUAn20dGXolWEojY5g47U7ZLLP+9QEFGbOuN/3pCOZJk81STN6O4+o6qdsOz0ubOWp529yLvwjtXPyByEC56UmlTIbTFi++CB3j/NPRWTo4hyj2abg+m93mCkZkLcwwIAtrfQJAlT/yB/OaOqKlheWbR+dtQE994VET
+ vOReksw3
+ 7KkxU+3YypZIY6YoI7ezUzphLGkeIZdihfw9i45X8aP7nNb7RkPIvo2c14wAssw8Vozhk1eZNPm8LkKQbzSqmYY3xk/JL6f+MzL1OCqkylzfY7n7xcGdwm5wYJrbPSuiQ54Dvx5fzKXXIc5c7ZIgZ4e8bLVrRyb/CqsO9xzhNV+Zfl5x9IAbSOwYfoWuyHw7yiQe15EKIRaxXphWvzCG494qt0kApc7dy1Ntq6ZUNtmx0Ix7e3LJ3zpz4hdndpxU7MOg25s4Dy86k7eQat/fnEp6sBnW/Hbl6671O1CFyF2mNpJMv03KzZz9KHegK33cSSKfQWGUa9X5pRNIr0/EX6xa7ZfOAQIYQycpm06xAa5H9GoLchWUpcrAQ3c6U7BF74GZybJJ4ZznzXX9xuvZsHqSqynpsQKPFhvp4EV1H95KjPdPlSv3Km+nxnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,111 +100,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/23/25 02:21, Jane Chu wrote:
-> When a newly poisoned subpage ends up in an already poisoned hugetlb
-> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
-> is not. Fix the inconsistency by designating action_result() to update
-> them both.
+> When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
+> passed head pfn to kill_accessing_process(), that is not right.
+> The precise pfn of the poisoned page should be used in order to
+> determine the precise vaddr as the SIGBUS payload.
 > 
-> While at it, define __get_huge_page_for_hwpoison() return values in terms
-> of symbol names for better readibility. Also rename
-> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
-> function does more than the conventional bit setting and the fact
-> three possible return values are expected.
+> This issue has already been taken care of in the normal path, that is,
+> hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
+> correctly in the hugetlb repoisoning case, it's essential to inform
+> VM the precise poisoned page, not the head page.
 > 
-> Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+> [1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
+> [2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+> [3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
+> 
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
 > v2 -> v3:
->    No change.
+>    incorporated suggestions from Miaohe and Matthew.
 > v1 -> v2:
->    adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
-> return values in terms of symbol names instead of naked integers for better
-> readibility.  #define instead of enum is used since the function has footprint
-> outside MF, just try to limit the MF specifics local.
->    also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
-> since the function does more than the conventional bit setting and the
-> fact three possible return values are expected.
-> 
-> ---
->   mm/memory-failure.c | 56 ++++++++++++++++++++++++++-------------------
->   1 file changed, 33 insertions(+), 23 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index fbc5a01260c8..8b47e8a1b12d 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1883,12 +1883,18 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
->   	return count;
->   }
->   
-> -static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
-> +#define	MF_HUGETLB_ALREADY_POISONED	3  /* already poisoned */
-> +#define	MF_HUGETLB_ACC_EXISTING_POISON	4  /* accessed existing poisoned page */
+>    pickup R-B, add stable to cc list.
 
-What happened to the idea of using an enum?
+Please don't send new versions when the discussions on your old 
+submissions are still going on. Makes the whole discussion hard to follow.
 
+You asked in the old version:
 
-> +/*
-> + * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-> + * to keep track of the poisoned pages.
-> + */
-> +static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
->   {
->   	struct llist_head *head;
->   	struct raw_hwp_page *raw_hwp;
->   	struct raw_hwp_page *p;
-> -	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
-> +	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_ALREADY_POISONED : 0;
->   
->   	/*
->   	 * Once the hwpoison hugepage has lost reliable raw error info,
-> @@ -1896,20 +1902,18 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
->   	 * so skip to add additional raw error info.
->   	 */
->   	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
-> -		return -EHWPOISON;
-> +		return MF_HUGETLB_ALREADY_POISONED;
-> +
->   	head = raw_hwp_list_head(folio);
->   	llist_for_each_entry(p, head->first, node) {
->   		if (p->page == page)
-> -			return -EHWPOISON;
-> +			return MF_HUGETLB_ACC_EXISTING_POISON;
->   	}
->   
->   	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
->   	if (raw_hwp) {
->   		raw_hwp->page = page;
->   		llist_add(&raw_hwp->node, head);
-> -		/* the first error event will be counted in action_result(). */
-> -		if (ret)
-> -			num_poisoned_pages_inc(page_to_pfn(page));
->   	} else {
->   		/*
->   		 * Failed to save raw error info.  We no longer trace all
-> @@ -1955,32 +1959,30 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
->   	folio_free_raw_hwp(folio, true);
->   }
->   
-> +#define	MF_HUGETLB_FREED			0	/* freed hugepage */
-> +#define	MF_HUGETLB_IN_USED			1	/* in-use hugepage */
-> +#define	MF_NOT_HUGETLB				2	/* not a hugepage */
+"
+What happens if non-head PFN of hugetlb is indicated in a SIGBUG to
+QEMU?  Because, the regular path, the path via hwpoison_user_mappings()
+already behave this way.
 
-If you're already dealing with negative error codes, "MF_NOT_HUGETLB" nicely
-translated to -EINVAL.
+I'm not familiar with QEMU. AFAIK, the need for this patch came from our
+VM/QEMU team.
+"
 
-But I wonder if it would be cleaner to just define all values in an enum and return
-that enum instead of an int from the functions.
+I just took a look and I think it's ok. I remembered a discussion around 
+[1] where we concluded that the kernel would always give us the first 
+PFN, but essentially the whole hugetlb folio will vanish.
 
-enum md_hugetlb_status {
-	MF_HUGETLB_INVALID,		/* not a hugetlb folio */
-	MF_HUGETLB_BUSY,		/* busy, retry later */
-	MF_HUGETLB_FREED,		/* hugetlb folio was freed */
-	MF_HUGETLB_IN_USED,		/* ??? no idea what that really means */
-	MF_HUGETLB_FOLIO_PRE_POISONED,	/* folio already poisoned, per-page information unclear */
-	MF_HUGETLB_PAGE_PRE_POISONED,	/* exact page already poisoned */
-}
+But in QEMU we work completely on the given vaddr, and are able to 
+identify that it's a hugetlb folio through our information on memory 
+mappings.
+
+QEMU stores a list of positioned vaddrs, to remap them (e.g., 
+fallocate(PUNCH_HOLE)) when restarting the VM. If we get various vaddrs 
+for the same hugetlb folio we will simply try to remap a hugetlb folio 
+several times, which is not a real problem. I think we discussed that 
+that could get optimized as part of [1] (or follow-up versions) if ever 
+required.
+
+[1] 
+https://lore.kernel.org/qemu-devel/20240910090747.2741475-1-william.roche@oracle.com/
+
 
 -- 
 Cheers
