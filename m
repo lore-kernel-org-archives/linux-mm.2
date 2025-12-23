@@ -4,115 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 304B8E6F095
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 14:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0407BE6F095
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 15:09:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EF546B0005; Tue, 23 Dec 2025 09:19:32 -0500 (EST)
+	id E0D4C6B0005; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79DCE6B0089; Tue, 23 Dec 2025 09:19:32 -0500 (EST)
+	id DBB056B0089; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67F136B008A; Tue, 23 Dec 2025 09:19:32 -0500 (EST)
+	id C9D1C6B008A; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 556FC6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:19:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC898130C7
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:19:31 +0000 (UTC)
-X-FDA: 84250943742.05.F33C525
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 29063A0015
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:19:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DDfAcMr8;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B975D6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6123EC0B9B
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:09:02 +0000 (UTC)
+X-FDA: 84251068524.16.517764C
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4485240010
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:09:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ud8Ux0yC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766502540; a=rsa-sha256;
+	cv=none;
+	b=G9KWzx+B00WFmRdt9WOJw7A76xgGVQ4bm05C0wkp3iGzNfyJObAdum+4eUXDxnfQ/jzlFO
+	3uu5fl4hP+QoenjkyJiF9UD/AWNlD0PGonbrIhtb7mvTLfxztcGHOcZgAFpcYDrbIV3GB0
+	e7vI1Gg4TpML6zBDCl3/1393gTo/2Xw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ud8Ux0yC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766499569;
+	s=arc-20220608; t=1766502540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXvlcOaXAIQVq0t9xJIXeKMuDJHoQWiYerhVoYVIFzk=;
-	b=kA8y7xLjPvF3/XVwx07p5ln6bxT7mD6ZgcV/onKFI8KkoVnRIKDdWl7cp+1PIUhX6nUiV9
-	V1+5gYCsYUeaw5j7PbVis3TcEss2ef1F3i4t4nY+K5ygiil6EXFXXFz9mb0D0NlBPT1vEk
-	MGi7G26arbjxB0dwV21BkcTduZNbZDQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DDfAcMr8;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766499569; a=rsa-sha256;
-	cv=none;
-	b=W7OSPTX+5vvXxpNQxcZV2IKmBoWP72ShziCtYG4uC/azPSxo/ZB0GjW3mmxWgf3BOwnj+X
-	zmMYcTcNix1xwt/w5TmVvnW3c4Gd3HiQyalCGvBn5nRywDRIUc5MJSMa+3h2IBuiuIkkie
-	Ve0dcQ5g8cnxaWPDi87lN5urCL7ut4E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766499569; x=1798035569;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZZQg8s4/nNF1ZlkzREeuw4bYSFY91iLUDaAHPJx09QE=;
-  b=DDfAcMr88uv7/OaW5CCek8ZsB/jDkPFbzHebqKK7H+I94O0a/TI/FMrh
-   Oi1aZKFR8lqrmozpW7vqIx1wZ2axoYL6xcOkE/NlzCgbbYdF7R8/GRUNI
-   NNsmhfQHmr5gLzN7l0iEuL6pgofgkJUUGoUvKBGhCUzkXtblpWtz9+u3L
-   BpIhl14fLDcTAQ/d8T0QZ0ajsR5PEVNe3/DYaLXzT9cAeUSm4grTeaL8f
-   hgRLnAW/z1BRZ+Z6PfMjMPzT67Qig5YKPBXH8jFkzaH5R26pWH4gpyKLx
-   BNWftowrerEH5ZUwpM7++s9ueX1fqPRDyAyvrftIcRE51a/2yQ6gb+NVO
-   Q==;
-X-CSE-ConnectionGUID: oFkeUMkMQjW3aCCmYsBLXg==
-X-CSE-MsgGUID: oJo/VVrOTgyWfj90xEtAVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79463744"
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="79463744"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 06:19:27 -0800
-X-CSE-ConnectionGUID: Vg9Iuvx1SiG+8Rwxb+2JDA==
-X-CSE-MsgGUID: nMqDeak8TR2g8NmJnysUGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="230813594"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 23 Dec 2025 06:19:23 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vY3EO-00000000217-3Qms;
-	Tue, 23 Dec 2025 14:19:20 +0000
-Date: Tue, 23 Dec 2025 22:18:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-	Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH v2 3/3] bitmap: break kunit into test cases
-Message-ID: <202512232235.vUHmJH7T-lkp@intel.com>
-References: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
+	bh=bGEmBuIAlDpfKf1Ox8wdvb0ICd3r/4M1pyLit4d3Row=;
+	b=7DHSBmUWoQkYO/OvTiBpO8ryTzuxUjaF5DxC7haSZuzlXyC91FOAyND0MACRdAi1KHSxgS
+	SqSr/kJxVvuawd9d0cpZ2iMhUM5S5FPcTdQq1HSg0OOXQJgoVpXDgWG/yRsbDyYMGlZ7b6
+	drl2tr7Ujp/f4SxbP7d11Rm6dn4WLaY=
+Date: Tue, 23 Dec 2025 23:08:32 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766502537;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bGEmBuIAlDpfKf1Ox8wdvb0ICd3r/4M1pyLit4d3Row=;
+	b=Ud8Ux0yCoBLP5E6OpgaynfOPKbsI21180p37taLDe/7moDEyiMS7JGkLZwqYdgIplvix8e
+	U+U7u/0ULmMVjzfg0xFoo5cZeq10s71ImKcAsLxVbp8iMkur+LlJ26yVuj+7GQrVCeirrG
+	ZlBBjj+f+5JSFWRn8bdv6GKKpP0wzcU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext
+ array from leftover
+Message-ID: <graryni6wadpi3ytfq7zimj2kbmm7dumxvhxtzmxndrv5s2y67@ju4cdnsmos6e>
+References: <20251222110843.980347-1-harry.yoo@oracle.com>
+ <20251222110843.980347-8-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
+In-Reply-To: <20251222110843.980347-8-harry.yoo@oracle.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4485240010
+X-Stat-Signature: 91qmowktg47jdnxxmkg9kx3754994dop
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 29063A0015
-X-Stat-Signature: 16qqbeng1md88ghy1jnpizum87hyw3om
-X-HE-Tag: 1766499568-654621
-X-HE-Meta: U2FsdGVkX18aMEaHhrR5KCPZ7YIDulbSjPc6LsI2px0cRqgM2tsJXzPZX6BmXRUlNw3FO7YP2kCOVQVZVpSfY2AYYgAJq6y6AaCsmgROnUtJ2oVe5U1df0kjq/atJm0doq4tTrY/nCzY6NW92HhA3N0AOzYPBWK006azrfkNUWjk3W7fOkaetOrjOREe4rbgzvdGoWVm79xnNzGnLgYEXnb3O1BoBsVJ+72jTLtwTV9fLYX9JHnZQSjMCkB4fwcxgbOrmqcNxqzj+iCSbWRohtpKXCKy+wVQIPW7fqY2lS5db0BS3LbgDPXs5hx1kngyJHVN/ltZknfhE52dZvyvoYMXty1eO2VviOISFe+IAfaTlOeSXxA57ZkQf5X/OS7wSlM6ZGF2sA+AjcFm17dJVqL5k40TDdMhSxSL1M6e2WcHhuTd+FgXrc+jz+6ODbmYz6EbLu44ed4dZ05Ro1icmTuOkwM3GWIg7RdiUeSTzTTtS5Z1rMzl1Sqpzuk5bidgZeVEybS8I1zwGO9Hq6ATQeaRqbbVc3QpOQ4FK/jKmudmgRDbn9YbQI1tHmld5iQH7ekPwNV3Qnu3Vvizgh/P/hBbnEfWr5GcfhkuXY8S07RZTFhTTMGwBKWWqy8jV2bax3/xIc1DG26NbiWHYW/Soy/G3h9oX6BJy6Ef8/ghUxI5pLrSEZz1svM0w/g8XS6ykLh2azcFcXcuUBue9WDX48MhCUxp2Wiym7iz/g9KqUOp5q/8k4n4q4WaXFC8NWgXxENrqJZ278agJxjWzJWuRIIUxKHnPwmpqWKXukcy+RfFWEVTw2bbpv6N4JLYJTGsP1IBqrVoKQkZlZZhy30eeDqC9uKEtjfuP6Zc4sUC4HtExVPHqQF7i/sIg20lDDqlHTpA2gjZB5vMTekRZPdHSJ83urD1CXmXAFtZ5GETvNDAyKa0VtBZJtKmOT7mt4gFFUQSc3C9ajLjvins8/B
- JSCbBLZ9
- Hlzt/3jefyVG4qWb9u2vRhbsugsxXlCQpbI+LRRrIiz5szzqDPn1K2s3kJmmxjfj6dBT1icN9yQH+/Ser0tntCTlSHUU8OL1ZJmiOvc/xb5aTIH+0ONzxbqRa7huKmpC72Nj+BWC7n3IPHp/Bc32E0OiUVyOSBgbhZ2Lofl4m53nrhBts3AIriuvNsgCJI6/3a4K7qECVvXfdvKQSke7UOCnyxBZ1ii8ta+O3At2eF3oWvA2uhVMEzZw3giIb3L6O0IkfM2+EUV+zIxdDEYiVgblH4kEo+aXYZxO7S0gVoycuRBoKiBgZXHpacpeqbqA09r73o2dq+hrx8k9rXF5+qrSMSH91Rg7jxVf2Qd0WgDwhVCG+OpWnHXXlLdPYEl2W/F58uFnRmGOgBsn0mM2WlfL5EAajBHFrpnM0S9T1CrI0U0Q=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766502540-111938
+X-HE-Meta: U2FsdGVkX19xzpYMqsmTBhEh/SQuEvOA1VUYugJeB1e29Kc0O0hqcqkobKnclAwlETtXFO5jDllkc7uNtmxZBe+FRIH+CYVJQ2ZTQy4jI0l+tHmsrmlE3SZC0jmQFzJYkkr3Nalb29yLskcQGJ1kcJh17xMiG4YEGttBGx5v2ncmj8Y293NYBlmay8ceYdC2rC4UsaHGQW8rK/KyBg7WKevaJiiApciMqkfSbJd65jDOI0TMHsNaNmGfhm821wO7EuG1pJNY2//SfxuTWMtMr7otj0a1RHkJaux5M6uaqmCmowt5xqU/2vH+Vvr0fqVW7uXBfeGbiIh7nbj/80qt04ppwVG26A4S+AE2pJ7kSrK+iAZQAptyioXUsCnmmcF+861dBKAuM3H4K/a5aVbkg5LUkfUB0+SA2DDoxR3fHvBvAxqHoxKqrSQfaybyCAAO7JczhHn2FdwDG4hZGB05TzB4uq294V+miwA75/Bt5AMamcZsX1GUJFY8sf56J4weVSSa8qfI7r5AiimiUrO4lBoJmS5IVCjcddkJOmaiq48d9G/ATKSLj9nCEDR/C5Zt6yNZ6de1MEB/3NWIKUyN84MyU+gBIlTPK5Bgv6AwPuuYCnc2W9+oG4hXv6xuxm6PPvCqFGsBDW05cTMDVfKoWy7TQff+HsUO/FRwX4kXxJ7doO0O/c9JHF3b6j7tj5emfDRI9yPhRFaynXyv2HCo157yr3+a016MZC+eOpb2EP6zT6ZNCBpI0Piy5yaJVZiBKu2+84/op9NdnVhmLN73fMT8KduSQtW45hNDjZT2NC52WVO5yohYIfWGpYHbTQPqrAHDmGvjZM+Jft0T+lRcKN1PQtjEpIDNkegj05H6jyjT5qnu5ZEqf6ryQFzEdhxmFAZ4LTtJpaE3TbSy/p+shaTrTc66YTxxK5At4M24razmIh0j/1mZmVJQxyahE2rzuAKaW7Rcny1cL1t7wVh
+ 0ZiT3xfA
+ hZQvdAlTcdsTs3meWW6de4KNkZTgeIv86dnX/YqHe3E2m0PP9r6rMdO+Aq9owkJCsCYPeBmbjlCQdWPA2SnWmto6Nw/Xb1SVnRibdr2EOSDP3RL0FFRW/U+cnh2qCWUAzsrZH6SKSdCiOtXfgUMT5+Lt4bRCLxVklgHgJ/b6G48fLO7uGphrSNiMY9pwOk9Yb6ba/xC2ujO20uJTV5u/WM2fcsf/N30e6/vg7pNS1bux3HLzwiUyuQaM7+1e+RwAaFccYVY71LZeD8uOJF/zABtdkKNaCIEl7H3riK96mEfARBQbPsP/KYQMq9OeFfBGP+GCVjRnaGBofmvVCYdPfgoksLDzt0+WxWc60rssisrLMJ1Zvxpof6oivbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,60 +94,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tamir,
+On Mon, Dec 22, 2025 at 08:08:42PM +0900, Harry Yoo wrote:
+> The leftover space in a slab is always smaller than s->size, and
+> kmem caches for large objects that are not power-of-two sizes tend to have
+> a greater amount of leftover space per slab. In some cases, the leftover
+> space is larger than the size of the slabobj_ext array for the slab.
+> 
+> An excellent example of such a cache is ext4_inode_cache. On my system,
+> the object size is 1144, with a preferred order of 3, 28 objects per slab,
+> and 736 bytes of leftover space per slab.
+> 
+> Since the size of the slabobj_ext array is only 224 bytes (w/o mem
+> profiling) or 448 bytes (w/ mem profiling) per slab, the entire array
+> fits within the leftover space.
+> 
+> Allocate the slabobj_exts array from this unused space instead of using
+> kcalloc() when it is large enough. The array is allocated from unused
+> space only when creating new slabs, and it doesn't try to utilize unused
+> space if alloc_slab_obj_exts() is called after slab creation because
+> implementing lazy allocation involves more expensive synchronization.
+> 
+> The implementation and evaluation of lazy allocation from unused space
+> is left as future-work. As pointed by Vlastimil Babka [1], it could be
+> beneficial when a slab cache without SLAB_ACCOUNT can be created, and
+> some of the allocations from the cache use __GFP_ACCOUNT. For example,
+> xarray does that.
+> 
+> To avoid unnecessary overhead when MEMCG (with SLAB_ACCOUNT) and
+> MEM_ALLOC_PROFILING are not used for the cache, allocate the slabobj_ext
+> array only when either of them is enabled.
+> 
+> [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
+> 
+> Before patch (creating ~2.64M directories on ext4):
+>   Slab:            4747880 kB
+>   SReclaimable:    4169652 kB
+>   SUnreclaim:       578228 kB
+> 
+> After patch (creating ~2.64M directories on ext4):
+>   Slab:            4724020 kB
+>   SReclaimable:    4169188 kB
+>   SUnreclaim:       554832 kB (-22.84 MiB)
+> 
+> Enjoy the memory savings!
+> 
+> Link: https://lore.kernel.org/linux-mm/48029aab-20ea-4d90-bfd1-255592b2018e@suse.cz [1]
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  mm/slub.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 151 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 39c381cc1b2c..3fc3d2ca42e7 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -886,6 +886,99 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+>  	return *(unsigned long *)p;
+>  }
+>  
+> +#ifdef CONFIG_SLAB_OBJ_EXT
+> +
+> +/*
+> + * Check if memory cgroup or memory allocation profiling is enabled.
+> + * If enabled, SLUB tries to reduce memory overhead of accounting
+> + * slab objects. If neither is enabled when this function is called,
+> + * the optimization is simply skipped to avoid affecting caches that do not
+> + * need slabobj_ext metadata.
+> + *
+> + * However, this may disable optimization when memory cgroup or memory
+> + * allocation profiling is used, but slabs are created too early
+> + * even before those subsystems are initialized.
+> + */
+> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> +{
+> +	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
+> +		return true;
+> +
+> +	if (mem_alloc_profiling_enabled())
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> +{
+> +	return sizeof(struct slabobj_ext) * slab->objects;
+> +}
+> +
+> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> +						    struct slab *slab)
+> +{
+> +	unsigned long objext_offset;
+> +
+> +	objext_offset = s->red_left_pad + s->size * slab->objects;
 
-kernel test robot noticed the following build warnings:
+Hi Harry,
 
-[auto build test WARNING on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
+As s->size already includes s->red_left_pad, do we still need
+s->red_left_pad here?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/test_bitmap-extract-benchmark-module/20251222-214306
-base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
-patch link:    https://lore.kernel.org/r/20251222-bitmap-kunit-convert-v2-3-6a61a5330eff%40gmail.com
-patch subject: [PATCH v2 3/3] bitmap: break kunit into test cases
-config: arm64-randconfig-004-20251223 (https://download.01.org/0day-ci/archive/20251223/202512232235.vUHmJH7T-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512232235.vUHmJH7T-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512232235.vUHmJH7T-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   lib/bitmap_kunit.c: In function 'test_bitmap_printlist':
->> lib/bitmap_kunit.c:468:2: warning: 'memset' used with length equal to number of elements without multiplication by element size [-Wmemset-elt-size]
-     468 |  memset(bmap, -1, PAGE_SIZE);
-         |  ^~~~~~
-
-
-vim +/memset +468 lib/bitmap_kunit.c
-
-6ea86bdfc169ba lib/test_bitmap.c  Yury Norov       2019-05-14  459  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  460  static void test_bitmap_printlist(struct kunit *kunittest)
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  461  {
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  462  	static long bmap[PAGE_SIZE];
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  463  	static char buf[PAGE_SIZE];
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  464  	char expected[256];
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  465  	int ret, slen;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  466  	ktime_t time;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  467  
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14 @468  	memset(bmap, -1, PAGE_SIZE);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  469  	slen = snprintf(expected, sizeof(expected), "0-%ld\n", PAGE_SIZE * 8 - 1);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  470  	KUNIT_ASSERT_GT(kunittest, slen, 0);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  471  
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  472  	time = ktime_get();
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  473  	ret = bitmap_print_to_pagebuf(true, buf, bmap, PAGE_SIZE * 8);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  474  	time = ktime_get() - time;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  475  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  476  	KUNIT_ASSERT_EQ(kunittest, ret, slen);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  477  	KUNIT_ASSERT_STREQ(kunittest, buf, expected);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  478  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  479  	kunit_info(kunittest, "Time: %llu", time);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  480  }
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  481  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
+> +	return objext_offset;
+> +}
+> +
+> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> +						     struct slab *slab)
+> +{
+> +	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
+> +	unsigned long objext_size = obj_exts_size_in_slab(slab);
+> +
+> +	return objext_offset + objext_size <= slab_size(slab);
+> +}
+> +
+> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	unsigned long expected;
+> +	unsigned long obj_exts;
+> +
+> +	obj_exts = slab_obj_exts(slab);
+> +	if (!obj_exts)
+> +		return false;
+> +
+> +	if (!obj_exts_fit_within_slab_leftover(s, slab))
+> +		return false;
+> +
+> +	expected = (unsigned long)slab_address(slab);
+> +	expected += obj_exts_offset_in_slab(s, slab);
+> +	return obj_exts == expected;
+> +}
+> +#else
+> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> +						    struct slab *slab)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> +						     struct slab *slab)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_SLUB_DEBUG
+>  
+>  /*
+> @@ -1405,7 +1498,15 @@ slab_pad_check(struct kmem_cache *s, struct slab *slab)
+>  	start = slab_address(slab);
+>  	length = slab_size(slab);
+>  	end = start + length;
+> -	remainder = length % s->size;
+> +
+> +	if (obj_exts_in_slab(s, slab)) {
+> +		remainder = length;
+> +		remainder -= obj_exts_offset_in_slab(s, slab);
+> +		remainder -= obj_exts_size_in_slab(slab);
+> +	} else {
+> +		remainder = length % s->size;
+> +	}
+> +
+>  	if (!remainder)
+>  		return;
+>  
+> @@ -2179,6 +2280,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  		return;
+>  	}
+>  
+> +	if (obj_exts_in_slab(slab->slab_cache, slab)) {
+> +		slab->obj_exts = 0;
+> +		return;
+> +	}
+> +
+>  	/*
+>  	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
+>  	 * corresponding extension will be NULL. alloc_tag_sub() will throw a
+> @@ -2194,6 +2300,35 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  	slab->obj_exts = 0;
+>  }
+>  
+> +/*
+> + * Try to allocate slabobj_ext array from unused space.
+> + * This function must be called on a freshly allocated slab to prevent
+> + * concurrency problems.
+> + */
+> +static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	void *addr;
+> +	unsigned long obj_exts;
+> +
+> +	if (!need_slab_obj_exts(s))
+> +		return;
+> +
+> +	if (obj_exts_fit_within_slab_leftover(s, slab)) {
+> +		addr = slab_address(slab) + obj_exts_offset_in_slab(s, slab);
+> +		addr = kasan_reset_tag(addr);
+> +		obj_exts = (unsigned long)addr;
+> +
+> +		get_slab_obj_exts(obj_exts);
+> +		memset(addr, 0, obj_exts_size_in_slab(slab));
+> +		put_slab_obj_exts(obj_exts);
+> +
+> +		if (IS_ENABLED(CONFIG_MEMCG))
+> +			obj_exts |= MEMCG_DATA_OBJEXTS;
+> +		slab->obj_exts = obj_exts;
+> +		slab_set_stride(slab, sizeof(struct slabobj_ext));
+> +	}
+> +}
+> +
+>  #else /* CONFIG_SLAB_OBJ_EXT */
+>  
+>  static inline void init_slab_obj_exts(struct slab *slab)
+> @@ -2210,6 +2345,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  {
+>  }
+>  
+> +static inline void alloc_slab_obj_exts_early(struct kmem_cache *s,
+> +						       struct slab *slab)
+> +{
+> +}
+> +
+>  #endif /* CONFIG_SLAB_OBJ_EXT */
+>  
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> @@ -3206,7 +3346,9 @@ static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
+>  static __always_inline void account_slab(struct slab *slab, int order,
+>  					 struct kmem_cache *s, gfp_t gfp)
+>  {
+> -	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
+> +	if (memcg_kmem_online() &&
+> +			(s->flags & SLAB_ACCOUNT) &&
+> +			!slab_obj_exts(slab))
+>  		alloc_slab_obj_exts(slab, s, gfp, true);
+>  
+>  	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+> @@ -3270,9 +3412,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	slab->objects = oo_objects(oo);
+>  	slab->inuse = 0;
+>  	slab->frozen = 0;
+> -	init_slab_obj_exts(slab);
+> -
+> -	account_slab(slab, oo_order(oo), s, flags);
+>  
+>  	slab->slab_cache = s;
+>  
+> @@ -3281,6 +3420,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	start = slab_address(slab);
+>  
+>  	setup_slab_debug(s, slab, start);
+> +	init_slab_obj_exts(slab);
+> +	/*
+> +	 * Poison the slab before initializing the slabobj_ext array
+> +	 * to prevent the array from being overwritten.
+> +	 */
+> +	alloc_slab_obj_exts_early(s, slab);
+> +	account_slab(slab, oo_order(oo), s, flags);
+>  
+>  	shuffle = shuffle_freelist(s, slab);
+>  
+> -- 
+> 2.43.0
+> 
 
