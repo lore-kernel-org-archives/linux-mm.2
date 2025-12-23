@@ -4,126 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E247E6FE41
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 21:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58508E748EE
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 21:37:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E86E6B0005; Tue, 23 Dec 2025 16:23:51 -0500 (EST)
+	id AAC3C6B0005; Tue, 23 Dec 2025 16:37:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796536B0089; Tue, 23 Dec 2025 16:23:51 -0500 (EST)
+	id A2F5D6B0089; Tue, 23 Dec 2025 16:37:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BFE36B008A; Tue, 23 Dec 2025 16:23:51 -0500 (EST)
+	id 93C046B008A; Tue, 23 Dec 2025 16:37:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 599A46B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 16:23:51 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21A1D59516
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:23:51 +0000 (UTC)
-X-FDA: 84252013062.22.6C5E84A
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 212AD10000A
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:23:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kCdejj2C;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 824166B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 16:37:53 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2AA221386A3
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:37:53 +0000 (UTC)
+X-FDA: 84252048426.12.13CFA13
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7C3C3120014
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 21:37:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LR748CgI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766525871; a=rsa-sha256;
+	cv=none;
+	b=5xjEMplM6s7Rgv+b+yLLjkxebsj9eZ/asMupcVWlpdHIijIdRKJkJk+ENCbpAjKj2xhnsF
+	jQ9Yga/SmUthIcM/LKvuHQUh6cUammXXUurRD2ENGdhzJ/RHUhq9F3qJ0gfIM03H+9EoFG
+	RV0IhstxxZ9SL7wSBE+7EDDR5LuvxsE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LR748CgI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766525029;
+	s=arc-20220608; t=1766525871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUOtxvoS/dJ0bosqqi9uYzrSZp+RubGpXgIfU8VaOC0=;
-	b=ffuNe3G1E90jon4gMRsfD6MX5shQYBVDqi0TIoNrQxmM/VECgPjRvm7NCQAEpt/kGxtvEp
-	pTbtp1sawAsXbjctloE+TEq7NYp5s8hVsrtRBy27SgVr7ZD9wZBrI11PWfl5QiDaXIbGp9
-	p28ivElx3Pc7mvi+dOI0qpSFF2Dbpfs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kCdejj2C;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766525029; a=rsa-sha256;
-	cv=none;
-	b=1TMo+WvoDaY7Xn5+9+W6K9ySFLYnIgkHokP2R64blfQlSn3TXIRlu9REkp/mgm6YHmlJ9L
-	zPh+xoNVUO8mf3JoetdsUoK5bfvNtsmwGEtpGlYquzycainiKClgXvoxy/dF25pKOTgXGr
-	hBydm1/b5YGfcRC9bQl0AmMFr3DBfoM=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7ade456b6abso4493452b3a.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:23:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766525028; x=1767129828; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUOtxvoS/dJ0bosqqi9uYzrSZp+RubGpXgIfU8VaOC0=;
-        b=kCdejj2CeydkskvfU158qCltreIaKYuXQyuXG5br4OS3+brjYWLmNZo0SUsEz9C6Tb
-         m+esQyb9Ht0zeFHM+WCmoP/STRaJxXoNsYdj7rYsQjqDCYHsZ9yEIsldxOnPfwbRQw3b
-         2mgB7TL3aXKHBofEZ8b+LKAXssLHf1C7e9Kh6p9H/ivEhbOZm9jTlM4gmlTU/5mJdWB/
-         U5qwgxLHjS49axrPc6jGgP/qtPvfjyicfJSkUuDTSrTS063bN584p8ziLjKc6p336Zwy
-         6z88UM7aZoASsEZKYf3KDJI6LXX9ksI2x9+qganFHTZkgr0h2tAB700DHL+h7SwSZ0Ef
-         mVdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766525028; x=1767129828;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aUOtxvoS/dJ0bosqqi9uYzrSZp+RubGpXgIfU8VaOC0=;
-        b=L81fN85mkVSqSUGQvIf1FQhMTT3S3YqRWz/wzg78AZuOiY48pMTb1YzxcIxOIeseNl
-         Zn+3oOqHc8oo8Iza4Gvr+DxWPKzCFBwB6UYG7d05/OFTdQa5SKEYhL8FkomYaD27Ubkv
-         yGoHjmqIckpBYcwdDt9c71ztfLzAjfmyTy7X+fZy6EY93oGFYclFhMtgFn4PzAOB4sfe
-         XHHibqiKaRSfKfL5I9BH7rBvR06XpI44DnKG/ULiEhcK7IL0aFzXh37evawznYyKwfdN
-         zCWM8GibYronPtHOEOfGawDn1PIwDkcpgJqrMpvsH6iVK9H5imw0lG98mScGXh/3LGeh
-         f1Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCVAbKGnuXDfNBMKITQfrh0hF9PUv3aYufxIzBQeBTYcBBztR/cM51zYI079z3/ztJNvLvOUT2sX5Q==@kvack.org
-X-Gm-Message-State: AOJu0YyiAKIIrpd/G4rkvWbL/X9ZW9OSiJiHIhKewOxAJTOnw/1P3dtn
-	E8QEM80YfOf5BcogzX1ULARlgTIKA0LlATvpIFIc4ZcwEOWEUdbEwCc1
-X-Gm-Gg: AY/fxX5NfhazoeWwST0yvFAy/BFMdzZ9CxrHgcNXnni5JhSeOODpnl/b9pV0SwpUS3I
-	t0Kf9htTI2ClCYH1gzjHR7g8+ay4KNecTt3O2IG4DCzLnbyidQSFROZ3OZlToSflzRrPOIQcAPw
-	FGnmyF3XeDCPXNV4FhLskatIeS2XzbQbOxEhMpGFgkH7vfhoND0qMahUQ+fqzQoWqxtBmJNLTkP
-	9JoOVGiHmGTb7sd83oVdbeE7qtCpR2TaKgE0Bj/riChmNKnjcU08Tb/ph+w/qMC5rjIVhhmRM2i
-	vwG8tG5IJMnrLsi0j9Axc/8lAG/Sg+Peg83+vloY7EmOxcUa5uqUcUZy5NfNL/LkuymnncnoHZ0
-	OxrIezT6f5biVZbznOeaKQuBEVSFop0Z0/dHoDOhMBKudksSfvqSk3092oFS4/v8XlUbUggyR1r
-	j36QVxUPKMqA1MZQZadXcjcTA=
-X-Google-Smtp-Source: AGHT+IFjl4NYgeswg6t6gVHpQmyKXq6Zs/y+ycrSPrseIyz6yvUumVrAY0eo9AqIFMVJD/juZ07wKw==
-X-Received: by 2002:a05:6a00:3017:b0:781:1f28:eadd with SMTP id d2e1a72fcca58-7ff646f8f08mr13731625b3a.20.1766525027718;
-        Tue, 23 Dec 2025 13:23:47 -0800 (PST)
-Received: from barry-desktop.hub ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cffesm14433009b3a.49.2025.12.23.13.23.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 13:23:45 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: urezki@gmail.com
-Cc: 21cnbao@gmail.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	jstultz@google.com,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	mripard@kernel.org,
-	sumit.semwal@linaro.org,
-	v-songbaohua@oppo.com,
-	zhengtangquan@oppo.com
-Subject: Re: [PATCH] mm/vmalloc: map contiguous pages in batches for vmap() whenever possible
-Date: Wed, 24 Dec 2025 10:23:34 +1300
-Message-ID: <20251223212336.36249-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <aUlC6N1jmDbMDPc5@milan>
-References: <aUlC6N1jmDbMDPc5@milan>
+	bh=RyXDQud2+QRFzgc1/tApOzJW0S9TlYzCMkFHqZsKgrw=;
+	b=4tsFBFH2xuycgciJ3++nqGaEzvnxA4Kmjt/cQrmmOkh+PLLqu4gbF1DYUiHzdGTVrfoqS2
+	p+c7lqVdvlAMlcsJ73QM5CpOs4m5oD4iDIVS2axGhM2osKXxkcBLgzhgyuUwfwOetoYC+B
+	+3FedzEe1CaIwWZHLzXkWJO/O+QAxW4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D1E7F60142;
+	Tue, 23 Dec 2025 21:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78289C113D0;
+	Tue, 23 Dec 2025 21:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766525870;
+	bh=q6AI67NwJvG0d5MePX9VplhpPUwUqzhtBZgditDmiMI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LR748CgIoq5JJA9NDUF8u+wYPMpWF8Xelj4aJGLy/CdNNl0F01oIzd2UG1llNB46/
+	 kORk78WwJaiX40Snzt4msG2bqX4uEOACjsFuoSCDrVKiKnQSARWJ7iLhXc7utOp3ao
+	 jExEP8YChhF8bFnki75VkNu1r4Lj061SWPGnj7yoJeki1oXGRhXyo0bFp1rRl7r96e
+	 5lB3anxVm8rDiUe8Rg/AqhHYYMp8mOtikOeyLRapzzhXR3tqOeYJR+AY3whfcgEdi8
+	 Ha3nm4ceD/vi8fd3y7ntxStCt+tb/3lZg1D+eDFyOHiiRvdGQQjqMNzwyTfWQDFd2i
+	 RaYg5F2sNd4Ww==
+Message-ID: <4e680315-5530-4900-a59e-d61cd8209c6a@kernel.org>
+Date: Tue, 23 Dec 2025 22:37:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ognarot5q4pmw51axwo7teid9658bxzs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] mm/hugetlb: fixes for PMD table sharing (incl.
+ using mmu_gather)
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>
+References: <20251223205046.565162-1-david@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251223205046.565162-1-david@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7C3C3120014
+X-Stat-Signature: zodruxy5c1au1nd5fanefwhw4y1651be
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 212AD10000A
-X-HE-Tag: 1766525028-394293
-X-HE-Meta: U2FsdGVkX19l8wnt2FSkDsoIV5xjLH7GYFmg/ojnzUGN8jKqiOumCeZ5iGjhskh8ZUjbN/udh4Sh+vYsq9EUa/UbYszFEhkamkS+ZrgI37IIeRoEqLC3MhSVCXy9hKSjFXjgJTaqJzp1ZJkr/OOF5PhPK2sXU1mWwLdxHsCKFpYdE7rZDnXA5m+C4OA1BucGKRXvpRUbaHXWkdeUsPVKSBVjfP6WZrhP5gsNn7Wet3IchlNutPv2aeNhJc2BksU9PuB772jTdOShxSvelqBXTCou3PMOuDE3sRrwOCb/D9cu1XDBgveza5tUHQttg0hcrYFx5C5IYNScy6fJfgzMS5CnAF+/+1Unr/z+HiGlNK/TJ6RuXXoJvz8LPjpr/BTQSH+KokYNSbec9z3dloXAjSg4iscvSh6TNtLp6trnhiRVfCWcBiQTEXd8DavjhPhWP6fqRGftPskeFXsHiF2c66OzvxQn1NmB+mKVpJzRF9ecoAEIks9MUODVeo7Fm5mrmsStRF809i8YX0fr5PWMikQfEu0YyJAwstBxbwdgwq1NWZQ6mBHDzq25ttKIqMn8HVweA+/vPNiJ0uABLDHsGOO15lxzYARzm6tJ4EoqSKJlyOmk6NdFDh/uz5CBkm5fq8rLa8jjH0ao/XgFeNJFhskZOplEgYEL1FF0kL0FuaqXNwwhtlMwhdRqH3Nd8AnUxgE4rylB3uwTYFMV7jwz/wLudJSppnPn3uCYtp4ZnHDsLZhvwqdCFQnQFtBjuoQ8yikB560Uq9NRSKyaP5FYlQ8KEnRoXxYEmCx+X43rS+4j3lS9ypcdV4ehwyrogOtxazCrviCuOJYG5Cp52rOGl/b+s44YPcAyy7WNXGgI4IvmQPE2pCp7XEmyXOG15Z14vu+U2sKOskscAfrzWIZe5NX8xiyhbgQorlyfuDWTXt+ss0cad1lWWcDXx0mjkRR0FcKXE29mxN9jXIl+AO0
- AHr0GEaQ
- EbRBQFl/7P6vNivNecED4CG9DJYIa0IwQn/0xRsxvi9/WexTDMDCBFCLqIMYTNsLArKfkdYuR/0Lz07lqA99QzZKr8KO51nfIh0DjWtvAH+xlURtuMAFoxXURjPzGGjEmJJ3ug6MFesGY3jGnSI5XqhQXksr1ZB8l7B7gbRjznUiB4CQBVohkzCgNRk6zxykGv3yHUGzpKKKPipu91SdVlJ+C4Frbf4CSw/pkz2NX3IqcGUG9elUviFlaJrsbKu+mOBYLica4THvqI/rIO3FEIqdPqoh8Z1o1k6uXUaJF47Q5fnhWBtoaJxQT6/ZIfXwAeLLVLFGIkL0jua/VXGpoHjGlWHS4P9dSUCzVNISNLOtvdt926PL3JoOws6JTP+ZZtjYPBFTJbw2idCW6ihgHFIrV9tpDFTLBlpXl1JFXFOejcLA=
+X-HE-Tag: 1766525871-752826
+X-HE-Meta: U2FsdGVkX1/G4G+O1/HsxM4I1cjnY5EFYwNCJtX3IL6TFMTsStRvA/C/f+LHTK2H4z4ZjpuBVAle+xhxLCLRsgTpA4CWLBttpCj/niEbxSSY4UEThu8mzZVggwwMNYtPjfTmjYgM3V0rUVpEmWCv6iELyEgyZNe8UoDLYHq6yS5KVTunvIzPhliIWQD+qa+B4ZrK84Jn/TeB4fKrYb97x1WWOflO7xO8WxXseDPr5rQZIQKxJrKeY159nEipBCVJMjv3NLj6hAHsT95jtov3vqTd156BiiBVMy0YNQG++q2sOrbPMOyxMpmtCHL2tk5C5mKK/b34Qvnm0usTmHNYi6rw6LBkkgSgUQIr5jp2J88pJ/Em3NEEkLe/MkEBUBBdnBKI2p2hPylPmycNZJm2gIuAr6As/k2y9mD8EXCupWfRgmGMi9/GrwLzjhHWsiBN2VMj1GsIb7cjiv5Kmi7873xynQyhn+s1JM6oARWll1U3ZDhtBI1HBZr2Qr2EQ9eCotC0nRIUeeM43EO9As9VnunFmV4l8OG+aqGRfN4zdEUas+wp/2zvHxWsTQ8Hwbcu6Y4rjOJSj2yUWkBwgWUyejpweMbucJzkT5k+GaCRvRfknLVQFLUvKLedKyAOHWNRi2EIu8hWNnGb60Ug7URO6HsgyJI1QyDInAGm3EC1M9gQnKQ+9v0Rv+jR7iy/OIcFKb7UZAT/l1M1+CmIHWXfHQCq6EdHUp852c7KnUjDDZWFJWw56p0k0PAR2B97SMrvGmokpLCLJNfQaYOG0yrLeACWKONsds7Dhb1fD4S+XuSpy5zy/DQ5X72i6Gcbb1mRcU8K82b//AuiPoKpO6s9zBRf+pMMhkdilISEcPISGmOVJ+Om1SOK2WX3azSLnhUluou0Ezq1p/JXKKJZULuV4hBKWbBxGeRrsTVoTYs7TBnzf/94DTDaLpkjLfLZrj8AzcDCNt9mX2PDwuWPinL
+ cat5rHiO
+ 0OuQAxj9CZJhrjqDVbcwHtX2Z0kqbPwDx2yO70f7XmzYb4lxBD3Facs93ITyNV+43pefZSoeJhpPz6WNG8Drzsabx/Ufht1psODbR+ZzV7Uv/wlTx+qOXasrHlVhXyrOpUelLYZRuTiFLtO7lAWt9l0Hld6KX3vA89gqsHvZmZYwCVVc3moDJewP3RHZQfu0QZbI1O5IHMApD8E1TcFJsPv8QMKyFIhuafYfJtjk0pMg59ynlzcs6yGfU/PggQR8DXPBITw7SZruxgoatB45kDlFHwUS2qlxmc2JLVeJZbBh64x31RiXUY/7T4UIQv9ALkaxwQAvIAfotZO4LYIy0mBlQI7JhJ4KCl8uAltn18e6/hDmCWaM0WN/f7Mz6fpsPkGkH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,126 +105,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >  /*
-> >   * vmap_pages_range_noflush is similar to vmap_pages_range, but does not
-> >   * flush caches.
-> > @@ -658,20 +672,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> >
-> >       WARN_ON(page_shift < PAGE_SHIFT);
-> >
-> > +     /*
-> > +      * For vmap(), users may allocate pages from high orders down to
-> > +      * order 0, while always using PAGE_SHIFT as the page_shift.
-> > +      * We first check whether the initial page is a compound page. If so,
-> > +      * there may be an opportunity to batch multiple pages together.
-> > +      */
-> >       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-> > -                     page_shift == PAGE_SHIFT)
-> > +                     (page_shift == PAGE_SHIFT && !PageCompound(pages[0])))
-> >               return vmap_small_pages_range_noflush(addr, end, prot, pages);
-> Hm.. If first few pages are order-0 and the rest are compound
-> then we do nothing.
+On 12/23/25 21:50, David Hildenbrand (Red Hat) wrote:
+> One functional fix, one performance regression fix, and two related
+> comment fixes.
 
-Now the dma-buf is allocated in descending order. If page0
-is not huge, page1 will not be either. However, I agree that
-we may extend support for this case.
+Ignore this one, I forgot to include the first patch. Will resend in a sec.
 
->
-> >
-> > -     for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-> > +     for (i = 0; i < nr; ) {
-> > +             unsigned int shift = page_shift;
-> >               int err;
-> >
-> > -             err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> > +             /*
-> > +              * For vmap() cases, page_shift is always PAGE_SHIFT, even
-> > +              * if the pages are physically contiguous, they may still
-> > +              * be mapped in a batch.
-> > +              */
-> > +             if (page_shift == PAGE_SHIFT)
-> > +                     shift += get_vmap_batch_order(pages, nr - i, i);
-> > +             err = vmap_range_noflush(addr, addr + (1UL << shift),
-> >                                       page_to_phys(pages[i]), prot,
-> > -                                     page_shift);
-> > +                                     shift);
-> >               if (err)
-> >                       return err;
-> >
-> > -             addr += 1UL << page_shift;
-> > +             addr += 1UL  << shift;
-> > +             i += 1U << shift;
-> >       }
-> >
-> >       return 0;
-> >
-> > Does this look clearer?
-> >
-> The concern is we mix it with a huge page mapping path. If we want to batch
-> v-mapping for page_shift == PAGE_SHIFT case, where "pages" array may contain
-> compound pages(folio)(corner case to me), i think we should split it.
-
-I agree this might not be common when the vmap buffer is only
-used by the CPU. However, for GPUs, NPUs, and similar devices,
-benefiting from larger mappings may be quite common.
-
-Does the code below, which moves batched mapping to vmap(),
-address both of your concerns?
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index ecbac900c35f..782f2eac8a63 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3501,6 +3501,20 @@ void vunmap(const void *addr)
- }
- EXPORT_SYMBOL(vunmap);
- 
-+static inline int get_vmap_batch_order(struct page **pages,
-+		unsigned int max_steps, unsigned int idx)
-+{
-+	unsigned int nr_pages;
-+
-+	nr_pages = compound_nr(pages[idx]);
-+	if (nr_pages == 1 || max_steps < nr_pages)
-+		return 0;
-+
-+	if (num_pages_contiguous(&pages[idx], nr_pages) == nr_pages)
-+		return compound_order(pages[idx]);
-+	return 0;
-+}
-+
- /**
-  * vmap - map an array of pages into virtually contiguous space
-  * @pages: array of page pointers
-@@ -3544,10 +3558,21 @@ void *vmap(struct page **pages, unsigned int count,
- 		return NULL;
- 
- 	addr = (unsigned long)area->addr;
--	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
--				pages, PAGE_SHIFT) < 0) {
--		vunmap(area->addr);
--		return NULL;
-+	for (unsigned int i = 0; i < count; ) {
-+		unsigned int shift = PAGE_SHIFT;
-+		int err;
-+
-+		shift += get_vmap_batch_order(pages, count - i, i);
-+		err = vmap_range_noflush(addr, addr + (1UL << shift),
-+				page_to_phys(pages[i]), pgprot_nx(prot),
-+				shift);
-+		if (err) {
-+			vunmap(area->addr);
-+			return NULL;
-+		}
-+
-+		addr += 1UL  << shift;
-+		i += 1U << shift;
- 	}
- 
- 	if (flags & VM_MAP_PUT_PAGES) {
 -- 
-2.48.1
+Cheers
 
-Thanks
-Barry
+David
 
