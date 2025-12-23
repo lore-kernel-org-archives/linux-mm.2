@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE543E6F079
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:45:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2DDAE6F07B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7846B0089; Tue, 23 Dec 2025 04:45:18 -0500 (EST)
+	id 4CAB66B0005; Tue, 23 Dec 2025 04:59:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B8CA6B008A; Tue, 23 Dec 2025 04:45:18 -0500 (EST)
+	id 4A2976B0089; Tue, 23 Dec 2025 04:59:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C1706B008C; Tue, 23 Dec 2025 04:45:18 -0500 (EST)
+	id 3D95C6B008A; Tue, 23 Dec 2025 04:59:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BE016B0089
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:45:18 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 13A4B160570
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:45:18 +0000 (UTC)
-X-FDA: 84250252716.23.96D40F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 925F6C000C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:45:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5rSmj0E;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766483116; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 294986B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:59:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ABCF8140111
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:59:37 +0000 (UTC)
+X-FDA: 84250288794.09.E4652B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 12FFF1C000B
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:59:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3kkAboY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766483976; a=rsa-sha256;
 	cv=none;
-	b=1ZMUMpiyzMt4+xqK9iy9q8SGxJcJ1K9u7+Dtby0MPGXmgTcKYbGr8kPxncGs3mfFpXhEzQ
-	u8anfOD9TkGqP1Nl1FK/ByJz2tLouCkwcgCYuY9PmIp5SkG+9QowSIpQ6Q4MBFL1Nd0vI8
-	sl5fHZRZoeBQXTE0aAdV9qGT1uipBLI=
+	b=LQklwBZfoNNa+7U/cctl3yupynVjHaXMMvIZkyBCn/QB7ZDM0khf+m6EFsmdJY7m+vJz8V
+	4ctOchNrZtG5b6Rfk3K3glGZZRmT5W96wmuhCGYBew6ZCtwnAyr1l2M5nM3QaDiN5dFXmD
+	+QUfujlAcL/70kk1zfwIsBICnrJd3Os=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5rSmj0E;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3kkAboY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766483116;
+	s=arc-20220608; t=1766483976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9kP4UQKZof9b3iY+9oFO5PIB2T9eFRPnGkM5v3gTi54=;
-	b=BlA3K4mXS+INLF9FgM0StbrV8PZbm2kPa74OUr5LQ5a6qVkF2F+xtCPYPPQ1dd8jORncL8
-	EcOdhfbtHQhbkwU7r5optraVOaxqC1kkdaynfq4aXkICLnItoZdgXC84mNzMV9JWcLeada
-	9qE+lZjtOGEolZDYL+AWPj+PemptQPk=
+	bh=zbLv6DEHgtDaX0O34tA7+y6ZTkgWpq+kPJwsCYukxAg=;
+	b=8oi0O5Yo99gIeOAkF3XIMBLPJZ2I55m3fkbQ3v9nAtcOWxGDdIN55vWM+LlHaN1cBz4+hI
+	nXWdwUL4onyRh9TtDLOkIrJ+0AQzlMkrOVzyRb6XA1Z5QUgnZkkWy/LjbqvGjTAx0rNB9N
+	6xLK0LKttOW+YYsa9VTKeB8ORhuYYjI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2035E600AE;
-	Tue, 23 Dec 2025 09:45:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C103C113D0;
-	Tue, 23 Dec 2025 09:45:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B45140659;
+	Tue, 23 Dec 2025 09:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA1AC113D0;
+	Tue, 23 Dec 2025 09:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766483115;
-	bh=pduBI4X/Mk1ek2LX7TGThg8Kkc2him1nGwwQ3ckU+6w=;
+	s=k20201202; t=1766483975;
+	bh=iKMg2CO9oQKKaDz/ACI08ogERjb2hc2nhBYRMS9mJCY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i5rSmj0EYfHS7GUR4EvivixR0KO99ndYmxPHDxE3+RdoG4NmfdXmHvWvLdFqtLa3J
-	 amk8iYzwJR5KuaJJ+ZpA0vpgc+uTv21oghiqJt4Fl3BEb0TDo2MAhLwoFGBpi6MDwg
-	 FV8hafq0oO0wAinH27bRxrI85B2Kho+oMulz9enBtUMb/AcWokDZEyyCbL6WF7yM4X
-	 P4+sBVQc6J+wEKyIiWS+VaGB4jHUhr6+XJ80N+b8A/yOJyg4Y077FCDkS8OLwHydsF
-	 iWTLdspIMxp7FRks206B5xqXSzzffjkAWI6boPOF48IYoh9S0UsJPCCiFBZAR2RuE8
-	 3FM/p4zVg020w==
-Message-ID: <961095cd-59d2-454a-9b97-493d12f296a1@kernel.org>
-Date: Tue, 23 Dec 2025 10:45:11 +0100
+	b=a3kkAboYgw5haeZSBviuhS3C0XusEuKN9e/Ax+iBOiGqbpvVbosS2sP0DcEtDEoYR
+	 GPSOIPboBTwkTdft7V3q8FzP0tj2gOMTugewkjCePWSnhajgrDN/1Fklyxc2gAj0QZ
+	 LxivIjGOgsiXeVtLL3uVvZLVudaqXcD6+oqJz2STkNwBIXabm51VbRvNdmJZi1JGsb
+	 Dp8DsqwlNwcLSHq6xPvJ/JY+Ng5Eu+Q45XuhPVA3dMYpdMmqOseV8NPlGSR56w2JFM
+	 sNyL9qg/cQtg2mtMVzWzhwbjU5B66LOAfdEnCL9PfBWqk4BX0bJzr9dgPth4eqmfz1
+	 F/8AXxUc5jHkg==
+Message-ID: <ad2c1355-be13-45d9-8474-a32a4b710aa5@kernel.org>
+Date: Tue, 23 Dec 2025 10:59:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/fadvise: validate offset in generic_fadvise
-To: klourencodev@gmail.com, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, Kevin Lourenco <k.lourenco@criteo.com>
-References: <20251222141817.13335-1-klourencodev@gmail.com>
+Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
+ MADV_COLD/MADV_FREE
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-4-yanglincheng@kylinos.cn>
+ <3c75d915-5d7f-4e80-975f-4479393e7139@kernel.org>
+ <tnvhnikpfxyjassrdsnqmpxlem3hnoepwxmp4hysfzqzl3wltw@7utx5hxc52th>
+ <6e8684a5-1f71-4be6-8805-9b047a2bcb78@kernel.org>
+ <20251221021044.2r5fhepiyyhvuo7h@master>
+ <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
+ <5af0e0ae-0472-45b8-a249-44b4e5239d33@kernel.org>
+ <ck5nkriyqdvy7ftu3xeu6cn4aj3s3cpefbga55vkzblnoywrpi@2sw5oh3saixt>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251222141817.13335-1-klourencodev@gmail.com>
+In-Reply-To: <ck5nkriyqdvy7ftu3xeu6cn4aj3s3cpefbga55vkzblnoywrpi@2sw5oh3saixt>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 925F6C000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 1xq76ay6xn6a7rdrixb6ek1r5mmdoodn
-X-HE-Tag: 1766483116-257217
-X-HE-Meta: U2FsdGVkX19WjqQlOKYkE21wOTzUtUtUrBXRRJpThp+uDRp9p6lz8ku0i6cIpNXet99Uzb+Y8aKaCh+L8Cz21StcIHRH3edMO87+RyRLJEK+x10zUGRALo1OWkl8MgjFp7SYR2eLUf1HqFP9DC4+1w3umQt7gWjIsC1WzxF6Kw7suIk8hDDsyWQYM4QDTIAb/X2m9au2RwB5Rp2rzjrNy1kWTNhrshrADOLYe2pf71sS8PIIQYeffXgntuEoNkxbJS9bdY0HuTiXy8XovgMl4CBN9eFJqrzHpoRDTN5S8IAuC1OpC1J2Ey377Hs+JGTrhRDBiNNmnHmEph+6xHMnpYB/YkgpaMO4T3nkizMxDrzmc2mU4kuzUHP8GEnbHVu5eRrAk4hTo5XJnnEvnXlGt1b6FHlAqW99zdL1RDySypVdvhkAcDWW+OcyRayu9MzTZ5nEpzTWQXGu6Pix8brjLV0rJ2szZ+x4M9qI/pqz0Op0tIqblj/z+w1K1R3LgnuWaOKCAu81gD4yh54sAbwDMt+KEOZpr+KkFjGTuaja/rtO6NRzyZyLy9AZ05DggXQYEIQ6e2RMMcZmSP6QAa/5zt/xNruLkekiHQUH+xPD6CVtGpkRhy1MEWSoUHLZ66evaI5NJ8ntx/JKGB70zhRwkwHioXjsot3uB1OcZ1z1rkZauSiWc9/PGXPw++1D4EfFoAjbaMToJCupsdr2tS8ZngtUnYS/jr9gEmwEbjZX2J6jw8nf4zJuWPvuxSQYxMvuro0bNOjw66bXXXGBInqUvK+mXdPQuPJSghk5QiXx7jk2JuzEIB4cQITaOVTzLa8US4IvXtduMshXWFAtW1WYtzq3cvMAoLJyoPY5/JfiF1YOVQLcspHAPLeGj8t0mE2voa/h1tM0mO358nD3JqcbNJQ/M1cVkS6J1Y6/HIYYgv9WMy4K/EuF2gmplK8EP74+mgQ+YM4Dz3iP0vcUSML
- w26cltES
- pSXiW
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000019, version=1.2.4
+X-Rspamd-Queue-Id: 12FFF1C000B
+X-Rspamd-Server: rspam10
+X-Stat-Signature: cu9pq4r6f1ye8ty9ae8nx9dik1fqhtx3
+X-HE-Tag: 1766483975-103120
+X-HE-Meta: U2FsdGVkX1+E7YUNkzMog/rl4uFwFi04OAj+g8cI9Mm3Udmiwl07DTFPY+6DBPy/NAb+QTRKwd2ADZHUtcE6Du/aXllry7l+U7NcFkMW4aonfIReOX1odcgkZ1PyCT4NBNyxWg210XXxmHzsig9YL06nSDyFRXj8J4nl5FQqz3/vvrkJ2yUCmfg/WkSXqR6yNAse6Lma6UGk+vtfgTtcAQlm+aB4LUhO8BKGIHqGXFVqdZmc4j8dlzvGUrgphKZ75syAkooicw64AhoAMLpC0SILc9RYiQ7wPr7z5SsM5ghqlnm7+Qs8nTxO/H41RUzwhF32cPtNn+4+JdlHvO2Ms27JVKdG0wGyHBtuCQXbx43u20tJQeKa/8ZDQTMc7K2Bf3/kbv5ZLsjTKTBXCVlokLIoEFa3a2M4IourURuNEIEMfFKoeUhh72w/CXokgYGmIuVLqOb/JcrzZxdVc0Ov4oDIfI+1qtsVFmL1EF2UQ7u9XRPW+Y5hDIt+MX6ggc6GQA/YJkMXfXI0tJGbW7DOT446JXJO7VRDRuaDfHMvE8pmZIpusq1fSGPYxsrasnDdlppo8H6Ts7GI107TVLIh3RNna0C75ktC6s2RL8GzFFg0vqkdM69DBnn45gz13dACc3nvm1Je2ZCEt28PIbyfxHoFbJe1RKlEWeHxsuFbLNU6xmRkdY5TXZLT7ia+2ktB/9OtTYUzEgysZR/SVjhBbYIgEQFzO6DcJToDSUZnmksiOFd6kftqnh7hXJYoIS+oeaBBNUbwhs9oYeTCPvUOEHyRYMUDHfWDPU8LiJSXI4SzfbytqDjotfb+uYbuaLkaoOVx93s4vI+7s3D1Ynnu5wr/yiu7BwWyFvqERVne2xHGEZRDhakVtr2/97tPWIDGuZ3nbFDUOwmunKHkZsHuP8m1t8cCwboe8IqZ+b6oW9FJS0CJ+v0VKm/zjmlJ2QjGp+fzEtBr72WJAcD48h+
+ 0DrdOCmJ
+ C4499mtsyIv48v0WWRUteIQumqatsif4jIYEMG5BTtDn/zK76gQtZauNLMaIwWJC8ukHTqMiilrSzb1o=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +105,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/22/25 15:18, klourencodev@gmail.com wrote:
-> From: Kevin Lourenco <klourencodev@gmail.com>
+On 12/21/25 13:34, Vernon Yang wrote:
+> On Sun, Dec 21, 2025 at 10:24:11AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 12/21/25 05:25, Vernon Yang wrote:
+>>> On Sun, Dec 21, 2025 at 02:10:44AM +0000, Wei Yang wrote:
+>>>> On Fri, Dec 19, 2025 at 09:58:17AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>> On 12/19/25 06:29, Vernon Yang wrote:
+>>>>>> On Thu, Dec 18, 2025 at 10:31:58AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>>>> On 12/15/25 10:04, Vernon Yang wrote:
+>>>>>>>> For example, create three task: hot1 -> cold -> hot2. After all three
+>>>>>>>> task are created, each allocate memory 128MB. the hot1/hot2 task
+>>>>>>>> continuously access 128 MB memory, while the cold task only accesses
+>>>>>>>> its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
+>>>>>>>> still prioritizes scanning the cold task and only scans the hot2 task
+>>>>>>>> after completing the scan of the cold task.
+>>>>>>>>
+>>>>>>>> So if the user has explicitly informed us via MADV_COLD/FREE that this
+>>>>>>>> memory is cold or will be freed, it is appropriate for khugepaged to
+>>>>>>>> scan it only at the latest possible moment, thereby avoiding unnecessary
+>>>>>>>> scan and collapse operations to reducing CPU wastage.
+>>>>>>>>
+>>>>>>>> Here are the performance test results:
+>>>>>>>> (Throughput bigger is better, other smaller is better)
+>>>>>>>>
+>>>>>>>> Testing on x86_64 machine:
+>>>>>>>>
+>>>>>>>> | task hot2           | without patch | with patch    |  delta  |
+>>>>>>>> |---------------------|---------------|---------------|---------|
+>>>>>>>> | total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
+>>>>>>>> | cycles per access   |  4.91         |  2.07         | -57.84% |
+>>>>>>>> | Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
+>>>>>>>> | dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
+>>>>>>>>
+>>>>>>>> Testing on qemu-system-x86_64 -enable-kvm:
+>>>>>>>>
+>>>>>>>> | task hot2           | without patch | with patch    |  delta  |
+>>>>>>>> |---------------------|---------------|---------------|---------|
+>>>>>>>> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+>>>>>>>> | cycles per access   |  7.23         |  2.12         | -70.68% |
+>>>>>>>> | Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
+>>>>>>>> | dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+>>>>>>>
+>>>>>>> Again, I also don't like that because you make assumptions on a full process
+>>>>>>> based on some part of it's address space.
+>>>>>>>
+>>>>>>> E.g., if a library issues a MADV_COLD on some part of the memory the library
+>>>>>>> manages, why should the remaining part of the process suffer as well?
+>>>>>>
+>>>>>> Yes, you make a good point, thanks!
+>>>>>>
+>>>>>>> This seems to be an heuristic focused on some specific workloads, no?
+>>>>>>
+>>>>>> Right.
+>>>>>>
+>>>>>> Could we use the VM_NOHUGEPAGE flag to indicate that this region should
+>>>>>> not be collapsed, so that khugepaged can simply skip this VMA during
+>>>>>> scanning? This way, it won't affect the remaining part of the task's
+>>>>>> memory regions.
+>>>>>
+>>>>> I thought we would skip these regions already properly in khugeapged, or
+>>>>> maybe I misunderstood your question.
+>>>>>
+>>>>
+>>>> I think we should, but seems we didn't do this for anonymous memory during
+>>>> khugepaged.
+>>>>
+>>>> We check the vma with thp_vma_allowable_order() during scan.
+>>>>
+>>>>     * For anonymous memory during khugepaged, if we always enable 2M collapse,
+>>>>       we will scan this vma. Even VM_NOHUGEPAGE is set.
+>>>>
+>>>>     * For other cases, it looks good since __thp_vma_allowable_order() will skip
+>>>>       this vma with vma_thp_disabled().
+>>>
+>>> Hi David, Wei,
+>>>
+>>> The khugepaged has already checked the VM_NOHUGEPAGE flag for anonymous
+>>> memory during scan, as below:
+>>>
+>>> khugepaged_scan_mm_slot()
+>>>       thp_vma_allowable_order()
+>>>           thp_vma_allowable_orders()
+>>>               __thp_vma_allowable_orders()
+>>>                   vma_thp_disabled() {
+>>>                        if (vm_flags & VM_NOHUGEPAGE)
+>>>                            return true;
+>>>                   }
+>>>
+>>> REAL ISSUE: when madvise(MADV_COLD)，not set VM_NOHUGEPAGE flag to vma,
+>>> so the khugepaged will continue scan this vma.
+>>>
+>>> I set VM_NOHUGEPAGE flag to vma when madvise(MADV_COLD), the test has
+>>> been successful. I will send it in the next version.
+>>
+>> No we must not do that. That's a user-space visible change. :/
 > 
-> When converted to (u64) for page calculations, a negative offset
-> can produce extremely large page indices. This may lead to issues in certain advice modes (excessive readahead or
-> cache invalidation)
-> 
-> offsets are normally non-negative, but the API does not guarantee this. Since 'len' is already
-> validated, checking 'offset' here is reasonable to prevent potential system instability.
+> David, what good ideas do you have to achieve this goal? let me know
+> please, thank!
 
-Hi,
+Your idea would be to skip a VMA when we issues madvise(MADV_COLD).
 
-we tend to break lines as 72 chars in the patch description. I assume 
-Andrew will fix that up or already did it :)
+That sounds like yet another heuristic that can easily be wrong? :/
 
-> 
-> Signed-off-by: Kevin Lourenco <k.lourenco@criteo.com>
-> ---
->   mm/fadvise.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/fadvise.c b/mm/fadvise.c
-> index 67028e30aa91..b63fe21416ff 100644
-> --- a/mm/fadvise.c
-> +++ b/mm/fadvise.c
-> @@ -43,7 +43,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
->   		return -ESPIPE;
->   
->   	mapping = file->f_mapping;
-> -	if (!mapping || len < 0)
-> +	if (!mapping || len < 0 || offset < 0)
->   		return -EINVAL;
->   
->   	bdi = inode_to_bdi(mapping->host);
+In particular, imagine if the VMA is much larger than the madvise'd 
+region (other parts used for something else) or if the previously cold 
+memory area is used for something that is now hot.
 
-The man page of fadvise64()/posix_madvise() is a bit unclear. It doesn't 
-really specify what's supposed to happen on negative size or offset.
-
-Staring at test cases in LTP, we seem to have:
-
-* Check the value that posix_fadvise returns for wrong ADVISE value
-* Check the value that posix_fadvise returns for wrong file descriptor
-* Check the value that posix_fadvise returns for wrong ADVISE value
-* Check the value that posix_fadvise returns for pipe descriptor
-
-And we primarily only seem to test what's documented in the man page to 
-fail.
-
-Which raises the questions:
-(1) Could we accidentally break some users out there?
-(2) Should we update the man page to document what is supposed to happen
-     with negative size or offset.
+With memory allocators that manage most of the memory in a single large 
+VMA, it's rather easy to see how such a heuristic would be bad, no?
 
 -- 
 Cheers
