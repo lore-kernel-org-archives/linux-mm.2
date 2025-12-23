@@ -4,126 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28BFCE6F06C
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 08:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D624E6F072
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 08:50:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FE0F6B0005; Tue, 23 Dec 2025 03:40:41 -0500 (EST)
+	id E21D56B0005; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ABA26B0089; Tue, 23 Dec 2025 03:40:41 -0500 (EST)
+	id DA5796B0089; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78D2C6B008A; Tue, 23 Dec 2025 03:40:41 -0500 (EST)
+	id CB1776B008A; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6807D6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 03:40:41 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B32396B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 03:50:34 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB3C1604B6
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:40:40 +0000 (UTC)
-X-FDA: 84250089840.10.8148B51
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DD8CA4000F
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:40:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dVXroVqR;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AE91160538
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:50:34 +0000 (UTC)
+X-FDA: 84250114788.10.CCEEFC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 89C7140003
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:50:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPEr2aSL;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766479239;
+	s=arc-20220608; t=1766479832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUwtgrMapZPA5zIKs3/MUFaPRl4dU3pm9b/uTBHe6g4=;
-	b=APcJTy2x00tHaMq24PC8TsHVyWiKYnXLuXNIFasS6LJKZS74fJTt4LGPqcJ+GTQQB4RF6J
-	GLcfHTzVkfYEIGw7mraLIg3gqppl8h+3evc5BuTK6HJ36Zb4IWfOZxNjn40dV1H1KLKDCC
-	FNuc7ltbfTRPJDG7PYBrieBwnRscr2w=
+	bh=vfrLkfn8KuTjwSTBMR/lPABFifbXFDGjujEi+D5oh/0=;
+	b=rtRsjinh3LglFagVlXMfd04xqNiwEfgJcf0Qr43sy5P/ms2g/+fX5jICQjzTSf8VrBFudQ
+	sQfW34A3XTLAFgOBqKb0RbSVWC4Gn1rQNpwX/FXYNNQpl1UbsHIY2PBeLBn0PbbCuX9emh
+	oPTJRpo2AZOoyUKDXGaRzamhlsw+dBU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dVXroVqR;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766479239; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPEr2aSL;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766479832; a=rsa-sha256;
 	cv=none;
-	b=XpufN2iMZ1JdCdNX+HBsqGvXfLmIcGNYc6owmMeuzTT4ur/OmosFNJgdR7H951nrEjzsuD
-	l6MR2TYhC9973Ga5Lb74+DRboTd6ZzvalmDEp2YF1VaW41a+kpecfGF2UHUMRVOyMEsLqj
-	+6kW5BmbK/AWpYgVLukzimgN78MTl+A=
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-477770019e4so39841595e9.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766479237; x=1767084037; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qUwtgrMapZPA5zIKs3/MUFaPRl4dU3pm9b/uTBHe6g4=;
-        b=dVXroVqRL/iyHUa+NwyU9K36asq2uQkojXEXsP5o/ZiuCyVkX3v0SM/+HcX+2jHy9h
-         1A1aGH59isdI9K5cOClmVx7RE/Hm6Vf6NOpdvA4cVryMl/LDbROdRzLM3/0eR8CHkx5V
-         /XCfp4pIdh42n0FBlz3ar24IW7cDDuBjyDYin9CipcRSjXcGguGEUT4kPbF7O1Ops26W
-         bZoTLzaoVmTZoMngHTcRM9l8M5MeXMGgpGI4HZZrlCY0VdyAyjo1gBX0UxQ8AdqY9TBR
-         GpgZ2O925nyJfmj4u98DIfiZCjZDUpObVSwe12yNG2n3naqZXDvmzeRPrep6c71Gmy/X
-         dr2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766479237; x=1767084037;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qUwtgrMapZPA5zIKs3/MUFaPRl4dU3pm9b/uTBHe6g4=;
-        b=LXj70QyOzaACPETgIiHxrMtxwc+QajMYhNMEbYhU3wEfY8ivAY1lA7kTthV89l9GrZ
-         dn9dxeCNnjC8OmjlWahvDJXyCdbWDOS8W67XnRQZEa+yuzuzwqAJmBsegm7PhhO6ouBP
-         2Q/4HocjtdDIZGxhMtx7Xge4WtULUJ5kJkXfZTA9MPjwjLt+lPEVeKuEK9rOfDZGTRXH
-         e0h/Pkg3ffyKARW56mUiGQWmvaOjdjc/Kp3opS07ii3zkdTiF5sz7wySh+abiKzsCg7s
-         WSQsTFVo+nK5/VerSR5nY7X2dDIinqg9BLueuPMqT8461XJ49lwnEf6kcUPrw44qOCAw
-         XOqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfObps1+1UCb2E7fIv7xW2mBpxMqI0A+fsgYJAKmICTXsIYE9c+RvyBo5Es1MW20TueDviD1WaxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzr+nSjRrq6zollZJu+1ZaIWqy2kbNeCPe07pAhDZ8eL3ZsZlXp
-	CXjODCOmkKwIYVk9UMdEy1GbnKm+AghEvkHSkIkK6MoNSaY2eNmrmsKc
-X-Gm-Gg: AY/fxX7xc4p5B+mHZE7moQk/hoWY2P/Xj14CQ5BHoQ0P/V1y8aoY7l3bJpascNl+YdS
-	1Tj9bfQJ0b/3JowbmZC846QedPddrXu2K5+LbEmEfBB1fOGnILGRJIRVMai4/oSvbPvp3gDh/dG
-	UvDYckhR9AMWNiE14truTX/wQWXoXb2EeZeQdJ38zu3x5cZozSt9RYpYNIyDlc38sCEnKd8U5T2
-	GgpPhxsDoj4D387qkSLa883fQ36u9TVOGWogPCePPbtk5HdYnCikEICNjeLwG/FSzJ6RkYKlecT
-	LkWsWR9EfOI9BILbPXbji46FfE+At9GNeeRuMGGVl9TkuUNwOz7F0uTv407148Gm8eXs+D6Zrv9
-	3Je9wd/6D1gFH8LAg620dy6PYHZ7sQNS6SBG+yGemtq+NXqqV13q4g86X5gz773m4trV2yIZKwY
-	XxxfWEypIm5SBKFKU2mKC0+8j/ORdZrziBQAPUHmHlBk/iBJ43vqo=
-X-Google-Smtp-Source: AGHT+IEpteUBeVyvK/GkVobHH5hYn/GMx0SLjKyrRDaOqelnxJtOqBWZOo0NwrW+rNFfDjpy5x73Jw==
-X-Received: by 2002:a05:600c:5246:b0:477:54cd:2030 with SMTP id 5b1f17b1804b1-47d1957f707mr151767255e9.21.1766479237056;
-        Tue, 23 Dec 2025 00:40:37 -0800 (PST)
-Received: from pumpkin (host-2-103-239-165.as13285.net. [2.103.239.165])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea2278dsm26831637f8f.18.2025.12.23.00.40.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 00:40:36 -0800 (PST)
-Date: Tue, 23 Dec 2025 08:40:35 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Li Wang <liwang@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Mark Brown
- <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, Waiman Long
- <longman@redhat.com>
-Subject: Re: [PATCH v3 1/3] selftests/mm/write_to_hugetlbfs: parse -s as
- size_t
-Message-ID: <20251223084035.67ba1b76@pumpkin>
-In-Reply-To: <CAEemH2dZ3DxDPWuV1Uze213CqoFHec9kK+MeteigGANYTUzbqA@mail.gmail.com>
-References: <20251221122639.3168038-1-liwang@redhat.com>
-	<20251221122639.3168038-2-liwang@redhat.com>
-	<20251221221052.3b769fc2@pumpkin>
-	<CAEemH2f40t+4SsjL3Y=8Gid-CBMtf3eL1egsPKT1J_7LDbdWPQ@mail.gmail.com>
-	<20251222094828.2783d9e5@pumpkin>
-	<CAEemH2fsAmhAkGAQb9rtD2WLUc7QMb9Q5dusG3S8LsJbNKsO_Q@mail.gmail.com>
-	<20251222180509.b12684e112195ac3f7ee9389@linux-foundation.org>
-	<CAEemH2dZ3DxDPWuV1Uze213CqoFHec9kK+MeteigGANYTUzbqA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	b=1Xvf/nhbGDYEHSJ9iSJRLJhDJfgnJQVoc9USu3n4GIJs/U/wUFhZp1PbII8ALwXzzzPDlV
+	0dzrBvwSmRtyWOS4Tc9lEFG7GDjxWwBLKK2obIi11KQ7Srlnzj1zMXOpd5qrpdcr9CreRZ
+	jUO3girBlEcv2kEWLCXew/ESu/sIVn4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 724FA43DFF;
+	Tue, 23 Dec 2025 08:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4FDC113D0;
+	Tue, 23 Dec 2025 08:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766479831;
+	bh=D9p4aDnkMp3xBLSj20cZVuhUlzR174rG+fno549cX1E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VPEr2aSLQ0B5IvUkEwGnIN50DkddlnZkOls9Lg8LAdeR5yqixmwJjyZR3nVT8kSHZ
+	 yccXBUwblTQpBXAqCsrn5N/VsNmomFTVWL4SyoqDmn+bgCnNuwvwPZjScnCf2+RNXi
+	 BuPWAbDvHJPHG7PiNW0jgcDiGH3cra3+cdb3WjPChCx0sGS+7+7vmDsot5sgAKGZnd
+	 zD8fLoReZj0cY1JzIll8pj9mtYSBC8bF84i/Mb7rENIKIDtw9j4pYjM0bCJOJIUPl0
+	 tEw248ret7R96jK/PXGgkV6UxtNWzpze9V5cSWZboHYJalhEEEQHBKxZe2q7hkR8VO
+	 pJKzn6O60YQ6A==
+Message-ID: <d9e09523-2b61-4280-876e-95be787258f5@kernel.org>
+Date: Tue, 23 Dec 2025 09:50:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/memory-failure: fix missing ->mf_stats count in
+ hugetlb poison
+To: Jane Chu <jane.chu@oracle.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
+ osalvador@suse.de, linmiaohe@huawei.com, jiaqiyan@google.com,
+ william.roche@oracle.com, rientjes@google.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, willy@infradead.org
+References: <20251223012113.370674-1-jane.chu@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251223012113.370674-1-jane.chu@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DD8CA4000F
-X-Stat-Signature: d8cu6gxhgd7hh1rxpxaao51ycaz4cqnm
+X-Stat-Signature: 8aiyim4zo4xqitsnaumg4y5r8yffu1xq
 X-Rspam-User: 
-X-HE-Tag: 1766479238-983238
-X-HE-Meta: U2FsdGVkX1/2JmK65SxZrFbpIUROwWWZXPiSlMDEhrVd+pV402d6npg5detLC/ju+BiT2ixK3X16YoFz1s7uMbp90lfe/8mr3IpA+Ed42XI7133bXbnHYyZxSgFEi2TR0Exxgc683zskL+KBmPTzFfcUj7ZUhdCgk6gvbbdkCbtavFxFGmsS8PZntWscDSsc6B0FcKBmH5BwMzICCOn3sVXMqvu+4tE123CabeMBeB+NaeMwIv1F71ZixNXsDIeZeVmMKxEPu9qAhdOhcLgTyJ+7pERH09JsyODPGzmNXA39GCZhNDEHOIWadkmuFAM6/96Flu+6jnhfRNtDhL+0kIt7A8rUdxKPMRT+9vjAWR3X8zxjJhOd32VELQKEqUbyDLF0TJJadmBmfkBFi/oyJA5LDaJES80cRJXuYrbICJQLn9j49Xi8B3qn8RkuGoq6ACvvokF/lC2oNVI06mEXkuAHnCogbG3sm0k9yWDn7aTUhKxoBR3woXz691WCcNwYOCk2X9RwkoII/MkxtUHPVmtHqA3507gQozzVI60sgxYhKDeIm6lP15yIxQ8+rpCbhdElc50p3yUBjdJ96bFU9hlvCE9j3GeBhjmq4uyuFHSX9mt4MCCFpQlMkXfzHdvlUpMtob3wlnWSLwdnjJ+5PujyLpQt8vuZOf2BkCm0gGv1subdwILjK3+LQPwuXjC26+w4YajS14bsVU/TEMsUtc+k1TF+uW+XTIE9NRVCzvXP3i7wCcfiO/YBIA+p6mfs3yjmCpsAVfSKHFk4Ow0vpnc8LjlQ3cHH9tdroo7OECvcsKsBsRBRmGDLOGtAv5w5SjnmxKkZCQWJQ5SDHZfEhBCiqqx/6NYFFsQt6/pk2z0IwHrS6IBNSt1tbIGll304U9Jj88wCZb+gzpCChno8CpXD5KOY6jVnsmIrb1rWpsGBk30XDL1YLQ8hS3aQsYJxFgSEzOJT2KvQSgmAD6v
- LgLRJ0Um
- 6RYfH+pSjKPwzFG656rU9mzY9cE9M/A+sxMc9elVMZP8OHq24dqbZLU3KDAzrjQ7mr+DCSMgTO8rYgUqv3spT0I7K1C8IH9HEWz0kjMzDC2sWhF/q3QIezQe6kSpAm/9nDPwFvCT6sypCydWQd7Yj6jNJGAUCdodiW5jaBFk+aB+N7eYqZtCYUPijapqOsRONBqihLwRJdDJM2JDHyZXpVUs1JgDZDQ3eJuc09xPF0zVlsyDMns6M2KJ632vxG6rgEPJESPT6ZxZgnujfvkRqIPm7CBL3g5cUThYejo5T8eMNBizyD8lVIxpeLnPpru15ZQjdOn5VX7VQbJdCG5rgKDiLZw3sNNx6MOfGOMXaUNHiUWG3FlVSovcX+HmwZ66sD9UslypEByJHw9J2NfxQXlUfAb9dl7kkflrECPiHNDGv5ValDGdwC2yIufSKUovia4aLkhaZVbH0ynpNG1oUaHsU+VjHZYvP9AnIP21hb8sEw/gsPakaEMHC3xapy6mHFMtzS3htejVQqYEds8cemYdybZQcf3Scick4GSYitkPkCj7EnT6WsZYc0nYWzWENfte+upVLDJzOKiThG/wwP35ttN4DygeVI+oRaBjSbs3Dz6uQ1JFL2QRRT/DlIEex7+i0xuPTUBVyLTg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 89C7140003
+X-HE-Tag: 1766479832-810753
+X-HE-Meta: U2FsdGVkX19Jt/lSXpB7oKA2wMJec4+VC2ihNjdKvYR7mWTf0mBNp6Vct6DbB9y/Goxaaool8mIFYi965d+sBk/5kk5uUAHfR4hA6uxEp43vhdvxK+Lj2s4APKFEBj9ZQcf/RfgdVXu7FVimD9bZz0/LlCumjfzU4VwWT1QuHmZXxsoedBnBrStUNkVhiBygjXjMDwOphvG6mm1WKCrDAqmaSUVaE5swwvrVr9mYNebzkzcJRjPCc/SHiRq7+y8n9yNwHw2NppvRP6+3v2bLuR2eiY/KY7nf1zLrCoHNTgc7I4Jrzgm+BrbB+Xdl3um2wIlwMbcH8Y+HBcNdrtBJHkUr1hfNSb+5nBLVPNUhpPAYqAcDA8fl4ZA/ELp1OxZMn9FRHoI3hXMyf16CZwC1uat9hsGnTNkFd8QFjxQfSzHAq9RLDPc5jPlP8UhOMuRX8JFKqC+tgZAu5p++XOkRpVFG4d2Sdfq3RDsP880xG0aPBLCaEnPuZA3FyAetW9XFCTCb7r4/wClQfkRRvkdpeUuYmzUcd5V742RpJbkgmXD3j+RWa8YTuKJyQhpMTfBDaJAV2gWJyRXrxzXjzrIVQR7PSgu6pJmL/19P3zh8gbvTUolp6Uj9YPl1Zop+wLGiRFoT4GSCXpkfKlXMI4AHbfV/tIy8XZM34NFQplkELctbmhRG6lE6SJe53xt6TZ8tL4FmCgGnTDnNV7dSSUwi73EZr3kCIA/BYCEriJYhE6UogKcL2AdEuyd+XCRjKUeS/w78kvduJgWI8M5Ilh6SMucnqDx0cDcO0cz+L1ijPw8adTdR92LjYR1Td66n2yLIh3YZl/ysg1W9uIAaQGyxZ2EiN2Yu96kmCMSxBLW/5L6UhXOfloycxQ18YfmCohk+d/wBXNDRNUbfNgnOSWvpEnkV79+rFK6YHoQ42bvUvaS55dxx+swteckUPlDAVBO8sS0Imm8ffhXdJuPVcmE
+ p6+Kwgap
+ hmLMQZ08NHKLzMUD+YogJOg1Q87BYcIVgLcjicnoYnHFD8Kq9w9QuX0RzSXAcn3XDKAy4qXjkWS1URuHPk/D/uix9IoCu/qH0dVzTM+VJrvyqOnRrsdHsClSub9oOsZFcqM9FuzIs9SaOBluUYQ1/0vkYvD8qvGuZHf4qRsALXNEWAZUn0N3iS41X7n1596sJon5hIG0FxRdykNqPmbg5XY6yJtjYSkNL1L0SqRlx0xfAQNYkTAKvQhgi17u2GJyYo5czepl2o/dLTNS/3ahyhwf6ZP/DgRN+/4wLI0PWYf7WOkbsht/WkQDO6ohqfRQaBmVQ3bOtL+8zMRnTnUjnQNC6IuhIcSVrAp4V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,75 +98,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Dec 2025 10:41:22 +0800
-Li Wang <liwang@redhat.com> wrote:
-
-> Andrew Morton <akpm@linux-foundation.org> wrote:
+On 12/23/25 02:21, Jane Chu wrote:
+> When a newly poisoned subpage ends up in an already poisoned hugetlb
+> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+> is not. Fix the inconsistency by designating action_result() to update
+> them both.
 > 
-> > > > It is best to use strtoul() and check the 'end' character is '\0'.  
-> > >
-> > > Hmm, that sounds like we need to go back to the patch V1 [1] method.
-> > > But I am not sure, @Andrew Morton, do you think so?
-> > >
-> > > --- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> > > +++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> > > @@ -86,10 +86,17 @@ int main(int argc, char **argv)
-> > >         while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
-> > >                 switch (c) {
-> > >                 case 's':
-> > > -                       if (sscanf(optarg, "%zu", &size) != 1) {
-> > > -                               perror("Invalid -s.");
-> > > +                       char *end = NULL;
-
-Initialiser not needed.
-
-> > > +                       unsigned long tmp = strtoul(optarg, &end, 10);
-> > > +                       if (errno || end == optarg || *end != '\0') {
-
-I doubt that use of errno is correct.
-Library functions that set errno on error don't set it to zero.
-The only test needed there is *end != '\'.
-(end == optarg will be picked up by size == 0 later - if that is actually
-needed to stop things breaking.)
-
-> > > +                               perror("Invalid -s size");
-> > >                                 exit_usage();
-> > >                         }
-> > > +                       if (tmp == 0) {
-
-No point checking for zero before the assigning the 'unsigned long' to 'size_t'.
-So the result of strtoul() can just be just assigned to 'size'.
-(Ignoring the fact that size_t will be unsigned long.)
-
-> > > +                               perror("size not found");
-> > > +                               exit_usage();
-> > > +                       }
-> > > +                       size = (size_t)tmp;
-> > >                         break;
-> > >                 case 'p':  
-> >
-> > Geeze guys, it's just a selftest.
-> >
-> > hp2:/usr/src/linux-6.19-rc1> grep -r scanf tools/testing/selftests | wc -l
-> > 177
-> >
-> > if your command line breaks the selftest, fix your command line?  
+> While at it, define __get_huge_page_for_hwpoison() return values in terms
+> of symbol names for better readibility. Also rename
+> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+> function does more than the conventional bit setting and the fact
+> three possible return values are expected.
 > 
-> Yes, I am ok with sscanf() :-).
-
-What was wrong with atoi() ?
-Or, at most, strtoul() with a check that *end == 0.
-
-	David
-
+> Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> ---
+> v2 -> v3:
+>    No change.
+> v1 -> v2:
+>    adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
+> return values in terms of symbol names instead of naked integers for better
+> readibility.  #define instead of enum is used since the function has footprint
+> outside MF, just try to limit the MF specifics local.
+>    also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
+> since the function does more than the conventional bit setting and the
+> fact three possible return values are expected.
 > 
-> In fact, write_to hugetlbfs currently only accepts arguments from
-> charge_reserved_hugetlb.sh, and the way the '-s' is used is not
-> very diverse.
+> ---
+>   mm/memory-failure.c | 56 ++++++++++++++++++++++++++-------------------
+>   1 file changed, 33 insertions(+), 23 deletions(-)
 > 
-> --
-> Regards,
-> Li Wang
-> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index fbc5a01260c8..8b47e8a1b12d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1883,12 +1883,18 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+>   	return count;
+>   }
+>   
+> -static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+> +#define	MF_HUGETLB_ALREADY_POISONED	3  /* already poisoned */
+> +#define	MF_HUGETLB_ACC_EXISTING_POISON	4  /* accessed existing poisoned page */
 
+What happened to the idea of using an enum?
+
+
+> +/*
+> + * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
+> + * to keep track of the poisoned pages.
+> + */
+> +static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+>   {
+>   	struct llist_head *head;
+>   	struct raw_hwp_page *raw_hwp;
+>   	struct raw_hwp_page *p;
+> -	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
+> +	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_ALREADY_POISONED : 0;
+>   
+>   	/*
+>   	 * Once the hwpoison hugepage has lost reliable raw error info,
+> @@ -1896,20 +1902,18 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+>   	 * so skip to add additional raw error info.
+>   	 */
+>   	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+> -		return -EHWPOISON;
+> +		return MF_HUGETLB_ALREADY_POISONED;
+> +
+>   	head = raw_hwp_list_head(folio);
+>   	llist_for_each_entry(p, head->first, node) {
+>   		if (p->page == page)
+> -			return -EHWPOISON;
+> +			return MF_HUGETLB_ACC_EXISTING_POISON;
+>   	}
+>   
+>   	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+>   	if (raw_hwp) {
+>   		raw_hwp->page = page;
+>   		llist_add(&raw_hwp->node, head);
+> -		/* the first error event will be counted in action_result(). */
+> -		if (ret)
+> -			num_poisoned_pages_inc(page_to_pfn(page));
+>   	} else {
+>   		/*
+>   		 * Failed to save raw error info.  We no longer trace all
+> @@ -1955,32 +1959,30 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+>   	folio_free_raw_hwp(folio, true);
+>   }
+>   
+> +#define	MF_HUGETLB_FREED			0	/* freed hugepage */
+> +#define	MF_HUGETLB_IN_USED			1	/* in-use hugepage */
+> +#define	MF_NOT_HUGETLB				2	/* not a hugepage */
+
+If you're already dealing with negative error codes, "MF_NOT_HUGETLB" nicely
+translated to -EINVAL.
+
+But I wonder if it would be cleaner to just define all values in an enum and return
+that enum instead of an int from the functions.
+
+enum md_hugetlb_status {
+	MF_HUGETLB_INVALID,		/* not a hugetlb folio */
+	MF_HUGETLB_BUSY,		/* busy, retry later */
+	MF_HUGETLB_FREED,		/* hugetlb folio was freed */
+	MF_HUGETLB_IN_USED,		/* ??? no idea what that really means */
+	MF_HUGETLB_FOLIO_PRE_POISONED,	/* folio already poisoned, per-page information unclear */
+	MF_HUGETLB_PAGE_PRE_POISONED,	/* exact page already poisoned */
+}
+
+-- 
+Cheers
+
+David
 
