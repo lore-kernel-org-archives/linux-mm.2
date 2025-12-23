@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C481E6B26A
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93A8E6B26B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:07:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF0A86B0089; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
+	id 194D96B0088; Mon, 22 Dec 2025 20:07:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA7B86B008A; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
+	id 118596B0089; Mon, 22 Dec 2025 20:07:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDE446B008C; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
+	id 016AD6B008A; Mon, 22 Dec 2025 20:07:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE5AC6B0089
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:01:08 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FC32B8C9B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:01:08 +0000 (UTC)
-X-FDA: 84248931816.24.33E6A17
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DFEB36B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:07:34 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74FC414043E
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:07:34 +0000 (UTC)
+X-FDA: 84248948028.28.C584656
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C11CF40015
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:01:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKXOod1D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766451666; a=rsa-sha256;
-	cv=none;
-	b=a1pOW/+pNyPsKGClvPFznhd1be62t+Yd2XJicpH1fiqCdPVNptJDtfoYbxpqtP6q/dUDcm
-	4Enl3NpCukFmDADCkNxLk5lmAPqepYQ++dRzsRTz3GfGY4NIyt+PkV63oGwvQuEO9uSJK8
-	pNijb7ahswfWh5gWvG2hCcJ3UMfIY2U=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKXOod1D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id DCF7A140006
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:07:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CrFyOnk8;
+	spf=pass (imf26.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766451666;
+	s=arc-20220608; t=1766452052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hz6vuN2+tW7bppaPMqpZ3TNFSuQST5OiJd8i0ajQHc4=;
-	b=olrYpYX3rIjdcMVWRYkYTK8/999VlAjawpxbjljiwZivvVXD3IfCBoJiEGntjdNQCV1CE6
-	4C543yHfLZVfDQdgkoqNy0lXTFyD+vfmhksVqLQx2uX5Cib3zGSln7WyHzwIzahX9KqhPg
-	vp4hNpggKSbjazwjXBj19vRDosXdI7g=
+	bh=s75WwS6zHxjLmxYTad6FpYF2GMJBMtpUdtAWmDGLC5o=;
+	b=GRm0XKNNXfAFFSfXVz1sSw9/6vkWJlfTqkFHlYYW7vuGfkpIgiIMLq7PMcLZoS3QVbJvOB
+	3X8FmywvT5gXCGMGfY6OhoMaGu6EB+Z7IJkeOujcVHsGKSy2kELHki2ciNkrZnKvIEvO6z
+	rSGUITnExUlhRnag+MwJuPDsqiARbAM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CrFyOnk8;
+	spf=pass (imf26.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766452052; a=rsa-sha256;
+	cv=none;
+	b=eb4Q+D7PF8AK/u6GrRiPgtnLwM7ODIK9cgHsZTSXqSNrXoHfNke1wUzhKY1w9Vqx/3DbWG
+	uMquDB6xOn8kq9SW/tT6r+1QNG3FmNoDD3A80aJO4ltPQ8pc91CmEAvDqA3vq0JlNX/MHZ
+	JrmWIfUofxHFWC8jsQdM1RTn7TvjPl8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35D1960136;
-	Tue, 23 Dec 2025 01:01:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDFCC4CEF1;
-	Tue, 23 Dec 2025 01:01:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 481F160136;
+	Tue, 23 Dec 2025 01:07:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244AEC4CEF1;
+	Tue, 23 Dec 2025 01:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766451665;
-	bh=2r+Tiz3V4y6CTzvUEe64MBbKMKKAXzykFnfKZv8E7bU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKXOod1DQEHksmNbUU5BF4sr8bUpQw3a+YSB2GU0WjWrW3HIhEgiDp3Oq1DR58s5S
-	 cs4UZRVxczFzSlo8zgvKRTqCrsQtqHhVPiRai5Oz4buLWLAUtU34SHqm9yf+siwz3m
-	 zff6KSKY9nicwx2gbDNIojIMkGO8ZwYqo+3VSQKzUyLlI4HWm9Jr1cqsNEgFxSnfNN
-	 1z1NVfEahqwNpgioukKAYpYihS/Nx9GrUpLfwPPBi6mHLRK3jYAoOzSK+BUT7bYNW2
-	 +OiAqZqAwXSXlSVJ2lBGOSb63o3Hrp3AG1eoxPy7NHxx/fq95X9llbYWk33NmJ9yGO
-	 UaKFaZPzKXttA==
-From: SeongJae Park <sj@kernel.org>
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 09/11] tools headers: Sync linux/gfp_types.h with kernel sources
-Date: Mon, 22 Dec 2025 17:00:57 -0800
-Message-ID: <20251223010057.4135-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251222225716.3565649-9-namhyung@kernel.org>
-References: 
+	s=k20201202; t=1766452052;
+	bh=8HLJDJzqJpZNyDjxm0GPb6san6RSllNRbd8BiJb/m3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CrFyOnk8xn0XnO9L2YfHDvLC3fVAb6sjS2M4lUZyTjaUAtCPJP4KMlIeAojFHmGjx
+	 Ej5DoYnq8xnh1lF3dhyspVDaD4HoyWUZ0Lw3QnJvM9FW9sGdB26jme6vv67KzDcNCG
+	 ejKU5u+0QKpmnVhUh+Ry4YueyBFCk+wq1THPLhaI/c/sBBsnGfWbpWZ9rgAoimrz+n
+	 fx7ypuNkmcmkJoza+bhHXo9fNHEIYovQufpz98k8AGD8b4qOXdYHM8PV+bB1W20q7r
+	 umK5u65js9ektIXsnVyIKXLg7Wtp8pAg37OHdZ4gQQPF0FUUsZBclpJyCQ2qAm2E8a
+	 esUXDwYfWvPVg==
+Date: Tue, 23 Dec 2025 02:07:26 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <aUnpiDyge6VdsnpB@devuan>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1765406336.git.alx@kernel.org>
+ <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
+ <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+ <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+ <202512101736.DE24BE89@keescook>
+ <aUf6xwicMCxL28Yp@devuan>
+ <202512221517.E1B039879E@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C11CF40015
-X-Rspamd-Server: rspam03
-X-Stat-Signature: c35okok6tp3abcxfsh8kasyj8gabueye
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fod4yrxti6hqvgsb"
+Content-Disposition: inline
+In-Reply-To: <202512221517.E1B039879E@keescook>
+X-Stat-Signature: 7pc8f1smfpcfts1e88776z56z7xyfcr8
 X-Rspam-User: 
-X-HE-Tag: 1766451666-776605
-X-HE-Meta: U2FsdGVkX19IMoARVrbehQjJK5tq8jrQCCRCr15k1Pl2fTOAB4wa6XHwMNNB0rivODyhRzNiEf177tf0buC5uunHhBpQnDlBM0GZ4EUJbBFN9hDSnVWs4zY1GGKGwbvqS4Kl4z56FKn18eTfsKdSljoiMHECXw5o76LbD/suGCQAj0ArANx9/IyT1h8H3XWHfZGzLdGtMeod6XkvR5/dYwkNf6dqStoQO1xf4aNrhgEtJMj2R6RW2p7nqff6OWLNc1bHcyO0W6qA3X+VBKDazoZH82RC7UTTqOkay6gzneuAnQTSetvG8B0S3/w2ITSQUlzZLJOntps6KMeNNvAHI9B6CcgUB+bKTcv4zbuKo8xcpO4Oaq90dhE00WqdvOFdiaxfy2bCVwnN+u0HpdkVNF6W8pQHQy4oNLL3NO2s4bPQ3FvJWpg1tfbpKLZJ4y6t7q+Uj0t6b8bPw2B9Y6NLpJHKrGVHOEQpe3I9iFdXkYHklckhU+/mRJZLKLo+c9wQEIOQ9LqfY08xN9MG0rDy6cDpM5bWcg+AnDdlzNTyys/LXaCdlnhZ1u2a8JylUCTFSo40LeNxbtHDIS5+31svJVjyk0JhqwaL5Q2McAId29oUSqoXWgR9R8kT2qrViWsyW59pwEDN0GRoCDttpz0sSFqfUInxxtiScQPvN2A52d65mtJNWxwKUIx3KUh+h1P5kQ6goJ0tsdG+hsI5e5gCrXaj/IW/xB3yKIUqaueeqp4VMeBxbYL4hm/7lxsWZjlHCCbEizHUl3r3l+xjmwtk6TQELm10N7Eav36Rb0F+L6KpwiaIA52rxOceyULS7L7XR4lcAEsGB8a+7BlcJcD1KgSu/CTcg3Wa+EXYx591IC7rWji5Pg/Tm2d/uuzi2Knr5gwIOk+VAiumBcxomPd+n5JMOVC14UUc9fXEhjmmXiB/K2qOxOBKSb0Y6Js/EtwI/MgjtroCY4pWWa2G4QY
- jAfsCuWA
- wEM/OFsqhjnBZ929Y8cwGSRsB5xoMO9+eNakIznQfdVSKTl8YMQ88AuTZmhqcJg+KQ+BtQ5MIAKaDsE42QkioDxfzGAPhf/T3k6dVJJc/m56Uskh5EU6L6yNaYKpXf6kM+Ib6RG2FXu+ARR7kUBcfaZFAxDKSGx4eUmiKaFbJkBu2WIrNrLk4SUxb/U3LITi16wR3K61E3i2R8w+e+GYGJ58gFguBLtBVL41U3ty4AsWgu8LPpLZiSBc61g6ebOXUKPp1wtFJiUNre4E/UZmNpy9//RTndmmvrgigcZFdUGxyLMKSpCkXsKu9PXpILPDxfBzMb61Fqj8hnLWL8KU8KGRo7Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DCF7A140006
+X-HE-Tag: 1766452052-696741
+X-HE-Meta: U2FsdGVkX18jguD6muydkJTZNTeswLc0ncwCn3UA6VJnopiq59okjMBw6qG865UZVe2guqCc9IVpLdDF7OdGpb8UmnzZ12DZNiBHPBhzQaumJ81bsw+quSRsZhkJ+hlkVLGA7z1Y538ADPYnoM4UvW1AAA3p52cLK0VEmPIH/QREzKciuw1j1fF3HapohxYobnlQwUBfU55GYW/QtFD+BhMJ1go1qtdeBAladW7zgTwRuXNAtFSMjze1ag1bawNE5KmON8gXKFYv+qyj2hYIAklLA8HJPqSo+j3Jo96RaHYzY6DNrC4LrZHU0qHMQQCYFEJUCGg3o3Vku1DJTEeB5vfBGmgnmD9E9+CU6/zHH/oOiROSEQrndYu5Y6zGJEKYTYjIMOEVvXeVV2ErKgY1ycM10CaiOVi4PVKm529OJMtmSKtBwwH9Vh8hyGHVviqzS3PkDQjUPRge5DmDXhLAjUPML90/F0naX0oL2m+S+VdfB8I3H10vkin5KcRqHo7tvQ3wHAC2hAc+J5QFbyvhjTTZQvW/2rMHL5QfQjOqCw13Q+dMmTyvLZg20TjtThTQc8sKRViAKeAFvBkaJNQ2u0UX3+5wN42AHtxACQAam25/lW2Ct4kxa0vtF8vqjZWkEt2YLv57F4VP/pG0upr2q3QX6xSGN2zXBDf4eOwYoWM65r6dW7gptGbLYW/IZS7s+mdpk4hCq+GUvky/1r9SEepnOIZiNqyl76YQXCd9EhrlNRuWoKV/y2YAekPbxi2VQmdqiU0WrGNMpIPbKP62ryZBHvkaRsB9kiJxMkOjPtNKATgL8KeeXWvwrFmGo3hPqBRBtVVOGyK5+T3igEYu1IS5U+epPSai6rCCc5Xb9LqQbhaD9u2O+FJXXrm/WBqQ/hTQ1lkKKolHEovxh3UJPCbEyJrLzKd3c0q7PK08x8PM8RSBWY1t1rNHd4PPWFqCXnLmWGmq8hE23NFePo0
+ HYSaoE6P
+ CkbzrkMRhHR6/5uCsu+oLRL3BvtSJbIshxRtRtVnOAMsgP6lsUH1Rr1Q4jI35zxKvtVhXPP1SyHsUGhQKOCHVRaFOWfYZ3TYbjQJb/AqycsEr2rJTD8YNnMgysrmwwugAnn2mfEdkbgbUz1NXT4WlxDZ9/sOwtQ0oIWQuE/DrHwJoBiuwjNUT8i2uch2F6kI94mwtefLiyNY8nXxqG1SD4ZcT3+OQn7IRxalOgitoCycXiO6cSZ7oMl40GBoHOVsIGUqzVKGpcSz8HW5Y9zgFLYbzUBxIA50k9Z73BL4V+EmrHIrrAlIrF2I1rFzjWqFcw2tzN4iDu24Kyog6NiTtfyHaLBWgxmKstMlRsjSwf9ac7QfRUt7RAtp4muq+AlEqq77Lt2t80590SnroXAfIbj5oY2r8ByPEQZIbLSVv09Q0bKvBxneZAqyBZvz/FUj7oPVDP6fnzP+Sg6KcGNxFgC+FKpg2nXdD1TWlT3k5BsCXAUUjqScFDg5TyuqqX0FDT9wYhLwkdGDe+FeXVw7urSott0GSS5y4oWQgPMPO3r2REITTp94yQTAFaHbxQVjFDCbntXQo9oIHQmE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,36 +104,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Dec 2025 14:57:14 -0800 Namhyung Kim <namhyung@kernel.org> wrote:
 
-> To pick up changes from:
-> 
->   4c0a17e28340e458 ("slab: prevent recursive kmalloc() in alloc_empty_sheaf()")
-> 
-> This would be used to handle GFP masks in the perf code and address these
-> tools/perf build warnings:
-> 
->   Warning: Kernel ABI header differences:
->     diff -u tools/include/linux/gfp_types.h include/linux/gfp_types.h
-> 
-> Please see tools/include/README.kernel-copies.
+--fod4yrxti6hqvgsb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <aUnpiDyge6VdsnpB@devuan>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1765406336.git.alx@kernel.org>
+ <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
+ <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
+ <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
+ <202512101736.DE24BE89@keescook>
+ <aUf6xwicMCxL28Yp@devuan>
+ <202512221517.E1B039879E@keescook>
+MIME-Version: 1.0
+In-Reply-To: <202512221517.E1B039879E@keescook>
 
-Nit.  I don't find the file on linux-next tree.  Do you mean
-tools/include/uapi/README [1]?
+Hi Kees,
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/tools/include/uapi/README
+On Mon, Dec 22, 2025 at 03:21:21PM -0800, Kees Cook wrote:
+> > Now that the first patch set has been merged, I'm working on a second
+> > round.
+> >=20
+> > I've written a semantic patch:
+> >=20
+> > 	$ cat src/spatch/array_end.sp=20
+> > 	@@
+> > 	expression a;
+> > 	@@
+> >=20
+> > 	- a + ARRAY_SIZE(a)
+> > 	+ ARRAY_END(a)
+> >=20
+> > 	@@
+> > 	expression a;
+> > 	@@
+> >=20
+> > 	- ARRAY_SIZE(a) + a
+> > 	+ ARRAY_END(a)
+>=20
+> I think you can add parens which will be silently removed but gain you
+> the commutative behavior:
 
-> 
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Ahhh, thanks!  I was wondering how I could get commutative behavior.
 
-Other than the above trivial nit,
+> @@
+> expression a;
+> @@
+>=20
+> - (ARRAY_SIZE(a) + a)
+> + ARRAY_END(a)
+>=20
+> I *think* that'll cover "a + ARRAY_SIZE(a)" too.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+Yup, it works.  :)
+
+> Anyway, looks good!
+
+Thanks!
+
+> You could send it directly to Linus at the end of
+> the next rc1, and he may take it.
+
+I'll send a draft before that, just for you to review the actual patch.
+
+> If not, you'll want to split the patch
+> up and send to subsystems after ARRAY_END is in Linus's tree. I use this
+> tool to split a large single patch into per-subsystem patches:
+> https://github.com/kees/kernel-tools/blob/trunk/split-on-maintainer
+
+Okay.  I can do both, anyway.
 
 
-Thanks,
-SJ
+Have a lovely night!
+Alex
 
-[...]
+--=20
+<https://www.alejandro-colomar.es>
+
+--fod4yrxti6hqvgsb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmlJ60gACgkQ64mZXMKQ
+wqkiMA/8DGujTyeC67FKUmw35SWj8WOq/Bpjhy2WiicfTsQcoLblao7BrO+2OPqR
+b6eE+86SJsaM7XcZ3+L8TxwK3X7OcADezT5WdnG7S61OmxjdwLQtWgoLPFNr92zj
+AJqU8uEQ8yIDdLv8NKMWt3TrWwgHXsxoTI+BXZPJFajkGjqjbX9d7Y/+2Zy5TUQ6
+b7L45gkWMK8W6qMdKJI/X/WGQP/Vde8yyzKzLt8JUSpg7ZxjH4hILe+PbmGcPAjH
+ip9BPvaeBFhRAZoPGM+NgQna+kzG/IMAG0hdwEiOwzjWkhw7LdJlhs0zSgjFjOS5
+By8fSBwmOU+ttynHHYloPM8HgjwMVOjnYm9FeH1i6AL5T4I6lo5eOlaz5WTGvXGq
+eh1VAGBZdSCz3IEag/WWjuHZXNkvShgmJ55lctJE+zGZpaaw+Hh8NKzDRj1Fjv5C
+sYmkjJRcRDbCGAP5QbmtAQAS1H0FtTd2SGIYzMfS1YQhP/+uBlyfe7ubFrQb6ks0
+Hlhb+7NCwRiP3m2v++UBa2gWOIRaSHYqbsO6A9LH9tN+YNCKrwObqcdibVVRVy5e
+ZMBMDHLo4/YGyTDKdWd1gkfBwPqjQfABgzMgxJQ295V7yAsJuuhNVzLrJFeiZg9F
+c0N9Gt5E962MTk+DAZ5cI/zFpY7jwLYfmG9V2nftvaaF7w5Slj4=
+=AU3k
+-----END PGP SIGNATURE-----
+
+--fod4yrxti6hqvgsb--
 
