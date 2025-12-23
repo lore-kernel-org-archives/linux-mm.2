@@ -4,121 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2643BE6FE24
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 17:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36F82E6FE23
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 18:06:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724756B0005; Tue, 23 Dec 2025 12:59:45 -0500 (EST)
+	id 781D16B0005; Tue, 23 Dec 2025 13:06:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 706376B0089; Tue, 23 Dec 2025 12:59:45 -0500 (EST)
+	id 738F96B0089; Tue, 23 Dec 2025 13:06:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 608676B008A; Tue, 23 Dec 2025 12:59:45 -0500 (EST)
+	id 63B2A6B008A; Tue, 23 Dec 2025 13:06:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E10F6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:59:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDEAD1A0474
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:59:44 +0000 (UTC)
-X-FDA: 84251498688.30.0A1A3D2
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EC20E80008
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:59:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ds2muEf8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766512783; a=rsa-sha256;
-	cv=none;
-	b=vNIf1RdlCB7DtcURP/7AeY6ftwXf5soRLWOG5rL5MFZU++C3ZHCiTmgU/z9QNgjBFE7WzH
-	HM64N14aVPLK/SvB4u/XHrXkMNH2u9vrGNBp2mY0ptyHMBfwb+xb0rRcQUpeJ+Ig0sk257
-	QsM0fZTfbWDtg/p/zODz41h8dxmvfBk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ds2muEf8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5486A6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:06:48 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E757B1401E7
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:06:47 +0000 (UTC)
+X-FDA: 84251516454.11.BE531D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5A565A001C
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:06:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRKXB5CX;
+	spf=pass (imf25.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766512783;
+	s=arc-20220608; t=1766513206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R53CMKldL+ao84ivaoLDo0FHwHdm/f6bhgTHaidoDBg=;
-	b=ZMHVjqyDeLm2TGuKKc1Wgi8MW7jEIjvDXZe2HqFN6AmX81HFya4yGreLm8A2J19SBdPHPK
-	XmkWOT6lmp4pAqAk/ZZ7SnjPdZZG4GvSP2zX6HCDX24ZPvsB61h4SbmhHXwHrIJZScPhRP
-	0QR8NGC8ZqoTOifaNbpJO4f69NXzGHQ=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-64d80a47491so4095036a12.1
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:59:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766512781; x=1767117581; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R53CMKldL+ao84ivaoLDo0FHwHdm/f6bhgTHaidoDBg=;
-        b=ds2muEf8C7GI3gwwtQu+nQT9LGiYJz9zNlFP37TtyLqxDp2mBRdl2xN/Libl0XMB2+
-         3aJXK2lR5T6eZX+3NIAiFK6wN+39eeBJ8uXIM8TLtqMyXJKawU6IgB1a+e+mCjVAoJqk
-         41cEtEOtkzSE/uNz422vDUE3efUmBrw6XM5k302aItGB2m02m0hBkPv6Tk3YdUkcKjiu
-         EazQI0PZCdQQ3M3Xww+CwiIbTCuLFueaHFbibzNDKRFnqhEPa02ReLBsUCKZPgVgPndf
-         YJti0uofwK6tON+LL61MDBylZLraMXtC0k3aOAwAW0wZI8UGQlIrd+9X+ncJ4rCC6rRP
-         0riA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766512781; x=1767117581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R53CMKldL+ao84ivaoLDo0FHwHdm/f6bhgTHaidoDBg=;
-        b=hWMadEkNmgS0njaOi9pfFk2ly7GmXKYEZ0iOMmIeXcJhGb4b9S/jaUyH/Sa6vOnKEL
-         gfaZByZKuImAROxvATKKbMZHSot3co1SHDXNKhFcBdUdcARtZFXmez5i8nCXQcGb/DrS
-         unv+Zzr9D0ykNiX8oY7Jx6NfhhMLrB4VdNm6zzZ8LDgVI6GCsNxiKh6lFNaV4U1aUd4g
-         4dFuvIFQbck3Wt3xslBBW9id2nEGEokI6soOPoNXce3E2GXJAEbirRPOODRAW123rxW2
-         0Dgyw+UVg3KXcq8jFl69Wf/eLxUJQWRMl4ychp3gJk+wE+dRVDNFr6WnIqEbpPTCCTza
-         CrDA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3NYmMzXuAGNDZ/rpIrlD4QofW96443nOHGvbWgvVEvWul2UODeQiTrnUUO4n0VBr5WdoyqHxunw==@kvack.org
-X-Gm-Message-State: AOJu0Yx6rID/Ec925d1Ufeo2u265M7YB4u+VY3UvEcWMJeLJARxnz5vJ
-	gZVnNW8I4fR0r7GUjUwznRTygEQjwKv/vCrxaV1wEXJnHK0FjEazY8V0ZL6zwNM4DUv2Szdg2o4
-	Gf8zMPKcDYFBr85ywhsS7dlhEEJBKe8qm2jaAFJvAOA==
-X-Gm-Gg: AY/fxX5qoxobGw+sCCmSeSE5cEEnlDUfjV+32E38+zzI9AVtprkSVa02kLiOyd0d+5B
-	DFDGfRtBm5l+M4ecDkEvf84AJjsUpz+pOBZxq8idjeAkVtjcZ53VHKv+tn04OB2ehQbKBJRWoRJ
-	m78yPuKKhq87sRiNx9lxUngVMVdDJWIvVVMSSnyz2eIBv+N1oqFVcGvIBgWXW15icJugAqYq0ep
-	iuaPNQIzpJpKalCEXOtV2IegrI5otEY+Hap6ccRMzmasP22m8rrg6INNDxKhRslceZZ6hKWoHS/
-	9ZNGAve42Zwyui51u/r7ZH50qA==
-X-Google-Smtp-Source: AGHT+IEIcVeNdEfJcm9VqUd+E8mWDB9V1hWp7w0giAMhCSKTNrPtcUlGUPRtf1huaKH0b5X5NkhBYKjrvd/UfQeEqC0=
-X-Received: by 2002:a05:6402:13c9:b0:64d:1294:42e8 with SMTP id
- 4fb4d7f45d1cf-64d12944806mr12214712a12.6.1766512781369; Tue, 23 Dec 2025
- 09:59:41 -0800 (PST)
+	bh=iEereEf/9PxHA0EG75icsOpp3z6uKrPJc3+NiNjat8c=;
+	b=1YhooTAEUzR2lJLsoobeskeTYwWICLulmF+SvbEDSztqB/dukkAHe5WS3fnt64Cqg+ni+Y
+	UgoyxbmabPBlN0J4T8HAuqpnjv7kQMW5ThgbXKhbHg6BBEk1xGPM1zBlqzgL8lfoQ66TcJ
+	KJDa4/C1tZ1yxYLHJ519j3egat2h0Pk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRKXB5CX;
+	spf=pass (imf25.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766513206; a=rsa-sha256;
+	cv=none;
+	b=xoekWEQmesPqr8CwvwVxlw9Es+boKzZS/oe4kuV9awl15x3Lq+9OtEuArJun6CiPaZE7Ac
+	/MRRX27rPus43Nm5b0eS3uUlU4uUz0mpnNwMT85RwM0q1nOmOhNH+Qu8tQo+k4itdcbZDX
+	8kdIFVRd/Xhh8pLV9OLWA/OFVjNQ01Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AF6E460143;
+	Tue, 23 Dec 2025 18:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D467CC113D0;
+	Tue, 23 Dec 2025 18:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766513205;
+	bh=p4oE+5o9bN0kXgNRRBGEZJVGoL3abU2EiA/DKtkd5rI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FRKXB5CXPr/2qVqWwBw3KOJ2f+ZjW8AXTnkL3tDS+isZzEVGahJ2O5inD4lY/sQ0Q
+	 v9Sy5UXYy52nuEjM3+RQ+UZx3EfRzlBTTKT2aVFkCsDpcWTaLGGzVuaPY1mVXn+cNW
+	 BomlQLRSEBlHCJgMdJq5KAolXb8+xjkQ4oONZoXT/zsI1NX2hnpcb4Tp86oPMl2lUF
+	 0VDJipxWpp4R44TpryHQN4AIhdyOjJV4dvFZsF+ctKsVNCgeeScvVDkEQL85BvahRI
+	 lhm962IHjpzhvPZNLL11W9//slDMK0zaeGAoczpqQ8AAnuWGUTGrM01RXn03PY7DEl
+	 wR6nMYFqZUhfw==
+Date: Tue, 23 Dec 2025 10:06:42 -0800
+From: Namhyung Kim <namhyung@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+	linux-perf-users@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 09/11] tools headers: Sync linux/gfp_types.h with kernel
+ sources
+Message-ID: <aUraMnczL_ba_zes@google.com>
+References: <20251222225716.3565649-9-namhyung@kernel.org>
+ <20251223010057.4135-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <20251206230222.853493-1-pratyush@kernel.org> <20251206230222.853493-2-pratyush@kernel.org>
-In-Reply-To: <20251206230222.853493-2-pratyush@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 23 Dec 2025 12:59:05 -0500
-X-Gm-Features: AQt7F2r0cpQB_ObkQOTsEIIl1kaIhEMZ8gs8RNljcXCPywOe6jERbxst1hl_vY8
-Message-ID: <CA+CK2bDvaGmfkCPCMWM6gPcd4FfUyD6e5yWE+kNcma1vT3Jw3g@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/10] kho: drop restriction on maximum page order
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, 
-	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251223010057.4135-1-sj@kernel.org>
+X-Stat-Signature: hy4y6n8xa3udm184xj9adhgd46wi3wx8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EC20E80008
-X-Stat-Signature: q5mwarpu8n9dr3boscapxjixf77rf7dw
-X-HE-Tag: 1766512782-236584
-X-HE-Meta: U2FsdGVkX18umydBzVzrvG+UAIHZmehy8WV2706k2G7KK5L3nCjNsbfDz3OK2Rmsq/TDcW9B4KMu31TlQt0Um8qoxsMjeIIeQN7xH54bWnZshMReNeKPsboTvoEbIy9r7h1uHptJGImBpI6SVNtERU52PZhVQB7luG6/6K2ZsMu/KLs2jZWyGOQZdB1zj3dekqkVOnQCr1UQjx0iizkgAooTrwR7xkwcxI2nKp80hp8CFGuRLDZsUf6TWZqaAAA8hZG0waO35Sw+kRo8s27n+mJ4++QwSY1zLV19eVnIZ6RAHqqkLYdtyX4I5IQacpSx/tuRwj+LLiCvfWDZkAdMQZHiLQZ9kxS6QDwfpiT+H7ZrkFc1pRkjshd+w5bRKOprjD4BYZzH/gcJ9Dr8jb2AVMzFBMZrG/Xo4liLBz4qWYMm0uAybIfl4dLSePd/cruKTbr5FKyCN3r3Vb5mY8ETgy8pslh0hHXJvHbMlx78LsTcAGAXtw+ZzBDI44Cm9HFfUEOeSvf72QjSIS1XLFpG+UFfkfaV5chlrVyeUmepKn73+DlkslIK/2pYaZkWaUunJHGe+jkX+/+2XdgkKj7d4o4gYCnDDtXKiVUx/JbPDYpEhFQbZUj9UzttRYoE12UlPiz7yYgIwxNSuJyI/vF3Jl4vox/BXhwvN0z1fRym3Dr6wYHvcfc190T55YYNwRQytiMjLbfqBztyqGhFvjJvxAPB0gpCpAyYVAsllK/WppP+D6T3OStlPB5ZWaES6GtqGjprsDBy7DF+17RMrmpe6IOf+kkPpheknfG6ASTZfWXVZiGMO9pUJRB3HK4ox2DfKidT13pCfNjZ3VPvcu+TmpkU4XZPJcxmlCpYKJCnSQ5wXtkoOai8W89VVDOaVOStkSU5o4QBVuIh+idvr9IRJHI+zpzsGBzUb17bJeS++PO4/4TVfr10EzuvXxCcDpxbOdNpv6qph7CnrjYTCif
- O/ipgGMF
- 9m3UP9jsc2eQN9AhjEuHZ5Zns9mI0AWzQjiHH1MqaMEx0uNyplXSqUMJdum9g5mm3caS8RVF/fd674H2gX3/x33PXMeDyn/evytED82YX1bDcvuPlkYJmQ9EuR75bq08Hv9/9mHklQYT5lNG4l25dltMJSdqHPLBY0Motk0oxhkfSCD8Da56qYCdTmcLvgtNn+B3/2rGDNrfEqc9e1TbXPhxWvw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A565A001C
+X-HE-Tag: 1766513206-309940
+X-HE-Meta: U2FsdGVkX1+6CM7Kx0ibpipxlMFm+MvcHakjXTuS1OfQr6xVb4yyHzPIO+2jTPKsOsk/BVReSns+jP05pZLsWg6uN8MtVHgR6+xHBoKXKZOugB8oFA+WhMS7nm1KkGsa078e6M+0Ga6BIs3Fz8KCQ4WOWX12v8A32kVi8ZdITcn3RcF3bJ4X3/qeOW1kVBDPCi4azi7QMGExOmmjvCwBQ9gPr5K55+G7lRt5QeBcca3OqaFP8pL22svsATLaV7qsxzLGtWaPex2Q/rwVJP8Nbk+mdfkfAVQdnomBqxMTWjoCwoX0mhXt6HnR+/mTIhjNAzhyYBXrnlZowwjTXLDhNF8fzNu3osLc8dskEf4PYwhxYyRPDaP7BDr/y7vLR3cYvBk13cdxglZpJAaUB7v4M5AJNe+XUtjXUVFuB+W8pbFKVJ04+PzzJ6diYJobWj9tHI905HtaITYeV3MxodPz5nC1RdmCSOkV+vDhPKJmTG4JFIKzAiu00R5QrcNXZMdJ9aiV1BkE9ysLLwtjDxD4GyHANwhmZeS0Dd3WT7R0TaKUBA2HTTRnsw3l/y021HLOQq4TWtOiS5mlPQ8y6svGvtcpT6gHybO+wl1senNxDDDcvoFJ1pzFx3jLA5x8jbD45zWImCINbbPOT7UxMaaTyPNmkIeBkLRIHxinZcpMgEiX5zZBMwiaPHe3BuZ50pwjxDLx1Cw5hFBUl3OL6uiUx0zCYFSaexdlB0zskG2BePDIv8Kzq4xCFr5iiUhItjctVGdt8HrM0/OjNR+TKNWGjiqA2hk/RCcjK+kh8Xx8dSXK+oRXgs4RQMej+OYT6J/fl5uo15s3+QNm2QZZ2ZImAVW+hqSLO7Kwa3gF7R30ERRyiA8h3XKieksfyl/Eis2c3AqLXLinib3sj0A850OkQMhmG5hAWNlB2FyzbtG0cnT0bU1IU1yw7IJQ6mpsfU/nGOi/Wp3jK8jnOp6gjir
+ yMK2enzv
+ OKGgt533MG1qNS+fA1Kc1jZMuojHS1ipmdydGjeBKqNG7WQ+h0ZYurb76vLroLLIOrVHasUn/8+Q8PDEmjNty1yvFrhZvQd1t1IwYxxVMS+ek84zsVQk0jJPFlYMNk+ccwuYXxr8A27a27yJywkZNR8dSm1cQ7uKJBRf5OXnbGluTqH6ZH7oy7XiZpiotcP7MqU9ZBOhMbzbBZrzZwuIEXur9susUv2oCmZLMcEnULuQ7/dPYAOJ9XZCFXxCt+5PV2s4pXSNuSslB4zhdKzNX7Wv80sL3DunibM+jefVeMw3JCMPm9Sp7CjRpvRwbcBTQr8nkz0fRrxdtdVpHqlBPRW0va/phn3eoVaC+KM2ogZCFGDuAcNoAJvUNTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,40 +98,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 6, 2025 at 6:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org>=
- wrote:
->
-> KHO currently restricts the maximum order of a restored page to the
-> maximum order supported by the buddy allocator. While this works fine
-> for much of the data passed across kexec, it is possible to have pages
-> larger than MAX_PAGE_ORDER.
->
-> For one, it is possible to get a larger order when using
-> kho_preserve_pages() if the number of pages is large enough, since it
-> tries to combine multiple aligned 0-order preservations into one higher
-> order preservation.
->
-> For another, upcoming support for hugepages can have gigantic hugepages
-> being preserved over KHO.
->
-> There is no real reason for this limit. The KHO preservation machinery
-> can handle any page order. Remove this artificial restriction on max
-> page order.
+Hi SeongJae,
 
-Before removing this restriction, please also add a patch that makes
-sure that the calculated order does not intermix memory from different
-topologies.
+On Mon, Dec 22, 2025 at 05:00:57PM -0800, SeongJae Park wrote:
+> On Mon, 22 Dec 2025 14:57:14 -0800 Namhyung Kim <namhyung@kernel.org> wrote:
+> 
+> > To pick up changes from:
+> > 
+> >   4c0a17e28340e458 ("slab: prevent recursive kmalloc() in alloc_empty_sheaf()")
+> > 
+> > This would be used to handle GFP masks in the perf code and address these
+> > tools/perf build warnings:
+> > 
+> >   Warning: Kernel ABI header differences:
+> >     diff -u tools/include/linux/gfp_types.h include/linux/gfp_types.h
+> > 
+> > Please see tools/include/README.kernel-copies.
+> 
+> Nit.  I don't find the file on linux-next tree.  Do you mean
+> tools/include/uapi/README [1]?
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/tools/include/uapi/README
 
-I suspect we need something like this in kho_preserve_pages():
+Oops, you're right.  I've used a wrong template.  Will fix.
 
-order =3D min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-/* Reduce order if the block spans across NUMA nodes. */
-while (order > 0) {
-   size_pfn =3D 1UL << order;
-   if (pfn_to_nid(pfn) =3D=3D pfn_to_nid(pfn + size_pfn - 1))
-     break;
-   order--;
-}
+> 
+> > 
+> > Cc: linux-mm@kvack.org
+> > Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> 
+> Other than the above trivial nit,
+> 
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-Pasha
+Thanks for your review!
+Namhyung
+
 
