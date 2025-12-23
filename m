@@ -4,104 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DDBE6F085
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 17:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FD8E6F086
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 17:38:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBECB6B0005; Tue, 23 Dec 2025 12:11:55 -0500 (EST)
+	id DF24C6B0005; Tue, 23 Dec 2025 12:38:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6C2B6B0089; Tue, 23 Dec 2025 12:11:55 -0500 (EST)
+	id DCA036B0089; Tue, 23 Dec 2025 12:38:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C77D06B008A; Tue, 23 Dec 2025 12:11:55 -0500 (EST)
+	id D00516B008A; Tue, 23 Dec 2025 12:38:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B4F7C6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:11:55 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F0A91A03E1
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:11:55 +0000 (UTC)
-X-FDA: 84251378190.04.BF3CB02
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BEDD340010
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:11:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fa+0Ubgf;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C24DF6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:38:15 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6263B60301
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:38:15 +0000 (UTC)
+X-FDA: 84251444550.16.078250B
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 782B44000F
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:38:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="kzXPMga/";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766511493; a=rsa-sha256;
+	cv=none;
+	b=ZZoidEU6EuMbyOeiIXA6p6VkxTgfLcj/uBx5Hz8v30b5TfUApqWjUhHIfuCCZHtB1qhnNm
+	jQn6wkcnSH3YdKSRKgP9WBngOXmgalfcBYb+XJ0YL7CWDpE4UqqTNPbkczcfPzjo89/PxB
+	ZtLwICPNzACjqeXP5hfy5JZ8W14ftNY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="kzXPMga/";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766509913;
+	s=arc-20220608; t=1766511493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NlmwdZqhPExcGZgM/pVZiC2lUJhmTkXwAn+qNuohbBI=;
-	b=uUYaCoHpdhu8OfTUvOEFQ3HYwC8eFehaQ2E7M8MuqBfTnBbuQ1N/vdWJQ0sQF3U6/kIzhF
-	+GBdPEWmj9FonCZXScs5uxHn1Du2dVyykbh2b/K3Jq6b19XX3Q7wvVw/aP96PAnWr9Xlzz
-	Qrma4pINaLnEmk1pl0Jd1WluETnm7YU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fa+0Ubgf;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766509913; a=rsa-sha256;
-	cv=none;
-	b=22AJOokA5iw6aVUAGNBjCA6hAxgWqt1tmjrYCNfVq1zzClAQM9AdrYN1P1K04keWQKBl8I
-	yFoOBYuJGpU1h8J0OesU5NylBKLtmGAYOre7/aARgST5SZubyG2xInffrDRnHBpQM7KA2B
-	+fCRYPPso89a1u/PDt4L6O23Mm1MIjU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5E6C41E5B;
-	Tue, 23 Dec 2025 17:11:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59005C113D0;
-	Tue, 23 Dec 2025 17:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766509912;
-	bh=3um8NkjnKfQWblw0ttBXC1gQUUqnZlPZFVjmKn1p7PE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fa+0UbgfGH0MW7oBnwI79BEfDFeL2kz26p3mGx0sCirQiG+ODvVSzIvze2Y4eZ39e
-	 WIzrCovlU7u1ZaXeiidmAy+OfcAiEQyWBxBq8TEgBFblUeLzUl71pnP8IwQYxRxZtl
-	 JU7DoafiH8mxnn2LoNc4c4dJAdE2oBfmG5UhDjQJJJ432y4bbFEKAVbwNtMFpz/VKJ
-	 6AlMqdnjsTFz7IjJg58q5KShlRT8jwNW+ZHfTHRSECk5n7n3KNXCVAxif2wK9xXXXT
-	 E+/IjLB2oCGTQ1JX1lHXV5bbVjgxm5fyavrfeDQFfoQJYkrnbzjVcvXusb6YT55ENG
-	 LaGk5PAMnNqlg==
-Date: Tue, 23 Dec 2025 12:11:51 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	x86@kernel.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-Message-ID: <aUrNVyuSaQrQLGZP@laps>
-References: <20251221104907.032abf56c67f3e50c9c94e31@linux-foundation.org>
- <20251223013045.4579-1-sj@kernel.org>
- <20251222183055.88c3cc1f0705c1dc29c7f011@linux-foundation.org>
- <aUqAcf2405H0pRW1@laps>
- <20251223085434.a6d6ae08c3aedf420908f404@linux-foundation.org>
+	bh=TTLC7OEVGIoEXEyvllrnolAl7aW+wPLOmIrEw4xjfLQ=;
+	b=YF+pKpRq8S0ndk4Huvbx2KQKQPbczpC1xq1b9lZA3KoL2ugeymWgguYUd0iMLnMfbwlv7A
+	GexhPeTy7SCBj4m7EL/rlJ2fJt+zw/s0463p/gPQHn4xVik/BqA0q06Wwhgsu2h0+LDxzr
+	YvtccMoynLgKpmzZJfa7tG2zwEyolj4=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64d02c01865so4823591a12.1
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:38:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766511492; x=1767116292; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TTLC7OEVGIoEXEyvllrnolAl7aW+wPLOmIrEw4xjfLQ=;
+        b=kzXPMga/9dHodI/Zt5U8uW9D7d7PV//l8sNWSThoNAaP8fLXHzN0beqZ/+Up27s1HB
+         JQYrjZ331IghWkIUT9hxzyiVObico+7450KATSxPL4dLUMioG7fGhpCHsoOilm6kwPZO
+         ZCoKP/xSyWezWCH5cpg4PBG3B+Vy3TxHnwGmOGiokP3lEJu7ytwQdXEc4+mDujhzzJbj
+         eYItTy1nRoGRg+0YXQ/U5K9+WB2k3NR5bYAs/YLuQg0bM41kgJyGCKugsu1Kc7eIhAa4
+         KgnR1EweXsd6wQz1zNlIe/4t8qhupIIqx0YT2/XeQTLjmivd4nfZ4h7nmn9LISS5sJib
+         iKaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766511492; x=1767116292;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TTLC7OEVGIoEXEyvllrnolAl7aW+wPLOmIrEw4xjfLQ=;
+        b=oTkyIQGfFRD4sLrE+P5w0E82aTud6MAz03h6eprHxAqdFa70zB5OkK5VrkrKSto0ai
+         fMibnSeZyFwpDp4MQRYTdiXLmXZ90B47kAaLy+Qb6vkI+02b6dMYF0x4uDYC0sYSBvz/
+         Mr20t7fb6CwTaPW6PkkDr6ZEumAtXvD0PqocYvRNjA92JqxvlCRWBcJ3SVppqvFuCfU9
+         Aaqwe83fQjsyHc2Ac7/717whrFpOdjIF+mdGnf7TD3hpYDPZ41wVbJJ4ZlTWc4AU+f8q
+         kmXTwFFb2M+FPTTSKYjG4NkxcsNKjHcJZFObKqCGwbrqIFn0+GWPKNZ1C7xF5Wvc/WYe
+         cMtg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2sADRApHKC2MKUBg9SJZDd+a44uqae3JBC3OfH6/D6aT1A6vvpWOmgZX4ICb5pRAILLzKis/uzA==@kvack.org
+X-Gm-Message-State: AOJu0YwIp+GCwpUkpC45+vgj5ydu2eGJlA1azE5HabiCjlTjQLXTjXaR
+	Vx7pikamU0OUxqDZ3hlgHN5EtlFUBsDvkAnnGSziUYdOua8dvgilPaVs94G2XlGDaAapETkBMpw
+	EiIc8MobJ7cnkjrelm5Y+JwV2Y0fTmZ81njbwtwtxuA==
+X-Gm-Gg: AY/fxX5XX7BP9Vb7+SxYwx7SticAVtIiNaxrafX85ZWtJcr5Yyiih9FkJEV6D9h6GEv
+	n6AL73YEdfI82Wz9WtMiIjkjmAmA8jY7N+p059R+F/jZy6xjXZ/AEfp5iaqs4Wqp1EQ0fsLOS/w
+	517UXuUCS2HzxfFNKPP7bDnd2dDYu9hiuwdA3CX5skq9ttHi/e3KlljLRBmC3MMSU6GTL62P97d
+	NFi0w77BvMAEVh8Ie64vB4RfOVXfUzpclOMed5H9li6mh/d2SpXn62fjk4qERAAPJvWDUUsffCp
+	+gDUo3GBI9mwqPxGFHsUp8UOEw==
+X-Google-Smtp-Source: AGHT+IE124uBCZCPJySJNjN/QHQdpyXa77YXFpY55orIImpDxYcMb4oh90L3OIkReSgyrytjfimRLEMoj5BCtx1k5Zs=
+X-Received: by 2002:a05:6402:34cc:b0:64d:498b:aee7 with SMTP id
+ 4fb4d7f45d1cf-64d498bb3ccmr7158286a12.9.1766511491347; Tue, 23 Dec 2025
+ 09:38:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251223085434.a6d6ae08c3aedf420908f404@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BEDD340010
-X-Stat-Signature: ipj197ibpwgcao1sajbexik3epxqmogx
+References: <20251216084913.86342-1-epetron@amazon.de> <aUFJH9xzJXYOt_X8@kernel.org>
+ <CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+ <aUF4fsWwD9BswkFh@kernel.org> <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+ <aUUYprAotKYMiEs0@kernel.org> <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+ <861pkpkffh.fsf@kernel.org> <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+ <86jyyecyzh.fsf@kernel.org> <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+ <863452cwns.fsf@kernel.org>
+In-Reply-To: <863452cwns.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 23 Dec 2025 12:37:34 -0500
+X-Gm-Features: AQt7F2qaH0m0VJoMuoVXVcmA15RsVJHyeu9_tkkVe-fDVNFSdl7k8MrpDozG4X8
+Message-ID: <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 782B44000F
+X-Stat-Signature: iqo5n4dyd3yiogbbekes3x1fohbn8ex1
 X-Rspam-User: 
-X-HE-Tag: 1766509913-763745
-X-HE-Meta: U2FsdGVkX18D7remn1kK75yvq2DfVlArg3dJXfU+lU+Mg2slgW5Q7hobeSR6Ywx2IzEkqLTDCwEi+QztbtkxnAGADIMlYZFQEmwYfxA391BvfREf/RBKg64u1z4cXXWx4cry0ibCq9qCOL2sXwghZmXaD8cv+j2jJG9Woq4LYv9lixKtJsIYAvIOjJULvfoZaVpRPCTgLtQtgs0ztqBWAm8ysgMOMPrObh8C7e5W0SsmLJYDgnfpF8ZbS9UAZ67FdoU4QL19d5I4DbZRGNSHyDqFv8NsaniyzNWC+h/uqTVbsDBjrIgYtyRz9Wo0oVXPt0aN1m6+6e31sX2pv2PUvmwWoY3oNO0C9zjybmLMXLRKtPFKBBYc6TA2r4q2YyDqr4bVq/60x+jogQfcBUsDmSReGZPYyOaZBQ7tVOFws8L3HosGdKQJCQp6ocxT/uPOO1ndW5R6/AYxtnkh7iIktd/VxoPVTZ29Fv7HKAIAVSf37WvCUEVyh40K++0VpNUobK/GqN4/uFQRBeazKHU+XJ9GDKxWWwqnJO1vgoKE3G+gU3agGwD1S9aXqr5l5f6WHEMh2uREOVlAUYT9KtyoniytDrqoInIGgM8OyW2DA5FfElNEjJCHwHjy2gRNqUVXkpJTj7g6RZcTUTnEygXqWDo4Y8XmO2ci3hfdDoyOvtcdT5aReNk3NsYpcTuCKiEVsI23VeOUfzuO+iinDPnUzv63p/9yNVl+HZyUB6cGeFwtLuBv/4iV0b4ibm9u6bO9zJnnO5SBCbga3P5FSNbDLAj1OpxPdilM678yRsfBPWSxUPMfXJTDSLivu8g6k+2XltSgXqMfMYBiyv5g65Q+nqmPmvGkq1zZDxuX7xUQlKRnMX+QHRdrdovsxob/elklL1c7BEQcLZ7iRtSVRyH3cDhZGzgp1WW5xrqaUMLSHHEdUkwhm70TjYQSc4nS0vhPplSEzPj4vdhRuKTsSCx
- aO/83lW/
- DpDxKn7zsP80ZHY4XSAmyjBFN8A==
+X-HE-Tag: 1766511493-43848
+X-HE-Meta: U2FsdGVkX1+498lc6kemaEjiQ7F97Orag4A2jLuUUnSfF7oWrkNY/qaphfgak+gBe6sIsIK5/i/w4A5J4MsxTIN1LTOITrlw4mVoy9Uh3U119PMsEj0joTwb1SBXjYhb1SjIa0G++zyteE39I6lxMa8a665YVW9BHklDeKiZUjapTI6ycA3xLus0P/lDrwpsypDF16UDWvOHUFmeb2pp9QyyfOaMd015q9siF3ekqTdeEDXsB7uhHHzPFkWWakZUYIMtXQ5HXGu4HmFpk4wBoeJh43hpDPkDDKC0Ky/13c2f1RIk8TeN4qBBhpPmA6EP2z+viSmFmAvTBSkQfFR90kFo2kwU4YaVajEwutX2KoBa38PkzNI55OK453BigrebLDYCJA2l0ZGBjVn6Yi1zNtZzZFprHdwPtqYlT820kAdt4w2aSlM+08YVfw3vrVIYTIAHZ+F+peNFfie4KDzcfJh/1gK4G33gl6dWzCxkbizgtZ54AEnzTAlIkbP37hVBKBk0i1Oem4LPtIA4YvaEpobMY2dn2AkjVuXNe76YJQPVNHBepaFK6SROxrtgdssJJm7M6J2U4s1sJGimtspVrnzFZvdap9G/FXa9zx7pf17W63j8pAlTL/aLUN9DtCA31V5AMFukAkKUNeeDZfptg7/Swq+OszdJYsJ/yxet6Oh1yFXUl8qugGvyT2OWR7ec1J73doT3YcRHf0uNcY66E7ycvpPooliCOQ1TtcnAg3shGgFeCvOIjJIRZIcZaxs9mXTorMGs/7FfEPuTI3TvijVB0rs6QJTOdboxfVP43GmYSgrEIL1goDnaJITgT0SUrc74ActAYQL+xp5i0CrgKmVreznmJlCSk/M7pREoHH+GmML+mtyiTZgn/b63O/oElevsZitYyKufjHUp6qvFmFmbZvx9QluB5bOgUah2WPwOmE1sy9037k0xZg5dzBu0To3UaypbqAQVFf92G/u
+ WtjtrA5V
+ k/qhpoG8DHZclJ4iAu1DH+1KYF8Q2ZW4+FYFUlGPGFGVhuezOT1hMSBbwtVOf9+rEVpph3UwDIcB8Xb88dHr0uusrlNGfWbTsM5KmAFBc/OZ3hzz4nZAtdd1xQThzKqri57ki8nPgjDQTKyJLbNZgM2L3xyViZqzo//7OxhXFVF7YAflkc//Y35kT4j/ynFOkxngO/fAwPOX7150XIsCmrRzzhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,57 +122,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 08:54:34AM -0800, Andrew Morton wrote:
->On Tue, 23 Dec 2025 06:43:45 -0500 Sasha Levin <sashal@kernel.org> wrote:
+> > if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER))
+> > return NULL;
 >
->> >> > Yes, -stable maintainers have been asked to only backport patches where
->> >> > the MM developers asked for that, with cc:stable.  There may be
->> >> > slipups, but as far as I know this is working.
->> >> >
->> >> > I don't actually know how they determine which patches need this
->> >> > special treatment.  Pathname?  Signed-off-by:akpm?
->> >>
->> >> I guess it is pathname, based on ignore_list file [1] of stable-queue repo.
->> >>
->> >> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list#n16
->> >>
->> >
->> >Oh, that's a bit sad.
->> >
->> >- other trees sometimes mess with mm/ and they probably aren't aware
->> >  that they need an explicit cc:stable.
->> >
->> >- misses drivers/block/zram and probably various other things that
->> >  the MM team maintains.
->> >
->> >Oh well, I guess simple mm/* coverage is good enough.  But I do worry a
->> >little that useful fixes coming into mm/ via other trees without
->> >cc:stable will get missed.
->>
->> How should we improve the filter? mm/ AND signed off by akpm?
+> See my patch that drops this restriction:
+> https://lore.kernel.org/linux-mm/20251206230222.853493-2-pratyush@kernel.org/
 >
->I think just signed-off-by:akpm please.  That way, mm fixes which come
->in via other trees without cc:stable get backported.
+> I think it was wrong to add it in the first place.
 
-Ack
+Agree, the restriction can be removed. Indeed, it is wrong as it is
+not enforced during preservation.
 
->Obviously we'd prefer that such patches get appropriate consideration
->by the MM developers but sometimes other-tree people aren't that
->cooperative.  In this case it's better to backport the thing rather
->than missing a fix?
+However, I think we are going to be in a world of pain if we allow
+preserving memory from different topologies within the same order. In
+kho_preserve_pages(), we have to check if the first and last page are
+from the same nid; if not, reduce the order by 1 and repeat until they
+are. It is just wrong to intermix different memory into the same
+order, so in addition to removing that restriction, I think we should
+implement this enforcement.
 
-I tend to err on the side of taking one extra thing rather than missing
-something :)
+Also, perhaps we should pass the NID in the Jason's radix tree
+together with the order. We could have a single tree that encodes both
+order and NID information in the top level, or we can have one tree
+per NID. It does not really matter to me, but that should help us with
+faster struct page initialization.
 
-Would you be interested in trying out AUTOSEL for mm/ again? In the current
-workflow I give about 2-3 weeks for review, and all it takes to have a patch
-dropped is to just reply with a "no".
+> >> To get the nid, you would need to call early_pfn_to_nid(). This takes a
+> >> spinlock and searches through all memblock memory regions. I don't think
+> >> it is too expensive, but it isn't free either. And all this would be
+> >> done serially. With the zone search, you at least have some room for
+> >> concurrency.
+> >>
+> >> I think either approach only makes a difference when we have a large
+> >> number of low-order preservations. If we have a handful of high-order
+> >> preservations, I suppose the overhead of nid search would be negligible.
+> >
+> > We should be targeting a situation where the vast majority of the
+> > preserved memory is HugeTLB, but I am still worried about lower order
+> > preservation efficiency for IOMMU page tables, etc.
+>
+> Yep. Plus we might get VMMs stashing some of their state in a memfd too.
 
-I can generate a series with mm/ patches from v6.18..v6.19-rc2 that don't have
-a Fixes/stable tag but the LLM thinks that it should be backported as a way for
-you and other mm/ folk to gauge the current state of AUTOSEL, if that helps?
+Yes, that is true, but hopefully those are tiny compared to everything else.
 
--- 
-Thanks,
-Sasha
+> >> Long term, I think we should hook this into page_alloc_init_late() so
+> >> that all the KHO pages also get initalized along with all the other
+> >> pages. This will result in better integration of KHO with rest of MM
+> >> init, and also have more consistent page restore performance.
+> >
+> > But we keep KHO as reserved memory, and hooking it up into
+> > page_alloc_init_late() would make it very different, since that memory
+> > is part of the buddy allocator memory...
+>
+> The idea I have is to have a separate call in page_alloc_init_late()
+> that initalizes KHO pages. It would traverse the radix tree (probably in
+> parallel by distributing the address space across multiple threads?) and
+> initialize all the pages. Then kho_restore_page() would only have to
+> double-check the magic and it can directly return the page.
+
+I kind of do not like relying on magic to decide whether to initialize
+the struct page. I would prefer to avoid this magic marker altogether:
+i.e. struct page is either initialized or not, not halfway
+initialized, etc.
+
+Magic is not reliable. During machine reset in many firmware
+implementations, and in every kexec reboot, memory is not zeroed. The
+kernel usually allocates vmemmap using exactly the same pages, so
+there is just too high a chance of getting magic values accidentally
+inherited from the previous boot.
+
+> Radix tree makes parallelism easier than the linked lists we have now.
+
+Agree, radix tree can absolutely help with parallelism.
+
+> >> Jason's radix tree patches will make that a bit easier to do I think.
+> >> The zone search will scale better I reckon.
+> >
+> > It could, perhaps early in boot we should reserve the radix tree, and
+> > use it as a source of truth look-ups later in boot?
+>
+> Yep. I think the radix tree should mark its own pages as preserved too
+> so they stick around later in boot.
+
+Unfortunately, this can only be done in the new kernel, not in the old
+kernel; otherwise we can end up with a recursive dependency that may
+never be satisfied.
+
+Pasha
 
