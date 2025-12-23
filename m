@@ -4,124 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 868F7E6B25C
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 05:30:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C71E6B25F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 05:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5C496B0005; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
+	id 513B26B0005; Tue, 23 Dec 2025 00:48:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDFE86B0089; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
+	id 4DE5D6B0089; Tue, 23 Dec 2025 00:48:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1576B008A; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
+	id 40A556B008A; Tue, 23 Dec 2025 00:48:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AAC696B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:30:08 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29AE5B9AE6
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:30:08 +0000 (UTC)
-X-FDA: 84249609696.18.8EE9742
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31B15C0002
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:30:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=icCfVVNi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766467806; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FFD06B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:48:52 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D04951404EC
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:48:51 +0000 (UTC)
+X-FDA: 84249656862.12.C8ACB51
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0F81BA0009
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:48:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ImeHeuCd;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766468930; a=rsa-sha256;
 	cv=none;
-	b=JZ/R3+5kgS+Ed1TFxogmdf0bqH9R5dpaAX1tpb6b3R8GUuGQZJd6M0uuF1IcHcpcALkXS/
-	MZMp5EOBsVqzwrGpv43nVruU7vmK7STfzhwUtTpDvgm8nJ3vcSE4NJz1OwMUx6FvxmEOK8
-	tVqCWMsSXl6zA49ec4FE8I0itPv6eOM=
+	b=RV/9ikAY+eLsGV6PI49aZC9RqWCKs1zzxlWb+wxvXWh8uacR5UxVJjtxCcVqexDkUHQ9Db
+	XdFzyw++q/hWBmWc7o2KGFhRwAzez5Rxn/T42jNwDJ7kx7uNT0w4prO73L+40rW9AgXmHw
+	24nRRiBDK2/PZwyIohYrLsw8POnmmGo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=icCfVVNi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ImeHeuCd;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766467806;
+	s=arc-20220608; t=1766468930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
-	b=OfJoxO0fMN/LEU/tG5aqyxQiQR3sT298H0TorqB9l45KEQ6tkSYxcfhgUeKLSyajE1Wz2y
-	Xul/z197kSPCkyyZU66pvFVls40ICBjfgDOTO1K11TL/4bjOOlHB5lefcM6lQAUrNZO5ks
-	HEc8XRy/ZF92Z2jx1UGh39ij+NTQdqE=
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-596ba07504dso4207240e87.1
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:30:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766467804; x=1767072604; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
-        b=icCfVVNiR/OniycMGvcULw4gaf7k2Pr8jCLswnk0FAMBwSOCmMFgEOBvIlFP09YIn2
-         RzCrPbMjDFzd4AWPaLsoW6RTXI6GUEhs7jE+RqZs2xxKnnXHDAZPgmqLUHop34rqDCwI
-         MUJ4SZSs32tRnaeDssTdtH4TuPUjvRlGRqzIQ4hTGhyXV4JKN/AJRwXUQA1KXz6Zewp7
-         /HtKU6vqxIbCZcdtG7+TE1urtpVQRogAoHom7d2J4noHICBceKqq+pBWCusO5pKGnoIu
-         1euuBhS4fWh8xtZ7GQbP/74K7xr8riKb8GnfF/uPW1nI3UgtG7J/Cp3ffqBFW57VE9tb
-         qLGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766467804; x=1767072604;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CjrVs5qAijx5UEiplGDR4bSOktnBgAEK/U0XoVs0/GM=;
-        b=JE5142YoJsZ1GuZUBfVD/rErh+Ur6taClnqUMjE4R9nw4mw8hvFul6bugYaRtY6PpM
-         LQCz8kDgmJtrFDixRQWeT4Ggg0W4OV9RVXM3y7VQXe1CjXmPI9gPkggUFhIJYAX0pErO
-         0kRNFEC7OVHPJM16o7q/rr6dm3U36l84nRUW43yvd8qVsfB8H5WrRDq90mInparRv7JR
-         Ukuy37a44X2TDWGLg2Mh1FZo8Qj+qk/Cn9Nto5Mk+SM4cRS62Oa/QyxU6wO/uayWh4O6
-         2bUpzyEYtnfW/H7BSLpArMbFikV7uViGIvuz+/2trhRmPSTLDLrF4igw0iK0JzT8/zzV
-         6otg==
-X-Forwarded-Encrypted: i=1; AJvYcCXincdukSumgD6fPNNcPBrupVH149A7BLO2J7qi3yXR/Lz3+Ar8YdXaNchxuX5tlghJOl8d+dBuxA==@kvack.org
-X-Gm-Message-State: AOJu0Yw8Ss1PGvRh4JQGjIi+mTyAj3QtSsGnZK1ByHuSmAPgQ2G7kl8D
-	UPpYasWfT6XIqbgEXzM80Kb8picA5GB1kqR/NoaH2r/Ly/3qxq3QrXW/
-X-Gm-Gg: AY/fxX7k14QjYT6KKancEmvXM7sjM72ugV5xNHHcLRQWOSXMyJHfrbZDRwcxH2uDJzz
-	tKok6lLSakKsCVgJ7Uu3dclGHCWwrE7kNzTQXAX7HkIxzywsu6k213JeqOK6y3dKSWqAU7oSE44
-	8DL9Zqn15+GdnbJEJHFklQTzwUHz8YyX+2DE1EzlXFJKo78/3giyf6BQWKYa7dWNaINgGTBDwcm
-	P86DBYaAcJUspaa74KwY3xMyZCLCl9e8oQY3yaG7xx+pJWuOlLpGByR251VInBjHE0Q6hrSf/m3
-	40Su128MXJmTvtptEKSsETB7oe4zGF7ehFQkm+99Sm0Gt1zuOVpjnwnb0ypLNGoptOQcujSs1+Q
-	bNzbZPyc4hAL7EZzSpF9hPnWvJFFn2DmQ9lHsMXL0ZXu7ItXohIJbkwmKMZXlmbFutFpRwNolPJ
-	69rLzG1iAY
-X-Google-Smtp-Source: AGHT+IFBJ4czf5dy7NoHG6Z5fLR0sF8QwzLoI7Shb3fIF5XKnuFbQtFm8MSKsqZe2birAQ3bGk4BUg==
-X-Received: by 2002:a05:6512:3a85:b0:598:8f90:eff5 with SMTP id 2adb3069b0e04-59a17df6969mr4474213e87.53.1766467803957;
-        Mon, 22 Dec 2025 21:30:03 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a18618ce8sm3818747e87.54.2025.12.22.21.30.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 21:30:02 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: gmazyland@gmail.com
-Cc: Dell.Client.Kernel@dell.com,
-	dm-devel@lists.linux.dev,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
+	 in-reply-to:references:dkim-signature;
+	bh=wurmuUfiWrJaqPqHxOTjUkR5eHzUJvLVCpRxkAiKRjc=;
+	b=TyIHZB5vLAuzBePl4XoSLb0bhzhFx+PBVpW5Ln/ubrr/fuZXaWzltnGNZpRaHQpz1E0Bl1
+	jr9M8vp1ccKMnjUoR/ENFJhQYOfkYuFKoCNqWQsP/D33O2a5loorXMzQA4ixQKfhWch8ti
+	bjx78EKUKXgm28Ct7H96StxXsFLsoGM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766468926; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=wurmuUfiWrJaqPqHxOTjUkR5eHzUJvLVCpRxkAiKRjc=;
+	b=ImeHeuCd57NwPMtWzd51UaBueoAfFOXjGMQ837zcuThKeQKZOWWUMgIsif/t8o6JfskqIaE5uIJBn2dVBvxm2NucsQmJoZ1slJ7xWmydn/XY5BLM15F87iQrCPPYWb1SYWH8Ht+slH+1eLh6quNDlOQEkXpNKK0bBKUayvRo74g=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvWX.R9_1766468923 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 23 Dec 2025 13:48:44 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org
+Cc: lorenzo.stoakes@oracle.com,
+	ryan.roberts@arm.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	riel@surriel.com,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	willy@infradead.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	mpatocka@redhat.com,
-	pavel@ucw.cz,
-	rafael@kernel.org
-Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
-Date: Tue, 23 Dec 2025 08:29:52 +0300
-Message-ID: <20251223052952.2623971-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
-References: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/5] support batch checking of references and unmapping for large folios
+Date: Tue, 23 Dec 2025 13:48:34 +0800
+Message-ID: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 31B15C0002
-X-Stat-Signature: qzoz8y5ocnpbdxdy6jkf1b486spfsj4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766467805-838714
-X-HE-Meta: U2FsdGVkX1+/CquFlHTTpNEXtlvw6Y8IVfk7sJEULcSbPTrZQ/Aiv7vaaA3PvBWz5LSYAfk2cb/Ls14pvZ75WZQN18+B/fNKr2nqsIItlhnn6d1LJlktFcqv4/UShHaSjdQwmYRb+WzORvTy+S6QuTpsp0GSEPIumqTWJGO6M5txz1yd4ynr+kHxcXskb7h1dq56/fOpphsh8KeDeBK2sxRMha7TTPCKoobl4y7ptw56lCLRMnrfv/cXPCgixOjoZ74KE2UOmzHDHgKNaMZsgwkShNkringa0UhCnbm50FJeSWjfbjm/kFS1P1k/G9t5T+Pm0fDCmY5iTpk+RHrcdLtzsSk98UKeNMYC43sSOM1WzQRKYqYPKM+rc9tDlJIXWeTFU1VpLbxRK4jEPbFq9e3UQmDIMN4QeqnTFgiT+s+XszbB8kxi+c6u6jgZXVjW95xUO3ETrpx4Cgm5DHj/xtAsN2fhxnqbzOi1HIw6sqwWbkNE4P09+iBIRtj0Oq8W2clRVWGpRjlLGHiEGvRlQJl8WA8HxLxJCjnQ+bpNopDeYjrPABlD8C8f7Xg02Rtzj1fT/ZvUlJUM/8rHklQ1+SpO2BdwUlp42kor42op1f7Dq/KFMem0D+glMjcS1XceRT7vvOQkcU4yySKcLbR6sVylFZdp5tniFNraYewIISlRMPl5lg+Qud1B/RfE5By9CezgdSpx8c/bp4RafmlF191hRP7hGkDqJng/d6ZUlePNgxVlWzWivCdZ1WdQIoSatIWsx7vkJRfgm3d1iEElJEYv+IITGfiNbW9HEMfTCo2eCYmlPIOHlSm/N/ldPsWIvdyrtw6p7wxmDNAXlM09nDRDKV04LhCzz0cDfk3OM9OqvYGNxNRNHjesQDDK9yYU7HkQjZ3umk6tmeQ/9O4zUPH4V7611lqgZm22hCpkzFKvtIBgJv5qV76kG8luCmOA87OfmcKwTechK9BnZ0K
- KvJGj4xg
- gCsqc50g8ZIfORLSWTt4gjk1Buq1XLSU3Pt5P8Ee7KekKk8Lp3f/PiglXexhQncTEjqx+c+udzZEnY2OPXnC236IrFREstykpLiysV/wS0ikYGOJhYL2w/YfOQ2Ad+Dlj88JbNzcj7cwDlOgIOFx1dOqp+RkEYoSNAtRQ0Tlr76WqHmlieE0y6/YYNcU6tQuFR1SQYX6ST9Rvj5VNnZ6+XFfoNEC/J5Izvb5L3moPJck/DELF8gNxoEY+sHdPAL6VYbQdSzijx4BUV35SIBo/5/eTqS17nZsnpFynkwvFGbzn4wrrHK+gQabRKPjhevJ8zboIDDmPmhKbI45Oafqxt8KJJE1qigBqesYWmIjFOWYwD7ujQ76pOTbCDUe+6QfA5OZPfZD4ZuqUlhojuzkwJoa6s+0EG6Zq2+93/XQq4jeDVuI0TsOpiTiwgaH5ZKdlVimZzXKsGKBgCxVCESJABAlF1ciJ56OHsUiFcY9B8RfjAjydhFRtIhMi80y/GCEqgGoHIgtU2AO4mCh4qBpK/48YLG7zf1IVdNwu
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0F81BA0009
+X-Stat-Signature: 4zo53ziiqd19sqcy1jqbc8rj6nseb4k9
+X-HE-Tag: 1766468928-668661
+X-HE-Meta: U2FsdGVkX18MHmOnV5J5k0iudH4v6vhuQFxfBu1treZ1PfFI1MsZaU2NxsO3Ues21yIoYd22NgOQue+Yjvlysy3nO3GUNkpOq3lBmirlGqC0HNtfvSiYN/wwXEJqudvJR6geXbMbWNMexrBVCqKobZC6zbcTh5/dkW7aYxYb7vQsIODm8ocbRlJO0B0zD9BnqqDK45BMBU2SgPquC/RZX6WOCFSfzwZToIrwO3LYIjmcTdaK+FTdrBTqlIy9wACW3l75wtxq7zLYdem6ZlfL4ALDpqUznsZc/vwBh6KJWnpXi/KjwfmAf492Xrt5OiQ6puigJMGWLSxlr8YXwBkiK7Y4l6wuf7VT41nbTC0B03zdvMuU0zhaQQWS60564gYhkqiru9Kz/bmw8hAq3uNrTYHJP7sfCvE15pzV4IVuOAObhpQeW+D55j8ulbTuACVqlMadq9TkXo9lUn2SEoT9w287OUYyxqt8bnHsSdHUg7r3PfOkuqc5VPXXf0S4xmjgale9kkh6IagnD5ME/2IF4jg07VoBIpM4/SZ13uD5amAQu6t/yeM4zDeKo6ZDaucCjSb5KshQQwruwGIjDrcEXVemhO822cFLq4F/bOfoXcxov7M1V2iOgSiRNezGL9y8c2OUNTe2gS2fVD4GW2BtBmrobzAfG+gCnQyFvdooMduSaIWDjj+h8XZJXutUDrT0ZC8q6YwEzgQINbW0Zz6BzLHyKvmxNWqiKYvd4zH8MW9Lv3CgW0ojDEfUWXLmIFGQUh6CfQRczm7aEpdzWOcklg5Q5ISYvJka66apzFggrV6nZuidTdx9sC3YSkG7wrMcWt7qQPPdy/um3S9j72nss27gVUb29ZxpjDZEGC8rpz4Xx64nRqhaE7BjHpwwgkQ/8SENX03c8JA0mWteO3GbB+f6gV4JMdhdlI7tl3uki5Y+JZFxjJ6MTwwFSTM/Qd1VdQaGDmUV6fR+I0g5rOb
+ tcOzn+ig
+ ckwcscnDG87wuzpcRdfP24qPPI4yXqHFoRTrc8PVOHE3DQbLUfKXKC3oghtr9GT9QL7gimF62fV1i23uQp72P2F5wCnv3eBHek3Ce57qydAYmDVKWTxY42Qief1w73+kG2OuQi3Yi5gwmdxJqZFGQOkG8ptiRQPZOdTnoRFNey5kqIMyDNXps5126UJG4vLa3OUcvE0vAp3tCCwtf9m04NBBlU+CKAAIMc6qnTikeHg5TOYBUsUf+tzeCs4kfvOTM09Mz6acWz//xo1g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,66 +100,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Milan Broz <gmazyland@gmail.com>:
-> Anyway, my understanding is that all device-mapper targets use mempools,
-> which should ensure that they can process even under memory pressure.
+Currently, folio_referenced_one() always checks the young flag for each PTE
+sequentially, which is inefficient for large folios. This inefficiency is
+especially noticeable when reclaiming clean file-backed large folios, where
+folio_referenced() is observed as a significant performance hotspot.
 
-I used journal mode so far, but, as well as I understand, direct mode is
-okay for my use case.
+Moreover, on Arm architecture, which supports contiguous PTEs, there is already
+an optimization to clear the young flags for PTEs within a contiguous range.
+However, this is not sufficient. We can extend this to perform batched operations
+for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
 
-Okay, I spent some time carefully reading dm-integrity source code.
+Similar to folio_referenced_one(), we can also apply batched unmapping for large
+file folios to optimize the performance of file folio reclamation. By supporting
+batched checking of the young flags, flushing TLB entries, and unmapping, I can
+observed a significant performance improvements in my performance tests for file
+folios reclamation. Please check the performance data in the commit message of
+each patch.
 
-I have read v6.12.48, because this is kernel I use.
+Run stress-ng and mm selftests, no issues were found.
 
-And I conclude that dm-integrity code never allocate (not even from mempool)...
-...in main code paths (as opposed to initialization code paths)...
-...in direct ('D') mode...
-...if I/O doesn't fail and checksums match.
+Patch 1: Add a new generic batched PTE helper that supports batched checks of
+the references for large folios.
+Patch 2 - 3: Preparation patches.
+patch 4: Implement the Arm64 arch-specific clear_flush_young_ptes().
+Patch 5: Support batched unmapping for file large folios.
 
-(As I said in previous letter, mempools are bad, too, as well as I understand.)
+Changes from v3:
+ - Fix using an incorrect parameter in ptep_clear_flush_young_notify()
+   (per Liam).
 
-I found exactly one place, where we seem to allocate in main code path:
-https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1789
-(i. e. these two kmalloc's).
+Changes from v2:
+ - Rearrange the patch set (per Ryan).
+ - Add pte_cont() check in clear_flush_young_ptes() (per Ryan).
+ - Add a helper to do contpte block alignment (per Ryan).
+ - Fix some coding style issues (per Lorenzo and Ryan).
+ - Add more comments and update the commit message (per Lorenzo and Ryan).
+ - Add acked tag from Barry. Thanks. 
 
-But I think this okay, because:
-- we pass GFP_NOIO, so, as well as I understand, this should not lead to
-recursion
-- we pass __GFP_NORETRY, so, as well as I understand, we will not block in
-this kmalloc for too much time
-- we gracefully handle possible failure
+Changes from v1:
+ - Add a new patch to support batched unmapping for file large folios.
+ - Update the cover letter
 
-Other strange place I found is this:
-https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1704 .
+Baolin Wang (5):
+  mm: rmap: support batched checks of the references for large folios
+  arm64: mm: factor out the address and ptep alignment into a new helper
+  arm64: mm: support batch clearing of the young flag for large folios
+  arm64: mm: implement the architecture-specific
+    clear_flush_young_ptes()
+  mm: rmap: support batched unmapping for file large folios
 
-But I think this is okay, because:
-- integrity_recheck is only ever called from here:
-https://elixir.bootlin.com/linux/v6.12.48/source/drivers/md/dm-integrity.c#L1857
-- that integrity_recheck call is only ever happens if dm_integrity_rw_tag failed
-- as well as I understand, dm_integrity_rw_tag can only fail if we got actual
-I/O error or checksum mismatch
-
-So, this mempool_alloc call is okay for my use case.
-
-So: in 'D' mode everything should be okay for my use case.
-
-Another note: I used very stupid way to search functions, which allocate:
-if function has "alloc" in its name, then I consider it allocating. :)
-
-And final note: there is an elephant in a room: bufio.
-
-As well as I understand, when pages are swapped in my use case, they first
-will get to dm-integrity bufio cache, and only after that, they will
-actually hit disk.
-
-This, of course, defeats whole purpose of swap.
-
-And possibly can lead to deadlocks.
-
-Is there a way to disable bufio?
-
-Or maybe bufio is used for checksums and metadata only?
+ arch/arm64/include/asm/pgtable.h | 23 ++++++++----
+ arch/arm64/mm/contpte.c          | 62 ++++++++++++++++++++------------
+ include/linux/mmu_notifier.h     |  9 ++---
+ include/linux/pgtable.h          | 35 ++++++++++++++++++
+ mm/rmap.c                        | 36 ++++++++++++++++---
+ 5 files changed, 128 insertions(+), 37 deletions(-)
 
 -- 
-Askar Safin
+2.47.3
+
 
