@@ -4,122 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 917ADE6F079
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D41F4E6F07A
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:38:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C663E6B0005; Tue, 23 Dec 2025 04:29:58 -0500 (EST)
+	id 30EEF6B0005; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14116B0089; Tue, 23 Dec 2025 04:29:58 -0500 (EST)
+	id 2924A6B0089; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B20226B008A; Tue, 23 Dec 2025 04:29:58 -0500 (EST)
+	id 1943F6B008A; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A195D6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:29:58 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 310AF140519
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:29:58 +0000 (UTC)
-X-FDA: 84250214076.05.7D3D288
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C5370100015
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:29:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AEuLaghH;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766482196; a=rsa-sha256;
-	cv=none;
-	b=o8M2/h8f+sbHtv57XQcxg4Q6wYzKdIOVniXrnJNM4fWTAFp+U3CP+IvEsnijPLW4ZN96oP
-	HMM3KLu69k2ABsjYFdPKJH918RsE2pMIaD/F53FivLcLcXjAjEKcDANC14P9ODlh9nifKN
-	tBoHgNqEjEiFk7OWZ2QnAbkH59QifK8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AEuLaghH;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of liwan@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwan@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BA356B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 951B3B9E71
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:38:37 +0000 (UTC)
+X-FDA: 84250235874.13.3CABF60
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id ECE1C4000A
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:38:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxwSgqka;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766482196;
+	s=arc-20220608; t=1766482715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+5+yO63YwLa4flqsofkNkaWk7XgJtylB2duw+RvJS3E=;
-	b=5dJgqcFagaf9SeXpClOV5Mwp/VvKGdRnMIaZe6ICDwGs8G51MMvwgJbJXOM06z5+W5uJoY
-	AOUXdJTBMCbggSuRJ1A+oX68EuJfH5k0+au4CwoLnQjwO1e53X6D7bSk1WqCjSzhdf14xP
-	xNaia9H3Yl2ajWd8iSff8f3fIBbhIIQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766482195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+5+yO63YwLa4flqsofkNkaWk7XgJtylB2duw+RvJS3E=;
-	b=AEuLaghHr7EuTc6dWOCsbYxw7TSu4q+P0a5fBW2EwoOf3h6gnpkza3PLEx8b2xFSGsaju1
-	M7OJ+yR4qODUf7EcuyKzSZKletiUeWyWhQO8qUVf+/vraH0y00ytN8uZKhLUB9dfLToVUn
-	SrTQmpu7EAeowCrAyxgKTfhLR+XUqn8=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-XdlI0GucPnKjsDtCw8LtWA-1; Tue, 23 Dec 2025 04:29:52 -0500
-X-MC-Unique: XdlI0GucPnKjsDtCw8LtWA-1
-X-Mimecast-MFC-AGG-ID: XdlI0GucPnKjsDtCw8LtWA_1766482192
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b99f6516262so13224930a12.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:29:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766482191; x=1767086991;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+5+yO63YwLa4flqsofkNkaWk7XgJtylB2duw+RvJS3E=;
-        b=M7pAEWRE+pgu0EuI7sj+rSqbdPVeQCkZC9SJBKon1lLNUgLpsDVKXFR5Gz3hLET7bd
-         NGwn8ie/7xLriwrLyR8f9+bqUVFmZeLawaTYZl6GNgda4ICzTIoFaX4HNP9iiQ6edOL4
-         Ipp27usqNil8bEQ7z0pPeHUHXnUOxVoSE+LsE3SmZEBj9bP90jo1mVD9mZR+MgFunLB6
-         nSYg/jzpg7s/p+u5BaNvaNKGmP8gSLOTLtsVyBnnIJqRlgnmzh5cWO6uha19LVBRT/3p
-         h6tXMV0e003HLJCrKOG0bL2lbgH1j7c+5LE+0EvyUYo57irqN9lNRY13Ce0goG2SeEYg
-         /jnw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8m+OlQIeygFKkgHs4vf0JOJJAPbXkQ1SJUabWEd0fQxYlBqc9TQqaXvZiOIkMtWX8uFiB60/mHQ==@kvack.org
-X-Gm-Message-State: AOJu0YxoYSVbTFcx+hSalipxcfqeHGtf/uOqNYc6nTgJJFWWD/6psXzr
-	hmTDxypPQI+ZSNnDx4DJjRRF91I9mL/2+u5mQW8FwFx3iPt1h5GicNHJf20d1oET5wKwK95ay+c
-	XftoZvYYcnTOkXltSQYyuOazPs86QSU0xbA+ockWZPMqZYZXrHpbh8VApuZg8z4MLOL11OMaV9M
-	lkMJnc44rmxC2EyA9Igk81VR8FyqU=
-X-Gm-Gg: AY/fxX5vYas/0QVxrswW7X+n+bdoZEbEL76a29DticZ4ih9lMOhQ2LeIyTbwCtsonfp
-	o4+yfvUXaF8w6wEOJgRtdCg09j8FVz84e6a/k++c1ii0Ba8TV23N2Puneu/XqVhEAMiSg+CXd4t
-	YVbMSvSFeCOMhDBLmVm8+Q2LK+Oqeult+3i9WRH3UTgm4lc3VgVUl8F9beDppoLHCNgds=
-X-Received: by 2002:a05:7300:2aa6:b0:2a4:3592:cf6b with SMTP id 5a478bee46e88-2b05ec0281emr11037152eec.15.1766482191546;
-        Tue, 23 Dec 2025 01:29:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhPgrR15PKVagmzN7a6PStvExivEAOucLTLUlaHSb2NA12G5e7NTScTQz7LY2+bHQ6pqAyAVZSFZr/lVtpm0s=
-X-Received: by 2002:a05:7300:2aa6:b0:2a4:3592:cf6b with SMTP id
- 5a478bee46e88-2b05ec0281emr11037139eec.15.1766482191161; Tue, 23 Dec 2025
- 01:29:51 -0800 (PST)
+	bh=vio7RoB6OygSz0UI6v9JbQht1GL0YyztG3yaWz/hpUQ=;
+	b=l0uEyB+ApfoDrxDqUSOqKcAeT2rEXZCQxDJv0O7xGi+bxkYzcviZKLPugMqnfwmbbWe2Z9
+	DJN2VYOgIlmuQPRWwalmPP4jUSJxZh/Hn5gKHpUwiSyYze3WYWLVi9jR83HSgPjSY2s7Ym
+	llhIshZXMueQyAy7KmkReJY7jhBRcjQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxwSgqka;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766482715; a=rsa-sha256;
+	cv=none;
+	b=mIndhtq148S+0FISuuRAT/SxUDbaem1VLRzoRwYqTg45MjkuhBkpAmqq4+tECGjf+/eDTS
+	JzVNjR7QE+AJ93cbbMJ+iQw2Blyf8jdCpH5RAdF9W1Mk+1Gnk4vO+IgJVmslpGBOkQNk68
+	dnyhCvu/BBcZ2C44+C/2KA6i21bJnAE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 380916014E;
+	Tue, 23 Dec 2025 09:38:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A041C113D0;
+	Tue, 23 Dec 2025 09:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766482714;
+	bh=0tCAuhor98NX6pArSQFPs+Lf5cNk0Pw64krLvrl0x2A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cxwSgqkadyvZ8pQ4lEyrcLOru5YsUsEv2NvVC5ROuRdVE1PKGXlPNJx+/lAnh5k7r
+	 4wIHDfUSqqcksPZptgbYmm0zDUjzZoXQEJVuvpvbMQgstpy0beGMa85LorT1ysXM/9
+	 FuddKfdevXD43gk64985bL/4YcO7YToGi0/cGvgyAot3fpvioQ5OPHQGKDYxGVIdFP
+	 G6Xcauo/JVei9z0K4O9Ti2oyUj8MM5kPapvbCo8zhWbYCRDcFysiVA60w4N7oDG+Hf
+	 dJ2Cg+suxyOWg20fIaKf9s7VuqHEK2YYcJjGhiECepzWUToyvVRDEp6XX5oWHHfLQA
+	 HCs8sJVVj0WmA==
+Message-ID: <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
+Date: Tue, 23 Dec 2025 10:38:26 +0100
 MIME-Version: 1.0
-References: <20251221122639.3168038-1-liwang@redhat.com> <20251221122639.3168038-2-liwang@redhat.com>
- <20251221221052.3b769fc2@pumpkin> <CAEemH2f40t+4SsjL3Y=8Gid-CBMtf3eL1egsPKT1J_7LDbdWPQ@mail.gmail.com>
- <20251222094828.2783d9e5@pumpkin> <CAEemH2fsAmhAkGAQb9rtD2WLUc7QMb9Q5dusG3S8LsJbNKsO_Q@mail.gmail.com>
- <20251222180509.b12684e112195ac3f7ee9389@linux-foundation.org>
- <CAEemH2dZ3DxDPWuV1Uze213CqoFHec9kK+MeteigGANYTUzbqA@mail.gmail.com> <20251223084035.67ba1b76@pumpkin>
-In-Reply-To: <20251223084035.67ba1b76@pumpkin>
-From: Li Wang <liwang@redhat.com>
-Date: Tue, 23 Dec 2025 17:29:38 +0800
-X-Gm-Features: AQt7F2rofrXsNRAbOaW8CCv-eBKvwDj-FJXSisJFaKR--ywyBYO5VAjZBdVePmU
-Message-ID: <CAEemH2e3C_oor-CK3_35m-gAp6uU5+75up7sL0wfX1MZdh3+jQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] selftests/mm/write_to_hugetlbfs: parse -s as size_t
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Waiman Long <longman@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: oS_VyLn34HpVR4kGExPT3wCh5aDexP4F3SwzxONqHjQ_1766482192
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C5370100015
-X-Stat-Signature: t8qf538u785kzy16fwdnddds8ezmacpj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+To: Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+ <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: z15q5cxo8t6p8j87eip38wxmqbtm4x56
 X-Rspam-User: 
-X-HE-Tag: 1766482195-863885
-X-HE-Meta: U2FsdGVkX1+W12nPel03sW7dEBD4DtMKrOFZvivRwpC5FaxOwJtojmumld3YqHQgGDcf+yk3orrCylcU+LK817LCzefn4WwAjG6314q8bdx070Z9NFuQGl3lci0k8xaxXfS5dIditvBPYKJijWlmZc+ckGr6YVg29vy5kXU0GaUvZ5mbs/7ijGsD0++iPXAnC4ZfZyjferzobSNbojed5bWgCCdV1vkCV5F6m7q/qsLzjkGYkDrUzXR58TkQddEyX1MNaM1lJNVHCpVCP7KADtopIu01K9yEoG0KdEAqZHVwSYMYU9CJ9QqDgjZ2TcmR2Foo/Vl0OvjuNYI76D8dnasmu+wKFcXXnVHptif64yV1vO2AasKkv91r1F7HqPDZKGSff/l/FT8e4VeNGZpTYo57PbJrQWBDQoMl5vVFMdzYAWxfwGLbbJe/pOm+B+q26ftOTtFMRqjGfkLC4pzaIDvXEDX3+jZTPvb0luMCyCa+4FEsl7JDpZ62Ml5MwSxpQfb2FAIMIAFFyWRs63IARtBPZAENEfsWxyGaqF/u49zTfb9lV2ZAwhh5Y3G1lsRllHnrek+QWQzqocvAsrYhwqlFJQhZY8pKCJCILrSPf/4F6N9bzMLEV+C4pFikXWBrrVrrSwd9H9id8W05T1AMWX85/FxGxHddP/n8yx23xWozOT8pdSguTnlo4p4QryXRRDI97SnEX9j3A+YhPY1cfJUOF0VWW15mISvJXcnyF387eb+hCrDPNIL6nGK+9Brm5t8siO2haFxXMcX8tM5rvhP9oJZ5AdH0KlsMjje3eUA6uTgihJdIZOkHK7NSWFQy9HrpSm1l1M84TAEkfIQyjt2zAMu3jkfwF1MY0AmXSI+GGiEE1kt420TbycjFWawt41uWchJFHQ3nJm5Xtn8NDG6o3a6rfN3Vs+g1dbUpn8hxgell8DKF0k+eF4MooUnuY8s9/g9VSLSzS+bzrXH
- K6sx7R6J
- WmYF48mWDDjIXVCoBJl2gW2SLXMwwTPJD6PJAXWWCqaRXRtTtedayn8TbLecIXLEzZiaTPj+x0UbDply53l1f5dLXMJNGozHyiahh4oGLHrKWAQgm97I+1eMu8ZIP4+ZF9+VTD7zai/TRCqhFP0dbEsTFE42V7w58DATtgKIP5bNJP8+Re/wSOsBjwZtvkf6Rj7DovPqDBWNXQok+Xtl1YV0d1fA7C592r5WNzpL/+NCH1O/mnGuqsgVdgIrnVrnGkcg6LJoW+udQTVFRbqXIdxjXW39h+pjB5vNMF3HvZVRhP4txsB1SdyTq6p2xL8WwsEypJGyR34O4ObrG+psaCg/0+YU3cWppjW/0VCzquKF45BGgF+krqhWFMpRYGbofZv7eTS4IwNnzc8/ovCcP/yw8gUv5weOsZM7Ws6zs8azutFZ9ERNmUDJIalyhE5qG4hqBXJ11JyQzpL+vaYXEgbJZpLp2YuN+jRUPfCpnzvE1n0djEEDRZ11n4afb33kenBaQJRjgHRivXyrMA1vrOolGzrEypLLlyg/msTX75DeiRTDrIi2hmBXHUNL7So/IOcm8LP/UoDhSN+ev1cFCHEhK88wzXZQXm1kqUnN1Vwrf5NA=
+X-Rspamd-Queue-Id: ECE1C4000A
+X-HE-Tag: 1766482715-101602
+X-HE-Meta: U2FsdGVkX19npl0cxreS3hqOy+8nqkhlAxEwvFjuLPfxWDicqvdCptuiISZpfeaZpsuUKo1akGHkWVHA6pK02JMULd/Lr7b9BE37KIswUbUUoghZcpSgjartZoGC78SnvIk9gZYHI6GXHyJcbur9EXddEQkgnyctAPOMDiLcdP2yzg/ZcgeVfLCSlENi5Bm071RkWoV5xuxIM0YN0tYP8vCDces0A19SPTSWpKt3GCnuze4C/Uqq0Apq+i6iQ4eFC+tGTHl2faffBRU7jqQAu0OJ5KvOJn781rtr2jQF3MCDeAbFcwtbA5RQsnNaynBpm8bCtddf0/gl2EMUpapwzZQv/020aw/NClrLjmtxrb16Hkmi41/tv2Le21A13a7ol5O7rhuyCxG+X4zqVyqsWNe5ePuR6OUl7oECNFlAUIGA1mgU6+PurowocbknRTcK9EmYRIHZXsPXUHeDbMU2oQ0WctmKk986i/1hRMmcn4Slk5ljD09/6im9UwMywurc3nO0+cyokj5iSeJoIZpHnLpwdPiXHxliF9v+kUjawmhQe1UIDOHEU1EReghaMKmPu4HPu/bK5RHlOkR375ShxSL714BLk3Tm3joqYP/t46HrSibTw49MjBiSA9rN53gHYXXUTfXmUk159/989zSXAR4ogN9H7Y36jeuigvYBr08N/NrJopZ71Hz7e/L9BaBmRR4VTTOaHn7nItz/4iIyZQ1D+gfHDcyod87UMZr2qC9B4IyzHKUdNPsyXxoe7STRh0Dt6ElhJf/zwHqnsNKlXfH7i8J+guCVX0pmdAvg5iJ5WRot6oi47No2HP9Vb5G2JVrdGp8UH5RW+696+4WIvPxN5odEhGDUEzzdZGKYR+mlPkD14E1qR90pnQJoR88ogeSdFrT1URO+H2Y3/Vxx2hMfHLbZ3kSg2HjyhTZJ1DdXAwKnI/8tUxygPR2vUX19YtqmRfTSl42ZzCMrCA1
+ z3ZH96H0
+ thlQCsAp4RwL0Jr60Vjo0ueFA6+9sZbKRIrtCBmVcMHUsWo4ZP4lKmrHP/BFXtbMXDYCaXUWsI7KcPmKYHp/xO8HUjqlkmQ9paGVG70ohdPwDO/gRZpM98TghpNUZbfaYmNHCYvoR9BKJeM4aXS1Mpe+QPGKEe7S+iqTVdVdVL7Y6AP8nKGISqT5enSayc7HJ3E8oH0vnit0nK/O6nqsZoaZ3fjxsXhHbr10snH7p9XcZ7vSvoDRtP//jTyb7w0B1PRjrDBHGn+GszaBUIAdlzoT3C/a0Qq7BzDHrUI6nJuEfAT2xUtzYReuSOcaT9LIHL2B4JqeA1Cz2O84I0wbo9hvQuASpeoK/yc2iNUFCcSkI49M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,85 +101,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-David Laight <david.laight.linux@gmail.com> wrote:
+On 12/22/25 15:55, Muchun Song wrote:
+> 
+> 
+>> On Dec 22, 2025, at 22:18, David Hildenbrand (Red Hat) <david@kernel.org> wrote:
+>>
+>> ﻿On 12/22/25 15:02, Kiryl Shutsemau wrote:
+>>>> On Mon, Dec 22, 2025 at 04:34:40PM +0800, Muchun Song wrote:
+>>>>
+>>>>
+>>>> On 2025/12/18 23:09, Kiryl Shutsemau wrote:
+>>>>> The upcoming changes in compound_head() require memmap to be naturally
+>>>>> aligned to the maximum folio size.
+>>>>>
+>>>>> Add a warning if it is not.
+>>>>>
+>>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
+>>>>> kernel is still likely to be functional if this strict check fails.
+>>>>
+>>>> Different architectures default to 2 MB alignment (mainly to
+>>>> enable huge mappings), which only accommodates folios up to
+>>>> 128 MB. Yet 1 GB huge pages are still fairly common, so
+>>>> validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
+>>>> miss the most frequent case.
+>>> I don't follow. 16 GB check is more strict that anything smaller.
+>>> How can it miss the most frequent case?
+>>>> I’m concerned that this might plant a hidden time bomb: it
+>>>> could detonate at any moment in later code, silently triggering
+>>>> memory corruption or similar failures. Therefore, I don’t
+>>>> think a WARNING is a good choice.
+>>> We can upgrade it BUG_ON(), but I want to understand your logic here
+>>> first.
+>>
+>> Definitely no BUG_ON(). I would assume this is something we would find early during testing, so even a VM_WARN_ON_ONCE() should be good enough?
+>>
+>> This smells like a possible problem, though, as soon as some architecture wants to increase the folio size. What would be the expected step to ensure the alignment is done properly?
+>>
+>> But OTOH, as I raised Willy's work will make all of that here obsolete either way, so maybe not worth worrying about that case too much,
+> 
+> Hi David,
+> 
 
-> > > > --- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> > > > +++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-> > > > @@ -86,10 +86,17 @@ int main(int argc, char **argv)
-> > > >         while ((c = getopt(argc, argv, "s:p:m:owlrn")) != -1) {
-> > > >                 switch (c) {
-> > > >                 case 's':
-> > > > -                       if (sscanf(optarg, "%zu", &size) != 1) {
-> > > > -                               perror("Invalid -s.");
-> > > > +                       char *end = NULL;
->
-> Initialiser not needed.
->
-> > > > +                       unsigned long tmp = strtoul(optarg, &end, 10);
-> > > > +                       if (errno || end == optarg || *end != '\0') {
->
-> I doubt that use of errno is correct.
-> Library functions that set errno on error don't set it to zero.
-> The only test needed there is *end != '\'.
-> (end == optarg will be picked up by size == 0 later - if that is actually
-> needed to stop things breaking.)
+Hi! :)
 
-Good point!
+> I hope you're doing well. I must admit I have limited knowledge of Willy's work, and I was wondering if you might be kind enough to share any publicly available links where I could learn more about the future direction of this project. I would be truly grateful for your guidance.
+> Thank you very much in advance.
 
->
-> > > > +                               perror("Invalid -s size");
-> > > >                                 exit_usage();
-> > > >                         }
-> > > > +                       if (tmp == 0) {
->
-> No point checking for zero before the assigning the 'unsigned long' to 'size_t'.
-> So the result of strtoul() can just be just assigned to 'size'.
-> (Ignoring the fact that size_t will be unsigned long.)
->
-> > > > +                               perror("size not found");
-> > > > +                               exit_usage();
-> > > > +                       }
-> > > > +                       size = (size_t)tmp;
-> > > >                         break;
-> > > >                 case 'p':
-> > >
-> > > Geeze guys, it's just a selftest.
-> > >
-> > > hp2:/usr/src/linux-6.19-rc1> grep -r scanf tools/testing/selftests | wc -l
-> > > 177
-> > >
-> > > if your command line breaks the selftest, fix your command line?
-> >
-> > Yes, I am ok with sscanf() :-).
->
-> What was wrong with atoi() ?
+There is some information to be had at [1], but more at [2]. Take a look 
+at [2] in "After those projects are complete - Then we can shrink struct 
+page to 32 bytes:"
 
-As the patch summary described, write_to_hugetlbfs previously parsed -s via
-atoi() into an int, which can overflow and print negative sizes. This
-problem was
-found on our kernel-64k platform and
+In essence, all pages (belonging to a memdesc) will have a "memdesc" 
+pointer (that replaces the compound_head pointer).
 
- #./charge_reserved_hugetlb.sh -cgroup-v2
- # -----------------------------------------
- ...
- # nr hugepages = 10
- # writing cgroup limit: 5368709120
- # writing reseravation limit: 5368709120
- ...
- # Writing to this path: /mnt/huge/test
- # Writing this size: -1610612736        <--------
+"Then we make page->compound_head point to the dynamically allocated 
+memdesc rather than the first page. Then we can transition to the above 
+layout. "
 
-> Or, at most, strtoul() with a check that *end == 0.
+The "memdesc" could be a pointer to a "struct folio" that is allocated 
+from the slab.
 
-True, this will work as well, but as Andrew pointed, it is a tiny test issue
-and also resolved by sscanf() so let's just go with it.
-(He has added patchset to the mm-new branch and queued it for linux-next)
+So in the new memdesc world, all pages part of a folio will point at the 
+allocated "struct folio", not the head page where "struct folio" 
+currently overlays "struct page".
 
-If the issue remains controversial, you could send a separate patch later.
-Anyway, thank you for the review comments.
+That would mean that the proposal in this patch set will have to be 
+reverted again.
+
+
+At LPC, Willy said that he wants to have something out there in the 
+first half of 2026.
+
+[1] https://kernelnewbies.org/MatthewWilcox/Memdescs
+[2] https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
 
 -- 
-Regards,
-Li Wang
+Cheers
 
+David
 
