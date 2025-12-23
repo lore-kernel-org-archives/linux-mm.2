@@ -4,111 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36121E6FE51
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 23:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0754E748FC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 23:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676B86B0005; Tue, 23 Dec 2025 18:11:01 -0500 (EST)
+	id EF7C66B0005; Tue, 23 Dec 2025 18:20:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 623536B0089; Tue, 23 Dec 2025 18:11:01 -0500 (EST)
+	id EA5906B0089; Tue, 23 Dec 2025 18:20:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 530E96B008A; Tue, 23 Dec 2025 18:11:01 -0500 (EST)
+	id DB20A6B008A; Tue, 23 Dec 2025 18:20:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E8726B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:11:01 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C52691403EC
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:11:00 +0000 (UTC)
-X-FDA: 84252283080.30.EA5E590
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0C2DF8000B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:10:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gnUyhTEn;
-	spf=pass (imf30.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C81CC6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:20:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B1B91A054F
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:20:59 +0000 (UTC)
+X-FDA: 84252308238.27.EC9453B
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4809A1C0009
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:20:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CMjc0KoH;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766531459;
+	s=arc-20220608; t=1766532057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Rke/w1+oY/WAEber1QpL2TXFwGsVEPZM8zD6/y1cmFM=;
-	b=glXnLURI6+wkjmKMAwDqoiJvH7MEDHqA5y3mg40azAZfDYGXRjQk/2V6Zq1WCQMglE8ONb
-	munnEIpliKDU28hbMvOaZ0ba58mUknXmFIyKe9WNXQD/GrxBbzplzQqqXK4RGnXTbo+ZEb
-	Hw2vs6phXCgJ64VnDjV0I5RKW740p/U=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W/Zjblw4vDP1sJ8bKC4Gyh93B2H/argQe0LsM3CQG9A=;
+	b=W4eSxAu8/zAI/BLzQRfH+DsZy5GE93M1v6hyBwZvc8z7bADvOX1a1mPNJgO61TazueR0KS
+	m6TekPvLXOFgDuauUHG3kIV65iiVZAHLZWVw9ZCj4fwZbtX4uByPTg3RlIuCT2NBZcdcGM
+	q52f74gUdjhj7ISF+Ot6/T6SolmyDa4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gnUyhTEn;
-	spf=pass (imf30.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766531459; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CMjc0KoH;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766532057; a=rsa-sha256;
 	cv=none;
-	b=t7g0APbvnFn5K56D/4MHrfEzZKGUUCVvTmcYMEs8DtoGs4Ji5Kh1tdkW9YXHJTZwsv96X/
-	L7bL6y5J3DEUe1GcsOwdIemW42jt3ltwntUMUllrgCdP6N6/9nGn0K6THnQHFJlCobEteG
-	oIuBsQCKUjWUI4pUww/nIDicBUUKsOY=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-477b198f4bcso35749665e9.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766531457; x=1767136257; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rke/w1+oY/WAEber1QpL2TXFwGsVEPZM8zD6/y1cmFM=;
-        b=gnUyhTEn6/8IZIgGvD7eXHMiuYkD78eNytUTcPhKOL+1cOa+HwWOZsSE1Wq3UbIswb
-         h8hHVek5DLAtBsSVRY90npzJV0uXeRm3PMLACkIphlYNM0zbBTbltVbdS6NSUQGxbfc2
-         8D2K+QezKbEWb91AgL7FVGVitkE+CVS9X/QZ0c5fIoEePYYeKB2/v0I1rwQyvchRhpVy
-         WabBEG2CAXYfYrGsebPRpm1rkQZDMD6PdiZLeiz54+rzX7ryeL3U7P17vZRtFs9QLRv/
-         EuGT9ABruc6asgl4xJTSjgU1aaEe1t2vRBUl52FZurAj1hoS3m/9L8QdIf416gIU1pKE
-         Zglg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766531457; x=1767136257;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rke/w1+oY/WAEber1QpL2TXFwGsVEPZM8zD6/y1cmFM=;
-        b=lAeqFagk+pzGRJrxdr2p9Cj9SHcvOaheMQhfhbbC7vH0ixphz1LEPANAl1pB/AsV2n
-         hQRmL0e8Oz77svuKueOiiyNtOaQ6GdRem23WQZBEU4bNRTK1V8IE8T1i9+1IOPGlrJ2p
-         l8qneZwxzGu0pjgyK7lpCHlpkrggRUuw+g3EI5BDVXIpdqfWzK1NhZK0sJM3m//aQ2PB
-         qSBiE0nNjc+Cod/kGLrlfuX+qfF/BCjZ+otHFRzkTwSks8CdShFrzV+j1wKMyS+TxgoZ
-         WQ6nzemEZvswpY2IEmDlet1hrUqF167w8Np5f2I1NyuVul8nQpjs50iBbAeqTnllNnKn
-         /8Pg==
-X-Gm-Message-State: AOJu0YxyeMa28aY/1P3i0UF/GeXOBm8fBCpcJOQtVceSI/3ifw1M1bDB
-	4r6RVZvOdT1tnXdrhOjVasu7IJK6AfM8N9SfZyWc6oxSdii6Mhq0SXrc1De8AQ==
-X-Gm-Gg: AY/fxX5CUo4GKm0z5IlPG1o+0E7t6ESV1uSS83AMHbaQW8SYBmY6OeW29BptM4yApr+
-	jbgfwP4AWlmO0gujYO8FtU58rDIIw6r8q1tGb0RLw2qX/1+7l9lhpO93VRhsiWAgN6kZVrfle6U
-	hbIiWRmLwpA8tkFEiNXmqu5715yx8o3LNGqLGMMWPgufqFZM4spMpcRk5haM77PKi/KHl6P3vGh
-	X0X6ER+ouVXzOIgnmEe4uqGvjtC9VZwrjUM2ejf+q9M9rJo7QWITVvqpP/M3gn0sMupzVSUnUJc
-	LmC72OCuxJm4/eEpxJgVcfrP8+UaJLhyBHZ4vH7E/LRPteqcHR0WiESy6Xfk0RZ1+TG8OnWSzlQ
-	PK4nlLRyJqsi4bUVdlgBWsH7sQaeMbbj8AfUyYlJDUH/rBSGrEHW4E1UdnqpMCGYmr2ADz+y0y3
-	YsSgmcaB6E+Qid6Kd9cEMC8cwqWVWW/seaWiqShqYIrygwcq4vZrvbuH3UpavOtUBFAdWNdx6rQ
-	xka+n+gJ8S+GCrj6g==
-X-Google-Smtp-Source: AGHT+IFqM5ZolQ9sgXk3Kh0/+7fWNmQoGF3i4FyCrKo7u5QSQgnUc91+rhutW9XuQFQ0SN0XwCAlzA==
-X-Received: by 2002:a05:600c:c494:b0:47b:d914:98a7 with SMTP id 5b1f17b1804b1-47d19582a05mr140590215e9.29.1766531457002;
-        Tue, 23 Dec 2025 15:10:57 -0800 (PST)
-Received: from desktop-mu90jgd.home (2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr. [2a01:cb00:676:9b00:1185:461c:960a:9b50])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eab2c4fsm30828557f8f.42.2025.12.23.15.10.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 15:10:56 -0800 (PST)
-From: klourencodev@gmail.com
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	Kevin Lourenco <klourencodev@gmail.com>
-Subject: [PATCH] mm/mempool.c: set @elems slots to NULL once freed
-Date: Wed, 24 Dec 2025 00:10:54 +0100
-Message-ID: <20251223231054.16061-1-klourencodev@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	b=3DyXV0MuLfpC35Ask+7u+PHfLqQ9Txe8c9GZLZ8dJfu6d9/3aqrrk3YJD0BII6gSDpUX9U
+	/Il7j295YK2XObWg8wHL2OFbZ64GCQl7wjQSyeMMtE/gfrP1oI4igeZnOJMCrHMkBGRvYl
+	ysZtYTWybnT/i/PN3qE3H4e8yF7i2Ws=
+Date: Tue, 23 Dec 2025 15:20:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766532054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/Zjblw4vDP1sJ8bKC4Gyh93B2H/argQe0LsM3CQG9A=;
+	b=CMjc0KoHfI06EwO7RnCzuv4OjMj2kPeXra5QwjJ3hvLUOZQCHA9rKdhFK1wvt2MWk3DdGI
+	1TMJdVwSItsdJWW/IYv08XCttBViaz3lrkp9mWUmcd1n5Gfid/4DEGfevMQfdWkIjc9Jmo
+	zxRR7xkm0WUkRQIqwQ+HMj5kvG5IpBw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
+	mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
+Message-ID: <vsr4khfsp4unk73a75ky7i35nzdjqsbodyeeuxipu3arormfjr@awi2srdwawfu>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <5dsb6q2r4xsi24kk5gcnckljuvgvvp6nwifwvc4wuho5hsifeg@5ukg2dq6ini5>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0C2DF8000B
-X-Stat-Signature: ixycx3mpjjoioouubxdikqszbqehbobo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dsb6q2r4xsi24kk5gcnckljuvgvvp6nwifwvc4wuho5hsifeg@5ukg2dq6ini5>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qib3ceg5ezb9jbyhgqswdji9jm9e6yr1
 X-Rspam-User: 
-X-HE-Tag: 1766531458-10400
-X-HE-Meta: U2FsdGVkX1+JxANf2FST+qwJOwFMaWCOxNtNIMvKFq4q43QFS0nC02dM9keKt8xIQzOtSvg19hpOzZegnaHF46J4BqHrL7KneF9XfL253BuulFQx4ccmgt1deyXqeY8vYtiWRgr2sERVZje4a6tYIIrYtU+GBOiKPuEmHyaDxA00+lcHUn+cC4rSa1shnELEKbGxTECSW3mENLxr9itRpKb1NE77w0+wJdT+o+BecBleSFRDikvjWbHOuV84wprTsLEN2G8tZ5EO3ZmzZvDHTQ7LvrQg3BHhDTkqNNwbNwIBtRqZFyP7p0N6kvO2QplQaNVC+bcdd0UdA9HPw5GWiiYujxMecMab8s29zE7Vd1Mg6ugTa4G9HFne/WBHGvI5uxvZfdSwWDsKzf40i++o+QJTmVOjRLBcW33D8/Rcm2GWZok4R8JXJCM/dRn7usieeMxlbFi+zjoeFue+eio1b3B3oJoZB7UIfsIdGVwZ48HDDSoTk8DCSas17Wc+aLwLwh5pH788slwk1z8EqMxN19082wW/wXqNNSwMexkoHfXN+B+nN7PJoov+s6wzNFcE9spQh5yrHEx0LEAYJAHMm4snM84S+tQz23NwiYe6HqxxrL122whR8yABJxCSe8oXognYea8/P6snI9KFk9vtodOVzoEKyPko/ah2f+D9PY56DwwcVxAaWBXchKAsxWMnli9XAK/OB4gEXfAMLpOvMdDGeASsgPimjaZYcAQZCF2u+cUqGdIcghjnrsKZW7KKfE1M8pUtRgpcmsajwSLEy9wEiDO0EXrSvQKxnrwHPl7XlTXTJUhi1KK1XUdLzDv42qao5MLWiR8ehyOl0+tIr47s8olKCbvPo33Er5F6JqH8p0pGf4z54ctm4WK/CgO97D11L5sD85KrL3RjWQOxcGvrwe/quSGJzUYsnh5USi6emeu60IDZaYRQ3QUcMmXDBkWrNfj1nQDBlU24RmA
- orRuWDzd
- kLTHivamstpHZsOtBtw2cK7qJWYL70hfemmPZSGa3OZ0Uc2g7XgBXeBaKcjTRwIz0ihw3up2wX4Vb1jbDlapMZD4/9h3WjYwzrsYmAkAkK46M2bAwJy78G0odcVj/YDpoyCTPntkQCjBzUTnI1JlDGadBTiJK0pGp8LwT1mi2rtm/ywhdGEtAdaftVoXJ5niuhzOPlQlVRT4wYQEmQVhnUPwkquKc2PTqGEzqaJ52Sm2lWRjoVzVE+0HizaM75MJJfZNNwCgI46mAuaxsD4p4tfhGCijycwWl0UL8Ongpv84ZPMmWpBc8+eNpxvbm1fFwiskDIZQC/tz4PU1AhHywDCcPo5qU30gnOGseNUc/aTvSldAsh4fn7utIBYP7ml6taS4jLb8+b/KiSB3X7jsuGWX4AL3v+Okq2/n/Ic0Z2iy8g67O692zjTpxFfJSd989wH071x5wnPASWWo=
+X-Rspamd-Queue-Id: 4809A1C0009
+X-HE-Tag: 1766532057-956177
+X-HE-Meta: U2FsdGVkX1/Sy408QL+WyxNPKUgnXpmVoT6ZWhKc9EGhnse9UpWjLzJyPQ8H7TqDCsVjW5+MCzgWZXVZensvBlQ+5/QarA55x97FPk57fxvfouOR21CQk1AW2t+f2vmuWj4mclWc3UCxC7ZScXiV5FG0ZN97whSKPleLaPoKY4+Cu6CGZwaRzfqlEm2faRhklLBipM8Ee3XRt5eMiV+A19eub6RiA/+qfgnytiX2t2JGX+nqfUUY/3oOlXhssiqi067urwQEAcNQXObh/u0PPQWdXJvQj7YDPxFczD1Lc13SeL2bQE1QvCqIWfvavqnv2iSX9zqT8yoA0yXYuBslblJbYk3oMzwibWZ4Rr/Fa0/dA0Ow0Kxipo932I5+ummj8BRKSfEIV2qTRmsZ5rtiXx53P6E45HKfz40He6gbfADgbY3zhiEzNiW7LLB4I4cPqSoVCZsLVdptHoA/yKSsx5Xf0ZBsQJcgyXzHlzs6W6RY1xXfVXL+2Aqmfkk7NTGtrtmFHNmuhLW4OP3xYCtzfT/TpPvrdbLHgVATh4MNQqGxMBpf/SR5USkvEZG8CEJIYO88DgI/VQ9ba50mmXcgv8Bqu+2fzEKfTtwxvXRTmrLXC5q9HYlrZT/pIZ4JWwLDHGYhFI6Kl6mJP0rdVU+lUKXktf9IcZ83YmIJ3gB1DgeBM5bmkcneyJI5HCWoIxCnjRXIQn3u2P+r5PiDazrMSMagPqrkMFoU/XS6sYU+muUiKh1HievbYz5jtSC6v1YX5YuuGLnIAhHmghUu/+j4XNDO2lvKBHrIfbZYnTQ17bONlTMtksLUoSTl+CoD3aXE5MnmL/tkESJ0DzM2CaMVUEzyPYq5+HPm59BfBZeqWVIB7XgtHYlyuTxZy24hAbznimIO9bvJavK28Me7xyrPFzL1sYUod4cSu4ij8/7K/n90eR2+4reuIb6CNHcARB57b7w4UIOYH/vs4vYXMA6
+ SCnS6GkR
+ inOXQ+DUs1UZlt+ZTDIzzcu81ZRXeYHEWKoQNE5YwK9G6i3Jx8CATQmEtlx8qzJQ5MZ9sjvu3zjkdpncqICZAbzeqiApJz0JqULwciLXXeBGTygBpomLCu4PGa3OJzpj924RWW1CFu9r23uON3B2D7iKrLwnnQbaYsCvh05JWna6SawZMqOs21po+skdGw9Ix6H8qeLFZHGL6LCQsQSM3XJxgKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,44 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kevin Lourenco <klourencodev@gmail.com>
+On Tue, Dec 23, 2025 at 08:04:50PM +0000, Yosry Ahmed wrote:
+[...]
+> 
+> I think there might be a problem with non-hierarchical stats on cgroup
+> v1, I brought it up previously [*]. I am not sure if this was addressed
+> but I couldn't immediately find anything.
 
-This is documented in the function comment as "...and sets their
-slots in @elems to NULL.", but it was not followed.
+Sigh, the curse of memcg-v1. Let's see what we can do to not break v1.
 
-We need to follow the NULL assignment, because elements newly returned
-to the pool must not be touched under any circumstances by the user.
+> 
+> In short, if memory is charged to a dying cgroup 
 
-Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
----
- mm/mempool.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Not sure why stats updates for dying cgroup is related. Isn't it simply
+stat increase at the child memcg and then stat decrease at the parent
+memcg would possibly show negative stat_local of the parent.
 
-diff --git a/mm/mempool.c b/mm/mempool.c
-index c290e5261b47..1a2060304fd4 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -674,7 +674,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
- 	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
- 		spin_lock_irqsave(&pool->lock, flags);
- 		while (pool->curr_nr < pool->min_nr && freed < count) {
--			add_element(pool, elems[freed++]);
-+			add_element(pool, elems[freed]);
-+			elems[freed++] = NULL;
- 			added = true;
- 		}
- 		spin_unlock_irqrestore(&pool->lock, flags);
-@@ -683,7 +684,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
- 		/* Handle the min_nr = 0 edge case: */
- 		spin_lock_irqsave(&pool->lock, flags);
- 		if (likely(pool->curr_nr == 0)) {
--			add_element(pool, elems[freed++]);
-+			add_element(pool, elems[freed]);
-+			elems[freed++] = NULL;
- 			added = true;
- 		}
- 		spin_unlock_irqrestore(&pool->lock, flags);
--- 
-2.47.3
+> at the time of
+> reparenting, when the memory gets uncharged the stats updates will occur
+> at the parent. This will update both hierarchical and non-hierarchical
+> stats of the parent, which would corrupt the parent's non-hierarchical
+> stats (because those counters were never incremented when the memory was
+> charged).
+> 
+> I didn't track down which stats are affected by this, but off the top of
+> my head I think all stats tracking anon, file, etc.
+
+Let's start with what specific stats might be effected. First the stats
+which are monotonically increasing should be fine, like
+WORKINGSET_REFAULT_[ANON|FILE], PGPG[IN|OUT], PG[MAJ]FAULT.
+
+So, the following ones are the interesting ones:
+
+NR_FILE_PAGES, NR_ANON_MAPPED, NR_ANON_THPS, NR_SHMEM, NR_FILE_MAPPED,
+NR_FILE_DIRTY, NR_WRITEBACK, MEMCG_SWAP, NR_SWAPCACHE.
+
+> 
+> The obvious solution is to flush and reparent the stats of a dying memcg
+> during reparenting,
+
+Again not sure how flushing will help here and what do you mean by
+'reparent the stats'? Do you mean something like:
+
+parent->vmstats->state_local += child->vmstats->state_local;
+
+Hmm this seems fine and I think it should work.
+
+> but I don't think this entirely fixes the problem
+> because the dying memcg stats can still be updated after its reparenting
+> (e.g. if a ref to the memcg has been held since before reparenting).
+
+How can dying memcg stats can still be updated after reparenting? The
+stats which we care about are the anon & file memory and this series is
+reparenting them, so dying memcg will not see stats updates unless there
+is a concurrent update happening and I think it is very easy to avoid
+such situation by putting a grace period between reparenting the
+file/anon folios and reparenting dying chils'd stats_local. Am I missing
+something?
 
 
