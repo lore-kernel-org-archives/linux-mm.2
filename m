@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FEE9E6B274
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 12:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3B8E6F08B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 12:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D69566B0005; Tue, 23 Dec 2025 07:25:52 -0500 (EST)
+	id 92DCA6B0005; Tue, 23 Dec 2025 07:29:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D17986B0089; Tue, 23 Dec 2025 07:25:52 -0500 (EST)
+	id 8B1BC6B0089; Tue, 23 Dec 2025 07:29:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE776B008A; Tue, 23 Dec 2025 07:25:52 -0500 (EST)
+	id 7934F6B008A; Tue, 23 Dec 2025 07:29:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACF776B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 07:25:52 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58B3D13767E
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:25:52 +0000 (UTC)
-X-FDA: 84250657344.14.ADFC552
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A66B68000F
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:25:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gazoi9Ix;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766492750;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=BGRw4C90s0m2SOEMgTOU12TAYFZwOSr323PPukFYiy8=;
-	b=mapV2BD7ujwI2uZYH33iSJ45zWFVv9XRDcN9WrO+fKwnEVjfJEObV9t4JkHspSf7U+21ph
-	nHWew2eULJU1wiE0C1i9KF4cml0UqAkuDMcpRJi9HhvDfEer17vSjS5XiltotqrOqBveJd
-	GlPB1RSZ9HdirSjsL0orGatlvJ9yUzY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gazoi9Ix;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766492750; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66ED66B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 07:29:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6E72570BC
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:29:15 +0000 (UTC)
+X-FDA: 84250665870.17.4DCD43D
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B5DD480004
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 12:29:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="FIIOg+3/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of dirk.behme@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=dirk.behme@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766492953; a=rsa-sha256;
 	cv=none;
-	b=lJ3ONoy33bHnaCSuI+DIr2ACHxCzCtR1XfH9VYWBak625AfM5s+RTpN0fu6bnLgbJN4a3s
-	wlHitZg8X6mh9F1GfaKS21JSXBDFi/dfrHQ6hdoMyQSiERlyHOQpiMUjLHu/vdOG7OxJrR
-	9ahDhr1SL1YGZEhNivmMGKiw0U7Px4o=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b8b5410a1so5468189a12.2
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:25:50 -0800 (PST)
+	b=HZ3CRj0C0ou1kF1sSbp0+NDmuczW6PLCEFmJDMeKXfoqglDl3wWfi9GAMKS2VGhyBYOBn6
+	JLYJpXEGoT72DgkOLaBDlYTGMAbIHQkweMu8b6nWsUm406Fkc+ZeoSyxOP5m9gKVa3rL2n
+	xD85+DKV4au8xg1PHczHyOwdYFt14WM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="FIIOg+3/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of dirk.behme@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=dirk.behme@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766492953;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w5xTlcGpdeyQEFa92rXXck2wdXNlODn2lhJvH8AYtz8=;
+	b=7PDwPfNOFNeS1dcPKKLwOkxWyVhMEkb/4HHVKUDJU6eRPGRQF7kri4ruFlYaWwuMGAyr+n
+	JJ5poHQNEoJyZQWM37WKu7DJ92B6Fe1pLL82rhSpEyqEUnk/MFyiyeX20A+S+CFZVSjx20
+	jvRJ96VwcZAeLkTvPz0aQZuOEEuiiLk=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7eff205947so704695466b.1
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:29:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766492749; x=1767097549; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BGRw4C90s0m2SOEMgTOU12TAYFZwOSr323PPukFYiy8=;
-        b=gazoi9IxxP0+fBzEikigtKZjngUoKrE/zPq+HX4TXTZTKNIsWg+4btQfTuT/qx5L0T
-         IPZhdmRaObyZ+3gGizmSWsmtqpTDAs+3eLU1m6Al9cA0eobNH5RYdfWy8DSG4nfsc5mf
-         kpUQY+H2V1Sqn1okzlZztwKkPijhUK15bI3YHAzJyT8sDfEVDFDXOuKvjCvZeeGKrtpL
-         U2P0vNkNasBphBU3ApPJw8I0ZHl/kJ7mbjUMWLAwO6pu2zIZw/yxvaL05UpVqVjgh0W5
-         X7dUvPZ6m3d5V9v+l1Pq6nTPsYpSGz02dhy75ihotw1xkKs5HVf3Z3oXEDhpESlGNCTX
-         XbpQ==
+        d=gmail.com; s=20230601; t=1766492952; x=1767097752; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=w5xTlcGpdeyQEFa92rXXck2wdXNlODn2lhJvH8AYtz8=;
+        b=FIIOg+3/K9k+YRq8cJ7rfJxPtSvpYjljJV+dryOeE9FdNGxwDZjLGOE0+pPV/nYJJn
+         XrsD7JE/Oj71049AH6pjgHqqkGG8BKzLBI8Ml0wZQBlBAnkFBbl3zkDuILW7IQnm97mf
+         ScIl+KScNhHVFKiSRFjuHGjrVfJ8EaBVpanfwTvD+lCgipvvN+tFcOQ42ptcaxuZu2xR
+         06H73RoLqjJOpu1je5AQK0+l8wyFZNcax+BsR7STu2/6W8YeAqN9RU/T6JyfESTK/1ht
+         9nwa8Sf2JrceOpRevp5dVpDE/Oq9vex5nSNGMHwH00fuiBpLjLuQo9/3lXm910pMp50N
+         kJIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766492749; x=1767097549;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BGRw4C90s0m2SOEMgTOU12TAYFZwOSr323PPukFYiy8=;
-        b=QG1R1OinPBfJbHFMHALfB8V55P9KeMFRCKwuC071iKU77GU29mwXjMDdTmnOP9X5Re
-         WL1ZuIqMEDF7NBy6fZ3RhBNiFcQQrbxAIKuwKaZuwTYa/YGKlsMh4Z83g7vlxLE2JtMo
-         MjQZh+ZOIChpFBztHwW1QyObVnBUdXLXSaHPaAUtal4OKnKUsiIMGRY9OFhdX5NBgGiR
-         e1qaKMhHnQaEuLbc/X/FD6frwSRN81blvLaDnaSd3LBaxlie8DqFte/we/uoM6icn+Mk
-         jrsdmy+q2V7TnHWqDwx+Hcd7sFprQ7Ql+iqkowH/Xx1MTVrNYlclfr6PmkFKDSqRthE1
-         Iplw==
-X-Gm-Message-State: AOJu0Yzy28ofxgQEeo52mx6hHkot3xVwlrmDsLu8YZEz3O1yM4XcACMf
-	wlec0I4w9KJyjAAmlzvhMEQzr+kDuJxbc0S3X7fvTlJJ2KLp8N+z7qhx
-X-Gm-Gg: AY/fxX5udu/YOGGpbaM0rpPJ2DKjb4/doM+QW13lA6OI185fEOP0FUMeNKsVDvIpT31
-	Fii6XxJTHmfIkZb/gbO3c5l1RKJXCrxmqvs+BGIl52y6T7yO50fXMDNGLhjZoc9/wOKeURJMeV6
-	m2zYoUMukfGE7svFjXKQbYOHGD+2BiPPe+9fxPAadmG4UGJnJ24h4STyF0CDkvUwwgCTzm44iDY
-	oo7a57bt9i/WfLzMJTThEbKD5sUSuNFTrSRXTS421NTH8gEhak7t79iXXaG5BqUTOXfnR1snx5B
-	n+Pr6c5FDrIMENOLkqVLEkGOyVHBMwgeK1aeE6bwlLjBPtk+9YPpJpCv3XmYqEr+R6Zb20Q1+F/
-	a+19IfLxiptoqWWwi6S1CaY5c54jOf8vCK0/Xk5cKhksVawWKCwHb0EJKpX/FXUxvba3cgQ1IQn
-	x92SJdfsqOzw==
-X-Google-Smtp-Source: AGHT+IEVtWM7siqyoaHdpIx67nMl6vkTmLCe4SLFz8Fu7b4CRZ5iAg/W+lBnlqzRYo097GkwslddYQ==
-X-Received: by 2002:a05:6402:35c7:b0:64d:264e:71f with SMTP id 4fb4d7f45d1cf-64d264e0afemr7171671a12.24.1766492748824;
-        Tue, 23 Dec 2025 04:25:48 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64cfebea196sm11247030a12.7.2025.12.23.04.25.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Dec 2025 04:25:48 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v2] mm/huge_memory: consolidate order-related checks into folio_check_splittable()
-Date: Tue, 23 Dec 2025 12:25:39 +0000
-Message-Id: <20251223122539.10726-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+        d=1e100.net; s=20230601; t=1766492952; x=1767097752;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w5xTlcGpdeyQEFa92rXXck2wdXNlODn2lhJvH8AYtz8=;
+        b=d5PCG0SLG0uZuhXtftF5+xXq42aAOktIQyuByznS2N6gqaRL3GipgprXK4e4QB8aS1
+         GA6HKTzKtZeCTyFIGONCS6Mee2NR+zn0FUfQz2LA+XVzarUBVOuESDmIv6Y2J2YoChXA
+         Q7RVeBXdsmeH0hz6kboaEj7nBQ3O/K/Mo/aDflwBqe4YRBtTbQ8P7shUuTh9izuJBO49
+         BLBBmVaFFdNqgInOYr8X1YUps77/HezTcWPAw/C2jV1AuKoKLlK0Qpr7kaO2YLuD3sVf
+         ++DQJBc3qhQGdgSnKEG8yc1KrJwONSCXmnaRk8APDs3/yVSRfHq9dzPrz/v4DJU34P8G
+         SH0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXeWJGGBPcDy1GyWIC/pJBasT0tX95jQzipYKwnhkFudHTX0r1zdQsnLLg3wJycfPp28fmc2PbmNQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyt0lZxH0usUUnQK9D8rrGIldMLoFQk68nzuR79LfY6LcE2Dax7
+	ZZFCZS1oXHIMHf3z8xbYVIt0WJt+xmUX/8iD6dMtru+flKC7A8k5+638
+X-Gm-Gg: AY/fxX6iYUxJehjLOb73BcSXf0wg5Vxsx+ajGUJdckjR3SF08lKYSG8TmTZFGmIiVGV
+	vnwez1C+pgd8Tw4cUlu5MXmGWPidrgcMNBVEp0ukJCyMhL3C3demD50divg8EWXmykw32ovHKwI
+	tb2+Ff0pnjrill7qF373QE6aUTkEiNpWuxSRBj7MGd6Yv3lpWYjHBVUtaP2WqmazlsTS+v5wSav
+	aNLWb6ulsa21O58w0IJssrEIxlLahKnu4DFRiXXHTZuhTwX/7Irtp3SI41R1n9bfoDt6Vfe1LbH
+	+81vkdf0xZR1/QgUk02/3ypkQZo+X3glh/03Ypwp4QlBAAh1mN5ZBfWTHrCxH0MY4TXn086x0FE
+	EnQG3kDY8b2GEjtkD9bPBxA2VxXF1/AYZuWiKC/AUx7fFQ0L1zBgE1kvqhATWLzeu2m0XDfl2pO
+	W2KYQQzl5Ypf7FvbTh+ZmC+ZN5f4ICA0G0N5LjUI1thynAQrQb8KIHktzAHMh//uaUnXYRtlEYa
+	NnT7s1GQctfo3HyPxY9kQfB12ROLPA7nQmqPf2SSrPOOw==
+X-Google-Smtp-Source: AGHT+IFQKu463Ws0DeQGqtqtFbIzklz16SbCW/WpuT8pw8rwR8527OOqWdhaQqGG2VyTUZbhKeJ8Ag==
+X-Received: by 2002:a17:907:6d0f:b0:b72:d001:7653 with SMTP id a640c23a62f3a-b8036f0f183mr1343019266b.19.1766492951664;
+        Tue, 23 Dec 2025 04:29:11 -0800 (PST)
+Received: from ?IPV6:2003:df:bf2d:e300:d174:1f34:13cc:be92? (p200300dfbf2de300d1741f3413ccbe92.dip0.t-ipconnect.de. [2003:df:bf2d:e300:d174:1f34:13cc:be92])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b90f5400bsm13550782a12.4.2025.12.23.04.29.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Dec 2025 04:29:11 -0800 (PST)
+Message-ID: <46e188a4-4b74-4206-ba18-f107f45bb98d@gmail.com>
+Date: Tue, 23 Dec 2025 13:29:10 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: page: Simplify overflow check using
+ checked_add()
+To: Gary Guo <gary@garyguo.net>, Kari Argillander <kari.argillander@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251223-rust-page-check-v2-1-fba3dbdde1d8@gmail.com>
+ <20251223115726.621bfa38.gary@garyguo.net>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20251223115726.621bfa38.gary@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A66B68000F
-X-Stat-Signature: br974ai144fj5bdk7amoejmpqchohe17
-X-HE-Tag: 1766492750-766825
-X-HE-Meta: U2FsdGVkX18pmZQsXEBoyJfO5G2ZpxMU3z8dPCy9fNad9Zc9TZ7CwGMH/0FK2VV0SyD5FA+8zb7YfUHHm76EPLvp3JEbEfyAyFVnAsxql7DTRf0n8aSsYscSbtD9ciGjpXwvZbETGaCHkXvWYMJLQRhIRCfx4mDfaX9z0Ipkyv+9egH5tmaOZ8zFd5sC7q6N3mURBdIe63NiiZ1AVhSkC+fnP9oO5G9dkefLg/nlvgl7PG5DWAC0bWDKeM0MON+14T170Ot79XXWsN8ljVp7hDPdgol47dmrhpnKoeCvonfQOv0x6sbNcbLo9QDgz01cu04ndveQXrlySOq2ZSGPSODd7B1UWpybjqpN6Iv3OmQ+AxaNE0/NU/UmZBCPmHVKJM8ihBQEPzIHVNNWnLgVoBPUvBZJUh0Db64ooHD/XzWxg56BZ9j89mi2MqXcPEFPgQnsqB3ZO9etUiqkipH0GIe3rC1xmHn1fPJIuXo+A6x8K7IbalDJD00ilvg6FA6sE0TGJob9Ts3VB/cZVJP22/WEod0OV7SzHoBUWeI7TDynvEk3U6iEzTCK/eclS6RQEGnFjzYQX9obuB0lkJsc9ZtuTSujHbffVOnUZVo7TR9jSj53VDfOvQiP/UAoSg5sQKlI3gsJ28IBCYOJWYTaoG7W6l/dhUW4mYbhgoMfHacWuuDTAr8YsRWzEe3AoKTRDX7goXgYEzANPSkBSh3aHLSNMT5UAMBtJibgo6+QtlU5LjUBm8CorlnHp3a0+AHak3ZeT20spPEUX/geS5mZRw7Ak6YowEzxKxXMYO6R0HK//PNxkeKbc512felW82PZ3ND7tuZnlAvDkkNWHMInaDDjJXFcflHtyPnfD6E0e2AZ6OjCXi8olPj4/+e8D6Q5oSixPCOlgWjTX2g9+8XpdZKQZddrh1QwEPJKC8FD5px7q2us2I0SzOsPBVy9xPnYEEF+dAQZ6toITwnyY39
- /H+2mLhN
- FEuEEpQVsLbb8Nzkp2CjCZccQAwsjKEgp432bcnmZxysJzQionY6KOTy+SXos9+0PTk30lpdRbU+LAd4WZzkp7kub4unvL7De/iaoukIOleIELLkMzkzJ30YzGUx53nLftmKbBJySZJiOJgB5HrJ2W/Z05qUvj/ZxmbB4mUFgkR2rWq+Rl/aRV+DnjAhS9y9zCiYzGz66U5PQQF+pXe207RtoiCuAgZ6HefindqXH48jsNVVjDwKMFuZ+ks73issT/2XtMFi1gI4YIQsCNzuoJcMamIU4bdSH6e1FKCIzEalwZ0u+5D0txIdsiWlxbxBEjS3hzyuPgwKxfPJGFth1ClqsJiPNrvHyHkujdxcuYmrGBoCGEgvb/PuRyaEWhHkR/nQwaWhWxElasrIIVlEmhqzIZ7amutWPOtS92+8XYehU9fHI6ZqFlD9dk2LPOrzKQRujQj9X5dkFYvh94oV9yT+eBhjiOIYNDRe5xGoCObCWijiTvFT3twolj4Qim1e+lRsNsNrIcXlL1q8b0GEjs1GaKYf6L0jVUPFSma09MXBlhSQURR55QxenQzDxU3JQslrFrDxruVdGfdlLbq7JivT2Zw==
+X-Rspamd-Queue-Id: B5DD480004
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 9z754k97iuar9cdkrhnfayjmte1jgy6i
+X-HE-Tag: 1766492953-684265
+X-HE-Meta: U2FsdGVkX18JqJMTzf0yUU1hAr5kJYFddYUQWiI/+EpAECAWWchVhkC2sR5xlMyxx8d3IXXCPhJYgxTxcBsWcqiAX01ajFbta7ZL79Uedieo/UrH/O09y4Vtz6zOgeD92I7xmcQyXsw/28VEujEopL4d0yJQ+ik9fasTiZGnemGNd8vrfDgyTOEKvcQeVk5OrlWHm+T/JJYjMTKMu9mT2WuIAE0Ud7OG5IXppy2JCzW0+ByWMdb/SyV8ZLZVacMgqZL6fUuEKAN2Q41WfeH91EufBsR3Gtc4GNIoSquGY5nIgVuCRqx7RO465/U0RlPvli6EE2vPAnhhc3RabQCe2jgqxdeg7kuhl7syfZpNq71Px2IKqHu9o9oUJPU1BUY3a/6ggucjeDZQJpe2mlhp4uhICiRxWKrt3KOBQqfFE4WCeWd0rXTc5Blh7r7+p9ywMsiGW+I0kgXNjb0tD0nOF6A7kXKRFq3iR1aMIieK3qW8ysZ+lbBZaxai3AdpATJv0+3OH7Sdar25msDHk8BPKnLRZGROfOrebYQUVn/Znd0eu/rjMRYP59F6WFrnHzI0O8GMGjYpx9uSObpRjfWoiGjP4UrsuBwmRtIA8vnPVnoXEVVpNIFs8iJ8xZdl0F9K0fxv2zyZPcuN6r1Dt6fm5CEKX7tKZpwetzSoymYiJT7nW8b4vYlGzyjHl/37qRVUjMR5OVz2qqgdcou7dp5M0c3V0DYqW2wlUwVlr1bVxdsyqTeW5e+6qOzkscdqPDhPH3Q1q01Lx4tcNAeVhDJWYrKc2Rx9m6Z71GyKvVD/Vs9xRDqYtHWRwaoW/YlyPW6HhZIHlqTTXEvIR+trB7lNaJqmAhwZ2qwxRVs0U6SEQzJEjUWAxmCSxlggCgKHCwSYF5etQgJkUW5KyCza3qVSm9QKLXo1oYemBBogpNpJW4Ie9jSpYn71/735eOeUvv+wny0bla4tTk3fuPXUiLZ
+ 5H8l4N1L
+ NaAGwo+51GPEaOD4jOSicB4HriFjV2KV8j3lSZShGV3KNhzd/V67l+/afUAfxoILICVYYCe9CGqZwZO4SEia2dSqD00kzouSYMxv+Og5kYpsp8svaC4s9mrAc9RNqNhnL9+UoXEVYkIE968h00oT1HKyNKpcg0ocO5eIbey+uOUbyjkbBKrUHga4per+NDK3RLAlj3oeDYyFjt1Z3nVYpGWzc4JKIdaK9XGeUDiqkXe7tXWxjcHl6+ZdXvOE+yJDEOKtiMc4bgX0SkTp8msaXEFmAMS0npMsqqy+pNhdyDWW52gG+tQM13noBdy9Vy1xlfclZUWIfxfZT+cItmQFL1kLuUnQiD7JsKm71bmUn5E4ZP9xnzRtAeYHVa5z+zqYeByJcp+6YcVI4+gt/GJR0hDJDuhyish2HY6ZqSkauRbpB/YgPemhAReiPKowIrAB5OH3rFyyrmQp49QUzVaDTyZqtfly2gqQHN6xrWF5LMGTcgbUhWIq3r9Eq8ovEzehXrr2WMzn5kehzxDtitAG713wJMMjLNeWrV2AD+wwzXjuIojoZWF3iV02JmenaK9RK9moPCX85KMB2kQ3oXWs3HozzBqNMbRAceD87Skr7ucBRqLst7KwPJT91J+vslIWwjy2CD5VyLBBHpg50rfBigzm8Nf+szot6L1VWaP+Vkr2BO4aJlp6jJMMnlb+sw3m6ekQFzfzaDWe0k8hHZ+sHpnSQTZuPQpmKUy1hs8LgbBOmF4xh8+aNv/8Ffg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,127 +134,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The primary goal of the folio_check_splittable() function is to validate
-whether a folio is suitable for splitting and to bail out early if it is
-not.
+On 23.12.25 12:57, Gary Guo wrote:
+> On Tue, 23 Dec 2025 12:06:17 +0200
+> Kari Argillander <kari.argillander@gmail.com> wrote:
+> 
+>> Replace the explicit bounds comparisons with a single checked_add()-based
+>> range check. This avoids redundant comparisons, makes the overflow case
+>> explicit, and results in simpler generated code (checked with godbolt
+>> for x86).
+>>
+>> No functional change intended.
+>>
+>> Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+>> ---
+>> Changes in v2:
+>> - Added MSVR todo (Dirk Behme)
+>> - Link to v1: https://lore.kernel.org/r/20251219-rust-page-check-v1-1-df2e52fa3bd5@gmail.com
+>> ---
+>>  rust/kernel/page.rs | 19 +++++++++----------
+>>  1 file changed, 9 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>> index 432fc0297d4a..cd2af7e4c357 100644
+>> --- a/rust/kernel/page.rs
+>> +++ b/rust/kernel/page.rs
+>> @@ -239,17 +239,16 @@ fn with_pointer_into_page<T>(
+>>          len: usize,
+>>          f: impl FnOnce(*mut u8) -> Result<T>,
+>>      ) -> Result<T> {
+>> -        let bounds_ok = off <= PAGE_SIZE && len <= PAGE_SIZE && (off + len) <= PAGE_SIZE;
+>> -
+>> -        if bounds_ok {
+>> -            self.with_page_mapped(move |page_addr| {
+>> -                // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
+>> -                // result in a pointer that is in bounds or one off the end of the page.
+>> -                f(unsafe { page_addr.add(off) })
+>> -            })
+>> -        } else {
+>> -            Err(EINVAL)
+>> +        // TODO: Replace `map_or` with `is_none_or` once the MSRV is >= 1.82.
+> 
+> I was about to suggest just enable the feature gate, but turns out it was
+> only added in 1.81. That's a fast one to stabilize!
 
-Currently, some order-related checks are scattered throughout the
-calling code rather than being centralized in folio_check_splittable().
 
-This commit moves all remaining order-related validation logic into
-folio_check_splittable(). This consolidation ensures that the function
-serves its intended purpose as a single point of failure and improves
-the clarity and maintainability of the surrounding code.
+With Alexandre's `matches!` proposal I was thinking that we could drop
+the TODO comment and we won't need to touch this file again once MSRV
+is >= 1.82. Opinions?
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
+Cheers
 
----
-v2: just move current logic here
----
- mm/huge_memory.c | 63 +++++++++++++++++++++++-------------------------
- 1 file changed, 30 insertions(+), 33 deletions(-)
+Dirk
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index b8ee33318a60..59d72522399f 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3705,6 +3705,10 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
- 			   enum split_type split_type)
- {
- 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-+
-+	if (new_order >= folio_order(folio))
-+		return -EINVAL;
-+
- 	/*
- 	 * Folios that just got truncated cannot get split. Signal to the
- 	 * caller that there was a race.
-@@ -3719,28 +3723,33 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
- 		/* order-1 is not supported for anonymous THP. */
- 		if (new_order == 1)
- 			return -EINVAL;
--	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
--		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--		    !mapping_large_folio_support(folio->mapping)) {
--			/*
--			 * We can always split a folio down to a single page
--			 * (new_order == 0) uniformly.
--			 *
--			 * For any other scenario
--			 *   a) uniform split targeting a large folio
--			 *      (new_order > 0)
--			 *   b) any non-uniform split
--			 * we must confirm that the file system supports large
--			 * folios.
--			 *
--			 * Note that we might still have THPs in such
--			 * mappings, which is created from khugepaged when
--			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
--			 * case, the mapping does not actually support large
--			 * folios properly.
--			 */
--			return -EINVAL;
-+	} else {
-+		if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-+			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-+			    !mapping_large_folio_support(folio->mapping)) {
-+				/*
-+				 * We can always split a folio down to a
-+				 * single page (new_order == 0) uniformly.
-+				 *
-+				 * For any other scenario
-+				 *   a) uniform split targeting a large folio
-+				 *      (new_order > 0)
-+				 *   b) any non-uniform split
-+				 * we must confirm that the file system
-+				 * supports large folios.
-+				 *
-+				 * Note that we might still have THPs in such
-+				 * mappings, which is created from khugepaged
-+				 * when CONFIG_READ_ONLY_THP_FOR_FS is
-+				 * enabled. But in that case, the mapping does
-+				 * not actually support large folios properly.
-+				 */
-+				return -EINVAL;
-+			}
- 		}
-+
-+		if (new_order < mapping_min_folio_order(folio->mapping))
-+			return -EINVAL;
- 	}
- 
- 	/*
-@@ -4008,11 +4017,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 		goto out;
- 	}
- 
--	if (new_order >= old_order) {
--		ret = -EINVAL;
--		goto out;
--	}
--
- 	ret = folio_check_splittable(folio, new_order, split_type);
- 	if (ret) {
- 		VM_WARN_ONCE(ret == -EINVAL, "Tried to split an unsplittable folio");
-@@ -4036,16 +4040,9 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 		anon_vma_lock_write(anon_vma);
- 		mapping = NULL;
- 	} else {
--		unsigned int min_order;
- 		gfp_t gfp;
- 
- 		mapping = folio->mapping;
--		min_order = mapping_min_folio_order(folio->mapping);
--		if (new_order < min_order) {
--			ret = -EINVAL;
--			goto out;
--		}
--
- 		gfp = current_gfp_context(mapping_gfp_mask(mapping) &
- 							GFP_RECLAIM_MASK);
- 
--- 
-2.34.1
+
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> 
+> Best,
+> Gary
+> 
+>> +        if off.checked_add(len).map_or(true, |end| end > PAGE_SIZE) {
+>> +            return Err(EINVAL);
+>>          }
+>> +
+>> +        self.with_page_mapped(move |page_addr| {
+>> +            // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
+>> +            // result in a pointer that is in bounds or one off the end of the page.
+>> +            f(unsafe { page_addr.add(off) })
+>> +        })
+>>      }
+>>  
+>>      /// Maps the page and reads from it into the given buffer.
+>>
+>> ---
+>> base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+>> change-id: 20251219-rust-page-check-819ccc39c53a
+>>
+>> Best regards,
+> 
+> 
 
 
