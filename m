@@ -4,125 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A024DE6B261
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC31E6B26B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11E466B0089; Mon, 22 Dec 2025 20:41:32 -0500 (EST)
+	id 137766B0088; Mon, 22 Dec 2025 20:42:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C8736B008A; Mon, 22 Dec 2025 20:41:32 -0500 (EST)
+	id 0E2636B008C; Mon, 22 Dec 2025 20:42:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F23716B008C; Mon, 22 Dec 2025 20:41:31 -0500 (EST)
+	id 010446B0092; Mon, 22 Dec 2025 20:42:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E423F6B0089
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:41:31 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95FB91A047D
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:31 +0000 (UTC)
-X-FDA: 84249033582.26.EDFBC8F
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A53F6100002
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hAkLy2ZZ;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E00F36B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:42:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79C7AC07E5
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:42:44 +0000 (UTC)
+X-FDA: 84249036648.21.A3BF317
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C531B120012
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:42:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w02fKMEg;
+	spf=pass (imf29.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766454089;
+	s=arc-20220608; t=1766454163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
-	b=OAc2s0Sr23e6cY4kkRGbVLDoXuwhcLYmBKuVgLtMcvjprK81cnxWP4BVsKzOw+toJfCUU2
-	H7hBWxMvmGpCtn3RjycziOWaf9viBywnaKu+NB8LBNp9zYpvEMcD/C3mBr0J0bnuCs7xv5
-	ZgAnoSojk8I8lPwTQIPS37lB2k61pQE=
+	bh=7B1SayI7EOFNqfNNBovUlQHi7a1s5Gt80AtJSL6qhUA=;
+	b=zPPeZPdICLSVbtgK9z3lQ9r/jqWEgvx7+It67ykEmkYqoiojuHljcyqiFT/RmICoxCB483
+	Sv+AXaTPj6ih2bg0OkihY+CQwpsTPF3k9P+gJ4fcSyO4SkBlz050ZTsImeUpD+pBlExYaa
+	0TD2MLmpwjm/jdIGyHx89FQHjcbUgJA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hAkLy2ZZ;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766454089; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w02fKMEg;
+	spf=pass (imf29.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766454163; a=rsa-sha256;
 	cv=none;
-	b=sLTVUh6GOg68LLmwSjQUJYwhUQ86Jl+ugLHrBHjMGxLI1OorAsTmstZXajMjzgvOB6fH2O
-	F+sCoEC1e/pkt+erEaUvPsCtvoANz5Vhcru6Up/wqrFhfdwg5bTHaAjiW38A1HfIQy02iV
-	A2nqYvnmtGOgy+8qR2QLcteDPLu7hbU=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-594270ec7f9so5340028e87.3
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:41:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766454088; x=1767058888; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
-        b=hAkLy2ZZIpWhlbkoxJ+NwkJ/auho/d5DTegW89lunqq0ncNrw8esD/xNzClFT+ZD/j
-         AkUjNZCsMwX564I24VhFZ+pW/3dQ7DSngU2yDgnZ9HXWQLl3aQuGdtPYtEb2qQg3JNaS
-         tQ7qqsKE1rS1sEL/1F0VQUXI/Evra/DfrJ6MvN6Fh9ZnmOMVRUZogr/4M7Y5E1sEqAXM
-         KprLuRVb6phpD6hJFsioxJls/UnbhwUhNpXwewJMLsTZ/ESIC+bQBGRnKm46lBeDntDQ
-         n0ttUMIjkKDeQzdpn019ehHC61BH7Z5CPHTeMWRDNy67CBt0dXBpkyuYcDHoNm+pzL+Q
-         CTbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766454088; x=1767058888;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
-        b=q4B0i1/f/LuzEhNMORLz+Q1Se0azZtN52Cg8C7jcIKwbX0/0Jj5zeF3eIcUWMSJ0Xs
-         P5zPPTH1FIiSYtWqg4YqjxnHBvXdo702YfnbNGxaTUgchc1loCHEEnDMRGmbDKKSQd4c
-         cZ5HqWT8w2vCqsaKiNFyMAyhp6fAOWOzTYK6m/LPc8gKKoKYN59SL8Q23Ic+MuYq6/gT
-         Xdmq8RGSKPIjmFDax+7vg/2I/XkQxMYNIy0S0fOtChNlW5ppVRcnSnAI5NQJhmbQer6N
-         geFAJ6aRsoFnL4b0yiFUJmrcYZkM8rl8dn79LvajXvUVknInaMvGcpKZsXcinuNwnsny
-         A+BA==
-X-Forwarded-Encrypted: i=1; AJvYcCXSE1BzTuG8lh9SsyUIhvK8jme5o5Yz0Ip4OZ5ZWZZfMfMK4zTGlDN0K2Wq5Sd3iGa9mIjeP53HaQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy8MqC1/b71/KTJt+z7oXO3xkoicnbBiaxejiEFgUvD91Oj57sI
-	7GwA0RmseO3sj14N8hC3rcSN8EIoPWWl5bPM0b4pPBAaTm70IyGcYFy53KOu4Zz9
-X-Gm-Gg: AY/fxX5Q0bSkHaDMksm0E72AaBYyRUcNmVvjwnw5J4d65nltNPaTv5gek4kM1sNvwXj
-	IW+Miasr5zKREABwXRXrCLHk3EM5/yfjGDjcSyAuHa4+AAnM7AmiRFpWP2NetCaLxh8j+UWLTzH
-	KAPyGjkvZNigc8LrWs560aq4rMFMmvnIac65Kl4ZEvSv2//3pBM8Gv9aXW6eHLx9wXjm8Mtk4nj
-	hyD16WtorHcrknnFXBF6uxEBKAMnjZuG9XklJ412LaK7fRQF4+9GMpspTkhTMQZYZWuzXawjUOj
-	U69+6c+YMpz5UdVoKpIVlr1QG4egYjBqx42hYVdKIXZiY9KK2y07BXo3kfJes5XyFlWO+ztW6vI
-	+vvOzFYndbAEoj8xnZsyh+Quek5pEj6RE0n1wSwbb9dcsKSlWEpbEI0jbM0nNrjlVFV5YBBQhLc
-	mmq0EmtZZM
-X-Google-Smtp-Source: AGHT+IHWUix04V1tUMjJhj8LmwIJFsrYjMJ2eegt/yizChdKwHOARh8H0MmDtl7KvKnzF0od4dTcxA==
-X-Received: by 2002:a05:6512:234b:b0:59a:123e:69ab with SMTP id 2adb3069b0e04-59a17d08c20mr4858078e87.10.1766454087534;
-        Mon, 22 Dec 2025 17:41:27 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a185d5ea6sm3600776e87.5.2025.12.22.17.41.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 17:41:27 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: gmazyland@gmail.com
-Cc: Dell.Client.Kernel@dell.com,
-	dm-devel@lists.linux.dev,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	mpatocka@redhat.com,
-	pavel@ucw.cz,
-	rafael@kernel.org
-Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
-Date: Tue, 23 Dec 2025 04:41:14 +0300
-Message-ID: <20251223014114.2193668-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
-References: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
+	b=vuLff7hnuRBSlVQWV5SKO5iFPqgzdwa6w2NsGm4+2GC/ECfKmqcEim+PbNrfNu2fytlm7Q
+	EO0n6FouIXPHHNf+rLLRh1MY6WZTayOc91CDePuAfHCPmM7IFfhLWzHAMifXJBMKqsDQaj
+	xzGFjQ/y7mDjzm+MKVe7eCBT5MK/2FE=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766454160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7B1SayI7EOFNqfNNBovUlQHi7a1s5Gt80AtJSL6qhUA=;
+	b=w02fKMEgNlPSc0I+5B5j6Us0z/FVgqCCPvfIPcPJGbnkCDeWj+f7xgPYEwIAB9O8s0V9Ea
+	7hTsmMYmoc0yNDL+cYeS8N5Q2zdIKw2gSMNgxzKgYxYV8h/XotN8Nry9URpzDwfUFjVdOg
+	pHIiCDGTzShifEIuMeyIUlDNBFyD2OI=
+Date: Tue, 23 Dec 2025 01:42:37 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+To: "Shakeel Butt" <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Qi Zheng" <zhengqi.arch@bytedance.com>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, linux-kernel@vger.kernel.org
+In-Reply-To: <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
+ <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C531B120012
+X-Stat-Signature: sfnus67uedjb9jieybo6h98i45mpmy4o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A53F6100002
-X-Stat-Signature: ms4z6mfa7urzhyrc6wm6t7bqh5e9qrm1
-X-HE-Tag: 1766454089-724335
-X-HE-Meta: U2FsdGVkX19qeUyTf0pPZR+S/+bxdD89U3KHYCSNUDPpRaqWjteCSm12hZeDvinR7SlnRzxg97w28F1gJqyN4ilpEkX4UewswSw5u8A0sRRTOexIJ+9JPBDXvf144yJWRLSb9+4SjFF2nZwNG5kQUfs8GBhE2uDyf/bgOchQMMh2HmtH04kBUO7jegPy7p9D3+g1sZTUycj+TPR0G46np1lyWCDkdK4xMjjwi5Htho2ZMrH6sx6li63TQz/sKa6fi+0ze7cBb+pufgno8FzCL6TC9zruMxe1Brw6PcuLaA4CGNcPhDNqQlkhhPOupXRC8ozWrwQ8JSShLKE2lFOQAcXBRLGOT2U+7cU/tfUBTh/aeG+IlzPJfwdqxuPBvOn8ca45ak8kVJt4BZdgWXfeNHteaPyEYDUeRoF5uk3KZzGRPic4XQYadTDyQbrJsWSjYcMFfa00XS95bor1G25DC37kw+jkxWnotqtv1XHNDpIw9HFv5DapHjiPHU5FH1twu01CXx1ZNkNywyHS8vH5rUK5744+EnlDa0Ng+3J5pfy2riXzWCiVjIg+hfbPpM2c037Nryjieaz+YlRlWVToKpJVn87OPvir6v24GhnviYoswdn5XCO7JpeqfG6J/rLBZ3xYCZC4mWmt+JHvO/np2CiDDGlePRISzv7CqqseTk76vcoWQg0sSQYvb+UurRTuxMLFO5pC/ZdX6CPBbuFyIpk642TPdrWUBeADO1YHQ4rMloI30UJfoJHn3XFBDlf5CYQqTGyAy5f5pBEgKYQ/Ew9NTXWkIZk3Vv6ewrNJIX59s7Ku52ULjsILPysnVLcfCM9LdYdrU+gCy2QGKiwYaDJR+JNqGcQ+/WDTJHtMiJ5qugpXbzEF4I09Gl0QvxyqFACRLlLSx4yZtr43qlnioCPH1dh2jeFx7qIsMMjKkgv0JuH9C5UMvtu7RUQBRzG4wM9QPw1RmJvs1ObUMuF
- +5KPKS3J
- kisH2AgVek/xHdhtpXI3v524KnzuCl2iqX20xrlMnTHwmTT3H5tulxEopJ8GKRICOGEiTz9pl5WkNRGY6UvmfZQep3TraDfhSz9ldWGdVSAtsXDrcoLWH5oujLjuoMz0zOhgTwnvQ2YzkVWKR3KRDeJgHT9bMu99ApBa0wwLM6sfxd8w808imtzJvSYwQmbrGHw/m7ObSi5O75C8DaTsjC7XY4rF4DIoeBZLjxFs6xduS7mS14EHxeXDw1sRAv+4PSkuzYojy6pj0+mp2dH0qS3an3GMOpzk3TX5yoyhYMvdGu6gijT3p0o0sdIcxyV8PI1ON19KhpFxaq62f9PDVYmG8OS17Fq7W8SXjv/mJPoBSshfNDI2n3rYrdidzFbQEvIAGy/oH31pn+OWCJMAo20r4Yy+mdL8yEXIhizshVGdn5p/n0n5NUtguTUe79iBBbMrg7xIxW2v7uYHvttFSOQvgw1zjKFiRS0viHIXcq+rTbVDG8Q8luVgnUedZRa52L2Ls
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.011560, version=1.2.4
+X-HE-Tag: 1766454162-330320
+X-HE-Meta: U2FsdGVkX186VhgG/ZuZUwoYyFhJmVHECLS5pGO/EaC5nOX1mK+lldIZm4NdWvelJGNvdv8y4gm5NLCIOIbsetLCMhgp4+4PtmwerwGlD0JwyVZpXI5p9UnsBaMQyu6UtQUqIhXgemwl7epBHnNO15dBWE/wQsgGvPFcferTGpdAokoYl78uMgmqG6hDF5XOcVhcdTnKOxi8jui93tN43M5FBOZmz76jmsbnZZviAw8srZlYm1jv9CcSq9UqeWjkUIH+S3rSssbnILpa782UdIudlENWnf+XgX5KODaCtz4C75wgLHpCDRUEUxdMSLU59vrjUiL1JllL68JIslX5fAmMorJoWR2vdRZPZwKlepppayH1Bz+qtRewGhUyv7qVsRvfQ8CBVWs5PWBdpcMTLsMikAKyBzftmsm9h8kCbdOubD88O4Wgj33DkDq37okTcM7hw0xKqq8zOKIpz7/8j5aesXqdaRMCRUk4TCIm/84Kq2AD2NpuTK+GxMEcRzAzQBB3pcW+C5KsqVmpQ8ymPkoWkhUt5yG2jEq1Or8HfNKeFhFLoRzxLn2WuePKIEuV8h4pLtE6PXRPtKodWHeu7jlNxMPAPuaXAPcYuQCV6EWqkpslT3VYVRUuMue45HsvpNc2df40ExgJTIP5AWQCe9WxIu/z6mG3vfCi3soKs3oOhWbM2/sSAyQ5nu2alXqc1HGvZgEcNLmJs3gxGywWFXX4I+aUwIGnLnqSbsWg0LL1GO+T8/yuYyASdGQa08dx4yjh+tkm6UcrEq67Qoa7pBu+paJNcqlJmu+fYxrFZZYRi4imSSgn99pJ10Uv/XK9gHFkJAH6DbUTz0crqN42m+MXrlg7+GtoQ+cjGtWx0oWKS8/jwEgGG/bgw6cAW+je087HaTNeQ2LthWpOCUmZ3hULtYEzIJl0qYGRS1lg/YY=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,15 +95,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Milan Broz <gmazyland@gmail.com>:
-> Anyway, my understanding is that all device-mapper targets use mempools,
-> which should ensure that they can process even under memory pressure.
+December 23, 2025 at 05:15, "Shakeel Butt" <shakeel.butt@linux.dev mailto=
+:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40lin=
+ux.dev%3E > wrote:
 
-Also, I don't understand how mempools help here.
 
-As well as I understand, allocation from mempool is still real allocation
-if mempool's own reserve is over.
+>=20
+>=20On Mon, Dec 22, 2025 at 08:20:21PM +0800, Jiayuan Chen wrote:
+>=20
+>=20>=20
+>=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >=20=20
+>=20>  When kswapd fails to reclaim memory, kswapd_failures is incremente=
+d.
+> >  Once it reaches MAX_RECLAIM_RETRIES, kswapd stops running to avoid
+> >  futile reclaim attempts. However, any successful direct reclaim
+> >  unconditionally resets kswapd_failures to 0, which can cause problem=
+s.
+> >=20=20
+>=20>  We observed an issue in production on a multi-NUMA system where a
+> >  process allocated large amounts of anonymous pages on a single NUMA
+> >  node, causing its watermark to drop below high and evicting most fil=
+e
+> >  pages:
+> >=20=20
+>=20>  $ numastat -m
+> >  Per-node system memory usage (in MBs):
+> >  Node 0 Node 1 Total
+> >  --------------- --------------- ---------------
+> >  MemTotal 128222.19 127983.91 256206.11
+> >  MemFree 1414.48 1432.80 2847.29
+> >  MemUsed 126807.71 126551.11 252358.82
+> >  SwapCached 0.00 0.00 0.00
+> >  Active 29017.91 25554.57 54572.48
+> >  Inactive 92749.06 95377.00 188126.06
+> >  Active(anon) 28998.96 23356.47 52355.43
+> >  Inactive(anon) 92685.27 87466.11 180151.39
+> >  Active(file) 18.95 2198.10 2217.05
+> >  Inactive(file) 63.79 7910.89 7974.68
+> >=20=20
+>=20>  With swap disabled, only file pages can be reclaimed. When kswapd =
+is
+> >  woken (e.g., via wake_all_kswapds()), it runs continuously but canno=
+t
+> >  raise free memory above the high watermark since reclaimable file pa=
+ges
+> >  are insufficient. Normally, kswapd would eventually stop after
+> >  kswapd_failures reaches MAX_RECLAIM_RETRIES.
+> >=20=20
+>=20>  However, pods on this machine have memory.high set in their cgroup=
+.
+> >  Business processes continuously trigger the high limit, causing freq=
+uent
+> >  direct reclaim that keeps resetting kswapd_failures to 0. This preve=
+nts
+> >  kswapd from ever stopping.
+> >=20=20
+>=20>  The result is that kswapd runs endlessly, repeatedly evicting the =
+few
+> >  remaining file pages which are actually hot. These pages constantly
+> >  refault, generating sustained heavy IO READ pressure.
+> >=20
+>=20I don't think kswapd is an issue here. The system is out of memory an=
+d
+> most of the memory is unreclaimable. Either change the workload to use
+> less memory or enable swap (or zswap) to have more reclaimable memory.
 
--- 
-Askar Safin
+
+Hi,
+Thanks for looking into this.
+
+Sorry, I didn't describe the scenario clearly enough in the original patc=
+h. Let me clarify:
+
+This is a multi-NUMA system where the memory pressure is not global but n=
+ode-local. The key observation is:
+
+Node 0: Under memory pressure, most memory is anonymous (unreclaimable wi=
+thout swap)
+Node 1: Has plenty of reclaimable memory (~60GB file cache out of 125GB t=
+otal)
+
+Node 0's kswapd runs continuously but cannot reclaim anything
+Direct reclaim succeeds by reclaiming from Node 1
+Direct reclaim resets kswapd_failures, preventing Node 0's kswapd from st=
+opping
+The few file pages on Node 0 are hot and keep refaulting, causing heavy I=
+/O
+
+From a per-node perspective, Node 0 is truly out of reclaimable memory an=
+d its kswapd
+should stop. But the global direct reclaim success (from Node 1) incorrec=
+tly keeps
+Node 0's kswapd alive.
+
+
+Thanks.
+
+> Other than that we can discuss memcg reclaim resetting the kswapd
+> failure count should be changed or not but that is a separate
+> discussion.
+>
 
