@@ -4,102 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F932E6B261
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7982E6B261
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE8546B0088; Mon, 22 Dec 2025 20:30:55 -0500 (EST)
+	id 25B4F6B0088; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D95466B0089; Mon, 22 Dec 2025 20:30:55 -0500 (EST)
+	id 208F06B0089; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C77146B008A; Mon, 22 Dec 2025 20:30:55 -0500 (EST)
+	id 115F66B008A; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B79A06B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:30:55 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63DBF16041B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:30:55 +0000 (UTC)
-X-FDA: 84249006870.14.91DE567
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E512940002
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:30:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dO5p1eAe;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id F22166B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:41:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 905EBB9803
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:00 +0000 (UTC)
+X-FDA: 84249032280.22.04FB9D5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C5FBE1C0003
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:40:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lXGcddiG;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766453454;
+	s=arc-20220608; t=1766454058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BKmOTCnahQz8ZADEqQpJwAvY9dVZYhmtgKDELnz+lCs=;
-	b=1uH2yo9NhzPp7Pge4UjOU+WNh+fNJf/lbnzxg9hUD75uYYhyt0ruQE2m5XiaXgzTC2Ub1p
-	n3FNyIf2C/mqSebhYq7otmUVIjNgFrS0mbGik0Tqg1l4zvr4MrsSd4rcG3ZhbzPv8oPWkj
-	tm7gCamnbWmfuDfQnr8ThTdSeWoYyP0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dO5p1eAe;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766453454; a=rsa-sha256;
+	bh=RFRh+wvD+Lc39oHsvnn+Lo9YDyd9nHvG3BTp0xqQdFw=;
+	b=TjcDsht67DKCIJF4fJSa7UIM6Ug4GR4kfjikOfhK6MvKmmpuPXu5NcYny29vQs4aPuNcz8
+	jTgEtM/jSIHa40McQUCmQdBFkvqhAuXnSaxSyi2r82kdpH1eg01dCk5MS9ud23pu4n/G6h
+	yD2hDP008DcZfoMU1y/fugHU4PzflVw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766454058; a=rsa-sha256;
 	cv=none;
-	b=mTzBqxkdMSbVmVnif53h5nAsiMBtM7dvJ5AfryNrLqGVQeLWKq4qt+Qry0/HyxmjfbM3cB
-	HTZTo5QRKHE8z2pB6zGv9SmMHPvsf1tXZhgec/idS12GAI5X75W0IV4uNQury9sgExZlJf
-	WcooTYBLJTuLqx6tgrkzhF1NCksm75Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E74CF40DD1;
-	Tue, 23 Dec 2025 01:30:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613A2C4CEF1;
-	Tue, 23 Dec 2025 01:30:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766453452;
-	bh=j7q2987NriSlS+UGsGEBmtZisdMET3w6wHahvWlFCXA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dO5p1eAeCiTmrLjfR2upqrJjMfmN+fqYqX5pLP/UpyRrXF2AUHgEYFwEMyD3r1obi
-	 pEDjXWgKmiqndnrwphcQ1xmocdXiVenBgaQpH8OhamNZ4Iq/5MM1cZj8puJ14LI3RY
-	 LIv+2+3bD4SBxu39wqhdoZkP8nz/qNyqFeQe02gX9CRGPAcZc59Hrq2vgSPjMPIkYw
-	 UaOU0CNfN/e1qXIcM9EXSCPrhHOvAC89afJ/neG7VaxyRjcLSVrHRanYLjzuXOsJWy
-	 l8K/ZNSDlGs6d4U/rrmNlDoBWYqa9kWYB4qLSlkOXTaf4oEIb8M8vGOL0VKP76nvWM
-	 AiNxz4lmAEbWw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	x86@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages are unsupported
-Date: Mon, 22 Dec 2025 17:30:44 -0800
-Message-ID: <20251223013045.4579-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251221104907.032abf56c67f3e50c9c94e31@linux-foundation.org>
-References: 
+	b=EypxoCeAd4WhjVNUB8I1poNkdpsDujjgHkjugcufDXR0rWfD9mITrCb+xnSYrbzhGB6bPx
+	YvKGeyrdOtxBcUnr55JH/sJ4O9NF1NYQXyVn6eVVljMd7jd6cxjudkawvmsFfenjj8CUND
+	CLVLGSTAkovI7zProsmVIoAUD9Uufnk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lXGcddiG;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766454058; x=1797990058;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p8QndN5AyrEGYCocKeThKwfhP7p3sqHksByq85sFU24=;
+  b=lXGcddiGxBFjvASm2m64or1zHaEK+jlYnN57j95LBAeaBEHp4bvw5Yos
+   hkl7NRyQTTRz53J1YTbfw3iTk2/Cbpu3TfCdTjAhbAnPTRuvR5vwkYw6F
+   u+NBd0RPIObbPY+4b+aEN6FEq0hysj8Ze1BemKnYV0lZin7Y5cpI3hJNr
+   yq/wQ+0ORaLCxOlZBXaHNg0AFo5q3Jk/zTV3r33gZeSPdkdAKpBlXSk62
+   zHGEwfGzU1TtmYINjUQjHFSoiJNEyLeYvTlK+dDEqf7P6kgM/yTeXTwR5
+   RC+LWITUSQPfKksNyLBKIgECYIUrPfhmwy+QyxSbuxKB6C9pduGWvv7+u
+   Q==;
+X-CSE-ConnectionGUID: 7siLyYbDRgWGiJ0BcyArBw==
+X-CSE-MsgGUID: Br+7KSzzTTCOqx9fIrFT7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="90966473"
+X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
+   d="scan'208";a="90966473"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 17:40:56 -0800
+X-CSE-ConnectionGUID: HH3KO3ruSFaqe8T5HyubLA==
+X-CSE-MsgGUID: zy40TVviR8+wEyDh/5xXGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
+   d="scan'208";a="199966668"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 22 Dec 2025 17:40:50 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXrOK-000000001Ij-25Ic;
+	Tue, 23 Dec 2025 01:40:48 +0000
+Date: Tue, 23 Dec 2025 09:40:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org,
+	vbabka@suse.cz
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
+	glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+	mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com,
+	shakeel.butt@linux.dev, surenb@google.com,
+	vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+	harry.yoo@oracle.com, tytso@mit.edu, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, hao.li@linux.dev
+Subject: Re: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext
+ array from leftover
+Message-ID: <202512231042.EEBUajQY-lkp@intel.com>
+References: <20251222110843.980347-8-harry.yoo@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E512940002
-X-Stat-Signature: r5bpeurqiujzzybpouc8c7tiewsgas64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251222110843.980347-8-harry.yoo@oracle.com>
+X-Stat-Signature: qg4yntgpk9694gki5c3zgr14ryegk3gi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C5FBE1C0003
 X-Rspam-User: 
-X-HE-Tag: 1766453453-893981
-X-HE-Meta: U2FsdGVkX1/iAKaZEEO6x9HJfdQUdA6nJGNb9H2SIZaUXAGlQYw4fxs6S7XXF48KxSh2zp/FynFtMUzliHWFToxirSoWjudwUuw3NC89RPVsSLsYZDIUV5w4Mq2+CqFyYMl2EhyZl4dtVITCx9Cui2oBMdKjaZ9UfNgfEBVtOVXg+p4cQ05mQu4oUGW+ynWtK9f/cw5MazNGjaOSu4akAQMIoY0x79Gav8CC1+x1Syhkvhi+6CiUP9hZumtUOaDu9TzYk4Fcc69On4MbH06KjB3NR8VG4GGdHBSwQIf2KaAqjcI6BA7twvfY5cSneaH+xgHkZhF7lCqt2EB2ttcM6RAAeXegRWtGvFZAGBcx4exTpc6ONi9hI5MY2sLKl7Du8nFjO+D8rSVl04i044hq3D8EvpK6eyWGi8/9gkCM6jw2D9RW98bEbJ+E7SBt5rdI2FdJgG+tWKWEjWJAsWv2bC7GyKovAUdQK35ViVaN3KJqejVdRuT42FFZamZnSS5Ee02Nf+UB2k2vvDVzz7GXnuHi4EBEIutQnw6EO1/DyPtnlSrKfOcHkYC8V1HMKfXWoRnZZWOSMPJc+S+ti2li6D0qvvvlXs/LLbB/S2AOEfuOjSmNNp0mP2CxhaEy3tAO7l3iYQpHHmOBGc8iBaN8kNTy3EC4VzGGZ6ao9pPoG3Ylt/5pBgOXYgTmhyJGaWMzD46cNTeV+IZ28shGaQC0s0+R7wsDwe6+r9SDZDF8kC3bkagj8bEt8kK3sL2wbDjd8QDce46/iOPFm/DHFcXJUATfI7tVQfsTRLYLZNXzsc2758f2Nmsk5pRlvWdwBR+ZGJTB8TKbdlPGJLh0Nx+WzDO/qnd1YbM5blnAOpBJfsli+SLUzRSieZj8K7KCprD6cq369FN0EO6h0TjOIA0RbgMXSPjBBLK7UUoBCOrtbYbS+JfWrboK7Dh3EEjaBhTmUeG1b25p9F+Uo1xKyeO
- 1Zw==
+X-HE-Tag: 1766454057-32225
+X-HE-Meta: U2FsdGVkX18VZBbXHBmPTI2NIbxhFJ7UKL2J+WsBmocz4keqEbHVg4U/3dCC/0t/8RAWWicydOTRnBYI3Nrm4bbt59byFAIOychang7y3h16UUNhQP555W7tL4uzm0kxXzgizODf0wB44m0xs04Ecc3AvArl9H7nDpLDBKaLGWe5LIUOWzjFiO0hsQOXnmqSj4dImqTt1HlqJ1NywHjssNw2G/Fv56MC1OlE9exh1hrrTb3iPFAb0OesdOsBd2nrbpuYjkgTTsadBdJWKq9/Fw24nXTl6JgRrs4upGYmKFjcIZAp/rswzmLhYGNq3v5s4zGxYt/KZXUg/12iC2GGGi00idhu7hvqaokzM8v0N0WwVSHjr0lCiExqaefjCPoxXHMIdeSCxvqElNozIenP8WFppdGgwiKw8YG8/3kIxJk417uCMndFvNFGVa9P3jLrOUYhHTkMF0CQkD1lVJkafbMMeXNUkVTjRLJsEadRYYSaD5yTihVb0qJn6zpthlbnUvBBp4wsAT2NKJvvJyERgeCpLj2oYca4Y37nzBDd4V8Ncfh7P1TilloXO3fg0UZeU4TCSW4yhFVWvC/lSw6+pYyyscOhH8nvlATtf0yxar1FZ6PiunX7vP5jP/6+eFs+ilhIrV9F7fB84H/OmGCE5FrZlEzlw2UHGKBtP8fly1oywVYnYiouLDcCujP2GT1kArLV3/SkzISwxW1bexOzvh2KQflmNCMb58RvAEITq8GExit+KEp5ItTXx0AT5cB55GnyHwv5Ze1vELODfUTfyUD7Zs0epH9vBr/quqiGIk8rTi48BeMAtrhcyMQTAtUUPROrmxCLXBV3mRbIyu4K+LzT6u4U3/3JunsAedsI4Tg9D/t6fGqo1ADuF18Jdf+ZNURGHPhKq4wJFOPa2xtwN8cqkCnxh/tJHiTu1dIlWTCcLv5Zz7a4FMu/q2/ew0SEbFIZG31JRmVJLBzzRP/
+ dnG2dR2p
+ xmRIEWUyimJ+pE28QMnSOvge2nnOAUc8cLc3W4rZBQph8fLbQ0hu5v5c0Sh+tlMehy26XeImm2PtBh7w13EF/v+qkda8LxDXYnB3La371JMXHbY0B2Lflb5YVqivBNjd0dB2gP+9fUR6XDE705A47Cn+shauRtItUwU/JFcs8QTIUnQtmGbI6zJ3X3ahcTzQjVhquKZLSUa+DdKdtA2Bj6jafhFDrATQmUzmg+4urOcxfE6oslekFEiYQp3DKdWlyDN/bIpFx2cF5AtpYoyi0ssd2osVh6cpHE0/VnwAjGotlUfPvb/P8o7IbvTxfC3fDhbf0nX19776J5q9q04UuJLblMsFsyQ5UdPk2HBeGP7rqu9t95FJIIvw+UQREluZbRbtlvXIdjV+ApMJIUNaKzeABIEK8RkLst+ttl9GvRlmAKUnjlFrY2n5FgNpg3SXL2LRl57wdZWhUCtvSoe7fFrq5fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,33 +117,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 21 Dec 2025 10:49:07 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+Hi Harry,
 
-> On Sun, 21 Dec 2025 10:22:44 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
-> 
-> > > 
-> > > My main concern was -
-> > > A fixes tag means it might get auto backported to stable kernels too,
-> > 
-> > Not in the MM world -- IIRC. I think there is the agreement, that we 
-> > decide what should go into stable and what not.
-> > 
-> > Andrew can correct me if my memory is wrong.
-> 
-> Yes, -stable maintainers have been asked to only backport patches where
-> the MM developers asked for that, with cc:stable.  There may be
-> slipups, but as far as I know this is working.
-> 
-> I don't actually know how they determine which patches need this
-> special treatment.  Pathname?  Signed-off-by:akpm?
+kernel test robot noticed the following build errors:
 
-I guess it is pathname, based on ignore_list file [1] of stable-queue repo.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list#n16
+url:    https://github.com/intel-lab-lkp/linux/commits/Harry-Yoo/mm-slab-use-unsigned-long-for-orig_size-to-ensure-proper-metadata-align/20251222-191144
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251222110843.980347-8-harry.yoo%40oracle.com
+patch subject: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext array from leftover
+config: x86_64-buildonly-randconfig-001-20251223 (https://download.01.org/0day-ci/archive/20251223/202512231042.EEBUajQY-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512231042.EEBUajQY-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512231042.EEBUajQY-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/slub.c:2140:33: error: passing 'union codetag_ref' to parameter of incompatible type 'union codetag_ref *'; take the address with &
+    2140 |                 if (unlikely(is_codetag_empty(ext->ref))) {
+         |                                               ^~~~~~~~
+         |                                               &
+   include/linux/compiler.h:47:41: note: expanded from macro 'unlikely'
+      47 | #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+         |                                           ^
+   include/linux/compiler.h:32:34: note: expanded from macro '__branch_check__'
+      32 |                         ______r = __builtin_expect(!!(x), expect);      \
+         |                                                       ^
+   include/linux/alloc_tag.h:52:56: note: passing argument to parameter 'ref' here
+      52 | static inline bool is_codetag_empty(union codetag_ref *ref)
+         |                                                        ^
+   mm/slub.c:2140:33: error: passing 'union codetag_ref' to parameter of incompatible type 'union codetag_ref *'; take the address with &
+    2140 |                 if (unlikely(is_codetag_empty(ext->ref))) {
+         |                                               ^~~~~~~~
+         |                                               &
+   include/linux/compiler.h:47:68: note: expanded from macro 'unlikely'
+      47 | #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
+         |                                                                      ^
+   include/linux/compiler.h:34:19: note: expanded from macro '__branch_check__'
+      34 |                                              expect, is_constant);      \
+         |                                                      ^~~~~~~~~~~
+   include/linux/alloc_tag.h:52:56: note: passing argument to parameter 'ref' here
+      52 | static inline bool is_codetag_empty(union codetag_ref *ref)
+         |                                                        ^
+>> mm/slub.c:2326:16: error: use of undeclared identifier 'MEMCG_DATA_OBJEXTS'
+    2326 |                         obj_exts |= MEMCG_DATA_OBJEXTS;
+         |                                     ^
+   3 errors generated.
 
 
-Thanks,
-SJ
+vim +/MEMCG_DATA_OBJEXTS +2326 mm/slub.c
 
-[...]
+  2302	
+  2303	/*
+  2304	 * Try to allocate slabobj_ext array from unused space.
+  2305	 * This function must be called on a freshly allocated slab to prevent
+  2306	 * concurrency problems.
+  2307	 */
+  2308	static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+  2309	{
+  2310		void *addr;
+  2311		unsigned long obj_exts;
+  2312	
+  2313		if (!need_slab_obj_exts(s))
+  2314			return;
+  2315	
+  2316		if (obj_exts_fit_within_slab_leftover(s, slab)) {
+  2317			addr = slab_address(slab) + obj_exts_offset_in_slab(s, slab);
+  2318			addr = kasan_reset_tag(addr);
+  2319			obj_exts = (unsigned long)addr;
+  2320	
+  2321			get_slab_obj_exts(obj_exts);
+  2322			memset(addr, 0, obj_exts_size_in_slab(slab));
+  2323			put_slab_obj_exts(obj_exts);
+  2324	
+  2325			if (IS_ENABLED(CONFIG_MEMCG))
+> 2326				obj_exts |= MEMCG_DATA_OBJEXTS;
+  2327			slab->obj_exts = obj_exts;
+  2328			slab_set_stride(slab, sizeof(struct slabobj_ext));
+  2329		}
+  2330	}
+  2331	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
