@@ -4,116 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AD25E6F08F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 13:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17F9AE6F090
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 13:40:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31E096B0005; Tue, 23 Dec 2025 08:23:38 -0500 (EST)
+	id 681656B0005; Tue, 23 Dec 2025 08:40:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D4B86B0089; Tue, 23 Dec 2025 08:23:38 -0500 (EST)
+	id 658EB6B0089; Tue, 23 Dec 2025 08:40:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FD7E6B008A; Tue, 23 Dec 2025 08:23:38 -0500 (EST)
+	id 564C86B008A; Tue, 23 Dec 2025 08:40:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ACB46B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:23:38 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A1B513A52A
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:23:37 +0000 (UTC)
-X-FDA: 84250802874.06.22DBC0E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9BA8B40013
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:23:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cAsOJcvY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766496215; a=rsa-sha256;
-	cv=none;
-	b=Qhmo+c2HrYHOosJVlNsVhJ4zuedCUyTx+5Un4XSHpH0eKk0tUKBvzMXyfd7har5E01A8r/
-	mdjpxAyipenslW7TguIug0OfIpvpr1LjBvxtLtj1vW0SZsUyzRTFdkhVdPneDG8FECnR51
-	lqTry5WbNBH5orldkXPxPMVUYKe2G8g=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cAsOJcvY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4759A6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:40:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAF311A01A4
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:40:30 +0000 (UTC)
+X-FDA: 84250845420.17.B15BC5B
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0D4E618000F
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 13:40:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=CUU3hrBw;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766496215;
+	s=arc-20220608; t=1766497229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ujoc4Did2a4hWKi0PVbKnoK20r76mRneQWS/N7RKfzw=;
-	b=EuOsDMHW0gkFHmXVzXyL6qvLx5adFX+cr/um/Is1C4PNGqH6436AP6Ay2eDDEzB/YvTtl3
-	FpDvL5XKuj2vItESqXxk8a+ISFq9HMhEWZcEGM9wUPPphP8jFTSDrYd/K8ypSVVlar4Wcz
-	andM7S6cuqzNlg/ULPwPjUcyKFgNZ2A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766496215; x=1798032215;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sVjyIGQrrpkyBkTFumzOYIT7xsfvu4X4mrPIwnTXsuo=;
-  b=cAsOJcvYibLQFd7awuBSEZIE0tpIPrlwpWQOnuMHevTcWLv1U85VbFPn
-   8pNfSO2DSgXM5mMvPAO1GalFpj/FdoIh6EV35/deZzYdpphHRCPh2f8AC
-   NhjexY9Wo7fPnYfumGe+gxtIuRoAJY3PDwahMAcT/WBwe9XQHpISUVuze
-   TEsylwPNyAMxUG4RofpFXG2ebDPVcp5oeCpBG7UpatBXEzpD8uy/3iH5k
-   VsJF4mb1W+7gr/eRNw+wAGgDN7Xc8wIZWxuJFaJeaPNqrNI5iDQVI+4wG
-   be0fBeYUoMielAW1zJNCHKxz6WvsucUJVNspQIkZDtjMlicH0ybk1xvrC
-   g==;
-X-CSE-ConnectionGUID: 3nTDasBTQUmIuPoujyxRJA==
-X-CSE-MsgGUID: +HonoM0BR5+aPSUBlpIaDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="68226195"
-X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
-   d="scan'208";a="68226195"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 05:23:33 -0800
-X-CSE-ConnectionGUID: trY28Fj2ScOhqzvD2TJVPw==
-X-CSE-MsgGUID: pablz/scS8mrJb7R/PPP9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
-   d="scan'208";a="199691761"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 23 Dec 2025 05:23:21 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vY2MA-000000001xh-2Udu;
-	Tue, 23 Dec 2025 13:23:18 +0000
-Date: Tue, 23 Dec 2025 21:22:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-	Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH v2 3/3] bitmap: break kunit into test cases
-Message-ID: <202512232124.O36Ud5C2-lkp@intel.com>
-References: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
+	bh=/I6XlXAEilN0X40BgO/Y75hBFwj9rzVL3WYipFqiWfY=;
+	b=oAnDPJ1ZKjCbt6379YdMI42xr0Isn/v6+mZlXY7qO0EOoqxbATNIflTzOMmSnUFIyVB+61
+	lARP/TfXVWwsWSr1eacYwOu2egqtctmZOqlnv7iytfYZB6bVeDlRNKGLgSQMGwcodJP24H
+	SeOZhi2aQiwGF7R1IT6Xi6PvzLMaddc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=CUU3hrBw;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766497229; a=rsa-sha256;
+	cv=none;
+	b=nMbtwBzuonlIe8q3vrgw1Vo8z67KbzVzeWmyeaOP6+l5k4iJlwW3YgCtS48RLFlHd5r4ZO
+	MfMalbnMhNSyeXhqDinkY36lCBDRZ1AWLEBe919c3zu3Pcz5N+ppppADT7NHHa570yNQCV
+	tUDLJO/63NuLNtXvPwB8fmSxHsfcl7s=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64b9dfc146fso5280925a12.0
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 05:40:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1766497227; x=1767102027; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/I6XlXAEilN0X40BgO/Y75hBFwj9rzVL3WYipFqiWfY=;
+        b=CUU3hrBwN2zIDKhZNTsL1tuQRja1CR/S4BqSLaCaWx1Q8XAzOaEEK680/QWFH9r2wc
+         U+uE+mR6k4VwUJPPFezlEeeX/e5UzV/9I/di/KtSd3CmK75qqf7gb7VlbO2pSthtzQdx
+         KwZ2yYyOiu7EN1Qsek7vyD4wlYjBGEiLHt6rs0odpG/i8jkPYWf3MCo3fM6k9qzn8lzN
+         3d6JG+t0SJbnClWAj3zsTffLZ92lRPDcwJV0ivV7mBZZOIe2FWVLAN8Jb/Gu7yP27Tf6
+         Cl/hu6KR//FjWtQixExTbO1L/zTA+TZmBEKaGi0rHzuwo7WLJH3Uos/qHd+3fbpCiyKt
+         YLUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766497227; x=1767102027;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/I6XlXAEilN0X40BgO/Y75hBFwj9rzVL3WYipFqiWfY=;
+        b=wxdM7vyHTrNDwqPuKd8tvnJilNEF03es+krqWTgse77u5UDfOIlJqBNK9IBRsw9PVf
+         OWNZhLgwARnOm8bMVCtcIO4bAQmyFjhI7zxopDUwKZZpJx5BFP43qiSQQ7ZfipnQRGPt
+         Rgx5wCPXo4xs8TEAdML0p8Tatsn76hdtspm+ZKLTn9DcE1WjcKtrylbYhsvLUjGhsDB+
+         Y0sHIgngPHbJD261/xSlKUV8fax6Br0lweHF0w7nj2TPMmOqcpcE2P9x3Q2Mk4xK8ZoU
+         lr2RcW9iIJl0Wtk3pJtpOgmFZJD/QFYV2ViQIk25/TE4rtbqI3CYRBGtgjyDIEoZh5l/
+         Vb2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVPjNtfxx4DANtY0aIDugSHVnY8RDBFpa4oOXKIoXqGUPeSB//2ueRu+No192JFdqA/wJOa/UwU6A==@kvack.org
+X-Gm-Message-State: AOJu0YwT5uEpUFmj+90zb17XlLsUfNOzXO3e9uorbjrAtYjoldsI1Ot/
+	162f/VbzEc6kEur+bkRS0ztn+RnIIb5F/YafSKin0yrtLTvHxHONbR4I/ZWqA8OlxV2Ulj0Aclr
+	2oLhBC6xaALyZydy2glOxujhQe4ug0kwjQFl+k1ZD2g==
+X-Gm-Gg: AY/fxX7EZvUViZ94iYIuPnIS9Iiw7QRD1BLnj1KQWQ0844GN4PUaD2LMBVd2EOUmYzs
+	hhdpLR50Xn7ILjaXavWuAdjk/Cs1ZTerwGdi7tphpFrHKxV2/gm8AYY0Ynx7KnA7PfXB9ioPwbj
+	I+TuVvCE0xHYbK7BEMtQjCduosg4z+37bVwPDIKBTm4p6qmbO0fQhGX1RPn3pUp9L64lTEg2keq
+	cKQJ8uo3TaMY2jjIjDpvvFNdXAU2kPudy3MWxmfMY+HfhRjFxpCrw5QoKGMO3bPpxOdxU/2FkS+
+	sg5L0W9CXp0JtFA/DtDhbIt8
+X-Google-Smtp-Source: AGHT+IEFQU33sVmeVFLErlX5wqjQ/4hBqKHnBwdxQHFQ80Xv+FpUyXlCV3CzWOpTQJ3IoFiUA/3yOMoYcOwx4IV8FXE=
+X-Received: by 2002:a05:6402:13c9:b0:64d:1294:42e8 with SMTP id
+ 4fb4d7f45d1cf-64d12944806mr11460426a12.6.1766497226898; Tue, 23 Dec 2025
+ 05:40:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
+References: <20251219071209.3696755-1-pasha.tatashin@soleen.com> <867buecxll.fsf@kernel.org>
+In-Reply-To: <867buecxll.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 23 Dec 2025 08:39:50 -0500
+X-Gm-Features: AQt7F2rhzmWJRK8-ihyTcUhLpQ6OBksFDfKd9ZX8sznEaOMe2EFoKSqVAgzv50g
+Message-ID: <CA+CK2bC2BQBgtgudZ3-Tpc9ctJEaiFJjx9gNuysXLU1LGpf6OA@mail.gmail.com>
+Subject: Re: [PATCH v3] kho: validate preserved memory map during population
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, graf@amazon.com, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	ricardo.neri-calderon@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0D4E618000F
+X-Stat-Signature: sjtqc83abig3gewag1exdqsou8pzztrr
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9BA8B40013
-X-Stat-Signature: nm6iihhf5ep65hagj4yp9ta1c91eaf78
-X-HE-Tag: 1766496214-364949
-X-HE-Meta: U2FsdGVkX198/KmSu17DpjsarY/h2VY16cs3xMwrKqEAmkVImNskrhEdJ+Bkrpkny947Mqk/AIUah4weOoemtCWUjbQ7lMD6M2CgnbNitDVN704Liwu8h98Pjlswj16irlVgoEamwJr4JhkaaKpLVfufT5AGar95dFDcfM4jCv3p6ayeAtBGTWO/lQbjwrzbt0rtPZAj5Zpe/Gf4w98URgx2ZV4wrxj6+F4C3rquZt2aunF6NGV6pmkASQSbni4Cge3gOV0Vo7H53uHdQAqEr6t9e5wpBBYjVqz0AX15U6X132BmNRaXgMGrW6HmvUh3Dq9BE9I/xmvCHi8r1P3sHu7JPG4BsI68odCKaycEk7HzGrJJLHI6lPTsGx+WMo4qGWSEvg9OdVSe5SpQxowRc2L0ODajknvi+nA/116E4V/aXUIfsUg0Q2nG/Ks8bXBc//jRm6YdpyrZt/FzC9v8o9fLbeEBrqObcnnJ2ddcj1LX7kfzPqFxc83dfapVUBvw48viVptepzvzb9BYkOHsxfvS9NyNRwKA5ndgoDt5vZx0FsJszx5WPFsQ6mKyyM0d40rogGvVQcnDQ1Urp2OHB5vhlElLAtG5i1AwBuiQEWvPKQNc6sya5yl7j08HfwYevdqH+sFmINXXuaxR53xnizimNJP0iUfv5vc0STnAy1LtAtDX8rcF6XYtadH9E1xVgJZW3Z+dStMXGJT9guTWyHYxJWGG5g98E+AJ8QXJl4w+ZcAgQ0ykGKJ3+lZosmxJaCTHW6wxhulkbHvmJAbqNMUZo0RCxDtqYATDrvbLgnriY1InBAvfWniNx29zxkXq7/AzbcvALk1zrowj5gVA2DC5xhHWiQ/CwGvudeZTukLJcd1N5OpK7QyBgORJQa+ui6MvTh+yXjKjKDtUDhS13IBkgoNDAgHVzeM+cKYbZkcD5qVKApfPXi3oie8U/+H/QHsGCWmCbLtuB0gBX91
- Z4Zf7vtQ
- 22J3L1GgVDsxuQdcSll1p/IPO2U9wGS99L9m1M+OacMSILR51Sw96gE83l/7WvlN5+zVd215K+2Q8UTFa+ZdxVXbqtzi55nF32JuOdBwNzV+hs0S7g9vIfoFQ+Pps2HAmXeov/8K/lNeEg2u+heSw+1SpYkzIjQr2xd2rJF1UI5n7l88HP/sc4i1EM98eUQFUDwqgDUQuCqTcIzN0wAV/TQQkw7SGkp2QNBzXbn1IKeqHunvPLvJgnhRo73ljfyK1++91mDtb3sf9W0R51yvmicBacqbd6fn/bGJFMxmYhgkkZ/4Z0SQtohAJRtAkqazXS1n0K0SOeI/UlM4d7I+A4IoKET3A6OL7VxXm0YCD6w4W2u9WAdneYyKrtQM+8Ook1sJi4Ccd+dp1Cm4nYesbFkBsIi5DmnLKUcQVZLLI/acwrVU=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1766497228-999628
+X-HE-Meta: U2FsdGVkX1/ptr6DoqpEDolX2pA15mQilBdeRIvBfHRaHBl53U2Qa38w0yq0pMncVylmttJFkYFjUaZEg/EOti8OwqO9CBlb+0P9aPuW2PlkdAiGxSk4MK1ZXqLHNj88QDhll1328yMnCUaOCU25eJWfj0oU9ydSJjFtoS0JMG++9crCr9x0+KYNIfIGMgNQX00pU/7plGGr7gY+FcSayog0gPclM50Z+cIALfQjHprp4CLHJMfuTpnqYw4wJfbjEUPxZe7KRe+uxPHX6hUlDzn8OZyTRvn09skf1o5OGK6XclhoVe+TYATW3dNuqJNifPs9oZdT/qrmjWYW1PL9GvD4UKWkdUlHxPOGyHKj9d5ub17r5nu75cTDRxKd2y6yQeNupts0k0FUlgIdTGM654nVSFNd+fxHqMe/avis+QJ0hdwonRo3fxGKR17A/Qup79xw5xxqvVVqVjYymGiMM4YKGel+WegxxT/GG9Nb6kC3k0+oXRUuEj5/l/Q4QKm0vAqLHmZhnUsnRBpUG1MEtGUiGmHhGiRvDT9VNp9neK1BYO2zrf41FwvRqQSS4yAuKNSrcGFmlNnn/VnF1I2z9jYLOBW8tcDs9ePHRpMEEi2Eq86Qnd6gX8qXLLwNkbdLswwExKwYVJiDjUh2OMe+km7BuIEGqfgObcU1TG+arsCxQsmXpwPa5ZlIe+N7ru9PufSATS+0pHt33Z/IHTv0Gr99SHSS9hhbIacCzsLcPccCbYSvsL56NG7GrUrpsUdomqwYfMgNh0p0ANKYyWz3sFhNf0rIoKsB4YzdD63x49hPGnV5NcP+HGJmEbO1u+JlCR0TQiIxM/Si3KZm9it7rBZUtpvUcoYAAnGxt7FtP35P5oKYb/7EFuEIgup8H+BzyWQcgndj5cOtRijUEcvJlTgCLPXkeZyPvRMC4QqUprp7ZqzoChWEe/SzH2ILsQ53x1QifIMWZDVzI3Gy9m2
+ DrsZidJf
+ XM6a+vlO75W4urkLbHN/fcXuhU984Pb3ZPAJZUGCMuZGEc7yvHW0AETgOasTMdBkQB20c8tk3DMTIGTC7N44MvEExgTbSXuXRNJ5R8DkQ5zw0OWiY9Yd575RldpzT9nqqyYF+OJPqnxwf2ygqaG+twAgJ5pMPzHRpQVfp+3iDjSV0kD90SrO1vOJFOtgYcMu2us7B
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,53 +115,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tamir,
+> > Previously, kho_populate() would succeed regardless of the memory map's
+> > state, reserving the incoming scratch regions in memblock. However,
+> > kho_memory_init() would later fail to deserialize the empty map. By that
+> > time, the scratch regions were already registered, leading to partial
+> > initialization and subsequent list corruption (double-free) during
+> > kho_init().
+>
+> Nit: I am guessing the double-free is the scratch regions being freed
+> twice? Can you please write that out explicitly?
 
-kernel test robot noticed the following build warnings:
+Sure.
 
-[auto build test WARNING on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
+> > +     mem_map_phys = kho_get_mem_map_phys(fdt);
+> > +     if (!mem_map_phys) {
+> > +             pr_warn("setup: handover FDT (0x%llx) present but no preserved memory found\n",
+> > +                     fdt_phys);
+>
+> Enabling KHO but not using it is a perfectly normal use case. This
+> should not be a warning. I don't think we should print anything here
+> TBH.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/test_bitmap-extract-benchmark-module/20251222-214306
-base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
-patch link:    https://lore.kernel.org/r/20251222-bitmap-kunit-convert-v2-3-6a61a5330eff%40gmail.com
-patch subject: [PATCH v2 3/3] bitmap: break kunit into test cases
-config: sparc-randconfig-001-20251223 (https://download.01.org/0day-ci/archive/20251223/202512232124.O36Ud5C2-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512232124.O36Ud5C2-lkp@intel.com/reproduce)
+That is fair, I considered pr_info(), but I think you are right, lets
+just remove print.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512232124.O36Ud5C2-lkp@intel.com/
+>
+> > +             err = -ENOENT;
+> > +             goto out;
+> > +     }
+> > +
+> >       scratch = early_memremap(scratch_phys, scratch_len);
+> >       if (!scratch) {
+> >               pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
+> > @@ -1515,6 +1517,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+> >
+> >       kho_in.fdt_phys = fdt_phys;
+> >       kho_in.scratch_phys = scratch_phys;
+> > +     kho_in.mem_map_phys = mem_map_phys;
+>
+> Nit: not a fan of duplicating information. This is already contained in
+> the FDT. Perhaps make kho_memory_init() also call
+> kho_get_mem_map_phys()? And while at it, perhaps make it
+> kho_get_mem_map() and the return type struct khoser_mem_chunk * ?
 
-All warnings (new ones prefixed by >>):
+I prefer the current approach, fetch from FDT once, it is just a single address.
 
-   In file included from include/linux/string.h:65,
-                    from include/linux/bitmap.h:13,
-                    from include/linux/cpumask.h:11,
-                    from include/linux/smp.h:13,
-                    from include/linux/lockdep.h:14,
-                    from include/linux/spinlock.h:63,
-                    from include/linux/kref.h:16,
-                    from include/kunit/test.h:22,
-                    from lib/bitmap_kunit.c:6:
-   lib/bitmap_kunit.c: In function 'test_bitmap_printlist':
->> arch/sparc/include/asm/string.h:18:29: warning: 'memset' used with length equal to number of elements without multiplication by element size [-Wmemset-elt-size]
-      18 | #define memset(s, c, count) __builtin_memset(s, c, count)
-         |                             ^~~~~~~~~~~~~~~~
-   lib/bitmap_kunit.c:468:9: note: in expansion of macro 'memset'
-     468 |         memset(bmap, -1, PAGE_SIZE);
-         |         ^~~~~~
+> No strong opinion, so fine either way, but I do think it is cleaner.
 
+Thank you for the review.
 
-vim +/memset +18 arch/sparc/include/asm/string.h
-
-70a6fcf3283a0a Al Viro 2016-01-17  16  
-70a6fcf3283a0a Al Viro 2016-01-17  17  #define __HAVE_ARCH_MEMSET
-70a6fcf3283a0a Al Viro 2016-01-17 @18  #define memset(s, c, count) __builtin_memset(s, c, count)
-70a6fcf3283a0a Al Viro 2016-01-17  19  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Pasha
 
