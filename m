@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0C40E6B277
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 06:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D015E6B277
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 06:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40A006B0005; Tue, 23 Dec 2025 01:11:16 -0500 (EST)
+	id 8E2D26B0005; Tue, 23 Dec 2025 01:14:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7636B0089; Tue, 23 Dec 2025 01:11:16 -0500 (EST)
+	id 890276B0089; Tue, 23 Dec 2025 01:14:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C3876B008A; Tue, 23 Dec 2025 01:11:16 -0500 (EST)
+	id 79C516B008A; Tue, 23 Dec 2025 01:14:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C9946B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:11:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AA6055934F
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 06:11:15 +0000 (UTC)
-X-FDA: 84249713310.14.C509BC2
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AF69180008
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 06:11:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 65FF36B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:14:24 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F02DB9B04
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 06:14:24 +0000 (UTC)
+X-FDA: 84249721248.06.FAB6042
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3DCA280007
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 06:14:22 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ko+T3x5d;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p3pNAUjj;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766470274; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766470462; a=rsa-sha256;
 	cv=none;
-	b=cOEXsxavUMWqtfw/5TUCNRV0WeH9VFQzgnxvhJt0ljLkkx7b+332b4TiQ6IOcvczcejMDH
-	7hPAKW/Y9WOQxW+XG/uxOIVHd4czQh9cUYdXbMLB/vYdKAxYrWLk6BJ2Mpu8uajaHpUOSm
-	BOgmvGhGMz6PgrnHxtCb1zOe+qvR2pw=
+	b=v9PuoDO38yfUCKc/K317IKDtlJxh/cYUlQQIg8IHXBLHbMSPkym5bc29Pno800O+BTYpPr
+	PTZdcotLlWgimBwNIcTJcNOS+N6eDR75skQkb7YfBkXd45MHDE7ytSgI2fHC+B/rNbmQ4y
+	zMlCXis94/I2H73AS6d7xtz+v8vpYcM=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ko+T3x5d;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p3pNAUjj;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766470274;
+	s=arc-20220608; t=1766470462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=23aWOZVb4BJFZwZWp+U6nNqi+ffrD9hfhTZYhMPV8NA=;
-	b=RYdkmng8ci5Pz746cIVclYgm/DRa3ZaC7GPZ51YwhgCcnKlMiT+wNuLq2E6HzhNQYydsab
-	qRofkPvKi+ZEH8dZs5dci//xKxC7zf7ni/ACW3C2hwNnsKO43kKCguXDy6X6L/0tS+nuV8
-	eIPfvTprNjPKj8ArCWGiakl6+hxSVv4=
-Date: Mon, 22 Dec 2025 22:11:05 -0800
+	bh=v1Vxe9QHr773cXPHburX7fEkwO6UQV/y6BuQFvRR+UI=;
+	b=VYsMOYFFLunS15xH3Csl8jAqSbLs15E2vi4CIM9qQZj5RkKtIJELb5KmzGNFS1di0UpapP
+	X9bW0wzbVJf5JxVqXCKD3QxJexGgXDSy2FlCSNiu/dYT6GAf5NqZqL8rNQP7kzJ0yewo93
+	1rSfvI21fIFzzCA2xUJakfUDzj33+9g=
+Message-ID: <ffc68aa4-cb9d-465f-8c6f-9cd7315eb560@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766470271;
+	t=1766470460;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23aWOZVb4BJFZwZWp+U6nNqi+ffrD9hfhTZYhMPV8NA=;
-	b=ko+T3x5dZUvaGGt3MUjw5uDq17uCH5QaQlH4UlV2s3orLqSCIvl93evk9/p9qfgHX/Z8nj
-	3ATnhhZPrVKz2ahwSml08lGAMOE26pMLObjy7IfjmaAarMiuzZGl19f4FD8kNMwavb5+rZ
-	4jnGSNjdwGz9dviGFEoaRd3gIkOirdg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
- from direct reclaim
-Message-ID: <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
-References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
- <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
- <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+	bh=v1Vxe9QHr773cXPHburX7fEkwO6UQV/y6BuQFvRR+UI=;
+	b=p3pNAUjj1hv8lsweRgKt7TABdptgSaVSplZqD1MmYcacqWp56Jo6BybVFtDaZv6+69kQnc
+	oEJurwFFBic9lI2wg4vy0AVYfl1Ixwo5Mq6tVEPaKXdhWG1WFv+xQ0BI3dBp4RgSvRuTly
+	bbrH8k2y4SlComNwLN0LoW3Q2PL0ZVo=
+Date: Tue, 23 Dec 2025 14:14:09 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+Subject: Re: [PATCH v2 23/28] mm: memcontrol: prepare for reparenting LRU
+ pages for lruvec lock
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <6d643ea41dd89134eb3c7af96f5bfb3531da7aa7.1765956026.git.zhengqi.arch@bytedance.com>
+ <jdhf6h7weedyentvyaqsr3n3v7dlj4n6k3mrryn2hkyhc255cl@kmexszfblh6s>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <jdhf6h7weedyentvyaqsr3n3v7dlj4n6k3mrryn2hkyhc255cl@kmexszfblh6s>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AF69180008
-X-Stat-Signature: 7zk71moss1d4zy685snzx8j64byaah4q
+X-Rspamd-Queue-Id: 3DCA280007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 3hsucerz97my76uzn4s3ngacjt6bboqj
 X-Rspam-User: 
-X-HE-Tag: 1766470273-914244
-X-HE-Meta: U2FsdGVkX1+PkGcehGDEXSwYlecUUZCTpeaSJMuG0p49Be4UFOGKri3J1lcbLRQEXDmbdUI+hxjgMl9Hb0/yZcu9KBL2Nm56cwdDiKHxApkfMN0rRoRvim9qUsdUXW3zIzEOoIY5acHelRknIT/etu9+seofjmCAyPdvUDWlL0R9ABPz0P2n/Z9YqfWvPKHs4JPszSuauAlqV4a9xWppDFwj7FbFOrINN04PsdP5+qvhNKacMDVd2DyUDAGOquXhsDoI+K1LXCDFMZDL4AFzSHZuh5bUTE8s7NHsmd5h8Ex7FOuuLc3g3pWD9fx7ibiGYs5HbdM1VcA/YSwRxIOow27MZPYgIV5o8qJZTpIE2MPYL5sjX/6JDw0ADWsraAgbrjTUHr2Gqf7/UwQvHGgIN3XQpN9JZOZscnQ73sCUtohfmcmgoJkZTG2OB3WakcqerMkG2yMiP8Jaq66QXMoirUCG2AoQrv6uCRhYF5Hjp7AsIelwXVm0fiEjVIw4q3/n0Wx9t1OOuw6PbLMCCqUeZ95E8Gbzf9JxRFStRVaLpYuUyuVOXiU31MSMNH3Ta7TZZeqzRGUJQcnC70PftL/LJCMczdSk2VKWJcAqVXs8QaudTut6rcGZPEQUzWEbtnXrWiiQjfmVuLFW1CgkT5x14U1bFtiGp2PzBu+IoWPV1Ugy9n1C5d6XTC+subpeKGvM6cHsvVd25lLhOglmiXe7OtLUK8XoKRZU0dT2B+qxgNTt8fDO9qmOxQueriiJX22/M3wcavuqnUPT+/k0Rb8sbeqFJrvMdORKbgmr7DpzumNlnaHA3CbQY/SXqSrVz6FTowbGdn4dJmK2BFN26Dnq7ufPdr0oWYnXAlFFhtVEOQggGERSIjofhtaiu5p66oqyOMFRnh3UyPqpaMfwrk1KRarbPoKhjr23wDGFp8gq47uKAnL2pY5eLMZ1dIBF4aQjitofasdRSJCZL4hvqCL
- tsxk3TNx
- /GQvSfavkVE4FTlmNHX2b/TomjRl+kB9SqJwVhIJwxzjT5retjcLdlsvqBLLfptqYI+nXOi7ULChnoWp7DwMsqxAucdLArLQKZu8tH0nccXAdP+cwTK/MdP5LX9baRyBo4xh74BJaCgFHBfjmUaPAMbTvx/spmKT9/PxyJLSQu4OoCd6b9uq0dlpNuXwL+ifobfdUL4bmuX2vZ4d/DgfwsmRuqBcmQ2ugCKgM9zD+tjNfKGy6iKBUdM8wSV0kwvZS7hfU
+X-HE-Tag: 1766470462-128533
+X-HE-Meta: U2FsdGVkX19Dd3FsAJ/22+UFw7Dlo9SysGo5la5vZNLjd31F2Km7oQDRHiEriZHfDb+O5oGvAz0x6mw6wwTwPasJDubgGOCw4wB5hNn0JgPrjT8bwcd/W6XU5U/hX++cjskB8/IKYNPuvTXSpFEJUcQjxMA8/P94BMKJl6n09HaXLPeOQLpuKodRO6DKlpcyEO8JjwHljen1NjLsep4TzYs/SOwcOk7Y/B5tggp5vmazUcZJoce5UbRc3REnZJpUZNpZaYgYSdywnZ+jyxpALLeTB4kRAPL8y+8Y9iwV4vIyxp4k9Yx8IlbHhlnf7JV2g9cR9CH6KZx9T6lIAwOpMcc9yqeyo9LXPDxv+ix+aCnjbq+t7I/F7/RV3UoNnnNOtRHt4ttsDOSHTBN8e3NcijnfH1SYBZcY7RTjFuebyc6CRfOBZyjFNNHao/qK098QHalPiLCxaS8/Me5exf/c0Ln1hlwloAFreMnvDY2t3qCqpCm4XPhFaikzFOVZu0gUSJ1o88kcPlnX4/sIX7e8ygXXEi1z0yf/hGdL182Jjz3aZqwI37Ayi4ReC0doS682G57OL8Ks/L7PqBUCt+bEY7HipauudZws9l8l9HscCOkk72lUks/sv7hwKdpIOIIocJArSdzo8L/Id3CkEj/MFTdeXafpMJ/tNjrS3Tw/EUrY6t/dx0r3bTbUFbglgdjsTAO/+nhNpHIphjJvvzByS2LnhtiJa/Ia02l5LgHIAMLxvVxsFqPkHp2Md6f6/Rq0t2pNkohnkQ4A/6zugL/1yIh/FpDrDZB2SsteTXgvAGQnNUPHHnXI/LSwYP+hAFIDuoaf0zhB0/T/Ki6Iz8FVdgvrDcYAywLYm6z6NUkICLWhb2cZi/Uu2hzQsXe8+Sp+Zgw2u4hf2f7yMTmAsArVoXb4vTZGxrCft60+f7mKpvCctXiQTjxAnxauR+vC/GweLiINSuALSeXlXNYXow4
+ 9X6/O1FA
+ 7VJ2V8BmxGmSc4OxYfXPhfheuRokcIvSGQNQvzSyyA2efjNw18IavbPgrM98zz82FLe11/Pa/nAc+J5VLMJIEW3J6N2drGdQT4qaW+us7WvPaBb9T8/j2l4f0bqyILO8nd+UWrAx0S5ulld9BMIFQperVBL9zP15py2YgR+ghoV0srDa6AtrkerDtZhKqjqKRaJmho71NB48RVS9ccODClk/Inw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,54 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 01:42:37AM +0000, Jiayuan Chen wrote:
-> December 23, 2025 at 05:15, "Shakeel Butt" <shakeel.butt@linux.dev mailto:shakeel.butt@linux.dev?to=%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux.dev%3E > wrote:
-> 
-[...]
-> 
-> > > 
-> > I don't think kswapd is an issue here. The system is out of memory and
-> > most of the memory is unreclaimable. Either change the workload to use
-> > less memory or enable swap (or zswap) to have more reclaimable memory.
-> 
-> 
-> Hi,
-> Thanks for looking into this.
-> 
-> Sorry, I didn't describe the scenario clearly enough in the original patch. Let me clarify:
-> 
-> This is a multi-NUMA system where the memory pressure is not global but node-local. The key observation is:
-> 
-> Node 0: Under memory pressure, most memory is anonymous (unreclaimable without swap)
-> Node 1: Has plenty of reclaimable memory (~60GB file cache out of 125GB total)
 
-Thanks and now the situation is much more clear. IIUC you are running
-multiple workloads (pods) on the system. How is the memcg limits
-configured for these workloads. You mentioned memory.high, what about
-memory.max? Also are you using cpusets to limit the pods to individual
-nodes (cpu & memory) or they can run on any node?
 
-Overall I still think it is unbalanced numa nodes in terms of memory and
-may for cpu as well. Anyways let's talk about kswapd.
+On 12/20/25 10:03 AM, Shakeel Butt wrote:
+> On Wed, Dec 17, 2025 at 03:27:47PM +0800, Qi Zheng wrote:
+>> @@ -1232,14 +1221,20 @@ struct lruvec *folio_lruvec_lock(struct folio *folio)
+>>    * - folio frozen (refcount of 0)
+>>    *
+>>    * Return: The lruvec this folio is on with its lock held and interrupts
+>> - * disabled.
+>> + * disabled and rcu read lock held.
+>>    */
+>>   struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
+>>   {
+>> -	struct lruvec *lruvec = folio_lruvec(folio);
+>> +	struct lruvec *lruvec;
+>>   
+>> +	rcu_read_lock();
+>> +retry:
+>> +	lruvec = folio_lruvec(folio);
+>>   	spin_lock_irq(&lruvec->lru_lock);
+>> -	lruvec_memcg_debug(lruvec, folio);
+>> +	if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
+>> +		spin_unlock_irq(&lruvec->lru_lock);
+>> +		goto retry;
+>> +	}
+> 
+> So after this patch, all folio_lruvec_lock_irq() calls should be paired
+> with lruvec_unlock_irq() but lru_note_cost_refault() is calling
+> folio_lruvec_lock_irq() without the paired lruvec_unlock_irq(). It is
+> using lru_note_cost_unlock_irq() for unlocking lru lock and thus rcu
+> read unlock is missed.
+
+Indeed. Will fix in the next version.
 
 > 
-> Node 0's kswapd runs continuously but cannot reclaim anything
-> Direct reclaim succeeds by reclaiming from Node 1
-> Direct reclaim resets kswapd_failures,
+> Beside fixing this, I would suggest to add __acquire()/__release() tags
+> for both lru lock and rcu for all these functions.
 
-So successful reclaim on one node does not reset kswapd_failures on
-other node. The kernel reclaims each node one by one, so if Node 0
-direct reclaim was successfull only then kernel allows to reset the
-kswapd_failures of Node 0 to be reset.
+OK, will do.
 
-> preventing Node 0's kswapd from stopping
-> The few file pages on Node 0 are hot and keep refaulting, causing heavy I/O
+
+Thanks,
+Qi
+
 > 
 
-Have you tried numa balancing? Though I think it would be better to
-schedule upfront in a way that one node is not overcommitted but numa
-balancing provides a dynamic way to adjust the load on each node.
-
-Can you dig deeper on who and why Node 0's kswapd_failures is getting
-reset?
 
