@@ -4,95 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D41F4E6F07A
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F385CE6F07A
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 09:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30EEF6B0005; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
+	id 42D946B0005; Tue, 23 Dec 2025 04:42:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2924A6B0089; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
+	id 41F2C6B0089; Tue, 23 Dec 2025 04:42:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1943F6B008A; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
+	id 359086B008A; Tue, 23 Dec 2025 04:42:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BA356B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:38:38 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 951B3B9E71
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:38:37 +0000 (UTC)
-X-FDA: 84250235874.13.3CABF60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id ECE1C4000A
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:38:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxwSgqka;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 229306B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 04:42:54 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 29B8013B307
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:42:53 +0000 (UTC)
+X-FDA: 84250246626.09.AD22FB6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 45A3A20003
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:42:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HbF7OsaP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766482971; a=rsa-sha256;
+	cv=none;
+	b=Tg6gc0tiB+aEguoA1A1B91ViwQ9+hala0dDbUARdT39m3DMmvhkKxcjf/c3ZehlwBboWqx
+	KaLJKKGmueldPa8oPkHAK/7ajWXiLDke0EYwg0H/FEL1HjSIiKDM6hJkActFi1PDFwin4V
+	+SVY4QOsnPEToOpxa51eEmvftdYyQns=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HbF7OsaP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766482715;
+	s=arc-20220608; t=1766482971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vio7RoB6OygSz0UI6v9JbQht1GL0YyztG3yaWz/hpUQ=;
-	b=l0uEyB+ApfoDrxDqUSOqKcAeT2rEXZCQxDJv0O7xGi+bxkYzcviZKLPugMqnfwmbbWe2Z9
-	DJN2VYOgIlmuQPRWwalmPP4jUSJxZh/Hn5gKHpUwiSyYze3WYWLVi9jR83HSgPjSY2s7Ym
-	llhIshZXMueQyAy7KmkReJY7jhBRcjQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxwSgqka;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766482715; a=rsa-sha256;
-	cv=none;
-	b=mIndhtq148S+0FISuuRAT/SxUDbaem1VLRzoRwYqTg45MjkuhBkpAmqq4+tECGjf+/eDTS
-	JzVNjR7QE+AJ93cbbMJ+iQw2Blyf8jdCpH5RAdF9W1Mk+1Gnk4vO+IgJVmslpGBOkQNk68
-	dnyhCvu/BBcZ2C44+C/2KA6i21bJnAE=
+	bh=LaBUY5KHIpGxhyUwYtzaVyp+87hCSOUTn9wOUej8fCc=;
+	b=LlAjYECe+AFABSZ5ow6sPs2RdSTsQOETBnsPV2+U1Uya0EdjQRt0SiIjbAV3ndsjTGIEvu
+	rdl24ErXVt2IzFuzIMfr5amND0IIpNIbIKQ4zjEt4l6+xL4Cc7STGR6ZEFpqz56ipfccWx
+	pjEsGY/dZhk55Kh/Z2Wnsi8Q0OxY30Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 380916014E;
-	Tue, 23 Dec 2025 09:38:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A041C113D0;
-	Tue, 23 Dec 2025 09:38:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 218DC42B12;
+	Tue, 23 Dec 2025 09:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4F5C113D0;
+	Tue, 23 Dec 2025 09:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766482714;
-	bh=0tCAuhor98NX6pArSQFPs+Lf5cNk0Pw64krLvrl0x2A=;
+	s=k20201202; t=1766482970;
+	bh=OgrrIS5kSKeOkNAg1o3SBBtI3WjzGuW6Rb6zXIqANak=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cxwSgqkadyvZ8pQ4lEyrcLOru5YsUsEv2NvVC5ROuRdVE1PKGXlPNJx+/lAnh5k7r
-	 4wIHDfUSqqcksPZptgbYmm0zDUjzZoXQEJVuvpvbMQgstpy0beGMa85LorT1ysXM/9
-	 FuddKfdevXD43gk64985bL/4YcO7YToGi0/cGvgyAot3fpvioQ5OPHQGKDYxGVIdFP
-	 G6Xcauo/JVei9z0K4O9Ti2oyUj8MM5kPapvbCo8zhWbYCRDcFysiVA60w4N7oDG+Hf
-	 dJ2Cg+suxyOWg20fIaKf9s7VuqHEK2YYcJjGhiECepzWUToyvVRDEp6XX5oWHHfLQA
-	 HCs8sJVVj0WmA==
-Message-ID: <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
-Date: Tue, 23 Dec 2025 10:38:26 +0100
+	b=HbF7OsaP13i2azHJQ3dr2a8dsVsPs6XCg8dDvmQY6JaRJZwTNq5LsDRgo2BSZtIn6
+	 Y5jxrvIuZoh9wNQo0XKnraDTCQd73MbY7tMGNY4ETJz4NRtYFMhyr49UXPp5dN/oJD
+	 iyDiEikKs4yJxB4R/LlnF8XMNK8EtoljcZfMT9J6CsOnRP3Zd2mHZGirMy0dzj0xiV
+	 lnVvfQSOgsF3DAhKZG3Mx5pmsD1dj3zybweckn4H1h0nFiVz4oReiCTFJLWWn0Jwqx
+	 XVMRF8i6QZfre+PYKfBLbyIYe2tGzoGj0sTFx103LaDk+Q63pxju9aEwezE42jo09e
+	 38PeAH6+cYZog==
+Message-ID: <c6b766bf-0f05-47c3-bcc6-2f0e1961a864@kernel.org>
+Date: Tue, 23 Dec 2025 10:42:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
-To: Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
- <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+Subject: Re: [PATCH] mm/page_owner: fix prematurely released rcu_read_lock()
+To: ranxiaokai627@163.com, akpm@linux-foundation.org, vbabka@suse.cz,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, luizcap@redhat.com
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, ran.xiaokai@zte.com.cn
+References: <20251223092526.140566-1-ranxiaokai627@163.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+In-Reply-To: <20251223092526.140566-1-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: z15q5cxo8t6p8j87eip38wxmqbtm4x56
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 45A3A20003
+X-Stat-Signature: 5p7t5wfux7fzgp76h7gb91aogzury739
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ECE1C4000A
-X-HE-Tag: 1766482715-101602
-X-HE-Meta: U2FsdGVkX19npl0cxreS3hqOy+8nqkhlAxEwvFjuLPfxWDicqvdCptuiISZpfeaZpsuUKo1akGHkWVHA6pK02JMULd/Lr7b9BE37KIswUbUUoghZcpSgjartZoGC78SnvIk9gZYHI6GXHyJcbur9EXddEQkgnyctAPOMDiLcdP2yzg/ZcgeVfLCSlENi5Bm071RkWoV5xuxIM0YN0tYP8vCDces0A19SPTSWpKt3GCnuze4C/Uqq0Apq+i6iQ4eFC+tGTHl2faffBRU7jqQAu0OJ5KvOJn781rtr2jQF3MCDeAbFcwtbA5RQsnNaynBpm8bCtddf0/gl2EMUpapwzZQv/020aw/NClrLjmtxrb16Hkmi41/tv2Le21A13a7ol5O7rhuyCxG+X4zqVyqsWNe5ePuR6OUl7oECNFlAUIGA1mgU6+PurowocbknRTcK9EmYRIHZXsPXUHeDbMU2oQ0WctmKk986i/1hRMmcn4Slk5ljD09/6im9UwMywurc3nO0+cyokj5iSeJoIZpHnLpwdPiXHxliF9v+kUjawmhQe1UIDOHEU1EReghaMKmPu4HPu/bK5RHlOkR375ShxSL714BLk3Tm3joqYP/t46HrSibTw49MjBiSA9rN53gHYXXUTfXmUk159/989zSXAR4ogN9H7Y36jeuigvYBr08N/NrJopZ71Hz7e/L9BaBmRR4VTTOaHn7nItz/4iIyZQ1D+gfHDcyod87UMZr2qC9B4IyzHKUdNPsyXxoe7STRh0Dt6ElhJf/zwHqnsNKlXfH7i8J+guCVX0pmdAvg5iJ5WRot6oi47No2HP9Vb5G2JVrdGp8UH5RW+696+4WIvPxN5odEhGDUEzzdZGKYR+mlPkD14E1qR90pnQJoR88ogeSdFrT1URO+H2Y3/Vxx2hMfHLbZ3kSg2HjyhTZJ1DdXAwKnI/8tUxygPR2vUX19YtqmRfTSl42ZzCMrCA1
- z3ZH96H0
- thlQCsAp4RwL0Jr60Vjo0ueFA6+9sZbKRIrtCBmVcMHUsWo4ZP4lKmrHP/BFXtbMXDYCaXUWsI7KcPmKYHp/xO8HUjqlkmQ9paGVG70ohdPwDO/gRZpM98TghpNUZbfaYmNHCYvoR9BKJeM4aXS1Mpe+QPGKEe7S+iqTVdVdVL7Y6AP8nKGISqT5enSayc7HJ3E8oH0vnit0nK/O6nqsZoaZ3fjxsXhHbr10snH7p9XcZ7vSvoDRtP//jTyb7w0B1PRjrDBHGn+GszaBUIAdlzoT3C/a0Qq7BzDHrUI6nJuEfAT2xUtzYReuSOcaT9LIHL2B4JqeA1Cz2O84I0wbo9hvQuASpeoK/yc2iNUFCcSkI49M=
+X-HE-Tag: 1766482971-626454
+X-HE-Meta: U2FsdGVkX1/YeNV6HbclsPn/K3wnZKSXV/jjBghIYX98PlkiNWcZ9/QsJjDQvWZFsScvgqaNCOx8pfjFzgPBcDMNIrsgY8arWpJOJqRqLyt5bV9EScwYl/Omgn/rPx7daHhUM8kZ3QetPeM6U2RDPhOI95DLSl+7GfyP4h0u7SvIHyNdEYQ4EqMAeQNTyWbTVELff7c5oR8u2EXewUXVcDqx056/hiJsXr9rlQnICJWPd8sfYwLO4HXn9IHX7oT2RlQqD6AulqV78iI7mEN9tk6naGq16ZoWMqt9cN42NXcKbdhxAN4rVVsM/WuDMXTUp+4kT2bt/xLrg17lMIOSE+Xr80Z8rMlxK1IVwCIzoeIZrCfG4iVuSfi57SWghPRRAnUs0Y8nICI+kZ2BLti7FNvhGmSpMPkWt4msah9GSkr9ue1uBQRJzUqI+IWnIzhb+xQkBrMELIn7CMfUB6CrjksSNchCyBFqd374n0yzKHRzsfwkzuGhW5L7KIHGBJNZGpgAZjlFcHdZ77jPSI/9pM8rDYnw28gRVHhSjxSOi+9dPRR7xNfHip1vtQ3xl1sDQh2BAfpcBoCQ1cUqTZH0va1yZ9c7evkLrVwZk7DMzNDgQvcLntX2NEntcx864eufFNIvXg/iXQSHE1JxJ+8h/zh5mVuquKzivgvJzqlESyLKHCxt77l0BwsbCZ+mkInV9uqhh7dcHfDZy8DHjnneoY6mivnlvaszYW9uNoosNHfiaSSsZICHpuVfUGiLVEQOnf2fLIMp2x046cD5ZMZTBPaMUckhtEHq9a9VrxjK0xe2L8KAB8OstgNJ0ahCe9pPBrQU3f42E5poJ6ZGxscQotO/NLWIhTvH0i2vLnzzK6M/CR8HP0R+roVH85ihLt3uWaQp4wq0AvxGF23kjNPc+lgOJb8/5qdtz2NrNqv3AKG1CJmGHVVsUWcffpwd7g6gQnyIvkhPWo27+v+FdDR
+ PN8S6oox
+ kCkn7/dryhsAJpyS9/0TmdJnHBRDvz2Wt+R0QSBbFWNo7KTwLUri3bsSb236az9ye7XVDYzrGoF4qbqUVmzbMPhg+ofqVAZetLYFW14CONS+z1MmJJF2L7trndkkS0PVkQxaztfe5g7J3Vld9XXDPAPaHabyR/boZnYfbzA9WPIQga/TZeHGgaJAgJva29DFLbasgx0xgx9sultp5uVN07cuXhoThIHsDFzAisDa9ZLNbnCj/HNrF0o66MWBCjxDu2nkkxVE5omsepCNaWRv/S0+W8jedR1C/BwwQAE3sTRttj6hgy7Ky8yS0jb22yTDvylYCCH6ErL2gHzKxXd73xpvRZB72jNT9IVMhvdIwfoGaa6dFY9KhgsIqO7m3HkrUSwrdPCAK/DACN28=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,79 +95,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/22/25 15:55, Muchun Song wrote:
+On 12/23/25 10:25, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
+> In CONFIG_SPARSEMEM systems, page_ext uses RCU to synchronize with
+> memory hotplug operations, ensuring page_ext memory won't be freed
+> due to MEM_OFFLINE during page_ext data access.
 > 
->> On Dec 22, 2025, at 22:18, David Hildenbrand (Red Hat) <david@kernel.org> wrote:
->>
->> ﻿On 12/22/25 15:02, Kiryl Shutsemau wrote:
->>>> On Mon, Dec 22, 2025 at 04:34:40PM +0800, Muchun Song wrote:
->>>>
->>>>
->>>> On 2025/12/18 23:09, Kiryl Shutsemau wrote:
->>>>> The upcoming changes in compound_head() require memmap to be naturally
->>>>> aligned to the maximum folio size.
->>>>>
->>>>> Add a warning if it is not.
->>>>>
->>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
->>>>> kernel is still likely to be functional if this strict check fails.
->>>>
->>>> Different architectures default to 2 MB alignment (mainly to
->>>> enable huge mappings), which only accommodates folios up to
->>>> 128 MB. Yet 1 GB huge pages are still fairly common, so
->>>> validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
->>>> miss the most frequent case.
->>> I don't follow. 16 GB check is more strict that anything smaller.
->>> How can it miss the most frequent case?
->>>> I’m concerned that this might plant a hidden time bomb: it
->>>> could detonate at any moment in later code, silently triggering
->>>> memory corruption or similar failures. Therefore, I don’t
->>>> think a WARNING is a good choice.
->>> We can upgrade it BUG_ON(), but I want to understand your logic here
->>> first.
->>
->> Definitely no BUG_ON(). I would assume this is something we would find early during testing, so even a VM_WARN_ON_ONCE() should be good enough?
->>
->> This smells like a possible problem, though, as soon as some architecture wants to increase the folio size. What would be the expected step to ensure the alignment is done properly?
->>
->> But OTOH, as I raised Willy's work will make all of that here obsolete either way, so maybe not worth worrying about that case too much,
+> Since page_owner is part of page_ext, rcu_read_lock() must be held
+> continuously throughout the entire page_owner access period and
+> should not be released midway. Otherwise, it may cause the
+> use-after-free issue. The sequence is like this:
 > 
-> Hi David,
+> CPU0                                        CPU1
+> __folio_copy_owner():                       MEM_OFFLINE:
+> page_ext = page_ext_get(&old->page);
+> old_page_owner = ...
+> page_ext_put(page_ext);
 > 
+> page_ext = page_ext_get(&newfolio->page);
+> new_page_owner = ...
+> page_ext_put(page_ext);
+>                                              __invalidate_page_ext(pfn);
+>                                              synchronize_rcu();
+>                                              __free_page_ext(pfn);
+> old_page_owner->pid
+> new_page_owner->order   ---> access to freed area
+> 
+> Fixes: 3a812bed3d32a ("mm: page_owner: use new iteration API")
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
+>   mm/page_owner.c | 21 +++++++++++----------
+>   1 file changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index b6a394a130ec..5d6860e54be7 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -375,24 +375,25 @@ void __split_page_owner(struct page *page, int old_order, int new_order)
+>   void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+>   {
+>   	struct page_ext *page_ext;
+> +	struct page_ext *old_page_ext, *new_page_ext;
+>   	struct page_ext_iter iter;
+>   	struct page_owner *old_page_owner;
+>   	struct page_owner *new_page_owner;
+>   	depot_stack_handle_t migrate_handle;
+>   
+> -	page_ext = page_ext_get(&old->page);
+> -	if (unlikely(!page_ext))
+> +	old_page_ext = page_ext_get(&old->page);
+> +	if (unlikely(!old_page_ext))
+>   		return;
+>   
+> -	old_page_owner = get_page_owner(page_ext);
+> -	page_ext_put(page_ext);
+> +	old_page_owner = get_page_owner(old_page_ext);
+>   
+> -	page_ext = page_ext_get(&newfolio->page);
+> -	if (unlikely(!page_ext))
+> +	new_page_ext = page_ext_get(&newfolio->page);
+> +	if (unlikely(!new_page_ext)) {
+> +		page_ext_put(old_page_ext);
+>   		return;
+> +	}
+>   
+> -	new_page_owner = get_page_owner(page_ext);
+> -	page_ext_put(page_ext);
+> +	new_page_owner = get_page_owner(new_page_ext);
+>   
+>   	migrate_handle = new_page_owner->handle;
+>   	__update_page_owner_handle(&newfolio->page, old_page_owner->handle,
+> @@ -414,12 +415,12 @@ void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+>   	 * for the new one and the old folio otherwise there will be an imbalance
+>   	 * when subtracting those pages from the stack.
+>   	 */
+> -	rcu_read_lock();
+>   	for_each_page_ext(&old->page, 1 << new_page_owner->order, page_ext, iter) {
+>   		old_page_owner = get_page_owner(page_ext);
+>   		old_page_owner->handle = migrate_handle;
+>   	}
+> -	rcu_read_unlock();
+> +	page_ext_put(new_page_ext);
+> +	page_ext_put(old_page_ext);
+>   }
 
-Hi! :)
+How are you possibly able to call into __split_page_owner() while 
+concurrently we are already finished with offlining the memory (-> all 
+memory freed and isolated in the buddy) and triggering the notifier?
 
-> I hope you're doing well. I must admit I have limited knowledge of Willy's work, and I was wondering if you might be kind enough to share any publicly available links where I could learn more about the future direction of this project. I would be truly grateful for your guidance.
-> Thank you very much in advance.
-
-There is some information to be had at [1], but more at [2]. Take a look 
-at [2] in "After those projects are complete - Then we can shrink struct 
-page to 32 bytes:"
-
-In essence, all pages (belonging to a memdesc) will have a "memdesc" 
-pointer (that replaces the compound_head pointer).
-
-"Then we make page->compound_head point to the dynamically allocated 
-memdesc rather than the first page. Then we can transition to the above 
-layout. "
-
-The "memdesc" could be a pointer to a "struct folio" that is allocated 
-from the slab.
-
-So in the new memdesc world, all pages part of a folio will point at the 
-allocated "struct folio", not the head page where "struct folio" 
-currently overlays "struct page".
-
-That would mean that the proposal in this patch set will have to be 
-reverted again.
-
-
-At LPC, Willy said that he wants to have something out there in the 
-first half of 2026.
-
-[1] https://kernelnewbies.org/MatthewWilcox/Memdescs
-[2] https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+Doesn't make sense, no?
 
 -- 
 Cheers
