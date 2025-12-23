@@ -4,128 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E685EE6FE26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 23:43:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6983E748FC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 23:47:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F58C6B0005; Tue, 23 Dec 2025 18:43:40 -0500 (EST)
+	id 2DD8E6B0005; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A2D96B0089; Tue, 23 Dec 2025 18:43:40 -0500 (EST)
+	id 28AB46B0088; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 284D46B008A; Tue, 23 Dec 2025 18:43:40 -0500 (EST)
+	id 16B9C6B008A; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 16E506B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:43:40 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9CBE138735
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:43:39 +0000 (UTC)
-X-FDA: 84252365358.07.AE9109C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 727B2C000B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:43:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02EA26B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99229138835
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:47:13 +0000 (UTC)
+X-FDA: 84252374346.25.C9B1BF4
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2D6DAC000C
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:47:10 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fsT8X6bp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vTjmXsHP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fsT8X6bp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vTjmXsHP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766533417; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYtqOZKa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N1ertnlG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxeFE5Ou;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sXBvebV3;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766533631; a=rsa-sha256;
 	cv=none;
-	b=WrGjcpXRSnZhoBL02Fjx6kdUNv/Kf6RUzyGktgqM0sR5pgXJQccPEPbT/vehUHu96d0cit
-	9ApCypYhUjM6sfw+QLCV9MkDdbfdFbbN6odbecEdIE9wj16sv4gfxpaJ5ygkux2ImwToFo
-	DCnkxBEwXmTpoHcXwd80RuDGg3Z0JwI=
+	b=0ovrg9MjOveVR29ahK0cedlh3QPsBilJxJHE5IQi1Jfq9nFwS55K6q8PSRvEZf8jA1jTa7
+	G3iA4TI2NlflUKxITJ0G6fwYAF0ngHfIutyGE9iMaaRoHF4nq1O5QENzAQlWOMBA8r5Dec
+	Y9kIOWz9NE4AFssm6qNy8DYuRz6frek=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fsT8X6bp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vTjmXsHP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fsT8X6bp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vTjmXsHP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYtqOZKa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N1ertnlG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxeFE5Ou;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sXBvebV3;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766533417;
+	s=arc-20220608; t=1766533631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jF5owSlvt6znPGAqMwnTm3qXilUL+Wl/Z+u2/aluLhA=;
-	b=MG+92WgkK8lGYn7cqTp8QsYnPuAjx3japNwrIomQNIbf+91EbzDDHP1ftSl5BSZUAnSWoV
-	CKHZdCv1Ij4bXTOwhEzfDd4kI/N5T2O6urkIcsukAeAYW35ZwIUJ7k3dL85A+/bEqqYRv3
-	t3mubnY83Qlv3UWDV0NIgHzVshRG7Qk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
+	b=NyrPtPi2bmaes/zhM9BZPxlrglj9Gt2sU6TRXB1RbuLQdhdHyTAeuXbJCT7IynGgwCqIId
+	rH6c/1DDap3EiNZpSdMclFRavVOD1JRWED5LZqrZqGXZlO8Y9sf8I/c3LRNSysDErxlS+a
+	uZY+zsUPNenWAO+sv69E/xCBzlCLclQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 984105BCC7;
-	Tue, 23 Dec 2025 23:43:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1766533415; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B373433A03;
+	Tue, 23 Dec 2025 23:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766533628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jF5owSlvt6znPGAqMwnTm3qXilUL+Wl/Z+u2/aluLhA=;
-	b=fsT8X6bpzzppOtMJIHh2e70alJNzdiYL2RSvgyd7kFEZ/VlLYMNsiTxSPrk3R8Oj3ekQd9
-	+2tYTrJH91OtLklDA8YynzBa6omufZ+Qn71gzq+Umy/vIVZVdiI3LQUfNGx7M2O8esDBxf
-	xNPGtbNxGTLZcjphcKIq4GvjNAkFNn4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1766533415;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
+	b=uYtqOZKasgcah56E6+C//qsZhCKY+K3Ge43W8e/6BNLAW8FGdrPqEMsCCt3J9CPzXNHioN
+	LBFeTXXe+NNkcWjticADKem/CJItlboeZIQuOQlp1QSUJvmn2UfCvkGyeoxsf0P5zoxqFU
+	JSs80ziPkNdinUtSmC5SnGvDX2WkP8o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766533628;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jF5owSlvt6znPGAqMwnTm3qXilUL+Wl/Z+u2/aluLhA=;
-	b=vTjmXsHPLgKwNTqUGcYnbHnGvlPLd8CzINPDRBSOFeH6Y8O7+cSzqK8l+uIO8phH+mXHtZ
-	C5ZscZAvnuM0H1Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1766533415; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
+	b=N1ertnlGiXSHQr3YfgV4qNBuiVCLwTd5VJ1NqS+hnDdV/twxcZIgJD6H1ppMLxG88H/sm4
+	2KYuVQ63lH7yEGBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766533627; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jF5owSlvt6znPGAqMwnTm3qXilUL+Wl/Z+u2/aluLhA=;
-	b=fsT8X6bpzzppOtMJIHh2e70alJNzdiYL2RSvgyd7kFEZ/VlLYMNsiTxSPrk3R8Oj3ekQd9
-	+2tYTrJH91OtLklDA8YynzBa6omufZ+Qn71gzq+Umy/vIVZVdiI3LQUfNGx7M2O8esDBxf
-	xNPGtbNxGTLZcjphcKIq4GvjNAkFNn4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1766533415;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
+	b=PxeFE5OuRDwy+Npu5QirNKJGNjUxM0hTbmcddEKNMQXV6Qw3b+F5ah81sbB4ZMbn0t9LRj
+	E+I1aY8SvWvttcOpoe/a5v4Zk743TJMgBxxL+U0fdY31DnXM9xeJ0i4zRUrn8kI3ZIt4Ma
+	JXzMCDu29ff/VCrI4n1g5n/1SvoKr9s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766533627;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jF5owSlvt6znPGAqMwnTm3qXilUL+Wl/Z+u2/aluLhA=;
-	b=vTjmXsHPLgKwNTqUGcYnbHnGvlPLd8CzINPDRBSOFeH6Y8O7+cSzqK8l+uIO8phH+mXHtZ
-	C5ZscZAvnuM0H1Dg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
+	b=sXBvebV3b3nN7kCSJuMlhNC/NDIOjicTapz+0z+fEFFc9/30Fk+nPBW4RqPP8BWFhWXOtT
+	dLZ+Ax24OC2/7GBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC20C13A54;
-	Tue, 23 Dec 2025 23:43:34 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0EB513A54;
+	Tue, 23 Dec 2025 23:47:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id b4p4JSYpS2lBXQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 23 Dec 2025 23:43:34 +0000
-Date: Tue, 23 Dec 2025 23:43:32 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Barry Song <21cnbao@gmail.com>
-Cc: syzbot <syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, akpm@linux-foundation.org, 
-	bhe@redhat.com, chrisl@kernel.org, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] KMSAN: uninit-value in swap_writeout
-Message-ID: <7ng6tntadu62ls32r54aetyevgbghta4oufyzxtq5ym6bprjai@hc2ozb2mbcyb>
-References: <6949370f.050a0220.1b4e0c.0038.GAE@google.com>
- <CAGsJ_4w3FQXS4YvRjfjRQrzjjVT3Z7WtvQLJdy76k-yBZ2es6A@mail.gmail.com>
+	id EXz0JvspS2kUXgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 23 Dec 2025 23:47:07 +0000
+Message-ID: <0b5f2c87-c180-4ada-9d37-f2e3d0071d9f@suse.cz>
+Date: Wed, 24 Dec 2025 00:47:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4w3FQXS4YvRjfjRQrzjjVT3Z7WtvQLJdy76k-yBZ2es6A@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mempool.c: set @elems slots to NULL once freed
+To: klourencodev@gmail.com, linux-mm@kvack.org,
+ Christoph Hellwig <hch@infradead.org>
+Cc: akpm@linux-foundation.org
+References: <20251223231054.16061-1-klourencodev@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251223231054.16061-1-klourencodev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 727B2C000B
-X-Stat-Signature: sf9wt8hnt33mrhwp676n4gh1ndtgt96h
+X-Rspamd-Queue-Id: 2D6DAC000C
+X-Stat-Signature: jxs69pgbe1fs4quk54x1qhdksirzt88a
 X-Rspam-User: 
-X-HE-Tag: 1766533417-275484
-X-HE-Meta: U2FsdGVkX1/ct8LO4UEO9AgXX81gzDoOHfFGlZL7aL2UAofMItcEUYLJQ5IJjgaByHQ2XaeRkiBrE2d6R0RG+7Jb9rg0bvY6YM41gikkVeri1LRlyf9vPKA7gF6LjvJNs4lh/EI4xezvyXkob9vzVx2BKJP8Fm625QyRauX5rDhiMIfozs8EBZVn+Vx3X7Wilhj22wO+RGFRbCIPTxnfUzOJKFbgogY51k1heW7mae75QxslAZ0fq45xj0Z7WogG28KziBQCJmO0RG+NDDHxluzd/wemeVcF4SjzgzTyPtPbdEE1JICv5pb5nwGuhlDPco9LBkelS/zGVz1E1uzBytOb0XgKeLQmTkOA0xQ5k2JDxmh98QYNguHuREreS8ZavdTxX+7JrjCIcQSdsNGOqm2gM4I3gKgenm7tErnmsa7d37lJvBfV/CUmRkV/GfD/M3MNOEebUYHyONkpffB2cW+c94ZRb82ewQWPb61Lq/ndSW6Z0V1pnrpZlYWxT6+sp6Hxgx7+giLpa6DVOA0P5YaCTXR61guDOVomdhiXmQCD1mkTu9ydbZW2KCqFYjeXPsyAw8qIvMow9Y6Aoj/7zsVOuO5+lxll/SjJW1ZjjCsEQsDH5DKEHlvZm3zDgGLhB2WhpphhukU9a/QnILAAVCB4SiTG63qKCd+/dyZAiuJA5Sg3f2PaJEg5kmeoQfokI8Iw2C98pBTHW24otLzSUvB+1fTvUxteNSSoau0yNa915IQ3QAPAIy7lWOfkeF+Ra+K4wiBJcRrRO0QNGCgun5mryl9lyyC6TAOfFbdZM3ldl7/sY8nywGzioeuADSPzjJ2CYBSQEPpIWUMh1S/99JprjNyNW7gLHgTl3AAgFfUb6I/ZXcES7P2+S831JX8QenwSKPDu8tC+xIDmUVKhv+4SYIW6UCUapKkBZrHweqGngqoRik6Mhz3FHQ/xxT+esU6U0bDoZMPCqzKuEFL
- TldXj0vh
- 7YBxtOr7KOsJEX+gsch+JvRBiw8rcdjcYuaG3aoiMNgMrVb/OrZkKyQXPVc/e+mzXfeYu0RQNam8UfXE6UV1J5sqMVChHjtkSnj3bYz1m4+7+3t4pMqQSlGKWIyYFT51Em45Yl4karXFQQvW4JkHlIssvVoOyGME5QjFNzYbqj3fFubPN0dVlH0iqDAXB3wBDBXP0hvf3JCrDOWl/wbXXCUeITQFbs+KabZSmmg0KtvOxmQoE4rUTkt6QlS2jhQsFRuW8Iwk5aSt6hMkZuIIIdIOOcZnqhcieVs28GilNoefWyvvJxKx2EgHQGGG0UHkRKgBt1PZonsp9GIcT7hUNFvtF8GOxNh4FCL1JccUe4HqYDMS4p994ZMnC6Fs8CAQ3or5pA1hccDVLPyFxv91rzc88uJxyECx3bLdwF2O+1y0cgT6pBql8o7pcaOJjWxfE0yFzdWK5X3mWuzi0qOzOc1ING+m5q85HqBWRYcHpNw49hXY=
+X-HE-Tag: 1766533630-189862
+X-HE-Meta: U2FsdGVkX1+1cFSXeMoS4GWwwtyXmK9y1t51fDoBYoatzWv5KgtQDanC4cE15Bgn5qWxUmJMfYO5aFGgsvM1uM0LtcHnkmvnC2nF5uU/JYg78PLYLLrbuerMra1/yQAvyV8XjASjXXNvaGr7Kdt1YuvySLZCQrJvQy4VTXrI1d+H2g6ziY/eoH+YyzdTpvGFseMsqSLrdPpCA4wK9cved9BoagCNVXfBPIshIHfnvIRcUxMXkwdNjDA/8Dq7BXokOEHX2/csTtzrYmUIOOonbGR06zwxbAWeD+wk4wrsX3YH5bKNH55kkbNWRW59SBD2M0eoVqte+ZqPOem/QUVx+P4yb2VR6+OjhpWeApr6kXSAO37QmBwjDjdtC5Nd0fxjKiKbN1KoWJbh3cAMyfUBZ+ryLvnx5UXaRDFIY1bMsK8w8C2wuktxdf7HDkQ0a5t4rRpjKDzpl7k1QO+kLVxDEeDFxPjnUzYNdhG0qUOjfD3tZUOMQYWANvTycuLD3Ua+K5STgS3gUsriku5xdNGq3/dfPJlKLND/Hh2Twuz92PXtxUvR2jDbWIeydTUJDi/NiRueiDJV+t1SkI0lja1qj2J3gEIkzAldesWjiT2dCc9VMPFS7UkSRhK4R+kwedyvM8SrKPMOJWgaiF/LP6D+kJQZDx+dJpA+dcjbbcoA9/14HdA4Tdukq3RogrXY2SCCmXSt7uFYsUsEmhWq8E6A5mqbnGtnSwXBK3GFG6GCKNf9qy7iV4GkWxLRmYsPVpeQFp15GXgZKl43CmXkSSAuLjOsbfrnzD6pihrO7w2A4TrtcFsAn0EnhxLv6qT83lm+LXaYZo9Dwx8l05ZM2au5T+Mrl7SDRtVByaZ1Q3TPycL3eqxNG52YfCakLzKgtXwLWmQtp77f1rmugbyBykWrgFfLaA3vK+wb5azy8xGyq0gh1CsOYzjUTtRl/e/+2ZDXnXOLGu7OrqLNj/RK2AO
+ udleBjYd
+ m2VjJ+IipkK6desDRNmh6j4SbFjf43t+mpdYgUPmFWsy4HrkhMaedTU0+USGdMMvxAWQE3sdODcDmnOJm2InN3aNFAJgZCW7vjCPA4+g3fYZPvfhMGYZNfPwDYLZHJxF3e8+kQPmuqkZcgu6unBacQGeRJsiFYKjHh6UTiFBFeKJaB/ospOwIwPnxO0ZPGfSlZsy9AhjGg8vwkXl/9aonP8SiV/Gze41PGOIW0mNUE+kH20tI9vSBTja/zJnt+8ZJjCTgF0eMtCJmgUhWKoFPBrwPsxcHpkKCbyVItOUlo//J2Kc8+yGI0AFaag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,32 +177,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 11:46:44AM +1300, Barry Song wrote:
-> >
-> > Uninit was created at:
-> >  __alloc_frozen_pages_noprof+0x421/0xab0 mm/page_alloc.c:5233
-> >  alloc_pages_mpol+0x328/0x860 mm/mempolicy.c:2486
-> >  folio_alloc_mpol_noprof+0x56/0x1d0 mm/mempolicy.c:2505
-> >  shmem_alloc_folio mm/shmem.c:1890 [inline]
-> >  shmem_alloc_and_add_folio+0xc56/0x1bd0 mm/shmem.c:1932
-> >  shmem_get_folio_gfp+0xad3/0x1fc0 mm/shmem.c:2556
-> >  shmem_get_folio mm/shmem.c:2662 [inline]
-> >  shmem_symlink+0x562/0xad0 mm/shmem.c:4129
-> >  vfs_symlink+0x42f/0x4c0 fs/namei.c:5514
-> >  do_symlinkat+0x2ae/0xbb0 fs/namei.c:5541
-> 
-> +Hugh and Baolin.
-> 
-> This happens in the shmem symlink path, where newly allocated
-> folios are not cleared for some reason. As a result,
-> is_folio_zero_filled() ends up reading uninitialized data.
-> 
++Cc Christoph
 
-I'm not Hugh nor Baolin, but I would guess that letting
-is_folio_zero_filled() skip/disable KMSAN would also work. Since all we want
-is to skip writeout if the folio is zero, whether it is incidentally zero, or not,
-does not really matter, I think.
+On 12/24/25 00:10, klourencodev@gmail.com wrote:
+> From: Kevin Lourenco <klourencodev@gmail.com>
+> 
+> This is documented in the function comment as "...and sets their
+> slots in @elems to NULL.", but it was not followed.
+> 
+> We need to follow the NULL assignment, because elements newly returned
+> to the pool must not be touched under any circumstances by the user.
+> 
+> Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
+> ---
+>  mm/mempool.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index c290e5261b47..1a2060304fd4 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -674,7 +674,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
+>  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		while (pool->curr_nr < pool->min_nr && freed < count) {
+> -			add_element(pool, elems[freed++]);
+> +			add_element(pool, elems[freed]);
+> +			elems[freed++] = NULL;
+>  			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+> @@ -683,7 +684,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
+>  		/* Handle the min_nr = 0 edge case: */
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		if (likely(pool->curr_nr == 0)) {
+> -			add_element(pool, elems[freed++]);
+> +			add_element(pool, elems[freed]);
+> +			elems[freed++] = NULL;
+>  			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
 
--- 
-Pedro
 
