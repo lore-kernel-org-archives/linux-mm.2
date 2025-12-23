@@ -4,83 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C5AE6F086
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 19:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A22E6F086
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 19:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 649CC6B0095; Tue, 23 Dec 2025 14:46:32 -0500 (EST)
+	id DC9E66B0098; Tue, 23 Dec 2025 14:58:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CD186B0096; Tue, 23 Dec 2025 14:46:32 -0500 (EST)
+	id DA1976B0099; Tue, 23 Dec 2025 14:58:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D9986B0098; Tue, 23 Dec 2025 14:46:32 -0500 (EST)
+	id CA9966B009B; Tue, 23 Dec 2025 14:58:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ED1E6B0095
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:46:32 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E76F8B97FE
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 19:46:31 +0000 (UTC)
-X-FDA: 84251767782.10.89E83C3
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1AB74000A
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 19:46:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eU9K0RjU;
-	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id ADE5C6B0098
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 14:58:08 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 605B558FE6
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 19:58:08 +0000 (UTC)
+X-FDA: 84251797056.27.413E95F
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 76CB416000C
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 19:58:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="F/rehiH6";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766519886; a=rsa-sha256;
+	cv=none;
+	b=zfMzEh1xx4V0OpJVEZdgKTZ1tyYfuQK44iWErgN5Kj69P/8bHTrK0ArjsmdH27e8RwXUfB
+	QaBRC6bMow/nR1jGgZmLeaFjhb4YU5x7F1RVH5/qb6hDAkMKXuP2jG2IMlEvpCsVSw74Ua
+	PxNYkI586i83Z3Cw5ERWqU8s8Z46Dys=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="F/rehiH6";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766519190;
+	s=arc-20220608; t=1766519886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6vzEZcO5hVRV8zIXh0SZ6K9qj2jT+ZzhCbLviEbk4mk=;
-	b=qGcWGZLpmIKwWwvTVA+yxx39rjc0JYosxjXXPf1tKBAgcMwC6e3GsNiNB/ho8wVAomEjtO
-	/H4tNve9Akh71Rb/4mhP0ACbH2eh0v5NXp4+5CMC2xi5SYc8sdIvNNZDhj3eHYOjKxXqg3
-	H9g6wd3rc/23tu3RCtpFw7cbVbiFJRc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eU9K0RjU;
-	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766519190; a=rsa-sha256;
-	cv=none;
-	b=N4IeLi5fTMjJYVV10iidUa+wWNc2TdcW9dA4tWk66XtEkft4NTcfBNnbGvYdDjxMRDNuvf
-	6lN57NSVznSM4fzG3aMUd2nxeqbLZkZNQZBKyG/AAEjMxqBPNwq4qldq5zCK5PoMIGcHRw
-	t6NwbxlOCN8HkJ9b8mMV4h2p7VhOC5s=
-Date: Tue, 23 Dec 2025 11:46:23 -0800
+	bh=ypZ04WzUZcjv8chBde4W5E+WNGEjNP6J/99avXKgkYQ=;
+	b=jdfcB+1jdTFk+yjeXu71DRNnTIRJ/WgcD+/E679LRRusSt3m6SKB8mpaW7AF0Av+y5ixFs
+	GOTOXHCOv69llPFYeBLdFMQB/81C8/0lQ1S8wAp1I8LfX2fZqZyDUbpGv3F40ljEemZ9qr
+	BZiHUDtVjSl2lavyEE6f8/9Ee4Bu6Wo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766519187;
+	t=1766519884;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6vzEZcO5hVRV8zIXh0SZ6K9qj2jT+ZzhCbLviEbk4mk=;
-	b=eU9K0RjU0zeKvccQ9oR5fEIkzhnG8y76apeoFH01jiVk905Jwv1zT6cFYhRE8YRkQBEbWA
-	V9pkhZQ00aBkVdRlwTyfU2uMoqHr68W30/+CIZ4hRWeI3kcX4BlCgNts+t1PN3/GNOSGU0
-	hxp7Me3b8nWtiUVNDnuP4BfYV+IhVPY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Michal Hocko <mhocko@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
+	bh=ypZ04WzUZcjv8chBde4W5E+WNGEjNP6J/99avXKgkYQ=;
+	b=F/rehiH61vSusu5N50yrYz2fWEYreVEnoYWl0HxPAq9CqRjLcZRmKlbE5W8REAHNOb2H3P
+	JZj/AH9T/SKZl7ECOLFegKmiz/e2XduXJkbr+IhEghYpt4nxLF51Bt7T4190/v1o83Vndq
+	pLf0wFHrtWKTJ1B7ZS8E+Rdi/mwQxCE=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,  bpf
+ <bpf@vger.kernel.org>,  linux-mm <linux-mm@kvack.org>,  LKML
+ <linux-kernel@vger.kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
+  Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Shakeel Butt <shakeel.butt@linux.dev>,  Michal
+ Hocko <mhocko@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>
 Subject: Re: [PATCH bpf-next v4 0/6] mm: bpf kfuncs to access memcg data
-Message-ID: <gy7vymh74pfh2oeo7ge3d27rkctbumunrkfcsqnhsl5jafs6yv@weu5dmztpvz4>
+In-Reply-To: <CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
+	(Alexei Starovoitov's message of "Tue, 23 Dec 2025 09:25:35 -1000")
 References: <20251223044156.208250-1-roman.gushchin@linux.dev>
+	<CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
+Date: Tue, 23 Dec 2025 11:57:53 -0800
+Message-ID: <875x9xt1ha.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223044156.208250-1-roman.gushchin@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 76CB416000C
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 876wfigg99s5tsfjefghpfghbqzrr48b
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E1AB74000A
-X-Stat-Signature: s88pdx6ake1n6ksjypb65qh3dr3hjybj
-X-HE-Tag: 1766519189-740479
-X-HE-Meta: U2FsdGVkX1/dSrNnp4S727eC+JTUQU0kjDC0zOvVJ91zy4gxNnQpGFhxkmCNZHA+lZkwQBfRt3/H5OZhpvYV+Uw3DyiiB0PC8IofDKXQKjRTYeCTmDNi+lQGcL3IF/3t/ZJXBYSxEUcpVoEjwbUDDh9ecACOSWavJzvDWFTIAFEMGFkLnjUUlAt8sJ6g9I22yzQ0f5IiWVU6E8ttWEUpcB6E8zi5XId+5jrxqV3BZIWxTmj1SS7AUx7vX9Hi2vzDA3yd9axxKZGa8huxYsvOlECLGj3Ceqlgu5sSnq4OQ31PYP9njsRJiW/wHvGF3hwCCNs5/VppZJ5qGDxUhaWWp5t1/8Bj9Z+HZQeiYufTy8UMKSb9hGtQ1ggoC/8uJYFl+FA3WuzfCasEepc1qiFaJ/wRnEtF0wIWJ1YQDmvJICxrp6qhBMF5Yy15yyFDUVYw0OC/cr/zzIE2ks2ssjo1HtvRrJjsKDvLzqyjC9qd7WZp8HAThI0tCLUVey4wtIJRa5e6CRM33AvsYNYJIF7y/t0ZGznL5iiwAhAGtcVRR0xFAyrppabfskGgrXyCkRMU/BS3jA7jg+aaOgqv9PHdZkHac235VENq1O2RXlPSW14BdwFaY0w8L/wh11dyyYrQQvKcUq5JwH55iFD5xJLW2ylxBX2zOePv8F6cXdkM7PTFytrnOe4kF42uqEt0kAfrMfmtkIuC2LwoG3E7m4n/LhiqD3VIw1eUaGR12DBElgNagte+tC76upuw3L9KARxOxjh3D6L0KtkjW9gxdXyjI8rTf7R6szXrLgaAHRLdbvT0uMvQHny0UgieQAYCRdAwN2Vbr5eoJeuSVmmTnKLr7v3X5r0G3f8EFOGbh6+wpMGPobcuVzdpx7ZdOeXCWuq/0wvaCwL81xwo5Dertj2nSli0OMfIb0GSrmN5pzgsLIHB7QOGxHI+OW2eDckRKpQP+D9lG4hc4YBQzwKRv6/
- F2cIREio
- y5p/cqSyGD5lb2X1vDac2SGCWhKYC9rHMQTV+cMMjyH1DjPPoIpSHRPKFz/oWceDVt+/0RzmlPl+dia1gx6TUYFU2qqIq6/PonJ4pWa1tw31WdmyQ4TerS9JkzI/Zd89ACGrcrhYyR9gYbDR0Xuc09IJCoUvyBFLqVORf0lRZFJdhJhYacv9qfzdkGGO2+ysc1QY9SiFXHFJ31rjg/zYDRhcYNxMN4iPmvqVqUATyJG08cGw=
+X-HE-Tag: 1766519886-205930
+X-HE-Meta: U2FsdGVkX1/UE8CBTsq/cfzZGLXuD292gmqDR6+0lwxfNur/skXra7ltyCFrSrgLeju9WfI+NYBISmG7mnKtrskSGB7bvg6/LHt0vrYb63pY/1vOImG3SPeGd4vMT/HSPBtXS6E4/1a4CxwLZcFoH5PebDL2djRiduKC7c9ykwDran1k2ar0mQHW9s6j4ZNoA6phVPqCtOgYqnTunbA3HQKMIYL744O4/rx3iFtoNy4eKXs6vJs/STFiI9zmPPH/CnyRFvRTquMsyuhMA6GD72C3jt4AlPRMWYFoEvr+8GGUF/MjAaEs+XIiMH47I/pX4nqezyhXLeCNtRgA5RuRkqLHJuvdY9ORIzAZScGdvdgqfDZThhSuPmy1khSdnEj36Wk+ARAGSCTHOFw1YfMZMijpl6H+6rr7AeXOXIx2cKHZK2p932AaXCoYFQy73GfvLMrSHW9lyo1HjUbQePQFl/2scLu1S+CUiXVnZskjcFMlZDr+hspsLYxHedV2+umhjthUkApgRwC3KVlGOHm+P3w8i0T2qd8nGFp/fYkMBnKDPZQKuSaKCZHESPFFGkwjLkdi/JyAu4KErG8vsqayLXdB2KruFphtQXFH5jg74fiw8472oormuJ3utCdPSeVeEQn1+J4x+/v5j27P+Sv2qZh3b9skcMR1CMgh+jQ8QMB/DWRVsdUeY60Xlq9B9WDGZ5LccNFxP1+2VdARDS4p/aNDYWgd8edg2BAjcWWaVnlbxloBNij3o6GJNIr/jnUrmAeiBgldzowoCu6qbox24muqgNUM7fZWgzlXoGP8APrFrP16lAuRfyXIZ9rD/5cCP0XH7TxsJEAGvT1DPCyIDXlpkLvCaxuKbXuFtuknjYWnUDusaL05uaYfcpaD9brtnuVjODpkxjQ7Gs+gh5aQYdFDzaU9jlF66slN21vJf3FkwoiQbeII3lqTgBEMQRMAUQVV5T9yPBg0TrE4Q5S
+ dLbMEwjS
+ h0NkrjI0JQ2oAOQg6us/Za0DID2VlC8EAg2w1Gem42Gkrf7PRc7TNFmMnvvYugGn4mPgtgKVZoYI+X9aie/rHwvAM+sWoytY/FPL+x2NGWj5xrDzR5whgk3KPyBrYjg64w8EMx/k3IghFzkqAp2myx0IgVR8toOJz/CyVUE2SZTFyZIeU1FtZpymy+5FGV5hbgFOtiQDa/Ao8E/C3g8Fxfyjo6CSD+ObP8TxJdvJqVY3pvgaXIRPEr6DhxIgLtJxFPhjpgBViz166UipfFS2wDOAjLAGvjLmius32PTmXyrKPJAtWGJ/Db9Z/75vmXxs+5mYf6SEGIolScWI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,16 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 08:41:50PM -0800, Roman Gushchin wrote:
-> Introduce kfuncs to simplify the access to the memcg data.
-> These kfuncs can be used to accelerate monitoring use cases and
-> for implementing custom OOM policies once BPF OOM is landed.
-> 
-> This patchset was separated out from the BPF OOM patchset to simplify
-> the logistics and accelerate the landing of the part which is useful
-> by itself. No functional changes since BPF OOM v2.
+Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
 
-For the series:
+> On Mon, Dec 22, 2025 at 6:42=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
+nux.dev> wrote:
+>>
+>> Introduce kfuncs to simplify the access to the memcg data.
+>> These kfuncs can be used to accelerate monitoring use cases and
+>> for implementing custom OOM policies once BPF OOM is landed.
+>>
+>> This patchset was separated out from the BPF OOM patchset to simplify
+>> the logistics and accelerate the landing of the part which is useful
+>> by itself. No functional changes since BPF OOM v2.
+>>
+>> v4:
+>>   - refactored memcg vm event and stat item idx checks (by Alexei)
+>
+> Applied yesterday.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Thank you!
+
+> pw-bot seems to be completely broken. No notifications for the last few d=
+ays.
+
+Yep, also there were some infra issues in the ci output... Something
+about git being unavailable.
 
