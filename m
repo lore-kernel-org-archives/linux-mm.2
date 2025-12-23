@@ -4,114 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FB02E6B26B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27D2E6B26E
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 02:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5FA76B0088; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
+	id 1C5816B0088; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE31F6B0089; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
+	id 1A6F36B0089; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EF8B6B008A; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
+	id 0D4696B008A; Mon, 22 Dec 2025 21:31:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FFF76B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:11:34 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41B65140464
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:11:34 +0000 (UTC)
-X-FDA: 84249109308.04.1ECBC8D
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 539BB40005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:11:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Le/J8Wcs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766455892; a=rsa-sha256;
-	cv=none;
-	b=ENdilYpDkZPWLiCw8Vg51ldPrwdBpUgLL7n4utRBznAwXcoyg8lBswFFDuMrhvHp6fZBeV
-	fAgK1eFUBJHXHWTyb33Lk0nQ8a5V0njb3rH1gdt3HHmD7awiRoNMmmO/IfEgerndkjxUe4
-	6xNp/Awe4lrQKposPXKX1TcliSFN8Qk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Le/J8Wcs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EED766B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 21:30:59 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F9C3137CBF
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:30:59 +0000 (UTC)
+X-FDA: 84249158238.29.2DA6D3A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DC473C0007
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 02:30:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1QL8f41R;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766455892;
+	s=arc-20220608; t=1766457058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
-	b=xrFsQK7Gs0PLxKWH29dCqz7X23i1sCsI4J1lfFfeQWz07b4tTMphpY1mZmEPTm1TYYYbgh
-	5xF/qau/SSu2VLyCmiRKHwc/WPSynzy0z2ZEoOadYEnOUbLq1kkjlRM7UDbeCBae3vaXL+
-	+Fjc+9OKhtesqmHNi6QMEYLAkuqDS34=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fed090e5fso2127796f8f.1
-        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 18:11:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766455891; x=1767060691; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
-        b=Le/J8Wcsz8oE6I7sYplqLIrhwPA5z0++Wmt/R4PdSj8D9Zk5EmipNIatzX0ekpu2P6
-         I89deBNAkRoGJ8Kujk3z0OKy1tMiUIAuzqbFoR7tnr4A5wx7vsZLyRDIAI9JjOfjWew9
-         V/L6OWVKHOheDcUedcKr8QqOKh8ho2M4UUH0gOAZymLgg2wqy/4k/FPaDpkDl/9rG2re
-         YmWkNC9u4C71jFjGWXpa4BmJZiRMyceTC4qMcJcN/yC5L+brBOBW6FEarbWypjCQtfb8
-         vBXblenl+kZzbW4K3qS5Jl86xM38S2isCcdFOeHOoaJtGxnEHVc1PdJaHNBTgDyFmBJF
-         dC8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766455891; x=1767060691;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h6XfH/unjs2YY5vH7P9rUbisIadizeaMLvKYvXY7Qxc=;
-        b=gY9alROyl4W7862KJHEspPIOJRGjzbabWPzBH9M6Dy9MEcJbCLSh8DSTfJASIDvnLE
-         U67nfeziToqogMfhzmow32dEfwRnSESDurVO9FMycifV8I33MXHnK47b9XcK0tAdIRyb
-         EU5mZoJLs0Uvi8z/kHvvQXuqHh8fDLDlJGSiZ42SI7c6WcJnnEoY+q1GcGipFJ/XTQTl
-         sx+chZgA6SV251KlPIRv5I4k2cFvcff5tFz/jTzexW/0+bC/nplae/sqcP+IoGD3LTre
-         0fKM6tqphd2AOTlIKvABASKg6qRQ1OkE7rpq1WoV/E8nB+sj9LcHwExmTxNLE4VfbeKU
-         38Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrvRfMRl4cXNFhhKSgj3KWeQtI8kZ8oY8kKZZS5Zdgmij4S4r5bIIaTkBRWAE4cEbokXpociJEyw==@kvack.org
-X-Gm-Message-State: AOJu0YyF4Wz0sETGDAorNF54lmIX8NTMtiFOGLRlyfsSoEeDDRrQopIo
-	dwPgFPXVaCpwrbIUYIiV6lL2nvVWmR36duGQ3WfhI37cz/0tDdNErDQhQABX/QxkJeSVSyjFJyW
-	WPYyb2PqbAVwKgNxt4kiJAEm0sR5/zCg=
-X-Gm-Gg: AY/fxX7e6wFnrxqMiDhwCexjvlCvCUxvRukeNvjNBQmmAoRB4qgI7M1ya767oyH+w4s
-	RXdvf+TeU/w1SLtkhhHcfKkMiTjxW88iqC7ePLy+p+s1E5ojh/2Rat0CKreHp4yWGQ5YGUXb4X4
-	wMZeIGaQ7+6Hs/Wai/TS5zrJVUGILAEkfLblWL4rvXa6F/TK3SbAurxwSYjFXOg6LuQAt2MhfBw
-	Ty79le8aESMlVBuChLQ2bbke4oZ/Wtw1151739Ulnlo1H0MF4wgjDkL2S+ZRrFjO2VYoJmP
-X-Google-Smtp-Source: AGHT+IF8BfcA5cvU+pxFPwDxmKTdBV/w13ESm1DnzKFgnWkd7KrlYrVdHx+Jn0QifxMjszHNpoYKpr1/f0zvUzcoB7w=
-X-Received: by 2002:a5d:588c:0:b0:430:ff81:295d with SMTP id
- ffacd0b85a97d-4324e4f9350mr14068995f8f.41.1766455890563; Mon, 22 Dec 2025
- 18:11:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20251222221754.186191-1-roman.gushchin@linux.dev> <20251222221754.186191-5-roman.gushchin@linux.dev>
-In-Reply-To: <20251222221754.186191-5-roman.gushchin@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Mon, 22 Dec 2025 16:11:19 -1000
-X-Gm-Features: AQt7F2oG8qKh_LrIImutrfPDVfsQ-CzA11AhccPedSQPp8mFoIFiyOb3CeObrO4
-Message-ID: <CAADnVQJ_WLMRXYV5p4Lk2+nxdC01iAaKQhYecMjx4rXdBeXjNw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 4/6] mm: introduce BPF kfuncs to access memcg
- statistics and events
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 539BB40005
-X-Stat-Signature: woy8zxr1r3xudxijwfuoj9c9orr6ewjh
+	bh=1Mu9nbMnGhSASaY3bN8+eYi3nCdJ0EK5/7Jtn21L86E=;
+	b=sW8jWpG2/sYCEE25YZRjhVnXAHurFXZ+t3tDZ6NmKvCGhxfEAuFGTq9KE8GvYJ480rKgBv
+	5/A/2n75Rzgrw+gau6e38zxadUCXpQWNj8N48D9nvdYi9lK2qSLyPsCD7vD1QYhQFKn75q
+	Bt9jQe+42NzWEFcsYInXOew/FO+4iA0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766457058; a=rsa-sha256;
+	cv=none;
+	b=fWIUL5QvFnatOC8GHErjQLceZbEia5EbcmV9jkWoGIH8h1/bw5fkcCt1x7zK0kMbSTtT19
+	EKl7hKDBpEKAwfJhQNqZ7bD+D19wqJ+zZm4685jTWbERa4qDlUnf/UOgOAe4ywnkHCnlkY
+	//joJvYnToHn9gs5GOPBi6QPtesNDpI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1QL8f41R;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 72C3940711;
+	Tue, 23 Dec 2025 02:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23ABC4CEF1;
+	Tue, 23 Dec 2025 02:30:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766457056;
+	bh=EGu5F46cvREoMWotC8TtqKlUedKHHiCD44Ca991/ZQg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=1QL8f41Rcexjp5HR46WOg9kxNLNocZNvvEbYU/Auokx8zqa8xA3O5RiDLBnxGF9E4
+	 y/C4Lqpm2r02rxa6co5a+BWXUIOB+8WAgimhq2VUTMXekY8F7nwfHvPj/swOESZT8s
+	 NHNWrvdZfY2vDa1FW8ZegBx08PWoBohUIHQY3dNI=
+Date: Mon, 22 Dec 2025 18:30:55 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, "Ritesh Harjani (IBM)"
+ <ritesh.list@gmail.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Borislav
+ Petkov <bp@alien8.de>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik
+ <gor@linux.ibm.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Sasha Levin
+ <sashal@kernel.org>
+Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
+ are unsupported
+Message-Id: <20251222183055.88c3cc1f0705c1dc29c7f011@linux-foundation.org>
+In-Reply-To: <20251223013045.4579-1-sj@kernel.org>
+References: <20251221104907.032abf56c67f3e50c9c94e31@linux-foundation.org>
+	<20251223013045.4579-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 77dnftg581461zckbgm3bmexo36a5bro
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DC473C0007
 X-Rspam-User: 
-X-HE-Tag: 1766455892-914414
-X-HE-Meta: U2FsdGVkX1/WMD4fThebqj7nqziPmCod7ZZiFOuDXnTZRPp2E1sXzJQv4aokvIs8+FnwTjAIN0PQf+npdyiVW862mPLqwnC+nDt8xveV7SFehLeZ9WVAjnNHcwSMduVEQpuRZ5Jf5Hs+IakWbojAfWqWOf8+C4cmfigbjXlVUsNBSKG7yQhrzuOgjggVUKyI0x9bj+uUV8C+HrZBo1u1scm/NFJ5beOrfq2fEbPRUn+CSm/1vGE40i4yyDodqDoWWMsnoKIGAlUCM+k6wNZQQy6rWLH+Avln6FT/Oozx9g5rHFVFJmn9afr+kcID/0ZwbcK/ealePf//qlWin46dStn5E45EGdHiEANi5dk4VH0z4Q/FC1ayDfi6FNgb6fA8EN4QxG3Sc0UWflLcOijtmrvm20sxkQJAJy/lEMc61Av2N1+TgazchYo7Vr8/aaZk7r+syUIkj7Igrovyq4T8CpFsjSVtpt+2Tiq1NijwvGUfsupv9IdnVSb0AZDai+GKOEDnIm3OGOsocAR4ooG7xr3FXDCh1PDVi0zA/E3SOxwLiEB95CAgIu6FktZ857614uIkQR7dc/g2RFIGhEl5t71mkv7ulANmcjfxfyCh9jtPz3WpEmkWaZFbg7/QAVFTW9Ce9LIIDC5gtjJuhsGZ3vD+AlFOTFxegtmjC0ExMoqdG01bkz7IgoDGEtx9zbKXbPwj5cRHlf5bKu/rpW+N9qQttRRa0K3ovuRCyL9JKlWMj6HROmV0wa32nmwsJnByxDFC8Pqx0+AuAclCMEXg9Uv3jWcEsLZV/dV57PVAp17NSoNtjotvjDkSCYUwebZItXr/JoGP1tFE5UeCLZZa7aB+SSjgzo1XoGudZY5ctHGGyR8XzHvrBW6nkqs2Y/PhA9V+utTN6OoZNj34cD6qPMgRJAQMwFgwITGAr09p5+MBEZemK8nTjDPYM0C0FbVZvGtrfIvYHlc08fPiLz3
- t02fdtjl
- KiEbQHkgfY00aF52SddM9suySq5EdDX3kstBFQCxeuME00X9gGe6zBH7XG8QyUiHDLNUzgBGtJSHbIpMtTvT7giA/WeLvmXWUhOqVxwi51twd0maFcyLStGVtINSh4KoHjdRedMWsG539aawnu4suX8ydg+BL19IiolpZt1RpV/siYf4prTfDoWi/hHwmFbHEDr1NdPW6HOF6sljiOc7EkuRNq36iVeiFwntXTOeLBiy2lDKzFjaTmK3mEDhOi64gog96t3N+wsr7MyuwCRbplEiZWt1IqLnwBcuCSn4WrTQhDsLAWoQyKApVWHjMEca9sE/U83R7yISyR/AAFrZCU6T3x1Lz5LJ+g4JuBeV3utTAWkc8tAAZQOLNpBKGZIG0o8lUwBE8AqWTcnyIa5DpMC3YQFvS/4HAW5PY5oE7OObeXK4eGvZCqoSTYQ==
+X-HE-Tag: 1766457057-441451
+X-HE-Meta: U2FsdGVkX1+a3bJL/m3Hvx0gyRnV3hRrms/RGIT63mlClhJkMCpaD6UsSweXK96a8lCMoISYsSczBAMZCQmIx4F9M2R/Y1ipUanrScl5bSZ43irmMgTfcII27t1hkz2ZB1T+R8VUvnrDsjMX9wOgyZJ6BPNpR47v2kTGXCr+CTZzo2dXo1f23tK4CQrp52hMbjc74u+jECIMdwCv78GcVsWkNs/wJHcS9s50SAZ8hVnjSwEKEChXJBpopQNFkumvMSiiDx+ZZjwYyndTTvYbwOVr/IphfBNDf6ufhVfRvM/D+LlqDYUOF566iaNTJmccTc5+20eCN8snVzybG9AEzIuMkg1NzrTmCLFMZmwQ9ctj0X8rZmojM7ZFotLTMAEXqaHC25LjLww0krmF1Qy7CQ8sPmZKF5An4P7wUIJR0X/9VO8H489d9P3ZGvSEoGrcd3Ntl7UgBEa9VQk9Nmx6tzWPhzEwg6iYdTftb/3Uz3zhEkD/xbKDDnR432K1KQOYfaCSDo34681HlNXhouXsGbuggUnNo8AvThpmbtDIK8H7Py1Xc19WYRCgX8WLwLD2kVqS8bgqyVUutJTGZhfvJ4ADXyjC1Lc9WyBkAyVXq+TUemLU3Iiau8HyGaf5CHwaJerHzc+F+zwhAASUFE5V3KEm7N73xuwMMpWZ9h1T5iK8WheIeYHvQY1/cmiYwmhry1z0/hzuFIn5pHis3AJHZGcPsuRDLgtnmB3219zhLWcdztr/KAXrNCK5dhOrAjxFcuEtFq/+fOaroLOKLFxEntBqPeAUZZ3tld26OrgRU1HjJ2UTMRRYKqvLQ/Hg0eLzCniAQMTFJkwUUtvqZAdXp0uom+/eTbM0qoLHbuxgm5CaYLdhafcJLPFrebiAsNcFAYKz6fRPVJ+W4iDY30hWfUavQmLhV8iAUU2EnaHWpt+ruRmENHoodZB907ypHgO+ZJqMdSO1lDm80vFeBfA
+ ZCysfFLW
+ F3beTgzEhfND63unGr2BrVBQkaeoOYJ4jHA9R3xaSoO3JeSfbJloDvFYS9xbgFShdrBtkIVZOaxIFA7gBnm5E89oPy1PrRQOWZ1jBnZVq+UlfbOupn/qCsdCRq6bnW5woabheW4pVJkuH/nz5maIOcIUWeEeZUouHVId0vRnhTWOoFfOQk+5Ph0Spa8C4ZjDP8/K/M7ohvQRduBtfPP8N6uy9pUOu9I8EKOcBQyERlPYTGrQz4r49d1MifK1eYTOs4NBxIwYbWL9vB2HzJciIn9a9XhwyN5P0iiqbC6CbamqEt4R/26JbJPgjEOslSRmYBBO7vpKY4xtsbRKgBnvzabyeiBO3h23G6Wvc7x9ZyfzVjoLMuQUWJQit8l8Nzke2ZL5qbQQ7O54bJ9Bs8dQ+F6/dGA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,21 +101,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 12:18=E2=80=AFPM Roman Gushchin
-<roman.gushchin@linux.dev> wrote:
->
-> +       if (idx < 0 || idx >=3D MEMCG_NR_STAT || !memcg_stat_item_valid(i=
-dx))
-> +               return (unsigned long)-1;
+On Mon, 22 Dec 2025 17:30:44 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-memcg_stat_item_valid() and memcg_stat_item_valid()
-helpers introduced specifically to be used in these kfuncs,
-so I feel it's cleaner to do all idx checking within them
-instead of splitting the checks like this.
-Then it will be easier to see that
-memcg_stat_item_valid(idx) access is in bounds when idx < MEMCG_NR_STAT
+> On Sun, 21 Dec 2025 10:49:07 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > On Sun, 21 Dec 2025 10:22:44 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+> > 
+> > > > 
+> > > > My main concern was -
+> > > > A fixes tag means it might get auto backported to stable kernels too,
+> > > 
+> > > Not in the MM world -- IIRC. I think there is the agreement, that we 
+> > > decide what should go into stable and what not.
+> > > 
+> > > Andrew can correct me if my memory is wrong.
+> > 
+> > Yes, -stable maintainers have been asked to only backport patches where
+> > the MM developers asked for that, with cc:stable.  There may be
+> > slipups, but as far as I know this is working.
+> > 
+> > I don't actually know how they determine which patches need this
+> > special treatment.  Pathname?  Signed-off-by:akpm?
+> 
+> I guess it is pathname, based on ignore_list file [1] of stable-queue repo.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list#n16
+> 
 
-Also I'd do one check like (u32)idx >=3D MEMCG_NR_STAT
-and drop idx < 0 part. Compiler is probably smart enough to
-optimize this way itself, but I'd still do one check.
+Oh, that's a bit sad.
+
+- other trees sometimes mess with mm/ and they probably aren't aware
+  that they need an explicit cc:stable.
+
+- misses drivers/block/zram and probably various other things that
+  the MM team maintains.
+
+Oh well, I guess simple mm/* coverage is good enough.  But I do worry a
+little that useful fixes coming into mm/ via other trees without
+cc:stable will get missed.
+
 
