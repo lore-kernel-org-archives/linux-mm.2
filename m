@@ -4,87 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FCDCE6B261
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 00:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA07E6B26B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC5656B0005; Mon, 22 Dec 2025 19:50:45 -0500 (EST)
+	id D3B086B0088; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E72E86B0089; Mon, 22 Dec 2025 19:50:45 -0500 (EST)
+	id CC7DA6B0089; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F7E6B008A; Mon, 22 Dec 2025 19:50:45 -0500 (EST)
+	id BF4AB6B008A; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9C4F6B0005
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 19:50:45 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F6E0137B8B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:50:45 +0000 (UTC)
-X-FDA: 84248905650.16.EDB5284
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BA5A6120006
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 00:50:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kubvgjru;
-	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3776B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:00:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A6E1C08E4
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:00:59 +0000 (UTC)
+X-FDA: 84248931438.12.9CD29B7
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5370CC0004
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:00:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	spf=pass (imf22.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766451657; a=rsa-sha256;
+	cv=none;
+	b=XRgrfP5bzgMmYJ2w+4Ttoi6gFFMjWOlSbNC7cgeg7mEGESioKHVB2dLr/Sy7QhxYqJc392
+	YVHZ+jVJcQt2LB71/f56/SVTFX8BjtoGd1aEURqyrUGnTy5UMmPbkk4ItsCL9ax4KVbEWo
+	iLvG9BsBBV66tEMzdaQEmgdGP74/NDM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766451043;
+	s=arc-20220608; t=1766451657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q09zvtwJgJMdeiHixqAZ9rCDdFiSF8XUgOoFtRWwVDY=;
-	b=7HlKu7hBbRrr9Be/EkvAfXqjD9h0fGcBty7JBRLxDXT5lWlhYLRKRAismnpGTYOu+8F+zX
-	xL1bCuvtEpivvzN40+3nl5pw9CyIn/acuN9quNOThprXllh8XH0XO+/pI+C9Sx8JNRG9pd
-	okpNDAxujEwTParfHtjVqrPMgRsmKS8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kubvgjru;
-	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766451043; a=rsa-sha256;
-	cv=none;
-	b=xdfpYcxgqFtZCnK0Y2qNKSJe30ZSUFP1jjjycF3CI8Hun2DtubZaBLRmeESMuunrbUDxWA
-	1Ao5Mr3XM3B0hxVL+C8ez8ihRxgUtsLx5Ho803iOt5SovDdL0CwO9/je85vRrRvGIfiEML
-	vMONERufQs/YocCpBJqRnUhvoHWEi4M=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766451039; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=q09zvtwJgJMdeiHixqAZ9rCDdFiSF8XUgOoFtRWwVDY=;
-	b=kubvgjruNw54H8lJe0BJvlUnXfyVVbmzSD7mUDsm0xMppUIO/HmkROq5WU18hWkWH6xyDxVvFxzrEu3iRElcgphc76tFsEyT/7vDxV14iB1GWQHAhjMgDvE7KktK8S7w033u/Gm2Ld0IMfkHyyDSG9wmVCvbMuzG//0nLd1OUB8=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WvVhBAY_1766451037 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 23 Dec 2025 08:50:37 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: <akpm@linuxfoundation.org>,  <david@kernel.org>,  <ziy@nvidia.com>,
-  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <mgorman@suse.de>,  <linux-mm@kvack.org>,
-  <wangkefeng.wang@huawei.com>
-Subject: Re: [PATCH v2] mm/mempolicy: fix mpol_rebind_nodemask() for
- MPOL_F_NUMA_BALANCING
-In-Reply-To: <4cf67d5a-af50-44d4-8a2a-c7fc76b304ee@huawei.com> (Jinjiang Tu's
-	message of "Mon, 22 Dec 2025 22:25:44 +0800")
-References: <20251222030456.2246728-1-tujinjiang@huawei.com>
-	<87ecomalp7.fsf@DESKTOP-5N7EMDA>
-	<4cf67d5a-af50-44d4-8a2a-c7fc76b304ee@huawei.com>
-Date: Tue, 23 Dec 2025 08:50:36 +0800
-Message-ID: <877bue9g2r.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 in-reply-to:in-reply-to:references:references;
+	bh=fIOF/yeujThf0GlPbWdXphuM+F15C/kDhTZvUX3cLSQ=;
+	b=v1YYtvrrRBrYG9vf5dijbLzqxCXFXzJ1esUJ3qtzyhyiJYmdcyq+RUiyo2/VEHQ0vNRJgB
+	wRyUBZwOHX0jVDQsEXm0h75Sw1vQvly6hpIEQzAczgqNUE//A0RLQxHmERAa11LPpjiSse
+	1Q1Nhyn5EgKtE3LRqQiA6JlQjI5NY/g=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dZxWJ73d9zYQtfr
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:00:12 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 25FEF40576
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 09:00:49 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgBH9va_6Ulp6keYBA--.39397S2;
+	Tue, 23 Dec 2025 09:00:48 +0800 (CST)
+Message-ID: <135f565e-b660-4773-8f98-fcbef9772f42@huaweicloud.com>
+Date: Tue, 23 Dec 2025 09:00:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BA5A6120006
-X-Stat-Signature: dtm75yk8wohre58gnssw51ycp6h36a53
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next 3/5] mm/mglru: extend shrink_one for both lrugen and
+ non-lrugen
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ corbet@lwn.net, roman.gushchin@linux.dev, muchun.song@linux.dev,
+ zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
+ zhongjinji@honor.com
+References: <20251209012557.1949239-1-chenridong@huaweicloud.com>
+ <20251209012557.1949239-4-chenridong@huaweicloud.com>
+ <20251215211357.GF905277@cmpxchg.org>
+ <6c69c4d9-f154-4ad3-93c8-907fa4f98b27@huaweicloud.com>
+ <7kwk3bkvhvflsyxgljnxzvrxco2u2rxjcdwqooeboyrkf2oxjj@2nywxl2sc6g5>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <7kwk3bkvhvflsyxgljnxzvrxco2u2rxjcdwqooeboyrkf2oxjj@2nywxl2sc6g5>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgBH9va_6Ulp6keYBA--.39397S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3AF1DGw43Kry5KrW7tF1DJrb_yoW7trWrpa
+	9xJFyjyayrZrnIgr9aqF4jg3sIvw48Jr1IqryDWw1rCFnaqFyrKF17CrWUuFy8ZrWF9r17
+	Jry7Xw17W3yFvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-HE-Tag: 1766451042-134615
-X-HE-Meta: U2FsdGVkX18E9bEOFYBNX6fHJZYYsec4vDS79w89Te8vG0xZ2fiMqb8wHa7PAzNLJwYNJYD7suAQylShI79//D8NIRQxNZ8iySBrz7ntjwoMYpiMcjzc+yN8T2YuHbDvHHfjG8q2HZzVZhCgYDYan3rCfW7kbayw7xSp82O3Phx8bDfZRLPbSDPxJSn2nE9R8Eti81VUgmuOGImq63U3hZOUCeKmvFCvAml+BSQ+V3teRYHdKQ9yQOK5FEngE6+vRkuoVG72elAkCXfgmZfGWXCrDHFp1nV+c6J4bsmwexX1uPz3XUfE+iyFJEiHYsxw0yuNYg2D78iqx/VtgP1OlbssqYnJQHPGBpcTuYnkm5tCBr73YNJVrINscNRPv9o/zbS0UBYskUbkSDBEEOo/lCg1bqJ4PsqgjMzwfik99CqaXEKTd8lW4U0Jgm46hziwQjjHVeINCmFcHmPHO24wh4NYnhPuz9hJXF9gwDxf6ZJWiMzJ+w5jMW02U6pxWauZdkMdbZc9cJzUEFmwra4Xm7lVriF10GnVYeUbILq7Eu+NObWfInVJIR2HHoq4bpCwSvYBOKKzbhZrhTTyjfmwAkFJHQFp//8fkhBW0d0XUwozb7h930Lj1cx0Tg6Yawf2yDDx4DcpQUnXOguA2OfvzA6VOiMZpctQ1DFuvIIsYnvw6fdjUQUbZMXUo54HXvQTrovRY5YPO6LtjQeavIaXm9e329yEpE+o6qJSbbpC4o/K8l/XjZQqChC4n8oKsQT9trBq1/aJgTceCCTSsppvLqBF6DRQS+8/mewONcA+Xe2U98LgT0q1WM0wDYyAvaqP1WlHVmT6yJiUaSrcLlDRnBmtybB0m7fAcJbRW0YEz0jvLL/3eBwEfu1Q8eXlNuFlxNrBfUuK0YerDKeEnHpRw37d3d0Ghk5cO0FTk93SHLaGF5arQKs1JNHJvVTKr8JXWH+Xof52ByFHl5DuUC1
- 9WZSqrFQ
- giZI/uamjU4Q0uNzWQT7cGV+Wy7Her0MMHBysaX+6WTSaXEP0mobQYggS4f9xu8QEhTURUmO6jDh7JKp96nbCum0m4KjPtQX4N2fV2r8Pl0g6bwXhDovYfx/0wDzfskFdfd6+tUdCCLcJKgJ0iBfDs8jqDUThbhMiAbTIxMsQvAyk6ToAAug4GMn1w8acqOzbksevXz8shDH/VKtSqf9pr5TtZRBfp9SFBUQ/Weyzx8r53uBjJ26DDeqotfVw6XP9GdC+pHKzlU2sWBvY7nTceDDkFCBTaalFQPs7I0rJ/b4FRjsry03CoR1WU9iCTu57JVnHKeAb2MRL3QoOFEwg2Zv9PR45JoXdnslSyfZUQeVMxyMAYc/0AyjLb2naKKF2YNMTuh/gy5wqMRBKEeGL8uaJus6RB2BM1kAsqprQc1DXxVjA1OPXBeA4hgo1tIK3pKzrojENHyPqmKg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5370CC0004
+X-Stat-Signature: ba1uhy6kp3rsqb4qtoncc9tgdwg3enme
+X-HE-Tag: 1766451652-350013
+X-HE-Meta: U2FsdGVkX18Y3KxDTtSKcaD52yM7Xo7211V9A9Rb+2lyVX3j0TPPmppFD7Sy3Ih2T+gwuXdd6tiUCpAWDPaH0Zo+o9JumKYHkZHk/l5nLQieKEzFwpGf/P06VoEOE7NuRf3vbCqY2ZuAO8f38Up+BSEU2HzRNCmy708Kbc8AhITWcuT2Sunw29Rz38OJ40N7QiiiRYjgNoFHxycDI/AhqQ6GspSdv5nnpEx2I7Ps+Qvf2SibSB1OU1VtIh/DTTrTGC+iNQfeYI1MCynORLNTGarlVntVPw4ZqYSqboVcdpHQzMdX95BamMoQruVdXYtxq9jE5SeNbeePElbYWzRIPPJR0fRmrtiB9IoWdpefjBWZiIDA2EmIO3krNTcCUNfK6BmOy+vonIciUxcctilkX995WtMjw7h/EPX9hK+p+2jKir8h2GklTJC0R7fy+9bAJyIyq9F4FuAEAUb/wld05HqIs3aKkcpjRNIgA9dL6Q+0twY5ZiZ+z7g3MIh43Nk32Lb/oRLLpjd8TPwshUImyOnE1S4lVIC5FBTmc5jV93EdcZ+KN9LvJpXjCb+B1ivQONK1xdQuXD8N3ZKqp7ycOrXJ3LqvWPhOyU3VYuvkFuUbRy0Q/qYzCeYFojuF8HO6FnuK4Um5CPiRf3SwjdBCiClUK8OE+99ORQ5YQKgpDKmtXWGaQEkGGN7S6NStoIpFC/nghfBK5aeHz1yyTnRUXQ/4L+ncl46XmxavCqH41myXdtOTNOqNjHVQOZwHqQvjiO7oM1dRmdkId0yhXJoJ9zRO3H93vKunW4mxrkCayhtibRFaac30FcZrHsyY+/4iF106R7EqnF61boSlIDgZ6eG7fF5FIqp6FCRoL4K+5wzQubd+78V2N6qTOpjunOcLqdcvnE6bdIgZYZ0iBvUc+Sz61SmMGFDbMhYYt302W2BmYiNGxY4D/1BcDP7zgJRyqvvRBUzm5CUHLV31+Y1
+ b56xv5FB
+ vDI/WNOSSXH6hkJOeG2TSkAQAgnN0lFb992GHQdJ2Hzqoz16x84bf6z9nlxxJB6hC6iDON2TBmnBMghANmHCGpyiQ7HaQN2a/iGE/S+c7ln25am2prYe3H7trghF4kuma37nbBmiIQz55Pz/meGEYaI6KQlTIEfAmLWJfje9dcqq4w1+bgZJOdiRHYppNhpLEGE28
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,119 +115,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jinjiang Tu <tujinjiang@huawei.com> writes:
 
-> =E5=9C=A8 2025/12/22 17:51, Huang, Ying =E5=86=99=E9=81=93:
->> Hi, Jinjiang,
+
+On 2025/12/23 5:36, Shakeel Butt wrote:
+> On Tue, Dec 16, 2025 at 09:14:45AM +0800, Chen Ridong wrote:
 >>
->> Sorry, I found the patch description is still confusing for me.
 >>
->> Jinjiang Tu <tujinjiang@huawei.com> writes:
+>> On 2025/12/16 5:13, Johannes Weiner wrote:
+>>> On Tue, Dec 09, 2025 at 01:25:55AM +0000, Chen Ridong wrote:
+>>>> From: Chen Ridong <chenridong@huawei.com>
+>>>>
+>>>> Currently, flush_reclaim_state is placed differently between
+>>>> shrink_node_memcgs and shrink_many. shrink_many (only used for gen-LRU)
+>>>> calls it after each lruvec is shrunk, while shrink_node_memcgs calls it
+>>>> only after all lruvecs have been shrunk.
+>>>>
+>>>> This patch moves flush_reclaim_state into shrink_node_memcgs and calls it
+>>>> after each lruvec. This unifies the behavior and is reasonable because:
+>>>>
+>>>> 1. flush_reclaim_state adds current->reclaim_state->reclaimed to
+>>>>    sc->nr_reclaimed.
+>>>> 2. For non-MGLRU root reclaim, this can help stop the iteration earlier
+>>>>    when nr_to_reclaim is reached.
+>>>> 3. For non-root reclaim, the effect is negligible since flush_reclaim_state
+>>>>    does nothing in that case.
+>>>>
+>>>> After moving flush_reclaim_state into shrink_node_memcgs, shrink_one can be
+>>>> extended to support both lrugen and non-lrugen paths. It will call
+>>>> try_to_shrink_lruvec for lrugen root reclaim and shrink_lruvec otherwise.
+>>>>
+>>>> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+>>>> ---
+>>>>  mm/vmscan.c | 57 +++++++++++++++++++++--------------------------------
+>>>>  1 file changed, 23 insertions(+), 34 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index 584f41eb4c14..795f5ebd9341 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>>> @@ -4758,23 +4758,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>>>>  	return nr_to_scan < 0;
+>>>>  }
+>>>>  
+>>>> -static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>>>> -{
+>>>> -	unsigned long scanned = sc->nr_scanned;
+>>>> -	unsigned long reclaimed = sc->nr_reclaimed;
+>>>> -	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>>>> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>>>> -
+>>>> -	try_to_shrink_lruvec(lruvec, sc);
+>>>> -
+>>>> -	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+>>>> -
+>>>> -	if (!sc->proactive)
+>>>> -		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
+>>>> -			   sc->nr_reclaimed - reclaimed);
+>>>> -
+>>>> -	flush_reclaim_state(sc);
+>>>> -}
+>>>> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc);
+>>>>  
+>>>>  static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+>>>>  {
+>>>> @@ -5760,6 +5744,27 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
+>>>>  	return inactive_lru_pages > pages_for_compaction;
+>>>>  }
+>>>>  
+>>>> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>>>> +{
+>>>> +	unsigned long scanned = sc->nr_scanned;
+>>>> +	unsigned long reclaimed = sc->nr_reclaimed;
+>>>> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>>>> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>>>> +
+>>>> +	if (lru_gen_enabled() && root_reclaim(sc))
+>>>> +		try_to_shrink_lruvec(lruvec, sc);
+>>>> +	else
+>>>> +		shrink_lruvec(lruvec, sc);
+>>>
 >>
->>> commit bda420b98505 ("numa balancing: migrate on fault among multiple
->>> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA balanc=
-ing
->>> for MPOL_BIND memory policy.
->> Is the following description better?  At least, I think we should
->> emphasize that MPOL_F_NUMA_BALANCING is set while both
->> MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES are cleared in the mode
->> parameter.
->
-> Thanks, I will update it to make it clearer. How about the following
-> description?
->
->
-> commit bda420b98505 ("numa balancing: migrate on fault among multiple
-> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA balancing
-> for MPOL_BIND memory policy.
->
-> When the cpuset of tasks changes, the mempolicy of the task is rebound
-> by mpol_rebind_nodemask(). When MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_N=
-ODES
-> are both not set, the behaviour is same whenever MPOL_F_NUMA_BALANCING
+>> Hi Johannes, thank you for your reply.
+>>
+>>> Yikes. So we end up with:
+>>>
+>>> shrink_node_memcgs()
+>>>   shrink_one()
+>>>     if lru_gen_enabled && root_reclaim(sc)
+>>>       try_to_shrink_lruvec(lruvec, sc)
+>>>     else
+>>>       shrink_lruvec()
+>>>         if lru_gen_enabled && !root_reclaim(sc)
+>>>           lru_gen_shrink_lruvec(lruvec, sc)
+>>>             try_to_shrink_lruvec()
+>>>
+>>> I think it's doing too much at once. Can you get it into the following
+>>> shape:
+>>>
+>>
+>> You're absolutely right. This refactoring is indeed what patch 5/5 implements.
+>>
+>> With patch 5/5 applied, the flow becomes:
+>>
+>> shrink_node_memcgs()
+>>     shrink_one()
+>>         if lru_gen_enabled
+>> 	    lru_gen_shrink_lruvec  --> symmetric with else shrink_lruvec()
+>> 		if (root_reclaim(sc))  --> handle root reclaim.
+>> 		    try_to_shrink_lruvec()
+>> 		else
+>> 		    ...
+>> 		    try_to_shrink_lruvec()
+>> 	else
+>> 	    shrink_lruvec()
+>>
+>> This matches the structure you described.
+>>
+>> One note: shrink_one() is also called from lru_gen_shrink_node() when memcg is disabled, so I
+>> believe it makes sense to keep this helper.
+> 
+> I think we don't need shrink_one as it can be inlined to its callers and
+> also shrink_node_memcgs() already handles mem_cgroup_disabled() case, so
+> lru_gen_shrink_node() should not need shrink_one for such case.
+> 
+I think you mean:
 
-s/is/should be/
+shrink_node
+    lru_gen_shrink_node
+    // We do not need to handle memcg-disabled case here,
+    // because shrink_node_memcgs can already handle it.
+	shrink_node_memcgs
+	    for each memcg:
+	        if lru_gen_enabled:
+		    lru_gen_shrink_lruvec()
+		else
+		    shrink_lruvec()
+	    shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+	    if (!sc->proactive)
+		vmpressure(...)
+	    flush_reclaim_state(sc);
 
-> is set or not. So, when an application calls set_mempolicy() with MPOL_F_=
-NUMA_BALANCING
-> set but both MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES cleared,
-> mempolicy.w.cpuset_mems_allowed should be set to cpuset_current_mems_allo=
-wed nodemask.
-> However, in current implementation, mpol_store_user_nodemask() wrongly re=
-turns true,
-> causing mempolicy->w.user_nodemask to be incorrectly set to the user-spec=
-ified nodemask.
-> Later, when the cpuset of the application changes, mpol_rebind_nodemask()=
- ends up rebinding
-> based on the user-specified nodemask rather than the cpuset_mems_allowed
-> nodemask as intended.
->
-> To fix this, only set mempolicy->w.user_nodemask to the user-specified no=
-demask
-> if MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES is present.
+With this structure, both shrink_many and shrink_one are no longer needed. That looks much cleaner.
+I will update it accordingly.
 
-This looks good to me.  Thanks!  Feel free to add my
-
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-
-in the future versions.
+Thank you very much.
 
 >>
->> When an application calls set_mempolicy() with MPOL_F_NUMA_BALANCING set
->> but both MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES cleared,
->> mempolicy.w.cpuset_mems_allowed should be set to
->> cpuset_current_mems_allowed nodemask.  However, due to a bug in its
->> current implementation, mpol_store_user_nodemask() wrongly returns true,
->> causing mempolicy->w.user_nodemask to be incorrectly set to the
->> user-specified nodemask (or an empty nodemask).  Later, when the cpuset
->> of the application changes, mpol_rebind_nodemask() ends up rebinding
->> based on the user-specified nodemask rather than the cpuset_mems_allowed
->> nodemask as intended.
+>>> shrink_node_memcgs()
+>>>   for each memcg:
+>>>     if lru_gen_enabled:
+>>>       lru_gen_shrink_lruvec()
+>>>     else
+>>>       shrink_lruvec()
+>>>
+> 
+> I actually like what Johannes has requested above but if that is not
+> possible without changing some behavior then let's aim to do as much as
+> possible in this series while keeping the same behavior. In a followup
+> we can try to combine the behavior part.
+> 
 >>
->>> when the cpuset of tasks changes, the mempolicy of the task is rebound
->>> by mpol_rebind_nodemask(). The intended rebinding behavior of
->>> MPOL_F_NUMA_BALANCING was the same as when neither MPOL_F_STATIC_NODES =
-nor
->>> MPOL_F_RELATIVE_NODES flags are set. However, this commit breaks it.
->>>
->>> struct mempolicy has a union member as bellow:
->>>
->>>     union {
->>>         nodemask_t cpuset_mems_allowed; /* relative to these nodes */
->>>         nodemask_t user_nodemask;       /* nodemask passed by user */
->>>     } w;
->>>
->>> w.cpuset_mems_allowed and w.user_nodemask are both nodemask type and th=
-eir
->>> difference is only what type of nodemask is stored. mpol_set_nodemask()
->>> initializes the union like below:
->>>
->>>     static int mpol_set_nodemask(...)
->>>     {
->>>          if (mpol_store_user_nodemask(pol))
->>>                  pol->w.user_nodemask =3D *nodes;
->>>          else
->>>                  pol->w.cpuset_mems_allowed =3D cpuset_current_mems_all=
-owed;
->>>     }
->>>
->>> mpol_store_user_nodemask() returns true for MPOL_F_NUMA_BALANCING
->>> incorrectly and the union stores user-passed nodemask. Consequently,
->>> mpol_rebind_nodemask() ends up rebinding based on the user-passed nodem=
-ask
->>> rather than the cpuset_mems_allowed nodemask as intended.
->>>
->>> To fix this, only store the user nodemask if MPOL_F_STATIC_NODES or
->>> MPOL_F_RELATIVE_NODES is present.
->>>
->>> Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple b=
-ound nodes")
->>> Reviewed-by: Gregory Price <gourry@gourry.net>
->>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> [snip]
+>> Regarding the patch split, I currently kept patch 3/5 and 5/5 separate to make the changes clearer
+>> in each step. Would you prefer that I merge patch 3/5 with patch 5/5, so the full refactoring
+>> appears in one patch?
 >>
+>> Looking forward to your guidance.
 
----
-Best Regards,
-Huang, Ying
+-- 
+Best regards,
+Ridong
+
 
