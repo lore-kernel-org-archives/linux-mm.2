@@ -4,98 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93A8E6B26B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE9C5E6B26C
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:15:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194D96B0088; Mon, 22 Dec 2025 20:07:35 -0500 (EST)
+	id 2499E6B0088; Mon, 22 Dec 2025 20:15:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118596B0089; Mon, 22 Dec 2025 20:07:35 -0500 (EST)
+	id 1F7C36B0089; Mon, 22 Dec 2025 20:15:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016AD6B008A; Mon, 22 Dec 2025 20:07:34 -0500 (EST)
+	id 0F7C86B008A; Mon, 22 Dec 2025 20:15:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DFEB36B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:07:34 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74FC414043E
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:07:34 +0000 (UTC)
-X-FDA: 84248948028.28.C584656
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DCF7A140006
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:07:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CrFyOnk8;
-	spf=pass (imf26.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3B26B0088
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:15:16 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F78E160420
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:15:16 +0000 (UTC)
+X-FDA: 84248967432.03.F5DA943
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CA72540002
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:15:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WEYZtYIU;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766452515; a=rsa-sha256;
+	cv=none;
+	b=s41xZw6Zgp44ccwqYty3d4TZ+8a1MIm7pKc8cG4pZaY2N383dP4Tku00Eu+kb2dqJcczFX
+	sF4kJ8/opqghZLsu+ATpsoRI7OEPNV3yZqyDMm7hVQXkeYuujZmlePlqa4ylZBs5wFcdnu
+	CbbK1bcRojXNpzBfOgXRQUFmTsc3qYY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WEYZtYIU;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766452052;
+	s=arc-20220608; t=1766452515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s75WwS6zHxjLmxYTad6FpYF2GMJBMtpUdtAWmDGLC5o=;
-	b=GRm0XKNNXfAFFSfXVz1sSw9/6vkWJlfTqkFHlYYW7vuGfkpIgiIMLq7PMcLZoS3QVbJvOB
-	3X8FmywvT5gXCGMGfY6OhoMaGu6EB+Z7IJkeOujcVHsGKSy2kELHki2ciNkrZnKvIEvO6z
-	rSGUITnExUlhRnag+MwJuPDsqiARbAM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CrFyOnk8;
-	spf=pass (imf26.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766452052; a=rsa-sha256;
-	cv=none;
-	b=eb4Q+D7PF8AK/u6GrRiPgtnLwM7ODIK9cgHsZTSXqSNrXoHfNke1wUzhKY1w9Vqx/3DbWG
-	uMquDB6xOn8kq9SW/tT6r+1QNG3FmNoDD3A80aJO4ltPQ8pc91CmEAvDqA3vq0JlNX/MHZ
-	JrmWIfUofxHFWC8jsQdM1RTn7TvjPl8=
+	bh=3dlSRudGxdQdwaR7goWiS6gUCttwissPHK+pbwSe9nU=;
+	b=DVqGdsBKwHEdWKwnELujURZYT7C7hCJGgNw14/cJIo6BzLB4HGdD2w28po/7zOz8KhOwYZ
+	k+83wV092BVt6U/5j1AyzWTq9mDJdcEhx8vxGkswe+F/XcUCdehtOWfMtqUc7X+UFTs+i2
+	uC0ByE7z8i1CJMEJJWjan/7tu3DdsX4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 481F160136;
-	Tue, 23 Dec 2025 01:07:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244AEC4CEF1;
-	Tue, 23 Dec 2025 01:07:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766452052;
-	bh=8HLJDJzqJpZNyDjxm0GPb6san6RSllNRbd8BiJb/m3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CrFyOnk8xn0XnO9L2YfHDvLC3fVAb6sjS2M4lUZyTjaUAtCPJP4KMlIeAojFHmGjx
-	 Ej5DoYnq8xnh1lF3dhyspVDaD4HoyWUZ0Lw3QnJvM9FW9sGdB26jme6vv67KzDcNCG
-	 ejKU5u+0QKpmnVhUh+Ry4YueyBFCk+wq1THPLhaI/c/sBBsnGfWbpWZ9rgAoimrz+n
-	 fx7ypuNkmcmkJoza+bhHXo9fNHEIYovQufpz98k8AGD8b4qOXdYHM8PV+bB1W20q7r
-	 umK5u65js9ektIXsnVyIKXLg7Wtp8pAg37OHdZ4gQQPF0FUUsZBclpJyCQ2qAm2E8a
-	 esUXDwYfWvPVg==
-Date: Tue, 23 Dec 2025 02:07:26 +0100
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
-Message-ID: <aUnpiDyge6VdsnpB@devuan>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1765406336.git.alx@kernel.org>
- <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
- <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
- <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
- <202512101736.DE24BE89@keescook>
- <aUf6xwicMCxL28Yp@devuan>
- <202512221517.E1B039879E@keescook>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fod4yrxti6hqvgsb"
-Content-Disposition: inline
-In-Reply-To: <202512221517.E1B039879E@keescook>
-X-Stat-Signature: 7pc8f1smfpcfts1e88776z56z7xyfcr8
+	by sea.source.kernel.org (Postfix) with ESMTP id 7004042B81;
+	Tue, 23 Dec 2025 01:15:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCE0C4CEF1;
+	Tue, 23 Dec 2025 01:15:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766452513;
+	bh=MFQWiEhzxXAD6Iigv+jk1Ze/A2AiReFlrbJXNt/mZxE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WEYZtYIUGsoIkaVTqDPKbWrAK9lstxF2JzJqxaCr8Xihvl4mgDHxpPep9VRR2oBHP
+	 cLdiOgPax8aSFLcLjYi2a/Os+MVPqUm7MZLsVr8UXg4+RJSTc4xh0Pvt1H8vyF2lyC
+	 mxn9Qh+DvlcI2wn/cz/aqw9dEpYN7/1eajSPrdCQ=
+Date: Mon, 22 Dec 2025 17:15:12 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: baolu.lu@linux.intel.com, david@redhat.com, rppt@kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH] mm: fix huge page table not free after memory unplug
+Message-Id: <20251222171512.edfb1e839e3f007d89825363@linux-foundation.org>
+In-Reply-To: <20251222041117.44865-1-yuan1.liu@intel.com>
+References: <20251222041117.44865-1-yuan1.liu@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DCF7A140006
-X-HE-Tag: 1766452052-696741
-X-HE-Meta: U2FsdGVkX18jguD6muydkJTZNTeswLc0ncwCn3UA6VJnopiq59okjMBw6qG865UZVe2guqCc9IVpLdDF7OdGpb8UmnzZ12DZNiBHPBhzQaumJ81bsw+quSRsZhkJ+hlkVLGA7z1Y538ADPYnoM4UvW1AAA3p52cLK0VEmPIH/QREzKciuw1j1fF3HapohxYobnlQwUBfU55GYW/QtFD+BhMJ1go1qtdeBAladW7zgTwRuXNAtFSMjze1ag1bawNE5KmON8gXKFYv+qyj2hYIAklLA8HJPqSo+j3Jo96RaHYzY6DNrC4LrZHU0qHMQQCYFEJUCGg3o3Vku1DJTEeB5vfBGmgnmD9E9+CU6/zHH/oOiROSEQrndYu5Y6zGJEKYTYjIMOEVvXeVV2ErKgY1ycM10CaiOVi4PVKm529OJMtmSKtBwwH9Vh8hyGHVviqzS3PkDQjUPRge5DmDXhLAjUPML90/F0naX0oL2m+S+VdfB8I3H10vkin5KcRqHo7tvQ3wHAC2hAc+J5QFbyvhjTTZQvW/2rMHL5QfQjOqCw13Q+dMmTyvLZg20TjtThTQc8sKRViAKeAFvBkaJNQ2u0UX3+5wN42AHtxACQAam25/lW2Ct4kxa0vtF8vqjZWkEt2YLv57F4VP/pG0upr2q3QX6xSGN2zXBDf4eOwYoWM65r6dW7gptGbLYW/IZS7s+mdpk4hCq+GUvky/1r9SEepnOIZiNqyl76YQXCd9EhrlNRuWoKV/y2YAekPbxi2VQmdqiU0WrGNMpIPbKP62ryZBHvkaRsB9kiJxMkOjPtNKATgL8KeeXWvwrFmGo3hPqBRBtVVOGyK5+T3igEYu1IS5U+epPSai6rCCc5Xb9LqQbhaD9u2O+FJXXrm/WBqQ/hTQ1lkKKolHEovxh3UJPCbEyJrLzKd3c0q7PK08x8PM8RSBWY1t1rNHd4PPWFqCXnLmWGmq8hE23NFePo0
- HYSaoE6P
- CkbzrkMRhHR6/5uCsu+oLRL3BvtSJbIshxRtRtVnOAMsgP6lsUH1Rr1Q4jI35zxKvtVhXPP1SyHsUGhQKOCHVRaFOWfYZ3TYbjQJb/AqycsEr2rJTD8YNnMgysrmwwugAnn2mfEdkbgbUz1NXT4WlxDZ9/sOwtQ0oIWQuE/DrHwJoBiuwjNUT8i2uch2F6kI94mwtefLiyNY8nXxqG1SD4ZcT3+OQn7IRxalOgitoCycXiO6cSZ7oMl40GBoHOVsIGUqzVKGpcSz8HW5Y9zgFLYbzUBxIA50k9Z73BL4V+EmrHIrrAlIrF2I1rFzjWqFcw2tzN4iDu24Kyog6NiTtfyHaLBWgxmKstMlRsjSwf9ac7QfRUt7RAtp4muq+AlEqq77Lt2t80590SnroXAfIbj5oY2r8ByPEQZIbLSVv09Q0bKvBxneZAqyBZvz/FUj7oPVDP6fnzP+Sg6KcGNxFgC+FKpg2nXdD1TWlT3k5BsCXAUUjqScFDg5TyuqqX0FDT9wYhLwkdGDe+FeXVw7urSott0GSS5y4oWQgPMPO3r2REITTp94yQTAFaHbxQVjFDCbntXQo9oIHQmE=
+X-Rspamd-Queue-Id: CA72540002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: m5kfsyg4pty1gmn35psjr4tmgue933b5
+X-HE-Tag: 1766452514-92826
+X-HE-Meta: U2FsdGVkX1+QJDnDwJSE3CDWkMTUvfgTNIRY4XUUpEUvvlvjvx8S4NV5b22nVq3IdxM1uouc8284IgfXfF1QUsD+8Pf3wpRdU++7KB0j/EXP4DECSvkko0QvIsHUPIlQqzTZYDdEBKTviU6J5JoxTKZBqSkWR3IitDUO6qyYL5stV5yuhfzVT44HDsknlmEVzFqfjnnPJabvAv7omVl1c8mvX+OgZG/Eo/7KZNTNfpQfnSdawcqWaeVFpCt7ISR9auA6QUOndVZtGbNgMT9QJd339cfdzjLs+fxCx+zkdYWrM1jKAcR7pyyWPbXNiFrode8IEmA7mm/fV9+4TqWKcvnegkB5HbWHqA0+qEiAGYDhRKisfwED33VfywzjEd6Ti646Rx1Gat/upGwWWjRSdQ++faU0XdKiDF1tK1caQX2AIZWmjg89HbpFTTarxHwwbNL08vl0sEwWSWp6u6JJDZ0N4gywJaAGZDmBbe05s8dJMsVEslMsCXHUBysZ8Ryf/ZxuQd6KKGUdEVppYtRDgDYcblavPTawK4IRi1/USkh2xB76db1kAtcz5RbDdf+FR8LednK6y8QoG4uDkU0tQu+37T/yS4KQCBmr6W3zZP6wzs/gWZ9R5Wd7J2ERiMSoUlC79xqTbIhM1hKn9xCwdk1RvucWuk1R0stGwgSDNWuK8Vwk8pjSr3a4RXAjX/CQUWfUuZ6SjIdX/ch0hMFKw4/MPgZhum45hdHaCMoVLnmkFcAQg0Yf+iP+4Dzaue2XRa9AzJUpcbVHAenLMfk/t2Bj0C5FamMKFcuJyPdzwSZRqr7+64zDwX2IdmE7n3V9Pz+3U/tGNAlze5mY2bAKwOPKQzvF2FQi7bVWkz1RM6tPRZgHVarsXAnD23pkHuIE+RzUHcWpr7gR80l1mLy6fZSAsS85RQvB0I8re+jJMyIIw8i8F7zPUtuTl7IknkPMUuiW7gfda3QqQOPTM9K
+ lgCYdkeX
+ kSRsHTglYp9VSiPP3ar7eHl+OFIc2ezGXGi10NR++9oJzp5mMgSx4ClOiH0lZecs45C31Galw7K+oZPo9PfPw8ykxEX1H6qZnIMTK9KQg5cgFxTgNCUVx5jNHKHgMYphhSFm90PXzXotzuRjAgBzpsdIBko+Sm37oavDW6g6ljJ14bSzU2hxdeFHiKPKy3M3k7z0EgfHJdpZ9FPjIIOPHd+uprvkgZF9b16FWexL/sANWZLh8opn2Ar47+cyVm2OB0h57J0QPRmy5KlA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,114 +90,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 21 Dec 2025 23:11:17 -0500 Yuan Liu <yuan1.liu@intel.com> wrote:
 
---fod4yrxti6hqvgsb
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v5 4/4] mm: Use ARRAY_END() instead of open-coding it
-Message-ID: <aUnpiDyge6VdsnpB@devuan>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1765406336.git.alx@kernel.org>
- <e7bde864b0394dd0946b5227c6afac7c05560654.1765406337.git.alx@kernel.org>
- <A17C0418-E304-43DF-A6AB-0F142D7B8764@kernel.org>
- <lo6fdczvfjb5q44euckxi5thjrply4wqk62ori4slz54ivdswj@3c234g733gzq>
- <202512101736.DE24BE89@keescook>
- <aUf6xwicMCxL28Yp@devuan>
- <202512221517.E1B039879E@keescook>
-MIME-Version: 1.0
-In-Reply-To: <202512221517.E1B039879E@keescook>
+> newly plugged memory is marked as prot_sethuge via phys_pmd_init
+> without setting PG_head. During memory unplug, free_hugepage_table
+> frees the page table as 2M, but pagetable_free handles it as 4K.
+> 
+> The following test case of memory unplug for a VM [1], tested in
+> the environment [2], show that results.
+> 
+> +-----------------------+------+------+
+> |Check System Memory    |Plug  |Unplug|
+> |via free -h            |256GB |256GB |
+> +-----------------------+------+------+
+> | Free 4K page table    |257GB |5.6GB |
+> +-----------------------+------+------+
+> | Free 2M page table    |257GB |1.7GB |
+> +-----------------------+------+------+
+> 
+> [1] Qemu commands to unhotplug 256G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=256G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 256G (Plug Memory)
+>     qom-set vmem1 requested-size 0G (Unplug Memory)
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v6.19-rc1
+>     Qemu         : v9.0.0
+> 
+> Launch VM:
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>    Guest kernel auto-onlines newly added memory blocks:
+>    echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> ...
+>
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1028,7 +1028,7 @@ static void __meminit free_pagetable(struct page *page, int order)
+>  		free_reserved_pages(page, nr_pages);
+>  #endif
+>  	} else {
+> -		pagetable_free(page_ptdesc(page));
+> +		__free_pages(page, order);
+>  	}
+>  }
 
-Hi Kees,
+This reverts half of bf9e4e30f353 ("x86/mm: use pagetable_free()").
 
-On Mon, Dec 22, 2025 at 03:21:21PM -0800, Kees Cook wrote:
-> > Now that the first patch set has been merged, I'm working on a second
-> > round.
-> >=20
-> > I've written a semantic patch:
-> >=20
-> > 	$ cat src/spatch/array_end.sp=20
-> > 	@@
-> > 	expression a;
-> > 	@@
-> >=20
-> > 	- a + ARRAY_SIZE(a)
-> > 	+ ARRAY_END(a)
-> >=20
-> > 	@@
-> > 	expression a;
-> > 	@@
-> >=20
-> > 	- ARRAY_SIZE(a) + a
-> > 	+ ARRAY_END(a)
->=20
-> I think you can add parens which will be silently removed but gain you
-> the commutative behavior:
+What about the other half?  The below change that patch made to
+arch/x86/mm/pat/set_memory.c - is that OK?
 
-Ahhh, thanks!  I was wondering how I could get commutative behavior.
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -429,7 +429,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+ 
+ 	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+ 		list_del(&ptdesc->pt_list);
+-		__free_page(ptdesc_page(ptdesc));
++		pagetable_free(ptdesc);
+ 	}
+ }
 
-> @@
-> expression a;
-> @@
->=20
-> - (ARRAY_SIZE(a) + a)
-> + ARRAY_END(a)
->=20
-> I *think* that'll cover "a + ARRAY_SIZE(a)" too.
-
-Yup, it works.  :)
-
-> Anyway, looks good!
-
-Thanks!
-
-> You could send it directly to Linus at the end of
-> the next rc1, and he may take it.
-
-I'll send a draft before that, just for you to review the actual patch.
-
-> If not, you'll want to split the patch
-> up and send to subsystems after ARRAY_END is in Linus's tree. I use this
-> tool to split a large single patch into per-subsystem patches:
-> https://github.com/kees/kernel-tools/blob/trunk/split-on-maintainer
-
-Okay.  I can do both, anyway.
-
-
-Have a lovely night!
-Alex
-
---=20
-<https://www.alejandro-colomar.es>
-
---fod4yrxti6hqvgsb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmlJ60gACgkQ64mZXMKQ
-wqkiMA/8DGujTyeC67FKUmw35SWj8WOq/Bpjhy2WiicfTsQcoLblao7BrO+2OPqR
-b6eE+86SJsaM7XcZ3+L8TxwK3X7OcADezT5WdnG7S61OmxjdwLQtWgoLPFNr92zj
-AJqU8uEQ8yIDdLv8NKMWt3TrWwgHXsxoTI+BXZPJFajkGjqjbX9d7Y/+2Zy5TUQ6
-b7L45gkWMK8W6qMdKJI/X/WGQP/Vde8yyzKzLt8JUSpg7ZxjH4hILe+PbmGcPAjH
-ip9BPvaeBFhRAZoPGM+NgQna+kzG/IMAG0hdwEiOwzjWkhw7LdJlhs0zSgjFjOS5
-By8fSBwmOU+ttynHHYloPM8HgjwMVOjnYm9FeH1i6AL5T4I6lo5eOlaz5WTGvXGq
-eh1VAGBZdSCz3IEag/WWjuHZXNkvShgmJ55lctJE+zGZpaaw+Hh8NKzDRj1Fjv5C
-sYmkjJRcRDbCGAP5QbmtAQAS1H0FtTd2SGIYzMfS1YQhP/+uBlyfe7ubFrQb6ks0
-Hlhb+7NCwRiP3m2v++UBa2gWOIRaSHYqbsO6A9LH9tN+YNCKrwObqcdibVVRVy5e
-ZMBMDHLo4/YGyTDKdWd1gkfBwPqjQfABgzMgxJQ295V7yAsJuuhNVzLrJFeiZg9F
-c0N9Gt5E962MTk+DAZ5cI/zFpY7jwLYfmG9V2nftvaaF7w5Slj4=
-=AU3k
------END PGP SIGNATURE-----
-
---fod4yrxti6hqvgsb--
 
