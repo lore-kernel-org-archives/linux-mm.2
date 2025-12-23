@@ -4,112 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7982E6B261
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A024DE6B261
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 01:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B4F6B0088; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
+	id 11E466B0089; Mon, 22 Dec 2025 20:41:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 208F06B0089; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
+	id 0C8736B008A; Mon, 22 Dec 2025 20:41:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115F66B008A; Mon, 22 Dec 2025 20:41:01 -0500 (EST)
+	id F23716B008C; Mon, 22 Dec 2025 20:41:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F22166B0088
-	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:41:00 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 905EBB9803
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:00 +0000 (UTC)
-X-FDA: 84249032280.22.04FB9D5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C5FBE1C0003
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:40:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lXGcddiG;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E423F6B0089
+	for <linux-mm@kvack.org>; Mon, 22 Dec 2025 20:41:31 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95FB91A047D
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:31 +0000 (UTC)
+X-FDA: 84249033582.26.EDFBC8F
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A53F6100002
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 01:41:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hAkLy2ZZ;
+	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766454058;
+	s=arc-20220608; t=1766454089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RFRh+wvD+Lc39oHsvnn+Lo9YDyd9nHvG3BTp0xqQdFw=;
-	b=TjcDsht67DKCIJF4fJSa7UIM6Ug4GR4kfjikOfhK6MvKmmpuPXu5NcYny29vQs4aPuNcz8
-	jTgEtM/jSIHa40McQUCmQdBFkvqhAuXnSaxSyi2r82kdpH1eg01dCk5MS9ud23pu4n/G6h
-	yD2hDP008DcZfoMU1y/fugHU4PzflVw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766454058; a=rsa-sha256;
-	cv=none;
-	b=EypxoCeAd4WhjVNUB8I1poNkdpsDujjgHkjugcufDXR0rWfD9mITrCb+xnSYrbzhGB6bPx
-	YvKGeyrdOtxBcUnr55JH/sJ4O9NF1NYQXyVn6eVVljMd7jd6cxjudkawvmsFfenjj8CUND
-	CLVLGSTAkovI7zProsmVIoAUD9Uufnk=
+	bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
+	b=OAc2s0Sr23e6cY4kkRGbVLDoXuwhcLYmBKuVgLtMcvjprK81cnxWP4BVsKzOw+toJfCUU2
+	H7hBWxMvmGpCtn3RjycziOWaf9viBywnaKu+NB8LBNp9zYpvEMcD/C3mBr0J0bnuCs7xv5
+	ZgAnoSojk8I8lPwTQIPS37lB2k61pQE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lXGcddiG;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766454058; x=1797990058;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p8QndN5AyrEGYCocKeThKwfhP7p3sqHksByq85sFU24=;
-  b=lXGcddiGxBFjvASm2m64or1zHaEK+jlYnN57j95LBAeaBEHp4bvw5Yos
-   hkl7NRyQTTRz53J1YTbfw3iTk2/Cbpu3TfCdTjAhbAnPTRuvR5vwkYw6F
-   u+NBd0RPIObbPY+4b+aEN6FEq0hysj8Ze1BemKnYV0lZin7Y5cpI3hJNr
-   yq/wQ+0ORaLCxOlZBXaHNg0AFo5q3Jk/zTV3r33gZeSPdkdAKpBlXSk62
-   zHGEwfGzU1TtmYINjUQjHFSoiJNEyLeYvTlK+dDEqf7P6kgM/yTeXTwR5
-   RC+LWITUSQPfKksNyLBKIgECYIUrPfhmwy+QyxSbuxKB6C9pduGWvv7+u
-   Q==;
-X-CSE-ConnectionGUID: 7siLyYbDRgWGiJ0BcyArBw==
-X-CSE-MsgGUID: Br+7KSzzTTCOqx9fIrFT7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="90966473"
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="90966473"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 17:40:56 -0800
-X-CSE-ConnectionGUID: HH3KO3ruSFaqe8T5HyubLA==
-X-CSE-MsgGUID: zy40TVviR8+wEyDh/5xXGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,169,1763452800"; 
-   d="scan'208";a="199966668"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 22 Dec 2025 17:40:50 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXrOK-000000001Ij-25Ic;
-	Tue, 23 Dec 2025 01:40:48 +0000
-Date: Tue, 23 Dec 2025 09:40:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org,
-	vbabka@suse.cz
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
-	glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
-	mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
-	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com,
-	shakeel.butt@linux.dev, surenb@google.com,
-	vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
-	harry.yoo@oracle.com, tytso@mit.edu, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, hao.li@linux.dev
-Subject: Re: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext
- array from leftover
-Message-ID: <202512231042.EEBUajQY-lkp@intel.com>
-References: <20251222110843.980347-8-harry.yoo@oracle.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hAkLy2ZZ;
+	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766454089; a=rsa-sha256;
+	cv=none;
+	b=sLTVUh6GOg68LLmwSjQUJYwhUQ86Jl+ugLHrBHjMGxLI1OorAsTmstZXajMjzgvOB6fH2O
+	F+sCoEC1e/pkt+erEaUvPsCtvoANz5Vhcru6Up/wqrFhfdwg5bTHaAjiW38A1HfIQy02iV
+	A2nqYvnmtGOgy+8qR2QLcteDPLu7hbU=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-594270ec7f9so5340028e87.3
+        for <linux-mm@kvack.org>; Mon, 22 Dec 2025 17:41:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766454088; x=1767058888; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
+        b=hAkLy2ZZIpWhlbkoxJ+NwkJ/auho/d5DTegW89lunqq0ncNrw8esD/xNzClFT+ZD/j
+         AkUjNZCsMwX564I24VhFZ+pW/3dQ7DSngU2yDgnZ9HXWQLl3aQuGdtPYtEb2qQg3JNaS
+         tQ7qqsKE1rS1sEL/1F0VQUXI/Evra/DfrJ6MvN6Fh9ZnmOMVRUZogr/4M7Y5E1sEqAXM
+         KprLuRVb6phpD6hJFsioxJls/UnbhwUhNpXwewJMLsTZ/ESIC+bQBGRnKm46lBeDntDQ
+         n0ttUMIjkKDeQzdpn019ehHC61BH7Z5CPHTeMWRDNy67CBt0dXBpkyuYcDHoNm+pzL+Q
+         CTbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766454088; x=1767058888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Uzc2azkAT7+UZs63CJT4nkeSpZYqRpvq+hUurVd9/nU=;
+        b=q4B0i1/f/LuzEhNMORLz+Q1Se0azZtN52Cg8C7jcIKwbX0/0Jj5zeF3eIcUWMSJ0Xs
+         P5zPPTH1FIiSYtWqg4YqjxnHBvXdo702YfnbNGxaTUgchc1loCHEEnDMRGmbDKKSQd4c
+         cZ5HqWT8w2vCqsaKiNFyMAyhp6fAOWOzTYK6m/LPc8gKKoKYN59SL8Q23Ic+MuYq6/gT
+         Xdmq8RGSKPIjmFDax+7vg/2I/XkQxMYNIy0S0fOtChNlW5ppVRcnSnAI5NQJhmbQer6N
+         geFAJ6aRsoFnL4b0yiFUJmrcYZkM8rl8dn79LvajXvUVknInaMvGcpKZsXcinuNwnsny
+         A+BA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSE1BzTuG8lh9SsyUIhvK8jme5o5Yz0Ip4OZ5ZWZZfMfMK4zTGlDN0K2Wq5Sd3iGa9mIjeP53HaQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy8MqC1/b71/KTJt+z7oXO3xkoicnbBiaxejiEFgUvD91Oj57sI
+	7GwA0RmseO3sj14N8hC3rcSN8EIoPWWl5bPM0b4pPBAaTm70IyGcYFy53KOu4Zz9
+X-Gm-Gg: AY/fxX5Q0bSkHaDMksm0E72AaBYyRUcNmVvjwnw5J4d65nltNPaTv5gek4kM1sNvwXj
+	IW+Miasr5zKREABwXRXrCLHk3EM5/yfjGDjcSyAuHa4+AAnM7AmiRFpWP2NetCaLxh8j+UWLTzH
+	KAPyGjkvZNigc8LrWs560aq4rMFMmvnIac65Kl4ZEvSv2//3pBM8Gv9aXW6eHLx9wXjm8Mtk4nj
+	hyD16WtorHcrknnFXBF6uxEBKAMnjZuG9XklJ412LaK7fRQF4+9GMpspTkhTMQZYZWuzXawjUOj
+	U69+6c+YMpz5UdVoKpIVlr1QG4egYjBqx42hYVdKIXZiY9KK2y07BXo3kfJes5XyFlWO+ztW6vI
+	+vvOzFYndbAEoj8xnZsyh+Quek5pEj6RE0n1wSwbb9dcsKSlWEpbEI0jbM0nNrjlVFV5YBBQhLc
+	mmq0EmtZZM
+X-Google-Smtp-Source: AGHT+IHWUix04V1tUMjJhj8LmwIJFsrYjMJ2eegt/yizChdKwHOARh8H0MmDtl7KvKnzF0od4dTcxA==
+X-Received: by 2002:a05:6512:234b:b0:59a:123e:69ab with SMTP id 2adb3069b0e04-59a17d08c20mr4858078e87.10.1766454087534;
+        Mon, 22 Dec 2025 17:41:27 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a185d5ea6sm3600776e87.5.2025.12.22.17.41.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Dec 2025 17:41:27 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: gmazyland@gmail.com
+Cc: Dell.Client.Kernel@dell.com,
+	dm-devel@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-lvm@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	lvm-devel@lists.linux.dev,
+	mpatocka@redhat.com,
+	pavel@ucw.cz,
+	rafael@kernel.org
+Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
+Date: Tue, 23 Dec 2025 04:41:14 +0300
+Message-ID: <20251223014114.2193668-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
+References: <86300955-72e4-42d5-892d-f49bdf14441e@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222110843.980347-8-harry.yoo@oracle.com>
-X-Stat-Signature: qg4yntgpk9694gki5c3zgr14ryegk3gi
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C5FBE1C0003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766454057-32225
-X-HE-Meta: U2FsdGVkX18VZBbXHBmPTI2NIbxhFJ7UKL2J+WsBmocz4keqEbHVg4U/3dCC/0t/8RAWWicydOTRnBYI3Nrm4bbt59byFAIOychang7y3h16UUNhQP555W7tL4uzm0kxXzgizODf0wB44m0xs04Ecc3AvArl9H7nDpLDBKaLGWe5LIUOWzjFiO0hsQOXnmqSj4dImqTt1HlqJ1NywHjssNw2G/Fv56MC1OlE9exh1hrrTb3iPFAb0OesdOsBd2nrbpuYjkgTTsadBdJWKq9/Fw24nXTl6JgRrs4upGYmKFjcIZAp/rswzmLhYGNq3v5s4zGxYt/KZXUg/12iC2GGGi00idhu7hvqaokzM8v0N0WwVSHjr0lCiExqaefjCPoxXHMIdeSCxvqElNozIenP8WFppdGgwiKw8YG8/3kIxJk417uCMndFvNFGVa9P3jLrOUYhHTkMF0CQkD1lVJkafbMMeXNUkVTjRLJsEadRYYSaD5yTihVb0qJn6zpthlbnUvBBp4wsAT2NKJvvJyERgeCpLj2oYca4Y37nzBDd4V8Ncfh7P1TilloXO3fg0UZeU4TCSW4yhFVWvC/lSw6+pYyyscOhH8nvlATtf0yxar1FZ6PiunX7vP5jP/6+eFs+ilhIrV9F7fB84H/OmGCE5FrZlEzlw2UHGKBtP8fly1oywVYnYiouLDcCujP2GT1kArLV3/SkzISwxW1bexOzvh2KQflmNCMb58RvAEITq8GExit+KEp5ItTXx0AT5cB55GnyHwv5Ze1vELODfUTfyUD7Zs0epH9vBr/quqiGIk8rTi48BeMAtrhcyMQTAtUUPROrmxCLXBV3mRbIyu4K+LzT6u4U3/3JunsAedsI4Tg9D/t6fGqo1ADuF18Jdf+ZNURGHPhKq4wJFOPa2xtwN8cqkCnxh/tJHiTu1dIlWTCcLv5Zz7a4FMu/q2/ew0SEbFIZG31JRmVJLBzzRP/
- dnG2dR2p
- xmRIEWUyimJ+pE28QMnSOvge2nnOAUc8cLc3W4rZBQph8fLbQ0hu5v5c0Sh+tlMehy26XeImm2PtBh7w13EF/v+qkda8LxDXYnB3La371JMXHbY0B2Lflb5YVqivBNjd0dB2gP+9fUR6XDE705A47Cn+shauRtItUwU/JFcs8QTIUnQtmGbI6zJ3X3ahcTzQjVhquKZLSUa+DdKdtA2Bj6jafhFDrATQmUzmg+4urOcxfE6oslekFEiYQp3DKdWlyDN/bIpFx2cF5AtpYoyi0ssd2osVh6cpHE0/VnwAjGotlUfPvb/P8o7IbvTxfC3fDhbf0nX19776J5q9q04UuJLblMsFsyQ5UdPk2HBeGP7rqu9t95FJIIvw+UQREluZbRbtlvXIdjV+ApMJIUNaKzeABIEK8RkLst+ttl9GvRlmAKUnjlFrY2n5FgNpg3SXL2LRl57wdZWhUCtvSoe7fFrq5fg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A53F6100002
+X-Stat-Signature: ms4z6mfa7urzhyrc6wm6t7bqh5e9qrm1
+X-HE-Tag: 1766454089-724335
+X-HE-Meta: U2FsdGVkX19qeUyTf0pPZR+S/+bxdD89U3KHYCSNUDPpRaqWjteCSm12hZeDvinR7SlnRzxg97w28F1gJqyN4ilpEkX4UewswSw5u8A0sRRTOexIJ+9JPBDXvf144yJWRLSb9+4SjFF2nZwNG5kQUfs8GBhE2uDyf/bgOchQMMh2HmtH04kBUO7jegPy7p9D3+g1sZTUycj+TPR0G46np1lyWCDkdK4xMjjwi5Htho2ZMrH6sx6li63TQz/sKa6fi+0ze7cBb+pufgno8FzCL6TC9zruMxe1Brw6PcuLaA4CGNcPhDNqQlkhhPOupXRC8ozWrwQ8JSShLKE2lFOQAcXBRLGOT2U+7cU/tfUBTh/aeG+IlzPJfwdqxuPBvOn8ca45ak8kVJt4BZdgWXfeNHteaPyEYDUeRoF5uk3KZzGRPic4XQYadTDyQbrJsWSjYcMFfa00XS95bor1G25DC37kw+jkxWnotqtv1XHNDpIw9HFv5DapHjiPHU5FH1twu01CXx1ZNkNywyHS8vH5rUK5744+EnlDa0Ng+3J5pfy2riXzWCiVjIg+hfbPpM2c037Nryjieaz+YlRlWVToKpJVn87OPvir6v24GhnviYoswdn5XCO7JpeqfG6J/rLBZ3xYCZC4mWmt+JHvO/np2CiDDGlePRISzv7CqqseTk76vcoWQg0sSQYvb+UurRTuxMLFO5pC/ZdX6CPBbuFyIpk642TPdrWUBeADO1YHQ4rMloI30UJfoJHn3XFBDlf5CYQqTGyAy5f5pBEgKYQ/Ew9NTXWkIZk3Vv6ewrNJIX59s7Ku52ULjsILPysnVLcfCM9LdYdrU+gCy2QGKiwYaDJR+JNqGcQ+/WDTJHtMiJ5qugpXbzEF4I09Gl0QvxyqFACRLlLSx4yZtr43qlnioCPH1dh2jeFx7qIsMMjKkgv0JuH9C5UMvtu7RUQBRzG4wM9QPw1RmJvs1ObUMuF
+ +5KPKS3J
+ kisH2AgVek/xHdhtpXI3v524KnzuCl2iqX20xrlMnTHwmTT3H5tulxEopJ8GKRICOGEiTz9pl5WkNRGY6UvmfZQep3TraDfhSz9ldWGdVSAtsXDrcoLWH5oujLjuoMz0zOhgTwnvQ2YzkVWKR3KRDeJgHT9bMu99ApBa0wwLM6sfxd8w808imtzJvSYwQmbrGHw/m7ObSi5O75C8DaTsjC7XY4rF4DIoeBZLjxFs6xduS7mS14EHxeXDw1sRAv+4PSkuzYojy6pj0+mp2dH0qS3an3GMOpzk3TX5yoyhYMvdGu6gijT3p0o0sdIcxyV8PI1ON19KhpFxaq62f9PDVYmG8OS17Fq7W8SXjv/mJPoBSshfNDI2n3rYrdidzFbQEvIAGy/oH31pn+OWCJMAo20r4Yy+mdL8yEXIhizshVGdn5p/n0n5NUtguTUe79iBBbMrg7xIxW2v7uYHvttFSOQvgw1zjKFiRS0viHIXcq+rTbVDG8Q8luVgnUedZRa52L2Ls
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.011560, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,93 +130,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
+Milan Broz <gmazyland@gmail.com>:
+> Anyway, my understanding is that all device-mapper targets use mempools,
+> which should ensure that they can process even under memory pressure.
 
-kernel test robot noticed the following build errors:
+Also, I don't understand how mempools help here.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Harry-Yoo/mm-slab-use-unsigned-long-for-orig_size-to-ensure-proper-metadata-align/20251222-191144
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251222110843.980347-8-harry.yoo%40oracle.com
-patch subject: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext array from leftover
-config: x86_64-buildonly-randconfig-001-20251223 (https://download.01.org/0day-ci/archive/20251223/202512231042.EEBUajQY-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512231042.EEBUajQY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512231042.EEBUajQY-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/slub.c:2140:33: error: passing 'union codetag_ref' to parameter of incompatible type 'union codetag_ref *'; take the address with &
-    2140 |                 if (unlikely(is_codetag_empty(ext->ref))) {
-         |                                               ^~~~~~~~
-         |                                               &
-   include/linux/compiler.h:47:41: note: expanded from macro 'unlikely'
-      47 | #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
-         |                                           ^
-   include/linux/compiler.h:32:34: note: expanded from macro '__branch_check__'
-      32 |                         ______r = __builtin_expect(!!(x), expect);      \
-         |                                                       ^
-   include/linux/alloc_tag.h:52:56: note: passing argument to parameter 'ref' here
-      52 | static inline bool is_codetag_empty(union codetag_ref *ref)
-         |                                                        ^
-   mm/slub.c:2140:33: error: passing 'union codetag_ref' to parameter of incompatible type 'union codetag_ref *'; take the address with &
-    2140 |                 if (unlikely(is_codetag_empty(ext->ref))) {
-         |                                               ^~~~~~~~
-         |                                               &
-   include/linux/compiler.h:47:68: note: expanded from macro 'unlikely'
-      47 | #  define unlikely(x)   (__branch_check__(x, 0, __builtin_constant_p(x)))
-         |                                                                      ^
-   include/linux/compiler.h:34:19: note: expanded from macro '__branch_check__'
-      34 |                                              expect, is_constant);      \
-         |                                                      ^~~~~~~~~~~
-   include/linux/alloc_tag.h:52:56: note: passing argument to parameter 'ref' here
-      52 | static inline bool is_codetag_empty(union codetag_ref *ref)
-         |                                                        ^
->> mm/slub.c:2326:16: error: use of undeclared identifier 'MEMCG_DATA_OBJEXTS'
-    2326 |                         obj_exts |= MEMCG_DATA_OBJEXTS;
-         |                                     ^
-   3 errors generated.
-
-
-vim +/MEMCG_DATA_OBJEXTS +2326 mm/slub.c
-
-  2302	
-  2303	/*
-  2304	 * Try to allocate slabobj_ext array from unused space.
-  2305	 * This function must be called on a freshly allocated slab to prevent
-  2306	 * concurrency problems.
-  2307	 */
-  2308	static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
-  2309	{
-  2310		void *addr;
-  2311		unsigned long obj_exts;
-  2312	
-  2313		if (!need_slab_obj_exts(s))
-  2314			return;
-  2315	
-  2316		if (obj_exts_fit_within_slab_leftover(s, slab)) {
-  2317			addr = slab_address(slab) + obj_exts_offset_in_slab(s, slab);
-  2318			addr = kasan_reset_tag(addr);
-  2319			obj_exts = (unsigned long)addr;
-  2320	
-  2321			get_slab_obj_exts(obj_exts);
-  2322			memset(addr, 0, obj_exts_size_in_slab(slab));
-  2323			put_slab_obj_exts(obj_exts);
-  2324	
-  2325			if (IS_ENABLED(CONFIG_MEMCG))
-> 2326				obj_exts |= MEMCG_DATA_OBJEXTS;
-  2327			slab->obj_exts = obj_exts;
-  2328			slab_set_stride(slab, sizeof(struct slabobj_ext));
-  2329		}
-  2330	}
-  2331	
+As well as I understand, allocation from mempool is still real allocation
+if mempool's own reserve is over.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Askar Safin
 
