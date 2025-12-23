@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0407BE6F095
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 15:09:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D76A6E6F093
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 15:16:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0D4C6B0005; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
+	id 2706B6B0005; Tue, 23 Dec 2025 10:16:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB056B0089; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
+	id 21E8B6B0089; Tue, 23 Dec 2025 10:16:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9D1C6B008A; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
+	id 11DD96B008A; Tue, 23 Dec 2025 10:16:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B975D6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 10:09:02 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6123EC0B9B
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:09:02 +0000 (UTC)
-X-FDA: 84251068524.16.517764C
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4485240010
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:09:00 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ud8Ux0yC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766502540; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0070D6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 10:16:35 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A9A0613379
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:16:35 +0000 (UTC)
+X-FDA: 84251087550.07.4C9EA19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 08C8D16001D
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 15:16:33 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GNmmWNv5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766502994; a=rsa-sha256;
 	cv=none;
-	b=G9KWzx+B00WFmRdt9WOJw7A76xgGVQ4bm05C0wkp3iGzNfyJObAdum+4eUXDxnfQ/jzlFO
-	3uu5fl4hP+QoenjkyJiF9UD/AWNlD0PGonbrIhtb7mvTLfxztcGHOcZgAFpcYDrbIV3GB0
-	e7vI1Gg4TpML6zBDCl3/1393gTo/2Xw=
+	b=P4HRpsuQzmpuOwQ9p87L3eYcoYSJbTeLmQxy7QwToyAAg/nGoSou/EvDMDOCx0aDPIVPSb
+	DJhIDMBIXsw/uZ9zC7hZZTvy5CPRAGrbiQ32SXkBZt7nCMXXw9DVYh8WXI+vOWifJGpE0D
+	FBGDjtQQKMdQcSs5jahchZkfJcXidMo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ud8Ux0yC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GNmmWNv5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766502540;
+	s=arc-20220608; t=1766502994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bGEmBuIAlDpfKf1Ox8wdvb0ICd3r/4M1pyLit4d3Row=;
-	b=7DHSBmUWoQkYO/OvTiBpO8ryTzuxUjaF5DxC7haSZuzlXyC91FOAyND0MACRdAi1KHSxgS
-	SqSr/kJxVvuawd9d0cpZ2iMhUM5S5FPcTdQq1HSg0OOXQJgoVpXDgWG/yRsbDyYMGlZ7b6
-	drl2tr7Ujp/f4SxbP7d11Rm6dn4WLaY=
-Date: Tue, 23 Dec 2025 23:08:32 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766502537;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bGEmBuIAlDpfKf1Ox8wdvb0ICd3r/4M1pyLit4d3Row=;
-	b=Ud8Ux0yCoBLP5E6OpgaynfOPKbsI21180p37taLDe/7moDEyiMS7JGkLZwqYdgIplvix8e
-	U+U7u/0ULmMVjzfg0xFoo5cZeq10s71ImKcAsLxVbp8iMkur+LlJ26yVuj+7GQrVCeirrG
-	ZlBBjj+f+5JSFWRn8bdv6GKKpP0wzcU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
-	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
-	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH V4 7/8] mm/slab: save memory by allocating slabobj_ext
- array from leftover
-Message-ID: <graryni6wadpi3ytfq7zimj2kbmm7dumxvhxtzmxndrv5s2y67@ju4cdnsmos6e>
-References: <20251222110843.980347-1-harry.yoo@oracle.com>
- <20251222110843.980347-8-harry.yoo@oracle.com>
+	bh=6i6STglztduNNN/BxT8GuFiTUc1VSfue7E9LS9V7obQ=;
+	b=Ioc8ZwVwZkQ/Bp1NZZ9SlE01PUT9NcsRn69c8ECTLTZ3Z1b7uqHG7cm06sESC173OT/5kW
+	fJCGxSIY8ieadfeNAsDEK4slLaaBCVNpQys90efNkYvvlCiq2xRAVjvuyRUhrIuUQI7v/O
+	9txTgKrz3tQiGVVNx1dONLAL5qs4UzU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CE0C860123;
+	Tue, 23 Dec 2025 15:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00827C113D0;
+	Tue, 23 Dec 2025 15:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766502992;
+	bh=MX0UEBGbGjeyT7I+fhRvt8AzC7Kbdy82QaHX7EWOjB4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GNmmWNv5axguqpzzF5TE4K9OHVqQuwUPYn7m9Xy4O5zQEcBhdYuWYACcupNC3GUbK
+	 oW2+cfENHoMcqbRbby7jWn2BmUXrd1fauW3pFEup7BKEk47nyIqle6LD9w6eOTMd9J
+	 MAZqcMh2EGy49IdXJUbrDxuE/UiNrY1dxeXDWBoB4oPhLs9w0s/VtwK9L1yAqkvUhU
+	 shf41UdhHRQXcM2m+TWEW/Amg+72ajreOtvYGVs4EFEnbxlGuB9fq0Yu/V+s3AuQkW
+	 bEj1psfGTsi3frtp7vlRosrykLLEo7oh/Z2lOA3Qv6uVrDq80/wGYWOfg0mzPNyeo+
+	 4OWUjWsJreuuw==
+Date: Tue, 23 Dec 2025 16:16:29 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 13/31] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+Message-ID: <aUqyTUm2NipItcVu@localhost.localdomain>
+References: <20251105210348.35256-1-frederic@kernel.org>
+ <20251105210348.35256-14-frederic@kernel.org>
+ <e0c0f8b7-112f-40d7-b211-89065e9003b2@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20251222110843.980347-8-harry.yoo@oracle.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4485240010
-X-Stat-Signature: 91qmowktg47jdnxxmkg9kx3754994dop
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e0c0f8b7-112f-40d7-b211-89065e9003b2@huaweicloud.com>
+X-Rspamd-Queue-Id: 08C8D16001D
+X-Stat-Signature: 7cfoyt9t1gjfm1x5sgga1enhokwimfqk
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1766502540-111938
-X-HE-Meta: U2FsdGVkX19xzpYMqsmTBhEh/SQuEvOA1VUYugJeB1e29Kc0O0hqcqkobKnclAwlETtXFO5jDllkc7uNtmxZBe+FRIH+CYVJQ2ZTQy4jI0l+tHmsrmlE3SZC0jmQFzJYkkr3Nalb29yLskcQGJ1kcJh17xMiG4YEGttBGx5v2ncmj8Y293NYBlmay8ceYdC2rC4UsaHGQW8rK/KyBg7WKevaJiiApciMqkfSbJd65jDOI0TMHsNaNmGfhm821wO7EuG1pJNY2//SfxuTWMtMr7otj0a1RHkJaux5M6uaqmCmowt5xqU/2vH+Vvr0fqVW7uXBfeGbiIh7nbj/80qt04ppwVG26A4S+AE2pJ7kSrK+iAZQAptyioXUsCnmmcF+861dBKAuM3H4K/a5aVbkg5LUkfUB0+SA2DDoxR3fHvBvAxqHoxKqrSQfaybyCAAO7JczhHn2FdwDG4hZGB05TzB4uq294V+miwA75/Bt5AMamcZsX1GUJFY8sf56J4weVSSa8qfI7r5AiimiUrO4lBoJmS5IVCjcddkJOmaiq48d9G/ATKSLj9nCEDR/C5Zt6yNZ6de1MEB/3NWIKUyN84MyU+gBIlTPK5Bgv6AwPuuYCnc2W9+oG4hXv6xuxm6PPvCqFGsBDW05cTMDVfKoWy7TQff+HsUO/FRwX4kXxJ7doO0O/c9JHF3b6j7tj5emfDRI9yPhRFaynXyv2HCo157yr3+a016MZC+eOpb2EP6zT6ZNCBpI0Piy5yaJVZiBKu2+84/op9NdnVhmLN73fMT8KduSQtW45hNDjZT2NC52WVO5yohYIfWGpYHbTQPqrAHDmGvjZM+Jft0T+lRcKN1PQtjEpIDNkegj05H6jyjT5qnu5ZEqf6ryQFzEdhxmFAZ4LTtJpaE3TbSy/p+shaTrTc66YTxxK5At4M24razmIh0j/1mZmVJQxyahE2rzuAKaW7Rcny1cL1t7wVh
- 0ZiT3xfA
- hZQvdAlTcdsTs3meWW6de4KNkZTgeIv86dnX/YqHe3E2m0PP9r6rMdO+Aq9owkJCsCYPeBmbjlCQdWPA2SnWmto6Nw/Xb1SVnRibdr2EOSDP3RL0FFRW/U+cnh2qCWUAzsrZH6SKSdCiOtXfgUMT5+Lt4bRCLxVklgHgJ/b6G48fLO7uGphrSNiMY9pwOk9Yb6ba/xC2ujO20uJTV5u/WM2fcsf/N30e6/vg7pNS1bux3HLzwiUyuQaM7+1e+RwAaFccYVY71LZeD8uOJF/zABtdkKNaCIEl7H3riK96mEfARBQbPsP/KYQMq9OeFfBGP+GCVjRnaGBofmvVCYdPfgoksLDzt0+WxWc60rssisrLMJ1Zvxpof6oivbw==
+X-HE-Tag: 1766502993-718975
+X-HE-Meta: U2FsdGVkX187HpAoii5mWlNPs30kZt7IHI0jq6LEsNk82KacIZFLy8CtNS4mopkYgzPm0eZNPR097Rdc1mYRsdp6qeHv6WPOdhZ5AAtwwlGjWj4lf331uNMRcp5vzY+4CDOpqZx9pGcL7Jw2Djmcqt2qeQXOHZsXA7vdb7wyxvuzxzuBGhGfAVZCnjiWwBWfD9fGv8G2gA3qcoiIE0qUOPYCBRlJtZYVeJHAeUJZ5aw0Mjrwh9S9Xi7Mo8uHLhTsTOSVzdWVR74p882Fj/lvXQznTLs01XLVhB01c/G5TsxIsDzWiaO8Iv2CvwOvXMnIYK55ck/LpIGYrbwc6sLbIS1TWUhCuvyndx02RGMuYr0WXqE3kCW13e9hM3bChknudQAxaJ+KvPMzV9xYPlAiSIxrDpaJZyGQGhzAIL99FNtQxstSBvrQqQcqKHC9pS2Jma+iE6410uXcAB2ASCfJw4HzsRX2KjMbdfDvm1pEj0BDxEzq2moclTLiV9Plb6ncC01Z6bdwL3p9K8FApXTUpJchXJemsbWTqZTC4aO9JKPXggYtiT0rKH22alNtrMC3N7+HWNc8yXFL4TbV8hfcURYFzoWMHjl4pnG7ZeX0fcMeezjhVeXSPP46Vqu00NqTzM+XWXzPA8WhAo65kCvbkJfHs8r1kVnHwFBJYwzdl45yGbSKHKM96VPIAyS+EC8KtAnSNKlZmNve7pGXoZvac3FiNFdx/zai/WNBjcbC+UpVruCv3VfO4fX4sRR31z9ejrcXJU4V6oOnX5raQrYYX/9KJCTE14QS7cAT6ckjgfBWRV3i4zuntzzC0aKUvYcQygW3ukFHKdqrcaK9QkZMr9BDlVCCPWkP8LKfq6/yMZsIeci1QdFzSr5L/+mwMm+bAgcpJpgK9j4wznLfmEW71OMMhKt5Fb0PTAKEJanVzlLdwii0Lw0dYhlGYdFp5990DAmYeydv9VPS3OsH2XA
+ wFV9Knnc
+ FnT0ui3vYRj3aLzNyBs/f+/7RhmPcFgOUO7aZhYvOFwAnlh3phjOMUYwXnvj6l8kbrZ6Wdf7tp/c/c9YpiDQxzAP5xNjnGxyIoxLDbV+/jkBUh7UBzEVfbQZ7ktwK/zd8NT3H8lgc03jUFmNl1rLC3VdjVeHC6CKPp7/+OIjPW1Oy+z38h1MFKajvqc+tn5P9cNeC0Y+poVzQ6pL6KmdZqiDYVGhq9BRVf3HjEU+n5lqGyUvpRabLVw+iXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,279 +120,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 08:08:42PM +0900, Harry Yoo wrote:
-> The leftover space in a slab is always smaller than s->size, and
-> kmem caches for large objects that are not power-of-two sizes tend to have
-> a greater amount of leftover space per slab. In some cases, the leftover
-> space is larger than the size of the slabobj_ext array for the slab.
+Le Sat, Nov 08, 2025 at 05:05:10PM +0800, Chen Ridong a écrit :
+> > +int housekeeping_update(struct cpumask *mask, enum hk_type type)
+> > +{
+> > +	struct cpumask *trial, *old = NULL;
+> > +
+> > +	if (type != HK_TYPE_DOMAIN)
+> > +		return -ENOTSUPP;
+> > +
+> > +	trial = kmalloc(cpumask_size(), GFP_KERNEL);
+> > +	if (!trial)
+> > +		return -ENOMEM;
+> > +
+> > +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), mask);
 > 
-> An excellent example of such a cache is ext4_inode_cache. On my system,
-> the object size is 1144, with a preferred order of 3, 28 objects per slab,
-> and 736 bytes of leftover space per slab.
-> 
-> Since the size of the slabobj_ext array is only 224 bytes (w/o mem
-> profiling) or 448 bytes (w/ mem profiling) per slab, the entire array
-> fits within the leftover space.
-> 
-> Allocate the slabobj_exts array from this unused space instead of using
-> kcalloc() when it is large enough. The array is allocated from unused
-> space only when creating new slabs, and it doesn't try to utilize unused
-> space if alloc_slab_obj_exts() is called after slab creation because
-> implementing lazy allocation involves more expensive synchronization.
-> 
-> The implementation and evaluation of lazy allocation from unused space
-> is left as future-work. As pointed by Vlastimil Babka [1], it could be
-> beneficial when a slab cache without SLAB_ACCOUNT can be created, and
-> some of the allocations from the cache use __GFP_ACCOUNT. For example,
-> xarray does that.
-> 
-> To avoid unnecessary overhead when MEMCG (with SLAB_ACCOUNT) and
-> MEM_ALLOC_PROFILING are not used for the cache, allocate the slabobj_ext
-> array only when either of them is enabled.
-> 
-> [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
-> 
-> Before patch (creating ~2.64M directories on ext4):
->   Slab:            4747880 kB
->   SReclaimable:    4169652 kB
->   SUnreclaim:       578228 kB
-> 
-> After patch (creating ~2.64M directories on ext4):
->   Slab:            4724020 kB
->   SReclaimable:    4169188 kB
->   SUnreclaim:       554832 kB (-22.84 MiB)
-> 
-> Enjoy the memory savings!
-> 
-> Link: https://lore.kernel.org/linux-mm/48029aab-20ea-4d90-bfd1-255592b2018e@suse.cz [1]
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/slub.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 151 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 39c381cc1b2c..3fc3d2ca42e7 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -886,6 +886,99 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
->  	return *(unsigned long *)p;
->  }
->  
-> +#ifdef CONFIG_SLAB_OBJ_EXT
-> +
-> +/*
-> + * Check if memory cgroup or memory allocation profiling is enabled.
-> + * If enabled, SLUB tries to reduce memory overhead of accounting
-> + * slab objects. If neither is enabled when this function is called,
-> + * the optimization is simply skipped to avoid affecting caches that do not
-> + * need slabobj_ext metadata.
-> + *
-> + * However, this may disable optimization when memory cgroup or memory
-> + * allocation profiling is used, but slabs are created too early
-> + * even before those subsystems are initialized.
-> + */
-> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> +{
-> +	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
-> +		return true;
-> +
-> +	if (mem_alloc_profiling_enabled())
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> +{
-> +	return sizeof(struct slabobj_ext) * slab->objects;
-> +}
-> +
-> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> +						    struct slab *slab)
-> +{
-> +	unsigned long objext_offset;
-> +
-> +	objext_offset = s->red_left_pad + s->size * slab->objects;
+> Since there's no comment for the 'mask' parameter, would it be better to name it 'isol_mask'? This
+> would make it clearer that this is the isolation mask input and what is doing
+> here.
 
-Hi Harry,
+Good point! I made the change.
 
-As s->size already includes s->red_left_pad, do we still need
-s->red_left_pad here?
+Thanks.
 
-> +	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
-> +	return objext_offset;
-> +}
-> +
-> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> +						     struct slab *slab)
-> +{
-> +	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
-> +	unsigned long objext_size = obj_exts_size_in_slab(slab);
-> +
-> +	return objext_offset + objext_size <= slab_size(slab);
-> +}
-> +
-> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	unsigned long expected;
-> +	unsigned long obj_exts;
-> +
-> +	obj_exts = slab_obj_exts(slab);
-> +	if (!obj_exts)
-> +		return false;
-> +
-> +	if (!obj_exts_fit_within_slab_leftover(s, slab))
-> +		return false;
-> +
-> +	expected = (unsigned long)slab_address(slab);
-> +	expected += obj_exts_offset_in_slab(s, slab);
-> +	return obj_exts == expected;
-> +}
-> +#else
-> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> +						    struct slab *slab)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> +						     struct slab *slab)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_SLUB_DEBUG
->  
->  /*
-> @@ -1405,7 +1498,15 @@ slab_pad_check(struct kmem_cache *s, struct slab *slab)
->  	start = slab_address(slab);
->  	length = slab_size(slab);
->  	end = start + length;
-> -	remainder = length % s->size;
-> +
-> +	if (obj_exts_in_slab(s, slab)) {
-> +		remainder = length;
-> +		remainder -= obj_exts_offset_in_slab(s, slab);
-> +		remainder -= obj_exts_size_in_slab(slab);
-> +	} else {
-> +		remainder = length % s->size;
-> +	}
-> +
->  	if (!remainder)
->  		return;
->  
-> @@ -2179,6 +2280,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
->  		return;
->  	}
->  
-> +	if (obj_exts_in_slab(slab->slab_cache, slab)) {
-> +		slab->obj_exts = 0;
-> +		return;
-> +	}
-> +
->  	/*
->  	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
->  	 * corresponding extension will be NULL. alloc_tag_sub() will throw a
-> @@ -2194,6 +2300,35 @@ static inline void free_slab_obj_exts(struct slab *slab)
->  	slab->obj_exts = 0;
->  }
->  
-> +/*
-> + * Try to allocate slabobj_ext array from unused space.
-> + * This function must be called on a freshly allocated slab to prevent
-> + * concurrency problems.
-> + */
-> +static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	void *addr;
-> +	unsigned long obj_exts;
-> +
-> +	if (!need_slab_obj_exts(s))
-> +		return;
-> +
-> +	if (obj_exts_fit_within_slab_leftover(s, slab)) {
-> +		addr = slab_address(slab) + obj_exts_offset_in_slab(s, slab);
-> +		addr = kasan_reset_tag(addr);
-> +		obj_exts = (unsigned long)addr;
-> +
-> +		get_slab_obj_exts(obj_exts);
-> +		memset(addr, 0, obj_exts_size_in_slab(slab));
-> +		put_slab_obj_exts(obj_exts);
-> +
-> +		if (IS_ENABLED(CONFIG_MEMCG))
-> +			obj_exts |= MEMCG_DATA_OBJEXTS;
-> +		slab->obj_exts = obj_exts;
-> +		slab_set_stride(slab, sizeof(struct slabobj_ext));
-> +	}
-> +}
-> +
->  #else /* CONFIG_SLAB_OBJ_EXT */
->  
->  static inline void init_slab_obj_exts(struct slab *slab)
-> @@ -2210,6 +2345,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
->  {
->  }
->  
-> +static inline void alloc_slab_obj_exts_early(struct kmem_cache *s,
-> +						       struct slab *slab)
-> +{
-> +}
-> +
->  #endif /* CONFIG_SLAB_OBJ_EXT */
->  
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> @@ -3206,7 +3346,9 @@ static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
->  static __always_inline void account_slab(struct slab *slab, int order,
->  					 struct kmem_cache *s, gfp_t gfp)
->  {
-> -	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
-> +	if (memcg_kmem_online() &&
-> +			(s->flags & SLAB_ACCOUNT) &&
-> +			!slab_obj_exts(slab))
->  		alloc_slab_obj_exts(slab, s, gfp, true);
->  
->  	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
-> @@ -3270,9 +3412,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
->  	slab->objects = oo_objects(oo);
->  	slab->inuse = 0;
->  	slab->frozen = 0;
-> -	init_slab_obj_exts(slab);
-> -
-> -	account_slab(slab, oo_order(oo), s, flags);
->  
->  	slab->slab_cache = s;
->  
-> @@ -3281,6 +3420,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
->  	start = slab_address(slab);
->  
->  	setup_slab_debug(s, slab, start);
-> +	init_slab_obj_exts(slab);
-> +	/*
-> +	 * Poison the slab before initializing the slabobj_ext array
-> +	 * to prevent the array from being overwritten.
-> +	 */
-> +	alloc_slab_obj_exts_early(s, slab);
-> +	account_slab(slab, oo_order(oo), s, flags);
->  
->  	shuffle = shuffle_freelist(s, slab);
->  
-> -- 
-> 2.43.0
-> 
+-- 
+Frederic Weisbecker
+SUSE Labs
 
