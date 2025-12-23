@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5438BE6F06C
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 08:22:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B93A2E6F06C
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 08:24:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E126B0005; Tue, 23 Dec 2025 03:22:51 -0500 (EST)
+	id 2F9DF6B0005; Tue, 23 Dec 2025 03:24:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BBEE6B0089; Tue, 23 Dec 2025 03:22:51 -0500 (EST)
+	id 2D13E6B0089; Tue, 23 Dec 2025 03:24:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F300C6B008A; Tue, 23 Dec 2025 03:22:50 -0500 (EST)
+	id 1FE586B008A; Tue, 23 Dec 2025 03:24:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E16036B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 03:22:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D931C0986
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:22:50 +0000 (UTC)
-X-FDA: 84250044900.10.D37D329
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4C64D180017
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:22:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LWGKu27t;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766478168; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F6426B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 03:24:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BB1A13B2F1
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:24:16 +0000 (UTC)
+X-FDA: 84250048512.13.10CA38A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DD663A0009
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 08:24:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S0htOP/1";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766478255; a=rsa-sha256;
 	cv=none;
-	b=G4ypiOaA7N+uWSspdEhzxnFiWCokoNqDBIR/FvnblEl6geS39jDcDJm0r6ifud1PXPCVnp
-	nnVutEXuQF0R8Zj/77PYAMlfblrTUy6K2LiqBblHeB5QXYjQ1Qx/RddlUqlP+Pt0YFeBvg
-	mnzHKCLhmsMQl+mhSGywlh2qEgkY11o=
+	b=vVqOai1AKiXVhFul+WCQWyRkbbjQSSYLlBYjwut30aEAeDPjLbyqUhEoSTsAznoEwVMv0y
+	4FlWv1S+FjWKeL3jauzq85KG7WdT3Tbu1+HaU+7X3qSHlUFD53GO4p7IC9ASArPmSQnxUC
+	5VL7pBF5KU0VZhFYBkmsXzTqnOMQdTc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LWGKu27t;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S0htOP/1";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766478168;
+	s=arc-20220608; t=1766478255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g8DrPyrW6XtxAjggK1JgrO3+7taqgHLHtwdI/kQJR+w=;
-	b=6Cp9qN5J4s4KT84cAW0FEDEZWz86BjPfBJCp5ivEX/8ojyWf6LUoG+1oMl9M/zk5KLwCKW
-	zNy+GQJtlcYzHwtiT0gd3UM0Q6H0qgz0hcV3olSCnXrHRurEbNKtbTd/4LLVY1ysegxkX6
-	O0fZ6qSwQ7jhryDBZatEQBjqGvLwLew=
+	bh=i7A3yHlUbGTsu0rrCu87u4bXajsFAUkyAS+vn/CIl7o=;
+	b=TRK3Da56wYI9RufZTjkj4pGFYUMX+odc5434XcTuzLFuhiLq5Cjn1Yh3I5F96Zjb6MkWli
+	sNEtsmRk8vLTf+k+ag+1okcDzzlP76CE2Ehu2mkQRjzzsdEDam1qsrWTugwCQsOiaU//gw
+	FBISYbeQCRJ6UmNTMaRTieB0/NJBJgU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B05F418D9;
+	Tue, 23 Dec 2025 08:24:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C416DC113D0;
+	Tue, 23 Dec 2025 08:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766478253;
+	bh=Cu3hVNe+vn/1Nl8EO/Jpn+yDlDMHQ7A+fr4A4oihm3A=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=S0htOP/1hh+2+c0XDJCBoL+dghPzhL1R9kZzGVyZU6rVMqjG5dwiHsMwoEgTNMzFg
+	 N4dQlHUmbzlfVEdWMhNV177ArYMuuqtx4qSRvc9sVCsrz/RJ9y5G02k5atCmKJ3KFm
+	 u9ieYeGjqSK7ar4CAb5mOihvdbVxpSnHWUKEB7K8LsDPuW3hmzRfO6Y++y+KlzEa71
+	 sa/JVa+IccYVlwR6ZY7T1nZiQZq9JnsnO5AtzqvsrFmMYbRu3OSyGCmHYfunSjoK6m
+	 xW1lJZX8VpTAhwpsX69APtL+OEmkVhhghu25+2oHMiRZYVcDxKd8yWNFtN5JZ155f2
+	 ItZyQnBnhuOgQ==
+Message-ID: <fa4d76aa-e5cc-41c7-81d5-d1c0024ffcbb@kernel.org>
+Date: Tue, 23 Dec 2025 09:24:05 +0100
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766478166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g8DrPyrW6XtxAjggK1JgrO3+7taqgHLHtwdI/kQJR+w=;
-	b=LWGKu27tPvA6G/BvHlU1qcMpvMeL6oZcoC6wVaQUt3k4Les05DwUlFnp7Gjahu1gLH5WZB
-	oktQErFDkcBbaLo98juzOcKkUlZauT477Cg0haR9+Kg1nX4zilo1MYpXCXp8yhoogkl1m9
-	FMaczIARJifLFdHGoGEQC+QIpX7I384=
-Date: Tue, 23 Dec 2025 08:22:43 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
- from direct reclaim
-To: "Shakeel Butt" <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Michal
- Hocko" <mhocko@kernel.org>, "Qi Zheng" <zhengqi.arch@bytedance.com>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
-References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
- <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
- <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
- <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4C64D180017
-X-Stat-Signature: 4df6j5kkjofgmbae7owz3dcei65muijy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in folio_remove_rmap_ptes
+To: syzbot <syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com>,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, harry.yoo@oracle.com,
+ jannh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, riel@surriel.com,
+ syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+References: <694a2745.050a0220.19928e.0017.GAE@google.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Cc: Jann Horn <jannh@google.com>
+In-Reply-To: <694a2745.050a0220.19928e.0017.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DD663A0009
+X-Stat-Signature: owjph839qnieqtxqjrzufk84gd7jiymo
 X-Rspam-User: 
-X-HE-Tag: 1766478168-409914
-X-HE-Meta: U2FsdGVkX18Lth+6jordcIQzAjuI7qkboi3ABkdksVf4TcFCug3NjY2hkOPZWeuMOIKqdTmHfvD5AjWHZVAw2/iho5+e/1WXelzmhcvzG4FQmESuB9zJH3kdMvsuYgfhlziC/XquiNv984CPIFdSKJrE5sGSw0GeLztnL3rHp2vgoPXkW17GOF8OAf17e0O6HZmD1EhaNPzp9lr9f3V3/9CgiSifZydJSsgvnwAw4pN3hMgGr0PCHZljxplnO0+yaYx8s0SDyOS7LgPPQDtMIBF+a12SqSCU6xKOijUHY7ewyYfLnNLUCA/fYJrtXNhqt8OSxcvSp4VQ8RH3N/4lQgQDmMdYeeiOhTBDTnIxU96t6k/l5/rYJ9c+ylaO+vD83BxlxFwFOMNAtLr+919keDspmeK7ktnERKCWTxXUN9ijGsba3/5jvAQKSwC3RGhDcqDND9pp6wn1DkEtIcIF83NNrEseh1Stzl7CcH4ORXTrXW/jyBDRfqJcGFSBZV0y1oD5iek7J2Gtx0aahgxLeT8MCcequIRCChzRLBN1kCB1EMN5zjiiED/RUxqn07kHWwzi81Q9N23t6OPHuyLsrgP4igfiWpiAtT2N5aU9pa8gP0JM11jKTAMPOaDb73NEKOxhT2OgJLJGOnN+nfMkwntXE6PwIsvmyrTnki5wucR0gE5IVgozTq+KA6xU4sftMeH1C/BNws8dmEoM+NLwtggldbA3lq4aLY8e4weyhBZJaVtR0ublM2IdiyNYy1CrgsCjgUR7QZCh74OSTHLN3M5doYewIl9mLKDuXYuXoIyjotwfL89H2VGBtvItSuDLHOGFfn357onbmSfsQLxyyHgEUcIc9QEtPEoL+IB6SeRX4GVcoexPrIZy8/M/0ltlWrhljAiPupyYVG7RV+e+49ANpUX2vMLqwgG6A1TX9m6h4i9QOE2/GNBIQ6pjtm1Yi1uU8D5Hwm6Fvs1Tkp3
- 2yJDYcTQ
- ygBumKjKbUUmK+T2NyI9negZmUtXwN9EDqk+JNPctP/LyvpVpzDmmzwYQ8A9NT4hzmYkP/oY5N2LUYmcmwRTPneAx7Ouf8me2yhO/8OXSvapy19ZxZp/mWkTR7sA0kKBIcceG/bpU8kyzV1mLdwbskyNBDDfc0VrIpiRD5vyDIU9HI2zBdazG9epqBr+fzBPpwgqu1iksUOcUZ/jHrI/UT4LXKxPy2qI11o4IPJY785fX5VrHO4nBwsbzyMmVp4LJmfknC0iWfc4Ea5esZOuZiDq5lA==
+X-HE-Tag: 1766478254-360862
+X-HE-Meta: U2FsdGVkX1+vMrrKphYc+zqxwUX05KnVQO/Bs0MZqC+qIHYjo6X0bomEm9hYOOzJCyaftflUszb00QClXv8IfYDx7W5gL9eoltLeR1P1fcYMGLktsWFXh5fj9VtW216oMghsa+pqXsTNrmrXbJnsMI5n6XuP+sARfvGQM08zErKLpitPGakVBlOdwBurzv9eCoQr7oX7gtA9T1JUsZ7NQ0f1hOOVCrTLkhIv6ggbxXoGpM8Dn7LVrFl6Z7vVwKSgMZLRxmR8KU14S9+XZ624O2/uh7TqVo0gYfpA6AuewEWENwMMnbAr8sR9x2G+ytBIkh3NaC9kNqAxy7kJ+7qmADRmfMBN/RhuNizziWIdZkK3rcO67kX9NsCRmqNBu17KgmcQXbiXUBZMi52QgRq+IRsXqsAvL5fWigaugaHbGuGQAAjurJVelquVDQjxcghLtJKMlVPBnQC6XzC8LWV23hwuDynUgvV3PFcmcx/2SWNB6ordY2QEt7cKwcOy0KiE3jPVpgmRDfhocHofq98xjXERlisWVLygUIvy957oXOHDrB7eVh7dfxwbcWjJ7SDz6qQFWwAz9sTDpryvoni8XNoe+AHWDoyYIFGQtBtnhP57hDIyHJTXFFcgAMAeO+0J0Y3IWRJ+tUco8bekqK40x9bgQW68MJ7IdjEeMq8Ldheo8xf9lrMqM1Hp1CO1tRCNI5T4PzbOUyAb6Z+nTY5xucd840BTRv/Q4PY8mvG2YS6PDPvglZKSUbGCdn9bCkW+IddqB1FdrKdD8iNPTCpfUgBrrX2UJbq0DOpKeRqKepS8tqO+xbCM4+4k71BeTKd8gbtbLjYbZfUch3k0PkpFWlCslit5cwS+uup7ZUY3d5Q822GYFk9ZOpr4IWWQuHeO9sgH9QUQxPupys4Ophe5D8LCpZarBKtFJ+utzUa7eecUiYjArKA/84TR1UOdUfUDwsd7GVmHUI1LKrUkMWE
+ IuFYGNdI
+ MPJormGSFO2JHhH3mjGINLuwirZegzRyZUPUxNNCWuh9SOrdvmLBYFOT8MhbWkTYN7pMCbqYKUBEioij9c84Su5gzfd5+bUfDg/il+IsebtqVwFdQnENCh95BdPRSDTCYnb74QK2hjQRoO81r0eHaplN2GY7+9OWDnjkFRBkQ+HIBDZM+VX5CZw/eLYgerlu0adeO0P8fiWx+Lh62Kcc6loMvIUf28kHn5JDfk3y/CvDkQE4kVQTWblJ5DLnfyWDBxjZcHf4TJ4C2f4awu2hkHKbyZgV2mmZWc/MPkuLCm66uNhg62iXu8mYlD9WmnIQ6xQtMhEhqXqaIPcbfCtHRt+0N3uTosMR6oSsMQ/6QtZC7yKG34JfiSmmMCTBqmdwHWSEhggfD4BKFHqkp6M9NDHqEYU1MTlVtMy3IuKfSoADzU5HjlLnL676iFY9lXgg+nEOFiKeL8k8qbL1ES0FD2WUvivWipDgEOlU2Ty8OfqnzTfUSq00Zod7p/kQMjGg7CGm1oG1Vq3wi2sUvB9MGTzU90T6yhNGYGuIBsKpf8YHCHem08L8H6js10PBt7bKPsCRfZ5iaZKybjjvcNEQk8LTPbXJ5Vl1YyH0oAIHVGIeJ6OTvk85vRrohKiS7sfP7Ru5hNABcBwQeZo/ZO0V9xYTIZWRQGgq6UrFK9CJuF22iC0qwgNDO9dy6aHcLLW3IFV6hT5uXpejsvp3zRKUxCSP0NsT0/jZxsHK5lW4ALqcHpe+2JD4eHyZlEC4sLItvIFDHSwB2exVmXbunxMTWnUCBPZDMlqHJL99ZAl1AFwFoGx3GWgeXWTUcClGj9FPekqrp2QP8+c7/8jt3+0h5iuoDvVWvSaXBppdYAfFOHMv4OCy71XA8+Nh84yE4lV/608FumGSxgf9ExDU25XzBulDynYK9w4mSLP1E685Lf29MAZrti90G9HFNgobmIDTJ5o+V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,137 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-December 23, 2025 at 14:11, "Shakeel Butt" <shakeel.butt@linux.dev mailto=
-:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40lin=
-ux.dev%3E > wrote:
+On 12/23/25 06:23, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    9094662f6707 Merge tag 'ata-6.19-rc2' of git://git.kernel...
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1411f77c580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=a11e0f726bfb6765
+> dashboard link: https://syzkaller.appspot.com/bug?extid=b165fc2e11771c66d8ba
+> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11998b1a580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=128cdb1a580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9094662f.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/5bec9d32a91c/vmlinux-9094662f.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/3df82e1a3cec/bzImage-9094662f.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+> 
+>   handle_mm_fault+0x3fe/0xad0 mm/memory.c:6580
+>   do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
+>   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+>   exc_page_fault+0x64/0xc0 arch/x86/mm/fault.c:1532
+>   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+> ------------[ cut here ]------------
+> WARNING: ./include/linux/rmap.h:462 at __folio_rmap_sanity_checks include/linux/rmap.h:462 [inline], CPU#1: syz.0.18/6090
 
+IIUC, that's the
 
->=20
->=20On Tue, Dec 23, 2025 at 01:42:37AM +0000, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> December 23, 2025 at 05:15, "Shakeel Butt" <shakeel.butt@linux.dev =
-mailto:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt=
-%40linux.dev%3E > wrote:
-> >=20
->=20[...]
->=20
->=20>=20
->=20> >=20
->=20>  I don't think kswapd is an issue here. The system is out of memory=
- and
-> >  most of the memory is unreclaimable. Either change the workload to u=
-se
-> >  less memory or enable swap (or zswap) to have more reclaimable memor=
-y.
-> >=20=20
->=20>=20=20
->=20>  Hi,
-> >  Thanks for looking into this.
-> >=20=20
->=20>  Sorry, I didn't describe the scenario clearly enough in the origin=
-al patch. Let me clarify:
-> >=20=20
->=20>  This is a multi-NUMA system where the memory pressure is not globa=
-l but node-local. The key observation is:
-> >=20=20
->=20>  Node 0: Under memory pressure, most memory is anonymous (unreclaim=
-able without swap)
-> >  Node 1: Has plenty of reclaimable memory (~60GB file cache out of 12=
-5GB total)
-> >=20
->=20Thanks and now the situation is much more clear. IIUC you are running
-> multiple workloads (pods) on the system. How is the memcg limits
-> configured for these workloads. You mentioned memory.high, what about
+if (folio_test_anon(folio) && !folio_test_ksm(folio)) {
+	...
+	VM_WARN_ON_FOLIO(atomic_read(&anon_vma->refcount) == 0, folio);
+}
 
-Thanks for the questions. We have pods configured with memory.high and po=
-ds configured with memory.max.
+Seems to indicate that the anon_vma is no longer alive :/
 
-Actually, memory.max itself causes heavy I/O issues for us, because it ke=
-eps trying to reclaim hot
-pages within the cgroup aggressively without killing the process.=20
+Fortunately we have a reproducer.
 
-So=20we configured some pods with memory.high instead, since it performs =
-reclaim in resume_user_mode_work,
-which somewhat throttles the memory allocation of user processes.
+CCing Jann who addded that check "recently".
 
-> memory.max? Also are you using cpusets to limit the pods to individual
-> nodes (cpu & memory) or they can run on any node?
+-- 
+Cheers
 
-Yes, we have cpusets(only cpuset.cpus not cpuset.mems) configured for our=
- cgroups, binding
-them to specific NUMA nodes. But I don't think this is directly related t=
-o the issue - the
-problem can occur with or without cpusets. Even without cpusets.cpus, the=
- kernel prefers
-to allocate memory from the node where the process is running, so if a pr=
-ocess happens to
-run on a CPU belonging to Node 0, the behavior would be similar.
-
-
->=20
->=20Overall I still think it is unbalanced numa nodes in terms of memory =
-and
-> may for cpu as well. Anyways let's talk about kswapd.
-> >=20
->=20> Node 0's kswapd runs continuously but cannot reclaim anything
-> >  Direct reclaim succeeds by reclaiming from Node 1
-> >  Direct reclaim resets kswapd_failures,
-> >=20
->=20So successful reclaim on one node does not reset kswapd_failures on
-> other node. The kernel reclaims each node one by one, so if Node 0
-> direct reclaim was successfull only then kernel allows to reset the
-> kswapd_failures of Node 0 to be reset.
-
-Let me dig deeper into this.
-
-When either memory.max or memory.high is reached, direct reclaim is
-triggered. The memory being reclaimed depends on the CPU where the
-process is running.
-
-When the problem occurred, we had workloads continuously hitting=20
-memory.max=20and workloads continuously hitting memory.high:
-
-reclaim_high    ->   -> try_to_free_mem_cgroup_pages
-                   ^      do_try_to_free_pages(zone of current node)
-                   |         shrink_zones()
-try_charge_memcg  -              shrink_node()
-                                     kswapd_failures =3D 0
-
-Although the pages are hot, if we scan aggressively enough, they will eve=
-ntually
-be reclaimed, and then kswapd_failures gets reset to 0 - because even rec=
-laiming
-a single page resets kswapd_failures to 0.
-
-The end result is that we most workloads, which didn't even hit their hig=
-h
-or max limits, experiencing continuous refaults, causing heavy I/O.
-
-Thanks.
-
-> >=20
->=20> preventing Node 0's kswapd from stopping
-> >  The few file pages on Node 0 are hot and keep refaulting, causing he=
-avy I/O
-> >=20
->=20Have you tried numa balancing? Though I think it would be better to
-> schedule upfront in a way that one node is not overcommitted but numa
-> balancing provides a dynamic way to adjust the load on each node.
-
-Yes, we have tried it. Actually, I submitted a patch about a month ago to=
- improve
-its observability:
-https://lore.kernel.org/all/20251124153331.465306a2@gandalf.local.home/
-(though only Steven replied, a bit awkward :( ).
-
-We found that the default settings didn't work well for our workloads. Wh=
-en we tried
-to increase scan_size to make it more aggressive, we noticed the system l=
-oad started
-to increase. So we haven't fully adopted it yet.
-
-> Can you dig deeper on who and why Node 0's kswapd_failures is getting
-> reset?
->
+David
 
