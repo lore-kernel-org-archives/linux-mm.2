@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 587FCE75450
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 17:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6415FE7544F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 17:34:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 479F36B0089; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
+	id 57C2F6B0088; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 424406B0088; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
+	id 54FFF6B0095; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32A6D6B008C; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
+	id 3D33C6B008A; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F8996B0088
+	by kanga.kvack.org (Postfix) with ESMTP id 2009D6B0089
 	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:34:08 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A54F4138A5B
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C455F13AFE2
 	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 17:34:07 +0000 (UTC)
-X-FDA: 84255062934.28.50CF967
+X-FDA: 84255062934.19.8BF66DA
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 335761A0015
+	by imf22.hostedemail.com (Postfix) with ESMTP id 37B00C000A
 	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 17:34:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="lsN/xG7J";
-	spf=pass (imf19.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=mwV8vjej;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1766597646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0/mQaUiHM70bBczLVLafy0D3SjjlawsO2OOWMSQWL5A=;
-	b=HeLxWDCsrc7V8FGr9JAciuKjzg+75JZb8nktrXn2w3eE5+BKkRvXkMX1CGnnY5XjeLoMgd
-	6mQzi3ce7Bc9XcNnFPEhb/EKfTQpZ0vWVkcjCaQyJlUNq+s50BZ+j7bKNrjz27qufiAEqy
-	EmO5rI3fhUCKmMumuGxxX6pP16wDW78=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Mq4W7sDg/Agh00nn/sSC9HgKzw4XSoLV+yJE0vShXuM=;
+	b=gAHhGfBAOqhkFJNs96E3MZdaAYiIT1LlfyNPr1urjwrne81RBlk6LbqVIjpkf/QIbDjA1e
+	LM40jgHvJ11WRyXCjFrTshmz/xjbOfl9U446JBGX5ERzWlgxk7VBnh8T45hUXvCDkdynEz
+	G2hecbfeLv1taa1zZM7fGMBLcs7FHfQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=mwV8vjej;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766597646; a=rsa-sha256;
 	cv=none;
-	b=UBrQcqsduzNfYg2ArSs0fZvYdEMSOlOpL123HDAfWe9SkCweaYXGUvYtOgIOGylsSuGbAC
-	dT+QVYHomWtpDN10ZBBiKAqxxVSBXBaTyrr9uthqjvHJEIF/ZRowhH1dk+UMYcdY/7sMye
-	+VjQe8Udmn+Xlx5dyBjJKaVQoBFkaG4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="lsN/xG7J";
-	spf=pass (imf19.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	b=bS03KbZwUpV/RhYvjcg4LJ6Bfl1HRSdFkIZnbQyvuQAirNcg0wi4vS9E3nOvVzkse7UkBP
+	yDAZqdOQHBHwFvcmT73z+il9bo+6LElr20fHBkXyi1JgR57jYIz8ehCDnf0UIeJUja2Lvr
+	OrjuKwdiNcwF/G8TeA+8F75xvQJ+pSI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1766597645;
-	bh=0/mQaUiHM70bBczLVLafy0D3SjjlawsO2OOWMSQWL5A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lsN/xG7JJcUpgZ1+8MQ69LoqMCE2OzrJMR+NToR/r+zJAKYvq7lMQaYXloj5oyZhk
-	 MB6b3AOBcXhUP+5CGFNQ5b3xE3LTuFY7g5WsieZ13kGTq7gkfMP0hUeoNjhQ7I5JaG
-	 Yyt0fxVkGayDExYqrK37CBtNF/EzTWgiq5tyg9/vIpw5yMaAq4dkcRl/HhDSYyBJiJ
-	 cTo99VJfi09klCAWnh+I5foY96IUMN3ncxBPpbPyjV2nUah5oI+GuW9DHnD2Ask4Yb
-	 U47d174ndv3fPqPwpiz0qvFVtgc+hWXc0xVkMXFb0WUxKO/tSRezozu6vq6bRzJdZ9
-	 LMJpPkmwTOZuA==
+	bh=Mq4W7sDg/Agh00nn/sSC9HgKzw4XSoLV+yJE0vShXuM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mwV8vjejIZtBnu/BJjgSoh3W8IJpP5EO2IJSE+RFcgANHPCeB+IvJzRN24gfE2q/n
+	 G+qD4TBldsguubC1CzBWgXCZk9cHb6JJGcRY0+A68Qolw2M5dEs2l38UfCj2pM6HFG
+	 zfNMYKNSyAO0TChR5iBq28RBTxRKjHoXd2P0MfRXFoUsisfj5/1OkkG+ZYy2SnC+my
+	 Q3y321qFZXstB2beDmbgavxfWHzwRRAUR8ARIBm37KXRnsVj0a/kUoQ9sD8N6/7ODe
+	 oeJ8PR6D2iPQjP+61hbSwEncWMcef/vyaEQ4YYzfsF7E1LmAPdHZDFUMvSs4268PC9
+	 3lTVo5ib/oSyw==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dbzWd1xMjzfHn;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dbzWd36bLzfHp;
 	Wed, 24 Dec 2025 12:34:05 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -68,20 +68,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	stable@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1 0/3] mm: mm_cid static initialization fixes
-Date: Wed, 24 Dec 2025 12:33:55 -0500
-Message-Id: <20251224173358.647691-1-mathieu.desnoyers@efficios.com>
+Subject: [PATCH v1 1/3] mm: Add missing static initializer for init_mm::mm_cid.lock
+Date: Wed, 24 Dec 2025 12:33:56 -0500
+Message-Id: <20251224173358.647691-2-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251224173358.647691-1-mathieu.desnoyers@efficios.com>
+References: <20251224173358.647691-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 69t7sr4qr995yu6eyyoqdpkda1x93wsi
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 335761A0015
+X-Rspamd-Server: rspam02
+X-Stat-Signature: b9oqap5j9cf4erzi6rxrxu7gx6uytwu1
 X-Rspam-User: 
-X-HE-Tag: 1766597646-980310
-X-HE-Meta: U2FsdGVkX1/9wO0bY3RarE3zCWpBYbovV0kfpBRwRdEoz2SoWOzzygwRYZCA0wo0DyO5BZ9YB2WhqKiZIhzymHhQc+HjSz3ZemiGILiGeHMWG7wqr/5p0v1MFLw50UIgX/+HsQy8PExlxKpMdE1/Asb2cPvAfNi/N8joTyK4ud1NhgLi6vHkI0i7G/dpOqXkho7AEVRWEWt7FkPROBGm2ppHcO9BsgVBVxAePaOd/U/OeKqtaqxjg9Li4NwXtO0N80TsK74jrO0bBJI7gJ6/SvoYY4FWqr2fnQAw7W0c/f8syontD5WvGx0mz4r/bAzOvaf4KvS+LX3V+9KiDqctcu7g1PWo7FGOGiKY/Dfd6cOl0K0iGCNX+ddYzPKKXgGwozn79rgS2kCoFe+1ATDiwJ4vFslsrik1lo8YssauaAGEGO6Cs87TsLPysNOQtP17+zPvufnZ32Imn36PLrJmP311X25UG27+evcknAO1aHtnE4ZAnG+xk+ieHW8d5uj00FLj4/AednSBLA/m9dSlLULDtOzRkRVU601jqbUkBI5R7BVtnthjGqXsmQA0FHT+4slbHVdT/clqm7dBn8sATAZVBWGfqJCTxCg05lVNeUm+uQWGcbBMMV/RQhkARYbK1za4XoRaMHhCeATxovvAz3MZT1/cPWi4jOl3WZgejWc+LmGzrGhNfybCaqt6rft4hq7ewS2G90eK4z9JTD8LutzEZt3Zj7QT6pXZ4HHeXYUw0SDC3KtK+cSWFAbxqsF/fH8vwUOd3yS3f5s3WlFRO/pKAwMkElYIq1AU2k4CezU4RtyYdSPBweqsCPuUjrWR3lG5eDTLHBbxxr6tv4+aIV04xD8FGHte0dhQdScP2KCiZo3FPJi399rDVWRDCwjua0b4Va9k9fJSz5AkxXMWnjnIhzJ0V6VSbkM8pxn9S3fPyp2nVaeYT0c8iAl+WA+U5pi/dgGA4HAvKy6dvTT
- LjWlaUF5
- iGPEdoZNy41cnmiGBHFCpmo82blAEcpYhSuI5tM0IRnroYT8OCLQLz8F8Ouq9vxFl4WnTtwC6nQ9EKsRJfNlnvklvD52CaEIRzCPqSlNG4lRiFX9MehNLkyAw0pSdq9FgcDOAoVguT/e7XKzGSFJ6KdmoATUNPupAAGHrss/PT5IxBTeD3bzI9DErYwZAWy476T0njyeorj/KtZUp7HPaB7wtX3f/JJzClnMnqV/bYrTcjncStnyi4RQ98yIF85WrcYXKt/ulC2KehxFNDElzGWIIvWhn0bDEMGCsVFA3QJA5mFsZ1rlzZyQNG0iBHVsE3hPd/XHL1C106XGSn4urpnbYvzyXar+sB0UWAoDofiKxoyHvwjESzm0VYasBL22ZTGS6Pdl5Cq9dW+6XE67egamjxYdZk4S5fJ6j6upY1uwpPYlN54gKdEvyS5Gva4JHyD/FRfmglPA4b0Q=
+X-Rspamd-Queue-Id: 37B00C000A
+X-HE-Tag: 1766597646-158218
+X-HE-Meta: U2FsdGVkX19Y1fHnO8dFZdkzEnXB57wNwjYWyogo3qxYXApz5h4ybXtTehKnnCiLopSKGhz9kf7v3sr2S4LC0evb26ghHSMtGu/7zD7W9MhtaEtLxNfe4CECzqQqNPswdBz9TFeu+9G/gbPGud2w0S3sSW25FVRipyHcc9oCwD+0a9f6lYCjhMg0cMAut3h9PiaLNRxnDg2bLWaNXmPerH9uJ0MBvBODk4MM1tLLCVWS+Nfz8fsJXQou9sJ7VbbqqJxbu88fUCRi+lyJHzpM6qZMKMge/arDFCVJ/3AwfknOuOP0OqcJkTTajqLlwP41TmjOL18d8w4CLdHaD2TOxKyPd9rr266h8OvSpBBiRpLKTbFPGEWR6DUseFEZ2ObPJFn+X8iZIgYHA4/D5invf8N4I0DuXE4VRTUYKrtwHj4vNIKaY7gflIr79D9HeflRtTtImlwMiwow3/vxc7KumVq/xmvnhcC/w45zHX8reckcLkv2G4J15W0X8LBAZnNuwLAVw4vNxo0HkWJl8u5p2HkZbCHMgpGGKjMP4O1Wij8jCJ9izx9K30QSpxZvwwtwUWFPMmMIYSN1IeEUdbk/miPHF9x9hbipNtReTmvziUlYaw8JSK/EMBzN209qmZqmgBRpra6iQkcr6zmpwt4M8mjzoTjanfbdW47CvKEEMX+YheJUAul7gLVZS9Yl6PVLf/G87VuSkHUc9dauXah+MtxVPbO4698TQsSPu/fgoVFFCVvgCagJtqzHBM6JOSNd7oNGAjBuBge3NkplzbAzWXXbnydhlklb/tvPeX+HLteb9Ng23fZwQ7qQkV4twWlcySWo9m+NCKzsx/5aouU+Xj4InRjfMkr8X3Zxe7uZGYow6LthAlXmvBC1U9/w3t1zMzrUgECDWXH1c+m0fMgQda8skVu2h+B1jHd+K2bTKm+kfAKyvL/IeV7sCrJkDrmA7WN5/kJrCN7CuOtAmyw
+ KvGKWG2u
+ XapdA1g9LbsgbpqXvzzVrDxb0vq84f3yTMN6XYkvWI6gj/mIXeFvdPBh5IsTM0YSee0YgsI7r88pNUQki3TAzKLLT9fX4VcCakBra9N1RU13ODdFp4HZPVuQeQtD0OMKOwOm7yEcIxmVaXajJBqN/iCaFqH/5Qp7ZWjASb0bHdhPbKMAe+sXgTP3uqk5thel6dxQJPKBJb0Wsk0R1hDwf5OgHu3rSsiTXtUldcpaAm523puDh2XQBtoKVx+Yg0yYpUxpPqFVSQF5cBIYEsj6MU+OJVfOSKi0Ut1E89JuCHVI/sCPrkzlFkwIwv9Cf001VhtxKSoKLgrrAy94CSyBpOIbVjNnzYFouOUXTQfOraMZrNqRuX5mjCaWAYFrjeBhDMhzAo4nfvaM+FoYoeu2UThDUx4ik2zsJ6JRau3qCMxz1TXhXYbt2/GV9TpqOD0yGBrT0LutqQjbx5SgiNve0j1k68Yb7wGwJ5lEeBTv5/q92+uxQvIPF+HAsHwlRelflmoy0FmlYyrhiYtrobtSFHBTzAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,30 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+Initialize the mm_cid.lock struct member of init_mm.
 
-Here are 2 fixes for missing mm_cid fields for init_mm and efi_mm static
-initialization. The renaming of cpu_bitmap to flexible_array (patch 2)
-is needed for patch 3.
-
-Those are relevant for mainline, with CC stable. They are based on
-v6.19-rc2.
-
+Fixes: 8cea569ca785 ("sched/mmcid: Use proper data structures")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
 Cc: linux-mm@kvack.org
+---
+ mm/init-mm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Mathieu Desnoyers (3):
-  mm: Add missing static initializer for init_mm::mm_cid.lock
-  mm: Rename cpu_bitmap field to flexible_array
-  mm: Take into account mm_cid size for mm_struct static definitions
-
- drivers/firmware/efi/efi.c |  2 +-
- include/linux/mm_types.h   | 18 +++++++++++++-----
- mm/init-mm.c               |  5 ++++-
- 3 files changed, 18 insertions(+), 7 deletions(-)
-
+diff --git a/mm/init-mm.c b/mm/init-mm.c
+index 4600e7605cab..a514f8ce47e3 100644
+--- a/mm/init-mm.c
++++ b/mm/init-mm.c
+@@ -44,6 +44,9 @@ struct mm_struct init_mm = {
+ 	.mm_lock_seq	= SEQCNT_ZERO(init_mm.mm_lock_seq),
+ #endif
+ 	.user_ns	= &init_user_ns,
++#ifdef CONFIG_SCHED_MM_CID
++	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
++#endif
+ 	.cpu_bitmap	= CPU_BITS_NONE,
+ 	INIT_MM_CONTEXT(init_mm)
+ };
 -- 
 2.39.5
+
 
