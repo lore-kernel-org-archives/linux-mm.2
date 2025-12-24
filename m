@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75C4E75453
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E9BE75453
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C2046B0098; Wed, 24 Dec 2025 08:46:18 -0500 (EST)
+	id 3896B6B0099; Wed, 24 Dec 2025 08:46:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 182CA6B0099; Wed, 24 Dec 2025 08:46:18 -0500 (EST)
+	id 3338F6B009B; Wed, 24 Dec 2025 08:46:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06E4C6B009B; Wed, 24 Dec 2025 08:46:17 -0500 (EST)
+	id 24ACB6B009D; Wed, 24 Dec 2025 08:46:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E8FE66B0098
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:46:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB889C08C6
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:46:17 +0000 (UTC)
-X-FDA: 84254488794.02.D5B0F9A
+	by kanga.kvack.org (Postfix) with ESMTP id 1509C6B0099
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:46:27 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CBEAA8958D
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:46:26 +0000 (UTC)
+X-FDA: 84254489172.05.7D186CE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3A3A440005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:46:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=htqHmciL;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583976; a=rsa-sha256;
-	cv=none;
-	b=coC7KGrgD3bEqUZKeOjBbt9To5Fs8/U7TfrlHIdsXpMcub67R1SXFVSVGsKBDzBhgldIlh
-	0xZwbZJ5t6ZsUbdhFOjSl6G3jNWscqrbfjZAPQArjwNGhPur0eEwHFGXoDPKEtoR39A6hy
-	DT0GDyaSznVPtVq50frCUlapgjQgo6Q=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=htqHmciL;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F0B1A000E
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:46:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h1pwtgfW;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766583976;
+	s=arc-20220608; t=1766583985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RfMR/Z1RHvJoXzr86CrgTofptafDgStvJi/kxysDsOY=;
-	b=x/aMjo9TyaT59xZafvzxg5a4VJfljK4sZVUm7AE/mz1tOdWwB6NRKaNPxzvOex75q8oyh3
-	wL1npqX3cOtqcBWLd8sUVtf1qIiWpdCIzQkKAYsHyHrVMeZYkNNXoNNrcHxfyBmlMwgvC5
-	+dV1k7kUjlL9VyNrd1lKdm2SvvgZ0II=
+	bh=44OT08l6ga0+S39XEupLso45c+UFzdaGqL3b2PhQ9gA=;
+	b=y3rtAHsIPxjEKuaDegEDHWywrqFzq8cifGWCenLNRZdpZU//kEub0moucgdL2cHQ2g0/vk
+	l+TN70o1Jhi2YozL261o7rkmuClb3h25DiGbZDpn9w4szEhmCjg2mIV8ltmMjDBUyzyABC
+	uUsM6Ao6DQQVuc/G8CdZ10jz7na9o3I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583985; a=rsa-sha256;
+	cv=none;
+	b=pf9Jksd1ZZUiIeWGBHxoeWh4mlcQnd0AJ4b3fctzlBKdSKs9ey+O9NwJ8/ngFp3XKR6PJy
+	iJ/eSCZTV36tMRe86FM8gzcradCLBnvzqY+nXwPgqmfzxQJkLGJtzrF4qLudSPgKcBbtl7
+	2zg8j3zS/Pu5HDoSrC1Ic7uF+mvyBuU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h1pwtgfW;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C13EE60135;
+	by tor.source.kernel.org (Postfix) with ESMTP id B962F60134;
+	Wed, 24 Dec 2025 13:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A0CC4CEFB;
 	Wed, 24 Dec 2025 13:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6704AC116D0;
-	Wed, 24 Dec 2025 13:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766583975;
-	bh=oYIDljVusPRyc5ygPH/YiE7a9Fhd9e2pU1qivro5W4A=;
+	s=k20201202; t=1766583984;
+	bh=++rdiwH6xC2TpgAmAKSO1o1OoJV81/TbDXeB42N/L1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htqHmciLhDIlwaAafpUU2VX1XDfcCQEG/G/wYBGqRb079YKOzQ4bLKuDSO20ILSbT
-	 x2ty2FrkhGcjZGmNhcNmU/XB8AIWGPf/OFBLStI85bMZdQFAmzFShHb3qUa+DBeXsL
-	 5uUPDkZhhIXRn+GO1UNkvMkdEkkexiOP29/cwdP3Gid83GGZU3YG/Q0/T9P1LqjAKU
-	 F1HAzDo2rY5jq99eUCywOkGr05yck1Ixww1LbBMc0+QCaK7qNicMaB53+WM1SMi1LB
-	 MZmedPl3zj6CvYqKtcScMTcR2Amms6hosgoprArwalGEXKya77EoHgIlGEufV9r9EB
-	 qCBxAiEKpDJQQ==
+	b=h1pwtgfWjJgC7zGWZZU2c+mF7L5Jrz0wfTJuGCYwL4mpOJx7hELqPe6VEfzwbuEJw
+	 PCEvzWe8eCvM+mT+X3JngUiSWewYLizBYnhUb7KbLkQtaH7HdJzJziUgG3VfHR/EQP
+	 DnDiYF6TE/Lo3AnXyPW5ODx+NMqOqINWvofxjswLQwc2UGMSUmnYKES6yEFOB2frlX
+	 CAOPA02Z6LzF4opDsbisvISWRdNKvQcGCFz2ocH2oilUmdSBAv2nQZd2s7aay5cztU
+	 g7Iw+iO9OaV+nZ49/UymEdhJLWHGvM2IPlBVIfnSMG5p0ntGr+xx+W99kthSDV/ilF
+	 e0FVHUiY0o2vA==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 05/33] sched/isolation: Save boot defined domain flags
-Date: Wed, 24 Dec 2025 14:44:52 +0100
-Message-ID: <20251224134520.33231-6-frederic@kernel.org>
+Subject: [PATCH 06/33] cpuset: Convert boot_hk_cpus to use HK_TYPE_DOMAIN_BOOT
+Date: Wed, 24 Dec 2025 14:44:53 +0100
+Message-ID: <20251224134520.33231-7-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
 References: <20251224134520.33231-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: csug84sud9h9wsa4sh4whza1txz65hu4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3F0B1A000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A3A440005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yrmxcidkpr5fu9ggf8ufm4huymd4sd43
-X-HE-Tag: 1766583976-637676
-X-HE-Meta: U2FsdGVkX189RMred6gYciGW0tQH3WlQ0MtVTX5L58/8szh6YzAsuiOoHRP4nmvwGMm1dfHgt8R1gj2MGx/4IdnxeIx8rsXIMkv2sc9k4eVQZ0Vhh7OlXbaq6O3aBtVFOUlbw7q7zUBoskgCH4kqaIPmqEW1frM8CTp2LouqEGbvrahclPZQvBQzLdGwQh318n0Bd9id8NajggoE6l2vOQFRQQ7Z/G8z67x9Gn52Zfxg0ToPOg4e6DjqQpt2/J9/mnuMVHFqKGujQLI650DFWscXapJBRKlj0BdvPgbx4CKD0foOromJhJ4RCI0/mAKK3hJXSTwzL8n2tFt+y5VQTmqjIO/zuxc4wjiLkBSQMPZK2H1OjqjJUNrxrLa/Q3BjCFn9FenWvady/OC3DU4kp9HiuViEZGYVdwux6YYwycrjPglGhFk1lLusl+AcyfWZAqzOOSBEam8EGCbCXGn74DuFnQ8SiRUpRyoUyP0XVyXgAse0YuuFkrYgUxDPseK5wzf4Fw7bjrwvHLgSydPn7HWhUHiLHCov08G5XKKbADEFgir0sCdYQDnJLkXX6LM51nCaChNtqnD6XsdFlYyD5kXkbaKEm5p4YodaWBGOkS0tj+mH2gXLnYaQ9haaWzfWjBfFq7WcQOx58xfOSKYwR32aVgOFRKC6hXcg9jRPER4mxygU34FW0xM3JBdAC0pgvF44fVEVujn0BFg247DjLrEIfsaCWi2VQYxHqgv1E2Q9Q9bIbqDDwaiXpfF19KtNiXCoLtkcbk1uRVxMztL0Rb98NjW8DEf9lrGtDFj6P7wqWKs6bdkwT/15kc5ybArD3dBr3huw9Mju8KHM8v4+fD/ymM6MSFdVQgXrhOl5+WSwVSLgxm+B63QNzcauNSnXTVe5rnGnqrZGTjYvJFgVw0quI0+w3Swq3feZgxV9oSHtlvY++CLDyAPOsgcsStA5CTKFooJSEo+bPRYHuJS
- ndy8gnDi
- MsOsBjNTHLYB1aw+RHHmxpgOkprzTMXRdCYjmqTwFfRuIADWPw60bxWysGrvSs9zNP/GxAvIpK7z5OEsmBkO7XeycOkGzCiRJCOgcNW3VTZldZiWTb0VJ4hiNz8WSADqNfSUrq8ZQtDy4euFo8tm8bm3fEycF/bFDbuuCSjN3vfI38ytNtDOsVjX9TY0kk5d30NMmr0ZxPqle9wiYESOkOSWdNXh/7hDGAR2Fn4KZoby9Z6Ozi5VWV8kKS/RO3XllpHs89VwS4F/fF3sywzaTt1CKvVRJEnM4M77K
+X-HE-Tag: 1766583985-404849
+X-HE-Meta: U2FsdGVkX18zW816EVt+gY/mg9sXtX83EDJ7Q8wr8QG6gCI/LHhMXb7ocNRNgeHlzajMPQxlJhTc46ksyS3fiu/Y0KUzqzsDYcDeM66jzLcsDDAKlVReBKsfSYVX3ggYQZV1rRnk1Uz4KZrZguuGN2PJWpfY43kKobex7Pt1ZIk2FwGStF/SU7GK8O9zRi9wclT2jsB2x2e51PG9ISWVkVoadxvK+xQzGtyt2iApnQEzmMh//fXzhS+ew9wgG4ppnKv7w7PDntrdm+W8sTdSPcTZyqOPykJHAK1AjbVHQFVw78r3O6toKtrk7OfLtV/mT4N9MyWjSsbZebOowVEgkkCf9iighNgABKBxFwOmrjbli6+VyB+sY9+AvxlDMxAj/Pre4hHQ+1RFD158HI/rKh7ZenY2vn1WgMsqYhiACF3rr9ov9ISiQOzFGemjWavJT1J2RK6d9K5/fljotC9oywIuloxvoNawSQt7y1fe8w6LuOU8ZNRRXfuqw28pdwuecXjGw2rVWjJ2EQJF3Wqie76V5wvN9g8x8hswcrGj7AwVAP/3nxwUWezvHWlvozica358Y1WpajVA/03j0yHdiSpa7+yJDnGPZgvhykRjMKLFjvEBfUMHjfTSgI6XfxaWQgw5zUJgbK5aW5j9wFenp52/UxRUOBpMpIg3xdk5butDuxO7irgI29vowiamK6LRy3X73UKw21SeA9z7TYS9PqluSzCqg4oae4Vefr7QAcFCMRdnDP9Mc2RLVvaOOJTSUTCcwoyqJmNL8OAG6ettfb8rskBWWsS9G519QrMcOMKtttCxU/flK/DExKt8g5d5siGfYPEDNIdkfkwZ69G1RV3j9+kWOYQNUTWqmpHQLl929dXleNBelH1N29LyXAZKIoE3UocjDTgLpKamSMl5ixjsgSSKzv8thiY21qNWSY/erfSUn6zu7x1lPAZKHL6H69jchXFSmro1Eyr+3HM
+ M4dx7GdB
+ J/rHulyBvTea3BspikRTXj3apmt5AwCVgNG49PI0+zuqN0KDMmavxvUkIY1GrhyKBwvIzSZV9Km6MRZylAprGB5HNjcf63R9qIG5spTkSdJt+bojyHaM7cUu6zt/AL88qLdgT9zc2n4xL0yHbofXKRXiFxqcWWvAV2CxseuK6/LKglOycJyNWN9a4ki9bxiCfWeSieTDwiWbwVjtRIasJB+dOo3Zq0prPx4VLibsJt/tKVXF4hi4kdDR+78Og9bXiKp7pNqQiXCD1aj3yVNFxbuE+H1VKracDKNB8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,69 +126,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
-but also cpuset isolated partitions.
-
-Housekeeping still needs a way to record what was initially passed
-to isolcpus= in order to keep these CPUs isolated after a cpuset
-isolated partition is modified or destroyed while containing some of
-them.
-
-Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
+boot_hk_cpus is an ad-hoc copy of HK_TYPE_DOMAIN_BOOT. Remove it and use
+the official version.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Phil Auld <pauld@redhat.com>
+Reviewed-by: Chen Ridong <chenridong@huawei.com>
 ---
- include/linux/sched/isolation.h | 4 ++++
- kernel/sched/isolation.c        | 5 +++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-index d8501f4709b5..109a2149e21a 100644
---- a/include/linux/sched/isolation.h
-+++ b/include/linux/sched/isolation.h
-@@ -7,8 +7,12 @@
- #include <linux/tick.h>
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 6e6eb09b8db6..3afa72f8d579 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -88,12 +88,6 @@ static cpumask_var_t	isolated_cpus;
+  */
+ static bool isolated_cpus_updating;
  
- enum hk_type {
-+	/* Revert of boot-time isolcpus= argument */
-+	HK_TYPE_DOMAIN_BOOT,
- 	HK_TYPE_DOMAIN,
-+	/* Revert of boot-time isolcpus=managed_irq argument */
- 	HK_TYPE_MANAGED_IRQ,
-+	/* Revert of boot-time nohz_full= or isolcpus=nohz arguments */
- 	HK_TYPE_KERNEL_NOISE,
- 	HK_TYPE_MAX,
+-/*
+- * Housekeeping (HK_TYPE_DOMAIN) CPUs at boot
+- */
+-static cpumask_var_t	boot_hk_cpus;
+-static bool		have_boot_isolcpus;
+-
+ /*
+  * A flag to force sched domain rebuild at the end of an operation.
+  * It can be set in
+@@ -1453,15 +1447,16 @@ static bool isolated_cpus_can_update(struct cpumask *add_cpus,
+  * @new_cpus: cpu mask
+  * Return: true if there is conflict, false otherwise
+  *
+- * CPUs outside of boot_hk_cpus, if defined, can only be used in an
++ * CPUs outside of HK_TYPE_DOMAIN_BOOT, if defined, can only be used in an
+  * isolated partition.
+  */
+ static bool prstate_housekeeping_conflict(int prstate, struct cpumask *new_cpus)
+ {
+-	if (!have_boot_isolcpus)
++	if (!housekeeping_enabled(HK_TYPE_DOMAIN_BOOT))
+ 		return false;
  
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 3ad0d6df6a0a..11a623fa6320 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -11,6 +11,7 @@
- #include "sched.h"
+-	if ((prstate != PRS_ISOLATED) && !cpumask_subset(new_cpus, boot_hk_cpus))
++	if ((prstate != PRS_ISOLATED) &&
++	    !cpumask_subset(new_cpus, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT)))
+ 		return true;
  
- enum hk_flags {
-+	HK_FLAG_DOMAIN_BOOT	= BIT(HK_TYPE_DOMAIN_BOOT),
- 	HK_FLAG_DOMAIN		= BIT(HK_TYPE_DOMAIN),
- 	HK_FLAG_MANAGED_IRQ	= BIT(HK_TYPE_MANAGED_IRQ),
- 	HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
-@@ -239,7 +240,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
+ 	return false;
+@@ -3892,12 +3887,9 @@ int __init cpuset_init(void)
  
- 		if (!strncmp(str, "domain,", 7)) {
- 			str += 7;
--			flags |= HK_FLAG_DOMAIN;
-+			flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
- 			continue;
- 		}
+ 	BUG_ON(!alloc_cpumask_var(&cpus_attach, GFP_KERNEL));
  
-@@ -269,7 +270,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
+-	have_boot_isolcpus = housekeeping_enabled(HK_TYPE_DOMAIN);
+-	if (have_boot_isolcpus) {
+-		BUG_ON(!alloc_cpumask_var(&boot_hk_cpus, GFP_KERNEL));
+-		cpumask_copy(boot_hk_cpus, housekeeping_cpumask(HK_TYPE_DOMAIN));
+-		cpumask_andnot(isolated_cpus, cpu_possible_mask, boot_hk_cpus);
+-	}
++	if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT))
++		cpumask_andnot(isolated_cpus, cpu_possible_mask,
++			       housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT));
  
- 	/* Default behaviour for isolcpus without flags */
- 	if (!flags)
--		flags |= HK_FLAG_DOMAIN;
-+		flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
- 
- 	return housekeeping_setup(str, flags);
+ 	return 0;
  }
 -- 
 2.51.1
