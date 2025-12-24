@@ -4,105 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94750E74908
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 03:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1C7E6B270
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 03:41:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC67A6B0005; Tue, 23 Dec 2025 22:28:57 -0500 (EST)
+	id 7AA106B0005; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74756B0088; Tue, 23 Dec 2025 22:28:57 -0500 (EST)
+	id 757AA6B0088; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55F56B008A; Tue, 23 Dec 2025 22:28:57 -0500 (EST)
+	id 6636A6B008A; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A4A1D6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 22:28:57 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 529716B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3926DB7497
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:28:57 +0000 (UTC)
-X-FDA: 84252933114.30.00F4445
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 26A90140019
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:28:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QOMtNkV9;
-	spf=pass (imf09.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E94DA138731
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:41:48 +0000 (UTC)
+X-FDA: 84252965496.30.B5C13BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 31767180003
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:41:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjR5qxQD;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf24.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766547707; a=rsa-sha256;
+	cv=none;
+	b=SbQcrdJ3rMv9oeszcEgIydi9xXKAYGqTMk0NRfe5FgXj24HspigwksWms/gLyERUPIlQF/
+	uib8p4FECPh4oXeegOB0firlbPFeATw9yPzKgini90HF5VTaHmQt+qGjQtKrMYiKwfknfK
+	7Cp3XREwi16e7RaiNUe+gQuvaMbCQss=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjR5qxQD;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf24.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766546935;
+	s=arc-20220608; t=1766547707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PEnYiKFC1BPTOh2lEem5yt8CWGQxdCaNcVZbw2GCpAY=;
-	b=QrkAptJj8zUNEE/iS0r6M3YYM/kurk5ya6jlwT8ioli4pqjB9b+GjSdkfUoewBQVCID9bn
-	ZOvImPW94PK5xbjZr+cymTj3wiz4OqHHf/+BFuga//pJFAmwaCJgFdkmHRy86RMP7mzlfy
-	J/Tdbe/vK+hE+ruv9DJXW/BtvjpymmA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QOMtNkV9;
-	spf=pass (imf09.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766546935; a=rsa-sha256;
-	cv=none;
-	b=3mVKz6bdsVMuF617bK1ivMjpHNBuelirTq5OkMeWzHy0kQ2IEd95Iy2s2gskbFpzjQG4wE
-	fp/MuaZlNjZZG9dLuwnqXNbu0vJukd+vvaZwyxvWOwTB1npdyvBHWKZJ8IVfqeCQloPdK4
-	rJliCIWsIAf35EJmryYqUU/IL1rSzNo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766546934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PEnYiKFC1BPTOh2lEem5yt8CWGQxdCaNcVZbw2GCpAY=;
-	b=QOMtNkV9f6xARWWwm1STXKAlQqM3VyZPwFPi9yvl0SyWtdUGh4wj+KiE2YwButHjj6zfjM
-	EiaxBuUFfs1AwiZn91cNd6JAnOjSxe56MCvLHD3CLWqq9YE67fq3a2GFwjyZvbiuwZZcFu
-	gX1krZINJ2Gp2oynL5UUuQ7nIfytNEY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-69w2rVsPMJybW1GIqvYelA-1; Tue,
- 23 Dec 2025 22:28:52 -0500
-X-MC-Unique: 69w2rVsPMJybW1GIqvYelA-1
-X-Mimecast-MFC-AGG-ID: 69w2rVsPMJybW1GIqvYelA_1766546930
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6ABDC1956046;
-	Wed, 24 Dec 2025 03:28:49 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.137])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C99551956053;
-	Wed, 24 Dec 2025 03:28:46 +0000 (UTC)
-Date: Wed, 24 Dec 2025 11:28:41 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	elver@google.com, sj@kernel.org, lorenzo.stoakes@oracle.com,
-	snovitoll@gmail.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v4 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aUtd6es8UC0lNf/9@MiWiFi-R3L-srv>
-References: <20251128033320.1349620-1-bhe@redhat.com>
- <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
+	bh=IZTyEQbr5jUviYb2EwPbxpL10mEgT9fTrCuoxpdxOpA=;
+	b=gntH5To4l/19pmGSc3oO7tWfPT3kLoDCJHauVAesRgbFCOy0d8KF+Bbv5IrVG4ppjui+pZ
+	1TnjKD3GM2LhxAYj4u2XiXHaz+SJO09OU5k5FuHcW+zrzVbtD+8gEJD2uf5bgkwGh/8q8V
+	gYslAEQgJJ7fd8M6G/Du/NWZ9hpUYLY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D72A740450;
+	Wed, 24 Dec 2025 03:41:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85034C4CEFB;
+	Wed, 24 Dec 2025 03:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1766547705;
+	bh=20KI9PwmKkeJtGHt2+Ga5SqcfLaOGJS1ES7ElwLbA68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EjR5qxQDtuAqdXT5FN7AhCbNukbExxsarCxKfXBvKG++ruBXOseReHM8aLlIdruJ5
+	 9d3kkJCgc8l1l9BswJuTnZRjpAEKrJOWzT4O3X1TmMh3TegaX42Sa0hIN6grqAGrzT
+	 FRHOkvc77N6mHpGnliGwWRMC3c+IvwYm1TGxc5yc=
+Date: Tue, 23 Dec 2025 22:41:41 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH bpf-next v4 0/6] mm: bpf kfuncs to access memcg data
+Message-ID: <20251223-snake-of-stimulating-genius-ff4cbf@lemur>
+References: <20251223044156.208250-1-roman.gushchin@linux.dev>
+ <CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 31767180003
+X-Stat-Signature: 56a8swqp4wag5dhmbtcwp5icitcscqxi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 26A90140019
-X-Stat-Signature: 3to4p4xsasm716b1e6rhhfyasc7g8eic
-X-HE-Tag: 1766546934-62606
-X-HE-Meta: U2FsdGVkX18AOnUBOoT0uWfbSrWtGeydtNO1WVAu/QUu0kfybZNcXgMiR8+QIomjFUUoQScVQtzn393AS6DhyFEhNCovPNkkOo5NYHmem3nq0MpxeQM54b6KX930ExGI2SM52SXi3kV59dqcRtvBuf9ZQHw//NMxvrGlysEQkCgg2QaYmKu7P4EmrszJTrtfx1pw19ompiaZlTTsS5Cnh9pGaNAFVZH3+4pK5tpGS1oFIW/cITZ/aA88rhixKpcn7hMGKg4J8GhGqD+sE33SxAda1gEl1lHEvOWE1L77SI21Nsu6r2up7Qu8vep44VhJU6oMtJtSbnCV6AQQzgglWA6FL5oXT1WeoscCdwSrOffZG6Qq9owazqFCHRlsZ2/s/1IobMFumH0zWRJZMw0XqjkcsowXMA5gLBbBvmHmDJdTAkvRNtqlkG8pUnqFZImJVXZ2e5tqUQPmI8adwtNgY4JUDAm8kLiROkAGhbEvDYy8fkUWu8uoNsyFTWFWxlu/KXYWOaMxdFzH1xWhwExaKB0s9wCuPv3XZiVwK4iQegqfQY2U7NTO5nXZ0ymZSvihLKBlYMJqWLR7q5Auu0JoUlUQDHr9DTWJym8IWD3BFCne0EXIXC9M404g6b+ZxHsTyPUD1lPZ3ROhDN9iIrOtgmYmpzAxVVGQIleLrigcp2HYtinhXyMbDkFrKJSnT4mwfpebCPJp6BzuGzfOXVF2JovI2h7v+j0GXAHXCGK5Fss5Y+atM+aBSG/ZCnJ18bigOPetqr8H8fWUA3CUghZai12dKo1gwByMAiqkacdA64nV4z0TrqUK0CHk4248BYYpPiNdmLbbstSghUy5piXsRk6P+r3y+kppuOCPTFeg+RRchq/05ryuYRRKML86zNzn4kpsow86k9gsBKGOh+rTgCj3RhU/z1nyacn+ivoWXplbQGjb1eFxte7Oz3rro/lMct83EBUal7pLWYZvali
- uT11GEqI
- WEuYDcdCAfeD6LsWjfZcN41sdestOPefnWw34/v3RBgh2B3HL9sgebJk4GrcvqFGqf0CRp98SYxt0nNRy31eDzdkXFBK+++o3nQOMMBVVDyMCN8R5GhSltOZ2UEDH9TDZfUqTBpCN9L0d/6GaREZJWNXLitDpznthsmA++2oUf4DxIGxd+JdjJe0kh6MLXxK/purB7X/Kr3U6XZ0hD2V4n94YilrY4UyyyVRHP60TOVaP7Es6cJaDanc9k7EAQzoYTUcIgrKm6FaFgdYu9ajGSLXpazR6Mv44tnYS9wTYpfWYKJviRcWL3+ASIogXN0OtP3GS2CT4mWGjOVB4H52nuCJD8Q6melx+6AE50QTgjJXiyr0cC/xP+OvcofNVlh3h4VF5DSK8yBbJxXoTQkAed8758yWMjUb/XSnFFMjOmXnarF5g+QSWrBcNyhThf/vYE1bLwof3O4ZawvW30l9jS6doOizTglAJuArTZLC/MvERkuKucMsHYfyd5em0L89fTp6GjC4gJk0zTES815KjIA6z+1bUmSCf8l7DV5z20ySrwTs=
+X-HE-Tag: 1766547706-189476
+X-HE-Meta: U2FsdGVkX19sdXJwMpow7TrV1Ofk5TpW4oTyQdxjkM6anA/JUCb3fdBTpd8bIB3LW8/tmaVFC+Atm4B9YZW6uWuQ9cr87Z4DsvRMu5Xx5icybdSA3/c+kOuDkP8cEPL+kcnOwo6952FQI1+ckD71uOhP8IGtSUAnytthZkJVddJ3Yte/XLaPfPp6P48POQ8djqUgkzz6NzqFg/KWmv+G5y4B7wafJzQmpAq+NHJYZrMVoEQS8Lzkrfh0F3b0IP0gF2u9Izx6kB94LKEaIpzIa9fO+zPiv1QRMZk7EOncgXZ4IAuUAS/yJUej/Ycfta6Sv4vidZlxjvMWaRC9MqDNT6MGfZXT/Z0BIuIrfbPxEuGzIUlLAMh8w921MzFpRNc0jgWAWRsTS5MPS8Wbz1RuNYqi7KZmmBnskTKhu6bgYzHpYdY6R1XPA58Fe1uSGxDalZ9jJWCOZM9J0A1MfJh8noXgr6yv0vWULV456Mc/i0b1+M1KZ1yiofLSdmcDXL6Dzrt7KGOYZhBd4cl7ofwZuGTq4QrZVh+SZvKvDOLqrMpPvPuR1UIE5LqoET2vCK7D6DCAYeXxxHF4E1TXSHCG1pI3Ze5qSiRzxjOIMqXF4KAQAzfDcDsqGeTRGLM0y5b88FIxAyYGQ0AZb6ytPbLmwQGLY/8plsZlT2gZMqHNhhfy6kXt0PIkv3YZGlfWiMc0pJR/8lT985aOgSrp0xo2VqajqT7dG16M5sdGSJuutGnjLjk2n4sxmdg3EcRxvCKYpsD/cYVQiwn24yAR5BbR3k75d1jxkp0HrOT/3LNmNaqWMt8+bSblc8UeFmKNYi7uvMX1LkJIPoXJ1MNc1fcjnaXVkvcffj2d5n9nBWp0//bscHOOl9kvLsGcMxc+0qbENt2jIp/jsmOwtHNCFiy9lj+Ua5u7g8YPw+L2aJgK82cb2FWNbGOgy5JXO6xoX5yi3N8OI9JEJ/x0EU4Z7NW
+ DwJ7ILSw
+ qGDwEjEY0m4UauHIpSP0mJSpTIeHiIPhDTNi88ff3zQ1r/qsDpnxhC62tKlcgo1Fgfgn1uE32m2+vn+ITGq2DpcA9lvRc28mGyp900s4tUmTrCbz02e2EwhO9v5Mb4ZCj4c9Fxnk5dxG/iiXyTFTo4B3dmTdqK9bhe7lkYUtMyF2jJ3Yx01uwrzJpIGurfZsPo+0P1dyff2Kf2/suAiv/IHzdAn+w1OjJUahRH7iHkBy0vMjiAOgeUwIHP+0ivEz2FXdxWAmmKe83TTxhQKWuL6kaLgQzHY1+qcMx9/xvroIsC7qUv9r4g6J8SfxM14IF8/Q42gWRyUWvYY1oTzmtyHAHkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,34 +92,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrey,
-
-On 12/04/25 at 05:38pm, Andrey Konovalov wrote:
-> On Fri, Nov 28, 2025 at 4:33 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-...snip...
-> > Testing:
-> > ========
-> > - Testing on x86_64 and arm64 for generic mode passed when kasan=on or
-> >   kasan=off.
-> >
-> > - Testing on arm64 with sw_tags mode passed when kasan=off is set. But
-> >   when I tried to test sw_tags on arm64, the system bootup failed. It's
-> >   not introduced by my patchset, the original code has the bug. I have
-> >   reported it to upstream.
-> >   - System is broken in KASAN sw_tags mode during bootup
-> >     - https://lore.kernel.org/all/aSXKqJTkZPNskFop@MiWiFi-R3L-srv/T/#u
+On Tue, Dec 23, 2025 at 09:25:35AM -1000, Alexei Starovoitov wrote:
+> > v4:
+> >   - refactored memcg vm event and stat item idx checks (by Alexei)
 > 
-> This will hopefully be fixed soon, so you'll be able to test.
+> Applied yesterday.
+> 
+> pw-bot seems to be completely broken. No notifications for the last few days.
 
-Do you have the patch link of the fix on sw_tags breakage?
+It was postfix, actually, but it managed to fail in a way that didn't show up
+on monitoring. It should be in a happier place now. Thanks for the heads-up.
 
-I am organizing patches and testing them for reposting, but still see
-the sw_tags breakage during boot on arm64 system. If you have the
-pointer about the fix, I can grab the possible unmature code change to
-make sw_tags mode work to finish my testing.
-
-Thanks
-Baoquan
-
+-K
 
