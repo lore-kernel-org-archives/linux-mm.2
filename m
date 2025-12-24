@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF6F9E7545D
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B64CE75458
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A79F6B008A; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
+	id 3E7446B0092; Wed, 24 Dec 2025 08:45:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23E6D6B008C; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
+	id 3A8A56B0093; Wed, 24 Dec 2025 08:45:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FFC76B0092; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
+	id 2BE626B0095; Wed, 24 Dec 2025 08:45:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC7A26B008A
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:45:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7478D1A01F7
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:43 +0000 (UTC)
-X-FDA: 84254487366.11.C154F29
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BBA7F20011
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EY/rxLVc";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583941; a=rsa-sha256;
-	cv=none;
-	b=YZumG7QDM9DAHammiZxoJV+Q/k/qIkTddD0iUaVqEekonWXXlaePeC5vTNYcAM5XQ/xiTp
-	NgXPx5xiTRLqeLJfSo52GdAJyrWeTgai2HG4p580bA2kdbMHK0OcL9PcbEWEuitvvP1E1K
-	tVROPk0g8L1wqlNWKPYM0u+RQC5j6+I=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EY/rxLVc";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B286B0092
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:45:52 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B049A12A78
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:51 +0000 (UTC)
+X-FDA: 84254487702.15.239A02D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2131718001A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7mMb30Q;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766583941;
+	s=arc-20220608; t=1766583950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfr3Q+nYd5p+xvys9qoVKamvPwe3ggDuT8010b3TjmQ=;
-	b=I+FSsgb37bxy+o7CzT/AQue2oNgx4EjqzlviOrlae+/PaatIyUH+JEnB4rdUIy09RnTWie
-	QwzQ5vMZaAIlTjuGQtKEUBn0D6fF5v7D4bwxtQz6g75Ov3Zn6savhYYi7r6YamTAULN9+h
-	QLvEAmr8zZTHz/sh0/5z0wqjuLqbEIA=
+	bh=mykHzv7B8kPpGCQz2I8/IOEXpAkCsSLvoDKqARyITa8=;
+	b=zwA2l4ivQ8eqBGwJZLLaeqeGnpnJM3P3dv7kEwERw8RvLCDjFgMcAl/GF4QJ/p1OyRyNog
+	HFtAGRcRKGsCzWtINE80LqwpwR/iBDqL/ypah8AUoMjgHOP2/5ZU80VkSXq0ImfsFHFHop
+	iF+SbpPgYWiFNrVqRM99wfPU0DKhSDg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583950; a=rsa-sha256;
+	cv=none;
+	b=3AF/wsayMJZL1OxsF+Fn1OX2SOcvMlT14fbMicIjNBaF4bALhVK76ZzQq/YAg7mLqLq3sQ
+	b9ceA7nc1aJnpfOFYvUubtchX5+DdY+ZGzaYbLPf7I/ikcCjyUCdF16AXEQ4V46IFP9V9u
+	jAXtJ9G7hkyG900EhbR2wUS6EKV9dfs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7mMb30Q;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1DB6435F8;
-	Wed, 24 Dec 2025 13:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AF5C19424;
-	Wed, 24 Dec 2025 13:45:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 50EF260051;
+	Wed, 24 Dec 2025 13:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC57C4CEFB;
+	Wed, 24 Dec 2025 13:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766583940;
-	bh=gRRNdybTJoPf4zghu+FAESdALpfSWbcpUTc3hVg/iP0=;
+	s=k20201202; t=1766583949;
+	bh=11kVg/bDOXpa/yvnQMWYkjqm5C/SPwrAAGSvfZEuxSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EY/rxLVcj3XVGLfQuhfdznrcbQGy/9FTi8WQJ12o6Y5hVKy8WvRZ0Agl952OnUz6k
-	 6TNPt9uSgZozs75LFMvC52n3ieQK9fVy2u22y57DdM94PbvQQ1IFpwvO0bDlp+xFmC
-	 aSmxwYc+FbNjaiOHyrQPpz8lQBamXwUAHhJRFwQzz/2I7/+oS1Zmj+GW50lW58ODpl
-	 AS5Jtn30lL8p1JTfpgp0uc69XhfvWvVKMz0fxLizZEV7dGZOvfmTdxGr0QyqDmmbPH
-	 JVCvPO6v+S95bZ8qrY1TqoMKdINOLKCOtKOpyxXw7v/tm/9+ZsQsDpDGVxMVcpOb/g
-	 tHraobqMSYmbA==
+	b=H7mMb30Qrj92/uviIhc1fyEu+nlpB/xOX1eLU8tjIzv3vuprkqSRobPPuypYr4P86
+	 KKG/T/ugcEL7chZ7jENBr+nDTaB3fIQi73GMI/yU4M9CSLpe5XHRfs2aG3MH798ZKl
+	 4W/s54uzqvvTq1KFo01rD6iLvt2JZgIB7Zox3EjCQFHqsDBeakRVEyKAdhPX9plzTc
+	 aF7Nqm7+o5LRlE4Mh0g/fVhpHlIWeUJo9F24g6Tw54kHme7x7rVQ5M2lw44yP9OcQP
+	 8I1gtwsfIgFGPD3ffd6khrIbcSTp71xzfbRWYvyWJ0QW3FHw2OXLZOVvnkrZ4PQwN7
+	 u8QBR2FBdMU/w==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 01/33] PCI: Prepare to protect against concurrent isolated cpuset change
-Date: Wed, 24 Dec 2025 14:44:48 +0100
-Message-ID: <20251224134520.33231-2-frederic@kernel.org>
+Subject: [PATCH 02/33] cpu: Revert "cpu/hotplug: Prevent self deadlock on CPU hot-unplug"
+Date: Wed, 24 Dec 2025 14:44:49 +0100
+Message-ID: <20251224134520.33231-3-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
 References: <20251224134520.33231-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rn881rmbbyuus5afuwhzxey41c8r8uqk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2131718001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BBA7F20011
-X-Stat-Signature: gh9gud9yto5z8tzajkfdgq71xfz3b7n8
-X-HE-Tag: 1766583941-802944
-X-HE-Meta: U2FsdGVkX18zSTCBWTYBHvwKFc3Q0NiFhd5eNPb3YfblHEcgmfNuW1frB+1i+2Z4WIEgcbGiDUFqp5NGbBg8ax0XGE6071PSS020scv2YJZ9kI9jG7q3fi/TmDNypp+/tidKprkQ6fuEifjN05cInEesqQWi1HHcqwqV9PmC5BX3pCphF+ItEAjgvE2nBOLJaRaEVGFZ4JshCxvdK1/zJn0/5S8VlBctDCRYQGQ3bzJN3N07cmWw4zVcIiaPeStUu7P8hAQsZ5qypvG+H4zSU6YclwN86rMvvrnlmkgf7u4J/8u3HiyAf+8Dn8AfZjfrB+KanQ4OrGncs0s5BvsJQB25ZH/DUMyxZVi50HFbRScsVpaPj9zvwCp3wzXPKwxYJpFmNfT462mCXPy5ipaGDqbNUiDMPmY8btwXk9+Q/MMdSd1k3TZXFBAtXv8cIZfGtmqRwZXGm3OFI9Mr+owbYVntvK4hT1U1PBuzYsp/U7eNCCF3Y6NOc7FnuFMe+gb94eSzq9D069RmFmMQDIAG0y/R3TFHYsRuFla9wusEPaOlL/TNbKRh1mYk5G5mbJa6GQBqW7CpMTbYvCzxGQZwdBa6vNYnF3T1aZ1zRVBGxtjJmjkrZa9xqMJcnc62yaQC4DhurSXvZWq4lKhyplk5VVb24HPdhWVkWZUYzZExFZHbs3KwBvA2ZncAMkrAgwGlSqDlU6PP3fzXICbv3qNjbQLRC1qbR23HlFDRewjkGNlVGDhCVInSphPnYxKbjMl7DqHgGWvY1IVUqCGwCTQGiph9yp2NELq5NNnCEFCHlILE6+2yc55X//X6TrChycRBLGQ5Rq1y9ALWExqecj6rCgHJ4AhOkgVQuG57nJlyKBC7th/nBT7iYtEnkTqKppAtgB+QCqU4LHrTRrzGEUKzmsznPL1O1i+nR2AN/5Y59pKK/RsmDH+VgWclu85RK9HgtVuF8d+OrLN48suJEYb
- 7zbXrkv/
- HWfBqsdSYS+NKewHU4tnpGeMGHhkxUjCrN9PYsW9iC0MAcEfTnqCwk2Xzf3nBs8QgVpia5jEtKvbkv6PduP14EJqgFST4pgKkOKDIwQ7ioGyAoV5IYOypdJ31UjqCKiWu8AyHS1lLIpP1ouA+3J0rQg4m2AxarpX4GbP1pnnS5hKLUZoJdg1ZPsH8MYGc+wRbaRRyyUAmDlegWH2Heg/1B0WVfELeZ1ihW7nQb//dhNAgVW0=
+X-HE-Tag: 1766583949-867542
+X-HE-Meta: U2FsdGVkX1/aEVcv4fydTymD7lo/am/u0kPQhpcfteNTh3x4Gye0WCOIatdm7Xxb+wuiaYpc+aGEdKb6hMRmS72uQ07yORGu/uJgX9R926PN+jk2rEK/EdkJZe030FTr6ds4qKto/C2PmwvBgsyqW6kz4vgHSEGQhpfKALM5PUuQy4Of0NlAq3Rnlqn1lHIXb9SD6cNEzpM05BeiCbjsk6YgMDEOzlDwC5t2krpSwtBExPOEbZ/Abj7pnWaY310N4las6bonJxT8b4zKUfy7F+F6Ld/BjntK0N5WPQqICfbqttEGPG3jHpm7hAA7t29kzVOv4qtJox09kHaiV0vYG/Dx9JlkJsXKBjWTAYGuOdzbfw4L+VpithFx1jWkSAsAK9roRwkwqSPVsRrn9d0n0pMIgBTk/uLKkNAuHlxyOhtZ0A5ti6m9BdqwVQWqOaM4IozqD3QLD9VJkiLAFvBW6lOUvu0PIByL7Fg74ygRO0Sj9NcEpaoDnI2rXpEC2rhjmi+42igng0+5Oop/1fQAjJU8b8HPVkpGRKMmWsbQYWP3qthafIw4D+OHCncKzgW9aY086ubJuUaX2ncFsXgfNA0hN1XyBThh4GM8AhTxgU8LKfg7Se4UyzmEJb+ZdfP7MgPh/0/WStSSLbaYsz5fXJtGN7pLiYo/wE0uNdcrTBy0wFnQeBjGV+4jk78Xz5LfYAbMC8i87KmsbK8XLe4/lOC9lSnPEA7Im55CVMxrtU8dJc/U0wDl/5ZlkUqf9RKa7ScHHmiW5XNItBy74bQn58mdkOYoAduX65NKuxea3jXge6XRhgbH5qDA/ZTRAm6lmGSD6MV8uwLOVL+pjlkYZEnhuf65/EQ0SILxiKAfXz8AgJ2BMITT753pIIzq/d0OzKTlD6CZnVVYjtP/4axJUczUERwCwyTXbLXoQWZXOx1/cdKGf+kJfS/NT1SX5aMIUFKf8rGpadJq9rF2i0w
+ 1MqHFpZs
+ 8qVniGBWr6AeLStwYRcWS87PalrKVIicsU5hmdpJVldYAnYRzXeBje2dJmpIGwQ7BjNW4RTK6irF0/EAGmLwzHB66JVft6p9Fywa1NHGDnocndUeOosl8HRn9cYn1WUXeCSQyGwVYTu/2fOzxly6lJZYX2wndlP1CFkWOXzVj6VXD7ghdoKgzLMoGJujCUZv2G9mvlIhYYcGMF+syp0PzVhK3q2E/tq4A8nOdot3CWmzf1DY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,117 +126,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
-therefore be made modifiable at runtime. Synchronize against the cpumask
-update using RCU.
+1) The commit:
 
-The RCU locked section includes both the housekeeping CPU target
-election for the PCI probe work and the work enqueue.
+	2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
 
-This way the housekeeping update side will simply need to flush the
-pending related works after updating the housekeeping mask in order to
-make sure that no PCI work ever executes on an isolated CPU. This part
-will be handled in a subsequent patch.
+was added to fix an issue where the hotplug control task (BP) was
+throttled between CPUHP_AP_IDLE_DEAD and CPUHP_HRTIMERS_PREPARE waiting
+in the hrtimer blindspot for the bandwidth callback queued in the dead
+CPU.
+
+2) Later on, the commit:
+
+	38685e2a0476 ("cpu/hotplug: Don't offline the last non-isolated CPU")
+
+plugged on the target selection for the workqueue offloaded CPU down
+process to prevent from destroying the last CPU domain.
+
+3) Finally:
+
+	5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+
+removed entirely the conditions for the race exposed and partially fixed
+in 1). The offloading of the CPU down process to a workqueue on another
+CPU then becomes unnecessary. But the last CPU belonging to scheduler
+domains must still remain online.
+
+Therefore revert the now obsolete commit
+2b8272ff4a70b866106ae13c36be7ecbef5d5da2 and move the housekeeping check
+under the cpu_hotplug_lock write held. Since HK_TYPE_DOMAIN will include
+both isolcpus and cpuset isolated partition, the hotplug lock will
+synchronize against concurrent cpuset partition updates.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- drivers/pci/pci-driver.c | 47 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+ kernel/cpu.c | 37 +++++++++++--------------------------
+ 1 file changed, 11 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 7c2d9d596258..786d6ce40999 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -302,9 +302,8 @@ struct drv_dev_and_id {
- 	const struct pci_device_id *id;
- };
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 8df2d773fe3b..40b8496f47c5 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1410,6 +1410,16 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
  
--static long local_pci_probe(void *_ddi)
-+static int local_pci_probe(struct drv_dev_and_id *ddi)
- {
--	struct drv_dev_and_id *ddi = _ddi;
- 	struct pci_dev *pci_dev = ddi->dev;
- 	struct pci_driver *pci_drv = ddi->drv;
- 	struct device *dev = &pci_dev->dev;
-@@ -338,6 +337,19 @@ static long local_pci_probe(void *_ddi)
- 	return 0;
+ 	cpus_write_lock();
+ 
++	/*
++	 * Keep at least one housekeeping cpu onlined to avoid generating
++	 * an empty sched_domain span.
++	 */
++	if (cpumask_any_and(cpu_online_mask,
++			    housekeeping_cpumask(HK_TYPE_DOMAIN)) >= nr_cpu_ids) {
++		ret = -EBUSY;
++		goto out;
++	}
++
+ 	cpuhp_tasks_frozen = tasks_frozen;
+ 
+ 	prev_state = cpuhp_set_state(cpu, st, target);
+@@ -1456,22 +1466,8 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
+ 	return ret;
  }
  
-+struct pci_probe_arg {
-+	struct drv_dev_and_id *ddi;
-+	struct work_struct work;
-+	int ret;
-+};
-+
-+static void local_pci_probe_callback(struct work_struct *work)
-+{
-+	struct pci_probe_arg *arg = container_of(work, struct pci_probe_arg, work);
-+
-+	arg->ret = local_pci_probe(arg->ddi);
-+}
-+
- static bool pci_physfn_is_probed(struct pci_dev *dev)
+-struct cpu_down_work {
+-	unsigned int		cpu;
+-	enum cpuhp_state	target;
+-};
+-
+-static long __cpu_down_maps_locked(void *arg)
+-{
+-	struct cpu_down_work *work = arg;
+-
+-	return _cpu_down(work->cpu, 0, work->target);
+-}
+-
+ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
  {
- #ifdef CONFIG_PCI_IOV
-@@ -362,34 +374,51 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 	dev->is_probed = 1;
- 
- 	cpu_hotplug_disable();
+-	struct cpu_down_work work = { .cpu = cpu, .target = target, };
 -
  	/*
- 	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
- 	 * device is probed from work_on_cpu() of the Physical device.
- 	 */
- 	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
- 	    pci_physfn_is_probed(dev)) {
--		cpu = nr_cpu_ids;
-+		error = local_pci_probe(&ddi);
- 	} else {
- 		cpumask_var_t wq_domain_mask;
-+		struct pci_probe_arg arg = { .ddi = &ddi };
-+
-+		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
- 
- 		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
- 			error = -ENOMEM;
- 			goto out;
- 		}
-+
-+		/*
-+		 * The target election and the enqueue of the work must be within
-+		 * the same RCU read side section so that when the workqueue pool
-+		 * is flushed after a housekeeping cpumask update, further readers
-+		 * are guaranteed to queue the probing work to the appropriate
-+		 * targets.
-+		 */
-+		rcu_read_lock();
- 		cpumask_and(wq_domain_mask,
- 			    housekeeping_cpumask(HK_TYPE_WQ),
- 			    housekeeping_cpumask(HK_TYPE_DOMAIN));
- 
- 		cpu = cpumask_any_and(cpumask_of_node(node),
- 				      wq_domain_mask);
-+		if (cpu < nr_cpu_ids) {
-+			schedule_work_on(cpu, &arg.work);
-+			rcu_read_unlock();
-+			flush_work(&arg.work);
-+			error = arg.ret;
-+		} else {
-+			rcu_read_unlock();
-+			error = local_pci_probe(&ddi);
-+		}
-+
- 		free_cpumask_var(wq_domain_mask);
-+		destroy_work_on_stack(&arg.work);
- 	}
+ 	 * If the platform does not support hotplug, report it explicitly to
+ 	 * differentiate it from a transient offlining failure.
+@@ -1480,18 +1476,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+ 		return -EOPNOTSUPP;
+ 	if (cpu_hotplug_disabled)
+ 		return -EBUSY;
 -
--	if (cpu < nr_cpu_ids)
--		error = work_on_cpu(cpu, local_pci_probe, &ddi);
--	else
--		error = local_pci_probe(&ddi);
- out:
- 	dev->is_probed = 0;
- 	cpu_hotplug_enable();
+-	/*
+-	 * Ensure that the control task does not run on the to be offlined
+-	 * CPU to prevent a deadlock against cfs_b->period_timer.
+-	 * Also keep at least one housekeeping cpu onlined to avoid generating
+-	 * an empty sched_domain span.
+-	 */
+-	for_each_cpu_and(cpu, cpu_online_mask, housekeeping_cpumask(HK_TYPE_DOMAIN)) {
+-		if (cpu != work.cpu)
+-			return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
+-	}
+-	return -EBUSY;
++	return _cpu_down(cpu, 0, target);
+ }
+ 
+ static int cpu_down(unsigned int cpu, enum cpuhp_state target)
 -- 
 2.51.1
 
