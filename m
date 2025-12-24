@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CBDEE75458
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 14:09:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8579E7545C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 14:11:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D5F6B00BB; Wed, 24 Dec 2025 09:09:58 -0500 (EST)
+	id 3E2F46B008C; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94ED66B00BD; Wed, 24 Dec 2025 09:09:58 -0500 (EST)
+	id 3B0EE6B00A0; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87BDC6B00BE; Wed, 24 Dec 2025 09:09:58 -0500 (EST)
+	id 2D04F6B00A5; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75D3A6B00BB
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:09:58 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 439D4C0A89
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:09:58 +0000 (UTC)
-X-FDA: 84254548476.15.DD426F9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C6D06B008C
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B72BF13191
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:11:30 +0000 (UTC)
+X-FDA: 84254552340.23.89D8D3D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 95341100008
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:09:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id F1F5240014
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:11:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766585489; a=rsa-sha256;
+	cv=none;
+	b=EE40p5/1r1xp5JHmXs0TZGEBL838/V62JOymjMVG4+xG3B/ZiXiwqC3wrVJV2F8ExJ18T5
+	H9O1C4VDh9bByl92conNL6yV3ILRN2CnS+9WXikG1s0KB0Eu/0orHIrsFX+Loa9Zpd4/VK
+	FfSc4kzVCok5vjsRRZlRg5jKPpJ6YA0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766585396;
+	s=arc-20220608; t=1766585489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s1K8sju+3/f8VFtV3zmY2c4SgwInjt4BE3PIxN+F7AI=;
-	b=pov4WUXxv7e3OktKLy7wsQXD8ZgUHRtWLTI2DSsiqLDI/QIPGJl3wMcYdeVMZkmiplPDjR
-	qWV9xpPRg0rySpE+kqJUJTjgFuW8P76/RKjRCCMp6IhPI/y4g88w127hCdEAY6TIM05TFA
-	wVf5p1Yk1yDqbi0UO7bB7Ul/lFRviK0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766585396; a=rsa-sha256;
-	cv=none;
-	b=QuvALMhDV8YEN24ODCMrCesSheIYrdciswyZ1m4TOIV7AXxtyP82Sdk3l4P+GijEGt6ftj
-	cNPswxc5w/ry39KWBd5JWar7VTmWeT9LsTAGZfJgoAsDVNkqFxdO736qSt0QRYr+SdX4Nn
-	HelK9yzRi+kuUUNi0KJ7v533jKh4nrw=
+	bh=engvTENbTkwyMwShxwwH2edffyeaZ701mnBGWNltMW8=;
+	b=ccjlfkb3sFU6KN0NiK9/K8QiS+VxY5ie0oN58z8Q5AvHlBHewkgk2m6J6zcyb0hRQVmr0u
+	HdRmrIGCrBt3pg5Vq1KMUkdyOJBNEU9jAPYRH6AKkAfZhkQHI8xWni4U8gzqIOWhoYcptc
+	80gq6BeKnbtjkv5aA5hJEGHJztuvImk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E5FA497;
-	Wed, 24 Dec 2025 06:09:48 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0109C1424;
+	Wed, 24 Dec 2025 06:11:21 -0800 (PST)
 Received: from [10.57.93.190] (unknown [10.57.93.190])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C61E3F5A1;
-	Wed, 24 Dec 2025 06:09:52 -0800 (PST)
-Message-ID: <ca465273-13ec-4397-a4f0-a38ad0dab2dc@arm.com>
-Date: Wed, 24 Dec 2025 14:09:51 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 763F53F5A1;
+	Wed, 24 Dec 2025 06:11:25 -0800 (PST)
+Message-ID: <20821c02-e16b-4e5f-95b0-b3e8b9192117@arm.com>
+Date: Wed, 24 Dec 2025 14:11:24 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] arm64: mm: implement the architecture-specific
- clear_flush_young_ptes()
+Subject: Re: [PATCH v4 5/5] mm: rmap: support batched unmapping for file large
+ folios
 Content-Language: en-GB
 To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
  david@kernel.org, catalin.marinas@arm.com, will@kernel.org
@@ -70,19 +70,19 @@ Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
  baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
- <e1e57d89fed939e3f7ff877e4f406d807a7eebd4.1766455378.git.baolin.wang@linux.alibaba.com>
+ <d869ae45a7be322f342ace62ffcdd4b47f4154fc.1766455378.git.baolin.wang@linux.alibaba.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <e1e57d89fed939e3f7ff877e4f406d807a7eebd4.1766455378.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <d869ae45a7be322f342ace62ffcdd4b47f4154fc.1766455378.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 95341100008
-X-Stat-Signature: umqrdkiktdekpxsnrozbekwg4ds66bax
-X-HE-Tag: 1766585396-954555
-X-HE-Meta: U2FsdGVkX18hHl2HAAo8f6Bj+KRC504iV1gRrZucmPUOVSI5Gv5OWgKh+m2U7BThujScFOB8I81CR+N1crYpYJDSkDMrKEJfYGKBNufwD4vufym9a+LWEcDiS4rtqmzBgPsooqrQ3MXoFPH6xmxVpawJu/9VvPE4Qc5vJRnYSTecNA6ChpeT/LYzZIfzGA107rxOApD3SJ/Y9DKDIw6oNYIB03s3SaGwYhBFB2oUyph3PD5YesrHAR4LJ4umvGS+0NDpQL4M/mnUItIR2+fT4jw1/7ViB/c0TNId9pwnesyp8cGm3mFiKkUp3yQyblkkzT//vmHvnIw98tC/4zqYVYHh6KRTD99euk80BupSPjP3WVnFK74YsrTda4GIq/5HRc0Cq1kWs4gehTnqt8mLGHhNROX+TJ0F0QVxfTgqgtQJZ2JVmBCDHDi9lzrl41y2Y4iLpMd/Whycgr+oLererPLkGtIsQHqm/xuJz2ITXaWfEzQrz4AJBhyEFKQaHg/uUQIRJ7hVMZ8sFKxXJMaO0E2cCxrJ6GFoGLCDWLjRDOIEXGTuLu5H25A3HE4p9h3dwe/2ALYZSCQPSIBLH5AhkdN6UdcWwc//sP3ZlYqRmlhvVWrFD2ObIBeXF70phZGOSmHHEGlI3C8mCMw1dq/MGTrRjSQyRYiZxHZafquxSS4WVD0sN+Vj6UPOpi0Smg3+ohnPrwODUpyV0rncLHaHdBBq42khEEwKgRSRUlkk9py7DlJ8NSOxksgoZkCffNhgWOMT6YbmA+kjZzBwOvzFLBaqQF1YUZ2QY0X+hP0mkAziR2d9cneMSWQI97XBa9Q+odBFz+888jrKNpB64sJWR2oPVAgiTzpXaYyIBF12hY1X3yv5W2OzRjAQGIhGeeRsJFnIsIWptWV82xzOE3lPBQVgoV0xokV15AdmSqR2e49MhoJ1uJFJpyd5VcFNsn0YaraHDeG97LxbqqAknQT
- o2kbYg50
- 887JFHJvbevwPQBkmH/xdWxYVeT04DQ34cPBzYgkuzg7p24dSaMqrem1V9pdWzu07kPb5bGY1WjuTyJOp3ciDtRyz55075SA7UoMSs16dtCZdDl7Mphd20fXLjzaSOfFaEK/m5A9IZ5G5pD93kAIHH7t1iRkYN4ozTpfYzd2UXmWzXp9iA1bm0AexAZhJFgEuiv8+zthPrM50aBlncXtFoiRYsEmS0x6NZFzaxpneHZ8+hIVi1FqM7kN2ZQl0RwRq9zwpYiWPUjLeyhM=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F1F5240014
+X-Stat-Signature: dhs77bt8w3cn5y957n7bes739uzcz8ac
+X-HE-Tag: 1766585488-661297
+X-HE-Meta: U2FsdGVkX1/Vkq7PsYsw6ejBNPPK3o2hizMKJn9gVrWbjM2RMdL4KVxJtpuhlOwSlbfseS+M9RE6I0Uil552l57Mgkp2XEmO+tinXIa9sAYXI/TPlO15zXkgehjKoy4vKqtkKuok91iQLo7OFD4CAl3X8VR9KvT/22LdkHgaw/KAyilY+Jn7ZU6HuPx3L90lfk8RHttl/LIg/1E3FJYBfj4OIBJPjRFAXIA4vk2Gvn1ODt9yeQPqywe7FVujvfxobDLfwbynBpFdr2FTDbLIgOnR5Mt8ePQpGRO88Xm1t/TkEtX2cxViPIIFLoXogfvuWPbY6Zs20+L7dihwaVruiyj9GO+4RrWjXw1pPNCb4YgN0Gl+pN2QXkEA9vNRqBCYtbOmkYRBnnZ4TTunCzrgZFTh1RBpwMwz99aikN4dzoMf4kgpwot17IWy45Z8C0gkh/+ZzUow+HUtHJnP3+LtrX2SOE/yMMGMLSqe/zPMqCRV1ADn/gMUK+eFgI/ESTykidzanMume9BZ0rZySY3v2HFRp6S2l2DJRXx0zsn8oCuoY1l2jfnzNtXjDXEMFXtQOrD+wCUhkUr/ALDoFUXK0v9M/HvnwyM5bvSgNnW4LUSDEIuAErZYJNCGvqPjkYREYcvQS2GK5Ygtl+Guu2dFSGyKGgGjLRWEbvOrkECl2TP/Is1qy6pkGT7RhBQbTYvahZnXftmIutGwH6aZjG/krVZcusWhTWAY4XH0gAuOrTVvkCv0Nm/S4qdNqV0hg5kM2Ke5Ppmnd8sn89H91qv8dWm5FAFNyRN7nK2bAJ+rWlUJOhUw2O1DZkwGCMxk07F9fYv1E3dWGdfwAhPnF+YYEE1dRoaJNke5aP/0GE47g5kbcVyKnRoZhhT//4EH2ttLv+urPxSsJ3R03l+ADsXPR4d+LZ6dxnSMr6jqYaiKmlzshYvTfjOMEBCLDyYRYhYPR3mathFXpuDK6f0XS9R
+ VPE9F4di
+ t/3PiCB5qHyDanQ36+7it4QMGZevYc83cI8ragX1HSd6hV18/skt1jNrX1X6rqo2jroeo41en46VveJ1xzNTn3Iqme0/ECLzE06J644VuFnXM94qkhmnmtjAu50RkhEpZ9r9CHcjA+HHtuP/YGxQyxD0x1zyradaoKanmAKXxV9cgM54rXcKYaaoqZbueW9nIWi8DUuz7Qg8gFbDpYI43jxfUuc1YJpq6G/bWg5qYj29wvmcsbjvkMMSCfvoXq+QtbDLvOU8y+ocNYVH9O6Z8uJOH1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,56 +92,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 23/12/2025 05:48, Baolin Wang wrote:
-> Implement the Arm64 architecture-specific clear_flush_young_ptes() to enable
-> batched checking of young flags and TLB flushing, improving performance during
-> large folio reclamation.
+> Similar to folio_referenced_one(), we can apply batched unmapping for file
+> large folios to optimize the performance of file folios reclamation.
+> 
+> Barry previously implemented batched unmapping for lazyfree anonymous large
+> folios[1] and did not further optimize anonymous large folios or file-backed
+> large folios at that stage. As for file-backed large folios, the batched
+> unmapping support is relatively straightforward, as we only need to clear
+> the consecutive (present) PTE entries for file-backed large folios.
 > 
 > Performance testing:
 > Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
 > reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
-> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
-> from approximately 35% to around 5%.
+> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
+> on my X86 machine) with this patch.
 > 
-> W/o patchset:
-> real	0m1.518s
+> W/o patch:
+> real    0m1.018s
+> user    0m0.000s
+> sys     0m1.018s
+> 
+> W/ patch:
+> real	0m0.249s
 > user	0m0.000s
-> sys	0m1.518s
+> sys	0m0.249s
 > 
-> W/ patchset:
-> real	0m1.018s
-> user	0m0.000s
-> sys	0m1.018s
-> 
+> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+> Acked-by: Barry Song <baohua@kernel.org>
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
 Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
 > ---
->  arch/arm64/include/asm/pgtable.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  mm/rmap.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index d5fbe72e820a..84a6bdabb1f9 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1838,6 +1838,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->  	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
->  }
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index a0fc05f5966f..7482121d4e92 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1862,9 +1862,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>  	end_addr = pmd_addr_end(addr, vma->vm_end);
+>  	max_nr = (end_addr - addr) >> PAGE_SHIFT;
 >  
-> +#define clear_flush_young_ptes clear_flush_young_ptes
-> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> +					unsigned long addr, pte_t *ptep,
-> +					unsigned int nr)
-> +{
-> +	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
-> +		return __ptep_clear_flush_young(vma, addr, ptep);
+> -	/* We only support lazyfree batching for now ... */
+> -	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+> +	/* We only support lazyfree or file folios batching for now ... */
+> +	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>  		return 1;
 > +
-> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
-> +}
-> +
->  #define wrprotect_ptes wrprotect_ptes
->  static __always_inline void wrprotect_ptes(struct mm_struct *mm,
->  				unsigned long addr, pte_t *ptep, unsigned int nr)
+>  	if (pte_unused(pte))
+>  		return 1;
+>  
+> @@ -2230,7 +2231,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  			 *
+>  			 * See Documentation/mm/mmu_notifier.rst
+>  			 */
+> -			dec_mm_counter(mm, mm_counter_file(folio));
+> +			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+>  		}
+>  discard:
+>  		if (unlikely(folio_test_hugetlb(folio))) {
 
 
