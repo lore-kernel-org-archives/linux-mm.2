@@ -4,86 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1C7E6B270
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 03:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A99E6B270
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 03:46:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AA106B0005; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
+	id 4D4106B0005; Tue, 23 Dec 2025 22:46:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 757AA6B0088; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
+	id 481936B0088; Tue, 23 Dec 2025 22:46:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6636A6B008A; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
+	id 376DB6B008A; Tue, 23 Dec 2025 22:46:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 529716B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 22:41:49 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0556B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 22:46:07 -0500 (EST)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E94DA138731
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:41:48 +0000 (UTC)
-X-FDA: 84252965496.30.B5C13BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 31767180003
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:41:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjR5qxQD;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf24.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766547707; a=rsa-sha256;
-	cv=none;
-	b=SbQcrdJ3rMv9oeszcEgIydi9xXKAYGqTMk0NRfe5FgXj24HspigwksWms/gLyERUPIlQF/
-	uib8p4FECPh4oXeegOB0firlbPFeATw9yPzKgini90HF5VTaHmQt+qGjQtKrMYiKwfknfK
-	7Cp3XREwi16e7RaiNUe+gQuvaMbCQss=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjR5qxQD;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf24.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0C5913B53A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:46:06 +0000 (UTC)
+X-FDA: 84252976332.30.685DC39
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1D3582000C
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 03:46:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lvjG7KPr;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766547707;
+	s=arc-20220608; t=1766547965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZTyEQbr5jUviYb2EwPbxpL10mEgT9fTrCuoxpdxOpA=;
-	b=gntH5To4l/19pmGSc3oO7tWfPT3kLoDCJHauVAesRgbFCOy0d8KF+Bbv5IrVG4ppjui+pZ
-	1TnjKD3GM2LhxAYj4u2XiXHaz+SJO09OU5k5FuHcW+zrzVbtD+8gEJD2uf5bgkwGh/8q8V
-	gYslAEQgJJ7fd8M6G/Du/NWZ9hpUYLY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D72A740450;
-	Wed, 24 Dec 2025 03:41:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85034C4CEFB;
-	Wed, 24 Dec 2025 03:41:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766547705;
-	bh=20KI9PwmKkeJtGHt2+Ga5SqcfLaOGJS1ES7ElwLbA68=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EjR5qxQDtuAqdXT5FN7AhCbNukbExxsarCxKfXBvKG++ruBXOseReHM8aLlIdruJ5
-	 9d3kkJCgc8l1l9BswJuTnZRjpAEKrJOWzT4O3X1TmMh3TegaX42Sa0hIN6grqAGrzT
-	 FRHOkvc77N6mHpGnliGwWRMC3c+IvwYm1TGxc5yc=
-Date: Tue, 23 Dec 2025 22:41:41 -0500
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH bpf-next v4 0/6] mm: bpf kfuncs to access memcg data
-Message-ID: <20251223-snake-of-stimulating-genius-ff4cbf@lemur>
-References: <20251223044156.208250-1-roman.gushchin@linux.dev>
- <CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SypNxq4ihkSOpwufXMhOr4v6vA4rTimGBEpmyUwAS38=;
+	b=sMfVEiYjWkogZUNPWWhO9vgqeuPZTVFDzhKZvLHMJyw+TzRxv2N3lVzqUDhG82QmY/BP2G
+	0gCUDeRn15ihRB+FnZFABuAZcd8+JafPwHtjLsS6kkogjsuJox4sJORQVmI+UbAlAcybdv
+	V5NTVnbDZNHS4cZX1fIScwF94qSxm2o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766547965; a=rsa-sha256;
+	cv=none;
+	b=2kJJzzn7epFv2sfvEQAuLMN9tK459iF1tX2keKmLJY1+TyTqSn7fid0P7/ljxvutqJCUgH
+	bzkoTMkYfn8jMVg7wkSL31Cd/Nx28S8xzwNhzyt76KZ2jzsX8ypwug1Cdxg3mhyPwP6/3k
+	+/BjepSl4jw4ALq+uxV+VwIy3cKC0Os=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lvjG7KPr;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766547962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SypNxq4ihkSOpwufXMhOr4v6vA4rTimGBEpmyUwAS38=;
+	b=lvjG7KPr3mKzGajh8YrxhwMJQ1a8J2HScnYZq9MVlcn/asADajOhFVEAb9UP2H6Bmk6H5X
+	2x7u/CdWwkIWl873VSWvPxx0RKUKhnKYDX/UxembPa88QErwNyTOmYs1kp+l08BjT30A+/
+	SWXYO/277sqa4GJjcRD1rR4oDyisjQQ=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: [PATCH] memcg: damon: get memcg reference before access
+Date: Tue, 23 Dec 2025 19:45:27 -0800
+Message-ID: <20251224034527.3751306-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAADnVQLAFav8czDjCYPyjDK6Bj7X_L70WQ0eSFTwvsxxEXDzCw@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 31767180003
-X-Stat-Signature: 56a8swqp4wag5dhmbtcwp5icitcscqxi
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: x6rp19owb8ms7ggttonnq6mjrpyguoeg
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1D3582000C
 X-Rspam-User: 
-X-HE-Tag: 1766547706-189476
-X-HE-Meta: U2FsdGVkX19sdXJwMpow7TrV1Ofk5TpW4oTyQdxjkM6anA/JUCb3fdBTpd8bIB3LW8/tmaVFC+Atm4B9YZW6uWuQ9cr87Z4DsvRMu5Xx5icybdSA3/c+kOuDkP8cEPL+kcnOwo6952FQI1+ckD71uOhP8IGtSUAnytthZkJVddJ3Yte/XLaPfPp6P48POQ8djqUgkzz6NzqFg/KWmv+G5y4B7wafJzQmpAq+NHJYZrMVoEQS8Lzkrfh0F3b0IP0gF2u9Izx6kB94LKEaIpzIa9fO+zPiv1QRMZk7EOncgXZ4IAuUAS/yJUej/Ycfta6Sv4vidZlxjvMWaRC9MqDNT6MGfZXT/Z0BIuIrfbPxEuGzIUlLAMh8w921MzFpRNc0jgWAWRsTS5MPS8Wbz1RuNYqi7KZmmBnskTKhu6bgYzHpYdY6R1XPA58Fe1uSGxDalZ9jJWCOZM9J0A1MfJh8noXgr6yv0vWULV456Mc/i0b1+M1KZ1yiofLSdmcDXL6Dzrt7KGOYZhBd4cl7ofwZuGTq4QrZVh+SZvKvDOLqrMpPvPuR1UIE5LqoET2vCK7D6DCAYeXxxHF4E1TXSHCG1pI3Ze5qSiRzxjOIMqXF4KAQAzfDcDsqGeTRGLM0y5b88FIxAyYGQ0AZb6ytPbLmwQGLY/8plsZlT2gZMqHNhhfy6kXt0PIkv3YZGlfWiMc0pJR/8lT985aOgSrp0xo2VqajqT7dG16M5sdGSJuutGnjLjk2n4sxmdg3EcRxvCKYpsD/cYVQiwn24yAR5BbR3k75d1jxkp0HrOT/3LNmNaqWMt8+bSblc8UeFmKNYi7uvMX1LkJIPoXJ1MNc1fcjnaXVkvcffj2d5n9nBWp0//bscHOOl9kvLsGcMxc+0qbENt2jIp/jsmOwtHNCFiy9lj+Ua5u7g8YPw+L2aJgK82cb2FWNbGOgy5JXO6xoX5yi3N8OI9JEJ/x0EU4Z7NW
- DwJ7ILSw
- qGDwEjEY0m4UauHIpSP0mJSpTIeHiIPhDTNi88ff3zQ1r/qsDpnxhC62tKlcgo1Fgfgn1uE32m2+vn+ITGq2DpcA9lvRc28mGyp900s4tUmTrCbz02e2EwhO9v5Mb4ZCj4c9Fxnk5dxG/iiXyTFTo4B3dmTdqK9bhe7lkYUtMyF2jJ3Yx01uwrzJpIGurfZsPo+0P1dyff2Kf2/suAiv/IHzdAn+w1OjJUahRH7iHkBy0vMjiAOgeUwIHP+0ivEz2FXdxWAmmKe83TTxhQKWuL6kaLgQzHY1+qcMx9/xvroIsC7qUv9r4g6J8SfxM14IF8/Q42gWRyUWvYY1oTzmtyHAHkA==
+X-HE-Tag: 1766547964-726769
+X-HE-Meta: U2FsdGVkX1+tISUi952tLFR8rnvNO3yTupMxPQymr9EMrl6VGEBFgS7gmjEvsPboFzm9219rivw2bReTWlN8X39rQaONePKzzrP+YGoOBThnXm8nm4PpunPGWOh3hQJUxJ/HEPj8AjuqvElmSMO7MNC8EqjgtZebQzxNhLi/VD+RZMVvf/H04JZpWp+QB/HBC9X/bXvxaSnbgHRxvkLW5F26ELYJDORaxdZiNc1ZA+NwgaO/Z+OkT4TxyEXyobEsYxcAaLEg3/hnlj/2NTRFGE44Sh3G3C8MpKYXxF3RdgqjsZw0nhUmw/eR4c4nNf/8vzw4HGHSsjoVzWWRVHtdFbfm/HaM5seAcx0KlAPoqkm+Hn6E0vnAksgm9E8rEvHq8LegM5HFcAmp7rNrAsYi/kMqfRw6ehV1+7DMBDQkE0FHZxXzVA/sHouJrqZ11HmHUyK6mQfVSyEpvEMlW/CtmCAPZpvXZeghmqaRDf/OwCMg9ATj2XgRGX3DLODqLb4exWWS5//Pczl9mIXit0FmMnY6Ok4VT4FVXxLaMR7lSjKdTCjLWLpl2X1Tpk63SR8qBq1KaUGGFyq/nQwZ4MZ+N4dEQye5SASi7KoU9gP6ZIkGCAA9NPs+uFRseDdZiLVzwrt9g1c+gHYwyWzPGugHb3TsukSX1U8zjfTf8v00TYyJJUZTP0sat1XjZw2wIQMfdmiCot/rz8Cd2WdW3jRoxoWUDF3HCaPymQuJoSdlDI/hroVu4PoGaJ+9DtBA30PgBh9b4qTYhQXM/A7ZMyK12G2leZ/ErKPRNW5G9j6d67N71lAoFDZx4oJD1NkoU3ecLH7JtGiAV39nEq+L4EHp5B1K6D3cEYJ5M0TIOE0QyOUbSSgAHWBzJNzK+EiiIE+VhIgBVXiQGsLDkhkpT8ZLZLQrFYuo3UsJ6dRUJQN7dq0Xj3GtuopiwsXjvZaPZDv+K+eJ1fDq6Ez3P03b7T/
+ RJuDPx/W
+ gQE4dW6Vs+VpCy5N4oYYElkhdAo1Et0DMbEQqBUqyJbBATys1FHewgXbOgUPtoAOi9Lu9H6IBigREMkONj2sTh2IyZ8B7kx+UFTokV3xR2hRhOw7x7tUJaKzNnXsFuEwUEcOlWAb9IqypH1E81DGcUZmu2cu/fa4jJKHKqUSnpbMOGtW79Rpg2s1vnQe2hYcSd4jl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,16 +88,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 09:25:35AM -1000, Alexei Starovoitov wrote:
-> > v4:
-> >   - refactored memcg vm event and stat item idx checks (by Alexei)
-> 
-> Applied yesterday.
-> 
-> pw-bot seems to be completely broken. No notifications for the last few days.
+The commit b74a120bcf507 ("mm/damon/core: implement
+DAMOS_QUOTA_NODE_MEMCG_USED_BP") added accesses to memcg structure
+without getting reference to it. This is unsafe. Let's get the reference
+before accessing the memcg.
 
-It was postfix, actually, but it managed to fail in a way that didn't show up
-on monitoring. It should be in a happier place now. Thanks for the heads-up.
+Fixes: b74a120bcf507 ("mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/damon/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
--K
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4ad5f290d382..89982e0229f0 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2051,13 +2051,15 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_id(goal->memcg_id);
+-	rcu_read_unlock();
+-	if (!memcg) {
++	if (!memcg || !mem_cgroup_tryget(memcg)) {
++		rcu_read_unlock();
+ 		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+ 			return 0;
+ 		else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
+ 			return 10000;
+ 	}
++	rcu_read_unlock();
++
+ 	mem_cgroup_flush_stats(memcg);
+ 	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
+ 	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
+@@ -2065,6 +2067,8 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 	used_pages += lruvec_page_state(lruvec, NR_ACTIVE_FILE);
+ 	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
+ 
++	mem_cgroup_put(memcg);
++
+ 	si_meminfo_node(&i, goal->nid);
+ 	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+ 		numerator = used_pages;
+-- 
+2.47.3
+
 
