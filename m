@@ -4,93 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD2C2E776F8
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 18:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC60EE78497
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 21:45:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3F736B0088; Wed, 24 Dec 2025 13:07:06 -0500 (EST)
+	id 9F6346B0088; Wed, 24 Dec 2025 16:45:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CED7C6B0089; Wed, 24 Dec 2025 13:07:06 -0500 (EST)
+	id 9A3786B0089; Wed, 24 Dec 2025 16:45:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C230A6B008A; Wed, 24 Dec 2025 13:07:06 -0500 (EST)
+	id 87C416B008A; Wed, 24 Dec 2025 16:45:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B3C626B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:07:06 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 363A516050C
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 18:07:06 +0000 (UTC)
-X-FDA: 84255146052.30.B62DB30
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EA5F01C000B
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 18:07:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hme0MOhh;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766599624; a=rsa-sha256;
-	cv=none;
-	b=B5dxxBNC6Z9spev3scq7YZh6WZBnb69TH5t204LZINUxBnz6sJMAly+1i9jDHG1azxK70W
-	Bh+86mlHzI8dPjPquUGSsN5cN5qz/M7ogapJBoBIODc8VDd6nn5vlGpYwUCZpIq7AjxR3C
-	EOZfQ5RIDnfeQD/U0ROGhOrKzmd0xzY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hme0MOhh;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CF96B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 16:45:26 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDE5958F81
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 21:45:25 +0000 (UTC)
+X-FDA: 84255696210.16.0FB4D76
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2C21840002
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 21:45:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bgobh9xB;
+	spf=pass (imf11.hostedemail.com: domain of rientjes@google.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766599624;
+	s=arc-20220608; t=1766612724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BQKGjyZDvWvZ8jDpsdKnYLCVOQ+GPoRi6k3p/8BF64o=;
-	b=jzYtcTtmluQWMH9gdG3psbrGHk8BSnY3VzBMLWgtApAGSNY1D7nytXgyxJFCFMTOkkkAEL
-	83nsyDa1KALdtF9BTYGrxicPHELGBKbki+TqThFVX+73Wo5TiWZos677GcywU/iPOkVKNP
-	4sUYqvy78NRA1KTS4HUETWfetmg54/4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BQKGjyZDvWvZ8jDpsdKnYLCVOQ+GPoRi6k3p/8BF64o=; b=hme0MOhhI8LkoVY2AKAI83bY+f
-	bYGIZe2Psau5T4X/Mq5qWfMaSaNnf7PBGt9n6fieHQPZeonQVA7bO4Ch3IxwnduJly1SOxD8PVmYz
-	mz8Y656AkSwn62wrheMHcaPvmfdgEO79CE/j4eFJzXcsuHe8kkHFPb001ggiwjnhcYwFy4eVWxcto
-	DTKJjAMriEkEtEwqRnhY9KLYqGXooxFaSeb7kE1Eyp9M7F5StcbvJwNXhWpNLI83TLVnalli83fAD
-	LcCxfhXHM26IkNGnUvr/V/oJbya7RQKcNzgHtn/wACQ9NP5JMeQRUdDI/gbM8w1SmARm3VMn9rpbi
-	G8+i2ZpA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vYTG4-0000000EYJO-32YH;
-	Wed, 24 Dec 2025 18:06:48 +0000
-Date: Wed, 24 Dec 2025 18:06:48 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Lance Yang <ioworker0@gmail.com>, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	axelrasmussen@google.com, chandna.sahil@gmail.com,
-	chengming.zhou@linux.dev, david@kernel.org, david@redhat.com,
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
-	nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev,
-	surenb@google.com, vbabka@suse.cz, weixugc@google.com,
-	yosry.ahmed@linux.dev, yuanchu@google.com,
-	zhengqi.arch@bytedance.com, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v4 1/3] mm: pagewalk: simplify hugepage boundary
-Message-ID: <aUwruMji4MCNaOPi@casper.infradead.org>
-References: <62a2d7ba-e7c3-4153-b227-c08802ca9e1c@linux.alibaba.com>
- <20251224092332.53214-1-ioworker0@gmail.com>
- <20251224140829.2ec7bbae@pumpkin>
+	bh=BVSrph4vFqsRAei4UBF49evcQq/UGcTwkAqjzFfFby4=;
+	b=Rc5YcWLhWtfhPP/llhXBU0qtb2fe0nRuNatCm1vJQ2LDTW9clIXq1osTRSUl030DDiO1UZ
+	Ozjd0/nlNtXCoITyY/LwDajcp+t8rKFD+nG/GSgsPI53CVNn1pQyP1G3CkpKTCy7mrc8EJ
+	kUdSs1lj8pHquEeRFstABwcDFwZK2Go=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bgobh9xB;
+	spf=pass (imf11.hostedemail.com: domain of rientjes@google.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766612724; a=rsa-sha256;
+	cv=none;
+	b=cH1GF4nC7Tw6ahX+A123562fBeq+AdKCQlhAajNn4b/fPUJKVdJqeqhKNyU6h3wp0bRquI
+	/Gp8B2IWEC/Y5Yr5R3SajftuyqR1KBTBsPMIdZg8rTm52aY7LZwsTnDdg/uh9/qZNYru44
+	OKN3xnuRypdfbVipyoneCi1y57Vmqj0=
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a0d06cfa93so906615ad.1
+        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766612723; x=1767217523; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BVSrph4vFqsRAei4UBF49evcQq/UGcTwkAqjzFfFby4=;
+        b=bgobh9xBqErRdL+ZeYoMm39drEO6Pd0xMeozP56T0nBE9VXrstsVYE1fdPqAaP2XZ2
+         euOc96AnG/nzIF8DBA6ifEfnCVttBfc/dar40esLuN39SUCE/+1FVxAefcOrNypqEjhV
+         CGrW5xXfXzXjrrtYkbGmdlMBPlbJtakFBZYOj9Quc3n+vS6Klg/fnzrnezBRy3VjFUIe
+         3VrcFQHFZiuxON1NFSF5a7P3p9FxsV4dmlxIlwdFtE6ese8S3YlwN8NvAyAGX3uskcah
+         IqgWYKa8yzRrZzglUFsegKRYwG9Zus2RbkRrtgN6ruhAVhC+KT2qraz3ywpe79NBCoLa
+         RyvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766612723; x=1767217523;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BVSrph4vFqsRAei4UBF49evcQq/UGcTwkAqjzFfFby4=;
+        b=urjlLcfVq7JQY7ZmxeR44r+4okc/nTrdzR4PqVljmD4ZQyd1XfMLSaLekpo7r2U16x
+         SOM+ud7wqJZOGevxVGVQovU0W3LkNb8ok7oW1ohyIHMtxrewM3vLB4QAcGzHYIJL7jkN
+         PtnSwRSxrrKTo7Q4otxgH9Ev4tVUfAz1CVycJFgJ/txU4rO0vW3bqzPgKW70tEHXXUgx
+         q+zAx7ETuHSqczWfFw5bsd9LouWhWcT+N1d6b8t+qw1Bpc7aEXoVsyjQdXAthAScjNsZ
+         GdkDcSUiRoMfrYde337TtkfPZQA0PbN2b+GSU9xQPr5LFJw0rE4D8cf93u7FmpHs+n30
+         Usdg==
+X-Gm-Message-State: AOJu0YxeaGGlRRwLG4S8Xy0xN58+REuQrz2QDEuoHNzhKmEPYjZD1iz1
+	zWFuAVUxuN6Nda+oO4I7nm9X554KCw+EoIbdZZHduWgWXzjD/6isKJtYALA/uxYeGQ==
+X-Gm-Gg: AY/fxX63fuE1jyL2IAcA2FpS97DoGC7rYmoiKuJZIMGKEEvF/8AMFKc5rMy6ALag+IJ
+	R/jXmaguKlfLA7fhj7slZQndK0uUr8T5MvYAe2SZhJmPIS6pgWj/djFniCCF0eXLhcP63aaVShC
+	Ckg4tAwWo1ihecQMpU18ZsVGn6QV6eaYfhTZrhU8ZrklopGsu0Wqp/aiz4QnROTmZyfViiuEHn6
+	Q4lowWByFczgNM5gxb3xIyFX7GqBiuZroQsI7YxPW4BKwsA7KW7aEPU+hovfuunwO4YKC0MubjQ
+	sgBU5RXUYWD/1iVccjROmHKUuFmlsk9Xb9z7+R4gJnbD7howrdFzc32qO/6uvtx9HXiuOYphfTM
+	jJZC0tvM613IbexGKmo/fgQPBjuycm55knwBVOyF1GPhdVx/yAdB5LcVdXYWmcNLLleyuj35Skd
+	ROt9pE2MwavZCoK3jzQ+yD3b7YDVXxjEBK7MIiRoD0BZOft2GnK7toWZNThVmpfdxyoA/a+tVuN
+	3/qpKpcgE46Nb8G3G8Tcyw9gJkPl3eeq+uumgrzxw==
+X-Google-Smtp-Source: AGHT+IFinsP+qZuskXhMf0I7dlZgK8eVRNz1z/uGY3g6QJhLT6VgXkln24BNeTU7r9KKUD0or0bXNA==
+X-Received: by 2002:a17:902:f70f:b0:29d:7b9e:6df8 with SMTP id d9443c01a7336-2a3522d57c7mr2328755ad.2.1766612722711;
+        Wed, 24 Dec 2025 13:45:22 -0800 (PST)
+Received: from [2a00:79e0:2eb0:8:892f:1325:ec15:5ca8] ([2a00:79e0:2eb0:8:892f:1325:ec15:5ca8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3da7dabsm163086525ad.25.2025.12.24.13.45.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 13:45:22 -0800 (PST)
+Date: Wed, 24 Dec 2025 13:45:21 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Gregory Price <gourry@gourry.net>
+cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+    linux-doc@vger.kernel.org, kernel-team@meta.com, david@kernel.org, 
+    osalvador@suse.de, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
+    Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+    surenb@google.com, mhocko@suse.com, corbet@lwn.net, muchun.song@linux.dev, 
+    hannes@cmpxchg.org, David Hildenbrand <david@redhat.com>, 
+    Mel Gorman <mgorman@suse.de>
+Subject: Re: [PATCH v5] mm, hugetlb: implement movable_gigantic_pages
+ sysctl
+In-Reply-To: <20251221125603.2364174-1-gourry@gourry.net>
+Message-ID: <dd6428a4-2984-e8f0-2760-bc2c7056b009@google.com>
+References: <20251221125603.2364174-1-gourry@gourry.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251224140829.2ec7bbae@pumpkin>
-X-Rspamd-Queue-Id: EA5F01C000B
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 698rreyjs16rk5i8skor9rr8n8cyb4wt
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: ssiddosgw4bhiscazqcr6qb8iyouwcot
 X-Rspam-User: 
-X-HE-Tag: 1766599623-147395
-X-HE-Meta: U2FsdGVkX1/DLT6fF62bsCxTaDoEk84wxLNCD3CjO5Qwi+/zIircKT55dNNGop7VQZb98wgCV0YlEfosxouUGmEVoFG/3jQxtkMbtqmmFtyL/8ES9PTh9ezCS9wnOPJARU3heoe1VhX359RKa2ucaWM5dGP3AMYSnFIXQGjArz7EHL9uE1H4MmbTnoK4Pmk8OJEtehqd90HFYx+hB2r+EfKgp1YL7QVuu2t1v2nNUfzirFmnZotWL0uNQRBto9c1OfrK7rvTR7b/OgpLleZywTzl/pviZmdNmPAZTrmwxmkcwPztjzCbI4ZulUbGzhiKRMFikemI1Zqgrg3G4dSps3cTtZ0ABIN+1uVvCJ9LXgQCQcZcRsrjccBKru0oudmJih3qRX/PN6iolE7aLYygBx44xVKooT7YHKfjykGNeJS/oYPYeU8lcM3M2Sz2jCEV90raR/6knH/h8I0eb4bB3AX0WZeZGf9xfTxGO5u7EgMvZmB/Zp6+cdwsGwT6bx3B6pkIXv0YJs7mWBS7KHJTzHik7lOjtoJoGIImJUYHf9Oh08ymqsheUcTOkdtUZiewemiGWZfKz6Pau6voTO5h19EaEdf+X/1slHe6ib1ifAdXg8hHcYJiJ/qPc4W75LhBkt1lHp+OpIkjFnOV8L9cEmFEAUN1+j5cFUToK5JGEfoapGDgHJQMkRbBbMhDnLsFwKyAW7/Z+FHK7NQADQ3J7E0GIK4aelu4+eIRVz6TPXICpBBYCoRTcov3NbUNkMnGoR0AMrd1+NWbXPce9RuOyrDMRNmmMGZR8Gzszw90Pr7nOuR4g9xoXBKVgIiebq+6NHOD3DayipulovLhqz+oYU/O56EdrsJH5V2S2K4F5Ec71JEnmVswZ1OfqDCn6KrRKGpERPHVwOz3lmBL9yZfvQJTRe3ciwJaZqVpWG0s+5LtDaBtojfg0Z+Z1FVMiHD1nRxj9yxI1tObizB6qpf
- irbWsH5Q
- q+sJWAdnBbm/H9HtsbcQ9ELFf+cF6FJF8WcZ0GHI3XJJgM9SP5x79tUM3C3AAvUxb3Eow1+vyXKWyVXIae4C3iGA7BNQkROnXdFKePpOro3qNPM3bR+/hhi04XjmGMcM/OeC/NNfWlomFiAUuv2n7nz4mcMfMG4YyNSS15jRvhVt9gX1tiVq4V2klUMnTYUZp6rWFH4i82Y5CG+AH2JWCcCZwwrVZC1iYDPBAZwUKIAfDdY6EJc34FLskeZOax/CDdqLR/++vcuCMqF+k3bmyWhkNwUUqAzJ+4MkQfKlra34YR2htVmVlW8nsVAN+Cwpp0DBgMxG2JJfwhUalV59gNePHimoJRm0T0boHrgQuGoZTQV/ykSHwLhXJervIG/O2Vk5fURDVRGf6EI01mcKw06T+90iV2HhuPM/yfTB/0pLX92M=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2C21840002
+X-HE-Tag: 1766612723-748791
+X-HE-Meta: U2FsdGVkX1/fRdw/eb8T17W5jabY6Ol4UezpkHB/rK3sATQFhpGAAikCxgPTIZiPJlL4cGW8HwM6wpnfwwfb8kBZ0CUujk0RBfnbgTF2ZO1rllh86pmaFYxGIkKL120gi/+7bLjnxgQkrWbzflvVdDsKgSHL6tMTUA/X5POF0BVi8JFm1ffX6LY0r0Xyb+KBHzmNfSerVAtGQfTZsLkceveY9dLTkAEwDMS2ZWC9dD1C1qKloIvmtio1ulHBqmb1/lZycWxopwwKXGEBJOtSnTaYitXKBc/ajHXXFHkhhKU5AKmP3FzIK7uYXe+DrypTADDW/RT6BDpRvFJxmc3CLtQ+plvlfU13fsHW4G+nEi3EGHCxjkRFKasaOciNOJmWrkfczM7xmIDrZj3Ei0cnM52EL3NtKZLnMGDQHeS1+5J56M6WeUsVwbUGVq9iVirzDunhecuERxid+LJCOvYUeSqvnSrmjSc6uRQwNz3nhOjib0WsbAG5/zCTIO0oy1MsrkEuow0HK4PvJdVt4MFlv3uwODAX3EeS/2nOLPaqt2q6kVOoIOkLy2w9YJv9qf3aZA6QoJqaEh7I7s+IsUt02zX53xMk+XMMeKf0p89KulitoGnDcVqHI9DjiFDOvaSiTJFWT6IvcOBDAutzokGMyxK9bHm+QF8a/sUAiuBEvcgC6eOIBA+O5cK/uUztHCOaxt+pR3zgTNJYNUbxWq/VMPUYNy7WDgN0oUV0Qjyf5f0n0c0gPCFLT+RRcBduTldtoNgnCwM458Gh6eoRToRJ+3cUGVJJ/IyUDURl55A6j48FpGY170py4jG14yvmKNfofVOj58zd+//lQ76Xqrw7m7rfTFl6wzUqsZgPOAgl5nFI3gfpsQcfz+nxI74npD0FG8l5OyTExHAxsInL2xRorwPnZkSrExiUS1mJKe0YgQbKKkY/SURY+F6tFjNaTeDaMLCklhzWTb+FVIHtilp
+ /C50Tgca
+ SHdMafLUSxdKLSy/98PdPPLkWrUmwoD1gnvS9OjHY2tbc0nCEWetsbPgRvWJhTtpRVP4ot0fljB0gWM9oEpi1kb2Ye0M2adbLKEdXg0tLh4TEkqWqQ/ZKssUxR1ydqnmVMoLMURBkx1TEayd/ZXuU1lW6Ani1iq/kdtQyrVwC3+v1Gk/gacoMQSn4WJsRuUcVmXppy6qiMqzbhFn9cHOa8bn24VnyPwRLDvLZdQIaQjA22m70g9tkOUU48sMSpYhXPpOVE2mvRaoBRKFPNfRbh7C1rX0IAcWIMF2N1EJLE8iflHNLhnflVMVAr9ukWYk4WrAnm/asjUaFd/dIVSO2MlVdLd+J9k8ylqAAZF9W7c24LcCQlgRrK3oR3qrckIVCiNXIyYA4nlX6k7Q5/tbpSEcBSx5BRWtHS1dsifHKSqGApw1nXMEUrhzfnpcbOV8JDdq3H21rqTpQdxTEfrJoIMTYsUAV2tzi7jHBulOj1hDtoKf8E2C6707AEQDCinymGEP+zqvuRvUrb60einJm0uEOtN5eMfzxN1ZdWzlKW9ncXV4wdPijzpN//Idz5Mu1HTpajTxb5TGQACLZs9/EOfMtpYuqHD1uwhTDRvWGxLNHWrD7dDeq+PtHymhpYOpBOptnwwUoSo/tBa7nBBgzAyWksN5Zp1rzYSPPlXTtvmYL7feORvu0pdtOUZ709lovZrU34B8subJeLkObnw1+LnyMKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,36 +123,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 02:08:29PM +0000, David Laight wrote:
-> > > > +++ b/mm/pagewalk.c
-> > > > @@ -312,8 +312,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
-> > > >   static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
-> > > >   				       unsigned long end)
-> > > >   {
-> > > > -	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
-> > > > -	return boundary < end ? boundary : end;
-> > > > +	return min(ALIGN(addr, huge_page_size(h)), end);
-> > > >   }  
-> > > 
-> > > Please drop this patch from the mm-new branch, as it causes 
-> > > 'run_vmtests.sh' to hang. Specifically, it leads to the system hanging 
-> > > when executing hugepage-vmemmap test, because the program falls into an 
-> > > infinite loop in walk_hugetlb_range() and cannot break out.  
-> > 
-> > Good catch! The problem is that ALIGN() returns addr itself when already
-> > aligned, causing the infinite loop ...
+On Sun, 21 Dec 2025, Gregory Price wrote:
+
+> This reintroduces a concept removed by:
+> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
 > 
-> Using ALIGN(addr + 1, huge_page_size(h)) would work.
-> Although it could be (addr + 1) & ~huge_page_mask(h) which is probably
-> the easiest to understand.
-> Some of the 'helper' macros don't really make the code easier to read.
-> (And that includes a lot of uses of min().)
+> This sysctl provides flexibility between ZONE_MOVABLE use cases:
+> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
+> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
+> 
+> When ZONE_MOVABLE is used to make huge page allocation more reliable,
+> disallowing gigantic pages memory in this region is pointless.  If
+> hotplug is not a requirement, we can loosen the restrictions to allow
+> 1GB gigantic pages in ZONE_MOVABLE.
+> 
+> Since 1GB can be difficult to migrate / has impacts on compaction /
+> defragmentation, we don't enable this by default. Notably, 1GB pages
+> can only be migrated if another 1GB page is available - so hot-unplug
+> will fail if such a page cannot be found.
+> 
+> However, since there are scenarios where gigantic pages are migratable,
+> we should allow use of these on movable regions.
+> 
+> When not valid 1GB is available for migration, hot-unplug will retry
+> indefinitely (or until interrupted).  For example:
+> 
+>   echo 0 > node0/hugepages/..-1GB/nr_hugepages  # clear node0 1GB pages
+>   echo 1 > node1/hugepages/..-1GB/nr_hugepages  # reserve node1 1GB page
+>   ./alloc_huge_node1 &    # Allocate a 1GB page on node1
+>   ./node1_offline  &      # attempt to offline all node1 memory
+>   echo 1 > node0/hugepages/..-1GB/nr_hugepages  # reserve node0 1GB page
+> 
+> In this example, node1_offline will block indefinitely until the final
+> step, when a node0 1GB page is made available.
+> 
+> Note: Boot-time CMA is not possible for driver-managed hotplug memory,
+> as CMA requires the memory to be registered as SystemRAM at boot time.
+> Additionally, 1GB huge pages are not supported by THP.
+> 
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Suggested-by: David Rientjes <rientjes@google.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
 
-Or we could go back to my original suggestion.
+Acked-by: David Rientjes <rientjes@google.com>
 
-https://lore.kernel.org/linux-mm/aRyOWrARRlUCeEz6@casper.infradead.org/
-
-which was in v2:
-
-https://lore.kernel.org/linux-mm/f802959f58865371ba1b10081bced98e3784c5e4.1763796152.git.chandna.sahil@gmail.com/
+Thanks for pursuing this, Gregory.
 
