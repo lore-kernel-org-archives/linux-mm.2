@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC3FAE74902
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0297E74917
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:27:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1228C6B0005; Wed, 24 Dec 2025 00:26:19 -0500 (EST)
+	id 444646B0005; Wed, 24 Dec 2025 00:27:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CFD46B0088; Wed, 24 Dec 2025 00:26:19 -0500 (EST)
+	id 425D86B0088; Wed, 24 Dec 2025 00:27:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1DC86B008A; Wed, 24 Dec 2025 00:26:18 -0500 (EST)
+	id 348956B008A; Wed, 24 Dec 2025 00:27:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E268C6B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:26:18 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 768F8BA41E
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:26:18 +0000 (UTC)
-X-FDA: 84253228836.14.7B7DBC1
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2559F6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:27:44 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C158FC0330
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:27:43 +0000 (UTC)
+X-FDA: 84253232406.29.03AF8E1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C9794140007
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:26:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcOL2azk;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 264241C0002
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:27:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aBN9PvLW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766554062; a=rsa-sha256;
+	cv=none;
+	b=mWoQYo7viYPwIhl+vaiDdtXKQ5pRk1SbtHQezq1Pf5nNMY4KUWfJZap8f9VjQgZaGPfq8Q
+	iKpzeIsOZ+ix9D+pBkRjkk/jpc2t0RHtIoBqSr3Aw+ciYslPpewONvheFDslivsFbFdHvw
+	NgeJ+EXbx9EiKESoygUinkyk7fxZ57E=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aBN9PvLW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766553976;
+	s=arc-20220608; t=1766554062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L14ottMXfh3PL7h/axcZBGvHy8SFM8xTHCzNkVgEeAk=;
-	b=si3x+Ft9tkZOrw8vpTuj1oRz0NfYwiSj037arIQnhUBy6toWXfiuDhK3V+0FM3L4kvVfHm
-	omTODNgYGJUBEOc4ATquqhlx4kbM7S4m29mAqtZRNPdO/pX+oWvY55bf8WUm+QcwHYzQ8O
-	h6nLWS5pEuelHzhp/1HdaPyQsCe5Erw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcOL2azk;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766553976; a=rsa-sha256;
-	cv=none;
-	b=0gCWmwD4dFympadumtcUekaXQLtS2FY9T8GJ2FeTma3vNT8i6RzMkyJS8CrNLLbB/Bq5Ue
-	MLQMi4orvGQ1vPW9D7BEuZss6c6Y4R7K0Mf8YAG/asK+eSOIV/YCYvdqTC7fvj8IXCduti
-	mFzzDQdv+N907Su+Dr/HUcRNcDnD1Lw=
+	bh=ZZ1ccsNHjcD7Xjezt4+gWMU1S2BIgMyDcSNVRjTlFsA=;
+	b=yAwf/Dc7trQrOH5UTX/9UFzFASA6vo12TKPfIDBT0TuGI42vK9s4MwE3v6EXgW/M3OLX3S
+	+GDqbP2NkKuMN4dGtTXUQoaVQuhNXL0bZDfqfCWKMD+mubUsD+GsZqfSmQgLb7u6PfH7yn
+	eWraS43Xc9ExW10dQrO4ll+bhErsgS4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B4E424034C;
-	Wed, 24 Dec 2025 05:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759AFC4CEFB;
-	Wed, 24 Dec 2025 05:26:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D4D1416BB;
+	Wed, 24 Dec 2025 05:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4649C4CEFB;
+	Wed, 24 Dec 2025 05:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766553975;
-	bh=w+yqxVPmNSXi64h9c/SbjrKYVAMQ3Vg9fRqikGkucIo=;
+	s=k20201202; t=1766554061;
+	bh=QDD2sVHnW4PwLhM9+5VNIHHAmrIHl3UBjDIC8SA2AdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcOL2azkZYxadIUBw3zX8ZlWM8l/iXVQI74TTFk60eFTUwk2LT+yXfrTzhev0j9Ag
-	 JmG31EbftpPHFsF7TPoeJOe2Eu+3CvQPdQOyX/uLRjjrQHLAlRfyEY1DmaS9zTY481
-	 q/tlBIuGFrVFulWdUpIIvIyBpp9uUvpYnpHNyow4WC7R/H0c/xVv2jdRlwl/QZmTH9
-	 XNekgrgtd4E6XomwSbKaP6gAbXzYOOqKlqRSDTXS6hVg0fU4EDLuE/03AqTPQa+4Dm
-	 tGlz0ZfWl4OoGhzUhxUZYcYx8Uxl5JzNpEkM5P56doPg7BlbXrmELBZ9f043jJFv2n
-	 mLm7L4MPoh8Zg==
+	b=aBN9PvLWUFGOeKoJtoX2EHuqBhvQIVCL7wohcinsBgPE9A/kqIfTPo48wvLw1FEY+
+	 wSMgIjUvX7aZgxxgTgE2GeIApv1lPQPpL/lzrjKI5KKE5zCJI+z6e1V9sTzlQhBPH3
+	 o5E3tTltwe7jlqV21lfFBCafxAxnT9xPB6EECHHLTf1s9XhfNjQUSKPK7WHxa8v7oS
+	 /nPHNSN2mdmk82bRqzL0Ryh7YeIG+ySMd10JLRyqHoH7JSUn9O+sM5xrQ37x6v/wqf
+	 7uwFpx5XxbZ9fMwZ3qLieDf/Hfl9Wj5Jdkm9os3g3BDLIpz2AwyUxjaLY3J9+i9s8P
+	 jttH3lMXafLww==
 From: SeongJae Park <sj@kernel.org>
 To: Shu Anzai <shu17az@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm/damon/tests/core-kunit: verify the 'age' field in damon_test_split_at()
-Date: Tue, 23 Dec 2025 21:26:10 -0800
-Message-ID: <20251224052611.81594-1-sj@kernel.org>
+Subject: Re: [PATCH v2 2/5] mm/damon/tests/core-kunit: verify the 'age' and 'nr_accesses_bp' fields in damon_test_merge_two()
+Date: Tue, 23 Dec 2025 21:27:35 -0800
+Message-ID: <20251224052736.81694-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251224042200.2061847-2-shu17az@gmail.com>
+In-Reply-To: <20251224042200.2061847-3-shu17az@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C9794140007
-X-Stat-Signature: p8bujfzrk6dwwmqchx8b6667uykknioc
-X-HE-Tag: 1766553976-870357
-X-HE-Meta: U2FsdGVkX18PXvql9JOr4+iikm7D9lSI0Nmrq80sF4j1k/9ZrM9IRjLgjwvroT1u2dIVyQDMq2d3UbbQoSUmuJIkCrkD395ZMenECn5X8LukmSF/swBsNGPlUHVaEIhOSxV4+LRsWpluHd2z3gYjfHlLF7VHjD8hU0BKXU+RdR9vMDK9T/uleJ1xTHbyu9JwreyZB3yPlsJQHRAdw5rVF3oI98ciejqVmyydxbRtmuaKhbl9tlK5Qojtx4L8aU03MY0PY5Ag8c+AKlfSKBhdVlvlg7xX9I8zyEwR1Y7Fc8vvY/0fgmEllg7RpKSc8DEG43HbtWRNMJzz43/m+Oq/T2J7gNvPDyNde2nemowF3dJCmi7TJy+AgOX1lT0t6aNukwDmJrC+dT0zOtD1n7Gf2wJTBi/11ZZX60p6Ez97VcblfFl8Wv0izpzyLDVksgYb8YY1FGMb5BSRurppffKr3qAN/2vnmQz49r6YrW76esLAtTKkOcPPrRULnOHTT/MwUumNBy40EcHjxd5hlzM8qzftzoS0FFG5QrqaxtSW17mI1gHgpXfC7pDc5joXDoXKELBDZncUV73AmMUYlS+6FuNDyfEuvhwUxXqnivzh17nK7MPklZgaG12UDIwDB+77edNYURwV0KenBqGDH1kIkeSrmCStX3xGL9U/TAaujXB8BBHcQeQSf+4ua9e9tG1xDeaw8Ozm1352i+NPhT/9x+BMdEUGqkx2XbVvT4R10M7TN15I9imnTcvxJ8Aj+g1XEG5vYc6xwYgMGmqIvOctjyH1EC/P6xVtv8AEoqBaA7h2J5Itl/GCosj8Wh/t0vn+Imr1Ovzx+FQFFAEZOqVn1qW88KO50k2x+3mceI90G5zSgtN8bSo1WsTPgNmWoyFZVhYA0YlLjpeUDWSVcWXPky7YFKC1MvckFibfgX7x1w82sYCcaWqcK194d98KjX8kDf2TxiqO+M+XMpvY4ih
- 8Xe2q9hM
- m3oQW/planJE2nvPGY0YGSqzU3MTKpRzqNdj6vB9qiLitlOHncJo/WEKq8PuiN8YsqteR/CKq0V6CF0LUiISKSQfAWnWi9BdFTc67hJp2rKBnWp3oJN60XY0UImdUmB55GlA64OlaM79YVvRCKdLfpppSDhvsLDPbTyGIUhey2IQU2oMTNbcqQOmytt3nlhBUdypRVV5KG5nhGHSA4tf/VqgDwqw5lZ0+akX8WAuoHHdkN3EEUKnZf9Xl0stquxHac0RKlWnvMzMQIK/yyiJdbdRmE4/OFwiEWe4I0o/VM5Vm+cU=
+X-Rspamd-Queue-Id: 264241C0002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 9b45cruf3obaz9o3zk8994e873d37ncd
+X-HE-Tag: 1766554061-428238
+X-HE-Meta: U2FsdGVkX187JuqKWq9G77mZEBKo6ULY0VDOEMxvFF/Y8xP/vMJjYH8qiwL2ipVWbHkweMzHs7ul2qpSARGYZ8li2DUgWX9Dd2Y0XyaSypo40upR9nV9Ov7777wtQKPcQU31fR9FVWipembPZ4tKswnYGKiyEJ2fXZbuew79GqFHU2Ix69SZlvL0agi+2N/MfbKF1BYu7eC5oxCaBjy4y/G7rGxzxTWGU8kBMfOhnBt2Vm0EKHhcdUpc1EtribZE82pPZLtAzF2ngNMZhqls1NVoxqECzjrG6zGtFmgtArV4zqoCCAKvJ8ea8zbxsBJoZaG4/KXsyZ1s7/eEUtJALErjWA0J7UagIoePgfCWPA4nN0DGdnZpeA5KmUqQkYYa1eOi2qMVmr4/Vkxm1F/4n+yjqo5xExN72Y/B995u1xAr0w5yGwV5ORBhku6EMO6wAFUaaKXVsjIj4JcH1eGOQh+1E+YDKa3u7l//xMo1aw8dpAsNj+lz/ibp3cBscEFZTI/pd+KGtW7jAV6adBXGJ3mLAWq2LO8Q+txh4IloTvEk4v8b/H5pam0S6P3DVnM8wWVdLr/utfqnarx6ubuDP6Ke0/FyambX67dodtsSnoYdxsfsweaylR0GGSL2YvlPcwFN3eeDddch0UCAFktkAikhdr+Cpbl/U6ks8M7ObkmyJxR8PdFauKKeyKImvGJX5l9nN4AglnBgffv9AeDa4FkjWiFPsvBwAVLjZPgPKKDU6PxM/XD0WikEqjLr7dLNODDj4D/VHPILKI8kx2IOVmNZbe6vnoY52Q7+s75RXmT92i1ZP+zrnOr8N7zSDwq5JI3DOGcQ1neyZRR7q4CceGSes3W749WUGXTv6ApRHfGpIbDwaLtJsQ8/WF9xVzyQ/ZHw65v4qKmxjdfS5sO9bjiFszpvzE5IgO6zlHZFyHFjL4+KgVjQYuulR42Y4/6ycQtT7PNi2iSNoNxNSMV
+ BYiATx5S
+ exM80bN8FaaFp0GhxFORFjdMza04CssuZOrOcc/bUE1ziUsc7qGecbDm2Zb/uiW37UwzfjnUsGllve0LSthxVm+6AvdLmX+eioOu49mVCE6MYyQ2/ci4XQNwSHh4U1yocIW6Z99PiI/rGXCRoM1kjF9ULecGi3uYoj+B3cvTFGSMcLPNWi4koV3DC+YDG9E+ythTD7z77scGimVQrmRnYgdeY8Q/pCgVK8aS5mL+JHz3BjCq+aWE1NrhlTsDdrAlDXkrC/htAswmTZGkMdNWuPbC3ri1UNR/Hh9nBmAwxVO+6TTaBkXdhkAEGDK/FlBHQYedDVrGYCYlInb2O0qgaAbXW56joxJ0XSJ82
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,42 +94,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Dec 2025 04:21:56 +0000 Shu Anzai <shu17az@gmail.com> wrote:
+On Wed, 24 Dec 2025 04:21:57 +0000 Shu Anzai <shu17az@gmail.com> wrote:
 
-> Extend damon_test_split_at() to verify the 'age' field.
+> Extend damon_test_merge_two() to verify the 'age' and 
+> 'nr_accesses_bp' fields.
 > 
 > Signed-off-by: Shu Anzai <shu17az@gmail.com>
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
 
-> ---
->  mm/damon/tests/core-kunit.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index f59ae7ee19a0..88ec046f4942 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
->  	r->nr_accesses_bp = 420000;
->  	r->nr_accesses = 42;
->  	r->last_nr_accesses = 15;
-> +	r->age = 10;
->  	damon_add_region(r, t);
->  	damon_split_region_at(t, r, 25);
->  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
-> @@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
->  	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
->  	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
->  	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
-> +	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
->  
->  	damon_free_target(t);
->  }
-> -- 
-> 2.43.0
-
 
 Thanks,
 SJ
+
+[...]
 
