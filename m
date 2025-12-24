@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA663E74913
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E6FFE74917
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:22:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A21AE6B0005; Wed, 24 Dec 2025 00:05:16 -0500 (EST)
+	id 95A2D6B0005; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CF3F6B0088; Wed, 24 Dec 2025 00:05:16 -0500 (EST)
+	id 907F86B0088; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D2296B008A; Wed, 24 Dec 2025 00:05:16 -0500 (EST)
+	id 7E9FF6B008A; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5926B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:05:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4331C1630
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:05:15 +0000 (UTC)
-X-FDA: 84253175790.03.8879E98
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E175F20005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:05:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6CABD6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 194541A01B7
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:21:59 +0000 (UTC)
+X-FDA: 84253217958.17.92B985E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6817E40002
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:21:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVRlH+oy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766553717; a=rsa-sha256;
+	cv=none;
+	b=0dM2XvoIe4j3vS1fOKkfZubmVnjRMX9CPskiCowj3ne4T0oWvQ1GFZSGv4Di1SUf9qdZ2m
+	CuLfDQ9+oM4SBVRWN/vmMtkLo4wOF0ETEsHQ63Qwg8iUUWoofP/YG5CHEtyaZ+uJoqbxd6
+	rNimmW2QbwWcChVucNAJA3ySyQirsoA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVRlH+oy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766552714;
+	s=arc-20220608; t=1766553717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MkixSAhRxEVhX5M563rXharhRiWWamTV8SfoJKxI6V4=;
-	b=GnJAZ0HZbohnNkfh/u90pUvg+XnZueuMNFgee8ni9ItdY7a0wc8IGk+s+JYD8tZ0X3O8Gu
-	5swetLrYjxqrZ13Er3psnSGAhjbVNYF26Dv3+fzhaZmaIYj/R+Cngehzguq0KvzY8XJ2k3
-	mS+916JtWO4vUIxY+GZyl+f5uoGYG94=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766552714; a=rsa-sha256;
-	cv=none;
-	b=3zi/oGHKUSjr/LSKYN/zW/p2Sn5oV8MA4zbLtrqMhdvA2hIYcrbjL1F8j/+XVqDsEo9Dh6
-	OilgQafTEOihlADxrfXo6dm62PTEPk1SuiciktzwfsShpb8mYMBxkEL320SiymncNsp7Cp
-	zlNaK1TjbRiDdW/rf6V0cKZCj/RFiiI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD602339;
-	Tue, 23 Dec 2025 21:05:05 -0800 (PST)
-Received: from [10.164.18.59] (MacBook-Pro.blr.arm.com [10.164.18.59])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 830543F73F;
-	Tue, 23 Dec 2025 21:05:07 -0800 (PST)
-Message-ID: <19e28edb-87b1-4e4d-accc-2219f717aa51@arm.com>
-Date: Wed, 24 Dec 2025 10:35:04 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RP9/QQKvBwW5MEOApDEMa35jTONp/NmvNh1b2EqvQ90=;
+	b=Q5Q9xlAdllQmA4RS491fKuTXsW9YGXaTsV2/56eqyJa+OuSpgkW/iXJcxVqsSxwbm4jBYG
+	pkn8sxosfppyTSA3VJnacUKxobjVk39MIEaBORoiXkmb5Cb8g++vx8M+FpnnOH88/6+m9G
+	KXwh9oKCpbWePCcK2ieS1PnwjMk58Rw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E733441D9;
+	Wed, 24 Dec 2025 05:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D318EC4CEFB;
+	Wed, 24 Dec 2025 05:21:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766553716;
+	bh=1i0AGvXVVrHdy9xcXcgBlco2Ngv8dnUQED7TtSQCPlM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MVRlH+oykfekemzk2FwHD+HxDBl/P+HAohM82+BUGVn3Xs2qbZKAzgevGU3mQSa4A
+	 bFPC3hkGmyKkS2YKWZIKn5u0FHtrUW1ClsbyboFV/cyFQn/snsEN+c8bN9lvZlq1Kb
+	 qo69DA5iAGcoKvAHy2Z4sZkZROgvbNkh7rOkdwjmkxwJ7ZjulRSxC1mqICtfBJnpou
+	 yMtW4jiO+qspAv8tFpozGD7E/Pq7M3DPfvFJ6Q/cYG7Mlw0X1Oa3j4DWOQETieS8Nk
+	 eUZCrNtHGv8AVtfQ1SGw/flpI0A+AyX1ESZ9syiYQum5luL2nagBZGYOvOfhfF7+C9
+	 oRe1bFeQR+KaQ==
+From: SeongJae Park <sj@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: damon: get memcg reference before access
+Date: Tue, 23 Dec 2025 21:21:47 -0800
+Message-ID: <20251224052148.68796-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251224034527.3751306-1-shakeel.butt@linux.dev>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND RFC PATCH 1/2] mm/vmalloc: Do not align size to huge size
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- tytso@mit.edu, adilger.kernel@dilger.ca, cem@kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com,
- shijie@os.amperecomputing.com, yang@os.amperecomputing.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, npiggin@gmail.com, willy@infradead.org,
- david@kernel.org, ziy@nvidia.com
-References: <20251212042701.71993-1-dev.jain@arm.com>
- <20251212042701.71993-2-dev.jain@arm.com> <aUkv51yk8lgzW9jv@milan>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aUkv51yk8lgzW9jv@milan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yr6cczisyuwwmfxw9d1fxt1pt7ewm568
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E175F20005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6817E40002
+X-Stat-Signature: gaujrzdthmk9aoroj11f5uk3njwaaycw
 X-Rspam-User: 
-X-HE-Tag: 1766552713-250122
-X-HE-Meta: U2FsdGVkX1/3I/rWymqaHv4rGPuYPC3cD2YFxpdt4qIgXJY4mzZBnUw6AK0PJSWoAyBkzHd+U2+3QIYiPS96gm3Gu/jCQIxXVFbKqYQupi4xzDJwQspuJFjF+oZA/lLm1WfEdQeVUgFZUc4skyZkDOZobsVeJ7asEIZ8xQe2FSNGZHcW3sk6kC69MppoJpyBBE72pe2OjYX/YIrAd9pdG+9GymuK+C5bm4K7g6bRhqzL6uWlC1qebgExdNuqlEN7OkGBNZTtTCQmujLS3fuVu9Ajsr7QicFjukQHKqlgD8BocCUZ4hoq5vkjy52Rm6S6L6fPQyf5HEWrbKmQNaEG0iuF/61cLRMiFbjR6ozLfj7bNrLRyFvLbyHPhO/b0Fx4stT2IbMTNIXf9jORdh0bLTU8NHSdZ2w4YoACSoK3JcZjDl+agpqGesuiIh5gYrVCCnodrWaQqBGA91L9y+6EE8q0ERUXhzgO5TT1Rjt8IcA2/dHifwy7fFL0Nw5KXlCFbnyH/Qww2VbDLf9yWbhDA+cdNC//KID+2rsukjuAkt/TZDyDdrhGYuGoMWP+yECw/U6NEX+wDf6pHCsrveMtenz14j8cHQ2GLt3YoWxN1XDLfj17LceiIFMRcXlusuN5lUpOOEiPlNb2XWXz1aaKZMtxWQiLDXjbnL8qxR9W7vKSyXOIahuFHH6BRdNgfR4aH1Bug94tv18IR0JKZ9YQcooO/mjNUpRztRsWU206nrVZ+tHEMaJVHhioLvAGOIn3bJO9wxTdYAYXzuo4SBeXlAPF8XcxcUieia6uSMP7sXshNTsK1BR0Z6sbgAklr9atSUGlUNsMe5/9H/98MVY4BoS7KUtZmpf2gv0cTvTJnQ4y41KuFAAM8ESqG6Lmm93sF1i2EDwcIOn4/b9TIyoF8FR+6wT7HJdDk0OJZxzDyZoH2RhlR6Elsk+l9kMgo3JbRasdrRwOD3Xgp3Fza62
- z0ndUsSh
- b6ImaE4ZrYPmGAaUGehFso7DADrAxN9jiZ+g8fE8gaXX9HMD7ph0dA9D5f3xdEjocCI5inklYy8FN67/k0+RBKqVsTLwKesL4BsUC/hBNyxJgtKe8oddSZ6JBHNpSkVwqpsR4LREIvRga6w65HadF+Q6LF3MQOuC9O5ogUUzIe0O5yydTSBT6KkusV6XHukrfzj2hS0h1VCOaErU=
+X-HE-Tag: 1766553717-760436
+X-HE-Meta: U2FsdGVkX19EFcvvno9ySMMvC62J9FitAazHbbm/7MKfirSylD7AiCvxktMWGXlLFQ3zT2PeY+rhjWbQ4+jwxPQ59NVUSXWDtGLFAacqQ1o9iqWnBPHpK560haLVtQyLy8OuybvbbDQx/IITMWnEeKNyAy68nsr7A5Junzz9o2vfQ32jcU4kUfZoeKpKAQt/yltQP+jk1VMa5lW4iXDdhY5dGCGhvvp4WsC/MeHMZ5SlhS+GqUVzcyBo5WXzHKtevYf8P3DZk7u3Gu24KH8DS8iR3KmP0iVCpmR3pp3zFQPhfW9lwEnO4t5muZZjNFA3OuSJmTQySPvDf8QD1NiI+1VodvyF8OANsRNLWc6QMwtqI0nazawT4ZyKOomBDAl0FLb1ign4P6srUhWkdOlah5aYgwm76ILlEpash1n0QZ7hdyZpId1dm/YXRy5vGvG5K/MJQQr2G6hFLajvNuWZGjIkMsJUmfMvK/VKqJNOFrj0/xI26hNDQRLGtDEaFbE70aQCSM5AwZy5kzpI8dLED6K601sENWDw/8DCp/hMSvwuLKk/OJVz2QP4sjyZpbqG96nQvelvHX8XlpNm8d1XUG56fz+JI/Gs77+SJAbQTOFZOEXGDI5n/+e6rikvK9KKAqZi/lzVPM9eVZm1l5Ovz5MmvXamhVvNNUvlifRnzr4ElBJLlctuOpqFsHHzBiXZqW6DOidl1zaq900XvurfDIWaCY4v+t85d56FgR7Wf7Mmf3XrpVRtp1avCHmyPbOOblTOzbzWa6/wDn9vUVqo3H2+5GwE6T0UeSF96cIa1nrVa7yZSCLTtMjIq/I4rle45KHu4YNQ+sfJWWY38mU/XR1tAvn/ukR0xy5NL+cOTAqIipNfkNtd5KL36yH7TvUdNi6JRRU4OSdBj4z0AD3OSHA5hUE1t2Y10Yg5X4YdsHm1pVI3gWe3VSdRysahKD6xNTpHyJ4cvWJJ9EfdRDF
+ fQEfkvjO
+ urKKmwX2hvDrSamo/wb6PaZOUEyn0vr9yAx6D+Ym0t3xMHLqTymjwGxqbf6yiPN7Ilqtp0+BB/PxxzKtV7Fg1icNKb5eiigLayl5K0Tk/lozr41Ii2cKnWHCXgradslwTArOpK3dnom/U0/zUxeyUPPAEhx5X2UluI/d8uc9J0Oe3urJvp0lBJIvSpmAy9Z3THkU0OupYkNsKMb2X9mPB9KhgRr9OmjIr7QOPuCOJPdKUUvU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,217 +96,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 23 Dec 2025 19:45:27 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-On 22/12/25 5:17 pm, Uladzislau Rezki wrote:
-> On Fri, Dec 12, 2025 at 09:57:00AM +0530, Dev Jain wrote:
->> vmalloc() consists of the following:
->>
->> (1) find empty space in the vmalloc space -> (2) get physical pages from
->> the buddy system -> (3) map the pages into the pagetable.
->>
->> It turns out that the cost of (1) and (3) is pretty insignificant. Hence,
->> the cost of vmalloc becomes highly sensitive to physical memory allocation
->> time.
->>
->> Currently, if we decide to use huge mappings, apart from aligning the start
->> of the target vm_struct region to the huge-alignment, we also align the
->> size. This does not seem to produce any benefit (apart from simplification
->> of the code), and there is a clear disadvantage - as mentioned above, the
->> main cost of vmalloc comes from its interaction with the buddy system, and
->> thus requesting more memory than was requested by the caller is suboptimal
->> and unnecessary.
->>
->> This change is also motivated due to the next patch ("arm64/mm: Enable
->> vmalloc-huge by default"). Suppose that some user of vmalloc maps 17 pages,
->> uses that mapping for an extremely short time, and vfree's it. That patch,
->> without this patch, on arm64 will ultimately map 16 * 2 = 32 pages in a
->> contiguous way. Since the mapping is used for a very short time, it is
->> likely that the extra cost of mapping 15 pages defeats any benefit from
->> reduced TLB pressure, and regresses that code path. 
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/vmalloc.c | 38 ++++++++++++++++++++++++++++++--------
->>  1 file changed, 30 insertions(+), 8 deletions(-)
->>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index ecbac900c35f..389225a6f7ef 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -654,7 +654,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
->>  {
->> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
->> +	unsigned int i, step, nr = (end - addr) >> PAGE_SHIFT;
->>  
->>  	WARN_ON(page_shift < PAGE_SHIFT);
->>  
->> @@ -662,7 +662,8 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>  			page_shift == PAGE_SHIFT)
->>  		return vmap_small_pages_range_noflush(addr, end, prot, pages);
->>  
->> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->> +	step = 1U << (page_shift - PAGE_SHIFT);
->> +	for (i = 0; i < ALIGN_DOWN(nr, step); i += step) {
->>  		int err;
->>  
->>  		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->> @@ -673,8 +674,9 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>  
->>  		addr += 1UL << page_shift;
->>  	}
->> -
->> -	return 0;
->> +	if (IS_ALIGNED(nr, step))
->> +		return 0;
->> +	return vmap_small_pages_range_noflush(addr, end, prot, pages + i);
->>  }
->>  
-> Can we improve the readability?
->
-> <snip>
-> index 25a4178188ee..14ca019b57af 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -655,6 +655,8 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->                 pgprot_t prot, struct page **pages, unsigned int page_shift)
->  {
->         unsigned int i, step, nr = (end - addr) >> PAGE_SHIFT;
-> +       unsigned int nr_aligned;
-> +       unsigned long chunk_size;
->
->         WARN_ON(page_shift < PAGE_SHIFT);
->
-> @@ -662,20 +664,24 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->                         page_shift == PAGE_SHIFT)
->                 return vmap_small_pages_range_noflush(addr, end, prot, pages);
->
-> -       step = 1U << (page_shift - PAGE_SHIFT);
-> -       for (i = 0; i < ALIGN_DOWN(nr, step); i += step) {
-> -               int err;
-> +       step = 1U << (page_shift - PAGE_SHIFT); /* small pages per huge chunk. */
-> +       nr_aligned = ALIGN_DOWN(nr, step);
-> +       chunk_size = 1UL << page_shift;
->
-> -               err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> +       for (i = 0; i < nr_aligned; i += step) {
-> +               int err = vmap_range_noflush(addr, addr + chunk_size,
->                                         page_to_phys(pages[i]), prot,
->                                         page_shift);
->                 if (err)
->                         return err;
->
-> -               addr += 1UL << page_shift;
-> +               addr += chunk_size;
->         }
-> -       if (IS_ALIGNED(nr, step))
+> The commit b74a120bcf507 ("mm/damon/core: implement
+> DAMOS_QUOTA_NODE_MEMCG_USED_BP") added accesses to memcg structure
+> without getting reference to it. This is unsafe. Let's get the reference
+> before accessing the memcg.
+
+Thank you for catching and fixing this!
+
+Nit.  On the subject, could we use 'mm/damon/core:' prefix instead of 'memcg:
+damon:' for keeping the file's commit log subjects consistent?
+
+> 
+> Fixes: b74a120bcf507 ("mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP")
+
+I was firsty thinking we might need to Cc: stable@.  But I realized the broken
+commit has merged into 6.19-rc1.  So Cc: stable@ is not needed.
+
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Other than the tirivial subject prefix inconsistency, looks good to me.
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/damon/core.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 4ad5f290d382..89982e0229f0 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2051,13 +2051,15 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  
+>  	rcu_read_lock();
+>  	memcg = mem_cgroup_from_id(goal->memcg_id);
+> -	rcu_read_unlock();
+> -	if (!memcg) {
+> +	if (!memcg || !mem_cgroup_tryget(memcg)) {
+
+For this part, I was thinking '!memcg' part seems not technically needed
+because mem_cgroup_tryget() does the check.  But I think that's just trivial,
+so this also looks good to me.
+
+> +		rcu_read_unlock();
+>  		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+>  			return 0;
+>  		else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
+>  			return 10000;
+>  	}
+> +	rcu_read_unlock();
 > +
-> +       if (i == nr)
->                 return 0;
+>  	mem_cgroup_flush_stats(memcg);
+>  	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
+>  	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
+> @@ -2065,6 +2067,8 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  	used_pages += lruvec_page_state(lruvec, NR_ACTIVE_FILE);
+>  	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
+>  
+> +	mem_cgroup_put(memcg);
 > +
-> +       /* Map the tail using small pages. */
->         return vmap_small_pages_range_noflush(addr, end, prot, pages + i);
->  }
-> <snip>
+>  	si_meminfo_node(&i, goal->nid);
+>  	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+>  		numerator = used_pages;
+> -- 
+> 2.47.3
 
-Indeed I can do this.
 
->
->>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->> @@ -3197,7 +3199,7 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
->>  	unsigned long requested_size = size;
->>  
->>  	BUG_ON(in_interrupt());
->> -	size = ALIGN(size, 1ul << shift);
->> +	size = PAGE_ALIGN(size);
->>  	if (unlikely(!size))
->>  		return NULL;
->>  
->> @@ -3353,7 +3355,7 @@ static void vm_reset_perms(struct vm_struct *area)
->>  	 * Find the start and end range of the direct mappings to make sure that
->>  	 * the vm_unmap_aliases() flush includes the direct map.
->>  	 */
->> -	for (i = 0; i < area->nr_pages; i += 1U << page_order) {
->> +	for (i = 0; i < ALIGN_DOWN(area->nr_pages, 1U << page_order); i += (1U << page_order)) {
->>
-> nr_blocks?
->
->>  		unsigned long addr = (unsigned long)page_address(area->pages[i]);
->>  
->>  		if (addr) {
->> @@ -3365,6 +3367,18 @@ static void vm_reset_perms(struct vm_struct *area)
->>  			flush_dmap = 1;
->>  		}
->>  	}
->> +	for (; i < area->nr_pages; ++i) {
->> +		unsigned long addr = (unsigned long)page_address(area->pages[i]);
->> +
->> +		if (addr) {
->> +			unsigned long page_size;
->> +
->> +			page_size = PAGE_SIZE;
->> +			start = min(addr, start);
->> +			end = max(addr + page_size, end);
->> +			flush_dmap = 1;
->> +		}
->> +	}
->>  
->>  	/*
->>  	 * Set direct map to something invalid so that it won't be cached if
->> @@ -3673,6 +3687,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->>  	 * more permissive.
->>  	 */
->>  	if (!order) {
->> +single_page:
->>  		while (nr_allocated < nr_pages) {
->>  			unsigned int nr, nr_pages_request;
->>  
->> @@ -3704,13 +3719,18 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->>  			 * If zero or pages were obtained partly,
->>  			 * fallback to a single page allocator.
->>  			 */
->> -			if (nr != nr_pages_request)
->> +			if (nr != nr_pages_request) {
->> +				order = 0;
->>  				break;
->> +			}
->>  		}
->>  	}
->>  
->>  	/* High-order pages or fallback path if "bulk" fails. */
->>  	while (nr_allocated < nr_pages) {
->> +		if (nr_pages - nr_allocated < (1UL << order)) {
->> +			goto single_page;
->> +		}
->>  		if (!(gfp & __GFP_NOFAIL) && fatal_signal_pending(current))
->>  			break;
->>
-> Yes, it requires more attention. That "goto single_page" should be
-> eliminated, IMO. We should not jump between blocks, logically the
-> single_page belongs to "order-0 alloc path".
->
-> Probably it requires more refactoring to simplify it.
+Thanks,
+SJ
 
-I can think about refactoring this.
-
->
->>  
->> @@ -5179,7 +5199,9 @@ static void show_numa_info(struct seq_file *m, struct vm_struct *v,
->>  
->>  	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
->>  
->> -	for (nr = 0; nr < v->nr_pages; nr += step)
->> +	for (nr = 0; nr < ALIGN_DOWN(v->nr_pages, step); nr += step)
->> +		counters[page_to_nid(v->pages[nr])] += step;
->> +	for (; nr < v->nr_pages; ++nr)
->>  		counters[page_to_nid(v->pages[nr])] += step;
->>
-> Can we fit it into one loop? Last tail loop continuous adding step?
-
-I don't see any other way.
-
->
-> --
-> Uladzislau Rezki
+[...]
 
