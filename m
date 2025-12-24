@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B904FE75448
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 11:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C56DBE75448
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 11:21:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07B646B0005; Wed, 24 Dec 2025 06:20:22 -0500 (EST)
+	id 3A98F6B008A; Wed, 24 Dec 2025 06:21:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F40FB6B0088; Wed, 24 Dec 2025 06:20:21 -0500 (EST)
+	id 3672F6B008C; Wed, 24 Dec 2025 06:21:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEAD26B008A; Wed, 24 Dec 2025 06:20:21 -0500 (EST)
+	id 269A96B0092; Wed, 24 Dec 2025 06:21:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CA13D6B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 06:20:21 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 865F5C016D
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:20:21 +0000 (UTC)
-X-FDA: 84254121042.08.9F9A117
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011065.outbound.protection.outlook.com [52.101.62.65])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9BBD1C000C
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:20:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="C/5sXta2";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 149E46B008A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 06:21:38 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD3761A014D
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:21:37 +0000 (UTC)
+X-FDA: 84254124234.18.CB4DCFC
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ADD521C000A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:21:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=CkF1hId4;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.65 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766575218; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.19 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766575294; a=rsa-sha256;
 	cv=pass;
-	b=FAQQezz3nXo3YpR/eQLBNX9bPe1jJHu6UmQZY3f44M88Cu8Hr8rNtRT79uILBu39+qfuxA
-	pjbmSfOzAdUeEt+o4Uu0POB5AMOhgPFK3c4p/RTx4APk2bM2MZiEcmY7CnT1JYKuuV6DYi
-	ZBI7RL2ru5gFYVMMiUALoWD+8a+QkoU=
+	b=eQnx3NX2mbQwb8Z/OMj4BdVrM/Bz7uNPXM8pepqwFJJZCS4E2vtC7EGLCmEUd2vK1rm8YZ
+	CW2U4tujgYiSvsiM10QkQ8g8GTzU7F8oa+SVk4e4nMLI2Po6x0DoEmJqavTu93vWF4piKJ
+	m8ahN+2iKoIpcQWNSeclu5rEqIm2xOo=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="C/5sXta2";
+	imf20.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=CkF1hId4;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.65 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	spf=pass (imf20.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.19 as permitted sender) smtp.mailfrom=shivankg@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766575218;
+	s=arc-20220608; t=1766575294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HcD1OcYA2MmW7Eytftz0VSG1J++S1TspRHCN6WkoyR4=;
-	b=PxPffjMT/Qpw+Gc5QrYdeabAXsO8bfy3UQDw0iYOXI45rjkuaDVcPURRVmlBtsGgV37d1G
-	kT/R6GMmP6Yh0wdkHWTkRWuawtngeLV18AxNw2KuYjewGza2MmuIS1x7D/PjmmjFrb2pkv
-	PVBxuFH4Yz0dp9MU4opLn12KsRhDjfs=
+	bh=L+XCQmbTtTpVGHq/Y77lT5EOkvPBu1bacPRFVKsUP+s=;
+	b=h+FzfLuNTMVcnRchk5oxS+U5qN3hz0r1ooaZdF+jDNkTx9HNqVEDsxoCViEpQZ45kL6vBX
+	9+m8x9Eguw2TaYyqHAACWo/oZhDQUCtehdJwtlUnSwIab8w3Dh44eD7X14C0W3mNXtIomw
+	KWXpZDh2ZUP9+InAtwVKJC9lobGh4Zk=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HFOXCqr4Lw/tTh8ELrWmobipOHsJ3ZiP1I/VgIqjnuKKoejIs+1PUUHb2NaRPwXiZtt8z4hk5Tm3ZLMASOgfe4eY+EhL1KI6zZVpbxmL4AX4dhE96ZhAOHAyHREOle2QxenqLd642UzwDSMsukUTfJMwBJqch7Qby3wEq1bWfOZUl8seCdGOuoRvFWogoMvKkxxEYpvplQnEJeNDxHruJEdGXsD6aqwMuPUdi+TM8olVUL6KNyik2ckA6xcWFO8vLbqBX/Ej4l+tPhIprjLM0mNrs2a0GSHNfkzisjx2X2G2wsj9wplGyG01q4N5ApJu4m/jv4M/haPAGpH0s19H6Q==
+ b=oDS5IpmPTbfKOs4auYWOBueg5akgjkR13EsnBsb1UXR7E4JAvkS65VHbWc2iHw3rtfOxkyBRVrxIYOcl17dn/dGBjimimEdizR1YoNffJxHD2HLJZeQVLHymkpev4KqaDX7ctH2PXviF2QCuVjTbE9D0djSsOHFayuuU+esbO+1ql29YZl6o95e6IgnOEUuUClXW/NA/+TixdnLCeeFz6XrrqqoiGWDgi0/ap7/kkC6/RHcddHO+K/vDdSiXAHatMJpMiAJHJw7tBs+HZVC17X0d6MO0SO7g/etD0x64wmjdLNSQxf6m5Pa3/wqcryLcEnP/T1N37GfcaCLNvs4FJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HcD1OcYA2MmW7Eytftz0VSG1J++S1TspRHCN6WkoyR4=;
- b=HeVuufyEtwtKBgVDpsbZrcc6PPD31zh9f2rdwYyDAx0GS7CdDEC+7u8u1/c9f0zRJeLKv7JxjbdBAN/u+Qj4stJhrtE5sxpHZduyECKZtoax050ZMIMRzrpNXbKGq+8JaTU7D9OZ19Xoj0I1W7toCVA7sWmh7xdRYJn/9nOIYIktvow7/PaUoi4/IBjWTxXM8FTr8tP8mNEBSRy0AETWqfHNq1X14xPxPhhNQRL6JfuqxG/fuksNSjQiMh22EG4jUElbNA+t6jYTh+muCl4rlftqkmKo7qkAOjlWKAQgWbi0KVsXqwrpa8GRjp0vKZinPNBB4/B/Un8Okd6IAtq3YQ==
+ bh=L+XCQmbTtTpVGHq/Y77lT5EOkvPBu1bacPRFVKsUP+s=;
+ b=lh2TpU1Qtvd4zRYAmTDJHcckHsOFgdbRtgBJ11Lwfc6ful/Ka73mv1vBkNiXsw3Whj6NH8b6zt4EV9bM8KsBF+XxBH1Vqdnxyfxwi+yYxBSFfCk9s4SBrxvCffhk74toa+2ANfmnndctFLi3+wJ/1dZoyR3E6rq7YXtB95GVqT0wfrv0oePeIheZATj1eK7tT2oqTp77hYjwrkk4CWDxG4bO8XuHQ8Z/2B+8JCrtaBcOwivNK7/Wyzj6V4NdDtvpJZxaSq6oac3gZUwdW0vJ4JzvcRIJLo0WZwkp0Phob+aL6v2YsJBnEmnkU1S1ug1vgObZAraa/hReVO55j/BRGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HcD1OcYA2MmW7Eytftz0VSG1J++S1TspRHCN6WkoyR4=;
- b=C/5sXta25wNCzlTovdhHVHI+yw0w5qFt16h18w4aREa8jfg6X8bCFovyL1bHKayTB7/fKHCNdTou3mkHqGmeFUFEMb1KGYPwKe5Rc8EOjqk8HBL8e6+23qY3OLFEO/lWlQvJ7DJmLzzsf5uIdJgBm2vt5mR34DqTeYQ8pBwbJLk=
-Received: from SJ0PR13CA0019.namprd13.prod.outlook.com (2603:10b6:a03:2c0::24)
- by DM4PR12MB7597.namprd12.prod.outlook.com (2603:10b6:8:10b::16) with
+ bh=L+XCQmbTtTpVGHq/Y77lT5EOkvPBu1bacPRFVKsUP+s=;
+ b=CkF1hId4fyMnmOb13rnt38pyFD4lqQrUO5oeKGmIyVrkv71fUU8/W5aOUn99w/mE7OegPq3297ICWZFCei1KkEqkzTepsbExEcNQdat7uZ44x5gWEGaoEqD8RNdkXUJLWPTuHJ2yHEwA0H83f2VZ8bHjiggBZvXGSRiRgb+CfV4=
+Received: from BL1PR13CA0088.namprd13.prod.outlook.com (2603:10b6:208:2b8::33)
+ by SA1PR12MB9247.namprd12.prod.outlook.com (2603:10b6:806:3af::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.11; Wed, 24 Dec
- 2025 11:20:13 +0000
-Received: from SJ1PEPF0000231A.namprd03.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::d4) by SJ0PR13CA0019.outlook.office365.com
- (2603:10b6:a03:2c0::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.10; Wed, 24 Dec
+ 2025 11:21:29 +0000
+Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
+ (2603:10b6:208:2b8:cafe::ff) by BL1PR13CA0088.outlook.office365.com
+ (2603:10b6:208:2b8::33) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.2 via Frontend Transport; Wed,
- 24 Dec 2025 11:20:13 +0000
+ 24 Dec 2025 11:21:29 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF0000231A.mail.protection.outlook.com (10.167.242.231) with Microsoft
+ BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9456.9 via Frontend Transport; Wed, 24 Dec 2025 11:20:13 +0000
+ 15.20.9456.9 via Frontend Transport; Wed, 24 Dec 2025 11:21:29 +0000
 Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 24 Dec
- 2025 05:20:05 -0600
+ 2025 05:21:25 -0600
 From: Shivank Garg <shivankg@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
@@ -98,9 +98,9 @@ CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
 	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, <shivankg@amd.com>
-Subject: [PATCH V2 3/5] mm/khugepaged: change collapse_pte_mapped_thp() to return void
-Date: Wed, 24 Dec 2025 11:13:55 +0000
-Message-ID: <20251224111351.41042-10-shivankg@amd.com>
+Subject: [PATCH V2 4/5] mm/khugepaged: use enum scan_result for result variables and return types
+Date: Wed, 24 Dec 2025 11:13:57 +0000
+Message-ID: <20251224111351.41042-12-shivankg@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251224111351.41042-4-shivankg@amd.com>
 References: <20251224111351.41042-4-shivankg@amd.com>
@@ -112,61 +112,61 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231A:EE_|DM4PR12MB7597:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba72d208-6b71-45f9-e83c-08de42de685e
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|SA1PR12MB9247:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44f92967-e8d4-4b0a-1b1c-08de42de95b8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|1800799024|82310400026;
+	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DT2AsonanOT5uRMr+D5TumWFzavYaRDuq3W2/7RLm5SSNySERGKL80IilOuk?=
- =?us-ascii?Q?ZNvNhWrAN+kC9TAexrPskNsFmoPkcBnizy4A4UownOhQYe+YxeS/f2WtHJJG?=
- =?us-ascii?Q?c3qwW/jlWKLPRDjQFcmNApBkmiNV4eOnz9iVtbByoz5j3afRaj0G7fhw/D3U?=
- =?us-ascii?Q?plkxR40VUeyuHbn5A0hDn9eit3lyAbKR1xOPpGOPe6PyDkxNn4j+jYXHe6uR?=
- =?us-ascii?Q?tMDSwJ2cQ5gns6kZRFhMjZ+DMgfrv1nnhx9cO+TlKPKNm2rrKY5lIAKuhrty?=
- =?us-ascii?Q?ZMI3kRvmOiz94iHJumO+ajrKlSg/87ErXdkExr90YlLtuyGZcFJ1Z//PpeuE?=
- =?us-ascii?Q?mOrl6DDqTfKiy7yOfcRD/TyOLtqQxVls9+kZJL9blxSUeepodlNDeJ9qxQMH?=
- =?us-ascii?Q?PNQcwbdcixvgFA79xWjnpmz9+kwlYFqEC5MbV8lvYdsp4VgoV6J04K5YFsPq?=
- =?us-ascii?Q?JMc/09tgm0WR3DGTeLfBNcV/TyOdvabmWOvGBcdh/hfAkVnugL5qdhgkYj0/?=
- =?us-ascii?Q?x0jwV+sHJUoobFAnuYfucwew4leyf0WOwJvpnO9RvUfOhwouUG1WTxmmzysG?=
- =?us-ascii?Q?GXbN2Z62oYVcMXYALN82DlZ/OUD3VM8ZnfrhcaB6g0q5fGABksVymAiJcS89?=
- =?us-ascii?Q?1jQ8C2VxpqRAr1zOWuIdRIhnn92+1I0y0H/yg96fhkHhaRb1ko4VfUhabd8G?=
- =?us-ascii?Q?ZkdsmLHY3/PSPKT9ZpLG9z8EQtEQf16lUqVqx0AuXPA+bH74Gl6xxF16QUvG?=
- =?us-ascii?Q?YWPDF08hJ4JXpAHoubVjJqVLpiWiyAkvsiYdvcXsMP2tfSrKBtsS6Sn4OQav?=
- =?us-ascii?Q?bsMpksiEnULGzRxxAL7Lbqm9XJB+nsjMZGvp4gTeM+3dwdO6QWvgKrEUa/6M?=
- =?us-ascii?Q?euOzGYlnfiBfONRExn6M6Nk27hS98MVFH0Q+ErmQN0Ped7v4uxWUDw872dL9?=
- =?us-ascii?Q?spRepbHB18eEAj3RDYxDFWXG4KU8uceAaXACQT51WqAjLXrkLe7b8GGXvn56?=
- =?us-ascii?Q?GYDFZRBCc58OuwjUdolRRwunuC2+/mZxaEh3NR+PIrBBna40JJoIjr0b1KhF?=
- =?us-ascii?Q?ITRpIGeFvBPMlSLh/wppXf55pChPC7YRB6ZexaYk04VGNICKheGNvwsgWxuE?=
- =?us-ascii?Q?IpFtJj36GbU0Xe3nRHN/L1BmsAwsChREI19mxXz1vo+NCXB2FGznxuHm9aa1?=
- =?us-ascii?Q?2vzRMmMRb32pdVzJTiMSsmLpAg3bI1gONSMV2Ny4oS2QC6x+7Tmc3eesnrZ+?=
- =?us-ascii?Q?OOQEnJWrTWO9+/DQUKJMN9CV6igEsrIZXw1ZFpI47pm7zvWY+tjDxwQJrawU?=
- =?us-ascii?Q?nOBpUZBEYyIMDF73ioLRok9KOBVuNAEjmdNJsAwEk2c0hCy+nGn6bW9xO2y5?=
- =?us-ascii?Q?y3gclCnHnu+ZIo/JBtorrVhyvJjNlQTDSFQDjOoTlugsRWYGPekKjO6xhA1n?=
- =?us-ascii?Q?Dcv+d0D5SB21KXP+Xy9P075sVqo3JPQntnNB2YFISdM/BtRKhGuLCzvv4ucy?=
- =?us-ascii?Q?ZcQ37XRsXL53gU74lXqk4jjRGiG3mSQYMoo58OmNHPGsrHIGXd53pAYzpQ?=
+	=?us-ascii?Q?yZjeuE3GwdAQNW6019A7wGcsJaaJD0jxuIZmPLKuXKOM2U5Ywx2Gszs1RLxY?=
+ =?us-ascii?Q?9TUADDJ/lrRmVgGJA9jfFExGFkje+NxJNDhQjEJZeVbsKUvFUHIh/nKYmxbH?=
+ =?us-ascii?Q?waAVH9AxIBpDV0k76ALng4bWOreCiPaUM8LOgEqm0z0e2FozaXMN/Uzd66/9?=
+ =?us-ascii?Q?pO1U003RcjpA1PgzdlY1wG7Efbgj3kiU5Au5f32bwmW9v5XgeJkrGJPiR1+u?=
+ =?us-ascii?Q?KEFeGwoSv5l8nu1hjmIbF+qWn+LAcnOT0pf9hd8yP3XJKlIl1XGoRpW2c8Iv?=
+ =?us-ascii?Q?SgO1hIpJddt788xMAz43B7jatN803gsjFrieUoKbtUMW5aOClHKdkCbBCbot?=
+ =?us-ascii?Q?aO9k8Z2zvFtURCd06zE+326Axq/iE0Av6U+Kxpr1o4GdOC99mexOwSyGFvAl?=
+ =?us-ascii?Q?WXnxc4NqhHrxLwC+GIHoaeQTq3tNQ1veTnG7eHgEXsaAZbhYZCslKVonjH+9?=
+ =?us-ascii?Q?yo7a/QmbUGRpH9OKj0WFDIfUvkd+opkeOBpTkKJAnX7/NRqhUszByZajRk89?=
+ =?us-ascii?Q?O9e8pp7NvMQx16E3lWg/679yZ1SdbmvtN0KcSKfc29V3gabr2i3HNqKEDXm2?=
+ =?us-ascii?Q?NPo6FugvhNoZZcD+aWpbXB5wLZgQZHUc+88dlAzL/x6J3l+uNvPcve/eEuXG?=
+ =?us-ascii?Q?AUSr8+kXRkejDJ75w72dIRWl5BHgD07+Cob1GNfktK5uT6Vf30doPMTT5S6A?=
+ =?us-ascii?Q?sGycw0J8TXHlRfvL03/psq4t6NEGjMo5ZCAG5BT4SatBDFvDkRH7CA4Eatn+?=
+ =?us-ascii?Q?poSYKb3aYgWBsMCdP9WyUicOJ/RzoWd2s5+7cyHwEKjss3def4Lavm2Yfflx?=
+ =?us-ascii?Q?nLRF8uctxX2Q8EdGyJ1jBNfTHbrPe2tP7doQjSLXr3Uxl36ST/UyTa9S56xW?=
+ =?us-ascii?Q?Rus5EIIroRajjiRSfjuLuXyyq4nMjdxgx1OSXVLYskYwUtadbzwikSi4Lyqo?=
+ =?us-ascii?Q?32hJWe5FlqSYwq9dfHNQ7k9pz0S4vj9l3EttDKAijXwOsrI2D/HKcS1JmzXT?=
+ =?us-ascii?Q?XtV/dH3zWHeRtYNsIvUSZErSkIPoW9rcdCU6brF0WpMCDQ8qgeBETd1ehJFs?=
+ =?us-ascii?Q?KuSXAP8mqeIO6tEJbKBJrJ6LG26SVJyEHQhfutw0MeItn3Zs1IjDCJXsihsN?=
+ =?us-ascii?Q?6Lr3x1qR2dytbBa9Ib47pbw/BdTVVmPV2/86THOIgUEYjpk+LKog4oz3LQXk?=
+ =?us-ascii?Q?prNRA6AsN2iPbygM/WzbQqMZ2lyDi0ghXlLkK56txqA2W4JuwM6s4Mk/Xbob?=
+ =?us-ascii?Q?es4WDOZJ2dVndA7EhAnkZL+GHzVcanylgeyj4ZyjW1VzxAatPbCONm/QJ9+Z?=
+ =?us-ascii?Q?4THdLlj3XnldPsT1GlnmaH0LHJ4EPNNl6v2mV+kX0Sw3KbaGxIDiypq83+yn?=
+ =?us-ascii?Q?IFEpCdIguvgVxviZ5doCy7YcjI8TtDJkzmCPKG/RAGCRS7n5DNADo3ySWXV4?=
+ =?us-ascii?Q?Jf1KdU3uvhg5W+y8E5J8c95CPt+qD0cgiWfKlYrES2eP/03JJooD5iDoLdoS?=
+ =?us-ascii?Q?n/AJyUTVNlWkSdvfdKOwyIYTgHBzXmLqhwqkVAyPzjpfJZH58MzH3SXjOA?=
  =?us-ascii?Q?=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2025 11:20:13.3067
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2025 11:21:29.4775
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba72d208-6b71-45f9-e83c-08de42de685e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44f92967-e8d4-4b0a-1b1c-08de42de95b8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231A.namprd03.prod.outlook.com
+	BL6PEPF0001AB55.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7597
-X-Rspamd-Queue-Id: 9BBD1C000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8aw3tn9bkotxj91mfswx8spdjwd953wa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9247
 X-Rspam-User: 
-X-HE-Tag: 1766575218-977490
-X-HE-Meta: U2FsdGVkX1+RymPLQqtXo3t4xOgS6tr/OE33OfkNx+6KoKgJ6GQ+i6mFigsQszecKJdLKjtQ+OmC/w4EErqYDhtaeKGwJGK2qs4sQSINkiNKJ/aUQGa1FpAxBGR6cqWEpCWJIqh/MfK5au7C7MMWGUIBYceUg6xOAZuCFb+L4Vf8ArN9oUxDDyk26IXYER1htwf5UmvzIPhrtQSZel2k1NxNuN2DwGYvGwZLDHQ74CUIhz0RUEYZyNtxB6el+mSWmZf2LzL8m79ajvh+wz5dx5WoC6WgO2uKid9qmWu2xWbKEbT2MrtlIkXRuKuRbpOOG+bRZmMt+kNJyR4xgGWfAsc5YFPNt/xidtCScnTq1OAqi4tVCIBczvJI/gxRb9NWQv4uonsG2mSHZp+0KNjcS6qR2aZaUsJCETgf46sIsNC546ImaS5n7o6BMpOcwUh60adHRzL7CN8apxXeWnEqHHRuHgxIIwOad2ESc6HrvfaVMXozTgHFHbt2rnOsmoEhfFzrlcj04MWIWDopVkgDTGGddi0niTB++yd2p3asJ0Ezi2LI/0WlaAXMKL40B+7NGtpuRI7I7uYQJKR+ZI469FU9SUsqmSwZm6/zUxZznmLXqPupACH7oSBMkOUsqUpCG7N6pInhnXazZrAsYmAn16eiPhCGLWd9ahxl2LDvV+IZL3UJz+GpFM3h/pjC1QjMo+FiMf2+tB4jUgI86wsjcK8xs0g3oO7e3YSaRwuZq4v2x8tFtUQzcRZx0b3a9KF61uMEcvgzCkashXJa9ahWcP8SsQGt1RO6YeRtj2Swg5GEc2ZyOhZuFHjHNPAfmZd0b5mnwGPHZ/f1hXfHqC0eBNpoIQTTFy9VOHhTE/hJS3iMBBDQRbbDsYXYPHi7K8FzmR8+HOijQ3O84GqxVqlVpXUpwoObmuVNbATQ7RlAVZYOrXrPmTMxNaUDXF4QMIN0+o1QGrzm+sdUsHA3i14
- t+n6Yqwg
- EFtPYAVD9pCnuef2E40GTw0xUtRigXYfEiMnJyBFadVIDb0fWgRyQeTCq/b0O3NZq/FwDOVMBTrKnapN8BR7owTV77Gev3AQ2eF048ZH7BKK61ZswIVNHNl8YYgJ764h51cm2l/NgUMl9NrmszmMRarl0a7Ar46WWM9di9PfEFl/Qkvzl7/IDp9X3u8slSBx0WRLuthCvuh7jSmoCuASNR6P7KiOS4OzzHFm4Bihyi5hvPo910V3DcAkdDRo8Zymd7FjJoZbKjbFA515Ddkg3j6rzRM0osOxZesFDKb5wU4UJpVU/RA8NjPl2B/KSlJz5gGdZ3sj3J0CFtiohDs6amcRbKoIWflU+L5WwOuXotIVsi45i9448g/gXcXOWWZ8wKd722YPcnnX4fnoD/T5yDpVbr6vo+d4L1x1tshKUXcM318Nx/ns55rate0fhhMc9Kx6fRhLxNpXR2CxMrp3N0vQF3ybrYVgNcBZ/g/5Js+Z2XgQr2PWyfbjN5JPmymEbuBHCAlqTmiOGDeERhUrICs+GJH3GZH8Q07w7FI70XG50uNBO/YN64wQ09A==
+X-Rspamd-Queue-Id: ADD521C000A
+X-Rspamd-Server: rspam10
+X-Stat-Signature: wz1eorha9erqjqfemjgwuep9jiixnh87
+X-HE-Tag: 1766575294-797457
+X-HE-Meta: U2FsdGVkX1+/WnQ+rNq8IMh2zr/l3mayXosnsvHeaqoZFiM+6wARXvNwBKxKGbPg6WIT9wqO7lIzvXduBVgZ05p3beqFRDen+DIjmt8UbQcMGGTS99VWkbXAOeUI17eGnOko9uEWwk6+6c0LIrql2S3l11RBXTOm8JOXOFm6rrSZK7nyBz4rUw0+ocVTzqzoWqLpHRuqkmXFJ39pO7PF29oXiMxrtn76xgPJvNbHZwXIyyyiJOIOrwR86HU6QrIIdcuS3R8IKwywIEI/hOPwR5+Y4g99x90qgh1hMx3Xi6EjYNKAHRFjLcMP55MgWZ+MyDux0vAfsKaWWABlMcMoszH1P2XIARApCibyWP8OGBRHPRMH6eJHwYQ7v4/jzRF0WUbAOP/2rMdBJUOTiXd0hukqRN9/SOEQf/a480g6e638lGsYuDWyA/aSG7re5D5YA95DNZSgP5IQylmZF0K+rUJ69Jav6HdQiyFSie8irg9EERrhdtUQpqSpc5P9MQ50ACaJZvOZA9f4l9QCRVUFHXSdqBnN/8e3hhHmud21QyQ6pBoINfHiWNIo/sD51HJyrCUw4aaASIw6XkwmG0pv4y1bo5lfGygspYoRdhCjbptBKREEbrvaBc9eVAvN1WDp4ap3uaIXhSAUBT55TCLA/Lt3dZuH+9jvIcDAjeVfwDAisM3XkN8X0mGggNrCD9/oAgq0SfFAoWhQbhRvN6dkDZqMJGhSwQxjGcnHpO4cxrKvY35qytI3aPHaG84dG428tslfAmHKfJ1HZz+YOWET/Jx7BNm9TXDlSazSe/lADYBMCifKoog2v6ITp0XE2uA/wl9+rpDzbBOHw/l/BGAjLFAz/z+sgp+2Xj0FUgYzjw1Zo69MatsnE6IdcT6xLuINTgZXc0qbA8AjdF/MtVwbMfTQkjPNE4f4YvQ/gMmtwn2Xo9lxw05qRZidPDzR4tTH1WZgv4rocPstp7zNQPW
+ bm+oHhtn
+ fZGlRUT8lBrjm3MTlqIt/3LG6PdlO2rObsY8WcKxsiUe2gLjvdVVEM7FUHsv2d+mhXeRS1HngeQ8sFO10b+ZM7zXl4CH6JmS/UbKUk6V2qkAVeITqYlOFcCCXqToNJ4AVlffdXgb40cYDbWNY5/RWwuToC2Ogt5+Y4H4L527bGYgmo1gYSh98OvUcLGwuWWoW04G/6BYOW/iL9RupcKs80XiHgF++RUZUKVPJcJf9O6f9c0wJ/KeXJXgWO19N5f3q7JqxGco79udLNLANwBiYAa7FNehW8bQV8hN3dGLegXXpf0TqRsvf/4SUebG/BGYjYuEJerXpCBSoM2KZac64zwmkb92DeMwy6xlHDsofkTG5rKSLk5EzWyCMYVxa7Hfsxv7caPH9MadBDJqOjkGsqw2Jl6+5nxUQ4phiutylav8a14zlyC1au3ra1LUNS+0Tb1kKcJgzCrbEpBClj2JmqBMMsYqtWhnw403ctfxqdPl+fg89+EYkrd72OPwmIBfklrEyboQkWrl+sf9MkU0P/gNvjQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -175,128 +175,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The only external caller of collapse_pte_mapped_thp() is uprobe, which
-ignores the return value. Change the external API to return void to
-simplify the interface.
+Convert result variables and return types from int to enum scan_result
+throughout khugepaged code. This improves type safety and code clarity
+by making the intent explicit.
 
-Introduce try_collapse_pte_mapped_thp() for internal use that preserves
-the return value. This prepares for future patch that will convert
-the return type to use enum scan_result.
+No functional change.
 
-Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- include/linux/khugepaged.h |  9 ++++-----
- mm/khugepaged.c            | 40 ++++++++++++++++++++++----------------
- 2 files changed, 27 insertions(+), 22 deletions(-)
+ mm/khugepaged.c | 111 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 57 insertions(+), 54 deletions(-)
 
-diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
-index eb1946a70cff..37b992b22bba 100644
---- a/include/linux/khugepaged.h
-+++ b/include/linux/khugepaged.h
-@@ -17,8 +17,8 @@ extern void khugepaged_enter_vma(struct vm_area_struct *vma,
- 				 vm_flags_t vm_flags);
- extern void khugepaged_min_free_kbytes_update(void);
- extern bool current_is_khugepaged(void);
--extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
--				   bool install_pmd);
-+extern void collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-+				    bool install_pmd);
- 
- static inline void khugepaged_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- {
-@@ -42,10 +42,9 @@ static inline void khugepaged_enter_vma(struct vm_area_struct *vma,
- 					vm_flags_t vm_flags)
- {
- }
--static inline int collapse_pte_mapped_thp(struct mm_struct *mm,
--					  unsigned long addr, bool install_pmd)
-+static inline void collapse_pte_mapped_thp(struct mm_struct *mm,
-+					   unsigned long addr, bool install_pmd)
- {
--	return 0;
- }
- 
- static inline void khugepaged_min_free_kbytes_update(void)
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 0b549c3250f9..04ff0730c9a1 100644
+index 04ff0730c9a1..6892b23d6fc4 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -1477,20 +1477,8 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+@@ -537,17 +537,18 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+ 	}
+ }
+ 
+-static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+-					unsigned long start_addr,
+-					pte_t *pte,
+-					struct collapse_control *cc,
+-					struct list_head *compound_pagelist)
++static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
++						     unsigned long start_addr,
++						     pte_t *pte,
++						     struct collapse_control *cc,
++						     struct list_head *compound_pagelist)
+ {
+ 	struct page *page = NULL;
+ 	struct folio *folio = NULL;
+ 	unsigned long addr = start_addr;
+ 	pte_t *_pte;
+-	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
++	int none_or_zero = 0, shared = 0, referenced = 0;
++	enum scan_result result = SCAN_FAIL;
+ 
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+@@ -780,13 +781,13 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
+  * @ptl: lock on raw pages' PTEs
+  * @compound_pagelist: list that stores compound pages
+  */
+-static int __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
++static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
+ 		pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+ 		unsigned long address, spinlock_t *ptl,
+ 		struct list_head *compound_pagelist)
+ {
+ 	unsigned int i;
+-	int result = SCAN_SUCCEED;
++	enum scan_result result = SCAN_SUCCEED;
+ 
+ 	/*
+ 	 * Copying pages' contents is subject to memory poison at any iteration.
+@@ -898,10 +899,9 @@ static int hpage_collapse_find_target_node(struct collapse_control *cc)
+  * Returns enum scan_result value.
+  */
+ 
+-static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
+-				   bool expect_anon,
+-				   struct vm_area_struct **vmap,
+-				   struct collapse_control *cc)
++static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
++						bool expect_anon, struct vm_area_struct **vmap,
++						struct collapse_control *cc)
+ {
+ 	struct vm_area_struct *vma;
+ 	enum tva_type type = cc->is_khugepaged ? TVA_KHUGEPAGED :
+@@ -930,7 +930,7 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
  	return SCAN_SUCCEED;
  }
  
--/**
-- * collapse_pte_mapped_thp - Try to collapse a pte-mapped THP for mm at
-- * address haddr.
-- *
-- * @mm: process address space where collapse happens
-- * @addr: THP collapse address
-- * @install_pmd: If a huge PMD should be installed
-- *
-- * This function checks whether all the PTEs in the PMD are pointing to the
-- * right THP. If so, retract the page table so the THP can refault in with
-- * as pmd-mapped. Possibly install a huge PMD mapping the THP.
-- */
--int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
--			    bool install_pmd)
-+static int try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-+				       bool install_pmd)
+-static inline int check_pmd_state(pmd_t *pmd)
++static inline enum scan_result check_pmd_state(pmd_t *pmd)
  {
- 	int nr_mapped_ptes = 0, result = SCAN_FAIL;
- 	unsigned int nr_batch_ptes;
-@@ -1711,6 +1699,24 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+ 	pmd_t pmde = pmdp_get_lockless(pmd);
+ 
+@@ -953,9 +953,9 @@ static inline int check_pmd_state(pmd_t *pmd)
+ 	return SCAN_SUCCEED;
+ }
+ 
+-static int find_pmd_or_thp_or_none(struct mm_struct *mm,
+-				   unsigned long address,
+-				   pmd_t **pmd)
++static enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
++						unsigned long address,
++						pmd_t **pmd)
+ {
+ 	*pmd = mm_find_pmd(mm, address);
+ 	if (!*pmd)
+@@ -964,12 +964,12 @@ static int find_pmd_or_thp_or_none(struct mm_struct *mm,
+ 	return check_pmd_state(*pmd);
+ }
+ 
+-static int check_pmd_still_valid(struct mm_struct *mm,
+-				 unsigned long address,
+-				 pmd_t *pmd)
++static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
++					      unsigned long address,
++					      pmd_t *pmd)
+ {
+ 	pmd_t *new_pmd;
+-	int result = find_pmd_or_thp_or_none(mm, address, &new_pmd);
++	enum scan_result result = find_pmd_or_thp_or_none(mm, address, &new_pmd);
+ 
+ 	if (result != SCAN_SUCCEED)
+ 		return result;
+@@ -985,15 +985,15 @@ static int check_pmd_still_valid(struct mm_struct *mm,
+  * Called and returns without pte mapped or spinlocks held.
+  * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
+  */
+-static int __collapse_huge_page_swapin(struct mm_struct *mm,
+-				       struct vm_area_struct *vma,
+-				       unsigned long start_addr, pmd_t *pmd,
+-				       int referenced)
++static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
++						    struct vm_area_struct *vma,
++						    unsigned long start_addr, pmd_t *pmd,
++						    int referenced)
+ {
+ 	int swapped_in = 0;
+ 	vm_fault_t ret = 0;
+ 	unsigned long addr, end = start_addr + (HPAGE_PMD_NR * PAGE_SIZE);
+-	int result;
++	enum scan_result result;
+ 	pte_t *pte = NULL;
+ 	spinlock_t *ptl;
+ 
+@@ -1062,8 +1062,8 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
  	return result;
  }
  
-+/**
-+ * collapse_pte_mapped_thp - Try to collapse a pte-mapped THP for mm at
-+ * address haddr.
-+ *
-+ * @mm: process address space where collapse happens
-+ * @addr: THP collapse address
-+ * @install_pmd: If a huge PMD should be installed
-+ *
-+ * This function checks whether all the PTEs in the PMD are pointing to the
-+ * right THP. If so, retract the page table so the THP can refault in with
-+ * as pmd-mapped. Possibly install a huge PMD mapping the THP.
-+ */
-+void collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-+			     bool install_pmd)
-+{
-+	try_collapse_pte_mapped_thp(mm, addr, install_pmd);
-+}
-+
- /* Can we retract page tables for this file-backed VMA? */
- static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
+-static int alloc_charge_folio(struct folio **foliop, struct mm_struct *mm,
+-			      struct collapse_control *cc)
++static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_struct *mm,
++					   struct collapse_control *cc)
  {
-@@ -2227,7 +2233,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	gfp_t gfp = (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpmask() :
+ 		     GFP_TRANSHUGE);
+@@ -1090,9 +1090,9 @@ static int alloc_charge_folio(struct folio **foliop, struct mm_struct *mm,
+ 	return SCAN_SUCCEED;
+ }
  
- 	/*
- 	 * Remove pte page tables, so we can re-fault the page as huge.
--	 * If MADV_COLLAPSE, adjust result to call collapse_pte_mapped_thp().
-+	 * If MADV_COLLAPSE, adjust result to call try_collapse_pte_mapped_thp().
- 	 */
- 	retract_page_tables(mapping, start);
- 	if (cc && !cc->is_khugepaged)
-@@ -2479,7 +2485,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 					mmap_read_lock(mm);
- 					if (hpage_collapse_test_exit_or_disable(mm))
- 						goto breakouterloop;
--					*result = collapse_pte_mapped_thp(mm,
-+					*result = try_collapse_pte_mapped_thp(mm,
- 						khugepaged_scan.address, false);
- 					if (*result == SCAN_PMD_MAPPED)
- 						*result = SCAN_SUCCEED;
-@@ -2869,7 +2875,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		case SCAN_PTE_MAPPED_HUGEPAGE:
- 			BUG_ON(mmap_locked);
- 			mmap_read_lock(mm);
--			result = collapse_pte_mapped_thp(mm, addr, true);
-+			result = try_collapse_pte_mapped_thp(mm, addr, true);
- 			mmap_read_unlock(mm);
- 			goto handle_result;
- 		/* Whitelisted set of results where continuing OK */
+-static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+-			      int referenced, int unmapped,
+-			      struct collapse_control *cc)
++static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
++					   int referenced, int unmapped,
++					   struct collapse_control *cc)
+ {
+ 	LIST_HEAD(compound_pagelist);
+ 	pmd_t *pmd, _pmd;
+@@ -1100,7 +1100,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 	pgtable_t pgtable;
+ 	struct folio *folio;
+ 	spinlock_t *pmd_ptl, *pte_ptl;
+-	int result = SCAN_FAIL;
++	enum scan_result result = SCAN_FAIL;
+ 	struct vm_area_struct *vma;
+ 	struct mmu_notifier_range range;
+ 
+@@ -1246,15 +1246,15 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 	return result;
+ }
+ 
+-static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+-				   struct vm_area_struct *vma,
+-				   unsigned long start_addr, bool *mmap_locked,
+-				   struct collapse_control *cc)
++static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
++						struct vm_area_struct *vma,
++						unsigned long start_addr, bool *mmap_locked,
++						struct collapse_control *cc)
+ {
+ 	pmd_t *pmd;
+ 	pte_t *pte, *_pte;
+-	int result = SCAN_FAIL, referenced = 0;
+-	int none_or_zero = 0, shared = 0;
++	int none_or_zero = 0, shared = 0, referenced = 0;
++	enum scan_result result = SCAN_FAIL;
+ 	struct page *page = NULL;
+ 	struct folio *folio = NULL;
+ 	unsigned long addr;
+@@ -1441,8 +1441,8 @@ static void collect_mm_slot(struct mm_slot *slot)
+ }
+ 
+ /* folio must be locked, and mmap_lock must be held */
+-static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+-			pmd_t *pmdp, struct folio *folio, struct page *page)
++static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
++				     pmd_t *pmdp, struct folio *folio, struct page *page)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct vm_fault vmf = {
+@@ -1477,10 +1477,11 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	return SCAN_SUCCEED;
+ }
+ 
+-static int try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+-				       bool install_pmd)
++static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
++						    bool install_pmd)
+ {
+-	int nr_mapped_ptes = 0, result = SCAN_FAIL;
++	enum scan_result result = SCAN_FAIL;
++	int nr_mapped_ptes = 0;
+ 	unsigned int nr_batch_ptes;
+ 	struct mmu_notifier_range range;
+ 	bool notified = false;
+@@ -1862,9 +1863,9 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+  *    + unlock old pages
+  *    + unlock and free huge page;
+  */
+-static int collapse_file(struct mm_struct *mm, unsigned long addr,
+-			 struct file *file, pgoff_t start,
+-			 struct collapse_control *cc)
++static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
++				      struct file *file, pgoff_t start,
++				      struct collapse_control *cc)
+ {
+ 	struct address_space *mapping = file->f_mapping;
+ 	struct page *dst;
+@@ -1872,7 +1873,8 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
+ 	LIST_HEAD(pagelist);
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
+-	int nr_none = 0, result = SCAN_SUCCEED;
++	enum scan_result result = SCAN_SUCCEED;
++	int nr_none = 0;
+ 	bool is_shmem = shmem_file(file);
+ 
+ 	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+@@ -2293,16 +2295,16 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	return result;
+ }
+ 
+-static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+-				    struct file *file, pgoff_t start,
+-				    struct collapse_control *cc)
++static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
++						 struct file *file, pgoff_t start,
++						 struct collapse_control *cc)
+ {
+ 	struct folio *folio = NULL;
+ 	struct address_space *mapping = file->f_mapping;
+ 	XA_STATE(xas, &mapping->i_pages, start);
+ 	int present, swap;
+ 	int node = NUMA_NO_NODE;
+-	int result = SCAN_SUCCEED;
++	enum scan_result result = SCAN_SUCCEED;
+ 
+ 	present = 0;
+ 	swap = 0;
+@@ -2400,7 +2402,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 	return result;
+ }
+ 
+-static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
++static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result *result,
+ 					    struct collapse_control *cc)
+ 	__releases(&khugepaged_mm_lock)
+ 	__acquires(&khugepaged_mm_lock)
+@@ -2561,7 +2563,7 @@ static void khugepaged_do_scan(struct collapse_control *cc)
+ 	unsigned int progress = 0, pass_through_head = 0;
+ 	unsigned int pages = READ_ONCE(khugepaged_pages_to_scan);
+ 	bool wait = true;
+-	int result = SCAN_SUCCEED;
++	enum scan_result result = SCAN_SUCCEED;
+ 
+ 	lru_add_drain_all();
+ 
+@@ -2774,7 +2776,8 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	struct collapse_control *cc;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long hstart, hend, addr;
+-	int thps = 0, last_fail = SCAN_FAIL;
++	enum scan_result last_fail = SCAN_FAIL;
++	int thps = 0;
+ 	bool mmap_locked = true;
+ 
+ 	BUG_ON(vma->vm_start > start);
+@@ -2796,7 +2799,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 
+ 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+ 		bool retried = false;
+-		int result = SCAN_FAIL;
++		enum scan_result result = SCAN_FAIL;
+ 
+ 		if (!mmap_locked) {
+ retry:
 -- 
 2.43.0
 
