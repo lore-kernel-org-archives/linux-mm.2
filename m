@@ -4,121 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2294CE74915
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 12:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B7EE75452
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 12:51:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A27C6B0005; Wed, 24 Dec 2025 07:46:31 -0500 (EST)
+	id 655036B0005; Wed, 24 Dec 2025 07:51:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 626336B0088; Wed, 24 Dec 2025 07:46:31 -0500 (EST)
+	id 602836B0088; Wed, 24 Dec 2025 07:51:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FA626B008A; Wed, 24 Dec 2025 07:46:31 -0500 (EST)
+	id 50ED96B008A; Wed, 24 Dec 2025 07:51:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39CE96B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:46:31 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C94061601E2
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:46:30 +0000 (UTC)
-X-FDA: 84254338140.19.D04DB5D
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 159DA8000B
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:46:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L1hmqr2c;
-	spf=pass (imf02.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E39A6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:51:50 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E68F2B6D4A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:51:49 +0000 (UTC)
+X-FDA: 84254351538.16.9893C3C
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1227420004
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:51:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EteAKAVd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766580708; a=rsa-sha256;
+	cv=none;
+	b=PguJ5QEA3vdga6AyaHx0YggVuhQYga11u/EoHkygp9hSkBoocuzUijWhuWkHXzu+GvLNbO
+	10ZCRSQibZjZ3V9KUCy6g12l+Jf0BLRyQoyLOLVaclUI3TS0SNLEn0dJcJRZHknkhKlBy/
+	O09dh/AiW9Nhh3w+zHX2onGReKQ2lh0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EteAKAVd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766580389;
+	s=arc-20220608; t=1766580708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wlVlC9b/pS7CL+ANzn0zFPhFeVvWZnrVU3LuyWiWxg=;
-	b=0Rqh6l9yTl7rmlDLlaf5QwJjIqcPC0eyTRHONS3WR4edF3dbZ5yX8Z2KPzsjJBd5q315Up
-	gWCMr+dmCV+fS4e2cUrNUZpvoRLEYIWBFfL+OYHnIqpie9h2annJW9AFZgZr7xtBzb3Ih+
-	HJSMdGwuEf3gKmk2fLOqmnWC0e5Cw6c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L1hmqr2c;
-	spf=pass (imf02.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766580389; a=rsa-sha256;
-	cv=none;
-	b=kgpRKXuu7iGB3ZLdDrJT1clgwEQrIldpNgsW0TZgzwM7dTYk8U7KciNEVoIIaDWBOCZwIu
-	r26iGPzI+sF3ZGBKDkuq1IP671BIsuJFxIgqY+rzOpxFwzP+WB2HlMB9kcC9d9eSL1u0Hb
-	UDMpjEHPzSpkW4bRib2d+BOVLfoRo+Y=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34ca40c1213so4939740a91.0
-        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:46:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766580388; x=1767185188; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9wlVlC9b/pS7CL+ANzn0zFPhFeVvWZnrVU3LuyWiWxg=;
-        b=L1hmqr2c9kEWp2dV/EptzH+i9SXR1Jt+u+D9SIcSTDIUOHfgZaLtH2kKdOX94YjtW4
-         MVkmsjosMA5PLxGl9HaW7oLdHcNmMQJMP/u18cGn0t8PPKnQrL65Xho3yxiLBHYHfMzs
-         A1QX/WgoxBZ5E34i9oFecmP4Oj1WpLHp7oVqel7W5gd1iBord0liPy/ssBbLIRPHUFnc
-         8Vsupk/kT87cnYg5wVilE7O6owcB3iR5fNlrAF3nXNkYYsjT3k7vnb4y4YPja4k/kPWG
-         wrw3O6x/IgkOdf+CBGHHBkYc+IFAudxr35IvKGm5AaPPPTUcIc7Z451/jyZEnW8jjwW0
-         dBFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766580388; x=1767185188;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9wlVlC9b/pS7CL+ANzn0zFPhFeVvWZnrVU3LuyWiWxg=;
-        b=EKZY+TnJY4lhjfU/Puxt2jG1LPQzwfOsru8nZ3QZyDG7dvCLXyrImjnfS0vfMcfXYP
-         C89/whEHTpopSNlYvO8mdLC9qN0wRwXI7Nv1giZxi8pih/dtBGfFyJsjcinyfcq4yi/d
-         b/yJP7yh/9rLHoiqULkN2w8moBRLgJHVKBxwdrZBCDw8VSGp0ERRAqTgbM0zFM+sDDXA
-         FfQF33ldafLIayZRDE0klqVgoJfEqX5UxcdqD0sGtS3Yl6fGMPnDZ297kwYv9pvx28Er
-         9PFJ3nug8B6tbPTJKJHjSaBY8xtVEQoJIjXk28j4T+MTIOuc0BJgvYUQa95TWsywDR85
-         7+fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgEmNFcyasPjM6Rfbtm8Cse++2K1Z/qZQ3wVCIjsEMb7V6cuLUhuStDEgucGQ5PfiZT3mWKROmEA==@kvack.org
-X-Gm-Message-State: AOJu0Yzbqm/BOFMlHgfihXS+ocw9UIx4cWVGCw5bisLZFkSY1TzlE6SB
-	g84Nw156YOWn0ccSc10sbZbMaykqDI1F7kHCyZg7czOst1Y+iFODA9b8
-X-Gm-Gg: AY/fxX4/RB8qkfzNDfHBrymbVNZSzfa6zRtfQBhWakp6yYr1+yTL81yIhmaimKZ/LSi
-	ODzI1VD389tKGwwkdQb9cDHVs8pNz29DKRptizWIAo1NoN8IhL8cVgipJbf2xHmGmZubMqjRVgK
-	9LuU4fsCH9oZSp6QeE1gUoHt7jStG8KXWX0iiGuSW+lQZVz1qsx1Ryb402w4a/g7lzpR/4PNd9t
-	q5S0exmo9BQMYCYlnqv3rviy4UsSEVcjEwaVVRJiSQy6NsvGT81XQlK2DSKLG/dpEO8AauY4ulo
-	/CcwYVxZOFMi1BygePI2zxfgUv942yCFU3Aj7grQSlhQJkOsApA+cGaTWIKV/olWH59+Osu9ob7
-	KJx8ooWfCWwXT9kVnbTZcnGNk19fp6usHUtQ4QsQ9dFvYYIXuPkzML4VrgI3j/iQJ9fXQPMFoVA
-	/GbnQ4143MqB+oBSwuJ/syIuyjOLaU7zysemyPfQ==
-X-Google-Smtp-Source: AGHT+IHzxQX59o7stHR2OJF+G0uLgA9CwrTfMv5VBSkhhu2VDNJvhwxQrWWgIJkEvKUvhhxyE95gvw==
-X-Received: by 2002:a17:90b:5107:b0:34d:1d54:8bcf with SMTP id 98e67ed59e1d1-34e92142ab1mr14054539a91.9.1766580387869;
-        Wed, 24 Dec 2025 04:46:27 -0800 (PST)
-Received: from chandna.localdomain ([106.222.230.223])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e921b39dfsm15837892a91.8.2025.12.24.04.46.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Dec 2025 04:46:27 -0800 (PST)
-Date: Wed, 24 Dec 2025 18:16:05 +0530
-From: Sahil Chandna <chandna.sahil@gmail.com>
-To: akpm@linux-foundation.org, Lance Yang <ioworker0@gmail.com>,
-	baolin.wang@linux.alibaba.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	axelrasmussen@google.com, chengming.zhou@linux.dev,
-	david.laight.linux@gmail.com, david@kernel.org, david@redhat.com,
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
-	nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev,
-	surenb@google.com, vbabka@suse.cz, weixugc@google.com,
-	willy@infradead.org, yosry.ahmed@linux.dev, yuanchu@google.com,
-	zhengqi.arch@bytedance.com
-Subject: Re: [PATCH v4 1/3] mm: pagewalk: simplify hugepage boundary
-Message-ID: <aUvgjc_KGH_903D3@chandna.localdomain>
-References: <62a2d7ba-e7c3-4153-b227-c08802ca9e1c@linux.alibaba.com>
- <20251224092332.53214-1-ioworker0@gmail.com>
+	bh=CRieSzag4iGvTpHtsvUWdbRPgpJbX/fu/qtI6sKweRY=;
+	b=7fsMRvryXFBLFYCH9UA+6ilXhLfgpzWeJuykPCiJGZGSJhQCrzFwZkyR03mwwBQ2ElKL7O
+	axlXFaa/DMnSGA56mJsmGBheNXH+WEbBGUgO2j+Bj2b9EhSLDYs8R7B93jizTE8J7Vikv2
+	ea4RdjGVbuN1OvnItNIAt5EgmXiTox8=
+Date: Wed, 24 Dec 2025 20:51:14 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766580706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CRieSzag4iGvTpHtsvUWdbRPgpJbX/fu/qtI6sKweRY=;
+	b=EteAKAVdI7AaeZsXkJZGXiC3GWcpQiwTLbqswnYduANuzhfYdjxwZQKi4oP+gB4Vzitol2
+	O7KMR4XxCVMZTxVGxznHE21MLxneFymlmh1m7rJjkbAK7KljziRMR7WY7Rv+DtYOsLt8e7
+	fijf2EakFJ1TPwarLAZkgATZvprtb+U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: [PATCH] slub: clarify object field layout comments
+Message-ID: <z7d52kjvlzxohbly42flhtebqc7knfvilierrjr4r5776rxhgy@lcqmkcpzklse>
+References: <20251222110843.980347-1-harry.yoo@oracle.com>
+ <20251222110843.980347-8-harry.yoo@oracle.com>
+ <graryni6wadpi3ytfq7zimj2kbmm7dumxvhxtzmxndrv5s2y67@ju4cdnsmos6e>
+ <aUq1x_BowqYpHZAQ@hyeyoo>
+ <zex6wgdlxk5vgwm7ou657fdmi27xnxihdndlszfa2chghamfuz@grhtfqw7gm7o>
+ <aUrCXYdziRWP9PfV@hyeyoo>
+ <c6owr44jdncf7q5zqgq4wn4pm57ai4cd3upauwmwszopuddf5g@52mkqbe2m27j>
+ <aUt_1uDe05diks7b@hyeyoo>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251224092332.53214-1-ioworker0@gmail.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pgnsghcdqcefiporqs56tznoowutbkz3
+In-Reply-To: <aUt_1uDe05diks7b@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1227420004
+X-Stat-Signature: 6mukx1o7ox4a978qu4m5hgzyyhwwtzgt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 159DA8000B
-X-HE-Tag: 1766580388-490807
-X-HE-Meta: U2FsdGVkX19CTF1n/+vOjopG6bSw/p8L0AsviBeVWN3mqDpIVoh3ICP1FoZGdBLya8OqBHSVynzZ/T85rdyhhdLVMDiOvKjpXchvHux/vneY+qum0QkL/85IKaFxl54stSwRGcItNcLJNdI8dlYIczMgLsxR/Xv1cV70dkowAbSWytBJjHdd0w0SLvX3hj/e7No1zMTTRwK804Lk775soAFXKD/GVmMIx8vUzl08J6RCTS/M2x+xrlSSBbyUxAt7h8Y4abIQqkGKEQ22h9G/o62raqAtBS7nxzcgz66ftNeDO3iidhjflGzzNRjc+hGXqApPQA8gmUycso36MM44uA83RUuQXOLcHnUSiar5dDd4sjYnKIpfmOSYICX1cuxej2csQw9grbktlhjky7BAkwcHa4xC6weiFz/5fSE6AWAthMNCckZliIo7g0v1R3kO98BqPN4VE7w0wRJ84TNR2oh0DFZ650/ZCO7xgwmnTKn46v36MoJELM5H6PdT06CyA7o6w44uYqRwUPivmDSnPf4znMJQhByoJTdvUHmlKJhqOQrS8BR49DdQbRpE5WqGZHQAjU6IhvVTx2CFtgE4yTTNxHQuB2rx28lXp+ukasf9Y5nHQqgMFdT9nscVOvJBCCfGGyGMf+bjMJ+iD0/4ULZvrl5KrHRxqOQ+WnfDfXxCuK/Ze3j6cRRllylgd+IStAExpr2ScOb+HKEIbMpRjGxRRsh4gET46RvKXNsuXMng9FUhUKlOKb6P2p0GUhxD5BwwEcwaVd+Sr0rQYzrYLlswfY52LwNZTKZhI8Nii9795VrtthH6RLQsBojVUY3CPl53RB/vzqfz/dIV+vSy1c0vYwuWZWupHDBPNQ8JU4L697P1Bi8HHYQF5qmh4/gr9KO6ggrcLyd98lqKyywjNI0XP4bbEFtAEmBuNHlR/jQFYWiwU/5xB6DCg9RZEzcxvTz0TEWFAoDA2J8Tu3y
- solUJ0Nq
- 2Ri3tQ0Q9uyzml80LdnTdJxlzMc43eQ5UNi98zkk2mUJemYOdvv69uTKL1F7k9qzD2AdFfyTzH9OL2z/YWO+EoEZhlZ/1z9A3LjwTnAxdbhLdY6C10M6mYelsTfetzHTeNFm3wG3VOx0gE9X1jWwY0LrA+qhC8alfcQnLl+4o4dn6aYqdwPDmwWbl6b6Rh8CsnwRDs61wVl50A6z2TSAvTnyoLQ==
+X-HE-Tag: 1766580707-494811
+X-HE-Meta: U2FsdGVkX18pAFUkaIZS0cHlnGpFC6f6o1t1GWiUoqB0sLd0vcZJo82M5LItrlXDxbTzCztghEpEQB/4iuFSqVOu80RdAEemIdrKMkXt4FNwQKTogn8Sz55qmBFszxvOQ48kaGHHoK1AOcWUasak9qXq9p6VUXuVwoNj/HZs6H285dkak9xhzddxcyVZ4TdsF+44oIkEp9jYmLzB9apk6Aqr1TIASFUYiY91gQ17tSn1WZFgFaCk79VEVQvMyd2KQzmM2TQWRdRNempcVlfat2t+4fXLe7baRCxlvG45r/9iHU6aXkcej7AB7dLbV4rDJodQYAW2YOJKBJ44JIO9fuRHx1l1gRsWNJKuvcaaw+/8JC1rU9MGVxcuaOm25THb6fDsRWrPFOHi+AadiY1blGSKF2NMqcrIwrn8znwgqCz+9MpgxYUTJZoFo8UXSf5zkZnEK25Ehgl6l9vSq06mWRBWd2MtDvvbCuHXrm57BIkdLDz3I1AeO2lPVmNzrDTK3PLVC+bRsUPNh/CIYL6hrXHx3/lo3BtC78TH6CpwhLGYjbPnD1xxr3EYShvb+pN8gLstg7vMQPP9H1KlmvXYX/lElhUpO4KEY1DkcezOkyDzpEvvdFHQFUPO3UrCghuOWpIfJgPxXCS8QzoQfeV5hf2UyK93ZfuB1+w+XG4rwZab69Q7pDDQrWay9kyheHV0sKZCOD4XwXIOzTbb48iKqcBGPKQP2a4EplqKRAoZSNbgdLm9v/Wa1MqL3++3892qf+5qmu5F7duggXUxbfdOdznZrnvm7K58h+ocrZm7Okpzf5oO9yH+q5LpInp40+KGcgSvWJ/bo1SyPtRh6L2BBVhRgjW++6Lex2D0Eep+lVf9JnjRukob5xs4SYpUM0FeLSKeq6DTbkNqHm8zzCzt5EKpPeEe9njNyaAEhzwOZtWAyRU4YKb9LaiDaWLPNcqDuWSDPFk1UHc76mKdZPc
+ gsISFFlb
+ 9+G0taajIkqrWe/B+68LxMJy25SHHjRL6wgTIP6TIJpJMfAGUn8Y7YAEfvf1YWb73hmImxadEcED3wyVlkYn3ghsaKlfWOkBZOB4maaA9mmkm+uZxZRDT/5288D63dbzh7hQsrvghEGMLMropBbTT6nultcHsY2RWL8KHhoX/tdj+0MkkxdnPVPZLLYRa7pJ0X6gQGdWMS7vElqjhuAPdjXxrwtCy3uU+a0GqliL+FbrtfNOxU6AT1kwaJVfq7w+w7yivR/bcKtojwwqGn0JwBG/1eFooXKfAnkPskzxkD2qege8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,75 +99,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 05:23:32PM +0800, Lance Yang wrote:
->From: Lance Yang <lance.yang@linux.dev>
->
->
->On Wed, 24 Dec 2025 15:50:34 +0800, Baolin Wang wrote:
->> Hi Andrew,
->>
->> On 2025/11/28 15:01, Sahil Chandna wrote:
->> > Replace hugepage boundary computation with ALIGN() helper instead of
->> > an open coded expression. This helps to improves code readability.
->> >
->> > This was flagged by Coccinelle (misc/minmax.cocci) as an opportunity
->> > to use min(), after which the boundary computation was updated following
->> > review suggestions.
->> >
->> > Found by: make coccicheck MODE=report M=mm/
->> > No functional change intended.
->> >
->> > Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> > Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> > Suggested-by: Matthew Wilcox <willy@infradead.org>
->> > Suggested-by: David Laight <david.laight.linux@gmail.com>
->> > Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
->> > ---
->> >   mm/pagewalk.c | 3 +--
->> >   1 file changed, 1 insertion(+), 2 deletions(-)
->> >
->> > diff --git a/mm/pagewalk.c b/mm/pagewalk.c
->> > index 9f91cf85a5be..9fd59d517f37 100644
->> > --- a/mm/pagewalk.c
->> > +++ b/mm/pagewalk.c
->> > @@ -312,8 +312,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
->> >   static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
->> >   				       unsigned long end)
->> >   {
->> > -	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
->> > -	return boundary < end ? boundary : end;
->> > +	return min(ALIGN(addr, huge_page_size(h)), end);
->> >   }
->>
->> Please drop this patch from the mm-new branch, as it causes
->> 'run_vmtests.sh' to hang. Specifically, it leads to the system hanging
->> when executing hugepage-vmemmap test, because the program falls into an
->> infinite loop in walk_hugetlb_range() and cannot break out.
->
->Good catch! The problem is that ALIGN() returns addr itself when already
->aligned, causing the infinite loop ...
->
->>
->> This patch does introduce functional changes and makes an incorrect
->> assumption that the 'end' must be aligned to the hugepage size. However,
->
->Yep. This patch is not equivalent to the original code when addr is
->already aligned :)
->
->> this is not necessarily the case. For example, see how pagemap_read()
->> calculates the 'end':
->>
->> "
->> end = start_vaddr + ((count / PM_ENTRY_BYTES) << PAGE_SHIFT);
->> "
->>
->> Revert this patch, mm selftests work well.
-Hi Baolin, Lance, Andrew,
-Thanks for catching this, I understand why ALIGN() caused an infinite loop.
-Please drop this patch, or shall I submit the revert ? 
-Apologies for this, I am setting up environment for running the selftest
-and will send out corrected patch once it successfully pass mm selftests.
+The comments above check_pad_bytes() document the field layout of a
+single object. Rewrite them to improve clarity and precision.
 
-Regards,
-Sahil
+Also update an outdated comment in calculate_sizes().
+
+Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Hao Li <hao.li@linux.dev>
+---
+Hi Harry, this patch adds more detailed object layout documentation. Let
+me know if you have any comments.
+
+ mm/slub.c | 92 ++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 53 insertions(+), 39 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index a94c64f56504..138e9d13540d 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1211,44 +1211,58 @@ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+ }
+ 
+ /*
+- * Object layout:
+- *
+- * object address
+- * 	Bytes of the object to be managed.
+- * 	If the freepointer may overlay the object then the free
+- *	pointer is at the middle of the object.
+- *
+- * 	Poisoning uses 0x6b (POISON_FREE) and the last byte is
+- * 	0xa5 (POISON_END)
+- *
+- * object + s->object_size
+- * 	Padding to reach word boundary. This is also used for Redzoning.
+- * 	Padding is extended by another word if Redzoning is enabled and
+- * 	object_size == inuse.
+- *
+- * 	We fill with 0xbb (SLUB_RED_INACTIVE) for inactive objects and with
+- * 	0xcc (SLUB_RED_ACTIVE) for objects in use.
+- *
+- * object + s->inuse
+- * 	Meta data starts here.
+- *
+- * 	A. Free pointer (if we cannot overwrite object on free)
+- * 	B. Tracking data for SLAB_STORE_USER
+- *	C. Original request size for kmalloc object (SLAB_STORE_USER enabled)
+- *	D. Padding to reach required alignment boundary or at minimum
+- * 		one word if debugging is on to be able to detect writes
+- * 		before the word boundary.
+- *
+- *	Padding is done using 0x5a (POISON_INUSE)
+- *
+- * object + s->size
+- * 	Nothing is used beyond s->size.
+- *
+- * If slabcaches are merged then the object_size and inuse boundaries are mostly
+- * ignored. And therefore no slab options that rely on these boundaries
++ * Object field layout:
++ *
++ * [Left redzone padding] (if SLAB_RED_ZONE)
++ *   - Field size: s->red_left_pad
++ *   - Filled with 0xbb (SLUB_RED_INACTIVE) for inactive objects and
++ *     0xcc (SLUB_RED_ACTIVE) for objects in use when SLAB_RED_ZONE.
++ *
++ * [Object bytes]
++ *   - Field size: s->object_size
++ *   - Object payload bytes.
++ *   - If the freepointer may overlap the object, it is stored inside
++ *     the object (typically near the middle).
++ *   - Poisoning uses 0x6b (POISON_FREE) and the last byte is
++ *     0xa5 (POISON_END) when __OBJECT_POISON is enabled.
++ *
++ * [Word-align padding] (right redzone when SLAB_RED_ZONE is set)
++ *   - Field size: s->inuse - s->object_size
++ *   - If redzoning is enabled and ALIGN(size, sizeof(void *)) adds no
++ *     padding, explicitly extend by one word so the right redzone is
++ *     non-empty.
++ *   - Filled with 0xbb (SLUB_RED_INACTIVE) for inactive objects and
++ *     0xcc (SLUB_RED_ACTIVE) for objects in use when SLAB_RED_ZONE.
++ *
++ * [Metadata starts at object + s->inuse]
++ *   - A. freelist pointer (if freeptr_outside_object)
++ *   - B. alloc tracking (SLAB_STORE_USER)
++ *   - C. free tracking (SLAB_STORE_USER)
++ *   - D. original request size (SLAB_KMALLOC && SLAB_STORE_USER)
++ *   - E. KASAN metadata (if enabled)
++ *
++ * [Mandatory padding] (if CONFIG_SLUB_DEBUG && SLAB_RED_ZONE)
++ *   - One mandatory debug word to guarantee a minimum poisoned gap
++ *     between metadata and the next object, independent of alignment.
++ *   - Filled with 0x5a (POISON_INUSE) when SLAB_POISON is set.
++ * [Final alignment padding]
++ *   - Any bytes added by ALIGN(size, s->align) to reach s->size.
++ *   - Filled with 0x5a (POISON_INUSE) when SLAB_POISON is set.
++ *
++ * Notes:
++ * - Redzones are filled by init_object() with SLUB_RED_ACTIVE/INACTIVE.
++ * - Object contents are poisoned with POISON_FREE/END when __OBJECT_POISON.
++ * - The trailing padding is pre-filled with POISON_INUSE by
++ *   setup_slab_debug() when SLAB_POISON is set, and is validated by
++ *   check_pad_bytes().
++ * - The first object pointer is slab_address(slab) +
++ *   (s->red_left_pad if redzoning); subsequent objects are reached by
++ *   adding s->size each time.
++ *
++ * If slabcaches are merged then the object_size and inuse boundaries are
++ * mostly ignored. Therefore no slab options that rely on these boundaries
+  * may be used with merged slabcaches.
+  */
+-
+ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ {
+ 	unsigned long off = get_info_end(s);	/* The end of info */
+@@ -7103,9 +7117,9 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 
+ 
+ 	/*
+-	 * If we are Redzoning then check if there is some space between the
+-	 * end of the object and the free pointer. If not then add an
+-	 * additional word to have some bytes to store Redzone information.
++	 * If we are Redzoning and there is no space between the end of the
++	 * object and the following fields, add one word so the right Redzone
++	 * is non-empty.
+ 	 */
+ 	if ((flags & SLAB_RED_ZONE) && size == s->object_size)
+ 		size += sizeof(void *);
+-- 
+2.50.1
+
 
