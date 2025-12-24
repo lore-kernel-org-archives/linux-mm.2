@@ -4,150 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9495DE74915
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 11:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57579E75448
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 12:02:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABC596B0005; Wed, 24 Dec 2025 06:55:57 -0500 (EST)
+	id 96F416B0005; Wed, 24 Dec 2025 07:02:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6AC16B0088; Wed, 24 Dec 2025 06:55:57 -0500 (EST)
+	id 91C476B0088; Wed, 24 Dec 2025 07:02:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 941BC6B008A; Wed, 24 Dec 2025 06:55:57 -0500 (EST)
+	id 828B96B008A; Wed, 24 Dec 2025 07:02:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8112B6B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 06:55:57 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C031160161
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:55:57 +0000 (UTC)
-X-FDA: 84254210754.24.E66891E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C7D4A1C0012
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:55:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fvAG5zOZ;
-	spf=pass (imf20.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EA046B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:02:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7DB6135111
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:02:07 +0000 (UTC)
+X-FDA: 84254226294.14.0ABFCC7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2D14418001E
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 12:02:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FY1b1b2u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766577726; a=rsa-sha256;
+	cv=none;
+	b=2jvIpdh1Ljoq3pcg6yXiMorBYd4cJLl6DXGMZoBKIzwBXqViKcELjz3ZWMogVTeK9r3Mnn
+	17ac5uYmQRK6sGpFmMSAXholeKFDv7aeJ4sjiAols7WZsUTvhQuaSUOf1LUsy3KuSy6LWd
+	datC8ybrkBS1JD0Sm1JMW8XNaQeeOW8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FY1b1b2u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766577354;
+	s=arc-20220608; t=1766577726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GH//FvUvT9DjuJ5WlysudQDLTqviGbkOp/XERUeAZAk=;
-	b=zzbWSnwr0A4DLjz+09rt1SE97pjvwX+10B5vAdkMR1JqBu3J/pfpa9uKilQRzOBV8tsIb9
-	AVB6KW3d4hMM5J4TLsZhYxHSowB3ZF8lIajsmw6kjBst2ucm3wAd8hPzHG0cShBwE1X+0h
-	5V15BnPpzDFs6jcbgPaXG1KbEHQiBJU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766577354; a=rsa-sha256;
-	cv=none;
-	b=3Yt8K/aruImYGM4rwvUmaMb6+J5Vtv9Vc3Yh9VSj9AgXyaPkTEyyPRVnztv7SxJJWT86RN
-	7WWBZObNAc+b28VbAaGpd35TSVnpKLHapPMvTp3ND0ww/Nmq5dFRTcFy92e/YeeGnSoavh
-	rfBoDegw9o1g0HYuMhSGzC6DJZwJJoU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fvAG5zOZ;
-	spf=pass (imf20.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BO6jUE4007802;
-	Wed, 24 Dec 2025 11:55:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=GH//FvUvT9DjuJ5WlysudQDLTqviGbkOp/XERUeAZ
-	Ak=; b=fvAG5zOZcxGC1lF/pEv6wdznKjxkwp8lHYlBZ5BuKwt3tsTYlNccljICg
-	G9yXbB/ElkqoxeuGhBhaQKX+lmCoX6nI7S5A2AQ0rl7sw/YCg1gdIJLnGm5E7NfP
-	29nyejkCjHW6XO/sI+4vieGEF/sHryL87M0ofPLxo0WnzsWQ9JSErifSsBIcXM0N
-	TRnvHwCVIyTNz9ttmjGDQjdB36+6sTv198dc0k74OcTqXvL/saKZHNyw/k0j1vGh
-	z95ypT3PsWzSF4OWgnOJnVLcS60BmYG2g2xVRopuqlAFng3cCyIiAX2+u0ZZXG9N
-	+9n0tpumpq1yD98OXXOmeFuOZq9rw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5h7j13av-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Dec 2025 11:55:36 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BOBtaoj000913;
-	Wed, 24 Dec 2025 11:55:36 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5h7j13as-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Dec 2025 11:55:36 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BOB0WXd030352;
-	Wed, 24 Dec 2025 11:55:35 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b66gy017j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Dec 2025 11:55:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BOBtVvD24707400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Dec 2025 11:55:31 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 156E020043;
-	Wed, 24 Dec 2025 11:55:31 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 236C520040;
-	Wed, 24 Dec 2025 11:55:27 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.124.211.66])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 24 Dec 2025 11:55:26 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, linux-riscv@lists.infradead.org,
-        "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v7] mm/hugetlb: ignore hugepage kernel args if hugepages are unsupported
-Date: Wed, 24 Dec 2025 17:25:24 +0530
-Message-ID: <20251224115524.1272010-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.51.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BRazb//YpBUuXuQsI7NHiELei7PSTpncdZMv9ssRZN0=;
+	b=D6mgaSEMDe+vGTY9waD4yjTpP3WfCxbmiiO9Dk+vwSuW6I3PTS4OvEZcOITN/vgDsLkZXk
+	hgquiJ6VmMegtIQaiirmZZ9s8oKwjX6rx/cHdcDx7GzRxqOw5R4IF3NocK/eSQ9oQ27+ME
+	/SAbUM8fqtTJHOIBH7dYY0R+gQQj8O4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 248CE42DBB;
+	Wed, 24 Dec 2025 12:02:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64201C4CEFB;
+	Wed, 24 Dec 2025 12:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766577725;
+	bh=uBPqXxyHezu6KXMQBRpWZz+nm9zp7C2D106puhEjv7o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FY1b1b2utCFXPMdOoq8ndCNnjTuXNaW7HmED9XfyIybn9/6t4O9TBn6CrzTWmRCBf
+	 DzV0uk8sNGWBHT0e0hIJUUGnFPYUjyDW438hnokF+br63eXJfp1opNni5v2uh3xMHn
+	 EPuLx/iua/0vEldXwaiE1aTVrKqT+IgrWn5jCTM9EKb6e0Rb20IllUtj34SGr5zowJ
+	 1AhUcBmkCZziavlIh6PfLNzEly5DYHo0poNTxs+al9f1yoz9Q4NyW58X7WsFXoqdjX
+	 gof0rFbzXjx98ncanny1FHY1o5Vr/pKtrsxnQITJXnPcY6CRmzOnLvG8tGwfW8pkYV
+	 gdXFNgVCx1agA==
+Date: Wed, 24 Dec 2025 13:01:58 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>, "Darrick J . Wong" <djwong@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>, syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, 
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH bpf v3] lib/buildid: use __kernel_read() for sleepable
+ context
+Message-ID: <20251224-partner-eiszapfen-92104956caed@brauner>
+References: <20251222205859.3968077-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI0MDEwMiBTYWx0ZWRfX49G/5GzFC2U/
- C+f55vWA8QZ8uaj863eDNaXePjGYiWXDwCH5iY7yWpgjHslmBbSyeAHeTQcfp+KrSv5ZnKLoj/d
- vMhTl0MmZuDR5DNh1wAKqvzc3zj6iueboozycmyXGikd3l1w2WwX42jhm6k6SudFTMiTaOWORqp
- NDTC01xlHbVpKIFjXhj9MvmxxKv3N7bhfcKb0tlV01ArCOJUdV21rZl9sQLoOSqMViR5b6Acmcn
- li12HmGHR3mNMJY99fT4GEKJjkhU7lWX0iI7MAKhBh/ifEPHQgpjLImHh5LnDIXBXHwtbP2/aMO
- jy8FfzVoZNwY2CdeATTsbe9B2fpA238SfkhJurHuSW3yMCP04ybmUCtfDXNAMD/GG9GALRjD8Fj
- 7OVsDNpPVUGSf5B7NsjgSWSivaSyzokbe2B26CptiCJhZxsI5hkKvVqv8aVcIADMBec0fy/R8Wc
- 9E+66lZ5qfXXGrwquEw==
-X-Authority-Analysis: v=2.4 cv=Ba3VE7t2 c=1 sm=1 tr=0 ts=694bd4b8 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Z4Rwk6OoAAAA:8 a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=37rDS-QxAAAA:8
- a=voM4FWlXAAAA:8 a=JfrnYn6hAAAA:8 a=pGLkceISAAAA:8 a=hZZqHmf6Ppl5AQPYj_cA:9
- a=HkZW87K1Qel5hWWM3VKY:22 a=Et2XPkok5AAZYJIKzHr1:22 a=k1Nq6YrhK2t884LQW06G:22
- a=IC2XNlieTeVoXbcui8wp:22 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-ORIG-GUID: fc0BAFO5dfQ8F-QvuQiPYBQ1kNVWgziz
-X-Proofpoint-GUID: 4LYmkV6B52ZfJ4_3n5nWsrbPH4bn8tWI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-24_03,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512240102
-X-Stat-Signature: f3i6tmiwt8fc7x1p4phcj7c75b7ea9bw
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C7D4A1C0012
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251222205859.3968077-1-shakeel.butt@linux.dev>
+X-Rspamd-Queue-Id: 2D14418001E
+X-Stat-Signature: khsz5szfa5zgz5fo5nd3jww3yrwzdqhb
 X-Rspam-User: 
-X-HE-Tag: 1766577354-587722
-X-HE-Meta: U2FsdGVkX18pN51U1eJO3QLhVod3tWKAiEu0euDeEJcGS/58D5GMwwmkx1Yaf9lW0cPQHwN/hEaJT2GcVED8L6petS/ud4ntmDYpoXb0s2WHt6UjSfB/B2FxrSihXTcv34gPUXmVax93u2boN9vXCx3iQmMOjaHI5aWGzVpVwOzUW3EbbXzf2Wpe/Ukfw2faevFthYbLZUaI+222TcHOh6NdNFY4g5hM7zrv7r2Q0dfCv6N2d845FS98q7hrkAYdhy+9mcl292KidF7qfUMtxx2A55lrMnPyBe6mLnacw7T+ywBaRQDzB/x7fw1b9OwR4Fzk5F41XomiN91wybntKTZij+Ym0tm705ZjzfjWzlJC0UCInIYZOBnXd7MDxQOJMksR/0A5SXoTUEuFO1GgXto5383CNk+5kRXOw5tJmI87ZjT9fa7ftjESxjAjIHTyAWckrIaq0/QsLJ3EVm3l0XSv39vN8mwk6ZKoaee3CNHbzCKTQ5//Yo6DR8sPejT6OqsS8tDshW+NTpuwfhHonYjdlMC/ZbYGX2UbMUqrecTc+mrGFm3y60SX305vBsI17B5yOO6a+WAVtjzdbikqA3UhcpRGi/g7QMMhRJrPSYT51R8X2Es+z2I/Dfr5CxETOlTUcxKlO3YwNkd3kH/t17PAp8IZRaFfe2PzmIGWk9lH2mXtyb4dKqtZrT1h0WDLbD+90j8prz2BMOVQgRT1jZWNjFHwKx3E3FNSVwolqOvRKGJaLLVGzYEnWv5673JffdGcMEMMIPDPETB9XWyxiVKfGc8DnI8VPbkgt+yHXBnEeSfK+X4depcR+dLxeBZRUGE6O3p4Z+D9xPpWUcCGs7U+ND94y3jrxpCZwkNNOoy5Xdk6ESAlFESrjLg8L+/z15CnQRj8Z9yBaAhUf95tJpe7/9BDHUSG+TGuVqL6ajgEp/XXotpe1ykxLprDNnwYwbJBzzNnhq3HARnZkE1
- Vxc2HUpC
- aHeBBQgOFykX0t3PbTj+WVcdElK/57SfipAWt2bkA7T8gl6IjDFHCgKbnXrHYXTj2qsdh5PbVEdi0s67vPKDCsCNnXlorIBWSXxlUVNevEKQz64+M1PFIv+VD2MmRdEK8D9vYFgAbZ46s4wqL7TKmebTUbjuoS3T+EK40EEtDEmDqhHEO+1khytUC27wob3npNNyF6Ah9K5vHJGcl43DBp9ge8g41Q54xNnfH0ee91/9o//KUrS7KBH0lWgGSXZwRUK4B2dz4DFbEHlA1Np3nqqKaKqVeCT3+5jHlFrHlbO3tiUsR3vq5m5NLJlaB5QFWvh34ws2JJn3evQ4LXUgkXW2AZ5zxCEpJ51lAiS6q50q9JJDOX9A3iOc6A+IViOeS0ImdtR5g+1AMIoovOJgYdQHfLR9z+Tm/2uukWOCBdWCndnhID0DNQOR+4rDMEBaaukT892MkbQHyJZxXm3jcRg050/VznZS831lDjAp3s6TPD+j7Yvgkph/aZ0t27fZ1bL+iqCLmWVd7aJJ4euEbOHZfC6ttQqqLVSvDFk4whd9PXayrN+ug1ozikKCIoSBJK4mKvkpw3ke9vOCtyZUMEc4bl0YzTOGvV6A9z20AEn7ypoO12hIrLGIqqH6C3u35qfHA
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766577725-91628
+X-HE-Meta: U2FsdGVkX1/ZtLVdolCccam9+6eoA4Fe22Zba4GXObDxAY9eIQHdMff1e+VlA1diXOCRNs3UzlCp5Ov9sEXn8sZ/VOKQX8c8EEaluWgAk6SNtPn6RORj9yTPV2k0UsVLuAC3JzZZalD6Hd51rM7Fo4o1W/R/EIcwweIpjQW9V2SWLneXG7rO0lxLyYW/77m9DcWQ1sMJLeqgaXdSPwHzHPHjOKkEtbao4eT1NpUb0gavVRYGoD9cL/gIZ649QfTG5aCy495aakskGoiD/VclB4QkjjeiiPWxKaaieY4Eg/CGtHcu6b7/iWHKA4scA89hQhqmSNG3kXFtpIW42ZDkJ8mivjnbOzhrK1qaH71vkQmBiV7a84kSnbqS1OPFUoPGdujdhfWWZJIDji6wwjGrdeUXsUBT58iubrna5BMuZe6I6QFz+e9ndcuElJyYaiIMZmW7Bw1JbGjWyTR1l9JmlKosBpWQeNXyemiOZAVqBmkSQRuo3vElUaX6josJaOA35x3mu+Auukl7CiMLyTAhF9ADqnQf2x1m5Yz4jULKErS6FSUJ2M46lxs6Tl/E5xr18+x25/OwnNWJ0d+/qpfcGF1xOyH5lehm87wW4N6vD2K15VSb3Tz6EqT4hWeCm3mikrJCsfr5cnc4tbzentJKkH9KfCLFFhwB8HOYOiJUuUXBaPJT8Z3vdkNUs4hs3rvdJ0wdkYhmZQXZNABbI6DUgVMypmDN6e0PmgvVTi+GYRkYv07q5Ufy8e6wpUNuujZm4Le72T8UUY/rb5Lus71iGecYZitxGaMeLNsI8MtUqPqJl1yfmgnudpRUxMsHNwDdyly21BZ+eMWTUpw/fJfEJp0byQPAv/kLo9oqtRE0CGcHM7XLp3TWYv8B8DhlGIgigiLs+KAbdHW75eVuPhm/1jFy9KfcZKNyd0snVqusAjvr/h4anGp51f21x++BHlU2E3uivC0xDr3R5TyLizz
+ O/OQfU2l
+ JA8eEW0B2WZylHsybAIQ82cEIezmlXKAe7isC8+nS6wdNeUY7nHr5nOc5rSPBxE7rYrUz5JhKaRyRRqbYkE7rOcbXwSKC3PmTl+pZHt62zzmgVo2kSWtagMySFKvpWapJu7IUosVF8E09+IurEzC0vCBgmfX8u9i+eetxVo/QckD2BzablXXSPAZ7HnD/IIfxFTcojCTbdTBwlMBtZgmAHE685mdKQc2eK7i42OMsbiINV30X34a9QT4PlCHGbONF5fJCEjkeEoEztpHymb/uwjycGUdfJT1xDYGpBsyVWUSy+Sd/+AkxSwIQigMJwKjgNglH8EV767yEGTrqha5oBQLP/GaAwNneGrbCG+ARkh16CqcoyIAr7qKMr+pN/AyrIEG19d7onQFIKgnEa/F1naTuubHXHcwOQbVvdmGBG9UHqv6DVaCNqfSbMSZHKJRoJCi495syZ/zNA9GY7JcuJfTHnPs70IMk3CuIapYg7SOs53J695F7y/BWoJKKmJ2e6WgyMXxo7Qtiph+94SVyPYZNDdrhrdBxEMYRWPFxFNnalBocpoSn9L5pHgKd1z3FYqK1IY+n2P68K18=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,182 +98,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
-default_hugepagesz) when hugepages are not supported by the
-architecture.
+On Mon, Dec 22, 2025 at 12:58:59PM -0800, Shakeel Butt wrote:
+> For the sleepable context, convert freader to use __kernel_read()
+> instead of direct page cache access via read_cache_folio(). This
+> simplifies the faultable code path by using the standard kernel file
+> reading interface which handles all the complexity of reading file data.
+> 
+> At the moment we are not changing the code for non-sleepable context
+> which uses filemap_get_folio() and only succeeds if the target folios
+> are already in memory and up-to-date. The reason is to keep the patch
+> simple and easier to backport to stable kernels.
+> 
+> Syzbot repro does not crash the kernel anymore and the selftests run
+> successfully.
+> 
+> In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+> non-sleepable contexts. In addition, I would like to replace the
+> secretmem check with a more generic approach and will add fstest for the
+> buildid code.
+> 
+> Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
+> Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
 
-Some architectures may need to disable hugepages based on conditions
-discovered during kernel boot. The hugepages_supported() helper allows
-architecture code to advertise whether hugepages are supported.
-
-Currently, normal hugepage allocation is guarded by
-hugepages_supported(), but gigantic hugepages are allocated regardless
-of this check. This causes problems on powerpc for fadump (firmware-
-assisted dump).
-
-In the fadump (firmware-assisted dump) scenario, a production kernel
-crash causes the system to boot into a special kernel whose sole
-purpose is to collect the memory dump and reboot. Features such as
-hugepages are not required in this environment and should be
-disabled.
-
-For example, when the fadump kernel boots with the following kernel
-arguments:
-default_hugepagesz=1GB hugepagesz=1GB hugepages=200
-
-Before this patch, the kernel prints the following logs:
-
- HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated 58 hugepages.
- HugeTLB support is disabled!
- HugeTLB: huge pages not supported, ignoring associated command-line parameters
- hugetlbfs: disabling because there are no supported hugepage sizes
-
-Even though the logs state that HugeTLB support is disabled, gigantic
-hugepages are still allocated. This causes the fadump kernel to run out
-of memory during boot.
-
-After this patch is applied, the kernel prints the following logs for
-the same command line:
-
- HugeTLB: hugepages unsupported, ignoring default_hugepagesz=1GB cmdline
- HugeTLB: hugepages unsupported, ignoring hugepagesz=1GB cmdline
- HugeTLB: hugepages unsupported, ignoring hugepages=200 cmdline
- HugeTLB support is disabled!
- hugetlbfs: disabling because there are no supported hugepage sizes
-
-To fix the issue, gigantic hugepage allocation should be guarded by
-hugepages_supported().
-
-Previously, two approaches were proposed to bring gigantic hugepage
-allocation under hugepages_supported():
-
-[1] Check hugepages_supported() in the generic code before allocating
-gigantic hugepages
-[2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes
-
-Approach [2] has two minor issues:
-1. It prints misleading logs about invalid hugepage sizes
-2. The kernel still processes hugepage kernel arguments unnecessarily
-
-To control gigantic hugepage allocation, skip processing hugepage kernel
-arguments (default_hugepagesz, hugepagesz and hugepages) when
-hugepages_supported() returns false.
-
-Note for backporting: This fix is a partial retrieval of the commit
-mentioned in the Fixes tag and is only valid once the change referenced
-by the Depends-on tag is present. When backporting this patch, the
-commit mentioned in the Depends-on tag must be included first.
-
-Note for backporting: This fix is a partial retrieval of the commit
-mentioned in the Fixes tag. It is only valid once the change referenced
-by the Depends-on tag is present. When backporting this patch, the
-commit mentioned in the Depends-on tag must be included first.
-
-Link: https://lore.kernel.org/all/20250121150419.1342794-1-sourabhjain@linux.ibm.com/ [1]
-Link: https://lore.kernel.org/all/20250128043358.163372-1-sourabhjain@linux.ibm.com/ [2]
-Fixes: c2833a5bf75b ("hugetlbfs: fix changes to command line processing")
-Depends-on: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: linux-mm@kvack.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-riscv@lists.infradead.org
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
-Changelog:
-
-v1:
-https://lore.kernel.org/all/20250121150419.1342794-1-sourabhjain@linux.ibm.com/
-
-v2:
-https://lore.kernel.org/all/20250124103220.111303-1-sourabhjain@linux.ibm.com/
- - disable gigantic hugepage in arch code, arch_hugetlb_valid_size()
-
-v3:
-https://lore.kernel.org/all/20250125104928.88881-1-sourabhjain@linux.ibm.com/
- - Do not modify the initialization of the shift variable
-
-v4:
-https://lore.kernel.org/all/20250128043358.163372-1-sourabhjain@linux.ibm.com/
- - Update commit message to include how hugepages_supported() detects
-   hugepages support when fadump is active
- - Add Reviewed-by tag
- - NO functional change
-
-v5:
-https://lore.kernel.org/all/20251218114154.228484-1-sourabhjain@linux.ibm.com/
- - Significant change in approach: disable processing of hugepage kernel
-   arguments if hugepages_supported() returns false
- - Drop a Reviewed-by tag
-
-v6:
-https://lore.kernel.org/all/20251221053611.441251-1-sourabhjain@linux.ibm.com/
- - Updated commit message with additional logs and tags
- - No functional changes
-
-v7:
- - Add a note for backporting this fix in the commit message
- - Add a Depends-on tag referencing the prerequisite commit
- - No functional changes
----
- mm/hugetlb.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..e0ab14020513 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4286,6 +4286,11 @@ static int __init hugepages_setup(char *s)
- 	unsigned long tmp;
- 	char *p = s;
- 
-+	if (!hugepages_supported()) {
-+		pr_warn("HugeTLB: hugepages unsupported, ignoring hugepages=%s cmdline\n", s);
-+		return 0;
-+	}
-+
- 	if (!parsed_valid_hugepagesz) {
- 		pr_warn("HugeTLB: hugepages=%s does not follow a valid hugepagesz, ignoring\n", s);
- 		parsed_valid_hugepagesz = true;
-@@ -4366,6 +4371,11 @@ static int __init hugepagesz_setup(char *s)
- 	unsigned long size;
- 	struct hstate *h;
- 
-+	if (!hugepages_supported()) {
-+		pr_warn("HugeTLB: hugepages unsupported, ignoring hugepagesz=%s cmdline\n", s);
-+		return 0;
-+	}
-+
- 	parsed_valid_hugepagesz = false;
- 	size = (unsigned long)memparse(s, NULL);
- 
-@@ -4414,6 +4424,12 @@ static int __init default_hugepagesz_setup(char *s)
- 	unsigned long size;
- 	int i;
- 
-+	if (!hugepages_supported()) {
-+		pr_warn("HugeTLB: hugepages unsupported, ignoring default_hugepagesz=%s cmdline\n",
-+			s);
-+		return 0;
-+	}
-+
- 	parsed_valid_hugepagesz = false;
- 	if (parsed_default_hugepagesz) {
- 		pr_err("HugeTLB: default_hugepagesz previously specified, ignoring %s\n", s);
--- 
-2.51.1
-
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 
