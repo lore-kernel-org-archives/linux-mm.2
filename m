@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 268C2E75453
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED63E7545D
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:50:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A2626B00CE; Wed, 24 Dec 2025 08:50:08 -0500 (EST)
+	id AB19D6B00CF; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 676B86B00CF; Wed, 24 Dec 2025 08:50:08 -0500 (EST)
+	id A65126B00D1; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 596336B00D0; Wed, 24 Dec 2025 08:50:08 -0500 (EST)
+	id 984CF6B00D2; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48EBC6B00CE
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:50:08 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0630E139FE6
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:08 +0000 (UTC)
-X-FDA: 84254498496.16.2E846E5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6DF34A0002
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ED8aVW74;
-	spf=pass (imf15.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 854F26B00CF
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62495137339
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:16 +0000 (UTC)
+X-FDA: 84254498832.15.3755D7C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9B513100002
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ahi82J95;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766584206;
+	s=arc-20220608; t=1766584214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ArkG22qdZfeZQL1mg0jDVHZEGKaocQfpykvwK+7103I=;
-	b=qE94Pc93K/yZoRIUrf+EO2c6kiSMSxwqNRez/TEQkey6xjTXvrKIcb+3K6Qbmlq/4z/0vZ
-	3GRk/7C4Quy2ApIrXCJRH+CsRTEJird5nHsInZ7Dkdsxl4en+yn1YrZiJW6WzDZGYRJSYP
-	8OzV296e9K473sv+0D8cHfV2F5X/bl4=
+	bh=1DzR/7++HQoBO8hfUtZdzGi5JYMWhENpMmrWTTSRkVk=;
+	b=QvvgX6LqrUhbbce4g/m+VlHSF+5qWdLrYn6BbLd/1JtY2F6yJiFmJhu/x97sE4/d3jj2Hs
+	EwONy2zPdRtL74L2ZFx46oKLrENRRd5CyQ+QHJebQBWe7h4Kr190hgQSGyPxzcprlyAjnE
+	vAcu2+oH2fmIIjspMdgAoyTJVW1hnCA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ED8aVW74;
-	spf=pass (imf15.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ahi82J95;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584206; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584214; a=rsa-sha256;
 	cv=none;
-	b=YnjC1sqy/oqZ1EMaRk87s9GuPeepam1/k5U6Zz8Kc9wJZNUOcBszpEgA0kQNR2J6V9sAPe
-	MPXVkHUsfAzbi0B6Gc0m9xF2AjwjJU+38OdMqmDTtMCT2ro8CiaiRX+srEt74ybMahha9B
-	edM9J///lL1tCE6bJ8irL9GsUtAqYhg=
+	b=gJ7zeadC/DEOk2Zy+K9cIUCi1rxZy2KGmh5KUqs3M3glgcix7EBkrr5U8o2/EnOw/Fkah5
+	CyhhOc70oUVpfE2sUI93ARPjlQTynVbWuq3aDqd6kuI6IkMzZI8h2vQQA4mc+0b6AGredi
+	s805gOg+lTeyZPxydTV/SqTebLDedCs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 02B1260177;
-	Wed, 24 Dec 2025 13:50:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98524C4CEF7;
-	Wed, 24 Dec 2025 13:49:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C8618435D6;
+	Wed, 24 Dec 2025 13:50:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270F1C4CEF7;
+	Wed, 24 Dec 2025 13:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766584205;
-	bh=kluxsGzh3yUyBuEdMQW2ChyzrN9Wa4B73tu4Iho0QMM=;
+	s=k20201202; t=1766584213;
+	bh=1ThumxDDgpI14i4xI2NJUZlN8OnswY2btiiSypM7sVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ED8aVW74APnBRvzGpOYVOFXbISRUsSm2ff53aXv0cWlkuHzOa2Q7QLiJId6sHUyzN
-	 rkK7hTT6utUbQFbv9Df3yhyCa4a8EYD50BV5521k0CI2l3AehI+q/A+085+RK2ThGK
-	 wvYl9sJQUScLxm3mKhBNH3YhFcIwGu1GH7wQB4YyxS/SkG4Nvoc4QK5tSR5YexlEny
-	 6f20Uaepl338lDSloLKe39VsAqy2OxcQFbfkUg/+huV1Y3z61CgCJMswZDPm2OK7Ft
-	 bgTx4CvDQ/1YAp+ph0GVI2FQhlYM9WTBhc2gtIOsrRGOMZsvUVeGeCAwy4V9Rh2Ybl
-	 UzfA5FSzot4Kg==
+	b=ahi82J95Ib/ppDRG2oGNZ9HCy4FO7NwJKzhKKQKG1+UUAadEdmqhM1slQjgCbxhV+
+	 /dcBOeXszn7WHt9ZEfzUfR2usAGjc5uAN/OK3ZHVMN6a/GtbA6m05cxKc30/svswW9
+	 lMaao3gqVfU1DJmnwW9fYJagoqE1abjZ+rGDbjrrUpMuwLIh6DIVlL9d2y7zHGdY30
+	 tfIgeKXtzkXkTpfedG0igUK8LV3+nv7+Y8XcfzegBKyVjUAwe8f8Df0/Q+XXlp1ix+
+	 v4BjeCOmS/tbEvleYYDEWcXyh76TNTsAYQ91xgEDVBUpifl3dY9W3RGxk+qIejrkj/
+	 y+oyfRg4KoKWA==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 32/33] kthread: Document kthread_affine_preferred()
-Date: Wed, 24 Dec 2025 14:45:19 +0100
-Message-ID: <20251224134520.33231-33-frederic@kernel.org>
+Subject: [PATCH 33/33] doc: Add housekeeping documentation
+Date: Wed, 24 Dec 2025 14:45:20 +0100
+Message-ID: <20251224134520.33231-34-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
 References: <20251224134520.33231-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bbgot8sttabwzhy874et4upi5mxg9st7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9B513100002
+X-Stat-Signature: woz3i13cx1rz9wzhs8745mczsujhdxen
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6DF34A0002
-X-HE-Tag: 1766584206-348948
-X-HE-Meta: U2FsdGVkX1/Yq1OILzKPSkn5hdt/AMn1q8zbzjpI3OqLboizhtK6iezIk9uUzJovn3CgCE/SCdPUnhrBfe2Z9K1RfjRC8vAD4d6HcV7zXtypO6qLZShUYrWmD9KhCZmjMIbK4WE1OoFBbYNBBB+do5FC/Ll8WOqyr+eTL/9LVgQmVZuMrKQhhpP8ac/eDzN0ttSjMTpSaT6rkeTAKmW4S8NLkGGIdaGD8N+FPdoR974q6zD4jekgiCPBjF7ymXbodIjwE3uUC0MbENH98t7edYj1sn2zLovjRsMTEjnRVO0DAwZC0Bm3WIzhQ9XBXa/I3xdL09nu6Ww7ChfxXf36Trdn9NaX03U1iiByQMwHE1ho+VsgrajcDLYwchdwvUX5UEXLM/inwOcEvyEvr8OQYCVWKih1Mfxky1c0Gz/3IdMpO0vBy/p8WSOOhLTiaofQ1A5N17pkmht+GSvpbHf1oh8J6Xb7Da0/fE6gC/d2q66jceXP3mThPo1NLSYRpxSVds0XVZdG6MvejknmRG0bQJ1Tmox5fLnAO4v9tkbCStJYS/QJy9WdS6tvCWYU8v9q0ewXBARVqtyrJhcPt7Ea7ByPi5OLdnYzNvEkwPwSL2eo58YNpUO0C7L5cYBTh+cIyNzqMWz9CuptC+Jm5dsczrXxz2z8vf6XAQNtXIkNx4TWO7AryZ1SkyOm6N5OuUoEOlMt/rYik+StG63YV3kCvocNCoplqeVDrbEc799bf/VrWZJZCC/ZJm7H+qBspwCkfJwtCaYihxZiLoR5H0I0agRTz7POp1P0JHphFsxCIkGrwiO6SJvRZ0F1kzWZYDmD4E4MtoV+DTwS7xrWnWCL3bdSHpBuCkHnvXEz3+N3itJ8iu0kDHynmIJxBiNkSxlhBvQzw8boZkZZE5VOQW+9+7OBcHdb1luWKRkSQNTzpCIRAQXH7D1YOKuiMsvJkeeNrH3pCQUPzRzZE3nqYx2
- s9tPrUPW
- 55cg2e+3Vu8/C3o7LulQyC1HjXOWRTgqBClGpG8LX1Tqx6iH6K4dC+Q/P2Fbn4l3sbjFv0cAjXVxPPgxrY8JDHRSND5Qg06zsDRCwuGcTZ7VxgzLH3uWwNtlVhA/TS5eFK2IFUG7mFHsVm3Omrbdpd78362GEtKH5kiCBFu6Q7vz5Xpn+A1156AuWtImKWd5GYbH1bW0yTBXMAXleQJgxT9EAUfKEmK4X5slaCEub7+Cz8sAnfpxBS2IQGYzLvcrOFyOAnoaJelD6GEjbWL4JuHYW9u1ECYk5LH7c8sB6Spm2f9kSjhxVfnSLywmz0t1+njjm
+X-HE-Tag: 1766584214-465084
+X-HE-Meta: U2FsdGVkX18r+CVR4N/L1okU2IlUMJ/7FE3ECh0H+cqDZZxA+xsnu43H5DHts8kzFLpTEOaxjAUw6y414VpYUwI0jbHjNYvXV7NasfKYKzK9dr66IXARV2RVkyFt95J/9GrdqQUFet7HFDHmy8cJmzQ2GTGUBYDKonT+J3wASNO7YF1krpPIszZZSvwPqKhJkeQCev+ZK6Fl1IM6mmd9iAi/IW6JICrg2MOBeCYxMp5QB1s/UAjl6AL6n89CXYVUnK1LeIozjzRWVtb5JPmnxY+1uA03//D/F0B0n6FOArDPLBghoSAUvlDGjtB6y4Dr4Hpw9I8gFtn7VcHoqADGHh3tMfRkhcevrEX4AhswXOwdwUk1qKpcYUmDlrJM3KERjcAEJf2NhuWxqjktUxftPjTZqA81Eg3ud/sc2TANDJqv+gd2NiOKb9ig07miIQmcRORUFEt9k84hunrqABhyMI6M2zpwIVZJ7Bppf/Oaghjms9O8CQWI/HhrdRlQP2mpxgQSTUbPjmAnZtAWjfjNmnZX6DHfwjPvsmb070NMMQ6Gobm8y0TrNjFBrZ3zI8l1oC1wVemqkQhSFNiuhrYREt8/Dp6PY5L+yS0yjDCDUzqQaS9Xc/CIWoF5fuBWQ7HNnzrimSD1NETFkzDhCMS86UOpfvWRvAKlhP5Ppi4rg5eoLtol1xiIfSQVxvF6T4i/1meE9vqmjGSaCkzRESlWlEEwPfV2syUBjNB6TGkh924gNLeuo8wiyl79QnpKPZR3MeQLS3xtuGtOi2ygcQjvwjAlx203G4o/+MzI8WeFSNijhMGHgWW4bYYFwZzDcNRz8rvm1GIZNiMWd55zHb8waF7x89qjrQZBkbdC5LDFSl8N8dJdPvJRU6Kq1eOLwEjJHW4xztbS2Xn3eFE0VdkrB+zgYQVqSHjGfNG14Js5sb9mv6dMZ4LDrRXpnfZJNKfDrFwId3SPXRlblgcve1b
+ 4nQqJz9i
+ vO2DHxruzvdAt2j6KR8lz2idEie2mjo7zW0f/YPc16rN0Zs1huay8vOdi/j1m7OVFm6kSWVd+EJkJNQnLJY3K11Bm/cNr7SK1XGrHrR9keawIEl8f3759G4d3Uf9fLkYcXa/xIntSHWJ+SZhJ+/lZZrjwHRwdKCAZlne6kWGf/J5u8HcSNYCnPaXT43tUArjn/NY80ShMfAJRM9fMJk5htzTkAqABw2+NL43XWuG2m2mnqCg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,37 +126,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The documentation of this new API has been overlooked during its
-introduction. Fill the gap.
-
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- kernel/kthread.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
+ Documentation/core-api/index.rst        |   1 +
+ 2 files changed, 112 insertions(+)
+ create mode 100644 Documentation/core-api/housekeeping.rst
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 51f419139dea..c50f4c0eabfe 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -856,6 +856,18 @@ int kthreadd(void *unused)
- 	return 0;
- }
+diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
+new file mode 100644
+index 000000000000..e5417302774c
+--- /dev/null
++++ b/Documentation/core-api/housekeeping.rst
+@@ -0,0 +1,111 @@
++======================================
++Housekeeping
++======================================
++
++
++CPU Isolation moves away kernel work that may otherwise run on any CPU.
++The purpose of its related features is to reduce the OS jitter that some
++extreme workloads can't stand, such as in some DPDK usecases.
++
++The kernel work moved away by CPU isolation is commonly described as
++"housekeeping" because it includes ground work that performs cleanups,
++statistics maintainance and actions relying on them, memory release,
++various deferrals etc...
++
++Sometimes housekeeping is just some unbound work (unbound workqueues,
++unbound timers, ...) that gets easily assigned to non-isolated CPUs.
++But sometimes housekeeping is tied to a specific CPU and requires
++elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
++scheduler tick, etc...).
++
++Thus, a housekeeping CPU can be considered as the reverse of an isolated
++CPU. It is simply a CPU that can execute housekeeping work. There must
++always be at least one online housekeeping CPU at any time. The CPUs that
++are not	isolated are automatically assigned as housekeeping.
++
++Housekeeping is currently divided in four features described
++by the ``enum hk_type type``:
++
++1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
++	isolation performed through ``isolcpus=domain`` boot parameter or
++	isolated cpuset partitions in cgroup v2. This includes scheduler
++	load balancing, unbound workqueues and timers.
++
++2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
++	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
++	parameters. This includes remote scheduler tick, vmstat and lockup
++	watchdog.
++
++3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
++	IRQ isolation performed through ``isolcpus=managed_irq``.
++
++4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
++	isolation performed through ``isolcpus=domain`` only. It is similar
++	to HK_TYPE_DOMAIN except it ignores the isolation performed by
++	cpusets.
++
++
++Housekeeping cpumasks
++=================================
++
++Housekeeping cpumasks include the CPUs that can execute the work moved
++away by the matching isolation feature. These cpumasks are returned by
++the following function::
++
++	const struct cpumask *housekeeping_cpumask(enum hk_type type)
++
++By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
++isolated partitions are used, which covers most usecases, this function
++returns the cpu_possible_mask.
++
++Otherwise the function returns the cpumask complement of the isolation
++feature. For example:
++
++With isolcpus=domain,7 the following will return a mask with all possible
++CPUs except 7::
++
++	housekeeping_cpumask(HK_TYPE_DOMAIN)
++
++Similarly with nohz_full=5,6 the following will return a mask with all
++possible CPUs except 5,6::
++
++	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
++
++
++Synchronization against cpusets
++=================================
++
++Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
++modifying or deleting an isolated partition.
++
++The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
++properly against cpuset in order to make sure that:
++
++1.	The cpumask snapshot stays coherent.
++
++2.	No housekeeping work is queued on a newly made isolated CPU.
++
++3.	Pending housekeeping work that was queued to a non isolated
++	CPU which just turned isolated through cpuset must be flushed
++	before the related created/modified isolated partition is made
++	available to userspace.
++
++This synchronization is maintained by an RCU based scheme. The cpuset update
++side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
++cpumask and before flushing pending works. On the read side, care must be
++taken to gather the housekeeping target election and the work enqueue within
++the same RCU read side critical section.
++
++A typical layout example would look like this on the update side
++(``housekeeping_update()``)::
++
++	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
++	synchronize_rcu();
++	flush_workqueue(example_workqueue);
++
++And then on the read side::
++
++	rcu_read_lock();
++	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
++	queue_work_on(cpu, example_workqueue, work);
++	rcu_read_unlock();
+diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+index 5eb0fbbbc323..79fe7735692e 100644
+--- a/Documentation/core-api/index.rst
++++ b/Documentation/core-api/index.rst
+@@ -25,6 +25,7 @@ it.
+    symbol-namespaces
+    asm-annotations
+    real-time/index
++   housekeeping.rst
  
-+/**
-+ * kthread_affine_preferred - Define a kthread's preferred affinity
-+ * @p: thread created by kthread_create().
-+ * @mask: preferred mask of CPUs (might not be online, must be possible) for @p
-+ *        to run on.
-+ *
-+ * Similar to kthread_bind_mask() except that the affinity is not a requirement
-+ * but rather a preference that can be constrained by CPU isolation or CPU hotplug.
-+ * Must be called before the first wakeup of the kthread.
-+ *
-+ * Returns 0 if the affinity has been applied.
-+ */
- int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- {
- 	struct kthread *kthread = to_kthread(p);
+ Data structures and low-level utilities
+ =======================================
 -- 
 2.51.1
 
