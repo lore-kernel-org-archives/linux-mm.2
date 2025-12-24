@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E6FFE74917
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC3FAE74902
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 05:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95A2D6B0005; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
+	id 1228C6B0005; Wed, 24 Dec 2025 00:26:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 907F86B0088; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
+	id 0CFD46B0088; Wed, 24 Dec 2025 00:26:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E9FF6B008A; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
+	id F1DC86B008A; Wed, 24 Dec 2025 00:26:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CABD6B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:21:59 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 194541A01B7
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:21:59 +0000 (UTC)
-X-FDA: 84253217958.17.92B985E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E268C6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:26:18 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 768F8BA41E
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:26:18 +0000 (UTC)
+X-FDA: 84253228836.14.7B7DBC1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6817E40002
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:21:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVRlH+oy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766553717; a=rsa-sha256;
-	cv=none;
-	b=0dM2XvoIe4j3vS1fOKkfZubmVnjRMX9CPskiCowj3ne4T0oWvQ1GFZSGv4Di1SUf9qdZ2m
-	CuLfDQ9+oM4SBVRWN/vmMtkLo4wOF0ETEsHQ63Qwg8iUUWoofP/YG5CHEtyaZ+uJoqbxd6
-	rNimmW2QbwWcChVucNAJA3ySyQirsoA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVRlH+oy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id C9794140007
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 05:26:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcOL2azk;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766553717;
+	s=arc-20220608; t=1766553976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RP9/QQKvBwW5MEOApDEMa35jTONp/NmvNh1b2EqvQ90=;
-	b=Q5Q9xlAdllQmA4RS491fKuTXsW9YGXaTsV2/56eqyJa+OuSpgkW/iXJcxVqsSxwbm4jBYG
-	pkn8sxosfppyTSA3VJnacUKxobjVk39MIEaBORoiXkmb5Cb8g++vx8M+FpnnOH88/6+m9G
-	KXwh9oKCpbWePCcK2ieS1PnwjMk58Rw=
+	bh=L14ottMXfh3PL7h/axcZBGvHy8SFM8xTHCzNkVgEeAk=;
+	b=si3x+Ft9tkZOrw8vpTuj1oRz0NfYwiSj037arIQnhUBy6toWXfiuDhK3V+0FM3L4kvVfHm
+	omTODNgYGJUBEOc4ATquqhlx4kbM7S4m29mAqtZRNPdO/pX+oWvY55bf8WUm+QcwHYzQ8O
+	h6nLWS5pEuelHzhp/1HdaPyQsCe5Erw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcOL2azk;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766553976; a=rsa-sha256;
+	cv=none;
+	b=0gCWmwD4dFympadumtcUekaXQLtS2FY9T8GJ2FeTma3vNT8i6RzMkyJS8CrNLLbB/Bq5Ue
+	MLQMi4orvGQ1vPW9D7BEuZss6c6Y4R7K0Mf8YAG/asK+eSOIV/YCYvdqTC7fvj8IXCduti
+	mFzzDQdv+N907Su+Dr/HUcRNcDnD1Lw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E733441D9;
-	Wed, 24 Dec 2025 05:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D318EC4CEFB;
-	Wed, 24 Dec 2025 05:21:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B4E424034C;
+	Wed, 24 Dec 2025 05:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759AFC4CEFB;
+	Wed, 24 Dec 2025 05:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766553716;
-	bh=1i0AGvXVVrHdy9xcXcgBlco2Ngv8dnUQED7TtSQCPlM=;
+	s=k20201202; t=1766553975;
+	bh=w+yqxVPmNSXi64h9c/SbjrKYVAMQ3Vg9fRqikGkucIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVRlH+oykfekemzk2FwHD+HxDBl/P+HAohM82+BUGVn3Xs2qbZKAzgevGU3mQSa4A
-	 bFPC3hkGmyKkS2YKWZIKn5u0FHtrUW1ClsbyboFV/cyFQn/snsEN+c8bN9lvZlq1Kb
-	 qo69DA5iAGcoKvAHy2Z4sZkZROgvbNkh7rOkdwjmkxwJ7ZjulRSxC1mqICtfBJnpou
-	 yMtW4jiO+qspAv8tFpozGD7E/Pq7M3DPfvFJ6Q/cYG7Mlw0X1Oa3j4DWOQETieS8Nk
-	 eUZCrNtHGv8AVtfQ1SGw/flpI0A+AyX1ESZ9syiYQum5luL2nagBZGYOvOfhfF7+C9
-	 oRe1bFeQR+KaQ==
+	b=dcOL2azkZYxadIUBw3zX8ZlWM8l/iXVQI74TTFk60eFTUwk2LT+yXfrTzhev0j9Ag
+	 JmG31EbftpPHFsF7TPoeJOe2Eu+3CvQPdQOyX/uLRjjrQHLAlRfyEY1DmaS9zTY481
+	 q/tlBIuGFrVFulWdUpIIvIyBpp9uUvpYnpHNyow4WC7R/H0c/xVv2jdRlwl/QZmTH9
+	 XNekgrgtd4E6XomwSbKaP6gAbXzYOOqKlqRSDTXS6hVg0fU4EDLuE/03AqTPQa+4Dm
+	 tGlz0ZfWl4OoGhzUhxUZYcYx8Uxl5JzNpEkM5P56doPg7BlbXrmELBZ9f043jJFv2n
+	 mLm7L4MPoh8Zg==
 From: SeongJae Park <sj@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
+To: Shu Anzai <shu17az@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: damon: get memcg reference before access
-Date: Tue, 23 Dec 2025 21:21:47 -0800
-Message-ID: <20251224052148.68796-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] mm/damon/tests/core-kunit: verify the 'age' field in damon_test_split_at()
+Date: Tue, 23 Dec 2025 21:26:10 -0800
+Message-ID: <20251224052611.81594-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251224034527.3751306-1-shakeel.butt@linux.dev>
+In-Reply-To: <20251224042200.2061847-2-shu17az@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6817E40002
-X-Stat-Signature: gaujrzdthmk9aoroj11f5uk3njwaaycw
 X-Rspam-User: 
-X-HE-Tag: 1766553717-760436
-X-HE-Meta: U2FsdGVkX19EFcvvno9ySMMvC62J9FitAazHbbm/7MKfirSylD7AiCvxktMWGXlLFQ3zT2PeY+rhjWbQ4+jwxPQ59NVUSXWDtGLFAacqQ1o9iqWnBPHpK560haLVtQyLy8OuybvbbDQx/IITMWnEeKNyAy68nsr7A5Junzz9o2vfQ32jcU4kUfZoeKpKAQt/yltQP+jk1VMa5lW4iXDdhY5dGCGhvvp4WsC/MeHMZ5SlhS+GqUVzcyBo5WXzHKtevYf8P3DZk7u3Gu24KH8DS8iR3KmP0iVCpmR3pp3zFQPhfW9lwEnO4t5muZZjNFA3OuSJmTQySPvDf8QD1NiI+1VodvyF8OANsRNLWc6QMwtqI0nazawT4ZyKOomBDAl0FLb1ign4P6srUhWkdOlah5aYgwm76ILlEpash1n0QZ7hdyZpId1dm/YXRy5vGvG5K/MJQQr2G6hFLajvNuWZGjIkMsJUmfMvK/VKqJNOFrj0/xI26hNDQRLGtDEaFbE70aQCSM5AwZy5kzpI8dLED6K601sENWDw/8DCp/hMSvwuLKk/OJVz2QP4sjyZpbqG96nQvelvHX8XlpNm8d1XUG56fz+JI/Gs77+SJAbQTOFZOEXGDI5n/+e6rikvK9KKAqZi/lzVPM9eVZm1l5Ovz5MmvXamhVvNNUvlifRnzr4ElBJLlctuOpqFsHHzBiXZqW6DOidl1zaq900XvurfDIWaCY4v+t85d56FgR7Wf7Mmf3XrpVRtp1avCHmyPbOOblTOzbzWa6/wDn9vUVqo3H2+5GwE6T0UeSF96cIa1nrVa7yZSCLTtMjIq/I4rle45KHu4YNQ+sfJWWY38mU/XR1tAvn/ukR0xy5NL+cOTAqIipNfkNtd5KL36yH7TvUdNi6JRRU4OSdBj4z0AD3OSHA5hUE1t2Y10Yg5X4YdsHm1pVI3gWe3VSdRysahKD6xNTpHyJ4cvWJJ9EfdRDF
- fQEfkvjO
- urKKmwX2hvDrSamo/wb6PaZOUEyn0vr9yAx6D+Ym0t3xMHLqTymjwGxqbf6yiPN7Ilqtp0+BB/PxxzKtV7Fg1icNKb5eiigLayl5K0Tk/lozr41Ii2cKnWHCXgradslwTArOpK3dnom/U0/zUxeyUPPAEhx5X2UluI/d8uc9J0Oe3urJvp0lBJIvSpmAy9Z3THkU0OupYkNsKMb2X9mPB9KhgRr9OmjIr7QOPuCOJPdKUUvU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C9794140007
+X-Stat-Signature: p8bujfzrk6dwwmqchx8b6667uykknioc
+X-HE-Tag: 1766553976-870357
+X-HE-Meta: U2FsdGVkX18PXvql9JOr4+iikm7D9lSI0Nmrq80sF4j1k/9ZrM9IRjLgjwvroT1u2dIVyQDMq2d3UbbQoSUmuJIkCrkD395ZMenECn5X8LukmSF/swBsNGPlUHVaEIhOSxV4+LRsWpluHd2z3gYjfHlLF7VHjD8hU0BKXU+RdR9vMDK9T/uleJ1xTHbyu9JwreyZB3yPlsJQHRAdw5rVF3oI98ciejqVmyydxbRtmuaKhbl9tlK5Qojtx4L8aU03MY0PY5Ag8c+AKlfSKBhdVlvlg7xX9I8zyEwR1Y7Fc8vvY/0fgmEllg7RpKSc8DEG43HbtWRNMJzz43/m+Oq/T2J7gNvPDyNde2nemowF3dJCmi7TJy+AgOX1lT0t6aNukwDmJrC+dT0zOtD1n7Gf2wJTBi/11ZZX60p6Ez97VcblfFl8Wv0izpzyLDVksgYb8YY1FGMb5BSRurppffKr3qAN/2vnmQz49r6YrW76esLAtTKkOcPPrRULnOHTT/MwUumNBy40EcHjxd5hlzM8qzftzoS0FFG5QrqaxtSW17mI1gHgpXfC7pDc5joXDoXKELBDZncUV73AmMUYlS+6FuNDyfEuvhwUxXqnivzh17nK7MPklZgaG12UDIwDB+77edNYURwV0KenBqGDH1kIkeSrmCStX3xGL9U/TAaujXB8BBHcQeQSf+4ua9e9tG1xDeaw8Ozm1352i+NPhT/9x+BMdEUGqkx2XbVvT4R10M7TN15I9imnTcvxJ8Aj+g1XEG5vYc6xwYgMGmqIvOctjyH1EC/P6xVtv8AEoqBaA7h2J5Itl/GCosj8Wh/t0vn+Imr1Ovzx+FQFFAEZOqVn1qW88KO50k2x+3mceI90G5zSgtN8bSo1WsTPgNmWoyFZVhYA0YlLjpeUDWSVcWXPky7YFKC1MvckFibfgX7x1w82sYCcaWqcK194d98KjX8kDf2TxiqO+M+XMpvY4ih
+ 8Xe2q9hM
+ m3oQW/planJE2nvPGY0YGSqzU3MTKpRzqNdj6vB9qiLitlOHncJo/WEKq8PuiN8YsqteR/CKq0V6CF0LUiISKSQfAWnWi9BdFTc67hJp2rKBnWp3oJN60XY0UImdUmB55GlA64OlaM79YVvRCKdLfpppSDhvsLDPbTyGIUhey2IQU2oMTNbcqQOmytt3nlhBUdypRVV5KG5nhGHSA4tf/VqgDwqw5lZ0+akX8WAuoHHdkN3EEUKnZf9Xl0stquxHac0RKlWnvMzMQIK/yyiJdbdRmE4/OFwiEWe4I0o/VM5Vm+cU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,76 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Dec 2025 19:45:27 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Wed, 24 Dec 2025 04:21:56 +0000 Shu Anzai <shu17az@gmail.com> wrote:
 
-> The commit b74a120bcf507 ("mm/damon/core: implement
-> DAMOS_QUOTA_NODE_MEMCG_USED_BP") added accesses to memcg structure
-> without getting reference to it. This is unsafe. Let's get the reference
-> before accessing the memcg.
-
-Thank you for catching and fixing this!
-
-Nit.  On the subject, could we use 'mm/damon/core:' prefix instead of 'memcg:
-damon:' for keeping the file's commit log subjects consistent?
-
+> Extend damon_test_split_at() to verify the 'age' field.
 > 
-> Fixes: b74a120bcf507 ("mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP")
-
-I was firsty thinking we might need to Cc: stable@.  But I realized the broken
-commit has merged into 6.19-rc1.  So Cc: stable@ is not needed.
-
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-
-Other than the tirivial subject prefix inconsistency, looks good to me.
+> Signed-off-by: Shu Anzai <shu17az@gmail.com>
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
 
 > ---
->  mm/damon/core.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  mm/damon/tests/core-kunit.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 4ad5f290d382..89982e0229f0 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2051,13 +2051,15 @@ static unsigned long damos_get_node_memcg_used_bp(
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index f59ae7ee19a0..88ec046f4942 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
+>  	r->nr_accesses_bp = 420000;
+>  	r->nr_accesses = 42;
+>  	r->last_nr_accesses = 15;
+> +	r->age = 10;
+>  	damon_add_region(r, t);
+>  	damon_split_region_at(t, r, 25);
+>  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+> @@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
+>  	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
+> +	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
 >  
->  	rcu_read_lock();
->  	memcg = mem_cgroup_from_id(goal->memcg_id);
-> -	rcu_read_unlock();
-> -	if (!memcg) {
-> +	if (!memcg || !mem_cgroup_tryget(memcg)) {
-
-For this part, I was thinking '!memcg' part seems not technically needed
-because mem_cgroup_tryget() does the check.  But I think that's just trivial,
-so this also looks good to me.
-
-> +		rcu_read_unlock();
->  		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
->  			return 0;
->  		else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
->  			return 10000;
->  	}
-> +	rcu_read_unlock();
-> +
->  	mem_cgroup_flush_stats(memcg);
->  	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
->  	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
-> @@ -2065,6 +2067,8 @@ static unsigned long damos_get_node_memcg_used_bp(
->  	used_pages += lruvec_page_state(lruvec, NR_ACTIVE_FILE);
->  	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
->  
-> +	mem_cgroup_put(memcg);
-> +
->  	si_meminfo_node(&i, goal->nid);
->  	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
->  		numerator = used_pages;
+>  	damon_free_target(t);
+>  }
 > -- 
-> 2.47.3
+> 2.43.0
 
 
 Thanks,
 SJ
-
-[...]
 
