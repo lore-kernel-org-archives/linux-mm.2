@@ -4,90 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11466E74916
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 11:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D447BE74916
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 11:35:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20A836B0005; Wed, 24 Dec 2025 06:35:14 -0500 (EST)
+	id 46FC36B0005; Wed, 24 Dec 2025 06:35:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B81F6B0088; Wed, 24 Dec 2025 06:35:14 -0500 (EST)
+	id 447966B0088; Wed, 24 Dec 2025 06:35:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3F56B008A; Wed, 24 Dec 2025 06:35:14 -0500 (EST)
+	id 3499D6B008A; Wed, 24 Dec 2025 06:35:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2976B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 06:35:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A52BA1A0128
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:35:13 +0000 (UTC)
-X-FDA: 84254158506.02.D8E92E4
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D06CBC0007
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:35:11 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f+ipvznN;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2486F6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 06:35:45 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF1721370A4
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:35:44 +0000 (UTC)
+X-FDA: 84254159808.07.60408E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 23C964000B
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 11:35:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xyh3uCiq;
+	spf=pass (imf12.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766576143; a=rsa-sha256;
+	cv=none;
+	b=4kdCjsCJrpG+q0rC2YurAGTot+BCMPVoU+P0jG4beTSVwATu0at4oXbNWQAIBLSHvpXFOy
+	gt2Yt9m6ddaF6K6igyNsmgNs91k/fjCoQGlB8ZeF4aW3Sug2DiiNmMVk+IcL8WZ5GhJQV0
+	LooDuzQkT4VcznuSAnYiWCV26GCihcs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xyh3uCiq;
+	spf=pass (imf12.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766576112;
+	s=arc-20220608; t=1766576143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y4r+rkBsBIRRgeO/AD5wwWFdV4DArdg4UZWAqYivFNs=;
-	b=GD7SgvugCplqVezWqeColce6D8EH9OMuX5dEmvso7iIe72t5of3VPmyFE1BqWKhj8nL/M0
-	+7vTBFKoP8YWYce2NqkkQF3aoR2o7+lDlSvv11+U5X4BiGW30A6B2nYcFu5g+zqZhXOwlx
-	ncbNLaXBKiZYcQgqemckZDXGha+f2os=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f+ipvznN;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766576112; a=rsa-sha256;
-	cv=none;
-	b=zoHEbDUtLS+xEsOiCK4Hj4EBfwlhWHsKXvj8WAt0WItm8X6luqvNpGrfaSG2GVmgIFVsNX
-	9j3xxNgxEYUyizi5d5AAPcS+jKubQdMv4cSN0/CNI0yyqW2frxED18cP41/3epKUiq/3pY
-	BDPOl9NXq90pudaFvYEe0bu0xi0BNew=
-Message-ID: <533d2818-b7ed-4bdf-a69b-5ca2678ef193@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766576109;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y4r+rkBsBIRRgeO/AD5wwWFdV4DArdg4UZWAqYivFNs=;
-	b=f+ipvznNzx2BGJa7BQHWc6B7JD9Qq54vNmjmGvPaEXx/ICCLDP4vErBdNrqGf7ARGH3RE7
-	szdz60O6/eYKyLCGaHaslJgLXXnOtUHDaXcDX/W2Dh4DP9Te/QAXc056UXzTC3n9DjcfTy
-	s42844qNlAcL6DQ2EzUKH4C9nvA0Ur8=
-Date: Wed, 24 Dec 2025 19:34:47 +0800
+	bh=aPfIf24VliWQq0f8Kj4Kw8bFV8BRu0VC6Nhx23FKLvY=;
+	b=qHNCmbnInNiHyn+TagK+3P+GmVjKsRvarGCr1weUdBvQHN9mArAqeYvhYM2mtf18fKzxYQ
+	d10HTL82UwNjtQnRQkMreGKFawUiROK9881F7KG6tbSH8FvoQfCEH5pZkuDLTFxk/8JzvY
+	2dpP6kENnY9BB/gl0AGAhY4FTnOsWOA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CEE260010;
+	Wed, 24 Dec 2025 11:35:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A511C4CEFB;
+	Wed, 24 Dec 2025 11:35:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766576142;
+	bh=rcZ3nMY4d65lf7YZ3P3xmWEvn3BCIy1Hqxm5btFypgE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xyh3uCiqBwLSFzvpXcwS7OgzIHuc0bPj2+++1C+l1eEdHzwH9vJxSkiPqkRFMbS1y
+	 ps9iufDkUHMFc+Ubsp/Ih+8vg/xG8gALVWWcXY8qNStsjwnxrLOqaekU8um42jJEfS
+	 Lc4m/ukrr2IIbJASAXqg+HHenooEDls2rLMRH+jytjJ6hh1g6L3+GcX8wqn7OZWMYC
+	 HKN4ffk7wlUSVmn8o1KLxUx+Ck8RnJ4pswDZfnYqLfRA9T9YiYmihb5Eh3YYjWHQxH
+	 H4dgYwbOm0YyQODKZahb3AHHHOWVb79bXnGIvQqAB1Qib22CmyKuAdU37Gl3WgD+CW
+	 8Arj0xFK1ZM8A==
+Message-ID: <6089e76b-80aa-4254-af70-12b96d115a2e@kernel.org>
+Date: Wed, 24 Dec 2025 12:35:31 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH V2 1/5] mm/khugepaged: remove unnecessary goto 'skip'
- label
-To: Shivank Garg <shivankg@amd.com>
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251224111351.41042-4-shivankg@amd.com>
- <20251224111351.41042-6-shivankg@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251224111351.41042-6-shivankg@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <monstr@monstr.eu>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
+References: <20251219161559.556737-1-arnd@kernel.org>
+ <20251219161559.556737-2-arnd@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20251219161559.556737-2-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D06CBC0007
-X-Stat-Signature: hje1auwtf88ewffutehek3j15p7r6fjn
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766576111-496273
-X-HE-Meta: U2FsdGVkX1/mEDABsM5gucvo/u4oK99HymKC6Hp754Slx8Yfeq8jOwS1zIlAhXmslbmnTbOEIsqQP8V19U/u08j4G4ezTkD1JnSlfAJzXvdapRyLYlwEtcaWMjtbUD/NPy+gAGKFOUnpG/D7Ete86boD0pM0TBSiilPUT72QeM61BhUfmfpL97rVbEUfrLBmm+QrNKfRICZ37yqUfiytll5Q/7tpeGze3bPPy3CIsJxd2OHQRCCFkZ6BBYxBvh7tAWYRk4vR8akwNCOHo3bFr6HLDLRc7vinVJME92Vcpjy3rV3Yye2c5BC2h7PVBvdvpAJyaulNlOu7XrPMsMuZ/K1oVdhdsgjNaPWW1lg0fBLtftLHt6Y2zefe3tBBfX8jG3IQ97AGPJR3O3fpQeZ/WUG7aSslljxjljZgYkqCHtDEVcF4dm/vQujv6FnWsX/PbdJPh2FXjNb9KIwxEFJZCccqr1Nt9Gsa9o/iLDsnmHM5qNpXl3yD/dRwm0YhWR9q3SHqID+ORj2R649vbPwvPSQY5llhPtZrds21YSBO2G+CDaEUhYdUsbg0QujW+DxNFPOWz9RA035jUMD9oKHCroYTnGi4uE+WDSY87VIKm31ujiSCZrCKw+vOKme2dcg3GAyhqYubI9SC4VTz89AZ9Yi3s8yNawPztWP1VMndw7K0/ytxWsgDqtf17DBAdzrEjrCcR733zqMBJybqSBjVC3yRHa0QlhG5IYZcACcVP/FM2bek2ZQgTEnxCRW92ehj0tJpu/04yGdD2RcyVwZXsOyqXe9ZAdCqnkWC8bsJCUZYlK3sixGDHKw++PigA+jS2D1OEOZd+u6O+Zfi3KUI5YuMD0nve1y5joK4jEN2C+Gmg7mpAeqIVA==
+X-Rspamd-Queue-Id: 23C964000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 679dauezqahjbqs1qheoc8ibjujfikt9
+X-HE-Tag: 1766576143-710185
+X-HE-Meta: U2FsdGVkX19I/ldKg2wmlncpQ0TpbsfECbwmc+0eJMM7M6KzqicV9OFqY3YW5QizB8+Ygpo6dboxo2OfYSEdwUnM6Z8yfCF/mwmCprp9FGrcOlZ033NfW83jyNwfi+RA8dSOoBM5Zkcn7BwrW0SN0qWzy2yFJknR6CszlTAwtQuLmTMG3VatLJT9cyDgwLF1+ThvKkKsVAp4VWq4Yc79FgXm793ObxE3KkgrLDjxd/SElnwbapH+lHdILUWoQnpUPn4pZJauuWZyvhMJsqfyubJ5PXKSwTNU2YQOii4FUaUFMyfXc3forXZxcoNldiaBJmdXEux67k2fRbXeO91qbQhb4C+khq3MLIW0DYJ4VNVAANHxF+/wxhEXpyHIFQ8oGeYkQD4gobhFB9L2P/aXkZyTt94bZT0+LGsCZkHp5m2CCxPSEhgbO32Mdw1jCciB6aDa/4y2+CryjyRNMb1bvYVwmjBXljXbpS65j0Nx1uTUoMJ6Dhgy5Do0xbItdTx1XNSXkmmHm8beynKi0imFnhtwYHrFYFaa5LhNQDUGLkd4l7ymcVwmOn7UoX3r7h11JrDcQ425qKGPkQmXxVwNgac/Dms2D/fRs9yxNzuoyffObAWfmBoVrGBSvGZMAa+833L+8Q4ItyANfOVFe8NoMHGQABdX7vXcciQrPeSWxQDoPxE4fVKhmQXmKWrhSBOzWHhfcnkD4vWqYMnEmi9miHkwUd2vp+r3MJOetokDAHtj/alabqe/XIH+m3GVqv7drc/SfaIkv87goYq49sHrIx6P/0DV+lULxO5bKYf7SaEV+cIcZMMgZYKcuukMEDQwvxT4EL8xMG9JCBREGCJrjGVpjzEqpI0rFH5waxgrYBe5xZanAp6d5rXXO225svlhUjEMkwS31tdNwztLY8OD95t5PJ0vte8kOLIYFEpx/GiKf41USTXbrzMhzfM+jXekb8hOIHPhsGEz6Vj5GKv
+ Hez9F3tT
+ GdPPg6aj13S01vTBU9Ly36etxuTrGE+gKwAMTl/RQC16QmVocJvBhl0n/o5sp+ZEdhEDMYhKqKlbF/KJV7GLKE2STz21HlGEn8p4qgsQd+hSaFLednluyh9Bm6saffhmoKiRufOWFVwYuzuOracGz1OOmXu6fPoc6gXC4FffMSu21jY1ckp+0bFRw/ZpgdCaZQONt4VnbQhReKWQ2PJZNEomfgjVQfhGYdvHw24+iqXfDAL7kDgYRJr6ylA4CIPQ4JV5Pd5C7NA7X8/RukYN+NypsHWkJ7iExp7Jc3XuQDmegBM74y9vO5+5WeWBgD0zQJxQHbFjy77cQtYhX8zyO+ovrfBcKmKuYpfoc34FTUHbSyfU15Yk/6b2NYog8BhmtT0ZKCDxkj0xYjDRlUn+De4gp3b4fe/KVp6qDu8zC2x+6fNCJaz9mbMpxF1kCskWDhLOsEOZGoZlIMckohwjVeB++EmGLXacw3ULis8xfZnmi1buCBLFKjMGMqB0OLMn7HmNG6Qaroz1XTUsTguQsx/ivj5HzkZkI5/tXM9lCfJWnf1eVk44R6VLK+A4avxVaH8r8ozUvnudyKUdSXnuiDj6l7K20C81cjNZHOpTAggxNlHp6h40o6l/3UhqzJQNJhkS2uepktTEMF6R6mopbIlQzDyX0BHcQYDS2eJu4V3DApTBChvSrxT+HP92fDEdET2lwox5IGvYzGSyk74tusBSEJhreqJbSvY765Qnjd2s6BWwYQZEs9EXWKlBtAb5sY0UmLyx23B4+fLS5pD9NoLQvbQRbXBjgKm7IehgOcNkSH81ofgEjoF+zJKgU3KljUVDe4XpSIiPIRxmRAEcluVliCUXJMQAkHPg+S6ox0sJKB0YQNQkr4BIaluzBmCcLWSahNOE/bEHCII9NrN62SuJ3J08ipnTKp0lCOwPE400gFKaJJkPn/XzleiWRrftIbJY7Q16Qao3fZP1QRvBnzgTSW11t
+ wPbAAS7k
+ XeVDJMyVi2zwvz47c/vku8fvVLr0OBninvwT3UeEZDJcgfsn+kvDKmt+LwmcqqVeImMNWRQGML4Cta57mtILGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,46 +114,156 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/12/24 19:13, Shivank Garg wrote:
-> Replace goto skip with actual logic for better code readability.
+Le 19/12/2025 à 17:15, Arnd Bergmann a écrit :
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> No functional change.
+> Most of the common 32-bit architectures (x86, arm, powerpc) all use the
+> default virtual memory layout that was already in place for i386 systems
+> in the 1990s, using exactly 3GiB of user TASK_SIZE, with the upper 1GiB
+> of addresses split between (at most 896MiB) lowmem and vmalloc.
 > 
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> Linux-2.3 introduced CONFIG_HIGHMEM for large x86 server machines that
+> had 4GiB of RAM or more, with the VMSPLIT_3G/2G/1G options added in
+> v2.6.16 for machines that had one or two gigabytes of memory but wanted
+> to avoid the overhead from managing highmem. Over time, similar options
+> appeared on other 32-bit architectures.
+> 
+> Twenty years later, it makes sense to reconsider the default settings,
+> as the tradeoffs have changed a bit:
+> 
+>   - Configurations with more than 2GiB have become extremely rare,
+>     as any users with large memory have moved on to 64-bit systems.
+>     There were only ever a few Laptop models in this category: Apple
+>     Powerbook G4 (2005), Macbook (2006), IBM Thinkpad X60 (2006), Arm
+>     Chromebooks based on Exynos 5800 (2014), Tegra K1 (2014) and RK3288
+>     (2015), and manufacturer support for all of these has ended in 2020
+>     or (much) earlier.
+>     Embedded systems with more than 2GiB use additional SoCs of a
+>     similar vintage: Intel Atom Z5xx (2008), Freescale QorIQ (2008),
+>     Marvell Armada XP (2010), Freescale i.MX6Q (2011), LSI Axxia (2013),
+>     TI Keystone2 (2014), Renesas RZ/G1M (2015). Most boards based on
+>     these have stopped receiving kernel upgrades. Newer 32-bit chips
+>     only support smaller memory configurations, though in particular the
+>     i.MX6Q and Keystone2 families have expected support cycles past 2035.
+>     While 32-bit server installations used to support even larger memory,
+>     none of those seem to still be used in production on any architecture.
+> 
+>   - While general-purpose distributes for 32-bit targets were common,
+>     it was rather risky to change the CONFIG_VMSPLIT setting because
+>     there is always a possibility of running into device driver bugs or
+>     applications that need a large virtual memory size. Presumably
+>     a lot of these issues have been resolved now, so most setups should
+>     be fine using a custom vmsplit instead of highmem now.
+> 
+>   - As fewer users test highmem, the expectation is that it will
+>     increasingly break in the future, so getting users to change the
+>     vmsplit means that even if there is a bug to fix initially,
+>     it improves the situation in the long run.
+> 
+>   - Highmem will ultimately need to be removed, at least for the page
+>     cache and most other code using it today. In a previous discussion, I
+>     had suggested doing this as early as 2029, but based on the discussions
+>     since ELC, the plan is now to leave highmem-enabled page cache as an
+>     option until at least 2029, at which point remaining users will have
+>     the choice between no longer updating kernels or using a combination of
+>     a custom vmsplit and zram/zswap. Changing the defaults now should both
+>     speed up the highmem deprecation and make it less painful for users.
+> 
+>   - The most VM space intensive applications tend to be web browsers,
+>     specifcally Chrome/ChromeOS and Firefox. Both have now stopped
+>     providing binary updates, but Firefox can still be built from source.
+>     Testing various combinations on Debian/armhf, I found that Firefox 140
+>     can still show complex websites with VMSPLIT_2G_OPT with and without
+>     HIGHMEM, though it failed for me both with the small address space
+>     of VMSPLIT_1G and the small lowmem of VMSPLIT_3G_OPT when HIGHMEM
+>     is disabled.
+>     This is likely to get worse with future versions, so embedded users
+>     may still be forced to migrate to specialized browsers like WPE Webkit
+>     when HIGHMEM pagecache is finally removed.
+> 
+> Based on the above observations and the discussion at the kernel summit,
+> change the defaults to the most appropriate values: use 1GiB of lowmem on
+> non-highmem configurations, and either 2GiB or 1.75GiB of lowmem on highmem
+> builds, depending on what is available on the architecture.  As ARM_LPAE
+> and X86_PAE builds both require a gigabyte-aligned vmsplit, those get
+> to use VMSPLIT_2G. The result is that the majority of previous highmem
+> users now only need lowmem. For platform specific defconfig files that
+> are known to only support up to 1GiB of RAM, drop the CONFIG_HIGHMEM line
+> as well as a simplification.
+> 
+> On PowerPC and Microblaze, the options have somewhat different names but
+> should have the same effect. MIPS and Xtensa cannot support a larger
+> than 512MB of lowmem but are limited to small DDR2 memory in most
+> implementations, with MT7621 being a notable exception. ARC and C-Sky
+> could support a configurable vmsplit in theory, but it's not clear
+> if anyone still cares.
+> SPARC is currently limited to 192MB of lowmem and should get patched
+> to behave either like arm/x86 or powerpc/microblaze to support 2GiB
+> of lowmem.
+> 
+> There are likely going to be regressions from the changed defaults,
+> in particular when hitting previously hidden device driver bugs
+> that fail to set the correct DMA mask, or from applications that
+> need a large virtual address space.
+> Ideally the in-kernel problems should all be fixable, but the previous
+> behavior is still selectable as a fallback with CONFIG_EXPERT=y
+> 
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: linux-mm@kvack.org
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
+>   arch/arm/Kconfig                            |  5 ++++-
+>   arch/arm/configs/aspeed_g5_defconfig        |  1 -
+>   arch/arm/configs/dove_defconfig             |  2 --
+>   arch/arm/configs/mv78xx0_defconfig          |  2 --
+>   arch/arm/configs/u8500_defconfig            |  1 -
+>   arch/arm/configs/vt8500_v6_v7_defconfig     |  3 ---
+>   arch/arm/mach-omap2/Kconfig                 |  1 -
+>   arch/microblaze/Kconfig                     |  9 ++++++---
+>   arch/microblaze/configs/mmu_defconfig       |  1 -
+>   arch/powerpc/Kconfig                        | 17 +++++++++++------
+>   arch/powerpc/configs/44x/akebono_defconfig  |  1 -
+>   arch/powerpc/configs/85xx/ksi8560_defconfig |  1 -
+>   arch/powerpc/configs/85xx/stx_gp3_defconfig |  1 -
 
-LGTM.
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Be aware that it will likely trivialy conflict with 
+https://lore.kernel.org/linuxppc-dev/6a2575420770d075cd090b5a316730a2ffafdee4.1766574657.git.chleroy@kernel.org/
 
->   mm/khugepaged.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 6c8c35d3e0c9..107146f012b1 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2442,14 +2442,15 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->   			break;
->   		}
->   		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
-> -skip:
->   			progress++;
->   			continue;
->   		}
->   		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
->   		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
-> -		if (khugepaged_scan.address > hend)
-> -			goto skip;
-> +		if (khugepaged_scan.address > hend) {
-> +			progress++;
-> +			continue;
-> +		}
->   		if (khugepaged_scan.address < hstart)
->   			khugepaged_scan.address = hstart;
->   		VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
+Another point is that it will increase the overall memory usage when 
+people activate KASAN as KASAN reserves 1/8 of RAM for lowmem memory. I 
+think we need to look at the impact on available virtual memory, because 
+1/8 of 2G is 256M which is the size of the last segment shared by KASAN 
+shadow mem and vmalloc.
+
+Christophe
 
 
