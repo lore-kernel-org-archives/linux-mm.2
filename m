@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D1BE7490E
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B0DDE7490C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:22:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BAB36B0093; Tue, 23 Dec 2025 23:22:28 -0500 (EST)
+	id 2A8B76B0095; Tue, 23 Dec 2025 23:22:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 426876B0095; Tue, 23 Dec 2025 23:22:28 -0500 (EST)
+	id 1BBFB6B0096; Tue, 23 Dec 2025 23:22:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27F326B0096; Tue, 23 Dec 2025 23:22:28 -0500 (EST)
+	id 0E7136B0098; Tue, 23 Dec 2025 23:22:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1856B6B0093
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:22:28 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9F2913B4D3
+	by kanga.kvack.org (Postfix) with ESMTP id F1FF36B0095
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:22:29 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1E788B66D
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:29 +0000 (UTC)
+X-FDA: 84253068018.22.F88B57A
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CBEE4140007
 	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:27 +0000 (UTC)
-X-FDA: 84253067934.07.2DB6E18
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EBDDF80002
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Top7b3Rc;
-	spf=pass (imf30.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766550146; a=rsa-sha256;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dQA1QOF3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766550147; a=rsa-sha256;
 	cv=none;
-	b=3N/x1kMY8N7v8TjEf6rRZbJmX5phzk6gqMCAip9RgXrwrzXo5aaxVF6MzgVOEto8bOTg5J
-	aTwnQGIULjSShYKZt9PinyXQnUHJE1GawiUeInLYANklpDVl6RZM/Q2RbXYZadIsu9r6Lj
-	+dfIoyEkL2t9bZloh9dsPR9MxM6WOA0=
+	b=Zu41lo1yE985JkoeiBu6edzMt/rbzIqRi5hIK3HjFkRsiqoILZIFHTpwUpN54JH3GTLihZ
+	gNDQjMX2eE7vKZwxwt4QdCDfF/p5LvvDR/CJ0PdjpTu9U/kvo7jyOfQxVYgqgq+mSGSy42
+	arwk3Igvdn4SzoDYeRc68eWHO8ITyjI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Top7b3Rc;
-	spf=pass (imf30.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dQA1QOF3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=shu17az@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766550146;
+	s=arc-20220608; t=1766550147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qAW++Y4fgSGuWCowvvKY4zihTht5dFRLAo1G1kvZ8PA=;
-	b=V4cPZ686XAamDVqwwbqMLnMmYPE7l9AVrr5CrFu4+AsAqkgq7seIUhKEO/dEnLhPPpMDr/
-	x2rtymL9Rtbg+4Z/RdCUkt5rkgJ9HqNv4YV8ntNG5LTf71p10leCYldoBm3/9JCwJVqqIh
-	IJsiEJo/CRVtVC7qk0gpdmizyfEtADU=
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c05d66dbab2so6054313a12.0
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:22:25 -0800 (PST)
+	bh=D8remLMvBFK5RUdUzYsP7LKIRjVVtdklxr8EKcqM/1U=;
+	b=EONFZvCKuyjbKbRKxtiOUqjZAg3a9g0WDGcO2lMPWamGm3OPXV/B2VZIvzsZ+UiKoTJcWB
+	AbqONCSzT+mUn1FqJjzxvGS71ZVuZGTpdnmBwzdRyLPSvvrjIVf4hQpkBxsgZBCpTEC+Ng
+	1pTM1ZYpE/jUsmktu5gP19wwsCqG0Xs=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c2af7d09533so638395a12.1
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:22:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766550145; x=1767154945; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1766550147; x=1767154947; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qAW++Y4fgSGuWCowvvKY4zihTht5dFRLAo1G1kvZ8PA=;
-        b=Top7b3RcwQUX87xlzi+Rk+tjbEIR0bR4XcUB397y3KNtzwzQUtPqZza2AL+oVY57Lg
-         g8xxE8+N6qLXiPxhodBV90dJB/5H7o8r5zNKJ0HXN6DILlp41hWDGuu8Q1++KqCkcyZp
-         kAI/5UoZQPCPZodSO3QDDmt2rS5kw50jXpKWcb8Yq8PbPZMEjUyc7i3W8cibv/BPOwyF
-         McJce6rDjlgUPljQU35+MrGelbJ4R7Qh16AFcWxXDSlS/Ml9mKLLpBnndZsdFt4SuNP6
-         HJrmOQgkTh7siXYmUHqtyvqJe71UfuoUVY4QjRDM6PUfb8izDBCQTfBKRPDeipij69F4
-         Nh9g==
+        bh=D8remLMvBFK5RUdUzYsP7LKIRjVVtdklxr8EKcqM/1U=;
+        b=dQA1QOF3/qKB6kjtRxG+UmsnUdHRPh50IDU8P7NJ3tcG4NfRcMyc/cODejixnwoHlx
+         a8s+y2CaOmmRLsEbQcxAx3DRfEp/oSA3XUdVhE5gWtq/1WIGNJLlPOKkuh8W2xwG/xNK
+         daN/YTGRIP3W6x+ajgl8loM4iL5hk6l+P7gsWHNattjJINqZmqoCJ5D1C2n621cp+V3e
+         7HteAzDzJyK/vRDDqrwWU+nJVgdH1WjRIfs641l0WhpLNcd/t9FW9yTZ7rg4TuL/gcHE
+         9ynk7McgRxBMOfRUUzR7NmSscH2s58hE7EdVan6JzBfKTVC4Ca5Pgc26lx/+6CYqaBJj
+         idug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766550145; x=1767154945;
+        d=1e100.net; s=20230601; t=1766550147; x=1767154947;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qAW++Y4fgSGuWCowvvKY4zihTht5dFRLAo1G1kvZ8PA=;
-        b=l9CH7NZ6NvJDPD0BaNG1TOh/yTzwBGTX2gmHtXlrk/M48ss2PoJ5j4FPe3L+cGUiAy
-         sBW6Ly9PhpPFvQNsgqtGxgVJjiHTT4A7sRHwioHqI5i943BfblJTg6xOWtrefF8jS51Z
-         JnBkgxR7ZeLUUyt7ize5XW874IRH38ao03oTr1EESYt8jnrhievbTWnwLYTpH6ZhsP60
-         9vjQ5D9kXc7LdmbP0oL+zzrSZVJ7S/1Igngust14r5sP0GuncQl97tcPwyJaPAI4dHNI
-         L6XKiGjrFGYUCfa7LcSh+vyem6C94dcfwDVKexQx8vDshB9CA16C9Blqvx/hbWfayJ9e
-         Si/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYPp/i24lAPDgDCPBKUCpUgVe0FxnoG9QMbbcHDrE+lF8Kf5j/RuQyPzxGWTK+6l4A5lu1HDOLqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yydkbrxz/60lVN0Uw9z7wm8groFSq/onirTHrhiap1n2hSuV5cZ
-	/W/TjZN+RJbD5QpRqziqVP680nhsXmQSPA3006t0BRKZp8nX5DfENrnf
-X-Gm-Gg: AY/fxX6Bijd3UcgiloEU4Ja+bYX7GeHJOZn4abHJB4m7YlrBz+HCfunQnGDXp5IyscA
-	aJSDZfx0I6sOJkf/9mFOXahTU3yahJNIZSt/h4pDiq/AEntDt5CMHXI9KIlidtZnREqG/LJMjPh
-	f+zP64J2sPKWWJgbvc8/lTW+FXVPTO7FR9bv1MhzAGzCcnyXEwWtP2OS+2UFMDmv4xj7DELuo/N
-	r21u+k3bsVLsD1KHnJ5MpDZqIT0OtbYkn/84celZPAK7VDB5rEPKL9l0wQWwl26GLkIn0XAJ3zH
-	Pb9nsUSQMGKREkUn9xxLG/qnaefgM6jdvlKERx1Mb+ilC8XlbO4mhhTKWyBl3uYLYwNJBx5AGde
-	bUeyiFe9MJvt3UHIWthjy9M5GfHKjwubNG/bPYRFYzBZfxrs0RDRldgMzyOQLbnMz4H//Wksj/W
-	Ms
-X-Google-Smtp-Source: AGHT+IEu3ypAtOJAXn9xiXQKRtee61CBDqJzBQT9KTWObNvd9b3sJXcWL8HyG3+q6D0Cz6eLFD6TVg==
-X-Received: by 2002:a05:7022:2590:b0:11d:fcb2:3311 with SMTP id a92af1059eb24-121722e32demr13284390c88.27.1766550144772;
-        Tue, 23 Dec 2025 20:22:24 -0800 (PST)
+        bh=D8remLMvBFK5RUdUzYsP7LKIRjVVtdklxr8EKcqM/1U=;
+        b=iQPF1bo2rpQWcDMOl8/MERuth9/CDxf6Z9PUpjqgyy2DIgl+qmsNN1M3cUNIYwyd+1
+         WHmEEKXHbWd6mbpz+okSLlGBA3OiqLM/H4kDZTZJYtsxR65eja1+A8c56D0tA4Gg5EKN
+         MIQ4VfXQcM5EKymBbfrPSDTSYvlLdP4PwQ83a/o3wDzKjKo19+wmPvEj/C3Nu2lFZRm6
+         5BGsfc9s7DiN00fExE2Rtb07zGZ0FeCM6+yq3//J1UmzB5UiZuyIwjnQL6GxAsWg7fLR
+         meBRJJR1f2NzGwsuWDigZJwFEatgotrV1Rbn4eZP+wc2oKviwiDQ6zqlPE6aO69n0CRL
+         OaBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSyNGlv/gBdfK9xn+NR4XqY85d7r3VDRUSOCaZMRHB72jEBNqhUYGnKhOmv2Zw2TwITdkGVSFbgQ==@kvack.org
+X-Gm-Message-State: AOJu0YzfJ64+qxjUdMs09AkLH63IJ61UUsseFw26ihm1G46ABMg8dZpk
+	zpXHbjIIaaUnzJf2f0cCHMPAPylW8hVjTURN9Dva4GjLmknvVXWji8ev
+X-Gm-Gg: AY/fxX79Avbi+HAR+fvhETt8K4SZ/7mLKkVMVsnMf3rj9eD6h0ec2zjtDT1iqzdLEDm
+	nMqpJlvbfZCYjnvuTmkb4q9BvA/riFISZHz6Jcf9FmItwK2B1vU9QaE7WwabPPS4oSGjCcodRLN
+	gkSJYZWTE+dtiUI0ZBIHIMv5g3xkWQJ5bmqnU2ogYY2lDWfPcxUdvhunPo66yKmeP77guXHbp3f
+	JzrTkag75VOh8BQtQeMFKSDmLe6ivEJa7d7GEdvRdv2czxzH/eQrVSmkuvwnvLfw4ALZYQwnptQ
+	nr18X/RLbfGrWjB//q39hk7Kgc6LVWAb4OiWXw9tDog/ZsFqNehX6HOJEqtsXusqUKUXHAEHxEl
+	lpQsCZ+nfE4eK/VsiJWiBDxnQXzEsTlih4Yv4mLronNVxfIFDws4QvaicR6CnXQ8+ON5CJMcgWv
+	Pidg334BphSsyMC0YNBZzdKQ==
+X-Google-Smtp-Source: AGHT+IHfPiFWmZDW4o5w7sYzXHS8vE/zaayVH1U7R9hjLU9hYqPevU+4g14ejv4+rRb+HrXioe9eQQ==
+X-Received: by 2002:a05:7022:2586:b0:119:e56c:18a7 with SMTP id a92af1059eb24-121722b4e90mr16067286c88.15.1766550146638;
+        Tue, 23 Dec 2025 20:22:26 -0800 (PST)
 Received: from dev.. ([208.184.112.130])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm48542031c88.8.2025.12.23.20.22.24
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm48542031c88.8.2025.12.23.20.22.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 20:22:24 -0800 (PST)
+        Tue, 23 Dec 2025 20:22:26 -0800 (PST)
 From: Shu Anzai <shu17az@gmail.com>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -98,22 +98,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Shu Anzai <shu17az@gmail.com>
-Subject: [PATCH v2 4/5] mm/damon/tests/core-kunit: add test cases for multiple regions in damon_test_split_regions_of()
-Date: Wed, 24 Dec 2025 04:21:59 +0000
-Message-ID: <20251224042200.2061847-5-shu17az@gmail.com>
+Subject: [PATCH v2 5/5] mm/damon/tests/core-kunit: remove a redundant test case and add a new test case in damos_test_commit_quota_goal()
+Date: Wed, 24 Dec 2025 04:22:00 +0000
+Message-ID: <20251224042200.2061847-6-shu17az@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251224042200.2061847-1-shu17az@gmail.com>
 References: <20251224042200.2061847-1-shu17az@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EBDDF80002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 5xen9ohi88dc6ze19zowzx4mxmy41z83
-X-HE-Tag: 1766550145-480149
-X-HE-Meta: U2FsdGVkX1+c6Ac8UvFeQ0IHzOuGN+al5JqxsB/rwy23lUwtzYWpKj+9jWssSCoZk7smEDm4D2T+CQPEIJO+BS2clrR40Su2fdhu69FLHpSlJeOUhvAGlMvFEdE9CJzSJ452lyd+hqUJMAtTEeMT2rLVajYZnmCXaGLbXScqo0Z/cWB+xXFs41WvF4V9LnhWbw4C/SqKlcMLM6PWhpOaM4gPMDamQGYQG/wsfShV0HKZIkZvvPVrdkCMakA5xhJ29h2S7atN1kVZqINY8V8rewSpik3+cj7VJiDrkBkfDYYi30eEYTA1s7kAouh9WvU83ItuPWjuJqr9fCzTod1myyyKjoZ/coapzCDuLH7vdcm2vgSZu94VChB75RtbmTFVG2tkciigQctMjiHmRps8l4zJrMURZqdtepPZFI6ZEaFLNvJVymmb+wBvtShSzyumkYsUuLbLJx858qXcwIfmFuJIZlciSz+RPx1JrwrR+ilASHmoyvZiq27mVEL9EWk6TkefwfOPzoXkx89TxqilzvXf98Xbg+cWH3DX3qtQTH4Bc6P/nOrJYF6LpU4fsNPqLRAHls+lXP92OCN/NETZwKM3Rj4RtGyV5gCRhmGMQroZN0wemGKMGi1Y7VEQWaLLtVhIifSxKkUaXNn9IZ4me41hu98s7Yd/Kj2bqTG2jhm+cKKTNlJrC615zOCVnV7FgwiJwodSiNJWqg5FoK+GvDO6AD75hy2kjrylWCS8iUWrbStWgTv1byhhfwQqVSlDmMiDI/fMvGUmKiKNpbdB90XHMT/6r7niPjcoxnQx0VkK19/X5pcoIM5hKwhlI+HOXJLqnsYYIb0mQl6/6vWMzCkSlxooy8q2xaz4K4mMeCQT1XH9bkmxRgDBDe8GLQdvO0Of7iEV/DVG3N7nFhmitFruOga8YQ8Vfnr9f4aPI4qqP6H94SOfftljuGF0XUUnnUko8+pa+goS7u14Ad3
- Hb00ezG8
- uNcPv2UiqklcYxOXTPfxcYUm/C14ZhglzzBcfeT7xMCthEjQXMjkZgLA9CijR15/6p6jRtBFFH8gM5Ase5Kb9YD6jZrViJzUDiDLCeqQgNNRHwfFYhEGOHbH567TlbIMz8hS1sVFh19jbcx4p/Umb84VRCu9+GcDTWgQKiE2HJgMGldZufTAtEseI6b2iYpDD1u/XoeVV1s2yMn6TQ6mw/08Pe2KG/JrqSJfDmNT5Znwe82UPVlmmJ/ksEVmqCAEaAKA0F5rq1+kbLhdNE8vlxVxeGO1nyDc1SeIlH9FvaX4vhpPwJRVkQmi3SgY82VSLMem+QVaTTC5jqVwWrtosIyg77arw+OjEMV6ii4T1ZqnsQmBgfO9Ryqud32QcYoHfK+yQQWHh/8ysJXdpDht7fr3HZouF0N2myZNNSPtnK8xHkahBJWQ/8u35KgkFd4E9gmLs6cyF9LZKZFk=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CBEE4140007
+X-Stat-Signature: b9t48e1faxfaffqf4yt37mzniaexaab6
+X-HE-Tag: 1766550147-844873
+X-HE-Meta: U2FsdGVkX18sYQMu2Xs1nT3DYbtLIeBCqbg4F5PqoH4Gzn4E3hdbwpIUcRa3/Saa2/BK6g2xGx/C5r7fT3qwqsEZ8KGC+BEW7e2O1BXqVdIzzTp066P2WyJEY7gyT9bAWG44JqlLvfgc+iPEpXx23h7K6nMt7NajTV9Ed7dvPFFUznkbn4GYTEe52uZfMA7AF8l2OVV2khwftICxNjoW1PAXSnwmS+i4bmxhB3MzjYSqo+Yzu8xsGOXT0t+FlIKMcBMMaFnLiYuXa6UIfYpCLJhMMlVUnEsd4BGrV3aU+H1VRthwe8eCYLhWPAjBaPE/nPFJV0ZK/Fes3xVv1BHXJsQufJ3aGQYLByDWmkpb51HyhyfItyOhf/OIdAjyejasiZ6B3J0pSWXytO1g3OX5tB4jpV5QkOahTrXhSsu0oGu65/IX/3iMOrdrIkRMozrfQOXjeJ1IDQqtByQOgak3MJISGgyffnRCUqzgsqRtSCE9A3LobbexWt1pw84Mbti4XtKXtPzvZb6PCRqVap70T65GzREE9Lxz7hZlUL8rH7qm44QyQJHqfkKZ7jxp2vQYXuIIAHZ9bHDX3mNbqnlYFurYWxQmvdKDMypN8NOeYxiUb0CzNTCaBGAg3udMgpYFWqp5OEGooPhgBoBUS7r1tbvc3BPAdctIHxjmHXgas5Z7gwURT3TJ3I1dC+pClHkIO0ppnz4D9QJQLtk7cvrW4h5oMRiY+/LwXs2vK3NdoU1wSN36qeV3mMfS9q/zLykY/K/Qco1ibSHuKORWOx5PLaykwCxCHT6jpgCSjrPBePNOdw6g6Je5J5quGpYHtLpd2XpGCSDYaAPCa1q9s2PJdcywcp/ng/x+ALlnEukS9tydYnHYFigv16qORRWjVN7ilSWluH/ct1FR3EHY1jH1sEINuC7umf4+vxAiTRzDahRptS1ns7pGJ3F5kVyaNwmHQMf2luH4+f0isA+1SEZ
+ zUyZbZit
+ 6eo8hrmjnRQ8340AyPBBQb7n8pKj3KoMjbVYSljec8oi2R42eahk22j6YQARLHydPk+yaBNWSC+j7DNWo/PRPJzV0Xl/j5DlCH6hNyTlL+jBbjWIbYipjWqbERnLcNhb0rYUgqOUfsE/NfFfCGfDpR9rOuXyuBZrwFCN0sFtVxPBTcAbAG1+MK4gjVzuHrWrf4bEA4G5c3wLDp7F7lcD2HdYXRKic+hCTbGQC4H4k4CKm+gwSYVLke8p+lUye2PnNuBstwnIg6eM3dRfEMFES21BRXEwvBiHm7qxcZo0sEhUdD6LCso3kO3hJxWxkcfm0RRMQbXfSHx5KjRnN+Avyefi4DQNgG9MWpMWYMl99hu8kvbtbl0kfnto+LPMoxpvw8zJMYhuwSKJHWkSiDVRqpF6vOYyuKnsHs0dj469yOssvTirgTBUf42KnwjBtRxUm+zSd/vnGwbeR6dI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,53 +122,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend damon_test_split_regions_of() to verify that it correctly handles 
-multiple regions with various 'min_sz_region'.
+Remove a redundant test case from damos_test_commit_quota_goal() 
+as it is already covered. Instead, add a new test for 
+DAMOS_QUOTA_SOME_MEM_PSI_US, which was previously not tested.
 
 Signed-off-by: Shu Anzai <shu17az@gmail.com>
 ---
- mm/damon/tests/core-kunit.h | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ mm/damon/tests/core-kunit.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 2eb6f41635a8..36622a2c11f1 100644
+index 36622a2c11f1..4bf1d172436b 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -275,6 +275,9 @@ static void damon_test_split_regions_of(struct kunit *test)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
-+	unsigned long sa[] = {0, 300, 500};
-+	unsigned long ea[] = {220, 400, 700};
-+	int i;
- 
- 	t = damon_new_target();
- 	if (!t)
-@@ -301,6 +304,24 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	damon_split_regions_of(t, 4, 1);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
- 	damon_free_target(t);
-+
-+	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "third target alloc fail");
-+	for (i = 0; i < ARRAY_SIZE(sa); i++) {
-+		r = damon_new_region(sa[i], ea[i]);
-+		if (!r) {
-+			damon_free_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
-+		damon_add_region(r, t);
-+	}
-+	damon_split_regions_of(t, 4, 5);
-+	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 12u);
-+	damon_for_each_region(r, t) {
-+		KUNIT_EXPECT_GE(test, damon_sz_region(r) % 5ul, 0ul);
-+	}
-+	damon_free_target(t);
+@@ -601,9 +601,10 @@ static void damos_test_commit_quota_goal(struct kunit *test)
+ 			});
+ 	damos_test_commit_quota_goal_for(test, &dst,
+ 			&(struct damos_quota_goal) {
+-			.metric = DAMOS_QUOTA_USER_INPUT,
+-			.target_value = 789,
+-			.current_value = 12,
++			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
++			.target_value = 234,
++			.current_value = 345,
++			.last_psi_total = 567,
+ 			});
  }
  
- static void damon_test_ops_registration(struct kunit *test)
 -- 
 2.43.0
 
