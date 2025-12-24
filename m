@@ -4,85 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8579E7545C
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 14:11:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6AEFE7545C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 14:13:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2F46B008C; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
+	id 271C76B00BE; Wed, 24 Dec 2025 09:13:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0EE6B00A0; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
+	id 21FA16B00C0; Wed, 24 Dec 2025 09:13:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D04F6B00A5; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
+	id 102016B00C1; Wed, 24 Dec 2025 09:13:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C6D06B008C
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:11:31 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B72BF13191
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:11:30 +0000 (UTC)
-X-FDA: 84254552340.23.89D8D3D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F1F5240014
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:11:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766585489; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F2E546B00BE
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:13:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ADB8E13A085
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:13:33 +0000 (UTC)
+X-FDA: 84254557506.06.FA950B5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A543116000C
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 14:13:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FHYGOWuZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766585611; a=rsa-sha256;
 	cv=none;
-	b=EE40p5/1r1xp5JHmXs0TZGEBL838/V62JOymjMVG4+xG3B/ZiXiwqC3wrVJV2F8ExJ18T5
-	H9O1C4VDh9bByl92conNL6yV3ILRN2CnS+9WXikG1s0KB0Eu/0orHIrsFX+Loa9Zpd4/VK
-	FfSc4kzVCok5vjsRRZlRg5jKPpJ6YA0=
+	b=ZaJuiMmq1sn7k6ocrMguZdEJse1Cx5rIf+WA5cI1PKWCYGWsOLMNN6NxKyaIcyjxsTssHu
+	cTmO7T4M0DVTndyPINXsA0P06Wo0I8WvNXqMaOJnzSmoeKu1TRxLkVGEbblF3wT36yrT9t
+	XuTQ4N8+4b/njN0CJcgaIH58dWgf7m0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FHYGOWuZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766585489;
+	s=arc-20220608; t=1766585611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=engvTENbTkwyMwShxwwH2edffyeaZ701mnBGWNltMW8=;
-	b=ccjlfkb3sFU6KN0NiK9/K8QiS+VxY5ie0oN58z8Q5AvHlBHewkgk2m6J6zcyb0hRQVmr0u
-	HdRmrIGCrBt3pg5Vq1KMUkdyOJBNEU9jAPYRH6AKkAfZhkQHI8xWni4U8gzqIOWhoYcptc
-	80gq6BeKnbtjkv5aA5hJEGHJztuvImk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0109C1424;
-	Wed, 24 Dec 2025 06:11:21 -0800 (PST)
-Received: from [10.57.93.190] (unknown [10.57.93.190])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 763F53F5A1;
-	Wed, 24 Dec 2025 06:11:25 -0800 (PST)
-Message-ID: <20821c02-e16b-4e5f-95b0-b3e8b9192117@arm.com>
-Date: Wed, 24 Dec 2025 14:11:24 +0000
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kzkA9M7rnT/5r2kESPfREb4wj7Ej8XVfsji/ba3gWW0=;
+	b=J1/R4Jff/Pj0IOyBk1zunMVWrKGSvlt+w/GnvHZIgKXl1aUaSQDQ79CVauqvNFZNxvA96L
+	rXWMdOwyajUHA6PzYD1yi9Zs7oLcF+a8D3MiiUTqUCfvOGhtldghowYr5ANPtqlxv6qXQ6
+	x1k2bsGk1HSnBVYTHXW+gZ/Ho9dmwh0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3037860010;
+	Wed, 24 Dec 2025 14:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4B7C4CEFB;
+	Wed, 24 Dec 2025 14:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766585610;
+	bh=x8pJJIM/R06HelItOz0mnR+O24PLB75z92hRRpCFFeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FHYGOWuZptBIcppYTlXBn4sW3MVXb73WxXQBc1w0Uz2XM1bPDLLjN9Jus9pa/qafZ
+	 O7IYlKUgSP6XtbxOkd+30wV073htRop2HRncbeI29eS6/kKtddadTdk6rYpmxTa8M9
+	 FK11xawVfOsKteVVw8OR/8sQad8LmfylBKi9a8ppmr9LJ/9c87eUsG31m53U5FCk2z
+	 zn6KzNGK5U8vvEhNl8hR6PzwBlrmEqfgD1myx8QukTR6kMyB0U9j2qwgB0lK0FVEiQ
+	 OH37k7/7YV1F+DMbXreI2CHByOpPInE6s/6qXsD4PCSYP/exWabMeyBcMr17U1kmrB
+	 h+el++vo8GjGA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 834B7F40068;
+	Wed, 24 Dec 2025 09:13:29 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 24 Dec 2025 09:13:29 -0500
+X-ME-Sender: <xms:CfVLac-XX2AxodhMm2mUM5fRSkfYO3sjew5HQLb5H_m7r92kjH_Glw>
+    <xme:CfVLaQG8Kn4K6xiF50TYZCxH_2Uz-uASo_yTsKOi9vkkLfCCYAshPunSctm6b8LvI
+    MgLIUuefwwwIiID7se007ajPfGyu0zELphyntpfFGm-G4OHGgegUqA>
+X-ME-Received: <xmr:CfVLabb4t3iCERwBSA2ye8Xqd2k23DDo9Y_G32SgQqovU6hLGfVGUOwoj8tzJg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeivdeludcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgestheksfdttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepvddufeetkedvheektdefhfefjeeujeejtdejuedufefhveekkeeffeetvedvffek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmuhgthhhunhdrsh
+    honhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggr
+    ugdrohhrghdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhrtghpth
+    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvsggrsghkrgesshhu
+    shgvrdgtiidprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvg
+    drtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegs
+    hhgvsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:CfVLaUOx-z6rz2cOkZTXqlMD7SVzr_JasznpUOQR_W4nbGIocrSoPw>
+    <xmx:CfVLacyW2XttqkD_f7r3SSyY329K9l__Gd6JRd2zpul-LSdyEFzl1A>
+    <xmx:CfVLadCmlcOXe_qvSVLcH65ZUWmmT7zCnJ_DPdjzrVIXPYfb5aO7Og>
+    <xmx:CfVLad6weKrosgU6y7QTtpOYp-LbHLKKriDGpJvsEcGMVH2be6LVnA>
+    <xmx:CfVLaTIdV2jFWK8oq9ccPbQ88T8QPugBXrDk1urbA8innEyGNP2Nr0Z3>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Dec 2025 09:13:28 -0500 (EST)
+Date: Wed, 24 Dec 2025 14:13:27 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, 
+	Matthew Wilcox <willy@infradead.org>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+Message-ID: <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+ <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+ <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/5] mm: rmap: support batched unmapping for file large
- folios
-Content-Language: en-GB
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
- <d869ae45a7be322f342ace62ffcdd4b47f4154fc.1766455378.git.baolin.wang@linux.alibaba.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <d869ae45a7be322f342ace62ffcdd4b47f4154fc.1766455378.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F1F5240014
-X-Stat-Signature: dhs77bt8w3cn5y957n7bes739uzcz8ac
-X-HE-Tag: 1766585488-661297
-X-HE-Meta: U2FsdGVkX1/Vkq7PsYsw6ejBNPPK3o2hizMKJn9gVrWbjM2RMdL4KVxJtpuhlOwSlbfseS+M9RE6I0Uil552l57Mgkp2XEmO+tinXIa9sAYXI/TPlO15zXkgehjKoy4vKqtkKuok91iQLo7OFD4CAl3X8VR9KvT/22LdkHgaw/KAyilY+Jn7ZU6HuPx3L90lfk8RHttl/LIg/1E3FJYBfj4OIBJPjRFAXIA4vk2Gvn1ODt9yeQPqywe7FVujvfxobDLfwbynBpFdr2FTDbLIgOnR5Mt8ePQpGRO88Xm1t/TkEtX2cxViPIIFLoXogfvuWPbY6Zs20+L7dihwaVruiyj9GO+4RrWjXw1pPNCb4YgN0Gl+pN2QXkEA9vNRqBCYtbOmkYRBnnZ4TTunCzrgZFTh1RBpwMwz99aikN4dzoMf4kgpwot17IWy45Z8C0gkh/+ZzUow+HUtHJnP3+LtrX2SOE/yMMGMLSqe/zPMqCRV1ADn/gMUK+eFgI/ESTykidzanMume9BZ0rZySY3v2HFRp6S2l2DJRXx0zsn8oCuoY1l2jfnzNtXjDXEMFXtQOrD+wCUhkUr/ALDoFUXK0v9M/HvnwyM5bvSgNnW4LUSDEIuAErZYJNCGvqPjkYREYcvQS2GK5Ygtl+Guu2dFSGyKGgGjLRWEbvOrkECl2TP/Is1qy6pkGT7RhBQbTYvahZnXftmIutGwH6aZjG/krVZcusWhTWAY4XH0gAuOrTVvkCv0Nm/S4qdNqV0hg5kM2Ke5Ppmnd8sn89H91qv8dWm5FAFNyRN7nK2bAJ+rWlUJOhUw2O1DZkwGCMxk07F9fYv1E3dWGdfwAhPnF+YYEE1dRoaJNke5aP/0GE47g5kbcVyKnRoZhhT//4EH2ttLv+urPxSsJ3R03l+ADsXPR4d+LZ6dxnSMr6jqYaiKmlzshYvTfjOMEBCLDyYRYhYPR3mathFXpuDK6f0XS9R
- VPE9F4di
- t/3PiCB5qHyDanQ36+7it4QMGZevYc83cI8ragX1HSd6hV18/skt1jNrX1X6rqo2jroeo41en46VveJ1xzNTn3Iqme0/ECLzE06J644VuFnXM94qkhmnmtjAu50RkhEpZ9r9CHcjA+HHtuP/YGxQyxD0x1zyradaoKanmAKXxV9cgM54rXcKYaaoqZbueW9nIWi8DUuz7Qg8gFbDpYI43jxfUuc1YJpq6G/bWg5qYj29wvmcsbjvkMMSCfvoXq+QtbDLvOU8y+ocNYVH9O6Z8uJOH1w==
+X-Rspamd-Queue-Id: A543116000C
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 85fsddpgw5mxc6krik9xou4mjskucpdr
+X-HE-Tag: 1766585611-18164
+X-HE-Meta: U2FsdGVkX1/JbD/Szf5kMUlipwWJWsYcBaX70sraa/hyWKfOZbuGwbGHrX3YAc0m/ntifo+HIeSnX2GYxi3DYBTQmWrA/l/OuJQHzPsnnXyIbDgvm1KQgewwjEcmhKkmxDy0DhoBm3OWSgMcz1JEKPgHu981xPjNVkzmK3LqkgLwMdFgPTXeEwMBE0xdwZ3XyKr22MJm8JUpaIT1JKyUZL+jvFIAX0i2Oot7Vpxr8/kTJoLT4yOnXGhhyHEFRHv/Mqo+qHStOumBuPEVkrJ42kGMERiy1BHwTE4ha0ZIs4EHB6vYCBjXdZr5Ho20NegFXn71JaEwKpfi0afK7VOfU8Oq+QmwyoT0JfIwbiqwSpvNZBrlbB2WR7EFeEtjjbX7WYNkxS+WYajSRLqhGUwdY0Qv3Dc3JMnVEAbGnbQaEDf3MfOsjPlKwqsOaKEstk54bpN+oG00PXHwvlTtxa6tKyLwoh764sEzW6m6t6trmg1nyizy3iyjMByqGpE5aiFJNEjbEIZl1LLj3c6IBBq4Axm9oTu6L1n2MeORXh/hIHH9KqR8yqZB20cNl60S7lG3Gs6329vPQ38xAEhjv5hpu+OkRIbY5O8rJZhdzUQp3xMigxRNifY71PwHgnfw7DpRa5ZoUMSf+CMS7fEeIFm/sS25ePVKRuFjs546AhNKtGzFbKBzzwMoNLznJcTv9NWJzYtPR+vUZumIQujQOqr0rNv9Utsi2IzQcv3Qmei3rkYI1CPFdtHBMjBxYzAYeslq8BUn8RplFqL+FKs3wrMRm9sjFXnLz/72J2523mlkXaisyiEGYzOFFznNVq9lT5djrazZXDlzyfES8pHEfD02YJ0aLYxAa+It6dCXODtJt3JCB9quq6Og1m9F+Ob3k2yyLTMxqXu8Pper0KWjyXDETzXKTekrn34j4EVq7qG08vhWfHMoWA/iDrDvng07Z1ueDrSr+RkJFxfPE3v+smF
+ ZXbOZSc5
+ wwrCZKmIzbOonlDWr3eBUPVfvCC42V9Lv3Z3ECtLLdibdA/ALJ1Fykn83/mbSgxbWGESTXLF0xFiJIC9b9/ntgrz4AhYY+r/ET46xA6ZlK8ZcRYI9LsZpi/+8A4c6I1yGj0MEAihWS5CPacolANXakLc2Y4SKV9Bb381c5TESFyCnA22YZNvPfoaU/Mk005B/2yUwdyBzVeXg8pofW8lTINWUviTDcClM5l7kgScZwe6A+nmYu08vsWVpy2B+BQ2Xjld+yOuC7Jeh93qWznfxeDeqjdUvuSJOdI5w4yFNGMI067HcDXci+Ukqea+vKE45v/WaDGSe4lShskI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,67 +136,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23/12/2025 05:48, Baolin Wang wrote:
-> Similar to folio_referenced_one(), we can apply batched unmapping for file
-> large folios to optimize the performance of file folios reclamation.
+On Tue, Dec 23, 2025 at 10:38:26AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/22/25 15:55, Muchun Song wrote:
+> > 
+> > 
+> > > On Dec 22, 2025, at 22:18, David Hildenbrand (Red Hat) <david@kernel.org> wrote:
+> > > 
+> > > ﻿On 12/22/25 15:02, Kiryl Shutsemau wrote:
+> > > > > On Mon, Dec 22, 2025 at 04:34:40PM +0800, Muchun Song wrote:
+> > > > > 
+> > > > > 
+> > > > > On 2025/12/18 23:09, Kiryl Shutsemau wrote:
+> > > > > > The upcoming changes in compound_head() require memmap to be naturally
+> > > > > > aligned to the maximum folio size.
+> > > > > > 
+> > > > > > Add a warning if it is not.
+> > > > > > 
+> > > > > > A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
+> > > > > > kernel is still likely to be functional if this strict check fails.
+> > > > > 
+> > > > > Different architectures default to 2 MB alignment (mainly to
+> > > > > enable huge mappings), which only accommodates folios up to
+> > > > > 128 MB. Yet 1 GB huge pages are still fairly common, so
+> > > > > validating 16 GB (MAX_FOLIO_SIZE) alignment seems likely to
+> > > > > miss the most frequent case.
+> > > > I don't follow. 16 GB check is more strict that anything smaller.
+> > > > How can it miss the most frequent case?
+> > > > > I’m concerned that this might plant a hidden time bomb: it
+> > > > > could detonate at any moment in later code, silently triggering
+> > > > > memory corruption or similar failures. Therefore, I don’t
+> > > > > think a WARNING is a good choice.
+> > > > We can upgrade it BUG_ON(), but I want to understand your logic here
+> > > > first.
+> > > 
+> > > Definitely no BUG_ON(). I would assume this is something we would find early during testing, so even a VM_WARN_ON_ONCE() should be good enough?
+> > > 
+> > > This smells like a possible problem, though, as soon as some architecture wants to increase the folio size. What would be the expected step to ensure the alignment is done properly?
+> > > 
+> > > But OTOH, as I raised Willy's work will make all of that here obsolete either way, so maybe not worth worrying about that case too much,
+> > 
+> > Hi David,
+> > 
 > 
-> Barry previously implemented batched unmapping for lazyfree anonymous large
-> folios[1] and did not further optimize anonymous large folios or file-backed
-> large folios at that stage. As for file-backed large folios, the batched
-> unmapping support is relatively straightforward, as we only need to clear
-> the consecutive (present) PTE entries for file-backed large folios.
+> Hi! :)
 > 
-> Performance testing:
-> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
-> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
-> on my X86 machine) with this patch.
+> > I hope you're doing well. I must admit I have limited knowledge of Willy's work, and I was wondering if you might be kind enough to share any publicly available links where I could learn more about the future direction of this project. I would be truly grateful for your guidance.
+> > Thank you very much in advance.
 > 
-> W/o patch:
-> real    0m1.018s
-> user    0m0.000s
-> sys     0m1.018s
+> There is some information to be had at [1], but more at [2]. Take a look at
+> [2] in "After those projects are complete - Then we can shrink struct page
+> to 32 bytes:"
 > 
-> W/ patch:
-> real	0m0.249s
-> user	0m0.000s
-> sys	0m0.249s
+> In essence, all pages (belonging to a memdesc) will have a "memdesc" pointer
+> (that replaces the compound_head pointer).
 > 
-> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
-> Acked-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> "Then we make page->compound_head point to the dynamically allocated memdesc
+> rather than the first page. Then we can transition to the above layout. "
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+I am not sure I understand how it is going to work.
 
-> ---
->  mm/rmap.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+32-byte layout indicates that flags will stay in the statically
+allocated part, but most (all?) flags are in the head page and we would
+need a way to redirect from tail to head in the statically allocated
+pages.
+
+> The "memdesc" could be a pointer to a "struct folio" that is allocated from
+> the slab.
 > 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index a0fc05f5966f..7482121d4e92 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1862,9 +1862,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->  	end_addr = pmd_addr_end(addr, vma->vm_end);
->  	max_nr = (end_addr - addr) >> PAGE_SHIFT;
->  
-> -	/* We only support lazyfree batching for now ... */
-> -	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
-> +	/* We only support lazyfree or file folios batching for now ... */
-> +	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->  		return 1;
-> +
->  	if (pte_unused(pte))
->  		return 1;
->  
-> @@ -2230,7 +2231,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  			 *
->  			 * See Documentation/mm/mmu_notifier.rst
->  			 */
-> -			dec_mm_counter(mm, mm_counter_file(folio));
-> +			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
->  		}
->  discard:
->  		if (unlikely(folio_test_hugetlb(folio))) {
+> So in the new memdesc world, all pages part of a folio will point at the
+> allocated "struct folio", not the head page where "struct folio" currently
+> overlays "struct page".
+> 
+> That would mean that the proposal in this patch set will have to be reverted
+> again.
+> 
+> 
+> At LPC, Willy said that he wants to have something out there in the first
+> half of 2026.
 
+Okay, seems ambitious to me.
+
+Last time I asked, we had no idea how much performance would additional
+indirection cost us. Do we have a clue?
+
+I like memdesc idea, but indirection cost always bothered me.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
