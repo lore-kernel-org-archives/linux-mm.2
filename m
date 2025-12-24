@@ -4,117 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B1AE74ADE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 07:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1338E74ADE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 07:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A450E6B0096; Wed, 24 Dec 2025 02:45:49 -0500 (EST)
+	id 0CF6C6B0005; Wed, 24 Dec 2025 02:49:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 916A46B0098; Wed, 24 Dec 2025 02:45:49 -0500 (EST)
+	id 0A7E06B0088; Wed, 24 Dec 2025 02:49:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DB176B0099; Wed, 24 Dec 2025 02:45:49 -0500 (EST)
+	id EE73A6B0099; Wed, 24 Dec 2025 02:49:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 665FB6B0096
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 02:45:49 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3493859993
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:45:49 +0000 (UTC)
-X-FDA: 84253580418.16.758FFFB
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B987D16000D
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:45:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766562347; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DAE9E6B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 02:49:30 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACC28133F4
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:49:30 +0000 (UTC)
+X-FDA: 84253589700.30.9504826
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3AB561A000B
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:49:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CGbaVs09;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766562568; a=rsa-sha256;
 	cv=none;
-	b=iYCXnydj9L64lLjzVY8BcbI2JY0X5bzPUrN7IyaSwW7YPllfjDQbvPWccWeyKjsKXc47mi
-	6yUItVbTx7hXRQOHkOUMGynTM/VvuoZTekHd38FXnAy2tm0wfmgTCE6WS/ZKHOUNr6HWvH
-	w5rPM540ufJ6OCZ7rORqMxcFCYnrQT4=
+	b=Z6pe1L8ZL9pAO6jO/D/MPI2fHb+A3o481hnh+rESNhiNKLnKkHuKwKnQN672CZ0VQVAiaU
+	1fuzggNgFwa8OnmaUdk2pRohbTlltrOoi6//0TbTholgNkLshOFDRzWldHFepyxZjwTOjf
+	TPxDPR62vt7WcjcZNv1uCIG8SFIGHF4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CGbaVs09;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766562347;
+	s=arc-20220608; t=1766562568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oVla/pBiCWthS9fsALraBzF7XniXml7SQm1x2wkcLbM=;
-	b=XYszRQignJumXtdkUqvM2zOjXIzNvZuQdaHTtBsFgxYnSCcOe1CUtHWs6OLLffnGLKI4hj
-	fbbTPiE1coiyJ+wWoe36IhGPkzjcDvwWTHApVFAYX13IzqIf2JAW8Qv0TIRvZFpoPJhm/W
-	OZgPH0NlQqrDTyP8j76w5rmAhpvSiUI=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dbkRr6HWFzYQtpZ
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 15:44:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 352F540590
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 15:45:35 +0800 (CST)
-Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP4 (Coremail) with SMTP id gCh0CgA3l_cMmktp9pcvBQ--.63051S8;
-	Wed, 24 Dec 2025 15:45:35 +0800 (CST)
-From: Chen Ridong <chenridong@huaweicloud.com>
-To: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com,
-	mkoutny@suse.com
-Cc: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	lujialin4@huawei.com,
-	chenridong@huaweicloud.com
-Subject: [PATCH -next v2 6/7] mm/mglru: combine shrink_many into shrink_node_memcgs
-Date: Wed, 24 Dec 2025 07:30:31 +0000
-Message-Id: <20251224073032.161911-7-chenridong@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251224073032.161911-1-chenridong@huaweicloud.com>
-References: <20251224073032.161911-1-chenridong@huaweicloud.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h0/Sg9vEcVPykAL4iwpmTNn0DtmSkFDaeo8PJsZs1/M=;
+	b=TU2RseYykcY5D67Bj5py8jNTq1MazIzKC4fUJwuF7jl/NqehQZDNdoXf+g67wfzDcpB2B0
+	u3MoMP87i5pTb6qV8PbaLoezG3AtxkyAkl6jDfGPL4PqPNTY+77W3Ov4LoVQJlPv4iy9Gj
+	8IJB5RSegx5RavSSTS813o3QgRDBgLk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766562564; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=h0/Sg9vEcVPykAL4iwpmTNn0DtmSkFDaeo8PJsZs1/M=;
+	b=CGbaVs09K2AqzUrE1mpWGcjItOfE9O35lYvYtCAI5o97lFvSPvAyq3MLgoRQ9Ae6oereBiXsfWssLGjYzKUaHPBI6jsH3gS04t8gFzUlfyZ/WmZsN37nMq1kVa+6dE8l4PblyTnLMX84qffPy2/RFc9QE8TVLP4QvoETph0oIE8=
+Received: from 30.221.132.102(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvaN3qJ_1766562562 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Dec 2025 15:49:23 +0800
+Message-ID: <db72933f-cda7-4196-8e54-73cbefbf1a26@linux.alibaba.com>
+Date: Wed, 24 Dec 2025 15:49:21 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 2/5] arm64: add support for ARCH_HAS_COPY_MC
+To: Tong Tiangen <tongtiangen@huawei.com>, Mark Rutland
+ <mark.rutland@arm.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, James Morse
+ <james.morse@arm.com>, Robin Murphy <robin.murphy@arm.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
+ Guohanjun <guohanjun@huawei.com>
+References: <20241209024257.3618492-1-tongtiangen@huawei.com>
+ <20241209024257.3618492-3-tongtiangen@huawei.com>
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+In-Reply-To: <20241209024257.3618492-3-tongtiangen@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgA3l_cMmktp9pcvBQ--.63051S8
-X-Coremail-Antispam: 1UD129KBjvJXoWxGFyDGw1fGFW5ArW8CF4fGrg_yoWrXFWUpF
-	ZxJry7ZayrAFsIgw13ta17ua4Skw48GrW3Ary8J3WxCr1Sqa4rGa42kryxCFy5CF95urnx
-	Zr909w1UWw4jvF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
-	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
-	IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
-	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
-	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
-	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
-	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI
-	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
-	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
-	daVFxhVjvjDU0xZFpf9x0pRQJ5wUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B987D16000D
-X-Stat-Signature: 4tsz368dxznwof1pe19qgjnrh9saei5n
+X-Rspamd-Queue-Id: 3AB561A000B
+X-Stat-Signature: h6yt8g5o4ma4noc74woprzr7wcdo67s5
 X-Rspam-User: 
-X-HE-Tag: 1766562346-392374
-X-HE-Meta: U2FsdGVkX1/4KwVc5lzeVSqO6ffunH+u5mMUI5LThfEFdSboksQwAe+xMSHUfqIVGUkAA0y6ojSEFZWzqkFmDfL6lW35ZT4albwZGTn79qrWcBa+BLMoe5z+ExSniWfwPbjbdRmtLdAICL00OcE5odyTJiBUvpQkfjXDhOdoxUpGO0AMiQuLF7Uz7cBYIit0mZdOp7tZvvaxtZgHXxNqRXf4IORc3pYDwxhqr5EediR+WMC5Gt5kAGC5CnIYTKs0/zq1FOf/N6N+pU3xTtlUQ7rzyBZXZb5t3RnwJB2mgyJEelMykrW/77xBBib48p6KYN1B+EVxjAdfSpKVa61QtXrbuJ+dtXrPK6FcQznQwhEtDuB7NYdSDcOVNg5qRucKUZD9sGvWt81UfHX/ssndeIVjWfSHs1ahl8bYeKKeOVE2t0OeNV6R1Nz8iPUijpfOr6moj2ud6wZfXIrX44SCOHSnQOCDRqVAmGXbhKjlh8s5k5LPbMgX4Yr1lKqtl6IDoGGiwDFGOZAidb12GXdVHNqw4WobU0MB/jcyB9k0R5kWMBDG8pI5QkRH7QOBcto5OJyuq8qjw1iYSpawI19GAyxs8fK2di3Z4mLBzBDYcNBPTrFbmcyfh2C2u3IQ79Uc7TH5F5WEvttOodU5LzBOex+ZExeGTSmz0r9MSv3LB/odME7D/zsRWPloLn9BsLUaNAlu/sUXyTN3m49udeHMiTcbPRZ0uK8qTGTaXchSxrbAWczM7adck99JNvyOyFdgO6BamHrFfwV9BvvZ8uwOC3uhGcTKt6K//6yxn+4V8za5zMhin1cAlnv5k8zUiBMDq+m0dN7Bmo+D/M2E3F6DEsKu8MNMeuN6wRHnppis1cdaUIjL9kybDOcph9v8KATL8OC6R9oG2fYIz+9epCmN32n363MVnNQy+AF9BWJE+ILkeLCH3oA9mEvotfNboWix0QK2JkWtqF4qwm+hl69
- AOMXNQNO
- x0K7SFr1vM26ASuOXDAnJ5UUEU/h04MICebiWCP64ev1x82W89tCSRSgkbg1eRb3yuT340LRXOSN6AqfebDDhmccmMENu02NNrdDo6Mmj8TSADLPyMS1XegOQR1Wvp2uCi8fDG6ghsy2uEXKoT8gUYNWlxY1Lw9TYPTEz6oxJWXcFUzegDOA1Bd927A==
+X-HE-Tag: 1766562566-593450
+X-HE-Meta: U2FsdGVkX18FF/htIBLTFTa09DA+1kWvftEp0I7aGoESIrIhyxONI42bLBrU6NRwi/1uMasrdQZj6y9tCN7m4ey1wi8YINyJPbvzXEArYZh3SxyfmFijI7Kr1YZ+PhKFpSLEp2r6VD/3AGxMrspgSpobbA+s3JlA3K0tsTV8opZws1uvJ3r/WJAwRS5n7SuMbTOfsPbeIUe11DyW707GBYtKkzMhJwr+rfyZN8xNILjp+LcyZlN3kURFiexqj5vw6nBQXes6DhjDD31hjI8fRBqP1sDcgTH82XfuGjrULxZAhv6z28uPBVcSAbDO263j4aTWcX3ne1p/qzBaxusf7LsIp4X2WiJlNeXQFgqjWptdWwEIjNBJqfDCVzlRDZRqL1KqO9lOlolZ8ssSrxpHB6vOYrNxwlm55BpYVv5K/s9u9liYReoLLybnu/LMSgP+Irzb2wMEHtFKG0PV0p875RTGJKsUB3HrCTOUQXMNFYD8JyVKUJ5MbQxwLPDvZXN1kMyfrVF3myrs/t3G+5E/hzkt/1d6HWxKQLoNN+1jhFB+01AI5LrOal3tPGWFzDxDjIGKsmUGW7Ijljkl1tNpMn1vLWO87+iWXV0JWQeqwc2Vn+ZX2X9gB8CZJf5nrFYTwq4qWqlp8zNq/D8TM6aIpUoD6rCavaqXSfUQlXg5PA6PJvVzmGjuu2UO5kPBlae4qYGwMXOxiRIuBF6RftIDLKhWCm1tB7hLHXKcl2S4+tH2KGhJvxE2nvvlb8gLRBY48yJm1cyIWnIhjLrUZzVsrOVkdP95MpHl+tKcS7raOkC3eVC6+fcu5Iee0v+urmDX8BHx4MopuAJwDKrB2CLPwWL4VKoG1eucKcfFf3NbINgCvbMvO0wJ4fylHpu7csodFHQ/8ggnM0YJN5zkPXvYhkxbDG0Affyn0Eq+IzWRmlerVu2EwN61AxXZoGRitp0WkLvFJDqrn2Oq7WEevHN
+ EU/lDmDS
+ wHIwZBLVFxw8O82ndrAbwbxIeCeUGWJ33CLPtrHSe9jfdUa3YOutR3n5sPBdgLbYk8PvSokcav9i1+d3XN3YMDBCRDkImvIY7bSHgYKqZBdp4ZMLwU6CzSXgww5mPSPA6eBTfEmLMATMGz6UUd2t7eTb4fa5vGow+j2KJPTUUOb7xz2x6yqblD6xBj13i+aDoF87Di576m5ICXsxQXbHvevPg+lpSK6LPo8t5J2H2Gzv14tS72n+5LK6Ln/Bof9L/+KTjgjsRX5tsFS+YMARKIepDmavNtmYKJxPMaJqkFP3OBnlYqh14/bthqx37NiSR2O5Dv4/2OD0PcOqBgcNdb73YVlUE86BGDl99nWzQnMSvN+p/5BnsjtvQCWXYJ2czkQoI5LwPtR2AXQtfr08rpsOyLNznfXBERUSSijuaR7CElIm3oZbqJoBcMdZ4TD7NMGGC91fRlHT5RfVDwfql2rJlsZK4rWL7E6iioJ7qIEEXB9qkkOabLhh6RQGqKoFpUgdM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,126 +106,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Ridong <chenridong@huawei.com>
+Hi Tong:
 
-This patch adds the lru_gen_should_abort_scan check to shrink_node_memcgs
-(which is only meaningful for gen-LRU root reclaim). After this change,
-shrink_node_memcgs can be used directly instead of shrink_many, allowing
-shrink_many to be safely removed.
+I applied this path on 6.18 and tested on Kunpeng920, system still alive 
+when i inject a error in copy from user context, but I found that user 
+application receive a SIGBUS, this action is different with x86 machine 
+which return -EFAULT rather than send SIGBUS.
 
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
----
- mm/vmscan.c | 60 +++++++++++------------------------------------------
- 1 file changed, 12 insertions(+), 48 deletions(-)
+I added a patch to fix this behavior[0]. Feel free to incorporate it 
+into your series, or I can send it as a formal follow-up patch, 
+whichever you prefer.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 3a266f6456af..1d13ce7338b4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4777,45 +4777,6 @@ static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	flush_reclaim_state(sc);
- }
- 
--static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
--{
--	struct mem_cgroup *target_memcg = sc->target_mem_cgroup;
--	struct mem_cgroup_reclaim_cookie reclaim = {
--		.pgdat = pgdat,
--	};
--	struct mem_cgroup_reclaim_cookie *partial = &reclaim;
--	struct mem_cgroup *memcg;
--
--	if (current_is_kswapd() || sc->memcg_full_walk)
--		partial = NULL;
--
--	memcg = mem_cgroup_iter(target_memcg, NULL, partial);
--	do {
--		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
--
--		cond_resched();
--
--		mem_cgroup_calculate_protection(target_memcg, memcg);
--
--		if (mem_cgroup_below_min(target_memcg, memcg)) {
--			continue;
--		} else if (mem_cgroup_below_low(target_memcg, memcg)) {
--			if (!sc->memcg_low_reclaim) {
--				sc->memcg_low_skipped = 1;
--				continue;
--			}
--			memcg_memory_event(memcg, MEMCG_LOW);
--		}
--
--		shrink_one(lruvec, sc);
--
--		if (lru_gen_should_abort_scan(lruvec, sc)) {
--			mem_cgroup_iter_break(target_memcg, memcg);
--			break;
--		}
--	} while ((memcg = mem_cgroup_iter(target_memcg, memcg, partial)));
--}
--
- static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- {
- 	struct blk_plug plug;
-@@ -4844,6 +4805,7 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
- 	blk_finish_plug(&plug);
- }
- 
-+static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc);
- static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *sc)
- {
- 	struct blk_plug plug;
-@@ -4873,7 +4835,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
- 	if (mem_cgroup_disabled())
- 		shrink_one(&pgdat->__lruvec, sc);
- 	else
--		shrink_many(pgdat, sc);
-+		shrink_node_memcgs(pgdat, sc);
- 
- 	if (current_is_kswapd())
- 		sc->nr_reclaimed += reclaimed;
-@@ -5586,11 +5548,6 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	bool proportional_reclaim;
- 	struct blk_plug plug;
- 
--	if (lru_gen_enabled() && !root_reclaim(sc)) {
--		lru_gen_shrink_lruvec(lruvec, sc);
--		return;
--	}
--
- 	get_scan_count(lruvec, sc, nr);
- 
- 	/* Record the original scan target for proportional adjustments later */
-@@ -5822,8 +5779,10 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 
- 		reclaimed = sc->nr_reclaimed;
- 		scanned = sc->nr_scanned;
--
--		shrink_lruvec(lruvec, sc);
-+		if (lru_gen_enabled())
-+			lru_gen_shrink_lruvec(lruvec, sc);
-+		else
-+			shrink_lruvec(lruvec, sc);
- 
- 		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
- 			    sc->priority);
-@@ -5837,7 +5796,12 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 		flush_reclaim_state(sc);
- 
- 		/* If partial walks are allowed, bail once goal is reached */
--		if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
-+		if (lru_gen_enabled() && root_reclaim(sc)) {
-+			if (lru_gen_should_abort_scan(lruvec, sc)) {
-+				mem_cgroup_iter_break(target_memcg, memcg);
-+				break;
-+			}
-+		} else if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
- 			mem_cgroup_iter_break(target_memcg, memcg);
- 			break;
- 		}
--- 
-2.34.1
+[0]: https://github.com/winterddd/linux/tree/arm-copyin
+
+Best regards,
+Ruidong
+
+在 2024/12/9 10:42, Tong Tiangen 写道:
+> For the arm64 kernel, when it processes hardware memory errors for
+> synchronize notifications(do_sea()), if the errors is consumed within the
+> kernel, the current processing is panic. However, it is not optimal.
+> 
+> Take copy_from/to_user for example, If ld* triggers a memory error, even in
+> kernel mode, only the associated process is affected. Killing the user
+> process and isolating the corrupt page is a better choice.
+> 
+> Add new fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR to identify insn
+> that can recover from memory errors triggered by access to kernel memory,
+> and this fixup type is used in __arch_copy_to_user(), This make the regular
+> copy_to_user() will handle kernel memory errors.
+> 
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> ---
+>   arch/arm64/Kconfig                   |  1 +
+>   arch/arm64/include/asm/asm-extable.h | 31 +++++++++++++++++++++++-----
+>   arch/arm64/include/asm/asm-uaccess.h |  4 ++++
+>   arch/arm64/include/asm/extable.h     |  1 +
+>   arch/arm64/lib/copy_to_user.S        | 10 ++++-----
+>   arch/arm64/mm/extable.c              | 19 +++++++++++++++++
+>   arch/arm64/mm/fault.c                | 30 ++++++++++++++++++++-------
+>   7 files changed, 78 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 100570a048c5..5fa54d31162c 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -21,6 +21,7 @@ config ARM64
+>   	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+>   	select ARCH_HAS_CACHE_LINE_SIZE
+>   	select ARCH_HAS_CC_PLATFORM
+> +	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
+>   	select ARCH_HAS_CURRENT_STACK_POINTER
+>   	select ARCH_HAS_DEBUG_VIRTUAL
+>   	select ARCH_HAS_DEBUG_VM_PGTABLE
+> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+> index b8a5861dc7b7..0f9123efca0a 100644
+> --- a/arch/arm64/include/asm/asm-extable.h
+> +++ b/arch/arm64/include/asm/asm-extable.h
+> @@ -5,11 +5,13 @@
+>   #include <linux/bits.h>
+>   #include <asm/gpr-num.h>
+>   
+> -#define EX_TYPE_NONE			0
+> -#define EX_TYPE_BPF			1
+> -#define EX_TYPE_UACCESS_ERR_ZERO	2
+> -#define EX_TYPE_KACCESS_ERR_ZERO	3
+> -#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
+> +#define EX_TYPE_NONE				0
+> +#define EX_TYPE_BPF				1
+> +#define EX_TYPE_UACCESS_ERR_ZERO		2
+> +#define EX_TYPE_KACCESS_ERR_ZERO		3
+> +#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD		4
+> +/* kernel access memory error safe */
+> +#define EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR	5
+>   
+>   /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
+>   #define EX_DATA_REG_ERR_SHIFT	0
+> @@ -51,6 +53,17 @@
+>   #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
+>   	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
+>   
+> +#define _ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, err, zero)	\
+> +	__ASM_EXTABLE_RAW(insn, fixup, 					\
+> +			  EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR,		\
+> +			  (						\
+> +			    EX_DATA_REG(ERR, err) |			\
+> +			    EX_DATA_REG(ZERO, zero)			\
+> +			  ))
+> +
+> +#define _ASM_EXTABLE_KACCESS_MEM_ERR(insn, fixup)			\
+> +	_ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, wzr, wzr)
+> +
+>   /*
+>    * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
+>    * when an unhandled fault is taken.
+> @@ -69,6 +82,14 @@
+>   	.endif
+>   	.endm
+>   
+> +/*
+> + * Create an exception table entry for kaccess `insn`, which will branch to
+> + * `fixup` when an unhandled fault is taken.
+> + */
+> +	.macro          _asm_extable_kaccess_mem_err, insn, fixup
+> +	_ASM_EXTABLE_KACCESS_MEM_ERR(\insn, \fixup)
+> +	.endm
+> +
+>   #else /* __ASSEMBLY__ */
+>   
+>   #include <linux/stringify.h>
+> diff --git a/arch/arm64/include/asm/asm-uaccess.h b/arch/arm64/include/asm/asm-uaccess.h
+> index 5b6efe8abeeb..19aa0180f645 100644
+> --- a/arch/arm64/include/asm/asm-uaccess.h
+> +++ b/arch/arm64/include/asm/asm-uaccess.h
+> @@ -57,6 +57,10 @@ alternative_else_nop_endif
+>   	.endm
+>   #endif
+>   
+> +#define KERNEL_MEM_ERR(l, x...)			\
+> +9999:	x;					\
+> +	_asm_extable_kaccess_mem_err	9999b, l
+> +
+>   #define USER(l, x...)				\
+>   9999:	x;					\
+>   	_asm_extable_uaccess	9999b, l
+> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
+> index 72b0e71cc3de..bc49443bc502 100644
+> --- a/arch/arm64/include/asm/extable.h
+> +++ b/arch/arm64/include/asm/extable.h
+> @@ -46,4 +46,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
+>   #endif /* !CONFIG_BPF_JIT */
+>   
+>   bool fixup_exception(struct pt_regs *regs);
+> +bool fixup_exception_me(struct pt_regs *regs);
+>   #endif
+> diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/copy_to_user.S
+> index 802231772608..bedab1678431 100644
+> --- a/arch/arm64/lib/copy_to_user.S
+> +++ b/arch/arm64/lib/copy_to_user.S
+> @@ -20,7 +20,7 @@
+>    *	x0 - bytes not copied
+>    */
+>   	.macro ldrb1 reg, ptr, val
+> -	ldrb  \reg, [\ptr], \val
+> +	KERNEL_MEM_ERR(9998f, ldrb  \reg, [\ptr], \val)
+>   	.endm
+>   
+>   	.macro strb1 reg, ptr, val
+> @@ -28,7 +28,7 @@
+>   	.endm
+>   
+>   	.macro ldrh1 reg, ptr, val
+> -	ldrh  \reg, [\ptr], \val
+> +	KERNEL_MEM_ERR(9998f, ldrh  \reg, [\ptr], \val)
+>   	.endm
+>   
+>   	.macro strh1 reg, ptr, val
+> @@ -36,7 +36,7 @@
+>   	.endm
+>   
+>   	.macro ldr1 reg, ptr, val
+> -	ldr \reg, [\ptr], \val
+> +	KERNEL_MEM_ERR(9998f, ldr \reg, [\ptr], \val)
+>   	.endm
+>   
+>   	.macro str1 reg, ptr, val
+> @@ -44,7 +44,7 @@
+>   	.endm
+>   
+>   	.macro ldp1 reg1, reg2, ptr, val
+> -	ldp \reg1, \reg2, [\ptr], \val
+> +	KERNEL_MEM_ERR(9998f, ldp \reg1, \reg2, [\ptr], \val)
+>   	.endm
+>   
+>   	.macro stp1 reg1, reg2, ptr, val
+> @@ -64,7 +64,7 @@ SYM_FUNC_START(__arch_copy_to_user)
+>   9997:	cmp	dst, dstin
+>   	b.ne	9998f
+>   	// Before being absolutely sure we couldn't copy anything, try harder
+> -	ldrb	tmp1w, [srcin]
+> +KERNEL_MEM_ERR(9998f, ldrb	tmp1w, [srcin])
+>   USER(9998f, sttrb tmp1w, [dst])
+>   	add	dst, dst, #1
+>   9998:	sub	x0, end, dst			// bytes not copied
+> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+> index 228d681a8715..9ad2b6473b60 100644
+> --- a/arch/arm64/mm/extable.c
+> +++ b/arch/arm64/mm/extable.c
+> @@ -72,7 +72,26 @@ bool fixup_exception(struct pt_regs *regs)
+>   		return ex_handler_uaccess_err_zero(ex, regs);
+>   	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+>   		return ex_handler_load_unaligned_zeropad(ex, regs);
+> +	case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
+> +		return false;
+>   	}
+>   
+>   	BUG();
+>   }
+> +
+> +bool fixup_exception_me(struct pt_regs *regs)
+> +{
+> +	const struct exception_table_entry *ex;
+> +
+> +	ex = search_exception_tables(instruction_pointer(regs));
+> +	if (!ex)
+> +		return false;
+> +
+> +	switch (ex->type) {
+> +	case EX_TYPE_UACCESS_ERR_ZERO:
+> +	case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
+> +		return ex_handler_uaccess_err_zero(ex, regs);
+> +	}
+> +
+> +	return false;
+> +}
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index ef63651099a9..278e67357f49 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -801,21 +801,35 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>   	return 1; /* "fault" */
+>   }
+>   
+> +/*
+> + * APEI claimed this as a firmware-first notification.
+> + * Some processing deferred to task_work before ret_to_user().
+> + */
+> +static int do_apei_claim_sea(struct pt_regs *regs)
+> +{
+> +	int ret;
+> +
+> +	ret = apei_claim_sea(regs);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!user_mode(regs) && IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
+> +		if (!fixup_exception_me(regs))
+> +			return -ENOENT;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>   static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>   {
+>   	const struct fault_info *inf;
+>   	unsigned long siaddr;
+>   
+> -	inf = esr_to_fault_info(esr);
+> -
+> -	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
+> -		/*
+> -		 * APEI claimed this as a firmware-first notification.
+> -		 * Some processing deferred to task_work before ret_to_user().
+> -		 */
+> +	if (do_apei_claim_sea(regs) == 0)
+>   		return 0;
+> -	}
+>   
+> +	inf = esr_to_fault_info(esr);
+>   	if (esr & ESR_ELx_FnV) {
+>   		siaddr = 0;
+>   	} else {
 
 
