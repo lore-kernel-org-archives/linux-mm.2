@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 334ECE7490C
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5416E7490E
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35D316B0005; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
+	id 19BFA6B0088; Tue, 23 Dec 2025 23:22:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30B856B0088; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
+	id 145EA6B008A; Tue, 23 Dec 2025 23:22:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2173A6B008A; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
+	id F225E6B008C; Tue, 23 Dec 2025 23:22:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CDC26B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A51CC1405DF
+	by kanga.kvack.org (Postfix) with ESMTP id DEC4B6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:22:19 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8948BA2C9
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:19 +0000 (UTC)
+X-FDA: 84253067598.04.E913725
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CC11740009
 	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:17 +0000 (UTC)
-X-FDA: 84253067514.29.05BF24B
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E5C391A000A
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QZB4ecCq;
-	spf=pass (imf19.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766550136; a=rsa-sha256;
-	cv=none;
-	b=GizLGYBaYs4ePkuOry1qbflPca8Zojm0HBD6qqjJmANP6G8sJAQRnDZNC/a5wCQqV7roPw
-	JnavUGc/m8v/dF9iwBW5/cQQOLF3A7oZhSG9qOP6ElhPPoqBCS0P/BhzGB+ttEq0A2SxRI
-	NEZg6O7YXJEtfhnq65NvgyQzsf0vBGk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QZB4ecCq;
-	spf=pass (imf19.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vz9Et8GS;
+	spf=pass (imf07.hostedemail.com: domain of shu17az@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766550136;
+	s=arc-20220608; t=1766550137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
-	b=3HZbj8Ng0Z6ba3wCTiZ68ze3QMLfQy7uXvo+KrDAuNRrSERjbHFZpPAJDQz/rFHkaLFyuk
-	FCCDa5vYg2ry6TIpWyHQoIpSK7OHyPlvyTFJJf5WahkLINMUdreiV65s9/OdFifw8pdb/O
-	uKGgouTgve11QMD2gSoieEuD7ARjmag=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso3676008a12.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:22:15 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VQkMD3ltAZru2XHuW3W3PQE75mGT0odUsu8IJA/78IY=;
+	b=AuCnumhpcDkZXza7Rov37np82W5qveHxAGV3YNvyg/54pFp1NBlWIgLvWPr6VYZgxDIGHw
+	0ZHUCAztbRJOtvN2+TTAavur7fd+JHFp0UvO0TqBvMHtOhKzPQobJRsvbjyauTLgP4zy80
+	2IjL2QGUe/WJHqgjsMX0RMVNIK+XJgU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vz9Et8GS;
+	spf=pass (imf07.hostedemail.com: domain of shu17az@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766550137; a=rsa-sha256;
+	cv=none;
+	b=3SBwreAyIdtU1f6GOVi5+yr7ZtaSzUa0dVqiJszt6crLGvUTY9Chz2JPL2XekAUBpm0sWR
+	Nlp/2Xspt5u6Z+63IBXLVnRoyVxzD/Ng6PULN4l72tmnI/h9WEuQZQVzXRD4MT1X1ejRLM
+	5GOWo2nCs+ohbniIrk6gPuthafVhoss=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a1022dda33so46479185ad.2
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:22:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766550135; x=1767154935; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
-        b=QZB4ecCqt7TM9xhCTqmD3iCGTr3gztVel6Sc6LS9m2M8AejwyuotexmYwKGr194r+K
-         KtWk3YIqn3X6EgaByNwJmbZAjFEF+3YDj1AkstN/JaueoZ+peVrN1TuefebICbLxEInS
-         y0Y3umFo8EQF0foMNFHuF+6j1rYhv/F7XL6bQkUQsGjjAvpkMAR3P3BCAOC/4v/P9PN/
-         wU8EZjwF7wDBQ0vxpVHK4O3whdiwkmoXLviQS0AmKeymnFz7r5QBU7CPSn1d7oriJ6xp
-         yubCFZ+7DHA3qeIzxYbCIWS+SO1ufOnn3IkUzCfdeGV2TmWQ11mFFto+cZmlOH/dujuw
-         36Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766550135; x=1767154935;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766550137; x=1767154937; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
-        b=McNJzb799KNm6ouaoABL/Q0t56oKcBr3eYyWY6H/TIH+91VfRMw4lMmxsojWv5Eihm
-         G4KwymcKtYRZQsi8wyBl+gJ1JqN7+q6X8qdNXdBCrVQt+Atv0+E2h9vsRlcGWx1RSsJ9
-         mh7PeUCCLA7fGSOBzpeb3HSkzkShzlSb/Z62/jjNXI7OniGgNNPVzxk8xp30fEvhdhoT
-         ipiw03smV4W3R23VUbKzdO1FUvrbXmQKojpzM0t68IPlUUXhwjEw6Kc4qXJDaZsjvo9Y
-         ZH4hPVsunuWZ7CbEDBdpZIyexrkH0PnzTAkwP7+nFgwplB3b6hz5v7e3C9XeWfqBoDlf
-         LsJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9MJgyfvmHvR8zmfNQvQw1DA4lallXAaLiaL3sFYh2ZnfKo9Q8Xb2+1WYLvDyBPD7kRNMptedVqQ==@kvack.org
-X-Gm-Message-State: AOJu0YwhQQhM4T2NaQBIWC+MG2JQz+J7Xm1Xypkne45w2ESf9aVnBiDF
-	RrqJlqsApthxTwJJKJtNMaGx9sF6oXaikg7pc2/kDWByX4GzSqaEdjU+
-X-Gm-Gg: AY/fxX4dfUoXX7IbaEDnRkBuyLf8VjzLuYhlQ33CFYnbqk6kA9Np4+KQcF4ccFTn7Td
-	CbuoU8GWvIB+VXM1HKQT3wO5V/bkplBJQTNaYvCVr+ryTwi8Km1ZyyYcxCjLuNUZK7dQ5gCn7jM
-	DWpwpi6KNBsyRFGDyTn4S9lGp47xcbMlyc9WmWiZK213a3UPH3KQ0owfXNgKAsYz4hGeEs/k7B6
-	sWiJCqRb1CQM5aaZDVhs1OzocCdiYHdMLORrq9KFE3zQ2+Za2UQfbY/V8roTWvRl4wPG16BN1+Q
-	We/jCXElwVcJnnDeRerSfv+3YbHhMbIIAwEWPSw79OPlNSxf3qsp5rGNTzV0QDYGmReSaKaB8ec
-	Z/+Hsz7lD3xNfAAh0PfsNnMOBSP88lSbGflHmuzgZ3aqR1sIEwNdrx6s7GEMDgGNs8GxDfTMxd5
-	oy
-X-Google-Smtp-Source: AGHT+IHOv+s1tLvmzhpsyvu7LJTsUAsXFw9q7TcmS1xRa6GeikBeK5vKJ0t6dCFNR8dYeCrV/OJTzw==
-X-Received: by 2002:a05:7022:1719:b0:119:e569:f609 with SMTP id a92af1059eb24-121721ababfmr11396994c88.2.1766550134622;
-        Tue, 23 Dec 2025 20:22:14 -0800 (PST)
+        bh=VQkMD3ltAZru2XHuW3W3PQE75mGT0odUsu8IJA/78IY=;
+        b=Vz9Et8GShNJcADZUxicdg6b2YZfIgiD48XFnxN5Dmm8lOJgZ4RDIoDc3ElSbHLCGdi
+         FRo8aSVRJYH8RDitvhy4nnSL0DUVnaoO0432W52PnC8hGiZy9YyOhUvFIy8/Pu13ky5Y
+         OFXzmgZuKHVVtddjLsFqCDtAfgYawSfWPaIcG4kKllLMx/3++cQxofc4s2uLQomQK3DE
+         lUvbeUs87MWZL618x/HesogjTB+F1qFtEgf5GeaDkqOkm7dyZofkFotPWxjUjKwO3sFZ
+         ncHpQdKl6ghUZ7xGnz2sbPP44uA1rZ+ZtVr7Fi0pi3wBAp31IW8tzTbwfsdAOIWG7rcc
+         Zk5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766550137; x=1767154937;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VQkMD3ltAZru2XHuW3W3PQE75mGT0odUsu8IJA/78IY=;
+        b=NtPhLb1BZqMb+0hr1bn2zZONt6Y9n8K9OcSCnbhmOSrrNprFmb4mr8USGWJARqhnIQ
+         kVHHb5BpXMaw71A7BfiWBfCsh693VZopwKXukGTn18NhWoQpxb6PbM8kE2HN0KNe/r1P
+         Qg4siUc/82kADqIW74Gwm3DIxe3i4ckMLHy2Og+Nvyz5YrVFtmY77O8GQGyImYsmrVby
+         +6O2feAbvUXL1RuZs419ozcxr8WCPMOpf1gtN0hV/HbLSJkVvSikvZvIkW0douWA9oxW
+         MpQ9P//uanVMkilQL8A56oTHCIbU/f36ibG05L65pSthFwgfmkFJPvjmlhTpx/zS8egk
+         Vz7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWXnIFSsMSdPujEmwOuQFDEbtollasltNF+P6k5yB7233CPKobFe+QivwdUtRdlGUdqwN193M5GxQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw4ue9nIUGBc81Er/ned9WiF1I3FXnzSu3TnPzbDciAs9uLUsmZ
+	0J2EyOCslzF6cfPjhRJJk0QeQs9ssSZcQxkGYzc6blG/pq4F6mtOlX8V
+X-Gm-Gg: AY/fxX45xGQRwsTfMhJKtkB8q+pt+N6rMsZzWUYbo3VY/niLadyeFTxUxtqmUblO/05
+	pgjLox+zvks/O0f4+QNyp6XKGz82SuOupoK6gQd9H48V6yEyTqmIms++HrynOBWxBH0vdSZeutB
+	ijGJTqIpDmNOkGu7b1Dse3EIF0C/6R39wBXCgRx8Yv1G4w/3E0mYgMpSjJS4dFR+pSUBWBfEtE0
+	Bk/BzcDT8ujXlyJ80r31Hugi2l/3IeTabBpkA9x/qCGNfjkhZMMeSPTX7TcYZubls3yrxdT05PB
+	vP/Tuj8HyxyElDHmKOikL+Jqy3KECXRgkQGBB3FdzLDflnZCcojGIgSh3Ed8U4uPKFaYUsbzOn5
+	1aup9qUmCqLFrfR2uG4BA5m0xaFb8Qr1ITT9+YJvc+UEV4O7oD4AaqP1t9vlPSalNU4YKLjtigc
+	vc
+X-Google-Smtp-Source: AGHT+IEIattYmas64tB4sMSx+gkWrf4v4xDu3o/R+q0wk09aYhAA7BXdfFClMLqznY0MS+X0mGR6Tg==
+X-Received: by 2002:a05:7022:e98b:b0:11c:b3ae:c9e9 with SMTP id a92af1059eb24-12172311f8fmr16335393c88.43.1766550136511;
+        Tue, 23 Dec 2025 20:22:16 -0800 (PST)
 Received: from dev.. ([208.184.112.130])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm48542031c88.8.2025.12.23.20.22.14
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm48542031c88.8.2025.12.23.20.22.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 20:22:14 -0800 (PST)
+        Tue, 23 Dec 2025 20:22:16 -0800 (PST)
 From: Shu Anzai <shu17az@gmail.com>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -97,21 +98,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Shu Anzai <shu17az@gmail.com>
-Subject: [PATCH v2 0/5] mm/damon/tests/core-kunit: extend existing test scenarios
-Date: Wed, 24 Dec 2025 04:21:55 +0000
-Message-ID: <20251224042200.2061847-1-shu17az@gmail.com>
+Subject: [PATCH v2 1/5] mm/damon/tests/core-kunit: verify the 'age' field in damon_test_split_at()
+Date: Wed, 24 Dec 2025 04:21:56 +0000
+Message-ID: <20251224042200.2061847-2-shu17az@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251224042200.2061847-1-shu17az@gmail.com>
+References: <20251224042200.2061847-1-shu17az@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4zi7nhqszto74ztos4fx1h4nfcbckoq4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E5C391A000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: whqx5hmrz41tyctwxwmrmjp1gacrix87
-X-HE-Tag: 1766550135-445833
-X-HE-Meta: U2FsdGVkX19sHky+1UVhyYnIF7t9ZMZADcqI1bi1bYk9ZKsAjoLuCTcOBL38hpjgYgTiyk6k4c5M36v/1+UYg/p6VikIdUIg0JaGv0yiE32lpK/BHnQSAjNb2Rh4vlEVgRBGV/I+ERKdx3NP2q89oTZkRwnFc/j7dR11EcOb/iuZkjOsCBXuZzJsoYwXyOpHDY0OdjFa7yxzLxzNmn7P2NjkvILOz7vUeZ06mTb7T/KYYNpHk8htlePEoQNVoLhgcN5eUAvL2OVQv8xWvthjem9VtzCZy0cP1dQoGQXE8PgS+cZhsZ2QXqtYh6tWEEcxzGtdFCfuEX69jt71DDgA4Vb7MzfxiwVSTqBgLxG7a6/CnNWba+D2uPRR6CNsGstuXNLdM78rtumCz7rQ5UzJhO9Y2ojx6QBWf4Um7xg3/tWqhd2wz6BITUFnUv306u6seX02OHFhHhVN8pMm3JwD3A9B9f3lS8NBUl3YKdCzGA4ybE3hg8nJR9ttcBRYnot0hoY9zzA3rwhDM/E7Cf2ja9U9b5aHUFOd2LPFEHmRao5dHF7IGLTET8FOtU7CczbWqniN977Tt+2ZKiJ8Lc3RUZU6iizHcYa/05AXNtmWKLSerS/y2LovEttPRUBeudw4iZOMPCjrfQVipvxwtOFQGJejcvZIIt20eKPffXwmfv5uAOi9B4+EQ/qQP9SAXPzpx2mwLRaUbF2iv8DR2AkNRgIHNKqEv8qdp6+eFAy30Ruai0QQ66QTp2lenzrkFCiNYeGITYGtTULqsyT6eAavQ1YUQ3tD+JaRi1E8Y398Al5UMkEh+FhDH0ELgTaxdnuyeA97OU85H1YVf+4GFrhAo4NHmFshL3ff+f5SY6F5sXLtklArI2cs+VtIJleaIjzqLKGCPEU/uGzjzjPxpC5knO4edXZ7moBcpfBOYB2sFlvUm3IDW36iQWZkIUHfyRgLY65LsB9aWP4+upUVc1B
- 8qE7l7R7
- r5Xm1bL5xVTK4N0Vg/wLN7sP0fhZSuoRHl/I2DkUM/iSrZkSAnEGw46KyN5UUaLhL6yZbsVZKPYWJVnKVol4UurzZfw+QJUV7W5nwN87mlKp5JyM2Nj7AYGoNqIj8S3XfkU6iwhMYpAR6y1QDYRuHxlsI47AFJp85R5Iz3l/PfgBq/gdTONj6sGZRSjPF5E2v9rzIrMF3owLCo8x7sVtBndZDg6Ergb2kQYo4TCllZ/AHWHXrVo0Xlgd9tff7DbczDEK6aWacwRFb4gB5oTc9P3cQ7qgbKWAtEMUE+P/YSuRB9+cgAZHMb+DflSLciboiWFGrnpYCfks9mYZAIw77sHg3RC9dWV5Gy5FeTAspnelpIp9PVhZfpovS2SoYLFWXcDGy
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CC11740009
+X-HE-Tag: 1766550137-834872
+X-HE-Meta: U2FsdGVkX1/iITqj18X29945bkk3H23N3Kcu0/hwTc9whz4lFjWqX5k2Ak4FjL8vUBLLNVxoHCTX/S40Gxhcw9yo4o3JXeoSnTSF/Y5azKOLFrMeLAdx85rkyn0WY9yhLWyMEeeFkMVP2ExP5uwP3Lvcdk0ozygQCcq+699FkpxVEgjRokSHV0ZldQHotGsuim1P64+YbLpZdjgJMUS2OSBMS7MSTNczaRco1d38gFFVV3hm2I18F9r9zpOnhaG/XXwlLnkiQtdRkbX8vlCOPax1sbb0sTxir43iHJqQl+ovaGthmBjxM6dGVdwutSqbaeA2fy5hWQAMhBFK9eyeMuxKNxW9HCXYsTNsUcNv95oCrdEwaPWbqzMl9emLcfbvsqyvKhU145g7/umFgmx5n/ydzAimLGFQFkYAo3etfPBbM2U5Ml44yy3y6/cgSph4AvpqyfxYFbufuLIXgxcBExJ/BGYbGo8KacCB7d2tTsX97D1HnP5hCEW2Ef67qjmTAyoutyJCXkqP18oWNl4PDkIweaTTvJZwHvjFbbjxNs/1CWVVpBH4uqdCQygqQzqbarqy/BBtPHnQ+u7f3iy6XUnKzvyhBSpiD5vvzaKGhgQHL83R+Q26S/CnxXn+CZ5xpro081da8w9SIhGOe1Rk3Bc8EbDZSKMXOakD6bFX6nG/Jw2Me9s/m45nFVbcUKt8zEtVyvRsZw++YgiLx2/p2+1oVWRSpu5IYLtZ0gGVPo5hAbrFGq1Gb/Vc3hSLE0ozcffCGmMZ3TPSOio5JFouSrjANn8WvDLjiqGDmFsj71WhDT3804N1sULYvhlM3NJRcLDJO/as+fx32Yf8n+330E8mbsqPIKBKb8Rx/uWzdfrpyZXh4RLSFBJIeiGSvI7i+dvLFCfyb/ilv7V8fvO3okZCV7QXHrfv63aeuMQKTpTumNzObZPpVznDm3GY4UaaK1F+ah5/nLlTO19JpMB
+ 3eVYOwHZ
+ M5Kds2VK2B4FDS7Fx01JNtLOZhnji794EePktH9Lt5fAVCHCgMS90kRzogUDCU6JdqGq+kD/ning+u4hGyfssyHpbTT3O7IpEVqgY7MccBu9lOP3MTKoCjXMuKr10lrYWLK9znPPrm/ryMBR0J5BtaodHfOTHmK4vLG7X7IDeoOf0qR0Po5aezQjX1EN1NQS/gS6FT/WciF5lUpa+9TGN/w76JVdgO0Cq/5J89AGXes25ESv730vq+s4MnwWEdfYBfe1Ge+3DzX2jXeBOD7P1ojjPY0Jn22t7U6/hgI4ae1MUhEWmhzElHqTdY/6Ly9w5pMVSZW1Z4GiwEvsDzC1wT7vhx/u9+kNduzDOSLYjVn4c6f+D7IzvJTaylbt1Mnk243vRkpSTV2bgoLDulElf6vfHPm9s/C7gAODhKXjT1V5Mp4WMKLwRGp4ukAMHHp4rg0KD+p88/+fWuLCiGN4AFWJVFVISkf4Y7Ttbq9/pu7HpDh0=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000053, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,34 +122,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Improve the KUnit test coverage for DAMON. 
+Extend damon_test_split_at() to verify the 'age' field.
 
-The five patches in this series respectively extend damon_test_split_at(), 
-damon_test_merge_two(), damon_test_merge_regions_of(), 
-damon_test_split_regions_of(), and damos_test_commit_quota_goal().
+Signed-off-by: Shu Anzai <shu17az@gmail.com>
+---
+ mm/damon/tests/core-kunit.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes from v1:
-- Split the original patch into five smaller patches.
-- Remove a newly added region from damon_test_merge_regions_of() 
-  to avoid an obvious test case.
-- Restore the test case in damon_test_split_regions_of() 
-  that was previously removed.
-
-Shu Anzai (5):
-  mm/damon/tests/core-kunit: verify the 'age' field in
-    damon_test_split_at()
-  mm/damon/tests/core-kunit: verify the 'age' and 'nr_accesses_bp'
-    fields in damon_test_merge_two()
-  mm/damon/tests/core-kunit: add a test case for region merge size limit
-    in damon_test_merge_regions_of()
-  mm/damon/tests/core-kunit: add test cases for multiple regions in
-    damon_test_split_regions_of()
-  mm/damon/tests/core-kunit: remove a redundant test case and add a new
-    test case in damos_test_commit_quota_goal()
-
- mm/damon/tests/core-kunit.h | 50 +++++++++++++++++++++++++++++--------
- 1 file changed, 39 insertions(+), 11 deletions(-)
-
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index f59ae7ee19a0..88ec046f4942 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -158,6 +158,7 @@ static void damon_test_split_at(struct kunit *test)
+ 	r->nr_accesses_bp = 420000;
+ 	r->nr_accesses = 42;
+ 	r->last_nr_accesses = 15;
++	r->age = 10;
+ 	damon_add_region(r, t);
+ 	damon_split_region_at(t, r, 25);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+@@ -170,6 +171,7 @@ static void damon_test_split_at(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses_bp, r_new->nr_accesses_bp);
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
+ 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
++	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
+ 
+ 	damon_free_target(t);
+ }
 -- 
 2.43.0
 
